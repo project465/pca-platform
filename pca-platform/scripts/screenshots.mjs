@@ -20,6 +20,13 @@ const shot = async (page, name, full = false) => {
   console.log("shot:", name, page.url());
 };
 
+/** 가운데 패널만 잘라낸다. 여백이 대부분인 화면을 줄여서 실으면 글자가 안 보인다. */
+const shotPanel = async (page, name) => {
+  await page.waitForLoadState("networkidle");
+  await page.locator(".panel").first().screenshot({ path: `${OUT}/${name}.png` });
+  console.log("shot(panel):", name, page.url());
+};
+
 const ctx = async () =>
   browser.newContext({ viewport: { width: 1280, height: 820 }, deviceScaleFactor: 1, locale: "ko-KR" });
 
@@ -27,7 +34,7 @@ const ctx = async () =>
 {
   const c = await ctx(); const p = await c.newPage();
   await p.goto(`${BASE}/login`);
-  await shot(p, "01-login");
+  await shotPanel(p, "01-login");
   await c.close();
 }
 
@@ -35,11 +42,11 @@ const ctx = async () =>
 {
   const c = await ctx(); const p = await c.newPage();
   await p.goto(`${BASE}/password/forgot`);
-  await shot(p, "02-forgot");
+  await shotPanel(p, "02-forgot");
   await p.fill("#identifier", "2021001234");
   await p.getByRole("button", { name: /로그인|재설정 링크 받기/ }).click();
   await p.waitForSelector(".notice.ok");
-  await shot(p, "03-forgot-sent", true);
+  await shotPanel(p, "03-forgot-sent");
   await c.close();
 }
 
@@ -51,7 +58,7 @@ const ctx = async () =>
   await p.fill("#password", "wrong-password");
   await p.getByRole("button", { name: /로그인|재설정 링크 받기/ }).click();
   await p.waitForSelector(".notice.error");
-  await shot(p, "04-login-error");
+  await shotPanel(p, "04-login-error");
   await c.close();
 }
 
@@ -63,7 +70,7 @@ const ctx = async () =>
   await p.fill("#password", "TempPass2026");
   await p.getByRole("button", { name: /로그인|재설정 링크 받기/ }).click();
   await p.waitForURL("**/password/change");
-  await shot(p, "05-forced-change");
+  await shotPanel(p, "05-forced-change");
   await c.close();
 }
 
