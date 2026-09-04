@@ -4,30 +4,49 @@ import type { SiteContent } from "@/content";
 /**
  * 히어로.
  *
- * 오른쪽은 문의 카드다. 처음 본 사람이 스크롤을 한 번도 하지 않고
+ * 제목의 {중괄호} 안은 금색으로 강조한다. 원고에서 강조 위치를 정하기 위한 표시다.
+ * 오른쪽은 문의 카드다 — 처음 본 사람이 스크롤을 한 번도 하지 않고
  * 남길 수 있어야 한다는 요구가 이 배치의 이유다.
- * 리포트 축소판은 리포트 섹션으로 옮겼다 — 거기가 제자리이기도 하다.
  */
+function Emphasised({ line }: { line: string }) {
+  const parts = line.split(/(\{[^}]*\})/g).filter(Boolean);
+  return (
+    <>
+      {parts.map((p, i) =>
+        p.startsWith("{") ? (
+          <span className="gold" key={i}>
+            {p.slice(1, -1)}
+          </span>
+        ) : (
+          <span key={i}>{p}</span>
+        ),
+      )}
+    </>
+  );
+}
+
 export default function Hero({ site }: { site: SiteContent }) {
   const h = site.hero;
 
   return (
     <div className="hero" id="top">
+      <span className="mark" aria-hidden="true">
+        {h.watermark}
+      </span>
       <div className="wrap herogrid">
         <div className="inner">
           <span className="eyebrow">{h.eyebrow}</span>
-          <p className="display">
-            {h.display.map((line, i) => (
-              <span key={line}>
-                {line}
-                {i < h.display.length - 1 ? <br /> : null}
+          <h1>
+            {h.title.map((line, i) => (
+              <span key={i}>
+                <Emphasised line={line} />
+                {i < h.title.length - 1 ? <br /> : null}
               </span>
             ))}
-          </p>
-          <h1>{h.title}</h1>
+          </h1>
           <p className="lead">{h.lead}</p>
           <div className="cta">
-            <a className="btn lg ghost" href={h.secondary.href}>
+            <a className="btn lg" href={h.secondary.href}>
               {h.secondary.label}
             </a>
           </div>

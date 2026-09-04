@@ -4,9 +4,14 @@ export default function SiteHeader({ site }: { site: SiteContent }) {
   return (
     <header className="site-header">
       <div className="wrap bar">
-        <a className="brand" href="#top">
-          {site.brand}
-          <span>{site.domain}</span>
+        <a className="brandmark" href="#top">
+          <span className="glyph" aria-hidden="true">
+            A
+          </span>
+          <span>
+            <b>{site.org}</b>
+            <span>{site.orgTagline}</span>
+          </span>
         </a>
 
         <nav className="wide">
@@ -18,9 +23,6 @@ export default function SiteHeader({ site }: { site: SiteContent }) {
         </nav>
 
         <div className="right">
-          <a className="btn ghost signin" href={site.platformUrl}>
-            {site.nav.login}
-          </a>
           <a className="btn solid" href="#contact">
             {site.nav.contact}
           </a>
@@ -35,9 +37,6 @@ export default function SiteHeader({ site }: { site: SiteContent }) {
                 {i.label}
               </a>
             ))}
-            <a className="alt" href={site.platformUrl}>
-              {site.nav.login}
-            </a>
           </nav>
         </details>
       </div>

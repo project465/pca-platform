@@ -15,16 +15,16 @@ const FONT = resolve("node_modules/pretendard/dist/web/variable/woff2/Pretendard
 const CARDS = [
   {
     file: "public/og-kr.png",
-    display: "PERSONALIZED<br>CAREER ANALYSIS",
-    kicker: "당신의 전공이 성공으로 이어지도록",
-    title: "전공은 선택했지만, 그 다음 길을 모르는 당신을 위한 정밀 진단",
+    display: "내 전공에 맞는<br><b>커리어 전략</b>을 설계해드립니다",
+    kicker: "PCA · PERSONALIZED CAREER ANALYSIS",
+    title: "적합 직무 · 업무 성향 · 실행 전략을 함께 분석해, 다음에 무엇을 준비해야 하는지까지.",
     foot: "PCA · ACADEMIX",
   },
   {
     file: "public/og-global.png",
-    display: "PERSONALIZED<br>CAREER ANALYSIS",
-    kicker: "So that a major leads somewhere",
-    title: "They chose a major. The next step is still a guess.",
+    display: "They chose a major.<br>We design the <b>career strategy</b>.",
+    kicker: "PCA · PERSONALIZED CAREER ANALYSIS",
+    title: "Job fit, work style and execution strategy — read together, then turned into a plan.",
     foot: "PCA · ACADEMIX",
   },
 ];
@@ -33,20 +33,21 @@ const html = (c) => `<!doctype html><html><head><meta charset="utf-8"><style>
 @font-face { font-family: "P"; src: url("file://${FONT}") format("woff2");
   font-weight: 45 920; font-display: block; }
 * { margin:0; padding:0; box-sizing:border-box; }
-body { width:1200px; height:630px; font-family:"P",sans-serif;
-  background: radial-gradient(900px 420px at 82% -12%, #E3EDFD 0%, rgba(227,237,253,0) 62%), #F4F7FC;
-  display:flex; flex-direction:column; justify-content:center; padding:72px 76px; color:#16232E; }
-.k { font-size:24px; font-weight:700; color:#2E6BE6; margin-bottom:18px; }
-.d { font-size:78px; font-weight:800; letter-spacing:-0.045em; line-height:1.02;
-  background:linear-gradient(96deg,#2E6BE6 8%,#6AA0F5 62%,#9CC0FA 100%);
-  -webkit-background-clip:text; background-clip:text; color:transparent; margin-bottom:26px; }
-.t { font-size:34px; font-weight:800; letter-spacing:-0.035em; line-height:1.3; max-width:22ch;
-  word-break:keep-all; }
-.f { position:absolute; left:76px; bottom:56px; font-size:22px; font-weight:800;
-  letter-spacing:-0.02em; color:#16232E; }
-.f em { font-style:normal; font-weight:500; color:#5C6B78; }
+body { width:1200px; height:630px; font-family:"P",sans-serif; position:relative;
+  background:#0B0B0C; overflow:hidden;
+  display:flex; flex-direction:column; justify-content:center; padding:76px 80px; color:#fff; }
+.mark { position:absolute; right:-30px; top:150px; font-size:300px; font-weight:800;
+  letter-spacing:-0.06em; color:#fff; opacity:.035; line-height:.8; }
+.k { font-size:20px; font-weight:800; letter-spacing:.2em; color:#C9A063; margin-bottom:22px; }
+.d { font-size:60px; font-weight:800; letter-spacing:-0.04em; line-height:1.2;
+  margin-bottom:26px; word-break:keep-all; max-width:17ch; }
+.d b { color:#E3C48F; }
+.t { font-size:24px; font-weight:600; line-height:1.55; max-width:34ch;
+  word-break:keep-all; color:#C6C6CD; }
+.f { margin-top:44px; font-size:20px; font-weight:800; letter-spacing:-0.02em; color:#fff; }
+.f em { font-style:normal; font-weight:500; color:#8B8B95; }
 </style></head><body>
-<div class="k">${c.kicker}</div>
+<div class="mark">PCA</div>\n<div class="k">${c.kicker}</div>
 <div class="d">${c.display}</div>
 <div class="t">${c.title}</div>
 <div class="f">PCA <em>· ACADEMIX</em></div>

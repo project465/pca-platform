@@ -1,74 +1,22 @@
+import Radar from "@/components/radar";
 import type { SiteContent } from "@/content";
 
-export function About({ site }: { site: SiteContent }) {
-  const a = site.about;
+export function Who({ site }: { site: SiteContent }) {
+  const w = site.who;
   return (
-    <section id="about" className="tinted bordered">
-      <div className="wrap">
-        <div className="about-grid">
-          <div>
-            <span className="label-sm">{a.label}</span>
-            <div className="org-mark" style={{ marginTop: 10 }}>
-              <b>{site.org}</b>
-              <span>Education &amp; Conference</span>
-            </div>
-            <h2 style={{ marginBottom: 12 }}>{a.heading}</h2>
-            <p className="lead">{a.body}</p>
-            <p className="highlight">{a.highlight}</p>
-
-            <div className="meta-rows">
-              <div className="meta-row">
-                <b>{a.brandsLabel}</b>
-                <span className="v">
-                  {a.brands.map((b) => (
-                    <span className="bn" key={b.name}>
-                      {b.name}
-                      <em>{b.note}</em>
-                    </span>
-                  ))}
-                </span>
-              </div>
-              <div className="meta-row">
-                <b>{a.partnersLabel}</b>
-                <span className="v">
-                  {a.partners.map((p) => (
-                    <span className="pt" key={p}>
-                      {p}
-                    </span>
-                  ))}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="svc">
-            {a.services.map((s) => (
-              <div key={s.title}>
-                <h3>{s.title}</h3>
-                <p>{s.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-export function Evidence({ site }: { site: SiteContent }) {
-  const e = site.evidence;
-  return (
-    <section id="evidence">
+    <section id="about" className="divided">
       <div className="wrap">
         <div className="sec-head">
-          <h2>{e.heading}</h2>
-          <p className="lead">{e.lead}</p>
+          <span className="label-sm">{w.label}</span>
+          <h2>{w.heading}</h2>
         </div>
-        <div className="stats">
-          {e.stats.map((s) => (
-            <div className="stat" key={s.label}>
-              <b>{s.value}</b>
-              <span>{s.label}</span>
+        <div className="cardgrid c3">
+          {w.items.map((i) => (
+            <div className="card" key={i.no}>
+              <span className="no">{i.no}</span>
+              <h3>{i.title}</h3>
+              <p>{i.body}</p>
+              <span className="tag">{i.tag}</span>
             </div>
           ))}
         </div>
@@ -77,66 +25,71 @@ export function Evidence({ site }: { site: SiteContent }) {
   );
 }
 
-export function Questions({ site }: { site: SiteContent }) {
-  const q = site.questions;
+/** 세 칸에 각각 다른 표식. 그림이 아니라 뜻이 있는 도형이다 */
+function AnalyzeIcon({ n }: { n: number }) {
+  if (n === 0)
+    return (
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path d="M4 2.5h8L16 6.5v11H4z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+        <path d="M11.5 2.5V7H16" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+      </svg>
+    );
+  if (n === 1)
+    return (
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <circle cx="10" cy="10" r="7.4" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M10 5.6V10l3 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
+    );
   return (
-    <section className="tinted bordered">
-      <div className="wrap">
-        <div className="sec-head">
-          <h2>{q.heading}</h2>
-          <p className="lead">{q.lead}</p>
-        </div>
-        <ul className="qs">
-          {q.items.map((i) => (
-            <li key={i}>{i}</li>
-          ))}
-        </ul>
-        <p className="lead" style={{ marginTop: 26 }}>
-          {q.note}
-        </p>
-      </div>
-    </section>
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path d="M3 13.5l4.2-4.4 3 2.6L17 5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M13 5.5h4v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }
 
-export function Analysis({ site }: { site: SiteContent }) {
-  const a = site.analysis;
+export function Analyze({ site }: { site: SiteContent }) {
+  const a = site.analyze;
   return (
-    <section id="analysis" className="bordered">
+    <section id="analyze" className="divided">
       <div className="wrap">
         <div className="sec-head">
+          <span className="label-sm">{a.label}</span>
           <h2>{a.heading}</h2>
           <p className="lead">{a.lead}</p>
         </div>
-        <div className="pillars">
-          {a.pillars.map((p, i) => (
-            <div className="pillar" key={p.title}>
-              <span className="n">{i + 1}</span>
-              <h3>{p.title}</h3>
-              <p>{p.body}</p>
+        <div className="cardgrid c3">
+          {a.items.map((i, n) => (
+            <div className="card" key={i.no}>
+              <span className="ico">
+                <AnalyzeIcon n={n} />
+              </span>
+              <span className="kick">
+                {i.no} {i.kicker}
+              </span>
+              <h3>{i.title}</h3>
+              <p>{i.body}</p>
             </div>
           ))}
         </div>
-        <p className="lead" style={{ marginTop: 26 }}>
-          {a.note}
-        </p>
       </div>
     </section>
   );
 }
 
-export function Compare({ site }: { site: SiteContent }) {
-  const c = site.compare;
+export function Why({ site }: { site: SiteContent }) {
+  const w = site.why;
   return (
-    <section className="bordered">
+    <section className="divided">
       <div className="wrap">
         <div className="sec-head">
-          <h2>{c.heading}</h2>
-          <p className="lead">{c.lead}</p>
+          <span className="label-sm">{w.label}</span>
+          <h2>{w.heading}</h2>
         </div>
-        <div className="cmp">
-          {[c.before, c.after].map((col, idx) => (
-            <div className={`cmp-col${idx === 1 ? " on" : ""}`} key={col.title}>
+        <div className="vsgrid">
+          {[w.before, w.after].map((col, i) => (
+            <div className={`vscol${i === 1 ? " on" : ""}`} key={col.title}>
               <span className="tag">{col.tag}</span>
               <h3>{col.title}</h3>
               <ol>
@@ -147,56 +100,48 @@ export function Compare({ site }: { site: SiteContent }) {
               <p className="verdict">{col.verdict}</p>
             </div>
           ))}
+          <span className="vs" aria-hidden="true" style={{ order: 1 }}>
+            {w.vs}
+          </span>
         </div>
       </div>
     </section>
   );
 }
 
-export function Report({ site }: { site: SiteContent }) {
-  const r = site.report;
+export function Styles({ site }: { site: SiteContent }) {
+  const s = site.styles;
   return (
-    <section id="report" className="tinted bordered">
+    <section id="styles" className="divided">
       <div className="wrap">
-        <div className="sec-head">
-          <h2>{r.heading}</h2>
-          <p className="lead">{r.lead}</p>
-        </div>
-
-        <div className="repgrid">
+        <div className="stylegrid">
+          <div className="hexcard">
+            <Radar
+              axes={site.sheet.styleAxes}
+              scores={site.sheet.styleScores}
+              width={460}
+              height={420}
+              radius={126}
+              labelGap={26}
+              ariaLabel={`${s.heading}: ${site.sheet.styleAxes
+                .map((a, i) => `${a} ${site.sheet.styleScores[i]}`)
+                .join(", ")}`}
+            />
+            <p className="cn">{s.chartNote}</p>
+          </div>
           <div>
-            <span className="volume">{r.volume}</span>
-            <ul className="toc">
-              {r.sections.map((s) => (
-                <li key={s.no}>
-                  <span className="no">{s.no}</span>
-                  <span className="t">{s.title}</span>
-                  <span className="b">{s.body}</span>
-                </li>
+            <span className="label-sm" style={{ marginBottom: 12 }}>
+              {s.label}
+            </span>
+            <h2 style={{ marginBottom: 24 }}>{s.heading}</h2>
+            <div className="stylelist">
+              {s.items.map((i) => (
+                <div key={i.name}>
+                  <span className="dot" aria-hidden="true" />
+                  <b>{i.name}</b>
+                  <span>{i.body}</span>
+                </div>
               ))}
-            </ul>
-          </div>
-
-          <div className="cover" aria-hidden="true">
-            <div className="sheet back">
-              <span className="k">{site.brand}</span>
-              <ul>
-                {r.sections.slice(0, 6).map((s) => (
-                  <li key={s.no}>
-                    <b>{s.no}</b>
-                    <i>{s.title}</i>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="sheet front">
-              <span className="k">{site.hero.coverKicker}</span>
-              <strong>
-                {site.hero.display.map((line) => (
-                  <span key={line}>{line}</span>
-                ))}
-              </strong>
-              <span className="n">{site.hero.coverNote}</span>
             </div>
           </div>
         </div>
@@ -205,140 +150,90 @@ export function Report({ site }: { site: SiteContent }) {
   );
 }
 
-export function Region({ site }: { site: SiteContent }) {
-  const r = site.region;
+export function Evidence({ site }: { site: SiteContent }) {
+  const e = site.evidence;
   return (
-    <section id="region" className="bordered">
+    <section id="evidence" className="divided">
       <div className="wrap">
-        <div className="region-hd">
-          <span className="label-sm">{r.label}</span>
-          <h2>{r.heading}</h2>
-          <p className="lead">{r.lead}</p>
+        <div className="sec-head">
+          <span className="label-sm">{e.label}</span>
+          <h2>{e.heading}</h2>
+          <p className="lead">{e.lead}</p>
         </div>
 
-        <div className="ba">
-          <div className="cell">
-            <b>{r.beforeValue}</b>
-            <span>{r.beforeLabel}</span>
-          </div>
-          <span className="arrow" aria-hidden="true">
-            →
-          </span>
-          <div className="cell on">
-            <b>{r.afterValue}</b>
-            <span>{r.afterLabel}</span>
-          </div>
-        </div>
-
-        <div>
-          <span className="small" style={{ fontWeight: 700 }}>
-            {r.clustersLabel}
-          </span>
-          <div className="clusters">
-            {r.clusters.map((c) => (
-              <span key={c}>{c}</span>
-            ))}
-          </div>
-        </div>
-
-        <div className="rpoints">
-          {r.points.map((p, i) => (
-            <div className="rpoint" key={p.title}>
-              <span className="n">{i + 1}</span>
-              <h3>{p.title}</h3>
-              <p>{p.body}</p>
+        <div className="stats">
+          {e.stats.map((s) => (
+            <div key={s.label}>
+              <span className="l">{s.label}</span>
+              <b>
+                {s.value}
+                {s.unit ? <em>{s.unit}</em> : null}
+              </b>
             </div>
           ))}
         </div>
 
-        <blockquote className="quote">
-          <p>{r.quote}</p>
-          <cite>{r.quoteSource}</cite>
-        </blockquote>
+        <div className="panelbox">
+          <h3>
+            <span className="ic" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M8 1.5l5 2v4c0 3-2.1 5.6-5 7-2.9-1.4-5-4-5-7v-4l5-2z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+              </svg>
+            </span>
+            {e.copyright.title}
+          </h3>
+          {e.copyright.rows.map((r) => (
+            <div className="crow" key={r.no}>
+              <span>{r.name}</span>
+              <span className="n">{r.no}</span>
+            </div>
+          ))}
+          <p className="note">{e.copyright.note}</p>
+        </div>
+
+        <div className="panelbox">
+          <h3>{e.standards.title}</h3>
+          <div className="tablescroll">
+            <table className="stdtable">
+              <thead>
+                <tr>
+                  {e.standards.head.map((h) => (
+                    <th key={h}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {e.standards.rows.map((r, i) => (
+                  <tr key={i}>
+                    {r.map((c, j) => (
+                      <td key={j}>{c}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="note">{e.standards.note}</p>
+        </div>
       </div>
     </section>
   );
 }
 
-export function MidCta({ site }: { site: SiteContent }) {
-  const c = site.midCta;
+export function Choose({ site }: { site: SiteContent }) {
+  const c = site.choose;
   return (
-    <section className="midcta">
-      <div className="wrap inner">
-        <div>
+    <section className="divided">
+      <div className="wrap">
+        <div className="sec-head">
+          <span className="label-sm">{c.label}</span>
           <h2>{c.heading}</h2>
-          <p>{c.body}</p>
         </div>
-        <a className="btn solid lg" href="#contact">
-          {c.button}
-        </a>
-      </div>
-    </section>
-  );
-}
-
-export function University({ site }: { site: SiteContent }) {
-  const u = site.university;
-  return (
-    <section id="university" className="tinted bordered">
-      <div className="wrap">
-        <div className="sec-head">
-          <span className="label-sm">{u.label}</span>
-          <h2>{u.heading}</h2>
-          <p className="lead">{u.lead}</p>
-        </div>
-        <div className="upoints">
-          {u.points.map((p) => (
-            <div className="upoint" key={p.title}>
-              <h3>{p.title}</h3>
-              <p>{p.body}</p>
-            </div>
-          ))}
-        </div>
-        <p className="closing-line">{u.closing}</p>
-      </div>
-    </section>
-  );
-}
-
-export function Process({ site }: { site: SiteContent }) {
-  const p = site.process;
-  return (
-    <section id="process" className="bordered">
-      <div className="wrap">
-        <div className="sec-head">
-          <h2>{p.heading}</h2>
-          <p className="lead">{p.lead}</p>
-        </div>
-        <ol className="steps3">
-          {p.steps.map((s) => (
-            <li key={s.title}>
-              <h3>{s.title}</h3>
-              <p>{s.body}</p>
-            </li>
-          ))}
-        </ol>
-        <p className="lead" style={{ marginTop: 24 }}>
-          {p.note}
-        </p>
-      </div>
-    </section>
-  );
-}
-
-export function Audience({ site }: { site: SiteContent }) {
-  const a = site.audience;
-  return (
-    <section className="tinted bordered">
-      <div className="wrap">
-        <div className="sec-head">
-          <h2>{a.heading}</h2>
-        </div>
-        <div className="aud">
-          {a.items.map((t, i) => (
-            <div key={t}>
-              <span className="n">{String(i + 1).padStart(2, "0")}</span>
-              <p>{t}</p>
+        <div className="cardgrid c2">
+          {c.items.map((i) => (
+            <div className="card" key={i.title}>
+              <h3>{i.title}</h3>
+              <p>{i.body}</p>
             </div>
           ))}
         </div>
@@ -347,20 +242,28 @@ export function Audience({ site }: { site: SiteContent }) {
   );
 }
 
-export function Faq({ site }: { site: SiteContent }) {
+export function Closing({ site }: { site: SiteContent }) {
+  const c = site.closing;
   return (
-    <section id="faq" className="bordered">
+    <section className="closing">
       <div className="wrap">
-        <div className="sec-head">
-          <h2>{site.faq.heading}</h2>
-        </div>
-        <div className="faq">
-          {site.faq.items.map((f, i) => (
-            <details key={f.q} open={i === 0}>
-              <summary>{f.q}</summary>
-              <p className="a">{f.a}</p>
-            </details>
+        <p className="kick">{c.kicker}</p>
+        <h2>
+          {c.heading.map((l, i) => (
+            <span key={l}>
+              {l}
+              {i < c.heading.length - 1 ? <br /> : null}
+            </span>
           ))}
+        </h2>
+        <p>{c.lead}</p>
+        <div className="cta">
+          <a className="btn lg" href={c.primary.href}>
+            {c.primary.label}
+          </a>
+          <a className="btn lg" href={c.secondary.href}>
+            {c.secondary.label}
+          </a>
         </div>
       </div>
     </section>
@@ -371,11 +274,11 @@ export function SiteFooter({ site }: { site: SiteContent }) {
   return (
     <footer className="site-footer">
       <div className="wrap">
-        <p className="closing">{site.footer.closing}</p>
+        <p className="closing-line">{site.footer.closing}</p>
         <div className="row">
-          <div style={{ minWidth: 230 }}>
-            <div className="bmark">
-              {site.brand} <span style={{ opacity: 0.5, fontWeight: 500 }}>· {site.org}</span>
+          <div style={{ minWidth: 240 }}>
+            <div style={{ fontSize: 17, fontWeight: 800, color: "#fff" }}>
+              {site.brand} · {site.org}
             </div>
             <p style={{ marginTop: 8 }}>{site.footer.note}</p>
           </div>
@@ -396,8 +299,18 @@ export function SiteFooter({ site }: { site: SiteContent }) {
             </ul>
           </div>
         </div>
-        <p className="note">{site.footer.platformNote}</p>
       </div>
     </footer>
+  );
+}
+
+export function FloatingCta({ site }: { site: SiteContent }) {
+  return (
+    <a className="floating" href="#contact">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M2 3.5h12v8H6.5L3 14v-2.5H2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+      </svg>
+      {site.nav.floating}
+    </a>
   );
 }

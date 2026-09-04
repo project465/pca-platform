@@ -1,29 +1,51 @@
 /**
  * 나라별 원고의 형태.
  *
- * 구조는 ACADEMIX 의 PCA 제안서를 그대로 따른다. 카자흐스탄·터키를 추가할 때는
- * 코드를 고치는 것이 아니라 이 형태를 채운 파일을 하나 더 만든다.
- * 검사 플랫폼의 translations 테이블과 같은 사고방식이다.
+ * 구조와 문구는 academix.co.kr 의 PCA 소개 페이지를 기준으로 한다.
+ * 나라를 추가할 때는 코드가 아니라 이 형태를 채운 파일을 하나 더 만든다.
  */
 
 export type SiteKey = "global" | "kr" | "kz" | "tr";
-
 export type Link = { label: string; href: string };
 export type Named = { title: string; body: string };
 
-/* ── 업무 성향 육각형 ────────────────────────────── */
-export type Trait = {
-  code: string;
-  name: string;
-  body: string;
-  /** 예시 점수(0~100). 실제 응시 결과가 아니라 설명용이다 */
-  score: number;
+/* ── 결과지 뷰어 ────────────────────────────────── */
+
+export type SheetTable = { head: string[]; rows: string[][] };
+
+export type SheetBlock = {
+  /** SUBSECTION 2-1 같은 표시 */
+  sub?: string;
+  title?: string;
+  /** 문단. 줄바꿈은 배열로 나눈다 */
+  body?: string[];
+  bullets?: string[];
+  table?: SheetTable;
+  /** 라벨 + 값 형태의 작은 상자들 */
+  fields?: { label: string; value: string }[];
 };
 
-/* ── 리포트 목차 ────────────────────────────────── */
-export type ReportSection = { no: string; title: string; body: string };
+export type SheetTab = {
+  /** 00-1, 01 … */
+  no: string;
+  /** 왼쪽 목차에 쓰는 짧은 이름 */
+  nav: string;
+  /** 결과지 문서 안의 제목 */
+  title: string;
+  /** 레이더를 그릴지, 글 블록만 놓을지 */
+  chart?: "jobs" | "styles";
+  /** 레이더 위에 놓는 요약 상자 */
+  meta?: { label: string; value: string }[];
+  blocks?: SheetBlock[];
+  /** 레이더 아래 한 줄 */
+  chartNote?: string;
+  /** 목차 아래 설명 상자 */
+  capTitle: string;
+  capBody: string;
+  capArrow: string;
+};
 
-/* ── 지도 ───────────────────────────────────────── */
+/* ── 지도 (글로벌판만) ──────────────────────────── */
 export type DeployStatus = "live" | "progress" | "planned";
 export type MapContent = {
   heading: string;
@@ -40,153 +62,116 @@ export type MapContent = {
   footnote: string;
 };
 
-export type Faq = { q: string; a: string };
-
 export type SiteContent = {
   key: SiteKey;
   lang: string;
   domain: string;
-  /** 제품명 */
   brand: string;
-  /** 제품을 만든 기관 */
   org: string;
+  orgTagline: string;
   platformUrl: string;
 
   meta: { title: string; description: string };
 
-  nav: { items: Link[]; login: string; contact: string; menu: string };
+  nav: { items: Link[]; contact: string; menu: string; floating: string };
 
   hero: {
     eyebrow: string;
-    /** 히어로 옆 리포트 축소판에 붙는 말 */
-    coverKicker: string;
-    coverNote: string;
-    /** 제안서 표지의 영문 제목. 줄바꿈은 원고가 정한다 */
-    display: string[];
-    title: string;
+    /** 제목. gold 로 강조할 부분은 {} 로 감싼다 */
+    title: string[];
+    lead: string;
+    primary: Link;
+    secondary: Link;
+    watermark: string;
+  };
+
+  /** 이런 고민, PCA가 방향을 잡아드립니다 */
+  who: {
+    label: string;
+    heading: string;
+    items: { no: string; title: string; body: string; tag: string }[];
+  };
+
+  /** PCA는 세 가지를 함께 분석합니다 */
+  analyze: {
+    label: string;
+    heading: string;
+    lead: string;
+    items: { no: string; kicker: string; title: string; body: string }[];
+  };
+
+  /** 검사 결과가 진로 로드맵으로 바로 연결됩니다 */
+  why: {
+    label: string;
+    heading: string;
+    before: { tag: string; title: string; steps: string[]; verdict: string };
+    after: { tag: string; title: string; steps: string[]; verdict: string };
+    vs: string;
+  };
+
+  /** 결과지 구성 */
+  sheet: {
+    label: string;
+    heading: string;
+    lead: string[];
+    tabs: SheetTab[];
+    /** 결과지 하단의 이어보기 문구 */
+    more: string;
+    disclaimer: string;
+    /** 레이더 축 이름 */
+    jobAxes: string[];
+    styleAxes: string[];
+    /** 레이더 예시 값 */
+    jobScores: number[];
+    styleScores: number[];
+  };
+
+  /** 업무 성향 6유형 */
+  styles: {
+    label: string;
+    heading: string;
+    chartNote: string;
+    items: { name: string; body: string }[];
+  };
+
+  /** 데이터로 설계한 진단 */
+  evidence: {
+    label: string;
+    heading: string;
+    lead: string;
+    stats: { label: string; value: string; unit: string }[];
+    copyright: {
+      title: string;
+      rows: { name: string; no: string }[];
+      note: string;
+    };
+    standards: {
+      title: string;
+      head: string[];
+      rows: string[][];
+      note: string;
+    };
+  };
+
+  /** PCA가 선택받는 이유 */
+  choose: {
+    label: string;
+    heading: string;
+    items: Named[];
+  };
+
+  /** 마감 배너 */
+  closing: {
+    kicker: string;
+    heading: string[];
     lead: string;
     primary: Link;
     secondary: Link;
   };
 
-  /** 기관 소개와 신뢰 근거 */
-  about: {
-    label: string;
-    heading: string;
-    body: string;
-    highlight: string;
-    services: Named[];
-    brandsLabel: string;
-    brands: { name: string; note: string }[];
-    partnersLabel: string;
-    partners: string[];
-  };
-
-  /** 개발 근거 숫자 */
-  evidence: {
-    heading: string;
-    lead: string;
-    stats: { value: string; label: string }[];
-  };
-
-  /** 전공을 정하고도 남는 질문들 */
-  questions: {
-    heading: string;
-    lead: string;
-    items: string[];
-    note: string;
-  };
-
-  /** PCA 가 분석하는 세 가지 */
-  analysis: {
-    heading: string;
-    lead: string;
-    pillars: Named[];
-    note: string;
-  };
-
-  /** 2축 분석 — 직무 영역과 업무 성향 */
-  traits: {
-    heading: string;
-    lead: string;
-    /** 왼쪽(직무 영역) 칸 제목 */
-    fitTitle: string;
-    /** 2·3순위를 어떻게 쓰는지 */
-    fitNote: string;
-    scaleNote: string;
-    exampleLabel: string;
-    chartTitle: string;
-    items: Trait[];
-  };
-
-  /** 기존 검사와의 차이 */
-  compare: {
-    heading: string;
-    lead: string;
-    before: { tag: string; title: string; steps: string[]; verdict: string };
-    after: { tag: string; title: string; steps: string[]; verdict: string };
-  };
-
-  /** 리포트 구성 */
-  report: {
-    heading: string;
-    lead: string;
-    volume: string;
-    sections: ReportSection[];
-    /** 결과지 축소판에 쓰는 예시 */
-    exampleLabel: string;
-    rankTitle: string;
-    ranks: { name: string; score: number }[];
-  };
-
-  /** 지역 연계 · 정주형 (핵심 차별점) */
-  region: {
-    label: string;
-    heading: string;
-    lead: string;
-    beforeValue: string;
-    beforeLabel: string;
-    afterValue: string;
-    afterLabel: string;
-    clustersLabel: string;
-    clusters: string[];
-    points: Named[];
-    quote: string;
-    quoteSource: string;
-  };
-
-  /** 대학이 이 진단을 고르는 이유 */
-  university: {
-    label: string;
-    heading: string;
-    lead: string;
-    points: Named[];
-    closing: string;
-  };
-
-  /** 도입 절차 */
-  process: {
-    heading: string;
-    lead: string;
-    steps: Named[];
-    note: string;
-  };
-
-  /** 이런 분들께 추천 */
-  audience: {
-    heading: string;
-    items: string[];
-  };
-
-  faq: { heading: string; items: Faq[] };
-
-  /** 본문 중간에서 한 번 더 문의를 권하는 자리 */
-  midCta: { heading: string; body: string; button: string };
-
   contact: {
     heading: string;
     lead: string;
-    /** 첫 화면 간편 문의 카드 */
     quickHeading: string;
     quickNote: string;
     quickSubmit: string;
@@ -211,10 +196,8 @@ export type SiteContent = {
     sitesLabel: string;
     sites: { label: string; href: string; ready: boolean }[];
     soonLabel: string;
-    platformNote: string;
     closing: string;
   };
 
-  /** 세계지도. 글로벌판에만 둔다 */
   map?: MapContent;
 };

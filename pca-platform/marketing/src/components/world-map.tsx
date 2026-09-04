@@ -15,9 +15,9 @@ import {
  */
 
 const FILL: Record<DeployStatus, string> = {
-  live: "var(--met)",
-  progress: "var(--partial)",
-  planned: "#6E7F8B",
+  live: "#5FBF9B",
+  progress: "#C9A063",
+  planned: "#5C5C66",
 };
 
 function Marker({ status, x, y }: { status: DeployStatus; x: number; y: number }) {
@@ -29,7 +29,7 @@ function Marker({ status, x, y }: { status: DeployStatus; x: number; y: number }
     return (
       <>
         <circle cx={x} cy={y} r={6} fill={color} />
-        <circle cx={x} cy={y} r={2.4} fill="var(--paper)" />
+        <circle cx={x} cy={y} r={2.4} fill="#17171A" />
       </>
     );
   }
@@ -79,20 +79,6 @@ export default function WorldMap({ map }: { map: MapContent }) {
                 return <Marker key={c.code} status={c.status} x={x} y={y} />;
               })}
 
-              {shown.map((c) => {
-                const [x, y] = COUNTRY_CENTROIDS[c.code];
-                return (
-                  <text
-                    key={c.code}
-                    className="mlabel"
-                    x={x + (c.labelDx ?? 0)}
-                    y={y - 15 + (c.labelDy ?? 0)}
-                    textAnchor={c.labelDx && c.labelDx > 0 ? "start" : "middle"}
-                  >
-                    {c.name}
-                  </text>
-                );
-              })}
             </svg>
           </figure>
 
@@ -102,7 +88,9 @@ export default function WorldMap({ map }: { map: MapContent }) {
                 <span className={`dot ${c.status}`} aria-hidden="true" />
                 <span className="nm">{c.name}</span>
                 <span className={`st ${c.status}`}>{map.statusLabel[c.status]}</span>
-                <span className="nt">{c.note}</span>
+                {c.note && c.note !== map.statusLabel[c.status] ? (
+                  <span className="nt">{c.note}</span>
+                ) : null}
               </li>
             ))}
           </ul>

@@ -15,8 +15,11 @@ const require = createRequire(import.meta.url);
 const landTopo = JSON.parse(readFileSync(require.resolve("world-atlas/land-110m.json"), "utf8"));
 const cTopo = JSON.parse(readFileSync(require.resolve("world-atlas/countries-110m.json"), "utf8"));
 
-/** 표시 후보. CLAUDE.md 가 적어 둔 나라들(KR, TR, US, JP, KZ)을 미리 담아 둔다. */
-const WANTED = { "410": "KR", "398": "KZ", "792": "TR", "392": "JP", "840": "US" };
+/** 지도에 표시할 나라. ISO 3166-1 숫자코드 → 두 글자 코드 */
+const WANTED = {
+  "276": "DE", "840": "US", "392": "JP", "156": "CN", "792": "TR",
+  "398": "KZ", "250": "FR", "710": "ZA", "608": "PH", "410": "KR",
+};
 
 const W = 1000;
 const H = 480;

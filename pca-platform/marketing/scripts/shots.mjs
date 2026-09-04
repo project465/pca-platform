@@ -24,19 +24,14 @@ await page.waitForTimeout(600); // 웹폰트가 적용된 뒤에 찍는다
 await page.screenshot({ path: `${OUT}/01-top.png` });
 
 const parts = [
-  ["#about", "02-about"],
-  ["#analysis", "03-analysis"],
-  ["#traits", "04-2axis"],
-  ["#report", "05-report"],
-  ["#region", "06-region"],
-  [".where", "06b-map"],
-  [".midcta", "06c-cta"],
-  ["#university", "07-university"],
-  ["#evidence", "08-evidence"],
-  ["#process", "09-process"],
-  ["#faq", "10-faq"],
-  [".contact", "11-contact"],
-  [".site-footer", "12-footer"],
+  ["#about", "02-who"],
+  ["#analyze", "03-analyze"],
+  ["#sheet", "04-sheet"],
+  ["#styles", "05-styles"],
+  [".where", "05b-map"],
+  ["#evidence", "06-evidence"],
+  [".closing", "07-closing"],
+  [".contact", "08-contact"],
 ];
 
 for (const [sel, name] of parts) {

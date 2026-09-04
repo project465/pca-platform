@@ -10,7 +10,7 @@ export function generateMetadata(): Metadata {
     metadataBase: new URL(`https://${site.domain}`),
     openGraph: {
       type: "website",
-      siteName: site.brand,
+      siteName: `${site.brand} · ${site.org}`,
       title: site.meta.title,
       description: site.meta.description,
       url: `https://${site.domain}`,
@@ -26,9 +26,7 @@ export function generateMetadata(): Metadata {
   };
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const site = getSite();
   return (
     <html lang={site.lang}>
