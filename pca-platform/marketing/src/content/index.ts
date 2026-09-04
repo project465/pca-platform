@@ -18,4 +18,4 @@ export function getSite(): SiteContent {
   return site;
 }
 
-export type { SiteContent, SiteKey } from "./types";
+export type { SiteContent, SiteKey, MapContent, DeployStatus } from "./types";

@@ -27,6 +27,7 @@ export const global: SiteContent = {
     ],
     login: "Sign in",
     contact: "Talk to us",
+    menu: "Menu",
   },
 
   hero: {
@@ -100,6 +101,7 @@ export const global: SiteContent = {
     lead: "One sitting produces two documents: one for the student, one for the department.",
     cards: [
       {
+        kind: "student",
         tag: "Student",
         title: "Individual report",
         body:
@@ -111,6 +113,7 @@ export const global: SiteContent = {
         ],
       },
       {
+        kind: "cohort",
         tag: "Department",
         title: "Cohort report",
         body:
@@ -122,6 +125,35 @@ export const global: SiteContent = {
         ],
       },
     ],
+    exampleLabel: "Example",
+    student: {
+      fitHeading: "Job fit",
+      jobs: [
+        { name: "Design & Analysis", score: 82 },
+        { name: "Manufacturing", score: 74 },
+        { name: "Quality & Reliability", score: 61 },
+      ],
+      gapHeading: "Competency gap",
+      gaps: [
+        { name: "ANSYS", required: 4, held: 2 },
+        { name: "FEM", required: 4, held: 3 },
+        { name: "MATLAB", required: 3, held: 3 },
+      ],
+      requiredLabel: "required",
+      heldLabel: "held",
+    },
+    cohort: {
+      heading: "Distribution across the cohort",
+      bars: [
+        { name: "Design & Analysis", pct: 38 },
+        { name: "Manufacturing", pct: 27 },
+        { name: "Quality & Reliability", pct: 19 },
+        { name: "R&D", pct: 16 },
+      ],
+      unit: "%",
+      missingHeading: "Not covered by the catalogue",
+      missing: ["ANSYS", "GD&T", "Reliability engineering"],
+    },
   },
 
   process: {
@@ -181,6 +213,32 @@ export const global: SiteContent = {
         a: "Responses and results are stored server-side; nothing is kept in the browser. Retention and hand-back at contract end are set out in the agreement.",
       },
     ],
+  },
+
+
+  map: {
+    heading: "Where it runs",
+    lead:
+      "The instrument, the job clusters and the competency framework are shared worldwide. What gets filled in per country is the university, its courses, and the translations — which is why a new country is a content job, not a rebuild.",
+    countries: [
+      {
+        code: "KR",
+        name: "Korea",
+        status: "progress",
+        note: "First department onboarding — mechanical engineering",
+        labelDx: 26,
+        labelDy: 4,
+      },
+      { code: "KZ", name: "Kazakhstan", status: "planned", note: "Next", labelDy: -18 },
+      { code: "TR", name: "Türkiye", status: "planned", note: "Next", labelDx: -14, labelDy: 24 },
+    ],
+    statusLabel: {
+      live: "Running",
+      progress: "Onboarding",
+      planned: "Planned",
+    },
+    footnote:
+      "Job clusters carry O*NET codes, so the same taxonomy lines up across countries. Students everywhere sit on one platform — that is what makes the comparison possible.",
   },
 
   contact: {

@@ -1,4 +1,5 @@
 import type { SiteContent } from "@/content";
+import { CohortPreview, StudentPreview } from "@/components/report-preview";
 
 export function Problem({ site }: { site: SiteContent }) {
   return (
@@ -40,6 +41,11 @@ export function Outputs({ site }: { site: SiteContent }) {
                   <li key={b}>{b}</li>
                 ))}
               </ul>
+              {c.kind === "student" ? (
+                <StudentPreview site={site} />
+              ) : (
+                <CohortPreview site={site} />
+              )}
             </div>
           ))}
         </div>

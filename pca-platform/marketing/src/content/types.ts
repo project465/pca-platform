@@ -23,6 +23,35 @@ export type PipelineStep = {
 
 export type Faq = { q: string; a: string };
 
+/**
+ * 결과지 미리보기에 쓰는 예시 값.
+ * 실제 응시 데이터가 아니라 설명용이라는 것을 화면에서 밝힌다.
+ */
+export type JobFit = { name: string; score: number };
+export type CompetencyGap = { name: string; required: number; held: number };
+export type CohortBar = { name: string; pct: number };
+
+/** 지도에 칠할 상태. 색만으로 구분하지 않고 모양과 라벨을 함께 준다 */
+export type DeployStatus = "live" | "progress" | "planned";
+
+export type MapContent = {
+  heading: string;
+  lead: string;
+  /** 지도 위 라벨과 옆 목록에 함께 쓰인다 */
+  countries: {
+    code: string;
+    name: string;
+    status: DeployStatus;
+    note: string;
+    /** 라벨이 서로 겹칠 때만 쓴다. 지도 좌표 기준 어긋냄 */
+    labelDx?: number;
+    labelDy?: number;
+  }[];
+  statusLabel: Record<DeployStatus, string>;
+  footnote: string;
+};
+
+
 export type SiteContent = {
   key: SiteKey;
   /** <html lang> */
@@ -40,6 +69,8 @@ export type SiteContent = {
     items: Link[];
     login: string;
     contact: string;
+    /** 좁은 화면에서 메뉴를 여는 버튼 */
+    menu: string;
   };
 
   hero: {
@@ -68,7 +99,32 @@ export type SiteContent = {
   outputs: {
     heading: string;
     lead: string;
-    cards: { tag: string; title: string; body: string; bullets: string[] }[];
+    cards: {
+      kind: "student" | "cohort";
+      tag: string;
+      title: string;
+      body: string;
+      bullets: string[];
+    }[];
+    /** 예시 값이라는 표시 */
+    exampleLabel: string;
+    student: {
+      fitHeading: string;
+      jobs: JobFit[];
+      gapHeading: string;
+      gaps: CompetencyGap[];
+      /** 요구 수준 / 보유 수준 을 가리키는 말 */
+      requiredLabel: string;
+      heldLabel: string;
+    };
+    cohort: {
+      heading: string;
+      bars: CohortBar[];
+      unit: string;
+      /** 학과가 가장 먼저 보는 항목. 교과 개편의 근거가 된다 */
+      missingHeading: string;
+      missing: string[];
+    };
   };
 
   process: {
@@ -82,6 +138,9 @@ export type SiteContent = {
     heading: string;
     items: Faq[];
   };
+
+  /** 세계지도. 글로벌판에만 둔다 */
+  map?: MapContent;
 
   contact: {
     heading: string;

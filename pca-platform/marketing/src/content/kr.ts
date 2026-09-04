@@ -26,6 +26,7 @@ export const kr: SiteContent = {
     ],
     login: "로그인",
     contact: "도입 문의",
+    menu: "메뉴",
   },
 
   hero: {
@@ -99,6 +100,7 @@ export const kr: SiteContent = {
     lead: "검사 한 회차에서 두 가지가 나옵니다. 학생이 받는 것과 학과가 받는 것입니다.",
     cards: [
       {
+        kind: "student",
         tag: "학생",
         title: "개인 결과지",
         body:
@@ -110,6 +112,7 @@ export const kr: SiteContent = {
         ],
       },
       {
+        kind: "cohort",
         tag: "학과",
         title: "단체 리포트",
         body:
@@ -121,6 +124,35 @@ export const kr: SiteContent = {
         ],
       },
     ],
+    exampleLabel: "예시",
+    student: {
+      fitHeading: "직무 적합도",
+      jobs: [
+        { name: "설계·해석", score: 82 },
+        { name: "생산기술", score: 74 },
+        { name: "품질·신뢰성", score: 61 },
+      ],
+      gapHeading: "역량 갭",
+      gaps: [
+        { name: "ANSYS", required: 4, held: 2 },
+        { name: "유한요소법", required: 4, held: 3 },
+        { name: "MATLAB", required: 3, held: 3 },
+      ],
+      requiredLabel: "요구",
+      heldLabel: "보유",
+    },
+    cohort: {
+      heading: "회차 전체의 직무 분포",
+      bars: [
+        { name: "설계·해석", pct: 38 },
+        { name: "생산기술", pct: 27 },
+        { name: "품질·신뢰성", pct: 19 },
+        { name: "연구개발", pct: 16 },
+      ],
+      unit: "%",
+      missingHeading: "커리큘럼에서 비어 있는 역량",
+      missing: ["ANSYS", "기하공차(GD&T)", "신뢰성 공학"],
+    },
   },
 
   process: {

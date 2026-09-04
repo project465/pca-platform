@@ -7,6 +7,20 @@ export function generateMetadata(): Metadata {
   return {
     title: site.meta.title,
     description: site.meta.description,
+    metadataBase: new URL(`https://${site.domain}`),
+    openGraph: {
+      type: "website",
+      siteName: site.brand,
+      title: site.meta.title,
+      description: site.meta.description,
+      url: `https://${site.domain}`,
+      locale: site.lang,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: site.meta.title,
+      description: site.meta.description,
+    },
   };
 }
 

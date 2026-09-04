@@ -25,6 +25,7 @@ await page.screenshot({ path: `${OUT}/01-top.png` });
 
 const parts = [
   [".pipeline", "02-pipeline"],
+  [".where", "02b-map"],
   ["#outputs", "03-outputs"],
   ["#process", "04-process"],
   ["#faq", "05-faq"],
@@ -34,6 +35,7 @@ const parts = [
 
 for (const [sel, name] of parts) {
   const el = page.locator(sel).first();
+  if ((await el.count()) === 0) { console.log("skip (없음):", name); continue; }
   await el.scrollIntoViewIfNeeded();
   await page.waitForTimeout(150);
   await el.screenshot({ path: `${OUT}/${name}.png` });
