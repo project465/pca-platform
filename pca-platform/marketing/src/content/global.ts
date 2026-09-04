@@ -434,50 +434,6 @@ export const global: SiteContent = {
         capBody: "What to watch for, and a 30-day checklist.",
         capArrow: "Down to what to do today",
       },
-      {
-        no: "09",
-        nav: "Regional strategy",
-        title: "Section 9. Regional and settlement strategy",
-        blocks: [
-          {
-            sub: "9-1",
-            title: "The industries around the university",
-            body: [
-              "Daejeon concentrates the Daedeok R&D cluster, bio-health, nano and semiconductor, defence and space, and energy. The first-ranked job area in this result connects directly to roles at institutions and companies in that cluster.",
-              "Employers marked as tied to the region's specialist industries are the ones to consider first when the plan is to stay and grow locally. In this report that came to 101 employers.",
-            ],
-          },
-          {
-            sub: "9-2",
-            title: "Employers matched to this respondent",
-            body: [
-              "Reading the first-ranked job area together with the respondent's three leading work styles, 184 institutions and companies in Daejeon were sorted by fit — 144 high, 40 moderate, 0 low.",
-              "Note: this is career information for reference. It does not recommend or broker employment with any named organisation; check openings and eligibility with each employer directly.",
-            ],
-          },
-          {
-            title: "① At a glance",
-            fields: [{ label: "High fit · a strong match", value: "144" }],
-            table: {
-              head: ["Organisation", "Sector", "Regional"],
-              rows: [
-                ["ETRI", "Government research institute", "●"],
-                ["KARI", "Government research institute", "●"],
-                ["KIMM", "Government research institute", "●"],
-                ["KRIBB", "Government research institute", "●"],
-                ["KIER", "Government research institute", "●"],
-                ["K-water", "Public enterprise", ""],
-                ["KORAIL", "Public enterprise", ""],
-                ["NST", "Public enterprise", "●"],
-              ],
-            },
-          },
-        ],
-        capTitle: "Regional and settlement strategy",
-        capBody:
-          "The region's specialist industries and employers, matched to the first-ranked job area and sorted by fit.",
-        capArrow: "A route that ends at a real local employer",
-      },
     ],
   },
 

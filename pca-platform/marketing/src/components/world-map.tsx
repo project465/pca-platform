@@ -15,9 +15,9 @@ import {
  */
 
 const FILL: Record<DeployStatus, string> = {
-  live: "#5FBF9B",
-  progress: "#C9A063",
-  planned: "#5C5C66",
+  live: "#2F6B57",
+  progress: "#A87F3F",
+  planned: "#9AA7B6",
 };
 
 function Marker({ status, x, y }: { status: DeployStatus; x: number; y: number }) {
@@ -29,7 +29,7 @@ function Marker({ status, x, y }: { status: DeployStatus; x: number; y: number }
     return (
       <>
         <circle cx={x} cy={y} r={6} fill={color} />
-        <circle cx={x} cy={y} r={2.4} fill="#17171A" />
+        <circle cx={x} cy={y} r={2.4} fill="#FFFFFF" />
       </>
     );
   }

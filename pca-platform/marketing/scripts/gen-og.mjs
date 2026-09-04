@@ -34,18 +34,18 @@ const html = (c) => `<!doctype html><html><head><meta charset="utf-8"><style>
   font-weight: 45 920; font-display: block; }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { width:1200px; height:630px; font-family:"P",sans-serif; position:relative;
-  background:#0B0B0C; overflow:hidden;
-  display:flex; flex-direction:column; justify-content:center; padding:76px 80px; color:#fff; }
-.mark { position:absolute; right:-30px; top:150px; font-size:300px; font-weight:800;
-  letter-spacing:-0.06em; color:#fff; opacity:.035; line-height:.8; }
-.k { font-size:20px; font-weight:800; letter-spacing:.2em; color:#C9A063; margin-bottom:22px; }
-.d { font-size:60px; font-weight:800; letter-spacing:-0.04em; line-height:1.2;
+  background:linear-gradient(180deg,#F5F7FA 0%,#FFFFFF 78%); overflow:hidden;
+  display:flex; flex-direction:column; justify-content:center; padding:76px 80px; color:#0F1B2D; }
+.mark { position:absolute; left:-20px; top:250px; font-size:300px; font-weight:800;
+  letter-spacing:-0.07em; color:#0F1B2D; opacity:.03; line-height:.8; }
+.k { font-size:18px; font-weight:800; letter-spacing:.22em; color:#A87F3F; margin-bottom:24px; }
+.d { font-size:60px; font-weight:800; letter-spacing:-0.042em; line-height:1.2;
   margin-bottom:26px; word-break:keep-all; max-width:17ch; }
-.d b { color:#E3C48F; }
-.t { font-size:24px; font-weight:600; line-height:1.55; max-width:34ch;
-  word-break:keep-all; color:#C6C6CD; }
-.f { margin-top:44px; font-size:20px; font-weight:800; letter-spacing:-0.02em; color:#fff; }
-.f em { font-style:normal; font-weight:500; color:#8B8B95; }
+.d b { color:#A87F3F; }
+.t { font-size:23px; font-weight:600; line-height:1.6; max-width:34ch;
+  word-break:keep-all; color:#33445A; }
+.f { margin-top:46px; font-size:20px; font-weight:800; letter-spacing:-0.02em; color:#0F1B2D; }
+.f em { font-style:normal; font-weight:500; color:#6B7A8D; }
 </style></head><body>
 <div class="mark">PCA</div>\n<div class="k">${c.kicker}</div>
 <div class="d">${c.display}</div>

@@ -258,7 +258,7 @@ export function Closing({ site }: { site: SiteContent }) {
         </h2>
         <p>{c.lead}</p>
         <div className="cta">
-          <a className="btn lg" href={c.primary.href}>
+          <a className="btn lg solid" href={c.primary.href}>
             {c.primary.label}
           </a>
           <a className="btn lg" href={c.secondary.href}>
