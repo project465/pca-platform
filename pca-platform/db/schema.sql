@@ -281,3 +281,26 @@ COMMENT ON TABLE competency_levels IS
   '결과지의 빗금(부족분) = job_competency_map.required_level - held_level';
 
 CREATE INDEX idx_jobfit_rank ON job_fit_scores(attempt_id, rank_no);
+
+
+-- ============================================================
+--  10. 인증 보조 (초안 v0.2에서 추가)
+--
+--  비밀번호 재설정은 1단계 범위다. 학생 계정은 email이 NULL일 수 있어
+--  메일 발송을 전제할 수 없으므로, 담당자가 재설정 링크를 발급하는 방식도
+--  같은 테이블로 처리한다. issued_by가 NULL이면 본인이 요청한 것이다.
+-- ============================================================
+
+CREATE TABLE password_reset_tokens (
+  id          BIGSERIAL PRIMARY KEY,
+  user_id     BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  token_hash  TEXT NOT NULL UNIQUE,          -- 원문 토큰은 저장하지 않는다
+  issued_by   BIGINT REFERENCES users(id),   -- 담당자 발급이면 그 사람, 본인 요청이면 NULL
+  expires_at  TIMESTAMPTZ NOT NULL,
+  used_at     TIMESTAMPTZ,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+COMMENT ON TABLE password_reset_tokens IS
+  '토큰 원문은 링크에만 있고 DB에는 해시만 둔다. 사용하면 used_at을 채워 재사용을 막는다';
+
+CREATE INDEX idx_reset_active ON password_reset_tokens(user_id) WHERE used_at IS NULL;
