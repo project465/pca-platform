@@ -33,6 +33,7 @@
 | 도메인 | 국가별 별도 도메인 |
 | 다국어 | translations 테이블에 행으로 저장 |
 | 개발 순서 | 계정 발급형 먼저. 셀프 가입·정기결제는 후순위 |
+| 소개 사이트 | 나라별로 만든다. 글로벌(영어)·한국 먼저, 카자흐스탄·터키는 다음 |
 
 ---
 
@@ -89,7 +90,19 @@ organizations, courses, course_competency_map, translations
 11. 검사 응시 → `mockups/01_test_screen.html`
 12. 결과지 → `mockups/02_student_report.html`
 
-공개 홈페이지는 MVP에 포함하지 않는다. 영업은 대면으로 한다.
+소개 사이트는 만든다. (2026-09-04 결정 변경. 그전에는 MVP에서 뺐었다.)
+영업은 여전히 대면으로 하되, 나라별 도메인에 소개 사이트를 두고 문의를 받는다.
+검사 플랫폼과는 코드가 분리돼 있다 — `marketing/` 이 소개 사이트고, `src/` 가 플랫폼이다.
+
+소개 사이트는 한 코드베이스에서 나라별 원고만 갈아 끼운다.
+
+```
+SITE=global npm run build   →  영어판
+SITE=kr     npm run build   →  한국어판
+SITE=kz / SITE=tr           →  원고 파일만 추가하면 된다
+```
+
+각 사이트의 로그인 버튼은 전부 같은 플랫폼 한 곳을 가리킨다 (설계 원칙 5).
 
 ---
 
@@ -119,6 +132,8 @@ organizations, courses, course_competency_map, translations
 - `db/schema.sql` — 테이블 정의. 여기부터 읽을 것
 - `mockups/*.html` — 확정된 화면 시안. 디자인 토큰과 레이아웃을 여기서 가져올 것
 - `docs/pca_mapping_template.xlsx` — 매핑 데이터 입력 양식
+- `src/` — 검사 플랫폼 (Next.js). 로그인·응시·결과
+- `marketing/` — 나라별 소개 사이트. 원고는 `marketing/src/content/*.ts`
 
 ---
 
