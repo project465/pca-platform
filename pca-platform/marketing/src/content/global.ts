@@ -35,11 +35,11 @@ export const global: SiteContent = {
 
   hero: {
     eyebrow: "PCA · PERSONALIZED CAREER ANALYSIS",
-    title: ["Bring a career diagnosis", "your universities can {actually act on}."],
+    title: ["Your students already know their major.", "{Nobody has told them what to do next.}"],
     lead:
-      "PCA reads job fit, work style and execution strategy together, then writes each student a 15–20 page plan. Built in Korea, designed to be rebuilt in your country from your own labour-market data.",
+      "PCA ranks ten job areas out of 100, maps six work styles, and writes each student a 15–20 page plan — credentials, projects, applications, interviews, founding, and employers in their own region. Built in Korea, rebuilt in your country from your own labour-market data.",
     primary: { label: "Talk to us", href: "/contact" },
-    secondary: { label: "See the result sheet", href: "/pca" },
+    secondary: { label: "See what a student gets", href: "/pca" },
     watermark: "PCA",
   },
 
@@ -50,20 +50,20 @@ export const global: SiteContent = {
       {
         no: "01",
         title: "Universities and departments",
-        body: "Career services that need more than a personality type to hand a graduating cohort",
-        tag: "Department rollout",
+        body: "“Our careers service hands out a personality type. Students still ask us what to actually do.”",
+        tag: "A 15–20 page plan per student",
       },
       {
         no: "02",
         title: "Ministries and consortia",
-        body: "Programmes that have to evidence graduate outcomes and regional retention, not just participation",
-        tag: "Cohort-level evidence",
+        body: "“We can report how many attended. We cannot report what changed.”",
+        tag: "Cohort evidence you can file",
       },
       {
         no: "03",
         title: "Local partners",
-        body: "Education and HR organisations that want to run the diagnosis under their own brand in their market",
-        tag: "Licensed operation",
+        body: "“We have the university relationships. We do not have an instrument worth selling.”",
+        tag: "Operate it under your brand",
       },
     ],
   },
@@ -72,25 +72,25 @@ export const global: SiteContent = {
     label: "WHAT PCA ANALYZES",
     heading: "PCA analyses three things together",
     lead:
-      "Role, style and strategy are not read separately. They are joined into one preparation plan for that student.",
+      "The three are not read separately. They are joined, which is why the result lands as something to do rather than something to know.",
     items: [
       {
         no: "01",
         kicker: "Job fit",
-        title: "The job areas that fit inside the major",
-        body: "Job areas are scored out of 100 and ranked, calibrated to the department.",
+        title: "The field narrows to three",
+        body: "Ten job areas scored out of 100 and ranked. The first is analysed in depth; the second and third stay as reference.",
       },
       {
         no: "02",
         kicker: "Work style",
-        title: "The way of working that performs",
-        body: "Six work styles are measured to find the conditions under which the student performs.",
+        title: "And they can say why",
+        body: "Six work styles, measured and reduced to a leading combination — the sentence a student needs when an interviewer asks why this role.",
       },
       {
         no: "03",
         kicker: "Execution",
-        title: "What to prepare now",
-        body: "The two combine into a roadmap: projects, applications, interviews, founding.",
+        title: "Something to do next month",
+        body: "Credentials, projects, portfolio, applications, interviews, founding — down to the one thing to start this week.",
       },
     ],
   },
@@ -490,33 +490,33 @@ export const global: SiteContent = {
 
   choose: {
     label: "WHY CHOOSE PCA",
-    heading: "Why departments pick it",
+    heading: "Why this and not another test",
     items: [
       {
-        title: "Works for every department",
-        body: "From business through engineering, science, humanities and the arts — job areas are recomposed to the department's own character.",
+        title: "What a free test cannot give you",
+        body: "Public career services produce results you cannot file as institutional evidence. PCA gives the student a 15–20 page plan and the institution an anonymised aggregate report it can submit.",
       },
       {
-        title: "Grounded in the recruitment market",
-        body: "Not personality theory. 428 job postings, 137 job descriptions and 62 NCS references, analysed for the capability the market asks for.",
+        title: "Recruitment market, not personality theory",
+        body: "428 job postings, 137 job descriptions and 62 NCS references, on a 2,346-student sample. The core items are registered with the Korea Copyright Commission.",
       },
       {
-        title: "Employment and founding, both",
-        body: "Preparation for employment, and ideas grounded in the major with a route to market — in one report.",
+        title: "This term, not after graduation",
+        body: "It does not end at “look into it later.” A four-week plan and a 30-day checklist mean the student closes the report with something scheduled.",
       },
       {
-        title: "Rule-based scores, tailored reading",
-        body: "Rule-based scoring keeps results stable; the interpretation is written to this student's own result.",
+        title: "A rollout you can cost out",
+        body: "Three layers, clearly split: what is shared worldwide, what is rebuilt per country, what the university fills in. You know what you are paying to build before you start.",
       },
     ],
   },
 
   closing: {
-    kicker: "Major · work style · employment · founding",
-    heading: ["The direction after a major,", "and the plan to get there"],
-    lead: "Available for department-wide rollout and for individual assessment.",
+    kicker: "Tell us the department and a headcount",
+    heading: ["We will come back with a scope,", "not a brochure"],
+    lead: "Which departments, what the localisation would involve, and what the regional module would cost to build in your market.",
     primary: { label: "Talk to us", href: "/contact" },
-    secondary: { label: "How localisation works", href: "/localisation" },
+    secondary: { label: "See how localisation works", href: "/localisation" },
   },
 
   about: {
@@ -700,10 +700,22 @@ export const global: SiteContent = {
   contact: {
     heading: "Talk to us",
     lead:
-      "Department-wide rollout and individual assessment are both available. We will follow up by email.",
-    quickHeading: "Talk to us",
-    quickNote: "Three fields. We will follow up by email.",
+      "The department and a rough headcount are enough. We come back with what a rollout would actually involve in your market.",
+    quickHeading: "One minute",
+    quickNote: "The department and a rough number are enough. We reply with a scope, not a brochure.",
     quickSubmit: "Send",
+    typeLabel: "What is this about",
+    types: [
+      { value: "org", label: "University or department rollout" },
+      { value: "partner", label: "Operating PCA in my country" },
+      { value: "individual", label: "An individual assessment" },
+    ],
+    afterLabel: "What happens next",
+    after: [
+      "We read it and check the fit",
+      "We come back with a scope and an estimate",
+      "We agree a pilot cohort and a timeline",
+    ],
     fields: {
       org: "University · department",
       name: "Your name",

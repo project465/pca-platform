@@ -46,6 +46,22 @@ export default function InquiryForm({
         </p>
       ) : null}
 
+      <fieldset className="typepick full">
+        <legend>{t.typeLabel}</legend>
+        {t.types.map((ty, i) => (
+          <label key={ty.value} htmlFor={id(`t-${ty.value}`)}>
+            <input
+              id={id(`t-${ty.value}`)}
+              type="radio"
+              name="kind"
+              value={ty.value}
+              defaultChecked={i === 0}
+            />
+            <span>{ty.label}</span>
+          </label>
+        ))}
+      </fieldset>
+
       <div className="field full">
         <label htmlFor={id("org")}>{t.fields.org}</label>
         <input id={id("org")} name="org" type="text" required maxLength={200} />
@@ -87,6 +103,12 @@ export default function InquiryForm({
         <button className={`btn solid${compact ? " full-w" : " lg"}`} type="submit" disabled={pending}>
           {pending ? t.sending : compact ? t.quickSubmit : t.submit}
         </button>
+        <ol className="afterlist">
+          <li className="l">{t.afterLabel}</li>
+          {t.after.map((a) => (
+            <li key={a}>{a}</li>
+          ))}
+        </ol>
       </div>
     </form>
   );

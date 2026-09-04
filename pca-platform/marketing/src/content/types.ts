@@ -244,6 +244,12 @@ export type SiteContent = {
     quickHeading: string;
     quickNote: string;
     quickSubmit: string;
+    /** 단체 도입인지 개인 진단인지 */
+    typeLabel: string;
+    types: { value: string; label: string }[];
+    /** 문의 뒤에 무엇이 일어나는지. 문턱을 낮추는 자리다 */
+    afterLabel: string;
+    after: string[];
     fields: {
       org: string;
       name: string;

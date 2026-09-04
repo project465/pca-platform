@@ -12,6 +12,7 @@ const schema = z.object({
   email: z.string().trim().email().max(200),
   size: z.string().trim().max(50).optional(),
   message: z.string().trim().max(4000).optional(),
+  kind: z.string().trim().max(40).optional(),
 });
 
 /**
@@ -33,6 +34,7 @@ export async function submitContact(
     email: formData.get("email"),
     size: formData.get("size") ?? "",
     message: formData.get("message") ?? "",
+    kind: formData.get("kind") ?? "",
   });
 
   if (!parsed.success) return { error: site.contact.error };
@@ -51,6 +53,6 @@ export async function submitContact(
     return { error: site.contact.error };
   }
 
-  console.info("[contact] 접수", row.site, row.org);
+  console.info("[contact] 접수", row.site, row.kind, row.org);
   return { ok: true };
 }
