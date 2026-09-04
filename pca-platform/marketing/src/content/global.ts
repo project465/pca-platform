@@ -22,12 +22,11 @@ export const global: SiteContent = {
 
   nav: {
     items: [
-      { label: "ABOUT US", href: "#about" },
-      { label: "PCA", href: "#analyze" },
-      { label: "RESULT SHEET", href: "#sheet" },
-      { label: "LOCALISATION", href: "#localisation" },
-      { label: "PARTNERSHIP", href: "#partnership" },
-      { label: "CONTACT", href: "#contact" },
+      { label: "THE DIAGNOSIS", href: "/pca" },
+      { label: "LOCALISATION", href: "/localisation" },
+      { label: "PARTNERSHIP", href: "/partnership" },
+      { label: "ABOUT", href: "/about" },
+      { label: "CONTACT", href: "/contact" },
     ],
     contact: "Talk to us",
     menu: "Menu",
@@ -39,8 +38,8 @@ export const global: SiteContent = {
     title: ["Bring a career diagnosis", "your universities can {actually act on}."],
     lead:
       "PCA reads job fit, work style and execution strategy together, then writes each student a 15–20 page plan. Built in Korea, designed to be rebuilt in your country from your own labour-market data.",
-    primary: { label: "Talk to us", href: "#contact" },
-    secondary: { label: "See the result sheet", href: "#sheet" },
+    primary: { label: "Talk to us", href: "/contact" },
+    secondary: { label: "See the result sheet", href: "/pca" },
     watermark: "PCA",
   },
 
@@ -516,8 +515,8 @@ export const global: SiteContent = {
     kicker: "Major · work style · employment · founding",
     heading: ["The direction after a major,", "and the plan to get there"],
     lead: "Available for department-wide rollout and for individual assessment.",
-    primary: { label: "Talk to us", href: "#contact" },
-    secondary: { label: "See the result sheet again", href: "#sheet" },
+    primary: { label: "Talk to us", href: "/contact" },
+    secondary: { label: "How localisation works", href: "/localisation" },
   },
 
   about: {

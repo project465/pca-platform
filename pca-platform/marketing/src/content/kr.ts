@@ -21,12 +21,11 @@ export const kr: SiteContent = {
 
   nav: {
     items: [
-      { label: "ABOUT US", href: "#about" },
-      { label: "PCA", href: "#analyze" },
-      { label: "RESULT SHEET", href: "#sheet" },
-      { label: "지역·앵커", href: "#university" },
-      { label: "PROGRAM", href: "#program" },
-      { label: "CONTACT", href: "#contact" },
+      { label: "PCA 진단", href: "/pca" },
+      { label: "지역·앵커", href: "/anchor" },
+      { label: "도입 안내", href: "/adopt" },
+      { label: "기관 소개", href: "/about" },
+      { label: "문의", href: "/contact" },
     ],
     contact: "도입·상담 문의",
     menu: "메뉴",
@@ -38,8 +37,8 @@ export const kr: SiteContent = {
     title: ["내 전공에 맞는", "{커리어 전략}을 설계해드립니다"],
     lead:
       "PCA 진로진단은 검사 결과로 끝나지 않습니다. 적합 직무·업무 성향·실행 전략을 함께 분석해, 다음에 무엇을 준비해야 하는지까지 제시해드립니다.",
-    primary: { label: "도입·상담 문의", href: "#contact" },
-    secondary: { label: "결과지 구성 보기", href: "#sheet" },
+    primary: { label: "도입·상담 문의", href: "/contact" },
+    secondary: { label: "결과지 구성 보기", href: "/pca" },
     watermark: "PCA",
   },
 
@@ -560,8 +559,8 @@ export const kr: SiteContent = {
     kicker: "전공 선택 · 업무 성향 · 취업 준비 · 창업 전략",
     heading: ["전공 이후의 방향과 준비 전략을", "함께 제시합니다"],
     lead: "대학·학과 단위 단체 도입과 개인 진단 모두 상담 가능합니다.",
-    primary: { label: "도입·상담 문의하기", href: "#contact" },
-    secondary: { label: "결과지 구성 다시 보기", href: "#sheet" },
+    primary: { label: "도입·상담 문의하기", href: "/contact" },
+    secondary: { label: "PCA 진단 자세히", href: "/pca" },
   },
 
   about: {
