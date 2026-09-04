@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>단체 리포트 — 기계공학과 2026-1학기</title>
+<style>
+:root{
+  --field:#EBEEF0; --paper:#FFFFFF; --ink:#16232E; --rule:#C9D2D8;
+  --muted:#61717D; --met:#1B6B57; --partial:#C08A0B; --gap:#C0392B;
+  --s1:#16232E; --s2:#3B4E5C; --s3:#61717D; --s4:#8D9AA4; --s5:#B9C3CA;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--field);color:var(--ink);
+  font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,-apple-system,sans-serif;
+  font-size:16px;line-height:1.6;font-variant-numeric:tabular-nums;
+  padding:32px 20px 80px;
+}
+.sheet{max-width:940px;margin:0 auto;background:var(--paper);border:1px solid var(--rule)}
+
+.top{display:flex;flex-wrap:wrap;gap:14px 28px;align-items:center;
+  padding:22px 40px;border-bottom:2px solid var(--ink)}
+.top h1{font-size:15px;font-weight:700}
+.top .meta{color:var(--muted);font-size:13.5px;display:flex;gap:18px;flex-wrap:wrap}
+.top .act{margin-left:auto;display:flex;align-items:center;gap:14px}
+.badge{font-size:12.5px;font-weight:700;padding:3px 9px;border:1px solid var(--partial);color:var(--partial)}
+.badge.open{border-color:var(--met);color:var(--met)}
+button.pub{font:inherit;font-size:14px;padding:9px 18px;border:1px solid var(--ink);
+  background:var(--ink);color:#fff;cursor:pointer}
+button.pub:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+button.pub[disabled]{background:var(--paper);color:var(--muted);border-color:var(--rule);cursor:default}
+
+section{padding:36px 40px;border-bottom:1px solid var(--rule)}
+section:last-of-type{border-bottom:0}
+h2{font-size:14px;font-weight:700;color:var(--muted);margin-bottom:8px}
+.sub{font-size:14px;color:var(--muted);max-width:64ch;margin-bottom:26px}
+
+/* 분포 밴드 */
+.band{display:flex;height:64px;border:1px solid var(--ink)}
+.band div{display:flex;align-items:center;justify-content:center;color:#fff;
+  font-size:15px;font-weight:700}
+.band div:nth-child(4),.band div:nth-child(5){color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 26px;margin-top:16px}
+.legend span{display:flex;align-items:center;gap:8px;font-size:14px}
+.legend i{width:12px;height:12px;flex:none}
+.legend em{font-style:normal;color:var(--muted);font-size:13.5px}
+
+/* 역량 갭 */
+.cg{display:grid;grid-template-columns:150px 1fr 84px;gap:0 16px;align-items:center;padding:12px 0}
+.cg + .cg{border-top:1px solid var(--rule)}
+.cg .lab{font-size:14.5px;font-weight:500}
+.cg .lab small{display:block;font-size:12px;color:var(--muted);font-weight:400}
+.meter{height:14px;background:#E4E9EC;position:relative}
+.meter i{position:absolute;left:0;top:0;bottom:0}
+.meter i.low{background:var(--gap)}
+.meter i.mid{background:var(--partial)}
+.meter i.high{background:var(--met)}
+.cg .pct{text-align:right;font-size:14px;font-weight:700}
+.cg .pct em{font-style:normal;font-weight:400;color:var(--muted);font-size:12.5px;display:block}
+
+/* 과목 제안 */
+.course{display:grid;grid-template-columns:1fr auto;gap:4px 20px;padding:16px 0}
+.course + .course{border-top:1px solid var(--rule)}
+.course h3{font-size:16.5px;font-weight:700;letter-spacing:-0.015em}
+.course .need{font-size:14px;font-weight:700;white-space:nowrap}
+.course p{grid-column:1/-1;font-size:13.5px;color:var(--muted);max-width:66ch}
+.flag{display:inline-block;font-size:12px;font-weight:600;padding:1px 7px;
+  border:1px solid var(--gap);color:var(--gap);margin-left:8px;vertical-align:1px}
+
+/* 미응시 */
+.miss{display:flex;flex-wrap:wrap;gap:10px 28px;align-items:center;font-size:14.5px}
+.miss b{font-weight:700}
+.miss span{color:var(--muted)}
+
+.foot{padding:20px 40px;color:var(--muted);font-size:12.5px;background:#F7F9FA}
+
+@media (max-width:680px){
+  body{padding:0 0 40px}
+  .sheet{border-left:0;border-right:0}
+  .top,section,.foot{padding-left:20px;padding-right:20px}
+  .top .act{margin-left:0;width:100%}
+  .band{height:52px}
+  .band div{font-size:13px}
+  .cg{grid-template-columns:110px 1fr 64px}
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="top">
+    <h1>기계공학과 단체 리포트</h1>
+    <div class="meta"><span>2026-1학기 3학년</span><span>대상 40명 · 응시 38명</span></div>
+    <div class="act">
+      <span class="badge" id="badge">학생 미공개</span>
+      <button class="pub" id="pub">학생에게 결과 공개</button>
+    </div>
+  </div>
+
+  <section>
+    <h2>학생들이 몰린 직무</h2>
+    <p class="sub">각 학생에게 가장 높게 나온 직무를 기준으로 38명을 나눈 결과입니다.
+      한쪽으로 몰려 있다면 학과 커리큘럼이 그 방향에 치우쳐 있다는 뜻일 수 있습니다.</p>
+    <div class="band">
+      <div style="width:36.8%;background:var(--s1)">14명</div>
+      <div style="width:23.7%;background:var(--s2)">9명</div>
+      <div style="width:18.4%;background:var(--s3)">7명</div>
+      <div style="width:13.2%;background:var(--s4)">5명</div>
+      <div style="width:7.9%;background:var(--s5)">3명</div>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i>기계설계 <em>평균 71점</em></span>
+      <span><i style="background:var(--s2)"></i>구조·유동 해석 <em>평균 68점</em></span>
+      <span><i style="background:var(--s3)"></i>생산기술 <em>평균 63점</em></span>
+      <span><i style="background:var(--s4)"></i>연구개발 <em>평균 60점</em></span>
+      <span><i style="background:var(--s5)"></i>품질보증 <em>평균 54점</em></span>
+    </div>
+  </section>
+
+  <section>
+    <h2>학과 전체에서 비어 있는 역량</h2>
+    <p class="sub">각 학생이 자기 최적합 직무에서 요구하는 수준을 채웠는지를 세었습니다.
+      충족률이 낮을수록 학과 차원에서 손을 대야 하는 역량입니다.</p>
+
+    <div class="cg">
+      <span class="lab">ANSYS<small>소프트웨어</small></span>
+      <span class="meter"><i class="low" style="width:16%"></i></span>
+      <span class="pct">16%<em>38명 중 6명</em></span>
+    </div>
+    <div class="cg">
+      <span class="lab">유한요소법<small>이론</small></span>
+      <span class="meter"><i class="low" style="width:29%"></i></span>
+      <span class="pct">29%<em>38명 중 11명</em></span>
+    </div>
+    <div class="cg">
+      <span class="lab">기하공차<small>이론</small></span>
+      <span class="meter"><i class="low" style="width:34%"></i></span>
+      <span class="pct">34%<em>38명 중 13명</em></span>
+    </div>
+    <div class="cg">
+      <span class="lab">재료역학<small>이론</small></span>
+      <span class="meter"><i class="mid" style="width:58%"></i></span>
+      <span class="pct">58%<em>38명 중 22명</em></span>
+    </div>
+    <div class="cg">
+      <span class="lab">MATLAB<small>소프트웨어</small></span>
+      <span class="meter"><i class="mid" style="width:68%"></i></span>
+      <span class="pct">68%<em>38명 중 26명</em></span>
+    </div>
+    <div class="cg">
+      <span class="lab">열역학<small>이론</small></span>
+      <span class="meter"><i class="high" style="width:82%"></i></span>
+      <span class="pct">82%<em>38명 중 31명</em></span>
+    </div>
+  </section>
+
+  <section>
+    <h2>커리큘럼 검토가 필요한 과목</h2>
+    <p class="sub">비어 있는 역량을 채워주는 과목을 학과 개설 현황과 대조했습니다.</p>
+
+    <div class="course">
+      <h3>유한요소해석 <span class="flag">미개설</span></h3>
+      <span class="need">22명에게 필요</span>
+      <p>ANSYS와 유한요소법을 함께 메우는 과목인데 이번 학기 개설 목록에 없습니다.
+        해석 직무를 최적합으로 받은 9명 전원이 이 과목을 필요로 합니다.</p>
+    </div>
+    <div class="course">
+      <h3>기하공차와 측정</h3>
+      <span class="need">25명에게 필요</span>
+      <p>개설되어 있으나 이 학년 수강 인원이 8명입니다. 설계 직무로 나온 14명 중 11명이
+        미수강 상태라 수강 안내만으로도 충족률이 크게 올라갑니다.</p>
+    </div>
+    <div class="course">
+      <h3>전산유체역학</h3>
+      <span class="need">9명에게 필요</span>
+      <p>해석 직무 중 유동 방향 학생에게 필요합니다. 유한요소해석을 먼저 듣는 순서를
+        권장하므로 두 과목의 개설 학기를 함께 검토하시는 편이 좋습니다.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>미응시</h2>
+    <p class="miss"><b>2명</b> <span>응시 기간 종료 2026.03.20 · 남은 응시권 2개</span></p>
+  </section>
+
+  <div class="foot">화면 시안입니다. 표시된 인원과 수치는 예시 데이터입니다.</div>
+</div>
+
+<script>
+const pub = document.getElementById("pub");
+const badge = document.getElementById("badge");
+pub.addEventListener("click", () => {
+  badge.textContent = "학생 공개됨 · 2026.03.21";
+  badge.classList.add("open");
+  pub.textContent = "공개 완료";
+  pub.disabled = true;
+});
+</script>
+</body>
+</html>

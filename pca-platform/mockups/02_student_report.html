@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PCA 결과지 — 기계공학과</title>
+<style>
+:root{
+  --field:#EBEEF0;
+  --paper:#FFFFFF;
+  --ink:#16232E;
+  --rule:#C9D2D8;
+  --muted:#61717D;
+  --met:#1B6B57;
+  --partial:#C08A0B;
+  --gap:#C0392B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--field);
+  color:var(--ink);
+  font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,-apple-system,sans-serif;
+  font-size:16px;line-height:1.6;
+  padding:32px 20px 80px;
+  font-variant-numeric:tabular-nums;
+}
+.sheet{max-width:880px;margin:0 auto;background:var(--paper);border:1px solid var(--rule)}
+
+/* header */
+.top{display:flex;flex-wrap:wrap;gap:8px 28px;align-items:baseline;
+  padding:22px 40px;border-bottom:2px solid var(--ink)}
+.top h1{font-size:15px;font-weight:700;letter-spacing:-0.01em}
+.meta{color:var(--muted);font-size:13.5px;display:flex;gap:20px;flex-wrap:wrap;margin-left:auto}
+
+section{padding:38px 40px;border-bottom:1px solid var(--rule)}
+section:last-of-type{border-bottom:0}
+h2{font-size:14px;font-weight:700;color:var(--muted);margin-bottom:26px;letter-spacing:-0.01em}
+
+/* hero */
+.lead{display:flex;align-items:flex-end;gap:18px;margin-bottom:4px;flex-wrap:wrap}
+.lead .name{font-size:38px;font-weight:800;letter-spacing:-0.035em;line-height:1.1}
+.lead .score{font-size:38px;font-weight:300;color:var(--muted);letter-spacing:-0.04em}
+.lead .score b{font-weight:800;color:var(--ink)}
+.lead-note{color:var(--muted);font-size:14.5px;margin-bottom:34px;max-width:62ch}
+
+/* gauge */
+.gauge{display:grid;grid-template-columns:150px 1fr 46px;align-items:center;
+  gap:0 16px;padding:9px 0}
+.gauge + .gauge{border-top:1px dotted var(--rule)}
+.gauge .lab{font-size:14.5px;font-weight:500}
+.gauge.is-top .lab{font-weight:800}
+.track{position:relative;height:22px}
+.track .ticks{position:absolute;inset:0;display:flex}
+.track .ticks i{flex:1;border-right:1px solid var(--rule)}
+.track .ticks i:last-child{border-right:0}
+.bar{position:absolute;top:5px;height:12px;left:0;background:var(--muted)}
+.gauge.is-top .bar{background:var(--ink)}
+.gauge .val{font-size:14.5px;text-align:right;color:var(--muted)}
+.gauge.is-top .val{color:var(--ink);font-weight:700}
+.scale{display:grid;grid-template-columns:150px 1fr 46px;gap:0 16px;margin-top:8px}
+.scale span:nth-child(2){display:flex;justify-content:space-between;
+  font-size:11.5px;color:var(--muted)}
+
+/* competency */
+.comp{display:grid;grid-template-columns:170px 1fr 92px;gap:0 16px;
+  align-items:center;padding:13px 0}
+.comp + .comp{border-top:1px solid var(--rule)}
+.comp .lab{font-size:14.5px;font-weight:500}
+.comp .lab small{display:block;font-size:12px;color:var(--muted);font-weight:400}
+.blocks{display:flex;gap:5px}
+.blocks span{flex:1;height:16px;border:1px solid var(--rule);background:transparent}
+.blocks span.req{border-color:var(--ink)}
+.blocks span.has{background:var(--met);border-color:var(--met)}
+.blocks span.short{background:repeating-linear-gradient(135deg,#F2D9D6 0 4px,transparent 4px 8px);border-color:var(--gap)}
+.verdict{font-size:13px;text-align:right;font-weight:700}
+.verdict.ok{color:var(--met)}
+.verdict.mid{color:var(--partial)}
+.verdict.no{color:var(--gap)}
+
+/* courses */
+.course{padding:16px 0;display:grid;grid-template-columns:1fr auto;gap:6px 20px}
+.course + .course{border-top:1px solid var(--rule)}
+.course h3{font-size:16px;font-weight:700;letter-spacing:-0.015em}
+.course p{font-size:13.5px;color:var(--muted);grid-column:1/-1;max-width:60ch}
+.course .code{font-size:13px;color:var(--muted);white-space:nowrap}
+.tags{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.tags b{font-size:12px;font-weight:600;color:var(--met);
+  border:1px solid var(--met);padding:1px 7px;border-radius:2px}
+
+.foot{padding:20px 40px;color:var(--muted);font-size:12.5px;background:#F7F9FA}
+
+@media (max-width:620px){
+  body{padding:0 0 40px}
+  .sheet{border-left:0;border-right:0}
+  .top,section,.foot{padding-left:20px;padding-right:20px}
+  .gauge,.scale{grid-template-columns:96px 1fr 38px}
+  .comp{grid-template-columns:1fr;gap:8px}
+  .verdict{text-align:left}
+  .lead .name{font-size:30px}
+  .lead .score{font-size:30px}
+}
+@media print{
+  body{background:#fff;padding:0}
+  .sheet{border:0;max-width:none}
+  section{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="top">
+    <h1>기계공학 진로지표 결과</h1>
+    <div class="meta"><span>김도현</span><span>3학년</span><span>2026.03.12 응시</span></div>
+  </div>
+
+  <section>
+    <h2>가장 가까운 직무</h2>
+    <div class="lead">
+      <span class="name">구조·유동 해석</span>
+      <span class="score"><b>82</b>/100</span>
+    </div>
+    <p class="lead-note">해석 직무에서 요구하는 수학·역학 지표가 높게 나왔습니다.
+      아래 다섯 직무는 기계공학 전공자가 실제로 입직하는 분야이며, 점수는 각 직무의 요구 지표와
+      김도현 님의 응답을 대조한 값입니다.</p>
+
+    <div class="gauge is-top">
+      <span class="lab">구조·유동 해석</span>
+      <span class="track"><span class="ticks"><i></i><i></i><i></i><i></i><i></i></span><span class="bar" style="width:82%"></span></span>
+      <span class="val">82</span>
+    </div>
+    <div class="gauge">
+      <span class="lab">기계설계</span>
+      <span class="track"><span class="ticks"><i></i><i></i><i></i><i></i><i></i></span><span class="bar" style="width:74%"></span></span>
+      <span class="val">74</span>
+    </div>
+    <div class="gauge">
+      <span class="lab">연구개발</span>
+      <span class="track"><span class="ticks"><i></i><i></i><i></i><i></i><i></i></span><span class="bar" style="width:61%"></span></span>
+      <span class="val">61</span>
+    </div>
+    <div class="gauge">
+      <span class="lab">생산기술</span>
+      <span class="track"><span class="ticks"><i></i><i></i><i></i><i></i><i></i></span><span class="bar" style="width:48%"></span></span>
+      <span class="val">48</span>
+    </div>
+    <div class="gauge">
+      <span class="lab">품질보증</span>
+      <span class="track"><span class="ticks"><i></i><i></i><i></i><i></i><i></i></span><span class="bar" style="width:35%"></span></span>
+      <span class="val">35</span>
+    </div>
+    <div class="scale"><span></span><span><em>0</em><em>20</em><em>40</em><em>60</em><em>80</em><em>100</em></span><span></span></div>
+  </section>
+
+  <section>
+    <h2>구조·유동 해석 직무가 요구하는 역량</h2>
+    <div class="comp">
+      <span class="lab">유한요소법<small>이론</small></span>
+      <span class="blocks">
+        <span class="has"></span><span class="has"></span><span class="has"></span><span class="short"></span><span class="short"></span>
+      </span>
+      <span class="verdict mid">2단계 부족</span>
+    </div>
+    <div class="comp">
+      <span class="lab">ANSYS<small>소프트웨어</small></span>
+      <span class="blocks">
+        <span class="has"></span><span class="has"></span><span class="short"></span><span class="short"></span><span class="short"></span>
+      </span>
+      <span class="verdict no">3단계 부족</span>
+    </div>
+    <div class="comp">
+      <span class="lab">재료역학<small>이론</small></span>
+      <span class="blocks">
+        <span class="has"></span><span class="has"></span><span class="has"></span><span class="short"></span><span class="short"></span>
+      </span>
+      <span class="verdict mid">2단계 부족</span>
+    </div>
+    <div class="comp">
+      <span class="lab">열역학<small>이론</small></span>
+      <span class="blocks">
+        <span class="has"></span><span class="has"></span><span class="has"></span><span class="has"></span><span class="req"></span>
+      </span>
+      <span class="verdict ok">충족</span>
+    </div>
+    <div class="comp">
+      <span class="lab">MATLAB<small>소프트웨어</small></span>
+      <span class="blocks">
+        <span class="has"></span><span class="has"></span><span class="has"></span><span class="req"></span><span class="req"></span>
+      </span>
+      <span class="verdict ok">충족</span>
+    </div>
+    <div class="comp">
+      <span class="lab">기하공차<small>이론</small></span>
+      <span class="blocks">
+        <span class="has"></span><span class="short"></span><span class="req"></span><span class="req"></span><span class="req"></span>
+      </span>
+      <span class="verdict mid">1단계 부족</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>다음 학기에 들을 과목</h2>
+    <div class="course">
+      <h3>유한요소해석</h3>
+      <span class="code">ME401 · 3학점 · 4학년 1학기</span>
+      <p>가장 크게 벌어진 두 역량을 한 과목에서 함께 메웁니다. 이 학기에 우선순위가 가장 높습니다.</p>
+      <span class="tags"><b>유한요소법</b><b>ANSYS</b></span>
+    </div>
+    <div class="course">
+      <h3>전산유체역학</h3>
+      <span class="code">ME412 · 3학점 · 4학년 1학기</span>
+      <p>해석 직무 중 유동 쪽으로 갈 경우 필요합니다. 유한요소해석을 먼저 듣는 편이 이해가 빠릅니다.</p>
+      <span class="tags"><b>ANSYS</b></span>
+    </div>
+    <div class="course">
+      <h3>재료역학 2</h3>
+      <span class="code">ME302 · 3학점 · 3학년 2학기</span>
+      <p>재료역학 1을 이수했다면 이어서 들으세요. 해석 직무의 면접에서 가장 자주 확인하는 영역입니다.</p>
+      <span class="tags"><b>재료역학</b></span>
+    </div>
+  </section>
+
+  <div class="foot">화면 시안입니다. 표시된 학생 정보와 점수는 예시 데이터입니다.</div>
+</div>
+</body>
+</html>

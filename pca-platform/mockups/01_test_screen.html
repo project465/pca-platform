@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PCA 검사 응시 — 기계공학</title>
+<style>
+:root{
+  --field:#EBEEF0; --paper:#FFFFFF; --ink:#16232E; --rule:#C9D2D8;
+  --muted:#61717D; --met:#1B6B57; --gap:#C0392B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--field);color:var(--ink);
+  font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,-apple-system,sans-serif;
+  font-size:16px;line-height:1.6;font-variant-numeric:tabular-nums;
+  min-height:100vh;padding:0 20px 60px;
+}
+.wrap{max-width:720px;margin:0 auto}
+
+/* fixed progress header */
+.bar{position:sticky;top:0;background:var(--field);padding:20px 0 14px;z-index:5}
+.bar .row{display:flex;align-items:baseline;gap:12px;margin-bottom:10px}
+.bar .who{font-size:13.5px;color:var(--muted)}
+.bar .count{margin-left:auto;font-size:13.5px;font-weight:700}
+.bar .count em{font-style:normal;color:var(--muted);font-weight:400}
+.rail{height:4px;background:var(--rule);position:relative;overflow:hidden}
+.rail i{position:absolute;left:0;top:0;bottom:0;background:var(--ink);width:0;transition:width .25s ease}
+@media (prefers-reduced-motion:reduce){.rail i{transition:none}}
+.saved{font-size:12.5px;color:var(--met);margin-top:8px;height:18px;opacity:0;transition:opacity .2s}
+.saved.on{opacity:1}
+
+/* card */
+.card{background:var(--paper);border:1px solid var(--rule);padding:38px 40px 32px;margin-top:8px}
+.qno{font-size:13px;color:var(--muted);margin-bottom:10px}
+.qtext{font-size:22px;font-weight:700;letter-spacing:-0.025em;line-height:1.45;margin-bottom:28px}
+
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;
+  background:var(--paper);border:1px solid var(--rule);padding:14px 16px;
+  font:inherit;color:inherit;cursor:pointer}
+.opt:hover{border-color:var(--muted)}
+.opt:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.opt .dot{width:16px;height:16px;border:1px solid var(--muted);border-radius:50%;flex:none}
+.opt[aria-pressed="true"]{border-color:var(--ink);background:#F4F7F8}
+.opt[aria-pressed="true"] .dot{background:var(--ink);border-color:var(--ink);
+  box-shadow:inset 0 0 0 3px var(--paper)}
+.opt .txt{font-size:15.5px}
+
+.nav{display:flex;gap:10px;margin-top:26px;padding-top:22px;border-top:1px solid var(--rule)}
+button.act{font:inherit;font-size:15px;padding:11px 22px;border:1px solid var(--ink);
+  background:var(--paper);color:var(--ink);cursor:pointer}
+button.act:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+button.act.solid{background:var(--ink);color:#fff}
+button.act[disabled]{opacity:.35;cursor:default}
+.nav .right{margin-left:auto;display:flex;gap:10px}
+
+/* intro & done */
+.panel{background:var(--paper);border:1px solid var(--rule);padding:44px 40px;margin-top:8px}
+.panel h1{font-size:26px;font-weight:800;letter-spacing:-0.03em;margin-bottom:14px}
+.panel p{color:var(--muted);font-size:15px;max-width:58ch;margin-bottom:10px}
+.panel ul{margin:18px 0 26px;padding-left:0;list-style:none}
+.panel li{font-size:15px;padding:9px 0;border-top:1px solid var(--rule)}
+.panel li b{font-weight:700}
+.hint{font-size:13.5px;color:var(--muted);margin-top:16px}
+.foot{color:var(--muted);font-size:12.5px;margin-top:22px;text-align:center}
+.hidden{display:none}
+
+@media (max-width:600px){
+  .card,.panel{padding:26px 20px}
+  .qtext{font-size:19px}
+  .nav{flex-wrap:wrap}
+  .nav .right{width:100%;margin-left:0}
+  .nav .right button{flex:1}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- 진행 바 -->
+  <div class="bar hidden" id="bar">
+    <div class="row">
+      <span class="who">기계공학 진로지표 검사 · 김도현</span>
+      <span class="count"><span id="cur">1</span><em> / <span id="tot">12</span></em></span>
+    </div>
+    <div class="rail"><i id="fill"></i></div>
+    <div class="saved" id="saved">응답이 저장되었습니다</div>
+  </div>
+
+  <!-- 시작 화면 -->
+  <div class="panel" id="intro">
+    <h1>이어서 응시하시겠어요?</h1>
+    <p>지난 접속에서 4번 문항까지 응답하셨습니다. 이어서 5번 문항부터 시작합니다.</p>
+    <ul>
+      <li><b>문항 수</b> 12개 · 남은 문항 8개</li>
+      <li><b>예상 소요 시간</b> 약 7분</li>
+      <li><b>중간에 창을 닫아도</b> 응답은 그대로 남습니다</li>
+      <li><b>결과 공개</b> 학과 담당 교수 확인 후 열립니다</li>
+    </ul>
+    <button class="act solid" id="start">5번 문항부터 이어하기</button>
+    <p class="hint">정답이 있는 검사가 아닙니다. 지금 상태를 그대로 고르시면 됩니다.</p>
+  </div>
+
+  <!-- 문항 화면 -->
+  <div class="card hidden" id="card">
+    <div class="qno" id="qno">문항 5</div>
+    <p class="qtext" id="qtext"></p>
+    <div class="opts" id="opts"></div>
+    <div class="nav">
+      <button class="act" id="prev">이전</button>
+      <span class="right">
+        <button class="act" id="skip">나중에 답하기</button>
+        <button class="act solid" id="next">다음</button>
+      </span>
+    </div>
+  </div>
+
+  <!-- 완료 화면 -->
+  <div class="panel hidden" id="done">
+    <h1>응답이 모두 제출되었습니다</h1>
+    <p>12개 문항에 모두 답하셨습니다. 결과는 학과 담당 교수가 확인한 뒤 공개되며,
+       공개되면 등록하신 이메일로 알려드립니다.</p>
+    <ul>
+      <li><b>제출 시각</b> 2026년 3월 12일 14:22</li>
+      <li><b>응시 회차</b> 2026-1학기 기계공학과 3학년</li>
+    </ul>
+    <button class="act" id="again">처음부터 다시 보기</button>
+  </div>
+
+  <p class="foot">화면 시안입니다. 문항과 응시자 정보는 예시 데이터입니다.</p>
+</div>
+
+<script>
+const LIKERT = ["전혀 아니다","아니다","보통이다","그렇다","매우 그렇다"];
+
+const Q = [
+  {t:"수식으로 표현된 물리 현상을 직접 계산해 확인해보는 일이 즐겁다.", o:LIKERT},
+  {t:"완성된 도면보다, 아직 형상이 정해지지 않은 아이디어 단계가 더 흥미롭다.", o:LIKERT},
+  {t:"실험 결과가 이론값과 다를 때 원인을 끝까지 추적하는 편이다.", o:LIKERT},
+  {t:"규격서나 기준 문서를 읽고 정리하는 일이 크게 부담스럽지 않다.", o:LIKERT},
+  {t:"3D 모델링 도구를 사용해 본 경험은 어느 정도인가요?",
+   o:["써본 적 없다","수업에서 따라 해봤다","과제 부품을 직접 그려봤다","조립체까지 설계해봤다"]},
+  {t:"설비가 멈춘 상황이라면, 현장에 직접 가서 확인하는 쪽이 나에게 맞다.", o:LIKERT},
+  {t:"반복되는 계산을 코드로 자동화해 본 경험은 어느 정도인가요?",
+   o:["없다","예제를 실행해봤다","과제에 직접 작성해 썼다","반복 작업용 도구를 만들어봤다"]},
+  {t:"하나의 주제를 오래 파고드는 편이다.", o:LIKERT},
+  {t:"유한요소해석을 수업이나 스터디에서 접해본 적이 있나요?",
+   o:["들어본 적 없다","이름만 안다","수업에서 다뤄봤다","직접 해석을 돌려봤다"]},
+  {t:"도면에 표기된 공차의 의미를 읽을 수 있다.", o:LIKERT},
+  {t:"팀 과제에서 결과 정리와 발표를 맡는 경우가 많다.", o:LIKERT},
+  {t:"졸업 후 대학원 진학을 고려하고 있다.", o:LIKERT}
+];
+
+const RESUME = 4;                 // 지난 접속에서 4번까지 응답
+const ans = new Array(Q.length).fill(null);
+for (let i = 0; i < RESUME; i++) ans[i] = 2;   // 이전 응답 예시
+let i = RESUME;
+
+const $ = id => document.getElementById(id);
+let savedTimer;
+
+function flashSaved(){
+  $("saved").classList.add("on");
+  clearTimeout(savedTimer);
+  savedTimer = setTimeout(() => $("saved").classList.remove("on"), 1400);
+}
+
+function render(){
+  const q = Q[i];
+  $("qno").textContent = "문항 " + (i + 1);
+  $("qtext").textContent = q.t;
+  $("cur").textContent = i + 1;
+  $("tot").textContent = Q.length;
+  $("fill").style.width = ((i) / Q.length * 100) + "%";
+
+  const box = $("opts");
+  box.innerHTML = "";
+  q.o.forEach((label, k) => {
+    const b = document.createElement("button");
+    b.className = "opt";
+    b.type = "button";
+    b.setAttribute("aria-pressed", ans[i] === k ? "true" : "false");
+    b.innerHTML = '<span class="dot"></span><span class="txt"></span>';
+    b.querySelector(".txt").textContent = label;
+    b.addEventListener("click", () => {
+      ans[i] = k;
+      flashSaved();
+      render();
+      setTimeout(advance, 220);
+    });
+    box.appendChild(b);
+  });
+
+  $("prev").disabled = i === 0;
+  $("next").textContent = i === Q.length - 1 ? "제출하기" : "다음";
+  $("next").disabled = ans[i] === null;
+}
+
+function advance(){
+  if (i === Q.length - 1){ finish(); return; }
+  i++; render();
+}
+
+function finish(){
+  $("card").classList.add("hidden");
+  $("bar").classList.add("hidden");
+  $("done").classList.remove("hidden");
+}
+
+$("start").addEventListener("click", () => {
+  $("intro").classList.add("hidden");
+  $("card").classList.remove("hidden");
+  $("bar").classList.remove("hidden");
+  render();
+});
+$("next").addEventListener("click", advance);
+$("prev").addEventListener("click", () => { if (i > 0){ i--; render(); } });
+$("skip").addEventListener("click", () => { if (i < Q.length - 1){ i++; render(); } });
+$("again").addEventListener("click", () => {
+  i = RESUME;
+  $("done").classList.add("hidden");
+  $("card").classList.remove("hidden");
+  $("bar").classList.remove("hidden");
+  render();
+});
+</script>
+</body>
+</html>
