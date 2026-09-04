@@ -332,6 +332,9 @@ export const global: SiteContent = {
     heading: "Talk to us",
     lead:
       "The department name and a rough headcount are enough to start. We will follow up by email.",
+    quickHeading: "Talk to us",
+    quickNote: "Three fields. We will follow up by email.",
+    quickSubmit: "Send",
     fields: {
       org: "University · department",
       name: "Your name",
@@ -346,6 +349,12 @@ export const global: SiteContent = {
     success: "Thanks — we have it",
     successBody: "We will reply to the address you gave.",
     error: "That did not send. Please try again in a moment.",
+  },
+
+  midCta: {
+    heading: "What would this look like at your university?",
+    body: "Give us the department and a rough headcount and we will come back with the regional matching scope and how it would run.",
+    button: "Talk to us",
   },
 
   footer: {

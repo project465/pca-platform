@@ -329,6 +329,9 @@ export const kr: SiteContent = {
   contact: {
     heading: "도입 문의",
     lead: "대학·학과명과 대략적인 응시 인원만 알려주시면 됩니다. 확인 후 담당자가 연락드립니다.",
+    quickHeading: "도입 문의",
+    quickNote: "세 칸이면 됩니다. 확인 후 담당자가 연락드립니다.",
+    quickSubmit: "문의 남기기",
     fields: {
       org: "대학 · 학과",
       name: "담당자 성함",
@@ -343,6 +346,12 @@ export const kr: SiteContent = {
     success: "문의가 접수되었습니다",
     successBody: "적어주신 이메일로 연락드리겠습니다.",
     error: "보내지 못했습니다. 잠시 후 다시 시도해 주세요.",
+  },
+
+  midCta: {
+    heading: "우리 대학에는 어떻게 적용될까요?",
+    body: "학과명과 대략적인 인원만 알려주시면, 지역 기업 매칭 범위와 운영 방식을 확인해 회신드립니다.",
+    button: "도입 문의하기",
   },
 
   footer: {

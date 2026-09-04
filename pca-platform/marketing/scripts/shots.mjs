@@ -30,6 +30,7 @@ const parts = [
   ["#report", "05-report"],
   ["#region", "06-region"],
   [".where", "06b-map"],
+  [".midcta", "06c-cta"],
   ["#university", "07-university"],
   ["#evidence", "08-evidence"],
   ["#process", "09-process"],

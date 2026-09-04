@@ -155,7 +155,6 @@ export function Compare({ site }: { site: SiteContent }) {
 
 export function Report({ site }: { site: SiteContent }) {
   const r = site.report;
-  const max = 100;
   return (
     <section id="report" className="tinted bordered">
       <div className="wrap">
@@ -178,22 +177,27 @@ export function Report({ site }: { site: SiteContent }) {
             </ul>
           </div>
 
-          <div className="rankbox">
-            <div className="cap">
-              <b>{r.rankTitle}</b>
-              <span className="ex">{r.exampleLabel}</span>
+          <div className="cover" aria-hidden="true">
+            <div className="sheet back">
+              <span className="k">{site.brand}</span>
+              <ul>
+                {r.sections.slice(0, 6).map((s) => (
+                  <li key={s.no}>
+                    <b>{s.no}</b>
+                    <i>{s.title}</i>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <ul>
-              {r.ranks.map((k) => (
-                <li key={k.name}>
-                  <span className="nm">{k.name}</span>
-                  <span className="track">
-                    <span className="fill" style={{ width: `${(k.score / max) * 100}%` }} />
-                  </span>
-                  <span className="val">{k.score}</span>
-                </li>
-              ))}
-            </ul>
+            <div className="sheet front">
+              <span className="k">{site.hero.coverKicker}</span>
+              <strong>
+                {site.hero.display.map((line) => (
+                  <span key={line}>{line}</span>
+                ))}
+              </strong>
+              <span className="n">{site.hero.coverNote}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -251,6 +255,23 @@ export function Region({ site }: { site: SiteContent }) {
           <p>{r.quote}</p>
           <cite>{r.quoteSource}</cite>
         </blockquote>
+      </div>
+    </section>
+  );
+}
+
+export function MidCta({ site }: { site: SiteContent }) {
+  const c = site.midCta;
+  return (
+    <section className="midcta">
+      <div className="wrap inner">
+        <div>
+          <h2>{c.heading}</h2>
+          <p>{c.body}</p>
+        </div>
+        <a className="btn solid lg" href="#contact">
+          {c.button}
+        </a>
       </div>
     </section>
   );

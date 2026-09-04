@@ -180,9 +180,16 @@ export type SiteContent = {
 
   faq: { heading: string; items: Faq[] };
 
+  /** 본문 중간에서 한 번 더 문의를 권하는 자리 */
+  midCta: { heading: string; body: string; button: string };
+
   contact: {
     heading: string;
     lead: string;
+    /** 첫 화면 간편 문의 카드 */
+    quickHeading: string;
+    quickNote: string;
+    quickSubmit: string;
     fields: {
       org: string;
       name: string;

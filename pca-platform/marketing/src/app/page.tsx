@@ -11,6 +11,7 @@ import {
   Compare,
   Evidence,
   Faq,
+  MidCta,
   Process,
   Questions,
   Region,
@@ -35,6 +36,7 @@ export default function Home() {
         <Report site={site} />
         <Region site={site} />
         {site.map ? <WorldMap map={site.map} /> : null}
+        <MidCta site={site} />
         <University site={site} />
         <Evidence site={site} />
         <Process site={site} />
