@@ -26,7 +26,7 @@ await page.screenshot({ path: `${OUT}/01-top.png` });
 const parts = [
   ["#about", "02-about"],
   ["#analysis", "03-analysis"],
-  ["#traits", "04-hexagon"],
+  ["#traits", "04-2axis"],
   ["#report", "05-report"],
   ["#region", "06-region"],
   [".where", "06b-map"],

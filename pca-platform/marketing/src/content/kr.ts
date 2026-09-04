@@ -32,6 +32,8 @@ export const kr: SiteContent = {
 
   hero: {
     eyebrow: "당신의 전공이 성공으로 이어지도록",
+    coverKicker: "결과 리포트",
+    coverNote: "총 15–20페이지 · 10개 섹션",
     display: ["PERSONALIZED", "CAREER ANALYSIS"],
     title: "전공은 선택했지만, 그 다음 길을 모르는 당신을 위한 정밀 진단",
     lead:
@@ -139,9 +141,13 @@ export const kr: SiteContent = {
   },
 
   traits: {
-    heading: "업무 성향을 육각형으로 한눈에",
+    heading: "2축 분석 — 직무 영역과 업무 성향",
     lead:
-      "6가지 업무 성향 점수를 시각화해 나에게 맞는 업무 방식과 성장 전략을 제시합니다.",
+      "가장 적합한 직무 영역과 6가지 업무 성향 프로파일을 함께 봅니다. 두 축이 만나는 자리에서 실행 전략이 나옵니다.",
+    fitTitle: "직무 영역 순위",
+    fitNote:
+      "가장 적합한 3개 직무 영역이 100점 만점 점수와 함께 나열됩니다. 2·3순위 영역은 향후 프로젝트 및 비교 참고용으로 활용됩니다.",
+    scaleNote: "6개 유형에 대해 점수와 한 줄 코멘트를 제공합니다.",
     exampleLabel: "예시",
     chartTitle: "업무 성향 프로파일",
     items: [

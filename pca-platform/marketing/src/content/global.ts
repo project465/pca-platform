@@ -34,6 +34,8 @@ export const global: SiteContent = {
 
   hero: {
     eyebrow: "So that a major leads somewhere",
+    coverKicker: "The report",
+    coverNote: "15–20 pages · 10 sections",
     display: ["PERSONALIZED", "CAREER ANALYSIS"],
     title: "They chose a major. The next step is still a guess.",
     lead:
@@ -141,9 +143,13 @@ export const global: SiteContent = {
   },
 
   traits: {
-    heading: "Work style, as one hexagon",
+    heading: "Two axes — job area and work style",
     lead:
-      "Six work-style scores, visualised — the way of working that suits the student, and the growth strategy that follows from it.",
+      "The best-fitting job areas and a six-axis work-style profile, read together. The execution strategy comes from where the two meet.",
+    fitTitle: "Job areas, ranked",
+    fitNote:
+      "The three best-fitting job areas, scored out of 100. Second and third are kept as references for future projects and comparison.",
+    scaleNote: "Each of the six types comes with a score and a one-line read.",
     exampleLabel: "Example",
     chartTitle: "Work-style profile",
     items: [

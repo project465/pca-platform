@@ -15,11 +15,13 @@ export function generateMetadata(): Metadata {
       description: site.meta.description,
       url: `https://${site.domain}`,
       locale: site.lang,
+      images: [{ url: `/og-${site.key}.png`, width: 1200, height: 630, alt: site.meta.title }],
     },
     twitter: {
       card: "summary_large_image",
       title: site.meta.title,
       description: site.meta.description,
+      images: [`/og-${site.key}.png`],
     },
   };
 }

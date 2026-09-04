@@ -133,10 +133,53 @@ section { padding-block: clamp(54px, 7.5vw, 92px); }
   border-bottom: 1px solid var(--rule);
   padding-block: clamp(50px, 7vw, 88px) clamp(46px, 6vw, 76px);
 }
+
+.herogrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.72fr); gap: 44px; align-items: center; }
+@media (max-width: 1000px) { .herogrid { grid-template-columns: 1fr; gap: 34px; } }
 .hero .inner { display: flex; flex-direction: column; gap: 16px; }
+
+/* 리포트 축소판. 이미지가 아니라 실제 목차를 줄여 그린 것 */
+.cover { position: relative; height: 320px; }
+@media (max-width: 1000px) { .cover { height: 280px; max-width: 460px; } }
+@media (max-width: 560px) { .cover { display: none; } }
+.cover .sheet {
+  position: absolute; border-radius: 12px; background: var(--paper);
+  border: 1px solid var(--rule); box-shadow: 0 10px 34px rgba(22,35,46,.10);
+  padding: 20px 20px 22px; display: flex; flex-direction: column;
+}
+.cover .sheet .k {
+  font-size: 10.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--brand); margin-bottom: 10px;
+}
+.cover .back {
+  left: 0; top: 6px; width: 61%; height: 290px;
+  transform: rotate(-4deg); background: var(--field);
+}
+.cover .back ul { list-style: none; display: flex; flex-direction: column; gap: 1px; }
+.cover .back li {
+  display: grid; grid-template-columns: 20px 1fr; gap: 8px; align-items: center;
+  padding: 6px 0; border-top: 1px solid var(--rule);
+}
+.cover .back li b { font-size: 9.5px; font-weight: 800; color: var(--brand); }
+.cover .back li i {
+  font-style: normal; font-size: 10.5px; color: var(--ink-2); font-weight: 600;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.cover .front {
+  right: 0; top: 26px; width: 63%; height: 274px;
+  transform: rotate(3deg); justify-content: center;
+}
+.cover .front strong {
+  display: flex; flex-direction: column; font-size: 22px; font-weight: 800;
+  letter-spacing: -0.045em; line-height: 1.06;
+  background: linear-gradient(96deg, var(--brand) 8%, var(--brand-hi) 70%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.cover .front .n { margin-top: 14px; font-size: 11.5px; color: var(--muted); font-weight: 600; }
+
 .display {
   font-weight: 800; letter-spacing: -0.045em; line-height: 1.03;
-  font-size: clamp(38px, 7.4vw, 78px);
+  font-size: clamp(34px, 5.6vw, 60px);
   background: linear-gradient(96deg, var(--brand) 8%, var(--brand-hi) 62%, #9CC0FA 100%);
   -webkit-background-clip: text; background-clip: text; color: transparent;
   margin: 2px 0 6px;
@@ -213,8 +256,11 @@ section { padding-block: clamp(54px, 7.5vw, 92px); }
 .pillar p { font-size: 14.5px; color: var(--muted); }
 
 /* ---------- 육각형 ---------- */
-.hexgrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 0.95fr); gap: 34px; align-items: center; }
-@media (max-width: 900px) { .hexgrid { grid-template-columns: 1fr; gap: 24px; } }
+.axis2 { display: grid; grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr); gap: 22px; align-items: start; }
+@media (max-width: 860px) { .axis2 { grid-template-columns: 1fr; } }
+.axis2 .rankbox { display: flex; flex-direction: column; }
+.axis2 .rankbox ul { margin-top: 4px; }
+.axis2 .rankbox li { align-items: center; }
 .hexfig { margin: 0; background: var(--paper); border: 1px solid var(--rule); border-radius: var(--r); padding: 16px; box-shadow: var(--shadow); }
 .hexfig .cap { display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px; }
 .hexfig .cap b { font-size: 13px; font-weight: 700; color: var(--muted); }
@@ -232,6 +278,14 @@ section { padding-block: clamp(54px, 7.5vw, 92px); }
 .hexfig .num { font-size: 11.5px; fill: var(--muted); font-weight: 600; }
 
 .traitlist { list-style: none; display: flex; flex-direction: column; }
+.traitlist.wide {
+  margin-top: 22px; display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0 26px;
+}
+@media (max-width: 860px) { .traitlist.wide { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px) { .traitlist.wide { grid-template-columns: 1fr; } }
+.traitlist.wide li:nth-child(-n+3) { border-top: 1px solid var(--rule); }
+.traitlist.wide li:last-child { border-bottom: 1px solid var(--rule); }
 .traitlist li { display: grid; grid-template-columns: auto 1fr auto; gap: 2px 12px; padding: 12px 0; border-top: 1px solid var(--rule); align-items: baseline; }
 .traitlist li:last-child { border-bottom: 1px solid var(--rule); }
 .traitlist .nm { font-size: 15px; font-weight: 700; }
@@ -281,6 +335,7 @@ section { padding-block: clamp(54px, 7.5vw, 92px); }
   border-radius: 5px; padding: 1px 7px;
 }
 .rankbox ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.boxnote { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--muted); line-height: 1.6; }
 .rankbox li { display: grid; grid-template-columns: minmax(58px,auto) 1fr 34px; gap: 10px; align-items: center; }
 .rankbox .nm { font-size: 13px; color: var(--muted); white-space: nowrap; }
 .rankbox li:first-child .nm { color: var(--ink); font-weight: 700; }

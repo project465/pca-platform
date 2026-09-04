@@ -58,6 +58,9 @@ export type SiteContent = {
 
   hero: {
     eyebrow: string;
+    /** 히어로 옆 리포트 축소판에 붙는 말 */
+    coverKicker: string;
+    coverNote: string;
     /** 제안서 표지의 영문 제목. 줄바꿈은 원고가 정한다 */
     display: string[];
     title: string;
@@ -102,10 +105,15 @@ export type SiteContent = {
     note: string;
   };
 
-  /** 업무 성향 육각형 */
+  /** 2축 분석 — 직무 영역과 업무 성향 */
   traits: {
     heading: string;
     lead: string;
+    /** 왼쪽(직무 영역) 칸 제목 */
+    fitTitle: string;
+    /** 2·3순위를 어떻게 쓰는지 */
+    fitNote: string;
+    scaleNote: string;
     exampleLabel: string;
     chartTitle: string;
     items: Trait[];

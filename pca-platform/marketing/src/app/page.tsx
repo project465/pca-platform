@@ -1,7 +1,7 @@
 import { getSite } from "@/content";
 import SiteHeader from "@/components/site-header";
 import Hero from "@/components/hero";
-import Hexagon from "@/components/hexagon";
+import TwoAxis from "@/components/two-axis";
 import Contact from "@/components/contact";
 import WorldMap from "@/components/world-map";
 import {
@@ -30,7 +30,7 @@ export default function Home() {
         <About site={site} />
         <Questions site={site} />
         <Analysis site={site} />
-        <Hexagon site={site} />
+        <TwoAxis site={site} />
         <Compare site={site} />
         <Report site={site} />
         <Region site={site} />
