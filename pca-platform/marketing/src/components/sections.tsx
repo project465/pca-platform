@@ -541,3 +541,110 @@ export function FaqSection({ site }: { site: SiteContent }) {
     </section>
   );
 }
+
+/** 나라별 사이트 진입 (글로벌판) */
+export function RegionsSection({ site }: { site: SiteContent }) {
+  const r = site.regions;
+  if (!r) return null;
+  return (
+    <section id="regions" className="divided tinted">
+      <div className="wrap">
+        <div className="sec-head">
+          <span className="label-sm">{r.label}</span>
+          <h2>{r.heading}</h2>
+          <p className="lead">{r.lead}</p>
+        </div>
+        <div className="regiongrid">
+          {r.items.map((c) => (
+            <a
+              key={c.code}
+              className={`region${c.live ? " live" : " soon"}`}
+              href={c.href}
+              {...(c.live ? { rel: "noopener" } : {})}
+            >
+              <span className="code">{c.code}</span>
+              <span className="nm">{c.native}</span>
+              <span className="dm">{c.domain}</span>
+              <span className="st">{c.live ? r.liveLabel : r.soonLabel}</span>
+            </a>
+          ))}
+        </div>
+        <p className="small" style={{ marginTop: 20 }}>
+          {r.note}
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/** 헤더의 국가 선택기. <details> 라 자바스크립트 없이 열린다 */
+export function RegionPicker({ site }: { site: SiteContent }) {
+  const r = site.regions;
+  if (!r) return null;
+  return (
+    <details className="regionpick">
+      <summary>
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="8" cy="8" r="6.4" stroke="currentColor" strokeWidth="1.4" />
+          <path d="M1.8 8h12.4M8 1.6c3.4 3.6 3.4 9.2 0 12.8-3.4-3.6-3.4-9.2 0-12.8z" stroke="currentColor" strokeWidth="1.4" />
+        </svg>
+        {r.label}
+      </summary>
+      <div className="menu">
+        {r.items.map((c) => (
+          <a key={c.code} href={c.href} className={c.live ? "" : "soon"}>
+            <b>{c.native}</b>
+            <span>{c.live ? c.domain : r.soonLabel}</span>
+          </a>
+        ))}
+      </div>
+    </details>
+  );
+}
+
+/** 요금제. 가격이 채워지면 문의가 아니라 신청 버튼이 된다 */
+export function PricingSection({ site }: { site: SiteContent }) {
+  const p = site.pricing;
+  return (
+    <section id="pricing" className="divided">
+      <div className="wrap">
+        <div className="sec-head">
+          <span className="label-sm">{p.label}</span>
+          <h2>{p.heading}</h2>
+          <p className="lead">{p.lead}</p>
+        </div>
+
+        <div className="plangrid">
+          {p.plans.map((pl) => (
+            <div className={`plan${pl.featured ? " featured" : ""}`} key={pl.key}>
+              <span className="who">{pl.who}</span>
+              <h3>{pl.name}</h3>
+              <div className="price">
+                {pl.price ? (
+                  <>
+                    <b>{pl.price}</b>
+                    <em>{pl.unit}</em>
+                  </>
+                ) : (
+                  <span className="ask">{pl.cta.ask}</span>
+                )}
+              </div>
+              <ul>
+                {pl.features.map((f) => (
+                  <li key={f}>{f}</li>
+                ))}
+              </ul>
+              <p className="note">{pl.note}</p>
+              <a className={`btn${pl.featured ? " solid" : ""}`} href="/contact">
+                {pl.price ? pl.cta.ready : pl.cta.ask}
+              </a>
+            </div>
+          ))}
+        </div>
+        <p className="small" style={{ marginTop: 22 }}>
+          {p.note}
+        </p>
+      </div>
+    </section>
+  );
+}

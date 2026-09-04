@@ -21,9 +21,10 @@ export const kr: SiteContent = {
 
   nav: {
     items: [
-      { label: "PCA 진단", href: "/pca" },
+      { label: "PCA", href: "/pca" },
       { label: "지역·앵커", href: "/anchor" },
       { label: "도입 안내", href: "/adopt" },
+      { label: "요금제", href: "/pricing" },
       { label: "기관 소개", href: "/about" },
       { label: "문의", href: "/contact" },
     ],
@@ -712,6 +713,66 @@ export const kr: SiteContent = {
         a: "네. 대학·학과 단위 단체 도입과 개인 진단 모두 상담 가능합니다. 문의 남겨주시면 안내드립니다.",
       },
     ],
+  },
+
+  pricing: {
+    label: "PRICING",
+    heading: "필요한 만큼만 시작하세요",
+    lead:
+      "학과 한 곳으로 시작해 전 학과로 넓히는 경우가 대부분입니다. 개인 진단은 언제든 한 건씩 받을 수 있습니다.",
+    planLabel: "관심 있는 것",
+    plans: [
+      {
+        key: "individual",
+        name: "개인 진단",
+        who: "학생 개인 · 취업 준비생 · 예비 창업자",
+        price: null,
+        unit: "1인",
+        note: "결제 연결 준비 중입니다. 지금은 문의로 신청받습니다.",
+        features: [
+          "직무 영역 10개 100점 순위",
+          "업무 성향 6유형 육각형",
+          "15–20페이지 개인 전략서 (10개 섹션)",
+          "프로젝트·자소서·면접·창업 전략",
+        ],
+        cta: { ready: "바로 신청하기", ask: "개인 진단 문의" },
+      },
+      {
+        key: "department",
+        name: "학과 단체",
+        who: "학과 · 취업지원처",
+        price: null,
+        unit: "1인당",
+        note: "인원 구간에 따라 단가가 달라집니다.",
+        features: [
+          "개인 진단의 모든 내용",
+          "학과별 전용 응시 링크 발급",
+          "익명 집계 기관 리포트",
+          "지역 기업 매칭 (소재지 기준)",
+          "결과 공개 시점 학과 지정",
+        ],
+        cta: { ready: "학과 도입 신청", ask: "학과 도입 문의" },
+        featured: true,
+      },
+      {
+        key: "university",
+        name: "대학 전체",
+        who: "대학 본부 · 지역 컨소시엄",
+        price: null,
+        unit: "연간",
+        note: "앵커사업 성과 보고용 집계가 포함됩니다.",
+        features: [
+          "학과 단체의 모든 내용",
+          "전 학과 통합 집계",
+          "관리자 대시보드 (제공 예정)",
+          "권역·초광역 단위 비교 지표",
+          "도입 설계와 운영 지원",
+        ],
+        cta: { ready: "대학 도입 신청", ask: "대학 도입 문의" },
+      },
+    ],
+    note:
+      "가격은 인원과 범위에 따라 달라집니다. 학과명과 대략적인 인원만 주시면 견적을 정리해 회신드립니다.",
   },
 
   contact: {

@@ -46,6 +46,20 @@ export default function InquiryForm({
         </p>
       ) : null}
 
+      {compact ? null : (
+        <div className="field full">
+          <label htmlFor={id("plan")}>{site.pricing.planLabel}</label>
+          <select id={id("plan")} name="plan" defaultValue="">
+            <option value="">—</option>
+            {site.pricing.plans.map((pl) => (
+              <option key={pl.key} value={pl.key}>
+                {pl.name} · {pl.who}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+
       <fieldset className="typepick full">
         <legend>{t.typeLabel}</legend>
         {t.types.map((ty, i) => (

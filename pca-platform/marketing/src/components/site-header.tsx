@@ -1,3 +1,4 @@
+import { RegionPicker } from "@/components/sections";
 import type { SiteContent } from "@/content";
 
 export default function SiteHeader({ site }: { site: SiteContent }) {
@@ -23,7 +24,8 @@ export default function SiteHeader({ site }: { site: SiteContent }) {
         </nav>
 
         <div className="right">
-          <a className="btn solid" href="#contact">
+          <RegionPicker site={site} />
+          <a className="btn solid" href="/contact">
             {site.nav.contact}
           </a>
         </div>

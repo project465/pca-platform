@@ -119,6 +119,48 @@ export type Partnership = {
   steps: Named[];
 };
 
+/** 나라별 사이트 진입 (글로벌판) */
+export type Regions = {
+  label: string;
+  heading: string;
+  lead: string;
+  liveLabel: string;
+  soonLabel: string;
+  note: string;
+  items: {
+    code: string;
+    name: string;
+    native: string;
+    domain: string;
+    href: string;
+    live: boolean;
+  }[];
+};
+
+/** 요금제. price 가 비어 있으면 화면은 문의로 흐른다 */
+export type Plan = {
+  key: string;
+  name: string;
+  who: string;
+  /** 값이 있으면 바로 신청, 없으면 가격 문의로 바뀐다 */
+  price: string | null;
+  unit: string;
+  note: string;
+  features: string[];
+  cta: { ready: string; ask: string };
+  featured?: boolean;
+};
+
+export type Pricing = {
+  label: string;
+  heading: string;
+  lead: string;
+  plans: Plan[];
+  note: string;
+  /** 문의 폼에서 고를 때 쓰는 라벨 */
+  planLabel: string;
+};
+
 export type SiteContent = {
   key: SiteKey;
   lang: string;
@@ -237,6 +279,9 @@ export type SiteContent = {
   /** 글로벌 전용 */
   localisation?: Localisation;
   partnership?: Partnership;
+
+  pricing: Pricing;
+  regions?: Regions;
 
   contact: {
     heading: string;

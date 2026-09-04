@@ -13,6 +13,7 @@ const schema = z.object({
   size: z.string().trim().max(50).optional(),
   message: z.string().trim().max(4000).optional(),
   kind: z.string().trim().max(40).optional(),
+  plan: z.string().trim().max(40).optional(),
 });
 
 /**
@@ -35,6 +36,7 @@ export async function submitContact(
     size: formData.get("size") ?? "",
     message: formData.get("message") ?? "",
     kind: formData.get("kind") ?? "",
+    plan: formData.get("plan") ?? "",
   });
 
   if (!parsed.success) return { error: site.contact.error };

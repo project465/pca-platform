@@ -22,9 +22,10 @@ export const global: SiteContent = {
 
   nav: {
     items: [
-      { label: "THE DIAGNOSIS", href: "/pca" },
+      { label: "PCA", href: "/pca" },
       { label: "LOCALISATION", href: "/localisation" },
       { label: "PARTNERSHIP", href: "/partnership" },
+      { label: "PRICING", href: "/pricing" },
       { label: "ABOUT", href: "/about" },
       { label: "CONTACT", href: "/contact" },
     ],
@@ -694,6 +695,89 @@ export const global: SiteContent = {
         q: "Is it validated?",
         a: "It was built from a 2,346-student sample together with 428 job postings, 137 job descriptions and 62 NCS references. Area definitions and interpretation criteria reference NCS, the O*NET lineage, RIASEC, NACE, OECD frameworks and AERA/APA/NCME measurement standards. The core items are registered with the Korea Copyright Commission.",
       },
+    ],
+  },
+
+  pricing: {
+    label: "PRICING",
+    heading: "Start with one department",
+    lead:
+      "Most institutions run one department first and widen from there. Individual assessments are available one at a time.",
+    planLabel: "What you are interested in",
+    plans: [
+      {
+        key: "individual",
+        name: "Individual",
+        who: "A student, a job seeker, a would-be founder",
+        price: null,
+        unit: "per person",
+        note: "Card payment is not connected yet. Requests come through the form for now.",
+        features: [
+          "Ten job areas ranked out of 100",
+          "Six work styles as a hexagon",
+          "A 15–20 page personal plan across ten sections",
+          "Projects, applications, interviews, founding",
+        ],
+        cta: { ready: "Buy now", ask: "Request an assessment" },
+      },
+      {
+        key: "department",
+        name: "Department",
+        who: "A department or careers service",
+        price: null,
+        unit: "per student",
+        note: "Unit price depends on the cohort size.",
+        features: [
+          "Everything in Individual",
+          "A participation link per department",
+          "Anonymised aggregate report",
+          "Regional employer matching, where localised",
+          "The department sets when results are released",
+        ],
+        cta: { ready: "Start a rollout", ask: "Talk about a rollout" },
+        featured: true,
+      },
+      {
+        key: "country",
+        name: "Country partner",
+        who: "An operator bringing PCA to their market",
+        price: null,
+        unit: "licence",
+        note: "Scoped against a pilot cohort rather than quoted blind.",
+        features: [
+          "Everything in Department",
+          "Localisation build for your country",
+          "Operate under your own brand",
+          "Training for the people running it",
+          "Administrator area for outcome reporting",
+        ],
+        cta: { ready: "Start a partnership", ask: "Talk about a partnership" },
+      },
+    ],
+    note:
+      "Price depends on cohort size and whether the regional module is in scope. Tell us the department and a rough number and we will come back with an estimate.",
+  },
+
+  regions: {
+    label: "COUNTRIES",
+    heading: "Open the site for your country",
+    lead:
+      "Each country runs its own site in its own language, against its own labour-market data. The platform students sit on is one, worldwide.",
+    liveLabel: "Open",
+    soonLabel: "In preparation",
+    note:
+      "Domains shown are placeholders until each country site goes live. If your country is not listed yet, talk to us — that is how a new one starts.",
+    items: [
+      { code: "KR", name: "Korea", native: "한국", domain: "pca.co.kr", href: "https://pca.co.kr", live: true },
+      { code: "DE", name: "Germany", native: "Deutschland", domain: "pca.de", href: "https://pca.de", live: true },
+      { code: "US", name: "United States", native: "United States", domain: "pca.us", href: "https://pca.us", live: true },
+      { code: "JP", name: "Japan", native: "日本", domain: "pca.jp", href: "https://pca.jp", live: true },
+      { code: "CN", name: "China", native: "中国", domain: "pca.cn", href: "https://pca.cn", live: true },
+      { code: "TR", name: "Türkiye", native: "Türkiye", domain: "pca.com.tr", href: "https://pca.com.tr", live: true },
+      { code: "KZ", name: "Kazakhstan", native: "Қазақстан", domain: "pca.kz", href: "#contact", live: false },
+      { code: "FR", name: "France", native: "France", domain: "pca.fr", href: "#contact", live: false },
+      { code: "ZA", name: "South Africa", native: "South Africa", domain: "pca.co.za", href: "#contact", live: false },
+      { code: "PH", name: "Philippines", native: "Pilipinas", domain: "pca.ph", href: "#contact", live: false },
     ],
   },
 

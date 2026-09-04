@@ -1,7 +1,7 @@
 import { getSite } from "@/content";
 import Shell from "@/components/shell";
 import Hero from "@/components/hero";
-import { Analyze, Closing, Who } from "@/components/sections";
+import { Analyze, Closing, PricingSection, RegionsSection, Who } from "@/components/sections";
 import { FlowDiagram, NextLink, PhotoSlot, PullQuote, ReportMini } from "@/components/visuals";
 
 export default function Home() {
@@ -84,6 +84,8 @@ export default function Home() {
         </div>
       </section>
 
+      <PricingSection site={site} />
+      <RegionsSection site={site} />
       <Closing site={site} />
     </Shell>
   );
