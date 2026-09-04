@@ -451,3 +451,80 @@ section { padding-block: clamp(60px, 8vw, 108px); }
 #sh-10:checked ~ .sheetgrid .tabs > label:nth-child(10) { border-left-color: var(--gold); background: var(--gold-soft); color: var(--ink); }
 #sh-11:checked ~ .sheetgrid .panels > .panel:nth-child(11) { display: block; }
 #sh-11:checked ~ .sheetgrid .tabs > label:nth-child(11) { border-left-color: var(--gold); background: var(--gold-soft); color: var(--ink); }
+
+/* ---------- ABOUT ---------- */
+.aboutgrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 52px; align-items: start; }
+@media (max-width: 900px) { .aboutgrid { grid-template-columns: 1fr; gap: 34px; } }
+.highlight {
+  margin-top: 22px; padding: 18px 20px; border-left: 2px solid var(--gold);
+  background: var(--gold-soft); color: var(--ink); font-size: 14.5px; font-weight: 600; line-height: 1.7;
+}
+.metalist { display: flex; flex-direction: column; gap: 32px; }
+.metalist h4 { font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+.brands { list-style: none; display: flex; flex-direction: column; }
+.brands li { display: flex; align-items: baseline; gap: 14px; padding: 13px 0; border-top: 1px solid var(--line); flex-wrap: wrap; }
+.brands li:last-child { border-bottom: 1px solid var(--line); }
+.brands b { font-size: 15.5px; font-weight: 800; }
+.brands span { font-size: 13px; color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 7px; }
+.chips span { font-size: 13px; font-weight: 600; padding: 6px 12px; border: 1px solid var(--line-2); border-radius: 999px; color: var(--ink-2); }
+
+/* ---------- 정책 수치 ---------- */
+.facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+@media (max-width: 780px) { .facts { grid-template-columns: 1fr 1fr; } }
+.facts > div { background: var(--paper); padding: 22px 20px 24px; }
+.facts .l { font-size: 12px; color: var(--muted); display: block; margin-bottom: 4px; }
+.facts b { font-size: clamp(24px, 3.2vw, 32px); font-weight: 800; letter-spacing: -0.045em; color: var(--gold); }
+.facts b em { font-style: normal; font-size: .42em; font-weight: 700; color: var(--muted); margin-left: 4px; }
+.source { margin-top: 12px; font-size: 12px; color: var(--faint); }
+.closing-line { margin-top: 28px; font-size: 17px; font-weight: 800; letter-spacing: -0.025em; color: var(--ink); }
+
+/* ---------- 도입 절차 ---------- */
+.steps3 { list-style: none; counter-reset: s; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+@media (max-width: 780px) { .steps3 { grid-template-columns: 1fr; } }
+.steps3 li { counter-increment: s; background: var(--paper); padding: 28px 26px 30px; display: flex; flex-direction: column; gap: 8px; }
+.steps3 li::before {
+  content: counter(s, decimal-leading-zero); font-size: 12px; font-weight: 800;
+  letter-spacing: .1em; color: var(--gold); margin-bottom: 6px;
+}
+.steps3 p { font-size: 14.5px; color: var(--muted); }
+
+/* ---------- 현지화 3층 ---------- */
+.layers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 900px) { .layers { grid-template-columns: 1fr; } }
+.layer { border: 1px solid var(--line); border-radius: var(--r); padding: 28px 26px 30px; display: flex; flex-direction: column; gap: 10px; }
+.layer.shared { border-color: var(--gold-line); background: var(--gold-soft); }
+.layer .tag { font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+.layer p { font-size: 14px; color: var(--muted); }
+.layer ul { list-style: none; display: flex; flex-direction: column; margin-top: 6px; }
+.layer li { font-size: 14px; color: var(--ink-2); padding: 10px 0 10px 18px; border-top: 1px solid var(--line); position: relative; }
+.layer.shared li { border-top-color: var(--gold-line); }
+.layer li::before { content: ""; position: absolute; left: 0; top: 19px; width: 7px; height: 1px; background: var(--gold); }
+
+/* ---------- 파트너십 ---------- */
+.splitgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 34px; }
+@media (max-width: 780px) { .splitgrid { grid-template-columns: 1fr; } }
+.splitcol { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); padding: 28px 26px; }
+.splitcol h3 { margin-bottom: 14px; }
+.splitcol ul { list-style: none; display: flex; flex-direction: column; }
+.splitcol li { font-size: 14.5px; color: var(--ink-2); padding: 11px 0 11px 20px; border-top: 1px solid var(--line); position: relative; }
+.splitcol li::before { content: ""; position: absolute; left: 0; top: 20px; width: 8px; height: 1px; background: var(--gold); }
+.steps4 { list-style: none; counter-reset: p; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+@media (max-width: 900px) { .steps4 { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px) { .steps4 { grid-template-columns: 1fr; } }
+.steps4 li { counter-increment: p; padding-top: 18px; border-top: 2px solid var(--ink); display: flex; flex-direction: column; gap: 7px; }
+.steps4 li::before { content: counter(p, decimal-leading-zero); font-size: 11.5px; font-weight: 800; letter-spacing: .1em; color: var(--gold); }
+.steps4 p { font-size: 14px; color: var(--muted); }
+
+/* ---------- FAQ ---------- */
+.faq { display: flex; flex-direction: column; max-width: 880px; }
+.faq details { border-top: 1px solid var(--line); }
+.faq details:last-of-type { border-bottom: 1px solid var(--line); }
+.faq summary {
+  cursor: pointer; list-style: none; padding: 20px 0; font-size: 16.5px; font-weight: 700;
+  letter-spacing: -0.022em; display: flex; align-items: baseline; gap: 16px;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; margin-left: auto; color: var(--gold); font-weight: 700; font-size: 20px; }
+.faq details[open] summary::after { content: "−"; }
+.faq .a { padding: 0 0 22px; font-size: 14.5px; color: var(--muted); max-width: var(--measure); }

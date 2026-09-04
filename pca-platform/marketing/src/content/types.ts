@@ -62,6 +62,63 @@ export type MapContent = {
   footnote: string;
 };
 
+/* ── 홈페이지 절 ─────────────────────────────── */
+
+export type About = {
+  label: string;
+  heading: string;
+  body: string;
+  highlight: string;
+  brandsLabel: string;
+  brands: { name: string; note: string }[];
+  partnersLabel: string;
+  partners: string[];
+  partnersNote: string;
+};
+
+export type Program = { label: string; heading: string; lead: string; items: Named[] };
+
+export type Process = {
+  label: string;
+  heading: string;
+  lead: string;
+  steps: Named[];
+  note: string;
+};
+
+export type Faq = { q: string; a: string };
+export type FaqBlock = { label: string; heading: string; items: Faq[] };
+
+/** 한국 전용 — 대학이 이 진단을 고르는 이유 */
+export type University = {
+  label: string;
+  heading: string;
+  lead: string;
+  /** 정책 수치. 출처를 반드시 함께 적는다 */
+  facts: { label: string; value: string; unit: string }[];
+  source: string;
+  points: Named[];
+  closing: string;
+};
+
+/** 글로벌 전용 — 새 나라에 들어갈 때 무엇이 공유되고 무엇을 새로 채우는가 */
+export type Localisation = {
+  label: string;
+  heading: string;
+  lead: string;
+  layers: { tag: string; title: string; body: string; items: string[] }[];
+  note: string;
+};
+
+/** 글로벌 전용 — 파트너십 */
+export type Partnership = {
+  label: string;
+  heading: string;
+  lead: string;
+  columns: { title: string; items: string[] }[];
+  steps: Named[];
+};
+
 export type SiteContent = {
   key: SiteKey;
   lang: string;
@@ -168,6 +225,18 @@ export type SiteContent = {
     primary: Link;
     secondary: Link;
   };
+
+  about: About;
+  program: Program;
+  faq: FaqBlock;
+
+  /** 한국 전용 */
+  university?: University;
+  process?: Process;
+
+  /** 글로벌 전용 */
+  localisation?: Localisation;
+  partnership?: Partnership;
 
   contact: {
     heading: string;

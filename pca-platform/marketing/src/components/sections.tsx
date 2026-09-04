@@ -4,7 +4,7 @@ import type { SiteContent } from "@/content";
 export function Who({ site }: { site: SiteContent }) {
   const w = site.who;
   return (
-    <section id="about" className="divided">
+    <section id="who" className="divided">
       <div className="wrap">
         <div className="sec-head">
           <span className="label-sm">{w.label}</span>
@@ -312,5 +312,232 @@ export function FloatingCta({ site }: { site: SiteContent }) {
       </svg>
       {site.nav.floating}
     </a>
+  );
+}
+
+/* ── 홈페이지 절 ───────────────────────────────── */
+
+export function About({ site }: { site: SiteContent }) {
+  const a = site.about;
+  return (
+    <section id="about" className="divided">
+      <div className="wrap">
+        <div className="aboutgrid">
+          <div>
+            <span className="label-sm">{a.label}</span>
+            <h2 style={{ margin: "16px 0 16px" }}>{a.heading}</h2>
+            <p className="lead">{a.body}</p>
+            <p className="highlight">{a.highlight}</p>
+          </div>
+          <div className="metalist">
+            <div>
+              <h4>{a.brandsLabel}</h4>
+              <ul className="brands">
+                {a.brands.map((b) => (
+                  <li key={b.name}>
+                    <b>{b.name}</b>
+                    <span>{b.note}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h4>{a.partnersLabel}</h4>
+              <div className="chips">
+                {a.partners.map((p) => (
+                  <span key={p}>{p}</span>
+                ))}
+              </div>
+              <p className="small" style={{ marginTop: 12 }}>
+                {a.partnersNote}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function ProgramSection({ site }: { site: SiteContent }) {
+  const p = site.program;
+  return (
+    <section id="program" className="divided tinted">
+      <div className="wrap">
+        <div className="sec-head">
+          <span className="label-sm">{p.label}</span>
+          <h2>{p.heading}</h2>
+          <p className="lead">{p.lead}</p>
+        </div>
+        <div className="cardgrid c2">
+          {p.items.map((i) => (
+            <div className="card" key={i.title}>
+              <h3>{i.title}</h3>
+              <p>{i.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** 한국 전용 — 앵커사업 맥락 */
+export function University({ site }: { site: SiteContent }) {
+  const u = site.university;
+  if (!u) return null;
+  return (
+    <section id="university" className="divided">
+      <div className="wrap">
+        <div className="sec-head">
+          <span className="label-sm">{u.label}</span>
+          <h2>{u.heading}</h2>
+          <p className="lead">{u.lead}</p>
+        </div>
+
+        <div className="facts">
+          {u.facts.map((f) => (
+            <div key={f.label}>
+              <span className="l">{f.label}</span>
+              <b>
+                {f.value}
+                <em>{f.unit}</em>
+              </b>
+            </div>
+          ))}
+        </div>
+        <p className="source">{u.source}</p>
+
+        <div className="cardgrid c2" style={{ marginTop: 30 }}>
+          {u.points.map((p) => (
+            <div className="card" key={p.title}>
+              <h3>{p.title}</h3>
+              <p>{p.body}</p>
+            </div>
+          ))}
+        </div>
+        <p className="closing-line">{u.closing}</p>
+      </div>
+    </section>
+  );
+}
+
+export function ProcessSection({ site }: { site: SiteContent }) {
+  const p = site.process;
+  if (!p) return null;
+  return (
+    <section id="process" className="divided tinted">
+      <div className="wrap">
+        <div className="sec-head">
+          <span className="label-sm">{p.label}</span>
+          <h2>{p.heading}</h2>
+          <p className="lead">{p.lead}</p>
+        </div>
+        <ol className="steps3">
+          {p.steps.map((s) => (
+            <li key={s.title}>
+              <h3>{s.title}</h3>
+              <p>{s.body}</p>
+            </li>
+          ))}
+        </ol>
+        <p className="lead" style={{ marginTop: 26 }}>
+          {p.note}
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/** 글로벌 전용 — 무엇이 공유되고 무엇을 다시 만드는가 */
+export function Localisation({ site }: { site: SiteContent }) {
+  const l = site.localisation;
+  if (!l) return null;
+  return (
+    <section id="localisation" className="divided">
+      <div className="wrap">
+        <div className="sec-head">
+          <span className="label-sm">{l.label}</span>
+          <h2>{l.heading}</h2>
+          <p className="lead">{l.lead}</p>
+        </div>
+        <div className="layers">
+          {l.layers.map((la, i) => (
+            <div className={`layer${i === 0 ? " shared" : ""}`} key={la.tag}>
+              <span className="tag">{la.tag}</span>
+              <h3>{la.title}</h3>
+              <p>{la.body}</p>
+              <ul>
+                {la.items.map((it) => (
+                  <li key={it}>{it}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <p className="lead" style={{ marginTop: 30 }}>
+          {l.note}
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/** 글로벌 전용 — 역할 분담과 단계 */
+export function Partnership({ site }: { site: SiteContent }) {
+  const p = site.partnership;
+  if (!p) return null;
+  return (
+    <section id="partnership" className="divided tinted">
+      <div className="wrap">
+        <div className="sec-head">
+          <span className="label-sm">{p.label}</span>
+          <h2>{p.heading}</h2>
+          <p className="lead">{p.lead}</p>
+        </div>
+        <div className="splitgrid">
+          {p.columns.map((c) => (
+            <div className="splitcol" key={c.title}>
+              <h3>{c.title}</h3>
+              <ul>
+                {c.items.map((i) => (
+                  <li key={i}>{i}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <ol className="steps4">
+          {p.steps.map((s) => (
+            <li key={s.title}>
+              <h3>{s.title}</h3>
+              <p>{s.body}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+export function FaqSection({ site }: { site: SiteContent }) {
+  const f = site.faq;
+  return (
+    <section id="faq" className="divided">
+      <div className="wrap">
+        <div className="sec-head">
+          <span className="label-sm">{f.label}</span>
+          <h2>{f.heading}</h2>
+        </div>
+        <div className="faq">
+          {f.items.map((q, i) => (
+            <details key={q.q} open={i === 0}>
+              <summary>{q.q}</summary>
+              <p className="a">{q.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }

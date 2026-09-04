@@ -25,7 +25,8 @@ export const global: SiteContent = {
       { label: "ABOUT US", href: "#about" },
       { label: "PCA", href: "#analyze" },
       { label: "RESULT SHEET", href: "#sheet" },
-      { label: "EVIDENCE", href: "#evidence" },
+      { label: "LOCALISATION", href: "#localisation" },
+      { label: "PARTNERSHIP", href: "#partnership" },
       { label: "CONTACT", href: "#contact" },
     ],
     contact: "Talk to us",
@@ -35,9 +36,9 @@ export const global: SiteContent = {
 
   hero: {
     eyebrow: "PCA · PERSONALIZED CAREER ANALYSIS",
-    title: ["They chose a major.", "We design the {career strategy} that follows."],
+    title: ["Bring a career diagnosis", "your universities can {actually act on}."],
     lead:
-      "PCA does not end at a result. It reads job fit, work style and execution strategy together, and carries on into what the student should prepare next.",
+      "PCA reads job fit, work style and execution strategy together, then writes each student a 15–20 page plan. Built in Korea, designed to be rebuilt in your country from your own labour-market data.",
     primary: { label: "Talk to us", href: "#contact" },
     secondary: { label: "See the result sheet", href: "#sheet" },
     watermark: "PCA",
@@ -45,25 +46,25 @@ export const global: SiteContent = {
 
   who: {
     label: "WHO IS IT FOR",
-    heading: "PCA sets the direction when these are the questions",
+    heading: "Who brings PCA into a country",
     items: [
       {
         no: "01",
-        title: "Students with no bearing",
-        body: "They have a major, but no idea which industry or role it actually leads to",
-        tag: "Find the direction",
+        title: "Universities and departments",
+        body: "Career services that need more than a personality type to hand a graduating cohort",
+        tag: "Department rollout",
       },
       {
         no: "02",
-        title: "Job seekers",
-        body: "They want a route of their own rather than the same credentials as everyone else",
-        tag: "Design the roadmap",
+        title: "Ministries and consortia",
+        body: "Programmes that have to evidence graduate outcomes and regional retention, not just participation",
+        tag: "Cohort-level evidence",
       },
       {
         no: "03",
-        title: "Would-be founders",
-        body: "They want to build on their major but cannot tell which idea fits them",
-        tag: "Founding strategy",
+        title: "Local partners",
+        body: "Education and HR organisations that want to run the diagnosis under their own brand in their market",
+        tag: "Licensed operation",
       },
     ],
   },
@@ -517,6 +518,184 @@ export const global: SiteContent = {
     lead: "Available for department-wide rollout and for individual assessment.",
     primary: { label: "Talk to us", href: "#contact" },
     secondary: { label: "See the result sheet again", href: "#sheet" },
+  },
+
+  about: {
+    label: "ABOUT US",
+    heading: "Developed by ACADEMIX",
+    body:
+      "ACADEMIX designs education programmes and runs events for universities and public institutions. PCA was developed in-house.",
+    highlight:
+      "Staffed by people out of government-funded research institutes and backed by a wide industry network, guiding career preparation from undergraduates through doctoral graduates.",
+    brandsLabel: "Brands",
+    brands: [
+      { name: "ACADEMIX", note: "flagship · programmes and events" },
+      { name: "career peak", note: "STEM careers and employment" },
+      { name: "JOBINDUSTRY", note: "STEM graduate platform" },
+    ],
+    partnersLabel: "Worked with",
+    partners: [
+      "Seoul National University",
+      "POSTECH",
+      "Samsung",
+      "Hyundai Mobis",
+      "KARI",
+      "ETRI",
+      "KORAIL",
+      "IBK",
+      "KAERI",
+    ],
+    partnersNote:
+      "Lectures, mentoring and recruitment events delivered with universities, government research institutes, public bodies and companies.",
+  },
+
+  program: {
+    label: "PROGRAM",
+    heading: "The diagnosis is one part of a programme",
+    lead:
+      "PCA is not sold as a test in isolation. The result feeds the lectures, mentoring and recruitment events that follow it.",
+    items: [
+      {
+        title: "Employment lectures and industry speakers",
+        body: "Role-specific sessions with invited practitioners, chosen against the job areas the cohort scored highest on.",
+      },
+      {
+        title: "STEM-focused mentoring",
+        body: "Industry-linked mentoring across bachelor's, master's and doctoral students, matched to each student's priority roles.",
+      },
+      {
+        title: "Career fairs and networking",
+        body: "Large-scale recruitment events, connected to the employers surfaced by the regional matching where that module runs.",
+      },
+      {
+        title: "AI-assisted career matching",
+        body: "Application-essay analysis and interview practice that continue from section 06 of the report.",
+      },
+    ],
+  },
+
+  localisation: {
+    label: "LOCALISATION",
+    heading: "What travels, and what gets rebuilt",
+    lead:
+      "A new country is a content project, not a rebuild. Three layers: one is shared worldwide, one is rewritten per country, one is per university. Knowing which is which is what makes a rollout predictable.",
+    layers: [
+      {
+        tag: "Layer 1",
+        title: "Shared worldwide",
+        body: "Built once, reused in every market. This is the part you do not pay to rebuild.",
+        items: [
+          "The instrument and its scoring rules",
+          "The ten job areas and the six work styles",
+          "The report structure — sections 00-1 through 08",
+          "The competency framework behind the strength profile",
+        ],
+      },
+      {
+        tag: "Layer 2",
+        title: "Rebuilt per country",
+        body: "Where the diagnosis meets a labour market. This is the actual localisation work.",
+        items: [
+          "Translation of every human-readable name and passage",
+          "Alignment to the national occupational standard, alongside NCS and O*NET",
+          "Local occupation names, entry routes and credential conventions",
+          "Regional employer data, where a country wants the settlement module",
+        ],
+      },
+      {
+        tag: "Layer 3",
+        title: "Filled in per university",
+        body: "Supplied by the institution itself, with an intake template.",
+        items: [
+          "The department list and its own character",
+          "Local employers and institutions around the campus",
+          "Release policy — who sees results, and when",
+        ],
+      },
+    ],
+    note:
+      "Because layer 1 is shared, cohorts in different countries stay comparable. That comparability is the asset — it is why the platform students sit on is one, worldwide, even though the marketing sites are separate.",
+  },
+
+  partnership: {
+    label: "PARTNERSHIP",
+    heading: "How a country gets started",
+    lead:
+      "Two ways in: run it as a university, or operate it in your market as a partner. Either way the split of work is the same.",
+    columns: [
+      {
+        title: "ACADEMIX provides",
+        items: [
+          "The instrument, scoring engine and report generation",
+          "The shared job-area and work-style framework",
+          "Intake templates for local occupation and employer data",
+          "Training for the people who will run sittings and read results",
+          "The administrator area for participation and outcome reporting",
+        ],
+      },
+      {
+        title: "The local partner provides",
+        items: [
+          "Translation review by someone who knows the sector",
+          "Alignment to the national occupational standard",
+          "Regional employer and institution data, where that module is wanted",
+          "The relationship with universities and the operation on the ground",
+        ],
+      },
+    ],
+    steps: [
+      {
+        title: "Scoping call",
+        body: "Which departments, roughly how many students, and whether the regional module is in scope.",
+      },
+      {
+        title: "Pilot cohort",
+        body: "One department sits the assessment against a first-pass localisation, and reads the reports with us.",
+      },
+      {
+        title: "Localisation build",
+        body: "Translation, standard alignment and employer data are completed from the pilot's findings.",
+      },
+      {
+        title: "Rollout",
+        body: "Department by department, with the institutional report accumulating from the first sitting.",
+      },
+    ],
+  },
+
+  faq: {
+    label: "FAQ",
+    heading: "FAQ",
+    items: [
+      {
+        q: "Does this only work in Korea?",
+        a: "No. The instrument, the ten job areas and the six work styles are shared worldwide. What is rebuilt per country is the translation, the alignment to that country's occupational standard, and — where wanted — regional employer data. That split is set out under Localisation.",
+      },
+      {
+        q: "How long does a localisation take?",
+        a: "It depends on whether the regional employer module is in scope. Translation and standard alignment are the bulk of it; employer data is the long pole. We scope it against a pilot cohort rather than quoting blind.",
+      },
+      {
+        q: "Can we run it under our own brand?",
+        a: "Yes. Local partners operate the diagnosis in their market under a licence. ACADEMIX supplies the instrument, scoring and report generation; the partner supplies the local data and the relationship with universities.",
+      },
+      {
+        q: "Where does student data live?",
+        a: "Responses and results are stored server-side; nothing is kept in the browser. Residency, retention and hand-back at contract end are set out in the agreement, and can be arranged to meet local requirements.",
+      },
+      {
+        q: "How do students take it?",
+        a: "We issue a participation link per university and department. A student opens the link, completes the assessment and receives their report automatically. There is no student sign-up and no roster upload.",
+      },
+      {
+        q: "What does the institution receive?",
+        a: "An anonymised aggregate report covering the cohort's distribution across job areas and work styles — usable as evidence of graduate outcomes. An administrator area covering every department is on the way.",
+      },
+      {
+        q: "Is it validated?",
+        a: "It was built from a 2,346-student sample together with 428 job postings, 137 job descriptions and 62 NCS references. Area definitions and interpretation criteria reference NCS, the O*NET lineage, RIASEC, NACE, OECD frameworks and AERA/APA/NCME measurement standards. The core items are registered with the Korea Copyright Commission.",
+      },
+    ],
   },
 
   contact: {
