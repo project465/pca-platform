@@ -40,8 +40,95 @@ export const global: SiteContent = {
     lead:
       "PCA ranks ten job areas out of 100, maps six work styles, and writes each student a 15–20 page plan — credentials, projects, applications, interviews, founding, and employers in their own region. Built in Korea, rebuilt in your country from your own labour-market data.",
     primary: { label: "Talk to us", href: "/contact" },
-    secondary: { label: "See what a student gets", href: "/pca" },
+    secondary: { label: "See a real report", href: "#sample" },
     watermark: "PCA",
+  },
+
+  sample: {
+    label: "A REAL REPORT",
+    heading: "Before the method, look at what a student is handed",
+    lead:
+      "What PCA measures is the second question. Below is a 15–20 page report with four of its pages put on one screen. A student does not receive a type name. They receive this.",
+    disclaimer:
+      "An illustrative screen showing the format of the report — not a real student’s submission. The ten job areas, the six work styles and the regional method are exactly as they ship.",
+    docTag: "PCA INDIVIDUAL REPORT",
+    page: "extract · 00-1 · 00-2 · 05–06 · regional annex",
+    person: {
+      name: "Sample student",
+      dept: "Mechanical Engineering, year 3",
+      meta: [
+        { l: "Sat", v: "11 March 2026" },
+        { l: "Time taken", v: "32 min" },
+        { l: "Report", v: "18 pages" },
+      ],
+    },
+    jobsLabel: "00-1 Job-area fit · ten areas, scored out of 100",
+    jobsNote:
+      "The top three set the application strategy. The seven below carry the reason they fell where they did, so the student never has to ask why they were ruled out.",
+    jobs: [
+      { name: "Production & operations", score: 88 },
+      { name: "Logistics, distribution & procurement", score: 81 },
+      { name: "Consulting & research", score: 74 },
+      { name: "IT, data & service planning", score: 69 },
+      { name: "Marketing, PR & sales", score: 63 },
+      { name: "Management & strategy", score: 57 },
+      { name: "Administration & business support", score: 51 },
+      { name: "Finance & accounting", score: 46 },
+      { name: "HR & organisation", score: 40 },
+      { name: "Banking & investment", score: 34 },
+    ],
+    styleLabel: "00-2 Work style · six profiles",
+    styleTypeLabel: "Profile",
+    styleType: "Quality-led · independent",
+    styleVerdict:
+      "Strong where a standard is set and has to be met to the end. Costly in a team that runs on speed and on pulling other people along. For now, aim at posts where the standard is explicit — process and quality — and leave leading a team until year three or later.",
+    styleAxes: ["Independent", "Collaborative", "Challenging", "Steady", "Speed-led", "Quality-led"],
+    styleScores: [78, 55, 62, 71, 49, 86],
+    planLabel: "Sections 05–06 · the next twelve months",
+    planNote:
+      "It does not end at a label. A month and a task are attached, and one line saying why it is worth doing.",
+    plan: [
+      {
+        when: "Month 1",
+        what: "Register for the quality-management certificate your country’s employers ask for most",
+        why: "It appears in the majority of postings in this student’s top area",
+      },
+      {
+        when: "Months 2–3",
+        what: "Reframe the capstone project around defect-rate reduction",
+        why: "Leaves a number the student can say out loud in an interview",
+      },
+      {
+        when: "Month 4",
+        what: "Apply for the placements at the local plants listed in the regional annex",
+        why: "Placements are how these employers actually hire",
+      },
+      {
+        when: "Month 6",
+        what: "Draft the first application answer from the sentence frames in section 06",
+        why: "The strengths are already written; the student edits rather than starts",
+      },
+      {
+        when: "Month 9",
+        what: "Apply to the five employers, in the order given",
+        why: "Ranked by fit, not by brand recognition",
+      },
+    ],
+    localLabel: "Regional annex · where they can go, near where they live",
+    localNote:
+      "Figures from the Korean edition, for a student in Daejeon: 184 organisations in the city were screened and sorted into 144 high fit, 40 moderate, 0 low, with 101 of them tied to the region’s priority industries. In your country the same method runs on your own labour-market data, and the report names the employers.",
+    local: [
+      { name: "184", note: "organisations screened in the city" },
+      { name: "144", note: "high fit" },
+      { name: "40", note: "moderate fit" },
+      { name: "101", note: "tied to priority industries" },
+    ],
+    cta: {
+      line: "Every student in the department gets one of these, with their own name on it.",
+      sub: "Tell us the department and the cohort size; we come back within a day with a plan and a quote.",
+      primary: { label: "Talk to us", href: "/contact" },
+      secondary: { label: "See all ten sections", href: "/pca" },
+    },
   },
 
   who: {

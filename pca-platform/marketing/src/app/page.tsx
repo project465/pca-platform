@@ -3,6 +3,7 @@ import Shell from "@/components/shell";
 import Hero from "@/components/hero";
 import { Analyze, Closing, PricingSection, RegionsSection, Who } from "@/components/sections";
 import { FlowDiagram, NextLink, PhotoSlot, PullQuote, ReportMini } from "@/components/visuals";
+import SampleReport from "@/components/sample-report";
 
 export default function Home() {
   const site = getSite();
@@ -27,6 +28,8 @@ export default function Home() {
   return (
     <Shell>
       <Hero site={site} />
+
+      <SampleReport site={site} />
 
       <section className="divided">
         <div className="wrap">

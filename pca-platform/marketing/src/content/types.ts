@@ -161,6 +161,39 @@ export type Pricing = {
   planLabel: string;
 };
 
+/**
+ * 예시 결과지 한 장.
+ *
+ * 홈에서 방법론을 설명하기 전에 결과물을 먼저 보여주기 위한 자리다.
+ * 실제 학생 자료가 아니므로 화면에 예시임을 분명히 밝힌다.
+ */
+export type Sample = {
+  label: string;
+  heading: string;
+  lead: string;
+  /** 예시임을 밝히는 한 줄. 화면에서 지우지 않는다 */
+  disclaimer: string;
+  docTag: string;
+  page: string;
+  person: { name: string; dept: string; meta: { l: string; v: string }[] };
+  jobsLabel: string;
+  jobsNote: string;
+  jobs: { name: string; score: number }[];
+  styleLabel: string;
+  styleTypeLabel: string;
+  styleType: string;
+  styleVerdict: string;
+  styleAxes: string[];
+  styleScores: number[];
+  planLabel: string;
+  planNote: string;
+  plan: { when: string; what: string; why: string }[];
+  localLabel: string;
+  localNote: string;
+  local: { name: string; note: string }[];
+  cta: { line: string; sub: string; primary: Link; secondary: Link };
+};
+
 export type SiteContent = {
   key: SiteKey;
   lang: string;
@@ -183,6 +216,9 @@ export type SiteContent = {
     secondary: Link;
     watermark: string;
   };
+
+  /** 예시 결과지 — 홈에서 설명보다 먼저 나온다 */
+  sample: Sample;
 
   /** 이런 고민, PCA가 방향을 잡아드립니다 */
   who: {
