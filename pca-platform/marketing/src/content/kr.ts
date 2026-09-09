@@ -31,6 +31,8 @@ export const kr: SiteContent = {
     contact: "도입·상담 문의",
     menu: "메뉴",
     floating: "문의",
+    login: "로그인",
+    loginNote: "계정은 학과를 통해 발급됩니다",
   },
 
   hero: {

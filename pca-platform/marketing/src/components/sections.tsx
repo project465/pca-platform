@@ -1,4 +1,5 @@
 import Radar from "@/components/radar";
+import { loginUrl } from "@/lib/platform";
 import type { SiteContent } from "@/content";
 
 export function Who({ site }: { site: SiteContent }) {
@@ -281,6 +282,17 @@ export function SiteFooter({ site }: { site: SiteContent }) {
               {site.brand} · {site.org}
             </div>
             <p style={{ marginTop: 8 }}>{site.footer.note}</p>
+          </div>
+          <div>
+            <h4>{site.nav.login}</h4>
+            <ul>
+              <li>
+                <a href={loginUrl(site)}>{site.nav.login}</a>
+              </li>
+              <li>
+                <span className="soon">{site.nav.loginNote}</span>
+              </li>
+            </ul>
           </div>
           <div>
             <h4>{site.footer.sitesLabel}</h4>

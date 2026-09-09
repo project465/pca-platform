@@ -205,7 +205,16 @@ export type SiteContent = {
 
   meta: { title: string; description: string };
 
-  nav: { items: Link[]; contact: string; menu: string; floating: string };
+  nav: {
+    items: Link[];
+    contact: string;
+    menu: string;
+    floating: string;
+    /** 플랫폼으로 넘어가는 단추. 나라가 달라도 가리키는 곳은 한 군데다 (설계 원칙 5) */
+    login: string;
+    /** 로그인 옆에 붙는 한 줄. 계정이 어디서 나오는지 알려 준다 */
+    loginNote: string;
+  };
 
   hero: {
     eyebrow: string;

@@ -32,6 +32,8 @@ export const global: SiteContent = {
     contact: "Talk to us",
     menu: "Menu",
     floating: "Contact",
+    login: "Sign in",
+    loginNote: "Accounts are issued by your department",
   },
 
   hero: {
