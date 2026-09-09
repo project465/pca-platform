@@ -128,6 +128,27 @@ await tx(async (c) => {
        ON CONFLICT (token) DO NOTHING`,
       [dept, SEED_LINK_TOKEN, "2026-1학기 3학년", SEED_SEATS, orgAdmin],
     );
+
+    /* 회차. 적재된 검사지가 있으면 하나 열어 둔다 — 없으면 학생 화면이
+       "응시할 검사가 없습니다" 로만 남아 무엇을 하는 화면인지 알 수 없다.
+       문항 적재는 별도다: npx tsx scripts/load-instrument.ts docs/instrument-example.json */
+    const inst = await c.query<{ id: string }>(
+      `SELECT i.id FROM instruments i
+        WHERE (SELECT count(*) FROM questions q WHERE q.instrument_id = i.id) > 0
+        ORDER BY i.id LIMIT 1`,
+    );
+    if (inst.rowCount) {
+      await c.query(
+        `UPDATE instruments SET status = 'published', published_at = now()
+          WHERE id = $1 AND status = 'draft'`,
+        [inst.rows[0].id],
+      );
+      await c.query(
+        `INSERT INTO test_sessions (org_id, contract_id, instrument_id, name, opens_at, closes_at)
+         VALUES ($1, $2, $3, $4, now() - interval '1 day', now() + interval '90 days')`,
+        [dept, contractId, inst.rows[0].id, "2026-1학기 기계공학과 3학년"],
+      );
+    }
   }
 });
 

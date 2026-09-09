@@ -102,3 +102,74 @@ export async function revokeLinkAction(
   revalidatePath("/org");
   return done > 0 ? { ok: "링크를 회수했습니다." } : { message: "이미 회수된 링크입니다." };
 }
+
+/* ── 회차 ────────────────────────────────────────────── */
+
+const sessionSchema = z.object({
+  orgId: z.string().trim().min(1),
+  instrumentId: z.string().trim().min(1, "검사지를 고르세요."),
+  name: z.string().trim().min(1, "회차 이름을 입력하세요.").max(200),
+  opensOn: z.string().trim().regex(/^\d{4}-\d{2}-\d{2}$/, "날짜는 YYYY-MM-DD 형식입니다."),
+  closesOn: z.string().trim().regex(/^\d{4}-\d{2}-\d{2}$/, "날짜는 YYYY-MM-DD 형식입니다."),
+});
+
+/**
+ * 회차를 연다.
+ *
+ * 회차가 있어야 학생이 응시할 수 있다. 계약을 함께 묶는 이유는 응시권이
+ * 계약에 달려 있기 때문이다 — 어느 계약의 좌석을 쓰는 회차인지 정해야 한다.
+ *
+ * 폼에서 온 orgId 는 여기서도 믿지 않는다. 세션의 소속으로 다시 확인한다.
+ */
+export async function createSessionAction(
+  _prev: LinkState,
+  formData: FormData,
+): Promise<LinkState> {
+  const user = await requireRole(["org_admin"]);
+
+  const parsed = sessionSchema.safeParse({
+    orgId: formData.get("orgId"),
+    instrumentId: formData.get("instrumentId"),
+    name: formData.get("name"),
+    opensOn: formData.get("opensOn"),
+    closesOn: formData.get("closesOn"),
+  });
+  if (!parsed.success) return { errors: fieldErrors(parsed.error) };
+  const v = parsed.data;
+
+  if (!adminOrgIds(user).includes(v.orgId)) return { message: "권한이 없습니다." };
+  if (v.closesOn < v.opensOn) return { errors: { closesOn: "종료일이 시작일보다 앞설 수 없습니다." } };
+
+  try {
+    await tx(async (c) => {
+      const contract = await c.query<{ id: string }>(
+        `SELECT id FROM contracts
+          WHERE org_id = $1 AND status = 'active'
+          ORDER BY ends_on DESC LIMIT 1`,
+        [v.orgId],
+      );
+      if (contract.rowCount === 0) throw new Error("NO_CONTRACT");
+
+      // 문항이 없는 검사지로 회차를 열면 학생이 빈 화면을 만난다
+      const q = await c.query<{ n: string }>(
+        `SELECT count(*)::text AS n FROM questions WHERE instrument_id = $1`,
+        [v.instrumentId],
+      );
+      if (Number(q.rows[0].n) === 0) throw new Error("NO_QUESTIONS");
+
+      await c.query(
+        `INSERT INTO test_sessions (org_id, contract_id, instrument_id, name, opens_at, closes_at)
+         VALUES ($1, $2, $3, $4, $5::date, $6::date + interval '1 day' - interval '1 second')`,
+        [v.orgId, contract.rows[0].id, v.instrumentId, v.name, v.opensOn, v.closesOn],
+      );
+    });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    if (msg.includes("NO_CONTRACT")) return { message: "계약이 없습니다. 운영사에 문의해 주세요." };
+    if (msg.includes("NO_QUESTIONS")) return { message: "그 검사지에는 아직 문항이 없습니다." };
+    throw e;
+  }
+
+  revalidatePath("/org");
+  return { ok: "회차를 열었습니다. 이제 학생이 전용 링크로 들어와 응시할 수 있습니다." };
+}

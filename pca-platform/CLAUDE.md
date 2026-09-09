@@ -114,7 +114,9 @@ SITE=kz / SITE=tr           →  원고 파일만 추가하면 된다
 
 1. **계정** — users, organizations, memberships, 로그인, 비밀번호 재설정, 관리자에서 기관 생성
 2. **계약과 회차** — contracts, seats, test_sessions, 명단 엑셀 업로드로 계정 일괄 생성
-3. **응시** — 응시 화면, responses 저장, 이어보기
+3. **응시** — 응시 화면, responses 저장, 이어보기 ✅ (2026-09-09)
+   문항은 `scripts/load-instrument.ts` 로 파일에서 넣는다. 텍스트는
+   translations 의 행이다. 회차는 담당자가 `/org` 에서 연다.
 4. **채점과 결과** — scoring_weights 적용, 결과지, 단체 리포트
 
 3단계까지는 채점 산식 없이 진행 가능하다.

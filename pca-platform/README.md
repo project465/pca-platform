@@ -99,6 +99,47 @@ npm run build
 그 화면은 2단계(명단 관리)에서 만든다.
 
 
+## 검사 문항 넣기
+
+문항 텍스트와 선택지는 컬럼이 아니라 `translations` 의 행으로 들어간다
+(설계 원칙 2). 파일로 넣는다.
+
+```bash
+npx tsx scripts/load-instrument.ts docs/instrument-example.json
+```
+
+같은 버전을 두 번 넣을 수 없다 (설계 원칙 4). 문항을 고치려면 파일의
+`version` 을 올려 새로 넣는다 — 작년 응시자의 결과가 올해 수정으로 바뀌면
+안 되기 때문이다. 아직 `draft` 인 것만 `--replace` 로 갈아끼울 수 있다.
+
+`docs/instrument-example.json` 은 **예시**다. `mockups/01_test_screen.html`
+의 시안 문항을 옮긴 것이고 실제 검사 문항이 아니다. 실제 문항이 정해지면
+같은 형태로 파일을 하나 더 만든다.
+
+적재한 검사지는 `draft` 로 들어간다. 회차에서 고를 수 있으려면 공개해야 한다.
+
+```sql
+UPDATE instruments SET status='published', published_at=now() WHERE version='...';
+```
+
+## 응시
+
+```
+담당자가 /org 에서 회차를 연다 (검사지·기간)
+   ▼
+학생이 /my 에서 응시를 시작한다 → 응시권 한 장이 소진된다
+   ▼
+/test/<attemptId> — 문항 하나 고를 때마다 즉시 저장
+   ▼
+제출 (빠뜨린 문항이 있으면 잠긴다)
+```
+
+**응답은 브라우저에 모아 두지 않는다.** 고를 때마다 서버에 저장하므로 창을
+닫아도 남고, 다시 들어오면 답한 다음 문항부터 이어진다.
+
+채점은 아직 없다. `scoring_weights` 가 비어 있고 산식이 정해지지 않았다.
+제출된 응시는 `submitted` 로 남는다.
+
 ## 단체 도입 흐름
 
 소개 사이트에서 단체가 신청하면 운영자가 승인하고, 그 자리에서 기관·담당자

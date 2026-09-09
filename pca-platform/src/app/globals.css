@@ -166,3 +166,48 @@ td .sub { display: block; font-size: 12.5px; color: var(--muted); }
 
 /* 입력 폼만 담는 패널은 화면 전체로 늘리지 않는다 */
 .panel.form-panel { max-width: 620px; }
+
+/* ---------- 응시 화면 ----------
+   mockups/01_test_screen.html 에서 그대로 가져온다. 시안이 확정된 값이다. */
+.bar { position:sticky; top:0; background:var(--field); padding:20px 0 14px; z-index:5; }
+.bar .row { display:flex; align-items:baseline; gap:12px; margin-bottom:10px; }
+.bar .who { font-size:13.5px; color:var(--muted); }
+.bar .count { margin-left:auto; font-size:13.5px; font-weight:700; }
+.bar .count em { font-style:normal; color:var(--muted); font-weight:400; }
+.rail { height:4px; background:var(--rule); position:relative; overflow:hidden; }
+.rail i { position:absolute; left:0; top:0; bottom:0; background:var(--ink); transition:width .25s ease; }
+.saved { font-size:12.5px; color:var(--met); margin-top:8px; height:18px; opacity:0; transition:opacity .2s; }
+.saved.on { opacity:1; }
+@media (prefers-reduced-motion:reduce) { .rail i, .saved { transition:none; } }
+
+.card { background:var(--paper); border:1px solid var(--rule); padding:38px 40px 32px; margin-top:8px; }
+.qno { font-size:13px; color:var(--muted); margin-bottom:10px; }
+.qtext { font-size:22px; font-weight:700; letter-spacing:-.025em; line-height:1.45; margin-bottom:28px; }
+
+.opts { display:flex; flex-direction:column; gap:9px; }
+.opt { display:flex; align-items:center; gap:14px; width:100%; text-align:left;
+  background:var(--paper); border:1px solid var(--rule); padding:14px 16px;
+  font:inherit; color:inherit; cursor:pointer; }
+.opt:hover { border-color:var(--muted); }
+.opt .dot { width:16px; height:16px; border:1px solid var(--muted); border-radius:50%; flex:none; }
+.opt[aria-pressed="true"] { border-color:var(--ink); background:#F4F7F8; }
+.opt[aria-pressed="true"] .dot { background:var(--ink); border-color:var(--ink);
+  box-shadow:inset 0 0 0 3px var(--paper); }
+.opt .txt { font-size:15.5px; }
+
+.nav { display:flex; gap:10px; margin-top:26px; padding-top:22px; border-top:1px solid var(--rule); }
+.nav .right { margin-left:auto; display:flex; gap:10px; }
+
+.panel h1 { font-size:26px; font-weight:800; letter-spacing:-.03em; margin-bottom:14px; }
+.panel p { color:var(--muted); font-size:15px; max-width:58ch; margin-bottom:10px; }
+.panel ul { margin:18px 0 26px; padding-left:0; list-style:none; }
+.panel li { font-size:15px; padding:9px 0; border-top:1px solid var(--rule); }
+.hint { font-size:13.5px; color:var(--muted); }
+
+@media (max-width:600px) {
+  .card { padding:26px 20px; }
+  .qtext { font-size:19px; }
+  .nav { flex-wrap:wrap; }
+  .nav .right { width:100%; margin-left:0; }
+  .nav .right button { flex:1; }
+}

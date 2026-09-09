@@ -2,8 +2,9 @@ import LogoutButton from "@/components/logout-button";
 import { ROLE_LABEL } from "@/lib/roles";
 import { requireRole, roleInOrg } from "@/lib/session";
 import { namesOf } from "@/lib/i18n";
-import { linksOf, seatsOf, visibleOrgIds } from "@/lib/org-links";
+import { linksOf, publishedInstruments, seatsOf, sessionsOf, visibleOrgIds } from "@/lib/org-links";
 import LinksPanel from "./links-panel";
+import SessionsPanel from "./sessions-panel";
 
 export const metadata = { title: "학과 담당자 — 단체 PCA 플랫폼" };
 export const dynamic = "force-dynamic";
@@ -22,11 +23,13 @@ export default async function OrgHome() {
       name: names.get(id) ?? "이름 없는 기관",
       links: await linksOf(id),
       seats: await seatsOf(id),
+      sessions: await sessionsOf(id),
       // 교수는 보기만 한다. 만들고 회수하는 것은 담당자 몫이다
       canManage: roleInOrg(user, id) === "org_admin",
     })),
   );
 
+  const instruments = await publishedInstruments();
   const baseUrl = process.env.AUTH_URL ?? "http://localhost:3000";
 
   return (
@@ -56,21 +59,28 @@ export default async function OrgHome() {
           </div>
         ) : (
           orgs.map((o) => (
-            <LinksPanel
-              key={o.id}
-              orgId={o.id}
-              orgName={o.name}
-              links={o.links}
-              seats={o.seats}
-              baseUrl={baseUrl}
-              canManage={o.canManage}
-            />
+            <div key={o.id}>
+              <LinksPanel
+                orgId={o.id}
+                orgName={o.name}
+                links={o.links}
+                seats={o.seats}
+                baseUrl={baseUrl}
+                canManage={o.canManage}
+              />
+              <SessionsPanel
+                orgId={o.id}
+                sessions={o.sessions}
+                instruments={instruments}
+                canManage={o.canManage}
+              />
+            </div>
           ))
         )}
 
         <div className="empty">
-          <b>나머지 담당자 화면은 2단계에서 만듭니다</b>
-          회차 생성, 명단 업로드와 계정 일괄 발급, 응시 진행 현황, 단체 리포트 순서입니다.
+          <b>남은 담당자 화면</b>
+          명단 업로드와 계정 일괄 발급, 응시 진행 현황, 단체 리포트가 아직 없습니다.
         </div>
       </main>
     </div>

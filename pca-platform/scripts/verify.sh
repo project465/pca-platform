@@ -38,7 +38,10 @@ trap cleanup EXIT
 say "1/5 스키마"
 psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -q -f db/schema.sql
 
-say "2/5 시드"
+say "2/5 문항 적재와 시드"
+# 문항이 있어야 회차를 열고 응시할 수 있다. 예시 문항을 넣는다 —
+# 실제 문항이 정해지면 그 파일로 바꾼다.
+npx --yes tsx scripts/load-instrument.ts docs/instrument-example.json
 npm run --silent db:seed
 
 say "3/5 빌드"
@@ -77,5 +80,8 @@ else
   echo "· 담당자 링크 관리 (남의 링크 id ${FOREIGN_LINK_ID} 로 권한도 시험)"
 fi
 node scripts/e2e-org-links.mjs
+
+echo "· 응시 — 시작, 즉시 저장, 이어보기, 제출"
+node scripts/e2e-exam.mjs
 
 printf '\n\033[1m전체 확인 통과\033[0m\n'

@@ -81,3 +81,39 @@ export async function linkOwnedBy(
   );
   return row ? { id: row.id, orgId: row.org_id } : null;
 }
+
+export type ExamSession = {
+  id: string; name: string; opens_at: string; closes_at: string;
+  total: string; started: string; submitted: string;
+};
+
+/** 이 기관이 연 회차와 진행 상황 */
+export async function sessionsOf(orgId: string): Promise<ExamSession[]> {
+  return query<ExamSession>(
+    `SELECT s.id, s.name,
+            to_char(s.opens_at, 'YYYY-MM-DD') AS opens_at,
+            to_char(s.closes_at, 'YYYY-MM-DD') AS closes_at,
+            (SELECT count(*) FROM questions q WHERE q.instrument_id = s.instrument_id)::text AS total,
+            (SELECT count(*) FROM attempts a WHERE a.session_id = s.id)::text AS started,
+            (SELECT count(*) FROM attempts a WHERE a.session_id = s.id
+               AND a.status IN ('submitted','scored'))::text AS submitted
+       FROM test_sessions s
+      WHERE s.org_id = $1
+      ORDER BY s.closes_at DESC`,
+    [orgId],
+  );
+}
+
+/** 회차를 열 때 고를 수 있는 검사지. 문항이 있는 것만 */
+export async function publishedInstruments(): Promise<{ id: string; label: string }[]> {
+  const rows = await query<{ id: string; code: string; version: string; n: string }>(
+    `SELECT i.id::text, m.code, i.version,
+            (SELECT count(*) FROM questions q WHERE q.instrument_id = i.id)::text AS n
+       FROM instruments i JOIN majors m ON m.id = i.major_id
+      WHERE i.status = 'published'
+      ORDER BY m.code, i.version`,
+  );
+  return rows
+    .filter((r) => Number(r.n) > 0)
+    .map((r) => ({ id: r.id, label: `${r.code} ${r.version} · 문항 ${r.n}개` }));
+}
