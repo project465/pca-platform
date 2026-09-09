@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { tx } from "@/lib/db";
 import { requireRole } from "@/lib/session";
 import { attemptOf } from "@/lib/exam";
+import { recordUse } from "@/lib/billing";
 
 /**
  * 문항 하나를 고를 때마다 즉시 저장한다.
@@ -98,6 +99,11 @@ export async function submitAction(attemptId: string): Promise<{ error?: string 
         WHERE id = $1 AND status <> 'submitted'`,
       [attemptId],
     );
+
+    /* 건당 계약이면 여기서 청구할 건이 하나 생긴다. 제출과 같은
+       트랜잭션에 둔다 — 제출은 됐는데 청구가 빠지거나 그 반대가 되면
+       나중에 장부를 맞출 방법이 없다. 선불 계약이면 아무 일도 없다 */
+    await recordUse(c, attemptId, user.id);
     return { short: 0 };
   });
 

@@ -79,11 +79,33 @@ CREATE TABLE contracts (
   title       TEXT NOT NULL,
   starts_on   DATE NOT NULL,
   ends_on     DATE NOT NULL,
-  seat_count  INTEGER NOT NULL,              -- 구매한 응시권 수량
+
+  -- 정산 방식.
+  --   prepaid  응시권을 미리 산다. seats 에 seat_count 만큼 행을 만들어 두고
+  --            그 안에서만 등록·응시한다.
+  --   per_use  건당 후불. 미리 사는 것이 없고, 제공이 끝난 건마다
+  --            billing_events 에 한 줄이 쌓인다. 대학 산학협력단,
+  --            지역 일자리·경제진흥원, 고용노동부 위탁사업처럼 실적으로
+  --            정산하는 발주처가 이 방식을 쓴다.
+  billing     TEXT NOT NULL DEFAULT 'prepaid'
+              CHECK (billing IN ('prepaid', 'per_use')),
+
+  seat_count  INTEGER NOT NULL DEFAULT 0,    -- prepaid 에서 구매한 응시권 수량
+  unit_price  BIGINT,                        -- per_use 단가. 최소 화폐 단위(원)
+  currency    TEXT NOT NULL DEFAULT 'KRW',
+  use_cap     INTEGER,                       -- per_use 건수 상한. NULL 이면 무제한
+
   status      TEXT NOT NULL DEFAULT 'active',
   memo        TEXT,
-  created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+
+  -- 단가 없는 건당 계약은 청구할 수가 없다
+  CHECK (billing <> 'per_use' OR unit_price IS NOT NULL),
+  -- 선불인데 응시권이 0장이면 아무도 못 들어온다
+  CHECK (billing <> 'prepaid' OR seat_count > 0)
 );
+COMMENT ON COLUMN contracts.use_cap IS
+  '건당 계약의 상한. 발주처 예산이 정해져 있으면 넘지 않도록 여기서 막는다';
 
 CREATE TABLE seats (
   id           BIGSERIAL PRIMARY KEY,
@@ -395,3 +417,43 @@ COMMENT ON TABLE consents IS
   '누가·무엇에·언제 동의했는지. 방침을 고치면 version 을 올리고 다시 받는다';
 
 CREATE INDEX idx_consents_user ON consents(user_id);
+
+
+-- ============================================================
+--  13. 건당 정산 (초안 v0.5에서 추가)
+--
+--  대학 산학협력단, 지역 일자리·경제진흥원, 고용노동부 위탁사업은 응시권을
+--  미리 사 두지 않는다. 사업 기간 동안 실제로 나간 건수를 집계해서 월별로
+--  청구하고, 발주처는 그 실적으로 검수한다.
+--
+--  그래서 '몇 건이 나갔는가' 가 나중에 세는 값이 아니라 그때그때 남는 값이어야
+--  한다. attempts 를 나중에 세면 되지 않느냐 싶지만, 그러면 단가가 바뀌거나
+--  계약이 갱신됐을 때 지난 달 청구서를 다시 만들 수 없다. 그 시점의 단가를
+--  행에 박아 둔다.
+--
+--  무엇을 한 건으로 보는가 — **제출된 응시 한 건**이다. 시작만 하고 만 것은
+--  세지 않는다. 서비스가 제공되지 않은 건을 청구하면 검수에서 잘리고, 잘리는
+--  것보다 애초에 청구하지 않는 편이 낫다. 이 기준을 바꾸려면 여기 주석과
+--  lib/billing.ts 를 함께 고친다.
+-- ============================================================
+
+CREATE TABLE billing_events (
+  id           BIGSERIAL PRIMARY KEY,
+  contract_id  BIGINT NOT NULL REFERENCES contracts(id) ON DELETE CASCADE,
+  org_id       BIGINT NOT NULL REFERENCES organizations(id),
+  attempt_id   BIGINT NOT NULL REFERENCES attempts(id) ON DELETE CASCADE,
+  user_id      BIGINT NOT NULL REFERENCES users(id),
+  occurred_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+  period       TEXT NOT NULL,              -- 'YYYY-MM'. 청구 단위
+  unit_price   BIGINT NOT NULL,            -- 그때의 단가. 계약이 바뀌어도 이 값은 안 바뀐다
+  currency     TEXT NOT NULL,
+  invoiced_at  TIMESTAMPTZ,                -- 청구서에 실린 시각. 실리기 전에는 NULL
+
+  -- 한 응시는 한 번만 청구된다. 두 번 청구하는 것이 가장 나쁜 오류다
+  UNIQUE (attempt_id)
+);
+COMMENT ON TABLE billing_events IS
+  '건당 계약에서 청구할 건 하나 = 1행. 제출된 응시에 대해서만 쌓인다';
+
+CREATE INDEX idx_billing_period ON billing_events(org_id, period);
+CREATE INDEX idx_billing_uninvoiced ON billing_events(contract_id) WHERE invoiced_at IS NULL;

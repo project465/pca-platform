@@ -74,6 +74,9 @@ export function approvedMail(
     setupUrl: string;
     setupHours: number;
     seatCount: number;
+    billing: "prepaid" | "per_use";
+    /** 링크가 받는 인원 상한. null 이면 열려 있다 */
+    linkMax: number | null;
   },
 ): Mail {
   if (lang === "ko") {
@@ -88,7 +91,9 @@ export function approvedMail(
         `1) 학생 안내용 전용 링크`,
         `   ${v.joinUrl}`,
         `   학생이 이 링크로 들어와 응시자로 등록합니다.`,
-        `   등록 가능 인원은 ${v.seatCount.toLocaleString("ko-KR")}명입니다.`,
+        v.linkMax === null
+          ? `   등록 인원 제한은 없습니다.`
+          : `   등록 가능 인원은 ${v.linkMax.toLocaleString("ko-KR")}명입니다.`,
         ``,
         `2) 담당자 비밀번호 설정`,
         `   ${v.setupUrl}`,
@@ -113,7 +118,9 @@ export function approvedMail(
       `1) Student link`,
       `   ${v.joinUrl}`,
       `   Students open this link to register as test takers.`,
-      `   It admits up to ${v.seatCount.toLocaleString("en-US")} students.`,
+      v.linkMax === null
+        ? `   There is no cap on the number of students.`
+        : `   It admits up to ${v.linkMax.toLocaleString("en-US")} students.`,
       ``,
       `2) Set your password`,
       `   ${v.setupUrl}`,

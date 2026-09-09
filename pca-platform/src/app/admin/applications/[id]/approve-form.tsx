@@ -38,6 +38,7 @@ export default function ApproveForm({
   const bound = approveAction.bind(null, applicationId);
   const [state, formAction, pending] = useActionState(bound, initial);
   const [orgType, setOrgType] = useState("department");
+  const [billing, setBilling] = useState("prepaid");
   const [copied, setCopied] = useState(false);
   const err = state.errors ?? {};
   const dates = defaultDates();
@@ -54,7 +55,9 @@ export default function ApproveForm({
       ``,
       `[학생 안내용 전용 링크]`,
       g.joinUrl,
-      `학생은 이 링크로 들어와 응시자로 등록합니다. ${g.seatCount.toLocaleString("ko-KR")}명까지 가능합니다.`,
+      g.linkMax === null
+        ? `학생은 이 링크로 들어와 응시자로 등록합니다. 인원 제한은 없습니다.`
+        : `학생은 이 링크로 들어와 응시자로 등록합니다. ${g.linkMax.toLocaleString("ko-KR")}명까지 가능합니다.`,
       ``,
       `[담당자 비밀번호 설정]`,
       g.setupUrl,
@@ -211,8 +214,27 @@ export default function ApproveForm({
         {err.contractTitle ? <span className="help" style={{ color: "var(--gap)" }}>{err.contractTitle}</span> : null}
       </div>
 
+      {/* 정산 방식을 먼저 고른다. 아래 칸들의 뜻이 이것에 따라 달라진다 */}
+      <div className="field full">
+        <label htmlFor="billing">정산 방식</label>
+        <select
+          id="billing"
+          name="billing"
+          value={billing}
+          onChange={(e) => setBilling(e.target.value)}
+        >
+          <option value="prepaid">선불 — 응시권을 미리 삽니다</option>
+          <option value="per_use">건당 — 나간 건수만큼 나중에 청구합니다</option>
+        </select>
+        <span className="help">
+          {billing === "per_use"
+            ? "제출된 응시 한 건마다 청구가 쌓입니다. 시작만 하고 만 것은 세지 않습니다. 대학 산학협력단·지역 일자리경제진흥원·고용노동부 위탁사업이 주로 이 방식입니다."
+            : "계약할 때 응시권을 만들어 두고 그 안에서만 등록·응시합니다."}
+        </span>
+      </div>
+
       <div className="field">
-        <label htmlFor="seatCount">응시권 수</label>
+        <label htmlFor="seatCount">{billing === "per_use" ? "예상 인원" : "응시권 수"}</label>
         <input
           id="seatCount"
           name="seatCount"
@@ -221,9 +243,36 @@ export default function ApproveForm({
           defaultValue={defaults.seatCount || 50}
           required
         />
-        <span className="help">전용 링크로 들어올 수 있는 학생 수의 상한이기도 합니다.</span>
+        <span className="help">
+          {billing === "per_use"
+            ? "건당 계약에서는 응시권을 만들지 않습니다. 이 값은 견적과 안내문에만 쓰입니다."
+            : "전용 링크로 들어올 수 있는 학생 수의 상한이기도 합니다."}
+        </span>
         {err.seatCount ? <span className="help" style={{ color: "var(--gap)" }}>{err.seatCount}</span> : null}
       </div>
+
+      {billing === "per_use" ? (
+        <>
+          <div className="field">
+            <label htmlFor="unitPrice">건당 단가 (원)</label>
+            <input id="unitPrice" name="unitPrice" type="number" min={0} step={1} required />
+            <span className="help">
+              원 단위 정수로 적습니다. 이 값은 발생한 건에 그대로 박히므로,
+              나중에 단가를 고쳐도 지난 청구서는 바뀌지 않습니다.
+            </span>
+            {err.unitPrice ? <span className="help" style={{ color: "var(--gap)" }}>{err.unitPrice}</span> : null}
+          </div>
+
+          <div className="field">
+            <label htmlFor="useCap">건수 상한</label>
+            <input id="useCap" name="useCap" type="number" min={1} placeholder="비우면 무제한" />
+            <span className="help">
+              발주처 예산이 정해져 있으면 적습니다. 이 수를 넘으면 새 응시가 시작되지 않습니다.
+            </span>
+            {err.useCap ? <span className="help" style={{ color: "var(--gap)" }}>{err.useCap}</span> : null}
+          </div>
+        </>
+      ) : null}
 
       <div className="field">
         <label htmlFor="startsOn">시작일</label>

@@ -107,10 +107,28 @@ export default function LinksPanel({
     <section style={{ marginBottom: 32 }}>
       <div className="page-head">
         <h2 style={{ fontSize: 16 }}>{orgName}</h2>
+        {/* 선불이면 산 응시권, 건당이면 나간 건수를 센다. 담당자에게는
+            "얼마나 남았는가" 가 같은 자리에 보여야 한다 */}
         <span className="count">
-          응시권 {seats.taken.toLocaleString("ko-KR")} / {seats.total.toLocaleString("ko-KR")}
-          {" · "}
-          남은 자리 {seats.free.toLocaleString("ko-KR")}
+          {seats.billing === "per_use" ? (
+            seats.unlimited ? (
+              <>나간 건수 {seats.taken.toLocaleString("ko-KR")} · 건수 제한 없음</>
+            ) : (
+              <>
+                나간 건수 {seats.taken.toLocaleString("ko-KR")} /{" "}
+                {seats.total.toLocaleString("ko-KR")}
+                {" · "}
+                남은 건수 {seats.free.toLocaleString("ko-KR")}
+              </>
+            )
+          ) : (
+            <>
+              응시권 {seats.taken.toLocaleString("ko-KR")} /{" "}
+              {seats.total.toLocaleString("ko-KR")}
+              {" · "}
+              남은 자리 {seats.free.toLocaleString("ko-KR")}
+            </>
+          )}
         </span>
         {canManage ? (
           <div className="right">
@@ -158,11 +176,13 @@ export default function LinksPanel({
               name="maxUses"
               type="number"
               min={1}
-              max={seats.free}
-              placeholder={String(seats.free)}
+              max={seats.unlimited ? undefined : seats.free}
+              placeholder={seats.unlimited ? "비우면 제한 없음" : String(seats.free)}
               />
             <span className="help">
-              비우면 남은 자리 전부({seats.free.toLocaleString("ko-KR")}명)입니다.
+              {seats.unlimited
+                ? "이 계약에는 건수 상한이 없습니다. 비우면 링크에도 제한을 걸지 않습니다."
+                : `비우면 남은 자리 전부(${seats.free.toLocaleString("ko-KR")}명)입니다.`}
             </span>
             {err.maxUses ? <span className="help" style={{ color: "var(--gap)" }}>{err.maxUses}</span> : null}
           </div>
@@ -192,7 +212,7 @@ export default function LinksPanel({
           </div>
 
           <div className="actions full">
-            <button className="act solid" disabled={pending || seats.free === 0}>
+            <button className="act solid" disabled={pending || (!seats.unlimited && seats.free === 0)}>
               {pending ? "만드는 중…" : "만들기"}
             </button>
           </div>

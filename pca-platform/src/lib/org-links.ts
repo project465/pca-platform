@@ -22,7 +22,23 @@ export type OrgLink = {
   email_domains: string | null;
 };
 
-export type SeatSummary = { total: number; taken: number; free: number };
+/**
+ * 담당자 화면이 보는 '남은 자리'.
+ *
+ * 선불 계약이면 산 응시권 가운데 몇 자리가 남았는가다.
+ * 건당 계약이면 미리 산 것이 없으므로 발주처가 정한 건수 상한에서
+ * 지금까지 나간 건수를 뺀 값이다. 상한이 없으면 unlimited 다.
+ *
+ * 두 경우를 같은 모양으로 돌려주는 이유는, 화면이 정산 방식을 몰라도
+ * "지금 새 링크를 만들어도 되는가" 를 판단할 수 있게 하기 위해서다.
+ */
+export type SeatSummary = {
+  billing: "prepaid" | "per_use" | "none";
+  total: number;
+  taken: number;
+  free: number;
+  unlimited: boolean;
+};
 
 /** 이 사람이 담당자로 있는 기관들. superadmin 은 여기로 오지 않는다 */
 export function adminOrgIds(user: SessionUser): string[] {
@@ -50,19 +66,55 @@ export async function linksOf(orgId: string): Promise<OrgLink[]> {
   );
 }
 
-/** 계약한 응시권 가운데 몇 자리가 남았는가 */
+const NO_CONTRACT: SeatSummary = {
+  billing: "none", total: 0, taken: 0, free: 0, unlimited: false,
+};
+
+/** 지금 이 기관에 자리가 얼마나 남았는가. 계약 방식에 따라 세는 것이 다르다 */
 export async function seatsOf(orgId: string): Promise<SeatSummary> {
+  const ct = await queryOne<{ id: string; billing: string; use_cap: string | null }>(
+    `SELECT id::text, billing, use_cap::text
+       FROM contracts WHERE org_id = $1 AND status = 'active'
+      ORDER BY id DESC LIMIT 1`,
+    [orgId],
+  );
+  if (!ct) return NO_CONTRACT;
+
+  if (ct.billing === "per_use") {
+    const used = await queryOne<{ n: string }>(
+      `SELECT count(*)::text AS n FROM billing_events WHERE contract_id = $1`,
+      [ct.id],
+    );
+    const taken = Number(used?.n ?? 0);
+    if (ct.use_cap === null) {
+      return { billing: "per_use", total: 0, taken, free: 0, unlimited: true };
+    }
+    const cap = Number(ct.use_cap);
+    return {
+      billing: "per_use",
+      total: cap,
+      taken,
+      free: Math.max(0, cap - taken),
+      unlimited: false,
+    };
+  }
+
   const row = await queryOne<{ total: string; taken: string }>(
     `SELECT count(*)::text AS total,
             count(*) FILTER (WHERE s.user_id IS NOT NULL)::text AS taken
        FROM seats s
-       JOIN contracts c ON c.id = s.contract_id
-      WHERE c.org_id = $1 AND c.status = 'active'`,
-    [orgId],
+      WHERE s.contract_id = $1`,
+    [ct.id],
   );
   const total = Number(row?.total ?? 0);
   const taken = Number(row?.taken ?? 0);
-  return { total, taken, free: Math.max(0, total - taken) };
+  return {
+    billing: "prepaid",
+    total,
+    taken,
+    free: Math.max(0, total - taken),
+    unlimited: false,
+  };
 }
 
 /**

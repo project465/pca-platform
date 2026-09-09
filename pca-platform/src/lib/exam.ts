@@ -1,4 +1,5 @@
 import { query, queryOne, tx } from "@/lib/db";
+import { reserveUse } from "@/lib/billing";
 
 /**
  * 응시.
@@ -53,20 +54,26 @@ export async function openSessionsFor(userId: string) {
 /**
  * 응시를 시작하거나 이어간다.
  *
- * 응시권은 여기서 소진된다 — 계약 좌석의 consumed_at 을 채운다. 학생이
- * 링크로 등록할 때 좌석을 잡아 두었고(user_id), 실제로 검사를 시작한
- * 시점이 소진 기준이다.
+ * 선불 계약이면 응시권이 여기서 소진된다 — 계약 좌석의 consumed_at 을
+ * 채운다. 학생이 링크로 등록할 때 좌석을 잡아 두었고(user_id), 실제로
+ * 검사를 시작한 시점이 소진 기준이다.
+ *
+ * 건당 계약이면 소진할 좌석이 없다. 대신 상한이 걸려 있으면 여기서 막는다.
+ * 청구는 제출 시점에 생긴다(lib/billing.ts) — 시작만 하고 만 건은 세지
+ * 않으므로, 여기서 막는 것은 돈이 아니라 발주처가 정한 건수 상한이다.
  */
 export async function startAttempt(userId: string, sessionId: string): Promise<string> {
   return tx(async (c) => {
-    const s = await c.query<{ id: string; org_id: string; contract_id: string }>(
-      `SELECT s.id, s.org_id, s.contract_id
+    const s = await c.query<{ id: string; org_id: string; contract_id: string; billing: string }>(
+      `SELECT s.id, s.org_id, s.contract_id, ct.billing
          FROM test_sessions s
+         JOIN contracts ct ON ct.id = s.contract_id
          JOIN memberships m ON m.org_id = s.org_id AND m.user_id = $1 AND m.role = 'student'
         WHERE s.id = $2 AND s.opens_at <= now() AND s.closes_at >= now()`,
       [userId, sessionId],
     );
     if (s.rowCount === 0) throw new Error("NOT_ELIGIBLE");
+    const contractId = s.rows[0].contract_id;
 
     const existing = await c.query<{ id: string }>(
       `SELECT id FROM attempts WHERE session_id = $1 AND user_id = $2`,
@@ -74,16 +81,21 @@ export async function startAttempt(userId: string, sessionId: string): Promise<s
     );
     if (existing.rowCount) return existing.rows[0].id;
 
-    /* 이 학생에게 배정된 좌석. 등록할 때 잡아 둔 것을 그대로 쓴다 */
-    const seat = await c.query<{ id: string }>(
-      `SELECT s.id FROM seats s
-        WHERE s.contract_id = $1 AND s.user_id = $2 AND s.consumed_at IS NULL
-        ORDER BY s.id FOR UPDATE SKIP LOCKED LIMIT 1`,
-      [s.rows[0].contract_id, userId],
-    );
-    const seatId = seat.rowCount ? seat.rows[0].id : null;
-    if (seatId) {
-      await c.query(`UPDATE seats SET consumed_at = now() WHERE id = $1`, [seatId]);
+    let seatId: string | null = null;
+    if (s.rows[0].billing === "per_use") {
+      if (!(await reserveUse(c, contractId))) throw new Error("USE_CAP_REACHED");
+    } else {
+      /* 이 학생에게 배정된 좌석. 등록할 때 잡아 둔 것을 그대로 쓴다 */
+      const seat = await c.query<{ id: string }>(
+        `SELECT s.id FROM seats s
+          WHERE s.contract_id = $1 AND s.user_id = $2 AND s.consumed_at IS NULL
+          ORDER BY s.id FOR UPDATE SKIP LOCKED LIMIT 1`,
+        [contractId, userId],
+      );
+      seatId = seat.rowCount ? seat.rows[0].id : null;
+      if (seatId) {
+        await c.query(`UPDATE seats SET consumed_at = now() WHERE id = $1`, [seatId]);
+      }
     }
 
     const a = await c.query<{ id: string }>(

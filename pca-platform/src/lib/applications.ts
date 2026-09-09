@@ -107,7 +107,20 @@ export const approveSchema = z.object({
     .min(1, "좌석은 1개 이상이어야 합니다.")
     .max(100_000, "좌석이 너무 많습니다."),
   linkLabel: z.string().trim().min(1, "링크 이름을 입력하세요.").max(200),
-});
+
+  /* 정산 방식. 선불은 응시권을 미리 사고, 건당은 나간 건수만큼 나중에
+     청구한다. 대학 산학협력단·지역 일자리경제진흥원·고용노동부 위탁사업이
+     건당을 쓴다 */
+  billing: z.enum(["prepaid", "per_use"]).default("prepaid"),
+  /* 건당 단가. 원 단위 정수로만 받는다 — 소수점은 청구서에서 어긋난다 */
+  unitPrice: z.union([z.literal(""), z.coerce.number().int().min(0).max(100_000_000)]).optional(),
+  /* 건당 상한. 비우면 무제한 */
+  useCap: z.union([z.literal(""), z.coerce.number().int().min(1).max(1_000_000)]).optional(),
+})
+  .refine((v) => v.billing !== "per_use" || (typeof v.unitPrice === "number" && v.unitPrice > 0), {
+    path: ["unitPrice"],
+    message: "건당 계약은 단가를 적어야 합니다.",
+  });
 
 /** 비밀번호 설정·재설정 링크. 승인 메일과 화면이 같은 것을 쓰게 한다 */
 export function resetUrl(token: string, baseUrl?: string): string {

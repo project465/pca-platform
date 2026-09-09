@@ -100,20 +100,35 @@ export async function joinAction(
       const max = l.rows[0].max_uses === null ? null : Number(l.rows[0].max_uses);
       if (max !== null && Number(l.rows[0].used_count) >= max) throw new Error("LINK_FULL");
 
-      /* 남은 응시권 하나를 잡는다. SKIP LOCKED 라 동시에 들어와도
-         서로 다른 좌석을 가져간다 */
-      const seat = await c.query<{ id: string }>(
-        `SELECT s.id
-           FROM seats s
-           JOIN contracts ct ON ct.id = s.contract_id
-          WHERE ct.org_id = $1 AND ct.status = 'active'
-            AND s.user_id IS NULL AND s.consumed_at IS NULL
-          ORDER BY s.id
-          FOR UPDATE OF s SKIP LOCKED
-          LIMIT 1`,
+      /* 계약이 어떤 방식인지 먼저 본다. 건당 계약에는 미리 산 좌석이 없다 */
+      const ct = await c.query<{ billing: string }>(
+        `SELECT billing FROM contracts
+          WHERE org_id = $1 AND status = 'active' ORDER BY id DESC LIMIT 1`,
         [link.orgId],
       );
-      if (seat.rowCount === 0) throw new Error("NO_SEAT");
+      if (ct.rowCount === 0) throw new Error("NO_CONTRACT");
+      const perUse = ct.rows[0].billing === "per_use";
+
+      /* 선불이면 남은 응시권 하나를 잡는다. SKIP LOCKED 라 동시에 들어와도
+         서로 다른 좌석을 가져간다.
+         건당이면 잡을 것이 없다 — 등록만으로는 돈이 나가지 않고, 실제로
+         제출된 건에서 청구가 생긴다. 등록 수는 링크의 max_uses 가 막는다 */
+      let seatId: string | null = null;
+      if (!perUse) {
+        const seat = await c.query<{ id: string }>(
+          `SELECT s.id
+             FROM seats s
+             JOIN contracts ct ON ct.id = s.contract_id
+            WHERE ct.org_id = $1 AND ct.status = 'active'
+              AND s.user_id IS NULL AND s.consumed_at IS NULL
+            ORDER BY s.id
+            FOR UPDATE OF s SKIP LOCKED
+            LIMIT 1`,
+          [link.orgId],
+        );
+        if (seat.rowCount === 0) throw new Error("NO_SEAT");
+        seatId = seat.rows[0].id;
+      }
 
       const user = await c.query<{ id: string }>(
         `INSERT INTO users (login_id, email, password_hash, display_name, must_reset_pw)
@@ -132,10 +147,12 @@ export async function joinAction(
         `INSERT INTO consents (user_id, kind, version) VALUES ($1, 'privacy', $2)`,
         [userId, PRIVACY_VERSION],
       );
-      await c.query(
-        `UPDATE seats SET user_id = $1, assigned_at = now() WHERE id = $2`,
-        [userId, seat.rows[0].id],
-      );
+      if (seatId) {
+        await c.query(
+          `UPDATE seats SET user_id = $1, assigned_at = now() WHERE id = $2`,
+          [userId, seatId],
+        );
+      }
       await c.query(
         `UPDATE org_links SET used_count = used_count + 1 WHERE id = $1`,
         [link.linkId],
@@ -147,6 +164,9 @@ export async function joinAction(
     if (msg.includes("LINK_FULL")) return { message: "방금 정원이 찼습니다. 담당자에게 문의해 주세요." };
     if (msg.includes("NO_SEAT")) {
       return { message: "남은 응시권이 없습니다. 학과 담당자에게 문의해 주세요." };
+    }
+    if (msg.includes("NO_CONTRACT")) {
+      return { message: "지금은 이 링크로 등록할 수 없습니다." };
     }
     if (msg.includes("users_login_id_key")) {
       return { errors: { loginId: "이미 등록된 학번입니다. 로그인 화면으로 가세요." } };

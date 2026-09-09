@@ -69,13 +69,24 @@ export async function createLinkAction(
   }
 
   const seats = await seatsOf(v.orgId);
-  if (seats.free === 0) {
-    return { message: "남은 응시권이 없습니다. 계약을 늘려야 새 링크가 의미가 있습니다." };
+  if (seats.billing === "none") {
+    return { message: "살아 있는 계약이 없습니다. 운영사에 문의해 주세요." };
+  }
+  if (!seats.unlimited && seats.free === 0) {
+    return {
+      message:
+        seats.billing === "per_use"
+          ? "이번 사업에 배정된 건수를 모두 썼습니다. 상한을 늘려야 새 링크가 의미가 있습니다."
+          : "남은 응시권이 없습니다. 계약을 늘려야 새 링크가 의미가 있습니다.",
+    };
   }
 
-  /* 남은 좌석보다 큰 상한은 뜻이 없다. 좌석이 없으면 등록이 어차피 막힌다 */
-  const asked = v.maxUses === "" || v.maxUses === undefined ? seats.free : v.maxUses;
-  const maxUses = Math.min(asked, seats.free);
+  /* 상한이 없는 건당 계약이면 링크에도 상한을 걸지 않는다 (max_uses NULL).
+     상한이 있으면 남은 만큼을 넘지 못하게 한다 — 넘겨 봐야 등록이 막힌다 */
+  const asked = v.maxUses === "" || v.maxUses === undefined ? null : v.maxUses;
+  const maxUses = seats.unlimited
+    ? asked
+    : Math.min(asked ?? seats.free, seats.free);
 
   await tx(async (c) => {
     await c.query(
@@ -88,7 +99,12 @@ export async function createLinkAction(
   });
 
   revalidatePath("/org");
-  return { ok: `새 링크를 만들었습니다. ${maxUses.toLocaleString("ko-KR")}명까지 등록할 수 있습니다.` };
+  return {
+    ok:
+      maxUses === null
+        ? "새 링크를 만들었습니다. 등록 인원 제한은 없습니다."
+        : `새 링크를 만들었습니다. ${maxUses.toLocaleString("ko-KR")}명까지 등록할 수 있습니다.`,
+  };
 }
 
 /**

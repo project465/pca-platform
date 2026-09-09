@@ -123,4 +123,7 @@ node scripts/e2e-report.mjs
 echo "· 단체 리포트 — 분포, 충족률, 과목"
 node scripts/e2e-group-report.mjs
 
+echo "· 건당 정산 — 좌석 없이 응시, 제출 건만 청구, 상한"
+node scripts/e2e-per-use.mjs
+
 printf '\n\033[1m전체 확인 통과\033[0m\n'

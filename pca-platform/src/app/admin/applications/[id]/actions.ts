@@ -32,6 +32,9 @@ export type ApproveState = {
     setupUrl: string;
     setupHours: number;
     seatCount: number;
+    billing: "prepaid" | "per_use";
+    /** 링크가 받는 인원 상한. null 이면 열려 있다 */
+    linkMax: number | null;
     /** 메일이 실제로 나갔는지. 안 나갔으면 화면의 안내문을 사람이 옮겨야 한다 */
     mail: { ok: true; via: string } | { ok: false; error: string };
   };
@@ -58,6 +61,9 @@ export async function approveAction(
     endsOn: formData.get("endsOn"),
     seatCount: formData.get("seatCount"),
     linkLabel: formData.get("linkLabel"),
+    billing: formData.get("billing") ?? "prepaid",
+    unitPrice: formData.get("unitPrice") ?? "",
+    useCap: formData.get("useCap") ?? "",
   });
 
   if (!parsed.success) return { errors: fieldErrors(parsed.error) };
@@ -123,25 +129,41 @@ export async function approveAction(
         [user.rows[0].id, setup.tokenHash, me.id, String(SETUP_TTL_HOURS)],
       );
 
+      const perUse = v.billing === "per_use";
       const contract = await c.query<{ id: string }>(
-        `INSERT INTO contracts (org_id, title, starts_on, ends_on, seat_count)
-         VALUES ($1, $2, $3, $4, $5) RETURNING id`,
-        [newOrgId, v.contractTitle, v.startsOn, v.endsOn, v.seatCount],
+        `INSERT INTO contracts
+           (org_id, title, starts_on, ends_on, billing, seat_count, unit_price, currency, use_cap)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, 'KRW', $8) RETURNING id`,
+        [
+          newOrgId, v.contractTitle, v.startsOn, v.endsOn, v.billing,
+          /* 건당 계약에는 미리 사 두는 좌석이 없다. CHECK 때문에 선불만 > 0 */
+          perUse ? 0 : v.seatCount,
+          perUse ? (v.unitPrice as number) : null,
+          perUse && typeof v.useCap === "number" ? v.useCap : null,
+        ],
       );
 
-      /* 응시권은 계약을 만들 때 seat_count 만큼 미리 만들어 둔다.
-         한 줄씩 넣지 않고 generate_series 로 한 번에 넣는다 */
-      await c.query(
-        `INSERT INTO seats (contract_id, expires_at)
-         SELECT $1, $2::date + interval '1 day'
-           FROM generate_series(1, $3)`,
-        [contract.rows[0].id, v.endsOn, v.seatCount],
-      );
+      /* 선불이면 응시권을 seat_count 만큼 미리 만들어 둔다. 한 줄씩 넣지
+         않고 generate_series 로 한 번에 넣는다.
+         건당이면 만들 것이 없다 — 나간 건수가 billing_events 에 쌓인다 */
+      if (!perUse) {
+        await c.query(
+          `INSERT INTO seats (contract_id, expires_at)
+           SELECT $1, $2::date + interval '1 day'
+             FROM generate_series(1, $3)`,
+          [contract.rows[0].id, v.endsOn, v.seatCount],
+        );
+      }
 
+      /* 링크가 몇 명까지 받는가.
+         선불은 산 좌석 수만큼. 건당은 상한이 있으면 그만큼, 없으면 열어 둔다 */
+      const linkMax = perUse
+        ? (typeof v.useCap === "number" ? v.useCap : null)
+        : v.seatCount;
       await c.query(
         `INSERT INTO org_links (org_id, token, label, max_uses, expires_at, created_by)
          VALUES ($1, $2, $3, $4, $5::date + interval '1 day', $6)`,
-        [newOrgId, token, v.linkLabel, v.seatCount, v.endsOn, me.id],
+        [newOrgId, token, v.linkLabel, linkMax, v.endsOn, me.id],
       );
 
       await c.query(
@@ -185,6 +207,11 @@ export async function approveAction(
       setupUrl: links.setupUrl,
       setupHours: SETUP_TTL_HOURS,
       seatCount: v.seatCount,
+      billing: v.billing,
+      linkMax:
+        v.billing === "per_use"
+          ? (typeof v.useCap === "number" ? v.useCap : null)
+          : v.seatCount,
     }),
   );
 
@@ -196,6 +223,11 @@ export async function approveAction(
       setupUrl: links.setupUrl,
       setupHours: SETUP_TTL_HOURS,
       seatCount: v.seatCount,
+      billing: v.billing,
+      linkMax:
+        v.billing === "per_use"
+          ? (typeof v.useCap === "number" ? v.useCap : null)
+          : v.seatCount,
       mail: mail.ok ? { ok: true, via: mail.via } : { ok: false, error: mail.error },
     },
   };

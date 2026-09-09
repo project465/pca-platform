@@ -34,6 +34,14 @@ export default async function StudentHome({
           </p>
         ) : null}
 
+        {/* 건당 계약에서 발주처가 정한 건수를 다 쓴 경우.
+            학생 잘못이 아니므로 학생이 할 수 있는 다음 행동을 적는다 */}
+        {error === "cap" ? (
+          <p className="notice error" role="alert" style={{ marginBottom: 16 }}>
+            이번 사업에서 배정된 응시 건수가 모두 찼습니다. 학과 담당자에게 문의해 주세요.
+          </p>
+        ) : null}
+
         {sessions.length === 0 ? (
           <div className="empty">
             <b>아직 응시할 검사가 없습니다</b>

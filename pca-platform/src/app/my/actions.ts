@@ -13,6 +13,7 @@ export async function startAction(sessionId: string) {
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
     if (msg.includes("NOT_ELIGIBLE")) redirect("/my?error=eligibility");
+    if (msg.includes("USE_CAP_REACHED")) redirect("/my?error=cap");
     throw e;
   }
   redirect(`/test/${attemptId}`);
