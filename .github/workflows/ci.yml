@@ -59,3 +59,24 @@ jobs:
       - run: npm run build
         env:
           SITE: ${{ matrix.site }}
+
+      # 타입 검사와 빌드로는 화면이 실제로 넘어가는지 알 수 없다.
+      # 요금제를 눌러도 홈이 나오던 버그가 그랬다 — 타입도 맞고 빌드도 됐다.
+      # 그래서 뽑아낸 미리보기를 브라우저로 열어 경로마다 확인한다.
+      - name: 브라우저 준비
+        run: npx playwright install --with-deps chromium
+
+      - name: 미리보기 경로 확인
+        env:
+          SITE: ${{ matrix.site }}
+        run: |
+          npm start &
+          for i in $(seq 1 60); do
+            curl -sf -o /dev/null http://localhost:3100/ && break
+            sleep 1
+          done
+          curl -sf -o /dev/null http://localhost:3100/ || {
+            echo "서버가 뜨지 않았습니다"; exit 1;
+          }
+          node scripts/export-preview.mjs "$SITE" "/tmp/preview-$SITE.html"
+          node scripts/check-preview.mjs "/tmp/preview-$SITE.html"

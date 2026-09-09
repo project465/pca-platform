@@ -37,7 +37,14 @@ SITE=kr     npm run dev     # 한국어판
 ```bash
 SITE=kr npm run build && SITE=kr npm start   # 다른 창에서
 node scripts/export-preview.mjs kr /tmp/pca-korea.html
+node scripts/check-preview.mjs /tmp/pca-korea.html   # 경로가 실제로 넘어가는지
 ```
+
+`check-preview.mjs` 는 뽑아낸 파일을 브라우저로 열어 경로마다 제 페이지가
+나오는지 본다. 타입 검사와 빌드로는 이걸 못 잡는다 — 본문 앵커와 칸의
+id 가 겹쳐 요금제를 눌러도 홈이 나오던 적이 있었고, 그때도 타입과 빌드는
+멀쩡했다. CI 가 나라마다 이 검사를 돌린다. 경로 목록은 파일에서 읽으므로
+페이지를 늘려도 이 스크립트는 고치지 않는다.
 
 ## 나라를 추가하려면
 
