@@ -1,5 +1,5 @@
 import Radar from "@/components/radar";
-import { loginUrl, platformUrl } from "@/lib/platform";
+import { loginUrl } from "@/lib/platform";
 import type { SiteContent } from "@/content";
 
 export function Who({ site }: { site: SiteContent }) {
@@ -296,9 +296,11 @@ export function SiteFooter({ site }: { site: SiteContent }) {
               <li>
                 <span className="soon">{site.nav.loginNote}</span>
               </li>
-              {site.footer.privacyLabel ? (
+              {/* 주소가 있을 때만 건다. 없으면 아무것도 그리지 않는다 —
+                  404 로 가는 링크는 없는 것만 못하다 */}
+              {site.footer.privacyLabel && site.privacyUrl ? (
                 <li>
-                  <a href={`${platformUrl(site)}/privacy`}>{site.footer.privacyLabel}</a>
+                  <a href={site.privacyUrl}>{site.footer.privacyLabel}</a>
                 </li>
               ) : null}
             </ul>

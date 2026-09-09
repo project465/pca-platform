@@ -15,7 +15,22 @@ export function platformUrl(site: SiteContent): string {
   return base.replace(/\/+$/, "");
 }
 
-/** 로그인 화면. 플랫폼의 로그인 경로는 나라와 무관하게 같다 */
+/**
+ * 담당자 로그인 화면.
+ *
+ * `/login` 이 아니라 `/admin/login` 이다. 라이브 플랫폼에 `/login` 은 없다 —
+ * 직접 확인했다(2026-09-09).
+ *
+ *   /            200
+ *   /login       404
+ *   /admin/login 200
+ *   /survey      200
+ *
+ * **학생은 이 단추로 들어오지 않는다.** 학생은 학교가 받은 전용 링크
+ * (`/survey?univ=…&pwd=…`)로 들어온다. 그 링크는 학교마다 값이 달라 소개
+ * 사이트가 만들어 낼 수 없다. 그래서 이 단추는 담당자용이고, 학생에게는
+ * "학교에서 받은 링크로 들어가라" 고 옆에 적는다(nav.loginNote).
+ */
 export function loginUrl(site: SiteContent): string {
-  return `${platformUrl(site)}/login`;
+  return `${platformUrl(site)}/admin/login`;
 }

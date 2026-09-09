@@ -12,7 +12,7 @@ export const global: SiteContent = {
   brand: "METRI",
   org: "ACADEMIX",
   orgTagline: "EDUCATION & CONFERENCE",
-  platformUrl: "https://app.metri.example",
+  platformUrl: "https://pcagroup.haricareer.com",
 
   meta: {
     title: "METRI — A career strategy built around the major you already chose",
@@ -74,8 +74,8 @@ export const global: SiteContent = {
     contact: "Talk to us",
     menu: "Menu",
     floating: "Contact",
-    login: "Sign in",
-    loginNote: "Accounts are issued by your department",
+    login: "Staff sign-in",
+    loginNote: "Students use the link their university sends them",
   },
 
   hero: {

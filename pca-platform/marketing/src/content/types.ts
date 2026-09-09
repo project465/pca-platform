@@ -240,6 +240,17 @@ export type SiteContent = {
   org: string;
   orgTagline: string;
   platformUrl: string;
+  /**
+   * 개인정보 처리방침의 실제 주소. **없으면 링크를 걸지 않는다.**
+   *
+   * 라이브 플랫폼(pcagroup.haricareer.com)에는 /privacy 가 없다 —
+   * 직접 확인했다(2026-09-09, 404). 방침 화면은 이 저장소의 src/ 에 있지만
+   * 아직 배포된 적이 없다. 죽은 링크를 거는 것보다 링크가 없는 편이 낫다.
+   *
+   * 방침이 실제로 올라가면 여기에 그 주소를 적는다. 그러면 꼬리와 문의 폼의
+   * 링크가 함께 살아난다.
+   */
+  privacyUrl?: string;
 
   meta: { title: string; description: string };
 

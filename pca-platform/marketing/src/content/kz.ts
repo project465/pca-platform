@@ -27,7 +27,7 @@ export const kz: SiteContent = {
   brand: "METRI",
   org: "ACADEMIX",
   orgTagline: "EDUCATION & CONFERENCE",
-  platformUrl: "https://app.metri.example",
+  platformUrl: "https://pcagroup.haricareer.com",
 
   meta: {
     title: "METRI — мамандығыңа сай мансап стратегиясы",
@@ -93,8 +93,8 @@ export const kz: SiteContent = {
     contact: "Сұрау қалдыру",
     menu: "Мәзір",
     floating: "Сұрау",
-    login: "Кіру",
-    loginNote: "Тіркелгіні кафедра береді",
+    login: "Әкімші кірісі",
+    loginNote: "Студенттер университеттен алған сілтемемен кіреді",
   },
 
   hero: {

@@ -11,7 +11,7 @@ export const kr: SiteContent = {
   brand: "METRI",
   org: "ACADEMIX",
   orgTagline: "EDUCATION & CONFERENCE",
-  platformUrl: "https://app.metri.example",
+  platformUrl: "https://pcagroup.haricareer.com",
 
   meta: {
     title: "METRI 진로진단 — 내 전공에 맞는 커리어 전략을 설계해드립니다",
@@ -71,8 +71,8 @@ export const kr: SiteContent = {
     contact: "도입·상담 문의",
     menu: "메뉴",
     floating: "문의",
-    login: "로그인",
-    loginNote: "계정은 학과를 통해 발급됩니다",
+    login: "담당자 로그인",
+    loginNote: "학생은 학교에서 받은 전용 링크로 들어갑니다",
   },
 
   hero: {

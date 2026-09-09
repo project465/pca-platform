@@ -3,7 +3,6 @@
 import { useActionState } from "react";
 import { submitContact, type ContactState } from "@/app/actions";
 import type { SiteContent } from "@/content";
-import { platformUrl } from "@/lib/platform";
 
 const initial: ContactState = {};
 
@@ -124,10 +123,17 @@ export default function InquiryForm({
       {/* 보내기 직전에 알린다. 다 보낸 뒤에 알리면 알린 것이 아니다 */}
       {t.privacyNote ? (
         <p className="privacy-note full">
-          {t.privacyNote.text}{" "}
-          <a href={`${platformUrl(site)}/privacy`} target="_blank" rel="noreferrer">
-            {t.privacyNote.linkLabel}
-          </a>
+          {/* 알리는 문장은 링크가 없어도 남긴다. 무엇을 받아 어디에 쓰는지
+              보내기 전에 알리는 것이 본질이고, 전문 링크는 곁들이다 */}
+          {t.privacyNote.text}
+          {site.privacyUrl ? (
+            <>
+              {" "}
+              <a href={site.privacyUrl} target="_blank" rel="noreferrer">
+                {t.privacyNote.linkLabel}
+              </a>
+            </>
+          ) : null}
         </p>
       ) : null}
 
