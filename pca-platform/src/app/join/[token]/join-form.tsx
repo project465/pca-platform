@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { joinAction, type JoinState } from "./actions";
+import { CONSENT_LABEL, CONSENT_SUMMARY } from "@/content/privacy";
 
 const initial: JoinState = {};
 
@@ -65,6 +66,25 @@ export default function JoinForm({
         <input id="passwordConfirm" name="passwordConfirm" type="password" required autoComplete="new-password" />
         {err.passwordConfirm ? <span className="help" style={{ color: "var(--gap)" }}>{err.passwordConfirm}</span> : null}
       </div>
+
+      {/* 필수 동의. 미리 체크해 두지 않는다 — 체크하는 행동이 동의다 */}
+      <div className="consent full">
+        <div className="line">
+          <input id="consent" name="consent" type="checkbox" value="1" />
+          <label htmlFor="consent">{CONSENT_LABEL}</label>
+        </div>
+        <ul>
+          {CONSENT_SUMMARY.map((l) => (
+            <li key={l}>{l}</li>
+          ))}
+        </ul>
+        <a className="more" href="/privacy" target="_blank" rel="noreferrer">
+          개인정보 처리방침 전문 보기
+        </a>
+      </div>
+      {err.consent ? (
+        <span className="help full" style={{ color: "var(--gap)" }}>{err.consent}</span>
+      ) : null}
 
       <div className="actions full">
         <button className="act solid" disabled={pending}>

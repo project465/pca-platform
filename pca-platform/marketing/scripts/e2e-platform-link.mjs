@@ -52,6 +52,16 @@ const footer = p.locator(".site-footer a", { hasText: /로그인|Sign in/ });
 (await footer.first().getAttribute("href")) === `${PLATFORM}/login`
   ? ok("꼬리도 같은 곳을 가리킨다") : bad("꼬리가 다른 곳을 가리킨다");
 
+/* 처리방침도 플랫폼 한 군데에 둔다. 나라별로 복사본을 두면 갈라진다 */
+const priv = p.locator(".site-footer a", { hasText: /개인정보 처리방침|Privacy/ });
+if (await priv.count()) {
+  (await priv.first().getAttribute("href")) === `${PLATFORM}/privacy`
+    ? ok("꼬리의 처리방침이 플랫폼을 가리킨다")
+    : bad(`처리방침이 다른 곳을 가리킨다: ${await priv.first().getAttribute("href")}`);
+} else {
+  ok("이 나라 사이트에는 처리방침 링크가 없다 — 그 말로 된 판이 아직 없다");
+}
+
 /* 좁은 화면의 메뉴 안에도 있어야 한다 */
 await p.setViewportSize({ width: 420, height: 800 });
 await p.goto(SITE);

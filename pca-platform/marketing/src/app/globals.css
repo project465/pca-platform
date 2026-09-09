@@ -768,3 +768,11 @@ section { padding-block: clamp(60px, 8vw, 108px); }
 .samplecta b { display: block; font-size: 17px; font-weight: 800; letter-spacing: -.03em; }
 .samplecta span { font-size: 13.5px; color: var(--muted); }
 .samplecta .cta { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* 문의 폼에서 보내기 직전에 붙는 한 줄. 읽히되 폼을 가리지 않는 크기 */
+.privacy-note {
+  font-size: 12.5px; line-height: 1.55; color: var(--faint);
+  margin-bottom: 14px;
+}
+.privacy-note a { color: inherit; text-decoration: underline; }
+.privacy-note a:hover { color: var(--ink); }

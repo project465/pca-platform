@@ -28,10 +28,12 @@ say() { printf '\n\033[1m── %s\033[0m\n' "$1"; }
 
 SERVER_PID=""
 cleanup() {
-  if [ -n "$SERVER_PID" ] && kill -0 "$SERVER_PID" 2>/dev/null; then
-    kill "$SERVER_PID" 2>/dev/null || true
-    wait "$SERVER_PID" 2>/dev/null || true
-  fi
+  [ -n "$SERVER_PID" ] || return 0
+  # npm 만 죽이면 그 밑의 next 가 살아남아 포트를 쥔 채로 남는다.
+  # 그러면 다음 실행이 '이미 무언가 떠 있습니다' 로 멈춘다.
+  # setsid 로 묶어 두었으니 무리째 보낸다.
+  kill -TERM "-$SERVER_PID" 2>/dev/null || kill -TERM "$SERVER_PID" 2>/dev/null || true
+  wait "$SERVER_PID" 2>/dev/null || true
 }
 trap cleanup EXIT
 
@@ -66,7 +68,7 @@ if curl -sf -o /dev/null "$BASE_URL/login"; then
   exit 1
 fi
 
-npm run --silent start > /tmp/pca-verify-server.log 2>&1 &
+setsid npm run --silent start > /tmp/pca-verify-server.log 2>&1 &
 SERVER_PID=$!
 for _ in $(seq 1 60); do
   if curl -sf -o /dev/null "$BASE_URL/login"; then break; fi
@@ -83,6 +85,18 @@ echo "$BASE_URL 응답함"
 say "5/5 브라우저로 흐름 확인"
 echo "· 신청 → 승인 → 전용 링크 → 학생 등록"
 node scripts/e2e-join.mjs
+
+# 동의가 화면에서만 막히고 끝났는지, 기록으로도 남았는지 본다.
+# 방금 3명이 전용 링크로 등록했으므로 그 판의 동의가 3건 이상 있어야 한다.
+PRIVACY_VERSION="$(sed -n 's/^export const PRIVACY_VERSION = "\(.*\)";$/\1/p' src/content/privacy.ts)"
+CONSENTS="$(psql "$DATABASE_URL" -t -A -c \
+  "SELECT count(*) FROM consents WHERE kind = 'privacy' AND version = '${PRIVACY_VERSION}'")"
+if [ "${CONSENTS:-0}" -ge 3 ]; then
+  echo "  통과  동의 기록 ${CONSENTS}건 (판 ${PRIVACY_VERSION})"
+else
+  echo "  실패  동의 기록이 ${CONSENTS:-0}건 — 등록은 됐는데 남지 않았다"
+  exit 1
+fi
 
 # 담당자가 남의 기관 링크를 건드릴 수 없는지도 본다.
 # 방금 승인으로 만들어진 다른 기관의 링크 id 를 넘겨준다.

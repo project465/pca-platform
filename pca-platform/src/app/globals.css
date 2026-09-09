@@ -345,3 +345,25 @@ td .sub { display: block; font-size: 12.5px; color: var(--muted); }
   .band div { font-size:13px; }
   .cg { grid-template-columns:110px 1fr 64px; }
 }
+
+/* ---------- 전용 링크 등록 화면 ----------
+   카드 하나만 놓는 자리. 로그인처럼 가운데로 몰지 않고 위에서부터 읽힌다. */
+.auth { max-width: 520px; margin: 0 auto; padding: 40px 20px 80px; }
+.auth h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 6px; }
+.auth .help { font-size: 13.5px; color: var(--muted); margin-bottom: 20px; }
+
+/* 동의 받는 자리. 글을 읽고 체크하는 순서가 보이도록 붙여 둔다. */
+.consent { border: 1px solid var(--rule); padding: 14px 16px; background: #F7F9FA; }
+.consent .line { display: flex; align-items: flex-start; gap: 10px; }
+.consent input { width: 17px; height: 17px; flex: none; margin-top: 2px; accent-color: var(--ink); }
+.consent label { font-size: 14px; font-weight: 700; line-height: 1.45; }
+.consent ul { list-style: none; margin: 10px 0 0 27px; }
+.consent li { font-size: 12.5px; color: var(--muted); padding: 2px 0; }
+.consent .more { display: block; margin: 10px 0 0 27px; font-size: 12.5px; color: var(--muted); }
+
+/* ---------- 문서 화면 (처리방침 등) ---------- */
+.doc .top { align-items: center; }
+.doc section { padding-top: 28px; padding-bottom: 28px; }
+.doc h2 { margin-bottom: 12px; color: var(--ink); font-size: 15px; }
+.doc p { font-size: 14.5px; max-width: 68ch; margin-bottom: 8px; }
+.doc table { min-width: 480px; }

@@ -152,6 +152,27 @@ if (joinLink) {
       await sp.fill("#loginId", `${tag}${i}`);
       await sp.fill("#password", "student-pass-1234");
       await sp.fill("#passwordConfirm", "student-pass-1234");
+
+      if (i === 1) {
+        /* 동의를 안 켠 채로 낸다. 체크박스에는 required 가 없으므로
+           브라우저가 아니라 서버가 막아야 한다 */
+        await sp.click('button:text-is("응시자로 등록")');
+        await sp.waitForTimeout(1500);
+        const refused = await sp.innerText("body");
+        sp.url().includes("/join/")
+          ? ok("동의 없이 내면 등록되지 않는다")
+          : bad(`동의 없이도 등록되었다 (${sp.url()})`);
+        refused.includes("동의해야 등록할 수 있습니다")
+          ? ok("동의가 왜 필요한지 화면에 나온다")
+          : bad("동의를 막은 이유가 화면에 없다");
+        /* 서버 액션이 돌아온 뒤 입력이 남아 있는지는 보장되지 않는다. 다시 채운다 */
+        await sp.fill("#displayName", `검사학생${i}`);
+        await sp.fill("#loginId", `${tag}${i}`);
+        await sp.fill("#password", "student-pass-1234");
+        await sp.fill("#passwordConfirm", "student-pass-1234");
+      }
+
+      await sp.check("#consent");
       await sp.click('button:text-is("응시자로 등록")');
       await sp.waitForTimeout(1500);
       sp.url().includes("/login") ? ok(`${i}번째 학생 등록됨`) : bad(`${i}번째 학생 등록 실패 (${sp.url()})`);
@@ -164,7 +185,18 @@ if (joinLink) {
   }
 }
 
-/* ── 5. 없는 링크 ── */
+/* ── 5. 개인정보 처리방침 ── */
+const ctxP = await b.newContext();
+const pp = await ctxP.newPage();
+await pp.goto(`${BASE}/privacy`);
+await pp.waitForTimeout(400);
+const privacy = await pp.innerText("body");
+privacy.includes("개인정보 처리방침") ? ok("처리방침 화면이 열린다") : bad("처리방침 화면이 안 열린다");
+privacy.includes("무엇을 받고") ? ok("수집 항목이 적혀 있다") : bad("수집 항목이 없다");
+privacy.includes("초안") ? ok("검토 전 초안임을 화면에 밝힌다") : bad("초안 표시가 없다 — 빈칸이 다 채워졌는지 확인할 것");
+await ctxP.close();
+
+/* ── 6. 없는 링크 ── */
 const ctx2 = await b.newContext();
 const sp2 = await ctx2.newPage();
 await sp2.goto(`${BASE}/join/definitely-not-a-real-token`);

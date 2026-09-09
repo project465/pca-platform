@@ -895,6 +895,11 @@ export const kr: SiteContent = {
     success: "문의가 접수되었습니다",
     successBody: "적어주신 이메일로 연락드리겠습니다.",
     error: "보내지 못했습니다. 잠시 후 다시 시도해 주세요.",
+    privacyNote: {
+      text:
+        "보내주신 기관명·담당자 이름·이메일은 도입 상담에만 씁니다. 상담이 끝나면 지웁니다.",
+      linkLabel: "개인정보 처리방침",
+    },
   },
 
   footer: {
@@ -908,5 +913,6 @@ export const kr: SiteContent = {
     ],
     soonLabel: "준비 중",
     closing: "당신의 전공이 성공으로 이어지도록",
+    privacyLabel: "개인정보 처리방침",
   },
 };

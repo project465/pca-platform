@@ -1,5 +1,5 @@
 import Radar from "@/components/radar";
-import { loginUrl } from "@/lib/platform";
+import { loginUrl, platformUrl } from "@/lib/platform";
 import type { SiteContent } from "@/content";
 
 export function Who({ site }: { site: SiteContent }) {
@@ -292,6 +292,11 @@ export function SiteFooter({ site }: { site: SiteContent }) {
               <li>
                 <span className="soon">{site.nav.loginNote}</span>
               </li>
+              {site.footer.privacyLabel ? (
+                <li>
+                  <a href={`${platformUrl(site)}/privacy`}>{site.footer.privacyLabel}</a>
+                </li>
+              ) : null}
             </ul>
           </div>
           <div>

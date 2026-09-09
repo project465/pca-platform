@@ -370,3 +370,28 @@ COMMENT ON TABLE org_links IS
    있는지를 좁힌다. 정규식을 그대로 받지 않는 이유는 lib/join-rules.ts 에 적었다';
 
 CREATE INDEX idx_org_links_live ON org_links(org_id) WHERE revoked_at IS NULL;
+
+
+-- ============================================================
+--  12. 동의 기록 (초안 v0.4에서 추가)
+--
+--  개인정보를 받으려면 무엇에 동의했는지 남겨야 한다. 나중에 "동의한 적
+--  없다" 는 말이 나왔을 때 댈 것이 있어야 하고, 방침이 바뀌면 누가 어느
+--  판에 동의했는지 갈라 볼 수 있어야 한다.
+--
+--  IP 나 기기 정보는 남기지 않는다. 분쟁을 대비해 더 모으고 싶어지지만,
+--  그것 자체가 또 다른 개인정보다. 누가·무엇에·언제만 남긴다.
+-- ============================================================
+
+CREATE TABLE consents (
+  id         BIGSERIAL PRIMARY KEY,
+  user_id    BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  kind       TEXT NOT NULL,              -- privacy(필수) | marketing(선택, 아직 안 씀
+  version    TEXT NOT NULL,              -- 동의한 방침의 판. lib/consent.ts 참고
+  agreed_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (user_id, kind, version)
+);
+COMMENT ON TABLE consents IS
+  '누가·무엇에·언제 동의했는지. 방침을 고치면 version 을 올리고 다시 받는다';
+
+CREATE INDEX idx_consents_user ON consents(user_id);

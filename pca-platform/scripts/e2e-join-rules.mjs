@@ -101,9 +101,12 @@ async function tryJoin({ loginId, email, expect }) {
   if (await sp.locator("#email").count()) await sp.fill("#email", email ?? "");
   await sp.fill("#password", "join-rules-pass-1234");
   await sp.fill("#passwordConfirm", "join-rules-pass-1234");
-  /* 화면의 검사를 걷어낸다. 서버가 막는지 보려는 것이다 */
+  await sp.check("#consent");
+  /* 화면의 검사를 걷어낸다. 서버가 막는지 보려는 것이다.
+     체크박스는 건드리지 않는다 — type 을 바꾸면 안 켠 동의도 값이 실려 나간다 */
   await sp.evaluate(() => {
     for (const el of document.querySelectorAll("input")) {
+      if (el.type === "checkbox") continue;
       el.removeAttribute("pattern"); el.removeAttribute("required"); el.type = "text";
     }
     document.querySelector("form")?.setAttribute("novalidate", "novalidate");

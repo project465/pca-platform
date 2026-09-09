@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { submitContact, type ContactState } from "@/app/actions";
 import type { SiteContent } from "@/content";
+import { platformUrl } from "@/lib/platform";
 
 const initial: ContactState = {};
 
@@ -119,6 +120,16 @@ export default function InquiryForm({
           </div>
         </>
       )}
+
+      {/* 보내기 직전에 알린다. 다 보낸 뒤에 알리면 알린 것이 아니다 */}
+      {t.privacyNote ? (
+        <p className="privacy-note full">
+          {t.privacyNote.text}{" "}
+          <a href={`${platformUrl(site)}/privacy`} target="_blank" rel="noreferrer">
+            {t.privacyNote.linkLabel}
+          </a>
+        </p>
+      ) : null}
 
       <div className="full">
         <button className={`btn solid${compact ? " full-w" : " lg"}`} type="submit" disabled={pending}>

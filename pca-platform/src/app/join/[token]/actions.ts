@@ -6,6 +6,7 @@ import { hashPassword } from "@/lib/password";
 import { passwordSchema, fieldErrors, type FieldErrors } from "@/lib/validation";
 import { readLink } from "@/lib/join";
 import { emailAllowed, loginIdAllowed, maskExample } from "@/lib/join-rules";
+import { PRIVACY_VERSION } from "@/content/privacy";
 import { z } from "zod";
 
 export type JoinState = { errors?: FieldErrors; message?: string };
@@ -23,6 +24,10 @@ const schema = z
     email: z.union([z.literal(""), z.string().trim().email("이메일 형식이 아닙니다.").max(200)]).optional(),
     password: passwordSchema,
     passwordConfirm: z.string(),
+    /* 체크박스는 켜야만 값이 온다. 안 켜면 undefined 라 여기서 걸린다 */
+    consent: z.literal("1", {
+      errorMap: () => ({ message: "개인정보 수집·이용에 동의해야 등록할 수 있습니다." }),
+    }),
   })
   .refine((v) => v.password === v.passwordConfirm, {
     path: ["passwordConfirm"],
@@ -47,6 +52,7 @@ export async function joinAction(
     email: formData.get("email") ?? "",
     password: formData.get("password"),
     passwordConfirm: formData.get("passwordConfirm"),
+    consent: formData.get("consent"),
   });
   if (!parsed.success) return { errors: fieldErrors(parsed.error) };
   const v = parsed.data;
@@ -119,6 +125,12 @@ export async function joinAction(
       await c.query(
         `INSERT INTO memberships (user_id, org_id, role) VALUES ($1, $2, 'student')`,
         [userId, link.orgId],
+      );
+      /* 동의한 사실을 남긴다. 어느 판에 동의했는지가 함께 남아야
+         방침이 바뀌었을 때 다시 받을 사람을 갈라낼 수 있다 */
+      await c.query(
+        `INSERT INTO consents (user_id, kind, version) VALUES ($1, 'privacy', $2)`,
+        [userId, PRIVACY_VERSION],
       );
       await c.query(
         `UPDATE seats SET user_id = $1, assigned_at = now() WHERE id = $2`,

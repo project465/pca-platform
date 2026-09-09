@@ -354,6 +354,9 @@ export type SiteContent = {
     success: string;
     successBody: string;
     error: string;
+    /* 보내기 전에 무엇이 어디로 가는지 알리는 한 줄. 방침이 그 말로
+       준비된 나라에서만 채운다 */
+    privacyNote?: { text: string; linkLabel: string };
   };
 
   footer: {
@@ -362,6 +365,9 @@ export type SiteContent = {
     sites: { label: string; href: string; ready: boolean }[];
     soonLabel: string;
     closing: string;
+    /* 처리방침은 플랫폼에 있다. 아직 그 나라 말로 된 판이 없으면 비워 둔다 —
+       없는 문서로 링크를 걸어 두는 것보다 링크가 없는 편이 낫다 */
+    privacyLabel?: string;
   };
 
   map?: MapContent;
