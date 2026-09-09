@@ -18,7 +18,7 @@ export default function PricingPage() {
       <FaqSection site={site} />
       <section className="divided">
         <div className="wrap nextgrid">
-          <NextLink label="pca" title={u.linkTitles.pca} href="/pca" />
+          <NextLink label="metri" title={u.linkTitles.metri} href="/metri" />
           <NextLink label="contact" title={u.linkTitles.contact} href="/contact" />
         </div>
       </section>

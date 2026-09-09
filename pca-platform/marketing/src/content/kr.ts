@@ -1,20 +1,20 @@
 import type { SiteContent } from "./types";
 
 /**
- * 한국어판. 사실관계와 문구는 academix.co.kr 의 PCA 소개 페이지를 따른다.
+ * 한국어판. 사실관계와 문구는 academix.co.kr 의 METRI 소개 페이지를 따른다.
  * 페이지에 없는 실적·수치는 만들어 쓰지 않는다.
  */
 export const kr: SiteContent = {
   key: "kr",
   lang: "ko",
-  domain: "pca.co.kr",
-  brand: "PCA",
+  domain: "metri.co.kr",
+  brand: "METRI",
   org: "ACADEMIX",
   orgTagline: "EDUCATION & CONFERENCE",
-  platformUrl: "https://app.pca.example",
+  platformUrl: "https://app.metri.example",
 
   meta: {
-    title: "PCA 진로진단 — 내 전공에 맞는 커리어 전략을 설계해드립니다",
+    title: "METRI 진로진단 — 내 전공에 맞는 커리어 전략을 설계해드립니다",
     description:
       "적합 직무·업무 성향·실행 전략을 함께 분석해, 다음에 무엇을 준비해야 하는지까지 제시하는 진로진단입니다. 프로젝트·자소서·면접·창업·지역 기업 연계까지 이어집니다.",
   },
@@ -29,7 +29,7 @@ export const kr: SiteContent = {
     nextLabel: "다음",
     nextHeading: "우리 학과에는 어떻게 적용될까요?",
     pageTitles: {
-      pca: "PCA",
+      metri: "METRI",
       adopt: "도입 안내",
       anchor: "지역·앵커",
       pricing: "요금제",
@@ -37,7 +37,7 @@ export const kr: SiteContent = {
       contact: "문의",
     },
     linkTitles: {
-      pca: "PCA 진단 자세히",
+      metri: "METRI 진단 자세히",
       adopt: "도입 안내",
       anchor: "지역·앵커 활용",
       contact: "도입·상담 문의",
@@ -53,7 +53,7 @@ export const kr: SiteContent = {
         "사진 자리 — 전문가 초청 특강",
         "사진 자리 — 팀 또는 사무 공간",
       ],
-      pca: "사진 자리 — 학과 단위 단체 응시 현장",
+      metri: "사진 자리 — 학과 단위 단체 응시 현장",
       adopt: "사진 자리 — 관리자 페이지 화면 또는 담당자 운영 장면",
       localisation: "사진 자리 — 파트너 대학과의 현지화 워크숍",
     },
@@ -61,7 +61,7 @@ export const kr: SiteContent = {
 
   nav: {
     items: [
-      { label: "PCA", href: "/pca" },
+      { label: "METRI", href: "/metri" },
       { label: "지역·앵커", href: "/anchor" },
       { label: "도입 안내", href: "/adopt" },
       { label: "요금제", href: "/pricing" },
@@ -76,23 +76,23 @@ export const kr: SiteContent = {
   },
 
   hero: {
-    eyebrow: "PCA · PERSONALIZED CAREER ANALYSIS",
+    eyebrow: "METRI · PERSONALIZED CAREER ANALYSIS",
     title: ["“내 전공으로 어디 가야 하죠”에", "{15–20페이지로 답}합니다"],
     lead:
       "직무 영역 10개를 100점으로 순위 매기고, 업무 성향 6유형을 짚고, 자격·프로젝트·자소서·면접·창업, 그리고 우리 지역 실제 기업까지 이어서 정리해드립니다. 유형을 알려주고 끝나는 검사가 아니라, 다음 달에 할 일이 남는 문서입니다.",
     primary: { label: "도입·상담 문의", href: "/contact" },
     secondary: { label: "실제 결과지 한 장 보기", href: "#sample" },
-    watermark: "PCA",
+    watermark: "METRI",
   },
 
   sample: {
     label: "예시 결과지",
     heading: "설명보다, 학생이 받아 드는 문서를 먼저 보세요",
     lead:
-      "PCA 가 무엇을 분석하는지는 그 다음 이야기입니다. 아래는 15–20페이지 결과지에서 네 장을 뽑아 한 화면에 옮긴 것입니다. 학생이 받는 것은 유형 이름이 아니라 이 문서입니다.",
+      "METRI 가 무엇을 분석하는지는 그 다음 이야기입니다. 아래는 15–20페이지 결과지에서 네 장을 뽑아 한 화면에 옮긴 것입니다. 학생이 받는 것은 유형 이름이 아니라 이 문서입니다.",
     disclaimer:
       "결과지의 형식을 보여주기 위한 예시 화면입니다. 실제 학생의 응시 자료가 아닙니다. 직무 영역 10개와 업무 성향 6유형, 지역 연계 방식은 실제 결과지와 같습니다.",
-    docTag: "PCA 개인 결과지",
+    docTag: "METRI 개인 결과지",
     page: "00-1 · 00-2 · 05~06 · 09 발췌",
     person: {
       name: "김수현 (예시)",
@@ -168,13 +168,13 @@ export const kr: SiteContent = {
       line: "학과 학생 전원이 각자 자기 이름이 붙은 이 문서를 한 부씩 받습니다.",
       sub: "학과명과 인원만 주시면 적용안과 견적을 하루 안에 회신드립니다.",
       primary: { label: "우리 학과 도입 문의", href: "/contact" },
-      secondary: { label: "결과지 11개 섹션 전체 보기", href: "/pca" },
+      secondary: { label: "결과지 11개 섹션 전체 보기", href: "/metri" },
     },
   },
 
   who: {
     label: "WHO IS IT FOR",
-    heading: "이런 고민, PCA가 방향을 잡아드립니다",
+    heading: "이런 고민, METRI가 방향을 잡아드립니다",
     items: [
       {
         no: "01",
@@ -198,8 +198,8 @@ export const kr: SiteContent = {
   },
 
   analyze: {
-    label: "WHAT PCA ANALYZES",
-    heading: "PCA는 세 가지를 함께 분석합니다",
+    label: "WHAT METRI ANALYZES",
+    heading: "METRI는 세 가지를 함께 분석합니다",
     lead: "세 가지를 따로 보지 않고 하나로 잇습니다. 그래서 결과가 ‘알게 된 것’이 아니라 ‘할 일’로 남습니다.",
     items: [
       {
@@ -224,7 +224,7 @@ export const kr: SiteContent = {
   },
 
   why: {
-    label: "WHY PCA",
+    label: "WHY METRI",
     heading: "검사 결과가 진로 로드맵으로 바로 연결됩니다",
     vs: "VS",
     before: {
@@ -235,7 +235,7 @@ export const kr: SiteContent = {
     },
     after: {
       tag: "전략 중심형",
-      title: "PCA 진로진단",
+      title: "METRI 진로진단",
       steps: [
         "적합 직무 분석",
         "업무 성향 육각형 분석",
@@ -247,9 +247,9 @@ export const kr: SiteContent = {
 
   sheet: {
     label: "RESULT SHEET",
-    heading: "PCA 검사 결과지 구성",
+    heading: "METRI 검사 결과지 구성",
     lead: [
-      "PCA는 진단 → 강점 → 적용 → 전략 → 실행으로 이어지는 섹션으로 구성됩니다.",
+      "METRI는 진단 → 강점 → 적용 → 전략 → 실행으로 이어지는 섹션으로 구성됩니다.",
       "목차를 눌러 실제 결과지 구성을 확인해보세요.",
     ],
     more: "결과지에서 이어서 확인",
@@ -627,7 +627,7 @@ export const kr: SiteContent = {
 
   evidence: {
     label: "EVIDENCE BASE",
-    heading: "PCA는 데이터로 설계한 진단입니다",
+    heading: "METRI는 데이터로 설계한 진단입니다",
     lead:
       "성격 유형 검사가 아니라, 전공자 표본과 실제 채용 시장 자료를 결합해 ‘시장이 원하는 역량’을 반영한 실측 데이터 기반 진단입니다.",
     stats: [
@@ -645,11 +645,11 @@ export const kr: SiteContent = {
         { name: "이공계 학과 선택 지표", no: "C-2025-059731" },
         { name: "대학원생용 진로 확인 지표", no: "C-2025-059732" },
       ],
-      note: "PCA 지표 계열의 핵심 진단 문항은 한국저작권위원회에 정식 등록되어 법적으로 보호됩니다.",
+      note: "METRI 지표 계열의 핵심 진단 문항은 한국저작권위원회에 정식 등록되어 법적으로 보호됩니다.",
     },
     standards: {
       title: "국제·국가 준거 체계",
-      head: ["준거 체계", "발행 / 계열", "PCA 설계에의 반영"],
+      head: ["준거 체계", "발행 / 계열", "METRI 설계에의 반영"],
       rows: [
         ["국가직무능력표준 (NCS)", "고용노동부 · HRD", "직무 영역·요구 역량 정의의 국가 표준 정합"],
         ["직무역량 분류 (O*NET 계열)", "미국 노동부 직무정보", "직무 영역·과업 항목 설계 참조"],
@@ -658,17 +658,17 @@ export const kr: SiteContent = {
         ["핵심역량 프레임워크 (OECD)", "OECD DeSeCo · Learning Compass", "전이 가능 핵심역량 구조 참조"],
         ["교육·심리 측정 표준", "AERA · APA · NCME 계열", "타당도·신뢰도 검증 체계의 준거"],
       ],
-      note: "PCA의 영역 정의·문항 설계·해석 기준은 진로·발달·직무역량·측정학 분야의 확립된 준거 체계를 참조·벤치마킹하여 정립되었습니다. 위 준거 체계는 설계 시 참조·벤치마킹한 것으로, 해당 기관·학회와의 공동 개발·인증·추천을 의미하지 않습니다.",
+      note: "METRI의 영역 정의·문항 설계·해석 기준은 진로·발달·직무역량·측정학 분야의 확립된 준거 체계를 참조·벤치마킹하여 정립되었습니다. 위 준거 체계는 설계 시 참조·벤치마킹한 것으로, 해당 기관·학회와의 공동 개발·인증·추천을 의미하지 않습니다.",
     },
   },
 
   choose: {
-    label: "WHY CHOOSE PCA",
-    heading: "왜 다른 검사가 아니라 PCA인가",
+    label: "WHY CHOOSE METRI",
+    heading: "왜 다른 검사가 아니라 METRI인가",
     items: [
       {
         title: "무료 검사와 결정적으로 다른 점",
-        body: "커리어넷·워크넷 결과는 기관 실적 보고에 쓸 수 없습니다. PCA는 학생에게는 15–20페이지 개인 전략서를, 대학에는 그대로 제출할 수 있는 익명 집계 리포트를 남깁니다.",
+        body: "커리어넷·워크넷 결과는 기관 실적 보고에 쓸 수 없습니다. METRI는 학생에게는 15–20페이지 개인 전략서를, 대학에는 그대로 제출할 수 있는 익명 집계 리포트를 남깁니다.",
       },
       {
         title: "성격 이론이 아니라 채용 시장",
@@ -690,14 +690,14 @@ export const kr: SiteContent = {
     heading: ["학과명과 인원만 주시면,", "우리 학과 적용안을 정리해 드립니다"],
     lead: "지역 기업 매칭 범위와 운영 방식까지 확인해 회신드립니다. 대학·학과 단위 단체 도입과 개인 진단 모두 상담 가능합니다.",
     primary: { label: "도입·상담 문의하기", href: "/contact" },
-    secondary: { label: "결과지 먼저 보기", href: "/pca" },
+    secondary: { label: "결과지 먼저 보기", href: "/metri" },
   },
 
   about: {
     label: "ABOUT US",
     heading: "ACADEMIX가 개발했습니다",
     body:
-      "ACADEMIX는 대학 및 공공기관을 위한 교육 프로그램을 설계하고 행사를 운영하는 전문 기관입니다. PCA 진로진단은 ACADEMIX가 개발했습니다.",
+      "ACADEMIX는 대학 및 공공기관을 위한 교육 프로그램을 설계하고 행사를 운영하는 전문 기관입니다. METRI 진로진단은 ACADEMIX가 개발했습니다.",
     highlight:
       "정부출연연구기관 출신 전문 인력과 폭넓은 산업 네트워크를 바탕으로, 학부생부터 석·박사 졸업생까지 커리어 준비를 안내합니다.",
     brandsLabel: "브랜드 구조",
@@ -724,13 +724,13 @@ export const kr: SiteContent = {
 
   program: {
     label: "PROGRAM",
-    heading: "PCA는 프로그램의 한 축입니다",
+    heading: "METRI는 프로그램의 한 축입니다",
     lead:
       "진단만 제공하고 끝내지 않습니다. 진단 결과를 특강·멘토링·채용 행사로 이어 붙여 학과의 진로 지원 전체를 설계합니다.",
     items: [
       {
         title: "취업 특강 및 산업 전문가 초청",
-        body: "직무별 온·오프라인 특강과 현직 전문가 초청 프로그램을 운영합니다. PCA 결과의 상위 직무 영역에 맞춰 주제를 고를 수 있습니다.",
+        body: "직무별 온·오프라인 특강과 현직 전문가 초청 프로그램을 운영합니다. METRI 결과의 상위 직무 영역에 맞춰 주제를 고를 수 있습니다.",
       },
       {
         title: "STEM 분야 특화 멘토링",
@@ -763,17 +763,17 @@ export const kr: SiteContent = {
       {
         title: "‘학생 체감도’를 문서로 증명합니다",
         body:
-          "개선 필요사항으로 지적된 것이 인재의 수요와 체감도였습니다. PCA는 집계용 설문이 아닙니다. 학생 한 명이 15–20페이지 개인 전략서를 받고, 그 문서가 그대로 체감의 증거가 됩니다.",
+          "개선 필요사항으로 지적된 것이 인재의 수요와 체감도였습니다. METRI는 집계용 설문이 아닙니다. 학생 한 명이 15–20페이지 개인 전략서를 받고, 그 문서가 그대로 체감의 증거가 됩니다.",
       },
       {
         title: "정주 지표로 가는 앞단을 만듭니다",
         body:
-          "지역정주 취업률(졸업 후 해당 시도 내 취업자 비율)과 지역 내 유지취업률은 졸업 뒤에 확정되는 숫자입니다. PCA는 그 앞단 — 학생이 소재지의 실제 기관·기업을 알고 우선순위를 잡는 과정 — 을 만들고, 그 집계를 남깁니다.",
+          "지역정주 취업률(졸업 후 해당 시도 내 취업자 비율)과 지역 내 유지취업률은 졸업 뒤에 확정되는 숫자입니다. METRI는 그 앞단 — 학생이 소재지의 실제 기관·기업을 알고 우선순위를 잡는 과정 — 을 만들고, 그 집계를 남깁니다.",
       },
       {
         title: "자체평가에 낼 수 있는 형식으로 나옵니다",
         body:
-          "지방정부는 교육부 평가 전에 대학 대상 자체평가를 실시하고, 대학은 성과지표 달성도를 제출합니다. PCA는 지역기업 매칭률과 정주 관심 지표가 담긴 익명 집계 리포트를 제공합니다. 무료 검사 결과는 이 자리에 쓸 수 없습니다.",
+          "지방정부는 교육부 평가 전에 대학 대상 자체평가를 실시하고, 대학은 성과지표 달성도를 제출합니다. METRI는 지역기업 매칭률과 정주 관심 지표가 담긴 익명 집계 리포트를 제공합니다. 무료 검사 결과는 이 자리에 쓸 수 없습니다.",
       },
       {
         title: "초광역으로 넓혀도 기준이 같습니다",
@@ -835,7 +835,7 @@ export const kr: SiteContent = {
       },
       {
         q: "앵커사업(구 라이즈) 성과 보고에 쓸 수 있나요?",
-        a: "지역기업 매칭률과 정주 관심 지표가 담긴 익명 집계 리포트를 제공합니다. 다만 지역정주 취업률 자체는 졸업 후 취업 통계로 확정되는 지표이므로, PCA가 그 숫자를 대신 산출한다고 말씀드리지는 않습니다. PCA가 대는 것은 학생 체감의 증거와 정주로 가는 과정 데이터입니다.",
+        a: "지역기업 매칭률과 정주 관심 지표가 담긴 익명 집계 리포트를 제공합니다. 다만 지역정주 취업률 자체는 졸업 후 취업 통계로 확정되는 지표이므로, METRI가 그 숫자를 대신 산출한다고 말씀드리지는 않습니다. METRI가 대는 것은 학생 체감의 증거와 정주로 가는 과정 데이터입니다.",
       },
       {
         q: "개인도 받을 수 있나요?",
@@ -961,13 +961,13 @@ export const kr: SiteContent = {
   },
 
   footer: {
-    note: "PCA 진로진단 · ACADEMIX가 개발했습니다",
+    note: "METRI 진로진단 · ACADEMIX가 개발했습니다",
     sitesLabel: "다른 나라",
     sites: [
-      { label: "Global (English)", href: "https://pca.example", ready: true },
-      { label: "한국", href: "https://pca.co.kr", ready: true },
-      { label: "Қазақстан", href: "https://pca.kz", ready: true },
-      { label: "Türkiye", href: "https://pca.com.tr", ready: false },
+      { label: "Global (English)", href: "https://metri.example", ready: true },
+      { label: "한국", href: "https://metri.co.kr", ready: true },
+      { label: "Қазақстан", href: "https://metri.kz", ready: true },
+      { label: "Türkiye", href: "https://metri.com.tr", ready: false },
     ],
     soonLabel: "준비 중",
     closing: "당신의 전공이 성공으로 이어지도록",

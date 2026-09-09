@@ -17,10 +17,10 @@ SITE=kz     npm run dev     # 카자흐어판
 
 | SITE | 도메인(예정) | 언어 | 상태 |
 |---|---|---|---|
-| `global` | pca.example | en | 있음 |
-| `kr` | pca.co.kr | ko | 있음 |
-| `kz` | pca.kz | kk | 있음 · **원어민 검수 전** |
-| `tr` | pca.com.tr | tr | 원고 없음 |
+| `global` | metri.example | en | 있음 |
+| `kr` | metri.co.kr | ko | 있음 |
+| `kz` | metri.kz | kk | 있음 · **원어민 검수 전** |
+| `tr` | metri.com.tr | tr | 원고 없음 |
 
 ## 지금 볼 수 있는 링크
 
@@ -38,8 +38,8 @@ SITE=kz     npm run dev     # 카자흐어판
 
 ```bash
 SITE=kr npm run build && SITE=kr npm start   # 다른 창에서
-node scripts/export-preview.mjs kr /tmp/pca-korea.html
-node scripts/check-preview.mjs /tmp/pca-korea.html   # 경로가 실제로 넘어가는지
+node scripts/export-preview.mjs kr /tmp/metri-kr.html
+node scripts/check-preview.mjs /tmp/metri-kr.html   # 경로가 실제로 넘어가는지
 ```
 
 `check-preview.mjs` 는 뽑아낸 파일을 브라우저로 열어 경로마다 제 페이지가
@@ -62,7 +62,7 @@ id 가 겹쳐 요금제를 눌러도 홈이 나오던 적이 있었고, 그때�
 만들어지므로, `npm start` 에만 주면 반영되지 않는다.
 
 ```bash
-PLATFORM_URL=https://app.pca.co.kr SITE=kr npm run build
+PLATFORM_URL=https://app.metri.co.kr SITE=kr npm run build
 ```
 
 바꾼 뒤 반영이 안 되면 `.next` 를 지우고 다시 빌드한다. 이전 빌드가 캐시에
@@ -111,7 +111,7 @@ node scripts/e2e-platform-link.mjs   # 눌러서 플랫폼 로그인까지 가�
 
 - **문의 접수**가 서버 파일(`.inquiries/contact.jsonl`)에 쌓이기만 한다.
   운영에 올리기 전에 메일 발송이나 CRM 연동으로 바꿔야 한다. `src/app/actions.ts` 참고
-- **브랜드명과 도메인이 미정**이다. 지금은 `PCA` 와 `pca.example` 을 임시로 쓴다.
+- **브랜드명과 도메인이 미정**이다. 지금은 `METRI` 와 `metri.example` 을 임시로 쓴다.
   정해지면 각 원고 파일의 `brand` · `domain` · `platformUrl` 만 고치면 된다
 - **카자흐어 원고가 원어민 검수를 받지 않았다.** 구조와 사실관계는 맞지만
   문장은 초안이다. 배포 전에 카자흐어를 쓰는 사람이 한 번 읽어야 한다.

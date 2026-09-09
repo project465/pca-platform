@@ -30,7 +30,7 @@ export default function AnchorPage() {
               나누어 정리했습니다.
             </PullQuote>
             <div style={{ marginTop: 24 }}>
-              <a className="btn lg solid" href="/pca">
+              <a className="btn lg solid" href="/metri">
                 결과지 9번 섹션 보기
               </a>
             </div>

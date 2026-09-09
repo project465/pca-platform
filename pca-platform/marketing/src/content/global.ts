@@ -8,14 +8,14 @@ import type { SiteContent } from "./types";
 export const global: SiteContent = {
   key: "global",
   lang: "en",
-  domain: "pca.example",
-  brand: "PCA",
+  domain: "metri.example",
+  brand: "METRI",
   org: "ACADEMIX",
   orgTagline: "EDUCATION & CONFERENCE",
-  platformUrl: "https://app.pca.example",
+  platformUrl: "https://app.metri.example",
 
   meta: {
-    title: "PCA — A career strategy built around the major you already chose",
+    title: "METRI — A career strategy built around the major you already chose",
     description:
       "Personalized Career Analysis reads job fit, work style and execution strategy together, then tells students what to prepare — projects, applications, interviews, founding, and employers in their own region.",
   },
@@ -30,7 +30,7 @@ export const global: SiteContent = {
     nextLabel: "NEXT",
     nextHeading: "What would this look like at your institution?",
     pageTitles: {
-      pca: "PCA",
+      metri: "METRI",
       adopt: "Adoption",
       pricing: "Pricing",
       about: "About",
@@ -39,7 +39,7 @@ export const global: SiteContent = {
       partnership: "Partnership",
     },
     linkTitles: {
-      pca: "The diagnosis",
+      metri: "The diagnosis",
       adopt: "How adoption works",
       contact: "Talk to us",
       localisation: "Localisation",
@@ -56,7 +56,7 @@ export const global: SiteContent = {
         "Photo — invited speaker",
         "Photo — the team",
       ],
-      pca: "Photo — a department sitting the assessment",
+      metri: "Photo — a department sitting the assessment",
       adopt: "Photo — the administrator screen in use",
       localisation: "Photo — a localisation workshop with a partner university",
     },
@@ -64,7 +64,7 @@ export const global: SiteContent = {
 
   nav: {
     items: [
-      { label: "PCA", href: "/pca" },
+      { label: "METRI", href: "/metri" },
       { label: "LOCALISATION", href: "/localisation" },
       { label: "PARTNERSHIP", href: "/partnership" },
       { label: "PRICING", href: "/pricing" },
@@ -79,23 +79,23 @@ export const global: SiteContent = {
   },
 
   hero: {
-    eyebrow: "PCA · PERSONALIZED CAREER ANALYSIS",
+    eyebrow: "METRI · PERSONALIZED CAREER ANALYSIS",
     title: ["Your students already know their major.", "{Nobody has told them what to do next.}"],
     lead:
-      "PCA ranks ten job areas out of 100, maps six work styles, and writes each student a 15–20 page plan — credentials, projects, applications, interviews, founding, and employers in their own region. Built in Korea, rebuilt in your country from your own labour-market data.",
+      "METRI ranks ten job areas out of 100, maps six work styles, and writes each student a 15–20 page plan — credentials, projects, applications, interviews, founding, and employers in their own region. Built in Korea, rebuilt in your country from your own labour-market data.",
     primary: { label: "Talk to us", href: "/contact" },
     secondary: { label: "See a real report", href: "#sample" },
-    watermark: "PCA",
+    watermark: "METRI",
   },
 
   sample: {
     label: "A REAL REPORT",
     heading: "Before the method, look at what a student is handed",
     lead:
-      "What PCA measures is the second question. Below is a 15–20 page report with four of its pages put on one screen. A student does not receive a type name. They receive this.",
+      "What METRI measures is the second question. Below is a 15–20 page report with four of its pages put on one screen. A student does not receive a type name. They receive this.",
     disclaimer:
       "An illustrative screen showing the format of the report — not a real student’s submission. The ten job areas, the six work styles and the regional method are exactly as they ship.",
-    docTag: "PCA INDIVIDUAL REPORT",
+    docTag: "METRI INDIVIDUAL REPORT",
     page: "extract · 00-1 · 00-2 · 05–06 · regional annex",
     person: {
       name: "Sample student",
@@ -171,13 +171,13 @@ export const global: SiteContent = {
       line: "Every student in the department gets one of these, with their own name on it.",
       sub: "Tell us the department and the cohort size; we come back within a day with a plan and a quote.",
       primary: { label: "Talk to us", href: "/contact" },
-      secondary: { label: "See all ten sections", href: "/pca" },
+      secondary: { label: "See all ten sections", href: "/metri" },
     },
   },
 
   who: {
     label: "WHO IS IT FOR",
-    heading: "Who brings PCA into a country",
+    heading: "Who brings METRI into a country",
     items: [
       {
         no: "01",
@@ -201,8 +201,8 @@ export const global: SiteContent = {
   },
 
   analyze: {
-    label: "WHAT PCA ANALYZES",
-    heading: "PCA analyses three things together",
+    label: "WHAT METRI ANALYZES",
+    heading: "METRI analyses three things together",
     lead:
       "The three are not read separately. They are joined, which is why the result lands as something to do rather than something to know.",
     items: [
@@ -228,7 +228,7 @@ export const global: SiteContent = {
   },
 
   why: {
-    label: "WHY PCA",
+    label: "WHY METRI",
     heading: "The result connects straight through to a roadmap",
     vs: "VS",
     before: {
@@ -239,7 +239,7 @@ export const global: SiteContent = {
     },
     after: {
       tag: "Strategy-led",
-      title: "PCA",
+      title: "METRI",
       steps: [
         "Analyse the job areas that fit",
         "Map work style across six axes",
@@ -253,7 +253,7 @@ export const global: SiteContent = {
     label: "RESULT SHEET",
     heading: "What the report contains",
     lead: [
-      "PCA runs diagnosis → strengths → application → strategy → execution.",
+      "METRI runs diagnosis → strengths → application → strategy → execution.",
       "Open a section to see how the report is built.",
     ],
     more: "continues in the report",
@@ -585,7 +585,7 @@ export const global: SiteContent = {
 
   evidence: {
     label: "EVIDENCE BASE",
-    heading: "PCA was built from data",
+    heading: "METRI was built from data",
     lead:
       "Not a personality inventory. A student sample and real recruitment-market material, combined so the diagnosis reflects the capability the market actually asks for.",
     stats: [
@@ -603,11 +603,11 @@ export const global: SiteContent = {
         { name: "Engineering department selection indicators", no: "C-2025-059731" },
         { name: "Graduate career confirmation indicators", no: "C-2025-059732" },
       ],
-      note: "The core diagnostic items in the PCA indicator family are registered with the Korea Copyright Commission and legally protected.",
+      note: "The core diagnostic items in the METRI indicator family are registered with the Korea Copyright Commission and legally protected.",
     },
     standards: {
       title: "Standards referenced in the design",
-      head: ["Framework", "Issued by / lineage", "How it informed PCA"],
+      head: ["Framework", "Issued by / lineage", "How it informed METRI"],
       rows: [
         ["NCS", "Ministry of Employment and Labor · HRD Korea", "Alignment of job areas and required capability with the national standard"],
         ["O*NET lineage", "US Department of Labor occupational information", "Reference for job areas and task-level design"],
@@ -621,12 +621,12 @@ export const global: SiteContent = {
   },
 
   choose: {
-    label: "WHY CHOOSE PCA",
+    label: "WHY CHOOSE METRI",
     heading: "Why this and not another test",
     items: [
       {
         title: "What a free test cannot give you",
-        body: "Public career services produce results you cannot file as institutional evidence. PCA gives the student a 15–20 page plan and the institution an anonymised aggregate report it can submit.",
+        body: "Public career services produce results you cannot file as institutional evidence. METRI gives the student a 15–20 page plan and the institution an anonymised aggregate report it can submit.",
       },
       {
         title: "Recruitment market, not personality theory",
@@ -655,7 +655,7 @@ export const global: SiteContent = {
     label: "ABOUT US",
     heading: "Developed by ACADEMIX",
     body:
-      "ACADEMIX designs education programmes and runs events for universities and public institutions. PCA was developed in-house.",
+      "ACADEMIX designs education programmes and runs events for universities and public institutions. METRI was developed in-house.",
     highlight:
       "Staffed by people out of government-funded research institutes and backed by a wide industry network, guiding career preparation from undergraduates through doctoral graduates.",
     brandsLabel: "Brands",
@@ -684,7 +684,7 @@ export const global: SiteContent = {
     label: "PROGRAM",
     heading: "The diagnosis is one part of a programme",
     lead:
-      "PCA is not sold as a test in isolation. The result feeds the lectures, mentoring and recruitment events that follow it.",
+      "METRI is not sold as a test in isolation. The result feeds the lectures, mentoring and recruitment events that follow it.",
     items: [
       {
         title: "Employment lectures and industry speakers",
@@ -871,7 +871,7 @@ export const global: SiteContent = {
       {
         key: "country",
         name: "Country partner",
-        who: "An operator bringing PCA to their market",
+        who: "An operator bringing METRI to their market",
         price: null,
         unit: "licence",
         note: "Scoped against a pilot cohort rather than quoted blind.",
@@ -899,16 +899,16 @@ export const global: SiteContent = {
     note:
       "Domains shown are placeholders until each country site goes live. If your country is not listed yet, talk to us — that is how a new one starts.",
     items: [
-      { code: "KR", name: "Korea", native: "한국", domain: "pca.co.kr", href: "https://pca.co.kr", live: true },
-      { code: "DE", name: "Germany", native: "Deutschland", domain: "pca.de", href: "https://pca.de", live: true },
-      { code: "US", name: "United States", native: "United States", domain: "pca.us", href: "https://pca.us", live: true },
-      { code: "JP", name: "Japan", native: "日本", domain: "pca.jp", href: "https://pca.jp", live: true },
-      { code: "CN", name: "China", native: "中国", domain: "pca.cn", href: "https://pca.cn", live: true },
-      { code: "TR", name: "Türkiye", native: "Türkiye", domain: "pca.com.tr", href: "https://pca.com.tr", live: true },
-      { code: "KZ", name: "Kazakhstan", native: "Қазақстан", domain: "pca.kz", href: "#contact", live: false },
-      { code: "FR", name: "France", native: "France", domain: "pca.fr", href: "#contact", live: false },
-      { code: "ZA", name: "South Africa", native: "South Africa", domain: "pca.co.za", href: "#contact", live: false },
-      { code: "PH", name: "Philippines", native: "Pilipinas", domain: "pca.ph", href: "#contact", live: false },
+      { code: "KR", name: "Korea", native: "한국", domain: "metri.co.kr", href: "https://metri.co.kr", live: true },
+      { code: "DE", name: "Germany", native: "Deutschland", domain: "metri.de", href: "https://metri.de", live: true },
+      { code: "US", name: "United States", native: "United States", domain: "metri.us", href: "https://metri.us", live: true },
+      { code: "JP", name: "Japan", native: "日本", domain: "metri.jp", href: "https://metri.jp", live: true },
+      { code: "CN", name: "China", native: "中国", domain: "metri.cn", href: "https://metri.cn", live: true },
+      { code: "TR", name: "Türkiye", native: "Türkiye", domain: "metri.com.tr", href: "https://metri.com.tr", live: true },
+      { code: "KZ", name: "Kazakhstan", native: "Қазақстан", domain: "metri.kz", href: "#contact", live: false },
+      { code: "FR", name: "France", native: "France", domain: "metri.fr", href: "#contact", live: false },
+      { code: "ZA", name: "South Africa", native: "South Africa", domain: "metri.co.za", href: "#contact", live: false },
+      { code: "PH", name: "Philippines", native: "Pilipinas", domain: "metri.ph", href: "#contact", live: false },
     ],
   },
 
@@ -922,7 +922,7 @@ export const global: SiteContent = {
     typeLabel: "What is this about",
     types: [
       { value: "org", label: "University or department rollout" },
-      { value: "partner", label: "Operating PCA in my country" },
+      { value: "partner", label: "Operating METRI in my country" },
       { value: "individual", label: "An individual assessment" },
     ],
     afterLabel: "What happens next",
@@ -948,20 +948,20 @@ export const global: SiteContent = {
   },
 
   footer: {
-    note: "PCA · developed by ACADEMIX",
+    note: "METRI · developed by ACADEMIX",
     sitesLabel: "Countries",
     sites: [
-      { label: "Global (English)", href: "https://pca.example", ready: true },
-      { label: "한국", href: "https://pca.co.kr", ready: true },
-      { label: "Қазақстан", href: "https://pca.kz", ready: true },
-      { label: "Türkiye", href: "https://pca.com.tr", ready: false },
+      { label: "Global (English)", href: "https://metri.example", ready: true },
+      { label: "한국", href: "https://metri.co.kr", ready: true },
+      { label: "Қазақстан", href: "https://metri.kz", ready: true },
+      { label: "Türkiye", href: "https://metri.com.tr", ready: false },
     ],
     soonLabel: "coming soon",
     closing: "So that a major leads somewhere",
   },
 
   map: {
-    heading: "Where PCA runs",
+    heading: "Where METRI runs",
     lead:
       "The instrument, the job areas and the work-style framework are shared worldwide. What is filled in per country is the university, its local employers, and the translations.",
     countries: [

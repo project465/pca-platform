@@ -210,7 +210,7 @@ export type Ui = {
   sheetCta: string;
   moreLabel: string;
   moreHeading: string;
-  /** /pca 아래쪽 이어보기 */
+  /** /metri 아래쪽 이어보기 */
   nextLabel: string;
   nextHeading: string;
   /** 브라우저 탭에 뜨는 이름 */
@@ -221,7 +221,7 @@ export type Ui = {
   photos: {
     home: string[];
     about: string[];
-    pca: string;
+    metri: string;
     adopt: string;
     localisation: string;
   };

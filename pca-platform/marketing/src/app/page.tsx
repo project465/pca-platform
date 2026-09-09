@@ -36,7 +36,7 @@ export default function Home() {
             <h2 style={{ margin: "16px 0 16px" }}>{site.sheet.heading}</h2>
             <p className="lead">{site.sheet.lead[0]}</p>
             <div style={{ marginTop: 24 }}>
-              <a className="btn lg solid" href="/pca">
+              <a className="btn lg solid" href="/metri">
                 {u.sheetCta}
               </a>
             </div>

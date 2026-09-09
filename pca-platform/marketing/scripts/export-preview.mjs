@@ -33,7 +33,15 @@ page.on("response", async (res) => {
 await page.goto(BASE + "/", { waitUntil: "networkidle" });
 await page.waitForTimeout(700);
 
-const title = await page.title();
+/* 미리보기 한 장의 이름.
+   사이트의 meta title 은 검색 결과용이라 길다. 미리보기는 목록에서 골라
+   여는 것이므로 짧고 구별되는 이름이 낫다 */
+const PREVIEW_NAME = {
+  global: "METRI Global",
+  kr: "METRI 코리아",
+  kz: "METRI Қазақстан",
+};
+const title = PREVIEW_NAME[site] ?? (await page.title());
 const lang = await page.getAttribute("html", "lang");
 /* 색과 결은 <html data-theme> 에 걸려 있다. 뽑아낸 한 장에는 그 html 이
    없으므로 토큰을 :root 로 옮겨 심어야 한다. 이걸 빼먹으면 어두운 판

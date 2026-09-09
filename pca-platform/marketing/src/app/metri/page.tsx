@@ -5,7 +5,7 @@ import { Analyze, Choose, Styles, Why } from "@/components/sections";
 import { NextLink, PageHead, PhotoSlot } from "@/components/visuals";
 
 export function generateMetadata() {
-  return { title: getSite().ui.pageTitles.pca };
+  return { title: getSite().ui.pageTitles.metri };
 }
 
 export default function PcaPage() {
@@ -22,7 +22,7 @@ export default function PcaPage() {
       <section className="divided">
         <div className="wrap photosplit">
           <PhotoSlot
-            caption={u.photos.pca}
+            caption={u.photos.metri}
             ratio="4 / 3"
           />
           <div>
