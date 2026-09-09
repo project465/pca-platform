@@ -19,6 +19,46 @@ export const kr: SiteContent = {
       "적합 직무·업무 성향·실행 전략을 함께 분석해, 다음에 무엇을 준비해야 하는지까지 제시하는 진로진단입니다. 프로젝트·자소서·면접·창업·지역 기업 연계까지 이어집니다.",
   },
 
+  ui: {
+    glanceLabel: "한눈에",
+    glanceHeading: "진단 한 번이 실행까지 이어집니다",
+    flow: ["진단 응시", "직무 영역 10개", "업무 성향 6유형", "실행 전략", "지역 기업 연계"],
+    sheetCta: "결과지 구성 보기",
+    moreLabel: "더 보기",
+    moreHeading: "필요한 곳부터 보세요",
+    nextLabel: "다음",
+    nextHeading: "우리 학과에는 어떻게 적용될까요?",
+    pageTitles: {
+      pca: "PCA",
+      adopt: "도입 안내",
+      anchor: "지역·앵커",
+      pricing: "요금제",
+      about: "기관 소개",
+      contact: "문의",
+    },
+    linkTitles: {
+      pca: "PCA 진단 자세히",
+      adopt: "도입 안내",
+      anchor: "지역·앵커 활용",
+      contact: "도입·상담 문의",
+    },
+    photos: {
+      home: [
+        "사진 자리 — 직무별 취업 특강 현장",
+        "사진 자리 — STEM 멘토링 진행 장면",
+        "사진 자리 — 채용 박람회 부스",
+      ],
+      about: [
+        "사진 자리 — 대학 행사 운영",
+        "사진 자리 — 전문가 초청 특강",
+        "사진 자리 — 팀 또는 사무 공간",
+      ],
+      pca: "사진 자리 — 학과 단위 단체 응시 현장",
+      adopt: "사진 자리 — 관리자 페이지 화면 또는 담당자 운영 장면",
+      localisation: "사진 자리 — 파트너 대학과의 현지화 워크숍",
+    },
+  },
+
   nav: {
     items: [
       { label: "PCA", href: "/pca" },
@@ -926,7 +966,7 @@ export const kr: SiteContent = {
     sites: [
       { label: "Global (English)", href: "https://pca.example", ready: true },
       { label: "한국", href: "https://pca.co.kr", ready: true },
-      { label: "Қазақстан", href: "https://pca.kz", ready: false },
+      { label: "Қазақстан", href: "https://pca.kz", ready: true },
       { label: "Türkiye", href: "https://pca.com.tr", ready: false },
     ],
     soonLabel: "준비 중",

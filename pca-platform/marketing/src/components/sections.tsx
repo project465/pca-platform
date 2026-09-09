@@ -50,16 +50,20 @@ function AnalyzeIcon({ n }: { n: number }) {
   );
 }
 
-export function Analyze({ site }: { site: SiteContent }) {
+export function Analyze(
+  { site, bare }: { site: SiteContent; bare?: boolean },
+) {
   const a = site.analyze;
   return (
     <section id="analyze" className="divided">
       <div className="wrap">
-        <div className="sec-head">
-          <span className="label-sm">{a.label}</span>
-          <h2>{a.heading}</h2>
-          <p className="lead">{a.lead}</p>
-        </div>
+        {bare ? null : (
+          <div className="sec-head">
+            <span className="label-sm">{a.label}</span>
+            <h2>{a.heading}</h2>
+            <p className="lead">{a.lead}</p>
+          </div>
+        )}
         <div className="cardgrid c3">
           {a.items.map((i, n) => (
             <div className="card" key={i.no}>
@@ -334,16 +338,22 @@ export function FloatingCta({ site }: { site: SiteContent }) {
 
 /* ── 홈페이지 절 ───────────────────────────────── */
 
-export function About({ site }: { site: SiteContent }) {
+export function About(
+  { site, bare }: { site: SiteContent; bare?: boolean },
+) {
   const a = site.about;
   return (
     <section id="about" className="divided">
       <div className="wrap">
         <div className="aboutgrid">
           <div>
-            <span className="label-sm">{a.label}</span>
-            <h2 style={{ margin: "16px 0 16px" }}>{a.heading}</h2>
-            <p className="lead">{a.body}</p>
+            {bare ? null : (
+              <>
+                <span className="label-sm">{a.label}</span>
+                <h2 style={{ margin: "16px 0 16px" }}>{a.heading}</h2>
+                <p className="lead">{a.body}</p>
+              </>
+            )}
             <p className="highlight">{a.highlight}</p>
           </div>
           <div className="metalist">
@@ -400,17 +410,21 @@ export function ProgramSection({ site }: { site: SiteContent }) {
 }
 
 /** 한국 전용 — 앵커사업 맥락 */
-export function University({ site }: { site: SiteContent }) {
+export function University(
+  { site, bare }: { site: SiteContent; bare?: boolean },
+) {
   const u = site.university;
   if (!u) return null;
   return (
     <section id="university" className="divided">
       <div className="wrap">
-        <div className="sec-head">
-          <span className="label-sm">{u.label}</span>
-          <h2>{u.heading}</h2>
-          <p className="lead">{u.lead}</p>
-        </div>
+        {bare ? null : (
+          <div className="sec-head">
+            <span className="label-sm">{u.label}</span>
+            <h2>{u.heading}</h2>
+            <p className="lead">{u.lead}</p>
+          </div>
+        )}
 
         <div className="facts">
           {u.facts.map((f) => (
@@ -439,17 +453,21 @@ export function University({ site }: { site: SiteContent }) {
   );
 }
 
-export function ProcessSection({ site }: { site: SiteContent }) {
+export function ProcessSection(
+  { site, bare }: { site: SiteContent; bare?: boolean },
+) {
   const p = site.process;
   if (!p) return null;
   return (
     <section id="process" className="divided tinted">
       <div className="wrap">
-        <div className="sec-head">
-          <span className="label-sm">{p.label}</span>
-          <h2>{p.heading}</h2>
-          <p className="lead">{p.lead}</p>
-        </div>
+        {bare ? null : (
+          <div className="sec-head">
+            <span className="label-sm">{p.label}</span>
+            <h2>{p.heading}</h2>
+            <p className="lead">{p.lead}</p>
+          </div>
+        )}
         <ol className="steps3">
           {p.steps.map((s) => (
             <li key={s.title}>
@@ -467,17 +485,21 @@ export function ProcessSection({ site }: { site: SiteContent }) {
 }
 
 /** 글로벌 전용 — 무엇이 공유되고 무엇을 다시 만드는가 */
-export function Localisation({ site }: { site: SiteContent }) {
+export function Localisation(
+  { site, bare }: { site: SiteContent; bare?: boolean },
+) {
   const l = site.localisation;
   if (!l) return null;
   return (
     <section id="localisation" className="divided">
       <div className="wrap">
-        <div className="sec-head">
-          <span className="label-sm">{l.label}</span>
-          <h2>{l.heading}</h2>
-          <p className="lead">{l.lead}</p>
-        </div>
+        {bare ? null : (
+          <div className="sec-head">
+            <span className="label-sm">{l.label}</span>
+            <h2>{l.heading}</h2>
+            <p className="lead">{l.lead}</p>
+          </div>
+        )}
         <div className="layers">
           {l.layers.map((la, i) => (
             <div className={`layer${i === 0 ? " shared" : ""}`} key={la.tag}>
@@ -501,17 +523,21 @@ export function Localisation({ site }: { site: SiteContent }) {
 }
 
 /** 글로벌 전용 — 역할 분담과 단계 */
-export function Partnership({ site }: { site: SiteContent }) {
+export function Partnership(
+  { site, bare }: { site: SiteContent; bare?: boolean },
+) {
   const p = site.partnership;
   if (!p) return null;
   return (
     <section id="partnership" className="divided tinted">
       <div className="wrap">
-        <div className="sec-head">
-          <span className="label-sm">{p.label}</span>
-          <h2>{p.heading}</h2>
-          <p className="lead">{p.lead}</p>
-        </div>
+        {bare ? null : (
+          <div className="sec-head">
+            <span className="label-sm">{p.label}</span>
+            <h2>{p.heading}</h2>
+            <p className="lead">{p.lead}</p>
+          </div>
+        )}
         <div className="splitgrid">
           {p.columns.map((c) => (
             <div className="splitcol" key={c.title}>
@@ -620,16 +646,20 @@ export function RegionPicker({ site }: { site: SiteContent }) {
 }
 
 /** 요금제. 가격이 채워지면 문의가 아니라 신청 버튼이 된다 */
-export function PricingSection({ site }: { site: SiteContent }) {
+export function PricingSection(
+  { site, bare }: { site: SiteContent; bare?: boolean },
+) {
   const p = site.pricing;
   return (
     <section id="pricing" className="divided">
       <div className="wrap">
-        <div className="sec-head">
-          <span className="label-sm">{p.label}</span>
-          <h2>{p.heading}</h2>
-          <p className="lead">{p.lead}</p>
-        </div>
+        {bare ? null : (
+          <div className="sec-head">
+            <span className="label-sm">{p.label}</span>
+            <h2>{p.heading}</h2>
+            <p className="lead">{p.lead}</p>
+          </div>
+        )}
 
         <div className="plangrid">
           {p.plans.map((pl) => (

@@ -32,6 +32,19 @@
   --good: #2F6B57;
   --warn: #A87F3F;
 
+  /* 눌러 쓰는 블록(솔리드 단추·마감 배너·떠 있는 단추)의 바탕과 그 위의 글자.
+     밝은 판에서는 잉크색이지만, 어두운 판에서는 잉크가 곧 글자색이라
+     같은 값을 쓸 수 없다. 그래서 따로 둔다 */
+  --strong: #0F1B2D;
+  --strong-hi: #1B2A40;
+  --on-strong: #FFFFFF;
+  /* 마감 배너의 보조 문구 */
+  --on-strong-2: #A9B6C6;
+  /* 마감 배너의 주 단추 */
+  --cta: #A87F3F;
+  --cta-hi: #C6A163;
+  --on-cta: #1A1206;
+
   --measure: 62ch;
   --pad: clamp(18px, 4.5vw, 46px);
   --r: 12px;
@@ -88,7 +101,7 @@ section { padding-block: clamp(60px, 8vw, 108px); }
 .brandmark { display: flex; align-items: center; gap: 11px; text-decoration: none; }
 .brandmark .glyph {
   width: 28px; height: 28px; flex: none; border-radius: 5px;
-  background: var(--ink); color: var(--gold-hi);
+  background: var(--strong); color: var(--gold-hi);
   display: grid; place-items: center; font-size: 13px; font-weight: 800; letter-spacing: -0.04em;
 }
 .brandmark b { font-size: 16px; font-weight: 800; letter-spacing: 0.02em; display: block; }
@@ -114,8 +127,8 @@ section { padding-block: clamp(60px, 8vw, 108px); }
   transition: border-color .15s ease, background .15s ease, color .15s ease;
 }
 .btn:hover { border-color: var(--ink); }
-.btn.solid { background: var(--ink); border-color: var(--ink); color: #fff; }
-.btn.solid:hover { background: #1B2A40; border-color: #1B2A40; }
+.btn.solid { background: var(--strong); border-color: var(--strong); color: var(--on-strong); }
+.btn.solid:hover { background: var(--strong-hi); border-color: var(--strong-hi); }
 .btn.lg { font-size: 15.5px; padding: 14px 26px; }
 .btn.full-w { width: 100%; }
 .btn[disabled] { opacity: .45; cursor: default; }
@@ -370,15 +383,15 @@ section { padding-block: clamp(60px, 8vw, 108px); }
 .tablescroll { overflow-x: auto; }
 
 /* ---------- 마감 배너 ---------- */
-.closing { background: var(--ink); color: #fff; text-align: center; }
+.closing { background: var(--strong); color: var(--on-strong); text-align: center; }
 .closing .kick { font-size: 12px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: var(--gold-hi); margin-bottom: 20px; }
-.closing h2 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); }
-.closing p { margin-top: 16px; font-size: 15.5px; color: #A9B6C6; }
+.closing h2 { color: var(--on-strong); font-size: clamp(26px, 3.8vw, 42px); }
+.closing p { margin-top: 16px; font-size: 15.5px; color: var(--on-strong-2); }
 .closing .cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
-.closing .btn { background: transparent; border-color: rgba(255,255,255,.28); color: #fff; }
-.closing .btn:hover { background: #fff; border-color: #fff; color: var(--ink); }
-.closing .btn.solid { background: var(--gold); border-color: var(--gold); color: #1A1206; }
-.closing .btn.solid:hover { background: var(--gold-hi); border-color: var(--gold-hi); color: #1A1206; }
+.closing .btn { background: transparent; border-color: rgba(255,255,255,.28); color: var(--on-strong); }
+.closing .btn:hover { background: var(--on-strong); border-color: var(--on-strong); color: var(--strong); }
+.closing .btn.solid { background: var(--cta); border-color: var(--cta); color: var(--on-cta); }
+.closing .btn.solid:hover { background: var(--cta-hi); border-color: var(--cta-hi); color: var(--on-cta); }
 
 /* ---------- 문의 ---------- */
 .contact { background: var(--ground); border-top: 1px solid var(--line); }
@@ -387,11 +400,11 @@ section { padding-block: clamp(60px, 8vw, 108px); }
 .floating {
   position: fixed; right: 20px; bottom: 20px; z-index: 60;
   display: inline-flex; align-items: center; gap: 9px;
-  background: var(--ink); color: #fff; text-decoration: none;
+  background: var(--strong); color: var(--on-strong); text-decoration: none;
   font-size: 14px; font-weight: 800; padding: 13px 20px; border-radius: 999px;
   box-shadow: 0 12px 32px rgba(15,27,45,.28);
 }
-.floating:hover { background: var(--gold); color: #1A1206; }
+.floating:hover { background: var(--cta); color: var(--on-cta); }
 
 /* ---------- 지도 ---------- */
 .where { background: var(--ground); }
@@ -666,7 +679,9 @@ section { padding-block: clamp(60px, 8vw, 108px); }
 .region.soon .st { color: var(--faint); }
 
 /* ---------- 요금제 ---------- */
-.plangrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: stretch; }
+/* 요금제가 셋일 때도 넷일 때도 한 줄에 서야 한다. 넷째(건당 정산)를
+   더한 뒤 3열 고정이라 혼자 아랫줄로 떨어져 있었다 */
+.plangrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(238px, 1fr)); gap: 16px; align-items: stretch; }
 @media (max-width: 900px) { .plangrid { grid-template-columns: 1fr; } }
 .plan { border: 1px solid var(--line); border-radius: var(--r); padding: 30px 26px 28px; display: flex; flex-direction: column; gap: 10px; background: var(--paper); }
 .plan.featured { border-color: var(--ink); box-shadow: 0 18px 50px rgba(15,27,45,.10); }
@@ -776,3 +791,121 @@ section { padding-block: clamp(60px, 8vw, 108px); }
 }
 .privacy-note a { color: inherit; text-decoration: underline; }
 .privacy-note a:hover { color: var(--ink); }
+
+/* ============================================================
+   THEME · steppe — 카자흐스탄판
+   
+   앞의 두 판(글로벌·한국)은 흰 종이에 잉크와 금색이다. 대학에 내는
+   문서처럼 보이게 만든 것이고, 그 결은 그대로 둔다.
+   
+   카자흐스탄판은 반대로 간다. 어두운 바탕에 하늘빛 강조다. 같은 회사가
+   낸 것이되 같은 페이지를 번역만 한 것처럼 보이지 않아야 하기 때문이다.
+   모서리도 둥글게 굴리지 않고 각을 살린다 — 결이 다르면 각도 달라야 한다.
+   
+   딱 하나 지키는 것이 있다. **결과지만은 흰 문서로 띄운다.** 어두운 화면
+   한가운데 흰 종이가 떠 있는 것이 이 브랜드의 규칙이고, 여기서도 지킨다.
+   ============================================================ */
+[data-theme="steppe"] {
+  --paper: #131E28;
+  --ground: #0B1319;
+  --ground-2: #1B2A35;
+
+  --ink: #E9F1F5;
+  --ink-2: #BCCBD4;
+  --muted: #8A9CA8;
+  --faint: #62747F;
+
+  --line: #22323E;
+  --line-2: #314656;
+
+  /* 금색이 하던 자리를 하늘빛이 대신한다 */
+  --gold: #55BFD4;
+  --gold-hi: #83D7E7;
+  --gold-soft: #12303A;
+  --gold-line: #2B5866;
+
+  --accent: #55BFD4;
+  --accent-soft: #12303A;
+
+  --good: #4FB392;
+  --warn: #D9A85E;
+
+  --strong: #45B2C8;
+  --strong-hi: #63C8DC;
+  --on-strong: #04171D;
+  --on-strong-2: #9FB4BE;
+
+  --cta: #E0AE6B;
+  --cta-hi: #EFC48A;
+  --on-cta: #201404;
+
+  /* 각을 살린다 */
+  --r: 0px;
+}
+
+/* 머리띠는 반투명한 어두운 판이라야 한다 */
+[data-theme="steppe"] .site-header {
+  background: rgba(19, 30, 40, .86);
+  border-bottom-color: var(--line-2);
+}
+
+/* 히어로의 큰 워터마크는 어두운 바탕에서 더 살려야 보인다 */
+[data-theme="steppe"] .hero .mark { opacity: .05; }
+
+/* 둥근 모서리를 쓰는 곳이 따로 있어 함께 눌러 준다 */
+[data-theme="steppe"] .btn,
+[data-theme="steppe"] .mnav summary,
+[data-theme="steppe"] .quickbox,
+[data-theme="steppe"] .field input,
+[data-theme="steppe"] .field select,
+[data-theme="steppe"] .field textarea,
+[data-theme="steppe"] .notice { border-radius: 0; }
+[data-theme="steppe"] .brandmark .glyph { border-radius: 0; }
+
+/* 마감 배너. 강조색을 통째로 깔면 소리가 너무 커서 바탕은 눌러 두고
+   단추만 띄운다 */
+[data-theme="steppe"] .closing {
+  background: var(--ground);
+  color: var(--ink);
+  border-top: 1px solid var(--line-2);
+}
+[data-theme="steppe"] .closing h2 { color: var(--ink); }
+[data-theme="steppe"] .closing p { color: var(--muted); }
+[data-theme="steppe"] .closing .btn {
+  border-color: var(--line-2); color: var(--ink);
+}
+[data-theme="steppe"] .closing .btn:hover {
+  background: var(--ground-2); border-color: var(--gold); color: var(--ink);
+}
+
+/* 오류 문구는 어두운 바탕에서 읽혀야 한다 */
+[data-theme="steppe"] .notice.err {
+  border-color: #7E3A31; color: #F0A79B; background: #241615;
+}
+
+/* 지도의 육지 */
+[data-theme="steppe"] .mapfig .land { fill: #1E2E3A; }
+
+/* ── 결과지는 흰 문서로 ──
+   토큰을 이 안에서 다시 선언하면 아래 있는 것들이 전부 따라온다.
+   어두운 화면 속에 밝은 판 하나를 섬처럼 띄우는 방법이다.
+   결과지를 흉내 내는 것(.report, .cover)도 같이 흰 판이라야 한 벌로 읽힌다. */
+[data-theme="steppe"] .doc,
+[data-theme="steppe"] .report,
+[data-theme="steppe"] .cover {
+  --paper: #FFFFFF;
+  --ground: #F5F7FA;
+  --ground-2: #EDF1F6;
+  --ink: #0F1B2D;
+  --ink-2: #33445A;
+  --muted: #6B7A8D;
+  --faint: #9AA7B6;
+  --line: #E4E9F0;
+  --line-2: #CFD8E4;
+  --gold: #A87F3F;
+  --gold-hi: #C6A163;
+  --gold-soft: #F6F0E4;
+  --gold-line: #E4D5BA;
+  background: var(--paper);
+  color: var(--ink);
+}

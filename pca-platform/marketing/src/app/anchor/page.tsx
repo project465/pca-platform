@@ -4,7 +4,9 @@ import Shell from "@/components/shell";
 import { University } from "@/components/sections";
 import { NextLink, PageHead, PhotoSlot, PullQuote } from "@/components/visuals";
 
-export const metadata = { title: "지역·앵커" };
+export function generateMetadata() {
+  return { title: getSite().ui.pageTitles.anchor ?? "" };
+}
 
 /** 한국 전용. 다른 나라 원고에는 이 절이 없다 */
 export default function AnchorPage() {
@@ -15,7 +17,7 @@ export default function AnchorPage() {
   return (
     <Shell>
       <PageHead label={u.label} title={u.heading} lead={u.lead} />
-      <University site={site} />
+      <University site={site} bare />
       <section className="divided tinted">
         <div className="wrap photosplit">
           <div>

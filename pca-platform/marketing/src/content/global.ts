@@ -20,6 +20,48 @@ export const global: SiteContent = {
       "Personalized Career Analysis reads job fit, work style and execution strategy together, then tells students what to prepare — projects, applications, interviews, founding, and employers in their own region.",
   },
 
+  ui: {
+    glanceLabel: "AT A GLANCE",
+    glanceHeading: "One sitting, carried through to execution",
+    flow: ["Sitting", "Ten job areas", "Six work styles", "Execution plan", "Report"],
+    sheetCta: "See the result sheet",
+    moreLabel: "GO DEEPER",
+    moreHeading: "Start where it matters to you",
+    nextLabel: "NEXT",
+    nextHeading: "What would this look like at your institution?",
+    pageTitles: {
+      pca: "PCA",
+      adopt: "Adoption",
+      pricing: "Pricing",
+      about: "About",
+      contact: "Contact",
+      localisation: "Localisation",
+      partnership: "Partnership",
+    },
+    linkTitles: {
+      pca: "The diagnosis",
+      adopt: "How adoption works",
+      contact: "Talk to us",
+      localisation: "Localisation",
+      partnership: "Partnership",
+    },
+    photos: {
+      home: [
+        "Photo — employment lecture",
+        "Photo — STEM mentoring session",
+        "Photo — career fair",
+      ],
+      about: [
+        "Photo — university event",
+        "Photo — invited speaker",
+        "Photo — the team",
+      ],
+      pca: "Photo — a department sitting the assessment",
+      adopt: "Photo — the administrator screen in use",
+      localisation: "Photo — a localisation workshop with a partner university",
+    },
+  },
+
   nav: {
     items: [
       { label: "PCA", href: "/pca" },
@@ -911,7 +953,7 @@ export const global: SiteContent = {
     sites: [
       { label: "Global (English)", href: "https://pca.example", ready: true },
       { label: "한국", href: "https://pca.co.kr", ready: true },
-      { label: "Қазақстан", href: "https://pca.kz", ready: false },
+      { label: "Қазақстан", href: "https://pca.kz", ready: true },
       { label: "Türkiye", href: "https://pca.com.tr", ready: false },
     ],
     soonLabel: "coming soon",

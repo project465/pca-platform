@@ -194,16 +194,56 @@ export type Sample = {
   cta: { line: string; sub: string; primary: Link; secondary: Link };
 };
 
+/**
+ * 화면에 박혀 있던 문구를 원고로 끌어낸 것.
+ *
+ * 나라가 둘일 때는 `kr ? "…" : "…"` 로 버틸 수 있었지만 셋이 되는 순간
+ * 그 방식은 무너진다 — 새 나라가 영어판 문구를 뒤집어쓴다. 나라를 더할 때
+ * 코드를 고치지 않는다는 원칙(index.ts)을 지키려면 여기 있어야 한다.
+ */
+export type Ui = {
+  /** 홈 — 한눈에 보는 흐름 */
+  glanceLabel: string;
+  glanceHeading: string;
+  /** 흐름 다섯 칸 */
+  flow: string[];
+  sheetCta: string;
+  moreLabel: string;
+  moreHeading: string;
+  /** /pca 아래쪽 이어보기 */
+  nextLabel: string;
+  nextHeading: string;
+  /** 브라우저 탭에 뜨는 이름 */
+  pageTitles: Record<string, string>;
+  /** 페이지 끝의 이어보기 카드 제목 */
+  linkTitles: Record<string, string>;
+  /** 사진이 들어갈 자리에 적어 두는 설명 */
+  photos: {
+    home: string[];
+    about: string[];
+    pca: string;
+    adopt: string;
+    localisation: string;
+  };
+};
+
 export type SiteContent = {
   key: SiteKey;
   lang: string;
   domain: string;
+  /**
+   * 화면의 색과 결. 비우면 기본(밝은 바탕 · 잉크 · 금색)이다.
+   * globals.css 의 [data-theme="…"] 와 이름이 맞아야 한다.
+   */
+  theme?: string;
   brand: string;
   org: string;
   orgTagline: string;
   platformUrl: string;
 
   meta: { title: string; description: string };
+
+  ui: Ui;
 
   nav: {
     items: Link[];

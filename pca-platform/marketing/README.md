@@ -10,6 +10,7 @@
 ```bash
 SITE=global npm run dev     # 영어판
 SITE=kr     npm run dev     # 한국어판
+SITE=kz     npm run dev     # 카자흐어판
 ```
 
 배포도 같다. 도메인마다 `SITE` 만 다르게 준 빌드를 올린다.
@@ -18,7 +19,7 @@ SITE=kr     npm run dev     # 한국어판
 |---|---|---|---|
 | `global` | pca.example | en | 있음 |
 | `kr` | pca.co.kr | ko | 있음 |
-| `kz` | pca.kz | kk | 원고 없음 |
+| `kz` | pca.kz | kk | 있음 · **원어민 검수 전** |
 | `tr` | pca.com.tr | tr | 원고 없음 |
 
 ## 지금 볼 수 있는 링크
@@ -74,12 +75,36 @@ node scripts/e2e-platform-link.mjs   # 눌러서 플랫폼 로그인까지 가�
 
 ## 나라를 추가하려면
 
-1. `src/content/kz.ts` 를 만들고 `SiteContent` 형태를 채운다
+1. `src/content/tr.ts` 를 만들고 `SiteContent` 형태를 채운다
 2. `src/content/index.ts` 의 `SITES` 에 한 줄 추가한다
+3. `.github/workflows/ci.yml` 의 `matrix.site` 에 한 줄 추가한다
 
 컴포넌트는 손대지 않는다. 화면에 박힌 한국어가 없도록 문구는 전부 원고에 있다.
 검사 플랫폼의 `translations` 테이블과 같은 사고방식이다 — 나라가 늘 때
 늘어나는 것은 구조가 아니라 내용이어야 한다.
+
+`ui` 블록에 화면 문구가 들어 있다. 나라가 둘일 때는 `kr ? "…" : "…"` 로
+버틸 수 있었지만 셋이 되는 순간 새 나라가 영어판 문구를 뒤집어쓴다.
+그래서 전부 원고로 옮겼다.
+
+## 색과 결 (theme)
+
+원고의 `theme` 이 `<html data-theme="…">` 로 나가고, `globals.css` 의
+`[data-theme="…"]` 가 토큰을 갈아 끼운다. 비우면 기본(밝은 바탕 · 잉크 ·
+금색)이다.
+
+| theme | 어디에 | 어떤 결 |
+|---|---|---|
+| (없음) | global · kr | 흰 종이 · 딥네이비 잉크 · 금색. 대학에 내는 문서 |
+| `steppe` | kz | 어두운 바탕 · 하늘빛 강조 · 각진 모서리 |
+
+`steppe` 에서도 **결과지는 흰 문서**다. 어두운 화면 한가운데 흰 종이가
+떠 있는 것이 이 브랜드의 규칙이라, `.doc`·`.report`·`.cover` 안에서만
+토큰을 밝은 판으로 되돌린다.
+
+새 결을 만들 때 색을 직접 박지 않는다. `--strong`(눌러 쓰는 블록)과
+`--cta`(마감 배너의 주 단추)까지 토큰으로 빠져 있으므로 토큰만 갈아 끼우면
+된다.
 
 ## 아직 안 된 것
 
@@ -87,7 +112,10 @@ node scripts/e2e-platform-link.mjs   # 눌러서 플랫폼 로그인까지 가�
   운영에 올리기 전에 메일 발송이나 CRM 연동으로 바꿔야 한다. `src/app/actions.ts` 참고
 - **브랜드명과 도메인이 미정**이다. 지금은 `PCA` 와 `pca.example` 을 임시로 쓴다.
   정해지면 각 원고 파일의 `brand` · `domain` · `platformUrl` 만 고치면 된다
-- 카자흐스탄·터키 원고
+- **카자흐어 원고가 원어민 검수를 받지 않았다.** 구조와 사실관계는 맞지만
+  문장은 초안이다. 배포 전에 카자흐어를 쓰는 사람이 한 번 읽어야 한다.
+  러시아어판이 따로 필요할 수도 있다 (`src/content/kz.ts` 머리말 참고)
+- 터키 원고
 
 ## 화면 촬영
 

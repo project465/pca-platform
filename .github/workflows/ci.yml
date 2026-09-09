@@ -93,7 +93,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        site: [global, kr]
+        site: [global, kr, kz]
     defaults:
       run:
         working-directory: pca-platform/marketing

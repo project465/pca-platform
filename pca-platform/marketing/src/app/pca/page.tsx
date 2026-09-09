@@ -4,15 +4,17 @@ import ResultSheet from "@/components/result-sheet";
 import { Analyze, Choose, Styles, Why } from "@/components/sections";
 import { NextLink, PageHead, PhotoSlot } from "@/components/visuals";
 
-export const metadata = { title: "PCA" };
+export function generateMetadata() {
+  return { title: getSite().ui.pageTitles.pca };
+}
 
 export default function PcaPage() {
   const site = getSite();
-  const kr = site.key === "kr";
+  const u = site.ui;
   return (
     <Shell>
       <PageHead label={site.analyze.label} title={site.analyze.heading} lead={site.analyze.lead} />
-      <Analyze site={site} />
+      <Analyze site={site} bare />
       <Styles site={site} />
       <Why site={site} />
       <ResultSheet site={site} />
@@ -20,13 +22,13 @@ export default function PcaPage() {
       <section className="divided">
         <div className="wrap photosplit">
           <PhotoSlot
-            caption={kr ? "사진 자리 — 학과 단위 단체 응시 현장" : "Photo — a department sitting the assessment"}
+            caption={u.photos.pca}
             ratio="4 / 3"
           />
           <div>
-            <span className="label-sm">{kr ? "다음" : "NEXT"}</span>
+            <span className="label-sm">{u.nextLabel}</span>
             <h2 style={{ margin: "16px 0 20px" }}>
-              {kr ? "우리 학과에는 어떻게 적용될까요?" : "What would this look like at your institution?"}
+              {u.nextHeading}
             </h2>
             <div className="nextgrid" style={{ gridTemplateColumns: "1fr" }}>
               {site.nav.items.slice(1, 3).map((i) => (
