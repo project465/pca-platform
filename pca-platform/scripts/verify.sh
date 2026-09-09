@@ -82,6 +82,13 @@ curl -sf -o /dev/null "$BASE_URL/login" \
   || { echo "서버가 응답하지 않습니다:"; tail -30 /tmp/pca-verify-server.log; exit 1; }
 echo "$BASE_URL 응답함"
 
+# 배포처의 상태 검사가 쓸 자리. 데이터베이스까지 닿는지 본다
+HEALTH="$(curl -sf "$BASE_URL/api/health" || true)"
+case "$HEALTH" in
+  *'"ok"'*) echo "  통과  /api/health 가 ok" ;;
+  *) echo "  실패  /api/health 가 ok 가 아니다: ${HEALTH:-응답 없음}"; exit 1 ;;
+esac
+
 say "5/5 브라우저로 흐름 확인"
 echo "· 신청 → 승인 → 전용 링크 → 학생 등록"
 node scripts/e2e-join.mjs

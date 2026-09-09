@@ -22,6 +22,15 @@ function loadEnv(file: string) {
 }
 loadEnv(".env.local");
 
+/* 운영에서는 절대 돌지 않게 막는다.
+   이 파일은 아무나 아는 비밀번호로 운영사 관리자 계정을 만든다. 운영
+   데이터베이스에 한 번이라도 돌면 그 순간 아무나 들어올 수 있다.
+   실수로 부르는 것을 막을 곳이 여기밖에 없다 */
+if (process.env.NODE_ENV === "production" || process.env.ALLOW_SEED === "never") {
+  console.error("시드는 운영에서 돌리지 않습니다. 여기서 만드는 계정은 비밀번호가 공개되어 있습니다.");
+  process.exit(2);
+}
+
 
 const PW_ADMIN = "pca-dev-admin-1234";
 const PW_ORG = "pca-dev-org-1234";
