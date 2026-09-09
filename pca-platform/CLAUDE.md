@@ -83,6 +83,7 @@ organizations, courses, course_competency_map, translations
 5. 전체 응시 현황
 
 **학과 담당자**
+5.5. 전용 링크 관리 (복사·회수·발급) → `/org`
 6. 회차 생성
 7. 명단 업로드 및 계정 일괄 발급
 8. 응시 진행 현황
