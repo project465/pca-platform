@@ -31,6 +31,7 @@ SITE=kz     npm run dev     # 카자흐어판
 |---|---|
 | 글로벌 (영어) | https://claude.ai/code/artifact/14f526a6-4854-447e-a693-3fc072027899 |
 | 한국 (한국어) | https://claude.ai/code/artifact/2489bd40-cdae-4413-8f99-804341b64cda |
+| 카자흐스탄 (카자흐어) | https://claude.ai/code/artifact/d6668638-4f95-49ea-bd6c-c0940ee92cbd |
 
 도메인이 정해지면 이 미리보기는 버리고 각 도메인에 `SITE` 만 다르게 준
 빌드를 올린다. 미리보기를 다시 뽑는 방법은 아래와 같다.
