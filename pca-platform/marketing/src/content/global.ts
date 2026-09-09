@@ -23,7 +23,7 @@ export const global: SiteContent = {
   ui: {
     glanceLabel: "AT A GLANCE",
     glanceHeading: "One sitting, carried through to execution",
-    flow: ["Sitting", "Ten job areas", "Six work styles", "Execution plan", "Report"],
+    flow: ["Sitting", "Job areas", "Six work styles", "Execution plan", "Report"],
     sheetCta: "See the result sheet",
     moreLabel: "GO DEEPER",
     moreHeading: "Start where it matters to you",
@@ -82,7 +82,7 @@ export const global: SiteContent = {
     eyebrow: "METRI · PERSONALIZED CAREER ANALYSIS",
     title: ["Your students already know their major.", "{Nobody has told them what to do next.}"],
     lead:
-      "METRI ranks ten job areas out of 100, maps six work styles, and writes each student a 15–20 page plan — credentials, projects, applications, interviews, founding, and employers in their own region. Built in Korea, rebuilt in your country from your own labour-market data.",
+      "METRI ranks the job areas of a student's own field out of 100, maps six work styles across 120 items, and writes each student a plan — credentials, projects, applications, interviews, founding, and employers in their own region. Built in Korea, rebuilt in your country from your own labour-market data.",
     primary: { label: "Talk to us", href: "/contact" },
     secondary: { label: "See a real report", href: "#sample" },
     watermark: "METRI",
@@ -92,9 +92,9 @@ export const global: SiteContent = {
     label: "A REAL REPORT",
     heading: "Before the method, look at what a student is handed",
     lead:
-      "What METRI measures is the second question. Below is a 15–20 page report with four of its pages put on one screen. A student does not receive a type name. They receive this.",
+      "What METRI measures is the second question. Below are four pages of the report put on one screen. A student does not receive a type name. They receive this.",
     disclaimer:
-      "An illustrative screen showing the format of the report — not a real student’s submission. The ten job areas, the six work styles and the regional method are exactly as they ship.",
+      "An illustrative screen showing the format of the report — not a real student’s submission. The job areas shown are one field's; the six work styles and the regional method are exactly as they ship.",
     docTag: "METRI INDIVIDUAL REPORT",
     page: "extract · 00-1 · 00-2 · 05–06 · regional annex",
     person: {
@@ -160,7 +160,7 @@ export const global: SiteContent = {
     ],
     localLabel: "Regional annex · where they can go, near where they live",
     localNote:
-      "Figures from the Korean edition, for a student in Daejeon: 184 organisations in the city were screened and sorted into 144 high fit, 40 moderate, 0 low, with 101 of them tied to the region’s priority industries. In your country the same method runs on your own labour-market data, and the report names the employers.",
+      "Figures from the Korean edition, for a student in Daejeon: 184 organisations in the city were screened and sorted into 144 high fit, 40 moderate, 0 low, with 101 of them tied to the region’s priority industries. Regional matching is a Korea module today. Elsewhere it is built with the partner university against that country's own labour-market data, and only then does the report name employers.",
     local: [
       { name: "184", note: "organisations screened in the city" },
       { name: "144", note: "high fit" },
@@ -171,7 +171,7 @@ export const global: SiteContent = {
       line: "Every student in the department gets one of these, with their own name on it.",
       sub: "Tell us the department and the cohort size; we come back within a day with a plan and a quote.",
       primary: { label: "Talk to us", href: "/contact" },
-      secondary: { label: "See all ten sections", href: "/metri" },
+      secondary: { label: "See the report structure", href: "/metri" },
     },
   },
 
@@ -183,7 +183,7 @@ export const global: SiteContent = {
         no: "01",
         title: "Universities and departments",
         body: "“Our careers service hands out a personality type. Students still ask us what to actually do.”",
-        tag: "A 15–20 page plan per student",
+        tag: "A written plan per student",
       },
       {
         no: "02",
@@ -210,7 +210,7 @@ export const global: SiteContent = {
         no: "01",
         kicker: "Job fit",
         title: "The field narrows to three",
-        body: "Ten job areas scored out of 100 and ranked. The first is analysed in depth; the second and third stay as reference.",
+        body: "The job areas of the student's field, scored out of 100 and ranked. The first is analysed in depth; the second and third stay as reference.",
       },
       {
         no: "02",
@@ -285,9 +285,9 @@ export const global: SiteContent = {
           { label: "Score", value: "92" },
           { label: "Respondent", value: "■■■" },
         ],
-        chartNote: "Management & Strategy came out highest across the ten job areas.",
+        chartNote: "Management & Strategy came out highest across this field's job areas.",
         capTitle: "Job area analysis",
-        capBody: "Ten job areas, scored out of 100 and ranked.",
+        capBody: "The job areas of the student's field, scored out of 100 and ranked.",
         capArrow: "Answers “which role does this major lead to?” with data",
       },
       {
@@ -626,7 +626,7 @@ export const global: SiteContent = {
     items: [
       {
         title: "What a free test cannot give you",
-        body: "Public career services produce results you cannot file as institutional evidence. METRI gives the student a 15–20 page plan and the institution an anonymised aggregate report it can submit.",
+        body: "Public career services produce results you cannot file as institutional evidence. METRI gives the student a written plan and the institution an anonymised aggregate report it can submit.",
       },
       {
         title: "Recruitment market, not personality theory",
@@ -717,7 +717,7 @@ export const global: SiteContent = {
         body: "Built once, reused in every market. This is the part you do not pay to rebuild.",
         items: [
           "The instrument and its scoring rules",
-          "The ten job areas and the six work styles",
+          "The job-area framework and the six work styles",
           "The report structure — sections 00-1 through 08",
           "The competency framework behind the strength profile",
         ],
@@ -800,7 +800,7 @@ export const global: SiteContent = {
     items: [
       {
         q: "Does this only work in Korea?",
-        a: "No. The instrument, the ten job areas and the six work styles are shared worldwide. What is rebuilt per country is the translation, the alignment to that country's occupational standard, and — where wanted — regional employer data. That split is set out under Localisation.",
+        a: "No. The instrument, the job-area framework and the six work styles are shared worldwide. What is rebuilt per country is the translation, the alignment to that country's occupational standard, and — where wanted — regional employer data. That split is set out under Localisation.",
       },
       {
         q: "How long does a localisation take?",
@@ -844,9 +844,9 @@ export const global: SiteContent = {
         unit: "per person",
         note: "Card payment is not connected yet. Requests come through the form for now.",
         features: [
-          "Ten job areas ranked out of 100",
+          "Job areas ranked out of 100",
           "Six work styles as a hexagon",
-          "A 15–20 page personal plan across ten sections",
+          "A personal written plan",
           "Projects, applications, interviews, founding",
         ],
         cta: { ready: "Buy now", ask: "Request an assessment" },
@@ -894,18 +894,20 @@ export const global: SiteContent = {
     heading: "Open the site for your country",
     lead:
       "Each country runs its own site in its own language, against its own labour-market data. The platform students sit on is one, worldwide.",
-    liveLabel: "Open",
+    liveLabel: "Site ready",
     soonLabel: "In preparation",
     note:
-      "Domains shown are placeholders until each country site goes live. If your country is not listed yet, talk to us — that is how a new one starts.",
+      "The sites are written; the domains are placeholders and not connected yet. If your country is not listed, talk to us — that is how a new one starts.",
+    /* live 는 "그 나라 사이트 원고가 있는가" 다. 지금 있는 것은 셋뿐이고
+       도메인은 아직 연결되지 않았다. 나라별 계약 현황과 다른 값이다 */
     items: [
       { code: "KR", name: "Korea", native: "한국", domain: "metri.co.kr", href: "https://metri.co.kr", live: true },
-      { code: "DE", name: "Germany", native: "Deutschland", domain: "metri.de", href: "https://metri.de", live: true },
-      { code: "US", name: "United States", native: "United States", domain: "metri.us", href: "https://metri.us", live: true },
-      { code: "JP", name: "Japan", native: "日本", domain: "metri.jp", href: "https://metri.jp", live: true },
-      { code: "CN", name: "China", native: "中国", domain: "metri.cn", href: "https://metri.cn", live: true },
-      { code: "TR", name: "Türkiye", native: "Türkiye", domain: "metri.com.tr", href: "https://metri.com.tr", live: true },
-      { code: "KZ", name: "Kazakhstan", native: "Қазақстан", domain: "metri.kz", href: "#contact", live: false },
+      { code: "KZ", name: "Kazakhstan", native: "Қазақстан", domain: "metri.kz", href: "https://metri.kz", live: true },
+      { code: "TR", name: "Türkiye", native: "Türkiye", domain: "metri.com.tr", href: "#contact", live: false },
+      { code: "DE", name: "Germany", native: "Deutschland", domain: "metri.de", href: "#contact", live: false },
+      { code: "US", name: "United States", native: "United States", domain: "metri.us", href: "#contact", live: false },
+      { code: "JP", name: "Japan", native: "日本", domain: "metri.jp", href: "#contact", live: false },
+      { code: "CN", name: "China", native: "中国", domain: "metri.cn", href: "#contact", live: false },
       { code: "FR", name: "France", native: "France", domain: "metri.fr", href: "#contact", live: false },
       { code: "ZA", name: "South Africa", native: "South Africa", domain: "metri.co.za", href: "#contact", live: false },
       { code: "PH", name: "Philippines", native: "Pilipinas", domain: "metri.ph", href: "#contact", live: false },
@@ -964,20 +966,23 @@ export const global: SiteContent = {
     heading: "Where METRI runs",
     lead:
       "The instrument, the job areas and the work-style framework are shared worldwide. What is filled in per country is the university, its local employers, and the translations.",
+    /* 실측한 것만 적는다. 2026-09-09 확인 — 라이브 플랫폼의 계약 대학
+       등록 9행 가운데 실계약은 터키 2곳이고 나머지 7행은 테스트·데모다.
+       예전 원고는 6개국이 "Running" 이라고 적고 있었다. 근거가 없다. */
     countries: [
-      { code: "DE", name: "Germany", status: "live", note: "Running" },
-      { code: "US", name: "United States", status: "live", note: "Running" },
-      { code: "JP", name: "Japan", status: "live", note: "Running" },
-      { code: "CN", name: "China", status: "live", note: "Running" },
-      { code: "TR", name: "Türkiye", status: "live", note: "Running" },
-      { code: "KR", name: "Korea", status: "live", note: "Home market · Daejeon regional matching" },
-      { code: "KZ", name: "Kazakhstan", status: "planned", note: "Planned" },
+      { code: "TR", name: "Türkiye", status: "live", note: "Universities under contract" },
+      { code: "KR", name: "Korea", status: "progress", note: "Home market · platform operated here" },
+      { code: "KZ", name: "Kazakhstan", status: "planned", note: "Site ready · in discussion" },
+      { code: "DE", name: "Germany", status: "planned", note: "Planned" },
+      { code: "US", name: "United States", status: "planned", note: "Planned" },
+      { code: "JP", name: "Japan", status: "planned", note: "Planned" },
+      { code: "CN", name: "China", status: "planned", note: "Planned" },
       { code: "FR", name: "France", status: "planned", note: "Planned" },
       { code: "ZA", name: "South Africa", status: "planned", note: "Planned" },
       { code: "PH", name: "Philippines", status: "planned", note: "Planned" },
     ],
-    statusLabel: { live: "Running", progress: "Onboarding", planned: "Planned" },
+    statusLabel: { live: "Under contract", progress: "Home market", planned: "Planned" },
     footnote:
-      "Regional matching is rebuilt per region from that region's own employers — the method travels, the list does not.",
+      "We do not publish partner names without their consent. Regional employer matching is a Korea module today; elsewhere the list is built with the partner university — the method travels, the list does not.",
   },
 };
