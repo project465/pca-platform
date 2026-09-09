@@ -279,9 +279,11 @@ export const global: SiteContent = {
        (regional employer matching) is a Korea-only module and is not part of
        this contents list.
 
-       Still provisional translations, pending the full 52 from the pilot:
-       2-2 · 2-3 · 2-4 · 2-5 · 3-1 · 3-2 · 3-3 · 4-7 · 5-2 · 5-5 · 5-7 ·
-       6-2 · 6-5 · 6-6 · 6-7 · 7-1 · 7-3 · 7-6 · 7-7 · all of chapter 8. */
+       All 52 section titles are the pilot's canonical English (2026-09-09).
+       Six of them — 2-2 to 2-4 and 3-1 to 3-3 — carry area-specific wording in
+       the report itself; a contents list has to stay general, so the generic
+       form is used here, as instructed. British spelling ("emphasise") is the
+       pilot's. */
     tabs: [
       {
         no: "1",
@@ -322,10 +324,10 @@ export const global: SiteContent = {
             title: "What this chapter holds",
             bullets: [
               "2-1 Three strengths drawn from your results",
-              "2-2 Your first strength",
-              "2-3 Your second strength",
-              "2-4 Your third strength",
-              "2-5 Your strengths read against the area",
+              "2-2 First strength",
+              "2-3 Second strength",
+              "2-4 Third strength",
+              "2-5 How your strengths work together",
               "2-6 Showing your strengths when applying",
             ],
           },
@@ -348,9 +350,9 @@ export const global: SiteContent = {
             sub: "4 sections",
             title: "What this chapter holds",
             bullets: [
-              "3-1 Work situation 1",
-              "3-2 Work situation 2",
-              "3-3 Work situation 3",
+              "3-1 Work scenario 1",
+              "3-2 Work scenario 2",
+              "3-3 Work scenario 3",
               "3-4 What these situations tell you",
             ],
           },
@@ -379,7 +381,7 @@ export const global: SiteContent = {
               "4-4 Roles worth comparing",
               "4-5 An order for exploring careers",
               "4-6 How to choose between roles",
-              "4-7 Overall proposal",
+              "4-7 Roles and career directions: summary",
             ],
           },
         ],
@@ -400,9 +402,9 @@ export const global: SiteContent = {
               "5-2 Project directions for this area",
               "5-3 Projects you can start now",
               "5-4 What a portfolio must contain",
-              "5-5 Writing it up, by output type",
+              "5-5 How to present each type of output",
               "5-6 A four-week plan",
-              "5-7 Summary",
+              "5-7 Projects and portfolio: summary",
             ],
           },
           {
@@ -425,12 +427,12 @@ export const global: SiteContent = {
             title: "What this chapter holds",
             bullets: [
               "6-1 How to approach your application documents",
-              "6-2 Example sentences",
+              "6-2 Example sentences for application documents",
               "6-3 Questions you may be asked",
               "6-4 How to structure an interview answer",
-              "6-5 Keywords to lean on",
-              "6-6 What to avoid",
-              "6-7 Summary",
+              "6-5 Points to emphasise in interviews",
+              "6-6 What to watch out for",
+              "6-7 Application and interview: summary",
             ],
           },
           {
@@ -452,13 +454,13 @@ export const global: SiteContent = {
             sub: "7 sections",
             title: "What this chapter holds",
             bullets: [
-              "7-1 A business direction, read from your area",
+              "7-1 Business directions from your results",
               "7-2 Five business ideas for this area",
-              "7-3 Comparing the ideas",
+              "7-3 Comparing the business ideas",
               "7-4 Entering the market",
               "7-5 Preparing at a student level",
-              "7-6 A four-week plan",
-              "7-7 Summary",
+              "7-6 A four-week plan for starting out",
+              "7-7 Starting your own business: summary",
             ],
           },
           {
@@ -480,13 +482,13 @@ export const global: SiteContent = {
             sub: "8 sections",
             title: "What this chapter holds",
             bullets: [
-              "8-1 Core strengths",
+              "8-1 Your core strengths",
               "8-2 Roles to explore first",
-              "8-3 The project to start first",
-              "8-4 Application and interview points",
-              "8-5 Business direction checkpoints",
-              "8-6 What to watch out for",
-              "8-7 Direction from here",
+              "8-3 The project to start with",
+              "8-4 Points to use in applications and interviews",
+              "8-5 Points to check on the business route",
+              "8-6 What to be careful about",
+              "8-7 Your direction from here",
               "8-8 A 30-day checklist",
             ],
           },
