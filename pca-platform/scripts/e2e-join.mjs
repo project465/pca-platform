@@ -69,8 +69,14 @@ const m = after.match(/http:\/\/localhost:3000\/join\/[A-Za-z0-9_-]+/);
 if (!m) { bad("전용 링크가 화면에 없다"); }
 const joinLink = m ? m[0] : null;
 if (joinLink) ok(`전용 링크 발급: ${joinLink.slice(0, 46)}…`);
-const pwMatch = after.match(/임시 비밀번호\s*([A-Za-z0-9]{10})/);
-pwMatch ? ok("임시 비밀번호가 한 번 보인다") : bad("임시 비밀번호가 없다");
+const setupMatch = after.match(/http:\/\/localhost:3000\/password\/reset\/[A-Za-z0-9_-]+/);
+setupMatch ? ok("담당자 비밀번호 설정 링크가 보인다") : bad("설정 링크가 없다");
+after.includes("임시 비밀번호")
+  ? bad("임시 비밀번호가 아직 화면에 있다 — 메일로 나가면 안 되는 값이다")
+  : ok("임시 비밀번호를 만들지도 보여주지도 않는다");
+after.includes("안내 메일을 보냈습니다") || after.includes("메일을 보내지 못했습니다")
+  ? ok("메일 발송 결과를 화면에 밝힌다")
+  : bad("메일이 나갔는지 화면에 없다");
 
 // ── 5. 두 번 승인되지 않는다 ──
 await p.goto(p.url());

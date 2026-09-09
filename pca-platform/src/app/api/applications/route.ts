@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { queryOne } from "@/lib/db";
 import { applicationSchema, newRefCode } from "@/lib/applications";
+import { sendMail } from "@/lib/mail";
+import { langOfSite, receivedMail } from "@/lib/mail-templates";
 
 /**
  * 소개 사이트의 도입 신청을 받는 곳.
@@ -67,8 +69,20 @@ export async function POST(req: Request) {
           a.message || null,
         ],
       );
-      console.info("[intake] 접수", row!.ref_code, a.site, a.orgName);
-      return NextResponse.json({ ok: true, refCode: row!.ref_code }, { status: 201 });
+      const refFinal = row!.ref_code;
+      console.info("[intake] 접수", refFinal, a.site, a.orgName);
+
+      /* 접수 확인 메일. 실패해도 접수는 이미 끝났으므로 201 을 돌려준다 —
+         신청자에게 "다시 넣어 보세요" 라고 할 일이 아니다 */
+      await sendMail(
+        receivedMail(langOfSite(a.site), {
+          to: a.contactEmail,
+          orgName: a.orgName,
+          refCode: refFinal,
+        }),
+      );
+
+      return NextResponse.json({ ok: true, refCode: refFinal }, { status: 201 });
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       if (msg.includes("org_applications_ref_code_key")) continue;

@@ -42,8 +42,11 @@ export default function ApproveForm({
   const err = state.errors ?? {};
   const dates = defaultDates();
 
-  /* 승인이 끝났다. 담당자에게 그대로 보낼 수 있는 안내문을 띄운다.
-     임시 비밀번호는 여기서만 볼 수 있으므로 화면을 떠나기 전에 옮겨야 한다 */
+  /* 승인이 끝났다.
+
+     메일이 나갔으면 담당자가 이미 두 링크를 받았으므로 운영자가 할 일이
+     없다. 못 나갔을 때만 손으로 옮기라고 안내문을 띄운다. 설정 링크는
+     DB 에 해시만 남아 이 화면을 떠나면 다시 볼 수 없다 */
   if (state.issued) {
     const g = state.issued;
     const notice = [
@@ -51,31 +54,50 @@ export default function ApproveForm({
       ``,
       `[학생 안내용 전용 링크]`,
       g.joinUrl,
-      `학생은 이 링크로 들어와 응시자로 등록합니다.`,
+      `학생은 이 링크로 들어와 응시자로 등록합니다. ${g.seatCount.toLocaleString("ko-KR")}명까지 가능합니다.`,
       ``,
-      `[담당자 로그인]`,
-      `아이디: ${g.adminEmail}`,
-      `임시 비밀번호: ${g.tempPassword}`,
-      `첫 로그인 때 비밀번호를 바꾸셔야 합니다.`,
+      `[담당자 비밀번호 설정]`,
+      g.setupUrl,
+      `${g.setupHours}시간 안에 열어 비밀번호를 정해 주세요.`,
     ].join("\n");
 
     return (
       <section className="card" style={{ maxWidth: 720 }}>
         <p className="notice ok" style={{ marginTop: 0 }}>
           <b>승인했습니다</b>
-          기관·담당자 계정·전용 링크가 함께 만들어졌습니다.
+          기관·담당자 계정·계약·전용 링크가 함께 만들어졌습니다.
         </p>
+
+        {g.mail.ok ? (
+          <p className="notice ok">
+            <b>안내 메일을 보냈습니다</b>
+            {g.adminEmail} 으로 전용 링크와 비밀번호 설정 링크가 나갔습니다.
+            {g.mail.via === "log"
+              ? " (지금 배포는 메일이 연결되어 있지 않아 서버 기록에만 남았습니다. 아래 안내문을 직접 전달하세요.)"
+              : ""}
+          </p>
+        ) : (
+          <p className="notice err">
+            <b>메일을 보내지 못했습니다</b>
+            아래 안내문을 담당자에게 직접 전달해 주세요. ({g.mail.error})
+          </p>
+        )}
 
         <h3 style={{ fontSize: 13 }}>전용 링크</h3>
         <code className="mono" style={{ wordBreak: "break-all", display: "block" }}>
           {g.joinUrl}
         </code>
+        <p className="help">
+          기관 화면에서 언제든 다시 볼 수 있습니다. 학생에게 그대로 전달하세요.
+        </p>
 
-        <h3 style={{ fontSize: 13 }}>담당자 임시 비밀번호</h3>
-        <code className="mono" style={{ fontSize: 16 }}>{g.tempPassword}</code>
+        <h3 style={{ fontSize: 13 }}>담당자 비밀번호 설정 링크</h3>
+        <code className="mono" style={{ wordBreak: "break-all", display: "block" }}>
+          {g.setupUrl}
+        </code>
         <p className="help" style={{ color: "var(--gap)" }}>
-          이 비밀번호는 지금 이 화면에서만 볼 수 있습니다. DB 에는 해시만 남으므로
-          다시 꺼낼 수 없고, 놓치면 재설정 링크를 새로 발급해야 합니다.
+          이 링크는 지금 이 화면에서만 볼 수 있습니다. {g.setupHours}시간 뒤 닫히고,
+          놓치면 담당자가 비밀번호 찾기로 새로 받으면 됩니다.
         </p>
 
         <h3 style={{ fontSize: 13 }}>전달용 안내문</h3>
@@ -93,10 +115,6 @@ export default function ApproveForm({
           >
             {copied ? "복사했습니다" : "안내문 복사"}
           </button>
-        </p>
-        <p className="help">
-          아직 메일 발송이 붙어 있지 않아 사람이 옮겨 보내야 합니다.
-          메일이 연결되면 이 안내문이 자동으로 나갑니다.
         </p>
       </section>
     );

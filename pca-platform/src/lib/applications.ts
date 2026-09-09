@@ -108,3 +108,9 @@ export const approveSchema = z.object({
     .max(100_000, "좌석이 너무 많습니다."),
   linkLabel: z.string().trim().min(1, "링크 이름을 입력하세요.").max(200),
 });
+
+/** 비밀번호 설정·재설정 링크. 승인 메일과 화면이 같은 것을 쓰게 한다 */
+export function resetUrl(token: string, baseUrl?: string): string {
+  const base = (baseUrl ?? process.env.AUTH_URL ?? "http://localhost:3000").replace(/\/+$/, "");
+  return `${base}/password/reset/${token}`;
+}

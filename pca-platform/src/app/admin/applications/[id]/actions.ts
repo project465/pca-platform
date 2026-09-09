@@ -3,14 +3,24 @@
 import { tx } from "@/lib/db";
 import { setTranslation } from "@/lib/i18n";
 import { requireRole } from "@/lib/session";
-import { generateTempPassword, hashPassword } from "@/lib/password";
-import { approveSchema, joinUrl, newLinkToken } from "@/lib/applications";
+import { createResetToken, generateTempPassword, hashPassword } from "@/lib/password";
+import { sendMail } from "@/lib/mail";
+import { approvedMail, langOfSite } from "@/lib/mail-templates";
+import { approveSchema, joinUrl, newLinkToken, resetUrl } from "@/lib/applications";
 import { fieldErrors, type FieldErrors } from "@/lib/validation";
 
+/** 담당자 비밀번호 설정 링크가 열려 있는 시간 */
+const SETUP_TTL_HOURS = 72;
+
 /**
- * 승인 결과. 임시 비밀번호는 이 화면에서 한 번만 보여준다 — DB 에는 해시만
- * 남으므로 나중에 다시 꺼낼 수 없다. 전용 링크는 org_links 에 원문이 있어
- * 기관 화면에서 언제든 다시 볼 수 있다.
+ * 승인 결과.
+ *
+ * 임시 비밀번호를 만들어 보여주지 않는다. 메일은 남고 전달되므로 비밀번호가
+ * 오래 떠돌게 되고, 화면에 한 번만 보이는 값은 운영자가 놓치면 그대로
+ * 잃어버린다. 대신 한 번 쓰면 닫히는 설정 링크를 보낸다.
+ *
+ * 설정 링크는 DB 에 해시만 남으므로 이 화면에서만 볼 수 있다. 메일이
+ * 나갔으면 그것으로 충분하고, 못 나갔을 때 손으로 옮기라고 함께 띄운다.
  */
 export type ApproveState = {
   errors?: FieldErrors;
@@ -19,7 +29,11 @@ export type ApproveState = {
     orgId: string;
     joinUrl: string;
     adminEmail: string;
-    tempPassword: string;
+    setupUrl: string;
+    setupHours: number;
+    seatCount: number;
+    /** 메일이 실제로 나갔는지. 안 나갔으면 화면의 안내문을 사람이 옮겨야 한다 */
+    mail: { ok: true; via: string } | { ok: false; error: string };
   };
 };
 
@@ -56,20 +70,24 @@ export async function approveAction(
     return { errors: { endsOn: "종료일이 시작일보다 앞설 수 없습니다." } };
   }
 
-  const tempPassword = generateTempPassword();
-  const passwordHash = await hashPassword(tempPassword);
+  /* 계정에는 아무도 모르는 값을 넣는다. 담당자는 설정 링크로 자기 비밀번호를
+     정하므로 이 값은 쓰이지 않고, 어디에도 보여주지 않는다 */
+  const passwordHash = await hashPassword(generateTempPassword(32));
   const token = newLinkToken();
+  const setup = createResetToken();
 
   let orgId: string;
+  let site = "global";
   try {
     orgId = await tx(async (c) => {
       /* 이미 처리된 신청을 두 번 승인하지 않는다. 같은 신청서를 두 사람이
          동시에 열어 두고 각자 누르는 상황을 막는 잠금이기도 하다 */
-      const app = await c.query<{ id: string; status: string }>(
-        `SELECT id, status FROM org_applications
+      const app = await c.query<{ id: string; status: string; site: string }>(
+        `SELECT id, status, site FROM org_applications
           WHERE id = $1 FOR UPDATE`,
         [applicationId],
       );
+      site = app.rows[0]?.site ?? "global";
       if (app.rowCount === 0) throw new Error("APP_NOT_FOUND");
       if (app.rows[0].status !== "received") throw new Error("APP_NOT_OPEN");
 
@@ -95,6 +113,14 @@ export async function approveAction(
       await c.query(
         `INSERT INTO memberships (user_id, org_id, role) VALUES ($1, $2, 'org_admin')`,
         [user.rows[0].id, newOrgId],
+      );
+
+      /* 비밀번호 설정 링크. issued_by 가 채워져 있으면 본인 요청이 아니라
+         운영자가 발급한 것이다 (schema.sql 10번 주석) */
+      await c.query(
+        `INSERT INTO password_reset_tokens (user_id, token_hash, issued_by, expires_at)
+         VALUES ($1, $2, $3, now() + ($4 || ' hours')::interval)`,
+        [user.rows[0].id, setup.tokenHash, me.id, String(SETUP_TTL_HOURS)],
       );
 
       const contract = await c.query<{ id: string }>(
@@ -144,12 +170,33 @@ export async function approveAction(
      그려지면서 승인 결과가 사라지는데, 임시 비밀번호는 이 화면에서만 볼 수
      있으므로 그대로 잃어버린다. 목록과 기관 화면은 force-dynamic 이라
      들어갈 때마다 새로 읽으므로 따로 무효화할 필요도 없다. */
+  const links = {
+    joinUrl: joinUrl(token),
+    setupUrl: resetUrl(setup.token),
+  };
+
+  /* 메일은 트랜잭션 밖에서 보낸다. 발송이 늦거나 실패해도 이미 만들어진
+     기관·링크가 되돌아가서는 안 되기 때문이다 */
+  const mail = await sendMail(
+    approvedMail(langOfSite(site), {
+      to: v.adminEmail,
+      orgName: v.nameKo,
+      joinUrl: links.joinUrl,
+      setupUrl: links.setupUrl,
+      setupHours: SETUP_TTL_HOURS,
+      seatCount: v.seatCount,
+    }),
+  );
+
   return {
     issued: {
       orgId,
-      joinUrl: joinUrl(token),
+      joinUrl: links.joinUrl,
       adminEmail: v.adminEmail,
-      tempPassword,
+      setupUrl: links.setupUrl,
+      setupHours: SETUP_TTL_HOURS,
+      seatCount: v.seatCount,
+      mail: mail.ok ? { ok: true, via: mail.via } : { ok: false, error: mail.error },
     },
   };
 }
