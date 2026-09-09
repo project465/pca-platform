@@ -21,6 +21,24 @@ SITE=kr     npm run dev     # 한국어판
 | `kz` | pca.kz | kk | 원고 없음 |
 | `tr` | pca.com.tr | tr | 원고 없음 |
 
+## 지금 볼 수 있는 링크
+
+빌드해서 정적 한 장으로 뽑아 올려 둔 미리보기다. 메뉴는 실제로 넘어가고,
+문의 폼만 접수되지 않는다 (뒤에 서버가 없다).
+
+| 사이트 | 링크 |
+|---|---|
+| 글로벌 (영어) | https://claude.ai/code/artifact/14f526a6-4854-447e-a693-3fc072027899 |
+| 한국 (한국어) | https://claude.ai/code/artifact/2489bd40-cdae-4413-8f99-804341b64cda |
+
+도메인이 정해지면 이 미리보기는 버리고 각 도메인에 `SITE` 만 다르게 준
+빌드를 올린다. 미리보기를 다시 뽑는 방법은 아래와 같다.
+
+```bash
+SITE=kr npm run build && SITE=kr npm start   # 다른 창에서
+node scripts/export-preview.mjs kr /tmp/pca-korea.html
+```
+
 ## 나라를 추가하려면
 
 1. `src/content/kz.ts` 를 만들고 `SiteContent` 형태를 채운다

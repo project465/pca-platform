@@ -44,7 +44,14 @@ const routes = await page.evaluate(() => {
   return ["/", ...new Set(hrefs)];
 });
 
-const idOf = (r) => (r === "/" ? "home" : r.replace(/^\//, "").replace(/\//g, "-"));
+/**
+ * 페이지를 감싸는 칸의 id.
+ *
+ * 접두사를 붙이는 이유가 있다. 사이트 본문에는 이미 id="pricing" 같은
+ * 한 페이지 안 앵커가 있고, 거기에 같은 이름을 또 쓰면 :target 이
+ * 문서에서 먼저 나오는 쪽(숨어 있는 본문 절)을 잡아 페이지가 넘어가지 않는다.
+ */
+const idOf = (r) => "page-" + (r === "/" ? "home" : r.replace(/^\//, "").replace(/\//g, "-"));
 
 const header = await page.evaluate(() => document.querySelector(".site-header")?.outerHTML ?? "");
 const footer = await page.evaluate(() => document.querySelector(".site-footer")?.outerHTML ?? "");
@@ -76,8 +83,8 @@ sheet = sheet.replace(/url\(\/_next\/[^)]*\)/g, "none");
 /** /pca 같은 내부 링크를 해시로 바꾼다 */
 const toHash = (html) =>
   html
-    .replace(/href="\/"/g, 'href="#home"')
-    .replace(/href="\/([a-z-]+)"/g, 'href="#$1"');
+    .replace(/href="\/"/g, 'href="#page-home"')
+    .replace(/href="\/([a-z0-9-]+)"/g, 'href="#page-$1"');
 
 const note =
   lang === "ko"
@@ -114,7 +121,7 @@ ${sheet}
 /* 페이지 전환. 자바스크립트 없이 해시로 바꾼다 */
 .route { display: none; }
 .route:target { display: block; }
-body:not(:has(.route:target)) #home { display: block; }
+body:not(:has(.route:target)) #page-home { display: block; }
 </style>
 
 <div class="preview-bar"><b>${note.badge}</b><span>${note.text}</span></div>
