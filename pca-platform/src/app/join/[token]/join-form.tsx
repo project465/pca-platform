@@ -5,7 +5,17 @@ import { joinAction, type JoinState } from "./actions";
 
 const initial: JoinState = {};
 
-export default function JoinForm({ token }: { token: string }) {
+export default function JoinForm({
+  token,
+  askEmail,
+  loginIdHint,
+}: {
+  token: string;
+  /** 링크가 이메일 도메인을 걸었으면 이메일을 함께 받는다 */
+  askEmail: boolean;
+  /** "2021001234 처럼" 같은 안내. 조건이 없으면 null */
+  loginIdHint: string | null;
+}) {
   const bound = joinAction.bind(null, token);
   const [state, formAction, pending] = useActionState(bound, initial);
   const err = state.errors ?? {};
@@ -27,9 +37,21 @@ export default function JoinForm({ token }: { token: string }) {
       <div className="field full">
         <label htmlFor="loginId">학번</label>
         <input id="loginId" name="loginId" required autoComplete="username" />
-        <span className="help">다음부터 이 학번으로 로그인합니다.</span>
+        <span className="help">
+          다음부터 이 학번으로 로그인합니다.
+          {loginIdHint ? ` ${loginIdHint}` : ""}
+        </span>
         {err.loginId ? <span className="help" style={{ color: "var(--gap)" }}>{err.loginId}</span> : null}
       </div>
+
+      {askEmail ? (
+        <div className="field full">
+          <label htmlFor="email">학교 이메일</label>
+          <input id="email" name="email" type="email" required autoComplete="email" />
+          <span className="help">결과가 공개되면 이 주소로 알려드립니다.</span>
+          {err.email ? <span className="help" style={{ color: "var(--gap)" }}>{err.email}</span> : null}
+        </div>
+      ) : null}
 
       <div className="field full">
         <label htmlFor="password">비밀번호</label>

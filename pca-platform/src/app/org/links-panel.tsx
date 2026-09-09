@@ -3,6 +3,7 @@
 import { useActionState, useState } from "react";
 import { createLinkAction, revokeLinkAction, type LinkState } from "./actions";
 import type { OrgLink, SeatSummary } from "@/lib/org-links";
+import { MASK_HELP, maskExample, parseDomains } from "@/lib/join-rules";
 
 const initial: LinkState = {};
 
@@ -171,6 +172,23 @@ export default function LinksPanel({
             <input id="days" name="days" type="number" min={1} defaultValue={90} required />
             <span className="help">며칠 동안 열어 둘지.</span>
             {err.days ? <span className="help" style={{ color: "var(--gap)" }}>{err.days}</span> : null}
+          </div>
+
+          <div className="field full">
+            <label htmlFor="loginIdMask">학번 형태 (선택)</label>
+            <input id="loginIdMask" name="loginIdMask" placeholder="9999999999" />
+            <span className="help">{MASK_HELP} 비우면 아무 학번이나 됩니다.</span>
+            {err.loginIdMask ? <span className="help" style={{ color: "var(--gap)" }}>{err.loginIdMask}</span> : null}
+          </div>
+
+          <div className="field full">
+            <label htmlFor="emailDomains">허용 이메일 도메인 (선택)</label>
+            <input id="emailDomains" name="emailDomains" placeholder="hanyang.ac.kr, ac.kr" />
+            <span className="help">
+              쉼표로 나눠 적습니다. 적으면 등록 화면이 이메일을 함께 묻습니다.
+              <code>ac.kr</code> 처럼 적으면 그 아래 도메인까지 됩니다.
+            </span>
+            {err.emailDomains ? <span className="help" style={{ color: "var(--gap)" }}>{err.emailDomains}</span> : null}
           </div>
 
           <div className="actions full">

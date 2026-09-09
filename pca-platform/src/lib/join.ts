@@ -1,4 +1,5 @@
 import { queryOne } from "@/lib/db";
+import { parseDomains } from "@/lib/join-rules";
 
 /**
  * 전용 링크 한 개의 상태.
@@ -8,7 +9,12 @@ import { queryOne } from "@/lib/db";
  * 참·거짓이 아니라 이유를 돌려준다.
  */
 export type LinkState =
-  | { ok: true; orgId: string; linkId: string; label: string; remaining: number | null }
+  | {
+      ok: true; orgId: string; linkId: string; label: string; remaining: number | null;
+      /** 등록 조건. 없으면 아무나 들어올 수 있다 */
+      loginIdMask: string | null;
+      emailDomains: string[];
+    }
   | { ok: false; reason: "unknown" | "revoked" | "expired" | "full" };
 
 export async function readLink(token: string): Promise<LinkState> {
@@ -20,8 +26,11 @@ export async function readLink(token: string): Promise<LinkState> {
     used_count: string;
     revoked: boolean;
     expired: boolean;
+    login_id_mask: string | null;
+    email_domains: string | null;
   }>(
     `SELECT id, org_id, label, max_uses::text AS max_uses, used_count::text AS used_count,
+            login_id_mask, email_domains,
             (revoked_at IS NOT NULL) AS revoked,
             (expires_at IS NOT NULL AND expires_at < now()) AS expired
        FROM org_links WHERE token = $1`,
@@ -42,6 +51,8 @@ export async function readLink(token: string): Promise<LinkState> {
     linkId: row.id,
     label: row.label,
     remaining: max === null ? null : max - used,
+    loginIdMask: row.login_id_mask,
+    emailDomains: parseDomains(row.email_domains),
   };
 }
 

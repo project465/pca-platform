@@ -5,6 +5,7 @@ import { tx } from "@/lib/db";
 import { hashPassword } from "@/lib/password";
 import { passwordSchema, fieldErrors, type FieldErrors } from "@/lib/validation";
 import { readLink } from "@/lib/join";
+import { emailAllowed, loginIdAllowed, maskExample } from "@/lib/join-rules";
 import { z } from "zod";
 
 export type JoinState = { errors?: FieldErrors; message?: string };
@@ -18,6 +19,8 @@ const schema = z
       .min(2, "학번을 입력하세요.")
       .max(50)
       .regex(/^[A-Za-z0-9_-]+$/, "학번은 영문·숫자·하이픈·밑줄만 쓸 수 있습니다."),
+    /** 이메일은 링크가 도메인을 걸었을 때만 묻는다 */
+    email: z.union([z.literal(""), z.string().trim().email("이메일 형식이 아닙니다.").max(200)]).optional(),
     password: passwordSchema,
     passwordConfirm: z.string(),
   })
@@ -41,6 +44,7 @@ export async function joinAction(
   const parsed = schema.safeParse({
     displayName: formData.get("displayName"),
     loginId: formData.get("loginId"),
+    email: formData.get("email") ?? "",
     password: formData.get("password"),
     passwordConfirm: formData.get("passwordConfirm"),
   });
@@ -49,6 +53,28 @@ export async function joinAction(
 
   const link = await readLink(token);
   if (!link.ok) return { message: "지금은 이 링크로 등록할 수 없습니다." };
+
+  /* 링크에 걸린 조건. 화면에서도 막지만 서버에서 다시 본다 —
+     화면의 검사는 브라우저에만 있는 것이라 그대로 두면 우회된다 */
+  if (!loginIdAllowed(v.loginId, link.loginIdMask)) {
+    return {
+      errors: {
+        loginId: `학번 형태가 맞지 않습니다. ${maskExample(link.loginIdMask!)} 처럼 적어 주세요.`,
+      },
+    };
+  }
+  if (link.emailDomains.length > 0) {
+    if (!v.email) {
+      return { errors: { email: "이메일을 입력하세요." } };
+    }
+    if (!emailAllowed(v.email, link.emailDomains)) {
+      return {
+        errors: {
+          email: `${link.emailDomains.map((d) => "@" + d).join(", ")} 주소만 등록할 수 있습니다.`,
+        },
+      };
+    }
+  }
 
   const passwordHash = await hashPassword(v.password);
 
@@ -84,9 +110,9 @@ export async function joinAction(
       if (seat.rowCount === 0) throw new Error("NO_SEAT");
 
       const user = await c.query<{ id: string }>(
-        `INSERT INTO users (login_id, password_hash, display_name, must_reset_pw)
-         VALUES ($1, $2, $3, false) RETURNING id`,
-        [v.loginId, passwordHash, v.displayName],
+        `INSERT INTO users (login_id, email, password_hash, display_name, must_reset_pw)
+         VALUES ($1, $2, $3, $4, false) RETURNING id`,
+        [v.loginId, v.email || null, passwordHash, v.displayName],
       );
       const userId = user.rows[0].id;
 
@@ -112,6 +138,9 @@ export async function joinAction(
     }
     if (msg.includes("users_login_id_key")) {
       return { errors: { loginId: "이미 등록된 학번입니다. 로그인 화면으로 가세요." } };
+    }
+    if (msg.includes("users_email_key")) {
+      return { errors: { email: "이미 등록된 이메일입니다. 로그인 화면으로 가세요." } };
     }
     throw e;
   }

@@ -36,6 +36,10 @@ cleanup() {
 trap cleanup EXIT
 
 say "1/5 스키마"
+# 적힌 대로 통째로 비우고 시작한다. 남아 있는 표가 있으면 schema.sql 이
+# 중간에서 멈추고, 그 뒤 검사들은 반쯤 찬 데이터베이스를 보게 된다.
+psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -q \
+  -c "DROP SCHEMA public CASCADE" -c "CREATE SCHEMA public"
 psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -q -f db/schema.sql
 
 say "2/5 문항 적재와 시드"
@@ -50,6 +54,18 @@ npm run --silent build > /tmp/pca-verify-build.log 2>&1 \
 echo "빌드 완료"
 
 say "4/5 서버 띄우기"
+
+# 이미 무언가 듣고 있으면 멈춘다.
+# 그대로 두면 우리가 띄운 서버는 포트를 못 잡아 죽고, 검사들은 남의 서버를
+# — 다른 데이터베이스를 보는 서버를 — 두드리면서 통과하거나 엉뚱하게 실패한다.
+# 조용히 잘못된 것을 확인하느니 여기서 멈추는 편이 낫다.
+if curl -sf -o /dev/null "$BASE_URL/login"; then
+  echo "$BASE_URL 에 이미 무언가 떠 있습니다."
+  echo "그 서버는 다른 데이터베이스를 보고 있을 수 있어 확인 결과를 믿을 수 없습니다."
+  echo "먼저 그것을 끄고 다시 실행하세요."
+  exit 1
+fi
+
 npm run --silent start > /tmp/pca-verify-server.log 2>&1 &
 SERVER_PID=$!
 for _ in $(seq 1 60); do
@@ -80,6 +96,9 @@ else
   echo "· 담당자 링크 관리 (남의 링크 id ${FOREIGN_LINK_ID} 로 권한도 시험)"
 fi
 node scripts/e2e-org-links.mjs
+
+echo "· 전용 링크 조건 — 학번 형태와 이메일 도메인"
+node scripts/e2e-join-rules.mjs
 
 echo "· 응시 — 시작, 즉시 저장, 이어보기, 제출"
 node scripts/e2e-exam.mjs

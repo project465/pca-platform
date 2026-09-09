@@ -7,6 +7,7 @@ import { requireRole } from "@/lib/session";
 import { newLinkToken } from "@/lib/applications";
 import { adminOrgIds, linkOwnedBy, seatsOf } from "@/lib/org-links";
 import { fieldErrors, type FieldErrors } from "@/lib/validation";
+import { isValidDomain, isValidMask, parseDomains } from "@/lib/join-rules";
 
 export type LinkState = { errors?: FieldErrors; message?: string; ok?: string };
 
@@ -22,6 +23,9 @@ const createSchema = z.object({
     .int()
     .min(1, "기간은 1일 이상이어야 합니다.")
     .max(730, "기간이 너무 깁니다."),
+  /* 등록 조건. 비우면 조건 없음 */
+  loginIdMask: z.string().trim().max(40).optional(),
+  emailDomains: z.string().trim().max(300).optional(),
 });
 
 /**
@@ -44,12 +48,25 @@ export async function createLinkAction(
     label: formData.get("label"),
     maxUses: formData.get("maxUses") ?? "",
     days: formData.get("days"),
+    loginIdMask: formData.get("loginIdMask") ?? "",
+    emailDomains: formData.get("emailDomains") ?? "",
   });
   if (!parsed.success) return { errors: fieldErrors(parsed.error) };
   const v = parsed.data;
 
   const mine = adminOrgIds(user);
   if (!mine.includes(v.orgId)) return { message: "권한이 없습니다." };
+
+  /* 조건을 알아볼 수 없으면 만들지 않는다. 잘못 저장하면 아무도 못 들어온다 */
+  const mask = v.loginIdMask || "";
+  if (mask && !isValidMask(mask)) {
+    return { errors: { loginIdMask: "9 는 숫자, A 는 영문, * 는 숫자나 영문입니다. 그 밖의 기호는 쓸 수 없습니다." } };
+  }
+  const domains = parseDomains(v.emailDomains || "");
+  const badDomain = domains.find((d) => !isValidDomain(d));
+  if (badDomain) {
+    return { errors: { emailDomains: `도메인 형식이 아닙니다: ${badDomain}` } };
+  }
 
   const seats = await seatsOf(v.orgId);
   if (seats.free === 0) {
@@ -62,9 +79,11 @@ export async function createLinkAction(
 
   await tx(async (c) => {
     await c.query(
-      `INSERT INTO org_links (org_id, token, label, max_uses, expires_at, created_by)
-       VALUES ($1, $2, $3, $4, now() + ($5 || ' days')::interval, $6)`,
-      [v.orgId, newLinkToken(), v.label, maxUses, String(v.days), user.id],
+      `INSERT INTO org_links
+         (org_id, token, label, max_uses, expires_at, created_by, login_id_mask, email_domains)
+       VALUES ($1, $2, $3, $4, now() + ($5 || ' days')::interval, $6, $7, $8)`,
+      [v.orgId, newLinkToken(), v.label, maxUses, String(v.days), user.id,
+       mask || null, domains.length ? domains.join(", ") : null],
     );
   });
 

@@ -42,7 +42,8 @@ if (p.url().includes("/password/change")) {
   await p.click('button[type="submit"], button.act');
   await p.waitForTimeout(1800);
 } else {
-  bad(`비밀번호 변경 화면으로 가지 않았다: ${p.url()}`);
+  const t = (await p.innerText("body")).replace(/\s+/g, " ").slice(0, 220);
+  bad(`비밀번호 변경 화면으로 가지 않았다: ${p.url()} | ${t}`);
 }
 
 await p.goto(`${BASE}/my`);

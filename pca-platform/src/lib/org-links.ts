@@ -18,6 +18,8 @@ export type OrgLink = {
   expires_at: string | null;
   revoked_at: string | null;
   created_at: string;
+  login_id_mask: string | null;
+  email_domains: string | null;
 };
 
 export type SeatSummary = { total: number; taken: number; free: number };
@@ -37,6 +39,7 @@ export function visibleOrgIds(user: SessionUser): string[] {
 export async function linksOf(orgId: string): Promise<OrgLink[]> {
   return query<OrgLink>(
     `SELECT id, token, label, used_count::text AS used_count, max_uses::text AS max_uses,
+            login_id_mask, email_domains,
             to_char(expires_at, 'YYYY-MM-DD') AS expires_at,
             to_char(revoked_at, 'YYYY-MM-DD HH24:MI') AS revoked_at,
             to_char(created_at, 'YYYY-MM-DD') AS created_at

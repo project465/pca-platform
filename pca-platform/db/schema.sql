@@ -353,6 +353,9 @@ CREATE TABLE org_links (
   label        TEXT NOT NULL,               -- '2026-1학기 기계공학과' 처럼 담당자가 알아볼 이름
   max_uses     INTEGER,                     -- NULL 이면 계약 좌석 수가 실질 상한이다
   used_count   INTEGER NOT NULL DEFAULT 0,
+  -- 등록 조건. 링크를 공개된 곳에 걸 때 엉뚱한 사람을 거른다. NULL 이면 조건 없음
+  login_id_mask TEXT,                      -- 9=숫자 A=영문 *=숫자나영문, 나머지는 그대로
+  email_domains TEXT,                      -- 쉼표로 나눈 목록. 'ac.kr' 은 그 아래 도메인까지
   expires_at   TIMESTAMPTZ,
   revoked_at   TIMESTAMPTZ,
   created_by   BIGINT REFERENCES users(id),
@@ -362,6 +365,8 @@ COMMENT ON TABLE org_links IS
   '단체 전용 링크. password_reset_tokens 와 달리 원문을 그대로 저장한다.
    재설정 토큰은 1회용·개인용이라 다시 보여줄 일이 없지만, 이 링크는 담당자가
    학생들에게 반복해서 뿌려야 하므로 화면에 다시 띄울 수 있어야 한다.
-   대신 만료(expires_at)·사용 상한(max_uses)·회수(revoked_at)로 위험을 줄인다';
+   대신 만료(expires_at)·사용 상한(max_uses)·회수(revoked_at)로 위험을 줄이고,
+   학번 형태(login_id_mask)와 이메일 도메인(email_domains)으로 누가 들어올 수
+   있는지를 좁힌다. 정규식을 그대로 받지 않는 이유는 lib/join-rules.ts 에 적었다';
 
 CREATE INDEX idx_org_links_live ON org_links(org_id) WHERE revoked_at IS NULL;
