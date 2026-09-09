@@ -197,7 +197,20 @@ FOREIGN_LINK_ID=5 node scripts/e2e-org-links.mjs    # 남의 링크까지 시험
 ### 흐름 전체를 한 번 돌려보기
 
 ```bash
-npm run db:reset && npm run db:seed
-npm run build && npm start
-node scripts/e2e-join.mjs      # 신청→승인→링크→학생 등록까지 브라우저로 확인
+DATABASE_URL=postgres://postgres@127.0.0.1:5432/pca npm run verify
+```
+
+빈 데이터베이스에서 스키마를 넣고, 시드를 채우고, 빌드해 띄운 다음 브라우저로
+두 흐름을 돌린다 — 신청→승인→전용 링크→학생 등록, 그리고 담당자의 링크 관리.
+사람이 눌러 보는 것과 같은 경로다. **대상 데이터베이스를 통째로 지우고 다시
+만드므로 운영 접속 문자열을 주면 안 된다.**
+
+CI 의 `도입 흐름` 잡이 PostgreSQL 을 옆에 띄우고 이것을 그대로 돌린다.
+푸시할 때마다 자동으로 확인된다.
+
+스크립트를 따로 돌릴 수도 있다.
+
+```bash
+INTAKE_SECRET=... node scripts/e2e-join.mjs        # 신청부터 학생 등록까지
+FOREIGN_LINK_ID=3 node scripts/e2e-org-links.mjs   # 담당자 링크 관리와 권한
 ```

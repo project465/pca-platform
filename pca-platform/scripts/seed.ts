@@ -27,6 +27,10 @@ const PW_ADMIN = "pca-dev-admin-1234";
 const PW_ORG = "pca-dev-org-1234";
 const PW_STUDENT = "TempPass2026";
 
+/** 개발용 계약 규모와 전용 링크 토큰. 고정해 둬야 다시 돌려도 링크가 살아 있다 */
+const SEED_SEATS = 30;
+const SEED_LINK_TOKEN = "dev-seed-link-token-0000000000ab";
+
 async function main() {
 await tx(async (c) => {
   const org = async (
@@ -98,6 +102,33 @@ await tx(async (c) => {
 
   const student = await user("2021001234", null, "이학생", PW_STUDENT, true);
   await member(student, dept, "student");
+
+  /* 계약·응시권·전용 링크.
+     이게 없으면 담당자 화면(/org)이 응시권 0 에 링크도 없는 빈 화면이라
+     무엇을 하는 화면인지 알 수 없다. 여러 번 돌려도 같은 상태가 되도록
+     이미 있으면 넘어간다. */
+  const contract = await c.query<{ id: string }>(
+    `INSERT INTO contracts (org_id, title, starts_on, ends_on, seat_count)
+     SELECT $1, $2, current_date, current_date + 365, $3
+      WHERE NOT EXISTS (SELECT 1 FROM contracts WHERE org_id = $1 AND title = $2)
+     RETURNING id`,
+    [dept, "2026 기계공학과 PCA", SEED_SEATS],
+  );
+  if (contract.rowCount) {
+    const contractId = contract.rows[0].id;
+    await c.query(
+      `INSERT INTO seats (contract_id, expires_at)
+       SELECT $1, current_date + 366 FROM generate_series(1, $2)`,
+      [contractId, SEED_SEATS],
+    );
+    // 토큰을 고정해 둔다. 시드를 다시 돌려도 개발 중 열어 둔 링크가 그대로다
+    await c.query(
+      `INSERT INTO org_links (org_id, token, label, max_uses, expires_at, created_by)
+       VALUES ($1, $2, $3, $4, current_date + 366, $5)
+       ON CONFLICT (token) DO NOTHING`,
+      [dept, SEED_LINK_TOKEN, "2026-1학기 3학년", SEED_SEATS, orgAdmin],
+    );
+  }
 });
 
   console.log(`
@@ -106,6 +137,9 @@ await tx(async (c) => {
   운영사 관리자   admin        / ${PW_ADMIN}
   학과 담당자     me-admin     / ${PW_ORG}
   학생(첫 로그인) 2021001234   / ${PW_STUDENT}   ← 로그인하면 비밀번호 변경 화면으로 갑니다
+
+  기계공학과에 응시권 ${SEED_SEATS}장과 전용 링크가 하나 있습니다.
+  /join/${SEED_LINK_TOKEN}
 `);
 }
 
