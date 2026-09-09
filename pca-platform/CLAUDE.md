@@ -273,6 +273,45 @@ PCA 가 대는 것은 학생 체감의 증거(개인 15–20페이지 전략서)
 옛 구성(00-1·00-2·01~09 = 11탭)이다. 숫자를 나란히 쓰면 어긋나므로,
 **8장 목차를 받은 뒤에 함께 고친다.** 그전까지 원고에 장 수를 적지 않는다.
 
+### 결과지는 8장 52절 (정본 목차 · 2026-09-09)
+
+| 장 | 절 |
+|---|---|
+| 1 핵심 진단 요약 | 6 |
+| 2 강점 프로파일 | 6 |
+| 3 실제 업무 장면 | 4 |
+| 4 직무·진로 방향 제안 | 7 |
+| 5 프로젝트·포트폴리오 전략 | 7 |
+| 6 자기소개서·면접 활용 | 7 |
+| 7 창업 준비 전략 | 7 |
+| 8 성장 포인트와 다음 단계 | 8 |
+| | **52** |
+
+- 정본: pca-line `.claude/skills/pca-result-ko-authoring/reference/skeleton_ko.json`
+- **9장(지역 기업 연계)은 목차에 넣지 않는다.** 한국 전용 모듈이라
+  한국판에서만 "부록: 지역 기업 연계" 로 언급한다
+- **해외판(글로벌·카자흐)의 6장 제목은 중립화한다** — "지원서류·면접 준비 /
+  Application Documents & Interview Preparation". 한국의 '자기소개서' 관행을
+  전제하지 않는다 (2026-09-04 확정). 한국판은 원제 그대로
+
+### 계열 10개 — 영어 정본만 확정 (R007 · ISCED-F 2013)
+
+C01 Education · C02 Arts and Humanities · C03 Social Sciences, Journalism and
+Information · C04 Business, Administration and Law · C05 Natural Sciences,
+Mathematics and Statistics · C06 Information and Communication Technologies ·
+C07 Engineering, Manufacturing and Construction · C08 Agriculture, Forestry,
+Fisheries and Veterinary · C09 Health and Welfare · C10 Services
+
+**한국어·카자흐어 표시 이름은 결재 대기다.** 한국판·카자흐판에 계열 이름을
+박지 않는다. 글로벌판은 영어 정본으로 구조 없이 언급만 한다.
+분야(전공)·영역 수는 계속 비워 둔다.
+
+### 예시 학생은 경영학과로 통일 (2026-09-09)
+
+세 판 모두 경영학과 3학년이다. 경영이 골든 레퍼런스(전 학과의 표준 원고)이고
+해외판 파일럿 A01 도 경영이라 예시 결과지가 한 줄로 맞는다. 기계공학과도
+라이브지만 "공과계열" 인상을 남긴다.
+
 ### R016 · 플랫폼은 라이브 pca-web 하나다
 
 이 저장소는 소개 사이트(`marketing/`)를 만든다. 검사 플랫폼은 라이브 중인

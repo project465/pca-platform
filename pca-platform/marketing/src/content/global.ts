@@ -96,17 +96,17 @@ export const global: SiteContent = {
     disclaimer:
       "An illustrative screen showing the format of the report — not a real student’s submission. The job areas shown are one field's; the six work styles and the regional method are exactly as they ship.",
     docTag: "METRI INDIVIDUAL REPORT",
-    page: "extract · 00-1 · 00-2 · 05–06 · regional annex",
+    page: "extract · ch.1 · ch.5–6 · annex",
     person: {
       name: "Sample student",
-      dept: "Mechanical Engineering, year 3",
+      dept: "Business Administration, year 3",
       meta: [
         { l: "Sat", v: "11 March 2026" },
         { l: "Time taken", v: "32 min" },
-        { l: "Report", v: "18 pages" },
+        { l: "Report", v: "8 chapters, 52 sections" },
       ],
     },
-    jobsLabel: "00-1 Job-area fit · ten areas, scored out of 100",
+    jobsLabel: "Ch.1 · Job-area fit, scored out of 100",
     jobsNote:
       "The top three set the application strategy. The seven below carry the reason they fell where they did, so the student never has to ask why they were ruled out.",
     jobs: [
@@ -128,7 +128,7 @@ export const global: SiteContent = {
       "Strong where a standard is set and has to be met to the end. Costly in a team that runs on speed and on pulling other people along. For now, aim at posts where the standard is explicit — process and quality — and leave leading a team until year three or later.",
     styleAxes: ["Independent", "Collaborative", "Challenging", "Steady", "Speed-led", "Quality-led"],
     styleScores: [78, 55, 62, 71, 49, 86],
-    planLabel: "Sections 05–06 · the next twelve months",
+    planLabel: "Chapters 5–6 · the next twelve months",
     planNote:
       "It does not end at a label. A month and a task are attached, and one line saying why it is worth doing.",
     plan: [
@@ -139,17 +139,17 @@ export const global: SiteContent = {
       },
       {
         when: "Months 2–3",
-        what: "Reframe the capstone project around defect-rate reduction",
+        what: "Reframe the final-year project around defect-rate reduction",
         why: "Leaves a number the student can say out loud in an interview",
       },
       {
         when: "Month 4",
-        what: "Apply for the placements at the local plants listed in the regional annex",
+        what: "Apply for the summer placements in operations roles",
         why: "Placements are how these employers actually hire",
       },
       {
         when: "Month 6",
-        what: "Draft the first application answer from the sentence frames in section 06",
+        what: "Draft the first application answer from the sentence frames in chapter 6",
         why: "The strengths are already written; the student edits rather than starts",
       },
       {
@@ -258,7 +258,7 @@ export const global: SiteContent = {
     ],
     more: "continues in the report",
     disclaimer:
-      "※ From an actual respondent's report, published with their consent. The name is masked.",
+      "※ This screen shows the report's structure — what each chapter holds. It does not carry any individual student's results.",
     jobAxes: [
       "Strategy",
       "HR & Org",
@@ -274,297 +274,225 @@ export const global: SiteContent = {
     jobScores: [92, 74, 68, 62, 58, 70, 66, 64, 82, 86],
     styleAxes: ["Independent", "Collaborative", "Challenging", "Steady", "Fast-moving", "Quality-first"],
     styleScores: [84, 78, 86, 66, 72, 91],
+    /* The report is 8 chapters, 52 sections. Chapter 9 (regional employer
+       matching) is a Korea-only module and is not part of this contents list. */
     tabs: [
       {
-        no: "00-1",
-        nav: "Job area analysis",
-        title: "Job area analysis",
+        no: "1",
+        nav: "Core diagnosis",
+        title: "Chapter 1. Core diagnosis",
         chart: "jobs",
         meta: [
-          { label: "Highest area", value: "Management & Strategy" },
-          { label: "Score", value: "92" },
-          { label: "Respondent", value: "■■■" },
+          { label: "Highest area", value: "Management & strategy" },
+          { label: "Score", value: "92 / 100" },
+          { label: "Student", value: "■■■" },
         ],
-        chartNote: "Management & Strategy came out highest across this field's job areas.",
-        capTitle: "Job area analysis",
-        capBody: "The job areas of the student's field, scored out of 100 and ranked.",
-        capArrow: "Answers “which role does this major lead to?” with data",
-      },
-      {
-        no: "00-2",
-        nav: "Work style analysis",
-        title: "Work style analysis",
-        chart: "styles",
-        meta: [
-          { label: "Highest style", value: "Quality-first" },
-          { label: "Score", value: "91" },
-          { label: "Leading combination", value: "Quality-first + Challenging + Independent" },
-        ],
-        chartNote: "Leading combination: Quality-first + Challenging + Independent",
-        capTitle: "Work style analysis",
-        capBody: "Six work styles measured, then reduced to a leading combination.",
-        capArrow: "The way of working that suits this student",
-      },
-      {
-        no: "01",
-        nav: "Core summary",
-        title: "Section 1. Core summary",
+        chartNote: "The job areas inside the student's own field, scored out of 100 and ranked.",
         blocks: [
           {
-            sub: "SUBSECTION 1-1",
-            title: "The highest-scoring area",
-            body: [
-              "The highest area in this result is Management & Strategy, at 92. This is the field that judges where an organisation should move, reading market, competitors, customers, business structure and performance indicators together to design a direction.",
-              "The result does not fix a single job. It says that, within this major, planning and strategy roles are the ones to examine first.",
-            ],
-          },
-          {
-            sub: "SUBSECTION 1-2",
-            title: "Ranked areas",
-            body: [
-              "The report is written around the highest area. Second and third are kept as context for how wide the respondent's interests run.",
-            ],
-            table: {
-              head: ["Rank", "Area", "Score", "How it is used in the report"],
-              rows: [
-                ["1st", "Management & Strategy", "92", "Main analysis"],
-                ["2nd", "Consulting & Research", "86", "Reference"],
-                ["3rd", "IT, Data & Service planning", "82", "Reference"],
-              ],
-            },
-          },
-        ],
-        capTitle: "Core summary",
-        capBody: "The top job area, its score and rank, alongside work style.",
-        capArrow: "The reference point for everything after it",
-      },
-      {
-        no: "02",
-        nav: "Strength profile",
-        title: "Section 2. Strength profile",
-        blocks: [
-          {
-            sub: "SUBSECTION 2-1",
-            title: "Three strengths drawn from the result area",
+            sub: "6 sections",
+            title: "What this chapter holds",
             bullets: [
-              "1. Strategic problem definition — seeing the whole situation an organisation is in, and structuring what has to be solved first.",
-              "2. Evidence-based analysis — checking market, competitor, customer and internal capability data to build grounds for a judgement.",
-              "3. Designing the route to execution — not stopping at a report, but turning findings into workable options and an order to do them in.",
+              "1-1 The highest-scoring area",
+              "1-2 Ranked summary of results",
+              "1-3 Work-style results",
+              "1-4 Dominant work-style summary",
+              "1-5 Employment vs founding, read against work style",
+              "1-6 Key diagnostic points",
+            ],
+          },
+        ],
+        capTitle: "Core diagnosis",
+        capBody: "The top area and the ranking, the work styles, and the two read together.",
+        capArrow: "The other seven chapters are all written against this one",
+      },
+      {
+        no: "2",
+        nav: "Strength profile",
+        title: "Chapter 2. Strength profile",
+        blocks: [
+          {
+            sub: "6 sections",
+            title: "What this chapter holds",
+            bullets: [
+              "2-1 Three defining strengths",
+              "2-2 First strength",
+              "2-3 Second strength",
+              "2-4 Third strength",
+              "2-5 Strengths read against the area",
+              "2-6 Showing the strengths in a job search",
             ],
           },
           {
-            sub: "SUBSECTION 2-2",
-            title: "First strength: strategic problem definition",
             body: [
-              "Company problems surface as falling revenue, sharper competition, customers leaving, rising costs. What matters is not stopping at the surface but working out structurally why the result happened.",
-              "In an application, “what I analysed” carries less than “which problem I found, and why I treated it as the core one.”",
+              "Three strengths, one section each, and then how to make them visible on paper and in a room. Knowing a strength and showing it are different jobs.",
             ],
           },
         ],
         capTitle: "Strength profile",
-        capBody: "Three headline strengths and how to use them in applications.",
-        capArrow: "Usable in an essay or interview as written",
+        capBody: "Three strengths unpacked, and how to show them.",
+        capArrow: "So “what are your strengths” has a written answer",
       },
       {
-        no: "03",
-        nav: "The work, concretely",
-        title: "Section 3. The work, concretely",
+        no: "3",
+        nav: "On the job",
+        title: "Chapter 3. What the work actually looks like",
         blocks: [
           {
-            sub: "SUBSECTION 3-1",
-            title: "Scenario 1: a market-entry review for a new business line",
-            fields: [{ label: "Linked area", value: "Management & Strategy" }],
-          },
-          {
-            title: "The situation you are given",
-            body: [
-              "You are placed in the strategy planning team of a food manufacturer. The team lead asks you to assess entry into the healthy convenience-meal market; growth in the existing range has flattened and the company is looking for new revenue.",
-              "What you have to produce is an entry review covering market attractiveness, competitive intensity, fit with the company, and how to enter.",
-            ],
-          },
-          {
-            title: "What is required of you",
-            body: [
-              "Structure the market opportunity, compare competitors against the company's own capability, and propose an entry route that can actually be executed.",
-            ],
-          },
-          {
-            title: "Capabilities it calls for",
+            sub: "4 sections",
+            title: "What this chapter holds",
             bullets: [
-              "1. Market analysis — reading size, growth and shifts in demand to judge whether entry is viable.",
-              "2. Competitor comparison — pricing, range, channels and points of difference, to place the company.",
-              "3. Commercial judgement — not stopping at “the market looks good”, but weighing capability and margin together.",
+              "3-1 Work scenario 1",
+              "3-2 Work scenario 2",
+              "3-3 Work scenario 3",
+              "3-4 How this student would settle in",
+            ],
+          },
+          {
+            body: [
+              "A job title does not tell you what the work is. Three scenes from an ordinary day, then a reading of how this student would adapt to them.",
             ],
           },
         ],
-        capTitle: "The work, concretely",
-        capBody: "A real scenario from that area, and the capability it demands.",
-        capArrow: "Try the role on before committing to it",
+        capTitle: "What the work actually looks like",
+        capBody: "Not a job title — a day, in three scenes.",
+        capArrow: "“Could I do this every day?”",
       },
       {
-        no: "04",
+        no: "4",
         nav: "Roles and direction",
-        title: "Section 4. Roles and career direction",
+        title: "Chapter 4. Roles and career direction",
         blocks: [
           {
-            sub: "SUBSECTION 4-1",
-            title: "Understanding the area",
-            body: [
-              "Management & Strategy judges how a company should grow and compete: setting objectives, analysing market and competition, proposing a direction that can be executed.",
-              "The end goal is a portfolio where subject knowledge, method, output and the link to the target role are all visible at once.",
-            ],
-          },
-          {
-            sub: "SUBSECTION 4-2",
-            title: "Roles this area connects to",
-            body: [
-              "Every role here touches direction and decision-making. Rather than picking one up front, narrow it by comparing duties, required capability and expected outputs across real postings.",
-            ],
-            table: {
-              head: ["#", "Role", "What it actually involves", "Experience to prepare"],
-              rows: [
-                [
-                  "1",
-                  "Business planning",
-                  "Setting annual objectives, the business plan, budget direction and the performance framework.",
-                  "Reading business plans, working with KPIs, understanding internal performance measures",
-                ],
-              ],
-            },
-          },
-        ],
-        capTitle: "Roles and direction",
-        capBody: "Connected roles, which to examine first, and how to choose.",
-        capArrow: "Eight roles, in priority order",
-      },
-      {
-        no: "05",
-        nav: "Projects & portfolio",
-        title: "Section 5. Projects and portfolio",
-        blocks: [
-          {
-            sub: "SUBSECTION 5-1",
-            title: "Why a project",
-            body: [
-              "For a student without much practical experience, a project is the most realistic way to show the work they are interested in and how they went about it. What counts is not the name of the activity but which problem was set, which sources were checked, on what criteria it was analysed, and what was produced.",
-            ],
-          },
-          {
-            sub: "SUBSECTION 5-2",
-            title: "Project directions grounded in the result area",
-            body: [
-              "A project does not end at “what I analysed”. What matters is how it connects to the actual work of the company being applied to.",
-            ],
-            table: {
-              head: ["Direction", "Why it fits", "Sources", "Output"],
-              rows: [
-                [
-                  "Company analysis report",
-                  "Analysing business structure, revenue model and growth strategy walks through the basic flow of planning and strategy work.",
-                  "Company site, annual report, news, industry data, competitor material",
-                  "A company analysis report",
-                ],
-              ],
-            },
-          },
-        ],
-        capTitle: "Projects & portfolio",
-        capBody: "Directions and worked examples, plus a four-week plan.",
-        capArrow: "The portfolio to start this week",
-      },
-      {
-        no: "06",
-        nav: "Applications & interviews",
-        title: "Section 6. Applications and interviews",
-        blocks: [
-          {
-            sub: "SUBSECTION 6-1",
-            title: "How to write the application",
-          },
-          {
-            title: "1. Connecting coursework to the work you want",
-            body: [
-              "What was studied connects directly to planning, strategy, new-business and analysis roles. Coursework persuades when it is offered as “here is a problem I analysed”, not as “I am interested in this”.",
-            ],
-          },
-          {
-            title: "2. Showing a project as capability",
-            body: [
-              "Write the project around how the problem was set, how sources were found, how criteria were chosen, what was produced, and how it connects to the role — not around the project's name.",
+            sub: "7 sections",
+            title: "What this chapter holds",
+            bullets: [
+              "4-1 Understanding the result area",
+              "4-2 Roles that connect to the area",
+              "4-3 Roles to explore first",
+              "4-4 Roles to weigh alongside",
+              "4-5 The order to explore in",
+              "4-6 How to choose between roles",
+              "4-7 Overall proposal",
             ],
           },
         ],
-        capTitle: "Applications & interviews",
-        capBody: "How to write it, and how to build answers to likely questions.",
-        capArrow: "Example sentences, anticipated questions",
+        capTitle: "Roles and career direction",
+        capBody: "What to look at first, what to weigh against it, and on what basis to choose.",
+        capArrow: "The search gets an order",
       },
       {
-        no: "07",
-        nav: "Founding strategy",
-        title: "Section 7. Founding strategy",
+        no: "5",
+        nav: "Projects and portfolio",
+        title: "Chapter 5. Projects and portfolio",
         blocks: [
           {
-            sub: "SUBSECTION 7-1",
-            title: "What the result area suggests about founding",
-            body: [
-              "This area equips someone to weigh market, customer, competitor, price, revenue model and operations together — which is exactly what assessing an idea requires. Validating a customer problem with a small piece of work is more realistic than starting with a platform.",
+            sub: "7 sections",
+            title: "What this chapter holds",
+            bullets: [
+              "5-1 Why a project at all",
+              "5-2 Project directions for this area",
+              "5-3 Projects that can start now",
+              "5-4 What a portfolio must contain",
+              "5-5 Writing it up, by output type",
+              "5-6 A four-week plan",
+              "5-7 Summary",
             ],
           },
           {
-            sub: "SUBSECTION 7-2",
-            title: "Five ideas grounded in the area",
-            fields: [{ label: "Idea 1", value: "Competitor analysis reports for small businesses" }],
             body: [
-              "What it is — a report service that lets a small business compare nearby competitors on price, menu, reviews, channels and promotion.",
-              "The problem it solves — owners feel they should be checking competitors but do not know what to compare them on.",
-              "Who it is for — cafés, restaurants, tutoring centres, salons, gyms, local single-site operators.",
+              "A portfolio does not accumulate by itself. This chapter goes from why, down to a four-week plan.",
             ],
           },
         ],
-        capTitle: "Founding strategy",
-        capBody: "Ideas grounded in the major, and a route to market.",
-        capArrow: "A second option beyond employment",
+        capTitle: "Projects and portfolio",
+        capBody: "What to build, down to a four-week plan.",
+        capArrow: "The chapter that makes the thing you will write about",
       },
       {
-        no: "08",
-        nav: "Growth points",
-        title: "Section 8. Growth points and next steps",
+        no: "6",
+        nav: "Application and interview",
+        title: "Chapter 6. Application documents and interview preparation",
         blocks: [
           {
-            sub: "SUBSECTION 8-1",
-            title: "The strengths this result surfaced",
+            sub: "7 sections",
+            title: "What this chapter holds",
             bullets: [
-              "A tendency to analyse companies and markets from subject knowledge, which reads across to strategy and planning roles.",
-              "Those roles connect to business-structure analysis, competitor comparison and opportunity assessment, so relevant experience sharpens the direction quickly.",
+              "6-1 How to frame the application",
+              "6-2 Example sentences",
+              "6-3 Likely interview questions",
+              "6-4 How to structure an answer",
+              "6-5 Keywords to lean on",
+              "6-6 What to avoid",
+              "6-7 Summary",
             ],
           },
           {
-            sub: "SUBSECTION 8-2",
-            title: "Roles to examine first",
+            body: [
+              "Example sentences and answer structures. Knowing a strength and writing it as a paragraph are different things — this chapter means the student does not start from a blank page.",
+            ],
+          },
+        ],
+        capTitle: "Application documents and interview",
+        capBody: "Example sentences, likely questions, answer structures.",
+        capArrow: "Nobody starts from a blank page",
+      },
+      {
+        no: "7",
+        nav: "Founding",
+        title: "Chapter 7. Preparing to found something",
+        blocks: [
+          {
+            sub: "7 sections",
+            title: "What this chapter holds",
             bullets: [
-              "Business planning, strategy planning, new-business planning, business development and management control.",
-              "Compare the actual duties, required capability and the experience that can be prepared, rather than fixing on one immediately.",
+              "7-1 Founding direction, read from the area",
+              "7-2 Five venture ideas grounded in the area",
+              "7-3 Comparing the ideas",
+              "7-4 Market entry",
+              "7-5 Preparing at an undergraduate's level",
+              "7-6 A four-week plan",
+              "7-7 Summary",
             ],
           },
           {
-            sub: "SUBSECTION 8-3",
-            title: "The project to start first",
+            body: [
+              "Founding is not for everyone. Where there is a direction that fits, this chapter says which idea and in what order.",
+            ],
+          },
+        ],
+        capTitle: "Preparing to found something",
+        capBody: "Five ideas, compared, with an entry strategy and a four-week plan.",
+        capArrow: "An option, not an instruction",
+      },
+      {
+        no: "8",
+        nav: "Next steps",
+        title: "Chapter 8. Growth points and next steps",
+        blocks: [
+          {
+            sub: "8 sections",
+            title: "What this chapter holds",
             bullets: [
-              "A company analysis report or a market-entry review produces an output that connects to these roles.",
-              "Present it as a report or deck, showing problem definition, method and the link to the target role.",
+              "8-1 Core strengths",
+              "8-2 Roles to explore first",
+              "8-3 The project to start first",
+              "8-4 Application and interview points",
+              "8-5 Founding checkpoints",
+              "8-6 What to watch out for",
+              "8-7 Direction from here",
+              "8-8 A 30-day checklist",
             ],
           },
           {
-            sub: "SUBSECTION 8-4",
-            title: "What to carry into applications and interviews",
-            bullets: [
-              "Coursework, project experience and role-specific training together evidence problem definition and the ability to propose a direction.",
+            body: [
+              "Seven chapters folded into one. The last section is a 30-day checklist, so the student can close the document and begin.",
             ],
           },
         ],
         capTitle: "Growth points and next steps",
-        capBody: "What to watch for, and a 30-day checklist.",
-        capArrow: "Down to what to do today",
+        capBody: "Seven chapters folded into one, ending in a 30-day checklist.",
+        capArrow: "What to do once you close it",
       },
     ],
   },
@@ -614,6 +542,7 @@ export const global: SiteContent = {
         ["RIASEC lineage", "Standard vocational-psychology model", "Conceptual frame for partitioning interest areas"],
         ["NACE competencies", "National Association of Colleges and Employers", "Benchmark for defining student career readiness"],
         ["OECD frameworks", "OECD DeSeCo · Learning Compass", "Reference for transferable core-competency structure"],
+        ["Field-of-study classification", "UNESCO ISCED-F 2013", "The ten broad fields METRI is organised by"],
         ["Measurement standards", "AERA · APA · NCME lineage", "Basis for the validity and reliability regime"],
       ],
       note: "These frameworks were referenced and benchmarked during design. Reference does not imply joint development, certification or endorsement by the bodies named.",
