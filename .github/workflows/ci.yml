@@ -1,0 +1,61 @@
+# 타입 검사와 빌드가 깨진 채로 main 에 들어가지 않게 막는다.
+#
+# 이 레포에는 앱이 둘 있고 서로 별개다 (설계 원칙 5).
+#   pca-platform/            검사 플랫폼
+#   pca-platform/marketing/  나라별 소개 사이트
+# 소개 사이트는 SITE 로 원고를 갈아 끼우므로 나라마다 따로 빌드해 본다.
+# 나라를 추가하면 아래 matrix 에 한 줄 넣는다.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# 같은 브랜치에 연달아 밀면 앞의 실행은 접는다
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  platform:
+    name: 플랫폼
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: pca-platform
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: pca-platform/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      # DB 없이 빌드된다. 값이 필요한 곳은 전부 실행 시점에 읽는다
+      - run: npm run build
+
+  marketing:
+    name: 소개 사이트 (${{ matrix.site }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        site: [global, kr]
+    defaults:
+      run:
+        working-directory: pca-platform/marketing
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: pca-platform/marketing/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run build
+        env:
+          SITE: ${{ matrix.site }}
