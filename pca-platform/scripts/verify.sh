@@ -87,4 +87,7 @@ node scripts/e2e-exam.mjs
 echo "· 결과지 — 채점 전, 공개 전, 공개됨"
 node scripts/e2e-report.mjs
 
+echo "· 단체 리포트 — 분포, 충족률, 과목"
+node scripts/e2e-group-report.mjs
+
 printf '\n\033[1m전체 확인 통과\033[0m\n'

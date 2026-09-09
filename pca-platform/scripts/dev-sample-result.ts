@@ -13,6 +13,10 @@
  * 착각하게 된다. 산식이 정해지면 이 파일은 지운다.
  *
  * 숫자와 매핑은 mockups/02_student_report.html 의 예시를 따랐다.
+ *
+ * --students N 을 주면 단체 리포트를 볼 수 있게 가짜 응시자 N 명을 더 만든다.
+ * 한 명뿐이면 분포도 충족률도 볼 것이 없기 때문이다. 이 사람들도 실제
+ * 응시자가 아니다.
  */
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -62,7 +66,18 @@ async function put(c: PoolClient, table: string, rowId: string, value: string) {
   );
 }
 
+/** 사람마다 조금씩 다르게. 같은 자리에 같은 값이 나오도록 규칙적으로 흔든다 */
+function shift(base: number, i: number, spread: number): number {
+  const wave = Math.sin(i * 2.399) * spread;
+  return Math.max(0, Math.min(100, Math.round(base + wave)));
+}
+
 async function main() {
+  const extra = (() => {
+    const i = process.argv.indexOf("--students");
+    return i >= 0 ? Math.max(0, Number(process.argv[i + 1]) || 0) : 0;
+  })();
+
   const n = await tx(async (c) => {
     const attempt = await c.query<{ id: string; major_id: string; org_id: string }>(
       `SELECT a.id, i.major_id, s.org_id
@@ -142,6 +157,76 @@ async function main() {
     }
 
     await c.query(`UPDATE attempts SET status = 'scored', scored_at = now() WHERE id = $1`, [attemptId]);
+
+    /* 단체 리포트를 볼 수 있게 가짜 응시자를 더 만든다.
+       이 사람들은 실제 응시자가 아니다 — 화면을 채우기 위한 것이다. */
+    if (extra > 0) {
+      const sess = await c.query<{ id: string; contract_id: string; org_id: string }>(
+        `SELECT s.id, s.contract_id, s.org_id
+           FROM attempts a JOIN test_sessions s ON s.id = a.session_id
+          WHERE a.id = $1`,
+        [attemptId],
+      );
+      const { id: sessionId, org_id: sOrgId } = sess.rows[0];
+
+      for (let i = 0; i < extra; i++) {
+        const loginId = `demo-${String(i + 1).padStart(3, "0")}`;
+        const u = await c.query<{ id: string }>(
+          `INSERT INTO users (login_id, password_hash, display_name, must_reset_pw)
+           VALUES ($1, 'x', $2, false)
+           ON CONFLICT (login_id) DO UPDATE SET display_name = EXCLUDED.display_name
+           RETURNING id`,
+          [loginId, `예시응시자${i + 1}`],
+        );
+        const uid = u.rows[0].id;
+        await c.query(
+          `INSERT INTO memberships (user_id, org_id, role) VALUES ($1, $2, 'student')
+           ON CONFLICT (user_id, org_id, role) DO NOTHING`,
+          [uid, sOrgId],
+        );
+        const at = await c.query<{ id: string }>(
+          `INSERT INTO attempts (session_id, user_id, status, submitted_at, scored_at)
+           VALUES ($1, $2, 'scored', now(), now())
+           ON CONFLICT (session_id, user_id)
+           DO UPDATE SET status = 'scored' RETURNING id`,
+          [sessionId, uid],
+        );
+        const aid = at.rows[0].id;
+
+        /* 사람마다 1순위 직무가 갈리게 한다.
+           점수만 흔들면 기준 점수 차이(82 … 35)가 커서 늘 같은 직무가 1등이
+           되므로, 이 사람의 차례인 직무에 웃돈을 얹어 위로 올린다. */
+        const rot = i % JOBS.length;
+        await c.query(`DELETE FROM job_fit_scores WHERE attempt_id = $1`, [aid]);
+        const topBase = Math.max(...JOBS.map((x) => x.score));
+        const ranked = JOBS.map((j, k) => ({
+          code: j.code,
+          // 이 사람 차례인 직무만 맨 위 점수보다 조금 위로 올린다. 크게 얹으면
+          // 100 에 붙어 버려 평균이 전부 100 으로 보인다
+          score: shift(k === rot ? topBase + 4 : j.score, i + k, 7),
+        })).sort((a, b) => b.score - a.score);
+        const order = ranked;
+        for (const [k, j] of order.entries()) {
+          await c.query(
+            `INSERT INTO job_fit_scores (attempt_id, job_id, fit_score, rank_no)
+             VALUES ($1, $2, $3, $4)`,
+            [aid, jobId.get(j.code), j.score, k + 1],
+          );
+        }
+
+        await c.query(`DELETE FROM competency_levels WHERE attempt_id = $1`, [aid]);
+        for (const [k, cm] of COMPS.entries()) {
+          // 충족·미충족이 갈리도록 요구 수준 언저리에서 오르내리게 한다
+          const held = Math.max(0, Math.min(5, cm.required - 2 + ((i * 3 + k * 5) % 4)));
+          await c.query(
+            `INSERT INTO competency_levels (attempt_id, competency_id, held_level)
+             VALUES ($1, $2, $3)`,
+            [aid, compId.get(cm.code), held],
+          );
+        }
+      }
+    }
+
     return attemptId;
   });
 

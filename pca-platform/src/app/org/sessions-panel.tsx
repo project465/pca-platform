@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState, useState } from "react";
 import { createSessionAction, releaseSessionAction, type LinkState } from "./actions";
 import type { ExamSession } from "@/lib/org-links";
@@ -127,6 +128,7 @@ export default function SessionsPanel({
                 <th style={{ textAlign: "right" }}>응시 시작</th>
                 <th style={{ textAlign: "right" }}>제출</th>
                 <th>결과</th>
+                <th />
               </tr>
             </thead>
             <tbody>
@@ -145,6 +147,9 @@ export default function SessionsPanel({
                     ) : (
                       <span className="tag">미공개</span>
                     )}
+                  </td>
+                  <td>
+                    <Link className="act small" href={`/org/report/${s.id}`}>단체 리포트</Link>
                   </td>
                 </tr>
               ))}
