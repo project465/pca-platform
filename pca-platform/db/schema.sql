@@ -304,3 +304,64 @@ COMMENT ON TABLE password_reset_tokens IS
   '토큰 원문은 링크에만 있고 DB에는 해시만 둔다. 사용하면 used_at을 채워 재사용을 막는다';
 
 CREATE INDEX idx_reset_active ON password_reset_tokens(user_id) WHERE used_at IS NULL;
+
+
+-- ============================================================
+--  11. 단체 신청과 전용 링크 (초안 v0.3에서 추가)
+--
+--  소개 사이트에서 단체가 도입을 신청하고, 승인되면 그 단체 전용 링크를
+--  받아 학생에게 뿌리는 흐름이다. 제안서의 "전용 링크 발급 → 학생 응시 →
+--  성과 자동 집계" 를 데이터로 옮긴 것이다.
+--
+--  셀프 가입이 아니다. 신청은 누구나 넣을 수 있지만 organizations 행과
+--  링크는 운영자가 승인해야 생긴다 (확정된 결정: "계약 후 관리자가 발급").
+-- ============================================================
+
+CREATE TABLE org_applications (
+  id             BIGSERIAL PRIMARY KEY,
+  ref_code       TEXT NOT NULL UNIQUE,       -- 신청자에게 알려주는 접수번호
+  site           TEXT NOT NULL,              -- 어느 나라 소개 사이트에서 왔는가 (global|kr|...)
+  country        CHAR(2) NOT NULL,
+  org_name       TEXT NOT NULL,              -- 적어 낸 그대로. 아직 organizations 행이 없다
+  dept_name      TEXT,
+  contact_name   TEXT NOT NULL,
+  contact_email  TEXT NOT NULL,
+  contact_phone  TEXT,
+  expected_size  INTEGER,                    -- 예상 응시 인원
+  plan           TEXT,                       -- 소개 사이트에서 고른 요금제 키
+  message        TEXT,
+  status         TEXT NOT NULL DEFAULT 'received',  -- received | approved | rejected
+  org_id         BIGINT REFERENCES organizations(id),  -- 승인하면 채워진다
+  reviewed_by    BIGINT REFERENCES users(id),
+  reviewed_at    TIMESTAMPTZ,
+  review_memo    TEXT,
+  created_at     TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+COMMENT ON TABLE org_applications IS
+  '홈페이지 도입 신청. org_name 을 translations 에 넣지 않는 이유는, 이것이
+   아직 기관이 아니라 신청자가 적어 낸 원문이기 때문이다. 승인해서 실제
+   organizations 행이 생길 때 비로소 translations 로 옮겨간다 (설계 원칙 2)';
+
+CREATE INDEX idx_applications_open ON org_applications(created_at DESC)
+  WHERE status = 'received';
+
+CREATE TABLE org_links (
+  id           BIGSERIAL PRIMARY KEY,
+  org_id       BIGINT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  session_id   BIGINT REFERENCES test_sessions(id),   -- 회차가 정해지면 연결한다
+  token        TEXT NOT NULL UNIQUE,        -- 링크에 그대로 들어가는 값
+  label        TEXT NOT NULL,               -- '2026-1학기 기계공학과' 처럼 담당자가 알아볼 이름
+  max_uses     INTEGER,                     -- NULL 이면 계약 좌석 수가 실질 상한이다
+  used_count   INTEGER NOT NULL DEFAULT 0,
+  expires_at   TIMESTAMPTZ,
+  revoked_at   TIMESTAMPTZ,
+  created_by   BIGINT REFERENCES users(id),
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+COMMENT ON TABLE org_links IS
+  '단체 전용 링크. password_reset_tokens 와 달리 원문을 그대로 저장한다.
+   재설정 토큰은 1회용·개인용이라 다시 보여줄 일이 없지만, 이 링크는 담당자가
+   학생들에게 반복해서 뿌려야 하므로 화면에 다시 띄울 수 있어야 한다.
+   대신 만료(expires_at)·사용 상한(max_uses)·회수(revoked_at)로 위험을 줄인다';
+
+CREATE INDEX idx_org_links_live ON org_links(org_id) WHERE revoked_at IS NULL;

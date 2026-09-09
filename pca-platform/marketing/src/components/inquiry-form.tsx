@@ -34,6 +34,13 @@ export default function InquiryForm({
       <p className="notice ok" role="status" style={compact ? undefined : { maxWidth: 720 }}>
         <b>{t.success}</b>
         {t.successBody}
+        {/* 접수번호는 플랫폼이 붙여 준다. 연결 전 배포에서는 없을 수 있다 */}
+        {state.refCode ? (
+          <>
+            <br />
+            <span className="mono">{state.refCode}</span>
+          </>
+        ) : null}
       </p>
     );
   }
