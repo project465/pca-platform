@@ -274,13 +274,19 @@ export const global: SiteContent = {
     jobScores: [92, 74, 68, 62, 58, 70, 66, 64, 82, 86],
     styleAxes: ["Independent", "Collaborative", "Challenging", "Steady", "Fast-moving", "Quality-first"],
     styleScores: [84, 78, 86, 66, 72, 91],
-    /* The report is 8 chapters, 52 sections. Chapter 9 (regional employer
-       matching) is a Korea-only module and is not part of this contents list. */
+    /* The report is 8 chapters, 52 sections. Chapter titles and most section
+       titles are the pilot's canonical English (A01, 2026-09-04). Chapter 9
+       (regional employer matching) is a Korea-only module and is not part of
+       this contents list.
+
+       Still provisional translations, pending the full 52 from the pilot:
+       2-2 · 2-3 · 2-4 · 2-5 · 3-1 · 3-2 · 3-3 · 4-7 · 5-2 · 5-5 · 5-7 ·
+       6-2 · 6-5 · 6-6 · 6-7 · 7-1 · 7-3 · 7-6 · 7-7 · all of chapter 8. */
     tabs: [
       {
         no: "1",
-        nav: "Core diagnosis",
-        title: "Chapter 1. Core diagnosis",
+        nav: "Summary of results",
+        title: "Chapter 1. Summary of Your Results",
         chart: "jobs",
         meta: [
           { label: "Highest area", value: "Management & strategy" },
@@ -293,12 +299,12 @@ export const global: SiteContent = {
             sub: "6 sections",
             title: "What this chapter holds",
             bullets: [
-              "1-1 The highest-scoring area",
-              "1-2 Ranked summary of results",
-              "1-3 Work-style results",
-              "1-4 Dominant work-style summary",
-              "1-5 Employment vs founding, read against work style",
-              "1-6 Key diagnostic points",
+              "1-1 The area with your highest score",
+              "1-2 Your areas, ranked",
+              "1-3 Your work style scores",
+              "1-4 Your three strongest work styles",
+              "1-5 Employment, business, or both",
+              "1-6 Key points from your results",
             ],
           },
         ],
@@ -308,19 +314,19 @@ export const global: SiteContent = {
       },
       {
         no: "2",
-        nav: "Strength profile",
-        title: "Chapter 2. Strength profile",
+        nav: "Your strengths",
+        title: "Chapter 2. Your Strengths",
         blocks: [
           {
             sub: "6 sections",
             title: "What this chapter holds",
             bullets: [
-              "2-1 Three defining strengths",
-              "2-2 First strength",
-              "2-3 Second strength",
-              "2-4 Third strength",
-              "2-5 Strengths read against the area",
-              "2-6 Showing the strengths in a job search",
+              "2-1 Three strengths drawn from your results",
+              "2-2 Your first strength",
+              "2-3 Your second strength",
+              "2-4 Your third strength",
+              "2-5 Your strengths read against the area",
+              "2-6 Showing your strengths when applying",
             ],
           },
           {
@@ -335,17 +341,17 @@ export const global: SiteContent = {
       },
       {
         no: "3",
-        nav: "On the job",
-        title: "Chapter 3. What the work actually looks like",
+        nav: "Real work situations",
+        title: "Chapter 3. Real Work Situations",
         blocks: [
           {
             sub: "4 sections",
             title: "What this chapter holds",
             bullets: [
-              "3-1 Work scenario 1",
-              "3-2 Work scenario 2",
-              "3-3 Work scenario 3",
-              "3-4 How this student would settle in",
+              "3-1 Work situation 1",
+              "3-2 Work situation 2",
+              "3-3 Work situation 3",
+              "3-4 What these situations tell you",
             ],
           },
           {
@@ -360,18 +366,18 @@ export const global: SiteContent = {
       },
       {
         no: "4",
-        nav: "Roles and direction",
-        title: "Chapter 4. Roles and career direction",
+        nav: "Roles and directions",
+        title: "Chapter 4. Roles and Career Directions",
         blocks: [
           {
             sub: "7 sections",
             title: "What this chapter holds",
             bullets: [
-              "4-1 Understanding the result area",
-              "4-2 Roles that connect to the area",
-              "4-3 Roles to explore first",
-              "4-4 Roles to weigh alongside",
-              "4-5 The order to explore in",
+              "4-1 Understanding this area",
+              "4-2 Roles connected to this area",
+              "4-3 Roles worth exploring first",
+              "4-4 Roles worth comparing",
+              "4-5 An order for exploring careers",
               "4-6 How to choose between roles",
               "4-7 Overall proposal",
             ],
@@ -384,15 +390,15 @@ export const global: SiteContent = {
       {
         no: "5",
         nav: "Projects and portfolio",
-        title: "Chapter 5. Projects and portfolio",
+        title: "Chapter 5. Projects and Portfolio",
         blocks: [
           {
             sub: "7 sections",
             title: "What this chapter holds",
             bullets: [
-              "5-1 Why a project at all",
+              "5-1 Why projects matter",
               "5-2 Project directions for this area",
-              "5-3 Projects that can start now",
+              "5-3 Projects you can start now",
               "5-4 What a portfolio must contain",
               "5-5 Writing it up, by output type",
               "5-6 A four-week plan",
@@ -412,16 +418,16 @@ export const global: SiteContent = {
       {
         no: "6",
         nav: "Application and interview",
-        title: "Chapter 6. Application documents and interview preparation",
+        title: "Chapter 6. Application Documents and Interview Preparation",
         blocks: [
           {
             sub: "7 sections",
             title: "What this chapter holds",
             bullets: [
-              "6-1 How to frame the application",
+              "6-1 How to approach your application documents",
               "6-2 Example sentences",
-              "6-3 Likely interview questions",
-              "6-4 How to structure an answer",
+              "6-3 Questions you may be asked",
+              "6-4 How to structure an interview answer",
               "6-5 Keywords to lean on",
               "6-6 What to avoid",
               "6-7 Summary",
@@ -439,18 +445,18 @@ export const global: SiteContent = {
       },
       {
         no: "7",
-        nav: "Founding",
-        title: "Chapter 7. Preparing to found something",
+        nav: "Starting a business",
+        title: "Chapter 7. Starting Your Own Business",
         blocks: [
           {
             sub: "7 sections",
             title: "What this chapter holds",
             bullets: [
-              "7-1 Founding direction, read from the area",
-              "7-2 Five venture ideas grounded in the area",
+              "7-1 A business direction, read from your area",
+              "7-2 Five business ideas for this area",
               "7-3 Comparing the ideas",
-              "7-4 Market entry",
-              "7-5 Preparing at an undergraduate's level",
+              "7-4 Entering the market",
+              "7-5 Preparing at a student level",
               "7-6 A four-week plan",
               "7-7 Summary",
             ],
@@ -467,8 +473,8 @@ export const global: SiteContent = {
       },
       {
         no: "8",
-        nav: "Next steps",
-        title: "Chapter 8. Growth points and next steps",
+        nav: "Growth and next steps",
+        title: "Chapter 8. Growth Points and Next Steps",
         blocks: [
           {
             sub: "8 sections",
@@ -478,7 +484,7 @@ export const global: SiteContent = {
               "8-2 Roles to explore first",
               "8-3 The project to start first",
               "8-4 Application and interview points",
-              "8-5 Founding checkpoints",
+              "8-5 Business direction checkpoints",
               "8-6 What to watch out for",
               "8-7 Direction from here",
               "8-8 A 30-day checklist",

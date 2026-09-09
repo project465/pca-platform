@@ -287,7 +287,15 @@ PCA 가 대는 것은 학생 체감의 증거(개인 15–20페이지 전략서)
 | 8 성장 포인트와 다음 단계 | 8 |
 | | **52** |
 
-- 정본: pca-line `.claude/skills/pca-result-ko-authoring/reference/skeleton_ko.json`
+- 정본(한국어): pca-line `.claude/skills/pca-result-ko-authoring/reference/skeleton_ko.json`
+- 정본(영어): pca-line `_해외판/G1_경영경제/A01_전략기획_KOEN.md` 의 EN 구간 (2026-09-04)
+
+영어 장 제목 — 1 Summary of Your Results · 2 Your Strengths · 3 Real Work
+Situations · 4 Roles and Career Directions · 5 Projects and Portfolio ·
+6 Application Documents and Interview Preparation · 7 Starting Your Own
+Business · 8 Growth Points and Next Steps
+
+카자흐어 장·절 제목은 **영어 정본을 기준으로** 옮긴다. 한국어에서 옮기지 않는다.
 - **9장(지역 기업 연계)은 목차에 넣지 않는다.** 한국 전용 모듈이라
   한국판에서만 "부록: 지역 기업 연계" 로 언급한다
 - **해외판(글로벌·카자흐)의 6장 제목은 중립화한다** — "지원서류·면접 준비 /
