@@ -173,3 +173,37 @@ export async function createSessionAction(
   revalidatePath("/org");
   return { ok: "회차를 열었습니다. 이제 학생이 전용 링크로 들어와 응시할 수 있습니다." };
 }
+
+/**
+ * 결과 공개.
+ *
+ * 확정된 결정이다 — 결과는 학과 담당자가 확인한 뒤 공개된다. 그전까지
+ * 학생 화면은 "아직 공개되지 않았습니다" 로 막힌다.
+ *
+ * 되돌리는 기능은 두지 않았다. 한 번 본 결과를 도로 감추는 것은 학생에게
+ * 더 나쁘고, 잘못 공개했다면 회차를 닫는 편이 낫다.
+ */
+export async function releaseSessionAction(
+  _prev: LinkState,
+  formData: FormData,
+): Promise<LinkState> {
+  const user = await requireRole(["org_admin"]);
+  const sessionId = String(formData.get("sessionId") ?? "").trim();
+
+  const done = await tx(async (c) => {
+    /* 폼에서 온 회차 id 를 믿지 않는다. 이 사람이 담당자인 기관의 것인지
+       되짚어 확인한다. 아니면 없는 회차와 똑같이 답한다 */
+    const r = await c.query(
+      `UPDATE test_sessions SET released_at = now()
+        WHERE id = $1 AND released_at IS NULL
+          AND org_id = ANY($2::bigint[])`,
+      [sessionId, adminOrgIds(user)],
+    );
+    return r.rowCount ?? 0;
+  });
+
+  revalidatePath("/org");
+  return done > 0
+    ? { ok: "결과를 공개했습니다. 학생이 결과지를 볼 수 있습니다." }
+    : { message: "회차를 찾을 수 없거나 이미 공개했습니다." };
+}

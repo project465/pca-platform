@@ -118,6 +118,9 @@ SITE=kz / SITE=tr           →  원고 파일만 추가하면 된다
    문항은 `scripts/load-instrument.ts` 로 파일에서 넣는다. 텍스트는
    translations 의 행이다. 회차는 담당자가 `/org` 에서 연다.
 4. **채점과 결과** — scoring_weights 적용, 결과지, 단체 리포트
+   결과지 화면은 만들어 두었다 (2026-09-09). 값이 들어오면 그리는 껍데기이고,
+   채점 산식이 정해져 job_fit_scores·competency_levels 가 채워지면 그대로
+   그려진다. 결과 공개는 담당자가 /org 에서 누른다. 단체 리포트는 아직 없다.
 
 3단계까지는 채점 산식 없이 진행 가능하다.
 

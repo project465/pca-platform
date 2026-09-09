@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
-import { createSessionAction, type LinkState } from "./actions";
+import { createSessionAction, releaseSessionAction, type LinkState } from "./actions";
 import type { ExamSession } from "@/lib/org-links";
 
 const initial: LinkState = {};
@@ -12,6 +12,23 @@ function defaults() {
   const end = new Date();
   end.setMonth(end.getMonth() + 1);
   return { start: iso(new Date()), end: iso(end) };
+}
+
+/** 결과 공개. 제출한 사람이 없으면 누를 것이 없다 */
+function ReleaseButton({ sessionId, disabled }: { sessionId: string; disabled: boolean }) {
+  const [state, formAction, pending] = useActionState(releaseSessionAction, initial);
+  return (
+    <form action={formAction} style={{ display: "inline" }}>
+      <input type="hidden" name="sessionId" value={sessionId} />
+      <button className="act small" disabled={pending || disabled}
+              title={disabled ? "제출한 응시가 없습니다" : undefined}>
+        {pending ? "공개 중…" : "결과 공개"}
+      </button>
+      {state.message ? (
+        <span className="help" style={{ color: "var(--gap)", marginLeft: 8 }}>{state.message}</span>
+      ) : null}
+    </form>
+  );
 }
 
 export default function SessionsPanel({
@@ -109,6 +126,7 @@ export default function SessionsPanel({
                 <th style={{ textAlign: "right" }}>문항</th>
                 <th style={{ textAlign: "right" }}>응시 시작</th>
                 <th style={{ textAlign: "right" }}>제출</th>
+                <th>결과</th>
               </tr>
             </thead>
             <tbody>
@@ -119,6 +137,15 @@ export default function SessionsPanel({
                   <td className="num">{Number(s.total).toLocaleString("ko-KR")}</td>
                   <td className="num">{Number(s.started).toLocaleString("ko-KR")}</td>
                   <td className="num">{Number(s.submitted).toLocaleString("ko-KR")}</td>
+                  <td>
+                    {s.released_at ? (
+                      <span className="tag active">{s.released_at} 공개</span>
+                    ) : canManage ? (
+                      <ReleaseButton sessionId={s.id} disabled={Number(s.submitted) === 0} />
+                    ) : (
+                      <span className="tag">미공개</span>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>

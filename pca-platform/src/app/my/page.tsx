@@ -1,6 +1,7 @@
 import LogoutButton from "@/components/logout-button";
 import { requireRole } from "@/lib/session";
 import { openSessionsFor } from "@/lib/exam";
+import Link from "next/link";
 import { startAction } from "./actions";
 
 export const metadata = { title: "내 검사 — 단체 PCA 플랫폼" };
@@ -58,7 +59,7 @@ export default async function StudentHome({
                   {started && doneAt > 0 ? ` · ${doneAt}번까지 답하셨습니다` : ""}
                   {submitted ? " · 결과는 담당자 확인 후 공개됩니다" : ""}
                 </p>
-                <form action={startAction.bind(null, s.id)}>
+                <form action={startAction.bind(null, s.id)} style={{ display: "inline" }}>
                   <button className="act solid" disabled={total === 0}>
                     {submitted ? "응시 내용 보기" : started ? "이어서 응시하기" : "응시 시작"}
                   </button>
@@ -68,6 +69,11 @@ export default async function StudentHome({
                     </span>
                   ) : null}
                 </form>
+                {submitted && s.attempt_id ? (
+                  <Link className="act" href={`/report/${s.attempt_id}`} style={{ marginLeft: 8 }}>
+                    결과지 보기
+                  </Link>
+                ) : null}
               </div>
             );
           })

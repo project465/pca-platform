@@ -84,4 +84,7 @@ node scripts/e2e-org-links.mjs
 echo "· 응시 — 시작, 즉시 저장, 이어보기, 제출"
 node scripts/e2e-exam.mjs
 
+echo "· 결과지 — 채점 전, 공개 전, 공개됨"
+node scripts/e2e-report.mjs
+
 printf '\n\033[1m전체 확인 통과\033[0m\n'

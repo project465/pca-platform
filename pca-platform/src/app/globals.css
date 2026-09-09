@@ -211,3 +211,75 @@ td .sub { display: block; font-size: 12.5px; color: var(--muted); }
   .nav .right { width:100%; margin-left:0; }
   .nav .right button { flex:1; }
 }
+
+/* ---------- 결과지 ----------
+   mockups/02_student_report.html 에서 그대로 가져온다. 시안이 확정된 값이다. */
+.sheet { max-width:880px; margin:0 auto; background:var(--paper); border:1px solid var(--rule); }
+.sheet .top { display:flex; flex-wrap:wrap; gap:8px 28px; align-items:baseline;
+  padding:22px 40px; border-bottom:2px solid var(--ink); }
+.sheet .top h1 { font-size:15px; font-weight:700; letter-spacing:-.01em; }
+.sheet .meta { color:var(--muted); font-size:13.5px; display:flex; gap:20px; flex-wrap:wrap; margin-left:auto; }
+.sheet section { padding:38px 40px; border-bottom:1px solid var(--rule); }
+.sheet section:last-of-type { border-bottom:0; }
+.sheet h2 { font-size:14px; font-weight:700; color:var(--muted); margin-bottom:26px; letter-spacing:-.01em; }
+
+.lead { display:flex; align-items:flex-end; gap:18px; margin-bottom:4px; flex-wrap:wrap; }
+.lead .name { font-size:38px; font-weight:800; letter-spacing:-.035em; line-height:1.1; }
+.lead .score { font-size:38px; font-weight:300; color:var(--muted); letter-spacing:-.04em; }
+.lead .score b { font-weight:800; color:var(--ink); }
+.lead-note { color:var(--muted); font-size:14.5px; margin-bottom:34px; max-width:62ch; }
+
+.gauge { display:grid; grid-template-columns:150px 1fr 46px; align-items:center; gap:0 16px; padding:9px 0; }
+.gauge + .gauge { border-top:1px dotted var(--rule); }
+.gauge .lab { font-size:14.5px; font-weight:500; }
+.gauge.is-top .lab { font-weight:800; }
+.track { position:relative; height:22px; }
+.track .ticks { position:absolute; inset:0; display:flex; }
+.track .ticks i { flex:1; border-right:1px solid var(--rule); }
+.track .ticks i:last-child { border-right:0; }
+.track .fill { position:absolute; top:5px; height:12px; left:0; background:var(--muted); }
+.gauge.is-top .fill { background:var(--ink); }
+.gauge .val { font-size:14.5px; text-align:right; color:var(--muted); }
+.gauge.is-top .val { color:var(--ink); font-weight:700; }
+.scale { display:grid; grid-template-columns:150px 1fr 46px; gap:0 16px; margin-top:8px; }
+.scale span:nth-child(2) { display:flex; justify-content:space-between; font-size:11.5px; color:var(--muted); }
+.scale em { font-style:normal; }
+
+.comp { display:grid; grid-template-columns:170px 1fr 92px; gap:0 16px; align-items:center; padding:13px 0; }
+.comp + .comp { border-top:1px solid var(--rule); }
+.comp .lab { font-size:14.5px; font-weight:500; }
+.comp .lab small { display:block; font-size:12px; color:var(--muted); font-weight:400; }
+.blocks { display:flex; gap:5px; }
+.blocks span { flex:1; height:16px; border:1px solid var(--rule); background:transparent; }
+.blocks span.req { border-color:var(--ink); }
+.blocks span.has { background:var(--met); border-color:var(--met); }
+.blocks span.short { background:repeating-linear-gradient(135deg,#F2D9D6 0 4px,transparent 4px 8px);
+  border-color:var(--gap); }
+.verdict { font-size:13px; text-align:right; font-weight:700; }
+.verdict.ok { color:var(--met); }
+.verdict.mid { color:var(--partial); }
+.verdict.no { color:var(--gap); }
+
+.course { padding:16px 0; display:grid; grid-template-columns:1fr auto; gap:6px 20px; }
+.course + .course { border-top:1px solid var(--rule); }
+.course h3 { font-size:16px; font-weight:700; letter-spacing:-.015em; }
+.course .code { font-size:13px; color:var(--muted); white-space:nowrap; }
+.course .tags { grid-column:1/-1; display:flex; flex-wrap:wrap; gap:6px; margin-top:2px; }
+.course .tags b { font-size:12px; font-weight:600; color:var(--met);
+  border:1px solid var(--met); padding:1px 7px; border-radius:2px; }
+
+.sheetfoot { padding:20px 40px; color:var(--muted); font-size:12.5px; background:#F7F9FA; }
+
+@media (max-width:620px) {
+  .sheet .top, .sheet section, .sheetfoot { padding-left:20px; padding-right:20px; }
+  .gauge, .scale { grid-template-columns:96px 1fr 38px; }
+  .comp { grid-template-columns:1fr; gap:8px; }
+  .verdict { text-align:left; }
+  .lead .name, .lead .score { font-size:30px; }
+}
+@media print {
+  body { background:#fff; }
+  .sheet { border:0; max-width:none; }
+  .sheet section { break-inside:avoid; }
+  .topbar, .act { display:none !important; }
+}

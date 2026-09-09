@@ -84,7 +84,7 @@ export async function linkOwnedBy(
 
 export type ExamSession = {
   id: string; name: string; opens_at: string; closes_at: string;
-  total: string; started: string; submitted: string;
+  total: string; started: string; submitted: string; released_at: string | null;
 };
 
 /** 이 기관이 연 회차와 진행 상황 */
@@ -96,7 +96,8 @@ export async function sessionsOf(orgId: string): Promise<ExamSession[]> {
             (SELECT count(*) FROM questions q WHERE q.instrument_id = s.instrument_id)::text AS total,
             (SELECT count(*) FROM attempts a WHERE a.session_id = s.id)::text AS started,
             (SELECT count(*) FROM attempts a WHERE a.session_id = s.id
-               AND a.status IN ('submitted','scored'))::text AS submitted
+               AND a.status IN ('submitted','scored'))::text AS submitted,
+            to_char(s.released_at, 'YYYY-MM-DD') AS released_at
        FROM test_sessions s
       WHERE s.org_id = $1
       ORDER BY s.closes_at DESC`,
