@@ -697,3 +697,39 @@ export function PricingSection(
     </section>
   );
 }
+
+/**
+ * 계열 열 개.
+ *
+ * 표시 이름이 아직 정해지지 않은 나라는 영어 정본을 그대로 싣는다 —
+ * 지어낸 이름을 올리는 것보다 낫고, 원고의 note 가 그 사실을 밝힌다.
+ */
+export function FieldsSection({ site, bare }: { site: SiteContent; bare?: boolean }) {
+  const f = site.fields;
+  if (!f) return null;
+  return (
+    <section id="fields" className="divided tinted">
+      <div className="wrap">
+        {bare ? null : (
+          <div className="sec-head">
+            <span className="label-sm">{f.label}</span>
+            <h2>{f.heading}</h2>
+            <p className="lead">{f.lead}</p>
+          </div>
+        )}
+        <div className="fieldgrid">
+          {f.items.map((i) => (
+            <div className="fieldcell" key={i.code}>
+              <span className="code">{i.code}</span>
+              <span className="nm">{i.name}</span>
+              {i.en ? <span className="en">{i.en}</span> : null}
+            </div>
+          ))}
+        </div>
+        <p className="small" style={{ marginTop: 18, maxWidth: "var(--measure)" }}>
+          {f.note}
+        </p>
+      </div>
+    </section>
+  );
+}

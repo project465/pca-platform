@@ -48,12 +48,18 @@ const lang = await page.getAttribute("html", "lang");
    사이트가 미리보기에서만 흰 판으로 나온다 */
 const theme = await page.getAttribute("html", "data-theme");
 
-/** 내비에 있는 경로 + 홈 */
+/**
+ * 뽑아낼 경로 — 홈 + 머리 내비 + 꼬리의 안쪽 링크.
+ *
+ * 꼬리까지 보는 이유가 있다. 처리방침은 내비에 없고 꼬리에만 있는데,
+ * 그것을 빼먹으면 미리보기에서 그 링크만 갈 곳이 없어진다. 실제로 그랬다.
+ */
 const routes = await page.evaluate(() => {
-  const hrefs = [...document.querySelectorAll(".site-header nav.wide a")]
-    .map((a) => a.getAttribute("href"))
-    .filter((h) => h && h.startsWith("/"));
-  return ["/", ...new Set(hrefs)];
+  const pick = (sel) =>
+    [...document.querySelectorAll(sel)]
+      .map((a) => a.getAttribute("href"))
+      .filter((h) => h && h.startsWith("/"));
+  return ["/", ...new Set([...pick(".site-header nav.wide a"), ...pick(".site-footer a")])];
 });
 
 /**

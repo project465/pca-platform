@@ -137,6 +137,47 @@ export type Regions = {
   }[];
 };
 
+/**
+ * 계열 열 개 (R021 · UNESCO ISCED-F 2013 광역분야).
+ *
+ * 영어 이름이 정본이다. 나라별 표시 이름은 결재를 거쳐야 하므로, 아직
+ * 정해지지 않은 나라는 `name` 에 영어 정본을 넣고 `note` 로 밝힌다.
+ * **분야(전공)와 영역 수는 회의 중이라 여기에 넣지 않는다** (R015).
+ */
+/**
+ * 개인정보 처리방침.
+ *
+ * **법률 검토를 받지 않은 초안이다.** 사업자 정보는 ⟨…⟩ 로 비어 있고 대표가
+ * 채운다. 빈칸이 남아 있는 동안 이 사이트를 배포하지 않는다 — 화면에는
+ * 초안 표시를 두지 않기로 했으므로(R022), 이 주석이 유일한 경고다.
+ *
+ * 방침을 고치면 version 을 올린다. 그래야 누가 어느 판에 동의했는지
+ * 갈라 볼 수 있다.
+ */
+export type PrivacySection = {
+  title: string;
+  body: string[];
+  table?: { head: string[]; rows: string[][] };
+};
+
+export type PrivacyDoc = {
+  label: string;
+  heading: string;
+  version: string;
+  versionLabel: string;
+  sections: PrivacySection[];
+  /** 맨 아래 사업자 정보 한 줄 */
+  operator: string;
+};
+
+export type FieldsBlock = {
+  label: string;
+  heading: string;
+  lead: string;
+  items: { code: string; name: string; en?: string }[];
+  note: string;
+};
+
 /** 요금제. price 가 비어 있으면 화면은 문의로 흐른다 */
 export type Plan = {
   key: string;
@@ -375,6 +416,12 @@ export type SiteContent = {
   /** 글로벌 전용 */
   localisation?: Localisation;
   partnership?: Partnership;
+
+  /** 계열 열 개. 표시 이름이 정해진 나라만 채운다 */
+  fields?: FieldsBlock;
+
+  /** 개인정보 처리방침 전문. 이 사이트의 /privacy 가 그린다 */
+  privacy?: PrivacyDoc;
 
   pricing: Pricing;
   regions?: Regions;

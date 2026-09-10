@@ -1,7 +1,7 @@
 import { getSite } from "@/content";
 import Shell from "@/components/shell";
 import ResultSheet from "@/components/result-sheet";
-import { Analyze, Choose, Styles, Why } from "@/components/sections";
+import { Analyze, Choose, FieldsSection, Styles, Why } from "@/components/sections";
 import { NextLink, PageHead, PhotoSlot } from "@/components/visuals";
 
 export function generateMetadata() {
@@ -15,6 +15,7 @@ export default function PcaPage() {
     <Shell>
       <PageHead label={site.analyze.label} title={site.analyze.heading} lead={site.analyze.lead} />
       <Analyze site={site} bare />
+      <FieldsSection site={site} />
       <Styles site={site} />
       <Why site={site} />
       <ResultSheet site={site} />

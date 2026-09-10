@@ -81,12 +81,22 @@ const footer = p.locator(`.site-footer a[href="${PLATFORM}/admin/login"]`);
 (await footer.count())
   ? ok("꼬리도 같은 곳을 가리킨다") : bad("꼬리가 다른 곳을 가리킨다");
 
-/* 처리방침도 플랫폼 한 군데에 둔다. 나라별로 복사본을 두면 갈라진다 */
-const priv = p.locator(`.site-footer a[href="${PLATFORM}/privacy"]`);
+/* 처리방침은 이 사이트 자체 페이지다(R022). 라이브 플랫폼에는 /privacy 가
+   없어서 그리로 걸면 404 가 된다 — 직접 확인했다 */
+const priv = p.locator('.site-footer a[href="/privacy"]');
 if (await priv.count()) {
-  ok("꼬리의 처리방침이 플랫폼을 가리킨다");
+  ok("꼬리에 처리방침 링크가 있다");
+  await priv.first().click();
+  await p.waitForURL(/\/privacy$/, { timeout: 15000 }).catch(() => {});
+  const body = await p.innerText("body");
+  /(처리방침|Privacy notice|Дербес деректер)/i.test(body)
+    ? ok("처리방침 화면이 열린다")
+    : bad(`처리방침 화면이 아니다: ${body.slice(0, 120)}`);
+  /⟨/.test(body)
+    ? skip("사업자 정보가 아직 ⟨…⟩ 로 비어 있다 — 채우기 전에는 배포하지 않는다")
+    : ok("사업자 정보가 채워져 있다");
 } else {
-  ok("이 나라 사이트에는 처리방침 링크가 없다 — 그 말로 된 판이 아직 없다");
+  bad("꼬리에 처리방침 링크가 없다");
 }
 
 /* 좁은 화면의 메뉴 안에도 있어야 한다 */

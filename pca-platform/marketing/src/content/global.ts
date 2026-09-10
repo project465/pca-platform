@@ -13,6 +13,8 @@ export const global: SiteContent = {
   org: "ACADEMIX",
   orgTagline: "EDUCATION & CONFERENCE",
   platformUrl: "https://pcagroup.haricareer.com",
+  /* 처리방침은 이 사이트 자체 페이지다 (R022). 라이브 플랫폼에는 없다 */
+  privacyUrl: "/privacy",
 
   meta: {
     title: "METRI — A career strategy built around the major you already chose",
@@ -79,7 +81,8 @@ export const global: SiteContent = {
   },
 
   hero: {
-    eyebrow: "METRI · PERSONALIZED CAREER ANALYSIS",
+    /* METRI 는 약자가 아니다. 옆 문구는 브랜드 풀이가 아니라 제품 설명이다 (R022) */
+    eyebrow: "METRI · CAREER-FIT ASSESSMENT FOR UNIVERSITIES",
     title: ["Your students already know their major.", "{Nobody has told them what to do next.}"],
     lead:
       "METRI ranks the job areas of a student's own field out of 100, maps six work styles across 120 items, and writes each student a plan — credentials, projects, applications, interviews, founding, and employers in their own region. Built in Korea, rebuilt in your country from your own labour-market data.",
@@ -766,6 +769,113 @@ export const global: SiteContent = {
     ],
   },
 
+  privacy: {
+    label: "PRIVACY",
+    heading: "Privacy notice",
+    version: "2026-09-10",
+    versionLabel: "Version",
+    operator:
+      "⟨Company name⟩ · ⟨Representative⟩ · ⟨Registered address⟩ · ⟨Business registration number⟩",
+    sections: [
+      {
+        title: "1. What we collect, and why",
+        body: [
+          "We collect only what the purpose needs, and delete it when the purpose ends. What we collect when you send an enquiry differs from what we collect when a student sits the assessment.",
+        ],
+        table: {
+          head: ["When", "What", "Why"],
+          rows: [
+            ["Enquiry", "Institution · contact name · email", "To reply and put a scope together"],
+            ["Enquiry", "Approximate cohort size · your message", "To estimate and schedule (optional)"],
+            ["Assessment", "Name · student number", "To identify the student and label the report"],
+            ["Assessment", "Password", "So only the student sees their result (stored irreversibly)"],
+            ["Assessment", "University email", "To notify when results open (only if the department asks for it)"],
+            ["Assessment", "Responses", "To compute job-area fit and work style"],
+            ["Automatic", "Last sign-in time", "To detect unauthorised access"],
+          ],
+        },
+      },
+      {
+        title: "2. How long we keep it",
+        body: [
+          "Enquiries are deleted once the conversation ends.",
+          "Assessment data is held for the term of the contract and deleted within ⟨retention period⟩ of its end.",
+          "If you ask us to delete it, we do so without delay, except where law requires us to keep it.",
+          "Aggregates may remain, but only after they have been made non-identifying — and that cannot be reversed.",
+        ],
+      },
+      {
+        title: "3. Who sees it",
+        body: [
+          "An individual report is visible to the student and to the administrator of their department, because the department is the contracting party.",
+          "The report the department sees is an aggregate. It does not say who is missing what.",
+          "We do not provide it to any other third party. Where law requires disclosure, we comply within the scope required.",
+          "We do not sell or transfer it for advertising or marketing.",
+        ],
+      },
+      {
+        title: "4. Processors",
+        body: ["We entrust the following to run the service. If a processor changes, we amend this notice and say so."],
+        table: {
+          head: ["Processor", "What they do"],
+          rows: [
+            ["⟨Hosting provider⟩", "Server operation and data storage"],
+            ["⟨Email provider⟩", "Sending notification email"],
+          ],
+        },
+      },
+      {
+        title: "5. Your rights",
+        body: [
+          "You may ask at any time to see, correct, delete, or stop the processing of your data. Contact us below and we will act without delay.",
+          "You may withdraw consent. Withdrawing consent for a required item means the assessment cannot continue.",
+          "The service is not for anyone under 14. It is written for university students.",
+        ],
+      },
+      {
+        title: "6. How we protect it",
+        body: [
+          "Passwords are stored irreversibly. We cannot read them either.",
+          "Connections are encrypted.",
+          "Results stay closed to the student until their department opens them.",
+          "The number of people who handle personal data is kept to the minimum, and access is logged.",
+        ],
+      },
+      {
+        title: "7. Contact",
+        body: [
+          "For anything about personal data, write to us.",
+          "Data protection officer: ⟨name and title⟩",
+          "Contact: ⟨phone⟩ · ⟨email⟩",
+        ],
+      },
+      {
+        title: "8. Changes to this notice",
+        body: ["If something material changes, we say so before it takes effect and, where needed, ask for consent again."],
+      },
+    ],
+  },
+
+  fields: {
+    label: "FIELDS",
+    heading: "METRI sits on ten fields of study",
+    lead:
+      "The fields follow UNESCO's International Standard Classification of Education (ISCED-F 2013). The same ten are used in every country, so departments, universities and markets stay comparable.",
+    items: [
+      { code: "C01", name: "Education" },
+      { code: "C02", name: "Arts and Humanities" },
+      { code: "C03", name: "Social Sciences, Journalism and Information" },
+      { code: "C04", name: "Business, Administration and Law" },
+      { code: "C05", name: "Natural Sciences, Mathematics and Statistics" },
+      { code: "C06", name: "Information and Communication Technologies" },
+      { code: "C07", name: "Engineering, Manufacturing and Construction" },
+      { code: "C08", name: "Agriculture, Forestry, Fisheries and Veterinary" },
+      { code: "C09", name: "Health and Welfare" },
+      { code: "C10", name: "Services" },
+    ],
+    note:
+      "Below a field sit the subjects, and below those the job areas — those differ by subject. What applies to a given department is worked out during scoping.",
+  },
   pricing: {
     label: "PRICING",
     heading: "Start with one department",
@@ -896,6 +1006,7 @@ export const global: SiteContent = {
       { label: "Türkiye", href: "https://metri.com.tr", ready: false },
     ],
     soonLabel: "coming soon",
+    privacyLabel: "Privacy notice",
     closing: "So that a major leads somewhere",
   },
 

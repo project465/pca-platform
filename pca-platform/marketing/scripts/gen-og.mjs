@@ -16,13 +16,13 @@ const CARDS = [
   {
     file: "public/og-kr.png",
     display: "내 전공에 맞는<br><b>커리어 전략</b>을 설계해드립니다",
-    kicker: "METRI · PERSONALIZED CAREER ANALYSIS",
+    kicker: "METRI · 대학·기관용 진로 적합도 검사",
     title: "적합 직무 · 업무 성향 · 실행 전략을 함께 분석해, 다음에 무엇을 준비해야 하는지까지.",
   },
   {
     file: "public/og-global.png",
     display: "They chose a major.<br>We design the <b>career strategy</b>.",
-    kicker: "METRI · PERSONALIZED CAREER ANALYSIS",
+    kicker: "METRI · CAREER-FIT ASSESSMENT FOR UNIVERSITIES",
     title: "Job fit, work style and execution strategy — read together, then turned into a plan.",
   },
   {
@@ -30,7 +30,7 @@ const CARDS = [
        링크를 붙였을 때 사이트와 다른 것이 뜨면 그것부터 눈에 걸린다 */
     file: "public/og-kz.png",
     display: "«Мамандығыммен қайда барам?»<br>дегенге <b>құжатпен</b> жауап береміз",
-    kicker: "METRI · PERSONALIZED CAREER ANALYSIS",
+    kicker: "METRI · УНИВЕРСИТЕТТЕРГЕ АРНАЛҒАН МАНСАП БАҒАЛАУЫ",
     title: "Қай кәсіби сала келеді, қалай жұмыс істейсіз және келесі он екі айда не істеу керек.",
     dark: true,
   },
