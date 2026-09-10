@@ -9,7 +9,7 @@
  *   node scripts/export-preview.mjs kr out.html
  */
 import { chromium } from "playwright";
-import { writeFileSync } from "node:fs";
+import { writeFileSync, readFileSync } from "node:fs";
 
 const site = process.argv[2] ?? "global";
 const out = process.argv[3] ?? `/tmp/preview-${site}.html`;
@@ -85,6 +85,27 @@ for (const r of routes) {
 }
 await browser.close();
 
+/* ---- 그림을 데이터 URI 로 ----
+   뽑아낸 한 장은 파일 하나다. /photos/01.jpg 처럼 서버에서 받아 오는
+   주소는 그 한 장 안에서 갈 곳이 없다. 넣어 두지 않으면 미리보기에서만
+   그림이 전부 깨진다 — 폰트에서 겪은 것과 같은 문제다 */
+const MIME = { jpg: "image/jpeg", jpeg: "image/jpeg", png: "image/png", svg: "image/svg+xml", webp: "image/webp" };
+const inlined = new Map();
+const inlineImages = (html) =>
+  html.replace(/src="(\/[^"]+\.(?:jpg|jpeg|png|svg|webp))"/gi, (whole, url) => {
+    if (!inlined.has(url)) {
+      try {
+        const ext = url.split(".").pop().toLowerCase();
+        const buf = readFileSync(new URL("../public" + url, import.meta.url));
+        inlined.set(url, `data:${MIME[ext]};base64,${buf.toString("base64")}`);
+      } catch {
+        inlined.set(url, null);
+      }
+    }
+    const d = inlined.get(url);
+    return d ? `src="${d}"` : whole;
+  });
+
 // ---- CSS: 폰트를 데이터 URI 로 ----
 let sheet = css.join("\n");
 sheet = sheet.replace(/@font-face\s*\{[^}]*\}/g, (rule) => {
@@ -100,7 +121,7 @@ sheet = sheet.replace(/url\(\/_next\/[^)]*\)/g, "none");
 
 /** /pca 같은 내부 링크를 해시로 바꾼다 */
 const toHash = (html) =>
-  html
+  inlineImages(html)
     .replace(/href="\/"/g, 'href="#page-home"')
     .replace(/href="\/([a-z0-9-]+)"/g, 'href="#page-$1"');
 

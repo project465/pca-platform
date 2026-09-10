@@ -20,9 +20,9 @@ export default function PartnershipPage() {
       <Partnership site={site} bare />
       <section className="divided">
         <div className="wrap photorow">
-          <PhotoSlot caption="Photo — partner briefing" />
-          <PhotoSlot caption="Photo — pilot cohort sitting" />
-          <PhotoSlot caption="Photo — results workshop" />
+          <PhotoSlot caption="A partner briefing" src="/photos/11.jpg" />
+          <PhotoSlot caption="A pilot cohort sitting the assessment" src="/photos/12.jpg" />
+          <PhotoSlot caption="A workshop reading the results" src="/photos/13.jpg" />
         </div>
       </section>
       <section className="divided">

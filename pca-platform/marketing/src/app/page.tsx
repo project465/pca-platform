@@ -51,8 +51,10 @@ export default function Home() {
             {site.why.after.verdict}
           </PullQuote>
           <div className="photorow" style={{ marginTop: 34 }}>
-            {u.photos.home.map((c) => (
-              <PhotoSlot key={c} caption={c} />
+            {/* 번호는 회신 7 §24-4 의 사진 자리 표와 같다. 원고가 아니라
+                배치의 사실이므로 나라별 원고에 넣지 않고 여기서 짚는다 */}
+            {u.photos.home.map((c, i) => (
+              <PhotoSlot key={c} caption={c} src={`/photos/0${i + 1}.jpg`} />
             ))}
           </div>
         </div>

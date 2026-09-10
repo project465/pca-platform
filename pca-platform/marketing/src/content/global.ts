@@ -49,18 +49,18 @@ export const global: SiteContent = {
     },
     photos: {
       home: [
-        "Photo — a careers talk for a department",
-        "Photo — a mentoring session with someone in the role",
-        "Photo — a campus recruitment fair",
+        "A careers talk for a department",
+        "A mentoring session with someone in the role",
+        "A campus recruitment fair",
       ],
       about: [
-        "Photo — university event",
-        "Photo — invited speaker",
-        "Photo — the team",
+        "A university event",
+        "An invited speaker",
+        "A working space",
       ],
-      metri: "Photo — a department sitting the assessment",
-      adopt: "Photo — the administrator screen in use",
-      localisation: "Photo — a localisation workshop with a partner university",
+      metri: "A department sitting the assessment",
+      adopt: "An administrator at the screen",
+      localisation: "A localisation workshop with a partner university",
     },
   },
 
@@ -799,11 +799,22 @@ export const global: SiteContent = {
       {
         title: "2. How long we keep it",
         body: [
+          "One rule: once the purpose we collected it for is served, it is destroyed without delay.",
           "Enquiries are deleted once the conversation ends.",
-          "Assessment data is held for the term of the contract and deleted within ⟨retention period⟩ of its end.",
+          "Assessment responses and results are destroyed without delay once the service has been delivered.",
           "If you ask us to delete it, we do so without delay, except where law requires us to keep it.",
           "Aggregates may remain, but only after they have been made non-identifying — and that cannot be reversed.",
+          "Korean law does require some records to be kept. Where such a record exists, it is kept for the period below.",
         ],
+        table: {
+          head: ["Record the law requires us to keep", "Period"],
+          rows: [
+            ["Contracts and withdrawal of subscription", "5 years"],
+            ["Payment and supply of goods or services", "5 years"],
+            ["Consumer complaints and dispute handling", "3 years"],
+            ["Labelling and advertising", "6 months"],
+          ],
+        },
       },
       {
         title: "3. Who sees it",
@@ -999,6 +1010,8 @@ export const global: SiteContent = {
   },
 
   footer: {
+    imageNote:
+      "The images on this site are AI-generated and are not photographs of real events. The people and scenes in them do not exist.",
     note: "METRI · developed by ACADEMIX",
     sitesLabel: "Countries",
     sites: [

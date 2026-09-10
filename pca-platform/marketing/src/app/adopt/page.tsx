@@ -20,7 +20,7 @@ export default function AdoptPage() {
       <ProcessSection site={site} bare />
       <section className="divided">
         <div className="wrap photosplit">
-          <PhotoSlot caption={u.photos.adopt} ratio="4 / 3" />
+          <PhotoSlot caption={u.photos.adopt} src="/photos/08.jpg" ratio="4 / 3" />
           <div>
             <span className="label-sm">누가 무엇을 하나</span>
             <h2 style={{ margin: "16px 0 18px" }}>학과가 할 일은 링크를 나눠주는 것뿐입니다</h2>

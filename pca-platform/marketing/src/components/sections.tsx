@@ -322,6 +322,11 @@ export function SiteFooter({ site }: { site: SiteContent }) {
             </ul>
           </div>
         </div>
+
+        {/* 이 사이트의 사진은 AI 로 만든 것이다. 그 사실을 밝히지 않으면
+            특강·멘토링·채용박람회를 설명하는 자리에 붙은 그림이 운영
+            실적의 증거처럼 읽힌다. 한 번, 여기서 밝힌다 */}
+        <p className="imgnote">{site.footer.imageNote}</p>
       </div>
     </footer>
   );

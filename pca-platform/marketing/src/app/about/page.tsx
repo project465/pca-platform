@@ -16,8 +16,8 @@ export default function AboutPage() {
       <About site={site} bare />
       <section className="divided tinted">
         <div className="wrap photorow">
-          {u.photos.about.map((c) => (
-            <PhotoSlot key={c} caption={c} tone="ink" />
+          {u.photos.about.map((c, i) => (
+            <PhotoSlot key={c} caption={c} src={`/photos/0${i + 4}.jpg`} tone="ink" />
           ))}
         </div>
       </section>

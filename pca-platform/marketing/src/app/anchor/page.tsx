@@ -35,7 +35,7 @@ export default function AnchorPage() {
               </a>
             </div>
           </div>
-          <PhotoSlot caption="사진 자리 — 지역 기관·기업 방문 또는 지역 채용 행사" ratio="4 / 3" />
+          <PhotoSlot caption="지역 기관·기업 방문" src="/photos/10.jpg" ratio="4 / 3" />
         </div>
       </section>
       <section className="divided">

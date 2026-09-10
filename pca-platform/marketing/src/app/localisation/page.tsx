@@ -22,7 +22,7 @@ export default function LocalisationPage() {
       {site.map ? <WorldMap map={site.map} /> : null}
       <section className="divided">
         <div className="wrap photosplit">
-          <PhotoSlot caption={site.ui.photos.localisation} ratio="4 / 3" />
+          <PhotoSlot caption={site.ui.photos.localisation} src="/photos/09.jpg" ratio="4 / 3" />
           <div>
             <span className="label-sm">NEXT</span>
             <h2 style={{ margin: "16px 0 20px" }}>Who does what, and how a rollout starts</h2>

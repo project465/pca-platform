@@ -24,6 +24,7 @@ export default function PcaPage() {
         <div className="wrap photosplit">
           <PhotoSlot
             caption={u.photos.metri}
+            src="/photos/07.jpg"
             ratio="4 / 3"
           />
           <div>
