@@ -1,0 +1,447 @@
+{
+  "version": "0.1",
+  "note": "ECI 공통 축. 판매·개발 단위는 전공이다. 트랙은 상품이 아니라 채점 가중치 행일 뿐이다. 검사 세트는 고교판·대학판 두 개만 만든다.",
+  "indicators": [
+    {
+      "code": "ANALYZE",
+      "ko": "해석·계산",
+      "en": "Analysis",
+      "desc": "현상을 수식과 모델로 풀어 답을 내는 활동"
+    },
+    {
+      "code": "DESIGN",
+      "ko": "설계·구상",
+      "en": "Design",
+      "desc": "요구조건에서 형상·구조·구성을 만들어내는 활동"
+    },
+    {
+      "code": "BUILD",
+      "ko": "제작·실험",
+      "en": "Build & Test",
+      "desc": "직접 만들고 측정해 확인하는 활동"
+    },
+    {
+      "code": "CODE",
+      "ko": "구현·프로그래밍",
+      "en": "Programming",
+      "desc": "코드로 동작을 만드는 활동"
+    },
+    {
+      "code": "FIELD",
+      "ko": "현장·설비",
+      "en": "Field & Plant",
+      "desc": "설비와 공정이 있는 현장에서 돌아가게 만드는 활동"
+    },
+    {
+      "code": "OPTIMIZE",
+      "ko": "개선·효율",
+      "en": "Optimization",
+      "desc": "이미 있는 것을 더 빠르고 싸고 안정되게 만드는 활동"
+    },
+    {
+      "code": "RESEARCH",
+      "ko": "탐구·이론",
+      "en": "Research",
+      "desc": "원리를 파고들어 새 방법을 찾는 활동"
+    },
+    {
+      "code": "ORCHESTRATE",
+      "ko": "조율·관리",
+      "en": "Coordination",
+      "desc": "사람·일정·이해관계를 맞춰 굴러가게 하는 활동"
+    }
+  ],
+  "traits": [
+    {
+      "code": "INDEP",
+      "ko": "독립형",
+      "en": "Independent"
+    },
+    {
+      "code": "COLLAB",
+      "ko": "협력형",
+      "en": "Collaborative"
+    },
+    {
+      "code": "CHALLENGE",
+      "ko": "도전형",
+      "en": "Challenging"
+    },
+    {
+      "code": "STABLE",
+      "ko": "안정형",
+      "en": "Stable"
+    },
+    {
+      "code": "SPEED",
+      "ko": "속도중시형",
+      "en": "Speed-oriented"
+    },
+    {
+      "code": "QUALITY",
+      "ko": "품질중시형",
+      "en": "Quality-oriented"
+    }
+  ],
+  "industries": [
+    {
+      "code": "AUTO",
+      "ko": "자동차·모빌리티"
+    },
+    {
+      "code": "SEMI",
+      "ko": "반도체·디스플레이"
+    },
+    {
+      "code": "BATT",
+      "ko": "이차전지·에너지"
+    },
+    {
+      "code": "AERO",
+      "ko": "항공우주"
+    },
+    {
+      "code": "DEF",
+      "ko": "방위산업"
+    },
+    {
+      "code": "ROBOT",
+      "ko": "로봇·자동화"
+    },
+    {
+      "code": "MACH",
+      "ko": "기계·장비"
+    },
+    {
+      "code": "CHEM",
+      "ko": "화학·소재"
+    },
+    {
+      "code": "POWER",
+      "ko": "전력·인프라"
+    },
+    {
+      "code": "TELCO",
+      "ko": "통신·네트워크"
+    },
+    {
+      "code": "SW",
+      "ko": "소프트웨어·플랫폼"
+    },
+    {
+      "code": "AI",
+      "ko": "AI·데이터"
+    },
+    {
+      "code": "MED",
+      "ko": "의료기기·바이오"
+    },
+    {
+      "code": "SHIP",
+      "ko": "조선·해양"
+    },
+    {
+      "code": "CONST",
+      "ko": "건설·플랜트"
+    }
+  ],
+  "tracks": [
+    {
+      "code": "HS",
+      "ko": "고등학생",
+      "stage": "high",
+      "instrument": "HS_V1",
+      "decision": "과목 선택 · 전공 선택 · (취업형은) 직무 선택",
+      "output": "전공 적합 · 과목 처방 / 취업형이면 직무 적합 · 자격 처방",
+      "note": "일반계고와 마이스터고를 트랙으로 나누지 않는다. 검사는 같고 결과지 뒷부분만 goal 로 갈린다"
+    },
+    {
+      "code": "UNIV_LOW",
+      "ko": "대학 1–2학년",
+      "stage": "univ",
+      "instrument": "UNIV_V1",
+      "decision": "트랙·부전공·프로젝트 선택",
+      "output": "직무 적합 · 과목 처방 · 활동 처방"
+    },
+    {
+      "code": "UNIV_HIGH",
+      "ko": "대학 3–4학년",
+      "stage": "univ",
+      "instrument": "UNIV_V1",
+      "decision": "취업 목표 직무와 기업",
+      "output": "직무 적합 · Skill Gap · JD 매칭"
+    },
+    {
+      "code": "GRAD",
+      "ko": "졸업예정·대학원",
+      "stage": "grad",
+      "instrument": "UNIV_V1",
+      "decision": "지원 기업",
+      "output": "JD 매칭 · 서류 · 면접"
+    }
+  ],
+  "majorFit": [
+    {
+      "code": "ME",
+      "ko": "기계공학",
+      "weights": {
+        "DESIGN": 0.26,
+        "ANALYZE": 0.22,
+        "BUILD": 0.2,
+        "FIELD": 0.12,
+        "OPTIMIZE": 0.1,
+        "RESEARCH": 0.06,
+        "CODE": 0.04
+      }
+    },
+    {
+      "code": "EE",
+      "ko": "전기·전자공학",
+      "weights": {
+        "ANALYZE": 0.24,
+        "BUILD": 0.2,
+        "DESIGN": 0.18,
+        "RESEARCH": 0.14,
+        "CODE": 0.14,
+        "FIELD": 0.1
+      }
+    },
+    {
+      "code": "CE",
+      "ko": "컴퓨터공학",
+      "weights": {
+        "CODE": 0.38,
+        "ANALYZE": 0.2,
+        "DESIGN": 0.16,
+        "OPTIMIZE": 0.14,
+        "RESEARCH": 0.08,
+        "BUILD": 0.04
+      }
+    },
+    {
+      "code": "CHE",
+      "ko": "화학공학",
+      "weights": {
+        "ANALYZE": 0.26,
+        "RESEARCH": 0.22,
+        "FIELD": 0.2,
+        "OPTIMIZE": 0.16,
+        "BUILD": 0.1,
+        "DESIGN": 0.06
+      }
+    },
+    {
+      "code": "MSE",
+      "ko": "신소재공학",
+      "weights": {
+        "RESEARCH": 0.3,
+        "BUILD": 0.24,
+        "ANALYZE": 0.22,
+        "OPTIMIZE": 0.12,
+        "FIELD": 0.08,
+        "DESIGN": 0.04
+      }
+    },
+    {
+      "code": "IE",
+      "ko": "산업공학",
+      "weights": {
+        "OPTIMIZE": 0.3,
+        "ORCHESTRATE": 0.24,
+        "ANALYZE": 0.2,
+        "CODE": 0.12,
+        "FIELD": 0.1,
+        "DESIGN": 0.04
+      }
+    },
+    {
+      "code": "CIV",
+      "ko": "건설·환경공학",
+      "weights": {
+        "FIELD": 0.3,
+        "DESIGN": 0.24,
+        "ANALYZE": 0.2,
+        "ORCHESTRATE": 0.16,
+        "OPTIMIZE": 0.1
+      }
+    },
+    {
+      "code": "BME",
+      "ko": "바이오·의공학",
+      "weights": {
+        "RESEARCH": 0.3,
+        "ANALYZE": 0.22,
+        "BUILD": 0.2,
+        "DESIGN": 0.14,
+        "CODE": 0.14
+      }
+    }
+  ],
+  "evidenceWeights": {
+    "note": "보유 수준 h(역량)을 만드는 증거별 배점과 신뢰도. 산식 문서 5장 참조",
+    "sources": [
+      {
+        "code": "COURSE",
+        "ko": "이수 과목",
+        "maxPoint": 2.0,
+        "reliability": 0.95,
+        "needsProof": false
+      },
+      {
+        "code": "PROJECT",
+        "ko": "프로젝트",
+        "maxPoint": 2.5,
+        "reliability": 0.8,
+        "needsProof": true
+      },
+      {
+        "code": "CERT",
+        "ko": "자격증",
+        "maxPoint": 2.5,
+        "reliability": 1.0,
+        "needsProof": true
+      },
+      {
+        "code": "INTERN",
+        "ko": "인턴·현장실습",
+        "maxPoint": 2.5,
+        "reliability": 0.85,
+        "needsProof": true
+      },
+      {
+        "code": "SOFTWARE",
+        "ko": "소프트웨어 사용",
+        "maxPoint": 1.5,
+        "reliability": 0.6,
+        "needsProof": false
+      },
+      {
+        "code": "SELF",
+        "ko": "검사 내 자기평가",
+        "maxPoint": 1.5,
+        "reliability": 0.5,
+        "needsProof": false
+      },
+      {
+        "code": "AWARD",
+        "ko": "공모전·수상",
+        "maxPoint": 1.5,
+        "reliability": 0.9,
+        "needsProof": true
+      },
+      {
+        "code": "NCS_UNIT",
+        "ko": "NCS 능력단위 이수",
+        "maxPoint": 2.0,
+        "reliability": 0.95,
+        "needsProof": true
+      }
+    ],
+    "gradeFactor": {
+      "A+": 1.0,
+      "A": 0.95,
+      "B+": 0.85,
+      "B": 0.75,
+      "C+": 0.65,
+      "C": 0.55,
+      "D": 0.35,
+      "P": 0.7
+    },
+    "levelLadder": [
+      [
+        0.0,
+        0
+      ],
+      [
+        0.8,
+        1
+      ],
+      [
+        1.8,
+        2
+      ],
+      [
+        2.8,
+        3
+      ],
+      [
+        3.8,
+        4
+      ],
+      [
+        4.8,
+        5
+      ]
+    ],
+    "cap": 6.0
+  },
+  "scoringProfiles": [
+    {
+      "track": "HS",
+      "goal": "univ",
+      "wA": 0.6,
+      "wS": 0.1,
+      "wP": 0.3,
+      "wC": 0.0,
+      "display": "band",
+      "topN": 3
+    },
+    {
+      "track": "HS",
+      "goal": "job",
+      "wA": 0.4,
+      "wS": 0.3,
+      "wP": 0.2,
+      "wC": 0.1,
+      "display": "band",
+      "topN": 5
+    },
+    {
+      "track": "UNIV_LOW",
+      "goal": "any",
+      "wA": 0.45,
+      "wS": 0.25,
+      "wP": 0.2,
+      "wC": 0.1,
+      "display": "score",
+      "topN": 6
+    },
+    {
+      "track": "UNIV_HIGH",
+      "goal": "any",
+      "wA": 0.3,
+      "wS": 0.4,
+      "wP": 0.15,
+      "wC": 0.15,
+      "display": "score",
+      "topN": 8
+    },
+    {
+      "track": "GRAD",
+      "goal": "any",
+      "wA": 0.25,
+      "wS": 0.45,
+      "wP": 0.15,
+      "wC": 0.15,
+      "display": "score",
+      "topN": 8
+    }
+  ],
+  "goals": [
+    {
+      "code": "univ",
+      "ko": "진학형",
+      "note": "일반계고 기본값. 결과지가 전공 적합 + 과목 처방으로 간다"
+    },
+    {
+      "code": "job",
+      "ko": "취업형",
+      "note": "마이스터고·특성화고 기본값. 결과지가 직무 적합 + 자격·NCS 처방으로 간다"
+    },
+    {
+      "code": "any",
+      "ko": "해당 없음",
+      "note": "대학 트랙"
+    }
+  ]
+}

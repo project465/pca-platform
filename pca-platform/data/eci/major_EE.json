@@ -1,0 +1,1207 @@
+{
+  "code": "EE",
+  "ko": "전기·전자공학",
+  "en": "Electrical & Electronic Engineering",
+  "competencies": [
+    {
+      "code": "EE.MATH",
+      "ko": "공학수학·변환",
+      "en": "Engineering Mathematics",
+      "type": "theory",
+      "layer": "L1",
+      "aliases": [
+        "푸리에",
+        "라플라스",
+        "복소해석"
+      ]
+    },
+    {
+      "code": "EE.PHYS",
+      "ko": "물리전자",
+      "en": "Physical Electronics",
+      "type": "theory",
+      "layer": "L1",
+      "aliases": [
+        "고체물리",
+        "양자"
+      ]
+    },
+    {
+      "code": "EE.PROB",
+      "ko": "확률과 랜덤변수",
+      "en": "Probability & Random Variables",
+      "type": "theory",
+      "layer": "L1",
+      "aliases": [
+        "확률변수",
+        "잡음이론"
+      ]
+    },
+    {
+      "code": "EE.CIRCUIT",
+      "ko": "회로이론",
+      "en": "Circuit Theory",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "회로해석",
+        "RLC"
+      ]
+    },
+    {
+      "code": "EE.ANALOG",
+      "ko": "전자회로·아날로그",
+      "en": "Analog Electronics",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "OP-AMP",
+        "증폭기"
+      ]
+    },
+    {
+      "code": "EE.DIGITAL",
+      "ko": "디지털논리회로",
+      "en": "Digital Logic",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "논리회로",
+        "FSM"
+      ]
+    },
+    {
+      "code": "EE.EM",
+      "ko": "전자기학",
+      "en": "Electromagnetics",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "Maxwell",
+        "전자파"
+      ]
+    },
+    {
+      "code": "EE.SIGSYS",
+      "ko": "신호 및 시스템",
+      "en": "Signals & Systems",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "시스템해석"
+      ]
+    },
+    {
+      "code": "EE.DSP",
+      "ko": "디지털신호처리",
+      "en": "Digital Signal Processing",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "DSP",
+        "FFT",
+        "필터설계"
+      ]
+    },
+    {
+      "code": "EE.SEMI",
+      "ko": "반도체 소자",
+      "en": "Semiconductor Devices",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "MOSFET",
+        "소자물리"
+      ]
+    },
+    {
+      "code": "EE.PROCESS",
+      "ko": "반도체 공정",
+      "en": "Semiconductor Process",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "포토",
+        "식각",
+        "증착",
+        "8대공정"
+      ]
+    },
+    {
+      "code": "EE.VLSI",
+      "ko": "VLSI·집적회로 설계",
+      "en": "VLSI Design",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "ASIC",
+        "SoC",
+        "물리설계"
+      ]
+    },
+    {
+      "code": "EE.POWERELEC",
+      "ko": "전력전자",
+      "en": "Power Electronics",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "컨버터",
+        "인버터",
+        "PWM"
+      ]
+    },
+    {
+      "code": "EE.POWERSYS",
+      "ko": "전력시스템",
+      "en": "Power Systems",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "송배전",
+        "계통해석"
+      ]
+    },
+    {
+      "code": "EE.MOTOR",
+      "ko": "전기기기·모터제어",
+      "en": "Electric Machines",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "BLDC",
+        "인버터제어"
+      ]
+    },
+    {
+      "code": "EE.CTRL",
+      "ko": "자동제어",
+      "en": "Control Systems",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "제어공학",
+        "상태공간"
+      ]
+    },
+    {
+      "code": "EE.COMM",
+      "ko": "통신이론",
+      "en": "Communication Theory",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "변복조",
+        "채널코딩"
+      ]
+    },
+    {
+      "code": "EE.RF",
+      "ko": "RF·안테나",
+      "en": "RF & Antenna",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "고주파",
+        "임피던스 정합"
+      ]
+    },
+    {
+      "code": "EE.MCU",
+      "ko": "마이크로프로세서",
+      "en": "Microprocessors",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "MCU",
+        "ARM",
+        "인터럽트"
+      ]
+    },
+    {
+      "code": "EE.EMBED",
+      "ko": "임베디드 시스템",
+      "en": "Embedded Systems",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "펌웨어",
+        "RTOS"
+      ]
+    },
+    {
+      "code": "EE.INSTR",
+      "ko": "계측·센서",
+      "en": "Instrumentation",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "센서회로",
+        "신호조절"
+      ]
+    },
+    {
+      "code": "EE.OPTO",
+      "ko": "광전자·디스플레이",
+      "en": "Optoelectronics",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "OLED",
+        "LED",
+        "광소자"
+      ]
+    },
+    {
+      "code": "EE.EMC",
+      "ko": "EMC·신호무결성",
+      "en": "EMC & Signal Integrity",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "EMI",
+        "SI/PI"
+      ]
+    },
+    {
+      "code": "SW.SPICE",
+      "ko": "SPICE 시뮬레이션",
+      "en": "SPICE",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "LTspice",
+        "PSpice",
+        "HSPICE"
+      ]
+    },
+    {
+      "code": "SW.CADENCE",
+      "ko": "Cadence Virtuoso",
+      "en": "Cadence Virtuoso",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "케이던스",
+        "레이아웃"
+      ]
+    },
+    {
+      "code": "SW.SYNOPSYS",
+      "ko": "Synopsys 합성·검증",
+      "en": "Synopsys EDA",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "Design Compiler",
+        "VCS",
+        "PrimeTime"
+      ]
+    },
+    {
+      "code": "SW.VERILOG",
+      "ko": "Verilog·SystemVerilog",
+      "en": "Verilog",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "RTL",
+        "SV",
+        "UVM"
+      ]
+    },
+    {
+      "code": "SW.VHDL",
+      "ko": "VHDL",
+      "en": "VHDL",
+      "type": "software",
+      "layer": "L3",
+      "aliases": []
+    },
+    {
+      "code": "SW.FPGA",
+      "ko": "FPGA 툴체인",
+      "en": "FPGA Toolchain",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "Vivado",
+        "Quartus",
+        "Xilinx"
+      ]
+    },
+    {
+      "code": "SW.PCB",
+      "ko": "PCB 설계",
+      "en": "PCB Design",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "Altium",
+        "OrCAD",
+        "KiCad",
+        "아트웍"
+      ]
+    },
+    {
+      "code": "SW.HFSS",
+      "ko": "전자계 해석 (HFSS·ADS)",
+      "en": "EM Simulation",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "ADS",
+        "CST",
+        "전자파해석"
+      ]
+    },
+    {
+      "code": "SW.TCAD",
+      "ko": "TCAD",
+      "en": "TCAD",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "Sentaurus",
+        "소자 시뮬레이션"
+      ]
+    },
+    {
+      "code": "SW.MATLAB",
+      "ko": "MATLAB",
+      "en": "MATLAB",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "매트랩"
+      ]
+    },
+    {
+      "code": "SW.SIMULINK",
+      "ko": "Simulink",
+      "en": "Simulink",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "MBD",
+        "PLECS"
+      ]
+    },
+    {
+      "code": "SW.C_EMB",
+      "ko": "임베디드 C",
+      "en": "Embedded C",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "C언어",
+        "C++"
+      ]
+    },
+    {
+      "code": "SW.PYTHON",
+      "ko": "Python",
+      "en": "Python",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "파이썬",
+        "자동화 스크립트"
+      ]
+    },
+    {
+      "code": "SW.RTOS",
+      "ko": "RTOS",
+      "en": "RTOS",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "FreeRTOS",
+        "Zephyr"
+      ]
+    },
+    {
+      "code": "SW.LABVIEW",
+      "ko": "LabVIEW·자동계측",
+      "en": "LabVIEW",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "자동시험"
+      ]
+    },
+    {
+      "code": "SW.SCOPE",
+      "ko": "오실로스코프·계측장비",
+      "en": "Lab Instruments",
+      "type": "tool",
+      "layer": "L3",
+      "aliases": [
+        "스펙트럼분석기",
+        "네트워크분석기",
+        "JTAG"
+      ]
+    },
+    {
+      "code": "SW.GIT",
+      "ko": "형상관리 (Git)",
+      "en": "Git",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "깃",
+        "버전관리"
+      ]
+    },
+    {
+      "code": "DM.FOUNDRY",
+      "ko": "파운드리·수율",
+      "en": "Foundry & Yield",
+      "type": "domain",
+      "layer": "L4",
+      "aliases": [
+        "수율분석",
+        "불량분석",
+        "FA"
+      ]
+    },
+    {
+      "code": "DM.MEMORY",
+      "ko": "메모리 (DRAM·NAND)",
+      "en": "Memory Devices",
+      "type": "domain",
+      "layer": "L4",
+      "aliases": [
+        "DRAM",
+        "낸드"
+      ]
+    },
+    {
+      "code": "DM.AUTO_E",
+      "ko": "자동차 전장·ADAS",
+      "en": "Automotive Electronics",
+      "type": "domain",
+      "layer": "L4",
+      "aliases": [
+        "ECU",
+        "CAN",
+        "AUTOSAR"
+      ]
+    },
+    {
+      "code": "DM.BMS",
+      "ko": "배터리 BMS",
+      "en": "Battery Management",
+      "type": "domain",
+      "layer": "L4",
+      "aliases": [
+        "셀밸런싱",
+        "SOC 추정"
+      ]
+    },
+    {
+      "code": "DM.GRID",
+      "ko": "전력망·신재생 연계",
+      "en": "Grid & Renewables",
+      "type": "domain",
+      "layer": "L4",
+      "aliases": [
+        "ESS",
+        "태양광 인버터"
+      ]
+    },
+    {
+      "code": "DM.MODEM",
+      "ko": "무선 모뎀·5G",
+      "en": "Wireless Modem",
+      "type": "domain",
+      "layer": "L4",
+      "aliases": [
+        "5G",
+        "LTE",
+        "베이스밴드"
+      ]
+    },
+    {
+      "code": "CM.STD_EE",
+      "ko": "규격·인증",
+      "en": "Standards & Certification",
+      "type": "soft",
+      "layer": "L5",
+      "aliases": [
+        "IEC",
+        "AEC-Q100",
+        "KC인증",
+        "기능안전"
+      ]
+    },
+    {
+      "code": "CM.DOC",
+      "ko": "기술문서 작성",
+      "en": "Technical Writing",
+      "type": "soft",
+      "layer": "L5",
+      "aliases": [
+        "사양서",
+        "시험성적서"
+      ]
+    },
+    {
+      "code": "CM.ENG",
+      "ko": "영문 기술 커뮤니케이션",
+      "en": "Technical English",
+      "type": "soft",
+      "layer": "L5",
+      "aliases": [
+        "영어",
+        "해외 협업"
+      ]
+    },
+    {
+      "code": "CM.COLLAB",
+      "ko": "협업·이슈관리",
+      "en": "Collaboration",
+      "type": "soft",
+      "layer": "L5",
+      "aliases": [
+        "Jira",
+        "코드리뷰"
+      ]
+    }
+  ],
+  "jobs": [
+    {
+      "code": "EE.SEMI_DEV",
+      "ko": "반도체 소자·공정",
+      "en": "Semiconductor Device & Process Engineer",
+      "onet": "17-2072.00",
+      "industries": [
+        "SEMI"
+      ],
+      "tracks": [
+        "UNIV_HIGH",
+        "GRAD"
+      ],
+      "weights": {
+        "RESEARCH": 0.28,
+        "ANALYZE": 0.26,
+        "FIELD": 0.18,
+        "BUILD": 0.14,
+        "OPTIMIZE": 0.1,
+        "DESIGN": 0.04
+      },
+      "requires": [
+        [
+          "EE.SEMI",
+          4,
+          3
+        ],
+        [
+          "EE.PROCESS",
+          4,
+          3
+        ],
+        [
+          "EE.PHYS",
+          4,
+          3
+        ],
+        [
+          "DM.FOUNDRY",
+          3,
+          3
+        ],
+        [
+          "SW.TCAD",
+          3,
+          2
+        ],
+        [
+          "EE.INSTR",
+          3,
+          2
+        ],
+        [
+          "SW.PYTHON",
+          3,
+          2
+        ],
+        [
+          "DM.MEMORY",
+          3,
+          2
+        ],
+        [
+          "EE.PROB",
+          3,
+          2
+        ],
+        [
+          "CM.DOC",
+          3,
+          2
+        ],
+        [
+          "CM.ENG",
+          3,
+          2
+        ]
+      ]
+    },
+    {
+      "code": "EE.ANALOG_RF",
+      "ko": "아날로그·RF 회로 설계",
+      "en": "Analog / RF Design Engineer",
+      "onet": "17-2072.00",
+      "industries": [
+        "SEMI",
+        "TELCO",
+        "MED"
+      ],
+      "tracks": [
+        "UNIV_HIGH",
+        "GRAD"
+      ],
+      "weights": {
+        "ANALYZE": 0.32,
+        "DESIGN": 0.28,
+        "RESEARCH": 0.18,
+        "BUILD": 0.14,
+        "CODE": 0.04,
+        "OPTIMIZE": 0.04
+      },
+      "requires": [
+        [
+          "EE.ANALOG",
+          5,
+          3
+        ],
+        [
+          "EE.CIRCUIT",
+          4,
+          3
+        ],
+        [
+          "SW.SPICE",
+          4,
+          3
+        ],
+        [
+          "SW.CADENCE",
+          4,
+          3
+        ],
+        [
+          "EE.SEMI",
+          4,
+          3
+        ],
+        [
+          "EE.EM",
+          3,
+          2
+        ],
+        [
+          "EE.RF",
+          3,
+          2
+        ],
+        [
+          "SW.HFSS",
+          3,
+          2
+        ],
+        [
+          "SW.SCOPE",
+          3,
+          2
+        ],
+        [
+          "EE.EMC",
+          3,
+          2
+        ],
+        [
+          "CM.ENG",
+          3,
+          2
+        ]
+      ]
+    },
+    {
+      "code": "EE.DIGITAL_SOC",
+      "ko": "디지털 IC·SoC 설계",
+      "en": "Digital IC / SoC Design Engineer",
+      "onet": "17-2061.00",
+      "industries": [
+        "SEMI",
+        "AI",
+        "TELCO"
+      ],
+      "tracks": [
+        "UNIV_HIGH",
+        "GRAD"
+      ],
+      "weights": {
+        "CODE": 0.28,
+        "DESIGN": 0.26,
+        "ANALYZE": 0.22,
+        "RESEARCH": 0.12,
+        "OPTIMIZE": 0.08,
+        "BUILD": 0.04
+      },
+      "requires": [
+        [
+          "SW.VERILOG",
+          5,
+          3
+        ],
+        [
+          "EE.DIGITAL",
+          4,
+          3
+        ],
+        [
+          "EE.VLSI",
+          4,
+          3
+        ],
+        [
+          "SW.SYNOPSYS",
+          4,
+          3
+        ],
+        [
+          "SW.FPGA",
+          3,
+          2
+        ],
+        [
+          "EE.MCU",
+          3,
+          2
+        ],
+        [
+          "SW.PYTHON",
+          3,
+          2
+        ],
+        [
+          "SW.GIT",
+          3,
+          2
+        ],
+        [
+          "EE.SIGSYS",
+          3,
+          2
+        ],
+        [
+          "EE.EMC",
+          2,
+          1
+        ],
+        [
+          "CM.ENG",
+          3,
+          2
+        ]
+      ]
+    },
+    {
+      "code": "EE.EMBEDDED",
+      "ko": "임베디드 SW·펌웨어",
+      "en": "Embedded Software Engineer",
+      "onet": "17-2061.00",
+      "industries": [
+        "AUTO",
+        "ROBOT",
+        "MED",
+        "MACH"
+      ],
+      "tracks": [
+        "HS",
+        "UNIV_LOW",
+        "UNIV_HIGH",
+        "GRAD"
+      ],
+      "weights": {
+        "CODE": 0.36,
+        "BUILD": 0.22,
+        "DESIGN": 0.16,
+        "ANALYZE": 0.14,
+        "OPTIMIZE": 0.08,
+        "FIELD": 0.04
+      },
+      "requires": [
+        [
+          "SW.C_EMB",
+          5,
+          3
+        ],
+        [
+          "EE.EMBED",
+          4,
+          3
+        ],
+        [
+          "EE.MCU",
+          4,
+          3
+        ],
+        [
+          "SW.RTOS",
+          3,
+          3
+        ],
+        [
+          "EE.DIGITAL",
+          3,
+          2
+        ],
+        [
+          "SW.GIT",
+          3,
+          2
+        ],
+        [
+          "SW.SCOPE",
+          3,
+          2
+        ],
+        [
+          "EE.INSTR",
+          3,
+          2
+        ],
+        [
+          "SW.PYTHON",
+          3,
+          2
+        ],
+        [
+          "DM.AUTO_E",
+          2,
+          1
+        ],
+        [
+          "CM.COLLAB",
+          3,
+          2
+        ]
+      ]
+    },
+    {
+      "code": "EE.POWER",
+      "ko": "전력전자·전력시스템",
+      "en": "Power Electronics / Power Systems Engineer",
+      "onet": "17-2071.00",
+      "industries": [
+        "POWER",
+        "BATT",
+        "AUTO"
+      ],
+      "tracks": [
+        "HS",
+        "UNIV_LOW",
+        "UNIV_HIGH"
+      ],
+      "weights": {
+        "ANALYZE": 0.28,
+        "DESIGN": 0.22,
+        "BUILD": 0.18,
+        "FIELD": 0.18,
+        "OPTIMIZE": 0.1,
+        "RESEARCH": 0.04
+      },
+      "requires": [
+        [
+          "EE.POWERELEC",
+          4,
+          3
+        ],
+        [
+          "EE.MOTOR",
+          4,
+          3
+        ],
+        [
+          "EE.CIRCUIT",
+          4,
+          3
+        ],
+        [
+          "EE.CTRL",
+          3,
+          3
+        ],
+        [
+          "SW.SIMULINK",
+          3,
+          2
+        ],
+        [
+          "EE.POWERSYS",
+          3,
+          2
+        ],
+        [
+          "DM.GRID",
+          3,
+          2
+        ],
+        [
+          "SW.PCB",
+          3,
+          2
+        ],
+        [
+          "SW.SCOPE",
+          3,
+          2
+        ],
+        [
+          "CM.STD_EE",
+          3,
+          2
+        ],
+        [
+          "DM.BMS",
+          2,
+          1
+        ]
+      ]
+    },
+    {
+      "code": "EE.AUTO_ELEC",
+      "ko": "자동차 전장·ADAS",
+      "en": "Automotive Electronics Engineer",
+      "onet": "17-2072.00",
+      "industries": [
+        "AUTO"
+      ],
+      "tracks": [
+        "UNIV_LOW",
+        "UNIV_HIGH",
+        "GRAD"
+      ],
+      "weights": {
+        "DESIGN": 0.24,
+        "CODE": 0.22,
+        "ANALYZE": 0.2,
+        "BUILD": 0.18,
+        "OPTIMIZE": 0.1,
+        "FIELD": 0.06
+      },
+      "requires": [
+        [
+          "DM.AUTO_E",
+          4,
+          3
+        ],
+        [
+          "EE.EMBED",
+          4,
+          3
+        ],
+        [
+          "SW.C_EMB",
+          4,
+          3
+        ],
+        [
+          "CM.STD_EE",
+          4,
+          3
+        ],
+        [
+          "SW.PCB",
+          3,
+          2
+        ],
+        [
+          "EE.EMC",
+          3,
+          2
+        ],
+        [
+          "EE.INSTR",
+          3,
+          2
+        ],
+        [
+          "SW.SIMULINK",
+          3,
+          2
+        ],
+        [
+          "EE.CTRL",
+          3,
+          2
+        ],
+        [
+          "SW.GIT",
+          3,
+          2
+        ],
+        [
+          "CM.ENG",
+          3,
+          2
+        ]
+      ]
+    },
+    {
+      "code": "EE.COMM_SYS",
+      "ko": "통신·네트워크 시스템",
+      "en": "Communication Systems Engineer",
+      "onet": "17-2072.00",
+      "industries": [
+        "TELCO",
+        "DEF",
+        "AERO"
+      ],
+      "tracks": [
+        "UNIV_HIGH",
+        "GRAD"
+      ],
+      "weights": {
+        "ANALYZE": 0.3,
+        "CODE": 0.22,
+        "RESEARCH": 0.2,
+        "DESIGN": 0.14,
+        "BUILD": 0.1,
+        "FIELD": 0.04
+      },
+      "requires": [
+        [
+          "EE.COMM",
+          4,
+          3
+        ],
+        [
+          "EE.DSP",
+          4,
+          3
+        ],
+        [
+          "EE.SIGSYS",
+          4,
+          3
+        ],
+        [
+          "EE.PROB",
+          4,
+          3
+        ],
+        [
+          "SW.MATLAB",
+          4,
+          3
+        ],
+        [
+          "DM.MODEM",
+          3,
+          2
+        ],
+        [
+          "EE.RF",
+          3,
+          2
+        ],
+        [
+          "SW.PYTHON",
+          3,
+          2
+        ],
+        [
+          "SW.FPGA",
+          2,
+          1
+        ],
+        [
+          "CM.ENG",
+          3,
+          2
+        ]
+      ]
+    },
+    {
+      "code": "EE.HW_TEST",
+      "ko": "하드웨어 시험·신뢰성",
+      "en": "Hardware Test & Reliability Engineer",
+      "onet": "17-3023.00",
+      "industries": [
+        "SEMI",
+        "AUTO",
+        "MED",
+        "TELCO"
+      ],
+      "tracks": [
+        "HS",
+        "UNIV_LOW",
+        "UNIV_HIGH"
+      ],
+      "weights": {
+        "BUILD": 0.28,
+        "OPTIMIZE": 0.22,
+        "ANALYZE": 0.2,
+        "FIELD": 0.18,
+        "ORCHESTRATE": 0.08,
+        "CODE": 0.04
+      },
+      "requires": [
+        [
+          "SW.SCOPE",
+          4,
+          3
+        ],
+        [
+          "EE.INSTR",
+          4,
+          3
+        ],
+        [
+          "CM.STD_EE",
+          4,
+          3
+        ],
+        [
+          "EE.EMC",
+          3,
+          3
+        ],
+        [
+          "SW.LABVIEW",
+          3,
+          2
+        ],
+        [
+          "EE.CIRCUIT",
+          3,
+          2
+        ],
+        [
+          "SW.PYTHON",
+          3,
+          2
+        ],
+        [
+          "CM.DOC",
+          3,
+          2
+        ],
+        [
+          "EE.PROB",
+          3,
+          2
+        ],
+        [
+          "SW.PCB",
+          2,
+          1
+        ]
+      ]
+    }
+  ]
+}

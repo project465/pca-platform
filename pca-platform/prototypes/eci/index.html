@@ -1,0 +1,831 @@
+<title>ECI 공학 커리어 엔진</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  /* 결과지 — mockups/*.html 토큰 그대로 */
+  --paper:#FFFFFF; --ink:#16232E; --rule:#C9D2D8; --muted:#61717D;
+  --met:#1B6B57; --partial:#C08A0B; --gap:#C0392B;
+  --s1:#16232E; --s2:#3B4E5C; --s3:#61717D; --s4:#8D9AA4; --s5:#B9C3CA;
+  --trackbg:#E4E9EC;
+  /* 셸 — 어두운 바탕 + 금색 (플랫폼 정체성) */
+  --shell:#101A21; --shell2:#17242D; --shell3:#1F3038;
+  --gold:#C9A227; --gold-soft:#E8C766; --shell-ink:#DCE6EC; --shell-mute:#8CA0AC;
+  --stage:#EBEEF0;               /* 결과지가 놓이는 바닥 */
+  --stage-line:#D5DBE0;
+  --shadow:0 1px 2px rgba(16,26,33,.06),0 8px 28px rgba(16,26,33,.10);
+  --ff:"IBM Plex Sans KR","Pretendard","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --fm:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){ --stage:#0C1418; --stage-line:#22323A; --shadow:0 1px 2px rgba(0,0,0,.5),0 10px 30px rgba(0,0,0,.45); }
+}
+:root[data-theme="dark"]{ --stage:#0C1418; --stage-line:#22323A; --shadow:0 1px 2px rgba(0,0,0,.5),0 10px 30px rgba(0,0,0,.45); }
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--stage); color:var(--ink);
+  font-family:var(--ff); font-size:16px; line-height:1.62;
+  font-variant-numeric:tabular-nums; -webkit-font-smoothing:antialiased;
+}
+:focus-visible{outline:2px solid var(--gold); outline-offset:2px}
+@media (prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important} }
+
+/* ---------- 레이아웃 ---------- */
+.wrap{display:grid; grid-template-columns:264px 1fr; min-height:100vh}
+.rail{background:var(--shell); color:var(--shell-ink); padding:22px 16px 40px; position:sticky; top:0; height:100vh; overflow-y:auto}
+.brand{display:flex; align-items:baseline; gap:8px; padding:0 8px 4px}
+.brand b{font-size:17px; font-weight:700; letter-spacing:-.02em}
+.brand span{font-family:var(--fm); font-size:11px; color:var(--gold); letter-spacing:.08em}
+.brand-sub{padding:0 8px; font-size:12.5px; color:var(--shell-mute); margin-bottom:20px}
+.navgrp{font-family:var(--fm); font-size:10.5px; letter-spacing:.14em; color:var(--shell-mute);
+  padding:16px 8px 7px; text-transform:uppercase}
+.rail button{
+  display:flex; width:100%; align-items:center; gap:10px; text-align:left;
+  background:none; border:0; color:var(--shell-ink); font:inherit; font-size:14.5px;
+  padding:8px 8px; border-radius:5px; cursor:pointer; line-height:1.35;
+}
+.rail button:hover{background:var(--shell2)}
+.rail button[aria-current="true"]{background:var(--shell3); color:#fff; box-shadow:inset 2px 0 0 var(--gold)}
+.rail button i{font-family:var(--fm); font-style:normal; font-size:11px; color:var(--gold); min-width:20px}
+.railfoot{margin-top:26px; padding:14px 8px 0; border-top:1px solid var(--shell3);
+  font-size:11.5px; color:var(--shell-mute); line-height:1.55}
+
+.stage{padding:26px 24px 88px; min-width:0}
+.screen{display:none}
+.screen.on{display:block}
+
+/* ---------- 시트 ---------- */
+.sheet{max-width:940px; margin:0 auto 22px; background:var(--paper); border:1px solid var(--rule); box-shadow:var(--shadow)}
+.sheet-top{display:flex; flex-wrap:wrap; gap:8px 24px; align-items:baseline; padding:20px 34px; border-bottom:2px solid var(--ink)}
+.sheet-top h1{font-size:15.5px; font-weight:700; letter-spacing:-.015em; margin:0}
+.sheet-top .meta{margin-left:auto; display:flex; flex-wrap:wrap; gap:6px 18px; color:var(--muted); font-size:13px}
+section.blk{padding:30px 34px; border-bottom:1px solid var(--rule)}
+section.blk:last-child{border-bottom:0}
+h2.blk{font-size:13px; font-weight:600; color:var(--muted); margin:0 0 20px; letter-spacing:.01em}
+h3{font-size:16px; font-weight:700; letter-spacing:-.015em; margin:0}
+p{margin:0 0 12px; max-width:66ch}
+p:last-child{margin-bottom:0}
+.note{font-size:13.5px; color:var(--muted); max-width:64ch}
+.foot{padding:16px 34px; background:#F6F8F9; color:var(--muted); font-size:12.5px; border-top:1px solid var(--rule)}
+
+/* 게이지 */
+.gauge{display:grid; grid-template-columns:minmax(120px,190px) 1fr 92px; gap:0 14px; align-items:center; padding:10px 0}
+.gauge+.gauge{border-top:1px dotted var(--rule)}
+.gauge .lab{font-size:14.5px; font-weight:500}
+.gauge .lab small{display:block; font-size:11.5px; color:var(--muted); font-weight:400; font-family:var(--fm)}
+.bar{height:14px; background:var(--trackbg); position:relative; border-radius:0 4px 4px 0}
+.bar i{position:absolute; left:0; top:0; bottom:0; border-radius:0 4px 4px 0; background:var(--s2)}
+.bar i.hi{background:var(--met)} .bar i.mid{background:var(--partial)} .bar i.lo{background:var(--gap)}
+.bar i.ink{background:var(--s1)}
+.gauge .val{text-align:right; font-family:var(--fm); font-size:14.5px; font-weight:600}
+.gauge .val em{display:block; font-style:normal; font-weight:400; font-size:11.5px; color:var(--muted); font-family:var(--ff)}
+
+/* 순위 band */
+.band{display:flex; height:56px; margin-bottom:10px; gap:2px}
+.band div{display:flex; align-items:center; justify-content:center; color:#fff; font-size:13px; font-weight:600; min-width:0; overflow:hidden}
+.bandkey{display:flex; flex-wrap:wrap; gap:6px 18px; font-size:13px; color:var(--muted)}
+.bandkey span{display:flex; align-items:center; gap:6px}
+.dot{width:10px; height:10px; border-radius:2px; flex:none}
+
+/* 표 */
+.tw{overflow-x:auto; margin:0 -2px}
+table{border-collapse:collapse; width:100%; font-size:14px; min-width:420px}
+th,td{text-align:left; padding:8px 12px 8px 0; border-bottom:1px solid var(--rule); vertical-align:top}
+th{font-size:11.5px; font-weight:600; color:var(--muted); font-family:var(--fm); letter-spacing:.06em; text-transform:uppercase; white-space:nowrap}
+td.num,th.num{text-align:right; font-family:var(--fm); white-space:nowrap}
+code{font-family:var(--fm); font-size:12.5px; color:var(--muted)}
+
+/* 칩·배지 */
+.chip{display:inline-block; font-family:var(--fm); font-size:11px; font-weight:500; padding:2px 7px; border:1px solid var(--rule); color:var(--muted); border-radius:3px; white-space:nowrap}
+.chip.req{border-color:var(--gap); color:var(--gap)}
+.chip.ok{border-color:var(--met); color:var(--met)}
+.chip.warn{border-color:var(--partial); color:var(--partial)}
+.stars{font-family:var(--fm); color:var(--gold); letter-spacing:-1px}
+
+/* 큰 수 */
+.lead{display:flex; align-items:flex-end; gap:16px; flex-wrap:wrap; margin-bottom:6px}
+.lead .name{font-size:34px; font-weight:700; letter-spacing:-.035em; line-height:1.12}
+.lead .score{font-family:var(--fm); font-size:32px; font-weight:300; color:var(--muted); letter-spacing:-.03em}
+.lead .score b{font-weight:600; color:var(--ink)}
+
+/* 계산 내역 */
+details.calc{border:1px solid var(--rule); margin-top:16px; background:#FAFBFC}
+details.calc summary{cursor:pointer; padding:9px 14px; font-size:13.5px; font-weight:600; list-style:none}
+details.calc summary::-webkit-details-marker{display:none}
+details.calc summary::before{content:"▸ "; color:var(--gold)}
+details.calc[open] summary::before{content:"▾ "}
+details.calc .body{padding:4px 14px 14px; font-family:var(--fm); font-size:13px}
+.calcrow{display:flex; justify-content:space-between; gap:14px; padding:3px 0; border-bottom:1px dotted var(--rule)}
+.calcrow.total{border-bottom:0; border-top:1px solid var(--ink); font-weight:600; margin-top:4px; padding-top:6px}
+
+/* 잠금 (B2C) */
+.lock{position:relative; padding:12px 14px; border:1px dashed var(--rule); margin-bottom:8px; display:flex; justify-content:space-between; gap:12px; align-items:center; color:var(--muted); font-size:14px}
+.lock b{color:var(--ink); font-weight:600}
+.buy{display:inline-block; background:var(--ink); color:#fff; border:0; font:inherit; font-weight:600; font-size:15px; padding:11px 22px; cursor:pointer; border-radius:3px}
+.buy.ghost{background:none; color:var(--ink); border:1px solid var(--ink)}
+
+/* 문항 */
+.qcard{border:1px solid var(--rule); padding:22px 24px}
+.qnum{font-family:var(--fm); font-size:11.5px; color:var(--gold); letter-spacing:.1em}
+.qtext{font-size:20px; font-weight:600; letter-spacing:-.02em; margin:6px 0 20px; max-width:34ch}
+.likert{display:flex; gap:8px; flex-wrap:wrap}
+.likert button{flex:1 1 90px; background:#fff; border:1px solid var(--rule); font:inherit; font-size:13.5px; padding:12px 6px; cursor:pointer; border-radius:3px; line-height:1.3}
+.likert button:hover{border-color:var(--ink)}
+.likert button[aria-pressed="true"]{background:var(--ink); color:#fff; border-color:var(--ink)}
+.prog{height:3px; background:var(--trackbg); margin-bottom:18px}
+.prog i{display:block; height:100%; background:var(--gold)}
+
+/* 대시보드 흐름 */
+.flowstep{display:grid; grid-template-columns:34px 1fr; gap:0 16px}
+.flowstep .n{font-family:var(--fm); font-size:12px; color:#fff; background:var(--s1); width:26px; height:26px; display:flex; align-items:center; justify-content:center; border-radius:50%}
+.alert{border-left:3px solid var(--partial); background:#FDF8EC; padding:12px 16px; font-size:14px; margin-top:16px}
+.alert b{color:var(--partial)}
+.alert.act{border-left-color:var(--met); background:#EFF6F3} .alert.act b{color:var(--met)}
+
+/* 컨트롤 */
+.controls{display:flex; flex-wrap:wrap; gap:10px 16px; align-items:flex-end; margin-bottom:20px}
+.field{display:flex; flex-direction:column; gap:4px}
+.field label{font-family:var(--fm); font-size:10.5px; letter-spacing:.1em; color:var(--muted); text-transform:uppercase}
+select,input[type=range]{font:inherit; font-size:14px}
+select{padding:7px 10px; border:1px solid var(--rule); background:#fff; color:var(--ink); border-radius:3px}
+input[type=range]{width:150px; accent-color:var(--gold)}
+.slider{display:grid; grid-template-columns:minmax(84px,110px) 1fr 52px; gap:0 12px; align-items:center; padding:5px 0}
+.slider span{font-size:13.5px}
+.slider output{font-family:var(--fm); font-size:13px; text-align:right; color:var(--muted)}
+
+/* 개요 */
+.kpis{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1px; background:var(--rule); border:1px solid var(--rule)}
+.kpi{background:var(--paper); padding:16px 18px}
+.kpi b{display:block; font-family:var(--fm); font-size:26px; font-weight:600; letter-spacing:-.03em; line-height:1.1}
+.kpi span{font-size:12.5px; color:var(--muted)}
+ul.tight{margin:0; padding-left:18px} ul.tight li{margin-bottom:6px; max-width:64ch}
+.hint{font-size:12.5px; color:var(--muted); font-family:var(--fm)}
+
+@media (max-width:900px){
+  .wrap{grid-template-columns:1fr}
+  .rail{position:static; height:auto; padding:16px 16px 18px}
+  .rail nav{display:flex; gap:6px; overflow-x:auto; padding-bottom:4px}
+  .navgrp{display:none}
+  .rail button{width:auto; white-space:nowrap; flex:none; border:1px solid var(--shell3)}
+  .railfoot{display:none}
+  .stage{padding:18px 16px 60px}
+  .sheet-top,section.blk,.foot{padding-left:20px; padding-right:20px}
+  .gauge{grid-template-columns:1fr 66px; grid-template-areas:"lab lab" "bar val"; row-gap:6px; padding:12px 0}
+  .gauge .lab{grid-area:lab} .gauge .bar,.gauge>.bar{grid-area:bar} .gauge .val{grid-area:val}
+  .gauge .val em{display:inline; margin-left:6px}
+  .slider{grid-template-columns:1fr 52px; grid-template-areas:"lab val" "rng rng"; row-gap:4px}
+  .slider span{grid-area:lab} .slider input{grid-area:rng; width:100%} .slider output{grid-area:val}
+  .lead .name{font-size:27px} .lead .score{font-size:26px}
+}
+</style>
+
+<div class="wrap">
+<aside class="rail">
+  <div class="brand"><b>ECI</b><span>PROTOTYPE</span></div>
+  <div class="brand-sub">공학 커리어 인텔리전스 · 화면 프리뷰</div>
+  <nav id="nav"></nav>
+  <div class="railfoot">
+    이 페이지는 설계 확인용 프리뷰입니다.<br>
+    Skill Tree·직무·요구역량은 <code style="color:var(--gold)">data/eci/*.json</code> 실제 데이터를 읽어 그립니다.<br>
+    학생·공고 숫자는 예시입니다.
+  </div>
+</aside>
+
+<main class="stage" id="stage"></main>
+</div>
+
+<script src="data.js"></script>
+<script>
+(function(){
+const D = window.ECI_DATA;
+const ME = D.majors.find(m=>m.code==='ME');
+const byCode = {}; D.majors.forEach(m=>m.competencies.forEach(c=>{ byCode[c.code]=c; }));
+const axisKo = {}; D.indicators.forEach(a=>axisKo[a.code]=a.ko);
+const indKo = {}; D.industries.forEach(i=>indKo[i.code]=i.ko);
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const sig = x => 1/(1+Math.exp(-x));
+const pct = n => Math.round(n*100);
+const nm = c => (byCode[c] ? byCode[c].ko : c);
+
+/* ---------- 재사용 조각 ---------- */
+function gauge(label, sub, w, cls, val, valsub){
+  return `<div class="gauge">
+    <div class="lab">${esc(label)}${sub?`<small>${esc(sub)}</small>`:''}</div>
+    <div class="bar"><i class="${cls}" style="width:${Math.max(2,Math.min(100,w))}%"></i></div>
+    <div class="val">${val}${valsub?`<em>${esc(valsub)}</em>`:''}</div>
+  </div>`;
+}
+function sheet(title, meta, inner, foot){
+  meta = Array.isArray(meta) ? meta : (meta ? [meta] : []);
+  return `<div class="sheet">
+    <div class="sheet-top"><h1>${esc(title)}</h1><div class="meta">${meta.map(m=>`<span>${esc(m)}</span>`).join('')}</div></div>
+    ${inner}
+    ${foot?`<div class="foot">${foot}</div>`:''}
+  </div>`;
+}
+const RAMP = ['var(--s1)','var(--s2)','var(--s3)','var(--s4)','var(--s5)'];
+function rankBand(rows){ // rows: [{label, n, share}] 크기순 — 순위 있는 크기라 단색 명도 램프를 쓴다
+  const bars = rows.map((r,i)=>`<div style="width:${r.share}%;background:${RAMP[Math.min(i,4)]};color:${i>3?'var(--ink)':'#fff'}" title="${esc(r.label)} ${r.n}">${r.n}</div>`).join('');
+  const key = rows.map((r,i)=>`<span><i class="dot" style="background:${RAMP[Math.min(i,4)]}"></i>${esc(r.label)} · ${r.share}%</span>`).join('');
+  return `<div class="band">${bars}</div><div class="bandkey">${key}</div>`;
+}
+
+/* ---------- 데모 학생 ---------- */
+const DEMO_Z = {ANALYZE:1.8, RESEARCH:1.0, DESIGN:0.5, CODE:0.8, OPTIMIZE:0.2, BUILD:-0.5, FIELD:-0.3, ORCHESTRATE:0.1};
+const DEMO_HELD = {
+  'ME.FEM':3,'SW.ANSYS_MECH':2,'ME.SOLID':4,'ME.MATH':4,'SW.ABAQUS':1,'ME.FLUID':3,
+  'SW.FLUENT':2,'ME.CFDT':2,'SW.PYTHON':3,'SW.MATLAB':3,'ME.VIB':2,'CM.DOC':3,
+  'SW.SOLIDWORKS':3,'ME.DESIGN':3,'ME.GDT':2,'ME.ELEM':3,'ME.MATL':3,'SW.CATIA':2,'ME.MFG':2,'SW.PDM':1,
+  'CM.STD':2,'ME.DYN':3,'ME.HEAT':3,'ME.CTRL':2,'SW.SIMULINK':2,'CM.ENG':2,'DM.AUTO_PT':1,'DM.BATTPACK':1,
+  'ME.ROBOT':1,'ME.MECHA':1,'SW.PLC':0,'DM.AEROSTR':1,'ME.RELIAB':1,'ME.STAT':3,'SW.MINITAB':1,
+  'SW.MEASURE':2,'ME.HYD':1,'DM.SEMI_EQ':0,'SW.CAM':0,'SW.3DPRINT':2,'ME.COMB':1,'CM.COLLAB':3,
+  'SW.AUTOCAD':2,'ME.THERMO':4,'ME.PHYS':4};
+const DEMO_PREF = {AUTO:1.0, AERO:0.8, SEMI:0.4};
+
+function scoreA(job, z){
+  let a=0; for(const k in job.weights) a += job.weights[k]*(z[k]??0);
+  return {a, A:sig(1.2*a)};
+}
+function scoreS(job, held){
+  let num=0, den=0;
+  job.requires.forEach(([c,r,k])=>{ num += k*Math.min(1,(held[c]??0)/r); den += k; });
+  return den? num/den : 0;
+}
+function scoreP(job, pref){
+  const keys=Object.keys(pref); if(!keys.length) return 0.5;
+  const dot = keys.reduce((s,k)=> s + (job.industries.includes(k)?pref[k]:0), 0);
+  const cos = dot / (Math.sqrt(keys.reduce((s,k)=>s+pref[k]*pref[k],0)) * Math.sqrt(job.industries.length));
+  return 0.6*cos + 0.25 + 0.15;
+}
+function fitOf(job, z, held, pref, prof){
+  const {A}=scoreA(job,z), S=scoreS(job,held), P=scoreP(job,pref), C=0.80;
+  return {A,S,P,C, fit:100*(prof.wA*A+prof.wS*S+prof.wP*P+prof.wC*C)};
+}
+const PROF_UH = D.scoringProfiles.find(p=>p.track==='UNIV_HIGH');
+
+/* ================= 화면 ================= */
+const SCREENS = [];
+const add = (id,group,label,fn)=>SCREENS.push({id,group,label,render:fn});
+
+/* --- 개요 --- */
+add('overview','시작','이 프리뷰가 뭔지', ()=> sheet('ECI 설계 프리뷰','',`
+<section class="blk">
+  <h2 class="blk">한 줄</h2>
+  <p style="font-size:20px;font-weight:600;letter-spacing:-.02em;max-width:40ch">공학 학습자의 Career Profile 을 만들고,
+  그것을 채용 수요에 붙여 <b style="color:var(--gold)">직무 · 부족 역량 · 다음에 할 일</b>까지 내려주는 엔진.</p>
+  <p class="note" style="margin-top:14px">적성검사가 아니고 공고 추천도 아니다. 둘을 잇는 Skill Graph 가 제품이다.</p>
+</section>
+<section class="blk">
+  <h2 class="blk">지금 들어 있는 실제 데이터</h2>
+  <div class="kpis">
+    <div class="kpi"><b>${D.majors.reduce((a,m)=>a+m.competencies.length,0)}</b><span>역량 (3개 전공)</span></div>
+    <div class="kpi"><b>${D.majors.reduce((a,m)=>a+m.jobs.length,0)}</b><span>직무군</span></div>
+    <div class="kpi"><b>${D.majors.reduce((a,m)=>a+m.jobs.reduce((x,j)=>x+j.requires.length,0),0)}</b><span>요구 관계</span></div>
+    <div class="kpi"><b>${D.majors.reduce((a,m)=>a+m.competencies.reduce((x,c)=>x+1+(c.aliases?c.aliases.length:0),0),0)}</b><span>동의어 사전</span></div>
+  </div>
+  <p class="note" style="margin-top:14px">아래 <b>Skill Tree</b> 와 <b>산식 계산기</b> 화면은 이 데이터를 그대로 읽어 그린다. 꾸민 값이 아니다.</p>
+</section>
+<section class="blk">
+  <h2 class="blk">나누는 축</h2>
+  <div class="tw"><table>
+    <tr><th>나누는 축</th><th>상품 수</th><th>매출로 이어지나</th></tr>
+    <tr><td style="text-decoration:line-through;color:var(--muted)">학교급</td><td>4개 — 문항 4벌</td><td>아니다. 고교는 단가가 낮고 결재선이 길다</td></tr>
+    <tr><td><b>전공</b> — 기계 → 전기전자 → 컴퓨터</td><td>전공당 1개, 문항은 공유</td><td><b>그렇다.</b> 학과가 결재권을 갖는다</td></tr>
+  </table></div>
+  <p class="note" style="margin-top:14px">그래서 실제로 만드는 검사지는 <b>두 벌</b>이다 — 고교판·대학판.
+  트랙 4개는 상품이 아니라 <code>scoring_profiles</code> 테이블의 행이다.</p>
+</section>
+<section class="blk">
+  <h2 class="blk">두 개의 문</h2>
+  <div class="tw"><table>
+    <tr><th>고객</th><th>사는 것</th><th>가격</th></tr>
+    <tr><td><b>학과 (B2B)</b></td><td>학생 500명 좌석 + 단체 리포트</td><td class="num">1,400만 / 년</td></tr>
+    <tr><td><b>학생 (B2C)</b></td><td>전체 리포트 (무료 진단에서 전환)</td><td class="num">29,000</td></tr>
+    <tr><td>기업</td><td>인재풀 · 채용 성공보수</td><td class="num">2차 이후</td></tr>
+  </table></div>
+  <p class="note" style="margin-top:14px">학과 계약이 곧 B2C 획득 채널이다. 광고로 학생을 사지 않는다.</p>
+</section>`, '왼쪽 목록에서 화면을 눌러 보세요. 학생 → 학과 → 기업 순으로 봐야 흐름이 이어집니다.'));
+
+/* --- B2C 무료 진단 --- */
+const LITE_Q = [
+  {ax:'ANALYZE', t:'실험 결과가 이론값과 다르면, 원인을 끝까지 찾아야 마음이 편하다'},
+  {ax:'DESIGN',  t:'조건이 여러 개 겹칠 때, 그걸 다 만족시키는 형태를 궁리하는 게 재미있다'},
+  {ax:'CODE',    t:'반복되는 작업이 있으면 자동화할 방법부터 찾는다'},
+  {ax:'FIELD',   t:'공장이나 실험실처럼 장비가 돌아가는 공간에서 일하고 싶다'}
+];
+let liteAns = [null,null,null,null], liteI = 0;
+add('lite','학생 화면','무료 간이 진단 (B2C 입구)', ()=>{
+  if(liteI < LITE_Q.length){
+    const q = LITE_Q[liteI];
+    return sheet('무료 진단 · 기계공학', ['12문항 중 '+(liteI+1)+'번','약 3분'],`
+    <section class="blk">
+      <div class="prog"><i style="width:${(liteI/LITE_Q.length)*100}%"></i></div>
+      <div class="qcard">
+        <div class="qnum">Q${liteI+1} · ${esc(axisKo[q.ax])}</div>
+        <p class="qtext">${esc(q.t)}</p>
+        <div class="likert">
+          ${[1,2,3,4,5].map(v=>`<button data-lite="${v}" aria-pressed="false">${['전혀 아니다','아니다','보통','그렇다','매우 그렇다'][v-1]}</button>`).join('')}
+        </div>
+      </div>
+      <p class="note" style="margin-top:14px">프리뷰라 4문항만 물어봅니다. 실제 간이 진단은 12문항입니다.</p>
+    </section>`,'문항마다 즉시 저장됩니다. 중간에 나가도 이어서 볼 수 있습니다.');
+  }
+  const z = {}; LITE_Q.forEach((q,i)=>{ z[q.ax] = ((liteAns[i]||3)-3)/1.1; });
+  const ranked = ME.jobs.map(j=>({j, A:scoreA(j,z).A})).sort((a,b)=>b.A-a.A);
+  const top = ranked[0];
+  return sheet('무료 진단 결과', ['기계공학','12문항 기준'],`
+  <section class="blk">
+    <h2 class="blk">당신에게 가장 가까운 직무</h2>
+    <div class="lead"><div class="name">${esc(top.j.ko)}</div><div class="score">적합 <b>높음</b></div></div>
+    <p class="note">12문항으로 뽑은 순위라 점수는 보여주지 않습니다. 숫자를 찍으면 그건 거짓말입니다.</p>
+    <div style="margin-top:18px">
+      ${Object.entries(top.j.weights).sort((a,b)=>b[1]-a[1]).slice(0,4)
+        .map(([ax,w])=>gauge(axisKo[ax], null, 50+((z[ax]??0)*18), 'ink', (w*100).toFixed(0)+'%','이 직무의 비중')).join('')}
+    </div>
+  </section>
+  <section class="blk">
+    <h2 class="blk">여기서부터는 전체 리포트</h2>
+    <div class="lock"><span>2위 · 3위 직무와 <b>점수 근거</b></span><span>🔒</span></div>
+    <div class="lock"><span>이 직무가 요구하는 역량 <b>${top.j.requires.length}개</b>와 내가 채운 것</span><span>🔒</span></div>
+    <div class="lock"><span>지금 지원 가능한 실제 공고 <b>34건</b></span><span>🔒</span></div>
+    <div class="lock"><span>다음 학기에 들을 과목 <b>3과목</b></span><span>🔒</span></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
+      <button class="buy" data-go="report-univ">전체 리포트 보기 — 29,000원</button>
+      <button class="buy ghost" data-go="report-univ">학교가 계약돼 있어요 · 학번 로그인</button>
+    </div>
+    <p class="note" style="margin-top:14px">1위 직무는 가리지 않고 전부 보여줍니다. 흐리게 가리면 신뢰를 잃고 결제도 안 됩니다.<br>
+    잠긴 칸에 <b>실제 숫자</b>를 적는 것이 전환의 핵심입니다.</p>
+  </section>
+  <section class="blk">
+    <button class="buy ghost" data-lite="reset" style="font-size:13.5px;padding:7px 14px">다시 해 보기</button>
+  </section>`,'학과 계약 학생은 이 화면을 건너뛰고 바로 전체 리포트로 갑니다. 개인 결제는 이 문으로 들어옵니다.');
+});
+
+/* --- 검사 화면 --- */
+add('test','학생 화면','검사 응시 (대학판 140문항)', ()=> sheet('일하는 방식 검사','기계공학과 3학년 · 140문항 중 38번',`
+<section class="blk">
+  <div class="prog"><i style="width:27%"></i></div>
+  <div class="qcard">
+    <div class="qnum">Q38 · 해석·계산</div>
+    <p class="qtext">답이 맞는지 확인하려고 같은 계산을 다른 방법으로 다시 해 본 적이 있다</p>
+    <div class="likert">
+      ${[1,2,3,4,5].map(v=>`<button data-demo="1" aria-pressed="${v===4}">${['전혀 아니다','아니다','보통','그렇다','매우 그렇다'][v-1]}</button>`).join('')}
+    </div>
+  </div>
+  <div class="tw" style="margin-top:22px"><table>
+    <tr><th>이 화면이 남기는 것</th><th>어디에</th><th>왜</th></tr>
+    <tr><td>선택한 보기</td><td><code>responses</code></td><td>문항마다 즉시 저장. 이어보기</td></tr>
+    <tr><td>문항 체류 시간</td><td><code>responses.elapsed_ms</code></td><td>1.5초 미만 응답 비율로 성의 판정</td></tr>
+    <tr><td>같은 보기 연속 횟수</td><td><code>attempt_quality</code></td><td>15회 이상이면 직선 응답 경고</td></tr>
+  </table></div>
+  <p class="note" style="margin-top:14px">500명이 단체로 보면 성의 없는 응답이 반드시 섞입니다.
+  못 거르면 학과 리포트 집계가 오염되고, 그 리포트로 재계약을 받을 수 없습니다.</p>
+</section>`,'기존 mockups/01_test_screen.html 을 그대로 씁니다. 문항 데이터만 채우면 됩니다.'));
+
+/* --- 대학 결과지 --- */
+add('report-univ','학생 화면','결과지 · 대학판', ()=>{
+  const ranked = ME.jobs.map(j=>({j, ...fitOf(j, DEMO_Z, DEMO_HELD, DEMO_PREF, PROF_UH)}))
+    .sort((a,b)=>b.fit-a.fit);
+  const top = ranked[0];
+  const gapRows = top.j.requires.map(([c,r,k])=>{
+    const h = DEMO_HELD[c]??0;
+    const share = {'SW.ANSYS_MECH':0.67,'ME.FEM':0.54,'SW.ABAQUS':0.31,'SW.FLUENT':0.42,'ME.CFDT':0.28,
+      'SW.PYTHON':0.44,'SW.MATLAB':0.39,'ME.SOLID':0.36,'ME.MATH':0.22,'ME.FLUID':0.33,'CM.DOC':0.19,'ME.VIB':0.14}[c]??0.2;
+    const feas = {'ME.CFDT':0.5,'SW.ABAQUS':0.8}[c]??1.0;
+    return {c,r,h,k,share,feas, p:(r-h)*k*share*feas};
+  }).filter(x=>x.h<x.r).sort((a,b)=>b.p-a.p).slice(0,5);
+
+  return sheet('기계공학과 3학년 · 진로 결과지', ['2026-1학기','응답 품질 정상'],`
+<section class="blk">
+  <h2 class="blk">가장 가까운 직무</h2>
+  <div class="lead">
+    <div class="name">${esc(top.j.ko)}</div>
+    <div class="score"><b>${top.fit.toFixed(0)}</b> <span style="font-size:20px">(±6)</span></div>
+  </div>
+  <p class="note" style="margin-bottom:18px">±6 은 증거가 충분하다는 뜻입니다. 검사만 보고 과목·프로젝트가 비어 있으면 ±12 로 넓어집니다.</p>
+  ${ranked.slice(0,6).map((r,i)=>gauge(r.j.ko, r.j.onet, r.fit, i===0?'ink':'', r.fit.toFixed(0), '±6')).join('')}
+  <details class="calc"><summary>왜 ${top.fit.toFixed(0)}점인가</summary><div class="body">
+    <div class="calcrow"><span>성향·활동 A</span><span>${top.A.toFixed(3)} × ${PROF_UH.wA} = ${(100*PROF_UH.wA*top.A).toFixed(1)}</span></div>
+    <div class="calcrow"><span>역량 충족 S</span><span>${top.S.toFixed(3)} × ${PROF_UH.wS} = ${(100*PROF_UH.wS*top.S).toFixed(1)}</span></div>
+    <div class="calcrow"><span>선호 일치 P</span><span>${top.P.toFixed(3)} × ${PROF_UH.wP} = ${(100*PROF_UH.wP*top.P).toFixed(1)}</span></div>
+    <div class="calcrow"><span>이력 방향 C</span><span>${top.C.toFixed(3)} × ${PROF_UH.wC} = ${(100*PROF_UH.wC*top.C).toFixed(1)}</span></div>
+    <div class="calcrow total"><span>합계</span><span>${top.fit.toFixed(1)} → ${top.fit.toFixed(0)}</span></div>
+  </div></details>
+  <p class="note" style="margin-top:12px">이 펼침이 없으면 학생이 결과지를 덮고, 학과 담당자가 설명을 못 해 재계약이 끊깁니다.</p>
+</section>
+
+<section class="blk">
+  <h2 class="blk">${esc(top.j.ko)} 이(가) 요구하는 역량</h2>
+  <div class="tw"><table>
+    <tr><th>역량</th><th class="num">요구</th><th class="num">보유</th><th>필수도</th><th>상태</th></tr>
+    ${top.j.requires.map(([c,r,k])=>{const h=DEMO_HELD[c]??0;
+      const st = h>=r?'<span class="chip ok">충족</span>':(h>=r-1?'<span class="chip warn">근접</span>':'<span class="chip req">부족</span>');
+      return `<tr><td>${esc(nm(c))} <code>${esc(c)}</code></td><td class="num">${r}</td><td class="num">${h}</td><td class="stars">${'★'.repeat(k)}</td><td>${st}</td></tr>`;}).join('')}
+  </table></div>
+  <p class="note" style="margin-top:14px">넘쳐도 요구 수준에서 자릅니다. 안 자르면 한 역량이 뛰어난 학생이 나머지 미달을 덮어버립니다.</p>
+</section>
+
+<section class="blk">
+  <h2 class="blk">채워야 할 것 — 상위 5개</h2>
+  ${gapRows.map((g,i)=>`
+    <div style="padding:14px 0;border-bottom:${i===gapRows.length-1?'0':'1px solid var(--rule)'}">
+      <div style="display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:baseline">
+        <h3>${i+1}. ${esc(nm(g.c))}</h3>
+        <span class="hint">우선순위 ${g.p.toFixed(2)}</span>
+      </div>
+      <div class="gauge" style="padding:8px 0">
+        <div class="lab">보유 ${g.h} / 요구 ${g.r}</div>
+        <div class="bar"><i class="${g.h/g.r<0.5?'lo':'mid'}" style="width:${(g.h/g.r)*100}%"></i></div>
+        <div class="val">${pct(g.h/g.r)}%</div>
+      </div>
+      <p class="note">공고 <b>${Math.round(g.share*132)}건 / 132건</b>이 요구 (${pct(g.share)}%)
+        · 필수도 ${'★'.repeat(g.k)} · ${g.feas===1?'다음 학기 개설 과목으로 채울 수 있음':'단기간에 채우기 어려움'}</p>
+    </div>`).join('')}
+  <div class="alert"><b>왜 이 순서인가</b> — (요구−보유) × 필수도 × <b>공고 요구 빈도</b> × 실현 가능성.
+    교수가 생각하는 중요도가 아니라 공고에 실제로 적힌 빈도로 매깁니다.</div>
+</section>
+
+<section class="blk">
+  <h2 class="blk">지금 지원 가능한 공고</h2>
+  <div class="tw"><table>
+    <tr><th>기업</th><th>공고</th><th class="num">매칭</th><th>요건</th></tr>
+    <tr><td>○○중공업</td><td>구조해석 신입</td><td class="num">84</td><td><span class="chip ok">자격 충족</span></td></tr>
+    <tr><td>△△모빌리티</td><td>CAE 엔지니어</td><td class="num">79</td><td><span class="chip warn">영어 요건 미달</span></td></tr>
+    <tr><td>□□항공</td><td>기체 구조설계</td><td class="num">72</td><td><span class="chip req">필수 2개 부족</span></td></tr>
+  </table></div>
+  <p class="note" style="margin-top:14px">요건 미달 공고를 <b>숨기지 않고 적어서</b> 보여줍니다.
+  숨기면 학생이 왜 안 나오는지 모르고, 그때부터 시스템을 안 믿습니다.</p>
+</section>`,'점수는 산식이 만들고 문장은 모델이 씁니다. LLM 이 만든 숫자는 job_fit_scores 에 들어가지 않습니다.');
+});
+
+/* --- 고교 · 진학형 --- */
+add('report-hs-univ','학생 화면','결과지 · 고교 진학형', ()=>{
+  const z = {DESIGN:1.4, ANALYZE:1.1, BUILD:0.9, FIELD:0.2, CODE:0.1, OPTIMIZE:0.3, RESEARCH:0.4, ORCHESTRATE:-0.2};
+  const fits = D.majorFit.map(m=>{
+    let a=0; for(const k in m.weights) a += m.weights[k]*(z[k]??0);
+    return {m, A:sig(1.2*a)};
+  }).sort((a,b)=>b.A-a.A);
+  const band = v => v>0.72?['적합 높음','hi']:(v>0.58?['보통','mid']:['낮음','lo']);
+  return sheet('고등학교 2학년 · 진로 결과지', ['일반계고','진학형','96문항'],`
+<section class="blk">
+  <h2 class="blk">나에게 맞는 공학 계열</h2>
+  ${fits.slice(0,4).map(f=>{const [t,c]=band(f.A); return gauge(f.m.ko, null, f.A*100, c, t, null);}).join('')}
+  <div class="alert" style="margin-top:18px"><b>점수가 아니라 구간입니다.</b>
+    지금은 검사 응답만 있고 해 본 것이 적습니다. 숫자로 못 박으면 틀립니다.
+    대학에 가서 과목·프로젝트가 쌓이면 그때 점수가 나옵니다.</div>
+</section>
+<section class="blk">
+  <h2 class="blk">왜 ${esc(fits[0].m.ko)}인가</h2>
+  ${Object.entries(fits[0].m.weights).sort((a,b)=>b[1]-a[1]).slice(0,4)
+    .map(([ax,w])=>gauge(axisKo[ax], '이 계열에서의 비중 '+pct(w)+'%', 50+(z[ax]??0)*20, 'ink',
+      (50+(z[ax]??0)*10).toFixed(0), 'T점수')).join('')}
+  <p class="note" style="margin-top:14px">이 셋이 높은 사람이 그 전공에서 잘 버팁니다.</p>
+</section>
+<section class="blk">
+  <h2 class="blk">그래서 무슨 과목을 들어야 하나</h2>
+  <div class="tw"><table>
+    <tr><th>구분</th><th>과목</th><th>이유</th></tr>
+    <tr><td><span class="chip req">반드시</span></td><td><b>미적분 · 물리학 · 기하</b></td><td>없으면 1학년 전공 수업에서 바로 막힌다</td></tr>
+    <tr><td><span class="chip warn">권장</span></td><td>역학과 에너지 · 전자기와 양자</td><td>4대 역학의 앞단</td></tr>
+    <tr><td><span class="chip">차별화</span></td><td>인공지능 기초 · 데이터 과학</td><td>기계 + SW 융합 직무가 늘고 있다</td></tr>
+  </table></div>
+  <p class="note" style="margin-top:14px">2025년 3월 고교학점제 전면 시행. 졸업까지 192학점을 학생이 고릅니다.
+  <b>처방의 단위가 대학의 "다음 학기 과목" 이 아니라 고교 선택과목입니다.</b><br>
+  학교에 개설되지 않은 과목은 공동교육과정을 안내합니다.</p>
+</section>
+<section class="blk">
+  <h2 class="blk">3년 뒤 이 전공은 어디로 가나</h2>
+  <div class="tw"><table>
+    <tr><th>직무</th><th>주요 산업</th><th class="num">최근 6개월 공고</th></tr>
+    ${ME.jobs.slice(0,5).map((j,i)=>`<tr><td>${esc(j.ko)}</td><td>${j.industries.slice(0,3).map(c=>esc(indKo[c])).join(' · ')}</td><td class="num">${[412,268,231,187,142][i]}건</td></tr>`).join('')}
+  </table></div>
+  <div class="alert act"><b>이 칸이 기존 진로검사와 갈리는 지점입니다.</b>
+    "이 전공이 좋아요" 가 아니라 "이 전공으로 이런 데를 간다, 근거는 공고 1,240건" 이라고 말합니다.</div>
+</section>`,'검사지는 취업형과 똑같습니다. 갈리는 곳은 이 결과지 뒷부분 한 군데뿐입니다 (learner_goals).');
+});
+
+/* --- 고교 · 취업형 --- */
+add('report-hs-job','학생 화면','결과지 · 고교 취업형', ()=>{
+  const hsJobs = [];
+  D.majors.forEach(m=>m.jobs.forEach(j=>{ if(j.tracks.includes('HS')) hsJobs.push({j,m}); }));
+  const pick = hsJobs.filter(x=>x.m.code==='ME').concat(hsJobs.filter(x=>x.m.code==='EE')).slice(0,4);
+  return sheet('마이스터고 2학년 · 진로 결과지', ['취업형','96문항 + 이수 능력단위'],`
+<section class="blk">
+  <h2 class="blk">지금 준비하면 갈 수 있는 자리</h2>
+  ${pick.map((x,i)=>gauge(x.j.ko, x.m.ko+' 계열', [78,71,64,58][i], i<2?'hi':'mid',
+    ['적합 높음','적합 높음','보통','보통'][i], ['지역 공고 34건','지역 공고 18건','지역 공고 12건','지역 공고 9건'][i])).join('')}
+  <p class="note" style="margin-top:14px"><b>고졸 채용이 실제로 있는 직무만 보여줍니다</b>
+  (<code>job_cluster_tracks.track_code='HS'</code> · 24개 중 10개).
+  마이스터고 학생에게 "항공우주 R&D 1위" 를 보여주면 그 결과지는 버려집니다.</p>
+</section>
+<section class="blk">
+  <h2 class="blk">졸업 전에 채워야 할 것</h2>
+  <div class="tw"><table>
+    <tr><th>#</th><th>채울 것</th><th>형태</th><th>근거</th></tr>
+    <tr><td class="num">1</td><td><b>컴퓨터응용가공산업기사</b></td><td><span class="chip">자격증</span></td><td>지역 공고 21건 중 14건이 요구</td></tr>
+    <tr><td class="num">2</td><td>PLC 프로그래밍</td><td><span class="chip">NCS 능력단위</span></td><td>1902010305_16v3 · 공고 21건 중 10건</td></tr>
+    <tr><td class="num">3</td><td>GD&amp;T 도면 해독</td><td><span class="chip">교과 + 실습</span></td><td>공고 21건 중 14건</td></tr>
+  </table></div>
+  <p class="note" style="margin-top:14px">대학생은 과목으로 처방하고, 여기서는 <b>자격증과 NCS 능력단위</b>로 처방합니다.
+  3년 뒤에 취업하는 학생이라 시간이 없고, 그래서 처방이 더 정확해야 합니다.</p>
+</section>
+<section class="blk">
+  <h2 class="blk">우리 지역 기업</h2>
+  <div class="tw"><table>
+    <tr><th>기업</th><th>직무</th><th>채용</th><th class="num">매칭</th></tr>
+    <tr><td>대전 ○○정밀</td><td>생산기술</td><td><span class="chip ok">고졸 채용</span></td><td class="num">81</td></tr>
+    <tr><td>충남 △△테크</td><td>설비보전</td><td><span class="chip ok">고졸 채용</span></td><td class="num">76</td></tr>
+    <tr><td>대전 □□반도체</td><td>장비 엔지니어</td><td><span class="chip warn">전문학사 우대</span></td><td class="num">69</td></tr>
+  </table></div>
+  <p class="note" style="margin-top:14px">지역 기업을 먼저 보여줍니다. 대기업 공고를 위에 두면 결과지가 남 얘기가 됩니다.</p>
+</section>
+<section class="blk">
+  <h2 class="blk">두 갈래</h2>
+  <div class="tw"><table>
+    <tr><th>경로</th><th>지금 할 일</th><th>3년 뒤</th></tr>
+    <tr><td><b>바로 취업</b></td><td>위 3개 → 3학년 1학기 현장실습</td><td>생산기술 · 설비보전</td></tr>
+    <tr><td><b>선취업 후진학</b></td><td>취업 후 기계공학과 진학</td><td>설계 · CAE 로 올라간다</td></tr>
+  </table></div>
+</section>`,'고1에 만든 계정이 대학 4학년까지 갑니다. learner_profiles 행은 하나고 track_code 만 올라갑니다.');
+});
+
+/* --- 학과 대시보드 --- */
+add('dept','학과 담당자','단체 리포트 · 500명 흐름', ()=>{
+  const jobs=[{label:'기계설계',n:118},{label:'CAE',n:94},{label:'생산기술',n:81},{label:'품질·신뢰성',n:64},{label:'로봇·자동화',n:57},{label:'그 외',n:73}];
+  const tot=487; jobs.forEach(j=>j.share=+(j.n/tot*100).toFixed(1));
+  const inds=[{label:'자동차',n:151},{label:'반도체',n:107},{label:'방산',n:58},{label:'로봇',n:54},{label:'배터리',n:44},{label:'그 외',n:73}];
+  inds.forEach(i=>i.share=+(i.n/tot*100).toFixed(1));
+  const gaps=[{c:'GD&T',fill:31,dem:67},{c:'ANSYS Mechanical',fill:38,dem:41},{c:'PLC',fill:24,dem:48},
+    {c:'기술영어',fill:41,dem:22},{c:'Python',fill:52,dem:31}];
+  return sheet('기계공학과 단체 리포트', ['2026-1학기','대상 500명 · 응시 487명 (97.4%)','응답 품질 제외 12명'],`
+<section class="blk">
+  <div class="flowstep"><div class="n">1</div><div>
+    <h2 class="blk" style="margin-bottom:8px">Career Profile 분포</h2>
+    <p class="note" style="margin-bottom:16px">학과 학생들의 공학 활동 선호가 어디에 몰려 있는지.</p>
+    ${['DESIGN','ANALYZE','BUILD','FIELD','CODE','OPTIMIZE'].map((ax,i)=>
+      gauge(axisKo[ax], null, [72,64,58,41,47,53][i], 'ink', [72,64,58,41,47,53][i], '학과 평균 T '+[57,54,52,47,49,51][i])).join('')}
+  </div></div>
+</section>
+<section class="blk">
+  <div class="flowstep"><div class="n">2</div><div>
+    <h2 class="blk" style="margin-bottom:8px">직무 분포 — 학생들이 몰린 직무</h2>
+    <p class="note" style="margin-bottom:16px">각 학생에게 가장 높게 나온 직무 기준. 한쪽으로 몰려 있으면 커리큘럼이 그쪽에 치우쳤다는 뜻일 수 있습니다.</p>
+    ${rankBand(jobs)}
+  </div></div>
+</section>
+<section class="blk">
+  <div class="flowstep"><div class="n">3</div><div>
+    <h2 class="blk" style="margin-bottom:8px">희망 산업</h2>
+    ${rankBand(inds)}
+    <div class="alert"><b>어긋남 경고</b> — 반도체 희망이 22%인데,
+      반도체 장비 직무의 적합 상위 학생은 9%뿐입니다.
+      <b>희망과 적합이 벌어진 이 구간이 학과의 진짜 문제입니다.</b></div>
+  </div></div>
+</section>
+<section class="blk">
+  <div class="flowstep"><div class="n">4</div><div>
+    <h2 class="blk" style="margin-bottom:8px">학과 전체가 모자란 역량</h2>
+    ${gaps.map(g=>gauge(g.c, null, g.fill, g.fill<35?'lo':(g.fill<50?'mid':'hi'), g.fill+'%', '충족 학생 비율')).join('')}
+  </div></div>
+</section>
+<section class="blk">
+  <div class="flowstep"><div class="n">5</div><div>
+    <h2 class="blk" style="margin-bottom:8px">기업 수요</h2>
+    <p class="note" style="margin-bottom:16px">최근 6개월 공고 1,240건 · 대전권 기업 184곳에서 뽑은 요구 빈도.</p>
+    ${[{c:'CAD',v:78},{c:'GD&T',v:67},{c:'FEA',v:54},{c:'PLC',v:48},{c:'Python',v:31},{c:'기술영어',v:22}]
+      .map(x=>gauge(x.c, null, x.v, '', x.v+'%', '공고 요구 비율')).join('')}
+    <div class="alert"><b>④와 ⑤가 겹치는 칸만 진짜 갭입니다.</b>
+      <b style="color:var(--gap)">GD&amp;T</b> (충족 31% ↔ 수요 67%) 와
+      <b style="color:var(--gap)">PLC</b> (충족 24% ↔ 수요 48%).
+      Python 은 충족 52% 인데 수요는 31% 이므로 급하지 않습니다.<br>
+      따로 보여주면 담당자가 스스로 교차해야 하고, 하지 않습니다.</div>
+  </div></div>
+</section>
+<section class="blk">
+  <div class="flowstep"><div class="n">6</div><div>
+    <h2 class="blk" style="margin-bottom:8px">그래서 학과가 할 일</h2>
+    <div class="tw"><table>
+      <tr><th>종류</th><th>할 일</th><th class="num">대상</th></tr>
+      <tr><td><span class="chip">교과</span></td><td><b>「기하공차 실무」 미개설</b> → 2학기 개설 검토</td><td class="num">372명</td></tr>
+      <tr><td><span class="chip">비교과</span></td><td>PLC 3일 캠프 (지역 A사 장비 대여 협의)</td><td class="num">118명</td></tr>
+      <tr><td><span class="chip">개인</span></td><td>개인 결과지에 처방 자동 발송</td><td class="num">372명</td></tr>
+    </table></div>
+    <div class="alert act"><b>집계에서 개인으로 되돌아가는 경로</b>가 있어야 흐름이 닫힙니다.
+      "GD&amp;T 충족률 31%" 라는 숫자가 곧 견적서이기도 합니다.</div>
+  </div></div>
+</section>
+<section class="blk">
+  <h2 class="blk">미응시와 공개</h2>
+  <p style="font-size:14.5px">대상 <b>500명</b> · 응시 <b>487명</b> · 미응시 <b>13명</b> · 품질 사유 제외 <b>12명</b></p>
+  <p class="note" style="margin-top:10px">5명 미만 칸은 공개하지 않습니다 (<code>cohort_reports.min_cell</code>).
+  익명 집계가 개인 식별로 바뀌는 순간 학생이 응답을 왜곡하고 데이터가 죽습니다.</p>
+  <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+    <button class="buy" data-demo="1">학생에게 결과 공개</button>
+    <span class="chip">현재 · 학생 미공개</span>
+  </div>
+  <p class="note" style="margin-top:10px">기존 단체 PCA 의 <code>test_sessions.released_at</code> 을 그대로 씁니다.</p>
+</section>`,'이 화면이 계약을 만듭니다. mockups/03_group_report.html 의 구조를 잇고 ③~⑥ 칸을 새로 얹었습니다.');
+});
+
+/* --- 기업 인재풀 --- */
+add('company','기업','인재풀 검색', ()=> sheet('인재풀 · 구조·유동 해석', ['대전·충남','2027-02 졸업예정','열람 요청 3건'],`
+<section class="blk">
+  <div class="controls">
+    <div class="field"><label>직무</label><select data-demo="1"><option>구조·유동 해석 (CAE)</option><option>기계설계</option></select></div>
+    <div class="field"><label>지역</label><select data-demo="1"><option>대전 · 충남</option><option>전국</option></select></div>
+    <div class="field"><label>필수 역량</label><select data-demo="1"><option>ANSYS ≥ 3</option><option>ABAQUS ≥ 3</option></select></div>
+  </div>
+  <div class="tw"><table>
+    <tr><th>후보</th><th class="num">매칭</th><th>보유 역량</th><th>정주 의향</th><th></th></tr>
+    <tr><td>후보 A · 기계공학 4학년</td><td class="num">88</td><td><span class="chip ok">ANSYS 4</span> <span class="chip ok">ABAQUS 3</span> <span class="chip ok">GD&amp;T 4</span></td><td><span class="chip ok">있음</span></td><td><button class="buy ghost" data-demo="1" style="font-size:13px;padding:5px 12px">열람 요청</button></td></tr>
+    <tr><td>후보 B · 기계공학 4학년</td><td class="num">84</td><td><span class="chip ok">ANSYS 4</span> <span class="chip warn">ABAQUS 2</span></td><td><span class="chip ok">있음</span></td><td><button class="buy ghost" data-demo="1" style="font-size:13px;padding:5px 12px">열람 요청</button></td></tr>
+    <tr><td>후보 C · 기계공학 대학원</td><td class="num">81</td><td><span class="chip ok">ANSYS 5</span> <span class="chip ok">FEM 4</span></td><td><span class="chip">미정</span></td><td><button class="buy ghost" data-demo="1" style="font-size:13px;padding:5px 12px">열람 요청</button></td></tr>
+  </table></div>
+  <div class="alert"><b>이름과 연락처는 검색 결과에 나오지 않습니다.</b>
+    열람 요청 → 학생 동의 → 공개 순서로만 열립니다.<br>
+    기업 매출보다 대학 채널이 큽니다. 충돌하면 대학을 지킵니다 — 한 번 끊기면 그 지역 전체가 막힙니다.</div>
+</section>
+<section class="blk">
+  <h2 class="blk">이 화면을 언제 만드나</h2>
+  <p class="note">인재풀에 학생이 1,000명은 있어야 기업이 돈을 냅니다. <b>2차 이후 상품</b>입니다.
+  1차에서는 학과와 학생에만 집중합니다.</p>
+</section>`,'실질적으로 가장 큰 기업 매출은 개별 기업이 아니라 지자체가 관내 기업 30곳을 묶어 사는 지역기업 패키지입니다.'));
+
+/* --- Skill Tree 탐색기 --- */
+let treeMajor='ME', treeJob=0;
+add('tree','데이터','Skill Tree 탐색기', ()=>{
+  const m = D.majors.find(x=>x.code===treeMajor);
+  const j = m.jobs[Math.min(treeJob, m.jobs.length-1)];
+  const layers = {L1:'기초과학',L2:'전공 핵심',L3:'도구·소프트웨어',L4:'응용 도메인',L5:'공통 역량'};
+  return sheet('Skill Tree — 실제 시드 데이터', [m.ko, '역량 '+m.competencies.length+'개', '직무군 '+m.jobs.length+'개'],`
+<section class="blk">
+  <div class="controls">
+    <div class="field"><label>전공</label><select id="selMajor">${D.majors.map(x=>`<option value="${x.code}" ${x.code===treeMajor?'selected':''}>${esc(x.ko)}</option>`).join('')}</select></div>
+    <div class="field"><label>직무군</label><select id="selJob">${m.jobs.map((x,i)=>`<option value="${i}" ${i===treeJob?'selected':''}>${esc(x.ko)}</option>`).join('')}</select></div>
+  </div>
+  <h3>${esc(j.ko)} <code>${esc(j.code)}</code></h3>
+  <p class="note" style="margin-top:6px">O*NET <code>${esc(j.onet)}</code> ·
+    산업 ${j.industries.map(c=>esc(indKo[c])).join(' · ')} ·
+    트랙 ${j.tracks.map(t=>`<span class="chip">${esc(t)}</span>`).join(' ')}</p>
+</section>
+<section class="blk">
+  <h2 class="blk">활동 지표 가중치 — A 항을 만드는 값</h2>
+  ${Object.entries(j.weights).sort((a,b)=>b[1]-a[1]).map(([ax,w])=>
+    gauge(axisKo[ax], ax, w*100/0.4, 'ink', w.toFixed(2), null)).join('')}
+  <p class="note" style="margin-top:12px">합이 1.00 이 되도록 맞춰져 있습니다 (24개 직무 전부 검증됨).</p>
+</section>
+<section class="blk">
+  <h2 class="blk">요구 역량 ${j.requires.length}개</h2>
+  <div class="tw"><table>
+    <tr><th>계층</th><th>역량</th><th>코드</th><th class="num">요구</th><th>필수도</th></tr>
+    ${j.requires.map(([c,r,k])=>{const cc=byCode[c];
+      return `<tr><td><span class="chip">${cc?layers[cc.layer]:'—'}</span></td><td>${esc(nm(c))}</td><td><code>${esc(c)}</code></td><td class="num">${r}</td><td class="stars">${'★'.repeat(k)}</td></tr>`;}).join('')}
+  </table></div>
+</section>
+<section class="blk">
+  <h2 class="blk">${esc(m.ko)} 역량 — 계층별</h2>
+  ${Object.keys(layers).map(L=>{
+    const list = m.competencies.filter(c=>c.layer===L); if(!list.length) return '';
+    return `<div style="margin-bottom:18px">
+      <h3 style="font-size:13.5px;color:var(--muted)">${L} · ${layers[L]} <span class="hint">(${list.length})</span></h3>
+      <p style="margin-top:8px;font-size:14px;line-height:2">${list.map(c=>`<span class="chip" title="${esc((c.aliases||[]).join(', '))}">${esc(c.ko)}</span>`).join(' ')}</p>
+    </div>`;}).join('')}
+  <p class="note">칩에 마우스를 올리면 동의어 사전이 보입니다. 공고에서 스킬을 뽑는 1차 관문이 이 사전입니다.</p>
+</section>`,'이 화면은 data/eci/*.json 을 그대로 읽습니다. 스킬 트리를 고치면 여기도 같이 바뀝니다.');
+});
+
+/* --- 산식 계산기 --- */
+const calcZ = Object.assign({}, DEMO_Z);
+const calcHeld = Object.assign({}, DEMO_HELD);
+let calcJobCode = 'ME.CAE', calcTrack = 'UNIV_HIGH';
+add('calc','데이터','매칭 산식 계산기', ()=>{
+  const j = ME.jobs.find(x=>x.code===calcJobCode) || ME.jobs[1];
+  const prof = D.scoringProfiles.find(p=>p.track===calcTrack) || PROF_UH;
+  const {a,A} = scoreA(j, calcZ);
+  const S = scoreS(j, calcHeld), P = scoreP(j, DEMO_PREF), C = 0.80;
+  const fit = 100*(prof.wA*A + prof.wS*S + prof.wP*P + prof.wC*C);
+  const axes = Object.keys(j.weights);
+  return sheet('산식 계산기', ['슬라이더를 움직이면 점수가 다시 계산됩니다'],`
+<section class="blk">
+  <div class="controls">
+    <div class="field"><label>직무</label><select id="calcJob">${ME.jobs.map(x=>`<option value="${x.code}" ${x.code===j.code?'selected':''}>${esc(x.ko)}</option>`).join('')}</select></div>
+    <div class="field"><label>트랙 (가중치)</label><select id="calcTrack">${D.scoringProfiles.map(p=>`<option value="${p.track}" ${p.track===calcTrack?'selected':''}>${esc(p.track)} · ${esc(p.goal)}</option>`).join('')}</select></div>
+  </div>
+  <div class="lead">
+    <div class="name">${fit.toFixed(1)}</div>
+    <div class="score">${prof.display==='band' ? '구간 표시 트랙' : '점수 표시 트랙'}</div>
+  </div>
+  <p class="note">${prof.display==='band'
+    ? '이 트랙은 증거가 적어 결과지에 <b>구간</b>으로만 나갑니다. 화면에는 숫자를 안 찍습니다.'
+    : '증거가 쌓인 트랙이라 점수와 신뢰구간으로 나갑니다.'}</p>
+  <details class="calc" open><summary>계산 내역</summary><div class="body">
+    <div class="calcrow"><span>A 성향·활동 (a=${a.toFixed(3)} → σ(1.2a))</span><span>${A.toFixed(3)} × ${prof.wA} = ${(100*prof.wA*A).toFixed(1)}</span></div>
+    <div class="calcrow"><span>S 역량 충족</span><span>${S.toFixed(3)} × ${prof.wS} = ${(100*prof.wS*S).toFixed(1)}</span></div>
+    <div class="calcrow"><span>P 선호 일치</span><span>${P.toFixed(3)} × ${prof.wP} = ${(100*prof.wP*P).toFixed(1)}</span></div>
+    <div class="calcrow"><span>C 이력 방향</span><span>${C.toFixed(3)} × ${prof.wC} = ${(100*prof.wC*C).toFixed(1)}</span></div>
+    <div class="calcrow total"><span>Fit</span><span>${fit.toFixed(2)}</span></div>
+  </div></details>
+</section>
+<section class="blk">
+  <h2 class="blk">A — 검사 지표 (T 점수)</h2>
+  ${axes.map(ax=>`<div class="slider">
+    <span>${esc(axisKo[ax])} <span class="hint">w ${j.weights[ax].toFixed(2)}</span></span>
+    <input type="range" id="z_${ax}" data-z="${ax}" min="20" max="80" step="1" value="${Math.round(50+calcZ[ax]*10)}">
+    <output>T ${Math.round(50+calcZ[ax]*10)}</output>
+  </div>`).join('')}
+</section>
+<section class="blk">
+  <h2 class="blk">S — 보유 역량 수준</h2>
+  ${j.requires.map(([c,r,k])=>`<div class="slider">
+    <span>${esc(nm(c))} <span class="hint">요구 ${r} ${'★'.repeat(k)}</span></span>
+    <input type="range" id="h_${c}" data-h="${c}" min="0" max="5" step="1" value="${calcHeld[c]??0}">
+    <output>${calcHeld[c]??0} / ${r}</output>
+  </div>`).join('')}
+  <p class="note" style="margin-top:14px">보유 수준은 실제로는 슬라이더가 아니라 <b>증거</b>에서 계산됩니다 —
+  과목 A+ 는 2.0×1.00×0.95, 자기보고는 1.5×0.60. 여기서는 산식이 어떻게 반응하는지 보려고 직접 움직이게 했습니다.</p>
+</section>`,'점수는 이 산식이 만듭니다. LLM 은 이 값을 설명하는 문장만 씁니다.');
+});
+
+/* --- PCA 연결 --- */
+add('bridge','시작','기존 단체 PCA 와의 연결', ()=> sheet('기존 PCA ↔ ECI', ['테이블을 하나도 지우지 않았다'],`
+<section class="blk">
+  <h2 class="blk">그대로 쓰는 것</h2>
+  <div class="tw"><table>
+    <tr><th>기존 자산</th><th>ECI 에서</th></tr>
+    <tr><td><code>users</code> · <code>memberships</code></td><td>고등학생·대학생·개인결제자 전부 여기. <b>설계 원칙 1 유지</b></td></tr>
+    <tr><td><code>contracts</code> · <code>seats</code></td><td>학과 좌석 그대로. 개인 결제는 계약 없이 좌석 1개</td></tr>
+    <tr><td><code>test_sessions</code> · <code>attempts</code> · <code>responses</code></td><td>응시 흐름 그대로. <code>elapsed_ms</code> 만 추가</td></tr>
+    <tr><td><code>instruments</code> · <code>questions</code></td><td>문항 버전 규칙 그대로. <b>설계 원칙 4 유지</b></td></tr>
+    <tr><td><code>scoring_weights</code></td><td>학과·국가별 덮어쓰기 자리로 남긴다. 기본값은 <code>job_axis_weights</code></td></tr>
+    <tr><td><code>translations</code></td><td>역량·직무·산업 이름 396행 추가. <b>설계 원칙 2 유지</b></td></tr>
+    <tr><td><code>job_fit_scores</code></td><td>컬럼만 추가 (A·S·P·C·구간). 기존 행은 그대로</td></tr>
+    <tr><td><code>mockups/*.html</code></td><td>이 프리뷰의 토큰·게이지·표가 전부 여기서 왔다</td></tr>
+  </table></div>
+</section>
+<section class="blk">
+  <h2 class="blk">두 축이 공존한다</h2>
+  <div class="tw"><table>
+    <tr><th>층</th><th>축</th><th>어디서 왔나</th><th>결과지에서</th></tr>
+    <tr><td>업무 성향</td><td>독립 · 협력 · 도전 · 안정 · 속도중시 · 품질중시</td><td><b>기존 PCA</b></td><td>육각형 그대로</td></tr>
+    <tr><td>공학 활동</td><td>해석 · 설계 · 제작 · 코딩 · 현장 · 개선 · 탐구 · 조율</td><td><b>ECI 신규</b></td><td>직무 적합도의 A 항</td></tr>
+    <tr><td>직무 영역 10</td><td>경영·전략 … 컨설팅</td><td>기존 PCA</td><td>전 학과 공통 층</td></tr>
+    <tr><td>전공 직무군 8</td><td>기계설계 · CAE …</td><td>ECI 신규</td><td>공학 특화 층</td></tr>
+  </table></div>
+  <p class="note" style="margin-top:14px"><b>기존 6축을 바꾸지 않습니다.</b> 바꾸면 이미 응시한 학생과 비교가 끊깁니다.
+  ECI 8축은 그 위에 얹습니다 — "협력형" 은 CAE 와 생산기술을 못 가르기 때문입니다.</p>
+</section>
+<section class="blk">
+  <h2 class="blk">제안서와 플랫폼 스펙의 충돌 — 셋 다 데이터로 흡수</h2>
+  <div class="tw"><table>
+    <tr><th>항목</th><th>플랫폼 스펙</th><th>제안서</th><th>결정</th></tr>
+    <tr><td>처방</td><td>역량 갭 → 개설 과목</td><td>자격·프로젝트·면접·지역기업</td><td><b>둘 다.</b> <code>skill_gap_items.action_kind</code></td></tr>
+    <tr><td>응시 자격</td><td>학과 명단 기반</td><td>전용 링크 발급</td><td><b>둘 다.</b> <code>seats</code> 하나로 처리</td></tr>
+    <tr><td>직무 영역</td><td>전공별 8개</td><td>전 학과 공통 10개</td><td><b>공존.</b> 결과지에서 층이 다르다</td></tr>
+  </table></div>
+</section>`,'ECI 는 PCA 를 대체하지 않습니다. db/schema_eci.sql 이 위에 얹히고, ALTER 와 CREATE 만 씁니다.'));
+
+/* ================= 부팅 ================= */
+const nav = document.getElementById('nav'), stage = document.getElementById('stage');
+let cur = 'overview';
+const groups = []; let navNo = 0;
+SCREENS.forEach(s=>{ let g=groups.find(x=>x.name===s.group); if(!g){g={name:s.group,items:[]};groups.push(g);} g.items.push(s); });
+nav.innerHTML = groups.map(g=>
+  `<div class="navgrp">${esc(g.name)}</div>` +
+  g.items.map(s=>`<button data-screen="${s.id}"><i>${String(++navNo).padStart(2,'0')}</i><span>${esc(s.label)}</span></button>`).join('')
+).join('');
+
+function draw(){
+  const s = SCREENS.find(x=>x.id===cur);
+  stage.innerHTML = s.render();
+  nav.querySelectorAll('button').forEach(b=>b.setAttribute('aria-current', b.dataset.screen===cur ? 'true':'false'));
+  window.scrollTo({top:0, behavior:'instant'});
+}
+function go(id){ cur=id; draw(); }
+
+document.addEventListener('click', e=>{
+  const b = e.target.closest('button, [data-go]');
+  if(!b) return;
+  if(b.dataset.screen) return go(b.dataset.screen);
+  if(b.dataset.go) return go(b.dataset.go);
+  if(b.dataset.lite === 'reset'){ liteAns=[null,null,null,null]; liteI=0; return draw(); }
+  if(b.dataset.lite){ liteAns[liteI] = +b.dataset.lite; liteI++; return draw(); }
+  if(b.dataset.demo){
+    const p = b.parentElement;
+    if(p && p.classList.contains('likert')) p.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed', x===b ? 'true':'false'));
+  }
+});
+document.addEventListener('input', e=>{
+  const t = e.target;
+  if(t.dataset && t.dataset.z){ calcZ[t.dataset.z] = (+t.value-50)/10; return draw(); }
+  if(t.dataset && t.dataset.h){ calcHeld[t.dataset.h] = +t.value; return draw(); }
+});
+document.addEventListener('change', e=>{
+  const t = e.target;
+  if(t.id==='selMajor'){ treeMajor=t.value; treeJob=0; return draw(); }
+  if(t.id==='selJob'){ treeJob=+t.value; return draw(); }
+  if(t.id==='calcJob'){ calcJobCode=t.value; return draw(); }
+  if(t.id==='calcTrack'){ calcTrack=t.value; return draw(); }
+});
+draw();
+})();
+</script>

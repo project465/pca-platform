@@ -1,0 +1,1190 @@
+{
+  "code": "CE",
+  "ko": "컴퓨터공학",
+  "en": "Computer Engineering / Computer Science",
+  "competencies": [
+    {
+      "code": "CE.MATH",
+      "ko": "이산수학·선형대수",
+      "en": "Discrete Math & Linear Algebra",
+      "type": "theory",
+      "layer": "L1",
+      "aliases": [
+        "이산구조",
+        "행렬"
+      ]
+    },
+    {
+      "code": "CE.PROB",
+      "ko": "확률·통계",
+      "en": "Probability & Statistics",
+      "type": "theory",
+      "layer": "L1",
+      "aliases": [
+        "통계학"
+      ]
+    },
+    {
+      "code": "CE.DS",
+      "ko": "자료구조",
+      "en": "Data Structures",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "트리",
+        "그래프",
+        "해시"
+      ]
+    },
+    {
+      "code": "CE.ALGO",
+      "ko": "알고리즘",
+      "en": "Algorithms",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "복잡도",
+        "동적계획법",
+        "코딩테스트"
+      ]
+    },
+    {
+      "code": "CE.OS",
+      "ko": "운영체제",
+      "en": "Operating Systems",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "프로세스",
+        "스케줄링",
+        "동시성"
+      ]
+    },
+    {
+      "code": "CE.ARCH",
+      "ko": "컴퓨터구조",
+      "en": "Computer Architecture",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "파이프라인",
+        "캐시"
+      ]
+    },
+    {
+      "code": "CE.NET",
+      "ko": "컴퓨터 네트워크",
+      "en": "Computer Networks",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "TCP/IP",
+        "HTTP",
+        "소켓"
+      ]
+    },
+    {
+      "code": "CE.DB",
+      "ko": "데이터베이스",
+      "en": "Databases",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "정규화",
+        "트랜잭션",
+        "인덱스"
+      ]
+    },
+    {
+      "code": "CE.SE",
+      "ko": "소프트웨어공학",
+      "en": "Software Engineering",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "설계패턴",
+        "테스트",
+        "요구공학"
+      ]
+    },
+    {
+      "code": "CE.COMP",
+      "ko": "컴파일러·언어이론",
+      "en": "Compilers",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "파서",
+        "형식언어"
+      ]
+    },
+    {
+      "code": "CE.DIST",
+      "ko": "분산·병렬 시스템",
+      "en": "Distributed Systems",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "합의",
+        "샤딩",
+        "병렬처리"
+      ]
+    },
+    {
+      "code": "CE.SEC",
+      "ko": "정보보안",
+      "en": "Information Security",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "암호학",
+        "취약점",
+        "인증"
+      ]
+    },
+    {
+      "code": "CE.AI",
+      "ko": "인공지능",
+      "en": "Artificial Intelligence",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "탐색",
+        "추론"
+      ]
+    },
+    {
+      "code": "CE.ML",
+      "ko": "기계학습",
+      "en": "Machine Learning",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "회귀",
+        "분류",
+        "모델평가"
+      ]
+    },
+    {
+      "code": "CE.DL",
+      "ko": "딥러닝",
+      "en": "Deep Learning",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "CNN",
+        "Transformer",
+        "LLM"
+      ]
+    },
+    {
+      "code": "CE.CG",
+      "ko": "컴퓨터그래픽스",
+      "en": "Computer Graphics",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "렌더링",
+        "셰이더"
+      ]
+    },
+    {
+      "code": "CE.HCI",
+      "ko": "HCI·UX",
+      "en": "Human-Computer Interaction",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "사용성",
+        "인터랙션"
+      ]
+    },
+    {
+      "code": "CE.EMBEDSW",
+      "ko": "시스템·임베디드 SW",
+      "en": "Systems Programming",
+      "type": "theory",
+      "layer": "L2",
+      "aliases": [
+        "커널",
+        "드라이버",
+        "펌웨어"
+      ]
+    },
+    {
+      "code": "SW.PYTHON",
+      "ko": "Python",
+      "en": "Python",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "파이썬"
+      ]
+    },
+    {
+      "code": "SW.JAVA",
+      "ko": "Java",
+      "en": "Java",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "자바",
+        "Kotlin"
+      ]
+    },
+    {
+      "code": "SW.CPP",
+      "ko": "C·C++",
+      "en": "C/C++",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "씨",
+        "씨쁠쁠"
+      ]
+    },
+    {
+      "code": "SW.JS",
+      "ko": "JavaScript·TypeScript",
+      "en": "JavaScript/TypeScript",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "JS",
+        "TS"
+      ]
+    },
+    {
+      "code": "SW.GO",
+      "ko": "Go·Rust",
+      "en": "Go/Rust",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "고랭",
+        "러스트"
+      ]
+    },
+    {
+      "code": "SW.SQL",
+      "ko": "SQL",
+      "en": "SQL",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "쿼리",
+        "PostgreSQL",
+        "MySQL"
+      ]
+    },
+    {
+      "code": "SW.SPRING",
+      "ko": "Spring",
+      "en": "Spring",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "스프링",
+        "Spring Boot"
+      ]
+    },
+    {
+      "code": "SW.NODE",
+      "ko": "Node.js",
+      "en": "Node.js",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "Express",
+        "NestJS"
+      ]
+    },
+    {
+      "code": "SW.DJANGO",
+      "ko": "Django·FastAPI",
+      "en": "Django/FastAPI",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "파이썬 웹"
+      ]
+    },
+    {
+      "code": "SW.REACT",
+      "ko": "React·Next.js",
+      "en": "React",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "리액트",
+        "Vue",
+        "프론트엔드 프레임워크"
+      ]
+    },
+    {
+      "code": "SW.PYTORCH",
+      "ko": "PyTorch",
+      "en": "PyTorch",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "TensorFlow",
+        "딥러닝 프레임워크"
+      ]
+    },
+    {
+      "code": "SW.PANDAS",
+      "ko": "Pandas·NumPy",
+      "en": "Pandas/NumPy",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "데이터 분석 라이브러리"
+      ]
+    },
+    {
+      "code": "SW.SPARK",
+      "ko": "Spark·Kafka",
+      "en": "Spark/Kafka",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "대용량 처리",
+        "스트리밍"
+      ]
+    },
+    {
+      "code": "SW.AIRFLOW",
+      "ko": "Airflow·dbt",
+      "en": "Airflow/dbt",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "워크플로",
+        "ELT"
+      ]
+    },
+    {
+      "code": "SW.DOCKER",
+      "ko": "Docker",
+      "en": "Docker",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "컨테이너"
+      ]
+    },
+    {
+      "code": "SW.K8S",
+      "ko": "Kubernetes",
+      "en": "Kubernetes",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "쿠버네티스",
+        "K8s"
+      ]
+    },
+    {
+      "code": "SW.CLOUD",
+      "ko": "AWS·GCP·Azure",
+      "en": "Cloud Platforms",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "클라우드",
+        "EC2",
+        "S3"
+      ]
+    },
+    {
+      "code": "SW.CICD",
+      "ko": "CI/CD",
+      "en": "CI/CD",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "GitHub Actions",
+        "Jenkins",
+        "배포 자동화"
+      ]
+    },
+    {
+      "code": "SW.LINUX",
+      "ko": "Linux·셸",
+      "en": "Linux",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "리눅스",
+        "bash",
+        "서버운영"
+      ]
+    },
+    {
+      "code": "SW.GIT",
+      "ko": "Git",
+      "en": "Git",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "깃",
+        "형상관리",
+        "코드리뷰"
+      ]
+    },
+    {
+      "code": "SW.TEST",
+      "ko": "테스트 자동화",
+      "en": "Test Automation",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "단위테스트",
+        "JUnit",
+        "pytest",
+        "E2E"
+      ]
+    },
+    {
+      "code": "SW.MONITOR",
+      "ko": "모니터링·관측",
+      "en": "Observability",
+      "type": "software",
+      "layer": "L3",
+      "aliases": [
+        "Prometheus",
+        "Grafana",
+        "로그"
+      ]
+    },
+    {
+      "code": "DM.BACKEND",
+      "ko": "백엔드 아키텍처",
+      "en": "Backend Architecture",
+      "type": "domain",
+      "layer": "L4",
+      "aliases": [
+        "API 설계",
+        "MSA",
+        "캐시 전략"
+      ]
+    },
+    {
+      "code": "DM.DATAENG",
+      "ko": "데이터 파이프라인",
+      "en": "Data Engineering",
+      "type": "domain",
+      "layer": "L4",
+      "aliases": [
+        "ETL",
+        "데이터 웨어하우스"
+      ]
+    },
+    {
+      "code": "DM.MLOPS",
+      "ko": "MLOps·모델 서빙",
+      "en": "MLOps",
+      "type": "domain",
+      "layer": "L4",
+      "aliases": [
+        "모델 배포",
+        "피처스토어"
+      ]
+    },
+    {
+      "code": "DM.SECOPS",
+      "ko": "보안 운영·모의해킹",
+      "en": "Security Operations",
+      "type": "domain",
+      "layer": "L4",
+      "aliases": [
+        "침해대응",
+        "펜테스트",
+        "SOC"
+      ]
+    },
+    {
+      "code": "DM.MOBILE",
+      "ko": "모바일 앱",
+      "en": "Mobile Development",
+      "type": "domain",
+      "layer": "L4",
+      "aliases": [
+        "Android",
+        "iOS",
+        "Flutter"
+      ]
+    },
+    {
+      "code": "CM.DOC",
+      "ko": "기술문서 작성",
+      "en": "Technical Writing",
+      "type": "soft",
+      "layer": "L5",
+      "aliases": [
+        "설계문서",
+        "README"
+      ]
+    },
+    {
+      "code": "CM.AGILE",
+      "ko": "애자일 협업",
+      "en": "Agile Collaboration",
+      "type": "soft",
+      "layer": "L5",
+      "aliases": [
+        "스크럼",
+        "Jira",
+        "스프린트"
+      ]
+    },
+    {
+      "code": "CM.ENG",
+      "ko": "영문 기술 커뮤니케이션",
+      "en": "Technical English",
+      "type": "soft",
+      "layer": "L5",
+      "aliases": [
+        "영어",
+        "원문 문서 독해"
+      ]
+    },
+    {
+      "code": "CM.PRODUCT",
+      "ko": "제품·도메인 이해",
+      "en": "Product Sense",
+      "type": "soft",
+      "layer": "L5",
+      "aliases": [
+        "요구사항 분석",
+        "기획 협업"
+      ]
+    }
+  ],
+  "jobs": [
+    {
+      "code": "CE.BACKEND",
+      "ko": "백엔드 개발",
+      "en": "Backend Engineer",
+      "onet": "15-1252.00",
+      "industries": [
+        "SW",
+        "AI",
+        "TELCO"
+      ],
+      "tracks": [
+        "HS",
+        "UNIV_LOW",
+        "UNIV_HIGH",
+        "GRAD"
+      ],
+      "weights": {
+        "CODE": 0.38,
+        "DESIGN": 0.22,
+        "ANALYZE": 0.16,
+        "OPTIMIZE": 0.14,
+        "ORCHESTRATE": 0.06,
+        "BUILD": 0.04
+      },
+      "requires": [
+        [
+          "SW.JAVA",
+          4,
+          3
+        ],
+        [
+          "DM.BACKEND",
+          4,
+          3
+        ],
+        [
+          "CE.DB",
+          4,
+          3
+        ],
+        [
+          "SW.SQL",
+          4,
+          3
+        ],
+        [
+          "CE.NET",
+          3,
+          3
+        ],
+        [
+          "SW.SPRING",
+          4,
+          3
+        ],
+        [
+          "CE.OS",
+          3,
+          2
+        ],
+        [
+          "SW.GIT",
+          4,
+          3
+        ],
+        [
+          "SW.DOCKER",
+          3,
+          2
+        ],
+        [
+          "SW.TEST",
+          3,
+          2
+        ],
+        [
+          "CE.ALGO",
+          3,
+          2
+        ],
+        [
+          "CM.AGILE",
+          3,
+          2
+        ]
+      ]
+    },
+    {
+      "code": "CE.FRONTEND",
+      "ko": "프론트엔드·웹 개발",
+      "en": "Frontend Engineer",
+      "onet": "15-1254.00",
+      "industries": [
+        "SW",
+        "AI"
+      ],
+      "tracks": [
+        "HS",
+        "UNIV_LOW",
+        "UNIV_HIGH"
+      ],
+      "weights": {
+        "CODE": 0.36,
+        "DESIGN": 0.26,
+        "OPTIMIZE": 0.14,
+        "ANALYZE": 0.1,
+        "ORCHESTRATE": 0.08,
+        "BUILD": 0.06
+      },
+      "requires": [
+        [
+          "SW.JS",
+          5,
+          3
+        ],
+        [
+          "SW.REACT",
+          4,
+          3
+        ],
+        [
+          "CE.HCI",
+          3,
+          3
+        ],
+        [
+          "CE.NET",
+          3,
+          2
+        ],
+        [
+          "SW.GIT",
+          4,
+          3
+        ],
+        [
+          "SW.TEST",
+          3,
+          2
+        ],
+        [
+          "CE.SE",
+          3,
+          2
+        ],
+        [
+          "SW.CICD",
+          2,
+          1
+        ],
+        [
+          "CM.PRODUCT",
+          3,
+          2
+        ],
+        [
+          "CM.AGILE",
+          3,
+          2
+        ]
+      ]
+    },
+    {
+      "code": "CE.DATAENG",
+      "ko": "데이터 엔지니어",
+      "en": "Data Engineer",
+      "onet": "15-2051.01",
+      "industries": [
+        "AI",
+        "SW",
+        "SEMI"
+      ],
+      "tracks": [
+        "UNIV_HIGH",
+        "GRAD"
+      ],
+      "weights": {
+        "CODE": 0.3,
+        "ANALYZE": 0.26,
+        "DESIGN": 0.18,
+        "OPTIMIZE": 0.18,
+        "ORCHESTRATE": 0.08
+      },
+      "requires": [
+        [
+          "SW.SQL",
+          5,
+          3
+        ],
+        [
+          "DM.DATAENG",
+          4,
+          3
+        ],
+        [
+          "SW.PYTHON",
+          4,
+          3
+        ],
+        [
+          "SW.SPARK",
+          4,
+          3
+        ],
+        [
+          "SW.AIRFLOW",
+          3,
+          3
+        ],
+        [
+          "CE.DB",
+          4,
+          3
+        ],
+        [
+          "SW.CLOUD",
+          3,
+          2
+        ],
+        [
+          "CE.DIST",
+          3,
+          2
+        ],
+        [
+          "SW.DOCKER",
+          3,
+          2
+        ],
+        [
+          "CE.PROB",
+          3,
+          2
+        ],
+        [
+          "SW.GIT",
+          3,
+          2
+        ]
+      ]
+    },
+    {
+      "code": "CE.ML",
+      "ko": "AI·ML 엔지니어",
+      "en": "Machine Learning Engineer",
+      "onet": "15-2051.00",
+      "industries": [
+        "AI",
+        "SW",
+        "AUTO",
+        "MED"
+      ],
+      "tracks": [
+        "UNIV_HIGH",
+        "GRAD"
+      ],
+      "weights": {
+        "RESEARCH": 0.3,
+        "CODE": 0.28,
+        "ANALYZE": 0.24,
+        "OPTIMIZE": 0.1,
+        "DESIGN": 0.08
+      },
+      "requires": [
+        [
+          "CE.ML",
+          4,
+          3
+        ],
+        [
+          "CE.DL",
+          4,
+          3
+        ],
+        [
+          "SW.PYTORCH",
+          4,
+          3
+        ],
+        [
+          "SW.PYTHON",
+          5,
+          3
+        ],
+        [
+          "CE.MATH",
+          4,
+          3
+        ],
+        [
+          "CE.PROB",
+          4,
+          3
+        ],
+        [
+          "SW.PANDAS",
+          4,
+          3
+        ],
+        [
+          "DM.MLOPS",
+          3,
+          2
+        ],
+        [
+          "SW.CLOUD",
+          3,
+          2
+        ],
+        [
+          "CM.ENG",
+          4,
+          3
+        ],
+        [
+          "SW.GIT",
+          3,
+          2
+        ]
+      ]
+    },
+    {
+      "code": "CE.SYSSW",
+      "ko": "시스템·임베디드 SW",
+      "en": "Systems / Embedded Software Engineer",
+      "onet": "15-1252.00",
+      "industries": [
+        "SEMI",
+        "AUTO",
+        "ROBOT",
+        "TELCO"
+      ],
+      "tracks": [
+        "UNIV_LOW",
+        "UNIV_HIGH",
+        "GRAD"
+      ],
+      "weights": {
+        "CODE": 0.34,
+        "ANALYZE": 0.24,
+        "BUILD": 0.18,
+        "OPTIMIZE": 0.16,
+        "DESIGN": 0.08
+      },
+      "requires": [
+        [
+          "SW.CPP",
+          5,
+          3
+        ],
+        [
+          "CE.OS",
+          4,
+          3
+        ],
+        [
+          "CE.EMBEDSW",
+          4,
+          3
+        ],
+        [
+          "CE.ARCH",
+          4,
+          3
+        ],
+        [
+          "SW.LINUX",
+          4,
+          3
+        ],
+        [
+          "CE.NET",
+          3,
+          2
+        ],
+        [
+          "SW.GIT",
+          3,
+          2
+        ],
+        [
+          "CE.ALGO",
+          3,
+          2
+        ],
+        [
+          "SW.TEST",
+          3,
+          2
+        ],
+        [
+          "CM.DOC",
+          3,
+          2
+        ]
+      ]
+    },
+    {
+      "code": "CE.DEVOPS",
+      "ko": "클라우드·인프라 (DevOps·SRE)",
+      "en": "DevOps / SRE",
+      "onet": "15-1244.00",
+      "industries": [
+        "SW",
+        "AI",
+        "TELCO"
+      ],
+      "tracks": [
+        "HS",
+        "UNIV_LOW",
+        "UNIV_HIGH"
+      ],
+      "weights": {
+        "OPTIMIZE": 0.28,
+        "FIELD": 0.22,
+        "CODE": 0.22,
+        "ANALYZE": 0.16,
+        "ORCHESTRATE": 0.12
+      },
+      "requires": [
+        [
+          "SW.LINUX",
+          5,
+          3
+        ],
+        [
+          "SW.K8S",
+          4,
+          3
+        ],
+        [
+          "SW.DOCKER",
+          4,
+          3
+        ],
+        [
+          "SW.CLOUD",
+          4,
+          3
+        ],
+        [
+          "SW.CICD",
+          4,
+          3
+        ],
+        [
+          "CE.NET",
+          4,
+          3
+        ],
+        [
+          "SW.MONITOR",
+          3,
+          3
+        ],
+        [
+          "SW.PYTHON",
+          3,
+          2
+        ],
+        [
+          "CE.SEC",
+          3,
+          2
+        ],
+        [
+          "SW.GIT",
+          4,
+          3
+        ]
+      ]
+    },
+    {
+      "code": "CE.SECURITY",
+      "ko": "보안 엔지니어",
+      "en": "Security Engineer",
+      "onet": "15-1212.00",
+      "industries": [
+        "SW",
+        "POWER",
+        "DEF",
+        "TELCO"
+      ],
+      "tracks": [
+        "UNIV_HIGH",
+        "GRAD"
+      ],
+      "weights": {
+        "ANALYZE": 0.3,
+        "RESEARCH": 0.22,
+        "CODE": 0.2,
+        "FIELD": 0.16,
+        "OPTIMIZE": 0.12
+      },
+      "requires": [
+        [
+          "CE.SEC",
+          5,
+          3
+        ],
+        [
+          "DM.SECOPS",
+          4,
+          3
+        ],
+        [
+          "CE.NET",
+          4,
+          3
+        ],
+        [
+          "SW.LINUX",
+          4,
+          3
+        ],
+        [
+          "CE.OS",
+          3,
+          3
+        ],
+        [
+          "SW.PYTHON",
+          3,
+          2
+        ],
+        [
+          "CE.ARCH",
+          3,
+          2
+        ],
+        [
+          "SW.CPP",
+          3,
+          2
+        ],
+        [
+          "CM.DOC",
+          3,
+          2
+        ],
+        [
+          "CM.ENG",
+          3,
+          2
+        ]
+      ]
+    },
+    {
+      "code": "CE.QA",
+      "ko": "SW 품질·테스트 엔지니어",
+      "en": "QA / Test Engineer",
+      "onet": "15-1253.00",
+      "industries": [
+        "SW",
+        "AUTO",
+        "MED",
+        "SEMI"
+      ],
+      "tracks": [
+        "HS",
+        "UNIV_LOW",
+        "UNIV_HIGH"
+      ],
+      "weights": {
+        "OPTIMIZE": 0.26,
+        "ANALYZE": 0.24,
+        "CODE": 0.22,
+        "ORCHESTRATE": 0.16,
+        "BUILD": 0.12
+      },
+      "requires": [
+        [
+          "SW.TEST",
+          5,
+          3
+        ],
+        [
+          "CE.SE",
+          4,
+          3
+        ],
+        [
+          "SW.PYTHON",
+          3,
+          3
+        ],
+        [
+          "SW.CICD",
+          3,
+          2
+        ],
+        [
+          "CE.DB",
+          3,
+          2
+        ],
+        [
+          "SW.GIT",
+          3,
+          2
+        ],
+        [
+          "CM.DOC",
+          4,
+          3
+        ],
+        [
+          "CE.NET",
+          3,
+          2
+        ],
+        [
+          "CM.AGILE",
+          3,
+          2
+        ],
+        [
+          "SW.LINUX",
+          3,
+          2
+        ]
+      ]
+    }
+  ]
+}
