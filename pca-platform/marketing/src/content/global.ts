@@ -776,7 +776,7 @@ export const global: SiteContent = {
     version: "2026-09-10",
     versionLabel: "Version",
     operator:
-      "⟨Company name⟩ · ⟨Representative⟩ · ⟨Registered address⟩ · ⟨Business registration number⟩",
+      "주식회사 에이치에이연구원 · Representative 조건희 · 704 Geumgang City Tower, 2143 Hannuri-daero, Sejong, Republic of Korea · Business registration number 375-88-02588",
     sections: [
       {
         title: "1. What we collect, and why",
@@ -846,8 +846,8 @@ export const global: SiteContent = {
         title: "7. Contact",
         body: [
           "For anything about personal data, write to us.",
-          "Data protection officer: ⟨name and title⟩",
-          "Contact: ⟨phone⟩ · ⟨email⟩",
+          "Data protection officer: 조건희",
+          "Contact: +82-44-867-7211 · hari_info@hari.re.kr",
         ],
       },
       {
