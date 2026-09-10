@@ -52,6 +52,19 @@ function parseSize(raw?: string): number | undefined {
  * 플랫폼이 응답하지 않아도 신청을 잃지 않도록 파일에도 남긴다. 영업이
  * 대면으로 이뤄지는 동안 들어온 문의를 놓치지 않으려는 기존 장치를 그대로
  * 둔 것이다.
+ *
+ * **메일은 보내지 않는다.** 이 함수 어디에도 SMTP 도 메일 서비스도 없다.
+ * 그래서 개인정보 처리방침의 위탁처에 메일 사업자를 적지 않는다.
+ *
+ * ⚠️ **배포 전에 반드시 확인할 것.**
+ * 두 저장처가 모두 없는 배포에서는 문의가 사라진다.
+ *
+ * - 서버리스(Vercel 등)의 파일 칸은 읽기 전용이다 → 파일 저장 실패
+ * - 라이브 플랫폼에는 접수 엔드포인트가 없다. 직접 확인했다(2026-09-10):
+ *   `/api/applications` · `/api/intake` · `/api/health` 모두 404
+ *
+ * 그래서 둘 다 실패하면 **접수되었다고 말하지 않는다.** 화면에 메일 주소를
+ * 띄운다. 접수됐다고 해 놓고 아무 데도 남지 않는 것이 가장 나쁘다.
  */
 export async function submitContact(
   _prev: ContactState,
@@ -74,20 +87,26 @@ export async function submitContact(
   if (!parsed.success) return { error: site.contact.error };
   const d = parsed.data;
 
+  /* 어딘가에 실제로 남았는가. 이 값이 false 인 채로 "접수되었습니다" 를
+     띄우면 안 된다 — 신청자는 기다리고 우리는 받은 적이 없다 */
+  let stored = false;
+
   const row = { at: new Date().toISOString(), site: site.key, ...d };
   try {
     await mkdir(".inquiries", { recursive: true });
     await appendFile(".inquiries/contact.jsonl", JSON.stringify(row) + "\n", "utf8");
+    stored = true;
   } catch (e) {
+    /* 서버리스(Vercel 등)에서는 파일 칸이 읽기 전용이라 여기서 걸린다.
+       그 자체는 사고가 아니지만, 다른 저장처가 없으면 사고가 된다 */
     console.error("[contact] 파일 저장 실패", e);
   }
 
   const endpoint = process.env.PLATFORM_INTAKE_URL;
   const secret = process.env.INTAKE_SECRET;
   if (!endpoint || !secret) {
-    // 아직 플랫폼과 연결되지 않은 배포. 파일에는 남았으므로 접수로 본다.
-    console.warn("[contact] PLATFORM_INTAKE_URL/INTAKE_SECRET 이 없어 파일에만 남깁니다");
-    return { ok: true };
+    console.warn("[contact] PLATFORM_INTAKE_URL/INTAKE_SECRET 이 없습니다");
+    return stored ? { ok: true } : { error: site.contact.unavailable };
   }
 
   try {
@@ -111,8 +130,7 @@ export async function submitContact(
 
     if (!res.ok) {
       console.error("[contact] 플랫폼 접수 실패", res.status, await res.text().catch(() => ""));
-      // 파일에는 남아 있으므로 신청자에게는 접수된 것으로 보인다.
-      return { ok: true };
+      return stored ? { ok: true } : { error: site.contact.unavailable };
     }
 
     const body = (await res.json()) as { refCode?: string };
@@ -120,6 +138,6 @@ export async function submitContact(
     return { ok: true, refCode: body.refCode };
   } catch (e) {
     console.error("[contact] 플랫폼 접수 오류", e);
-    return { ok: true };
+    return stored ? { ok: true } : { error: site.contact.unavailable };
   }
 }

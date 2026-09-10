@@ -792,8 +792,7 @@ export const kr: SiteContent = {
         table: {
           head: ["맡기는 곳", "맡기는 일"],
           rows: [
-            ["⟨호스팅 사업자⟩", "서버 운영과 데이터 보관"],
-            ["⟨메일 발송 사업자⟩", "안내 메일 발송"],
+            ["Vercel Inc.", "서버 운영과 데이터 보관 (국외 처리 포함)"],
           ],
         },
       },
@@ -943,6 +942,8 @@ export const kr: SiteContent = {
     success: "문의가 접수되었습니다",
     successBody: "적어주신 이메일로 연락드리겠습니다.",
     error: "보내지 못했습니다. 잠시 후 다시 시도해 주세요.",
+    unavailable:
+      "지금은 문의를 접수할 수 없습니다. hari_info@hari.re.kr 로 보내주시면 같은 담당자가 확인합니다.",
     privacyNote: {
       text:
         "보내주신 기관명·담당자 이름·이메일은 도입 상담에만 씁니다. 상담이 끝나면 지웁니다.",

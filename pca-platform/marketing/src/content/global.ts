@@ -831,8 +831,7 @@ export const global: SiteContent = {
         table: {
           head: ["Processor", "What they do"],
           rows: [
-            ["⟨Hosting provider⟩", "Server operation and data storage"],
-            ["⟨Email provider⟩", "Sending notification email"],
+            ["Vercel Inc.", "Server operation and data storage (processed outside Korea)"],
           ],
         },
       },
@@ -1007,6 +1006,8 @@ export const global: SiteContent = {
     success: "Thanks — we have it",
     successBody: "We will reply to the address you gave.",
     error: "That did not send. Please try again in a moment.",
+    unavailable:
+      "We cannot take enquiries through this form right now. Please write to hari_info@hari.re.kr — the same people read it.",
   },
 
   footer: {
