@@ -306,6 +306,8 @@ export type SiteContent = {
     login: string;
     /** 로그인 옆에 붙는 한 줄. 계정이 어디서 나오는지 알려 준다 */
     loginNote: string;
+    /** 머리의 이름 아래 한 줄. 만든 곳을 밝힌다 */
+    byLine: string;
   };
 
   hero: {

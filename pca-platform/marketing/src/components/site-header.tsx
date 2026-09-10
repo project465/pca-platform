@@ -6,13 +6,13 @@ export default function SiteHeader({ site }: { site: SiteContent }) {
   return (
     <header className="site-header">
       <div className="wrap bar">
+        {/* 로고 시안이 오기 전까지는 글자 로고다.
+            ACADEMIX 의 A 글리프는 뺐다 — 다른 브랜드 자산이다.
+            머리에 서는 이름은 제품(METRI)이고, 만든 곳은 그 아래에 작게 둔다 */}
         <a className="brandmark" href="#top">
-          <span className="glyph" aria-hidden="true">
-            A
-          </span>
           <span>
-            <b>{site.org}</b>
-            <span>{site.orgTagline}</span>
+            <b>{site.brand}</b>
+            <span>{site.nav.byLine}</span>
           </span>
         </a>
 

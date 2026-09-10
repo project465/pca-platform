@@ -99,11 +99,6 @@ section { padding-block: clamp(60px, 8vw, 108px); }
 }
 .site-header .bar { display: flex; align-items: center; gap: 22px; min-height: 70px; }
 .brandmark { display: flex; align-items: center; gap: 11px; text-decoration: none; }
-.brandmark .glyph {
-  width: 28px; height: 28px; flex: none; border-radius: 5px;
-  background: var(--strong); color: var(--gold-hi);
-  display: grid; place-items: center; font-size: 13px; font-weight: 800; letter-spacing: -0.04em;
-}
 .brandmark b { font-size: 16px; font-weight: 800; letter-spacing: 0.02em; display: block; }
 .brandmark span span,
 .brandmark > span > span {
@@ -860,7 +855,6 @@ section { padding-block: clamp(60px, 8vw, 108px); }
 [data-theme="steppe"] .field select,
 [data-theme="steppe"] .field textarea,
 [data-theme="steppe"] .notice { border-radius: 0; }
-[data-theme="steppe"] .brandmark .glyph { border-radius: 0; }
 
 /* 마감 배너. 강조색을 통째로 깔면 소리가 너무 커서 바탕은 눌러 두고
    단추만 띄운다 */

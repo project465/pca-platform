@@ -49,9 +49,9 @@ export const global: SiteContent = {
     },
     photos: {
       home: [
-        "Photo — employment lecture",
-        "Photo — STEM mentoring session",
-        "Photo — career fair",
+        "Photo — a careers talk for a department",
+        "Photo — a mentoring session with someone in the role",
+        "Photo — a campus recruitment fair",
       ],
       about: [
         "Photo — university event",
@@ -78,6 +78,7 @@ export const global: SiteContent = {
     floating: "Contact",
     login: "Staff sign-in",
     loginNote: "Students use the link their university sends them",
+    byLine: "BY ACADEMIX",
   },
 
   hero: {
@@ -631,7 +632,7 @@ export const global: SiteContent = {
         body: "Role-specific sessions with invited practitioners, chosen against the job areas the cohort scored highest on.",
       },
       {
-        title: "STEM-focused mentoring",
+        title: "Mentoring by people in the field",
         body: "Industry-linked mentoring across bachelor's, master's and doctoral students, matched to each student's priority roles.",
       },
       {
@@ -878,62 +879,63 @@ export const global: SiteContent = {
   },
   pricing: {
     label: "PRICING",
-    heading: "Start with one department",
+    heading: "Start with what you need",
     lead:
-      "Most institutions run one department first and widen from there. Individual assessments are available one at a time.",
-    planLabel: "What you are interested in",
+      "Individuals pay per sitting; institutions are split by size. Large rollouts differ too much in scope to price on a page.",
+    planLabel: "What this is about",
+    /* Amounts and the size threshold are pending sign-off. Do not carry this
+       into sales material while the ⟨…⟩ are still blank. */
     plans: [
       {
         key: "individual",
         name: "Individual",
-        who: "A student, a job seeker, a would-be founder",
-        price: null,
+        who: "A student · a graduate · a would-be founder",
+        price: "⟨amount⟩",
         unit: "per person",
-        note: "Card payment is not connected yet. Requests come through the form for now.",
+        note: "Payment is not connected yet. For now we take it as an enquiry.",
         features: [
-          "Job areas ranked out of 100",
-          "Six work styles as a hexagon",
-          "A personal written plan",
-          "Projects, applications, interviews, founding",
+          "Job areas inside the student's own field, ranked out of 100",
+          "Six work styles across 120 items",
+          "A personal report — 8 chapters, 52 sections",
+          "Projects, applications, interviews and founding",
         ],
-        cta: { ready: "Buy now", ask: "Request an assessment" },
+        cta: { ready: "Enquire", ask: "Enquire" },
       },
       {
-        key: "department",
-        name: "Department",
-        who: "A department or careers service",
-        price: null,
-        unit: "per student",
-        note: "Unit price depends on the cohort size.",
+        key: "small",
+        name: "Small cohort",
+        who: "A department · a lab · a careers programme",
+        price: "⟨amount⟩",
+        unit: "per person",
+        note: "This rate applies up to ⟨threshold⟩ students.",
         features: [
-          "Everything in Individual",
-          "A participation link per department",
-          "Anonymised aggregate report",
-          "Regional employer matching, where localised",
-          "The department sets when results are released",
+          "Everything in the individual assessment",
+          "A link for the department — no student list needed",
+          "An anonymised aggregate report",
+          "The department decides when results open",
         ],
-        cta: { ready: "Start a rollout", ask: "Talk about a rollout" },
+        cta: { ready: "Enquire", ask: "Enquire" },
         featured: true,
       },
       {
-        key: "country",
-        name: "Country partner",
-        who: "An operator bringing METRI to their market",
+        key: "large",
+        name: "Large rollout",
+        who: "A university · a regional consortium · a funded programme",
         price: null,
-        unit: "licence",
-        note: "Scoped against a pilot cohort rather than quoted blind.",
+        unit: "",
+        note: "Scope differs too much to quote on a page; we price each one.",
         features: [
-          "Everything in Department",
-          "Localisation build for your country",
-          "Operate under your own brand",
-          "Training for the people running it",
-          "Administrator area for outcome reporting",
+          "Everything in the small cohort",
+          "Aggregate across every department",
+          "Pay per completed sitting, billed monthly — nothing bought up front",
+          "A cap on sittings, set to the programme's budget",
+          "Rollout design and operational support",
         ],
-        cta: { ready: "Start a partnership", ask: "Talk about a partnership" },
+        cta: { ready: "Talk to us", ask: "Talk to us (scoped quote)" },
       },
     ],
     note:
-      "Price depends on cohort size and whether the regional module is in scope. Tell us the department and a rough number and we will come back with an estimate.",
+      "Amounts go up once they are signed off. Tell us the department and a rough number and we come back with an estimate.",
   },
 
   regions: {
