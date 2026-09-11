@@ -15,9 +15,9 @@ export const global: SiteContent = {
   platformUrl: "https://app.metri.io",
 
   meta: {
-    title: "METRI — from your major to the employers that fit",
+    title: "METRI — engineering majors, read against the roles that hire them",
     description:
-      "Personalized Career Analysis reads job fit, work style and execution strategy together, then tells students what to prepare — projects, applications, interviews, founding, and employers in their own region.",
+      "Twenty-four engineering job clusters and 138 competencies across mechanical, electrical and computer engineering, checked against real postings. Not a personality type — ANSYS held 2 of 4, GD&T not met, asked for in 89 of 132 postings.",
   },
 
   nav: {
@@ -36,17 +36,17 @@ export const global: SiteContent = {
   },
 
   hero: {
-    eyebrow: "PCA · PERSONALIZED CAREER ANALYSIS",
-    title: ["Your students already know their major.", "{Nobody has told them what to do next.}"],
+    eyebrow: "METRI · ENGINEERING CAREER INTELLIGENCE",
+    title: ["They chose engineering.", "{Nobody told them which engineering.}"],
     lead:
-      "PCA ranks ten job areas out of 100, maps six work styles, and writes each student a 15–20 page plan — credentials, projects, applications, interviews, founding, and employers in their own region. Built in Korea, rebuilt in your country from your own labour-market data.",
+      "Mechanical, electrical and computer engineering — 24 job clusters and 138 competencies, checked against real postings. Not “you are collaborative”, but “Simulation & CAE 80, ANSYS held 2 of 4, asked for in 89 of 132 postings for this role”. The activity axes are the same in every country, which is why the instrument travels.",
     primary: { label: "Talk to us", href: "/contact" },
     secondary: { label: "See a real report", href: "#sample" },
     watermark: "METRI",
     proof: [
-      { value: "2,346", label: "graduates in the design set" },
-      { value: "428", label: "job postings analysed" },
-      { value: "48", label: "practitioners reviewed it" },
+      { value: "250", label: "items, already written in three languages" },
+      { value: "24", label: "engineering job clusters" },
+      { value: "138", label: "competencies in the skill graph" },
       { value: "3", label: "copyright registrations" },
     ],
   },
@@ -73,23 +73,23 @@ export const global: SiteContent = {
     jobsNote:
       "The top three set the application strategy. The seven below carry the reason they fell where they did, so the student never has to ask why they were ruled out.",
     jobs: [
-      { name: "Production & operations", score: 88 },
-      { name: "Logistics, distribution & procurement", score: 81 },
-      { name: "Consulting & research", score: 74 },
-      { name: "IT, data & service planning", score: 69 },
-      { name: "Marketing, PR & sales", score: 63 },
-      { name: "Management & strategy", score: 57 },
-      { name: "Administration & business support", score: 51 },
-      { name: "Finance & accounting", score: 46 },
-      { name: "HR & organisation", score: 40 },
-      { name: "Banking & investment", score: 34 },
+      { name: "Design & Development", score: 92 },
+      { name: "Automotive & Aerospace", score: 88 },
+      { name: "Research & Education", score: 79 },
+      { name: "Manufacturing & Production", score: 74 },
+      { name: "Robotics & Automation", score: 70 },
+      { name: "IT Convergence & Data Analysis", score: 66 },
+      { name: "Energy & Plant", score: 61 },
+      { name: "Construction & Facility Management", score: 48 },
+      { name: "Bio & Healthcare", score: 45 },
+      { name: "Public Institutions & Other Fields", score: 41 },
     ],
     styleLabel: "00-2 Work style · six profiles",
     styleTypeLabel: "Profile",
     styleType: "Quality-led · independent",
     styleVerdict:
       "Strong where a standard is set and has to be met to the end. Costly in a team that runs on speed and on pulling other people along. For now, aim at posts where the standard is explicit — process and quality — and leave leading a team until year three or later.",
-    styleAxes: ["Independent", "Collaborative", "Challenging", "Steady", "Speed-led", "Quality-led"],
+    styleAxes: ["Independent", "Collaborative", "Challenge-oriented", "Stability-oriented", "Speed-focused", "Quality-focused"],
     styleScores: [78, 55, 62, 71, 49, 86],
     planLabel: "Sections 05–06 · the next twelve months",
     planNote:
@@ -184,52 +184,55 @@ export const global: SiteContent = {
 
   who: {
     label: "WHO IS IT FOR",
-    heading: "Who brings PCA into a country",
+    heading: "Who brings METRI into a country",
     items: [
       {
         no: "01",
-        title: "Universities and departments",
-        body: "“Our careers service hands out a personality type. Students still ask us what to actually do.”",
-        tag: "A 15–20 page plan per student",
+        title: "Engineering faculties and departments",
+        body: "“Careers services hand out a personality type. A mechanical engineering student still cannot tell design from CAE from process engineering.”",
+        tag: "Job cluster fit with a confidence interval",
       },
       {
         no: "02",
         title: "Ministries and consortia",
-        body: "“We can report how many attended. We cannot report what changed.”",
-        tag: "Cohort evidence you can file",
+        body: "“We can report how many attended. We cannot report which competencies the cohort is missing.”",
+        tag: "Cohort gaps you can put in a budget line",
       },
       {
         no: "03",
         title: "Local partners",
-        body: "“We have the university relationships. We do not have an instrument worth selling.”",
+        body: "“We have the university relationships. We do not have an engineering instrument worth selling.”",
         tag: "Operate it under your brand",
       },
     ],
   },
 
   analyze: {
-    label: "WHAT PCA ANALYZES",
-    heading: "PCA analyses three things together",
+    label: "WHAT IT READS",
+    heading: "Three layers, and only the first one is a questionnaire",
     lead:
-      "The three are not read separately. They are joined, which is why the result lands as something to do rather than something to know.",
+      "Interest is measured. Competency is not asked about — it is computed from coursework, certificates and projects. Keeping the two apart is the whole point: wanting to do CAE and being able to do CAE are different facts, and a report that blends them cannot be acted on.",
     items: [
       {
         no: "01",
-        kicker: "Job fit",
-        title: "The field narrows to three",
-        body: "Ten job areas scored out of 100 and ranked. The first is analysed in depth; the second and third stay as reference.",
+        kicker: "MEASURED",
+        title: "Ten engineering job areas, eight activity axes",
+        body:
+          "250 items, 25 per job area. Design, manufacturing, energy and plant, automotive and aerospace, robotics, IT convergence, construction, research, bio, public sector. Those ten fold into eight activity axes — analysis, design, build and test, programming, field and plant, optimisation, research, coordination — which mean the same thing in Seoul, Ankara and Astana.",
       },
       {
         no: "02",
-        kicker: "Work style",
-        title: "And they can say why",
-        body: "Six work styles, measured and reduced to a leading combination — the sentence a student needs when an interviewer asks why this role.",
+        kicker: "MEASURED",
+        title: "Six work styles, carried inside the same items",
+        body:
+          "120 of the 250 items carry a work-style signal without naming it. Independent, collaborative, challenge-oriented, stability-oriented, speed-focused, quality-focused. What matters is not the absolute height but which sits above which — the same student is an asset in process quality and a liability on a sprint team.",
       },
       {
         no: "03",
-        kicker: "Execution",
-        title: "Something to do next month",
-        body: "Credentials, projects, portfolio, applications, interviews, founding — down to the one thing to start this week.",
+        kicker: "COMPUTED",
+        title: "Held competency, from evidence only",
+        body:
+          "A course passed, a certificate held, a project shipped — each carries its own weight and reliability, and the sum converts to a level from 0 to 5. Ask a student to rate their own ANSYS and everyone says three. Where there is no evidence the report says so rather than guessing.",
       },
     ],
   },
@@ -267,19 +270,15 @@ export const global: SiteContent = {
     disclaimer:
       "※ From an actual respondent's report, published with their consent. The name is masked.",
     jobAxes: [
-      "Strategy",
-      "HR & Org",
-      "Admin",
-      "Finance",
-      "Investment",
-      "Marketing",
-      "Supply chain",
-      "Operations",
-      "IT & Data",
-      "Consulting",
+      "Simulation & CAE",
+      "Mechanical design",
+      "Process engineering",
+      "Quality & reliability",
+      "Robotics & automation",
+      "Semiconductor equipment",
     ],
-    jobScores: [92, 74, 68, 62, 58, 70, 66, 64, 82, 86],
-    styleAxes: ["Independent", "Collaborative", "Challenging", "Steady", "Fast-moving", "Quality-first"],
+    jobScores: [80, 73, 60, 65, 67, 61],
+    styleAxes: ["Independent", "Collaborative", "Challenge-oriented", "Stability-oriented", "Speed-focused", "Quality-focused"],
     styleScores: [84, 78, 86, 66, 72, 91],
     tabs: [
       {
@@ -627,25 +626,56 @@ export const global: SiteContent = {
     },
   },
 
+  gap: {
+    label: "AFTER THE ASSESSMENT",
+    heading: "The assessment is the entrance. The expensive problem sits behind it.",
+    lead:
+      "When a department spends its training budget, the thing it knows least is who needs which training. Put 300 courses on a shelf and the coordinator picks by instinct. METRI names that cell with a number.",
+    funnel: [
+      { value: "487", label: "students in one mechanical engineering department" },
+      { value: "31%", label: "meet the required GD&T level" },
+      { value: "67%", label: "of 1,240 regional postings ask for GD&T" },
+      { value: "372", label: "the overlap — students who need this training" },
+    ],
+    funnelNote:
+      "That last figure is the quote. The department has already accepted the problem before choosing a remedy, which is a different conversion from a cold offer. The numbers above illustrate how the calculation runs; they are not a real department's data.",
+    matrix: {
+      head: ["Kind of tool", "What it has", "What it lacks"],
+      rows: [
+        ["Labour-market alignment analytics", "Curriculum measured against regional demand", "No individual student"],
+        ["Individual skill-matching services", "Personal skills matched to postings", "No department-level aggregate"],
+        ["National competency frameworks", "A standard dictionary of roles and skills", "No student assessment"],
+        ["Free public career tests", "Free, open to everyone", "Neither engineering focus nor cohort view"],
+        ["Vocational training platforms", "Hundreds of courses and a university channel", "No diagnosis — no idea who to sell to"],
+        ["METRI", "Individual assessment → cohort aggregate → named training demand", "Training delivery runs through partners"],
+      ],
+      note:
+        "We list kinds of tool rather than company names. Each does its own job well; what is empty is the cell where all five meet.",
+    },
+  },
   choose: {
-    label: "WHY CHOOSE PCA",
-    heading: "Why this and not another test",
+    label: "WHY METRI",
+    heading: "Why institutions pick this over a generic career test",
     items: [
       {
-        title: "What a free test cannot give you",
-        body: "Public career services produce results you cannot file as institutional evidence. PCA gives the student a 15–20 page plan and the institution an anonymised aggregate report it can submit.",
+        title: "Engineering-specific, not engineering-adjacent",
+        body:
+          "General career tests end at “technical field”. METRI separates mechanical design from structural analysis from process engineering from equipment engineering, because those four hire differently, pay differently and require different software.",
       },
       {
-        title: "Recruitment market, not personality theory",
-        body: "428 job postings, 137 job descriptions and 62 NCS references, on a 2,346-student sample. The core items are registered with the Korea Copyright Commission.",
+        title: "Scores you can recompute",
+        body:
+          "Every weight sits in a table, not in code. A department can be handed the formula and arrive at the same 82. A score nobody can reproduce does not survive a procurement review.",
       },
       {
-        title: "This term, not after graduation",
-        body: "It does not end at “look into it later.” A four-week plan and a 30-day checklist mean the student closes the report with something scheduled.",
+        title: "Intervals, not false precision",
+        body:
+          "Straight-lining, rushed answers and failed attention checks widen the confidence interval instead of silently lowering the score. Where two roles overlap, the report says so rather than inventing a rank.",
       },
       {
-        title: "A rollout you can cost out",
-        body: "Three layers, clearly split: what is shared worldwide, what is rebuilt per country, what the university fills in. You know what you are paying to build before you start.",
+        title: "The instrument already travels",
+        body:
+          "The same 250 items exist in Korean, English and Turkish, and the eight activity axes are country-invariant by construction. Localisation replaces the labour-market layer — postings, employers, credentials — not the instrument.",
       },
     ],
   },

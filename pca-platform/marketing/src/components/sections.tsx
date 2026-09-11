@@ -266,6 +266,58 @@ export function Evidence({ site }: { site: SiteContent }) {
   );
 }
 
+/**
+ * 진단이 특정해 주는 교육 수요. 숫자 네 칸이 왼쪽에서 오른쪽으로 좁혀진다.
+ * 마지막 칸(대상 학생 수)이 곧 학과 담당자가 결재에 올리는 숫자다.
+ */
+export function GapSection({ site }: { site: SiteContent }) {
+  const g = site.gap;
+  return (
+    <section className="divided tinted">
+      <div className="wrap">
+        <div className="sec-head">
+          <span className="label-sm">{g.label}</span>
+          <h2>{g.heading}</h2>
+        </div>
+        <p className="lead">{g.lead}</p>
+
+        <ol className="funnel">
+          {g.funnel.map((f, i) => (
+            <li key={f.label}>
+              <span className="funnel-no">{String(i + 1).padStart(2, "0")}</span>
+              <b>{f.value}</b>
+              <span className="funnel-label">{f.label}</span>
+            </li>
+          ))}
+        </ol>
+        <p className="funnel-note">{g.funnelNote}</p>
+
+        <div className="tablewrap">
+          <table className="matrix">
+            <thead>
+              <tr>
+                {g.matrix.head.map((h) => (
+                  <th key={h}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {g.matrix.rows.map((r) => (
+                <tr key={r[0]} className={r[0].includes("METRI") ? "mine" : ""}>
+                  {r.map((c, i) => (
+                    <td key={i}>{c}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="funnel-note">{g.matrix.note}</p>
+      </div>
+    </section>
+  );
+}
+
 export function Choose({ site }: { site: SiteContent }) {
   const c = site.choose;
   return (

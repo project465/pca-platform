@@ -322,6 +322,25 @@ export type SiteContent = {
     };
   };
 
+  /**
+   * 진단 다음에 오는 것 — 이 사업이 서 있는 자리.
+   *
+   * 진단만 파는 회사로는 규모가 안 나온다(docs/metri/11_scale.md 의 나눗셈).
+   * 학과가 큰돈을 쓰는 곳은 교육이고, 교육을 파는 쪽은 누구에게 무엇을
+   * 팔아야 하는지 모른다. METRI 는 그 칸을 숫자로 짚는다. 홈에서 이 논지를
+   * 빼면 "검사 하나 파는 회사" 로 읽힌다.
+   */
+  gap: {
+    label: string;
+    heading: string;
+    lead: string;
+    /** 학과 집계가 교육 수요로 좁혀지는 네 칸 */
+    funnel: { value: string; label: string }[];
+    funnelNote: string;
+    /** 도구 갈래별로 가진 것과 없는 것. 회사 이름을 적지 않는다 */
+    matrix: { head: string[]; rows: string[][]; note: string };
+  };
+
   /** PCA가 선택받는 이유 */
   choose: {
     label: string;

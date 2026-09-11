@@ -21,9 +21,9 @@ export const tr: SiteContent = {
   platformUrl: "https://app.metri.io",
 
   meta: {
-    title: "METRI — bölümünüzden işe giden yol",
+    title: "METRI — mühendislik bölümleri, işe alan rollere göre okunur",
     description:
-      "Öğrencinin yetkinliklerini gerçek iş ilanlarının aradığı becerilerle karşılaştırır. Hangi pozisyon, hangi sektör, hangi şirket ve önümüzdeki altı ayda ne yapmalı — hepsi tek raporda.",
+      "Makine, elektrik-elektronik ve bilgisayar mühendisliğinde 24 görev kümesi ve 138 yetkinlik, gerçek ilanlarla karşılaştırılır. Kişilik tipi değil: ANSYS 4 üzerinden 2, GD&T karşılanmadı, 132 ilanın 89'unda isteniyor.",
   },
 
   nav: {
@@ -41,17 +41,17 @@ export const tr: SiteContent = {
   },
 
   hero: {
-    eyebrow: "METRI · PERSONALIZED CAREER ANALYSIS",
-    title: ["«Bu bölümle nereye gideceğim?» sorusuna", "{15–20 sayfalık yanıt}"],
+    eyebrow: "METRI · ENGINEERING CAREER INTELLIGENCE",
+    title: ["Mühendisliği seçtiler.", "{Hangi mühendisliği, kimse söylemedi.}"],
     lead:
-      "Bir tip adı söyleyip bitmiyor. Uygun görev alanlarını 100 puanlık ölçekte sıralıyor, altı çalışma tarzını gösteriyor, ardından sektöre, şirkete, eksik beceriye ve önümüzdeki altı ayın planına kadar gidiyor.",
+      "Makine, elektrik-elektronik ve bilgisayar mühendisliği — 24 görev kümesi ve 138 yetkinlik, gerçek ilanlarla karşılaştırılıyor. “İş birlikçisiniz” değil; “Simülasyon ve CAE 80, ANSYS 4 üzerinden 2, bu rolün 132 ilanının 89'unda isteniyor”. 250 sorunun tamamı Türkçe olarak hazır.",
     primary: { label: "Görüşme talep et", href: "/contact" },
     secondary: { label: "Örnek raporu gör", href: "#sample" },
     watermark: "METRI",
     proof: [
-      { value: "2.346", label: "mezun verisiyle tasarlandı" },
-      { value: "428", label: "iş ilanı analizi" },
-      { value: "48", label: "sektör uzmanı incelemesi" },
+      { value: "250", label: "soru, Türkçe olarak hazır" },
+      { value: "24", label: "mühendislik görev kümesi" },
+      { value: "138", label: "yetkinlik haritası" },
       { value: "3", label: "telif tescili" },
     ],
   },
@@ -78,18 +78,23 @@ export const tr: SiteContent = {
     jobsNote:
       "İlk üç alan başvuru stratejisinin temeli olur. Aşağıda kalanların neden aşağıda kaldığı da metinde yazılıdır — öğrenci «ben neden olmuyorum?» diye sormak zorunda kalmaz.",
     jobs: [
-      { name: "Üretim ve operasyon", score: 88 },
-      { name: "Lojistik ve satın alma", score: 81 },
-      { name: "Danışmanlık ve analiz", score: 74 },
-      { name: "BT ve veri", score: 69 },
-      { name: "Finans ve muhasebe", score: 52 },
+      { name: "Tasarım ve Geliştirme", score: 92 },
+      { name: "Otomotiv ve Havacılık", score: 88 },
+      { name: "Araştırma ve Eğitim", score: 79 },
+      { name: "İmalat ve Üretim", score: 74 },
+      { name: "Robotik ve Otomasyon", score: 70 },
+      { name: "BT Entegrasyonu ve Veri Analizi", score: 66 },
+      { name: "Enerji ve Tesis", score: 61 },
+      { name: "İnşaat ve Tesis Yönetimi", score: 48 },
+      { name: "Biyomedikal ve Sağlık Hizmetleri", score: 45 },
+      { name: "Kamu Kurumları ve Diğer Alanlar", score: 41 },
     ],
     styleLabel: "00-2 Çalışma tarzı · altı tip",
     styleTypeLabel: "Baskın tarz",
     styleType: "Kaliteye odaklı · İş birlikçi",
     styleVerdict:
       "Hızdan çok doğruluğu seçen, ekip içinde verimi artan bir tarz. Üretim kalitesi ve test alanları bu tarza yakındır.",
-    styleAxes: ["Bağımsız", "İş birlikçi", "Cesur", "İstikrarlı", "Hızlı", "Kaliteli"],
+    styleAxes: ["Bağımsız", "İş birlikçi", "Meydan okuyan", "İstikrarlı", "Hız odaklı", "Kalite odaklı"],
     styleScores: [58, 82, 61, 74, 47, 88],
     planLabel: "05–06 Önümüzdeki altı ay",
     planNote: "Her satır eksik bir yetkinlikten çıkar. Tamamlandıkça seviye yükselir ve uygunluk yeniden hesaplanır.",
@@ -161,24 +166,57 @@ export const tr: SiteContent = {
   },
 
   who: {
-    label: "SORUN",
-    heading: "Bölüm seçildi. Sonrası?",
+    label: "KİMLER İÇİN",
+    heading: "METRI'yi Türkiye'ye kim getirir",
     items: [
-      { no: "01", title: "Hangi pozisyona hazırlanmalıyım?", body: "Bölüm bir, pozisyon onlarca. Hangisi bana uyar?", tag: "Pozisyon" },
-      { no: "02", title: "Hangi proje gerekli?", body: "CV'ye ne yazacağım? Hangi deneyim ağır basar?", tag: "Proje" },
-      { no: "03", title: "Hangi sertifika gerekli?", body: "Zaman kısıtlı. Hangisi gerçekten aranıyor?", tag: "Sertifika" },
-      { no: "04", title: "Mülakatta ne anlatacağım?", body: "«Neden bu pozisyon?» sorusuna gerekçe lazım.", tag: "Mülakat" },
+      {
+        no: "01",
+        title: "Mühendislik fakülteleri ve bölümleri",
+        body: "“Kariyer merkezi bir kişilik tipi veriyor. Makine mühendisliği öğrencisi hâlâ tasarımı, CAE'yi ve süreç mühendisliğini birbirinden ayıramıyor.”",
+        tag: "Güven aralığıyla birlikte görev kümesi uyumu",
+      },
+      {
+        no: "02",
+        title: "Bakanlıklar ve konsorsiyumlar",
+        body: "“Kaç kişinin katıldığını raporlayabiliyoruz. Sınıfın hangi yetkinlikte eksik olduğunu raporlayamıyoruz.”",
+        tag: "Bütçe kalemine yazılabilecek sınıf açıkları",
+      },
+      {
+        no: "03",
+        title: "Yerel iş ortakları",
+        body: "“Üniversite ilişkilerimiz var. Satmaya değer bir mühendislik ölçüm aracımız yok.”",
+        tag: "Kendi markanızla işletin",
+      },
     ],
   },
 
   analyze: {
-    label: "ÜÇ BOYUT",
-    heading: "METRI üç şeyi birlikte analiz eder",
-    lead: "Ayrı ayrı değil, birbirine bağlayarak.",
+    label: "NE OKUR",
+    heading: "Üç katman — ve yalnızca ilki bir ankettir",
+    lead:
+      "İlgi ölçülür. Yetkinlik sorulmaz; alınan dersler, sertifikalar ve projelerden hesaplanır. İkisini ayrı tutmak işin özüdür: CAE yapmak istemek ile CAE yapabilmek farklı olgulardır, ikisini karıştıran bir rapor uygulanamaz.",
     items: [
-      { no: "01", kicker: "POZİSYON", title: "Uygun görev alanları", body: "Her alan 100 puanlık ölçekte sıralanır. Neden yüksek, neden düşük olduğu yazılır." },
-      { no: "02", kicker: "TARZ", title: "Altı çalışma tarzı", body: "Bağımsız, iş birlikçi, cesur, istikrarlı, hızlı, kaliteli. Altıgenle gösterilir." },
-      { no: "03", kicker: "PLAN", title: "Uygulanabilir plan", body: "Sertifika, proje, portfolyo, CV, mülakat ve bölgedeki şirketler." },
+      {
+        no: "01",
+        kicker: "ÖLÇÜLÜR",
+        title: "On mühendislik iş alanı, sekiz faaliyet ekseni",
+        body:
+          "250 soru, iş alanı başına 25. Tasarım, imalat, enerji ve tesis, otomotiv ve havacılık, robotik, BT entegrasyonu, inşaat, araştırma, biyomedikal, kamu. Bu on alan sekiz faaliyet eksenine katlanır — analiz, tasarım, üretim ve test, programlama, saha ve tesis, iyileştirme, araştırma, koordinasyon — ve bu sekizi Seul'de de Ankara'da da aynı şeyi ifade eder.",
+      },
+      {
+        no: "02",
+        kicker: "ÖLÇÜLÜR",
+        title: "Altı çalışma tarzı, aynı soruların içinde",
+        body:
+          "250 sorunun 120'si, adını anmadan bir çalışma tarzı sinyali taşır. Bağımsız, iş birlikçi, meydan okuyan, istikrarlı, hız odaklı, kalite odaklı. Önemli olan mutlak yükseklik değil, hangisinin hangisinin üstünde olduğudur — aynı öğrenci süreç kalitesinde bir kazanç, sprint ekibinde bir yüktür.",
+      },
+      {
+        no: "03",
+        kicker: "HESAPLANIR",
+        title: "Sahip olunan yetkinlik, yalnızca kanıttan",
+        body:
+          "Geçilen bir ders, alınan bir sertifika, tamamlanan bir proje — her biri kendi ağırlığını ve güvenilirliğini taşır; toplam 0–5 arası bir seviyeye dönüşür. Öğrenciye kendi ANSYS'ini sorarsanız herkes üç der. Kanıt yoksa rapor tahmin etmez, “yok” yazar.",
+      },
     ],
   },
 
@@ -283,9 +321,16 @@ export const tr: SiteContent = {
     ],
     more: "Kalan bölümler tam raporda.",
     disclaimer: "Örnek veridir. Gerçek bir öğrencinin materyali değildir.",
-    jobAxes: ["Üretim", "Lojistik", "Danışmanlık", "BT ve veri", "Finans", "Pazarlama"],
-    styleAxes: ["Bağımsız", "İş birlikçi", "Cesur", "İstikrarlı", "Hızlı", "Kaliteli"],
-    jobScores: [88, 81, 74, 69, 52, 48],
+    jobAxes: [
+      "Simülasyon ve CAE",
+      "Makine tasarımı",
+      "Süreç mühendisliği",
+      "Kalite ve güvenilirlik",
+      "Robotik ve otomasyon",
+      "Yarı iletken ekipmanı",
+    ],
+    styleAxes: ["Bağımsız", "İş birlikçi", "Meydan okuyan", "İstikrarlı", "Hız odaklı", "Kalite odaklı"],
+    jobScores: [80, 73, 60, 65, 67, 61],
     styleScores: [58, 82, 61, 74, 47, 88],
   },
 
@@ -337,14 +382,57 @@ export const tr: SiteContent = {
     },
   },
 
+  gap: {
+    label: "DEĞERLENDİRMEDEN SONRA",
+    heading: "Değerlendirme giriştir. Pahalı sorun onun arkasında durur.",
+    lead:
+      "Bir bölüm eğitim bütçesini harcarken en az bildiği şey, kime hangi eğitimin gerektiğidir. Rafa 300 kurs koyarsanız koordinatör sezgiyle seçer. METRI o hücreyi bir sayıyla adlandırır.",
+    funnel: [
+      { value: "487", label: "bir makine mühendisliği bölümünün öğrencisi" },
+      { value: "%31", label: "GD&T gerekli seviyesini karşılıyor" },
+      { value: "%67", label: "1.240 bölgesel ilanın GD&T istediği oran" },
+      { value: "372", label: "kesişim — bu eğitime ihtiyacı olan öğrenciler" },
+    ],
+    funnelNote:
+      "Son sayı teklifin kendisidir. Bölüm, çözümü seçmeden önce sorunu zaten kabul etmiştir; bu, soğuk bir teklifle aynı şey değildir. Yukarıdaki sayılar hesabın nasıl işlediğini gösterir, gerçek bir bölümün verisi değildir.",
+    matrix: {
+      head: ["Araç türü", "Sahip olduğu", "Eksik olanı"],
+      rows: [
+        ["İşgücü piyasası uyum analitiği", "Müfredatın bölgesel talebe göre ölçülmesi", "Bireysel öğrenci yok"],
+        ["Bireysel beceri eşleştirme hizmetleri", "Kişisel becerilerin ilanlarla eşleşmesi", "Bölüm düzeyinde toplam yok"],
+        ["Ulusal yetkinlik çerçeveleri", "Standart rol ve beceri sözlüğü", "Öğrenci değerlendirmesi yok"],
+        ["Ücretsiz kamu kariyer testleri", "Ücretsiz, herkese açık", "Ne mühendislik odağı ne de sınıf görünümü var"],
+        ["Mesleki eğitim platformları", "Yüzlerce kurs ve üniversite kanalı", "Teşhis yok — kime satacağını bilmiyor"],
+        ["METRI", "Bireysel değerlendirme → bölüm toplamı → adlandırılmış eğitim talebi", "Eğitimi iş ortaklarıyla veriyoruz"],
+      ],
+      note:
+        "Şirket adı yerine araç türlerini yazdık. Her biri kendi işini iyi yapıyor; boş olan, bu beşinin buluştuğu hücre.",
+    },
+  },
   choose: {
     label: "NEDEN METRI",
-    heading: "Dört neden",
+    heading: "Kurumlar genel bir kariyer testi yerine neden bunu seçiyor",
     items: [
-      { title: "Öneriyle bitmez", body: "Pozisyondan sonra sektör, şirket, eksik beceri ve plan gelir." },
-      { title: "Puan açıklanır", body: "«Neden 80 puan?» dendiğinde hesap ekranda açılır." },
-      { title: "Bölgeye bağlanır", body: "Merkezdeki değil, kampüsün bulunduğu bölgedeki şirketler gösterilir." },
-      { title: "Bölüme toplu görünüm", body: "Bireysel rapor ile anonim toplam aynı anda çıkar." },
+      {
+        title: "Mühendisliğe özgü, mühendisliğe komşu değil",
+        body:
+          "Genel kariyer testleri “teknik alan” deyip biter. METRI makine tasarımını yapısal analizden, süreç mühendisliğinden ve ekipman mühendisliğinden ayırır; çünkü bu dördü farklı işe alır, farklı öder ve farklı yazılım ister.",
+      },
+      {
+        title: "Yeniden hesaplayabileceğiniz puanlar",
+        body:
+          "Her ağırlık kodda değil, bir tabloda durur. Bölüme formülü verirsiniz, aynı 82'ye varır. Kimsenin yeniden üretemediği bir puan satın alma incelemesinden geçmez.",
+      },
+      {
+        title: "Sahte kesinlik değil, aralık",
+        body:
+          "Aynı şıkkın üst üste işaretlenmesi, aceleye gelen yanıtlar ve kaçırılan dikkat kontrolleri puanı sessizce düşürmez; güven aralığını genişletir. İki rol çakışıyorsa rapor bunu söyler, sıralama uydurmaz.",
+      },
+      {
+        title: "Türkçesi hazır",
+        body:
+          "250 sorunun tamamı Türkçe olarak mevcut; Korece ve İngilizce sürümlerle birebir aynı sorulardır. Sekiz faaliyet ekseni tasarımı gereği ülkeden bağımsızdır. Yerelleştirilen ölçüm aracı değil, işgücü piyasası katmanıdır — ilanlar, işverenler, belgeler.",
+      },
     ],
   },
 
