@@ -379,6 +379,32 @@ export const UI = {
   payGoTest: d("검사 시작하기", "Start the assessment", "Değerlendirmeye başla"),
   payNotSold: d("판매하지 않는 상품입니다", "This product is not on sale", "Bu ürün satışta değil"),
 
+  // 탈퇴·파기
+  erTitle: d("회원 탈퇴", "Close your account", "Hesabınızı kapatın"),
+  erLead: d(
+    "탈퇴하면 이름·이메일·아이디를 지워 누구였는지 알 수 없게 만듭니다. 되돌릴 수 없습니다.",
+    "Closing your account erases your name, email and ID so you can no longer be identified. This cannot be undone.",
+    "Hesabı kapatmak adınızı, e-postanızı ve kimliğinizi siler; artık tanınamazsınız. Geri alınamaz.",
+  ),
+  erWhyKeep: d(
+    "결제 기록은 법이 5년간 보관하도록 정하고 있어 남습니다. 다만 그 기록에서 사람을 알아볼 수는 없습니다.",
+    "Payment records stay because the law requires keeping them for five years. They no longer identify you.",
+    "Ödeme kayıtları yasa gereği beş yıl saklanır. Bu kayıtlardan kimliğiniz anlaşılmaz.",
+  ),
+  erRemoveTitle: d("지우는 것", "What is erased", "Silinenler"),
+  erKeepTitle: d("남는 것", "What is kept", "Saklananlar"),
+  erConfirmLabel: d(
+    "확인을 위해 아래 칸에 {word} 라고 적어 주세요.",
+    "Type {word} below to confirm.",
+    "Onaylamak için aşağıya {word} yazın.",
+  ),
+  erConfirmWord: d("탈퇴", "DELETE", "SİL"),
+  erSubmit: d("탈퇴하기", "Close account", "Hesabı kapat"),
+  erWorking: d("처리 중…", "Working…", "İşleniyor…"),
+  erMismatch: d("적으신 말이 다릅니다.", "That does not match.", "Yazdığınız eşleşmiyor."),
+  erDone: d("탈퇴가 끝났습니다.", "Your account is closed.", "Hesabınız kapatıldı."),
+  erAccount: d("계정", "Account", "Hesap"),
+
   // 상품 이름. 주문서에 찍히는 이름이라 결제 화면과 같은 말이어야 한다.
   prodREPORT_UNIV: d(
     "METRI 진로 결과지 (대학)",

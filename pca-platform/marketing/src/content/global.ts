@@ -20,6 +20,25 @@ export const global: SiteContent = {
       "Twenty-four engineering job clusters and 138 competencies across mechanical, electrical and computer engineering, checked against real postings. Not a personality type — ANSYS held 2 of 4, GD&T not met, asked for in 89 of 132 postings.",
   },
 
+  legal: {
+    company: "",
+    ceo: "",
+    address: "",
+    tel: "",
+    email: "",
+    bizNo: "",
+    mailOrderNo: "",
+    jobInfoNo: "J1700020220007",
+    privacyOfficer: "",
+    labels: {
+      heading: "Business information",
+      company: "Company", ceo: "Representative", address: "Address", tel: "Phone",
+      email: "Email", bizNo: "Business registration no.", mailOrderNo: "Mail-order licence no.",
+      jobInfoNo: "Career information provider no.", privacyOfficer: "Privacy officer",
+      unset: "to be confirmed",
+    },
+    links: { terms: "Terms", privacy: "Privacy", refund: "Refunds" },
+  },
   nav: {
     items: [
       { label: "PCA", href: "/pca" },

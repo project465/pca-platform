@@ -25,6 +25,25 @@ export const kz: SiteContent = {
       "Машина жасау, электроника және компьютерлік инженерия бойынша 24 лауазым тобы мен 138 құзырет нақты хабарландырулармен салыстырылады. Тұлға типі емес: ANSYS 4-тен 2, GD&T талапқа сай емес, 132 хабарландырудың 89-ында сұралады.",
   },
 
+  legal: {
+    company: "",
+    ceo: "",
+    address: "",
+    tel: "",
+    email: "",
+    bizNo: "",
+    mailOrderNo: "",
+    jobInfoNo: "J1700020220007",
+    privacyOfficer: "",
+    labels: {
+      heading: "Кәсіпкер туралы мәлімет",
+      company: "Атауы", ceo: "Басшы", address: "Мекенжай", tel: "Телефон",
+      email: "Email", bizNo: "Тіркеу нөмірі", mailOrderNo: "Сауда лицензиясы",
+      jobInfoNo: "Кәсіби ақпарат нөмірі", privacyOfficer: "Дербес деректер жауаптысы",
+      unset: "нақтылау қажет",
+    },
+    links: { terms: "Шарттар", privacy: "Құпиялылық", refund: "Қайтару" },
+  },
   nav: {
     items: [
       { label: "METRI", href: "/pca" },

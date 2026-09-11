@@ -26,6 +26,25 @@ export const tr: SiteContent = {
       "Makine, elektrik-elektronik ve bilgisayar mühendisliğinde 24 görev kümesi ve 138 yetkinlik, gerçek ilanlarla karşılaştırılır. Kişilik tipi değil: ANSYS 4 üzerinden 2, GD&T karşılanmadı, 132 ilanın 89'unda isteniyor.",
   },
 
+  legal: {
+    company: "",
+    ceo: "",
+    address: "",
+    tel: "",
+    email: "",
+    bizNo: "",
+    mailOrderNo: "",
+    jobInfoNo: "J1700020220007",
+    privacyOfficer: "",
+    labels: {
+      heading: "İşletme bilgileri",
+      company: "Unvan", ceo: "Yetkili", address: "Adres", tel: "Telefon",
+      email: "E-posta", bizNo: "Vergi/Sicil no.", mailOrderNo: "Mesafeli satış no.",
+      jobInfoNo: "Kariyer bilgi sağlayıcı no.", privacyOfficer: "Veri sorumlusu",
+      unset: "doğrulanmalı",
+    },
+    links: { terms: "Şartlar", privacy: "Gizlilik", refund: "İade" },
+  },
   nav: {
     items: [
       { label: "METRI", href: "/pca" },

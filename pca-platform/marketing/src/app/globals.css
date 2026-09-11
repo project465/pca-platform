@@ -874,3 +874,34 @@ section { padding-block: clamp(60px, 8vw, 108px); }
   .matrix { min-width: 560px; }
 }
 .planctas { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* ---------- 전자상거래법 표시 ---------- */
+.legal { margin-top: 34px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.14); }
+.legal h4 { font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; opacity: .62; margin-bottom: 12px; }
+.legal dl { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px 26px; }
+.legal dl > div { display: flex; gap: 8px; font-size: 12.5px; line-height: 1.5; }
+.legal dt { opacity: .55; white-space: nowrap; }
+.legal dd { opacity: .9; }
+.legal dd.unset {
+  /* 비어 있는 값은 눈에 띄어야 한다. 빈칸으로 두면 그대로 런칭된다 */
+  color: var(--gold-hi); font-weight: 700;
+  border-bottom: 1px dashed currentColor;
+}
+.legal-links { margin-top: 16px; display: flex; gap: 18px; flex-wrap: wrap; font-size: 12.5px; }
+.legal-links a { text-decoration: underline; text-underline-offset: 2px; }
+@media (max-width: 760px) { .legal dl { grid-template-columns: 1fr; } }
+
+/* ---------- 약관·방침 ---------- */
+.policy { max-width: 74ch; display: flex; flex-direction: column; gap: 30px; }
+.policy article h2 {
+  font-size: 17px; font-weight: 800; letter-spacing: -.02em;
+  display: flex; gap: 12px; align-items: baseline; margin-bottom: 12px;
+}
+.policy article h2 span { font-size: 11.5px; color: var(--muted); font-weight: 800; }
+.policy p { font-size: 14.5px; line-height: 1.75; color: var(--ink-2); margin-bottom: 10px; }
+.policy ul { margin: 6px 0 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; }
+.policy li { font-size: 14px; line-height: 1.65; color: var(--ink-2); }
+.reviewnote {
+  background: var(--gold-soft); border: 1px solid var(--gold-line); color: #6B4E02;
+  padding: 14px 16px; font-size: 13.5px; line-height: 1.65; max-width: 78ch;
+}

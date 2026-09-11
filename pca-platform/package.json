@@ -15,7 +15,8 @@
     "metri:check": "tsx scripts/metri/e2e-check.ts",
     "metri:evidence": "tsx scripts/metri/evidence-check.ts",
     "metri:org": "tsx scripts/metri/org-check.ts",
-    "metri:pay": "tsx scripts/metri/pay-check.ts"
+    "metri:pay": "tsx scripts/metri/pay-check.ts",
+    "metri:erase": "tsx scripts/metri/erase-check.ts"
   },
   "dependencies": {
     "bcryptjs": "3.0.2",

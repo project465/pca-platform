@@ -223,6 +223,41 @@ export type Sample = {
   cta: { line: string; sub: string; primary: Link; secondary: Link };
 };
 
+/**
+ * 법이 게시하라고 정한 것.
+ *
+ * 전자상거래법 제10조는 온라인으로 대금을 받는 사업자에게 상호·대표자·주소·
+ * 전화·이메일·사업자등록번호·통신판매업 신고번호를 "소비자가 알아보기 쉽게"
+ * 표시하도록 한다. 없으면 과태료 대상이고, PG 가맹점 심사에서도 이것부터 본다.
+ *
+ * 값을 지어내면 안 된다. 비어 있으면 화면이 "확인 필요" 로 표시해 눈에 띄게
+ * 한다 — 조용히 빈칸으로 두면 그대로 런칭된다.
+ */
+export type LegalInfo = {
+  /** 상호 */
+  company: string;
+  /** 대표자 성명 */
+  ceo: string;
+  /** 영업소 소재지 */
+  address: string;
+  tel: string;
+  email: string;
+  /** 사업자등록번호 */
+  bizNo: string;
+  /** 통신판매업 신고번호 */
+  mailOrderNo: string;
+  /** 직업정보제공사업 신고번호 */
+  jobInfoNo: string;
+  /** 개인정보 보호책임자 */
+  privacyOfficer: string;
+  labels: {
+    company: string; ceo: string; address: string; tel: string; email: string;
+    bizNo: string; mailOrderNo: string; jobInfoNo: string; privacyOfficer: string;
+    heading: string; unset: string;
+  };
+  links: { terms: string; privacy: string; refund: string };
+};
+
 export type SiteContent = {
   key: SiteKey;
   lang: string;
@@ -233,6 +268,9 @@ export type SiteContent = {
   platformUrl: string;
 
   meta: { title: string; description: string };
+
+  /** 전자상거래법 제10조 표시 의무. 결제를 받는 나라에서는 비워 두면 안 된다 */
+  legal: LegalInfo;
 
   nav: {
     items: Link[];

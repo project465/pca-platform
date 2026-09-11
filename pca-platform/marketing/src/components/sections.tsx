@@ -406,8 +406,54 @@ export function SiteFooter({ site }: { site: SiteContent }) {
             </ul>
           </div>
         </div>
+
+        <LegalBlock site={site} />
       </div>
     </footer>
+  );
+}
+
+/**
+ * 전자상거래법 제10조 표시.
+ *
+ * 온라인으로 대금을 받으려면 상호·대표자·주소·전화·이메일·사업자등록번호·
+ * 통신판매업 신고번호를 소비자가 알아보기 쉽게 적어야 한다. PG 가맹점 심사도
+ * 이 화면부터 본다.
+ *
+ * 값이 비어 있으면 조용히 빈칸으로 두지 않고 "확인 필요" 라고 찍는다.
+ * 빈칸은 눈에 안 띄고, 눈에 안 띄면 그대로 런칭된다.
+ */
+function LegalBlock({ site }: { site: SiteContent }) {
+  const l = site.legal;
+  const rows: [string, string][] = [
+    [l.labels.company, l.company],
+    [l.labels.ceo, l.ceo],
+    [l.labels.address, l.address],
+    [l.labels.tel, l.tel],
+    [l.labels.email, l.email],
+    [l.labels.bizNo, l.bizNo],
+    [l.labels.mailOrderNo, l.mailOrderNo],
+    [l.labels.jobInfoNo, l.jobInfoNo],
+    [l.labels.privacyOfficer, l.privacyOfficer],
+  ];
+
+  return (
+    <div className="legal">
+      <h4>{l.labels.heading}</h4>
+      <dl>
+        {rows.map(([label, value]) => (
+          <div key={label}>
+            <dt>{label}</dt>
+            <dd className={value ? undefined : "unset"}>{value || l.labels.unset}</dd>
+          </div>
+        ))}
+      </dl>
+      <p className="legal-links">
+        <a href="/terms">{l.links.terms}</a>
+        <a href="/privacy">{l.links.privacy}</a>
+        <a href="/refund">{l.links.refund}</a>
+      </p>
+    </div>
   );
 }
 

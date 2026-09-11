@@ -19,6 +19,27 @@ export const kr: SiteContent = {
       "기계·전기전자·컴퓨터 세 전공의 직무군 24개와 역량 138개를 실제 채용공고에 대조합니다. 성향 유형이 아니라 ANSYS 2레벨·GD&T 미충족처럼 확인 가능한 값으로 냅니다.",
   },
 
+  legal: {
+    // ⚠ 아래 다섯 칸은 실제 값으로 채워야 결제를 받을 수 있다.
+    //    지어내지 않았다. 비어 있으면 화면이 "확인 필요" 로 표시한다.
+    company: "",
+    ceo: "",
+    address: "",
+    tel: "",
+    email: "",
+    bizNo: "",
+    mailOrderNo: "",
+    jobInfoNo: "J1700020220007",
+    privacyOfficer: "",
+    labels: {
+      heading: "사업자 정보",
+      company: "상호", ceo: "대표자", address: "주소", tel: "전화",
+      email: "이메일", bizNo: "사업자등록번호", mailOrderNo: "통신판매업 신고번호",
+      jobInfoNo: "직업정보제공사업 신고번호", privacyOfficer: "개인정보 보호책임자",
+      unset: "확인 필요",
+    },
+    links: { terms: "이용약관", privacy: "개인정보처리방침", refund: "환불 정책" },
+  },
   nav: {
     items: [
       { label: "결과지", href: "/pca" },

@@ -44,6 +44,7 @@ export default async function StudentHome({
         <span className="brand">{t("brand", lang)}</span>
         <div className="who">
           <LangSwitch current={lang} />
+          <Link href="/my/account">{t("erAccount", lang)}</Link>
           <span>{user.name}</span>
           <LogoutButton />
         </div>

@@ -818,3 +818,41 @@ ALTER TABLE seats ADD CONSTRAINT seats_order_id_fkey
 --
 -- 익명화 절차는 아직 만들지 않았다. 만들기 전까지 회원 삭제를 운영에서
 -- 쓰지 말 것. 위 제약들은 그 절차를 만들 때 막히지 않게 미리 풀어둔 것이다.
+
+
+-- ============================================================
+--  25. 파기 — 지우는 것이 아니라 사람을 떼어내는 것
+--
+--  두 법이 반대 방향으로 당긴다.
+--    개인정보보호법 제21조   보유기간이 끝나거나 본인이 요구하면 지체 없이 파기
+--    전자상거래법 제6조·시행령 제6조  대금결제·재화공급 기록은 5년 보존
+--
+--  그래서 하드 딜리트가 답이 아니다. users 행에서 사람을 알아볼 수 있는 값만
+--  지우고(익명화), 거래 기록은 그대로 둔다. 익명화가 끝나면 남은 행은
+--  개인정보가 아니므로 5년 보존과 부딪히지 않는다.
+--
+--  같은 원칙으로 검사 응답과 점수도 남긴다 — 사람과 이어지지 않는 숫자는
+--  규준(norm)을 만드는 근거이고, 지우면 그 해 학과 집계가 뒤늦게 흔들린다.
+--  대신 자유입력이 섞인 것(증거 이름)과 준식별자(학교·지역·소속)는 지운다.
+--  "기계공학과 3학년 대전 거주" 세 칸이면 사람이 좁혀진다.
+-- ============================================================
+
+ALTER TABLE users ADD COLUMN IF NOT EXISTS erased_at TIMESTAMPTZ;
+COMMENT ON COLUMN users.erased_at IS
+  '익명화한 시각. 이 값이 있으면 로그인할 수 없고 화면에 "탈퇴한 회원" 으로 나온다';
+
+CREATE INDEX IF NOT EXISTS idx_users_erased ON users(erased_at) WHERE erased_at IS NOT NULL;
+
+CREATE TABLE IF NOT EXISTS erasure_log (
+  id           BIGSERIAL PRIMARY KEY,
+  user_id      BIGINT REFERENCES users(id) ON DELETE SET NULL,
+  requested_by TEXT NOT NULL,            -- self | admin
+  reason       TEXT,                     -- withdraw | retention | request
+  removed      JSONB NOT NULL,           -- 무엇을 몇 행 지웠는지
+  kept         JSONB NOT NULL,           -- 무엇을 왜 남겼는지
+  erased_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+COMMENT ON TABLE erasure_log IS
+  '파기했다는 사실 자체는 증명할 수 있어야 한다(개인정보보호법 제21조 제3항).
+   그런데 이 표에 개인정보를 또 남기면 파기가 아니다 — 그래서 이름도 이메일도
+   담지 않고, 어떤 표에서 몇 행이 지워졌는지 숫자만 남긴다';
