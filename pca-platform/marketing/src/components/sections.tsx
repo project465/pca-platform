@@ -1,5 +1,6 @@
 import Radar from "@/components/radar";
 import type { SiteContent } from "@/content";
+import { platformStart } from "@/lib/platform";
 
 export function Who({ site }: { site: SiteContent }) {
   const w = site.who;
@@ -81,9 +82,17 @@ export function ChannelsSection({ site }: { site: SiteContent }) {
                 ))}
               </ul>
               <p className="note">{it.unit}</p>
-              <a className={`btn${it.key === "campus" ? " solid" : ""}`} href={it.cta.href}>
-                {it.cta.label}
-              </a>
+              <div className="planctas">
+                <a className={`btn${it.key === "campus" ? " solid" : ""}`} href={it.cta.href}>
+                  {it.cta.label}
+                </a>
+                {/* 개인은 상담이 필요 없다. 바로 들어가 결제하고 응시한다 */}
+                {it.key === "individual" && (
+                  <a className="btn solid" href={platformStart(site)}>
+                    {site.nav.start}
+                  </a>
+                )}
+              </div>
             </div>
           ))}
         </div>

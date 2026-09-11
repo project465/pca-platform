@@ -706,3 +706,34 @@ td .sub { display: block; font-size: 12.5px; color: var(--muted); }
 .reissue-err { color: var(--gap); display: block; margin-top: 4px; }
 .roster-form .field input[type="file"] { font-size: 13.5px; padding: 8px 0; border: 0; }
 .roster-form .field { width: 100%; }
+
+/* ---------- 명단 찾기와 쪽 나누기 ---------- */
+.rosterfind {
+  display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.rosterfind input[type="search"], .rosterfind select {
+  font: inherit; font-size: 14px; padding: 9px 12px;
+  border: 1px solid var(--rule); background: var(--paper); color: var(--ink);
+}
+.rosterfind input[type="search"] { flex: 1; min-width: 200px; }
+.rosterfind-num { font-size: 13px; color: var(--muted); margin-left: auto; }
+
+.pager { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; margin-top: 16px; }
+.pager a {
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  padding: 6px 11px; border: 1px solid var(--rule); color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.pager a:hover { border-color: var(--ink); color: var(--ink); }
+.pager a.on { background: var(--ink); border-color: var(--ink); color: #fff; }
+.pager-num { font-size: 12.5px; color: var(--muted); margin-left: auto; font-variant-numeric: tabular-nums; }
+
+@media (max-width: 620px) {
+  .rosterfind-num, .pager-num { margin-left: 0; flex-basis: 100%; }
+}
+.panel-foot { margin-top: 14px; font-size: 13px; color: var(--muted); }
+.panel-foot a { font-weight: 700; color: var(--ink); }
+.act.full { width: 100%; }
+.field .err { font-size: 12.5px; color: var(--gap); font-weight: 700; }
+.foot-links { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 18px; font-size: 13px; }

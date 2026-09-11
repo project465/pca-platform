@@ -39,3 +39,16 @@ export function fieldErrors(err: z.ZodError): FieldErrors {
   }
   return out;
 }
+
+/**
+ * 개인 회원가입.
+ *
+ * 기관 계정은 관리자가 발급하지만 개인은 스스로 만든다(2026-09-10 결정).
+ * 결제 화면에서 로그인을 요구하면 처음 온 사람이 거기서 막히므로,
+ * 가입과 결제가 한 줄로 이어져야 한다.
+ */
+export const signupSchema = z.object({
+  email: z.string().trim().toLowerCase().email("이메일 형식이 아닙니다.").max(190),
+  name: z.string().trim().min(1, "이름을 적어 주세요.").max(60),
+  password: passwordSchema,
+});

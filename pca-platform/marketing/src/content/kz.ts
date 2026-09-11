@@ -37,6 +37,7 @@ export const kz: SiteContent = {
     contact: "Кеңес алу",
     menu: "Мәзір",
     floating: "Сұрау",
+    start: "Бастау",
   },
 
   hero: {

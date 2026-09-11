@@ -234,7 +234,14 @@ export type SiteContent = {
 
   meta: { title: string; description: string };
 
-  nav: { items: Link[]; contact: string; menu: string; floating: string };
+  nav: {
+    items: Link[];
+    contact: string;
+    menu: string;
+    floating: string;
+    /** 플랫폼으로 들어가는 버튼. 소개만 읽고 나가지 않게 헤더에 둔다 */
+    start: string;
+  };
 
   hero: {
     eyebrow: string;

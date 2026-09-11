@@ -2,6 +2,8 @@ import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import { settlePayment } from "@/lib/orders";
 import { paymentProvider } from "@/lib/payments";
+import { t } from "@/lib/locale";
+import { resolveLang } from "@/lib/locale-server";
 
 export const metadata = { title: "결제 결과 — METRI" };
 
@@ -14,10 +16,17 @@ export const metadata = { title: "결제 결과 — METRI" };
 export default async function CompletePage({
   searchParams,
 }: {
-  searchParams: Promise<{ order?: string; paymentId?: string; code?: string; message?: string }>;
+  searchParams: Promise<{
+    order?: string;
+    paymentId?: string;
+    code?: string;
+    message?: string;
+    lang?: string;
+  }>;
 }) {
   await requireUser();
   const sp = await searchParams;
+  const lang = await resolveLang(sp.lang);
 
   // PortOne 은 paymentId 를, mock 은 order 를 돌려준다
   const key =
@@ -28,10 +37,10 @@ export default async function CompletePage({
     return (
       <main className="main">
         <div className="empty">
-          <b>결제가 완료되지 않았습니다</b>
-          {sp.message ?? "결제창에서 취소되었습니다."}
-          <Link className="btn" href="/checkout">
-            다시 시도하기
+          <b>{t("payFailTitle", lang)}</b>
+          {sp.message ?? ""}
+          <Link className="act" href="/checkout">
+            {t("payGo", lang)}
           </Link>
         </div>
       </main>
@@ -42,8 +51,7 @@ export default async function CompletePage({
     return (
       <main className="main">
         <div className="empty">
-          <b>결제 정보를 찾을 수 없습니다</b>
-          주문 화면에서 다시 시작해 주세요.
+          <b>{t("payFailTitle", lang)}</b>
         </div>
       </main>
     );
@@ -56,27 +64,22 @@ export default async function CompletePage({
       <div className="paywrap">
         {result.ok ? (
           <>
-            <h1>결제가 완료되었습니다</h1>
+            <h1>{t("payDoneTitle", lang)}</h1>
             <p className="paydone">
-              주문번호 <b>{result.orderNo}</b>
+              <b>{result.orderNo}</b>
               <br />
-              응시권 1개가 발급되었습니다.
-              {result.alreadyDone ? " (이미 처리된 결제입니다)" : null}
+              {t("payDoneBody", lang)}
             </p>
-            <Link className="btn solid lg" href="/my">
-              검사 시작하기
+            <Link className="act solid" href="/test">
+              {t("payGoTest", lang)}
             </Link>
           </>
         ) : (
           <>
-            <h1>결제를 확인하지 못했습니다</h1>
+            <h1>{t("payFailTitle", lang)}</h1>
             <p className="err">{result.reason}</p>
-            <p className="paynote-p">
-              이미 결제하셨다면 잠시 후 자동으로 처리됩니다. 계속 문제가 있으면 주문번호와 함께
-              문의해 주세요.
-            </p>
-            <Link className="btn" href="/my">
-              내 검사로
+            <Link className="act" href="/my">
+              {t("repBack", lang)}
             </Link>
           </>
         )}

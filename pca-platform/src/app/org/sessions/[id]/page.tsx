@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireRole } from "@/lib/session";
-import { canManage, canRead } from "@/lib/org";
+import { canManage, canRead, rosterOf, ROSTER_PAGE } from "@/lib/org";
 import { query, queryOne } from "@/lib/db";
 import RosterPanel from "./roster-panel";
 import ReissueButton from "./reissue-button";
@@ -9,9 +9,16 @@ import { release } from "../../actions";
 
 export const metadata = { title: "회차 — METRI" };
 
-export default async function SessionPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function SessionPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ q?: string; status?: string; page?: string }>;
+}) {
   const user = await requireRole(["org_admin", "instructor"]);
   const { id } = await params;
+  const sp = await searchParams;
   if (!(await canRead(user.id, id))) notFound();
   const manage = await canManage(user.id, id);
 
@@ -32,31 +39,13 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
   );
   if (!s) notFound();
 
-  const roster = await query<{
-    user_id: string;
-    name: string;
-    ident: string;
-    status: string;
-    answered: number;
-    total: number;
-    flag: string | null;
-  }>(
-    `SELECT u.id AS user_id, u.display_name AS name,
-            COALESCE(u.login_id, u.email) AS ident,
-            a.status,
-            (SELECT count(*)::int FROM responses r WHERE r.attempt_id = a.id) AS answered,
-            (SELECT count(*)::int FROM questions q WHERE q.instrument_id = ts.instrument_id) AS total,
-            q.flag
-       FROM attempts a
-       JOIN users u ON u.id = a.user_id
-       JOIN test_sessions ts ON ts.id = a.session_id
-       LEFT JOIN attempt_quality q ON q.attempt_id = a.id
-      WHERE a.session_id = $1
-      ORDER BY (a.status = 'scored') DESC, u.display_name`,
-    [id],
-  );
+  const view = await rosterOf(id, {
+    q: sp.q,
+    status: sp.status,
+    page: Number(sp.page) || 1,
+  });
 
-  const scored = roster.filter((r) => r.status === "scored").length;
+  const scored = view.counts.scored;
   const label: Record<string, string> = {
     ready: "시작 전",
     in_progress: "응시 중",
@@ -90,11 +79,11 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
         <div className="statrow">
           <div className="stat">
             <span>명단</span>
-            <b>{roster.length}</b>
+            <b>{view.counts.all}</b>
           </div>
           <div className="stat">
             <span>응시 중·제출</span>
-            <b>{roster.filter((r) => r.status === "in_progress" || r.status === "submitted").length}</b>
+            <b>{view.counts.inProgress}</b>
           </div>
           <div className="stat">
             <span>채점 완료</span>
@@ -102,7 +91,7 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
           </div>
           <div className="stat">
             <span>재확인 권고</span>
-            <b>{roster.filter((r) => r.flag && r.flag !== "ok").length}</b>
+            <b>{view.counts.flagged}</b>
           </div>
         </div>
 
@@ -128,10 +117,52 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
         {manage && <RosterPanel sessionId={s.id} seatsFree={s.seats_free} />}
 
         <h2 className="page-h2">명단과 진행</h2>
-        {roster.length === 0 ? (
+
+        {view.counts.all > 0 && (
+          <>
+            {/* 자바스크립트 없이 도는 GET 폼. 주소에 남아 새로고침·공유가 된다 */}
+            <form className="rosterfind" method="get">
+              <input
+                type="search"
+                name="q"
+                defaultValue={sp.q ?? ""}
+                placeholder="이름 또는 학번으로 찾기"
+                maxLength={60}
+                aria-label="명단 검색"
+              />
+              <select name="status" defaultValue={sp.status ?? "all"} aria-label="상태로 거르기">
+                <option value="all">전체 {view.counts.all}</option>
+                <option value="not_started">아직 시작 안 함 {view.counts.notStarted}</option>
+                <option value="in_progress">응시 중·제출 {view.counts.inProgress}</option>
+                <option value="scored">채점 완료 {view.counts.scored}</option>
+                <option value="flagged">재확인 권고 {view.counts.flagged}</option>
+              </select>
+              <button type="submit" className="act">
+                찾기
+              </button>
+              {(sp.q || (sp.status && sp.status !== "all")) && (
+                <Link className="act" href={`/org/sessions/${s.id}`}>
+                  지우기
+                </Link>
+              )}
+              <span className="rosterfind-num">
+                {view.matched === view.counts.all
+                  ? `${view.counts.all}명`
+                  : `${view.counts.all}명 중 ${view.matched}명`}
+              </span>
+            </form>
+          </>
+        )}
+
+        {view.counts.all === 0 ? (
           <div className="empty">
             <b>명단이 비어 있습니다</b>
-            위에 이름과 학번을 붙여 넣으면 계정이 한 번에 만들어집니다.
+            위에 이름과 학번을 붙여 넣거나 엑셀을 올리면 계정이 한 번에 만들어집니다.
+          </div>
+        ) : view.rows.length === 0 ? (
+          <div className="empty">
+            <b>찾는 학생이 없습니다</b>
+            검색어나 상태를 바꿔 보세요.
           </div>
         ) : (
           <div className="tablewrap">
@@ -147,8 +178,8 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
                 </tr>
               </thead>
               <tbody>
-                {roster.map((r) => (
-                  <tr key={r.user_id}>
+                {view.rows.map((r) => (
+                  <tr key={r.userId}>
                     <td>{r.name}</td>
                     <td className="mono">{r.ident}</td>
                     <td>{label[r.status] ?? r.status}</td>
@@ -168,7 +199,7 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
                     </td>
                     {manage && (
                       <td>
-                        <ReissueButton sessionId={s.id} studentId={r.user_id} name={r.name} />
+                        <ReissueButton sessionId={s.id} studentId={r.userId} name={r.name} />
                       </td>
                     )}
                   </tr>
@@ -176,6 +207,26 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
               </tbody>
             </table>
           </div>
+        )}
+
+        {view.pages > 1 && (
+          <nav className="pager">
+            {Array.from({ length: view.pages }, (_, i) => i + 1).map((n) => {
+              const qs = new URLSearchParams();
+              if (sp.q) qs.set("q", sp.q);
+              if (sp.status && sp.status !== "all") qs.set("status", sp.status);
+              if (n > 1) qs.set("page", String(n));
+              const href = qs.toString() ? `/org/sessions/${s.id}?${qs}` : `/org/sessions/${s.id}`;
+              return (
+                <Link key={n} href={href} className={n === view.page ? "on" : ""}>
+                  {n}
+                </Link>
+              );
+            })}
+            <span className="pager-num">
+              {(view.page - 1) * ROSTER_PAGE + 1}–{Math.min(view.page * ROSTER_PAGE, view.matched)} / {view.matched}
+            </span>
+          </nav>
         )}
       </main>
     </div>

@@ -33,6 +33,7 @@ export const global: SiteContent = {
     contact: "Talk to us",
     menu: "Menu",
     floating: "Contact",
+    start: "Start",
   },
 
   hero: {

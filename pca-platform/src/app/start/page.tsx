@@ -30,7 +30,7 @@ export default async function StartPage({
   const doors = [
     {
       key: "individual",
-      href: "/checkout?product=REPORT_UNIV",
+      href: "/signup?next=%2Fcheckout%3Fproduct%3DREPORT_UNIV&product=REPORT_UNIV",
       title: t("doorIndividual", lang),
       note: t("doorIndividualNote", lang),
       primary: true,

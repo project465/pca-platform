@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useState } from "react";
+import { t, type Lang } from "@/lib/locale";
 import { createOrderAction, mockPayAction, type CheckoutState } from "./actions";
 
 declare global {
@@ -24,11 +25,13 @@ export default function CheckoutForm({
   productCode,
   provider,
   globalReady,
+  lang,
 }: {
   productCode: string;
   provider: string;
   /** 해외 카드 채널이 설정돼 있는가. 없으면 선택지를 열지 않는다 */
   globalReady: boolean;
+  lang: Lang;
 }) {
   const [state, action, pending] = useActionState<CheckoutState, FormData>(createOrderAction, {});
   const [launching, setLaunching] = useState(false);
@@ -106,19 +109,19 @@ export default function CheckoutForm({
       <input type="hidden" name="product" value={productCode} />
 
       <fieldset className="paymethod">
-        <legend>결제 수단</legend>
+        <legend>{t("payMethodLabel", lang)}</legend>
         <label>
           <input type="radio" name="region" value="domestic" defaultChecked />
           <span>
-            <b>국내 카드</b>
-            <em>국내 발급 신용·체크카드</em>
+            <b>{t("payDomestic", lang)}</b>
+            <em>{t("payDomesticNote", lang)}</em>
           </span>
         </label>
         <label className={globalReady ? undefined : "off"}>
           <input type="radio" name="region" value="global" disabled={!globalReady} />
           <span>
-            <b>해외 카드 · Visa · Mastercard</b>
-            <em>{globalReady ? "해외 발급 카드로 결제합니다" : "채널 연동 준비 중입니다"}</em>
+            <b>{t("payGlobal", lang)}</b>
+            <em>{globalReady ? t("payGlobalNote", lang) : t("payGlobalOff", lang)}</em>
           </span>
         </label>
       </fieldset>
@@ -126,7 +129,7 @@ export default function CheckoutForm({
       {state.error ? <p className="err">{state.error}</p> : null}
       {sdkError ? <p className="err">{sdkError}</p> : null}
       <button className="btn solid lg" type="submit" disabled={pending || launching}>
-        {pending || launching ? "결제창을 여는 중…" : "결제하기"}
+        {pending || launching ? t("payOpening", lang) : t("payGo", lang)}
       </button>
     </form>
   );

@@ -27,6 +27,7 @@ export async function loginAction(
     throw e;
   }
 
-  // 역할과 must_reset_pw 에 따라 "/" 가 알아서 갈 곳을 정한다.
-  redirect("/");
+  // 원래 가려던 곳이 있으면 그리로. 없으면 "/" 가 역할을 보고 정한다.
+  const next = String(formData.get("next") ?? "");
+  redirect(next.startsWith("/") && !next.startsWith("//") ? next : "/");
 }

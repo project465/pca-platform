@@ -301,7 +301,102 @@ export const UI = {
     "Nothing yet. Start with one major course you took this term.",
     "Henüz bir şey yok. Bu dönem aldığınız bir bölüm dersiyle başlayın.",
   ),
+
+  // 가입과 결제
+  suTitle: d("가입하고 시작하기", "Create an account", "Hesap oluşturun"),
+  suLead: d(
+    "이메일과 비밀번호만 있으면 됩니다.",
+    "An email and a password are all you need.",
+    "Bir e-posta ve şifre yeterli.",
+  ),
+  suLeadPaid: d(
+    "{item} · {price}. 가입하면 바로 결제 화면으로 넘어갑니다.",
+    "{item} · {price}. You go straight to payment after signing up.",
+    "{item} · {price}. Kaydolduktan sonra doğrudan ödemeye geçersiniz.",
+  ),
+  suName: d("이름", "Name", "Ad"),
+  suEmail: d("이메일", "Email", "E-posta"),
+  suEmailHint: d(
+    "결과지를 다시 열 때 쓰는 아이디입니다.",
+    "This is the ID you use to reopen your report.",
+    "Raporunuzu yeniden açarken kullanacağınız kimliktir.",
+  ),
+  suPassword: d("비밀번호", "Password", "Şifre"),
+  suSubmit: d("가입하고 계속", "Create account and continue", "Hesap oluştur ve devam et"),
+  suWorking: d("만드는 중…", "Creating…", "Oluşturuluyor…"),
+  suHaveAccount: d("이미 계정이 있으신가요?", "Already have an account?", "Hesabınız var mı?"),
+  suFromSchool: d(
+    "학교에서 아이디를 받으셨다면 가입하지 마시고 로그인하세요.",
+    "If your school gave you an ID, sign in instead of signing up.",
+    "Okulunuz size bir kimlik verdiyse kaydolmayın, giriş yapın.",
+  ),
+
+  payTitle: d("결제", "Payment", "Ödeme"),
+  payNote1: d(
+    "결제하면 응시권 1개가 발급됩니다.",
+    "Payment issues one assessment credit.",
+    "Ödeme bir değerlendirme hakkı verir.",
+  ),
+  payNote2: d(
+    "응시를 시작하기 전에는 전액 환불됩니다.",
+    "Full refund any time before you start the assessment.",
+    "Değerlendirmeye başlamadan önce tam iade yapılır.",
+  ),
+  payNote3: d(
+    "결과지는 응시를 마치면 바로 열립니다.",
+    "The report opens as soon as you finish.",
+    "Rapor, testi bitirir bitirmez açılır.",
+  ),
+  payDomestic: d("국내 카드", "Korean card", "Kore kartı"),
+  payDomesticNote: d(
+    "국내에서 발급된 신용·체크카드",
+    "Credit or debit card issued in Korea",
+    "Kore'de verilmiş kredi veya banka kartı",
+  ),
+  payGlobal: d("해외 카드 · Visa · Mastercard", "International card · Visa · Mastercard", "Yurt dışı kart · Visa · Mastercard"),
+  payGlobalNote: d(
+    "해외 발급 카드로 결제합니다",
+    "Pay with a card issued outside Korea",
+    "Kore dışında verilmiş bir kartla ödeyin",
+  ),
+  payGlobalOff: d("채널 연동 준비 중입니다", "This channel is not connected yet", "Bu kanal henüz bağlı değil"),
+  payMethodLabel: d("결제 수단", "Payment method", "Ödeme yöntemi"),
+  payGo: d("결제하기", "Pay", "Öde"),
+  payOpening: d("결제창 여는 중…", "Opening payment…", "Ödeme açılıyor…"),
+  payTestMode: d("테스트 모드", "Test mode", "Test modu"),
+  payTestBody: d(
+    "실제로 결제되지 않습니다.",
+    "No real charge is made.",
+    "Gerçek bir tahsilat yapılmaz.",
+  ),
+  payDoneTitle: d("결제가 끝났습니다", "Payment complete", "Ödeme tamamlandı"),
+  payDoneBody: d(
+    "응시권이 발급됐습니다. 지금 바로 시작하실 수 있습니다.",
+    "Your assessment credit is ready. You can start right now.",
+    "Değerlendirme hakkınız hazır. Hemen başlayabilirsiniz.",
+  ),
+  payFailTitle: d("결제가 완료되지 않았습니다", "Payment did not go through", "Ödeme tamamlanmadı"),
+  payGoTest: d("검사 시작하기", "Start the assessment", "Değerlendirmeye başla"),
+  payNotSold: d("판매하지 않는 상품입니다", "This product is not on sale", "Bu ürün satışta değil"),
+
+  // 상품 이름. 주문서에 찍히는 이름이라 결제 화면과 같은 말이어야 한다.
+  prodREPORT_UNIV: d(
+    "METRI 진로 결과지 (대학)",
+    "METRI Career Report (university)",
+    "METRI Kariyer Raporu (üniversite)",
+  ),
+  prodREPORT_HS: d(
+    "METRI 진로 결과지 (고교)",
+    "METRI Career Report (high school)",
+    "METRI Kariyer Raporu (lise)",
+  ),
 } as const;
+
+/** 상품 코드로 이름을 찾는다. 없는 코드면 브랜드만 돌려준다. */
+export function productName(code: string, lang: Lang): string {
+  const key = `prod${code}` as UiKey;
+  return key in UI ? t(key, lang) : t("brand", lang);
+}
 
 export type UiKey = keyof typeof UI;
 

@@ -38,6 +38,7 @@ export const tr: SiteContent = {
     contact: "Görüşme talep et",
     menu: "Menü",
     floating: "İletişim",
+    start: "Başla",
   },
 
   hero: {

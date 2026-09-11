@@ -188,9 +188,24 @@ npm run metri:items     # 단체 PCA 250문항을 검사지로 적재
 npm run metri:check     # 결제 → 응시 → 채점 → 결과지를 실제 DB 로 한 바퀴
 npm run metri:evidence  # 증거 → 레벨 계산을 문서 예제와 대조
 npm run metri:org       # 계약 → 회차 → 명단 → 채점 → 공개 → 단체 리포트
+npm run metri:pay       # 국내카드·해외카드(Visa/Mastercard)·멱등·금액조작
 ```
 
-**검사 한 판이 도는 경로** (2026-09-11)
+**처음 온 사람이 결과지를 받기까지** (2026-09-11)
+
+```
+소개 사이트 헤더 "시작하기"  →  플랫폼 /start?lang=xx   (언어를 들고 간다)
+  /start   문패 다섯 개       →  개인이면 /signup
+  /signup  가입 = 즉시 로그인  →  원래 가려던 /checkout 으로
+  /checkout  국내카드 | 해외카드(Visa·Mastercard)
+  /checkout/complete          →  좌석 발급
+```
+
+**로그인을 요구해 막지 않는다.** 처음 온 사람은 계정이 없다. 결제 화면이
+`requireUser()` 로 로그인 폼을 띄우면 거기서 그대로 나간다. 가입 화면이 값을
+먼저 보여주고, 끝나면 원래 가려던 곳(`next`)으로 돌려보낸다.
+
+**검사 한 판이 도는 경로**
 
 ```
 결제(seats.order_id)  →  /test        openAttempt()      좌석 하나 = 응시 하나
@@ -243,6 +258,19 @@ npm run metri:org       # 계약 → 회차 → 명단 → 채점 → 공개 →
 **5명 미만 칸은 숫자를 내지 않는다.** 익명 집계가 개인 식별이 되는 순간
 담당자가 특정 학생을 지목할 수 있고, 그러면 이 제품은 못 쓴다. 감춘 칸은
 빈 막대가 아니라 빗금으로 그린다 — 빈 막대는 0 으로 읽힌다.
+
+**해외 카드** (2026-09-11)
+
+국내 PG 의 일반 카드결제로는 해외 발급 Visa·Mastercard 가 승인되지 않는다.
+PortOne 은 채널(channelKey) 단위로 PG 가 갈리므로 채널을 둘 두고 고른다 —
+`PORTONE_CHANNEL_KEY`(국내) · `PORTONE_CHANNEL_KEY_GLOBAL`(해외).
+해외 채널 값이 비어 있으면 화면이 그 선택지를 열지 않는다.
+
+**소개 사이트와 플랫폼 사이** (설계 원칙 5)
+
+`marketing/src/lib/platform.ts` 하나가 그 다리다. 어느 나라 사이트에서 눌러도
+같은 플랫폼으로 가고, 그 사이트의 언어를 `?lang=` 으로 들고 간다(플랫폼이
+쿠키로 굳힌다). 개발 중에는 `NEXT_PUBLIC_PLATFORM_URL` 로 localhost 를 본다.
 
 **흥미와 실력을 섞지 않는다** (2026-09-11)
 

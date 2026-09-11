@@ -32,6 +32,7 @@ export const kr: SiteContent = {
     contact: "도입·상담 문의",
     menu: "메뉴",
     floating: "문의",
+    start: "시작하기",
   },
 
   hero: {

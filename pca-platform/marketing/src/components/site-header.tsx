@@ -1,4 +1,5 @@
 import { RegionPicker } from "@/components/sections";
+import { platformStart } from "@/lib/platform";
 import type { SiteContent } from "@/content";
 
 export default function SiteHeader({ site }: { site: SiteContent }) {
@@ -25,6 +26,10 @@ export default function SiteHeader({ site }: { site: SiteContent }) {
 
         <div className="right">
           <RegionPicker site={site} />
+          {/* 소개만 읽고 나갈 수는 없어야 한다. 플랫폼으로 가는 문을 헤더에 둔다 */}
+          <a className="btn" href={platformStart(site)}>
+            {site.nav.start}
+          </a>
           <a className="btn solid" href="/contact">
             {site.nav.contact}
           </a>
@@ -39,6 +44,8 @@ export default function SiteHeader({ site }: { site: SiteContent }) {
                 {i.label}
               </a>
             ))}
+            <a href={platformStart(site)}>{site.nav.start}</a>
+            <a href="/contact">{site.nav.contact}</a>
           </nav>
         </details>
       </div>

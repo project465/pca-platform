@@ -763,3 +763,58 @@ ON CONFLICT (min_raw) DO UPDATE SET held_level = EXCLUDED.held_level;
 -- 증거 점수 합의 상한. 같은 역량에 과목 열 개를 넣어도 5레벨을 넘지 않는다.
 ALTER TABLE learner_competency_levels
   ADD CONSTRAINT learner_competency_levels_raw_cap CHECK (held_raw <= 6.0);
+
+
+-- ============================================================
+--  24. 회원 삭제가 막히지 않게 한다
+--
+--  개인정보보호법은 보유기간이 끝나거나 본인이 요구하면 파기하도록 한다.
+--  그런데 users 를 가리키는 외래키 넷이 NO ACTION 이라 DELETE 가 그냥
+--  에러로 끝난다. 지울 수 없는 개인정보는 법을 지킬 수 없다는 뜻이다.
+--
+--  둘로 나눠 잡는다.
+--    본인의 것(attempts)      → 사람과 함께 지운다. CASCADE
+--    조직의 것(seats·감사 기록) → 사람만 떼어낸다. SET NULL
+--
+--  좌석은 계약이 산 자산이지 개인정보가 아니다. 학생이 나가면 주인만
+--  비고 좌석은 학과에 남는다. 검수·발급자 기록도 마찬가지로 "누가 했는지"
+--  만 지우고 행은 남긴다 — 감사 기록 자체를 지우면 안 된다.
+-- ============================================================
+
+ALTER TABLE attempts DROP CONSTRAINT IF EXISTS attempts_user_id_fkey;
+ALTER TABLE attempts ADD CONSTRAINT attempts_user_id_fkey
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
+
+ALTER TABLE seats DROP CONSTRAINT IF EXISTS seats_user_id_fkey;
+ALTER TABLE seats ADD CONSTRAINT seats_user_id_fkey
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL;
+
+ALTER TABLE learner_evidence DROP CONSTRAINT IF EXISTS learner_evidence_verified_by_fkey;
+ALTER TABLE learner_evidence ADD CONSTRAINT learner_evidence_verified_by_fkey
+  FOREIGN KEY (verified_by) REFERENCES users(id) ON DELETE SET NULL;
+
+ALTER TABLE password_reset_tokens DROP CONSTRAINT IF EXISTS password_reset_tokens_issued_by_fkey;
+ALTER TABLE password_reset_tokens ADD CONSTRAINT password_reset_tokens_issued_by_fkey
+  FOREIGN KEY (issued_by) REFERENCES users(id) ON DELETE SET NULL;
+
+ALTER TABLE skill_candidates DROP CONSTRAINT IF EXISTS skill_candidates_reviewed_by_fkey;
+ALTER TABLE skill_candidates ADD CONSTRAINT skill_candidates_reviewed_by_fkey
+  FOREIGN KEY (reviewed_by) REFERENCES users(id) ON DELETE SET NULL;
+
+-- 주문이 지워질 때 좌석까지 막히지 않게 한다. 좌석은 주문의 결과물이지
+-- 주문 자체가 아니다.
+ALTER TABLE seats DROP CONSTRAINT IF EXISTS seats_order_id_fkey;
+ALTER TABLE seats ADD CONSTRAINT seats_order_id_fkey
+  FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE SET NULL;
+
+-- ⚠ 여기까지는 "지울 수 있게" 만든 것이고, 실제 운영에서 쓸 길은 아니다.
+--
+-- orders.user_id 가 CASCADE 라, 회원을 하드 딜리트하면 결제 기록까지 같이
+-- 사라진다. 그런데 전자상거래법 제6조는 대금결제·재화공급 기록을 5년간
+-- 보존하도록 한다. 개인정보보호법의 파기 의무와 이 보존 의무가 부딪히는
+-- 자리이고, 실무의 답은 "지우기" 가 아니라 **익명화**다 —
+--   users 의 이메일·이름·로그인 아이디를 지우고 status 를 'erased' 로 두면,
+--   orders 는 그대로 남아 5년 보존이 되고 사람은 식별되지 않는다.
+--
+-- 익명화 절차는 아직 만들지 않았다. 만들기 전까지 회원 삭제를 운영에서
+-- 쓰지 말 것. 위 제약들은 그 절차를 만들 때 막히지 않게 미리 풀어둔 것이다.

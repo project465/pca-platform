@@ -281,6 +281,128 @@ export async function reissuePassword(
   return { name: student.name, loginId: student.ident, tempPassword: temp };
 }
 
+/* ── 명단 보기 ──────────────────────────────────── */
+
+export type RosterFilter = {
+  /** 이름 또는 학번 일부 */
+  q?: string;
+  /** all | not_started | in_progress | scored | flagged */
+  status?: string;
+  page?: number;
+};
+
+export type RosterEntry = {
+  userId: string;
+  name: string;
+  ident: string;
+  status: string;
+  answered: number;
+  total: number;
+  flag: string | null;
+};
+
+export type RosterView = {
+  rows: RosterEntry[];
+  total: number;
+  matched: number;
+  page: number;
+  pages: number;
+  counts: { all: number; notStarted: number; inProgress: number; scored: number; flagged: number };
+};
+
+export const ROSTER_PAGE = 50;
+
+/**
+ * 회차 명단. 500명이 되면 한 화면에 다 못 놓는다.
+ *
+ * 담당자가 실제로 던지는 질문은 "누가 아직 안 했나" 와 "이 학생 비밀번호
+ * 다시" 둘이다. 그래서 검색과 상태 거르기를 같이 둔다 — 이름만 찾게 하면
+ * 미응시자를 세려고 500줄을 눈으로 훑어야 한다.
+ *
+ * 거르기는 SQL 에서 한다. 500줄을 받아 와서 화면에서 거르면 쪽 나누기가
+ * 어긋난다.
+ */
+export async function rosterOf(sessionId: string, f: RosterFilter = {}): Promise<RosterView> {
+  // ILIKE 는 % 와 _ 를 와일드카드로 본다. 학번에 밑줄이 들어가는 학교가 있고,
+  // "100%" 를 찾는 사람도 있다. 검색어는 글자 그대로 찾는 것이 맞다.
+  const q = (f.q ?? "").trim().slice(0, 60).replace(/[\\%_]/g, (c) => "\\" + c);
+  const status = f.status && f.status !== "all" ? f.status : null;
+
+  const counts = await queryOne<{
+    all: number;
+    not_started: number;
+    in_progress: number;
+    scored: number;
+    flagged: number;
+  }>(
+    `SELECT count(*)::int AS all,
+            count(*) FILTER (WHERE a.status = 'ready')::int AS not_started,
+            count(*) FILTER (WHERE a.status IN ('in_progress', 'submitted'))::int AS in_progress,
+            count(*) FILTER (WHERE a.status = 'scored')::int AS scored,
+            count(*) FILTER (WHERE aq.flag IS NOT NULL AND aq.flag <> 'ok')::int AS flagged
+       FROM attempts a
+       LEFT JOIN attempt_quality aq ON aq.attempt_id = a.id
+      WHERE a.session_id = $1`,
+    [sessionId],
+  );
+
+  // 거르는 조건을 한 번만 쓰고 세는 곳과 뽑는 곳에서 같이 쓴다.
+  const where = `
+      WHERE a.session_id = $1
+        AND ($2 = '' OR u.display_name ILIKE '%' || $2 || '%' ESCAPE '\\'
+                     OR COALESCE(u.login_id, u.email) ILIKE '%' || $2 || '%' ESCAPE '\\')
+        AND ($3::text IS NULL
+             OR ($3 = 'not_started' AND a.status = 'ready')
+             OR ($3 = 'in_progress' AND a.status IN ('in_progress', 'submitted'))
+             OR ($3 = 'scored'      AND a.status = 'scored')
+             OR ($3 = 'flagged'     AND aq.flag IS NOT NULL AND aq.flag <> 'ok'))`;
+
+  const matched = await queryOne<{ n: number }>(
+    `SELECT count(*)::int AS n
+       FROM attempts a
+       JOIN users u ON u.id = a.user_id
+       LEFT JOIN attempt_quality aq ON aq.attempt_id = a.id
+       ${where}`,
+    [sessionId, q, status],
+  );
+
+  const pages = Math.max(1, Math.ceil((matched?.n ?? 0) / ROSTER_PAGE));
+  const page = Math.min(Math.max(1, f.page ?? 1), pages);
+
+  const rows = await query<RosterEntry>(
+    `SELECT u.id AS "userId", u.display_name AS name,
+            COALESCE(u.login_id, u.email) AS ident,
+            a.status,
+            (SELECT count(*)::int FROM responses r WHERE r.attempt_id = a.id) AS answered,
+            (SELECT count(*)::int FROM questions qq
+              JOIN test_sessions ts ON ts.id = a.session_id
+             WHERE qq.instrument_id = ts.instrument_id) AS total,
+            aq.flag
+       FROM attempts a
+       JOIN users u ON u.id = a.user_id
+       LEFT JOIN attempt_quality aq ON aq.attempt_id = a.id
+       ${where}
+      ORDER BY (a.status = 'scored') DESC, u.display_name, u.id
+      LIMIT $4 OFFSET $5`,
+    [sessionId, q, status, ROSTER_PAGE, (page - 1) * ROSTER_PAGE],
+  );
+
+  return {
+    rows,
+    total: counts?.all ?? 0,
+    matched: matched?.n ?? 0,
+    page,
+    pages,
+    counts: {
+      all: counts?.all ?? 0,
+      notStarted: counts?.not_started ?? 0,
+      inProgress: counts?.in_progress ?? 0,
+      scored: counts?.scored ?? 0,
+      flagged: counts?.flagged ?? 0,
+    },
+  };
+}
+
 export async function releaseSession(userId: string, sessionId: string): Promise<void> {
   if (!(await canManage(userId, sessionId))) throw new Error("공개할 권한이 없습니다.");
   await query(

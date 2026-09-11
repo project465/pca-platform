@@ -873,3 +873,4 @@ section { padding-block: clamp(60px, 8vw, 108px); }
   .funnel { grid-template-columns: 1fr; }
   .matrix { min-width: 560px; }
 }
+.planctas { display: flex; gap: 8px; flex-wrap: wrap; }
