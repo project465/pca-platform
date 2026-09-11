@@ -1,0 +1,146 @@
+/* METRI 결과지 — A4 인쇄용.
+   구성은 career peak 실제 결과지(68쪽·8섹션)를 따른다.
+   섹션마다 표지가 따로 있고, SUBSECTION 번호가 붙고, 섹션 끝에 종합 정리가 온다. */
+@page { size: A4; margin: 18mm 16mm 20mm; }
+
+:root{
+  --ink:#16232E; --muted:#61717D; --rule:#C9D2D8; --paper:#FFFFFF;
+  --gold:#9A7B1E; --gold-soft:#C9A227;
+  --met:#1B6B57; --partial:#C08A0B; --gap:#C0392B;
+  --s1:#16232E; --s2:#3B4E5C; --s3:#61717D; --s4:#8D9AA4; --s5:#B9C3CA;
+  --ff:"Pretendard","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
+  --fm:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink); font-family:var(--ff);
+  font-size:10.5pt; line-height:1.72; font-variant-numeric:tabular-nums;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+p{margin:0 0 9pt}
+strong{font-weight:700}
+
+/* ── 페이지 ── */
+.page{break-after:page; padding-bottom:2pt}
+.page:last-child{break-after:auto}
+
+/* ── 표지 ── */
+.cover{display:flex; flex-direction:column; min-height:245mm}
+.cover .brand{font-family:var(--fm); font-size:9pt; letter-spacing:.22em; color:var(--gold)}
+.cover .dept{margin-top:78mm; font-size:15pt; font-weight:600; color:var(--muted)}
+.cover h1{margin:6pt 0 0; font-size:31pt; font-weight:800; letter-spacing:-.03em; line-height:1.22}
+.cover .sub{margin-top:10pt; font-size:11pt; color:var(--muted)}
+.cover .meta{margin-top:auto; border-top:1.6pt solid var(--ink); padding-top:10pt;
+  display:flex; flex-wrap:wrap; gap:4pt 22pt; font-size:9.5pt; color:var(--muted)}
+.cover .meta b{color:var(--ink); font-weight:600}
+
+/* ── 목차 ── */
+.toc h2{font-size:9pt; font-family:var(--fm); letter-spacing:.2em; color:var(--muted); margin:0 0 16pt}
+.toc-item{display:grid; grid-template-columns:26pt 1fr; gap:0 10pt; padding:9pt 0; border-bottom:.6pt solid var(--rule)}
+.toc-item .no{font-family:var(--fm); font-size:11pt; font-weight:600; color:var(--gold)}
+.toc-item b{font-size:11.5pt; font-weight:700; letter-spacing:-.01em}
+.toc-item span{grid-column:2; font-size:9.5pt; color:var(--muted); margin-top:2pt; display:block}
+
+/* ── 섹션 표지 ── */
+.secdiv{display:flex; flex-direction:column; justify-content:center; min-height:238mm; text-align:left}
+.secdiv .kicker{font-family:var(--fm); font-size:10pt; letter-spacing:.22em; color:var(--gold)}
+.secdiv h2{margin:8pt 0 0; font-size:27pt; font-weight:800; letter-spacing:-.03em}
+.secdiv p{margin-top:12pt; font-size:11pt; color:var(--muted); max-width:74%}
+.secdiv .rule{margin-top:20pt; width:54pt; height:2.4pt; background:var(--gold)}
+
+/* ── 본문 머리 ── */
+.phead{display:flex; align-items:baseline; gap:10pt; border-bottom:1.4pt solid var(--ink);
+  padding-bottom:7pt; margin-bottom:15pt}
+.phead b{font-size:11pt; font-weight:700}
+.phead span{margin-left:auto; font-family:var(--fm); font-size:9pt; color:var(--muted)}
+.sub{font-family:var(--fm); font-size:8.5pt; letter-spacing:.16em; color:var(--gold); margin:16pt 0 6pt}
+.sub:first-of-type{margin-top:0}
+h3{font-size:13pt; font-weight:700; letter-spacing:-.02em; margin:0 0 9pt}
+h4{font-size:11pt; font-weight:700; margin:13pt 0 6pt}
+
+/* ── 큰 수 ── */
+.headline{display:flex; align-items:flex-end; gap:14pt; flex-wrap:wrap; margin:4pt 0 12pt}
+.headline .name{font-size:24pt; font-weight:800; letter-spacing:-.035em; line-height:1.15}
+.headline .score{font-family:var(--fm); font-size:22pt; font-weight:300; color:var(--muted)}
+.headline .score b{font-weight:600; color:var(--ink)}
+
+/* ── 게이지 ── */
+.g{display:grid; grid-template-columns:112pt 1fr 42pt; gap:0 9pt; align-items:center; padding:5.5pt 0}
+.g + .g{border-top:.5pt dotted var(--rule)}
+.g .lab{font-size:10pt; font-weight:500}
+.g .lab em{display:block; font-style:normal; font-family:var(--fm); font-size:7.5pt; color:var(--muted)}
+.g .bar{height:8pt; background:#E7EBEE}
+.g .bar i{display:block; height:100%; background:var(--s2)}
+.g .bar i.top{background:var(--gold)}
+.g .bar i.lo{background:var(--gap)} .g .bar i.mid{background:var(--partial)} .g .bar i.hi{background:var(--met)}
+.g .v{text-align:right; font-family:var(--fm); font-size:10pt; font-weight:600}
+
+/* ── 표 ── */
+table{width:100%; border-collapse:collapse; font-size:9.5pt; margin:6pt 0 10pt}
+th,td{text-align:left; vertical-align:top; padding:6pt 8pt 6pt 0; border-bottom:.5pt solid var(--rule)}
+th{font-family:var(--fm); font-size:8pt; letter-spacing:.08em; color:var(--muted); font-weight:600;
+  border-bottom:1pt solid var(--ink); text-transform:uppercase; white-space:nowrap}
+td.n,th.n{text-align:right; font-family:var(--fm); white-space:nowrap}
+tr{break-inside:avoid}
+
+/* ── 상자 ── */
+.note{background:#F6F8F9; border-left:2.4pt solid var(--s3); padding:9pt 12pt; font-size:9.5pt; margin:10pt 0}
+.note.gold{background:#FDF9EE; border-left-color:var(--gold)}
+.note.good{background:#EFF6F3; border-left-color:var(--met)}
+.note b{font-weight:700}
+.wrapup{border:1pt solid var(--ink); padding:12pt 14pt; margin-top:14pt}
+.wrapup .t{font-family:var(--fm); font-size:8pt; letter-spacing:.16em; color:var(--gold); margin-bottom:5pt}
+
+ul.b{margin:0 0 9pt; padding-left:13pt} ul.b li{margin-bottom:4pt}
+ol.b{margin:0 0 9pt; padding-left:15pt} ol.b li{margin-bottom:5pt}
+.chip{display:inline-block; font-family:var(--fm); font-size:7.5pt; padding:1pt 5pt;
+  border:.6pt solid var(--rule); color:var(--muted); white-space:nowrap}
+.chip.req{border-color:var(--gap); color:var(--gap)}
+.chip.ok{border-color:var(--met); color:var(--met)}
+.chip.warn{border-color:var(--partial); color:var(--partial)}
+code{font-family:var(--fm); font-size:8.5pt; color:var(--muted)}
+
+/* ── 단계 ── */
+.steps{counter-reset:st}
+.steps .st{display:grid; grid-template-columns:17pt 1fr; gap:0 9pt; padding:7pt 0; break-inside:avoid}
+.steps .st + .st{border-top:.5pt dotted var(--rule)}
+.steps .st::before{counter-increment:st; content:counter(st) "단계"; font-family:var(--fm); font-size:7.5pt;
+  color:var(--gold); grid-column:1; padding-top:2pt; white-space:nowrap}
+.steps .st b{display:block; font-size:10.5pt; margin-bottom:3pt}
+.steps .st p{margin:0; font-size:9.5pt}
+
+.closing{text-align:center; padding-top:70mm}
+.closing .brand{font-family:var(--fm); font-size:9pt; letter-spacing:.22em; color:var(--gold)}
+.closing h2{font-size:17pt; margin:10pt 0 6pt; letter-spacing:-.02em}
+.closing p{color:var(--muted); font-size:9.5pt}
+.closing .fine{margin-top:26pt; font-size:8pt; color:var(--muted); line-height:1.8}
+
+/* ── 요약 상자 3개 (실제 결과지의 머리) ── */
+.facts{display:grid; grid-template-columns:repeat(3,1fr); gap:8pt; margin:0 0 14pt}
+.facts > div{border:.8pt solid var(--rule); padding:8pt 10pt}
+.facts span{display:block; font-size:7.5pt; color:var(--muted); margin-bottom:2pt}
+.facts b{font-size:11.5pt; font-weight:700; letter-spacing:-.01em}
+
+/* ── 차트 상자 ── */
+.chartbox{border:.8pt solid var(--rule); padding:12pt 14pt 10pt; margin:4pt 0 12pt; break-inside:avoid}
+.chartbox .ct{font-size:10pt; font-weight:700; color:var(--gold); border-bottom:1pt solid var(--gold);
+  display:inline-block; padding-bottom:2pt; margin-bottom:10pt}
+.cnote{margin:10pt 0 0; font-size:9.5pt; color:var(--muted)}
+.cnote b{color:var(--ink)}
+
+/* ── 유형 카드 ── */
+.tcard{border-bottom:.5pt solid var(--rule); padding:9pt 0; break-inside:avoid}
+.tcard b{font-size:11pt}
+.tcard em{font-style:normal; font-family:var(--fm); font-size:8pt; color:var(--gold); letter-spacing:.1em; margin-left:6pt}
+.tcard p{margin:3pt 0 0; font-size:9.5pt; color:var(--muted)}
+
+.cover .sub2{margin-top:10pt; font-size:11pt; color:var(--muted)}
+
+/* ── 전후 비교 ── */
+.ba{display:flex; align-items:center; gap:12pt; margin:10pt 0}
+.ba > div{flex:1; border:.8pt solid var(--rule); padding:10pt 12pt}
+.ba .arw{flex:0 0 auto; border:0; padding:0; color:var(--gold); font-size:15pt; text-align:center}
+.ba span{display:block; font-size:8pt; color:var(--muted)}
+.ba b{display:block; font-family:var(--fm); font-size:18pt; font-weight:700; letter-spacing:-.02em}
+.ba em{display:block; font-style:normal; font-size:8pt; color:var(--muted)}
+.ba .hi{border-color:var(--gold); background:#FDF9EE}

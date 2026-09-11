@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>METRI 결과지 — 기계공학과</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="doc"></div>
+<script src="data.js"></script>
+<script>
+(function(){
+const R = window.METRI_REPORT;
+const esc = s => String(s ?? '');
+const out = [];
+const push = h => out.push(h);
+
+/* ── 레이더 차트 ─────────────────────────────────
+   실제 결과지가 쓰는 형태다. 축 하나에 값 하나, 눈금은 20 간격,
+   꼭짓점마다 점을 찍고 바깥에 이름과 값을 같이 적는다 —
+   색만으로 읽게 두지 않는다. */
+function radar(items, opt){
+  const o = Object.assign({ size:420, pad:86, max:100, ring:5 }, opt||{});
+  const n = items.length, cx=o.size/2, cy=o.size/2, rad=(o.size-o.pad*2)/2;
+  const ang = i => (Math.PI*2*i/n) - Math.PI/2;
+  const pt = (i,v) => [cx + Math.cos(ang(i))*rad*(v/o.max), cy + Math.sin(ang(i))*rad*(v/o.max)];
+
+  let g = '';
+  for(let r=1; r<=o.ring; r++){
+    const rr = rad*r/o.ring;
+    const poly = Array.from({length:n}, (_,i)=>`${cx+Math.cos(ang(i))*rr},${cy+Math.sin(ang(i))*rr}`).join(' ');
+    g += `<polygon points="${poly}" fill="none" stroke="#D9DFE3" stroke-width="0.7"/>`;
+    g += `<text x="${cx+3}" y="${cy-rr+3}" font-size="7.5" fill="#8D9AA4" font-family="monospace">${Math.round(o.max*r/o.ring)}</text>`;
+  }
+  for(let i=0;i<n;i++){
+    const [x,y] = pt(i,o.max);
+    g += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#D9DFE3" stroke-width="0.7"/>`;
+  }
+  const poly = items.map((it,i)=>pt(i,it.s).join(',')).join(' ');
+  g += `<polygon points="${poly}" fill="#16232E" fill-opacity="0.10" stroke="#16232E" stroke-width="1.9" stroke-linejoin="round"/>`;
+  items.forEach((it,i)=>{
+    const [x,y]=pt(i,it.s);
+    const top = it.s === Math.max(...items.map(z=>z.s));
+    g += `<circle cx="${x}" cy="${y}" r="${top?3.4:2.4}" fill="${top?'#9A7B1E':'#16232E'}"/>`;
+  });
+  items.forEach((it,i)=>{
+    const [lx,ly]=pt(i,o.max*1.20);
+    const a=ang(i), anchor = Math.abs(Math.cos(a))<0.25 ? 'middle' : (Math.cos(a)>0?'start':'end');
+    const top = it.s === Math.max(...items.map(z=>z.s));
+    g += `<text x="${lx}" y="${ly}" font-size="9" text-anchor="${anchor}" fill="${top?'#9A7B1E':'#16232E'}" font-weight="${top?700:600}" font-family="Pretendard,sans-serif">${esc(it.n)}</text>`;
+    g += `<text x="${lx}" y="${ly+10}" font-size="8.5" text-anchor="${anchor}" fill="#61717D" font-family="monospace">${it.s}</text>`;
+  });
+  // 축 이름이 바깥으로 나가므로 뷰박스를 좌우로 열어 둔다. 안 그러면 긴 이름이 잘린다
+  const m = 78;
+  return `<svg viewBox="${-m} ${-6} ${o.size + m * 2} ${o.size + 14}" width="100%" style="max-width:${o.size + m * 2}px;display:block;margin:0 auto">${g}</svg>`;
+}
+
+/* 요약 상자 3개 — 실제 결과지의 머리 부분 */
+function facts(list){
+  return `<div class="facts">${list.map(f=>`<div><span>${esc(f[0])}</span><b>${esc(f[1])}</b></div>`).join('')}</div>`;
+}
+
+/* 가로 막대 한 줄 */
+function grow(label, sub, w, cls, val){
+  return `<div class="g"><div class="lab">${esc(label)}${sub?`<em>${esc(sub)}</em>`:''}</div>`
+    + `<div class="bar"><i class="${cls||''}" style="width:${Math.max(2,Math.min(100,w))}%"></i></div>`
+    + `<div class="v">${esc(val)}</div></div>`;
+}
+
+/* 요구 대비 보유 — 덤벨 */
+function gapChart(rows){
+  const w=460, rh=19, h=rows.length*rh+26;
+  let g=`<text x="118" y="9" font-size="7.5" fill="#8D9AA4" font-family="monospace">보유 ─ 요구 (1–5)</text>`;
+  for(let k=1;k<=5;k++){
+    const x=118+(w-160)*(k-1)/4;
+    g+=`<line x1="${x}" y1="16" x2="${x}" y2="${h-8}" stroke="#EDF0F2" stroke-width="0.8"/>`;
+    g+=`<text x="${x}" y="${h-1}" font-size="7" text-anchor="middle" fill="#8D9AA4" font-family="monospace">${k}</text>`;
+  }
+  rows.forEach((r,i)=>{
+    const y=28+i*rh, X=k=>118+(w-160)*(k-1)/4;
+    const short = r.have < r.need;
+    g+=`<text x="0" y="${y+3}" font-size="8.5" fill="#16232E" font-family="Pretendard,sans-serif">${esc(r.n)}</text>`;
+    g+=`<line x1="${X(r.have)}" y1="${y}" x2="${X(r.need)}" y2="${y}" stroke="${short?'#C0392B':'#1B6B57'}" stroke-width="1.6"/>`;
+    g+=`<circle cx="${X(r.have)}" cy="${y}" r="3.1" fill="${short?'#C0392B':'#1B6B57'}"/>`;
+    g+=`<circle cx="${X(r.need)}" cy="${y}" r="3.1" fill="#fff" stroke="#16232E" stroke-width="1.2"/>`;
+    g+=`<text x="${w-32}" y="${y+3}" font-size="8" fill="#61717D" font-family="monospace">${r.have}/${r.need}</text>`;
+  });
+  return `<svg viewBox="0 0 ${w} ${h}" width="100%" style="display:block;margin:8pt 0 4pt">${g}</svg>`;
+}
+
+/* 점수 구성 스택 */
+function stackChart(parts){
+  const w=460,h=52, tot=parts.reduce((a,p)=>a+p.v,0);
+  let x=0,g='';
+  const col=['#16232E','#9A7B1E','#3B4E5C','#8D9AA4'];
+  parts.forEach((p,i)=>{
+    const bw=(p.v/100)*w;
+    g+=`<rect x="${x}" y="8" width="${Math.max(bw-1.5,1)}" height="17" fill="${col[i]}"/>`;
+    g+=`<text x="${x}" y="38" font-size="8" fill="#16232E" font-family="Pretendard,sans-serif" font-weight="600">${esc(p.n)}</text>`;
+    g+=`<text x="${x}" y="48" font-size="8" fill="#61717D" font-family="monospace">${p.v.toFixed(1)}</text>`;
+    x+=bw;
+  });
+  g+=`<text x="${w}" y="21" font-size="9.5" text-anchor="end" fill="#16232E" font-family="monospace" font-weight="700">합계 ${tot.toFixed(1)}</text>`;
+  return `<svg viewBox="0 0 ${w+40} ${h}" width="100%" style="display:block;margin:10pt 0 6pt">${g}</svg>`;
+}
+
+/* 적합도 변화 */
+function lineChart(pts, cap){
+  const w=460,h=120,pad=26;
+  const xs=i=>pad+(w-pad*2)*i/(pts.length-1);
+  const ys=v=>h-24-((v-70)/25)*(h-46);
+  let g=`<text x="0" y="9" font-size="7.5" fill="#8D9AA4" font-family="monospace">${esc(cap)}</text>`;
+  [75,80,85,90].forEach(v=>{
+    g+=`<line x1="${pad}" y1="${ys(v)}" x2="${w-pad}" y2="${ys(v)}" stroke="#EDF0F2" stroke-width="0.8"/>`;
+    g+=`<text x="0" y="${ys(v)+3}" font-size="7" fill="#8D9AA4" font-family="monospace">${v}</text>`;
+  });
+  g+=`<polyline points="${pts.map((p,i)=>`${xs(i)},${ys(p.v)}`).join(' ')}" fill="none" stroke="#9A7B1E" stroke-width="2" stroke-linejoin="round"/>`;
+  pts.forEach((p,i)=>{
+    g+=`<circle cx="${xs(i)}" cy="${ys(p.v)}" r="${i===pts.length-1?3.6:2.6}" fill="#9A7B1E"/>`;
+    g+=`<text x="${xs(i)}" y="${h-10}" font-size="7.5" text-anchor="middle" fill="#61717D" font-family="Pretendard,sans-serif">${esc(p.n)}</text>`;
+    if(i===0||i===pts.length-1)
+      g+=`<text x="${xs(i)}" y="${ys(p.v)-8}" font-size="8.5" text-anchor="middle" fill="#16232E" font-family="monospace" font-weight="700">${p.v}</text>`;
+  });
+  return `<svg viewBox="0 0 ${w} ${h}" width="100%" style="display:block;margin:8pt 0">${g}</svg>`;
+}
+
+/* ── 차트 모음 ── */
+const CHARTS = {
+  fitbreak: () => stackChart([
+    {n:'성향·활동 A', v:23.6}, {n:'역량 충족 S', v:32.7},
+    {n:'선호 일치 P', v:12.0}, {n:'이력 방향 C', v:12.0},
+  ]),
+  gap: () => gapChart([
+    {n:'유한요소법', need:4, have:3}, {n:'ANSYS Mechanical', need:4, have:2},
+    {n:'고체역학', need:4, have:4}, {n:'공학수학', need:4, have:4},
+    {n:'ABAQUS', need:3, have:1}, {n:'유체역학', need:3, have:3},
+    {n:'ANSYS Fluent', need:3, have:2}, {n:'전산유체 이론', need:3, have:2},
+    {n:'Python', need:3, have:3}, {n:'MATLAB', need:3, have:3},
+  ]),
+  demand: () => [
+    {c:'CAD / 3D 모델링', v:78}, {c:'GD&T · 도면', v:71}, {c:'ANSYS', v:67},
+    {c:'유한요소법', v:54}, {c:'ANSYS Fluent', v:42}, {c:'Python', v:44},
+    {c:'ABAQUS', v:31}, {c:'기술영어', v:22},
+  ].map(x=>grow(x.c, null, x.v, x.v>=60?'lo':(x.v>=40?'mid':''), x.v+'%')).join(''),
+  trajectory: () => lineChart([
+    {n:'지금', v:80}, {n:'9월', v:83}, {n:'10월', v:85},
+    {n:'11월', v:86}, {n:'12월', v:87}, {n:'1월', v:89},
+  ], '계획을 실행했을 때의 적합도 (계산값)'),
+  after: () => `<div class="ba">
+    <div><span>지금</span><b>34건</b><em>자격 충족 공고 / 132건</em></div>
+    <div class="arw">→</div>
+    <div class="hi"><span>6개월 뒤</span><b>78건</b><em>자격 충족 공고 / 132건</em></div>
+  </div>`,
+};
+
+/* ── 조각 렌더 ── */
+function tableHtml(t){
+  return `<table><thead><tr>${t.head.map((h,i)=>`<th class="${i>0&&/^\d+$/.test(t.rows[0][i]||'')?'n':''}">${esc(h)}</th>`).join('')}</tr></thead>`
+   + `<tbody>${t.rows.map(r=>`<tr>${r.map((c,i)=>`<td class="${i>0&&/^\d+$/.test(c)?'n':''}">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+}
+function subHtml(s, secNo, secTitle){
+  let h = `<div class="page"><div class="phead"><b>섹션 ${secNo}. ${esc(secTitle)}</b><span>${esc(secNo)}</span></div>`;
+  h += `<div class="sub">SUBSECTION ${esc(s.no)}</div><h3>${esc(s.title)}</h3>`;
+  if(s.fields) h += facts(s.fields);
+  (s.paras||[]).forEach(p => h += `<p>${p}</p>`);
+  if(s.chart && CHARTS[s.chart]) h += CHARTS[s.chart]();
+  if(s.bullets) h += `<ul class="b">${s.bullets.map(b=>`<li>${b}</li>`).join('')}</ul>`;
+  if(s.steps) h += `<div class="steps">${s.steps.map(t=>`<div class="st"><div><b>${esc(t.b)}</b><p>${esc(t.p)}</p></div></div>`).join('')}</div>`;
+  if(s.table) h += tableHtml(s.table);
+  if(s.note) h += `<div class="note ${s.note.t||''}"><b>${esc(s.note.b)}</b> ${esc(s.note.p)}</div>`;
+  if(s.wrapup) h += `<div class="wrapup"><div class="t">종합 정리</div>${s.wrapup}</div>`;
+  return h + `</div>`;
+}
+
+/* ── 문서 조립 ── */
+const c = R.cover;
+push(`<div class="page cover"><div class="brand">${esc(c.brand)}</div>
+  <div class="dept">${esc(c.dept)}</div>
+  <h1>${c.title.map(esc).join('<br>')}</h1>
+  <div class="sub2">${esc(c.sub)}</div>
+  <div class="meta">${c.meta.map(m=>`<span>${esc(m.l)} <b>${esc(m.v)}</b></span>`).join('')}</div></div>`);
+
+push(`<div class="page toc"><h2>CONTENTS</h2>${R.toc.map(t=>
+  `<div class="toc-item"><div class="no">${esc(t.no)}</div><div><b>${esc(t.t)}</b><span>${esc(t.d)}</span></div></div>`).join('')}</div>`);
+
+const I = R.intro;
+push(`<div class="page"><div class="phead"><b>직무 적합도 분석</b><span>00-1</span></div>
+  ${facts([['가장 높은 직무', I.topJob], ['점수', I.topScore+'점'], ['응시자', c.meta[0].v]])}
+  <div class="chartbox"><div class="ct">직무 적합도 · 기계공학 직무군 8개</div>${radar(I.jobs.map(j=>({n:j.n,s:j.s})))}
+  <p class="cnote">${esc(c.meta[0].v)}님의 직무 적합도 분석 결과, <b>${esc(I.topJob)}</b> 가 가장 높게 나타났습니다.</p></div>
+  <p>${esc(I.jobsLead)}</p></div>`);
+
+push(`<div class="page"><div class="phead"><b>업무 성향 분석</b><span>00-2</span></div>
+  ${facts([['가장 높은 성향', I.topStyle], ['점수', I.topStyleScore+'점'], ['대표 조합', '품질중시형 + 독립형']])}
+  <div class="chartbox"><div class="ct">업무 성향 · 6유형</div>${radar(I.styles, {size:380, pad:80})}
+  <p class="cnote">${esc(c.meta[0].v)}님의 업무 성향은 <b>${esc(I.topStyle)}</b> 이 가장 높게 나타났습니다.</p></div>
+  <p>${esc(I.stylesLead)}</p></div>`);
+
+push(`<div class="page"><div class="phead"><b>업무 유형별 소개</b><span>00-2B</span></div>
+  ${I.types.map(t=>`<div class="tcard"><b>${esc(t.n)}</b> <em>${esc(t.e)}</em><p>${esc(t.d)}</p></div>`).join('')}</div>`);
+
+R.sections.forEach(sec=>{
+  push(`<div class="page secdiv"><div class="kicker">SECTION ${esc(sec.no)}</div>
+    <h2>${esc(sec.title)}</h2><p>${esc(sec.lead)}</p><div class="rule"></div></div>`);
+  sec.subs.forEach(s => push(subHtml(s, sec.no, sec.title)));
+});
+
+push(`<div class="page closing"><div class="brand">METRI</div>
+  <h2>이 결과지는 한 번 보고 덮는 문서가 아닙니다</h2>
+  <p>증거가 쌓일 때마다 숫자가 움직이고, 움직인 숫자가 다음 학기의 선택을 바꿉니다.</p>
+  <div class="fine">METRI · ACADEMIX 개발 · 직업정보제공사업 신고 J1700020220007호<br>
+  본 결과지는 화면 확인용 예시입니다. 실제 응시 자료가 아닙니다.<br>
+  점수는 공개된 산식으로 계산되며, 문장 생성에만 언어모델을 사용합니다.</div></div>`);
+
+document.getElementById('doc').innerHTML = out.join('\n');
+})();
+</script>
+</body>
+</html>

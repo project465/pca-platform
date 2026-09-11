@@ -385,33 +385,14 @@ add('test','학생 화면','검사 응시 (대학판 140문항)', ()=> sheet('�
 
 /* --- 대학 결과지 · 전체 흐름 --- */
 const STARS = v => '★'.repeat(Math.round(v)) + '☆'.repeat(5-Math.round(v));
-const COMPANIES = {
-  KR: [
-    {n:'한화에어로스페이스', ind:'항공우주·방산', m:88, why:'FEM · ABAQUS · 복합재 구조', st:'2027 신입 상시'},
-    {n:'현대자동차',        ind:'자동차',        m:84, why:'CAE · NVH · 진동해석',      st:'상반기 신입'},
-    {n:'LIG넥스원',         ind:'방위산업',      m:81, why:'구조해석 · 내환경 시험',    st:'수시'},
-    {n:'세메스',            ind:'반도체 장비',   m:76, why:'ANSYS · 진공챔버 설계',     st:'수시'},
-    {n:'두산에너빌리티',    ind:'플랜트',        m:72, why:'열전달 · 유동해석',         st:'상반기'},
-    {n:'HD현대인프라코어',  ind:'기계·장비',     m:70, why:'구조해석 · GD&T',           st:'수시'}
-  ],
-  US: [
-    {n:'Boeing',            ind:'Aerospace',     m:79, why:'FEA · Composite · GD&T',    st:'New Grad'},
-    {n:'Lockheed Martin',   ind:'Defense',       m:76, why:'ABAQUS · Structures',       st:'시민권 필요'},
-    {n:'Tesla',             ind:'Automotive',    m:73, why:'CAE · Thermal',             st:'New Grad'},
-    {n:'Applied Materials', ind:'Semiconductor', m:69, why:'ANSYS · Vacuum systems',    st:'New Grad'}
-  ],
-  DE: [
-    {n:'Siemens',           ind:'Industrie',     m:74, why:'FEM · Konstruktion',        st:'Trainee'},
-    {n:'Robert Bosch',      ind:'Automotive',    m:71, why:'CAE · Thermomanagement',    st:'Direkteinstieg'},
-    {n:'Airbus',            ind:'Luftfahrt',     m:68, why:'Strukturanalyse · CATIA',   st:'Graduate'}
-  ]
-};
-const COUNTRY_NOTE = {
-  KR:'워크넷 Open API 로 수집한 공고에서 자동으로 채워진다 — 1차 범위',
-  US:'O*NET + Adzuna 로 채운다. 민간 공고 전량은 유료라 2차 범위',
-  DE:'ESCO↔O*NET 크로스워크로 직무를 잇는다. 3차 범위'
-};
-let repCountry = 'KR';
+const COMPANIES = [
+  {n:'한화에어로스페이스', ind:'항공우주·방산', m:88, why:'FEM · ABAQUS · 복합재 구조', st:'2027 신입 상시'},
+  {n:'현대자동차',        ind:'자동차',        m:84, why:'CAE · NVH · 진동해석',      st:'상반기 신입'},
+  {n:'LIG넥스원',         ind:'방위산업',      m:81, why:'구조해석 · 내환경 시험',    st:'수시'},
+  {n:'세메스',            ind:'반도체 장비',   m:76, why:'ANSYS · 진공챔버 설계',     st:'수시'},
+  {n:'두산에너빌리티',    ind:'플랜트',        m:72, why:'열전달 · 유동해석',         st:'상반기'},
+  {n:'HD현대인프라코어',  ind:'기계·장비',     m:70, why:'구조해석 · GD&T',           st:'수시'}
+];
 
 add('report-univ','학생 화면','결과지 · 대학판 (전체 흐름)', ()=>{
   const ranked = ME.jobs.map(j=>({j, ...fitOf(j, DEMO_Z, DEMO_HELD, DEMO_PREF, PROF_UH)}))
@@ -446,7 +427,6 @@ add('report-univ','학생 화면','결과지 · 대학판 (전체 흐름)', ()=>
     {m:'2월',  act:'자소서 초안 · 면접 답변을 이 결과지로 만든다', why:'"왜 CAE 인가" 의 근거가 이미 이 문서에 있다', gain:'지원 준비 완료'}
   ];
 
-  const comp = COMPANIES[repCountry];
   return sheet('기계공학과 3학년 · 진로 결과지', ['2026-1학기','전체 8장 중 1–7장','응답 품질 정상'],`
 
 <section class="blk">
@@ -454,7 +434,7 @@ add('report-univ','학생 화면','결과지 · 대학판 (전체 흐름)', ()=>
   <div class="kpis">
     <div class="kpi"><b>${top.fit.toFixed(0)}</b><span>${esc(top.j.ko)} 적합도</span></div>
     <div class="kpi"><b class="word">${esc(indKo[inds[0].c])}</b><span>1순위 산업 · 공고 ${POST[inds[0].c]??'—'}건</span></div>
-    <div class="kpi"><b>${comp.filter(c=>c.m>=75).length}곳</b><span>매칭 75 이상 기업</span></div>
+    <div class="kpi"><b>${COMPANIES.filter(c=>c.m>=75).length}곳</b><span>매칭 75 이상 국내 기업</span></div>
     <div class="kpi"><b>${gaps.length}개</b><span>6개월 안에 채울 역량</span></div>
   </div>
   <p class="note" style="margin-top:14px">아래 일곱 칸이 한 줄로 이어집니다 —
@@ -510,21 +490,19 @@ add('report-univ','학생 화면','결과지 · 대학판 (전체 흐름)', ()=>
 <section class="blk">
   <div class="flowstep"><div class="n">4</div><div>
   <h2 class="blk" style="margin-bottom:8px">적합도가 높은 기업 <span class="chip warn">샘플</span></h2>
-  <div class="controls" style="margin-bottom:14px">
-    ${[['KR','한국'],['US','미국'],['DE','독일']].map(([c,ko])=>
-      `<button class="buy ${repCountry===c?'':'ghost'}" data-country="${c}" style="font-size:13.5px;padding:7px 16px">${ko}</button>`).join('')}
-  </div>
   <div class="tw"><table>
     <tr><th>기업</th><th>산업</th><th class="num">매칭</th><th>맞은 이유</th><th>채용</th></tr>
-    ${comp.map(c=>`<tr>
+    ${COMPANIES.map(c=>`<tr>
       <td><b>${esc(c.n)}</b></td><td>${esc(c.ind)}</td>
       <td class="num">${c.m}</td><td>${esc(c.why)}</td>
       <td><span class="chip ${c.m>=80?'ok':'warn'}">${esc(c.st)}</span></td>
     </tr>`).join('')}
   </table></div>
-  <p class="note" style="margin-top:14px"><b>${esc(COUNTRY_NOTE[repCountry])}.</b><br>
-  위 기업명은 화면 확인용 예시입니다. 실제로는 수집된 공고에서 자동으로 채워지고,
-  기업마다 "맞은 이유" 칸에 <b>어떤 요구 스킬이 일치했는지</b>가 들어갑니다.</p>
+  <p class="note" style="margin-top:14px"><b>한국 결과지는 국내 기업만 봅니다.</b>
+  워크넷 Open API 로 수집한 공고에서 자동으로 채워집니다.
+  해외 기업은 해당 국가판에서 그 나라 공고로 채웁니다 — 한국 학생 결과지에 섞지 않습니다.<br>
+  위 기업명은 화면 확인용 예시입니다. 실제로는 기업마다 "맞은 이유" 칸에
+  <b>어떤 요구 스킬이 일치했는지</b>가 들어갑니다.</p>
   <div class="alert"><b>여기가 진로검사와 취업 플랫폼이 갈리는 지점입니다.</b>
     직무까지만 내면 학생이 "그래서 어디에 넣지?" 를 스스로 풀어야 합니다.
     기업까지 내려가야 다음 행동이 생깁니다.</div>
@@ -911,7 +889,6 @@ document.addEventListener('click', e=>{
   if(!b) return;
   if(b.dataset.screen) return go(b.dataset.screen);
   if(b.dataset.go) return go(b.dataset.go);
-  if(b.dataset.country){ repCountry=b.dataset.country; return draw(); }
   if(b.dataset.lite === 'reset'){ liteAns=[null,null,null,null]; liteI=0; return draw(); }
   if(b.dataset.lite){ liteAns[liteI] = +b.dataset.lite; liteI++; return draw(); }
   if(b.dataset.demo){
