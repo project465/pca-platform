@@ -893,14 +893,15 @@ export const global: SiteContent = {
     lead:
       "Individuals pay per sitting; institutions are split by size. Large rollouts differ too much in scope to price on a page.",
     planLabel: "What this is about",
-    /* Amounts and the size threshold are pending sign-off. Do not carry this
-       into sales material while the ⟨…⟩ are still blank. */
+    /* Signed off (R038). The Korean won figures are the real ones; the
+       dollar figures below are our conversion of them and are marked as
+       such in `note`. Keep the two in step if either moves. */
     plans: [
       {
         key: "individual",
         name: "Individual",
         who: "A student · a graduate · a would-be founder",
-        price: "⟨amount⟩",
+        price: "US$19",
         unit: "per person",
         note: "Payment is not connected yet. For now we take it as an enquiry.",
         features: [
@@ -915,9 +916,9 @@ export const global: SiteContent = {
         key: "small",
         name: "Small cohort",
         who: "A department · a lab · a careers programme",
-        price: "⟨amount⟩",
+        price: "US$17",
         unit: "per person",
-        note: "This rate applies up to ⟨threshold⟩ students.",
+        note: "This rate applies up to 30 students. From 31 we quote it.",
         features: [
           "Everything in the individual assessment",
           "A link for the department — no student list needed",
@@ -945,7 +946,7 @@ export const global: SiteContent = {
       },
     ],
     note:
-      "Amounts go up once they are signed off. Tell us the department and a rough number and we come back with an estimate.",
+      "Prices are set in Korean won — \u20a925,000 and \u20a922,000 — and converted here at \u20a91,345 to the dollar (11 September 2026). We invoice in won unless we agree otherwise, and we confirm the amount with you before anything is signed. Payment is not connected yet, so an individual assessment also comes through the enquiry form.",
   },
 
   regions: {

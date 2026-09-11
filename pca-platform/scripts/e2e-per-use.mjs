@@ -36,7 +36,8 @@ const tag = Date.now().toString(36).toUpperCase().slice(-6);
 const ORG = `건당대학교-${tag}`;
 const EMAIL = `pu-${tag.toLowerCase()}@example.ac.kr`;
 const CODE = `PU-${tag}`;
-const UNIT = 15000;   // 건당 단가
+const UNIT = 18000;   // 검사용 임의의 건당 단가 — 실제 가격이 아니다.
+                      // 아래 확인은 전부 이 값에서 계산해 내므로 아무 수나 된다
 const CAP = 2;        // 발주처가 정한 건수 상한
 const PW = "per-use-pass-1234";
 
