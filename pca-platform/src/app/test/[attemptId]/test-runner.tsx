@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useRef, useState, useTransition } from "react";
 import type { Question } from "@/lib/attempts";
+import { t, type Lang } from "@/lib/locale";
+import LangSwitch from "@/components/lang-switch";
 import { answer, submit } from "./actions";
 
 /**
@@ -27,7 +29,7 @@ export default function TestRunner({
   total: number;
   answered: number;
   questions: Question[];
-  lang: string;
+  lang: Lang;
 }) {
   const router = useRouter();
   const [picked, setPicked] = useState<Record<string, string>>(
@@ -89,21 +91,22 @@ export default function TestRunner({
     <div className="test-shell">
       <header className="test-bar">
         <div className="test-bar-in">
-          <span className="brand">METRI</span>
-          <div className="progress" aria-label={`${total}문항 중 ${count}문항 완료`}>
+          <span className="brand">{t("brand", lang)}</span>
+          <div className="progress" aria-label={`${count} / ${total}`}>
             <div className="progress-fill" style={{ width: `${pct}%` }} />
           </div>
           <span className="progress-num">
             {count} / {total}
           </span>
+          <LangSwitch current={lang} />
         </div>
       </header>
 
       <main className="test-main">
         {missing && (
           <p className="notice warn" role="alert">
-            아직 답하지 않은 문항이 {missing.length}개 있습니다. {missing.slice(0, 8).join(", ")}
-            {missing.length > 8 ? " …" : ""}번을 확인해 주세요.
+            {t("missingItems", lang, { n: missing.length })} {missing.slice(0, 8).join(", ")}
+            {missing.length > 8 ? " …" : ""}
           </p>
         )}
 
@@ -137,7 +140,7 @@ export default function TestRunner({
               </div>
               {failed[q.id] && (
                 <p className="qerr" role="alert">
-                  저장되지 않았습니다. 다시 눌러 주세요.
+                  {t("saveFailed", lang)}
                 </p>
               )}
             </li>
@@ -146,11 +149,9 @@ export default function TestRunner({
 
         <nav className="test-nav">
           <button type="button" className="act" onClick={() => go(page - 1)} disabled={page <= 1}>
-            이전
+            {t("prev", lang)}
           </button>
-          <span className="test-nav-num">
-            {page} / {pages} 쪽
-          </span>
+          <span className="test-nav-num">{t("pageOf", lang, { a: page, b: pages })}</span>
           {page < pages ? (
             <button
               type="button"
@@ -158,11 +159,11 @@ export default function TestRunner({
               onClick={() => go(page + 1)}
               disabled={!pageDone}
             >
-              {pageDone ? "다음" : "이 쪽을 모두 답해 주세요"}
+              {pageDone ? t("next", lang) : t("finishPage", lang)}
             </button>
           ) : (
             <button type="button" className="act solid" onClick={onSubmit} disabled={saving}>
-              {saving ? "채점 중…" : "제출하고 결과 보기"}
+              {saving ? t("scoring", lang) : t("submit", lang)}
             </button>
           )}
         </nav>

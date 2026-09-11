@@ -124,8 +124,10 @@ export function BandBars({
 /** 요구 수준과 보유 수준의 아령 그래프. 보유가 없으면 비워 둔다. */
 export function GapChart({
   rows,
+  mustLabel,
 }: {
   rows: { name: string; required: number; held: number | null; criticality: number }[];
+  mustLabel: string;
 }) {
   const pos = (lv: number) => (lv / 5) * 100;
   return (
@@ -134,7 +136,7 @@ export function GapChart({
         <li key={r.name}>
           <span className="gc-name">
             {r.name}
-            {r.criticality === 3 && <em className="gc-must">필수</em>}
+            {r.criticality === 3 && <em className="gc-must">{mustLabel}</em>}
           </span>
           <span className="gc-track">
             {[1, 2, 3, 4, 5].map((t) => (

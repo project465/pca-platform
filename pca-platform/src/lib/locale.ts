@@ -1,0 +1,255 @@
+/**
+ * 화면에 쓰는 언어.
+ *
+ * 문항과 직무 이름은 이미 translations 에 세 언어로 들어 있다(설계 원칙 2).
+ * 그런데 문항만 번역되고 버튼이 한국어면 외국인 응시자는 검사를 끝내지 못한다.
+ * 그래서 껍데기 문구도 같은 세 언어로 둔다.
+ *
+ * 언어는 쿠키 하나로 기억한다. 사용자 테이블에 붙이지 않는 이유는, 결제 전
+ * 둘러보는 사람도 언어를 골라야 하기 때문이다.
+ *
+ * 이 파일에는 next/headers 를 들이지 않는다. 언어 전환 버튼은 클라이언트
+ * 컴포넌트이고, 서버 전용 모듈을 하나라도 끌어오면 빌드가 깨진다.
+ * 쿠키를 읽는 쪽은 locale-server.ts 에 따로 있다.
+ */
+export const LANGS = ["ko", "en", "tr"] as const;
+export type Lang = (typeof LANGS)[number];
+export const LANG_COOKIE = "metri_lang";
+
+export const LANG_LABEL: Record<Lang, string> = {
+  ko: "한국어",
+  en: "English",
+  tr: "Türkçe",
+};
+
+export function isLang(v: string | undefined): v is Lang {
+  return !!v && (LANGS as readonly string[]).includes(v);
+}
+
+type Dict = Record<Lang, string>;
+const d = (ko: string, en: string, tr: string): Dict => ({ ko, en, tr });
+
+/**
+ * 화면 문구. 여기 없는 문장은 화면에 못 나온다 — 새 문구를 쓸 때 세 언어를
+ * 같이 쓰게 만들려는 제약이다.
+ */
+export const UI = {
+  brand: d("METRI", "METRI", "METRI"),
+
+  // 진입
+  doorTitle: d(
+    "어떤 분이신가요?",
+    "Who are you here as?",
+    "Hangi sıfatla geldiniz?",
+  ),
+  doorSub: d(
+    "고르시면 필요한 화면으로 바로 갑니다. 계정이 없어도 개인으로 시작할 수 있습니다.",
+    "Pick one and we take you straight to the right screen. No account needed to start as an individual.",
+    "Birini seçin, doğrudan ilgili ekrana götürelim. Bireysel başlamak için hesaba gerek yok.",
+  ),
+  doorIndividual: d("개인으로 검사받기", "Take the assessment yourself", "Testi kendim almak istiyorum"),
+  doorIndividualNote: d(
+    "결제하면 바로 응시할 수 있습니다. 소속이 없어도 됩니다.",
+    "Pay and start immediately. No institution required.",
+    "Ödeme sonrası hemen başlayın. Kuruma bağlı olmanız gerekmez.",
+  ),
+  doorStudent: d("학교에서 받은 계정으로", "Sign in with a school account", "Okulumdan aldığım hesapla"),
+  doorStudentNote: d(
+    "학과가 명단에 올렸다면 아이디와 첫 비밀번호를 받으셨을 겁니다.",
+    "If your department enrolled you, you were given an ID and a first password.",
+    "Bölümünüz sizi listeye eklediyse bir kullanıcı adı ve ilk şifre aldınız.",
+  ),
+  doorProfessor: d("학과 교수", "Faculty", "Öğretim üyesi"),
+  doorProfessorNote: d(
+    "우리 과 학생들의 응시 현황과 단체 리포트를 봅니다.",
+    "See your students' progress and the cohort report.",
+    "Öğrencilerinizin durumunu ve toplu raporu görün.",
+  ),
+  doorCenter: d(
+    "인재개발원 · 대학일자리플러스",
+    "Career center · Talent development",
+    "Kariyer merkezi · İnsan kaynakları",
+  ),
+  doorCenterNote: d(
+    "회차를 열고 명단을 올리고 결과 공개를 승인합니다.",
+    "Open a round, upload the roster, release results.",
+    "Dönem açın, listeyi yükleyin, sonuçları yayınlayın.",
+  ),
+  doorIntl: d("해외 대학 담당자", "International partner institution", "Yurt dışı kurum yetkilisi"),
+  doorIntlNote: d(
+    "화면과 문항이 영어·튀르키예어로 나옵니다. 결과지는 같은 자로 비교됩니다.",
+    "Screens and items in English or Turkish. Results are on the same scale as everyone else.",
+    "Ekranlar ve sorular İngilizce veya Türkçe. Sonuçlar herkesle aynı ölçekte.",
+  ),
+  doorHasAccount: d("이미 계정이 있으신가요?", "Already have an account?", "Hesabınız var mı?"),
+  signIn: d("로그인", "Sign in", "Giriş yap"),
+
+  // 응시
+  testTitle: d("기계공학 직무적합 검사", "Mechanical Engineering Career Fit", "Makine Mühendisliği Kariyer Uyumu"),
+  testMeta: d("{n}문항 · 약 {m}분", "{n} items · about {m} min", "{n} soru · yaklaşık {m} dk"),
+  testBrief1: d(
+    "정답이 없습니다. 오래 고민하지 말고 먼저 떠오르는 쪽을 고르세요.",
+    "There are no right answers. Go with your first instinct.",
+    "Doğru cevap yoktur. İlk aklınıza geleni işaretleyin.",
+  ),
+  testBrief2: d(
+    "한 문항 고를 때마다 저장됩니다. 도중에 닫아도 이어서 볼 수 있습니다.",
+    "Every answer is saved as you go. You can close the page and come back.",
+    "Her yanıt anında kaydedilir. Sayfayı kapatıp geri dönebilirsiniz.",
+  ),
+  testBrief3: d(
+    "끝까지 답해야 결과지가 나옵니다.",
+    "The report is produced once every item is answered.",
+    "Rapor, tüm sorular yanıtlandığında oluşturulur.",
+  ),
+  testStart: d("검사 시작", "Start", "Başla"),
+  testResume: d("{n}번부터 이어보기", "Resume from item {n}", "{n}. sorudan devam et"),
+  prev: d("이전", "Back", "Geri"),
+  next: d("다음", "Next", "İleri"),
+  pageOf: d("{a} / {b} 쪽", "Page {a} of {b}", "Sayfa {a} / {b}"),
+  finishPage: d(
+    "이 쪽을 모두 답해 주세요",
+    "Answer every item on this page",
+    "Bu sayfadaki tüm soruları yanıtlayın",
+  ),
+  submit: d("제출하고 결과 보기", "Submit and see results", "Gönder ve sonucu gör"),
+  scoring: d("채점 중…", "Scoring…", "Puanlanıyor…"),
+  saveFailed: d(
+    "저장되지 않았습니다. 다시 눌러 주세요.",
+    "Not saved. Please tap again.",
+    "Kaydedilmedi. Lütfen tekrar dokunun.",
+  ),
+  missingItems: d(
+    "아직 답하지 않은 문항이 {n}개 있습니다.",
+    "{n} items are still unanswered.",
+    "{n} soru hâlâ yanıtlanmadı.",
+  ),
+  noSeatTitle: d("응시할 검사가 없습니다", "No assessment available", "Kullanılabilir test yok"),
+  noSeatBody: d(
+    "개인으로 오셨다면 결제 후 바로 응시할 수 있고, 학교를 통해 오셨다면 학과에서 명단에 올린 뒤 열립니다.",
+    "As an individual, you can start right after payment. Through a school, it opens once your department enrolls you.",
+    "Bireysel geldiyseniz ödemeden hemen sonra başlayabilirsiniz. Okul üzerinden geldiyseniz bölümünüz sizi listeye ekleyince açılır.",
+  ),
+  startAsIndividual: d("개인으로 시작하기", "Start as an individual", "Bireysel olarak başla"),
+
+  // 결과지
+  repKicker: d(
+    "METRI · 공학 진로 인텔리전스",
+    "METRI · Engineering Career Intelligence",
+    "METRI · Mühendislik Kariyer Zekâsı",
+  ),
+  repTitle: d("직무적합 진단 결과지", "Career Fit Report", "Kariyer Uyum Raporu"),
+  repSec00: d("종합 요약", "Summary", "Genel özet"),
+  repSec01: d("직무분야 10개", "Ten job areas", "On iş alanı"),
+  repSec02: d("공학 활동 선호", "Engineering activity preferences", "Mühendislik faaliyet tercihleri"),
+  repSec03: d("업무 성향", "Work style", "Çalışma eğilimi"),
+  repSec04: d("직무 적합도", "Role fit", "Rol uyumu"),
+  repSec05: d("1순위 직무가 요구하는 역량", "What the top role requires", "İlk sıradaki rolün gerektirdikleri"),
+  repSec06: d("다음 여섯 달", "The next six months", "Önümüzdeki altı ay"),
+  repLead: d(
+    "250문항이 재는 것은 무엇을 하고 싶은가입니다. 실력이 아니라 관심의 방향입니다.",
+    "The 250 items measure what you want to do — the direction of your interest, not your skill level.",
+    "250 soru ne yapmak istediğinizi ölçer — yetkinliğinizi değil, ilginizin yönünü.",
+  ),
+  repLeadTop: d(
+    "가장 높게 나온 직무 분야는 {area}이고, 그 아래 직무로 내려가면 {job}이 1순위입니다.",
+    "Your strongest job area is {area}; drilling down, {job} ranks first.",
+    "En güçlü iş alanınız {area}; alt kırılımda {job} ilk sırada.",
+  ),
+  repKpiJob: d("1순위 직무", "Top role", "İlk sıradaki rol"),
+  repKpiArea: d("1순위 직무분야", "Top job area", "İlk sıradaki iş alanı"),
+  repKpiTrait: d("가장 뚜렷한 업무 성향", "Most pronounced work style", "En belirgin çalışma eğilimi"),
+  repQuality: d("응답 신뢰도", "Response reliability", "Yanıt güvenilirliği"),
+  repQualityOk: d(
+    "응답이 고르게 들어왔습니다. 아래 점수를 그대로 읽으셔도 됩니다.",
+    "Responses came in evenly. You can read the scores below at face value.",
+    "Yanıtlar dengeli geldi. Aşağıdaki puanları olduğu gibi okuyabilirsiniz.",
+  ),
+  repQualityCheck: d(
+    "같은 보기가 길게 이어지거나 응답이 빨랐습니다. 점수는 그대로 두되 구간을 넓게 잡았습니다.",
+    "The same option ran long, or answers came fast. Scores are unchanged; the interval is widened.",
+    "Aynı seçenek uzun sürdü ya da yanıtlar hızlıydı. Puanlar aynı; aralık genişletildi.",
+  ),
+  repQualityInvalid: d(
+    "성실도 확인 문항을 모두 놓쳤습니다. 결과를 판단 근거로 쓰기 전에 다시 응시하시기를 권합니다.",
+    "Every attention check was missed. We suggest retaking before relying on this result.",
+    "Tüm dikkat kontrolleri kaçırıldı. Bu sonuca dayanmadan önce testi tekrarlamanızı öneririz.",
+  ),
+  repQualityStat: d(
+    "성실도 확인 {a}/{b} 통과 · 같은 보기 최대 {r}연속 · 적합도 구간 ±{w}점",
+    "Attention checks {a}/{b} passed · longest same-option run {r} · fit interval ±{w}",
+    "Dikkat kontrolü {a}/{b} geçildi · en uzun aynı seçenek dizisi {r} · uyum aralığı ±{w}",
+  ),
+  repNote01: d(
+    "문항이 직접 재는 단위입니다. 분야마다 25문항씩 답하셨고, 그 평균을 100점으로 폈습니다. 아래 8축과 직무 순위는 모두 이 열 개에서 나옵니다.",
+    "This is what the items measure directly. You answered 25 items per area; the average is stretched to 100. The eight axes and the role ranking below all come from these ten.",
+    "Soruların doğrudan ölçtüğü birim budur. Her alan için 25 soru yanıtladınız; ortalama 100 üzerinden ölçeklendi. Aşağıdaki sekiz eksen ve rol sıralaması bu ondan türer.",
+  ),
+  repNote02: d(
+    "직무분야 열 개를 공학 활동 여덟 가지로 옮긴 값입니다. 분야 이름은 나라마다 다르지만 이 여덟 가지는 어디서나 같습니다 — 해외 직무와 비교할 때 쓰는 축입니다.",
+    "The ten job areas mapped onto eight engineering activities. Area names differ by country; these eight do not — this is the axis used to compare roles across borders.",
+    "On iş alanının sekiz mühendislik faaliyetine aktarılmış hâli. Alan adları ülkeye göre değişir; bu sekizi değişmez — sınır ötesi karşılaştırmada kullanılan eksen budur.",
+  ),
+  repNote03: d(
+    "250문항 중 120문항에 성향이 심어져 있습니다. 여섯 가지의 절대 높이보다 서로의 높낮이가 정보입니다. 가장 높은 쪽이 {hi}, 가장 낮은 쪽이 {lo}입니다.",
+    "120 of the 250 items carry a work-style signal. What matters is the relative height of the six, not their absolute level. Highest is {hi}; lowest is {lo}.",
+    "250 sorunun 120'si çalışma eğilimi taşır. Önemli olan altısının mutlak yüksekliği değil, birbirine göre konumudur. En yüksek {hi}; en düşük {lo}.",
+  ),
+  repNote04: d(
+    "활동 선호 75% + 업무 성향 25%로 계산했습니다. 가는 막대는 신뢰구간입니다 — 구간이 겹치는 직무끼리는 순위 차이를 크게 읽지 마십시오.",
+    "Computed as 75% activity preference + 25% work style. The thin bar is the confidence interval — where intervals overlap, do not read much into the rank gap.",
+    "Hesaplama: %75 faaliyet tercihi + %25 çalışma eğilimi. İnce çubuk güven aralığıdır — aralıklar çakışıyorsa sıralama farkına fazla anlam yüklemeyin.",
+  ),
+  repNote05: d(
+    "1순위로 나온 {job}이 요구하는 역량을 중요도 순으로 놓았습니다.",
+    "What {job}, your top-ranked role, requires — ordered by importance.",
+    "İlk sıradaki rol olan {job} için gerekenler — önem sırasına göre.",
+  ),
+  repNoEvidence: d(
+    "보유 수준은 아직 비어 있습니다. 이 검사는 관심의 방향을 재는 것이고, 역량 보유 수준은 들은 과목·자격증·프로젝트에서만 나옵니다. 추정해서 채우지 않았습니다.",
+    "Your held level is still empty. This assessment measures the direction of interest; held competency comes only from coursework, certificates and projects. We did not estimate it.",
+    "Sahip olunan seviye hâlâ boş. Bu test ilginin yönünü ölçer; yetkinlik seviyesi yalnızca dersler, sertifikalar ve projelerden gelir. Tahmin ederek doldurmadık.",
+  ),
+  repLegendReq: d("요구 수준", "Required", "Gerekli"),
+  repLegendHeld: d("보유 수준", "Held", "Sahip olunan"),
+  repLegendGap: d("채워야 할 구간", "Gap to close", "Kapatılacak fark"),
+  repMust: d("필수", "Must", "Zorunlu"),
+  repPlan1: d(
+    "{job} 요구 역량 중 필수로 표시된 것부터 관련 과목을 확인합니다. 이미 들은 과목이 있다면 증거로 올려 보유 수준을 채웁니다.",
+    "Start from the items marked Must for {job} and find the matching courses. If you have already taken some, upload them as evidence to fill in your held level.",
+    "{job} için Zorunlu işaretli maddelerden başlayıp ilgili dersleri bulun. Aldıklarınız varsa kanıt olarak yükleyip seviyenizi doldurun.",
+  ),
+  repPlan2: d(
+    "{area} 쪽 프로젝트를 하나 끝냅니다. 결과물보다 과정 기록이 증거가 됩니다.",
+    "Finish one project on the {area} side. The record of the process counts as evidence more than the artifact does.",
+    "{area} tarafında bir proje bitirin. Kanıt olarak ürün değil, sürecin kaydı sayılır.",
+  ),
+  repPlan3: d(
+    "2순위였던 {job}과 비교해 다시 봅니다. 구간이 겹쳤다면 해 본 경험이 순위를 가릅니다.",
+    "Revisit this against {job}, which ranked second. Where the intervals overlapped, experience is what separates them.",
+    "İkinci sıradaki {job} ile yeniden karşılaştırın. Aralıklar çakıştıysa ayrımı deneyim yapar.",
+  ),
+  repPlanM1: d("1–2개월", "Months 1–2", "1–2. ay"),
+  repPlanM2: d("3–4개월", "Months 3–4", "3–4. ay"),
+  repPlanM3: d("5–6개월", "Months 5–6", "5–6. ay"),
+  repRetest: d(
+    "재검사는 여섯 달 뒤를 권합니다. 그전에는 값이 거의 움직이지 않습니다.",
+    "We suggest retaking in six months. Before that the numbers barely move.",
+    "Altı ay sonra tekrar almanızı öneririz. Öncesinde değerler neredeyse değişmez.",
+  ),
+  repBack: d("내 검사로 돌아가기", "Back to my assessments", "Testlerime dön"),
+  repFootNote: d(
+    "응시 번호 {id} · 점수는 산식이 계산했고 문장은 이 결과지의 해설입니다",
+    "Attempt {id} · the scores come from the formula; the sentences explain them",
+    "Deneme {id} · puanlar formülden gelir; cümleler onları açıklar",
+  ),
+} as const;
+
+export type UiKey = keyof typeof UI;
+
+/** t("pageOf", lang, { a: 3, b: 26 }) */
+export function t(key: UiKey, lang: Lang, vars: Record<string, string | number> = {}): string {
+  let s: string = UI[key][lang];
+  for (const [k, v] of Object.entries(vars)) s = s.replaceAll(`{${k}}`, String(v));
+  return s;
+}

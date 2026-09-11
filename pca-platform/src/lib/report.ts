@@ -51,11 +51,22 @@ export type Report = {
   };
 };
 
-/** translations 에서 이름을 끌어오는 조각. 없으면 코드를 그대로 보여준다. */
+/**
+ * translations 에서 이름을 끌어오는 조각.
+ *
+ * 요청한 언어 → 영어 → 한국어 → 코드 순으로 떨어진다. 이 사다리가 없으면
+ * 튀르키예어 결과지에 "ME.AEROSPACE" 같은 코드가 그대로 찍힌다 — 번역이
+ * 덜 된 것보다 코드가 보이는 쪽이 훨씬 나쁘다.
+ */
 const NAME = (t: string, alias: string) =>
-  `COALESCE((SELECT value FROM translations
-              WHERE table_name = '${t}' AND row_id = ${alias}.id
-                AND lang = $2 AND field = 'name'), ${alias}.code)`;
+  `COALESCE(
+     (SELECT value FROM translations
+       WHERE table_name = '${t}' AND row_id = ${alias}.id AND lang = $2 AND field = 'name'),
+     (SELECT value FROM translations
+       WHERE table_name = '${t}' AND row_id = ${alias}.id AND lang = 'en' AND field = 'name'),
+     (SELECT value FROM translations
+       WHERE table_name = '${t}' AND row_id = ${alias}.id AND lang = 'ko' AND field = 'name'),
+     ${alias}.code)`;
 
 export async function buildReport(attemptId: string, userId: string, lang = "ko"): Promise<Report | null> {
   const head = await queryOne<{
@@ -65,8 +76,14 @@ export async function buildReport(attemptId: string, userId: string, lang = "ko"
     status: string;
   }>(
     `SELECT u.display_name AS name,
-            (SELECT value FROM translations
-              WHERE table_name = 'majors' AND row_id = m.id AND lang = $3 AND field = 'name') AS major_name,
+            COALESCE(
+              (SELECT value FROM translations
+                WHERE table_name = 'majors' AND row_id = m.id AND lang = $3 AND field = 'name'),
+              (SELECT value FROM translations
+                WHERE table_name = 'majors' AND row_id = m.id AND lang = 'en' AND field = 'name'),
+              (SELECT value FROM translations
+                WHERE table_name = 'majors' AND row_id = m.id AND lang = 'ko' AND field = 'name'),
+              m.code) AS major_name,
             a.submitted_at, a.status
        FROM attempts a
        JOIN users u ON u.id = a.user_id

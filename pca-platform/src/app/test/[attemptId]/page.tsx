@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { requireRole } from "@/lib/session";
 import { findAttempt, questionPage, PAGE_SIZE } from "@/lib/attempts";
+import { resolveLang } from "@/lib/locale-server";
 import TestRunner from "./test-runner";
 
 export const metadata = { title: "검사 응시 — METRI" };
@@ -14,7 +15,8 @@ export default async function TestPage({
 }) {
   const user = await requireRole(["student"]);
   const { attemptId } = await params;
-  const { p, lang } = await searchParams;
+  const { p, lang: q } = await searchParams;
+  const lang = await resolveLang(q);
 
   const attempt = await findAttempt(attemptId, user.id);
   if (!attempt) redirect("/test");
@@ -22,7 +24,7 @@ export default async function TestPage({
 
   const pages = Math.ceil(attempt.total / PAGE_SIZE);
   const page = Math.min(Math.max(1, Number(p) || 1), pages);
-  const questions = await questionPage(attempt, page, lang ?? "ko");
+  const questions = await questionPage(attempt, page, lang);
 
   return (
     <TestRunner
@@ -32,7 +34,7 @@ export default async function TestPage({
       total={attempt.total}
       answered={attempt.answered}
       questions={questions}
-      lang={lang ?? "ko"}
+      lang={lang}
     />
   );
 }
