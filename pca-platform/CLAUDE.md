@@ -187,6 +187,7 @@ npm run metri:seed      # 확장 스키마와 시드를 DB 에 적용
 npm run metri:items     # 단체 PCA 250문항을 검사지로 적재
 npm run metri:check     # 결제 → 응시 → 채점 → 결과지를 실제 DB 로 한 바퀴
 npm run metri:evidence  # 증거 → 레벨 계산을 문서 예제와 대조
+npm run metri:org       # 계약 → 회차 → 명단 → 채점 → 공개 → 단체 리포트
 ```
 
 **검사 한 판이 도는 경로** (2026-09-11)
@@ -203,6 +204,28 @@ npm run metri:evidence  # 증거 → 레벨 계산을 문서 예제와 대조
 - `src/lib/report.ts` — 점수를 읽어 이름만 붙인다. **여기서 숫자를 만들지 않는다**
 - `src/components/report-charts.tsx` — 결과지 그래프. 인쇄를 전제로 서버에서 SVG 로 그린다
 - `src/lib/evidence.ts` — 증거를 모아 보유 레벨을 계산한다. 화면은 `/evidence`
+
+**학과 경로** (2026-09-11)
+
+```
+계약(seats)  →  /org/sessions/new      회차를 연다
+             →  /org/sessions/[id]     명단을 붙여넣어 계정 일괄 발급
+             →  학생이 응시·채점
+             →  단체 리포트 확인 후 "공개"
+             →  그제야 학생에게 결과지가 열린다
+```
+
+- `src/lib/org.ts` — 회차·명단·공개. 좌석이 모자라면 그 줄에서 멈춘다
+- `src/lib/cohort.ts` — 단체 집계. **5명 미만 칸은 숫자를 내지 않는다**
+- 계약 등록은 운영사(`/admin/contracts/new`). 저장과 동시에 좌석을 만든다
+
+**결과 공개는 승인제가 기본이다.** `release_mode='manual'` 이면 담당자가
+공개를 누르기 전까지 `buildReport` 가 `"pending"` 을 돌려준다. 개인 결제(solo)와
+`instant` 회차만 승인 없이 바로 열린다.
+
+**5명 미만 칸은 숫자를 내지 않는다.** 익명 집계가 개인 식별이 되는 순간
+담당자가 특정 학생을 지목할 수 있고, 그러면 이 제품은 못 쓴다. 감춘 칸은
+빈 막대가 아니라 빗금으로 그린다 — 빈 막대는 0 으로 읽힌다.
 
 **흥미와 실력을 섞지 않는다** (2026-09-11)
 

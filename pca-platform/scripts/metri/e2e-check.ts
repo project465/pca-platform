@@ -67,6 +67,7 @@ async function main() {
 
   const rep = await buildReport(attempt.id, userId);
   if (!rep) throw new Error("결과지를 만들 수 없습니다");
+  if (rep === "pending") throw new Error("개인 결제 응시는 승인 없이 바로 열려야 합니다");
   console.log(`\n결과지 OK — 분야 ${rep.areas.length} · 성향 ${rep.traits.length} · 축 ${rep.axes.length} · 직무 ${rep.jobs.length} · 요구역량 ${rep.gaps.length}`);
   console.log(`  1순위 "${rep.jobs[0].name}" (${rep.jobs[0].areaName}) ${rep.jobs[0].fit}`);
   console.log(`  1순위 분야 "${rep.areas[0].name}" ${rep.areas[0].scaled}`);

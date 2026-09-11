@@ -244,6 +244,17 @@ export const UI = {
     "Deneme {id} · puanlar formülden gelir; cümleler onları açıklar",
   ),
 
+  repPendingTitle: d(
+    "결과지는 학과 승인 후 열립니다",
+    "Your report opens once the department releases it",
+    "Raporunuz bölüm yayınladığında açılır",
+  ),
+  repPendingBody: d(
+    "채점은 끝났습니다. 학과 담당자가 회차 전체를 확인한 뒤 공개하면 바로 보실 수 있습니다.",
+    "Scoring is done. Your coordinator reviews the whole round first; the report appears as soon as they release it.",
+    "Puanlama tamamlandı. Koordinatörünüz önce tüm dönemi inceler; yayınladığı anda rapor görünür.",
+  ),
+
   // 증거 입력
   evTitle: d("역량 증거", "Competency evidence", "Yetkinlik kanıtı"),
   evLead: d(

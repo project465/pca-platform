@@ -34,6 +34,19 @@ export default async function ReportPage({
   // 그 결과지는 못 읽는다.
   const r = await buildReport(attemptId, user.id, lang);
   if (!r) notFound();
+  if (r === "pending") {
+    return (
+      <div className="center-wrap">
+        <div className="panel narrow">
+          <h1>{t("repPendingTitle", lang)}</h1>
+          <p className="sub">{t("repPendingBody", lang)}</p>
+          <Link className="act" href="/my">
+            {t("repBack", lang)}
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   const top = r.jobs[0];
   const topArea = r.areas[0];

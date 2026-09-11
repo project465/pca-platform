@@ -68,12 +68,18 @@ const NAME = (t: string, alias: string) =>
        WHERE table_name = '${t}' AND row_id = ${alias}.id AND lang = 'ko' AND field = 'name'),
      ${alias}.code)`;
 
-export async function buildReport(attemptId: string, userId: string, lang = "ko"): Promise<Report | null> {
+/** 공개 승인 전이면 "pending". 없는 응시면 null. */
+export async function buildReport(
+  attemptId: string,
+  userId: string,
+  lang = "ko",
+): Promise<Report | "pending" | null> {
   const head = await queryOne<{
     name: string;
     major_name: string | null;
     submitted_at: string | null;
     status: string;
+    released: boolean;
   }>(
     `SELECT u.display_name AS name,
             COALESCE(
@@ -84,7 +90,10 @@ export async function buildReport(attemptId: string, userId: string, lang = "ko"
               (SELECT value FROM translations
                 WHERE table_name = 'majors' AND row_id = m.id AND lang = 'ko' AND field = 'name'),
               m.code) AS major_name,
-            a.submitted_at, a.status
+            a.submitted_at, a.status,
+            -- 학과 회차는 담당자가 공개를 승인해야 학생에게 보인다.
+            -- instant 회차와 개인 결제(solo)는 승인 없이 바로 열린다.
+            (ts.release_mode = 'instant' OR ts.released_at IS NOT NULL) AS released
        FROM attempts a
        JOIN users u ON u.id = a.user_id
        JOIN test_sessions ts ON ts.id = a.session_id
@@ -94,6 +103,8 @@ export async function buildReport(attemptId: string, userId: string, lang = "ko"
     [attemptId, userId, lang],
   );
   if (!head || head.status !== "scored") return null;
+  // 채점이 끝났어도 공개 전이면 학생에게 주지 않는다. 학과가 먼저 본다.
+  if (!head.released) return "pending";
 
   const areas = await query<Named>(
     `SELECT s.area_code AS code, ${NAME("job_areas", "ja")} AS name, s.scaled_score::float AS scaled
