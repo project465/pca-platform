@@ -554,3 +554,88 @@ CREATE TABLE match_feedback (
 );
 COMMENT ON TABLE match_feedback IS
   '1차 MVP 100명 검증이 만드는 표. 가중치를 다시 학습시킬 유일한 정답지다';
+
+
+-- ============================================================
+--  20. 결제 (2026-09-11)
+--
+--  개인 결제(B2C)를 받기 위한 최소 구성이다. 기존 seats 를 그대로 쓴다 —
+--  학과 계약은 contracts → seats 500개, 개인 결제는 계약 없이 seats 1개.
+--  회원 테이블을 나누지 않았듯이 좌석도 나누지 않는다.
+--
+--  지키는 것 세 가지
+--   1. 금액은 서버가 정한다. 브라우저가 보낸 금액을 믿지 않는다
+--   2. 승인은 PG 조회 결과로만 확정한다. 리다이렉트 파라미터를 믿지 않는다
+--   3. 같은 결제가 두 번 들어와도 좌석은 하나만 생긴다 (UNIQUE + 트랜잭션)
+-- ============================================================
+
+CREATE TABLE products (
+  code        TEXT PRIMARY KEY,          -- REPORT_UNIV | REPORT_HS | PACK_CAREER
+  kind        TEXT NOT NULL,             -- report | pack
+  amount      INTEGER NOT NULL,          -- 최소 화폐 단위 (원)
+  currency    CHAR(3) NOT NULL DEFAULT 'KRW',
+  seat_count  SMALLINT NOT NULL DEFAULT 1,
+  active      BOOLEAN NOT NULL DEFAULT true
+);
+COMMENT ON TABLE products IS
+  '가격을 코드에 박지 않는다. 값을 바꿀 때 배포하지 않기 위한 것이고,
+   무엇보다 브라우저가 보낸 금액으로 결제를 만들지 않기 위한 것이다';
+
+CREATE TABLE orders (
+  id           BIGSERIAL PRIMARY KEY,
+  order_no     TEXT NOT NULL UNIQUE,     -- PG 에 넘기는 값. 영문·숫자만, 40자 이내
+  user_id      BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  product_code TEXT NOT NULL REFERENCES products(code),
+  amount       INTEGER NOT NULL,         -- 주문 시점에 굳힌다. products 가 나중에 바뀌어도 이 값이 진실
+  currency     CHAR(3) NOT NULL DEFAULT 'KRW',
+  status       TEXT NOT NULL DEFAULT 'pending',  -- pending | paid | failed | cancelled | refunded
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
+  paid_at      TIMESTAMPTZ,
+  cancelled_at TIMESTAMPTZ
+);
+
+CREATE INDEX idx_orders_user ON orders(user_id, created_at DESC);
+CREATE INDEX idx_orders_open ON orders(status) WHERE status = 'pending';
+
+CREATE TABLE payments (
+  id                  BIGSERIAL PRIMARY KEY,
+  order_id            BIGINT NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+  provider            TEXT NOT NULL,     -- mock | portone
+  provider_payment_id TEXT NOT NULL,     -- PortOne 의 paymentId
+  status              TEXT NOT NULL,     -- ready | paid | failed | cancelled | partial_cancelled
+  amount              INTEGER NOT NULL,  -- PG 가 알려준 실제 승인 금액
+  method              TEXT,
+  raw                 JSONB,             -- PG 응답 원문. 분쟁이 나면 이것만 증거가 된다
+  created_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (provider, provider_payment_id)
+);
+COMMENT ON CONSTRAINT payments_provider_provider_payment_id_key ON payments IS
+  '웹훅과 리다이렉트가 같은 결제를 두 번 들고 와도 행이 하나만 생긴다.
+   좌석 중복 발급을 막는 것이 이 제약이다';
+
+CREATE TABLE payment_events (
+  id          BIGSERIAL PRIMARY KEY,
+  provider    TEXT NOT NULL,
+  event_id    TEXT,                      -- 웹훅 고유 id. 재전송 판별용
+  kind        TEXT NOT NULL,             -- webhook | redirect | manual
+  payload     JSONB NOT NULL,
+  received_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (provider, event_id)
+);
+COMMENT ON TABLE payment_events IS
+  '들어온 것은 검증 전에 일단 다 적는다. 서명이 틀린 요청도 적는다 —
+   공격을 받고 있는지 나중에 알아야 하기 때문이다';
+
+-- 개인 결제로 생긴 좌석은 계약이 없다. 기존 seats.contract_id 의 NOT NULL 을 푼다.
+ALTER TABLE seats ALTER COLUMN contract_id DROP NOT NULL;
+ALTER TABLE seats ADD COLUMN IF NOT EXISTS order_id BIGINT REFERENCES orders(id);
+COMMENT ON COLUMN seats.order_id IS
+  '개인 결제로 발급된 좌석. 학과 계약 좌석은 여기가 NULL 이고 contract_id 가 찬다';
+
+CREATE UNIQUE INDEX idx_seats_order ON seats(order_id) WHERE order_id IS NOT NULL;
+
+INSERT INTO products (code, kind, amount, currency, seat_count) VALUES
+  ('REPORT_UNIV', 'report', 29000, 'KRW', 1),
+  ('REPORT_HS',   'report', 19000, 'KRW', 1)
+ON CONFLICT (code) DO UPDATE SET amount = EXCLUDED.amount;
