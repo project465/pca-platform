@@ -19,6 +19,7 @@ export default function RosterPanel({
 }) {
   const [state, action, pending] = useActionState<RosterState, FormData>(uploadRoster, {});
   const [open, setOpen] = useState(false);
+  const [file, setFile] = useState<string | null>(null);
   const r = state.result;
 
   return (
@@ -35,20 +36,35 @@ export default function RosterPanel({
       {open && (
         <form action={action} className="roster-form">
           <input type="hidden" name="sessionId" value={sessionId} />
+
           <label className="field">
-            <span>한 줄에 한 명. 이름, 학번 또는 이름, 이메일</span>
+            <span>엑셀 파일 (.xlsx) 또는 CSV</span>
+            <input
+              type="file"
+              name="file"
+              accept=".xlsx,.xlsm,.csv,.tsv,.txt"
+              onChange={(e) => setFile(e.target.files?.[0]?.name ?? null)}
+            />
+            <span className="help">
+              첫 줄의 머리글에서 <b>이름</b>과 <b>학번·이메일</b> 칸을 찾습니다. 열 순서는
+              맞추지 않으셔도 되고, 다른 칸이 섞여 있어도 됩니다.
+            </span>
+          </label>
+
+          <label className="field">
+            <span>또는 붙여넣기 — 한 줄에 한 명</span>
             <textarea
               name="roster"
-              rows={8}
-              required
+              rows={6}
               placeholder={"홍길동, 2021001234\n김이박, student@univ.ac.kr"}
             />
             <span className="help">
               남은 좌석 {seatsFree}개. 이미 있는 계정은 다시 만들지 않고 이 회차에만 붙입니다.
             </span>
           </label>
+
           <button type="submit" className="act solid" disabled={pending}>
-            {pending ? "만드는 중…" : "계정 만들기"}
+            {pending ? "만드는 중…" : file ? `${file} 올리기` : "계정 만들기"}
           </button>
         </form>
       )}
@@ -63,6 +79,13 @@ export default function RosterPanel({
         <div className="roster-result">
           <p className="notice">
             새 계정 {r.created.length}개 · 기존 계정 {r.reused}개 · 건너뜀 {r.skipped.length}개
+            {r.columns && (
+              <>
+                {" "}
+                — <b>{r.columns.name}</b> 칸을 이름으로, <b>{r.columns.ident}</b> 칸을 학번으로
+                읽었습니다.
+              </>
+            )}
           </p>
 
           {r.created.length > 0 && (

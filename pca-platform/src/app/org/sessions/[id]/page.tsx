@@ -4,6 +4,7 @@ import { requireRole } from "@/lib/session";
 import { canManage, canRead } from "@/lib/org";
 import { query, queryOne } from "@/lib/db";
 import RosterPanel from "./roster-panel";
+import ReissueButton from "./reissue-button";
 import { release } from "../../actions";
 
 export const metadata = { title: "회차 — METRI" };
@@ -32,6 +33,7 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
   if (!s) notFound();
 
   const roster = await query<{
+    user_id: string;
     name: string;
     ident: string;
     status: string;
@@ -39,7 +41,7 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
     total: number;
     flag: string | null;
   }>(
-    `SELECT u.display_name AS name,
+    `SELECT u.id AS user_id, u.display_name AS name,
             COALESCE(u.login_id, u.email) AS ident,
             a.status,
             (SELECT count(*)::int FROM responses r WHERE r.attempt_id = a.id) AS answered,
@@ -141,11 +143,12 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
                   <th>상태</th>
                   <th>진행</th>
                   <th>신뢰도</th>
+                  {manage && <th>비밀번호</th>}
                 </tr>
               </thead>
               <tbody>
                 {roster.map((r) => (
-                  <tr key={r.ident}>
+                  <tr key={r.user_id}>
                     <td>{r.name}</td>
                     <td className="mono">{r.ident}</td>
                     <td>{label[r.status] ?? r.status}</td>
@@ -163,6 +166,11 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
                         "—"
                       )}
                     </td>
+                    {manage && (
+                      <td>
+                        <ReissueButton sessionId={s.id} studentId={r.user_id} name={r.name} />
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>

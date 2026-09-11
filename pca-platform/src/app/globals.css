@@ -695,3 +695,14 @@ td .sub { display: block; font-size: 12.5px; color: var(--muted); }
   background: repeating-linear-gradient(
     45deg, var(--rule), var(--rule) 3px, transparent 3px, transparent 7px);
 }
+
+.act.tiny { font-size: 12px; padding: 4px 9px; }
+.reissued { display: inline-flex; align-items: center; gap: 8px; }
+.reissued code {
+  background: var(--ink); color: #fff; padding: 3px 8px;
+  font-size: 13px; letter-spacing: 0.04em;
+}
+.reissued i, .reissue-err { font-style: normal; font-size: 11.5px; color: var(--muted); }
+.reissue-err { color: var(--gap); display: block; margin-top: 4px; }
+.roster-form .field input[type="file"] { font-size: 13.5px; padding: 8px 0; border: 0; }
+.roster-form .field { width: 100%; }

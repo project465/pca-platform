@@ -9,6 +9,7 @@
  */
 import { query, queryOne, tx } from "./db";
 import { generateTempPassword, hashPassword } from "./password";
+import type { RosterParse } from "./roster";
 
 /** 이보다 작은 칸은 숫자를 내지 않는다. */
 export const MIN_CELL = 5;
@@ -143,18 +144,21 @@ export type EnrollResult = {
   created: { name: string; loginId: string; tempPassword: string }[];
   reused: number;
   skipped: { line: string; why: string }[];
+  /** 어느 열을 이름·학번으로 봤는지. 담당자가 눈으로 확인할 수 있게 돌려준다 */
+  columns: { name: string; ident: string } | null;
 };
 
 /**
- * 명단을 붙여넣어 계정을 한 번에 만든다. 한 줄에 "이름, 학번" 또는 "이름, 이메일".
+ * 명단을 계정으로 바꾼다. 붙여넣기든 엑셀이든 여기 오기 전에 같은 모양
+ * (RosterLine[])이 돼 있다 — 파일 형식을 아는 곳은 roster.ts 하나뿐이다.
  *
- * 임시 비밀번호는 여기서 한 번만 보여주고 저장하지 않는다. 해시만 남는다.
+ * 임시 비밀번호는 여기서 한 번만 돌려주고 저장하지 않는다. 해시만 남는다.
  * 담당자가 그 화면을 닫으면 다시 볼 수 없고, 재발급만 된다.
  */
 export async function enrollRoster(
   userId: string,
   sessionId: string,
-  raw: string,
+  parsed: RosterParse,
 ): Promise<EnrollResult> {
   if (!(await canManage(userId, sessionId))) throw new Error("명단을 올릴 권한이 없습니다.");
 
@@ -164,28 +168,21 @@ export async function enrollRoster(
   );
   if (!session?.contract_id) throw new Error("계약이 붙어 있지 않은 회차입니다.");
 
-  const lines = raw
-    .split("\n")
-    .map((l) => l.trim())
-    .filter(Boolean)
-    .slice(0, 1000);
+  const out: EnrollResult = {
+    created: [],
+    reused: 0,
+    skipped: [...parsed.skipped],
+    columns: parsed.columns,
+  };
 
-  const out: EnrollResult = { created: [], reused: 0, skipped: [] };
-
-  for (const line of lines) {
-    const parts = line.split(/[,\t]/).map((x) => x.trim());
-    const name = parts[0];
-    const ident = parts[1];
-    if (!name || !ident) {
-      out.skipped.push({ line, why: "이름과 학번(또는 이메일)을 쉼표로 나눠 적어 주세요." });
-      continue;
-    }
+  for (const { name, ident } of parsed.lines) {
     const isEmail = ident.includes("@");
-
     try {
       await tx(async (c) => {
         const found = await c.query<{ id: string }>(
-          isEmail ? `SELECT id FROM users WHERE email = $1` : `SELECT id FROM users WHERE login_id = $1`,
+          isEmail
+            ? `SELECT id FROM users WHERE lower(email) = lower($1)`
+            : `SELECT id FROM users WHERE lower(login_id) = lower($1)`,
           [ident],
         );
 
@@ -235,11 +232,53 @@ export async function enrollRoster(
         if (temp) out.created.push({ name, loginId: ident, tempPassword: temp });
       });
     } catch (e) {
-      out.skipped.push({ line, why: e instanceof Error ? e.message : "등록하지 못했습니다." });
+      out.skipped.push({
+        line: `${name}, ${ident}`,
+        why: e instanceof Error ? e.message : "등록하지 못했습니다.",
+      });
     }
   }
 
   return out;
+}
+
+/**
+ * 비밀번호 재발급.
+ *
+ * 임시 비밀번호를 저장하지 않으므로 "다시 보여주기" 는 없고 재발급만 있다.
+ * 새 비밀번호를 넣고 must_reset_pw 를 다시 세워, 학생이 처음 들어올 때
+ * 반드시 자기 것으로 바꾸게 한다. 이 회차 명단에 있는 학생만 가능하다.
+ */
+export async function reissuePassword(
+  userId: string,
+  sessionId: string,
+  studentId: string,
+): Promise<{ name: string; loginId: string; tempPassword: string }> {
+  if (!(await canManage(userId, sessionId))) throw new Error("재발급 권한이 없습니다.");
+
+  const student = await queryOne<{ id: string; name: string; ident: string }>(
+    `SELECT u.id, u.display_name AS name, COALESCE(u.login_id, u.email) AS ident
+       FROM attempts a JOIN users u ON u.id = a.user_id
+      WHERE a.session_id = $1 AND u.id = $2`,
+    [sessionId, studentId],
+  );
+  if (!student) throw new Error("이 회차 명단에 없는 학생입니다.");
+
+  const temp = generateTempPassword();
+  const hash = await hashPassword(temp);
+  await query(
+    `UPDATE users SET password_hash = $2, must_reset_pw = true WHERE id = $1`,
+    [student.id, hash],
+  );
+  // 예전 재설정 링크가 살아 있으면 같이 끊는다. 재발급했는데 옛 링크로
+  // 또 바꿀 수 있으면 담당자가 건네준 비밀번호가 조용히 무력해진다.
+  await query(
+    `UPDATE password_reset_tokens SET used_at = now()
+      WHERE user_id = $1 AND used_at IS NULL`,
+    [student.id],
+  );
+
+  return { name: student.name, loginId: student.ident, tempPassword: temp };
 }
 
 export async function releaseSession(userId: string, sessionId: string): Promise<void> {

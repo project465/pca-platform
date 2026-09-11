@@ -6,7 +6,8 @@
  */
 import { query, queryOne, tx } from "../../src/lib/db";
 import { hashPassword } from "../../src/lib/password";
-import { createSession, enrollRoster, orgsOf, releaseSession, sessionsOf } from "../../src/lib/org";
+import { createSession, enrollRoster, orgsOf, reissuePassword, releaseSession, sessionsOf } from "../../src/lib/org";
+import { parseText } from "../../src/lib/roster";
 import { buildCohort } from "../../src/lib/cohort";
 import { buildReport } from "../../src/lib/report";
 import { questionPage, saveResponse, submitAttempt, findAttempt, PAGE_SIZE } from "../../src/lib/attempts";
@@ -57,13 +58,13 @@ async function main() {
 
   // ---- 명단: 좌석 8개인데 10명을 넣어 본다 ----
   const roster = Array.from({length: 10}, (_, i) => `학생${i+1}, orgchk-s${i+1}`).join("\n");
-  const r1 = await enrollRoster(admin!.id, sid, roster);
+  const r1 = await enrollRoster(admin!.id, sid, parseText(roster));
   console.log(`\n명단 10명 → 생성 ${r1.created.length} · 재사용 ${r1.reused} · 건너뜀 ${r1.skipped.length}`);
   if (r1.skipped.length) console.log(`  건너뛴 이유: ${r1.skipped[0].why}   (좌석 ${SEATS}개뿐이므로 2명이 막혀야 한다)`);
 
   // 같은 명단을 또 올려도 좌석을 더 먹지 않아야 한다
   const before = await queryOne<{n:number}>(`SELECT count(*)::int AS n FROM seats WHERE contract_id=$1 AND user_id IS NOT NULL`,[contract]);
-  await enrollRoster(admin!.id, sid, roster);
+  await enrollRoster(admin!.id, sid, parseText(roster));
   const after = await queryOne<{n:number}>(`SELECT count(*)::int AS n FROM seats WHERE contract_id=$1 AND user_id IS NOT NULL`,[contract]);
   console.log(`같은 명단 재업로드 → 배정 좌석 ${before!.n} → ${after!.n}   (늘면 안 된다)`);
 
@@ -104,6 +105,35 @@ async function main() {
   await releaseSession(admin!.id, sid);
   const after2 = await buildReport(attempts[0].id, attempts[0].user_id);
   console.log(`공개 후: ${after2 && after2 !== "pending" ? "결과지 열림" : "아직 막힘 (틀렸다)"}`);
+
+  // ---- 엑셀 업로드 ----
+  // 실제 xlsx 를 만들어 파일 경로로 읽힌다. 머리글이 한국어·영어·튀르키예어
+  // 어느 쪽이어도 같은 명단이 나와야 한다.
+  const { parseFile } = await import("../../src/lib/roster");
+  const { makeXlsx } = await import("./make-xlsx");
+  for (const head of [["이름","학번"], ["Student Name","Email"], ["Adı","Öğrenci No"]]) {
+    const rows = [head, ["가나다", "20260001"], ["라마바", "20260002"]];
+    const buf = makeXlsx(rows);
+    const parsed = parseFile("명단.xlsx", buf);
+    console.log(`  엑셀 머리글 [${head.join(', ')}] → 열 ${JSON.stringify(parsed.columns)} · ${parsed.lines.length}명`);
+  }
+  const csv = Buffer.from("이름,학번\n가나다,20260001\n라마바,20260002\n", "utf8");
+  console.log(`  CSV → ${parseFile("명단.csv", csv).lines.length}명`);
+
+  // ---- 비밀번호 재발급 ----
+  const target = attempts[0];
+  const before3 = await queryOne<{h:string; m:boolean}>(
+    `SELECT password_hash AS h, must_reset_pw AS m FROM users WHERE id=$1`, [target.user_id]);
+  const issued = await reissuePassword(admin!.id, sid, target.user_id);
+  const after3 = await queryOne<{h:string; m:boolean}>(
+    `SELECT password_hash AS h, must_reset_pw AS m FROM users WHERE id=$1`, [target.user_id]);
+  console.log(`\n재발급 ${issued.loginId} → 해시 바뀜 ${before3!.h !== after3!.h} · 첫로그인 변경강제 ${after3!.m}`);
+  const { verifyPassword } = await import("../../src/lib/password");
+  console.log(`  새 비밀번호로 검증: ${await verifyPassword(issued.tempPassword, after3!.h)}`);
+  try {
+    await reissuePassword(admin!.id, sid, "999999");
+    console.log("  명단에 없는 학생 → 통과 (막았어야 한다)");
+  } catch (e) { console.log(`  명단에 없는 학생 → 거절: ${(e as Error).message}`); }
 
   const list = await sessionsOf([org!.id]);
   console.log(`\n담당자 목록: ${list[0].name} · 명단 ${list[0].enrolled} · 채점 ${list[0].scored} · 공개 ${list[0].releasedAt ? 'O' : 'X'}`);
