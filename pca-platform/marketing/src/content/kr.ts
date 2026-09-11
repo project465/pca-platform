@@ -792,7 +792,7 @@ export const kr: SiteContent = {
         table: {
           head: ["맡기는 곳", "맡기는 일"],
           rows: [
-            ["Vercel Inc.", "서버 운영과 데이터 보관 (국외 처리 포함)"],
+            ["Google LLC (Firebase Hosting)", "서버 운영과 데이터 보관 (국외 처리 포함)"],
           ],
         },
       },

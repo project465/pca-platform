@@ -831,7 +831,7 @@ export const global: SiteContent = {
         table: {
           head: ["Processor", "What they do"],
           rows: [
-            ["Vercel Inc.", "Server operation and data storage (processed outside Korea)"],
+            ["Google LLC (Firebase Hosting)", "Server operation and data storage (processed outside Korea)"],
           ],
         },
       },
