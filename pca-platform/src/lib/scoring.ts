@@ -22,6 +22,12 @@ export function scale100(mean1to5: number): number {
   return Math.round(((mean1to5 - 1) / 4) * 1000) / 10;
 }
 
+/**
+ * 리커트 5점에서 이보다 작은 흩어짐은 신호가 아니다.
+ * 표준편차가 정확히 0 이 아니라 1e-16 으로 남는 경우를 함께 막는다.
+ */
+const SPREAD_FLOOR = 0.05;
+
 /** 로지스틱. 평균보다 위면 빠르게 올라가고 아래면 빠르게 떨어진다. */
 function sigma(z: number): number {
   return 1 / (1 + Math.exp(-1.2 * z));
@@ -31,7 +37,16 @@ export type AttemptScore = {
   areas: { code: string; raw: number; scaled: number; rank: number }[];
   traits: { code: string; raw: number; scaled: number }[];
   axes: { code: string; scaled: number }[];
-  jobs: { code: string; fit: number; a: number; p: number; band: [number, number]; rank: number }[];
+  jobs: {
+    code: string;
+    fit: number;
+    a: number;
+    p: number;
+    band: [number, number];
+    rank: number;
+    /** 구간이 겹치는 직무끼리 같은 번호. 결과지는 등수가 아니라 이것을 읽는다 */
+    tier: number;
+  }[];
   quality: Quality;
 };
 
@@ -140,6 +155,26 @@ export async function score(attemptId: string): Promise<AttemptScore> {
 
   // 1. 직무분야
   const areaCodes = await query<{ code: string }>(`SELECT code FROM job_areas ORDER BY sort_no`);
+  /**
+   * 분야 점수의 표준오차. 25문항 평균이므로 sd/√25 이다.
+   * 이 값이 적합도 신뢰구간의 근거가 된다 — 예전에는 ±6 이라는 상수를 썼는데,
+   * 그건 근거 없는 숫자였고 1위와 2위 차이(보통 1~2점)보다 훨씬 넓어서
+   * 500명 시뮬레이션에서 100% 겹쳤다. 구간은 재서 나와야 한다.
+   */
+  const areaSe = new Map<string, number>();
+  for (const { code } of areaCodes) {
+    const vals = rows
+      .filter((r) => r.score !== null && r.area_code === code && r.item_kind !== "attention")
+      .map((r) => Number(r.score));
+    if (vals.length < 2) {
+      areaSe.set(code, 25);
+      continue;
+    }
+    const m = vals.reduce((a, b) => a + b, 0) / vals.length;
+    const sd = Math.sqrt(vals.reduce((a, v) => a + (v - m) ** 2, 0) / (vals.length - 1));
+    areaSe.set(code, (sd / Math.sqrt(vals.length)) * 25); // 1~5 를 0~100 으로 편 만큼 곱한다
+  }
+
   const areas = areaCodes
     .map(({ code }) => {
       const raw = meanBy(rows, (r) => r.area_code === code && r.item_kind !== "attention");
@@ -165,7 +200,6 @@ export async function score(attemptId: string): Promise<AttemptScore> {
   // 아니라 1e-16 쯤으로 남아서, 나누면 부동소수점 찌꺼기가 z=±1 로 부풀어
   // 오른다. 리커트 5점에서 0.05 미만의 차이는 신호가 아니므로 0 으로 본다.
   //   — "성향이 고르다" 를 "성향이 뚜렷하다" 로 읽지 않기 위한 바닥값이다.
-  const SPREAD_FLOOR = 0.05;
   const traitZ = new Map(
     traits.map((t) => [
       t.code,
@@ -188,11 +222,46 @@ export async function score(attemptId: string): Promise<AttemptScore> {
     axisNum.set(m.axis_code, (axisNum.get(m.axis_code) ?? 0) + w * area.raw);
     axisDen.set(m.axis_code, (axisDen.get(m.axis_code) ?? 0) + w);
   }
-  const axes = [...axisNum.keys()].map((code) => ({
-    code,
-    scaled: scale100(axisNum.get(code)! / axisDen.get(code)!),
-  }));
-  const axisByCode = new Map(axes.map((a) => [a.code, a.scaled]));
+  const axisRaw = new Map(
+    [...axisNum.keys()].map((code) => [code, axisNum.get(code)! / axisDen.get(code)!]),
+  );
+  const axes = [...axisRaw.keys()].map((code) => ({ code, scaled: scale100(axisRaw.get(code)!) }));
+
+  /**
+   * 직무 순위를 매길 때는 축의 절대 높이가 아니라 **그 사람 안에서의 높낮이**
+   * 를 쓴다. 축마다 몇 개 분야에서 오는지가 달라서 그렇다 —
+   * ANALYZE 는 열 분야 중 여덟에서 평균돼 평평해지고, CODE 는 둘뿐이라 크게
+   * 흔들린다. 날것을 그대로 쓰면 CODE 에 가중치를 둔 직무가 사람과 무관하게
+   * 유리해진다(500명 시뮬레이션에서 로봇·자동화 28% 대 품질·신뢰성 2%).
+   *
+   * 성향(traitZ)에 이미 쓰던 방법을 활동 축에도 그대로 쓴다.
+   * 절대 높이는 결과지의 8축 레이더가 따로 보여준다 — 거기서는 날것이 맞다.
+   */
+  // 분야 오차를 축으로 옮긴다. axis = Σ(w·area)/Σw 이므로 오차도 같은 계수로 간다.
+  const axisSe = new Map<string, number>();
+  for (const code of axisRaw.keys()) {
+    let v = 0;
+    for (const m of matrix) {
+      if (m.axis_code !== code) continue;
+      const c = Number(m.weight) / (axisDen.get(code) ?? 1);
+      const se = areaSe.get(m.area_code) ?? 0;
+      v += (c * se) ** 2;
+    }
+    axisSe.set(code, Math.sqrt(v));
+  }
+
+  const axisVals = [...axisRaw.values()];
+  const axisMean = axisVals.reduce((a, b) => a + b, 0) / (axisVals.length || 1);
+  const axisSd = Math.sqrt(
+    axisVals.reduce((a, v) => a + (v - axisMean) ** 2, 0) / (axisVals.length || 1),
+  );
+  const SPREAD = axisSd < SPREAD_FLOOR ? 0 : axisSd;
+  const axisZ = new Map(
+    [...axisRaw.entries()].map(([code, v]) => [
+      code,
+      SPREAD === 0 ? 0 : Math.max(-3, Math.min(3, (v - axisMean) / SPREAD)),
+    ]),
+  );
 
   // 4. 직무 적합도
   //    A = activity 축 가중합. 축 가중치는 job_axis_weights 에 있다.
@@ -225,7 +294,9 @@ export async function score(attemptId: string): Promise<AttemptScore> {
   const jobs = [...byJob.entries()]
     .map(([code, ws]) => {
       const den = ws.reduce((a, x) => a + x.w, 0) || 1;
-      const a = ws.reduce((acc, x) => acc + x.w * (axisByCode.get(x.axis) ?? 0), 0) / den;
+      // 이 직무가 무겁게 보는 축에서 그 사람이 얼마나 위에 있는가
+      const lean = ws.reduce((acc, x) => acc + x.w * (axisZ.get(x.axis) ?? 0), 0) / den;
+      const a = Math.round(sigma(lean) * 1000) / 10;
 
       // 성향 적합 P: 이 직무에서 무거운 축이 선호하는 성향의 z 를 가중 평균해
       //   0~100 으로 편다. 성향은 높낮이 자체보다 방향이 맞는지가 정보다.
@@ -241,7 +312,36 @@ export async function score(attemptId: string): Promise<AttemptScore> {
 
       // 재학생 트랙 가중치: 활동 선호 0.75, 업무 성향 0.25.
       const fit = Math.round((0.75 * a + 0.25 * p) * 10) / 10;
-      const half = q.bandWidth / 2;
+
+      /**
+       * 신뢰구간을 잰다.
+       *
+       * lean 은 축 z 의 가중합이고, 축마다 표준오차가 있다. 그것을 모아
+       * lean 의 오차를 만들고, 로지스틱의 기울기(120·σ·(1-σ))를 곱해
+       * 적합도 점수 단위로 옮긴다. 여기에 응답 품질에서 온 벌점을 더한다 —
+       * 같은 보기를 연타한 사람은 측정 자체가 덜 믿을 만하기 때문이다.
+       */
+      let leanVar = 0;
+      for (const x of ws) {
+        const se = (axisSe.get(x.axis) ?? 0) / (SPREAD === 0 ? 1 : SPREAD * 25);
+        leanVar += ((x.w / den) * se) ** 2;
+      }
+      const sg = sigma(lean);
+      const seFit = 120 * sg * (1 - sg) * 1.2 * Math.sqrt(leanVar);
+      /**
+       * 폭은 표준오차 1배(약 68%)로 잡는다.
+       *
+       * 95%(1.96배)로 잡아 봤더니 500명 중 절반이 1군에 직무 네 개 이상을
+       * 담았고, 열에 하나는 여덟 개가 전부 한 묶음이 됐다. "여덟 개 중에
+       * 어느 것인지 모르겠습니다" 는 결과지가 아니다.
+       *
+       * 검사 점수 보고에서 표준오차 1배는 관례이기도 하다. 다만 이 폭으로
+       * 두 직무를 "못 가른다" 고 판정하는 것은 대략 1.4시그마 검정이므로,
+       * 결과지 문구도 "우열을 가릴 수 없다" 까지만 말하고 그 이상을
+       * 주장하지 않는다.
+       */
+      const half = Math.max(0.5, seFit + (q.bandWidth - 6) / 2);
+
       return {
         code,
         fit,
@@ -256,8 +356,29 @@ export async function score(attemptId: string): Promise<AttemptScore> {
     .sort((x, y) => y.fit - x.fit)
     .map((j, i) => ({ ...j, rank: i + 1 }));
 
-  await persist(attemptId, { areas, traits, axes, jobs, quality: q });
-  return { areas, traits, axes, jobs, quality: q };
+  /**
+   * 등수를 묶음으로 바꾼다.
+   *
+   * 측정 오차가 1위와 2위의 차이보다 크다(시뮬레이션에서 7.3 대 3.7).
+   * 그 상태로 "1위 · 2위" 를 적으면 없는 정밀도를 파는 것이다. 구간이
+   * 겹치면 같은 묶음으로 둔다.
+   *
+   * 비교 대상은 바로 앞 직무가 아니라 그 묶음의 머리다. 앞 직무와만
+   * 비교하면 조금씩 겹치는 것이 사슬처럼 이어져 여덟 개가 한 묶음이 된다.
+   */
+  const tiered = jobs.map((j) => ({ ...j, tier: 1 }));
+  let tier = 1;
+  let head = tiered[0];
+  for (let i = 1; i < tiered.length; i++) {
+    if (tiered[i].band[1] < head.band[0]) {
+      tier += 1;
+      head = tiered[i];
+    }
+    tiered[i].tier = tier;
+  }
+
+  await persist(attemptId, { areas, traits, axes, jobs: tiered, quality: q });
+  return { areas, traits, axes, jobs: tiered, quality: q };
 }
 
 async function persist(attemptId: string, s: AttemptScore) {
@@ -297,9 +418,9 @@ async function persist(attemptId: string, s: AttemptScore) {
     for (const j of s.jobs) {
       await c.query(
         `INSERT INTO job_fit_scores
-           (attempt_id, job_id, fit_score, rank_no, a_score, p_score, band_low, band_high)
-         SELECT $1, id, $3, $4, $5, $6, $7, $8 FROM job_clusters WHERE code = $2`,
-        [attemptId, j.code, j.fit, j.rank, j.a, j.p, j.band[0], j.band[1]],
+           (attempt_id, job_id, fit_score, rank_no, a_score, p_score, band_low, band_high, tier)
+         SELECT $1, id, $3, $4, $5, $6, $7, $8, $9 FROM job_clusters WHERE code = $2`,
+        [attemptId, j.code, j.fit, j.rank, j.a, j.p, j.band[0], j.band[1], j.tier],
       );
     }
 

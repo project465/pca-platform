@@ -50,6 +50,8 @@ export default async function ReportPage({
 
   const top = r.jobs[0];
   const topArea = r.areas[0];
+  // 1군에 몇 개가 들어 있는지. 여러 개면 그 사실을 그대로 말해 준다
+  const topTier = r.jobs.filter((j) => j.tier === 1).length;
   const byScore = [...r.traits].sort((a, b) => b.scaled - a.scaled);
   const traitTop = byScore[0];
   const traitLow = byScore[byScore.length - 1];
@@ -167,8 +169,16 @@ export default async function ReportPage({
           </div>
           <p className="rp-note">{t("repNote04", lang)}</p>
           <BandBars
-            items={r.jobs.map((j) => ({ name: j.name, fit: j.fit, band: j.band, sub: j.areaName }))}
+            items={r.jobs.map((j) => ({
+              name: j.name,
+              fit: j.fit,
+              band: j.band,
+              sub: j.areaName,
+              tier: j.tier,
+            }))}
+            tierLabel={(n) => t("repTier", lang, { n })}
           />
+          {topTier > 1 && <p className="rp-note">{t("repTierNote", lang, { n: topTier })}</p>}
         </section>
 
         {/* ---- 05 역량 격차 ---- */}

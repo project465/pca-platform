@@ -196,9 +196,15 @@ export const UI = {
     "250 sorunun 120'si çalışma eğilimi taşır. Önemli olan altısının mutlak yüksekliği değil, birbirine göre konumudur. En yüksek {hi}; en düşük {lo}.",
   ),
   repNote04: d(
-    "활동 선호 75% + 업무 성향 25%로 계산했습니다. 가는 막대는 신뢰구간입니다 — 구간이 겹치는 직무끼리는 순위 차이를 크게 읽지 마십시오.",
-    "Computed as 75% activity preference + 25% work style. The thin bar is the confidence interval — where intervals overlap, do not read much into the rank gap.",
-    "Hesaplama: %75 faaliyet tercihi + %25 çalışma eğilimi. İnce çubuk güven aralığıdır — aralıklar çakışıyorsa sıralama farkına fazla anlam yüklemeyin.",
+    "활동 선호 75% + 업무 성향 25%로 계산했습니다. 등수를 매기지 않고 묶음으로 보여드립니다 — 같은 묶음 안의 직무는 이 검사로 우열을 가릴 수 없습니다. 가는 막대가 그 폭입니다.",
+    "Computed as 75% activity preference + 25% work style. We group rather than rank: this assessment cannot separate roles inside the same group. The thin bar shows that margin.",
+    "Hesaplama: %75 faaliyet tercihi + %25 çalışma eğilimi. Sıralamak yerine gruplandırıyoruz: aynı gruptaki roller bu testle ayrılamaz. İnce çubuk bu payı gösterir.",
+  ),
+  repTier: d("{n}군", "Group {n}", "{n}. grup"),
+  repTierNote: d(
+    "1군이 {n}개입니다. 이 검사로는 그 안에서 우열을 가릴 수 없으니, 해 본 경험으로 가르십시오.",
+    "Your top group holds {n} roles. This assessment cannot separate them — experience will.",
+    "İlk grubunuzda {n} rol var. Bu test onları ayıramaz — ayrımı deneyim yapar.",
   ),
   repNote05: d(
     "1순위로 나온 {job}이 요구하는 역량을 중요도 순으로 놓았습니다.",

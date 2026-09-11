@@ -21,6 +21,8 @@ export type ReportJob = {
   p: number;
   band: [number, number];
   rank: number;
+  /** 구간이 겹치는 직무끼리 같은 번호 */
+  tier: number;
   areaName: string | null;
 };
 
@@ -130,7 +132,7 @@ export async function buildReport(
     `SELECT jc.code, ${NAME("job_clusters", "jc")} AS name,
             f.fit_score::float AS fit, f.a_score::float AS a, f.p_score::float AS p,
             ARRAY[f.band_low::float, f.band_high::float] AS band,
-            f.rank_no AS rank,
+            f.rank_no AS rank, COALESCE(f.tier, f.rank_no) AS tier,
             (SELECT ${NAME("job_areas", "ja")} FROM job_cluster_areas jca
                JOIN job_areas ja ON ja.code = jca.area_code
               WHERE jca.job_id = jc.id ORDER BY jca.share DESC LIMIT 1) AS "areaName"

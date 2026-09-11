@@ -88,16 +88,39 @@ export function RankBars({ items, max = 100 }: { items: Item[]; max?: number }) 
 }
 
 /** 적합도와 신뢰구간. 점 하나가 아니라 구간으로 보여야 정직하다. */
+/**
+ * 적합도와 신뢰구간.
+ *
+ * 등수를 1,2,3… 으로 적지 않는다. 500명 시뮬레이션에서 1위와 2위의 차이가
+ * 중앙 3.7점인데 측정 오차는 7.3점이었다 — 오차가 차이보다 크면 그 등수는
+ * 없는 정밀도다. 구간이 겹치는 직무는 같은 묶음으로 묶어 보여준다.
+ */
 export function BandBars({
   items,
+  tierLabel,
 }: {
-  items: { name: string; fit: number; band: [number, number]; sub?: string | null }[];
+  items: {
+    name: string;
+    fit: number;
+    band: [number, number];
+    sub?: string | null;
+    tier: number;
+  }[];
+  /** "{n}군" 처럼 묶음 번호를 사람 말로 바꾸는 함수 */
+  tierLabel: (n: number) => string;
 }) {
   return (
     <ul className="bandbars">
       {items.map((it, i) => (
-        <li key={it.name} className={i === 0 ? "top" : ""}>
-          <span className="bb-rank">{i + 1}</span>
+        <li
+          key={it.name}
+          className={`${it.tier === 1 ? "top" : ""}${
+            i > 0 && items[i - 1].tier !== it.tier ? " tierbreak" : ""
+          }`}
+        >
+          <span className="bb-rank">
+            {i === 0 || items[i - 1].tier !== it.tier ? tierLabel(it.tier) : ""}
+          </span>
           <span className="bb-name">
             {it.name}
             {it.sub && <em>{it.sub}</em>}
