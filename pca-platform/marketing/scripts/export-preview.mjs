@@ -15,7 +15,7 @@ const site = process.argv[2] ?? "global";
 const out = process.argv[3] ?? `/tmp/preview-${site}.html`;
 const BASE = "http://localhost:3100";
 
-const browser = await chromium.launch();
+const browser = await chromium.launch({ executablePath: process.env.PW_CHROME || undefined, args: ["--no-sandbox"] });
 const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
 
 const css = [];

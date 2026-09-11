@@ -8,14 +8,14 @@ import type { SiteContent } from "./types";
 export const global: SiteContent = {
   key: "global",
   lang: "en",
-  domain: "pca.example",
-  brand: "PCA",
+  domain: "metri.io",
+  brand: "METRI",
   org: "ACADEMIX",
   orgTagline: "EDUCATION & CONFERENCE",
-  platformUrl: "https://app.pca.example",
+  platformUrl: "https://app.metri.io",
 
   meta: {
-    title: "PCA — A career strategy built around the major you already chose",
+    title: "METRI — from your major to the employers that fit",
     description:
       "Personalized Career Analysis reads job fit, work style and execution strategy together, then tells students what to prepare — projects, applications, interviews, founding, and employers in their own region.",
   },
@@ -23,6 +23,7 @@ export const global: SiteContent = {
   nav: {
     items: [
       { label: "PCA", href: "/pca" },
+      { label: "Who it is for", href: "/#channels" },
       { label: "LOCALISATION", href: "/localisation" },
       { label: "PARTNERSHIP", href: "/partnership" },
       { label: "PRICING", href: "/pricing" },
@@ -41,7 +42,7 @@ export const global: SiteContent = {
       "PCA ranks ten job areas out of 100, maps six work styles, and writes each student a 15–20 page plan — credentials, projects, applications, interviews, founding, and employers in their own region. Built in Korea, rebuilt in your country from your own labour-market data.",
     primary: { label: "Talk to us", href: "/contact" },
     secondary: { label: "See a real report", href: "#sample" },
-    watermark: "PCA",
+    watermark: "METRI",
   },
 
   sample: {
@@ -129,6 +130,66 @@ export const global: SiteContent = {
       primary: { label: "Talk to us", href: "/contact" },
       secondary: { label: "See all ten sections", href: "/pca" },
     },
+  },
+
+  channels: {
+    label: "WHO IT IS FOR",
+    heading: "Three doors, one engine",
+    lead:
+      "A student can take it alone. A department can look at 500 at once. A company can search for people. All three run on the same assessment and the same skill graph - what differs is the unit you buy and the document you walk away with.",
+    items: [
+      {
+        key: "individual",
+        tag: "INDIVIDUAL",
+        title: "Take it on your own",
+        who: "Students, job seekers, recent graduates",
+        body:
+          "Start with a free 12-item check to see the direction. Buy the full report one at a time. No institutional contract required.",
+        gets: [
+          "Free 12-item check - top role shown in full",
+          "Full report - roles, industries, employers, skill gaps",
+          "A six-month action plan",
+          "An account that outlives graduation",
+        ],
+        unit: "One seat, pay per report",
+        cta: { label: "See individual pricing", href: "/pricing" },
+      },
+      {
+        key: "company",
+        tag: "EMPLOYER",
+        title: "Find people who fit the work",
+        who: "Recruiters, industry partners, regional employers",
+        body:
+          "Post a role and it appears in the reports of students it actually fits. They apply to you directly. You also see how far those students have covered what your posting asks for.",
+        gets: [
+          "Your posting placed in fitting students' reports",
+          "Coverage report on your required skills (anonymised)",
+          "Regional employer packages",
+          "Role content for employer branding",
+        ],
+        unit: "Annual placement and reporting subscription",
+        cta: { label: "Talk to us about partnership", href: "/partnership" },
+      },
+      {
+        key: "campus",
+        tag: "CAMPUS",
+        title: "See a whole cohort at once",
+        who: "Departments, career services, schools",
+        body:
+          "Every student gets their own report; the department gets the anonymised roll-up. Where student gaps overlap with employer demand is where the curriculum has work to do.",
+        gets: [
+          "Individual reports for every student",
+          "Anonymised cohort report - role spread, target industries, gaps",
+          "Overlap with employer demand marked automatically",
+          "Local employer matching by campus location",
+          "Process data for outcome reporting",
+        ],
+        unit: "Annual contract, priced per seat",
+        cta: { label: "Talk to us about adoption", href: "/adopt" },
+      },
+    ],
+    note:
+      "When a department contracts, its students reach the full report without paying individually - and keep the account after they graduate.",
   },
 
   who: {
@@ -808,6 +869,21 @@ export const global: SiteContent = {
         cta: { ready: "Buy now", ask: "Request an assessment" },
       },
       {
+        key: "company",
+        name: "Employer",
+        who: "Recruiters, industry partners, regional employers",
+        price: null,
+        unit: "per year",
+        note: "Often bought by a local authority on behalf of a group of employers.",
+        features: [
+          "Your posting placed in fitting students' reports",
+          "Coverage report on your required skills",
+          "Applications go straight to your own posting",
+          "No personally identifying data is supplied",
+        ],
+        cta: { ready: "Request employer access", ask: "Talk about employer access" },
+      },
+      {
         key: "department",
         name: "Department",
         who: "A department or careers service",
@@ -877,8 +953,9 @@ export const global: SiteContent = {
     quickSubmit: "Send",
     typeLabel: "What is this about",
     types: [
-      { value: "org", label: "University or department rollout" },
-      { value: "partner", label: "Operating PCA in my country" },
+      { value: "org", label: "University, department or school rollout" },
+      { value: "company", label: "Employer access" },
+      { value: "partner", label: "Operating METRI in my country" },
       { value: "individual", label: "An individual assessment" },
     ],
     afterLabel: "What happens next",

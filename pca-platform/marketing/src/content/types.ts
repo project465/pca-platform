@@ -119,6 +119,35 @@ export type Partnership = {
   steps: Named[];
 };
 
+/**
+ * 세 개의 문 — 개인 · 기업 · 학교.
+ *
+ * 같은 엔진을 세 지갑에 판다. 지갑마다 사는 이유와 결재선이 다르므로
+ * 진입 문구·구매 단위·다음 행동을 따로 적는다. 한 문으로 다 받으면
+ * 학생이 "우리 학교가 계약했나?" 를 스스로 판단해야 하고, 대학 담당자는
+ * 자기 얘기가 아닌 문구를 먼저 읽게 된다.
+ */
+export type Channels = {
+  label: string;
+  heading: string;
+  lead: string;
+  items: {
+    key: "individual" | "company" | "campus";
+    /** 문 위에 붙는 짧은 표시 */
+    tag: string;
+    title: string;
+    /** 누가 이 문으로 들어오는가 */
+    who: string;
+    body: string;
+    /** 이 문으로 들어오면 받는 것 */
+    gets: string[];
+    /** 구매 단위 — 좌석 1개 / 학과 좌석 / 구독 */
+    unit: string;
+    cta: Link;
+  }[];
+  note: string;
+};
+
 /** 나라별 사이트 진입 (글로벌판) */
 export type Regions = {
   label: string;
@@ -219,6 +248,9 @@ export type SiteContent = {
 
   /** 예시 결과지 — 홈에서 설명보다 먼저 나온다 */
   sample: Sample;
+
+  /** 개인 · 기업 · 학교 세 개의 문 */
+  channels: Channels;
 
   /** 이런 고민, PCA가 방향을 잡아드립니다 */
   who: {

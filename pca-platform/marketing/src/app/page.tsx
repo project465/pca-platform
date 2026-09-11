@@ -1,7 +1,7 @@
 import { getSite } from "@/content";
 import Shell from "@/components/shell";
 import Hero from "@/components/hero";
-import { Analyze, Closing, PricingSection, RegionsSection, Who } from "@/components/sections";
+import { Analyze, ChannelsSection, Closing, PricingSection, RegionsSection, Who } from "@/components/sections";
 import { FlowDiagram, NextLink, PhotoSlot, PullQuote, ReportMini } from "@/components/visuals";
 import SampleReport from "@/components/sample-report";
 
@@ -40,6 +40,8 @@ export default function Home() {
           <FlowDiagram steps={flow} />
         </div>
       </section>
+
+      <ChannelsSection site={site} />
 
       <Who site={site} />
       <Analyze site={site} />

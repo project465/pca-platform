@@ -49,6 +49,52 @@ function AnalyzeIcon({ n }: { n: number }) {
   );
 }
 
+/**
+ * 세 개의 문. 홈 위쪽에 둔다.
+ *
+ * 한 문으로 다 받으면 학생은 "우리 학교가 계약했나" 를 스스로 판단해야 하고,
+ * 대학 담당자는 자기 얘기가 아닌 문구를 먼저 읽게 된다.
+ */
+export function ChannelsSection({ site }: { site: SiteContent }) {
+  const c = site.channels;
+  return (
+    <section id="channels" className="divided tinted">
+      <div className="wrap">
+        <div className="sec-head">
+          <span className="label-sm">{c.label}</span>
+          <h2>{c.heading}</h2>
+          <p className="lead">{c.lead}</p>
+        </div>
+
+        <div className="plangrid">
+          {c.items.map((it) => (
+            <div className={`plan${it.key === "campus" ? " featured" : ""}`} key={it.key}>
+              <span className="who">{it.tag}</span>
+              <h3>{it.title}</h3>
+              <p className="small" style={{ margin: "6px 0 14px" }}>
+                {it.who}
+              </p>
+              <p style={{ margin: "0 0 16px" }}>{it.body}</p>
+              <ul>
+                {it.gets.map((g) => (
+                  <li key={g}>{g}</li>
+                ))}
+              </ul>
+              <p className="note">{it.unit}</p>
+              <a className={`btn${it.key === "campus" ? " solid" : ""}`} href={it.cta.href}>
+                {it.cta.label}
+              </a>
+            </div>
+          ))}
+        </div>
+        <p className="small" style={{ marginTop: 22 }}>
+          {c.note}
+        </p>
+      </div>
+    </section>
+  );
+}
+
 export function Analyze({ site }: { site: SiteContent }) {
   const a = site.analyze;
   return (

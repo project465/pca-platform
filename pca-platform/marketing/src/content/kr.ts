@@ -7,14 +7,14 @@ import type { SiteContent } from "./types";
 export const kr: SiteContent = {
   key: "kr",
   lang: "ko",
-  domain: "pca.co.kr",
-  brand: "PCA",
+  domain: "metri.co.kr",
+  brand: "METRI",
   org: "ACADEMIX",
   orgTagline: "EDUCATION & CONFERENCE",
-  platformUrl: "https://app.pca.example",
+  platformUrl: "https://app.metri.io",
 
   meta: {
-    title: "PCA 진로진단 — 내 전공에 맞는 커리어 전략을 설계해드립니다",
+    title: "METRI — 전공에서 기업까지 이어지는 진로진단",
     description:
       "적합 직무·업무 성향·실행 전략을 함께 분석해, 다음에 무엇을 준비해야 하는지까지 제시하는 진로진단입니다. 프로젝트·자소서·면접·창업·지역 기업 연계까지 이어집니다.",
   },
@@ -22,6 +22,7 @@ export const kr: SiteContent = {
   nav: {
     items: [
       { label: "PCA", href: "/pca" },
+      { label: "누가 쓰나", href: "/#channels" },
       { label: "지역·앵커", href: "/anchor" },
       { label: "도입 안내", href: "/adopt" },
       { label: "요금제", href: "/pricing" },
@@ -34,13 +35,13 @@ export const kr: SiteContent = {
   },
 
   hero: {
-    eyebrow: "PCA · PERSONALIZED CAREER ANALYSIS",
+    eyebrow: "METRI · PCA 진단 엔진",
     title: ["“내 전공으로 어디 가야 하죠”에", "{15–20페이지로 답}합니다"],
     lead:
       "직무 영역 10개를 100점으로 순위 매기고, 업무 성향 6유형을 짚고, 자격·프로젝트·자소서·면접·창업, 그리고 우리 지역 실제 기업까지 이어서 정리해드립니다. 유형을 알려주고 끝나는 검사가 아니라, 다음 달에 할 일이 남는 문서입니다.",
     primary: { label: "도입·상담 문의", href: "/contact" },
     secondary: { label: "실제 결과지 한 장 보기", href: "#sample" },
-    watermark: "PCA",
+    watermark: "METRI",
   },
 
   sample: {
@@ -128,6 +129,66 @@ export const kr: SiteContent = {
       primary: { label: "우리 학과 도입 문의", href: "/contact" },
       secondary: { label: "결과지 11개 섹션 전체 보기", href: "/pca" },
     },
+  },
+
+  channels: {
+    label: "누가 쓰나",
+    heading: "문은 셋, 엔진은 하나입니다",
+    lead:
+      "학생 혼자 받아볼 수도 있고, 학과가 500명을 한 번에 볼 수도 있고, 기업이 사람을 찾을 수도 있습니다. 세 경우 모두 같은 진단과 같은 Skill Graph 를 씁니다. 다른 것은 사는 단위와 받아 드는 문서입니다.",
+    items: [
+      {
+        key: "individual",
+        tag: "개인",
+        title: "나 혼자 받아본다",
+        who: "재학생 · 취업 준비생 · 졸업생",
+        body:
+          "12문항 무료 진단으로 방향부터 봅니다. 전체 결과지는 한 건씩 결제합니다. 학교 계약과 무관하게 언제든 받을 수 있습니다.",
+        gets: [
+          "무료 간이 진단 12문항 — 1순위 직무까지 무료",
+          "전체 결과지 — 직무 · 산업 · 기업 · 부족 역량",
+          "다음 6개월 실행 계획",
+          "졸업 뒤에도 남는 계정과 이력",
+        ],
+        unit: "응시권 1개 · 건당 결제",
+        cta: { label: "개인 진단 보기", href: "/pricing" },
+      },
+      {
+        key: "company",
+        tag: "기업",
+        title: "우리 회사에 맞는 사람을 찾는다",
+        who: "채용 담당 · 산학협력 · 지역 기업 · 지자체",
+        body:
+          "공고를 올리면 그 직무에 적합한 학생의 결과지에 실립니다. 학생이 직접 지원합니다. 우리 공고가 요구하는 역량을 학생들이 얼마나 채웠는지도 함께 보입니다.",
+        gets: [
+          "적합한 학생의 결과지에 공고 노출",
+          "우리 공고의 요구 역량 충족률 (익명 집계)",
+          "지역 기업 패키지 — 지자체 예산 연계",
+          "직무 소개 콘텐츠로 채용 브랜딩",
+        ],
+        unit: "연간 노출·리포트 구독",
+        cta: { label: "기업 제휴 문의", href: "/contact" },
+      },
+      {
+        key: "campus",
+        tag: "학교",
+        title: "학생 전체를 한 번에 본다",
+        who: "학과 · 취업지원처 · 고등학교",
+        body:
+          "학생 한 명 한 명이 개인 결과지를 받고, 학과는 그것을 익명으로 모은 리포트를 받습니다. 학생이 모자란 역량과 기업이 요구하는 역량이 겹치는 칸이 학과가 손볼 곳입니다.",
+        gets: [
+          "학생 전원 개인 결과지",
+          "익명 집계 학과 리포트 — 직무 분포 · 희망 산업 · 부족 역량",
+          "기업 수요와 겹치는 칸 자동 표시",
+          "소재 지역 실제 기업 매칭",
+          "앵커·RISE 성과 보고에 쓰는 과정 데이터",
+        ],
+        unit: "학과 좌석 단위 연간 계약",
+        cta: { label: "학과 도입 문의", href: "/adopt" },
+      },
+    ],
+    note:
+      "학과가 계약하면 그 학과 학생은 개인 결제 없이 바로 결과지를 받습니다. 졸업한 뒤에도 계정이 남아 프로필이 이어집니다.",
   },
 
   who: {
@@ -825,6 +886,21 @@ export const kr: SiteContent = {
         cta: { ready: "바로 신청하기", ask: "개인 진단 문의" },
       },
       {
+        key: "company",
+        name: "기업",
+        who: "채용 담당 · 산학협력 · 지역 기업",
+        price: null,
+        unit: "연간",
+        note: "지자체 예산으로 관내 기업을 묶어 도입하는 경우가 많습니다.",
+        features: [
+          "적합한 학생의 결과지에 공고 노출",
+          "요구 역량 충족률 리포트 (익명 집계)",
+          "지원은 기업 공고 원문으로 바로 연결",
+          "개인 식별 정보는 제공하지 않습니다",
+        ],
+        cta: { ready: "기업 제휴 신청", ask: "기업 제휴 문의" },
+      },
+      {
         key: "department",
         name: "학과 단체",
         who: "학과 · 취업지원처",
@@ -870,7 +946,8 @@ export const kr: SiteContent = {
     quickSubmit: "문의 남기기",
     typeLabel: "어떤 문의인가요",
     types: [
-      { value: "org", label: "단체 도입 (대학·학과)" },
+      { value: "org", label: "학교 도입 (대학·학과·고등학교)" },
+      { value: "company", label: "기업 제휴" },
       { value: "individual", label: "개인 진단" },
     ],
     afterLabel: "문의 후 진행",
@@ -896,13 +973,13 @@ export const kr: SiteContent = {
   },
 
   footer: {
-    note: "PCA 진로진단 · ACADEMIX가 개발했습니다",
+    note: "METRI · PCA 진단 엔진 · ACADEMIX가 개발했습니다 · 직업정보제공사업 신고 J1700020220007호",
     sitesLabel: "다른 나라",
     sites: [
-      { label: "Global (English)", href: "https://pca.example", ready: true },
-      { label: "한국", href: "https://pca.co.kr", ready: true },
-      { label: "Қазақстан", href: "https://pca.kz", ready: false },
-      { label: "Türkiye", href: "https://pca.com.tr", ready: false },
+      { label: "Global (English)", href: "https://metri.io", ready: true },
+      { label: "한국", href: "https://metri.co.kr", ready: true },
+      { label: "Қазақстан", href: "https://metri.kz", ready: true },
+      { label: "Türkiye", href: "https://metri.com.tr", ready: true },
     ],
     soonLabel: "준비 중",
     closing: "당신의 전공이 성공으로 이어지도록",

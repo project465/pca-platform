@@ -16,10 +16,14 @@ SITE=kr     npm run dev     # 한국어판
 
 | SITE | 도메인(예정) | 언어 | 상태 |
 |---|---|---|---|
-| `global` | pca.example | en | 있음 |
-| `kr` | pca.co.kr | ko | 있음 |
-| `kz` | pca.kz | kk | 원고 없음 |
-| `tr` | pca.com.tr | tr | 원고 없음 |
+| `global` | metri.io | en | 있음 |
+| `kr` | metri.co.kr | ko | 있음 |
+| `kz` | metri.kz | kk | **있음** (현지 검수 필요) |
+| `tr` | metri.com.tr | tr | **있음** (현지 검수 필요) |
+
+네 나라 원고가 모두 들어와 있다. kz·tr 은 구조를 채우고 현지어로 쓴 초안이므로
+영업에 내보내기 전에 현지 검수를 한 번 받는다. 검수해도 코드는 안 바뀐다 —
+고칠 곳은 원고 파일 하나다.
 
 ## 나라를 추가하려면
 
@@ -34,9 +38,11 @@ SITE=kr     npm run dev     # 한국어판
 
 - **문의 접수**가 서버 파일(`.inquiries/contact.jsonl`)에 쌓이기만 한다.
   운영에 올리기 전에 메일 발송이나 CRM 연동으로 바꿔야 한다. `src/app/actions.ts` 참고
-- **브랜드명과 도메인이 미정**이다. 지금은 `PCA` 와 `pca.example` 을 임시로 쓴다.
-  정해지면 각 원고 파일의 `brand` · `domain` · `platformUrl` 만 고치면 된다
-- 카자흐스탄·터키 원고
+- **도메인이 확정되지 않았다.** 브랜드는 `METRI` 로 정해졌고 원고에 반영했다.
+  도메인이 정해지면 각 원고 파일의 `domain` · `platformUrl` · `footer.sites` 만 고치면 된다
+- **kz·tr 원고의 현지 검수**
+- **기업 채널의 법적 범위 확인.** 한국은 `docs/metri/10_legal_kr.md` 에 정리했다.
+  터키는 İŞKUR 의 özel istihdam bürosu 허가가 같은 자리에 있다. 카자흐스탄도 확인이 필요하다
 
 ## 화면 촬영
 
