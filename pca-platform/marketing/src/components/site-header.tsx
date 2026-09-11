@@ -7,11 +7,11 @@ export default function SiteHeader({ site }: { site: SiteContent }) {
       <div className="wrap bar">
         <a className="brandmark" href="#top">
           <span className="glyph" aria-hidden="true">
-            A
+            M
           </span>
           <span>
-            <b>{site.org}</b>
-            <span>{site.orgTagline}</span>
+            <b>{site.brand}</b>
+            <span>by {site.org}</span>
           </span>
         </a>
 

@@ -42,6 +42,12 @@ export const kr: SiteContent = {
     primary: { label: "도입·상담 문의", href: "/contact" },
     secondary: { label: "실제 결과지 한 장 보기", href: "#sample" },
     watermark: "METRI",
+    proof: [
+      { value: "2,346명", label: "전공자 데이터로 설계" },
+      { value: "428건", label: "채용공고 분석" },
+      { value: "48명", label: "현직자 검토" },
+      { value: "3건", label: "저작권 등록" },
+    ],
   },
 
   sample: {
@@ -51,7 +57,7 @@ export const kr: SiteContent = {
       "PCA 가 무엇을 분석하는지는 그 다음 이야기입니다. 아래는 15–20페이지 결과지에서 네 장을 뽑아 한 화면에 옮긴 것입니다. 학생이 받는 것은 유형 이름이 아니라 이 문서입니다.",
     disclaimer:
       "결과지의 형식을 보여주기 위한 예시 화면입니다. 실제 학생의 응시 자료가 아닙니다. 직무 영역 10개와 업무 성향 6유형, 지역 연계 방식은 실제 결과지와 같습니다.",
-    docTag: "PCA 개인 결과지",
+    docTag: "METRI 개인 결과지",
     page: "00-1 · 00-2 · 05~06 · 09 발췌",
     person: {
       name: "김수현 (예시)",
@@ -133,9 +139,9 @@ export const kr: SiteContent = {
 
   channels: {
     label: "누가 쓰나",
-    heading: "문은 셋, 엔진은 하나입니다",
+    heading: "문은 둘, 엔진은 하나입니다",
     lead:
-      "학생 혼자 받아볼 수도 있고, 학과가 500명을 한 번에 볼 수도 있고, 기업이 사람을 찾을 수도 있습니다. 세 경우 모두 같은 진단과 같은 Skill Graph 를 씁니다. 다른 것은 사는 단위와 받아 드는 문서입니다.",
+      "학생 혼자 받아볼 수도 있고, 학과가 500명을 한 번에 볼 수도 있습니다. 둘 다 같은 진단과 같은 Skill Graph 를 씁니다. 다른 것은 사는 단위와 받아 드는 문서입니다.",
     items: [
       {
         key: "individual",
@@ -152,22 +158,6 @@ export const kr: SiteContent = {
         ],
         unit: "응시권 1개 · 건당 결제",
         cta: { label: "개인 진단 보기", href: "/pricing" },
-      },
-      {
-        key: "company",
-        tag: "기업",
-        title: "우리 회사에 맞는 사람을 찾는다",
-        who: "채용 담당 · 산학협력 · 지역 기업 · 지자체",
-        body:
-          "공고를 올리면 그 직무에 적합한 학생의 결과지에 실립니다. 학생이 직접 지원합니다. 우리 공고가 요구하는 역량을 학생들이 얼마나 채웠는지도 함께 보입니다.",
-        gets: [
-          "적합한 학생의 결과지에 공고 노출",
-          "우리 공고의 요구 역량 충족률 (익명 집계)",
-          "지역 기업 패키지 — 지자체 예산 연계",
-          "직무 소개 콘텐츠로 채용 브랜딩",
-        ],
-        unit: "연간 노출·리포트 구독",
-        cta: { label: "기업 제휴 문의", href: "/contact" },
       },
       {
         key: "campus",
@@ -886,21 +876,6 @@ export const kr: SiteContent = {
         cta: { ready: "바로 신청하기", ask: "개인 진단 문의" },
       },
       {
-        key: "company",
-        name: "기업",
-        who: "채용 담당 · 산학협력 · 지역 기업",
-        price: null,
-        unit: "연간",
-        note: "지자체 예산으로 관내 기업을 묶어 도입하는 경우가 많습니다.",
-        features: [
-          "적합한 학생의 결과지에 공고 노출",
-          "요구 역량 충족률 리포트 (익명 집계)",
-          "지원은 기업 공고 원문으로 바로 연결",
-          "개인 식별 정보는 제공하지 않습니다",
-        ],
-        cta: { ready: "기업 제휴 신청", ask: "기업 제휴 문의" },
-      },
-      {
         key: "department",
         name: "학과 단체",
         who: "학과 · 취업지원처",
@@ -947,7 +922,6 @@ export const kr: SiteContent = {
     typeLabel: "어떤 문의인가요",
     types: [
       { value: "org", label: "학교 도입 (대학·학과·고등학교)" },
-      { value: "company", label: "기업 제휴" },
       { value: "individual", label: "개인 진단" },
     ],
     afterLabel: "문의 후 진행",

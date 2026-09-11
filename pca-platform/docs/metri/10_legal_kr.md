@@ -1,4 +1,4 @@
-# 법적 범위 — 직업안정법 (한국)
+# 법적 범위 — 한국 · 터키 · 카자흐스탄
 
 > **이 문서는 법률 자문이 아니다.** 아래는 공개 자료로 확인한 내용이고,
 > 사업을 확정하기 전에 **노무사 또는 행정사 확인을 반드시 거친다.**
@@ -122,6 +122,70 @@ JOBINDUSTRY(STEM 석·박사) 브랜드와 묶으면 등록의 값어치가 커�
 
 ---
 
+---
+
+## 6. 터키 — İŞKUR özel istihdam bürosu
+
+**한국보다 기준이 빡빡하다.** 면제 조건이 좁다.
+
+İŞKUR 이 밝힌 **면제 요건**은 이렇다.
+
+> 검색엔진이나 분류광고 형태이면서, **지원 버튼·회원제·어떠한 등록 절차도 없이**
+> 개인이 채용 공고의 연락처에 자유롭게 접근할 수 있게 하는 인터넷 사이트는
+> İŞKUR 의 허가를 받을 필요가 없다.
+
+**METRI 는 이 면제에 안 들어간다.** 우리는 로그인이 있고, 결과지 안에서 공고를 보여준다.
+회원제가 있는 순간 면제가 깨진다.
+
+| 항목 | 내용 |
+|---|---|
+| 근거법 | 4904 sayılı Türkiye İş Kurumu Kanunu 제17조 |
+| 허가 | İŞKUR 시도 지국(il müdürlüğü) 신청, 30일 내 심사 |
+| **담보(teminat)** | **2026년 660,600 TL** (임시근로 권한은 6,606,000 TL) |
+| 비용(masraf) | 2026년 43,841.19 TL, 갱신 25,981.45 TL |
+| 자격 | 대표자 4년제 학사 학위, 파산·화의 없음 증명 |
+| 무허가 제재 | 4904호 제20조 행정 제재. 별도로 취업허가 없는 외국인 알선은 1인당 5,000 TL 과태료 |
+
+**판단** — 터키는 **공고 기능을 켜지 않고 진단·리포트만으로 출시한다.**
+기업 채널이 없어졌으므로 알선 요소는 이미 없고, 남는 것은 "회원제 화면 안에서 공고를 보여주는가" 하나다.
+그것만 빼면 허가 없이 운영된다. 공고 대신 **집계 통계**(이 직무 공고 412건에서 뽑은 요구 역량)를 쓴다 —
+통계는 구인정보 제공이 아니라 노동시장 정보다.
+
+---
+
+## 7. 카자흐스탄 — ЧАЗ (частное агентство занятости)
+
+**규제가 지금 바뀌고 있다.** 확정된 자리에 들어가지 말고 지켜본다.
+
+| 항목 | 내용 |
+|---|---|
+| 근거법 | 「Халықты жұмыспен қамту туралы」 (고용에 관한 법, Z1600000482) |
+| ЧАЗ 정의 | **노동 중개 서비스(услуги трудового посредничества)를 제공**하고 법령이 정한 절차로 **등록된** 자연인·법인 |
+| 현재 | 등록부(реестр) 운영. **국가 통제와 면허제(лицензирование) 도입이 추진 중** |
+| 국외 알선 | 카자흐 국민의 해외 취업 알선은 별도 규정. 60여 개 업체가 등록돼 있다 |
+| 공공 플랫폼 | **Enbek.kz** (전자노동거래소)가 국가 채널이다 |
+
+**판단** — 면허제가 도입되는 중이라 **기업·알선 쪽은 아예 건드리지 않는다.**
+진단·리포트·학과 집계만으로 출시하고, Enbek.kz 와의 연계는 등록 요건이 확정된 뒤에 본다.
+
+---
+
+## 8. 세 나라를 한 장으로
+
+| | 한국 | 터키 | 카자흐스탄 |
+|---|---|---|---|
+| 보유 자격 | **직업정보제공사업 신고** J1700020220007호 | 없음 | 없음 |
+| 진단·리포트·학과 집계 | ✅ | ✅ | ✅ |
+| 공고를 화면에 보여주기 | ✅ 신고 범위 | ❌ 회원제라 면제 불가 | ⚠️ 확인 필요 |
+| 공고 **집계 통계**만 보여주기 | ✅ | ✅ | ✅ |
+| 기업에 인재 추천 | ❌ 등록 필요 | ❌ 허가 필요 | ❌ 면허 도입 중 |
+
+**코드에 미치는 것 하나** — `jd_sources` 에 이미 나라별 설정이 있다.
+여기에 **나라별 공고 노출 스위치**를 둔다. 한국은 개별 공고까지, 터키·카자흐스탄은 집계 통계까지.
+화면을 나라마다 새로 만들지 않는다.
+
+---
+
 ## 출처
 
 - [직업안정법 (국가법령정보센터)](https://www.law.go.kr/LSW/lsRvsDocListP.do?lsId=001765)
@@ -130,3 +194,15 @@ JOBINDUSTRY(STEM 석·박사) 브랜드와 묶으면 등록의 값어치가 커�
 - [국내유료직업소개요금 등 고시](https://www.ulex.co.kr/%EB%B2%95%EB%A5%A0/2000000022633-34929-%EA%B5%AD%EB%82%B4%EC%9C%A0%EB%A3%8C%EC%A7%81)
 - [직업소개사업 및 직업정보제공사업 해설 (k-labor)](https://k-labor.co.kr/main/klabor_01_view.html?pgubun=1&lang=ko&find=&code1=12&chapter_idx=151)
 - [유료직업소개사업 등록요건 해설](https://www.help-me.kr/blog/article/%EC%A7%81%EC%97%85%EC%86%8C%EA%B0%9C%EC%82%AC%EC%97%85%EB%B2%95%EC%9D%B8%EC%84%A4%EB%A6%BD/)
+
+**터키**
+- [İŞKUR — 어떤 경우 özel istihdam bürosu 허가가 필요 없는가](https://www.iskur.gov.tr/sikca-sorulan-sorular/ozel-istihdam-burolari/hangi-durumlarda-ozel-istihdam-burosu-izni-alinmasina-gerek-bulunmamaktadir/)
+- [İŞKUR — Özel İstihdam Büroları 안내](https://www.iskur.gov.tr/ozel-istihdam-burolari/basvuru-bilgileri/) · [자주 묻는 질문](https://www.iskur.gov.tr/sikca-sorulan-sorular/ozel-istihdam-burolari/)
+- [4904 sayılı Türkiye İş Kurumu Kanunu](https://www.lexpera.com.tr/mevzuat/kanunlar/turkiye-is-kurumu-kanunu-4904)
+- [Özel İstihdam Büroları Yönetmeliği](https://www.lexpera.com.tr/resmi-gazete/metin/ozel-istihdam-burolari-yonetmeligi-26954)
+
+**카자흐스탄**
+- [Закон «О занятости населения» (Adilet)](https://adilet.zan.kz/eng/docs/Z1600000482)
+- [Enbek.kz — Частные агентства занятости](https://enbek.kz/ru/chaz)
+- [ЧАЗ 면허제 도입 추진](https://mybuh.kz/news/chastnye-agentstva-zanyatosti-dolzhny-budut-poluchit-litsenziyu/) · [국가 통제 강화](https://vlast.kz/novosti/69892-v-kazahstane-usilat-kontrol-za-castnymi-agentstvami-zanatosti.html)
+- [МТСЗН — ЧАЗ 해외취업 알선 규정](https://www.gov.kz/memleket/entities/enbek/press/news/details/884796?lang=ru)

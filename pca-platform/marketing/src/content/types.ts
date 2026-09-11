@@ -132,7 +132,7 @@ export type Channels = {
   heading: string;
   lead: string;
   items: {
-    key: "individual" | "company" | "campus";
+    key: "individual" | "campus";
     /** 문 위에 붙는 짧은 표시 */
     tag: string;
     title: string;
@@ -244,6 +244,8 @@ export type SiteContent = {
     primary: Link;
     secondary: Link;
     watermark: string;
+    /** 히어로 아래 한 줄. 근거 있는 숫자만 넣는다 */
+    proof?: { value: string; label: string }[];
   };
 
   /** 예시 결과지 — 홈에서 설명보다 먼저 나온다 */

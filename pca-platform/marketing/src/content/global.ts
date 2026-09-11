@@ -43,6 +43,12 @@ export const global: SiteContent = {
     primary: { label: "Talk to us", href: "/contact" },
     secondary: { label: "See a real report", href: "#sample" },
     watermark: "METRI",
+    proof: [
+      { value: "2,346", label: "graduates in the design set" },
+      { value: "428", label: "job postings analysed" },
+      { value: "48", label: "practitioners reviewed it" },
+      { value: "3", label: "copyright registrations" },
+    ],
   },
 
   sample: {
@@ -52,7 +58,7 @@ export const global: SiteContent = {
       "What PCA measures is the second question. Below is a 15–20 page report with four of its pages put on one screen. A student does not receive a type name. They receive this.",
     disclaimer:
       "An illustrative screen showing the format of the report — not a real student’s submission. The ten job areas, the six work styles and the regional method are exactly as they ship.",
-    docTag: "PCA INDIVIDUAL REPORT",
+    docTag: "METRI INDIVIDUAL REPORT",
     page: "extract · 00-1 · 00-2 · 05–06 · regional annex",
     person: {
       name: "Sample student",
@@ -134,9 +140,9 @@ export const global: SiteContent = {
 
   channels: {
     label: "WHO IT IS FOR",
-    heading: "Three doors, one engine",
+    heading: "Two doors, one engine",
     lead:
-      "A student can take it alone. A department can look at 500 at once. A company can search for people. All three run on the same assessment and the same skill graph - what differs is the unit you buy and the document you walk away with.",
+      "A student can take it alone. A department can look at 500 at once. Both run on the same assessment and the same skill graph - what differs is the unit you buy and the document you walk away with.",
     items: [
       {
         key: "individual",
@@ -153,22 +159,6 @@ export const global: SiteContent = {
         ],
         unit: "One seat, pay per report",
         cta: { label: "See individual pricing", href: "/pricing" },
-      },
-      {
-        key: "company",
-        tag: "EMPLOYER",
-        title: "Find people who fit the work",
-        who: "Recruiters, industry partners, regional employers",
-        body:
-          "Post a role and it appears in the reports of students it actually fits. They apply to you directly. You also see how far those students have covered what your posting asks for.",
-        gets: [
-          "Your posting placed in fitting students' reports",
-          "Coverage report on your required skills (anonymised)",
-          "Regional employer packages",
-          "Role content for employer branding",
-        ],
-        unit: "Annual placement and reporting subscription",
-        cta: { label: "Talk to us about partnership", href: "/partnership" },
       },
       {
         key: "campus",
@@ -869,21 +859,6 @@ export const global: SiteContent = {
         cta: { ready: "Buy now", ask: "Request an assessment" },
       },
       {
-        key: "company",
-        name: "Employer",
-        who: "Recruiters, industry partners, regional employers",
-        price: null,
-        unit: "per year",
-        note: "Often bought by a local authority on behalf of a group of employers.",
-        features: [
-          "Your posting placed in fitting students' reports",
-          "Coverage report on your required skills",
-          "Applications go straight to your own posting",
-          "No personally identifying data is supplied",
-        ],
-        cta: { ready: "Request employer access", ask: "Talk about employer access" },
-      },
-      {
         key: "department",
         name: "Department",
         who: "A department or careers service",
@@ -954,7 +929,6 @@ export const global: SiteContent = {
     typeLabel: "What is this about",
     types: [
       { value: "org", label: "University, department or school rollout" },
-      { value: "company", label: "Employer access" },
       { value: "partner", label: "Operating METRI in my country" },
       { value: "individual", label: "An individual assessment" },
     ],

@@ -48,6 +48,12 @@ export const tr: SiteContent = {
     primary: { label: "Görüşme talep et", href: "/contact" },
     secondary: { label: "Örnek raporu gör", href: "#sample" },
     watermark: "METRI",
+    proof: [
+      { value: "2.346", label: "mezun verisiyle tasarlandı" },
+      { value: "428", label: "iş ilanı analizi" },
+      { value: "48", label: "sektör uzmanı incelemesi" },
+      { value: "3", label: "telif tescili" },
+    ],
   },
 
   sample: {
@@ -112,9 +118,9 @@ export const tr: SiteContent = {
 
   channels: {
     label: "KİMLER İÇİN",
-    heading: "Üç kapı, tek motor",
+    heading: "İki kapı, tek motor",
     lead:
-      "Öğrenci tek başına girebilir. Bölüm 500 öğrenciyi aynı anda görebilir. Şirket ilan verebilir. Üçü de aynı envanteri ve aynı beceri grafiğini kullanır. Fark, satın alma birimi ve elinize geçen belgede.",
+      "Öğrenci tek başına girebilir. Bölüm 500 öğrenciyi aynı anda görebilir. İkisi de aynı envanteri ve aynı beceri grafiğini kullanır. Fark, satın alma birimi ve elinize geçen belgede.",
     items: [
       {
         key: "individual",
@@ -131,22 +137,6 @@ export const tr: SiteContent = {
         ],
         unit: "Tek kullanım · rapor başına ödeme",
         cta: { label: "Bireysel fiyatları gör", href: "/pricing" },
-      },
-      {
-        key: "company",
-        tag: "İŞVEREN",
-        title: "İşe uygun kişiyi arıyorum",
-        who: "İK ekipleri · sanayi iş birlikleri · bölgesel şirketler",
-        body:
-          "İlanınızı yayınlarsınız, o pozisyona uygun öğrencilerin raporunda görünür. Öğrenci size doğrudan başvurur. İlanınızın aradığı becerileri öğrencilerin ne kadar karşıladığını da görürsünüz.",
-        gets: [
-          "İlanınız uygun öğrencilerin raporunda gösterilir",
-          "Aradığınız becerilerin karşılanma oranı (anonim)",
-          "Bölgesel işveren paketi",
-          "İşveren markası için pozisyon içeriği",
-        ],
-        unit: "Yıllık yayın ve raporlama aboneliği",
-        cta: { label: "İş birliği için yazın", href: "/contact" },
       },
       {
         key: "campus",
@@ -442,21 +432,6 @@ export const tr: SiteContent = {
         cta: { ready: "Başvur", ask: "Bireysel değerlendirme için yazın" },
       },
       {
-        key: "company",
-        name: "İşveren",
-        who: "İK ekipleri · bölgesel şirketler",
-        price: null,
-        unit: "yıllık",
-        note: "Yerel yönetimin birkaç şirketi birleştirerek alması sık görülür.",
-        features: [
-          "İlanınız uygun öğrencilerin raporunda gösterilir",
-          "Aradığınız becerilerin karşılanma oranı",
-          "Başvuru doğrudan kendi ilan sayfanıza gider",
-          "Kişisel veri paylaşılmaz",
-        ],
-        cta: { ready: "Erişim talep et", ask: "İş birliği için yazın" },
-      },
-      {
         key: "department",
         name: "Bölüm",
         who: "Bölüm · kariyer merkezi",
@@ -486,7 +461,6 @@ export const tr: SiteContent = {
     typeLabel: "Talep türü",
     types: [
       { value: "org", label: "Üniversite veya bölüm" },
-      { value: "company", label: "İşveren" },
       { value: "individual", label: "Bireysel değerlendirme" },
     ],
     afterLabel: "Gönderdikten sonra",

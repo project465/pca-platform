@@ -144,9 +144,9 @@ section { padding-block: clamp(60px, 8vw, 108px); }
   border-bottom: 1px solid var(--line);
 }
 .hero .mark {
-  position: absolute; left: -1.5%; top: 44%;
-  font-size: clamp(160px, 24vw, 330px); font-weight: 800; letter-spacing: -0.07em;
-  color: var(--ink); opacity: .028; line-height: .8; pointer-events: none; user-select: none;
+  position: absolute; right: 2%; bottom: -4%;
+  font-size: clamp(90px, 11vw, 170px); font-weight: 800; letter-spacing: -0.07em;
+  color: var(--ink); opacity: .020; line-height: .8; pointer-events: none; user-select: none;
 }
 .herogrid {
   position: relative; z-index: 1;
@@ -768,3 +768,44 @@ section { padding-block: clamp(60px, 8vw, 108px); }
 .samplecta b { display: block; font-size: 17px; font-weight: 800; letter-spacing: -.03em; }
 .samplecta span { font-size: 13.5px; color: var(--muted); }
 .samplecta .cta { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* ── 히어로의 제품 미리보기 ─────────────────────────
+   문의 폼이 있던 자리다. 처음 온 사람이 5초 안에 "무엇을 파는가" 를
+   알아야 하는데, 그 답은 폼이 아니라 학생이 받아 드는 문서다. */
+.proofbar{
+  display:flex; flex-wrap:wrap; gap:10px 30px; list-style:none;
+  margin:30px 0 0; padding:20px 0 0; border-top:1px solid var(--rule);
+}
+.proofbar li{display:flex; flex-direction:column; gap:1px}
+.proofbar b{font-size:20px; font-weight:700; letter-spacing:-.02em; font-variant-numeric:tabular-nums}
+.proofbar span{font-size:12.5px; color:var(--muted)}
+
+.heroreport{
+  background:#fff; border:1px solid var(--rule); border-radius:4px;
+  box-shadow:0 1px 2px rgba(22,35,46,.05), 0 18px 44px rgba(22,35,46,.11);
+  overflow:hidden; align-self:start; font-variant-numeric:tabular-nums;
+}
+.hr-top{
+  display:flex; flex-wrap:wrap; gap:4px 14px; align-items:baseline;
+  padding:14px 20px; border-bottom:2px solid var(--ink);
+}
+.hr-top b{font-size:13.5px; font-weight:700; letter-spacing:-.01em}
+.hr-top span{font-size:12.5px; color:var(--muted); margin-left:auto}
+.hr-body{padding:18px 20px 14px}
+.hr-cap{display:block; font-size:11px; color:var(--muted); letter-spacing:.02em; margin-bottom:12px}
+.hr-cap2{margin-top:22px; padding-top:16px; border-top:1px solid var(--rule)}
+.hr-row{display:grid; grid-template-columns:minmax(78px,1fr) 1.25fr 30px; gap:0 10px; align-items:center; padding:6px 0}
+.hr-row span{font-size:13px; font-weight:500}
+.hr-row i{display:block; height:9px; background:#E7EBEE; border-radius:0 3px 3px 0}
+.hr-row i b{display:block; height:100%; background:var(--ink); border-radius:0 3px 3px 0}
+.hr-row:first-of-type i b{background:var(--gold-ink,#9A7B1E)}
+.hr-row em{font-style:normal; font-size:13px; font-weight:700; text-align:right}
+.hr-plan{display:grid; grid-template-columns:44px 1fr; gap:0 10px; padding:5px 0; font-size:12.5px}
+.hr-plan b{font-weight:700; color:var(--muted)}
+.hr-foot{padding:11px 20px; background:#F6F8F9; border-top:1px solid var(--rule); font-size:11.5px; color:var(--muted)}
+
+@media (max-width:900px){
+  .heroreport{margin-top:30px}
+  .proofbar{gap:10px 20px}
+  .proofbar b{font-size:17px}
+}

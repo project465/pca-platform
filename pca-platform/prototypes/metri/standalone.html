@@ -303,7 +303,6 @@ add('overview','시작','이 프리뷰가 뭔지', ()=> sheet('METRI 설계 프�
     <tr><th>고객</th><th>사는 것</th><th>가격</th></tr>
     <tr><td><b>학과 (B2B)</b></td><td>학생 500명 좌석 + 단체 리포트</td><td class="num">1,400만 / 년</td></tr>
     <tr><td><b>학생 (B2C)</b></td><td>전체 리포트 (무료 진단에서 전환)</td><td class="num">29,000</td></tr>
-    <tr><td>기업</td><td>인재풀 · 채용 성공보수</td><td class="num">2차 이후</td></tr>
   </table></div>
   <p class="note" style="margin-top:14px">학과 계약이 곧 B2C 획득 채널이다. 광고로 학생을 사지 않는다.</p>
 </section>`, '왼쪽 목록에서 화면을 눌러 보세요. 학생 → 학과 → 기업 순으로 봐야 흐름이 이어집니다.'));
@@ -755,45 +754,6 @@ add('dept','학과 담당자','단체 리포트 · 500명 흐름', ()=>{
   <p class="note" style="margin-top:10px">기존 단체 PCA 의 <code>test_sessions.released_at</code> 을 그대로 씁니다.</p>
 </section>`,'이 화면이 계약을 만듭니다. mockups/03_group_report.html 의 구조를 잇고 ③~⑥ 칸을 새로 얹었습니다.');
 });
-
-/* --- 기업 --- */
-add('company','기업','공고 노출·수요 리포트', ()=> sheet('우리 공고가 닿은 범위', ['구조해석 신입 · 대전권','최근 30일'],`
-<section class="blk">
-  <div class="alert"><b>이 화면은 법이 구조를 정했습니다.</b>
-    보유한 것은 <b>직업정보제공사업 신고(J1700020220007호)</b> 이고, 기업에 사람을 추천하면 알선이 됩니다.
-    그래서 방향을 뒤집었습니다 — 기업은 공고를 올리고, <b>학생이 직접 지원</b>합니다.</div>
-</section>
-<section class="blk">
-  <h2 class="blk">노출 현황</h2>
-  <div class="kpis">
-    <div class="kpi"><b>38</b><span>적합도 70 이상 학생</span></div>
-    <div class="kpi"><b>112</b><span>결과지 노출 횟수</span></div>
-    <div class="kpi"><b>27</b><span>공고 원문으로 이동</span></div>
-    <div class="kpi"><b>9</b><span>지원 전환 (기업 집계)</span></div>
-  </div>
-  <p class="note" style="margin-top:14px">개인 식별 정보는 제공하지 않습니다. 이름·연락처·학번은 이 화면에 없습니다.</p>
-</section>
-<section class="blk">
-  <h2 class="blk">우리 공고의 요구 역량 — 학생들은 얼마나 채웠나</h2>
-  ${[{c:'ANSYS Mechanical',v:62},{c:'유한요소법',v:58},{c:'GD&T',v:31},{c:'ABAQUS',v:24},{c:'기술영어',v:41}]
-    .map(x=>gauge(x.c, null, x.v, x.v<35?'lo':(x.v<50?'mid':'hi'), x.v+'%','충족 학생 비율')).join('')}
-  <div class="alert"><b>GD&amp;T 31% 가 이 공고가 막히는 지점입니다.</b>
-    요건을 낮추든, 입사 후 교육을 붙이든, 학과에 개설을 요청하든 —
-    <b>셋 다 우리가 파는 것입니다.</b> 기업이 사는 건 사람이 아니라 이 근거입니다.</div>
-</section>
-<section class="blk">
-  <h2 class="blk">화면에서 지키는 것</h2>
-  <div class="tw"><table>
-    <tr><th>규칙</th><th>이유</th></tr>
-    <tr><td>지원 버튼은 <b>기업 공고 원문</b>으로 나간다</td><td>광고에 우리 연락처를 넣지 않는다 (시행령 제28조)</td></tr>
-    <tr><td>이력서 <b>보내기 버튼을 만들지 않는다</b></td><td>구직자 이력서 발송 대행 금지</td></tr>
-    <tr><td>"추천 기업" 이 아니라 <b>"적합도가 높은 기업"</b></td><td>취업추천서 발부 금지</td></tr>
-    <tr><td>신원 미확인·최저임금 미달 공고는 거른다</td><td>게재 금지 항목</td></tr>
-  </table></div>
-  <p class="note" style="margin-top:14px"><b>인재 검색은 유료직업소개사업 등록 후에 엽니다.</b>
-  자본금 5천만 원 · 임원 2명 자격 · 사무실 10㎡ 가 요건입니다.
-  리멤버처럼 신고와 등록을 함께 갖는 것이 업계 표준이고, 기업 매출을 실제로 붙일 때 같이 준비합니다.</p>
-</section>`,'직업정보제공사업 신고번호 J1700020220007호 · 법률 자문이 아니며 노무사·행정사 확인이 필요합니다.'));
 
 /* --- Skill Tree 탐색기 --- */
 let treeMajor='ME', treeJob=0;
