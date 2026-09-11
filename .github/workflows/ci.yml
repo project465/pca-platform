@@ -106,9 +106,9 @@ jobs:
           cache-dependency-path: pca-platform/marketing/package-lock.json
       - run: npm ci
       - run: npm run typecheck
-      - run: npm run build
-        env:
-          SITE: ${{ matrix.site }}
+      # 판마다 다른 폴더로 나간다 (out-global · out-kr · out-kz).
+      # 정적으로 내보내므로 next start 가 없다 — 배포도 이 폴더를 올린다
+      - run: npm run build:${{ matrix.site }}
 
       # 타입 검사와 빌드로는 화면이 실제로 넘어가는지 알 수 없다.
       # 요금제를 눌러도 홈이 나오던 버그가 그랬다 — 타입도 맞고 빌드도 됐다.
@@ -120,7 +120,9 @@ jobs:
         env:
           SITE: ${{ matrix.site }}
         run: |
-          npm start &
+          # firebase.json 의 cleanUrls 와 같은 규칙으로 띄운다.
+          # 여기서만 열리고 배포에서 404 가 나면 확인한 의미가 없다
+          node scripts/serve-static.mjs "out-$SITE" 3100 &
           for i in $(seq 1 60); do
             curl -sf -o /dev/null http://localhost:3100/ && break
             sleep 1
@@ -130,3 +132,17 @@ jobs:
           }
           node scripts/export-preview.mjs "$SITE" "/tmp/preview-$SITE.html"
           node scripts/check-preview.mjs "/tmp/preview-$SITE.html"
+
+      # 접수되지 않은 문의를 접수됐다고 말하지 않는지 본다.
+      # 정적으로 바뀌며 폼이 브라우저에서 창구를 직접 부르게 됐고,
+      # 창구가 거절했을 때 성공으로 보이면 문의가 조용히 사라진다
+      - name: 문의 폼 확인
+        env:
+          SITE: ${{ matrix.site }}
+        run: |
+          node scripts/serve-static.mjs "out-$SITE" 3100 &
+          for i in $(seq 1 60); do
+            curl -sf -o /dev/null http://localhost:3100/ && break
+            sleep 1
+          done
+          node scripts/e2e-contact.mjs

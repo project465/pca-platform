@@ -5,12 +5,19 @@
  * 거절하면 **접수되었다고 말하면 안 된다.** 이 검사가 지키는 것은 그 한 줄이다.
  * 접수됐다고 해 놓고 아무 데도 남지 않는 것이 이 사이트에서 가장 나쁜 고장이다.
  *
+ * **글자가 아니라 화면의 모양으로 본다.** 판이 셋이고 말이 다 다르므로
+ * 한국어 문구로 확인하면 나머지 두 판에서 거짓 실패가 난다. 성공은
+ * `.notice.ok` 가 나오는 것이고 실패는 `.notice.err` 가 나오는 것이다.
+ *
  *   npm run build:kr && node scripts/serve-static.mjs out-kr 3100   (다른 창)
  *   node scripts/e2e-contact.mjs
  */
 import { chromium } from "playwright";
 
 const BASE = process.argv[2] ?? "http://localhost:3100";
+/** 세 판이 함께 쓰는 것. 응급 문구에는 이 주소가 들어 있어야 한다 */
+const FALLBACK_MAIL = "hari_info@hari.re.kr";
+
 let fail = 0;
 const ok = (c, m) => {
   console.log(`  ${c ? "통과" : "실패"}  ${m}`);
@@ -19,6 +26,15 @@ const ok = (c, m) => {
 
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+
+async function fillAndSend() {
+  const form = page.locator("form").last();
+  await form.locator('input[name="org"]').fill("Test University · Dept");
+  await form.locator('input[name="name"]').fill("Test Person");
+  await form.locator('input[name="email"]').fill("test@example.ac.kr");
+  await form.locator('button[type="submit"]').click();
+  await page.waitForTimeout(1200);
+}
 
 await page.goto(`${BASE}/contact`, { waitUntil: "networkidle" });
 
@@ -33,26 +49,34 @@ const hpBox = await hp.evaluate((el) => {
 });
 ok(hpBox.left < -1000, "허니팟 칸이 화면 밖에 있다");
 ok(hpBox.opacity === "0", "허니팟 칸이 투명하다");
-ok(await hp.evaluate((el) => el.getAttribute("aria-hidden") === "true"),
-   "읽는 기계에도 감춰져 있다");
+ok(
+  await hp.evaluate((el) => el.getAttribute("aria-hidden") === "true"),
+  "읽는 기계에도 감춰져 있다",
+);
 
-/* 창구를 가로채 거절을 돌려준다 — 창구가 죽었을 때와 같은 상황이다 */
+/* ① 창구가 거절한다 — 창구가 죽었을 때와 같은 상황이다 */
 await page.route("**/api/intake", (r) =>
   r.fulfill({ status: 500, contentType: "application/json", body: '{"ok":false}' }),
 );
+await fillAndSend();
 
-const form = page.locator("form").last();
-await form.locator('input[name="org"]').fill("검사용 대학 경영학과");
-await form.locator('input[name="name"]').fill("홍길동");
-await form.locator('input[name="email"]').fill("test@example.ac.kr");
-await form.locator('button[type="submit"]').click();
-await page.waitForTimeout(1200);
+ok((await page.locator(".notice.ok").count()) === 0, "거절당했을 때 접수됐다고 하지 않는다");
+const err = page.locator(".notice.err").first();
+ok((await err.count()) > 0, "거절당했을 때 알린다");
+ok(((await err.innerText().catch(() => "")) || "").includes(FALLBACK_MAIL),
+   "대신 메일 주소를 알려 준다");
 
-const body = await page.innerText("body");
-ok(!body.includes("문의가 접수되었습니다"), "거절당했을 때 접수됐다고 하지 않는다");
-ok(body.includes("hari_info@hari.re.kr"), "대신 메일 주소를 알려 준다");
+/* ② 창구가 200 을 주지만 본문이 ok:false 다. 이것도 실패다 */
+await page.unroute("**/api/intake");
+await page.goto(`${BASE}/contact`, { waitUntil: "networkidle" });
+await page.route("**/api/intake", (r) =>
+  r.fulfill({ status: 200, contentType: "application/json", body: '{"ok":false,"error":"spam"}' }),
+);
+await fillAndSend();
+ok((await page.locator(".notice.ok").count()) === 0, "200 이어도 ok:false 면 접수가 아니다");
 
-/* 이번에는 창구가 받아 준다 */
+/* ③ 창구가 받아 준다 */
+await page.unroute("**/api/intake");
 await page.goto(`${BASE}/contact`, { waitUntil: "networkidle" });
 await page.route("**/api/intake", (r) =>
   r.fulfill({
@@ -61,16 +85,12 @@ await page.route("**/api/intake", (r) =>
     body: '{"ok":true,"refCode":"MT-2026-0001"}',
   }),
 );
-const form2 = page.locator("form").last();
-await form2.locator('input[name="org"]').fill("검사용 대학 경영학과");
-await form2.locator('input[name="name"]').fill("홍길동");
-await form2.locator('input[name="email"]').fill("test@example.ac.kr");
-await form2.locator('button[type="submit"]').click();
-await page.waitForTimeout(1200);
+await fillAndSend();
 
-const body2 = await page.innerText("body");
-ok(body2.includes("문의가 접수되었습니다"), "받아 주면 접수됐다고 한다");
-ok(body2.includes("MT-2026-0001"), "접수번호를 보여 준다");
+const okBox = page.locator(".notice.ok").first();
+ok((await okBox.count()) > 0, "받아 주면 접수됐다고 한다");
+ok(((await okBox.innerText().catch(() => "")) || "").includes("MT-2026-0001"),
+   "접수번호를 보여 준다");
 
 await browser.close();
 console.log(fail === 0 ? "\n전부 통과" : `\n${fail}건 실패`);
