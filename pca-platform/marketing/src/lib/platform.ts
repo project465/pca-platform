@@ -34,3 +34,14 @@ export function platformUrl(site: SiteContent): string {
 export function loginUrl(site: SiteContent): string {
   return `${platformUrl(site)}/admin/login`;
 }
+
+/**
+ * 도입 문의를 받는 창구.
+ *
+ * 정적 사이트라 브라우저가 직접 부른다. 그래서 이 주소는 빌드 때 박히고
+ * 화면 소스에 드러난다 — 비밀이 아니어야 한다는 뜻이고, 실제로 아니다.
+ * 막는 것은 창구 쪽의 Origin 허용 목록과 속도 제한이다 (R036).
+ */
+export function intakeUrl(site: SiteContent): string {
+  return `${platformUrl(site)}/api/intake`;
+}

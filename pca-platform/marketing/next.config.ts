@@ -19,6 +19,13 @@ console.info(
 );
 
 const nextConfig: NextConfig = {
+  /**
+   * 정적으로 내보낸다. Firebase Hosting 은 정적 파일만 서빙한다 (R033).
+   *
+   * 그래서 서버 액션을 쓸 수 없다 — 문의 폼은 브라우저에서 창구를 직접
+   * 부른다(`src/lib/contact.ts`). 여기를 되돌리려면 폼도 함께 되돌려야 한다.
+   */
+  output: "export",
   reactStrictMode: true,
   env: { SITE: process.env.SITE ?? "global" },
 

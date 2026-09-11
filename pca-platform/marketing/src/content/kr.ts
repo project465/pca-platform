@@ -959,7 +959,9 @@ export const kr: SiteContent = {
     sites: [
       { label: "Global (English)", href: "https://metri.example", ready: true },
       { label: "한국", href: "https://metri.co.kr", ready: true },
-      { label: "Қазақстан", href: "https://metri.kz", ready: true },
+      /* 카자흐판은 원어민 검수가 끝난 뒤에 연다 (R037). 열지 않은 판으로
+         링크를 걸면 죽은 링크가 된다 */
+      { label: "Қазақстан", href: "https://metri.kz", ready: false },
       { label: "Türkiye", href: "https://metri.com.tr", ready: false },
     ],
     soonLabel: "준비 중",

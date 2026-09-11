@@ -807,6 +807,13 @@ section { padding-block: clamp(60px, 8vw, 108px); }
 .privacy-note a { color: inherit; text-decoration: underline; }
 .privacy-note a:hover { color: var(--ink); }
 
+/* 허니팟 칸. 사람에게 보이면 안 되고, 읽는 기계에도 걸리면 안 된다.
+   display:none 은 일부 봇이 건너뛰므로 화면 밖으로 밀어낸다 */
+.hp {
+  position: absolute; left: -9999px; width: 1px; height: 1px;
+  opacity: 0; pointer-events: none;
+}
+
 /* ============================================================
    THEME · steppe — 카자흐스탄판
    
