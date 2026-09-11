@@ -1,8 +1,8 @@
-// data/eci/*.json 하나를 원본으로 삼아 세 가지를 만든다.
-//   1. db/seed/eci/skill_tree.sql        — 시드 SQL
-//   2. docs/eci/generated/skill_tree.md  — 문서용 표
-//   3. prototypes/eci/data.js            — 프리뷰 사이트가 읽는 데이터
-// 스킬 트리를 고칠 때는 JSON만 고치고 `npm run eci:build` 를 돌린다.
+// data/metri/*.json 하나를 원본으로 삼아 세 가지를 만든다.
+//   1. db/seed/metri/skill_tree.sql        — 시드 SQL
+//   2. docs/metri/generated/skill_tree.md  — 문서용 표
+//   3. prototypes/metri/data.js            — 프리뷰 사이트가 읽는 데이터
+// 스킬 트리를 고칠 때는 JSON만 고치고 `npm run metri:build` 를 돌린다.
 
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, join } from 'node:path'
@@ -11,8 +11,8 @@ import { fileURLToPath } from 'node:url'
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const read = (p) => JSON.parse(readFileSync(join(root, p), 'utf8'))
 
-const common = read('data/eci/common.json')
-const majors = ['ME', 'EE', 'CE'].map((c) => read(`data/eci/major_${c}.json`))
+const common = read('data/metri/common.json')
+const majors = ['ME', 'EE', 'CE'].map((c) => read(`data/metri/major_${c}.json`))
 
 const q = (s) => `'${String(s).replace(/'/g, "''")}'`
 const CRIT = { 3: '필수', 2: '중요', 1: '보조' }
@@ -28,8 +28,8 @@ const nameRow = (table, code, lang, field, value) =>
       `  ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;`
   )
 
-out(`-- 자동 생성 파일. 고치지 말 것. 원본은 data/eci/*.json, 생성은 scripts/eci/build.mjs`)
-out(`-- 적용 순서: db/schema.sql → db/schema_eci.sql → 이 파일`)
+out(`-- 자동 생성 파일. 고치지 말 것. 원본은 data/metri/*.json, 생성은 scripts/metri/build.mjs`)
+out(`-- 적용 순서: db/schema.sql → db/schema_metri.sql → 이 파일`)
 out(`BEGIN;`)
 
 out(`\n-- 지표 축`)
@@ -161,14 +161,14 @@ for (const major of majors) {
 }
 out(`\nCOMMIT;`)
 
-mkdirSync(join(root, 'db/seed/eci'), { recursive: true })
-writeFileSync(join(root, 'db/seed/eci/skill_tree.sql'), sql.join('\n') + '\n')
+mkdirSync(join(root, 'db/seed/metri'), { recursive: true })
+writeFileSync(join(root, 'db/seed/metri/skill_tree.sql'), sql.join('\n') + '\n')
 
 // ---------------------------------------------------------------- 2. 문서용 표
 const md = []
 md.push('# 3개 전공 Skill Tree (자동 생성)')
 md.push('')
-md.push('> 이 파일은 `scripts/eci/build.mjs` 가 만든다. 고칠 곳은 `data/eci/*.json` 이다.')
+md.push('> 이 파일은 `scripts/metri/build.mjs` 가 만든다. 고칠 곳은 `data/metri/*.json` 이다.')
 md.push('')
 md.push(`전공 ${majors.length}개 · 역량 ${majors.reduce((a, m) => a + m.competencies.length, 0)}개 · 직무군 ${majors.reduce((a, m) => a + m.jobs.length, 0)}개`)
 md.push('')
@@ -207,32 +207,32 @@ for (const major of majors) {
     }
   }
 }
-mkdirSync(join(root, 'docs/eci/generated'), { recursive: true })
-writeFileSync(join(root, 'docs/eci/generated/skill_tree.md'), md.join('\n') + '\n')
+mkdirSync(join(root, 'docs/metri/generated'), { recursive: true })
+writeFileSync(join(root, 'docs/metri/generated/skill_tree.md'), md.join('\n') + '\n')
 
 // ---------------------------------------------------------------- 3. 프리뷰 데이터
 const bundle = { ...common, majors }
-mkdirSync(join(root, 'prototypes/eci'), { recursive: true })
+mkdirSync(join(root, 'prototypes/metri'), { recursive: true })
 writeFileSync(
-  join(root, 'prototypes/eci/data.js'),
-  `// 자동 생성 파일. 원본은 data/eci/*.json\nwindow.ECI_DATA = ${JSON.stringify(bundle)};\n`
+  join(root, 'prototypes/metri/data.js'),
+  `// 자동 생성 파일. 원본은 data/metri/*.json\nwindow.METRI_DATA = ${JSON.stringify(bundle)};\n`
 )
 
 // 아티팩트로 게시할 자립형 파일 — data.js 를 인라인으로 박는다
 try {
-  const page = readFileSync(join(root, 'prototypes/eci/index.html'), 'utf8')
+  const page = readFileSync(join(root, 'prototypes/metri/index.html'), 'utf8')
   const inlined = page.replace(
     '<script src="data.js"></script>',
-    `<script>window.ECI_DATA = ${JSON.stringify(bundle)};</script>`
+    `<script>window.METRI_DATA = ${JSON.stringify(bundle)};</script>`
   )
-  writeFileSync(join(root, 'prototypes/eci/standalone.html'), inlined)
-  console.log('  prototypes/eci/standalone.html')
+  writeFileSync(join(root, 'prototypes/metri/standalone.html'), inlined)
+  console.log('  prototypes/metri/standalone.html')
 } catch (e) {
   console.log('  (standalone 생략 — index.html 없음)')
 }
 
 const counts = majors.map((m) => `${m.code} 역량 ${m.competencies.length} · 직무 ${m.jobs.length}`).join(' / ')
 console.log(`생성 완료 — ${counts}`)
-console.log(`  db/seed/eci/skill_tree.sql (${sql.length} 문)`)
-console.log(`  docs/eci/generated/skill_tree.md`)
-console.log(`  prototypes/eci/data.js`)
+console.log(`  db/seed/metri/skill_tree.sql (${sql.length} 문)`)
+console.log(`  docs/metri/generated/skill_tree.md`)
+console.log(`  prototypes/metri/data.js`)

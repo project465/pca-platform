@@ -181,7 +181,7 @@ node scripts/export-preview.mjs kr out-kr.html
 
 ---
 
-# ECI 확장 (2026-09-10)
+# METRI 확장 (2026-09-10)
 
 기존 단체 PCA 위에 **Engineering Career Intelligence** 를 얹었다.
 테이블을 하나도 지우지 않았고 `ALTER` 와 `CREATE` 만 썼다.
@@ -190,22 +190,22 @@ node scripts/export-preview.mjs kr out-kr.html
 
 | 경로 | 내용 |
 |---|---|
-| `docs/eci/` | 설계 문서 10편. `README.md` 부터 |
-| `data/eci/*.json` | **3개 전공 Skill Tree 원본.** 역량 138 · 직무군 24 · 요구관계 261 · 동의어 565 |
-| `db/schema_eci.sql` | 확장 스키마 (트랙·Skill Graph·증거·JD·집계) |
-| `db/seed/eci/skill_tree.sql` | 자동 생성 시드. `ON CONFLICT DO UPDATE` 라 몇 번 돌려도 안전 |
-| `scripts/eci/build.mjs` | JSON → 시드 SQL + 문서 표 + 프리뷰 데이터 |
-| `prototypes/eci/index.html` | 화면 프리뷰 11개 |
+| `docs/metri/` | 설계 문서 10편. `README.md` 부터 |
+| `data/metri/*.json` | **3개 전공 Skill Tree 원본.** 역량 138 · 직무군 24 · 요구관계 261 · 동의어 565 |
+| `db/schema_metri.sql` | 확장 스키마 (트랙·Skill Graph·증거·JD·집계) |
+| `db/seed/metri/skill_tree.sql` | 자동 생성 시드. `ON CONFLICT DO UPDATE` 라 몇 번 돌려도 안전 |
+| `scripts/metri/build.mjs` | JSON → 시드 SQL + 문서 표 + 프리뷰 데이터 |
+| `prototypes/metri/index.html` | 화면 프리뷰 11개 |
 
 ## 띄우는 법
 
 ```bash
-npm run eci:build          # 시드·문서·프리뷰 데이터 다시 생성
+npm run metri:build          # 시드·문서·프리뷰 데이터 다시 생성
 psql "$DATABASE_URL" -f db/schema.sql
-npm run eci:seed           # schema_eci.sql + skill_tree.sql 적용
+npm run metri:seed           # schema_metri.sql + skill_tree.sql 적용
 
 # 프리뷰는 서버 없이 그냥 열면 된다
-open prototypes/eci/index.html
+open prototypes/metri/index.html
 ```
 
 PostgreSQL 16 에서 세 파일 전부 적용해 확인했다 (역량 138 · 직무군 24 · 번역 396행).
@@ -221,7 +221,7 @@ PostgreSQL 16 에서 세 파일 전부 적용해 확인했다 (역량 138 · 직
 
 ## 다음에 이어받는 사람이 먼저 할 일
 
-1. `docs/eci/07_mvp.md` 의 12주 계획 1주차 — **워크넷 Open API 수집기.** 공고 20,000건에 30~60일 걸린다. 화면보다 먼저다
+1. `docs/metri/07_mvp.md` 의 12주 계획 1주차 — **워크넷 Open API 수집기.** 공고 20,000건에 30~60일 걸린다. 화면보다 먼저다
 2. 문항 110개 추가 집필 (예시 30개만 있다)
 3. 기계공학 Skill Tree 현직자 검수 — 요구 수준·필수도가 전부 추정치다
 4. 100명 검증. **Top-3 수용률 70% 가 유일한 관문이다**

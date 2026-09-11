@@ -1,7 +1,7 @@
 # Skill Graph — 온톨로지 구조와 3개 전공 Skill Tree
 
 전체 표는 [`generated/skill_tree.md`](generated/skill_tree.md) 에 있다 (자동 생성).
-**고칠 곳은 `data/eci/*.json` 이고**, 고친 뒤 `npm run eci:build` 를 돌리면
+**고칠 곳은 `data/metri/*.json` 이고**, 고친 뒤 `npm run metri:build` 를 돌리면
 시드 SQL·문서 표·프리뷰 데이터가 한 번에 다시 만들어진다.
 
 현재 규모 — **역량 138개 · 직무군 24개 · 요구관계 261개 · 동의어 565개.**

@@ -9,8 +9,8 @@
     "typecheck": "tsc --noEmit",
     "db:reset": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 -f db/schema.sql",
     "db:seed": "tsx scripts/seed.ts",
-    "eci:build": "node scripts/eci/build.mjs",
-    "eci:seed": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 -f db/schema_eci.sql -f db/seed/eci/skill_tree.sql"
+    "metri:build": "node scripts/metri/build.mjs",
+    "metri:seed": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 -f db/schema_metri.sql -f db/seed/metri/skill_tree.sql"
   },
   "dependencies": {
     "bcryptjs": "3.0.2",

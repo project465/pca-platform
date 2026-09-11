@@ -1,11 +1,11 @@
 -- ============================================================
---  ECI 확장 스키마 — Engineering Career Intelligence
+--  METRI 확장 스키마 — Engineering Career Intelligence
 --  db/schema.sql 을 적용한 다음에 적용한다.
 --
 --  적용 순서
 --    1. db/schema.sql            기존 검사 플랫폼
---    2. db/schema_eci.sql        이 파일
---    3. db/seed/eci/skill_tree.sql   자동 생성 시드
+--    2. db/schema_metri.sql        이 파일
+--    3. db/seed/metri/skill_tree.sql   자동 생성 시드
 --
 --  기존 파일의 설계 원칙 세 가지를 그대로 지킨다.
 --    1. 로그인 주체는 users 하나. 고등학생도 대학생도 여기 들어간다.

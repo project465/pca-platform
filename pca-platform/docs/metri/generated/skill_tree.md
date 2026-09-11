@@ -1,6 +1,6 @@
 # 3개 전공 Skill Tree (자동 생성)
 
-> 이 파일은 `scripts/eci/build.mjs` 가 만든다. 고칠 곳은 `data/eci/*.json` 이다.
+> 이 파일은 `scripts/metri/build.mjs` 가 만든다. 고칠 곳은 `data/metri/*.json` 이다.
 
 전공 3개 · 역량 148개 · 직무군 24개
 

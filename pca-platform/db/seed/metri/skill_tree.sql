@@ -1,5 +1,5 @@
--- 자동 생성 파일. 고치지 말 것. 원본은 data/eci/*.json, 생성은 scripts/eci/build.mjs
--- 적용 순서: db/schema.sql → db/schema_eci.sql → 이 파일
+-- 자동 생성 파일. 고치지 말 것. 원본은 data/metri/*.json, 생성은 scripts/metri/build.mjs
+-- 적용 순서: db/schema.sql → db/schema_metri.sql → 이 파일
 BEGIN;
 
 -- 지표 축

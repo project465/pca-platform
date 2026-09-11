@@ -1,11 +1,11 @@
 # 데이터베이스
 
-파일 — `db/schema.sql`(기존) → `db/schema_eci.sql`(확장) → `db/seed/eci/skill_tree.sql`(시드)
+파일 — `db/schema.sql`(기존) → `db/schema_metri.sql`(확장) → `db/seed/metri/skill_tree.sql`(시드)
 
 ```bash
 psql "$DATABASE_URL" -f db/schema.sql
-psql "$DATABASE_URL" -f db/schema_eci.sql
-psql "$DATABASE_URL" -f db/seed/eci/skill_tree.sql
+psql "$DATABASE_URL" -f db/schema_metri.sql
+psql "$DATABASE_URL" -f db/seed/metri/skill_tree.sql
 ```
 
 **셋 다 실제 PostgreSQL 16 에 적용해 확인했다.**
@@ -15,12 +15,12 @@ psql "$DATABASE_URL" -f db/seed/eci/skill_tree.sql
 
 ## 1. 기존 스키마를 하나도 지우지 않았다
 
-`schema_eci.sql` 은 `ALTER TABLE ... ADD COLUMN IF NOT EXISTS` 와
+`schema_metri.sql` 은 `ALTER TABLE ... ADD COLUMN IF NOT EXISTS` 와
 `CREATE TABLE` 로만 이뤄져 있다. **기존 테이블을 고치거나 지우지 않는다.**
 
 기존 설계 원칙 세 개를 그대로 지킨다.
 
-| 원칙 | ECI 에서 |
+| 원칙 | METRI 에서 |
 |---|---|
 | 1. 로그인 주체는 `users` 하나 | 고등학생·대학생·개인결제자 전부 `users`. `learner_profiles` 가 옆에 붙는다 |
 | 2. 이름은 전부 `translations` | 역량·직무·산업·트랙 이름이 전부 행으로 들어간다. 396행 |
@@ -158,11 +158,11 @@ cohort_reports.min_cell SMALLINT DEFAULT 5
 **SQL 을 직접 고치지 않는다.**
 
 ```
-data/eci/major_ME.json   ← 여기를 고친다
-        ↓  npm run eci:build
-db/seed/eci/skill_tree.sql        (자동 생성)
-docs/eci/generated/skill_tree.md  (자동 생성)
-prototypes/eci/data.js            (자동 생성)
+data/metri/major_ME.json   ← 여기를 고친다
+        ↓  npm run metri:build
+db/seed/metri/skill_tree.sql        (자동 생성)
+docs/metri/generated/skill_tree.md  (자동 생성)
+prototypes/metri/data.js            (자동 생성)
 ```
 
 시드 SQL 은 전부 `ON CONFLICT ... DO UPDATE` 라 **몇 번 돌려도 안전하다.**

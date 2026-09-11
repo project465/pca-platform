@@ -146,17 +146,17 @@ SITE=kz / SITE=tr           →  원고 파일만 추가하면 된다
 - `src/` — 검사 플랫폼 (Next.js). 로그인·응시·결과
 - `marketing/` — 나라별 소개 사이트. 원고는 `marketing/src/content/*.ts`
 
-**ECI 확장 (2026-09-10 추가)**
+**METRI 확장 (2026-09-10 추가)**
 
-- `docs/eci/README.md` — 설계 문서 10편. 여기부터 읽을 것
-- `db/schema_eci.sql` — 확장 스키마. `db/schema.sql` 다음에 적용한다
-- `data/eci/*.json` — **3개 전공 Skill Tree 원본. 고칠 곳은 여기다**
-- `db/seed/eci/skill_tree.sql` · `docs/eci/generated/skill_tree.md` — 자동 생성. 직접 고치지 말 것
-- `prototypes/eci/index.html` — 화면 프리뷰 (전 화면을 눌러 볼 수 있다)
+- `docs/metri/README.md` — 설계 문서 10편. 여기부터 읽을 것
+- `db/schema_metri.sql` — 확장 스키마. `db/schema.sql` 다음에 적용한다
+- `data/metri/*.json` — **3개 전공 Skill Tree 원본. 고칠 곳은 여기다**
+- `db/seed/metri/skill_tree.sql` · `docs/metri/generated/skill_tree.md` — 자동 생성. 직접 고치지 말 것
+- `prototypes/metri/index.html` — 화면 프리뷰 (전 화면을 눌러 볼 수 있다)
 
 ```bash
-npm run eci:build     # JSON → 시드 SQL + 문서 표 + 프리뷰 데이터
-npm run eci:seed      # 확장 스키마와 시드를 DB 에 적용
+npm run metri:build     # JSON → 시드 SQL + 문서 표 + 프리뷰 데이터
+npm run metri:seed      # 확장 스키마와 시드를 DB 에 적용
 ```
 
 ---
@@ -232,9 +232,9 @@ PCA 가 대는 것은 학생 체감의 증거(개인 15–20페이지 전략서)
 |---|---|
 | 처방 | **둘 다 낸다.** `skill_gap_items.action_kind` 가 `course` 든 `cert` 든 `ncs_unit` 이든 담는다. 트랙별로 기본 처방 종류만 다르다 |
 | 응시 자격 | **둘 다.** 명단 업로드는 B2B, 전용 링크는 B2C·소규모 계약. `seats` 하나로 처리된다 |
-| 직무 영역 | **공존한다.** 공통 10개는 성향 축(기존 PCA), 전공별 8개는 ECI 축. 결과지에서 층이 다르다 |
+| 직무 영역 | **공존한다.** 공통 10개는 성향 축(기존 PCA), 전공별 8개는 METRI 축. 결과지에서 층이 다르다 |
 
-근거는 `docs/eci/07_mvp.md` 마지막 절.
+근거는 `docs/metri/07_mvp.md` 마지막 절.
 
 ---
 
@@ -242,10 +242,10 @@ PCA 가 대는 것은 학생 체감의 증거(개인 15–20페이지 전략서)
 
 | 항목 | 상태 (2026-09-10) |
 |---|---|
-| 채점 산식 | **제안이 나왔다** — `docs/eci/04_matching.md`. `Fit = 100×(wA·A + wS·S + wP·P + wC·C)`. 계수는 전문가 설정값이고 **100명 검증 전까지는 추정치다** |
+| 채점 산식 | **제안이 나왔다** — `docs/metri/04_matching.md`. `Fit = 100×(wA·A + wS·S + wP·P + wC·C)`. 계수는 전문가 설정값이고 **100명 검증 전까지는 추정치다** |
 | 역량 보유 수준 판정 | **제안이 나왔다** — 증거 모델. 과목·자격·프로젝트에 배점과 신뢰도를 매겨 합산하고 사다리로 레벨 변환 |
-| 문항 수와 내용 | **기존 PCA 문항을 쓴다** (2026-09-11). 새로 쓰지 않는다. 저작권 등록분이고 개발 근거(2,346명·2,091 설문)가 이미 있다. 다만 **공학 활동 8축이 비어 있어 48문항만 추가**한다 — `docs/eci/03_assessment.md` 0장·2장 |
-| 가격 | **제안이 나왔다** — `docs/eci/08_revenue.md`. 학과 500명 1,400만 / 개인 리포트 29,000 |
+| 문항 수와 내용 | **기존 PCA 문항을 쓴다** (2026-09-11). 새로 쓰지 않는다. 저작권 등록분이고 개발 근거(2,346명·2,091 설문)가 이미 있다. 다만 **공학 활동 8축이 비어 있어 48문항만 추가**한다 — `docs/metri/03_assessment.md` 0장·2장 |
+| 가격 | **제안이 나왔다** — `docs/metri/08_revenue.md`. 학과 500명 1,400만 / 개인 리포트 29,000 |
 | 도메인 | 미정 |
 
 **위 네 개는 확정이 아니라 제안이다.** 숫자마다 근거를 붙여 뒀으니, 동의하지 않으면

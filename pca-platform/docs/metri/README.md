@@ -1,4 +1,4 @@
-# ECI 설계 문서
+# METRI 설계 문서
 
 Engineering Career Intelligence — 공학 학습자 Career Profile 엔진의 설계 묶음.
 업로드된 사업 컨텍스트 문서(`Engineering Career Intelligence Platform — 사업 아이디어 및 경쟁사 분석`)의
@@ -22,15 +22,15 @@ Engineering Career Intelligence — 공학 학습자 Career Profile 엔진의 �
 부속물
 
 - [`generated/skill_tree.md`](generated/skill_tree.md) — 3개 전공 전체 표 (자동 생성)
-- `../../data/eci/*.json` — Skill Tree 원본. **고칠 곳은 여기다**
-- `../../db/schema_eci.sql` — 확장 스키마
-- `../../db/seed/eci/skill_tree.sql` — 시드 (자동 생성)
-- `../../prototypes/eci/index.html` — 임시 프리뷰 사이트
+- `../../data/metri/*.json` — Skill Tree 원본. **고칠 곳은 여기다**
+- `../../db/schema_metri.sql` — 확장 스키마
+- `../../db/seed/metri/skill_tree.sql` — 시드 (자동 생성)
+- `../../prototypes/metri/index.html` — 임시 프리뷰 사이트
 
 ## 다시 만들기
 
 ```bash
-npm run eci:build     # JSON → SQL 시드 + 문서 표 + 프리뷰 데이터
+npm run metri:build     # JSON → SQL 시드 + 문서 표 + 프리뷰 데이터
 ```
 
 ## 확정되지 않은 것
