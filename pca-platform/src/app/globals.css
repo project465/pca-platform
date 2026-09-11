@@ -166,3 +166,220 @@ td .sub { display: block; font-size: 12.5px; color: var(--muted); }
 
 /* 입력 폼만 담는 패널은 화면 전체로 늘리지 않는다 */
 .panel.form-panel { max-width: 620px; }
+
+/* ---------- 응시 화면 ----------
+   mockups/01_test_screen.html 에서 그대로 가져온다. 시안이 확정된 값이다. */
+.bar { position:sticky; top:0; background:var(--field); padding:20px 0 14px; z-index:5; }
+.bar .row { display:flex; align-items:baseline; gap:12px; margin-bottom:10px; }
+.bar .who { font-size:13.5px; color:var(--muted); }
+.bar .count { margin-left:auto; font-size:13.5px; font-weight:700; }
+.bar .count em { font-style:normal; color:var(--muted); font-weight:400; }
+.rail { height:4px; background:var(--rule); position:relative; overflow:hidden; }
+.rail i { position:absolute; left:0; top:0; bottom:0; background:var(--ink); transition:width .25s ease; }
+.saved { font-size:12.5px; color:var(--met); margin-top:8px; height:18px; opacity:0; transition:opacity .2s; }
+.saved.on { opacity:1; }
+@media (prefers-reduced-motion:reduce) { .rail i, .saved { transition:none; } }
+
+.card { background:var(--paper); border:1px solid var(--rule); padding:38px 40px 32px; margin-top:8px; }
+.qno { font-size:13px; color:var(--muted); margin-bottom:10px; }
+.qtext { font-size:22px; font-weight:700; letter-spacing:-.025em; line-height:1.45; margin-bottom:28px; }
+
+.opts { display:flex; flex-direction:column; gap:9px; }
+.opt { display:flex; align-items:center; gap:14px; width:100%; text-align:left;
+  background:var(--paper); border:1px solid var(--rule); padding:14px 16px;
+  font:inherit; color:inherit; cursor:pointer; }
+.opt:hover { border-color:var(--muted); }
+.opt .dot { width:16px; height:16px; border:1px solid var(--muted); border-radius:50%; flex:none; }
+.opt[aria-pressed="true"] { border-color:var(--ink); background:#F4F7F8; }
+.opt[aria-pressed="true"] .dot { background:var(--ink); border-color:var(--ink);
+  box-shadow:inset 0 0 0 3px var(--paper); }
+.opt .txt { font-size:15.5px; }
+
+.nav { display:flex; gap:10px; margin-top:26px; padding-top:22px; border-top:1px solid var(--rule); }
+.nav .right { margin-left:auto; display:flex; gap:10px; }
+
+.panel h1 { font-size:26px; font-weight:800; letter-spacing:-.03em; margin-bottom:14px; }
+.panel p { color:var(--muted); font-size:15px; max-width:58ch; margin-bottom:10px; }
+.panel ul { margin:18px 0 26px; padding-left:0; list-style:none; }
+.panel li { font-size:15px; padding:9px 0; border-top:1px solid var(--rule); }
+.hint { font-size:13.5px; color:var(--muted); }
+
+@media (max-width:600px) {
+  .card { padding:26px 20px; }
+  .qtext { font-size:19px; }
+  .nav { flex-wrap:wrap; }
+  .nav .right { width:100%; margin-left:0; }
+  .nav .right button { flex:1; }
+}
+
+/* ---------- 결과지 ----------
+   mockups/02_student_report.html 에서 그대로 가져온다. 시안이 확정된 값이다. */
+.sheet { max-width:880px; margin:0 auto; background:var(--paper); border:1px solid var(--rule); }
+.sheet .top { display:flex; flex-wrap:wrap; gap:8px 28px; align-items:baseline;
+  padding:22px 40px; border-bottom:2px solid var(--ink); }
+.sheet .top h1 { font-size:15px; font-weight:700; letter-spacing:-.01em; }
+.sheet .meta { color:var(--muted); font-size:13.5px; display:flex; gap:20px; flex-wrap:wrap; margin-left:auto; }
+.sheet section { padding:38px 40px; border-bottom:1px solid var(--rule); }
+.sheet section:last-of-type { border-bottom:0; }
+.sheet h2 { font-size:14px; font-weight:700; color:var(--muted); margin-bottom:26px; letter-spacing:-.01em; }
+
+.lead { display:flex; align-items:flex-end; gap:18px; margin-bottom:4px; flex-wrap:wrap; }
+.lead .name { font-size:38px; font-weight:800; letter-spacing:-.035em; line-height:1.1; }
+.lead .score { font-size:38px; font-weight:300; color:var(--muted); letter-spacing:-.04em; }
+.lead .score b { font-weight:800; color:var(--ink); }
+.lead-note { color:var(--muted); font-size:14.5px; margin-bottom:34px; max-width:62ch; }
+
+.gauge { display:grid; grid-template-columns:150px 1fr 46px; align-items:center; gap:0 16px; padding:9px 0; }
+.gauge + .gauge { border-top:1px dotted var(--rule); }
+.gauge .lab { font-size:14.5px; font-weight:500; }
+.gauge.is-top .lab { font-weight:800; }
+.track { position:relative; height:22px; }
+.track .ticks { position:absolute; inset:0; display:flex; }
+.track .ticks i { flex:1; border-right:1px solid var(--rule); }
+.track .ticks i:last-child { border-right:0; }
+.track .fill { position:absolute; top:5px; height:12px; left:0; background:var(--muted); }
+.gauge.is-top .fill { background:var(--ink); }
+.gauge .val { font-size:14.5px; text-align:right; color:var(--muted); }
+.gauge.is-top .val { color:var(--ink); font-weight:700; }
+.scale { display:grid; grid-template-columns:150px 1fr 46px; gap:0 16px; margin-top:8px; }
+.scale span:nth-child(2) { display:flex; justify-content:space-between; font-size:11.5px; color:var(--muted); }
+.scale em { font-style:normal; }
+
+.comp { display:grid; grid-template-columns:170px 1fr 92px; gap:0 16px; align-items:center; padding:13px 0; }
+.comp + .comp { border-top:1px solid var(--rule); }
+.comp .lab { font-size:14.5px; font-weight:500; }
+.comp .lab small { display:block; font-size:12px; color:var(--muted); font-weight:400; }
+.blocks { display:flex; gap:5px; }
+.blocks span { flex:1; height:16px; border:1px solid var(--rule); background:transparent; }
+.blocks span.req { border-color:var(--ink); }
+.blocks span.has { background:var(--met); border-color:var(--met); }
+.blocks span.short { background:repeating-linear-gradient(135deg,#F2D9D6 0 4px,transparent 4px 8px);
+  border-color:var(--gap); }
+.verdict { font-size:13px; text-align:right; font-weight:700; }
+.verdict.ok { color:var(--met); }
+.verdict.mid { color:var(--partial); }
+.verdict.no { color:var(--gap); }
+
+.course { padding:16px 0; display:grid; grid-template-columns:1fr auto; gap:6px 20px; }
+.course + .course { border-top:1px solid var(--rule); }
+.course h3 { font-size:16px; font-weight:700; letter-spacing:-.015em; }
+.course .code { font-size:13px; color:var(--muted); white-space:nowrap; }
+.course .tags { grid-column:1/-1; display:flex; flex-wrap:wrap; gap:6px; margin-top:2px; }
+.course .tags b { font-size:12px; font-weight:600; color:var(--met);
+  border:1px solid var(--met); padding:1px 7px; border-radius:2px; }
+
+.sheetfoot { padding:20px 40px; color:var(--muted); font-size:12.5px; background:#F7F9FA; }
+
+@media (max-width:620px) {
+  .sheet .top, .sheet section, .sheetfoot { padding-left:20px; padding-right:20px; }
+  .gauge, .scale { grid-template-columns:96px 1fr 38px; }
+  .comp { grid-template-columns:1fr; gap:8px; }
+  .verdict { text-align:left; }
+  .lead .name, .lead .score { font-size:30px; }
+}
+@media print {
+  body { background:#fff; }
+  .sheet { border:0; max-width:none; }
+  .sheet section { break-inside:avoid; }
+  .topbar, .act { display:none !important; }
+}
+
+/* ---------- 단체 리포트 ----------
+   mockups/03_group_report.html 에서 그대로 가져온다. 시안이 확정된 값이다.
+   개인 결과지(.sheet)와 이름이 겹치지 않게 g 를 붙였다. */
+.gsheet { max-width:940px; margin:0 auto; background:var(--paper); border:1px solid var(--rule); }
+.gtop { display:flex; flex-wrap:wrap; gap:14px 28px; align-items:center;
+  padding:22px 40px; border-bottom:2px solid var(--ink); }
+.gtop h1 { font-size:15px; font-weight:700; }
+.gmeta { color:var(--muted); font-size:13.5px; display:flex; gap:18px; flex-wrap:wrap; }
+.gact { margin-left:auto; display:flex; align-items:center; gap:14px; }
+.badge { font-size:12.5px; font-weight:700; padding:3px 9px;
+  border:1px solid var(--partial); color:var(--partial); }
+.badge.open { border-color:var(--met); color:var(--met); }
+
+.gsheet section { padding:36px 40px; border-bottom:1px solid var(--rule); }
+.gsheet section:last-of-type { border-bottom:0; }
+.gsheet h2 { font-size:14px; font-weight:700; color:var(--muted); margin-bottom:8px; }
+.gsub { font-size:14px; color:var(--muted); max-width:64ch; margin-bottom:26px; }
+
+.band { display:flex; height:64px; border:1px solid var(--ink); }
+.band div { display:flex; align-items:center; justify-content:center;
+  font-size:15px; font-weight:700; overflow:hidden; }
+.legend { display:flex; flex-wrap:wrap; gap:8px 26px; margin-top:16px; }
+.legend span { display:flex; align-items:center; gap:8px; font-size:14px; }
+.legend i { width:12px; height:12px; flex:none; }
+.legend em { font-style:normal; color:var(--muted); font-size:13.5px; }
+
+.cg { display:grid; grid-template-columns:150px 1fr 84px; gap:0 16px;
+  align-items:center; padding:12px 0; }
+.cg + .cg { border-top:1px solid var(--rule); }
+.cg .lab { font-size:14.5px; font-weight:500; }
+.cg .lab small { display:block; font-size:12px; color:var(--muted); font-weight:400; }
+.meter { height:14px; background:#E4E9EC; position:relative; }
+.meter i { position:absolute; left:0; top:0; bottom:0; }
+.meter i.low { background:var(--gap); }
+.meter i.mid { background:var(--partial); }
+.meter i.high { background:var(--met); }
+.cg .pct { text-align:right; font-size:14px; font-weight:700; }
+.cg .pct em { font-style:normal; font-weight:400; color:var(--muted);
+  font-size:12.5px; display:block; }
+
+.gcourse { display:grid; grid-template-columns:1fr auto; gap:4px 20px; padding:16px 0; }
+.gcourse + .gcourse { border-top:1px solid var(--rule); }
+.gcourse h3 { font-size:16.5px; font-weight:700; letter-spacing:-.015em; }
+.gcourse .need { font-size:14px; font-weight:700; white-space:nowrap; }
+.gcourse p { grid-column:1/-1; font-size:13.5px; color:var(--muted); max-width:66ch; }
+.flag { display:inline-block; font-size:12px; font-weight:600; padding:1px 7px;
+  border:1px solid var(--gap); color:var(--gap); margin-left:8px; vertical-align:1px; }
+
+.miss { display:flex; flex-wrap:wrap; gap:10px 28px; align-items:center; font-size:14.5px; }
+.miss b { font-weight:700; }
+.miss span { color:var(--muted); }
+
+.gfoot { padding:20px 40px; color:var(--muted); font-size:12.5px; background:#F7F9FA; }
+
+@media (max-width:680px) {
+  .gtop, .gsheet section, .gfoot { padding-left:20px; padding-right:20px; }
+  .gact { margin-left:0; width:100%; }
+  .band { height:52px; }
+  .band div { font-size:13px; }
+  .cg { grid-template-columns:110px 1fr 64px; }
+}
+
+/* ---------- 전용 링크 등록 화면 ----------
+   카드 하나만 놓는 자리. 로그인처럼 가운데로 몰지 않고 위에서부터 읽힌다. */
+.auth { max-width: 520px; margin: 0 auto; padding: 40px 20px 80px; }
+.auth h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 6px; }
+.auth .help { font-size: 13.5px; color: var(--muted); margin-bottom: 20px; }
+
+/* 동의 받는 자리. 글을 읽고 체크하는 순서가 보이도록 붙여 둔다. */
+.consent { border: 1px solid var(--rule); padding: 14px 16px; background: #F7F9FA; }
+.consent .line { display: flex; align-items: flex-start; gap: 10px; }
+.consent input { width: 17px; height: 17px; flex: none; margin-top: 2px; accent-color: var(--ink); }
+.consent label { font-size: 14px; font-weight: 700; line-height: 1.45; }
+.consent ul { list-style: none; margin: 10px 0 0 27px; }
+.consent li { font-size: 12.5px; color: var(--muted); padding: 2px 0; }
+.consent .more { display: block; margin: 10px 0 0 27px; font-size: 12.5px; color: var(--muted); }
+
+/* ---------- 문서 화면 (처리방침 등) ---------- */
+.doc .top { align-items: center; }
+.doc section { padding-top: 28px; padding-bottom: 28px; }
+.doc h2 { margin-bottom: 12px; color: var(--ink); font-size: 15px; }
+.doc p { font-size: 14.5px; max-width: 68ch; margin-bottom: 8px; }
+.doc table { min-width: 480px; }
+
+/* ---------- 건당 정산 현황 ----------
+   담당자가 이번 달에 얼마가 쌓였는지 보는 자리. 청구서를 받고 놀라지
+   않으려면 숫자가 진행 중에 보여야 한다. */
+.usage {
+  background: var(--paper); border: 1px solid var(--rule);
+  padding: 20px 24px; margin-bottom: 16px;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 18px 28px;
+}
+.usage > div { display: flex; flex-direction: column; gap: 2px; }
+.usage b { font-size: 22px; font-weight: 800; letter-spacing: -0.03em; }
+.usage span { font-size: 12.5px; color: var(--muted); }
+.usage .note {
+  grid-column: 1 / -1; font-size: 12.5px; color: var(--muted);
+  border-top: 1px solid var(--rule); padding-top: 12px; max-width: 72ch;
+}

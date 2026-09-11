@@ -79,11 +79,33 @@ CREATE TABLE contracts (
   title       TEXT NOT NULL,
   starts_on   DATE NOT NULL,
   ends_on     DATE NOT NULL,
-  seat_count  INTEGER NOT NULL,              -- 구매한 응시권 수량
+
+  -- 정산 방식.
+  --   prepaid  응시권을 미리 산다. seats 에 seat_count 만큼 행을 만들어 두고
+  --            그 안에서만 등록·응시한다.
+  --   per_use  건당 후불. 미리 사는 것이 없고, 제공이 끝난 건마다
+  --            billing_events 에 한 줄이 쌓인다. 대학 산학협력단,
+  --            지역 일자리·경제진흥원, 고용노동부 위탁사업처럼 실적으로
+  --            정산하는 발주처가 이 방식을 쓴다.
+  billing     TEXT NOT NULL DEFAULT 'prepaid'
+              CHECK (billing IN ('prepaid', 'per_use')),
+
+  seat_count  INTEGER NOT NULL DEFAULT 0,    -- prepaid 에서 구매한 응시권 수량
+  unit_price  BIGINT,                        -- per_use 단가. 최소 화폐 단위(원)
+  currency    TEXT NOT NULL DEFAULT 'KRW',
+  use_cap     INTEGER,                       -- per_use 건수 상한. NULL 이면 무제한
+
   status      TEXT NOT NULL DEFAULT 'active',
   memo        TEXT,
-  created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+
+  -- 단가 없는 건당 계약은 청구할 수가 없다
+  CHECK (billing <> 'per_use' OR unit_price IS NOT NULL),
+  -- 선불인데 응시권이 0장이면 아무도 못 들어온다
+  CHECK (billing <> 'prepaid' OR seat_count > 0)
 );
+COMMENT ON COLUMN contracts.use_cap IS
+  '건당 계약의 상한. 발주처 예산이 정해져 있으면 넘지 않도록 여기서 막는다';
 
 CREATE TABLE seats (
   id           BIGSERIAL PRIMARY KEY,
@@ -304,3 +326,134 @@ COMMENT ON TABLE password_reset_tokens IS
   '토큰 원문은 링크에만 있고 DB에는 해시만 둔다. 사용하면 used_at을 채워 재사용을 막는다';
 
 CREATE INDEX idx_reset_active ON password_reset_tokens(user_id) WHERE used_at IS NULL;
+
+
+-- ============================================================
+--  11. 단체 신청과 전용 링크 (초안 v0.3에서 추가)
+--
+--  소개 사이트에서 단체가 도입을 신청하고, 승인되면 그 단체 전용 링크를
+--  받아 학생에게 뿌리는 흐름이다. 제안서의 "전용 링크 발급 → 학생 응시 →
+--  성과 자동 집계" 를 데이터로 옮긴 것이다.
+--
+--  셀프 가입이 아니다. 신청은 누구나 넣을 수 있지만 organizations 행과
+--  링크는 운영자가 승인해야 생긴다 (확정된 결정: "계약 후 관리자가 발급").
+-- ============================================================
+
+CREATE TABLE org_applications (
+  id             BIGSERIAL PRIMARY KEY,
+  ref_code       TEXT NOT NULL UNIQUE,       -- 신청자에게 알려주는 접수번호
+  site           TEXT NOT NULL,              -- 어느 나라 소개 사이트에서 왔는가 (global|kr|...)
+  country        CHAR(2) NOT NULL,
+  org_name       TEXT NOT NULL,              -- 적어 낸 그대로. 아직 organizations 행이 없다
+  dept_name      TEXT,
+  contact_name   TEXT NOT NULL,
+  contact_email  TEXT NOT NULL,
+  contact_phone  TEXT,
+  expected_size  INTEGER,                    -- 예상 응시 인원
+  plan           TEXT,                       -- 소개 사이트에서 고른 요금제 키
+  message        TEXT,
+  status         TEXT NOT NULL DEFAULT 'received',  -- received | approved | rejected
+  org_id         BIGINT REFERENCES organizations(id),  -- 승인하면 채워진다
+  reviewed_by    BIGINT REFERENCES users(id),
+  reviewed_at    TIMESTAMPTZ,
+  review_memo    TEXT,
+  created_at     TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+COMMENT ON TABLE org_applications IS
+  '홈페이지 도입 신청. org_name 을 translations 에 넣지 않는 이유는, 이것이
+   아직 기관이 아니라 신청자가 적어 낸 원문이기 때문이다. 승인해서 실제
+   organizations 행이 생길 때 비로소 translations 로 옮겨간다 (설계 원칙 2)';
+
+CREATE INDEX idx_applications_open ON org_applications(created_at DESC)
+  WHERE status = 'received';
+
+CREATE TABLE org_links (
+  id           BIGSERIAL PRIMARY KEY,
+  org_id       BIGINT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  session_id   BIGINT REFERENCES test_sessions(id),   -- 회차가 정해지면 연결한다
+  token        TEXT NOT NULL UNIQUE,        -- 링크에 그대로 들어가는 값
+  label        TEXT NOT NULL,               -- '2026-1학기 기계공학과' 처럼 담당자가 알아볼 이름
+  max_uses     INTEGER,                     -- NULL 이면 계약 좌석 수가 실질 상한이다
+  used_count   INTEGER NOT NULL DEFAULT 0,
+  -- 등록 조건. 링크를 공개된 곳에 걸 때 엉뚱한 사람을 거른다. NULL 이면 조건 없음
+  login_id_mask TEXT,                      -- 9=숫자 A=영문 *=숫자나영문, 나머지는 그대로
+  email_domains TEXT,                      -- 쉼표로 나눈 목록. 'ac.kr' 은 그 아래 도메인까지
+  expires_at   TIMESTAMPTZ,
+  revoked_at   TIMESTAMPTZ,
+  created_by   BIGINT REFERENCES users(id),
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+COMMENT ON TABLE org_links IS
+  '단체 전용 링크. password_reset_tokens 와 달리 원문을 그대로 저장한다.
+   재설정 토큰은 1회용·개인용이라 다시 보여줄 일이 없지만, 이 링크는 담당자가
+   학생들에게 반복해서 뿌려야 하므로 화면에 다시 띄울 수 있어야 한다.
+   대신 만료(expires_at)·사용 상한(max_uses)·회수(revoked_at)로 위험을 줄이고,
+   학번 형태(login_id_mask)와 이메일 도메인(email_domains)으로 누가 들어올 수
+   있는지를 좁힌다. 정규식을 그대로 받지 않는 이유는 lib/join-rules.ts 에 적었다';
+
+CREATE INDEX idx_org_links_live ON org_links(org_id) WHERE revoked_at IS NULL;
+
+
+-- ============================================================
+--  12. 동의 기록 (초안 v0.4에서 추가)
+--
+--  개인정보를 받으려면 무엇에 동의했는지 남겨야 한다. 나중에 "동의한 적
+--  없다" 는 말이 나왔을 때 댈 것이 있어야 하고, 방침이 바뀌면 누가 어느
+--  판에 동의했는지 갈라 볼 수 있어야 한다.
+--
+--  IP 나 기기 정보는 남기지 않는다. 분쟁을 대비해 더 모으고 싶어지지만,
+--  그것 자체가 또 다른 개인정보다. 누가·무엇에·언제만 남긴다.
+-- ============================================================
+
+CREATE TABLE consents (
+  id         BIGSERIAL PRIMARY KEY,
+  user_id    BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  kind       TEXT NOT NULL,              -- privacy(필수) | marketing(선택, 아직 안 씀
+  version    TEXT NOT NULL,              -- 동의한 방침의 판. lib/consent.ts 참고
+  agreed_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (user_id, kind, version)
+);
+COMMENT ON TABLE consents IS
+  '누가·무엇에·언제 동의했는지. 방침을 고치면 version 을 올리고 다시 받는다';
+
+CREATE INDEX idx_consents_user ON consents(user_id);
+
+
+-- ============================================================
+--  13. 건당 정산 (초안 v0.5에서 추가)
+--
+--  대학 산학협력단, 지역 일자리·경제진흥원, 고용노동부 위탁사업은 응시권을
+--  미리 사 두지 않는다. 사업 기간 동안 실제로 나간 건수를 집계해서 월별로
+--  청구하고, 발주처는 그 실적으로 검수한다.
+--
+--  그래서 '몇 건이 나갔는가' 가 나중에 세는 값이 아니라 그때그때 남는 값이어야
+--  한다. attempts 를 나중에 세면 되지 않느냐 싶지만, 그러면 단가가 바뀌거나
+--  계약이 갱신됐을 때 지난 달 청구서를 다시 만들 수 없다. 그 시점의 단가를
+--  행에 박아 둔다.
+--
+--  무엇을 한 건으로 보는가 — **제출된 응시 한 건**이다. 시작만 하고 만 것은
+--  세지 않는다. 서비스가 제공되지 않은 건을 청구하면 검수에서 잘리고, 잘리는
+--  것보다 애초에 청구하지 않는 편이 낫다. 이 기준을 바꾸려면 여기 주석과
+--  lib/billing.ts 를 함께 고친다.
+-- ============================================================
+
+CREATE TABLE billing_events (
+  id           BIGSERIAL PRIMARY KEY,
+  contract_id  BIGINT NOT NULL REFERENCES contracts(id) ON DELETE CASCADE,
+  org_id       BIGINT NOT NULL REFERENCES organizations(id),
+  attempt_id   BIGINT NOT NULL REFERENCES attempts(id) ON DELETE CASCADE,
+  user_id      BIGINT NOT NULL REFERENCES users(id),
+  occurred_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+  period       TEXT NOT NULL,              -- 'YYYY-MM'. 청구 단위
+  unit_price   BIGINT NOT NULL,            -- 그때의 단가. 계약이 바뀌어도 이 값은 안 바뀐다
+  currency     TEXT NOT NULL,
+  invoiced_at  TIMESTAMPTZ,                -- 청구서에 실린 시각. 실리기 전에는 NULL
+
+  -- 한 응시는 한 번만 청구된다. 두 번 청구하는 것이 가장 나쁜 오류다
+  UNIQUE (attempt_id)
+);
+COMMENT ON TABLE billing_events IS
+  '건당 계약에서 청구할 건 하나 = 1행. 제출된 응시에 대해서만 쌓인다';
+
+CREATE INDEX idx_billing_period ON billing_events(org_id, period);
+CREATE INDEX idx_billing_uninvoiced ON billing_events(contract_id) WHERE invoiced_at IS NULL;

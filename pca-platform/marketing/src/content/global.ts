@@ -8,21 +8,65 @@ import type { SiteContent } from "./types";
 export const global: SiteContent = {
   key: "global",
   lang: "en",
-  domain: "pca.example",
-  brand: "PCA",
+  domain: "metri.example",
+  brand: "METRI",
   org: "ACADEMIX",
   orgTagline: "EDUCATION & CONFERENCE",
-  platformUrl: "https://app.pca.example",
+  platformUrl: "https://pcagroup.haricareer.com",
+  /* 처리방침은 이 사이트 자체 페이지다 (R022). 라이브 플랫폼에는 없다 */
+  privacyUrl: "/privacy",
 
   meta: {
-    title: "PCA — A career strategy built around the major you already chose",
+    title: "METRI — A career strategy built around the major you already chose",
     description:
       "Personalized Career Analysis reads job fit, work style and execution strategy together, then tells students what to prepare — projects, applications, interviews, founding, and employers in their own region.",
   },
 
+  ui: {
+    glanceLabel: "AT A GLANCE",
+    glanceHeading: "One sitting, carried through to execution",
+    flow: ["Sitting", "Job areas", "Six work styles", "Execution plan", "Report"],
+    sheetCta: "See the result sheet",
+    moreLabel: "GO DEEPER",
+    moreHeading: "Start where it matters to you",
+    nextLabel: "NEXT",
+    nextHeading: "What would this look like at your institution?",
+    pageTitles: {
+      metri: "METRI",
+      adopt: "Adoption",
+      pricing: "Pricing",
+      about: "About",
+      contact: "Contact",
+      localisation: "Localisation",
+      partnership: "Partnership",
+    },
+    linkTitles: {
+      metri: "The diagnosis",
+      adopt: "How adoption works",
+      contact: "Talk to us",
+      localisation: "Localisation",
+      partnership: "Partnership",
+    },
+    photos: {
+      home: [
+        "A careers talk for a department",
+        "A mentoring session with someone in the role",
+        "A campus recruitment fair",
+      ],
+      about: [
+        "A university event",
+        "An invited speaker",
+        "A working space",
+      ],
+      metri: "A department sitting the assessment",
+      adopt: "An administrator at the screen",
+      localisation: "A localisation workshop with a partner university",
+    },
+  },
+
   nav: {
     items: [
-      { label: "PCA", href: "/pca" },
+      { label: "METRI", href: "/metri" },
       { label: "LOCALISATION", href: "/localisation" },
       { label: "PARTNERSHIP", href: "/partnership" },
       { label: "PRICING", href: "/pricing" },
@@ -32,37 +76,41 @@ export const global: SiteContent = {
     contact: "Talk to us",
     menu: "Menu",
     floating: "Contact",
+    login: "Staff sign-in",
+    loginNote: "Students use the link their university sends them",
+    byLine: "BY ACADEMIX",
   },
 
   hero: {
-    eyebrow: "PCA · PERSONALIZED CAREER ANALYSIS",
+    /* METRI 는 약자가 아니다. 옆 문구는 브랜드 풀이가 아니라 제품 설명이다 (R022) */
+    eyebrow: "METRI · CAREER-FIT ASSESSMENT FOR UNIVERSITIES",
     title: ["Your students already know their major.", "{Nobody has told them what to do next.}"],
     lead:
-      "PCA ranks ten job areas out of 100, maps six work styles, and writes each student a 15–20 page plan — credentials, projects, applications, interviews, founding, and employers in their own region. Built in Korea, rebuilt in your country from your own labour-market data.",
+      "METRI ranks the job areas of a student's own field out of 100, maps six work styles across 120 items, and writes each student a plan — credentials, projects, applications, interviews, founding, and employers in their own region. Built in Korea, rebuilt in your country from your own labour-market data.",
     primary: { label: "Talk to us", href: "/contact" },
     secondary: { label: "See a real report", href: "#sample" },
-    watermark: "PCA",
+    watermark: "METRI",
   },
 
   sample: {
     label: "A REAL REPORT",
     heading: "Before the method, look at what a student is handed",
     lead:
-      "What PCA measures is the second question. Below is a 15–20 page report with four of its pages put on one screen. A student does not receive a type name. They receive this.",
+      "What METRI measures is the second question. Below are four pages of the report put on one screen. A student does not receive a type name. They receive this.",
     disclaimer:
-      "An illustrative screen showing the format of the report — not a real student’s submission. The ten job areas, the six work styles and the regional method are exactly as they ship.",
-    docTag: "PCA INDIVIDUAL REPORT",
-    page: "extract · 00-1 · 00-2 · 05–06 · regional annex",
+      "An illustrative screen showing the format of the report — not a real student’s submission. The job areas shown are one field's; the six work styles and the regional method are exactly as they ship.",
+    docTag: "METRI INDIVIDUAL REPORT",
+    page: "extract · ch.1 · ch.5–6 · annex",
     person: {
       name: "Sample student",
-      dept: "Mechanical Engineering, year 3",
+      dept: "Business Administration, year 3",
       meta: [
         { l: "Sat", v: "11 March 2026" },
         { l: "Time taken", v: "32 min" },
-        { l: "Report", v: "18 pages" },
+        { l: "Report", v: "8 chapters, 52 sections" },
       ],
     },
-    jobsLabel: "00-1 Job-area fit · ten areas, scored out of 100",
+    jobsLabel: "Ch.1 · Job-area fit, scored out of 100",
     jobsNote:
       "The top three set the application strategy. The seven below carry the reason they fell where they did, so the student never has to ask why they were ruled out.",
     jobs: [
@@ -84,7 +132,7 @@ export const global: SiteContent = {
       "Strong where a standard is set and has to be met to the end. Costly in a team that runs on speed and on pulling other people along. For now, aim at posts where the standard is explicit — process and quality — and leave leading a team until year three or later.",
     styleAxes: ["Independent", "Collaborative", "Challenging", "Steady", "Speed-led", "Quality-led"],
     styleScores: [78, 55, 62, 71, 49, 86],
-    planLabel: "Sections 05–06 · the next twelve months",
+    planLabel: "Chapters 5–6 · the next twelve months",
     planNote:
       "It does not end at a label. A month and a task are attached, and one line saying why it is worth doing.",
     plan: [
@@ -95,17 +143,17 @@ export const global: SiteContent = {
       },
       {
         when: "Months 2–3",
-        what: "Reframe the capstone project around defect-rate reduction",
+        what: "Reframe the final-year project around defect-rate reduction",
         why: "Leaves a number the student can say out loud in an interview",
       },
       {
         when: "Month 4",
-        what: "Apply for the placements at the local plants listed in the regional annex",
+        what: "Apply for the summer placements in operations roles",
         why: "Placements are how these employers actually hire",
       },
       {
         when: "Month 6",
-        what: "Draft the first application answer from the sentence frames in section 06",
+        what: "Draft the first application answer from the sentence frames in chapter 6",
         why: "The strengths are already written; the student edits rather than starts",
       },
       {
@@ -116,7 +164,7 @@ export const global: SiteContent = {
     ],
     localLabel: "Regional annex · where they can go, near where they live",
     localNote:
-      "Figures from the Korean edition, for a student in Daejeon: 184 organisations in the city were screened and sorted into 144 high fit, 40 moderate, 0 low, with 101 of them tied to the region’s priority industries. In your country the same method runs on your own labour-market data, and the report names the employers.",
+      "Figures from the Korean edition, for a student in Daejeon: 184 organisations in the city were screened and sorted into 144 high fit, 40 moderate, 0 low, with 101 of them tied to the region’s priority industries. Regional matching is a Korea module today. Elsewhere it is built with the partner university against that country's own labour-market data, and only then does the report name employers.",
     local: [
       { name: "184", note: "organisations screened in the city" },
       { name: "144", note: "high fit" },
@@ -127,19 +175,19 @@ export const global: SiteContent = {
       line: "Every student in the department gets one of these, with their own name on it.",
       sub: "Tell us the department and the cohort size; we come back within a day with a plan and a quote.",
       primary: { label: "Talk to us", href: "/contact" },
-      secondary: { label: "See all ten sections", href: "/pca" },
+      secondary: { label: "See the report structure", href: "/metri" },
     },
   },
 
   who: {
     label: "WHO IS IT FOR",
-    heading: "Who brings PCA into a country",
+    heading: "Who brings METRI into a country",
     items: [
       {
         no: "01",
         title: "Universities and departments",
         body: "“Our careers service hands out a personality type. Students still ask us what to actually do.”",
-        tag: "A 15–20 page plan per student",
+        tag: "A written plan per student",
       },
       {
         no: "02",
@@ -157,8 +205,8 @@ export const global: SiteContent = {
   },
 
   analyze: {
-    label: "WHAT PCA ANALYZES",
-    heading: "PCA analyses three things together",
+    label: "WHAT METRI ANALYZES",
+    heading: "METRI analyses three things together",
     lead:
       "The three are not read separately. They are joined, which is why the result lands as something to do rather than something to know.",
     items: [
@@ -166,7 +214,7 @@ export const global: SiteContent = {
         no: "01",
         kicker: "Job fit",
         title: "The field narrows to three",
-        body: "Ten job areas scored out of 100 and ranked. The first is analysed in depth; the second and third stay as reference.",
+        body: "The job areas of the student's field, scored out of 100 and ranked. The first is analysed in depth; the second and third stay as reference.",
       },
       {
         no: "02",
@@ -184,7 +232,7 @@ export const global: SiteContent = {
   },
 
   why: {
-    label: "WHY PCA",
+    label: "WHY METRI",
     heading: "The result connects straight through to a roadmap",
     vs: "VS",
     before: {
@@ -195,7 +243,7 @@ export const global: SiteContent = {
     },
     after: {
       tag: "Strategy-led",
-      title: "PCA",
+      title: "METRI",
       steps: [
         "Analyse the job areas that fit",
         "Map work style across six axes",
@@ -209,12 +257,12 @@ export const global: SiteContent = {
     label: "RESULT SHEET",
     heading: "What the report contains",
     lead: [
-      "PCA runs diagnosis → strengths → application → strategy → execution.",
+      "METRI runs diagnosis → strengths → application → strategy → execution.",
       "Open a section to see how the report is built.",
     ],
     more: "continues in the report",
     disclaimer:
-      "※ From an actual respondent's report, published with their consent. The name is masked.",
+      "※ This screen shows the report's structure — what each chapter holds. It does not carry any individual student's results.",
     jobAxes: [
       "Strategy",
       "HR & Org",
@@ -230,297 +278,233 @@ export const global: SiteContent = {
     jobScores: [92, 74, 68, 62, 58, 70, 66, 64, 82, 86],
     styleAxes: ["Independent", "Collaborative", "Challenging", "Steady", "Fast-moving", "Quality-first"],
     styleScores: [84, 78, 86, 66, 72, 91],
+    /* The report is 8 chapters, 52 sections. Chapter titles and most section
+       titles are the pilot's canonical English (A01, 2026-09-04). Chapter 9
+       (regional employer matching) is a Korea-only module and is not part of
+       this contents list.
+
+       All 52 section titles are the pilot's canonical English (2026-09-09).
+       Six of them — 2-2 to 2-4 and 3-1 to 3-3 — carry area-specific wording in
+       the report itself; a contents list has to stay general, so the generic
+       form is used here, as instructed. British spelling ("emphasise") is the
+       pilot's. */
     tabs: [
       {
-        no: "00-1",
-        nav: "Job area analysis",
-        title: "Job area analysis",
+        no: "1",
+        nav: "Summary of results",
+        title: "Chapter 1. Summary of Your Results",
         chart: "jobs",
         meta: [
-          { label: "Highest area", value: "Management & Strategy" },
-          { label: "Score", value: "92" },
-          { label: "Respondent", value: "■■■" },
+          { label: "Highest area", value: "Management & strategy" },
+          { label: "Score", value: "92 / 100" },
+          { label: "Student", value: "■■■" },
         ],
-        chartNote: "Management & Strategy came out highest across the ten job areas.",
-        capTitle: "Job area analysis",
-        capBody: "Ten job areas, scored out of 100 and ranked.",
-        capArrow: "Answers “which role does this major lead to?” with data",
-      },
-      {
-        no: "00-2",
-        nav: "Work style analysis",
-        title: "Work style analysis",
-        chart: "styles",
-        meta: [
-          { label: "Highest style", value: "Quality-first" },
-          { label: "Score", value: "91" },
-          { label: "Leading combination", value: "Quality-first + Challenging + Independent" },
-        ],
-        chartNote: "Leading combination: Quality-first + Challenging + Independent",
-        capTitle: "Work style analysis",
-        capBody: "Six work styles measured, then reduced to a leading combination.",
-        capArrow: "The way of working that suits this student",
-      },
-      {
-        no: "01",
-        nav: "Core summary",
-        title: "Section 1. Core summary",
+        chartNote: "The job areas inside the student's own field, scored out of 100 and ranked.",
         blocks: [
           {
-            sub: "SUBSECTION 1-1",
-            title: "The highest-scoring area",
-            body: [
-              "The highest area in this result is Management & Strategy, at 92. This is the field that judges where an organisation should move, reading market, competitors, customers, business structure and performance indicators together to design a direction.",
-              "The result does not fix a single job. It says that, within this major, planning and strategy roles are the ones to examine first.",
-            ],
-          },
-          {
-            sub: "SUBSECTION 1-2",
-            title: "Ranked areas",
-            body: [
-              "The report is written around the highest area. Second and third are kept as context for how wide the respondent's interests run.",
-            ],
-            table: {
-              head: ["Rank", "Area", "Score", "How it is used in the report"],
-              rows: [
-                ["1st", "Management & Strategy", "92", "Main analysis"],
-                ["2nd", "Consulting & Research", "86", "Reference"],
-                ["3rd", "IT, Data & Service planning", "82", "Reference"],
-              ],
-            },
-          },
-        ],
-        capTitle: "Core summary",
-        capBody: "The top job area, its score and rank, alongside work style.",
-        capArrow: "The reference point for everything after it",
-      },
-      {
-        no: "02",
-        nav: "Strength profile",
-        title: "Section 2. Strength profile",
-        blocks: [
-          {
-            sub: "SUBSECTION 2-1",
-            title: "Three strengths drawn from the result area",
+            sub: "6 sections",
+            title: "What this chapter holds",
             bullets: [
-              "1. Strategic problem definition — seeing the whole situation an organisation is in, and structuring what has to be solved first.",
-              "2. Evidence-based analysis — checking market, competitor, customer and internal capability data to build grounds for a judgement.",
-              "3. Designing the route to execution — not stopping at a report, but turning findings into workable options and an order to do them in.",
+              "1-1 The area with your highest score",
+              "1-2 Your areas, ranked",
+              "1-3 Your work style scores",
+              "1-4 Your three strongest work styles",
+              "1-5 Employment, business, or both",
+              "1-6 Key points from your results",
+            ],
+          },
+        ],
+        capTitle: "Core diagnosis",
+        capBody: "The top area and the ranking, the work styles, and the two read together.",
+        capArrow: "The other seven chapters are all written against this one",
+      },
+      {
+        no: "2",
+        nav: "Your strengths",
+        title: "Chapter 2. Your Strengths",
+        blocks: [
+          {
+            sub: "6 sections",
+            title: "What this chapter holds",
+            bullets: [
+              "2-1 Three strengths drawn from your results",
+              "2-2 First strength",
+              "2-3 Second strength",
+              "2-4 Third strength",
+              "2-5 How your strengths work together",
+              "2-6 Showing your strengths when applying",
             ],
           },
           {
-            sub: "SUBSECTION 2-2",
-            title: "First strength: strategic problem definition",
             body: [
-              "Company problems surface as falling revenue, sharper competition, customers leaving, rising costs. What matters is not stopping at the surface but working out structurally why the result happened.",
-              "In an application, “what I analysed” carries less than “which problem I found, and why I treated it as the core one.”",
+              "Three strengths, one section each, and then how to make them visible on paper and in a room. Knowing a strength and showing it are different jobs.",
             ],
           },
         ],
         capTitle: "Strength profile",
-        capBody: "Three headline strengths and how to use them in applications.",
-        capArrow: "Usable in an essay or interview as written",
+        capBody: "Three strengths unpacked, and how to show them.",
+        capArrow: "So “what are your strengths” has a written answer",
       },
       {
-        no: "03",
-        nav: "The work, concretely",
-        title: "Section 3. The work, concretely",
+        no: "3",
+        nav: "Real work situations",
+        title: "Chapter 3. Real Work Situations",
         blocks: [
           {
-            sub: "SUBSECTION 3-1",
-            title: "Scenario 1: a market-entry review for a new business line",
-            fields: [{ label: "Linked area", value: "Management & Strategy" }],
-          },
-          {
-            title: "The situation you are given",
-            body: [
-              "You are placed in the strategy planning team of a food manufacturer. The team lead asks you to assess entry into the healthy convenience-meal market; growth in the existing range has flattened and the company is looking for new revenue.",
-              "What you have to produce is an entry review covering market attractiveness, competitive intensity, fit with the company, and how to enter.",
-            ],
-          },
-          {
-            title: "What is required of you",
-            body: [
-              "Structure the market opportunity, compare competitors against the company's own capability, and propose an entry route that can actually be executed.",
-            ],
-          },
-          {
-            title: "Capabilities it calls for",
+            sub: "4 sections",
+            title: "What this chapter holds",
             bullets: [
-              "1. Market analysis — reading size, growth and shifts in demand to judge whether entry is viable.",
-              "2. Competitor comparison — pricing, range, channels and points of difference, to place the company.",
-              "3. Commercial judgement — not stopping at “the market looks good”, but weighing capability and margin together.",
+              "3-1 Work scenario 1",
+              "3-2 Work scenario 2",
+              "3-3 Work scenario 3",
+              "3-4 What these situations tell you",
+            ],
+          },
+          {
+            body: [
+              "A job title does not tell you what the work is. Three scenes from an ordinary day, then a reading of how this student would adapt to them.",
             ],
           },
         ],
-        capTitle: "The work, concretely",
-        capBody: "A real scenario from that area, and the capability it demands.",
-        capArrow: "Try the role on before committing to it",
+        capTitle: "What the work actually looks like",
+        capBody: "Not a job title — a day, in three scenes.",
+        capArrow: "“Could I do this every day?”",
       },
       {
-        no: "04",
-        nav: "Roles and direction",
-        title: "Section 4. Roles and career direction",
+        no: "4",
+        nav: "Roles and directions",
+        title: "Chapter 4. Roles and Career Directions",
         blocks: [
           {
-            sub: "SUBSECTION 4-1",
-            title: "Understanding the area",
-            body: [
-              "Management & Strategy judges how a company should grow and compete: setting objectives, analysing market and competition, proposing a direction that can be executed.",
-              "The end goal is a portfolio where subject knowledge, method, output and the link to the target role are all visible at once.",
-            ],
-          },
-          {
-            sub: "SUBSECTION 4-2",
-            title: "Roles this area connects to",
-            body: [
-              "Every role here touches direction and decision-making. Rather than picking one up front, narrow it by comparing duties, required capability and expected outputs across real postings.",
-            ],
-            table: {
-              head: ["#", "Role", "What it actually involves", "Experience to prepare"],
-              rows: [
-                [
-                  "1",
-                  "Business planning",
-                  "Setting annual objectives, the business plan, budget direction and the performance framework.",
-                  "Reading business plans, working with KPIs, understanding internal performance measures",
-                ],
-              ],
-            },
-          },
-        ],
-        capTitle: "Roles and direction",
-        capBody: "Connected roles, which to examine first, and how to choose.",
-        capArrow: "Eight roles, in priority order",
-      },
-      {
-        no: "05",
-        nav: "Projects & portfolio",
-        title: "Section 5. Projects and portfolio",
-        blocks: [
-          {
-            sub: "SUBSECTION 5-1",
-            title: "Why a project",
-            body: [
-              "For a student without much practical experience, a project is the most realistic way to show the work they are interested in and how they went about it. What counts is not the name of the activity but which problem was set, which sources were checked, on what criteria it was analysed, and what was produced.",
-            ],
-          },
-          {
-            sub: "SUBSECTION 5-2",
-            title: "Project directions grounded in the result area",
-            body: [
-              "A project does not end at “what I analysed”. What matters is how it connects to the actual work of the company being applied to.",
-            ],
-            table: {
-              head: ["Direction", "Why it fits", "Sources", "Output"],
-              rows: [
-                [
-                  "Company analysis report",
-                  "Analysing business structure, revenue model and growth strategy walks through the basic flow of planning and strategy work.",
-                  "Company site, annual report, news, industry data, competitor material",
-                  "A company analysis report",
-                ],
-              ],
-            },
-          },
-        ],
-        capTitle: "Projects & portfolio",
-        capBody: "Directions and worked examples, plus a four-week plan.",
-        capArrow: "The portfolio to start this week",
-      },
-      {
-        no: "06",
-        nav: "Applications & interviews",
-        title: "Section 6. Applications and interviews",
-        blocks: [
-          {
-            sub: "SUBSECTION 6-1",
-            title: "How to write the application",
-          },
-          {
-            title: "1. Connecting coursework to the work you want",
-            body: [
-              "What was studied connects directly to planning, strategy, new-business and analysis roles. Coursework persuades when it is offered as “here is a problem I analysed”, not as “I am interested in this”.",
-            ],
-          },
-          {
-            title: "2. Showing a project as capability",
-            body: [
-              "Write the project around how the problem was set, how sources were found, how criteria were chosen, what was produced, and how it connects to the role — not around the project's name.",
+            sub: "7 sections",
+            title: "What this chapter holds",
+            bullets: [
+              "4-1 Understanding this area",
+              "4-2 Roles connected to this area",
+              "4-3 Roles worth exploring first",
+              "4-4 Roles worth comparing",
+              "4-5 An order for exploring careers",
+              "4-6 How to choose between roles",
+              "4-7 Roles and career directions: summary",
             ],
           },
         ],
-        capTitle: "Applications & interviews",
-        capBody: "How to write it, and how to build answers to likely questions.",
-        capArrow: "Example sentences, anticipated questions",
+        capTitle: "Roles and career direction",
+        capBody: "What to look at first, what to weigh against it, and on what basis to choose.",
+        capArrow: "The search gets an order",
       },
       {
-        no: "07",
-        nav: "Founding strategy",
-        title: "Section 7. Founding strategy",
+        no: "5",
+        nav: "Projects and portfolio",
+        title: "Chapter 5. Projects and Portfolio",
         blocks: [
           {
-            sub: "SUBSECTION 7-1",
-            title: "What the result area suggests about founding",
-            body: [
-              "This area equips someone to weigh market, customer, competitor, price, revenue model and operations together — which is exactly what assessing an idea requires. Validating a customer problem with a small piece of work is more realistic than starting with a platform.",
+            sub: "7 sections",
+            title: "What this chapter holds",
+            bullets: [
+              "5-1 Why projects matter",
+              "5-2 Project directions for this area",
+              "5-3 Projects you can start now",
+              "5-4 What a portfolio must contain",
+              "5-5 How to present each type of output",
+              "5-6 A four-week plan",
+              "5-7 Projects and portfolio: summary",
             ],
           },
           {
-            sub: "SUBSECTION 7-2",
-            title: "Five ideas grounded in the area",
-            fields: [{ label: "Idea 1", value: "Competitor analysis reports for small businesses" }],
             body: [
-              "What it is — a report service that lets a small business compare nearby competitors on price, menu, reviews, channels and promotion.",
-              "The problem it solves — owners feel they should be checking competitors but do not know what to compare them on.",
-              "Who it is for — cafés, restaurants, tutoring centres, salons, gyms, local single-site operators.",
+              "A portfolio does not accumulate by itself. This chapter goes from why, down to a four-week plan.",
             ],
           },
         ],
-        capTitle: "Founding strategy",
-        capBody: "Ideas grounded in the major, and a route to market.",
-        capArrow: "A second option beyond employment",
+        capTitle: "Projects and portfolio",
+        capBody: "What to build, down to a four-week plan.",
+        capArrow: "The chapter that makes the thing you will write about",
       },
       {
-        no: "08",
-        nav: "Growth points",
-        title: "Section 8. Growth points and next steps",
+        no: "6",
+        nav: "Application and interview",
+        title: "Chapter 6. Application Documents and Interview Preparation",
         blocks: [
           {
-            sub: "SUBSECTION 8-1",
-            title: "The strengths this result surfaced",
+            sub: "7 sections",
+            title: "What this chapter holds",
             bullets: [
-              "A tendency to analyse companies and markets from subject knowledge, which reads across to strategy and planning roles.",
-              "Those roles connect to business-structure analysis, competitor comparison and opportunity assessment, so relevant experience sharpens the direction quickly.",
+              "6-1 How to approach your application documents",
+              "6-2 Example sentences for application documents",
+              "6-3 Questions you may be asked",
+              "6-4 How to structure an interview answer",
+              "6-5 Points to emphasise in interviews",
+              "6-6 What to watch out for",
+              "6-7 Application and interview: summary",
             ],
           },
           {
-            sub: "SUBSECTION 8-2",
-            title: "Roles to examine first",
+            body: [
+              "Example sentences and answer structures. Knowing a strength and writing it as a paragraph are different things — this chapter means the student does not start from a blank page.",
+            ],
+          },
+        ],
+        capTitle: "Application documents and interview",
+        capBody: "Example sentences, likely questions, answer structures.",
+        capArrow: "Nobody starts from a blank page",
+      },
+      {
+        no: "7",
+        nav: "Starting a business",
+        title: "Chapter 7. Starting Your Own Business",
+        blocks: [
+          {
+            sub: "7 sections",
+            title: "What this chapter holds",
             bullets: [
-              "Business planning, strategy planning, new-business planning, business development and management control.",
-              "Compare the actual duties, required capability and the experience that can be prepared, rather than fixing on one immediately.",
+              "7-1 Business directions from your results",
+              "7-2 Five business ideas for this area",
+              "7-3 Comparing the business ideas",
+              "7-4 Entering the market",
+              "7-5 Preparing at a student level",
+              "7-6 A four-week plan for starting out",
+              "7-7 Starting your own business: summary",
             ],
           },
           {
-            sub: "SUBSECTION 8-3",
-            title: "The project to start first",
+            body: [
+              "Founding is not for everyone. Where there is a direction that fits, this chapter says which idea and in what order.",
+            ],
+          },
+        ],
+        capTitle: "Preparing to found something",
+        capBody: "Five ideas, compared, with an entry strategy and a four-week plan.",
+        capArrow: "An option, not an instruction",
+      },
+      {
+        no: "8",
+        nav: "Growth and next steps",
+        title: "Chapter 8. Growth Points and Next Steps",
+        blocks: [
+          {
+            sub: "8 sections",
+            title: "What this chapter holds",
             bullets: [
-              "A company analysis report or a market-entry review produces an output that connects to these roles.",
-              "Present it as a report or deck, showing problem definition, method and the link to the target role.",
+              "8-1 Your core strengths",
+              "8-2 Roles to explore first",
+              "8-3 The project to start with",
+              "8-4 Points to use in applications and interviews",
+              "8-5 Points to check on the business route",
+              "8-6 What to be careful about",
+              "8-7 Your direction from here",
+              "8-8 A 30-day checklist",
             ],
           },
           {
-            sub: "SUBSECTION 8-4",
-            title: "What to carry into applications and interviews",
-            bullets: [
-              "Coursework, project experience and role-specific training together evidence problem definition and the ability to propose a direction.",
+            body: [
+              "Seven chapters folded into one. The last section is a 30-day checklist, so the student can close the document and begin.",
             ],
           },
         ],
         capTitle: "Growth points and next steps",
-        capBody: "What to watch for, and a 30-day checklist.",
-        capArrow: "Down to what to do today",
+        capBody: "Seven chapters folded into one, ending in a 30-day checklist.",
+        capArrow: "What to do once you close it",
       },
     ],
   },
@@ -541,7 +525,7 @@ export const global: SiteContent = {
 
   evidence: {
     label: "EVIDENCE BASE",
-    heading: "PCA was built from data",
+    heading: "METRI was built from data",
     lead:
       "Not a personality inventory. A student sample and real recruitment-market material, combined so the diagnosis reflects the capability the market actually asks for.",
     stats: [
@@ -559,17 +543,18 @@ export const global: SiteContent = {
         { name: "Engineering department selection indicators", no: "C-2025-059731" },
         { name: "Graduate career confirmation indicators", no: "C-2025-059732" },
       ],
-      note: "The core diagnostic items in the PCA indicator family are registered with the Korea Copyright Commission and legally protected.",
+      note: "The core diagnostic items in the METRI indicator family are registered with the Korea Copyright Commission and legally protected.",
     },
     standards: {
       title: "Standards referenced in the design",
-      head: ["Framework", "Issued by / lineage", "How it informed PCA"],
+      head: ["Framework", "Issued by / lineage", "How it informed METRI"],
       rows: [
         ["NCS", "Ministry of Employment and Labor · HRD Korea", "Alignment of job areas and required capability with the national standard"],
         ["O*NET lineage", "US Department of Labor occupational information", "Reference for job areas and task-level design"],
         ["RIASEC lineage", "Standard vocational-psychology model", "Conceptual frame for partitioning interest areas"],
         ["NACE competencies", "National Association of Colleges and Employers", "Benchmark for defining student career readiness"],
         ["OECD frameworks", "OECD DeSeCo · Learning Compass", "Reference for transferable core-competency structure"],
+        ["Field-of-study classification", "UNESCO ISCED-F 2013", "The ten broad fields METRI is organised by"],
         ["Measurement standards", "AERA · APA · NCME lineage", "Basis for the validity and reliability regime"],
       ],
       note: "These frameworks were referenced and benchmarked during design. Reference does not imply joint development, certification or endorsement by the bodies named.",
@@ -577,12 +562,12 @@ export const global: SiteContent = {
   },
 
   choose: {
-    label: "WHY CHOOSE PCA",
+    label: "WHY CHOOSE METRI",
     heading: "Why this and not another test",
     items: [
       {
         title: "What a free test cannot give you",
-        body: "Public career services produce results you cannot file as institutional evidence. PCA gives the student a 15–20 page plan and the institution an anonymised aggregate report it can submit.",
+        body: "Public career services produce results you cannot file as institutional evidence. METRI gives the student a written plan and the institution an anonymised aggregate report it can submit.",
       },
       {
         title: "Recruitment market, not personality theory",
@@ -611,7 +596,7 @@ export const global: SiteContent = {
     label: "ABOUT US",
     heading: "Developed by ACADEMIX",
     body:
-      "ACADEMIX designs education programmes and runs events for universities and public institutions. PCA was developed in-house.",
+      "ACADEMIX designs education programmes and runs events for universities and public institutions. METRI was developed in-house.",
     highlight:
       "Staffed by people out of government-funded research institutes and backed by a wide industry network, guiding career preparation from undergraduates through doctoral graduates.",
     brandsLabel: "Brands",
@@ -640,14 +625,14 @@ export const global: SiteContent = {
     label: "PROGRAM",
     heading: "The diagnosis is one part of a programme",
     lead:
-      "PCA is not sold as a test in isolation. The result feeds the lectures, mentoring and recruitment events that follow it.",
+      "METRI is not sold as a test in isolation. The result feeds the lectures, mentoring and recruitment events that follow it.",
     items: [
       {
         title: "Employment lectures and industry speakers",
         body: "Role-specific sessions with invited practitioners, chosen against the job areas the cohort scored highest on.",
       },
       {
-        title: "STEM-focused mentoring",
+        title: "Mentoring by people in the field",
         body: "Industry-linked mentoring across bachelor's, master's and doctoral students, matched to each student's priority roles.",
       },
       {
@@ -673,7 +658,7 @@ export const global: SiteContent = {
         body: "Built once, reused in every market. This is the part you do not pay to rebuild.",
         items: [
           "The instrument and its scoring rules",
-          "The ten job areas and the six work styles",
+          "The job-area framework and the six work styles",
           "The report structure — sections 00-1 through 08",
           "The competency framework behind the strength profile",
         ],
@@ -756,7 +741,7 @@ export const global: SiteContent = {
     items: [
       {
         q: "Does this only work in Korea?",
-        a: "No. The instrument, the ten job areas and the six work styles are shared worldwide. What is rebuilt per country is the translation, the alignment to that country's occupational standard, and — where wanted — regional employer data. That split is set out under Localisation.",
+        a: "No. The instrument, the job-area framework and the six work styles are shared worldwide. What is rebuilt per country is the translation, the alignment to that country's occupational standard, and — where wanted — regional employer data. That split is set out under Localisation.",
       },
       {
         q: "How long does a localisation take?",
@@ -785,64 +770,183 @@ export const global: SiteContent = {
     ],
   },
 
+  privacy: {
+    label: "PRIVACY",
+    heading: "Privacy notice",
+    version: "2026-09-10",
+    versionLabel: "Version",
+    operator:
+      "주식회사 에이치에이연구원 · Representative 조건희 · 704 Geumgang City Tower, 2143 Hannuri-daero, Sejong, Republic of Korea · Business registration number 375-88-02588",
+    sections: [
+      {
+        title: "1. What we collect, and why",
+        body: [
+          "We collect only what the purpose needs, and delete it when the purpose ends. What we collect when you send an enquiry differs from what we collect when a student sits the assessment.",
+        ],
+        table: {
+          head: ["When", "What", "Why"],
+          rows: [
+            ["Enquiry", "Institution · contact name · email", "To reply and put a scope together"],
+            ["Enquiry", "Approximate cohort size · your message", "To estimate and schedule (optional)"],
+            ["Assessment", "Name · student number", "To identify the student and label the report"],
+            ["Assessment", "Password", "So only the student sees their result (stored irreversibly)"],
+            ["Assessment", "University email", "To notify when results open (only if the department asks for it)"],
+            ["Assessment", "Responses", "To compute job-area fit and work style"],
+            ["Automatic", "Last sign-in time", "To detect unauthorised access"],
+          ],
+        },
+      },
+      {
+        title: "2. How long we keep it",
+        body: [
+          "One rule: once the purpose we collected it for is served, it is destroyed without delay.",
+          "Enquiries are deleted once the conversation ends.",
+          "Assessment responses and results are destroyed without delay once the service has been delivered.",
+          "If you ask us to delete it, we do so without delay, except where law requires us to keep it.",
+          "Aggregates may remain, but only after they have been made non-identifying — and that cannot be reversed.",
+          "Korean law does require some records to be kept. Where such a record exists, it is kept for the period below.",
+        ],
+        table: {
+          head: ["Record the law requires us to keep", "Period"],
+          rows: [
+            ["Contracts and withdrawal of subscription", "5 years"],
+            ["Payment and supply of goods or services", "5 years"],
+            ["Consumer complaints and dispute handling", "3 years"],
+            ["Labelling and advertising", "6 months"],
+          ],
+        },
+      },
+      {
+        title: "3. Who sees it",
+        body: [
+          "An individual report is visible to the student and to the administrator of their department, because the department is the contracting party.",
+          "The report the department sees is an aggregate. It does not say who is missing what.",
+          "We do not provide it to any other third party. Where law requires disclosure, we comply within the scope required.",
+          "We do not sell or transfer it for advertising or marketing.",
+        ],
+      },
+      {
+        title: "4. Processors",
+        body: ["We entrust the following to run the service. If a processor changes, we amend this notice and say so."],
+        table: {
+          head: ["Processor", "What they do"],
+          rows: [
+            ["Google LLC (Firebase Hosting)", "Server operation and data storage (processed outside Korea)"],
+          ],
+        },
+      },
+      {
+        title: "5. Your rights",
+        body: [
+          "You may ask at any time to see, correct, delete, or stop the processing of your data. Contact us below and we will act without delay.",
+          "You may withdraw consent. Withdrawing consent for a required item means the assessment cannot continue.",
+          "The service is not for anyone under 14. It is written for university students.",
+        ],
+      },
+      {
+        title: "6. How we protect it",
+        body: [
+          "Passwords are stored irreversibly. We cannot read them either.",
+          "Connections are encrypted.",
+          "Results stay closed to the student until their department opens them.",
+          "The number of people who handle personal data is kept to the minimum, and access is logged.",
+        ],
+      },
+      {
+        title: "7. Contact",
+        body: [
+          "For anything about personal data, write to us.",
+          "Data protection officer: 조건희",
+          "Contact: +82-44-867-7211 · hari_info@hari.re.kr",
+        ],
+      },
+      {
+        title: "8. Changes to this notice",
+        body: ["If something material changes, we say so before it takes effect and, where needed, ask for consent again."],
+      },
+    ],
+  },
+
+  fields: {
+    label: "FIELDS",
+    heading: "METRI sits on ten fields of study",
+    lead:
+      "The fields follow UNESCO's International Standard Classification of Education (ISCED-F 2013). The same ten are used in every country, so departments, universities and markets stay comparable.",
+    items: [
+      { code: "C01", name: "Education" },
+      { code: "C02", name: "Arts and Humanities" },
+      { code: "C03", name: "Social Sciences, Journalism and Information" },
+      { code: "C04", name: "Business, Administration and Law" },
+      { code: "C05", name: "Natural Sciences, Mathematics and Statistics" },
+      { code: "C06", name: "Information and Communication Technologies" },
+      { code: "C07", name: "Engineering, Manufacturing and Construction" },
+      { code: "C08", name: "Agriculture, Forestry, Fisheries and Veterinary" },
+      { code: "C09", name: "Health and Welfare" },
+      { code: "C10", name: "Services" },
+    ],
+    note:
+      "Below a field sit the subjects, and below those the job areas — those differ by subject. What applies to a given department is worked out during scoping.",
+  },
   pricing: {
     label: "PRICING",
-    heading: "Start with one department",
+    heading: "Start with what you need",
     lead:
-      "Most institutions run one department first and widen from there. Individual assessments are available one at a time.",
-    planLabel: "What you are interested in",
+      "Individuals pay per sitting; institutions are split by size. Large rollouts differ too much in scope to price on a page.",
+    planLabel: "What this is about",
+    /* Signed off (R038). The Korean won figures are the real ones; the
+       dollar figures below are our conversion of them and are marked as
+       such in `note`. Keep the two in step if either moves. */
     plans: [
       {
         key: "individual",
         name: "Individual",
-        who: "A student, a job seeker, a would-be founder",
-        price: null,
+        who: "A student · a graduate · a would-be founder",
+        price: "US$19",
         unit: "per person",
-        note: "Card payment is not connected yet. Requests come through the form for now.",
+        note: "Payment is not connected yet. For now we take it as an enquiry.",
         features: [
-          "Ten job areas ranked out of 100",
-          "Six work styles as a hexagon",
-          "A 15–20 page personal plan across ten sections",
-          "Projects, applications, interviews, founding",
+          "Job areas inside the student's own field, ranked out of 100",
+          "Six work styles across 120 items",
+          "A personal report — 8 chapters, 52 sections",
+          "Projects, applications, interviews and founding",
         ],
-        cta: { ready: "Buy now", ask: "Request an assessment" },
+        cta: { ready: "Enquire", ask: "Enquire" },
       },
       {
-        key: "department",
-        name: "Department",
-        who: "A department or careers service",
-        price: null,
-        unit: "per student",
-        note: "Unit price depends on the cohort size.",
+        key: "small",
+        name: "Small cohort",
+        who: "A department · a lab · a careers programme",
+        price: "US$17",
+        unit: "per person",
+        note: "This rate applies up to 30 students. From 31 we quote it.",
         features: [
-          "Everything in Individual",
-          "A participation link per department",
-          "Anonymised aggregate report",
-          "Regional employer matching, where localised",
-          "The department sets when results are released",
+          "Everything in the individual assessment",
+          "A link for the department — no student list needed",
+          "An anonymised aggregate report",
+          "The department decides when results open",
         ],
-        cta: { ready: "Start a rollout", ask: "Talk about a rollout" },
+        cta: { ready: "Enquire", ask: "Enquire" },
         featured: true,
       },
       {
-        key: "country",
-        name: "Country partner",
-        who: "An operator bringing PCA to their market",
+        key: "large",
+        name: "Large rollout",
+        who: "A university · a regional consortium · a funded programme",
         price: null,
-        unit: "licence",
-        note: "Scoped against a pilot cohort rather than quoted blind.",
+        unit: "",
+        note: "Scope differs too much to quote on a page; we price each one.",
         features: [
-          "Everything in Department",
-          "Localisation build for your country",
-          "Operate under your own brand",
-          "Training for the people running it",
-          "Administrator area for outcome reporting",
+          "Everything in the small cohort",
+          "Aggregate across every department",
+          "Pay per completed sitting, billed monthly — nothing bought up front",
+          "A cap on sittings, set to the programme's budget",
+          "Rollout design and operational support",
         ],
-        cta: { ready: "Start a partnership", ask: "Talk about a partnership" },
+        cta: { ready: "Talk to us", ask: "Talk to us (scoped quote)" },
       },
     ],
     note:
-      "Price depends on cohort size and whether the regional module is in scope. Tell us the department and a rough number and we will come back with an estimate.",
+      "Prices are set in Korean won — \u20a925,000 and \u20a922,000 — and converted here at \u20a91,345 to the dollar (11 September 2026). We invoice in won unless we agree otherwise, and we confirm the amount with you before anything is signed. Payment is not connected yet, so an individual assessment also comes through the enquiry form.",
   },
 
   regions: {
@@ -850,21 +954,23 @@ export const global: SiteContent = {
     heading: "Open the site for your country",
     lead:
       "Each country runs its own site in its own language, against its own labour-market data. The platform students sit on is one, worldwide.",
-    liveLabel: "Open",
+    liveLabel: "Site ready",
     soonLabel: "In preparation",
     note:
-      "Domains shown are placeholders until each country site goes live. If your country is not listed yet, talk to us — that is how a new one starts.",
+      "The sites are written; the domains are placeholders and not connected yet. If your country is not listed, talk to us — that is how a new one starts.",
+    /* live 는 "그 나라 사이트 원고가 있는가" 다. 지금 있는 것은 셋뿐이고
+       도메인은 아직 연결되지 않았다. 나라별 계약 현황과 다른 값이다 */
     items: [
-      { code: "KR", name: "Korea", native: "한국", domain: "pca.co.kr", href: "https://pca.co.kr", live: true },
-      { code: "DE", name: "Germany", native: "Deutschland", domain: "pca.de", href: "https://pca.de", live: true },
-      { code: "US", name: "United States", native: "United States", domain: "pca.us", href: "https://pca.us", live: true },
-      { code: "JP", name: "Japan", native: "日本", domain: "pca.jp", href: "https://pca.jp", live: true },
-      { code: "CN", name: "China", native: "中国", domain: "pca.cn", href: "https://pca.cn", live: true },
-      { code: "TR", name: "Türkiye", native: "Türkiye", domain: "pca.com.tr", href: "https://pca.com.tr", live: true },
-      { code: "KZ", name: "Kazakhstan", native: "Қазақстан", domain: "pca.kz", href: "#contact", live: false },
-      { code: "FR", name: "France", native: "France", domain: "pca.fr", href: "#contact", live: false },
-      { code: "ZA", name: "South Africa", native: "South Africa", domain: "pca.co.za", href: "#contact", live: false },
-      { code: "PH", name: "Philippines", native: "Pilipinas", domain: "pca.ph", href: "#contact", live: false },
+      { code: "KR", name: "Korea", native: "한국", domain: "metri.co.kr", href: "https://metri.co.kr", live: true },
+      { code: "KZ", name: "Kazakhstan", native: "Қазақстан", domain: "metri.kz", href: "https://metri.kz", live: true },
+      { code: "TR", name: "Türkiye", native: "Türkiye", domain: "metri.com.tr", href: "#contact", live: false },
+      { code: "DE", name: "Germany", native: "Deutschland", domain: "metri.de", href: "#contact", live: false },
+      { code: "US", name: "United States", native: "United States", domain: "metri.us", href: "#contact", live: false },
+      { code: "JP", name: "Japan", native: "日本", domain: "metri.jp", href: "#contact", live: false },
+      { code: "CN", name: "China", native: "中国", domain: "metri.cn", href: "#contact", live: false },
+      { code: "FR", name: "France", native: "France", domain: "metri.fr", href: "#contact", live: false },
+      { code: "ZA", name: "South Africa", native: "South Africa", domain: "metri.co.za", href: "#contact", live: false },
+      { code: "PH", name: "Philippines", native: "Pilipinas", domain: "metri.ph", href: "#contact", live: false },
     ],
   },
 
@@ -878,7 +984,7 @@ export const global: SiteContent = {
     typeLabel: "What is this about",
     types: [
       { value: "org", label: "University or department rollout" },
-      { value: "partner", label: "Operating PCA in my country" },
+      { value: "partner", label: "Operating METRI in my country" },
       { value: "individual", label: "An individual assessment" },
     ],
     afterLabel: "What happens next",
@@ -901,39 +1007,49 @@ export const global: SiteContent = {
     success: "Thanks — we have it",
     successBody: "We will reply to the address you gave.",
     error: "That did not send. Please try again in a moment.",
+    unavailable:
+      "We cannot take enquiries through this form right now. Please write to hari_info@hari.re.kr — the same people read it.",
   },
 
   footer: {
-    note: "PCA · developed by ACADEMIX",
+    imageNote:
+      "The images on this site are AI-generated and are not photographs of real events. The people and scenes in them do not exist.",
+    note: "METRI · developed by ACADEMIX",
     sitesLabel: "Countries",
     sites: [
-      { label: "Global (English)", href: "https://pca.example", ready: true },
-      { label: "한국", href: "https://pca.co.kr", ready: true },
-      { label: "Қазақстан", href: "https://pca.kz", ready: false },
-      { label: "Türkiye", href: "https://pca.com.tr", ready: false },
+      { label: "Global (English)", href: "https://metri.example", ready: true },
+      { label: "한국", href: "https://metri.co.kr", ready: true },
+      /* 카자흐판은 원어민 검수가 끝난 뒤에 연다 (R037). 열지 않은 판으로
+         링크를 걸면 죽은 링크가 된다 */
+      { label: "Қазақстан", href: "https://metri.kz", ready: false },
+      { label: "Türkiye", href: "https://metri.com.tr", ready: false },
     ],
     soonLabel: "coming soon",
+    privacyLabel: "Privacy notice",
     closing: "So that a major leads somewhere",
   },
 
   map: {
-    heading: "Where PCA runs",
+    heading: "Where METRI runs",
     lead:
       "The instrument, the job areas and the work-style framework are shared worldwide. What is filled in per country is the university, its local employers, and the translations.",
+    /* 실측한 것만 적는다. 2026-09-09 확인 — 라이브 플랫폼의 계약 대학
+       등록 9행 가운데 실계약은 터키 2곳이고 나머지 7행은 테스트·데모다.
+       예전 원고는 6개국이 "Running" 이라고 적고 있었다. 근거가 없다. */
     countries: [
-      { code: "DE", name: "Germany", status: "live", note: "Running" },
-      { code: "US", name: "United States", status: "live", note: "Running" },
-      { code: "JP", name: "Japan", status: "live", note: "Running" },
-      { code: "CN", name: "China", status: "live", note: "Running" },
-      { code: "TR", name: "Türkiye", status: "live", note: "Running" },
-      { code: "KR", name: "Korea", status: "live", note: "Home market · Daejeon regional matching" },
-      { code: "KZ", name: "Kazakhstan", status: "planned", note: "Planned" },
+      { code: "TR", name: "Türkiye", status: "live", note: "Universities under contract" },
+      { code: "KR", name: "Korea", status: "progress", note: "Home market · platform operated here" },
+      { code: "KZ", name: "Kazakhstan", status: "planned", note: "Site ready · in discussion" },
+      { code: "DE", name: "Germany", status: "planned", note: "Planned" },
+      { code: "US", name: "United States", status: "planned", note: "Planned" },
+      { code: "JP", name: "Japan", status: "planned", note: "Planned" },
+      { code: "CN", name: "China", status: "planned", note: "Planned" },
       { code: "FR", name: "France", status: "planned", note: "Planned" },
       { code: "ZA", name: "South Africa", status: "planned", note: "Planned" },
       { code: "PH", name: "Philippines", status: "planned", note: "Planned" },
     ],
-    statusLabel: { live: "Running", progress: "Onboarding", planned: "Planned" },
+    statusLabel: { live: "Under contract", progress: "Home market", planned: "Planned" },
     footnote:
-      "Regional matching is rebuilt per region from that region's own employers — the method travels, the list does not.",
+      "We do not publish partner names without their consent. Regional employer matching is a Korea module today; elsewhere the list is built with the partner university — the method travels, the list does not.",
   },
 };

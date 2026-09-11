@@ -4,7 +4,9 @@ import Shell from "@/components/shell";
 import { Partnership } from "@/components/sections";
 import { NextLink, PageHead, PhotoSlot } from "@/components/visuals";
 
-export const metadata = { title: "Partnership" };
+export function generateMetadata() {
+  return { title: getSite().ui.pageTitles.partnership ?? "" };
+}
 
 /** 글로벌 전용 */
 export default function PartnershipPage() {
@@ -15,12 +17,12 @@ export default function PartnershipPage() {
   return (
     <Shell>
       <PageHead label={p.label} title={p.heading} lead={p.lead} />
-      <Partnership site={site} />
+      <Partnership site={site} bare />
       <section className="divided">
         <div className="wrap photorow">
-          <PhotoSlot caption="Photo — partner briefing" />
-          <PhotoSlot caption="Photo — pilot cohort sitting" />
-          <PhotoSlot caption="Photo — results workshop" />
+          <PhotoSlot caption="A partner briefing" src="/photos/11.jpg" />
+          <PhotoSlot caption="A pilot cohort sitting the assessment" src="/photos/12.jpg" />
+          <PhotoSlot caption="A workshop reading the results" src="/photos/13.jpg" />
         </div>
       </section>
       <section className="divided">

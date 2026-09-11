@@ -1,10 +1,8 @@
 "use client";
 
-import { useActionState } from "react";
-import { submitContact, type ContactState } from "@/app/actions";
+import { useState } from "react";
+import { submitContact, type ContactState } from "@/lib/contact";
 import type { SiteContent } from "@/content";
-
-const initial: ContactState = {};
 
 /**
  * 문의 폼.
@@ -24,8 +22,20 @@ export default function InquiryForm({
   variant: "compact" | "full";
   idPrefix: string;
 }) {
-  const [state, formAction, pending] = useActionState(submitContact, initial);
+  /* 정적 사이트라 서버 액션이 없다. 브라우저가 직접 창구를 부른다 (R036) */
+  const [state, setState] = useState<ContactState>({});
+  const [pending, setPending] = useState(false);
   const t = site.contact;
+
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (pending) return;
+    setPending(true);
+    setState({});
+    const next = await submitContact(site, new FormData(e.currentTarget));
+    setState(next);
+    setPending(false);
+  }
   const id = (n: string) => `${idPrefix}-${n}`;
   const compact = variant === "compact";
 
@@ -34,12 +44,30 @@ export default function InquiryForm({
       <p className="notice ok" role="status" style={compact ? undefined : { maxWidth: 720 }}>
         <b>{t.success}</b>
         {t.successBody}
+        {/* 접수번호는 플랫폼이 붙여 준다. 연결 전 배포에서는 없을 수 있다 */}
+        {state.refCode ? (
+          <>
+            <br />
+            <span className="mono">{state.refCode}</span>
+          </>
+        ) : null}
       </p>
     );
   }
 
   return (
-    <form action={formAction} className={compact ? "form compact" : "form"}>
+    <form onSubmit={onSubmit} className={compact ? "form compact" : "form"}>
+      {/* 허니팟. 사람 눈에는 없는 칸이고, 채워져 오면 사람이 아니다.
+          숨기는 것만으로는 모자라 탭으로도 닿지 않게 하고 자동완성을 끈다 */}
+      <input
+        className="hp"
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+      />
+
       {state.error ? (
         <p className="notice err full" role="alert">
           {state.error}
@@ -112,6 +140,23 @@ export default function InquiryForm({
           </div>
         </>
       )}
+
+      {/* 보내기 직전에 알린다. 다 보낸 뒤에 알리면 알린 것이 아니다 */}
+      {t.privacyNote ? (
+        <p className="privacy-note full">
+          {/* 알리는 문장은 링크가 없어도 남긴다. 무엇을 받아 어디에 쓰는지
+              보내기 전에 알리는 것이 본질이고, 전문 링크는 곁들이다 */}
+          {t.privacyNote.text}
+          {site.privacyUrl ? (
+            <>
+              {" "}
+              <a href={site.privacyUrl} target="_blank" rel="noreferrer">
+                {t.privacyNote.linkLabel}
+              </a>
+            </>
+          ) : null}
+        </p>
+      ) : null}
 
       <div className="full">
         <button className={`btn solid${compact ? " full-w" : " lg"}`} type="submit" disabled={pending}>

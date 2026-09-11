@@ -22,10 +22,23 @@ function loadEnv(file: string) {
 }
 loadEnv(".env.local");
 
+/* 운영에서는 절대 돌지 않게 막는다.
+   이 파일은 아무나 아는 비밀번호로 운영사 관리자 계정을 만든다. 운영
+   데이터베이스에 한 번이라도 돌면 그 순간 아무나 들어올 수 있다.
+   실수로 부르는 것을 막을 곳이 여기밖에 없다 */
+if (process.env.NODE_ENV === "production" || process.env.ALLOW_SEED === "never") {
+  console.error("시드는 운영에서 돌리지 않습니다. 여기서 만드는 계정은 비밀번호가 공개되어 있습니다.");
+  process.exit(2);
+}
+
 
 const PW_ADMIN = "pca-dev-admin-1234";
 const PW_ORG = "pca-dev-org-1234";
 const PW_STUDENT = "TempPass2026";
+
+/** 개발용 계약 규모와 전용 링크 토큰. 고정해 둬야 다시 돌려도 링크가 살아 있다 */
+const SEED_SEATS = 30;
+const SEED_LINK_TOKEN = "dev-seed-link-token-0000000000ab";
 
 async function main() {
 await tx(async (c) => {
@@ -98,6 +111,54 @@ await tx(async (c) => {
 
   const student = await user("2021001234", null, "이학생", PW_STUDENT, true);
   await member(student, dept, "student");
+
+  /* 계약·응시권·전용 링크.
+     이게 없으면 담당자 화면(/org)이 응시권 0 에 링크도 없는 빈 화면이라
+     무엇을 하는 화면인지 알 수 없다. 여러 번 돌려도 같은 상태가 되도록
+     이미 있으면 넘어간다. */
+  const contract = await c.query<{ id: string }>(
+    `INSERT INTO contracts (org_id, title, starts_on, ends_on, seat_count)
+     SELECT $1, $2, current_date, current_date + 365, $3
+      WHERE NOT EXISTS (SELECT 1 FROM contracts WHERE org_id = $1 AND title = $2)
+     RETURNING id`,
+    [dept, "2026 기계공학과 PCA", SEED_SEATS],
+  );
+  if (contract.rowCount) {
+    const contractId = contract.rows[0].id;
+    await c.query(
+      `INSERT INTO seats (contract_id, expires_at)
+       SELECT $1, current_date + 366 FROM generate_series(1, $2)`,
+      [contractId, SEED_SEATS],
+    );
+    // 토큰을 고정해 둔다. 시드를 다시 돌려도 개발 중 열어 둔 링크가 그대로다
+    await c.query(
+      `INSERT INTO org_links (org_id, token, label, max_uses, expires_at, created_by)
+       VALUES ($1, $2, $3, $4, current_date + 366, $5)
+       ON CONFLICT (token) DO NOTHING`,
+      [dept, SEED_LINK_TOKEN, "2026-1학기 3학년", SEED_SEATS, orgAdmin],
+    );
+
+    /* 회차. 적재된 검사지가 있으면 하나 열어 둔다 — 없으면 학생 화면이
+       "응시할 검사가 없습니다" 로만 남아 무엇을 하는 화면인지 알 수 없다.
+       문항 적재는 별도다: npx tsx scripts/load-instrument.ts docs/instrument-example.json */
+    const inst = await c.query<{ id: string }>(
+      `SELECT i.id FROM instruments i
+        WHERE (SELECT count(*) FROM questions q WHERE q.instrument_id = i.id) > 0
+        ORDER BY i.id LIMIT 1`,
+    );
+    if (inst.rowCount) {
+      await c.query(
+        `UPDATE instruments SET status = 'published', published_at = now()
+          WHERE id = $1 AND status = 'draft'`,
+        [inst.rows[0].id],
+      );
+      await c.query(
+        `INSERT INTO test_sessions (org_id, contract_id, instrument_id, name, opens_at, closes_at)
+         VALUES ($1, $2, $3, $4, now() - interval '1 day', now() + interval '90 days')`,
+        [dept, contractId, inst.rows[0].id, "2026-1학기 기계공학과 3학년"],
+      );
+    }
+  }
 });
 
   console.log(`
@@ -106,6 +167,9 @@ await tx(async (c) => {
   운영사 관리자   admin        / ${PW_ADMIN}
   학과 담당자     me-admin     / ${PW_ORG}
   학생(첫 로그인) 2021001234   / ${PW_STUDENT}   ← 로그인하면 비밀번호 변경 화면으로 갑니다
+
+  기계공학과에 응시권 ${SEED_SEATS}장과 전용 링크가 하나 있습니다.
+  /join/${SEED_LINK_TOKEN}
 `);
 }
 

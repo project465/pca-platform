@@ -1,4 +1,5 @@
 import Radar from "@/components/radar";
+import { loginUrl } from "@/lib/platform";
 import type { SiteContent } from "@/content";
 
 export function Who({ site }: { site: SiteContent }) {
@@ -49,16 +50,20 @@ function AnalyzeIcon({ n }: { n: number }) {
   );
 }
 
-export function Analyze({ site }: { site: SiteContent }) {
+export function Analyze(
+  { site, bare }: { site: SiteContent; bare?: boolean },
+) {
   const a = site.analyze;
   return (
     <section id="analyze" className="divided">
       <div className="wrap">
-        <div className="sec-head">
-          <span className="label-sm">{a.label}</span>
-          <h2>{a.heading}</h2>
-          <p className="lead">{a.lead}</p>
-        </div>
+        {bare ? null : (
+          <div className="sec-head">
+            <span className="label-sm">{a.label}</span>
+            <h2>{a.heading}</h2>
+            <p className="lead">{a.lead}</p>
+          </div>
+        )}
         <div className="cardgrid c3">
           {a.items.map((i, n) => (
             <div className="card" key={i.no}>
@@ -283,6 +288,24 @@ export function SiteFooter({ site }: { site: SiteContent }) {
             <p style={{ marginTop: 8 }}>{site.footer.note}</p>
           </div>
           <div>
+            <h4>{site.nav.login}</h4>
+            <ul>
+              <li>
+                <a href={loginUrl(site)}>{site.nav.login}</a>
+              </li>
+              <li>
+                <span className="soon">{site.nav.loginNote}</span>
+              </li>
+              {/* 주소가 있을 때만 건다. 없으면 아무것도 그리지 않는다 —
+                  404 로 가는 링크는 없는 것만 못하다 */}
+              {site.footer.privacyLabel && site.privacyUrl ? (
+                <li>
+                  <a href={site.privacyUrl}>{site.footer.privacyLabel}</a>
+                </li>
+              ) : null}
+            </ul>
+          </div>
+          <div>
             <h4>{site.footer.sitesLabel}</h4>
             <ul>
               {site.footer.sites.map((s) => (
@@ -299,6 +322,11 @@ export function SiteFooter({ site }: { site: SiteContent }) {
             </ul>
           </div>
         </div>
+
+        {/* 이 사이트의 사진은 AI 로 만든 것이다. 그 사실을 밝히지 않으면
+            특강·멘토링·채용박람회를 설명하는 자리에 붙은 그림이 운영
+            실적의 증거처럼 읽힌다. 한 번, 여기서 밝힌다 */}
+        <p className="imgnote">{site.footer.imageNote}</p>
       </div>
     </footer>
   );
@@ -317,16 +345,22 @@ export function FloatingCta({ site }: { site: SiteContent }) {
 
 /* ── 홈페이지 절 ───────────────────────────────── */
 
-export function About({ site }: { site: SiteContent }) {
+export function About(
+  { site, bare }: { site: SiteContent; bare?: boolean },
+) {
   const a = site.about;
   return (
     <section id="about" className="divided">
       <div className="wrap">
         <div className="aboutgrid">
           <div>
-            <span className="label-sm">{a.label}</span>
-            <h2 style={{ margin: "16px 0 16px" }}>{a.heading}</h2>
-            <p className="lead">{a.body}</p>
+            {bare ? null : (
+              <>
+                <span className="label-sm">{a.label}</span>
+                <h2 style={{ margin: "16px 0 16px" }}>{a.heading}</h2>
+                <p className="lead">{a.body}</p>
+              </>
+            )}
             <p className="highlight">{a.highlight}</p>
           </div>
           <div className="metalist">
@@ -383,17 +417,21 @@ export function ProgramSection({ site }: { site: SiteContent }) {
 }
 
 /** 한국 전용 — 앵커사업 맥락 */
-export function University({ site }: { site: SiteContent }) {
+export function University(
+  { site, bare }: { site: SiteContent; bare?: boolean },
+) {
   const u = site.university;
   if (!u) return null;
   return (
     <section id="university" className="divided">
       <div className="wrap">
-        <div className="sec-head">
-          <span className="label-sm">{u.label}</span>
-          <h2>{u.heading}</h2>
-          <p className="lead">{u.lead}</p>
-        </div>
+        {bare ? null : (
+          <div className="sec-head">
+            <span className="label-sm">{u.label}</span>
+            <h2>{u.heading}</h2>
+            <p className="lead">{u.lead}</p>
+          </div>
+        )}
 
         <div className="facts">
           {u.facts.map((f) => (
@@ -422,17 +460,21 @@ export function University({ site }: { site: SiteContent }) {
   );
 }
 
-export function ProcessSection({ site }: { site: SiteContent }) {
+export function ProcessSection(
+  { site, bare }: { site: SiteContent; bare?: boolean },
+) {
   const p = site.process;
   if (!p) return null;
   return (
     <section id="process" className="divided tinted">
       <div className="wrap">
-        <div className="sec-head">
-          <span className="label-sm">{p.label}</span>
-          <h2>{p.heading}</h2>
-          <p className="lead">{p.lead}</p>
-        </div>
+        {bare ? null : (
+          <div className="sec-head">
+            <span className="label-sm">{p.label}</span>
+            <h2>{p.heading}</h2>
+            <p className="lead">{p.lead}</p>
+          </div>
+        )}
         <ol className="steps3">
           {p.steps.map((s) => (
             <li key={s.title}>
@@ -450,17 +492,21 @@ export function ProcessSection({ site }: { site: SiteContent }) {
 }
 
 /** 글로벌 전용 — 무엇이 공유되고 무엇을 다시 만드는가 */
-export function Localisation({ site }: { site: SiteContent }) {
+export function Localisation(
+  { site, bare }: { site: SiteContent; bare?: boolean },
+) {
   const l = site.localisation;
   if (!l) return null;
   return (
     <section id="localisation" className="divided">
       <div className="wrap">
-        <div className="sec-head">
-          <span className="label-sm">{l.label}</span>
-          <h2>{l.heading}</h2>
-          <p className="lead">{l.lead}</p>
-        </div>
+        {bare ? null : (
+          <div className="sec-head">
+            <span className="label-sm">{l.label}</span>
+            <h2>{l.heading}</h2>
+            <p className="lead">{l.lead}</p>
+          </div>
+        )}
         <div className="layers">
           {l.layers.map((la, i) => (
             <div className={`layer${i === 0 ? " shared" : ""}`} key={la.tag}>
@@ -484,17 +530,21 @@ export function Localisation({ site }: { site: SiteContent }) {
 }
 
 /** 글로벌 전용 — 역할 분담과 단계 */
-export function Partnership({ site }: { site: SiteContent }) {
+export function Partnership(
+  { site, bare }: { site: SiteContent; bare?: boolean },
+) {
   const p = site.partnership;
   if (!p) return null;
   return (
     <section id="partnership" className="divided tinted">
       <div className="wrap">
-        <div className="sec-head">
-          <span className="label-sm">{p.label}</span>
-          <h2>{p.heading}</h2>
-          <p className="lead">{p.lead}</p>
-        </div>
+        {bare ? null : (
+          <div className="sec-head">
+            <span className="label-sm">{p.label}</span>
+            <h2>{p.heading}</h2>
+            <p className="lead">{p.lead}</p>
+          </div>
+        )}
         <div className="splitgrid">
           {p.columns.map((c) => (
             <div className="splitcol" key={c.title}>
@@ -603,16 +653,20 @@ export function RegionPicker({ site }: { site: SiteContent }) {
 }
 
 /** 요금제. 가격이 채워지면 문의가 아니라 신청 버튼이 된다 */
-export function PricingSection({ site }: { site: SiteContent }) {
+export function PricingSection(
+  { site, bare }: { site: SiteContent; bare?: boolean },
+) {
   const p = site.pricing;
   return (
     <section id="pricing" className="divided">
       <div className="wrap">
-        <div className="sec-head">
-          <span className="label-sm">{p.label}</span>
-          <h2>{p.heading}</h2>
-          <p className="lead">{p.lead}</p>
-        </div>
+        {bare ? null : (
+          <div className="sec-head">
+            <span className="label-sm">{p.label}</span>
+            <h2>{p.heading}</h2>
+            <p className="lead">{p.lead}</p>
+          </div>
+        )}
 
         <div className="plangrid">
           {p.plans.map((pl) => (
@@ -643,6 +697,42 @@ export function PricingSection({ site }: { site: SiteContent }) {
         </div>
         <p className="small" style={{ marginTop: 22 }}>
           {p.note}
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * 계열 열 개.
+ *
+ * 표시 이름이 아직 정해지지 않은 나라는 영어 정본을 그대로 싣는다 —
+ * 지어낸 이름을 올리는 것보다 낫고, 원고의 note 가 그 사실을 밝힌다.
+ */
+export function FieldsSection({ site, bare }: { site: SiteContent; bare?: boolean }) {
+  const f = site.fields;
+  if (!f) return null;
+  return (
+    <section id="fields" className="divided tinted">
+      <div className="wrap">
+        {bare ? null : (
+          <div className="sec-head">
+            <span className="label-sm">{f.label}</span>
+            <h2>{f.heading}</h2>
+            <p className="lead">{f.lead}</p>
+          </div>
+        )}
+        <div className="fieldgrid">
+          {f.items.map((i) => (
+            <div className="fieldcell" key={i.code}>
+              <span className="code">{i.code}</span>
+              <span className="nm">{i.name}</span>
+              {i.en ? <span className="en">{i.en}</span> : null}
+            </div>
+          ))}
+        </div>
+        <p className="small" style={{ marginTop: 18, maxWidth: "var(--measure)" }}>
+          {f.note}
         </p>
       </div>
     </section>

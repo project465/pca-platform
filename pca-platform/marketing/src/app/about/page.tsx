@@ -3,20 +3,22 @@ import Shell from "@/components/shell";
 import { About, Evidence, ProgramSection } from "@/components/sections";
 import { NextLink, PageHead, PhotoSlot } from "@/components/visuals";
 
-export const metadata = { title: "About" };
+export function generateMetadata() {
+  return { title: getSite().ui.pageTitles.about ?? "" };
+}
 
 export default function AboutPage() {
   const site = getSite();
-  const kr = site.key === "kr";
+  const u = site.ui;
   return (
     <Shell>
       <PageHead label={site.about.label} title={site.about.heading} lead={site.about.body} />
-      <About site={site} />
+      <About site={site} bare />
       <section className="divided tinted">
         <div className="wrap photorow">
-          <PhotoSlot caption={kr ? "사진 자리 — 대학 행사 운영" : "Photo — university event"} tone="ink" />
-          <PhotoSlot caption={kr ? "사진 자리 — 전문가 초청 특강" : "Photo — invited speaker"} tone="ink" />
-          <PhotoSlot caption={kr ? "사진 자리 — 팀 또는 사무 공간" : "Photo — the team"} tone="ink" />
+          {u.photos.about.map((c, i) => (
+            <PhotoSlot key={c} caption={c} src={`/photos/0${i + 4}.jpg`} tone="ink" />
+          ))}
         </div>
       </section>
       <ProgramSection site={site} />

@@ -137,6 +137,59 @@ export type Regions = {
   }[];
 };
 
+/**
+ * 계열 열 개 (R021 · UNESCO ISCED-F 2013 광역분야).
+ *
+ * 영어 이름이 정본이다. 나라별 표시 이름은 결재를 거쳐야 하므로, 아직
+ * 정해지지 않은 나라는 `name` 에 영어 정본을 넣고 `note` 로 밝힌다.
+ * **분야(전공)와 영역 수는 회의 중이라 여기에 넣지 않는다** (R015).
+ */
+/**
+ * 개인정보 처리방침.
+ *
+ * **법률 검토를 받지 않은 초안이다.** 화면에는 초안 표시를 두지 않기로
+ * 했으므로(R022), 이 주석이 유일한 경고다.
+ *
+ * 사업자 정보는 대표 지시로 하리로(주식회사 에이치에이연구원)의 것을 쓴다
+ * (2026-09-10). 상호·대표자·주소·등록번호·보호책임자·연락처·이메일 일곱
+ * 칸과 보유 기간을 채웠다. 보유 기간은 하리로 방침의 값을 그대로 옮긴
+ * 것이다 — 목적을 다 하면 지체 없이 파기하고, 법이 정한 것만 그 기간
+ * 동안 남긴다.
+ *
+ * 위탁처는 호스팅 한 곳(Vercel Inc.)뿐이다. **메일 사업자는 적지 않는다** —
+ * `app/actions.ts` 어디에도 메일을 보내는 코드가 없다. 없는 위탁을 방침에
+ * 적으면 그것도 거짓이다.
+ *
+ * **빈칸은 없다** (2026-09-10). 그래도 배포는 총괄 승인 뒤에 한다 —
+ * 대표 카드 셋과 도메인 등록이 아직 열려 있다.
+ *
+ * 방침을 고치면 version 을 올린다. 그래야 누가 어느 판에 동의했는지
+ * 갈라 볼 수 있다.
+ */
+export type PrivacySection = {
+  title: string;
+  body: string[];
+  table?: { head: string[]; rows: string[][] };
+};
+
+export type PrivacyDoc = {
+  label: string;
+  heading: string;
+  version: string;
+  versionLabel: string;
+  sections: PrivacySection[];
+  /** 맨 아래 사업자 정보 한 줄 */
+  operator: string;
+};
+
+export type FieldsBlock = {
+  label: string;
+  heading: string;
+  lead: string;
+  items: { code: string; name: string; en?: string }[];
+  note: string;
+};
+
 /** 요금제. price 가 비어 있으면 화면은 문의로 흐른다 */
 export type Plan = {
   key: string;
@@ -194,18 +247,80 @@ export type Sample = {
   cta: { line: string; sub: string; primary: Link; secondary: Link };
 };
 
+/**
+ * 화면에 박혀 있던 문구를 원고로 끌어낸 것.
+ *
+ * 나라가 둘일 때는 `kr ? "…" : "…"` 로 버틸 수 있었지만 셋이 되는 순간
+ * 그 방식은 무너진다 — 새 나라가 영어판 문구를 뒤집어쓴다. 나라를 더할 때
+ * 코드를 고치지 않는다는 원칙(index.ts)을 지키려면 여기 있어야 한다.
+ */
+export type Ui = {
+  /** 홈 — 한눈에 보는 흐름 */
+  glanceLabel: string;
+  glanceHeading: string;
+  /** 흐름 다섯 칸 */
+  flow: string[];
+  sheetCta: string;
+  moreLabel: string;
+  moreHeading: string;
+  /** /metri 아래쪽 이어보기 */
+  nextLabel: string;
+  nextHeading: string;
+  /** 브라우저 탭에 뜨는 이름 */
+  pageTitles: Record<string, string>;
+  /** 페이지 끝의 이어보기 카드 제목 */
+  linkTitles: Record<string, string>;
+  /** 사진이 들어갈 자리에 적어 두는 설명 */
+  photos: {
+    home: string[];
+    about: string[];
+    metri: string;
+    adopt: string;
+    localisation: string;
+  };
+};
+
 export type SiteContent = {
   key: SiteKey;
   lang: string;
   domain: string;
+  /**
+   * 화면의 색과 결. 비우면 기본(밝은 바탕 · 잉크 · 금색)이다.
+   * globals.css 의 [data-theme="…"] 와 이름이 맞아야 한다.
+   */
+  theme?: string;
   brand: string;
   org: string;
   orgTagline: string;
   platformUrl: string;
+  /**
+   * 개인정보 처리방침의 실제 주소. **없으면 링크를 걸지 않는다.**
+   *
+   * 라이브 플랫폼(pcagroup.haricareer.com)에는 /privacy 가 없다 —
+   * 직접 확인했다(2026-09-09, 404). 방침 화면은 이 저장소의 src/ 에 있지만
+   * 아직 배포된 적이 없다. 죽은 링크를 거는 것보다 링크가 없는 편이 낫다.
+   *
+   * 방침이 실제로 올라가면 여기에 그 주소를 적는다. 그러면 꼬리와 문의 폼의
+   * 링크가 함께 살아난다.
+   */
+  privacyUrl?: string;
 
   meta: { title: string; description: string };
 
-  nav: { items: Link[]; contact: string; menu: string; floating: string };
+  ui: Ui;
+
+  nav: {
+    items: Link[];
+    contact: string;
+    menu: string;
+    floating: string;
+    /** 플랫폼으로 넘어가는 단추. 나라가 달라도 가리키는 곳은 한 군데다 (설계 원칙 5) */
+    login: string;
+    /** 로그인 옆에 붙는 한 줄. 계정이 어디서 나오는지 알려 준다 */
+    loginNote: string;
+    /** 머리의 이름 아래 한 줄. 만든 곳을 밝힌다 */
+    byLine: string;
+  };
 
   hero: {
     eyebrow: string;
@@ -316,6 +431,12 @@ export type SiteContent = {
   localisation?: Localisation;
   partnership?: Partnership;
 
+  /** 계열 열 개. 표시 이름이 정해진 나라만 채운다 */
+  fields?: FieldsBlock;
+
+  /** 개인정보 처리방침 전문. 이 사이트의 /privacy 가 그린다 */
+  privacy?: PrivacyDoc;
+
   pricing: Pricing;
   regions?: Regions;
 
@@ -345,6 +466,11 @@ export type SiteContent = {
     success: string;
     successBody: string;
     error: string;
+    /** 어디에도 남기지 못했을 때. 거짓으로 접수했다고 하지 않는다 */
+    unavailable: string;
+    /* 보내기 전에 무엇이 어디로 가는지 알리는 한 줄. 방침이 그 말로
+       준비된 나라에서만 채운다 */
+    privacyNote?: { text: string; linkLabel: string };
   };
 
   footer: {
@@ -353,6 +479,11 @@ export type SiteContent = {
     sites: { label: string; href: string; ready: boolean }[];
     soonLabel: string;
     closing: string;
+    /* 처리방침은 플랫폼에 있다. 아직 그 나라 말로 된 판이 없으면 비워 둔다 —
+       없는 문서로 링크를 걸어 두는 것보다 링크가 없는 편이 낫다 */
+    privacyLabel?: string;
+  /** 사진이 AI 생성물임을 밝히는 한 줄. 꼬리에 한 번만 나온다 */
+  imageNote: string;
   };
 
   map?: MapContent;
