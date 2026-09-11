@@ -243,6 +243,53 @@ export const UI = {
     "Attempt {id} · the scores come from the formula; the sentences explain them",
     "Deneme {id} · puanlar formülden gelir; cümleler onları açıklar",
   ),
+
+  // 증거 입력
+  evTitle: d("역량 증거", "Competency evidence", "Yetkinlik kanıtı"),
+  evLead: d(
+    "보유 수준은 고르는 것이 아니라 쌓이는 것입니다. 들은 과목, 딴 자격증, 끝낸 프로젝트를 적으면 배점과 신뢰도를 곱해 레벨이 계산됩니다.",
+    "Held level is not something you pick; it accumulates. Add the courses you passed, the certificates you hold and the projects you finished — each carries its own weight and reliability, and the level follows.",
+    "Sahip olunan seviye seçilmez, birikir. Geçtiğiniz dersleri, aldığınız sertifikaları ve bitirdiğiniz projeleri ekleyin — her biri kendi ağırlığını ve güvenilirliğini taşır, seviye buradan çıkar.",
+  ),
+  evWhyNotAsk: d(
+    "“ANSYS 몇 레벨입니까” 를 묻지 않는 이유는 그렇게 물으면 거의 모두가 3이라고 답하기 때문입니다.",
+    "We do not ask “what level is your ANSYS?” because almost everyone answers three.",
+    "“ANSYS seviyeniz nedir?” diye sormuyoruz, çünkü neredeyse herkes üç diyor.",
+  ),
+  evRequired: d("1순위 직무가 요구하는 역량", "What your top role requires", "İlk sıradaki rolün gerektirdikleri"),
+  evOthers: d("그 밖의 역량", "Other competencies", "Diğer yetkinlikler"),
+  evHeld: d("보유", "Held", "Sahip"),
+  evNone: d("증거 없음", "No evidence", "Kanıt yok"),
+  evAdd: d("증거 추가", "Add evidence", "Kanıt ekle"),
+  evSave: d("추가", "Add", "Ekle"),
+  evCancel: d("닫기", "Close", "Kapat"),
+  evDelete: d("지우기", "Remove", "Kaldır"),
+  evSource: d("무엇으로 채웠나요", "What kind of evidence", "Ne tür kanıt"),
+  evLabel: d("이름", "Name", "Ad"),
+  evLabelHint: d(
+    "예: 전산구조해석 (ME412)",
+    "e.g. Computational Structural Analysis (ME412)",
+    "ör. Hesaplamalı Yapısal Analiz (ME412)",
+  ),
+  evGrade: d("성적", "Grade", "Not"),
+  evGradeBlank: d("적지 않음", "Not stated", "Belirtilmedi"),
+  evGradeNote: d(
+    "성적을 비우면 가장 낮은 계수로 잡습니다. 비워서 이득을 보지는 않습니다.",
+    "Left blank, the lowest coefficient applies. Blank is never an advantage.",
+    "Boş bırakılırsa en düşük katsayı uygulanır. Boş bırakmak avantaj sağlamaz.",
+  ),
+  evNeedsProof: d("증빙 필요", "Proof required", "Kanıt belgesi gerekli"),
+  evPoints: d("점", "pts", "puan"),
+  evSum: d("증거 합 {raw} → 레벨 {lv}", "Evidence {raw} → level {lv}", "Kanıt {raw} → seviye {lv}"),
+  evCount: d("역량 {n}개에 증거가 있습니다", "Evidence on {n} competencies", "{n} yetkinlikte kanıt var"),
+  evBackToReport: d("결과지로 돌아가기", "Back to the report", "Rapora dön"),
+  evOpen: d("보유 수준 채우기", "Fill in your held levels", "Seviyelerinizi doldurun"),
+  evSourceName: d("출처", "Source", "Kaynak"),
+  evEmpty: d(
+    "아직 아무것도 없습니다. 이번 학기에 들은 전공 과목 하나부터 넣어 보세요.",
+    "Nothing yet. Start with one major course you took this term.",
+    "Henüz bir şey yok. Bu dönem aldığınız bir bölüm dersiyle başlayın.",
+  ),
 } as const;
 
 export type UiKey = keyof typeof UI;

@@ -165,8 +165,22 @@ export default async function ReportPage({
             <h2>{t("repSec05", lang)}</h2>
           </div>
           <p className="rp-note">{t("repNote05", lang, { job: top?.name ?? "—" })}</p>
-          {r.evidenceCount === 0 && <p className="notice warn">{t("repNoEvidence", lang)}</p>}
+          {r.evidenceCount === 0 && (
+            <p className="notice warn">
+              {t("repNoEvidence", lang)}{" "}
+              <Link href="/evidence" className="notice-link">
+                {t("evOpen", lang)}
+              </Link>
+            </p>
+          )}
           <GapChart rows={r.gaps} mustLabel={t("repMust", lang)} />
+          {r.evidenceCount > 0 && (
+            <p className="rp-note" style={{ marginTop: 16 }}>
+              <Link href="/evidence" className="notice-link">
+                {t("evOpen", lang)}
+              </Link>
+            </p>
+          )}
           <p className="rp-legend">
             <span className="lg lg-req" /> {t("repLegendReq", lang)}
             <span className="lg lg-held" /> {t("repLegendHeld", lang)}

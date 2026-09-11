@@ -724,3 +724,42 @@ ALTER TABLE attempt_quality ADD COLUMN IF NOT EXISTS flag TEXT NOT NULL DEFAULT 
 -- 독립↔협력 · 도전↔안정 · 속도중시↔품질중시 로 놓여야 읽힌다.
 -- 순서를 코드에 박으면 전공이 늘 때마다 배포해야 하므로 데이터로 둔다.
 ALTER TABLE indicator_axes ADD COLUMN IF NOT EXISTS sort_no INTEGER NOT NULL DEFAULT 0;
+
+
+-- ============================================================
+--  23. 증거 → 레벨 변환에 쓰는 두 표
+--
+--  역량 보유 수준은 학생이 직접 고르지 않는다. 증거를 쌓고 계산해서 얻는다.
+--  그 계산에 성적계수와 레벨 사다리가 들어가는데, 둘 다 코드가 아니라 여기
+--  있어야 한다 — 학교마다 성적 체계가 다르고(P/NP, 백분위), 사다리는 1차
+--  검증 뒤에 반드시 조정되기 때문이다. 배포 없이 바꿀 수 있어야 한다.
+-- ============================================================
+
+CREATE TABLE grade_points (
+  grade        TEXT PRIMARY KEY,          -- A+ ~ D, P
+  coefficient  NUMERIC(3,2) NOT NULL CHECK (coefficient > 0 AND coefficient <= 1),
+  sort_no      INTEGER NOT NULL DEFAULT 0
+);
+COMMENT ON TABLE grade_points IS
+  '성적계수. 증거 배점 × 이 값 × 출처 신뢰도 = 그 증거 한 줄의 점수';
+
+INSERT INTO grade_points (grade, coefficient, sort_no) VALUES
+  ('A+', 1.00, 1), ('A', 0.95, 2), ('B+', 0.85, 3), ('B', 0.75, 4),
+  ('C+', 0.65, 5), ('C', 0.55, 6), ('D', 0.35, 7), ('P', 0.70, 8)
+ON CONFLICT (grade) DO UPDATE SET coefficient = EXCLUDED.coefficient;
+
+CREATE TABLE level_ladder (
+  min_raw     NUMERIC(4,2) PRIMARY KEY,   -- 이 값 이상이면
+  held_level  SMALLINT NOT NULL CHECK (held_level BETWEEN 0 AND 5)
+);
+COMMENT ON TABLE level_ladder IS
+  '증거 점수 합을 0~5 레벨로 바꾸는 사다리. 경계는 하한 포함이다.
+   1차 100명 검증에서 가장 먼저 조정될 값이라 테이블에 둔다';
+
+INSERT INTO level_ladder (min_raw, held_level) VALUES
+  (0.00, 0), (0.80, 1), (1.80, 2), (2.80, 3), (3.80, 4), (4.80, 5)
+ON CONFLICT (min_raw) DO UPDATE SET held_level = EXCLUDED.held_level;
+
+-- 증거 점수 합의 상한. 같은 역량에 과목 열 개를 넣어도 5레벨을 넘지 않는다.
+ALTER TABLE learner_competency_levels
+  ADD CONSTRAINT learner_competency_levels_raw_cap CHECK (held_raw <= 6.0);

@@ -139,7 +139,9 @@ export async function buildReport(attemptId: string, userId: string, lang = "ko"
            JOIN competencies c ON c.id = m.competency_id
            JOIN job_clusters jc ON jc.id = m.job_id
           WHERE jc.code = $3
-          ORDER BY m.criticality DESC, m.required_level DESC
+          -- 증거 화면과 같은 순서여야 한다. 동점일 때 코드로 고정하지 않으면
+          -- 두 화면의 1행이 서로 다른 역량을 가리킨다.
+          ORDER BY m.criticality DESC, m.required_level DESC, c.code
           LIMIT 12`,
         // NAME() 이 언어를 $2 로 읽으므로 자리를 맞춘다.
         [userId, lang, jobs[0].code],

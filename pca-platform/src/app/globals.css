@@ -526,3 +526,90 @@ td .sub { display: block; font-size: 12.5px; color: var(--muted); }
 .rp-cover .langsw button { color: rgba(255,255,255,0.78); border-left-color: rgba(255,255,255,0.38); }
 .rp-cover .langsw button.on { background: #fff; color: var(--ink); }
 @media print { .rp-cover .langsw { display: none; } }
+
+/* ============================================================
+   증거 입력 — 역량마다 접히는 폼 하나.
+   ============================================================ */
+.ev { min-height: 100vh; }
+.ev-bar { background: var(--ink); color: #fff; }
+.ev-bar-in {
+  max-width: 900px; margin: 0 auto; padding: 13px 20px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.ev-bar .brand { font-weight: 800; letter-spacing: 0.05em; font-size: 15px; text-decoration: none; }
+
+.ev-main { max-width: 900px; margin: 0 auto; padding: 36px 20px 80px; }
+.ev-main h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.03em; }
+.ev-lead { margin-top: 10px; font-size: 15px; line-height: 1.65; max-width: 68ch; }
+.ev-aside {
+  margin-top: 12px; font-size: 13.5px; color: var(--muted); line-height: 1.6;
+  padding-left: 12px; border-left: 2px solid var(--rule); max-width: 68ch;
+}
+.ev-count { margin-top: 20px; font-size: 13.5px; font-weight: 700; color: var(--muted); }
+
+.ev-group { margin-top: 30px; }
+.ev-group h2 {
+  font-size: 12.5px; font-weight: 800; letter-spacing: 0.08em; color: var(--muted);
+  padding-bottom: 8px; border-bottom: 1px solid var(--rule);
+}
+.ev-list { list-style: none; }
+
+.ev-item { background: var(--paper); border: 1px solid var(--rule); border-top: 0; padding: 14px 18px; }
+.ev-group .ev-list > li:first-child { border-top: 1px solid var(--rule); }
+.ev-item.has { border-left: 3px solid var(--met); padding-left: 15px; }
+
+.ev-head { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.ev-name { flex: 1; min-width: 180px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.ev-name b { font-size: 15px; font-weight: 700; }
+.ev-must {
+  font-style: normal; font-size: 10.5px; font-weight: 800;
+  color: var(--gap); border: 1px solid var(--gap); padding: 1px 5px;
+}
+.ev-req { font-size: 11.5px; color: var(--muted); font-weight: 700; }
+
+.ev-level { text-align: right; font-size: 13px; min-width: 130px; }
+.ev-level b { display: block; font-weight: 800; }
+.ev-level i { font-style: normal; font-size: 11.5px; color: var(--muted); }
+
+.act.small { font-size: 13px; padding: 7px 13px; }
+
+.ev-chips { list-style: none; margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+.ev-chips li {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  background: var(--field); border: 1px solid var(--rule); padding: 7px 10px; font-size: 13px;
+}
+.ev-chip-src { font-weight: 800; font-size: 11.5px; color: var(--muted); }
+.ev-chip-label { flex: 1; min-width: 120px; }
+.ev-chip-grade { font-weight: 800; font-variant-numeric: tabular-nums; }
+.ev-chip-pt { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 12px; }
+.ev-chip-del {
+  font: inherit; font-size: 16px; line-height: 1; cursor: pointer;
+  background: none; border: 0; color: var(--muted); padding: 0 4px;
+}
+.ev-chip-del:hover { color: var(--gap); }
+
+.ev-form {
+  margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--rule);
+  display: flex; gap: 14px; align-items: flex-start; flex-wrap: wrap;
+}
+.ev-field { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 200px; }
+.ev-field.narrow { flex: 0 0 170px; min-width: 140px; }
+.ev-field > span { font-size: 12.5px; font-weight: 700; }
+.ev-field input, .ev-field select {
+  font: inherit; font-size: 14px; padding: 9px 11px;
+  border: 1px solid var(--rule); background: var(--paper); color: var(--ink);
+}
+.ev-hint { font-style: normal; font-size: 11.5px; color: var(--muted); line-height: 1.45; }
+.ev-form > .act { margin-top: 22px; }
+.ev-error { flex-basis: 100%; font-size: 13px; color: var(--gap); font-weight: 700; }
+.ev-foot { margin-top: 32px; }
+
+@media (max-width: 620px) {
+  .ev-level { text-align: left; min-width: 0; }
+  .ev-form > .act { margin-top: 0; width: 100%; }
+}
+
+.notice-link { font-weight: 800; text-decoration: underline; text-underline-offset: 2px; }
+.topbar .who { display: flex; align-items: center; gap: 12px; }
+.tasklist li .act { grid-row: 1 / span 2; grid-column: 2; }
+.empty .act { margin-top: 16px; }

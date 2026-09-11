@@ -12,7 +12,8 @@
     "metri:build": "node scripts/metri/build.mjs",
     "metri:seed": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 -f db/schema_metri.sql -f db/seed/metri/skill_tree.sql",
     "metri:items": "tsx scripts/metri/seed-instrument.ts",
-    "metri:check": "tsx scripts/metri/e2e-check.ts"
+    "metri:check": "tsx scripts/metri/e2e-check.ts",
+    "metri:evidence": "tsx scripts/metri/evidence-check.ts"
   },
   "dependencies": {
     "bcryptjs": "3.0.2",
