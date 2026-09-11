@@ -639,3 +639,88 @@ INSERT INTO products (code, kind, amount, currency, seat_count) VALUES
   ('REPORT_UNIV', 'report', 29000, 'KRW', 1),
   ('REPORT_HS',   'report', 19000, 'KRW', 1)
 ON CONFLICT (code) DO UPDATE SET amount = EXCLUDED.amount;
+
+
+-- ============================================================
+--  21. 직무분야 — 단체 PCA 250문항이 실제로 재는 10개 축
+--
+--  기존 단체 PCA 기계공학과 검사지는 10개 직무분야 × 25문항으로 돼 있고,
+--  그 중 120문항에 6개 업무성향이 심어져 있다. METRI 는 이 문항을 새로 쓰지
+--  않고 그대로 쓴다. 문항이 실제로 재는 것은 직무분야 흥미이고, activity 축
+--  8개는 그 위에 올린 해석 레이어다. 그래서 변환 가중치를 코드가 아니라
+--  여기 테이블에 둔다 — 전공이 늘면 행만 늘어난다.
+-- ============================================================
+
+CREATE TABLE job_areas (
+  id       BIGSERIAL PRIMARY KEY,
+  code     TEXT NOT NULL UNIQUE,          -- DESIGN_DEV, MFG_PROD, ...
+  major_id BIGINT REFERENCES majors(id),  -- NULL이면 전공 공통
+  sort_no  INTEGER NOT NULL DEFAULT 0
+);
+COMMENT ON TABLE job_areas IS
+  '문항이 직접 재는 단위. indicator_axes(activity) 는 이것을 8축으로 요약한 해석값이다';
+
+CREATE TABLE job_area_axis_weights (
+  area_code  TEXT NOT NULL REFERENCES job_areas(code) ON DELETE CASCADE,
+  axis_code  TEXT NOT NULL REFERENCES indicator_axes(code),
+  weight     NUMERIC(4,3) NOT NULL CHECK (weight > 0 AND weight <= 1),
+  PRIMARY KEY (area_code, axis_code)
+);
+COMMENT ON TABLE job_area_axis_weights IS
+  '직무분야 점수를 activity 축으로 옮기는 변환 행렬. 분야별 합이 1.0 이어야 한다';
+
+CREATE TABLE job_cluster_areas (
+  job_id     BIGINT NOT NULL REFERENCES job_clusters(id) ON DELETE CASCADE,
+  area_code  TEXT NOT NULL REFERENCES job_areas(code) ON DELETE CASCADE,
+  share      NUMERIC(4,3) NOT NULL DEFAULT 1.0 CHECK (share > 0 AND share <= 1),
+  PRIMARY KEY (job_id, area_code)
+);
+COMMENT ON TABLE job_cluster_areas IS
+  '결과지에서 "설계 및 개발 92점 → 기계설계 직무" 로 내려가는 경로';
+
+-- 문항이 어느 직무분야에 속하는지, 성실도 문항이면 정답이 무엇인지
+ALTER TABLE questions ADD COLUMN IF NOT EXISTS area_code        TEXT REFERENCES job_areas(code);
+ALTER TABLE questions ADD COLUMN IF NOT EXISTS attention_expect SMALLINT;
+
+CREATE TABLE area_scores (
+  attempt_id    BIGINT NOT NULL REFERENCES attempts(id) ON DELETE CASCADE,
+  area_code     TEXT NOT NULL REFERENCES job_areas(code),
+  raw_score     NUMERIC(7,2) NOT NULL,      -- 1~5 평균
+  scaled_score  NUMERIC(5,1) NOT NULL,      -- 0~100
+  rank_no       SMALLINT NOT NULL,
+  PRIMARY KEY (attempt_id, area_code)
+);
+CREATE INDEX idx_area_scores_rank ON area_scores(attempt_id, rank_no);
+
+
+-- ============================================================
+--  22. 개인 응시 — 회차 없이 혼자 보는 경우
+--
+--  기존 test_sessions 는 학교가 계약을 맺고 회차를 여는 B2B 전제였다.
+--  개인이 결제해서 바로 보는 B2C 를 위해 org_id·contract_id 를 풀고,
+--  대신 둘 중 하나는 반드시 있도록 CHECK 로 묶는다. 테이블은 늘리지 않는다.
+-- ============================================================
+
+ALTER TABLE test_sessions ALTER COLUMN org_id      DROP NOT NULL;
+ALTER TABLE test_sessions ALTER COLUMN contract_id DROP NOT NULL;
+ALTER TABLE test_sessions ADD COLUMN IF NOT EXISTS order_id BIGINT REFERENCES orders(id);
+ALTER TABLE test_sessions ADD COLUMN IF NOT EXISTS kind     TEXT NOT NULL DEFAULT 'org';  -- org | solo
+
+DO $$ BEGIN
+  ALTER TABLE test_sessions ADD CONSTRAINT test_sessions_owner_chk CHECK (
+    (kind = 'org'  AND org_id IS NOT NULL AND contract_id IS NOT NULL) OR
+    (kind = 'solo' AND order_id IS NOT NULL)
+  );
+EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+
+-- 주문 하나당 개인 회차 하나
+CREATE UNIQUE INDEX IF NOT EXISTS uq_test_sessions_solo_order
+  ON test_sessions(order_id) WHERE kind = 'solo';
+
+-- 신뢰도는 예/아니오보다 세 단계가 쓸모 있다. ok / check(재확인 권고) / invalid(무효)
+ALTER TABLE attempt_quality ADD COLUMN IF NOT EXISTS flag TEXT NOT NULL DEFAULT 'ok';
+
+-- 결과지의 레이더는 축 순서가 곧 뜻이다. 성향 육각형은 마주 보는 짝이
+-- 독립↔협력 · 도전↔안정 · 속도중시↔품질중시 로 놓여야 읽힌다.
+-- 순서를 코드에 박으면 전공이 늘 때마다 배포해야 하므로 데이터로 둔다.
+ALTER TABLE indicator_axes ADD COLUMN IF NOT EXISTS sort_no INTEGER NOT NULL DEFAULT 0;

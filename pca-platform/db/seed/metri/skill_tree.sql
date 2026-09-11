@@ -3,7 +3,7 @@
 BEGIN;
 
 -- 지표 축
-INSERT INTO indicator_axes (code, kind) VALUES ('ANALYZE', 'activity') ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind;
+INSERT INTO indicator_axes (code, kind, sort_no) VALUES ('ANALYZE', 'activity', 1) ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind, sort_no = EXCLUDED.sort_no;
 INSERT INTO translations (table_name, row_id, lang, field, value)
   SELECT 'indicator_axes', id, 'ko', 'name', '해석·계산' FROM indicator_axes WHERE code = 'ANALYZE'
   ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
@@ -13,7 +13,7 @@ INSERT INTO translations (table_name, row_id, lang, field, value)
 INSERT INTO translations (table_name, row_id, lang, field, value)
   SELECT 'indicator_axes', id, 'en', 'name', 'Analysis' FROM indicator_axes WHERE code = 'ANALYZE'
   ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
-INSERT INTO indicator_axes (code, kind) VALUES ('DESIGN', 'activity') ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind;
+INSERT INTO indicator_axes (code, kind, sort_no) VALUES ('DESIGN', 'activity', 2) ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind, sort_no = EXCLUDED.sort_no;
 INSERT INTO translations (table_name, row_id, lang, field, value)
   SELECT 'indicator_axes', id, 'ko', 'name', '설계·구상' FROM indicator_axes WHERE code = 'DESIGN'
   ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
@@ -23,7 +23,7 @@ INSERT INTO translations (table_name, row_id, lang, field, value)
 INSERT INTO translations (table_name, row_id, lang, field, value)
   SELECT 'indicator_axes', id, 'en', 'name', 'Design' FROM indicator_axes WHERE code = 'DESIGN'
   ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
-INSERT INTO indicator_axes (code, kind) VALUES ('BUILD', 'activity') ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind;
+INSERT INTO indicator_axes (code, kind, sort_no) VALUES ('BUILD', 'activity', 3) ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind, sort_no = EXCLUDED.sort_no;
 INSERT INTO translations (table_name, row_id, lang, field, value)
   SELECT 'indicator_axes', id, 'ko', 'name', '제작·실험' FROM indicator_axes WHERE code = 'BUILD'
   ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
@@ -33,7 +33,7 @@ INSERT INTO translations (table_name, row_id, lang, field, value)
 INSERT INTO translations (table_name, row_id, lang, field, value)
   SELECT 'indicator_axes', id, 'en', 'name', 'Build & Test' FROM indicator_axes WHERE code = 'BUILD'
   ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
-INSERT INTO indicator_axes (code, kind) VALUES ('CODE', 'activity') ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind;
+INSERT INTO indicator_axes (code, kind, sort_no) VALUES ('CODE', 'activity', 4) ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind, sort_no = EXCLUDED.sort_no;
 INSERT INTO translations (table_name, row_id, lang, field, value)
   SELECT 'indicator_axes', id, 'ko', 'name', '구현·프로그래밍' FROM indicator_axes WHERE code = 'CODE'
   ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
@@ -43,7 +43,7 @@ INSERT INTO translations (table_name, row_id, lang, field, value)
 INSERT INTO translations (table_name, row_id, lang, field, value)
   SELECT 'indicator_axes', id, 'en', 'name', 'Programming' FROM indicator_axes WHERE code = 'CODE'
   ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
-INSERT INTO indicator_axes (code, kind) VALUES ('FIELD', 'activity') ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind;
+INSERT INTO indicator_axes (code, kind, sort_no) VALUES ('FIELD', 'activity', 5) ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind, sort_no = EXCLUDED.sort_no;
 INSERT INTO translations (table_name, row_id, lang, field, value)
   SELECT 'indicator_axes', id, 'ko', 'name', '현장·설비' FROM indicator_axes WHERE code = 'FIELD'
   ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
@@ -53,7 +53,7 @@ INSERT INTO translations (table_name, row_id, lang, field, value)
 INSERT INTO translations (table_name, row_id, lang, field, value)
   SELECT 'indicator_axes', id, 'en', 'name', 'Field & Plant' FROM indicator_axes WHERE code = 'FIELD'
   ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
-INSERT INTO indicator_axes (code, kind) VALUES ('OPTIMIZE', 'activity') ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind;
+INSERT INTO indicator_axes (code, kind, sort_no) VALUES ('OPTIMIZE', 'activity', 6) ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind, sort_no = EXCLUDED.sort_no;
 INSERT INTO translations (table_name, row_id, lang, field, value)
   SELECT 'indicator_axes', id, 'ko', 'name', '개선·효율' FROM indicator_axes WHERE code = 'OPTIMIZE'
   ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
@@ -63,7 +63,7 @@ INSERT INTO translations (table_name, row_id, lang, field, value)
 INSERT INTO translations (table_name, row_id, lang, field, value)
   SELECT 'indicator_axes', id, 'en', 'name', 'Optimization' FROM indicator_axes WHERE code = 'OPTIMIZE'
   ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
-INSERT INTO indicator_axes (code, kind) VALUES ('RESEARCH', 'activity') ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind;
+INSERT INTO indicator_axes (code, kind, sort_no) VALUES ('RESEARCH', 'activity', 7) ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind, sort_no = EXCLUDED.sort_no;
 INSERT INTO translations (table_name, row_id, lang, field, value)
   SELECT 'indicator_axes', id, 'ko', 'name', '탐구·이론' FROM indicator_axes WHERE code = 'RESEARCH'
   ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
@@ -73,7 +73,7 @@ INSERT INTO translations (table_name, row_id, lang, field, value)
 INSERT INTO translations (table_name, row_id, lang, field, value)
   SELECT 'indicator_axes', id, 'en', 'name', 'Research' FROM indicator_axes WHERE code = 'RESEARCH'
   ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
-INSERT INTO indicator_axes (code, kind) VALUES ('ORCHESTRATE', 'activity') ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind;
+INSERT INTO indicator_axes (code, kind, sort_no) VALUES ('ORCHESTRATE', 'activity', 8) ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind, sort_no = EXCLUDED.sort_no;
 INSERT INTO translations (table_name, row_id, lang, field, value)
   SELECT 'indicator_axes', id, 'ko', 'name', '조율·관리' FROM indicator_axes WHERE code = 'ORCHESTRATE'
   ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
@@ -83,42 +83,42 @@ INSERT INTO translations (table_name, row_id, lang, field, value)
 INSERT INTO translations (table_name, row_id, lang, field, value)
   SELECT 'indicator_axes', id, 'en', 'name', 'Coordination' FROM indicator_axes WHERE code = 'ORCHESTRATE'
   ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
-INSERT INTO indicator_axes (code, kind) VALUES ('INDEP', 'trait') ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind;
+INSERT INTO indicator_axes (code, kind, sort_no) VALUES ('INDEP', 'trait', 1) ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind, sort_no = EXCLUDED.sort_no;
 INSERT INTO translations (table_name, row_id, lang, field, value)
   SELECT 'indicator_axes', id, 'ko', 'name', '독립형' FROM indicator_axes WHERE code = 'INDEP'
   ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
 INSERT INTO translations (table_name, row_id, lang, field, value)
   SELECT 'indicator_axes', id, 'en', 'name', 'Independent' FROM indicator_axes WHERE code = 'INDEP'
   ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
-INSERT INTO indicator_axes (code, kind) VALUES ('COLLAB', 'trait') ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind;
-INSERT INTO translations (table_name, row_id, lang, field, value)
-  SELECT 'indicator_axes', id, 'ko', 'name', '협력형' FROM indicator_axes WHERE code = 'COLLAB'
-  ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
-INSERT INTO translations (table_name, row_id, lang, field, value)
-  SELECT 'indicator_axes', id, 'en', 'name', 'Collaborative' FROM indicator_axes WHERE code = 'COLLAB'
-  ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
-INSERT INTO indicator_axes (code, kind) VALUES ('CHALLENGE', 'trait') ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind;
+INSERT INTO indicator_axes (code, kind, sort_no) VALUES ('CHALLENGE', 'trait', 2) ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind, sort_no = EXCLUDED.sort_no;
 INSERT INTO translations (table_name, row_id, lang, field, value)
   SELECT 'indicator_axes', id, 'ko', 'name', '도전형' FROM indicator_axes WHERE code = 'CHALLENGE'
   ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
 INSERT INTO translations (table_name, row_id, lang, field, value)
   SELECT 'indicator_axes', id, 'en', 'name', 'Challenging' FROM indicator_axes WHERE code = 'CHALLENGE'
   ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
-INSERT INTO indicator_axes (code, kind) VALUES ('STABLE', 'trait') ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind;
-INSERT INTO translations (table_name, row_id, lang, field, value)
-  SELECT 'indicator_axes', id, 'ko', 'name', '안정형' FROM indicator_axes WHERE code = 'STABLE'
-  ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
-INSERT INTO translations (table_name, row_id, lang, field, value)
-  SELECT 'indicator_axes', id, 'en', 'name', 'Stable' FROM indicator_axes WHERE code = 'STABLE'
-  ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
-INSERT INTO indicator_axes (code, kind) VALUES ('SPEED', 'trait') ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind;
+INSERT INTO indicator_axes (code, kind, sort_no) VALUES ('SPEED', 'trait', 3) ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind, sort_no = EXCLUDED.sort_no;
 INSERT INTO translations (table_name, row_id, lang, field, value)
   SELECT 'indicator_axes', id, 'ko', 'name', '속도중시형' FROM indicator_axes WHERE code = 'SPEED'
   ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
 INSERT INTO translations (table_name, row_id, lang, field, value)
   SELECT 'indicator_axes', id, 'en', 'name', 'Speed-oriented' FROM indicator_axes WHERE code = 'SPEED'
   ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
-INSERT INTO indicator_axes (code, kind) VALUES ('QUALITY', 'trait') ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind;
+INSERT INTO indicator_axes (code, kind, sort_no) VALUES ('COLLAB', 'trait', 4) ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind, sort_no = EXCLUDED.sort_no;
+INSERT INTO translations (table_name, row_id, lang, field, value)
+  SELECT 'indicator_axes', id, 'ko', 'name', '협력형' FROM indicator_axes WHERE code = 'COLLAB'
+  ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
+INSERT INTO translations (table_name, row_id, lang, field, value)
+  SELECT 'indicator_axes', id, 'en', 'name', 'Collaborative' FROM indicator_axes WHERE code = 'COLLAB'
+  ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
+INSERT INTO indicator_axes (code, kind, sort_no) VALUES ('STABLE', 'trait', 5) ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind, sort_no = EXCLUDED.sort_no;
+INSERT INTO translations (table_name, row_id, lang, field, value)
+  SELECT 'indicator_axes', id, 'ko', 'name', '안정형' FROM indicator_axes WHERE code = 'STABLE'
+  ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
+INSERT INTO translations (table_name, row_id, lang, field, value)
+  SELECT 'indicator_axes', id, 'en', 'name', 'Stable' FROM indicator_axes WHERE code = 'STABLE'
+  ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;
+INSERT INTO indicator_axes (code, kind, sort_no) VALUES ('QUALITY', 'trait', 6) ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind, sort_no = EXCLUDED.sort_no;
 INSERT INTO translations (table_name, row_id, lang, field, value)
   SELECT 'indicator_axes', id, 'ko', 'name', '품질중시형' FROM indicator_axes WHERE code = 'QUALITY'
   ON CONFLICT (table_name, row_id, lang, field) DO UPDATE SET value = EXCLUDED.value;

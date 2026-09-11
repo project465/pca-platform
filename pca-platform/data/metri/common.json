@@ -58,24 +58,24 @@
       "en": "Independent"
     },
     {
-      "code": "COLLAB",
-      "ko": "협력형",
-      "en": "Collaborative"
-    },
-    {
       "code": "CHALLENGE",
       "ko": "도전형",
       "en": "Challenging"
     },
     {
-      "code": "STABLE",
-      "ko": "안정형",
-      "en": "Stable"
-    },
-    {
       "code": "SPEED",
       "ko": "속도중시형",
       "en": "Speed-oriented"
+    },
+    {
+      "code": "COLLAB",
+      "ko": "협력형",
+      "en": "Collaborative"
+    },
+    {
+      "code": "STABLE",
+      "ko": "안정형",
+      "en": "Stable"
     },
     {
       "code": "QUALITY",
@@ -443,5 +443,6 @@
       "ko": "해당 없음",
       "note": "대학 트랙"
     }
-  ]
+  ],
+  "traitNote": "육각형에서 마주 보는 짝이 뜻을 갖도록 이 순서를 고정한다 — 독립↔협력 · 도전↔안정 · 속도중시↔품질중시. 순서를 바꾸면 결과지의 육각형이 읽히지 않는다"
 }

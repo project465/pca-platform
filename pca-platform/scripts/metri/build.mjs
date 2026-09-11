@@ -33,14 +33,14 @@ out(`-- 적용 순서: db/schema.sql → db/schema_metri.sql → 이 파일`)
 out(`BEGIN;`)
 
 out(`\n-- 지표 축`)
-for (const i of common.indicators) {
-  out(`INSERT INTO indicator_axes (code, kind) VALUES (${q(i.code)}, 'activity') ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind;`)
+for (const [n, i] of common.indicators.entries()) {
+  out(`INSERT INTO indicator_axes (code, kind, sort_no) VALUES (${q(i.code)}, 'activity', ${n + 1}) ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind, sort_no = EXCLUDED.sort_no;`)
   nameRow('indicator_axes', i.code, 'ko', 'name', i.ko)
   nameRow('indicator_axes', i.code, 'ko', 'description', i.desc)
   nameRow('indicator_axes', i.code, 'en', 'name', i.en)
 }
-for (const t of common.traits) {
-  out(`INSERT INTO indicator_axes (code, kind) VALUES (${q(t.code)}, 'trait') ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind;`)
+for (const [n, t] of common.traits.entries()) {
+  out(`INSERT INTO indicator_axes (code, kind, sort_no) VALUES (${q(t.code)}, 'trait', ${n + 1}) ON CONFLICT (code) DO UPDATE SET kind = EXCLUDED.kind, sort_no = EXCLUDED.sort_no;`)
   nameRow('indicator_axes', t.code, 'ko', 'name', t.ko)
   nameRow('indicator_axes', t.code, 'en', 'name', t.en)
 }
