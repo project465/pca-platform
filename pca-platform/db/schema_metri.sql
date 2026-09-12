@@ -1025,9 +1025,15 @@ CREATE TABLE IF NOT EXISTS hs_univ_subject_recs (
   univ_code   TEXT NOT NULL,             -- SNU ...
   track_code  TEXT NOT NULL,             -- type2 (자연계열 모집단위)
   subject_id  BIGINT REFERENCES hs_subjects(id) ON DELETE CASCADE,
-  level       TEXT NOT NULL,             -- required(권장) | core(핵심권장)
-  UNIQUE (univ_code, track_code, subject_id)
+  level       TEXT NOT NULL,             -- required(권장) | preferred(우선 권장) | core(핵심권장)
+  -- 같은 대학·트랙 안에서도 계열마다 권장이 갈린다. 서울대 유형② 는 전체에
+  -- 기하·미적분Ⅱ 를 권장하지만, 물리학 우선 이수는 공과대학 일부 전공에만 붙는다.
+  -- NULL 이면 그 트랙 전체에 걸린다.
+  major_id    BIGINT REFERENCES majors(id) ON DELETE CASCADE,
+  UNIQUE (univ_code, track_code, subject_id, major_id)
 );
+ALTER TABLE hs_univ_subject_recs
+  ADD COLUMN IF NOT EXISTS major_id BIGINT REFERENCES majors(id) ON DELETE CASCADE;
 COMMENT ON TABLE hs_univ_subject_recs IS
   '"서울대는 기하와 미적분Ⅱ 를 권장한다" 처럼 대학이 이름을 걸고 밝힌 것만 담는다.
    학원이 추측한 것은 담지 않는다 — 출처가 없는 권장은 학부모가 가장 먼저 따진다';

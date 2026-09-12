@@ -3,29 +3,13 @@ import type { SiteContent } from "@/content";
 /**
  * 히어로.
  *
- * 제목의 {중괄호} 안은 금색으로 강조한다. 원고에서 강조 위치를 정하기 위한 표시다.
+ * 제목에 강조색 낱말을 두지 않는다. 한 낱말만 색을 입히는 것은 소개 페이지의
+ * 관용구이고, 마감 배너에서는 그 표시가 중괄호째로 찍히고 있었다.
  *
  * 오른쪽은 실제 결과지의 앞부분이다. 문의 폼이 아니라 제품을 둔 이유 —
  * 처음 온 사람이 5초 안에 "무엇을 파는가" 를 알아야 하고, 그 답은 폼이 아니라
  * 학생이 받아 드는 문서다. 문의는 상단 버튼과 각 절 끝에서 계속 받는다.
  */
-function Emphasised({ line }: { line: string }) {
-  const parts = line.split(/(\{[^}]*\})/g).filter(Boolean);
-  return (
-    <>
-      {parts.map((p, i) =>
-        p.startsWith("{") ? (
-          <span className="gold" key={i}>
-            {p.slice(1, -1)}
-          </span>
-        ) : (
-          <span key={i}>{p}</span>
-        ),
-      )}
-    </>
-  );
-}
-
 export default function Hero({ site }: { site: SiteContent }) {
   const h = site.hero;
 
@@ -40,7 +24,7 @@ export default function Hero({ site }: { site: SiteContent }) {
           <h1>
             {h.title.map((line, i) => (
               <span key={i}>
-                <Emphasised line={line} />
+                {line}
                 {i < h.title.length - 1 ? <br /> : null}
               </span>
             ))}

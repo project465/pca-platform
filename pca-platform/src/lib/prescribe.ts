@@ -212,14 +212,31 @@ export async function prescribe(
 
   const catalog = new Map((await allSubjects(lang)).map((s) => [s.code, s]));
 
-  const univRecs = await query<{ code: string; univ_code: string; level: string }>(
-    `SELECT s.code, r.univ_code, r.level
-       FROM hs_univ_subject_recs r JOIN hs_subjects s ON s.id = r.subject_id`,
+  // 대학 권장은 트랙 전체에 걸리는 것(major_id 가 비어 있다)과
+  // 계열마다 갈리는 것이 섞여 있다. 서울대 유형② 는 전체에 기하·미적분Ⅱ 를
+  // 권장하지만 물리학 우선 이수는 공과대학 일부 전공에만 붙는다.
+  // 1군에 없는 계열의 권장을 끌어오면 그 학생 얘기가 아니다.
+  const univRecs = await query<{
+    code: string;
+    univ_code: string;
+    level: string;
+    major_code: string | null;
+  }>(
+    `SELECT s.code, r.univ_code, r.level, mj.code AS major_code
+       FROM hs_univ_subject_recs r
+       JOIN hs_subjects s ON s.id = r.subject_id
+       LEFT JOIN majors mj ON mj.id = r.major_id
+      WHERE r.major_id IS NULL OR mj.code = ANY($1::text[])`,
+    [picked.map((m) => m.code)],
   );
   const univBySubject = new Map<string, { univ: string; level: string }[]>();
   for (const r of univRecs) {
     if (!univBySubject.has(r.code)) univBySubject.set(r.code, []);
-    univBySubject.get(r.code)!.push({ univ: r.univ_code, level: r.level });
+    const list = univBySubject.get(r.code)!;
+    // 같은 대학이 같은 과목에 두 경로로 걸릴 수 있다. 한 번만 적는다
+    if (!list.some((x) => x.univ === r.univ_code)) {
+      list.push({ univ: r.univ_code, level: r.level });
+    }
   }
 
   // 2. 과목별로 합친다. 1군 안에서 가장 높은 필요도를 쓰고,

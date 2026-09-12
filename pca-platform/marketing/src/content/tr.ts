@@ -62,7 +62,7 @@ export const tr: SiteContent = {
 
   hero: {
     eyebrow: "METRI · Mühendislik kariyer tanılaması",
-    title: ["Mühendisliği seçtiler.", "{Hangi mühendisliği, kimse söylemedi.}"],
+    title: ["Mühendisliği seçtiler.", "Hangi mühendisliği, kimse söylemedi."],
     lead:
       "Makine, elektrik-elektronik ve bilgisayar mühendisliği — 24 görev kümesi ve 138 yetkinlik, gerçek ilanlarla karşılaştırılıyor. “İş birlikçisiniz” değil; “Simülasyon ve CAE 80, ANSYS 4 üzerinden 2, bu rolün 132 ilanının 89'unda isteniyor”. 250 sorunun tamamı Türkçe olarak hazır.",
     primary: { label: "Görüşme talep et", href: "/contact" },
@@ -458,7 +458,7 @@ export const tr: SiteContent = {
 
   closing: {
     kicker: "BAŞLANGIÇ",
-    heading: ["Tek bir bölümle", "{başlanabilir}"],
+    heading: ["Tek bir bölümle", "başlanabilir"],
     lead: "Önce bir sınıfta pilot uygulamak, sonucu görünce genişletmek en sık seçilen yoldur.",
     primary: { label: "Görüşme talep et", href: "/contact" },
     secondary: { label: "Fiyatları gör", href: "/pricing" },

@@ -57,7 +57,7 @@ export const global: SiteContent = {
 
   hero: {
     eyebrow: "METRI · Engineering career diagnostics",
-    title: ["They chose engineering.", "{Nobody told them which engineering.}"],
+    title: ["They chose engineering.", "Nobody told them which engineering."],
     lead:
       "Mechanical, electrical and computer engineering — 24 job clusters and 138 competencies, checked against real postings. Not “you are collaborative”, but “Simulation & CAE 80, ANSYS held 2 of 4, asked for in 89 of 132 postings for this role”. The activity axes are the same in every country, which is why the instrument travels.",
     primary: { label: "Talk to us", href: "/contact" },
@@ -259,7 +259,7 @@ export const global: SiteContent = {
 
   why: {
     label: "Why this assessment",
-    heading: "The result connects straight through to a roadmap",
+    heading: "“You are collaborative” does not tell a student where to apply",
     vs: "VS",
     before: {
       tag: "Recommendation-led",
@@ -630,7 +630,7 @@ export const global: SiteContent = {
 
   styles: {
     label: "Six work styles",
-    heading: "Six work styles, read as one hexagon",
+    heading: "Two students can score 80 and work nothing alike",
     chartNote: "Work style analysis — sample",
     items: [
       { name: "Independent", body: "Absorbed in focused, solitary work" },
@@ -644,9 +644,9 @@ export const global: SiteContent = {
 
   evidence: {
     label: "What it rests on",
-    heading: "PCA was built from data",
+    heading: "The items were worked backwards from job postings",
     lead:
-      "Not a personality inventory. A student sample and real recruitment-market material, combined so the diagnosis reflects the capability the market actually asks for.",
+      "We read 428 job postings and 137 job descriptions first, to see what each role is actually asked to do, then put that to 2,346 graduates in the field to check it against the work. The traits did not come first with occupations attached afterwards.",
     stats: [
       { label: "Students took part", value: "2,346", unit: "" },
       { label: "Survey responses", value: "2,091", unit: "" },
@@ -840,7 +840,7 @@ export const global: SiteContent = {
 
   partnership: {
     label: "Partnership",
-    heading: "How a country gets started",
+    heading: "What the first year looks like",
     lead:
       "Two ways in: run it as a university, or operate it in your market as a partner. Either way the split of work is the same.",
     columns: [
@@ -886,7 +886,7 @@ export const global: SiteContent = {
 
   faq: {
     label: "Questions we get",
-    heading: "FAQ",
+    heading: "What institutions ask first",
     items: [
       {
         q: "Does this only work in Korea?",

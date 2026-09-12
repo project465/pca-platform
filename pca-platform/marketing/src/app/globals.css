@@ -170,8 +170,6 @@ section { padding-block: clamp(60px, 8vw, 108px); }
   font-size: 12.5px; font-weight: 700; color: var(--muted);
 }
 .hero h1 { font-size: clamp(30px, 4.6vw, 54px); line-height: 1.2; }
-/* 표제 한 낱말만 강조색으로 물들이는 것도 관용구다. 문장으로 읽히게 둔다 */
-.hero h1 .gold { color: inherit; }
 .hero .lead { color: var(--ink-2); max-width: 50ch; }
 .hero .cta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
 

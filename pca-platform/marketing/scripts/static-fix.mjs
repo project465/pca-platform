@@ -56,6 +56,11 @@ for (const f of readdirSync(dir)) {
   s = s.replaceAll('href="/"', 'href="index.html"').replaceAll('href="/#', 'href="index.html#');
   s = s.replaceAll('href="/sitemap.xml"', 'href="sitemap.xml"');
 
+  // Next 의 polyfills 청크는 Artifact 업로드에서 거부된다 — 안에 U+FFFD
+  // 치환문자가 들어 있어 표준 텍스트 파일로 통과하지 못한다. noModule 스크립트라
+  // 최신 브라우저는 애초에 읽지 않으므로 태그째 뺀다(미리보기 전용 처리다).
+  s = s.replace(/<script[^>]*polyfills-[^>]*><\/script>/g, "");
+
   s = s.includes("</body>") ? s.replace("</body>", shim + "</body>") : s + shim;
   writeFileSync(p, s);
   n++;
@@ -73,6 +78,16 @@ const fixJs = (d) => {
   }
 };
 fixJs(join(dir, "next"));
+
+// 태그를 뺐으니 파일도 지운다
+const dropPolyfills = (d) => {
+  for (const e of readdirSync(d, { withFileTypes: true })) {
+    const p = join(d, e.name);
+    if (e.isDirectory()) dropPolyfills(p);
+    else if (e.name.startsWith("polyfills-")) rmSync(p);
+  }
+};
+dropPolyfills(join(dir, "next"));
 
 let bytes = 0, count = 0;
 const walk = (d) => {

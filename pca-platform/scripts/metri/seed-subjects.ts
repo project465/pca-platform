@@ -55,7 +55,14 @@ type Bank = {
   groups: { code: string; ko: string; en: string }[];
   subjects: Subject[];
   need: { major: string; subject: string; necessity: number; why: string }[];
-  univRecommendations: { univ: string; track: string; subject: string; level: string }[];
+  univRecommendations: {
+    univ: string;
+    track: string;
+    subject: string;
+    level: string;
+    /** 없으면 그 트랙 전체에 걸린다 */
+    major?: string;
+  }[];
   univRules: {
     univ: string;
     track: string;
@@ -168,9 +175,9 @@ async function main() {
       const sid = subjectId.get(r.subject);
       if (!sid) throw new Error(`과목표에 ${r.subject} 가 없습니다`);
       await c.query(
-        `INSERT INTO hs_univ_subject_recs (univ_code, track_code, subject_id, level)
-         VALUES ($1,$2,$3,$4)`,
-        [r.univ, r.track, sid, r.level],
+        `INSERT INTO hs_univ_subject_recs (univ_code, track_code, subject_id, level, major_id)
+         VALUES ($1,$2,$3,$4,$5)`,
+        [r.univ, r.track, sid, r.level, r.major ? majorId.get(r.major) ?? null : null],
       );
     }
     await c.query(`DELETE FROM hs_univ_subject_rules`);
