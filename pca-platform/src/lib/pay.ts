@@ -63,8 +63,12 @@ export async function approve(input: {
   };
 }
 
-/** 전액 취소. 이미 취소된 건이면 성공으로 본다. */
-export async function cancel(providerKey: string, reason: string): Promise<void> {
+/** 취소. 금액을 주면 부분 취소다. 이미 취소된 건이면 성공으로 본다. */
+export async function cancel(
+  providerKey: string,
+  reason: string,
+  amount?: number,
+): Promise<void> {
   if (payDryRun() || providerKey.startsWith("dry_")) return;
   if (!payConfigured()) throw new PayError("결제 연동이 설정되지 않았습니다.");
 
@@ -72,7 +76,10 @@ export async function cancel(providerKey: string, reason: string): Promise<void>
     method: "POST",
     headers: { Authorization: auth(), "Content-Type": "application/json" },
     cache: "no-store",
-    body: JSON.stringify({ cancelReason: reason.slice(0, 200) }),
+    body: JSON.stringify({
+      cancelReason: reason.slice(0, 200),
+      ...(amount !== undefined ? { cancelAmount: amount } : {}),
+    }),
   });
   if (res.ok) return;
 

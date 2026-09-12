@@ -109,6 +109,14 @@ node scripts/export-preview.mjs kr out-kr.html
 - 로그인 / 비밀번호 재설정
 - 운영사 관리자 — 기관 생성, 기관 목록
 
+**환불·정산 (2026-09-12)** — schema.sql 14절
+환불 규칙과 수수료율은 `/admin/prices` 에서 정한다. 둘 다 비어 있으면
+환불도 정산도 일어나지 않는다. 정산은 `scripts/notify.ts` 가 같이 돌린다.
+`/admin/payouts` 에서 지급 확정, 멘토는 자기 콘솔에서 본다.
+
+**소셜 로그인 (2026-09-12)** — schema.sql 13절
+카카오·네이버. 키가 있는 것만 버튼이 뜬다. 실제 로그인은 앱 등록 뒤에 확인해야 한다.
+
 **개인 결제 (2026-09-12)** — schema.sql 12절
 개인이 `/signup` 으로 가입하고 현멘을 건당 결제한다. 학과 계약 학생은 무료다.
 `src/lib/pay.ts` 가 토스페이먼츠, `src/lib/billing.ts` 가 우리 쪽 규칙이다.

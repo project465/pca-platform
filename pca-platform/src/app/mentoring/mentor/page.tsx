@@ -4,6 +4,7 @@ import { requireUser } from "@/lib/session";
 import { applicantLabel, applicantStageLabel } from "@/lib/anon";
 import { formatSlot } from "@/lib/notify";
 import { mentorForUser, mentorStats, requestsByMentor } from "@/lib/mentoring";
+import { payoutsOfMentor } from "@/lib/payout";
 import { zoomConfigured, zoomDryRun } from "@/lib/zoom";
 import MentoringShell from "@/components/mentoring-shell";
 import {
@@ -58,7 +59,7 @@ export default async function MentorConsolePage() {
     );
   }
 
-  const [rows, stats, slots, mineJobs] = await Promise.all([
+  const [rows, stats, slots, mineJobs, payouts] = await Promise.all([
     requestsByMentor(mentor.id),
     mentorStats(mentor.id),
     query<{ id: string; starts_at: string; status: string }>(
@@ -72,7 +73,11 @@ export default async function MentorConsolePage() {
       `SELECT job_id FROM mentor_job_clusters WHERE mentor_id = $1`,
       [mentor.id],
     ),
+    payoutsOfMentor(mentor.id),
   ]);
+  const pendingNet = payouts
+    .filter((p) => p.status === "pending")
+    .reduce((a, p) => a + p.net, 0);
 
   const pending = rows.filter((r) => r.status === "requested");
   const zoomReady = zoomConfigured() || zoomDryRun();
@@ -168,6 +173,54 @@ export default async function MentorConsolePage() {
           ))}
         </ul>
       )}
+
+      {payouts.length > 0 ? (
+        <>
+          <h2 className="sec-h">정산</h2>
+          <div className="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>세션</th>
+                  <th style={{ textAlign: "right" }}>받은 돈</th>
+                  <th style={{ textAlign: "right" }}>수수료</th>
+                  <th style={{ textAlign: "right" }}>원천징수</th>
+                  <th style={{ textAlign: "right" }}>지급액</th>
+                  <th>상태</th>
+                </tr>
+              </thead>
+              <tbody>
+                {payouts.map((p) => (
+                  <tr key={p.id}>
+                    <td className="mono">{p.starts_at}</td>
+                    <td className="num">{p.gross.toLocaleString("ko-KR")}원</td>
+                    <td className="num">{p.fee.toLocaleString("ko-KR")}원</td>
+                    <td className="num">{p.withholding.toLocaleString("ko-KR")}원</td>
+                    <td className="num">
+                      <b>{p.net.toLocaleString("ko-KR")}원</b>
+                    </td>
+                    <td>
+                      {p.status === "paid" ? (
+                        <>
+                          <span className="tag active">지급됨</span>
+                          <span className="sub mono">{p.paid_at}</span>
+                        </>
+                      ) : (
+                        <span className="tag">지급 대기</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {pendingNet > 0 ? (
+            <p className="help" style={{ marginTop: 8 }}>
+              지급 대기 {pendingNet.toLocaleString("ko-KR")}원. 운영사가 확인 후 보냅니다.
+            </p>
+          ) : null}
+        </>
+      ) : null}
 
       <h2 className="sec-h">내 시간대</h2>
       <div className="panel">

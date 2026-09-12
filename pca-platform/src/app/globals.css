@@ -747,3 +747,13 @@ table.weights tfoot td.zero { color: var(--gap); }
 }
 .act.social-kakao { background: #FEE500; border-color: #E6CF00; color: #191600; }
 .act.social-naver { background: #03C75A; border-color: #02A94C; color: #fff; }
+
+/* ---------- 환불 규칙 입력 ---------- */
+.rule-rows { display: flex; flex-direction: column; gap: 8px; }
+.rule-row {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 14px;
+}
+.rule-row input {
+  font: inherit; font-size: 14px; width: 76px; text-align: right;
+  padding: 6px 8px; border: 1px solid var(--rule); background: var(--paper); color: var(--ink);
+}

@@ -13,7 +13,8 @@ const NAV: NavItem[] = [
   { href: "/admin/mappings", label: "매핑 데이터", ready: false },
   { href: "/admin/attempts", label: "응시 현황", ready: false },
   { href: "/admin/mentors", label: "현직자 멘토", ready: true },
-  { href: "/admin/prices", label: "멘토링 가격", ready: true },
+  { href: "/admin/prices", label: "가격·정책", ready: true },
+  { href: "/admin/payouts", label: "멘토 정산", ready: true },
 ];
 
 export default function AdminShell({

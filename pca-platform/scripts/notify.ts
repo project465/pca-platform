@@ -7,7 +7,8 @@
  * 하는 일 세 가지
  *   1. 응답 기한을 넘긴 신청을 닫고 시간대를 풀어준다
  *   2. 끝난 시간이 지난 확정 건을 completed 로 넘긴다 (후기를 쓸 수 있게)
- *   3. notifications 에서 때가 된 것을 보낸다
+ *   3. 끝난 세션의 멘토 정산 건을 만든다
+ *   4. notifications 에서 때가 된 것을 보낸다
  *
  * 메일 발송은 MAIL_WEBHOOK_URL 로 POST 한다. 외부 메일 SDK 를 의존성으로
  * 들이지 않으려는 것이고, 어떤 발송 업체를 쓸지 아직 정하지 않았기 때문이다.
@@ -17,6 +18,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { query } from "../src/lib/db";
 import { completeDueSessions, expireStaleRequests } from "../src/lib/mentoring";
+import { buildPayouts } from "../src/lib/payout";
 
 function loadEnv(file: string) {
   try {
@@ -86,8 +88,10 @@ async function send(row: Due): Promise<void> {
 async function main() {
   const expired = await expireStaleRequests();
   const completed = await completeDueSessions();
+  const payouts = await buildPayouts();
   if (expired > 0) console.log(`기한 초과로 닫은 신청 ${expired}건`);
   if (completed > 0) console.log(`완료 처리한 세션 ${completed}건`);
+  if (payouts.made > 0) console.log(`정산 ${payouts.made}건`);
 
   const rows = await due();
   if (rows.length === 0) {

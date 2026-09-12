@@ -632,7 +632,7 @@ export async function cancelRequest(input: {
   if (found.provider_meeting_id) {
     await deleteMeeting(found.provider_meeting_id).catch(() => {});
   }
-  await refundFor(input.requestId, byApplicant ? "신청자 취소" : "멘토 취소");
+  await refundFor(input.requestId, byApplicant ? "신청자 취소" : "멘토 취소", { byApplicant });
 }
 
 /**

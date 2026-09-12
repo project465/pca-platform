@@ -548,3 +548,56 @@ COMMENT ON TABLE user_identities IS
   '같은 사람이 이메일 가입과 소셜을 함께 쓸 수 있다. 이메일이 같으면 기존 계정에 붙인다';
 
 CREATE INDEX idx_identities_user ON user_identities(user_id);
+
+
+-- ============================================================
+--  14. 환불과 정산 (2026-09-12)
+--
+--  환불 규칙은 코드가 아니라 표에 둔다 (설계 원칙 3 과 같은 이유).
+--  "세션 시작 몇 시간 전까지 몇 %" 를 행으로 쌓아두고, 취소 시각에 맞는 행을 고른다.
+-- ============================================================
+
+CREATE TABLE refund_rules (
+  id           BIGSERIAL PRIMARY KEY,
+  -- 세션 시작까지 남은 시간이 이 값 이상이면 이 행이 적용된다
+  hours_before INTEGER NOT NULL UNIQUE CHECK (hours_before >= 0),
+  percent      SMALLINT NOT NULL CHECK (percent BETWEEN 0 AND 100),
+  updated_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_by   BIGINT REFERENCES users(id)
+);
+COMMENT ON TABLE refund_rules IS
+  '신청자가 스스로 취소할 때만 쓴다. 멘토 거절·기한 초과·멘토 취소는 언제나 전액이다';
+
+ALTER TABLE payments ADD COLUMN refunded_amount INTEGER NOT NULL DEFAULT 0;
+COMMENT ON COLUMN payments.refunded_amount IS '부분 환불이 있으므로 금액을 따로 센다';
+
+-- 멘토에게 줄 돈. 세션이 끝난 뒤 확정한다
+CREATE TABLE payouts (
+  id             BIGSERIAL PRIMARY KEY,
+  mentor_id      BIGINT NOT NULL REFERENCES mentors(id),
+  request_id     BIGINT NOT NULL UNIQUE REFERENCES mentoring_requests(id) ON DELETE CASCADE,
+  gross          INTEGER NOT NULL,   -- 신청자가 실제로 낸 돈(환불 제외)
+  fee            INTEGER NOT NULL,   -- 운영사 수수료
+  withholding    INTEGER NOT NULL,   -- 원천징수
+  net            INTEGER NOT NULL,   -- 실제 지급액
+  status         TEXT NOT NULL DEFAULT 'pending',  -- pending | paid | void
+  paid_at        TIMESTAMPTZ,
+  memo           TEXT,
+  created_at     TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+COMMENT ON TABLE payouts IS
+  '세션 1건에 정산 1행. 무료(학과 계약) 세션은 gross 가 0 이라 행을 만들지 않는다';
+
+CREATE INDEX idx_payouts_mentor ON payouts(mentor_id, created_at DESC);
+CREATE INDEX idx_payouts_pending ON payouts(status) WHERE status = 'pending';
+
+-- 수수료율과 원천징수율. 한 행짜리 설정이라 id 를 고정한다
+CREATE TABLE payout_settings (
+  id              SMALLINT PRIMARY KEY DEFAULT 1 CHECK (id = 1),
+  fee_percent     NUMERIC(5,2) NOT NULL DEFAULT 0,
+  withholding_percent NUMERIC(5,2) NOT NULL DEFAULT 0,
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_by      BIGINT REFERENCES users(id)
+);
+COMMENT ON TABLE payout_settings IS
+  '값은 비워둔 채로 시작한다. 수수료율은 사업 결정이라 코드가 정하지 않는다';

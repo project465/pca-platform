@@ -1,6 +1,7 @@
 import { query, queryOne, tx } from "@/lib/db";
 import type { PoolClient } from "pg";
 import { cancel, newOrderId, PayError } from "@/lib/pay";
+import { percentFor, refundRules } from "@/lib/refund";
 
 export class BillingError extends Error {}
 
@@ -89,17 +90,41 @@ export async function markFailed(orderId: string, reason: string): Promise<void>
 /**
  * 결제를 물린다. 신청이 거절·만료·취소될 때 부른다.
  * PG 호출이 실패해도 예약 취소 자체는 이미 성립했으므로 여기서 막지 않는다.
+ *
+ * 신청자가 스스로 취소할 때만 환불 규칙(refund_rules)을 적용해 일부만 돌려준다.
+ * 멘토 거절·무응답·멘토 취소는 신청자 잘못이 아니므로 언제나 전액이다.
  */
-export async function refundFor(requestId: string, reason: string): Promise<void> {
-  const p = await queryOne<{ id: string; provider_key: string | null; status: string }>(
-    `SELECT id, provider_key, status FROM payments WHERE request_id = $1`,
+export async function refundFor(
+  requestId: string,
+  reason: string,
+  opts: { byApplicant?: boolean } = {},
+): Promise<void> {
+  const p = await queryOne<{
+    id: string;
+    provider_key: string | null;
+    status: string;
+    amount: number;
+    starts_at: string;
+  }>(
+    `SELECT p.id, p.provider_key, p.status, p.amount, s.starts_at::text
+       FROM payments p
+       JOIN mentoring_requests r ON r.id = p.request_id
+       JOIN mentor_slots s ON s.id = r.slot_id
+      WHERE p.request_id = $1`,
     [requestId],
   );
   if (!p) return;
 
-  if (p.status === "paid" && p.provider_key) {
+  let refund = p.amount;
+  if (opts.byApplicant && p.status === "paid") {
+    const hoursLeft = (new Date(p.starts_at).getTime() - Date.now()) / 3_600_000;
+    const pct = percentFor(await refundRules(), hoursLeft);
+    refund = Math.floor((p.amount * pct) / 100);
+  }
+
+  if (p.status === "paid" && p.provider_key && refund > 0) {
     try {
-      await cancel(p.provider_key, reason);
+      await cancel(p.provider_key, reason, refund < p.amount ? refund : undefined);
     } catch (e) {
       // 남겨두고 운영에서 확인한다. 여기서 예외를 올리면 취소가 통째로 막힌다.
       await query(`UPDATE payments SET fail_reason = $2 WHERE id = $1`, [
@@ -109,11 +134,18 @@ export async function refundFor(requestId: string, reason: string): Promise<void
       return;
     }
   }
+
   if (p.status === "paid" || p.status === "ready") {
+    // 일부만 돌려준 건은 '취소'가 아니다. 남은 돈은 정산 대상으로 살아 있다.
+    const fully = refund >= p.amount || p.status === "ready";
     await query(
-      `UPDATE payments SET status = 'cancelled', cancel_reason = $2, cancelled_at = now()
+      `UPDATE payments
+          SET status = CASE WHEN $3 THEN 'cancelled' ELSE status END,
+              refunded_amount = $4,
+              cancel_reason = $2,
+              cancelled_at = CASE WHEN $3 THEN now() ELSE cancelled_at END
         WHERE id = $1`,
-      [p.id, reason.slice(0, 200)],
+      [p.id, reason.slice(0, 200), fully, p.status === "ready" ? 0 : refund],
     );
   }
 }
