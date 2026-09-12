@@ -134,6 +134,11 @@ export async function createMeeting(input: {
         email_notification: false,
         auto_recording: "none",
         mute_upon_entry: true,
+        // 카메라는 꺼진 채로 시작한다(2026-09-12 결정). 켜는 것은 각자 고른다.
+        // 기본을 켜짐으로 두면 멘토는 얼굴을 보일지 말지 고를 새도 없이 노출된다.
+        // 반대로 끄기를 강제하면 30분 대화가 어색해지고 상대가 진짜인지도 흐려진다.
+        host_video: false,
+        participant_video: false,
       },
     }),
   });

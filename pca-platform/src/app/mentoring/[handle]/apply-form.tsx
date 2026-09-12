@@ -109,6 +109,16 @@ export default function ApplyForm({
 
       {state.message ? <div className="notice error">{state.message}</div> : null}
 
+      <div className="policy">
+        <b>세션에서 익명이 어디까지 지켜지는지</b>
+        <ul>
+          <li>멘토의 이름·회사명·연락처는 끝까지 공개되지 않습니다</li>
+          <li>화상으로 만나므로 얼굴과 목소리는 드러날 수 있습니다</li>
+          <li>카메라는 꺼진 채로 시작합니다. 켜는 것은 각자 고릅니다</li>
+        </ul>
+        <span>멘토의 신원을 알아내려 하거나 세션을 녹화·녹음하는 것은 금지돼 있습니다.</span>
+      </div>
+
       {refundPolicy.length > 0 ? (
         <div className="policy">
           <b>취소하면 얼마가 돌아오는지</b>
