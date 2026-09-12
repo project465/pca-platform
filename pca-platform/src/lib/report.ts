@@ -46,8 +46,15 @@ export async function attemptHeader(attemptId: string): Promise<AttemptHeader | 
   );
 }
 
-/** 결과가 학생에게 공개됐는가. 담당자 승인(released_at) 전에는 학생이 볼 수 없다. */
-export function isReleased(h: AttemptHeader): boolean {
+/**
+ * 결과가 학생에게 공개됐는가. 담당자 승인(released_at) 전에는 학생이 볼 수 없다.
+ * 결과지 화면과 응시 화면이 같은 규칙을 써야 해서 필요한 세 값만 받는다.
+ */
+export function isReleased(h: {
+  status: string;
+  release_mode: string;
+  released_at: string | null;
+}): boolean {
   if (h.status !== "scored") return false;
   return h.release_mode === "instant" || h.released_at !== null;
 }
@@ -205,17 +212,34 @@ export type MyAttempt = {
   opens_at: string;
   closes_at: string;
   released: boolean;
+  /** 지금 응시할 수 있는가 — 아직 제출 전이고, 기간 안이고, 문항이 있다 */
+  can_take: boolean;
+  question_count: number;
+  answered_count: number;
   top_job_id: string | null;
   top_job_name: string | null;
   top_score: string | null;
+  /** 화면에 그대로 쓰는 기간 문구 */
+  window: string;
+  window_note: string;
 };
 
 export async function myAttempts(userId: string, lang: string): Promise<MyAttempt[]> {
-  const rows = await query<Omit<MyAttempt, "top_job_name">>(
+  const rows = await query<
+    Omit<MyAttempt, "top_job_name" | "window" | "window_note">
+  >(
     `SELECT a.id AS attempt_id, a.status, ts.name AS session_name,
             ts.opens_at::text, ts.closes_at::text,
             (a.status = 'scored'
               AND (ts.release_mode = 'instant' OR ts.released_at IS NOT NULL)) AS released,
+            (a.status IN ('ready', 'in_progress')
+              AND ts.opens_at <= now() AND ts.closes_at >= now()
+              AND EXISTS (SELECT 1 FROM questions q
+                           WHERE q.instrument_id = ts.instrument_id)) AS can_take,
+            (SELECT count(*) FROM questions q
+              WHERE q.instrument_id = ts.instrument_id)::int AS question_count,
+            (SELECT count(*) FROM responses r
+              WHERE r.attempt_id = a.id AND r.option_id IS NOT NULL)::int AS answered_count,
             f.job_id AS top_job_id, f.fit_score::text AS top_score
        FROM attempts a
        JOIN test_sessions ts ON ts.id = a.session_id
@@ -230,8 +254,29 @@ export async function myAttempts(userId: string, lang: string): Promise<MyAttemp
     rows.map((r) => r.top_job_id).filter((v): v is string => v !== null),
     lang,
   );
-  return rows.map((r) => ({
-    ...r,
-    top_job_name: r.top_job_id ? (names.get(r.top_job_id) ?? null) : null,
-  }));
+
+  const when = new Intl.DateTimeFormat("ko-KR", {
+    dateStyle: "medium",
+    timeStyle: "short",
+    timeZone: "Asia/Seoul",
+  });
+  const now = Date.now();
+
+  return rows.map((r) => {
+    const opens = new Date(r.opens_at);
+    const closes = new Date(r.closes_at);
+    return {
+      ...r,
+      top_job_name: r.top_job_id ? (names.get(r.top_job_id) ?? null) : null,
+      window: `${when.format(opens)} ~ ${when.format(closes)}`,
+      window_note:
+        opens.getTime() > now
+          ? `${when.format(opens)}부터 응시할 수 있습니다.`
+          : closes.getTime() < now
+            ? `${when.format(closes)}에 마감됐습니다.`
+            : r.question_count === 0
+              ? "문항이 아직 등록되지 않았습니다."
+              : "",
+    };
+  });
 }

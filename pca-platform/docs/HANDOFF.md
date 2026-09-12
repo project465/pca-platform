@@ -56,6 +56,7 @@ npm install
 psql "$DATABASE_URL" -f db/schema.sql
 npm run db:seed              # 관리자·학과담당자·학생 계정
 npm run db:seed:mentoring    # 현멘 멘토 6명과 열린 시간대
+npm run db:seed:questions    # 검사 문항 12개 (시안에서 가져온 예시)
 npm run db:seed:report       # 채점된 응시 한 건 (결과지 화면 확인용)
 npm run dev                  # :3000
 ```
@@ -107,6 +108,15 @@ node scripts/export-preview.mjs kr out-kr.html
 - Auth.js(next-auth 5 beta) Credentials + JWT, bcryptjs 12 라운드
 - 로그인 / 비밀번호 재설정
 - 운영사 관리자 — 기관 생성, 기관 목록
+
+**응시 (2026-09-12)** — 개발 순서 3단계, `/exam/[attemptId]`
+시안(`mockups/01_test_screen.html`)대로. 시작 → 문항 → 제출, 문항마다 즉시 저장,
+창을 닫아도 이어보기. 응시권은 시작할 때 소진된다.
+- 문항은 처음에 전부 내려주고 서버로는 시작·저장·제출만 간다. 배점은 내리지 않는다
+- 저장은 대기열 + 재시도. 연결이 끊기면 다시 보내고, 마감된 회차처럼 소용없는
+  실패는 멈추고 새로고침을 권한다. 저장 안 된 응답이 있으면 제출을 막는다
+- 키보드만으로 끝까지 갈 수 있다. 숫자키로 고르고 Alt+방향키로 문항을 옮긴다.
+  선택지는 라디오 그룹이라 방향키는 그룹 안에서 움직인다
 
 **계약·회차·명단 (2026-09-12)** — 개발 순서 2단계
 - 운영사 `/admin/contracts` — 계약 등록. 등록과 동시에 응시권(seats)이 그 수만큼 생긴다
@@ -163,10 +173,11 @@ node scripts/export-preview.mjs kr out-kr.html
 
 ## 5. 아직 안 된 것
 
-**플랫폼** — 3단계(응시)와 4단계(채점)가 남았다
-응시 화면(`mockups/01_test_screen.html`), responses 저장과 이어보기,
+**플랫폼** — 4단계(채점)가 남았다
 채점 산식과 실행, 단체 리포트(`mockups/03_group_report.html`).
-결과지 화면은 만들어 뒀으므로 채점이 값을 채우면 바로 보인다.
+응답(responses)과 배점(question_options.score)은 이미 쌓이고 있고, 결과지 화면도
+만들어 뒀으므로 채점이 job_fit_scores·competency_levels 를 채우면 바로 보인다.
+`attempts.status` 를 submitted → scored 로 옮기는 것도 채점의 일이다.
 
 명단 발급에서 알아둘 것
 - 비밀번호 해싱이 1건당 0.4초다. 발급을 10명씩 끊어 부르는 이유이고,

@@ -48,6 +48,13 @@ export default async function StudentHome() {
                   </span>
                 </div>
 
+                {r.can_take ? (
+                  <div className="req-meta">
+                    응시 기간 {r.window} · 문항 {r.question_count}개
+                    {r.answered_count > 0 ? ` · ${r.answered_count}개 응답함` : ""}
+                  </div>
+                ) : null}
+
                 {r.released && r.top_job_name ? (
                   <div className="req-meta">
                     가장 가까운 직무 <b>{r.top_job_name}</b> · {Number(r.top_score)}점
@@ -61,6 +68,17 @@ export default async function StudentHome() {
                     <Link className="act solid" href={`/my/report/${r.attempt_id}`}>
                       결과지 보기
                     </Link>
+                  ) : null}
+                  {r.can_take ? (
+                    <Link className="act solid" href={`/exam/${r.attempt_id}`}>
+                      {r.status === "in_progress" ? "이어서 응시하기" : "응시하기"}
+                    </Link>
+                  ) : null}
+                  {r.status === "submitted" ? (
+                    <span className="help">제출했습니다. 채점을 기다리는 중입니다.</span>
+                  ) : null}
+                  {!r.can_take && r.status === "ready" ? (
+                    <span className="help">{r.window_note}</span>
                   ) : null}
                 </div>
               </li>
