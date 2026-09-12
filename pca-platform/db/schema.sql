@@ -673,3 +673,35 @@ CREATE INDEX idx_payments_failed_refund ON payments(created_at DESC)
 -- 결제대행사를 부르기 전에 적어둔다. refunded_amount 는 '실제로 돌아간 돈'이라
 -- 실패한 건에는 쓸 수 없다
 ALTER TABLE payments ADD COLUMN refund_due INTEGER;
+
+
+-- ============================================================
+--  17. 문의 (2026-09-13)
+--
+--  연락할 방법이 없었다. 결제나 환불이 막힌 사람은 갈 데가 없고,
+--  멘토가 되고 싶은데 조건이 애매한 사람도 마찬가지다.
+--
+--  메일 주소만 적어두지 않고 표를 만든 이유는, 주소만 적어두면 놓친 문의가
+--  어디에 있는지 아무도 모르기 때문이다. 들어온 것과 답한 것이 남아야 한다.
+-- ============================================================
+
+CREATE TABLE inquiries (
+  id          BIGSERIAL PRIMARY KEY,
+  -- 로그인하지 않고도 남길 수 있다. 결제가 막힌 사람은 로그인부터 막혔을 수 있다
+  user_id     BIGINT REFERENCES users(id) ON DELETE SET NULL,
+  kind        TEXT NOT NULL,                  -- general | mentor | payment | report
+  name        TEXT NOT NULL,
+  email       TEXT NOT NULL,
+  message     TEXT NOT NULL,
+  -- 어느 화면에서 눌렀는지. 결제 화면에서 온 문의와 갤러리에서 온 문의는 다르다
+  from_path   TEXT,
+  status      TEXT NOT NULL DEFAULT 'open',   -- open | done
+  answered_at TIMESTAMPTZ,
+  answered_by BIGINT REFERENCES users(id),
+  memo        TEXT,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+COMMENT ON TABLE inquiries IS
+  '들어온 문의 1건 = 1행. 답한 것과 안 답한 것이 구분돼야 놓치지 않는다';
+
+CREATE INDEX idx_inquiries_open ON inquiries(created_at DESC) WHERE status = 'open';

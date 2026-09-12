@@ -876,3 +876,25 @@ table.weights tfoot td.zero { color: var(--gap); }
 .faq dd b { color: var(--ink); }
 
 @media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+
+/* 문의 종류 고르기 */
+.kinds { display: grid; gap: 8px; }
+.kind {
+  display: flex; align-items: center; gap: 9px; cursor: pointer;
+  border: 1px solid var(--rule); background: var(--paper); padding: 11px 14px; font-size: 14.5px;
+}
+.kind.on { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.kind input { margin: 0; }
+
+/* 홈의 첫 화면. 로그인한 사람에게는 나오지 않는다 — 그 사람은 일하러 온 것이다 */
+.hero { padding: 26px 0 30px; border-bottom: 1px solid var(--rule); margin-bottom: 26px; }
+.hero h2 {
+  font-size: clamp(26px, 4.2vw, 38px); font-weight: 700; letter-spacing: -0.035em;
+  line-height: 1.25; margin: 0 0 14px; text-wrap: balance;
+}
+.hero p { font-size: 16px; line-height: 1.8; color: var(--muted); max-width: 60ch; margin: 0 0 20px; }
+.hero p b { color: var(--ink); font-weight: 600; }
+.hero-stats { display: flex; flex-wrap: wrap; gap: 10px 32px; margin-top: 22px; font-size: 14px; color: var(--muted); }
+.hero-stats b { color: var(--ink); font-size: 17px; font-weight: 700; letter-spacing: -0.02em; margin-right: 5px; }
+.hero-sub { font-size: 14.5px; line-height: 1.8; color: var(--muted); max-width: 62ch; margin: 0 0 20px; }
+.hero-sub b { color: var(--ink); font-weight: 600; }

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { query } from "@/lib/db";
+import { query, queryOne } from "@/lib/db";
 import { namesOf } from "@/lib/i18n";
 import { currentUser } from "@/lib/session";
 import { listGallery, mentorForUser } from "@/lib/mentoring";
@@ -58,9 +58,18 @@ export default async function GalleryPage({
 
   // 처음 온 사람에게는 값과 절차를 먼저 보여준다. 신청 버튼을 누른 뒤에
   // 얼마인지 알게 되는 것은 속이는 것에 가깝다
-  const [prices, rules] = user
-    ? [[], []]
-    : await Promise.all([priceTable(), refundRules()]);
+  const [prices, rules, stats] = user
+    ? [[], [], null]
+    : await Promise.all([
+        priceTable(),
+        refundRules(),
+        // 홈에 거는 숫자는 지어내지 않는다. 없으면 그 칸을 띄우지 않는다
+        queryOne<{ mentors: number; sessions: number; rating: string | null }>(
+          `SELECT (SELECT count(*) FROM mentors WHERE status = 'active')::int AS mentors,
+                  (SELECT count(*) FROM mentoring_requests WHERE status = 'completed')::int AS sessions,
+                  (SELECT to_char(avg(rating), 'FM0.0') FROM mentor_reviews) AS rating`,
+        ),
+      ]);
 
   // 직무 영역 이름은 translations 에서 가져온다 (설계 원칙 2).
   const jobNames = await namesOf(
@@ -87,10 +96,13 @@ export default async function GalleryPage({
 
   return (
     <MentoringShell user={user} current="/mentoring" isMentor={Boolean(mine)}>
-      <div className="page-head">
-        <h1>현직자 멘토링</h1>
-        <span className="count">{cards.length}명</span>
-      </div>
+      {/* 처음 온 사람은 히어로가 제목을 대신한다. 같은 말을 두 번 하지 않는다 */}
+      {user ? (
+        <div className="page-head">
+          <h1>현직자 멘토링</h1>
+          <span className="count">{cards.length}명</span>
+        </div>
+      ) : null}
 
       {fromReport && jobId ? (
         <div className="from-report">
@@ -101,12 +113,59 @@ export default async function GalleryPage({
         </div>
       ) : null}
 
-      <p className="lede">
-        <b>석·박사</b>가 석·박사에게 묻는 자리입니다. 멘토는 학위 과정을 지나 지금 그
-        경로에 있는 사람이고, 전원 익명입니다 — 소속 회사명과 실명은 공개되지 않습니다.
-        시간대를 골라 신청하면 멘토가 <b>24시간 안에</b> 답하고, 승낙되는 순간 줌 링크가
-        자동으로 만들어져 두 사람에게 발송됩니다.
-      </p>
+      {user ? (
+        <p className="lede">
+          <b>석·박사</b>가 석·박사에게 묻는 자리입니다. 멘토는 학위 과정을 지나 지금 그
+          경로에 있는 사람이고, 전원 익명입니다 — 소속 회사명과 실명은 공개되지 않습니다.
+          시간대를 골라 신청하면 멘토가 <b>24시간 안에</b> 답하고, 승낙되는 순간 줌 링크가
+          자동으로 만들어져 두 사람에게 발송됩니다.
+        </p>
+      ) : null}
+
+      {!user ? (
+        <section className="hero">
+          <h2>
+            학위를 마친 뒤의 길은
+            <br />
+            먼저 걸어본 사람만 압니다
+          </h2>
+          <p>
+            논문 실적을 이력서로 옮기는 법, 포닥을 거칠지 말지, 출연연과 산업계의 차이 —
+            지도교수도 취업 상담사도 답하기 어려운 질문들입니다. 현멘은 그 길을 실제로
+            걸어간 석·박사에게 <b>30분 동안 직접 묻는 자리</b>입니다.
+          </p>
+          <p className="hero-sub">
+            멘토는 전원 <b>익명</b>입니다. 회사명과 실명은 공개되지 않고, 운영사가 현직
+            여부를 확인한 사람만 갤러리에 올라갑니다. 시간대를 골라 신청하면
+            <b> 24시간 안에</b> 답이 옵니다.
+          </p>
+          <div className="join">
+            <a className="act solid" href="#gallery">
+              멘토 둘러보기
+            </a>
+            <Link className="act" href="/mentoring/guide">
+              어떻게 돌아가나요
+            </Link>
+          </div>
+          {stats && stats.mentors > 0 ? (
+            <div className="hero-stats">
+              <span>
+                <b>{stats.mentors}명</b> 인증된 현직자
+              </span>
+              {stats.sessions > 0 ? (
+                <span>
+                  <b>{stats.sessions}회</b> 진행된 세션
+                </span>
+              ) : null}
+              {stats.rating ? (
+                <span>
+                  <b>★ {stats.rating}</b> 평균 만족도
+                </span>
+              ) : null}
+            </div>
+          ) : null}
+        </section>
+      ) : null}
 
       {!user ? (
         <section className="visitor">
@@ -158,7 +217,7 @@ export default async function GalleryPage({
         </section>
       ) : null}
 
-      <div className="filters">
+      <div className="filters" id="gallery">
         <div className="filter-row">
           <span className="filter-label">진로 경로</span>
           <Link className={`chip ${!path ? "on" : ""}`} href={qs({ path: undefined })}>
