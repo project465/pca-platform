@@ -1017,6 +1017,44 @@ export const kr: SiteContent = {
     error: "보내지 못했습니다. 잠시 후 다시 시도해 주세요.",
   },
 
+  chrome: {
+    glanceLabel: "한눈에",
+    glanceHeading: "진단 한 번이 실행까지 이어집니다",
+    flow: ["진단 응시", "직무 영역 10개", "업무 성향 6유형", "실행 전략", "지역 기업 연계"],
+    seeSheet: "결과지 구성 보기",
+    photosHome: [
+      "사진 자리 — 직무별 취업 특강 현장",
+      "사진 자리 — STEM 멘토링 진행 장면",
+      "사진 자리 — 채용 박람회 부스",
+    ],
+    photosAbout: [
+      "사진 자리 — 대학 행사 운영",
+      "사진 자리 — 전문가 초청 특강",
+      "사진 자리 — 팀 또는 사무 공간",
+    ],
+    photoCohort: "사진 자리 — 학과 단위 단체 응시 현장",
+    deeperLabel: "더 보기",
+    deeperHeading: "필요한 곳부터 보세요",
+    nextLabel: "다음",
+    nextSheetToAdopt: "우리 학과에는 어떻게 적용될까요?",
+    nextDiagnosis: "PCA 진단 자세히",
+    nextContact: "도입·상담 문의",
+    policy: {
+      termsLabel: "이용약관",
+      termsTitle: "서비스 이용약관",
+      termsLead: "저희가 무엇을 하고 무엇을 하지 않는지, 그리고 응시권과 결과지가 어떤 것인지 적었습니다.",
+      privacyLabel: "개인정보처리방침",
+      privacyTitle: "개인정보를 이렇게 다룹니다",
+      privacyLead: "무엇을 받고, 얼마나 두고, 어떻게 없애는지 적었습니다.",
+      refundLabel: "환불 정책",
+      refundTitle: "환불은 이 기준으로 합니다",
+      refundLead: "응시 전과 응시 후가 다릅니다. 그 경계를 먼저 적었습니다.",
+      updated: "2026-09-11 개정",
+      reviewNote:
+        "이 약관은 법률 자문이 아닙니다. 게시 전에 변호사 검토를 받고, 아래 사업자 정보를 채우십시오. 직업정보제공사업 준수사항은 docs/metri/10_legal_kr.md 에 근거를 정리해 두었습니다.",
+    },
+  },
+
   footer: {
     note: "METRI · PCA 진단 엔진 · ACADEMIX가 개발했습니다 · 직업정보제공사업 신고 J1700020220007호",
     sitesLabel: "다른 나라",

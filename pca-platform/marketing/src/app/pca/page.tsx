@@ -8,7 +8,6 @@ export const metadata = { title: "PCA" };
 
 export default function PcaPage() {
   const site = getSite();
-  const kr = site.key === "kr";
   return (
     <Shell>
       <PageHead label={site.analyze.label} title={site.analyze.heading} lead={site.analyze.lead} />
@@ -20,13 +19,13 @@ export default function PcaPage() {
       <section className="divided">
         <div className="wrap photosplit">
           <PhotoSlot
-            caption={kr ? "사진 자리 — 학과 단위 단체 응시 현장" : "Photo — a department sitting the assessment"}
+            caption={site.chrome.photoCohort}
             ratio="4 / 3"
           />
           <div>
-            <span className="label-sm">{kr ? "다음" : "NEXT"}</span>
+            <span className="label-sm">{site.chrome.nextLabel}</span>
             <h2 style={{ margin: "16px 0 20px" }}>
-              {kr ? "우리 학과에는 어떻게 적용될까요?" : "What would this look like at your institution?"}
+              {site.chrome.nextSheetToAdopt}
             </h2>
             <div className="nextgrid" style={{ gridTemplateColumns: "1fr" }}>
               {site.nav.items.slice(1, 3).map((i) => (

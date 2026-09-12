@@ -7,16 +7,15 @@ export const metadata = { title: "About" };
 
 export default function AboutPage() {
   const site = getSite();
-  const kr = site.key === "kr";
   return (
     <Shell>
       <PageHead label={site.about.label} title={site.about.heading} lead={site.about.body} />
       <About site={site} />
       <section className="divided tinted">
         <div className="wrap photorow">
-          <PhotoSlot caption={kr ? "사진 자리 — 대학 행사 운영" : "Photo — university event"} tone="ink" />
-          <PhotoSlot caption={kr ? "사진 자리 — 전문가 초청 특강" : "Photo — invited speaker"} tone="ink" />
-          <PhotoSlot caption={kr ? "사진 자리 — 팀 또는 사무 공간" : "Photo — the team"} tone="ink" />
+          {site.chrome.photosAbout.map((caption) => (
+            <PhotoSlot key={caption} caption={caption} tone="ink" />
+          ))}
         </div>
       </section>
       <ProgramSection site={site} />

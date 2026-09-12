@@ -1037,6 +1037,43 @@ export const global: SiteContent = {
     error: "That did not send. Please try again in a moment.",
   },
 
+  chrome: {
+    glanceLabel: "At a glance",
+    glanceHeading: "One sitting, carried through to execution",
+    flow: ["Sitting", "Ten job areas", "Six work styles", "Execution plan", "Report"],
+    seeSheet: "See the result sheet",
+    photosHome: [
+      "Photo — employment lecture",
+      "Photo — STEM mentoring session",
+      "Photo — career fair",
+    ],
+    photosAbout: [
+      "Photo — university event",
+      "Photo — invited speaker",
+      "Photo — the team",
+    ],
+    photoCohort: "Photo — a department sitting the assessment",
+    deeperLabel: "Go deeper",
+    deeperHeading: "Start where it matters to you",
+    nextLabel: "Next",
+    nextSheetToAdopt: "What would this look like at your institution?",
+    nextDiagnosis: "The diagnosis",
+    nextContact: "Talk to us",
+    policy: {
+      termsLabel: "Terms of service",
+      termsTitle: "Terms of service",
+      termsLead: "What we do, what we do not do, and what a credit and a report actually are.",
+      privacyLabel: "Privacy policy",
+      privacyTitle: "How we handle personal data",
+      privacyLead: "What we collect, how long we keep it, and how it is destroyed.",
+      refundLabel: "Refund policy",
+      refundTitle: "When we refund",
+      refundLead: "Before a sitting and after a sitting are different. The boundary comes first.",
+      updated: "Updated 2026-09-11",
+      reviewNote: "These terms are not legal advice. Have counsel review them before publishing.",
+    },
+  },
+
   footer: {
     note: "PCA · developed by ACADEMIX",
     sitesLabel: "Countries",

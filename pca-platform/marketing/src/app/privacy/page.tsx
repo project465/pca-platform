@@ -13,7 +13,7 @@ export const metadata = { title: "개인정보처리방침 · Privacy" };
  */
 export default function PrivacyPage() {
   const site = getSite();
-  const kr = site.key === "kr";
+  const p = site.chrome.policy;
 
   const clausesKo: Clause[] = [
     {
@@ -166,20 +166,12 @@ export default function PrivacyPage() {
     <Shell>
       <Policy
         site={site}
-        label={kr ? "개인정보처리방침" : "PRIVACY POLICY"}
-        title={kr ? "개인정보를 이렇게 다룹니다" : "How we handle personal data"}
-        lead={
-          kr
-            ? "무엇을 받고, 얼마나 갖고 있고, 어떻게 없애는지 적었습니다. 여기 적힌 보유기간과 파기 절차는 실제로 코드가 하는 일과 같습니다."
-            : "What we collect, how long we keep it, and how we erase it. The retention periods and the erasure procedure here are what the code actually does."
-        }
-        updated={kr ? "2026-09-11 개정" : "Updated 2026-09-11"}
-        reviewNote={
-          kr
-            ? "이 방침은 법률 자문이 아닙니다. 게시 전에 개인정보 보호책임자를 지정하고, 아래 사업자 정보를 채우고, 변호사 또는 개인정보 전문가의 검토를 받으십시오."
-            : "This policy is not legal advice. Before publishing, appoint a privacy officer, fill in the business information below, and have it reviewed by counsel."
-        }
-        clauses={kr ? clausesKo : clausesEn}
+        label={p.privacyLabel}
+        title={p.privacyTitle}
+        lead={p.privacyLead}
+        updated={p.updated}
+        reviewNote={[p.reviewNote, p.clausesPending].filter(Boolean).join(" ")}
+        clauses={site.key === "kr" ? clausesKo : clausesEn}
       />
     </Shell>
   );

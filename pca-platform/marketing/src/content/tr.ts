@@ -593,6 +593,53 @@ export const tr: SiteContent = {
     error: "Gönderilemedi. Biraz sonra tekrar deneyin.",
   },
 
+  chrome: {
+    glanceLabel: "Kısaca",
+    glanceHeading: "Tek oturum, uygulamaya kadar bağlanır",
+    flow: [
+      "Envanteri doldurma",
+      "On görev alanı",
+      "Altı çalışma tarzı",
+      "Uygulama planı",
+      "Bölgedeki şirketlerle bağlantı",
+    ],
+    seeSheet: "Rapor yapısını gör",
+    photosHome: [
+      "Fotoğraf yeri — göreve göre kariyer dersi",
+      "Fotoğraf yeri — STEM mentorluk oturumu",
+      "Fotoğraf yeri — kariyer fuarı standı",
+    ],
+    photosAbout: [
+      "Fotoğraf yeri — üniversite etkinliği",
+      "Fotoğraf yeri — davetli konuşmacı",
+      "Fotoğraf yeri — ekip veya ofis",
+    ],
+    photoCohort: "Fotoğraf yeri — bölüm olarak toplu oturum",
+    deeperLabel: "Daha fazlası",
+    deeperHeading: "Sizin için önemli olan yerden başlayın",
+    nextLabel: "Sıradaki",
+    nextSheetToAdopt: "Bu bizim bölümde nasıl işler?",
+    nextDiagnosis: "Değerlendirme hakkında",
+    nextContact: "Görüşme talep et",
+    policy: {
+      termsLabel: "Kullanım şartları",
+      termsTitle: "Hizmet kullanım şartları",
+      termsLead:
+        "Ne yaptığımız, ne yapmadığımız ve bir kullanım hakkı ile raporun tam olarak ne olduğu burada yazılı.",
+      privacyLabel: "Gizlilik politikası",
+      privacyTitle: "Kişisel verileri nasıl işliyoruz",
+      privacyLead: "Neyi topluyoruz, ne kadar süre tutuyoruz ve nasıl yok ediyoruz.",
+      refundLabel: "İade politikası",
+      refundTitle: "İade hangi durumda yapılır",
+      refundLead: "Oturumdan önce ve oturumdan sonra farklıdır. Sınırı en başta yazdık.",
+      updated: "2026-09-11 güncellendi",
+      reviewNote:
+        "Bu metin hukuki danışmanlık değildir. Yayımlamadan önce avukat incelemesinden geçirin ve aşağıdaki işletme bilgilerini doldurun.",
+      clausesPending:
+        "Aşağıdaki maddelerin metni İngilizce referans sürümüdür. 6698 sayılı KVKK ve Mesafeli Sözleşmeler Yönetmeliği'ne uygun Türkçe sürüm, yerel hukuk incelemesinden sonra yayımlanacaktır.",
+    },
+  },
+
   footer: {
     note: "METRI · PCA değerlendirme motoru · ACADEMIX tarafından geliştirildi",
     sitesLabel: "Diğer ülkeler",

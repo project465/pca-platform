@@ -445,6 +445,60 @@ export type SiteContent = {
     error: string;
   };
 
+  /**
+   * 화면 껍데기의 짧은 문구.
+   *
+   * 예전에는 페이지 안에서 `kr ? "한눈에" : "AT A GLANCE"` 로 갈랐다.
+   * 나라가 둘일 때만 맞는 코드라서, 카자흐·튀르키예 사이트가 영어 가지로
+   * 떨어져 한 절이 통째로 영어로 나갔다(설계 원칙 2 — 사람이 읽는 이름은
+   * 컬럼이나 삼항연산자가 아니라 데이터에 있어야 한다).
+   */
+  chrome: {
+    /** 흐름도 절 */
+    glanceLabel: string;
+    glanceHeading: string;
+    flow: string[];
+    /** 결과지 구성 절의 버튼 */
+    seeSheet: string;
+    /** 사진 자리 설명 — 홈 세 장 */
+    photosHome: string[];
+    /** 사진 자리 설명 — 기관 소개 세 장 */
+    photosAbout: string[];
+    /** 결과지 페이지의 단체 응시 사진 */
+    photoCohort: string;
+    /** 더 보기 절 */
+    deeperLabel: string;
+    deeperHeading: string;
+    /** 결과지 페이지 끝의 다음 링크 */
+    nextLabel: string;
+    nextSheetToAdopt: string;
+    /** 요금 페이지 끝의 다음 링크 두 개 */
+    nextDiagnosis: string;
+    nextContact: string;
+    /**
+     * 약관·방침 화면의 머리.
+     *
+     * 조항 본문은 나라마다 법이 달라 번역으로 만들 수 없다 — 한국어판과
+     * 영어 기준본만 있고, 나머지 나라는 `clausesPending` 에 그 사실을
+     * 적어 화면에 그대로 띄운다. 비어 있으면 아무 말도 하지 않는다.
+     */
+    policy: {
+      termsLabel: string;
+      termsTitle: string;
+      termsLead: string;
+      privacyLabel: string;
+      privacyTitle: string;
+      privacyLead: string;
+      refundLabel: string;
+      refundTitle: string;
+      refundLead: string;
+      updated: string;
+      reviewNote: string;
+      /** 조항 본문이 현지어가 아닐 때 그 사실을 알리는 한 줄 */
+      clausesPending?: string;
+    };
+  };
+
   footer: {
     note: string;
     sitesLabel: string;

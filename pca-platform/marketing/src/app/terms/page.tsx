@@ -6,7 +6,7 @@ export const metadata = { title: "이용약관 · Terms" };
 
 export default function TermsPage() {
   const site = getSite();
-  const kr = site.key === "kr";
+  const p = site.chrome.policy;
 
   const ko: Clause[] = [
     {
@@ -126,20 +126,12 @@ export default function TermsPage() {
     <Shell>
       <Policy
         site={site}
-        label={kr ? "이용약관" : "TERMS OF SERVICE"}
-        title={kr ? "서비스 이용약관" : "Terms of service"}
-        lead={
-          kr
-            ? "저희가 무엇을 하고 무엇을 하지 않는지, 그리고 응시권과 결과지가 어떤 것인지 적었습니다."
-            : "What we do, what we do not do, and what a credit and a report actually are."
-        }
-        updated={kr ? "2026-09-11 개정" : "Updated 2026-09-11"}
-        reviewNote={
-          kr
-            ? "이 약관은 법률 자문이 아닙니다. 게시 전에 변호사 검토를 받고, 아래 사업자 정보를 채우십시오. 직업정보제공사업 준수사항은 docs/metri/10_legal_kr.md 에 근거를 정리해 두었습니다."
-            : "These terms are not legal advice. Have counsel review them before publishing."
-        }
-        clauses={kr ? ko : en}
+        label={p.termsLabel}
+        title={p.termsTitle}
+        lead={p.termsLead}
+        updated={p.updated}
+        reviewNote={[p.reviewNote, p.clausesPending].filter(Boolean).join(" ")}
+        clauses={site.key === "kr" ? ko : en}
       />
     </Shell>
   );

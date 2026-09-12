@@ -12,7 +12,7 @@ export const metadata = { title: "환불 정책 · Refunds" };
  */
 export default function RefundPage() {
   const site = getSite();
-  const kr = site.key === "kr";
+  const p = site.chrome.policy;
 
   const ko: Clause[] = [
     {
@@ -98,20 +98,12 @@ export default function RefundPage() {
     <Shell>
       <Policy
         site={site}
-        label={kr ? "환불 정책" : "REFUND POLICY"}
-        title={kr ? "환불은 이 기준으로 합니다" : "When we refund"}
-        lead={
-          kr
-            ? "응시를 시작했는지가 기준입니다. 시작 전이면 전액, 시작 후면 환불되지 않습니다."
-            : "The line is whether you started the assessment. Before: full refund. After: none."
-        }
-        updated={kr ? "2026-09-11 개정" : "Updated 2026-09-11"}
-        reviewNote={
-          kr
-            ? "결제를 열기 전에 이 내용이 결제 화면 안내와 일치하는지, 그리고 전자상거래법 제17조와 어긋나지 않는지 확인받으십시오."
-            : "Before taking payments, confirm this matches the checkout copy and your local distance-selling law."
-        }
-        clauses={kr ? ko : en}
+        label={p.refundLabel}
+        title={p.refundTitle}
+        lead={p.refundLead}
+        updated={p.updated}
+        reviewNote={[p.reviewNote, p.clausesPending].filter(Boolean).join(" ")}
+        clauses={site.key === "kr" ? ko : en}
       />
     </Shell>
   );

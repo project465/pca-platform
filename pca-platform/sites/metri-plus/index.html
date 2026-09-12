@@ -106,6 +106,55 @@ a { color: inherit; }
   color: var(--muted);
 }
 
+/* ── 머리 띠 ──────────────────────────────────
+   다른 사이트들처럼 메뉴를 얹는다. 한 장짜리 페이지라
+   링크는 전부 이 페이지 안의 절을 가리킨다. */
+.topbar {
+  position: sticky; top: 0; z-index: 40;
+  background: rgba(255,255,255,.92); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .topbar { background: rgba(11,18,26,.92); }
+}
+:root[data-theme="dark"] .topbar { background: rgba(11,18,26,.92); }
+.topbar .bar { display: flex; align-items: center; gap: 20px; min-height: 62px; }
+.tb-brand { display: flex; align-items: baseline; gap: 7px; text-decoration: none; flex: none; }
+.tb-brand b { font-family: var(--display); font-weight: 900; font-size: 16px; letter-spacing: -0.03em; }
+.tb-brand span { font-size: 11.5px; font-weight: 700; color: var(--amber); }
+.topbar nav.wide { display: flex; gap: 17px; margin-left: auto; }
+.topbar nav.wide a {
+  font-size: 13px; font-weight: 600; color: var(--muted);
+  text-decoration: none; white-space: nowrap;
+}
+.topbar nav.wide a:hover { color: var(--ink); }
+.topbar .tb-cta {
+  flex: none; margin-left: 16px; font-size: 13.5px; font-weight: 700;
+  text-decoration: none; padding: 9px 15px; border-radius: var(--r);
+  background: var(--ink); color: var(--paper);
+}
+.tb-menu { display: none; margin-left: auto; position: relative; }
+.tb-menu summary {
+  list-style: none; cursor: pointer; font-size: 13.5px; font-weight: 700;
+  padding: 9px 14px; border: 1px solid var(--line-2); border-radius: var(--r);
+}
+.tb-menu summary::-webkit-details-marker { display: none; }
+.tb-menu[open] summary { border-color: var(--ink); }
+.tb-menu nav {
+  position: absolute; right: 0; top: calc(100% + 9px); z-index: 50;
+  background: var(--paper); border: 1px solid var(--line-2); border-radius: var(--r);
+  display: grid; min-width: 210px; max-width: calc(100vw - 32px); overflow: hidden;
+}
+.tb-menu nav a {
+  padding: 12px 16px; font-size: 13.5px; font-weight: 600; text-decoration: none;
+  border-bottom: 1px solid var(--line);
+}
+.tb-menu nav a:last-child { border-bottom: 0; }
+@media (max-width: 900px) {
+  .topbar nav.wide, .topbar .tb-cta { display: none; }
+  .tb-menu { display: block; }
+}
+
 /* ── 표지 ─────────────────────────────────── */
 .cover { background: #0F1B2D; color: var(--onnavy); }
 .cover-in {
@@ -119,6 +168,7 @@ a { color: inherit; }
   max-width: 19ch;
 }
 .cover h1 em { font-style: normal; }
+.cover-lead b { color: #fff; font-weight: 700; }
 .cover-lead {
   color: var(--onnavy-2);
   max-width: var(--measure);
@@ -145,6 +195,8 @@ a { color: inherit; }
 
 /* ── 절 ───────────────────────────────────── */
 .sec { padding-block: clamp(48px, 7.5vw, 88px); border-top: 1px solid var(--line); }
+/* 머리 띠가 붙어 있으니 그만큼 띄워야 절 제목이 가려지지 않는다 */
+.sec[id], header[id] { scroll-margin-top: 62px; }
 .sec:first-of-type { border-top: 0; }
 .sec.tint { background: var(--ground-2); }
 .sec-head { display: grid; gap: 10px; margin-bottom: clamp(24px, 3.5vw, 36px); }
@@ -319,7 +371,36 @@ footer .wrap { display: grid; gap: 8px; }
 .vis-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 </style>
 
-<header class="cover">
+<div class="topbar">
+  <div class="wrap bar">
+    <a class="tb-brand" href="#top"><b>메트리 플러스</b><span>중·고등학생</span></a>
+    <nav class="wide">
+      <a href="#fields">8계열</a>
+      <a href="#items">문항</a>
+      <a href="#chain">현장에서 거꾸로</a>
+      <a href="#subjects">과목 처방</a>
+      <a href="#evidence">검증</a>
+      <a href="#price">값</a>
+    </nav>
+    <a class="tb-cta" href="#contact">도입 문의</a>
+    <details class="tb-menu">
+      <summary>메뉴</summary>
+      <nav>
+        <a href="#fields">8계열</a>
+        <a href="#items">문항</a>
+        <a href="#chain">현장에서 거꾸로</a>
+        <a href="#subjects">과목 처방</a>
+        <a href="#axes">무엇으로 재는가</a>
+        <a href="#evidence">검증</a>
+        <a href="#price">값</a>
+        <a href="#scope">범위</a>
+        <a href="#contact">도입 문의</a>
+      </nav>
+    </details>
+  </div>
+</div>
+
+<header class="cover" id="top">
   <div class="wrap cover-in">
     <svg class="logo" viewBox="-26 -16 652 212" role="img" aria-label="METRI PLUS">
       <title>METRI PLUS</title>
@@ -340,8 +421,13 @@ footer .wrap { display: grid; gap: 8px; }
     <div style="display:grid;gap:18px">
       <h1>중학생과 고등학생에게는 <em>다른 문장</em>으로 물어야 합니다</h1>
       <p class="cover-lead">
-        메트리 플러스는 이공계 8계열 중 어디가 자기와 맞는지를 재는 진단입니다.
-        115문항, 약 15분. 문항은 전부 중·고등학생의 하루에서 나온 장면으로 썼습니다.
+        이공계 8계열 중 어디가 자기와 맞는지를 재고, 다음 학기 과목 신청서까지 내려가는
+        진단입니다. 115문항, 약 15분. 문항은 전부 중·고등학생의 하루에서 나온 장면으로 썼습니다.
+      </p>
+      <p class="cover-lead">
+        <b>한국 교육과정 전용입니다.</b> 2022 개정 교육과정 과목표와 2028 대입을
+        전제로 만들었기 때문에 다른 나라로 그대로 나갈 수 없습니다. 그 대신 과목 이름과 학년까지
+        적을 수 있습니다.
       </p>
     </div>
 
@@ -362,7 +448,7 @@ footer .wrap { display: grid; gap: 8px; }
 
 <main>
   <!-- 8계열 -->
-  <section class="sec">
+  <section class="sec" id="fields">
     <div class="wrap">
       <div class="sec-head">
         <span class="eyebrow">무엇을 재는가</span>
@@ -380,14 +466,14 @@ footer .wrap { display: grid; gap: 8px; }
         <div class="field"><b>바이오·의공학</b><div class="ax"><span class="chip">탐구·이론</span><span class="chip">해석·계산</span><span class="chip dim">제작·실험</span></div></div>
       </div>
       <p class="note" style="margin-top:18px">
-        경영·경제·인문·예체능 계열은 다루지 않습니다. “모든 계열을 다 봐 주는 진로검사”는 이미 많고 대개 무료입니다.
-        이공계 한 갈래를 끝까지 파는 것이 이 제품이 존재하는 이유입니다.
+        경영·경제·인문·예체능 계열은 다루지 않습니다. “모든 계열을 다 봐 주는 진로검사”는 이미 많고 대개
+        무료입니다. 이 검사는 이공계 여덟 갈래만 보는 대신 과목 이름과 학년까지 적습니다.
       </p>
     </div>
   </section>
 
   <!-- 문항 예시 -->
-  <section class="sec tint">
+  <section class="sec tint" id="items">
     <div class="wrap">
       <div class="sec-head">
         <span class="eyebrow">실제 문항</span>
@@ -578,7 +664,7 @@ footer .wrap { display: grid; gap: 8px; }
   </section>
 
   <!-- 무엇으로 재는가 -->
-  <section class="sec">
+  <section class="sec" id="axes">
     <div class="wrap">
       <div class="sec-head">
         <span class="eyebrow">무엇으로 재는가</span>
@@ -609,7 +695,7 @@ footer .wrap { display: grid; gap: 8px; }
   </section>
 
   <!-- 묶음 -->
-  <section class="sec tint">
+  <section class="sec tint" id="tiers">
     <div class="wrap">
       <div class="sec-head">
         <span class="eyebrow">결과지가 하지 않는 것</span>
@@ -646,7 +732,7 @@ footer .wrap { display: grid; gap: 8px; }
   </section>
 
   <!-- 숫자 -->
-  <section class="sec">
+  <section class="sec" id="evidence">
     <div class="wrap">
       <div class="sec-head">
         <span class="eyebrow">검증</span>
@@ -677,7 +763,7 @@ footer .wrap { display: grid; gap: 8px; }
   </section>
 
   <!-- 가격 -->
-  <section class="sec tint">
+  <section class="sec tint" id="price">
     <div class="wrap">
       <div class="sec-head">
         <span class="eyebrow">값</span>
@@ -689,7 +775,7 @@ footer .wrap { display: grid; gap: 8px; }
           <span class="amt">19,000<span style="font-size:.5em;font-weight:700"> 원</span></span>
           <ul>
             <li>115문항 · 약 15분</li>
-            <li>계열 적합 결과지 (한국어·영어)</li>
+            <li>계열 적합 결과지 · 한국어</li>
             <li>구간·묶음 표기. 등수 없음</li>
             <li>고교학점제 과목 처방</li>
           </ul>
@@ -708,24 +794,26 @@ footer .wrap { display: grid; gap: 8px; }
   </section>
 
   <!-- 아직 없는 것 -->
-  <section class="sec">
+  <section class="sec" id="scope">
     <div class="wrap">
       <div class="sec-head">
         <span class="eyebrow">범위</span>
         <h2>지금 되는 것과, 아직 안 되는 것</h2>
-        <p>파는 쪽이 안 되는 것을 먼저 말해야 학교가 계획을 세울 수 있습니다.</p>
+        <p>
+          파는 쪽이 안 되는 것을 먼저 말해야 학교가 계획을 세울 수 있습니다.
+          <b>한국 밖으로는 나가지 않습니다</b> — 과목표·내신·수능이 나라마다 다르고,
+          그것을 모르면 과목 처방이 빈말이 됩니다.
+        </p>
       </div>
       <div class="todo">
         <ul>
           <li class="done">115문항 · 결제 → 응시 → 채점 → 결과지가 끝까지 돈다</li>
           <li class="done">계열 적합 · 활동 8축 · 성향 6축 · 응답 신뢰도</li>
-          <li class="done">학교 단체 진행과 익명 집계 리포트</li>
-          <li class="done">한국어 · 영어 결과지</li>
+          <li class="done">학교 단체 진행과 익명 집계 리포트 (5명 미만 칸은 감춤)</li>
           <li class="done">고교학점제 <b>과목 처방</b> — 73과목, 학년별·선수과목·서울대 권장 대조까지</li>
           <li><b>학교가 실제로 여는 과목</b> — 학교가 교육과정 편제표를 올려야 “이 학교엔 없는 과목”을 표시할 수 있습니다</li>
           <li>마이스터고·특성화고용 <b>자격·NCS 처방</b></li>
           <li>중학생용 결과지 뒷부분 (어느 고등학교를 볼 것인가)</li>
-          <li>튀르키예어 문항 — 중·고등학생은 국내부터입니다</li>
           <li>결제 연동 — PG 가맹점 심사와 통신판매업 신고가 끝나야 열립니다</li>
         </ul>
       </div>
@@ -733,12 +821,15 @@ footer .wrap { display: grid; gap: 8px; }
   </section>
 
   <!-- 문의 -->
-  <section class="sec tint">
+  <section class="sec tint" id="contact">
     <div class="wrap">
       <div class="sec-head">
         <span class="eyebrow">도입 문의</span>
         <h2>한 학급으로 먼저 해 보시는 것을 권합니다</h2>
-        <p>학년 전체를 한 번에 돌리기 전에 한 반 30명으로 결과지를 받아 보시면, 학교가 실제로 무엇을 쓰게 되는지가 보입니다.</p>
+        <p>
+          학년 전체를 한 번에 돌리기 전에 한 반으로 먼저 받아 보십시오. 결과지가 손에 들어오면
+          담임이 상담에서 무엇을 쓰게 되는지, 과목 신청 기간에 무엇이 필요한지가 보입니다.
+        </p>
       </div>
       <div class="contact">
         <dl class="kv">
@@ -749,7 +840,7 @@ footer .wrap { display: grid; gap: 8px; }
           <dt>연락처</dt><dd class="unset">확인 필요</dd>
         </dl>
         <p class="note">
-          담당자와 연락처는 아직 정해지지 않아 비워 두었습니다. 지어내지 않습니다.
+          담당자와 연락처는 아직 정해지지 않아 비워 두었습니다.
         </p>
       </div>
     </div>
@@ -758,7 +849,7 @@ footer .wrap { display: grid; gap: 8px; }
 
 <footer>
   <div class="wrap">
-    <p><b>메트리 플러스</b> — 중·고등학생 이공계 계열 적합 진단.</p>
+    <p><b>메트리 플러스</b> — 중·고등학생 이공계 계열 적합 진단. 대한민국 교육과정 전용.</p>
     <p>이 페이지의 숫자는 가상 응시자 500명 시뮬레이션 결과이며, 실제 학생 표본이 아닙니다. 규준(norm)은 첫 학교 도입 이후 만들어집니다.</p>
   </div>
 </footer>
