@@ -357,3 +357,143 @@ td .sub { display: block; font-size: 12.5px; color: var(--muted); }
   .two { grid-template-columns: 1fr; }
   .filter-label { width: auto; }
 }
+
+/* ============================================================
+   학생 결과지 — mockups/02_student_report.html 을 그대로 옮긴다.
+   시안이 확정된 값이므로 수치를 임의로 바꾸지 않는다.
+   게이지의 '현직자 n명' 링크 한 칸만 시안에 없던 것이다.
+   ============================================================ */
+
+.sheet-wrap { padding: 32px 20px 80px; }
+.sheet { max-width: 880px; margin: 0 auto; background: var(--paper); border: 1px solid var(--rule); }
+
+.sheet .top {
+  display: flex; flex-wrap: wrap; gap: 8px 28px; align-items: baseline;
+  padding: 22px 40px; border-bottom: 2px solid var(--ink);
+}
+.sheet .top h1 { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
+.sheet .meta {
+  color: var(--muted); font-size: 13.5px; display: flex; gap: 20px;
+  flex-wrap: wrap; margin-left: auto;
+}
+.sheet section { padding: 38px 40px; border-bottom: 1px solid var(--rule); }
+.sheet section:last-of-type { border-bottom: 0; }
+.sheet h2 {
+  font-size: 14px; font-weight: 700; color: var(--muted);
+  margin-bottom: 26px; letter-spacing: -0.01em;
+}
+
+.lead { display: flex; align-items: flex-end; gap: 18px; margin-bottom: 4px; flex-wrap: wrap; }
+.lead .name { font-size: 38px; font-weight: 800; letter-spacing: -0.035em; line-height: 1.1; }
+.lead .score { font-size: 38px; font-weight: 300; color: var(--muted); letter-spacing: -0.04em; }
+.lead .score b { font-weight: 800; color: var(--ink); }
+.lead-note { color: var(--muted); font-size: 14.5px; margin-bottom: 34px; max-width: 62ch; }
+
+/* 시안은 3열이다. 현직자 링크 한 열을 오른쪽에 덧댔다 */
+.gauge {
+  display: grid; grid-template-columns: 150px 1fr 46px 92px;
+  align-items: center; gap: 0 16px; padding: 9px 0;
+}
+.gauge + .gauge { border-top: 1px dotted var(--rule); }
+.gauge .lab { font-size: 14.5px; font-weight: 500; }
+.gauge.is-top .lab { font-weight: 800; }
+.track { position: relative; height: 22px; }
+.track .ticks { position: absolute; inset: 0; display: flex; }
+.track .ticks i { flex: 1; border-right: 1px solid var(--rule); }
+.track .ticks i:last-child { border-right: 0; }
+.bar { position: absolute; top: 5px; height: 12px; left: 0; background: var(--muted); }
+.gauge.is-top .bar { background: var(--ink); }
+.gauge .val { font-size: 14.5px; text-align: right; color: var(--muted); }
+.gauge.is-top .val { color: var(--ink); font-weight: 700; }
+.gauge-link { font-size: 12.5px; text-align: right; }
+.gauge-link a { color: var(--met); text-decoration: none; border-bottom: 1px solid var(--met); }
+.gauge-link a:hover { color: var(--ink); border-bottom-color: var(--ink); }
+
+.scale { display: grid; grid-template-columns: 150px 1fr 46px 92px; gap: 0 16px; margin-top: 8px; }
+.scale span:nth-child(2) {
+  display: flex; justify-content: space-between; font-size: 11.5px; color: var(--muted);
+}
+
+.comp {
+  display: grid; grid-template-columns: 170px 1fr 92px; gap: 0 16px;
+  align-items: center; padding: 13px 0;
+}
+.comp + .comp { border-top: 1px solid var(--rule); }
+.comp .lab { font-size: 14.5px; font-weight: 500; }
+.comp .lab small { display: block; font-size: 12px; color: var(--muted); font-weight: 400; }
+.blocks { display: flex; gap: 5px; }
+.blocks span { flex: 1; height: 16px; border: 1px solid var(--rule); background: transparent; }
+.blocks span.has { background: var(--met); border-color: var(--met); }
+.blocks span.short {
+  background: repeating-linear-gradient(135deg, #F2D9D6 0 4px, transparent 4px 8px);
+  border-color: var(--gap);
+}
+.verdict { font-size: 13px; text-align: right; font-weight: 700; }
+.verdict.ok { color: var(--met); }
+.verdict.mid { color: var(--partial); }
+.verdict.no { color: var(--gap); }
+
+.course { padding: 16px 0; display: grid; grid-template-columns: 1fr auto; gap: 6px 20px; }
+.course + .course { border-top: 1px solid var(--rule); }
+.course h3 { font-size: 16px; font-weight: 700; letter-spacing: -0.015em; }
+.course p { font-size: 13.5px; color: var(--muted); grid-column: 1/-1; max-width: 60ch; }
+.course .code { font-size: 13px; color: var(--muted); white-space: nowrap; }
+.tags { grid-column: 1/-1; display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+.tags b {
+  font-size: 12px; font-weight: 600; color: var(--met);
+  border: 1px solid var(--met); padding: 1px 7px;
+}
+
+/* 결과지 안의 멘토 칸 */
+.rec-list { list-style: none; display: flex; flex-direction: column; }
+.rec-list li + li { border-top: 1px solid var(--rule); }
+.rec-list a {
+  display: grid; grid-template-columns: 1fr auto; gap: 2px 16px;
+  padding: 14px 0; text-decoration: none;
+}
+.rec-list a:hover b { text-decoration: underline; }
+.rec-list b { font-size: 16px; font-weight: 700; letter-spacing: -0.015em; }
+.rec-meta { font-size: 13px; color: var(--muted); text-align: right; }
+.rec-head { grid-column: 1/-1; font-size: 13.5px; color: var(--s2); }
+.rec-slot { grid-column: 1/-1; font-size: 12.5px; color: var(--met); font-weight: 700; }
+.sheet-more { margin-top: 16px; font-size: 13.5px; }
+.sheet-more a { color: var(--ink); }
+
+.sheet .foot { padding: 20px 40px; color: var(--muted); font-size: 12.5px; background: #F7F9FA; }
+
+/* 결과지에서 넘어왔을 때 갤러리 맨 위에 붙는 줄 */
+.from-report {
+  background: var(--paper); border: 1px solid var(--ink);
+  padding: 14px 18px; margin-bottom: 18px;
+  display: flex; gap: 14px; align-items: baseline; flex-wrap: wrap;
+  font-size: 14px;
+}
+.from-report b { font-weight: 800; }
+.from-report a { margin-left: auto; font-size: 13.5px; }
+
+/* 학생 홈에서 현멘으로 건너가는 칸 */
+.cross-link {
+  margin-top: 26px; background: var(--paper); border: 1px solid var(--rule);
+  padding: 20px 22px; display: flex; gap: 18px; align-items: center; flex-wrap: wrap;
+}
+.cross-link b { font-size: 15px; }
+.cross-link p { font-size: 13.5px; color: var(--muted); margin-top: 4px; max-width: 56ch; }
+.cross-link .act { margin-left: auto; }
+
+@media (max-width: 620px) {
+  .sheet-wrap { padding: 0 0 40px; }
+  .sheet { border-left: 0; border-right: 0; }
+  .sheet .top, .sheet section, .sheet .foot { padding-left: 20px; padding-right: 20px; }
+  .gauge, .scale { grid-template-columns: 96px 1fr 38px 64px; }
+  .comp { grid-template-columns: 1fr; gap: 8px; }
+  .verdict { text-align: left; }
+  .lead .name, .lead .score { font-size: 30px; }
+  .cross-link .act { margin-left: 0; }
+}
+@media print {
+  body { background: #fff; }
+  .sheet-wrap { padding: 0; }
+  .sheet { border: 0; max-width: none; }
+  .sheet section { break-inside: avoid; }
+  .gauge-link, .sheet-more { display: none; }
+}

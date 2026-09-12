@@ -119,6 +119,16 @@ export async function listGallery(filter: {
   return rows;
 }
 
+/**
+ * 특정 직무 영역을 다루는 멘토 몇 명. 결과지에서 바로 보여주기 위한 것이다.
+ * 지금 신청할 수 있는 사람(열린 시간대가 있는 사람)만 고른다 — 결과지에서 눌렀는데
+ * 신청할 수 없는 사람이 나오면 동선이 거기서 끊긴다.
+ */
+export async function mentorsForJob(jobId: string, limit = 3): Promise<GalleryCard[]> {
+  const all = await listGallery({ jobId });
+  return all.filter((m) => m.open_slots > 0).slice(0, limit);
+}
+
 export type SlotRow = { id: string; starts_at: string; status: string };
 
 /** 상세 화면에 뿌리는 시간대. 너무 임박한 것은 빼고 보여준다. */

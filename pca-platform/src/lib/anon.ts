@@ -128,7 +128,16 @@ export function mentorTitle(m: {
   degree: string;
   career_path: string;
 }): string {
-  return `${m.alias} · ${degreeLabel(m.degree)} · ${careerPathLabel(m.career_path)} ${m.years}년차`;
+  return `${m.alias} · ${mentorFacets(m)}`;
+}
+
+/** 별명 없이 속성만. 별명을 이미 크게 띄운 자리(결과지 추천 줄 등)에서 쓴다. */
+export function mentorFacets(m: {
+  years: number;
+  degree: string;
+  career_path: string;
+}): string {
+  return `${degreeLabel(m.degree)} · ${careerPathLabel(m.career_path)} ${m.years}년차`;
 }
 
 /**

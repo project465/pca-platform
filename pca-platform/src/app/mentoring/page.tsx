@@ -28,7 +28,14 @@ export const dynamic = "force-dynamic";
 export default async function GalleryPage({
   searchParams,
 }: {
-  searchParams: Promise<{ job?: string; degree?: string; path?: string; track?: string }>;
+  searchParams: Promise<{
+    job?: string;
+    degree?: string;
+    path?: string;
+    track?: string;
+    /** 결과지에서 넘어왔다는 표시. 맥락을 잃지 않게 한 줄 띄운다 */
+    from?: string;
+  }>;
 }) {
   const user = await requireUser();
   const sp = await searchParams;
@@ -36,6 +43,7 @@ export default async function GalleryPage({
   const degree = DEGREES.includes((sp.degree ?? "") as never) ? sp.degree : undefined;
   const path = CAREER_PATHS.includes((sp.path ?? "") as never) ? sp.path : undefined;
   const track = FIELD_TRACKS.includes((sp.track ?? "") as never) ? sp.track : undefined;
+  const fromReport = sp.from === "report";
 
   const [cards, mine, clusters] = await Promise.all([
     listGallery({ jobId, degree, path, track }),
@@ -55,7 +63,14 @@ export default async function GalleryPage({
 
   const qs = (patch: Record<string, string | undefined>) => {
     const p = new URLSearchParams();
-    const next = { job: jobId, degree, path, track, ...patch };
+    const next = {
+      job: jobId,
+      degree,
+      path,
+      track,
+      from: fromReport ? "report" : undefined,
+      ...patch,
+    };
     for (const [k, v] of Object.entries(next)) if (v) p.set(k, v);
     const s = p.toString();
     return s ? `/mentoring?${s}` : "/mentoring";
@@ -67,6 +82,15 @@ export default async function GalleryPage({
         <h1>현직자 멘토링</h1>
         <span className="count">{cards.length}명</span>
       </div>
+
+      {fromReport && jobId ? (
+        <div className="from-report">
+          <span>
+            결과지의 <b>{jobLabel(jobId)}</b> 직무 영역을 다루는 현직자만 보고 있습니다.
+          </span>
+          <Link href={qs({ job: undefined, from: undefined })}>필터 지우고 전체 보기</Link>
+        </div>
+      ) : null}
 
       <p className="lede">
         <b>석·박사</b>가 석·박사에게 묻는 자리입니다. 멘토는 학위 과정을 지나 지금 그
@@ -135,7 +159,9 @@ export default async function GalleryPage({
       {cards.length === 0 ? (
         <div className="empty">
           <b>조건에 맞는 멘토가 없습니다</b>
-          필터를 지우면 전체 멘토를 볼 수 있습니다. 승인된 멘토만 여기에 나옵니다.
+          {fromReport
+            ? "이 직무 영역의 현직자가 아직 없습니다. 필터를 지우면 다른 경로의 멘토를 볼 수 있습니다."
+            : "필터를 지우면 전체 멘토를 볼 수 있습니다. 승인된 멘토만 여기에 나옵니다."}
         </div>
       ) : (
         <ul className="gallery">

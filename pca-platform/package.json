@@ -10,7 +10,8 @@
     "db:reset": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 -f db/schema.sql",
     "db:seed": "tsx scripts/seed.ts",
     "db:seed:mentoring": "tsx scripts/seed-mentoring.ts",
-    "notify": "tsx scripts/notify.ts"
+    "notify": "tsx scripts/notify.ts",
+    "db:seed:report": "tsx scripts/seed-report.ts"
   },
   "dependencies": {
     "bcryptjs": "3.0.2",
