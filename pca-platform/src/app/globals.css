@@ -759,3 +759,21 @@ td .sub { display: block; font-size: 12.5px; color: var(--muted); }
 /* 묶음이 바뀌는 자리에 선을 하나 긋는다. 같은 묶음은 붙여 읽어야 한다 */
 .bandbars li.tierbreak { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--rule); }
 .bandbars .bb-rank { font-size: 11px; white-space: nowrap; }
+
+/* ---------- 운영사: 담당자 발급 ---------- */
+.staffpanel { margin-top: 26px; }
+.staffform {
+  margin-top: 14px; display: flex; gap: 14px; align-items: flex-end; flex-wrap: wrap;
+  background: var(--paper); border: 1px solid var(--rule); padding: 18px 20px;
+}
+.staffform .field { flex: 1; min-width: 170px; gap: 5px; }
+.staffform .field > span { font-size: 12.5px; font-weight: 700; }
+.staffform input, .staffform select {
+  font: inherit; font-size: 14px; padding: 9px 11px;
+  border: 1px solid var(--rule); background: var(--paper); color: var(--ink);
+}
+.tempkey {
+  background: var(--ink); color: #fff; padding: 3px 9px;
+  font-size: 13px; letter-spacing: 0.04em;
+}
+.page-head .right { display: flex; gap: 8px; }

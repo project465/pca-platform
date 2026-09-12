@@ -6,8 +6,10 @@ import { createContract, type ContractState } from "./actions";
 
 export default function ContractForm({
   orgs,
+  preset,
 }: {
   orgs: { id: string; code: string; name: string }[];
+  preset?: string;
 }) {
   const [state, action, pending] = useActionState<ContractState, FormData>(createContract, {});
   const today = new Date().toISOString().slice(0, 10);
@@ -17,7 +19,7 @@ export default function ContractForm({
     <form className="form" action={action}>
       <div className="field">
         <label htmlFor="orgId">기관</label>
-        <select id="orgId" name="orgId" required>
+        <select id="orgId" name="orgId" required defaultValue={preset}>
           {orgs.map((o) => (
             <option key={o.id} value={o.id}>
               {o.name} ({o.code})

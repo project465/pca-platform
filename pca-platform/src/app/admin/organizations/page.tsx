@@ -80,7 +80,11 @@ export default async function OrganizationsPage() {
               {rows.map((r) => (
                 <tr key={r.id}>
                   <td className="mono">{r.code}</td>
-                  <td>{names.get(r.id) ?? <span style={{ color: "var(--muted)" }}>이름 없음</span>}</td>
+                  <td>
+                    <Link href={`/admin/organizations/${r.id}`}>
+                      {names.get(r.id) ?? <span style={{ color: "var(--muted)" }}>이름 없음</span>}
+                    </Link>
+                  </td>
                   <td>
                     <span
                       className={`tag ${r.org_type === "university" ? "univ" : "dept"}`}
