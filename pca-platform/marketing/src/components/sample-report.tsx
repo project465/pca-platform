@@ -13,7 +13,6 @@ import type { SiteContent } from "@/content";
  */
 export default function SampleReport({ site }: { site: SiteContent }) {
   const s = site.sample;
-  const top = 3;
 
   return (
     <section className="divided tinted" id="sample">
@@ -48,19 +47,47 @@ export default function SampleReport({ site }: { site: SiteContent }) {
           <div className="rgrid">
             <div className="rblock">
               <h3>{s.jobsLabel}</h3>
-              <ol className="bars">
-                {s.jobs.map((j, i) => (
-                  <li key={j.name} className={i < top ? "hi" : undefined}>
-                    <span className="r">{String(i + 1).padStart(2, "0")}</span>
-                    <span className="n">{j.name}</span>
-                    <span className="track">
-                      <span className="fill" style={{ width: `${j.score}%` }} />
-                    </span>
-                    <span className="v">{j.score}</span>
-                  </li>
-                ))}
+              {/* 등수가 아니라 묶음. 실제 결과지(BandBars)와 같은 모양이다 —
+                  점 하나가 아니라 구간을 그리고, 묶음 번호는 머리에만 붙는다. */}
+              <ol className="bars bands">
+                {s.jobs.map((j, i) => {
+                  const head = i === 0 || s.jobs[i - 1].tier !== j.tier;
+                  const lo = j.band[0];
+                  const hi = j.band[1];
+                  return (
+                    <li
+                      key={j.name}
+                      // thead = 묶음의 첫 줄(번호가 찍힌다) · tierhead = 그 위에 선을 긋는 줄.
+                      // 첫 묶음은 번호는 찍되 선은 긋지 않는다 — 표 맨 위의 선은 뜻이 없다.
+                      className={`${j.tier === 1 ? "hi" : ""}${head ? " thead" : ""}${
+                        head && i > 0 ? " tierhead" : ""
+                      }`}
+                    >
+                      <span className="r">{head ? s.tierLabel.replace("{n}", String(j.tier)) : ""}</span>
+                      <span className="n">{j.name}</span>
+                      <span className="track">
+                        <span
+                          className="fill"
+                          style={{ left: `${lo}%`, width: `${Math.max(hi - lo, 1)}%` }}
+                        />
+                        <span className="dot" style={{ left: `${j.score}%` }} />
+                      </span>
+                      <span className="v">
+                        {j.score}
+                        {/* ±5.0 은 어색하다. 정수면 소수점을 떼어 적는다 */}
+                        <em>
+                          ±
+                          {Number.isInteger((hi - lo) / 2)
+                            ? (hi - lo) / 2
+                            : ((hi - lo) / 2).toFixed(1)}
+                        </em>
+                      </span>
+                    </li>
+                  );
+                })}
               </ol>
               <p className="rnote">{s.jobsNote}</p>
+              <p className="rnote rtier">{s.tierNote}</p>
             </div>
 
             <div className="rblock">

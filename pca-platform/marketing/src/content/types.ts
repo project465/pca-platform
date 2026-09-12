@@ -207,7 +207,21 @@ export type Sample = {
   person: { name: string; dept: string; meta: { l: string; v: string }[] };
   jobsLabel: string;
   jobsNote: string;
-  jobs: { name: string; score: number }[];
+  /**
+   * 예시 결과지의 직무 적합도.
+   *
+   * **등수가 아니라 묶음이다.** 실제 결과지가 그렇게 내보내므로 소개
+   * 사이트도 그렇게 보여야 한다 — 시안에 순위표를 띄워 놓고 계약한 학과가
+   * 결과지를 열면 "순위가 어디 갔느냐" 가 된다.
+   *
+   * `band` 는 신뢰구간(표준오차 1배), `tier` 는 묶음 번호다. 묶음은
+   * `band[1] < 묶음 머리의 band[0]` 일 때 갈린다 — 채점 엔진과 같은 규칙.
+   */
+  jobs: { name: string; score: number; band: [number, number]; tier: number }[];
+  /** "{n}군" 처럼 묶음 번호를 사람 말로 (예시 원고도 언어별로 다르다) */
+  tierLabel: string;
+  /** 묶음이 여럿일 때 붙이는 한 줄 — "1군에 셋이 있어 우열을 가릴 수 없다" */
+  tierNote: string;
   styleLabel: string;
   styleTypeLabel: string;
   styleType: string;

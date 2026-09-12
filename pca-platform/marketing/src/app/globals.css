@@ -728,12 +728,37 @@ section { padding-block: clamp(60px, 8vw, 108px); }
 .bars .hi .n { color: var(--ink); font-weight: 700; }
 .bars .hi .fill { background: var(--gold); }
 .bars .hi .v { color: var(--ink); }
+/* 묶음 표기. 점 하나가 아니라 구간을 그린다 — 실제 결과지와 같은 모양이다.
+   묶음 번호가 들어가는 첫 칸은 "01" 보다 넓어야 한다("1군"). */
+.bars.bands li { grid-template-columns: 30px minmax(96px, 172px) minmax(0, 1fr) 58px; }
+.bars.bands .r { color: var(--muted); white-space: nowrap; }
+.bars.bands .track { position: relative; overflow: visible; }
+.bars.bands .fill { position: absolute; top: 0; height: 100%; width: auto; }
+.bars.bands .dot {
+  position: absolute; top: 50%; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--ink); transform: translate(-50%, -50%);
+}
+/* 점은 늘 진한 잉크다. 1군 막대가 금색이라 점까지 금색이면 점추정이
+   막대에 묻혀 사라진다 — 구간과 점 둘 다 보여야 구간의 뜻이 산다. */
+.bars.bands .dot { box-shadow: 0 0 0 1.5px var(--paper, #fff); }
+.bars.bands .v em {
+  font-style: normal; font-weight: 500; font-size: 11px; color: var(--faint);
+  margin-left: 3px;
+}
+/* 묶음이 갈리는 줄만 선을 진하게 — 묶음 사이가 유일하게 뜻이 있는 경계다 */
+.bars.bands li.tierhead { border-top: 1px solid var(--line-2); margin-top: 5px; padding-top: 12px; }
+.rtier { margin-top: 8px; font-weight: 700; color: var(--ink-2); }
+
 @media (max-width: 560px) {
   .bars li { grid-template-columns: 1fr auto; grid-template-areas: "n v" "t t"; gap: 6px 12px; }
   .bars .r { display: none; }
   .bars .n { grid-area: n; }
   .bars .v { grid-area: v; }
   .bars .track { grid-area: t; }
+  /* 좁은 화면에서는 묶음 번호를 이름 앞에 붙인다 — 숨기면 묶음이 사라진다 */
+  .bars.bands li { grid-template-columns: 1fr auto; grid-template-areas: "r v" "n n" "t t"; }
+  .bars.bands .r { display: block; grid-area: r; }
+  .bars.bands li:not(.thead) .r { visibility: hidden; }
 }
 
 .hexcard.flat { border: 0; padding: 0; background: transparent; }
@@ -802,8 +827,13 @@ section { padding-block: clamp(60px, 8vw, 108px); }
 .hr-row span{font-size:13px; font-weight:500}
 .hr-row i{display:block; height:9px; background:#E7EBEE; border-radius:0 3px 3px 0}
 .hr-row i b{display:block; height:100%; background:var(--ink); border-radius:0 3px 3px 0}
-.hr-row:first-of-type i b{background:var(--gold-ink,#9A7B1E)}
+/* 표지 카드는 1군만 싣는다. 첫 줄만 금색으로 칠하면 묶음 안에 등수가
+   있는 것처럼 읽히므로 실린 줄을 다 같은 색으로 둔다. */
+.hr-row i b{background:var(--gold-ink,#9A7B1E)}
 .hr-row em{font-style:normal; font-size:13px; font-weight:700; text-align:right}
+/* 표지 카드의 막대도 구간이다. 왼쪽 끝이 0 이 아니므로 양쪽을 둥글린다 */
+.hr-row i b{border-radius:3px}
+.hr-tier{display:block; margin-top:9px; font-size:11.5px; line-height:1.6; color:var(--muted)}
 .hr-plan{display:grid; grid-template-columns:44px 1fr; gap:0 10px; padding:5px 0; font-size:12.5px}
 .hr-plan b{font-weight:700; color:var(--muted)}
 .hr-foot{padding:11px 20px; background:#F6F8F9; border-top:1px solid var(--line); font-size:11.5px; color:var(--muted)}

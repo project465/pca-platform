@@ -58,15 +58,26 @@ export default function Hero({ site }: { site: SiteContent }) {
           </div>
           <div className="hr-body">
             <span className="hr-cap">{site.sample.jobsLabel}</span>
-            {site.sample.jobs.slice(0, 4).map((j) => (
-              <div className="hr-row" key={j.name}>
-                <span>{j.name}</span>
-                <i>
-                  <b style={{ width: `${j.score}%` }} />
-                </i>
-                <em>{j.score}</em>
-              </div>
-            ))}
+            {/* 1군만 싣는다. 표지에서 등수를 매기면 안쪽 결과지와 어긋난다 —
+                이 묶음 안은 이 검사로 우열을 가릴 수 없다는 것이 요지다. */}
+            {site.sample.jobs
+              .filter((j) => j.tier === 1)
+              .slice(0, 4)
+              .map((j) => (
+                <div className="hr-row" key={j.name}>
+                  <span>{j.name}</span>
+                  <i>
+                    <b
+                      style={{
+                        marginLeft: `${j.band[0]}%`,
+                        width: `${Math.max(j.band[1] - j.band[0], 1)}%`,
+                      }}
+                    />
+                  </i>
+                  <em>{j.score}</em>
+                </div>
+              ))}
+            <span className="hr-tier">{site.sample.tierNote}</span>
             <span className="hr-cap hr-cap2">{site.sample.planLabel}</span>
             {site.sample.plan.slice(0, 3).map((x) => (
               <div className="hr-plan" key={x.when}>
