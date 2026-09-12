@@ -151,14 +151,22 @@ export const UI = {
     "The 250 items measure what you want to do — the direction of your interest, not your skill level.",
     "250 soru ne yapmak istediğinizi ölçer — yetkinliğinizi değil, ilginizin yönünü.",
   ),
+  /* "1순위" 라고 쓰지 않는다. 구간이 겹치는 것은 묶어서 보여주기로 했는데,
+     라벨이 다시 등수를 주장하면 "1순위 직무 — 4개 직무" 가 찍힌다. */
   repLeadTop: d(
-    "가장 높게 나온 직무 분야는 {area}이고, 그 아래 직무로 내려가면 {job}이 1순위입니다.",
-    "Your strongest job area is {area}; drilling down, {job} ranks first.",
-    "En güçlü iş alanınız {area}; alt kırılımda {job} ilk sırada.",
+    "가장 높게 나온 직무 분야는 {area}이고, 그 아래 직무로 내려가면 {job}[이/가] 가장 앞에 있습니다.",
+    // 묶음이 들어올 수 있으므로 단수 동사를 쓰지 않는다 ("4 roles sits")
+    "Strongest job area: {area}. Drilling down to individual roles, furthest ahead: {job}.",
+    "En güçlü iş alanı: {area}. Rol kırılımında en önde: {job}.",
   ),
-  repKpiJob: d("1순위 직무", "Top role", "İlk sıradaki rol"),
-  repKpiArea: d("1순위 직무분야", "Top job area", "İlk sıradaki iş alanı"),
+  repKpiJob: d("가장 앞에 있는 직무", "Role furthest ahead", "En öndeki rol"),
+  repKpiArea: d("가장 앞에 있는 직무분야", "Job area furthest ahead", "En öndeki iş alanı"),
   repKpiTrait: d("가장 뚜렷한 업무 성향", "Most pronounced work style", "En belirgin çalışma eğilimi"),
+  // 묶음이 넷을 넘으면 이름을 다 늘어놓지 않는다. 요약 칸에 여섯 이름이
+  // 들어가면 읽히지 않고, 안 읽히는 칸은 없는 칸과 같다. 이름은 04절에 있다.
+  repGroupN: d("{n}개 계열", "{n} fields", "{n} alan"),
+  repGroupNJob: d("{n}개 직무", "{n} roles", "{n} rol"),
+  repGroupNTrait: d("{n}가지가 같음", "{n} tied", "{n} eşit"),
   repQuality: d("응답 신뢰도", "Response reliability", "Yanıt güvenilirliği"),
   repQualityOk: d(
     "응답이 고르게 들어왔습니다. 아래 점수를 그대로 읽으셔도 됩니다.",
@@ -221,7 +229,7 @@ export const UI = {
     "İlk grubunuzda {n} rol var. Bu test onları ayıramaz — ayrımı deneyim yapar.",
   ),
   repNote05: d(
-    "1순위로 나온 {job}이 요구하는 역량을 중요도 순으로 놓았습니다.",
+    "1순위로 나온 {job}[이/가] 요구하는 역량을 중요도 순으로 놓았습니다.",
     "What {job}, your top-ranked role, requires — ordered by importance.",
     "İlk sıradaki rol olan {job} için gerekenler — önem sırasına göre.",
   ),
@@ -245,7 +253,7 @@ export const UI = {
     "{area} tarafında bir proje bitirin. Kanıt olarak ürün değil, sürecin kaydı sayılır.",
   ),
   repPlan3: d(
-    "2순위였던 {job}과 비교해 다시 봅니다. 구간이 겹쳤다면 해 본 경험이 순위를 가릅니다.",
+    "2순위였던 {job}[과/와] 비교해 다시 봅니다. 구간이 겹쳤다면 해 본 경험이 순위를 가릅니다.",
     "Revisit this against {job}, which ranked second. Where the intervals overlapped, experience is what separates them.",
     "İkinci sıradaki {job} ile yeniden karşılaştırın. Aralıklar çakıştıysa ayrımı deneyim yapar.",
   ),
@@ -393,14 +401,16 @@ export const UI = {
   ),
   repLeadTopHs: d(
     "지금 재 보면 {area} 쪽이 가장 앞에 있습니다. 고등학교 3년 동안 바뀔 수 있는 값입니다.",
-    "Measured now, {area} sits furthest ahead. This can change over three years of high school.",
-    "Şu anki ölçümde en önde {area} var. Bu, lise boyunca değişebilir.",
+    "Measured now, furthest ahead: {area}. This can change over three years of high school.",
+    "Şu anki ölçümde en önde: {area}. Bu, lise boyunca değişebilir.",
   ),
   repKpiJobHs: d("가장 앞에 있는 계열", "Field furthest ahead", "En öndeki alan"),
   /* 고교판에서는 계열이 곧 전공이라, 대학판의 "1순위 분야" 칸에 같은 이름이
      한 번 더 찍힌다. 그 자리에 다음 묶음의 선두를 놓는다 — 학생이 실제로
      다음에 볼 곳이다. */
-  repKpiAreaHs: d("다음 묶음의 선두", "Next group's leader", "Sonraki grubun başı"),
+  /* 예전에는 "선두" 였는데, 다음 묶음에 여섯이 들어가면 그중 하나를 선두로
+     세우는 것이 곧 없는 등수를 매기는 일이다. 묶음 자체를 가리킨다. */
+  repKpiAreaHs: d("다음 묶음", "The next group", "Sonraki grup"),
   repKpiNextNone: d("없음 — 한 묶음뿐", "None — a single group", "Yok — tek grup"),
   repPlanM1Hs: d("이번 학기", "This term", "Bu dönem"),
   repPlanM2Hs: d("다음 방학", "Next break", "Sonraki tatil"),
@@ -686,8 +696,39 @@ export function productName(code: string, lang: Lang): string {
 export type UiKey = keyof typeof UI;
 
 /** t("pageOf", lang, { a: 3, b: 26 }) */
+/**
+ * 조사를 앞말에 맞춘다 — `{job}[이/가]` 처럼 적어 두면 여기서 고른다.
+ *
+ * 값에 이름이 들어오므로 받침이 있는지는 넣어 보고야 안다. "직무이" 나
+ * "기계공학가" 는 한 글자 틀린 정도가 아니라 문장을 읽다 멈추게 한다 —
+ * 결과지는 학부모가 읽는 문서다.
+ *
+ * 한글 음절은 (코드 − 0xAC00) % 28 이 0 이 아니면 받침이 있다.
+ * 숫자는 읽는 소리로 본다 — 1(일)·3(삼)·6(육)·7(칠)·8(팔)·0(영)에 받침이 있다.
+ */
+const JONG_DIGIT: Record<string, boolean> = {
+  "0": true, "1": true, "2": false, "3": true, "4": false,
+  "5": false, "6": true, "7": true, "8": true, "9": false,
+};
+function hasFinalConsonant(word: string): boolean {
+  const ch = word.trim().slice(-1);
+  if (!ch) return false;
+  if (ch in JONG_DIGIT) return JONG_DIGIT[ch];
+  const code = ch.charCodeAt(0);
+  if (code >= 0xac00 && code <= 0xd7a3) return (code - 0xac00) % 28 !== 0;
+  // 한글도 숫자도 아니면(영문·기호) 받침 없는 쪽으로 본다
+  return false;
+}
+
+/** 앞말 + `[받침있을때/없을때]` 를 한 조사로 줄인다 */
+function resolveParticles(s: string): string {
+  return s.replace(/([^\[\]\s])\[([^/\]]+)\/([^/\]]+)\]/g, (_m, prev, withJong, without) =>
+    prev + (hasFinalConsonant(prev) ? withJong : without),
+  );
+}
+
 export function t(key: UiKey, lang: Lang, vars: Record<string, string | number> = {}): string {
   let s: string = UI[key][lang];
   for (const [k, v] of Object.entries(vars)) s = s.replaceAll(`{${k}}`, String(v));
-  return s;
+  return resolveParticles(s);
 }

@@ -97,11 +97,49 @@ export default async function ReportPage({
    * 아슬아슬한 차이(50 대 51)는 아직 못 가른다. 성향에는 직무처럼 전파된
    * 표준오차가 없고, 문턱값을 지어내지 않는다(설계 원칙 6).
    */
+  /**
+   * 같은 값(또는 겹치는 구간)으로 묶인 것들을 한 칸에 적는 방법.
+   *
+   * 셋까지는 이름을 다 적는다. 넷을 넘으면 개수로 적는다 — 요약 칸에 여섯
+   * 이름이 들어가면 읽히지 않고, 안 읽히는 칸은 없는 칸과 같다. 이름은
+   * 04절 표에 전부 있다.
+   */
+  const joinNames = (xs: { name: string }[]) => xs.map((x) => x.name).join(" · ");
+  const groupLabel = (xs: { name: string }[], nKey: UiKey) =>
+    xs.length === 0 ? "—" : xs.length <= 3 ? joinNames(xs) : t(nKey, lang, { n: xs.length });
   const tied = (v: number) =>
-    byScore.filter((x) => x.scaled === v).map((x) => x.name).join(" · ");
+    groupLabel(byScore.filter((x) => x.scaled === v), "repGroupNTrait");
   const traitFlat = byScore.length > 1 && traitTop.scaled === traitLow.scaled;
   const traitHiNames = traitTop ? tied(traitTop.scaled) : "—";
   const traitLoNames = traitLow ? tied(traitLow.scaled) : "—";
+
+  /**
+   * 요약 칸도 묶어서 적는다.
+   *
+   * 1군은 **구간이 겹쳐 이 검사로 우열을 가릴 수 없는 묶음**이다. 그래놓고
+   * 학부모가 가장 먼저 읽는 칸에 한쪽 이름만 찍으면, 04절이 "2개를 다 열어
+   * 두십시오" 라고 말해도 이미 한쪽으로 정해 준 셈이 된다.
+   *
+   * 묶음이 둘 이상이면 점추정(80.7)을 쓰지 않는다 — 1군은 같은 값이라서
+   * 묶인 것이 아니라 구간이 겹쳐서 묶인 것이므로, 한 숫자를 두 이름 옆에
+   * 놓으면 어느 쪽 값인지 알 수 없다. 묶음 전체를 덮는 구간만 적는다.
+   */
+  const tier1 = r.jobs.filter((j) => j.tier === 1);
+  const groupKey: UiKey = hs ? "repGroupN" : "repGroupNJob";
+  const topNames = tier1.length ? groupLabel(tier1, groupKey) : (top?.name ?? "—");
+  const topBand: [number, number] | null = tier1.length
+    ? [Math.min(...tier1.map((j) => j.band[0])), Math.max(...tier1.map((j) => j.band[1]))]
+    : null;
+  /** 다음 묶음의 선두도 여럿일 수 있다 */
+  const nextGroup = nextTier ? r.jobs.filter((j) => j.tier === nextTier.tier) : [];
+  /** 계열 순위(대학판 칸)는 구간이 없으므로 같은 값끼리만 묶는다 */
+  const topAreaNames = topArea
+    ? groupLabel(r.areas.filter((x) => x.scaled === topArea.scaled), "repGroupN")
+    : "—";
+  /** 다음 묶음을 덮는 구간. 이름을 못 적을 때 이 칸이 유일한 정보가 된다 */
+  const nextBand: [number, number] | null = nextGroup.length
+    ? [Math.min(...nextGroup.map((j) => j.band[0])), Math.max(...nextGroup.map((j) => j.band[1]))]
+    : null;
   const dated = r.learner.submittedAt
     ? new Date(r.learner.submittedAt).toLocaleDateString(DATE_LOCALE[lang])
     : "";
@@ -133,32 +171,46 @@ export default async function ReportPage({
           <div className="rp-lead">
             <p>
               {tt("repLead")}{" "}
-              {tt("repLeadTop", { area: topArea?.name ?? "—", job: top?.name ?? "—" })}
+              {tt("repLeadTop", { area: topAreaNames, job: topNames })}
             </p>
           </div>
 
           <div className="rp-kpis">
             <div className="rp-kpi big">
               <span className="k-label">{tt("repKpiJob")}</span>
-              <b className="k-val">{top?.name}</b>
+              <b className="k-val">{topNames}</b>
               <span className="k-num">
-                {top?.fit.toFixed(1)}
-                <em>
-                  {" "}
-                  ({top?.band[0].toFixed(0)}–{top?.band[1].toFixed(0)})
-                </em>
+                {tier1.length > 1 ? null : top?.fit.toFixed(1)}
+                {topBand && (
+                  <em>
+                    {tier1.length > 1 ? "" : " "}
+                    ({topBand[0].toFixed(0)}–{topBand[1].toFixed(0)})
+                  </em>
+                )}
               </span>
             </div>
             <div className="rp-kpi">
               <span className="k-label">{tt("repKpiArea")}</span>
               {hs ? (
                 <>
-                  <b className="k-val">{nextTier?.name ?? t("repKpiNextNone", lang)}</b>
-                  <span className="k-num">{nextTier ? nextTier.fit.toFixed(1) : ""}</span>
+                  <b className="k-val">
+                    {nextGroup.length
+                      ? groupLabel(nextGroup, groupKey)
+                      : t("repKpiNextNone", lang)}
+                  </b>
+                  <span className="k-num">
+                    {nextGroup.length === 1 ? nextGroup[0].fit.toFixed(1) : null}
+                    {nextBand && (
+                      <em>
+                        {nextGroup.length === 1 ? " " : ""}
+                        ({nextBand[0].toFixed(0)}–{nextBand[1].toFixed(0)})
+                      </em>
+                    )}
+                  </span>
                 </>
               ) : (
                 <>
-                  <b className="k-val">{topArea?.name}</b>
+                  <b className="k-val">{topAreaNames}</b>
                   <span className="k-num">{topArea?.scaled.toFixed(1)}</span>
                 </>
               )}
