@@ -30,7 +30,7 @@
 
   --pad: clamp(20px, 5vw, 64px);
   --measure: 60ch;
-  --r: 14px;
+  --r: 3px;
   --display: "Gothic A1", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
   --body: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
 }
@@ -96,13 +96,13 @@ a { color: inherit; }
 :focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
 
 .wrap { max-width: 1080px; margin: 0 auto; padding-inline: var(--pad); }
+/* 절 머리의 작은 라벨. 대문자로 늘려 쓰지 않는다 — 한글에는
+   대문자가 없고, 자간을 벌린 영문 라벨은 내용이 아니라 장식이다 */
 .eyebrow {
-  font-family: var(--display);
-  font-weight: 800;
-  font-size: 12px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--amber);
+  font-family: var(--body);
+  font-weight: 700;
+  font-size: 12.5px;
+  color: var(--muted);
 }
 
 /* ── 표지 ─────────────────────────────────── */
@@ -117,7 +117,7 @@ a { color: inherit; }
   color: #fff;
   max-width: 19ch;
 }
-.cover h1 em { font-style: normal; color: var(--amber-hi); }
+.cover h1 em { font-style: normal; }
 .cover-lead {
   color: var(--onnavy-2);
   max-width: var(--measure);
@@ -137,10 +137,7 @@ a { color: inherit; }
   display: grid; gap: 10px; align-content: start;
 }
 .qcard.no { border-color: #4A3323; background: #1E1810; }
-.qtag {
-  font-family: var(--display); font-weight: 800; font-size: 11px;
-  letter-spacing: 0.12em; text-transform: uppercase; color: var(--onnavy-2);
-}
+.qtag { font-weight: 700; font-size: 12px; color: var(--onnavy-2); }
 .qcard.no .qtag { color: #D9945A; }
 .qtext { color: #fff; font-size: 15.5px; line-height: 1.7; }
 .qwhy { color: var(--onnavy-2); font-size: 13.5px; line-height: 1.65; }
@@ -163,19 +160,20 @@ a { color: inherit; }
 .field b { font-family: var(--display); font-weight: 800; font-size: 16.5px; }
 .field .ax { display: flex; flex-wrap: wrap; gap: 5px; }
 .chip {
-  font-size: 11.5px; line-height: 1.5; padding: 2px 8px; border-radius: 999px;
-  background: var(--amber-soft); border: 1px solid var(--amber-line); color: var(--amber);
-  font-weight: 700; white-space: nowrap;
+  font-size: 11.5px; line-height: 1.5; padding: 2px 7px; border-radius: 2px;
+  background: var(--ground-2); border: 1px solid var(--line-2); color: var(--ink-2);
+  font-weight: 600; white-space: nowrap;
 }
-.chip.dim { background: transparent; border-color: var(--line-2); color: var(--muted); font-weight: 500; }
+/* 부 활동은 테두리를 빼서 한 단 낮춘다 — 색을 하나 더 쓰지 않고 위계를 낸다 */
+.chip.dim { background: transparent; border-color: transparent; color: var(--muted); font-weight: 400; padding-inline: 1px; }
 
 /* ── 비교표 ───────────────────────────────── */
 .tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r); background: var(--paper); }
 table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 14.5px; }
 th, td { text-align: left; padding: 13px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
 thead th {
-  font-family: var(--display); font-weight: 800; font-size: 12px;
-  letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+  font-family: var(--body); font-weight: 700; font-size: 12.5px;
+  color: var(--muted);
   background: var(--ground-2); border-bottom-color: var(--line-2);
 }
 tbody tr:last-child td { border-bottom: 0; }
@@ -196,11 +194,11 @@ th[scope="row"] { font-weight: 700; color: var(--ink); font-family: var(--body);
 .bars { display: grid; gap: 9px; min-width: 0; }
 .bar { display: grid; grid-template-columns: 108px 1fr; gap: 14px; align-items: center; min-width: 0; }
 .track {
-  position: relative; height: 16px; border-radius: 999px;
+  position: relative; height: 14px; border-radius: 2px;
   background: var(--ground-2); border: 1px solid var(--line-2);
 }
 .band {
-  position: absolute; top: -1px; bottom: -1px; border-radius: 999px;
+  position: absolute; top: -1px; bottom: -1px; border-radius: 2px;
   background: var(--amber); opacity: .30;
 }
 .dot {
@@ -216,30 +214,31 @@ th[scope="row"] { font-weight: 700; color: var(--ink); font-family: var(--body);
 }
 
 /* ── 숫자 ─────────────────────────────────── */
-.stats { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr)); }
-.stat { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); padding: 18px 18px 16px; display: grid; gap: 4px; }
-.stat .n { font-family: var(--display); font-weight: 900; font-size: clamp(28px, 4.4vw, 38px); letter-spacing: -0.04em; color: var(--ink); line-height: 1.1; }
-.stat .n span { font-size: 0.55em; color: var(--muted); font-weight: 800; }
-.stat .k { font-size: 13px; color: var(--muted); line-height: 1.55; }
-.stat.hi { border-color: var(--amber-line); background: var(--amber-soft); }
-.stat.hi .n { color: var(--amber); }
+/* 수치는 타일에 크게 박아 놓는 대신 값과 설명을 한 줄로 붙인다.
+   숫자를 키운다고 근거가 세지지는 않는다 */
+.figs { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); margin: 0; }
+.figs > div { display: grid; grid-template-columns: 92px 1fr; gap: 18px; padding: 12px 18px; align-items: baseline; }
+.figs > div + div { border-top: 1px solid var(--line); }
+.figs dt { font-family: var(--display); font-weight: 800; font-size: 17px; letter-spacing: -0.03em; white-space: nowrap; }
+.figs dt span { font-size: 0.72em; font-weight: 700; color: var(--muted); }
+.figs dd { margin: 0; font-size: 13.5px; color: var(--ink-2); line-height: 1.62; }
+.figs dd em { font-style: normal; color: var(--muted); }
+@media (max-width: 430px) { .figs > div { grid-template-columns: 1fr; gap: 2px; } }
 
 /* ── 문항 예시 ────────────────────────────── */
-.items { display: grid; gap: 10px; }
-.item {
-  background: var(--paper); border: 1px solid var(--line); border-left: 3px solid var(--amber);
-  border-radius: 0 var(--r) var(--r) 0; padding: 14px 18px;
-  display: grid; gap: 6px;
-}
-.item .meta { font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 700; font-family: var(--display); }
+/* 문항은 카드 넉 장이 아니라 목록 한 장이다. 검사지에서도 그렇게 생겼다 */
+.items { display: grid; gap: 0; background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.item { padding: 14px 18px; display: grid; gap: 6px; }
+.item + .item { border-top: 1px solid var(--line); }
+.item .meta { font-size: 12px; color: var(--muted); font-weight: 700; }
 .item p { font-size: 15.5px; }
 .scale { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
-.scale span { font-size: 11.5px; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 2px 8px; }
+.scale span { font-size: 11.5px; color: var(--muted); border: 1px solid var(--line); border-radius: 2px; padding: 2px 8px; }
 
 /* ── 가격 ─────────────────────────────────── */
 .prices { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
 .price { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); padding: 22px; display: grid; gap: 8px; align-content: start; }
-.price.plus { border-color: var(--amber-line); box-shadow: 0 1px 0 var(--amber-line), 0 10px 24px -18px rgba(201,107,36,.5); }
+.price.plus { border-color: var(--line-2); border-top: 3px solid var(--amber); }
 .price h3 { font-size: 18px; }
 .price .amt { font-family: var(--display); font-weight: 900; font-size: 30px; letter-spacing: -0.04em; }
 .price.plus .amt { color: var(--amber); }
@@ -247,9 +246,10 @@ th[scope="row"] { font-weight: 700; color: var(--ink); font-family: var(--body);
 
 /* ── 아직 없는 것 ─────────────────────────── */
 .todo { display: grid; gap: 8px; max-width: var(--measure); }
-.todo li { list-style: none; display: grid; grid-template-columns: 16px 1fr; gap: 10px; font-size: 14.5px; color: var(--ink-2); }
-.todo li::before { content: "□"; color: var(--muted); font-size: 15px; line-height: 1.7; }
-.todo li.done::before { content: "■"; color: var(--good); }
+/* 그리드로 짜면 <b> 가 따로 한 칸을 차지해 줄이 쪼개진다. 네모는 띄워서 붙인다 */
+.todo li { list-style: none; position: relative; padding-left: 26px; font-size: 14.5px; color: var(--ink-2); }
+.todo li::before { content: "\25A1"; position: absolute; left: 0; top: 0; color: var(--muted); font-size: 15px; line-height: 1.72; }
+.todo li.done::before { content: "\25A0"; color: var(--good); }
 .todo ul { padding: 0; margin: 0; display: grid; gap: 8px; }
 
 /* ── 문의 ─────────────────────────────────── */
@@ -263,7 +263,7 @@ th[scope="row"] { font-weight: 700; color: var(--ink); font-family: var(--body);
 .chain { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); }
 .crole { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
 .crole > header { padding: 16px 18px 14px; background: var(--ground-2); border-bottom: 1px solid var(--line); }
-.crole .fld { font-size: 11px; font-weight: 800; letter-spacing: .1em; color: var(--muted); font-family: var(--display); }
+.crole .fld { font-size: 12px; font-weight: 700; color: var(--muted); }
 .crole h3 { font-size: 17px; margin-top: 3px; }
 .crole .scene { margin-top: 8px; font-size: 13.5px; line-height: 1.65; color: var(--ink-2); }
 .cneed { padding: 15px 18px; }
@@ -279,7 +279,7 @@ th[scope="row"] { font-weight: 700; color: var(--ink); font-family: var(--body);
   width: 7px; height: 7px; border-radius: 50%; background: var(--line-2);
 }
 .cstep.now::before { background: var(--amber); width: 9px; height: 9px; left: -16px; top: 7px; }
-.cwhen { font-size: 11.5px; font-weight: 800; color: var(--muted); font-family: var(--display); padding-top: 2px; }
+.cwhen { font-size: 12px; font-weight: 700; color: var(--muted); padding-top: 2px; }
 .cstep.now .cwhen { color: var(--amber); }
 .cbody { font-size: 13.5px; line-height: 1.6; min-width: 0; }
 .cbody b { font-family: var(--display); font-weight: 800; }
@@ -300,13 +300,13 @@ th[scope="row"] { font-weight: 700; color: var(--ink); font-family: var(--body);
 .rxrow + .rxrow { border-top: 1px solid var(--line); }
 .rxneed {
   font-size: 10.5px; font-weight: 800; text-align: center; padding: 3px 0; height: fit-content;
-  border-radius: 5px; border: 1px solid var(--line-2); color: var(--muted); font-family: var(--display);
+  border-radius: 2px; border: 1px solid var(--line-2); color: var(--muted); font-family: var(--display);
 }
 .rxneed.must { background: var(--ink); border-color: var(--ink); color: var(--paper); }
 .rxb { min-width: 0; display: grid; gap: 4px; }
 .rxb b { font-family: var(--display); font-weight: 800; font-size: 15px; }
 .rxm { font-size: 11.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-.rxm .t { border: 1px solid var(--line-2); border-radius: 5px; padding: 1px 6px; font-weight: 700; }
+.rxm .t { border: 1px solid var(--line-2); border-radius: 2px; padding: 1px 6px; font-weight: 700; }
 .rxm .t.u { border-color: var(--amber-line); color: var(--amber); background: var(--amber-soft); }
 .rxw { font-size: 13px; line-height: 1.6; color: var(--ink-2); }
 .rxfor { font-size: 12px; color: var(--muted); }
@@ -315,6 +315,7 @@ th[scope="row"] { font-weight: 700; color: var(--ink); font-family: var(--body);
 footer { border-top: 1px solid var(--line); padding-block: 28px 40px; color: var(--muted); font-size: 13px; }
 footer .wrap { display: grid; gap: 8px; }
 .note { color: var(--muted); font-size: 13.5px; max-width: var(--measure); }
+.vis-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 </style>
 
 <header class="cover">
@@ -546,11 +547,11 @@ footer .wrap { display: grid; gap: 8px; }
         </div>
       </div>
 
-      <div class="stats" style="margin-top:22px">
-        <div class="stat"><span class="n">73<span>과목</span></span><span class="k">2022 개정 교육과정에서<br>이공계에 걸리는 과목만</span></div>
-        <div class="stat"><span class="n">123<span>줄</span></span><span class="k">계열 × 과목마다<br>“왜 이 과목인가” 한 줄</span></div>
-        <div class="stat hi"><span class="n">52<span>학점</span></span><span class="k">한 학년에 넣을 수 있는 상한<br>넘는 목록은 신청할 수 없습니다</span></div>
-      </div>
+      <dl class="figs" style="margin-top:22px">
+        <div><dt>73<span>과목</span></dt><dd>2022 개정 교육과정 중 이공계에 걸리는 것만 추렸습니다. 국어·수학·영어·사회·과학·기술가정·정보 일곱 교과군.</dd></div>
+        <div><dt>123<span>줄</span></dt><dd>계열 × 과목마다 “왜 이 과목인가”를 한 줄씩 적어 두었습니다. 과목 이름만 던지지 않습니다.</dd></div>
+        <div><dt>52<span>학점</span></dt><dd>한 학년에 넣을 수 있는 선택과목 상한. <em>이 선을 넘는 목록은 신청서로 낼 수 없으므로, 넘으면 처방이 스스로 줄입니다.</em></dd></div>
+      </dl>
 
       <p class="note" style="margin-top:18px">
         <b>선수과목을 따라 올라갑니다.</b> 미적분Ⅱ 만 적어 놓고 미적분Ⅰ 을 빠뜨리면 학생은 그 신청서를 낼 수 없습니다.
@@ -636,13 +637,21 @@ footer .wrap { display: grid; gap: 8px; }
         <h2>가상 응시자 500명으로 먼저 돌려 봤습니다</h2>
         <p>숨은 성향을 심어 둔 가상 학생 500명에게 115문항을 풀리고, 엔진이 그 성향을 되찾아 내는지 봤습니다. 불성실 응답자도 일부러 섞었습니다.</p>
       </div>
-      <div class="stats">
-        <div class="stat hi"><span class="n">89.2<span>%</span></span><span class="k">심어 둔 계열을 1순위로 집어냄<br>(무작위라면 12.5%)</span></div>
-        <div class="stat"><span class="n">99.3<span>%</span></span><span class="k">3순위 안에 들어옴</span></div>
-        <div class="stat"><span class="n">76.5<span>%</span></span><span class="k">가장 높은 성향까지 되찾음<br>(무작위라면 16.7%)</span></div>
-        <div class="stat"><span class="n">100<span>%</span></span><span class="k">같은 보기 연타·무작위 응답을 걸러냄</span></div>
-        <div class="stat"><span class="n">99.5<span>%</span></span><span class="k">성실하게 답한 학생은 정상으로 판정</span></div>
-        <div class="stat"><span class="n">2<span>개</span></span><span class="k">1군에 들어가는 계열 수 (중앙값)<br>8개 중 둘로 좁혀진다는 뜻</span></div>
+      <div class="tablewrap">
+        <table>
+          <caption class="vis-hidden">가상 응시자 500명 시뮬레이션 결과</caption>
+          <thead>
+            <tr><th scope="col">무엇을 봤는가</th><th scope="col">결과</th><th scope="col">무작위로 찍으면</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">심어 둔 계열이 1순위로 나오는가</th><td class="diff">89.2%</td><td>12.5%</td></tr>
+            <tr><th scope="row">3순위 안에는 들어오는가</th><td class="diff">99.3%</td><td>37.5%</td></tr>
+            <tr><th scope="row">가장 높은 업무 성향까지 되찾는가</th><td class="diff">76.5%</td><td>16.7%</td></tr>
+            <tr><th scope="row">같은 보기 연타·무작위 응답을 걸러내는가</th><td class="same">100%</td><td>—</td></tr>
+            <tr><th scope="row">성실하게 답한 학생을 정상으로 두는가</th><td class="same">99.5%</td><td>—</td></tr>
+            <tr><th scope="row">1군에 들어가는 계열 수 (중앙값)</th><td>8개 중 2개</td><td>8개 중 8개</td></tr>
+          </tbody>
+        </table>
       </div>
       <p class="note" style="margin-top:18px">
         이 시뮬레이션이 설계 오류 두 개를 잡아냈고 둘 다 고쳤습니다. 하나는 전기·전자를 좋아하는 학생에게 컴퓨터공학이 1순위로 나오던 것,

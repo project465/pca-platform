@@ -1,0 +1,467 @@
+<title>METRI 개발 현황</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+
+<style>
+/* ============================================================
+   METRI 개발 현황 — 2026-09-12
+
+   이 페이지는 소개 자료가 아니라 현황 문서다. 그래서 문서처럼
+   만든다. 회색 바탕 위에 종이 한 장이 놓이고, 그 안은 머리말 ·
+   번호 붙은 절 · 표로만 간다.
+
+   일부러 쓰지 않은 것 — 둥근 모서리, 카드 그림자, 알약 모양 태그,
+   대문자로 자간 벌린 라벨, 큰 숫자 타일, 강조색으로 물들인 제목.
+   전부 "웹 서비스 소개 페이지" 의 관용구이고, 이 문서에는 그런
+   관용구가 하나도 필요하지 않다. 숫자는 표 안에 있어야 읽힌다.
+
+   글자는 IBM Plex Sans KR 과 IBM Plex Mono 두 벌. 수치·테이블 이름·
+   명령은 전부 고정폭으로 적는다 — 공학 문서의 관례이고, 이 제품이
+   공학 진로 엔진이라 그 관례가 내용과 맞는다.
+   ============================================================ */
+:root {
+  --ink:    #12202F;
+  --ink-2:  #44566B;
+  --muted:  #78889A;
+  --paper:  #FFFFFF;
+  --ground: #EBEEF1;
+  --rule:   #CFD8E0;
+  --rule-2: #E5EAEE;
+  --uni:    #8A6B2F;   /* 메트리 (대학)  */
+  --plus:   #B4551A;   /* 메트리 플러스 (중·고) */
+  --ok:     #1F6B52;
+
+  --sans: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink: #E7ECF1; --ink-2: #B3C0CD; --muted: #7F8E9E;
+    --paper: #131B24; --ground: #0A0F15;
+    --rule: #2A3742; --rule-2: #1E2831;
+    --uni: #C6A163; --plus: #E08A4A; --ok: #5FB394;
+  }
+}
+:root[data-theme="dark"] {
+  --ink: #E7ECF1; --ink-2: #B3C0CD; --muted: #7F8E9E;
+  --paper: #131B24; --ground: #0A0F15;
+  --rule: #2A3742; --rule-2: #1E2831;
+  --uni: #C6A163; --plus: #E08A4A; --ok: #5FB394;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.78;
+  font-variant-numeric: tabular-nums;
+  word-break: keep-all;
+  -webkit-font-smoothing: antialiased;
+  padding-block: clamp(16px, 4vw, 48px);
+}
+p { margin: 0 0 0.9em; }
+p:last-child { margin-bottom: 0; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--uni); outline-offset: 2px; }
+
+.sheet {
+  max-width: 860px; margin: 0 auto; background: var(--paper);
+  border: 1px solid var(--rule);
+  padding: clamp(24px, 5vw, 64px);
+}
+.m { font-family: var(--mono); font-size: 0.9em; }
+
+/* ── 머리말 ─────────────────────────────── */
+.mast { border-bottom: 2px solid var(--ink); padding-bottom: 18px; }
+.mast h1 {
+  margin: 0; font-size: clamp(22px, 3.4vw, 30px); font-weight: 700;
+  letter-spacing: -0.03em; line-height: 1.3;
+}
+.mast .sub { margin-top: 6px; color: var(--ink-2); font-size: 15px; }
+.meta {
+  margin-top: 16px; display: grid; gap: 2px 20px;
+  grid-template-columns: 74px 1fr; font-size: 13px; color: var(--muted);
+}
+.meta dt { font-weight: 500; }
+.meta dd { margin: 0; font-family: var(--mono); font-size: 12.5px; color: var(--ink-2); }
+
+.lede { margin-top: 22px; font-size: 16px; line-height: 1.8; max-width: 60ch; }
+.lede b { font-weight: 600; }
+
+/* ── 목차 ───────────────────────────────── */
+.toc { margin-top: 26px; border-top: 1px solid var(--rule-2); padding-top: 14px; }
+.toc ol { margin: 0; padding: 0; list-style: none;
+          display: grid; gap: 1px 28px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+.toc li { display: grid; grid-template-columns: 26px 1fr; font-size: 13.5px; color: var(--ink-2); }
+.toc span { font-family: var(--mono); color: var(--muted); font-size: 12px; }
+
+/* ── 절 ─────────────────────────────────── */
+section { margin-top: clamp(30px, 5vw, 48px); }
+section > h2 {
+  display: grid; grid-template-columns: 34px 1fr; align-items: baseline;
+  margin: 0 0 4px; font-size: 18px; font-weight: 700; letter-spacing: -0.022em;
+}
+section > h2 .n { font-family: var(--mono); font-size: 13px; color: var(--muted); font-weight: 400; }
+section > h2 + .rule { border-top: 1px solid var(--ink); margin-bottom: 14px; }
+section > p, section > .note { max-width: 62ch; }
+.note { font-size: 13.5px; color: var(--muted); line-height: 1.7; margin-top: 12px; }
+h3 { font-size: 14.5px; font-weight: 600; margin: 22px 0 8px; letter-spacing: -0.015em; }
+h3:first-of-type { margin-top: 14px; }
+
+/* ── 표 ─────────────────────────────────── */
+.tw { overflow-x: auto; margin-top: 10px; }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; line-height: 1.62; }
+th, td { text-align: left; padding: 7px 12px 7px 0; vertical-align: top;
+         border-bottom: 1px solid var(--rule-2); }
+thead th {
+  font-weight: 600; font-size: 12.5px; color: var(--muted);
+  border-bottom: 1px solid var(--rule); padding-bottom: 5px; white-space: nowrap;
+}
+tbody tr:last-child td { border-bottom: 1px solid var(--rule); }
+td.n, th.n { font-family: var(--mono); font-size: 12.5px; white-space: nowrap; }
+td.r, th.r { text-align: right; padding-right: 0; }
+.u { color: var(--uni); }
+.p { color: var(--plus); }
+.ok { color: var(--ok); }
+.dim { color: var(--muted); }
+
+/* 두 제품을 나란히 놓는 자리 */
+.two { display: grid; gap: 0 34px; grid-template-columns: 1fr 1fr; margin-top: 6px; }
+.two > div { min-width: 0; }
+.two h3 { margin-top: 14px; padding-bottom: 5px; border-bottom: 2px solid currentColor; }
+.two > div:first-child h3 { color: var(--uni); }
+.two > div:last-child h3 { color: var(--plus); }
+.two h3 em { font-style: normal; color: var(--muted); font-weight: 400; font-size: 12.5px; }
+.two dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 0 14px; font-size: 13.5px; }
+.two dt { color: var(--muted); padding: 5px 0; border-bottom: 1px solid var(--rule-2); white-space: nowrap; }
+.two dd { margin: 0; padding: 5px 0; border-bottom: 1px solid var(--rule-2); text-align: right;
+          font-family: var(--mono); font-size: 12.5px; }
+
+/* 사슬 한 줄기 */
+.chain { margin-top: 12px; border-left: 2px solid var(--plus); padding-left: 16px; }
+.chain dl { margin: 0; display: grid; grid-template-columns: 82px 1fr; gap: 3px 14px; font-size: 13.5px; }
+.chain dt { color: var(--muted); font-size: 12.5px; padding-top: 1px; }
+.chain dd { margin: 0; }
+.chain dd em { font-style: normal; color: var(--muted); font-size: 12.5px; }
+
+/* 열어 볼 것 */
+.links { margin-top: 10px; }
+.links tr td:first-child { white-space: nowrap; font-weight: 600; }
+.links a { font-family: var(--mono); font-size: 12px; word-break: break-all; }
+
+/* 아직 안 되는 것 */
+ul.todo { margin: 10px 0 0; padding: 0; list-style: none; max-width: 62ch; }
+ul.todo li { padding: 5px 0 5px 20px; border-bottom: 1px solid var(--rule-2); position: relative;
+             font-size: 13.5px; line-height: 1.7; }
+ul.todo li::before { content: "—"; position: absolute; left: 0; color: var(--muted); }
+
+footer { margin-top: 44px; padding-top: 14px; border-top: 1px solid var(--rule);
+         font-size: 12.5px; color: var(--muted); }
+footer p { margin-bottom: 0.5em; }
+
+@media (max-width: 620px) {
+  .two { grid-template-columns: 1fr; gap: 0; }
+  .meta { grid-template-columns: 64px 1fr; }
+  .chain dl { grid-template-columns: 1fr; gap: 0; }
+  .chain dt { padding-top: 6px; }
+}
+@media print {
+  body { background: #fff; padding: 0; }
+  .sheet { border: 0; max-width: none; padding: 0; }
+  section { break-inside: avoid; }
+}
+</style>
+
+<div class="sheet">
+
+  <header class="mast">
+    <h1>METRI · 메트리 플러스 개발 현황</h1>
+    <p class="sub">공학 진로 진단 플랫폼 두 벌 — 대학생용과 중·고등학생용</p>
+    <dl class="meta">
+      <dt>작성</dt><dd>2026-09-12</dd>
+      <dt>저장소</dt><dd>project465/pca-platform</dd>
+      <dt>브랜치</dt><dd>claude/amazing-thompson-w3f2o2 · 커밋 41</dd>
+      <dt>DB</dt><dd>PostgreSQL 16 — 빈 데이터베이스에서 끝까지 올라가는 것을 확인</dd>
+    </dl>
+  </header>
+
+  <p class="lede">
+    학생이 검사를 보면 <b>어느 계열·직무가 자기와 맞는지</b>를 내고, 거기서 멈추지 않고
+    <b>다음 학기에 무엇을 할지</b>까지 내려간다. 대학생에게는 직무와 역량 격차를,
+    중·고등학생에게는 계열과 고교학점제 과목을 낸다. 문항은 두 벌이지만 재는 자는 하나라,
+    고1 때 잰 값과 대학 때 잰 값이 같은 축 위에 놓인다.
+  </p>
+
+  <nav class="toc">
+    <ol>
+      <li><span>01</span> 두 제품</li>
+      <li><span>02</span> 실제로 도는 것</li>
+      <li><span>03</span> 쌓인 데이터</li>
+      <li><span>04</span> 산식이 사람을 갈라내는가</li>
+      <li><span>05</span> 메트리 플러스가 새로 낸 것</li>
+      <li><span>06</span> 열어 볼 수 있는 것</li>
+      <li><span>07</span> 아직 안 되는 것</li>
+    </ol>
+  </nav>
+
+  <section>
+    <h2><span class="n">01</span> 두 제품</h2>
+    <div class="rule"></div>
+    <p>
+      나누는 축은 학교급이 아니라 전공이었다. 그 판단은 지금도 유효하지만, 대학판 250문항을
+      중2에게 줄 수 없다는 사실이 확인되어 문항만 따로 썼다. 엔진·축·결과지 화면은 한 벌이다.
+    </p>
+
+    <div class="two">
+      <div>
+        <h3>메트리 <em>대학생</em></h3>
+        <dl>
+          <dt>검사지</dt><dd>PCA_ME_V1</dd>
+          <dt>문항</dt><dd>253 · 30분</dd>
+          <dt>구조</dt><dd>직무분야 10 × 25</dd>
+          <dt>성향 문항</dt><dd>120</dd>
+          <dt>결과</dt><dd>직무 적합 8</dd>
+          <dt>표기</dt><dd>점수</dd>
+          <dt>역량 격차</dt><dd>있음</dd>
+          <dt>가격</dt><dd>29,000원</dd>
+        </dl>
+      </div>
+      <div>
+        <h3>메트리 플러스 <em>중·고등학생</em></h3>
+        <dl>
+          <dt>검사지</dt><dd>HS_V1</dd>
+          <dt>문항</dt><dd>115 · 14분</dd>
+          <dt>구조</dt><dd>이공계 8계열 × 14</dd>
+          <dt>성향 문항</dt><dd>96</dd>
+          <dt>결과</dt><dd>계열 적합 8</dd>
+          <dt>표기</dt><dd>구간 · 묶음</dd>
+          <dt>과목 처방</dt><dd>있음</dd>
+          <dt>가격</dt><dd>19,000원</dd>
+        </dl>
+      </div>
+    </div>
+
+    <p class="note">
+      공유하는 것은 <span class="m">공학 활동 8축</span>(해석·계산 / 설계·구상 / 제작·실험 /
+      구현·프로그래밍 / 현장·설비 / 개선·효율 / 탐구·이론 / 조율·관리)과
+      <span class="m">업무 성향 6축</span>(독립↔협력 · 도전↔안정 · 속도중시↔품질중시),
+      그리고 채점 산식이다. 가중치는 코드가 아니라 테이블에 있다.
+    </p>
+    <p class="note">
+      이공계만 다룬다. 기계·전기전자·컴퓨터·화공·신소재·산업·건설환경·바이오의공학 여덟이고,
+      경영·경제·인문·예체능은 다루지 않는다. 좁힌 것이 손해가 아니라, 공학 직무는 나라가 달라도
+      같은 역량을 요구하기 때문에 그대로 해외로 나갈 수 있는 근거가 된다.
+    </p>
+  </section>
+
+  <section>
+    <h2><span class="n">02</span> 실제로 도는 것</h2>
+    <div class="rule"></div>
+    <p>
+      아래는 전부 실제 PostgreSQL 로 한 바퀴 돌려 확인한 것이다. 화면만 있고 뒤가 비어 있는 것은
+      이 표에 넣지 않았다.
+    </p>
+    <div class="tw">
+      <table class="links">
+        <thead>
+          <tr><th>흐름</th><th>확인 명령</th><th class="r">상태</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>개인 — 가입 → 결제 → 응시 → 채점 → 결과지</td><td class="n">npm run metri:check</td><td class="n r ok">통과</td></tr>
+          <tr><td>메트리 플러스 — 고교 상품으로 같은 한 바퀴</td><td class="n">npm run metri:hs</td><td class="n r ok">통과</td></tr>
+          <tr><td>과목 처방 — 계열마다 다른 과목이 나가는가</td><td class="n">npm run metri:prescribe</td><td class="n r ok">통과</td></tr>
+          <tr><td>증거 → 역량 보유 레벨 계산</td><td class="n">npm run metri:evidence</td><td class="n r ok">통과</td></tr>
+          <tr><td>결제 — 국내카드·해외카드·멱등·금액조작 거절</td><td class="n">npm run metri:pay</td><td class="n r ok">통과</td></tr>
+          <tr><td>학과 — 계약 → 회차 → 명단 → 공개 → 단체 리포트</td><td class="n">npm run metri:org</td><td class="n r ok">통과</td></tr>
+          <tr><td>개인정보 익명화 — 무엇이 지워지고 무엇이 남는가</td><td class="n">npm run metri:erase</td><td class="n r ok">통과</td></tr>
+          <tr><td>대학판 500명 시뮬레이션</td><td class="n">npm run metri:sim</td><td class="n r ok">통과</td></tr>
+          <tr><td>고교판 500명 시뮬레이션</td><td class="n">npm run metri:sim:hs</td><td class="n r ok">통과</td></tr>
+          <tr><td>타입체크 · 프로덕션 빌드 (플랫폼)</td><td class="n">npm run typecheck &amp;&amp; build</td><td class="n r ok">통과</td></tr>
+          <tr><td>소개 사이트 4개국 빌드</td><td class="n">SITE=kr|global|kz|tr build</td><td class="n r ok">통과</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">
+      결제는 <span class="m">PAYMENTS_PROVIDER=mock</span> 으로 돈다. 운영에 그대로 올리면 서버가
+      뜨지 않게 막아 뒀다 — 돈을 안 받고 좌석이 나가는 사고는 코드가 거절한다. PG 가맹점 심사가
+      끝나면 <span class="m">.env</span> 다섯 줄이면 붙는다.
+    </p>
+  </section>
+
+  <section>
+    <h2><span class="n">03</span> 쌓인 데이터</h2>
+    <div class="rule"></div>
+    <div class="tw">
+      <table>
+        <thead>
+          <tr><th>무엇</th><th class="r">행</th><th>비고</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>검사 문항 <span class="m dim">questions</span></td><td class="n r">368</td><td>대학판 253 + 고교판 115</td></tr>
+          <tr><td>전공·계열 <span class="m dim">majors</span></td><td class="n r">8</td><td>이공계만</td></tr>
+          <tr><td>직무군 <span class="m dim">job_clusters</span></td><td class="n r">24</td><td>기계·전기전자·컴퓨터 각 8</td></tr>
+          <tr><td>역량 노드 <span class="m dim">competencies</span></td><td class="n r">138</td><td>L1~L5 계층</td></tr>
+          <tr><td>고교 과목 <span class="m dim">hs_subjects</span></td><td class="n r">73</td><td>2022 개정 교육과정</td></tr>
+          <tr><td>계열 × 과목 필요도 <span class="m dim">hs_subject_major_map</span></td><td class="n r">123</td><td>행마다 “왜” 한 줄</td></tr>
+          <tr><td>대표 직무 <span class="m dim">career_roles</span></td><td class="n r">16</td><td>계열마다 둘</td></tr>
+          <tr><td>현장이 요구하는 것 <span class="m dim">career_needs</span></td><td class="n r">48</td><td>직무마다 셋</td></tr>
+          <tr><td>요구 ↔ 고교 과목 <span class="m dim">career_need_subjects</span></td><td class="n r">103</td><td>처방과 사슬을 잇는 다리</td></tr>
+          <tr><td>번역 <span class="m dim">translations</span></td><td class="n r">8,522</td><td>한국어·영어·튀르키예어</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">
+      사람이 읽는 이름은 컬럼이 아니라 <span class="m">translations</span> 의 행으로 쌓인다.
+      나라를 하나 더 열 때 스키마가 바뀌지 않는다.
+    </p>
+  </section>
+
+  <section>
+    <h2><span class="n">04</span> 산식이 사람을 갈라내는가</h2>
+    <div class="rule"></div>
+    <p>
+      숨은 성향을 심어 둔 가상 응시자 500명에게 문항을 풀리고, 엔진이 그 성향을 되찾아 내는지 봤다.
+      불성실 응답자도 일부러 섞었다. 두 검사지를 따로 돌린다.
+    </p>
+    <div class="tw">
+      <table>
+        <thead>
+          <tr><th>보는 것</th><th class="r">메트리</th><th class="r">메트리 플러스</th><th class="r">무작위라면</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>심어 둔 1순위를 그대로 집어냄</td><td class="n r">91.2%</td><td class="n r">89.2%</td><td class="n r dim">10.0 / 12.5%</td></tr>
+          <tr><td>3순위 안에 들어옴</td><td class="n r">99.6%</td><td class="n r">99.3%</td><td class="n r dim">30.0 / 37.5%</td></tr>
+          <tr><td>가장 높은 성향까지 되찾음</td><td class="n r">73.5%</td><td class="n r">76.5%</td><td class="n r dim">16.7%</td></tr>
+          <tr><td>1군 크기 (중앙값)</td><td class="n r">3개 / 8</td><td class="n r">2개 / 8</td><td class="n r dim">—</td></tr>
+          <tr><td>같은 보기 연타·무작위 응답을 걸러냄</td><td class="n r ok">100%</td><td class="n r ok">100%</td><td class="n r dim">—</td></tr>
+          <tr><td>성실하게 답한 사람을 정상으로 판정</td><td class="n r">99.3%</td><td class="n r">99.5%</td><td class="n r dim">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">
+      시뮬레이션이 설계 오류 네 개를 잡아냈고 전부 고쳤다. ① 활동 축마다 몇 개 분야에서 오는지가
+      달라 특정 직무가 사람과 무관하게 유리해지던 것 ② 신뢰구간이 근거 없는 상수 ±6 이던 것
+      ③ 고교판에서 축을 한 번 거치자 전기·전자를 좋아하는 학생의 1순위가 컴퓨터공학으로 나오던 것
+      ④ 성실도 확인 3문항 중 2개를 틀려도 정상으로 통과하던 것. ④는 대학판에도 있던 구멍이라
+      함께 막혔다.
+    </p>
+    <p class="note">
+      다만 <b>가상 응시자는 우리가 만든 모형대로 답한 것</b>이다. 현실을 맞히는지는 실제 학생
+      100명이 말해 준다. 규준(norm)도 첫 학교 도입 이후에 만들어진다.
+    </p>
+  </section>
+
+  <section>
+    <h2><span class="n">05</span> 메트리 플러스가 새로 낸 것</h2>
+    <div class="rule"></div>
+    <p>
+      “기계공학이 앞에 있습니다” 로 끝나면 학생이 다음 주에 할 일이 없다. 결과지가 두 칸 더 내려간다.
+    </p>
+
+    <h3>현장에서 거꾸로 — 한 줄기</h3>
+    <div class="chain">
+      <dl>
+        <dt>직무</dt><dd>구조해석 엔지니어 <em>기계공학</em></dd>
+        <dt>현장에서</dt><dd>전기차 배터리 팩 하우징이 노면 진동에 용접부부터 갈라질지, 실차 시험 두 달 전에 계산으로 먼저 짚어 낸다</dd>
+        <dt>필요한 것</dt><dd>실제 도로에서 걸리는 힘을 계산할 수 있는 조건으로 바꾸는 일</dd>
+        <dt>대학에서</dt><dd>정역학 · 동역학 · 재료역학</dd>
+        <dt>고등학교에서</dt><dd><b>물리학 · 역학과 에너지</b> <em>— 어디를 고정으로 보고 어디에 힘이 걸린다고 볼 것인지. 해석의 답은 여기서 거의 정해진다</em></dd>
+        <dt>중학교에서</dt><dd>부러진 의자나 휘어진 자전거 짐받이를 보고 왜 하필 거기가 먼저 갔는지 그림으로 설명해 보기</dd>
+      </dl>
+    </div>
+    <p class="note">
+      과목에서 출발해 직업을 붙이면 “물리학을 들으면 엔지니어가 될 수 있어요” 라는, 어느 과목에나
+      붙는 빈말이 된다. 직무에서 출발해 내려오면 따질 거리가 생긴다. 이런 줄기가 계열 8 × 직무 2 ×
+      요구 3 = 48개 들어 있다.
+    </p>
+
+    <h3>과목 처방 — 2022 개정 교육과정</h3>
+    <p class="note" style="margin-top:6px">
+      채점이 “1군에 기계공학과 신소재공학이 있고 우열을 못 가린다” 고 말해 놓고 처방이 한쪽 과목만
+      내면 앞뒤가 안 맞는다. 그래서 세 덩어리다 — <b>먼저 듣습니다</b>(1군 전부에 걸리는 과목),
+      <b>여기서 갈립니다</b>, <b>여유가 되면</b>. 고1이 지금 하나로 좁힐 이유가 없다.
+    </p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>지키는 것</th><th>왜</th></tr></thead>
+        <tbody>
+          <tr><td>학년 정원 <span class="m">52학점</span></td><td>상한이 없으면 계열이 안 갈린 학생에게 3학년 17과목 68학점짜리 목록이 나간다. 신청할 수 없는 목록은 처방이 아니다</td></tr>
+          <tr><td>선수과목을 따라 올라감</td><td>미적분Ⅱ 만 적어 놓고 미적분Ⅰ 을 빠뜨리면 학생은 그 신청서를 낼 수 없다</td></tr>
+          <tr><td>줄마다 “왜” 한 줄</td><td>이유 없는 목록은 학부모가 먼저 안 믿는다. 문장은 데이터에서 오고 코드가 짓지 않는다</td></tr>
+          <tr><td>계열 요구와 대학 권장을 안 섞음</td><td>“기계공학과 수업이 전제한다” 와 “서울대가 밝혔다” 는 근거가 다르다. 대학이 이름을 걸고 밝힌 것만 담는다</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">06</span> 열어 볼 수 있는 것</h2>
+    <div class="rule"></div>
+    <p>
+      소개 사이트 네 벌과 메트리 플러스 소개 페이지를 정적으로 내보내 올려 뒀다. 페이지 안의 링크와
+      결과지 탭·FAQ 가 그대로 돈다.
+    </p>
+    <div class="tw">
+      <table class="links">
+        <thead><tr><th>사이트</th><th>언어</th><th>주소</th></tr></thead>
+        <tbody>
+          <tr><td class="p">메트리 플러스</td><td>한국어</td><td><a href="https://claude.ai/code/artifact/2fcde5ba-e2e6-4182-beb1-0254329d1cf3">claude.ai/code/artifact/2fcde5ba…</a></td></tr>
+          <tr><td class="u">메트리 한국</td><td>한국어</td><td><a href="https://claude.ai/code/artifact/6ac2600d-9690-4824-be94-1e194739f5df">claude.ai/code/artifact/6ac2600d…</a></td></tr>
+          <tr><td class="u">메트리 인터내셔널</td><td>영어</td><td><a href="https://claude.ai/code/artifact/35fcca56-b8df-4b1a-b544-b3e6cadc05e5">claude.ai/code/artifact/35fcca56…</a></td></tr>
+          <tr><td class="u">메트리 카자흐스탄</td><td>카자흐어</td><td><a href="https://claude.ai/code/artifact/9d351fd9-c03d-46f4-bc26-493048abf228">claude.ai/code/artifact/9d351fd9…</a></td></tr>
+          <tr><td class="u">메트리 튀르키예</td><td>튀르키예어</td><td><a href="https://claude.ai/code/artifact/3d7307d0-95df-4e94-8d6b-f25b34f2e83f">claude.ai/code/artifact/3d7307d0…</a></td></tr>
+          <tr><td>이 문서</td><td>한국어</td><td><a href="https://claude.ai/code/artifact/36e3b58f-7b78-48e5-bcd9-a56b00cbeccb">claude.ai/code/artifact/36e3b58f…</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">
+      네 사이트의 「시작하기」 버튼은 전부 같은 플랫폼 한 곳을 가리키고 언어를 들고 간다.
+      다만 그 주소(<span class="m">app.metri.io</span>)는 아직 DNS 가 없어 열리지 않는다 —
+      07 을 볼 것. 문의 폼은 서버 없는 미리보기라 “접수되지 않습니다” 라고 알려 주고 멈춘다.
+    </p>
+  </section>
+
+  <section>
+    <h2><span class="n">07</span> 아직 안 되는 것</h2>
+    <div class="rule"></div>
+    <p>
+      파는 쪽이 안 되는 것을 먼저 말해야 상대가 계획을 세울 수 있다. 코드 밖에서 막는 것과 아직
+      안 만든 것을 갈라 적는다.
+    </p>
+
+    <h3>밖에서 막는 것</h3>
+    <ul class="todo">
+      <li><b>도메인.</b> <span class="m">metri.io</span> 는 주차 페이지, <span class="m">metri.kz</span>·<span class="m">metri.com.tr</span> 은 이미 다른 사람이 쓰고 있고, <span class="m">metri.co.kr</span> 은 미등록, <span class="m">app.metri.io</span> 는 DNS 자체가 없다. 확보되면 코드에서 고칠 것은 네 줄이다</li>
+      <li><b>PG 가맹점 심사</b> — PortOne + 카드사. 영업일 3~10일. 해외카드 채널은 별도 심사</li>
+      <li><b>통신판매업 신고</b> — 관할 구청 3~5일. 사업자등록증·구매안전서비스 확인증 필요</li>
+      <li><b>사업자 정보</b> — 상호·대표자·주소·전화·사업자등록번호. 지어내지 않았고, 비어 있으면 푸터에 금색 “확인 필요” 로 찍힌다</li>
+    </ul>
+
+    <h3>아직 안 만든 것</h3>
+    <ul class="todo">
+      <li>전기전자·컴퓨터 <b>대학판 문항</b> — 기계공학 한 벌만 있다</li>
+      <li>화공·신소재·산업·건설환경·바이오의공학의 <b>스킬트리</b> — 생기면 사슬이 대학판과 한 줄기가 된다</li>
+      <li>학교가 실제로 <b>여는 과목</b> — 편제표를 받아야 “이 학교엔 없는 과목” 을 표시할 수 있다</li>
+      <li>마이스터고·특성화고의 <b>자격·NCS 처방</b>, 중학생의 “어느 고등학교” 처방</li>
+      <li>메트리 플러스 <b>튀르키예어 문항</b> — 중·고등학생은 국내부터다</li>
+      <li>사슬의 <b>현직자 검수</b> — 지금 장면은 공개된 직무기술서와 공학 교육과정에서 왔다</li>
+      <li>단체 리포트 <b>PDF 내보내기</b>, 보유기간 만료 자동 파기</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>
+      이 문서의 숫자는 2026-09-12 기준 저장소와 데이터베이스에서 직접 읽은 값이다.
+      시뮬레이션 수치는 가상 응시자 500명의 결과이며 실제 학생 표본이 아니다.
+    </p>
+    <p>
+      메트리 플러스의 예시 결과지와 직무 장면은 해당 분야에서 실제로 일어나는 일을 압축한 것이고,
+      특정 회사의 사례나 실제 응시자의 결과가 아니다.
+    </p>
+  </footer>
+
+</div>
