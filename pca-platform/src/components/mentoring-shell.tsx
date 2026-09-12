@@ -22,13 +22,17 @@ export default function MentoringShell({
   isMentor: boolean;
   children: React.ReactNode;
 }) {
-  const nav = user
-    ? [
-        { href: "/mentoring", label: "멘토 둘러보기" },
-        { href: "/mentoring/requests", label: "내 신청" },
-        { href: "/mentoring/mentor", label: isMentor ? "멘토 콘솔" : "멘토로 참여하기" },
-      ]
-    : [{ href: "/mentoring", label: "멘토 둘러보기" }];
+  /**
+   * 메뉴는 로그인 여부로 갈리되 순서는 같다. 로그인했다고 항목이 앞뒤로 움직이면
+   * 같은 사이트를 두 번 익혀야 한다. '내 신청'만 로그인한 사람에게 끼어든다.
+   */
+  const nav = [
+    { href: "/mentoring", label: "멘토 둘러보기" },
+    { href: "/mentoring/guide", label: "이용 안내" },
+    { href: "/mentoring/faq", label: "자주 묻는 질문" },
+    ...(user ? [{ href: "/mentoring/requests", label: "내 신청" }] : []),
+    { href: "/mentoring/mentor", label: isMentor ? "멘토 콘솔" : "멘토로 참여하기" },
+  ];
 
   return (
     <div className="shell">
@@ -65,8 +69,28 @@ export default function MentoringShell({
       </header>
       <main className="main">{children}</main>
       <footer className="site-foot">
-        <Link href="/terms">이용약관</Link>
-        <Link href="/privacy">개인정보처리방침</Link>
+        <div className="foot-cols">
+          <div>
+            <b>현멘</b>
+            <Link href="/mentoring">멘토 둘러보기</Link>
+            <Link href="/mentoring/guide">이용 안내</Link>
+            <Link href="/mentoring/faq">자주 묻는 질문</Link>
+          </div>
+          <div>
+            <b>멘토</b>
+            <Link href="/mentoring/mentor">멘토로 참여하기</Link>
+            <Link href="/mentoring/guide#mentor">정산과 지급</Link>
+          </div>
+          <div>
+            <b>약관</b>
+            <Link href="/terms">이용약관</Link>
+            <Link href="/privacy">개인정보처리방침</Link>
+          </div>
+        </div>
+        <p className="foot-note">
+          현멘은 석·박사 현직자와 석·박사 과정에 있는 사람이 만나는 자리입니다.
+          멘토는 익명이며, 운영사가 현직 여부를 확인한 사람만 갤러리에 올라갑니다.
+        </p>
       </footer>
     </div>
   );

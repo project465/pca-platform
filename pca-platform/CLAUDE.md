@@ -140,7 +140,12 @@ organizations, courses, course_competency_map, translations
     상세도 로그인 없이 보이고, **신청 버튼 자리에서 로그인을 받는다**.
     화면만 열어둔 것이 아니라 서버 동작(신청·취소·후기·노쇼)에도 같은 문지기가 있다
 15. 내 신청 `/mentoring/requests` — 상태, 줌 참가 링크, 취소, 후기
-16. 멘토 콘솔 `/mentoring/mentor` — 프로필, 시간대 열기, 승낙·거절
+15-1. 이용 안내 `/mentoring/guide` · 자주 묻는 질문 `/mentoring/faq` — 로그인 없이 읽는다.
+    요금·환불율·수수료·유예 시간은 **DB 에서 읽어 그린다.** 문장에 숫자를 박아두면
+    값이 바뀔 때 반드시 어긋나고, 어긋난 안내는 없는 것보다 나쁘다
+16. 멘토 콘솔 `/mentoring/mentor` — 프로필, 시간대 열기, 승낙·거절, 지급 계좌, 정산.
+    **로그인 전에는 모집 안내**가 보인다 — 멘토 모집도 영업이고, 조건과 금액을 보지도
+    못하고 가입할 수는 없다
 17. 멘토 승인 `/admin/mentors` — 운영사가 현직 인증 근거를 적고 승인
 18. 가격·정책 `/admin/prices` · 멘토 정산 `/admin/payouts` · 노쇼 신고 `/admin/no-shows`
     · 환불 실패 `/admin/refunds`
