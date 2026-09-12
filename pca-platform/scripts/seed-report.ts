@@ -35,11 +35,14 @@ const COMPETENCIES: [string, string, string][] = [
   ["GDNT", "theory", "기하공차"],
   ["PYTHON", "software", "Python"],
   ["SPC", "theory", "통계적 공정관리"],
+  ["CAD", "software", "3D 모델링(CAD)"],
 ];
 
-/** 1순위 직무가 요구하는 수준과 학생의 보유 수준 */
-const REQUIRED: Record<string, number> = {
-  FEM: 5, ANSYS: 5, SOLID_MECH: 5, THERMO: 4, MATLAB: 3, GDNT: 4, PYTHON: 3, SPC: 2,
+/** 직무가 요구하는 역량 수준. 단체 리포트가 집계할 것이 있으려면 직무 여럿에 붙어 있어야 한다 */
+const REQUIRED: Record<string, Record<string, number>> = {
+  PROD_OPS: { FEM: 5, ANSYS: 5, SOLID_MECH: 5, THERMO: 4, MATLAB: 3, GDNT: 4, PYTHON: 3, SPC: 2 },
+  IT_DATA: { PYTHON: 5, MATLAB: 4, FEM: 2, SPC: 3, CAD: 2 },
+  CONSULT: { SPC: 4, MATLAB: 3, PYTHON: 3, GDNT: 2 },
 };
 const HELD: Record<string, number> = {
   FEM: 3, ANSYS: 2, SOLID_MECH: 3, THERMO: 4, MATLAB: 3, GDNT: 1, PYTHON: 2, SPC: 2,
@@ -109,14 +112,16 @@ async function main() {
     );
     for (const j of jobs.rows) jobId.set(j.code, j.id);
 
-    const topJob = jobId.get(FITS[0][0])!;
-    for (const [code, level] of Object.entries(REQUIRED)) {
-      await c.query(
-        `INSERT INTO job_competency_map (job_id, competency_id, required_level)
-         VALUES ($1, $2, $3)
-         ON CONFLICT (job_id, competency_id) DO UPDATE SET required_level = EXCLUDED.required_level`,
-        [topJob, compId.get(code), level],
-      );
+    for (const [job, needs] of Object.entries(REQUIRED)) {
+      for (const [code, level] of Object.entries(needs)) {
+        if (!compId.get(code) || !jobId.get(job)) continue;
+        await c.query(
+          `INSERT INTO job_competency_map (job_id, competency_id, required_level)
+           VALUES ($1, $2, $3)
+           ON CONFLICT (job_id, competency_id) DO UPDATE SET required_level = EXCLUDED.required_level`,
+          [jobId.get(job), compId.get(code), level],
+        );
+      }
     }
 
     // 과목

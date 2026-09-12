@@ -8,9 +8,12 @@ const initial: { message?: string; ok?: string } = {};
 export default function ReleaseButton({
   sessionId,
   releasedAt,
+  compact = false,
 }: {
   sessionId: string;
   releasedAt: string | null;
+  /** 리포트 머리글처럼 자리가 좁은 곳에서는 버튼만 남긴다 */
+  compact?: boolean;
 }) {
   const [state, action, pending] = useActionState(releaseAction, initial);
   const done = Boolean(state.ok) || releasedAt !== null;
@@ -21,7 +24,7 @@ export default function ReleaseButton({
       <button className="act solid" type="submit" disabled={pending || done}>
         {pending ? "공개 중…" : done ? "공개함" : "결과 공개하기"}
       </button>
-      {state.ok ? (
+      {compact ? null : state.ok ? (
         <span className="inline-ok">{state.ok}</span>
       ) : done ? (
         <span className="help">학생 화면에 결과지가 보입니다.</span>

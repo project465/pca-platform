@@ -92,7 +92,8 @@ organizations, courses, course_competency_map, translations
 6. 회차 생성 → `/org/sessions/new`
 7. 명단 업로드 및 계정 일괄 발급 → `/org/sessions/[id]`
 8. 응시 진행 현황 → 같은 화면의 명단 표
-9. 단체 리포트 → `mockups/03_group_report.html`
+9. 단체 리포트 → `mockups/03_group_report.html` · `/org/sessions/[id]/report`
+   몰린 직무 분포, 역량 충족률, 검토가 필요한 과목, 미응시. 익명 집계라 개인은 안 나온다
 
 담당자(org_admin)와 교수(instructor)의 권한을 나눴다. 교수는 진행 상황을 보고,
 명단을 올리고 결과를 공개하는 것은 담당자만 한다 — 계약 주체가 학과이기 때문이다.
@@ -133,7 +134,7 @@ SITE=kz / SITE=tr           →  원고 파일만 추가하면 된다
 1. **계정** — users, organizations, memberships, 로그인, 비밀번호 재설정, 관리자에서 기관 생성 ✔
 2. **계약과 회차** — contracts, seats, test_sessions, 명단 엑셀 업로드로 계정 일괄 생성 ✔
 3. **응시** — 응시 화면, responses 저장, 이어보기 ✔
-4. **채점과 결과** — scoring_weights 적용 ✔, 결과지 ✔, 단체 리포트가 남았다
+4. **채점과 결과** — scoring_weights 적용 ✔, 결과지 ✔, 단체 리포트 ✔
    채점은 `src/lib/scoring.ts`. 가중치를 `/admin/instruments/[id]` 에서 채우고,
    담당자가 회차 화면에서 돌린다. 가중치가 비어 있으면 채점이 시작되지 않는다.
 
@@ -147,6 +148,8 @@ SITE=kz / SITE=tr           →  원고 파일만 추가하면 된다
 - 역량 보유 수준은 역량 문항의 선택 순번을 0~5 로 옮긴다. 같은 역량을 여러 번 물었으면 높은 쪽
 - 채점은 여러 번 돌려도 된다. 가중치를 바꾸면 다시 돌려야 반영된다
 - 채점과 공개는 누른 뒤에도 그 칸이 남는다. 칸째로 사라지면 무슨 일이 일어났는지 알 수 없다
+- 단체 리포트의 역량 충족률 분모는 "그 역량을 요구받은 학생 수"다. 1순위 직무가
+  달라 요구 역량도 다르므로 전체 인원으로 나누면 숫자가 거짓말이 된다
 
 **3단계에서 정한 것**
 

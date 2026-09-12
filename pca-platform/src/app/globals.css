@@ -655,3 +655,76 @@ table.weights tfoot th, table.weights tfoot td {
   font-size: 13px; font-weight: 700; color: var(--muted);
 }
 table.weights tfoot td.zero { color: var(--gap); }
+
+/* ============================================================
+   단체 리포트 — mockups/03_group_report.html
+   ============================================================ */
+
+.sheet.group { max-width: 940px; }
+.sheet.group .top { gap: 14px 28px; align-items: center; }
+.sheet.group .top .act { margin-left: auto; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.badge {
+  font-size: 12.5px; font-weight: 700; padding: 3px 9px;
+  border: 1px solid var(--partial); color: var(--partial); white-space: nowrap;
+}
+.badge.open { border-color: var(--met); color: var(--met); }
+
+.sheet.group h2 { font-size: 14px; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
+.sheet.group .sub { font-size: 14px; color: var(--muted); max-width: 64ch; margin-bottom: 26px; }
+
+.band { display: flex; height: 64px; border: 1px solid var(--ink); }
+.band div {
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 15px; font-weight: 700; overflow: hidden; min-width: 0;
+}
+.band div:nth-child(4), .band div:nth-child(5) { color: var(--ink); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 26px; margin-top: 16px; }
+.legend span { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.legend i { width: 12px; height: 12px; flex: none; }
+.legend em { font-style: normal; color: var(--muted); font-size: 13.5px; }
+
+.cg {
+  display: grid; grid-template-columns: 150px 1fr 84px;
+  gap: 0 16px; align-items: center; padding: 12px 0;
+}
+.cg + .cg { border-top: 1px solid var(--rule); }
+.cg .lab { font-size: 14.5px; font-weight: 500; }
+.cg .lab small { display: block; font-size: 12px; color: var(--muted); font-weight: 400; }
+.meter { height: 14px; background: #E4E9EC; position: relative; }
+.meter i { position: absolute; left: 0; top: 0; bottom: 0; }
+.meter i.low { background: var(--gap); }
+.meter i.mid { background: var(--partial); }
+.meter i.high { background: var(--met); }
+.cg .pct { text-align: right; font-size: 14px; font-weight: 700; }
+.cg .pct em {
+  font-style: normal; font-weight: 400; color: var(--muted);
+  font-size: 12.5px; display: block;
+}
+
+.sheet.group .course { display: grid; grid-template-columns: 1fr auto; gap: 4px 20px; padding: 16px 0; }
+.sheet.group .course + .course { border-top: 1px solid var(--rule); }
+.sheet.group .course h3 { font-size: 16.5px; font-weight: 700; letter-spacing: -0.015em; }
+.sheet.group .course .need { font-size: 14px; font-weight: 700; white-space: nowrap; }
+.sheet.group .course p { grid-column: 1/-1; font-size: 13.5px; color: var(--muted); max-width: 66ch; }
+.flag {
+  display: inline-block; font-size: 12px; font-weight: 600; padding: 1px 7px;
+  border: 1px solid var(--gap); color: var(--gap); margin-left: 8px; vertical-align: 1px;
+}
+
+.miss { display: flex; flex-wrap: wrap; gap: 10px 28px; align-items: center; font-size: 14.5px; }
+.miss b { font-weight: 700; }
+.miss span { color: var(--muted); }
+
+.sheet.group .foot { display: flex; gap: 16px; flex-wrap: wrap; }
+.sheet.group .foot .foot-right { margin-left: auto; }
+
+@media (max-width: 680px) {
+  .sheet.group .top .act { margin-left: 0; width: 100%; }
+  .band { height: 52px; }
+  .band div { font-size: 13px; }
+  .cg { grid-template-columns: 110px 1fr 64px; }
+  .sheet.group .foot .foot-right { margin-left: 0; }
+}
+@media print {
+  .sheet.group .top .act form, .sheet.group .foot a { display: none; }
+}

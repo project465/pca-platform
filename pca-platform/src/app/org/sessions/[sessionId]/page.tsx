@@ -54,6 +54,11 @@ export default async function SessionDetailPage({
         <h1>{session.name}</h1>
         <span className="count">{session.contract_title}</span>
         <div className="right">
+          {session.scored > 0 ? (
+            <Link className="act solid" href={`/org/sessions/${sessionId}/report`}>
+              단체 리포트
+            </Link>
+          ) : null}
           <Link className="act" href="/org">
             회차 목록
           </Link>
