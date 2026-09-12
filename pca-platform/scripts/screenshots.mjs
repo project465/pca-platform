@@ -136,6 +136,11 @@ await group("결과지 → 현직자", async (p) => {
 });
 
 // ── 현멘 ─────────────────────────────────────────────────────────
+await group("현멘 (로그인 없이)", async (p) => {
+  await p.goto(`${BASE}/mentoring`);
+  await shot(p, "19-mentoring-public", true);
+});
+
 await group("현멘 (신청자)", async (p) => {
   await login(p, "kim@example.com", "pca-dev-kim-1234");
   await p.goto(`${BASE}/mentoring`);
@@ -194,6 +199,21 @@ await group("운영사", async (p) => {
 
   await p.goto(`${BASE}/admin/payouts`);
   await shot(p, "45-admin-payouts", true);
+
+  await p.goto(`${BASE}/admin/no-shows`);
+  await shot(p, "46-admin-noshows", true);
+
+  await p.goto(`${BASE}/admin/refunds`);
+  await shot(p, "47-admin-refunds", true);
+});
+
+// ── 약관 (로그인 전에도 읽는다) ─────────────────────────────────
+await group("약관", async (p) => {
+  await p.goto(`${BASE}/terms`);
+  await shot(p, "48-terms", true);
+
+  await p.goto(`${BASE}/privacy`);
+  await shot(p, "49-privacy", true);
 });
 
 await browser.close();
