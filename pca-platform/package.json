@@ -16,7 +16,9 @@
     "check:sheet": "tsx scripts/check-sheet.ts",
     "db:seed:responses": "tsx scripts/seed-responses.ts",
     "db:fees": "tsx scripts/seed-fees.ts",
-    "check:money": "tsx scripts/check-money.ts"
+    "check:money": "tsx scripts/check-money.ts",
+    "sheet:weights": "tsx scripts/make-rating-sheet.ts",
+    "import:weights": "tsx scripts/import-weights.ts"
   },
   "dependencies": {
     "bcryptjs": "3.0.2",
