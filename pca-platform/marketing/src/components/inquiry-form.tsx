@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { submitContact, type ContactState } from "@/app/actions";
+import { submitContact, type ContactState } from "@/lib/actions";
 import type { SiteContent } from "@/content";
 
 const initial: ContactState = {};

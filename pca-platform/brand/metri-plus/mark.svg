@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96"
+     role="img" aria-label="METRI PLUS">
+  <title>METRI PLUS</title>
+  <!-- 파비콘·앱 아이콘. 16px 로 줄여도 남는 것은 올라가는 호와 플러스 둘뿐이라
+       그 둘만 남겼다. 대학용 METRI 의 육각형 아이콘과 섞이지 않는다. -->
+  <rect width="96" height="96" rx="22" fill="#0F1B2D"/>
+  <path d="M16,74 C38,79 57,68 70,40" fill="none" stroke="#E07B39"
+        stroke-width="11" stroke-linecap="round"/>
+  <path d="M70,17 L70,45 M56,31 L84,31" fill="none" stroke="#FFFFFF"
+        stroke-width="11" stroke-linecap="round"/>
+</svg>

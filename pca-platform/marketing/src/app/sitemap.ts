@@ -1,6 +1,9 @@
 import type { MetadataRoute } from "next";
 import { getSite } from "@/content";
 
+/** 정적 내보내기에서도 만들어지도록 고정한다 */
+export const dynamic = "force-static";
+
 /** 내비에 있는 경로를 그대로 싣는다 */
 export default function sitemap(): MetadataRoute.Sitemap {
   const site = getSite();
