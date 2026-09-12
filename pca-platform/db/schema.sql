@@ -525,3 +525,26 @@ ALTER TABLE users ADD COLUMN email_verified_at TIMESTAMPTZ;
 ALTER TABLE users ADD COLUMN terms_agreed_at TIMESTAMPTZ;
 COMMENT ON COLUMN users.terms_agreed_at IS
   '셀프 가입에만 채운다. 학과가 발급한 계정은 학과가 동의를 받는다';
+
+
+-- ============================================================
+--  13. 소셜 로그인 (2026-09-12)
+--
+--  카카오·네이버로 들어온 사람도 users 에 들어간다 (설계 원칙 1).
+--  이메일을 안 주는 계정이 있어서 이메일로 사람을 특정할 수 없다.
+--  그래서 제공자가 주는 고유 id 를 따로 들고 매칭한다.
+-- ============================================================
+
+CREATE TABLE user_identities (
+  id                BIGSERIAL PRIMARY KEY,
+  user_id           BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  provider          TEXT NOT NULL,             -- kakao | naver
+  provider_user_id  TEXT NOT NULL,
+  email             TEXT,
+  created_at        TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (provider, provider_user_id)
+);
+COMMENT ON TABLE user_identities IS
+  '같은 사람이 이메일 가입과 소셜을 함께 쓸 수 있다. 이메일이 같으면 기존 계정에 붙인다';
+
+CREATE INDEX idx_identities_user ON user_identities(user_id);

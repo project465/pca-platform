@@ -734,3 +734,16 @@ table.weights tfoot td.zero { color: var(--gap); }
 .pay-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
 .pay-head b { font-size: 24px; font-weight: 800; letter-spacing: -0.03em; }
 .pay-head span { font-size: 13.5px; color: var(--muted); }
+
+/* ---------- 소셜 로그인 ---------- */
+.social { display: flex; flex-direction: column; gap: 8px; margin-top: 18px; }
+.social form { display: block; }
+.social-or {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 12.5px; color: var(--muted); margin-bottom: 4px;
+}
+.social-or::before, .social-or::after {
+  content: ""; flex: 1; height: 1px; background: var(--rule);
+}
+.act.social-kakao { background: #FEE500; border-color: #E6CF00; color: #191600; }
+.act.social-naver { background: #03C75A; border-color: #02A94C; color: #fff; }

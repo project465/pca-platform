@@ -1,8 +1,11 @@
 import NextAuth, { type NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import Kakao from "next-auth/providers/kakao";
+import Naver from "next-auth/providers/naver";
 import { query, queryOne } from "@/lib/db";
 import { verifyPassword } from "@/lib/password";
 import { highestRole, isRole, type Role } from "@/lib/roles";
+import { linkSocialUser } from "@/lib/social";
 
 type UserRow = {
   id: string;
@@ -40,11 +43,34 @@ async function loadMemberships(userId: string): Promise<Membership[]> {
     .map((r) => ({ orgId: r.org_id, role: r.role as Role }));
 }
 
+/** 키가 들어와 있는 것만 켠다. 앱 등록을 안 했으면 버튼 자체가 없어야 한다. */
+function socialProviders(): NextAuthConfig["providers"] {
+  const out: NextAuthConfig["providers"] = [];
+  if (process.env.KAKAO_CLIENT_ID && process.env.KAKAO_CLIENT_SECRET) {
+    out.push(
+      Kakao({
+        clientId: process.env.KAKAO_CLIENT_ID,
+        clientSecret: process.env.KAKAO_CLIENT_SECRET,
+      }),
+    );
+  }
+  if (process.env.NAVER_CLIENT_ID && process.env.NAVER_CLIENT_SECRET) {
+    out.push(
+      Naver({
+        clientId: process.env.NAVER_CLIENT_ID,
+        clientSecret: process.env.NAVER_CLIENT_SECRET,
+      }),
+    );
+  }
+  return out;
+}
+
 export const authConfig: NextAuthConfig = {
   session: { strategy: "jwt", maxAge: 60 * 60 * 8 },
   pages: { signIn: "/login" },
   trustHost: true,
   providers: [
+    ...socialProviders(),
     Credentials({
       credentials: {
         identifier: { label: "아이디" },
@@ -71,6 +97,25 @@ export const authConfig: NextAuthConfig = {
     }),
   ],
   callbacks: {
+    /**
+     * 소셜로 들어온 사람을 users 에 붙이고, 우리 쪽 id 를 토큰에 싣는다.
+     * 제공자가 준 id 를 그대로 쓰면 users.id 와 섞인다.
+     */
+    async signIn({ user, account, profile }) {
+      if (!account || account.provider === "credentials") return true;
+
+      const id = await linkSocialUser({
+        provider: account.provider,
+        providerUserId: String(account.providerAccountId),
+        email: (user.email ?? (profile?.email as string | undefined) ?? null) || null,
+        name: user.name ?? (profile?.name as string | undefined) ?? null,
+      });
+      if (!id) return false;
+
+      user.id = id;
+      return true;
+    },
+
     /**
      * 토큰에는 id만 신뢰하고, 나머지는 매 요청마다 DB에서 다시 읽는다.
      * 정지된 계정이 남은 쿠키로 계속 들어오거나, 비밀번호를 바꿨는데도
