@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { requireRole } from "@/lib/session";
 import { buildReport } from "@/lib/report";
 import { t, UI, type Lang, type UiKey } from "@/lib/locale";
+import { prescribe } from "@/lib/prescribe";
+import PrescriptionView from "@/components/prescription";
 import { resolveLang } from "@/lib/locale-server";
 import LangSwitch from "@/components/lang-switch";
 import { Radar, RankBars, BandBars, GapChart } from "@/components/report-charts";
@@ -56,6 +58,11 @@ export default async function ReportPage({
    * 직무 ↔ 계열, 여섯 달 ↔ 한 학기, 역량 격차는 고교판에 없다.
    */
   const hs = r.kind === "major";
+  /**
+   * 과목 처방은 고교판에만 붙는다. 대학생에게 고교학점제 과목을 권할 일이
+   * 없고, 고교판에는 역량 격차(05)가 없어 자리가 비어 있다.
+   */
+  const rx = hs ? await prescribe(attemptId, lang) : null;
   const tt = (key: UiKey, vars?: Record<string, string | number>) =>
     hs && `${key}Hs` in UI ? t(`${key}Hs` as UiKey, lang, vars) : t(key, lang, vars);
 
@@ -238,10 +245,30 @@ export default async function ReportPage({
         </section>
         )}
 
+        {/* ---- 05 과목 처방 (고교판) ---- */}
+        {hs && rx && (
+          <section className="rp-sec">
+            <div className="rp-sec-head">
+              <span className="rp-no">05</span>
+              <h2>{t("repSec05Hs", lang)}</h2>
+            </div>
+            <p className="rp-note">
+              {t("repNote05Hs", lang, {
+                n: String(rx.majors.length),
+                c: String(rx.totalCredits),
+              })}
+            </p>
+            <PrescriptionView rx={rx} />
+            <p className="rp-note" style={{ marginTop: 20, marginBottom: 0 }}>
+              {t("repRxCaveat", lang)}
+            </p>
+          </section>
+        )}
+
         {/* ---- 06 다음 여섯 달 ---- */}
         <section className="rp-sec">
           <div className="rp-sec-head">
-            <span className="rp-no">{hs ? "05" : "06"}</span>
+            <span className="rp-no">06</span>
             <h2>{tt("repSec06")}</h2>
           </div>
           <ol className="rp-plan">

@@ -20,7 +20,9 @@
     "metri:sim": "tsx scripts/metri/simulate.ts",
     "metri:items:hs": "tsx scripts/metri/seed-instrument.ts data/metri/items_hs_v1.json",
     "metri:sim:hs": "tsx scripts/metri/simulate.ts hs",
-    "metri:hs": "tsx scripts/metri/hs-check.ts"
+    "metri:hs": "tsx scripts/metri/hs-check.ts",
+    "metri:subjects": "tsx scripts/metri/seed-subjects.ts",
+    "metri:prescribe": "tsx scripts/metri/prescribe-check.ts"
   },
   "dependencies": {
     "bcryptjs": "3.0.2",

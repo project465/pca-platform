@@ -20,6 +20,8 @@
 | 개인정보 익명화 | ✅ | `npm run metri:erase` |
 | **메트리 플러스** 고교 문항 115개 적재 | ✅ | `npm run metri:items:hs` |
 | 메트리 플러스: 결제 → 응시 → 채점 → 결과지 | ✅ | `npm run metri:hs` |
+| 고교학점제 과목표 73개 (2022 개정) | ✅ | `npm run metri:subjects` |
+| 과목 처방 — 학년별·선수과목·대학 권장 | ✅ | `npm run metri:prescribe` |
 | 타입체크 · 프로덕션 빌드 (플랫폼) | ✅ | `npm run typecheck && npm run build` |
 | 소개 사이트 4개국 빌드 | ✅ | `cd marketing && SITE=kr npm run build` (global·kz·tr 도) |
 | 한국어·영어·튀르키예어 전 화면 | ✅ | 브라우저로 확인 |

@@ -242,6 +242,21 @@ export const UI = {
      같은 결과지 화면이 두 제품을 그린다. 갈라지는 것은 이 문구들뿐이고,
      화면 코드는 kind 를 보고 "Hs" 가 붙은 키를 고른다.
      중·고등학생에게 "직무" 와 "역량 레벨" 은 아직 뜻이 없는 말이다. */
+  repSec05Hs: d(
+    "지금 신청할 과목",
+    "Subjects to enrol in now",
+    "Şimdi seçilecek dersler",
+  ),
+  repNote05Hs: d(
+    "2022 개정 교육과정 과목표에서, 1군 {n}개 계열이 요구하는 것만 골라 학년별로 놓았습니다. 모두 {c}학점입니다. 학교마다 여는 과목이 다르므로 최종 확인은 재학 중인 학교의 교육과정 편제표로 하십시오.",
+    "Selected from the 2022 revised national curriculum: only what the {n} field(s) in your top group require, laid out by school year — {c} credits in total. Schools differ in what they open, so confirm against your school's own course table.",
+    "2022 müfredatından, ilk gruptaki {n} alanın gerektirdikleri sınıf sınıf dizildi. Toplam {c} kredi.",
+  ),
+  repRxCaveat: d(
+    "여기 적힌 학점과 학년은 교육과정 총론의 기본값입니다. 학교가 1학점 범위에서 조정하거나 아예 열지 않을 수 있습니다. 원하는 과목이 학교에 없으면 공동교육과정과 온라인학교로 들을 수 있는지 담임 선생님께 확인하십시오 — 안 열린다고 포기할 과목이 아닙니다.",
+    "The credits and year shown are the national defaults. Schools may adjust them or not open a subject at all. If your school does not offer one you need, ask your homeroom teacher about the joint-curriculum or online-school route — it is not a subject to give up on.",
+    "Buradaki krediler ulusal varsayılanlardır; okullar değiştirebilir ya da dersi hiç açmayabilir.",
+  ),
   repTitleHs: d("계열 적합 진단 결과지", "Field Fit Report", "Alan Uyum Raporu"),
   repSec01Hs: d("이공계 8계열", "Eight engineering fields", "Sekiz mühendislik alanı"),
   repSec04Hs: d("계열 적합도", "Field fit", "Alan uyumu"),

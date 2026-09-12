@@ -963,3 +963,82 @@ COMMENT ON COLUMN products.track_code IS
 
 UPDATE products SET track_code = 'UNIV_LOW' WHERE code = 'REPORT_UNIV' AND track_code IS NULL;
 UPDATE products SET track_code = 'HS'       WHERE code = 'REPORT_HS'   AND track_code IS NULL;
+
+
+-- ============================================================
+--  28. 과목 처방 — 고교학점제 2022 개정 교육과정
+--
+--  고교판 결과지의 마지막 칸이다. "기계공학이 앞에 있습니다" 로 끝나면
+--  학생이 다음 주에 할 일이 없다. 2학년 과목 신청서에 무엇을 적을지까지
+--  내려가야 결과지가 쓰인다.
+--
+--  기존 hs_subjects 는 (코드·구분·학점) 세 칸뿐이라 처방을 만들 수 없었다.
+--  실제로 필요한 것은 다섯 개가 더 있다.
+--    교과군      수학인지 과학인지 — 대학 권장이 교과군 단위로 걸린다
+--    선수과목    미적분Ⅱ 를 미적분Ⅰ 없이 신청할 수 없다
+--    권장 학년   2학년에 넣을지 3학년에 넣을지
+--    석차등급    2028 대입에서 사회·과학 융합선택 9과목만 절대평가다
+--    수능 범위   2028 수능은 선택과목이 없는 통합형이다
+-- ============================================================
+
+ALTER TABLE hs_subjects ADD COLUMN IF NOT EXISTS subject_group TEXT;
+ALTER TABLE hs_subjects ADD COLUMN IF NOT EXISTS prereq_code   TEXT;
+ALTER TABLE hs_subjects ADD COLUMN IF NOT EXISTS grade_hint    SMALLINT;
+ALTER TABLE hs_subjects ADD COLUMN IF NOT EXISTS absolute_only BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE hs_subjects ADD COLUMN IF NOT EXISTS csat          BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE hs_subjects ADD COLUMN IF NOT EXISTS sort_no       INTEGER NOT NULL DEFAULT 0;
+
+COMMENT ON COLUMN hs_subjects.prereq_code IS
+  '이 과목 앞에 들어야 하는 과목. 처방이 "미적분Ⅱ" 를 먼저 적어 놓고
+   "미적분Ⅰ" 을 빠뜨리면 학생은 그 신청서를 낼 수 없다';
+COMMENT ON COLUMN hs_subjects.absolute_only IS
+  '상대평가 석차등급을 병기하지 않는 과목(사회·과학 융합선택 9과목).
+   내신 부담이 적어 탐구형 과목을 권하기 좋은 자리라 화면에 표시한다';
+COMMENT ON COLUMN hs_subjects.grade_hint IS
+  '몇 학년에 두는 것이 보통인가. 학교 편제가 우선이므로 참고값이다';
+
+CREATE INDEX IF NOT EXISTS idx_hs_subjects_group ON hs_subjects(country, subject_group, sort_no);
+
+-- 교과군 이름도 translations 로 간다(설계 원칙 2). translations.row_id 가
+-- BIGINT 라 코드 문자열을 그대로 넣을 수 없어 표를 하나 둔다.
+CREATE TABLE IF NOT EXISTS hs_subject_groups (
+  id       BIGSERIAL PRIMARY KEY,
+  code     TEXT NOT NULL UNIQUE,        -- KOR MATH ENG SOC SCI TECH INFO
+  sort_no  INTEGER NOT NULL DEFAULT 0
+);
+
+-- 왜 이 과목인지를 함께 담는다. 이유 없는 목록은 학생이 믿지 않는다.
+-- 문장은 translations 에 두고(설계 원칙 2), 여기에는 연결만 남긴다.
+ALTER TABLE hs_subject_major_map ADD COLUMN IF NOT EXISTS id BIGSERIAL;
+CREATE UNIQUE INDEX IF NOT EXISTS uq_hs_subject_major_id ON hs_subject_major_map(id);
+COMMENT ON COLUMN hs_subject_major_map.id IS
+  '(과목, 전공) 쌍마다 "왜 이 과목인가" 한 줄이 붙는다. translations 가
+   가리킬 행 번호가 필요해 복합키와 별도로 둔다';
+COMMENT ON COLUMN hs_subject_major_map.necessity IS
+  '3 사실상 필수 — 안 들으면 대학 1~2학년이 막힌다
+   2 권장 — 들으면 유리하다
+   1 도움 — 관심이 그쪽이면 열어 둔다';
+
+-- 대학이 권장하는 과목은 계열이 요구하는 과목과 근거가 다르다. 섞지 않는다.
+CREATE TABLE IF NOT EXISTS hs_univ_subject_recs (
+  id          BIGSERIAL PRIMARY KEY,
+  univ_code   TEXT NOT NULL,             -- SNU ...
+  track_code  TEXT NOT NULL,             -- type2 (자연계열 모집단위)
+  subject_id  BIGINT REFERENCES hs_subjects(id) ON DELETE CASCADE,
+  level       TEXT NOT NULL,             -- required(권장) | core(핵심권장)
+  UNIQUE (univ_code, track_code, subject_id)
+);
+COMMENT ON TABLE hs_univ_subject_recs IS
+  '"서울대는 기하와 미적분Ⅱ 를 권장한다" 처럼 대학이 이름을 걸고 밝힌 것만 담는다.
+   학원이 추측한 것은 담지 않는다 — 출처가 없는 권장은 학부모가 가장 먼저 따진다';
+
+-- 과목 하나가 아니라 "과학 진로선택 3과목 이상" 처럼 묶음으로 걸리는 권장.
+CREATE TABLE IF NOT EXISTS hs_univ_subject_rules (
+  id          BIGSERIAL PRIMARY KEY,
+  univ_code   TEXT NOT NULL,
+  track_code  TEXT NOT NULL,
+  subject_group TEXT NOT NULL,           -- SCI ...
+  category    TEXT NOT NULL,             -- career ...
+  min_count   SMALLINT NOT NULL,
+  UNIQUE (univ_code, track_code, subject_group, category)
+);

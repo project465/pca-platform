@@ -1,0 +1,1839 @@
+{
+ "country": "KR",
+ "curriculum": "2022 개정 교육과정 (교육부 고시 제2022-33호)",
+ "appliesFrom": "2025학년도 고등학교 1학년",
+ "source": [
+  "교육부 고시 제2022-33호 [별책] 고등학교 교육과정 총론 <표5> 보통교과",
+  "2028 대학입시제도 개편 확정안(2023-12) — 내신 5등급 상대평가 병기, 사회·과학 융합선택 9과목만 절대평가",
+  "서울대학교 2028학년도 전공 연계 과목 선택 안내 — 유형②(자연계열 모집단위)"
+ ],
+ "verified": "2026-09-12 웹 검색으로 교차 확인. 학교마다 개설 과목과 학점이 다르므로 실제 이수 계획은 재학 중인 학교의 교육과정 편제표로 확정해야 한다.",
+ "scope": "이공계 8계열 진학에 실제로 걸리는 교과만 담았다. 체육·예술·제2외국어·한문·교양은 담지 않았다 — 확인하지 못한 것을 채워 넣지 않기 위해서다.",
+ "groups": [
+  {
+   "code": "KOR",
+   "ko": "국어",
+   "en": "Korean"
+  },
+  {
+   "code": "MATH",
+   "ko": "수학",
+   "en": "Mathematics"
+  },
+  {
+   "code": "ENG",
+   "ko": "영어",
+   "en": "English"
+  },
+  {
+   "code": "SOC",
+   "ko": "사회",
+   "en": "Social Studies"
+  },
+  {
+   "code": "SCI",
+   "ko": "과학",
+   "en": "Science"
+  },
+  {
+   "code": "TECH",
+   "ko": "기술·가정",
+   "en": "Technology & Home Economics"
+  },
+  {
+   "code": "INFO",
+   "ko": "정보",
+   "en": "Informatics"
+  }
+ ],
+ "subjects": [
+  {
+   "code": "KOR.COMMON1",
+   "group": "KOR",
+   "category": "common",
+   "credit": 4,
+   "prereq": null,
+   "grade": 1,
+   "absoluteOnly": false,
+   "csat": true,
+   "sortNo": 1,
+   "ko": "공통국어1",
+   "en": "Common Korean 1",
+   "blurb": "고1 공통. 읽기·쓰기·화법의 기초를 다진다"
+  },
+  {
+   "code": "KOR.COMMON2",
+   "group": "KOR",
+   "category": "common",
+   "credit": 4,
+   "prereq": "KOR.COMMON1",
+   "grade": 1,
+   "absoluteOnly": false,
+   "csat": true,
+   "sortNo": 2,
+   "ko": "공통국어2",
+   "en": "Common Korean 2",
+   "blurb": "고1 공통. 공통국어1에 이어진다"
+  },
+  {
+   "code": "KOR.SPEECH",
+   "group": "KOR",
+   "category": "general",
+   "credit": 4,
+   "prereq": null,
+   "grade": 2,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 3,
+   "ko": "화법과 언어",
+   "en": "Speech and Language",
+   "blurb": "말하기와 언어 구조를 다룬다"
+  },
+  {
+   "code": "KOR.READWRITE",
+   "group": "KOR",
+   "category": "general",
+   "credit": 4,
+   "prereq": null,
+   "grade": 2,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 4,
+   "ko": "독서와 작문",
+   "en": "Reading and Writing",
+   "blurb": "글을 읽고 쓰는 힘. 탐구 보고서의 바탕이 된다"
+  },
+  {
+   "code": "KOR.LIT",
+   "group": "KOR",
+   "category": "general",
+   "credit": 4,
+   "prereq": null,
+   "grade": 2,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 5,
+   "ko": "문학",
+   "en": "Literature",
+   "blurb": "문학 작품을 읽고 해석한다"
+  },
+  {
+   "code": "KOR.THEMEREAD",
+   "group": "KOR",
+   "category": "career",
+   "credit": 4,
+   "prereq": null,
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 6,
+   "ko": "주제 탐구 독서",
+   "en": "Thematic Reading",
+   "blurb": "관심 주제를 깊게 읽고 정리한다. 세특에 남는 활동이 여기서 나온다"
+  },
+  {
+   "code": "MATH.COMMON1",
+   "group": "MATH",
+   "category": "common",
+   "credit": 4,
+   "prereq": null,
+   "grade": 1,
+   "absoluteOnly": false,
+   "csat": true,
+   "sortNo": 7,
+   "ko": "공통수학1",
+   "en": "Common Mathematics 1",
+   "blurb": "고1 공통. 다항식·방정식·도형의 방정식"
+  },
+  {
+   "code": "MATH.COMMON2",
+   "group": "MATH",
+   "category": "common",
+   "credit": 4,
+   "prereq": "MATH.COMMON1",
+   "grade": 1,
+   "absoluteOnly": false,
+   "csat": true,
+   "sortNo": 8,
+   "ko": "공통수학2",
+   "en": "Common Mathematics 2",
+   "blurb": "고1 공통. 집합과 명제·함수·경우의 수"
+  },
+  {
+   "code": "MATH.ALGEBRA",
+   "group": "MATH",
+   "category": "general",
+   "credit": 4,
+   "prereq": "MATH.COMMON2",
+   "grade": 2,
+   "absoluteOnly": false,
+   "csat": true,
+   "sortNo": 9,
+   "ko": "대수",
+   "en": "Algebra",
+   "blurb": "지수·로그·삼각함수·수열. 이공계 전 계열의 바닥이다"
+  },
+  {
+   "code": "MATH.CALC1",
+   "group": "MATH",
+   "category": "general",
+   "credit": 4,
+   "prereq": "MATH.COMMON2",
+   "grade": 2,
+   "absoluteOnly": false,
+   "csat": true,
+   "sortNo": 10,
+   "ko": "미적분Ⅰ",
+   "en": "Calculus I",
+   "blurb": "극한·미분·적분의 시작. 공학 계산의 언어다"
+  },
+  {
+   "code": "MATH.PROB",
+   "group": "MATH",
+   "category": "general",
+   "credit": 4,
+   "prereq": "MATH.COMMON2",
+   "grade": 2,
+   "absoluteOnly": false,
+   "csat": true,
+   "sortNo": 11,
+   "ko": "확률과 통계",
+   "en": "Probability and Statistics",
+   "blurb": "확률·통계적 추정. 데이터와 품질을 다루는 계열의 기초"
+  },
+  {
+   "code": "MATH.GEOM",
+   "group": "MATH",
+   "category": "career",
+   "credit": 4,
+   "prereq": "MATH.COMMON2",
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 12,
+   "ko": "기하",
+   "en": "Geometry",
+   "blurb": "이차곡선·공간도형·벡터. 설계와 3차원을 다루는 계열에 직접 쓰인다"
+  },
+  {
+   "code": "MATH.CALC2",
+   "group": "MATH",
+   "category": "career",
+   "credit": 4,
+   "prereq": "MATH.CALC1",
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 13,
+   "ko": "미적분Ⅱ",
+   "en": "Calculus II",
+   "blurb": "초월함수의 미적분·미분방정식 맛보기. 대학 공학수학의 앞부분이다"
+  },
+  {
+   "code": "MATH.ECOMATH",
+   "group": "MATH",
+   "category": "career",
+   "credit": 4,
+   "prereq": "MATH.COMMON2",
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 14,
+   "ko": "경제 수학",
+   "en": "Mathematics for Economics",
+   "blurb": "비용·수요·최적화를 수학으로 다룬다"
+  },
+  {
+   "code": "MATH.AIMATH",
+   "group": "MATH",
+   "category": "career",
+   "credit": 4,
+   "prereq": "MATH.COMMON2",
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 15,
+   "ko": "인공지능 수학",
+   "en": "Mathematics for AI",
+   "blurb": "행렬·벡터·최적화를 인공지능 맥락에서 다룬다"
+  },
+  {
+   "code": "MATH.JOBMATH",
+   "group": "MATH",
+   "category": "career",
+   "credit": 4,
+   "prereq": null,
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 16,
+   "ko": "직무 수학",
+   "en": "Mathematics for Vocations",
+   "blurb": "현장에서 쓰는 계산. 취업형 트랙을 위한 과목"
+  },
+  {
+   "code": "MATH.CULTURE",
+   "group": "MATH",
+   "category": "fusion",
+   "credit": 4,
+   "prereq": null,
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 17,
+   "ko": "수학과 문화",
+   "en": "Mathematics and Culture",
+   "blurb": "수학이 문화·예술·사회와 만나는 지점"
+  },
+  {
+   "code": "MATH.APPSTAT",
+   "group": "MATH",
+   "category": "fusion",
+   "credit": 4,
+   "prereq": null,
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 18,
+   "ko": "실용 통계",
+   "en": "Practical Statistics",
+   "blurb": "실제 데이터로 통계적 문제해결 과정을 해 본다"
+  },
+  {
+   "code": "MATH.PROJECT",
+   "group": "MATH",
+   "category": "fusion",
+   "credit": 4,
+   "prereq": null,
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 19,
+   "ko": "수학과제 탐구",
+   "en": "Mathematical Inquiry Project",
+   "blurb": "수학 주제를 스스로 정해 탐구하고 보고서를 쓴다"
+  },
+  {
+   "code": "ENG.COMMON1",
+   "group": "ENG",
+   "category": "common",
+   "credit": 4,
+   "prereq": null,
+   "grade": 1,
+   "absoluteOnly": false,
+   "csat": true,
+   "sortNo": 20,
+   "ko": "공통영어1",
+   "en": "Common English 1",
+   "blurb": "고1 공통"
+  },
+  {
+   "code": "ENG.COMMON2",
+   "group": "ENG",
+   "category": "common",
+   "credit": 4,
+   "prereq": "ENG.COMMON1",
+   "grade": 1,
+   "absoluteOnly": false,
+   "csat": true,
+   "sortNo": 21,
+   "ko": "공통영어2",
+   "en": "Common English 2",
+   "blurb": "고1 공통"
+  },
+  {
+   "code": "ENG.E1",
+   "group": "ENG",
+   "category": "general",
+   "credit": 4,
+   "prereq": null,
+   "grade": 2,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 22,
+   "ko": "영어Ⅰ",
+   "en": "English I",
+   "blurb": "듣기·읽기·말하기·쓰기의 일반 영어"
+  },
+  {
+   "code": "ENG.E2",
+   "group": "ENG",
+   "category": "general",
+   "credit": 4,
+   "prereq": "ENG.E1",
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 23,
+   "ko": "영어Ⅱ",
+   "en": "English II",
+   "blurb": "영어Ⅰ에 이어지는 심화"
+  },
+  {
+   "code": "ENG.RW",
+   "group": "ENG",
+   "category": "general",
+   "credit": 4,
+   "prereq": null,
+   "grade": 2,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 24,
+   "ko": "영어 독해와 작문",
+   "en": "English Reading and Writing",
+   "blurb": "긴 글을 읽고 쓰는 힘. 공학 자료는 대부분 영어다"
+  },
+  {
+   "code": "ENG.ADV",
+   "group": "ENG",
+   "category": "career",
+   "credit": 4,
+   "prereq": "ENG.E1",
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 25,
+   "ko": "심화 영어",
+   "en": "Advanced English",
+   "blurb": "학술적인 영어"
+  },
+  {
+   "code": "ENG.ADVRW",
+   "group": "ENG",
+   "category": "career",
+   "credit": 4,
+   "prereq": "ENG.RW",
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 26,
+   "ko": "심화 영어 독해와 작문",
+   "en": "Advanced English Reading and Writing",
+   "blurb": "논문·기사 수준의 읽기와 쓰기"
+  },
+  {
+   "code": "ENG.PRES",
+   "group": "ENG",
+   "category": "career",
+   "credit": 4,
+   "prereq": null,
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 27,
+   "ko": "영어 발표와 토론",
+   "en": "English Presentation and Debate",
+   "blurb": "영어로 발표하고 토론한다"
+  },
+  {
+   "code": "ENG.JOB",
+   "group": "ENG",
+   "category": "career",
+   "credit": 4,
+   "prereq": null,
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 28,
+   "ko": "직무 영어",
+   "en": "English for Vocations",
+   "blurb": "현장에서 쓰는 영어. 취업형 트랙"
+  },
+  {
+   "code": "ENG.LIT",
+   "group": "ENG",
+   "category": "career",
+   "credit": 4,
+   "prereq": null,
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 29,
+   "ko": "영미 문학 읽기",
+   "en": "Reading English Literature",
+   "blurb": "영미 문학 작품 읽기"
+  },
+  {
+   "code": "SOC.HIST1",
+   "group": "SOC",
+   "category": "common",
+   "credit": 3,
+   "prereq": null,
+   "grade": 1,
+   "absoluteOnly": false,
+   "csat": true,
+   "sortNo": 30,
+   "ko": "한국사1",
+   "en": "Korean History 1",
+   "blurb": "고1 공통"
+  },
+  {
+   "code": "SOC.HIST2",
+   "group": "SOC",
+   "category": "common",
+   "credit": 3,
+   "prereq": "SOC.HIST1",
+   "grade": 1,
+   "absoluteOnly": false,
+   "csat": true,
+   "sortNo": 31,
+   "ko": "한국사2",
+   "en": "Korean History 2",
+   "blurb": "고1 공통"
+  },
+  {
+   "code": "SOC.INTEG1",
+   "group": "SOC",
+   "category": "common",
+   "credit": 4,
+   "prereq": null,
+   "grade": 1,
+   "absoluteOnly": false,
+   "csat": true,
+   "sortNo": 32,
+   "ko": "통합사회1",
+   "en": "Integrated Social Studies 1",
+   "blurb": "고1 공통"
+  },
+  {
+   "code": "SOC.INTEG2",
+   "group": "SOC",
+   "category": "common",
+   "credit": 4,
+   "prereq": "SOC.INTEG1",
+   "grade": 1,
+   "absoluteOnly": false,
+   "csat": true,
+   "sortNo": 33,
+   "ko": "통합사회2",
+   "en": "Integrated Social Studies 2",
+   "blurb": "고1 공통"
+  },
+  {
+   "code": "SOC.GEO",
+   "group": "SOC",
+   "category": "general",
+   "credit": 4,
+   "prereq": null,
+   "grade": 2,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 34,
+   "ko": "세계시민과 지리",
+   "en": "Global Citizenship and Geography",
+   "blurb": "세계의 지리와 시민 문제"
+  },
+  {
+   "code": "SOC.WORLDHIST",
+   "group": "SOC",
+   "category": "general",
+   "credit": 4,
+   "prereq": null,
+   "grade": 2,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 35,
+   "ko": "세계사",
+   "en": "World History",
+   "blurb": "세계사의 흐름"
+  },
+  {
+   "code": "SOC.CULTURE",
+   "group": "SOC",
+   "category": "general",
+   "credit": 4,
+   "prereq": null,
+   "grade": 2,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 36,
+   "ko": "사회와 문화",
+   "en": "Society and Culture",
+   "blurb": "사회 구조와 문화 현상"
+  },
+  {
+   "code": "SOC.ETHICS",
+   "group": "SOC",
+   "category": "general",
+   "credit": 4,
+   "prereq": null,
+   "grade": 2,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 37,
+   "ko": "현대사회와 윤리",
+   "en": "Contemporary Society and Ethics",
+   "blurb": "기술이 사회에 남기는 문제를 윤리로 읽는다"
+  },
+  {
+   "code": "SOC.TRAVEL",
+   "group": "SOC",
+   "category": "fusion",
+   "credit": 4,
+   "prereq": null,
+   "grade": 3,
+   "absoluteOnly": true,
+   "csat": false,
+   "sortNo": 38,
+   "ko": "여행지리",
+   "en": "Travel Geography",
+   "blurb": "절대평가 과목"
+  },
+  {
+   "code": "SOC.MODERN",
+   "group": "SOC",
+   "category": "fusion",
+   "credit": 4,
+   "prereq": null,
+   "grade": 3,
+   "absoluteOnly": true,
+   "csat": false,
+   "sortNo": 39,
+   "ko": "역사로 탐구하는 현대 세계",
+   "en": "Exploring the Modern World through History",
+   "blurb": "절대평가 과목"
+  },
+  {
+   "code": "SOC.ISSUE",
+   "group": "SOC",
+   "category": "fusion",
+   "credit": 4,
+   "prereq": null,
+   "grade": 3,
+   "absoluteOnly": true,
+   "csat": false,
+   "sortNo": 40,
+   "ko": "사회문제 탐구",
+   "en": "Inquiry into Social Issues",
+   "blurb": "절대평가 과목. 주제를 정해 조사하고 보고서를 쓴다"
+  },
+  {
+   "code": "SOC.FINANCE",
+   "group": "SOC",
+   "category": "fusion",
+   "credit": 4,
+   "prereq": null,
+   "grade": 3,
+   "absoluteOnly": true,
+   "csat": false,
+   "sortNo": 41,
+   "ko": "금융과 경제생활",
+   "en": "Finance and Economic Life",
+   "blurb": "절대평가 과목. 비용과 수익을 다루는 감각"
+  },
+  {
+   "code": "SOC.ETHICSQ",
+   "group": "SOC",
+   "category": "fusion",
+   "credit": 4,
+   "prereq": null,
+   "grade": 3,
+   "absoluteOnly": true,
+   "csat": false,
+   "sortNo": 42,
+   "ko": "윤리문제 탐구",
+   "en": "Inquiry into Ethical Issues",
+   "blurb": "절대평가 과목"
+  },
+  {
+   "code": "SOC.CLIMATE",
+   "group": "SOC",
+   "category": "fusion",
+   "credit": 4,
+   "prereq": null,
+   "grade": 3,
+   "absoluteOnly": true,
+   "csat": false,
+   "sortNo": 43,
+   "ko": "기후변화와 지속가능한 세계",
+   "en": "Climate Change and a Sustainable World",
+   "blurb": "절대평가 과목. 환경·에너지 계열과 곧장 이어진다"
+  },
+  {
+   "code": "SCI.INTEG1",
+   "group": "SCI",
+   "category": "common",
+   "credit": 4,
+   "prereq": null,
+   "grade": 1,
+   "absoluteOnly": false,
+   "csat": true,
+   "sortNo": 44,
+   "ko": "통합과학1",
+   "en": "Integrated Science 1",
+   "blurb": "고1 공통. 물리·화학·생명·지구를 한 번씩 훑는다"
+  },
+  {
+   "code": "SCI.INTEG2",
+   "group": "SCI",
+   "category": "common",
+   "credit": 4,
+   "prereq": "SCI.INTEG1",
+   "grade": 1,
+   "absoluteOnly": false,
+   "csat": true,
+   "sortNo": 45,
+   "ko": "통합과학2",
+   "en": "Integrated Science 2",
+   "blurb": "고1 공통"
+  },
+  {
+   "code": "SCI.LAB1",
+   "group": "SCI",
+   "category": "common",
+   "credit": 1,
+   "prereq": null,
+   "grade": 1,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 46,
+   "ko": "과학탐구실험1",
+   "en": "Scientific Inquiry Experiment 1",
+   "blurb": "고1 공통. 1학점. 직접 손으로 해 보는 시간"
+  },
+  {
+   "code": "SCI.LAB2",
+   "group": "SCI",
+   "category": "common",
+   "credit": 1,
+   "prereq": "SCI.LAB1",
+   "grade": 1,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 47,
+   "ko": "과학탐구실험2",
+   "en": "Scientific Inquiry Experiment 2",
+   "blurb": "고1 공통. 1학점"
+  },
+  {
+   "code": "SCI.PHYS",
+   "group": "SCI",
+   "category": "general",
+   "credit": 4,
+   "prereq": "SCI.INTEG2",
+   "grade": 2,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 48,
+   "ko": "물리학",
+   "en": "Physics",
+   "blurb": "힘·운동·에너지·전기. 공학의 절반이 여기서 시작한다"
+  },
+  {
+   "code": "SCI.CHEM",
+   "group": "SCI",
+   "category": "general",
+   "credit": 4,
+   "prereq": "SCI.INTEG2",
+   "grade": 2,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 49,
+   "ko": "화학",
+   "en": "Chemistry",
+   "blurb": "물질의 구조와 반응"
+  },
+  {
+   "code": "SCI.BIO",
+   "group": "SCI",
+   "category": "general",
+   "credit": 4,
+   "prereq": "SCI.INTEG2",
+   "grade": 2,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 50,
+   "ko": "생명과학",
+   "en": "Biology",
+   "blurb": "생명 현상과 유전"
+  },
+  {
+   "code": "SCI.EARTH",
+   "group": "SCI",
+   "category": "general",
+   "credit": 4,
+   "prereq": "SCI.INTEG2",
+   "grade": 2,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 51,
+   "ko": "지구과학",
+   "en": "Earth Science",
+   "blurb": "지구와 우주의 구조·변화"
+  },
+  {
+   "code": "SCI.MECH",
+   "group": "SCI",
+   "category": "career",
+   "credit": 4,
+   "prereq": "SCI.PHYS",
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 52,
+   "ko": "역학과 에너지",
+   "en": "Mechanics and Energy",
+   "blurb": "힘과 운동을 깊게. 기계·건설·항공이 직접 쓴다"
+  },
+  {
+   "code": "SCI.EM",
+   "group": "SCI",
+   "category": "career",
+   "credit": 4,
+   "prereq": "SCI.PHYS",
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 53,
+   "ko": "전자기와 양자",
+   "en": "Electromagnetism and Quantum",
+   "blurb": "전기·자기·현대물리. 전기전자·반도체가 직접 쓴다"
+  },
+  {
+   "code": "SCI.MATTER",
+   "group": "SCI",
+   "category": "career",
+   "credit": 4,
+   "prereq": "SCI.CHEM",
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 54,
+   "ko": "물질과 에너지",
+   "en": "Matter and Energy",
+   "blurb": "물질의 상태와 에너지. 화공·신소재의 바탕"
+  },
+  {
+   "code": "SCI.RXN",
+   "group": "SCI",
+   "category": "career",
+   "credit": 4,
+   "prereq": "SCI.CHEM",
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 55,
+   "ko": "화학 반응의 세계",
+   "en": "The World of Chemical Reactions",
+   "blurb": "반응 속도와 평형. 공정을 이해하는 자리"
+  },
+  {
+   "code": "SCI.CELL",
+   "group": "SCI",
+   "category": "career",
+   "credit": 4,
+   "prereq": "SCI.BIO",
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 56,
+   "ko": "세포와 물질대사",
+   "en": "Cells and Metabolism",
+   "blurb": "세포 수준의 생명 현상. 바이오·의공학의 바탕"
+  },
+  {
+   "code": "SCI.GENE",
+   "group": "SCI",
+   "category": "career",
+   "credit": 4,
+   "prereq": "SCI.BIO",
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 57,
+   "ko": "생물의 유전",
+   "en": "Genetics",
+   "blurb": "유전의 원리와 생명공학"
+  },
+  {
+   "code": "SCI.EARTHSYS",
+   "group": "SCI",
+   "category": "career",
+   "credit": 4,
+   "prereq": "SCI.EARTH",
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 58,
+   "ko": "지구시스템과학",
+   "en": "Earth System Science",
+   "blurb": "지권·수권·기권이 얽히는 방식. 환경·자원 계열"
+  },
+  {
+   "code": "SCI.SPACE",
+   "group": "SCI",
+   "category": "career",
+   "credit": 4,
+   "prereq": "SCI.EARTH",
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 59,
+   "ko": "행성우주과학",
+   "en": "Planetary and Space Science",
+   "blurb": "행성과 우주. 항공우주 쪽 관심을 확인한다"
+  },
+  {
+   "code": "SCI.HISTORY",
+   "group": "SCI",
+   "category": "fusion",
+   "credit": 4,
+   "prereq": null,
+   "grade": 3,
+   "absoluteOnly": true,
+   "csat": false,
+   "sortNo": 60,
+   "ko": "과학의 역사와 문화",
+   "en": "History and Culture of Science",
+   "blurb": "절대평가 과목"
+  },
+  {
+   "code": "SCI.ECO",
+   "group": "SCI",
+   "category": "fusion",
+   "credit": 4,
+   "prereq": null,
+   "grade": 3,
+   "absoluteOnly": true,
+   "csat": false,
+   "sortNo": 61,
+   "ko": "기후변화와 환경생태",
+   "en": "Climate Change and Ecology",
+   "blurb": "절대평가 과목. 환경·에너지 계열과 이어진다"
+  },
+  {
+   "code": "SCI.FUSION",
+   "group": "SCI",
+   "category": "fusion",
+   "credit": 4,
+   "prereq": null,
+   "grade": 3,
+   "absoluteOnly": true,
+   "csat": false,
+   "sortNo": 62,
+   "ko": "융합과학 탐구",
+   "en": "Convergence Science Inquiry",
+   "blurb": "절대평가 과목. 주제를 정해 실험하고 보고서를 쓴다"
+  },
+  {
+   "code": "TECH.HOME",
+   "group": "TECH",
+   "category": "general",
+   "credit": 4,
+   "prereq": null,
+   "grade": 2,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 63,
+   "ko": "기술·가정",
+   "en": "Technology and Home Economics",
+   "blurb": "제조·건설·수송·생명 기술과 생활 전반"
+  },
+  {
+   "code": "TECH.ROBOT",
+   "group": "TECH",
+   "category": "career",
+   "credit": 4,
+   "prereq": "TECH.HOME",
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 64,
+   "ko": "로봇과 공학세계",
+   "en": "Robots and the World of Engineering",
+   "blurb": "로봇을 설계·제작하며 공학 전반을 본다. 이공계에서 가장 직접적인 과목"
+  },
+  {
+   "code": "TECH.LIFESCI",
+   "group": "TECH",
+   "category": "career",
+   "credit": 4,
+   "prereq": "TECH.HOME",
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 65,
+   "ko": "생활과학 탐구",
+   "en": "Inquiry into Life Sciences",
+   "blurb": "의식주·아동·가족 쪽 탐구"
+  },
+  {
+   "code": "TECH.DESIGN",
+   "group": "TECH",
+   "category": "fusion",
+   "credit": 4,
+   "prereq": null,
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 66,
+   "ko": "창의 공학 설계",
+   "en": "Creative Engineering Design",
+   "blurb": "문제를 정해 직접 설계하고 만든다. 포트폴리오가 남는다"
+  },
+  {
+   "code": "TECH.IP",
+   "group": "TECH",
+   "category": "fusion",
+   "credit": 4,
+   "prereq": null,
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 67,
+   "ko": "지식 재산 일반",
+   "en": "Introduction to Intellectual Property",
+   "blurb": "특허와 지식재산의 기초"
+  },
+  {
+   "code": "TECH.LIFEPLAN",
+   "group": "TECH",
+   "category": "fusion",
+   "credit": 4,
+   "prereq": null,
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 68,
+   "ko": "생애 설계와 자립",
+   "en": "Life Design and Independence",
+   "blurb": "생애 설계"
+  },
+  {
+   "code": "TECH.CHILD",
+   "group": "TECH",
+   "category": "fusion",
+   "credit": 4,
+   "prereq": null,
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 69,
+   "ko": "아동발달과 부모",
+   "en": "Child Development and Parenting",
+   "blurb": "아동 발달"
+  },
+  {
+   "code": "INFO.INFO",
+   "group": "INFO",
+   "category": "general",
+   "credit": 4,
+   "prereq": null,
+   "grade": 2,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 70,
+   "ko": "정보",
+   "en": "Informatics",
+   "blurb": "프로그래밍과 컴퓨팅 사고. 컴퓨터 계열의 입구"
+  },
+  {
+   "code": "INFO.AI",
+   "group": "INFO",
+   "category": "career",
+   "credit": 4,
+   "prereq": "INFO.INFO",
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 71,
+   "ko": "인공지능 기초",
+   "en": "Foundations of Artificial Intelligence",
+   "blurb": "인공지능의 원리와 구현"
+  },
+  {
+   "code": "INFO.DATA",
+   "group": "INFO",
+   "category": "career",
+   "credit": 4,
+   "prereq": "INFO.INFO",
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 72,
+   "ko": "데이터 과학",
+   "en": "Data Science",
+   "blurb": "데이터를 모으고 분석해 판단한다"
+  },
+  {
+   "code": "INFO.SWLIFE",
+   "group": "INFO",
+   "category": "fusion",
+   "credit": 4,
+   "prereq": null,
+   "grade": 3,
+   "absoluteOnly": false,
+   "csat": false,
+   "sortNo": 73,
+   "ko": "소프트웨어와 생활",
+   "en": "Software and Life",
+   "blurb": "소프트웨어로 생활 문제를 푼다"
+  }
+ ],
+ "need": [
+  {
+   "major": "BME",
+   "subject": "MATH.ALGEBRA",
+   "necessity": 3,
+   "why": "지수·로그·삼각함수·수열 없이 진행되는 이공계 전공 과목이 없다."
+  },
+  {
+   "major": "BME",
+   "subject": "MATH.CALC1",
+   "necessity": 3,
+   "why": "미분과 적분은 공학이 현상을 적는 언어다. 여기서 막히면 2학년이 통째로 막힌다."
+  },
+  {
+   "major": "BME",
+   "subject": "SCI.CHEM",
+   "necessity": 3,
+   "why": "생체 재료와 약물이 화학 위에 있다."
+  },
+  {
+   "major": "BME",
+   "subject": "SCI.BIO",
+   "necessity": 3,
+   "why": "생명 현상을 모르면 의공학의 대상이 무엇인지 알 수 없다."
+  },
+  {
+   "major": "BME",
+   "subject": "SCI.CELL",
+   "necessity": 3,
+   "why": "세포와 대사가 조직공학·진단의 바탕이다."
+  },
+  {
+   "major": "BME",
+   "subject": "KOR.THEMEREAD",
+   "necessity": 2,
+   "why": "관심 주제를 스스로 읽고 정리한 기록이 학생부에 남는 가장 확실한 자리다."
+  },
+  {
+   "major": "BME",
+   "subject": "MATH.CALC2",
+   "necessity": 2,
+   "why": "생체 신호와 약물 동태가 미분방정식으로 기술된다."
+  },
+  {
+   "major": "BME",
+   "subject": "ENG.E1",
+   "necessity": 2,
+   "why": "대학 전공 강의와 원서의 최소 문턱이다."
+  },
+  {
+   "major": "BME",
+   "subject": "ENG.RW",
+   "necessity": 2,
+   "why": "전공 자료와 데이터시트는 대부분 영어다. 긴 글을 읽는 힘이 실제로 쓰인다."
+  },
+  {
+   "major": "BME",
+   "subject": "SCI.PHYS",
+   "necessity": 2,
+   "why": "의료기기는 결국 물리 장치다."
+  },
+  {
+   "major": "BME",
+   "subject": "SCI.EM",
+   "necessity": 2,
+   "why": "영상장비와 생체신호 계측이 전자기 위에 있다."
+  },
+  {
+   "major": "BME",
+   "subject": "SCI.GENE",
+   "necessity": 2,
+   "why": "유전과 생명공학이 진단·치료로 이어진다."
+  },
+  {
+   "major": "BME",
+   "subject": "SCI.FUSION",
+   "necessity": 1,
+   "why": "생명 주제로 실험을 설계해 본 기록이 남는다."
+  },
+  {
+   "major": "BME",
+   "subject": "INFO.INFO",
+   "necessity": 1,
+   "why": "의료 데이터를 다루는 일이 빠르게 늘고 있다."
+  },
+  {
+   "major": "BME",
+   "subject": "INFO.AI",
+   "necessity": 1,
+   "why": "영상 판독과 진단 보조가 인공지능으로 간다."
+  },
+  {
+   "major": "CE",
+   "subject": "MATH.ALGEBRA",
+   "necessity": 3,
+   "why": "지수·로그·삼각함수·수열 없이 진행되는 이공계 전공 과목이 없다."
+  },
+  {
+   "major": "CE",
+   "subject": "MATH.CALC1",
+   "necessity": 3,
+   "why": "미분과 적분은 공학이 현상을 적는 언어다. 여기서 막히면 2학년이 통째로 막힌다."
+  },
+  {
+   "major": "CE",
+   "subject": "MATH.CALC2",
+   "necessity": 3,
+   "why": "기계학습과 그래픽스가 미적분 위에 있다."
+  },
+  {
+   "major": "CE",
+   "subject": "INFO.INFO",
+   "necessity": 3,
+   "why": "프로그래밍을 학교에서 정식으로 배우는 유일한 과목이다. 안 들으면 대학 1학년에서 처음 만난다."
+  },
+  {
+   "major": "CE",
+   "subject": "INFO.AI",
+   "necessity": 3,
+   "why": "인공지능의 원리를 구현까지 해 보는 자리다."
+  },
+  {
+   "major": "CE",
+   "subject": "KOR.THEMEREAD",
+   "necessity": 2,
+   "why": "관심 주제를 스스로 읽고 정리한 기록이 학생부에 남는 가장 확실한 자리다."
+  },
+  {
+   "major": "CE",
+   "subject": "MATH.PROB",
+   "necessity": 2,
+   "why": "확률 없이 기계학습을 읽을 수 없다."
+  },
+  {
+   "major": "CE",
+   "subject": "MATH.GEOM",
+   "necessity": 2,
+   "why": "그래픽스와 공간 자료 구조에서 벡터가 계속 나온다."
+  },
+  {
+   "major": "CE",
+   "subject": "MATH.AIMATH",
+   "necessity": 2,
+   "why": "행렬·벡터·최적화가 인공지능의 계산 그 자체다."
+  },
+  {
+   "major": "CE",
+   "subject": "ENG.E1",
+   "necessity": 2,
+   "why": "대학 전공 강의와 원서의 최소 문턱이다."
+  },
+  {
+   "major": "CE",
+   "subject": "ENG.RW",
+   "necessity": 2,
+   "why": "전공 자료와 데이터시트는 대부분 영어다. 긴 글을 읽는 힘이 실제로 쓰인다."
+  },
+  {
+   "major": "CE",
+   "subject": "SCI.PHYS",
+   "necessity": 2,
+   "why": "시뮬레이션·게임·로보틱스 쪽으로 가면 곧바로 필요해진다."
+  },
+  {
+   "major": "CE",
+   "subject": "INFO.DATA",
+   "necessity": 2,
+   "why": "데이터를 모으고 분석해 판단하는 과정을 통째로 겪는다."
+  },
+  {
+   "major": "CE",
+   "subject": "MATH.APPSTAT",
+   "necessity": 1,
+   "why": "실제 데이터로 통계를 써 본 기록이 남는다."
+  },
+  {
+   "major": "CE",
+   "subject": "SCI.EM",
+   "necessity": 1,
+   "why": "하드웨어와 임베디드로 갈 때 필요하다."
+  },
+  {
+   "major": "CE",
+   "subject": "INFO.SWLIFE",
+   "necessity": 1,
+   "why": "만든 것을 생활 문제에 붙여 보는 연습이 된다."
+  },
+  {
+   "major": "CHE",
+   "subject": "MATH.ALGEBRA",
+   "necessity": 3,
+   "why": "지수·로그·삼각함수·수열 없이 진행되는 이공계 전공 과목이 없다."
+  },
+  {
+   "major": "CHE",
+   "subject": "MATH.CALC1",
+   "necessity": 3,
+   "why": "미분과 적분은 공학이 현상을 적는 언어다. 여기서 막히면 2학년이 통째로 막힌다."
+  },
+  {
+   "major": "CHE",
+   "subject": "MATH.CALC2",
+   "necessity": 3,
+   "why": "물질·에너지 수지가 미분방정식으로 세워진다."
+  },
+  {
+   "major": "CHE",
+   "subject": "SCI.CHEM",
+   "necessity": 3,
+   "why": "화학 없이 화학공학은 성립하지 않는다."
+  },
+  {
+   "major": "CHE",
+   "subject": "SCI.MATTER",
+   "necessity": 3,
+   "why": "상태와 에너지는 열역학·물질전달로 그대로 이어진다."
+  },
+  {
+   "major": "CHE",
+   "subject": "SCI.RXN",
+   "necessity": 3,
+   "why": "반응 속도와 평형이 반응공학의 앞부분이다."
+  },
+  {
+   "major": "CHE",
+   "subject": "KOR.THEMEREAD",
+   "necessity": 2,
+   "why": "관심 주제를 스스로 읽고 정리한 기록이 학생부에 남는 가장 확실한 자리다."
+  },
+  {
+   "major": "CHE",
+   "subject": "MATH.GEOM",
+   "necessity": 2,
+   "why": "장치 형상과 벡터장을 다룰 때 필요하다."
+  },
+  {
+   "major": "CHE",
+   "subject": "ENG.E1",
+   "necessity": 2,
+   "why": "대학 전공 강의와 원서의 최소 문턱이다."
+  },
+  {
+   "major": "CHE",
+   "subject": "ENG.RW",
+   "necessity": 2,
+   "why": "전공 자료와 데이터시트는 대부분 영어다. 긴 글을 읽는 힘이 실제로 쓰인다."
+  },
+  {
+   "major": "CHE",
+   "subject": "SCI.PHYS",
+   "necessity": 2,
+   "why": "유체와 열전달은 물리에서 온다."
+  },
+  {
+   "major": "CHE",
+   "subject": "SCI.MECH",
+   "necessity": 2,
+   "why": "공정 장치의 유동과 에너지를 읽는 데 쓰인다."
+  },
+  {
+   "major": "CHE",
+   "subject": "SCI.BIO",
+   "necessity": 1,
+   "why": "바이오공정으로 갈 여지를 열어 둔다."
+  },
+  {
+   "major": "CHE",
+   "subject": "SCI.ECO",
+   "necessity": 1,
+   "why": "환경 규제와 배출이 공정 설계의 조건이 된다."
+  },
+  {
+   "major": "CHE",
+   "subject": "SCI.FUSION",
+   "necessity": 1,
+   "why": "실험 설계와 기록을 연습한다."
+  },
+  {
+   "major": "CIV",
+   "subject": "MATH.ALGEBRA",
+   "necessity": 3,
+   "why": "지수·로그·삼각함수·수열 없이 진행되는 이공계 전공 과목이 없다."
+  },
+  {
+   "major": "CIV",
+   "subject": "MATH.CALC1",
+   "necessity": 3,
+   "why": "미분과 적분은 공학이 현상을 적는 언어다. 여기서 막히면 2학년이 통째로 막힌다."
+  },
+  {
+   "major": "CIV",
+   "subject": "MATH.CALC2",
+   "necessity": 3,
+   "why": "구조 해석과 유동 계산이 미적분 위에 있다."
+  },
+  {
+   "major": "CIV",
+   "subject": "SCI.PHYS",
+   "necessity": 3,
+   "why": "구조물에 걸리는 힘과 평형이 전공의 첫 과목이다."
+  },
+  {
+   "major": "CIV",
+   "subject": "SCI.MECH",
+   "necessity": 3,
+   "why": "정역학과 유체가 구조·수리 분야로 그대로 이어진다."
+  },
+  {
+   "major": "CIV",
+   "subject": "KOR.THEMEREAD",
+   "necessity": 2,
+   "why": "관심 주제를 스스로 읽고 정리한 기록이 학생부에 남는 가장 확실한 자리다."
+  },
+  {
+   "major": "CIV",
+   "subject": "MATH.GEOM",
+   "necessity": 2,
+   "why": "측량·도로 선형·공간 좌표가 기하다."
+  },
+  {
+   "major": "CIV",
+   "subject": "ENG.E1",
+   "necessity": 2,
+   "why": "대학 전공 강의와 원서의 최소 문턱이다."
+  },
+  {
+   "major": "CIV",
+   "subject": "ENG.RW",
+   "necessity": 2,
+   "why": "전공 자료와 데이터시트는 대부분 영어다. 긴 글을 읽는 힘이 실제로 쓰인다."
+  },
+  {
+   "major": "CIV",
+   "subject": "SCI.CHEM",
+   "necessity": 2,
+   "why": "콘크리트·수질·대기를 다루려면 필요하다."
+  },
+  {
+   "major": "CIV",
+   "subject": "SCI.EARTHSYS",
+   "necessity": 2,
+   "why": "지반과 수자원이 지구시스템 위에 있다."
+  },
+  {
+   "major": "CIV",
+   "subject": "TECH.HOME",
+   "necessity": 2,
+   "why": "건설 기술의 전체 그림을 처음 본다."
+  },
+  {
+   "major": "CIV",
+   "subject": "SOC.CLIMATE",
+   "necessity": 1,
+   "why": "기후 대응이 토목·환경 설계의 조건이 되고 있다."
+  },
+  {
+   "major": "CIV",
+   "subject": "SCI.ECO",
+   "necessity": 1,
+   "why": "환경영향평가와 생태 복원으로 이어진다."
+  },
+  {
+   "major": "CIV",
+   "subject": "TECH.DESIGN",
+   "necessity": 1,
+   "why": "구조물을 직접 설계해 본 기록이 남는다."
+  },
+  {
+   "major": "EE",
+   "subject": "MATH.ALGEBRA",
+   "necessity": 3,
+   "why": "지수·로그·삼각함수·수열 없이 진행되는 이공계 전공 과목이 없다."
+  },
+  {
+   "major": "EE",
+   "subject": "MATH.CALC1",
+   "necessity": 3,
+   "why": "미분과 적분은 공학이 현상을 적는 언어다. 여기서 막히면 2학년이 통째로 막힌다."
+  },
+  {
+   "major": "EE",
+   "subject": "MATH.GEOM",
+   "necessity": 3,
+   "why": "벡터 없이 전자기장을 다룰 수 없다."
+  },
+  {
+   "major": "EE",
+   "subject": "MATH.CALC2",
+   "necessity": 3,
+   "why": "회로와 신호를 미분방정식으로 푼다."
+  },
+  {
+   "major": "EE",
+   "subject": "SCI.PHYS",
+   "necessity": 3,
+   "why": "전기·자기·회로가 전부 여기서 출발한다."
+  },
+  {
+   "major": "EE",
+   "subject": "SCI.EM",
+   "necessity": 3,
+   "why": "전자기학과 현대물리가 전기전자 전공의 뼈대다. 반도체·통신이 여기에 붙는다."
+  },
+  {
+   "major": "EE",
+   "subject": "KOR.THEMEREAD",
+   "necessity": 2,
+   "why": "관심 주제를 스스로 읽고 정리한 기록이 학생부에 남는 가장 확실한 자리다."
+  },
+  {
+   "major": "EE",
+   "subject": "MATH.AIMATH",
+   "necessity": 2,
+   "why": "행렬과 최적화가 신호·제어에서 그대로 쓰인다."
+  },
+  {
+   "major": "EE",
+   "subject": "ENG.E1",
+   "necessity": 2,
+   "why": "대학 전공 강의와 원서의 최소 문턱이다."
+  },
+  {
+   "major": "EE",
+   "subject": "ENG.RW",
+   "necessity": 2,
+   "why": "전공 자료와 데이터시트는 대부분 영어다. 긴 글을 읽는 힘이 실제로 쓰인다."
+  },
+  {
+   "major": "EE",
+   "subject": "SCI.MECH",
+   "necessity": 2,
+   "why": "에너지와 열은 전력·소자에서도 계속 나온다."
+  },
+  {
+   "major": "EE",
+   "subject": "INFO.INFO",
+   "necessity": 2,
+   "why": "임베디드와 제어는 코드로 완성된다."
+  },
+  {
+   "major": "EE",
+   "subject": "INFO.AI",
+   "necessity": 2,
+   "why": "신호 처리와 인공지능이 붙는 분야가 빠르게 늘고 있다."
+  },
+  {
+   "major": "EE",
+   "subject": "SCI.CHEM",
+   "necessity": 1,
+   "why": "반도체 공정과 소자 재료를 이해하는 데 도움이 된다."
+  },
+  {
+   "major": "EE",
+   "subject": "TECH.ROBOT",
+   "necessity": 1,
+   "why": "센서–제어–구동을 직접 이어 보는 경험이 된다."
+  },
+  {
+   "major": "EE",
+   "subject": "TECH.DESIGN",
+   "necessity": 1,
+   "why": "회로를 직접 설계해 만든 결과물이 남는다."
+  },
+  {
+   "major": "IE",
+   "subject": "MATH.ALGEBRA",
+   "necessity": 3,
+   "why": "지수·로그·삼각함수·수열 없이 진행되는 이공계 전공 과목이 없다."
+  },
+  {
+   "major": "IE",
+   "subject": "MATH.CALC1",
+   "necessity": 3,
+   "why": "최적화 문제의 기본이 미분이다."
+  },
+  {
+   "major": "IE",
+   "subject": "MATH.PROB",
+   "necessity": 3,
+   "why": "대기행렬·품질관리·수요예측이 전부 확률과 통계 위에 있다."
+  },
+  {
+   "major": "IE",
+   "subject": "INFO.INFO",
+   "necessity": 3,
+   "why": "최적화와 시뮬레이션을 코드로 돌린다."
+  },
+  {
+   "major": "IE",
+   "subject": "KOR.THEMEREAD",
+   "necessity": 2,
+   "why": "관심 주제를 스스로 읽고 정리한 기록이 학생부에 남는 가장 확실한 자리다."
+  },
+  {
+   "major": "IE",
+   "subject": "MATH.CALC2",
+   "necessity": 2,
+   "why": "연속 최적화로 넘어갈 때 필요하다."
+  },
+  {
+   "major": "IE",
+   "subject": "MATH.ECOMATH",
+   "necessity": 2,
+   "why": "비용과 수익을 수식으로 다루는 연습이 된다."
+  },
+  {
+   "major": "IE",
+   "subject": "MATH.AIMATH",
+   "necessity": 2,
+   "why": "선형계획과 최적화가 행렬 위에서 돌아간다."
+  },
+  {
+   "major": "IE",
+   "subject": "MATH.APPSTAT",
+   "necessity": 2,
+   "why": "실제 데이터로 통계적 판단을 해 본다."
+  },
+  {
+   "major": "IE",
+   "subject": "ENG.E1",
+   "necessity": 2,
+   "why": "대학 전공 강의와 원서의 최소 문턱이다."
+  },
+  {
+   "major": "IE",
+   "subject": "ENG.RW",
+   "necessity": 2,
+   "why": "전공 자료와 데이터시트는 대부분 영어다. 긴 글을 읽는 힘이 실제로 쓰인다."
+  },
+  {
+   "major": "IE",
+   "subject": "INFO.DATA",
+   "necessity": 2,
+   "why": "공정·물류 데이터를 다루는 일이 산업공학의 절반이다."
+  },
+  {
+   "major": "IE",
+   "subject": "SOC.FINANCE",
+   "necessity": 1,
+   "why": "원가와 투자 판단의 감각을 얻는다."
+  },
+  {
+   "major": "IE",
+   "subject": "SCI.PHYS",
+   "necessity": 1,
+   "why": "생산 설비와 공정을 이해하는 데 도움이 된다."
+  },
+  {
+   "major": "IE",
+   "subject": "TECH.HOME",
+   "necessity": 1,
+   "why": "제조와 물류의 전체 그림을 본다."
+  },
+  {
+   "major": "ME",
+   "subject": "MATH.ALGEBRA",
+   "necessity": 3,
+   "why": "지수·로그·삼각함수·수열 없이 진행되는 이공계 전공 과목이 없다."
+  },
+  {
+   "major": "ME",
+   "subject": "MATH.CALC1",
+   "necessity": 3,
+   "why": "미분과 적분은 공학이 현상을 적는 언어다. 여기서 막히면 2학년이 통째로 막힌다."
+  },
+  {
+   "major": "ME",
+   "subject": "MATH.GEOM",
+   "necessity": 3,
+   "why": "3차원 형상과 벡터를 다루지 않으면 CAD와 기구학이 감으로만 남는다."
+  },
+  {
+   "major": "ME",
+   "subject": "MATH.CALC2",
+   "necessity": 3,
+   "why": "재료역학과 열전달이 미분방정식 위에서 돌아간다."
+  },
+  {
+   "major": "ME",
+   "subject": "SCI.PHYS",
+   "necessity": 3,
+   "why": "힘·운동·에너지가 기계공학 전 과목의 전제다. 이 과목을 빼면 정역학·동역학이 첫 학기부터 막힌다."
+  },
+  {
+   "major": "ME",
+   "subject": "SCI.MECH",
+   "necessity": 3,
+   "why": "정역학·동역학·열역학이 고등학교에서 미리 열리는 유일한 자리다."
+  },
+  {
+   "major": "ME",
+   "subject": "KOR.THEMEREAD",
+   "necessity": 2,
+   "why": "관심 주제를 스스로 읽고 정리한 기록이 학생부에 남는 가장 확실한 자리다."
+  },
+  {
+   "major": "ME",
+   "subject": "ENG.E1",
+   "necessity": 2,
+   "why": "대학 전공 강의와 원서의 최소 문턱이다."
+  },
+  {
+   "major": "ME",
+   "subject": "ENG.RW",
+   "necessity": 2,
+   "why": "전공 자료와 데이터시트는 대부분 영어다. 긴 글을 읽는 힘이 실제로 쓰인다."
+  },
+  {
+   "major": "ME",
+   "subject": "SCI.CHEM",
+   "necessity": 2,
+   "why": "재료와 부식·연소를 이해하려면 필요하다."
+  },
+  {
+   "major": "ME",
+   "subject": "SCI.EM",
+   "necessity": 2,
+   "why": "센서·모터·전장이 붙지 않는 기계는 이제 거의 없다."
+  },
+  {
+   "major": "ME",
+   "subject": "TECH.HOME",
+   "necessity": 2,
+   "why": "제조·수송 기술의 전체 그림을 처음 보는 자리다."
+  },
+  {
+   "major": "ME",
+   "subject": "TECH.ROBOT",
+   "necessity": 2,
+   "why": "설계–제작–제어를 한 과목 안에서 겪어 볼 수 있다."
+  },
+  {
+   "major": "ME",
+   "subject": "TECH.DESIGN",
+   "necessity": 2,
+   "why": "직접 설계해 만든 결과물이 학생부와 대학 면접에서 실제로 쓰인다."
+  },
+  {
+   "major": "ME",
+   "subject": "MATH.PROJECT",
+   "necessity": 1,
+   "why": "수학 주제를 스스로 파 본 기록이 남는다."
+  },
+  {
+   "major": "ME",
+   "subject": "SCI.FUSION",
+   "necessity": 1,
+   "why": "실험 설계와 보고서 쓰기를 연습하는 자리다."
+  },
+  {
+   "major": "ME",
+   "subject": "INFO.INFO",
+   "necessity": 1,
+   "why": "해석과 자동화가 코드 위에서 돌아가는 일이 늘고 있다."
+  },
+  {
+   "major": "MSE",
+   "subject": "MATH.ALGEBRA",
+   "necessity": 3,
+   "why": "지수·로그·삼각함수·수열 없이 진행되는 이공계 전공 과목이 없다."
+  },
+  {
+   "major": "MSE",
+   "subject": "MATH.CALC1",
+   "necessity": 3,
+   "why": "미분과 적분은 공학이 현상을 적는 언어다. 여기서 막히면 2학년이 통째로 막힌다."
+  },
+  {
+   "major": "MSE",
+   "subject": "SCI.PHYS",
+   "necessity": 3,
+   "why": "고체의 성질은 물리에서 설명된다."
+  },
+  {
+   "major": "MSE",
+   "subject": "SCI.CHEM",
+   "necessity": 3,
+   "why": "재료의 구조와 결합을 화학으로 읽는다."
+  },
+  {
+   "major": "MSE",
+   "subject": "SCI.MATTER",
+   "necessity": 3,
+   "why": "상변화와 에너지가 재료 열역학의 앞부분이다."
+  },
+  {
+   "major": "MSE",
+   "subject": "KOR.THEMEREAD",
+   "necessity": 2,
+   "why": "관심 주제를 스스로 읽고 정리한 기록이 학생부에 남는 가장 확실한 자리다."
+  },
+  {
+   "major": "MSE",
+   "subject": "MATH.GEOM",
+   "necessity": 2,
+   "why": "결정 구조와 방위를 벡터로 다룬다."
+  },
+  {
+   "major": "MSE",
+   "subject": "MATH.CALC2",
+   "necessity": 2,
+   "why": "확산과 상변태가 미분방정식으로 기술된다."
+  },
+  {
+   "major": "MSE",
+   "subject": "ENG.E1",
+   "necessity": 2,
+   "why": "대학 전공 강의와 원서의 최소 문턱이다."
+  },
+  {
+   "major": "MSE",
+   "subject": "ENG.RW",
+   "necessity": 2,
+   "why": "전공 자료와 데이터시트는 대부분 영어다. 긴 글을 읽는 힘이 실제로 쓰인다."
+  },
+  {
+   "major": "MSE",
+   "subject": "SCI.EM",
+   "necessity": 2,
+   "why": "반도체·자성·광학 재료가 전자기 위에 있다."
+  },
+  {
+   "major": "MSE",
+   "subject": "SCI.RXN",
+   "necessity": 2,
+   "why": "합성과 표면 반응을 다룰 때 쓰인다."
+  },
+  {
+   "major": "MSE",
+   "subject": "SCI.HISTORY",
+   "necessity": 1,
+   "why": "재료가 시대를 바꾼 사례를 통해 분야의 감을 잡는다."
+  },
+  {
+   "major": "MSE",
+   "subject": "SCI.FUSION",
+   "necessity": 1,
+   "why": "재료를 직접 만들어 성질을 재 본 기록이 남는다."
+  }
+ ],
+ "univRecommendations": [
+  {
+   "univ": "SNU",
+   "track": "type2",
+   "subject": "MATH.GEOM",
+   "level": "required",
+   "note": "유형②(자연계) 지원자에게 이수를 권장하는 수학 과목"
+  },
+  {
+   "univ": "SNU",
+   "track": "type2",
+   "subject": "MATH.CALC2",
+   "level": "required",
+   "note": "유형②(자연계) 지원자에게 이수를 권장하는 수학 과목"
+  }
+ ],
+ "univRules": [
+  {
+   "univ": "SNU",
+   "track": "type2",
+   "rule": "과학 교과(군)의 진로 선택 과목 중 3과목 이상 이수 권장",
+   "group": "SCI",
+   "category": "career",
+   "minCount": 3
+  }
+ ]
+}

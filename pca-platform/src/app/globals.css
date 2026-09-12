@@ -777,3 +777,59 @@ td .sub { display: block; font-size: 12.5px; color: var(--muted); }
   font-size: 13px; letter-spacing: 0.04em;
 }
 .page-head .right { display: flex; gap: 8px; }
+
+/* ── 과목 처방 (고교판 결과지 05) ──────────────────────────
+   학생이 이 화면을 보고 과목 신청서를 쓴다. 그래서 목록보다
+   "먼저 들을 것 / 여기서 갈리는 것" 이라는 구분이 먼저 보여야 한다. */
+.rx-group { margin-bottom: 26px; }
+.rx-group:last-of-type { margin-bottom: 0; }
+.rx-gh {
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+  padding-bottom: 8px; margin-bottom: 12px; border-bottom: 1px solid var(--rule);
+}
+.rx-gh h3 { font-size: 15px; font-weight: 800; letter-spacing: -0.02em; }
+.rx-gh span { font-size: 12.5px; color: var(--muted); }
+
+.rx-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.rx-item {
+  display: grid; grid-template-columns: 52px 1fr; gap: 14px;
+  padding: 12px 14px; border: 1px solid var(--rule); background: var(--paper);
+}
+.rx-item.must { border-left: 3px solid var(--ink); }
+.rx-item.rec  { border-left: 3px solid var(--s4); }
+.rx-need {
+  font-size: 11px; font-weight: 800; letter-spacing: 0.04em; text-align: center;
+  padding: 3px 0; border: 1px solid var(--rule); height: fit-content;
+}
+.rx-item.must .rx-need { background: var(--ink); color: #fff; border-color: var(--ink); }
+.rx-body { min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+.rx-name { font-size: 15px; font-weight: 800; letter-spacing: -0.02em; }
+.rx-meta { font-size: 12px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px; }
+.rx-meta b { font-weight: 700; color: var(--ink); }
+.rx-tag {
+  font-size: 11px; font-weight: 700; padding: 1px 6px; border: 1px solid var(--rule);
+  color: var(--muted); white-space: nowrap;
+}
+.rx-tag.csat { border-color: var(--ink); color: var(--ink); }
+.rx-tag.abs  { border-color: var(--met); color: var(--met); }
+.rx-tag.univ { border-color: var(--partial); color: var(--partial); }
+.rx-why { font-size: 13.5px; line-height: 1.6; color: var(--ink); }
+.rx-for { font-size: 12.5px; color: var(--muted); }
+
+.rx-terms { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 22px; }
+.rx-term { border: 1px solid var(--rule); padding: 14px 16px; }
+.rx-term h4 { font-size: 13px; font-weight: 800; margin-bottom: 4px; }
+.rx-term .n { font-size: 20px; font-weight: 800; letter-spacing: -0.03em; }
+.rx-term .n em { font-style: normal; font-size: 13px; color: var(--muted); font-weight: 700; }
+.rx-term p { font-size: 12.5px; color: var(--muted); line-height: 1.55; margin-top: 6px; }
+
+.rx-univ { margin-top: 20px; border: 1px solid var(--rule); padding: 14px 16px; }
+.rx-univ h4 { font-size: 13px; font-weight: 800; margin-bottom: 8px; }
+.rx-univ li { font-size: 13.5px; line-height: 1.7; list-style: none; }
+.rx-univ .ok { color: var(--met); font-weight: 700; }
+.rx-univ .no { color: var(--partial); font-weight: 700; }
+
+@media (max-width: 720px) {
+  .rx-terms { grid-template-columns: 1fr; }
+  .rx-item { grid-template-columns: 44px 1fr; gap: 10px; padding: 11px 12px; }
+}

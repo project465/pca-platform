@@ -259,6 +259,32 @@ th[scope="row"] { font-weight: 700; color: var(--ink); font-family: var(--body);
 .kv dt { color: var(--muted); }
 .kv dd { margin: 0; }
 
+/* ── 과목 처방 ────────────────────────────── */
+.rx { display: grid; gap: 14px; }
+.rxgrp { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.rxgrp > h3 {
+  font-size: 14px; padding: 12px 18px; margin: 0;
+  background: var(--ground-2); border-bottom: 1px solid var(--line);
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+}
+.rxgrp > h3 em { font-style: normal; font-weight: 500; font-size: 12.5px; color: var(--muted); font-family: var(--body); }
+.rxgrp.lead > h3 { background: var(--amber-soft); border-bottom-color: var(--amber-line); color: var(--amber); }
+.rxrow { display: grid; grid-template-columns: 46px 1fr; gap: 14px; padding: 13px 18px; }
+.rxrow + .rxrow { border-top: 1px solid var(--line); }
+.rxneed {
+  font-size: 10.5px; font-weight: 800; text-align: center; padding: 3px 0; height: fit-content;
+  border-radius: 5px; border: 1px solid var(--line-2); color: var(--muted); font-family: var(--display);
+}
+.rxneed.must { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.rxb { min-width: 0; display: grid; gap: 4px; }
+.rxb b { font-family: var(--display); font-weight: 800; font-size: 15px; }
+.rxm { font-size: 11.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.rxm .t { border: 1px solid var(--line-2); border-radius: 5px; padding: 1px 6px; font-weight: 700; }
+.rxm .t.u { border-color: var(--amber-line); color: var(--amber); background: var(--amber-soft); }
+.rxw { font-size: 13px; line-height: 1.6; color: var(--ink-2); }
+.rxfor { font-size: 12px; color: var(--muted); }
+@media (max-width: 430px) { .rxrow { grid-template-columns: 40px 1fr; gap: 10px; padding: 12px 14px; } }
+
 footer { border-top: 1px solid var(--line); padding-block: 28px 40px; color: var(--muted); font-size: 13px; }
 footer .wrap { display: grid; gap: 8px; }
 .note { color: var(--muted); font-size: 13.5px; max-width: var(--measure); }
@@ -366,6 +392,80 @@ footer .wrap { display: grid; gap: 8px; }
     </div>
   </section>
 
+
+  <!-- 과목 처방 -->
+  <section class="sec" id="subjects">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">결과지 05</span>
+        <h2>다음 학기 과목 신청서까지 내려갑니다</h2>
+        <p>
+          “기계공학이 앞에 있습니다” 로 끝나면 학생이 다음 주에 할 일이 없습니다.
+          2022 개정 교육과정 과목표에서 그 계열이 실제로 요구하는 과목만 골라, 학년별로 놓습니다.
+          아래는 1군이 <b>기계공학 · 신소재공학</b> 으로 나온 학생이 실제로 받는 화면입니다.
+        </p>
+      </div>
+
+      <div class="rx">
+        <div class="rxgrp lead">
+          <h3>먼저 듣습니다 <em>기계공학 · 신소재공학 어느 쪽으로 가도 필요합니다</em></h3>
+          <div class="rxrow">
+            <span class="rxneed must">필수</span>
+            <div class="rxb"><b>미적분Ⅰ</b>
+              <span class="rxm"><span>수학</span><span>일반 선택</span><span>4학점</span><span>2학년</span><span class="t">수능 범위</span></span>
+              <span class="rxw">미분과 적분은 공학이 현상을 적는 언어입니다. 여기서 막히면 대학 2학년이 통째로 막힙니다.</span></div>
+          </div>
+          <div class="rxrow">
+            <span class="rxneed must">필수</span>
+            <div class="rxb"><b>기하</b>
+              <span class="rxm"><span>수학</span><span>진로 선택</span><span>4학점</span><span>3학년</span><span class="t u">서울대 권장</span></span>
+              <span class="rxw">3차원 형상과 벡터를 다루지 않으면 CAD와 기구학이 감으로만 남습니다.</span></div>
+          </div>
+          <div class="rxrow">
+            <span class="rxneed must">필수</span>
+            <div class="rxb"><b>물리학</b>
+              <span class="rxm"><span>과학</span><span>일반 선택</span><span>4학점</span><span>2학년</span></span>
+              <span class="rxw">고체의 성질은 물리에서 설명됩니다.</span></div>
+          </div>
+        </div>
+
+        <div class="rxgrp">
+          <h3>여기서 갈립니다 <em>어느 쪽으로 기우는지에 따라 골라 듣습니다</em></h3>
+          <div class="rxrow">
+            <span class="rxneed must">필수</span>
+            <div class="rxb"><b>역학과 에너지</b>
+              <span class="rxm"><span>과학</span><span>진로 선택</span><span>4학점</span><span>3학년</span><span>먼저 — 물리학</span></span>
+              <span class="rxw">정역학·동역학·열역학이 고등학교에서 미리 열리는 유일한 자리입니다.</span>
+              <span class="rxfor">기계공학 쪽에서 필요합니다</span></div>
+          </div>
+          <div class="rxrow">
+            <span class="rxneed must">필수</span>
+            <div class="rxb"><b>물질과 에너지</b>
+              <span class="rxm"><span>과학</span><span>진로 선택</span><span>4학점</span><span>3학년</span><span>먼저 — 화학</span></span>
+              <span class="rxw">상변화와 에너지가 재료 열역학의 앞부분입니다.</span>
+              <span class="rxfor">신소재공학 쪽에서 필요합니다</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats" style="margin-top:22px">
+        <div class="stat"><span class="n">73<span>과목</span></span><span class="k">2022 개정 교육과정에서<br>이공계에 걸리는 과목만</span></div>
+        <div class="stat"><span class="n">123<span>줄</span></span><span class="k">계열 × 과목마다<br>“왜 이 과목인가” 한 줄</span></div>
+        <div class="stat hi"><span class="n">52<span>학점</span></span><span class="k">한 학년에 넣을 수 있는 상한<br>넘는 목록은 신청할 수 없습니다</span></div>
+      </div>
+
+      <p class="note" style="margin-top:18px">
+        <b>선수과목을 따라 올라갑니다.</b> 미적분Ⅱ 만 적어 놓고 미적분Ⅰ 을 빠뜨리면 학생은 그 신청서를 낼 수 없습니다.
+        <b>서울대가 밝힌 권장 과목</b>(2028학년도 유형② — 기하 · 미적분Ⅱ, 과학 진로선택 3과목 이상)도 함께 대조해,
+        지금 목록이 몇 과목 모자라는지 숫자로 적습니다. 계열이 요구하는 것과 대학이 권장하는 것은 근거가 다르므로 섞지 않습니다.
+      </p>
+      <p class="note">
+        학교마다 여는 과목과 학점이 다릅니다. 결과지가 그 말을 직접 합니다 —
+        원하는 과목이 학교에 없으면 공동교육과정·온라인학교로 들을 수 있는지 확인하라고 적습니다.
+      </p>
+    </div>
+  </section>
+
   <!-- 메트리와의 관계 -->
   <section class="sec">
     <div class="wrap">
@@ -468,6 +568,7 @@ footer .wrap { display: grid; gap: 8px; }
             <li>115문항 · 약 15분</li>
             <li>계열 적합 결과지 (한국어·영어)</li>
             <li>구간·묶음 표기. 등수 없음</li>
+            <li>고교학점제 과목 처방</li>
           </ul>
         </div>
         <div class="price">
@@ -506,7 +607,8 @@ footer .wrap { display: grid; gap: 8px; }
           <li class="done">계열 적합 · 활동 8축 · 성향 6축 · 응답 신뢰도</li>
           <li class="done">학교 단체 진행과 익명 집계 리포트</li>
           <li class="done">한국어 · 영어 결과지</li>
-          <li>고교학점제 <b>과목 처방</b> — 과목표가 아직 비어 있어 나오지 않습니다</li>
+          <li class="done">고교학점제 <b>과목 처방</b> — 73과목, 학년별·선수과목·서울대 권장 대조까지</li>
+          <li><b>학교가 실제로 여는 과목</b> — 학교가 교육과정 편제표를 올려야 “이 학교엔 없는 과목”을 표시할 수 있습니다</li>
           <li>마이스터고·특성화고용 <b>자격·NCS 처방</b></li>
           <li>중학생용 결과지 뒷부분 (어느 고등학교를 볼 것인가)</li>
           <li>튀르키예어 문항 — 중·고등학생은 국내부터입니다</li>
