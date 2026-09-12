@@ -111,13 +111,20 @@ a { color: inherit; }
    링크는 전부 이 페이지 안의 절을 가리킨다. */
 .topbar {
   position: sticky; top: 0; z-index: 40;
-  background: rgba(255,255,255,.92); backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .topbar { background: rgba(11,18,26,.92); }
+/* 흐린 바탕은 머리 띠가 아니라 그 뒤에 깔린 층이 만든다.
+   backdrop-filter 를 띠 자신에게 걸면 그 띠가 절대 배치 자식을 잘라내는
+   상자가 되어, 좁은 화면에서 "메뉴" 를 눌러도 펼쳐진 목록이 띠 높이
+   밖으로 나가는 순간 잘려 아무것도 안 보였다. */
+.topbar::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: rgba(255,255,255,.92); backdrop-filter: blur(10px);
 }
-:root[data-theme="dark"] .topbar { background: rgba(11,18,26,.92); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .topbar::before { background: rgba(11,18,26,.92); }
+}
+:root[data-theme="dark"] .topbar::before { background: rgba(11,18,26,.92); }
 .topbar .bar { display: flex; align-items: center; gap: 20px; min-height: 62px; }
 .tb-brand { display: flex; align-items: baseline; gap: 7px; text-decoration: none; flex: none; }
 .tb-brand b { font-family: var(--display); font-weight: 900; font-size: 16px; letter-spacing: -0.03em; }
@@ -144,6 +151,8 @@ a { color: inherit; }
   position: absolute; right: 0; top: calc(100% + 9px); z-index: 50;
   background: var(--paper); border: 1px solid var(--line-2); border-radius: var(--r);
   display: grid; min-width: 210px; max-width: calc(100vw - 32px); overflow: hidden;
+  /* 화면이 낮으면 목록이 화면 밖으로 내려가 손이 닿지 않는다 */
+  max-height: calc(100dvh - 96px); overflow-y: auto;
 }
 .tb-menu nav a {
   padding: 12px 16px; font-size: 13.5px; font-weight: 600; text-decoration: none;

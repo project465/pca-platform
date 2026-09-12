@@ -82,8 +82,20 @@ section { padding-block: clamp(60px, 8vw, 108px); }
 /* ---------- 헤더 ---------- */
 .site-header {
   position: sticky; top: 0; z-index: 40;
-  background: rgba(255,255,255,.9); backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
+}
+/**
+ * 흐린 바탕은 헤더가 아니라 헤더 뒤에 깔린 층이 만든다.
+ *
+ * backdrop-filter 를 헤더 자신에게 걸면 그 헤더가 절대 배치 자식의
+ * 기준 상자이자 잘라내는 상자가 된다. 그래서 좁은 화면에서 "메뉴" 를
+ * 눌러도 펼쳐진 목록이 헤더 높이(70px) 밖으로 나가는 순간 잘려
+ * 아무것도 안 보였다. 흐림을 ::before 로 떼어 내면 헤더는 평범한
+ * sticky 상자로 남고 목록이 그 아래로 온전히 내려온다.
+ */
+.site-header::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: rgba(255,255,255,.9); backdrop-filter: blur(12px);
 }
 .site-header .bar { display: flex; align-items: center; gap: 22px; min-height: 70px; }
 .brandmark { display: flex; align-items: center; gap: 11px; text-decoration: none; }
@@ -143,6 +155,9 @@ section { padding-block: clamp(60px, 8vw, 108px); }
   display: flex; flex-direction: column; min-width: 220px; overflow: hidden;
   /* 390px 화면에서 220px 패널이 왼쪽으로 삐져나갔다 */
   max-width: calc(100vw - 32px);
+  /* 화면이 낮으면(가로로 든 폰·좁은 미리보기 칸) 목록이 화면 밖으로
+     내려가 손이 닿지 않는다. 그때는 목록 안에서 굴린다. */
+  max-height: calc(100dvh - 100px); overflow-y: auto;
 }
 .mnav nav a { padding: 13px 17px; font-size: 13.5px; font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--line); }
 .mnav nav a:last-child { border-bottom: 0; }
