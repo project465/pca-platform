@@ -259,6 +259,33 @@ th[scope="row"] { font-weight: 700; color: var(--ink); font-family: var(--body);
 .kv dt { color: var(--muted); }
 .kv dd { margin: 0; }
 
+/* ── 현장에서 거꾸로 내려오는 사슬 ────────── */
+.chain { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); }
+.crole { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.crole > header { padding: 16px 18px 14px; background: var(--ground-2); border-bottom: 1px solid var(--line); }
+.crole .fld { font-size: 11px; font-weight: 800; letter-spacing: .1em; color: var(--muted); font-family: var(--display); }
+.crole h3 { font-size: 17px; margin-top: 3px; }
+.crole .scene { margin-top: 8px; font-size: 13.5px; line-height: 1.65; color: var(--ink-2); }
+.cneed { padding: 15px 18px; }
+.cneed + .cneed { border-top: 1px solid var(--line); }
+.cwhat {
+  font-family: var(--display); font-weight: 800; font-size: 14.5px;
+  padding-left: 11px; border-left: 3px solid var(--amber); margin-bottom: 9px;
+}
+.csteps { display: grid; gap: 7px; padding-left: 11px; border-left: 1px solid var(--line); }
+.cstep { display: grid; grid-template-columns: 84px 1fr; gap: 12px; position: relative; }
+.cstep::before {
+  content: ""; position: absolute; left: -15px; top: 8px;
+  width: 7px; height: 7px; border-radius: 50%; background: var(--line-2);
+}
+.cstep.now::before { background: var(--amber); width: 9px; height: 9px; left: -16px; top: 7px; }
+.cwhen { font-size: 11.5px; font-weight: 800; color: var(--muted); font-family: var(--display); padding-top: 2px; }
+.cstep.now .cwhen { color: var(--amber); }
+.cbody { font-size: 13.5px; line-height: 1.6; min-width: 0; }
+.cbody b { font-family: var(--display); font-weight: 800; }
+.cbody em { display: block; font-style: normal; font-size: 12.5px; color: var(--muted); margin-top: 2px; line-height: 1.55; }
+@media (max-width: 430px) { .cstep { grid-template-columns: 1fr; gap: 1px; } }
+
 /* ── 과목 처방 ────────────────────────────── */
 .rx { display: grid; gap: 14px; }
 .rxgrp { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
@@ -392,6 +419,77 @@ footer .wrap { display: grid; gap: 8px; }
     </div>
   </section>
 
+
+
+  <!-- 현장에서 거꾸로 -->
+  <section class="sec tint" id="chain">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">결과지 05</span>
+        <h2>과목부터 내밀면 “그래서 왜” 가 남습니다</h2>
+        <p>
+          그래서 순서를 뒤집었습니다. <b>현장에서 실제로 하는 일이 이것을 요구하기 때문에</b>,
+          대학에서 이것을 배우고, 고등학교에서 이 과목을 듣고, 중학교에서는 지금 이것을 해 볼 수 있습니다.
+          8계열 × 대표 직무 2개 × 현장이 요구하는 것 3가지 = 48줄기가 들어 있습니다.
+        </p>
+      </div>
+
+      <div class="chain">
+        <article class="crole">
+          <header>
+            <span class="fld">기계공학</span>
+            <h3>구조해석 엔지니어</h3>
+            <p class="scene">전기차 배터리 팩 하우징이 노면 진동에 용접부부터 갈라질지, 실차 시험 두 달 전에 계산으로 먼저 짚어 낸다. 여기서 못 잡으면 시험에서 깨지고 일정이 석 달 밀린다.</p>
+          </header>
+          <div class="cneed">
+            <p class="cwhat">실제 도로에서 걸리는 힘을 계산할 수 있는 조건으로 바꾸는 일</p>
+            <div class="csteps">
+              <div class="cstep"><span class="cwhen">대학에서</span><span class="cbody">정역학 · 동역학 · 재료역학</span></div>
+              <div class="cstep now"><span class="cwhen">고등학교에서</span><span class="cbody"><b>물리학 · 역학과 에너지</b><em>어디를 고정으로 보고 어디에 힘이 걸린다고 볼 것인지 — 해석의 답은 여기서 거의 정해진다.</em></span></div>
+              <div class="cstep"><span class="cwhen">중학교에서</span><span class="cbody">부러진 의자나 휘어진 자전거 짐받이를 보고 왜 하필 거기가 먼저 갔는지 그림으로 설명해 보기<em>공식보다 ‘힘이 어디로 모이는가’ 를 눈으로 먼저 보는 습관이 오래 간다.</em></span></div>
+            </div>
+          </div>
+          <div class="cneed">
+            <p class="cwhat">계산 결과를 그대로 믿지 않고 의심하는 일</p>
+            <div class="csteps">
+              <div class="cstep"><span class="cwhen">대학에서</span><span class="cbody">수치해석 · 유한요소법</span></div>
+              <div class="cstep now"><span class="cwhen">고등학교에서</span><span class="cbody"><b>미적분Ⅰ · 미적분Ⅱ</b><em>격자를 잘게 쪼개면 답이 어디로 수렴하는지는 결국 극한의 이야기다.</em></span></div>
+              <div class="cstep"><span class="cwhen">중학교에서</span><span class="cbody">같은 길이를 자로 다섯 번 재 보고 값이 왜 다르게 나오는지 적어 보기<em>측정에는 늘 폭이 있다는 감각 — 해석 엔지니어가 가장 먼저 배우는 것이다.</em></span></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="crole">
+          <header>
+            <span class="fld">컴퓨터공학</span>
+            <h3>AI·머신러닝 엔지니어</h3>
+            <p class="scene">불량품 사진 2만 장으로 모델을 학습시켜 사람보다 빠르게 걸러 낸다. 정확도 99%라는 숫자가 실제로는 쓸모없을 수 있다는 것도 함께 설명해야 한다.</p>
+          </header>
+          <div class="cneed">
+            <p class="cwhat">모델이 무엇을 최소화하고 있는지 아는 일</p>
+            <div class="csteps">
+              <div class="cstep"><span class="cwhen">대학에서</span><span class="cbody">선형대수 · 최적화 · 기계학습</span></div>
+              <div class="cstep now"><span class="cwhen">고등학교에서</span><span class="cbody"><b>미적분Ⅰ · 미적분Ⅱ · 인공지능 수학</b><em>학습은 기울기를 따라 내려가는 일이다. 미적분이 그 기울기다.</em></span></div>
+              <div class="cstep"><span class="cwhen">중학교에서</span><span class="cbody">엑셀로 점을 찍고 추세선을 그려, 선이 점들과 얼마나 어긋나는지 계산해 보기<em>‘오차를 가장 작게 만드는 선을 찾는다’ 가 기계학습의 전부라 해도 크게 틀리지 않는다.</em></span></div>
+            </div>
+          </div>
+          <div class="cneed">
+            <p class="cwhat">99% 가 거짓말일 수 있다는 것을 아는 일</p>
+            <div class="csteps">
+              <div class="cstep"><span class="cwhen">대학에서</span><span class="cbody">확률통계 · 평가 지표</span></div>
+              <div class="cstep now"><span class="cwhen">고등학교에서</span><span class="cbody"><b>확률과 통계 · 실용 통계</b><em>불량이 100개 중 1개면 전부 정상이라 답해도 99%다.</em></span></div>
+              <div class="cstep"><span class="cwhen">중학교에서</span><span class="cbody">반 친구들의 키를 재서 평균만으로는 안 보이는 것이 무엇인지 찾아보기<em>숫자 하나로 요약하면 반드시 무언가가 사라진다.</em></span></div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <p class="note" style="margin-top:18px">
+        직무 장면은 그 분야에서 실제로 일어나는 일을 압축한 것이고 특정 회사의 사례가 아닙니다.
+        결과지에서는 1군으로 나온 계열의 직무만 골라 보여 줍니다.
+      </p>
+    </div>
+  </section>
 
   <!-- 과목 처방 -->
   <section class="sec" id="subjects">

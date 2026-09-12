@@ -9,6 +9,7 @@
  *   3. 여기서 갈리는 과목 — 어느 쪽으로 기울면 무엇이 붙는지
  *   4. 대학이 밝힌 권장 — 계열이 요구하는 것과 근거가 다르므로 따로
  */
+import { josa } from "@/lib/locale";
 import type { Prescription, PrescribedSubject } from "@/lib/prescribe";
 
 const CATEGORY: Record<string, string> = {
@@ -38,6 +39,19 @@ function Item({ s, showFor }: { s: PrescribedSubject; showFor: boolean }) {
           {s.prereq && <span>먼저 — {s.prereq.name}</span>}
         </span>
         {s.why && <span className="rx-why">{s.why}</span>}
+        {/* 처방과 사슬을 잇는 한 줄. 이 과목이 현장 어디서 쓰이는지 */}
+        {s.usedAt.length > 0 && (
+          <span className="rx-use">
+            현장에서 —{" "}
+            {s.usedAt.map((u, i) => (
+              <span key={u.role + u.what}>
+                {i > 0 && " · "}
+                <b>{u.role}</b>
+                {josa(u.role, "이", "가")} {u.what}
+              </span>
+            ))}
+          </span>
+        )}
         {s.addedForPrereq && (
           <span className="rx-for">
             아래 과목을 신청하려면 이 과목이 먼저 필요해 함께 넣었습니다.

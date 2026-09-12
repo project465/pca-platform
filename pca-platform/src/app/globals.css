@@ -833,3 +833,50 @@ td .sub { display: block; font-size: 12.5px; color: var(--muted); }
   .rx-terms { grid-template-columns: 1fr; }
   .rx-item { grid-template-columns: 44px 1fr; gap: 10px; padding: 11px 12px; }
 }
+
+/* ── 현장에서 거꾸로 내려오는 사슬 (고교판 결과지 05) ──────
+   한 직무가 위에서 아래로 흐른다 — 현장 장면 → 요구하는 것 →
+   대학 · 고등학교 · 중학교. 왼쪽 세로선이 "같은 줄기" 라는 표시다. */
+.cc { display: flex; flex-direction: column; gap: 22px; }
+.cc-role { border: 1px solid var(--rule); background: var(--paper); }
+.cc-head { padding: 18px 20px 16px; border-bottom: 1px solid var(--rule); background: var(--field); }
+.cc-major {
+  font-size: 11px; font-weight: 800; letter-spacing: 0.08em; color: var(--muted);
+  display: block; margin-bottom: 4px;
+}
+.cc-head h3 { font-size: 17px; font-weight: 800; letter-spacing: -0.025em; }
+.cc-scene { margin-top: 8px; font-size: 14px; line-height: 1.66; color: var(--ink); }
+
+.cc-needs { display: flex; flex-direction: column; }
+.cc-need { padding: 16px 20px; }
+.cc-need + .cc-need { border-top: 1px solid var(--rule); }
+.cc-what {
+  font-size: 14.5px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 10px;
+  padding-left: 12px; border-left: 3px solid var(--ink);
+}
+.cc-steps { display: flex; flex-direction: column; gap: 0; padding-left: 12px;
+            border-left: 1px solid var(--rule); }
+.cc-step { display: grid; grid-template-columns: 92px 1fr; gap: 14px; padding: 7px 0; position: relative; }
+.cc-step::before {
+  content: ""; position: absolute; left: -16px; top: 15px;
+  width: 7px; height: 7px; border-radius: 50%; background: var(--rule);
+}
+.cc-step.now::before { background: var(--partial); width: 9px; height: 9px; left: -17px; top: 14px; }
+.cc-when {
+  font-size: 12px; font-weight: 800; color: var(--muted); letter-spacing: -0.01em;
+  padding-top: 1px;
+}
+.cc-step.now .cc-when { color: var(--partial); }
+.cc-body { font-size: 14px; line-height: 1.6; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.cc-body b { font-weight: 800; }
+.cc-body em { font-style: normal; font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+/* 과목 처방의 각 줄에 붙는 "현장 어디서 쓰이나" */
+.rx-use { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+.rx-use b { font-weight: 700; color: var(--ink); }
+
+@media (max-width: 720px) {
+  .cc-step { grid-template-columns: 1fr; gap: 2px; }
+  .cc-need { padding: 14px 16px; }
+  .cc-head { padding: 16px; }
+}

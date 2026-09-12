@@ -28,6 +28,7 @@
  * 여기서 점수를 만들지 않는다. scoring.ts 가 정한 1군을 읽을 뿐이다.
  */
 import { query } from "./db";
+import { subjectUses } from "./chain";
 
 export type Necessity = 1 | 2 | 3;
 
@@ -58,6 +59,11 @@ export type PrescribedSubject = {
   addedForPrereq: boolean;
   /** 대학이 이름을 걸고 밝힌 권장 */
   univ: { univ: string; level: string }[];
+  /**
+   * 이 과목이 현장 어디서 쓰이는가.
+   * 처방과 사슬이 따로 놀면 학생이 두 번 읽고 연결은 스스로 해야 한다.
+   */
+  usedAt: { role: string; what: string }[];
 };
 
 export type GradePlan = {
@@ -240,6 +246,7 @@ export async function prescribe(
         prereq: null,
         addedForPrereq: false,
         univ: univBySubject.get(r.code) ?? [],
+        usedAt: [],
       });
       continue;
     }
@@ -344,6 +351,7 @@ export async function prescribe(
         prereq: null,
         addedForPrereq: true,
         univ: univBySubject.get(s.code) ?? [],
+        usedAt: [],
       };
       if (existing) {
         // 정원에 밀렸던 과목이 선수과목이면 다시 담는다
@@ -370,6 +378,10 @@ export async function prescribe(
     p.prereq = pre && pre.category !== "common" ? { code: pre.code, name: pre.name } : null;
     if (p.addedForPrereq) p.shared = true;
   }
+
+  // 현장 쓰임을 붙인다. 과목마다 최대 두 줄까지 — 세 줄이 넘으면 목록이 된다.
+  const uses = await subjectUses(picked.map((m) => m.code), lang);
+  for (const p of byCode.values()) p.usedAt = (uses.get(p.code) ?? []).slice(0, 2);
 
   const core = kept.sort(cmp);
   const shared = core.filter((s) => s.shared);

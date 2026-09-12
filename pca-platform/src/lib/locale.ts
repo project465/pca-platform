@@ -242,6 +242,16 @@ export const UI = {
      같은 결과지 화면이 두 제품을 그린다. 갈라지는 것은 이 문구들뿐이고,
      화면 코드는 kind 를 보고 "Hs" 가 붙은 키를 고른다.
      중·고등학생에게 "직무" 와 "역량 레벨" 은 아직 뜻이 없는 말이다. */
+  repSec05Chain: d(
+    "이 계열은 나중에 무슨 일을 하는가",
+    "What this field actually does later",
+    "Bu alan ileride ne iş yapar",
+  ),
+  repNote05Chain: d(
+    "과목부터 내밀면 “그래서 왜” 가 남습니다. 그래서 순서를 뒤집었습니다 — 현장에서 실제로 하는 일이 이것을 요구하기 때문에, 대학에서 이것을 배우고, 고등학교에서 이 과목을 듣고, 중학교에서는 지금 이것을 해 볼 수 있습니다. 아래 직무는 그 분야에서 실제로 일어나는 일을 압축한 것이며 특정 회사의 사례가 아닙니다.",
+    "Leading with subjects leaves “but why” unanswered, so the order is reversed here: the work itself demands this, which is why it is studied at university, taken as these subjects in high school, and can be started on now in middle school. The roles below compress what actually happens in the field; they are not any one company's case.",
+    "Derslerle başlamak “peki neden” sorusunu açık bırakır; bu yüzden sıra tersine çevrildi — işin kendisi bunu gerektirir.",
+  ),
   repSec05Hs: d(
     "지금 신청할 과목",
     "Subjects to enrol in now",
@@ -513,6 +523,26 @@ export const UI = {
 } as const;
 
 /** 상품 코드로 이름을 찾는다. 없는 코드면 브랜드만 돌려준다. */
+
+/**
+ * 한국어 조사를 받침에 맞춰 고른다.
+ *
+ * 데이터에서 온 이름 뒤에 조사를 붙이는 자리가 있는데(직무 이름 + 이/가),
+ * 하나로 박아 두면 "연구원가" 같은 문장이 그대로 화면에 나간다. 한국어를
+ * 읽는 사람은 이걸 먼저 본다.
+ *
+ * 한글 음절은 U+AC00 부터 28개씩 묶여 있고, 그 안에서의 자리가 0 이면
+ * 받침이 없다. 한글이 아닌 글자로 끝나면(영문·숫자) 받침 없음으로 본다 —
+ * 틀릴 수 있지만 "가" 쪽이 덜 어색하다.
+ */
+export function josa(word: string, withBatchim: string, without: string): string {
+  const last = word.trim().slice(-1);
+  if (!last) return without;
+  const code = last.charCodeAt(0);
+  if (code < 0xac00 || code > 0xd7a3) return without;
+  return (code - 0xac00) % 28 === 0 ? without : withBatchim;
+}
+
 export function productName(code: string, lang: Lang): string {
   const key = `prod${code}` as UiKey;
   return key in UI ? t(key, lang) : t("brand", lang);

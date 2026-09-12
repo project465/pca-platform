@@ -30,6 +30,25 @@ type Subject = {
   blurb: string;
 };
 
+type Need = {
+  sortNo: number;
+  what: string;
+  univ: string;
+  hs: string[];
+  hsWhy: string;
+  ms: string;
+  msWhy: string;
+};
+type Role = {
+  major: string;
+  sortNo: number;
+  job: string | null;
+  name: string;
+  scene: string;
+  needs: Need[];
+};
+type Chain = { roles: Role[] };
+
 type Bank = {
   country: string;
   curriculum: string;
@@ -48,6 +67,9 @@ type Bank = {
 
 const bankPath = process.argv[2] ?? "data/metri/hs_subjects_kr.json";
 const bank: Bank = JSON.parse(readFileSync(join(process.cwd(), bankPath), "utf8"));
+const chain: Chain = JSON.parse(
+  readFileSync(join(process.cwd(), "data/metri/career_chain_kr.json"), "utf8"),
+);
 
 const LANGS = ["ko", "en"] as const;
 
@@ -161,9 +183,63 @@ async function main() {
       );
     }
 
+    /**
+     * 5. 현장에서 거꾸로 내려오는 사슬(29절).
+     *
+     * 과목표와 같은 스크립트에서 올린다. 사슬의 잎이 과목 코드라서 과목이
+     * 먼저 들어가 있어야 하고, 둘이 따로 돌면 언젠가 한쪽만 최신이 된다.
+     */
+    await c.query(`DELETE FROM career_roles`);
+    let nNeeds = 0;
+    let nLinks = 0;
+    for (const r of chain.roles) {
+      const mj = majorId.get(r.major)
+        ?? (await q1<{ id: string }>(`SELECT id FROM majors WHERE code = $1`, [r.major]))?.id;
+      if (!mj) throw new Error(`majors 에 ${r.major} 가 없습니다`);
+      const job = r.job
+        ? await q1<{ id: string }>(`SELECT id FROM job_clusters WHERE code = $1`, [r.job])
+        : null;
+      // 대학판에 없는 계열도 있다. 못 찾았다고 멈추지 않되, 코드를 적어 뒀는데
+      // 못 찾은 것은 오타이므로 그때는 멈춘다.
+      if (r.job && !job) throw new Error(`job_clusters 에 ${r.job} 가 없습니다`);
+
+      const role = await q1<{ id: string }>(
+        `INSERT INTO career_roles (major_id, job_id, sort_no) VALUES ($1,$2,$3) RETURNING id`,
+        [mj, job?.id ?? null, r.sortNo],
+      );
+      await putText(c, "career_roles", role!.id, "name", { ko: r.name });
+      await putText(c, "career_roles", role!.id, "scene", { ko: r.scene });
+
+      for (const nd of r.needs) {
+        const need = await q1<{ id: string }>(
+          `INSERT INTO career_needs (role_id, sort_no) VALUES ($1,$2) RETURNING id`,
+          [role!.id, nd.sortNo],
+        );
+        nNeeds++;
+        await putText(c, "career_needs", need!.id, "what", { ko: nd.what });
+        await putText(c, "career_needs", need!.id, "univ", { ko: nd.univ });
+        await putText(c, "career_needs", need!.id, "hs_why", { ko: nd.hsWhy });
+        await putText(c, "career_needs", need!.id, "ms", { ko: nd.ms });
+        await putText(c, "career_needs", need!.id, "ms_why", { ko: nd.msWhy });
+        for (const code of nd.hs) {
+          const sid = subjectId.get(code);
+          if (!sid) throw new Error(`사슬이 가리키는 과목 ${code} 가 과목표에 없습니다`);
+          await c.query(
+            `INSERT INTO career_need_subjects (need_id, subject_id) VALUES ($1,$2)
+             ON CONFLICT DO NOTHING`,
+            [need!.id, sid],
+          );
+          nLinks++;
+        }
+      }
+    }
+
     console.log(
       `적재 완료 — 과목 ${subjectId.size} · 필요도 ${bank.need.length} · ` +
         `대학 권장 ${bank.univRecommendations.length} + 규칙 ${bank.univRules.length}`,
+    );
+    console.log(
+      `사슬 — 직무 ${chain.roles.length} · 현장에서 필요한 것 ${nNeeds} · 과목 연결 ${nLinks}`,
     );
   });
 }

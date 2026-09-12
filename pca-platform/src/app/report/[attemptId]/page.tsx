@@ -4,7 +4,9 @@ import { requireRole } from "@/lib/session";
 import { buildReport } from "@/lib/report";
 import { t, UI, type Lang, type UiKey } from "@/lib/locale";
 import { prescribe } from "@/lib/prescribe";
+import { careerChain } from "@/lib/chain";
 import PrescriptionView from "@/components/prescription";
+import CareerChainView from "@/components/career-chain";
 import { resolveLang } from "@/lib/locale-server";
 import LangSwitch from "@/components/lang-switch";
 import { Radar, RankBars, BandBars, GapChart } from "@/components/report-charts";
@@ -63,6 +65,11 @@ export default async function ReportPage({
    * 없고, 고교판에는 역량 격차(05)가 없어 자리가 비어 있다.
    */
   const rx = hs ? await prescribe(attemptId, lang) : null;
+  /**
+   * 과목 앞에 "왜" 가 와야 한다. 현장에서 하는 일이 이것을 요구하기 때문에
+   * 이 과목이라는 순서다 — 과목부터 내밀면 "그래서 왜" 가 남는다.
+   */
+  const cc = hs ? await careerChain(attemptId, lang) : null;
   const tt = (key: UiKey, vars?: Record<string, string | number>) =>
     hs && `${key}Hs` in UI ? t(`${key}Hs` as UiKey, lang, vars) : t(key, lang, vars);
 
@@ -245,11 +252,23 @@ export default async function ReportPage({
         </section>
         )}
 
-        {/* ---- 05 과목 처방 (고교판) ---- */}
-        {hs && rx && (
+        {/* ---- 05 현장에서 거꾸로 (고교판) ---- */}
+        {hs && cc && (
           <section className="rp-sec">
             <div className="rp-sec-head">
               <span className="rp-no">05</span>
+              <h2>{t("repSec05Chain", lang)}</h2>
+            </div>
+            <p className="rp-note">{t("repNote05Chain", lang)}</p>
+            <CareerChainView chain={cc} />
+          </section>
+        )}
+
+        {/* ---- 06 과목 처방 (고교판) ---- */}
+        {hs && rx && (
+          <section className="rp-sec">
+            <div className="rp-sec-head">
+              <span className="rp-no">06</span>
               <h2>{t("repSec05Hs", lang)}</h2>
             </div>
             <p className="rp-note">
@@ -268,7 +287,7 @@ export default async function ReportPage({
         {/* ---- 06 다음 여섯 달 ---- */}
         <section className="rp-sec">
           <div className="rp-sec-head">
-            <span className="rp-no">06</span>
+            <span className="rp-no">{hs ? "07" : "06"}</span>
             <h2>{tt("repSec06")}</h2>
           </div>
           <ol className="rp-plan">

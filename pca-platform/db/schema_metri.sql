@@ -1042,3 +1042,57 @@ CREATE TABLE IF NOT EXISTS hs_univ_subject_rules (
   min_count   SMALLINT NOT NULL,
   UNIQUE (univ_code, track_code, subject_group, category)
 );
+
+
+-- ============================================================
+--  29. 현장에서 거꾸로 내려오는 사슬
+--
+--  "기계공학이 앞에 있습니다" 다음에 학생이 묻는 것은 하나다 — 그래서 뭘
+--  해야 하는데. 28절의 과목 처방이 "무엇을" 에 답했다면 여기는 "왜" 에
+--  답한다. 그리고 그 왜는 교실이 아니라 현장에서 와야 한다.
+--
+--    직무          구조해석 엔지니어
+--    현장 장면      배터리 팩이 진동에 깨질지 실차 시험 전에 계산으로 짚는다
+--    필요한 것      실제 하중을 계산 가능한 조건으로 바꾸는 일
+--    대학에서       정역학 · 동역학 · 재료역학
+--    고등학교에서   물리학 · 역학과 에너지
+--    중학교에서     부러진 의자를 보고 왜 거기가 먼저 갔는지 설명해 보기
+--
+--  사슬의 방향이 중요하다. 과목에서 출발해 직업을 붙이면 "이 과목을 들으면
+--  이런 직업" 이라는 빈말이 되고, 직무에서 출발해 내려오면 "그 일이 이것을
+--  요구하기 때문에 이 과목" 이 된다. 뒤엣것만 학부모를 설득한다.
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS career_roles (
+  id        BIGSERIAL PRIMARY KEY,
+  major_id  BIGINT NOT NULL REFERENCES majors(id) ON DELETE CASCADE,
+  -- 대학판에 같은 직무가 있으면 잇는다. 없는 계열도 있어서 NULL 을 허용한다.
+  job_id    BIGINT REFERENCES job_clusters(id),
+  sort_no   SMALLINT NOT NULL,
+  UNIQUE (major_id, sort_no)
+);
+COMMENT ON TABLE career_roles IS
+  '계열마다 대표 직무 두엇. 이름과 현장 장면은 translations 에 있다.
+   특정 회사 사례가 아니라 그 분야에서 실제로 일어나는 일을 압축한 것이다';
+
+CREATE TABLE IF NOT EXISTS career_needs (
+  id       BIGSERIAL PRIMARY KEY,
+  role_id  BIGINT NOT NULL REFERENCES career_roles(id) ON DELETE CASCADE,
+  sort_no  SMALLINT NOT NULL,
+  UNIQUE (role_id, sort_no)
+);
+COMMENT ON TABLE career_needs IS
+  '그 직무가 현장에서 요구하는 것 하나. 딸린 문장 다섯 개가 translations 에 있다 —
+   what(현장에서 하는 일) · univ(대학 과목) · hs_why(고교 과목이 왜) ·
+   ms(중학교에서 할 것) · ms_why(그게 왜)';
+
+CREATE TABLE IF NOT EXISTS career_need_subjects (
+  need_id     BIGINT NOT NULL REFERENCES career_needs(id) ON DELETE CASCADE,
+  subject_id  BIGINT NOT NULL REFERENCES hs_subjects(id) ON DELETE CASCADE,
+  PRIMARY KEY (need_id, subject_id)
+);
+COMMENT ON TABLE career_need_subjects IS
+  '현장의 요구 ↔ 고교 과목. 이 연결이 있어야 과목 처방의 각 줄이
+   "이건 현장 어디서 쓰인다" 를 달 수 있다. 28절 처방과 29절 사슬을 잇는 표다';
+
+CREATE INDEX IF NOT EXISTS idx_career_need_subject ON career_need_subjects(subject_id);
