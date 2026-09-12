@@ -3,6 +3,12 @@
 이 파일은 Claude가 매 세션 시작할 때 읽는 프로젝트 설명서다.
 새 결정이 생기면 여기에 추가한다.
 
+> **작업 범위 (2026-09-13)** — 지금은 **현멘(현직자 멘토링)만** 진행한다.
+> 검사 플랫폼(단체 PCA)과 소개 사이트는 여기서 다루지 않는다. 아래 설명은
+> 배경으로 남겨둔 것이고, 손대는 곳은 `src/app/mentoring/`, `src/lib/mentoring.ts`,
+> `zoom.ts` · `notify.ts` · `noshow.ts` · `billing.ts` · `payout*.ts` 와
+> 운영사의 현멘 화면(`/admin/mentors` · `prices` · `payouts` · `no-shows` · `refunds`)이다.
+
 ---
 
 ## 무엇을 만드는가
