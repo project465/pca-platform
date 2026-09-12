@@ -28,6 +28,34 @@ export const orgCreateSchema = z.object({
   nameEn: z.string().trim().max(200).optional(),
 });
 
+/* ---------- 계약과 회차 ---------- */
+
+export const contractCreateSchema = z.object({
+  orgId: z.string().regex(/^\d+$/, "학과를 고르세요."),
+  title: z.string().trim().min(2, "계약명을 입력하세요.").max(120),
+  startsOn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "시작일을 고르세요."),
+  endsOn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "종료일을 고르세요."),
+  seatCount: z.coerce
+    .number()
+    .int("응시권 수는 정수로 입력하세요.")
+    .min(1, "응시권은 1개 이상이어야 합니다.")
+    .max(20000, "한 계약에 20,000개까지 넣을 수 있습니다."),
+  memo: z.string().trim().max(500).optional(),
+});
+
+/**
+ * 회차. 시작·종료는 datetime-local 로 받고 서비스 기준 시간대로 해석한다.
+ * 학과 담당자가 자기 학과의 계약 안에서만 만들 수 있다 — 그 검사는 액션에서 한다.
+ */
+export const sessionCreateSchema = z.object({
+  contractId: z.string().regex(/^\d+$/, "계약을 고르세요."),
+  instrumentId: z.string().regex(/^\d+$/, "검사 도구를 고르세요."),
+  name: z.string().trim().min(2, "회차 이름을 입력하세요.").max(120),
+  opensAt: z.string().regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/, "시작 일시를 고르세요."),
+  closesAt: z.string().regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/, "종료 일시를 고르세요."),
+  releaseMode: z.enum(["manual", "instant"]),
+});
+
 /* ---------- 현멘 (현직자 멘토링) ---------- */
 
 /**

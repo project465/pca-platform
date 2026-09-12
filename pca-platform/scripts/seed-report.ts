@@ -159,6 +159,14 @@ async function main() {
         [dept.id],
       );
     }
+    // 응시권은 계약을 만들 때 그 수만큼 만들어진다(운영사 화면과 같은 규칙).
+    // 시드에서 빠뜨리면 회차는 있는데 명단을 못 올리는 상태가 된다.
+    await c.query(
+      `INSERT INTO seats (contract_id, expires_at)
+       SELECT $1, (current_date + 366)::timestamptz
+         FROM generate_series(1, 50 - (SELECT count(*) FROM seats WHERE contract_id = $1))`,
+      [contract.id],
+    );
 
     let session = await one<{ id: string } | undefined>(
       `SELECT id FROM test_sessions WHERE org_id = $1 AND name = '2026-1학기 기계공학과 3학년'`,

@@ -56,6 +56,7 @@ npm install
 psql "$DATABASE_URL" -f db/schema.sql
 npm run db:seed              # 관리자·학과담당자·학생 계정
 npm run db:seed:mentoring    # 현멘 멘토 6명과 열린 시간대
+npm run db:seed:report       # 채점된 응시 한 건 (결과지 화면 확인용)
 npm run dev                  # :3000
 ```
 
@@ -107,6 +108,21 @@ node scripts/export-preview.mjs kr out-kr.html
 - 로그인 / 비밀번호 재설정
 - 운영사 관리자 — 기관 생성, 기관 목록
 
+**계약·회차·명단 (2026-09-12)** — 개발 순서 2단계
+- 운영사 `/admin/contracts` — 계약 등록. 등록과 동시에 응시권(seats)이 그 수만큼 생긴다
+- 학과 `/org` — 남은 응시권과 회차 목록. `/org/sessions/new` 회차 생성
+- 학과 `/org/sessions/[id]` — 명단 업로드(xlsx·csv·tsv) → 계정 일괄 발급 → 진행 현황 →
+  결과 공개 버튼. 담당자만 바꿀 수 있고 교수는 보기만 한다
+
+명단 파서를 직접 만들었다(`src/lib/sheet.ts`). 후보였던 exceljs 는 21MB 에 취약점이
+보고된 uuid 를 물고 오는데 우리는 읽기만 하면 된다. xlsx 는 ZIP 안의 XML 두 개이고
+압축 해제는 node:zlib 에 이미 있다. 실제 엑셀 파일로 확인한다 — `npm run check:sheet`.
+
+**결과지 (2026-09-12)** — `/my/report/[attemptId]`
+시안대로 그리고, 맨 아래에 1순위 직무의 현직자 멘토를 붙였다. 게이지마다
+'현직자 n명' 링크가 `/mentoring?job=..&from=report` 로 간다. 점수는 계산하지 않고
+저장된 값을 읽기만 한다(`src/lib/report.ts`).
+
 **현멘 — 현직자 멘토링 (2026-09-12)** — schema.sql 11절, `/mentoring`
 석·박사 대상. 갤러리 → 신청 → 승낙 → 줌 자동 생성 → 일정 자동 발송까지 돈다.
 - 화면 다섯 — 갤러리 / 멘토 상세·신청 / 내 신청 / 멘토 콘솔 / 운영사 승인
@@ -147,8 +163,17 @@ node scripts/export-preview.mjs kr out-kr.html
 
 ## 5. 아직 안 된 것
 
-**플랫폼** — 개발 순서 2~4단계가 통째로 남았다
-계약·좌석, 회차, 명단 업로드, 응시 화면, 응답 저장, 채점, 결과지, 단체 리포트
+**플랫폼** — 3단계(응시)와 4단계(채점)가 남았다
+응시 화면(`mockups/01_test_screen.html`), responses 저장과 이어보기,
+채점 산식과 실행, 단체 리포트(`mockups/03_group_report.html`).
+결과지 화면은 만들어 뒀으므로 채점이 값을 채우면 바로 보인다.
+
+명단 발급에서 알아둘 것
+- 비밀번호 해싱이 1건당 0.4초다. 발급을 10명씩 끊어 부르는 이유이고,
+  대량(수백 명) 발급을 자주 한다면 라운드 수나 해싱 방식을 다시 볼 일이다
+- 임시 비밀번호는 발급 화면을 벗어나면 다시 볼 수 없다. 재발급은
+  비밀번호 재설정(`password_reset_tokens`)으로 해야 하는데, 담당자가 링크를
+  발급하는 화면은 아직 없다
 
 **현멘 — 공개 전에 반드시**
 - 줌 앱 자격 증명(`ZOOM_ACCOUNT_ID`·`ZOOM_CLIENT_ID`·`ZOOM_CLIENT_SECRET`).

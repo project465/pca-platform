@@ -497,3 +497,21 @@ td .sub { display: block; font-size: 12.5px; color: var(--muted); }
   .sheet section { break-inside: avoid; }
   .gauge-link, .sheet-more { display: none; }
 }
+
+/* ---------- 명단 올리기 ---------- */
+.roster-upload input[type="file"] { font-size: 14px; max-width: 340px; }
+.preview, .issued { margin-top: 20px; border-top: 1px solid var(--rule); padding-top: 16px; }
+.preview-head {
+  display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; margin-bottom: 10px;
+}
+.preview-head b { font-size: 14.5px; }
+.preview-head span { font-size: 13px; color: var(--muted); }
+.preview table, .issued table { min-width: 480px; }
+
+@media print {
+  /* 임시 비밀번호를 종이로 나눠주는 상황이 기본이다. 그 표만 남기고 지운다 */
+  .topbar, .page-head, .stat-row, .sec-h, .roster-upload > form,
+  .preview, .req-foot, .help, .notice { display: none !important; }
+  .issued { border: 0; }
+  .main { padding: 0; }
+}
