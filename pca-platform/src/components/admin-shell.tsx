@@ -9,7 +9,7 @@ type NavItem = { href: string; label: string; ready: boolean };
 const NAV: NavItem[] = [
   { href: "/admin/organizations", label: "기관", ready: true },
   { href: "/admin/contracts", label: "계약·응시권", ready: true },
-  { href: "/admin/instruments", label: "검사 문항", ready: false },
+  { href: "/admin/instruments", label: "검사 문항", ready: true },
   { href: "/admin/mappings", label: "매핑 데이터", ready: false },
   { href: "/admin/attempts", label: "응시 현황", ready: false },
   { href: "/admin/mentors", label: "현직자 멘토", ready: true },

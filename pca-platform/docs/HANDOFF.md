@@ -109,6 +109,11 @@ node scripts/export-preview.mjs kr out-kr.html
 - 로그인 / 비밀번호 재설정
 - 운영사 관리자 — 기관 생성, 기관 목록
 
+**채점 (2026-09-12)** — 개발 순서 4단계
+`src/lib/scoring.ts`. 운영사가 `/admin/instruments/[id]` 에서 지표 × 직무 가중치를
+채우고, 담당자가 회차 화면에서 채점을 돌린 뒤 결과를 공개한다.
+가중치가 비어 있으면 채점 버튼 대신 안내가 뜬다. 단체 리포트는 아직 없다.
+
 **응시 (2026-09-12)** — 개발 순서 3단계, `/exam/[attemptId]`
 시안(`mockups/01_test_screen.html`)대로. 시작 → 문항 → 제출, 문항마다 즉시 저장,
 창을 닫아도 이어보기. 응시권은 시작할 때 소진된다.
@@ -173,11 +178,9 @@ node scripts/export-preview.mjs kr out-kr.html
 
 ## 5. 아직 안 된 것
 
-**플랫폼** — 4단계(채점)가 남았다
-채점 산식과 실행, 단체 리포트(`mockups/03_group_report.html`).
-응답(responses)과 배점(question_options.score)은 이미 쌓이고 있고, 결과지 화면도
-만들어 뒀으므로 채점이 job_fit_scores·competency_levels 를 채우면 바로 보인다.
-`attempts.status` 를 submitted → scored 로 옮기는 것도 채점의 일이다.
+**플랫폼** — 단체 리포트(`mockups/03_group_report.html`)가 남았다
+채점까지는 돈다. 남은 것은 회차 단위 집계 화면과, 가중치 값 자체다 —
+표는 만들어 뒀지만 무엇을 넣을지는 정해지지 않았다.
 
 명단 발급에서 알아둘 것
 - 비밀번호 해싱이 1건당 0.4초다. 발급을 10명씩 끊어 부르는 이유이고,

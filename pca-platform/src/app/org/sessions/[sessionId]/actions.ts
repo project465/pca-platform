@@ -7,6 +7,7 @@ import { canEditSession, sessionForIssueGuard } from "@/lib/org-guard";
 import { issueChunk, parseRosterFile, RosterError, sessionForIssue } from "@/lib/roster";
 import { CHUNK_SIZE, type IssueResult, type RosterEntry } from "@/lib/roster-types";
 import { MAX_FILE_BYTES } from "@/lib/sheet";
+import { scoreSession, ScoringError } from "@/lib/scoring";
 
 export type PreviewState = {
   entries?: RosterEntry[];
@@ -110,4 +111,24 @@ export async function releaseAction(
   revalidatePath(`/org/sessions/${sessionId}`);
   revalidatePath("/org");
   return { ok: "결과를 공개했습니다. 학생 화면에 결과지가 나타납니다." };
+}
+
+export async function scoreAction(
+  _prev: { message?: string; ok?: string },
+  formData: FormData,
+): Promise<{ message?: string; ok?: string }> {
+  const user = await requireUser();
+  const sessionId = String(formData.get("sessionId") ?? "");
+  if (!(await canEditSession(user, sessionId))) return { message: "채점 권한이 없습니다." };
+
+  try {
+    const { scored } = await scoreSession(sessionId);
+    if (scored === 0) return { message: "채점할 제출이 없습니다." };
+    revalidatePath(`/org/sessions/${sessionId}`);
+    revalidatePath("/org");
+    return { ok: `${scored}명을 채점했습니다. 결과를 확인한 뒤 공개하세요.` };
+  } catch (e) {
+    if (e instanceof ScoringError) return { message: e.message };
+    throw e;
+  }
 }

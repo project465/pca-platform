@@ -627,3 +627,31 @@ td .sub { display: block; font-size: 12.5px; color: var(--muted); }
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
+
+/* ---------- 채점 가중치 표 ---------- */
+.grid-tools { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
+.grid-tools .help { font-size: 12.5px; color: var(--muted); }
+
+table.weights { min-width: 780px; }
+table.weights th, table.weights td { padding: 8px 10px; }
+table.weights thead th {
+  font-size: 11.5px; line-height: 1.35; vertical-align: bottom;
+  max-width: 92px; white-space: normal;
+}
+table.weights th.corner { text-align: left; min-width: 150px; }
+table.weights tbody th {
+  text-align: left; font-size: 13.5px; font-weight: 600; color: var(--ink);
+  border-bottom: 1px solid var(--rule); white-space: nowrap;
+}
+table.weights td { text-align: center; }
+table.weights td.on { background: #F2F8F6; }
+table.weights input {
+  font: inherit; font-size: 14px; width: 56px; text-align: center;
+  padding: 6px 4px; border: 1px solid var(--rule); background: var(--paper); color: var(--ink);
+}
+table.weights input:focus-visible { outline: 2px solid var(--ink); outline-offset: -1px; }
+table.weights tfoot th, table.weights tfoot td {
+  border-top: 1px solid var(--ink); border-bottom: 0;
+  font-size: 13px; font-weight: 700; color: var(--muted);
+}
+table.weights tfoot td.zero { color: var(--gap); }

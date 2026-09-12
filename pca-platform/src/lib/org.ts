@@ -151,3 +151,14 @@ export async function rosterOf(sessionId: string): Promise<RosterRow[]> {
 export async function orgNameOf(orgId: string, lang: string): Promise<string | null> {
   return nameOf("organizations", orgId, lang);
 }
+
+/** 이 회차가 쓰는 검사 도구에 채점 가중치가 채워져 있는가. */
+export async function instrumentWeights(sessionId: string): Promise<{ filled: number }> {
+  const row = await queryOne<{ filled: number }>(
+    `SELECT (SELECT count(*) FROM scoring_weights w
+              WHERE w.instrument_id = ts.instrument_id AND w.weight > 0)::int AS filled
+       FROM test_sessions ts WHERE ts.id = $1`,
+    [sessionId],
+  );
+  return { filled: row?.filled ?? 0 };
+}

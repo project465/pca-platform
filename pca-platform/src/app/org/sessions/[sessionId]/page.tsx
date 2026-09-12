@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireUser } from "@/lib/session";
-import { canEditSession, canViewSession, orgNameOf, rosterOf, sessionDetail } from "@/lib/org";
+import { canEditSession, canViewSession, instrumentWeights, orgNameOf, rosterOf, sessionDetail } from "@/lib/org";
 import OrgShell from "@/components/org-shell";
 import RosterUpload from "./roster-upload";
-import ReleaseButton from "./release-button";
+import ReleaseButton, { ScoreButton } from "./release-button";
 
 export const metadata = { title: "회차 — 단체 PCA 플랫폼" };
 export const dynamic = "force-dynamic";
@@ -37,17 +37,16 @@ export default async function SessionDetailPage({
   const session = await sessionDetail(sessionId);
   if (!session) notFound();
 
-  const [roster, orgName] = await Promise.all([
+  const [roster, orgName, weights] = await Promise.all([
     rosterOf(sessionId),
     orgNameOf(session.org_id, user.locale),
+    instrumentWeights(sessionId),
   ]);
+  const waiting = session.submitted - session.scored;
 
   const notLoggedIn = roster.filter((r) => r.last_login_at === null).length;
-  const canRelease =
-    canEdit &&
-    session.release_mode === "manual" &&
-    session.released_at === null &&
-    session.scored > 0;
+  // 공개한 뒤에도 칸을 남겨 둔다. 눌렀는데 칸째로 사라지면 무슨 일이 일어났는지 알 수 없다.
+  const canRelease = canEdit && session.release_mode === "manual" && session.scored > 0;
 
   return (
     <OrgShell user={user} orgName={orgName}>
@@ -102,11 +101,26 @@ export default async function SessionDetailPage({
         </div>
       )}
 
+      {canEdit && session.submitted > 0 ? (
+        <>
+          <h2 className="sec-h">채점</h2>
+          <div className="panel">
+            {weights.filled > 0 ? (
+              <ScoreButton sessionId={sessionId} pending={waiting} />
+            ) : (
+              <div className="notice error">
+                이 검사 도구의 채점 가중치가 비어 있어 채점할 수 없습니다. 운영사에 문의하세요.
+              </div>
+            )}
+          </div>
+        </>
+      ) : null}
+
       {canRelease ? (
         <>
           <h2 className="sec-h">결과 공개</h2>
           <div className="panel">
-            <ReleaseButton sessionId={sessionId} />
+            <ReleaseButton sessionId={sessionId} releasedAt={session.released_at} />
           </div>
         </>
       ) : null}
