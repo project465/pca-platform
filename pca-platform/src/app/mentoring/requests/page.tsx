@@ -4,6 +4,7 @@ import { mentorTitle } from "@/lib/anon";
 import { formatSlot, formatWhen } from "@/lib/notify";
 import { inboxFor, mentorForUser, requestsByApplicant } from "@/lib/mentoring";
 import { percentFor, refundRules } from "@/lib/refund";
+import { noShowStates } from "@/lib/noshow";
 import MentoringShell from "@/components/mentoring-shell";
 import RequestCards, { type MyRequest } from "./request-cards";
 
@@ -39,6 +40,8 @@ export default async function MyRequestsPage({
       : `지금 취소하면 ${back.toLocaleString("ko-KR")}원이 환불됩니다.`;
   }
 
+  const noShow = await noShowStates(rows.map((r) => r.id));
+
   const cards: MyRequest[] = rows.map((r) => ({
     id: r.id,
     status: r.status,
@@ -60,6 +63,7 @@ export default async function MyRequestsPage({
     canCancel:
       ["requested", "accepted"].includes(r.status) && new Date(r.starts_at) > new Date(),
     refundNotice: refundNotice(r),
+    noShow: noShow.get(r.id) ?? null,
   }));
 
   return (

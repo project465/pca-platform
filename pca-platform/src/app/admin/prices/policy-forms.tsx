@@ -79,7 +79,15 @@ export function RefundForm({ rules }: { rules: { hours_before: number; percent: 
   );
 }
 
-export function PayoutForm({ fee, withholding }: { fee: string; withholding: string }) {
+export function PayoutForm({
+  fee,
+  withholding,
+  holdHours,
+}: {
+  fee: string;
+  withholding: string;
+  holdHours: number;
+}) {
   const [state, action, pending] = useActionState(savePayoutAction, initial);
 
   return (
@@ -89,6 +97,23 @@ export function PayoutForm({ fee, withholding }: { fee: string; withholding: str
         <input id="fee" name="fee" type="number" min={0} max={100} step="0.1" defaultValue={fee} />
         <span className="help">
           0이면 정산 건이 만들어지지 않습니다. 값을 넣어야 세션이 끝날 때 정산이 잡힙니다.
+        </span>
+      </div>
+
+      <div className="field">
+        <label htmlFor="holdHours">정산 보류 시간 (시간)</label>
+        <input
+          id="holdHours"
+          name="holdHours"
+          type="number"
+          min={0}
+          max={720}
+          step={1}
+          defaultValue={holdHours}
+        />
+        <span className="help">
+          세션이 끝나고 이만큼 지나야 정산 건을 만듭니다. 그 사이가 노쇼 신고 기간입니다 —
+          돈이 나간 뒤에는 노쇼를 인정해도 되돌릴 곳이 없습니다.
         </span>
       </div>
 

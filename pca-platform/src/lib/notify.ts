@@ -20,7 +20,10 @@ export type NotifyKind =
   | "cancelled"
   | "expired"
   | "reminder_24h"
-  | "reminder_1h";
+  | "reminder_1h"
+  | "no_show_reported"
+  | "no_show_accepted"
+  | "no_show_rejected";
 
 const KST_DATE = new Intl.DateTimeFormat("ko-KR", {
   dateStyle: "full",
@@ -216,4 +219,73 @@ export function reminderTimes(startsAt: Date): { kind: "reminder_24h" | "reminde
   if (day.getTime() > now) out.push({ kind: "reminder_24h", at: day });
   if (hour.getTime() > now) out.push({ kind: "reminder_1h", at: hour });
   return out;
+}
+
+/**
+ * 노쇼 신고가 들어왔다는 안내. 지목된 쪽에게 간다.
+ *
+ * 신고 내용을 그대로 옮기지 않는다. 상대가 쓴 글이 검증 없이 전달되면 그 자체가
+ * 분쟁이 된다. 무슨 일이 일어났는지와 언제까지 기다리면 되는지만 알린다.
+ */
+export function noShowReported(m: {
+  startsAt: Date;
+  against: "mentor" | "applicant";
+  hold: number;
+}) {
+  const who = m.against === "mentor" ? "멘토" : "신청자";
+  return {
+    subject: "노쇼 신고가 접수됐습니다",
+    body: [
+      `${formatWhen(m.startsAt)} 세션에 대해 ${who}가 나타나지 않았다는 신고가 들어왔습니다.`,
+      "",
+      "운영사가 양쪽 이야기를 확인한 뒤 판정합니다. 판정 전까지 정산과 환불은 멈춰 있습니다.",
+      `사실과 다르다면 회신해 주세요. 판정은 보통 ${m.hold}시간 안에 끝납니다.`,
+    ].join("\n"),
+  };
+}
+
+/** 판정 결과. 멘토와 신청자에게 각각 다른 문장이 간다 */
+export function noShowResolved(m: {
+  startsAt: Date;
+  against: "mentor" | "applicant";
+  accepted: boolean;
+  toMentor: boolean;
+}) {
+  const when = formatWhen(m.startsAt);
+  if (!m.accepted) {
+    return {
+      subject: "노쇼 신고가 기각됐습니다",
+      body: [
+        `${when} 세션의 노쇼 신고가 기각됐습니다.`,
+        "세션이 열린 것으로 처리되며, 환불이나 정산 보류는 없습니다.",
+      ].join("\n"),
+    };
+  }
+  if (m.against === "mentor") {
+    return {
+      subject: "노쇼가 인정돼 전액 환불됩니다",
+      body: m.toMentor
+        ? [
+            `${when} 세션에 나타나지 않으신 것으로 판정됐습니다.`,
+            "신청자에게 전액 환불되며 이 세션의 정산은 없습니다.",
+            "사정이 있으셨다면 회신해 주세요.",
+          ].join("\n")
+        : [
+            `${when} 세션의 노쇼가 인정됐습니다.`,
+            "결제하신 금액은 전액 환불됩니다. 카드사에 따라 반영에 며칠 걸릴 수 있습니다.",
+          ].join("\n"),
+    };
+  }
+  return {
+    subject: "노쇼가 인정됐습니다",
+    body: m.toMentor
+      ? [
+          `${when} 세션에 신청자가 나타나지 않은 것으로 판정됐습니다.`,
+          "비워두신 시간에 대한 정산은 그대로 진행됩니다.",
+        ].join("\n")
+      : [
+          `${when} 세션에 나타나지 않으신 것으로 판정됐습니다.`,
+          "멘토가 그 시간을 비워두었으므로 환불되지 않습니다.",
+        ].join("\n"),
+  };
 }

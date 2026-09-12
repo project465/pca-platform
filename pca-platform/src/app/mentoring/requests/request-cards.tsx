@@ -2,6 +2,8 @@
 
 import { useActionState } from "react";
 import { cancelAction, reviewAction, type RequestActionState } from "./actions";
+import NoShowForm from "@/components/no-show-form";
+import type { NoShowState } from "@/lib/noshow";
 
 const initial: RequestActionState = {};
 
@@ -22,6 +24,7 @@ export type MyRequest = {
   canCancel: boolean;
   /** 지금 취소하면 얼마가 돌아오는지. 무료 세션은 null */
   refundNotice: string | null;
+  noShow: NoShowState | null;
   payStatus: string | null;
   payAmount: number | null;
   payOrderId: string | null;
@@ -39,6 +42,7 @@ const STATUS: Record<string, { label: string; cls: string }> = {
   accepted: { label: "확정", cls: "ok" },
   declined: { label: "거절됨", cls: "no" },
   cancelled: { label: "취소됨", cls: "no" },
+  no_show: { label: "노쇼 확인 중", cls: "wait" },
   expired: { label: "기한 초과로 닫힘", cls: "no" },
   completed: { label: "완료", cls: "done" },
 };
@@ -150,6 +154,19 @@ export default function RequestCards({ rows }: { rows: MyRequest[] }) {
                 <span className="help">후기를 남겼습니다.</span>
               ) : null}
             </div>
+
+            {r.noShow?.canReport ? (
+              <NoShowForm requestId={r.id} who="멘토" until={r.noShow.until} />
+            ) : null}
+            {r.noShow?.reported ? (
+              <div className="notice" style={{ marginTop: 10 }}>
+                {r.noShow.resolution === "accepted"
+                  ? "노쇼가 인정됐습니다. 결제하신 금액은 전액 환불됩니다."
+                  : r.noShow.resolution === "rejected"
+                    ? "노쇼 신고가 기각됐습니다. 세션이 열린 것으로 처리됐습니다."
+                    : "노쇼 신고를 접수했습니다. 운영사가 확인한 뒤 알려드립니다."}
+              </div>
+            ) : null}
           </li>
         );
       })}

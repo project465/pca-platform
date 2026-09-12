@@ -15,6 +15,10 @@ export class PayoutError extends Error {}
  *   - 시작 시각이 지날 때까지. 취소하면 시간대가 다시 열리므로 그 전에는 아직 모른다
  *   - 그 시간대를 다른 사람이 가져가지 않았는지. 가져갔으면 멘토는 그 건으로 받는다.
  *     한 시간대를 두 번 치지 않는다
+ *
+ * 끝난 세션은 곧바로 잡지 않고 hold_hours 만큼 기다린다. 그 사이가 노쇼 신고 기간이고,
+ * 돈이 이미 나간 뒤에는 노쇼를 인정해도 되돌릴 곳이 없기 때문이다.
+ * 신고가 들어온 건은 no_show 로 빠지고, 판정이 나야 다시 여기로 온다.
  */
 export async function buildPayouts(): Promise<{ made: number; skipped: string | null }> {
   const s = await payoutSettings();
@@ -23,6 +27,8 @@ export async function buildPayouts(): Promise<{ made: number; skipped: string | 
   if (fee <= 0) {
     return { made: 0, skipped: "수수료율이 설정되지 않아 정산 건을 만들지 않았습니다." };
   }
+
+  const hold = Number(s.hold_hours);
 
   const rows = await query<{ id: string }>(
     `INSERT INTO payouts (mentor_id, request_id, gross, fee, withholding, net)
@@ -38,20 +44,31 @@ export async function buildPayouts(): Promise<{ made: number; skipped: string | 
        FROM mentoring_requests r
        JOIN payments p ON p.request_id = r.id
        JOIN mentor_slots s ON s.id = r.slot_id
+       JOIN mentors mm ON mm.id = r.mentor_id
       WHERE p.status = 'paid'
         AND (p.amount - p.refunded_amount) > 0
         AND (
-              r.status = 'completed'
+              -- 세션을 한 건. 노쇼 신고 기간이 지나야 잡는다
+              (r.status = 'completed'
+               AND s.starts_at + (mm.session_minutes || ' minutes')::interval
+                     + ($3 || ' hours')::interval <= now())
+              -- 신청자가 늦게 취소해 남은 돈
            OR (r.status = 'cancelled'
                AND s.starts_at <= now()
                AND NOT EXISTS (SELECT 1 FROM mentoring_requests r2
                                 WHERE r2.slot_id = r.slot_id
                                   AND r2.id <> r.id
                                   AND r2.status IN ('accepted', 'completed')))
+              -- 신청자 노쇼가 인정된 건. 멘토는 그 시간을 비웠다
+           OR (r.status = 'no_show'
+               AND EXISTS (SELECT 1 FROM no_show_reports n
+                            WHERE n.request_id = r.id
+                              AND n.against = 'applicant'
+                              AND n.resolution = 'accepted'))
             )
         AND NOT EXISTS (SELECT 1 FROM payouts o WHERE o.request_id = r.id)
      RETURNING id`,
-    [fee, wh],
+    [fee, wh, hold],
   );
   return { made: rows.length, skipped: null };
 }

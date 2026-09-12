@@ -601,3 +601,37 @@ CREATE TABLE payout_settings (
 );
 COMMENT ON TABLE payout_settings IS
   '값은 비워둔 채로 시작한다. 수수료율은 사업 결정이라 코드가 정하지 않는다';
+
+
+-- ============================================================
+--  15. 노쇼 (2026-09-12)
+--
+--  약속한 시각에 한쪽이 나타나지 않은 경우다. 취소와 다르다 — 취소는 미리
+--  알리고 시간대가 풀리지만, 노쇼는 상대가 그 자리에 앉아 기다린 뒤에 안다.
+--
+--  돈이 한쪽 말만 듣고 움직이면 안 되므로 신고는 곧바로 환불이 아니라
+--  운영사 판정을 거친다. 대신 판정할 시간을 벌기 위해 정산을 유예한다
+--  (payout_settings.hold_hours). 세션이 끝나자마자 멘토에게 돈이 나가면
+--  노쇼를 인정해도 되돌릴 곳이 없다.
+-- ============================================================
+
+-- 세션이 끝나고 이 시간이 지나야 정산 건을 만든다. 그 사이가 노쇼 신고 기간이다
+ALTER TABLE payout_settings ADD COLUMN hold_hours SMALLINT NOT NULL DEFAULT 48;
+
+CREATE TABLE no_show_reports (
+  id           BIGSERIAL PRIMARY KEY,
+  -- 한 세션에 한 건만 받는다. 양쪽이 서로 신고하는 일은 운영사가 메모로 정리한다
+  request_id   BIGINT NOT NULL UNIQUE REFERENCES mentoring_requests(id) ON DELETE CASCADE,
+  reported_by  BIGINT NOT NULL REFERENCES users(id),
+  against      TEXT NOT NULL CHECK (against IN ('mentor', 'applicant')),
+  note         TEXT NOT NULL,                  -- 무슨 일이 있었는지. 판정 근거가 된다
+  resolution   TEXT CHECK (resolution IN ('accepted', 'rejected')),
+  resolve_note TEXT,
+  resolved_at  TIMESTAMPTZ,
+  resolved_by  BIGINT REFERENCES users(id),
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+COMMENT ON TABLE no_show_reports IS
+  '신고 1건 = 1행. 판정 전에는 resolution 이 NULL 이고, 그동안 정산이 잡히지 않는다';
+
+CREATE INDEX idx_no_show_open ON no_show_reports(created_at) WHERE resolution IS NULL;

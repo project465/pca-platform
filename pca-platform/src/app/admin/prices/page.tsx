@@ -42,7 +42,11 @@ export default async function PricesPage() {
 
       <h2 className="sec-h">정산 설정</h2>
       <div className="panel form-panel">
-        <PayoutForm fee={settings.fee_percent} withholding={settings.withholding_percent} />
+        <PayoutForm
+          fee={settings.fee_percent}
+          withholding={settings.withholding_percent}
+          holdHours={settings.hold_hours}
+        />
       </div>
     </AdminShell>
   );

@@ -53,27 +53,35 @@ export async function saveRefundRules(
   }
 }
 
-export type PayoutSettings = { fee_percent: string; withholding_percent: string };
+export type PayoutSettings = {
+  fee_percent: string;
+  withholding_percent: string;
+  /** 세션이 끝나고 정산을 잡기까지 기다리는 시간. 그 사이가 노쇼 신고 기간이다 */
+  hold_hours: number;
+};
 
 export async function payoutSettings(): Promise<PayoutSettings> {
   const row = await queryOne<PayoutSettings>(
-    `SELECT fee_percent::text, withholding_percent::text FROM payout_settings WHERE id = 1`,
+    `SELECT fee_percent::text, withholding_percent::text, hold_hours FROM payout_settings WHERE id = 1`,
   );
-  return row ?? { fee_percent: "0", withholding_percent: "0" };
+  return row ?? { fee_percent: "0", withholding_percent: "0", hold_hours: 48 };
 }
 
 export async function savePayoutSettings(
   fee: number,
   withholding: number,
+  holdHours: number,
   actorId: string,
 ): Promise<void> {
   await query(
-    `INSERT INTO payout_settings (id, fee_percent, withholding_percent, updated_by, updated_at)
-     VALUES (1, $1, $2, $3, now())
+    `INSERT INTO payout_settings
+       (id, fee_percent, withholding_percent, hold_hours, updated_by, updated_at)
+     VALUES (1, $1, $2, $3, $4, now())
      ON CONFLICT (id) DO UPDATE
        SET fee_percent = EXCLUDED.fee_percent,
            withholding_percent = EXCLUDED.withholding_percent,
+           hold_hours = EXCLUDED.hold_hours,
            updated_by = EXCLUDED.updated_by, updated_at = now()`,
-    [fee, withholding, actorId],
+    [fee, withholding, holdHours, actorId],
   );
 }

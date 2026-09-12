@@ -62,8 +62,12 @@ export async function savePayoutAction(
   const wh = Number(String(formData.get("withholding") ?? "").trim());
   if (!Number.isFinite(fee) || fee < 0 || fee > 100) return { message: "수수료율은 0~100 사이여야 합니다." };
   if (!Number.isFinite(wh) || wh < 0 || wh > 100) return { message: "원천징수율은 0~100 사이여야 합니다." };
+  const hold = Number(String(formData.get("holdHours") ?? "").trim());
+  if (!Number.isInteger(hold) || hold < 0 || hold > 720) {
+    return { message: "정산 보류 시간은 0에서 720 사이의 정수여야 합니다." };
+  }
 
-  await savePayoutSettings(fee, wh, admin.id);
+  await savePayoutSettings(fee, wh, hold, admin.id);
   revalidatePath("/admin/prices");
   revalidatePath("/admin/payouts");
   return { ok: "정산 설정을 저장했습니다. 이후 끝나는 세션부터 적용됩니다." };

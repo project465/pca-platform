@@ -4,6 +4,8 @@ import { requireUser } from "@/lib/session";
 import { applicantLabel, applicantStageLabel } from "@/lib/anon";
 import { formatSlot } from "@/lib/notify";
 import { mentorForUser, mentorStats, requestsByMentor } from "@/lib/mentoring";
+import { noShowStates } from "@/lib/noshow";
+import NoShowForm from "@/components/no-show-form";
 import { payoutsOfMentor } from "@/lib/payout";
 import { zoomConfigured, zoomDryRun } from "@/lib/zoom";
 import MentoringShell from "@/components/mentoring-shell";
@@ -25,6 +27,7 @@ const STATUS_LABEL: Record<string, string> = {
   cancelled: "취소",
   expired: "기한 초과",
   completed: "완료",
+  no_show: "노쇼 확인 중",
 };
 
 export default async function MentorConsolePage() {
@@ -80,6 +83,7 @@ export default async function MentorConsolePage() {
     .reduce((a, p) => a + p.net, 0);
 
   const pending = rows.filter((r) => r.status === "requested");
+  const noShow = await noShowStates(rows.map((r) => r.id));
   const zoomReady = zoomConfigured() || zoomDryRun();
 
   return (
@@ -167,6 +171,15 @@ export default async function MentorConsolePage() {
                   <span className="help">
                     이 링크는 호스트 권한이 있습니다. 전달하지 마세요.
                   </span>
+                </div>
+              ) : null}
+
+              {noShow.get(r.id)?.canReport ? (
+                <NoShowForm requestId={r.id} who="신청자" until={noShow.get(r.id)?.until ?? null} />
+              ) : null}
+              {noShow.get(r.id)?.reported ? (
+                <div className="notice" style={{ marginTop: 10 }}>
+                  노쇼 신고가 접수된 세션입니다. 운영사 판정 전까지 정산이 멈춰 있습니다.
                 </div>
               ) : null}
             </li>
