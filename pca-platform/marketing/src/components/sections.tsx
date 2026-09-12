@@ -11,7 +11,9 @@ export function Who({ site }: { site: SiteContent }) {
           <span className="label-sm">{w.label}</span>
           <h2>{w.heading}</h2>
         </div>
-        <div className="cardgrid c3">
+        {/* 세 칸에 네 개를 넣으면 한 칸이 빈 회색 덩어리로 남는다.
+            칸 수는 항목 수가 정한다 */}
+        <div className={`cardgrid ${w.items.length % 3 === 0 ? "c3" : "c2"}`}>
           {w.items.map((i) => (
             <div className="card" key={i.no}>
               <span className="no">{i.no}</span>

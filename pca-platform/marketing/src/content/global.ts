@@ -43,11 +43,11 @@ export const global: SiteContent = {
     items: [
       { label: "PCA", href: "/pca" },
       { label: "Who it is for", href: "/#channels" },
-      { label: "LOCALISATION", href: "/localisation" },
-      { label: "PARTNERSHIP", href: "/partnership" },
-      { label: "PRICING", href: "/pricing" },
-      { label: "ABOUT", href: "/about" },
-      { label: "CONTACT", href: "/contact" },
+      { label: "Localisation", href: "/localisation" },
+      { label: "Partnership", href: "/partnership" },
+      { label: "Pricing", href: "/pricing" },
+      { label: "About", href: "/about" },
+      { label: "Contact", href: "/contact" },
     ],
     contact: "Talk to us",
     menu: "Menu",
@@ -56,7 +56,7 @@ export const global: SiteContent = {
   },
 
   hero: {
-    eyebrow: "METRI · ENGINEERING CAREER INTELLIGENCE",
+    eyebrow: "METRI · Engineering career diagnostics",
     title: ["They chose engineering.", "{Nobody told them which engineering.}"],
     lead:
       "Mechanical, electrical and computer engineering — 24 job clusters and 138 competencies, checked against real postings. Not “you are collaborative”, but “Simulation & CAE 80, ANSYS held 2 of 4, asked for in 89 of 132 postings for this role”. The activity axes are the same in every country, which is why the instrument travels.",
@@ -64,21 +64,21 @@ export const global: SiteContent = {
     secondary: { label: "See a real report", href: "#sample" },
     watermark: "METRI",
     proof: [
-      { value: "250", label: "items, already written in three languages" },
+      { value: "250", label: "items, in three languages" },
       { value: "24", label: "engineering job clusters" },
-      { value: "138", label: "competencies in the skill graph" },
+      { value: "138", label: "competencies mapped" },
       { value: "3", label: "copyright registrations" },
     ],
   },
 
   sample: {
-    label: "A REAL REPORT",
+    label: "A real report",
     heading: "Before the method, look at what a student is handed",
     lead:
       "What PCA measures is the second question. Below is a 15–20 page report with four of its pages put on one screen. A student does not receive a type name. They receive this.",
     disclaimer:
       "An illustrative screen showing the format of the report — not a real student’s submission. The ten job areas, the six work styles and the regional method are exactly as they ship.",
-    docTag: "METRI INDIVIDUAL REPORT",
+    docTag: "METRI individual report",
     page: "extract · 00-1 · 00-2 · 05–06 · regional annex",
     person: {
       name: "Sample student",
@@ -159,7 +159,7 @@ export const global: SiteContent = {
   },
 
   channels: {
-    label: "WHO IT IS FOR",
+    label: "Who it is for",
     heading: "Two doors, one engine",
     lead:
       "A student can take it alone. A department can look at 500 at once. Both run on the same assessment and the same skill graph - what differs is the unit you buy and the document you walk away with.",
@@ -203,7 +203,7 @@ export const global: SiteContent = {
   },
 
   who: {
-    label: "WHO IS IT FOR",
+    label: "Whose problem this is",
     heading: "Who brings METRI into a country",
     items: [
       {
@@ -228,7 +228,7 @@ export const global: SiteContent = {
   },
 
   analyze: {
-    label: "WHAT IT READS",
+    label: "What it reads",
     heading: "Three layers, and only the first one is a questionnaire",
     lead:
       "Interest is measured. Competency is not asked about — it is computed from coursework, certificates and projects. Keeping the two apart is the whole point: wanting to do CAE and being able to do CAE are different facts, and a report that blends them cannot be acted on.",
@@ -258,7 +258,7 @@ export const global: SiteContent = {
   },
 
   why: {
-    label: "WHY PCA",
+    label: "Why this assessment",
     heading: "The result connects straight through to a roadmap",
     vs: "VS",
     before: {
@@ -280,7 +280,7 @@ export const global: SiteContent = {
   },
 
   sheet: {
-    label: "RESULT SHEET",
+    label: "The eleven sections",
     heading: "What the report contains",
     lead: [
       "PCA runs diagnosis → strengths → application → strategy → execution.",
@@ -629,7 +629,7 @@ export const global: SiteContent = {
   },
 
   styles: {
-    label: "6 WORK STYLES",
+    label: "Six work styles",
     heading: "Six work styles, read as one hexagon",
     chartNote: "Work style analysis — sample",
     items: [
@@ -643,7 +643,7 @@ export const global: SiteContent = {
   },
 
   evidence: {
-    label: "EVIDENCE BASE",
+    label: "What it rests on",
     heading: "PCA was built from data",
     lead:
       "Not a personality inventory. A student sample and real recruitment-market material, combined so the diagnosis reflects the capability the market actually asks for.",
@@ -680,7 +680,7 @@ export const global: SiteContent = {
   },
 
   gap: {
-    label: "AFTER THE ASSESSMENT",
+    label: "After the assessment",
     heading: "The assessment is the entrance. The expensive problem sits behind it.",
     lead:
       "When a department spends its training budget, the thing it knows least is who needs which training. Put 300 courses on a shelf and the coordinator picks by instinct. METRI names that cell with a number.",
@@ -707,7 +707,7 @@ export const global: SiteContent = {
     },
   },
   choose: {
-    label: "WHY METRI",
+    label: "Why METRI",
     heading: "Why institutions pick this over a generic career test",
     items: [
       {
@@ -742,7 +742,7 @@ export const global: SiteContent = {
   },
 
   about: {
-    label: "ABOUT US",
+    label: "Who builds it",
     heading: "Developed by ACADEMIX",
     body:
       "ACADEMIX designs education programmes and runs events for universities and public institutions. PCA was developed in-house.",
@@ -771,7 +771,7 @@ export const global: SiteContent = {
   },
 
   program: {
-    label: "PROGRAM",
+    label: "Programme",
     heading: "The diagnosis is one part of a programme",
     lead:
       "PCA is not sold as a test in isolation. The result feeds the lectures, mentoring and recruitment events that follow it.",
@@ -796,7 +796,7 @@ export const global: SiteContent = {
   },
 
   localisation: {
-    label: "LOCALISATION",
+    label: "Localisation",
     heading: "What travels, and what gets rebuilt",
     lead:
       "A new country is a content project, not a rebuild. Three layers: one is shared worldwide, one is rewritten per country, one is per university. Knowing which is which is what makes a rollout predictable.",
@@ -839,7 +839,7 @@ export const global: SiteContent = {
   },
 
   partnership: {
-    label: "PARTNERSHIP",
+    label: "Partnership",
     heading: "How a country gets started",
     lead:
       "Two ways in: run it as a university, or operate it in your market as a partner. Either way the split of work is the same.",
@@ -885,7 +885,7 @@ export const global: SiteContent = {
   },
 
   faq: {
-    label: "FAQ",
+    label: "Questions we get",
     heading: "FAQ",
     items: [
       {
@@ -920,7 +920,7 @@ export const global: SiteContent = {
   },
 
   pricing: {
-    label: "PRICING",
+    label: "Pricing",
     heading: "Start with one department",
     lead:
       "Most institutions run one department first and widen from there. Individual assessments are available one at a time.",
@@ -980,7 +980,7 @@ export const global: SiteContent = {
   },
 
   regions: {
-    label: "COUNTRIES",
+    label: "Countries",
     heading: "Open the site for your country",
     lead:
       "Each country runs its own site in its own language, against its own labour-market data. The platform students sit on is one, worldwide.",

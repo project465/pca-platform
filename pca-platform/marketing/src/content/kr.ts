@@ -57,7 +57,7 @@ export const kr: SiteContent = {
   },
 
   hero: {
-    eyebrow: "METRI · ENGINEERING CAREER INTELLIGENCE",
+    eyebrow: "METRI · 공학 진로 진단",
     title: ["전공은 정했다. 그런데", "{어디에 지원하지}"],
     lead:
       "기계·전기전자·컴퓨터 세 전공의 직무군 24개, 역량 138개를 실제 채용공고에 대조합니다. “당신은 협력형입니다” 가 아니라 “구조·유동 해석 80점, ANSYS 보유 2 / 요구 4, 이 직무 공고 132건 중 89건이 요구” 로 냅니다.",
@@ -257,7 +257,7 @@ export const kr: SiteContent = {
   },
 
   why: {
-    label: "WHY PCA",
+    label: "왜 이 검사인가",
     heading: "검사 결과가 진로 로드맵으로 바로 연결됩니다",
     vs: "VS",
     before: {
@@ -279,7 +279,7 @@ export const kr: SiteContent = {
   },
 
   sheet: {
-    label: "RESULT SHEET",
+    label: "결과지 11개 절",
     heading: "결과지 구성 — 여덟 칸이 한 줄로 이어집니다",
     lead: [
       "적합도 → 산업 → 직무 → 기업 → 부족 역량 → 6개월 계획 → 지원. 직무까지만 내면 학생이 “그래서 어디에 넣지” 를 스스로 풀어야 하고, 거기서 진로검사로 끝납니다.",
@@ -665,7 +665,7 @@ export const kr: SiteContent = {
   },
 
   styles: {
-    label: "6 WORK STYLES",
+    label: "업무 성향 6축",
     heading: "업무 성향 6유형을 육각형으로 한눈에 볼 수 있습니다.",
     chartNote: "업무 성향 분석 — 예시 샘플",
     items: [
@@ -679,7 +679,7 @@ export const kr: SiteContent = {
   },
 
   evidence: {
-    label: "EVIDENCE BASE",
+    label: "무엇에 근거하는가",
     heading: "PCA는 데이터로 설계한 진단입니다",
     lead:
       "성격 유형 검사가 아니라, 전공자 표본과 실제 채용 시장 자료를 결합해 ‘시장이 원하는 역량’을 반영한 실측 데이터 기반 진단입니다.",
@@ -774,7 +774,7 @@ export const kr: SiteContent = {
   },
 
   about: {
-    label: "ABOUT US",
+    label: "만드는 곳",
     heading: "ACADEMIX가 개발했습니다",
     body:
       "ACADEMIX는 대학 및 공공기관을 위한 교육 프로그램을 설계하고 행사를 운영하는 전문 기관입니다. PCA 진로진단은 ACADEMIX가 개발했습니다.",
@@ -803,7 +803,7 @@ export const kr: SiteContent = {
   },
 
   program: {
-    label: "PROGRAM",
+    label: "프로그램",
     heading: "PCA는 프로그램의 한 축입니다",
     lead:
       "진단만 제공하고 끝내지 않습니다. 진단 결과를 특강·멘토링·채용 행사로 이어 붙여 학과의 진로 지원 전체를 설계합니다.",
@@ -865,7 +865,7 @@ export const kr: SiteContent = {
   },
 
   process: {
-    label: "HOW IT WORKS",
+    label: "어떻게 진행되나",
     heading: "도입은 이렇게 간단합니다",
     lead: "링크 발급부터 집계까지, 별도 시스템 없이 관리자 페이지로 처리합니다.",
     steps: [
@@ -886,7 +886,7 @@ export const kr: SiteContent = {
   },
 
   faq: {
-    label: "FAQ",
+    label: "자주 묻는 것",
     heading: "자주 묻는 질문",
     items: [
       {
@@ -925,7 +925,7 @@ export const kr: SiteContent = {
   },
 
   pricing: {
-    label: "PRICING",
+    label: "요금",
     heading: "필요한 만큼만 시작하세요",
     lead:
       "학과 한 곳으로 시작해 전 학과로 넓히는 경우가 대부분입니다. 개인 진단은 언제든 한 건씩 받을 수 있습니다.",

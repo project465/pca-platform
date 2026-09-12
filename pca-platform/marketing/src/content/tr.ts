@@ -61,7 +61,7 @@ export const tr: SiteContent = {
   },
 
   hero: {
-    eyebrow: "METRI · ENGINEERING CAREER INTELLIGENCE",
+    eyebrow: "METRI · Mühendislik kariyer tanılaması",
     title: ["Mühendisliği seçtiler.", "{Hangi mühendisliği, kimse söylemedi.}"],
     lead:
       "Makine, elektrik-elektronik ve bilgisayar mühendisliği — 24 görev kümesi ve 138 yetkinlik, gerçek ilanlarla karşılaştırılıyor. “İş birlikçisiniz” değil; “Simülasyon ve CAE 80, ANSYS 4 üzerinden 2, bu rolün 132 ilanının 89'unda isteniyor”. 250 sorunun tamamı Türkçe olarak hazır.",
@@ -211,7 +211,7 @@ export const tr: SiteContent = {
   },
 
   analyze: {
-    label: "NE OKUR",
+    label: "Neyi okur",
     heading: "Üç katman — ve yalnızca ilki bir ankettir",
     lead:
       "İlgi ölçülür. Yetkinlik sorulmaz; alınan dersler, sertifikalar ve projelerden hesaplanır. İkisini ayrı tutmak işin özüdür: CAE yapmak istemek ile CAE yapabilmek farklı olgulardır, ikisini karıştıran bir rapor uygulanamaz.",
@@ -241,7 +241,7 @@ export const tr: SiteContent = {
   },
 
   why: {
-    label: "FARK",
+    label: "Fark nerede",
     heading: "Öneriyle biten bir test değil",
     before: {
       tag: "ALIŞILMIŞ TEST",
@@ -259,7 +259,7 @@ export const tr: SiteContent = {
   },
 
   sheet: {
-    label: "RAPOR YAPISI",
+    label: "Rapor yapısı",
     heading: "15–20 sayfa, on bölüm",
     lead: [
       "Rapor tek sayfalık bir özet değildir. Her bölüm bir soruyu yanıtlar ve bir sonrakine bağlanır.",
@@ -369,7 +369,7 @@ export const tr: SiteContent = {
   },
 
   evidence: {
-    label: "DAYANAK",
+    label: "Neye dayanır",
     heading: "Veriyle tasarlandı",
     lead: "Envanter tek bir uzmanın görüşünden değil, toplanan veriden çıktı.",
     stats: [
@@ -430,7 +430,7 @@ export const tr: SiteContent = {
     },
   },
   choose: {
-    label: "NEDEN METRI",
+    label: "Neden METRI",
     heading: "Kurumlar genel bir kariyer testi yerine neden bunu seçiyor",
     items: [
       {
@@ -465,7 +465,7 @@ export const tr: SiteContent = {
   },
 
   about: {
-    label: "HAKKIMIZDA",
+    label: "Hakkımızda",
     heading: "ACADEMIX",
     body:
       "Üniversiteler ve kamu kurumları için eğitim programları tasarlayan ve yürüten bir kuruluş. METRI, bu işten doğan değerlendirme ve kariyer platformudur.",
@@ -482,7 +482,7 @@ export const tr: SiteContent = {
   },
 
   program: {
-    label: "PROGRAM",
+    label: "Program",
     heading: "Envanterle birlikte yürüyen programlar",
     lead: "Değerlendirme eksiği gösterir. Onu kapatacak programlar da hazırdır.",
     items: [
@@ -494,7 +494,7 @@ export const tr: SiteContent = {
   },
 
   process: {
-    label: "KURULUM",
+    label: "Nasıl ilerler",
     heading: "Dört adım",
     lead: "Bölümden karmaşık bir hazırlık istenmez.",
     steps: [
@@ -507,7 +507,7 @@ export const tr: SiteContent = {
   },
 
   faq: {
-    label: "SIK SORULAN",
+    label: "Sık sorulanlar",
     heading: "Sık sorulan sorular",
     items: [
       { q: "Ne kadar sürer?", a: "30–40 dakika. Ara verip sonra devam edilebilir." },
