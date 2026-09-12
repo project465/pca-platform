@@ -307,6 +307,7 @@ td .sub { display: block; font-size: 12.5px; color: var(--muted); }
 }
 .inline-err { font-size: 12.5px; color: var(--gap); }
 .inline-ok { font-size: 12.5px; color: var(--met); }
+.inline-note { font-size: 12.5px; color: var(--muted); }
 .linkish {
   font: inherit; font-size: 13.5px; background: none; border: 0;
   color: var(--muted); text-decoration: underline; cursor: pointer; padding: 0;
@@ -757,3 +758,13 @@ table.weights tfoot td.zero { color: var(--gap); }
   font: inherit; font-size: 14px; width: 76px; text-align: right;
   padding: 6px 8px; border: 1px solid var(--rule); background: var(--paper); color: var(--ink);
 }
+
+/* 환불 규정. 돈을 받기 전에 보여주는 자리라 눈에 띄되 폼을 가리지 않는다 */
+.policy {
+  border: 1px solid var(--rule); background: var(--field);
+  padding: 12px 14px; margin: 4px 0 14px;
+}
+.policy b { display: block; font-size: 13px; margin-bottom: 7px; }
+.policy ul { margin: 0; padding-left: 16px; }
+.policy li { font-size: 13px; line-height: 1.75; color: var(--ink); }
+.policy span { display: block; margin-top: 7px; font-size: 12.5px; color: var(--muted); }

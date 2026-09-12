@@ -14,6 +14,7 @@ import {
 } from "@/lib/mentoring";
 import { isFreeUser, priceOf } from "@/lib/billing";
 import { payDryRun } from "@/lib/pay";
+import { refundPolicyLines, refundRules } from "@/lib/refund";
 import MentoringShell from "@/components/mentoring-shell";
 import ApplyForm, { type SlotOption } from "./apply-form";
 
@@ -52,6 +53,8 @@ export default async function MentorDetailPage({
     isFreeUser(user.id),
   ]);
   const price = free ? null : await priceOf(mentor.session_minutes);
+  // 돈을 받는 경우에만 환불 규정을 보여준다. 무료 세션은 돌려줄 돈이 없다
+  const refundPolicy = price === null ? [] : refundPolicyLines(await refundRules());
 
   const jobNames = await namesOf(
     "job_clusters",
@@ -179,6 +182,7 @@ export default async function MentorDetailPage({
               slots={slotOptions}
               minutes={mentor.session_minutes}
               price={price}
+              refundPolicy={refundPolicy}
               clientKey={process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY ?? null}
               dryRun={payDryRun()}
             />

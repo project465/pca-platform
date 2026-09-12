@@ -19,6 +19,20 @@ export function percentFor(rules: RefundRule[], hoursLeft: number): number {
   return 0;
 }
 
+/**
+ * 규칙을 사람이 읽는 문장으로 바꾼다. 돈을 받기 전에 보여줘야 하는 내용이라
+ * 신청 화면과 취소 버튼이 같은 문장을 쓴다 — 두 곳이 다르게 말하면 안 된다.
+ *
+ * 규칙은 hours_before 내림차순이고, 각 행은 '남은 시간이 이 값 이상'을 뜻한다.
+ */
+export function refundPolicyLines(rules: RefundRule[]): string[] {
+  if (rules.length === 0) return ["취소 환불 규정이 정해지지 않았습니다."];
+  return rules.map((r) => {
+    const when = r.hours_before === 0 ? "그보다 늦게 취소" : `시작 ${r.hours_before}시간 전까지 취소`;
+    return `${when} — ${r.percent === 0 ? "환불 없음" : `${r.percent}% 환불`}`;
+  });
+}
+
 export async function saveRefundRules(
   rows: { hoursBefore: number; percent: number }[],
   actorId: string,

@@ -3,6 +3,7 @@ import { requireUser } from "@/lib/session";
 import { mentorTitle } from "@/lib/anon";
 import { formatSlot, formatWhen } from "@/lib/notify";
 import { inboxFor, mentorForUser, requestsByApplicant } from "@/lib/mentoring";
+import { percentFor, refundRules } from "@/lib/refund";
 import MentoringShell from "@/components/mentoring-shell";
 import RequestCards, { type MyRequest } from "./request-cards";
 
@@ -17,11 +18,26 @@ export default async function MyRequestsPage({
   const user = await requireUser();
   const sp = await searchParams;
 
-  const [rows, mine, inbox] = await Promise.all([
+  const [rows, mine, inbox, rules] = await Promise.all([
     requestsByApplicant(user.id),
     mentorForUser(user.id),
     inboxFor(user.id),
+    refundRules(),
   ]);
+
+  /**
+   * 취소 버튼을 누르기 전에 얼마가 돌아오는지 알려준다. 규정을 읽고 계산하게 하지
+   * 않는다 — 누른 뒤에 알게 되면 그건 고지가 아니다.
+   */
+  function refundNotice(r: (typeof rows)[number]): string | null {
+    if (r.pay_status === "ready") return "아직 결제 전이라 청구되지 않습니다.";
+    if (r.pay_status !== "paid" || !r.pay_amount) return null;
+    const hoursLeft = (new Date(r.starts_at).getTime() - Date.now()) / 3_600_000;
+    const back = Math.floor((r.pay_amount * percentFor(rules, hoursLeft)) / 100);
+    return back === 0
+      ? "지금 취소하면 환불되지 않습니다."
+      : `지금 취소하면 ${back.toLocaleString("ko-KR")}원이 환불됩니다.`;
+  }
 
   const cards: MyRequest[] = rows.map((r) => ({
     id: r.id,
@@ -43,6 +59,7 @@ export default async function MyRequestsPage({
     // 지난 일정은 취소할 것이 없다
     canCancel:
       ["requested", "accepted"].includes(r.status) && new Date(r.starts_at) > new Date(),
+    refundNotice: refundNotice(r),
   }));
 
   return (

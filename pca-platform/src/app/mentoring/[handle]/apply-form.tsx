@@ -18,6 +18,7 @@ export default function ApplyForm({
   slots,
   minutes,
   price,
+  refundPolicy,
   clientKey,
   dryRun,
 }: {
@@ -26,6 +27,8 @@ export default function ApplyForm({
   minutes: number;
   /** 이 사람이 내야 하는 금액. 학과 계약 학생은 null */
   price: number | null;
+  /** 취소 환불 규정. 무료 세션은 빈 배열 */
+  refundPolicy: string[];
   clientKey: string | null;
   dryRun: boolean;
 }) {
@@ -105,6 +108,18 @@ export default function ApplyForm({
       </div>
 
       {state.message ? <div className="notice error">{state.message}</div> : null}
+
+      {refundPolicy.length > 0 ? (
+        <div className="policy">
+          <b>취소하면 얼마가 돌아오는지</b>
+          <ul>
+            {refundPolicy.map((line) => (
+              <li key={line}>{line}</li>
+            ))}
+          </ul>
+          <span>멘토가 거절하거나 답하지 않아 닫힌 신청은 언제나 전액 돌려드립니다.</span>
+        </div>
+      ) : null}
 
       <button className="act solid" type="submit" disabled={pending}>
         {pending

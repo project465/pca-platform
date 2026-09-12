@@ -20,6 +20,8 @@ export type MyRequest = {
   provider: string | null;
   hasReview: boolean;
   canCancel: boolean;
+  /** 지금 취소하면 얼마가 돌아오는지. 무료 세션은 null */
+  refundNotice: string | null;
   payStatus: string | null;
   payAmount: number | null;
   payOrderId: string | null;
@@ -41,14 +43,25 @@ const STATUS: Record<string, { label: string; cls: string }> = {
   completed: { label: "완료", cls: "done" },
 };
 
-function CancelButton({ id }: { id: string }) {
+function CancelButton({ id, refundNotice }: { id: string; refundNotice: string | null }) {
   const [state, action, pending] = useActionState(cancelAction, initial);
   return (
-    <form action={action} className="inline-form">
+    <form
+      action={action}
+      className="inline-form"
+      onSubmit={(e) => {
+        // 되돌릴 수 없고 돈이 걸려 있다. 금액을 한 번 더 보여주고 받는다
+        const ask = refundNotice
+          ? `${refundNotice}\n취소하시겠습니까?`
+          : "취소하시겠습니까?";
+        if (!window.confirm(ask)) e.preventDefault();
+      }}
+    >
       <input type="hidden" name="requestId" value={id} />
       <button className="act" type="submit" disabled={pending}>
         {pending ? "취소 중…" : "취소"}
       </button>
+      {refundNotice ? <span className="inline-note">{refundNotice}</span> : null}
       {state.message ? <span className="inline-err">{state.message}</span> : null}
     </form>
   );
@@ -131,7 +144,7 @@ export default function RequestCards({ rows }: { rows: MyRequest[] }) {
             ) : null}
 
             <div className="req-foot">
-              {r.canCancel ? <CancelButton id={r.id} /> : null}
+              {r.canCancel ? <CancelButton id={r.id} refundNotice={r.refundNotice} /> : null}
               {r.status === "completed" && !r.hasReview ? <ReviewForm id={r.id} /> : null}
               {r.status === "completed" && r.hasReview ? (
                 <span className="help">후기를 남겼습니다.</span>

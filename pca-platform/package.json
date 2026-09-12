@@ -14,7 +14,9 @@
     "notify": "tsx scripts/notify.ts",
     "db:seed:report": "tsx scripts/seed-report.ts",
     "check:sheet": "tsx scripts/check-sheet.ts",
-    "db:seed:responses": "tsx scripts/seed-responses.ts"
+    "db:seed:responses": "tsx scripts/seed-responses.ts",
+    "db:fees": "tsx scripts/seed-fees.ts",
+    "check:money": "tsx scripts/check-money.ts"
   },
   "dependencies": {
     "bcryptjs": "3.0.2",
