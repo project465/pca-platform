@@ -38,6 +38,9 @@ export default function Hero({ site }: { site: SiteContent }) {
               {h.secondary.label}
             </a>
           </div>
+          {/* 값은 버튼 옆에 붙여 둔다. 요금 페이지까지 내려가야 알 수 있는
+              가격은 대부분 안 읽힌다. */}
+          {h.priceline ? <p className="priceline">{h.priceline}</p> : null}
 
           {h.proof ? (
             <ul className="proofbar">

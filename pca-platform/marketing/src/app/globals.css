@@ -117,15 +117,44 @@ section { padding-block: clamp(60px, 8vw, 108px); }
 }
 .site-header nav.wide a:hover { color: var(--ink); }
 .site-header .right { display: flex; align-items: center; gap: 8px; margin-left: 18px; flex: none; }
-@media (max-width: 1180px) { .site-header nav.wide { display: none; } .site-header .right { margin-left: auto; } }
 
-/* 좁은 화면에서는 헤더 오른쪽(지역 선택 + 문의 버튼)을 내린다.
-   flex: none 이라 줄어들지 않아, 한국어보다 긴 라벨(Menü·Кеңес алу)이 들어오면
-   가로 스크롤이 생겼다. 문의는 떠 있는 버튼과 메뉴 안에 그대로 있다. */
+/**
+ * 좁아져도 메뉴 항목을 감추지 않는다.
+ *
+ * 예전에는 1180px 아래에서 항목을 전부 숨기고 "메뉴" 버튼 하나로 접었다.
+ * 그런데 접힌 메뉴는 한 번 더 눌러야 보이고, 눌러도 안 보이는 사고가
+ * 실제로 났다. **보이지 않는 메뉴는 없는 메뉴와 같다.**
+ *
+ * 그래서 접지 않고 브랜드·버튼 아래 한 줄로 내린다. 항목이 줄 너비를
+ * 넘으면 그 줄 안에서 옆으로 굴린다 — 굴릴 수 있는 목록은 접힌 목록보다
+ * 한 단계 가깝다. 첫 항목은 늘 보이므로 메뉴가 있다는 것 자체를 모를 수 없다.
+ */
+@media (max-width: 1180px) {
+  /* wrap 이 없으면 width:100% 를 줘도 줄이 내려가지 않고 그냥 눌린다 */
+  .site-header .bar { flex-wrap: wrap; min-height: 0; padding-block: 11px; row-gap: 0; }
+  .site-header nav.wide {
+    order: 3; width: 100%; margin: 0; gap: 0;
+    margin-top: 9px; border-top: 1px solid var(--line);
+    overflow-x: auto; overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .site-header nav.wide::-webkit-scrollbar { display: none; }
+  .site-header nav.wide a {
+    flex: none; padding: 11px 13px; font-size: 13.5px; color: var(--ink-2);
+  }
+  .site-header nav.wide a:first-child { padding-left: 0; }
+  .site-header nav.wide a:last-child { padding-right: var(--pad); }
+  .site-header .right { margin-left: auto; }
+}
+
+/* 더 좁아지면 지역 선택만 접는다. 시작하기·문의 버튼은 남긴다 —
+   이 둘이 이 사이트가 받으려는 행동이다. */
 @media (max-width: 560px) {
-  .site-header .right { display: none; }
-  .site-header .bar { gap: 12px; }
-  .mnav { margin-left: auto; }
+  .site-header .bar { gap: 10px; }
+  .site-header .right { margin-left: auto; gap: 6px; }
+  .site-header .right .regionpick { display: none; }
+  .site-header .right .btn { font-size: 13px; padding: 9px 13px; }
 }
 
 .btn {
@@ -140,28 +169,14 @@ section { padding-block: clamp(60px, 8vw, 108px); }
 .btn.solid:hover { background: #1B2A40; border-color: #1B2A40; }
 .btn.lg { font-size: 15.5px; padding: 14px 26px; }
 .btn.full-w { width: 100%; }
+
+/* 히어로 버튼 아래 값 한 줄 */
+.priceline {
+  margin-top: 14px; font-size: 14px; line-height: 1.7; color: var(--ink-2);
+  font-variant-numeric: tabular-nums; max-width: 46ch;
+}
 .btn[disabled] { opacity: .45; cursor: default; }
 
-.mnav { display: none; position: relative; margin-left: 8px; }
-.mnav summary {
-  list-style: none; cursor: pointer; font-size: 13.5px; font-weight: 700;
-  padding: 10px 15px; border: 1px solid var(--line-2); border-radius: 7px;
-}
-.mnav summary::-webkit-details-marker { display: none; }
-.mnav[open] summary { border-color: var(--ink); }
-.mnav nav {
-  position: absolute; right: 0; top: calc(100% + 10px); z-index: 50;
-  background: var(--paper); border: 1px solid var(--line-2); border-radius: var(--r);
-  display: flex; flex-direction: column; min-width: 220px; overflow: hidden;
-  /* 390px 화면에서 220px 패널이 왼쪽으로 삐져나갔다 */
-  max-width: calc(100vw - 32px);
-  /* 화면이 낮으면(가로로 든 폰·좁은 미리보기 칸) 목록이 화면 밖으로
-     내려가 손이 닿지 않는다. 그때는 목록 안에서 굴린다. */
-  max-height: calc(100dvh - 100px); overflow-y: auto;
-}
-.mnav nav a { padding: 13px 17px; font-size: 13.5px; font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--line); }
-.mnav nav a:last-child { border-bottom: 0; }
-@media (max-width: 1180px) { .mnav { display: block; } }
 
 /* ---------- 히어로 ---------- */
 .hero {

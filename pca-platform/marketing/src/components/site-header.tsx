@@ -16,6 +16,8 @@ export default function SiteHeader({ site }: { site: SiteContent }) {
           </span>
         </a>
 
+        {/* 좁아져도 접지 않는다. 줄이 모자라면 이 줄 안에서 옆으로 굴린다 —
+            한 번 눌러야 보이는 메뉴는 안 보이는 메뉴가 되기 쉽다. */}
         <nav className="wide">
           {site.nav.items.map((i) => (
             <a key={i.href} href={i.href}>
@@ -34,20 +36,6 @@ export default function SiteHeader({ site }: { site: SiteContent }) {
             {site.nav.contact}
           </a>
         </div>
-
-        {/* 좁은 화면용. <details> 라 자바스크립트 없이 열린다 */}
-        <details className="mnav">
-          <summary>{site.nav.menu}</summary>
-          <nav>
-            {site.nav.items.map((i) => (
-              <a key={i.href} href={i.href}>
-                {i.label}
-              </a>
-            ))}
-            <a href={platformStart(site)}>{site.nav.start}</a>
-            <a href="/contact">{site.nav.contact}</a>
-          </nav>
-        </details>
       </div>
     </header>
   );

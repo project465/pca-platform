@@ -60,8 +60,10 @@ export const global: SiteContent = {
     title: ["They chose engineering.", "Nobody told them which engineering."],
     lead:
       "Mechanical, electrical and computer engineering — 24 job clusters and 138 competencies, checked against real postings. Not “you are collaborative”, but “Simulation & CAE 80, ANSYS held 2 of 4, asked for in 89 of 132 postings for this role”. The activity axes are the same in every country, which is why the instrument travels.",
-    primary: { label: "Talk to us", href: "/contact" },
-    secondary: { label: "See a real report", href: "#sample" },
+    primary: { label: "See a real report", href: "#sample" },
+    secondary: { label: "Talk to us", href: "/contact" },
+    priceline:
+      "₩29,000 per person · 253 items, about 30 minutes · an 18-page report. Departments contract by cohort size.",
     watermark: "METRI",
     proof: [
       { value: "250", label: "items, in three languages" },
@@ -925,18 +927,18 @@ export const global: SiteContent = {
 
   pricing: {
     label: "Pricing",
-    heading: "Start with one department",
+    heading: "₩29,000 for one, cohort pricing for a department",
     lead:
-      "Most institutions run one department first and widen from there. Individual assessments are available one at a time.",
+      "Individuals buy one at a time. Departments contract by cohort size. Most institutions run one department first and widen from there — a single year group is enough to see what the reports change.",
     planLabel: "What you are interested in",
     plans: [
       {
         key: "individual",
         name: "Individual",
         who: "A student, a job seeker, a would-be founder",
-        price: null,
+        price: "₩29,000",
         unit: "per person",
-        note: "Card payment is not connected yet. Requests come through the form for now.",
+        note: "Billed in Korean won; overseas Visa and Mastercard are accepted. Card payment opens once the merchant review clears — until then requests come through the form.",
         features: [
           "Ten job areas out of 100 · groups and intervals",
           "Six work styles as a hexagon",

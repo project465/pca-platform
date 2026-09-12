@@ -790,8 +790,13 @@ export function PricingSection({ site }: { site: SiteContent }) {
                 ))}
               </ul>
               <p className="note">{pl.note}</p>
-              <a className={`btn${pl.featured ? " solid" : ""}`} href="/contact">
-                {pl.price ? pl.cta.ready : pl.cta.ask}
+              {/* 가격을 적어 두는 것과 카드로 살 수 있는 것은 다른 문제다.
+                  payable 이 켜지기 전에는 값만 보여주고 접수는 문의로 받는다. */}
+              <a
+                className={`btn${pl.featured ? " solid" : ""}`}
+                href={pl.payable ? platformStart(site) : "/contact"}
+              >
+                {pl.payable ? pl.cta.ready : pl.cta.ask}
               </a>
             </div>
           ))}

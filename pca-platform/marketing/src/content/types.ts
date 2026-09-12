@@ -171,13 +171,22 @@ export type Plan = {
   key: string;
   name: string;
   who: string;
-  /** 값이 있으면 바로 신청, 없으면 가격 문의로 바뀐다 */
+  /**
+   * 적어 둘 값. 없으면 "가격 문의" 로 나온다.
+   *
+   * **값이 있다고 곧 결제가 열린 것은 아니다.** 가격은 물어보지 않아도
+   * 알 수 있어야 하고(모르면 그냥 나간다), 결제 가능 여부는 PG 가맹점
+   * 심사에 달려 있다. 그래서 둘을 따로 둔다 — `price` 는 적는 것,
+   * `payable` 은 지금 카드로 살 수 있는가.
+   */
   price: string | null;
   unit: string;
   note: string;
   features: string[];
   cta: { ready: string; ask: string };
   featured?: boolean;
+  /** true 면 버튼이 플랫폼 결제로 간다. 기본값은 문의 접수다 */
+  payable?: boolean;
 };
 
 export type Pricing = {
@@ -303,6 +312,13 @@ export type SiteContent = {
     primary: Link;
     secondary: Link;
     watermark: string;
+    /**
+     * 버튼 바로 아래 한 줄. **값과 분량을 여기서 말한다.**
+     *
+     * 처음 온 사람이 가격을 찾으러 요금 페이지까지 내려가야 하면 대부분
+     * 거기까지 가지 않는다. 물어봐야 아는 값은 없는 값과 같다.
+     */
+    priceline?: string;
     /** 히어로 아래 한 줄. 근거 있는 숫자만 넣는다 */
     proof?: { value: string; label: string }[];
   };
