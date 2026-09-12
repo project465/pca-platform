@@ -32,6 +32,22 @@ const STATUS_LABEL: Record<string, string> = {
   no_show: "노쇼 확인 중",
 };
 
+/** 익명의 경계. 프로필을 처음 만들 때도, 이미 있는 멘토도 같은 내용을 본다 */
+function AnonymityNote() {
+  return (
+    <div className="policy" style={{ marginTop: 14 }}>
+      <b>익명이 어디까지 지켜지는지</b>
+      <ul>
+        <li>신청자 화면에는 별명과 속성만 나갑니다. 이름·회사명·연락처는 나가지 않습니다</li>
+        <li>줌 회의는 운영사 계정으로 만들고, 줌이 보내는 안내 메일은 꺼져 있습니다</li>
+        <li>화상으로 만나므로 얼굴과 목소리는 드러날 수 있습니다. 카메라는 꺼진 채로 시작합니다</li>
+        <li>줌에 들어가신 뒤 표시 이름을 별명으로 바꿔주세요 — 이것만 시스템이 대신 못 합니다</li>
+      </ul>
+      <span>신청자에게도 같은 내용을 결제 전에 알리고 있습니다.</span>
+    </div>
+  );
+}
+
 export default async function MentorConsolePage() {
   const user = await requireUser();
   const mentor = await mentorForUser(user.id);
@@ -57,16 +73,7 @@ export default async function MentorConsolePage() {
           기록되지 않은 프로필은 갤러리에 올라가지 않습니다. 신청자에게는 별명과 속성만 보이고,
           실명·회사명·이메일은 어느 화면에도 나오지 않습니다.
         </p>
-        <div className="policy" style={{ marginTop: 14 }}>
-          <b>익명이 어디까지 지켜지는지</b>
-          <ul>
-            <li>신청자 화면에는 별명과 속성만 나갑니다. 이름·회사명·연락처는 나가지 않습니다</li>
-            <li>줌 회의는 운영사 계정으로 만들고, 줌이 보내는 안내 메일은 꺼져 있습니다</li>
-            <li>화상으로 만나므로 얼굴과 목소리는 드러날 수 있습니다. 카메라는 꺼진 채로 시작합니다</li>
-            <li>줌에 들어가신 뒤 표시 이름을 별명으로 바꿔주세요 — 이것만 시스템이 대신 못 합니다</li>
-          </ul>
-          <span>신청자에게도 같은 내용을 결제 전에 알리고 있습니다.</span>
-        </div>
+        <AnonymityNote />
         <div className="panel form-panel">
           <ProfileForm values={null} jobs={jobs} />
         </div>
@@ -295,6 +302,7 @@ export default async function MentorConsolePage() {
       </div>
 
       <h2 className="sec-h">프로필</h2>
+      <AnonymityNote />
       <div className="panel form-panel">
         <ProfileForm
           values={{
