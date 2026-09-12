@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireRole } from "@/lib/session";
 import { payoutList, payoutSummary } from "@/lib/payout";
 import { payoutSettings } from "@/lib/refund";
+import { accountsFor } from "@/lib/payout-account";
 import AdminShell from "@/components/admin-shell";
 import { BuildButton, PayButton } from "./payout-actions";
 
@@ -19,6 +20,9 @@ export default async function PayoutsPage() {
   ]);
 
   const feeSet = Number(settings.fee_percent) > 0;
+  // 보낼 곳이 있는지. 계좌가 없으면 정산이 잡혀도 이체할 수 없다
+  const accounts = await accountsFor([...new Set(rows.map((r) => r.mentor_id))]);
+  const noAccount = rows.filter((r) => r.status === "pending" && !accounts.has(r.mentor_id)).length;
 
   return (
     <AdminShell user={user} current="/admin/payouts">
@@ -28,6 +32,13 @@ export default async function PayoutsPage() {
           지급 대기 {summary.pending}건 · {won(summary.pending_net)}
         </span>
       </div>
+
+      {noAccount > 0 ? (
+        <div className="notice error" style={{ marginBottom: 18 }}>
+          지급 대기 {noAccount}건이 계좌 없이 잡혀 있습니다. 금액은 계산됐지만 보낼 곳이
+          없습니다. 해당 멘토에게 콘솔에서 계좌를 등록하도록 알려주세요.
+        </div>
+      ) : null}
 
       {!feeSet ? (
         <div className="notice error" style={{ marginBottom: 18 }}>
@@ -77,6 +88,17 @@ export default async function PayoutsPage() {
                     <span className="sub">
                       {r.real_name} · <span className="mono">{r.handle}</span>
                     </span>
+                    {accounts.get(r.mentor_id) ? (
+                      <span className="sub mono">
+                        {accounts.get(r.mentor_id)!.bank} {accounts.get(r.mentor_id)!.account_no}{" "}
+                        {accounts.get(r.mentor_id)!.holder}
+                        {accounts.get(r.mentor_id)!.has_rrn ? "" : " · 주민번호 없음"}
+                      </span>
+                    ) : (
+                      <span className="sub" style={{ color: "var(--gap)" }}>
+                        지급 계좌 없음 — 멘토가 콘솔에서 등록해야 합니다
+                      </span>
+                    )}
                   </td>
                   <td className="num">{won(r.gross)}</td>
                   <td className="num">{won(r.fee)}</td>

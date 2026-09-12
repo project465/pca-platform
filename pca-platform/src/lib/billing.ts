@@ -123,13 +123,17 @@ export async function refundFor(
   }
 
   if (p.status === "paid" && p.provider_key && refund > 0) {
+    // 부르기 전에 얼마를 돌려주기로 했는지 적어둔다. 실패한 뒤에 다시 계산하면
+    // 그사이 시각이 지나 환불율이 달라진다 — 늦게 재시도할수록 적게 돌려주게 된다
+    await query(`UPDATE payments SET refund_due = $2 WHERE id = $1`, [p.id, refund]);
     try {
       await cancel(p.provider_key, reason, refund < p.amount ? refund : undefined);
     } catch (e) {
       // 남겨두고 운영에서 확인한다. 여기서 예외를 올리면 취소가 통째로 막힌다.
-      await query(`UPDATE payments SET fail_reason = $2 WHERE id = $1`, [
+      await query(`UPDATE payments SET fail_reason = $2, cancel_reason = $3 WHERE id = $1`, [
         p.id,
         e instanceof PayError ? e.message : "결제 취소 실패",
+        reason.slice(0, 200),
       ]);
       return;
     }
@@ -143,11 +147,100 @@ export async function refundFor(
           SET status = CASE WHEN $3 THEN 'cancelled' ELSE status END,
               refunded_amount = $4,
               cancel_reason = $2,
-              cancelled_at = CASE WHEN $3 THEN now() ELSE cancelled_at END
+              cancelled_at = CASE WHEN $3 THEN now() ELSE cancelled_at END,
+              -- 지난번에 실패했더라도 이번에 성공했으면 기록을 지운다.
+              -- 남겨두면 운영 화면의 '환불 실패' 목록에서 영영 사라지지 않는다
+              fail_reason = NULL
         WHERE id = $1`,
       [p.id, reason.slice(0, 200), fully, p.status === "ready" ? 0 : refund],
     );
   }
+}
+
+export type FailedRefund = {
+  payment_id: string;
+  request_id: string;
+  order_id: string;
+  amount: number;
+  refunded_amount: number;
+  /** 돌려주기로 정한 금액 */
+  refund_due: number | null;
+  fail_reason: string;
+  cancel_reason: string | null;
+  applicant_name: string;
+  applicant_email: string | null;
+  handle: string;
+  alias: string;
+  starts_at: string;
+};
+
+/**
+ * 환불이 실패한 건. 흔하지 않지만 조용히 묻히면 안 된다 —
+ * 신청자는 '취소됐습니다'를 보고 돈은 돌아오지 않는 상태다.
+ */
+export async function failedRefunds(): Promise<FailedRefund[]> {
+  return query<FailedRefund>(
+    `SELECT p.id AS payment_id, p.request_id, p.order_id, p.amount, p.refunded_amount,
+            p.refund_due, p.fail_reason, p.cancel_reason,
+            u.display_name AS applicant_name, u.email AS applicant_email,
+            m.handle, m.alias,
+            to_char(s.starts_at AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD HH24:MI') AS starts_at
+       FROM payments p
+       JOIN mentoring_requests r ON r.id = p.request_id
+       JOIN users u   ON u.id = p.user_id
+       JOIN mentors m ON m.id = r.mentor_id
+       JOIN mentor_slots s ON s.id = r.slot_id
+      WHERE p.fail_reason IS NOT NULL
+      ORDER BY p.created_at DESC
+      LIMIT 100`,
+  );
+}
+
+/**
+ * 실패한 환불을 다시 시도한다. 돌려줄 금액은 처음 판정한 그대로다 —
+ * 시간이 지났다고 환불율을 다시 계산하면 늦게 재시도할수록 적게 돌려주게 된다.
+ */
+export async function retryRefund(paymentId: string): Promise<void> {
+  const p = await queryOne<{
+    id: string;
+    request_id: string;
+    provider_key: string | null;
+    status: string;
+    amount: number;
+    refund_due: number | null;
+    cancel_reason: string | null;
+  }>(
+    `SELECT id, request_id, provider_key, status, amount, refund_due, cancel_reason
+       FROM payments WHERE id = $1 AND fail_reason IS NOT NULL`,
+    [paymentId],
+  );
+  if (!p) throw new PayError("다시 시도할 환불 건이 아닙니다.");
+  if (!p.provider_key) throw new PayError("결제 키가 없어 취소할 수 없습니다.");
+
+  // 처음 취소할 때 정한 금액 그대로 보낸다. 지금 다시 계산하면 그사이 시각이 지나
+  // 환불율이 달라진다 — 늦게 재시도할수록 적게 돌려주게 된다
+  const refund = p.refund_due ?? p.amount;
+  const reason = p.cancel_reason ?? "환불 재시도";
+
+  try {
+    await cancel(p.provider_key, reason, refund < p.amount ? refund : undefined);
+  } catch (e) {
+    await query(`UPDATE payments SET fail_reason = $2 WHERE id = $1`, [
+      p.id,
+      e instanceof PayError ? e.message : "결제 취소 실패",
+    ]);
+    throw e instanceof PayError ? e : new PayError("결제 취소에 실패했습니다.");
+  }
+
+  await query(
+    `UPDATE payments
+        SET status = CASE WHEN $2 >= amount THEN 'cancelled' ELSE status END,
+            refunded_amount = $2,
+            cancelled_at = CASE WHEN $2 >= amount THEN now() ELSE cancelled_at END,
+            fail_reason = NULL
+      WHERE id = $1`,
+    [p.id, refund],
+  );
 }
 
 /** 결제가 끝나지 않은 신청. 멘토에게 보이지 않아야 한다. */

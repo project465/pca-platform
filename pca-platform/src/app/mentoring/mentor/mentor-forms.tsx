@@ -6,6 +6,7 @@ import {
   closeSlotAction,
   declineAction,
   openSlotAction,
+  saveAccountAction,
   saveProfileAction,
   type MentorState,
 } from "./actions";
@@ -303,5 +304,90 @@ export function DecideForm({ requestId }: { requestId: string }) {
       {accepted.message ? <div className="notice error">{accepted.message}</div> : null}
       {declined.message ? <div className="notice error">{declined.message}</div> : null}
     </div>
+  );
+}
+
+/**
+ * 지급 계좌. 이미 넣은 주민등록번호는 다시 타이핑하게 하지 않는다 —
+ * 빈칸으로 두면 있던 값이 그대로 남는다.
+ */
+export function AccountForm({
+  banks,
+  account,
+  rrnSupported,
+}: {
+  banks: string[];
+  account: {
+    bank: string;
+    account_no: string;
+    holder: string;
+    rrn_tail: string | null;
+    has_rrn: boolean;
+    updated_at: string;
+  } | null;
+  rrnSupported: boolean;
+}) {
+  const [state, action, pending] = useActionState(saveAccountAction, initial);
+
+  return (
+    <form action={action} className="form" style={{ maxWidth: 460 }}>
+      <div className="field">
+        <label htmlFor="bank">은행</label>
+        <select id="bank" name="bank" defaultValue={account?.bank ?? ""} required>
+          <option value="" disabled>
+            고르세요
+          </option>
+          {banks.map((b) => (
+            <option key={b} value={b}>
+              {b}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="field">
+        <label htmlFor="accountNo">계좌번호</label>
+        <input
+          id="accountNo"
+          name="accountNo"
+          inputMode="numeric"
+          defaultValue={account?.account_no ?? ""}
+          placeholder="숫자와 하이픈만"
+          required
+        />
+      </div>
+
+      <div className="field">
+        <label htmlFor="holder">예금주</label>
+        <input id="holder" name="holder" defaultValue={account?.holder ?? ""} required />
+        <span className="help">본인 명의가 아니어도 됩니다. 실제 계좌의 예금주를 적어주세요.</span>
+      </div>
+
+      <div className="field">
+        <label htmlFor="rrn">주민등록번호</label>
+        <input
+          id="rrn"
+          name="rrn"
+          inputMode="numeric"
+          autoComplete="off"
+          placeholder={account?.has_rrn ? "저장돼 있습니다. 바꿀 때만 적으세요" : "13자리"}
+          disabled={!rrnSupported}
+        />
+        <span className="help">
+          {!rrnSupported
+            ? "지금은 받을 수 없습니다. 운영사가 보관 준비를 마친 뒤 열립니다."
+            : account?.has_rrn
+              ? `저장돼 있습니다 (끝자리 ${account.rrn_tail}). 암호화해서 보관하며, 원천징수 신고에만 씁니다.`
+              : "소득세법상 원천징수 신고에 필요합니다. 암호화해서 보관하고 화면에는 끝자리만 보입니다."}
+        </span>
+      </div>
+
+      <button className="act solid" type="submit" disabled={pending}>
+        {pending ? "저장 중…" : account ? "계좌 수정" : "계좌 등록"}
+      </button>
+      {state.ok ? <div className="notice ok">{state.ok}</div> : null}
+      {state.message ? <div className="notice error">{state.message}</div> : null}
+      {account ? <span className="help">마지막 수정 {account.updated_at}</span> : null}
+    </form>
   );
 }

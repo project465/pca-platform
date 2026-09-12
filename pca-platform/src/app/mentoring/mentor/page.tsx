@@ -5,12 +5,14 @@ import { applicantLabel, applicantStageLabel } from "@/lib/anon";
 import { formatSlot } from "@/lib/notify";
 import { mentorForUser, mentorStats, requestsByMentor } from "@/lib/mentoring";
 import { noShowStates } from "@/lib/noshow";
+import { accountOf, BANK_LIST, rrnSupported } from "@/lib/payout-account";
 import NoShowForm from "@/components/no-show-form";
 import { payoutsOfMentor } from "@/lib/payout";
 import { zoomConfigured, zoomDryRun } from "@/lib/zoom";
 import MentoringShell from "@/components/mentoring-shell";
 import {
   DecideForm,
+  AccountForm,
   ProfileForm,
   SlotCloser,
   SlotOpener,
@@ -84,6 +86,7 @@ export default async function MentorConsolePage() {
 
   const pending = rows.filter((r) => r.status === "requested");
   const noShow = await noShowStates(rows.map((r) => r.id));
+  const account = await accountOf(mentor.id);
   const zoomReady = zoomConfigured() || zoomDryRun();
 
   return (
@@ -186,6 +189,16 @@ export default async function MentorConsolePage() {
           ))}
         </ul>
       )}
+
+      <h2 className="sec-h">지급 계좌</h2>
+      <div className="panel form-panel">
+        {!account ? (
+          <div className="notice" style={{ marginBottom: 14 }}>
+            계좌를 등록하지 않으면 정산이 잡혀도 돈을 보내드릴 수 없습니다.
+          </div>
+        ) : null}
+        <AccountForm banks={BANK_LIST} account={account} rrnSupported={rrnSupported()} />
+      </div>
 
       {payouts.length > 0 ? (
         <>

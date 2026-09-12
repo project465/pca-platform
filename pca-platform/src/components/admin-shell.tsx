@@ -16,6 +16,7 @@ const NAV: NavItem[] = [
   { href: "/admin/prices", label: "가격·정책", ready: true },
   { href: "/admin/payouts", label: "멘토 정산", ready: true },
   { href: "/admin/no-shows", label: "노쇼 신고", ready: true },
+  { href: "/admin/refunds", label: "환불 실패", ready: true },
 ];
 
 export default function AdminShell({

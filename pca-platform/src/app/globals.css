@@ -806,3 +806,30 @@ table.weights tfoot td.zero { color: var(--gap); }
 .gate .policy-lines { margin: 12px 0 14px; padding-left: 16px; }
 .gate .policy-lines li { font-size: 13px; color: var(--muted); line-height: 1.7; }
 .gate .join { margin-top: 4px; }
+
+/* 약관·개인정보처리방침. 읽으라고 만든 화면이므로 폭을 좁게 잡는다 */
+.legal-wrap { max-width: 760px; margin: 0 auto; padding: 40px 20px 80px; }
+.legal-wrap header { border-bottom: 2px solid var(--ink); padding-bottom: 18px; margin-bottom: 26px; }
+.legal-wrap .back { font-size: 13px; color: var(--muted); text-decoration: none; }
+.legal-wrap h1 { font-size: 26px; letter-spacing: -0.03em; margin: 10px 0 6px; }
+.legal-wrap .effective { font-size: 13px; color: var(--muted); margin: 0; }
+.legal h2 { font-size: 17px; margin: 30px 0 10px; letter-spacing: -0.02em; }
+.legal h3 { font-size: 15px; margin: 20px 0 8px; }
+.legal p { font-size: 14.5px; line-height: 1.85; margin: 0 0 12px; }
+.legal ul, .legal ol { margin: 0 0 14px; padding-left: 20px; }
+.legal li { font-size: 14.5px; line-height: 1.85; margin-bottom: 4px; }
+.legal table { width: 100%; border-collapse: collapse; margin: 10px 0 18px; font-size: 14px; }
+.legal th, .legal td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.legal th { font-size: 12.5px; color: var(--muted); border-bottom: 1px solid var(--ink); white-space: nowrap; }
+.legal .fill { color: var(--gap); font-weight: 600; }
+.legal-foot {
+  border-top: 1px solid var(--rule); margin-top: 40px; padding-top: 16px;
+  display: flex; gap: 18px; font-size: 13px;
+}
+
+/* 약관 링크는 어느 화면에서도 한 번은 닿아야 한다 */
+.site-foot {
+  border-top: 1px solid var(--rule); margin-top: 40px; padding: 16px 28px 28px;
+  display: flex; gap: 18px; font-size: 12.5px; color: var(--muted);
+}
+.site-foot a { color: inherit; }

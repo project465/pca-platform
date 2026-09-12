@@ -68,7 +68,14 @@ export default function SignupForm() {
 
         <label className="check" style={{ alignSelf: "flex-start" }}>
           <input type="checkbox" name="terms" defaultChecked={v?.terms ?? false} />
-          이용약관과 개인정보 수집·이용에 동의합니다
+          <a href="/terms" target="_blank" rel="noreferrer">
+            이용약관
+          </a>
+          과{" "}
+          <a href="/privacy" target="_blank" rel="noreferrer">
+            개인정보 수집·이용
+          </a>
+          에 동의합니다
         </label>
         {err.terms ? <span className="help" style={{ color: "var(--gap)" }}>{err.terms}</span> : null}
 

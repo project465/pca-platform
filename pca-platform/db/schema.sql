@@ -635,3 +635,41 @@ COMMENT ON TABLE no_show_reports IS
   '신고 1건 = 1행. 판정 전에는 resolution 이 NULL 이고, 그동안 정산이 잡히지 않는다';
 
 CREATE INDEX idx_no_show_open ON no_show_reports(created_at) WHERE resolution IS NULL;
+
+
+-- ============================================================
+--  16. 멘토 지급 계좌 (2026-09-12)
+--
+--  정산 금액은 계산되는데 보낼 곳이 없었다. 운영자가 멘토에게 따로 연락해
+--  계좌를 물어보는 운영은 규모가 커지면 무너진다.
+--
+--  계좌번호와 주민등록번호는 다른 개인정보와 무게가 다르다. 그래서
+--  mentors 에 컬럼으로 붙이지 않고 표를 따로 두었다. 멘토 프로필은 갤러리를
+--  그리느라 자주 읽히는데, 그때마다 계좌가 같이 딸려 나오면 안 된다.
+--
+--  주민등록번호는 소득세법상 원천징수 신고에 필요해서 받되 평문으로 두지 않는다.
+--  암호문만 저장하고(PAYOUT_SECRET), 키가 없으면 아예 받지 않는다.
+--  화면에는 끝자리만 보인다.
+-- ============================================================
+
+CREATE TABLE mentor_payout_accounts (
+  mentor_id     BIGINT PRIMARY KEY REFERENCES mentors(id) ON DELETE CASCADE,
+  bank          TEXT NOT NULL,                  -- 은행 이름
+  account_no    TEXT NOT NULL,                  -- 계좌번호. 숫자와 하이픈만
+  holder        TEXT NOT NULL,                  -- 예금주. 멘토 실명과 달라도 된다(가족 계좌 등)
+  -- 주민등록번호. 암호문(iv:tag:cipher, base64)만 들어간다. 평문은 어디에도 남지 않는다
+  rrn_enc       TEXT,
+  rrn_tail      CHAR(1),                        -- 화면 확인용 끝자리 한 글자
+  updated_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+COMMENT ON TABLE mentor_payout_accounts IS
+  '멘토 본인과 운영사 정산 화면에서만 읽는다. 갤러리·상세는 이 표를 건드리지 않는다';
+
+-- 환불 실패를 화면에서 찾기 위한 인덱스. 실패한 건은 드물지만 반드시 보여야 한다
+CREATE INDEX idx_payments_failed_refund ON payments(created_at DESC)
+  WHERE fail_reason IS NOT NULL;
+
+-- 돌려주기로 정한 금액. 환불이 실패했을 때 얼마를 다시 보내야 하는지 알기 위해
+-- 결제대행사를 부르기 전에 적어둔다. refunded_amount 는 '실제로 돌아간 돈'이라
+-- 실패한 건에는 쓸 수 없다
+ALTER TABLE payments ADD COLUMN refund_due INTEGER;

@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { query, tx } from "@/lib/db";
 import { makeHandle } from "@/lib/anon";
 import { requireUser } from "@/lib/session";
+import { AccountError, saveAccount } from "@/lib/payout-account";
 import {
   acceptRequest,
   declineRequest,
@@ -228,4 +229,34 @@ export async function declineAction(
   revalidatePath("/mentoring/mentor");
   revalidatePath("/mentoring/requests");
   return { ok: "거절했습니다. 그 시간대는 다시 열렸습니다." };
+}
+
+/**
+ * 지급 계좌. 프로필과 분리해 저장한다 — 소개 문구를 고치다가 계좌가 지워지면 안 되고,
+ * 계좌를 바꿨다고 다시 심사를 받을 이유도 없다.
+ */
+export async function saveAccountAction(
+  _prev: MentorState,
+  formData: FormData,
+): Promise<MentorState> {
+  const user = await requireUser();
+  const mentor = await mentorForUser(user.id);
+  if (!mentor) return { message: "멘토 프로필을 먼저 만들어주세요." };
+
+  try {
+    await saveAccount({
+      mentorId: mentor.id,
+      bank: String(formData.get("bank") ?? ""),
+      accountNo: String(formData.get("accountNo") ?? ""),
+      holder: String(formData.get("holder") ?? ""),
+      rrn: String(formData.get("rrn") ?? ""),
+    });
+  } catch (e) {
+    if (e instanceof AccountError) return { message: e.message };
+    throw e;
+  }
+
+  revalidatePath("/mentoring/mentor");
+  revalidatePath("/admin/payouts");
+  return { ok: "지급 계좌를 저장했습니다." };
 }

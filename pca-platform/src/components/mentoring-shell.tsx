@@ -64,6 +64,10 @@ export default function MentoringShell({
         </div>
       </header>
       <main className="main">{children}</main>
+      <footer className="site-foot">
+        <Link href="/terms">이용약관</Link>
+        <Link href="/privacy">개인정보처리방침</Link>
+      </footer>
     </div>
   );
 }

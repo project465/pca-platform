@@ -130,7 +130,22 @@ export async function payoutsOfMentor(mentorId: string): Promise<PayoutRow[]> {
   );
 }
 
+/**
+ * 지급 확정. 계좌가 없으면 막는다 — 화면에서 경고만 하고 버튼은 눌리게 두면
+ * 실제로 보내지 않은 건이 '지급함'으로 남는다.
+ */
 export async function markPayoutPaid(payoutId: string, memo: string | null): Promise<void> {
+  const has = await queryOne<{ ok: boolean }>(
+    `SELECT EXISTS (
+       SELECT 1 FROM mentor_payout_accounts a
+        WHERE a.mentor_id = (SELECT mentor_id FROM payouts WHERE id = $1)
+     ) AS ok`,
+    [payoutId],
+  );
+  if (!has?.ok) {
+    throw new PayoutError("이 멘토의 지급 계좌가 등록되지 않았습니다. 보낼 곳이 없습니다.");
+  }
+
   const rows = await query<{ id: string }>(
     `UPDATE payouts SET status = 'paid', paid_at = now(), memo = $2
       WHERE id = $1 AND status = 'pending'
