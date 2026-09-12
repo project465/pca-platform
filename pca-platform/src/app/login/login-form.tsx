@@ -5,11 +5,12 @@ import { loginAction, type LoginState } from "./actions";
 
 const initial: LoginState = {};
 
-export default function LoginForm() {
+export default function LoginForm({ next }: { next: string }) {
   const [state, formAction, pending] = useActionState(loginAction, initial);
 
   return (
     <form action={formAction} className="form">
+      <input type="hidden" name="next" value={next} />
       {state.error ? (
         <p className="notice error" role="alert">
           {state.error}

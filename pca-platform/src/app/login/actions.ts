@@ -3,6 +3,7 @@
 import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
 import { signIn } from "@/lib/auth";
+import { safeNext } from "@/lib/session";
 
 export type LoginState = { error?: string };
 
@@ -27,6 +28,7 @@ export async function loginAction(
     throw e;
   }
 
-  // 역할과 must_reset_pw 에 따라 "/" 가 알아서 갈 곳을 정한다.
-  redirect("/");
+  // 보던 화면이 있으면 그리로 돌려보낸다. 없으면 역할과 must_reset_pw 에 따라
+  // "/" 가 알아서 갈 곳을 정한다.
+  redirect(safeNext(String(formData.get("next") ?? "") || undefined));
 }

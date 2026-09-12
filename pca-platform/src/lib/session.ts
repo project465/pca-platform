@@ -42,3 +42,13 @@ export function roleInOrg(user: SessionUser, orgId: string): Role | null {
   if (user.role === "superadmin") return "superadmin";
   return user.memberships.find((m) => m.orgId === orgId)?.role ?? null;
 }
+
+/**
+ * 로그인 뒤 돌아갈 곳. 우리 사이트 안의 경로만 받는다.
+ * 바깥 주소를 그대로 믿으면 로그인 링크가 남의 사이트로 보내는 미끼가 된다.
+ */
+export function safeNext(raw: string | undefined, fallback = "/"): string {
+  if (!raw) return fallback;
+  if (!raw.startsWith("/") || raw.startsWith("//")) return fallback;
+  return raw;
+}

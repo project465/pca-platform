@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { query } from "@/lib/db";
 import { namesOf } from "@/lib/i18n";
-import { requireUser } from "@/lib/session";
+import { currentUser } from "@/lib/session";
 import { careerPathLabel, companyScaleLabel, degreeLabel, fieldTrackLabel } from "@/lib/anon";
 import { formatSlot } from "@/lib/notify";
 import {
@@ -34,12 +34,13 @@ export default async function MentorDetailPage({
 }: {
   params: Promise<{ handle: string }>;
 }) {
-  const user = await requireUser();
+  // 로그인 없이도 본다. 신청 버튼에서 받는다
+  const user = await currentUser();
   const { handle } = await params;
 
   const mentor = await mentorByHandle(handle);
   // 승인 전·중지된 멘토는 본인 말고는 못 본다. 링크를 알아도 마찬가지다.
-  if (!mentor || (mentor.status !== "active" && mentor.user_id !== user.id)) notFound();
+  if (!mentor || (mentor.status !== "active" && mentor.user_id !== user?.id)) notFound();
 
   const [slots, stats, reviews, jobs, mine, free] = await Promise.all([
     openSlots(mentor.id),
@@ -49,8 +50,8 @@ export default async function MentorDetailPage({
       `SELECT job_id FROM mentor_job_clusters WHERE mentor_id = $1`,
       [mentor.id],
     ),
-    mentorForUser(user.id),
-    isFreeUser(user.id),
+    user ? mentorForUser(user.id) : Promise.resolve(null),
+    user ? isFreeUser(user.id) : Promise.resolve(false),
   ]);
   const price = free ? null : await priceOf(mentor.session_minutes);
   // 돈을 받는 경우에만 환불 규정을 보여준다. 무료 세션은 돌려줄 돈이 없다
@@ -59,7 +60,7 @@ export default async function MentorDetailPage({
   const jobNames = await namesOf(
     "job_clusters",
     jobs.map((j) => j.job_id),
-    user.locale,
+    user?.locale ?? "ko",
   );
 
   const slotOptions: SlotOption[] = slots.map((s) => ({
@@ -67,7 +68,7 @@ export default async function MentorDetailPage({
     label: formatSlot(new Date(s.starts_at)),
   }));
 
-  const isSelf = mentor.user_id === user.id;
+  const isSelf = mentor.user_id === user?.id;
 
   return (
     <MentoringShell user={user} current="/mentoring" isMentor={Boolean(mine)}>
@@ -175,6 +176,48 @@ export default async function MentorDetailPage({
           {isSelf ? (
             <div className="notice">
               내 프로필입니다. 받은 신청은 <Link href="/mentoring/mentor">멘토 콘솔</Link>에서 봅니다.
+            </div>
+          ) : !user ? (
+            /* 여기가 로그인을 받는 자리다. 둘러보는 데는 계정이 필요 없지만,
+               신청은 결제·일정·알림이 붙으므로 누구인지 알아야 한다 */
+            <div className="gate">
+              <p>
+                {slotOptions.length > 0 ? (
+                  <>
+                    지금 열린 시간대가 <b>{slotOptions.length}개</b> 있습니다.
+                    <br />
+                    가장 이른 시간은 {slotOptions[0].label} 입니다.
+                  </>
+                ) : (
+                  <>지금은 열린 시간대가 없습니다. 멘토가 시간대를 열면 여기에 표시됩니다.</>
+                )}
+              </p>
+              <p className="help">
+                한 번에 {mentor.session_minutes}분
+                {price !== null ? ` · ${price.toLocaleString("ko-KR")}원` : ""}. 멘토가 거절하거나
+                24시간 안에 답하지 않으면 자동으로 취소되고 청구되지 않습니다.
+              </p>
+              {refundPolicy.length > 0 ? (
+                <ul className="policy-lines">
+                  {refundPolicy.map((line) => (
+                    <li key={line}>{line}</li>
+                  ))}
+                </ul>
+              ) : null}
+              <div className="join">
+                <Link className="act solid" href="/signup">
+                  가입하고 신청하기
+                </Link>
+                <Link
+                  className="act"
+                  href={`/login?next=${encodeURIComponent(`/mentoring/${mentor.handle}`)}`}
+                >
+                  로그인
+                </Link>
+              </div>
+              <span className="help">
+                학과 계약으로 들어온 학생은 받은 계정으로 로그인하면 무료입니다.
+              </span>
             </div>
           ) : (
             <ApplyForm

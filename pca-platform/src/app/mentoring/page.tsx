@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { query } from "@/lib/db";
 import { namesOf } from "@/lib/i18n";
-import { requireUser } from "@/lib/session";
+import { currentUser } from "@/lib/session";
 import { listGallery, mentorForUser } from "@/lib/mentoring";
 import {
   CAREER_PATHS,
@@ -16,6 +16,8 @@ import {
 } from "@/lib/anon";
 import { formatSlot } from "@/lib/notify";
 import MentoringShell from "@/components/mentoring-shell";
+import { priceTable } from "@/lib/billing";
+import { refundPolicyLines, refundRules } from "@/lib/refund";
 
 export const metadata = { title: "멘토 둘러보기 — 현멘" };
 export const dynamic = "force-dynamic";
@@ -37,7 +39,8 @@ export default async function GalleryPage({
     from?: string;
   }>;
 }) {
-  const user = await requireUser();
+  // 로그인 없이도 들어온다. 어떤 멘토가 있는지 보지도 못하고 가입할 수는 없다
+  const user = await currentUser();
   const sp = await searchParams;
   const jobId = /^\d+$/.test(sp.job ?? "") ? sp.job : undefined;
   const degree = DEGREES.includes((sp.degree ?? "") as never) ? sp.degree : undefined;
@@ -47,17 +50,23 @@ export default async function GalleryPage({
 
   const [cards, mine, clusters] = await Promise.all([
     listGallery({ jobId, degree, path, track }),
-    mentorForUser(user.id),
+    user ? mentorForUser(user.id) : Promise.resolve(null),
     query<{ id: string; code: string }>(
       `SELECT id, code FROM job_clusters ORDER BY sort_no, code`,
     ),
   ]);
 
+  // 처음 온 사람에게는 값과 절차를 먼저 보여준다. 신청 버튼을 누른 뒤에
+  // 얼마인지 알게 되는 것은 속이는 것에 가깝다
+  const [prices, rules] = user
+    ? [[], []]
+    : await Promise.all([priceTable(), refundRules()]);
+
   // 직무 영역 이름은 translations 에서 가져온다 (설계 원칙 2).
   const jobNames = await namesOf(
     "job_clusters",
     clusters.map((c) => c.id),
-    user.locale,
+    user?.locale ?? "ko",
   );
   const jobLabel = (id: string) => jobNames.get(id) ?? clusters.find((c) => c.id === id)?.code ?? id;
 
@@ -98,6 +107,56 @@ export default async function GalleryPage({
         시간대를 골라 신청하면 멘토가 <b>24시간 안에</b> 답하고, 승낙되는 순간 줌 링크가
         자동으로 만들어져 두 사람에게 발송됩니다.
       </p>
+
+      {!user ? (
+        <section className="visitor">
+          <div className="visitor-steps">
+            <div>
+              <span className="no">1</span>
+              <b>멘토를 고른다</b>
+              <span className="why">진로 경로·학위·전공 계열로 거릅니다</span>
+            </div>
+            <div>
+              <span className="no">2</span>
+              <b>시간대를 고르고 세 줄로 묻는다</b>
+              <span className="why">멘토는 이 질문만 보고 승낙을 판단합니다</span>
+            </div>
+            <div>
+              <span className="no">3</span>
+              <b>승낙되면 줌 링크가 온다</b>
+              <span className="why">거절되거나 24시간 안에 답이 없으면 청구되지 않습니다</span>
+            </div>
+          </div>
+
+          <div className="visitor-price">
+            <div className="pricing">
+              {prices.map((p) => (
+                <span key={p.session_minutes}>
+                  <b>{p.session_minutes}분</b> {p.amount.toLocaleString("ko-KR")}원
+                </span>
+              ))}
+              {prices.length === 0 ? <span>가격은 준비 중입니다</span> : null}
+            </div>
+            <p className="help">
+              학과 계약으로 들어온 학생은 무료입니다. 신청할 때 결제하고, 아래 규정대로
+              돌려드립니다.
+            </p>
+            <ul className="policy-lines">
+              {refundPolicyLines(rules).map((line) => (
+                <li key={line}>{line}</li>
+              ))}
+            </ul>
+            <div className="join">
+              <Link className="act solid" href="/signup">
+                가입하고 신청하기
+              </Link>
+              <Link className="act" href="/login?next=%2Fmentoring">
+                이미 계정이 있습니다
+              </Link>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <div className="filters">
         <div className="filter-row">
