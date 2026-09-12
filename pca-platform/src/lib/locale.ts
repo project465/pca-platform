@@ -195,6 +195,20 @@ export const UI = {
     "120 of the 250 items carry a work-style signal. What matters is the relative height of the six, not their absolute level. Highest is {hi}; lowest is {lo}.",
     "250 sorunun 120'si çalışma eğilimi taşır. Önemli olan altısının mutlak yüksekliği değil, birbirine göre konumudur. En yüksek {hi}; en düşük {lo}.",
   ),
+  // 여섯 축이 같은 값으로 나오는 일이 실제로 있다(문항을 고르게 답하면
+  // 그렇다). 그때 "가장 높은 쪽이 X" 라고 쓰면 없는 차이를 주장하게 된다.
+  // 직무 묶음에서 이미 지킨 원칙 — 못 가리면 못 가린다고 적는다.
+  repNote03Flat: d(
+    "250문항 중 120문항에 성향이 심어져 있습니다. 여섯 가지의 절대 높이보다 서로의 높낮이가 정보인데, 이번 응답에서는 여섯이 같은 높이로 나왔습니다. 어느 쪽이 더 뚜렷하다고 말할 수 없습니다.",
+    "120 of the 250 items carry a work-style signal. What matters is the relative height of the six — and in this response all six came out level. None of them stands out over the others.",
+    "250 sorunun 120'si çalışma eğilimi taşır. Bu yanıtta altısı da aynı düzeyde çıktı; hiçbiri diğerlerinin önünde değil.",
+  ),
+  repNote03FlatHs: d(
+    "문항 112개 중 96개에 성향이 심어져 있습니다. 여섯 가지의 절대 높이보다 서로의 높낮이가 정보인데, 이번 응답에서는 여섯이 같은 높이로 나왔습니다. 어느 쪽이 더 뚜렷하다고 말할 수 없습니다.",
+    "96 of the 112 items carry a work-style signal. What matters is the relative height of the six — and in this response all six came out level. None of them stands out over the others.",
+    "112 sorunun 96'sı çalışma eğilimi taşır. Bu yanıtta altısı da aynı düzeyde çıktı.",
+  ),
+  repKpiTraitFlat: d("여섯이 고르게", "All six level", "Altısı da eşit"),
   repNote04: d(
     "활동 선호 75% + 업무 성향 25%로 계산했습니다. 등수를 매기지 않고 묶음으로 보여드립니다 — 같은 묶음 안의 직무는 이 검사로 우열을 가릴 수 없습니다. 가는 막대가 그 폭입니다.",
     "Computed as 75% activity preference + 25% work style. We group rather than rank: this assessment cannot separate roles inside the same group. The thin bar shows that margin.",

@@ -84,6 +84,24 @@ export default async function ReportPage({
   const byScore = [...r.traits].sort((a, b) => b.scaled - a.scaled);
   const traitTop = byScore[0];
   const traitLow = byScore[byScore.length - 1];
+  /**
+   * 성향의 위·아래를 말할 때 **같은 값끼리 묶는다.**
+   *
+   * 협력형 50 과 속도중시형 50 이 함께 바닥인데 "가장 낮은 쪽이 협력형"
+   * 이라고 쓰면 없는 차이를 주장하는 것이 된다. 직무 묶음에서 이미 지킨
+   * 원칙이고(오차가 차이보다 크면 그 등수는 없다), 성향에서도 같다.
+   *
+   * 여섯이 전부 같은 값으로 나오는 일도 실제로 있다 — 고르게 답하면
+   * 그렇다. 그때는 위도 아래도 없으므로 문장을 아예 바꾼다.
+   *
+   * 아슬아슬한 차이(50 대 51)는 아직 못 가른다. 성향에는 직무처럼 전파된
+   * 표준오차가 없고, 문턱값을 지어내지 않는다(설계 원칙 6).
+   */
+  const tied = (v: number) =>
+    byScore.filter((x) => x.scaled === v).map((x) => x.name).join(" · ");
+  const traitFlat = byScore.length > 1 && traitTop.scaled === traitLow.scaled;
+  const traitHiNames = traitTop ? tied(traitTop.scaled) : "—";
+  const traitLoNames = traitLow ? tied(traitLow.scaled) : "—";
   const dated = r.learner.submittedAt
     ? new Date(r.learner.submittedAt).toLocaleDateString(DATE_LOCALE[lang])
     : "";
@@ -147,8 +165,8 @@ export default async function ReportPage({
             </div>
             <div className="rp-kpi">
               <span className="k-label">{t("repKpiTrait", lang)}</span>
-              <b className="k-val">{traitTop?.name}</b>
-              <span className="k-num">{traitTop?.scaled.toFixed(1)}</span>
+              <b className="k-val">{traitFlat ? t("repKpiTraitFlat", lang) : traitHiNames}</b>
+              {!traitFlat && <span className="k-num">{traitTop?.scaled.toFixed(1)}</span>}
             </div>
           </div>
 
@@ -193,7 +211,9 @@ export default async function ReportPage({
             <h2>{t("repSec03", lang)}</h2>
           </div>
           <p className="rp-note">
-            {tt("repNote03", { hi: traitTop?.name ?? "—", lo: traitLow?.name ?? "—" })}
+            {traitFlat
+              ? tt("repNote03Flat")
+              : tt("repNote03", { hi: traitHiNames, lo: traitLoNames })}
           </p>
           <div className="rp-chart-wrap">
             <Radar items={r.traits} />
