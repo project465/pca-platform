@@ -1,0 +1,504 @@
+<title>메트리 플러스 배포 자료</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@500;600;700&display=swap">
+
+<style>
+/* ============================================================
+   메트리 플러스 — 학교·학부모 배포 자료. 2026-09-12
+
+   이 파일은 화면용이 아니라 종이용이다. 학교는 이것을 흑백으로
+   복사해서 돌린다. 그래서 지켜야 할 것이 셋 있다.
+
+   1. 색으로 정보를 나르지 않는다. 앰버는 "아직 안 채운 칸" 과
+      로고에만 쓰고, 흑백에서 중간 회색이 되어도 읽는 데 지장이
+      없어야 한다. 표의 구분은 선과 굵기로만 한다.
+   2. 한 장이 A4 한 장이다. @page 와 break-after 로 실제로 끊는다.
+   3. 활자는 공문에 가깝게. 제목은 명조(Noto Serif KR), 본문은
+      고딕. 소개 페이지의 Gothic A1 과 일부러 다르게 잡았다 —
+      이건 팔려고 만든 화면이 아니라 결재에 올라가는 종이다.
+
+   쓰지 않은 것 — 둥근 카드, 그림자, 알약 태그, 큰 숫자 타일,
+   강조색 제목, 대문자 자간 라벨. 종이에서는 전부 잉크 낭비다.
+   ============================================================ */
+:root {
+  --ink:    #16202B;
+  --ink-2:  #46535F;
+  --muted:  #78848E;
+  --paper:  #FFFFFF;
+  --desk:   #E8EAEC;
+  --rule:   #C9D0D6;
+  --rule-2: #E3E7EA;
+  --amber:  #B4551A;   /* 아직 안 채운 칸에만 */
+  --serif: "Noto Serif KR", "Batang", serif;
+  --sans:  "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--desk); color: var(--ink);
+  font-family: var(--sans); font-size: 9.05pt; line-height: 1.53;
+  font-variant-numeric: tabular-nums; word-break: keep-all;
+  -webkit-font-smoothing: antialiased;
+  padding-block: 24px;
+}
+p { margin: 0 0 0.62em; }
+p:last-child { margin-bottom: 0; }
+
+/* ── A4 한 장 ─────────────────────────────── */
+.sheet {
+  width: 210mm; min-height: 297mm; margin: 0 auto 24px;
+  background: var(--paper); padding: 14mm 16mm 11mm;
+  border: 1px solid var(--rule);
+  display: flex; flex-direction: column;
+}
+@media screen and (max-width: 230mm) {
+  body { padding-block: 12px; }
+  .sheet { width: 100%; min-height: 0; padding: 20px 16px; margin-bottom: 12px; }
+}
+
+/* ── 문서 머리 ────────────────────────────── */
+.mast { border-bottom: 2.5px solid var(--ink); padding-bottom: 9px; }
+.mast .who {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 14px; font-size: 8.6pt; color: var(--muted); margin-bottom: 7px;
+}
+.mast .who b { font-weight: 700; color: var(--ink-2); }
+.mast h1 {
+  font-family: var(--serif); font-weight: 700; margin: 0;
+  font-size: 15.2pt; letter-spacing: -0.02em; line-height: 1.24;
+}
+.mast .sub { margin: 4px 0 0; font-size: 9.3pt; color: var(--ink-2); }
+
+/* ── 절 ───────────────────────────────────── */
+.sec { margin-top: 8px; }
+.sec > h2 {
+  font-family: var(--serif); font-weight: 600; font-size: 10.2pt;
+  margin: 0 0 4px; padding-bottom: 2px; border-bottom: 1px solid var(--rule);
+  display: flex; align-items: baseline; gap: 8px;
+}
+.sec > h2 i { font-style: normal; font-size: 9pt; color: var(--muted); font-weight: 400; }
+.sec > p, .sec > ul { max-width: 62ch; }
+.lede { font-size: 9.5pt; line-height: 1.58; margin-top: 8px; }
+.lede b { font-weight: 700; }
+
+ul.plain { margin: 0; padding: 0; list-style: none; }
+ul.plain li {
+  position: relative; padding: 1.5px 0 1.5px 13px; font-size: 8.9pt; line-height: 1.5;
+}
+ul.plain li::before {
+  content: ""; position: absolute; left: 2px; top: 12px;
+  width: 5px; height: 1.4px; background: var(--ink-2);
+}
+ul.plain li b { font-weight: 700; }
+ul.plain li i { font-style: normal; color: var(--muted); }
+
+/* ── 표 ───────────────────────────────────── */
+table { width: 100%; border-collapse: collapse; font-size: 8.8pt; line-height: 1.48; }
+th, td { text-align: left; padding: 3.5px 8px 3.5px 0; vertical-align: top;
+         border-bottom: 1px solid var(--rule-2); }
+thead th { font-size: 8.8pt; font-weight: 700; color: var(--muted);
+           border-bottom: 1px solid var(--rule); white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 1px solid var(--rule); }
+th[scope="row"] { font-weight: 700; white-space: nowrap; padding-right: 14px; }
+td.n { white-space: nowrap; }
+
+/* 두 칸을 나란히 */
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 0 26px; }
+.two > div { min-width: 0; }
+@media screen and (max-width: 230mm) { .two { grid-template-columns: 1fr; gap: 0; } }
+
+/* ── 되는 것 / 안 되는 것 ─────────────────── */
+.gate { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--rule); }
+.gate > div { padding: 8px 11px; }
+.gate > div + div { border-left: 1px solid var(--rule); }
+.gate h3 { font-family: var(--serif); font-size: 9.6pt; font-weight: 600; margin: 0 0 3px; }
+.gate ul { margin: 0; padding: 0; list-style: none; }
+.gate li { font-size: 8.6pt; line-height: 1.46; padding: 1.5px 0 1.5px 12px; position: relative; }
+.gate li::before { position: absolute; left: 0; top: 2.5px; font-size: 8.8pt; }
+.gate .yes li::before { content: "■"; color: var(--ink); }
+.gate .no  li::before { content: "□"; color: var(--muted); }
+@media screen and (max-width: 230mm) {
+  .gate { grid-template-columns: 1fr; }
+  .gate > div + div { border-left: 0; border-top: 1px solid var(--rule); }
+}
+
+/* ── 아직 안 채운 칸 ──────────────────────── */
+.unset {
+  color: var(--amber); font-weight: 700;
+  border-bottom: 1px dashed currentColor;
+}
+/* 흑백에서도 빈칸임이 보이게 밑줄을 남긴다 */
+
+/* ── 연락처 ───────────────────────────────── */
+.kv { margin: 0; display: grid; grid-template-columns: 76px 1fr; gap: 3px 13px; font-size: 9.1pt; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; }
+
+/* ── 복사해 쓰는 문안 ─────────────────────── */
+.copy {
+  border: 1px solid var(--ink); padding: 10px 12px; margin-top: 6px;
+  font-size: 8.6pt; line-height: 1.58;
+}
+.copy p { margin-bottom: 0.55em; }
+.copy .blank { color: var(--amber); font-weight: 700; }
+.copy .sig { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--rule); text-align: right; }
+
+/* ── 진행 순서 — 실제로 순서가 있는 것만 번호를 붙인다 ── */
+ol.steps { margin: 8px 0 0; padding: 0; list-style: none; counter-reset: s; }
+ol.steps li {
+  counter-increment: s; display: grid; grid-template-columns: 25px 44px 1fr;
+  gap: 0 9px; padding: 2.5px 0; border-top: 1px solid var(--rule-2); font-size: 8.9pt;
+}
+ol.steps li:first-child { border-top: 1px solid var(--rule); }
+ol.steps li::before { content: counter(s, decimal-leading-zero); color: var(--muted); font-weight: 700; }
+ol.steps .t { color: var(--muted); }
+ol.steps b { font-weight: 700; }
+ol.steps em { font-style: normal; color: var(--ink-2); display: block; font-size: 8.4pt; line-height: 1.46; }
+
+/* ── 꼬리말 ───────────────────────────────── */
+.foot {
+  margin-top: auto; padding-top: 7px; border-top: 1px solid var(--rule);
+  font-size: 7.4pt; color: var(--muted); line-height: 1.46;
+}
+.foot b { color: var(--ink-2); font-weight: 700; }
+.note { font-size: 8.3pt; color: var(--muted); line-height: 1.5; margin-top: 6px; }
+
+/* 로고 자리 */
+.mark { display: inline-flex; align-items: baseline; gap: 5px; }
+.mark b { font-family: var(--serif); font-weight: 700; font-size: 10pt; letter-spacing: -0.02em; }
+.mark i { font-style: normal; color: var(--amber); font-weight: 700; font-size: 10pt; }
+
+@page { size: A4; margin: 13mm 14mm; }
+@media print {
+  body { background: #fff; padding: 0; }
+  .sheet {
+    width: auto; min-height: 0; margin: 0; border: 0; padding: 0;
+    break-after: page;
+  }
+  .sheet:last-child { break-after: auto; }
+  .screen-only { display: none; }
+}
+.screen-only {
+  width: 210mm; max-width: 100%; margin: 0 auto 18px; padding: 0 4px;
+  font-size: 9.4pt; color: #55606A; line-height: 1.7;
+}
+.screen-only b { color: #16202B; }
+</style>
+
+<p class="screen-only">
+  <b>인쇄용 배포 자료 3장.</b> 브라우저에서 인쇄(⌘P · Ctrl+P)하면 A4 세 장으로 끊어져 나옵니다 —
+  1장 학교용, 2장 학부모용, 3장 가정통신문 문안과 설명회 순서. 흑백 복사를 전제로 만들었습니다.
+  주황색으로 밑줄 친 칸은 아직 정해지지 않아 비워 둔 곳이니, 배포 전에 채워야 합니다.
+</p>
+
+<!-- ══════════════ 1장 · 학교용 ══════════════ -->
+<div class="sheet">
+  <div class="mast">
+    <div class="who">
+      <span>수신 <b>중·고등학교 진로진학상담부 · 학년부</b></span>
+      <span class="mark"><b>메트리</b><i>플러스</i></span>
+    </div>
+    <h1>이공계로 마음이 기운 학생에게,<br>다음 학기 과목 신청서까지 적어 주는 진단</h1>
+    <p class="sub">중학교 2–3학년 · 고등학교 1–3학년 / 115문항 · 약 15분 / 한 차시 안에 끝납니다</p>
+  </div>
+
+  <p class="lede">
+    진로검사는 “기계공학 계열이 맞습니다” 까지 나옵니다. 학생이 다음 주에 할 일은 거기서 나오지
+    않습니다. <b>메트리 플러스는 계열을 짚은 다음, 그 계열이 실제로 요구하는 고등학교 과목을
+    학년별로 적어 줍니다.</b> 2022 개정 교육과정 과목표에서 골랐고 선수과목과 학년 정원을
+    맞춰 놓았으므로, 그대로 신청서에 옮길 수 있습니다.
+  </p>
+
+  <div class="sec">
+    <h2>학교가 받는 것</h2>
+    <div class="two">
+      <ul class="plain">
+        <li><b>학생별 결과지</b> — 이공계 8계열 적합, 공학 활동 8축, 업무 성향 6축, 응답 신뢰도</li>
+        <li><b>과목 처방</b> — 학년별 과목, 선수과목, 서울대 권장과목 대조</li>
+        <li><b>현장에서 거꾸로</b> — 직무 → 대학 → 고등학교 → 중학교 순서로 내려오는 설명</li>
+      </ul>
+      <ul class="plain">
+        <li><b>익명 집계 리포트</b> — 학년 전체의 계열·성향 분포. <b>5명 미만인 칸은 숫자를 내지 않습니다</b></li>
+        <li><b>결과 공개 시점을 학교가 정합니다</b> — 담당자가 확인한 뒤 학생에게 열립니다</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>진행 <i>학교가 따로 설치할 것은 없습니다</i></h2>
+    <ul class="plain">
+      <li><b>명단 등록</b> — 반·이름 명단을 올리면 학생별 접속 정보가 발급됩니다 <i>10분 안팎</i></li>
+      <li><b>응시</b> — 컴퓨터실이나 각자 기기로 접속해 115문항을 풉니다 <i>한 차시</i></li>
+      <li><b>결과 확인</b> — 담당자가 집계를 먼저 보고 학생 결과지를 공개합니다 <i>당일</i></li>
+    </ul>
+    <p class="note" style="margin-top:0">
+      학교에 없는 과목은 공동교육과정·온라인학교로 들을 수 있는지 확인하라고 결과지가 적습니다.
+      2026학년도부터 미이수 학생을 위한 온라인 이수 경로도 마련되었습니다.
+    </p>
+  </div>
+
+  <div class="sec">
+    <h2>2028 대입에서 갈리는 지점을 표시합니다</h2>
+    <p>
+      2028 수능은 수학을 <b>대수 · 미적분Ⅰ · 확률과 통계</b>까지만 내고, 탐구는
+      <b>통합사회 · 통합과학</b>을 전원이 같이 봅니다. 그런데 서울대는 자연계열(유형②)에
+      <b>기하 · 미적분Ⅱ</b>와 과학 진로선택 3과목 이상을, 공과대학 일부 전공에는 물리학
+      우선 이수를 권장합니다. <b>수능에 안 나오는데 대학이 권장하는 과목이 생긴다는
+      뜻입니다.</b> 처방은 과목마다 어느 쪽인지를 적어 둡니다.
+    </p>
+  </div>
+
+  <div class="sec">
+    <h2>지금 되는 것과, 아직 안 되는 것</h2>
+    <div class="gate">
+      <div class="yes">
+        <h3>됩니다</h3>
+        <ul>
+          <li>115문항 · 응시부터 결과지까지 한 바퀴</li>
+          <li>고교학점제 과목 처방 — 74과목</li>
+          <li>학교 단체 진행과 익명 집계</li>
+          <li>결과 공개 승인제</li>
+        </ul>
+      </div>
+      <div class="no">
+        <h3>아직 안 됩니다</h3>
+        <ul>
+          <li>학교별 개설 과목 반영 — 교육과정 편제표를 받아야 가능</li>
+          <li>마이스터고·특성화고용 자격·NCS 처방</li>
+          <li>온라인 카드결제 — 시범 도입은 계약으로 진행합니다</li>
+          <li>규준(상위 몇 %) — 첫 학교 도입 이후 만들어집니다</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>비용과 문의</h2>
+    <div class="two">
+      <div>
+        <table>
+          <tbody>
+            <tr><th scope="row">개인</th><td class="n">1인 1회 19,000원</td></tr>
+            <tr><th scope="row">학교 단체</th><td>학년 단위 계약 · 인원에 따라 협의</td></tr>
+            <tr><th scope="row">권하는 시작</th><td><b>한 학급 시범 도입</b></td></tr>
+          </tbody>
+        </table>
+        <p class="note">
+          학년 전체를 돌리기 전에 한 반으로 먼저 받아 보시길 권합니다.
+        </p>
+      </div>
+      <div>
+        <dl class="kv">
+          <dt>담당</dt><dd class="unset">확인 필요</dd>
+          <dt>전화</dt><dd class="unset">확인 필요</dd>
+          <dt>이메일</dt><dd class="unset">확인 필요</dd>
+          <dt>소개 자료</dt><dd class="unset">확인 필요</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <p class="foot">
+    <b>이 자료의 숫자에 대하여.</b> 검사 성능 수치는 가상 응시자 500명 시뮬레이션 결과이며 실제 학생
+    표본이 아닙니다. 규준은 첫 학교 도입 이후 만들어집니다. 교육과정·대입 정보는 2026년 9월 기준으로
+    2028 대입은 확정안, 2030·2033학년도 개편은 검토 단계입니다. 실제 이수 계획은 재학 중인 학교의
+    교육과정 편제표로 확정해야 합니다.
+  </p>
+</div>
+
+<!-- ══════════════ 2장 · 학부모용 ══════════════ -->
+<div class="sheet">
+  <div class="mast">
+    <div class="who">
+      <span>수신 <b>학부모님</b></span>
+      <span class="mark"><b>메트리</b><i>플러스</i></span>
+    </div>
+    <h1>“공대에 가고 싶다” 다음에<br>물어야 할 것이 남아 있습니다</h1>
+    <p class="sub">중학교 2–3학년 · 고등학교 1–3학년 / 115문항 · 약 15분</p>
+  </div>
+
+  <p class="lede">
+    공대 안에도 전공이 여덟 갈래로 갈립니다. 기계, 전기·전자, 컴퓨터, 화학, 신소재, 산업,
+    건설·환경, 바이오·의공학입니다. <b>이 여덟 갈래는 대학에 들어간 뒤 하는 일이 서로
+    많이 다릅니다.</b> 그런데 고등학교에서는 “이과”로 한 덩어리로 묶이고, 그러다 3학년에
+    “생각했던 일과 다르다”를 알게 되는 경우가 적지 않습니다. 메트리 플러스는 아이가 그 여덟 갈래
+    중 어디와 맞는지를 재고, <b>다음 학기에 어떤 과목을 신청해야 하는지까지 적어 줍니다.</b>
+  </p>
+
+  <div class="sec">
+    <h2>문항이 이렇게 생겼습니다</h2>
+    <p class="note" style="margin-top:0">전공 용어가 한 개도 없습니다. 115문항 전부 학교 수업·동아리·평소 습관에서 나온 장면입니다.</p>
+    <table>
+      <tbody>
+        <tr><td>“고장 난 물건이 있으면 누구에게 물어보기 전에 먼저 뜯어서 안이 어떻게 생겼는지 본다.”</td></tr>
+        <tr><td>“만든 프로그램이 안 돌아가면 먼저 혼자 어디가 틀렸는지 찾아보는 편이다.”</td></tr>
+        <tr><td>“다리나 건물을 보면 혼자 어떻게 서 있는 건지 구조를 짚어 본다.”</td></tr>
+      </tbody>
+    </table>
+    <p class="note">
+      아직 배우지 않은 단어로 물으면 성향이 아니라 <b>그 단어를 아는지</b>를 재게 됩니다.
+      모르는 문항에 전부 ‘보통이다’를 찍으면 그 응답은 쓸 수 없습니다.
+    </p>
+  </div>
+
+  <div class="sec">
+    <h2>결과지가 하지 않는 것 <i>먼저 읽어 주십시오</i></h2>
+    <div class="gate">
+      <div class="no">
+        <h3>이 검사는 이렇게 하지 않습니다</h3>
+        <ul>
+          <li>직업을 정해 주지 않습니다</li>
+          <li>1위·2위로 등수를 매기지 않습니다</li>
+          <li>대학 합격이나 입시 유리를 말하지 않습니다</li>
+          <li>“상위 몇 %” 를 내지 않습니다</li>
+        </ul>
+      </div>
+      <div class="yes">
+        <h3>대신 이렇게 합니다</h3>
+        <ul>
+          <li>겹치는 계열은 <b>한 묶음</b>으로 보여 줍니다</li>
+          <li>“이 검사로는 1군 안에서 우열을 가릴 수 없다”고 직접 적습니다</li>
+          <li>그 판단은 <b>직접 해 본 경험</b>이 하도록 남겨 둡니다</li>
+          <li>과목마다 왜 그 과목인지 한 줄씩 적습니다</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">
+      등수를 매기지 않는 이유는 기술적인 것입니다. 1위와 2위의 차이가 측정 오차보다 작은
+      경우가 많아, “1위 기계공학”이라 적으면 없는 정밀도를 파는 셈이 됩니다.
+    </p>
+  </div>
+
+  <div class="sec">
+    <h2>아이가 받는 종이에 무엇이 적혀 있나</h2>
+    <ol class="steps">
+      <li><span class="t">앞부분</span><span><b>이공계 8계열 중 어디와 맞는가</b><em>겹치는 계열은 묶음으로, 구간과 함께</em></span></li>
+      <li><span class="t">중간</span><span><b>현장에서 거꾸로 내려오는 설명</b><em>구조해석 엔지니어의 일이 하중 조건을 세우는 것을 요구하고, 그래서 대학에서 정역학을, 고등학교에서 물리학을 듣는다 — 순서가 반대입니다</em></span></li>
+      <li><span class="t">뒷부분</span><span><b>다음 학기 과목 신청서</b><em>학년별 과목과 학점. 미적분Ⅱ 를 넣으면 미적분Ⅰ 도 함께 넣습니다</em></span></li>
+    </ol>
+  </div>
+
+  <div class="sec">
+    <h2>비용과 문의</h2>
+    <div class="two">
+      <div>
+        <table>
+          <tbody>
+            <tr><th scope="row">1인 1회</th><td class="n">19,000원</td></tr>
+            <tr><th scope="row">소요 시간</th><td>115문항 · 약 15분</td></tr>
+            <tr><th scope="row">결과지</th><td>응시 후 바로 · 한국어</td></tr>
+            <tr><th scope="row">학교 단체</th><td>학교가 도입한 경우 개별 결제 없이 받습니다</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <dl class="kv">
+          <dt>담당</dt><dd class="unset">확인 필요</dd>
+          <dt>전화</dt><dd class="unset">확인 필요</dd>
+          <dt>이메일</dt><dd class="unset">확인 필요</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <p class="foot">
+    <b>미리 밝혀 둡니다.</b> 이 자료의 검사 성능 수치는 가상 응시자 500명 시뮬레이션 결과이며 실제 학생
+    표본이 아닙니다. 규준은 첫 학교 도입 이후 만들어지므로 지금은 “또래 중 상위 몇 %” 를 말할 수
+    없고, 말하지 않습니다. 교육과정·대입 정보는 2026년 9월 기준입니다.
+  </p>
+</div>
+
+<!-- ══════════════ 3장 · 가정통신문 문안과 설명회 순서 ══════════════ -->
+<div class="sheet">
+  <div class="mast">
+    <div class="who">
+      <span>수신 <b>학교 담당 선생님</b> · 그대로 복사해 쓰시는 자료입니다</span>
+      <span class="mark"><b>메트리</b><i>플러스</i></span>
+    </div>
+    <h1>가정통신문 문안과 설명회 진행 순서</h1>
+    <p class="sub">학교 이름과 날짜만 채우면 그대로 나갑니다. 문장을 줄이거나 고쳐 쓰셔도 됩니다</p>
+  </div>
+
+  <div class="sec">
+    <h2>가정통신문 문안 <i>아래 상자 안을 그대로 옮기십시오</i></h2>
+    <div class="copy">
+      <p style="text-align:center;font-family:var(--serif);font-weight:700;font-size:12pt;margin-bottom:1.1em">
+        이공계 계열 적합 진단 「메트리 플러스」 안내
+      </p>
+      <p>학부모님께,</p>
+      <p>
+        본교는 <span class="blank">○학년</span> 학생을 대상으로 이공계 계열 적합 진단
+        「메트리 플러스」를 <span class="blank">○월 ○일</span> 실시합니다.
+      </p>
+      <p>
+        공과대학 안에도 기계·전기전자·컴퓨터·화학·신소재·산업·건설환경·바이오의공학으로
+        전공이 갈리고, 계열에 따라 고등학교에서 들어야 하는 과목이 달라집니다. 이 진단은
+        학생이 여덟 계열 중 어디와 맞는지를 재고, <b>2022 개정 교육과정 과목표에서 그 계열이
+        요구하는 과목을 학년별로 정리해</b> 학생에게 제공합니다.
+      </p>
+      <p>
+        검사는 115문항, 약 15분이며 수업 한 차시 안에 끝납니다. 전공 용어가 들어간 문항은
+        없으며, 학교 수업·동아리·평소 습관에서 나온 장면으로 구성되어 있습니다.
+      </p>
+      <p>
+        결과지는 계열에 <b>등수를 매기지 않습니다.</b> 점수 차이가 측정 오차보다 작은 계열은
+        한 묶음으로 표시하고, 그 안에서는 우열을 가릴 수 없다고 결과지에 직접 적습니다.
+        진로를 확정해 주는 자료가 아니라, 다음 학기 과목 선택을 의논할 때 쓰는 자료로
+        받아 주시면 좋겠습니다.
+      </p>
+      <p>
+        결과는 담당 교사가 확인한 뒤 학생에게 개별 제공되며, 학교는 5명 미만인 항목의 수치를
+        제외한 익명 집계만 확인합니다.
+      </p>
+      <p>
+        문의는 <span class="blank">○○부 ○○○ 선생님</span>
+        (<span class="blank">전화번호</span>) 으로 부탁드립니다.
+      </p>
+      <p class="sig">
+        <span class="blank">○○○○년 ○○월 ○○일</span><br>
+        <span class="blank">○○중학교 · ○○고등학교</span> 장
+      </p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>학부모 설명회 진행 순서 <i>15분 분량</i></h2>
+    <ol class="steps">
+      <li><span class="t">2분</span><span><b>공대는 한 곳이 아니다</b><em>여덟 갈래를 칠판에 적고, 기계와 컴퓨터가 대학에서 하는 일이 어떻게 다른지 한 예만 든다</em></span></li>
+      <li><span class="t">3분</span><span><b>문항을 소리내어 읽어 준다</b><em>“고장 난 물건을 먼저 뜯어 본다” 두세 개. 학부모가 자기 아이를 떠올리게 되는 지점이다</em></span></li>
+      <li><span class="t">4분</span><span><b>과목 처방 화면을 띄운다</b><em>이 자료의 1장을 그대로 보여 줘도 된다. “이게 다음 학기 신청서로 옮겨 간다” 가 핵심</em></span></li>
+      <li><span class="t">3분</span><span><b>2028 대입에서 갈리는 지점</b><em>기하·미적분Ⅱ 는 수능에 안 나오는데 서울대가 권장한다 — 이 한 장면이 가장 많은 질문을 받는다</em></span></li>
+      <li><span class="t">2분</span><span><b>하지 않는 것을 먼저 말한다</b><em>등수 없음, 규준 없음, 직업을 정해 주지 않음. 이걸 먼저 말하면 나머지가 신뢰를 얻는다</em></span></li>
+      <li><span class="t">1분</span><span><b>일정과 문의</b><em>응시일, 결과 제공 시점, 담당 선생님</em></span></li>
+    </ol>
+  </div>
+
+  <div class="sec">
+    <h2>많이 나오는 질문 세 개</h2>
+    <table>
+      <tbody>
+        <tr>
+          <th scope="row" style="width:34%">“이 검사로 진로가 정해지나요?”</th>
+          <td>아닙니다. 여덟 계열 중 어느 묶음에 가까운지를 보여 주고, 그 계열이 요구하는 과목을 알려 줍니다. 확정은 직접 해 본 경험이 합니다.</td>
+        </tr>
+        <tr>
+          <th scope="row">“우리 아이가 상위 몇 %인가요?”</th>
+          <td>지금은 답할 수 없습니다. 규준은 첫 학교 도입 이후 만들어집니다. 이 검사는 다른 학생과 비교하지 않고 그 학생 안에서 무엇이 더 높은지를 봅니다.</td>
+        </tr>
+        <tr>
+          <th scope="row">“결과가 학교 기록에 남나요?”</th>
+          <td>학생 개별 결과는 학생에게 갑니다. 학교는 5명 미만 항목을 제외한 익명 집계만 봅니다. 학생부에 자동으로 기재되는 항목이 아닙니다.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="foot">
+    <b>배포 전에 채울 것.</b> 이 자료에서 주황색 밑줄로 표시된 칸은 아직 정해지지 않아
+    비워 두었습니다 — 담당자, 전화, 이메일, 소개 자료 주소입니다. 값을 지어내지 않았으므로
+    그대로 복사하면 빈칸이 나갑니다. 더불어 학부모에게 직접 결제를 받으려면 사업자 정보 표시와
+    통신판매업 신고가 먼저 필요합니다. <b>학교 시범 도입은 계약으로 진행하므로 그 절차 없이도
+    시작할 수 있습니다.</b>
+  </p>
+</div>

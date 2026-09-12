@@ -306,7 +306,8 @@ th[scope="row"] { font-weight: 700; color: var(--ink); font-family: var(--body);
 .todo ul { padding: 0; margin: 0; display: grid; gap: 8px; }
 
 /* ── 문의 ─────────────────────────────────── */
-.unset { color: var(--amber); font-weight: 700; }
+.unset { color: var(--amber); font-weight: 700; border-bottom: 1px dashed currentColor; }
+.rxlink { font-weight: 700; text-decoration-thickness: 1px; text-underline-offset: 2px; }
 .contact { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); padding: clamp(20px, 3.5vw, 30px); display: grid; gap: 14px; }
 .kv { display: grid; grid-template-columns: 120px 1fr; gap: 6px 16px; font-size: 14.5px; }
 .kv dt { color: var(--muted); }
@@ -829,6 +830,7 @@ footer .wrap { display: grid; gap: 8px; }
         <p>
           학년 전체를 한 번에 돌리기 전에 한 반으로 먼저 받아 보십시오. 결과지가 손에 들어오면
           담임이 상담에서 무엇을 쓰게 되는지, 과목 신청 기간에 무엇이 필요한지가 보입니다.
+          <b>학교 시범 도입은 계약으로 진행하므로, 온라인 결제가 열리기 전에도 시작할 수 있습니다.</b>
         </p>
       </div>
       <div class="contact">
@@ -836,11 +838,20 @@ footer .wrap { display: grid; gap: 8px; }
           <dt>대상</dt><dd>중학교 2–3학년 · 고등학교 1–3학년</dd>
           <dt>소요</dt><dd>115문항, 약 15분. 한 차시 안에 끝납니다</dd>
           <dt>진행</dt><dd>학교가 명단을 올리면 학생별 접속 정보가 발급됩니다</dd>
+          <dt>배포 자료</dt>
+          <dd>
+            <a href="https://claude.ai/code/artifact/791da8ea-23c2-42bc-b7ab-ea025e64194e" class="rxlink">
+              학교용 · 학부모용 안내문과 가정통신문 문안
+            </a>
+            — 인쇄하면 A4 세 장입니다
+          </dd>
           <dt>담당</dt><dd class="unset">확인 필요</dd>
-          <dt>연락처</dt><dd class="unset">확인 필요</dd>
+          <dt>전화</dt><dd class="unset">확인 필요</dd>
+          <dt>이메일</dt><dd class="unset">확인 필요</dd>
         </dl>
         <p class="note">
-          담당자와 연락처는 아직 정해지지 않아 비워 두었습니다.
+          담당자와 연락처는 아직 정해지지 않아 비워 두었습니다. 이 칸이 채워지기 전까지는
+          배포 자료를 인쇄해도 학교가 연락할 곳이 없습니다.
         </p>
       </div>
     </div>
