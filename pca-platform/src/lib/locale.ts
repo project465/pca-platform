@@ -144,7 +144,7 @@ export const UI = {
   repSec02: d("공학 활동 선호", "Engineering activity preferences", "Mühendislik faaliyet tercihleri"),
   repSec03: d("업무 성향", "Work style", "Çalışma eğilimi"),
   repSec04: d("직무 적합도", "Role fit", "Rol uyumu"),
-  repSec05: d("1순위 직무가 요구하는 역량", "What the top role requires", "İlk sıradaki rolün gerektirdikleri"),
+  repSec05: d("가장 앞에 있는 직무가 요구하는 역량", "What the top role requires", "İlk sıradaki rolün gerektirdikleri"),
   repSec06: d("다음 여섯 달", "The next six months", "Önümüzdeki altı ay"),
   repLead: d(
     "250문항이 재는 것은 무엇을 하고 싶은가입니다. 실력이 아니라 관심의 방향입니다.",
@@ -229,9 +229,17 @@ export const UI = {
     "İlk grubunuzda {n} rol var. Bu test onları ayıramaz — ayrımı deneyim yapar.",
   ),
   repNote05: d(
-    "1순위로 나온 {job}[이/가] 요구하는 역량을 중요도 순으로 놓았습니다.",
-    "What {job}, your top-ranked role, requires — ordered by importance.",
-    "İlk sıradaki rol olan {job} için gerekenler — önem sırasına göre.",
+    "{job}[이/가] 요구하는 역량을 중요도 순으로 놓았습니다.",
+    "What {job} requires — ordered by importance.",
+    "{job} için gerekenler — önem sırasına göre.",
+  ),
+  // 1군에 여럿이 있는데 역량 표는 그중 하나만 펼친다(증거와 처방이 직무
+  // 하나에 걸려 있다). 그 사실을 적지 않으면 앞 칸에서 "우열을 못 가린다"
+  // 고 해 놓고 여기서 한 직무를 정답처럼 내놓는 셈이 된다.
+  repNote05Group: d(
+    "1군에 직무가 {n}개 있어 이 검사로는 우열을 가릴 수 없습니다. 아래는 그중 점수가 가장 높게 나온 하나만 펼친 것이고, 나머지는 04절 표에 있습니다.",
+    "The top group holds {n} roles that this assessment cannot separate. Below is only the one that scored highest; the rest are in section 04.",
+    "İlk grupta bu değerlendirmenin ayırt edemediği {n} rol var. Aşağıda yalnızca en yüksek puanlı olan açıldı.",
   ),
   repNoEvidence: d(
     "보유 수준은 아직 비어 있습니다. 이 검사는 관심의 방향을 재는 것이고, 역량 보유 수준은 들은 과목·자격증·프로젝트에서만 나옵니다. 추정해서 채우지 않았습니다.",
@@ -253,9 +261,9 @@ export const UI = {
     "{area} tarafında bir proje bitirin. Kanıt olarak ürün değil, sürecin kaydı sayılır.",
   ),
   repPlan3: d(
-    "2순위였던 {job}[과/와] 비교해 다시 봅니다. 구간이 겹쳤다면 해 본 경험이 순위를 가릅니다.",
-    "Revisit this against {job}, which ranked second. Where the intervals overlapped, experience is what separates them.",
-    "İkinci sıradaki {job} ile yeniden karşılaştırın. Aralıklar çakıştıysa ayrımı deneyim yapar.",
+    "다음으로 높게 나온 {job}[과/와] 비교해 다시 봅니다. 구간이 겹쳤다면 해 본 경험이 순위를 가릅니다.",
+    "Revisit this against {job}, the next one up. Where the intervals overlapped, experience is what separates them.",
+    "Bir sonraki {job} ile yeniden karşılaştırın. Aralıklar çakıştıysa ayrımı deneyim yapar.",
   ),
   repPlanM1: d("1–2개월", "Months 1–2", "1–2. ay"),
   repPlanM2: d("3–4개월", "Months 3–4", "3–4. ay"),
@@ -710,19 +718,32 @@ const JONG_DIGIT: Record<string, boolean> = {
   "0": true, "1": true, "2": false, "3": true, "4": false,
   "5": false, "6": true, "7": true, "8": true, "9": false,
 };
+/**
+ * 영문 한 글자를 한국어로 읽었을 때 받침이 있는 것 — 엘·엠·엔·알 넷이다.
+ * 직무 이름이 "구조·유동 해석 (CAE)" 처럼 약어로 끝나는 일이 잦다.
+ *
+ * 한 글자씩 읽는 약어(CAE·R&D·ANSYS)는 이 규칙으로 맞는다. 단어로 읽는
+ * 약어는 못 맞춘다 — MATLAB 은 "매트랩" 이라 "매트랩과" 인데 B(비)로 읽어
+ * "와" 가 된다. 그런 이름은 지금 조사가 붙는 자리에 오지 않고(역량 목록에만
+ * 있다), 오게 되면 그때 예외 표를 두는 것이 규칙을 비틀는 것보다 낫다.
+ */
+const JONG_LATIN = new Set(["L", "M", "N", "R"]);
 function hasFinalConsonant(word: string): boolean {
-  const ch = word.trim().slice(-1);
+  // 닫는 괄호·인용부호는 소리가 없다. "…(CAE)" 는 "CAE" 로 읽는다
+  const w = word.replace(/[\s)\]}"'’”』」]+$/u, "");
+  const ch = w.slice(-1);
   if (!ch) return false;
   if (ch in JONG_DIGIT) return JONG_DIGIT[ch];
   const code = ch.charCodeAt(0);
   if (code >= 0xac00 && code <= 0xd7a3) return (code - 0xac00) % 28 !== 0;
-  // 한글도 숫자도 아니면(영문·기호) 받침 없는 쪽으로 본다
+  if (/[A-Za-z]/.test(ch)) return JONG_LATIN.has(ch.toUpperCase());
   return false;
 }
 
 /** 앞말 + `[받침있을때/없을때]` 를 한 조사로 줄인다 */
 function resolveParticles(s: string): string {
-  return s.replace(/([^\[\]\s])\[([^/\]]+)\/([^/\]]+)\]/g, (_m, prev, withJong, without) =>
+  // 조사 바로 앞의 덩어리를 통째로 넘긴다 — 괄호로 끝나면 그 안을 읽어야 한다
+  return s.replace(/([^\[\]\s]+)\[([^/\]]+)\/([^/\]]+)\]/g, (_m, prev, withJong, without) =>
     prev + (hasFinalConsonant(prev) ? withJong : without),
   );
 }

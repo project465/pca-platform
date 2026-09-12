@@ -70,12 +70,29 @@ export function Radar({ items, size = 260 }: { items: Item[]; size?: number }) {
 }
 
 /** 순위 막대. 1위만 진하게 — 결과지에서 눈이 먼저 가야 하는 곳은 하나다. */
+/**
+ * 순위 막대.
+ *
+ * **화면에 같은 값으로 찍히면 같은 번호를 준다.** 82.0 · 82.0 · 82.0 에
+ * 1·2·3 을 매기면 세 칸을 순서대로 읽게 되는데, 그 순서는 문항이 잰 것이
+ * 아니라 정렬이 만든 것이다. 같은 값이면 1·1·1 을 주고 다음 값은 4 부터
+ * 간다(경쟁 순위). 굵게 칠하는 것도 첫 줄이 아니라 1등 값을 가진 줄 전부다.
+ *
+ * 비교는 **찍히는 자리까지만** 한다. 원값은 82.0416… 과 81.9583… 처럼
+ * 다를 수 있는데, 둘 다 "82.0" 으로 찍히면 읽는 사람에게는 같은 값이다.
+ * 보이지 않는 소수점으로 등수를 가르면 그 등수는 설명할 수 없다.
+ */
+const shown = (v: number) => v.toFixed(1);
 export function RankBars({ items, max = 100 }: { items: Item[]; max?: number }) {
+  const ranks = items.map(
+    (it, i) => items.findIndex((x) => shown(x.scaled) === shown(it.scaled)) + 1 || i + 1,
+  );
+  const topValue = items[0] ? shown(items[0].scaled) : null;
   return (
     <ul className="rankbars">
       {items.map((it, i) => (
-        <li key={it.name} className={i === 0 ? "top" : ""}>
-          <span className="rb-rank">{i + 1}</span>
+        <li key={it.name} className={shown(it.scaled) === topValue ? "top" : ""}>
+          <span className="rb-rank">{ranks[i]}</span>
           <span className="rb-name">{it.name}</span>
           <span className="rb-track">
             <span className="rb-fill" style={{ width: `${(it.scaled / max) * 100}%` }} />

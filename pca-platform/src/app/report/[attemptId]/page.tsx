@@ -104,12 +104,14 @@ export default async function ReportPage({
    * 이름이 들어가면 읽히지 않고, 안 읽히는 칸은 없는 칸과 같다. 이름은
    * 04절 표에 전부 있다.
    */
+  /** 찍히는 자리까지만 비교한다 — 보이지 않는 소수점으로 가른 등수는 설명할 수 없다 */
+  const shown = (v: number) => v.toFixed(1);
   const joinNames = (xs: { name: string }[]) => xs.map((x) => x.name).join(" · ");
   const groupLabel = (xs: { name: string }[], nKey: UiKey) =>
     xs.length === 0 ? "—" : xs.length <= 3 ? joinNames(xs) : t(nKey, lang, { n: xs.length });
   const tied = (v: number) =>
-    groupLabel(byScore.filter((x) => x.scaled === v), "repGroupNTrait");
-  const traitFlat = byScore.length > 1 && traitTop.scaled === traitLow.scaled;
+    groupLabel(byScore.filter((x) => shown(x.scaled) === shown(v)), "repGroupNTrait");
+  const traitFlat = byScore.length > 1 && shown(traitTop.scaled) === shown(traitLow.scaled);
   const traitHiNames = traitTop ? tied(traitTop.scaled) : "—";
   const traitLoNames = traitLow ? tied(traitLow.scaled) : "—";
 
@@ -134,7 +136,10 @@ export default async function ReportPage({
   const nextGroup = nextTier ? r.jobs.filter((j) => j.tier === nextTier.tier) : [];
   /** 계열 순위(대학판 칸)는 구간이 없으므로 같은 값끼리만 묶는다 */
   const topAreaNames = topArea
-    ? groupLabel(r.areas.filter((x) => x.scaled === topArea.scaled), "repGroupN")
+    ? groupLabel(
+        r.areas.filter((x) => shown(x.scaled) === shown(topArea.scaled)),
+        "repGroupN",
+      )
     : "—";
   /** 다음 묶음을 덮는 구간. 이름을 못 적을 때 이 칸이 유일한 정보가 된다 */
   const nextBand: [number, number] | null = nextGroup.length
@@ -305,7 +310,11 @@ export default async function ReportPage({
             <span className="rp-no">05</span>
             <h2>{t("repSec05", lang)}</h2>
           </div>
-          <p className="rp-note">{t("repNote05", lang, { job: top?.name ?? "—" })}</p>
+          <p className="rp-note">
+            {t("repNote05", lang, { job: top?.name ?? "—" })}
+            {/* 역량 표는 1군 중 하나만 펼친다. 여럿이면 그 사실을 적는다 */}
+            {topTier > 1 ? ` ${t("repNote05Group", lang, { n: topTier })}` : null}
+          </p>
           {r.evidenceCount === 0 && (
             <p className="notice warn">
               {t("repNoEvidence", lang)}{" "}
