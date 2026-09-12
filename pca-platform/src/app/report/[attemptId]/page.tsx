@@ -426,7 +426,11 @@ export default async function ReportPage({
               ) : (
                 <b className="rp-lock-soon">{t("repLockSoon", lang)}</b>
               )}
-              <span className="rp-foot-note">{t("repLockSchool", lang)}</span>
+              {/* 결제가 닫혀 있을 때 repLockSoon 이 이미 학교 경로를 말한다.
+                  둘을 같이 두면 같은 문장을 두 번 읽게 된다. */}
+              {checkoutReady() ? (
+                <span className="rp-foot-note">{t("repLockSchool", lang)}</span>
+              ) : null}
             </div>
           </section>
         )}

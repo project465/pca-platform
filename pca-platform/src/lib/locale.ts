@@ -207,12 +207,12 @@ export const UI = {
   // 그렇다). 그때 "가장 높은 쪽이 X" 라고 쓰면 없는 차이를 주장하게 된다.
   // 직무 묶음에서 이미 지킨 원칙 — 못 가리면 못 가린다고 적는다.
   repNote03Flat: d(
-    "250문항 중 120문항에 성향이 심어져 있습니다. 여섯 가지의 절대 높이보다 서로의 높낮이가 정보인데, 이번 응답에서는 여섯이 같은 높이로 나왔습니다. 어느 쪽이 더 뚜렷하다고 말할 수 없습니다.",
+    "250문항 중 120문항에 성향이 심어져 있습니다. 여섯 축은 절대값이 아니라 서로 견줘 읽는데, 이번 응답에서는 여섯이 같은 값으로 나왔습니다. 더 뚜렷한 쪽이 없습니다.",
     "120 of the 250 items carry a work-style signal. What matters is the relative height of the six — and in this response all six came out level. None of them stands out over the others.",
     "250 sorunun 120'si çalışma eğilimi taşır. Bu yanıtta altısı da aynı düzeyde çıktı; hiçbiri diğerlerinin önünde değil.",
   ),
   repNote03FlatHs: d(
-    "문항 112개 중 96개에 성향이 심어져 있습니다. 여섯 가지의 절대 높이보다 서로의 높낮이가 정보인데, 이번 응답에서는 여섯이 같은 높이로 나왔습니다. 어느 쪽이 더 뚜렷하다고 말할 수 없습니다.",
+    "문항 112개 중 96개에 성향이 심어져 있습니다. 여섯 축은 절대값이 아니라 서로 견줘 읽는데, 이번 응답에서는 여섯이 같은 값으로 나왔습니다. 더 뚜렷한 쪽이 없습니다.",
     "96 of the 112 items carry a work-style signal. What matters is the relative height of the six — and in this response all six came out level. None of them stands out over the others.",
     "112 sorunun 96'sı çalışma eğilimi taşır. Bu yanıtta altısı da aynı düzeyde çıktı.",
   ),
@@ -311,12 +311,12 @@ export const UI = {
     "Buraya kadarı hangi alanın uyduğunu söyledi. Kalanı önümüzdeki dönem hangi dersi seçeceğini söylüyor.",
   ),
   repLockItem1: d(
-    "현장에서 거꾸로 — 1군 계열의 대표 직무가 실제로 하는 일, 그것이 요구하는 것, 그래서 지금 무엇을 해 볼지",
-    "The chain, read backwards — what the roles in your top group actually do, what that demands, and what to try now",
+    "현장에서 거꾸로 — 1군 계열의 대표 직무가 하는 일에서 시작해 지금 해 볼 수 있는 것까지 내려옵니다",
+    "The chain, read backwards — starts from what the roles in your top group do and comes down to what you can try now",
     "Zincir, tersten — ilk gruptaki rollerin gerçekte ne yaptığı ve bunun ne gerektirdiği",
   ),
   repLockItem2: d(
-    "과목 처방 — 2022 개정 교육과정 74과목에서 골라 학년별로. 선수과목과 학년 학점까지 맞춰 그대로 신청서에 옮길 수 있습니다",
+    "과목 처방 — 2022 개정 교육과정 74과목에서 골라 학년별로 놓습니다. 선수과목과 학년 학점을 맞춰 두었으니 신청서에 그대로 옮기면 됩니다",
     "The course prescription — chosen from 74 subjects in the national curriculum, laid out by year with prerequisites and credit limits already met",
     "Ders reçetesi — ulusal müfredattaki 74 dersten seçilmiş, sınıf sınıf",
   ),
@@ -339,9 +339,9 @@ export const UI = {
   // 개인 결제가 아직 열리지 않은 동안. 버튼을 그려 놓고 누르면 오류가
   // 나는 것보다, 왜 아직 못 사는지 적는 것이 낫다.
   repLockSoon: d(
-    "개인 결제는 아직 열리지 않았습니다. 지금은 학교가 단체로 도입한 경우에만 남은 절이 열립니다.",
-    "Individual payment is not open yet. For now the rest opens only where a school has adopted it.",
-    "Bireysel ödeme henüz açık değil.",
+    "개인 결제는 아직 열리지 않았습니다. 지금은 학교가 단체로 도입한 경우에만 남은 절이 열리니, 담당 선생님께 확인하십시오.",
+    "Individual payment is not open yet. For now the rest opens only where a school has adopted it — ask your teacher.",
+    "Bireysel ödeme henüz açık değil. Şimdilik yalnızca okul kurumsal olarak aldıysa açılır; öğretmeninize sorun.",
   ),
   repLockSchool: d(
     "학교가 단체로 도입한 경우 결제 없이 전부 열립니다. 담당 선생님께 확인하십시오.",
@@ -364,13 +364,13 @@ export const UI = {
   ),
   freeIncHead: d("무료로 나오는 것", "What the free part gives", "Ücretsiz bölümde gelenler"),
   freeInc1: d(
-    "이공계 8계열 적합도 — 등수가 아니라 구간과 묶음으로",
-    "Fit across the eight engineering fields — as bands and groups, not a ranking",
+    "이공계 8계열 적합도 — 구간과 묶음으로 냅니다. 등수는 매기지 않습니다",
+    "Fit across the eight engineering fields — as bands and groups. No ranking",
     "Sekiz mühendislik alanında uyum — sıralama değil, aralık",
   ),
   freeInc2: d("공학 활동 8축", "The eight engineering activity axes", "Sekiz mühendislik etkinlik ekseni"),
   freeInc3: d("응답 신뢰도 — 성실하게 답했는지", "Response reliability", "Yanıt güvenilirliği"),
-  freeExcHead: d("여기까지가 무료입니다", "Where the free part stops", "Ücretsiz bölümün bittiği yer"),
+  freeExcHead: d("여기서부터 유료입니다", "Where the paid part starts", "Ücretli bölümün başladığı yer"),
   freeExc1: d(
     "현장 사슬과 고교학점제 과목 처방은 유료 구간입니다",
     "The chain and the course prescription are the paid part",
@@ -388,8 +388,8 @@ export const UI = {
     "Kişi başına bir ücretsiz deneme.",
   ),
   freeSchool: d(
-    "학교가 단체로 도입한 경우 이 문이 아니라 선생님이 준 접속 정보로 들어가십시오 — 그쪽은 전부 열립니다.",
-    "If your school has adopted it, use the sign-in your teacher gave you instead — that route opens everything.",
+    "학교가 단체로 도입한 경우에는 선생님이 준 접속 정보로 들어가십시오. 그쪽은 처음부터 전부 열립니다.",
+    "If your school has adopted it, use the sign-in your teacher gave you. That route opens everything from the start.",
     "Okulunuz kurumsal olarak aldıysa öğretmeninizin verdiği giriş bilgisini kullanın.",
   ),
   freeFail: d(
