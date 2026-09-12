@@ -20,6 +20,16 @@ export type MyRequest = {
   provider: string | null;
   hasReview: boolean;
   canCancel: boolean;
+  payStatus: string | null;
+  payAmount: number | null;
+  payOrderId: string | null;
+};
+
+const PAY_LABEL: Record<string, string> = {
+  ready: "결제 대기",
+  paid: "결제 완료",
+  cancelled: "결제 취소됨",
+  failed: "결제 실패",
 };
 
 const STATUS: Record<string, { label: string; cls: string }> = {
@@ -84,7 +94,19 @@ export default function RequestCards({ rows }: { rows: MyRequest[] }) {
             <div className="req-meta">
               {r.mentorTitle} · {r.minutes}분
               {r.status === "requested" ? ` · 응답 기한 ${r.respondBy}` : ""}
+              {r.payAmount !== null
+                ? ` · ${r.payAmount.toLocaleString("ko-KR")}원 ${PAY_LABEL[r.payStatus ?? ""] ?? ""}`
+                : ""}
             </div>
+
+            {r.payStatus === "ready" ? (
+              <div className="notice" style={{ marginTop: 10 }}>
+                아직 결제가 끝나지 않아 멘토에게 전달되지 않았습니다.{" "}
+                <a href={`/mentoring/pay/resume?order=${encodeURIComponent(r.payOrderId ?? "")}`}>
+                  결제 이어서 하기
+                </a>
+              </div>
+            ) : null}
 
             <p className="req-q">{r.question}</p>
 

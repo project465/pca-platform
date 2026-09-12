@@ -109,6 +109,12 @@ node scripts/export-preview.mjs kr out-kr.html
 - 로그인 / 비밀번호 재설정
 - 운영사 관리자 — 기관 생성, 기관 목록
 
+**개인 결제 (2026-09-12)** — schema.sql 12절
+개인이 `/signup` 으로 가입하고 현멘을 건당 결제한다. 학과 계약 학생은 무료다.
+`src/lib/pay.ts` 가 토스페이먼츠, `src/lib/billing.ts` 가 우리 쪽 규칙이다.
+신청과 동시에 결제하고 거절·기한 초과·취소 때 자동으로 물린다.
+결제창 없이 흐름만 보려면 `.env.local` 에 `PAYMENTS_DRY_RUN=1`.
+
 **단체 리포트 (2026-09-12)** — `/org/sessions/[id]/report`
 시안대로. 집계는 `src/lib/group-report.ts`. 담당자·교수·운영사만 보고 학생은 404다.
 시연용 응답을 채우려면 `npm run db:seed:responses -- <회차id>`.

@@ -6,7 +6,12 @@ import { requireUser } from "@/lib/session";
 import { createRequest, mentorByHandle, MentoringError } from "@/lib/mentoring";
 import { fieldErrors, mentoringRequestSchema, type FieldErrors } from "@/lib/validation";
 
-export type ApplyState = { errors?: FieldErrors; message?: string };
+export type ApplyState = {
+  errors?: FieldErrors;
+  message?: string;
+  /** 결제가 필요한 신청. 화면이 이 값으로 결제창을 연다 */
+  pay?: { orderId: string; amount: number; requestId: string; title: string };
+};
 
 export async function applyAction(
   _prev: ApplyState,
@@ -25,8 +30,9 @@ export async function applyAction(
   const mentor = await mentorByHandle(handle);
   if (!mentor) return { message: "멘토를 찾을 수 없습니다." };
 
+  let made;
   try {
-    await createRequest({
+    made = await createRequest({
       mentorId: mentor.id,
       slotId: parsed.data.slotId,
       applicantId: user.id,
@@ -41,5 +47,16 @@ export async function applyAction(
 
   revalidatePath(`/mentoring/${handle}`);
   revalidatePath("/mentoring/requests");
+
+  if (made.orderId) {
+    return {
+      pay: {
+        orderId: made.orderId,
+        amount: made.amount,
+        requestId: made.requestId,
+        title: `현직자 멘토링 · ${mentor.alias}`,
+      },
+    };
+  }
   redirect("/mentoring/requests?applied=1");
 }

@@ -728,3 +728,9 @@ table.weights tfoot td.zero { color: var(--gap); }
 @media print {
   .sheet.group .top .act form, .sheet.group .foot a { display: none; }
 }
+
+/* ---------- 결제 ---------- */
+.pay-box { display: flex; flex-direction: column; gap: 10px; }
+.pay-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.pay-head b { font-size: 24px; font-weight: 800; letter-spacing: -0.03em; }
+.pay-head span { font-size: 13.5px; color: var(--muted); }

@@ -47,7 +47,7 @@ async function due(): Promise<Due[]> {
     `SELECT n.id, n.kind, n.subject, n.body, u.email, u.display_name
        FROM notifications n
        JOIN users u ON u.id = n.recipient_id
-       JOIN mentoring_requests r ON r.id = n.request_id
+       LEFT JOIN mentoring_requests r ON r.id = n.request_id
       WHERE n.sent_at IS NULL
         AND n.channel = 'email'
         AND n.send_after <= now()

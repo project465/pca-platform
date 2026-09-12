@@ -45,6 +45,10 @@ export default function LoginForm() {
       <button className="act solid full" type="submit" disabled={pending}>
         {pending ? "확인 중…" : "로그인"}
       </button>
+
+      <p className="help" style={{ textAlign: "center" }}>
+        현직자 멘토링을 처음 쓰시나요? <a href="/signup">회원가입</a>
+      </p>
     </form>
   );
 }

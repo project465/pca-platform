@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 export default async function MyRequestsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ applied?: string }>;
+  searchParams: Promise<{ applied?: string; paid?: string }>;
 }) {
   const user = await requireUser();
   const sp = await searchParams;
@@ -37,6 +37,9 @@ export default async function MyRequestsPage({
     passcode: r.passcode,
     provider: r.provider,
     hasReview: r.has_review,
+    payStatus: r.pay_status,
+    payAmount: r.pay_amount,
+    payOrderId: r.pay_order_id,
     // 지난 일정은 취소할 것이 없다
     canCancel:
       ["requested", "accepted"].includes(r.status) && new Date(r.starts_at) > new Date(),
@@ -57,6 +60,13 @@ export default async function MyRequestsPage({
       {sp.applied ? (
         <div className="notice ok" style={{ marginBottom: 18 }}>
           신청이 접수됐습니다. 멘토가 24시간 안에 응답합니다. 승낙되면 줌 링크가 자동으로 발송됩니다.
+        </div>
+      ) : null}
+
+      {sp.paid ? (
+        <div className="notice ok" style={{ marginBottom: 18 }}>
+          결제가 끝났습니다. 멘토에게 신청이 전달됐습니다. 거절되거나 24시간 안에 응답이
+          없으면 자동으로 취소되고 결제도 함께 취소됩니다.
         </div>
       ) : null}
 

@@ -3,6 +3,7 @@
 import { useActionState, useState } from "react";
 import { APPLICANT_STAGE_LABEL } from "@/lib/anon";
 import { applyAction, type ApplyState } from "./actions";
+import PayLauncher from "./pay-launcher";
 
 const initial: ApplyState = {};
 
@@ -16,15 +17,26 @@ export default function ApplyForm({
   handle,
   slots,
   minutes,
+  price,
+  clientKey,
+  dryRun,
 }: {
   handle: string;
   slots: SlotOption[];
   minutes: number;
+  /** 이 사람이 내야 하는 금액. 학과 계약 학생은 null */
+  price: number | null;
+  clientKey: string | null;
+  dryRun: boolean;
 }) {
   const [state, formAction, pending] = useActionState(applyAction, initial);
   const [question, setQuestion] = useState("");
   const [slotId, setSlotId] = useState(slots[0]?.id ?? "");
   const err = state.errors ?? {};
+
+  if (state.pay) {
+    return <PayLauncher pay={state.pay} clientKey={clientKey} dryRun={dryRun} />;
+  }
 
   if (slots.length === 0) {
     return (
@@ -95,10 +107,17 @@ export default function ApplyForm({
       {state.message ? <div className="notice error">{state.message}</div> : null}
 
       <button className="act solid" type="submit" disabled={pending}>
-        {pending ? "신청 중…" : "이 시간대로 신청"}
+        {pending
+          ? "신청 중…"
+          : price === null
+            ? "이 시간대로 신청"
+            : `${price.toLocaleString("ko-KR")}원 결제하고 신청`}
       </button>
       <span className="help">
-        승낙되면 줌 회의가 자동으로 만들어지고 링크가 바로 발송됩니다. 신청은 언제든 취소할 수 있습니다.
+        {price === null
+          ? "학과 계약으로 무료입니다. "
+          : "멘토가 거절하거나 24시간 안에 답하지 않으면 자동으로 취소되고 청구되지 않습니다. "}
+        승낙되면 줌 회의가 자동으로 만들어지고 링크가 바로 발송됩니다.
       </span>
     </form>
   );

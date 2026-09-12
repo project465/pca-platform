@@ -12,6 +12,8 @@ import {
   openSlots,
   reviewsFor,
 } from "@/lib/mentoring";
+import { isFreeUser, priceOf } from "@/lib/billing";
+import { payDryRun } from "@/lib/pay";
 import MentoringShell from "@/components/mentoring-shell";
 import ApplyForm, { type SlotOption } from "./apply-form";
 
@@ -38,7 +40,7 @@ export default async function MentorDetailPage({
   // 승인 전·중지된 멘토는 본인 말고는 못 본다. 링크를 알아도 마찬가지다.
   if (!mentor || (mentor.status !== "active" && mentor.user_id !== user.id)) notFound();
 
-  const [slots, stats, reviews, jobs, mine] = await Promise.all([
+  const [slots, stats, reviews, jobs, mine, free] = await Promise.all([
     openSlots(mentor.id),
     mentorStats(mentor.id),
     reviewsFor(mentor.id),
@@ -47,7 +49,9 @@ export default async function MentorDetailPage({
       [mentor.id],
     ),
     mentorForUser(user.id),
+    isFreeUser(user.id),
   ]);
+  const price = free ? null : await priceOf(mentor.session_minutes);
 
   const jobNames = await namesOf(
     "job_clusters",
@@ -174,6 +178,9 @@ export default async function MentorDetailPage({
               handle={mentor.handle}
               slots={slotOptions}
               minutes={mentor.session_minutes}
+              price={price}
+              clientKey={process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY ?? null}
+              dryRun={payDryRun()}
             />
           )}
         </aside>

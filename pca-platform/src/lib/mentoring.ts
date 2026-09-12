@@ -12,6 +12,7 @@ import {
   type MeetingBrief,
 } from "@/lib/notify";
 import { createMeeting, deleteMeeting } from "@/lib/zoom";
+import { createPayment, isFreeUser, priceOf, refundFor } from "@/lib/billing";
 
 /**
  * 현멘 도메인 로직.
@@ -165,6 +166,9 @@ export type RequestView = {
   passcode: string | null;
   provider: string | null;
   applicant_name: string;
+  pay_status: string | null;
+  pay_amount: number | null;
+  pay_order_id: string | null;
 };
 
 /** 신청자 화면. host_url 은 고르지 않는다 (멘토만 본다). */
@@ -176,11 +180,13 @@ export async function requestsByApplicant(applicantId: string): Promise<RequestV
             m.handle, m.alias, m.years, m.degree, m.career_path, m.session_minutes,
             r.applicant_stage,
             mt.join_url, NULL::text AS host_url, mt.passcode, mt.provider,
-            '' AS applicant_name
+            '' AS applicant_name,
+            pm.status AS pay_status, pm.amount AS pay_amount, pm.order_id AS pay_order_id
        FROM mentoring_requests r
        JOIN mentor_slots s ON s.id = r.slot_id
        JOIN mentors m      ON m.id = r.mentor_id
        LEFT JOIN meetings mt ON mt.request_id = r.id AND mt.cancelled_at IS NULL
+       LEFT JOIN payments pm ON pm.request_id = r.id
       WHERE r.applicant_id = $1
       ORDER BY s.starts_at DESC`,
     [applicantId],
@@ -189,6 +195,7 @@ export async function requestsByApplicant(applicantId: string): Promise<RequestV
 
 /** 멘토 콘솔. 신청자 실명 대신 마스킹한 표기를 쓴다 (applicantLabel). */
 export async function requestsByMentor(mentorId: string): Promise<RequestView[]> {
+  // 결제가 끝나지 않은 신청은 아직 신청이 아니다. 멘토 화면에 띄우지 않는다.
   return query<RequestView>(
     `SELECT r.id, r.status, r.question, r.decline_reason,
             s.starts_at::text, r.created_at::text, r.respond_by::text,
@@ -196,13 +203,16 @@ export async function requestsByMentor(mentorId: string): Promise<RequestView[]>
             m.handle, m.alias, m.years, m.degree, m.career_path, m.session_minutes,
             r.applicant_stage,
             mt.join_url, mt.host_url, mt.passcode, mt.provider,
-            u.display_name AS applicant_name
+            u.display_name AS applicant_name,
+            NULL::text AS pay_status, NULL::int AS pay_amount, NULL::text AS pay_order_id
        FROM mentoring_requests r
        JOIN mentor_slots s ON s.id = r.slot_id
        JOIN mentors m      ON m.id = r.mentor_id
        JOIN users u        ON u.id = r.applicant_id
        LEFT JOIN meetings mt ON mt.request_id = r.id AND mt.cancelled_at IS NULL
       WHERE r.mentor_id = $1
+        AND NOT EXISTS (SELECT 1 FROM payments p
+                         WHERE p.request_id = r.id AND p.status <> 'paid')
       ORDER BY r.status = 'requested' DESC,   -- 처리할 것이 위로
                s.starts_at
       LIMIT 200`,
@@ -223,9 +233,9 @@ export async function createRequest(input: {
   applicantId: string;
   question: string;
   applicantStage: string;
-}): Promise<{ requestId: string }> {
-  const mentor = await queryOne<{ user_id: string; status: string }>(
-    `SELECT user_id, status FROM mentors WHERE id = $1`,
+}): Promise<{ requestId: string; orderId: string | null; amount: number }> {
+  const mentor = await queryOne<{ user_id: string; status: string; session_minutes: number }>(
+    `SELECT user_id, status, session_minutes FROM mentors WHERE id = $1`,
     [input.mentorId],
   );
   if (!mentor || mentor.status !== "active") {
@@ -244,6 +254,13 @@ export async function createRequest(input: {
     throw new MentoringError(
       "이 멘토에게 진행 중인 신청이 이미 있습니다. 끝나거나 취소된 뒤에 다시 신청하세요.",
     );
+  }
+
+  // 학과 계약으로 들어온 학생은 무료다. 개인은 정가표대로 낸다.
+  const free = await isFreeUser(input.applicantId);
+  const amount = free ? 0 : ((await priceOf(mentor.session_minutes)) ?? -1);
+  if (!free && amount < 0) {
+    throw new MentoringError("이 길이의 세션 가격이 정해져 있지 않습니다. 운영사에 문의하세요.");
   }
 
   return tx(async (c) => {
@@ -274,7 +291,16 @@ export async function createRequest(input: {
         input.applicantStage,
       ],
     );
-    return { requestId: r.rows[0].id };
+    const requestId = r.rows[0].id;
+
+    if (free) return { requestId, orderId: null, amount: 0 };
+
+    const orderId = await createPayment(c, {
+      requestId,
+      userId: input.applicantId,
+      amount,
+    });
+    return { requestId, orderId, amount };
   });
 }
 
@@ -520,6 +546,8 @@ export async function declineRequest(input: {
       }),
     });
   });
+
+  await refundFor(input.requestId, "멘토 거절");
 }
 
 /**
@@ -600,10 +628,11 @@ export async function cancelRequest(input: {
     }
   });
 
-  // 줌 삭제는 DB 가 정리된 뒤에 한다. 실패해도 취소 자체는 이미 성립했다.
+  // 줌 삭제와 결제 취소는 DB 가 정리된 뒤에 한다. 실패해도 취소 자체는 이미 성립했다.
   if (found.provider_meeting_id) {
     await deleteMeeting(found.provider_meeting_id).catch(() => {});
   }
+  await refundFor(input.requestId, byApplicant ? "신청자 취소" : "멘토 취소");
 }
 
 /**
@@ -612,7 +641,7 @@ export async function cancelRequest(input: {
  * 알림 발송기(scripts/notify.ts)가 주기적으로 부른다.
  */
 export async function expireStaleRequests(): Promise<number> {
-  return tx(async (c) => {
+  const expired = await tx(async (c) => {
     const rows = await c.query<{
       id: string;
       slot_id: string;
@@ -652,8 +681,11 @@ export async function expireStaleRequests(): Promise<number> {
         }),
       });
     }
-    return rows.rowCount ?? 0;
+    return rows.rows.map((r) => r.id);
   });
+
+  for (const id of expired) await refundFor(id, "멘토 무응답으로 기한 초과");
+  return expired.length;
 }
 
 /** 끝난 시간이 지난 확정 건을 completed 로 넘긴다. 후기는 그 뒤에 쓸 수 있다. */

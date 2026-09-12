@@ -28,6 +28,25 @@ export const orgCreateSchema = z.object({
   nameEn: z.string().trim().max(200).optional(),
 });
 
+/* ---------- 개인 회원가입 ---------- */
+
+export const signupSchema = z
+  .object({
+    email: z.string().trim().email("이메일 형식이 올바르지 않습니다.").max(200),
+    name: z.string().trim().min(1, "이름을 입력하세요.").max(50),
+    password: passwordSchema,
+    confirm: z.string(),
+    terms: z.string().optional(),
+  })
+  .refine((v) => v.password === v.confirm, {
+    message: "비밀번호가 서로 다릅니다.",
+    path: ["confirm"],
+  })
+  .refine((v) => v.terms === "on", {
+    message: "약관과 개인정보 수집·이용에 동의해야 가입할 수 있습니다.",
+    path: ["terms"],
+  });
+
 /* ---------- 계약과 회차 ---------- */
 
 export const contractCreateSchema = z.object({

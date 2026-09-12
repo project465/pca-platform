@@ -443,10 +443,12 @@ COMMENT ON COLUMN meetings.host_url IS
 -- 발송 대기열. 승낙과 같은 트랜잭션에서 행이 쌓이고, 발송기가 비운다
 CREATE TABLE notifications (
   id            BIGSERIAL PRIMARY KEY,
-  request_id    BIGINT NOT NULL REFERENCES mentoring_requests(id) ON DELETE CASCADE,
+  -- 신청과 무관한 알림(가입 확인 메일 등)도 이 큐로 나가므로 NULL 을 허용한다
+  request_id    BIGINT REFERENCES mentoring_requests(id) ON DELETE CASCADE,
   recipient_id  BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   channel       TEXT NOT NULL,                  -- email | inapp
-  kind          TEXT NOT NULL,                  -- accepted | declined | cancelled | reminder_24h | reminder_1h
+  kind          TEXT NOT NULL,                  -- accepted | declined | cancelled | expired
+                                                -- | reminder_24h | reminder_1h | verify
   dedupe_key    TEXT NOT NULL UNIQUE,           -- request:recipient:kind. 같은 알림이 두 번 안 나간다
   subject       TEXT NOT NULL,
   body          TEXT NOT NULL,
@@ -463,3 +465,63 @@ COMMENT ON TABLE notifications IS
 CREATE INDEX idx_notifications_due ON notifications(send_after) WHERE sent_at IS NULL;
 CREATE INDEX idx_notifications_inbox ON notifications(recipient_id, created_at DESC)
   WHERE channel = 'inapp';
+
+
+-- ============================================================
+--  12. 개인 결제 (2026-09-12 결정 변경)
+--
+--  현멘은 개인이 직접 가입해 건당 결제한다. 그전까지 이 플랫폼은
+--  "계약 후 관리자 발급, 좌석 차감"만 전제했다 (CLAUDE.md 확정된 결정).
+--  학과 계약으로 들어온 학생은 그대로 무료다 — memberships 에 행이 있으면 무료.
+--
+--  결제는 신청과 동시에 승인하고, 멘토가 거절하거나 24시간을 넘기면 취소한다.
+--  매입 전 취소라 카드 청구 자체가 가지 않는다.
+-- ============================================================
+
+CREATE TABLE mentoring_prices (
+  session_minutes  SMALLINT PRIMARY KEY,
+  amount           INTEGER NOT NULL CHECK (amount >= 0),   -- 원 단위
+  updated_at       TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_by       BIGINT REFERENCES users(id)
+);
+COMMENT ON TABLE mentoring_prices IS
+  '운영사가 정하는 정가표. 멘토가 값을 정하지 않는다 — 가격이 멘토 서열 신호가 되면 익명이 흐려진다';
+
+CREATE TABLE payments (
+  id              BIGSERIAL PRIMARY KEY,
+  request_id      BIGINT NOT NULL UNIQUE REFERENCES mentoring_requests(id) ON DELETE CASCADE,
+  user_id         BIGINT NOT NULL REFERENCES users(id),
+  amount          INTEGER NOT NULL CHECK (amount >= 0),
+  -- 결제창에 넘기는 우리 쪽 주문번호. PG 가 중복을 거부하므로 UNIQUE 여야 한다
+  order_id        TEXT NOT NULL UNIQUE,
+  provider        TEXT NOT NULL DEFAULT 'toss',   -- toss | dryrun
+  provider_key    TEXT,                           -- 승인 후 PG 가 준 결제 키
+  status          TEXT NOT NULL DEFAULT 'ready',  -- ready | paid | cancelled | failed
+  method          TEXT,
+  receipt_url     TEXT,
+  fail_reason     TEXT,
+  cancel_reason   TEXT,
+  paid_at         TIMESTAMPTZ,
+  cancelled_at    TIMESTAMPTZ,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+COMMENT ON TABLE payments IS
+  '신청 1건에 결제 1건. request_id 가 UNIQUE 라 결제창을 두 번 열어도 두 번 청구되지 않는다';
+
+CREATE INDEX idx_payments_user ON payments(user_id, created_at DESC);
+CREATE INDEX idx_payments_open ON payments(status) WHERE status = 'ready';
+
+-- 셀프 가입 계정의 이메일 확인. 원문 토큰은 링크에만 있고 DB 에는 해시만 둔다
+CREATE TABLE email_verifications (
+  id          BIGSERIAL PRIMARY KEY,
+  user_id     BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  token_hash  TEXT NOT NULL UNIQUE,
+  expires_at  TIMESTAMPTZ NOT NULL,
+  used_at     TIMESTAMPTZ,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+ALTER TABLE users ADD COLUMN email_verified_at TIMESTAMPTZ;
+ALTER TABLE users ADD COLUMN terms_agreed_at TIMESTAMPTZ;
+COMMENT ON COLUMN users.terms_agreed_at IS
+  '셀프 가입에만 채운다. 학과가 발급한 계정은 학과가 동의를 받는다';
