@@ -113,14 +113,29 @@ export async function buildCohort(sessionId: string, lang = "ko"): Promise<Cohor
     };
   }
 
+  /**
+   * 1순위 분포.
+   *
+   * 대학 회차는 직무가, 고교 회차는 전공이 1순위다. 한 회차에는 둘 중
+   * 하나만 있으므로 붙여서 읽는다 — if 를 두면 회차 종류가 늘 때마다
+   * 이 함수가 갈라진다.
+   */
   const topJobs = await query<{ name: string; n: number }>(
-    `SELECT ${NAME("job_clusters", "jc", "$2")} AS name, count(*)::int AS n
-       FROM job_fit_scores f
-       JOIN attempts a ON a.id = f.attempt_id
-       JOIN job_clusters jc ON jc.id = f.job_id
-      WHERE a.session_id = $1 AND a.status = 'scored' AND f.rank_no = 1
-      GROUP BY jc.id, jc.code
-      ORDER BY n DESC`,
+    `SELECT name, count(*)::int AS n FROM (
+       SELECT jc.id::text AS key, ${NAME("job_clusters", "jc", "$2")} AS name
+         FROM job_fit_scores f
+         JOIN attempts a ON a.id = f.attempt_id
+         JOIN job_clusters jc ON jc.id = f.job_id
+        WHERE a.session_id = $1 AND a.status = 'scored' AND f.rank_no = 1
+       UNION ALL
+       SELECT 'm' || m.id::text, ${NAME("majors", "m", "$2")}
+         FROM major_fit_scores f
+         JOIN attempts a ON a.id = f.attempt_id
+         JOIN majors m ON m.id = f.major_id
+        WHERE a.session_id = $1 AND a.status = 'scored' AND f.rank_no = 1
+     ) x
+     GROUP BY key, name
+     ORDER BY n DESC`,
     [sessionId, lang],
   );
 

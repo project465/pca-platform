@@ -876,3 +876,90 @@ COMMENT ON TABLE erasure_log IS
 ALTER TABLE job_fit_scores ADD COLUMN IF NOT EXISTS tier SMALLINT;
 COMMENT ON COLUMN job_fit_scores.tier IS
   '신뢰구간이 겹치는 직무끼리 같은 번호를 갖는다. 결과지는 등수가 아니라 이것을 읽는다';
+
+
+-- ============================================================
+--  27. 메트리 플러스 — 전공이 없는 검사지와 전공 적합 점수
+--
+--  대학판은 "이 전공 학생이 어느 직무로 가나" 를 낸다. 고교판은 전공이
+--  아직 없으므로 "어느 전공으로 가나" 를 낸다. 재는 축은 같다 —
+--  activity 8축과 업무성향 6축. 고1 때 잰 DESIGN 이 대학 2학년 때 잰
+--  DESIGN 과 같은 자로 읽혀야 learner_profiles 의 연속성이 말이 된다.
+--
+--  걸림돌은 세 개였고 전부 여기서 푼다.
+--    1) instruments.major_id 가 NOT NULL 이라 전공 없는 검사지를 못 만든다
+--    2) 채점이 job_areas 를 전부 긁어서, 고교 영역이 대학 채점에 섞인다
+--    3) 전공 적합도를 넣을 표가 없다 (job_fit_scores 는 직무를 가리킨다)
+-- ============================================================
+
+-- 1) 전공 없는 검사지. 대신 instrument_key 로 유일성을 잡는다 —
+--    tracks.instrument_key 가 처음부터 가리키고 있던 값이다.
+ALTER TABLE instruments ALTER COLUMN major_id DROP NOT NULL;
+ALTER TABLE instruments ADD COLUMN IF NOT EXISTS instrument_key TEXT;
+
+UPDATE instruments i SET instrument_key = 'PCA_' || m.code || '_V1'
+  FROM majors m WHERE m.id = i.major_id AND i.instrument_key IS NULL;
+
+CREATE UNIQUE INDEX IF NOT EXISTS uq_instruments_key
+  ON instruments(instrument_key, version) WHERE instrument_key IS NOT NULL;
+
+COMMENT ON COLUMN instruments.instrument_key IS
+  '검사지를 부르는 이름. 전공이 있는 검사지는 (major_id, version) 으로도
+   유일하지만 고교판은 전공이 없어서 이 값이 유일성을 진다';
+
+-- 2) 영역을 검사지에 묶는다. 이게 없으면 채점이 SELECT code FROM job_areas
+--    로 전부 긁어, 고교 영역 8개가 대학 응시자의 채점에 0점으로 끼어든다.
+ALTER TABLE job_areas ADD COLUMN IF NOT EXISTS instrument_key TEXT;
+
+UPDATE job_areas SET instrument_key = 'PCA_ME_V1' WHERE instrument_key IS NULL;
+
+COMMENT ON COLUMN job_areas.instrument_key IS
+  '이 영역을 재는 검사지. 채점은 응시자가 본 검사지의 영역만 본다';
+
+CREATE INDEX IF NOT EXISTS idx_job_areas_instrument ON job_areas(instrument_key, sort_no);
+
+-- 3) 전공 적합 점수. 표는 16절에 이미 있다 — 칸만 맞춘다.
+--    job_fit_scores 와 같은 산식으로 계산되므로 남기는 값도 같아야 한다.
+--    a_score·p_score 를 안 남기면 "왜 이 점수인가" 를 화면에서 펼칠 수 없고,
+--    tier 가 없으면 결과지가 등수를 적게 된다(26절).
+ALTER TABLE major_fit_scores ADD COLUMN IF NOT EXISTS a_score NUMERIC(5,1);
+ALTER TABLE major_fit_scores ADD COLUMN IF NOT EXISTS p_score NUMERIC(5,1);
+ALTER TABLE major_fit_scores ADD COLUMN IF NOT EXISTS tier    SMALLINT;
+
+-- 고1은 증거가 없어 구간이 넓다. 구간이 겹치면 순위를 읽히지 않게 NOT NULL 을 푼다
+ALTER TABLE major_fit_scores ALTER COLUMN band_low  DROP NOT NULL;
+ALTER TABLE major_fit_scores ALTER COLUMN band_high DROP NOT NULL;
+
+COMMENT ON TABLE major_fit_scores IS
+  '고교판 결과. 가중치는 major_fit_weights 에 있고 산식은 직무 적합과 같다.
+   등수가 아니라 tier 를 읽는다 — 고1의 1위와 2위를 갈라 적을 만큼 정확하지 않다';
+
+-- 4) 중학생. 트랙을 새로 만들지 않는다 — learner_goals 에 행 하나다.
+--    중학생이 앞둔 선택은 과목도 직무도 아니고 "어느 고등학교" 하나다.
+INSERT INTO learner_goals (code, sort_no) VALUES ('hs', 4)
+ON CONFLICT (code) DO NOTHING;
+
+INSERT INTO scoring_profiles
+  (track_code, goal_code, w_aptitude, w_skill, w_preference, w_coursework, display_mode, top_n)
+VALUES ('HS', 'hs', 0.700, 0.000, 0.300, 0.000, 'band', 3)
+ON CONFLICT (track_code, goal_code) DO UPDATE SET
+  w_aptitude = EXCLUDED.w_aptitude, w_skill = EXCLUDED.w_skill,
+  w_preference = EXCLUDED.w_preference, w_coursework = EXCLUDED.w_coursework,
+  display_mode = EXCLUDED.display_mode, top_n = EXCLUDED.top_n;
+
+-- 중학생에게는 증거(S)도 이력(C)도 0 이다. 있지도 않은 것에 가중치를 주면
+-- 점수가 아니라 빈칸에 곱하기를 하는 것이다.
+
+
+-- 5) 어떤 상품을 샀는지가 어떤 검사지를 푸는지를 정한다.
+--
+--    예전에는 openAttempt 가 `ORDER BY id DESC LIMIT 1` 로 검사지를 골랐다.
+--    검사지가 하나뿐일 때는 맞는 말이었지만, 고교판을 올리는 순간 29,000원을
+--    내고 대학판을 산 사람이 고교 문항 115개를 받게 된다. 상품이 정하게 한다.
+ALTER TABLE products ADD COLUMN IF NOT EXISTS track_code TEXT REFERENCES tracks(code);
+COMMENT ON COLUMN products.track_code IS
+  '이 상품을 사면 어느 트랙의 검사지를 푸는가. 전공이 늘어도 상품은 그대로이고
+   전공은 응시자의 learner_profiles 가 정한다';
+
+UPDATE products SET track_code = 'UNIV_LOW' WHERE code = 'REPORT_UNIV' AND track_code IS NULL;
+UPDATE products SET track_code = 'HS'       WHERE code = 'REPORT_HS'   AND track_code IS NULL;

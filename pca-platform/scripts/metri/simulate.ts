@@ -1,5 +1,8 @@
 /**
- * 기계공학과 한 학년을 통째로 흉내 내 본다.
+ * 한 학년을 통째로 흉내 내 본다.
+ *
+ *   npm run metri:sim        대학판 — 기계공학과 500명, 직무가 갈리는가
+ *   npm run metri:sim:hs     고교판 — 고등학생 500명, 계열이 갈리는가
  *
  * 전공을 늘리기 전에 확인할 것은 하나다 — **산식이 사람을 갈라내는가.**
  * 500명을 넣었는데 전부 같은 직무가 1순위로 나오거나, 적합도가 55~65 사이에
@@ -21,6 +24,9 @@ import { buildCohort } from "../../src/lib/cohort";
 const N = 500;
 const SEED = 20260911;
 
+/* ── 어느 검사지를 흉내 내는가 ─────────────────────── */
+const WHICH = process.argv[2] === "hs" ? "hs" : "univ";
+
 /* ── 재현 가능한 난수 ────────────────────────────── */
 let seed = SEED;
 function rnd(): number {
@@ -35,19 +41,16 @@ function gauss(): number {
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
 
 /* ── 사람의 원형 ─────────────────────────────────── */
-const AREAS = [
-  "DESIGN_DEV", "MFG_PROD", "ENERGY_PLANT", "AUTO_AERO", "ROBOT_AUTO",
-  "IT_DATA", "CONSTR_FACIL", "RND_EDU", "BIO_HEALTH", "PUBLIC_ETC",
-] as const;
 const TRAITS = ["INDEP", "CHALLENGE", "SPEED", "COLLAB", "STABLE", "QUALITY"] as const;
 
 type Vec = Partial<Record<string, number>>;
+type Archetype = { name: string; share: number; area: Vec; trait: Vec };
 
 /**
  * 여섯 가지 사람. 마지막 "두루형" 이 진짜 시험대다 — 뚜렷한 사람은 아무
  * 산식이나 맞히고, 평평한 사람에게 무엇을 말해 주느냐가 제품의 값이다.
  */
-const ARCHETYPES: { name: string; share: number; area: Vec; trait: Vec }[] = [
+const UNIV_ARCHETYPES: Archetype[] = [
   { name: "설계형", share: 0.20,
     area: { DESIGN_DEV: 0.90, AUTO_AERO: 0.70, RND_EDU: 0.50, ROBOT_AUTO: 0.45 },
     trait: { QUALITY: 0.80, INDEP: 0.65, CHALLENGE: 0.55 } },
@@ -65,6 +68,57 @@ const ARCHETYPES: { name: string; share: number; area: Vec; trait: Vec }[] = [
     trait: { CHALLENGE: 0.80, SPEED: 0.65, INDEP: 0.55 } },
   { name: "두루형", share: 0.15, area: {}, trait: {} },
 ];
+
+/**
+ * 고등학생 원형. 대학생과 달리 "직무" 가 아니라 "무엇을 하고 노는가" 로
+ * 갈린다. 계열 이름을 아는 학생을 전제하지 않는다.
+ */
+const HS_ARCHETYPES: Archetype[] = [
+  { name: "만들기형", share: 0.18,
+    area: { "HS.ME": 0.88, "HS.MSE": 0.68, "HS.CIV": 0.55 },
+    trait: { CHALLENGE: 0.75, SPEED: 0.65, INDEP: 0.60 } },
+  { name: "회로형", share: 0.16,
+    area: { "HS.EE": 0.88, "HS.CE": 0.68, "HS.ME": 0.55 },
+    trait: { INDEP: 0.75, QUALITY: 0.65, CHALLENGE: 0.60 } },
+  { name: "코딩형", share: 0.17,
+    area: { "HS.CE": 0.90, "HS.IE": 0.62, "HS.EE": 0.55 },
+    trait: { INDEP: 0.78, SPEED: 0.70, CHALLENGE: 0.60 } },
+  { name: "실험형", share: 0.16,
+    area: { "HS.CHE": 0.88, "HS.MSE": 0.70, "HS.BME": 0.58 },
+    trait: { QUALITY: 0.82, STABLE: 0.68, INDEP: 0.55 } },
+  { name: "현장형", share: 0.15,
+    area: { "HS.CIV": 0.88, "HS.IE": 0.66, "HS.ME": 0.56 },
+    trait: { COLLAB: 0.80, STABLE: 0.72, SPEED: 0.58 } },
+  { name: "생명형", share: 0.13,
+    area: { "HS.BME": 0.88, "HS.CHE": 0.66 },
+    trait: { QUALITY: 0.75, COLLAB: 0.65, CHALLENGE: 0.58 } },
+  { name: "두루형", share: 0.05, area: {}, trait: {} },
+];
+
+const PROFILE = WHICH === "hs"
+  ? {
+      key: "HS_V1",
+      title: "고등학생",
+      target: "계열",
+      areas: ["HS.ME","HS.EE","HS.CE","HS.CHE","HS.MSE","HS.IE","HS.CIV","HS.BME"],
+      archetypes: HS_ARCHETYPES,
+      /** 결과의 code 가 가리키는 표 */
+      labelTable: "majors",
+      labelWhere: "",
+    }
+  : {
+      key: "PCA_ME_V1",
+      title: "기계공학과",
+      target: "직무",
+      areas: ["DESIGN_DEV","MFG_PROD","ENERGY_PLANT","AUTO_AERO","ROBOT_AUTO",
+              "IT_DATA","CONSTR_FACIL","RND_EDU","BIO_HEALTH","PUBLIC_ETC"],
+      archetypes: UNIV_ARCHETYPES,
+      labelTable: "job_clusters",
+      labelWhere: "WHERE t.code LIKE 'ME.%'",
+    };
+
+const AREAS = PROFILE.areas;
+const ARCHETYPES = PROFILE.archetypes;
 
 /** 불성실 응답자 비율 */
 const BAD = { straight: 0.05, random: 0.03, careless: 0.02 };
@@ -151,7 +205,7 @@ function stats(xs: number[]) {
 const f1 = (x: number) => x.toFixed(1);
 
 async function main() {
-  console.log(`기계공학과 ${N}명 시뮬레이션 (seed ${SEED})\n`);
+  console.log(`${PROFILE.title} ${N}명 시뮬레이션 — 검사지 ${PROFILE.key} (seed ${SEED})\n`);
 
   // ---- 판 깔기 ----
   await query(`DELETE FROM attempts WHERE session_id IN (SELECT id FROM test_sessions WHERE name LIKE 'SIM%')`);
@@ -162,8 +216,12 @@ async function main() {
   const org = await queryOne<{ id: string }>(
     `INSERT INTO organizations (code, country, org_type) VALUES ('SIMORG','KR','department')
      ON CONFLICT (code) DO UPDATE SET status='active' RETURNING id`);
+  // 검사지를 이름으로 고른다. 예전에는 id 가 가장 큰 것을 집었는데, 고교판을
+  // 올리는 순간 대학 시뮬레이션이 고교 문항으로 돌아간다.
   const inst = await queryOne<{ id: string }>(
-    `SELECT id FROM instruments WHERE status='published' ORDER BY id DESC LIMIT 1`);
+    `SELECT id FROM instruments WHERE instrument_key = $1 AND status='published'
+      ORDER BY id DESC LIMIT 1`, [PROFILE.key]);
+  if (!inst) throw new Error(`검사지 ${PROFILE.key} 가 없습니다. 먼저 적재하세요.`);
 
   const contract = await tx(async (c) => {
     const r = await c.query<{ id: string }>(
@@ -174,8 +232,8 @@ async function main() {
   });
   const sess = await queryOne<{ id: string }>(
     `INSERT INTO test_sessions (org_id, contract_id, kind, instrument_id, name, opens_at, closes_at, release_mode)
-     VALUES ($1,$2,'org',$3,'SIM 2026 기계공학과', now(), now()+interval '30 days','instant') RETURNING id`,
-    [org!.id, contract, inst!.id]);
+     VALUES ($1,$2,'org',$3,$4, now(), now()+interval '30 days','instant') RETURNING id`,
+    [org!.id, contract, inst!.id, `SIM ${PROFILE.key}`]);
 
   const rows = await query<Omit<Item, "opt">>(
     `SELECT id, order_no, area_code, axis_code, item_kind, attention_expect
@@ -210,7 +268,7 @@ async function main() {
          VALUES ($1,$2,$3,'submitted',now(),now()) RETURNING id`,
         [sess!.id, uid, seat.rows[0].id]);
 
-      // 253개를 한 번에 넣는다. 한 문항씩 왕복하면 하루가 걸린다
+      // 문항 전부를 한 번에 넣는다. 한 문항씩 왕복하면 하루가 걸린다
       const vals: string[] = [];
       const args: unknown[] = [a.rows[0].id];
       for (const it of items) {
@@ -244,14 +302,17 @@ async function main() {
 
 async function report(people: Person[], results: Map<number, Awaited<ReturnType<typeof score>>>) {
   const names = await query<{ code: string; name: string }>(
-    `SELECT jc.code, COALESCE((SELECT value FROM translations
-        WHERE table_name='job_clusters' AND row_id=jc.id AND lang='ko' AND field='name'), jc.code) AS name
-       FROM job_clusters jc WHERE jc.code LIKE 'ME.%'`);
+    `SELECT t.code, COALESCE((SELECT value FROM translations
+        WHERE table_name = '${PROFILE.labelTable}' AND row_id = t.id
+          AND lang='ko' AND field='name'), t.code) AS name
+       FROM ${PROFILE.labelTable} t ${PROFILE.labelWhere}`);
   const label = new Map(names.map(n => [n.code, n.name]));
+  const TARGET = PROFILE.target;
+  const NTARGET = [...new Set(names.map(n => n.code))].length;
 
   const good = people.filter(p => p.mode === "normal");
 
-  console.log("═══ 1. 1순위 직무가 갈리는가 ═══");
+  console.log(`═══ 1. 1순위 ${TARGET}가 갈리는가 ═══`);
   const top1 = new Map<string, number>();
   for (const p of good) {
     const j = results.get(p.id)!.jobs[0].code;
@@ -262,7 +323,7 @@ async function report(people: Person[], results: Map<number, Awaited<ReturnType<
     const bar = "█".repeat(Math.round((n / good.length) * 40));
     console.log(`  ${(label.get(code) ?? code).padEnd(18)} ${String(n).padStart(3)}명 ${pct(n / good.length).padStart(6)} ${bar}`);
   }
-  console.log(`  → 서로 다른 직무 ${sorted.length}개 / 8개. 가장 몰린 곳 ${pct(sorted[0][1] / good.length)}`);
+  console.log(`  → 서로 다른 ${TARGET} ${sorted.length}개 / ${NTARGET}개. 가장 몰린 곳 ${pct(sorted[0][1] / good.length)}`);
 
   console.log("\n═══ 2. 적합도가 퍼지는가 ═══");
   const fits = good.map(p => results.get(p.id)!.jobs[0].fit);
@@ -274,10 +335,10 @@ async function report(people: Person[], results: Map<number, Awaited<ReturnType<
     return j[0].fit - j[j.length - 1].fit;
   });
   const sp = stats(spread);
-  console.log(`  1위와 8위 차이 중앙 ${f1(sp.p50)}점 (10% ${f1(sp.p10)} · 90% ${f1(sp.p90)})`);
+  console.log(`  1위와 꼴찌 차이 중앙 ${f1(sp.p50)}점 (10% ${f1(sp.p10)} · 90% ${f1(sp.p90)})`);
 
   console.log("\n═══ 3. 숨은 성향을 되찾는가 ═══");
-  console.log("  원형마다 1순위로 가장 많이 나온 직무");
+  console.log(`  원형마다 1순위로 가장 많이 나온 ${TARGET}`);
   for (const arch of ARCHETYPES) {
     const mine = good.filter(p => p.archetype === arch.name);
     if (!mine.length) continue;
@@ -300,7 +361,9 @@ async function report(people: Person[], results: Map<number, Awaited<ReturnType<
     if (got.slice(0, 3).some(a => a.code === wanted)) hit3++;
     n++;
   }
-  console.log(`  1순위 일치 ${pct(hit1 / n)} · 3순위 안에 ${pct(hit3 / n)}  (무작위라면 각각 10% · 30%)`);
+  const chance = 1 / AREAS.length;
+  console.log(`  1순위 일치 ${pct(hit1 / n)} · 3순위 안에 ${pct(hit3 / n)}` +
+    `  (무작위라면 각각 ${pct(chance)} · ${pct(Math.min(1, 3 * chance))})`);
 
   console.log("\n═══ 4. 성향도 되찾는가 ═══");
   let tHit1 = 0, tHit2 = 0;
@@ -323,7 +386,7 @@ async function report(people: Person[], results: Map<number, Awaited<ReturnType<
     topSize.push(j.filter(x => x.tier === 1).length);
   }
   console.log(`  1위와 2위 구간이 겹치는 사람 ${pct(overlap / good.length)}`);
-  console.log(`  → 그래서 등수를 적지 않는다. 겹치는 직무는 한 묶음으로 묶는다`);
+  console.log(`  → 그래서 등수를 적지 않는다. 겹치는 ${TARGET}는 한 묶음으로 묶는다`);
   const tc = stats(tierCount), ts = stats(topSize);
   console.log(`  묶음 개수   중앙 ${f1(tc.p50)} · 10% ${f1(tc.p10)} · 90% ${f1(tc.p90)} (1이면 아무것도 못 가른 것)`);
   console.log(`  1군 크기    중앙 ${f1(ts.p50)}개 · 10% ${f1(ts.p10)} · 90% ${f1(ts.p90)} (8이면 쓸모없다)`);

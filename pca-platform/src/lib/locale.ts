@@ -238,6 +238,79 @@ export const UI = {
   repPlanM1: d("1–2개월", "Months 1–2", "1–2. ay"),
   repPlanM2: d("3–4개월", "Months 3–4", "3–4. ay"),
   repPlanM3: d("5–6개월", "Months 5–6", "5–6. ay"),
+  /* ── 메트리 플러스(고교판) 문구 ────────────────────────
+     같은 결과지 화면이 두 제품을 그린다. 갈라지는 것은 이 문구들뿐이고,
+     화면 코드는 kind 를 보고 "Hs" 가 붙은 키를 고른다.
+     중·고등학생에게 "직무" 와 "역량 레벨" 은 아직 뜻이 없는 말이다. */
+  repTitleHs: d("계열 적합 진단 결과지", "Field Fit Report", "Alan Uyum Raporu"),
+  repSec01Hs: d("이공계 8계열", "Eight engineering fields", "Sekiz mühendislik alanı"),
+  repSec04Hs: d("계열 적합도", "Field fit", "Alan uyumu"),
+  repSec06Hs: d("다음 한 학기", "The next term", "Önümüzdeki dönem"),
+  repLeadHs: d(
+    "이 검사가 재는 것은 무엇을 하고 싶은가입니다. 실력도, 성적도 아닙니다.",
+    "This assessment measures what you want to do — not your ability and not your grades.",
+    "Bu test ne yapmak istediğinizi ölçer — yeteneğinizi ya da notlarınızı değil.",
+  ),
+  repLeadTopHs: d(
+    "지금 재 보면 {area} 쪽이 가장 앞에 있습니다. 고등학교 3년 동안 바뀔 수 있는 값입니다.",
+    "Measured now, {area} sits furthest ahead. This can change over three years of high school.",
+    "Şu anki ölçümde en önde {area} var. Bu, lise boyunca değişebilir.",
+  ),
+  repKpiJobHs: d("가장 앞에 있는 계열", "Field furthest ahead", "En öndeki alan"),
+  /* 고교판에서는 계열이 곧 전공이라, 대학판의 "1순위 분야" 칸에 같은 이름이
+     한 번 더 찍힌다. 그 자리에 다음 묶음의 선두를 놓는다 — 학생이 실제로
+     다음에 볼 곳이다. */
+  repKpiAreaHs: d("다음 묶음의 선두", "Next group's leader", "Sonraki grubun başı"),
+  repKpiNextNone: d("없음 — 한 묶음뿐", "None — a single group", "Yok — tek grup"),
+  repPlanM1Hs: d("이번 학기", "This term", "Bu dönem"),
+  repPlanM2Hs: d("다음 방학", "Next break", "Sonraki tatil"),
+  repPlanM3Hs: d("다음 학년", "Next year", "Gelecek yıl"),
+  repNote01Hs: d(
+    "문항이 직접 재는 단위입니다. 계열마다 14문항씩 답하셨고, 그 평균을 100점으로 폈습니다. 아래 8축과 계열 순위가 모두 이 여덟 개에서 나옵니다.",
+    "This is what the items measure directly. You answered 14 items per field; the average is stretched to 100. The eight axes and the field ranking below come from these eight.",
+    "Soruların doğrudan ölçtüğü birim budur. Her alan için 14 soru yanıtladınız; ortalama 100 üzerinden ölçeklendi.",
+  ),
+  repNote02Hs: d(
+    "계열 여덟 개를 공학 활동 여덟 가지로 옮긴 값입니다. 이 여덟 축은 대학에 가서 다시 검사해도 같은 축입니다 — 지금 잰 값과 그때 잰 값을 나란히 놓을 수 있습니다.",
+    "The eight fields mapped onto eight engineering activities. These axes stay the same when you retake the assessment at university, so today's numbers and those can sit side by side.",
+    "Sekiz alanın sekiz mühendislik faaliyetine aktarılmış hâli. Üniversitede yeniden çözdüğünüzde de aynı eksenlerdir.",
+  ),
+  repNote03Hs: d(
+    "문항 112개 중 96개에 성향이 심어져 있습니다. 여섯 가지의 절대 높이보다 서로의 높낮이가 정보입니다. 가장 높은 쪽이 {hi}, 가장 낮은 쪽이 {lo}입니다.",
+    "96 of the 112 items carry a work-style signal. What matters is the relative height of the six, not their absolute level. Highest is {hi}; lowest is {lo}.",
+    "112 sorunun 96'sı çalışma eğilimi taşır. Önemli olan altısının birbirine göre konumudur. En yüksek {hi}; en düşük {lo}.",
+  ),
+  repNote04Hs: d(
+    "문항 응답 75% + 업무 성향 25%로 계산했습니다. 등수를 매기지 않고 묶음으로 보여드립니다 — 같은 묶음 안의 계열은 이 검사로 우열을 가릴 수 없습니다. 가는 막대가 그 폭입니다.",
+    "Computed as 75% item response + 25% work style. We group rather than rank: this assessment cannot separate fields inside the same group. The thin bar shows that margin.",
+    "Hesaplama: %75 soru yanıtı + %25 çalışma eğilimi. Sıralamak yerine gruplandırıyoruz; ince çubuk bu payı gösterir.",
+  ),
+  repTierNoteHs: d(
+    "1군에 계열이 {n}개 있습니다. 이 검사로는 그 안에서 우열을 가릴 수 없습니다. {n}개를 다 열어 두고 직접 해 보십시오 — 지금 하나로 좁힐 이유가 없습니다.",
+    "Your top group holds {n} fields. This assessment cannot separate them. Keep all {n} open and try them — there is no reason to narrow down yet.",
+    "İlk grubunuzda {n} alan var. Bu test onları ayıramaz. {n} alanı da açık tutup deneyin.",
+  ),
+  repPlan1Hs: d(
+    "{job} 쪽 수업이나 동아리를 하나 골라 한 학기 해 봅니다. 읽어서 아는 것과 해 보고 아는 것은 다릅니다.",
+    "Pick one class or club on the {job} side and give it a term. Knowing from reading and knowing from doing are different.",
+    "{job} tarafında bir ders ya da kulüp seçip bir dönem deneyin.",
+  ),
+  repPlan2Hs: d(
+    "{area} 문항에서 높게 답한 활동을 실제로 해 봅니다. 만들어 본 것, 고쳐 본 것, 관찰한 것을 기록으로 남기면 나중에 근거가 됩니다.",
+    "Actually do the activities you rated highly in the {area} items. A record of what you built, fixed or observed becomes evidence later.",
+    "{area} sorularında yüksek puan verdiğiniz etkinlikleri gerçekten yapın ve kaydını tutun.",
+  ),
+  repPlan3Hs: d(
+    "{job} 쪽도 한 번은 해 봅니다. 묶음이 겹치는 안에서는 이 검사가 아니라 해 본 경험이 답을 줍니다.",
+    "Try the {job} side at least once too. Inside an overlapping group, experience answers the question — this assessment cannot.",
+    "{job} tarafını da bir kez deneyin. Çakışan grup içinde yanıtı bu test değil, deneyim verir.",
+  ),
+  repRetestHs: d(
+    "재검사는 한 학년 뒤를 권합니다. 해 본 것이 늘면 값이 움직입니다.",
+    "We suggest retaking after a school year. The numbers move as you do more.",
+    "Bir öğretim yılı sonra tekrar almanızı öneririz.",
+  ),
+
   repRetest: d(
     "재검사는 여섯 달 뒤를 권합니다. 그전에는 값이 거의 움직이지 않습니다.",
     "We suggest retaking in six months. Before that the numbers barely move.",

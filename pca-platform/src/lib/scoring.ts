@@ -6,11 +6,16 @@
  * LLM 이 쓴 문장은 이 숫자를 읽기만 할 뿐 절대 이 숫자를 바꾸지 않는다.
  *
  * 채점 순서
- *   1. 직무분야 10개      문항이 직접 재는 것. 25문항 평균.
- *   2. 업무성향 6개        120문항이 재는 것. 20문항 평균.
- *   3. activity 축 8개     1번을 job_area_axis_weights 로 옮긴 해석값.
- *   4. 직무 적합도         3번 × job_axis_weights + 성향 보정.
- *   5. 응답 품질           신뢰구간의 폭을 정한다.
+ *   1. 영역             문항이 직접 재는 것. 대학판은 직무분야 10개(25문항
+ *                       평균), 고교판은 계열 8개(14문항 평균).
+ *   2. 업무성향 6개      두 검사지가 공유하는 축.
+ *   3. activity 축 8개   1번을 job_area_axis_weights 로 옮긴 해석값.
+ *                       두 검사지가 공유하는 축은 이것과 2번뿐이고,
+ *                       그래서 고1 결과와 대학 결과가 같은 자 위에 놓인다.
+ *   4. 적합도           3번 × 가중치 + 성향 보정.
+ *                       대학판은 직무(job_axis_weights),
+ *                       고교판은 전공(major_fit_weights) 을 향한다.
+ *   5. 응답 품질         신뢰구간의 폭을 정한다.
  *
  * 3번의 변환 행렬도 4번의 가중치도 코드가 아니라 테이블에 있다.
  * 전공이 늘거나 가중치를 바꿀 때 이 파일은 건드리지 않는다.
@@ -33,7 +38,12 @@ function sigma(z: number): number {
   return 1 / (1 + Math.exp(-1.2 * z));
 }
 
+/** 이 응시가 무엇을 향해 채점되는가. 검사지가 정한다 */
+export type FitKind = "job" | "major";
+
 export type AttemptScore = {
+  /** job = 대학판(직무 적합) · major = 고교판(전공 적합) */
+  kind: FitKind;
   areas: { code: string; raw: number; scaled: number; rank: number }[];
   traits: { code: string; raw: number; scaled: number }[];
   axes: { code: string; scaled: number }[];
@@ -118,12 +128,25 @@ export function quality(rows: ResponseRow[]): Quality {
   if (coverage < 0.95) bandWidth += 4;
   bandWidth = Math.min(20, bandWidth);
 
+  /**
+   * 성실도 문항은 폭(bandWidth)에 얹는 것만으로 부족하다.
+   *
+   * 예전에는 "전부 틀렸을 때만 무효" 였다. 3문항짜리 검사에서 무작위로
+   * 찍으면 하나쯤은 우연히 맞으므로(P≈38%), 세 문항 중 둘을 틀린 응시자가
+   * 폭 12 로 남아 "정상" 판정을 받았다. 500명 고교 시뮬레이션에서 성실도를
+   * 안 읽은 응시자의 절반이 그렇게 빠져나갔다.
+   *
+   * 그래서 절반 이상(최소 둘)을 틀리면 무효로 본다. 성실하게 답한 사람이
+   * 여기에 걸릴 확률은 문항당 실수율 3% 기준 0.3% 아래다.
+   */
+  const attentionMissed = attention.length - attentionPassed;
+  const invalidAt = Math.max(2, Math.ceil(attention.length / 2));
+  const attentionFailed =
+    attention.length > 0 &&
+    (attentionPassed === 0 || (attention.length >= 2 && attentionMissed >= invalidAt));
+
   const flag: Quality["flag"] =
-    attentionPassed === 0 && attention.length > 0
-      ? "invalid"
-      : bandWidth >= 14
-        ? "check"
-        : "ok";
+    attentionFailed ? "invalid" : bandWidth >= 14 ? "check" : "ok";
 
   return {
     answered: answered.length,
@@ -153,8 +176,41 @@ export async function score(attemptId: string): Promise<AttemptScore> {
 
   const q = quality(rows);
 
-  // 1. 직무분야
-  const areaCodes = await query<{ code: string }>(`SELECT code FROM job_areas ORDER BY sort_no`);
+  /**
+   * 이 응시가 어느 검사지였는지 먼저 확인한다.
+   *
+   * 전공이 있으면 그 전공의 직무로 내려가고(대학판), 없으면 전공 자체를
+   * 향한다(고교판). 검사지가 늘 때 이 파일에 if 가 늘지 않도록, 갈라지는
+   * 곳은 "무엇을 향해 계산하는가" 한 군데뿐이다.
+   */
+  const inst = await query<{ instrument_key: string | null; major_code: string | null }>(
+    `SELECT i.instrument_key, m.code AS major_code
+       FROM attempts a
+       JOIN test_sessions ts ON ts.id = a.session_id
+       JOIN instruments i ON i.id = ts.instrument_id
+       LEFT JOIN majors m ON m.id = i.major_id
+      WHERE a.id = $1`,
+    [attemptId],
+  );
+  if (!inst[0]) throw new Error(`응시 ${attemptId} 의 검사지를 찾을 수 없습니다`);
+  const instrumentKey = inst[0].instrument_key;
+  const majorCode = inst[0].major_code;
+  const kind: FitKind = majorCode ? "job" : "major";
+
+  /**
+   * 1. 영역.
+   *
+   * 검사지에 묶인 영역만 본다. 예전에는 job_areas 를 통째로 긁었는데,
+   * 고교판 영역 8개가 생기는 순간 대학 응시자의 채점에 응답 0개짜리 영역이
+   * 여덟 개 끼어들어 순위와 표준오차가 전부 흔들린다.
+   */
+  const areaCodes = await query<{ code: string }>(
+    `SELECT code FROM job_areas
+      WHERE instrument_key IS NOT DISTINCT FROM $1
+      ORDER BY sort_no`,
+    [instrumentKey],
+  );
+  if (!areaCodes.length) throw new Error(`검사지 ${instrumentKey ?? "(이름 없음)"} 에 영역이 없습니다`);
   /**
    * 분야 점수의 표준오차. 25문항 평균이므로 sd/√25 이다.
    * 이 값이 적합도 신뢰구간의 근거가 된다 — 예전에는 ±6 이라는 상수를 썼는데,
@@ -183,6 +239,23 @@ export async function score(attemptId: string): Promise<AttemptScore> {
     .sort((a, b) => b.scaled - a.scaled)
     .map((a, i) => ({ ...a, rank: i + 1 }));
   const areaByCode = new Map(areas.map((a) => [a.code, a]));
+
+  /**
+   * 영역의 사람 안 z. 고교판이 이것을 직접 쓴다.
+   * 축을 거치지 않는 이유는 아래 4번에 적었다.
+   */
+  const areaVals = areas.map((a) => a.raw);
+  const areaMean = areaVals.reduce((x, y) => x + y, 0) / (areaVals.length || 1);
+  const areaSdRaw = Math.sqrt(
+    areaVals.reduce((x, v) => x + (v - areaMean) ** 2, 0) / (areaVals.length || 1),
+  );
+  const AREA_SPREAD = areaSdRaw < SPREAD_FLOOR ? 0 : areaSdRaw;
+  const areaZ = new Map(
+    areas.map((a) => [
+      a.code,
+      AREA_SPREAD === 0 ? 0 : Math.max(-3, Math.min(3, (a.raw - areaMean) / AREA_SPREAD)),
+    ]),
+  );
 
   // 2. 업무성향 — 성향은 절대값보다 6개 사이의 상대 높낮이가 정보다.
   const traitCodes = await query<{ code: string }>(
@@ -267,11 +340,61 @@ export async function score(attemptId: string): Promise<AttemptScore> {
   //    A = activity 축 가중합. 축 가중치는 job_axis_weights 에 있다.
   //    P = 그 직무가 요구하는 성향과 응시자 성향이 맞는 정도.
   //    현재 트랙(재학생)은 증거(S)와 맥락(C)이 아직 없으므로 A·P 만 쓴다.
-  const jobWeights = await query<{ code: string; axis_code: string; weight: string }>(
-    `SELECT j.code, w.axis_code, w.weight
-       FROM job_axis_weights w JOIN job_clusters j ON j.id = w.job_id
-      WHERE j.code LIKE 'ME.%'`,
-  );
+  /**
+   * 적합 대상의 축 가중치.
+   *   대학판 — 그 전공에 달린 직무들 (job_axis_weights)
+   *   고교판 — 전공 8개              (major_fit_weights)
+   * 둘 다 (대상 코드 × 축 × 무게) 모양이라 아래 산식은 하나로 간다.
+   *
+   * 대학판의 범위를 전공 코드로 잡는다. 예전에는 'ME.%' 가 코드에 박혀
+   * 있어서, 전기전자 검사지를 올리는 순간 기계 직무로 채점됐을 것이다.
+   */
+  const jobWeights = majorCode
+    ? await query<{ code: string; axis_code: string; weight: string }>(
+        `SELECT j.code, w.axis_code, w.weight
+           FROM job_axis_weights w JOIN job_clusters j ON j.id = w.job_id
+          WHERE j.code LIKE $1`,
+        [majorCode + ".%"],
+      )
+    : await query<{ code: string; axis_code: string; weight: string }>(
+        `SELECT m.code, w.axis_code, w.weight
+           FROM major_fit_weights w JOIN majors m ON m.id = w.major_id`,
+      );
+  if (!jobWeights.length) {
+    throw new Error(
+      kind === "job"
+        ? `전공 ${majorCode} 에 직무 축 가중치가 없습니다`
+        : `major_fit_weights 가 비어 있습니다. npm run metri:seed 를 먼저 돌리세요.`,
+    );
+  }
+
+  /**
+   * 고교판에서 전공 하나가 어느 영역에서 재어졌는지.
+   *
+   * 대학판은 직무를 문항이 직접 재지 않는다 — 문항은 직무분야를 재고, 축을
+   * 거쳐야 직무에 닿는다. 고교판은 다르다. 계열 14문항이 그 계열을 바로
+   * 재고 있어서, 축을 한 번 거치면 신호가 섞이기만 한다.
+   *
+   * 실제로 섞였다. 500명 시뮬레이션에서 전기·전자 문항만 높게 답한 학생의
+   * 1순위가 컴퓨터공학 74% 로 나왔다. W·Wᵀ 를 보면 이유가 분명하다 —
+   * 전기·전자의 축 분포는 평평해서(ANALYZE .24 가 최대) 자기 자신을 가리키는
+   * 힘이 0.155 인데, 컴퓨터공학은 CODE .38 로 뾰족해 0.250 이다. 축을 거치는
+   * 순간 뾰족한 전공이 남의 학생까지 가져간다.
+   *
+   * 그래서 고교판의 A 는 축이 아니라 **그 전공의 영역 점수**에서 온다.
+   * 축 8개는 결과지의 레이더와 대학판과의 연속성에 그대로 쓰인다 —
+   * 재는 데 안 쓸 뿐, 없애지 않는다.
+   */
+  const areaOfMajor = new Map<string, string>();
+  if (kind === "major") {
+    const pairs = await query<{ major_code: string; area_code: string }>(
+      `SELECT m.code AS major_code, ja.code AS area_code
+         FROM job_areas ja JOIN majors m ON m.id = ja.major_id
+        WHERE ja.instrument_key IS NOT DISTINCT FROM $1`,
+      [instrumentKey],
+    );
+    for (const r of pairs) areaOfMajor.set(r.major_code, r.area_code);
+  }
   const byJob = new Map<string, { axis: string; w: number }[]>();
   for (const r of jobWeights) {
     if (!byJob.has(r.code)) byJob.set(r.code, []);
@@ -294,8 +417,12 @@ export async function score(attemptId: string): Promise<AttemptScore> {
   const jobs = [...byJob.entries()]
     .map(([code, ws]) => {
       const den = ws.reduce((a, x) => a + x.w, 0) || 1;
-      // 이 직무가 무겁게 보는 축에서 그 사람이 얼마나 위에 있는가
-      const lean = ws.reduce((acc, x) => acc + x.w * (axisZ.get(x.axis) ?? 0), 0) / den;
+      // 대학판: 이 직무가 무겁게 보는 축에서 그 사람이 얼마나 위에 있는가
+      // 고교판: 그 계열 문항에서 그 사람이 얼마나 위에 있는가 (위 주석 참고)
+      const lean =
+        kind === "major"
+          ? (areaZ.get(areaOfMajor.get(code) ?? "") ?? 0)
+          : ws.reduce((acc, x) => acc + x.w * (axisZ.get(x.axis) ?? 0), 0) / den;
       const a = Math.round(sigma(lean) * 1000) / 10;
 
       // 성향 적합 P: 이 직무에서 무거운 축이 선호하는 성향의 z 를 가중 평균해
@@ -322,9 +449,16 @@ export async function score(attemptId: string): Promise<AttemptScore> {
        * 같은 보기를 연타한 사람은 측정 자체가 덜 믿을 만하기 때문이다.
        */
       let leanVar = 0;
-      for (const x of ws) {
-        const se = (axisSe.get(x.axis) ?? 0) / (SPREAD === 0 ? 1 : SPREAD * 25);
-        leanVar += ((x.w / den) * se) ** 2;
+      if (kind === "major") {
+        // 영역 점수 하나에서 바로 온다. areaSe 는 0~100 단위이므로 z 단위로 되돌린다.
+        const se = (areaSe.get(areaOfMajor.get(code) ?? "") ?? 0) /
+          (AREA_SPREAD === 0 ? 1 : AREA_SPREAD * 25);
+        leanVar = se ** 2;
+      } else {
+        for (const x of ws) {
+          const se = (axisSe.get(x.axis) ?? 0) / (SPREAD === 0 ? 1 : SPREAD * 25);
+          leanVar += ((x.w / den) * se) ** 2;
+        }
       }
       const sg = sigma(lean);
       const seFit = 120 * sg * (1 - sg) * 1.2 * Math.sqrt(leanVar);
@@ -377,8 +511,9 @@ export async function score(attemptId: string): Promise<AttemptScore> {
     tiered[i].tier = tier;
   }
 
-  await persist(attemptId, { areas, traits, axes, jobs: tiered, quality: q });
-  return { areas, traits, axes, jobs: tiered, quality: q };
+  const result: AttemptScore = { kind, areas, traits, axes, jobs: tiered, quality: q };
+  await persist(attemptId, result);
+  return result;
 }
 
 async function persist(attemptId: string, s: AttemptScore) {
@@ -386,6 +521,7 @@ async function persist(attemptId: string, s: AttemptScore) {
     await c.query(`DELETE FROM area_scores     WHERE attempt_id = $1`, [attemptId]);
     await c.query(`DELETE FROM indicator_scores WHERE attempt_id = $1`, [attemptId]);
     await c.query(`DELETE FROM job_fit_scores   WHERE attempt_id = $1`, [attemptId]);
+    await c.query(`DELETE FROM major_fit_scores WHERE attempt_id = $1`, [attemptId]);
 
     for (const a of s.areas) {
       await c.query(
@@ -415,13 +551,19 @@ async function persist(attemptId: string, s: AttemptScore) {
       );
     }
 
+    // 같은 숫자를 대상만 바꿔 담는다. 고교판은 직무가 없으므로 전공 표로 간다.
+    const into =
+      s.kind === "job"
+        ? `INSERT INTO job_fit_scores
+             (attempt_id, job_id, fit_score, rank_no, a_score, p_score, band_low, band_high, tier)
+           SELECT $1, id, $3, $4, $5, $6, $7, $8, $9 FROM job_clusters WHERE code = $2`
+        : `INSERT INTO major_fit_scores
+             (attempt_id, major_id, fit_score, rank_no, a_score, p_score, band_low, band_high, tier)
+           SELECT $1, id, $3, $4, $5, $6, $7, $8, $9 FROM majors WHERE code = $2`;
     for (const j of s.jobs) {
-      await c.query(
-        `INSERT INTO job_fit_scores
-           (attempt_id, job_id, fit_score, rank_no, a_score, p_score, band_low, band_high, tier)
-         SELECT $1, id, $3, $4, $5, $6, $7, $8, $9 FROM job_clusters WHERE code = $2`,
-        [attemptId, j.code, j.fit, j.rank, j.a, j.p, j.band[0], j.band[1], j.tier],
-      );
+      await c.query(into, [
+        attemptId, j.code, j.fit, j.rank, j.a, j.p, j.band[0], j.band[1], j.tier,
+      ]);
     }
 
     await c.query(

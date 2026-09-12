@@ -36,6 +36,8 @@ export type GapRow = {
 
 export type Report = {
   attemptId: string;
+  /** job = 대학판(직무 적합) · major = 고교판(전공 적합) */
+  kind: "job" | "major";
   learner: { name: string; majorName: string | null; submittedAt: string | null };
   areas: Named[];
   traits: Named[];
@@ -141,7 +143,31 @@ export async function buildReport(
     [attemptId, lang],
   );
 
+  /**
+   * 고교판은 직무가 아니라 전공이 나온다. 같은 칸에 담아 같은 화면이 읽게
+   * 한다 — 결과지를 한 벌 더 만들지 않기 위해서다. 무엇이 담겼는지는
+   * kind 가 말한다.
+   *
+   * 고교판에는 areaName 을 넣지 않는다. 계열이 곧 전공이라 "기계공학
+   * (기계공학)" 이 되기 때문이다.
+   */
+  const majors = jobs.length
+    ? []
+    : await query<ReportJob>(
+        `SELECT m.code, ${NAME("majors", "m")} AS name,
+                f.fit_score::float AS fit, f.a_score::float AS a, f.p_score::float AS p,
+                ARRAY[f.band_low::float, f.band_high::float] AS band,
+                f.rank_no AS rank, COALESCE(f.tier, f.rank_no) AS tier,
+                NULL::text AS "areaName"
+           FROM major_fit_scores f JOIN majors m ON m.id = f.major_id
+          WHERE f.attempt_id = $1 ORDER BY f.rank_no`,
+        [attemptId, lang],
+      );
+  const kind: Report["kind"] = jobs.length ? "job" : "major";
+  const fits = jobs.length ? jobs : majors;
+
   // 1순위 직무가 요구하는 역량. 보유 수준은 증거에서만 온다 — 없으면 null.
+  // 고교판에는 없다. 고1에게 "요구 레벨 3, 보유 0" 을 보여줄 이유가 없다.
   const gaps = jobs.length
     ? await query<GapRow>(
         `SELECT c.code, ${NAME("competencies", "c")} AS name,
@@ -177,11 +203,12 @@ export async function buildReport(
 
   return {
     attemptId,
+    kind,
     learner: { name: head.name, majorName: head.major_name, submittedAt: head.submitted_at },
     areas,
     traits: traits.map(({ code, name, scaled }) => ({ code, name, scaled })),
     axes: axes.map(({ code, name, scaled }) => ({ code, name, scaled })),
-    jobs,
+    jobs: fits,
     gaps,
     evidenceCount: ev?.n ?? 0,
     quality: {

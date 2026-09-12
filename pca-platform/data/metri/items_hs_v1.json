@@ -1,0 +1,1179 @@
+{
+ "instrumentKey": "HS_V1",
+ "version": "1.0.0",
+ "major": null,
+ "track": "HS",
+ "source": "메트리 플러스 고교·중학 문항. 대학판 문항을 쓰지 않고 새로 썼다 — 전공 용어가 들어간 문장은 중·고등학생에게 성향이 아니라 어휘를 묻게 된다. 재는 축(활동 8·성향 6)은 대학판과 같은 축이라, 고1 결과와 대학 결과가 같은 자 위에 놓인다.",
+ "scale": {
+  "points": 5,
+  "labels": {
+   "ko": [
+    "전혀 그렇지 않다",
+    "그렇지 않다",
+    "보통이다",
+    "그렇다",
+    "매우 그렇다"
+   ],
+   "en": [
+    "Strongly disagree",
+    "Disagree",
+    "Neutral",
+    "Agree",
+    "Strongly agree"
+   ]
+  }
+ },
+ "areas": [
+  {
+   "code": "HS.ME",
+   "ko": "기계공학",
+   "en": "Mechanical Engineering",
+   "axisWeights": {
+    "DESIGN": 0.26,
+    "ANALYZE": 0.22,
+    "BUILD": 0.2,
+    "FIELD": 0.12,
+    "OPTIMIZE": 0.1,
+    "RESEARCH": 0.06,
+    "CODE": 0.04
+   },
+   "major": "ME"
+  },
+  {
+   "code": "HS.EE",
+   "ko": "전기·전자공학",
+   "en": "Electrical & Electronic Eng.",
+   "axisWeights": {
+    "ANALYZE": 0.24,
+    "BUILD": 0.2,
+    "DESIGN": 0.18,
+    "RESEARCH": 0.14,
+    "CODE": 0.14,
+    "FIELD": 0.1
+   },
+   "major": "EE"
+  },
+  {
+   "code": "HS.CE",
+   "ko": "컴퓨터공학",
+   "en": "Computer Engineering",
+   "axisWeights": {
+    "CODE": 0.38,
+    "ANALYZE": 0.2,
+    "DESIGN": 0.16,
+    "OPTIMIZE": 0.14,
+    "RESEARCH": 0.08,
+    "BUILD": 0.04
+   },
+   "major": "CE"
+  },
+  {
+   "code": "HS.CHE",
+   "ko": "화학공학",
+   "en": "Chemical Engineering",
+   "axisWeights": {
+    "ANALYZE": 0.26,
+    "RESEARCH": 0.22,
+    "FIELD": 0.2,
+    "OPTIMIZE": 0.16,
+    "BUILD": 0.1,
+    "DESIGN": 0.06
+   },
+   "major": "CHE"
+  },
+  {
+   "code": "HS.MSE",
+   "ko": "신소재공학",
+   "en": "Materials Science & Eng.",
+   "axisWeights": {
+    "RESEARCH": 0.3,
+    "BUILD": 0.24,
+    "ANALYZE": 0.22,
+    "OPTIMIZE": 0.12,
+    "FIELD": 0.08,
+    "DESIGN": 0.04
+   },
+   "major": "MSE"
+  },
+  {
+   "code": "HS.IE",
+   "ko": "산업공학",
+   "en": "Industrial Engineering",
+   "axisWeights": {
+    "OPTIMIZE": 0.3,
+    "ORCHESTRATE": 0.24,
+    "ANALYZE": 0.2,
+    "CODE": 0.12,
+    "FIELD": 0.1,
+    "DESIGN": 0.04
+   },
+   "major": "IE"
+  },
+  {
+   "code": "HS.CIV",
+   "ko": "건설·환경공학",
+   "en": "Civil & Environmental Eng.",
+   "axisWeights": {
+    "FIELD": 0.3,
+    "DESIGN": 0.24,
+    "ANALYZE": 0.2,
+    "ORCHESTRATE": 0.16,
+    "OPTIMIZE": 0.1
+   },
+   "major": "CIV"
+  },
+  {
+   "code": "HS.BME",
+   "ko": "바이오·의공학",
+   "en": "Biomedical Engineering",
+   "axisWeights": {
+    "RESEARCH": 0.3,
+    "ANALYZE": 0.22,
+    "BUILD": 0.2,
+    "DESIGN": 0.14,
+    "CODE": 0.14
+   },
+   "major": "BME"
+  }
+ ],
+ "items": [
+  {
+   "code": "HS.ME.01",
+   "seq": 1,
+   "area": "HS.ME",
+   "trait": "INDEP",
+   "reverse": false,
+   "ko": "고장 난 물건이 있으면 누구에게 물어보기 전에 먼저 뜯어서 안이 어떻게 생겼는지 본다.",
+   "en": "When something breaks, I open it up to see how it is made before asking anyone."
+  },
+  {
+   "code": "HS.EE.01",
+   "seq": 2,
+   "area": "HS.EE",
+   "trait": "INDEP",
+   "reverse": false,
+   "ko": "회로에 불이 안 들어오면 먼저 혼자 선을 하나씩 짚어 가며 어디가 끊겼는지 찾아본다.",
+   "en": "If a circuit does not light up, I trace the wires one by one on my own to find the break."
+  },
+  {
+   "code": "HS.CE.01",
+   "seq": 3,
+   "area": "HS.CE",
+   "trait": "INDEP",
+   "reverse": false,
+   "ko": "만든 프로그램이 안 돌아가면 먼저 혼자 어디가 틀렸는지 찾아보는 편이다.",
+   "en": "When a program I wrote does not run, I first look for the mistake on my own."
+  },
+  {
+   "code": "HS.CHE.01",
+   "seq": 4,
+   "area": "HS.CHE",
+   "trait": "INDEP",
+   "reverse": false,
+   "ko": "실험 결과가 이상하게 나오면 먼저 혼자 과정을 되짚어 본다.",
+   "en": "When an experiment gives an odd result, I retrace the steps on my own first."
+  },
+  {
+   "code": "HS.MSE.01",
+   "seq": 5,
+   "area": "HS.MSE",
+   "trait": "INDEP",
+   "reverse": false,
+   "ko": "재료마다 왜 성질이 다른지 혼자 찾아본 적이 있다.",
+   "en": "I have looked up on my own why different materials behave differently."
+  },
+  {
+   "code": "HS.IE.01",
+   "seq": 6,
+   "area": "HS.IE",
+   "trait": "INDEP",
+   "reverse": false,
+   "ko": "일이 꼬이면 먼저 혼자 순서를 종이에 적어 정리해 본다.",
+   "en": "When things get tangled, I first write the order down on paper by myself."
+  },
+  {
+   "code": "HS.CIV.01",
+   "seq": 7,
+   "area": "HS.CIV",
+   "trait": "INDEP",
+   "reverse": false,
+   "ko": "다리나 건물을 보면 혼자 어떻게 서 있는 건지 구조를 짚어 본다.",
+   "en": "Looking at a bridge or a building, I work out on my own how it stands up."
+  },
+  {
+   "code": "HS.BME.01",
+   "seq": 8,
+   "area": "HS.BME",
+   "trait": "INDEP",
+   "reverse": false,
+   "ko": "몸이 어떻게 작동하는지 혼자 찾아본 적이 있다.",
+   "en": "I have looked up on my own how the body works."
+  },
+  {
+   "code": "HS.EE.02",
+   "seq": 9,
+   "area": "HS.EE",
+   "trait": "INDEP",
+   "reverse": false,
+   "ko": "새 부품이 생기면 쓰는 법을 배우기 전에 직접 연결해 본다.",
+   "en": "When I get a new component, I wire it up myself before learning how it is meant to be used."
+  },
+  {
+   "code": "HS.CE.02",
+   "seq": 10,
+   "area": "HS.CE",
+   "trait": "INDEP",
+   "reverse": false,
+   "ko": "새 앱이나 프로그램은 설명을 듣기보다 직접 눌러 가며 익힌다.",
+   "en": "I learn a new app by clicking through it rather than by being told how it works."
+  },
+  {
+   "code": "HS.CHE.02",
+   "seq": 11,
+   "area": "HS.CHE",
+   "trait": "INDEP",
+   "reverse": false,
+   "ko": "물질이 섞일 때 무슨 일이 일어나는지 직접 조건을 바꿔 확인해 보고 싶다.",
+   "en": "I want to change the conditions myself to see what happens when substances mix."
+  },
+  {
+   "code": "HS.MSE.02",
+   "seq": 12,
+   "area": "HS.MSE",
+   "trait": "INDEP",
+   "reverse": false,
+   "ko": "처음 보는 재료가 생기면 직접 구부리거나 긁어 보며 어떤지 확인한다.",
+   "en": "With a material I have not seen before, I bend or scratch it myself to find out what it is like."
+  },
+  {
+   "code": "HS.IE.02",
+   "seq": 13,
+   "area": "HS.IE",
+   "trait": "INDEP",
+   "reverse": false,
+   "ko": "공부 계획이나 일정은 스스로 짜서 관리하는 편이다.",
+   "en": "I set and manage my own study plan and schedule."
+  },
+  {
+   "code": "HS.CIV.02",
+   "seq": 14,
+   "area": "HS.CIV",
+   "trait": "INDEP",
+   "reverse": false,
+   "ko": "지도를 보고 길이나 지형을 스스로 파악하는 편이다.",
+   "en": "I read a map and work out the roads and the terrain myself."
+  },
+  {
+   "code": "HS.BME.02",
+   "seq": 15,
+   "area": "HS.BME",
+   "trait": "INDEP",
+   "reverse": false,
+   "ko": "생물 실험에서 관찰한 것을 스스로 정리해 보는 편이다.",
+   "en": "I organise what I observed in a biology experiment by myself."
+  },
+  {
+   "code": "HS.ME.02",
+   "seq": 16,
+   "area": "HS.ME",
+   "trait": "INDEP",
+   "reverse": false,
+   "ko": "처음 보는 기계는 설명서를 읽기 전에 이리저리 만져 보며 어떻게 움직이는지 짐작해 본다.",
+   "en": "With a machine I have never seen, I handle it and guess how it works before reading the manual."
+  },
+  {
+   "code": "HS.CE.03",
+   "seq": 17,
+   "area": "HS.CE",
+   "trait": "CHALLENGE",
+   "reverse": false,
+   "ko": "아무도 안 만들어 본 기능을 넣어 보라고 하면 해 보고 싶어진다.",
+   "en": "If I were asked to add a feature nobody has built, I would want to try."
+  },
+  {
+   "code": "HS.CHE.03",
+   "seq": 18,
+   "area": "HS.CHE",
+   "trait": "CHALLENGE",
+   "reverse": false,
+   "ko": "배운 적 없는 반응을 조건을 바꿔 가며 시험해 보고 싶다.",
+   "en": "I would like to test a reaction I have never learned by varying the conditions."
+  },
+  {
+   "code": "HS.MSE.03",
+   "seq": 19,
+   "area": "HS.MSE",
+   "trait": "CHALLENGE",
+   "reverse": false,
+   "ko": "아직 잘 쓰이지 않는 재료로 무언가 만들어 보는 쪽이 흥미롭다.",
+   "en": "I find it interesting to build something from a material not yet widely used."
+  },
+  {
+   "code": "HS.IE.03",
+   "seq": 20,
+   "area": "HS.IE",
+   "trait": "CHALLENGE",
+   "reverse": false,
+   "ko": "늘 하던 방식을 아예 바꾸자고 제안해 보고 싶다.",
+   "en": "I would like to propose changing the usual way of doing things entirely."
+  },
+  {
+   "code": "HS.CIV.03",
+   "seq": 21,
+   "area": "HS.CIV",
+   "trait": "CHALLENGE",
+   "reverse": false,
+   "ko": "지금까지 없던 모양의 구조물을 세우는 일이 흥미롭다.",
+   "en": "Putting up a structure of a shape that has not existed before interests me."
+  },
+  {
+   "code": "HS.BME.03",
+   "seq": 22,
+   "area": "HS.BME",
+   "trait": "CHALLENGE",
+   "reverse": false,
+   "ko": "아직 치료법이 없는 문제를 다루는 쪽에 마음이 간다.",
+   "en": "I am drawn to problems that have no treatment yet."
+  },
+  {
+   "code": "HS.ME.03",
+   "seq": 23,
+   "area": "HS.ME",
+   "trait": "CHALLENGE",
+   "reverse": false,
+   "ko": "한 번도 만들어 본 적 없는 구조를 만들어 보라고 하면 해 보고 싶어진다.",
+   "en": "If I were asked to build a structure I have never built before, I would want to try."
+  },
+  {
+   "code": "HS.EE.03",
+   "seq": 24,
+   "area": "HS.EE",
+   "trait": "CHALLENGE",
+   "reverse": false,
+   "ko": "배운 적 없는 센서를 써서 무언가 만들어 보라고 하면 해 보고 싶다.",
+   "en": "If I were asked to build something with a sensor I have never learned, I would want to try."
+  },
+  {
+   "code": "HS.CHE.04",
+   "seq": 25,
+   "area": "HS.CHE",
+   "trait": "CHALLENGE",
+   "reverse": false,
+   "ko": "같은 결과를 더 적은 재료로 얻는 방법을 찾는 쪽에 흥미가 간다.",
+   "en": "I am drawn to finding a way to get the same result with less material."
+  },
+  {
+   "code": "HS.MSE.04",
+   "seq": 26,
+   "area": "HS.MSE",
+   "trait": "CHALLENGE",
+   "reverse": false,
+   "ko": "더 가벼우면서 더 튼튼한 재료를 찾는 문제가 재미있을 것 같다.",
+   "en": "Finding a material that is both lighter and stronger sounds like an interesting problem."
+  },
+  {
+   "code": "HS.IE.04",
+   "seq": 27,
+   "area": "HS.IE",
+   "trait": "CHALLENGE",
+   "reverse": false,
+   "ko": "줄을 덜 서게 만드는 방법을 찾는 문제가 흥미롭다.",
+   "en": "Finding a way to make people queue less is an interesting problem to me."
+  },
+  {
+   "code": "HS.CIV.04",
+   "seq": 28,
+   "area": "HS.CIV",
+   "trait": "CHALLENGE",
+   "reverse": false,
+   "ko": "지진이나 홍수에도 견디게 만드는 문제를 풀어 보고 싶다.",
+   "en": "I would like to work on making something withstand an earthquake or a flood."
+  },
+  {
+   "code": "HS.BME.04",
+   "seq": 29,
+   "area": "HS.BME",
+   "trait": "CHALLENGE",
+   "reverse": false,
+   "ko": "몸의 기능을 대신해 주는 장치를 만들어 보고 싶다.",
+   "en": "I would like to build a device that stands in for a function of the body."
+  },
+  {
+   "code": "HS.ATT1",
+   "seq": 30,
+   "area": null,
+   "trait": null,
+   "reverse": false,
+   "attention": 3,
+   "ko": "이 문항은 끝까지 잘 읽고 있는지 확인하는 문항입니다. '보통이다'를 선택해 주세요.",
+   "en": "This item checks that you are still reading. Please select \"Neutral\"."
+  },
+  {
+   "code": "HS.ME.04",
+   "seq": 31,
+   "area": "HS.ME",
+   "trait": "CHALLENGE",
+   "reverse": false,
+   "ko": "잘 굴러가는 수레를 만드는 것보다, 무거운 것을 실어도 안 넘어지는 수레를 만드는 쪽이 더 해 보고 싶다.",
+   "en": "I would rather build a cart that does not tip over under a heavy load than one that simply rolls well."
+  },
+  {
+   "code": "HS.EE.04",
+   "seq": 32,
+   "area": "HS.EE",
+   "trait": "CHALLENGE",
+   "reverse": false,
+   "ko": "이미 잘 되는 회로를 더 작게 만들어 보는 쪽에 흥미가 간다.",
+   "en": "I am drawn to making a circuit that already works smaller."
+  },
+  {
+   "code": "HS.CE.04",
+   "seq": 33,
+   "area": "HS.CE",
+   "trait": "CHALLENGE",
+   "reverse": false,
+   "ko": "정답이 하나로 정해져 있지 않은 문제를 푸는 쪽이 더 흥미롭다.",
+   "en": "I find problems without a single fixed answer more interesting."
+  },
+  {
+   "code": "HS.MSE.05",
+   "seq": 34,
+   "area": "HS.MSE",
+   "trait": "SPEED",
+   "reverse": false,
+   "ko": "여러 재료를 놓고 따지기보다 하나씩 빨리 써 보며 고르는 편이다.",
+   "en": "Rather than weighing up many materials, I try them one by one quickly and choose."
+  },
+  {
+   "code": "HS.IE.05",
+   "seq": 35,
+   "area": "HS.IE",
+   "trait": "SPEED",
+   "reverse": false,
+   "ko": "계획을 완벽하게 짜기보다 일단 해 보면서 고치는 편이 빠르다.",
+   "en": "I think it is faster to start and fix as I go than to plan perfectly."
+  },
+  {
+   "code": "HS.CIV.05",
+   "seq": 36,
+   "area": "HS.CIV",
+   "trait": "SPEED",
+   "reverse": false,
+   "ko": "도면을 다 그리기보다 모형으로 먼저 세워 보는 편이다.",
+   "en": "Rather than finishing the drawing, I build a model and stand it up first."
+  },
+  {
+   "code": "HS.BME.05",
+   "seq": 37,
+   "area": "HS.BME",
+   "trait": "SPEED",
+   "reverse": false,
+   "ko": "오래 관찰하기보다 조건을 바꿔 빨리 여러 번 해 보는 편이다.",
+   "en": "Rather than observing for long, I change a condition and repeat quickly."
+  },
+  {
+   "code": "HS.ME.05",
+   "seq": 38,
+   "area": "HS.ME",
+   "trait": "SPEED",
+   "reverse": false,
+   "ko": "설계도를 다 그리기 전에 일단 대충 만들어 보고 고쳐 나가는 편이 빠르다고 생각한다.",
+   "en": "I think it is faster to build a rough version first and fix it than to finish the drawing."
+  },
+  {
+   "code": "HS.EE.05",
+   "seq": 39,
+   "area": "HS.EE",
+   "trait": "SPEED",
+   "reverse": false,
+   "ko": "회로를 종이에 완전히 그리기보다 부품을 꽂아 가며 맞춰 보는 편이다.",
+   "en": "Rather than drawing the whole circuit on paper, I plug parts in and adjust as I go."
+  },
+  {
+   "code": "HS.CE.05",
+   "seq": 40,
+   "area": "HS.CE",
+   "trait": "SPEED",
+   "reverse": false,
+   "ko": "전체 구조를 정리하기 전에 일단 돌아가게 만들어 놓고 고치는 편이다.",
+   "en": "I get it running first and fix it afterwards, rather than settling the structure first."
+  },
+  {
+   "code": "HS.CHE.05",
+   "seq": 41,
+   "area": "HS.CHE",
+   "trait": "SPEED",
+   "reverse": false,
+   "ko": "조건을 다 계산하기보다 조금만 먼저 해 보고 맞춰 가는 편이다.",
+   "en": "Rather than calculating every condition, I run a small trial first and adjust."
+  },
+  {
+   "code": "HS.IE.06",
+   "seq": 42,
+   "area": "HS.IE",
+   "trait": "SPEED",
+   "reverse": false,
+   "ko": "막히면 바로 순서를 바꿔 다른 것부터 처리한다.",
+   "en": "When blocked, I reorder and handle something else right away."
+  },
+  {
+   "code": "HS.CIV.06",
+   "seq": 43,
+   "area": "HS.CIV",
+   "trait": "SPEED",
+   "reverse": false,
+   "ko": "잘 안 되면 오래 계산하기보다 형태를 바꿔 다시 세워 본다.",
+   "en": "When it does not hold, I change the shape and rebuild rather than calculate at length."
+  },
+  {
+   "code": "HS.BME.06",
+   "seq": 44,
+   "area": "HS.BME",
+   "trait": "SPEED",
+   "reverse": false,
+   "ko": "결과가 안 나오면 다른 방법으로 바꿔 시도한다.",
+   "en": "When nothing comes out, I switch to another method."
+  },
+  {
+   "code": "HS.ME.06",
+   "seq": 45,
+   "area": "HS.ME",
+   "trait": "SPEED",
+   "reverse": false,
+   "ko": "만들다가 막히면 오래 고민하기보다 바로 다른 방법으로 바꿔 본다.",
+   "en": "When I get stuck building something, I switch to another approach rather than thinking it over for long."
+  },
+  {
+   "code": "HS.EE.06",
+   "seq": 46,
+   "area": "HS.EE",
+   "trait": "SPEED",
+   "reverse": false,
+   "ko": "안 되면 원인을 끝까지 따지기보다 부품을 바꿔 끼워 빨리 확인해 본다.",
+   "en": "When it fails, I swap parts to check quickly rather than chasing the cause to the end."
+  },
+  {
+   "code": "HS.CE.06",
+   "seq": 47,
+   "area": "HS.CE",
+   "trait": "SPEED",
+   "reverse": false,
+   "ko": "막히면 오래 붙잡고 있기보다 다른 방법을 빨리 시도해 본다.",
+   "en": "When I am stuck, I try another way quickly rather than holding on to one."
+  },
+  {
+   "code": "HS.CHE.06",
+   "seq": 48,
+   "area": "HS.CHE",
+   "trait": "SPEED",
+   "reverse": false,
+   "ko": "실험이 잘 안 되면 오래 따지기보다 조건을 바꿔 다시 해 본다.",
+   "en": "When an experiment fails, I change a condition and run it again rather than analysing at length."
+  },
+  {
+   "code": "HS.MSE.06",
+   "seq": 49,
+   "area": "HS.MSE",
+   "trait": "SPEED",
+   "reverse": false,
+   "ko": "결과가 안 좋으면 원인을 파기보다 다른 재료로 바꿔 본다.",
+   "en": "When the result is poor, I switch material rather than digging into the cause."
+  },
+  {
+   "code": "HS.CIV.07",
+   "seq": 50,
+   "area": "HS.CIV",
+   "trait": "COLLAB",
+   "reverse": false,
+   "ko": "큰 것을 만드는 일은 여러 사람이 나눠 맡아야 한다고 생각한다.",
+   "en": "I think building something large has to be divided among many people."
+  },
+  {
+   "code": "HS.BME.07",
+   "seq": 51,
+   "area": "HS.BME",
+   "trait": "COLLAB",
+   "reverse": false,
+   "ko": "사람을 대상으로 하는 일은 여러 분야 사람이 함께해야 한다고 본다.",
+   "en": "I think work involving people has to bring several fields together."
+  },
+  {
+   "code": "HS.ME.07",
+   "seq": 52,
+   "area": "HS.ME",
+   "trait": "COLLAB",
+   "reverse": false,
+   "ko": "무언가 만드는 수행평가는 혼자 하는 것보다 여럿이 나눠 맡을 때 더 잘 된다.",
+   "en": "A hands-on assignment goes better when the work is split among several people than done alone."
+  },
+  {
+   "code": "HS.EE.07",
+   "seq": 53,
+   "area": "HS.EE",
+   "trait": "COLLAB",
+   "reverse": false,
+   "ko": "배선이 복잡해지면 친구와 역할을 나눠 맡는 쪽이 낫다고 생각한다.",
+   "en": "When wiring gets complicated, I think it is better to split the roles with a friend."
+  },
+  {
+   "code": "HS.CE.07",
+   "seq": 54,
+   "area": "HS.CE",
+   "trait": "COLLAB",
+   "reverse": false,
+   "ko": "프로그램을 만들 때 기능을 나눠 맡았다가 합치는 방식이 좋다.",
+   "en": "I like splitting a program into features, each taken by someone, and joining them later."
+  },
+  {
+   "code": "HS.CHE.07",
+   "seq": 55,
+   "area": "HS.CHE",
+   "trait": "COLLAB",
+   "reverse": false,
+   "ko": "실험은 역할을 나눠 동시에 진행하는 편이 낫다고 생각한다.",
+   "en": "I think experiments go better when roles are split and run in parallel."
+  },
+  {
+   "code": "HS.MSE.07",
+   "seq": 56,
+   "area": "HS.MSE",
+   "trait": "COLLAB",
+   "reverse": false,
+   "ko": "재료를 고를 때는 여러 사람 의견을 모아 정하는 쪽이 낫다.",
+   "en": "I think a material is better chosen by gathering several people's views."
+  },
+  {
+   "code": "HS.IE.07",
+   "seq": 57,
+   "area": "HS.IE",
+   "trait": "COLLAB",
+   "reverse": false,
+   "ko": "여러 사람이 하는 일에는 역할과 순서를 맞춰 주는 사람이 필요하다고 본다.",
+   "en": "I think work involving several people needs someone to align roles and order."
+  },
+  {
+   "code": "HS.BME.08",
+   "seq": 58,
+   "area": "HS.BME",
+   "trait": "COLLAB",
+   "reverse": false,
+   "ko": "관찰 결과는 다른 사람과 맞춰 봐야 믿을 수 있다고 생각한다.",
+   "en": "I think an observation can only be trusted once it is checked against someone else's."
+  },
+  {
+   "code": "HS.ME.08",
+   "seq": 59,
+   "area": "HS.ME",
+   "trait": "COLLAB",
+   "reverse": false,
+   "ko": "만든 물건은 친구에게 보여 주고 어디가 약한지 물어보는 편이다.",
+   "en": "I show what I built to a friend and ask where it is weak."
+  },
+  {
+   "code": "HS.ATT2",
+   "seq": 60,
+   "area": null,
+   "trait": null,
+   "reverse": false,
+   "attention": 5,
+   "ko": "이 문항은 끝까지 잘 읽고 있는지 확인하는 문항입니다. '매우 그렇다'를 선택해 주세요.",
+   "en": "This item checks that you are still reading. Please select \"Strongly agree\"."
+  },
+  {
+   "code": "HS.EE.08",
+   "seq": 61,
+   "area": "HS.EE",
+   "trait": "COLLAB",
+   "reverse": false,
+   "ko": "회로가 안 되면 다른 사람에게 설명하면서 원인을 찾는 편이다.",
+   "en": "When a circuit fails, I find the cause by explaining it to someone else."
+  },
+  {
+   "code": "HS.CE.08",
+   "seq": 62,
+   "area": "HS.CE",
+   "trait": "COLLAB",
+   "reverse": false,
+   "ko": "내가 쓴 코드를 다른 사람이 읽고 고쳐 주는 것이 도움이 된다고 생각한다.",
+   "en": "I think it helps to have someone else read my code and correct it."
+  },
+  {
+   "code": "HS.CHE.08",
+   "seq": 63,
+   "area": "HS.CHE",
+   "trait": "COLLAB",
+   "reverse": false,
+   "ko": "관찰한 것을 조원과 맞춰 보며 기록하는 쪽이 정확하다고 본다.",
+   "en": "I think recording is more accurate when observations are checked against a teammate's."
+  },
+  {
+   "code": "HS.MSE.08",
+   "seq": 64,
+   "area": "HS.MSE",
+   "trait": "COLLAB",
+   "reverse": false,
+   "ko": "관찰한 성질을 조원과 비교해 보며 정리하는 편이다.",
+   "en": "I organise what I observed by comparing it with a teammate's notes."
+  },
+  {
+   "code": "HS.IE.08",
+   "seq": 65,
+   "area": "HS.IE",
+   "trait": "COLLAB",
+   "reverse": false,
+   "ko": "조별 과제에서 누가 무엇을 언제 할지 정리하는 역할을 맡는 편이다.",
+   "en": "In group work I tend to take the role of settling who does what and when."
+  },
+  {
+   "code": "HS.CIV.08",
+   "seq": 66,
+   "area": "HS.CIV",
+   "trait": "COLLAB",
+   "reverse": false,
+   "ko": "현장에서는 사람들과 말을 맞추는 일이 중요하다고 본다.",
+   "en": "I think keeping everyone on the same page matters on a worksite."
+  },
+  {
+   "code": "HS.ME.09",
+   "seq": 67,
+   "area": "HS.ME",
+   "trait": "STABLE",
+   "reverse": false,
+   "ko": "새로운 방법보다, 잘 되는 것이 확인된 방법으로 만드는 쪽이 마음이 편하다.",
+   "en": "I am more comfortable building with a method already known to work than with a new one."
+  },
+  {
+   "code": "HS.EE.09",
+   "seq": 68,
+   "area": "HS.EE",
+   "trait": "STABLE",
+   "reverse": false,
+   "ko": "전기를 다룰 때는 배운 순서를 그대로 지키는 것이 중요하다고 생각한다.",
+   "en": "With electricity, I think it matters to follow the order exactly as taught."
+  },
+  {
+   "code": "HS.CE.09",
+   "seq": 69,
+   "area": "HS.CE",
+   "trait": "STABLE",
+   "reverse": false,
+   "ko": "새로 나온 도구보다 익숙한 도구로 확실하게 만드는 쪽이 낫다.",
+   "en": "I would rather build something reliably with a familiar tool than with a new one."
+  },
+  {
+   "code": "HS.CHE.09",
+   "seq": 70,
+   "area": "HS.CHE",
+   "trait": "STABLE",
+   "reverse": false,
+   "ko": "실험은 정해진 절차와 안전 규칙을 그대로 지켜야 한다고 생각한다.",
+   "en": "I think an experiment must follow the stated procedure and safety rules exactly."
+  },
+  {
+   "code": "HS.MSE.09",
+   "seq": 71,
+   "area": "HS.MSE",
+   "trait": "STABLE",
+   "reverse": false,
+   "ko": "검증된 재료를 쓰는 것이 새 재료를 시험해 보는 것보다 낫다고 본다.",
+   "en": "I think using a proven material beats testing a new one."
+  },
+  {
+   "code": "HS.IE.09",
+   "seq": 72,
+   "area": "HS.IE",
+   "trait": "STABLE",
+   "reverse": false,
+   "ko": "이미 정해진 절차대로 하는 것이 실수를 줄인다고 생각한다.",
+   "en": "I think following the established procedure reduces mistakes."
+  },
+  {
+   "code": "HS.CIV.09",
+   "seq": 73,
+   "area": "HS.CIV",
+   "trait": "STABLE",
+   "reverse": false,
+   "ko": "안전과 관련된 일은 규정을 그대로 지키는 것이 먼저다.",
+   "en": "Where safety is involved, following the rule exactly comes first."
+  },
+  {
+   "code": "HS.BME.09",
+   "seq": 74,
+   "area": "HS.BME",
+   "trait": "STABLE",
+   "reverse": false,
+   "ko": "사람 몸에 쓰는 것은 충분히 검증된 것만 써야 한다고 본다.",
+   "en": "I think only what has been thoroughly verified should be used on the human body."
+  },
+  {
+   "code": "HS.EE.10",
+   "seq": 75,
+   "area": "HS.EE",
+   "trait": "STABLE",
+   "reverse": false,
+   "ko": "실험할 때는 정해진 전압과 전류 범위를 벗어나지 않게 맞춘다.",
+   "en": "In an experiment I keep within the stated voltage and current range."
+  },
+  {
+   "code": "HS.CE.10",
+   "seq": 76,
+   "area": "HS.CE",
+   "trait": "STABLE",
+   "reverse": false,
+   "ko": "잘 돌아가고 있는 부분은 되도록 건드리지 않는 편이다.",
+   "en": "I avoid touching the part that is already working."
+  },
+  {
+   "code": "HS.CHE.10",
+   "seq": 77,
+   "area": "HS.CHE",
+   "trait": "STABLE",
+   "reverse": false,
+   "ko": "익숙한 방법으로 여러 번 확인한 결과를 더 믿는다.",
+   "en": "I trust a result more when it has been confirmed several times by a familiar method."
+  },
+  {
+   "code": "HS.MSE.10",
+   "seq": 78,
+   "area": "HS.MSE",
+   "trait": "STABLE",
+   "reverse": false,
+   "ko": "재료를 바꿀 때는 원래 쓰던 것과 최대한 비슷하게 맞춘다.",
+   "en": "When changing material I match the original as closely as possible."
+  },
+  {
+   "code": "HS.IE.10",
+   "seq": 79,
+   "area": "HS.IE",
+   "trait": "STABLE",
+   "reverse": false,
+   "ko": "새 방법을 쓰기 전에 작게 시험해 보고 바꾸는 쪽이 낫다.",
+   "en": "I think a new method is better trialled small before it replaces the old one."
+  },
+  {
+   "code": "HS.CIV.10",
+   "seq": 80,
+   "area": "HS.CIV",
+   "trait": "STABLE",
+   "reverse": false,
+   "ko": "검증된 방식으로 짓는 쪽이 새 방식보다 낫다고 본다.",
+   "en": "I think building by a proven method beats a new one."
+  },
+  {
+   "code": "HS.BME.10",
+   "seq": 81,
+   "area": "HS.BME",
+   "trait": "STABLE",
+   "reverse": false,
+   "ko": "실험 절차를 정해진 대로 지켜야 결과를 믿을 수 있다.",
+   "en": "A result can only be trusted when the procedure was followed as written."
+  },
+  {
+   "code": "HS.ME.10",
+   "seq": 82,
+   "area": "HS.ME",
+   "trait": "STABLE",
+   "reverse": false,
+   "ko": "부품을 바꿔야 할 때는 원래 쓰던 것과 같은 규격을 고르는 편이다.",
+   "en": "When a part has to be replaced, I pick the same specification as the original."
+  },
+  {
+   "code": "HS.CE.11",
+   "seq": 83,
+   "area": "HS.CE",
+   "trait": "QUALITY",
+   "reverse": false,
+   "ko": "만든 프로그램이 이상한 값을 넣어도 멈추지 않는지 확인해 본다.",
+   "en": "I check whether my program survives strange input without stopping."
+  },
+  {
+   "code": "HS.CHE.11",
+   "seq": 84,
+   "area": "HS.CHE",
+   "trait": "QUALITY",
+   "reverse": false,
+   "ko": "무게나 부피를 잴 때 눈금을 정확히 맞추려고 시간을 더 쓴다.",
+   "en": "I spend extra time lining up the scale exactly when measuring mass or volume."
+  },
+  {
+   "code": "HS.MSE.11",
+   "seq": 85,
+   "area": "HS.MSE",
+   "trait": "QUALITY",
+   "reverse": false,
+   "ko": "재료가 언제 부러지는지 여러 번 확인해 봐야 안심이 된다.",
+   "en": "I am only satisfied once I have checked several times when a material breaks."
+  },
+  {
+   "code": "HS.IE.11",
+   "seq": 86,
+   "area": "HS.IE",
+   "trait": "QUALITY",
+   "reverse": false,
+   "ko": "일이 끝나면 어디에서 시간이 더 걸렸는지 되짚어 본다.",
+   "en": "When the work is done, I look back at where the time went."
+  },
+  {
+   "code": "HS.CIV.11",
+   "seq": 87,
+   "area": "HS.CIV",
+   "trait": "QUALITY",
+   "reverse": false,
+   "ko": "무게를 견디는지 계산이 맞는지 여러 번 확인해야 한다고 본다.",
+   "en": "I think the load calculation has to be checked several times."
+  },
+  {
+   "code": "HS.BME.11",
+   "seq": 88,
+   "area": "HS.BME",
+   "trait": "QUALITY",
+   "reverse": false,
+   "ko": "측정값이 조금만 흔들려도 다시 재 보는 편이다.",
+   "en": "If a reading wavers even slightly, I measure again."
+  },
+  {
+   "code": "HS.ME.11",
+   "seq": 89,
+   "area": "HS.ME",
+   "trait": "QUALITY",
+   "reverse": false,
+   "ko": "다 만들고 나면 흔들리는 곳이나 헐거운 곳이 없는지 하나씩 확인한다.",
+   "en": "Once it is built, I check one by one for anything loose or wobbling."
+  },
+  {
+   "code": "HS.ATT3",
+   "seq": 90,
+   "area": null,
+   "trait": null,
+   "reverse": false,
+   "attention": 2,
+   "ko": "이 문항은 끝까지 잘 읽고 있는지 확인하는 문항입니다. '그렇지 않다'를 선택해 주세요.",
+   "en": "This item checks that you are still reading. Please select \"Disagree\"."
+  },
+  {
+   "code": "HS.EE.11",
+   "seq": 91,
+   "area": "HS.EE",
+   "trait": "QUALITY",
+   "reverse": false,
+   "ko": "연결을 끝내고 나서 헐겁게 닿은 곳이 없는지 다시 확인한다.",
+   "en": "After finishing the wiring I check again for loose contacts."
+  },
+  {
+   "code": "HS.CHE.12",
+   "seq": 92,
+   "area": "HS.CHE",
+   "trait": "QUALITY",
+   "reverse": false,
+   "ko": "기록은 나중에 몰아 적기보다 그때그때 정확히 남긴다.",
+   "en": "I record accurately as I go rather than writing everything up afterwards."
+  },
+  {
+   "code": "HS.MSE.12",
+   "seq": 93,
+   "area": "HS.MSE",
+   "trait": "QUALITY",
+   "reverse": false,
+   "ko": "표면에 흠이 있는지 자세히 들여다보는 편이다.",
+   "en": "I look closely at a surface for flaws."
+  },
+  {
+   "code": "HS.IE.12",
+   "seq": 94,
+   "area": "HS.IE",
+   "trait": "QUALITY",
+   "reverse": false,
+   "ko": "기록이나 숫자가 안 맞으면 그냥 넘어가지 못한다.",
+   "en": "I cannot let a record or a number pass when it does not add up."
+  },
+  {
+   "code": "HS.CIV.12",
+   "seq": 95,
+   "area": "HS.CIV",
+   "trait": "QUALITY",
+   "reverse": false,
+   "ko": "수평이나 각도가 조금이라도 안 맞으면 다시 맞추는 편이다.",
+   "en": "If the level or the angle is even slightly off, I set it again."
+  },
+  {
+   "code": "HS.BME.12",
+   "seq": 96,
+   "area": "HS.BME",
+   "trait": "QUALITY",
+   "reverse": false,
+   "ko": "기록을 자세히 남겨야 나중에 비교할 수 있다고 생각한다.",
+   "en": "I think records must be detailed to allow comparison later."
+  },
+  {
+   "code": "HS.ME.12",
+   "seq": 97,
+   "area": "HS.ME",
+   "trait": "QUALITY",
+   "reverse": false,
+   "ko": "길이를 잴 때 한 번 재고 넘어가기보다 다시 재서 맞는지 확인한다.",
+   "en": "I measure twice rather than moving on after measuring once."
+  },
+  {
+   "code": "HS.EE.12",
+   "seq": 98,
+   "area": "HS.EE",
+   "trait": "QUALITY",
+   "reverse": false,
+   "ko": "측정한 값이 예상과 조금 달라도 그냥 넘기지 않고 이유를 찾아본다.",
+   "en": "Even when a reading differs only slightly from what I expected, I look for the reason."
+  },
+  {
+   "code": "HS.CE.12",
+   "seq": 99,
+   "area": "HS.CE",
+   "trait": "QUALITY",
+   "reverse": false,
+   "ko": "결과가 맞는지 여러 경우를 넣어 보고 확인한다.",
+   "en": "I check the result by trying several different cases."
+  },
+  {
+   "code": "HS.MSE.13",
+   "seq": 100,
+   "area": "HS.MSE",
+   "trait": null,
+   "reverse": false,
+   "ko": "같은 모양이라도 재료에 따라 왜 더 단단한지 알고 싶다.",
+   "en": "I want to know why the same shape is harder in one material than another."
+  },
+  {
+   "code": "HS.IE.13",
+   "seq": 101,
+   "area": "HS.IE",
+   "trait": null,
+   "reverse": false,
+   "ko": "시간이나 돈이 어디에서 새는지 숫자로 찾아내는 일에 관심이 있다.",
+   "en": "I am interested in finding, in numbers, where time or money leaks away."
+  },
+  {
+   "code": "HS.CIV.13",
+   "seq": 102,
+   "area": "HS.CIV",
+   "trait": null,
+   "reverse": false,
+   "ko": "도로나 상하수도가 어떻게 계획되는지 알고 싶다.",
+   "en": "I want to know how roads and water systems are planned."
+  },
+  {
+   "code": "HS.BME.13",
+   "seq": 103,
+   "area": "HS.BME",
+   "trait": null,
+   "reverse": false,
+   "ko": "의료기기가 몸의 상태를 어떻게 재는지 알고 싶다.",
+   "en": "I want to know how medical devices measure the state of the body."
+  },
+  {
+   "code": "HS.ME.13",
+   "seq": 104,
+   "area": "HS.ME",
+   "trait": null,
+   "reverse": false,
+   "ko": "자동차나 자전거가 어떻게 힘을 전달해 움직이는지 알고 싶다.",
+   "en": "I want to know how a car or a bicycle transmits force to move."
+  },
+  {
+   "code": "HS.EE.13",
+   "seq": 105,
+   "area": "HS.EE",
+   "trait": null,
+   "reverse": false,
+   "ko": "스마트폰이나 이어폰 안에서 신호가 어떻게 오가는지 알고 싶다.",
+   "en": "I want to know how signals travel inside a phone or a pair of earbuds."
+  },
+  {
+   "code": "HS.CE.13",
+   "seq": 106,
+   "area": "HS.CE",
+   "trait": null,
+   "reverse": false,
+   "ko": "반복되는 일을 컴퓨터가 대신하게 만드는 데 관심이 있다.",
+   "en": "I am interested in making a computer take over work that repeats."
+  },
+  {
+   "code": "HS.CHE.13",
+   "seq": 107,
+   "area": "HS.CHE",
+   "trait": null,
+   "reverse": false,
+   "ko": "플라스틱이나 약이 어떤 과정을 거쳐 만들어지는지 알고 싶다.",
+   "en": "I want to know what process plastics or medicines go through to be made."
+  },
+  {
+   "code": "HS.IE.14",
+   "seq": 108,
+   "area": "HS.IE",
+   "trait": null,
+   "reverse": false,
+   "ko": "같은 일을 더 적은 사람으로 해내는 방법을 생각해 본 적이 있다.",
+   "en": "I have thought about how the same work could be done by fewer people."
+  },
+  {
+   "code": "HS.CIV.14",
+   "seq": 109,
+   "area": "HS.CIV",
+   "trait": null,
+   "reverse": false,
+   "ko": "미세먼지나 폐수를 줄이는 방법에 관심이 있다.",
+   "en": "I am interested in ways to reduce fine dust or wastewater."
+  },
+  {
+   "code": "HS.BME.14",
+   "seq": 110,
+   "area": "HS.BME",
+   "trait": null,
+   "reverse": false,
+   "ko": "약이나 백신이 몸에서 어떻게 작용하는지 궁금하다.",
+   "en": "I am curious how a medicine or a vaccine acts in the body."
+  },
+  {
+   "code": "HS.ME.14",
+   "seq": 111,
+   "area": "HS.ME",
+   "trait": null,
+   "reverse": false,
+   "ko": "무거운 것을 덜 힘들게 들어 올리는 장치를 만들어 보고 싶다.",
+   "en": "I would like to design a device that lifts heavy things with less effort."
+  },
+  {
+   "code": "HS.EE.14",
+   "seq": 112,
+   "area": "HS.EE",
+   "trait": null,
+   "reverse": false,
+   "ko": "빛·소리·온도를 숫자로 바꿔 주는 센서를 직접 써 보고 싶다.",
+   "en": "I would like to use sensors that turn light, sound and temperature into numbers."
+  },
+  {
+   "code": "HS.CE.14",
+   "seq": 113,
+   "area": "HS.CE",
+   "trait": null,
+   "reverse": false,
+   "ko": "많은 자료 속에서 규칙을 찾아내는 일을 해 보고 싶다.",
+   "en": "I would like to find patterns inside a large amount of data."
+  },
+  {
+   "code": "HS.CHE.14",
+   "seq": 114,
+   "area": "HS.CHE",
+   "trait": null,
+   "reverse": false,
+   "ko": "물이나 공기에서 필요 없는 것을 걸러 내는 방법에 관심이 있다.",
+   "en": "I am interested in how unwanted things are filtered out of water or air."
+  },
+  {
+   "code": "HS.MSE.14",
+   "seq": 115,
+   "area": "HS.MSE",
+   "trait": null,
+   "reverse": false,
+   "ko": "열이나 전기를 잘 통하는 재료가 왜 그런지 궁금하다.",
+   "en": "I am curious why some materials conduct heat or electricity well."
+  }
+ ]
+}
