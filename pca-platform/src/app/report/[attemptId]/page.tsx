@@ -202,9 +202,11 @@ export default async function ReportPage({
         )}
 
         {/* ---- 04 직무 적합도 ---- */}
+        {/* 무료 구간에서는 03(성향)이 빠지므로 번호를 한 칸 올린다.
+            00·01·02·04·03 순으로 찍히는 결과지는 그 자체로 오류로 읽힌다. */}
         <section className="rp-sec">
           <div className="rp-sec-head">
-            <span className="rp-no">04</span>
+            <span className="rp-no">{paid ? "04" : "03"}</span>
             <h2>{tt("repSec04")}</h2>
           </div>
           <p className="rp-note">{tt("repNote04")}</p>
@@ -319,7 +321,7 @@ export default async function ReportPage({
         {!paid && (
           <section className="rp-sec rp-lock">
             <div className="rp-sec-head">
-              <span className="rp-no">{hs ? "03" : "03"}</span>
+              <span className="rp-no">04</span>
               <h2>{t("repLockTitle", lang)}</h2>
             </div>
             <p className="rp-note">{t("repLockBody", lang)}</p>
