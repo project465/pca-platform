@@ -19,7 +19,8 @@
     "check:money": "tsx scripts/check-money.ts",
     "sheet:weights": "tsx scripts/make-rating-sheet.ts",
     "import:weights": "tsx scripts/import-weights.ts",
-    "check:env": "tsx scripts/check-env.ts"
+    "check:env": "tsx scripts/check-env.ts",
+    "build:notify": "esbuild scripts/notify.ts --bundle --platform=node --format=esm --outfile=dist/notify.mjs --packages=external --alias:@=./src"
   },
   "dependencies": {
     "bcryptjs": "3.0.2",

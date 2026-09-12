@@ -99,6 +99,14 @@ async function main() {
     return;
   }
 
+  // 발송 주소가 없는 것은 '실패'가 아니다. 시도한 적이 없기 때문이다.
+  // 이걸 실패로 세면 5분마다 재시도 횟수만 올라가고, 로그는 진짜 실패와 구분되지 않는다.
+  if (!DRY && !process.env.MAIL_WEBHOOK_URL) {
+    console.log(`MAIL_WEBHOOK_URL 이 없어 ${rows.length}건을 큐에 그대로 두었습니다.`);
+    console.log("주소를 넣으면 다음 실행에서 한꺼번에 나갑니다. 사라진 알림은 없습니다.");
+    return;
+  }
+
   let sent = 0;
   let failed = 0;
 

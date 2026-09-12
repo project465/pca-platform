@@ -46,7 +46,7 @@ cp .env.example .env
 
 docker compose up -d --build
 docker compose exec -T db psql -U pca -d pca < db/schema.sql   # 처음 한 번만
-docker compose exec app node --experimental-strip-types scripts/seed-fees.ts
+docker compose exec -T db psql -U pca -d pca -c "INSERT INTO payout_settings (id,fee_percent,withholding_percent,hold_hours) VALUES (1,10,3.3,48) ON CONFLICT (id) DO NOTHING"
 ```
 
 `notifier` 컨테이너가 5분마다 발송기를 돌린다. 크론을 따로 걸 필요가 없다.

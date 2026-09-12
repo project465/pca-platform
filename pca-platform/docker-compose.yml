@@ -73,7 +73,7 @@ services:
       ZOOM_CLIENT_SECRET: ${ZOOM_CLIENT_SECRET}
       MEETING_TIMEZONE: ${MEETING_TIMEZONE:-Asia/Seoul}
     command: >
-      sh -c "while true; do node --experimental-strip-types scripts/notify.ts || true; sleep 300; done"
+      sh -c "while true; do node dist/notify.mjs || true; sleep 300; done"
 
 volumes:
   pgdata:
