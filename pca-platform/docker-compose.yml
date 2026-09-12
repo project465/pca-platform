@@ -1,0 +1,79 @@
+# 서버 한 대에 올릴 때 쓴다.
+#
+#   cp .env.example .env && vi .env      필요한 값을 채운다
+#   docker compose up -d --build
+#   docker compose exec -T db psql -U pca -d pca < db/schema.sql   처음 한 번
+#
+# 관리형 데이터베이스(Cloud SQL, RDS, Supabase 등)를 쓴다면 db 서비스를 지우고
+# DATABASE_URL 만 그쪽으로 돌리면 된다.
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: pca
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD 를 .env 에 넣으세요}
+      POSTGRES_DB: pca
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pca -d pca"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      args:
+        # 이 값만 빌드 시점에 번들로 들어간다. 바꾸면 다시 빌드해야 한다
+        NEXT_PUBLIC_TOSS_CLIENT_KEY: ${NEXT_PUBLIC_TOSS_CLIENT_KEY}
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://pca:${POSTGRES_PASSWORD}@db:5432/pca
+      AUTH_SECRET: ${AUTH_SECRET:?AUTH_SECRET 을 .env 에 넣으세요}
+      AUTH_URL: ${AUTH_URL:?AUTH_URL 을 .env 에 넣으세요}
+      TOSS_SECRET_KEY: ${TOSS_SECRET_KEY}
+      NEXT_PUBLIC_TOSS_CLIENT_KEY: ${NEXT_PUBLIC_TOSS_CLIENT_KEY}
+      ZOOM_ACCOUNT_ID: ${ZOOM_ACCOUNT_ID}
+      ZOOM_CLIENT_ID: ${ZOOM_CLIENT_ID}
+      ZOOM_CLIENT_SECRET: ${ZOOM_CLIENT_SECRET}
+      ZOOM_HOST_USER: ${ZOOM_HOST_USER:-me}
+      MAIL_WEBHOOK_URL: ${MAIL_WEBHOOK_URL}
+      MAIL_WEBHOOK_TOKEN: ${MAIL_WEBHOOK_TOKEN}
+      MAIL_FROM: ${MAIL_FROM}
+      PAYOUT_SECRET: ${PAYOUT_SECRET}
+      KAKAO_CLIENT_ID: ${KAKAO_CLIENT_ID}
+      KAKAO_CLIENT_SECRET: ${KAKAO_CLIENT_SECRET}
+      NAVER_CLIENT_ID: ${NAVER_CLIENT_ID}
+      NAVER_CLIENT_SECRET: ${NAVER_CLIENT_SECRET}
+      MEETING_TIMEZONE: ${MEETING_TIMEZONE:-Asia/Seoul}
+    ports:
+      - "3000:3000"
+
+  # 알림 발송·기한 만료·세션 완료·정산을 5분마다 돌린다.
+  # 이것이 없으면 확정 안내도 리마인더도 나가지 않고 정산도 잡히지 않는다.
+  notifier:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://pca:${POSTGRES_PASSWORD}@db:5432/pca
+      MAIL_WEBHOOK_URL: ${MAIL_WEBHOOK_URL}
+      MAIL_WEBHOOK_TOKEN: ${MAIL_WEBHOOK_TOKEN}
+      MAIL_FROM: ${MAIL_FROM}
+      ZOOM_ACCOUNT_ID: ${ZOOM_ACCOUNT_ID}
+      ZOOM_CLIENT_ID: ${ZOOM_CLIENT_ID}
+      ZOOM_CLIENT_SECRET: ${ZOOM_CLIENT_SECRET}
+      MEETING_TIMEZONE: ${MEETING_TIMEZONE:-Asia/Seoul}
+    command: >
+      sh -c "while true; do node --experimental-strip-types scripts/notify.ts || true; sleep 300; done"
+
+volumes:
+  pgdata:
