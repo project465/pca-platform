@@ -66,7 +66,12 @@ export default async function PayoutsPage() {
             <tbody>
               {rows.map((r) => (
                 <tr key={r.id}>
-                  <td className="mono">{r.starts_at}</td>
+                  <td className="mono">
+                    {r.starts_at}
+                    {r.req_status === "cancelled" ? (
+                      <span className="sub">늦게 취소돼 남은 돈</span>
+                    ) : null}
+                  </td>
                   <td>
                     {r.alias}
                     <span className="sub">

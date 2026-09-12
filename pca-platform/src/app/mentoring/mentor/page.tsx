@@ -192,7 +192,12 @@ export default async function MentorConsolePage() {
               <tbody>
                 {payouts.map((p) => (
                   <tr key={p.id}>
-                    <td className="mono">{p.starts_at}</td>
+                    <td className="mono">
+                      {p.starts_at}
+                      {p.req_status === "cancelled" ? (
+                        <span className="sub">신청자가 늦게 취소한 건</span>
+                      ) : null}
+                    </td>
                     <td className="num">{p.gross.toLocaleString("ko-KR")}원</td>
                     <td className="num">{p.fee.toLocaleString("ko-KR")}원</td>
                     <td className="num">{p.withholding.toLocaleString("ko-KR")}원</td>

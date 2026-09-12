@@ -8,6 +8,13 @@ export class PayoutError extends Error {}
  *
  * 기준 금액은 신청자가 실제로 낸 돈(환불 뺀 금액)이다. 무료 세션은 0 이라 만들지 않는다.
  * 수수료율이 설정되지 않았으면 만들지 않는다 — 0% 로 만들어두면 나중에 고칠 수 없다.
+ *
+ * 세션이 열리지 않았어도 신청자가 늦게 취소해 돈이 남았으면 그 돈은 멘토 것이다.
+ * 멘토는 그 시간을 비워뒀기 때문이다(2026-09-12 결정).
+ * 다만 두 가지를 기다린다.
+ *   - 시작 시각이 지날 때까지. 취소하면 시간대가 다시 열리므로 그 전에는 아직 모른다
+ *   - 그 시간대를 다른 사람이 가져가지 않았는지. 가져갔으면 멘토는 그 건으로 받는다.
+ *     한 시간대를 두 번 치지 않는다
  */
 export async function buildPayouts(): Promise<{ made: number; skipped: string | null }> {
   const s = await payoutSettings();
@@ -30,9 +37,18 @@ export async function buildPayouts(): Promise<{ made: number; skipped: string | 
                        - floor((p.amount - p.refunded_amount) * $1 / 100)) * $2 / 100) AS net
        FROM mentoring_requests r
        JOIN payments p ON p.request_id = r.id
-      WHERE r.status = 'completed'
-        AND p.status = 'paid'
+       JOIN mentor_slots s ON s.id = r.slot_id
+      WHERE p.status = 'paid'
         AND (p.amount - p.refunded_amount) > 0
+        AND (
+              r.status = 'completed'
+           OR (r.status = 'cancelled'
+               AND s.starts_at <= now()
+               AND NOT EXISTS (SELECT 1 FROM mentoring_requests r2
+                                WHERE r2.slot_id = r.slot_id
+                                  AND r2.id <> r.id
+                                  AND r2.status IN ('accepted', 'completed')))
+            )
         AND NOT EXISTS (SELECT 1 FROM payouts o WHERE o.request_id = r.id)
      RETURNING id`,
     [fee, wh],
@@ -52,6 +68,8 @@ export type PayoutRow = {
   withholding: number;
   net: number;
   status: string;
+  /** 무엇으로 잡힌 건인지 — completed(세션을 했다) 또는 cancelled(늦게 취소돼 남은 돈) */
+  req_status: string;
   starts_at: string;
   paid_at: string | null;
 };
@@ -61,6 +79,7 @@ export async function payoutList(status?: string): Promise<PayoutRow[]> {
   return query<PayoutRow>(
     `SELECT o.id, o.mentor_id, m.handle, m.alias, u.display_name AS real_name,
             o.request_id, o.gross, o.fee, o.withholding, o.net, o.status,
+            r.status AS req_status,
             to_char(s.starts_at AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD HH24:MI') AS starts_at,
             to_char(o.paid_at AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD') AS paid_at
        FROM payouts o
@@ -80,6 +99,7 @@ export async function payoutsOfMentor(mentorId: string): Promise<PayoutRow[]> {
   return query<PayoutRow>(
     `SELECT o.id, o.mentor_id, m.handle, m.alias, '' AS real_name,
             o.request_id, o.gross, o.fee, o.withholding, o.net, o.status,
+            r.status AS req_status,
             to_char(s.starts_at AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD HH24:MI') AS starts_at,
             to_char(o.paid_at AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD') AS paid_at
        FROM payouts o
