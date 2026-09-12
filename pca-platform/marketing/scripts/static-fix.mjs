@@ -66,14 +66,31 @@ for (const f of readdirSync(dir)) {
   n++;
 }
 
-// webpack publicPath 등 JS 안에 남은 "/_next/" 도 고친다.
+/**
+ * JS·CSS 안에 남은 "/_next/" 도 고친다.
+ *
+ * **JS 와 CSS 의 기준점이 다르다.** JS 의 webpack publicPath 는 문서(HTML)
+ * 기준이라 "next/" 로 두면 되는데, CSS 의 url() 은 **그 CSS 파일** 기준이다.
+ * 같이 "next/" 로 바꾸면 next/static/css/ 안에서 다시 next/ 를 찾아
+ * next/static/css/next/static/media/... 가 되고 웹폰트가 404 로 떨어진다.
+ * 글꼴이 없어도 화면은 그려지니 조용히 기본 글꼴로 나온다 — 그래서
+ * 눈으로는 안 잡히고, 여기서 막아야 한다.
+ */
 const fixJs = (d) => {
   for (const e of readdirSync(d, { withFileTypes: true })) {
     const p = join(d, e.name);
     if (e.isDirectory()) fixJs(p);
     else if (e.name.endsWith(".js") || e.name.endsWith(".css")) {
       const t = readFileSync(p, "utf8");
-      if (t.includes("/_next/")) writeFileSync(p, t.replaceAll("/_next/", "next/"));
+      if (!t.includes("/_next/")) continue;
+      if (e.name.endsWith(".css")) {
+        // 이 CSS 에서 내보내기 루트까지 거슬러 올라가는 만큼 ../ 를 쌓는다
+        const depth = p.slice(dir.length).replace(/^[/\\]/, "").split(/[/\\]/).length - 1;
+        const up = "../".repeat(depth);
+        writeFileSync(p, t.replaceAll("/_next/", `${up}next/`));
+      } else {
+        writeFileSync(p, t.replaceAll("/_next/", "next/"));
+      }
     }
   }
 };
