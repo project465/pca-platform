@@ -12,16 +12,18 @@ export const metadata = { title: "결제 — METRI" };
 export default async function CheckoutPage({
   searchParams,
 }: {
-  searchParams: Promise<{ product?: string; lang?: string }>;
+  searchParams: Promise<{ product?: string; lang?: string; attempt?: string }>;
 }) {
-  const { product: code = "REPORT_UNIV", lang: q } = await searchParams;
+  const { product: code = "REPORT_UNIV", lang: q, attempt } = await searchParams;
   const lang = await resolveLang(q);
   // 로그인 요구로 막지 않는다. 처음 온 사람은 계정이 없고, 여기서 로그인
   // 폼만 보여주면 그대로 나간다. 가입 화면이 값을 먼저 보여주고 끝나면
   // 이 화면으로 돌려보낸다.
   const user = await currentUser();
   if (!user) {
-    const back = `/checkout?product=${encodeURIComponent(code)}`;
+    const back = attempt
+      ? `/checkout?product=${encodeURIComponent(code)}&attempt=${encodeURIComponent(attempt)}`
+      : `/checkout?product=${encodeURIComponent(code)}`;
     redirect(`/signup?next=${encodeURIComponent(back)}&product=${encodeURIComponent(code)}`);
   }
   if (user.mustResetPw) redirect("/password/change");
@@ -65,6 +67,7 @@ export default async function CheckoutPage({
 
         <CheckoutForm
           productCode={product.code}
+          upgradesAttemptId={attempt}
           provider={provider}
           globalReady={globalReady}
           lang={lang}

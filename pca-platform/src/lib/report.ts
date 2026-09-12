@@ -10,6 +10,7 @@
  * 없다고 쓴다. 채워 넣지 않는다.
  */
 import { query, queryOne } from "./db";
+import { reportLevel, type ReportLevel } from "./entitlement";
 
 export type Named = { code: string; name: string; scaled: number };
 
@@ -38,8 +39,16 @@ export type Report = {
   attemptId: string;
   /** job = 대학판(직무 적합) · major = 고교판(전공 적합) */
   kind: "job" | "major";
+  /**
+   * 어느 구간까지 열리는가. free 면 성향 6축·사슬·과목 처방이 **아예 오지 않는다.**
+   *
+   * 보내 놓고 화면에서 가리지 않는다 — 그건 가린 게 아니라 개발자 도구 한 번이면
+   * 보이는 것이고, 유료 구간을 공짜로 나눠 주는 것과 같다.
+   */
+  level: ReportLevel;
   learner: { name: string; majorName: string | null; submittedAt: string | null };
   areas: Named[];
+  /** 유료 구간. free 면 빈 배열이다 */
   traits: Named[];
   axes: Named[];
   jobs: ReportJob[];
@@ -117,6 +126,17 @@ export async function buildReport(
     [attemptId, lang],
   );
 
+  /**
+   * 등급을 먼저 가른다. 무료 구간이면 유료 칸을 **채우지 않고** 돌려보낸다.
+   *
+   * 보내 놓고 화면에서 가리는 방법은 쓰지 않는다 — 개발자 도구 한 번이면
+   * 보이고, 그건 가린 것이 아니라 공짜로 준 것이다.
+   */
+  const level = (await reportLevel(attemptId)) ?? "free";
+  const paid = level === "full";
+
+  // 활동 8축은 무료 구간이고 성향 6축은 유료다. 두 값이 한 표에서 나오므로
+  // 조회는 한 번 하고, 무료면 성향만 떨어뜨린다.
   const indicators = await query<Named & { kind: string }>(
     `SELECT ax.code, ${NAME("indicator_axes", "ax")} AS name,
             s.scaled_score::float AS scaled, ax.kind
@@ -127,7 +147,7 @@ export async function buildReport(
       ORDER BY ax.sort_no, ax.code`,
     [attemptId, lang],
   );
-  const traits = indicators.filter((i) => i.kind === "trait");
+  const traits = paid ? indicators.filter((i) => i.kind === "trait") : [];
   const axes = indicators.filter((i) => i.kind === "activity");
 
   const jobs = await query<ReportJob>(
@@ -206,6 +226,7 @@ export async function buildReport(
     kind,
     learner: { name: head.name, majorName: head.major_name, submittedAt: head.submitted_at },
     areas,
+    level,
     traits: traits.map(({ code, name, scaled }) => ({ code, name, scaled })),
     axes: axes.map(({ code, name, scaled }) => ({ code, name, scaled })),
     jobs: fits,

@@ -1102,3 +1102,66 @@ COMMENT ON TABLE career_need_subjects IS
    "이건 현장 어디서 쓰인다" 를 달 수 있다. 28절 처방과 29절 사슬을 잇는 표다';
 
 CREATE INDEX IF NOT EXISTS idx_career_need_subject ON career_need_subjects(subject_id);
+
+-- ════════════════════════════════════════════════════════════════
+-- 30. 무료 구간과 유료 구간
+--
+-- 메트리 플러스가 파는 것은 지표가 아니라 사슬이다.
+--
+-- 지표(115문항 → 8계열 적합)는 커리어넷·워크넷이 무료로 주는 것과
+-- 같은 층이고, 무엇보다 규준(norm)이 없어서 "상위 몇 %" 를 말할 수
+-- 없다. 규준 없이 팔 수 있는 것은 사슬 쪽이다 — "구조해석 엔지니어가
+-- 하중 조건을 세운다" 는 그 학생의 점수가 조금 틀려도 참이다.
+--
+-- 그래서 지표는 무료로 열어 유입으로 쓰고, 현장 사슬과 과목 처방을
+-- 유료 구간으로 가른다.
+--
+--   무료   00 응답 신뢰도 · 01 계열 적합(1군까지) · 02 활동 8축
+--   유료   03 성향 6축 · 05 현장 사슬 · 06 과목 처방 · 07 다음 학기
+--
+-- 등급은 응시가 아니라 "그 응시에 무엇을 살 수 있었나" 가 정한다.
+-- 무료로 본 학생이 나중에 결제하면 **같은 응시가 열린다** — 115문항을
+-- 다시 풀게 하면 아무도 결제하지 않는다.
+-- ════════════════════════════════════════════════════════════════
+
+-- 상품마다 어느 구간까지 여는가. 기존 상품은 전부 full 이다.
+ALTER TABLE products
+  ADD COLUMN IF NOT EXISTS report_level TEXT NOT NULL DEFAULT 'full'
+    CHECK (report_level IN ('free', 'full'));
+COMMENT ON COLUMN products.report_level IS
+  'free = 지표까지만 · full = 사슬과 과목 처방까지.
+   학과·학교 단체 계약 좌석(contract_id)은 상품을 거치지 않으므로 항상 full 이다 —
+   학교가 사는 것이 바로 사슬이다';
+
+-- 무료로 본 응시를 나중에 결제로 여는 기록.
+CREATE TABLE IF NOT EXISTS report_grants (
+  attempt_id  BIGINT PRIMARY KEY REFERENCES attempts(id) ON DELETE CASCADE,
+  order_id    BIGINT REFERENCES orders(id) ON DELETE SET NULL,
+  level       TEXT NOT NULL CHECK (level IN ('full')),
+  granted_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+COMMENT ON TABLE report_grants IS
+  '무료 응시 하나를 유료 구간까지 연 기록. attempt 당 한 줄이고,
+   상품 등급보다 이 표가 우선한다. 결제를 취소해도 줄을 지우지 않는다 —
+   이미 본 것을 되돌릴 수는 없고, 환불 판단은 orders 쪽이 한다';
+
+INSERT INTO products (code, kind, amount, currency, seat_count, active, track_code, report_level)
+VALUES
+  -- 무료 진단. 금액이 0이므로 결제 화면을 거치지 않는다
+  ('HS_FREE',    'report', 0,     'KRW', 1, true, 'HS', 'free'),
+  -- 무료로 본 학생이 사는 것. 같은 응시가 열린다
+  ('HS_UPGRADE', 'report', 19000, 'KRW', 1, true, 'HS', 'full')
+ON CONFLICT (code) DO UPDATE
+  SET amount = EXCLUDED.amount,
+      track_code = EXCLUDED.track_code,
+      report_level = EXCLUDED.report_level,
+      active = EXCLUDED.active;
+
+-- 어느 응시를 여는 결제인가. 업그레이드 상품에만 찬다.
+-- 학생이 여러 번 무료로 봤을 수 있으므로 "최근 응시" 로 추측하지 않는다 —
+-- 결제 화면이 받은 응시 번호를 주문에 적어 두고 그것만 연다.
+ALTER TABLE orders
+  ADD COLUMN IF NOT EXISTS upgrades_attempt_id BIGINT REFERENCES attempts(id) ON DELETE SET NULL;
+COMMENT ON COLUMN orders.upgrades_attempt_id IS
+  '유료 구간을 열어 줄 응시. report_level=full 상품을 이미 본 응시에 붙일 때 쓴다.
+   비어 있으면 새 좌석을 발급하는 보통 주문이다';

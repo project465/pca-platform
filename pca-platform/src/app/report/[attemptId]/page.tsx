@@ -5,6 +5,7 @@ import { buildReport } from "@/lib/report";
 import { t, UI, type Lang, type UiKey } from "@/lib/locale";
 import { prescribe } from "@/lib/prescribe";
 import { careerChain } from "@/lib/chain";
+import { checkoutReady } from "@/lib/payments";
 import PrescriptionView from "@/components/prescription";
 import CareerChainView from "@/components/career-chain";
 import { resolveLang } from "@/lib/locale-server";
@@ -64,12 +65,13 @@ export default async function ReportPage({
    * 과목 처방은 고교판에만 붙는다. 대학생에게 고교학점제 과목을 권할 일이
    * 없고, 고교판에는 역량 격차(05)가 없어 자리가 비어 있다.
    */
-  const rx = hs ? await prescribe(attemptId, lang) : null;
+  const paid = r.level === "full";
+  const rx = hs && paid ? await prescribe(attemptId, lang) : null;
   /**
    * 과목 앞에 "왜" 가 와야 한다. 현장에서 하는 일이 이것을 요구하기 때문에
    * 이 과목이라는 순서다 — 과목부터 내밀면 "그래서 왜" 가 남는다.
    */
-  const cc = hs ? await careerChain(attemptId, lang) : null;
+  const cc = hs && paid ? await careerChain(attemptId, lang) : null;
   const tt = (key: UiKey, vars?: Record<string, string | number>) =>
     hs && `${key}Hs` in UI ? t(`${key}Hs` as UiKey, lang, vars) : t(key, lang, vars);
 
@@ -183,7 +185,8 @@ export default async function ReportPage({
           </div>
         </section>
 
-        {/* ---- 03 업무 성향 ---- */}
+        {/* ---- 03 업무 성향 (유료) ---- */}
+        {paid && (
         <section className="rp-sec">
           <div className="rp-sec-head">
             <span className="rp-no">03</span>
@@ -196,6 +199,7 @@ export default async function ReportPage({
             <Radar items={r.traits} />
           </div>
         </section>
+        )}
 
         {/* ---- 04 직무 적합도 ---- */}
         <section className="rp-sec">
@@ -284,7 +288,8 @@ export default async function ReportPage({
           </section>
         )}
 
-        {/* ---- 06 다음 여섯 달 ---- */}
+        {/* ---- 06·07 다음 여섯 달 / 다음 한 학기 (유료) ---- */}
+        {paid && (
         <section className="rp-sec">
           <div className="rp-sec-head">
             <span className="rp-no">{hs ? "07" : "06"}</span>
@@ -303,6 +308,45 @@ export default async function ReportPage({
           </ol>
           <p className="rp-note">{tt("repRetest")}</p>
         </section>
+        )}
+
+        {/*
+          무료 구간이 끝나는 자리.
+          유료 절이 있던 곳에 그대로 놓는다 — 아래로 내려가다 멈추는
+          지점이어야 무엇이 남았는지 알 수 있다. 항목을 적어서 무엇을
+          사는지 알게 한다.
+        */}
+        {!paid && (
+          <section className="rp-sec rp-lock">
+            <div className="rp-sec-head">
+              <span className="rp-no">{hs ? "03" : "03"}</span>
+              <h2>{t("repLockTitle", lang)}</h2>
+            </div>
+            <p className="rp-note">{t("repLockBody", lang)}</p>
+            <ul className="rp-lock-list">
+              <li>{t("repLockItem1", lang)}</li>
+              <li>{t("repLockItem2", lang)}</li>
+              <li>{t("repLockItem3", lang)}</li>
+              <li>{t("repLockItem4", lang)}</li>
+            </ul>
+            <p className="rp-lock-keep">{t("repLockNote", lang)}</p>
+            <div className="rp-lock-act">
+              {/* 결제가 아직 안 열렸으면 버튼을 그리지 않는다 — 누르면
+                  오류 화면이 나오고, 그건 안내가 아니다. */}
+              {checkoutReady() ? (
+                <Link
+                  className="act solid"
+                  href={`/checkout?product=HS_UPGRADE&attempt=${r.attemptId}`}
+                >
+                  {t("repLockCta", lang)}
+                </Link>
+              ) : (
+                <b className="rp-lock-soon">{t("repLockSoon", lang)}</b>
+              )}
+              <span className="rp-foot-note">{t("repLockSchool", lang)}</span>
+            </div>
+          </section>
+        )}
 
         <footer className="rp-foot">
           <Link className="act" href="/my">

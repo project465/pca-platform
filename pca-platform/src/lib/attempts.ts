@@ -66,6 +66,25 @@ export async function currentAttempt(userId: string): Promise<AttemptView | null
 }
 
 /**
+ * 채점이 끝난 마지막 응시. 없으면 null.
+ *
+ * `currentAttempt` 는 `status <> 'scored'` 라서 다 끝낸 사람에게는 null 을
+ * 준다. 그건 맞다 — 끝난 검사를 또 풀 일은 없다. 그런데 그 null 을 "좌석이
+ * 없다" 로만 읽으면, 무료로 다 풀고 결과지까지 받은 학생이 검사 화면에
+ * 다시 들어왔을 때 **자기 결과지가 있는데도 결제 안내를 본다.**
+ * 그 사람에게 필요한 것은 결제창이 아니라 이미 받은 결과지다.
+ */
+export async function lastScoredAttempt(userId: string): Promise<string | null> {
+  const row = await queryOne<{ id: string }>(
+    `SELECT id FROM attempts
+      WHERE user_id = $1 AND status = 'scored'
+      ORDER BY id DESC LIMIT 1`,
+    [userId],
+  );
+  return row?.id ?? null;
+}
+
+/**
  * 쓰지 않은 좌석이 있으면 응시를 연다. 이미 열려 있으면 그것을 준다.
  * 개인 결제 좌석이면 그 주문에 묶인 1인용 회차를 만들어 붙인다.
  */

@@ -22,9 +22,18 @@ export async function createOrderAction(
   const user = await requireUser();
   const productCode = String(formData.get("product") ?? "");
   const region: PayRegion = formData.get("region") === "global" ? "global" : "domestic";
+  // 무료로 본 결과지를 여는 결제라면 어느 응시인지 함께 온다.
+  // 본인 것인지는 startCheckout 이 확인한다 — 여기서 믿지 않는다.
+  const upgrades = String(formData.get("attempt") ?? "").trim() || undefined;
 
   try {
-    const { ticket } = await startCheckout(user.id, productCode, await origin(), region);
+    const { ticket } = await startCheckout(
+      user.id,
+      productCode,
+      await origin(),
+      region,
+      upgrades,
+    );
     return { ticket };
   } catch (e) {
     return { error: e instanceof Error ? e.message : "주문을 만들지 못했습니다." };

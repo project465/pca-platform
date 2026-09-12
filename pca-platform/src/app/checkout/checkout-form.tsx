@@ -23,11 +23,14 @@ declare global {
  */
 export default function CheckoutForm({
   productCode,
+  upgradesAttemptId,
   provider,
   globalReady,
   lang,
 }: {
   productCode: string;
+  /** 무료로 본 결과지를 여는 결제라면 그 응시 번호 */
+  upgradesAttemptId?: string;
   provider: string;
   /** 해외 카드 채널이 설정돼 있는가. 없으면 선택지를 열지 않는다 */
   globalReady: boolean;
@@ -107,6 +110,7 @@ export default function CheckoutForm({
   return (
     <form action={action}>
       <input type="hidden" name="product" value={productCode} />
+      {upgradesAttemptId && <input type="hidden" name="attempt" value={upgradesAttemptId} />}
 
       <fieldset className="paymethod">
         <legend>{t("payMethodLabel", lang)}</legend>

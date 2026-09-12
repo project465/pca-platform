@@ -296,6 +296,7 @@ th[scope="row"] { font-weight: 700; color: var(--ink); font-family: var(--body);
 .price .amt { font-family: var(--display); font-weight: 900; font-size: 30px; letter-spacing: -0.04em; }
 .price.plus .amt { color: var(--amber); }
 .price ul { margin: 6px 0 0; padding-left: 18px; color: var(--ink-2); font-size: 14px; display: grid; gap: 4px; }
+.pricefoot { margin-top: 16px; color: var(--muted); font-size: 13.5px; max-width: var(--measure); }
 
 /* ── 아직 없는 것 ─────────────────────────── */
 .todo { display: grid; gap: 8px; max-width: var(--measure); }
@@ -768,29 +769,49 @@ footer .wrap { display: grid; gap: 8px; }
     <div class="wrap">
       <div class="sec-head">
         <span class="eyebrow">값</span>
-        <h2>개인은 1인 1회, 학교는 학년 단위</h2>
+        <h2>어느 계열이 맞는지까지는 무료입니다</h2>
+        <p>
+          115문항을 풀면 계열 적합 결과지가 바로 열립니다. 값을 받는 것은 그 다음 —
+          <b>“그래서 다음 학기에 무엇을 신청하는가”</b> 부터입니다. 결과지를 읽어 본 뒤에
+          정하면 되고, 문항을 다시 풀지 않습니다.
+        </p>
       </div>
       <div class="prices">
-        <div class="price plus">
-          <h3>메트리 플러스 · 중·고등학생</h3>
-          <span class="amt">19,000<span style="font-size:.5em;font-weight:700"> 원</span></span>
+        <div class="price">
+          <h3>계열 적합까지</h3>
+          <span class="amt">무료</span>
           <ul>
             <li>115문항 · 약 15분</li>
-            <li>계열 적합 결과지 · 한국어</li>
-            <li>구간·묶음 표기. 등수 없음</li>
-            <li>고교학점제 과목 처방</li>
+            <li>이공계 8계열 적합 · 구간과 묶음. 등수 없음</li>
+            <li>공학 활동 8축</li>
+            <li>응답 신뢰도</li>
+          </ul>
+        </div>
+        <div class="price plus">
+          <h3>과목 신청서까지</h3>
+          <span class="amt">19,000<span style="font-size:.5em;font-weight:700"> 원</span></span>
+          <ul>
+            <li>현장 사슬 — 직무가 하는 일에서 거꾸로 내려옵니다</li>
+            <li>과목 처방 — 74과목에서 학년별로, 선수과목과 학년 학점까지</li>
+            <li>대학이 밝힌 권장 과목 대조</li>
+            <li>업무 성향 6축</li>
           </ul>
         </div>
         <div class="price">
           <h3>학교 단체</h3>
           <span class="amt" style="font-size:22px">학년 단위 계약</span>
           <ul>
+            <li>학생은 결제 없이 전부 열립니다</li>
             <li>명단 업로드 · 좌석 배정 · 진행률</li>
             <li>익명 집계 리포트 (5명 미만 칸은 감춤)</li>
             <li>단가는 인원에 따라 협의</li>
           </ul>
         </div>
       </div>
+      <p class="pricefoot">
+        무료는 한 사람에게 한 번입니다. 학교가 단체로 도입한 경우 학생은 이 표를 볼 일이
+        없습니다 — 선생님이 준 접속 정보로 들어가면 처음부터 전부 열립니다.
+      </p>
     </div>
   </section>
 
@@ -811,7 +832,8 @@ footer .wrap { display: grid; gap: 8px; }
           <li class="done">115문항 · 결제 → 응시 → 채점 → 결과지가 끝까지 돈다</li>
           <li class="done">계열 적합 · 활동 8축 · 성향 6축 · 응답 신뢰도</li>
           <li class="done">학교 단체 진행과 익명 집계 리포트 (5명 미만 칸은 감춤)</li>
-          <li class="done">고교학점제 <b>과목 처방</b> — 73과목, 학년별·선수과목·서울대 권장 대조까지</li>
+          <li class="done">고교학점제 <b>과목 처방</b> — 74과목, 학년별·선수과목·서울대 권장 대조까지</li>
+          <li class="done"><b>무료 구간과 유료 구간이 갈립니다</b> — 무료는 계열까지, 유료가 사슬과 과목 처방. 가리는 것이 아니라 무료 응시에는 그 데이터가 내려오지 않습니다</li>
           <li><b>학교가 실제로 여는 과목</b> — 학교가 교육과정 편제표를 올려야 “이 학교엔 없는 과목”을 표시할 수 있습니다</li>
           <li>마이스터고·특성화고용 <b>자격·NCS 처방</b></li>
           <li>중학생용 결과지 뒷부분 (어느 고등학교를 볼 것인가)</li>

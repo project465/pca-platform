@@ -267,6 +267,107 @@ export const UI = {
     "The credits and year shown are the national defaults. Schools may adjust them or not open a subject at all. If your school does not offer one you need, ask your homeroom teacher about the joint-curriculum or online-school route — it is not a subject to give up on.",
     "Buradaki krediler ulusal varsayılanlardır; okullar değiştirebilir ya da dersi hiç açmayabilir.",
   ),
+  // ── 무료 구간이 끝나는 자리 ──────────────────────────────
+  // 여기 문구가 이 제품의 매출을 정한다. 그래서 무엇을 더 주는지
+  // 항목으로 적는다 — "전체 결과지를 보세요" 는 무엇을 사는지 모르게 한다.
+  repLockTitle: d(
+    "여기까지가 무료입니다",
+    "The free part ends here",
+    "Ücretsiz bölüm burada bitiyor",
+  ),
+  repLockBody: d(
+    "지금까지는 “어느 계열이 맞는가” 였습니다. 남은 절은 “그래서 다음 학기에 무엇을 신청하는가” 입니다.",
+    "So far this answered which field fits. What remains answers what to put on next term's course form.",
+    "Buraya kadarı hangi alanın uyduğunu söyledi. Kalanı önümüzdeki dönem hangi dersi seçeceğini söylüyor.",
+  ),
+  repLockItem1: d(
+    "현장에서 거꾸로 — 1군 계열의 대표 직무가 실제로 하는 일, 그것이 요구하는 것, 그래서 지금 무엇을 해 볼지",
+    "The chain, read backwards — what the roles in your top group actually do, what that demands, and what to try now",
+    "Zincir, tersten — ilk gruptaki rollerin gerçekte ne yaptığı ve bunun ne gerektirdiği",
+  ),
+  repLockItem2: d(
+    "과목 처방 — 2022 개정 교육과정 74과목에서 골라 학년별로. 선수과목과 학년 학점까지 맞춰 그대로 신청서에 옮길 수 있습니다",
+    "The course prescription — chosen from 74 subjects in the national curriculum, laid out by year with prerequisites and credit limits already met",
+    "Ders reçetesi — ulusal müfredattaki 74 dersten seçilmiş, sınıf sınıf",
+  ),
+  repLockItem3: d(
+    "대학이 밝힌 권장 과목 대조 — 지금 목록이 몇 과목 모자라는지 숫자로",
+    "Checked against what universities publish as recommended — how many subjects short you are, as a number",
+    "Üniversitelerin önerdiği derslerle karşılaştırma",
+  ),
+  repLockItem4: d(
+    "업무 성향 6축 — 같은 계열 안에서 어떤 자리가 맞는지",
+    "The six work styles — which seat inside that field fits you",
+    "Altı çalışma tarzı",
+  ),
+  repLockNote: d(
+    "115문항을 다시 풀지 않습니다. 지금 이 결과지가 그대로 열립니다.",
+    "You will not retake the 115 items. This same report opens up.",
+    "115 soruyu tekrar çözmezsiniz. Bu rapor olduğu gibi açılır.",
+  ),
+  repLockCta: d("남은 절 열기", "Open the rest", "Kalanını aç"),
+  // 개인 결제가 아직 열리지 않은 동안. 버튼을 그려 놓고 누르면 오류가
+  // 나는 것보다, 왜 아직 못 사는지 적는 것이 낫다.
+  repLockSoon: d(
+    "개인 결제는 아직 열리지 않았습니다. 지금은 학교가 단체로 도입한 경우에만 남은 절이 열립니다.",
+    "Individual payment is not open yet. For now the rest opens only where a school has adopted it.",
+    "Bireysel ödeme henüz açık değil.",
+  ),
+  repLockSchool: d(
+    "학교가 단체로 도입한 경우 결제 없이 전부 열립니다. 담당 선생님께 확인하십시오.",
+    "If your school has adopted it, everything opens with no payment — ask your teacher.",
+    "Okulunuz kurumsal olarak aldıysa ödeme olmadan tamamı açılır.",
+  ),
+
+  // ── 무료 진단 시작 화면 (/free) ──────────────────────────
+  // 결제창을 거치지 않는 문이다. 그래서 "무료" 말고 **어디까지 무료인지**를
+  // 먼저 적는다. 나중에 "이럴 줄 몰랐다" 가 나오면 무료의 값이 사라진다.
+  freeTitle: d(
+    "계열 적합까지는 무료입니다",
+    "Field fit is free",
+    "Alan uyumu ücretsizdir",
+  ),
+  freeSub: d(
+    "115문항, 약 15분. 답을 다 하면 결과지가 바로 열립니다. 결제 정보를 넣는 곳이 없습니다.",
+    "115 items, about 15 minutes. The report opens as soon as you finish. There is no card field anywhere in this path.",
+    "115 soru, yaklaşık 15 dakika. Bitirdiğinizde rapor hemen açılır.",
+  ),
+  freeIncHead: d("무료로 나오는 것", "What the free part gives", "Ücretsiz bölümde gelenler"),
+  freeInc1: d(
+    "이공계 8계열 적합도 — 등수가 아니라 구간과 묶음으로",
+    "Fit across the eight engineering fields — as bands and groups, not a ranking",
+    "Sekiz mühendislik alanında uyum — sıralama değil, aralık",
+  ),
+  freeInc2: d("공학 활동 8축", "The eight engineering activity axes", "Sekiz mühendislik etkinlik ekseni"),
+  freeInc3: d("응답 신뢰도 — 성실하게 답했는지", "Response reliability", "Yanıt güvenilirliği"),
+  freeExcHead: d("여기까지가 무료입니다", "Where the free part stops", "Ücretsiz bölümün bittiği yer"),
+  freeExc1: d(
+    "현장 사슬과 고교학점제 과목 처방은 유료 구간입니다",
+    "The chain and the course prescription are the paid part",
+    "Zincir ve ders reçetesi ücretli bölümdür",
+  ),
+  freeExc2: d(
+    "결과지를 본 뒤에 정하면 됩니다. 문항을 다시 풀지 않습니다.",
+    "Decide after you have read the report. You will not retake the items.",
+    "Raporu okuduktan sonra karar verin. Soruları tekrar çözmezsiniz.",
+  ),
+  freeCta: d("무료로 시작하기", "Start free", "Ücretsiz başla"),
+  freeOnce: d(
+    "무료 진단은 한 사람에게 한 번입니다. 같은 계정으로 다시 누르면 이미 열린 응시로 돌아갑니다.",
+    "One free run per person. Pressing again returns you to the run you already opened.",
+    "Kişi başına bir ücretsiz deneme.",
+  ),
+  freeSchool: d(
+    "학교가 단체로 도입한 경우 이 문이 아니라 선생님이 준 접속 정보로 들어가십시오 — 그쪽은 전부 열립니다.",
+    "If your school has adopted it, use the sign-in your teacher gave you instead — that route opens everything.",
+    "Okulunuz kurumsal olarak aldıysa öğretmeninizin verdiği giriş bilgisini kullanın.",
+  ),
+  freeFail: d(
+    "무료 진단을 열지 못했습니다. 잠시 뒤 다시 눌러 주십시오.",
+    "Could not open the free run. Please try again shortly.",
+    "Ücretsiz deneme açılamadı.",
+  ),
+
   repTitleHs: d("계열 적합 진단 결과지", "Field Fit Report", "Alan Uyum Raporu"),
   repSec01Hs: d("이공계 8계열", "Eight engineering fields", "Sekiz mühendislik alanı"),
   repSec04Hs: d("계열 적합도", "Field fit", "Alan uyumu"),
@@ -479,6 +580,14 @@ export const UI = {
     "Your assessment credit is ready. You can start right now.",
     "Değerlendirme hakkınız hazır. Hemen başlayabilirsiniz.",
   ),
+  // 업그레이드 결제는 결과가 다르다 — 풀 것이 생기는 것이 아니라
+  // 이미 낸 결과지가 넓어진다. 문장도 링크도 갈라야 한다.
+  payDoneUpgradeBody: d(
+    "결과지의 남은 절이 열렸습니다. 문항을 다시 풀지 않습니다 — 같은 결과지가 그대로 넓어집니다.",
+    "The rest of your report is open. You do not retake the items — the same report simply opens up.",
+    "Raporunuzun kalanı açıldı. Soruları tekrar çözmezsiniz.",
+  ),
+  payGoReport: d("결과지 보기", "Open the report", "Raporu aç"),
   payFailTitle: d("결제가 완료되지 않았습니다", "Payment did not go through", "Ödeme tamamlanmadı"),
   payGoTest: d("검사 시작하기", "Start the assessment", "Değerlendirmeye başla"),
   payNotSold: d("판매하지 않는 상품입니다", "This product is not on sale", "Bu ürün satışta değil"),
@@ -519,6 +628,18 @@ export const UI = {
     "METRI 진로 결과지 (고교)",
     "METRI Career Report (high school)",
     "METRI Kariyer Raporu (lise)",
+  ),
+  prodHS_FREE: d(
+    "메트리 플러스 무료 진단",
+    "METRI PLUS free assessment",
+    "METRI PLUS ücretsiz değerlendirme",
+  ),
+  // 주문서에 찍히는 이름이므로 "무엇을 사는가" 가 보여야 한다.
+  // "전체 결과지" 라고만 적으면 결제 후에야 무엇을 샀는지 안다.
+  prodHS_UPGRADE: d(
+    "메트리 플러스 — 현장 사슬과 과목 처방",
+    "METRI PLUS — the chain and the course prescription",
+    "METRI PLUS — zincir ve ders reçetesi",
   ),
 } as const;
 

@@ -68,10 +68,16 @@ export default async function CompletePage({
             <p className="paydone">
               <b>{result.orderNo}</b>
               <br />
-              {t("payDoneBody", lang)}
+              {result.upgradedAttemptId
+                ? t("payDoneUpgradeBody", lang)
+                : t("payDoneBody", lang)}
             </p>
-            <Link className="act solid" href="/test">
-              {t("payGoTest", lang)}
+            {/* 업그레이드면 시작할 것이 없다. 이미 낸 결과지로 보낸다. */}
+            <Link
+              className="act solid"
+              href={result.upgradedAttemptId ? `/report/${result.upgradedAttemptId}` : "/test"}
+            >
+              {result.upgradedAttemptId ? t("payGoReport", lang) : t("payGoTest", lang)}
             </Link>
           </>
         ) : (

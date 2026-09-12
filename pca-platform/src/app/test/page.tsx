@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { requireRole } from "@/lib/session";
-import { openAttempt, PAGE_SIZE } from "@/lib/attempts";
+import { openAttempt, lastScoredAttempt, PAGE_SIZE } from "@/lib/attempts";
 import { queryOne } from "@/lib/db";
 import { t } from "@/lib/locale";
 import { resolveLang } from "@/lib/locale-server";
@@ -20,6 +20,9 @@ export default async function TestEntry({
   const attempt = await openAttempt(user.id);
 
   if (!attempt) {
+    // 다 풀고 채점까지 끝난 사람이면 결제 안내가 아니라 결과지로 보낸다.
+    const done = await lastScoredAttempt(user.id);
+    if (done) redirect(`/report/${done}`);
     return (
       <div className="center-wrap">
         <div className="panel narrow">
@@ -32,8 +35,6 @@ export default async function TestEntry({
       </div>
     );
   }
-  if (attempt.status === "scored") redirect(`/report/${attempt.id}`);
-
   const inst = await queryOne<{ item_count: number; est_minutes: number }>(
     `SELECT item_count, est_minutes FROM instruments WHERE id = $1`,
     [attempt.instrumentId],

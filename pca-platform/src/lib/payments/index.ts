@@ -28,3 +28,19 @@ export function paymentProvider(): PaymentProvider {
 
   throw new Error(`알 수 없는 PAYMENTS_PROVIDER: ${name}`);
 }
+
+/**
+ * 지금 결제를 받을 수 있는 상태인가. **던지지 않는다.**
+ *
+ * `paymentProvider()` 는 운영에서 mock 이면 예외를 던진다(그게 맞다 —
+ * 돈을 안 받고 좌석이 나가는 것을 막는다). 그런데 무료 구간은 PG 를
+ * 거치지 않으므로, 가맹점 심사가 끝나기 전에도 무료로 켤 수 있다.
+ * 그 상태에서 결과지가 "남은 절 열기" 버튼을 그리면 학생이 그 버튼을
+ * 눌러 예외 화면을 만난다. 그래서 **버튼을 그릴지 먼저 물어본다.**
+ */
+export function checkoutReady(): boolean {
+  const name = process.env.PAYMENTS_PROVIDER ?? "mock";
+  if (name === "portone") return true;
+  // mock 은 개발·검증에서만 결제창을 흉내 낸다
+  return name === "mock" && process.env.NODE_ENV !== "production";
+}
