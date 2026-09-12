@@ -54,9 +54,13 @@ cd pca-platform
 npm install
 # PostgreSQL 16 필요. .env.local 에 DATABASE_URL, AUTH_SECRET
 psql "$DATABASE_URL" -f db/schema.sql
-npx tsx scripts/seed.ts      # 관리자 계정 한 개
+npm run db:seed              # 관리자·학과담당자·학생 계정
+npm run db:seed:mentoring    # 현멘 멘토 6명과 열린 시간대
 npm run dev                  # :3000
 ```
+
+현멘(현직자 멘토링)을 줌 없이 화면만 볼 거면 `.env.local` 에 `ZOOM_DRY_RUN=1`.
+알림 발송기는 따로 돈다 — `npm run notify -- --dry` 로 나갈 것을 먼저 본다.
 
 **소개 사이트**
 ```bash
@@ -103,6 +107,24 @@ node scripts/export-preview.mjs kr out-kr.html
 - 로그인 / 비밀번호 재설정
 - 운영사 관리자 — 기관 생성, 기관 목록
 
+**현멘 — 현직자 멘토링 (2026-09-12)** — schema.sql 11절, `/mentoring`
+석·박사 대상. 갤러리 → 신청 → 승낙 → 줌 자동 생성 → 일정 자동 발송까지 돈다.
+- 화면 다섯 — 갤러리 / 멘토 상세·신청 / 내 신청 / 멘토 콘솔 / 운영사 승인
+- 줌은 Server-to-Server OAuth 로 운영사 계정 하나에서 만든다 (`src/lib/zoom.ts`).
+  멘토에게 줌 계정을 요구하지 않으므로 멘토 이메일이 회의에 남지 않는다
+- 알림은 `notifications` 큐에 쌓고 `scripts/notify.ts` 가 비운다.
+  확정 안내 2통 + 24시간 전·1시간 전 리마인더 4통이 승낙 한 번에 들어간다
+- 이메일이 없는 계정(학번 로그인)은 `channel=inapp` 으로 넣고 `/mentoring/requests`
+  화면에서 읽게 한다. 보낼 수 없는 주소로 보낸 척하지 않는다
+
+주의할 구현 세 가지
+- 승낙은 **DB 선점 → 줌 생성 → 회의·알림 저장** 순서다. 줌이 실패하면 승낙을
+  되돌린다. 외부 호출을 트랜잭션 안에 넣지 않는다
+- `meetings.request_id` 가 UNIQUE 다. 승낙이 두 번 눌려도 회의가 겹쳐 생기지 않고,
+  뒤늦게 만들어진 줌 회의는 지운다
+- `src/lib/anon.ts` 는 클라이언트 컴포넌트도 불러온다. `node:crypto` 를 쓰면
+  번들이 깨진다 — 웹 표준 `crypto.getRandomValues` 를 쓴다
+
 주의할 구현 두 가지
 - `src/lib/db.ts` 의 풀은 **게으르게** 만든다. 모듈 로드 시점에 만들면
   `.env.local` 을 읽기 전에 연결하려다 죽는다
@@ -127,6 +149,15 @@ node scripts/export-preview.mjs kr out-kr.html
 
 **플랫폼** — 개발 순서 2~4단계가 통째로 남았다
 계약·좌석, 회차, 명단 업로드, 응시 화면, 응답 저장, 채점, 결과지, 단체 리포트
+
+**현멘 — 공개 전에 반드시**
+- 줌 앱 자격 증명(`ZOOM_ACCOUNT_ID`·`ZOOM_CLIENT_ID`·`ZOOM_CLIENT_SECRET`).
+  없으면 승낙이 실패한다. 멘토 콘솔에 그 경고를 띄워 뒀다
+- 알림 발송 웹훅(`MAIL_WEBHOOK_URL`)과 크론 `*/5 * * * * npm run notify`.
+  크론이 안 돌면 리마인더도, 응답 기한 자동 만료도 일어나지 않는다
+- 검사 결과지와의 연결 — 결과지 상위 직무 영역에서 바로 멘토를 찾아가는 동선.
+  데이터(`mentor_job_clusters`)는 준비됐고 화면만 없다
+- 과금과 멘토 보상이 정해지지 않았다 (CLAUDE.md 「아직 정해지지 않은 것」)
 
 **소개 사이트 — 공개 전에 반드시**
 - 문의 폼 백엔드. 지금은 서버 액션이 JSONL 파일에 쓴다. 서버리스에 올리면 날아간다.

@@ -28,6 +28,84 @@ export const orgCreateSchema = z.object({
   nameEn: z.string().trim().max(200).optional(),
 });
 
+/* ---------- 현멘 (현직자 멘토링) ---------- */
+
+/**
+ * 멘토 프로필. 별명에 실명·회사명이 들어가면 익명이 깨지므로 화면에서도 경고하고
+ * 길이도 짧게 잡는다. 긴 자기소개는 bio 에 쓴다.
+ */
+export const mentorProfileSchema = z.object({
+  alias: z
+    .string()
+    .trim()
+    .min(2, "별명을 입력하세요.")
+    .max(30, "별명은 30자까지입니다."),
+  years: z.coerce
+    .number()
+    .int("연차는 정수로 입력하세요.")
+    .min(0, "연차는 0 이상입니다.")
+    .max(50, "연차는 50 이하입니다."),
+  // 석·박사 전용 서비스이므로 학위와 진로 경로는 선택이 아니다
+  degree: z.enum(["master", "phd"]),
+  fieldTrack: z.enum(["stem", "humanities", "business"]),
+  careerPath: z.enum([
+    "industry_rnd",
+    "industry_biz",
+    "research_inst",
+    "academia",
+    "startup",
+    "public_policy",
+  ]),
+  companyScale: z.enum(["large", "midsize", "startup", "public", "research", "foreign"]),
+  region: z.string().trim().max(20).optional(),
+  headline: z
+    .string()
+    .trim()
+    .min(10, "한 줄 소개를 10자 이상 써 주세요.")
+    .max(80, "한 줄 소개는 80자까지입니다."),
+  bio: z.string().trim().max(1500).optional(),
+  sessionMinutes: z.coerce.number().int().min(15).max(120),
+  jobIds: z.array(z.string().regex(/^\d+$/)).min(1, "직무 영역을 하나 이상 고르세요."),
+});
+
+/**
+ * 신청서. 코멘토의 '3줄' 방식을 따른다 — 길게 쓰게 하면 신청이 줄고,
+ * 멘토도 30분 안에 답할 수 있는 질문이어야 한다.
+ */
+export const mentoringRequestSchema = z.object({
+  slotId: z.string().regex(/^\d+$/, "시간대를 고르세요."),
+  applicantStage: z.enum(["ms_student", "phd_student", "phd_abd", "postdoc", "graduated"]),
+  question: z
+    .string()
+    .trim()
+    .min(20, "무엇을 묻고 싶은지 20자 이상 적어 주세요.")
+    .max(600, "600자 안으로 줄여 주세요. 30분 안에 답할 수 있는 질문이 좋습니다."),
+});
+
+/** 멘토가 시간대를 열 때. 로컬 시간 문자열(datetime-local)을 그대로 받는다. */
+export const slotOpenSchema = z.object({
+  startsAt: z
+    .string()
+    .trim()
+    .regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/, "날짜와 시간을 고르세요."),
+});
+
+export const reviewSchema = z.object({
+  requestId: z.string().regex(/^\d+$/),
+  rating: z.coerce.number().int().min(1, "별점을 고르세요.").max(5),
+  comment: z.string().trim().max(500).optional(),
+});
+
+/** 승인. 인증 근거를 비워둘 수 없다 (schema.sql 의 CHECK 와 같은 규칙). */
+export const mentorApproveSchema = z.object({
+  mentorId: z.string().regex(/^\d+$/),
+  verifyNote: z
+    .string()
+    .trim()
+    .min(5, "무엇으로 현직을 확인했는지 적어야 승인할 수 있습니다.")
+    .max(300),
+});
+
 export type FieldErrors = Record<string, string>;
 
 /** zod 오류를 필드명 → 첫 메시지 로 눌러서 폼에 그대로 붙일 수 있게 만든다. */

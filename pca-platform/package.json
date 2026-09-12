@@ -8,7 +8,9 @@
     "start": "next start -p 3000",
     "typecheck": "tsc --noEmit",
     "db:reset": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 -f db/schema.sql",
-    "db:seed": "tsx scripts/seed.ts"
+    "db:seed": "tsx scripts/seed.ts",
+    "db:seed:mentoring": "tsx scripts/seed-mentoring.ts",
+    "notify": "tsx scripts/notify.ts"
   },
   "dependencies": {
     "bcryptjs": "3.0.2",

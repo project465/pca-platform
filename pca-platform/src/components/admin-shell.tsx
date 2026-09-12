@@ -5,13 +5,14 @@ import type { SessionUser } from "@/lib/session";
 
 type NavItem = { href: string; label: string; ready: boolean };
 
-/** 화면 목록(CLAUDE.md)의 운영사 관리자 1~5번. 만든 것만 링크가 된다. */
+/** 화면 목록(CLAUDE.md)의 운영사 관리자 1~5번 + 현멘. 만든 것만 링크가 된다. */
 const NAV: NavItem[] = [
   { href: "/admin/organizations", label: "기관", ready: true },
   { href: "/admin/contracts", label: "계약·응시권", ready: false },
   { href: "/admin/instruments", label: "검사 문항", ready: false },
   { href: "/admin/mappings", label: "매핑 데이터", ready: false },
   { href: "/admin/attempts", label: "응시 현황", ready: false },
+  { href: "/admin/mentors", label: "현직자 멘토", ready: true },
 ];
 
 export default function AdminShell({

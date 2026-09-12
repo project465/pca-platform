@@ -304,3 +304,162 @@ COMMENT ON TABLE password_reset_tokens IS
   '토큰 원문은 링크에만 있고 DB에는 해시만 둔다. 사용하면 used_at을 채워 재사용을 막는다';
 
 CREATE INDEX idx_reset_active ON password_reset_tokens(user_id) WHERE used_at IS NULL;
+
+
+-- ============================================================
+--  11. 현직자 멘토링 (현멘) — 초안 v0.3에서 추가
+--
+--  갤러리에서 익명 카드를 고르고, 그 사람이 열어둔 시간대에 신청한다.
+--  멘토가 승낙하면 줌 회의가 자동 생성되고 두 사람에게 일정이 자동으로 간다.
+--
+--  대상은 석·박사다 (career peak 브랜드). 멘토도 신청자도 석·박사 과정에 있거나
+--  그 과정을 지나온 사람이다. 그래서 고르는 축이 학부 취업 서비스와 다르다 —
+--  회사 규모보다 학위와 진로 경로(산업계 R&D·출연연·학계·창업)가 먼저다.
+--  전공 계열은 지금 이공계지만, 인문·경상으로 넓힐 때 컬럼이 아니라
+--  field_track 의 값이 늘어난다.
+--
+--  익명이 이 기능의 전제다. 응시자에게 보이는 화면에서는 users.display_name 을
+--  쓰지 않고 mentors.handle 과 속성(연차·회사 규모·직무 영역)만 보여준다.
+--  멘토도 users 에 들어간다 (설계 원칙 1). 소속이 없으므로 memberships 행은 없고,
+--  멘토라는 사실은 mentors 에 행이 있는 것으로 판정한다.
+-- ============================================================
+
+CREATE TABLE mentors (
+  id              BIGSERIAL PRIMARY KEY,
+  user_id         BIGINT NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+  handle          TEXT NOT NULL UNIQUE,          -- 화면·주소에 쓰는 익명 식별자. M-7F3K
+  alias           TEXT NOT NULL,                 -- 멘토가 정한 익명 별명. 실명·회사명은 금지
+  years           SMALLINT NOT NULL CHECK (years BETWEEN 0 AND 50),
+  degree          TEXT NOT NULL,                 -- master | phd  (멘토 본인의 최종 학위)
+  field_track     TEXT NOT NULL DEFAULT 'stem',  -- stem | humanities | business
+  career_path     TEXT NOT NULL,                 -- 석·박사가 갈라지는 경로.
+                                                 -- industry_rnd | industry_biz | research_inst
+                                                 -- | academia | startup | public_policy
+  company_scale   TEXT NOT NULL,                 -- large | midsize | startup | public | research | foreign
+  region          TEXT,                          -- 근무 지역. 시도 단위까지만 (익명 유지)
+  headline        TEXT NOT NULL,                 -- 카드에 한 줄로 뜨는 문장
+  bio             TEXT,                          -- 상세 화면의 소개
+  session_minutes SMALLINT NOT NULL DEFAULT 30 CHECK (session_minutes BETWEEN 15 AND 120),
+  status          TEXT NOT NULL DEFAULT 'pending',  -- pending | active | paused
+  verify_note     TEXT,                          -- 현직 인증 근거. 무엇으로 확인했는지 적는다
+  approved_at     TIMESTAMPTZ,
+  approved_by     BIGINT REFERENCES users(id),
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+  -- 근거 없이 갤러리에 올릴 수 없게 DB 가 막는다. '인증된 현직자'라고 쓰려면 근거가 남아야 한다
+  CONSTRAINT mentors_active_needs_verify
+    CHECK (status <> 'active' OR (verify_note IS NOT NULL AND approved_at IS NOT NULL))
+);
+COMMENT ON TABLE mentors IS '현직자 본인의 프로필. 승인(status=active) 전에는 갤러리에 나오지 않는다';
+COMMENT ON COLUMN mentors.alias IS '실명을 넣으면 익명이 깨진다. 화면에서 그렇게 안내한다';
+
+CREATE INDEX idx_mentors_open ON mentors(status) WHERE status = 'active';
+CREATE INDEX idx_mentors_facet ON mentors(degree, career_path, field_track)
+  WHERE status = 'active';
+
+-- 갤러리 필터의 기준. 결과지의 직무 영역을 그대로 쓴다
+CREATE TABLE mentor_job_clusters (
+  mentor_id  BIGINT NOT NULL REFERENCES mentors(id) ON DELETE CASCADE,
+  job_id     BIGINT NOT NULL REFERENCES job_clusters(id) ON DELETE CASCADE,
+  PRIMARY KEY (mentor_id, job_id)
+);
+COMMENT ON TABLE mentor_job_clusters IS
+  '결과지 상위 직무 영역으로 멘토를 찾게 하려면 이 표가 있어야 한다';
+
+-- 멘토가 열어둔 시간대. 신청자는 여기 있는 것만 고를 수 있다
+CREATE TABLE mentor_slots (
+  id          BIGSERIAL PRIMARY KEY,
+  mentor_id   BIGINT NOT NULL REFERENCES mentors(id) ON DELETE CASCADE,
+  starts_at   TIMESTAMPTZ NOT NULL,
+  status      TEXT NOT NULL DEFAULT 'open',   -- open | held(신청 대기) | booked | closed
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (mentor_id, starts_at)
+);
+COMMENT ON COLUMN mentor_slots.status IS
+  '신청이 들어오면 held 로 잡아둔다. 승낙하면 booked, 거절·취소하면 open 으로 돌린다';
+
+CREATE INDEX idx_slots_open ON mentor_slots(mentor_id, starts_at) WHERE status = 'open';
+
+CREATE TABLE mentoring_requests (
+  id             BIGSERIAL PRIMARY KEY,
+  slot_id        BIGINT NOT NULL REFERENCES mentor_slots(id) ON DELETE CASCADE,
+  mentor_id      BIGINT NOT NULL REFERENCES mentors(id) ON DELETE CASCADE,
+  applicant_id   BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  status         TEXT NOT NULL DEFAULT 'requested',
+                 -- requested | accepted | declined | cancelled | expired | completed
+  question       TEXT NOT NULL,                 -- 무엇을 묻고 싶은지. 멘토가 승낙 판단에 쓴다
+  -- 신청자가 어느 단계에 있는지. 멘토가 답의 높이를 맞추는 데 쓴다.
+  -- 석사 1학기와 박사 수료생에게 같은 말을 해줄 수는 없다
+  applicant_stage TEXT NOT NULL,                 -- ms_student | phd_student | phd_abd
+                                                 -- | postdoc | graduated
+  decline_reason TEXT,
+  -- 응답 기한. 멘토가 이 시각까지 답하지 않으면 expired 로 넘기고 시간대를 풀어준다.
+  -- 신청자가 무응답으로 며칠을 기다리는 것이 이 서비스에서 가장 나쁜 경험이다
+  respond_by     TIMESTAMPTZ NOT NULL DEFAULT now() + interval '24 hours',
+  decided_at     TIMESTAMPTZ,
+  created_at     TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+COMMENT ON TABLE mentoring_requests IS '신청 1건 = 1행. 같은 시간대에 살아있는 신청은 하나뿐이다';
+
+-- 같은 시간대에 두 사람이 동시에 신청해 둘 다 성립하는 일을 DB가 막는다
+CREATE UNIQUE INDEX idx_request_live_slot ON mentoring_requests(slot_id)
+  WHERE status IN ('requested', 'accepted');
+
+CREATE INDEX idx_request_mentor ON mentoring_requests(mentor_id, status);
+CREATE INDEX idx_request_applicant ON mentoring_requests(applicant_id, created_at DESC);
+
+-- 세션이 끝난 뒤 신청자가 남기는 평가. 갤러리 카드의 평점이 여기서 나온다
+CREATE TABLE mentor_reviews (
+  id          BIGSERIAL PRIMARY KEY,
+  request_id  BIGINT NOT NULL UNIQUE REFERENCES mentoring_requests(id) ON DELETE CASCADE,
+  mentor_id   BIGINT NOT NULL REFERENCES mentors(id) ON DELETE CASCADE,
+  rating      SMALLINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+  comment     TEXT,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+COMMENT ON TABLE mentor_reviews IS
+  '신청 1건에 후기 1건. 세션이 completed 가 된 뒤에만 쓸 수 있다.
+   신청자가 누구인지는 멘토에게 드러나지 않는다 — 후기에는 작성자를 표시하지 않는다';
+
+CREATE INDEX idx_reviews_mentor ON mentor_reviews(mentor_id);
+
+CREATE TABLE meetings (
+  id                  BIGSERIAL PRIMARY KEY,
+  request_id          BIGINT NOT NULL UNIQUE REFERENCES mentoring_requests(id) ON DELETE CASCADE,
+  provider            TEXT NOT NULL DEFAULT 'zoom',   -- zoom | dryrun(개발용)
+  provider_meeting_id TEXT,
+  join_url            TEXT NOT NULL,                  -- 신청자에게 보내는 참가 링크
+  host_url            TEXT,                           -- 멘토(호스트)용 시작 링크
+  passcode            TEXT,
+  starts_at           TIMESTAMPTZ NOT NULL,
+  duration_min        SMALLINT NOT NULL,
+  cancelled_at        TIMESTAMPTZ,
+  created_at          TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+COMMENT ON TABLE meetings IS
+  '신청 1건에 회의 1개. request_id 가 UNIQUE 이므로 승낙이 두 번 눌려도 회의가 겹쳐 생기지 않는다';
+COMMENT ON COLUMN meetings.host_url IS
+  '호스트 권한이 담긴 링크다. 멘토에게만 보여준다. 신청자 화면에 절대 내보내지 않는다';
+
+-- 발송 대기열. 승낙과 같은 트랜잭션에서 행이 쌓이고, 발송기가 비운다
+CREATE TABLE notifications (
+  id            BIGSERIAL PRIMARY KEY,
+  request_id    BIGINT NOT NULL REFERENCES mentoring_requests(id) ON DELETE CASCADE,
+  recipient_id  BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  channel       TEXT NOT NULL,                  -- email | inapp
+  kind          TEXT NOT NULL,                  -- accepted | declined | cancelled | reminder_24h | reminder_1h
+  dedupe_key    TEXT NOT NULL UNIQUE,           -- request:recipient:kind. 같은 알림이 두 번 안 나간다
+  subject       TEXT NOT NULL,
+  body          TEXT NOT NULL,
+  send_after    TIMESTAMPTZ NOT NULL DEFAULT now(),
+  sent_at       TIMESTAMPTZ,
+  attempts      SMALLINT NOT NULL DEFAULT 0,
+  last_error    TEXT,
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+COMMENT ON TABLE notifications IS
+  '알림을 보내는 순간 만들지 않고 큐에 넣는다. 메일 서버가 죽어 있어도 승낙은 성립하고,
+   되살아나면 밀린 것이 나간다. 학생 계정은 email 이 NULL 일 수 있으므로 그때는 channel=inapp';
+
+CREATE INDEX idx_notifications_due ON notifications(send_after) WHERE sent_at IS NULL;
+CREATE INDEX idx_notifications_inbox ON notifications(recipient_id, created_at DESC)
+  WHERE channel = 'inapp';
