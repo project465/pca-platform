@@ -1165,3 +1165,84 @@ ALTER TABLE orders
 COMMENT ON COLUMN orders.upgrades_attempt_id IS
   '유료 구간을 열어 줄 응시. report_level=full 상품을 이미 본 응시에 붙일 때 쓴다.
    비어 있으면 새 좌석을 발급하는 보통 주문이다';
+
+
+-- ═══════════════════════════════════════════════════════════════
+-- 31. 학년 사다리 (2026-09-14)
+--
+--   중2 → 중3 → 고1 → 고2 → 고3 으로 이어지는 상품 줄. 학년마다 학생이
+--   반드시 내려야 하는 결정이 다르고, 그 결정 앞에 상품을 둔다.
+--
+--   **학년마다 코드를 새로 파지 않는다.** 검사지가 늘면 범위를 명시하라는
+--   설계 원칙 8 과 같은 이유다 — 학년은 상품의 속성이지 새 제품이 아니다.
+--   무엇을 푸는가는 products.track_code 가, 누구에게 파는가는
+--   products.grade_band 가 정한다.
+-- ═══════════════════════════════════════════════════════════════
+
+ALTER TABLE products
+  -- m2 | m3 | h1 | h2 | h3 | any — 파는 대상 학년
+  ADD COLUMN IF NOT EXISTS grade_band TEXT NOT NULL DEFAULT 'any'
+    CHECK (grade_band IN ('m2','m3','h1','h2','h3','any')),
+  -- 기간제 상품(PASS)이면 며칠짜리인가. 단품이면 NULL
+  ADD COLUMN IF NOT EXISTS duration_days INTEGER
+    CHECK (duration_days IS NULL OR duration_days > 0);
+
+COMMENT ON COLUMN products.grade_band IS
+  '파는 대상 학년. 문항을 고르는 값이 아니다 — 그건 track_code 가 한다';
+COMMENT ON COLUMN products.duration_days IS
+  'PASS 처럼 기간 동안 열리는 상품의 기간. 단품이면 NULL';
+
+/**
+ * 기간제 권한 — "내 아이의 이공계 진학 계정".
+ *
+ * 좌석(seats)은 응시 한 번을 여는 표이고, 이것은 **기간 동안 열려 있는
+ * 권한**이다. 둘을 한 테이블에 섞지 않는다 — 좌석은 쓰면 없어지고
+ * 권한은 날짜가 지나면 없어진다. 사라지는 방식이 다르면 테이블이 다르다.
+ *
+ * 만료를 지운 행으로 표현하지 않는다. ends_at 이 지나면 조회에서 빠질
+ * 뿐 행은 남는다 — 언제부터 언제까지 무엇을 팔았는지가 법정 보존 대상이고,
+ * 지워 버리면 환불 분쟁에서 댈 근거가 없다.
+ */
+CREATE TABLE IF NOT EXISTS entitlements (
+  id           BIGSERIAL PRIMARY KEY,
+  user_id      BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  order_id     BIGINT REFERENCES orders(id) ON DELETE SET NULL,
+  product_code TEXT NOT NULL REFERENCES products(code),
+  -- 지금은 pass 하나뿐이다. 늘어날 때 값을 추가한다
+  kind         TEXT NOT NULL DEFAULT 'pass' CHECK (kind IN ('pass')),
+  starts_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
+  ends_at      TIMESTAMPTZ NOT NULL,
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
+  CHECK (ends_at > starts_at)
+);
+CREATE INDEX IF NOT EXISTS entitlements_live_idx
+  ON entitlements (user_id, ends_at DESC);
+
+COMMENT ON TABLE entitlements IS
+  '기간제 권한. 좌석과 섞지 않는다 — 좌석은 쓰면 없어지고 이것은 날짜로 없어진다';
+
+/**
+ * 학년 사다리 상품.
+ *
+ * **전부 active = false 로 들어간다.** 금액은 전략 문서의 시장검증용
+ * 가설이지 확정가가 아니고, 확정되지 않은 값으로 결제를 받을 수는 없다.
+ * 값이 정해진 줄만 active = true 로 켠다.
+ *
+ * 지금 켜져 있는 것은 30절의 HS_FREE(0원) 와 HS_UPGRADE(19,000원) 둘뿐이다.
+ */
+INSERT INTO products (code, kind, amount, currency, seat_count, active, track_code, report_level, grade_band, duration_days)
+VALUES
+  -- 중2·중3 — 검사지가 아직 없다. track_code 를 비워 두고 문항이 생기면 채운다
+  ('M2_DISCOVERY', 'report', 69000, 'KRW', 1, false, NULL, 'full', 'm2', NULL),
+  ('M3_ROADMAP',   'report', 199000,'KRW', 1, false, NULL, 'full', 'm3', NULL),
+  -- 고1 — 검사지가 있다. 지금 파는 HS_UPGRADE 가 이 자리의 저가판이다
+  ('H1_REPORT',    'report', 99000, 'KRW', 1, false, 'HS', 'full', 'h1', NULL),
+  ('H1_PASS',      'pass',   790000,'KRW', 0, false, 'HS', 'full', 'h1', 365),
+  -- 고2·고3 — 대학·학과·전형 데이터가 없다. 데이터부터다
+  ('H2_ADMISSION', 'report', 99000, 'KRW', 1, false, NULL, 'full', 'h2', NULL),
+  ('H3_STRATEGY',  'report', 299000,'KRW', 1, false, NULL, 'full', 'h3', NULL)
+ON CONFLICT (code) DO UPDATE SET
+  kind = EXCLUDED.kind, amount = EXCLUDED.amount, currency = EXCLUDED.currency,
+  seat_count = EXCLUDED.seat_count, track_code = EXCLUDED.track_code,
+  report_level = EXCLUDED.report_level, grade_band = EXCLUDED.grade_band,
+  duration_days = EXCLUDED.duration_days;

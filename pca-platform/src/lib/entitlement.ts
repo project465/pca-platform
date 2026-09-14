@@ -11,8 +11,9 @@
  *
  *   1. report_grants 에 줄이 있으면 full — 무료로 보고 나중에 결제한 경우
  *   2. 학과·학교 단체 좌석(contract_id)이면 full — 학교가 사는 것이 사슬이다
- *   3. 개인 결제 좌석이면 그 상품의 report_level
- *   4. 아무것도 없으면 free — 등급을 못 가리면 덜 주는 쪽으로 떨어진다
+ *   3. 응시 시점에 살아 있던 PASS 가 있으면 full
+ *   4. 개인 결제 좌석이면 그 상품의 report_level
+ *   5. 아무것도 없으면 free — 등급을 못 가리면 덜 주는 쪽으로 떨어진다
  *
  * 4번이 기본값인 이유: 새 결제 경로를 잘못 배선하면 유료 구간이 공짜로
  * 나가는데, 그건 조용히 돈이 새는 쪽이라 눈에 안 띈다. 반대로 떨어지면
@@ -31,9 +32,25 @@ export async function reportLevel(attemptId: string): Promise<ReportLevel | null
                             WHERE g.attempt_id = a.id AND g.level = 'full') THEN 'full'
               -- 2. 학과·학교 단체 좌석. 학교가 사는 것이 바로 사슬이다
               WHEN s.contract_id IS NOT NULL THEN 'full'
-              -- 3. 개인 결제 좌석 — 상품이 정한다
+              -- 3. PASS. 기준은 **지금 시각이 아니라 응시 시각**이고,
+              --    보는 것은 끝날 밖에 없다(a.started_at < e.ends_at).
+              --
+              --    지금 시각으로 보면 만료된 날 결과지가 닫혀, 돈을 낸
+              --    기간에 받은 문서를 학생이 잃는다. 기간 동안 판 것은
+              --    "그 기간에 검사할 권리" 이지 "그 기간에만 읽을 권리"
+              --    가 아니다.
+              --
+              --    시작일을 안 보는 것도 일부러다. 무료로 먼저 풀어 보고
+              --    PASS 를 산 학부모의 결과지가 안 열리면, 방금 79만원을
+              --    낸 사람이 자기 아이 문서를 못 보는 일이 된다. 만료
+              --    이후에 새로 본 응시는 끝날 조건에서 걸린다.
+              WHEN EXISTS (SELECT 1 FROM entitlements e
+                            WHERE e.user_id = a.user_id
+                              AND e.kind = 'pass'
+                              AND a.started_at < e.ends_at) THEN 'full'
+              -- 4. 개인 결제 좌석 — 상품이 정한다
               WHEN p.report_level IS NOT NULL THEN p.report_level
-              -- 4. 못 가리면 덜 주는 쪽
+              -- 5. 못 가리면 덜 주는 쪽
               ELSE 'free'
             END AS level
        FROM attempts a
@@ -71,4 +88,47 @@ export async function grantFull(attemptId: string, orderId: string, userId: stri
     [attemptId, orderId],
   );
   return true;
+}
+
+/**
+ * PASS 를 발급한다 — 기간 동안 열리는 권한.
+ *
+ * 좌석을 주지 않는다. PASS 는 "이 기간에 검사를 볼 수 있다" 는 권한이고,
+ * 실제 응시권은 회차마다 따로 발급한다. 여기서 좌석을 같이 주면 1년짜리
+ * PASS 하나로 115문항을 무한히 풀 수 있게 되어 규준이 오염된다.
+ *
+ * 기간은 상품이 정한다(products.duration_days). 결제 화면에서 넘어온
+ * 날짜를 쓰지 않는다 — 금액을 화면에서 받지 않는 것과 같은 이유다.
+ */
+export async function grantPass(
+  userId: string,
+  orderId: string,
+): Promise<{ ok: true; endsAt: string } | { ok: false; reason: string }> {
+  const row = await queryOne<{ code: string; days: number | null }>(
+    `SELECT p.code, p.duration_days AS days
+       FROM orders o
+       JOIN products p ON p.code = o.product_code
+      WHERE o.id = $1 AND o.user_id = $2 AND o.status = 'paid' AND p.kind = 'pass'`,
+    [orderId, userId],
+  );
+  if (!row) return { ok: false, reason: "확정된 PASS 주문이 아닙니다." };
+  if (!row.days) return { ok: false, reason: "기간이 정해지지 않은 상품입니다." };
+
+  /**
+   * 이미 살아 있는 PASS 가 있으면 그 끝에서 이어 붙인다.
+   *
+   * 지금부터 1년으로 덮어쓰면 남아 있던 기간이 사라져 산 것을 뺏는 셈이 된다.
+   */
+  const made = await queryOne<{ ends_at: string }>(
+    `INSERT INTO entitlements (user_id, order_id, product_code, kind, starts_at, ends_at)
+     SELECT $1, $2, $3, 'pass',
+            COALESCE(MAX(e.ends_at), now()),
+            COALESCE(MAX(e.ends_at), now()) + ($4 || ' days')::interval
+       FROM entitlements e
+      WHERE e.user_id = $1 AND e.kind = 'pass' AND e.ends_at > now()
+     RETURNING ends_at`,
+    [userId, orderId, row.code, String(row.days)],
+  );
+  if (!made) return { ok: false, reason: "PASS 를 발급하지 못했습니다." };
+  return { ok: true, endsAt: made.ends_at };
 }

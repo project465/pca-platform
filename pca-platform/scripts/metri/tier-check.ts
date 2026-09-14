@@ -10,7 +10,8 @@
  *   3. 결제하면 **같은 응시가** 열리는가 (115문항을 다시 풀리면 안 된다)
  *   4. 학교 단체 좌석은 결제 없이 full 인가 (학교가 사는 것이 사슬이다)
  *   5. 업그레이드 결제가 좌석을 늘리지 않는가 (문항을 또 풀면 규준이 오염된다)
- *   6. 결제되지 않은 주문으로는 열리지 않는가
+ *   6. PASS 가 기간 동안 열고, 만료 뒤에도 그때 본 결과지는 남는가
+ *   7. 결제되지 않은 주문으로는 열리지 않는가
  *
  *   npm run metri:tier
  */
@@ -18,7 +19,7 @@ import { query, queryOne } from "../../src/lib/db";
 import { openAttempt, lastScoredAttempt, questionPage, saveResponse, submitAttempt, PAGE_SIZE } from "../../src/lib/attempts";
 import { score } from "../../src/lib/scoring";
 import { buildReport } from "../../src/lib/report";
-import { reportLevel, grantFull } from "../../src/lib/entitlement";
+import { reportLevel, grantFull, grantPass } from "../../src/lib/entitlement";
 import { openFreeOrder, startCheckout, settlePayment } from "../../src/lib/orders";
 import { markMockPaid } from "../../src/lib/payments";
 import { hashPassword } from "../../src/lib/password";
@@ -237,7 +238,46 @@ async function main() {
     `SELECT count(*)::int AS n FROM seats WHERE user_id=$1`, [up.userId]))!.n === seatsBefore,
     "재수신에도 좌석이 늘지 않는다");
 
-  console.log("\n════════ 6. 등급을 못 가리면 ════════");
+  console.log("\n════════ 6. PASS — 기간 동안 열린다 ════════");
+  // PASS 는 좌석이 아니라 기간이다. 확인할 것 셋 —
+  //   ① 좌석을 주지 않는다(문항을 무한히 풀 수 없다)
+  //   ② 기간 안에 본 응시가 열린다
+  //   ③ **기간이 끝나도 그때 본 결과지는 계속 열린다.** 기간 동안 판 것은
+  //      "그 기간에 검사할 권리" 이지 "그 기간에만 읽을 권리" 가 아니다
+  const pu = await freeAttemptFor("tier-pass@example.com", "PASS 학생");
+  await query(`DELETE FROM entitlements WHERE user_id = $1`, [pu.userId]);
+  await query(`UPDATE products SET active = true WHERE code = 'H1_PASS'`);
+  const passOrder = await queryOne<{ id: string }>(
+    `INSERT INTO orders (order_no, user_id, product_code, amount, status, paid_at)
+     VALUES ($1,$2,'H1_PASS',790000,'paid',now()) RETURNING id`,
+    [`TIER-PASS-${Date.now()}`, pu.userId],
+  );
+  const seatsBeforePass = (await queryOne<{ n: number }>(
+    `SELECT count(*)::int AS n FROM seats WHERE user_id=$1`, [pu.userId]))!.n;
+  const pass = await grantPass(pu.userId, passOrder!.id);
+  check(pass.ok, "확정된 PASS 주문으로 발급된다", pass.ok ? `만료 ${pass.endsAt}` : pass.reason);
+  check((await queryOne<{ n: number }>(
+    `SELECT count(*)::int AS n FROM seats WHERE user_id=$1`, [pu.userId]))!.n === seatsBeforePass,
+    "PASS 는 좌석을 주지 않는다 — 문항을 무한히 풀 수 없다");
+  check((await reportLevel(pu.attemptId)) === "full",
+    "무료로 먼저 풀고 PASS 를 사도 그 결과지가 열린다");
+
+  // 기간을 과거로 밀어 만료시킨다. 응시는 그 기간 안에 있었다
+  await query(
+    `UPDATE entitlements SET starts_at = now() - interval '400 days',
+                             ends_at   = now() - interval '35 days'
+      WHERE user_id = $1`, [pu.userId]);
+  check((await reportLevel(pu.attemptId)) === "free",
+    "기간 밖에서 본 응시는 열리지 않는다");
+  await query(
+    `UPDATE entitlements SET starts_at = (SELECT started_at - interval '1 day' FROM attempts WHERE id = $2),
+                             ends_at   = (SELECT started_at + interval '1 day' FROM attempts WHERE id = $2)
+      WHERE user_id = $1`, [pu.userId, pu.attemptId]);
+  check((await reportLevel(pu.attemptId)) === "full",
+    "기간이 끝나도 그 기간에 본 결과지는 계속 열린다");
+  await query(`UPDATE products SET active = false WHERE code = 'H1_PASS'`);
+
+  console.log("\n════════ 7. 등급을 못 가리면 ════════");
   const orphan = await queryOne<{ id: string }>(
     `INSERT INTO attempts (session_id, user_id, seat_id, status, started_at)
      VALUES ($1,$2,NULL,'in_progress',now()) RETURNING id`, [ses!.id, free.userId]);
