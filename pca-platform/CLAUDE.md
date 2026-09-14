@@ -291,6 +291,7 @@ SITE=kz / SITE=tr           →  원고 파일만 추가하면 된다
 - `scripts/notify.ts` — 알림 발송기. 크론으로 5분마다 돌린다
 - `marketing/` — 나라별 소개 사이트(검사 플랫폼용). 원고는 `marketing/src/content/*.ts`
 - `docs/IMWEB.md` — 현멘 앞단(아임웹)과 붙이는 법. 아임웹에 **만들면 안 되는 것**이 핵심이다
+- `docs/IMWEB-COPY.md` — 아임웹 소개 페이지 원고. 근거 없는 숫자·표현 금지 목록이 붙어 있다
 
 ---
 
