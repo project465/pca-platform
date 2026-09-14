@@ -1,6 +1,7 @@
 import { randomBytes } from "node:crypto";
 import { query, queryOne, tx } from "@/lib/db";
 import { paymentProvider, type CheckoutTicket, type PaymentFact, type PayRegion } from "@/lib/payments";
+import { enqueue } from "@/lib/outbox";
 
 export type Product = {
   code: string;
@@ -155,7 +156,7 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
   const product = await getProduct(order.product_code);
   const seatCount = product?.seat_count ?? 1;
 
-  return tx(async (c) => {
+  const done = await tx(async (c) => {
     /**
      * 업그레이드 결제인가, 새 응시권 결제인가.
      *
@@ -225,6 +226,21 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
       upgradedAttemptId: isUpgrade ? attemptId : null,
     };
   });
+
+  /**
+   * 알림은 **거래가 끝난 뒤에** 적는다. 트랜잭션 안에서 적으면 되돌아간
+   * 결제에도 "결제가 확인됐습니다" 가 나가고, 메일 쪽이 느린 날 결제
+   * 확정이 그만큼 늦어진다. enqueue 는 실패해도 던지지 않는다.
+   */
+  if (done.ok && !done.alreadyDone && done.upgradedAttemptId) {
+    await enqueue({
+      kind: "upgrade_done",
+      userId: order.user_id,
+      payload: { orderNo: done.orderNo },
+      dedupeKey: `upgrade_done:${order.id}`,
+    });
+  }
+  return done;
 }
 
 /**

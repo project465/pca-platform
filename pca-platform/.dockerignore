@@ -1,0 +1,10 @@
+node_modules
+.next
+.next-static
+marketing/node_modules
+marketing/.next
+marketing/.next-static
+.git
+*.log
+.env*
+!.env.example

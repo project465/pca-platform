@@ -10,6 +10,7 @@
 import { query, queryOne, tx } from "./db";
 import { generateTempPassword, hashPassword } from "./password";
 import type { RosterParse } from "./roster";
+import { notifySessionReleased } from "./outbox";
 
 /** 이보다 작은 칸은 숫자를 내지 않는다. */
 export const MIN_CELL = 5;
@@ -410,4 +411,7 @@ export async function releaseSession(userId: string, sessionId: string): Promise
       WHERE id = $1 AND kind = 'org'`,
     [sessionId],
   );
+  // 공개를 누른 순간이 학생에게는 결과지가 생긴 순간이다. 그 사실을
+  // 학생이 알아야 담당자가 한 명씩 연락하지 않아도 된다.
+  await notifySessionReleased(sessionId);
 }

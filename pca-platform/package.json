@@ -28,12 +28,16 @@
     "metri:refund": "tsx scripts/metri/refund-check.ts",
     "metri:codes": "tsx scripts/metri/make-codes.ts",
     "metri:redeem": "tsx scripts/metri/redeem-check.ts",
-    "metri:tier": "tsx scripts/metri/tier-check.ts"
+    "metri:tier": "tsx scripts/metri/tier-check.ts",
+    "metri:outbox": "tsx scripts/metri/outbox-check.ts",
+    "metri:ops": "tsx scripts/metri/ops.ts"
   },
   "dependencies": {
+    "@types/nodemailer": "^8.0.1",
     "bcryptjs": "3.0.2",
     "next": "15.5.25",
     "next-auth": "5.0.0-beta.29",
+    "nodemailer": "^6.10.1",
     "pg": "8.16.3",
     "react": "19.1.1",
     "react-dom": "19.1.1",

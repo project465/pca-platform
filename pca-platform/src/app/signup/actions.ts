@@ -2,10 +2,11 @@
 
 import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
-import { query, queryOne } from "@/lib/db";
+import { queryOne } from "@/lib/db";
 import { hashPassword } from "@/lib/password";
 import { signIn } from "@/lib/auth";
 import { fieldErrors, signupSchema, type FieldErrors } from "@/lib/validation";
+import { enqueue } from "@/lib/outbox";
 
 export type SignupState = { errors?: FieldErrors; message?: string };
 
@@ -31,11 +32,21 @@ export async function signupAction(_prev: SignupState, form: FormData): Promise<
   }
 
   const hash = await hashPassword(password);
-  await query(
+  const created = await queryOne<{ id: string }>(
     `INSERT INTO users (email, display_name, password_hash, must_reset_pw, status)
-     VALUES ($1, $2, $3, false, 'active')`,
+     VALUES ($1, $2, $3, false, 'active')
+     RETURNING id`,
     [email, name, hash],
   );
+
+  // 인사 한 줄을 대기열에 적는다. 메일 서버를 여기서 기다리지 않는다 —
+  // 기다리면 메일이 느린 날 가입 버튼이 느려진다.
+  await enqueue({
+    kind: "signup",
+    userId: created?.id ?? null,
+    toAddr: email,
+    dedupeKey: created ? `signup:${created.id}` : undefined,
+  });
 
   try {
     await signIn("credentials", { identifier: email, password, redirect: false });

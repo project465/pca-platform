@@ -1384,3 +1384,52 @@ ON CONFLICT (code) DO UPDATE SET
 -- 있었는데, 결제 경로가 좌석 대신 report_grants 를 만들어서 드러나지
 -- 않았을 뿐이다. 표가 말하는 것과 코드가 하는 일을 맞춘다.
 UPDATE products SET seat_count = 0 WHERE code = 'HS_UPGRADE';
+
+-- ────────────────────────────────────────────────────────────────
+-- 35. 보낼 것 대기열 (2026-09-14)
+--
+-- 밤에 사람이 없어도 돌아야 한다. 가입·채점 완료·결제 완료에 사람이
+-- 손으로 메일을 보내고 있으면 그 시간에만 장사가 된다.
+--
+-- **보내는 것과 만드는 것을 나눈다.** 화면은 "보낼 것" 을 한 줄 적고
+-- 끝낸다. 실제 발송은 따로 돈다. 그래서
+--
+--   · 메일 서버가 죽어도 결제가 실패하지 않는다
+--   · 자격증명이 아직 없으면 쌓아 두었다가 붙는 날 순서대로 나간다
+--   · 무엇이 나갔는지 한 표에서 센다
+--
+-- **본문을 저장하지 않는다.** 종류와 대상만 적고 문면은 보낼 때 만든다.
+-- 결과지 내용이 메일 표에 복사되면 파기(익명화)가 반쪽이 된다.
+-- ────────────────────────────────────────────────────────────────
+
+CREATE TABLE IF NOT EXISTS outbox (
+  id          BIGSERIAL PRIMARY KEY,
+  kind        TEXT NOT NULL CHECK (kind IN (
+                'signup',        -- 가입했습니다
+                'report_ready',  -- 채점이 끝났습니다
+                'upgrade_done',  -- 결제로 결과지가 넓어졌습니다
+                'code_low'       -- (운영자에게) 응시권 코드가 얼마 안 남았습니다
+              )),
+  user_id     BIGINT REFERENCES users(id) ON DELETE CASCADE,
+  -- 보낼 곳. users 를 익명화하면 여기도 같이 비워야 하므로 참조만 두고
+  -- 주소는 보낼 때 users 에서 읽는다. 운영자 알림만 주소를 직접 적는다
+  to_addr     TEXT,
+  -- 문면을 만들 때 쓰는 최소한의 값. **결과지 내용은 넣지 않는다**
+  payload     JSONB NOT NULL DEFAULT '{}'::jsonb,
+  status      TEXT NOT NULL DEFAULT 'queued'
+                CHECK (status IN ('queued', 'sent', 'failed', 'skipped')),
+  attempts    INTEGER NOT NULL DEFAULT 0,
+  last_error  TEXT,
+  -- 같은 일로 두 번 쌓이지 않게 하는 열쇠. 예: 'report_ready:7978'
+  dedupe_key  TEXT UNIQUE,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+  sent_at     TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS idx_outbox_queued
+  ON outbox (created_at) WHERE status = 'queued';
+
+COMMENT ON TABLE outbox IS
+  '보낼 것 대기열. 화면은 한 줄 적고 끝내고, 발송은 따로 돈다.
+   메일 서버가 죽어도 결제가 실패하지 않아야 하기 때문이다.
+   본문은 저장하지 않는다 — 보낼 때 만든다';
