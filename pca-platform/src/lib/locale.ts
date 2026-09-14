@@ -403,7 +403,49 @@ export const UI = {
     "Decide after you have read the report. You will not retake the items.",
     "Raporu okuduktan sonra karar verin. Soruları tekrar çözmezsiniz.",
   ),
-  freeCta: d("무료로 시작하기", "Start free", "Ücretsiz başla"),
+    freeCta: d("무료로 시작하기", "Start free", "Ücretsiz başla"),
+
+  // 응시권 코드 — 밖에서 산 것을 여기서 좌석으로 바꾼다
+  redeemTitle: d("응시권 코드 입력", "Enter your access code", "Erişim kodunuzu girin"),
+  redeemSub: d(
+    "구매하신 곳에서 받은 코드를 적어 주세요. 하이픈과 대소문자는 신경 쓰지 않으셔도 됩니다.",
+    "Type the code you received where you bought it. Hyphens and letter case do not matter.",
+    "Satın aldığınız yerden aldığınız kodu yazın. Tire ve büyük/küçük harf önemli değildir.",
+  ),
+  redeemLabel: d("코드", "Code", "Kod"),
+  redeemCta: d("응시권 등록", "Redeem", "Kullan"),
+  redeemOk: d(
+    "등록됐습니다. 바로 시작하실 수 있습니다.",
+    "Redeemed. You can start now.",
+    "Kullanıldı. Şimdi başlayabilirsiniz.",
+  ),
+  // 왜 안 되는지를 이유마다 다르게 적는다. "코드가 올바르지 않습니다" 하나로
+  // 뭉개면 이미 산 사람이 자기 잘못인 줄 알고 문의조차 못 한다
+  redeemUnknown: d(
+    "그런 코드가 없습니다. 받으신 그대로 다시 한 번 확인해 주세요.",
+    "We do not have that code. Please check it against what you received.",
+    "Böyle bir kod yok. Aldığınız kodu tekrar kontrol edin.",
+  ),
+  redeemUsed: d(
+    "이미 사용된 코드입니다. 본인이 쓰신 것이라면 결과지로 바로 가실 수 있습니다.",
+    "This code has already been used. If it was you, your report is waiting.",
+    "Bu kod zaten kullanıldı. Sizseniz raporunuz hazır.",
+  ),
+  redeemExpired: d(
+    "사용 기간이 지난 코드입니다. 구매하신 곳으로 문의해 주세요.",
+    "This code has expired. Please contact where you bought it.",
+    "Bu kodun süresi doldu. Satın aldığınız yerle iletişime geçin.",
+  ),
+  redeemVoided: d(
+    "취소된 코드입니다. 구매하신 곳으로 문의해 주세요.",
+    "This code was cancelled. Please contact where you bought it.",
+    "Bu kod iptal edildi. Satın aldığınız yerle iletişime geçin.",
+  ),
+  redeemInactive: d(
+    "지금은 이 상품으로 응시할 수 없습니다. 문의해 주시면 확인해 드리겠습니다.",
+    "This product is not open right now. Get in touch and we will sort it out.",
+    "Bu ürün şu anda açık değil. Bize ulaşın, ilgilenelim.",
+  ),
   freeOnce: d(
     "무료 진단은 한 사람에게 한 번입니다. 같은 계정으로 다시 누르면 이미 열린 응시로 돌아갑니다.",
     "One free run per person. Pressing again returns you to the run you already opened.",

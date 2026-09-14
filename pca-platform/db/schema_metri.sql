@@ -1246,3 +1246,54 @@ ON CONFLICT (code) DO UPDATE SET
   seat_count = EXCLUDED.seat_count, track_code = EXCLUDED.track_code,
   report_level = EXCLUDED.report_level, grade_band = EXCLUDED.grade_band,
   duration_days = EXCLUDED.duration_days;
+
+-- ────────────────────────────────────────────────────────────────
+-- 32. 응시권 코드 (2026-09-14)
+--
+-- 밖에서 판 것을 안에서 좌석으로 바꾼다.
+--
+-- 아임웹 같은 쇼핑몰에서 "응시권" 을 상품으로 팔고, 주문이 끝나면 코드를
+-- 보낸다. 학생이 그 코드를 플랫폼에 입력하면 좌석이 생긴다. 결제는 저쪽이
+-- 받고 응시는 이쪽이 한다.
+--
+-- **왜 API 로 잇지 않는가.** 아임웹 개발자센터는 "특정 고객 또는 사이트만을
+-- 위한 서비스" 를 승인하지 않는다. 우리만 쓰는 앱을 올릴 수 없다. 코드
+-- 교환은 승인이 필요 없고, 쇼핑몰이 바뀌어도 이 표는 그대로다.
+--
+-- **코드를 평문으로 두지 않는다.** 임시 비밀번호와 같은 이유다(설계 원칙에
+-- 준함) — DB 가 새면 그대로 공짜 좌석이 된다. sha256 만 저장하고, 만들 때
+-- 한 번 보여준다. 다시 보여주기는 없고 새로 만드는 것만 있다.
+--
+-- 코드로 만든 주문은 `status='paid'` 이고 금액은 0 이다. **돈은 저쪽 장부에
+-- 있다.** 이쪽 금액을 19,000 으로 적으면 매출이 두 번 잡힌다.
+-- 저쪽 주문번호는 `external_ref` 에 남겨 대조할 수 있게 한다.
+-- ────────────────────────────────────────────────────────────────
+
+CREATE TABLE IF NOT EXISTS redemption_codes (
+  id           BIGSERIAL PRIMARY KEY,
+  -- 학생이 입력한 코드를 그대로 찾아야 하므로 소금 없는 sha256 을 쓴다.
+  -- 코드 자체가 128비트 난수라 사전공격 대상이 아니다.
+  code_hash    TEXT NOT NULL UNIQUE,
+  -- 사람이 알아볼 꼬리. 문의가 왔을 때 어느 코드인지 맞춰 보는 용도다
+  code_tail    TEXT NOT NULL,
+  product_code TEXT NOT NULL REFERENCES products(code),
+  batch        TEXT,
+  -- 밖에서 판 주문번호. 대조용이고 개인정보는 넣지 않는다
+  external_ref TEXT,
+  expires_at   TIMESTAMPTZ,
+  used_by      BIGINT REFERENCES users(id) ON DELETE SET NULL,
+  used_at      TIMESTAMPTZ,
+  order_id     BIGINT REFERENCES orders(id) ON DELETE SET NULL,
+  voided_at    TIMESTAMPTZ,
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
+  -- 쓴 코드는 누가 언제 썼는지가 같이 있어야 한다. 하나만 차 있으면 사고다
+  CHECK ((used_by IS NULL) = (used_at IS NULL))
+);
+
+CREATE INDEX IF NOT EXISTS idx_redemption_unused
+  ON redemption_codes (product_code) WHERE used_at IS NULL AND voided_at IS NULL;
+CREATE INDEX IF NOT EXISTS idx_redemption_batch ON redemption_codes (batch);
+
+-- 어느 코드로 열린 주문인지 주문 쪽에서도 보이게 한다
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS redemption_code_id BIGINT
+  REFERENCES redemption_codes(id) ON DELETE SET NULL;

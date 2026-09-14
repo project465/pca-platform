@@ -25,6 +25,8 @@
     "metri:prescribe": "tsx scripts/metri/prescribe-check.ts",
     "domains:check": "node scripts/domains-check.mjs",
     "copy:audit": "node scripts/copy-audit.mjs",
+    "metri:codes": "tsx scripts/metri/make-codes.ts",
+    "metri:redeem": "tsx scripts/metri/redeem-check.ts",
     "metri:tier": "tsx scripts/metri/tier-check.ts"
   },
   "dependencies": {

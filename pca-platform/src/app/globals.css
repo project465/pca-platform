@@ -187,6 +187,22 @@ td .sub { display: block; font-size: 12.5px; color: var(--muted); }
    한쪽을 작게 쓰면 나중에 "안 적혀 있었다" 가 나온다. 자물쇠 모양이나
    흐리게 덮는 장식은 쓰지 않는다. 없는 것은 없다고 글자로 적는다. */
 .paylead { font-size: 14.5px; line-height: 1.75; color: var(--muted, #61717D); margin-bottom: 26px; }
+
+/* 응시권 코드 입력.
+   종이나 문자에서 옮겨 적는 칸이라 글자를 크게 띄우고 자간을 벌린다.
+   `XXXX-XXXX-XXXX` 를 한눈에 맞춰 볼 수 있어야 오타가 줄어든다. */
+.redeem { display: grid; gap: 10px; }
+.redeem label { font-size: 13px; font-weight: 700; color: var(--muted, #61717D); }
+.redeem input {
+  font: inherit; font-size: 20px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; text-align: center;
+  padding: 14px 12px; border: 1px solid var(--line, #DDE3E8); border-radius: 4px;
+  background: var(--paper, #fff); color: inherit; width: 100%;
+}
+.redeem input::placeholder { font-weight: 400; letter-spacing: 0.08em; opacity: .45; }
+.redeem input:focus-visible { outline: 2px solid var(--gold, #B8892B); outline-offset: 2px; }
+.redeem .act { margin-top: 4px; }
+.redeem .notice { margin-top: 6px; }
 .freesplit { display: grid; gap: 0; margin-bottom: 26px; border-top: 2px solid var(--ink, #16232E); }
 .freesplit > section { padding: 18px 0; border-bottom: 1px solid var(--rule, #C9D2D8); }
 .freesplit h2 { font-size: 13px; letter-spacing: .02em; margin: 0 0 10px; }
