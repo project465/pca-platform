@@ -804,6 +804,30 @@ export function PricingSection({ site }: { site: SiteContent }) {
         <p className="small" style={{ marginTop: 22 }}>
           {p.note}
         </p>
+
+        {/* 값 다음에 "그래서 어떻게 사는가" 를 적는다. 여기가 비어 있으면
+            마음을 정한 사람이 다음에 무엇을 눌러야 할지 몰라 그대로 나간다.
+            번호를 붙이는 이유는 실제로 순서가 있어서다 — 2번을 건너뛰면
+            3번이 없다. 순서 없는 목록에는 번호를 붙이지 않는다. */}
+        <div className="howbuy">
+          <span className="label-sm">{p.howBuy.label}</span>
+          <h3>{p.howBuy.heading}</h3>
+          <div className="hbgrid">
+            {p.howBuy.tracks.map((tr) => (
+              <div className="hbtrack" key={tr.key}>
+                <b>{tr.name}</b>
+                <span className="who">{tr.who}</span>
+                <ol>
+                  {tr.steps.map((st) => (
+                    <li key={st}>{st}</li>
+                  ))}
+                </ol>
+              </div>
+            ))}
+          </div>
+          {/* 아직 안 되는 것을 적는 자리. 되는 것처럼 두면 첫 결제에서 막힌다 */}
+          <p className="hbcaveat">{p.howBuy.caveat}</p>
+        </div>
       </div>
     </section>
   );

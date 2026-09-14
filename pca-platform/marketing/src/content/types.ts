@@ -197,6 +197,20 @@ export type Pricing = {
   note: string;
   /** 문의 폼에서 고를 때 쓰는 라벨 */
   planLabel: string;
+  /**
+   * 값 다음에 오는 것은 "그래서 어떻게 사는가" 다.
+   *
+   * 값만 적어 두면 마음을 정한 사람이 다음에 무엇을 눌러야 하는지 몰라
+   * 그 자리에서 나간다. 사는 사람이 개인과 기관 둘이고 경로가 다르므로
+   * 갈래별로 적는다. `caveat` 은 **아직 안 되는 것**을 적는 자리다 —
+   * 카드 결제가 열리기 전에 결제 화면으로 보내면 거기서 막힌다.
+   */
+  howBuy: {
+    label: string;
+    heading: string;
+    tracks: { key: string; name: string; who: string; steps: string[] }[];
+    caveat: string;
+  };
 };
 
 /**

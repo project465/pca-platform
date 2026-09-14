@@ -983,6 +983,37 @@ export const global: SiteContent = {
     ],
     note:
       "Price depends on cohort size and whether the regional module is in scope. Tell us the department and a rough number and we will come back with an estimate.",
+    howBuy: {
+      label: "How buying works",
+      heading: "If the price works for you, here is what happens next",
+      tracks: [
+        {
+          key: "individual",
+          name: "Individual — ₩29,000",
+          who: "A student or a job seeker",
+          steps: [
+            "Start opens the sign-up screen. Signing up logs you in and returns you to where you were",
+            "Pay ₩29,000 — a Korean card, or a Visa or Mastercard issued overseas",
+            "253 questions, about 30 minutes. Every answer saves as you go, so you can close the tab and come back",
+            "Your report opens as soon as it is scored. No departmental approval to wait on",
+          ],
+        },
+        {
+          key: "org",
+          name: "Department or university — by contract",
+          who: "A department, a careers office, a university",
+          steps: [
+            "Tell us the department and a rough number; we come back with an estimate",
+            "The contract creates the seats. Students never see a payment screen",
+            "Upload the roster and each student gets their own credentials",
+            "Students sit the assessment; the coordinator reads the anonymous cohort report first",
+            "Reports open to students when the coordinator releases them",
+          ],
+        },
+      ],
+      caveat:
+        "Individual card payment opens once the Korean merchant review and the mail-order seller filing clear. Until then individual assessments are booked through the form, while department contracts run today — a contract does not go through a payment screen. We do not list something as working when it does not.",
+    },
   },
 
   regions: {

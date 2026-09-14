@@ -561,6 +561,36 @@ export const tr: SiteContent = {
       },
     ],
     note: "Kesin fiyat kişi sayısına ve döneme göre sunulur.",
+    howBuy: {
+      label: "Nasıl alınır",
+      heading: "Karar verdiyseniz sıradaki adımlar şunlar",
+      tracks: [
+        {
+          key: "individual",
+          name: "Bireysel değerlendirme",
+          who: "Öğrenci · iş arayan",
+          steps: [
+            "Talep bırakırsınız; fiyatı ve takvimi size iletiriz",
+            "253 soru, yaklaşık 30 dakika. Her yanıt anında kaydedilir, ara verip devam edebilirsiniz",
+            "Rapor puanlanır puanlanmaz açılır — bölüm onayı beklenmez",
+          ],
+        },
+        {
+          key: "org",
+          name: "Bölüm veya üniversite — sözleşmeyle",
+          who: "Bölüm · kariyer merkezi · üniversite",
+          steps: [
+            "Bölüm adını ve yaklaşık kişi sayısını iletin, teklifi hazırlayalım",
+            "Sözleşme kontenjanı açar. Öğrenci ödeme ekranı görmez",
+            "Listeyi yüklediğinizde her öğrenciye kendi giriş bilgileri verilir",
+            "Öğrenciler uygulamayı tamamlar; koordinatör önce anonim toplu raporu okur",
+            "Koordinatör yayımladığında öğrenci raporları açılır",
+          ],
+        },
+      ],
+      caveat:
+        "Çevrim içi ödeme henüz açık değil; bireysel değerlendirme form üzerinden alınıyor. Bölüm sözleşmesi bugün de yürüyor, çünkü sözleşme ödeme ekranından geçmiyor. Çalışmayan bir şeyi çalışıyormuş gibi yazmıyoruz.",
+    },
   },
 
   contact: {
