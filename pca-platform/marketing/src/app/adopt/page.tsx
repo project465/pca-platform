@@ -4,20 +4,23 @@ import Shell from "@/components/shell";
 import { ProcessSection } from "@/components/sections";
 import { NextLink, PageHead, PhotoSlot } from "@/components/visuals";
 
-export const metadata = { title: "도입 안내" };
+export function generateMetadata() {
+  return { title: getSite().ui.pageTitles.adopt ?? "" };
+}
 
 export default function AdoptPage() {
   const site = getSite();
   if (!site.process) notFound();
   const p = site.process;
+  const u = site.ui;
 
   return (
     <Shell>
       <PageHead label={p.label} title={p.heading} lead={p.lead} />
-      <ProcessSection site={site} />
+      <ProcessSection site={site} bare />
       <section className="divided">
         <div className="wrap photosplit">
-          <PhotoSlot caption="사진 자리 — 관리자 페이지 화면 또는 담당자 운영 장면" ratio="4 / 3" />
+          <PhotoSlot caption={u.photos.adopt} src="/photos/08.jpg" ratio="4 / 3" />
           <div>
             <span className="label-sm">누가 무엇을 하나</span>
             <h2 style={{ margin: "16px 0 18px" }}>학과가 할 일은 링크를 나눠주는 것뿐입니다</h2>
@@ -34,8 +37,10 @@ export default function AdoptPage() {
       </section>
       <section className="divided">
         <div className="wrap nextgrid">
-          <NextLink label="anchor" title="지역·앵커 활용" href="/anchor" />
-          <NextLink label="contact" title="도입·상담 문의" href="/contact" />
+          {site.university ? (
+            <NextLink label="anchor" title={u.linkTitles.anchor} href="/anchor" />
+          ) : null}
+          <NextLink label="contact" title={u.linkTitles.contact} href="/contact" />
         </div>
       </section>
     </Shell>

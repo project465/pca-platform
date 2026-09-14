@@ -2,6 +2,8 @@
 
 import { query, queryOne, tx } from "@/lib/db";
 import { createResetToken } from "@/lib/password";
+import { sendMail } from "@/lib/mail";
+import { resetMail } from "@/lib/mail-templates";
 
 export type ForgotState = { done?: boolean; devLink?: string };
 
@@ -11,8 +13,8 @@ const TOKEN_TTL_HOURS = 24;
  * 계정이 있든 없든 같은 화면을 돌려준다.
  * 응답이 다르면 남의 학번이 등록돼 있는지 확인하는 수단이 된다.
  *
- * 메일 발송은 아직 붙어 있지 않다. 학생 계정은 email 이 없는 경우가 많아
- * 실제 운영에서는 학과 담당자가 재설정 링크를 발급해 전달하는 경로가 주가 된다.
+ * 이메일이 있는 계정에는 메일로 보낸다. 학생 계정은 email 이 없는 경우가
+ * 많으므로, 그때는 학과 담당자가 재설정 링크를 발급해 전달하는 경로가 남는다.
  */
 export async function forgotAction(
   _prev: ForgotState,
@@ -49,12 +51,16 @@ export async function forgotAction(
   const base = process.env.AUTH_URL ?? "http://localhost:3000";
   const link = `${base}/password/reset/${token}`;
 
-  if (process.env.NODE_ENV === "production") {
-    // TODO: 메일 발송 연결. 그 전까지는 담당자 발급 경로만 실제로 동작한다.
-    console.info("[password-reset] issued for user", user.id);
-    return { done: true };
+  /* 메일이 나갔는지 여부도 화면에 알리지 않는다. 알리면 그 계정에 이메일이
+     있는지가 드러나고, 위에서 같은 화면을 돌려주기로 한 이유가 무너진다 */
+  if (user.email) {
+    await sendMail(resetMail("ko", { to: user.email, setupUrl: link, hours: TOKEN_TTL_HOURS }));
+  } else {
+    console.info("[password-reset] 이메일이 없는 계정. 담당자 발급 경로로 전달해야 한다", user.id);
   }
 
+  // 개발 중에는 메일함을 열지 않고도 확인할 수 있게 링크를 함께 돌려준다
+  if (process.env.NODE_ENV === "production") return { done: true };
   return { done: true, devLink: link };
 }
 

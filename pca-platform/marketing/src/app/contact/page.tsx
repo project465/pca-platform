@@ -4,7 +4,9 @@ import Contact from "@/components/contact";
 import { FaqSection } from "@/components/sections";
 import { PageHead } from "@/components/visuals";
 
-export const metadata = { title: "Contact" };
+export function generateMetadata() {
+  return { title: getSite().ui.pageTitles.contact ?? "" };
+}
 
 export default function ContactPage() {
   const site = getSite();
