@@ -147,7 +147,7 @@ a { color: inherit; }
    그래서 접지 않고 브랜드·버튼 아래 한 줄로 내린다. 항목이 줄 너비를
    넘으면 그 줄 안에서 옆으로 굴린다 — 굴릴 수 있는 목록은 접힌 목록보다
    한 단계 가깝다. 첫 항목이 늘 보이므로 메뉴가 있다는 것을 모를 수 없다. */
-@media (max-width: 1240px) {
+@media (max-width: 720px) {
   /* wrap 이 없으면 width:100% 를 줘도 줄이 내려가지 않고 그냥 눌린다 */
   .topbar .bar { flex-wrap: wrap; min-height: 0; padding-block: 10px; row-gap: 0; }
   .topbar nav.wide {
@@ -278,7 +278,7 @@ a { color: inherit; }
 /* 눌러서 간 절이 머리 띠에 가려지면 제목부터 못 읽는다. 띠 높이보다
    조금 더 남긴다 — 좁아지면 메뉴가 한 줄 더 생겨 띠가 두 배 가까워진다. */
 .sec[id], header[id] { scroll-margin-top: 77px; }
-@media (max-width: 1240px) { .sec[id], header[id] { scroll-margin-top: 130px; } }
+@media (max-width: 720px) { .sec[id], header[id] { scroll-margin-top: 130px; } }
 .sec:first-of-type { border-top: 0; }
 .sec.tint { background: var(--ground-2); }
 .sec-head { display: grid; gap: 10px; margin-bottom: clamp(24px, 3.5vw, 36px); }
@@ -473,16 +473,10 @@ footer .wrap { display: grid; gap: 8px; }
          여기서 같이 고쳤다 — 접는 쪽에만 있던 "무엇으로 재는가"·"범위" 가
          이제 늘 보인다. -->
     <nav class="wide">
-      <a href="#now">왜 지금</a>
-      <a href="#fields">8계열</a>
       <a href="#items">문항</a>
-      <a href="#chain">현장 사슬</a>
       <a href="#subjects">과목 처방</a>
-      <a href="#axes">재는 축</a>
-      <a href="#evidence">검증</a>
       <a href="#diff">다른 점</a>
       <a href="#price">값</a>
-      <a href="#scope">범위</a>
       <a href="#contact">학교 도입</a>
     </nav>
     <!-- 띠의 버튼은 학생·학부모가 할 수 있는 일 하나만 가리킨다.
