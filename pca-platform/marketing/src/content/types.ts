@@ -440,6 +440,25 @@ export type SiteContent = {
   pricing: Pricing;
   regions?: Regions;
 
+  /**
+   * 개인 진단을 그 자리에서 사는 자리.
+   *
+   * **이 블록이 있다고 단추가 나오는 것이 아니다.** 단추는 플랫폼이
+   * "지금 팔 수 있다" 고 대답할 때만 나온다 — 문항과 채점 산식이 있고
+   * 결제가 연결됐을 때다. 못 줄 것을 파는 화면을 만들지 않기 위해서다.
+   * 그전까지 개인 칸은 그대로 문의로 간다.
+   */
+  buy: {
+    /** 요금제 칸의 단추 글자 */
+    cta: string;
+    heading: string;
+    /** 결제한 뒤 무엇이 일어나는지. 사람이 붙지 않는다는 것을 알린다 */
+    note: string;
+    submit: string;
+    /** 결제창까지 못 갔을 때. 접수됐다고 하지 않는다 */
+    error: string;
+  };
+
   contact: {
     heading: string;
     lead: string;

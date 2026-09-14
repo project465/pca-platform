@@ -457,3 +457,84 @@ COMMENT ON TABLE billing_events IS
 
 CREATE INDEX idx_billing_period ON billing_events(org_id, period);
 CREATE INDEX idx_billing_uninvoiced ON billing_events(contract_id) WHERE invoiced_at IS NULL;
+
+
+-- ============================================================
+--  10. 개인 결제 — 밤에도 도는 자리
+-- ============================================================
+--
+-- 단체는 사람이 붙어야 한다. 신청서를 읽고, 승인하고, 계약을 만든다.
+-- 개인은 그러면 안 된다 — 새벽 두 시에 카드로 긁은 사람이 아침까지
+-- 기다려야 한다면 그 사람은 그냥 떠난다.
+--
+-- 그래서 개인 주문은 사람 손을 타지 않는다. 결제가 승인되면 그 자리에서
+-- 응시권이 생기고 메일이 나간다. 이 표는 그 흐름이 **한 번만** 일어나게
+-- 하려고 있다.
+
+CREATE TABLE orders (
+  id             BIGSERIAL PRIMARY KEY,
+  order_no       TEXT NOT NULL UNIQUE,       -- 사람이 부르는 번호. MT-20260914-XXXXXX
+  site           TEXT NOT NULL,              -- global | kr | kz. 메일 언어와 통화를 가른다
+  product        TEXT NOT NULL,              -- 지금은 individual 하나뿐이다
+
+  buyer_email    TEXT NOT NULL,
+  buyer_name     TEXT NOT NULL,
+
+  -- 금액은 **서버가 정한다**. 브라우저가 보낸 값을 그대로 쓰면 100원짜리
+  -- 주문이 만들어진다. 결제에서 가장 흔하고 가장 조용한 사고다
+  amount         BIGINT NOT NULL CHECK (amount > 0),
+  currency       TEXT NOT NULL,
+
+  --   created    주문만 있고 돈은 아직이다
+  --   paid       결제가 승인됐다. 아직 응시권은 없다
+  --   fulfilled  응시권이 생기고 메일이 나갔다
+  --   failed     이행하다 막혔다. fail_reason 을 보고 사람이 손본다
+  --   refunded   돌려줬다
+  status         TEXT NOT NULL DEFAULT 'created'
+                 CHECK (status IN ('created','paid','fulfilled','failed','refunded')),
+
+  provider       TEXT,                       -- portone 등
+  provider_tx_id TEXT,                       -- 결제대행사의 결제 건 식별자
+  paid_amount    BIGINT,                     -- 대행사에 되물어 확인한 실제 승인 금액
+  paid_at        TIMESTAMPTZ,
+
+  user_id        BIGINT REFERENCES users(id),
+  attempt_id     BIGINT REFERENCES attempts(id),
+  fulfilled_at   TIMESTAMPTZ,
+
+  fail_reason    TEXT,
+  created_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
+
+  -- 같은 결제 건이 두 주문에 붙을 수 없다. 웹훅은 얼마든지 다시 온다
+  UNIQUE (provider, provider_tx_id)
+);
+COMMENT ON TABLE orders IS
+  '개인 카드 결제 1건 = 1행. 결제 승인부터 응시권 발급까지가 여기서 닫힌다';
+COMMENT ON COLUMN orders.amount IS
+  '서버가 정한 청구 금액. 브라우저가 보낸 금액은 쳐다보지 않는다';
+COMMENT ON COLUMN orders.paid_amount IS
+  '대행사 API 로 되물어 확인한 승인 금액. amount 와 다르면 이행하지 않는다';
+
+CREATE INDEX idx_orders_status ON orders(status, created_at);
+CREATE INDEX idx_orders_email ON orders(lower(buyer_email));
+
+-- 받은 웹훅을 그대로 남긴다.
+--
+-- 대행사는 같은 사건을 여러 번 보낸다(재시도·중복 발송). 두 번째부터는
+-- 아무 일도 일어나면 안 되는데, 그걸 "아마 안 했을 것" 으로 두지 않고
+-- 데이터베이스가 막게 한다. 사고가 났을 때 무엇이 언제 들어왔는지
+-- 되짚을 수 있어야 하므로 본문도 통째로 남긴다.
+CREATE TABLE payment_webhooks (
+  id           BIGSERIAL PRIMARY KEY,
+  provider     TEXT NOT NULL,
+  event_id     TEXT NOT NULL,               -- 대행사가 준 사건 식별자
+  tx_id        TEXT,
+  payload      JSONB NOT NULL,
+  received_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+  handled_at   TIMESTAMPTZ,
+  note         TEXT,
+
+  UNIQUE (provider, event_id)
+);
+COMMENT ON TABLE payment_webhooks IS
+  '받은 결제 통지 원문. UNIQUE 가 같은 통지의 두 번째 처리를 막는다';

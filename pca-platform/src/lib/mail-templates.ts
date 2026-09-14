@@ -172,3 +172,63 @@ export function resetMail(
     ].join("\n"),
   };
 }
+
+/**
+ * 결제가 끝났고 응시할 수 있다 — 구매자에게.
+ *
+ * 이 메일은 **사람이 자는 동안 나간다.** 그래서 받는 사람이 이것만 보고
+ * 끝까지 갈 수 있어야 한다. 답장을 기다려야 하는 문장을 넣지 않는다.
+ *
+ * 비밀번호는 적지 않는다. 메일은 남고 전달되므로 비밀번호가 오래
+ * 떠돈다 — 승인 메일과 같은 이유다.
+ */
+export function orderReadyMail(
+  lang: Lang,
+  v: { to: string; name: string; orderNo: string; setupUrl: string; hours: number },
+): Mail {
+  if (lang === "ko") {
+    return {
+      to: v.to,
+      subject: `[METRI] 결제가 완료되었습니다 — 지금 응시하실 수 있습니다 (${v.orderNo})`,
+      text: [
+        `${v.name}님,`,
+        ``,
+        `결제가 확인되었습니다. 바로 시작하실 수 있습니다.`,
+        ``,
+        `1) 비밀번호 정하기`,
+        `   ${v.setupUrl}`,
+        `   이 링크는 ${v.hours}시간 동안만 열립니다.`,
+        ``,
+        `2) 비밀번호를 정하시면 그 화면에서 바로 검사로 넘어갑니다.`,
+        `   30분 정도 걸리고, 중간에 닫으셔도 답한 곳부터 이어집니다.`,
+        ``,
+        `제출하시면 결과지가 준비되는 대로 같은 계정에서 보실 수 있습니다.`,
+        ``,
+        `주문번호 ${v.orderNo}`,
+        `문의: hari_info@hari.re.kr`,
+      ].join("\n"),
+    };
+  }
+  return {
+    to: v.to,
+    subject: `[METRI] Payment received — you can start now (${v.orderNo})`,
+    text: [
+      `Dear ${v.name},`,
+      ``,
+      `Your payment is confirmed. You can start straight away.`,
+      ``,
+      `1) Set your password`,
+      `   ${v.setupUrl}`,
+      `   This link stays open for ${v.hours} hours.`,
+      ``,
+      `2) Once set, that same screen takes you into the assessment.`,
+      `   It takes about 30 minutes, and it resumes where you left off`,
+      `   if you close the window.`,
+      ``,
+      `After you submit, your report becomes available in the same account.`,
+      ``,
+      `Order ${v.orderNo}`,
+      `Questions: hari_info@hari.re.kr`,
+    ].join("\n"),
+  };
+}

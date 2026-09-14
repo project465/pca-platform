@@ -1,5 +1,6 @@
 import Radar from "@/components/radar";
 import { loginUrl } from "@/lib/platform";
+import { BuyButton } from "@/components/buy-button";
 import type { SiteContent } from "@/content";
 
 export function Who({ site }: { site: SiteContent }) {
@@ -689,6 +690,12 @@ export function PricingSection(
                 ))}
               </ul>
               <p className="note">{pl.note}</p>
+              {/* 개인 칸만 그 자리에서 살 수 있다. 단추는 플랫폼이
+                  "지금 팔 수 있다" 고 할 때만 나타나고, 그렇지 않으면
+                  아래 문의 단추가 그대로 남는다 */}
+              {pl.key === "individual" ? (
+                <BuyButton site={site} className="btn solid" />
+              ) : null}
               <a className={`btn${pl.featured ? " solid" : ""}`} href="/contact">
                 {pl.price ? pl.cta.ready : pl.cta.ask}
               </a>

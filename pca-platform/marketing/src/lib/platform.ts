@@ -45,3 +45,25 @@ export function loginUrl(site: SiteContent): string {
 export function intakeUrl(site: SiteContent): string {
   return `${platformUrl(site)}/api/intake`;
 }
+
+/**
+ * 개인 주문을 만드는 창구.
+ *
+ * 문의 창구와 같은 이유로 브라우저가 직접 부른다(R036). **금액은 넘기지
+ * 않는다** — 넘길 수 있게 해 두면 누군가는 고쳐서 보낸다. 이 사이트는
+ * "어느 판에서 누가 산다" 까지만 말하고 값은 서버가 매긴다.
+ */
+export function orderUrl(site: SiteContent): string {
+  return `${platformUrl(site)}/api/orders`;
+}
+
+/**
+ * 결제창으로 넘어가는 자리.
+ *
+ * 정적 사이트는 결제대행사 SDK 를 띄우지 않는다. 키와 서명이 오가는 곳을
+ * 누구나 원고를 뜯어볼 수 있는 판에 두지 않기 위해서다. 주문번호만 들고
+ * 플랫폼으로 넘기고, 결제는 거기서 끝낸다.
+ */
+export function checkoutUrl(site: SiteContent, orderNo: string): string {
+  return `${platformUrl(site)}/checkout/${encodeURIComponent(orderNo)}`;
+}

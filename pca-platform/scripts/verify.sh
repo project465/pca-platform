@@ -133,4 +133,10 @@ node scripts/e2e-group-report.mjs
 echo "· 건당 정산 — 좌석 없이 응시, 제출 건만 청구, 상한"
 node scripts/e2e-per-use.mjs
 
+# 돈이 오가는 자리다. 조용히 깨지면 몇 주 뒤에야 드러난다.
+# 채점 산식이 아직 없으므로 지금은 "못 줄 것은 팔지 않는다" 까지만 돈다 —
+# 산식이 들어오면 나머지 검사가 저절로 켜진다
+echo "· 개인 결제 — 못 줄 것은 팔지 않기, 금액 위조, 한 결제 한 응시권"
+npx tsx scripts/e2e-order.ts
+
 printf '\n\033[1m전체 확인 통과\033[0m\n'

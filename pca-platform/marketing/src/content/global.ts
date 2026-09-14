@@ -974,6 +974,16 @@ export const global: SiteContent = {
     ],
   },
 
+  buy: {
+    cta: "Buy now",
+    heading: "Individual assessment",
+    note:
+      "Your access link is emailed the moment payment clears. Nobody has to approve it — buy at three in the morning and you can start at three in the morning.",
+    submit: "Pay",
+    error:
+      "We could not open the payment window. Send us an enquiry and we will come back to you — hari_info@hari.re.kr",
+  },
+
   contact: {
     heading: "Talk to us",
     lead:
