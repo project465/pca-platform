@@ -23,7 +23,7 @@ export const tr: SiteContent = {
   meta: {
     title: "METRI — mühendislik bölümleri, işe alan rollere göre okunur",
     description:
-      "Makine, elektrik-elektronik ve bilgisayar mühendisliğinde 24 görev kümesi ve 138 yetkinlik, gerçek ilanlarla karşılaştırılır. Kişilik tipi değil: ANSYS 4 üzerinden 2, GD&T karşılanmadı, 132 ilanın 89'unda isteniyor.",
+      "Makine, elektrik-elektronik ve bilgisayar mühendisliğinde 24 görev kümesi ve 138 yetkinlik, gerçek ilanlarla karşılaştırılır. Kişilik tipi değil: ANSYS 4 üzerinden 2, 132 ilanın 89'unda isteniyor.",
   },
 
   legal: {

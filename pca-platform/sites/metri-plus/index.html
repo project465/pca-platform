@@ -201,6 +201,77 @@ a { color: inherit; }
 .qtext { color: #fff; font-size: 15.5px; line-height: 1.7; }
 .qwhy { color: var(--onnavy-2); font-size: 13.5px; line-height: 1.65; }
 
+/* ── 누르는 것 ─────────────────────────────────
+   페이지 전체에서 학생·학부모가 할 수 있는 일은 하나다 — 무료로 풀어 보는 것.
+   유료는 그 결과지를 읽은 다음에 결정한다. 그래서 버튼도 한 종류만 강하게
+   쓰고, 값으로 가는 것은 옆에 조용히 둔다. 버튼이 둘 다 세면 둘 다 안 눌린다. */
+.buy { display: grid; gap: 14px; justify-items: start; }
+.btn-a, .btn-b {
+  display: inline-block; text-decoration: none; font-weight: 800;
+  font-family: var(--display); letter-spacing: -0.02em;
+  font-size: clamp(15px, 1.8vw, 17px); padding: 14px 24px; border-radius: var(--r);
+  background: var(--amber-hi); color: #16283F; border: 1px solid var(--amber-hi);
+}
+.btn-a:hover { background: #FFA353; border-color: #FFA353; }
+.btn-b { background: transparent; color: #fff; border-color: #3A4D68; font-weight: 700; }
+.btn-b:hover { border-color: var(--onnavy-2); }
+/* 밝은 바탕 위에 놓일 때 — 표지 말고 본문 절에서 쓴다 */
+.btn-a.dark { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.btn-a.dark:hover { background: var(--ink-2); border-color: var(--ink-2); }
+.buy .btn-a, .buy .btn-b { display: inline-block; }
+.buy > :is(.btn-a, .btn-b) { margin-right: 10px; }
+.priceline { color: var(--onnavy-2); font-size: 13.5px; max-width: var(--measure); line-height: 1.65; }
+.priceline b { color: #fff; font-weight: 700; }
+@media (min-width: 560px) {
+  .buy { grid-template-areas: "a b" "p p"; grid-template-columns: max-content max-content; gap: 12px 10px; }
+  .buy .btn-a { grid-area: a; } .buy .btn-b { grid-area: b; } .buy .priceline { grid-area: p; }
+}
+
+/* ── 왜 지금인가 ──────────────────────────────
+   카드 세 장이지만 숫자를 붙이지 않는다. 순서가 있는 절차가 아니라
+   서로 다른 세 가지 이유라서, 번호를 붙이면 없는 순서를 만들게 된다. */
+.reasons { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.reason {
+  background: var(--paper); border: 1px solid var(--line); border-radius: var(--r);
+  border-top: 3px solid var(--amber); padding: 20px; display: grid; gap: 9px; align-content: start;
+}
+.reason .rno { font-family: var(--display); font-weight: 800; font-size: 16px; letter-spacing: -0.03em; }
+.reason p { font-size: 14px; line-height: 1.68; color: var(--ink-2); }
+
+/* ── 무엇이 다른가 ────────────────────────── */
+.diffs { display: grid; gap: 0; background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.diff-row { display: grid; grid-template-columns: 210px 1fr; gap: 20px; padding: 18px 20px; }
+.diff-row + .diff-row { border-top: 1px solid var(--line); }
+.diff-q { font-family: var(--display); font-weight: 800; font-size: 15px; letter-spacing: -0.03em; }
+.diff-a { font-size: 14.5px; line-height: 1.7; color: var(--ink-2); }
+.diff-a b { color: var(--ink); font-weight: 700; }
+@media (max-width: 620px) { .diff-row { grid-template-columns: 1fr; gap: 7px; } }
+
+/* ── 결과지를 이렇게 씁니다 ───────────────── */
+.uses { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.use { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); padding: 18px 20px; display: grid; gap: 8px; align-content: start; }
+.use b { font-family: var(--display); font-weight: 800; font-size: 15.5px; }
+.use p { font-size: 13.5px; line-height: 1.66; color: var(--ink-2); }
+.use .who { font-size: 12px; font-weight: 700; color: var(--amber); }
+
+/* ── 바닥에 붙는 띠 ───────────────────────────
+   표지의 버튼은 스크롤하면 사라진다. 페이지가 길어서 값 절까지 내려가는
+   동안 누를 것이 없어진다. 그래서 좁은 화면에서는 바닥에 하나 붙여 둔다.
+   덮지 않도록 body 아래쪽을 그만큼 비운다. */
+.buybar { display: none; }
+@media (max-width: 760px) {
+  .buybar {
+    display: flex; align-items: center; gap: 12px;
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 45;
+    padding: 10px var(--pad) calc(10px + env(safe-area-inset-bottom));
+    background: var(--paper); border-top: 1px solid var(--line-2);
+  }
+  .buybar .bb-txt { font-size: 12.5px; line-height: 1.45; color: var(--muted); min-width: 0; }
+  .buybar .bb-txt b { display: block; color: var(--ink); font-size: 13.5px; font-weight: 800; font-family: var(--display); }
+  .buybar .btn-a { margin-left: auto; flex: none; font-size: 14px; padding: 11px 16px; }
+  body { padding-bottom: 76px; }
+}
+
 /* ── 절 ───────────────────────────────────── */
 .sec { padding-block: clamp(48px, 7.5vw, 88px); border-top: 1px solid var(--line); }
 /* 머리 띠가 붙어 있으니 그만큼 띄워야 절 제목이 가려지지 않는다 */
@@ -308,6 +379,17 @@ th[scope="row"] { font-weight: 700; color: var(--ink); font-family: var(--body);
 .price.plus .amt { color: var(--amber); }
 .price ul { margin: 6px 0 0; padding-left: 18px; color: var(--ink-2); font-size: 14px; display: grid; gap: 4px; }
 .pricefoot { margin-top: 16px; color: var(--muted); font-size: 13.5px; max-width: var(--measure); }
+.pricefoot b { color: var(--ink-2); font-weight: 700; }
+.howbuy {
+  margin-top: 22px; background: var(--paper); border: 1px solid var(--line-2);
+  border-radius: var(--r); padding: 22px 24px; display: grid; gap: 14px; justify-items: start;
+}
+.howbuy h3 { font-size: 16px; }
+/* 여기는 실제로 순서가 있다 — 1단계를 건너뛰면 2단계가 없다.
+   그래서 번호를 붙인다. 순서 없는 곳에는 붙이지 않는다. */
+.howbuy ol { margin: 0; padding-left: 20px; display: grid; gap: 9px; max-width: var(--measure); }
+.howbuy li { font-size: 14.5px; line-height: 1.68; color: var(--ink-2); }
+.howbuy li b { color: var(--ink); font-weight: 700; }
 
 /* ── 아직 없는 것 ─────────────────────────── */
 .todo { display: grid; gap: 8px; max-width: var(--measure); }
@@ -391,17 +473,21 @@ footer .wrap { display: grid; gap: 8px; }
          여기서 같이 고쳤다 — 접는 쪽에만 있던 "무엇으로 재는가"·"범위" 가
          이제 늘 보인다. -->
     <nav class="wide">
+      <a href="#now">왜 지금</a>
       <a href="#fields">8계열</a>
       <a href="#items">문항</a>
-      <a href="#chain">현장에서 거꾸로</a>
+      <a href="#chain">현장 사슬</a>
       <a href="#subjects">과목 처방</a>
-      <a href="#axes">무엇으로 재는가</a>
-      <a href="#tiers">등수 대신 묶음</a>
+      <a href="#axes">재는 축</a>
       <a href="#evidence">검증</a>
+      <a href="#diff">다른 점</a>
       <a href="#price">값</a>
       <a href="#scope">범위</a>
+      <a href="#contact">학교 도입</a>
     </nav>
-    <a class="tb-cta" href="#contact">도입 문의</a>
+    <!-- 띠의 버튼은 학생·학부모가 할 수 있는 일 하나만 가리킨다.
+         학교는 계약으로 오므로 위 목록의 "학교 도입" 으로 간다. -->
+    <a class="tb-cta" href="https://app.metri.io/free">무료로 시작</a>
   </div>
 </div>
 
@@ -436,6 +522,15 @@ footer .wrap { display: grid; gap: 8px; }
       </p>
     </div>
 
+    <div class="buy">
+      <a class="btn-a" href="https://app.metri.io/free">무료로 115문항 풀어보기</a>
+      <a class="btn-b" href="#price">과목 처방까지 19,000원</a>
+      <p class="priceline">
+        약 15분 · 계열 적합 결과지는 풀면 바로 열립니다 · 값은 그 결과지를 읽어 본 뒤에 정하면 되고,
+        <b>문항을 다시 풀지 않습니다</b>
+      </p>
+    </div>
+
     <div class="contrast">
       <div class="qcard no">
         <span class="qtag">대학생용 진단의 문항</span>
@@ -452,6 +547,55 @@ footer .wrap { display: grid; gap: 8px; }
 </header>
 
 <main>
+  <!-- 왜 지금인가 -->
+  <section class="sec" id="now">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">왜 지금인가</span>
+        <h2>과목 신청서는 제출하고 나면 되돌릴 수 없습니다</h2>
+        <p>
+          고교학점제에서 1학년은 2학년에 들을 과목을, 2학년은 3학년에 들을 과목을 미리 고릅니다.
+          한 번 낸 신청서는 그 학년의 시간표가 되고, 3년 뒤 서류평가에서 그대로 읽힙니다.
+          <b>고를 때 쓸 수 있는 시간은 보통 몇 주입니다.</b>
+        </p>
+      </div>
+
+      <div class="reasons">
+        <div class="reason">
+          <span class="rno">한쪽만 보면 다른 쪽이 빕니다</span>
+          <p>
+            2028 수능은 수학을 대수 · 미적분Ⅰ · 확률과 통계까지만 내고, 탐구는 통합사회 ·
+            통합과학을 전원이 같이 봅니다. 그런데 대학은 <b>기하 · 미적분Ⅱ · 물리학</b>처럼
+            수능에 나오지 않는 과목을 권장합니다. 수능 범위만 보고 짠 시간표는 서류에서 깎이고,
+            권장 과목만 보고 짠 시간표는 수능 대비가 빕니다.
+          </p>
+        </div>
+        <div class="reason">
+          <span class="rno">빠뜨린 선수과목은 다음 해에 못 메웁니다</span>
+          <p>
+            미적분Ⅱ 는 미적분Ⅰ 을 들어야 신청됩니다. 역학과 에너지는 물리학이 먼저입니다.
+            1학년 때 한 과목을 빼면 2학년에 두 과목이 막히고, 그때는 이미 학년 정원
+            <b>52학점</b> 이 차 있습니다.
+          </p>
+        </div>
+        <div class="reason">
+          <span class="rno">계열을 안다고 과목이 정해지지는 않습니다</span>
+          <p>
+            “기계공학이 맞는다” 까지는 무료 검사로도 나옵니다. 그런데 신청서에 적는 것은
+            계열 이름이 아니라 <b>과목 이름과 학점</b>입니다. 그 사이를 메우는 것이
+            이 제품이 파는 부분입니다.
+          </p>
+        </div>
+      </div>
+
+      <p class="note" style="margin-top:20px">
+        <b>15분을 먼저 쓰고 정하십시오.</b> 115문항을 풀면 계열 적합 결과지가 값 없이 열립니다.
+        읽어 보고 쓸 만하다 싶을 때 과목 처방을 여시면 됩니다.
+      </p>
+      <p style="margin-top:16px"><a class="btn-a dark" href="https://app.metri.io/free">무료로 115문항 풀어보기</a></p>
+    </div>
+  </section>
+
   <!-- 8계열 -->
   <section class="sec" id="fields">
     <div class="wrap">
@@ -767,6 +911,79 @@ footer .wrap { display: grid; gap: 8px; }
     </div>
   </section>
 
+  <!-- 무엇이 다른가 -->
+  <section class="sec" id="diff">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">사기 전에 드는 생각</span>
+        <h2>비슷해 보이는 것들과 무엇이 다른지</h2>
+      </div>
+      <div class="diffs">
+        <div class="diff-row">
+          <span class="diff-q">“커리어넷·워크넷은 무료인데요”</span>
+          <p class="diff-a">
+            맞습니다. 그래서 <b>계열까지는 여기도 무료입니다.</b> 같은 층을 돈 받고 팔 생각이 없습니다.
+            값을 받는 부분은 그 아래 — <b>과목 이름과 학점과 학년</b>입니다. 무료 진로검사는
+            “기계공학이 맞습니다” 까지 말하고, 신청서에 무엇을 적을지는 말하지 않습니다.
+          </p>
+        </div>
+        <div class="diff-row">
+          <span class="diff-q">“성격유형검사 같은 건가요”</span>
+          <p class="diff-a">
+            유형 이름을 붙여 주지 않습니다. 네 글자도, 동물도, 색깔도 없습니다.
+            나오는 것은 <b>계열별 구간과 묶음</b>이고, 구간이 겹치면 겹친다고 적습니다.
+            <b>등수를 매기지 않는 이유를 결과지 안에 써 둡니다</b> — 측정 오차가 1위와 2위의
+            차이보다 크기 때문입니다.
+          </p>
+        </div>
+        <div class="diff-row">
+          <span class="diff-q">“학원 컨설팅을 받으면 되지 않나요”</span>
+          <p class="diff-a">
+            컨설팅과 겹치지 않습니다. 이건 <b>근거가 적힌 문서</b>입니다. 과목마다
+            “왜 이 과목인가” 가 한 줄씩 붙고, 그 줄이 현장 직무에서 거꾸로 내려옵니다.
+            컨설턴트를 만나더라도 <b>들고 가서 따질 수 있는 종이</b>가 먼저 있는 편이 낫습니다.
+          </p>
+        </div>
+        <div class="diff-row">
+          <span class="diff-q">“아이가 아직 진로를 모르는데요”</span>
+          <p class="diff-a">
+            그 상태를 전제로 만들었습니다. 문항에 전공 용어가 한 개도 없습니다 —
+            고장 난 물건을 뜯어 보는지, 다리를 보면 구조를 짚어 보는지 같은
+            <b>평소 습관</b>을 묻습니다. 진로를 정한 학생에게 쓰는 검사가 아닙니다.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 결과지를 이렇게 씁니다 -->
+  <section class="sec" id="uses">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">받고 나서</span>
+        <h2>이 문서는 세 자리에서 쓰입니다</h2>
+        <p>결과지를 받아 놓고 어디에 쓸지 모르면 값을 낸 보람이 없습니다. 쓰이는 자리를 적어 둡니다.</p>
+      </div>
+      <div class="uses">
+        <div class="use">
+          <span class="who">과목 신청 기간</span>
+          <b>신청서 옆에 놓고 채웁니다</b>
+          <p>학년별로 정리돼 있어 그대로 옮겨 적을 수 있습니다. 선수과목이 빠졌는지, 52학점을 넘겼는지도 같이 봅니다.</p>
+        </div>
+        <div class="use">
+          <span class="who">담임 상담</span>
+          <b>“왜 이 과목인지” 를 대신 설명합니다</b>
+          <p>과목마다 근거가 한 줄씩 붙어 있어 상담 시간에 처음부터 설명하지 않아도 됩니다.</p>
+        </div>
+        <div class="use">
+          <span class="who">집에서</span>
+          <b>싸우지 않고 이야기를 시작합니다</b>
+          <p>“네가 알아서 해” 와 “엄마 말 들어” 사이에 놓을 것이 생깁니다. 근거가 종이에 있으면 따질 대상이 사람이 아니라 문서가 됩니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- 가격 -->
   <section class="sec tint" id="price">
     <div class="wrap">
@@ -811,9 +1028,28 @@ footer .wrap { display: grid; gap: 8px; }
           </ul>
         </div>
       </div>
+      <!-- 값 다음에 오는 것은 "어떻게 사는가" 다. 결제 버튼을 여기 두지 않는
+           이유가 있다 — 살 대상(응시)이 아직 없기 때문이다. 무료로 풀고 나야
+           그 결과지를 넓히는 결제가 된다. 순서를 숨기면 결제 화면에서 막힌다. -->
+      <div class="howbuy">
+        <h3>사는 순서</h3>
+        <ol>
+          <li><b>무료로 115문항을 풉니다.</b> 약 15분, 값 없이 계열 적합 결과지가 열립니다</li>
+          <li><b>받은 결과지를 읽어 봅니다.</b> 쓸 만한지 여기서 판단하시면 됩니다</li>
+          <li><b>그 결과지에서 과목 처방을 엽니다.</b> 19,000원. 같은 결과지가 넓어지고
+            <b>문항을 다시 풀지 않습니다</b></li>
+        </ol>
+        <a class="btn-a dark" href="https://app.metri.io/free">1단계 시작하기 — 무료</a>
+      </div>
+
       <p class="pricefoot">
-        무료는 한 사람에게 한 번입니다. 학교가 단체로 도입한 경우 학생은 이 표를 볼 일이
-        없습니다. 선생님이 준 접속 정보로 들어가면 처음부터 전부 열립니다.
+        무료는 한 사람에게 한 번입니다. 같은 사람이 두 번 풀면 응답이 두 벌 쌓여
+        기준값이 흔들리기 때문입니다. 학교가 단체로 도입한 경우 학생은 이 표를 볼 일이
+        없습니다 — 선생님이 준 접속 정보로 들어가면 처음부터 전부 열립니다.
+      </p>
+      <p class="pricefoot">
+        <b>결제는 PG 가맹점 심사와 통신판매업 신고가 끝난 뒤 열립니다.</b> 그 전까지는
+        무료 구간과 학교 계약만 됩니다. 안 되는 것을 되는 것처럼 적어 두지 않습니다.
       </p>
     </div>
   </section>
@@ -889,3 +1125,9 @@ footer .wrap { display: grid; gap: 8px; }
     <p>이 페이지의 숫자는 가상 응시자 500명 시뮬레이션 결과이며, 실제 학생 표본이 아닙니다. 규준(norm)은 첫 학교 도입 이후 만들어집니다.</p>
   </div>
 </footer>
+
+<!-- 표지의 버튼은 스크롤하면 사라진다. 좁은 화면에서만 바닥에 하나 남긴다. -->
+<div class="buybar">
+  <span class="bb-txt"><b>계열 적합까지 무료</b>115문항 · 약 15분</span>
+  <a class="btn-a" href="https://app.metri.io/free">시작하기</a>
+</div>

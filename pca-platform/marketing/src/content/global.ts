@@ -17,7 +17,7 @@ export const global: SiteContent = {
   meta: {
     title: "METRI — engineering majors, read against the roles that hire them",
     description:
-      "Twenty-four engineering job clusters and 138 competencies across mechanical, electrical and computer engineering, checked against real postings. Not a personality type — ANSYS held 2 of 4, GD&T not met, asked for in 89 of 132 postings.",
+      "Twenty-four engineering job clusters and 138 competencies across mechanical, electrical and computer engineering, checked against real postings. Not a personality type — ANSYS held 2 of 4, asked for in 89 of 132 postings for this role.",
   },
 
   legal: {
@@ -692,7 +692,7 @@ export const global: SiteContent = {
       "When a department spends its training budget, the thing it knows least is who needs which training. Put 300 courses on a shelf and the coordinator picks by instinct. METRI names that cell with a number.",
     funnel: [
       { value: "487", label: "students in one mechanical engineering department" },
-      { value: "31%", label: "meet the required GD&T level" },
+      { value: "31%", label: "meet the required geometric tolerancing (GD&T) level" },
       { value: "67%", label: "of 1,240 regional postings ask for GD&T" },
       { value: "372", label: "the overlap — students who need this training" },
     ],
