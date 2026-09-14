@@ -758,3 +758,54 @@ export async function inboxFor(userId: string) {
     [userId],
   );
 }
+
+export type ReviewRow = {
+  rating: number;
+  comment: string;
+  created_at: string;
+  handle: string;
+  alias: string;
+  degree: string;
+  field_track: string;
+  career_path: string;
+  company_scale: string;
+  years: number;
+};
+
+/**
+ * 후기 모음. 멘토별 상세에 흩어져 있던 것을 한자리에 모은다.
+ *
+ * 처음 온 사람이 판단할 근거가 카드의 별점 숫자뿐이면 약하다. 무슨 이야기를 듣고
+ * 왔는지가 보여야 한다. 작성자는 여기서도 표시하지 않는다 — 익명은 멘토 쪽만의
+ * 문제가 아니다.
+ *
+ * 한 줄도 안 쓴 별점만 있는 후기는 빼고 글이 있는 것만 보여준다.
+ */
+export async function allReviews(filter: { path?: string; minRating?: number } = {}) {
+  return query<ReviewRow>(
+    `SELECT v.rating, v.comment,
+            to_char(v.created_at AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD') AS created_at,
+            m.handle, m.alias, m.degree, m.field_track, m.career_path, m.company_scale, m.years
+       FROM mentor_reviews v
+       JOIN mentors m ON m.id = v.mentor_id
+      WHERE v.comment IS NOT NULL AND v.comment <> ''
+        AND m.status = 'active'
+        AND ($1::text IS NULL OR m.career_path = $1)
+        AND ($2::int  IS NULL OR v.rating >= $2)
+      ORDER BY v.created_at DESC
+      LIMIT 200`,
+    [filter.path ?? null, filter.minRating ?? null],
+  );
+}
+
+/** 후기 화면 머리에 거는 숫자. 지어내지 않고 센다 */
+export async function reviewSummary() {
+  return queryOne<{ total: number; avg: string | null; with_comment: number }>(
+    `SELECT count(*)::int AS total,
+            to_char(avg(v.rating), 'FM0.0') AS avg,
+            count(*) FILTER (WHERE v.comment IS NOT NULL AND v.comment <> '')::int AS with_comment
+       FROM mentor_reviews v
+       JOIN mentors m ON m.id = v.mentor_id
+      WHERE m.status = 'active'`,
+  );
+}

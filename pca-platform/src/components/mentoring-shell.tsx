@@ -28,6 +28,7 @@ export default function MentoringShell({
    */
   const nav = [
     { href: "/mentoring", label: "멘토 둘러보기" },
+    { href: "/mentoring/reviews", label: "후기" },
     { href: "/mentoring/guide", label: "이용 안내" },
     { href: "/mentoring/faq", label: "자주 묻는 질문" },
     { href: "/mentoring/contact", label: "문의" },
@@ -74,6 +75,7 @@ export default function MentoringShell({
           <div>
             <b>현멘</b>
             <Link href="/mentoring">멘토 둘러보기</Link>
+            <Link href="/mentoring/reviews">후기</Link>
             <Link href="/mentoring/guide">이용 안내</Link>
             <Link href="/mentoring/faq">자주 묻는 질문</Link>
             <Link href="/mentoring/contact">문의</Link>
