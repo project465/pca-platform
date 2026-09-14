@@ -119,8 +119,40 @@ for (const level of ["stop", "degrade", "optional"] as const) {
 /* 값이 있어도 틀릴 수 있는 것들 */
 const warn: string[] = [];
 const url = process.env.AUTH_URL ?? "";
-if (url && !/^https:\/\//.test(url) && !/localhost/.test(url)) {
-  warn.push("AUTH_URL 이 https 가 아니다. 쿠키가 붙지 않을 수 있다");
+const host = (() => {
+  try {
+    return new URL(url).hostname;
+  } catch {
+    return "";
+  }
+})();
+if (url && !host) {
+  warn.push("AUTH_URL 을 주소로 읽을 수 없다. https://도메인 형태여야 한다");
+}
+// localhost 를 예외로 두면 운영에 그대로 올라간다. 메일 속 링크가 localhost 를
+// 가리킨 채로 나가고, 받는 사람은 열 수 없는데 우리는 보낸 줄 안다
+const isLocal = /^(localhost|127\.|0\.0\.0\.0|\[::1\])/.test(host);
+if (isLocal) {
+  warn.push("AUTH_URL 이 아직 localhost 다. 메일 속 링크가 열리지 않는다 — 도메인을 넣자");
+} else if (url && !/^https:\/\//.test(url)) {
+  warn.push("AUTH_URL 이 https 가 아니다. 쿠키가 붙지 않고 결제창도 뜨지 않는다");
+}
+
+/**
+ * 보내는 주소의 도메인이 서비스 도메인과 다르면 SPF·DKIM 이 어긋나 스팸함으로 간다.
+ * 도메인을 새로 잡은 날 제일 먼저 걸리는 곳이다.
+ */
+const from = process.env.MAIL_FROM ?? "";
+const fromHost = from.includes("@") ? from.split("@").pop()!.toLowerCase() : "";
+const reg = (h: string) => h.toLowerCase().split(".").slice(-3).join(".");
+if (host && !isLocal && fromHost && !reg(host).endsWith(fromHost) && !fromHost.endsWith(reg(host))) {
+  warn.push(
+    `MAIL_FROM(${fromHost}) 이 서비스 도메인(${host}) 과 다르다. ` +
+      "SPF·DKIM 이 어긋나면 메일이 스팸함으로 간다",
+  );
+}
+if (host && !isLocal && !from) {
+  warn.push(`MAIL_FROM 이 비어 있어 기본값으로 나간다. ${host} 쪽 주소로 맞추자`);
 }
 if ((process.env.AUTH_SECRET ?? "").length > 0 && (process.env.AUTH_SECRET ?? "").length < 32) {
   warn.push("AUTH_SECRET 이 32자보다 짧다. openssl rand -base64 32 로 만들자");

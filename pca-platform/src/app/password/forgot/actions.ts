@@ -2,6 +2,7 @@
 
 import { query, queryOne, tx } from "@/lib/db";
 import { createResetToken } from "@/lib/password";
+import { baseUrl } from "@/lib/url";
 
 export type ForgotState = { done?: boolean; devLink?: string };
 
@@ -46,7 +47,7 @@ export async function forgotAction(
     );
   });
 
-  const base = process.env.AUTH_URL ?? "http://localhost:3000";
+  const base = baseUrl();
   const link = `${base}/password/reset/${token}`;
 
   if (process.env.NODE_ENV === "production") {

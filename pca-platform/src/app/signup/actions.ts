@@ -3,6 +3,7 @@
 import { query } from "@/lib/db";
 import { signup, SignupError } from "@/lib/signup";
 import { fieldErrors, signupSchema, type FieldErrors } from "@/lib/validation";
+import { baseUrl } from "@/lib/url";
 
 export type SignupState = {
   errors?: FieldErrors;
@@ -44,7 +45,7 @@ export async function signupAction(
   }
 
   // 확인 메일은 알림 큐로 나간다. 발송기가 없으면 큐에 쌓인 채로 남는다.
-  const base = process.env.AUTH_URL ?? "http://localhost:3000";
+  const base = baseUrl();
   const link = `${base}/verify/${made.token}`;
   await query(
     `INSERT INTO notifications
