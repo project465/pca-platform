@@ -6,7 +6,7 @@ import { percentFor, refundRules } from "@/lib/refund";
 
 export class BillingError extends Error {}
 
-/** 학과 계약으로 들어온 학생은 무료다. memberships 에 행이 있으면 소속이 있다는 뜻. */
+/** 소속 기관이 있는지. 실제로 안 내는지는 이용권이 남아 있어야 정해진다 (pack.ts) */
 export async function isFreeUser(userId: string): Promise<boolean> {
   return (await sponsorOrgOf(userId)) !== null;
 }
@@ -45,7 +45,7 @@ export type PendingPayment = {
   status: string;
 };
 
-/** 신청과 같은 트랜잭션에서 결제 건을 만든다. 무료 이용자면 만들지 않는다. */
+/** 신청과 같은 트랜잭션에서 결제 건을 만든다. 본인이 카드로 내는 경우다. */
 export async function createPayment(
   c: PoolClient,
   input: { requestId: string; userId: string; amount: number },

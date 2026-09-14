@@ -197,8 +197,8 @@ export default async function GalleryPage({
               {prices.length === 0 ? <span>가격은 준비 중입니다</span> : null}
             </div>
             <p className="help">
-              학과 계약으로 들어온 학생은 무료입니다. 신청할 때 결제하고, 아래 규정대로
-              돌려드립니다.
+              학과가 이용권을 사둔 경우, 받은 계정으로 들어오면 본인은 내지 않습니다.
+              그 외에는 신청할 때 결제하고 아래 규정대로 돌려드립니다.
             </p>
             <ul className="policy-lines">
               {refundPolicyLines(rules).map((line) => (
