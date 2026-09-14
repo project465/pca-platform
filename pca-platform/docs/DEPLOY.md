@@ -29,7 +29,8 @@ npm run typecheck && npm run build
 
 - `DATABASE_URL`
 - `AUTH_SECRET` — `openssl rand -base64 32`. **바꾸면 모든 세션이 끊긴다**
-- `AUTH_URL` — 실제 주소. 소셜 로그인 리다이렉트와 메일 속 링크가 이 값을 쓴다
+- `AUTH_URL` — 정본 주소(`https://hyunmen.kr`). 소셜 로그인 리다이렉트와 메일 속 링크가
+  이 값을 쓰고, 다른 도메인으로 들어온 요청은 여기로 308 로 모인다
 - `NEXT_PUBLIC_TOSS_CLIENT_KEY` · `TOSS_SECRET_KEY`
 - `ZOOM_ACCOUNT_ID` · `ZOOM_CLIENT_ID` · `ZOOM_CLIENT_SECRET`
 
@@ -58,7 +59,7 @@ docker compose exec -T db psql -U pca -d pca -c "INSERT INTO payout_settings (id
 확인:
 
 ```bash
-curl -s https://<도메인>/api/health     # {"ok":true,"db":true,...}
+curl -s https://hyunmen.kr/api/health     # {"ok":true,"db":true,...}
 ```
 
 이 응답은 프로세스가 떴다는 뜻이 아니라 **데이터베이스까지 닿았다**는 뜻이다.

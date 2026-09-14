@@ -60,46 +60,37 @@ $ npm run check:env
 - 서버는 셋을 띄운다: 웹, PostgreSQL, **5분 크론**(`npm run notify`).
   세 번째를 빠뜨리면 화면은 멀쩡한데 메일이 한 통도 안 나간다. `docker-compose.yml` 에 들어 있다.
 
-#### 어떤 도메인을 살 것인가
+#### 도메인
 
-2026-09-14 기준으로 후보들의 **DNS 응답만** 확인했다. 등록 여부는 등록기관에서
-다시 봐야 한다 — 산 뒤에 안 쓰고 있는 도메인은 여기서 '미해석'으로 보인다.
+**정본은 `hyunmen.kr`** (2026-09-14 결정). `hyunmen.com` 은 오타 방어용으로 같이 사서
+같은 서버를 가리키게 두면, 코드가 `hyunmen.kr` 로 308 로 모은다(`src/middleware.ts`).
 
-| | 상태 | |
-|---|---|---|
-| `hyunmen.kr` | 미해석 | 한국 서비스, 짧다. **1순위** |
-| `hyunmen.co.kr` | 미해석 | 사업자 확인이 필요한 대신 신뢰감이 있다 |
-| `hyunmen.com` | 미해석 | 나중에 밖으로 나갈 때 |
-| `hyunmen.net` · `.io` | 미해석 | 방어용 |
-| `hyunmentor.com` · `hyeonmen.com` | 미해석 | 오타·유사 방어용 |
-| `careerpeak.co.kr` | **사용 중** | 이미 있는 브랜드 사이트 |
-| `academix.co.kr` | **사용 중** | 운영사 사이트 |
-| `mentorlab.kr` · `phdmentor.com` | **사용 중** | 못 쓴다 |
+2026-09-14 기준 `hyunmen.kr` · `.co.kr` · `.com` · `.net` · `.io` 모두 DNS 응답이 없다.
+등록 여부는 등록기관에서 다시 봐야 한다 — 사두고 안 쓰는 도메인은 여기서 구분되지 않는다.
+`careerpeak.co.kr` 과 `academix.co.kr` 은 쓰고 있는 브랜드 사이트이고,
+`mentorlab.kr` · `phdmentor.com` 은 남이 쓰고 있어 못 쓴다.
 
-`careerpeak.com` 도 응답하지만 `careerpeak.co.kr` 과 IP 가 달라 같은 주인인지
-확인되지 않았다. 우리 것이라고 가정하지 말 것.
-
-**정해야 하는 것이 하나 있다.** 현멘을 `careerpeak.co.kr` 아래 두느냐
-(`mentoring.careerpeak.co.kr`), 별도 도메인으로 세우느냐(`hyunmen.kr`)다.
-CLAUDE.md 의 '아직 정해지지 않은 것'에 남아 있는 항목이고, 코드는 어느 쪽이든
-`AUTH_URL` 한 줄로 따라간다.
-
-- **하위 도메인**은 돈이 안 들고 기존 브랜드 신뢰를 쓴다. 대신 현멘이 careerpeak 의
-  기능처럼 보인다.
-- **별도 도메인**은 현멘을 독립 서비스로 세운다. 멘토 모집 글에 주소를 적을 때
-  차이가 크다. 대신 신뢰를 처음부터 쌓아야 한다.
-
-사는 순서: 1순위 하나 + `.com` 방어. 나머지는 서비스가 자리를 잡은 뒤에 사도 늦지 않다.
+소개 사이트는 아임웹(`careerpeak.co.kr`)이 맡는다. 무엇을 어디에 두는지는
+[IMWEB.md](IMWEB.md) 에 있다.
 
 #### 도메인이 생긴 날 할 일
 
 ```bash
-# 1. DNS A 레코드를 서버 IP 로
-# 2. 인증서 발급 (리버스 프록시가 자동으로 받게 두는 편이 낫다)
-AUTH_URL=https://<도메인>          # .env
-MAIL_FROM=no-reply@<도메인>
-npm run check:env                  # localhost·도메인 불일치를 여기서 잡는다
-npm run build                      # NEXT_PUBLIC_ 값이 바뀌었으면 반드시 다시 빌드
+# 1. DNS A 레코드를 서버 IP 로 (별칭까지 전부)
+# 2. 인증서를 별칭까지 함께 발급 — 별칭에 인증서가 없으면 308 이 나가기 전에
+#    브라우저가 경고를 띄운다. 리다이렉트가 있어도 소용없다
+AUTH_URL=https://hyunmen.kr              # .env
+MAIL_FROM=no-reply@hyunmen.kr
+NEXT_PUBLIC_SITE_URL=https://careerpeak.co.kr
+npm run check:env                        # localhost·도메인 불일치를 여기서 잡는다
+npm run build                            # NEXT_PUBLIC_TOSS_CLIENT_KEY 가 바뀌었으면 필수
+```
+
+소셜 로그인 콜백은 **정본 하나만** 등록한다 — 별칭은 어차피 여기로 넘어온다.
+
+```
+https://hyunmen.kr/api/auth/callback/kakao
+https://hyunmen.kr/api/auth/callback/naver
 ```
 
 메일 도메인 인증(SPF·DKIM·DMARC)은 발송사 쪽 안내를 따른다. 이걸 빼면 확정 안내와
@@ -150,7 +141,7 @@ npm run db:fees                   # 수수료 10% · 원천징수 3.3% · 환불
 npm run check:money               # 3만원 세션 기준 금액 검산
 npm run typecheck && npm run build
 docker compose up -d              # 웹 + DB + 5분 크론
-curl https<도메인>/api/health     # DB까지 확인한다
+curl https://hyunmen.kr/api/health   # DB까지 확인한다
 ```
 
 열고 나서 눈으로 볼 것:
