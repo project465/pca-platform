@@ -932,3 +932,38 @@ td .sub { display: block; font-size: 12.5px; color: var(--muted); }
   .cc-need { padding: 14px 16px; }
   .cc-head { padding: 16px; }
 }
+
+/* ---------- 운영 화면 (/admin/ops) ---------- */
+/* 아침에 한 번 읽는 화면이라 눈이 가는 순서가 곧 급한 순서다 —
+   할 일 → 숫자 → 막힌 것 → 재고·대기열 → 문이 열려 있는가. */
+.ops-grid {
+  display: grid; gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+.ops-grid .panel { margin: 0; }
+.ops-grid h2, .panel > h2 {
+  font-size: 15px; font-weight: 800; letter-spacing: -0.02em;
+  margin: 0 0 14px; display: flex; align-items: baseline; gap: 8px;
+}
+.panel > h2 .count { font-size: 13px; font-weight: 600; color: var(--muted); }
+.ops-stats { display: flex; flex-wrap: wrap; gap: 28px; }
+.ops-stats dt { font-size: 13px; color: var(--muted); margin-bottom: 2px; }
+.ops-stats dd { font-size: 26px; font-weight: 800; letter-spacing: -0.03em; }
+.panel .warn { color: var(--partial); }
+.ops-gates { list-style: none; display: grid; gap: 10px; }
+.ops-gates li { padding-left: 20px; position: relative; font-size: 14.5px; }
+.ops-gates li::before {
+  content: ""; position: absolute; left: 0; top: 8px;
+  width: 9px; height: 9px; border-radius: 50%;
+}
+.ops-gates li.on::before { background: var(--met); }
+.ops-gates li.off::before { background: var(--partial); }
+/* 좁은 칸의 두 줄짜리 목록. 전역 table 에는 min-width 640px 이 걸려 있어
+   패널 안에서 넘치므로, 이런 값 목록은 표로 그리지 않는다. */
+.ops-rows { list-style: none; display: grid; gap: 0; margin-bottom: 12px; }
+.ops-rows li {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+  padding: 9px 0; border-bottom: 1px solid var(--rule); font-size: 14.5px;
+}
+.ops-rows li:last-child { border-bottom: 0; }
+.ops-rows b { font-weight: 700; }
