@@ -275,6 +275,10 @@ export default async function MentorConsolePage() {
               지급 대기 {pendingNet.toLocaleString("ko-KR")}원. 운영사가 확인 후 보냅니다.
             </p>
           ) : null}
+          <p className="help" style={{ marginTop: 8 }}>
+            정산이 잡히면 <b>금액과 계산 내역을 메일로 보내드립니다.</b> 이 표를 매번 열어
+            확인하지 않으셔도 됩니다.
+          </p>
         </>
       ) : null}
 

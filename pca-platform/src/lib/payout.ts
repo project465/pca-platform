@@ -1,5 +1,7 @@
-import { query, queryOne } from "@/lib/db";
+import type { PoolClient } from "pg";
+import { query, queryOne, tx } from "@/lib/db";
 import { payoutSettings } from "@/lib/refund";
+import { enqueue, payoutPendingToMentor } from "@/lib/notify";
 
 export class PayoutError extends Error {}
 
@@ -30,47 +32,110 @@ export async function buildPayouts(): Promise<{ made: number; skipped: string | 
 
   const hold = Number(s.hold_hours);
 
-  const rows = await query<{ id: string }>(
-    `INSERT INTO payouts (mentor_id, request_id, gross, fee, withholding, net)
-     SELECT r.mentor_id, r.id,
-            (p.amount - p.refunded_amount) AS gross,
-            floor((p.amount - p.refunded_amount) * $1 / 100) AS fee,
-            floor(((p.amount - p.refunded_amount)
-                   - floor((p.amount - p.refunded_amount) * $1 / 100)) * $2 / 100) AS withholding,
-            (p.amount - p.refunded_amount)
-              - floor((p.amount - p.refunded_amount) * $1 / 100)
-              - floor(((p.amount - p.refunded_amount)
-                       - floor((p.amount - p.refunded_amount) * $1 / 100)) * $2 / 100) AS net
-       FROM mentoring_requests r
-       JOIN payments p ON p.request_id = r.id
+  return tx(async (c) => {
+    const rows = (await c.query<{ id: string }>(
+      `INSERT INTO payouts (mentor_id, request_id, gross, fee, withholding, net)
+       SELECT r.mentor_id, r.id,
+              (p.amount - p.refunded_amount) AS gross,
+              floor((p.amount - p.refunded_amount) * $1 / 100) AS fee,
+              floor(((p.amount - p.refunded_amount)
+                     - floor((p.amount - p.refunded_amount) * $1 / 100)) * $2 / 100) AS withholding,
+              (p.amount - p.refunded_amount)
+                - floor((p.amount - p.refunded_amount) * $1 / 100)
+                - floor(((p.amount - p.refunded_amount)
+                         - floor((p.amount - p.refunded_amount) * $1 / 100)) * $2 / 100) AS net
+         FROM mentoring_requests r
+         JOIN payments p ON p.request_id = r.id
+         JOIN mentor_slots s ON s.id = r.slot_id
+         JOIN mentors mm ON mm.id = r.mentor_id
+        WHERE p.status = 'paid'
+          AND (p.amount - p.refunded_amount) > 0
+          AND (
+                -- 세션을 한 건. 노쇼 신고 기간이 지나야 잡는다
+                (r.status = 'completed'
+                 AND s.starts_at + (mm.session_minutes || ' minutes')::interval
+                       + ($3 || ' hours')::interval <= now())
+                -- 신청자가 늦게 취소해 남은 돈
+             OR (r.status = 'cancelled'
+                 AND s.starts_at <= now()
+                 AND NOT EXISTS (SELECT 1 FROM mentoring_requests r2
+                                  WHERE r2.slot_id = r.slot_id
+                                    AND r2.id <> r.id
+                                    AND r2.status IN ('accepted', 'completed')))
+                -- 신청자 노쇼가 인정된 건. 멘토는 그 시간을 비웠다
+             OR (r.status = 'no_show'
+                 AND EXISTS (SELECT 1 FROM no_show_reports n
+                              WHERE n.request_id = r.id
+                                AND n.against = 'applicant'
+                                AND n.resolution = 'accepted'))
+              )
+          AND NOT EXISTS (SELECT 1 FROM payouts o WHERE o.request_id = r.id)
+       RETURNING id`,
+      [fee, wh, hold],
+    )).rows;
+
+    // 잡힌 금액을 멘토에게 알린다. 통장을 들여다보게 두지 않는다.
+    // 큐에만 넣으므로 메일 서버 사정으로 정산이 막히지 않는다
+    if (rows.length > 0) await tellMentors(c, rows.map((r) => r.id));
+
+    return { made: rows.length, skipped: null };
+  });
+}
+
+/**
+ * 새로 잡힌 정산 건을 멘토에게 알린다.
+ *
+ * 계좌 등록 여부를 같이 본다. 계좌가 없으면 금액이 계산돼도 이체가 막히는데,
+ * 그 사실을 멘토가 알 방법이 운영사 화면 말고는 없었다.
+ */
+async function tellMentors(c: PoolClient, payoutIds: string[]): Promise<void> {
+  const rows = await c.query<{
+    request_id: string;
+    user_id: string;
+    email: string | null;
+    payout_id: string;
+    gross: number;
+    fee: number;
+    withholding: number;
+    net: number;
+    req_status: string;
+    starts_at: string;
+    has_account: boolean;
+  }>(
+    `SELECT o.id AS payout_id, o.request_id, o.gross, o.fee, o.withholding, o.net,
+            m.user_id, u.email, r.status AS req_status, s.starts_at::text,
+            EXISTS (SELECT 1 FROM mentor_payout_accounts a WHERE a.mentor_id = m.id)
+              AS has_account
+       FROM payouts o
+       JOIN mentors m  ON m.id = o.mentor_id
+       JOIN users u    ON u.id = m.user_id
+       JOIN mentoring_requests r ON r.id = o.request_id
        JOIN mentor_slots s ON s.id = r.slot_id
-       JOIN mentors mm ON mm.id = r.mentor_id
-      WHERE p.status = 'paid'
-        AND (p.amount - p.refunded_amount) > 0
-        AND (
-              -- 세션을 한 건. 노쇼 신고 기간이 지나야 잡는다
-              (r.status = 'completed'
-               AND s.starts_at + (mm.session_minutes || ' minutes')::interval
-                     + ($3 || ' hours')::interval <= now())
-              -- 신청자가 늦게 취소해 남은 돈
-           OR (r.status = 'cancelled'
-               AND s.starts_at <= now()
-               AND NOT EXISTS (SELECT 1 FROM mentoring_requests r2
-                                WHERE r2.slot_id = r.slot_id
-                                  AND r2.id <> r.id
-                                  AND r2.status IN ('accepted', 'completed')))
-              -- 신청자 노쇼가 인정된 건. 멘토는 그 시간을 비웠다
-           OR (r.status = 'no_show'
-               AND EXISTS (SELECT 1 FROM no_show_reports n
-                            WHERE n.request_id = r.id
-                              AND n.against = 'applicant'
-                              AND n.resolution = 'accepted'))
-            )
-        AND NOT EXISTS (SELECT 1 FROM payouts o WHERE o.request_id = r.id)
-     RETURNING id`,
-    [fee, wh, hold],
+      WHERE o.id = ANY($1::bigint[])`,
+    [payoutIds],
   );
-  return { made: rows.length, skipped: null };
+
+  for (const r of rows.rows) {
+    const msg = payoutPendingToMentor({
+      startsAt: new Date(r.starts_at),
+      reqStatus: r.req_status,
+      gross: r.gross,
+      fee: r.fee,
+      withholding: r.withholding,
+      net: r.net,
+      hasAccount: r.has_account,
+    });
+    await enqueue(c, {
+      requestId: r.request_id,
+      recipientId: r.user_id,
+      recipientEmail: r.email,
+      kind: "payout_pending",
+      subject: msg.subject,
+      body: msg.body,
+      // 정산 건 하나에 한 통. 같은 신청으로 두 번 잡히지 않으므로 이것으로 충분하다
+      dedupeKey: `payout:${r.payout_id}:${r.user_id}:pending`,
+    });
+  }
 }
 
 export type PayoutRow = {

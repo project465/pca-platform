@@ -25,7 +25,8 @@ export type NotifyKind =
   | "no_show_accepted"
   | "no_show_rejected"
   | "pack_low"
-  | "pack_empty";
+  | "pack_empty"
+  | "payout_pending";
 
 const KST_DATE = new Intl.DateTimeFormat("ko-KR", {
   dateStyle: "full",
@@ -340,5 +341,49 @@ export function packLowToStaff(m: {
       `다 쓰면 학과 학생의 신청이 본인 결제로 넘어갑니다.\n\n` +
       `계약 기간: ~ ${m.endsOn}\n` +
       `추가가 필요하시면 운영사로 알려주세요.`,
+  };
+}
+
+/**
+ * 정산이 잡혔을 때 멘토에게.
+ *
+ * 금액만 적지 않고 계산 과정을 그대로 적는다. 30,000원 세션을 하고 26,109원이
+ * 들어오면, 이유를 모르는 사람은 떼였다고 생각한다.
+ *
+ * 계좌가 없으면 그 말부터 한다. 금액이 계산돼도 보낼 곳이 없으면 돈은 안 나간다.
+ */
+export function payoutPendingToMentor(m: {
+  startsAt: Date;
+  /** completed(세션을 했다) 또는 cancelled(늦게 취소돼 남은 돈) */
+  reqStatus: string;
+  gross: number;
+  fee: number;
+  withholding: number;
+  net: number;
+  hasAccount: boolean;
+}) {
+  const won = (n: number) => `${n.toLocaleString("ko-KR")}원`;
+  const why =
+    m.reqStatus === "cancelled"
+      ? `${formatWhen(m.startsAt)} 시간대는 신청자가 늦게 취소했습니다.\n` +
+        `그 시간을 비워두셨으므로 환불되지 않은 금액은 멘토님 몫입니다.`
+      : `${formatWhen(m.startsAt)} 세션이 끝나고 신고 기간이 지났습니다.`;
+
+  const account = m.hasAccount
+    ? `등록하신 계좌로 보내드립니다. 운영사가 확인한 뒤 이체하므로 며칠 걸릴 수 있습니다.`
+    : `아직 지급 계좌를 등록하지 않으셨습니다. **계좌가 없으면 금액이 계산돼도 보내드릴 수 없습니다.**\n` +
+      `멘토 콘솔에서 은행·계좌번호·예금주를 등록해 주세요.`;
+
+  return {
+    subject: `[현멘] 정산 ${won(m.net)}이 잡혔습니다`,
+    body:
+      `${why}\n\n` +
+      `받은 돈 ${won(m.gross)}\n` +
+      `− 플랫폼 수수료 ${won(m.fee)}\n` +
+      `− 원천징수 ${won(m.withholding)}\n` +
+      `= 지급 예정 ${won(m.net)}\n\n` +
+      `원천징수는 수수료를 뗀 뒤 금액에 붙고, 소득세법상 운영사가 대신 신고합니다.\n` +
+      `1원 단위는 항상 내림하므로 적힌 금액보다 덜 받으시는 일은 없습니다.\n\n` +
+      account,
   };
 }
