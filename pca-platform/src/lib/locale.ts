@@ -102,6 +102,21 @@ export const UI = {
     "The report is produced once every item is answered.",
     "Rapor, tüm sorular yanıtlandığında oluşturulur.",
   ),
+    /**
+   * 고교판 응시자는 "기계공학 직무적합 검사" 를 보면 안 된다.
+   * 중2 학부모가 무료로 들어와 이 제목을 만나면 잘못 온 줄 안다.
+   * 결과지가 `repXxxHs` 로 갈리는 것과 같은 방식이다(설계 원칙 9).
+   */
+  testTitleHs: d(
+    "이공계 계열 적합 검사",
+    "Engineering field fit",
+    "Mühendislik alan uyumu",
+  ),
+  testBrief3Hs: d(
+    "끝까지 답해야 어느 계열이 맞는지 나옵니다.",
+    "Answer every item to see which field fits.",
+    "Hangi alanın uyduğunu görmek için tüm soruları yanıtlayın.",
+  ),
   testStart: d("검사 시작", "Start", "Başla"),
   testResume: d("{n}번부터 이어보기", "Resume from item {n}", "{n}. sorudan devam et"),
   prev: d("이전", "Back", "Geri"),
@@ -130,7 +145,14 @@ export const UI = {
     "As an individual, you can start right after payment. Through a school, it opens once your department enrolls you.",
     "Bireysel geldiyseniz ödemeden hemen sonra başlayabilirsiniz. Okul üzerinden geldiyseniz bölümünüz sizi listeye ekleyince açılır.",
   ),
-  startAsIndividual: d("개인으로 시작하기", "Start as an individual", "Bireysel olarak başla"),
+    startAsIndividual: d("개인으로 시작하기", "Start as an individual", "Bireysel olarak başla"),
+  // 고교 응시자에게 대학 상품을 권하지 않는다. 무료로 한 번 더 여는 문이 맞다
+  noSeatBodyHs: d(
+    "무료 진단은 한 사람에 한 번입니다. 이미 푸셨다면 결과지로 가시고, 학교를 통해 오셨다면 선생님이 명단에 올린 뒤 열립니다.",
+    "The free assessment is once per person. If you have already taken it, go to your report; through a school, it opens once your teacher enrolls you.",
+    "Ücretsiz değerlendirme kişi başına bir kezdir. Zaten tamamladıysanız raporunuza gidin; okul üzerinden geldiyseniz öğretmeniniz sizi listeye ekleyince açılır.",
+  ),
+  startFree: d("무료 진단 열기", "Open the free assessment", "Ücretsiz değerlendirmeyi aç"),
 
   // 결과지
   repKicker: d(

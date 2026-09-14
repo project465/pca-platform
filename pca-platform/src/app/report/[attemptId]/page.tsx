@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { requireRole } from "@/lib/session";
+import { requireRole, currentUser } from "@/lib/session";
+import { findAttempt } from "@/lib/attempts";
 import { buildReport } from "@/lib/report";
 import { t, UI, type Lang, type UiKey } from "@/lib/locale";
 import { prescribe } from "@/lib/prescribe";
@@ -12,7 +13,13 @@ import { resolveLang } from "@/lib/locale-server";
 import LangSwitch from "@/components/lang-switch";
 import { Radar, RankBars, BandBars, GapChart } from "@/components/report-charts";
 
-export const metadata = { title: "METRI" };
+/** 결과지 탭 제목. 본문은 이미 `Hs` 문구로 갈리는데 제목만 남아 있었다. */
+export async function generateMetadata({ params }: { params: Promise<{ attemptId: string }> }) {
+  const { attemptId } = await params;
+  const user = await currentUser();
+  const a = user ? await findAttempt(attemptId, user.id) : null;
+  return { title: a?.trackCode === "HS" ? "메트리 플러스" : "METRI" };
+}
 
 /** attempt_quality.flag 세 값을 문구 키로 옮긴다. */
 const FLAG_KEY: Record<string, UiKey> = {

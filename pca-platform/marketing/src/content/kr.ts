@@ -43,12 +43,10 @@ export const kr: SiteContent = {
   nav: {
     items: [
       { label: "결과지", href: "/pca" },
-      { label: "Skill Graph", href: "/#channels" },
       { label: "지역·앵커", href: "/anchor" },
       { label: "도입 안내", href: "/adopt" },
       { label: "요금제", href: "/pricing" },
       { label: "기관 소개", href: "/about" },
-      { label: "문의", href: "/contact" },
     ],
     contact: "도입·상담 문의",
     menu: "메뉴",

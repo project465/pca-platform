@@ -26,9 +26,16 @@ export type AttemptView = {
   status: string;
   total: number;
   answered: number;
-  /** 아직 답하지 않은 첫 문항 번호. 다 찼으면 마지막 번호. */
+    /** 아직 답하지 않은 첫 문항 번호. 다 찼으면 마지막 번호. */
   resumeOrderNo: number;
   instrumentId: string;
+  /**
+   * 이 응시가 어느 검사지인가(`HS` · `UNIV`).
+   *
+   * 화면 문구가 여기서 갈린다. 없으면 대학판 제목이 고교 응시자에게
+   * 그대로 나가고, 실제로 그랬다(설계 원칙 8과 같은 종류의 사고다).
+   */
+  trackCode: string | null;
 };
 
 /** 한 화면에 올리는 문항 수. 250문항을 한 장에 쏟으면 아무도 끝내지 않는다. */
@@ -36,8 +43,9 @@ export const PAGE_SIZE = 10;
 
 export async function findAttempt(attemptId: string, userId: string): Promise<AttemptView | null> {
   return queryOne<AttemptView>(
-    `SELECT a.id, a.status,
+        `SELECT a.id, a.status,
             ts.instrument_id AS "instrumentId",
+            (SELECT i.track_code FROM instruments i WHERE i.id = ts.instrument_id) AS "trackCode",
             (SELECT count(*) FROM questions q WHERE q.instrument_id = ts.instrument_id)::int AS total,
             (SELECT count(*) FROM responses r WHERE r.attempt_id = a.id)::int AS answered,
             -- 250번을 먼저 찍고 나간 학생을 26쪽으로 돌려보내면 안 된다.
@@ -63,6 +71,37 @@ export async function currentAttempt(userId: string): Promise<AttemptView | null
     [userId],
   );
   return row ? findAttempt(row.id, userId) : null;
+}
+
+/**
+ * 이 사람이 지금 향하는 검사지의 트랙(`HS` · `UNIV_LOW`…).
+ *
+ * 화면 제목을 정하는 데 쓴다. **응시가 아직 없을 때가 문제다** — `/test`
+ * 안내 화면은 `generateMetadata` 가 먼저 돌고 그 다음 본문에서 응시가
+ * 만들어진다. 그래서 응시만 보면 처음 들어온 사람에게는 늘 null 이 나오고,
+ * 고교 응시자가 탭에서 "METRI" 를 보게 된다. 아직 안 쓴 좌석이 가리키는
+ * 상품을 대신 본다. 좌석이 계약에 붙어 있으면 회차의 검사지를 본다.
+ */
+export async function pendingTrack(userId: string): Promise<string | null> {
+  const cur = await currentAttempt(userId);
+  if (cur) return cur.trackCode;
+  const row = await queryOne<{ track_code: string | null }>(
+    `SELECT COALESCE(
+              (SELECT p.track_code FROM orders o
+                 JOIN products p ON p.code = o.product_code
+                WHERE o.id = s.order_id),
+              (SELECT i.track_code FROM test_sessions ts
+                 JOIN instruments i ON i.id = ts.instrument_id
+                WHERE ts.contract_id = s.contract_id
+                ORDER BY ts.id DESC LIMIT 1)
+            ) AS track_code
+       FROM seats s
+      WHERE s.user_id = $1
+        AND NOT EXISTS (SELECT 1 FROM attempts a WHERE a.seat_id = s.id)
+      ORDER BY s.id LIMIT 1`,
+    [userId],
+  );
+  return row?.track_code ?? null;
 }
 
 /**

@@ -42,12 +42,10 @@ export const global: SiteContent = {
   nav: {
     items: [
       { label: "PCA", href: "/pca" },
-      { label: "Who it is for", href: "/#channels" },
       { label: "Localisation", href: "/localisation" },
       { label: "Partnership", href: "/partnership" },
       { label: "Pricing", href: "/pricing" },
       { label: "About", href: "/about" },
-      { label: "Contact", href: "/contact" },
     ],
     contact: "Talk to us",
     menu: "Menu",

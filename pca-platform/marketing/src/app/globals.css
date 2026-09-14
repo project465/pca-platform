@@ -129,7 +129,7 @@ section { padding-block: clamp(60px, 8vw, 108px); }
  * 넘으면 그 줄 안에서 옆으로 굴린다 — 굴릴 수 있는 목록은 접힌 목록보다
  * 한 단계 가깝다. 첫 항목은 늘 보이므로 메뉴가 있다는 것 자체를 모를 수 없다.
  */
-@media (max-width: 1180px) {
+@media (max-width: 900px) {
   /* wrap 이 없으면 width:100% 를 줘도 줄이 내려가지 않고 그냥 눌린다 */
   .site-header .bar { flex-wrap: wrap; min-height: 0; padding-block: 11px; row-gap: 0; }
   .site-header nav.wide {
@@ -156,6 +156,11 @@ section { padding-block: clamp(60px, 8vw, 108px); }
   .site-header .right .regionpick { display: none; }
   .site-header .right .btn { font-size: 13px; padding: 9px 13px; }
 }
+
+/* 붙어 있는 머리 띠가 절 제목을 덮는다. 띠 높이보다 조금 더 남긴다 —
+   좁아지면 메뉴가 한 줄 내려가 띠가 두 배 가까워진다. */
+section[id], div[id="top"] { scroll-margin-top: 86px; }
+@media (max-width: 900px) { section[id], div[id="top"] { scroll-margin-top: 142px; } }
 
 .btn {
   display: inline-block; font: inherit; font-size: 14.5px; font-weight: 700;
