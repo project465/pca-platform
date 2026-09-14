@@ -7,11 +7,22 @@ export class BillingError extends Error {}
 
 /** 학과 계약으로 들어온 학생은 무료다. memberships 에 행이 있으면 소속이 있다는 뜻. */
 export async function isFreeUser(userId: string): Promise<boolean> {
-  const row = await queryOne<{ n: string }>(
-    `SELECT count(*)::text AS n FROM memberships WHERE user_id = $1`,
+  return (await sponsorOrgOf(userId)) !== null;
+}
+
+/**
+ * 이 사람의 세션 값을 대신 낼 기관. 소속이 없으면 null 이고, 그때는 본인이 낸다.
+ *
+ * 소속이 여럿이면 가장 먼저 맺은 곳으로 단다. 한 사람이 학과와 연구소에 동시에
+ * 걸려 있는 경우가 있는데, 둘 중 무엇이 맞는지는 시스템이 알 수 없다. 임의로
+ * 고르되 어디로 달았는지를 결제 행에 남겨, 청구서를 보고 바로잡을 수 있게 한다.
+ */
+export async function sponsorOrgOf(userId: string): Promise<string | null> {
+  const row = await queryOne<{ org_id: string }>(
+    `SELECT org_id FROM memberships WHERE user_id = $1 ORDER BY created_at, id LIMIT 1`,
     [userId],
   );
-  return Number(row?.n ?? 0) > 0;
+  return row?.org_id ?? null;
 }
 
 export async function priceOf(minutes: number): Promise<number | null> {
@@ -49,6 +60,27 @@ export async function createPayment(
       orderId,
       process.env.PAYMENTS_DRY_RUN === "1" ? "dryrun" : "toss",
     ],
+  );
+  return orderId;
+}
+
+/**
+ * 기관이 부담하는 건. 결제대행사를 거치지 않으므로 만드는 순간 이미 'paid' 다.
+ *
+ * 금액을 0 으로 적지 않는다. 0 으로 적으면 정산 쿼리가 그 행을 걸러내고, 결국
+ * 결제 행을 안 만들던 때와 똑같아진다. 학생이 낼 돈이 0 인 것과 세션 값이 0 인
+ * 것은 다른 이야기다.
+ */
+export async function createOrgPayment(
+  c: PoolClient,
+  input: { requestId: string; userId: string; orgId: string; amount: number },
+): Promise<string> {
+  const orderId = "ORG-" + newOrderId();
+  await c.query(
+    `INSERT INTO payments
+       (request_id, user_id, amount, order_id, provider, payer_org_id, status, paid_at)
+     VALUES ($1, $2, $3, $4, 'org', $5, 'paid', now())`,
+    [input.requestId, input.userId, input.amount, orderId, input.orgId],
   );
   return orderId;
 }
@@ -269,4 +301,42 @@ export async function saveprices(
       );
     }
   });
+}
+
+export type OrgBillingRow = {
+  org_id: string;
+  month: string;
+  /** 정산이 잡힌 건. 기관에 청구할 근거가 확정된 것들이다 */
+  billed_n: number;
+  billed: number;
+  /** 아직 세션 전이거나 멘토 응답을 기다리는 건. 청구 대상이 아니다 */
+  upcoming_n: number;
+};
+
+/**
+ * 기관이 부담한 멘토링. 청구서의 근거가 된다.
+ *
+ * 금액을 payments.amount 가 아니라 payouts.gross 에서 읽는다. 멘토에게 실제로
+ * 지급이 잡힌 금액과 기관에 청구하는 금액이 같은 모집단을 봐야, 중간에 취소·환불된
+ * 건이 한쪽에만 남는 일이 없다.
+ */
+export async function orgBilling(): Promise<OrgBillingRow[]> {
+  return query<OrgBillingRow>(
+    `SELECT p.payer_org_id AS org_id,
+            to_char(s.starts_at AT TIME ZONE 'Asia/Seoul', 'YYYY-MM') AS month,
+            count(*) FILTER (WHERE o.id IS NOT NULL)::int AS billed_n,
+            COALESCE(sum(o.gross) FILTER (WHERE o.id IS NOT NULL), 0)::int AS billed,
+            count(*) FILTER (
+              WHERE o.id IS NULL AND r.status IN ('requested', 'accepted')
+            )::int AS upcoming_n
+       FROM payments p
+       JOIN mentoring_requests r ON r.id = p.request_id
+       JOIN mentor_slots s       ON s.id = r.slot_id
+       LEFT JOIN payouts o       ON o.request_id = r.id
+      WHERE p.provider = 'org' AND p.payer_org_id IS NOT NULL
+      GROUP BY 1, 2
+     HAVING count(*) FILTER (WHERE o.id IS NOT NULL) > 0
+         OR count(*) FILTER (WHERE o.id IS NULL AND r.status IN ('requested', 'accepted')) > 0
+      ORDER BY 2 DESC, 4 DESC`,
+  );
 }

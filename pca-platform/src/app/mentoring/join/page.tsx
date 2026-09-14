@@ -103,6 +103,10 @@ export default async function JoinPage() {
         덜 받으시는 일은 없습니다. 세션이 끝나고 <b>{settings.hold_hours}시간</b>이
         지나면 정산이 잡히고, 등록하신 계좌로 보내드립니다.
       </p>
+      <p className="help" style={{ marginTop: 8 }}>
+        학과 계약으로 들어온 학생은 본인이 내지 않지만, <b>멘토에게는 같은 금액이 지급됩니다.</b>
+        학과가 대신 부담합니다 — 신청자가 누구냐에 따라 받으실 돈이 달라지지 않습니다.
+      </p>
 
       <h2 className="sec-h">시간은 얼마나 씁니까</h2>
       <div className="policy">

@@ -586,7 +586,7 @@ CREATE TABLE payouts (
   created_at     TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 COMMENT ON TABLE payouts IS
-  '세션 1건에 정산 1행. 무료(학과 계약) 세션은 gross 가 0 이라 행을 만들지 않는다';
+  '세션 1건에 정산 1행. 결제 행이 없거나 전액 환불된 세션에는 행을 만들지 않는다';
 
 CREATE INDEX idx_payouts_mentor ON payouts(mentor_id, created_at DESC);
 CREATE INDEX idx_payouts_pending ON payouts(status) WHERE status = 'pending';
@@ -705,3 +705,27 @@ COMMENT ON TABLE inquiries IS
   '들어온 문의 1건 = 1행. 답한 것과 안 답한 것이 구분돼야 놓치지 않는다';
 
 CREATE INDEX idx_inquiries_open ON inquiries(created_at DESC) WHERE status = 'open';
+
+
+-- ============================================================
+--  18. 기관이 부담하는 멘토링 (2026-09-14)
+--
+--  학과 계약으로 들어온 학생은 무료였다. 그런데 '무료'를 결제 행을 아예 만들지
+--  않는 것으로 구현해 두어서, 정산 쿼리(payouts)가 payments 를 INNER JOIN 하는
+--  순간 그 세션은 사라졌다. 멘토는 시간을 쓰고 한 푼도 받지 못했다.
+--
+--  무료인 것은 학생이지 세션이 아니다. 돈을 내는 주체가 학생에서 기관으로
+--  바뀔 뿐이다. 그래서 결제 행은 똑같이 만들되 누가 부담하는지를 적는다.
+--  provider = 'org' 이고 결제대행사를 거치지 않으므로 provider_key 는 비어 있다.
+--
+--  단가는 개인 건과 같은 정가표를 쓴다. 기관 건이 더 싸면 멘토가 기관 건을
+--  거절하기 시작하고, 그러면 손해는 결국 그 학생에게 돌아간다.
+-- ============================================================
+
+ALTER TABLE payments ADD COLUMN payer_org_id BIGINT REFERENCES organizations(id);
+COMMENT ON COLUMN payments.payer_org_id IS
+  '기관이 부담하는 건. provider = ''org'' 일 때만 채운다. 기관 청구의 근거가 된다';
+
+-- 기관별 청구 화면이 훑는 인덱스
+CREATE INDEX idx_payments_org ON payments(payer_org_id, created_at DESC)
+  WHERE payer_org_id IS NOT NULL;

@@ -15,6 +15,7 @@ const NAV: NavItem[] = [
   { href: "/admin/mentors", label: "현직자 멘토", ready: true },
   { href: "/admin/prices", label: "가격·정책", ready: true },
   { href: "/admin/payouts", label: "멘토 정산", ready: true },
+  { href: "/admin/org-billing", label: "기관 청구", ready: true },
   { href: "/admin/no-shows", label: "노쇼 신고", ready: true },
   { href: "/admin/refunds", label: "환불 실패", ready: true },
   { href: "/admin/inquiries", label: "문의", ready: true },

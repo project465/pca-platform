@@ -28,6 +28,7 @@ export type MyRequest = {
   payStatus: string | null;
   payAmount: number | null;
   payOrderId: string | null;
+  payProvider: string | null;
 };
 
 const PAY_LABEL: Record<string, string> = {
@@ -111,9 +112,11 @@ export default function RequestCards({ rows }: { rows: MyRequest[] }) {
             <div className="req-meta">
               {r.mentorTitle} · {r.minutes}분
               {r.status === "requested" ? ` · 응답 기한 ${r.respondBy}` : ""}
-              {r.payAmount !== null
-                ? ` · ${r.payAmount.toLocaleString("ko-KR")}원 ${PAY_LABEL[r.payStatus ?? ""] ?? ""}`
-                : ""}
+              {r.payProvider === "org"
+                ? " · 학과 계약 (청구 없음)"
+                : r.payAmount !== null
+                  ? ` · ${r.payAmount.toLocaleString("ko-KR")}원 ${PAY_LABEL[r.payStatus ?? ""] ?? ""}`
+                  : ""}
             </div>
 
             {r.payStatus === "ready" ? (

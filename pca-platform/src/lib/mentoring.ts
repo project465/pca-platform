@@ -12,7 +12,7 @@ import {
   type MeetingBrief,
 } from "@/lib/notify";
 import { createMeeting, deleteMeeting } from "@/lib/zoom";
-import { createPayment, isFreeUser, priceOf, refundFor } from "@/lib/billing";
+import { createOrgPayment, createPayment, priceOf, refundFor, sponsorOrgOf } from "@/lib/billing";
 
 /**
  * 현멘 도메인 로직.
@@ -169,6 +169,8 @@ export type RequestView = {
   pay_status: string | null;
   pay_amount: number | null;
   pay_order_id: string | null;
+  /** toss | dryrun | org. 'org' 는 기관이 대신 낸 건이라 신청자에게 금액을 말하지 않는다 */
+  pay_provider: string | null;
 };
 
 /** 신청자 화면. host_url 은 고르지 않는다 (멘토만 본다). */
@@ -181,7 +183,8 @@ export async function requestsByApplicant(applicantId: string): Promise<RequestV
             r.applicant_stage,
             mt.join_url, NULL::text AS host_url, mt.passcode, mt.provider,
             '' AS applicant_name,
-            pm.status AS pay_status, pm.amount AS pay_amount, pm.order_id AS pay_order_id
+            pm.status AS pay_status, pm.amount AS pay_amount, pm.order_id AS pay_order_id,
+            pm.provider AS pay_provider
        FROM mentoring_requests r
        JOIN mentor_slots s ON s.id = r.slot_id
        JOIN mentors m      ON m.id = r.mentor_id
@@ -204,7 +207,8 @@ export async function requestsByMentor(mentorId: string): Promise<RequestView[]>
             r.applicant_stage,
             mt.join_url, mt.host_url, mt.passcode, mt.provider,
             u.display_name AS applicant_name,
-            NULL::text AS pay_status, NULL::int AS pay_amount, NULL::text AS pay_order_id
+            NULL::text AS pay_status, NULL::int AS pay_amount, NULL::text AS pay_order_id,
+            NULL::text AS pay_provider
        FROM mentoring_requests r
        JOIN mentor_slots s ON s.id = r.slot_id
        JOIN mentors m      ON m.id = r.mentor_id
@@ -256,12 +260,18 @@ export async function createRequest(input: {
     );
   }
 
-  // 학과 계약으로 들어온 학생은 무료다. 개인은 정가표대로 낸다.
-  const free = await isFreeUser(input.applicantId);
-  const amount = free ? 0 : ((await priceOf(mentor.session_minutes)) ?? -1);
-  if (!free && amount < 0) {
+  /**
+   * 학과 계약으로 들어온 학생은 카드로 내지 않는다. 그렇다고 세션 값이 0 인 것은
+   * 아니다 — 기관이 대신 낸다. 값을 0 으로 두면 멘토에게 갈 돈도 0 이 된다.
+   * 그래서 정가는 어느 쪽이든 똑같이 구한다.
+   */
+  const sponsorOrgId = await sponsorOrgOf(input.applicantId);
+  const price = (await priceOf(mentor.session_minutes)) ?? -1;
+  if (price < 0) {
     throw new MentoringError("이 길이의 세션 가격이 정해져 있지 않습니다. 운영사에 문의하세요.");
   }
+  // 신청자가 직접 낼 금액. 기관 건은 0 이지만 세션 값은 price 그대로다
+  const amount = sponsorOrgId ? 0 : price;
 
   return tx(async (c) => {
     const held = await c.query<{ id: string }>(
@@ -293,7 +303,16 @@ export async function createRequest(input: {
     );
     const requestId = r.rows[0].id;
 
-    if (free) return { requestId, orderId: null, amount: 0 };
+    if (sponsorOrgId) {
+      // 결제창을 띄우지 않으므로 orderId 를 돌려주지 않는다. 값은 이미 치러진 것으로 본다
+      await createOrgPayment(c, {
+        requestId,
+        userId: input.applicantId,
+        orgId: sponsorOrgId,
+        amount: price,
+      });
+      return { requestId, orderId: null, amount: 0 };
+    }
 
     const orderId = await createPayment(c, {
       requestId,

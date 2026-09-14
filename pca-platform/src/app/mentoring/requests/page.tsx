@@ -32,6 +32,8 @@ export default async function MyRequestsPage({
    */
   function refundNotice(r: (typeof rows)[number]): string | null {
     if (r.pay_status === "ready") return "아직 결제 전이라 청구되지 않습니다.";
+    // 기관이 낸 건은 신청자에게 돌아갈 돈이 없다. 금액을 말하면 자기 돈인 줄 안다
+    if (r.pay_provider === "org") return "학과 계약 건이라 청구된 금액이 없습니다.";
     if (r.pay_status !== "paid" || !r.pay_amount) return null;
     const hoursLeft = (new Date(r.starts_at).getTime() - Date.now()) / 3_600_000;
     const back = Math.floor((r.pay_amount * percentFor(rules, hoursLeft)) / 100);
@@ -59,6 +61,7 @@ export default async function MyRequestsPage({
     payStatus: r.pay_status,
     payAmount: r.pay_amount,
     payOrderId: r.pay_order_id,
+    payProvider: r.pay_provider,
     // 지난 일정은 취소할 것이 없다
     canCancel:
       ["requested", "accepted"].includes(r.status) && new Date(r.starts_at) > new Date(),
