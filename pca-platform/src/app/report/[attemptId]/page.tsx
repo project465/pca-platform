@@ -7,6 +7,7 @@ import { t, UI, type Lang, type UiKey } from "@/lib/locale";
 import { prescribe } from "@/lib/prescribe";
 import { careerChain } from "@/lib/chain";
 import { checkoutReady } from "@/lib/payments";
+import { markReportViewed } from "@/lib/refund";
 import PrescriptionView from "@/components/prescription";
 import CareerChainView from "@/components/career-chain";
 import { resolveLang } from "@/lib/locale-server";
@@ -72,7 +73,13 @@ export default async function ReportPage({
    * 과목 처방은 고교판에만 붙는다. 대학생에게 고교학점제 과목을 권할 일이
    * 없고, 고교판에는 역량 격차(05)가 없어 자리가 비어 있다.
    */
-  const paid = r.level === "full";
+    const paid = r.level === "full";
+  /**
+   * 업그레이드 환불의 경계가 여기다 — **넓어진 결과지를 처음 연 때.**
+   * 결제하고 한 번도 열지 않았으면 돌려준다. 한 번만 적고 덮어쓰지 않는다.
+   * 무료 응시에는 적을 줄이 없으므로(report_grants 가 없다) 그냥 지나간다.
+   */
+  if (paid) await markReportViewed(attemptId);
   const rx = hs && paid ? await prescribe(attemptId, lang) : null;
   /**
    * 과목 앞에 "왜" 가 와야 한다. 현장에서 하는 일이 이것을 요구하기 때문에

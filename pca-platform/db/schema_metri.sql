@@ -1297,3 +1297,53 @@ CREATE INDEX IF NOT EXISTS idx_redemption_batch ON redemption_codes (batch);
 -- 어느 코드로 열린 주문인지 주문 쪽에서도 보이게 한다
 ALTER TABLE orders ADD COLUMN IF NOT EXISTS redemption_code_id BIGINT
   REFERENCES redemption_codes(id) ON DELETE SET NULL;
+
+-- ────────────────────────────────────────────────────────────────
+-- 33. 환불 (2026-09-14)
+--
+-- 무엇을 언제까지 돌려주는지를 표가 들고 있어야 한다. 화면마다 판단하면
+-- 화면이 늘 때마다 판단이 복사되고, 복사된 것 중 하나가 틀리면 **돈 문제로**
+-- 틀린다(설계 원칙 10 과 같은 이유다).
+--
+-- **경계는 "제공이 개시된 때" 다.** 전자상거래법 제17조 제2항 5호가
+-- 디지털콘텐츠 제공 개시 후 청약철회를 제한할 수 있게 하는데, 상품마다
+-- 개시 시점이 다르다.
+--
+--   응시권(REPORT_UNIV · REPORT_HS)  첫 문항에 답한 때
+--   업그레이드(HS_UPGRADE)           **넓어진 결과지를 처음 연 때**
+--                                    — 응시는 이미 끝난 사람이라 응시 시작을
+--                                      경계로 쓸 수 없다
+--   기간권(H1_PASS)                  가분적이므로 남은 기간은 돌려준다
+--                                    (계속거래 — 방문판매법)
+--
+-- 그래서 업그레이드의 경계를 재려면 **처음 연 시각**이 필요하다.
+-- 열람 시각 하나만 남기고 무엇을 읽었는지는 남기지 않는다.
+-- ────────────────────────────────────────────────────────────────
+
+ALTER TABLE report_grants ADD COLUMN IF NOT EXISTS first_viewed_at TIMESTAMPTZ;
+COMMENT ON COLUMN report_grants.first_viewed_at IS
+  '넓어진 결과지를 처음 연 시각. 업그레이드 환불의 경계다 —
+   결제하고 한 번도 열지 않았으면 돌려준다. 한 번만 적고 덮어쓰지 않는다';
+
+-- 환불 기록. orders.status 를 바꾸는 것과 별개로 **왜·얼마를** 남긴다
+CREATE TABLE IF NOT EXISTS refunds (
+  id          BIGSERIAL PRIMARY KEY,
+  order_id    BIGINT NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+  amount      INTEGER NOT NULL CHECK (amount >= 0),
+  -- 왜 돌려줬는가. 사람이 적는 메모가 아니라 코드가 고르는 값이다
+  reason      TEXT NOT NULL CHECK (reason IN (
+                'before_start',    -- 응시 전
+                'not_viewed',      -- 업그레이드인데 결과지를 안 열었다
+                'pass_remaining',  -- 기간권 잔여분
+                'code_unused',     -- 응시권 코드를 쓰기 전
+                'operator'         -- 운영 판단 (사유를 note 에)
+              )),
+  note        TEXT,
+  refunded_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS idx_refunds_order ON refunds (order_id);
+
+COMMENT ON TABLE refunds IS
+  '환불한 기록. 전자상거래법 제6조가 결제 기록을 5년 보존하라 하므로
+   주문을 지우지 않고 여기에 쌓는다. 익명화(파기)에도 남는다 —
+   사람과 이어지지 않는 금액 기록이다';
