@@ -140,28 +140,27 @@ a { color: inherit; }
   text-decoration: none; padding: 9px 15px; border-radius: var(--r);
   background: var(--ink); color: var(--paper);
 }
-.tb-menu { display: none; margin-left: auto; position: relative; }
-.tb-menu summary {
-  list-style: none; cursor: pointer; font-size: 13.5px; font-weight: 700;
-  padding: 9px 14px; border: 1px solid var(--line-2); border-radius: var(--r);
-}
-.tb-menu summary::-webkit-details-marker { display: none; }
-.tb-menu[open] summary { border-color: var(--ink); }
-.tb-menu nav {
-  position: absolute; right: 0; top: calc(100% + 9px); z-index: 50;
-  background: var(--paper); border: 1px solid var(--line-2); border-radius: var(--r);
-  display: grid; min-width: 210px; max-width: calc(100vw - 32px); overflow: hidden;
-  /* 화면이 낮으면 목록이 화면 밖으로 내려가 손이 닿지 않는다 */
-  max-height: calc(100dvh - 96px); overflow-y: auto;
-}
-.tb-menu nav a {
-  padding: 12px 16px; font-size: 13.5px; font-weight: 600; text-decoration: none;
-  border-bottom: 1px solid var(--line);
-}
-.tb-menu nav a:last-child { border-bottom: 0; }
-@media (max-width: 900px) {
-  .topbar nav.wide, .topbar .tb-cta { display: none; }
-  .tb-menu { display: block; }
+/* 좁아져도 메뉴 항목을 감추지 않는다.
+   예전에는 900px 아래에서 항목을 전부 숨기고 "메뉴" 버튼 하나로 접었다.
+   접힌 메뉴는 한 번 더 눌러야 보이고, 눌러도 안 보이는 사고가 실제로 났다.
+   보이지 않는 메뉴는 없는 메뉴와 같다.
+   그래서 접지 않고 브랜드·버튼 아래 한 줄로 내린다. 항목이 줄 너비를
+   넘으면 그 줄 안에서 옆으로 굴린다 — 굴릴 수 있는 목록은 접힌 목록보다
+   한 단계 가깝다. 첫 항목이 늘 보이므로 메뉴가 있다는 것을 모를 수 없다. */
+@media (max-width: 1240px) {
+  /* wrap 이 없으면 width:100% 를 줘도 줄이 내려가지 않고 그냥 눌린다 */
+  .topbar .bar { flex-wrap: wrap; min-height: 0; padding-block: 10px; row-gap: 0; }
+  .topbar nav.wide {
+    order: 3; width: 100%; margin: 0; gap: 0;
+    margin-top: 8px; border-top: 1px solid var(--line);
+    overflow-x: auto; overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .topbar nav.wide::-webkit-scrollbar { display: none; }
+  .topbar nav.wide a { flex: none; padding: 11px 12px; font-size: 13.5px; color: var(--ink); }
+  .topbar nav.wide a:first-child { padding-left: 0; }
+  .topbar .tb-cta { margin-left: auto; }
 }
 
 /* ── 표지 ─────────────────────────────────── */
@@ -205,7 +204,10 @@ a { color: inherit; }
 /* ── 절 ───────────────────────────────────── */
 .sec { padding-block: clamp(48px, 7.5vw, 88px); border-top: 1px solid var(--line); }
 /* 머리 띠가 붙어 있으니 그만큼 띄워야 절 제목이 가려지지 않는다 */
-.sec[id], header[id] { scroll-margin-top: 62px; }
+/* 눌러서 간 절이 머리 띠에 가려지면 제목부터 못 읽는다. 띠 높이보다
+   조금 더 남긴다 — 좁아지면 메뉴가 한 줄 더 생겨 띠가 두 배 가까워진다. */
+.sec[id], header[id] { scroll-margin-top: 77px; }
+@media (max-width: 1240px) { .sec[id], header[id] { scroll-margin-top: 130px; } }
 .sec:first-of-type { border-top: 0; }
 .sec.tint { background: var(--ground-2); }
 .sec-head { display: grid; gap: 10px; margin-bottom: clamp(24px, 3.5vw, 36px); }
@@ -385,29 +387,21 @@ footer .wrap { display: grid; gap: 8px; }
 <div class="topbar">
   <div class="wrap bar">
     <a class="tb-brand" href="#top"><b>메트리 플러스</b><span>중·고등학생</span></a>
+    <!-- 좁아져도 접지 않는다. 접힌 메뉴에서 항목이 사라져 있던 것도
+         여기서 같이 고쳤다 — 접는 쪽에만 있던 "무엇으로 재는가"·"범위" 가
+         이제 늘 보인다. -->
     <nav class="wide">
       <a href="#fields">8계열</a>
       <a href="#items">문항</a>
       <a href="#chain">현장에서 거꾸로</a>
       <a href="#subjects">과목 처방</a>
+      <a href="#axes">무엇으로 재는가</a>
+      <a href="#tiers">등수 대신 묶음</a>
       <a href="#evidence">검증</a>
       <a href="#price">값</a>
+      <a href="#scope">범위</a>
     </nav>
     <a class="tb-cta" href="#contact">도입 문의</a>
-    <details class="tb-menu">
-      <summary>메뉴</summary>
-      <nav>
-        <a href="#fields">8계열</a>
-        <a href="#items">문항</a>
-        <a href="#chain">현장에서 거꾸로</a>
-        <a href="#subjects">과목 처방</a>
-        <a href="#axes">무엇으로 재는가</a>
-        <a href="#evidence">검증</a>
-        <a href="#price">값</a>
-        <a href="#scope">범위</a>
-        <a href="#contact">도입 문의</a>
-      </nav>
-    </details>
   </div>
 </div>
 
@@ -871,7 +865,7 @@ footer .wrap { display: grid; gap: 8px; }
           <dt>진행</dt><dd>학교가 명단을 올리면 학생별 접속 정보가 발급됩니다</dd>
           <dt>배포 자료</dt>
           <dd>
-            <a href="https://claude.ai/code/artifact/791da8ea-23c2-42bc-b7ab-ea025e64194e" class="rxlink">
+            <a href="https://claude.ai/code/artifact/791da8ea-23c2-42bc-b7ab-ea025e64194e" class="rxlink" target="_blank" rel="noopener">
               학교용 · 학부모용 안내문과 가정통신문 문안
             </a>
             — 인쇄하면 A4 세 장입니다
