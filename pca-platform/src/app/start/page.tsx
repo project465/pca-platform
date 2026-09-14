@@ -30,7 +30,10 @@ export default async function StartPage({
   const doors = [
     {
       key: "individual",
-      href: "/signup?next=%2Fcheckout%3Fproduct%3DREPORT_UNIV&product=REPORT_UNIV",
+            // 개인은 무료 문으로 보낸다. 결제 전에 253문항을 풀고 직무 묶음까지
+      // 받아 본 다음에 정한다 — 전자상거래법 제17조 제6항이 요구하는
+      // 시험 사용이 이 구간이고, 사는 사람에게도 이 순서가 낫다
+      href: "/signup?next=%2Ffree%3Ftrack%3Duniv",
       title: t("doorIndividual", lang),
       note: t("doorIndividualNote", lang),
       primary: true,

@@ -86,6 +86,16 @@ export default async function ReportPage({
    * 이 과목이라는 순서다 — 과목부터 내밀면 "그래서 왜" 가 남는다.
    */
   const cc = hs && paid ? await careerChain(attemptId, lang) : null;
+    /**
+   * 절 번호를 손으로 세지 않는다.
+   *
+   * 무료·유료와 고교·대학이 겹치면서 번호를 세 곳에서 따로 계산하고
+   * 있었고, 그래서 한 번은 00·01·02·04·03 이 찍혔다. 빠지는 절이 생길
+   * 때마다 다시 틀린다. 그리는 순서대로 하나씩 세는 쪽이 안 틀린다.
+   */
+  let secNo = 0;
+  const no = () => String(secNo++).padStart(2, "0");
+
   const tt = (key: UiKey, vars?: Record<string, string | number>) =>
     hs && `${key}Hs` in UI ? t(`${key}Hs` as UiKey, lang, vars) : t(key, lang, vars);
 
@@ -184,7 +194,7 @@ export default async function ReportPage({
         {/* ---- 00 종합 ---- */}
         <section className="rp-sec">
           <div className="rp-sec-head">
-            <span className="rp-no">00</span>
+                        <span className="rp-no">{no()}</span>
             <h2>{t("repSec00", lang)}</h2>
           </div>
           <div className="rp-lead">
@@ -255,7 +265,7 @@ export default async function ReportPage({
         {/* ---- 01 직무분야 ---- */}
         <section className="rp-sec">
           <div className="rp-sec-head">
-            <span className="rp-no">01</span>
+                        <span className="rp-no">{no()}</span>
             <h2>{tt("repSec01")}</h2>
           </div>
           <p className="rp-note">{tt("repNote01")}</p>
@@ -265,7 +275,7 @@ export default async function ReportPage({
         {/* ---- 02 공학 활동 8축 ---- */}
         <section className="rp-sec">
           <div className="rp-sec-head">
-            <span className="rp-no">02</span>
+                        <span className="rp-no">{no()}</span>
             <h2>{t("repSec02", lang)}</h2>
           </div>
           <p className="rp-note">{tt("repNote02")}</p>
@@ -278,7 +288,7 @@ export default async function ReportPage({
         {paid && (
         <section className="rp-sec">
           <div className="rp-sec-head">
-            <span className="rp-no">03</span>
+                        <span className="rp-no">{no()}</span>
             <h2>{t("repSec03", lang)}</h2>
           </div>
           <p className="rp-note">
@@ -292,12 +302,10 @@ export default async function ReportPage({
         </section>
         )}
 
-        {/* ---- 04 직무 적합도 ---- */}
-        {/* 무료 구간에서는 03(성향)이 빠지므로 번호를 한 칸 올린다.
-            00·01·02·04·03 순으로 찍히는 결과지는 그 자체로 오류로 읽힌다. */}
+                {/* ---- 직무 적합도 ---- */}
         <section className="rp-sec">
           <div className="rp-sec-head">
-            <span className="rp-no">{paid ? "04" : "03"}</span>
+            <span className="rp-no">{no()}</span>
             <h2>{tt("repSec04")}</h2>
           </div>
           <p className="rp-note">{tt("repNote04")}</p>
@@ -314,14 +322,15 @@ export default async function ReportPage({
           {topTier > 1 && <p className="rp-note">{tt("repTierNote", { n: topTier })}</p>}
         </section>
 
-        {/* ---- 05 역량 격차 ---- */}
+                {/* ---- 역량 격차 (대학판 · 유료) ---- */}
         {/* 고교판에는 이 절이 없다. 고1에게 "요구 레벨 3 · 보유 0" 을 보여 주면
             아직 아무것도 안 한 것이 부족한 것으로 읽힌다. 역량은 증거에서만
-            나오고, 증거는 대학에서 쌓인다. */}
-        {!hs && (
+            나오고, 증거는 대학에서 쌓인다.
+            대학판 무료 구간에도 없다 — 성향 6축과 같은 층이다. */}
+        {!hs && paid && (
         <section className="rp-sec">
           <div className="rp-sec-head">
-            <span className="rp-no">05</span>
+            <span className="rp-no">{no()}</span>
             <h2>{t("repSec05", lang)}</h2>
           </div>
           <p className="rp-note">
@@ -357,7 +366,7 @@ export default async function ReportPage({
         {hs && cc && (
           <section className="rp-sec">
             <div className="rp-sec-head">
-              <span className="rp-no">05</span>
+                            <span className="rp-no">{no()}</span>
               <h2>{t("repSec05Chain", lang)}</h2>
             </div>
             <p className="rp-note">{t("repNote05Chain", lang)}</p>
@@ -369,7 +378,7 @@ export default async function ReportPage({
         {hs && rx && (
           <section className="rp-sec">
             <div className="rp-sec-head">
-              <span className="rp-no">06</span>
+                            <span className="rp-no">{no()}</span>
               <h2>{t("repSec05Hs", lang)}</h2>
             </div>
             <p className="rp-note">
@@ -389,7 +398,7 @@ export default async function ReportPage({
         {paid && (
         <section className="rp-sec">
           <div className="rp-sec-head">
-            <span className="rp-no">{hs ? "07" : "06"}</span>
+                        <span className="rp-no">{no()}</span>
             <h2>{tt("repSec06")}</h2>
           </div>
           <ol className="rp-plan">
@@ -416,7 +425,7 @@ export default async function ReportPage({
         {!paid && (
           <section className="rp-sec rp-lock">
             <div className="rp-sec-head">
-              <span className="rp-no">04</span>
+                            <span className="rp-no">{no()}</span>
               <h2>{t("repLockTitle", lang)}</h2>
             </div>
             <p className="rp-note">{t("repLockBody", lang)}</p>
@@ -433,7 +442,7 @@ export default async function ReportPage({
               {checkoutReady() ? (
                 <Link
                   className="act solid"
-                  href={`/checkout?product=HS_UPGRADE&attempt=${r.attemptId}`}
+                                    href={`/checkout?product=${hs ? "HS_UPGRADE" : "UNIV_UPGRADE"}&attempt=${r.attemptId}`}
                 >
                   {t("repLockCta", lang)}
                 </Link>

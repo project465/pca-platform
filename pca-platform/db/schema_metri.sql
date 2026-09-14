@@ -1347,3 +1347,40 @@ COMMENT ON TABLE refunds IS
   '환불한 기록. 전자상거래법 제6조가 결제 기록을 5년 보존하라 하므로
    주문을 지우지 않고 여기에 쌓는다. 익명화(파기)에도 남는다 —
    사람과 이어지지 않는 금액 기록이다';
+
+-- ────────────────────────────────────────────────────────────────
+-- 34. 대학판에도 무료 구간 (2026-09-14)
+--
+-- 고교판과 같은 구조로 맞춘다. 253문항을 무료로 열고, 직무 영역과 활동
+-- 8축까지 보여준 뒤 나머지를 29,000원에 연다.
+--
+-- **왜 가격 구조를 바꾸는가.** 전자상거래법 제17조 제6항이 "제공 개시 후
+-- 청약철회 제한" 에 조건을 건다 — 불가 사실 표시와 **시험 사용 제공**을
+-- 둘 다 해야 하고, 안 하면 환불 거절 자체가 무효다. 시행령 제21조의2 는
+-- 미리보기·한시 이용·체험판을 방법으로 적어 뒀고, 넷째(정보 제공)는
+-- 앞의 셋이 곤란할 때만 쓸 수 있다. **고교판에서 무료 구간을 만든 이상
+-- 대학판만 곤란하다고 말할 수 없다.**
+--
+-- 덤이 하나 있다. 무료 응답이 쌓여야 규준이 생기고, 규준이 없으면 지금처럼
+-- "상위 몇 %" 를 영영 못 쓴다. 고교판에서 무료를 연 이유가 그것이었다.
+--
+-- 29,000원은 응시권에서 **업그레이드**로 바뀐다. REPORT_UNIV 는 남겨 둔다 —
+-- 학과 계약 좌석은 상품을 거치지 않지만, 처음부터 전부 열어 사는 개인
+-- 경로까지 없앨 이유는 없다.
+-- ────────────────────────────────────────────────────────────────
+
+INSERT INTO products (code, kind, amount, currency, seat_count, active, track_code, report_level)
+VALUES
+  ('UNIV_FREE',    'report', 0,     'KRW', 1, true, 'UNIV_LOW', 'free'),
+  -- 업그레이드는 좌석을 주지 않는다. 좌석이 늘면 253문항을 또 풀게 되고
+  -- 같은 사람의 응답이 두 벌 쌓여 규준이 오염된다(설계 원칙 10).
+  ('UNIV_UPGRADE', 'report', 29000, 'KRW', 0, true, 'UNIV_LOW', 'full')
+ON CONFLICT (code) DO UPDATE SET
+  kind = EXCLUDED.kind, amount = EXCLUDED.amount, currency = EXCLUDED.currency,
+  seat_count = EXCLUDED.seat_count, active = EXCLUDED.active,
+  track_code = EXCLUDED.track_code, report_level = EXCLUDED.report_level;
+
+-- 고교 업그레이드도 좌석을 주지 않는 것이 맞다. seat_count 가 1 로 남아
+-- 있었는데, 결제 경로가 좌석 대신 report_grants 를 만들어서 드러나지
+-- 않았을 뿐이다. 표가 말하는 것과 코드가 하는 일을 맞춘다.
+UPDATE products SET seat_count = 0 WHERE code = 'HS_UPGRADE';

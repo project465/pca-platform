@@ -48,10 +48,10 @@ export const UI = {
     "Birini seçin, doğrudan ilgili ekrana götürelim. Bireysel başlamak için hesaba gerek yok.",
   ),
   doorIndividual: d("개인으로 검사받기", "Take the assessment yourself", "Testi kendim almak istiyorum"),
-  doorIndividualNote: d(
-    "결제하면 바로 응시할 수 있습니다. 소속이 없어도 됩니다.",
-    "Pay and start immediately. No institution required.",
-    "Ödeme sonrası hemen başlayın. Kuruma bağlı olmanız gerekmez.",
+    doorIndividualNote: d(
+    "253문항을 무료로 풀고 직무 묶음까지 받아 보신 뒤에 정하시면 됩니다. 소속이 없어도 됩니다.",
+    "Answer all 253 items for free and see your job groups before deciding. No institution required.",
+    "253 soruyu ücretsiz yanıtlayıp görev gruplarınızı gördükten sonra karar verin. Kuruma bağlı olmanız gerekmez.",
   ),
   doorStudent: d("학교에서 받은 계정으로", "Sign in with a school account", "Okulumdan aldığım hesapla"),
   doorStudentNote: d(
@@ -403,7 +403,34 @@ export const UI = {
     "Decide after you have read the report. You will not retake the items.",
     "Raporu okuduktan sonra karar verin. Soruları tekrar çözmezsiniz.",
   ),
-    freeCta: d("무료로 시작하기", "Start free", "Ücretsiz başla"),
+      // 대학판 무료 구간. 고교판과 같은 구조지만 브랜드와 나오는 것이 다르다
+  freeTitleUniv: d(
+    "직무 묶음까지는 무료입니다",
+    "The job groups are free",
+    "Görev grupları ücretsizdir",
+  ),
+  freeSubUniv: d(
+    "253문항, 약 30분. 답을 다 하면 결과지가 바로 열립니다. 결제 정보를 넣는 곳이 없습니다.",
+    "253 items, about 30 minutes. The report opens as soon as you finish. There is no card field anywhere in this path.",
+    "253 soru, yaklaşık 30 dakika. Bitirdiğinizde rapor hemen açılır.",
+  ),
+  freeInc1Univ: d(
+    "직무 영역 10개 적합도 — 구간과 묶음으로 냅니다. 등수는 매기지 않습니다",
+    "Fit across the ten job areas — as bands and groups. No ranking",
+    "On görev alanında uyum — sıralama değil, aralık",
+  ),
+  freeExc1Univ: d(
+    "업무 성향 6축과 역량 격차, 기업 매칭은 유료 구간입니다",
+    "The six work styles, the competency gaps and employer matching are the paid part",
+    "Altı çalışma eğilimi, yetkinlik farkları ve işveren eşleştirmesi ücretli bölümdür",
+  ),
+  freeExc2Univ: d(
+    "결과지를 본 뒤에 정하면 됩니다. 문항을 다시 풀지 않습니다.",
+    "Decide after you have read the report. You will not retake the items.",
+    "Raporu okuduktan sonra karar verin. Soruları tekrar çözmezsiniz.",
+  ),
+
+  freeCta: d("무료로 시작하기", "Start free", "Ücretsiz başla"),
 
   // 응시권 코드 — 밖에서 산 것을 여기서 좌석으로 바꾼다
   redeemTitle: d("응시권 코드 입력", "Enter your access code", "Erişim kodunuzu girin"),

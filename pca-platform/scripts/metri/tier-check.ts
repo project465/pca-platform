@@ -11,7 +11,9 @@
  *   4. 학교 단체 좌석은 결제 없이 full 인가 (학교가 사는 것이 사슬이다)
  *   5. 업그레이드 결제가 좌석을 늘리지 않는가 (문항을 또 풀면 규준이 오염된다)
  *   6. PASS 가 기간 동안 열고, 만료 뒤에도 그때 본 결과지는 남는가
- *   7. 결제되지 않은 주문으로는 열리지 않는가
+ *   7. **대학판 무료 구간도 같은 구조인가** — 직무 묶음·활동 축까지만 오고
+      성향과 역량 격차는 오지 않는가
+   8. 결제되지 않은 주문으로는 열리지 않는가
  *
  *   npm run metri:tier
  */
@@ -277,7 +279,68 @@ async function main() {
     "기간이 끝나도 그 기간에 본 결과지는 계속 열린다");
   await query(`UPDATE products SET active = false WHERE code = 'H1_PASS'`);
 
-  console.log("\n════════ 7. 등급을 못 가리면 ════════");
+    console.log("\n════════ 7. 대학판 무료 구간 ════════");
+  {
+    // 고교판과 같은 구조인지 본다. 다른 것은 나오는 이름(직무/계열)뿐이어야 한다
+    const pw = await hashPassword("test-pass-1234");
+    const u = await queryOne<{ id: string }>(
+      `INSERT INTO users (email, display_name, password_hash, status)
+       VALUES ('tier-univ@example.com','대학 무료',$1,'active')
+       ON CONFLICT (email) DO UPDATE SET display_name = EXCLUDED.display_name RETURNING id`,
+      [pw],
+    );
+    const uid = u!.id;
+    await query(`DELETE FROM report_grants WHERE attempt_id IN (SELECT id FROM attempts WHERE user_id = $1)`, [uid]);
+    await query(`DELETE FROM responses WHERE attempt_id IN (SELECT id FROM attempts WHERE user_id = $1)`, [uid]);
+    await query(`DELETE FROM attempts WHERE user_id = $1`, [uid]);
+    await query(`DELETE FROM seats WHERE user_id = $1`, [uid]);
+    await query(`DELETE FROM test_sessions WHERE order_id IN (SELECT id FROM orders WHERE user_id = $1)`, [uid]);
+    await query(`DELETE FROM orders WHERE user_id = $1`, [uid]);
+
+    await openFreeOrder(uid, "UNIV_FREE");
+    const at = await openAttempt(uid);
+    check(at !== null, "UNIV_FREE 로 좌석과 응시가 열린다");
+    const inst = await queryOne<{ item_count: number; track_code: string }>(
+      `SELECT item_count, track_code FROM instruments WHERE id = $1`, [at!.instrumentId]);
+    check(inst?.track_code === "UNIV_LOW" && inst.item_count === 253,
+      "대학판 253문항이 나온다 — 고교 문항이 섞이지 않는다",
+      `${inst?.track_code} · ${inst?.item_count}문항`);
+
+    // 끝까지 풀린다
+    for (let p = 1; p <= Math.ceil(at!.total / PAGE_SIZE); p++) {
+      const items = await questionPage(at!, p);
+      for (const it of items) await saveResponse(at!.id, uid, it.id, it.options[2].id, null);
+    }
+    await submitAttempt(at!.id, uid);
+    await score(at!.id);
+
+    check((await reportLevel(at!.id)) === "free", "등급은 free 다");
+        const rep = await buildReport(at!.id, uid, "ko");
+    if (!rep || rep === "pending") throw new Error("무료 결과지가 열리지 않았습니다");
+    check(rep.kind === "job", "직무가 나온다 (고교판은 계열)", rep.kind);
+    check(rep.jobs.length > 0 && rep.axes.length === 8,
+      "직무 묶음과 활동 8축은 온다", `직무 ${rep.jobs.length} · 축 ${rep.axes.length}`);
+    check(rep.traits.length === 0, "업무 성향 6축은 오지 않는다", `${rep.traits.length}개`);
+    check(rep.gaps.length === 0,
+      "역량 격차도 오지 않는다 — 가린 것이 아니라 조회하지 않는다", `${rep.gaps.length}개`);
+
+    // 업그레이드하면 같은 응시가 넓어진다
+    const uo = await queryOne<{ id: string }>(
+      `INSERT INTO orders (order_no, user_id, product_code, amount, currency, status, paid_at, upgrades_attempt_id)
+       VALUES ($1,$2,'UNIV_UPGRADE',29000,'KRW','paid',now(),$3) RETURNING id`,
+      [`TU${Date.now().toString(36)}`.toUpperCase(), uid, at!.id]);
+    await grantFull(at!.id, uo!.id, uid);
+        const full = await buildReport(at!.id, uid, "ko");
+    if (!full || full === "pending") throw new Error("넓어진 결과지가 열리지 않았습니다");
+    check(full.level === "full" && full.traits.length === 6, "결제하면 성향 6축이 열린다",
+      `${full.traits.length}개`);
+    check(full.gaps.length > 0, "역량 격차도 열린다", `${full.gaps.length}줄`);
+    const seats = await queryOne<{ n: number }>(
+      `SELECT count(*)::int AS n FROM seats WHERE user_id = $1`, [uid]);
+    check(seats!.n === 1, "업그레이드는 좌석을 늘리지 않는다 — 253문항을 또 풀 수 없다", `${seats!.n}개`);
+  }
+
+console.log("\n════════ 8. 등급을 못 가리면 ════════");
   const orphan = await queryOne<{ id: string }>(
     `INSERT INTO attempts (session_id, user_id, seat_id, status, started_at)
      VALUES ($1,$2,NULL,'in_progress',now()) RETURNING id`, [ses!.id, free.userId]);

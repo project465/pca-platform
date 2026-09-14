@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { openFreeOrder } from "@/lib/orders";
 import { lastScoredAttempt } from "@/lib/attempts";
+import { TRACKS, resolveTrack } from "./tracks";
 
 export type FreeState = { error?: string };
 
@@ -13,10 +14,13 @@ export type FreeState = { error?: string };
  * GET 으로 열지 않는다. 주소만 눌러도 주문이 생기면 링크 미리보기나
  * 크롤러가 학생 계정에 주문을 만들어 버린다. 그래서 버튼(POST)만 문이다.
  */
-export async function openFreeAction(_prev: FreeState, _formData: FormData): Promise<FreeState> {
+export async function openFreeAction(_prev: FreeState, formData: FormData): Promise<FreeState> {
   const user = await requireUser();
+  // 폼에서 온 값을 그대로 상품 코드로 쓰지 않는다. 아는 갈래 둘 중 하나로
+  // 접어서 쓴다 — 주소를 고쳐 다른 상품의 좌석을 받아 갈 수 없어야 한다
+  const track = resolveTrack(String(formData.get("track") ?? ""));
   try {
-    await openFreeOrder(user.id);
+    await openFreeOrder(user.id, TRACKS[track].product);
   } catch {
     return { error: "fail" };
   }

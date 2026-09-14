@@ -186,9 +186,14 @@ export async function buildReport(
   const kind: Report["kind"] = jobs.length ? "job" : "major";
   const fits = jobs.length ? jobs : majors;
 
-  // 1순위 직무가 요구하는 역량. 보유 수준은 증거에서만 온다 — 없으면 null.
-  // 고교판에는 없다. 고1에게 "요구 레벨 3, 보유 0" 을 보여줄 이유가 없다.
-  const gaps = jobs.length
+    /**
+   * 1순위 직무가 요구하는 역량. 보유 수준은 증거에서만 온다 — 없으면 null.
+   *
+   * 고교판에는 없다. 고1에게 "요구 레벨 3, 보유 0" 을 보여줄 이유가 없다.
+   * **대학판 무료 구간에도 없다.** 성향 6축과 같은 층이고, 가리는 것이
+   * 아니라 조회하지 않는다 — 부르지 않는 쿼리는 샐 수 없다(설계 원칙 10).
+   */
+  const gaps = jobs.length && paid
     ? await query<GapRow>(
         `SELECT c.code, ${NAME("competencies", "c")} AS name,
                 m.required_level AS required, m.criticality,

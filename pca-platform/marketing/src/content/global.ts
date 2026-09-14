@@ -61,7 +61,7 @@ export const global: SiteContent = {
     primary: { label: "See a real report", href: "#sample" },
     secondary: { label: "Talk to us", href: "/contact" },
     priceline:
-      "₩29,000 per person · 253 items, about 30 minutes · an 18-page report. Departments contract by cohort size.",
+      "253 items, about 30 minutes. The job groups come free; the rest of the report opens for ₩29,000. Departments contract by cohort size.",
     watermark: "METRI",
     proof: [
       { value: "250", label: "items, in three languages" },
@@ -925,9 +925,9 @@ export const global: SiteContent = {
 
   pricing: {
     label: "Pricing",
-    heading: "₩29,000 for one, cohort pricing for a department",
+    heading: "Job groups free, the rest for ₩29,000",
     lead:
-      "Individuals buy one at a time. Departments contract by cohort size. Most institutions run one department first and widen from there. A single year group is enough to see what the reports change.",
+            "Answer all 253 items first and read your job groups, then decide. Departments contract by cohort size, and most run one department first and widen from there. A single year group is enough to see what the reports change.",
     planLabel: "What you are interested in",
     plans: [
       {
@@ -936,10 +936,10 @@ export const global: SiteContent = {
         who: "A student, a job seeker, a would-be founder",
         price: "₩29,000",
         unit: "per person",
-        note: "Billed in Korean won; overseas Visa and Mastercard are accepted. Card payment opens once the merchant review clears. Until then requests come through the form.",
+                note: "The ten job areas and the eight activity axes come at no charge. Billed in Korean won; overseas Visa and Mastercard are accepted. Card payment opens once the merchant review clears.",
         features: [
-          "Ten job areas out of 100 · groups and intervals",
-          "Six work styles as a hexagon",
+                    "Six work styles as a hexagon",
+          "Competency gaps: required level against held level",
           "A 15–20 page personal plan across ten sections",
           "Projects, applications, interviews, founding",
         ],
@@ -987,13 +987,13 @@ export const global: SiteContent = {
       tracks: [
         {
           key: "individual",
-          name: "Individual, ₩29,000",
+                    name: "Individual: free to sit, ₩29,000 to widen",
           who: "A student or a job seeker",
           steps: [
             "Start opens the sign-up screen. Signing up logs you in and returns you to where you were",
-            "Pay ₩29,000 with a Korean card, or a Visa or Mastercard issued overseas",
-            "253 questions, about 30 minutes. Every answer saves as you go, so you can close the tab and come back",
-            "Your report opens as soon as it is scored. No departmental approval to wait on",
+            "253 questions, about 30 minutes, at no charge. Every answer saves as you go, so you can close the tab and come back",
+            "The job areas and activity axes open as soon as it is scored. No departmental approval to wait on",
+            "Read it, and open the rest for ₩29,000 if you want it. You never retake the items",
           ],
         },
         {

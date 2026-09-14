@@ -1,11 +1,21 @@
 import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/session";
-import { t } from "@/lib/locale";
+import { t, UI, type UiKey } from "@/lib/locale";
 import { resolveLang } from "@/lib/locale-server";
 import LangSwitch from "@/components/lang-switch";
 import FreeForm from "./free-form";
+import { TRACKS, resolveTrack } from "./tracks";
 
-export const metadata = { title: "무료 진단 — 메트리 플러스" };
+/** 브랜드가 둘이라 제목도 둘이다. 메트리 플러스로 온 학부모에게 METRI 를
+ *  띄우지 않는다(설계 원칙 9). */
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ track?: string }>;
+}) {
+  const { track } = await searchParams;
+  return { title: `무료 진단 — ${TRACKS[resolveTrack(track)].brand}` };
+}
 
 /**
  * 무료 구간으로 들어오는 문.
@@ -18,15 +28,23 @@ export const metadata = { title: "무료 진단 — 메트리 플러스" };
 export default async function FreePage({
   searchParams,
 }: {
-  searchParams: Promise<{ lang?: string }>;
+    searchParams: Promise<{ lang?: string; track?: string }>;
 }) {
-  const { lang: q } = await searchParams;
+  const { lang: q, track: rawTrack } = await searchParams;
   const lang = await resolveLang(q);
+  /**
+   * 고교판과 대학판이 같은 문을 쓴다. 구조가 같기 때문이다 — 문항을 무료로
+   * 열고 지표까지 보여준 뒤 나머지를 판다. 문구만 갈린다.
+   */
+  const track = resolveTrack(rawTrack);
+  const univ = track === "univ";
+  const tt = (key: UiKey) =>
+    univ && `${key}Univ` in UI ? t(`${key}Univ` as UiKey, lang) : t(key, lang);
 
   // 결제 화면과 같은 이유로 로그인 폼으로 막지 않는다 — 처음 온 사람은
   // 계정이 없다. 가입이 끝나면 이 화면으로 돌아온다.
-  const user = await currentUser();
-  if (!user) redirect(`/signup?next=${encodeURIComponent("/free")}`);
+    const user = await currentUser();
+  if (!user) redirect(`/signup?next=${encodeURIComponent(`/free?track=${track}`)}`);
   if (user.mustResetPw) redirect("/password/change");
 
   return (
@@ -35,14 +53,14 @@ export default async function FreePage({
         <div className="panel-top">
           <LangSwitch current={lang} />
         </div>
-        <h1>{t("freeTitle", lang)}</h1>
-        <p className="paylead">{t("freeSub", lang)}</p>
+                <h1>{tt("freeTitle")}</h1>
+        <p className="paylead">{tt("freeSub")}</p>
 
         <div className="freesplit">
           <section>
             <h2>{t("freeIncHead", lang)}</h2>
             <ul className="freeyes">
-              <li>{t("freeInc1", lang)}</li>
+                            <li>{tt("freeInc1")}</li>
               <li>{t("freeInc2", lang)}</li>
               <li>{t("freeInc3", lang)}</li>
             </ul>
@@ -50,13 +68,13 @@ export default async function FreePage({
           <section>
             <h2>{t("freeExcHead", lang)}</h2>
             <ul className="freeno">
-              <li>{t("freeExc1", lang)}</li>
-              <li>{t("freeExc2", lang)}</li>
+                            <li>{tt("freeExc1")}</li>
+              <li>{tt("freeExc2")}</li>
             </ul>
           </section>
         </div>
 
-        <FreeForm lang={lang} />
+                <FreeForm lang={lang} track={track} />
 
         <ul className="paynote">
           <li>{t("freeOnce", lang)}</li>
