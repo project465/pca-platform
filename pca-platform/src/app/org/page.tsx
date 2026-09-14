@@ -26,7 +26,7 @@ export default async function OrgHome() {
   const canCreate = user.role === "org_admin" && contracts.some((c) => !c.expired);
 
   return (
-    <OrgShell user={user} orgName={orgName}>
+    <OrgShell user={user} orgName={orgName} current="/org">
       <div className="page-head">
         <h1>회차</h1>
         <span className="count">{sessions.length}개</span>

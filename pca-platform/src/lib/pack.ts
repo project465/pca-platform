@@ -47,7 +47,45 @@ export async function packList(): Promise<Pack[]> {
 }
 
 export async function packsOfOrg(orgId: string): Promise<Pack[]> {
-  return query<Pack>(`${packSelect("WHERE p.org_id = $1")} ORDER BY p.ends_on`, [orgId]);
+  return packsOfOrgs([orgId]);
+}
+
+/** 학과 담당자 화면. 한 사람이 여러 학과를 맡는 경우가 있다 */
+export async function packsOfOrgs(orgIds: string[]): Promise<Pack[]> {
+  if (orgIds.length === 0) return [];
+  return query<Pack>(
+    `${packSelect("WHERE p.org_id = ANY($1::bigint[])")}
+      ORDER BY p.status = 'active' DESC, p.ends_on DESC`,
+    [orgIds],
+  );
+}
+
+export type MonthUse = { month: string; used: number; returned: number };
+
+/**
+ * 월별로 몇 장이 나갔는지. 담당자에게 주는 것은 **숫자뿐이다.**
+ *
+ * 누가 어느 멘토에게 무엇을 물었는지는 보여주지 않는다. 학과가 돈을 냈다는 것과
+ * 학생의 진로 상담 내용을 볼 권리는 다른 이야기다. 담당자가 볼 수 있다는 것을
+ * 학생이 알면 진짜 고민을 쓰지 않는다 — 그러면 이 서비스는 아무 쓸모가 없다.
+ */
+export async function packUsageByMonth(orgIds: string[]): Promise<MonthUse[]> {
+  if (orgIds.length === 0) return [];
+  return query<MonthUse>(
+    `SELECT to_char(s.starts_at AT TIME ZONE 'Asia/Seoul', 'YYYY-MM') AS month,
+            count(*)::int AS used,
+            count(*) FILTER (WHERE pm.refunded_amount >= pm.amount)::int AS returned
+       FROM mentoring_credits c
+       JOIN mentoring_packs p  ON p.id = c.pack_id
+       JOIN mentoring_requests r ON r.id = c.request_id
+       JOIN mentor_slots s     ON s.id = r.slot_id
+       LEFT JOIN payments pm   ON pm.request_id = r.id
+      WHERE p.org_id = ANY($1::bigint[]) AND c.consumed_at IS NOT NULL
+      GROUP BY 1
+      ORDER BY 1 DESC
+      LIMIT 24`,
+    [orgIds],
+  );
 }
 
 /**
