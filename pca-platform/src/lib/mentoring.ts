@@ -13,6 +13,7 @@ import {
 } from "@/lib/notify";
 import { createMeeting, deleteMeeting } from "@/lib/zoom";
 import { createOrgPayment, createPayment, priceOf, refundFor, sponsorOrgOf } from "@/lib/billing";
+import { claimCredit } from "@/lib/pack";
 
 /**
  * 현멘 도메인 로직.
@@ -261,17 +262,18 @@ export async function createRequest(input: {
   }
 
   /**
-   * 학과 계약으로 들어온 학생은 카드로 내지 않는다. 그렇다고 세션 값이 0 인 것은
-   * 아니다 — 기관이 대신 낸다. 값을 0 으로 두면 멘토에게 갈 돈도 0 이 된다.
+   * 학과가 이용권을 사뒀으면 한 장을 깎고 본인은 내지 않는다. 그렇다고 세션 값이
+   * 0 인 것은 아니다 — 그 한 장이 값이다. 값을 0 으로 두면 멘토에게 갈 돈도 0 이 된다.
    * 그래서 정가는 어느 쪽이든 똑같이 구한다.
+   *
+   * 이용권을 집는 것은 트랜잭션 안에서 한다. 여기서 미리 확인하면 그 사이에
+   * 마지막 한 장이 남에게 갈 수 있다.
    */
   const sponsorOrgId = await sponsorOrgOf(input.applicantId);
   const price = (await priceOf(mentor.session_minutes)) ?? -1;
   if (price < 0) {
     throw new MentoringError("이 길이의 세션 가격이 정해져 있지 않습니다. 운영사에 문의하세요.");
   }
-  // 신청자가 직접 낼 금액. 기관 건은 0 이지만 세션 값은 price 그대로다
-  const amount = sponsorOrgId ? 0 : price;
 
   return tx(async (c) => {
     const held = await c.query<{ id: string }>(
@@ -303,12 +305,23 @@ export async function createRequest(input: {
     );
     const requestId = r.rows[0].id;
 
-    if (sponsorOrgId) {
-      // 결제창을 띄우지 않으므로 orderId 를 돌려주지 않는다. 값은 이미 치러진 것으로 본다
+    /**
+     * 이용권이 남아 있으면 한 장을 깎는다. 없거나 기간이 지났거나 한도가 모자라면
+     * null 이 오고, 그때는 본인 결제로 넘어간다. 여기서 막지 않는 이유는 학생이
+     * 할 수 있는 일이 없기 때문이다 — 학과가 더 사기를 기다리는 동안 신청이
+     * 아예 안 되면 그 학생은 그냥 떠난다. 대신 화면에 왜 결제인지 적는다.
+     */
+    const claimed = sponsorOrgId
+      ? await claimCredit(c, { orgId: sponsorOrgId, requestId, price })
+      : null;
+
+    if (claimed) {
+      // 결제창을 띄우지 않으므로 orderId 를 돌려주지 않는다. 값은 이미 치러졌다
       await createOrgPayment(c, {
         requestId,
         userId: input.applicantId,
-        orgId: sponsorOrgId,
+        orgId: sponsorOrgId!,
+        packId: claimed.packId,
         amount: price,
       });
       return { requestId, orderId: null, amount: 0 };
@@ -317,9 +330,9 @@ export async function createRequest(input: {
     const orderId = await createPayment(c, {
       requestId,
       userId: input.applicantId,
-      amount,
+      amount: price,
     });
-    return { requestId, orderId, amount };
+    return { requestId, orderId, amount: price };
   });
 }
 

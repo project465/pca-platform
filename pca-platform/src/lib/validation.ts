@@ -49,6 +49,28 @@ export const signupSchema = z
 
 /* ---------- 계약과 회차 ---------- */
 
+/**
+ * 기관 멘토링 이용권. unitPrice 는 한 장이 덮는 한도라서 정가표 값과 맞춰 넣는다 —
+ * 30,000 으로 두면 20·30분 세션은 덮고 45·60분은 본인 결제로 넘어간다.
+ */
+export const packCreateSchema = z.object({
+  orgId: z.string().regex(/^\d+$/, "기관을 고르세요."),
+  title: z.string().trim().min(2, "이용권 이름을 입력하세요.").max(120),
+  unitPrice: z.coerce
+    .number()
+    .int("한도는 정수로 입력하세요.")
+    .min(1000, "한도가 너무 작습니다.")
+    .max(1000000, "한도가 너무 큽니다."),
+  count: z.coerce
+    .number()
+    .int("장수는 정수로 입력하세요.")
+    .min(1, "1장 이상이어야 합니다.")
+    .max(20000, "한 번에 20,000장까지 만들 수 있습니다."),
+  startsOn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "시작일을 고르세요."),
+  endsOn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "종료일을 고르세요."),
+  memo: z.string().trim().max(500).optional(),
+});
+
 export const contractCreateSchema = z.object({
   orgId: z.string().regex(/^\d+$/, "학과를 고르세요."),
   title: z.string().trim().min(2, "계약명을 입력하세요.").max(120),

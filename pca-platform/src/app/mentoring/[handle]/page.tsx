@@ -12,7 +12,8 @@ import {
   openSlots,
   reviewsFor,
 } from "@/lib/mentoring";
-import { isFreeUser, priceOf } from "@/lib/billing";
+import { priceOf, sponsorOrgOf } from "@/lib/billing";
+import { coverableBy } from "@/lib/pack";
 import { payDryRun } from "@/lib/pay";
 import { refundPolicyLines, refundRules } from "@/lib/refund";
 import MentoringShell from "@/components/mentoring-shell";
@@ -42,7 +43,7 @@ export default async function MentorDetailPage({
   // 승인 전·중지된 멘토는 본인 말고는 못 본다. 링크를 알아도 마찬가지다.
   if (!mentor || (mentor.status !== "active" && mentor.user_id !== user?.id)) notFound();
 
-  const [slots, stats, reviews, jobs, mine, free] = await Promise.all([
+  const [slots, stats, reviews, jobs, mine, sponsorOrgId] = await Promise.all([
     openSlots(mentor.id),
     mentorStats(mentor.id),
     reviewsFor(mentor.id),
@@ -51,10 +52,22 @@ export default async function MentorDetailPage({
       [mentor.id],
     ),
     user ? mentorForUser(user.id) : Promise.resolve(null),
-    user ? isFreeUser(user.id) : Promise.resolve(false),
+    user ? sponsorOrgOf(user.id) : Promise.resolve(null),
   ]);
-  const price = free ? null : await priceOf(mentor.session_minutes);
-  // 돈을 받는 경우에만 환불 규정을 보여준다. 무료 세션은 돌려줄 돈이 없다
+
+  /**
+   * 학과가 이용권을 사뒀고 이 길이의 세션을 덮을 수 있으면 본인은 내지 않는다.
+   * 소속만 보고 '무료'라고 말하지 않는다 — 이용권이 떨어졌거나 기간이 지났는데
+   * 무료라고 해두면, 신청을 누른 뒤에야 결제창을 보게 된다.
+   */
+  const listPrice = await priceOf(mentor.session_minutes);
+  const pack = sponsorOrgId && listPrice !== null
+    ? await coverableBy(sponsorOrgId, listPrice)
+    : null;
+  const price = pack ? null : listPrice;
+  // 소속은 있는데 덮지 못하는 경우. 왜 결제인지 말해주지 않으면 문의가 된다
+  const noCover = Boolean(sponsorOrgId) && !pack;
+  // 돈을 받는 경우에만 환불 규정을 보여준다. 이용권으로 덮은 세션은 돌려줄 돈이 없다
   const refundPolicy = price === null ? [] : refundPolicyLines(await refundRules());
 
   const jobNames = await namesOf(
@@ -197,6 +210,13 @@ export default async function MentorDetailPage({
                 {price !== null ? ` · ${price.toLocaleString("ko-KR")}원` : ""}. 멘토가 거절하거나
                 24시간 안에 답하지 않으면 자동으로 취소되고 청구되지 않습니다.
               </p>
+              {noCover ? (
+                <p className="help">
+                  학과 이용권으로 덮이지 않아 본인 결제입니다. 남은 이용권이 없거나,
+                  계약 기간이 지났거나, 이 길이의 세션이 이용권 한도보다 비싼 경우입니다.
+                  학과 담당자에게 확인해 보세요.
+                </p>
+              ) : null}
               {refundPolicy.length > 0 ? (
                 <ul className="policy-lines">
                   {refundPolicy.map((line) => (
@@ -216,7 +236,7 @@ export default async function MentorDetailPage({
                 </Link>
               </div>
               <span className="help">
-                학과 계약으로 들어온 학생은 받은 계정으로 로그인하면 무료입니다.
+                학과가 이용권을 사둔 경우, 받은 계정으로 로그인하면 본인은 내지 않습니다.
               </span>
             </div>
           ) : (
@@ -225,6 +245,7 @@ export default async function MentorDetailPage({
               slots={slotOptions}
               minutes={mentor.session_minutes}
               price={price}
+              noCover={noCover}
               refundPolicy={refundPolicy}
               clientKey={process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY ?? null}
               dryRun={payDryRun()}

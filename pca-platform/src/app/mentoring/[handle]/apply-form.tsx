@@ -18,6 +18,7 @@ export default function ApplyForm({
   slots,
   minutes,
   price,
+  noCover,
   refundPolicy,
   clientKey,
   dryRun,
@@ -27,6 +28,8 @@ export default function ApplyForm({
   minutes: number;
   /** 이 사람이 내야 하는 금액. 학과 계약 학생은 null */
   price: number | null;
+  /** 소속은 있는데 이용권으로 덮이지 않는 경우. 왜 결제인지 말해준다 */
+  noCover: boolean;
   /** 취소 환불 규정. 무료 세션은 빈 배열 */
   refundPolicy: string[];
   clientKey: string | null;
@@ -140,10 +143,17 @@ export default function ApplyForm({
       </button>
       <span className="help">
         {price === null
-          ? "학과 계약으로 무료입니다. "
+          ? "학과 이용권으로 덮이는 세션이라 본인이 내지 않습니다. "
           : "멘토가 거절하거나 24시간 안에 답하지 않으면 자동으로 취소되고 청구되지 않습니다. "}
         승낙되면 줌 회의가 자동으로 만들어지고 링크가 바로 발송됩니다.
       </span>
+      {noCover ? (
+        <span className="help">
+          학과 이용권으로 덮이지 않아 본인 결제입니다. 남은 이용권이 없거나, 계약 기간이
+          지났거나, 이 길이의 세션이 이용권 한도보다 비싼 경우입니다. 학과 담당자에게
+          확인해 보세요.
+        </span>
+      ) : null}
     </form>
   );
 }

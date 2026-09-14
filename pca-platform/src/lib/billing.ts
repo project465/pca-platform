@@ -1,6 +1,7 @@
 import { query, queryOne, tx } from "@/lib/db";
 import type { PoolClient } from "pg";
 import { cancel, newOrderId, PayError } from "@/lib/pay";
+import { releaseCredit } from "@/lib/pack";
 import { percentFor, refundRules } from "@/lib/refund";
 
 export class BillingError extends Error {}
@@ -73,14 +74,14 @@ export async function createPayment(
  */
 export async function createOrgPayment(
   c: PoolClient,
-  input: { requestId: string; userId: string; orgId: string; amount: number },
+  input: { requestId: string; userId: string; orgId: string; packId: string; amount: number },
 ): Promise<string> {
   const orderId = "ORG-" + newOrderId();
   await c.query(
     `INSERT INTO payments
-       (request_id, user_id, amount, order_id, provider, payer_org_id, status, paid_at)
-     VALUES ($1, $2, $3, $4, 'org', $5, 'paid', now())`,
-    [input.requestId, input.userId, input.amount, orderId, input.orgId],
+       (request_id, user_id, amount, order_id, provider, payer_org_id, pack_id, status, paid_at)
+     VALUES ($1, $2, $3, $4, 'org', $5, $6, 'paid', now())`,
+    [input.requestId, input.userId, input.amount, orderId, input.orgId, input.packId],
   );
   return orderId;
 }
@@ -174,6 +175,9 @@ export async function refundFor(
   if (p.status === "paid" || p.status === "ready") {
     // 일부만 돌려준 건은 '취소'가 아니다. 남은 돈은 정산 대상으로 살아 있다.
     const fully = refund >= p.amount || p.status === "ready";
+
+    // 기관 이용권은 전액일 때만 돌아온다. 장 단위라 반 장을 돌려줄 방법이 없다
+    if (fully) await releaseCredit(requestId);
     await query(
       `UPDATE payments
           SET status = CASE WHEN $3 THEN 'cancelled' ELSE status END,
@@ -301,42 +305,4 @@ export async function saveprices(
       );
     }
   });
-}
-
-export type OrgBillingRow = {
-  org_id: string;
-  month: string;
-  /** 정산이 잡힌 건. 기관에 청구할 근거가 확정된 것들이다 */
-  billed_n: number;
-  billed: number;
-  /** 아직 세션 전이거나 멘토 응답을 기다리는 건. 청구 대상이 아니다 */
-  upcoming_n: number;
-};
-
-/**
- * 기관이 부담한 멘토링. 청구서의 근거가 된다.
- *
- * 금액을 payments.amount 가 아니라 payouts.gross 에서 읽는다. 멘토에게 실제로
- * 지급이 잡힌 금액과 기관에 청구하는 금액이 같은 모집단을 봐야, 중간에 취소·환불된
- * 건이 한쪽에만 남는 일이 없다.
- */
-export async function orgBilling(): Promise<OrgBillingRow[]> {
-  return query<OrgBillingRow>(
-    `SELECT p.payer_org_id AS org_id,
-            to_char(s.starts_at AT TIME ZONE 'Asia/Seoul', 'YYYY-MM') AS month,
-            count(*) FILTER (WHERE o.id IS NOT NULL)::int AS billed_n,
-            COALESCE(sum(o.gross) FILTER (WHERE o.id IS NOT NULL), 0)::int AS billed,
-            count(*) FILTER (
-              WHERE o.id IS NULL AND r.status IN ('requested', 'accepted')
-            )::int AS upcoming_n
-       FROM payments p
-       JOIN mentoring_requests r ON r.id = p.request_id
-       JOIN mentor_slots s       ON s.id = r.slot_id
-       LEFT JOIN payouts o       ON o.request_id = r.id
-      WHERE p.provider = 'org' AND p.payer_org_id IS NOT NULL
-      GROUP BY 1, 2
-     HAVING count(*) FILTER (WHERE o.id IS NOT NULL) > 0
-         OR count(*) FILTER (WHERE o.id IS NULL AND r.status IN ('requested', 'accepted')) > 0
-      ORDER BY 2 DESC, 4 DESC`,
-  );
 }

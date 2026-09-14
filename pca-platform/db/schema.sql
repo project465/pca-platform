@@ -720,6 +720,8 @@ CREATE INDEX idx_inquiries_open ON inquiries(created_at DESC) WHERE status = 'op
 --
 --  단가는 개인 건과 같은 정가표를 쓴다. 기관 건이 더 싸면 멘토가 기관 건을
 --  거절하기 시작하고, 그러면 손해는 결국 그 학생에게 돌아간다.
+--
+--  (2026-09-14 수정) 사후 청구에서 선불 이용권으로 바꿨다. 19번을 볼 것.
 -- ============================================================
 
 ALTER TABLE payments ADD COLUMN payer_org_id BIGINT REFERENCES organizations(id);
@@ -729,3 +731,56 @@ COMMENT ON COLUMN payments.payer_org_id IS
 -- 기관별 청구 화면이 훑는 인덱스
 CREATE INDEX idx_payments_org ON payments(payer_org_id, created_at DESC)
   WHERE payer_org_id IS NOT NULL;
+
+
+-- ============================================================
+--  19. 기관 선불 이용권 (2026-09-14)
+--
+--  기관 건을 쓴 만큼 나중에 청구하는 방식이었는데, 그러면 운영사가 돈을 받기
+--  전에 멘토에게 먼저 지급해야 한다. 학과 예산은 선집행이 원칙이기도 하다.
+--  그래서 기관이 N건을 미리 사두고, 신청이 들어올 때마다 한 장씩 깎는다.
+--
+--  계약·응시권(contracts·seats)과 같은 모양으로 만든다. 몇 장 남았는지를
+--  계산이 아니라 행 개수로 답하기 위해서다 — 소진은 행 하나의 상태 변화가 된다.
+--  검사 응시권과 섞지 않는다. 상품이 다르고 기간도 따로 돈다.
+--
+--  unit_price 는 '이용권 한 장이 덮는 한도'다. 세션 정가가 한도보다 비싸면
+--  그 이용권으로는 덮지 못하고 본인 결제로 넘어간다. 한도를 두지 않으면
+--  30,000원짜리 권으로 60,000원 세션을 결제하게 되고 차액은 운영사가 문다.
+--  멘토에게는 어느 쪽이든 정가표대로 지급한다.
+-- ============================================================
+
+CREATE TABLE mentoring_packs (
+  id          BIGSERIAL PRIMARY KEY,
+  org_id      BIGINT NOT NULL REFERENCES organizations(id),
+  title       TEXT NOT NULL,
+  -- 이용권 한 장이 덮는 한도(원). 이보다 비싼 세션은 본인 결제로 넘어간다
+  unit_price  INTEGER NOT NULL CHECK (unit_price > 0),
+  starts_on   DATE NOT NULL,
+  ends_on     DATE NOT NULL,
+  status      TEXT NOT NULL DEFAULT 'active',   -- active | suspended
+  memo        TEXT,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+  created_by  BIGINT REFERENCES users(id),
+  CHECK (ends_on >= starts_on)
+);
+COMMENT ON TABLE mentoring_packs IS
+  '기관이 선불로 사둔 멘토링 이용권 묶음. 검사 응시권(contracts)과 별개다';
+
+CREATE TABLE mentoring_credits (
+  id          BIGSERIAL PRIMARY KEY,
+  pack_id     BIGINT NOT NULL REFERENCES mentoring_packs(id) ON DELETE CASCADE,
+  -- 어느 신청에 썼는지. 되돌리면 둘 다 비운다
+  request_id  BIGINT UNIQUE REFERENCES mentoring_requests(id) ON DELETE SET NULL,
+  consumed_at TIMESTAMPTZ
+);
+COMMENT ON TABLE mentoring_credits IS
+  '이용권 1장 = 1행. 살 때 개수만큼 미리 만든다. 남은 장수는 세는 것이 아니라 행을 센다';
+
+-- 쓸 수 있는 장을 집는 인덱스. 신청 트랜잭션 안에서 매번 탄다
+CREATE INDEX idx_credits_free ON mentoring_credits(pack_id) WHERE consumed_at IS NULL;
+CREATE INDEX idx_credits_request ON mentoring_credits(request_id) WHERE request_id IS NOT NULL;
+
+-- 어느 이용권으로 덮은 건인지. 사후 청구가 없어졌으므로 payer_org_id 만으로는
+-- 어느 묶음에서 깎였는지 알 수 없다
+ALTER TABLE payments ADD COLUMN pack_id BIGINT REFERENCES mentoring_packs(id);
