@@ -90,6 +90,12 @@ const CHECKS: Check[] = [
     without: "Asia/Seoul 로 본다",
     level: "optional",
   },
+  {
+    keys: ["NEXT_PUBLIC_SITE_URL"],
+    what: "소개 사이트 주소",
+    without: "서비스 화면에서 소개 사이트로 돌아갈 길이 없다",
+    level: "optional",
+  },
 ];
 
 const has = (k: string) => (process.env[k] ?? "").trim().length > 0;

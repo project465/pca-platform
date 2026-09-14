@@ -26,6 +26,13 @@ export default function MentoringShell({
    * 메뉴는 로그인 여부로 갈리되 순서는 같다. 로그인했다고 항목이 앞뒤로 움직이면
    * 같은 사이트를 두 번 익혀야 한다. '내 신청'만 로그인한 사람에게 끼어든다.
    */
+  /**
+   * 소개 사이트(아임웹) 주소. 값이 있을 때만 링크가 뜬다.
+   * 앞단과 서비스가 다른 도메인이라 서로를 가리키는 길이 하나는 있어야 한다 —
+   * 없으면 소개를 보고 들어온 사람이 돌아갈 곳을 잃는다.
+   */
+  const site = process.env.NEXT_PUBLIC_SITE_URL;
+
   const nav = [
     { href: "/mentoring", label: "멘토 둘러보기" },
     { href: "/mentoring/reviews", label: "후기" },
@@ -92,6 +99,7 @@ export default function MentoringShell({
             <b>약관</b>
             <Link href="/terms">이용약관</Link>
             <Link href="/privacy">개인정보처리방침</Link>
+            {site ? <a href={site}>소개 사이트</a> : null}
           </div>
         </div>
         <p className="foot-note">
