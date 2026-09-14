@@ -1,5 +1,7 @@
 import type { PoolClient } from "pg";
 import { query, queryOne, tx } from "@/lib/db";
+import { enqueue, packEmptyToStaff, packLowToStaff } from "@/lib/notify";
+import { namesOf } from "@/lib/i18n";
 
 /**
  * 기관 선불 이용권.
@@ -135,7 +137,82 @@ export async function claimCredit(
       RETURNING pack_id`,
     [input.orgId, input.requestId, input.price],
   );
-  return r.rows[0] ? { packId: r.rows[0].pack_id } : null;
+  if (!r.rows[0]) return null;
+
+  const packId = r.rows[0].pack_id;
+  await alertIfRunningOut(c, packId);
+  return { packId };
+}
+
+/** 이 아래로 떨어지면 미리 한 번 알린다. 다 쓴 뒤에 아는 것보다 낫다 */
+const LOW_MARK = 5;
+
+async function remainOf(c: PoolClient, packId: string): Promise<number> {
+  const r = await c.query<{ n: number }>(
+    `SELECT count(*)::int AS n FROM mentoring_credits
+      WHERE pack_id = $1 AND consumed_at IS NULL`,
+    [packId],
+  );
+  return r.rows[0]?.n ?? 0;
+}
+
+/**
+ * 남은 장이 바닥나면 학과 담당자에게 메일을 건다.
+ *
+ * 신청과 같은 트랜잭션에서 큐에만 넣는다. 메일 서버가 죽어 있어도 신청은
+ * 성립해야 하고, 발송은 scripts/notify.ts 가 따로 비운다.
+ *
+ * 보낸 적이 있는지를 묶음에 적어두지 않으면 신청이 들어올 때마다 같은 메일이
+ * 나간다. 표시를 세우는 UPDATE 가 성공한 경우에만 큐에 넣어, 동시에 두 신청이
+ * 마지막 장을 나눠 가져도 메일은 한 번만 나가게 한다.
+ */
+async function alertIfRunningOut(c: PoolClient, packId: string): Promise<void> {
+  const remain = await remainOf(c, packId);
+  if (remain > LOW_MARK) return;
+
+  const col = remain === 0 ? "empty_notified_at" : "low_notified_at";
+  const marked = await c.query<{
+    org_id: string;
+    title: string;
+    ends_on: string;
+  }>(
+    `UPDATE mentoring_packs
+        SET ${col} = now()
+      WHERE id = $1 AND ${col} IS NULL
+      RETURNING org_id, title, ends_on::text`,
+    [packId],
+  );
+  if (marked.rowCount === 0) return; // 이미 알렸다
+
+  const pack = marked.rows[0];
+  const staff = await c.query<{ id: string; email: string | null }>(
+    `SELECT u.id, u.email
+       FROM memberships m JOIN users u ON u.id = m.user_id
+      WHERE m.org_id = $1 AND m.role = 'org_admin' AND u.status = 'active'`,
+    [pack.org_id],
+  );
+  // 담당자 계정이 없으면 보낼 곳이 없다. 운영사 화면에는 이미 경고가 떠 있다
+  if (staff.rowCount === 0) return;
+
+  const names = await namesOf("organizations", [pack.org_id], "ko");
+  const orgName = names.get(pack.org_id) ?? "학과";
+  const msg =
+    remain === 0
+      ? packEmptyToStaff({ orgName, title: pack.title, endsOn: pack.ends_on })
+      : packLowToStaff({ orgName, title: pack.title, remain, endsOn: pack.ends_on });
+
+  for (const s of staff.rows) {
+    await enqueue(c, {
+      requestId: null,
+      recipientId: s.id,
+      recipientEmail: s.email,
+      kind: remain === 0 ? "pack_empty" : "pack_low",
+      subject: msg.subject,
+      body: msg.body,
+      // 표시를 다시 세울 때마다 새 열쇠가 나와야 다음 소진도 알릴 수 있다
+      dedupeKey: `pack:${packId}:${remain === 0 ? "empty" : "low"}:${s.id}:${Date.now()}`,
+    });
+  }
 }
 
 /**
@@ -146,14 +223,26 @@ export async function claimCredit(
  * 취소하면 이용권이 돌아온다'로 안내한다.
  */
 export async function releaseCredit(requestId: string): Promise<boolean> {
-  const rows = await query<{ id: string }>(
+  const rows = await query<{ pack_id: string }>(
     `UPDATE mentoring_credits
         SET consumed_at = NULL, request_id = NULL
       WHERE request_id = $1
-      RETURNING id`,
+      RETURNING pack_id`,
     [requestId],
   );
-  return rows.length > 0;
+  if (rows.length === 0) return false;
+
+  // 장이 돌아와 여유가 생기면 알림 표시를 지운다. 그래야 다음에 다시
+  // 떨어질 때 또 알린다 — 지우지 않으면 첫 소진 한 번만 알리고 끝난다
+  await query(
+    `UPDATE mentoring_packs p
+        SET low_notified_at = NULL, empty_notified_at = NULL
+      WHERE p.id = $1
+        AND (SELECT count(*) FROM mentoring_credits c
+              WHERE c.pack_id = p.id AND c.consumed_at IS NULL) > $2`,
+    [rows[0].pack_id, LOW_MARK],
+  );
+  return true;
 }
 
 export async function createPack(input: {

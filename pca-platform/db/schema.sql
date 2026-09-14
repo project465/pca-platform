@@ -784,3 +784,19 @@ CREATE INDEX idx_credits_request ON mentoring_credits(request_id) WHERE request_
 -- 어느 이용권으로 덮은 건인지. 사후 청구가 없어졌으므로 payer_org_id 만으로는
 -- 어느 묶음에서 깎였는지 알 수 없다
 ALTER TABLE payments ADD COLUMN pack_id BIGINT REFERENCES mentoring_packs(id);
+
+
+-- ============================================================
+--  20. 이용권 소진 알림 (2026-09-14)
+--
+--  담당자가 모르면 학생이 먼저 안다 — 무료인 줄 알고 신청하다 결제창을 보는
+--  방식으로. 그건 학생이 어떻게 할 수 있는 일이 아니다.
+--
+--  보낸 적이 있는지를 묶음에 적어둔다. 신청이 들어올 때마다 세는 구조라
+--  표시가 없으면 같은 메일이 계속 나간다. 환불로 장이 돌아와 여유가 생기면
+--  표시를 지워, 다음에 다시 떨어질 때 또 알린다.
+-- ============================================================
+
+ALTER TABLE mentoring_packs
+  ADD COLUMN low_notified_at   TIMESTAMPTZ,
+  ADD COLUMN empty_notified_at TIMESTAMPTZ;

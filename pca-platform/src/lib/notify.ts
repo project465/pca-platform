@@ -23,7 +23,9 @@ export type NotifyKind =
   | "reminder_1h"
   | "no_show_reported"
   | "no_show_accepted"
-  | "no_show_rejected";
+  | "no_show_rejected"
+  | "pack_low"
+  | "pack_empty";
 
 const KST_DATE = new Intl.DateTimeFormat("ko-KR", {
   dateStyle: "full",
@@ -53,7 +55,8 @@ export function formatSlot(d: Date): string {
 }
 
 type QueueRow = {
-  requestId: string;
+  /** 신청과 무관한 알림(이용권 소진 등)은 null */
+  requestId: string | null;
   recipientId: string;
   /** users.email. NULL 이면 화면 알림으로 돌린다 */
   recipientEmail: string | null;
@@ -61,6 +64,8 @@ type QueueRow = {
   subject: string;
   body: string;
   sendAfter?: Date;
+  /** 기본값은 신청:받는이:종류. 신청이 없는 알림은 직접 준다 */
+  dedupeKey?: string;
 };
 
 /**
@@ -82,7 +87,7 @@ export async function enqueue(client: PoolClient, row: QueueRow): Promise<void> 
       row.recipientId,
       channel,
       row.kind,
-      `${row.requestId}:${row.recipientId}:${row.kind}`,
+      row.dedupeKey ?? `${row.requestId}:${row.recipientId}:${row.kind}`,
       row.subject,
       row.body,
       row.sendAfter ?? new Date(),
@@ -299,5 +304,41 @@ export function noShowResolved(m: {
           `${when} 세션에 나타나지 않으신 것으로 판정됐습니다.`,
           "멘토가 그 시간을 비워두었으므로 환불되지 않습니다.",
         ].join("\n"),
+  };
+}
+
+/**
+ * 이용권이 떨어졌을 때 학과 담당자에게.
+ *
+ * 담당자가 모르면 학생이 먼저 안다 — 무료인 줄 알고 신청하다 결제창을 보는
+ * 방식으로. 그건 학생이 어떻게 할 수 있는 일이 아니다.
+ */
+export function packEmptyToStaff(m: { orgName: string; title: string; endsOn: string }) {
+  return {
+    subject: `[현멘] ${m.orgName} 멘토링 이용권을 다 썼습니다`,
+    body:
+      `${m.orgName}의 멘토링 이용권 '${m.title}'을 모두 사용했습니다.\n\n` +
+      `지금부터 학과 학생이 멘토링을 신청하면 **본인 결제**로 넘어갑니다.\n` +
+      `신청이 막히지는 않지만, 무료인 줄 알았던 학생이 결제창을 보게 됩니다.\n\n` +
+      `계약 기간: ~ ${m.endsOn}\n` +
+      `남은 장수는 담당자 화면에서 확인하실 수 있습니다.\n` +
+      `추가가 필요하시면 운영사로 알려주세요.`,
+  };
+}
+
+/** 떨어지기 전에 한 번. 다 쓴 뒤에 아는 것보다 낫다 */
+export function packLowToStaff(m: {
+  orgName: string;
+  title: string;
+  remain: number;
+  endsOn: string;
+}) {
+  return {
+    subject: `[현멘] ${m.orgName} 멘토링 이용권이 ${m.remain}장 남았습니다`,
+    body:
+      `${m.orgName}의 멘토링 이용권 '${m.title}'이 ${m.remain}장 남았습니다.\n\n` +
+      `다 쓰면 학과 학생의 신청이 본인 결제로 넘어갑니다.\n\n` +
+      `계약 기간: ~ ${m.endsOn}\n` +
+      `추가가 필요하시면 운영사로 알려주세요.`,
   };
 }
