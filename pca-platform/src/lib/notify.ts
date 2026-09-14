@@ -26,7 +26,8 @@ export type NotifyKind =
   | "no_show_rejected"
   | "pack_low"
   | "pack_empty"
-  | "payout_pending";
+  | "payout_pending"
+  | "payout_paid";
 
 const KST_DATE = new Intl.DateTimeFormat("ko-KR", {
   dateStyle: "full",
@@ -385,5 +386,40 @@ export function payoutPendingToMentor(m: {
       `원천징수는 수수료를 뗀 뒤 금액에 붙고, 소득세법상 운영사가 대신 신고합니다.\n` +
       `1원 단위는 항상 내림하므로 적힌 금액보다 덜 받으시는 일은 없습니다.\n\n` +
       account,
+  };
+}
+
+/**
+ * 지급을 마쳤을 때 멘토에게.
+ *
+ * 이 메일이 없으면 멘토는 통장을 들여다보는 수밖에 없다. 언제 들어오는지
+ * 모르는 돈은 액수와 상관없이 사람을 불안하게 한다.
+ *
+ * 계좌번호는 끝 네 자리만 적는다. 메일은 어디로든 전달될 수 있다.
+ */
+export function payoutPaidToMentor(m: {
+  startsAt: Date;
+  reqStatus: string;
+  net: number;
+  withholding: number;
+  bank: string;
+  accountNo: string;
+  holder: string;
+}) {
+  const won = (n: number) => `${n.toLocaleString("ko-KR")}원`;
+  const tail = m.accountNo.replace(/\D/g, "").slice(-4);
+  const what =
+    m.reqStatus === "cancelled"
+      ? `${formatWhen(m.startsAt)} 시간대(신청자가 늦게 취소한 건)`
+      : `${formatWhen(m.startsAt)} 세션`;
+
+  return {
+    subject: `[현멘] ${won(m.net)}을 보냈습니다`,
+    body:
+      `${what}의 정산을 보내드렸습니다.\n\n` +
+      `보낸 금액 ${won(m.net)}\n` +
+      `보낸 곳 ${m.bank} ****${tail} (${m.holder})\n\n` +
+      `은행 사정으로 반영에 시간이 걸릴 수 있습니다. 하루가 지나도 들어오지 않으면 알려주세요.\n` +
+      `원천징수한 ${won(m.withholding)}은 운영사가 대신 신고합니다. 따로 하실 일은 없습니다.`,
   };
 }

@@ -276,8 +276,8 @@ export default async function MentorConsolePage() {
             </p>
           ) : null}
           <p className="help" style={{ marginTop: 8 }}>
-            정산이 잡히면 <b>금액과 계산 내역을 메일로 보내드립니다.</b> 이 표를 매번 열어
-            확인하지 않으셔도 됩니다.
+            정산이 잡힐 때와 <b>실제로 보내드렸을 때</b> 각각 메일로 알려드립니다. 금액과
+            계산 내역이 함께 갑니다 — 이 표를 매번 열어 확인하지 않으셔도 됩니다.
           </p>
         </>
       ) : null}

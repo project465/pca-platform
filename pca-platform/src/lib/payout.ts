@@ -1,7 +1,7 @@
 import type { PoolClient } from "pg";
 import { query, queryOne, tx } from "@/lib/db";
 import { payoutSettings } from "@/lib/refund";
-import { enqueue, payoutPendingToMentor } from "@/lib/notify";
+import { enqueue, payoutPaidToMentor, payoutPendingToMentor } from "@/lib/notify";
 
 export class PayoutError extends Error {}
 
@@ -211,13 +211,62 @@ export async function markPayoutPaid(payoutId: string, memo: string | null): Pro
     throw new PayoutError("이 멘토의 지급 계좌가 등록되지 않았습니다. 보낼 곳이 없습니다.");
   }
 
-  const rows = await query<{ id: string }>(
-    `UPDATE payouts SET status = 'paid', paid_at = now(), memo = $2
-      WHERE id = $1 AND status = 'pending'
-      RETURNING id`,
-    [payoutId, memo],
-  );
-  if (rows.length === 0) throw new PayoutError("이미 지급 처리된 건입니다.");
+  await tx(async (c) => {
+    const rows = await c.query<{ id: string }>(
+      `UPDATE payouts SET status = 'paid', paid_at = now(), memo = $2
+        WHERE id = $1 AND status = 'pending'
+        RETURNING id`,
+      [payoutId, memo],
+    );
+    if (rows.rowCount === 0) throw new PayoutError("이미 지급 처리된 건입니다.");
+
+    // 보냈다는 것을 본인에게 알린다. 이 메일이 없으면 통장을 들여다보는 수밖에 없다
+    const d = await c.query<{
+      request_id: string;
+      user_id: string;
+      email: string | null;
+      net: number;
+      withholding: number;
+      req_status: string;
+      starts_at: string;
+      bank: string;
+      account_no: string;
+      holder: string;
+    }>(
+      `SELECT o.request_id, m.user_id, u.email, o.net, o.withholding,
+              r.status AS req_status, s.starts_at::text,
+              a.bank, a.account_no, a.holder
+         FROM payouts o
+         JOIN mentors m ON m.id = o.mentor_id
+         JOIN users u   ON u.id = m.user_id
+         JOIN mentoring_requests r ON r.id = o.request_id
+         JOIN mentor_slots s ON s.id = r.slot_id
+         JOIN mentor_payout_accounts a ON a.mentor_id = m.id
+        WHERE o.id = $1`,
+      [payoutId],
+    );
+    const p = d.rows[0];
+    if (!p) return;
+
+    const msg = payoutPaidToMentor({
+      startsAt: new Date(p.starts_at),
+      reqStatus: p.req_status,
+      net: p.net,
+      withholding: p.withholding,
+      bank: p.bank,
+      accountNo: p.account_no,
+      holder: p.holder,
+    });
+    await enqueue(c, {
+      requestId: p.request_id,
+      recipientId: p.user_id,
+      recipientEmail: p.email,
+      kind: "payout_paid",
+      subject: msg.subject,
+      body: msg.body,
+      dedupeKey: `payout:${payoutId}:${p.user_id}:paid`,
+    });
+  });
 }
 
 export async function payoutSummary(): Promise<{ pending: number; pending_net: number }> {
