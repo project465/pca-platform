@@ -23,6 +23,7 @@
     "metri:hs": "tsx scripts/metri/hs-check.ts",
     "metri:subjects": "tsx scripts/metri/seed-subjects.ts",
     "metri:prescribe": "tsx scripts/metri/prescribe-check.ts",
+    "domains:check": "node scripts/domains-check.mjs",
     "copy:audit": "node scripts/copy-audit.mjs",
     "metri:tier": "tsx scripts/metri/tier-check.ts"
   },

@@ -281,6 +281,7 @@ npm run metri:subjects  # 고교학점제 과목표 74개 적재 (2022 개정 �
 npm run metri:prescribe # 과목 처방 — 계열마다 다른 과목이 나가는지 확인
 npm run metri:tier      # 무료·유료 경계 — 무료 응시에 유료 데이터가 오지 않는지
 npm run copy:audit      # 원고에서 기계로 쓴 냄새를 센다 (대시·대구·잠언 종결)
+npm run domains:check   # 코드가 가리키는 주소에 이미 남이 있는지 본다
 ```
 
 **메트리 플러스 (중·고등학생용, 2026-09-12 추가)**
@@ -303,6 +304,8 @@ npm run copy:audit      # 원고에서 기계로 쓴 냄새를 센다 (대시·�
 - `docs/metri/17_plus_product_line.md` — **무엇을 파는가.** 무료·유료 경계와 그 이유
 - `docs/metri/18_plus_validation.md` — **무엇을 증명해야 파는가.** 검증 설계와
   합격 기준, 그리고 **떨어지면 무엇을 멈추는지**
+- `docs/metri/20_domains.md` — **도메인.** `metri.io` 가 우리 것이 아니라는 것과,
+  사고 나서 고칠 두 줄
 - `docs/metri/19_plus_ladder.md` — **학년마다 다시 파는 사다리.** 중2부터 고3까지
   무엇을 팔 수 있고 무엇이 아직 없는지, 그리고 켜기 전에 확인할 것
 - `src/lib/entitlement.ts` — 등급을 정하는 유일한 곳 (설계 원칙 10)
