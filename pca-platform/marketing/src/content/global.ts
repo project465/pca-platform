@@ -15,9 +15,9 @@ export const global: SiteContent = {
   platformUrl: "https://app.metri.io",
 
   meta: {
-    title: "METRI — engineering majors, read against the roles that hire them",
+    title: "METRI | Engineering majors, read against the roles that hire them",
     description:
-      "Twenty-four engineering job clusters and 138 competencies across mechanical, electrical and computer engineering, checked against real postings. Not a personality type — ANSYS held 2 of 4, asked for in 89 of 132 postings for this role.",
+      "Twenty-four engineering job clusters and 138 competencies across mechanical, electrical and computer engineering, checked against real postings. Not a personality type: ANSYS held 2 of 4, asked for in 89 of 132 postings for this role.",
   },
 
   legal: {
@@ -59,7 +59,7 @@ export const global: SiteContent = {
     eyebrow: "METRI · Engineering career diagnostics",
     title: ["They chose engineering.", "Nobody told them which engineering."],
     lead:
-      "Mechanical, electrical and computer engineering — 24 job clusters and 138 competencies, checked against real postings. Not “you are collaborative”, but “Simulation & CAE 80, ANSYS held 2 of 4, asked for in 89 of 132 postings for this role”. The activity axes are the same in every country, which is why the instrument travels.",
+      "Mechanical, electrical and computer engineering: 24 job clusters and 138 competencies, checked against real postings. The report does not say “you are collaborative”. It says “Simulation & CAE 80, ANSYS held 2 of 4, asked for in 89 of 132 postings for this role”. The activity axes are the same in every country, which is why the instrument travels.",
     primary: { label: "See a real report", href: "#sample" },
     secondary: { label: "Talk to us", href: "/contact" },
     priceline:
@@ -79,7 +79,7 @@ export const global: SiteContent = {
     lead:
       "What PCA measures is the second question. Below is a 15–20 page report with four of its pages put on one screen. A student does not receive a type name. They receive this.",
     disclaimer:
-      "An illustrative screen showing the format of the report — not a real student’s submission. The ten job areas, the six work styles and the regional method are exactly as they ship.",
+      "An illustrative screen showing the format of the report. It is not a real student’s submission. The ten job areas, the six work styles and the regional method are exactly as they ship.",
     docTag: "METRI individual report",
     page: "extract · 00-1 · 00-2 · 05–06 · regional annex",
     person: {
@@ -93,7 +93,7 @@ export const global: SiteContent = {
     },
     jobsLabel: "00-1 Job-area fit · ten areas, scored out of 100",
     jobsNote:
-      "The thin bar is the measurement error. Areas whose intervals overlap are shown as one group — we do not rank differences smaller than the error. Areas in a lower group carry the reason they fell there, so the student never has to ask why they were ruled out.",
+      "The thin bar is the measurement error. Areas whose intervals overlap are shown as one group, because we do not rank differences smaller than the error. Areas in a lower group carry the reason they fell there, so the student never has to ask why they were ruled out.",
     tierLabel: "Group {n}",
     tierNote:
       "Two areas share the top group. This assessment cannot separate them, so both stay open and experience decides.",
@@ -113,7 +113,7 @@ export const global: SiteContent = {
     styleTypeLabel: "Profile",
     styleType: "Quality-led · independent",
     styleVerdict:
-      "Strong where a standard is set and has to be met to the end. Costly in a team that runs on speed and on pulling other people along. For now, aim at posts where the standard is explicit — process and quality — and leave leading a team until year three or later.",
+      "Strong where a standard is set and has to be met to the end. Costly in a team that runs on speed and on pulling other people along. For now, aim at posts where the standard is explicit, such as process and quality, and leave leading a team until year three or later.",
     styleAxes: ["Independent", "Collaborative", "Challenge-oriented", "Stability-oriented", "Speed-focused", "Quality-focused"],
     styleScores: [78, 55, 62, 71, 49, 86],
     planLabel: "Sections 05–06 · the next twelve months",
@@ -236,28 +236,28 @@ export const global: SiteContent = {
     label: "What it reads",
     heading: "Three layers, and only the first one is a questionnaire",
     lead:
-      "Interest is measured. Competency is not asked about — it is computed from coursework, certificates and projects. Keeping the two apart is the whole point: wanting to do CAE and being able to do CAE are different facts, and a report that blends them cannot be acted on.",
+      "Interest is measured. Competency is never asked about. It is computed from coursework, certificates and projects. Keeping the two apart is the whole point: wanting to do CAE and being able to do CAE are different facts, and a report that blends them cannot be acted on.",
     items: [
       {
         no: "01",
         kicker: "MEASURED",
         title: "Ten engineering job areas, eight activity axes",
         body:
-          "250 items, 25 per job area. Design, manufacturing, energy and plant, automotive and aerospace, robotics, IT convergence, construction, research, bio, public sector. Those ten fold into eight activity axes — analysis, design, build and test, programming, field and plant, optimisation, research, coordination — which mean the same thing in Seoul, Ankara and Astana.",
+          "250 items, 25 per job area. Design, manufacturing, energy and plant, automotive and aerospace, robotics, IT convergence, construction, research, bio, public sector. Those ten fold into eight activity axes: analysis, design, build and test, programming, field and plant, optimisation, research and coordination. They mean the same thing in Seoul, Ankara and Astana.",
       },
       {
         no: "02",
         kicker: "MEASURED",
         title: "Six work styles, carried inside the same items",
         body:
-          "120 of the 250 items carry a work-style signal without naming it. Independent, collaborative, challenge-oriented, stability-oriented, speed-focused, quality-focused. What matters is not the absolute height but which sits above which — the same student is an asset in process quality and a liability on a sprint team.",
+          "120 of the 250 items carry a work-style signal without naming it. Independent, collaborative, challenge-oriented, stability-oriented, speed-focused, quality-focused. What matters is not the absolute height but which sits above which. The same student is an asset in process quality and a liability on a sprint team.",
       },
       {
         no: "03",
         kicker: "COMPUTED",
         title: "Held competency, from evidence only",
         body:
-          "A course passed, a certificate held, a project shipped — each carries its own weight and reliability, and the sum converts to a level from 0 to 5. Ask a student to rate their own ANSYS and everyone says three. Where there is no evidence the report says so rather than guessing.",
+          "A course passed, a certificate held, a project shipped. Each carries its own weight and reliability, and the sum converts to a level from 0 to 5. Ask a student to rate their own ANSYS and everyone says three. Where there is no evidence the report says so rather than guessing.",
       },
     ],
   },
@@ -360,7 +360,7 @@ export const global: SiteContent = {
             sub: "SUBSECTION 1-2",
             title: "Group summary",
             body: [
-              "The report groups rather than ranks. In a 500-respondent simulation the gap between first and second was a median 3.7 points while the measurement error was 7.3 — when the error is larger than the gap, that rank is precision the instrument does not have. Areas whose intervals overlap form one group, and the report makes no claim about the order inside it.",
+              "The report groups rather than ranks. In a 500-respondent simulation the gap between first and second was a median 3.7 points while the measurement error was 7.3. When the error is larger than the gap, that rank is precision the instrument does not have. Areas whose intervals overlap form one group, and the report makes no claim about the order inside it.",
             ],
             table: {
               head: ["Group", "Area", "Score (interval)", "How the report uses it"],
@@ -386,9 +386,9 @@ export const global: SiteContent = {
             sub: "SUBSECTION 2-1",
             title: "Three representative strengths",
             bullets: [
-              "1. Turning a physical situation into a solvable problem — translating a real part into boundary conditions, loads and material properties.",
-              "2. Distrusting a number until it is checked — testing mesh dependence, convergence and the gap against measured data before believing a result.",
-              "3. Carrying analysis through to a design change — not stopping at “the stress is high”, but proposing geometry, thickness, material and joint alternatives.",
+              "1. Turning a physical situation into a solvable problem, by translating a real part into boundary conditions, loads and material properties.",
+              "2. Distrusting a number until it is checked, by testing mesh dependence, convergence and the gap against measured data before believing a result.",
+              "3. Carrying analysis through to a design change, proposing geometry, thickness, material and joint alternatives instead of stopping at “the stress is high”.",
             ],
           },
           {
@@ -580,9 +580,9 @@ export const global: SiteContent = {
               { label: "Venture idea 1", value: "Structural verification service for small manufacturers" },
             ],
             body: [
-              "What it is — a job-by-job analysis service that takes drawings and load conditions and returns a strength and fatigue review.",
-              "The problem it solves — smaller manufacturers need grounds for a design change but cannot keep analysis staff and licences on hand.",
-              "Who buys it — small manufacturers and design offices in automotive parts, industrial machinery, tooling and construction equipment.",
+              "What it is. A job-by-job analysis service that takes drawings and load conditions and returns a strength and fatigue review.",
+              "The problem it solves. Smaller manufacturers need grounds for a design change but cannot keep analysis staff and licences on hand.",
+              "Who buys it. Small manufacturers and design offices in automotive parts, industrial machinery, tooling and construction equipment.",
             ],
           },
         ],
@@ -600,7 +600,7 @@ export const global: SiteContent = {
             title: "The strengths this result surfaced",
             bullets: [
               "A clear tendency to move a physical situation into a model and decide by calculation, which reads across to simulation and CAE roles.",
-              "Quality-oriented came out highest among the work styles — consistent with work that keeps verifying results and re-examining conditions.",
+              "Quality-oriented came out highest among the work styles, which fits work that keeps verifying results and re-examining conditions.",
             ],
           },
           {
@@ -637,7 +637,7 @@ export const global: SiteContent = {
   styles: {
     label: "Six work styles",
     heading: "Two students can score 80 and work nothing alike",
-    chartNote: "Work style analysis — sample",
+    chartNote: "Work style analysis (sample)",
     items: [
       { name: "Independent", body: "Absorbed in focused, solitary work" },
       { name: "Collaborative", body: "Solves problems alongside other people" },
@@ -694,7 +694,7 @@ export const global: SiteContent = {
       { value: "487", label: "students in one mechanical engineering department" },
       { value: "31%", label: "meet the required geometric tolerancing (GD&T) level" },
       { value: "67%", label: "of 1,240 regional postings ask for GD&T" },
-      { value: "372", label: "the overlap — students who need this training" },
+      { value: "372", label: "the overlap, students who need this training" },
     ],
     funnelNote:
       "That last figure is the quote. The department has already accepted the problem before choosing a remedy, which is a different conversion from a cold offer. The numbers above illustrate how the calculation runs; they are not a real department's data.",
@@ -705,7 +705,7 @@ export const global: SiteContent = {
         ["Individual skill-matching services", "Personal skills matched to postings", "No department-level aggregate"],
         ["National competency frameworks", "A standard dictionary of roles and skills", "No student assessment"],
         ["Free public career tests", "Free, open to everyone", "Neither engineering focus nor cohort view"],
-        ["Vocational training platforms", "Hundreds of courses and a university channel", "No diagnosis — no idea who to sell to"],
+        ["Vocational training platforms", "Hundreds of courses and a university channel", "No diagnosis, no idea who to sell to"],
         ["METRI", "Individual assessment → cohort aggregate → named training demand", "Training delivery runs through partners"],
       ],
       note:
@@ -734,7 +734,7 @@ export const global: SiteContent = {
       {
         title: "The instrument already travels",
         body:
-          "The same 250 items exist in Korean, English and Turkish, and the eight activity axes are country-invariant by construction. Localisation replaces the labour-market layer — postings, employers, credentials — not the instrument.",
+          "The same 250 items exist in Korean, English and Turkish, and the eight activity axes are country-invariant by construction. Localisation replaces the labour-market layer, meaning postings, employers and credentials. The instrument itself stays put.",
       },
     ],
   },
@@ -814,7 +814,7 @@ export const global: SiteContent = {
         items: [
           "The instrument and its scoring rules",
           "The ten job areas and the six work styles",
-          "The report structure — sections 00-1 through 08",
+          "The report structure, sections 00-1 through 08",
           "The competency framework behind the strength profile",
         ],
       },
@@ -836,12 +836,12 @@ export const global: SiteContent = {
         items: [
           "The department list and its own character",
           "Local employers and institutions around the campus",
-          "Release policy — who sees results, and when",
+          "Release policy: who sees results, and when",
         ],
       },
     ],
     note:
-      "Because layer 1 is shared, cohorts in different countries stay comparable. That comparability is the asset — it is why the platform students sit on is one, worldwide, even though the marketing sites are separate.",
+      "Because layer 1 is shared, cohorts in different countries stay comparable. That comparability is the asset, and it is why the platform students sit on is one system worldwide even though the marketing sites are separate.",
   },
 
   partnership: {
@@ -896,7 +896,7 @@ export const global: SiteContent = {
     items: [
       {
         q: "Does this only work in Korea?",
-        a: "No. The instrument, the ten job areas and the six work styles are shared worldwide. What is rebuilt per country is the translation, the alignment to that country's occupational standard, and — where wanted — regional employer data. That split is set out under Localisation.",
+        a: "No. The instrument, the ten job areas and the six work styles are shared worldwide. What is rebuilt per country is the translation, the alignment to that country's occupational standard, and, where wanted, regional employer data. That split is set out under Localisation.",
       },
       {
         q: "How long does a localisation take?",
@@ -916,7 +916,7 @@ export const global: SiteContent = {
       },
       {
         q: "What does the institution receive?",
-        a: "An anonymised aggregate report covering the cohort's distribution across job areas and work styles — usable as evidence of graduate outcomes. An administrator area covering every engineering department is on the way.",
+        a: "An anonymised aggregate report covering the cohort's distribution across job areas and work styles, usable as evidence of graduate outcomes. An administrator area covering every engineering department is on the way.",
       },
       {
         q: "Is it validated?",
@@ -929,7 +929,7 @@ export const global: SiteContent = {
     label: "Pricing",
     heading: "₩29,000 for one, cohort pricing for a department",
     lead:
-      "Individuals buy one at a time. Departments contract by cohort size. Most institutions run one department first and widen from there — a single year group is enough to see what the reports change.",
+      "Individuals buy one at a time. Departments contract by cohort size. Most institutions run one department first and widen from there. A single year group is enough to see what the reports change.",
     planLabel: "What you are interested in",
     plans: [
       {
@@ -938,7 +938,7 @@ export const global: SiteContent = {
         who: "A student, a job seeker, a would-be founder",
         price: "₩29,000",
         unit: "per person",
-        note: "Billed in Korean won; overseas Visa and Mastercard are accepted. Card payment opens once the merchant review clears — until then requests come through the form.",
+        note: "Billed in Korean won; overseas Visa and Mastercard are accepted. Card payment opens once the merchant review clears. Until then requests come through the form.",
         features: [
           "Ten job areas out of 100 · groups and intervals",
           "Six work styles as a hexagon",
@@ -989,18 +989,18 @@ export const global: SiteContent = {
       tracks: [
         {
           key: "individual",
-          name: "Individual — ₩29,000",
+          name: "Individual, ₩29,000",
           who: "A student or a job seeker",
           steps: [
             "Start opens the sign-up screen. Signing up logs you in and returns you to where you were",
-            "Pay ₩29,000 — a Korean card, or a Visa or Mastercard issued overseas",
+            "Pay ₩29,000 with a Korean card, or a Visa or Mastercard issued overseas",
             "253 questions, about 30 minutes. Every answer saves as you go, so you can close the tab and come back",
             "Your report opens as soon as it is scored. No departmental approval to wait on",
           ],
         },
         {
           key: "org",
-          name: "Department or university — by contract",
+          name: "Department or university, by contract",
           who: "A department, a careers office, a university",
           steps: [
             "Tell us the department and a rough number; we come back with an estimate",
@@ -1012,7 +1012,7 @@ export const global: SiteContent = {
         },
       ],
       caveat:
-        "Individual card payment opens once the Korean merchant review and the mail-order seller filing clear. Until then individual assessments are booked through the form, while department contracts run today — a contract does not go through a payment screen. We do not list something as working when it does not.",
+        "Individual card payment opens once the Korean merchant review and the mail-order seller filing clear. Until then individual assessments are booked through the form, while department contracts run today, because a contract does not go through a payment screen. We do not list something as working when it does not.",
     },
   },
 
@@ -1024,7 +1024,7 @@ export const global: SiteContent = {
     liveLabel: "Open",
     soonLabel: "In preparation",
     note:
-      "No country site is open yet — the domains below are reserved names, not live addresses. The assessment itself runs; what is pending is the domain and the local rollout. If your country is not listed, talk to us — that is how one starts.",
+      "No country site is open yet. The domains below are reserved names, not live addresses. The assessment itself runs; what is pending is the domain and the local rollout. If your country is not listed, talk to us. That is how one starts.",
     items: [
       { code: "KR", name: "Korea", native: "한국", domain: "metri.co.kr", href: "https://metri.co.kr", live: false },
       { code: "DE", name: "Germany", native: "Deutschland", domain: "metri.de", href: "https://metri.de", live: false },
@@ -1069,7 +1069,7 @@ export const global: SiteContent = {
     },
     submit: "Send",
     sending: "Sending…",
-    success: "Thanks — we have it",
+    success: "Thanks, we have it",
     successBody: "We will reply to the address you gave.",
     error: "That did not send. Please try again in a moment.",
   },
@@ -1080,16 +1080,16 @@ export const global: SiteContent = {
     flow: ["Sitting", "Ten job areas", "Six work styles", "Execution plan", "Report"],
     seeSheet: "See the result sheet",
     photosHome: [
-      "Photo — employment lecture",
-      "Photo — STEM mentoring session",
-      "Photo — career fair",
+      "Photo: employment lecture",
+      "Photo: STEM mentoring session",
+      "Photo: career fair",
     ],
     photosAbout: [
-      "Photo — university event",
-      "Photo — invited speaker",
-      "Photo — the team",
+      "Photo: university event",
+      "Photo: invited speaker",
+      "Photo: the team",
     ],
-    photoCohort: "Photo — a department sitting the assessment",
+    photoCohort: "Photo: a department sitting the assessment",
     deeperLabel: "Go deeper",
     deeperHeading: "Start where it matters to you",
     nextLabel: "Next",
@@ -1142,6 +1142,6 @@ export const global: SiteContent = {
     ],
     statusLabel: { live: "Running", progress: "Onboarding", planned: "Planned" },
     footnote:
-      "Regional matching is rebuilt per region from that region's own employers — the method travels, the list does not.",
+      "Regional matching is rebuilt per region from that region's own employers. The method travels; the list does not.",
   },
 };
