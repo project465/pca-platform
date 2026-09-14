@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { query } from "@/lib/db";
 import { namesOf } from "@/lib/i18n";
 import { currentUser, requireUser } from "@/lib/session";
@@ -49,66 +50,11 @@ function AnonymityNote() {
   );
 }
 
-/** 로그인 전에 보이는 멘토 모집 안내 */
-function MentorIntro() {
-  return (
-    <MentoringShell user={null} current="/mentoring/mentor" isMentor={false}>
-      <div className="page-head">
-        <h1>멘토로 참여하기</h1>
-      </div>
-
-      <p className="lede">
-        석·박사 과정을 지나 지금 그 경로에 있는 분만 멘토가 됩니다. 산업계 R&amp;D ·
-        산업계 비R&amp;D · 정부출연연구기관 · 대학·학계 · 창업·스타트업 · 공공·정책 —
-        여섯 경로 중 하나면 됩니다. <b>전원 익명</b>이고, 운영사가 현직 여부를 확인한
-        뒤에야 갤러리에 올라갑니다.
-      </p>
-
-      <div className="visitor-steps" style={{ marginBottom: 22 }}>
-        <div>
-          <span className="no">1</span>
-          <b>프로필을 만듭니다</b>
-          <span className="why">별명·학위·진로 경로·연차·다룰 수 있는 직무 영역</span>
-        </div>
-        <div>
-          <span className="no">2</span>
-          <b>운영사가 현직 여부를 확인합니다</b>
-          <span className="why">무엇으로 확인했는지 기록이 남습니다. 근거 없이는 갤러리에 올라가지 않습니다</span>
-        </div>
-        <div>
-          <span className="no">3</span>
-          <b>시간대를 엽니다</b>
-          <span className="why">직접 연 시간대에만 신청이 들어옵니다. 열지 않으면 신청도 없습니다</span>
-        </div>
-        <div>
-          <span className="no">4</span>
-          <b>승낙하면 줌 회의가 자동으로 만들어집니다</b>
-          <span className="why">일정과 링크가 양쪽에 발송되고, 세션이 끝나면 정산이 잡힙니다</span>
-        </div>
-      </div>
-
-      <AnonymityNote />
-
-      <div className="join" style={{ marginTop: 22 }}>
-        <Link className="act solid" href="/signup">
-          가입하고 프로필 만들기
-        </Link>
-        <Link className="act" href="/login?next=%2Fmentoring%2Fmentor">
-          이미 계정이 있습니다
-        </Link>
-      </div>
-      <p className="help" style={{ marginTop: 10 }}>
-        받는 금액과 지급 시점은 <Link href="/mentoring/guide#mentor">이용 안내</Link>에 있습니다.
-      </p>
-    </MentoringShell>
-  );
-}
-
 export default async function MentorConsolePage() {
-  // 멘토 모집도 영업이다. 어떤 조건이고 얼마를 받는지 보지도 못하고 가입할 수는 없다.
-  // 로그인은 프로필을 실제로 만드는 자리에서 받는다
+  // 모집 안내는 /mentoring/join 한 곳에만 둔다. 여기에도 같은 글을 두면 둘이
+  // 어긋나고, 주소를 건네줬을 때 받는 쪽이 보는 화면이 로그인 여부로 갈린다
   const visitor = await currentUser();
-  if (!visitor) return <MentorIntro />;
+  if (!visitor) redirect("/mentoring/join");
 
   const user = await requireUser();
   const mentor = await mentorForUser(user.id);
@@ -132,7 +78,8 @@ export default async function MentorConsolePage() {
           석·박사 과정을 지나 지금 그 경로에 있는 분만 멘토가 됩니다.
           프로필을 만들면 운영사가 현직 여부를 확인한 뒤 갤러리에 올립니다. 확인 근거가
           기록되지 않은 프로필은 갤러리에 올라가지 않습니다. 신청자에게는 별명과 속성만 보이고,
-          실명·회사명·이메일은 어느 화면에도 나오지 않습니다.
+          실명·회사명·이메일은 어느 화면에도 나오지 않습니다. 받는 금액과 절차는{" "}
+          <Link href="/mentoring/join">멘토 모집</Link>에 정리해 두었습니다.
         </p>
         <AnonymityNote />
         <div className="panel form-panel">

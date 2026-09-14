@@ -33,7 +33,9 @@ export default function MentoringShell({
     { href: "/mentoring/faq", label: "자주 묻는 질문" },
     { href: "/mentoring/contact", label: "문의" },
     ...(user ? [{ href: "/mentoring/requests", label: "내 신청" }] : []),
-    { href: "/mentoring/mentor", label: isMentor ? "멘토 콘솔" : "멘토로 참여하기" },
+    isMentor
+      ? { href: "/mentoring/mentor", label: "멘토 콘솔" }
+      : { href: "/mentoring/join", label: "멘토로 참여하기" },
   ];
 
   return (
@@ -82,7 +84,7 @@ export default function MentoringShell({
           </div>
           <div>
             <b>멘토</b>
-            <Link href="/mentoring/mentor">멘토로 참여하기</Link>
+            <Link href="/mentoring/join">멘토로 참여하기</Link>
             <Link href="/mentoring/guide#mentor">정산과 지급</Link>
             <Link href="/mentoring/contact?kind=mentor">멘토 문의</Link>
           </div>

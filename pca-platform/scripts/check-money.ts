@@ -15,6 +15,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { percentFor, refundRules, payoutSettings } from "../src/lib/refund";
+import { payoutOf } from "../src/lib/payout-math";
 
 function loadEnv(file: string) {
   try {
@@ -35,11 +36,10 @@ function check(label: string, ok: boolean) {
 }
 
 /** 정산 계산. src/lib/payout.ts 의 SQL 과 같은 식이다 */
-function payout(gross: number, feePct: number, whPct: number) {
-  const fee = Math.floor((gross * feePct) / 100);
-  const withholding = Math.floor(((gross - fee) * whPct) / 100);
-  return { fee, withholding, net: gross - fee - withholding };
-}
+// 계산은 src/lib/payout-math.ts 하나만 쓴다. 검산 스크립트가 자기 식을 따로
+// 들고 있으면 그 스크립트는 아무것도 검산하지 못한다
+const payout = (gross: number, feePct: number, whPct: number) =>
+  payoutOf(gross, feePct, whPct);
 
 const AMOUNT = 30_000;
 const HOURS = [168, 72, 48, 47, 24, 23, 6, 0];
