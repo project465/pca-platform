@@ -16,7 +16,7 @@
 
 | | 무엇 |
 |---|---|
-| `careerpeak.co.kr` | 아임웹. 소개·영업 |
+| `careerpeak.co.kr/hyunmen` | 아임웹. 현멘 소개 페이지 (2026-09-15 확정) |
 | **`hyunmen.kr`** | 이 코드. 서비스 **정본** (2026-09-14 결정) |
 | `hyunmen.com` 등 나머지 | 사두고 `hyunmen.kr` 로 보낸다. 서비스로 쓰지 않는다 |
 
@@ -50,7 +50,7 @@
 ```
 AUTH_URL=https://hyunmen.kr
 MAIL_FROM=no-reply@hyunmen.kr
-NEXT_PUBLIC_SITE_URL=https://careerpeak.co.kr   # 푸터에 '소개 사이트' 링크가 뜬다
+NEXT_PUBLIC_SITE_URL=https://careerpeak.co.kr/hyunmen   # 푸터에 '소개 사이트' 링크가 뜬다
 ```
 
 `NEXT_PUBLIC_SITE_URL` 은 푸터를 그리는 서버 컴포넌트에서 읽으므로 **재시작만 하면
@@ -126,6 +126,8 @@ NEXT_PUBLIC_SITE_URL=https://careerpeak.co.kr   # 푸터에 '소개 사이트' �
   갤러리는 로그인 없이 열린다
 - **유입 추적**을 붙일 거면 양쪽에 같은 분석 도구를 걸어야 한다. 지금은 없다
 - 서비스 화면 푸터에 '소개 사이트' 링크가 뜬다(`NEXT_PUBLIC_SITE_URL`).
+  **careerpeak 홈이 아니라 `/hyunmen` 을 가리켜야 한다.** 홈으로 보내면 현멘과 상관없는
+  페이지가 뜨고, 돌아온 사람이 다시 길을 찾아야 한다.
   이 값을 비워두면 링크가 뜨지 않는다 — 아임웹이 아직 없을 때 깨진 링크를
   보여주지 않기 위해서다
 
@@ -152,7 +154,8 @@ NEXT_PUBLIC_SITE_URL=https://careerpeak.co.kr   # 푸터에 '소개 사이트' �
   안 쌓인다. 현멘 페이지의 문의 버튼은 `hyunmen.kr/mentoring/contact` 로 보낸다
 - **사업자 정보** — 공용 푸터에 이미 있으면 9번에서 빼도 된다. 없으면 넣는다
 
-페이지 주소(`careerpeak.co.kr/…`)가 곧 멘토 모집 글에 적을 주소가 된다.
+페이지 주소는 **`careerpeak.co.kr/hyunmen`** 으로 정했다. 이 주소가 곧 멘토 모집 글에
+적을 주소이고, 한 번 뿌린 뒤에 바꾸면 그 링크들이 전부 죽는다.
 
 **3. 원고 붙이기** — [IMWEB-COPY.md](IMWEB-COPY.md) 의 1~9번을 순서대로
 
@@ -161,10 +164,10 @@ NEXT_PUBLIC_SITE_URL=https://careerpeak.co.kr   # 푸터에 '소개 사이트' �
 **5. 사업자 정보 채우기**
 전자상거래법상 표시 의무다. 이것 때문에 공개가 막히면 1~4 는 미리 해둬도 된다.
 
-**6. 도메인 연결과 공개** — 아임웹 쪽에 `careerpeak.co.kr` 을 붙인다
+**6. 공개** — `careerpeak.co.kr` 은 이미 붙어 있으므로 페이지만 공개로 돌리면 된다
 
 **7. 서비스 쪽 `.env` 에 한 줄**
-`NEXT_PUBLIC_SITE_URL=https://careerpeak.co.kr` — 서비스 화면 푸터에 '소개 사이트'
+`NEXT_PUBLIC_SITE_URL=https://careerpeak.co.kr/hyunmen` — 서비스 화면 푸터에 '소개 사이트'
 링크가 뜬다. 이 줄을 빼면 소개를 보고 들어온 사람이 돌아갈 길이 없다.
 
 ### 이미지는 어떻게 할 것인가

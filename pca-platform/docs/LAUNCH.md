@@ -70,7 +70,7 @@ $ npm run check:env
 `careerpeak.co.kr` 과 `academix.co.kr` 은 쓰고 있는 브랜드 사이트이고,
 `mentorlab.kr` · `phdmentor.com` 은 남이 쓰고 있어 못 쓴다.
 
-소개 사이트는 아임웹(`careerpeak.co.kr`)이 맡는다. 무엇을 어디에 두는지는
+소개 사이트는 아임웹이 맡고, 현멘 소개는 `careerpeak.co.kr/hyunmen` 이다. 무엇을 어디에 두는지는
 [IMWEB.md](IMWEB.md) 에 있다.
 
 #### 도메인이 생긴 날 할 일
@@ -81,7 +81,7 @@ $ npm run check:env
 #    브라우저가 경고를 띄운다. 리다이렉트가 있어도 소용없다
 AUTH_URL=https://hyunmen.kr              # .env
 MAIL_FROM=no-reply@hyunmen.kr
-NEXT_PUBLIC_SITE_URL=https://careerpeak.co.kr
+NEXT_PUBLIC_SITE_URL=https://careerpeak.co.kr/hyunmen
 npm run check:env                        # localhost·도메인 불일치를 여기서 잡는다
 npm run build                            # NEXT_PUBLIC_TOSS_CLIENT_KEY 가 바뀌었으면 필수
 ```
