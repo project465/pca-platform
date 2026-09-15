@@ -3,7 +3,7 @@
  *
  * 결제를 밖(아임웹 같은 쇼핑몰)에서 받고 응시는 여기서 하는 구조다.
  * 그 사이를 잇는 것이 코드 한 줄이라, 코드가 새면 그대로 공짜 좌석이 된다.
- * 확인하는 것 일곱.
+ * 확인하는 것 여덟.
  *
  *   1. 만든 코드로 좌석이 생기고 응시가 열리는가
  *   2. **금액이 0 으로 적히는가** — 돈은 저쪽 장부에 있다. 두 번 잡으면 안 된다
@@ -12,6 +12,9 @@
  *   5. 없는 코드·취소된 코드·기간 지난 코드가 각각 제 이유로 거절되는가
  *   6. 하이픈·소문자·공백을 섞어 적어도 같은 코드로 읽는가
  *   7. 코드로 연 결과지 등급이 그 상품의 등급과 같은가
+ *   8. **좌석을 주지 않는 상품으로는 코드를 찍지 않는가**
+ *      — 업그레이드는 어느 응시를 여는지가 있어야 열린다. 코드에는 그
+ *        자리가 없어서, 막지 않으면 돈만 건너가고 아무 일도 안 생긴다
  *
  *   npm run metri:redeem
  */
@@ -150,6 +153,19 @@ async function main() {
   } else {
     check(true, "아직 응시 전이라 등급은 응시 후에 본다 (좌석까지 확인됨)");
   }
+
+  console.log("\n════════ 8. 좌석 없는 상품은 코드로 못 판다 ════════");
+  let refused = "";
+  try {
+    await issueCodes({ productCode: "HS_UPGRADE", count: 1, batch: "redeem-check-up" });
+  } catch (e) {
+    refused = e instanceof Error ? e.message : String(e);
+  }
+  check(refused.includes("코드로 팔 수 없습니다"), "업그레이드 상품은 발행을 거절한다",
+    refused ? refused.slice(0, 36) + "…" : "거절하지 않았다");
+  const leaked = await queryOne<{ n: number }>(
+    `SELECT count(*)::int AS n FROM redemption_codes WHERE batch = 'redeem-check-up'`);
+  check((leaked?.n ?? 0) === 0, "거절했으면 한 장도 남지 않는다", `${leaked?.n ?? 0}장`);
 
   console.log("\n════════ 묶음 현황 ════════");
   for (const row of await batchStatus(BATCH)) {
