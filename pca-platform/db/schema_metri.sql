@@ -1433,3 +1433,117 @@ COMMENT ON TABLE outbox IS
   '보낼 것 대기열. 화면은 한 줄 적고 끝내고, 발송은 따로 돈다.
    메일 서버가 죽어도 결제가 실패하지 않아야 하기 때문이다.
    본문은 저장하지 않는다 — 보낼 때 만든다';
+
+
+/**
+ * 36. 부가 문항 — 지역 정주와 진단 만족도
+ *
+ * 제안서(METRICAREER)가 성과지표로 약속한 것이다. 검사 문항과 **섞지
+ * 않는다** — 두 가지가 다르기 때문이다.
+ *
+ *   검사 문항   →  점수를 만든다. 산식이 읽고, 결과지가 그 숫자를 쓴다
+ *   부가 문항   →  점수를 만들지 않는다. 기관 리포트의 성과지표로만 간다
+ *
+ * 섞으면 정주 의향이 직무 적합도를 흔든다. `questions` 에 넣지 않고
+ * 따로 두는 것이 그 선이다.
+ *
+ * **응시 전과 후에 같은 것을 묻는다.** 그래야 "이 진단을 보고 달라졌는가"
+ * 를 뺄셈으로 말할 수 있다. 한 번만 물으면 그냥 현황 조사다.
+ */
+CREATE TABLE IF NOT EXISTS survey_items (
+  id        BIGSERIAL PRIMARY KEY,
+  code      TEXT NOT NULL UNIQUE,
+  -- residency(지역 정주) | awareness(지역 기업 인지) | interest(지역 관심)
+  -- | satisfaction(만족도)
+  kind      TEXT NOT NULL CHECK (kind IN
+              ('residency', 'awareness', 'interest', 'satisfaction')),
+  -- before(응시 전) | after(응시 후)
+  phase     TEXT NOT NULL CHECK (phase IN ('before', 'after')),
+  order_no  INTEGER NOT NULL,
+  /**
+   * 응시 전·후를 짝지어 비교할 때 쓰는 열쇠. 같은 것을 묻는 두 문항이
+   * 같은 값을 가진다. 없으면(만족도처럼 한 번만 묻는 것) NULL 이다.
+   */
+  pair_key  TEXT,
+  active    BOOLEAN NOT NULL DEFAULT true
+);
+CREATE INDEX IF NOT EXISTS survey_items_phase_idx ON survey_items (phase, order_no);
+
+COMMENT ON TABLE survey_items IS
+  '지역 정주·만족도 문항. 채점에 들어가지 않는다 — 기관 리포트 성과지표용';
+
+CREATE TABLE IF NOT EXISTS survey_responses (
+  attempt_id  BIGINT NOT NULL REFERENCES attempts(id) ON DELETE CASCADE,
+  item_id     BIGINT NOT NULL REFERENCES survey_items(id),
+  -- 5점 척도. 1 전혀 아니다 … 5 매우 그렇다
+  value       SMALLINT NOT NULL CHECK (value BETWEEN 1 AND 5),
+  answered_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  PRIMARY KEY (attempt_id, item_id)
+);
+
+COMMENT ON TABLE survey_responses IS
+  '부가 문항 응답. responses 와 나눠 둔 이유는 채점이 이 표를 아예 읽지 않기 위해서다';
+
+/**
+ * 문항 전문은 제안서에 적힌 그대로다. **고쳐 쓰지 않았다** — 응시 전과
+ * 후의 문장이 조금이라도 다르면 뺄셈이 의미를 잃는다.
+ */
+INSERT INTO survey_items (code, kind, phase, order_no, pair_key) VALUES
+  ('RES_BEFORE',  'residency',    'before', 1, 'residency'),
+  ('AWR_BEFORE',  'awareness',    'before', 2, 'awareness'),
+  ('INT_AFTER',   'interest',     'after',  1, NULL),
+  ('RES_AFTER',   'residency',    'after',  2, 'residency'),
+  ('AWR_AFTER',   'awareness',    'after',  3, 'awareness'),
+  ('SAT_OVERALL', 'satisfaction', 'after',  4, NULL),
+  ('SAT_CLARITY', 'satisfaction', 'after',  5, NULL),
+  ('SAT_HELP',    'satisfaction', 'after',  6, NULL),
+  ('SAT_RECOMMEND','satisfaction','after',  7, NULL)
+ON CONFLICT (code) DO NOTHING;
+
+INSERT INTO translations (table_name, row_id, lang, field, value)
+SELECT 'survey_items', s.id, 'ko', 'text', v.text
+  FROM survey_items s
+  JOIN (VALUES
+    ('RES_BEFORE',   '졸업 후 우리 지역에서 취업하거나 정착할 의향이 있다.'),
+    ('AWR_BEFORE',   '우리 지역에 내 전공을 살릴 수 있는 기업·기관이 어디 있는지 알고 있다.'),
+    ('INT_AFTER',    '이 진단을 보고, 우리 지역의 기업·진로에 대한 관심이 높아졌다.'),
+    ('RES_AFTER',    '진단 결과를 확인한 지금, 졸업 후 우리 지역에서 취업하거나 정착할 의향이 있다.'),
+    ('AWR_AFTER',    '진단 결과를 확인한 지금, 우리 지역에 내 전공을 살릴 수 있는 기업·기관이 어디 있는지 알고 있다.'),
+    ('SAT_OVERALL',  '이 진단에 전반적으로 만족한다.'),
+    ('SAT_CLARITY',  '결과 리포트의 내용을 이해하기 쉬웠다.'),
+    ('SAT_HELP',     '진단 결과가 진로 준비에 도움이 된다.'),
+    ('SAT_RECOMMEND','이 진단을 다른 학생에게 추천할 의향이 있다.')
+  ) AS v(code, text) ON v.code = s.code
+ON CONFLICT (table_name, row_id, lang, field) DO NOTHING;
+
+
+/**
+ * 37. 전공 카탈로그 — 제안서의 28개 학과
+ *
+ * 학과마다 직무영역·문항·결과지가 따로다(설계 원칙 8). 그래서 학과는
+ * **검사지를 고르는 열쇠**이지 화면 위의 이름표가 아니다.
+ *
+ * **문항이 없는 학과는 켜지 않는다.** 제안서에 28개가 적혀 있지만 실제로
+ * 문항 은행이 있는 것은 기계공학 하나뿐이다. 없는 것을 켜 두면 판매
+ * 화면이 먼저 생기고 내용이 나중에 따라온다 — 학년 사다리에서 이미
+ * 같은 규칙을 썼다.
+ */
+CREATE TABLE IF NOT EXISTS major_programs (
+  id             BIGSERIAL PRIMARY KEY,
+  code           TEXT NOT NULL UNIQUE,      -- 'ME' · 'MGMT' …
+  -- engineering | science | health | business | design | service
+  family         TEXT NOT NULL,
+  -- 이 학과가 푸는 검사지. 아직 없으면 NULL 이고 그때는 active 가 false 다
+  instrument_key TEXT,
+  order_no       INTEGER NOT NULL,
+  active         BOOLEAN NOT NULL DEFAULT false,
+  CHECK (NOT active OR instrument_key IS NOT NULL)
+);
+CREATE INDEX IF NOT EXISTS major_programs_family_idx ON major_programs (family, order_no);
+
+COMMENT ON TABLE major_programs IS
+  '제안서의 학과 목록. active 는 문항 은행이 실제로 있는 학과만 참이다 —
+   CHECK 가 검사지 없는 학과를 켜지 못하게 막는다';
+
+COMMENT ON COLUMN major_programs.instrument_key IS
+  '비어 있으면 아직 문항이 없다는 뜻이다. 지어내서 채우지 않는다';

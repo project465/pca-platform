@@ -30,7 +30,9 @@
     "metri:redeem": "tsx scripts/metri/redeem-check.ts",
     "metri:tier": "tsx scripts/metri/tier-check.ts",
     "metri:outbox": "tsx scripts/metri/outbox-check.ts",
-    "metri:ops": "tsx scripts/metri/ops.ts"
+    "metri:ops": "tsx scripts/metri/ops.ts",
+    "metri:majors": "tsx scripts/metri/seed-majors.ts",
+    "metri:survey": "tsx scripts/metri/survey-check.ts"
   },
   "dependencies": {
     "@types/nodemailer": "^8.0.1",
