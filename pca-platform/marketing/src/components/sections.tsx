@@ -702,7 +702,10 @@ export function PricingSection(
             </div>
           ))}
         </div>
-        <p className="small" style={{ marginTop: 22 }}>
+        {/* 세금 한 줄은 요금표 바로 밑에 붙는다 (R043). 아래 안내문
+            속에 섞어 두면 가격을 보는 눈길이 닿지 않는다 */}
+        <p className="taxnote">{p.taxNote}</p>
+        <p className="small" style={{ marginTop: 14 }}>
           {p.note}
         </p>
       </div>

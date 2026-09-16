@@ -945,6 +945,9 @@ export const global: SiteContent = {
         cta: { ready: "Talk to us", ask: "Talk to us (scoped quote)" },
       },
     ],
+    /* R043. The won figures are tax-inclusive, so the converted ones are
+       too. Said plainly here rather than buried in the note below */
+    taxNote: "Prices shown include tax.",
     note:
       "Prices are set in Korean won — \u20a925,000 and \u20a922,000 — and converted here at \u20a91,345 to the dollar (11 September 2026). We invoice in won unless we agree otherwise, and we confirm the amount with you before anything is signed. Payment is not connected yet, so an individual assessment also comes through the enquiry form.",
   },

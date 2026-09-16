@@ -712,6 +712,10 @@ section { padding-block: clamp(60px, 8vw, 108px); }
 .plan .note { margin-top: auto; padding-top: 16px; font-size: 12px; color: var(--faint); line-height: 1.6; }
 .plan .btn { margin-top: 14px; }
 
+/* 세금 한 줄 (R043). 요금표에 붙여 두고, 아래 안내문보다 진하게 둔다 —
+   금액을 본 눈이 그대로 읽고 지나가야 하는 줄이다 */
+.taxnote { margin-top: 18px; font-size: 13px; font-weight: 600; color: var(--ink-2); letter-spacing: -0.01em; }
+
 /* ── 예시 결과지 ─────────────────────────────── */
 .report {
   background: var(--paper); border: 1px solid var(--line-2); border-radius: var(--r);

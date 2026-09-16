@@ -209,6 +209,15 @@ export type Pricing = {
   heading: string;
   lead: string;
   plans: Plan[];
+  /**
+   * 요금표 바로 밑의 세금 한 줄 (R043).
+   *
+   * 금액이 부가세를 포함한 값인지 아닌지는 사는 사람이 요금표에서
+   * 바로 알아야 한다 — 문의하고 나서 금액이 달라지면 그때부터는
+   * 해명이다. 나라마다 표기 관행이 달라 문장은 판마다 다르지만
+   * **세 판 모두 이 줄이 있어야 한다.** 그래서 선택 항목이 아니다.
+   */
+  taxNote: string;
   note: string;
   /** 문의 폼에서 고를 때 쓰는 라벨 */
   planLabel: string;
