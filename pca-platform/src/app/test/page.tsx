@@ -9,13 +9,13 @@ import LangSwitch from "@/components/lang-switch";
 
 /**
  * 제목은 응시자가 무엇을 사서 왔는지에 따라 갈린다. 고교판 응시자에게
- * "METRI" 를 띄우면 메트리 플러스로 들어온 사람이 다른 회사에 온 줄 안다
+ * "Careermetri" 를 띄우면 커리어메트리 플러스로 들어온 사람이 다른 회사에 온 줄 안다
  * (설계 원칙 9 — 두 브랜드는 서로를 설명하지 않는다).
  */
 export async function generateMetadata() {
     const user = await currentUser();
   const track = user ? await pendingTrack(user.id) : null;
-  return { title: track === "HS" ? "검사 시작 — 메트리 플러스" : "검사 시작 — METRI" };
+  return { title: track === "HS" ? "검사 시작 — 커리어메트리 플러스" : "검사 시작 — Careermetri" };
 }
 
 export default async function TestEntry({

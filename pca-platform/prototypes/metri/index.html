@@ -1,4 +1,4 @@
-<title>METRI 공학 커리어 엔진</title>
+<title>Careermetri 공학 커리어 엔진</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
 :root{
@@ -182,7 +182,7 @@ ul.tight{margin:0; padding-left:18px} ul.tight li{margin-bottom:6px; max-width:6
 
 <div class="wrap">
 <aside class="rail">
-  <div class="brand"><b>METRI</b><span>PROTOTYPE</span></div>
+  <div class="brand"><b>Careermetri</b><span>PROTOTYPE</span></div>
   <div class="brand-sub">전공에서 기업까지 · 화면 프리뷰</div>
   <nav id="nav"></nav>
   <div class="railfoot">
@@ -199,7 +199,7 @@ ul.tight{margin:0; padding-left:18px} ul.tight li{margin-bottom:6px; max-width:6
 <script src="data.js"></script>
 <script>
 (function(){
-const D = window.METRI_DATA;
+const D = window.Careermetri_DATA;
 const ME = D.majors.find(m=>m.code==='ME');
 const byCode = {}; D.majors.forEach(m=>m.competencies.forEach(c=>{ byCode[c.code]=c; }));
 const axisKo = {}; D.indicators.forEach(a=>axisKo[a.code]=a.ko);
@@ -270,7 +270,7 @@ const SCREENS = [];
 const add = (id,group,label,fn)=>SCREENS.push({id,group,label,render:fn});
 
 /* --- 개요 --- */
-add('overview','시작','이 프리뷰가 뭔지', ()=> sheet('METRI 설계 프리뷰','',`
+add('overview','시작','이 프리뷰가 뭔지', ()=> sheet('Careermetri 설계 프리뷰','',`
 <section class="blk">
   <h2 class="blk">한 줄</h2>
   <p style="font-size:20px;font-weight:600;letter-spacing:-.02em;max-width:40ch">공학 학습자의 Career Profile 을 만들고,
@@ -829,11 +829,11 @@ add('calc','데이터','매칭 산식 계산기', ()=>{
 });
 
 /* --- PCA 연결 --- */
-add('bridge','시작','기존 단체 PCA 와의 연결', ()=> sheet('기존 PCA ↔ METRI', ['테이블을 하나도 지우지 않았다'],`
+add('bridge','시작','기존 단체 PCA 와의 연결', ()=> sheet('기존 PCA ↔ Careermetri', ['테이블을 하나도 지우지 않았다'],`
 <section class="blk">
   <h2 class="blk">그대로 쓰는 것</h2>
   <div class="tw"><table>
-    <tr><th>기존 자산</th><th>METRI 에서</th></tr>
+    <tr><th>기존 자산</th><th>Careermetri 에서</th></tr>
     <tr><td><code>users</code> · <code>memberships</code></td><td>고등학생·대학생·개인결제자 전부 여기. <b>설계 원칙 1 유지</b></td></tr>
     <tr><td><code>contracts</code> · <code>seats</code></td><td>학과 좌석 그대로. 개인 결제는 계약 없이 좌석 1개</td></tr>
     <tr><td><code>test_sessions</code> · <code>attempts</code> · <code>responses</code></td><td>응시 흐름 그대로. <code>elapsed_ms</code> 만 추가</td></tr>
@@ -849,12 +849,12 @@ add('bridge','시작','기존 단체 PCA 와의 연결', ()=> sheet('기존 PCA 
   <div class="tw"><table>
     <tr><th>층</th><th>축</th><th>어디서 왔나</th><th>결과지에서</th></tr>
     <tr><td>업무 성향</td><td>독립 · 협력 · 도전 · 안정 · 속도중시 · 품질중시</td><td><b>기존 PCA</b></td><td>육각형 그대로</td></tr>
-    <tr><td>공학 활동</td><td>해석 · 설계 · 제작 · 코딩 · 현장 · 개선 · 탐구 · 조율</td><td><b>METRI 신규</b></td><td>직무 적합도의 A 항</td></tr>
+    <tr><td>공학 활동</td><td>해석 · 설계 · 제작 · 코딩 · 현장 · 개선 · 탐구 · 조율</td><td><b>Careermetri 신규</b></td><td>직무 적합도의 A 항</td></tr>
     <tr><td>직무 영역 10</td><td>경영·전략 … 컨설팅</td><td>기존 PCA</td><td>전 학과 공통 층</td></tr>
-    <tr><td>전공 직무군 8</td><td>기계설계 · CAE …</td><td>METRI 신규</td><td>공학 특화 층</td></tr>
+    <tr><td>전공 직무군 8</td><td>기계설계 · CAE …</td><td>Careermetri 신규</td><td>공학 특화 층</td></tr>
   </table></div>
   <p class="note" style="margin-top:14px"><b>기존 6축을 바꾸지 않습니다.</b> 바꾸면 이미 응시한 학생과 비교가 끊깁니다.
-  METRI 8축은 그 위에 얹습니다 — "협력형" 은 CAE 와 생산기술을 못 가르기 때문입니다.</p>
+  Careermetri 8축은 그 위에 얹습니다 — "협력형" 은 CAE 와 생산기술을 못 가르기 때문입니다.</p>
 </section>
 <section class="blk">
   <h2 class="blk">제안서와 플랫폼 스펙의 충돌 — 셋 다 데이터로 흡수</h2>
@@ -864,7 +864,7 @@ add('bridge','시작','기존 단체 PCA 와의 연결', ()=> sheet('기존 PCA 
     <tr><td>응시 자격</td><td>학과 명단 기반</td><td>전용 링크 발급</td><td><b>둘 다.</b> <code>seats</code> 하나로 처리</td></tr>
     <tr><td>직무 영역</td><td>전공별 8개</td><td>전 학과 공통 10개</td><td><b>공존.</b> 결과지에서 층이 다르다</td></tr>
   </table></div>
-</section>`,'METRI 는 PCA 를 대체하지 않습니다. db/schema_metri.sql 이 위에 얹히고, ALTER 와 CREATE 만 씁니다.'));
+</section>`,'Careermetri 는 PCA 를 대체하지 않습니다. db/schema_metri.sql 이 위에 얹히고, ALTER 와 CREATE 만 씁니다.'));
 
 /* ================= 부팅 ================= */
 const nav = document.getElementById('nav'), stage = document.getElementById('stage');

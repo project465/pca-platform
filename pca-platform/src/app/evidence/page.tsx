@@ -3,7 +3,7 @@ import { competencies, evidenceOf, evidenceSources, grades } from "@/lib/evidenc
 import { resolveLang } from "@/lib/locale-server";
 import EvidenceBoard from "./evidence-board";
 
-export const metadata = { title: "역량 증거 — METRI" };
+export const metadata = { title: "역량 증거 — Careermetri" };
 
 /**
  * 증거 입력 화면.

@@ -18,14 +18,15 @@ import { lookup } from "node:dns/promises";
 
 /** 코드가 실제로 가리키는 주소. marketing/src/content/*.ts 와 맞춰 둔다. */
 const USED = [
-  { host: "metri.io", why: "인터내셔널 사이트 도메인 (global.ts)" },
-  { host: "app.metri.io", why: "플랫폼 — 네 사이트의 '시작하기' 가 모두 여기로 간다" },
-  { host: "metri.co.kr", why: "한국 사이트 도메인 (kr.ts)" },
+  { host: "careermetri.com", why: "인터내셔널 사이트 도메인 (global.ts)" },
+  { host: "app.careermetri.com", why: "플랫폼 — 네 사이트의 '시작하기' 가 모두 여기로 간다" },
+  { host: "careermetri.co.kr", why: "한국 사이트 도메인 (kr.ts)" },
 ];
 
 /** 아직 안 쓰지만 같이 잡아 둘 만한 이름. */
 const CANDIDATES = [
-  "metri.kr", "metriplus.co.kr", "metriplus.kr", "metri.com", "metri.app", "metri.co",
+  "careermetri.kr", "careermetri.io", "careermetri.net",
+  "careermetriplus.co.kr", "careermetri.app",
 ];
 
 async function probe(host) {

@@ -3,7 +3,7 @@ import { requireRole } from "@/lib/session";
 import { contractsOf, orgsOf } from "@/lib/org";
 import SessionForm from "./session-form";
 
-export const metadata = { title: "회차 열기 — METRI" };
+export const metadata = { title: "회차 열기 — Careermetri" };
 
 export default async function NewSession() {
   const user = await requireRole(["org_admin"]);

@@ -16,8 +16,8 @@ SITE=kr     npm run dev     # 한국어판
 
 | SITE | 도메인(예정) | 언어 | 상태 |
 |---|---|---|---|
-| `global` | metri.io | en | 있음 |
-| `kr` | metri.co.kr | ko | 있음 |
+| `global` | careermetri.com | en | 있음 |
+| `kr` | careermetri.co.kr | ko | 있음 |
 | `kz` | metri.kz | kk | **있음** (현지 검수 필요) |
 | `tr` | metri.com.tr | tr | **있음** (현지 검수 필요) |
 
@@ -38,7 +38,7 @@ SITE=kr     npm run dev     # 한국어판
 
 - **문의 접수**가 서버 파일(`.inquiries/contact.jsonl`)에 쌓이기만 한다.
   운영에 올리기 전에 메일 발송이나 CRM 연동으로 바꿔야 한다. `src/app/actions.ts` 참고
-- **도메인이 확정되지 않았다.** 브랜드는 `METRI` 로 정해졌고 원고에 반영했다.
+- **도메인이 확정되지 않았다.** 브랜드는 `Careermetri` 로 정해졌고 원고에 반영했다.
   도메인이 정해지면 각 원고 파일의 `domain` · `platformUrl` · `footer.sites` 만 고치면 된다
 - **kz·tr 원고의 현지 검수**
 - **기업 채널의 법적 범위 확인.** 한국은 `docs/metri/10_legal_kr.md` 에 정리했다.

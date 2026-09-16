@@ -1,5 +1,5 @@
 /**
- * METRI 결과지 데이터 — 기계공학과 3학년 예시.
+ * Careermetri 결과지 데이터 — 기계공학과 3학년 예시.
  *
  * 구성은 career peak 실제 결과지(68쪽·8섹션)를 따른다. 섹션 표지 → SUBSECTION
  * 번호 → 서술 → 표 → 종합 정리.
@@ -7,9 +7,9 @@
  * 내용은 전부 이 데이터에 있고 report.html 은 그리기만 한다. 학생이 바뀌면
  * 이 파일만 바뀐다 — 화면에 한국어가 박혀 있으면 전공을 늘릴 때마다 코드를 고쳐야 한다.
  */
-window.METRI_REPORT = {
+window.Careermetri_REPORT = {
   cover: {
-    brand: "METRI",
+    brand: "Careermetri",
     dept: "기계공학과",
     title: ["공학 직무 적합도", "진단 결과지"],
     sub: "전공에서 기업까지 — 적합 직무 · 역량 격차 · 6개월 실행 계획",

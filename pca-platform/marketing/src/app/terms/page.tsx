@@ -12,7 +12,7 @@ export default function TermsPage() {
     {
       title: "무엇을 제공하는가",
       body: [
-        "METRI 는 공학 전공자의 직무 적합도를 진단해 결과지를 제공하는 서비스입니다. 검사 문항은 ACADEMIX 가 개발한 PCA 진단 엔진을 씁니다.",
+        "Careermetri 는 공학 전공자의 직무 적합도를 진단해 결과지를 제공하는 서비스입니다. 검사 문항은 ACADEMIX 가 개발한 PCA 진단 엔진을 씁니다.",
         "결과지는 참고 자료입니다. 합격이나 채용을 보장하지 않으며, 진로 결정의 근거 가운데 하나로 쓰시는 것을 전제로 합니다.",
       ],
     },
@@ -74,7 +74,7 @@ export default function TermsPage() {
     {
       title: "What this is",
       body: [
-        "METRI assesses engineering students' fit to job clusters and produces a report, using the PCA instrument developed by ACADEMIX.",
+        "Careermetri assesses engineering students' fit to job clusters and produces a report, using the PCA instrument developed by ACADEMIX.",
         "The report is a reference. It does not guarantee admission or employment.",
       ],
     },

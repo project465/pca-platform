@@ -6,7 +6,7 @@ import { t } from "@/lib/locale";
 import { resolveLang } from "@/lib/locale-server";
 import LangSwitch from "@/components/lang-switch";
 
-export const metadata = { title: "METRI" };
+export const metadata = { title: "Careermetri" };
 
 /**
  * 문 고르는 화면.

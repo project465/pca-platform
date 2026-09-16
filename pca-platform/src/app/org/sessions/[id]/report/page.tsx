@@ -5,7 +5,7 @@ import { canRead, MIN_CELL } from "@/lib/org";
 import { buildCohort } from "@/lib/cohort";
 import { Radar, RankBars } from "@/components/report-charts";
 
-export const metadata = { title: "단체 리포트 — METRI" };
+export const metadata = { title: "단체 리포트 — Careermetri" };
 
 /**
  * 단체 리포트.
@@ -27,7 +27,7 @@ export default async function CohortReport({ params }: { params: Promise<{ id: s
     <div className="report">
       <header className="rp-cover">
         <div className="rp-cover-in">
-          <span className="rp-kicker">METRI · 학과 집계 리포트</span>
+          <span className="rp-kicker">Careermetri · 학과 집계 리포트</span>
           <h1>{c.session.name}</h1>
           <p className="rp-who">
             {c.session.orgName} · 명단 {c.n}명 · 채점 완료 {c.scored}명

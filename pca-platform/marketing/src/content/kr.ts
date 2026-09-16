@@ -7,14 +7,14 @@ import type { SiteContent } from "./types";
 export const kr: SiteContent = {
   key: "kr",
   lang: "ko",
-  domain: "metri.co.kr",
-  brand: "METRI",
+  domain: "careermetri.co.kr",
+  brand: "Careermetri",
   org: "ACADEMIX",
   orgTagline: "EDUCATION & CONFERENCE",
-  platformUrl: "https://app.metri.io",
+  platformUrl: "https://app.careermetri.com",
 
   meta: {
-    title: "METRI | 전공에서 기업까지 이어지는 공학 진로 진단",
+    title: "Careermetri | 전공에서 기업까지 이어지는 공학 진로 진단",
     description:
       "기계·전기전자·컴퓨터 세 전공의 직무군 24개와 역량 138개를 실제 채용공고에 대조합니다. 성향 유형 대신 “ANSYS 보유 2 / 요구 4, 이 직무 공고 132건 중 89건이 요구”처럼 확인해 볼 수 있는 값으로 냅니다.",
   },
@@ -55,7 +55,7 @@ export const kr: SiteContent = {
   },
 
   hero: {
-    eyebrow: "METRI · 공학 진로 진단",
+    eyebrow: "Careermetri · 공학 진로 진단",
     title: ["전공은 정했다. 그런데", "어디에 지원하지"],
     lead:
       "기계, 전기전자, 컴퓨터 세 전공의 직무군 24개와 역량 138개를 실제 채용공고에 대조합니다. 결과지에 적히는 건 “당신은 협력형입니다”가 아니라 “구조·유동 해석 80점, ANSYS 보유 2 / 요구 4, 이 직무 공고 132건 중 89건이 요구”입니다.",
@@ -63,7 +63,7 @@ export const kr: SiteContent = {
     secondary: { label: "도입·상담 문의", href: "/contact" },
     priceline:
       "253문항 약 30분. 직무 묶음까지는 무료로 받아 보시고, 나머지 절을 29,000원에 여십니다. 학과는 인원 단가로 계약합니다.",
-    watermark: "METRI",
+    watermark: "Careermetri",
     proof: [
       { value: "138", label: "역량 노드" },
       { value: "24", label: "공학 직무군" },
@@ -79,7 +79,7 @@ export const kr: SiteContent = {
       "무엇을 분석하는지는 그 다음 이야기입니다. 아래는 결과지에서 네 장을 뽑아 한 화면에 옮긴 것입니다. 학생 손에 남는 건 유형 이름 한 줄이 아니라 이 문서 전체입니다.",
     disclaimer:
       "결과지의 형식을 보여주기 위한 예시 화면입니다. 실제 학생의 응시 자료가 아닙니다. 직무군·역량 코드·요구 수준은 실제 결과지와 같습니다.",
-    docTag: "METRI 개인 결과지",
+    docTag: "Careermetri 개인 결과지",
     page: "00-1 · 00-2 · 05~06 · 09 발췌",
     person: {
       name: "김수현 (예시)",
@@ -723,7 +723,7 @@ export const kr: SiteContent = {
     label: "진단 다음",
     heading: "진단은 입구입니다. 돈이 드는 문제는 그 다음에 있습니다.",
     lead:
-      "학과가 교육 예산을 쓸 때 가장 모르는 것은 “누구에게 무슨 교육을 시켜야 하는가” 입니다. 프로그램을 300종 차려놓고 학생이 고르게 하면 담당자도 감으로 고릅니다. METRI 는 그 칸을 숫자로 짚습니다.",
+      "학과가 교육 예산을 쓸 때 가장 모르는 것은 “누구에게 무슨 교육을 시켜야 하는가” 입니다. 프로그램을 300종 차려놓고 학생이 고르게 하면 담당자도 감으로 고릅니다. Careermetri 는 그 칸을 숫자로 짚습니다.",
     funnel: [
       { value: "487명", label: "기계공학과 전체 응시" },
       { value: "31%", label: "도면 기하공차(GD&T) 요구 수준 충족" },
@@ -740,14 +740,14 @@ export const kr: SiteContent = {
         ["국가 역량 프레임워크", "표준화된 직무·역량 사전", "학생 진단이 없다"],
         ["무료 공공 진로검사", "누구나 무료, 전 국민 대상", "공학 특화도 학과 집계도 없다"],
         ["직무교육 플랫폼", "과정 수백 종과 대학 채널", "진단이 없으면 누구에게 팔지 모른다"],
-        ["METRI", "개인 진단 → 학과 집계 → 교육 수요 특정", "교육 공급은 파트너와 함께"],
+        ["Careermetri", "개인 진단 → 학과 집계 → 교육 수요 특정", "교육 공급은 파트너와 함께"],
       ],
       note:
         "회사 이름 대신 갈래로 적었습니다. 각 갈래는 자기 자리에서 잘 하고 있고, 비어 있는 것은 이 다섯이 만나는 칸입니다.",
     },
   },
   choose: {
-    label: "왜 METRI 인가",
+    label: "왜 Careermetri 인가",
     heading: "이공계만 판다. 그래서 국경을 넘습니다",
     items: [
       {
@@ -1092,11 +1092,11 @@ export const kr: SiteContent = {
   },
 
   footer: {
-    note: "METRI · PCA 진단 엔진 · ACADEMIX가 개발했습니다 · 직업정보제공사업 신고 J1700020220007호",
+    note: "Careermetri · PCA 진단 엔진 · ACADEMIX가 개발했습니다 · 직업정보제공사업 신고 J1700020220007호",
     sitesLabel: "다른 나라",
     sites: [
-      { label: "Global (English)", href: "https://metri.io", ready: false },
-      { label: "한국", href: "https://metri.co.kr", ready: false },
+      { label: "Global (English)", href: "https://careermetri.com", ready: false },
+      { label: "한국", href: "https://careermetri.co.kr", ready: false },
       { label: "Қазақстан", href: "https://metri.kz", ready: false },
       { label: "Türkiye", href: "https://metri.com.tr", ready: false },
     ],

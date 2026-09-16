@@ -79,7 +79,7 @@ export async function currentAttempt(userId: string): Promise<AttemptView | null
  * 화면 제목을 정하는 데 쓴다. **응시가 아직 없을 때가 문제다** — `/test`
  * 안내 화면은 `generateMetadata` 가 먼저 돌고 그 다음 본문에서 응시가
  * 만들어진다. 그래서 응시만 보면 처음 들어온 사람에게는 늘 null 이 나오고,
- * 고교 응시자가 탭에서 "METRI" 를 보게 된다. 아직 안 쓴 좌석이 가리키는
+ * 고교 응시자가 탭에서 "Careermetri" 를 보게 된다. 아직 안 쓴 좌석이 가리키는
  * 상품을 대신 본다. 좌석이 계약에 붙어 있으면 회차의 검사지를 본다.
  */
 export async function pendingTrack(userId: string): Promise<string | null> {

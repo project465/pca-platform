@@ -7,7 +7,7 @@ import { resolveLang } from "@/lib/locale-server";
 import LangSwitch from "@/components/lang-switch";
 import SignupForm from "./signup-form";
 
-export const metadata = { title: "가입하고 시작 — METRI" };
+export const metadata = { title: "가입하고 시작 — Careermetri" };
 
 export default async function SignupPage({
   searchParams,

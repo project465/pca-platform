@@ -5,7 +5,7 @@ import { paymentProvider } from "@/lib/payments";
 import { t } from "@/lib/locale";
 import { resolveLang } from "@/lib/locale-server";
 
-export const metadata = { title: "결제 결과 — METRI" };
+export const metadata = { title: "결제 결과 — Careermetri" };
 
 /**
  * 결제창에서 돌아오는 자리.

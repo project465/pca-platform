@@ -215,7 +215,7 @@ const bundle = { ...common, majors }
 mkdirSync(join(root, 'prototypes/metri'), { recursive: true })
 writeFileSync(
   join(root, 'prototypes/metri/data.js'),
-  `// 자동 생성 파일. 원본은 data/metri/*.json\nwindow.METRI_DATA = ${JSON.stringify(bundle)};\n`
+  `// 자동 생성 파일. 원본은 data/metri/*.json\nwindow.Careermetri_DATA = ${JSON.stringify(bundle)};\n`
 )
 
 // 아티팩트로 게시할 자립형 파일 — data.js 를 인라인으로 박는다
@@ -223,7 +223,7 @@ try {
   const page = readFileSync(join(root, 'prototypes/metri/index.html'), 'utf8')
   const inlined = page.replace(
     '<script src="data.js"></script>',
-    `<script>window.METRI_DATA = ${JSON.stringify(bundle)};</script>`
+    `<script>window.Careermetri_DATA = ${JSON.stringify(bundle)};</script>`
   )
   writeFileSync(join(root, 'prototypes/metri/standalone.html'), inlined)
   console.log('  prototypes/metri/standalone.html')

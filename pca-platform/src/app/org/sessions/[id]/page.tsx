@@ -7,7 +7,7 @@ import RosterPanel from "./roster-panel";
 import ReissueButton from "./reissue-button";
 import { release } from "../../actions";
 
-export const metadata = { title: "회차 — METRI" };
+export const metadata = { title: "회차 — Careermetri" };
 
 export default async function SessionPage({
   params,
@@ -57,7 +57,7 @@ export default async function SessionPage({
     <div className="shell">
       <header className="topbar">
         <Link className="brand" href="/org">
-          METRI
+          Careermetri
         </Link>
         <div className="who">
           <span>{user.name}</span>

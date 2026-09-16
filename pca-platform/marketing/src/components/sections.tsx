@@ -314,7 +314,7 @@ export function GapSection({ site }: { site: SiteContent }) {
             </thead>
             <tbody>
               {g.matrix.rows.map((r) => (
-                <tr key={r[0]} className={r[0].includes("METRI") ? "mine" : ""}>
+                <tr key={r[0]} className={r[0].includes("Careermetri") ? "mine" : ""}>
                   {r.map((c, i) => (
                     <td key={i}>{c}</td>
                   ))}

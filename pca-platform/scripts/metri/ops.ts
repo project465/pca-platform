@@ -38,7 +38,7 @@ async function main() {
   const b = await briefing(days);
 
   console.log("════════════════════════════════════════════════");
-  console.log(`  METRI 운영 브리핑 — ${b.at.slice(0, 16).replace("T", " ")} UTC`);
+  console.log(`  Careermetri 운영 브리핑 — ${b.at.slice(0, 16).replace("T", " ")} UTC`);
   console.log(`  구간: 최근 ${b.days}일`);
   console.log("════════════════════════════════════════════════");
 

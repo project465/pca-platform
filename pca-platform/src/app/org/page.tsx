@@ -4,7 +4,7 @@ import { ROLE_LABEL } from "@/lib/roles";
 import { requireRole } from "@/lib/session";
 import { contractsOf, orgsOf, sessionsOf } from "@/lib/org";
 
-export const metadata = { title: "기관 담당자 — METRI" };
+export const metadata = { title: "기관 담당자 — Careermetri" };
 
 /**
  * 교수와 담당자가 같은 문으로 들어오지만 할 일이 다르다.
@@ -23,7 +23,7 @@ export default async function OrgHome() {
   return (
     <div className="shell">
       <header className="topbar">
-        <span className="brand">METRI</span>
+        <span className="brand">Careermetri</span>
         <div className="who">
           <span>
             {user.name} · {ROLE_LABEL[user.role]}

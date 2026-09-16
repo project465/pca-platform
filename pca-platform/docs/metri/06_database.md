@@ -20,7 +20,7 @@ psql "$DATABASE_URL" -f db/seed/metri/skill_tree.sql
 
 기존 설계 원칙 세 개를 그대로 지킨다.
 
-| 원칙 | METRI 에서 |
+| 원칙 | Careermetri 에서 |
 |---|---|
 | 1. 로그인 주체는 `users` 하나 | 고등학생·대학생·개인결제자 전부 `users`. `learner_profiles` 가 옆에 붙는다 |
 | 2. 이름은 전부 `translations` | 역량·직무·산업·트랙 이름이 전부 행으로 들어간다. 396행 |

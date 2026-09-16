@@ -1,4 +1,4 @@
-/* METRI 결과지 — A4 인쇄용.
+/* Careermetri 결과지 — A4 인쇄용.
    구성은 career peak 실제 결과지(68쪽·8섹션)를 따른다.
    섹션마다 표지가 따로 있고, SUBSECTION 번호가 붙고, 섹션 끝에 종합 정리가 온다. */
 @page { size: A4; margin: 18mm 16mm 20mm; }

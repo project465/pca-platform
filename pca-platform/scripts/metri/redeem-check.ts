@@ -138,7 +138,7 @@ async function main() {
   const rm = await redeemCode(e, messy);
   check(rm.ok, "하이픈 대신 공백, 소문자로 적어도 통한다", JSON.stringify(messy));
   check(
-    normalizeCode("metri 7k4m-9xq2") === normalizeCode("METRI-7K4M-9XQ2"),
+    normalizeCode("mhqr 7k4m-9xq2") === normalizeCode("MHQR-7K4M-9XQ2"),
     "표준형이 같다",
   );
 

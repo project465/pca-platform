@@ -15,13 +15,13 @@ export const tr: SiteContent = {
   key: "tr",
   lang: "tr",
   domain: "metri.com.tr",
-  brand: "METRI",
+  brand: "Careermetri",
   org: "ACADEMIX",
   orgTagline: "Üniversiteler ve kamu kurumları için eğitim programları",
-  platformUrl: "https://app.metri.io",
+  platformUrl: "https://app.careermetri.com",
 
   meta: {
-    title: "METRI — mühendislik bölümleri, işe alan rollere göre okunur",
+    title: "Careermetri — mühendislik bölümleri, işe alan rollere göre okunur",
     description:
       "Makine, elektrik-elektronik ve bilgisayar mühendisliğinde 24 görev kümesi ve 138 yetkinlik, gerçek ilanlarla karşılaştırılır. Kişilik tipi değil: ANSYS 4 üzerinden 2, 132 ilanın 89'unda isteniyor.",
   },
@@ -47,7 +47,7 @@ export const tr: SiteContent = {
   },
   nav: {
     items: [
-      { label: "METRI", href: "/pca" },
+      { label: "Careermetri", href: "/pca" },
       { label: "Kimler için", href: "/#channels" },
       { label: "Kurulum", href: "/adopt" },
       { label: "Fiyatlandırma", href: "/pricing" },
@@ -61,13 +61,13 @@ export const tr: SiteContent = {
   },
 
   hero: {
-    eyebrow: "METRI · Mühendislik kariyer tanılaması",
+    eyebrow: "Careermetri · Mühendislik kariyer tanılaması",
     title: ["Mühendisliği seçtiler.", "Hangi mühendisliği, kimse söylemedi."],
     lead:
       "Makine, elektrik-elektronik ve bilgisayar mühendisliği — 24 görev kümesi ve 138 yetkinlik, gerçek ilanlarla karşılaştırılıyor. “İş birlikçisiniz” değil; “Simülasyon ve CAE 80, ANSYS 4 üzerinden 2, bu rolün 132 ilanının 89'unda isteniyor”. 250 sorunun tamamı Türkçe olarak hazır.",
     primary: { label: "Görüşme talep et", href: "/contact" },
     secondary: { label: "Örnek raporu gör", href: "#sample" },
-    watermark: "METRI",
+    watermark: "Careermetri",
     proof: [
       { value: "250", label: "soru, Türkçe olarak hazır" },
       { value: "24", label: "mühendislik görev kümesi" },
@@ -80,10 +80,10 @@ export const tr: SiteContent = {
     label: "ÖRNEK RAPOR",
     heading: "Açıklamadan önce, öğrencinin eline aldığı belgeye bakın",
     lead:
-      "METRI'nin neyi analiz ettiği sonraki konu. Aşağıda 15–20 sayfalık rapordan dört sayfa alınıp tek ekrana taşındı.",
+      "Careermetri'nin neyi analiz ettiği sonraki konu. Aşağıda 15–20 sayfalık rapordan dört sayfa alınıp tek ekrana taşındı.",
     disclaimer:
       "Bu, raporun biçimini göstermek için hazırlanmış örnek bir ekrandır. Gerçek bir öğrencinin verisi değildir. Görev alanları, altı çalışma tarzı ve bölgesel eşleştirme gerçek rapordaki gibidir.",
-    docTag: "METRI bireysel rapor",
+    docTag: "Careermetri bireysel rapor",
     page: "00-1 · 00-2 · 05~06 · 09 alıntı",
     person: {
       name: "Elif K. (örnek)",
@@ -190,7 +190,7 @@ export const tr: SiteContent = {
 
   who: {
     label: "KİMLER İÇİN",
-    heading: "METRI'yi Türkiye'ye kim getirir",
+    heading: "Careermetri'yi Türkiye'ye kim getirir",
     items: [
       {
         no: "01",
@@ -253,7 +253,7 @@ export const tr: SiteContent = {
       verdict: "Sonuç belli, ama ne yapılacağı belirsiz.",
     },
     after: {
-      tag: "METRI",
+      tag: "Careermetri",
       title: "Yol haritasına bağlanır",
       steps: ["Pozisyon uygunluğu", "Sektör ve şirket", "Eksik beceri", "Altı aylık plan"],
       verdict: "Sonuç, altı ayın planına dönüşür.",
@@ -409,7 +409,7 @@ export const tr: SiteContent = {
     label: "DEĞERLENDİRMEDEN SONRA",
     heading: "Değerlendirme giriştir. Pahalı sorun onun arkasında durur.",
     lead:
-      "Bir bölüm eğitim bütçesini harcarken en az bildiği şey, kime hangi eğitimin gerektiğidir. Rafa 300 kurs koyarsanız koordinatör sezgiyle seçer. METRI o hücreyi bir sayıyla adlandırır.",
+      "Bir bölüm eğitim bütçesini harcarken en az bildiği şey, kime hangi eğitimin gerektiğidir. Rafa 300 kurs koyarsanız koordinatör sezgiyle seçer. Careermetri o hücreyi bir sayıyla adlandırır.",
     funnel: [
       { value: "487", label: "bir makine mühendisliği bölümünün öğrencisi" },
       { value: "%31", label: "GD&T gerekli seviyesini karşılıyor" },
@@ -426,20 +426,20 @@ export const tr: SiteContent = {
         ["Ulusal yetkinlik çerçeveleri", "Standart rol ve beceri sözlüğü", "Öğrenci değerlendirmesi yok"],
         ["Ücretsiz kamu kariyer testleri", "Ücretsiz, herkese açık", "Ne mühendislik odağı ne de sınıf görünümü var"],
         ["Mesleki eğitim platformları", "Yüzlerce kurs ve üniversite kanalı", "Teşhis yok — kime satacağını bilmiyor"],
-        ["METRI", "Bireysel değerlendirme → bölüm toplamı → adlandırılmış eğitim talebi", "Eğitimi iş ortaklarıyla veriyoruz"],
+        ["Careermetri", "Bireysel değerlendirme → bölüm toplamı → adlandırılmış eğitim talebi", "Eğitimi iş ortaklarıyla veriyoruz"],
       ],
       note:
         "Şirket adı yerine araç türlerini yazdık. Her biri kendi işini iyi yapıyor; boş olan, bu beşinin buluştuğu hücre.",
     },
   },
   choose: {
-    label: "Neden METRI",
+    label: "Neden Careermetri",
     heading: "Kurumlar genel bir kariyer testi yerine neden bunu seçiyor",
     items: [
       {
         title: "Mühendisliğe özgü, mühendisliğe komşu değil",
         body:
-          "Genel kariyer testleri “teknik alan” deyip biter. METRI makine tasarımını yapısal analizden, süreç mühendisliğinden ve ekipman mühendisliğinden ayırır; çünkü bu dördü farklı işe alır, farklı öder ve farklı yazılım ister.",
+          "Genel kariyer testleri “teknik alan” deyip biter. Careermetri makine tasarımını yapısal analizden, süreç mühendisliğinden ve ekipman mühendisliğinden ayırır; çünkü bu dördü farklı işe alır, farklı öder ve farklı yazılım ister.",
       },
       {
         title: "Yeniden hesaplayabileceğiniz puanlar",
@@ -471,7 +471,7 @@ export const tr: SiteContent = {
     label: "Hakkımızda",
     heading: "ACADEMIX",
     body:
-      "Üniversiteler ve kamu kurumları için eğitim programları tasarlayan ve yürüten bir kuruluş. METRI, bu işten doğan değerlendirme ve kariyer platformudur.",
+      "Üniversiteler ve kamu kurumları için eğitim programları tasarlayan ve yürüten bir kuruluş. Careermetri, bu işten doğan değerlendirme ve kariyer platformudur.",
     highlight: "Bölümden işe giden yol tek bir veride toplanır.",
     brandsLabel: "Markalar",
     brands: [
@@ -674,11 +674,11 @@ export const tr: SiteContent = {
   },
 
   footer: {
-    note: "METRI · PCA değerlendirme motoru · ACADEMIX tarafından geliştirildi",
+    note: "Careermetri · PCA değerlendirme motoru · ACADEMIX tarafından geliştirildi",
     sitesLabel: "Diğer ülkeler",
     sites: [
-      { label: "Global (English)", href: "https://metri.io", ready: false },
-      { label: "한국", href: "https://metri.co.kr", ready: false },
+      { label: "Global (English)", href: "https://careermetri.com", ready: false },
+      { label: "한국", href: "https://careermetri.co.kr", ready: false },
       { label: "Қазақстан", href: "https://metri.kz", ready: false },
       { label: "Türkiye", href: "https://metri.com.tr", ready: false },
     ],

@@ -6,8 +6,8 @@
  * 좌석을 받아 갈 수 있으면 안 된다. 여기 적힌 둘만 문이다.
  */
 export const TRACKS = {
-  hs: { product: "HS_FREE", brand: "메트리 플러스" },
-  univ: { product: "UNIV_FREE", brand: "METRI" },
+  hs: { product: "HS_FREE", brand: "커리어메트리 플러스" },
+  univ: { product: "UNIV_FREE", brand: "Careermetri" },
 } as const;
 
 export type TrackKey = keyof typeof TRACKS;

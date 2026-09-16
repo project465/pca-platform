@@ -7,7 +7,7 @@ import { resolveLang } from "@/lib/locale-server";
 import LangSwitch from "@/components/lang-switch";
 import CheckoutForm from "./checkout-form";
 
-export const metadata = { title: "결제 — METRI" };
+export const metadata = { title: "결제 — Careermetri" };
 
 export default async function CheckoutPage({
   searchParams,

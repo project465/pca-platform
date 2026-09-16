@@ -1,4 +1,4 @@
-# METRI 설계 문서
+# Careermetri 설계 문서
 
 Engineering Career Intelligence — 공학 학습자 Career Profile 엔진의 설계 묶음.
 업로드된 사업 컨텍스트 문서(`Engineering Career Intelligence Platform — 사업 아이디어 및 경쟁사 분석`)의

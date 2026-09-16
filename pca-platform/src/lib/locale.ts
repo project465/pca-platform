@@ -34,7 +34,7 @@ const d = (ko: string, en: string, tr: string): Dict => ({ ko, en, tr });
  * 같이 쓰게 만들려는 제약이다.
  */
 export const UI = {
-  brand: d("METRI", "METRI", "METRI"),
+  brand: d("Careermetri", "Careermetri", "Careermetri"),
 
   // 진입
   doorTitle: d(
@@ -156,9 +156,9 @@ export const UI = {
 
   // 결과지
   repKicker: d(
-    "METRI · 공학 진로 인텔리전스",
-    "METRI · Engineering Career Intelligence",
-    "METRI · Mühendislik Kariyer Zekâsı",
+    "Careermetri · 공학 진로 인텔리전스",
+    "Careermetri · Engineering Career Intelligence",
+    "Careermetri · Mühendislik Kariyer Zekâsı",
   ),
   repTitle: d("직무적합 진단 결과지", "Career Fit Report", "Kariyer Uyum Raporu"),
   repSec00: d("종합 요약", "Summary", "Genel özet"),
@@ -290,7 +290,7 @@ export const UI = {
   repPlanM1: d("1–2개월", "Months 1–2", "1–2. ay"),
   repPlanM2: d("3–4개월", "Months 3–4", "3–4. ay"),
   repPlanM3: d("5–6개월", "Months 5–6", "5–6. ay"),
-  /* ── 메트리 플러스(고교판) 문구 ────────────────────────
+  /* ── 커리어메트리 플러스(고교판) 문구 ────────────────────────
      같은 결과지 화면이 두 제품을 그린다. 갈라지는 것은 이 문구들뿐이고,
      화면 코드는 kind 를 보고 "Hs" 가 붙은 키를 고른다.
      중·고등학생에게 "직무" 와 "역량 레벨" 은 아직 뜻이 없는 말이다. */
@@ -743,26 +743,26 @@ export const UI = {
 
   // 상품 이름. 주문서에 찍히는 이름이라 결제 화면과 같은 말이어야 한다.
   prodREPORT_UNIV: d(
-    "METRI 진로 결과지 (대학)",
-    "METRI Career Report (university)",
-    "METRI Kariyer Raporu (üniversite)",
+    "Careermetri 진로 결과지 (대학)",
+    "Careermetri Career Report (university)",
+    "Careermetri Kariyer Raporu (üniversite)",
   ),
   prodREPORT_HS: d(
-    "METRI 진로 결과지 (고교)",
-    "METRI Career Report (high school)",
-    "METRI Kariyer Raporu (lise)",
+    "Careermetri 진로 결과지 (고교)",
+    "Careermetri Career Report (high school)",
+    "Careermetri Kariyer Raporu (lise)",
   ),
   prodHS_FREE: d(
-    "메트리 플러스 무료 진단",
-    "METRI PLUS free assessment",
-    "METRI PLUS ücretsiz değerlendirme",
+    "커리어메트리 플러스 무료 진단",
+    "Careermetri Plus free assessment",
+    "Careermetri Plus ücretsiz değerlendirme",
   ),
   // 주문서에 찍히는 이름이므로 "무엇을 사는가" 가 보여야 한다.
   // "전체 결과지" 라고만 적으면 결제 후에야 무엇을 샀는지 안다.
   prodHS_UPGRADE: d(
-    "메트리 플러스 — 현장 사슬과 과목 처방",
-    "METRI PLUS — the chain and the course prescription",
-    "METRI PLUS — zincir ve ders reçetesi",
+    "커리어메트리 플러스 — 현장 사슬과 과목 처방",
+    "Careermetri Plus — the chain and the course prescription",
+    "Careermetri Plus — zincir ve ders reçetesi",
   ),
 } as const;
 

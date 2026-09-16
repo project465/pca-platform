@@ -2,7 +2,7 @@ import { requireRole } from "@/lib/session";
 import { query } from "@/lib/db";
 import ContractForm from "./contract-form";
 
-export const metadata = { title: "계약 등록 — METRI" };
+export const metadata = { title: "계약 등록 — Careermetri" };
 
 export default async function NewContract({
   searchParams,

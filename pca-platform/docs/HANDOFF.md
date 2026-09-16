@@ -181,7 +181,7 @@ node scripts/export-preview.mjs kr out-kr.html
 
 ---
 
-# METRI 확장 (2026-09-10)
+# Careermetri 확장 (2026-09-10)
 
 기존 단체 PCA 위에 **Engineering Career Intelligence** 를 얹었다.
 테이블을 하나도 지우지 않았고 `ALTER` 와 `CREATE` 만 썼다.

@@ -6,7 +6,7 @@ import LangSwitch from "@/components/lang-switch";
 import FreeForm from "./free-form";
 import { TRACKS, resolveTrack } from "./tracks";
 
-/** 브랜드가 둘이라 제목도 둘이다. 메트리 플러스로 온 학부모에게 METRI 를
+/** 브랜드가 둘이라 제목도 둘이다. 커리어메트리 플러스로 온 학부모에게 Careermetri 를
  *  띄우지 않는다(설계 원칙 9). */
 export async function generateMetadata({
   searchParams,

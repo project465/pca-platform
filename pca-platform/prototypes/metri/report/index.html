@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<title>METRI 결과지 — 기계공학과</title>
+<title>Careermetri 결과지 — 기계공학과</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -10,7 +10,7 @@
 <script src="data.js"></script>
 <script>
 (function(){
-const R = window.METRI_REPORT;
+const R = window.Careermetri_REPORT;
 const esc = s => String(s ?? '');
 const out = [];
 const push = h => out.push(h);
@@ -205,10 +205,10 @@ R.sections.forEach(sec=>{
   sec.subs.forEach(s => push(subHtml(s, sec.no, sec.title)));
 });
 
-push(`<div class="page closing"><div class="brand">METRI</div>
+push(`<div class="page closing"><div class="brand">Careermetri</div>
   <h2>이 결과지는 한 번 보고 덮는 문서가 아닙니다</h2>
   <p>증거가 쌓일 때마다 숫자가 움직이고, 움직인 숫자가 다음 학기의 선택을 바꿉니다.</p>
-  <div class="fine">METRI · ACADEMIX 개발 · 직업정보제공사업 신고 J1700020220007호<br>
+  <div class="fine">Careermetri · ACADEMIX 개발 · 직업정보제공사업 신고 J1700020220007호<br>
   본 결과지는 화면 확인용 예시입니다. 실제 응시 자료가 아닙니다.<br>
   점수는 공개된 산식으로 계산되며, 문장 생성에만 언어모델을 사용합니다.</div></div>`);
 

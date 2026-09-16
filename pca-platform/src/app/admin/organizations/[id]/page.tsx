@@ -7,7 +7,7 @@ import { query, queryOne } from "@/lib/db";
 import { nameOf } from "@/lib/i18n";
 import StaffPanel from "./staff-panel";
 
-export const metadata = { title: "기관 — METRI" };
+export const metadata = { title: "기관 — Careermetri" };
 
 /**
  * 기관 한 곳의 전부 — 담당자, 계약, 회차.

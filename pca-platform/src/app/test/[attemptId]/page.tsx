@@ -4,12 +4,12 @@ import { findAttempt, questionPage, PAGE_SIZE } from "@/lib/attempts";
 import { resolveLang } from "@/lib/locale-server";
 import TestRunner from "./test-runner";
 
-/** 탭 제목도 브랜드를 따라간다. 고교 응시자에게 METRI 를 띄우지 않는다. */
+/** 탭 제목도 브랜드를 따라간다. 고교 응시자에게 Careermetri 를 띄우지 않는다. */
 export async function generateMetadata({ params }: { params: Promise<{ attemptId: string }> }) {
   const { attemptId } = await params;
   const user = await currentUser();
   const a = user ? await findAttempt(attemptId, user.id) : null;
-  return { title: a?.trackCode === "HS" ? "검사 응시 — 메트리 플러스" : "검사 응시 — METRI" };
+  return { title: a?.trackCode === "HS" ? "검사 응시 — 커리어메트리 플러스" : "검사 응시 — Careermetri" };
 }
 
 export default async function TestPage({

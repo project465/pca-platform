@@ -1,8 +1,8 @@
 /**
- * 문항 은행 파일 하나를 METRI 검사지로 올린다.
+ * 문항 은행 파일 하나를 Careermetri 검사지로 올린다.
  *
  *   npm run metri:items       대학판 PCA_ME_V1 — 기계공학 253문항
- *   npm run metri:items:hs    고교판 HS_V1    — 메트리 플러스 115문항
+ *   npm run metri:items:hs    고교판 HS_V1    — 커리어메트리 플러스 115문항
  *
  * 대학판은 단체 PCA 기계공학과 엑셀 세 벌(한국어·영어·튀르키예어)에서 뽑아낸
  * 것이고, 문항 번호·직무분야·성향 배정이 원본과 완전히 같다. 고교판은 새로

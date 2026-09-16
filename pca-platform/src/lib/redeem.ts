@@ -30,7 +30,7 @@ function hashCode(normalized: string): string {
   return createHash("sha256").update(normalized).digest("hex");
 }
 
-/** `METRI-7K4M-9XQ2` 꼴. 앞의 브랜드 조각은 사람이 무엇인지 알아보라고 붙인다. */
+/** `Careermetri-7K4M-9XQ2` 꼴. 앞의 브랜드 조각은 사람이 무엇인지 알아보라고 붙인다. */
 function newCode(): { display: string; normalized: string } {
   const parts: string[] = [];
   for (let g = 0; g < GROUPS; g++) {

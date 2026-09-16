@@ -5,7 +5,7 @@ import { resolveLang } from "@/lib/locale-server";
 import LangSwitch from "@/components/lang-switch";
 import RedeemForm from "./redeem-form";
 
-export const metadata = { title: "응시권 코드 — METRI" };
+export const metadata = { title: "응시권 코드 — Careermetri" };
 
 /**
  * 밖에서 산 사람이 들어오는 문.

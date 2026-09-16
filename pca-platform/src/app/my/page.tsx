@@ -6,7 +6,7 @@ import { t } from "@/lib/locale";
 import { resolveLang } from "@/lib/locale-server";
 import LangSwitch from "@/components/lang-switch";
 
-export const metadata = { title: "내 검사 — METRI" };
+export const metadata = { title: "내 검사 — Careermetri" };
 
 /**
  * 학생의 첫 화면. 지금 눌러야 할 것 하나를 맨 위에 둔다 —
