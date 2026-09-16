@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { requireRole } from "@/lib/session";
 import { canRead, MIN_CELL } from "@/lib/org";
 import { buildCohort } from "@/lib/cohort";
+import { residencyShift, satisfaction } from "@/lib/survey";
 import { Radar, RankBars } from "@/components/report-charts";
 
 export const metadata = { title: "단체 리포트 — Careermetri" };
@@ -13,6 +14,11 @@ export const metadata = { title: "단체 리포트 — Careermetri" };
  * 개인 결과지를 500장 묶어 준다고 학과가 돈을 쓰지 않는다. 학과가 사는 것은
  * 커리큘럼을 손볼 근거이므로, 마지막 절이 항상 교육 수요로 끝나야 한다.
  */
+const SHIFT_LABEL: Record<string, string> = {
+  residency: "지역 정주 의향",
+  awareness: "지역 기업·기관 인지",
+};
+
 export default async function CohortReport({ params }: { params: Promise<{ id: string }> }) {
   const user = await requireRole(["org_admin", "instructor"]);
   const { id } = await params;
@@ -22,6 +28,10 @@ export default async function CohortReport({ params }: { params: Promise<{ id: s
   if (!c) notFound();
 
   const worst = c.demand[0];
+  // 부가 문항은 집계와 별개 표에서 온다. 안 물은 회차면 빈 배열이고,
+  // 그때는 절 자체를 그리지 않는다
+  const shift = await residencyShift(id);
+  const sat = await satisfaction(id);
 
   return (
     <div className="report">
@@ -182,6 +192,73 @@ export default async function CohortReport({ params }: { params: Promise<{ id: s
                 </table>
               </div>
             </section>
+
+            {/* ---- 05 지역 정주 · 만족도 ---- */}
+            {(shift.length > 0 || sat.length > 0) && (
+              <section className="rp-sec">
+                <div className="rp-sec-head">
+                  <span className="rp-no">05</span>
+                  <h2>지역 연계 · 진단 만족도</h2>
+                </div>
+                <p className="rp-note">
+                  응시 전과 후에 같은 문항을 물었습니다. <b>두 시점을 모두 답한 학생만</b> 셉니다 —
+                  한쪽만 답한 사람을 섞으면 두 평균이 서로 다른 사람들의 평균이 되어 변화가
+                  뜻을 잃습니다. 5점 척도입니다.
+                </p>
+
+                {shift.length > 0 && (
+                  <div className="tablewrap">
+                    <table className="demand">
+                      <thead>
+                        <tr>
+                          <th>문항</th>
+                          <th>응시 전</th>
+                          <th>응시 후</th>
+                          <th>변화</th>
+                          <th>인원</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {shift.map((r) => (
+                          <tr key={r.pairKey}>
+                            <td>{SHIFT_LABEL[r.pairKey] ?? r.pairKey}</td>
+                            <td className="mono">{r.before ?? <i>—</i>}</td>
+                            <td className="mono">{r.after ?? <i>—</i>}</td>
+                            <td className="mono strong">
+                              {r.delta === null
+                                ? <i>{MIN_CELL}명 미만</i>
+                                : `${r.delta > 0 ? "+" : ""}${r.delta}`}
+                            </td>
+                            <td className="mono">{r.n}명</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+
+                {sat.length > 0 && (
+                  <div className="tablewrap" style={{ marginTop: 18 }}>
+                    <table className="demand">
+                      <thead>
+                        <tr><th>만족도 문항</th><th>평균</th><th>응답</th></tr>
+                      </thead>
+                      <tbody>
+                        {sat.map((r) => (
+                          <tr key={r.code}>
+                            <td>{r.text}</td>
+                            <td className="mono strong">
+                              {r.avg === null ? <i>{MIN_CELL}명 미만</i> : r.avg}
+                            </td>
+                            <td className="mono">{r.n}명</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </section>
+            )}
           </>
         )}
 

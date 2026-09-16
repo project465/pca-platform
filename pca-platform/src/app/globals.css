@@ -967,3 +967,35 @@ td .sub { display: block; font-size: 12.5px; color: var(--muted); }
 }
 .ops-rows li:last-child { border-bottom: 0; }
 .ops-rows b { font-weight: 700; }
+
+/* ---------- 추가 문항 (/survey) ---------- */
+/* 검사 화면과 다르게 보여야 한다 — 응시자가 "이것도 점수인가" 싶으면
+   솔직하게 답하지 않는다. 문항 수가 적어 한 화면에 다 놓는다. */
+.sv-list { list-style: none; display: grid; gap: 26px; margin: 4px 0 26px; }
+.sv-q { display: flex; gap: 10px; font-size: 15.5px; line-height: 1.55; margin-bottom: 12px; }
+.sv-n {
+  flex: 0 0 auto; width: 22px; height: 22px; border-radius: 50%;
+  background: var(--ink); color: var(--paper);
+  font-size: 12px; font-weight: 700; display: grid; place-items: center;
+  margin-top: 2px;
+}
+.sv-scale { display: flex; gap: 8px; flex-wrap: wrap; }
+.sv-scale label {
+  flex: 1 1 96px; border: 1px solid var(--rule); border-radius: 8px;
+  padding: 10px 6px; text-align: center; font-size: 13px; cursor: pointer;
+  background: var(--paper); transition: border-color .12s, background .12s;
+}
+.sv-scale label:hover { border-color: var(--s3); }
+.sv-scale label.on { border-color: var(--ink); background: var(--ink); color: var(--paper); font-weight: 700; }
+/* 라디오는 숨기되 키보드 초점은 살려 둔다 */
+.sv-scale input { position: absolute; opacity: 0; width: 0; height: 0; }
+.sv-scale label:has(input:focus-visible) { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* 결과지 위의 안내. 결과를 가리지 않고 얹기만 한다 */
+.rp-ask {
+  border: 1px solid var(--rule); border-left: 3px solid var(--partial);
+  background: var(--paper); padding: 18px 20px; margin-bottom: 28px;
+}
+.rp-ask b { display: block; font-size: 15px; margin-bottom: 6px; }
+.rp-ask p { font-size: 14px; color: var(--muted); margin-bottom: 14px; }
+@media print { .rp-ask { display: none; } }

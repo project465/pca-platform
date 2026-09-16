@@ -14,6 +14,23 @@ import { query, queryOne } from "./db";
 
 export type SurveyPhase = "before" | "after";
 
+/**
+ * 이 응시에 부가 문항을 물어야 하는가.
+ *
+ * **의뢰 기관이 있을 때만 묻는다.** 정주 문항은 "우리 지역" 을 묻는데,
+ * 개인이 혼자 결제해 본 응시에는 그 지역이 없다. 어느 지역인지 모르는
+ * 사람에게 물으면 답이 나와도 성과지표로 못 쓰고, 묻는 것 자체가
+ * 이상한 화면이 된다.
+ */
+export async function surveyApplies(attemptId: string): Promise<boolean> {
+  const r = await queryOne<{ kind: string }>(
+    `SELECT ts.kind FROM attempts a JOIN test_sessions ts ON ts.id = a.session_id
+      WHERE a.id = $1`,
+    [attemptId],
+  );
+  return r?.kind === "org";
+}
+
 export type SurveyItem = {
   id: string;
   code: string;

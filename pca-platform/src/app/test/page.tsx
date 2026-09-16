@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { requireRole, currentUser } from "@/lib/session";
 import { openAttempt, pendingTrack, lastScoredAttempt, PAGE_SIZE } from "@/lib/attempts";
 import { queryOne } from "@/lib/db";
+import { surveyApplies, surveyDone } from "@/lib/survey";
 import { t, UI, type UiKey } from "@/lib/locale";
 import { resolveLang } from "@/lib/locale-server";
 import LangSwitch from "@/components/lang-switch";
@@ -50,6 +51,19 @@ export default async function TestEntry({
         </div>
       </div>
     );
+  }
+
+  /**
+   * 학과 회차면 시작 전에 정주 문항 둘을 먼저 묻는다.
+   *
+   * **응시를 시작하기 전이어야 한다.** 검사를 다 풀고 나서 "시작 전 생각"
+   * 을 물으면 그건 이미 진단을 본 사람의 답이라, 나중 답과 빼도 이
+   * 진단이 한 일이 나오지 않는다. 답을 아직 안 한 사람만 이리로 간다.
+   */
+  if (attempt.answered === 0
+      && (await surveyApplies(attempt.id))
+      && !(await surveyDone(attempt.id, "before"))) {
+    redirect(`/survey/${attempt.id}?phase=before`);
   }
 
   // 고교판이면 "Hs" 가 붙은 문구를 고른다. 결과지와 같은 방식이다.

@@ -8,6 +8,7 @@ import { prescribe } from "@/lib/prescribe";
 import { careerChain } from "@/lib/chain";
 import { checkoutReady } from "@/lib/payments";
 import { markReportViewed } from "@/lib/refund";
+import { surveyApplies, surveyDone } from "@/lib/survey";
 import PrescriptionView from "@/components/prescription";
 import CareerChainView from "@/components/career-chain";
 import { resolveLang } from "@/lib/locale-server";
@@ -80,6 +81,15 @@ export default async function ReportPage({
    * 무료 응시에는 적을 줄이 없으므로(report_grants 가 없다) 그냥 지나간다.
    */
   if (paid) await markReportViewed(attemptId);
+
+  /**
+   * 결과를 본 뒤에 묻는 문항이 남아 있는가.
+   *
+   * **결과지를 막지 않는다.** 산 것을 먼저 보여주고, 안내만 얹는다 —
+   * 설문을 통과해야 결과가 열리면 그건 산 것을 볼모로 잡는 것이다.
+   */
+  const askAfter =
+    (await surveyApplies(attemptId)) && !(await surveyDone(attemptId, "after"));
   const rx = hs && paid ? await prescribe(attemptId, lang) : null;
   /**
    * 과목 앞에 "왜" 가 와야 한다. 현장에서 하는 일이 이것을 요구하기 때문에
@@ -191,6 +201,20 @@ export default async function ReportPage({
       </header>
 
       <main className="rp-body">
+        {askAfter && (
+          <aside className="rp-ask">
+            <b>결과를 보신 뒤 여쭐 것이 다섯 개 있습니다</b>
+            <p>
+              시작 전에 물었던 것과 같은 문항이 들어 있습니다. 달라진 만큼이 이
+              진단이 한 일이라, 학교가 그 숫자로 다음 프로그램을 정합니다.
+              1분이면 됩니다.
+            </p>
+            <Link className="act solid" href={`/survey/${attemptId}?phase=after`}>
+              답하기
+            </Link>
+          </aside>
+        )}
+
         {/* ---- 00 종합 ---- */}
         <section className="rp-sec">
           <div className="rp-sec-head">
