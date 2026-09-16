@@ -29,7 +29,8 @@ export function generateMetadata(): Metadata {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const site = getSite();
   return (
-    <html lang={site.lang}>
+    /* 색과 결은 나라마다 다를 수 있다. globals.css 의 [data-theme] 를 켠다 */
+    <html lang={site.lang} data-theme={site.theme}>
       <body>{children}</body>
     </html>
   );

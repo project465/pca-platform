@@ -5,8 +5,13 @@
   "scripts": {
     "dev": "next dev -p 3100",
     "build": "next build",
-    "start": "next start -p 3100",
-    "typecheck": "tsc --noEmit"
+    "start": "echo '정적으로 내보냅니다. npm run build:<판> 뒤 npm run serve 를 쓰세요' && exit 1",
+    "typecheck": "tsc --noEmit",
+    "serve": "node scripts/serve-static.mjs out 3100",
+    "build:global": "SITE=global next build && rm -rf out-global && mv out out-global",
+    "build:kr": "SITE=kr next build && rm -rf out-kr && mv out out-kr",
+    "build:kz": "SITE=kz next build && rm -rf out-kz && mv out out-kz",
+    "build:all": "npm run build:global && npm run build:kr && npm run build:kz"
   },
   "dependencies": {
     "d3-geo": "^3.1.1",
