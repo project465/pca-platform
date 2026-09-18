@@ -571,7 +571,7 @@ export const tr: SiteContent = {
           who: "Öğrenci · iş arayan",
           steps: [
             "Talep bırakırsınız; fiyatı ve takvimi size iletiriz",
-            "253 soru, yaklaşık 30 dakika. Her yanıt anında kaydedilir, ara verip devam edebilirsiniz",
+            "253 soru, yaklaşık 15-20 dakika. Her yanıt anında kaydedilir, ara verip devam edebilirsiniz",
             "Rapor puanlanır puanlanmaz açılır — bölüm onayı beklenmez",
           ],
         },

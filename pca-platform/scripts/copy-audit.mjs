@@ -41,7 +41,11 @@ const files = process.argv.slice(2).length
      // 위젯 쪽 문장을 놓치면 사이트에 남는 것은 위젯 쪽이다
      ...readdirSync("sites/careermetri/imweb")
        .filter((f) => /^\d\d-.*\.html$/.test(f))
-       .map((f) => `sites/careermetri/imweb/${f}`)];
+       .map((f) => `sites/careermetri/imweb/${f}`),
+     // 약관도 사람이 읽는 글이다. 법 문장이라 딱딱해도 기계 티는 따로 난다
+     ...readdirSync("sites/careermetri/legal")
+       .filter((f) => f.endsWith(".md"))
+       .map((f) => `sites/careermetri/legal/${f}`)];
 
 /** 사람이 읽는 글만 본다. 코드·주석·태그는 문체와 상관이 없다. */
 function prose(path) {

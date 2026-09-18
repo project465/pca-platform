@@ -61,7 +61,7 @@ export const global: SiteContent = {
     primary: { label: "See a real report", href: "#sample" },
     secondary: { label: "Talk to us", href: "/contact" },
     priceline:
-      "253 items, about 30 minutes. The job groups come free; the rest of the report opens for ₩29,000. Departments contract by cohort size.",
+      "253 items, about 15 to 20 minutes. The job groups come free; the rest of the report opens for ₩29,000. Departments contract by cohort size.",
     watermark: "Careermetri",
     proof: [
       { value: "250", label: "items, in three languages" },
@@ -991,7 +991,7 @@ export const global: SiteContent = {
           who: "A student or a job seeker",
           steps: [
             "Start opens the sign-up screen. Signing up logs you in and returns you to where you were",
-            "253 questions, about 30 minutes, at no charge. Every answer saves as you go, so you can close the tab and come back",
+            "253 questions, about 15 to 20 minutes, at no charge. Every answer saves as you go, so you can close the tab and come back",
             "The job areas and activity axes open as soon as it is scored. No departmental approval to wait on",
             "Read it, and open the rest for ₩29,000 if you want it. You never retake the items",
           ],
