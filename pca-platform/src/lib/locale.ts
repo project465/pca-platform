@@ -182,6 +182,20 @@ export const UI = {
     "Careermetri · Mühendislik Kariyer Zekâsı",
   ),
   repTitle: d("직무적합 진단 결과지", "Career Fit Report", "Kariyer Uyum Raporu"),
+
+  /* 결과지 위에 얹는 정주·만족도 안내. 결과지를 막지 않고 얹기만 한다.
+     하드코딩된 한국어로 있다가 영어 화면에 그대로 나갔다. */
+  repAskTitle: d(
+    "결과를 보신 뒤 여쭐 것이 다섯 개 있습니다",
+    "Five questions once you have read your report",
+    "Raporunuzu okuduktan sonra beş sorumuz var",
+  ),
+  repAskBody: d(
+    "시작 전에 물었던 것과 같은 문항이 들어 있습니다. 달라진 만큼이 이 진단이 한 일이라, 학교가 그 숫자로 다음 프로그램을 정합니다. 1분이면 됩니다.",
+    "Some are the same questions you answered before you started. The difference between the two is what this assessment did, and your institution uses that figure to plan the next programme. It takes a minute.",
+    "Bazıları başlamadan önce yanıtladığınız sorularla aynı. İkisi arasındaki fark bu değerlendirmenin yaptığı iştir ve kurumunuz bu sayıyla bir sonraki programı planlar. Bir dakikanızı alır.",
+  ),
+  repAskCta: d("답하기", "Answer them", "Yanıtla"),
   repSec00: d("종합 요약", "Summary", "Genel özet"),
   repSec01: d("직무분야 10개", "Ten job areas", "On iş alanı"),
   repSec02: d("공학 활동 선호", "Engineering activity preferences", "Mühendislik faaliyet tercihleri"),

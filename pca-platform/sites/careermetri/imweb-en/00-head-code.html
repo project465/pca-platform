@@ -332,6 +332,81 @@
   transition:opacity .62s cubic-bezier(.2,.7,.3,1), transform .62s cubic-bezier(.2,.7,.3,1);}
 .cm-anim .cm-rise.cm-in-view{opacity:1; transform:none;}
 
+/* ── The report's own charts, on the home page.
+   One series, so there is no categorical palette and no legend: the tab
+   above the chart names what is drawn. Gold carries the data and never
+   carries text; every label and figure stays in the text tokens, because
+   gold on white is 2.4:1 and unreadable as type. The figures are listed
+   beside the shape, so nothing here depends on reading an angle. */
+.cm-tabs{display:inline-flex; gap:4px; margin-top:6px; padding:4px;
+  border:1px solid var(--cm-line); border-radius:var(--cm-pill);
+  background:var(--cm-surface2);}
+.cm-tabs button{font:inherit; font-size:13.5px; font-weight:600; cursor:pointer;
+  padding:9px 18px; border:0; border-radius:var(--cm-pill);
+  background:transparent; color:var(--cm-mute);
+  transition:background .2s, color .2s;}
+.cm-tabs button[aria-pressed="true"]{background:var(--cm-surface); color:var(--cm-text);
+  box-shadow:0 1px 2px rgba(15,27,45,.08);}
+.cm-tabs button:hover[aria-pressed="false"]{color:var(--cm-text);}
+
+.cm-chart{display:grid; gap:22px 40px; align-items:center; margin-top:22px;}
+@media (min-width:820px){.cm-chart{grid-template-columns:minmax(0,7fr) minmax(0,5fr);}}
+.cm-radarwrap{min-width:0;}
+.cm-radar{display:block; width:100%; height:auto; overflow:visible;}
+/* The hidden attribute is an HTML one: the browser's rule for it is namespaced
+   to HTML elements, so on an <svg> it does nothing and both charts draw on top
+   of each other. */
+.cm-radar[hidden]{display:none;}
+.cm-radar .cm-rg polygon{fill:none; stroke:var(--cm-line); stroke-width:1;}
+.cm-radar .cm-rg-mid{stroke:var(--cm-rule);}
+.cm-radar .cm-sp line{stroke:var(--cm-line); stroke-width:1;}
+.cm-radar .cm-poly{fill:rgba(201,162,39,.16); stroke:var(--cm-gold); stroke-width:2;
+  stroke-linejoin:round;}
+.cm-radar .cm-vtx circle{fill:var(--cm-gold); stroke:var(--cm-surface); stroke-width:2;}
+.cm-radar .cm-lab text{font-family:var(--cm-body); font-size:12.5px; font-weight:500;
+  fill:var(--cm-mute);}
+/* The shape opens from the centre once, and only when the script is there to
+   close it first. With no script the polygon is already drawn correctly. */
+.cm-anim .cm-radar .cm-poly,
+.cm-anim .cm-radar .cm-vtx{
+  transform-box:view-box; transform-origin:220px 176px; transform:scale(.02); opacity:0;
+  transition:transform .85s cubic-bezier(.18,.72,.26,1), opacity .5s ease;
+}
+.cm-anim .cm-radar.cm-drawn .cm-poly,
+.cm-anim .cm-radar.cm-drawn .cm-vtx{transform:none; opacity:1;}
+
+.cm-vals{min-width:0;}
+.cm-vlist{border-top:1px solid var(--cm-line);}
+.cm-vlist > div{display:flex; align-items:baseline; gap:14px; padding:10px 0;
+  border-bottom:1px solid var(--cm-line);}
+.cm-vlist span{flex:1 1 auto; font-size:14px; color:var(--cm-text);}
+.cm-vlist b{font-weight:600; font-size:15px; font-variant-numeric:tabular-nums;
+  color:var(--cm-text);}
+.cm-vals .cm-small{margin-top:14px;}
+
+.cm-bars{margin-top:18px; border-top:1px solid var(--cm-line);}
+.cm-bar{display:grid; grid-template-columns:minmax(0,15em) minmax(0,1fr) 3em;
+  align-items:center; gap:16px; padding:11px 0; border-bottom:1px solid var(--cm-line);}
+.cm-bar span{font-size:14px; color:var(--cm-text); min-width:0;}
+.cm-bar i{display:block; height:9px; width:var(--w); border-radius:999px;
+  background:var(--cm-gold); opacity:.85;}
+.cm-bar b{font-weight:600; font-size:14.5px; text-align:right;
+  font-variant-numeric:tabular-nums; color:var(--cm-mute);}
+@media (max-width:620px){
+  .cm-bar{grid-template-columns:minmax(0,1fr) 3em; gap:4px 12px;}
+  .cm-bar i{grid-column:1 / -1;}
+}
+/* The bars grow in place, one after another, from a zero that the script
+   sets. In the stylesheet alone they would be zero for a reader with no
+   script and the section would look empty. */
+.cm-anim .cm-bars .cm-bar i{width:0; transition:width .78s cubic-bezier(.2,.75,.3,1);}
+.cm-anim .cm-bars.cm-in-view .cm-bar i{width:var(--w);}
+.cm-bar:nth-child(1) i{transition-delay:.02s}  .cm-bar:nth-child(2) i{transition-delay:.07s}
+.cm-bar:nth-child(3) i{transition-delay:.12s}  .cm-bar:nth-child(4) i{transition-delay:.17s}
+.cm-bar:nth-child(5) i{transition-delay:.22s}  .cm-bar:nth-child(6) i{transition-delay:.27s}
+.cm-bar:nth-child(7) i{transition-delay:.32s}  .cm-bar:nth-child(8) i{transition-delay:.37s}
+.cm-bar:nth-child(9) i{transition-delay:.42s}  .cm-bar:nth-child(10) i{transition-delay:.47s}
+
 /* ── World map. The dots are Natural Earth 110m land geometry sampled every
    3.2 degrees, so the coastlines are real. Antarctica is dropped, which is the
    usual convention and keeps the bottom from becoming a band. */
@@ -374,6 +449,8 @@
   .cm-anim .cm-rise{opacity:1!important; transform:none!important;}
   .cm-anim .cm-sl-img .cm-slide{opacity:1!important;}
   .cm-anim .cm-map-pins .cm-pin{opacity:1!important;}
+  .cm-anim .cm-radar .cm-poly, .cm-anim .cm-radar .cm-vtx{transform:none!important; opacity:1!important;}
+  .cm-anim .cm-bars .cm-bar i{width:var(--w)!important;}
 }
 </style>
 <script>
@@ -522,6 +599,58 @@
 })();
 </script>
 <script>
+/* The two profiles behind one chart.
+   Without this the first profile is the one on the page and the second is
+   hidden, which is still a correct page: the figures beside the shape are
+   what a reader actually reads off, and both lists are in the markup. */
+(function () {
+  function wire(tabs) {
+    if (tabs.dataset.cmWired) return;
+    tabs.dataset.cmWired = "1";
+    var scope = tabs.closest(".cm-in") || document;
+    var btns = Array.prototype.slice.call(tabs.querySelectorAll("[data-cm-tab]"));
+
+    function pick(key) {
+      btns.forEach(function (b) {
+        b.setAttribute("aria-pressed", b.dataset.cmTab === key ? "true" : "false");
+      });
+      scope.querySelectorAll("[data-cm-vals]").forEach(function (v) {
+        v.hidden = v.dataset.cmVals !== key;
+      });
+      scope.querySelectorAll("[data-cm-radar]").forEach(function (r) {
+        var on = r.dataset.cmRadar === key;
+        r.hidden = !on;
+        /* Redrawn each time it is brought back, so switching profiles shows
+           the shape being made rather than swapping one picture for another. */
+        if (on) {
+          r.classList.remove("cm-drawn");
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () { r.classList.add("cm-drawn"); });
+          });
+        }
+      });
+    }
+    btns.forEach(function (b, i) {
+      b.addEventListener("click", function () { pick(b.dataset.cmTab); });
+      b.addEventListener("keydown", function (e) {
+        var d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+        if (!d) return;
+        e.preventDefault();
+        var nx = btns[(i + d + btns.length) % btns.length];
+        nx.focus(); pick(nx.dataset.cmTab);
+      });
+    });
+  }
+  function scan() { document.querySelectorAll(".cm-tabs").forEach(wire); }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", scan);
+  } else { scan(); }
+  if (window.MutationObserver) {
+    new MutationObserver(scan).observe(document.documentElement, { childList: true, subtree: true });
+  }
+})();
+</script>
+<script>
 /* Sections arrive as they are reached, and the specification figures count up
    the first time they are seen.
 
@@ -561,7 +690,11 @@
       if (!e.isIntersecting) return;
       io.unobserve(e.target);
       var wait = still ? 0 : Number(e.target.dataset.cmDelay || 0);
-      setTimeout(function () { e.target.classList.add("cm-in-view"); run(e.target); }, wait);
+      setTimeout(function () {
+        e.target.classList.add("cm-in-view");
+        if (e.target.classList.contains("cm-radar")) e.target.classList.add("cm-drawn");
+        run(e.target);
+      }, wait);
     });
   }, { rootMargin: "0px 0px -7% 0px", threshold: 0.04 });
 
@@ -580,6 +713,14 @@
       Array.prototype.forEach.call(inner.children, function (child, i) {
         mark(child, Math.min(i, 4) * 70);
       });
+    });
+    /* The radar opens from the centre. It is observed on its own rather than
+       through its container, so the shape starts drawing when the chart is
+       reached and not when the section above it is. */
+    document.querySelectorAll(".cm-radar").forEach(function (r) {
+      if (r.dataset.cmRise) return;
+      r.dataset.cmRise = "1";
+      io.observe(r);
     });
     document.querySelectorAll(".cm-map-pins").forEach(function (g) {
       if (g.dataset.cmRise) return;

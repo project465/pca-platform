@@ -43,7 +43,7 @@ the top code widget on every page. Every page, or the ones you miss render bare.
 
 | Page | Widgets, top to bottom |
 |---|---|
-| Home | `01-hero` · `07-screens` · `16-markets` · `02-who` · `03-output` |
+| Home | `01-hero` · `07-screens` · `17-measure` · `16-markets` · `02-who` · `03-output` |
 | The assessment | `04-instrument` · `05-scoring` |
 | Reports | `06-report` · `08-cohort` |
 | Localisation | `09-localisation` |
@@ -65,6 +65,8 @@ All of it is in the head code. The widgets carry no script.
 | The opening figures count up | `01-hero`, on `data-cm-count` | Reduced motion |
 | Dot lattice and the cool light behind the headline | `01-hero`, via `cm-open` | Nothing: they are static gradients |
 | One map pin beats, and the ten arrive in order | `16-markets` | Reduced motion |
+| The radar opens from its centre, and again on each profile switch | `17-measure` | Reduced motion |
+| The ten bars grow in place, one after another | `17-measure` | Reduced motion |
 | Cards lift under the pointer | Any `cm-cell` | A device with no hover |
 | The two sliders | See below | Reduced motion, for the automatic advance |
 
@@ -103,11 +105,43 @@ duration of a drag and restored on release, because mandatory snap pulls the
 position back after every write and a drag made of small steps would never
 leave its slide.
 
-## 5. Images
+## 5. The charts on the home page
+
+`17-measure` carries the two radars and the ranked bars. **Every figure in it
+is the scoring engine's real output for one simulated sitting** (`attempt 8377`,
+produced by `npm run metri:sim`), read out of the database, and the polygon
+coordinates were computed from those figures rather than drawn by eye. The
+same sitting is the one in `img-en/report.png`, so the screenshot and the
+charts agree: Research & Education 77.0, Independent 62.5.
+
+**The file is generated. Do not edit it by hand.**
+
+```
+npm run metri:radar          # the demonstration sitting the site uses
+npm run metri:radar -- 1234  # some other attempt
+```
+
+The `points` attribute is geometry computed from the figures, so editing a
+value in the list beside the chart without recomputing the polygon makes the
+picture lie. The script reads both out of the database and writes the whole
+widget, which is why there is nowhere for the shape and the numbers to drift
+apart. Change the attempt and you have to re-capture `img-en/report.png` from
+the same one, or the screenshot and the charts stop agreeing.
+
+**Six and eight axes are a shape; ten areas are magnitudes.** The radar is the
+form the report itself draws and the one a coordinator recognises across a
+cohort. Ten ranked values are a different job, and a ten-spoke radar is a
+decoration nobody can read, so those are bars. Gold carries the data and never
+carries text: it is 2.4:1 on white and unreadable as type, so every label and
+figure stays in the text tokens. The figures are listed beside the shape, which
+is also the table view, so nothing depends on reading an angle.
+
+## 6. Images
 
 **This site has its own images, in `../img-en/`.** They are not the Korean
 site's files. Both were captured from a build that serves English only, so
-there is no Korean or Turkish tab in frame.
+there is no Korean or Turkish tab in frame, and both come from the same
+sitting as the charts in `17-measure`.
 
 That is a real setting, not a crop: `NEXT_PUBLIC_LANGS=en` at build time makes
 `OFFERED_LANGS` a single language, and the switcher renders nothing when there
@@ -130,7 +164,7 @@ renders in Korean. A Korean screen on this site cannot be read by the person
 it is for, so `08-cohort` carries the structure as a table and no picture.
 When that screen is translated, capture it and add the plate back.
 
-## 6. Do not write these in code
+## 7. Do not write these in code
 
 **The contact form.** `14-contact` ends at the heading and its paragraph. A
 form written in code has nowhere to send to, so put an imweb **form widget**
@@ -147,7 +181,7 @@ number only.
 **Button targets.** `01-hero` points at `/contact` and `/reports`. Change
 them to the real page addresses.
 
-## 7. The world map
+## 8. The world map
 
 `16-markets` carries an inline SVG world map. The dots are Natural Earth 110m land
 geometry sampled every 3.2 degrees, so the coastlines are real rather than traced by
@@ -159,7 +193,7 @@ To move a pin, change its `cx`/`cy` in the widget. The projection is equirectang
 over latitudes 80 to -56, so `x = (lon + 180) / 360 * 1000` and
 `y = (80 - lat) / 136 * 470`.
 
-## 8. This site carries no prices
+## 9. This site carries no prices
 
 There is no pricing page, no checkout and no individual purchase. The site explains
 what the assessment is and takes enquiries; a figure is discussed against a country,
@@ -180,7 +214,7 @@ Six widgets were removed on the way to that, and the reasons are worth keeping:
 One fact from the removed widgets was kept, because it answers a real question:
 students never see a payment screen. It now sits in `03-output` and in the FAQ.
 
-## 9. What was cut, and why
+## 10. What was cut, and why
 
 A second pass took the site down from eighteen widgets to seventeen and cut
 about a fifth of the words. Nothing true was dropped; what went was said
@@ -196,7 +230,7 @@ twice or said nothing.
 | The five retention items quoted verbatim in `09-localisation` | The module is worth naming; its questionnaire is not marketing copy |
 | Two hero rows, the second market table's split rows, the duplicated "no country site is open yet" note | Said elsewhere, or said twice |
 
-## 10. What is still open
+## 11. What is still open
 
 - The domain. `careermetri.com` is the reserved name in
   `marketing/src/content/global.ts`, not a live address

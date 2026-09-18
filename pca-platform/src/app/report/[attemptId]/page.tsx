@@ -203,14 +203,10 @@ export default async function ReportPage({
       <main className="rp-body">
         {askAfter && (
           <aside className="rp-ask">
-            <b>결과를 보신 뒤 여쭐 것이 다섯 개 있습니다</b>
-            <p>
-              시작 전에 물었던 것과 같은 문항이 들어 있습니다. 달라진 만큼이 이
-              진단이 한 일이라, 학교가 그 숫자로 다음 프로그램을 정합니다.
-              1분이면 됩니다.
-            </p>
+            <b>{tt("repAskTitle")}</b>
+            <p>{tt("repAskBody")}</p>
             <Link className="act solid" href={`/survey/${attemptId}?phase=after`}>
-              답하기
+              {tt("repAskCta")}
             </Link>
           </aside>
         )}
