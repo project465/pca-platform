@@ -322,6 +322,9 @@ npm run domains:check   # 코드가 가리키는 주소에 이미 남이 있는�
   기준과, 후보마다 우리 제품의 무엇을 가리키는지
 - `docs/metri/25_metricareer.md` — **받은 제안서와 지금 코드의 차이.**
   무엇을 만들었고, 무엇을 안 만들었고, 정해야 하는 것 둘
+- `docs/metri/26_imweb_site.md` — 홈페이지. 코드로 만든 판과 아임웹 순서
+- `sites/careermetri/index.html` — **대학·기관 소개 한 장 (코드판).**
+  원고는 `sites/imweb/copy.md` 와 같고, 화면 캡처는 플랫폼에서 실제로 뽑았다
 - `docs/metri/19_plus_ladder.md` — **학년마다 다시 파는 사다리.** 중2부터 고3까지
   무엇을 팔 수 있고 무엇이 아직 없는지, 그리고 켜기 전에 확인할 것
 - `src/lib/entitlement.ts` — 등급을 정하는 유일한 곳 (설계 원칙 10)
