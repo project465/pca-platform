@@ -14,7 +14,7 @@ things, so several sections have no counterpart.
 | 14 department rows in Korean names | The same rows in field and discipline names |
 | Korean e-commerce footer | imweb required-footer fields, labels in English |
 | The Korean career-information registration as a credential | The same number, labelled as a Korean registration |
-| Price in won, individuals buy directly | Everything quoted in US dollars, and nothing is sold on the site |
+| Price in won, individuals buy directly | No prices at all. This site explains and takes enquiries |
 
 Two sections exist only here, and they carry the international pitch:
 **Localisation** (what is shared worldwide, what is rebuilt per country, what
@@ -43,13 +43,12 @@ the top code widget on every page. Every page, or the ones you miss render bare.
 
 | Page | Widgets, top to bottom |
 |---|---|
-| Home | `01-hero` · `16-markets` · `17-channels` · `02-who` · `03-output` |
-| The assessment | `04-instrument` · `18-why` · `05-scoring` |
+| Home | `01-hero` · `16-markets` · `02-who` · `03-output` |
+| The assessment | `04-instrument` · `05-scoring` |
 | Reports | `06-report` · `07-screens` · `08-cohort` |
 | Localisation | `09-localisation` |
 | Partnership | `10-partnership` |
-| Pricing | `19-gap` · `11-pricing` · `21-program` |
-| About | `20-choose` · `12-evidence` · `13-coverage` · `22-about` |
+| About | `12-evidence` · `13-coverage` · `22-about` |
 | Contact | `23-faq` · `14-contact` + an imweb form widget below it |
 | Bottom of every page | `15-footer` |
 
@@ -98,15 +97,26 @@ To move a pin, change its `cx`/`cy` in the widget. The projection is equirectang
 over latitudes 80 to -56, so `x = (lon + 180) / 360 * 1000` and
 `y = (80 - lat) / 136 * 470`.
 
-## 7. Nothing is sold here
+## 7. This site carries no prices
 
-There is no checkout, no student payment screen and no individual purchase on this
-site. Every track is quoted in US dollars against a country, a discipline and a
-cohort size, and the only way in is the enquiry form on Contact. The Korean site
-keeps its own individual track; this one does not carry it.
+There is no pricing page, no checkout and no individual purchase. The site explains
+what the assessment is and takes enquiries; a figure is discussed against a country,
+a discipline and a cohort size once someone writes in. The Korean site keeps its own
+individual track and its price; this one does not carry either.
 
-**No dollar figure is printed anywhere.** Supply one and it goes in a single place,
-the three `cm-price` lines in `11-pricing`.
+Six widgets were removed on the way to that, and the reasons are worth keeping:
+
+| Removed | Why |
+|---|---|
+| `11-pricing` | A price on a site that cannot take payment is a promise with nothing behind it |
+| `19-gap` | Its funnel figures were illustrative, not a real department's. On an explanatory site a reader takes numbers as real |
+| `17-channels` | After the prices went, it repeated what Partnership already says |
+| `18-why` | A two-column comparison against "a conventional career test" is positioning, not explanation |
+| `20-choose` | Its four points are properties, and they are already stated where they belong: intervals and reproducibility in `05-scoring`, travelling in `09-localisation` |
+| `21-program` | Lectures and mentoring are delivered in Korea. Selling them here would promise something a partner market has not built |
+
+One fact from the removed widgets was kept, because it answers a real question:
+students never see a payment screen. It now sits in `03-output` and in the FAQ.
 
 ## 8. What is still open
 
