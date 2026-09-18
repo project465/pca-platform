@@ -10,7 +10,7 @@
      읽고 팀장에게 넘길 자료를 찾습니다. 그래서 이 화면은 광고가 아니라
      사양서의 짜임을 따릅니다 — 명사형 제목, 설명 문단, 표.
      ═══════════════════════════════════════════════════════════ -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@500;700&family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
 <style>
 :root{
   --cm-navy:#0F1B2D; --cm-gold:#C9A227;
@@ -18,12 +18,12 @@
   --cm-text:#0F1B2D; --cm-mute:#4F6076;
   --cm-line:#DCE2EA; --cm-rule:#B9C4D0;
   --cm-acc:#7A6214; --cm-btn2:#0F1B2D;
-  /* 모서리 규칙: 금색이 닿는 면과 선은 각지게, 회색 선으로 둘러싼 그릇은 둥글게.
-     섞는 것을 규칙으로 두면 취향이 아니라 짜임이 된다 */
-  --cm-r:10px; --cm-r2:6px;
-  --cm-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  /* 모서리는 전부 둥글다. 각진 모서리를 쓰지 않는다 */
+  --cm-r:12px; --cm-r2:8px; --cm-r3:4px;
+  /* 글꼴은 한 벌만 쓴다. 제목·본문·숫자가 다른 집안이면 한 화면으로
+     읽히지 않는다. 숫자는 폰트를 바꾸는 대신 tabular-nums 로 줄을 맞춘다 */
   --cm-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
-  --cm-disp:"Gothic A1","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --cm-disp:var(--cm-body); --cm-mono:var(--cm-body);
 }
 .cm.cm-tint{--cm-bg:#F2F4F7; --cm-surface:#F2F4F7; --cm-surface2:#FFFFFF;}
 .cm.cm-dark{
@@ -40,6 +40,8 @@
   padding:58px 20px; margin:0;
 }
 .cm *{box-sizing:border-box;}
+/* 모든 절이 같은 세로선에서 시작한다. 폭을 절마다 다르게 두면
+   스크롤할 때 왼쪽 끝이 흔들린다 */
 .cm-in{max-width:1040px; margin:0 auto;}
 .cm-col{max-width:660px;}
 .cm img{max-width:100%; display:block;}
@@ -53,7 +55,7 @@
   line-height:1.4; letter-spacing:-.015em; margin:0 0 14px; color:var(--cm-text);
 }
 .cm-h2::after{content:""; display:block; width:34px; height:2px;
-  background:var(--cm-gold); margin-top:14px;}
+  background:var(--cm-gold); border-radius:var(--cm-r3); margin-top:14px;}
 .cm-h3{font-family:var(--cm-disp); font-weight:700; font-size:16px; margin:0 0 7px; color:var(--cm-text);}
 .cm-sublabel{
   font-family:var(--cm-body); font-weight:600; font-size:15px; color:var(--cm-text);
@@ -70,11 +72,10 @@
 .cm-cta{display:flex; gap:10px; flex-wrap:wrap; margin-top:26px;}
 .cm-btn{
   font-family:var(--cm-body); font-weight:600; font-size:15px; padding:12px 24px;
-  text-decoration:none; display:inline-block;
+  text-decoration:none; display:inline-block; border-radius:var(--cm-r2);
   border:1px solid var(--cm-gold); color:var(--cm-navy); background:var(--cm-gold);
 }
-.cm-btn.cm-ghost{background:transparent; color:var(--cm-btn2); border-color:var(--cm-rule);
-  border-radius:var(--cm-r2);}
+.cm-btn.cm-ghost{background:transparent; color:var(--cm-btn2); border-color:var(--cm-rule);}
 .cm-btn:hover{background:#B38E1C; border-color:#B38E1C;}
 .cm-btn.cm-ghost:hover{background:rgba(201,162,39,.14); border-color:var(--cm-gold);}
 
@@ -91,7 +92,7 @@
 .cm-tw th[scope=row]{background:var(--cm-surface2); width:9.5em; vertical-align:top; font-size:14px;}
 .cm-tw td.cm-live{color:var(--cm-acc); font-weight:600; white-space:nowrap;}
 .cm-tw .cm-num{text-align:right;}
-.cm-tw td.cm-num{font-family:var(--cm-mono); font-variant-numeric:tabular-nums;}
+.cm-tw td.cm-num{font-variant-numeric:tabular-nums;}
 @media (max-width:540px){.cm-tw th[scope=row]{width:7.5em; font-size:13px;}}
 
 .cm-grid{display:grid; gap:1px; background:var(--cm-line); margin-top:20px;
@@ -117,7 +118,7 @@
 /* 문항을 그대로 인용하는 줄 */
 .cm-items{margin-top:18px; display:grid; gap:9px;}
 .cm-item{background:var(--cm-surface2); border:1px solid var(--cm-line);
-  border-left:3px solid var(--cm-gold); border-radius:0 var(--cm-r) var(--cm-r) 0;
+  border-left:3px solid var(--cm-gold); border-radius:var(--cm-r);
   padding:13px 16px; font-size:14.5px; line-height:1.7;}
 .cm-item b{display:block; font-size:12.5px; color:var(--cm-acc);
   margin-bottom:4px; font-weight:600;}
@@ -127,7 +128,8 @@
   margin-top:20px; border:1px solid var(--cm-line); border-radius:var(--cm-r); overflow:hidden;}
 .cm-step{background:var(--cm-surface); padding:16px 22px; display:flex; gap:14px; align-items:baseline;}
 .cm-step::before{counter-increment:cmstep; content:counter(cmstep,decimal-leading-zero);
-  font-family:var(--cm-mono); font-size:12px; color:var(--cm-mute); flex:0 0 auto;}
+  font-size:12.5px; font-weight:600; font-variant-numeric:tabular-nums;
+  color:var(--cm-acc); flex:0 0 auto;}
 .cm-step b{font-weight:600; flex:0 0 11em;}
 .cm-step span{color:var(--cm-mute); font-size:14.5px;}
 @media (max-width:540px){
@@ -140,7 +142,7 @@
 .cm-pack{border:1px solid var(--cm-line); border-radius:var(--cm-r);
   padding:24px 22px; background:var(--cm-surface);}
 .cm-pack.cm-pick{border-color:var(--cm-gold); border-top:3px solid var(--cm-gold);
-  background:var(--cm-surface2); border-radius:0 0 var(--cm-r) var(--cm-r);}
+  background:var(--cm-surface2);}
 .cm-tag{font-weight:600; font-size:12.5px; color:var(--cm-acc); display:block; margin-bottom:10px;}
 .cm-price{font-family:var(--cm-disp); font-weight:700; font-size:22px;
   margin:0 0 4px; letter-spacing:-.015em; color:var(--cm-text);
@@ -191,13 +193,13 @@
   margin:0 0 7px; color:var(--cm-text);}
 .cm-slide p{margin:0; font-size:14px; color:var(--cm-mute); line-height:1.75;}
 /* 금색 띠를 위에 올린 장은 위쪽 모서리를 각지게 둔다 */
-.cm-slide.cm-lead{border-top:3px solid var(--cm-gold); border-radius:0 0 var(--cm-r) var(--cm-r);}
+.cm-slide.cm-lead{border-top:3px solid var(--cm-gold);}
 .cm-slide figure{margin:0;}
 .cm-slide img{border:1px solid var(--cm-rule); border-radius:var(--cm-r2);}
 .cm-slide figcaption{font-size:12.5px; color:var(--cm-mute); padding-top:10px;}
 .cm-sl-dots{display:flex; gap:6px; margin-top:14px;}
-.cm-sl-dot{width:22px; height:3px; background:var(--cm-line); border:0; padding:0;
-  cursor:pointer;}
+.cm-sl-dot{width:22px; height:4px; border-radius:2px; background:var(--cm-line);
+  border:0; padding:0; cursor:pointer;}
 .cm-sl-dot[aria-current="true"]{background:var(--cm-gold);}
 @media (prefers-reduced-motion:reduce){
   .cm *{transition:none!important; animation:none!important;}
