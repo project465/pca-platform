@@ -829,8 +829,12 @@
       setTimeout(function () { dock.remove(); }, 420);
     });
     var tick = function () {
-      var h = document.documentElement;
-      var seen = (h.scrollTop + window.innerHeight) / Math.max(h.scrollHeight, 1);
+      /* Which element actually scrolls is not always the same one: a page
+         without a doctype scrolls its body and reports 0 on documentElement,
+         and then the bar never appears. scrollingElement answers correctly
+         in both. */
+      var sc = document.scrollingElement || document.documentElement;
+      var seen = (sc.scrollTop + window.innerHeight) / Math.max(sc.scrollHeight, 1);
       dock.classList.toggle("cm-up", seen > 0.55);
     };
     window.addEventListener("scroll", tick, { passive: true });
