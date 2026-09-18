@@ -1,28 +1,37 @@
-<!-- 홈 · 서비스 개요. 버튼 href 는 아임웹에서 만든 실제 페이지 주소로 바꿉니다.
-     cm-dark 는 이 한 장에만 씁니다 -->
-<div class="cm cm-dark">
+<!-- 홈 · 첫 화면.
+     href="/contact" 와 href="/result" 는 아임웹에서 만든 실제 페이지 주소로
+     바꿉니다. cm-dark 는 이 띠와 아래 지도에만 씁니다.
+
+     cm-open 이 점 격자와 표제 뒤 조명을 칠합니다. 둘 다 CSS 그라디언트라
+     올릴 이미지가 없고 빠질 이미지도 없습니다. data-cm-count 가 붙은 숫자는
+     처음 보일 때 한 번 올라갑니다 — 요소에 적힌 값이 참값이고 끝나면 그
+     값으로 돌아오므로, 스크립트를 꺼도 숫자는 맞습니다. -->
+<div class="cm cm-dark cm-open">
   <div class="cm-in">
-    <h1 class="cm-h1">공학계열 재학생 직무적합 진단</h1>
+    <h1 class="cm-h1">전공은 골랐는데, 어느 직무인지는 아무도 안 알려줬다.</h1>
     <div class="cm-col">
       <p>전공 안에서 어느 직무로 갈 수 있는지를 재고, 그 직무를 준비하는 방법까지
         개인 리포트 한 부로 냅니다. 의뢰 기관은 같은 응답을 익명으로 모은 분석
         리포트를 받아 다음 학기 프로그램의 근거로 씁니다.</p>
     </div>
-    <div class="cm-tw cm-col">
-      <table>
-        <tbody>
-          <tr><th scope="row">대상</th><td>4년제·전문대 공학계열 재학생</td></tr>
-          <tr><th scope="row">문항</th><td>253문항 · 직무흥미 130 · 성향 반영 120 · 성실도 3</td></tr>
-          <tr><th scope="row">응시</th><td>모바일·PC · 약 15~20분 · 5점 척도 · 문항마다 저장</td></tr>
-          <tr><th scope="row">결과물</th><td>개인 결과 리포트 · 기관 분석 리포트</td></tr>
-          <tr><th scope="row">제공</th><td>온라인 열람 · PDF</td></tr>
-          <tr><th scope="row">신고</th><td>직업정보제공사업 J1700020220007호</td></tr>
-        </tbody>
-      </table>
+
+    <div class="cm-kpi">
+      <div><b data-cm-count="253">253</b><span>한 번에 푸는 문항</span></div>
+      <div><b data-cm-count="10">10</b><span>전공 안의 직무영역</span></div>
+      <div><b data-cm-count="6">6</b><span>함께 재는 업무 성향</span></div>
+      <div><b>15~20</b><span>분 · 모바일과 PC</span></div>
     </div>
+
     <div class="cm-cta">
       <a class="cm-btn" href="/contact">도입 문의</a>
       <a class="cm-btn cm-ghost" href="/result">결과 예시 보기</a>
     </div>
+
+    <dl class="cm-spec">
+      <div><dt>대상</dt><span>4년제·전문대 공학계열 재학생</span></div>
+      <div><dt>응시 방식</dt><span>5점 척도, 문항마다 저장, 중간에 닫아도 이어서</span></div>
+      <div><dt>결과물</dt><span>개인 결과 리포트와 기관 분석 리포트, 온라인 열람과 PDF</span></div>
+      <div><dt>신고</dt><span>직업정보제공사업 J1700020220007호</span></div>
+    </dl>
   </div>
 </div>

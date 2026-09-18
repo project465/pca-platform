@@ -1,61 +1,84 @@
 <!-- ═══════════════════════════════════════════════════════════
-     [대안] Header Code 칸을 못 찾으셨을 때 쓰는 판입니다.
+     Header Code 칸을 못 찾을 때 쓰는 대체본입니다.
 
-     원래 자리는 관리자 > 설정(환경설정) > SEO > 공통 코드삽입 >
-     Header Code 이고, 거기 붙이면 한 번으로 끝납니다.
+     00-head-code.html 과 몸통이 같고, 붙이는 곳만 다릅니다 — 페이지마다
+     맨 위 코드 위젯으로 하나씩 붙입니다. **모든 페이지에** 붙여야 합니다.
+     빠뜨린 페이지는 꾸밈 없이 그대로 나옵니다.
 
-     그 칸을 못 찾으셨으면 이 파일을 **페이지마다 맨 위 코드 위젯**에
-     하나씩 붙이십시오. 홈·진단·결과 예시·제공 학과·지역 연계·
-     도입 안내·문의 일곱 장 전부에 넣어야 합니다. 한 장이라도 빠지면
-     그 페이지만 맨몸으로 나옵니다.
-
-     같은 규칙이 여러 번 실리지만 값이 같아서 화면은 달라지지 않고,
-     슬라이더 배선에는 이미 두 번 걸리지 않게 표시를 남겨 뒀습니다.
+     이 파일도 손으로 고치지 않습니다. 고칠 곳은 imweb-en/00-head-code.html
+     하나입니다.
      ═══════════════════════════════════════════════════════════ -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@500;700&family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<!-- Two font links. Pretendard first (a variable font with a dynamic subset,
+     so only the glyphs in use are fetched), Noto Sans KR second as the loaded
+     fallback. The fallback only downloads on a day the first one fails: an
+     unused @font-face never fetches its files. Same stack as the Korean site,
+     so both read as one system. -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap">
 <style>
 :root{
   --cm-navy:#0F1B2D; --cm-gold:#C9A227;
   --cm-bg:#FFFFFF; --cm-surface:#FFFFFF; --cm-surface2:#F2F4F7;
   --cm-text:#0F1B2D; --cm-mute:#4F6076;
-  --cm-line:#DCE2EA; --cm-rule:#B9C4D0;
+  --cm-line:#E4E9EF; --cm-rule:#C3CCD8;
   --cm-acc:#7A6214; --cm-btn2:#0F1B2D;
-  /* 모서리 규칙: 금색이 닿는 면과 선은 각지게, 회색 선으로 둘러싼 그릇은 둥글게.
-     섞는 것을 규칙으로 두면 취향이 아니라 짜임이 된다 */
-  --cm-r:10px; --cm-r2:6px;
-  --cm-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
-  --cm-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
-  --cm-disp:"Gothic A1","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  /* Every corner is rounded. Nothing on this site is square. */
+  --cm-r:24px; --cm-r2:16px; --cm-r3:3px; --cm-pill:999px;
+  /* One very shallow shadow on raised surfaces. A border alone reads flat,
+     and a heavy shadow reads like an old card. */
+  --cm-lift:0 1px 2px rgba(15,27,45,.035), 0 12px 34px rgba(15,27,45,.06);
+  /* One typeface only. Headings, body and figures from different families
+     stop reading as one page. Figures line up with tabular-nums rather than
+     by switching to a second font. */
+  --cm-body:"Pretendard Variable",Pretendard,"Noto Sans KR",-apple-system,
+    BlinkMacSystemFont,system-ui,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --cm-disp:var(--cm-body); --cm-mono:var(--cm-body);
 }
 .cm.cm-tint{--cm-bg:#F2F4F7; --cm-surface:#F2F4F7; --cm-surface2:#FFFFFF;}
 .cm.cm-dark{
+  /* A flat fill of one navy over 900 pixels reads as a printed block. The
+     gradient is shallow enough that nobody sees a gradient. */
+  background-image:linear-gradient(178deg,#132134 0%,#0F1B2D 46%,#0C1726 100%);
   --cm-bg:#0F1B2D; --cm-surface:#0F1B2D; --cm-surface2:#16273C;
   --cm-text:#E8EDF2; --cm-mute:#8D9CAE;
-  --cm-line:#24374F; --cm-rule:#2E4460;
+  --cm-line:#22354C; --cm-rule:#2E4460;
   --cm-acc:#C9A227; --cm-btn2:#C9A227;
 }
 
 .cm{
   background:var(--cm-bg); color:var(--cm-text);
-  font-family:var(--cm-body); font-size:16px; line-height:1.8;
-  word-break:keep-all; overflow-wrap:break-word;
-  padding:58px 20px; margin:0;
+  font-family:var(--cm-body); font-size:16px; line-height:1.78;
+  letter-spacing:-.011em; word-break:keep-all; overflow-wrap:break-word;
+  padding:92px 20px; margin:0;
 }
 .cm *{box-sizing:border-box;}
+/* Every section starts on the same vertical line. Different widths per
+   section make the left edge wobble as the page scrolls. */
 .cm-in{max-width:1040px; margin:0 auto;}
+/* Section head: the heading holds the left column, the opening paragraph the
+   right. In one column the text measure leaves the right side empty on every
+   section, which reads as unfinished rather than composed. */
+.cm-head{display:grid; gap:14px 56px; align-items:start; margin-bottom:26px;}
+@media (min-width:900px){
+  .cm-head{grid-template-columns:minmax(0,7fr) minmax(0,9fr);}
+  .cm-head > .cm-h2{margin:0; padding-top:2px;}
+  .cm-head > .cm-col{max-width:none;}
+  .cm-head > .cm-col > p:last-child{margin-bottom:0;}
+}
 .cm-col{max-width:660px;}
 .cm img{max-width:100%; display:block;}
 .cm a{color:var(--cm-text);}
 .cm strong{font-weight:600;}
 .cm :focus-visible{outline:2px solid var(--cm-acc); outline-offset:3px;}
 
-/* 제목은 명사형으로 짧게. 문장형 제목을 절마다 쓰면 광고문이 된다 */
+/* Headings are short noun phrases. A sentence per section reads as ad copy. */
 .cm-h2{
-  font-family:var(--cm-disp); font-weight:700; font-size:clamp(21px,2.5vw,27px);
-  line-height:1.4; letter-spacing:-.015em; margin:0 0 14px; color:var(--cm-text);
+  font-family:var(--cm-disp); font-weight:700; font-size:clamp(25px,3.1vw,36px);
+  line-height:1.26; letter-spacing:-.035em; margin:0 0 14px; color:var(--cm-text);
+  text-wrap:balance;
 }
-.cm-h2::after{content:""; display:block; width:34px; height:2px;
-  background:var(--cm-gold); margin-top:14px;}
 .cm-h3{font-family:var(--cm-disp); font-weight:700; font-size:16px; margin:0 0 7px; color:var(--cm-text);}
 .cm-sublabel{
   font-family:var(--cm-body); font-weight:600; font-size:15px; color:var(--cm-text);
@@ -66,41 +89,59 @@
 .cm-small{font-size:13.5px; color:var(--cm-mute); line-height:1.75;}
 
 .cm-h1{
-  font-family:var(--cm-disp); font-weight:700; font-size:clamp(25px,3.6vw,36px);
-  line-height:1.35; letter-spacing:-.02em; margin:0 0 16px; color:var(--cm-text);
+  font-family:var(--cm-disp); font-weight:700; font-size:clamp(33px,5.4vw,60px);
+  line-height:1.12; letter-spacing:-.042em; margin:0 0 20px; color:var(--cm-text);
+  max-width:17ch; text-wrap:balance;
 }
+@media (max-width:760px){.cm-h1{max-width:none;}}
 .cm-cta{display:flex; gap:10px; flex-wrap:wrap; margin-top:26px;}
 .cm-btn{
   font-family:var(--cm-body); font-weight:600; font-size:15px; padding:12px 24px;
-  text-decoration:none; display:inline-block;
+  text-decoration:none; display:inline-block; border-radius:var(--cm-pill);
   border:1px solid var(--cm-gold); color:var(--cm-navy); background:var(--cm-gold);
 }
-.cm-btn.cm-ghost{background:transparent; color:var(--cm-btn2); border-color:var(--cm-rule);
-  border-radius:var(--cm-r2);}
-.cm-btn:hover{background:#B38E1C; border-color:#B38E1C;}
-.cm-btn.cm-ghost:hover{background:rgba(201,162,39,.14); border-color:var(--cm-gold);}
+.cm-btn{transition:transform .2s cubic-bezier(.2,.7,.3,1), background .2s, border-color .2s, box-shadow .2s;}
+.cm-btn.cm-ghost{background:transparent; color:var(--cm-btn2); border-color:var(--cm-rule);}
+.cm-btn:hover{background:#B38E1C; border-color:#B38E1C; transform:translateY(-2px);
+  box-shadow:0 10px 24px rgba(201,162,39,.28);}
+.cm-btn.cm-ghost:hover{background:rgba(201,162,39,.14); border-color:var(--cm-gold);
+  box-shadow:none;}
+.cm-btn:active{transform:translateY(0);}
 
-/* 사양 표. 이 화면에서 가장 많이 쓰는 그릇이다 */
+/* Specification tables. The most used container on this site. */
 .cm-tw{overflow-x:auto; margin:20px 0 0; border:1px solid var(--cm-line);
   border-radius:var(--cm-r); background:var(--cm-surface);}
 .cm-tw table{border-collapse:collapse; width:100%; font-size:14.5px; min-width:440px;}
-.cm-tw th,.cm-tw td{text-align:left; padding:13px 16px; border-bottom:1px solid var(--cm-line);}
+.cm-tw th,.cm-tw td{text-align:left; padding:16px 20px; border-bottom:1px solid var(--cm-line);}
 .cm-tw tr:last-child th,.cm-tw tr:last-child td{border-bottom:0;}
-.cm-tw thead th{font-family:var(--cm-body); font-size:12.5px; color:var(--cm-mute);
-  font-weight:600; background:var(--cm-surface2); border-bottom:1px solid var(--cm-rule);}
+/* Head cells were filled grey and row labels filled grey again, which made
+   every table look like a form from a decade ago. A small capitalised label
+   over a single rule does the same job and lets the figures carry the block. */
+.cm-tw thead th{font-family:var(--cm-body); font-size:11px; color:var(--cm-mute);
+  font-weight:600; letter-spacing:.09em; text-transform:uppercase;
+  padding-top:18px; padding-bottom:12px;
+  background:transparent; border-bottom:1px solid var(--cm-rule);}
 .cm-tw td{color:var(--cm-mute); vertical-align:top;}
-.cm-tw td.cm-name,.cm-tw th[scope=row]{color:var(--cm-text); font-weight:500; white-space:nowrap;}
-.cm-tw th[scope=row]{background:var(--cm-surface2); width:9.5em; vertical-align:top; font-size:14px;}
+.cm-tw td.cm-name,.cm-tw th[scope=row]{color:var(--cm-text); font-weight:600; white-space:nowrap;}
+.cm-tw th[scope=row]{background:transparent; width:10.5em; vertical-align:top;
+  font-size:11px; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--cm-mute); font-weight:600; padding-top:19px;}
 .cm-tw td.cm-live{color:var(--cm-acc); font-weight:600; white-space:nowrap;}
 .cm-tw .cm-num{text-align:right;}
-.cm-tw td.cm-num{font-family:var(--cm-mono); font-variant-numeric:tabular-nums;}
+.cm-tw td.cm-num{font-variant-numeric:tabular-nums;}
 @media (max-width:540px){.cm-tw th[scope=row]{width:7.5em; font-size:13px;}}
 
-.cm-grid{display:grid; gap:1px; background:var(--cm-line); margin-top:20px;
-  border:1px solid var(--cm-line); border-radius:var(--cm-r); overflow:hidden;}
+/* Cells stand apart. Butted together on a 1px rule they set into one table. */
+.cm-grid{display:grid; gap:16px; margin-top:22px;}
 .cm-g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr));}
 .cm-g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr));}
-.cm-cell{background:var(--cm-surface); padding:22px 22px 24px;}
+.cm-cell{background:var(--cm-surface); padding:28px 26px 30px;
+  border:1px solid var(--cm-line); border-radius:var(--cm-r); box-shadow:var(--cm-lift);
+  transition:transform .28s cubic-bezier(.2,.7,.3,1), box-shadow .28s, border-color .28s;}
+@media (hover:hover){
+  .cm-cell:hover{transform:translateY(-3px); border-color:var(--cm-rule);
+    box-shadow:0 2px 4px rgba(15,27,45,.04), 0 22px 48px rgba(15,27,45,.10);}
+}
 .cm-n{font-family:var(--cm-body); font-weight:600; font-size:12.5px; color:var(--cm-acc);
   display:block; margin-bottom:9px;}
 .cm-cell p{margin:0; font-size:14.5px; color:var(--cm-mute); line-height:1.75;}
@@ -110,26 +151,27 @@
 .cm-cell li::before{content:""; position:absolute; left:1px; top:13px;
   width:5px; height:5px; border-radius:50%; background:var(--cm-rule);}
 
-/* 결과지는 흰 문서다. 받침과 괘선을 둘러 책상에 놓은 것처럼 만든다 */
-.cm-plate{margin:24px 0 0; background:var(--cm-surface2); padding:14px;
-  border:1px solid var(--cm-line); border-radius:var(--cm-r);}
+/* The report is a white document. A mount and a hairline put it on a desk. */
+.cm-plate{margin:26px 0 0; background:var(--cm-surface2); padding:16px;
+  border:1px solid var(--cm-line); border-radius:var(--cm-r); box-shadow:var(--cm-lift);}
 .cm-plate img{border:1px solid var(--cm-rule); border-radius:var(--cm-r2);}
 .cm-plate figcaption{font-size:12.5px; color:var(--cm-mute); padding:11px 2px 1px;}
 
-/* 문항을 그대로 인용하는 줄 */
+/* Rows that quote an item verbatim. */
 .cm-items{margin-top:18px; display:grid; gap:9px;}
 .cm-item{background:var(--cm-surface2); border:1px solid var(--cm-line);
-  border-left:3px solid var(--cm-gold); border-radius:0 var(--cm-r) var(--cm-r) 0;
-  padding:13px 16px; font-size:14.5px; line-height:1.7;}
+  border-left:3px solid var(--cm-gold); border-radius:var(--cm-r);
+  padding:16px 20px; font-size:14.5px; line-height:1.72;}
 .cm-item b{display:block; font-size:12.5px; color:var(--cm-acc);
   margin-bottom:4px; font-weight:600;}
 
-/* 번호가 뜻을 갖는 유일한 곳. 순서대로 밟는 절차다 */
-.cm-steps{counter-reset:cmstep; display:grid; gap:1px; background:var(--cm-line);
-  margin-top:20px; border:1px solid var(--cm-line); border-radius:var(--cm-r); overflow:hidden;}
-.cm-step{background:var(--cm-surface); padding:16px 22px; display:flex; gap:14px; align-items:baseline;}
+/* The only place a number means something: steps taken in order. */
+.cm-steps{counter-reset:cmstep; display:grid; gap:10px; margin-top:22px;}
+.cm-step{background:var(--cm-surface); padding:18px 24px; display:flex; gap:14px;
+  align-items:baseline; border:1px solid var(--cm-line); border-radius:var(--cm-r2);}
 .cm-step::before{counter-increment:cmstep; content:counter(cmstep,decimal-leading-zero);
-  font-family:var(--cm-mono); font-size:12px; color:var(--cm-mute); flex:0 0 auto;}
+  font-size:12.5px; font-weight:600; font-variant-numeric:tabular-nums;
+  color:var(--cm-acc); flex:0 0 auto;}
 .cm-step b{font-weight:600; flex:0 0 11em;}
 .cm-step span{color:var(--cm-mute); font-size:14.5px;}
 @media (max-width:540px){
@@ -140,12 +182,12 @@
 
 .cm-packs{display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(255px,1fr)); margin-top:20px;}
 .cm-pack{border:1px solid var(--cm-line); border-radius:var(--cm-r);
-  padding:24px 22px; background:var(--cm-surface);}
+  padding:28px 26px; background:var(--cm-surface); box-shadow:var(--cm-lift);}
 .cm-pack.cm-pick{border-color:var(--cm-gold); border-top:3px solid var(--cm-gold);
-  background:var(--cm-surface2); border-radius:0 0 var(--cm-r) var(--cm-r);}
+  background:var(--cm-surface2);}
 .cm-tag{font-weight:600; font-size:12.5px; color:var(--cm-acc); display:block; margin-bottom:10px;}
-.cm-price{font-family:var(--cm-disp); font-weight:700; font-size:22px;
-  margin:0 0 4px; letter-spacing:-.015em; color:var(--cm-text);
+.cm-price{font-family:var(--cm-disp); font-weight:700; font-size:25px;
+  margin:0 0 5px; letter-spacing:-.03em; color:var(--cm-text);
   font-variant-numeric:tabular-nums;}
 .cm-unit{font-size:13px; color:var(--cm-mute); margin-bottom:14px;}
 .cm-pack ul{margin:0; padding:0; list-style:none;}
@@ -155,23 +197,28 @@
   border-radius:50%; border:1px solid var(--cm-rule);}
 .cm-pack li.cm-on::before{background:var(--cm-gold); border-color:var(--cm-gold);}
 
+/* The note runs the full width of the section and holds its own measure
+   inside. Stopping the box itself at reading width leaves a stub under a
+   full-width table, which reads as a layout that gave up rather than as a
+   deliberate column. */
 .cm-note{background:var(--cm-surface2); border:1px solid var(--cm-line);
-  border-radius:var(--cm-r); padding:18px 20px; margin-top:22px;}
-.cm-note p{margin:0; font-size:14px; color:var(--cm-mute); line-height:1.8;}
+  border-radius:var(--cm-r); padding:22px 26px; margin-top:24px;}
+.cm-note p{margin:0; font-size:14px; color:var(--cm-mute); line-height:1.8;
+  max-width:74ch;}
 .cm-note p + p{margin-top:9px;}
 
 .cm-brand{font-family:var(--cm-disp); font-weight:700; font-size:16px; letter-spacing:.05em;
   color:var(--cm-text);}
 .cm-brand em{color:var(--cm-acc); font-style:normal;}
-/* ── 옆으로 넘기는 판.
-   scroll-snap 이라 JS 가 죽어도 손가락과 트랙패드로는 넘어간다.
-   단추와 점은 아래 스크립트가 붙인다 */
+/* Sideways sliders. Built on scroll-snap, so a finger or a trackpad still
+   works if the script fails. The arrows and dots are attached by the script
+   at the end of this block. */
 .cm-sl{margin-top:20px;}
 .cm-sl-head{display:flex; align-items:center; gap:12px; margin-bottom:12px;}
 .cm-sl-head p{margin:0; font-size:13.5px; color:var(--cm-mute); margin-right:auto;}
-.cm-sl-btn{width:34px; height:34px; flex:0 0 auto; cursor:pointer;
+.cm-sl-btn{width:38px; height:38px; flex:0 0 auto; cursor:pointer;
   background:var(--cm-surface); color:var(--cm-text);
-  border:1px solid var(--cm-rule); border-radius:var(--cm-r2);
+  border:1px solid var(--cm-line); border-radius:var(--cm-pill);
   font-family:var(--cm-body); font-size:15px; line-height:1;
   display:inline-flex; align-items:center; justify-content:center;}
 .cm-sl-btn:hover:not([disabled]){border-color:var(--cm-gold);}
@@ -186,29 +233,380 @@
 @media (min-width:760px){.cm-sl-track{grid-auto-columns:minmax(276px,1fr);}}
 .cm-slide{
   background:var(--cm-surface); border:1px solid var(--cm-line);
-  border-radius:var(--cm-r); padding:22px 20px 24px; min-width:0;
+  border-radius:var(--cm-r); padding:24px 22px 26px; min-width:0;
+  box-shadow:var(--cm-lift);
 }
 .cm-slide .cm-n{margin-bottom:8px;}
 .cm-slide h3{font-family:var(--cm-disp); font-weight:700; font-size:16px;
   margin:0 0 7px; color:var(--cm-text);}
 .cm-slide p{margin:0; font-size:14px; color:var(--cm-mute); line-height:1.75;}
-/* 금색 띠를 위에 올린 장은 위쪽 모서리를 각지게 둔다 */
-.cm-slide.cm-lead{border-top:3px solid var(--cm-gold); border-radius:0 0 var(--cm-r) var(--cm-r);}
+/* The lead slide carries a gold rule along its top edge. */
+.cm-slide.cm-lead{border-top:3px solid var(--cm-gold);}
 .cm-slide figure{margin:0;}
 .cm-slide img{border:1px solid var(--cm-rule); border-radius:var(--cm-r2);}
 .cm-slide figcaption{font-size:12.5px; color:var(--cm-mute); padding-top:10px;}
 .cm-sl-dots{display:flex; gap:6px; margin-top:14px;}
-.cm-sl-dot{width:22px; height:3px; background:var(--cm-line); border:0; padding:0;
-  cursor:pointer;}
+.cm-sl-dot{width:22px; height:4px; border-radius:2px; background:var(--cm-line);
+  border:0; padding:0; cursor:pointer;}
 .cm-sl-dot[aria-current="true"]{background:var(--cm-gold);}
+/* A hairline that fills as the slider runs. With eleven slides the dots stop
+   telling anyone where they are; a filled line does it at a glance. */
+.cm-sl-rail{position:relative; height:2px; margin-top:16px; border-radius:2px;
+  background:var(--cm-line); overflow:hidden;}
+.cm-sl-rail i{position:absolute; inset:0 auto 0 0; display:block; width:0;
+  background:var(--cm-gold); border-radius:2px;
+  transition:width .38s cubic-bezier(.2,.7,.3,1);}
+/* Image variant. One picture per view, and the slide is the mount around it
+   rather than a card with text in it. */
+.cm-sl-img .cm-sl-track{grid-auto-columns:100%;}
+@media (min-width:760px){.cm-sl-img .cm-sl-track{grid-auto-columns:100%;}}
+.cm-sl-img .cm-slide{background:var(--cm-surface2); padding:16px; cursor:grab;
+  transition:opacity .4s ease;}
+/* The slide half out of frame is dimmed, so the eye is told which one is
+   being shown without a border or a shadow being added to say it. */
+.cm-anim .cm-sl-img .cm-slide{opacity:.34;}
+.cm-anim .cm-sl-img .cm-slide.cm-here{opacity:1;}
+.cm-sl-img .cm-slide:active{cursor:grabbing;}
+/* The browser's own image drag would start instead of the slider's. */
+.cm-sl-img .cm-slide img{width:100%; -webkit-user-drag:none; user-select:none;}
+
+/* ── The opening band. A dot lattice at very low contrast, fading out as it
+   falls, and one warm pool of light behind the headline. Both are painted
+   with gradients rather than an image, so they cost nothing to load and stay
+   sharp at any width. The band has to be positioned for them to sit inside. */
+.cm-open{position:relative; overflow:hidden; isolation:isolate;}
+.cm-open::before{
+  content:""; position:absolute; inset:0; z-index:-2;
+  background-image:radial-gradient(currentColor .9px, transparent 1px);
+  background-size:24px 24px; color:var(--cm-mute);
+  opacity:.26;
+  -webkit-mask-image:linear-gradient(170deg,#000 0%,rgba(0,0,0,.45) 46%,transparent 86%);
+  mask-image:linear-gradient(170deg,#000 0%,rgba(0,0,0,.45) 46%,transparent 86%);
+}
+/* A cool lift rather than a gold one. Gold spread thin over navy goes brown
+   and reads as a stain on the photograph; the metal is worth more kept for
+   the things that are actually gold, the buttons and the one live pin. */
+.cm-open::after{
+  content:""; position:absolute; z-index:-1;
+  top:-46%; right:-18%; width:min(880px,96vw); aspect-ratio:1;
+  background:radial-gradient(circle at 50% 50%,
+    rgba(62,104,164,.42) 0%, rgba(40,70,112,.20) 38%, transparent 70%);
+  pointer-events:none;
+}
+.cm-open > .cm-in{position:relative; z-index:1;}
+
+/* Headline figures. These are the instrument's specification, not decoration,
+   so they are allowed to be the largest thing after the headline. */
+.cm-kpi{display:grid; gap:2px 0; margin:34px 0 4px;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  border-top:1px solid var(--cm-line);}
+.cm-kpi > div{padding:20px 22px 18px; border-bottom:1px solid var(--cm-line);
+  border-right:1px solid var(--cm-line);}
+.cm-kpi > div:first-child{padding-left:0;}
+.cm-kpi b{display:block; font-family:var(--cm-disp); font-weight:700;
+  font-size:clamp(28px,3.4vw,40px); line-height:1.05; letter-spacing:-.04em;
+  color:var(--cm-text); font-variant-numeric:tabular-nums;}
+.cm-kpi span{display:block; margin-top:8px; font-size:13px; color:var(--cm-mute);
+  line-height:1.5;}
+@media (max-width:620px){
+  .cm-kpi > div{padding:16px 16px 15px;}
+  .cm-kpi > div:nth-child(2n){border-right:0;}
+}
+@media (min-width:621px){.cm-kpi > div:last-child{border-right:0;}}
+
+/* A short specification list under the figures, as label and value on one
+   rule each. It replaces the bordered table the opening band used to carry. */
+.cm-spec{margin-top:26px; border-top:1px solid var(--cm-line);}
+.cm-spec div{display:grid; gap:4px 28px; padding:15px 0;
+  border-bottom:1px solid var(--cm-line);}
+@media (min-width:660px){.cm-spec div{grid-template-columns:11em minmax(0,1fr);}}
+.cm-spec dt, .cm-spec b{font-size:11px; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--cm-mute); font-weight:600; padding-top:3px;}
+.cm-spec span{font-size:14.5px; color:var(--cm-text);}
+
+/* Sections arrive rather than appear. The starting state is added by script,
+   never by this stylesheet: a reader whose JavaScript failed must not be left
+   looking at a page of invisible blocks. */
+.cm-anim .cm-rise{opacity:0; transform:translateY(14px);
+  transition:opacity .62s cubic-bezier(.2,.7,.3,1), transform .62s cubic-bezier(.2,.7,.3,1);}
+.cm-anim .cm-rise.cm-in-view{opacity:1; transform:none;}
+
+/* ── The report's own charts, on the home page.
+   One series, so there is no categorical palette and no legend: the tab
+   above the chart names what is drawn. Gold carries the data and never
+   carries text; every label and figure stays in the text tokens, because
+   gold on white is 2.4:1 and unreadable as type. The figures are listed
+   beside the shape, so nothing here depends on reading an angle. */
+.cm-tabs{display:inline-flex; gap:4px; margin-top:6px; padding:4px;
+  border:1px solid var(--cm-line); border-radius:var(--cm-pill);
+  background:var(--cm-surface2);}
+.cm-tabs button{font:inherit; font-size:13.5px; font-weight:600; cursor:pointer;
+  padding:9px 18px; border:0; border-radius:var(--cm-pill);
+  background:transparent; color:var(--cm-mute);
+  transition:background .2s, color .2s;}
+.cm-tabs button[aria-pressed="true"]{background:var(--cm-surface); color:var(--cm-text);
+  box-shadow:0 1px 2px rgba(15,27,45,.08);}
+.cm-tabs button:hover[aria-pressed="false"]{color:var(--cm-text);}
+
+.cm-chart{display:grid; gap:22px 40px; align-items:center; margin-top:22px;}
+@media (min-width:820px){.cm-chart{grid-template-columns:minmax(0,7fr) minmax(0,5fr);}}
+.cm-radarwrap{min-width:0;}
+.cm-radar{display:block; width:100%; height:auto; overflow:visible;}
+/* The hidden attribute is an HTML one: the browser's rule for it is namespaced
+   to HTML elements, so on an <svg> it does nothing and both charts draw on top
+   of each other. */
+.cm-radar[hidden]{display:none;}
+.cm-radar .cm-rg polygon{fill:none; stroke:var(--cm-line); stroke-width:1;}
+.cm-radar .cm-rg-mid{stroke:var(--cm-rule);}
+.cm-radar .cm-sp line{stroke:var(--cm-line); stroke-width:1;}
+.cm-radar .cm-poly{fill:rgba(201,162,39,.16); stroke:var(--cm-gold); stroke-width:2;
+  stroke-linejoin:round;}
+.cm-radar .cm-vtx circle{fill:var(--cm-gold); stroke:var(--cm-surface); stroke-width:2;}
+.cm-radar .cm-lab text{font-family:var(--cm-body); font-size:12.5px; font-weight:500;
+  fill:var(--cm-mute);}
+/* The shape opens from the centre once, and only when the script is there to
+   close it first. With no script the polygon is already drawn correctly. */
+.cm-anim .cm-radar .cm-poly,
+.cm-anim .cm-radar .cm-vtx{
+  transform-box:view-box; transform-origin:220px 176px; transform:scale(.02); opacity:0;
+  transition:transform .85s cubic-bezier(.18,.72,.26,1), opacity .5s ease;
+}
+.cm-anim .cm-radar.cm-drawn .cm-poly,
+.cm-anim .cm-radar.cm-drawn .cm-vtx{transform:none; opacity:1;}
+
+.cm-vals{min-width:0;}
+.cm-vlist{border-top:1px solid var(--cm-line);}
+.cm-vlist > div{display:flex; align-items:baseline; gap:14px; padding:10px 0;
+  border-bottom:1px solid var(--cm-line);}
+.cm-vlist span{flex:1 1 auto; font-size:14px; color:var(--cm-text);}
+.cm-vlist b{font-weight:600; font-size:15px; font-variant-numeric:tabular-nums;
+  color:var(--cm-text);}
+.cm-vals .cm-small{margin-top:14px;}
+
+.cm-bars{margin-top:18px; border-top:1px solid var(--cm-line);}
+.cm-bar{display:grid; grid-template-columns:minmax(0,15em) minmax(0,1fr) 3em;
+  align-items:center; gap:16px; padding:11px 0; border-bottom:1px solid var(--cm-line);}
+.cm-bar span{font-size:14px; color:var(--cm-text); min-width:0;}
+.cm-bar i{display:block; height:9px; width:var(--w); border-radius:999px;
+  background:var(--cm-gold); opacity:.85;}
+.cm-bar b{font-weight:600; font-size:14.5px; text-align:right;
+  font-variant-numeric:tabular-nums; color:var(--cm-mute);}
+@media (max-width:620px){
+  .cm-bar{grid-template-columns:minmax(0,1fr) 3em; gap:4px 12px;}
+  .cm-bar i{grid-column:1 / -1;}
+}
+/* The bars grow in place, one after another, from a zero that the script
+   sets. In the stylesheet alone they would be zero for a reader with no
+   script and the section would look empty. */
+.cm-anim .cm-bars .cm-bar i{width:0; transition:width .78s cubic-bezier(.2,.75,.3,1);}
+.cm-anim .cm-bars.cm-in-view .cm-bar i{width:var(--w);}
+.cm-bar:nth-child(1) i{transition-delay:.02s}  .cm-bar:nth-child(2) i{transition-delay:.07s}
+.cm-bar:nth-child(3) i{transition-delay:.12s}  .cm-bar:nth-child(4) i{transition-delay:.17s}
+.cm-bar:nth-child(5) i{transition-delay:.22s}  .cm-bar:nth-child(6) i{transition-delay:.27s}
+.cm-bar:nth-child(7) i{transition-delay:.32s}  .cm-bar:nth-child(8) i{transition-delay:.37s}
+.cm-bar:nth-child(9) i{transition-delay:.42s}  .cm-bar:nth-child(10) i{transition-delay:.47s}
+
+/* ── Accordion. A page of questions reads as a wall when every answer is open
+   at once, and a table of questions reads as a specification. The summary is
+   the control, so it gets the pointer and the whole row as a hit area. */
+.cm-acc{margin-top:22px; border-top:1px solid var(--cm-line);}
+.cm-acc details{border-bottom:1px solid var(--cm-line);}
+.cm-acc summary{list-style:none; cursor:pointer; display:flex; gap:18px;
+  align-items:flex-start; padding:19px 2px; font-weight:600; font-size:16px;
+  color:var(--cm-text); transition:color .18s;}
+.cm-acc summary::-webkit-details-marker{display:none;}
+.cm-acc summary:hover{color:var(--cm-acc);}
+.cm-acc summary span{flex:1 1 auto;}
+.cm-acc summary i{flex:0 0 auto; width:22px; height:22px; margin-top:2px;
+  border-radius:50%; border:1px solid var(--cm-rule); position:relative;
+  transition:transform .28s cubic-bezier(.2,.7,.3,1), border-color .2s, background .2s;}
+.cm-acc summary i::before,.cm-acc summary i::after{content:""; position:absolute;
+  left:50%; top:50%; background:var(--cm-text); transform:translate(-50%,-50%);}
+.cm-acc summary i::before{width:9px; height:1.5px;}
+.cm-acc summary i::after{width:1.5px; height:9px; transition:opacity .2s;}
+.cm-acc details[open] summary i{transform:rotate(180deg); border-color:var(--cm-gold);
+  background:rgba(201,162,39,.14);}
+.cm-acc details[open] summary i::after{opacity:0;}
+.cm-acc .cm-ans{overflow:hidden;}
+.cm-acc .cm-ans p{margin:0 0 17px; padding-right:40px; font-size:14.5px;
+  color:var(--cm-mute); max-width:74ch;}
+.cm-anim .cm-acc details[open] .cm-ans{animation:cm-open .34s cubic-bezier(.2,.7,.3,1);}
+@keyframes cm-open{from{opacity:0; transform:translateY(-6px);} to{opacity:1; transform:none;}}
+
+/* ── Timeline. Four steps in a row of boxes are four boxes; on a rail they
+   are a sequence, which is the one thing the reader needs to take from it. */
+.cm-time{margin-top:26px; position:relative; display:grid; gap:0;}
+.cm-time::before{content:""; position:absolute; left:15px; top:10px; bottom:26px;
+  width:2px; background:linear-gradient(180deg,var(--cm-gold),var(--cm-line));}
+.cm-tstep{position:relative; padding:0 0 30px 52px;}
+.cm-tstep:last-child{padding-bottom:0;}
+.cm-tstep::before{content:""; position:absolute; left:8px; top:6px; width:16px; height:16px;
+  border-radius:50%; background:var(--cm-surface); border:2px solid var(--cm-gold);}
+.cm-tstep b{display:block; font-family:var(--cm-disp); font-weight:700; font-size:17px;
+  letter-spacing:-.02em; color:var(--cm-text); margin-bottom:5px;}
+.cm-tstep em{display:block; font-style:normal; font-size:11px; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--cm-acc); font-weight:600; margin-bottom:7px;}
+.cm-tstep p{margin:0; font-size:14.5px; color:var(--cm-mute); max-width:62ch;}
+
+/* ── Layer stack. The point of the section is that one layer is wide and the
+   next is narrower, so the widths carry it and the words only confirm it. */
+.cm-stack{margin-top:24px; display:grid; gap:12px;}
+.cm-layer{border:1px solid var(--cm-line); border-radius:var(--cm-r);
+  padding:24px 26px 26px; background:var(--cm-surface); box-shadow:var(--cm-lift);
+  transition:transform .28s cubic-bezier(.2,.7,.3,1), box-shadow .28s;}
+.cm-layer:nth-child(1){width:100%;}
+.cm-layer:nth-child(2){width:88%;}
+.cm-layer:nth-child(3){width:76%;}
+@media (max-width:760px){.cm-layer{width:100%!important;}}
+@media (hover:hover){.cm-layer:hover{transform:translateX(6px);
+  box-shadow:0 2px 4px rgba(15,27,45,.04), 0 20px 44px rgba(15,27,45,.10);}}
+.cm-layer:nth-child(1){border-left:3px solid var(--cm-gold);}
+.cm-layer h3{margin:0 0 4px;}
+.cm-layer ul{margin:12px 0 0; padding:0; list-style:none; columns:2; column-gap:30px;}
+@media (max-width:640px){.cm-layer ul{columns:1;}}
+.cm-layer li{font-size:14px; color:var(--cm-mute); padding-left:15px; position:relative;
+  line-height:1.8; break-inside:avoid;}
+.cm-layer li::before{content:""; position:absolute; left:1px; top:12px; width:5px; height:5px;
+  border-radius:50%; background:var(--cm-rule);}
+.cm-reach{margin-top:12px; font-size:11px; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--cm-acc); font-weight:600;}
+
+/* ── Stat tiles. Development figures are the point of that section, so they
+   are allowed to be the largest thing in it. */
+.cm-tiles{display:grid; gap:14px; margin-top:24px;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));}
+.cm-tile{border:1px solid var(--cm-line); border-radius:var(--cm-r);
+  padding:24px 22px 22px; background:var(--cm-surface); box-shadow:var(--cm-lift);
+  transition:transform .28s cubic-bezier(.2,.7,.3,1), border-color .28s;}
+@media (hover:hover){.cm-tile:hover{transform:translateY(-3px); border-color:var(--cm-rule);}}
+.cm-tile b{display:block; font-family:var(--cm-disp); font-weight:700;
+  font-size:clamp(26px,3vw,34px); line-height:1.05; letter-spacing:-.04em;
+  color:var(--cm-text); font-variant-numeric:tabular-nums;}
+.cm-tile span{display:block; margin-top:8px; font-size:13.5px; color:var(--cm-text);}
+.cm-tile em{display:block; margin-top:5px; font-style:normal; font-size:12.5px;
+  color:var(--cm-mute);}
+
+/* ── Try one item. Reading that the scale is five points is not the same as
+   pressing one. The readout says what that single answer feeds, which is the
+   whole structure of the instrument in one gesture. */
+.cm-try{margin-top:22px; border:1px solid var(--cm-line); border-radius:var(--cm-r);
+  background:var(--cm-surface2); padding:26px 26px 24px;}
+.cm-try > p{margin:0 0 6px; font-size:11px; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--cm-acc); font-weight:600;}
+.cm-try q{display:block; font-size:clamp(17px,1.9vw,21px); line-height:1.5;
+  letter-spacing:-.02em; color:var(--cm-text); quotes:none; margin-bottom:20px;}
+.cm-scale{display:grid; gap:8px; grid-template-columns:repeat(auto-fit,minmax(112px,1fr));}
+.cm-scale button{font:inherit; font-size:13px; font-weight:500; cursor:pointer;
+  padding:14px 8px; border-radius:var(--cm-r2); border:1px solid var(--cm-line);
+  background:var(--cm-surface); color:var(--cm-mute);
+  transition:border-color .2s, color .2s, transform .2s, background .2s;}
+.cm-scale button:hover{border-color:var(--cm-rule); color:var(--cm-text);}
+.cm-scale button[aria-pressed="true"]{border-color:var(--cm-gold); color:var(--cm-text);
+  background:rgba(201,162,39,.12); font-weight:600;}
+.cm-try-out{margin-top:18px; min-height:1px;}
+.cm-try-out[hidden]{display:none;}
+.cm-anim .cm-try-out:not([hidden]){animation:cm-open .38s cubic-bezier(.2,.7,.3,1);}
+.cm-try-out div{display:flex; gap:12px; align-items:baseline; padding:11px 0;
+  border-top:1px solid var(--cm-line); font-size:14px; color:var(--cm-mute);}
+.cm-try-out div b{font-weight:600; color:var(--cm-text); flex:0 0 11em;}
+.cm-try-note{margin-top:14px; font-size:13px; color:var(--cm-mute);}
+
+/* ── The closing band. Every page ends somewhere; without this it ends in a
+   footnote, and the reader who was ready to write to us has to go looking
+   for the menu. */
+.cm-cta-band{border-radius:var(--cm-r); padding:44px 44px 46px; margin-top:0;
+  background:linear-gradient(140deg,#16273C 0%,#0F1B2D 62%,#0C1726 100%);
+  position:relative; overflow:hidden; isolation:isolate;}
+.cm-cta-band::after{content:""; position:absolute; z-index:-1; top:-60%; right:-12%;
+  width:min(620px,80%); aspect-ratio:1; pointer-events:none;
+  background:radial-gradient(circle at 50% 50%, rgba(201,162,39,.22) 0%, transparent 66%);}
+.cm-cta-band h2{font-family:var(--cm-disp); font-weight:700;
+  font-size:clamp(23px,2.9vw,33px); line-height:1.2; letter-spacing:-.035em;
+  color:#E8EDF2; margin:0 0 13px; max-width:19ch; text-wrap:balance;}
+.cm-cta-band p{margin:0; font-size:15px; line-height:1.75; color:#B9C6D4; max-width:56ch;}
+.cm-cta-band .cm-cta{margin-top:26px;}
+.cm-cta-band .cm-btn.cm-ghost{color:#E8EDF2; border-color:#3A5170;}
+@media (max-width:620px){.cm-cta-band{padding:34px 24px 36px;}}
+.cm-cta-list{display:flex; flex-wrap:wrap; gap:8px 26px; margin:24px 0 0; padding:0;
+  list-style:none;}
+.cm-cta-list li{font-size:13px; color:#8D9CAE; padding-left:19px; position:relative;}
+.cm-cta-list li::before{content:""; position:absolute; left:0; top:8px; width:7px; height:7px;
+  border-radius:50%; background:var(--cm-gold);}
+
+/* ── The bar that follows the reader down. It only appears once someone has
+   read most of a page, and it closes for good once closed: a bar that comes
+   back after being dismissed is an argument with the visitor. */
+.cm-dock{position:fixed; left:0; right:0; bottom:0; z-index:9000;
+  padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));
+  background:rgba(15,27,45,.96); backdrop-filter:saturate(1.3) blur(10px);
+  border-top:1px solid #22354C;
+  transform:translateY(120%); transition:transform .4s cubic-bezier(.2,.7,.3,1);}
+.cm-dock.cm-up{transform:none;}
+.cm-dock-in{max-width:1040px; margin:0 auto; display:flex; align-items:center;
+  gap:10px 18px; flex-wrap:wrap;}
+.cm-dock b{font-size:14.5px; font-weight:600; color:#E8EDF2; margin-right:auto;}
+.cm-dock .cm-btn{padding:10px 20px; font-size:14px;}
+.cm-dock button.cm-x{background:none; border:0; cursor:pointer; color:#8D9CAE;
+  font:inherit; font-size:20px; line-height:1; padding:6px 4px;}
+.cm-dock button.cm-x:hover{color:#E8EDF2;}
+@media (max-width:560px){.cm-dock b{flex:1 1 100%; margin-right:0; font-size:13.5px;}}
+
+/* ── Two shapes side by side. */
+.cm-mini{max-width:260px; margin:18px 0 4px;}
+.cm-vlist.cm-tight > div{padding:7px 0; font-size:13.5px;}
+.cm-vlist.cm-tight b{font-size:14px;}
+.cm-cell .cm-vlist{border-top:1px solid var(--cm-line);}
+
+/* ── World map. The dots are Natural Earth 110m land geometry sampled every
+   3.2 degrees, so the coastlines are real. Antarctica is dropped, which is the
+   usual convention and keeps the bottom from becoming a band. */
+.cm-mapwrap{margin-top:26px;}
+.cm-map{display:block; width:100%; height:auto; overflow:visible;}
+.cm-map-land use{fill:var(--cm-rule); opacity:.62;}
+.cm-pin text{font-family:var(--cm-body); font-size:15px; font-weight:600;
+  fill:var(--cm-text); paint-order:stroke; dominant-baseline:middle;}
+.cm-pin .cm-pin-dot{fill:var(--cm-mute);}
+.cm-pin .cm-pin-halo{fill:none;}
+.cm-pin-legal .cm-pin-dot{fill:var(--cm-text);}
+.cm-pin-src .cm-pin-dot{fill:var(--cm-gold);}
+.cm-pin-src .cm-pin-halo{fill:var(--cm-gold); opacity:.18;}
+/* One pin beats, and only the one the section is about. Ten beating pins
+   would be a fairground. */
+@keyframes cm-beat{
+  0%{r:14; opacity:.30;} 70%{r:30; opacity:0;} 100%{r:30; opacity:0;}
+}
+.cm-anim .cm-pin-src .cm-pin-halo{animation:cm-beat 2.9s ease-out infinite;}
+/* Pins arrive one after another the first time the map is reached. */
+.cm-anim .cm-map-pins .cm-pin{opacity:0; transition:opacity .5s ease;}
+.cm-anim .cm-map-pins.cm-in-view .cm-pin{opacity:1;}
+.cm-pin-src text{fill:var(--cm-text);}
+.cm-legend{list-style:none; margin:18px 0 0; padding:0; display:flex;
+  flex-wrap:wrap; gap:10px 26px;}
+.cm-legend li{font-size:13.5px; color:var(--cm-mute); position:relative; padding-left:20px;}
+.cm-legend li::before{content:""; position:absolute; left:0; top:7px;
+  width:10px; height:10px; border-radius:50%; background:var(--cm-mute);}
+.cm-legend .cm-lg-src::before{background:var(--cm-gold);}
+.cm-legend .cm-lg-legal::before{background:var(--cm-text);}
+@media (max-width:760px){
+  .cm-map{min-width:680px;}
+  .cm-mapwrap{overflow-x:auto;}
+  .cm-pin text{font-size:19px;}
+}
 @media (prefers-reduced-motion:reduce){
   .cm *{transition:none!important; animation:none!important;}
   .cm-sl-track{scroll-behavior:auto;}
+  /* Nothing may be left waiting on a transition that will never run. */
+  .cm-anim .cm-rise{opacity:1!important; transform:none!important;}
+  .cm-anim .cm-sl-img .cm-slide{opacity:1!important;}
+  .cm-anim .cm-map-pins .cm-pin{opacity:1!important;}
+  .cm-anim .cm-radar .cm-poly, .cm-anim .cm-radar .cm-vtx{transform:none!important; opacity:1!important;}
+  .cm-anim .cm-bars .cm-bar i{width:var(--w)!important;}
+  .cm-dock{transition:none!important;}
 }
 </style>
 <script>
-/* 슬라이더 배선. 아임웹은 위젯을 늦게 심기도 해서 새로 생긴 것도 잡는다.
-   같은 판을 두 번 배선하지 않도록 표시를 남긴다 */
+/* Slider wiring. imweb sometimes inserts widgets late, so newly added
+   sliders are picked up too. A marker is left so none is wired twice. */
 (function () {
   function wire(sl) {
     if (sl.dataset.cmWired) return;
@@ -219,6 +617,18 @@
     var next = sl.querySelector("[data-cm-next]");
     var dots = sl.querySelector(".cm-sl-dots");
     var slides = Array.prototype.slice.call(track.children);
+    /* Past four slides the dots stop telling anyone where they are, so the
+       row is replaced by a rail that fills. Under that, dots are clearer and
+       can be aimed at. One or the other, never both. */
+    var rail = null;
+    if (dots && slides.length > 4) {
+      dots.hidden = true;
+      rail = document.createElement("div");
+      rail.className = "cm-sl-rail";
+      rail.appendChild(document.createElement("i"));
+      dots.parentNode.insertBefore(rail, dots.nextSibling);
+      rail = rail.firstChild;
+    }
 
     function step() {
       var a = slides[0], b = slides[1];
@@ -233,12 +643,12 @@
     if (prev) prev.addEventListener("click", function () { go(idx() - 1); });
     if (next) next.addEventListener("click", function () { go(idx() + 1); });
 
-    if (dots) {
+    if (dots && !rail) {
       slides.forEach(function (_, i) {
         var d = document.createElement("button");
         d.type = "button";
         d.className = "cm-sl-dot";
-        d.setAttribute("aria-label", (i + 1) + "번째로 이동");
+        d.setAttribute("aria-label", "Go to slide " + (i + 1));
         d.addEventListener("click", function () { go(i); });
         dots.appendChild(d);
       });
@@ -255,16 +665,80 @@
       var atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
       if (prev) prev.disabled = atStart;
       if (next) next.disabled = atEnd;
-      if (dots) {
-        var i = idx();
+      var i = idx();
+      if (dots && !rail) {
         Array.prototype.forEach.call(dots.children, function (d, k) {
           d.setAttribute("aria-current", k === i ? "true" : "false");
         });
       }
+      if (rail) rail.style.width = ((i + 1) / slides.length * 100) + "%";
+      slides.forEach(function (sd, k) { sd.classList.toggle("cm-here", k === i); });
     }
     track.addEventListener("scroll", sync, { passive: true });
     window.addEventListener("resize", sync);
     sync();
+
+    /* Drag with a mouse or a trackpad, on image sliders only. On a text
+       slide the same gesture is how someone selects a line, so taking it
+       over there would break selection to gain nothing. Touch already
+       scrolls natively and is left alone. */
+    if (sl.classList.contains("cm-sl-img")) {
+      var down = false, startX = 0, startLeft = 0, moved = false;
+      track.addEventListener("pointerdown", function (e) {
+        if (e.pointerType === "touch") return;
+        down = true; moved = false;
+        startX = e.clientX; startLeft = track.scrollLeft;
+        /* Snapping has to come off for the duration. Mandatory snap pulls the
+           scroll position back to the nearest slide after every write, so a
+           drag made of small steps never leaves the slide it started on. */
+        track.style.scrollSnapType = "none";
+        track.style.scrollBehavior = "auto";
+      });
+      track.addEventListener("pointermove", function (e) {
+        if (!down) return;
+        var d = e.clientX - startX;
+        if (Math.abs(d) > 3) moved = true;
+        track.scrollLeft = startLeft - d;
+      });
+      function release() {
+        if (!down) return;
+        down = false;
+        track.style.scrollSnapType = "";
+        track.style.scrollBehavior = "";
+        if (moved) go(idx());
+      }
+      track.addEventListener("pointerup", release);
+      track.addEventListener("pointercancel", release);
+      track.addEventListener("pointerleave", release);
+      track.addEventListener("dragstart", function (e) { e.preventDefault(); });
+    }
+
+    /* Advance on its own, if the section asks for it with data-cm-auto.
+       It stops under the pointer, while anything inside has focus, and on a
+       hidden tab: a slide that moves while it is being read is worse than
+       one that never moves. Reduced motion turns it off entirely. */
+    var every = parseInt(sl.getAttribute("data-cm-auto") || "0", 10);
+    var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (every >= 2000 && slides.length > 1 && !still) {
+      var timer = null;
+      var stop = function () { if (timer) { clearInterval(timer); timer = null; } };
+      var start = function () {
+        stop();
+        timer = setInterval(function () {
+          var i = idx();
+          go(i >= slides.length - 1 ? 0 : i + 1);
+        }, every);
+      };
+      sl.addEventListener("mouseenter", stop);
+      sl.addEventListener("mouseleave", start);
+      sl.addEventListener("focusin", stop);
+      sl.addEventListener("focusout", start);
+      sl.addEventListener("pointerdown", stop);
+      document.addEventListener("visibilitychange", function () {
+        if (document.hidden) { stop(); } else { start(); }
+      });
+      start();
+    }
   }
   function scan() { document.querySelectorAll(".cm-sl").forEach(wire); }
   if (document.readyState === "loading") {
@@ -275,4 +749,197 @@
   }
 })();
 </script>
-</style>
+<script>
+/* The two profiles behind one chart.
+   Without this the first profile is the one on the page and the second is
+   hidden, which is still a correct page: the figures beside the shape are
+   what a reader actually reads off, and both lists are in the markup. */
+(function () {
+  function wire(tabs) {
+    if (tabs.dataset.cmWired) return;
+    tabs.dataset.cmWired = "1";
+    var scope = tabs.closest(".cm-in") || document;
+    var btns = Array.prototype.slice.call(tabs.querySelectorAll("[data-cm-tab]"));
+
+    function pick(key) {
+      btns.forEach(function (b) {
+        b.setAttribute("aria-pressed", b.dataset.cmTab === key ? "true" : "false");
+      });
+      scope.querySelectorAll("[data-cm-vals]").forEach(function (v) {
+        v.hidden = v.dataset.cmVals !== key;
+      });
+      scope.querySelectorAll("[data-cm-radar]").forEach(function (r) {
+        var on = r.dataset.cmRadar === key;
+        r.hidden = !on;
+        /* Redrawn each time it is brought back, so switching profiles shows
+           the shape being made rather than swapping one picture for another. */
+        if (on) {
+          r.classList.remove("cm-drawn");
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () { r.classList.add("cm-drawn"); });
+          });
+        }
+      });
+    }
+    btns.forEach(function (b, i) {
+      b.addEventListener("click", function () { pick(b.dataset.cmTab); });
+      b.addEventListener("keydown", function (e) {
+        var d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+        if (!d) return;
+        e.preventDefault();
+        var nx = btns[(i + d + btns.length) % btns.length];
+        nx.focus(); pick(nx.dataset.cmTab);
+      });
+    });
+  }
+
+  /* One sample item that can actually be answered. The readout is not a score:
+     a single item cannot produce one, and pretending otherwise would be the
+     first lie the site tells. It says what that answer feeds. */
+  function wireTry(box) {
+    if (box.dataset.cmWired) return;
+    box.dataset.cmWired = "1";
+    var out = box.querySelector(".cm-try-out");
+    var btns = Array.prototype.slice.call(box.querySelectorAll("[data-cm-pick]"));
+    btns.forEach(function (b) {
+      b.addEventListener("click", function () {
+        btns.forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
+        if (!out) return;
+        out.hidden = false;
+        out.querySelectorAll("[data-cm-answer]").forEach(function (el) {
+          el.textContent = b.dataset.cmPick;
+        });
+      });
+    });
+  }
+
+  /* The bar that follows the reader down. Shown once most of a page has gone
+     past, closed for good when closed: it remembers in this browser only, and
+     a browser that refuses to remember simply shows it again next visit. */
+  function wireDock(dock) {
+    if (dock.dataset.cmWired) return;
+    dock.dataset.cmWired = "1";
+    var KEY = "cm-dock-closed";
+    try { if (localStorage.getItem(KEY) === "1") { dock.remove(); return; } } catch (e) {}
+    var x = dock.querySelector(".cm-x");
+    if (x) x.addEventListener("click", function () {
+      dock.classList.remove("cm-up");
+      try { localStorage.setItem(KEY, "1"); } catch (e) {}
+      setTimeout(function () { dock.remove(); }, 420);
+    });
+    var tick = function () {
+      /* Which element actually scrolls is not always the same one: a page
+         without a doctype scrolls its body and reports 0 on documentElement,
+         and then the bar never appears. scrollingElement answers correctly
+         in both. */
+      var sc = document.scrollingElement || document.documentElement;
+      var seen = (sc.scrollTop + window.innerHeight) / Math.max(sc.scrollHeight, 1);
+      dock.classList.toggle("cm-up", seen > 0.55);
+    };
+    window.addEventListener("scroll", tick, { passive: true });
+    window.addEventListener("resize", tick);
+    tick();
+  }
+
+  function scan() {
+    document.querySelectorAll(".cm-tabs").forEach(wire);
+    document.querySelectorAll(".cm-try").forEach(wireTry);
+    document.querySelectorAll(".cm-dock").forEach(wireDock);
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", scan);
+  } else { scan(); }
+  if (window.MutationObserver) {
+    new MutationObserver(scan).observe(document.documentElement, { childList: true, subtree: true });
+  }
+})();
+</script>
+<script>
+/* Sections arrive as they are reached, and the specification figures count up
+   the first time they are seen.
+
+   The starting state lives behind .cm-anim, and that class is only added once
+   this script has an IntersectionObserver to hand. A stylesheet that hides
+   blocks up front would leave a reader with broken JavaScript looking at an
+   empty page, which is worse than a page that does not move. */
+(function () {
+  if (!("IntersectionObserver" in window)) return;
+  var root = document.documentElement;
+  var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  root.classList.add("cm-anim");
+
+  function run(el) {
+    var figs = el.querySelectorAll ? el.querySelectorAll("[data-cm-count]") : [];
+    Array.prototype.forEach.call(figs, function (f) {
+      if (f.dataset.cmCounted) return;
+      f.dataset.cmCounted = "1";
+      var to = Number(f.getAttribute("data-cm-count"));
+      /* The element's own text is the real value and is always put back at
+         the end, so nothing on the page depends on the animation finishing. */
+      var settled = f.textContent;
+      if (!isFinite(to) || still) return;
+      var t0 = 0;
+      requestAnimationFrame(function step(ts) {
+        if (!t0) t0 = ts;
+        var k = Math.min(1, (ts - t0) / 900);
+        var e = 1 - Math.pow(1 - k, 3);
+        f.textContent = Math.round(to * e).toLocaleString("en-US");
+        if (k < 1) requestAnimationFrame(step); else f.textContent = settled;
+      });
+    });
+  }
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      io.unobserve(e.target);
+      var wait = still ? 0 : Number(e.target.dataset.cmDelay || 0);
+      setTimeout(function () {
+        e.target.classList.add("cm-in-view");
+        if (e.target.classList.contains("cm-radar")) e.target.classList.add("cm-drawn");
+        run(e.target);
+      }, wait);
+    });
+  }, { rootMargin: "0px 0px -7% 0px", threshold: 0.04 });
+
+  function mark(el, delay) {
+    if (el.dataset.cmRise) return;
+    el.dataset.cmRise = "1";
+    el.classList.add("cm-rise");
+    if (delay) el.dataset.cmDelay = String(delay);
+    io.observe(el);
+  }
+
+  function scan() {
+    /* Targets are found rather than declared, so a widget added later needs
+       no class of its own and the two sites cannot drift apart. */
+    document.querySelectorAll(".cm > .cm-in").forEach(function (inner) {
+      Array.prototype.forEach.call(inner.children, function (child, i) {
+        mark(child, Math.min(i, 4) * 70);
+      });
+    });
+    /* The radar opens from the centre. It is observed on its own rather than
+       through its container, so the shape starts drawing when the chart is
+       reached and not when the section above it is. */
+    document.querySelectorAll(".cm-radar").forEach(function (r) {
+      if (r.dataset.cmRise) return;
+      r.dataset.cmRise = "1";
+      io.observe(r);
+    });
+    document.querySelectorAll(".cm-map-pins").forEach(function (g) {
+      if (g.dataset.cmRise) return;
+      g.dataset.cmRise = "1";
+      Array.prototype.forEach.call(g.children, function (pin, i) {
+        pin.style.transitionDelay = still ? "0ms" : (140 + i * 80) + "ms";
+      });
+      io.observe(g);
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", scan);
+  } else { scan(); }
+  if (window.MutationObserver) {
+    new MutationObserver(scan).observe(document.documentElement, { childList: true, subtree: true });
+  }
+})();
+</script>

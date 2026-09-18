@@ -94,5 +94,34 @@ for (const path of files.filter((f) => {
   if (n) failed++;
 }
 
+// 두 사이트의 Head Code 는 머리말만 다르고 몸통이 같아야 한다.
+// 두 벌을 따로 고치면 반드시 한쪽만 고쳐지는 날이 오고, 그날 두 사이트의
+// 디자인이 갈린다. 눈으로 지킬 수 없는 약속이라 여기서 센다.
+{
+  const MARK = "<!-- Two font links.";
+  const heads = [
+    "sites/careermetri/imweb-en/00-head-code.html",
+    "sites/careermetri/imweb/00-head-code.html",
+    "sites/careermetri/imweb/00b-head-code-as-widget.html",
+  ];
+  const bodies = heads.map((h) => {
+    const t = readFileSync(h, "utf8");
+    const i = t.indexOf(MARK);
+    return i < 0 ? null : t.slice(i);
+  });
+  const missing = heads.filter((_, i) => bodies[i] === null);
+  const drifted = heads.filter((_, i) => bodies[i] !== null && bodies[i] !== bodies[0]);
+  if (missing.length) {
+    console.log(`\n  넘침 Head Code 에서 "${MARK}" 를 못 찾음: ${missing.join(", ")}`);
+    failed++;
+  } else if (drifted.length) {
+    console.log(`\n  넘침 Head Code 몸통이 갈라졌다: ${drifted.join(", ")}`);
+    console.log(`        고칠 곳은 ${heads[0]} 하나이고, 나머지는 거기서 복사한다`);
+    failed++;
+  } else {
+    console.log(`  OK  Head Code ${heads.length}벌 몸통 동일`);
+  }
+}
+
 console.log(failed ? `\n${failed}개 항목이 한도를 넘었다.` : "\n원고 OK.");
 process.exit(failed ? 1 : 0);

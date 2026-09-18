@@ -1,33 +1,72 @@
-<!-- 진단 페이지 · IMG_TEST 를 업로드한 이미지 주소로 바꿉니다 -->
+<!-- 진단 · 측정 항목.
+     세 층을 네 칸짜리 표로 적어 놨었습니다. 사양을 적는 데는 표가 맞지만,
+     이 사이트에서 표가 연달아 네 번째라 "또 표" 로 읽혔습니다. 세 층은 그냥
+     숫자 셋이고, 응시 순서는 표가 아니라 레일 위에 세웠습니다.
+
+     아래 문항은 실제로 눌러 볼 수 있습니다. 5점 척도라고 읽는 것과 하나
+     눌러 보는 것은 다릅니다. 누르면 그 한 답이 어디로 가는지 적어 줍니다.
+     점수는 만들지 않습니다 — 문항 하나로는 못 만들고, 만드는 척하는 것이
+     이 사이트가 처음 하는 거짓말이 됩니다. 문항은 실제 검사지의 1번이고
+     성향이 함께 실린 문항입니다. -->
 <div class="cm">
   <div class="cm-in">
-    <h2 class="cm-h2">측정 항목</h2>
-    <div class="cm-col"><p>두 축을 함께 잽니다. 전공 안에서 어느 일에 끌리는지를 보는
-      직무영역과, 그 일을 어떤 방식으로 하려 하는지를 보는 업무성향입니다.</p></div>
-    <div class="cm-tw">
-      <table>
-        <thead><tr><th>구분</th><th class="cm-num">항목</th><th class="cm-num">문항</th><th>내용</th></tr></thead>
-        <tbody>
-          <tr><td class="cm-name">직무영역</td><td class="cm-num">10</td><td class="cm-num">250</td>
-            <td>영역 하나를 25문항으로 재고, 직무흥미 13문항과 성향 반영 12문항을 합산해
-              한 문항의 오차 영향을 줄입니다</td></tr>
-          <tr><td class="cm-name">업무성향</td><td class="cm-num">6</td><td class="cm-num">120</td>
-            <td>독립 · 협력 · 도전 · 안정 · 속도중시 · 품질중시. 성향 하나를 20문항으로 재고,
-              10개 직무영역에 2문항씩 흩어 놓았습니다</td></tr>
-          <tr><td class="cm-name">성실도</td><td class="cm-num">3</td><td class="cm-num">3</td>
-            <td>응답 일관성을 봅니다</td></tr>
-        </tbody>
-      </table>
+    <div class="cm-head">
+    <h2 class="cm-h2">무엇을 재는가</h2>
+    <div class="cm-col"><p>두 축을 함께 잽니다. 전공 안에서 어느 일에 끌리는지를
+    보는 직무영역과, 그 일을 어떤 방식으로 하려 하는지를 보는 업무성향입니다.
+    같은 250문항이 둘 다 나르기 때문에 응시가 20분에 끝납니다.</p></div>
     </div>
-    <p class="cm-small cm-col" style="margin-top:14px">직무흥미 130문항과 성향 반영
-      120문항이 같은 250문항 안에 겹쳐 있습니다. 같은 성향을 서로 다른 직무 상황에서
-      다시 묻는 방식입니다.</p>
 
-    <p class="cm-sublabel">문항 예시</p>
-    <div class="cm-items cm-col">
-      <div class="cm-item"><b>직무흥미 · 설계 및 개발</b>도면과 해석 결과를 놓고 구조를 다시 잡는 과정이 흥미롭다.</div>
-      <div class="cm-item"><b>성향 반영 · 직무영역 + 품질중시형</b>해석 조건을 꼼꼼히 확인해 신뢰할 수 있는 결론을 내고 싶다.</div>
-      <div class="cm-item"><b>성향 반영 · 직무영역 + 협력형</b>설계 변경안을 팀원들과 주고받으며 함께 다듬는 과정이 즐겁다.</div>
+    <div class="cm-tiles">
+      <div class="cm-tile"><b data-cm-count="10">10</b><span>직무영역</span>
+        <em>영역 하나에 25문항. 25개를 합산하면 한 문항의 오차가 결과를 흔들지 못합니다</em></div>
+      <div class="cm-tile"><b data-cm-count="6">6</b><span>업무 성향</span>
+        <em>성향 하나에 20문항. 열 개 직무영역에 2문항씩 흩어 놓아, 같은 성향을 다른 상황에서 다시 묻습니다</em></div>
+      <div class="cm-tile"><b data-cm-count="3">3</b><span>성실도 확인</span>
+        <em>응답이 애초에 서로 맞아떨어지는지를 봅니다</em></div>
+    </div>
+
+    <p class="cm-small cm-col" style="margin-top:16px">직무흥미 130문항과 성향 반영
+      120문항이 같은 250문항 안에 겹쳐 있습니다. 모든 문항이 자기를 설명하는 문장이고
+      5점 척도로 답합니다.</p>
+
+    <p class="cm-sublabel">한 문항 답해 보고, 어디로 가는지 보기</p>
+    <div class="cm-try">
+      <p>253문항 중 1번 &middot; 설계 및 개발 &middot; 성향 반영 문항</p>
+      <q>설계 과제를 받으면 팀 회의 전에 먼저 혼자 부품 조건을 정리해 무엇부터
+        풀지 기준을 잡는 편이다.</q>
+      <div class="cm-scale" role="group" aria-label="5점 척도">
+        <button type="button" aria-pressed="false" data-cm-pick="전혀 아니다">전혀 아니다</button>
+        <button type="button" aria-pressed="false" data-cm-pick="아니다">아니다</button>
+        <button type="button" aria-pressed="false" data-cm-pick="보통이다">보통이다</button>
+        <button type="button" aria-pressed="false" data-cm-pick="그렇다">그렇다</button>
+        <button type="button" aria-pressed="false" data-cm-pick="매우 그렇다">매우 그렇다</button>
+      </div>
+      <div class="cm-try-out" hidden>
+        <div><b>고르신 답</b><span data-cm-answer>아직</span></div>
+        <div><b>들어가는 직무영역</b><span>설계 및 개발, 그 영역 25문항 중 하나</span></div>
+        <div><b>들어가는 성향</b><span>독립형, 그 성향 20문항 중 하나</span></div>
+        <div><b>결과가 움직이는 폭</b><span>한 축의 약 40분의 1. 문항 하나가 정하는 것은 없습니다</span></div>
+        <p class="cm-try-note">253문항으로 재면 마지막 줄이 이렇게 됩니다. 다섯 문항짜리
+          검사는 한 답마다 무게를 실을 수밖에 없고, 그래서 기분이 안 좋은 날에 결과가
+          달라집니다.</p>
+      </div>
+    </div>
+
+    <p class="cm-sublabel">응시는 이렇게 흘러갑니다</p>
+    <div class="cm-time">
+      <div class="cm-tstep"><em>문항 전에</em><b>학과를 고릅니다</b>
+        <p>그 학과에 묶인 직무영역만 씁니다. 기계공학과 학생이 다른 계열의 영역으로
+          채점되는 일은 없습니다.</p></div>
+      <div class="cm-tstep"><em>약 15분</em><b>직무흥미 문항</b>
+        <p>영역별로 흥미와 적합을 봅니다. 고른 즉시 저장되므로 버스에서 닫고
+          저녁에 이어서 풀어도 됩니다.</p></div>
+      <div class="cm-tstep"><em>약 5분</em><b>성향 반영 문항</b>
+        <p>한 문장 안에서 직무영역과 업무성향을 함께 잽니다. 성향 문항 120개를
+          따로 붙이지 않고도 성향마다 20번씩 관찰이 쌓이는 이유입니다.</p></div>
+      <div class="cm-tstep"><em>제출 직후</em><b>채점</b>
+        <p>판단이 아니라 규칙입니다. 같은 응답지는 언제 돌려도 같은 점수가 나오고,
+          담당자에게 다시 채점해 보여 드릴 수 있습니다.</p></div>
     </div>
 
     <p class="cm-sublabel">문항 구성</p>
