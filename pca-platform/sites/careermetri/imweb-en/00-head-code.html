@@ -407,6 +407,157 @@
 .cm-bar:nth-child(7) i{transition-delay:.32s}  .cm-bar:nth-child(8) i{transition-delay:.37s}
 .cm-bar:nth-child(9) i{transition-delay:.42s}  .cm-bar:nth-child(10) i{transition-delay:.47s}
 
+/* ── Accordion. A page of questions reads as a wall when every answer is open
+   at once, and a table of questions reads as a specification. The summary is
+   the control, so it gets the pointer and the whole row as a hit area. */
+.cm-acc{margin-top:22px; border-top:1px solid var(--cm-line);}
+.cm-acc details{border-bottom:1px solid var(--cm-line);}
+.cm-acc summary{list-style:none; cursor:pointer; display:flex; gap:18px;
+  align-items:flex-start; padding:19px 2px; font-weight:600; font-size:16px;
+  color:var(--cm-text); transition:color .18s;}
+.cm-acc summary::-webkit-details-marker{display:none;}
+.cm-acc summary:hover{color:var(--cm-acc);}
+.cm-acc summary span{flex:1 1 auto;}
+.cm-acc summary i{flex:0 0 auto; width:22px; height:22px; margin-top:2px;
+  border-radius:50%; border:1px solid var(--cm-rule); position:relative;
+  transition:transform .28s cubic-bezier(.2,.7,.3,1), border-color .2s, background .2s;}
+.cm-acc summary i::before,.cm-acc summary i::after{content:""; position:absolute;
+  left:50%; top:50%; background:var(--cm-text); transform:translate(-50%,-50%);}
+.cm-acc summary i::before{width:9px; height:1.5px;}
+.cm-acc summary i::after{width:1.5px; height:9px; transition:opacity .2s;}
+.cm-acc details[open] summary i{transform:rotate(180deg); border-color:var(--cm-gold);
+  background:rgba(201,162,39,.14);}
+.cm-acc details[open] summary i::after{opacity:0;}
+.cm-acc .cm-ans{overflow:hidden;}
+.cm-acc .cm-ans p{margin:0 0 17px; padding-right:40px; font-size:14.5px;
+  color:var(--cm-mute); max-width:74ch;}
+.cm-anim .cm-acc details[open] .cm-ans{animation:cm-open .34s cubic-bezier(.2,.7,.3,1);}
+@keyframes cm-open{from{opacity:0; transform:translateY(-6px);} to{opacity:1; transform:none;}}
+
+/* ── Timeline. Four steps in a row of boxes are four boxes; on a rail they
+   are a sequence, which is the one thing the reader needs to take from it. */
+.cm-time{margin-top:26px; position:relative; display:grid; gap:0;}
+.cm-time::before{content:""; position:absolute; left:15px; top:10px; bottom:26px;
+  width:2px; background:linear-gradient(180deg,var(--cm-gold),var(--cm-line));}
+.cm-tstep{position:relative; padding:0 0 30px 52px;}
+.cm-tstep:last-child{padding-bottom:0;}
+.cm-tstep::before{content:""; position:absolute; left:8px; top:6px; width:16px; height:16px;
+  border-radius:50%; background:var(--cm-surface); border:2px solid var(--cm-gold);}
+.cm-tstep b{display:block; font-family:var(--cm-disp); font-weight:700; font-size:17px;
+  letter-spacing:-.02em; color:var(--cm-text); margin-bottom:5px;}
+.cm-tstep em{display:block; font-style:normal; font-size:11px; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--cm-acc); font-weight:600; margin-bottom:7px;}
+.cm-tstep p{margin:0; font-size:14.5px; color:var(--cm-mute); max-width:62ch;}
+
+/* ── Layer stack. The point of the section is that one layer is wide and the
+   next is narrower, so the widths carry it and the words only confirm it. */
+.cm-stack{margin-top:24px; display:grid; gap:12px;}
+.cm-layer{border:1px solid var(--cm-line); border-radius:var(--cm-r);
+  padding:24px 26px 26px; background:var(--cm-surface); box-shadow:var(--cm-lift);
+  transition:transform .28s cubic-bezier(.2,.7,.3,1), box-shadow .28s;}
+.cm-layer:nth-child(1){width:100%;}
+.cm-layer:nth-child(2){width:88%;}
+.cm-layer:nth-child(3){width:76%;}
+@media (max-width:760px){.cm-layer{width:100%!important;}}
+@media (hover:hover){.cm-layer:hover{transform:translateX(6px);
+  box-shadow:0 2px 4px rgba(15,27,45,.04), 0 20px 44px rgba(15,27,45,.10);}}
+.cm-layer:nth-child(1){border-left:3px solid var(--cm-gold);}
+.cm-layer h3{margin:0 0 4px;}
+.cm-layer ul{margin:12px 0 0; padding:0; list-style:none; columns:2; column-gap:30px;}
+@media (max-width:640px){.cm-layer ul{columns:1;}}
+.cm-layer li{font-size:14px; color:var(--cm-mute); padding-left:15px; position:relative;
+  line-height:1.8; break-inside:avoid;}
+.cm-layer li::before{content:""; position:absolute; left:1px; top:12px; width:5px; height:5px;
+  border-radius:50%; background:var(--cm-rule);}
+.cm-reach{margin-top:12px; font-size:11px; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--cm-acc); font-weight:600;}
+
+/* ── Stat tiles. Development figures are the point of that section, so they
+   are allowed to be the largest thing in it. */
+.cm-tiles{display:grid; gap:14px; margin-top:24px;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));}
+.cm-tile{border:1px solid var(--cm-line); border-radius:var(--cm-r);
+  padding:24px 22px 22px; background:var(--cm-surface); box-shadow:var(--cm-lift);
+  transition:transform .28s cubic-bezier(.2,.7,.3,1), border-color .28s;}
+@media (hover:hover){.cm-tile:hover{transform:translateY(-3px); border-color:var(--cm-rule);}}
+.cm-tile b{display:block; font-family:var(--cm-disp); font-weight:700;
+  font-size:clamp(26px,3vw,34px); line-height:1.05; letter-spacing:-.04em;
+  color:var(--cm-text); font-variant-numeric:tabular-nums;}
+.cm-tile span{display:block; margin-top:8px; font-size:13.5px; color:var(--cm-text);}
+.cm-tile em{display:block; margin-top:5px; font-style:normal; font-size:12.5px;
+  color:var(--cm-mute);}
+
+/* ── Try one item. Reading that the scale is five points is not the same as
+   pressing one. The readout says what that single answer feeds, which is the
+   whole structure of the instrument in one gesture. */
+.cm-try{margin-top:22px; border:1px solid var(--cm-line); border-radius:var(--cm-r);
+  background:var(--cm-surface2); padding:26px 26px 24px;}
+.cm-try > p{margin:0 0 6px; font-size:11px; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--cm-acc); font-weight:600;}
+.cm-try q{display:block; font-size:clamp(17px,1.9vw,21px); line-height:1.5;
+  letter-spacing:-.02em; color:var(--cm-text); quotes:none; margin-bottom:20px;}
+.cm-scale{display:grid; gap:8px; grid-template-columns:repeat(auto-fit,minmax(112px,1fr));}
+.cm-scale button{font:inherit; font-size:13px; font-weight:500; cursor:pointer;
+  padding:14px 8px; border-radius:var(--cm-r2); border:1px solid var(--cm-line);
+  background:var(--cm-surface); color:var(--cm-mute);
+  transition:border-color .2s, color .2s, transform .2s, background .2s;}
+.cm-scale button:hover{border-color:var(--cm-rule); color:var(--cm-text);}
+.cm-scale button[aria-pressed="true"]{border-color:var(--cm-gold); color:var(--cm-text);
+  background:rgba(201,162,39,.12); font-weight:600;}
+.cm-try-out{margin-top:18px; min-height:1px;}
+.cm-try-out[hidden]{display:none;}
+.cm-anim .cm-try-out:not([hidden]){animation:cm-open .38s cubic-bezier(.2,.7,.3,1);}
+.cm-try-out div{display:flex; gap:12px; align-items:baseline; padding:11px 0;
+  border-top:1px solid var(--cm-line); font-size:14px; color:var(--cm-mute);}
+.cm-try-out div b{font-weight:600; color:var(--cm-text); flex:0 0 11em;}
+.cm-try-note{margin-top:14px; font-size:13px; color:var(--cm-mute);}
+
+/* ── The closing band. Every page ends somewhere; without this it ends in a
+   footnote, and the reader who was ready to write to us has to go looking
+   for the menu. */
+.cm-cta-band{border-radius:var(--cm-r); padding:44px 44px 46px; margin-top:0;
+  background:linear-gradient(140deg,#16273C 0%,#0F1B2D 62%,#0C1726 100%);
+  position:relative; overflow:hidden; isolation:isolate;}
+.cm-cta-band::after{content:""; position:absolute; z-index:-1; top:-60%; right:-12%;
+  width:min(620px,80%); aspect-ratio:1; pointer-events:none;
+  background:radial-gradient(circle at 50% 50%, rgba(201,162,39,.22) 0%, transparent 66%);}
+.cm-cta-band h2{font-family:var(--cm-disp); font-weight:700;
+  font-size:clamp(23px,2.9vw,33px); line-height:1.2; letter-spacing:-.035em;
+  color:#E8EDF2; margin:0 0 13px; max-width:19ch; text-wrap:balance;}
+.cm-cta-band p{margin:0; font-size:15px; line-height:1.75; color:#B9C6D4; max-width:56ch;}
+.cm-cta-band .cm-cta{margin-top:26px;}
+.cm-cta-band .cm-btn.cm-ghost{color:#E8EDF2; border-color:#3A5170;}
+@media (max-width:620px){.cm-cta-band{padding:34px 24px 36px;}}
+.cm-cta-list{display:flex; flex-wrap:wrap; gap:8px 26px; margin:24px 0 0; padding:0;
+  list-style:none;}
+.cm-cta-list li{font-size:13px; color:#8D9CAE; padding-left:19px; position:relative;}
+.cm-cta-list li::before{content:""; position:absolute; left:0; top:8px; width:7px; height:7px;
+  border-radius:50%; background:var(--cm-gold);}
+
+/* ── The bar that follows the reader down. It only appears once someone has
+   read most of a page, and it closes for good once closed: a bar that comes
+   back after being dismissed is an argument with the visitor. */
+.cm-dock{position:fixed; left:0; right:0; bottom:0; z-index:9000;
+  padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));
+  background:rgba(15,27,45,.96); backdrop-filter:saturate(1.3) blur(10px);
+  border-top:1px solid #22354C;
+  transform:translateY(120%); transition:transform .4s cubic-bezier(.2,.7,.3,1);}
+.cm-dock.cm-up{transform:none;}
+.cm-dock-in{max-width:1040px; margin:0 auto; display:flex; align-items:center;
+  gap:10px 18px; flex-wrap:wrap;}
+.cm-dock b{font-size:14.5px; font-weight:600; color:#E8EDF2; margin-right:auto;}
+.cm-dock .cm-btn{padding:10px 20px; font-size:14px;}
+.cm-dock button.cm-x{background:none; border:0; cursor:pointer; color:#8D9CAE;
+  font:inherit; font-size:20px; line-height:1; padding:6px 4px;}
+.cm-dock button.cm-x:hover{color:#E8EDF2;}
+@media (max-width:560px){.cm-dock b{flex:1 1 100%; margin-right:0; font-size:13.5px;}}
+
+/* ── Two shapes side by side. */
+.cm-mini{max-width:260px; margin:18px 0 4px;}
+.cm-vlist.cm-tight > div{padding:7px 0; font-size:13.5px;}
+.cm-vlist.cm-tight b{font-size:14px;}
+.cm-cell .cm-vlist{border-top:1px solid var(--cm-line);}
+
 /* ── World map. The dots are Natural Earth 110m land geometry sampled every
    3.2 degrees, so the coastlines are real. Antarctica is dropped, which is the
    usual convention and keeps the bottom from becoming a band. */
@@ -451,6 +602,7 @@
   .cm-anim .cm-map-pins .cm-pin{opacity:1!important;}
   .cm-anim .cm-radar .cm-poly, .cm-anim .cm-radar .cm-vtx{transform:none!important; opacity:1!important;}
   .cm-anim .cm-bars .cm-bar i{width:var(--w)!important;}
+  .cm-dock{transition:none!important;}
 }
 </style>
 <script>
@@ -641,7 +793,56 @@
       });
     });
   }
-  function scan() { document.querySelectorAll(".cm-tabs").forEach(wire); }
+
+  /* One sample item that can actually be answered. The readout is not a score:
+     a single item cannot produce one, and pretending otherwise would be the
+     first lie the site tells. It says what that answer feeds. */
+  function wireTry(box) {
+    if (box.dataset.cmWired) return;
+    box.dataset.cmWired = "1";
+    var out = box.querySelector(".cm-try-out");
+    var btns = Array.prototype.slice.call(box.querySelectorAll("[data-cm-pick]"));
+    btns.forEach(function (b) {
+      b.addEventListener("click", function () {
+        btns.forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
+        if (!out) return;
+        out.hidden = false;
+        out.querySelectorAll("[data-cm-answer]").forEach(function (el) {
+          el.textContent = b.dataset.cmPick;
+        });
+      });
+    });
+  }
+
+  /* The bar that follows the reader down. Shown once most of a page has gone
+     past, closed for good when closed: it remembers in this browser only, and
+     a browser that refuses to remember simply shows it again next visit. */
+  function wireDock(dock) {
+    if (dock.dataset.cmWired) return;
+    dock.dataset.cmWired = "1";
+    var KEY = "cm-dock-closed";
+    try { if (localStorage.getItem(KEY) === "1") { dock.remove(); return; } } catch (e) {}
+    var x = dock.querySelector(".cm-x");
+    if (x) x.addEventListener("click", function () {
+      dock.classList.remove("cm-up");
+      try { localStorage.setItem(KEY, "1"); } catch (e) {}
+      setTimeout(function () { dock.remove(); }, 420);
+    });
+    var tick = function () {
+      var h = document.documentElement;
+      var seen = (h.scrollTop + window.innerHeight) / Math.max(h.scrollHeight, 1);
+      dock.classList.toggle("cm-up", seen > 0.55);
+    };
+    window.addEventListener("scroll", tick, { passive: true });
+    window.addEventListener("resize", tick);
+    tick();
+  }
+
+  function scan() {
+    document.querySelectorAll(".cm-tabs").forEach(wire);
+    document.querySelectorAll(".cm-try").forEach(wireTry);
+    document.querySelectorAll(".cm-dock").forEach(wireDock);
+  }
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", scan);
   } else { scan(); }

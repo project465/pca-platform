@@ -1,46 +1,73 @@
-<!-- The assessment · what it measures. The sitting screenshot lives on the
-     Reports page, in the slider, and is not repeated here. -->
+<!-- The assessment · what it measures.
+     The layers used to be a four-column table. A specification table is the
+     right form for a specification, but it was the fourth table in a row on
+     this site and it read as more of the same, so the three layers are now
+     the figures they are and the sitting is a sequence on a rail.
+
+     The item below can actually be answered. Reading that the scale has five
+     points is not the same as pressing one, and the readout says what that
+     single answer feeds. It is not a score: one item cannot make one, and
+     pretending otherwise would be the first thing the site got wrong. -->
 <div class="cm">
   <div class="cm-in">
     <div class="cm-head">
     <h2 class="cm-h2">What it measures</h2>
     <div class="cm-col"><p>Two axes, measured together: which work inside the
-    discipline pulls a student, and how they want to do that work.</p></div>
-    </div>
-    <div class="cm-tw">
-      <table>
-        <thead><tr><th>Layer</th><th class="cm-num">Scales</th><th class="cm-num">Items</th><th>How it is built</th></tr></thead>
-        <tbody>
-          <tr><td class="cm-name">Job areas</td><td class="cm-num">10</td><td class="cm-num">250</td>
-            <td>Each area is measured by 25 items. 13 job-interest items and 12
-              style-bearing items are summed, which holds down the effect of any
-              single item's error</td></tr>
-          <tr><td class="cm-name">Work styles</td><td class="cm-num">6</td><td class="cm-num">120</td>
-            <td>Independent, collaborative, challenge-seeking, stability-seeking,
-              speed-first, quality-first. Each style is measured by 20 items spread
-              two at a time across the ten job areas, so the same style is asked
-              again in different situations</td></tr>
-          <tr><td class="cm-name">Consistency</td><td class="cm-num">3</td><td class="cm-num">3</td>
-            <td>Checks whether the responses hold together</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="cm-small cm-col" style="margin-top:14px">The 130 job-interest items and
-      the 120 style-bearing items overlap inside the same 250. Every item is
-      self-descriptive and answered on a five-point scale from "not at all like me"
-      to "very much like me".</p>
-
-    <p class="cm-sublabel">Sample items</p>
-    <div class="cm-items cm-col">
-      <div class="cm-item"><b>Job interest · Design and development</b>Reworking a structure with the drawings and the analysis results in front of me is interesting.</div>
-      <div class="cm-item"><b>Style-bearing · Job area plus quality-first</b>I want to check the analysis conditions carefully and reach a conclusion I can stand behind.</div>
+    discipline pulls a student, and how they want to do that work. The same 250
+    items carry both, which is why the sitting is twenty minutes and not
+    two.</p></div>
     </div>
 
-    <p class="cm-sublabel">Sitting</p>
-    <div class="cm-steps">
-      <div class="cm-step"><b>Choose a discipline</b><span>The job areas for that discipline are used</span></div>
-      <div class="cm-step"><b>Job-interest items</b><span>Interest and fit, area by area</span></div>
-      <div class="cm-step"><b>Style-bearing items</b><span>Job area and work style measured together</span></div>
+    <div class="cm-tiles">
+      <div class="cm-tile"><b data-cm-count="10">10</b><span>Job areas</span>
+        <em>25 items each. Summing 25 holds down the effect of any single item's error</em></div>
+      <div class="cm-tile"><b data-cm-count="6">6</b><span>Work styles</span>
+        <em>20 items each, spread two at a time across the ten areas, so a style is asked again in different situations</em></div>
+      <div class="cm-tile"><b data-cm-count="3">3</b><span>Consistency checks</span>
+        <em>Whether the responses hold together at all</em></div>
+    </div>
+
+    <p class="cm-small cm-col" style="margin-top:16px">The 130 job-interest items
+      and the 120 style-bearing items overlap inside the same 250. Every item is
+      self-descriptive and answered on a five-point scale.</p>
+
+    <p class="cm-sublabel">Answer one and see where it goes</p>
+    <div class="cm-try">
+      <p>Item 4 of 253 &middot; job interest, design and development</p>
+      <q>I'd like to apply what I learned in mechanics of materials to calculating
+        the loads a real component can withstand.</q>
+      <div class="cm-scale" role="group" aria-label="Five-point scale">
+        <button type="button" aria-pressed="false" data-cm-pick="Strongly disagree">Strongly disagree</button>
+        <button type="button" aria-pressed="false" data-cm-pick="Disagree">Disagree</button>
+        <button type="button" aria-pressed="false" data-cm-pick="Neutral">Neutral</button>
+        <button type="button" aria-pressed="false" data-cm-pick="Agree">Agree</button>
+        <button type="button" aria-pressed="false" data-cm-pick="Strongly agree">Strongly agree</button>
+      </div>
+      <div class="cm-try-out" hidden>
+        <div><b>You answered</b><span data-cm-answer>Not yet</span></div>
+        <div><b>Feeds job area</b><span>Design and development, one of its 25 items</span></div>
+        <div><b>Feeds work style</b><span>Quality-first, one of its 20</span></div>
+        <div><b>Changes the report by</b><span>About a fortieth of one axis. No single item decides anything</span></div>
+        <p class="cm-try-note">That last line is the point of a 253-item
+          instrument. A five-question quiz has to make each answer count, which
+          is why its results move when someone is in a bad mood.</p>
+      </div>
+    </div>
+
+    <p class="cm-sublabel">How a sitting runs</p>
+    <div class="cm-time">
+      <div class="cm-tstep"><em>Before the items</em><b>Choose a discipline</b>
+        <p>The job areas belonging to that discipline are the ones used. A mechanical
+          student is never scored against another field's areas.</p></div>
+      <div class="cm-tstep"><em>About 15 minutes</em><b>Job-interest items</b>
+        <p>Interest and fit, area by area. Each answer saves as it is made, so a
+          student can close the tab on a bus and come back that evening.</p></div>
+      <div class="cm-tstep"><em>About 5 minutes</em><b>Style-bearing items</b>
+        <p>Job area and work style measured in the same sentence, which is how the
+          six styles get 20 observations each without adding 120 questions.</p></div>
+      <div class="cm-tstep"><em>Immediately</em><b>Scored</b>
+        <p>Rules, not judgement. The same answer sheet always produces the same
+          scores, and a coordinator can be shown it re-scored.</p></div>
     </div>
   </div>
 </div>

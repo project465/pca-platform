@@ -18,6 +18,14 @@ import { query } from "../../src/lib/db";
 
 const ATTEMPT = Number(process.argv[2] ?? 8377);
 const OUT = join(process.cwd(), "sites/careermetri/imweb-en/17-measure.html");
+const OUT_TWO = join(process.cwd(), "sites/careermetri/imweb-en/18-two.html");
+
+/**
+ * 같은 학년 안에서 결과가 갈린다는 말은 표로는 안 믿긴다. 실제로 갈린 두
+ * 사람의 도형을 나란히 놓는다. 둘 다 시뮬레이션 응시자이고, 1순위 직무영역이
+ * 서로 다른 쪽에서 골랐다.
+ */
+const PAIR = [Number(process.env.METRI_PAIR_A ?? 8176), Number(process.env.METRI_PAIR_B ?? 8452)];
 
 /** 결과지가 그리는 순서 그대로. 축 순서가 바뀌면 도형이 달라 보인다. */
 const STYLE_ORDER = ["INDEP", "COLLAB", "CHALLENGE", "STABLE", "SPEED", "QUALITY"] as const;
@@ -80,6 +88,106 @@ function radar(rows: Row[], key: string, hidden: boolean): string {
 
 const vals = (rows: Row[]) =>
   rows.map((r) => `<div><span>${r.name}</span><b>${String(r.value).replace(/\.0$/, "")}</b></div>`).join("");
+
+/** 나란히 놓는 작은 도형. 축 이름을 빼고 값 목록이 대신 읽어 준다. */
+function miniRadar(rows: Row[], key: string): string {
+  const n = rows.length;
+  const SW = 260, SH = 260, SCX = 130, SCY = 130, SR = 92;
+  const at = (i: number, v: number): [number, number] => {
+    const a = -Math.PI / 2 + (2 * Math.PI * i) / n, r = (SR * v) / 100;
+    return [SCX + r * Math.cos(a), SCY + r * Math.sin(a)];
+  };
+  const j = (xs: [number, number][]) => xs.map(([x, y]) => `${f1(x)},${f1(y)}`).join(" ");
+  const rings = [50, 100]
+    .map((p) => `<polygon${p === 50 ? ' class="cm-rg-mid"' : ""} points="${j(rows.map((_, i) => at(i, p)))}"/>`)
+    .join("");
+  const spokes = rows
+    .map((_, i) => { const [x, y] = at(i, 100); return `<line x1="${SCX}" y1="${SCY}" x2="${f1(x)}" y2="${f1(y)}"/>`; })
+    .join("");
+  const vtx = rows
+    .map((r, i) => { const [x, y] = at(i, r.value); return `<circle r="3.2" cx="${f1(x)}" cy="${f1(y)}"/>`; })
+    .join("");
+  return (
+    `<svg class="cm-radar cm-mini" viewBox="0 0 ${SW} ${SH}" role="img" data-cm-radar="${key}" ` +
+    `aria-label="Work-style shape for this student. The six values are listed underneath.">` +
+    `<g class="cm-rg">${rings}</g><g class="cm-sp">${spokes}</g>` +
+    `<polygon class="cm-poly" points="${j(rows.map((r, i) => at(i, r.value)))}"/>` +
+    `<g class="cm-vtx">${vtx}</g></svg>`
+  );
+}
+
+async function one(attempt: number) {
+  const ind = await query<{ code: string; scaled_score: string }>(
+    `SELECT i.code, s.scaled_score FROM indicator_scores s
+       JOIN indicators i ON i.id = s.indicator_id WHERE s.attempt_id = $1`,
+    [attempt],
+  );
+  const areas = await query<{ area_code: string; scaled_score: string }>(
+    `SELECT area_code, scaled_score FROM area_scores WHERE attempt_id = $1 ORDER BY rank_no`,
+    [attempt],
+  );
+  if (!ind.length || !areas.length) throw new Error(`응시 ${attempt} 의 점수가 없다`);
+  const by = new Map(ind.map((r) => [r.code, Number(r.scaled_score)]));
+  const pick = (codes: readonly string[]): Row[] =>
+    codes.map((c) => {
+      const v = by.get(c);
+      if (v === undefined) throw new Error(`축 ${c} 의 점수가 없다`);
+      return { name: EN[c] ?? c, value: v };
+    });
+  return {
+    style: pick(STYLE_ORDER),
+    axis: pick(AXIS_ORDER),
+    areas: areas.map((a) => ({ name: EN[a.area_code] ?? a.area_code, value: Math.round(Number(a.scaled_score)) })),
+  };
+}
+
+async function writeTwo() {
+  const [a, b] = await Promise.all(PAIR.map(one));
+  const card = (who: string, d: Awaited<ReturnType<typeof one>>, n: number) => {
+    const top = d.style.slice().sort((x, y) => y.value - x.value).slice(0, 2).map((r) => r.name);
+    return `<div class="cm-cell">
+        <span class="cm-n">Student ${who}</span>
+        <h3 class="cm-h3">${d.areas[0].name}</h3>
+        <p>Leading job area ${d.areas[0].value}, then ${d.areas[1].name} ${d.areas[1].value}.
+          Works ${top[0].toLowerCase()} and ${top[1].toLowerCase()}.</p>
+        ${miniRadar(d.style, "pair" + n)}
+        <div class="cm-vlist cm-tight">${vals(d.style)}</div>
+      </div>`;
+  };
+  const html = `<!-- Reports · two students from one year group.
+
+     GENERATED with 17-measure by scripts/metri/make-radar.ts. Both are
+     simulated sittings picked because their leading job area differs; the
+     shapes are the scoring engine's real output for each.
+
+     A table said the same thing and nobody believed it. Two shapes side by
+     side is the whole argument of the product in one look: same department,
+     same year, different support. -->
+<div class="cm cm-tint">
+  <div class="cm-in">
+    <div class="cm-head">
+    <h2 class="cm-h2">Same department, same year, different answer</h2>
+    <div class="cm-col"><p>Both of these read mechanical engineering and sat the
+    same 253 items. A cohort average would put them in the same row of a
+    spreadsheet. The support that would actually help them is not the
+    same.</p></div>
+    </div>
+    <div class="cm-grid cm-g2">
+      ${card("A", a, 1)}
+      ${card("B", b, 2)}
+    </div>
+    <div class="cm-note">
+      <p>This is what the cohort report is for: not an average, but how many of
+        each there are, so a careers office knows which masterclass to run and
+        which practitioner to bring in. Both sittings are simulated, not real
+        students.</p>
+    </div>
+  </div>
+</div>
+`;
+  writeFileSync(OUT_TWO, html, "utf8");
+  console.log(`응시 ${PAIR.join(" · ")} → ${OUT_TWO}`);
+}
 
 async function main() {
   const ind = await query<{ code: string; scaled_score: string }>(
@@ -172,6 +280,7 @@ async function main() {
   console.log(`  성향 ${style.map((r) => `${r.name} ${r.value}`).join(" · ")}`);
   console.log(`  활동 ${axis.map((r) => `${r.name} ${r.value}`).join(" · ")}`);
   console.log(`  직무영역 ${bars.map((b) => `${b.name} ${b.value}`).join(" · ")}`);
+  await writeTwo();
 }
 
 main().then(
