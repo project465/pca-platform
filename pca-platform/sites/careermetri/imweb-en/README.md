@@ -13,8 +13,8 @@ things, so several sections have no counterpart.
 | 42 Korean cities, 13,920 employers | The same figures, stated as Korea, the first market |
 | 14 department rows in Korean names | The same rows in field and discipline names |
 | Korean e-commerce footer | imweb required-footer fields, labels in English |
-| 직업정보제공사업 신고 as a credential | The same number, labelled as a Korean registration |
-| Price in won for both tracks | Individual in won, department and partner quoted |
+| The Korean career-information registration as a credential | The same number, labelled as a Korean registration |
+| Price in won, individuals buy directly | Everything quoted in US dollars, and nothing is sold on the site |
 
 Two sections exist only here, and they carry the international pitch:
 **Localisation** (what is shared worldwide, what is rebuilt per country, what
@@ -98,7 +98,17 @@ To move a pin, change its `cx`/`cy` in the widget. The projection is equirectang
 over latitudes 80 to -56, so `x = (lon + 180) / 360 * 1000` and
 `y = (80 - lat) / 136 * 470`.
 
-## 7. What is still open
+## 7. Nothing is sold here
+
+There is no checkout, no student payment screen and no individual purchase on this
+site. Every track is quoted in US dollars against a country, a discipline and a
+cohort size, and the only way in is the enquiry form on Contact. The Korean site
+keeps its own individual track; this one does not carry it.
+
+**No dollar figure is printed anywhere.** Supply one and it goes in a single place,
+the three `cm-price` lines in `11-pricing`.
+
+## 8. What is still open
 
 - The domain. `careermetri.com` is the reserved name in
   `marketing/src/content/global.ts`, not a live address
