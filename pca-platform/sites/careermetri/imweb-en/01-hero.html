@@ -1,7 +1,14 @@
-<!-- Home · overview. Replace href="/contact" and href="/reports" with the
-     real page addresses you create in imweb. cm-dark is used on this one
-     section only; everything below is light. -->
-<div class="cm cm-dark">
+<!-- Home · the opening band.
+     Replace href="/contact" and href="/reports" with the real page addresses
+     you create in imweb. cm-dark is used on this band and on the map below
+     it; everything else on the site is light.
+
+     cm-open paints the dot lattice and the pool of light behind the headline.
+     Both are CSS gradients, so there is no image to upload and nothing to go
+     missing. data-cm-count makes a figure count up the first time it is seen;
+     the number written in the element is the real one and is always restored,
+     so the page reads correctly with the script switched off. -->
+<div class="cm cm-dark cm-open">
   <div class="cm-in">
     <h1 class="cm-h1">They chose engineering. Nobody told them which engineering.</h1>
     <div class="cm-col">
@@ -10,19 +17,23 @@
         institution receives the same responses as an anonymised cohort report and
         uses it to plan the next term.</p>
     </div>
-    <div class="cm-tw cm-col">
-      <table>
-        <tbody>
-          <tr><th scope="row">Who sits it</th><td>Undergraduates in engineering and the natural sciences</td></tr>
-          <tr><th scope="row">Items</th><td>253 · 130 job interest · 120 work style · 3 consistency</td></tr>
-          <tr><th scope="row">Sitting</th><td>Mobile and desktop · about 15 to 20 minutes · 5-point scale · saves as you go</td></tr>
-          <tr><th scope="row">Output</th><td>Personal report &middot; anonymised cohort report &middot; online and PDF</td></tr>
-        </tbody>
-      </table>
+
+    <div class="cm-kpi">
+      <div><b data-cm-count="253">253</b><span>Items in one sitting</span></div>
+      <div><b data-cm-count="10">10</b><span>Job areas inside the discipline</span></div>
+      <div><b data-cm-count="6">6</b><span>Work styles, measured alongside</span></div>
+      <div><b>15&ndash;20</b><span>Minutes, mobile or desktop</span></div>
     </div>
+
     <div class="cm-cta">
       <a class="cm-btn" href="/contact">Talk to us</a>
       <a class="cm-btn cm-ghost" href="/reports">See what a report contains</a>
     </div>
+
+    <dl class="cm-spec">
+      <div><dt>Who sits it</dt><span>Undergraduates in engineering and the natural sciences</span></div>
+      <div><dt>How it runs</dt><span>Five-point scale, answers saved as they are made, resumable</span></div>
+      <div><dt>What comes back</dt><span>A personal report and an anonymised cohort report, online and PDF</span></div>
+    </dl>
   </div>
 </div>

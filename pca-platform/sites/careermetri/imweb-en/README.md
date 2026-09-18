@@ -55,7 +55,27 @@ the top code widget on every page. Every page, or the ones you miss render bare.
 Build the menu with imweb's menu settings, not in code, so the mobile
 hamburger and the current-page marker attach themselves.
 
-## 3. The sliders
+## 3. What moves, and what turns it off
+
+All of it is in the head code. The widgets carry no script.
+
+| Effect | Where | Switched off by |
+|---|---|---|
+| Sections rise as they are reached | Every section, found by the script rather than declared | Reduced motion, or no `IntersectionObserver` |
+| The opening figures count up | `01-hero`, on `data-cm-count` | Reduced motion |
+| Dot lattice and the cool light behind the headline | `01-hero`, via `cm-open` | Nothing: they are static gradients |
+| One map pin beats, and the ten arrive in order | `16-markets` | Reduced motion |
+| Cards lift under the pointer | Any `cm-cell` | A device with no hover |
+| The two sliders | See below | Reduced motion, for the automatic advance |
+
+**The starting state is added by the script, never by the stylesheet.** A rule
+in CSS that sets `opacity:0` and waits for JavaScript leaves a reader whose
+script failed looking at an empty page, which is worse than a page that does
+not move. So the script adds `cm-anim` to the document only once it has an
+observer in hand, and the numbers written into the HTML are the real ones and
+are always put back when the count finishes.
+
+## 4. The sliders
 
 Two, and the wiring for both is in the head code; the widgets carry markup
 only.
@@ -83,11 +103,17 @@ duration of a drag and restored on release, because mandatory snap pulls the
 position back after every write and a drag made of small steps would never
 leave its slide.
 
-## 4. Images
+## 5. Images
 
 **This site has its own images, in `../img-en/`.** They are not the Korean
-site's files. Both were captured from the platform with the language set to
-English, so a reader who does not read Korean can follow them.
+site's files. Both were captured from a build that serves English only, so
+there is no Korean or Turkish tab in frame.
+
+That is a real setting, not a crop: `NEXT_PUBLIC_LANGS=en` at build time makes
+`OFFERED_LANGS` a single language, and the switcher renders nothing when there
+is only one to pick. Leave the variable unset and all three stay, which is what
+the Korean deployment wants. **Re-capture from an English-only build**, or the
+tabs come back into the picture.
 
 | Placeholder | File | Used in |
 |---|---|---|
@@ -104,7 +130,7 @@ renders in Korean. A Korean screen on this site cannot be read by the person
 it is for, so `08-cohort` carries the structure as a table and no picture.
 When that screen is translated, capture it and add the plate back.
 
-## 5. Do not write these in code
+## 6. Do not write these in code
 
 **The contact form.** `14-contact` ends at the heading and its paragraph. A
 form written in code has nowhere to send to, so put an imweb **form widget**
@@ -121,7 +147,7 @@ number only.
 **Button targets.** `01-hero` points at `/contact` and `/reports`. Change
 them to the real page addresses.
 
-## 6. The world map
+## 7. The world map
 
 `16-markets` carries an inline SVG world map. The dots are Natural Earth 110m land
 geometry sampled every 3.2 degrees, so the coastlines are real rather than traced by
@@ -133,7 +159,7 @@ To move a pin, change its `cx`/`cy` in the widget. The projection is equirectang
 over latitudes 80 to -56, so `x = (lon + 180) / 360 * 1000` and
 `y = (80 - lat) / 136 * 470`.
 
-## 7. This site carries no prices
+## 8. This site carries no prices
 
 There is no pricing page, no checkout and no individual purchase. The site explains
 what the assessment is and takes enquiries; a figure is discussed against a country,
@@ -154,7 +180,7 @@ Six widgets were removed on the way to that, and the reasons are worth keeping:
 One fact from the removed widgets was kept, because it answers a real question:
 students never see a payment screen. It now sits in `03-output` and in the FAQ.
 
-## 8. What was cut, and why
+## 9. What was cut, and why
 
 A second pass took the site down from eighteen widgets to seventeen and cut
 about a fifth of the words. Nothing true was dropped; what went was said
@@ -170,7 +196,7 @@ twice or said nothing.
 | The five retention items quoted verbatim in `09-localisation` | The module is worth naming; its questionnaire is not marketing copy |
 | Two hero rows, the second market table's split rows, the duplicated "no country site is open yet" note | Said elsewhere, or said twice |
 
-## 9. What is still open
+## 10. What is still open
 
 - The domain. `careermetri.com` is the reserved name in
   `marketing/src/content/global.ts`, not a live address
