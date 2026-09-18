@@ -1,0 +1,278 @@
+<!-- ═══════════════════════════════════════════════════════════
+     [대안] Header Code 칸을 못 찾으셨을 때 쓰는 판입니다.
+
+     원래 자리는 관리자 > 설정(환경설정) > SEO > 공통 코드삽입 >
+     Header Code 이고, 거기 붙이면 한 번으로 끝납니다.
+
+     그 칸을 못 찾으셨으면 이 파일을 **페이지마다 맨 위 코드 위젯**에
+     하나씩 붙이십시오. 홈·진단·결과 예시·제공 학과·지역 연계·
+     도입 안내·문의 일곱 장 전부에 넣어야 합니다. 한 장이라도 빠지면
+     그 페이지만 맨몸으로 나옵니다.
+
+     같은 규칙이 여러 번 실리지만 값이 같아서 화면은 달라지지 않고,
+     슬라이더 배선에는 이미 두 번 걸리지 않게 표시를 남겨 뒀습니다.
+     ═══════════════════════════════════════════════════════════ -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@500;700&family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --cm-navy:#0F1B2D; --cm-gold:#C9A227;
+  --cm-bg:#FFFFFF; --cm-surface:#FFFFFF; --cm-surface2:#F2F4F7;
+  --cm-text:#0F1B2D; --cm-mute:#4F6076;
+  --cm-line:#DCE2EA; --cm-rule:#B9C4D0;
+  --cm-acc:#7A6214; --cm-btn2:#0F1B2D;
+  /* 모서리 규칙: 금색이 닿는 면과 선은 각지게, 회색 선으로 둘러싼 그릇은 둥글게.
+     섞는 것을 규칙으로 두면 취향이 아니라 짜임이 된다 */
+  --cm-r:10px; --cm-r2:6px;
+  --cm-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --cm-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --cm-disp:"Gothic A1","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+}
+.cm.cm-tint{--cm-bg:#F2F4F7; --cm-surface:#F2F4F7; --cm-surface2:#FFFFFF;}
+.cm.cm-dark{
+  --cm-bg:#0F1B2D; --cm-surface:#0F1B2D; --cm-surface2:#16273C;
+  --cm-text:#E8EDF2; --cm-mute:#8D9CAE;
+  --cm-line:#24374F; --cm-rule:#2E4460;
+  --cm-acc:#C9A227; --cm-btn2:#C9A227;
+}
+
+.cm{
+  background:var(--cm-bg); color:var(--cm-text);
+  font-family:var(--cm-body); font-size:16px; line-height:1.8;
+  word-break:keep-all; overflow-wrap:break-word;
+  padding:58px 20px; margin:0;
+}
+.cm *{box-sizing:border-box;}
+.cm-in{max-width:1040px; margin:0 auto;}
+.cm-col{max-width:660px;}
+.cm img{max-width:100%; display:block;}
+.cm a{color:var(--cm-text);}
+.cm strong{font-weight:600;}
+.cm :focus-visible{outline:2px solid var(--cm-acc); outline-offset:3px;}
+
+/* 제목은 명사형으로 짧게. 문장형 제목을 절마다 쓰면 광고문이 된다 */
+.cm-h2{
+  font-family:var(--cm-disp); font-weight:700; font-size:clamp(21px,2.5vw,27px);
+  line-height:1.4; letter-spacing:-.015em; margin:0 0 14px; color:var(--cm-text);
+}
+.cm-h2::after{content:""; display:block; width:34px; height:2px;
+  background:var(--cm-gold); margin-top:14px;}
+.cm-h3{font-family:var(--cm-disp); font-weight:700; font-size:16px; margin:0 0 7px; color:var(--cm-text);}
+.cm-sublabel{
+  font-family:var(--cm-body); font-weight:600; font-size:15px; color:var(--cm-text);
+  margin:48px 0 14px; padding-top:16px; border-top:1px solid var(--cm-line);
+}
+.cm p{margin:0 0 15px;}
+.cm-sub{color:var(--cm-mute);}
+.cm-small{font-size:13.5px; color:var(--cm-mute); line-height:1.75;}
+
+.cm-h1{
+  font-family:var(--cm-disp); font-weight:700; font-size:clamp(25px,3.6vw,36px);
+  line-height:1.35; letter-spacing:-.02em; margin:0 0 16px; color:var(--cm-text);
+}
+.cm-cta{display:flex; gap:10px; flex-wrap:wrap; margin-top:26px;}
+.cm-btn{
+  font-family:var(--cm-body); font-weight:600; font-size:15px; padding:12px 24px;
+  text-decoration:none; display:inline-block;
+  border:1px solid var(--cm-gold); color:var(--cm-navy); background:var(--cm-gold);
+}
+.cm-btn.cm-ghost{background:transparent; color:var(--cm-btn2); border-color:var(--cm-rule);
+  border-radius:var(--cm-r2);}
+.cm-btn:hover{background:#B38E1C; border-color:#B38E1C;}
+.cm-btn.cm-ghost:hover{background:rgba(201,162,39,.14); border-color:var(--cm-gold);}
+
+/* 사양 표. 이 화면에서 가장 많이 쓰는 그릇이다 */
+.cm-tw{overflow-x:auto; margin:20px 0 0; border:1px solid var(--cm-line);
+  border-radius:var(--cm-r); background:var(--cm-surface);}
+.cm-tw table{border-collapse:collapse; width:100%; font-size:14.5px; min-width:440px;}
+.cm-tw th,.cm-tw td{text-align:left; padding:13px 16px; border-bottom:1px solid var(--cm-line);}
+.cm-tw tr:last-child th,.cm-tw tr:last-child td{border-bottom:0;}
+.cm-tw thead th{font-family:var(--cm-body); font-size:12.5px; color:var(--cm-mute);
+  font-weight:600; background:var(--cm-surface2); border-bottom:1px solid var(--cm-rule);}
+.cm-tw td{color:var(--cm-mute); vertical-align:top;}
+.cm-tw td.cm-name,.cm-tw th[scope=row]{color:var(--cm-text); font-weight:500; white-space:nowrap;}
+.cm-tw th[scope=row]{background:var(--cm-surface2); width:9.5em; vertical-align:top; font-size:14px;}
+.cm-tw td.cm-live{color:var(--cm-acc); font-weight:600; white-space:nowrap;}
+.cm-tw .cm-num{text-align:right;}
+.cm-tw td.cm-num{font-family:var(--cm-mono); font-variant-numeric:tabular-nums;}
+@media (max-width:540px){.cm-tw th[scope=row]{width:7.5em; font-size:13px;}}
+
+.cm-grid{display:grid; gap:1px; background:var(--cm-line); margin-top:20px;
+  border:1px solid var(--cm-line); border-radius:var(--cm-r); overflow:hidden;}
+.cm-g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr));}
+.cm-g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr));}
+.cm-cell{background:var(--cm-surface); padding:22px 22px 24px;}
+.cm-n{font-family:var(--cm-body); font-weight:600; font-size:12.5px; color:var(--cm-acc);
+  display:block; margin-bottom:9px;}
+.cm-cell p{margin:0; font-size:14.5px; color:var(--cm-mute); line-height:1.75;}
+.cm-cell ul{margin:9px 0 0; padding:0; list-style:none;}
+.cm-cell li{font-size:14.5px; color:var(--cm-mute); padding-left:15px;
+  position:relative; line-height:1.8;}
+.cm-cell li::before{content:""; position:absolute; left:1px; top:13px;
+  width:5px; height:5px; border-radius:50%; background:var(--cm-rule);}
+
+/* 결과지는 흰 문서다. 받침과 괘선을 둘러 책상에 놓은 것처럼 만든다 */
+.cm-plate{margin:24px 0 0; background:var(--cm-surface2); padding:14px;
+  border:1px solid var(--cm-line); border-radius:var(--cm-r);}
+.cm-plate img{border:1px solid var(--cm-rule); border-radius:var(--cm-r2);}
+.cm-plate figcaption{font-size:12.5px; color:var(--cm-mute); padding:11px 2px 1px;}
+
+/* 문항을 그대로 인용하는 줄 */
+.cm-items{margin-top:18px; display:grid; gap:9px;}
+.cm-item{background:var(--cm-surface2); border:1px solid var(--cm-line);
+  border-left:3px solid var(--cm-gold); border-radius:0 var(--cm-r) var(--cm-r) 0;
+  padding:13px 16px; font-size:14.5px; line-height:1.7;}
+.cm-item b{display:block; font-size:12.5px; color:var(--cm-acc);
+  margin-bottom:4px; font-weight:600;}
+
+/* 번호가 뜻을 갖는 유일한 곳. 순서대로 밟는 절차다 */
+.cm-steps{counter-reset:cmstep; display:grid; gap:1px; background:var(--cm-line);
+  margin-top:20px; border:1px solid var(--cm-line); border-radius:var(--cm-r); overflow:hidden;}
+.cm-step{background:var(--cm-surface); padding:16px 22px; display:flex; gap:14px; align-items:baseline;}
+.cm-step::before{counter-increment:cmstep; content:counter(cmstep,decimal-leading-zero);
+  font-family:var(--cm-mono); font-size:12px; color:var(--cm-mute); flex:0 0 auto;}
+.cm-step b{font-weight:600; flex:0 0 11em;}
+.cm-step span{color:var(--cm-mute); font-size:14.5px;}
+@media (max-width:540px){
+  .cm-step{flex-wrap:wrap; gap:5px 14px;}
+  .cm-step b{flex:0 0 auto;}
+  .cm-step span{flex:1 1 100%; padding-left:26px;}
+}
+
+.cm-packs{display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(255px,1fr)); margin-top:20px;}
+.cm-pack{border:1px solid var(--cm-line); border-radius:var(--cm-r);
+  padding:24px 22px; background:var(--cm-surface);}
+.cm-pack.cm-pick{border-color:var(--cm-gold); border-top:3px solid var(--cm-gold);
+  background:var(--cm-surface2); border-radius:0 0 var(--cm-r) var(--cm-r);}
+.cm-tag{font-weight:600; font-size:12.5px; color:var(--cm-acc); display:block; margin-bottom:10px;}
+.cm-price{font-family:var(--cm-disp); font-weight:700; font-size:22px;
+  margin:0 0 4px; letter-spacing:-.015em; color:var(--cm-text);
+  font-variant-numeric:tabular-nums;}
+.cm-unit{font-size:13px; color:var(--cm-mute); margin-bottom:14px;}
+.cm-pack ul{margin:0; padding:0; list-style:none;}
+.cm-pack li{font-size:14px; color:var(--cm-mute); padding:5px 0 5px 19px; position:relative;}
+.cm-pack li.cm-on{color:var(--cm-text);}
+.cm-pack li::before{content:""; position:absolute; left:2px; top:13px; width:7px; height:7px;
+  border-radius:50%; border:1px solid var(--cm-rule);}
+.cm-pack li.cm-on::before{background:var(--cm-gold); border-color:var(--cm-gold);}
+
+.cm-note{background:var(--cm-surface2); border:1px solid var(--cm-line);
+  border-radius:var(--cm-r); padding:18px 20px; margin-top:22px;}
+.cm-note p{margin:0; font-size:14px; color:var(--cm-mute); line-height:1.8;}
+.cm-note p + p{margin-top:9px;}
+
+.cm-brand{font-family:var(--cm-disp); font-weight:700; font-size:16px; letter-spacing:.05em;
+  color:var(--cm-text);}
+.cm-brand em{color:var(--cm-acc); font-style:normal;}
+/* ── 옆으로 넘기는 판.
+   scroll-snap 이라 JS 가 죽어도 손가락과 트랙패드로는 넘어간다.
+   단추와 점은 아래 스크립트가 붙인다 */
+.cm-sl{margin-top:20px;}
+.cm-sl-head{display:flex; align-items:center; gap:12px; margin-bottom:12px;}
+.cm-sl-head p{margin:0; font-size:13.5px; color:var(--cm-mute); margin-right:auto;}
+.cm-sl-btn{width:34px; height:34px; flex:0 0 auto; cursor:pointer;
+  background:var(--cm-surface); color:var(--cm-text);
+  border:1px solid var(--cm-rule); border-radius:var(--cm-r2);
+  font-family:var(--cm-body); font-size:15px; line-height:1;
+  display:inline-flex; align-items:center; justify-content:center;}
+.cm-sl-btn:hover:not([disabled]){border-color:var(--cm-gold);}
+.cm-sl-btn[disabled]{opacity:.35; cursor:default;}
+.cm-sl-track{
+  display:grid; grid-auto-flow:column; grid-auto-columns:minmax(252px,1fr);
+  gap:14px; overflow-x:auto; scroll-snap-type:x mandatory;
+  scroll-behavior:smooth; scrollbar-width:none; padding-bottom:4px;
+}
+.cm-sl-track::-webkit-scrollbar{display:none;}
+.cm-sl-track > *{scroll-snap-align:start;}
+@media (min-width:760px){.cm-sl-track{grid-auto-columns:minmax(276px,1fr);}}
+.cm-slide{
+  background:var(--cm-surface); border:1px solid var(--cm-line);
+  border-radius:var(--cm-r); padding:22px 20px 24px; min-width:0;
+}
+.cm-slide .cm-n{margin-bottom:8px;}
+.cm-slide h3{font-family:var(--cm-disp); font-weight:700; font-size:16px;
+  margin:0 0 7px; color:var(--cm-text);}
+.cm-slide p{margin:0; font-size:14px; color:var(--cm-mute); line-height:1.75;}
+/* 금색 띠를 위에 올린 장은 위쪽 모서리를 각지게 둔다 */
+.cm-slide.cm-lead{border-top:3px solid var(--cm-gold); border-radius:0 0 var(--cm-r) var(--cm-r);}
+.cm-slide figure{margin:0;}
+.cm-slide img{border:1px solid var(--cm-rule); border-radius:var(--cm-r2);}
+.cm-slide figcaption{font-size:12.5px; color:var(--cm-mute); padding-top:10px;}
+.cm-sl-dots{display:flex; gap:6px; margin-top:14px;}
+.cm-sl-dot{width:22px; height:3px; background:var(--cm-line); border:0; padding:0;
+  cursor:pointer;}
+.cm-sl-dot[aria-current="true"]{background:var(--cm-gold);}
+@media (prefers-reduced-motion:reduce){
+  .cm *{transition:none!important; animation:none!important;}
+  .cm-sl-track{scroll-behavior:auto;}
+}
+</style>
+<script>
+/* 슬라이더 배선. 아임웹은 위젯을 늦게 심기도 해서 새로 생긴 것도 잡는다.
+   같은 판을 두 번 배선하지 않도록 표시를 남긴다 */
+(function () {
+  function wire(sl) {
+    if (sl.dataset.cmWired) return;
+    sl.dataset.cmWired = "1";
+    var track = sl.querySelector(".cm-sl-track");
+    if (!track) return;
+    var prev = sl.querySelector("[data-cm-prev]");
+    var next = sl.querySelector("[data-cm-next]");
+    var dots = sl.querySelector(".cm-sl-dots");
+    var slides = Array.prototype.slice.call(track.children);
+
+    function step() {
+      var a = slides[0], b = slides[1];
+      return b ? b.offsetLeft - a.offsetLeft : (a ? a.offsetWidth : 300);
+    }
+    function idx() { return Math.round(track.scrollLeft / step()); }
+    function go(i) {
+      var max = slides.length - 1;
+      i = Math.max(0, Math.min(max, i));
+      track.scrollTo({ left: slides[i] ? slides[i].offsetLeft - slides[0].offsetLeft : 0 });
+    }
+    if (prev) prev.addEventListener("click", function () { go(idx() - 1); });
+    if (next) next.addEventListener("click", function () { go(idx() + 1); });
+
+    if (dots) {
+      slides.forEach(function (_, i) {
+        var d = document.createElement("button");
+        d.type = "button";
+        d.className = "cm-sl-dot";
+        d.setAttribute("aria-label", (i + 1) + "번째로 이동");
+        d.addEventListener("click", function () { go(i); });
+        dots.appendChild(d);
+      });
+    }
+    track.setAttribute("tabindex", "0");
+    track.setAttribute("role", "group");
+    track.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { e.preventDefault(); go(idx() + 1); }
+      if (e.key === "ArrowLeft") { e.preventDefault(); go(idx() - 1); }
+    });
+
+    function sync() {
+      var atStart = track.scrollLeft <= 2;
+      var atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+      if (prev) prev.disabled = atStart;
+      if (next) next.disabled = atEnd;
+      if (dots) {
+        var i = idx();
+        Array.prototype.forEach.call(dots.children, function (d, k) {
+          d.setAttribute("aria-current", k === i ? "true" : "false");
+        });
+      }
+    }
+    track.addEventListener("scroll", sync, { passive: true });
+    window.addEventListener("resize", sync);
+    sync();
+  }
+  function scan() { document.querySelectorAll(".cm-sl").forEach(wire); }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", scan);
+  } else { scan(); }
+  if (window.MutationObserver) {
+    new MutationObserver(scan).observe(document.documentElement, { childList: true, subtree: true });
+  }
+})();
+</script>
+</style>
