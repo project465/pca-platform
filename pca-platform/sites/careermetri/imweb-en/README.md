@@ -64,14 +64,20 @@ a `MutationObserver` catches widgets imweb inserts late.
 
 ## 4. Images
 
-Same three files as the Korean site, in `../img/`. Upload them and replace
-the placeholders.
+**This site has its own images, in `../img-en/`.** They are not the Korean
+site's files. Both were captured from the platform with the language set to
+English, so a reader who does not read Korean can follow them.
 
 | Placeholder | File | Used in |
 |---|---|---|
-| `IMG_TEST` | `test.png` | `04-instrument` · `07-screens` |
-| `IMG_REPORT` | `report.png` | `06-report` · `07-screens` |
-| `IMG_ORG` | `org.png` | `08-cohort` · `07-screens` |
+| `IMG_TEST` | `img-en/test.png` | `04-instrument` · `07-screens` |
+| `IMG_REPORT` | `img-en/report.png` | `06-report` · `07-screens` |
+
+**There is no cohort-report screenshot, deliberately.** The coordinator's
+report is not translated yet: with the language set to English it still
+renders in Korean. A Korean screen on this site cannot be read by the person
+it is for, so `08-cohort` carries the structure as a table and no picture.
+When that screen is translated, capture it and add the plate back.
 
 ## 5. Do not write these in code
 
