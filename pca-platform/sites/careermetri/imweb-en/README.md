@@ -41,16 +41,26 @@ the top code widget on every page. Every page, or the ones you miss render bare.
 
 ## 2. One code widget per section
 
+**Five menus, not seven.** Localisation and Partnership were two halves of one
+question, so they are one page; About's evidence belongs with the instrument it
+describes, and who builds it belongs beside the enquiry form. Seven items in a
+bar is a site that has not decided what it is about.
+
 | Page | Widgets, top to bottom |
 |---|---|
-| Home | `01-hero` · `07-screens` · `17-measure` · `16-markets` · `02-who` · `03-output` |
-| The assessment | `04-instrument` · `05-scoring` |
-| Reports | `06-report` · `08-cohort` |
-| Localisation | `09-localisation` |
-| Partnership | `10-partnership` |
-| About | `12-evidence` · `13-coverage` · `22-about` |
-| Contact | `23-faq` · `14-contact` + an imweb form widget below it |
+| Home | `01-hero` · `07-screens` · `17-measure` · `02-who` · `03-output` |
+| The assessment | `04-instrument` · `05-scoring` · `12-evidence` · `13-coverage` |
+| Reports | `06-report` · `18-two` · `08-cohort` |
+| Rollout | `09-localisation` · `16-markets` · `10-partnership` |
+| Contact | `23-faq` · `22-about` · `14-contact` + an imweb form widget below it |
+| Every page but Contact | `20-cta`, last, above the footer |
+| Every page | `21-dock`, once, anywhere |
 | Bottom of every page | `15-footer` |
+
+**The world map is on Rollout, not Home.** That page is about what travels and
+what gets rebuilt; the map is how far each market has got with the rebuilding.
+On the home page it was a picture. Here it is the evidence for the paragraph
+above it.
 
 Build the menu with imweb's menu settings, not in code, so the mobile
 hamburger and the current-page marker attach themselves.
@@ -80,8 +90,24 @@ the database with the rest. It is not a student norm and we say so, but "62.5"
 with nothing beside it asks the reader to invent a baseline, and they will
 invent a flattering one.
 
-Title-block rules (a short heavy run at the left of each sub-heading), a
-progress hairline at the top of the page, and a print stylesheet finish it.
+**The map states its projection.** A graticule every 30 degrees, the equator
+picked out, and the projection written under it in the technical face. A world
+map without one is a shape; with one it is a chart, and this one is plotted
+from real geometry so it can afford to say so.
+
+**A title block in the footer.** What this is, which instrument it describes,
+on what scale, where the figures come from, and the registrations. Every value
+in it is checkable, which is the only reason to set it like a title block
+rather than draw one.
+
+The palette went down a step at the same time: a deeper navy, and a band that
+is blue rather than grey. **A neutral grey reads as a colour nobody chose**,
+and this product has no reason to be neutral. Contrast was re-measured: body
+17.6:1, secondary 6.5:1, gold text 5.9:1.
+
+Title-block rules at each sub-heading, registration marks at the corners of the
+dark bands, extension lines and ticks around the opening figures, a progress
+hairline at the top of the page, and a print stylesheet finish it.
 **The print rules matter more than they look:** this site's reader prints it
 and hands it to a head of department, so backgrounds come off, both radars and
 both value lists un-hide, and cards stop breaking across pages.

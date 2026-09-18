@@ -30,11 +30,15 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
 :root{
-  --cm-navy:#0F1B2D; --cm-gold:#C9A227;
-  --cm-bg:#FFFFFF; --cm-surface:#FFFFFF; --cm-surface2:#F2F4F7;
-  --cm-text:#0F1B2D; --cm-mute:#4F6076;
-  --cm-line:#E4E9EF; --cm-rule:#C3CCD8;
-  --cm-acc:#7A6214; --cm-btn2:#0F1B2D;
+  /* 색을 한 단 내렸다. 네이비가 더 깊고, 연회색 띠가 회색이 아니라 푸른
+     쪽으로 간다. 중립 회색은 고르지 않은 색으로 읽히고, 이 제품은 중립적일
+     이유가 없다. 대비는 다시 재서 본문 17.6:1 · 보조 6.5:1 · 금색 글자
+     5.9:1 이다. */
+  --cm-navy:#0B1524; --cm-gold:#C9A227;
+  --cm-bg:#FFFFFF; --cm-surface:#FFFFFF; --cm-surface2:#EDF1F6;
+  --cm-text:#0B1524; --cm-mute:#4B5D73;
+  --cm-line:#DFE6EE; --cm-rule:#B9C4D2;
+  --cm-acc:#7A6214; --cm-btn2:#0B1524;
   /* Every corner is rounded. Nothing on this site is square. */
   --cm-r:24px; --cm-r2:16px; --cm-r3:3px; --cm-pill:999px;
   /* One very shallow shadow on raised surfaces. A border alone reads flat,
@@ -48,16 +52,28 @@
   --cm-disp:var(--cm-body);
   --cm-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
 }
-.cm.cm-tint{--cm-bg:#F2F4F7; --cm-surface:#F2F4F7; --cm-surface2:#FFFFFF;}
+.cm.cm-tint{--cm-bg:#EDF1F6; --cm-surface:#EDF1F6; --cm-surface2:#FFFFFF;}
 .cm.cm-dark{
   /* A flat fill of one navy over 900 pixels reads as a printed block. The
      gradient is shallow enough that nobody sees a gradient. */
-  background-image:linear-gradient(178deg,#132134 0%,#0F1B2D 46%,#0C1726 100%);
-  --cm-bg:#0F1B2D; --cm-surface:#0F1B2D; --cm-surface2:#16273C;
-  --cm-text:#E8EDF2; --cm-mute:#8D9CAE;
-  --cm-line:#22354C; --cm-rule:#2E4460;
+  background-image:linear-gradient(178deg,#10202F 0%,#0B1524 48%,#070F1B 100%);
+  --cm-bg:#0B1524; --cm-surface:#0B1524; --cm-surface2:#122132;
+  --cm-text:#E6EDF4; --cm-mute:#8798AC;
+  --cm-line:#1D2F44; --cm-rule:#2B4159;
   --cm-acc:#C9A227; --cm-btn2:#C9A227;
 }
+/* Registration marks at the corners, the way a drawing sheet is trimmed.
+   Only on the dark bands, where there is room for them to be quiet. */
+.cm.cm-dark{position:relative;}
+.cm.cm-dark::before, .cm.cm-dark::after{
+  content:""; position:absolute; width:13px; height:13px; pointer-events:none;
+  border:1px solid var(--cm-rule); opacity:.55;
+}
+.cm.cm-dark::before{top:22px; left:22px; border-right:0; border-bottom:0;}
+.cm.cm-dark::after{bottom:22px; right:22px; border-left:0; border-top:0;}
+/* The opening band paints its own grid on ::before, so its marks go on a
+   child instead of fighting for the same pseudo-element. */
+.cm.cm-dark.cm-open::before{border:0; top:0; left:0; width:auto; height:auto; opacity:1;}
 
 .cm{
   background:var(--cm-bg); color:var(--cm-text);
@@ -235,6 +251,16 @@
 
 .cm-brand{font-family:var(--cm-disp); font-weight:700; font-size:16px; letter-spacing:.05em;
   color:var(--cm-text);}
+/* The title block. A drawing states what it is, at what scale and when, in a
+   ruled box at its corner; this is that box, and every value in it is
+   checkable. It is set in the technical face because all of it is data. */
+.cm-block{margin:26px 0 0; padding-top:18px; border-top:1px solid var(--cm-rule);
+  display:grid; gap:0; grid-template-columns:repeat(auto-fit,minmax(248px,1fr));}
+.cm-block > div{display:flex; gap:14px; align-items:baseline; padding:9px 18px 9px 0;
+  border-bottom:1px solid var(--cm-line);}
+.cm-block dt{font-family:var(--cm-mono); font-size:10.5px; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--cm-mute); flex:0 0 9.5em;}
+.cm-block dd{margin:0; font-family:var(--cm-mono); font-size:12px; color:var(--cm-text);}
 .cm-brand em{color:var(--cm-acc); font-style:normal;}
 /* Sideways sliders. Built on scroll-snap, so a finger or a trackpad still
    works if the script fails. The arrows and dots are attached by the script
@@ -330,11 +356,18 @@
 
 /* Headline figures. These are the instrument's specification, not decoration,
    so they are allowed to be the largest thing after the headline. */
-.cm-kpi{display:grid; gap:2px 0; margin:34px 0 4px;
+/* Dimensioned, the way a drawing states a length: an extension line at each
+   end of the run and a tick where one figure stops and the next begins. */
+.cm-kpi{display:grid; gap:2px 0; margin:38px 0 4px; position:relative;
   grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  border-top:1px solid var(--cm-line);}
-.cm-kpi > div{padding:20px 22px 18px; border-bottom:1px solid var(--cm-line);
-  border-right:1px solid var(--cm-line);}
+  border-top:1px solid var(--cm-rule);}
+.cm-kpi::before, .cm-kpi::after{content:""; position:absolute; top:-7px; height:14px;
+  width:1px; background:var(--cm-rule);}
+.cm-kpi::before{left:0;} .cm-kpi::after{right:0;}
+.cm-kpi > div{padding:22px 22px 18px; border-bottom:1px solid var(--cm-line);
+  border-right:1px solid var(--cm-line); position:relative;}
+.cm-kpi > div + div::before{content:""; position:absolute; top:-5px; left:-1px;
+  height:10px; width:1px; background:var(--cm-rule);}
 .cm-kpi > div:first-child{padding-left:0;}
 .cm-kpi b{display:block; font-family:var(--cm-disp); font-weight:700;
   font-size:clamp(28px,3.4vw,40px); line-height:1.05; letter-spacing:-.04em;
@@ -689,6 +722,12 @@
 .cm-mapwrap{margin-top:26px;}
 .cm-map{display:block; width:100%; height:auto; overflow:visible;}
 .cm-map-land use{fill:var(--cm-rule); opacity:.62;}
+/* The graticule. A world map without one is a shape; with one it states its
+   projection, and the projection is written under it. */
+.cm-grat line{stroke:var(--cm-line); stroke-width:1; opacity:.5;}
+.cm-grat .cm-eq{stroke:var(--cm-rule); stroke-width:1; opacity:.8;}
+.cm-proj{font-family:var(--cm-mono); font-size:11px; letter-spacing:.03em;
+  color:var(--cm-mute); margin:16px 0 0;}
 .cm-pin text{font-family:var(--cm-body); font-size:15px; font-weight:600;
   fill:var(--cm-text); paint-order:stroke; dominant-baseline:middle;}
 .cm-pin .cm-pin-dot{fill:var(--cm-mute);}
