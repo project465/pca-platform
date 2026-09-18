@@ -23,13 +23,13 @@
   --cm-navy:#0F1B2D; --cm-gold:#C9A227;
   --cm-bg:#FFFFFF; --cm-surface:#FFFFFF; --cm-surface2:#F2F4F7;
   --cm-text:#0F1B2D; --cm-mute:#4F6076;
-  --cm-line:#DCE2EA; --cm-rule:#B9C4D0;
+  --cm-line:#E4E9EF; --cm-rule:#C3CCD8;
   --cm-acc:#7A6214; --cm-btn2:#0F1B2D;
   /* 모서리는 전부 둥글다. 각진 모서리를 쓰지 않는다 */
-  --cm-r:16px; --cm-r2:10px; --cm-r3:3px; --cm-pill:999px;
+  --cm-r:20px; --cm-r2:14px; --cm-r3:3px; --cm-pill:999px;
   /* 올라온 면에는 아주 얕은 그림자를 하나 둔다. 선만으로 층을 나누면
      평면이 되고, 짙게 주면 옛날 카드가 된다 */
-  --cm-lift:0 1px 2px rgba(15,27,45,.04), 0 10px 28px rgba(15,27,45,.055);
+  --cm-lift:0 1px 2px rgba(15,27,45,.035), 0 12px 34px rgba(15,27,45,.06);
   /* 글꼴은 한 벌만 쓴다. 제목·본문·숫자가 다른 집안이면 한 화면으로
      읽히지 않는다. 숫자는 폰트를 바꾸는 대신 tabular-nums 로 줄을 맞춘다 */
   --cm-body:"Pretendard Variable",Pretendard,"Noto Sans KR",-apple-system,
@@ -40,7 +40,7 @@
 .cm.cm-dark{
   --cm-bg:#0F1B2D; --cm-surface:#0F1B2D; --cm-surface2:#16273C;
   --cm-text:#E8EDF2; --cm-mute:#8D9CAE;
-  --cm-line:#24374F; --cm-rule:#2E4460;
+  --cm-line:#22354C; --cm-rule:#2E4460;
   --cm-acc:#C9A227; --cm-btn2:#C9A227;
 }
 
@@ -48,7 +48,7 @@
   background:var(--cm-bg); color:var(--cm-text);
   font-family:var(--cm-body); font-size:16px; line-height:1.78;
   letter-spacing:-.011em; word-break:keep-all; overflow-wrap:break-word;
-  padding:76px 20px; margin:0;
+  padding:92px 20px; margin:0;
 }
 .cm *{box-sizing:border-box;}
 /* 모든 절이 같은 세로선에서 시작한다. 폭을 절마다 다르게 두면
@@ -94,7 +94,7 @@
 .cm-tw{overflow-x:auto; margin:20px 0 0; border:1px solid var(--cm-line);
   border-radius:var(--cm-r); background:var(--cm-surface);}
 .cm-tw table{border-collapse:collapse; width:100%; font-size:14.5px; min-width:440px;}
-.cm-tw th,.cm-tw td{text-align:left; padding:15px 18px; border-bottom:1px solid var(--cm-line);}
+.cm-tw th,.cm-tw td{text-align:left; padding:16px 20px; border-bottom:1px solid var(--cm-line);}
 .cm-tw tr:last-child th,.cm-tw tr:last-child td{border-bottom:0;}
 .cm-tw thead th{font-family:var(--cm-body); font-size:12.5px; color:var(--cm-mute);
   font-weight:600; letter-spacing:0; background:var(--cm-surface2);
@@ -107,11 +107,12 @@
 .cm-tw td.cm-num{font-variant-numeric:tabular-nums;}
 @media (max-width:540px){.cm-tw th[scope=row]{width:7.5em; font-size:13px;}}
 
-.cm-grid{display:grid; gap:1px; background:var(--cm-line); margin-top:20px;
-  border:1px solid var(--cm-line); border-radius:var(--cm-r); overflow:hidden;}
+/* 칸은 떼어 놓는다. 1px 선으로 맞붙이면 한 덩어리 표처럼 굳어 보인다 */
+.cm-grid{display:grid; gap:16px; margin-top:22px;}
 .cm-g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr));}
 .cm-g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr));}
-.cm-cell{background:var(--cm-surface); padding:22px 22px 24px;}
+.cm-cell{background:var(--cm-surface); padding:26px 24px 28px;
+  border:1px solid var(--cm-line); border-radius:var(--cm-r); box-shadow:var(--cm-lift);}
 .cm-n{font-family:var(--cm-body); font-weight:600; font-size:12.5px; color:var(--cm-acc);
   display:block; margin-bottom:9px;}
 .cm-cell p{margin:0; font-size:14.5px; color:var(--cm-mute); line-height:1.75;}
@@ -131,14 +132,14 @@
 .cm-items{margin-top:18px; display:grid; gap:9px;}
 .cm-item{background:var(--cm-surface2); border:1px solid var(--cm-line);
   border-left:3px solid var(--cm-gold); border-radius:var(--cm-r);
-  padding:13px 16px; font-size:14.5px; line-height:1.7;}
+  padding:16px 20px; font-size:14.5px; line-height:1.72;}
 .cm-item b{display:block; font-size:12.5px; color:var(--cm-acc);
   margin-bottom:4px; font-weight:600;}
 
 /* 번호가 뜻을 갖는 유일한 곳. 순서대로 밟는 절차다 */
-.cm-steps{counter-reset:cmstep; display:grid; gap:1px; background:var(--cm-line);
-  margin-top:20px; border:1px solid var(--cm-line); border-radius:var(--cm-r); overflow:hidden;}
-.cm-step{background:var(--cm-surface); padding:16px 22px; display:flex; gap:14px; align-items:baseline;}
+.cm-steps{counter-reset:cmstep; display:grid; gap:10px; margin-top:22px;}
+.cm-step{background:var(--cm-surface); padding:18px 24px; display:flex; gap:14px;
+  align-items:baseline; border:1px solid var(--cm-line); border-radius:var(--cm-r2);}
 .cm-step::before{counter-increment:cmstep; content:counter(cmstep,decimal-leading-zero);
   font-size:12.5px; font-weight:600; font-variant-numeric:tabular-nums;
   color:var(--cm-acc); flex:0 0 auto;}
@@ -168,7 +169,7 @@
 .cm-pack li.cm-on::before{background:var(--cm-gold); border-color:var(--cm-gold);}
 
 .cm-note{background:var(--cm-surface2); border:1px solid var(--cm-line);
-  border-radius:var(--cm-r); padding:18px 20px; margin-top:22px;}
+  border-radius:var(--cm-r); padding:22px 24px; margin-top:24px;}
 .cm-note p{margin:0; font-size:14px; color:var(--cm-mute); line-height:1.8;}
 .cm-note p + p{margin-top:9px;}
 
