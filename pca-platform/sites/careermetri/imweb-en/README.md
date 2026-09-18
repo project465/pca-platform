@@ -55,7 +55,38 @@ the top code widget on every page. Every page, or the ones you miss render bare.
 Build the menu with imweb's menu settings, not in code, so the mobile
 hamburger and the current-page marker attach themselves.
 
-## 3. What moves, and what turns it off
+## 3. What makes it read as engineering
+
+Four things, and none of them is a picture.
+
+**A second typeface, for data only.** IBM Plex Mono carries every figure and
+every label that *names a measurement* — axis names, scale heads, item codes,
+table heads, the step markers. Prose never uses it. An engineering document
+sets its text in one face and its data in another; doing the same here is what
+separates a specification from a brochure, and it costs one stylesheet.
+
+**Graph paper, not a dot field.** The opening band is ruled with a fine grid
+and a heavier line every fifth, which is the paper this work is drawn on. Four
+CSS gradients, no image to upload and none to go missing.
+
+**The plot is ruled like a plot.** Ticks at 25 / 50 / 75 / 100 with figures
+against the twelve o'clock spoke, a heavier outer ring, and every value printed
+under its axis name. A radar without a readable scale is a shape; with one it
+is a chart.
+
+**Everything is drawn against something.** The dashed outline on the radar and
+the upright mark on each bar are the mean of 500 simulated sittings, read from
+the database with the rest. It is not a student norm and we say so, but "62.5"
+with nothing beside it asks the reader to invent a baseline, and they will
+invent a flattering one.
+
+Title-block rules (a short heavy run at the left of each sub-heading), a
+progress hairline at the top of the page, and a print stylesheet finish it.
+**The print rules matter more than they look:** this site's reader prints it
+and hands it to a head of department, so backgrounds come off, both radars and
+both value lists un-hide, and cards stop breaking across pages.
+
+## 4. What moves, and what turns it off
 
 All of it is in the head code. The widgets carry no script.
 
@@ -66,6 +97,8 @@ All of it is in the head code. The widgets carry no script.
 | Dot lattice and the cool light behind the headline | `01-hero`, via `cm-open` | Nothing: they are static gradients |
 | One map pin beats, and the ten arrive in order | `16-markets` | Reduced motion |
 | The radar opens from its centre, and again on each profile switch | `17-measure` | Reduced motion |
+| Pointing at an axis raises it in the plot and in the figures at once | `17-measure` | A device with no pointer; the figures are listed either way |
+| A hairline at the top fills as the page goes past | Every page | Nothing; it is two pixels |
 | The ten bars grow in place, one after another | `17-measure` | Reduced motion |
 | Cards lift under the pointer | Any `cm-cell` | A device with no hover |
 | The two sliders | See below | Reduced motion, for the automatic advance |
@@ -77,7 +110,7 @@ not move. So the script adds `cm-anim` to the document only once it has an
 observer in hand, and the numbers written into the HTML are the real ones and
 are always put back when the count finishes.
 
-## 4. The sliders
+## 5. The sliders
 
 Two, and the wiring for both is in the head code; the widgets carry markup
 only.
@@ -105,7 +138,7 @@ duration of a drag and restored on release, because mandatory snap pulls the
 position back after every write and a drag made of small steps would never
 leave its slide.
 
-## 5. The charts on the home page
+## 6. The charts on the home page
 
 `17-measure` carries the two radars and the ranked bars. **Every figure in it
 is the scoring engine's real output for one simulated sitting** (`attempt 8377`,
@@ -117,8 +150,9 @@ charts agree: Research & Education 77.0, Independent 62.5.
 **The file is generated. Do not edit it by hand.**
 
 ```
-npm run metri:radar          # the demonstration sitting the site uses
+npm run metri:radar          # the demonstration sitting, both languages
 npm run metri:radar -- 1234  # some other attempt
+npm run metri:head           # copy this file's Head Code body to the Korean site
 ```
 
 The `points` attribute is geometry computed from the figures, so editing a
@@ -128,6 +162,12 @@ widget, which is why there is nowhere for the shape and the numbers to drift
 apart. Change the attempt and you have to re-capture `img-en/report.png` from
 the same one, or the screenshot and the charts stop agreeing.
 
+**Two series, and one of them is the point.** The sitting is the accent; the
+comparison mean is a neutral dashed outline with no fill. That is the emphasis
+form, not a categorical palette, so no hue has to be told apart from another:
+the legend names both, the dash separates them in print and for a reader who
+cannot distinguish the colours, and every figure is listed beside the plot.
+
 **Six and eight axes are a shape; ten areas are magnitudes.** The radar is the
 form the report itself draws and the one a coordinator recognises across a
 cohort. Ten ranked values are a different job, and a ten-spoke radar is a
@@ -136,7 +176,7 @@ carries text: it is 2.4:1 on white and unreadable as type, so every label and
 figure stays in the text tokens. The figures are listed beside the shape, which
 is also the table view, so nothing depends on reading an angle.
 
-## 6. Images
+## 7. Images
 
 **This site has its own images, in `../img-en/`.** They are not the Korean
 site's files. Both were captured from a build that serves English only, so
@@ -164,7 +204,7 @@ renders in Korean. A Korean screen on this site cannot be read by the person
 it is for, so `08-cohort` carries the structure as a table and no picture.
 When that screen is translated, capture it and add the plate back.
 
-## 7. Do not write these in code
+## 8. Do not write these in code
 
 **The contact form.** `14-contact` ends at the heading and its paragraph. A
 form written in code has nowhere to send to, so put an imweb **form widget**
@@ -181,7 +221,7 @@ number only.
 **Button targets.** `01-hero` points at `/contact` and `/reports`. Change
 them to the real page addresses.
 
-## 8. The world map
+## 9. The world map
 
 `16-markets` carries an inline SVG world map. The dots are Natural Earth 110m land
 geometry sampled every 3.2 degrees, so the coastlines are real rather than traced by
@@ -193,7 +233,7 @@ To move a pin, change its `cx`/`cy` in the widget. The projection is equirectang
 over latitudes 80 to -56, so `x = (lon + 180) / 360 * 1000` and
 `y = (80 - lat) / 136 * 470`.
 
-## 9. This site carries no prices
+## 10. This site carries no prices
 
 There is no pricing page, no checkout and no individual purchase. The site explains
 what the assessment is and takes enquiries; a figure is discussed against a country,
@@ -214,7 +254,7 @@ Six widgets were removed on the way to that, and the reasons are worth keeping:
 One fact from the removed widgets was kept, because it answers a real question:
 students never see a payment screen. It now sits in `03-output` and in the FAQ.
 
-## 10. What was cut, and why
+## 11. What was cut, and why
 
 A second pass took the site down from eighteen widgets to seventeen and cut
 about a fifth of the words. Nothing true was dropped; what went was said
@@ -230,7 +270,7 @@ twice or said nothing.
 | The five retention items quoted verbatim in `09-localisation` | The module is worth naming; its questionnaire is not marketing copy |
 | Two hero rows, the second market table's split rows, the duplicated "no country site is open yet" note | Said elsewhere, or said twice |
 
-## 11. What is still open
+## 12. What is still open
 
 - The domain. `careermetri.com` is the reserved name in
   `marketing/src/content/global.ts`, not a live address

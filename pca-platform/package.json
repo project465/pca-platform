@@ -34,7 +34,8 @@
     "metri:ops": "tsx scripts/metri/ops.ts",
     "metri:majors": "tsx scripts/metri/seed-majors.ts",
     "metri:survey": "tsx scripts/metri/survey-check.ts",
-    "metri:radar": "tsx scripts/metri/make-radar.ts"
+    "metri:radar": "tsx scripts/metri/make-radar.ts",
+    "metri:head": "node scripts/metri/sync-head.mjs"
   },
   "dependencies": {
     "@types/nodemailer": "^8.0.1",

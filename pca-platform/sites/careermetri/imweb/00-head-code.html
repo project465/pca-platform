@@ -23,6 +23,11 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap">
+<!-- A second face, for figures and for the labels that name a measurement.
+     An engineering document sets its prose in one face and its data in
+     another; doing the same here is what separates a specification from a
+     brochure, and it costs one stylesheet. Prose never uses it. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
 :root{
   --cm-navy:#0F1B2D; --cm-gold:#C9A227;
@@ -40,7 +45,8 @@
      by switching to a second font. */
   --cm-body:"Pretendard Variable",Pretendard,"Noto Sans KR",-apple-system,
     BlinkMacSystemFont,system-ui,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
-  --cm-disp:var(--cm-body); --cm-mono:var(--cm-body);
+  --cm-disp:var(--cm-body);
+  --cm-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
 }
 .cm.cm-tint{--cm-bg:#F2F4F7; --cm-surface:#F2F4F7; --cm-surface2:#FFFFFF;}
 .cm.cm-dark{
@@ -86,10 +92,24 @@
   text-wrap:balance;
 }
 .cm-h3{font-family:var(--cm-disp); font-weight:700; font-size:16px; margin:0 0 7px; color:var(--cm-text);}
+/* A label that names a measurement wears the technical face; a label that
+   introduces prose does not. The rule is what the label is for, not where
+   it sits. */
+/* 소제목의 괘선은 도면 표제란의 모서리처럼 왼쪽 한 토막만 굵다. 절 전체를
+   가로지르는 같은 굵기의 선을 반복하는 것보다 시트 한 장처럼 읽힌다. */
 .cm-sublabel{
-  font-family:var(--cm-body); font-weight:600; font-size:15px; color:var(--cm-text);
+  font-family:var(--cm-mono); font-weight:500; font-size:12.5px; letter-spacing:.04em;
+  text-transform:uppercase; color:var(--cm-text);
   margin:48px 0 14px; padding-top:16px; border-top:1px solid var(--cm-line);
+  position:relative;
 }
+.cm-sublabel::before{content:""; position:absolute; left:0; top:-1.5px;
+  width:54px; border-top:3px solid var(--cm-gold);}
+.cm-n, .cm-reach, .cm-tw thead th, .cm-tw th[scope=row], .cm-try > p,
+.cm-tstep em, .cm-tag{font-family:var(--cm-mono); font-weight:500;}
+.cm-kpi b, .cm-tile b, .cm-price, .cm-vlist b, .cm-bar b,
+.cm-tw td.cm-num, .cm-spec dt{font-family:var(--cm-mono);}
+.cm-kpi b, .cm-tile b{font-weight:600; letter-spacing:-.02em;}
 .cm p{margin:0 0 15px;}
 .cm-sub{color:var(--cm-mute);}
 .cm-small{font-size:13.5px; color:var(--cm-mute); line-height:1.75;}
@@ -281,13 +301,20 @@
    with gradients rather than an image, so they cost nothing to load and stay
    sharp at any width. The band has to be positioned for them to sit inside. */
 .cm-open{position:relative; overflow:hidden; isolation:isolate;}
+/* Graph paper rather than a dot field: a fine grid with every fifth line
+   heavier, which is the ruling of the paper this kind of work is drawn on.
+   Four gradients, no image, sharp at any width. */
 .cm-open::before{
-  content:""; position:absolute; inset:0; z-index:-2;
-  background-image:radial-gradient(currentColor .9px, transparent 1px);
-  background-size:24px 24px; color:var(--cm-mute);
-  opacity:.26;
-  -webkit-mask-image:linear-gradient(170deg,#000 0%,rgba(0,0,0,.45) 46%,transparent 86%);
-  mask-image:linear-gradient(170deg,#000 0%,rgba(0,0,0,.45) 46%,transparent 86%);
+  content:""; position:absolute; inset:0; z-index:-2; color:var(--cm-mute);
+  background-image:
+    linear-gradient(to right, currentColor 1px, transparent 1px),
+    linear-gradient(to bottom, currentColor 1px, transparent 1px),
+    linear-gradient(to right, currentColor 1px, transparent 1px),
+    linear-gradient(to bottom, currentColor 1px, transparent 1px);
+  background-size:120px 120px, 120px 120px, 24px 24px, 24px 24px;
+  opacity:.17;
+  -webkit-mask-image:linear-gradient(168deg,#000 0%,rgba(0,0,0,.4) 48%,transparent 88%);
+  mask-image:linear-gradient(168deg,#000 0%,rgba(0,0,0,.4) 48%,transparent 88%);
 }
 /* A cool lift rather than a gold one. Gold spread thin over navy goes brown
    and reads as a stain on the photograph; the metal is worth more kept for
@@ -354,8 +381,8 @@
   box-shadow:0 1px 2px rgba(15,27,45,.08);}
 .cm-tabs button:hover[aria-pressed="false"]{color:var(--cm-text);}
 
-.cm-chart{display:grid; gap:22px 40px; align-items:center; margin-top:22px;}
-@media (min-width:820px){.cm-chart{grid-template-columns:minmax(0,7fr) minmax(0,5fr);}}
+.cm-chart{display:grid; gap:22px 44px; align-items:start; margin-top:22px;}
+@media (min-width:860px){.cm-chart{grid-template-columns:minmax(0,8fr) minmax(0,4fr);}}
 .cm-radarwrap{min-width:0;}
 .cm-radar{display:block; width:100%; height:auto; overflow:visible;}
 /* The hidden attribute is an HTML one: the browser's rule for it is namespaced
@@ -364,20 +391,65 @@
 .cm-radar[hidden]{display:none;}
 .cm-radar .cm-rg polygon{fill:none; stroke:var(--cm-line); stroke-width:1;}
 .cm-radar .cm-rg-mid{stroke:var(--cm-rule);}
+.cm-radar .cm-rg-out{stroke:var(--cm-rule); stroke-width:1.4;}
 .cm-radar .cm-sp line{stroke:var(--cm-line); stroke-width:1;}
-.cm-radar .cm-poly{fill:rgba(201,162,39,.16); stroke:var(--cm-gold); stroke-width:2;
+/* Tick marks across the spokes, the way a plot is ruled rather than a
+   background being drawn behind it. */
+.cm-radar .cm-tick line{stroke:var(--cm-rule); stroke-width:1;}
+.cm-radar .cm-tick text{font-family:var(--cm-mono); font-size:10.5px; fill:var(--cm-mute);}
+/* Two series, and one of them is the point. The cohort is context, so it is
+   a neutral dashed outline with no fill; the student is the accent. Identity
+   never rests on colour alone: the legend names both, the figures are listed
+   beside the plot, and the dash pattern separates them in print and for a
+   reader who cannot tell the hues apart. */
+.cm-radar .cm-mean{fill:none; stroke:var(--cm-rule); stroke-width:1.6;
+  stroke-dasharray:5 4; stroke-linejoin:round;}
+.cm-radar .cm-poly{fill:rgba(201,162,39,.18); stroke:var(--cm-gold); stroke-width:2.4;
   stroke-linejoin:round;}
-.cm-radar .cm-vtx circle{fill:var(--cm-gold); stroke:var(--cm-surface); stroke-width:2;}
-.cm-radar .cm-lab text{font-family:var(--cm-body); font-size:12.5px; font-weight:500;
-  fill:var(--cm-mute);}
+.cm-radar .cm-vtx circle{fill:var(--cm-gold); stroke:var(--cm-surface); stroke-width:2;
+  transition:r .18s ease;}
+.cm-radar .cm-lab text{font-family:var(--cm-body); font-size:13px; font-weight:500;
+  fill:var(--cm-text);}
+.cm-radar .cm-lab tspan{font-family:var(--cm-mono); font-size:12px; fill:var(--cm-mute);}
+/* Pointing at one axis raises it in both places at once. Hovering the plot
+   marks the row, hovering the row marks the plot: the two are one object. */
+.cm-radar .cm-hit{fill:transparent; cursor:default;}
+.cm-radar [data-cm-ax].cm-hot circle{r:5.6;}
+.cm-radar [data-cm-ax].cm-hot text{fill:var(--cm-acc); font-weight:700;}
+.cm-radar [data-cm-ax].cm-hot tspan{fill:var(--cm-acc);}
+.cm-vlist > div{transition:background .18s ease;}
+.cm-vlist > div.cm-hot{background:rgba(201,162,39,.11);
+  box-shadow:inset 3px 0 0 var(--cm-gold);}
+.cm-vlist > div{padding-left:9px; margin-left:-9px; border-radius:0 6px 6px 0;}
+.cm-vlist .cm-mean{font-family:var(--cm-mono); font-size:12px; color:var(--cm-mute);
+  min-width:3.4em; text-align:right;}
+.cm-vhead{display:flex; align-items:baseline; gap:14px; padding-bottom:9px;
+  font-family:var(--cm-mono); font-size:10.5px; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--cm-mute);}
+.cm-vhead span:first-child{flex:1 1 auto;}
+.cm-vhead b{font-weight:500; min-width:3.4em; text-align:right;}
+/* Legend. Two series, so it is always present. */
+.cm-key{display:flex; flex-wrap:wrap; gap:8px 24px; margin:16px 0 0; padding:0;
+  list-style:none;}
+.cm-key li{font-family:var(--cm-mono); font-size:12px; color:var(--cm-mute);
+  display:flex; align-items:center; gap:9px;}
+.cm-key i{display:block; width:22px; height:0; border-top:2.4px solid var(--cm-gold);}
+.cm-key .cm-k-mean i{border-top:1.6px dashed var(--cm-rule);}
 /* The shape opens from the centre once, and only when the script is there to
    close it first. With no script the polygon is already drawn correctly. */
+/* The plot opens from its own centre, which each chart states, so one rule
+   serves the big radar and the small pair alike. */
 .cm-anim .cm-radar .cm-poly,
+.cm-anim .cm-radar .cm-mean,
 .cm-anim .cm-radar .cm-vtx{
-  transform-box:view-box; transform-origin:220px 176px; transform:scale(.02); opacity:0;
-  transition:transform .85s cubic-bezier(.18,.72,.26,1), opacity .5s ease;
+  transform-box:view-box; transform-origin:var(--cm-o,50% 50%);
+  transform:scale(.02); opacity:0;
+  transition:transform .9s cubic-bezier(.18,.72,.26,1), opacity .55s ease;
 }
+.cm-anim .cm-radar .cm-mean{transition-delay:.06s;}
+.cm-anim .cm-radar .cm-vtx{transition-delay:.16s;}
 .cm-anim .cm-radar.cm-drawn .cm-poly,
+.cm-anim .cm-radar.cm-drawn .cm-mean,
 .cm-anim .cm-radar.cm-drawn .cm-vtx{transform:none; opacity:1;}
 
 .cm-vals{min-width:0;}
@@ -392,19 +464,29 @@
 .cm-bars{margin-top:18px; border-top:1px solid var(--cm-line);}
 .cm-bar{display:grid; grid-template-columns:minmax(0,15em) minmax(0,1fr) 3em;
   align-items:center; gap:16px; padding:11px 0; border-bottom:1px solid var(--cm-line);}
-.cm-bar span{font-size:14px; color:var(--cm-text); min-width:0;}
-.cm-bar i{display:block; height:9px; width:var(--w); border-radius:999px;
-  background:var(--cm-gold); opacity:.85;}
+.cm-bar > span{font-size:14px; color:var(--cm-text); min-width:0;}
+/* The bar runs in a track, so the comparison mark can be placed against the
+   full scale rather than against the bar's own end. */
+.cm-track{position:relative; height:10px;}
+.cm-bar i{display:block; height:10px; width:var(--w); border-radius:999px;
+  background:var(--cm-gold); opacity:.88;}
+.cm-bar .cm-mk{position:absolute; top:-5px; bottom:-5px; left:var(--m); width:2px;
+  background:var(--cm-navy); border-radius:1px;
+  /* 막대 위에 얹히는 구간이 있어 흰 테를 두른다. 회색이면 금색 위에서
+     사라지고, 사라지는 기준선은 없는 것과 같다. */
+  box-shadow:0 0 0 1.5px var(--cm-surface);}
 .cm-bar b{font-weight:600; font-size:14.5px; text-align:right;
   font-variant-numeric:tabular-nums; color:var(--cm-mute);}
 @media (max-width:620px){
   .cm-bar{grid-template-columns:minmax(0,1fr) 3em; gap:4px 12px;}
-  .cm-bar i{grid-column:1 / -1;}
+  .cm-bar .cm-track{grid-column:1 / -1;}
 }
 /* The bars grow in place, one after another, from a zero that the script
    sets. In the stylesheet alone they would be zero for a reader with no
    script and the section would look empty. */
 .cm-anim .cm-bars .cm-bar i{width:0; transition:width .78s cubic-bezier(.2,.75,.3,1);}
+.cm-anim .cm-bars .cm-bar .cm-mk{opacity:0; transition:opacity .4s ease .5s;}
+.cm-anim .cm-bars.cm-in-view .cm-bar .cm-mk{opacity:1;}
 .cm-anim .cm-bars.cm-in-view .cm-bar i{width:var(--w);}
 .cm-bar:nth-child(1) i{transition-delay:.02s}  .cm-bar:nth-child(2) i{transition-delay:.07s}
 .cm-bar:nth-child(3) i{transition-delay:.12s}  .cm-bar:nth-child(4) i{transition-delay:.17s}
@@ -563,6 +645,44 @@
 .cm-vlist.cm-tight b{font-size:14px;}
 .cm-cell .cm-vlist{border-top:1px solid var(--cm-line);}
 
+/* ── A hairline across the top that fills as the page goes past. It sits
+   under whatever the imweb theme fixes up there, which is why it is two
+   pixels and no more. */
+.cm-prog{position:fixed; left:0; top:0; right:0; height:2px; z-index:9500;
+  background:transparent; pointer-events:none;}
+.cm-prog i{display:block; height:100%; width:0; background:var(--cm-gold);
+  transition:width .12s linear;}
+
+/* ── A rule that reads as a drawing sheet's edge rather than a divider:
+   a hairline with a short heavier run at its left, like a title block. */
+.cm-rule{border:0; height:0; margin:0;
+  border-top:1px solid var(--cm-line); position:relative;}
+.cm-rule::before{content:""; position:absolute; left:0; top:-1.5px;
+  width:54px; border-top:3px solid var(--cm-gold);}
+
+/* ── Printed. The audience for this site reads it and hands it to a head of
+   department, and some of them hand over paper. Backgrounds and the things
+   that only work with a pointer come off; nothing that carries meaning does. */
+@media print{
+  .cm-dock, .cm-prog, .cm-sl-head, .cm-sl-dots, .cm-sl-rail, .cm-tabs{display:none!important;}
+  .cm{padding:18px 0!important; background:#fff!important; color:#000!important;
+    background-image:none!important;}
+  .cm.cm-dark, .cm.cm-tint{--cm-bg:#fff; --cm-surface:#fff; --cm-surface2:#fff;
+    --cm-text:#000; --cm-mute:#333; --cm-line:#bbb; --cm-rule:#888; --cm-acc:#000;}
+  .cm-cta-band{background:#fff!important; border:1px solid #bbb;}
+  .cm-cta-band h2, .cm-cta-band p{color:#000!important;}
+  .cm-sl-track{display:block!important; overflow:visible!important;}
+  .cm-slide{break-inside:avoid; page-break-inside:avoid; margin-bottom:10px;}
+  .cm-radar[hidden]{display:block!important;}
+  .cm-vlist[hidden]{display:block!important;}
+  .cm-try-out[hidden]{display:block!important;}
+  .cm-anim .cm-rise{opacity:1!important; transform:none!important;}
+  .cm-anim .cm-radar .cm-poly, .cm-anim .cm-radar .cm-mean,
+  .cm-anim .cm-radar .cm-vtx{transform:none!important; opacity:1!important;}
+  .cm-anim .cm-bars .cm-bar i{width:var(--w)!important;}
+  .cm-cell, .cm-tile, .cm-tw, .cm-note, .cm-layer{break-inside:avoid; page-break-inside:avoid;}
+}
+
 /* ── World map. The dots are Natural Earth 110m land geometry sampled every
    3.2 degrees, so the coastlines are real. Antarctica is dropped, which is the
    usual convention and keeps the bottom from becoming a band. */
@@ -607,6 +727,7 @@
   .cm-anim .cm-map-pins .cm-pin{opacity:1!important;}
   .cm-anim .cm-radar .cm-poly, .cm-anim .cm-radar .cm-vtx{transform:none!important; opacity:1!important;}
   .cm-anim .cm-bars .cm-bar i{width:var(--w)!important;}
+  .cm-anim .cm-bars .cm-bar .cm-mk{opacity:1!important;}
   .cm-dock{transition:none!important;}
 }
 </style>
@@ -847,7 +968,47 @@
     tick();
   }
 
+  /* The rail across the top. Built here rather than pasted as a widget: it
+     belongs to the page, not to any one section, and one per document is the
+     only correct number. */
+  function rail() {
+    if (document.querySelector(".cm-prog")) return;
+    if (!document.querySelector(".cm")) return;
+    var bar = document.createElement("div");
+    bar.className = "cm-prog";
+    bar.setAttribute("aria-hidden", "true");
+    var fill = document.createElement("i");
+    bar.appendChild(fill);
+    document.body.appendChild(bar);
+    var tick = function () {
+      var sc = document.scrollingElement || document.documentElement;
+      var room = sc.scrollHeight - window.innerHeight;
+      fill.style.width = (room > 40 ? Math.min(1, sc.scrollTop / room) * 100 : 0) + "%";
+    };
+    window.addEventListener("scroll", tick, { passive: true });
+    window.addEventListener("resize", tick);
+    tick();
+  }
+
+  /* Pointing at one axis raises it in the plot and in the list at once. */
+  function wireAxes(chart) {
+    if (chart.dataset.cmWired) return;
+    chart.dataset.cmWired = "1";
+    var mark = function (i, on) {
+      chart.querySelectorAll('[data-cm-ax="' + i + '"]').forEach(function (el) {
+        el.classList.toggle("cm-hot", on);
+      });
+    };
+    chart.querySelectorAll("[data-cm-ax]").forEach(function (el) {
+      var i = el.dataset.cmAx;
+      el.addEventListener("pointerenter", function () { mark(i, true); });
+      el.addEventListener("pointerleave", function () { mark(i, false); });
+    });
+  }
+
   function scan() {
+    rail();
+    document.querySelectorAll(".cm-chart").forEach(wireAxes);
     document.querySelectorAll(".cm-tabs").forEach(wire);
     document.querySelectorAll(".cm-try").forEach(wireTry);
     document.querySelectorAll(".cm-dock").forEach(wireDock);
