@@ -629,6 +629,32 @@ export const global: SiteContent = {
         capBody: "What to watch for, and a 30-day checklist.",
         capArrow: "Down to what to do today",
       },
+      {
+        no: "09",
+        nav: "Regional careers",
+        title: "Section 9. Regional careers and settling",
+        blocks: [
+          {
+            sub: "SUBSECTION 9-1",
+            title: "Employers around the campus that match this result",
+            bullets: [
+              "Employers and institutions in the commissioning region are compared against the leading job areas and the three strongest work styles, then ordered by fit.",
+              "Each row carries the reason it matched, so a student can tell whether the fit came from the work itself or from how the organisation works.",
+            ],
+          },
+          {
+            sub: "SUBSECTION 9-2",
+            title: "What this section is not",
+            bullets: [
+              "Information is provided up to the point of ordering by fit. Applying on a student's behalf, referrals and recommendation letters are outside what is offered.",
+              "This section runs only where the regional module has been localised for that country. Elsewhere the report ends at section 8.",
+            ],
+          },
+        ],
+        capTitle: "Regional careers and settling",
+        capBody: "Employers and institutions around the campus, connected to the leading job areas and ordered by fit.",
+        capArrow: "Carries the result through to a route into work in the region",
+      },
     ],
   },
 

@@ -43,14 +43,14 @@ the top code widget on every page. Every page, or the ones you miss render bare.
 
 | Page | Widgets, top to bottom |
 |---|---|
-| Home | `01-hero` · `02-who` · `03-output` |
-| The assessment | `04-instrument` · `05-scoring` |
+| Home | `01-hero` · `16-markets` · `17-channels` · `02-who` · `03-output` |
+| The assessment | `04-instrument` · `18-why` · `05-scoring` |
 | Reports | `06-report` · `07-screens` · `08-cohort` |
 | Localisation | `09-localisation` |
 | Partnership | `10-partnership` |
-| Pricing | `11-pricing` |
-| About | `12-evidence` · `13-coverage` |
-| Contact | `14-contact` + an imweb form widget below it |
+| Pricing | `19-gap` · `11-pricing` · `21-program` |
+| About | `20-choose` · `12-evidence` · `13-coverage` · `22-about` |
+| Contact | `23-faq` · `14-contact` + an imweb form widget below it |
 | Bottom of every page | `15-footer` |
 
 Build the menu with imweb's menu settings, not in code, so the mobile
@@ -86,7 +86,19 @@ number only.
 **Button targets.** `01-hero` points at `/contact` and `/reports`. Change
 them to the real page addresses.
 
-## 6. What is still open
+## 6. The world map
+
+`16-markets` carries an inline SVG world map. The dots are Natural Earth 110m land
+geometry sampled every 3.2 degrees, so the coastlines are real rather than traced by
+hand; Antarctica is dropped, which is the usual convention. Ten markets are pinned in
+three states: development source, legal groundwork done, and named with a domain
+reserved. **Nothing is marked live, because nothing is.**
+
+To move a pin, change its `cx`/`cy` in the widget. The projection is equirectangular
+over latitudes 80 to -56, so `x = (lon + 180) / 360 * 1000` and
+`y = (80 - lat) / 136 * 470`.
+
+## 7. What is still open
 
 - The domain. `careermetri.com` is the reserved name in
   `marketing/src/content/global.ts`, not a live address

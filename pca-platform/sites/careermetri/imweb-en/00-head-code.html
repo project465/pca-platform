@@ -215,6 +215,33 @@
 .cm-sl-dot{width:22px; height:4px; border-radius:2px; background:var(--cm-line);
   border:0; padding:0; cursor:pointer;}
 .cm-sl-dot[aria-current="true"]{background:var(--cm-gold);}
+
+/* ── World map. The dots are Natural Earth 110m land geometry sampled every
+   3.2 degrees, so the coastlines are real. Antarctica is dropped, which is the
+   usual convention and keeps the bottom from becoming a band. */
+.cm-mapwrap{margin-top:26px;}
+.cm-map{display:block; width:100%; height:auto; overflow:visible;}
+.cm-map-land use{fill:var(--cm-rule); opacity:.62;}
+.cm-pin text{font-family:var(--cm-body); font-size:15px; font-weight:600;
+  fill:var(--cm-text); paint-order:stroke; dominant-baseline:middle;}
+.cm-pin .cm-pin-dot{fill:var(--cm-mute);}
+.cm-pin .cm-pin-halo{fill:none;}
+.cm-pin-legal .cm-pin-dot{fill:var(--cm-text);}
+.cm-pin-src .cm-pin-dot{fill:var(--cm-gold);}
+.cm-pin-src .cm-pin-halo{fill:var(--cm-gold); opacity:.18;}
+.cm-pin-src text{fill:var(--cm-text);}
+.cm-legend{list-style:none; margin:18px 0 0; padding:0; display:flex;
+  flex-wrap:wrap; gap:10px 26px;}
+.cm-legend li{font-size:13.5px; color:var(--cm-mute); position:relative; padding-left:20px;}
+.cm-legend li::before{content:""; position:absolute; left:0; top:7px;
+  width:10px; height:10px; border-radius:50%; background:var(--cm-mute);}
+.cm-legend .cm-lg-src::before{background:var(--cm-gold);}
+.cm-legend .cm-lg-legal::before{background:var(--cm-text);}
+@media (max-width:760px){
+  .cm-map{min-width:680px;}
+  .cm-mapwrap{overflow-x:auto;}
+  .cm-pin text{font-size:19px;}
+}
 @media (prefers-reduced-motion:reduce){
   .cm *{transition:none!important; animation:none!important;}
   .cm-sl-track{scroll-behavior:auto;}
