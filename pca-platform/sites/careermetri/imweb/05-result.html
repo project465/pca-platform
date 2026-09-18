@@ -1,28 +1,66 @@
 <!-- 결과 예시 페이지 · IMG_REPORT 를 바꿉니다 -->
 <div class="cm">
   <div class="cm-in">
-    <p class="cm-eyebrow">개인 결과 리포트</p>
-    <h2 class="cm-h2">같은 학과인데 결과가 갈립니다</h2>
-    <div class="cm-col"><p>아래는 같은 기계공학과 3학년 두 명입니다. 필요한 후속
-      프로그램도 갈립니다.</p></div>
-    <div class="cm-grid cm-g2">
-      <div class="cm-cell"><span class="cm-n">학생 A</span>
-        <h3 class="cm-h3">설계 및 개발 · 자동차 및 항공</h3>
-        <p>가장 앞선 직무 : 기계설계 · 자동차·전동화 R&amp;D · 항공우주·방산 R&amp;D<br>
-          적합도 88.0 · 구간 ±3.0점<br>
-          우선 지원 : 설계 직무특강, 구조해석 프로젝트</p></div>
-      <div class="cm-cell"><span class="cm-n">학생 B</span>
-        <h3 class="cm-h3">IT융합 및 데이터 분석</h3>
-        <p>가장 앞선 직무 : 로봇·자동화 엔지니어<br>
-          적합도 88.0 · 구간 ±3.0점<br>
-          우선 지원 : 제어·자동화 현직자 멘토링</p></div>
+    <h2 class="cm-h2">개인 결과 리포트</h2>
+    <div class="cm-col"><p>8개 섹션으로 구성되며 PDF 로 약 70쪽 분량입니다. 진단 결과부터
+      직무 방향, 준비 방법, 실행계획까지 한 권에 담았습니다.</p></div>
+    <div class="cm-sl">
+      <div class="cm-sl-head">
+        <p>옆으로 넘겨 여덟 섹션을 보십니다</p>
+        <button class="cm-sl-btn" type="button" data-cm-prev aria-label="이전 섹션">&#8592;</button>
+        <button class="cm-sl-btn" type="button" data-cm-next aria-label="다음 섹션">&#8594;</button>
+      </div>
+      <div class="cm-sl-track" aria-label="개인 결과 리포트 여덟 섹션">
+        <div class="cm-slide cm-lead"><span class="cm-n">섹션 01</span>
+          <h3>핵심 진단 요약</h3><p>직무영역과 업무성향, 취업과 창업 적합도를 한 장에 모읍니다.</p></div>
+        <div class="cm-slide"><span class="cm-n">섹션 02</span>
+          <h3>강점 프로파일</h3><p>응답에서 뚜렷하게 올라온 대표 강점 세 가지를 짚습니다.</p></div>
+        <div class="cm-slide"><span class="cm-n">섹션 03</span>
+          <h3>실제 업무 장면</h3><p>입사 후 맡게 되는 업무 시나리오 세 개를 장면으로 씁니다.</p></div>
+        <div class="cm-slide"><span class="cm-n">섹션 04</span>
+          <h3>직무·진로 방향</h3><p>먼저 탐색할 직무를 묶음으로 지목하고 이유를 적습니다.</p></div>
+        <div class="cm-slide"><span class="cm-n">섹션 05</span>
+          <h3>포트폴리오 전략</h3><p>그 직무에 맞는 프로젝트 예시 다섯 개를 냅니다.</p></div>
+        <div class="cm-slide"><span class="cm-n">섹션 06</span>
+          <h3>자기소개서·면접</h3><p>면접 예상 질문 열 개와 답할 방향을 함께 줍니다.</p></div>
+        <div class="cm-slide"><span class="cm-n">섹션 07</span>
+          <h3>창업 준비 전략</h3><p>전공을 살린 창업 아이템 다섯 개를 검토합니다.</p></div>
+        <div class="cm-slide"><span class="cm-n">섹션 08</span>
+          <h3>다음 단계</h3><p>앞으로 30일 동안 할 일을 체크리스트로 끊습니다.</p></div>
+      </div>
+      <div class="cm-sl-dots" aria-hidden="true"></div>
+    </div>
+    <p class="cm-small cm-col" style="margin-top:14px">업무 시나리오와 준비 결과물은 현직자
+      48명의 검토를 거쳐 실제 직무 현장을 반영했습니다.</p>
+
+    <p class="cm-sublabel">같은 학과 두 학생의 결과 비교</p>
+    <div class="cm-col"><p>같은 학과 같은 학년이라도 결과가 갈립니다. 아래는 기계공학과
+      3학년 두 명이고, 필요한 후속 프로그램도 서로 다릅니다.</p></div>
+    <div class="cm-tw">
+      <table>
+        <thead><tr><th>항목</th><th>학생 A</th><th>학생 B</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">1순위 영역</th>
+            <td>설계 및 개발 · 자동차 및 항공</td><td>IT융합 및 데이터 분석</td></tr>
+          <tr><th scope="row">업무성향</th>
+            <td>품질중시 · 도전 · 독립</td><td>협력 · 품질중시 · 안정</td></tr>
+          <tr><th scope="row">우선 탐색 직무</th>
+            <td>기계설계 · 자동차·전동화 R&amp;D · 항공우주·방산 R&amp;D</td>
+            <td>로봇·자동화 엔지니어</td></tr>
+          <tr><th scope="row">적합도</th>
+            <td class="cm-num">88.0 · 구간 ±3.0</td><td class="cm-num">88.0 · 구간 ±3.0</td></tr>
+          <tr><th scope="row">우선 지원</th>
+            <td>설계 직무특강 · 구조해석 프로젝트</td><td>제어·자동화 현직자 멘토링</td></tr>
+        </tbody>
+      </table>
     </div>
     <figure class="cm-plate">
       <img src="IMG_REPORT" alt="개인 결과 리포트 첫 화면. 종합 요약과 직무분야 10개 순위가 보인다.">
       <figcaption>개인 결과 리포트 · 종합 요약과 직무분야 10개</figcaption>
     </figure>
-    <p class="cm-small cm-col" style="margin-top:14px">화면의 숫자는 시연 응답으로 만든
-      예시이고 실제 학생 데이터가 아닙니다. 첫 학과를 운영한 뒤 그 회차의 익명 예시로
-      바꿉니다.</p>
+    <div class="cm-note cm-col">
+      <p>화면의 숫자는 시연 응답으로 만든 예시이고 실제 학생 데이터가 아닙니다. 첫 학과를
+        운영한 뒤 그 회차의 익명 예시로 바꿉니다.</p>
+    </div>
   </div>
 </div>
