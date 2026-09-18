@@ -1,30 +1,38 @@
-<!-- Reports · screens. Replace IMG_TEST and IMG_REPORT with your uploads. -->
+<!-- Home · the two screens, as a slider. It sits on the home page rather
+     than under Reports so that the product is visible before the reader has
+     to choose a menu, and so neither screen appears twice on the site.
+     Replace IMG_TEST and IMG_REPORT with the addresses imweb gives your
+     uploads. data-cm-auto is the dwell in milliseconds; delete the attribute
+     to leave it on the arrows alone. It stops under the pointer, while
+     anything inside has focus, and for a visitor who asked for reduced
+     motion. -->
 <div class="cm cm-tint">
   <div class="cm-in">
     <div class="cm-head">
     <h2 class="cm-h2">Screens</h2>
-    <div class="cm-col"><p>The sitting, and the report a student receives.</p></div>
+    <div class="cm-col"><p>The sitting a student works through, and the report
+    that comes back. Both captured in English from the mechanical engineering
+    instrument.</p></div>
     </div>
-    <div class="cm-sl">
+    <div class="cm-sl cm-sl-img" data-cm-auto="6500">
       <div class="cm-sl-head">
-        <p>Swipe through</p>
+        <p>Drag, swipe or use the arrows</p>
         <button class="cm-sl-btn" type="button" data-cm-prev aria-label="Previous screen">&#8592;</button>
         <button class="cm-sl-btn" type="button" data-cm-next aria-label="Next screen">&#8594;</button>
       </div>
       <div class="cm-sl-track" aria-label="Two screens">
         <div class="cm-slide"><figure>
-          <img src="IMG_TEST" alt="A sitting in progress: five-point items a page at a time.">
-          <figcaption>The sitting · answers save as they are made</figcaption>
+          <img src="IMG_TEST" alt="A sitting in progress: five-point items shown a page at a time.">
+          <figcaption>The sitting &middot; every answer saves as it is made, so a student can close the tab and come back</figcaption>
         </figure></div>
         <div class="cm-slide"><figure>
           <img src="IMG_REPORT" alt="Personal report: summary and the ten job areas ranked.">
-          <figcaption>Personal report · summary and the ten job areas</figcaption>
+          <figcaption>Personal report &middot; summary and the ten job areas</figcaption>
         </figure></div>
       </div>
       <div class="cm-sl-dots" aria-hidden="true"></div>
     </div>
-    <p class="cm-small cm-col" style="margin-top:14px">Captured from the mechanical
-      engineering instrument in English. The figures come from a demonstration sitting,
-      not from a real student.</p>
+    <p class="cm-small cm-col" style="margin-top:14px">The figures come from a
+      demonstration sitting, not from a real student.</p>
   </div>
 </div>

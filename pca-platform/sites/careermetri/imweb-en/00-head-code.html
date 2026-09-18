@@ -177,9 +177,14 @@
   border-radius:50%; border:1px solid var(--cm-rule);}
 .cm-pack li.cm-on::before{background:var(--cm-gold); border-color:var(--cm-gold);}
 
+/* The note runs the full width of the section and holds its own measure
+   inside. Stopping the box itself at reading width leaves a stub under a
+   full-width table, which reads as a layout that gave up rather than as a
+   deliberate column. */
 .cm-note{background:var(--cm-surface2); border:1px solid var(--cm-line);
-  border-radius:var(--cm-r); padding:22px 24px; margin-top:24px;}
-.cm-note p{margin:0; font-size:14px; color:var(--cm-mute); line-height:1.8;}
+  border-radius:var(--cm-r); padding:22px 26px; margin-top:24px;}
+.cm-note p{margin:0; font-size:14px; color:var(--cm-mute); line-height:1.8;
+  max-width:74ch;}
 .cm-note p + p{margin-top:9px;}
 
 .cm-brand{font-family:var(--cm-disp); font-weight:700; font-size:16px; letter-spacing:.05em;
@@ -224,6 +229,14 @@
 .cm-sl-dot{width:22px; height:4px; border-radius:2px; background:var(--cm-line);
   border:0; padding:0; cursor:pointer;}
 .cm-sl-dot[aria-current="true"]{background:var(--cm-gold);}
+/* Image variant. One picture per view, and the slide is the mount around it
+   rather than a card with text in it. */
+.cm-sl-img .cm-sl-track{grid-auto-columns:100%;}
+@media (min-width:760px){.cm-sl-img .cm-sl-track{grid-auto-columns:100%;}}
+.cm-sl-img .cm-slide{background:var(--cm-surface2); padding:16px; cursor:grab;}
+.cm-sl-img .cm-slide:active{cursor:grabbing;}
+/* The browser's own image drag would start instead of the slider's. */
+.cm-sl-img .cm-slide img{width:100%; -webkit-user-drag:none; user-select:none;}
 
 /* ── World map. The dots are Natural Earth 110m land geometry sampled every
    3.2 degrees, so the coastlines are real. Antarctica is dropped, which is the
@@ -315,6 +328,68 @@
     track.addEventListener("scroll", sync, { passive: true });
     window.addEventListener("resize", sync);
     sync();
+
+    /* Drag with a mouse or a trackpad, on image sliders only. On a text
+       slide the same gesture is how someone selects a line, so taking it
+       over there would break selection to gain nothing. Touch already
+       scrolls natively and is left alone. */
+    if (sl.classList.contains("cm-sl-img")) {
+      var down = false, startX = 0, startLeft = 0, moved = false;
+      track.addEventListener("pointerdown", function (e) {
+        if (e.pointerType === "touch") return;
+        down = true; moved = false;
+        startX = e.clientX; startLeft = track.scrollLeft;
+        /* Snapping has to come off for the duration. Mandatory snap pulls the
+           scroll position back to the nearest slide after every write, so a
+           drag made of small steps never leaves the slide it started on. */
+        track.style.scrollSnapType = "none";
+        track.style.scrollBehavior = "auto";
+      });
+      track.addEventListener("pointermove", function (e) {
+        if (!down) return;
+        var d = e.clientX - startX;
+        if (Math.abs(d) > 3) moved = true;
+        track.scrollLeft = startLeft - d;
+      });
+      function release() {
+        if (!down) return;
+        down = false;
+        track.style.scrollSnapType = "";
+        track.style.scrollBehavior = "";
+        if (moved) go(idx());
+      }
+      track.addEventListener("pointerup", release);
+      track.addEventListener("pointercancel", release);
+      track.addEventListener("pointerleave", release);
+      track.addEventListener("dragstart", function (e) { e.preventDefault(); });
+    }
+
+    /* Advance on its own, if the section asks for it with data-cm-auto.
+       It stops under the pointer, while anything inside has focus, and on a
+       hidden tab: a slide that moves while it is being read is worse than
+       one that never moves. Reduced motion turns it off entirely. */
+    var every = parseInt(sl.getAttribute("data-cm-auto") || "0", 10);
+    var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (every >= 2000 && slides.length > 1 && !still) {
+      var timer = null;
+      var stop = function () { if (timer) { clearInterval(timer); timer = null; } };
+      var start = function () {
+        stop();
+        timer = setInterval(function () {
+          var i = idx();
+          go(i >= slides.length - 1 ? 0 : i + 1);
+        }, every);
+      };
+      sl.addEventListener("mouseenter", stop);
+      sl.addEventListener("mouseleave", start);
+      sl.addEventListener("focusin", stop);
+      sl.addEventListener("focusout", start);
+      sl.addEventListener("pointerdown", stop);
+      document.addEventListener("visibilitychange", function () {
+        if (document.hidden) { stop(); } else { start(); }
+      });
+      start();
+    }
   }
   function scan() { document.querySelectorAll(".cm-sl").forEach(wire); }
   if (document.readyState === "loading") {
@@ -325,4 +400,3 @@
   }
 })();
 </script>
-</style>
