@@ -10,7 +10,14 @@
      읽고 팀장에게 넘길 자료를 찾습니다. 그래서 이 화면은 광고가 아니라
      사양서의 짜임을 따릅니다 — 명사형 제목, 설명 문단, 표.
      ═══════════════════════════════════════════════════════════ -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<!-- 글꼴 둘을 싣습니다. 앞이 Pretendard(지금 한국 웹에서 가장 현대적으로
+     읽히는 활자, 가변 폰트 + 동적 서브셋이라 필요한 글자만 내려받습니다),
+     뒤가 Noto Sans KR 입니다. 뒤엣것은 앞이 못 뜬 날에만 실제로 내려받습니다
+     — 쓰이지 않는 @font-face 는 파일을 가져오지 않습니다. -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap">
 <style>
 :root{
   --cm-navy:#0F1B2D; --cm-gold:#C9A227;
@@ -19,10 +26,14 @@
   --cm-line:#DCE2EA; --cm-rule:#B9C4D0;
   --cm-acc:#7A6214; --cm-btn2:#0F1B2D;
   /* 모서리는 전부 둥글다. 각진 모서리를 쓰지 않는다 */
-  --cm-r:12px; --cm-r2:8px; --cm-r3:4px;
+  --cm-r:16px; --cm-r2:10px; --cm-r3:3px; --cm-pill:999px;
+  /* 올라온 면에는 아주 얕은 그림자를 하나 둔다. 선만으로 층을 나누면
+     평면이 되고, 짙게 주면 옛날 카드가 된다 */
+  --cm-lift:0 1px 2px rgba(15,27,45,.04), 0 10px 28px rgba(15,27,45,.055);
   /* 글꼴은 한 벌만 쓴다. 제목·본문·숫자가 다른 집안이면 한 화면으로
      읽히지 않는다. 숫자는 폰트를 바꾸는 대신 tabular-nums 로 줄을 맞춘다 */
-  --cm-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --cm-body:"Pretendard Variable",Pretendard,"Noto Sans KR",-apple-system,
+    BlinkMacSystemFont,system-ui,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
   --cm-disp:var(--cm-body); --cm-mono:var(--cm-body);
 }
 .cm.cm-tint{--cm-bg:#F2F4F7; --cm-surface:#F2F4F7; --cm-surface2:#FFFFFF;}
@@ -35,9 +46,9 @@
 
 .cm{
   background:var(--cm-bg); color:var(--cm-text);
-  font-family:var(--cm-body); font-size:16px; line-height:1.8;
-  word-break:keep-all; overflow-wrap:break-word;
-  padding:58px 20px; margin:0;
+  font-family:var(--cm-body); font-size:16px; line-height:1.78;
+  letter-spacing:-.011em; word-break:keep-all; overflow-wrap:break-word;
+  padding:76px 20px; margin:0;
 }
 .cm *{box-sizing:border-box;}
 /* 모든 절이 같은 세로선에서 시작한다. 폭을 절마다 다르게 두면
@@ -51,8 +62,8 @@
 
 /* 제목은 명사형으로 짧게. 문장형 제목을 절마다 쓰면 광고문이 된다 */
 .cm-h2{
-  font-family:var(--cm-disp); font-weight:700; font-size:clamp(21px,2.5vw,27px);
-  line-height:1.4; letter-spacing:-.015em; margin:0 0 14px; color:var(--cm-text);
+  font-family:var(--cm-disp); font-weight:700; font-size:clamp(22px,2.6vw,29px);
+  line-height:1.38; letter-spacing:-.028em; margin:0 0 14px; color:var(--cm-text);
 }
 .cm-h2::after{content:""; display:block; width:34px; height:2px;
   background:var(--cm-gold); border-radius:var(--cm-r3); margin-top:14px;}
@@ -66,13 +77,13 @@
 .cm-small{font-size:13.5px; color:var(--cm-mute); line-height:1.75;}
 
 .cm-h1{
-  font-family:var(--cm-disp); font-weight:700; font-size:clamp(25px,3.6vw,36px);
-  line-height:1.35; letter-spacing:-.02em; margin:0 0 16px; color:var(--cm-text);
+  font-family:var(--cm-disp); font-weight:700; font-size:clamp(27px,3.9vw,40px);
+  line-height:1.3; letter-spacing:-.035em; margin:0 0 18px; color:var(--cm-text);
 }
 .cm-cta{display:flex; gap:10px; flex-wrap:wrap; margin-top:26px;}
 .cm-btn{
   font-family:var(--cm-body); font-weight:600; font-size:15px; padding:12px 24px;
-  text-decoration:none; display:inline-block; border-radius:var(--cm-r2);
+  text-decoration:none; display:inline-block; border-radius:var(--cm-pill);
   border:1px solid var(--cm-gold); color:var(--cm-navy); background:var(--cm-gold);
 }
 .cm-btn.cm-ghost{background:transparent; color:var(--cm-btn2); border-color:var(--cm-rule);}
@@ -83,10 +94,11 @@
 .cm-tw{overflow-x:auto; margin:20px 0 0; border:1px solid var(--cm-line);
   border-radius:var(--cm-r); background:var(--cm-surface);}
 .cm-tw table{border-collapse:collapse; width:100%; font-size:14.5px; min-width:440px;}
-.cm-tw th,.cm-tw td{text-align:left; padding:13px 16px; border-bottom:1px solid var(--cm-line);}
+.cm-tw th,.cm-tw td{text-align:left; padding:15px 18px; border-bottom:1px solid var(--cm-line);}
 .cm-tw tr:last-child th,.cm-tw tr:last-child td{border-bottom:0;}
 .cm-tw thead th{font-family:var(--cm-body); font-size:12.5px; color:var(--cm-mute);
-  font-weight:600; background:var(--cm-surface2); border-bottom:1px solid var(--cm-rule);}
+  font-weight:600; letter-spacing:0; background:var(--cm-surface2);
+  border-bottom:1px solid var(--cm-line);}
 .cm-tw td{color:var(--cm-mute); vertical-align:top;}
 .cm-tw td.cm-name,.cm-tw th[scope=row]{color:var(--cm-text); font-weight:500; white-space:nowrap;}
 .cm-tw th[scope=row]{background:var(--cm-surface2); width:9.5em; vertical-align:top; font-size:14px;}
@@ -110,8 +122,8 @@
   width:5px; height:5px; border-radius:50%; background:var(--cm-rule);}
 
 /* 결과지는 흰 문서다. 받침과 괘선을 둘러 책상에 놓은 것처럼 만든다 */
-.cm-plate{margin:24px 0 0; background:var(--cm-surface2); padding:14px;
-  border:1px solid var(--cm-line); border-radius:var(--cm-r);}
+.cm-plate{margin:26px 0 0; background:var(--cm-surface2); padding:16px;
+  border:1px solid var(--cm-line); border-radius:var(--cm-r); box-shadow:var(--cm-lift);}
 .cm-plate img{border:1px solid var(--cm-rule); border-radius:var(--cm-r2);}
 .cm-plate figcaption{font-size:12.5px; color:var(--cm-mute); padding:11px 2px 1px;}
 
@@ -140,12 +152,12 @@
 
 .cm-packs{display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(255px,1fr)); margin-top:20px;}
 .cm-pack{border:1px solid var(--cm-line); border-radius:var(--cm-r);
-  padding:24px 22px; background:var(--cm-surface);}
+  padding:28px 26px; background:var(--cm-surface); box-shadow:var(--cm-lift);}
 .cm-pack.cm-pick{border-color:var(--cm-gold); border-top:3px solid var(--cm-gold);
   background:var(--cm-surface2);}
 .cm-tag{font-weight:600; font-size:12.5px; color:var(--cm-acc); display:block; margin-bottom:10px;}
-.cm-price{font-family:var(--cm-disp); font-weight:700; font-size:22px;
-  margin:0 0 4px; letter-spacing:-.015em; color:var(--cm-text);
+.cm-price{font-family:var(--cm-disp); font-weight:700; font-size:25px;
+  margin:0 0 5px; letter-spacing:-.03em; color:var(--cm-text);
   font-variant-numeric:tabular-nums;}
 .cm-unit{font-size:13px; color:var(--cm-mute); margin-bottom:14px;}
 .cm-pack ul{margin:0; padding:0; list-style:none;}
@@ -169,9 +181,9 @@
 .cm-sl{margin-top:20px;}
 .cm-sl-head{display:flex; align-items:center; gap:12px; margin-bottom:12px;}
 .cm-sl-head p{margin:0; font-size:13.5px; color:var(--cm-mute); margin-right:auto;}
-.cm-sl-btn{width:34px; height:34px; flex:0 0 auto; cursor:pointer;
+.cm-sl-btn{width:38px; height:38px; flex:0 0 auto; cursor:pointer;
   background:var(--cm-surface); color:var(--cm-text);
-  border:1px solid var(--cm-rule); border-radius:var(--cm-r2);
+  border:1px solid var(--cm-line); border-radius:var(--cm-pill);
   font-family:var(--cm-body); font-size:15px; line-height:1;
   display:inline-flex; align-items:center; justify-content:center;}
 .cm-sl-btn:hover:not([disabled]){border-color:var(--cm-gold);}
@@ -186,7 +198,8 @@
 @media (min-width:760px){.cm-sl-track{grid-auto-columns:minmax(276px,1fr);}}
 .cm-slide{
   background:var(--cm-surface); border:1px solid var(--cm-line);
-  border-radius:var(--cm-r); padding:22px 20px 24px; min-width:0;
+  border-radius:var(--cm-r); padding:24px 22px 26px; min-width:0;
+  box-shadow:var(--cm-lift);
 }
 .cm-slide .cm-n{margin-bottom:8px;}
 .cm-slide h3{font-family:var(--cm-disp); font-weight:700; font-size:16px;
