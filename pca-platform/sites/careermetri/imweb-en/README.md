@@ -41,26 +41,49 @@ the top code widget on every page. Every page, or the ones you miss render bare.
 
 ## 2. One code widget per section
 
-**Five menus, not seven.** Localisation and Partnership were two halves of one
-question, so they are one page; About's evidence belongs with the instrument it
-describes, and who builds it belongs beside the enquiry form. Seven items in a
-bar is a site that has not decided what it is about.
+**Each page answers one question, and that is what decides the map.** The
+question is the one a reader arrives with, not a topic we would like to cover.
+Write this down before moving a section: a page whose question you cannot say
+in one line is a page that will collect whatever is left over.
+
+| Page | The question it answers | Who is asking |
+|---|---|---|
+| Home | What is this, and is it for my students? | Anyone, in thirty seconds |
+| The assessment | Is the instrument any good? | Whoever has to defend the choice |
+| Reports | What do we actually get back? | The person who will read them |
+| Localisation | **Will it work in my country?** | The same person, before they commit |
+| Partnership | What would each of us have to do? | Whoever signs |
+| Contact | How do I start? | Someone who has decided to ask |
+
+Localisation and Partnership look adjacent and are not. *Can it work here* is a
+feasibility question, asked while the reader is still deciding whether to take
+it seriously. *What would we each do* is a commercial one, asked only after the
+first is answered yes. Folding them together was tried and reversed: it put the
+work split in front of people who had not yet decided the thing was possible
+where they are, and it buried the map.
+
+**The world map belongs on Localisation.** That page's question is "will it
+work in my country", and the map is the part of the answer nobody reads a
+paragraph for: whether anyone has done this anywhere near them yet, and how far
+they got. On Home it was decoration.
 
 | Page | Widgets, top to bottom |
 |---|---|
 | Home | `01-hero` · `07-screens` · `17-measure` · `02-who` · `03-output` |
 | The assessment | `04-instrument` · `05-scoring` · `12-evidence` · `13-coverage` |
 | Reports | `06-report` · `18-two` · `08-cohort` |
-| Rollout | `09-localisation` · `16-markets` · `10-partnership` |
+| Localisation | `09-localisation` · `16-markets` |
+| Partnership | `10-partnership` |
 | Contact | `23-faq` · `22-about` · `14-contact` + an imweb form widget below it |
 | Every page but Contact | `20-cta`, last, above the footer |
 | Every page | `21-dock`, once, anywhere |
 | Bottom of every page | `15-footer` |
 
-**The world map is on Rollout, not Home.** That page is about what travels and
-what gets rebuilt; the map is how far each market has got with the rebuilding.
-On the home page it was a picture. Here it is the evidence for the paragraph
-above it.
+**About went away, and nothing in it did.** Its evidence sits with the
+instrument it describes, because "is this any good" and "what was it built
+from" are one question. Who builds it sits beside the enquiry form, because
+that is the moment a reader wants to know who they would be writing to. An
+About page is where a site puts what it could not place.
 
 Build the menu with imweb's menu settings, not in code, so the mobile
 hamburger and the current-page marker attach themselves.
