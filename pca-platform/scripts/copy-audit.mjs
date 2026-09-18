@@ -45,7 +45,11 @@ const files = process.argv.slice(2).length
      // 약관도 사람이 읽는 글이다. 법 문장이라 딱딱해도 기계 티는 따로 난다
      ...readdirSync("sites/careermetri/legal")
        .filter((f) => f.endsWith(".md"))
-       .map((f) => `sites/careermetri/legal/${f}`)];
+       .map((f) => `sites/careermetri/legal/${f}`),
+     // 영문 위젯. 한글 규칙은 안 걸리지만 대시는 영문에서도 센다
+     ...readdirSync("sites/careermetri/imweb-en")
+       .filter((f) => /^\d\d-.*\.html$/.test(f))
+       .map((f) => `sites/careermetri/imweb-en/${f}`)];
 
 /** 사람이 읽는 글만 본다. 코드·주석·태그는 문체와 상관이 없다. */
 function prose(path) {
@@ -80,7 +84,11 @@ for (const path of files) {
 }
 
 // 영어 원고는 규칙이 다르다. 대시만 따로 본다
-for (const path of files.filter((f) => f.includes("global"))) {
+for (const path of files.filter((f) => {
+  const t = prose(f);
+  const ko = (t.match(/[가-힣]/g) ?? []).length;
+  return ko < 200 && t.replace(/\s/g, "").length > 200;   // 영문 원고
+})) {
   const n = (prose(path).match(/—/g) ?? []).length;
   console.log(n ? `\n  넘침 ${path}: em dash ${n}회 (한도 0)` : `  OK  ${path} (영문) em dash 0`);
   if (n) failed++;
