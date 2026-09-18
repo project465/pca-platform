@@ -67,7 +67,8 @@
 
 | 바꾸는 것 | 고칠 곳 |
 |---|---|
-| 가격 | `10-price.html` 의 세 패키지와 단가표 첫 줄 |
+| 기관 계약 단가 | `10-price.html` 의 세 패키지와 단가표 첫 줄 |
+| 개인 업그레이드 값 | `10-price.html` 의 "개인으로 오신 경우" 와 `products.amount` 의 `UNIV_UPGRADE` |
 | 색·활자 | `00-head-code.html` 의 `:root` 변수 |
 | 학과 목록 | `08-majors.html` 표 |
 | 브랜드 이름 | `01-hero.html`·`13-footer.html` 과 `00-head-code.html` 의 `.cm-brand` |

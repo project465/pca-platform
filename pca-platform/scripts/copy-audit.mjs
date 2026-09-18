@@ -11,7 +11,7 @@
  *   node scripts/copy-audit.mjs            모든 원고
  *   node scripts/copy-audit.mjs <파일...>   고른 파일만
  */
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 
 // [이름, 정규식, 한글 1000자당 허용치, 설명]
 const RULES = [
@@ -36,7 +36,12 @@ const files = process.argv.slice(2).length
   : ["marketing/src/content/kr.ts", "marketing/src/content/global.ts",
      "sites/metri-plus/index.html", "sites/metri-plus-print/index.html",
      "sites/imweb/copy.md", "sites/careermetri/index.html",
-     "sites/careermetri/imweb/README.md"];
+     "sites/careermetri/imweb/README.md",
+     // 아임웹 위젯은 실제로 붙여 넣는 원고다. index.html 만 보다가
+     // 위젯 쪽 문장을 놓치면 사이트에 남는 것은 위젯 쪽이다
+     ...readdirSync("sites/careermetri/imweb")
+       .filter((f) => /^\d\d-.*\.html$/.test(f))
+       .map((f) => `sites/careermetri/imweb/${f}`)];
 
 /** 사람이 읽는 글만 본다. 코드·주석·태그는 문체와 상관이 없다. */
 function prose(path) {
