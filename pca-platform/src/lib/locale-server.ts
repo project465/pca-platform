@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { isLang, LANG_COOKIE, type Lang } from "./locale";
+import { DEFAULT_LANG, isLang, LANG_COOKIE, OFFERED_LANGS, type Lang } from "./locale";
 
 /**
  * 서버에서만 쓴다. locale.ts 와 나눠 둔 이유는 그 파일을 클라이언트 컴포넌트인
@@ -9,7 +9,9 @@ import { isLang, LANG_COOKIE, type Lang } from "./locale";
  * 해외 대학 담당자가 학생들에게 영어판 주소를 뿌릴 수 있다.
  */
 export async function resolveLang(override?: string): Promise<Lang> {
-  if (isLang(override)) return override;
+  const offered = (v: string | undefined): v is Lang =>
+    isLang(v) && OFFERED_LANGS.includes(v);
+  if (offered(override)) return override;
   const c = (await cookies()).get(LANG_COOKIE)?.value;
-  return isLang(c) ? c : "ko";
+  return offered(c) ? c : DEFAULT_LANG;
 }

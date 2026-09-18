@@ -26,6 +26,27 @@ export function isLang(v: string | undefined): v is Lang {
   return !!v && (LANGS as readonly string[]).includes(v);
 }
 
+/**
+ * 이 배포본이 실제로 내놓는 언어.
+ *
+ * 문항과 화면 문구는 세 언어로 들어 있지만, 그렇다고 어느 시장에서나 셋을
+ * 다 보여줘야 하는 것은 아니다. 영문 시장에 한국어 탭이 떠 있으면 파는 쪽이
+ * 아니라 만든 쪽 사정을 보여주는 것이 된다.
+ *
+ * `NEXT_PUBLIC_LANGS=en` 이면 영어만, 비워 두면 예전처럼 셋 다다 —
+ * 값을 안 채운 배포본의 동작이 바뀌면 한국 쪽이 조용히 달라진다.
+ * 지원하지 않는 값이 섞여 들어오면 걸러내고, 전부 걸러지면 세 언어로 돌아간다.
+ */
+export const OFFERED_LANGS: readonly Lang[] = (() => {
+  const raw = process.env.NEXT_PUBLIC_LANGS;
+  if (!raw) return LANGS;
+  const picked = raw.split(",").map((v) => v.trim()).filter(isLang);
+  return picked.length ? (picked as Lang[]) : LANGS;
+})();
+
+/** 골라 둔 것이 없을 때 쓸 언어. 내놓는 언어 중 첫 번째다. */
+export const DEFAULT_LANG: Lang = OFFERED_LANGS[0];
+
 type Dict = Record<Lang, string>;
 const d = (ko: string, en: string, tr: string): Dict => ({ ko, en, tr });
 
