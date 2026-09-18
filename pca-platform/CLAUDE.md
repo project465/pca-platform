@@ -325,6 +325,10 @@ npm run domains:check   # 코드가 가리키는 주소에 이미 남이 있는�
 - `docs/metri/26_imweb_site.md` — 홈페이지. 코드로 만든 판과 아임웹 순서
 - `sites/careermetri/index.html` — **대학·기관 소개 한 장 (코드판).**
   원고는 `sites/imweb/copy.md` 와 같고, 화면 캡처는 플랫폼에서 실제로 뽑았다
+- `sites/careermetri/imweb/` — **아임웹에 붙이는 코드.** CSS 한 번(Head Code)
+  + 섹션별 코드 위젯 13개. **셀렉터를 전부 `cm-` 으로 감쌌다** — `body`·
+  `section`·`h2` 를 직접 잡으면 아임웹 테마가 같이 바뀐다. 붙이는 곳과
+  주의는 그 폴더의 `README.md`
 - `docs/metri/19_plus_ladder.md` — **학년마다 다시 파는 사다리.** 중2부터 고3까지
   무엇을 팔 수 있고 무엇이 아직 없는지, 그리고 켜기 전에 확인할 것
 - `src/lib/entitlement.ts` — 등급을 정하는 유일한 곳 (설계 원칙 10)

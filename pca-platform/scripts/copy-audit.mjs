@@ -35,7 +35,8 @@ const files = process.argv.slice(2).length
   ? process.argv.slice(2)
   : ["marketing/src/content/kr.ts", "marketing/src/content/global.ts",
      "sites/metri-plus/index.html", "sites/metri-plus-print/index.html",
-     "sites/imweb/copy.md", "sites/careermetri/index.html"];
+     "sites/imweb/copy.md", "sites/careermetri/index.html",
+     "sites/careermetri/imweb/README.md"];
 
 /** 사람이 읽는 글만 본다. 코드·주석·태그는 문체와 상관이 없다. */
 function prose(path) {
