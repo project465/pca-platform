@@ -766,6 +766,32 @@
   .cm-anim .cm-bars .cm-bar .cm-mk{opacity:1!important;}
   .cm-dock{transition:none!important;}
 }
+
+/* ── Holding our own ground inside someone else's theme.
+   The alarm that brought this in: the two buttons in the opening band came
+   out as empty pills on the live site. The shapes were right and the widths
+   differed with the label lengths, so the text was laid out and then not
+   painted. Themes do that on purpose — a gradient headline is made by
+   clipping the background to the glyphs and setting the fill to transparent —
+   and a rule written for the theme's own links reaches ours too.
+
+   currentColor puts the fill back wherever the colour is, whatever rule set
+   it to transparent, and the two buttons name their colour again so nothing
+   downstream can take that away either. !important is not a habit; a host
+   stylesheet loading after ours is the case it exists for. */
+.cm, .cm *{-webkit-text-fill-color:currentColor !important;}
+.cm .cm-btn{color:var(--cm-navy) !important; text-decoration:none !important;
+  -webkit-text-fill-color:var(--cm-navy) !important;}
+.cm .cm-btn.cm-ghost{color:var(--cm-btn2) !important;
+  -webkit-text-fill-color:var(--cm-btn2) !important;}
+/* The closing band paints its own dark gradient inside a light section, so
+   it is not .cm-dark and its ghost button has to be named on its own. The
+   first draft of this patch reached it through .cm.cm-dark, missed, and left
+   navy type on a navy band: the same bug it was written to fix. */
+.cm-cta-band .cm-btn.cm-ghost{color:#E8EDF2 !important;
+  -webkit-text-fill-color:#E8EDF2 !important; border-color:#3A5170 !important;}
+.cm-dock .cm-btn{color:var(--cm-navy) !important;
+  -webkit-text-fill-color:var(--cm-navy) !important;}
 </style>
 <script>
 /* Slider wiring. imweb sometimes inserts widgets late, so newly added
