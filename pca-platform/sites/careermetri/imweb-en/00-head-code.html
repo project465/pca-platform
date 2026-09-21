@@ -35,10 +35,10 @@
   --cm-line:#DFE6EE; --cm-rule:#B9C4D2;
   --cm-acc:#7A6214; --cm-btn2:#0B1524;
   /* Every corner is rounded. Nothing on this site is square. */
-  --cm-r:24px; --cm-r2:16px; --cm-r3:3px; --cm-pill:999px;
+  --cm-r:32px; --cm-r2:22px; --cm-r3:3px; --cm-pill:999px;
   /* One very shallow shadow on raised surfaces. A border alone reads flat,
      and a heavy shadow reads like an old card. */
-  --cm-lift:0 1px 2px rgba(15,27,45,.035), 0 12px 34px rgba(15,27,45,.06);
+  --cm-lift:0 1px 2px rgba(15,27,45,.035), 0 14px 38px rgba(15,27,45,.065);
   /* One typeface only. Headings, body and figures from different families
      stop reading as one page. Figures line up with tabular-nums rather than
      by switching to a second font. */
@@ -64,8 +64,8 @@
   content:""; position:absolute; width:13px; height:13px; pointer-events:none;
   border:1px solid var(--cm-rule); opacity:.55;
 }
-.cm.cm-dark::before{top:22px; left:22px; border-right:0; border-bottom:0;}
-.cm.cm-dark::after{bottom:22px; right:22px; border-left:0; border-top:0;}
+.cm.cm-dark::before{top:26px; left:26px; border-right:0; border-bottom:0;}
+.cm.cm-dark::after{bottom:26px; right:26px; border-left:0; border-top:0;}
 /* The opening band paints its own grid on ::before, so its marks go on a
    child instead of fighting for the same pseudo-element. */
 .cm.cm-dark.cm-open::before{border:0; top:0; left:0; width:auto; height:auto; opacity:1;}
@@ -299,15 +299,15 @@
 .cm-slide img{border:1px solid var(--cm-rule); border-radius:var(--cm-r2);}
 .cm-slide figcaption{font-size:12.5px; color:var(--cm-mute); padding-top:10px;}
 .cm-sl-dots{display:flex; gap:6px; margin-top:14px;}
-.cm-sl-dot{width:22px; height:4px; border-radius:2px; background:var(--cm-line);
+.cm-sl-dot{width:24px; height:5px; border-radius:999px; background:var(--cm-line);
   border:0; padding:0; cursor:pointer;}
 .cm-sl-dot[aria-current="true"]{background:var(--cm-gold);}
 /* A hairline that fills as the slider runs. With eleven slides the dots stop
    telling anyone where they are; a filled line does it at a glance. */
-.cm-sl-rail{position:relative; height:2px; margin-top:16px; border-radius:2px;
+.cm-sl-rail{position:relative; height:3px; margin-top:16px; border-radius:999px;
   background:var(--cm-line); overflow:hidden;}
 .cm-sl-rail i{position:absolute; inset:0 auto 0 0; display:block; width:0;
-  background:var(--cm-gold); border-radius:2px;
+  background:var(--cm-gold); border-radius:999px;
   transition:width .38s cubic-bezier(.2,.7,.3,1);}
 /* Image variant. One picture per view, and the slide is the mount around it
    rather than a card with text in it. */
@@ -686,7 +686,7 @@
    pixels and no more. */
 .cm-prog{position:fixed; left:0; top:0; right:0; height:2px; z-index:9500;
   background:transparent; pointer-events:none;}
-.cm-prog i{display:block; height:100%; width:0; background:var(--cm-gold);
+.cm-prog i{display:block; height:100%; width:0; background:var(--cm-gold); border-radius:999px;
   transition:width .12s linear;}
 
 /* ── A rule that reads as a drawing sheet's edge rather than a divider:
@@ -728,7 +728,7 @@
 .cm-mapwrap{margin-top:30px;}
 @media (min-width:1140px){
   .cm-mapwrap{
-    --cm-mw:min(1400px, calc(100vw - 88px));
+    --cm-mw:min(1640px, calc(100vw - 48px));
     width:var(--cm-mw); margin-left:calc(50% - var(--cm-mw) / 2);
   }
 }
@@ -736,15 +736,15 @@
 /* 점을 키우고 진하게. 2.1 은 1040 폭에서 정한 값인데 이제 1400 까지 간다.
    r 을 CSS 로 주면 생성기를 건드리지 않고 한 줄로 끝나고, 이 속성을 모르는
    브라우저는 마크업에 적힌 2.1 을 그대로 쓴다. */
-.cm-map defs circle{r:2.7;}
-.cm-map-land use{fill:var(--cm-rule); opacity:.8;}
+.cm-map defs circle{r:3.2;}
+.cm-map-land use{fill:var(--cm-rule); opacity:.88;}
 /* The graticule. A world map without one is a shape; with one it states its
    projection, and the projection is written under it. */
-.cm-grat line{stroke:var(--cm-line); stroke-width:1; opacity:.5;}
+.cm-grat line{stroke:var(--cm-line); stroke-width:1; opacity:.62;}
 .cm-grat .cm-eq{stroke:var(--cm-rule); stroke-width:1; opacity:.8;}
-.cm-proj{font-family:var(--cm-mono); font-size:11px; letter-spacing:.03em;
+.cm-proj{font-family:var(--cm-mono); font-size:12px; letter-spacing:.03em;
   color:var(--cm-mute); margin:16px 0 0;}
-.cm-pin text{font-family:var(--cm-body); font-size:17px; font-weight:600;
+.cm-pin text{font-family:var(--cm-body); font-size:20px; font-weight:600;
   fill:var(--cm-text); paint-order:stroke; dominant-baseline:middle;}
 .cm-pin .cm-pin-dot{fill:var(--cm-mute);}
 .cm-pin .cm-pin-halo{fill:none;}
@@ -761,11 +761,14 @@
 .cm-anim .cm-map-pins .cm-pin{opacity:0; transition:opacity .5s ease;}
 .cm-anim .cm-map-pins.cm-in-view .cm-pin{opacity:1;}
 .cm-pin-src text{fill:var(--cm-text);}
-.cm-legend{list-style:none; margin:18px 0 0; padding:0; display:flex;
-  flex-wrap:wrap; gap:10px 26px;}
-.cm-legend li{font-size:13.5px; color:var(--cm-mute); position:relative; padding-left:20px;}
-.cm-legend li::before{content:""; position:absolute; left:0; top:7px;
-  width:10px; height:10px; border-radius:50%; background:var(--cm-mute);}
+/* 범례는 지도 안에 들어 있지만 읽는 것이라 본문 폭으로 돌려놓는다. 지도가
+   1640 까지 가는데 범례가 그 왼쪽 끝에서 시작하면 아래 표와 줄이 어긋나고,
+   한 절이 두 개의 왼쪽 선을 갖게 된다. 넓힐 것은 그림뿐이다. */
+.cm-legend{list-style:none; margin:20px auto 0; padding:0; display:flex;
+  flex-wrap:wrap; gap:10px 26px; max-width:1040px;}
+.cm-legend li{font-size:15px; color:var(--cm-mute); position:relative; padding-left:20px;}
+.cm-legend li::before{content:""; position:absolute; left:0; top:8px;
+  width:12px; height:12px; border-radius:50%; background:var(--cm-mute);}
 .cm-legend .cm-lg-src::before{background:var(--cm-gold);}
 .cm-legend .cm-lg-legal::before{background:var(--cm-text);}
 @media (max-width:760px){
