@@ -1,15 +1,19 @@
 <!-- Contact.
-     Put an imweb FORM widget directly below this one. Seven fields:
-     institution, country, contact name, email, the discipline under
-     consideration, roughly how many students, and a message. No telephone
-     number: the next thing we promise is a written reply, and asking for a
-     phone number implies a call nobody offered. A form written
-     in code here has nowhere to send to and does nothing when pressed.
+     The enquiry goes by email, not through a form. A form needs somewhere to
+     send to, and an imweb form widget is one more thing to configure and to
+     check is still working six months from now. The mailto below opens the
+     visitor's own mail client with the six questions already typed, so the
+     enquiry arrives structured and the reply thread starts in the place
+     replies actually happen.
 
-     What this block does instead is remove the reasons not to write: it says
-     what happens after the button, how long it takes, and that nothing is
-     being committed. Most enquiry pages end at "get in touch", which asks the
-     reader to imagine all three. -->
+     If a form is added later, put the imweb form widget directly under this
+     block and leave the address here as well: some institutions route all
+     outbound mail through a person who will not use a web form.
+
+     What this block does besides giving an address is remove the reasons not
+     to write: it says what happens after the button, how long it takes, and
+     that nothing is being committed. Most enquiry pages end at "get in
+     touch", which asks the reader to imagine all three. -->
 <div class="cm cm-tint" id="cm-contact">
   <div class="cm-in">
     <div class="cm-head">
@@ -21,10 +25,26 @@
     </div>
     </div>
 
+    <div class="cm-cta">
+      <a class="cm-btn" href="mailto:hari_info@hari.re.kr?subject=Careermetri%20pilot%20enquiry&body=Institution%3A%0ACountry%3A%0ADiscipline%20under%20consideration%3A%0ARoughly%20how%20many%20students%3A%0AWhen%20you%20would%20want%20to%20run%20it%3A%0AYour%20name%20and%20role%3A%0A%0AAnything%20else%20you%20want%20us%20to%20know%3A%0A">Write to us</a>
+      <a class="cm-btn cm-ghost" href="tel:+821073927211">Call +82 10-7392-7211</a>
+    </div>
+
+    <dl class="cm-spec">
+      <div><dt>Email</dt><span><a href="mailto:hari_info@hari.re.kr">hari_info@hari.re.kr</a></span></div>
+      <div><dt>Telephone</dt><span><a href="tel:+821073927211">+82 10-7392-7211</a></span></div>
+      <div><dt>Company</dt><span>HARI CO., LTD &middot; Republic of Korea</span></div>
+      <div><dt>Working hours</dt><span>09:00&ndash;18:00 KST, Monday to Friday. Write at any hour; we reply inside two working days</span></div>
+    </dl>
+
+    <p class="cm-small cm-col" style="margin-top:16px">The button opens your own
+      mail program with six questions already typed. Delete any you cannot answer
+      yet: not knowing the student numbers changes nothing at this stage.</p>
+
     <div class="cm-time">
       <div class="cm-tstep"><em>Today</em><b>You write</b>
-        <p>The short form below. If you do not know the student numbers yet,
-          say so; it changes nothing at this stage.</p></div>
+        <p>Six lines is enough. Whichever of them you leave blank, we will ask
+          about in the reply rather than hold the reply for.</p></div>
       <div class="cm-tstep"><em>Within two working days</em><b>We reply with a scope</b>
         <p>What a pilot would cover in your market, what we would need from you, and
           what is not ready yet. Where something is missing we say so rather than
