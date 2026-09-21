@@ -10,11 +10,11 @@
      gives your uploads, or paste 07-screens-embedded.html instead, which
      carries the pictures inside it.
 
-     data-cm-auto is the dwell in milliseconds. Six slides at 3.8 s is a
-     little over twenty seconds for the whole run, which is about as long as
-     anyone stands in front of a home page. It stops under the pointer, while
-     anything inside has focus, and for a visitor who asked for reduced
-     motion. -->
+     data-cm-auto is the dwell in milliseconds, and it is the only number to
+     change if this reads too fast or too slow: 1000 is a second. Two seconds
+     over six slides is twelve for the whole run. It stops under the pointer,
+     while anything inside has focus, and for a visitor who asked for reduced
+     motion, so nobody is dragged past something they are reading. -->
 <div class="cm cm-tint">
   <div class="cm-in">
     <div class="cm-head">
@@ -23,7 +23,7 @@
     sections of the report that comes back. Captured in English from the
     mechanical engineering instrument, from one demonstration sitting.</p></div>
     </div>
-    <div class="cm-sl cm-sl-img" data-cm-auto="3800">
+    <div class="cm-sl cm-sl-img" data-cm-auto="2000">
       <div class="cm-sl-head">
         <p>Drag, swipe or use the arrows</p>
         <button class="cm-sl-btn" type="button" data-cm-prev aria-label="Previous screen">&#8592;</button>
