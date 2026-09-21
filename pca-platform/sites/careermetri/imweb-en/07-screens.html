@@ -1,33 +1,58 @@
-<!-- Home · the two screens, as a slider. It sits on the home page rather
-     than under Reports so that the product is visible before the reader has
-     to choose a menu, and so neither screen appears twice on the site.
-     Replace IMG_TEST and IMG_REPORT with the addresses imweb gives your
-     uploads. data-cm-auto is the dwell in milliseconds; delete the attribute
-     to leave it on the arrows alone. It stops under the pointer, while
+<!-- Home · the screens, as a slider. It sits on the home page rather than
+     under Reports so that the product is visible before the reader has to
+     choose a menu.
+
+     Six slides: the sitting, then five sections of one report. Two pictures
+     let a reader think the report is two pages; the sections are what makes
+     the size of it obvious without a paragraph claiming it.
+
+     Replace IMG_SITTING and the five IMG_REPORT_* with the addresses imweb
+     gives your uploads, or paste 07-screens-embedded.html instead, which
+     carries the pictures inside it.
+
+     data-cm-auto is the dwell in milliseconds. Six slides at 3.8 s is a
+     little over twenty seconds for the whole run, which is about as long as
+     anyone stands in front of a home page. It stops under the pointer, while
      anything inside has focus, and for a visitor who asked for reduced
      motion. -->
 <div class="cm cm-tint">
   <div class="cm-in">
     <div class="cm-head">
     <h2 class="cm-h2">Screens</h2>
-    <div class="cm-col"><p>The sitting a student works through, and the report
-    that comes back. Both captured in English from the mechanical engineering
-    instrument.</p></div>
+    <div class="cm-col"><p>The sitting a student works through, and five
+    sections of the report that comes back. Captured in English from the
+    mechanical engineering instrument, from one demonstration sitting.</p></div>
     </div>
-    <div class="cm-sl cm-sl-img" data-cm-auto="6500">
+    <div class="cm-sl cm-sl-img" data-cm-auto="3800">
       <div class="cm-sl-head">
         <p>Drag, swipe or use the arrows</p>
         <button class="cm-sl-btn" type="button" data-cm-prev aria-label="Previous screen">&#8592;</button>
         <button class="cm-sl-btn" type="button" data-cm-next aria-label="Next screen">&#8594;</button>
       </div>
-      <div class="cm-sl-track" aria-label="Two screens">
+      <div class="cm-sl-track" aria-label="Six screens">
         <div class="cm-slide"><figure>
-          <img src="IMG_TEST" alt="A sitting in progress: five-point items shown a page at a time.">
+          <img src="IMG_SITTING" alt="A sitting in progress: five-point items shown a page at a time.">
           <figcaption>The sitting &middot; every answer saves as it is made, so a student can close the tab and come back</figcaption>
         </figure></div>
         <div class="cm-slide"><figure>
-          <img src="IMG_REPORT" alt="Personal report: summary and the ten job areas ranked.">
-          <figcaption>Personal report &middot; summary and the ten job areas</figcaption>
+          <img src="IMG_REPORT_SUMMARY" alt="Report section 00, Summary: the role, job area and work style furthest ahead, with the reliability of the sitting.">
+          <figcaption>Report 00 &middot; what stands furthest ahead, and how reliable this particular sitting was</figcaption>
+        </figure></div>
+        <div class="cm-slide"><figure>
+          <img src="IMG_REPORT_AREAS" alt="Report section 01, Ten job areas ranked from 77.0 down to 25.0.">
+          <figcaption>Report 01 &middot; the ten job areas inside the discipline, which is what the items measure directly</figcaption>
+        </figure></div>
+        <div class="cm-slide"><figure>
+          <img src="IMG_REPORT_AXES" alt="Report section 02: the eight engineering activity axes drawn as a radar.">
+          <figcaption>Report 02 &middot; the eight activity axes. Area names differ by country; these do not</figcaption>
+        </figure></div>
+        <div class="cm-slide"><figure>
+          <img src="IMG_REPORT_ROLES" alt="Report section 04, Role fit: roles in three groups with a margin bar on each.">
+          <figcaption>Report 04 &middot; roles in groups, not a ranking. The thin bar is the margin we cannot see past</figcaption>
+        </figure></div>
+        <div class="cm-slide"><figure>
+          <img src="IMG_REPORT_NEXT" alt="Report section 06, The next six months, in three two-month steps.">
+          <figcaption>Report 06 &middot; what to do next, in three steps, against the role furthest ahead</figcaption>
         </figure></div>
       </div>
       <div class="cm-sl-dots" aria-hidden="true"></div>
