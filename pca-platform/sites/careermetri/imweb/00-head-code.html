@@ -403,10 +403,21 @@
 .cm-kpi span{display:block; margin-top:8px; font-size:13px; color:var(--cm-mute);
   line-height:1.5;}
 @media (max-width:620px){
+  /* 두 칸으로 못 박는다. auto-fit 에 맡기면 600px 안팎에서 세 칸이 되는데,
+     아래의 '두 번째마다 오른쪽 선을 없앤다' 는 두 칸일 때만 맞는 말이라
+     세 칸이 되는 순간 줄 한가운데에 선이 빠진다. */
+  .cm-kpi{grid-template-columns:repeat(2,minmax(0,1fr));}
   .cm-kpi > div{padding:16px 16px 15px;}
   .cm-kpi > div:nth-child(2n){border-right:0;}
 }
 @media (min-width:621px){.cm-kpi > div:last-child{border-right:0;}}
+/* 여섯 개가 한 줄에 다 들어가지 못하는 폭에서는 5+1 로 갈라져 마지막 하나가
+   혼자 남는다. 그 구간만 3+3 으로 못 박는다 — 줄이 갈리는 자리는 세로선이
+   끝나는 자리이기도 해서, 어중간하게 갈리면 도면의 치수선이 끊겨 보인다. */
+@media (min-width:621px) and (max-width:1099px){
+  .cm-kpi{grid-template-columns:repeat(3,minmax(0,1fr));}
+  .cm-kpi > div:nth-child(3n){border-right:0;}
+}
 
 /* A short specification list under the figures, as label and value on one
    rule each. It replaces the bordered table the opening band used to carry. */
