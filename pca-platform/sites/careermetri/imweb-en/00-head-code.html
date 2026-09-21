@@ -76,7 +76,10 @@
   letter-spacing:-.011em; word-break:keep-all; overflow-wrap:break-word;
   padding:92px 20px; margin:0;
 }
-.cm *{box-sizing:border-box;}
+/* 띠 자신도 포함한다. `.cm *` 는 자손만 잡아서, 폭을 못 박기 전까지는
+   아무 일도 없었지만 100vw 를 주는 순간 좌우 여백 20px 씩이 그 위에
+   얹혀 가로로 40px 넘쳤다. */
+.cm, .cm *{box-sizing:border-box;}
 /* Every section starts on the same vertical line. Different widths per
    section make the left edge wobble as the page scrolls. */
 .cm-in{max-width:1040px; margin:0 auto;}
@@ -779,6 +782,31 @@
    it to transparent, and the two buttons name their colour again so nothing
    downstream can take that away either. !important is not a habit; a host
    stylesheet loading after ours is the case it exists for. */
+/* ── Taking the full width back from whatever column we were dropped into.
+
+   The host's editor puts a code widget inside a section, and that section
+   carries the theme's own content width. Our bands are meant to run edge to
+   edge and set their own measure inside, so in a narrow column the whole
+   site arrives as a strip down the middle of a white page.
+
+   The margins pull the band out to the viewport from wherever its container
+   starts. When the container is already full width, 50% and half the
+   viewport are the same number and both margins come out at zero, so this
+   costs nothing in the case where the section was set correctly. That is
+   why it can be the default rather than a class someone has to remember.
+
+   100vw counts the scrollbar, so on a platform that reserves space for one
+   this would overshoot by its width and put a horizontal scrollbar on every
+   page. The script at the end of this block measures that gap once and
+   writes it into --cm-sbw; until it runs the fallback is 0, which is right
+   for overlay scrollbars and off by a few pixels for a moment elsewhere. */
+.cm{
+  --cm-vw:calc(100vw - var(--cm-sbw, 0px));
+  width:var(--cm-vw);
+  max-width:var(--cm-vw);
+  margin-left:calc(50% - var(--cm-vw) / 2);
+  margin-right:calc(50% - var(--cm-vw) / 2);
+}
 .cm, .cm *{-webkit-text-fill-color:currentColor !important;}
 .cm .cm-btn{color:var(--cm-navy) !important; text-decoration:none !important;
   -webkit-text-fill-color:var(--cm-navy) !important;}
@@ -793,6 +821,27 @@
 .cm-dock .cm-btn{color:var(--cm-navy) !important;
   -webkit-text-fill-color:var(--cm-navy) !important;}
 </style>
+<script>
+/* The scrollbar's width, measured rather than guessed.
+
+   The bands above are pulled out to 100vw, and 100vw includes the scrollbar
+   on a platform that reserves room for one. Without this the page gains a
+   horizontal scrollbar exactly as wide as the vertical one. innerWidth
+   counts it, clientWidth does not, so the difference is the number we want.
+   It is re-measured on resize because a page can gain or lose its vertical
+   scrollbar as content changes. */
+(function () {
+  function measure() {
+    var gap = window.innerWidth - document.documentElement.clientWidth;
+    document.documentElement.style.setProperty("--cm-sbw", (gap > 0 ? gap : 0) + "px");
+  }
+  measure();
+  window.addEventListener("resize", measure);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", measure);
+  }
+})();
+</script>
 <script>
 /* Slider wiring. imweb sometimes inserts widgets late, so newly added
    sliders are picked up too. A marker is left so none is wired twice. */
