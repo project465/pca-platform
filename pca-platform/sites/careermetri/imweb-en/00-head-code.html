@@ -131,7 +131,10 @@
    it sits. */
 /* 소제목의 괘선은 도면 표제란의 모서리처럼 왼쪽 한 토막만 굵다. 절 전체를
    가로지르는 같은 굵기의 선을 반복하는 것보다 시트 한 장처럼 읽힌다. */
-.cm-sublabel{
+/* `.cm p{margin:0 0 15px}` 가 아래에 있고 명시도가 한 단 높아서, 소제목이
+   <p> 인 동안은 여기 적은 48px 가 한 번도 먹지 않았다. 절을 가르는 선이
+   앞 덩어리에 붙어 있던 것이 그래서다. 클래스를 한 번 더 걸어 되찾는다. */
+.cm .cm-sublabel{
   font-family:var(--cm-mono); font-weight:500; font-size:12.5px; letter-spacing:.04em;
   text-transform:uppercase; color:var(--cm-text);
   margin:48px 0 14px; padding-top:16px; border-top:1px solid var(--cm-line);
@@ -279,6 +282,7 @@
 .cm-block dt{font-family:var(--cm-mono); font-size:10.5px; letter-spacing:.09em;
   text-transform:uppercase; color:var(--cm-mute); flex:0 0 9.5em;}
 .cm-block dd{margin:0; font-family:var(--cm-mono); font-size:12px; color:var(--cm-text);}
+.cm-block > div.cm-wide{grid-column:1 / -1;}
 .cm-brand em{color:var(--cm-acc); font-style:normal;}
 /* Sideways sliders. Built on scroll-snap, so a finger or a trackpad still
    works if the script fails. The arrows and dots are attached by the script
