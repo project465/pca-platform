@@ -48,36 +48,49 @@ in one line is a page that will collect whatever is left over.
 
 | Page | The question it answers | Who is asking |
 |---|---|---|
-| Home | What is this, and is it for my students? | Anyone, in thirty seconds |
+| Home | What is this, is it for my students, and has anyone done it near me? | Anyone, in thirty seconds |
 | The assessment | Is the instrument any good? | Whoever has to defend the choice |
 | Reports | What do we actually get back? | The person who will read them |
-| Localisation | **Will it work in my country?** | The same person, before they commit |
 | Partnership | What would each of us have to do? | Whoever signs |
 | Contact | How do I start? | Someone who has decided to ask |
 
-Localisation and Partnership look adjacent and are not. *Can it work here* is a
-feasibility question, asked while the reader is still deciding whether to take
-it seriously. *What would we each do* is a commercial one, asked only after the
-first is answered yes. Folding them together was tried and reversed: it put the
+*Can it work here* and *what would we each do* are different questions, asked at
+different moments, and an earlier draft that folded them into one page put the
 work split in front of people who had not yet decided the thing was possible
-where they are, and it buried the map.
+where they are. The second question still has its own page. The first no longer
+does.
 
-**The world map belongs on Localisation.** That page's question is "will it
-work in my country", and the map is the part of the answer nobody reads a
-paragraph for: whether anyone has done this anywhere near them yet, and how far
-they got. On Home it was decoration.
+**The world map is on Home.** It was on Localisation, because that page asked
+"will it work in my country" and the map is the part of that answer nobody reads
+a paragraph for. With the page gone the map did not go with it: a reader asks
+"has anyone done this near me" early, not after clicking a menu, and the map is
+the one section that stops a scroll. What was true of an earlier draft, that on
+Home it was decoration, stopped being true once it carried the three tiers and
+the state of each market rather than ten dots.
 
 | Page | Widgets, top to bottom |
 |---|---|
-| Home | `01-hero` · `07-screens` · `17-measure` · `02-who` · `03-output` |
+| Home | `01-hero` · `07-screens` · `17-measure` · `02-who` · `03-output` · `16-markets` |
 | The assessment | `04-instrument` · `05-scoring` · `12-evidence` · `13-coverage` |
 | Reports | `06-report` · `18-two` · `08-cohort` |
-| Localisation | `09-localisation` · `16-markets` |
 | Partnership | `10-partnership` |
 | Contact | `23-faq` · `22-about` · `14-contact` + an imweb form widget below it |
 | Every page but Contact | `20-cta`, last, above the footer |
 | Every page | `21-dock`, once, anywhere |
 | Bottom of every page | `15-footer` |
+
+**Localisation was dropped as a menu and the map moved to Home.** Five menus
+instead of six. The map earned the move: it answers "has anyone done this
+anywhere near me", which a first-time reader asks in the same breath as "what
+is this", and it is the one section a reader will stop scrolling for. Putting
+it last on Home means the page ends on the honest version of that answer, which
+is that no country site is open yet.
+
+`09-localisation`, the three-layer stack, has no page now. It answers "what
+would we have to supply" and that question belongs with Partnership, but it has
+not been moved there: two sections about the division of work, back to back, is
+one section too many, and which one to keep is a decision about what is being
+sold rather than about layout. It stays unplaced until that is settled.
 
 **About went away, and nothing in it did.** Its evidence sits with the
 instrument it describes, because "is this any good" and "what was it built
