@@ -323,7 +323,7 @@ function measureHtml(d: Deck, lang: Lang, cohortN: number): string {
      Two forms on purpose. Six and eight axes are a shape, which is what the
      report draws. Ten ranked areas are magnitudes, and a bar is the honest way
      to compare ten of those.`} -->
-<div class="cm">
+<div class="cm" id="cm-reports">
   <div class="cm-in">
     <div class="cm-head">
     <h2 class="cm-h2">${c.h2}</h2>
