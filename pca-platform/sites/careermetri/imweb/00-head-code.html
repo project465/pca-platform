@@ -40,10 +40,10 @@
   --cm-line:#DFE6EE; --cm-rule:#B9C4D2;
   --cm-acc:#7A6214; --cm-btn2:#0B1524;
   /* Every corner is rounded. Nothing on this site is square. */
-  --cm-r:32px; --cm-r2:22px; --cm-r3:3px; --cm-pill:999px;
+  --cm-r:40px; --cm-r2:26px; --cm-r3:3px; --cm-pill:999px;
   /* One very shallow shadow on raised surfaces. A border alone reads flat,
      and a heavy shadow reads like an old card. */
-  --cm-lift:0 1px 2px rgba(15,27,45,.035), 0 14px 38px rgba(15,27,45,.065);
+  --cm-lift:0 1px 2px rgba(15,27,45,.04), 0 18px 48px rgba(15,27,45,.075);
   /* One typeface only. Headings, body and figures from different families
      stop reading as one page. Figures line up with tabular-nums rather than
      by switching to a second font. */
@@ -64,7 +64,8 @@
 }
 /* Registration marks at the corners, the way a drawing sheet is trimmed.
    Only on the dark bands, where there is room for them to be quiet. */
-.cm.cm-dark{position:relative;}
+.cm.cm-dark{position:relative;
+  box-shadow:inset 0 1px 0 rgba(230,237,244,.08);}
 .cm.cm-dark::before, .cm.cm-dark::after{
   content:""; position:absolute; width:13px; height:13px; pointer-events:none;
   border:1px solid var(--cm-rule); opacity:.55;
@@ -82,7 +83,7 @@
   background:var(--cm-bg); color:var(--cm-text);
   font-family:var(--cm-body); font-size:16px; line-height:1.78;
   letter-spacing:-.011em; word-break:keep-all; overflow-wrap:break-word;
-  padding:92px 20px; margin:0;
+  padding:96px 20px; margin:0;
 }
 /* 띠 자신도 포함한다. `.cm *` 는 자손만 잡아서, 폭을 못 박기 전까지는
    아무 일도 없었지만 100vw 를 주는 순간 좌우 여백 20px 씩이 그 위에
@@ -91,10 +92,12 @@
 /* Every section starts on the same vertical line. Different widths per
    section make the left edge wobble as the page scrolls. */
 .cm-in{max-width:1040px; margin:0 auto;}
+@media (min-width:900px){.cm{padding:112px 32px;}}
+@media (min-width:1400px){.cm{padding:124px 40px;}}
 /* Section head: the heading holds the left column, the opening paragraph the
    right. In one column the text measure leaves the right side empty on every
    section, which reads as unfinished rather than composed. */
-.cm-head{display:grid; gap:14px 56px; align-items:start; margin-bottom:26px;}
+.cm-head{display:grid; gap:16px 64px; align-items:start; margin-bottom:34px;}
 @media (min-width:900px){
   .cm-head{grid-template-columns:minmax(0,7fr) minmax(0,9fr);}
   .cm-head > .cm-h2{margin:0; padding-top:2px;}
@@ -109,8 +112,8 @@
 
 /* Headings are short noun phrases. A sentence per section reads as ad copy. */
 .cm-h2{
-  font-family:var(--cm-disp); font-weight:700; font-size:clamp(25px,3.1vw,36px);
-  line-height:1.26; letter-spacing:-.035em; margin:0 0 14px; color:var(--cm-text);
+  font-family:var(--cm-disp); font-weight:700; font-size:clamp(28px,3.6vw,44px);
+  line-height:1.16; letter-spacing:-.04em; margin:0 0 16px; color:var(--cm-text);
   text-wrap:balance;
 }
 .cm-h3{font-family:var(--cm-disp); font-weight:700; font-size:16px; margin:0 0 7px; color:var(--cm-text);}
@@ -137,14 +140,14 @@
 .cm-small{font-size:13.5px; color:var(--cm-mute); line-height:1.75;}
 
 .cm-h1{
-  font-family:var(--cm-disp); font-weight:700; font-size:clamp(33px,5.4vw,60px);
-  line-height:1.12; letter-spacing:-.042em; margin:0 0 20px; color:var(--cm-text);
-  max-width:17ch; text-wrap:balance;
+  font-family:var(--cm-disp); font-weight:700; font-size:clamp(35px,6vw,70px);
+  line-height:1.07; letter-spacing:-.045em; margin:0 0 24px; color:var(--cm-text);
+  max-width:19ch; text-wrap:balance;
 }
 @media (max-width:760px){.cm-h1{max-width:none;}}
 .cm-cta{display:flex; gap:10px; flex-wrap:wrap; margin-top:26px;}
 .cm-btn{
-  font-family:var(--cm-body); font-weight:600; font-size:15px; padding:12px 24px;
+  font-family:var(--cm-body); font-weight:600; font-size:16px; padding:15px 32px;
   text-decoration:none; display:inline-block; border-radius:var(--cm-pill);
   border:1px solid var(--cm-gold); color:var(--cm-navy); background:var(--cm-gold);
 }
@@ -160,7 +163,7 @@
 .cm-tw{overflow-x:auto; margin:20px 0 0; border:1px solid var(--cm-line);
   border-radius:var(--cm-r); background:var(--cm-surface);}
 .cm-tw table{border-collapse:collapse; width:100%; font-size:14.5px; min-width:440px;}
-.cm-tw th,.cm-tw td{text-align:left; padding:16px 20px; border-bottom:1px solid var(--cm-line);}
+.cm-tw th,.cm-tw td{text-align:left; padding:19px 26px; border-bottom:1px solid var(--cm-line);}
 .cm-tw tr:last-child th,.cm-tw tr:last-child td{border-bottom:0;}
 /* Head cells were filled grey and row labels filled grey again, which made
    every table look like a form from a decade ago. A small capitalised label
@@ -274,7 +277,7 @@
 .cm-sl{margin-top:20px;}
 .cm-sl-head{display:flex; align-items:center; gap:12px; margin-bottom:12px;}
 .cm-sl-head p{margin:0; font-size:13.5px; color:var(--cm-mute); margin-right:auto;}
-.cm-sl-btn{width:38px; height:38px; flex:0 0 auto; cursor:pointer;
+.cm-sl-btn{width:46px; height:46px; flex:0 0 auto; cursor:pointer;
   background:var(--cm-surface); color:var(--cm-text);
   border:1px solid var(--cm-line); border-radius:var(--cm-pill);
   font-family:var(--cm-body); font-size:15px; line-height:1;
@@ -665,11 +668,15 @@
 /* ── The bar that follows the reader down. It only appears once someone has
    read most of a page, and it closes for good once closed: a bar that comes
    back after being dismissed is an argument with the visitor. */
-.cm-dock{position:fixed; left:0; right:0; bottom:0; z-index:9000;
-  padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));
-  background:rgba(15,27,45,.96); backdrop-filter:saturate(1.3) blur(10px);
-  border-top:1px solid #22354C;
-  transform:translateY(120%); transition:transform .4s cubic-bezier(.2,.7,.3,1);}
+.cm-dock{position:fixed; left:16px; right:16px; z-index:9000;
+  bottom:calc(18px + env(safe-area-inset-bottom,0px));
+  max-width:1000px; margin:0 auto;
+  padding:14px 16px 14px 26px; border-radius:var(--cm-pill);
+  background:rgba(11,21,36,.94); backdrop-filter:saturate(1.4) blur(14px);
+  border:1px solid rgba(230,237,244,.12);
+  box-shadow:0 10px 40px rgba(7,15,27,.42);
+  transform:translateY(160%); transition:transform .45s cubic-bezier(.2,.75,.3,1);}
+@media (max-width:560px){.cm-dock{border-radius:var(--cm-r2); padding:14px 16px;}}
 .cm-dock.cm-up{transform:none;}
 .cm-dock-in{max-width:1040px; margin:0 auto; display:flex; align-items:center;
   gap:10px 18px; flex-wrap:wrap;}
