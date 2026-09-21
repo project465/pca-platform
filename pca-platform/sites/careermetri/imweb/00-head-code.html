@@ -34,11 +34,11 @@
      쪽으로 간다. 중립 회색은 고르지 않은 색으로 읽히고, 이 제품은 중립적일
      이유가 없다. 대비는 다시 재서 본문 17.6:1 · 보조 6.5:1 · 금색 글자
      5.9:1 이다. */
-  --cm-navy:#07131F; --cm-gold:#D3A528; --cm-steel:#2F6FD0;
-  --cm-bg:#FFFFFF; --cm-surface:#FFFFFF; --cm-surface2:#E6EEF9;
-  --cm-text:#07131F; --cm-mute:#33506E;
-  --cm-line:#D5E1F0; --cm-rule:#9FB6D2;
-  --cm-acc:#6B5310; --cm-btn2:#07131F;
+  --cm-navy:#07131F; --cm-gold:#E0B02E;
+  --cm-bg:#0A1725; --cm-surface:#12253A; --cm-surface2:#162C45;
+  --cm-text:#EEF4FB; --cm-mute:#9FB8D4;
+  --cm-line:#1E3855; --cm-rule:#33567A;
+  --cm-acc:#E0B02E; --cm-btn2:#E0B02E;
   /* Every corner is rounded. Nothing on this site is square. */
   --cm-r:40px; --cm-r2:26px; --cm-r3:3px; --cm-pill:999px;
   /* One very shallow shadow on raised surfaces. A border alone reads flat,
@@ -52,15 +52,15 @@
   --cm-disp:var(--cm-body);
   --cm-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
 }
-.cm.cm-tint{--cm-bg:#E6EEF9; --cm-surface:#E6EEF9; --cm-surface2:#FFFFFF;}
+.cm.cm-tint{--cm-bg:#0F2135; --cm-surface:#16304A; --cm-surface2:#1B3A57;}
 .cm.cm-dark{
   /* A flat fill of one navy over 900 pixels reads as a printed block. The
      gradient is shallow enough that nobody sees a gradient. */
-  background-image:linear-gradient(178deg,#0C2136 0%,#07131F 48%,#040B14 100%);
-  --cm-bg:#07131F; --cm-surface:#07131F; --cm-surface2:#0E2033;
-  --cm-text:#E9F1FA; --cm-mute:#93AECB;
-  --cm-line:#17293D; --cm-rule:#2A4763; --cm-steel:#4E8BE8;
-  --cm-acc:#D3A528; --cm-btn2:#D3A528;
+  background-image:linear-gradient(178deg,#0B1E31 0%,#06111C 48%,#030A12 100%);
+  --cm-bg:#06111C; --cm-surface:#0D1E30; --cm-surface2:#12283F;
+  --cm-text:#EEF4FB; --cm-mute:#9FB8D4;
+  --cm-line:#18304A; --cm-rule:#2D5074;
+  --cm-acc:#E0B02E; --cm-btn2:#E0B02E;
 }
 /* Registration marks at the corners, the way a drawing sheet is trimmed.
    Only on the dark bands, where there is room for them to be quiet. */
@@ -203,7 +203,7 @@
   width:5px; height:5px; border-radius:50%; background:var(--cm-rule);}
 
 /* The report is a white document. A mount and a hairline put it on a desk. */
-.cm-plate{margin:26px 0 0; background:var(--cm-surface2); padding:16px;
+.cm-plate{margin:26px 0 0; background:#FFFFFF; padding:16px;
   border:1px solid var(--cm-line); border-radius:var(--cm-r); box-shadow:var(--cm-lift);}
 .cm-plate img{border:1px solid var(--cm-rule); border-radius:var(--cm-r2);}
 .cm-plate figcaption{font-size:12.5px; color:var(--cm-mute); padding:11px 2px 1px;}
@@ -319,9 +319,10 @@
   transition:width .38s cubic-bezier(.2,.7,.3,1);}
 /* Image variant. One picture per view, and the slide is the mount around it
    rather than a card with text in it. */
-.cm-sl-img .cm-sl-track{grid-auto-columns:100%;}
-@media (min-width:760px){.cm-sl-img .cm-sl-track{grid-auto-columns:100%;}}
-.cm-sl-img .cm-slide{background:var(--cm-surface2); padding:16px; cursor:grab;
+/* 장과 장 사이 틈은 100% 폭짜리 슬라이더에서 이동 중에만 보이는 회색
+   줄이다. 서 있을 때 안 보이는 것이 움직일 때만 보이면 그건 흠이다. */
+.cm-sl-img .cm-sl-track{grid-auto-columns:100%; gap:0;}
+.cm-sl-img .cm-slide{background:#FFFFFF; padding:16px; cursor:grab;
   transition:opacity .4s ease;}
 /* The slide half out of frame is dimmed, so the eye is told which one is
    being shown without a border or a shadow being added to say it. */
@@ -349,7 +350,9 @@
   background-size:132px 132px, 132px 132px, 33px 33px, 33px 33px;
   /* 실제 화면에서 보니 모눈이 글자와 다툰다. 종이의 괘선은 읽는 동안
      보이지 않아야 하고, 보려고 하면 그때 보이면 된다. */
-  opacity:.115;
+  /* 페이지 전체가 어두워지면서 모눈이 혼자 밝아졌다. 바탕색이 바뀌면
+     그 위에 얹힌 것의 세기도 다시 재야 한다. */
+  opacity:.075;
   -webkit-mask-image:linear-gradient(168deg,#000 0%,rgba(0,0,0,.4) 48%,transparent 88%);
   mask-image:linear-gradient(168deg,#000 0%,rgba(0,0,0,.4) 48%,transparent 88%);
 }
@@ -446,7 +449,7 @@
    never rests on colour alone: the legend names both, the figures are listed
    beside the plot, and the dash pattern separates them in print and for a
    reader who cannot tell the hues apart. */
-.cm-radar .cm-mean{fill:none; stroke:var(--cm-steel); stroke-width:1.9;
+.cm-radar .cm-mean{fill:none; stroke:var(--cm-rule); stroke-width:1.9;
   stroke-dasharray:5 4; stroke-linejoin:round;}
 .cm-radar .cm-poly{fill:rgba(201,162,39,.18); stroke:var(--cm-gold); stroke-width:2.4;
   stroke-linejoin:round;}
@@ -478,7 +481,7 @@
 .cm-key li{font-family:var(--cm-mono); font-size:12px; color:var(--cm-mute);
   display:flex; align-items:center; gap:9px;}
 .cm-key i{display:block; width:22px; height:0; border-top:2.4px solid var(--cm-gold);}
-.cm-key .cm-k-mean i{border-top:1.9px dashed var(--cm-steel);}
+.cm-key .cm-k-mean i{border-top:1.9px dashed var(--cm-rule);}
 /* The shape opens from the centre once, and only when the script is there to
    close it first. With no script the polygon is already drawn correctly. */
 /* The plot opens from its own centre, which each chart states, so one rule
@@ -515,7 +518,7 @@
 .cm-bar i{display:block; height:10px; width:var(--w); border-radius:999px;
   background:var(--cm-gold); opacity:.88;}
 .cm-bar .cm-mk{position:absolute; top:-5px; bottom:-5px; left:var(--m); width:2.5px;
-  background:var(--cm-steel); border-radius:999px;
+  background:var(--cm-text); border-radius:999px;
   /* 막대 위에 얹히는 구간이 있어 흰 테를 두른다. 회색이면 금색 위에서
      사라지고, 사라지는 기준선은 없는 것과 같다. */
   box-shadow:0 0 0 1.5px var(--cm-surface);}
@@ -748,10 +751,8 @@
 /* 점을 키우고 진하게. 2.1 은 1040 폭에서 정한 값인데 이제 1400 까지 간다.
    r 을 CSS 로 주면 생성기를 건드리지 않고 한 줄로 끝나고, 이 속성을 모르는
    브라우저는 마크업에 적힌 2.1 을 그대로 쓴다. */
-.cm-land-fill{fill:var(--cm-rule); opacity:.55;}
-/* 해안선은 땅 칸이 바다 칸과 맞닿는 변만 모은 것이라, 굵게 그으면 그
-   격자가 드러난다. 1px 로 두고 색으로만 세운다. */
-.cm-land-edge{fill:none; stroke:var(--cm-steel); stroke-width:1.1; opacity:.85;}
+.cm-map defs circle{r:3.2;}
+.cm-map-land use{fill:var(--cm-rule); opacity:.9;}
 /* The graticule. A world map without one is a shape; with one it states its
    projection, and the projection is written under it. */
 .cm-grat line{stroke:var(--cm-line); stroke-width:1; opacity:.62;}
@@ -762,7 +763,7 @@
   fill:var(--cm-text); paint-order:stroke; dominant-baseline:middle;}
 .cm-pin .cm-pin-dot{fill:var(--cm-mute);}
 .cm-pin .cm-pin-halo{fill:none;}
-.cm-pin-legal .cm-pin-dot{fill:var(--cm-steel);}
+.cm-pin-legal .cm-pin-dot{fill:var(--cm-text);}
 .cm-pin-src .cm-pin-dot{fill:var(--cm-gold);}
 .cm-pin-src .cm-pin-halo{fill:var(--cm-gold); opacity:.18;}
 /* One pin beats, and only the one the section is about. Ten beating pins
@@ -784,7 +785,7 @@
 .cm-legend li::before{content:""; position:absolute; left:0; top:8px;
   width:12px; height:12px; border-radius:50%; background:var(--cm-mute);}
 .cm-legend .cm-lg-src::before{background:var(--cm-gold);}
-.cm-legend .cm-lg-legal::before{background:var(--cm-steel);}
+.cm-legend .cm-lg-legal::before{background:var(--cm-text);}
 @media (max-width:760px){
   .cm-map{min-width:680px;}
   .cm-mapwrap{overflow-x:auto;}
