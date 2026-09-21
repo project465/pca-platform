@@ -213,25 +213,53 @@ function radar(rows: Row[], key: string, hidden: boolean, c: (typeof COPY)[Lang]
   );
 }
 
-/** 나란히 놓는 작은 도형. 축 이름을 빼고 값 목록이 대신 읽어 준다. */
+/**
+ * 나란히 놓는 작은 도형. 큰 것과 같은 그래프다 — 눈금 넷, 축 이름과 값,
+ * 견줄 값의 파선까지 전부 있다. 이름표 없는 도형은 모양만 보여 주고 "무엇이
+ * 높다는 것인지" 를 옆의 표로 미루는데, 두 사람을 견주라고 내놓은 자리에서는
+ * 그 미룸이 곧 논지를 못 읽게 만든다.
+ *
+ * 좌표계만 작다. 카드 폭에 맞춰 반지름을 줄이고 이름표 자리를 남겼다.
+ */
+const MW = 560, MH = 400, MCX = 280, MCY = 192, MR = 130, MLAB = MR + 22;
 function miniRadar(rows: Row[], key: string): string {
-  const n = rows.length, S = 260, C = 130, r0 = 92;
-  const at = (i: number, v: number) => pt(i, n, v, C, C, r0);
-  const rings = [50, 100]
-    .map((p) => `<polygon${p === 50 ? ' class="cm-rg-mid"' : ""} points="${j2(rows.map((_, i) => at(i, p)))}"/>`)
-    .join("");
+  const n = rows.length;
+  const at = (i: number, v: number) => pt(i, n, v, MCX, MCY, MR);
+  const ring = (p: number, cls: string) =>
+    `<polygon${cls ? ` class="${cls}"` : ""} points="${j2(rows.map((_, i) => at(i, p)))}"/>`;
+  const rings = [25, 50, 75].map((p) => ring(p, p === 50 ? "cm-rg-mid" : "")).join("") + ring(100, "cm-rg-out");
   const spokes = rows
-    .map((_, i) => { const [x, y] = at(i, 100); return `<line x1="${C}" y1="${C}" x2="${f1(x)}" y2="${f1(y)}"/>`; })
+    .map((_, i) => { const [x, y] = at(i, 100); return `<line x1="${MCX}" y1="${MCY}" x2="${f1(x)}" y2="${f1(y)}"/>`; })
+    .join("");
+  const ticks = [25, 50, 75, 100]
+    .map((p) => {
+      const [, y] = at(0, p);
+      return `<line x1="${MCX - 4}" y1="${f1(y)}" x2="${MCX + 4}" y2="${f1(y)}"/>` +
+             `<text x="${MCX + 9}" y="${f1(y + 3.5)}">${p}</text>`;
+    })
     .join("");
   const vtx = rows
-    .map((r, i) => { const [x, y] = at(i, r.value); return `<circle r="3.2" cx="${f1(x)}" cy="${f1(y)}"/>`; })
+    .map((r, i) => { const [x, y] = at(i, r.value); return `<circle r="3.8" cx="${f1(x)}" cy="${f1(y)}"/>`; })
     .join("");
+  const labs = rows
+    .map((r, i) => {
+      const a = ang(i, n), cs = Math.cos(a), sn = Math.sin(a);
+      const x = MCX + MLAB * cs;
+      let y = MCY + MLAB * sn, anchor: string, base: string;
+      if (Math.abs(cs) < 0.28) { anchor = "middle"; y += sn < 0 ? -11 : 19; base = "auto"; }
+      else { anchor = cs > 0 ? "start" : "end"; base = "middle"; }
+      return `<g data-cm-ax="${i}">` +
+        `<text x="${f1(x)}" y="${f1(y)}" text-anchor="${anchor}" dominant-baseline="${base}">${r.name}` +
+        `<tspan x="${f1(x)}" dy="15">${fmt(r.value)}</tspan></text></g>`;
+    })
+    .join("");
+  const mean = `<polygon class="cm-mean" points="${j2(rows.map((r, i) => at(i, r.mean)))}"/>`;
   return (
-    `<svg class="cm-radar cm-mini" viewBox="0 0 ${S} ${S}" role="img" data-cm-radar="${key}" ` +
-    `style="--cm-o:${C}px ${C}px" aria-hidden="true" focusable="false">` +
-    `<g class="cm-rg">${rings}</g><g class="cm-sp">${spokes}</g>` +
-    `<polygon class="cm-poly" points="${j2(rows.map((r, i) => at(i, r.value)))}"/>` +
-    `<g class="cm-vtx">${vtx}</g></svg>`
+    `<svg class="cm-radar cm-mini" viewBox="0 0 ${MW} ${MH}" role="img" data-cm-radar="${key}" ` +
+    `style="--cm-o:${MCX}px ${MCY}px" aria-hidden="true" focusable="false">` +
+    `<g class="cm-rg">${rings}</g><g class="cm-sp">${spokes}</g><g class="cm-tick">${ticks}</g>` +
+    `${mean}<polygon class="cm-poly" points="${j2(rows.map((r, i) => at(i, r.value)))}"/>` +
+    `<g class="cm-vtx">${vtx}</g><g class="cm-lab">${labs}</g></svg>`
   );
 }
 
@@ -357,14 +385,18 @@ function measureHtml(d: Deck, lang: Lang, cohortN: number): string {
 `;
 }
 
-function twoHtml(a: Deck, b: Deck, lang: Lang): string {
+function twoHtml(a: Deck, b: Deck, lang: Lang, cohortN: number): string {
   const c = COPY[lang];
+  /* 제목 길이가 달라도 두 장의 도형과 표가 같은 줄에서 시작하도록, 카드
+     안을 머리 · 도형 · 표 세 덩어리로 나눠 바깥 격자 줄에 건다. */
   const card = (who: string, d: Deck, n: number) => `<div class="cm-cell">
-        <span class="cm-n">${c.student(who)}</span>
-        <h3 class="cm-h3">${d.areas[0].name}</h3>
-        <p>${c.card(d)}</p>
+        <div class="cm-chead">
+          <span class="cm-n">${c.student(who)}</span>
+          <h3 class="cm-h3">${d.areas[0].name}</h3>
+          <p>${c.card(d)}</p>
+        </div>
         ${miniRadar(d.style, "pair" + n)}
-        <div class="cm-vlist cm-tight">${vals(d.style, undefined, false)}</div>
+        <div class="cm-vlist cm-tight">${vals(d.style, { a: c.colAxis, b: c.colYou, c: c.colMean })}</div>
       </div>`;
   return `<!-- ${c.genNote}
 
@@ -381,10 +413,14 @@ function twoHtml(a: Deck, b: Deck, lang: Lang): string {
     <h2 class="cm-h2">${c.twoH2}</h2>
     <div class="cm-col"><p>${c.twoLead}</p></div>
     </div>
-    <div class="cm-grid cm-g2">
+    <div class="cm-grid cm-g2 cm-align">
       ${card("A", a, 1)}
       ${card("B", b, 2)}
     </div>
+    <ul class="cm-key">
+      <li><i></i>${c.keyYou}</li>
+      <li class="cm-k-mean"><i></i>${c.keyMean(cohortN)}</li>
+    </ul>
     <div class="cm-note"><p>${c.twoNote}</p></div>
   </div>
 </div>
@@ -397,7 +433,7 @@ async function main() {
     const d = await deck(ATTEMPT, lang, co.mean);
     writeFileSync(join(process.cwd(), SITE[lang], "17-measure.html"), measureHtml(d, lang, co.n), "utf8");
     const [a, b] = await Promise.all(PAIR.map((n) => deck(n, lang, co.mean)));
-    writeFileSync(join(process.cwd(), SITE[lang], "18-two.html"), twoHtml(a, b, lang), "utf8");
+    writeFileSync(join(process.cwd(), SITE[lang], "18-two.html"), twoHtml(a, b, lang, co.n), "utf8");
     console.log(`${lang}  응시 ${ATTEMPT} · 짝 ${PAIR.join("+")} → ${SITE[lang]}/17-measure.html · 18-two.html`);
     if (lang === "en") {
       console.log(`     성향 ${d.style.map((r) => `${r.name} ${r.value}`).join(" · ")}`);

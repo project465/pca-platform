@@ -32,6 +32,11 @@
   --cm-bg:#0A1725; --cm-surface:#12253A; --cm-surface2:#162C45;
   --cm-text:#EEF4FB; --cm-mute:#9FB8D4;
   --cm-line:#1E3855; --cm-rule:#33567A;
+  /* 계기의 두 번째 채널. 금색이 "이 응시", 청록이 "견줄 값" 이다.
+     면에는 절대 쓰지 않는다 — 데이터, 눈금, 모눈, 지도의 상태에만.
+     제도판과 계측기의 색이라 공학 문서로 읽히고, 금색과 서로 물들지
+     않아 두 계열을 색맹 조건에서도 파선과 실선으로 갈라 볼 수 있다. */
+  --cm-cyan:#4FC7DE;
   --cm-acc:#E0B02E; --cm-btn2:#E0B02E;
   /* Every corner is rounded. Nothing on this site is square. */
   --cm-r:40px; --cm-r2:26px; --cm-r3:3px; --cm-pill:999px;
@@ -69,6 +74,15 @@
 /* The opening band paints its own grid on ::before, so its marks go on a
    child instead of fighting for the same pseudo-element. */
 .cm.cm-dark.cm-open::before{border:0; top:0; left:0; width:auto; height:auto; opacity:1;}
+/* 도면지의 괘선. 여는 띠는 제 ::before 로 이미 모눈을 그리니 빼고,
+   나머지 어두운 띠에만 배경 레이어로 얹는다. 글자와 다투면 안 되므로
+   66px 에 4% — 보려고 해야 보이는 세기다. */
+.cm.cm-dark:not(.cm-open){
+  background-image:
+    repeating-linear-gradient(to right, rgba(79,199,222,.042) 0 1px, transparent 1px 66px),
+    repeating-linear-gradient(to bottom, rgba(79,199,222,.042) 0 1px, transparent 1px 66px),
+    linear-gradient(178deg,#0B1E31 0%,#06111C 48%,#030A12 100%);
+}
 
 /* 메뉴가 같은 페이지 안 위치로 보내는 구조라, 뛰어간 자리에서 제목이
    상단 막대에 가리면 안 된다. 여유는 상단 높이보다 넉넉하게 준다. */
@@ -171,7 +185,7 @@
 .cm-tw th[scope=row]{background:transparent; width:10.5em; vertical-align:top;
   font-size:11px; letter-spacing:.09em; text-transform:uppercase;
   color:var(--cm-mute); font-weight:600; padding-top:19px;}
-.cm-tw td.cm-live{color:var(--cm-acc); font-weight:600; white-space:nowrap;}
+.cm-tw td.cm-live{color:var(--cm-acc); font-weight:600;}
 .cm-tw .cm-num{text-align:right;}
 .cm-tw td.cm-num{font-variant-numeric:tabular-nums;}
 @media (max-width:540px){.cm-tw th[scope=row]{width:7.5em; font-size:13px;}}
@@ -436,14 +450,14 @@
 .cm-radar .cm-sp line{stroke:var(--cm-line); stroke-width:1;}
 /* Tick marks across the spokes, the way a plot is ruled rather than a
    background being drawn behind it. */
-.cm-radar .cm-tick line{stroke:var(--cm-rule); stroke-width:1;}
+.cm-radar .cm-tick line{stroke:var(--cm-cyan); stroke-width:1; opacity:.7;}
 .cm-radar .cm-tick text{font-family:var(--cm-mono); font-size:10.5px; fill:var(--cm-mute);}
 /* Two series, and one of them is the point. The cohort is context, so it is
    a neutral dashed outline with no fill; the student is the accent. Identity
    never rests on colour alone: the legend names both, the figures are listed
    beside the plot, and the dash pattern separates them in print and for a
    reader who cannot tell the hues apart. */
-.cm-radar .cm-mean{fill:none; stroke:var(--cm-rule); stroke-width:1.9;
+.cm-radar .cm-mean{fill:none; stroke:var(--cm-cyan); stroke-width:1.9;
   stroke-dasharray:5 4; stroke-linejoin:round;}
 .cm-radar .cm-poly{fill:rgba(201,162,39,.18); stroke:var(--cm-gold); stroke-width:2.4;
   stroke-linejoin:round;}
@@ -462,7 +476,7 @@
 .cm-vlist > div.cm-hot{background:rgba(201,162,39,.11);
   box-shadow:inset 3px 0 0 var(--cm-gold);}
 .cm-vlist > div{padding-left:9px; margin-left:-9px; border-radius:0 6px 6px 0;}
-.cm-vlist .cm-mean{font-family:var(--cm-mono); font-size:12px; color:var(--cm-mute);
+.cm-vlist .cm-mean{font-family:var(--cm-mono); font-size:12px; color:var(--cm-cyan);
   min-width:3.4em; text-align:right;}
 .cm-vhead{display:flex; align-items:baseline; gap:14px; padding-bottom:9px;
   font-family:var(--cm-mono); font-size:10.5px; letter-spacing:.09em;
@@ -475,7 +489,7 @@
 .cm-key li{font-family:var(--cm-mono); font-size:12px; color:var(--cm-mute);
   display:flex; align-items:center; gap:9px;}
 .cm-key i{display:block; width:22px; height:0; border-top:2.4px solid var(--cm-gold);}
-.cm-key .cm-k-mean i{border-top:1.9px dashed var(--cm-rule);}
+.cm-key .cm-k-mean i{border-top:1.9px dashed var(--cm-cyan);}
 /* The shape opens from the centre once, and only when the script is there to
    close it first. With no script the polygon is already drawn correctly. */
 /* The plot opens from its own centre, which each chart states, so one rule
@@ -684,11 +698,30 @@
 .cm-dock button.cm-x:hover{color:#E8EDF2;}
 @media (max-width:560px){.cm-dock b{flex:1 1 100%; margin-right:0; font-size:13.5px;}}
 
-/* ── Two shapes side by side. */
-.cm-mini{max-width:260px; margin:18px 0 4px;}
+/* ── Two shapes side by side. 작은 도형도 큰 것과 같은 그래프다 — 눈금,
+   축 이름, 견줄 값까지 다 달았다. 이름표 없는 도형은 모양만 보여 주고
+   "그래서 뭐가 높다는 건지" 를 옆의 표로 미룬다. */
+.cm-mini{width:100%; max-width:none; margin:16px 0 6px;}
+.cm-mini .cm-lab text{font-size:14px;}
+.cm-mini .cm-lab tspan{font-size:12.5px;}
+.cm-mini .cm-tick text{font-size:11px;}
 .cm-vlist.cm-tight > div{padding:7px 0; font-size:13.5px;}
 .cm-vlist.cm-tight b{font-size:14px;}
+.cm-vlist.cm-tight .cm-mean{font-size:11.5px;}
 .cm-cell .cm-vlist{border-top:1px solid var(--cm-line);}
+.cm-chead{min-width:0;}
+.cm-cell .cm-key{margin-top:14px;}
+/* 두 장이 한 벌로 읽히려면 제목 길이가 달라도 도형과 표가 같은 줄에서
+   시작해야 한다. 카드 안쪽 세 덩어리를 바깥 격자의 줄에 맞춰 건다.
+   subgrid 를 모르는 브라우저에서는 이 블록이 통째로 무시되고 지금까지의
+   모습 그대로다. */
+@supports (grid-template-rows:subgrid){
+  @media (min-width:600px){
+    .cm-g2.cm-align{grid-template-rows:auto auto auto;}
+    .cm-g2.cm-align > .cm-cell{display:grid; grid-row:span 3; gap:0;
+      grid-template-rows:subgrid; align-content:start;}
+  }
+}
 
 /* ── A hairline across the top that fills as the page goes past. It sits
    under whatever the imweb theme fixes up there, which is why it is two
@@ -750,14 +783,15 @@
 /* The graticule. A world map without one is a shape; with one it states its
    projection, and the projection is written under it. */
 .cm-grat line{stroke:var(--cm-line); stroke-width:1; opacity:.62;}
-.cm-grat .cm-eq{stroke:var(--cm-rule); stroke-width:1; opacity:.8;}
+.cm-grat .cm-eq{stroke:var(--cm-cyan); stroke-width:1; opacity:.55;}
 .cm-proj{font-family:var(--cm-mono); font-size:12px; letter-spacing:.03em;
   color:var(--cm-mute); margin:16px 0 0;}
 .cm-pin text{font-family:var(--cm-body); font-size:20px; font-weight:600;
   fill:var(--cm-text); paint-order:stroke; dominant-baseline:middle;}
 .cm-pin .cm-pin-dot{fill:var(--cm-mute);}
 .cm-pin .cm-pin-halo{fill:none;}
-.cm-pin-legal .cm-pin-dot{fill:var(--cm-text);}
+.cm-pin-legal .cm-pin-dot{fill:var(--cm-cyan);}
+.cm-pin-legal .cm-pin-halo{fill:var(--cm-cyan); opacity:.16;}
 .cm-pin-src .cm-pin-dot{fill:var(--cm-gold);}
 .cm-pin-src .cm-pin-halo{fill:var(--cm-gold); opacity:.18;}
 /* One pin beats, and only the one the section is about. Ten beating pins
@@ -779,7 +813,21 @@
 .cm-legend li::before{content:""; position:absolute; left:0; top:8px;
   width:12px; height:12px; border-radius:50%; background:var(--cm-mute);}
 .cm-legend .cm-lg-src::before{background:var(--cm-gold);}
-.cm-legend .cm-lg-legal::before{background:var(--cm-text);}
+.cm-legend .cm-lg-legal::before{background:var(--cm-cyan);}
+/* 시장 표의 주소 칸. 아직 어느 것도 살아 있지 않으므로 링크로 만들지
+   않는다. 눌러서 아무 데도 안 가는 링크는 없는 것보다 나쁘다. 대신 그
+   줄에서 실제로 할 수 있는 일 하나 — 그 시장을 적은 문의 — 를 건다. */
+.cm-addr{font-family:var(--cm-mono); font-size:13px; color:var(--cm-text);
+  white-space:nowrap;}
+.cm-addr em{display:block; font-style:normal; font-family:var(--cm-body);
+  font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--cm-mute); margin-top:5px;}
+.cm-addr.cm-addr-on{color:var(--cm-cyan);}
+.cm-ask{display:inline-block; margin-top:9px; font-size:13px; font-weight:600;
+  color:var(--cm-acc); text-decoration:none; border-bottom:1px solid transparent;
+  transition:border-color .2s ease;}
+.cm-ask::after{content:" \2192";}
+.cm-ask:hover{border-bottom-color:var(--cm-acc);}
 @media (max-width:760px){
   .cm-map{min-width:680px;}
   .cm-mapwrap{overflow-x:auto;}
