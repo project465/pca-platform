@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>PCA 진로·직무 진단</title>
+<meta name="description" content="전공 기반 진로·직무 진단. 나에게 맞는 직무와 현재 준비 수준, 부족한 점과 다음 행동까지 확인합니다.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2314263d'/%3E%3Cpath d='M9 22V10h5a4 4 0 0 1 0 8H9' stroke='%230f6b58' stroke-width='2.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+<div class="app">
+
+  <header class="top">
+    <div class="topin">
+      <div class="row">
+        <div class="brand">PCA · 진로직무진단</div>
+        <div class="badge" id="badge">전공 기반 진단</div>
+      </div>
+      <div id="progArea" style="display:none">
+        <div class="progwrap"><div class="prog" id="prog"></div></div>
+        <div class="meta"><span id="progText">0 / 0</span><span id="progPct">0%</span></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell">
+
+    <!-- 1. 시작 -->
+    <section class="screen active" id="s-start">
+      <div class="hero">
+        <div class="eyebrow">PERSONALIZED CAREER ANALYSIS</div>
+        <h1>전공은 정했는데,<br>졸업 후 무엇을 할지 모를 때</h1>
+        <p class="desc">
+          같은 전공 안에서도 직무마다 하는 일과 필요한 준비가 다릅니다.
+          응답을 바탕으로 <b>나에게 맞는 직무</b>, <b>현재 준비 수준</b>,
+          <b>부족한 부분</b>과 <b>다음에 할 일</b>까지 확인합니다.
+        </p>
+      </div>
+
+      <div class="card pad">
+        <div class="statgrid">
+          <div class="stat"><strong id="stQ">28</strong><span>문항</span></div>
+          <div class="stat"><strong id="stT">4~6분</strong><span>소요시간</span></div>
+          <div class="stat"><strong id="stJ">8</strong><span>직무 분석</span></div>
+        </div>
+        <button class="primary" id="btnStart">검사 시작하기</button>
+        <p class="note">
+          결과는 직무를 확정하는 판정이 아니라 <b>탐색 우선순위</b>입니다.
+          중간에 나가도 같은 기기·같은 브라우저에서 이어서 진행할 수 있습니다.
+        </p>
+      </div>
+    </section>
+
+    <!-- 1-2. 단계 선택 -->
+    <section class="screen" id="s-stage">
+      <div class="hero">
+        <div class="eyebrow">STEP 1</div>
+        <h1>지금 어디에 계신가요?</h1>
+        <p class="desc">단계마다 묻는 것과 결과지에 붙는 절이 다릅니다. 대학원·연구 단계에서는 연구 역량 문항이 더 나옵니다.</p>
+      </div>
+      <div id="stageList"></div>
+      <div class="nav" id="navStage" style="display:none">
+        <div class="navin"><button class="primary" id="btnStageNext" disabled>다음</button></div>
+      </div>
+    </section>
+
+    <!-- 2. 학과 선택 -->
+    <section class="screen" id="s-major">
+      <div class="hero">
+        <div class="eyebrow">STEP 2</div>
+        <h1>학과를 선택해 주세요</h1>
+        <p class="desc">학과마다 직무 구조와 문항이 다릅니다. 현재는 기계공학과가 열려 있고, 나머지 학과는 순차적으로 추가됩니다.</p>
+      </div>
+      <div id="majorList"></div>
+      <div class="nav" id="navMajor" style="display:none">
+        <div class="navin"><button class="primary" id="btnMajorNext" disabled>다음</button></div>
+      </div>
+    </section>
+
+    <!-- 3. 응시자 정보 -->
+    <section class="screen" id="s-profile">
+      <div class="hero">
+        <div class="eyebrow">STEP 3</div>
+        <h1>응시자 정보</h1>
+        <p class="desc" id="profileDesc">결과지 발급과 기관 제출용으로만 사용합니다.</p>
+      </div>
+      <div class="card pad">
+        <div class="field">
+          <label>학과</label>
+          <div class="fixed" id="pfMajor">기계공학과</div>
+        </div>
+        <div class="field">
+          <label for="pfName">이름</label>
+          <input id="pfName" type="text" autocomplete="name" placeholder="홍길동" maxlength="20">
+        </div>
+        <div class="field">
+          <label>성별</label>
+          <div class="segs" id="pfGender">
+            <button class="seg" data-v="M">남</button>
+            <button class="seg" data-v="F">여</button>
+            <button class="seg" data-v="N">응답 안 함</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="pfSid">학번</label>
+          <input id="pfSid" type="text" inputmode="numeric" autocomplete="off" placeholder="20231234" maxlength="20">
+        </div>
+        <label class="agree">
+          <input type="checkbox" id="pfAgree">
+          <span>검사 응답과 결과를 결과지 발급 및 기관 통계 목적으로 이용하는 데 동의합니다.
+          이름·학번은 결과지 본인 확인 용도로만 사용합니다.</span>
+        </label>
+        <div class="err" id="pfErr"></div>
+        <button class="primary" id="btnProfileNext" style="margin-top:6px">검사 시작</button>
+      </div>
+    </section>
+
+    <!-- 4. 문항 -->
+    <section class="screen" id="s-question">
+      <div class="qwrap">
+        <div class="qidx" id="qidx">Q1</div>
+        <div class="qtype" id="qtype"></div>
+        <h2 class="qtext" id="qtext"></h2>
+        <div class="scalehint" id="scalehint" style="display:none"></div>
+        <div class="opts" id="opts"></div>
+      </div>
+      <div class="nav" id="navQ">
+        <div class="navin"><button class="secondary" id="btnPrev">이전 문항</button></div>
+      </div>
+    </section>
+
+    <!-- 5. 결과 -->
+    <section class="screen" id="s-result">
+      <div id="resultBody"></div>
+    </section>
+
+  </main>
+</div>
+
+<script src="data/majors.js"></script>
+<script src="data/grad.js"></script>
+<script src="data/me.js"></script>
+<!-- 학과 추가 시 이 아래에 <script src="data/<code>.js"></script> 한 줄만 추가하세요 -->
+<script src="assets/engine.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
