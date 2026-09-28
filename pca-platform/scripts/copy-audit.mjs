@@ -40,7 +40,9 @@ const files = process.argv.slice(2).length
      // 아임웹 위젯은 실제로 붙여 넣는 원고다. index.html 만 보다가
      // 위젯 쪽 문장을 놓치면 사이트에 남는 것은 위젯 쪽이다
      ...readdirSync("sites/careermetri/imweb")
-       .filter((f) => /^\d\d-.*\.html$/.test(f))
+       // 01b · 01c 처럼 사이에 끼워 넣은 절이 있다. 두 자리만 보던 규칙은
+       // 그런 파일을 조용히 빼놓았고, 빠진 파일이 곧 아무도 안 보는 원고가 된다.
+       .filter((f) => /^\d\d[a-z]?-.*\.html$/.test(f) && !f.includes("head-code"))
        .map((f) => `sites/careermetri/imweb/${f}`),
      // 약관도 사람이 읽는 글이다. 법 문장이라 딱딱해도 기계 티는 따로 난다
      ...readdirSync("sites/careermetri/legal")
@@ -48,7 +50,9 @@ const files = process.argv.slice(2).length
        .map((f) => `sites/careermetri/legal/${f}`),
      // 영문 위젯. 한글 규칙은 안 걸리지만 대시는 영문에서도 센다
      ...readdirSync("sites/careermetri/imweb-en")
-       .filter((f) => /^\d\d-.*\.html$/.test(f))
+       // 01b · 01c 처럼 사이에 끼워 넣은 절이 있다. 두 자리만 보던 규칙은
+       // 그런 파일을 조용히 빼놓았고, 빠진 파일이 곧 아무도 안 보는 원고가 된다.
+       .filter((f) => /^\d\d[a-z]?-.*\.html$/.test(f) && !f.includes("head-code"))
        .map((f) => `sites/careermetri/imweb-en/${f}`)];
 
 /** 사람이 읽는 글만 본다. 코드·주석·태그는 문체와 상관이 없다. */
