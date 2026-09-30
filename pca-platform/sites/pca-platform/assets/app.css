@@ -52,6 +52,22 @@ h1{font-size:34px;line-height:1.16;letter-spacing:-.04em;color:var(--navy)}
 .secondary{border:1px solid var(--line);background:#fff;color:#111}
 .note{font-size:11px;line-height:1.65;color:#8b949f;margin:16px 2px}
 
+/* 처음으로 — 어느 화면에서든 머리에 있다 */
+.ghost{border:1px solid var(--line);background:#fff;color:var(--navy);
+  font-size:11.5px;font-weight:700;padding:7px 11px;border-radius:999px;
+  cursor:pointer;white-space:nowrap;align-items:center;line-height:1}
+.ghost:hover{border-color:var(--navy);background:#fbfcfd}
+/* 저장되는지 보이지 않으면 아무도 믿지 않는다 */
+.saved{color:var(--green);font-weight:700}
+/* 이어서 하기 화면의 요약 */
+.rsum{border-top:2px solid var(--navy);border-bottom:1px solid var(--line);margin-bottom:18px}
+.rsum-row{display:flex;justify-content:space-between;gap:14px;align-items:baseline;
+  padding:12px 0;border-bottom:1px solid #edf1f3}
+.rsum-row:last-child{border-bottom:0}
+.rsum-row span{font-size:12.5px;color:var(--muted)}
+.rsum-row b{font-size:14.5px;color:var(--navy);font-weight:650;text-align:right;
+  font-variant-numeric:tabular-nums;word-break:keep-all}
+
 /* 학과 선택 */
 .groupname{font-size:12px;font-weight:900;color:var(--muted);letter-spacing:.08em;margin:22px 2px 9px}
 .majorgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}

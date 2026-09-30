@@ -78,17 +78,39 @@
   function save() {
     S.savedAt = Date.now();
     store(S);
+    var el = document.getElementById('savedAt');
+    if (el) el.textContent = '자동 저장됨 ' + hhmm(S.savedAt);
+  }
+  function hhmm(t) {
+    var d = new Date(t), p2 = function (n) { return (n < 10 ? '0' : '') + n; };
+    return p2(d.getHours()) + ':' + p2(d.getMinutes());
+  }
+  function ymdhm(t) {
+    var d = new Date(t), p2 = function (n) { return (n < 10 ? '0' : '') + n; };
+    return d.getFullYear() + '. ' + (d.getMonth() + 1) + '. ' + d.getDate() +
+      '. ' + p2(d.getHours()) + ':' + p2(d.getMinutes());
   }
   function clearSession() {
     try { localStorage.removeItem(KEY); } catch (e) {}
     mem = null;
   }
 
+  /* 처음으로 돌아간다. 주소의 major·form·stage 는 그대로 두고 응답만 지운다 —
+     학과 링크로 들어온 사람이 처음으로를 눌렀다고 학과 선택으로 떨어지면
+     자기가 무엇을 푸는지 다시 골라야 한다. */
+  function resetAll() {
+    clearSession();
+    location.reload();
+  }
+
   function screen(id) {
-    ['s-start', 's-stage', 's-major', 's-profile', 's-question', 's-result'].forEach(function (x) {
+    ['s-resume', 's-start', 's-stage', 's-major', 's-profile', 's-question', 's-result'].forEach(function (x) {
       var el = document.getElementById(x);
       if (el) el.classList.toggle('active', x === id);
     });
+    /* 시작 화면과 이어서 화면에는 돌아갈 '처음' 이 이미 그 화면이다 */
+    var home = document.getElementById('btnHome');
+    if (home) home.style.display = (id === 's-start' || id === 's-resume') ? 'none' : 'inline-flex';
     $('#progArea').style.display = (id === 's-question') ? 'block' : 'none';
     $('#navQ').style.display = (id === 's-question') ? 'block' : 'none';
     $('#navMajor').style.display = (id === 's-major') ? 'block' : 'none';
@@ -704,6 +726,15 @@
     bindProfile();
     bindQuestion();
 
+    $('#btnHome').addEventListener('click', function () {
+      // 답한 것이 있을 때만 묻는다. 없으면 지울 것도 없다
+      var n = Object.keys(S.answers || {}).length;
+      if (n > 0 && !confirm('처음 화면으로 돌아갑니다.\n지금까지 답한 ' + n +
+        '문항이 저장되어 있어, 다시 들어오면 이어서 할 수 있습니다.')) return;
+      if (n > 0) save();
+      location.href = location.pathname + location.search;
+    });
+
     $('#btnStart').addEventListener('click', function () {
       if (!S.stage) { screen('s-stage'); return; }
       if (S.majorCode && window.PCA_DATA[S.majorCode]) { applyMajor(S.majorCode); screen('s-profile'); }
@@ -722,20 +753,55 @@
       screen('s-profile');
     });
 
-    /* 이어서 응시 */
+    /* 이어서 응시.
+
+       예전에는 저장된 응답이 있으면 말없이 문항 화면으로 되돌렸다. 그러면
+       다시 들어온 사람이 34번 문항 앞에 떨어지고, 왜 여기인지도 처음부터
+       다시 할 방법도 알 수 없다. 그래서 무엇이 남아 있는지 보여주고 고르게
+       한다. */
     var prev = store();
-    var resumed = false;
     if (prev && prev.majorCode && window.PCA_DATA[prev.majorCode] &&
         prev.answers && Object.keys(prev.answers).length > 0 && !p.t) {
+      /* Q 길이는 상품과 단계에 따라 달라지므로 S 를 먼저 넣고 계산한다.
+         '처음부터 다시' 를 고르면 어차피 전부 지운다. */
       S = prev;
       if (!S.profile) S.profile = { name: '', gender: '', sid: '' };
       applyMajor(S.majorCode);
-      if (S.idx >= Q.length) { showResult(); return; }
-      renderQuestion();
-      screen('s-question');
-      resumed = true;
+      var done = Object.keys(S.answers).length;
+      var total = Q.length;
+      var finished = S.idx >= total;
+      var pst = STAGE_BY[S.stage];
+      var rows = [
+        ['학과', major.name],
+        ['단계', pst ? pst.label : '선택 전'],
+        ['상품', S.form + ' · ' + total + '문항'],
+        [finished ? '응답' : '답한 문항', done + ' / ' + total + '문항'],
+        ['마지막 저장', S.savedAt ? ymdhm(S.savedAt) : '기록 없음']
+      ];
+      $('#resumeInfo').innerHTML = rows.map(function (r) {
+        return '<div class="rsum-row"><span>' + r[0] + '</span><b>' + esc(r[1]) + '</b></div>';
+      }).join('');
+      if (finished) {
+        $('#resumeTitle').innerHTML = '끝낸 검사가<br>남아 있습니다';
+        $('#resumeDesc').textContent =
+          '이 기기의 브라우저에 저장된 응답입니다. 결과지를 다시 열 수 있습니다.';
+        $('#btnResume').textContent = '결과지 다시 보기';
+        $('#btnRestart').textContent = '새로 검사하기';
+      }
+      $('#btnResume').addEventListener('click', function () {
+        if (finished) { showResult(); return; }
+        renderQuestion();
+        screen('s-question');
+      });
+      $('#btnRestart').addEventListener('click', function () {
+        if (!confirm(finished
+          ? '저장된 응답과 결과지를 지우고 새로 시작합니다.\n지운 응답은 되돌릴 수 없습니다.'
+          : '저장된 응답을 지우고 처음부터 다시 시작합니다.\n지운 응답은 되돌릴 수 없습니다.')) return;
+        resetAll();
+      });
+      screen('s-resume');
+      return;
     }
-    if (resumed) return;
 
     /* 단체(1인 1링크) */
     if (p.t) { S.token = p.t; clearSession(); }
