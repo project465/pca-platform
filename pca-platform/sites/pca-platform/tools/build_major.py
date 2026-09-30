@@ -167,6 +167,9 @@ def main():
         evw[str(r[0]).strip()] = {colmap[i]: float(r[i]) for i in colmap
                                   if r[i] not in (None, '') and float(r[i]) > 0}
 
+    # ── 학과 공통 원고 (직무 이름이 아니라 '__major__' 키에 들어 있다)
+    major_copy = content.get('__major__', {})
+
     # ── 직무 서술 콘텐츠 적용
     for j in jobs:
         c = content.get(j['name'], {})
@@ -224,6 +227,10 @@ def main():
         'style': WS3, 'style_labels': STYLE_LABELS,
         'jobs': jobs, 'questions': questions, 'evidence_weights': evw,
     }
+    # 학과 공통 원고 (8축 설명·성향별 부담 국면). 없으면 그 소절을 그리지 않는다.
+    for k in ('dna_desc', 'style_load'):
+        if major_copy.get(k):
+            data[k] = major_copy[k]
     body = json.dumps(data, ensure_ascii=False, separators=(',', ':'))
     out = ('/* PCA Platform — %s 데이터셋 (자동 생성)\n'
            '   생성: tools/build_major.py  출처: %s\n'
