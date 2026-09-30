@@ -228,7 +228,7 @@ def main():
         'jobs': jobs, 'questions': questions, 'evidence_weights': evw,
     }
     # 학과 공통 원고 (8축 설명·성향별 부담 국면). 없으면 그 소절을 그리지 않는다.
-    for k in ('dna_desc', 'style_load'):
+    for k in ('dna_desc', 'dna_low', 'style_load'):
         if major_copy.get(k):
             data[k] = major_copy[k]
     body = json.dumps(data, ensure_ascii=False, separators=(',', ':'))
