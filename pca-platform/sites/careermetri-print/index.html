@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>커리어메트리 · 학과용 한 장</title>
+<!--
+  학과·취업지원처에 놓고 나오는 A4 한 장.
+
+  **범주 이름을 적지 않는다.** "진로 방향 구체화" 는 읽는 사람에게 아무것도
+  주지 않는다. 쪽수와 개수로 적는다.
+
+  **못 하는 것을 같은 크기로 적는다.** 사업 보고서에 들어갈 문서를 고르는
+  사람은 과장된 표현을 두려워한다. 아직 안 되는 것을 먼저 말하는 쪽이
+  신뢰를 얻고, 나중에 계약이 깨지지 않는다.
+
+  인쇄: A4 세로 1장. Chrome 인쇄 → 배경 그래픽 켜기.
+-->
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  :root{
+    --navy:#14263d; --green:#0f6b58; --mint:#edf7f3;
+    --line:#dde6ea; --text:#26303c; --muted:#6b7785; --paper:#fff;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",
+      "Apple SD Gothic Neo","Malgun Gothic",Arial,sans-serif;
+    background:#eef2f4;color:var(--text);
+    -webkit-text-size-adjust:100%;font-variant-numeric:tabular-nums;
+  }
+  .sheet{
+    width:210mm;min-height:297mm;margin:22px auto;background:var(--paper);
+    padding:13mm 15mm 10mm;box-shadow:0 18px 50px rgba(20,38,61,.13);
+  }
+  .top{display:flex;justify-content:space-between;align-items:flex-start;
+    gap:16px;border-bottom:2px solid var(--navy);padding-bottom:11px}
+  .brand{font-size:10.5px;letter-spacing:.26em;font-weight:800;color:var(--green)}
+  h1{margin:6px 0 0;font-size:22px;letter-spacing:-.035em;color:var(--navy);line-height:1.26}
+  .top-r{text-align:right;font-size:10.5px;color:var(--muted);line-height:1.75;white-space:nowrap}
+  .lede{margin:9px 0 0;font-size:11px;line-height:1.62;color:#3c4854;max-width:52em;
+    word-break:keep-all}
+  .lede b{color:var(--navy);font-weight:700}
+
+  h2{margin:11px 0 5px;font-size:10px;letter-spacing:.2em;font-weight:800;color:var(--green)}
+  .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .g3 > div{padding:8px 11px 9px 0}
+  .g3 > div + div{padding-left:15px;border-left:1px solid var(--line)}
+  .who{font-size:9.5px;letter-spacing:.14em;font-weight:800;color:var(--green)}
+  .what{display:block;margin-top:4px;font-size:14px;font-weight:700;color:var(--navy);
+    letter-spacing:-.02em}
+  ul{margin:8px 0 0;padding-left:15px}
+  li{font-size:10px;line-height:1.55;color:#3c4854;margin-bottom:3px;word-break:keep-all}
+  li:last-child{margin-bottom:0}
+  li b{color:var(--navy);font-weight:700}
+
+  table{width:100%;border-collapse:collapse;font-size:10.5px}
+  thead th{text-align:left;font-size:9.5px;letter-spacing:.09em;color:var(--navy);
+    font-weight:700;padding:7px 10px 7px 0;border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);white-space:nowrap}
+  td,tbody th{text-align:left;padding:5px 9px 5px 0;border-bottom:1px solid #eef2f4;
+    vertical-align:top;line-height:1.62;word-break:keep-all}
+  tbody th{font-weight:700;color:var(--navy);white-space:nowrap}
+  td:last-child,th:last-child{padding-right:0}
+  .num{font-weight:700;color:var(--navy)}
+
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:2px}
+  .two > div{padding:9px 12px}
+  .yes{background:var(--mint);border-left:2px solid var(--green)}
+  .no{background:#f6f8f9;border-left:2px solid #b7c2cc}
+  .two h3{margin:0 0 7px;font-size:11.5px;color:var(--navy);font-weight:700}
+  .two li{font-size:10.5px;margin-bottom:5px}
+
+  .foot{margin-top:10px;padding-top:8px;border-top:2px solid var(--navy);
+    display:flex;justify-content:space-between;gap:18px;align-items:flex-start}
+  .foot-l{font-size:10px;line-height:1.72;color:#3c4854}
+  .foot-l b{color:var(--navy)}
+  .foot-r{text-align:right;font-size:9px;color:var(--muted);line-height:1.68;
+    white-space:nowrap}
+  .try{display:inline-block;margin-top:6px;padding:6px 11px;background:var(--navy);
+    color:#fff;font-size:10.5px;font-weight:700;border-radius:4px;text-decoration:none}
+  .note{margin-top:6px;font-size:9px;color:var(--muted);line-height:1.66;word-break:keep-all}
+
+  @media (max-width:760px){
+    .sheet{width:auto;min-height:0;margin:0;padding:22px 18px 30px;box-shadow:none}
+    .g3,.two{grid-template-columns:1fr}
+    .g3 > div + div{padding-left:0;border-left:0;border-top:1px solid var(--line)}
+    .top,.foot{flex-direction:column;gap:9px}
+    .top-r,.foot-r{text-align:left;white-space:normal}
+  }
+  @media print{
+    body{background:#fff}
+    .sheet{width:auto;min-height:0;margin:0;padding:0;box-shadow:none}
+    .yes,.no{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .try{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    tr,li,.g3 > div{break-inside:avoid;page-break-inside:avoid}
+  }
+  @page{size:A4 portrait;margin:14mm}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="top">
+    <div>
+      <div class="brand">CAREER METRI</div>
+      <h1>기계공학과 진로 직무 진단</h1>
+    </div>
+    <div class="top-r">
+      학과 · 취업지원처용<br>2026학년도 · 파일럿 모집<br>기계공학과 1개 학과
+    </div>
+  </div>
+
+  <p class="lede">전공은 정해졌는데 <b>그 전공 안에서 어느 직무로 갈지</b>는 아무도
+    정리해 주지 않습니다. 이 검사는 기계공학 8개 직무 가운데 학생이 일하는 방식에
+    가까운 자리를 재고, 그 직무를 준비하는 방법까지 결과지 한 부로 냅니다.
+    학과는 같은 응답을 익명으로 모은 집계를 받아 <b>다음 학기 프로그램의 근거</b>로
+    씁니다.</p>
+
+  <h2>손에 들어오는 것</h2>
+  <div class="g3">
+    <div>
+      <span class="who">학생 한 사람</span>
+      <b class="what">결과지 73~84쪽</b>
+      <ul>
+        <li>8개 직무의 적합도와 <b>그렇게 나온 근거</b></li>
+        <li>그 직무의 하루와 한 주</li>
+        <li>자기소개서 문장 <b>3개</b></li>
+        <li>면접 질문 <b>5개</b>와 각 질문이 확인하는 것</li>
+        <li>프로젝트 <b>4개</b>와 진행 순서</li>
+        <li>30일 실행 체크리스트</li>
+      </ul>
+    </div>
+    <div>
+      <span class="who">학과 담당자</span>
+      <b class="what">학과 집계 리포트</b>
+      <ul>
+        <li>학생 N명의 <b>직무 분포</b></li>
+        <li>업무성향 6유형 분포</li>
+        <li>준비도가 비어 있는 항목</li>
+        <li>다음 학기 특강 주제 후보</li>
+        <li>멘토 섭외가 필요한 분야</li>
+        <li><b>5명 미만 칸은 숫자를 내지 않습니다</b></li>
+      </ul>
+    </div>
+    <div>
+      <span class="who">기관 · 사업 담당</span>
+      <b class="what">지출 근거 문서</b>
+      <ul>
+        <li>응시 인원과 응답률</li>
+        <li>후속 프로그램 연계 실적</li>
+        <li>학생 체감 성과의 증거물</li>
+        <li>사업 보고에 그대로 넣는 형태</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>한 회차가 도는 순서</h2>
+  <table>
+    <thead><tr><th>단계</th><th>학과가 하는 일</th><th>기간</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">1 · 회차 개설</th><td>응시 대상과 기간을 정합니다. 명단은 엑셀 붙여넣기로 올립니다</td><td>1일</td></tr>
+      <tr><th scope="row">2 · 응시</th><td>학생이 링크로 들어와 15~25분 응답합니다. 중간에 끄면 이어서 할 수 있습니다</td><td>2~3주</td></tr>
+      <tr><th scope="row">3 · 집계 확인</th><td>담당자가 학과 집계를 먼저 봅니다</td><td>즉시</td></tr>
+      <tr><th scope="row">4 · 공개</th><td>담당자가 공개를 누르면 그때 학생에게 결과지가 열립니다</td><td>담당자 판단</td></tr>
+    </tbody>
+  </table>
+
+  <h2>가격과 예산 항목</h2>
+  <table>
+    <thead><tr><th>상품</th><th>인원</th><th>1인</th><th>계약가</th><th>어느 예산에서 나가는가</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">파일럿</th><td>100명</td><td class="num">48,000원</td><td class="num">480만 원</td>
+        <td>학과 특성화 사업비 · 대학혁신지원사업비</td></tr>
+      <tr><th scope="row">학과 연간</th><td>500명</td><td class="num">28,000원</td><td class="num">1,400만 원</td>
+        <td>RISE(지역성장 인재양성체계) · 대학일자리플러스센터</td></tr>
+    </tbody>
+  </table>
+  <p class="note">파일럿 단가가 더 높습니다. 할인은 규모에서 나오지 시작이라서 나오지
+    않고, 파일럿을 낮게 잡으면 본계약에서 그 가격이 기준이 됩니다.
+    위 금액은 제안값이고 계약 시 조정됩니다. 차년도 예산 편성은 보통 9~10월에 시작합니다. 그때 항목에 들어가지 못하면
+    한 해를 기다리게 됩니다.</p>
+
+  <h2>지금 되는 것과 아직 안 되는 것</h2>
+  <div class="two">
+    <div class="yes">
+      <h3>지금 됩니다</h3>
+      <ul>
+        <li>기계공학과 결과지 (STANDARD 73쪽 · PRO 84쪽)</li>
+        <li>무료 4분 진단 (지금 눌러 보실 수 있습니다)</li>
+        <li>학과 집계 · 5명 미만 비공개 규칙</li>
+        <li>담당자 승인 후 학생 공개</li>
+        <li>모바일 응시 · 중간 저장 · 이어서 하기</li>
+      </ul>
+    </div>
+    <div class="no">
+      <h3>아직 안 됩니다</h3>
+      <ul>
+        <li><b>기계공학과 외 학과.</b> 문항이 없어 열지 않았습니다</li>
+        <li><b>지역 기업 매칭.</b> 데이터를 갖추기 전입니다</li>
+        <li><b>취업률·정주율 효과.</b> 파일럿 전이라 말할 수 없습니다</li>
+        <li><b>상위 몇 %.</b> 규준 표본이 없어 쓰지 않습니다</li>
+        <li>가중치와 직무 매트릭스는 <b>파일럿 검증 전 초기값</b>입니다</li>
+      </ul>
+    </div>
+  </div>
+  <p class="note">저희는 <b>직업정보제공사업 신고사업자</b>(J1700020220007호)입니다.
+    정보 제공까지가 범위이고 취업 알선과 추천서 발부는 하지 않습니다. 그래서
+    기업을 "추천" 한다고 적지 않고 "적합도가 높은" 이라고 씁니다.</p>
+
+  <div class="foot">
+    <div class="foot-l">
+      <b>먼저 눌러 보십시오.</b> 학생 30명에게 무료 진단을 돌려 응답률과 반응을
+      보신 뒤에 파일럿을 결정하셔도 됩니다.<br>
+      <a class="try" href="https://project465.github.io/pca-platform/?major=ME&amp;form=QUICK">무료 진단 4분 · 기계공학과</a>
+      <div class="note">무료 진단은 28문항으로, 위 결과지(68~92문항)와 <b>다른 검사</b>입니다.
+        두 점수를 서로 비교하지 마십시오.</div>
+    </div>
+    <div class="foot-r">
+      <b style="color:var(--navy)">HARI CO.,LTD</b><br>
+      010-7392-7211<br>
+      hari_info@hari.re.kr<br><br>
+      세종특별자치시 한누리대로 2143, 704호<br>
+      대전광역시 유성구 대학로 82, 402·403-27호
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
