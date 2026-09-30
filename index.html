@@ -17,16 +17,42 @@
     <div class="topin">
       <div class="row">
         <div class="brand">PCA · 진로직무진단</div>
-        <div class="badge" id="badge">전공 기반 진단</div>
+        <div class="row" style="gap:8px;flex:0 0 auto">
+          <button type="button" class="ghost" id="btnHome" style="display:none">처음으로</button>
+          <div class="badge" id="badge">전공 기반 진단</div>
+        </div>
       </div>
       <div id="progArea" style="display:none">
         <div class="progwrap"><div class="prog" id="prog"></div></div>
-        <div class="meta"><span id="progText">0 / 0</span><span id="progPct">0%</span></div>
+        <div class="meta"><span id="progText">0 / 0</span>
+          <span id="savedAt" class="saved"></span>
+          <span id="progPct">0%</span></div>
       </div>
     </div>
   </header>
 
   <main class="shell">
+
+    <!-- 0. 이어서 하기 -->
+    <section class="screen" id="s-resume">
+      <div class="hero">
+        <div class="eyebrow">RESUME</div>
+        <h1 id="resumeTitle">답하던 검사가<br>남아 있습니다</h1>
+        <p class="desc" id="resumeDesc">
+          이 기기의 브라우저에 저장된 응답입니다. 이어서 하면 답한 곳 다음
+          문항부터 시작합니다.
+        </p>
+      </div>
+      <div class="card pad">
+        <div class="rsum" id="resumeInfo"></div>
+        <button class="primary" id="btnResume">이어서 하기</button>
+        <button class="secondary" id="btnRestart" style="margin-top:9px">처음부터 다시</button>
+        <p class="note">
+          처음부터 다시 하면 저장된 응답이 지워지고 되돌릴 수 없습니다.
+          응답은 이 기기에만 저장되므로 다른 기기에서는 이어지지 않습니다.
+        </p>
+      </div>
+    </section>
 
     <!-- 1. 시작 -->
     <section class="screen active" id="s-start">
