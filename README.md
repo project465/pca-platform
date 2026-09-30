@@ -7,7 +7,7 @@
 `sites/pca-platform/` 에 있습니다. 고친 뒤 아래 파일들만 이 브랜치로 옮깁니다.
 
 ```
-index.html  .nojekyll  assets/  content/  data/
+index.html  privacy.html  .nojekyll  assets/  content/  data/
 ```
 
 인수인계 문서(`HANDOFF.md`·`CLAUDE.md`)와 계산 원본(`source/`)·생성 도구
