@@ -384,6 +384,17 @@
     var gr = (stageIsGrad() && GRAD && E.scoreGrad) ? E.scoreGrad(GRAD, S.answers) : null;
     r.stage = S.stage || null;
     r.grad = gr;
+
+    /* STANDARD·PRO 는 긴 형식 결과지로 간다. QUICK 은 아래의 짧은 판 그대로다 —
+       무료 구간이 유료 구간과 같은 분량이면 경계가 없어진다. */
+    if (r.product_type !== 'QUICK' && window.PCAReport) {
+      var cmap = {};
+      major.jobs.forEach(function (j) { cmap[j.name] = j; });
+      $('#resultBody').innerHTML = window.PCAReport.render(r, major, cmap, S, GRAD);
+      window.PCA_RESULT = r;
+      screen('s-result');
+      return;
+    }
     var top = r.jobs[0], c = top.job;
     var gs = top.gaps.slice(0, 3);
     var out = [];
