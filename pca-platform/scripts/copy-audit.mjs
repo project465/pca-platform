@@ -45,6 +45,10 @@ const files = process.argv.slice(2).length
        .filter((f) => /^\d\d[a-z]?-.*\.html$/.test(f) && !f.includes("head-code"))
        .map((f) => `sites/careermetri/imweb/${f}`),
      // 약관도 사람이 읽는 글이다. 법 문장이라 딱딱해도 기계 티는 따로 난다
+     // 결과지 원고. 학생이 실제로 읽는 문장이라 위젯 원고와 같은 기준으로 센다
+     "sites/pca-platform/content/me.json",
+     // 결과지의 공통 원고는 코드 안에 문자열로 있다. JSON 만 보면 절반을 놓친다
+     "sites/pca-platform/assets/report.js",
      ...readdirSync("sites/careermetri/legal")
        .filter((f) => f.endsWith(".md"))
        .map((f) => `sites/careermetri/legal/${f}`),
@@ -58,6 +62,16 @@ const files = process.argv.slice(2).length
 /** 사람이 읽는 글만 본다. 코드·주석·태그는 문체와 상관이 없다. */
 function prose(path) {
   const raw = readFileSync(path, "utf8");
+  if (path.endsWith(".js") || path.endsWith(".mjs")) {
+    // 작은따옴표 문자열만. 주석에 쓴 설계 메모는 원고가 아니다
+    const noComment = raw.replace(/\/\*[\s\S]*?\*\//g, " ").replace(/^\s*\/\/.*$/gm, " ");
+    return (noComment.match(/'(?:[^'\\]|\\.)*'/g) ?? []).join(" ");
+  }
+  if (path.endsWith(".json")) {
+    // 값(문자열)만 본다. 키는 원고가 아니다
+    return (raw.match(/:\s*"(?:[^"\\]|\\.)*"/g) ?? []).join(" ") +
+      (raw.match(/^\s*"(?:[^"\\]|\\.)*",?$/gm) ?? []).join(" ");
+  }
   if (path.endsWith(".ts")) {
     // 큰따옴표 문자열만. 주석에 쓴 설계 메모는 원고가 아니다
     const noComment = raw.replace(/\/\*[\s\S]*?\*\//g, " ").replace(/^\s*\/\/.*$/gm, " ");

@@ -175,6 +175,12 @@ def main():
         j['scenes'] = c.get('scenes', [])
         j['projects'] = c.get('projects', [])
         j['interview'] = c.get('interview', [])
+        # 긴 결과지(STANDARD·PRO)가 쓰는 원고. 없으면 그 소절을 그리지 않는다.
+        for k in ('field', 'overview', 'keywords', 'strengths', 'scenarios', 'roles',
+                  'projects_long', 'resume_angle', 'resume_sentences', 'resume_caution',
+                  'interview_long', 'venture', 'criteria', 'next30', 'narr'):
+            if c.get(k):
+                j[k] = c[k]
         if not (j['summary'] and len(j['tasks']) == 4 and len(j['scenes']) == 4
                 and len(j['projects']) == 3 and len(j['interview']) == 3):
             problems.append('콘텐츠 누락: %s (summary / tasks 4 / scenes 4 / projects 3 / interview 3 필요)'
