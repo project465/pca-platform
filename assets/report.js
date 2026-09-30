@@ -91,6 +91,13 @@ window.PCAReport = (function () {
       var q = at(0, v);
       g += '<text class="rp-tick" x="' + (cx + 7) + '" y="' + (q[1] + 3.5).toFixed(1) + '">' + v + '</text>';
     });
+    /* 비교 계열. 뒤에 점선으로 깔고 본 계열을 그 위에 얹는다 */
+    var base = '';
+    if (opts.cmp && opts.cmp.length === n) {
+      base = '<polygon class="rp-cmp" points="' + opts.cmp.map(function (v, i) {
+        var q = at(i, v); return q[0].toFixed(1) + ',' + q[1].toFixed(1);
+      }).join(' ') + '"/>';
+    }
     var shape = '<polygon class="rp-poly" points="' + points.map(function (pt, i) {
       var q = at(i, pt.v); return q[0].toFixed(1) + ',' + q[1].toFixed(1);
     }).join(' ') + '"/>';
@@ -105,11 +112,13 @@ window.PCAReport = (function () {
       else { anchor = cs > 0 ? 'start' : 'end'; base = 'middle'; }
       return '<g class="rp-lab"><text x="' + x.toFixed(1) + '" y="' + y.toFixed(1) +
         '" text-anchor="' + anchor + '" dominant-baseline="' + base + '">' + esc(pt.n) +
-        '<tspan x="' + x.toFixed(1) + '" dy="15">' + pt.v + '</tspan></text></g>';
+        '<tspan x="' + x.toFixed(1) + '" dy="15">' + pt.v +
+        (opts.cmp && opts.cmp.length === n ? ' / ' + opts.cmp[i] : '') + '</tspan></text></g>';
     }).join('');
     return '<div class="rp-chart"><div class="rp-chart-t">' + esc(opts.title || '') + '</div>' +
       '<svg class="rp-radar" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' +
-      esc(opts.title || '') + '">' + g + shape + dots + labs + '</svg>' +
+      esc(opts.title || '') + '">' + g + base + shape + dots + labs + '</svg>' +
+      (opts.legend ? '<div class="rp-legend">' + opts.legend + '</div>' : '') +
       (opts.foot ? '<p class="rp-chart-f">' + opts.foot + '</p>' : '') + '</div>';
   }
 
@@ -163,7 +172,7 @@ window.PCAReport = (function () {
       c: '산업계로 갈 계획이라면 연구를 사업의 언어로 바꿔 보는 연습을 지금 하십시오. 이 연구가 어떤 문제를 줄이고 그것이 얼마의 값인지를 다섯 문장으로 말할 수 있으면, 면접에서 가장 어려운 질문이 미리 풀립니다.' },
     RESEARCH: { n: '석·박사 졸업 후 · 연구 경력',
       a: '지금은 이미 쌓인 것을 어디에 놓을지의 문제입니다. 이 결과지의 직무 적합도는 신입 기준이 아니라 일하는 방식으로 계산한 값이므로, 경력자에게도 그대로 읽힙니다. 다만 경력자의 선택은 적합도보다 그동안 쌓은 것이 값을 받는 자리가 어디인지로 정해집니다.',
-      b: 'R절의 여덟 축 중 높은 쪽을 앞의 직무와 겹쳐 보십시오. 연구에서 반복해 온 일이 그 직무의 어느 국면인지가 보이면, 경력을 바꾸는 것이 아니라 옮기는 형태로 설명할 수 있습니다. 바꾸는 것보다 옮기는 쪽이 설득이 쉽습니다.',
+      b: 'R절의 여덟 축 중 높은 쪽을 앞의 직무와 겹쳐 보십시오. 연구에서 반복해 온 일이 그 직무의 어느 국면인지가 보이면, 경력을 바꾸기보다 옮기는 형태로 설명할 수 있습니다. 바꾸는 것보다 옮기는 쪽이 설득이 쉽습니다.',
       c: '옮길 생각이라면 그 분야의 현직자 세 명을 만나는 것이 가장 빠릅니다. 경력자의 이동은 공고보다 사람으로 일어나는 경우가 많고, 만나 보면 자기 경력의 어느 부분이 값을 받는지도 함께 알게 됩니다.' }
   };
   var QTYPE_DESC = {
@@ -209,6 +218,7 @@ window.PCAReport = (function () {
       ['05', '프로젝트 · 포트폴리오 전략', '실행 가능한 프로젝트와 포트폴리오 방향을 정리합니다.'],
       ['06', '자기소개서 · 면접 활용', '면접 질문과 자기소개서 작성 힌트를 제공합니다.']
     ];
+    toc.push(['G', '역량 격차', '이 직무가 요구하는 모양과 지금의 내 모양을 겹쳐 봅니다.']);
     if (r.grad && gradBank) toc.push(['R', '연구 역량 8축', '학위 연구에서 무엇을 해 왔는지를 따로 봅니다.']);
     if (pro) toc.push(['07', '창업 준비 전략', '전공 기반 창업 아이템과 시장 진입 전략을 확인합니다.']);
     toc.push([pro ? '08' : '07', '성장 포인트와 다음 단계', '주의점과 다음 액션을 정리합니다.']);
@@ -337,7 +347,7 @@ window.PCAReport = (function () {
       (top.ready !== null && top.ready !== undefined
         ? '<div class="rp-sublabel">준비도와 경험 근거는 무엇인가</div>' +
           '<div class="rp-inner"><b>READY ' + top.ready + '점 — 준비도</b>' +
-          '<p>이 직무가 요구하는 것들 중 지금 어디까지 해 봤는지를 경험 문항으로 계산한 값입니다. 적합도와 따로 계산하며, 둘은 서로 바꿔 읽을 수 없습니다. 적합도가 높고 준비도가 낮은 것은 흔하고 자연스러운 상태입니다. 방향은 맞는데 아직 해 본 것이 적다는 뜻이고, 그때 할 일은 직무를 다시 고르는 것이 아니라 05절의 프로젝트 하나를 닫는 것입니다.</p></div>' +
+          '<p>이 직무가 요구하는 것들 중 지금 어디까지 해 봤는지를 경험 문항으로 계산한 값입니다. 적합도와 따로 계산하며, 둘은 서로 바꿔 읽을 수 없습니다. 적합도가 높고 준비도가 낮은 것은 흔하고 자연스러운 상태입니다. 방향은 맞는데 아직 해 본 것이 적다는 뜻이고, 그때 할 일은 직무를 다시 고르기보다 05절의 프로젝트 하나를 닫는 것입니다.</p></div>' +
           '<div class="rp-inner"><b>EVIDENCE ' + top.evidence + '점 — 경험 근거</b>' +
           '<p>준비도를 뒷받침하는 근거가 얼마나 구체적인지를 보는 값입니다. 해 봤다고 답한 것에 실제로 남은 결과물이나 확인 가능한 경험이 있는지를 봅니다. 이 값이 준비도보다 낮으면, 해 본 것은 있는데 그것을 보여줄 형태로 남기지 않았다는 뜻입니다. 그 경우 새 경험을 만들기 전에 이미 한 것을 정리하는 쪽이 빠릅니다.</p>' +
           '<small>이 상품에서 경험 문항은 ' + (r.product_type === 'PRO' ? '30개' : '6개') +
@@ -499,6 +509,28 @@ window.PCAReport = (function () {
       if (c.criteria) sub('4-6', '직무 선택 기준',
         p('아래 항목은 이 직무를 놓고 자리를 고를 때 실제로 차이를 만드는 기준입니다. 연봉과 회사 규모는 비교하기 쉬워서 먼저 보게 되지만, 3년 뒤에 남는 것을 정하는 것은 대체로 아래 항목들입니다. 면접은 평가받는 자리이기도 하지만 확인하는 자리이기도 하므로, 아래 중 두세 개는 직접 물어보는 편이 좋습니다.') +
         ul(c.criteria.map(esc)));
+      /* 2·3순위 직무도 원고가 다 있는데 1위만 쓰고 있었다. 한 쪽씩 낸다. */
+      var alt = r.jobs.slice(1, 3).map(function (j) {
+        return { j: j, c: (content || {})[j.name] || {} };
+      }).filter(function (x) { return x.c.field; });
+      if (alt.length) {
+        sub('4-9', '함께 볼 직무 ' + (alt.length === 1 ? '한 곳' : '두 곳') + ' 자세히',
+          p('앞의 순위표는 여덟 직무를 한 줄씩만 적었습니다. 그중 바로 다음에 있는 ' +
+            (alt.length === 1 ? '직무' : '두 직무') + '는 실제로 비교 대상이 되는 자리라 한 쪽씩 더 적습니다. ' +
+            '1위와 이 직무들의 FIT 차이가 측정 오차(±' + r.fit_se + '점)보다 작다면 순서를 믿지 말고 내용으로 고르십시오.') +
+          alt.map(function (x) {
+            var st1 = (x.c.strengths || [])[0];
+            return '<div class="rp-inner"><b>' + esc(x.j.name) +
+              ' <small>FIT ' + x.j.fit + '점 · ' + x.j.group + '군</small></b>' +
+              '<p>' + esc(x.c.field) + '</p>' +
+              (x.c.overview ? '<p>' + esc(x.c.overview) + '</p>' : '') +
+              (x.c.keywords ? '<p>반복해서 나타나는 키워드 · ' + x.c.keywords.map(esc).join(', ') + '</p>' : '') +
+              (st1 ? '<small>이 직무의 첫 번째 강점 · ' + esc(st1.t) + '</small>' : '') +
+              '</div>';
+          }).join('') +
+          note('여기까지 읽고도 1위와 갈리지 않으면 그것이 정상입니다. 그때는 G절의 요구 8축 비교와 1-7절의 네 기준을 순서대로 쓰십시오.'));
+      }
+
       var st = STAGE_NOW[(S && S.stage) || ''];
       if (st) {
         sub('4-8', '지금 단계에서 할 수 있는 것',
@@ -661,6 +693,109 @@ window.PCAReport = (function () {
           return '<label><input type="checkbox" id="rp-chk-doc-' + (i + 1) + '"><span>' + x + '</span></label>';
         }).join('') + '</div>' +
         note('아홉 개 중 셋 이상이 걸렸다면 오늘 제출하지 마십시오. 하루를 더 쓰는 비용이 다시 지원하는 비용보다 훨씬 작습니다.'));
+
+    /* ── G 역량 격차 ──────────────────────────────
+       직무 매트릭스의 요구 벡터(major.jobs[].v)와 응답자의 8축을 직접 견준다.
+       두 값 모두 이미 계산되어 있던 것이고, 여기서 새로 만드는 숫자는 뺄셈뿐이다. */
+    var topJob = (major.jobs || []).filter(function (j) { return j.name === top.name; })[0];
+    if (topJob && topJob.v) {
+      var axes = major.dna.slice();
+      var gaps = axes.map(function (d) {
+        var need = Math.round(topJob.v[d]);
+        /* 8축은 소수 한 자리라 그냥 빼면 22.200000000000003 이 찍힌다 */
+        return { d: d, need: need, mine: r.career_dna[d],
+                 gap: Math.round((need - r.career_dna[d]) * 10) / 10 };
+      });
+      var short = gaps.slice().sort(function (a, b) { return b.gap - a.gap; });
+      var over = short.slice().reverse();
+
+      push('<div class="rp-cover"><small>SECTION G</small><h2>역량 격차</h2>' +
+        '<p>이 직무가 요구하는 모양과 지금의 내 모양을 겹쳐 봅니다.</p></div>');
+      sec('G', '역량 격차');
+
+      sub('G-1', '이 직무가 요구하는 것과 지금의 나',
+        p('앞의 FIT은 두 모양이 <b>얼마나 닮았는지</b>를 하나의 숫자로 줄인 값입니다. 이 절은 그 숫자를 풀어 어느 축에서 붙고 어느 축에서 벌어지는지를 그대로 보여줍니다. 요구값은 ' + esc(top.name) + '의 채용공고와 직무기술서에서 정한 값이고, 내 값은 이번 응답에서 나온 값입니다.') +
+        radar(gaps.map(function (x) { return { n: major.dna_labels[x.d], v: x.mine }; }),
+          { title: '요구 대비 현재',
+            cmp: gaps.map(function (x) { return x.need; }),
+            legend: '<span><i></i>나의 8축</span><span class="c"><i></i>' + esc(top.name) + ' 요구</span>',
+            foot: '축 이름 아래 숫자는 <b>내 값 / 요구값</b> 순입니다.' }) +
+        table(['특성', '요구', '현재', '차이'], gaps.map(function (x) {
+          var sign = x.gap > 0 ? '+' + x.gap : String(x.gap);
+          return ['<b>' + esc(major.dna_labels[x.d]) + '</b>', x.need + '점', x.mine + '점',
+                  (x.gap > 0 ? '<b>' + sign + '</b>' : sign)];
+        })) +
+        note('차이는 요구값에서 내 값을 뺀 것입니다. <b>양수가 모자란 쪽</b>입니다. 음수는 그 직무가 요구하는 것보다 높게 나온 축이고, 약점이 아니라 다른 직무에서 더 쓰일 수 있는 여유분으로 읽으십시오.'));
+
+      sub('G-2', '가장 벌어진 축',
+        (short[0].gap <= 0
+          ? p('요구값을 밑도는 축이 없습니다. 이 직무가 요구하는 모양을 지금 응답이 전반적으로 넘고 있다는 뜻인데, 그렇다고 준비가 끝났다는 의미는 아닙니다. 이 여덟 축은 <b>하고 싶은 방향</b>을 재는 값이고 해 본 경험은 따로 재기 때문입니다. 준비도는 앞 절의 READY와 다음 소절의 경험 근거로 확인하십시오.')
+          : p('아래 셋이 요구값과 가장 많이 벌어진 축입니다. 벌어졌다는 것은 <b>그 방향으로 손이 덜 간다</b>는 뜻이고, 그 축이 이 직무의 일상에서 자주 쓰인다면 의식적인 보완이 필요합니다.') +
+            short.filter(function (x) { return x.gap > 0; }).slice(0, 3).map(function (x) {
+              return '<div class="rp-inner"><b>' + esc(major.dna_labels[x.d]) +
+                ' <small>요구 ' + x.need + ' · 현재 ' + x.mine + ' · 차이 +' + x.gap + '</small></b>' +
+                (major.dna_desc && major.dna_desc[x.d] ? '<p>' + esc(major.dna_desc[x.d]) + '</p>' : '') +
+                (major.dna_low && major.dna_low[x.d] ? '<small>' + esc(major.dna_low[x.d]) + '</small>' : '') +
+                '</div>';
+            }).join('')) +
+        (over[0].gap < 0
+          ? '<div class="rp-sublabel">요구보다 높게 나온 축</div>' +
+            p('<b>' + esc(major.dna_labels[over[0].d]) + '</b>이(가) 이 직무의 요구보다 ' +
+              Math.abs(over[0].gap) + '점 높습니다. 이 축을 많이 쓰는 다른 직무가 앞의 순위표에 있다면 함께 보십시오. 지금 직무에서는 이 축이 남는 힘이고, 다른 직무에서는 그것이 이유가 될 수 있습니다.')
+          : '') +
+        note('이 절은 <b>무엇을 해 봤는지</b>를 재지 않습니다. 여덟 축은 일하는 방식과 하고 싶은 방향이고, 실제 경험은 바로 다음 소절에서 따로 봅니다. 두 값을 섞어 읽지 마십시오.'));
+
+      /* 경험 근거 상세 — EXPERIENCE 문항이 있는 상품에서만 */
+      var exQs = (major.questions || []).filter(function (q) {
+        return q.type === 'EXPERIENCE' && TIER_ORDER[q.tier] && TIER_ORDER[q.tier] <= TIER_ORDER[r.product_type];
+      });
+      var ew = major.evidence_weights || {};
+      var mine = exQs.filter(function (q) { return Number((ew[q.id] || {})[topJob.code] || 0) > 0; });
+      if (mine.length) {
+        var EXPLV = ['경험 없음', '접해봄', '직접 수행', '주도·성과'];
+        var ansd = mine.filter(function (q) {
+          var a = (S && S.answers) ? S.answers[q.id] : undefined;
+          return a !== undefined && a !== null && a !== '';
+        });
+        sub('G-3', '경험 근거 상세',
+          p('앞 절의 EVIDENCE 점수가 어느 문항에서 나왔는지를 그대로 펼친 것입니다. ' +
+            esc(top.name) + '의 경험 근거로 쓰이는 문항은 이번 상품에서 <b>' + mine.length +
+            '개</b>이고, 그중 ' + ansd.length + '개에 답하셨습니다.') +
+          p('이 직무에서 근거로 인정되는 경험의 예는 <b>' + esc(topJob.evidence_examples || '-') +
+            '</b> 같은 것들입니다. 아래에서 <b>경험 없음</b>으로 답한 줄이 지금 비어 있는 자리이고, 05절의 프로젝트를 고를 때 그 줄을 메우는 쪽을 고르면 준비가 한 번에 둘로 쓰입니다.') +
+          table(['경험 항목', '답한 수준'], mine.map(function (q) {
+            var a = (S && S.answers) ? S.answers[q.id] : undefined;
+            var lv = (a === undefined || a === null || a === '') ? '<small>답하지 않음</small>'
+              : (Number(a) === 0 ? '<b>경험 없음</b>' : esc(EXPLV[Number(a)] || String(a)));
+            return [esc(q.text || q.id), lv];
+          })) +
+          note('경험 문항은 스스로 답한 값이라 <b>증빙이 아닙니다.</b> 서류와 면접에서는 같은 내용을 결과물과 숫자로 보여줘야 하고, 05절이 그 결과물을 만드는 절입니다.'));
+      }
+
+      /* 1군이 둘 이상일 때만 — 무엇이 둘을 가르는가 */
+      if (g1.length > 1) {
+        var g1jobs = g1.map(function (x) {
+          return (major.jobs || []).filter(function (j) { return j.name === x.name; })[0];
+        }).filter(Boolean);
+        if (g1jobs.length > 1) {
+          var spread = axes.map(function (d) {
+            var vs = g1jobs.map(function (j) { return Math.round(j.v[d]); });
+            return { d: d, lo: Math.min.apply(null, vs), hi: Math.max.apply(null, vs),
+                     w: Math.max.apply(null, vs) - Math.min.apply(null, vs) };
+          }).sort(function (a, b) { return b.w - a.w; });
+          sub('G-4', '1군 안에서 무엇이 갈리는가',
+            p('1군에 <b>' + esc(g1.map(function (x) { return x.name; }).join(' · ')) +
+              '</b>이(가) 함께 들어왔습니다. 점수로는 갈리지 않지만 <b>요구하는 모양은 다릅니다.</b> 아래는 이 직무들이 서로 가장 크게 다르게 요구하는 축이고, 여기가 곧 둘을 고르는 기준입니다.') +
+            table(['특성'].concat(g1jobs.map(function (j) { return j.name; })).concat(['내 값']),
+              spread.slice(0, 4).map(function (x) {
+                return ['<b>' + esc(major.dna_labels[x.d]) + '</b>']
+                  .concat(g1jobs.map(function (j) { return Math.round(j.v[x.d]) + '점'; }))
+                  .concat([r.career_dna[x.d] + '점']);
+              })) +
+            note('맨 위 축에서 내 값에 가장 가까운 직무가 지금 일하는 방식에 더 맞는 쪽입니다. 다만 차이가 몇 점 수준이면 이 표로도 갈리지 않으니, 그때는 1-7절의 네 기준을 쓰십시오.'));
+        }
+      }
+    }
 
     /* ── R 연구 역량 8축 — 대학원·연구 단계에서만 ──── */
     if (r.grad && gradBank) {
