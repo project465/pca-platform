@@ -49,6 +49,7 @@ const files = process.argv.slice(2).length
      "sites/pca-platform/content/me.json",
      // 결과지의 공통 원고는 코드 안에 문자열로 있다. JSON 만 보면 절반을 놓친다
      "sites/pca-platform/assets/report.js",
+     "sites/pca-platform/assets/app.js",
      ...readdirSync("sites/careermetri/legal")
        .filter((f) => f.endsWith(".md"))
        .map((f) => `sites/careermetri/legal/${f}`),

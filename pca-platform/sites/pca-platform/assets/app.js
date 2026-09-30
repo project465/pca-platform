@@ -412,7 +412,18 @@
     if (r.product_type !== 'QUICK' && window.PCAReport) {
       var cmap = {};
       major.jobs.forEach(function (j) { cmap[j.name] = j; });
-      $('#resultBody').innerHTML = window.PCAReport.render(r, major, cmap, S, GRAD);
+      /* 긴 결과지는 화면에서 끝나면 손에 남는 것이 없다. 저장 줄을 위에 붙인다.
+         인쇄에서는 이 줄을 빼야 결과지 첫 장이 깨끗하다. */
+      $('#resultBody').innerHTML =
+        '<div class="rp-act">' +
+          '<div class="rp-act-t"><b>' + esc(FORM_META[r.product_type] ? r.product_type : '') +
+            ' 결과지</b><span>' + (r.product_type === 'PRO' ? '약 84쪽' : '약 73쪽') +
+            ' · 이 기기에만 저장됩니다</span></div>' +
+          '<button type="button" class="rp-act-b" id="btnPrint">인쇄 · PDF로 저장</button>' +
+        '</div>' +
+        window.PCAReport.render(r, major, cmap, S, GRAD);
+      var bp = document.getElementById('btnPrint');
+      if (bp) bp.addEventListener('click', function () { window.print(); });
       window.PCA_RESULT = r;
       screen('s-result');
       return;
@@ -447,7 +458,7 @@
     out.push(sect(no(), r.product_type === 'QUICK' ? 'TOP 3 직무 적합도' : 'TOP 5 직무 적합도',
       'FIT은 업무방식의 유사성입니다. 취업 가능성 점수가 아닙니다. ' +
       '같은 군에 있는 직무는 측정 오차(±' + r.fit_se + '점) 안에서 서로 갈리지 ' +
-      '않습니다. 순서가 아니라 함께 살펴볼 묶음으로 읽어 주세요.',
+      '않습니다. 순서 대신 함께 살펴볼 묶음으로 읽어 주세요.',
       cards(r.top_jobs.map(jobCard))));
 
     /* 연구 역량 8축 — 대학원·연구 단계에서만 */
@@ -489,7 +500,7 @@
     }
 
     /* Work Style */
-    out.push(sect(no(), 'Work Style', '성향의 좋고 나쁨이 아니라 잘 맞는 업무 환경을 보는 축입니다.', styleRows(r)));
+    out.push(sect(no(), 'Work Style', '성향의 좋고 나쁨보다 잘 맞는 업무 환경을 보는 축입니다.', styleRows(r)));
 
     if (r.product_type === 'QUICK') {
       /* QUICK — 즉시 행동 1개 + 안내 */
@@ -540,7 +551,7 @@
         '<div class="scorebox"><span>FIT</span><b>' + top.fit + '</b></div>' +
         '<div class="scorebox"><span>READY</span><b>' + top.ready + '</b></div></div></div>' +
         '<div class="card contentcard" style="margin-top:10px"><h3>경험을 얼마나 증명할 수 있는가</h3>' +
-        '<p>EVIDENCE ' + top.evidence + '은 “잘한다고 생각한다”가 아니라 실제 프로젝트·도구·문제해결 경험을 ' +
+        '<p>EVIDENCE ' + top.evidence + '은 “잘한다고 생각한다” 대신 실제 프로젝트·도구·문제해결 경험을 ' +
         '얼마나 제시할 수 있는지를 보는 값입니다. 이 직무의 판단 근거로 사용된 경험문항은 ' +
         top.evidenceBasis + '개입니다.</p></div>'));
 
@@ -580,7 +591,7 @@
 
       /* 포트폴리오 구성법 */
       out.push(sect(no(), '포트폴리오 구성법',
-        '결과물은 “관심 기록”이 아니라 직무 Evidence가 되어야 합니다.',
+        '결과물은 “관심 기록”에서 그치지 않고 직무 Evidence가 되어야 합니다.',
         cards(PORTFOLIO_STEPS.map(function (x, i) {
           return '<div class="card contentcard"><div class="eyebrow">STEP ' + pad2(i + 1) +
             '</div><h4>' + esc(x[0]) + '</h4><p>' + esc(x[1]) + '</p></div>';
@@ -678,7 +689,7 @@
         '<div class="card contentcard"><div class="eyebrow">PRIORITY</div>' +
         '<h3>현재는 ' + esc(top.name) + '을 1순위 탐색 직무로 두고, ' +
         esc(gs[0] ? gs[0].name : '핵심 GAP') + '을 먼저 보완하는 것이 합리적입니다.</h3>' +
-        '<p>다만 이 결과는 직무를 확정하는 판정이 아니라 탐색 우선순위입니다. ' +
+        '<p>다만 이 결과는 직무 확정 판정 대신 탐색 우선순위를 말합니다. ' +
         '실제 프로젝트와 공고 분석을 통해 적합성을 다시 확인하는 과정이 필요합니다.</p>' +
         (r.jobs[1] ? '<div class="divider"></div><p><b>2순위 활용:</b> ' + esc(r.jobs[1].name) +
           '은 FIT ' + r.jobs[1].fit + '으로 보조 지원 직무로 검토할 수 있습니다.</p>' : '') +
@@ -690,6 +701,39 @@
       out.push('<div class="section"><div class="card contentcard" style="border-color:#e8cfcf">' +
         '<h4 class="danger">결과 해석 시 참고</h4><p>동일하거나 극단적인 응답의 비율이 높게 나타났습니다. ' +
         '결과가 실제 성향과 다르게 느껴진다면 다시 응시해 비교해 보시는 것을 권합니다.</p></div></div>');
+    }
+
+    /* 무료 구간의 끝. 여기까지가 BASIC 이고 다음이 무엇인지 적는다.
+       **결제창을 만들지 않는다** — 정적 사이트에는 결제를 검증할 서버가 없어서
+       버튼만 두면 '돈 내면 열린다' 가 거짓이 된다. 실제로 살 수 있는 경로로만 잇는다. */
+    if (r.product_type === 'QUICK') {
+      out.push('<div class="section"><div class="card pad buybox">' +
+        '<div class="buy-eye">여기까지가 BASIC 입니다</div>' +
+        '<h3 class="buy-h">더 보려면 무엇이 달라지는가</h3>' +
+        '<div class="buy-tw"><table><thead><tr>' +
+          '<th>구분</th><th>BASIC</th><th>STANDARD</th><th>PRO</th></tr></thead><tbody>' +
+          '<tr><th scope="row">문항</th><td>28</td><td>68</td><td>92</td></tr>' +
+          '<tr><th scope="row">결과지</th><td>이 화면</td><td>약 73쪽</td><td>약 84쪽</td></tr>' +
+          '<tr><th scope="row">업무성향 6유형</th><td>없음</td><td>있음</td><td>있음</td></tr>' +
+          '<tr><th scope="row">역량 격차 (요구 대비 현재)</th><td>없음</td><td>있음</td><td>있음</td></tr>' +
+          '<tr><th scope="row">자기소개서·면접</th><td>없음</td><td>있음</td><td>있음</td></tr>' +
+          '<tr><th scope="row">경험 근거 문항</th><td>없음</td><td>6개</td><td>30개</td></tr>' +
+          '<tr><th scope="row">창업 준비 전략</th><td>없음</td><td>없음</td><td>있음</td></tr>' +
+        '</tbody></table></div>' +
+        '<p class="note" style="margin-top:14px">BASIC 은 28문항으로, STANDARD·PRO 와 ' +
+          '<b>다른 검사</b>입니다. 문항 수가 달라 점수의 폭도 다르므로 두 결과의 점수를 ' +
+          '서로 비교하지 마십시오.</p>' +
+        '<div class="buy-how">' +
+          '<b>지금 받는 방법</b>' +
+          '<p>학과나 취업지원처가 계약한 회차에 포함되어 있으면 결제 없이 열립니다. ' +
+          '소속 학과에 먼저 확인해 보십시오.</p>' +
+          '<p>개인으로 받고 싶으시면 아래로 문의해 주십시오. ' +
+          '<b>개인 결제는 아직 열려 있지 않습니다.</b> 결제 심사와 도메인 등록이 끝나는 대로 ' +
+          '이 화면에서 바로 결제할 수 있게 됩니다.</p>' +
+          '<p class="buy-c">HARI CO.,LTD · 010-7392-7211 · ' +
+            '<a href="mailto:hari_info@hari.re.kr">hari_info@hari.re.kr</a></p>' +
+        '</div>' +
+        '</div></div>');
     }
 
     /* 버전 표기 */

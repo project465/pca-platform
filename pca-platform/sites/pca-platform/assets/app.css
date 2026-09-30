@@ -204,6 +204,38 @@ h1{font-size:34px;line-height:1.16;letter-spacing:-.04em;color:var(--navy)}
    숫자가 세로로 줄 맞는 곳에는 tabular-nums 를 건다. 점수표에서
    자릿수가 흔들리면 비교가 안 된다. */
 
+/* 무료 구간의 끝 안내 */
+.buybox{border-color:var(--navy)}
+.buy-eye{font-size:10.5px;letter-spacing:.18em;font-weight:800;color:var(--green)}
+.buy-h{margin:8px 0 16px;font-size:19px;color:var(--navy);letter-spacing:-.02em}
+.buy-tw{overflow-x:auto;border-top:2px solid var(--navy);border-bottom:1px solid var(--line)}
+.buy-tw table{width:100%;border-collapse:collapse;font-size:13px;min-width:400px;
+  font-variant-numeric:tabular-nums}
+.buy-tw th,.buy-tw td{text-align:left;padding:10px 12px 10px 0;border-bottom:1px solid #eef2f4;
+  word-break:keep-all;line-height:1.6}
+.buy-tw thead th{font-size:11px;letter-spacing:.06em;color:var(--navy);font-weight:700;
+  white-space:nowrap}
+.buy-tw tbody th{font-weight:600;color:#3c4854}
+.buy-tw td{color:var(--navy);font-weight:600}
+.buy-tw tr:last-child th,.buy-tw tr:last-child td{border-bottom:0}
+.buy-how{margin-top:18px;padding:16px 18px;background:var(--mint);border-radius:12px}
+.buy-how > b{display:block;font-size:13.5px;color:var(--navy);margin-bottom:7px}
+.buy-how p b{color:var(--navy);font-weight:700}
+.buy-how p{font-size:13px;line-height:1.8;color:#3c4854;margin-bottom:8px;word-break:keep-all}
+.buy-how p:last-child{margin-bottom:0}
+.buy-c{font-size:12.5px !important;color:var(--navy) !important;font-weight:600}
+.buy-c a{color:var(--green)}
+
+/* 저장 줄. 결과지 위에 붙고 인쇄에서는 빠진다 */
+.rp-act{max-width:880px;margin:0 auto 14px;display:flex;justify-content:space-between;
+  align-items:center;gap:14px;flex-wrap:wrap;padding:14px 18px;background:var(--navy);
+  border-radius:6px;color:#fff}
+.rp-act-t b{font-size:14px;font-weight:700}
+.rp-act-t span{display:block;margin-top:3px;font-size:11.5px;color:rgba(255,255,255,.62)}
+.rp-act-b{border:0;background:#fff;color:var(--navy);font-size:13px;font-weight:700;
+  padding:11px 18px;border-radius:5px;cursor:pointer;white-space:nowrap}
+.rp-act-b:hover{background:#eef2f4}
+
 /* 종이 */
 .rp{max-width:880px;margin:0 auto 60px;color:var(--text);background:#fff;
   border:1px solid var(--line);border-radius:6px;
@@ -344,6 +376,12 @@ h1{font-size:34px;line-height:1.16;letter-spacing:-.04em;color:var(--navy)}
 .rp-radar .rp-tick{font-size:9px;fill:#aab5bf}
 .rp-radar .rp-poly{fill:rgba(15,107,88,.10);stroke:var(--green);stroke-width:2;stroke-linejoin:round}
 .rp-radar .rp-dot{fill:var(--green);stroke:#fff;stroke-width:1.8}
+.rp-radar .rp-cmp{fill:none;stroke:var(--navy);stroke-width:1.5;stroke-dasharray:5 4;
+  stroke-linejoin:round;opacity:.55}
+.rp-legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:#68737f}
+.rp-legend i{display:inline-block;width:18px;height:0;vertical-align:middle;margin-right:6px;
+  border-top:2px solid var(--green)}
+.rp-legend .c i{border-top:1.5px dashed var(--navy);opacity:.7}
 .rp-radar .rp-lab text{font-size:12px;font-weight:650;fill:var(--navy)}
 .rp-radar .rp-lab tspan{font-size:11px;font-weight:400;fill:#98a3ad;font-variant-numeric:tabular-nums}
 
@@ -368,6 +406,7 @@ h1{font-size:34px;line-height:1.16;letter-spacing:-.04em;color:var(--navy)}
 }
 
 @media print{
+  .rp-act{display:none}
   .rp{max-width:none;border:0;border-radius:0;box-shadow:none;padding:0 0 10px}
   .rp-cover{break-before:page;page-break-before:always;margin:0;padding:96px 0 88px;
     background:var(--navy) !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
