@@ -663,7 +663,9 @@
     out.push('<div class="foot">' +
       '문항 ' + esc(r.versions.question_bank) + ' · 직무매트릭스 ' + esc(r.versions.job_matrix) +
       ' · 채점엔진 ' + esc(r.versions.scoring_engine) + '<br>' +
-      '현재 가중치와 직무 매트릭스는 파일럿 검증 전 초기값입니다. 결과는 직무 확정이 아니라 탐색 우선순위로 활용해 주세요.' +
+      '현재 가중치와 직무 매트릭스는 파일럿 검증 전 초기값입니다. 결과는 직무 확정이 아니라 탐색 우선순위로 활용해 주세요.<br>' +
+      '이 결과는 이 기기의 브라우저에만 저장되며 서버로 전송되지 않습니다. ' +
+      '<a href="privacy.html" target="_blank" rel="noopener">개인정보처리방침</a>' +
       '</div>');
 
     $('#resultBody').innerHTML = out.join('');
