@@ -279,6 +279,15 @@ h1{font-size:34px;line-height:1.16;letter-spacing:-.04em;color:var(--navy)}
 .rp-radar .rp-lab text{font-size:12px;font-weight:600;fill:var(--navy)}
 .rp-radar .rp-lab tspan{font-size:11px;font-weight:400;fill:#8b96a2}
 
+/* 소절 안에서 묶음을 가르는 작은 머리. .rp p 보다 명시도를 높여 둔다 —
+   .rp p{margin:0 0 12px} 이 (0,1,1) 이라 클래스 하나로는 지지 않게 한다 */
+.rp .rp-sublabel{margin:20px 0 10px;font-size:11.5px;letter-spacing:.12em;
+  font-weight:700;color:var(--green);text-transform:uppercase}
+.rp .rp-sublabel:first-child{margin-top:0}
+.rp-toc-how{border:1px solid var(--line);border-radius:14px;padding:20px 22px;
+  background:var(--mint);margin:6px 0 10px}
+.rp-toc-how p:last-child{margin-bottom:0}
+
 .rp-foot{margin-top:30px;padding-top:16px;border-top:1px solid var(--line);
   font-size:12px;color:#8a95a1;line-height:1.85}
 .rp-foot a{color:var(--green)}
@@ -294,6 +303,7 @@ h1{font-size:34px;line-height:1.16;letter-spacing:-.04em;color:var(--navy)}
   .rp-cover{break-before:page;page-break-before:always;border-radius:0;
     background:#0c0f12 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .rp-sub,.rp-proj,.rp-chart{break-inside:avoid;page-break-inside:avoid}
+  .rp-inner,.rp-toc-how{break-inside:avoid;page-break-inside:avoid}
   .rp-subhead{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .rp-toc{break-after:page;page-break-after:always}
 }
