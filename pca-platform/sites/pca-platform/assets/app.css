@@ -172,138 +172,194 @@ h1{font-size:34px;line-height:1.16;letter-spacing:-.04em;color:var(--navy)}
   .card{box-shadow:none}
 }
 
+
 /* ── 긴 형식 결과지 (report.js) ─────────────────────────────────
-   화면과 인쇄가 같은 마크업을 쓴다. 절 표지와 소절 머리가 인쇄에서
-   쪽을 가르는 기준이 된다. */
-.rp{max-width:840px;margin:0 auto;padding:0 0 60px;color:var(--text)}
-.rp p{font-size:14.5px;line-height:1.92;color:#2b3440;margin:0 0 12px}
+   화면과 인쇄가 같은 마크업을 쓴다.
+
+   **한 장의 종이로 읽히게 한다.** 소절마다 테두리 상자를 두르면
+   63개의 카드가 회색 바탕에 떠 있는 화면이 되고, 카드 안에 또 카드를
+   넣으면 무엇이 큰 덩어리인지가 사라진다. 그래서 종이는 하나이고,
+   소절은 가로선과 머리글자로만 나눈다.
+
+   테두리는 역할이 있을 때만 쓴다 — 표, 그래프, 체크리스트, 프로젝트
+   카드처럼 '따로 떨어진 물건' 인 것들이다. 설명 문단은 왼쪽 실선만
+   받는다.
+
+   숫자가 세로로 줄 맞는 곳에는 tabular-nums 를 건다. 점수표에서
+   자릿수가 흔들리면 비교가 안 된다. */
+
+/* 종이 */
+.rp{max-width:880px;margin:0 auto 60px;color:var(--text);background:#fff;
+  border:1px solid var(--line);border-radius:6px;
+  box-shadow:0 1px 2px rgba(20,38,61,.04),0 16px 40px rgba(20,38,61,.07);
+  padding:0 62px 78px;overflow:hidden}
+.rp p{font-size:15px;line-height:1.92;color:#39434f;margin:0 0 13px;
+  word-break:keep-all;overflow-wrap:break-word}
 .rp p:last-child{margin-bottom:0}
-.rp b{color:var(--navy);font-weight:600}
+.rp b{color:var(--navy);font-weight:650}
+/* 세리프 숫자. 웹폰트를 더 부르지 않는다 — 이 페이지의 바깥 요청은
+   Pretendard 하나뿐이라는 개인정보 문구를 지키기 위해서다 */
+.rp-fig{font-family:ui-serif,Georgia,"Times New Roman",serif;
+  font-variant-numeric:tabular-nums lining-nums;letter-spacing:-.01em}
 
-.rp-title{padding:70px 4px 54px;border-top:3px solid var(--navy);margin-top:6px}
-.rp-title small{display:block;font-size:11.5px;letter-spacing:.16em;color:var(--navy);font-weight:700}
-.rp-title-major{display:inline-block;margin:26px 0 30px;padding-bottom:6px;font-size:14px;
-  font-weight:700;color:var(--green);border-bottom:2px solid var(--green)}
-.rp-title h1{font-size:40px;line-height:1.28;letter-spacing:-.03em;color:var(--navy);font-weight:800}
-.rp-title p{margin-top:22px;font-size:14.5px;color:#61707f;line-height:1.9}
-.rp-title-meta{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);
-  font-size:13px;color:#7a8593;line-height:1.95}
+/* 표지 */
+.rp-title{padding:86px 0 62px;border-bottom:1px solid var(--line)}
+.rp-title small{display:block;font-size:11px;letter-spacing:.3em;color:var(--green);font-weight:800}
+.rp-title-major{display:inline-block;margin:30px 0 26px;padding:6px 13px;font-size:12.5px;
+  font-weight:700;color:var(--green);background:var(--mint);border-radius:999px;letter-spacing:.01em}
+.rp-title h1{font-size:46px;line-height:1.24;letter-spacing:-.045em;color:var(--navy);font-weight:800}
+.rp-title p{margin-top:24px;font-size:15px;color:#6b7785;line-height:1.9;max-width:34em}
+.rp-title-meta{margin-top:62px;padding-top:22px;border-top:2px solid var(--navy);
+  font-size:13px;color:#6b7785;line-height:2.05;font-variant-numeric:tabular-nums}
 
-.rp-toc{padding:42px 4px 10px}
-.rp-toc h2{font-size:34px;letter-spacing:-.02em;color:var(--navy);font-weight:800;margin-bottom:22px}
-.rp-toc-row{display:flex;gap:22px;align-items:flex-start;padding:17px 2px;border-top:1px solid var(--line)}
-.rp-toc-row span{flex:0 0 34px;font-size:12px;font-weight:700;color:var(--green);padding-top:3px}
-.rp-toc-row b{display:block;font-size:16px;color:var(--navy);font-weight:700}
-.rp-toc-row small{display:block;margin-top:5px;font-size:12.5px;color:#7a8593}
-
-.rp-cover{background:#0c0f12;color:#fff;border-radius:18px;margin:46px 0 34px;
-  padding:92px 30px;text-align:center}
-.rp-cover small{display:block;font-size:11.5px;letter-spacing:.24em;color:#9fb0bd}
-.rp-cover h2{margin-top:14px;font-size:30px;font-weight:800;letter-spacing:-.02em;color:#fff}
-.rp-cover p{margin-top:12px;color:#b9c5cf;font-size:13.5px}
-
-.rp-sec{margin:34px 0 20px;padding-bottom:12px;border-bottom:2px solid var(--navy)}
-.rp-sec h2{font-size:23px;font-weight:800;letter-spacing:-.02em;color:var(--navy)}
-.rp-sec h2 span{color:var(--green)}
-
-.rp-sub{margin:0 0 24px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff}
-.rp-subhead{padding:17px 22px 15px;background:var(--mint);border-bottom:1px solid #dcebe4}
-.rp-subhead small{display:block;font-size:10.5px;letter-spacing:.14em;color:var(--green);font-weight:700}
-.rp-subhead h3{margin-top:5px;font-size:17px;font-weight:700;color:var(--navy)}
-.rp-body{padding:22px}
-
-.rp-ul,.rp-ol{margin:0;padding-left:20px}
-.rp-ul li,.rp-ol li{font-size:14px;line-height:1.85;color:#2b3440;margin-bottom:8px}
-.rp-ul li:last-child,.rp-ol li:last-child{margin-bottom:0}
-
-.rp-tw{overflow-x:auto;margin:6px 0 0;border:1px solid var(--line);border-radius:12px}
-.rp-tw table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:420px}
-.rp-tw th,.rp-tw td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);
-  vertical-align:top;line-height:1.75}
-.rp-tw th{background:#f4f8f6;font-weight:700;color:var(--navy);font-size:12.5px;white-space:nowrap}
-.rp-tw tr:last-child td{border-bottom:0}
-
-.rp-cards{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));margin-top:4px}
-.rp-card{border:1px solid var(--line);border-radius:12px;padding:14px 15px;background:#fcfdfd}
-.rp-card small{display:block;font-size:10.5px;letter-spacing:.1em;color:var(--green);font-weight:700}
-.rp-card b{display:block;margin-top:4px;font-size:14.5px;color:var(--navy)}
-.rp-card p{margin-top:6px;font-size:13px;color:#5d6b79;line-height:1.7}
-
-.rp-stats{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:16px}
-.rp-stats div{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:#fcfdfd}
-.rp-stats small{display:block;font-size:11px;color:#7a8593}
-.rp-stats b{display:block;margin-top:5px;font-size:19px;font-weight:800;color:var(--navy);letter-spacing:-.02em}
-
-.rp-inner{border:1px solid var(--line);border-radius:12px;padding:15px 16px;margin-bottom:10px;background:#fcfdfd}
-.rp-inner:last-child{margin-bottom:0}
-.rp-inner > b{display:block;font-size:14.5px;color:var(--navy);margin-bottom:6px}
-.rp-inner small{display:block;margin-top:8px;padding-top:8px;border-top:1px solid var(--line);
-  font-size:12.5px;color:#6b7785;line-height:1.7}
-
-.rp-note{margin-top:12px;border-left:3px solid var(--green);background:#f4f8f6;
-  border-radius:0 10px 10px 0;padding:13px 16px;font-size:13.5px;line-height:1.8;color:#3a4652}
-.rp-quote{border-left:3px solid var(--navy);background:#f7f9fb;border-radius:0 10px 10px 0;
-  padding:14px 16px;margin-bottom:10px;font-size:14px;line-height:1.85;color:#2b3440}
-
-.rp-type{border:1px solid var(--line);border-radius:12px;padding:15px 16px;margin-bottom:9px;background:#fff}
-.rp-type-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
-.rp-type-h b{font-size:15px;color:var(--navy)}
-.rp-type-h small{font-size:10.5px;letter-spacing:.12em;color:var(--green);font-weight:700}
-.rp-type p{margin:9px 0 0;font-size:13.5px}
-.rp-type > small{display:block;margin-top:9px;padding-top:9px;border-top:1px solid var(--line);
-  font-size:12.5px;color:#7a8593}
-
-.rp-proj{border:1px solid var(--line);border-radius:12px;padding:16px 17px;margin-bottom:12px;background:#fcfdfd}
-.rp-proj-h small{display:block;font-size:10.5px;letter-spacing:.1em;color:var(--green);font-weight:700}
-.rp-proj-h b{display:block;margin-top:4px;font-size:15.5px;color:var(--navy)}
-.rp-proj-h p{margin:6px 0 12px;font-size:13.5px;color:#5d6b79}
-.rp-proj-d{margin-top:12px;padding-top:11px;border-top:1px solid var(--line);font-size:13.5px;color:var(--navy)}
-.rp-proj-d small{display:block;font-size:11px;color:#7a8593;margin-bottom:3px}
-
-.rp-check label{display:flex;gap:10px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line)}
-.rp-check label:last-child{border-bottom:0}
-.rp-check input{margin-top:3px;width:16px;height:16px;flex:0 0 auto;accent-color:var(--green)}
-.rp-check span{font-size:14px;line-height:1.8;color:#2b3440}
-
-.rp-chart{border:1px solid var(--line);border-radius:14px;padding:18px 16px 14px;background:#fff}
-.rp-chart-t{font-size:13.5px;font-weight:700;color:var(--green);border-bottom:2px solid var(--green);
-  display:inline-block;padding-bottom:5px;margin-bottom:6px}
-.rp-chart-f{margin:6px 2px 0;font-size:13px;color:#5d6b79;line-height:1.8}
-.rp-radar{display:block;width:100%;height:auto;overflow:visible}
-.rp-radar .rp-ring{fill:none;stroke:#e2eae7;stroke-width:1}
-.rp-radar .rp-ring-out{stroke:#c9d6d1;stroke-width:1.3}
-.rp-radar .rp-spoke{stroke:#e2eae7;stroke-width:1}
-.rp-radar .rp-tick{font-size:9.5px;fill:#9aa6b1}
-.rp-radar .rp-poly{fill:rgba(15,107,88,.13);stroke:var(--green);stroke-width:2.1;stroke-linejoin:round}
-.rp-radar .rp-dot{fill:var(--green);stroke:#fff;stroke-width:1.6}
-.rp-radar .rp-lab text{font-size:12px;font-weight:600;fill:var(--navy)}
-.rp-radar .rp-lab tspan{font-size:11px;font-weight:400;fill:#8b96a2}
-
-/* 소절 안에서 묶음을 가르는 작은 머리. .rp p 보다 명시도를 높여 둔다 —
-   .rp p{margin:0 0 12px} 이 (0,1,1) 이라 클래스 하나로는 지지 않게 한다 */
-.rp .rp-sublabel{margin:20px 0 10px;font-size:11.5px;letter-spacing:.12em;
-  font-weight:700;color:var(--green);text-transform:uppercase}
-.rp .rp-sublabel:first-child{margin-top:0}
-.rp-toc-how{border:1px solid var(--line);border-radius:14px;padding:20px 22px;
-  background:var(--mint);margin:6px 0 10px}
+/* 목차 */
+.rp-toc{padding:54px 0 8px}
+.rp-toc h2{font-size:12px;letter-spacing:.3em;color:var(--green);font-weight:800;margin-bottom:26px}
+.rp-toc-row{display:flex;gap:26px;align-items:baseline;padding:16px 2px;border-top:1px solid #edf1f3}
+.rp-toc-row:first-of-type{border-top:0}
+.rp-toc-row span{flex:0 0 46px;font-size:19px;font-weight:400;color:#b6c2cc;
+  font-family:ui-serif,Georgia,"Times New Roman",serif;font-variant-numeric:lining-nums}
+.rp-toc-row b{display:block;font-size:16.5px;color:var(--navy);font-weight:700;letter-spacing:-.01em}
+.rp-toc-row small{display:block;margin-top:4px;font-size:13px;color:#8b95a1;line-height:1.7}
+.rp-toc-how{border-top:1px solid var(--line);margin:26px 0 8px;padding:24px 0 0}
+.rp-toc-how p{font-size:14px;color:#5d6a77}
 .rp-toc-how p:last-child{margin-bottom:0}
 
-.rp-foot{margin-top:30px;padding-top:16px;border-top:1px solid var(--line);
-  font-size:12px;color:#8a95a1;line-height:1.85}
+/* 절 표지 — 종이 가장자리까지 나간다 */
+.rp-cover{background:var(--navy);color:#fff;margin:54px -62px 0;padding:104px 62px 96px}
+.rp-cover small{display:block;font-size:52px;line-height:1;color:rgba(255,255,255,.28);
+  font-family:ui-serif,Georgia,"Times New Roman",serif;font-variant-numeric:lining-nums;
+  letter-spacing:.02em;font-weight:400}
+.rp-cover h2{margin-top:26px;padding-top:24px;font-size:31px;font-weight:700;
+  letter-spacing:-.03em;color:#fff;border-top:1px solid rgba(255,255,255,.22);display:inline-block}
+.rp-cover p{margin-top:14px;color:rgba(255,255,255,.62);font-size:14px;max-width:30em}
+
+/* 절 머리 */
+.rp-sec{margin:46px 0 4px}
+.rp-sec h2{font-size:13px;font-weight:800;letter-spacing:.2em;color:var(--green)}
+.rp-sec h2 span{color:#b6c2cc;margin-right:8px;
+  font-family:ui-serif,Georgia,"Times New Roman",serif;letter-spacing:.06em}
+
+/* 소절 — 상자가 아니라 가로선으로 나눈다 */
+.rp-sub{margin:0;border-top:1px solid var(--line);padding:34px 0 6px}
+.rp-subhead{padding:0;background:none;border:0}
+.rp-subhead small{display:block;font-size:10.5px;letter-spacing:.2em;color:var(--green);font-weight:800}
+.rp-subhead h3{margin:9px 0 20px;font-size:20px;font-weight:700;color:var(--navy);letter-spacing:-.025em}
+.rp-body{padding:0}
+
+.rp-ul,.rp-ol{margin:0;padding-left:20px}
+.rp-ul li,.rp-ol li{font-size:14.5px;line-height:1.9;color:#39434f;margin-bottom:9px;
+  word-break:keep-all;padding-left:4px}
+.rp-ul li::marker{color:var(--green)}
+.rp-ol li::marker{color:var(--green);font-weight:700}
+.rp-ul li:last-child,.rp-ol li:last-child{margin-bottom:0}
+
+/* 표 — 테두리를 쓸 자격이 있는 곳 */
+.rp-tw{overflow-x:auto;margin:6px 0 4px;border-top:2px solid var(--navy);
+  border-bottom:1px solid var(--line)}
+.rp-tw table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:440px;
+  font-variant-numeric:tabular-nums}
+.rp-tw th,.rp-tw td{text-align:left;padding:13px 14px 13px 0;border-bottom:1px solid #edf1f3;
+  vertical-align:top;line-height:1.72;color:#39434f;word-break:keep-all}
+.rp-tw th{font-weight:700;color:var(--navy);font-size:11.5px;white-space:nowrap;
+  letter-spacing:.08em;padding-top:11px;padding-bottom:11px}
+.rp-tw td:last-child,.rp-tw th:last-child{padding-right:0}
+.rp-tw tr:last-child td{border-bottom:0}
+.rp-tw tbody tr:hover td{background:#fafcfb}
+
+.rp-cards{display:grid;gap:1px;grid-template-columns:repeat(auto-fit,minmax(186px,1fr));
+  margin:6px 0 4px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.rp-card{padding:15px 16px;background:#fff}
+.rp-card small{display:block;font-size:10px;letter-spacing:.14em;color:var(--green);font-weight:800}
+.rp-card b{display:block;margin-top:5px;font-size:14.5px;color:var(--navy);font-weight:650}
+.rp-card p{margin-top:6px;font-size:13px;color:#68737f;line-height:1.72}
+
+/* 상단 요약 숫자 — 상자 셋 대신 한 줄에 칸을 나눈다 */
+.rp-stats{display:flex;flex-wrap:wrap;gap:0;margin:0 0 22px;
+  border-top:2px solid var(--navy);border-bottom:1px solid var(--line)}
+.rp-stats div{flex:1 1 150px;padding:15px 20px 15px 0}
+.rp-stats div + div{padding-left:22px;border-left:1px solid #edf1f3}
+.rp-stats small{display:block;font-size:11px;color:#8b95a1;letter-spacing:.04em}
+.rp-stats b{display:block;margin-top:6px;font-size:21px;font-weight:700;color:var(--navy);
+  letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+
+/* 설명 덩어리 — 상자가 아니라 왼쪽 실선 */
+.rp-inner{border-left:2px solid #dfe9e5;padding:1px 0 1px 20px;margin:18px 0}
+.rp-inner:last-child{margin-bottom:0}
+.rp-inner > b{display:block;font-size:15.5px;color:var(--navy);margin-bottom:7px;font-weight:650}
+.rp-inner > b small{font-weight:500;color:#8b95a1;font-size:12.5px;margin-left:7px;
+  font-variant-numeric:tabular-nums}
+.rp-inner small{display:block;margin-top:9px;font-size:12.5px;color:#7b8590;line-height:1.75}
+
+.rp-note{margin-top:16px;border-left:2px solid var(--green);background:#f5faf8;
+  padding:14px 18px;font-size:13.5px;line-height:1.82;color:#3f4b57}
+.rp-quote{border-left:2px solid var(--navy);padding:4px 0 4px 20px;margin:0 0 16px;
+  font-size:15px;line-height:1.9;color:#2b3440}
+
+.rp-type{border-top:1px solid #edf1f3;padding:17px 0 4px}
+.rp-type-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.rp-type-h b{font-size:16px;color:var(--navy);font-weight:700}
+.rp-type-h small{font-size:10px;letter-spacing:.16em;color:#b0bcc6;font-weight:700}
+.rp-type p{margin:9px 0 0;font-size:14px}
+.rp-type > small{display:block;margin-top:10px;font-size:12.5px;color:#8b95a1}
+
+/* 프로젝트 — 따로 떨어진 물건이라 테두리를 쓴다 */
+.rp-proj{border:1px solid var(--line);border-radius:10px;padding:20px 22px;margin-bottom:12px;background:#fcfdfd}
+.rp-proj-h small{display:block;font-size:10px;letter-spacing:.14em;color:var(--green);font-weight:800}
+.rp-proj-h b{display:block;margin-top:6px;font-size:16px;color:var(--navy);font-weight:700;letter-spacing:-.02em}
+.rp-proj-h p{margin:7px 0 14px;font-size:13.5px;color:#68737f}
+.rp-proj-d{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:13.5px;color:var(--navy)}
+.rp-proj-d small{display:block;font-size:10.5px;color:#8b95a1;margin-bottom:4px;letter-spacing:.1em;font-weight:700}
+
+.rp-check{border-top:2px solid var(--navy);margin-top:6px}
+.rp-check label{display:flex;gap:13px;align-items:flex-start;padding:13px 0;border-bottom:1px solid #edf1f3}
+.rp-check label:last-child{border-bottom:0}
+.rp-check input{margin-top:3px;width:17px;height:17px;flex:0 0 auto;accent-color:var(--green)}
+.rp-check span{font-size:14.5px;line-height:1.82;color:#39434f}
+
+/* 방사형 */
+.rp-chart{border:1px solid var(--line);border-radius:10px;padding:22px 20px 16px;background:#fff;margin:4px 0}
+.rp-chart-t{font-size:10.5px;font-weight:800;color:var(--green);letter-spacing:.2em;margin-bottom:10px}
+.rp-chart-f{margin:10px 2px 0;font-size:13px;color:#68737f;line-height:1.8}
+.rp-radar{display:block;width:100%;height:auto;overflow:visible}
+.rp-radar .rp-ring{fill:none;stroke:#e9eef1;stroke-width:1}
+.rp-radar .rp-ring-out{stroke:#cfd9e0;stroke-width:1.2}
+.rp-radar .rp-spoke{stroke:#e9eef1;stroke-width:1}
+.rp-radar .rp-tick{font-size:9px;fill:#aab5bf}
+.rp-radar .rp-poly{fill:rgba(15,107,88,.10);stroke:var(--green);stroke-width:2;stroke-linejoin:round}
+.rp-radar .rp-dot{fill:var(--green);stroke:#fff;stroke-width:1.8}
+.rp-radar .rp-lab text{font-size:12px;font-weight:650;fill:var(--navy)}
+.rp-radar .rp-lab tspan{font-size:11px;font-weight:400;fill:#98a3ad;font-variant-numeric:tabular-nums}
+
+/* 소절 안의 작은 머리. .rp p 가 (0,1,1) 이라 클래스 하나로는 진다 */
+.rp .rp-sublabel{margin:26px 0 12px;font-size:10.5px;letter-spacing:.2em;
+  font-weight:800;color:var(--green)}
+.rp .rp-sublabel:first-child{margin-top:0}
+
+.rp-foot{margin-top:46px;padding-top:20px;border-top:2px solid var(--navy);
+  font-size:12px;color:#8b95a1;line-height:1.9;font-variant-numeric:tabular-nums}
 .rp-foot a{color:var(--green)}
 
-@media (max-width:560px){
-  .rp-title h1{font-size:30px}
-  .rp-toc h2{font-size:27px}
-  .rp-cover{padding:64px 20px}
-  .rp-body{padding:16px}
+@media (max-width:720px){
+  .rp{padding:0 22px 56px;border-left:0;border-right:0;border-radius:0}
+  .rp-cover{margin-left:-22px;margin-right:-22px;padding:70px 22px 64px}
+  .rp-title{padding:56px 0 44px}
+  .rp-title h1{font-size:33px}
+  .rp-cover small{font-size:40px}
+  .rp-cover h2{font-size:25px}
+  .rp-stats div + div{padding-left:0;border-left:0;border-top:1px solid #edf1f3}
+  .rp-inner{padding-left:15px}
 }
+
 @media print{
-  .rp{max-width:none}
-  .rp-cover{break-before:page;page-break-before:always;border-radius:0;
-    background:#0c0f12 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .rp{max-width:none;border:0;border-radius:0;box-shadow:none;padding:0 0 10px}
+  .rp-cover{break-before:page;page-break-before:always;margin:0;padding:96px 0 88px;
+    background:var(--navy) !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .rp-cover small,.rp-cover h2,.rp-cover p{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .rp-sub,.rp-proj,.rp-chart{break-inside:avoid;page-break-inside:avoid}
-  .rp-inner,.rp-toc-how{break-inside:avoid;page-break-inside:avoid}
-  .rp-subhead{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .rp-inner,.rp-toc-how,.rp-type{break-inside:avoid;page-break-inside:avoid}
+  .rp-note,.rp-quote{break-inside:avoid;page-break-inside:avoid}
+  .rp-subhead h3{break-after:avoid;page-break-after:avoid}
   .rp-toc{break-after:page;page-break-after:always}
+  .rp-tw tbody tr:hover td{background:none}
 }
