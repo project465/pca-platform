@@ -84,6 +84,7 @@ export async function sessionsOf(orgIds: string[]): Promise<SessionRow[]> {
 
 /** 담당자가 이 회차를 만질 수 있는지. 교수는 읽기만 한다. */
 export async function canManage(userId: string, sessionId: string): Promise<boolean> {
+  if (!isDbId(sessionId)) return false;
   const row = await queryOne<{ id: string }>(
     `SELECT ts.id FROM test_sessions ts
        JOIN memberships m ON m.org_id = ts.org_id
@@ -93,7 +94,20 @@ export async function canManage(userId: string, sessionId: string): Promise<bool
   return !!row;
 }
 
+/**
+ * bigint 컬럼에 들어갈 id 인지 본다.
+ *
+ * `/org/sessions/new/report` 처럼 [id] 자리에 숫자가 아닌 값이 들어오면
+ * 그대로 질의로 내려가 Postgres 가 `invalid input syntax for type bigint`
+ * 를 던진다. 화면은 404 가 아니라 500 이 되고, 개발 모드에서는 스택이
+ * 그대로 보인다. 권한 검사 앞에서 걸러 notFound() 로 보낸다.
+ */
+export function isDbId(v: string): boolean {
+  return /^[0-9]+$/.test(v);
+}
+
 export async function canRead(userId: string, sessionId: string): Promise<boolean> {
+  if (!isDbId(sessionId)) return false;
   const row = await queryOne<{ id: string }>(
     `SELECT ts.id FROM test_sessions ts
        JOIN memberships m ON m.org_id = ts.org_id
