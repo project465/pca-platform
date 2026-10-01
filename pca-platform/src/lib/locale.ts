@@ -114,7 +114,7 @@ export const UI = {
     "Doğru cevap yoktur. İlk aklınıza geleni işaretleyin.",
   ),
   testBrief2: d(
-    "한 문항 고를 때마다 저장됩니다. 도중에 닫아도 이어서 볼 수 있습니다.",
+    "한 문항씩 고를 때마다 저장되기 때문에, 도중에 닫으셔도 이어서 하실 수 있습니다.",
     "Every answer is saved as you go. You can close the page and come back.",
     "Her yanıt anında kaydedilir. Sayfayı kapatıp geri dönebilirsiniz.",
   ),
@@ -226,7 +226,7 @@ export const UI = {
   repGroupNTrait: d("{n}가지가 같음", "{n} tied", "{n} eşit"),
   repQuality: d("응답 신뢰도", "Response reliability", "Yanıt güvenilirliği"),
   repQualityOk: d(
-    "응답이 고르게 들어왔습니다. 아래 점수를 그대로 읽으셔도 됩니다.",
+    "응답이 고르게 들어와서 아래 점수를 그대로 읽으셔도 됩니다.",
     "Responses came in evenly. You can read the scores below at face value.",
     "Yanıtlar dengeli geldi. Aşağıdaki puanları olduğu gibi okuyabilirsiniz.",
   ),
@@ -313,7 +313,7 @@ export const UI = {
     "{job} için Zorunlu işaretli maddelerden başlayıp ilgili dersleri bulun. Aldıklarınız varsa kanıt olarak yükleyip seviyenizi doldurun.",
   ),
   repPlan2: d(
-    "{area} 쪽 프로젝트를 하나 끝냅니다. 결과물보다 과정 기록이 증거가 됩니다.",
+    "{area} 쪽 프로젝트를 하나 끝내 보십시오. 완성된 결과물보다 그 과정을 적어 둔 기록이 더 좋은 증거가 됩니다.",
     "Finish one project on the {area} side. The record of the process counts as evidence more than the artifact does.",
     "{area} tarafında bir proje bitirin. Kanıt olarak ürün değil, sürecin kaydı sayılır.",
   ),
@@ -415,7 +415,7 @@ export const UI = {
     "Alan uyumu ücretsizdir",
   ),
   freeSub: d(
-    "115문항, 약 15분. 답을 다 하면 결과지가 바로 열립니다. 결제 정보를 넣는 곳이 없습니다.",
+    "115문항이고 15분쯤 걸립니다. 답을 다 하시면 결과지가 바로 열리고, 중간에 결제 정보를 넣는 곳은 없습니다.",
     "115 items, about 15 minutes. The report opens as soon as you finish. There is no card field anywhere in this path.",
     "115 soru, yaklaşık 15 dakika. Bitirdiğinizde rapor hemen açılır.",
   ),
@@ -445,7 +445,7 @@ export const UI = {
     "Görev grupları ücretsizdir",
   ),
   freeSubUniv: d(
-    "253문항, 약 30분. 답을 다 하면 결과지가 바로 열립니다. 결제 정보를 넣는 곳이 없습니다.",
+    "253문항이고 30분쯤 걸립니다. 답을 다 하시면 결과지가 바로 열리고, 중간에 결제 정보를 넣는 곳은 없습니다.",
     "253 items, about 30 minutes. The report opens as soon as you finish. There is no card field anywhere in this path.",
     "253 soru, yaklaşık 30 dakika. Bitirdiğinizde rapor hemen açılır.",
   ),
@@ -504,7 +504,7 @@ export const UI = {
     "Bu kod iptal edildi. Satın aldığınız yerle iletişime geçin.",
   ),
   redeemInactive: d(
-    "지금은 이 상품으로 응시할 수 없습니다. 문의해 주시면 확인해 드리겠습니다.",
+    "지금은 이 상품으로 응시하실 수 없습니다. 문의해 주시면 확인해서 알려 드리겠습니다.",
     "This product is not open right now. Get in touch and we will sort it out.",
     "Bu ürün şu anda açık değil. Bize ulaşın, ilgilenelim.",
   ),
@@ -534,7 +534,7 @@ export const UI = {
     "Bu test ne yapmak istediğinizi ölçer: yeteneğinizi ya da notlarınızı değil.",
   ),
   repLeadTopHs: d(
-    "지금 재 보면 {area} 쪽이 가장 앞에 있습니다. 고등학교 3년 동안 바뀔 수 있는 값입니다.",
+    "지금 보면 {area} 쪽이 가장 앞에 있는데, 고등학교 3년을 지나는 동안 얼마든지 바뀔 수 있는 값입니다.",
     "Measured now, furthest ahead: {area}. This can change over three years of high school.",
     "Şu anki ölçümde en önde: {area}. Bu, lise boyunca değişebilir.",
   ),
@@ -590,13 +590,13 @@ export const UI = {
     "{job} tarafını da bir kez deneyin. Çakışan grup içinde yanıtı bu test değil, deneyim verir.",
   ),
   repRetestHs: d(
-    "재검사는 한 학년 뒤를 권합니다. 해 본 것이 늘면 값이 움직입니다.",
+    "다시 받아 보시는 것은 한 학년 뒤를 권합니다. 해 본 일이 늘면 값도 따라 움직입니다.",
     "We suggest retaking after a school year. The numbers move as you do more.",
     "Bir öğretim yılı sonra tekrar almanızı öneririz.",
   ),
 
   repRetest: d(
-    "재검사는 여섯 달 뒤를 권합니다. 그전에는 값이 거의 움직이지 않습니다.",
+    "다시 받아 보시는 것은 여섯 달 뒤를 권합니다. 그전에는 값이 거의 움직이지 않습니다.",
     "We suggest retaking in six months. Before that the numbers barely move.",
     "Altı ay sonra tekrar almanızı öneririz. Öncesinde değerler neredeyse değişmez.",
   ),
@@ -741,7 +741,7 @@ export const UI = {
   // 업그레이드 결제는 결과가 다르다 — 풀 것이 생기는 것이 아니라
   // 이미 낸 결과지가 넓어진다. 문장도 링크도 갈라야 한다.
   payDoneUpgradeBody: d(
-    "결과지의 남은 절이 열렸습니다. 문항을 다시 풀지 않습니다. 같은 결과지가 그대로 넓어집니다.",
+    "결과지의 남은 절이 열렸습니다. 문항을 다시 푸실 필요는 없고, 보고 계시던 결과지가 그대로 넓어집니다.",
     "The rest of your report is open. You do not retake the items. The same report simply opens up.",
     "Raporunuzun kalanı açıldı. Soruları tekrar çözmezsiniz.",
   ),

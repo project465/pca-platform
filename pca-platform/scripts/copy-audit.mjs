@@ -135,6 +135,51 @@ function prose(path) {
     .replace(/<[^>]+>/g, " ");
 }
 
+/**
+ * 토막 문단. 짧은 단정문 두 개를 연달아 놓는 버릇이다.
+ *
+ * "빈 막대로 두면 0으로 읽힙니다." 처럼 주어를 떼고 짧게 끊은 문장을 이어
+ * 붙이면 사람이 말하는 리듬이 아니라 메모가 된다. 지적이 네 번째로 들어왔을 때
+ * 세기 시작했다. 한 덩어리 안의 문장이 전부 열일곱 자 미만이면 토막으로 본다.
+ *
+ * **상황 설명은 원래 짧다.** 결과지의 장면 제시("설비가 멈췄습니다. 알람은
+ * 모호하고 생산은 대기 중입니다.")는 사람도 그렇게 쓴다. 그래서 0을 요구하지
+ * 않고 비율로 본다.
+ */
+function chunks(path) {
+  const raw = readFileSync(path, "utf8");
+  if (path.endsWith(".json")) {
+    return (raw.match(/"(?:[^"\\]|\\.)*"/g) ?? []).map((t) => t.slice(1, -1));
+  }
+  if (path.endsWith(".js") || path.endsWith(".mjs")) {
+    const t = raw.replace(/\/\*[\s\S]*?\*\//g, " ").replace(/^\s*\/\/.*$/gm, " ");
+    return (t.match(/'(?:[^'\\]|\\.)*'/g) ?? []).map((x) => x.slice(1, -1));
+  }
+  if (path.endsWith(".ts") || path.endsWith(".tsx")) {
+    const t = raw.replace(/\/\*[\s\S]*?\*\//g, " ").replace(/(^|[^:/])\/\/.*$/gm, "$1");
+    return (t.match(/"(?:[^"\\]|\\.)*"/g) ?? []).map((x) => x.slice(1, -1));
+  }
+  if (path.endsWith(".md")) return raw.split(/\n\s*\n/);
+  return raw
+    .replace(/<(style|script)[\s\S]*?<\/\1>|<!--[\s\S]*?-->/g, " ")
+    .split(/<[^>]+>/);
+}
+
+function koLen(s) { return (s.match(/[가-힣]/g) ?? []).length; }
+
+function choppy(path) {
+  let units = 0, bad = 0, first = "";
+  for (const c of chunks(path)) {
+    const t = c.replace(/\s+/g, " ").trim();
+    if (koLen(t) < 25) continue;
+    const ss = t.split(/(?<=[.!?])\s+/).filter((x) => koLen(x) > 1);
+    if (ss.length < 2) continue;
+    units++;
+    if (ss.every((x) => koLen(x) < 17)) { bad++; if (!first) first = t.slice(0, 60); }
+  }
+  return { units, bad, first };
+}
+
 let failed = 0;
 for (const path of files) {
   const text = prose(path);
@@ -145,6 +190,13 @@ for (const path of files) {
     const n = (text.match(re) ?? []).length;
     const cap = Math.max(1, Math.round((per1000 * ko) / 1000));
     if (n > cap) { rows.push([name, n, cap, fix]); failed++; }
+  }
+  const ch = choppy(path);
+  const chCap = Math.max(2, Math.round(ch.units * 0.08));
+  if (ch.bad > chCap) {
+    rows.push(["토막 문단", ch.bad, chCap,
+      `문장을 잇거나 주어를 살린다. 예: ${ch.first}`]);
+    failed++;
   }
   const head = `${path}  (한글 ${ko}자)`;
   if (!rows.length) { console.log(`  OK  ${head}`); continue; }
