@@ -546,7 +546,7 @@
       out.push(sect(no(), 'FIT ≠ READY', '',
         '<div class="card contentcard"><h3>적합도는 높지만 준비도가 낮을 수 있습니다.</h3>' +
         '<p>FIT ' + top.fit + '은 업무방식의 유사성, READY ' + top.ready +
-        '는 현재 준비상태를 의미합니다. 두 값을 같은 점수로 해석하지 않습니다.</p>' +
+        '는 지금의 준비 상태를 뜻합니다. 두 값을 같은 점수처럼 읽지 않으셔야 합니다.</p>' +
         '<div class="two" style="margin-top:12px">' +
         '<div class="scorebox"><span>FIT</span><b>' + top.fit + '</b></div>' +
         '<div class="scorebox"><span>READY</span><b>' + top.ready + '</b></div></div></div>' +
