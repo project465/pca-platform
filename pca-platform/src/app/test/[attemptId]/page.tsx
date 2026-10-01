@@ -9,7 +9,7 @@ export async function generateMetadata({ params }: { params: Promise<{ attemptId
   const { attemptId } = await params;
   const user = await currentUser();
   const a = user ? await findAttempt(attemptId, user.id) : null;
-  return { title: a?.trackCode === "HS" ? "검사 응시 — 커리어메트리 플러스" : "검사 응시 — Careermetri" };
+  return { title: a?.trackCode === "HS" ? "검사 응시 · 커리어메트리 플러스" : "검사 응시 · Careermetri" };
 }
 
 export default async function TestPage({

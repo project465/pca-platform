@@ -36,13 +36,13 @@ function Item({ s, showFor }: { s: PrescribedSubject; showFor: boolean }) {
           {s.univ.length > 0 && (
             <span className="rx-tag univ">{s.univ.map((u) => u.univ).join("·")} 권장</span>
           )}
-          {s.prereq && <span>먼저 — {s.prereq.name}</span>}
+          {s.prereq && <span>선수과목 {s.prereq.name}</span>}
         </span>
         {s.why && <span className="rx-why">{s.why}</span>}
         {/* 처방과 사슬을 잇는 한 줄. 이 과목이 현장 어디서 쓰이는지 */}
         {s.usedAt.length > 0 && (
           <span className="rx-use">
-            현장에서 —{" "}
+            현장에서{" "}
             {s.usedAt.map((u, i) => (
               <span key={u.role + u.what}>
                 {i > 0 && " · "}
@@ -91,7 +91,7 @@ export default function PrescriptionView({ rx }: { rx: Prescription }) {
         <p className="notice warn">
           1군에 계열이 {rx.majors.length}개 있어 여기 담긴 것은 <b>그 전부에 공통으로
           걸리는 과목</b>까지입니다. 한 계열만 요구하는 과목은 아래 “여기서 갈립니다”
-          로 내렸습니다 — 지금 다 담으면 신청할 수 없는 목록이 됩니다.
+          로 내렸습니다. 지금 다 담으면 신청할 수 없는 목록이 됩니다.
         </p>
       )}
 
@@ -143,13 +143,13 @@ export default function PrescriptionView({ rx }: { rx: Prescription }) {
           <ul>
             {rx.univPicks.map((s) => (
               <li key={s.code}>
-                {s.univ.map((u) => u.univ).join("·")} — {s.name}{" "}
+                {s.univ.map((u) => u.univ).join("·")} 권장: {s.name}{" "}
                 <span className="ok">담겨 있습니다</span>
               </li>
             ))}
             {rx.univChecks.map((c) => (
               <li key={c.univ + c.rule}>
-                {c.univ} — {c.rule}: 지금 {c.have}과목{" "}
+                {c.univ} {c.rule}, 지금 {c.have}과목{" "}
                 {c.met ? (
                   <span className="ok">충족</span>
                 ) : (

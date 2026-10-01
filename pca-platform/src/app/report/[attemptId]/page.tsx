@@ -272,7 +272,7 @@ export default async function ReportPage({
           </div>
 
           <p className={`notice ${r.quality.flag === "ok" ? "" : "warn"}`}>
-            <b>{t("repQuality", lang)}</b> — {t(flag, lang)}{" "}
+            <b>{t("repQuality", lang)}</b>: {t(flag, lang)}{" "}
             {t("repQualityStat", lang, {
               a: r.quality.attentionPass,
               b: r.quality.attentionTotal,

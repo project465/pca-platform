@@ -50,14 +50,23 @@ const files = process.argv.slice(2).length
      // 결과지의 공통 원고는 코드 안에 문자열로 있다. JSON 만 보면 절반을 놓친다
      "sites/pca-platform/assets/report.js",
      "sites/pca-platform/assets/app.js",
-     // 관리자·담당자 화면도 사람이 읽는 원고다. 여기만 감사 밖이었고,
-     // 넣어 보니 한글 1000자당 대시가 13.5개(한도 0.3)였다
-     ...readdirSync("src/app/admin", { recursive: true })
+     // 플랫폼 화면 전부. 관리자·담당자만 넣었다가 **학생이 보는 화면이
+     // 밖에 남아 있는 것**을 알았다. 결과지 문구는 화면 파일이 아니라
+     // 사전(`locale.ts`)에 있어서, 화면만 훑는 규칙으로는 영원히 안 걸린다
+     ...readdirSync("src/app", { recursive: true })
        .filter((f) => String(f).endsWith(".tsx"))
-       .map((f) => `src/app/admin/${f}`),
-     ...readdirSync("src/app/org", { recursive: true })
-       .filter((f) => String(f).endsWith(".tsx"))
-       .map((f) => `src/app/org/${f}`),
+       .map((f) => `src/app/${f}`),
+     ...readdirSync("src/components")
+       .filter((f) => f.endsWith(".tsx"))
+       .map((f) => `src/components/${f}`),
+     // 학생이 읽는 결과지·화면 문구가 전부 이 사전에 있다. 한글 4,200자다
+     "src/lib/locale.ts",
+     "src/lib/prescribe.ts",
+     "src/lib/chain.ts",
+     "src/lib/evidence.ts",
+     "src/lib/refund.ts",
+     "src/lib/redeem.ts",
+     "src/lib/survey.ts",
      ...readdirSync("sites/careermetri/legal")
        .filter((f) => f.endsWith(".md"))
        .map((f) => `sites/careermetri/legal/${f}`),
@@ -94,9 +103,30 @@ function prose(path) {
       dropBlanks(raw.match(/^\s*"(?:[^"\\]|\\.)*",?$/gm) ?? []).join(" ");
   }
   if (path.endsWith(".ts") || path.endsWith(".tsx")) {
-    // 큰따옴표 문자열만. 주석에 쓴 설계 메모는 원고가 아니다
-    const noComment = raw.replace(/\/\*[\s\S]*?\*\//g, " ").replace(/^\s*\/\/.*$/gm, " ");
-    return dropBlanks(noComment.match(/"(?:[^"\\]|\\.)*"/g) ?? []).join(" ");
+    // 화면 문구의 대부분은 문자열이 아니라 **JSX 본문**이다. 큰따옴표만
+    // 세던 규칙은 그래서 결과지 화면의 한글 2,000자 중 200자도 못 봤고,
+    // 감사에 넣어 둔 채로 통과 표시만 찍혔다. 가장 나쁜 종류의 통과다.
+    //
+    // 그래서 주석·import·코드용 속성값을 걷어낸 뒤 **한글이 든 조각만**
+    // 남긴다. 코드 토큰은 전부 ASCII 라 이 한 줄이 코드와 원고를 가른다.
+    // placeholder·title·alt·aria-label 은 사람이 읽는 말이라 남겨 둔다.
+    const t = raw
+      .replace(/\/\*[\s\S]*?\*\//g, " ")
+      .replace(/\{\/\*[\s\S]*?\*\/\}/g, " ")
+      .replace(/(^|[^:/])\/\/.*$/gm, "$1")
+      .replace(/^\s*import[\s\S]*?from\s+["'][^"']+["'];?\s*$/gm, " ")
+      .replace(
+        /\b(?:className|style|href|src|id|key|type|name|value|htmlFor|rel|target|method|action|scope|colSpan|rowSpan|width|height|viewBox|fill|stroke|d|x|y|cx|cy|r)=(?:"[^"]*"|\{[^{}]*\})/g,
+        " ",
+      );
+    // 대시는 한글 조각 밖에도 선다 — `<b>{t("repQuality")}</b> — {t(flag)}`
+    // 처럼 코드 사이에 홀로 놓인 것이 화면에서는 문장 가운데에 찍힌다.
+    // 그래서 값이 없는 칸의 `—` 만 걷어낸 뒤 **남은 대시를 전부** 센다.
+    const body = t.replace(/(["'])\s*—\s*\1|>\s*—\s*</g, " ");
+    const segs = dropBlanks(body.match(/[^\n<>]*[가-힣][^\n<>]*/g) ?? []);
+    const inSeg = (segs.join("").match(/—/g) ?? []).length;
+    const all = (body.match(/—/g) ?? []).length;
+    return segs.join("\n") + "\n" + "—".repeat(Math.max(0, all - inSeg));
   }
   return raw
     .replace(/<style[\s\S]*?<\/style>|<script[\s\S]*?<\/script>|<!--[\s\S]*?-->/g, " ")
@@ -126,7 +156,10 @@ for (const path of files) {
 for (const path of files.filter((f) => {
   const t = prose(f);
   const ko = (t.match(/[가-힣]/g) ?? []).length;
-  return ko < 200 && t.replace(/\s/g, "").length > 200;   // 영문 원고
+  // 한글이 적은 파일. 영문 원고이거나, 문구가 사전에 있고 화면 파일에는
+  // 조각만 남은 경우다. 길이로 거르던 규칙은 **결과지 화면을 통째로
+  // 빠뜨렸다** — 한글 아홉 자뿐이라 양쪽 검사에 다 들지 않았다.
+  return ko < 200 && t.replace(/\s/g, "").length > 0;
 })) {
   const n = (prose(path).match(/—/g) ?? []).length;
   console.log(n ? `\n  넘침 ${path}: em dash ${n}회 (한도 0)` : `  OK  ${path} (영문) em dash 0`);

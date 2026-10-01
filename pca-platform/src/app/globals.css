@@ -211,7 +211,7 @@ td .sub { display: block; font-size: 12.5px; color: var(--muted); }
 .freesplit li::before { position: absolute; left: 0; top: 0; font-weight: 700; }
 .freeyes li::before { content: "\002B"; }
 .freeno li { color: var(--muted, #61717D); }
-.freeno li::before { content: "\2014"; }
+.freeno li::before { content: "\2212"; }   /* 빼기표. 대시를 글머리로 쓰면 결과지가 대시 범벅으로 보인다 */
 
 .testbar {
   background: #FDF8EC; border-left: 3px solid #C08A0B; padding: 11px 14px;

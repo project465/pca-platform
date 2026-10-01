@@ -22,7 +22,7 @@ export default function ForgotForm() {
 
         {state.devLink ? (
           <div className="notice">
-            <b>개발 모드</b> — 메일 발송이 아직 연결되지 않아 링크를 여기에 표시합니다.
+            <b>개발 모드</b>. 메일 발송이 아직 연결되지 않아 링크를 여기에 표시합니다.
             운영 환경에서는 표시되지 않습니다.
             <br />
             <Link className="mono" href={state.devLink}>

@@ -16,7 +16,7 @@ import LangSwitch from "@/components/lang-switch";
 export async function generateMetadata() {
     const user = await currentUser();
   const track = user ? await pendingTrack(user.id) : null;
-  return { title: track === "HS" ? "검사 시작 — 커리어메트리 플러스" : "검사 시작 — Careermetri" };
+  return { title: track === "HS" ? "검사 시작 · 커리어메트리 플러스" : "검사 시작 · Careermetri" };
 }
 
 export default async function TestEntry({

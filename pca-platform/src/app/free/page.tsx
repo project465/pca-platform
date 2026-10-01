@@ -14,7 +14,7 @@ export async function generateMetadata({
   searchParams: Promise<{ track?: string }>;
 }) {
   const { track } = await searchParams;
-  return { title: `무료 진단 — ${TRACKS[resolveTrack(track)].brand}` };
+  return { title: `무료 진단 · ${TRACKS[resolveTrack(track)].brand}` };
 }
 
 /**

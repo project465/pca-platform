@@ -205,8 +205,8 @@ export const UI = {
   repSec06: d("다음 여섯 달", "The next six months", "Önümüzdeki altı ay"),
   repLead: d(
     "250문항이 재는 것은 무엇을 하고 싶은가입니다. 실력이 아니라 관심의 방향입니다.",
-    "The 250 items measure what you want to do — the direction of your interest, not your skill level.",
-    "250 soru ne yapmak istediğinizi ölçer — yetkinliğinizi değil, ilginizin yönünü.",
+    "The 250 items measure what you want to do: the direction of your interest, not your skill level.",
+    "250 soru ne yapmak istediğinizi ölçer: yetkinliğinizi değil, ilginizin yönünü.",
   ),
   /* "1순위" 라고 쓰지 않는다. 구간이 겹치는 것은 묶어서 보여주기로 했는데,
      라벨이 다시 등수를 주장하면 "1순위 직무 — 4개 직무" 가 찍힌다. */
@@ -251,9 +251,9 @@ export const UI = {
     "Soruların doğrudan ölçtüğü birim budur. Her alan için 25 soru yanıtladınız; ortalama 100 üzerinden ölçeklendi. Aşağıdaki sekiz eksen ve rol sıralaması bu ondan türer.",
   ),
   repNote02: d(
-    "직무분야 열 개를 공학 활동 여덟 가지로 옮긴 값입니다. 분야 이름은 나라마다 다르지만 이 여덟 가지는 어디서나 같습니다 — 해외 직무와 비교할 때 쓰는 축입니다.",
-    "The ten job areas mapped onto eight engineering activities. Area names differ by country; these eight do not — this is the axis used to compare roles across borders.",
-    "On iş alanının sekiz mühendislik faaliyetine aktarılmış hâli. Alan adları ülkeye göre değişir; bu sekizi değişmez — sınır ötesi karşılaştırmada kullanılan eksen budur.",
+    "직무분야 열 개를 공학 활동 여덟 가지로 옮긴 값입니다. 분야 이름은 나라마다 다르지만 이 여덟 가지는 어디서나 같습니다. 해외 직무와 비교할 때 쓰는 축입니다.",
+    "The ten job areas mapped onto eight engineering activities. Area names differ by country; these eight do not. This is the axis used to compare roles across borders.",
+    "On iş alanının sekiz mühendislik faaliyetine aktarılmış hâli. Alan adları ülkeye göre değişir; bu sekizi değişmez; sınır ötesi karşılaştırmada kullanılan eksen budur.",
   ),
   repNote03: d(
     "250문항 중 120문항에 성향이 심어져 있습니다. 여섯 가지의 절대 높이보다 서로의 높낮이가 정보입니다. 가장 높은 쪽이 {hi}, 가장 낮은 쪽이 {lo}입니다.",
@@ -264,31 +264,31 @@ export const UI = {
   // 그렇다). 그때 "가장 높은 쪽이 X" 라고 쓰면 없는 차이를 주장하게 된다.
   // 직무 묶음에서 이미 지킨 원칙 — 못 가리면 못 가린다고 적는다.
   repNote03Flat: d(
-    "250문항 중 120문항에 성향이 심어져 있습니다. 여섯 축은 절대값이 아니라 서로 견줘 읽는데, 이번 응답에서는 여섯이 같은 값으로 나왔습니다. 더 뚜렷한 쪽이 없습니다.",
-    "120 of the 250 items carry a work-style signal. What matters is the relative height of the six — and in this response all six came out level. None of them stands out over the others.",
+    "250문항 중 120문항에 성향이 심어져 있습니다. 여섯 축은 절대값으로 읽지 않고 서로 견줘 읽는데, 이번 응답에서는 여섯이 같은 값으로 나왔습니다. 더 뚜렷한 쪽이 없습니다.",
+    "120 of the 250 items carry a work-style signal. What matters is the relative height of the six, and in this response all six came out level. None of them stands out over the others.",
     "250 sorunun 120'si çalışma eğilimi taşır. Bu yanıtta altısı da aynı düzeyde çıktı; hiçbiri diğerlerinin önünde değil.",
   ),
   repNote03FlatHs: d(
-    "문항 112개 중 96개에 성향이 심어져 있습니다. 여섯 축은 절대값이 아니라 서로 견줘 읽는데, 이번 응답에서는 여섯이 같은 값으로 나왔습니다. 더 뚜렷한 쪽이 없습니다.",
-    "96 of the 112 items carry a work-style signal. What matters is the relative height of the six — and in this response all six came out level. None of them stands out over the others.",
+    "문항 112개 중 96개에 성향이 심어져 있습니다. 여섯 축은 절대값으로 읽지 않고 서로 견줘 읽는데, 이번 응답에서는 여섯이 같은 값으로 나왔습니다. 더 뚜렷한 쪽이 없습니다.",
+    "96 of the 112 items carry a work-style signal. What matters is the relative height of the six, and in this response all six came out level. None of them stands out over the others.",
     "112 sorunun 96'sı çalışma eğilimi taşır. Bu yanıtta altısı da aynı düzeyde çıktı.",
   ),
   repKpiTraitFlat: d("여섯이 고르게", "All six level", "Altısı da eşit"),
   repNote04: d(
-    "활동 선호 75% + 업무 성향 25%로 계산했습니다. 등수를 매기지 않고 묶음으로 보여드립니다 — 같은 묶음 안의 직무는 이 검사로 우열을 가릴 수 없습니다. 가는 막대가 그 폭입니다.",
+    "활동 선호 75% + 업무 성향 25%로 계산했습니다. 등수를 매기지 않고 묶음으로 보여드립니다. 같은 묶음 안의 직무는 이 검사로 우열을 가릴 수 없습니다. 가는 막대가 그 폭입니다.",
     "Computed as 75% activity preference + 25% work style. We group rather than rank: this assessment cannot separate roles inside the same group. The thin bar shows that margin.",
     "Hesaplama: %75 faaliyet tercihi + %25 çalışma eğilimi. Sıralamak yerine gruplandırıyoruz: aynı gruptaki roller bu testle ayrılamaz. İnce çubuk bu payı gösterir.",
   ),
   repTier: d("{n}군", "Group {n}", "{n}. grup"),
   repTierNote: d(
     "1군이 {n}개입니다. 이 검사로는 그 안에서 우열을 가릴 수 없으니, 해 본 경험으로 가르십시오.",
-    "Your top group holds {n} roles. This assessment cannot separate them — experience will.",
-    "İlk grubunuzda {n} rol var. Bu test onları ayıramaz — ayrımı deneyim yapar.",
+    "Your top group holds {n} roles. This assessment cannot separate them; experience will.",
+    "İlk grubunuzda {n} rol var. Bu test onları ayıramaz; ayrımı deneyim yapar.",
   ),
   repNote05: d(
     "{job}[이/가] 요구하는 역량을 중요도 순으로 놓았습니다.",
-    "What {job} requires — ordered by importance.",
-    "{job} için gerekenler — önem sırasına göre.",
+    "What {job} requires, ordered by importance.",
+    "{job} için gerekenler, önem sırasına göre.",
   ),
   // 1군에 여럿이 있는데 역량 표는 그중 하나만 펼친다(증거와 처방이 직무
   // 하나에 걸려 있다). 그 사실을 적지 않으면 앞 칸에서 "우열을 못 가린다"
@@ -335,9 +335,9 @@ export const UI = {
     "Bu alan ileride ne iş yapar",
   ),
   repNote05Chain: d(
-    "과목부터 내밀면 “그래서 왜” 가 남습니다. 그래서 순서를 뒤집었습니다 — 현장에서 실제로 하는 일이 이것을 요구하기 때문에, 대학에서 이것을 배우고, 고등학교에서 이 과목을 듣고, 중학교에서는 지금 이것을 해 볼 수 있습니다. 아래 직무는 그 분야에서 실제로 일어나는 일을 압축한 것이며 특정 회사의 사례가 아닙니다.",
+    "과목부터 내밀면 “그래서 왜” 가 남습니다. 그래서 순서를 뒤집었습니다. 현장에서 실제로 하는 일이 이것을 요구하기 때문에, 대학에서 이것을 배우고, 고등학교에서 이 과목을 듣고, 중학교에서는 지금 이것을 해 볼 수 있습니다. 아래 직무는 그 분야에서 실제로 일어나는 일을 압축한 것이며 특정 회사의 사례가 아닙니다.",
     "Leading with subjects leaves “but why” unanswered, so the order is reversed here: the work itself demands this, which is why it is studied at university, taken as these subjects in high school, and can be started on now in middle school. The roles below compress what actually happens in the field; they are not any one company's case.",
-    "Derslerle başlamak “peki neden” sorusunu açık bırakır; bu yüzden sıra tersine çevrildi — işin kendisi bunu gerektirir.",
+    "Derslerle başlamak “peki neden” sorusunu açık bırakır; bu yüzden sıra tersine çevrildi; işin kendisi bunu gerektirir.",
   ),
   repSec05Hs: d(
     "지금 신청할 과목",
@@ -346,12 +346,12 @@ export const UI = {
   ),
   repNote05Hs: d(
     "2022 개정 교육과정 과목표에서, 1군 {n}개 계열이 요구하는 것만 골라 학년별로 놓았습니다. 모두 {c}학점입니다. 학교마다 여는 과목이 다르므로 최종 확인은 재학 중인 학교의 교육과정 편제표로 하십시오.",
-    "Selected from the 2022 revised national curriculum: only what the {n} field(s) in your top group require, laid out by school year — {c} credits in total. Schools differ in what they open, so confirm against your school's own course table.",
+    "Selected from the 2022 revised national curriculum: only what the {n} field(s) in your top group require, laid out by school year, {c} credits in total. Schools differ in what they open, so confirm against your school's own course table.",
     "2022 müfredatından, ilk gruptaki {n} alanın gerektirdikleri sınıf sınıf dizildi. Toplam {c} kredi.",
   ),
   repRxCaveat: d(
-    "여기 적힌 학점과 학년은 교육과정 총론의 기본값입니다. 학교가 1학점 범위에서 조정하거나 아예 열지 않을 수 있습니다. 원하는 과목이 학교에 없으면 공동교육과정과 온라인학교로 들을 수 있는지 담임 선생님께 확인하십시오 — 안 열린다고 포기할 과목이 아닙니다.",
-    "The credits and year shown are the national defaults. Schools may adjust them or not open a subject at all. If your school does not offer one you need, ask your homeroom teacher about the joint-curriculum or online-school route — it is not a subject to give up on.",
+    "여기 적힌 학점과 학년은 교육과정 총론의 기본값입니다. 학교가 1학점 범위에서 조정하거나 아예 열지 않을 수 있습니다. 원하는 과목이 학교에 없으면 공동교육과정과 온라인학교로 들을 수 있는지 담임 선생님께 확인하십시오. 안 열린다고 포기하지 않아도 됩니다.",
+    "The credits and year shown are the national defaults. Schools may adjust them or not open a subject at all. If your school does not offer one you need, ask your homeroom teacher about the joint-curriculum or online-school route. It is worth going after.",
     "Buradaki krediler ulusal varsayılanlardır; okullar değiştirebilir ya da dersi hiç açmayabilir.",
   ),
   // ── 무료 구간이 끝나는 자리 ──────────────────────────────
@@ -368,23 +368,23 @@ export const UI = {
     "Buraya kadarı hangi alanın uyduğunu söyledi. Kalanı önümüzdeki dönem hangi dersi seçeceğini söylüyor.",
   ),
   repLockItem1: d(
-    "현장에서 거꾸로 — 1군 계열의 대표 직무가 하는 일에서 시작해 지금 해 볼 수 있는 것까지 내려옵니다",
-    "The chain, read backwards — starts from what the roles in your top group do and comes down to what you can try now",
-    "Zincir, tersten — ilk gruptaki rollerin gerçekte ne yaptığı ve bunun ne gerektirdiği",
+    "현장에서 거꾸로: 1군 계열의 대표 직무가 하는 일에서 시작해 지금 해 볼 수 있는 것까지 내려옵니다",
+    "The chain, read backwards: starts from what the roles in your top group do and comes down to what you can try now",
+    "Zincir, tersten: ilk gruptaki rollerin gerçekte ne yaptığı ve bunun ne gerektirdiği",
   ),
   repLockItem2: d(
-    "과목 처방 — 2022 개정 교육과정 74과목에서 골라 학년별로 놓습니다. 선수과목과 학년 학점을 맞춰 두었으니 신청서에 그대로 옮기면 됩니다",
-    "The course prescription — chosen from 74 subjects in the national curriculum, laid out by year with prerequisites and credit limits already met",
-    "Ders reçetesi — ulusal müfredattaki 74 dersten seçilmiş, sınıf sınıf",
+    "과목 처방: 2022 개정 교육과정 74과목에서 골라 학년별로 놓습니다. 선수과목과 학년 학점을 맞춰 두었으니 신청서에 그대로 옮기면 됩니다",
+    "The course prescription: chosen from 74 subjects in the national curriculum, laid out by year with prerequisites and credit limits already met",
+    "Ders reçetesi: ulusal müfredattaki 74 dersten seçilmiş, sınıf sınıf",
   ),
   repLockItem3: d(
-    "대학이 밝힌 권장 과목 대조 — 지금 목록이 몇 과목 모자라는지 숫자로",
-    "Checked against what universities publish as recommended — how many subjects short you are, as a number",
+    "대학이 밝힌 권장 과목 대조: 지금 목록이 몇 과목 모자라는지 숫자로",
+    "Checked against what universities publish as recommended: how many subjects short you are, as a number",
     "Üniversitelerin önerdiği derslerle karşılaştırma",
   ),
   repLockItem4: d(
-    "업무 성향 6축 — 같은 계열 안에서 어떤 자리가 맞는지",
-    "The six work styles — which seat inside that field fits you",
+    "업무 성향 6축: 같은 계열 안에서 어떤 자리가 맞는지",
+    "The six work styles: which seat inside that field fits you",
     "Altı çalışma tarzı",
   ),
   repLockNote: d(
@@ -397,12 +397,12 @@ export const UI = {
   // 나는 것보다, 왜 아직 못 사는지 적는 것이 낫다.
   repLockSoon: d(
     "개인 결제는 아직 열리지 않았습니다. 지금은 학교가 단체로 도입한 경우에만 남은 절이 열리니, 담당 선생님께 확인하십시오.",
-    "Individual payment is not open yet. For now the rest opens only where a school has adopted it — ask your teacher.",
+    "Individual payment is not open yet. For now the rest opens only where a school has adopted it; ask your teacher.",
     "Bireysel ödeme henüz açık değil. Şimdilik yalnızca okul kurumsal olarak aldıysa açılır; öğretmeninize sorun.",
   ),
   repLockSchool: d(
     "학교가 단체로 도입한 경우 결제 없이 전부 열립니다. 담당 선생님께 확인하십시오.",
-    "If your school has adopted it, everything opens with no payment — ask your teacher.",
+    "If your school has adopted it, everything opens with no payment; ask your teacher.",
     "Okulunuz kurumsal olarak aldıysa ödeme olmadan tamamı açılır.",
   ),
 
@@ -421,12 +421,12 @@ export const UI = {
   ),
   freeIncHead: d("무료로 나오는 것", "What the free part gives", "Ücretsiz bölümde gelenler"),
   freeInc1: d(
-    "이공계 8계열 적합도 — 구간과 묶음으로 냅니다. 등수는 매기지 않습니다",
-    "Fit across the eight engineering fields — as bands and groups. No ranking",
-    "Sekiz mühendislik alanında uyum — sıralama değil, aralık",
+    "이공계 8계열 적합도: 구간과 묶음으로 냅니다. 등수는 매기지 않습니다",
+    "Fit across the eight engineering fields: bands and groups. No ranking",
+    "Sekiz mühendislik alanında uyum: sıralama değil, aralık",
   ),
   freeInc2: d("공학 활동 8축", "The eight engineering activity axes", "Sekiz mühendislik etkinlik ekseni"),
-  freeInc3: d("응답 신뢰도 — 성실하게 답했는지", "Response reliability", "Yanıt güvenilirliği"),
+  freeInc3: d("응답 신뢰도: 성실하게 답했는지", "Response reliability", "Yanıt güvenilirliği"),
   freeExcHead: d("여기서부터 유료입니다", "Where the paid part starts", "Ücretli bölümün başladığı yer"),
   freeExc1: d(
     "현장 사슬과 고교학점제 과목 처방은 유료 구간입니다",
@@ -450,9 +450,9 @@ export const UI = {
     "253 soru, yaklaşık 30 dakika. Bitirdiğinizde rapor hemen açılır.",
   ),
   freeInc1Univ: d(
-    "직무 영역 10개 적합도 — 구간과 묶음으로 냅니다. 등수는 매기지 않습니다",
-    "Fit across the ten job areas — as bands and groups. No ranking",
-    "On görev alanında uyum — sıralama değil, aralık",
+    "직무 영역 10개 적합도: 구간과 묶음으로 냅니다. 등수는 매기지 않습니다",
+    "Fit across the ten job areas: bands and groups. No ranking",
+    "On görev alanında uyum: sıralama değil, aralık",
   ),
   freeExc1Univ: d(
     "업무 성향 6축과 역량 격차, 기업 매칭은 유료 구간입니다",
@@ -530,8 +530,8 @@ export const UI = {
   repSec06Hs: d("다음 한 학기", "The next term", "Önümüzdeki dönem"),
   repLeadHs: d(
     "이 검사가 재는 것은 무엇을 하고 싶은가입니다. 실력도, 성적도 아닙니다.",
-    "This assessment measures what you want to do — not your ability and not your grades.",
-    "Bu test ne yapmak istediğinizi ölçer — yeteneğinizi ya da notlarınızı değil.",
+    "This assessment measures what you want to do, not your ability and not your grades.",
+    "Bu test ne yapmak istediğinizi ölçer: yeteneğinizi ya da notlarınızı değil.",
   ),
   repLeadTopHs: d(
     "지금 재 보면 {area} 쪽이 가장 앞에 있습니다. 고등학교 3년 동안 바뀔 수 있는 값입니다.",
@@ -545,7 +545,7 @@ export const UI = {
   /* 예전에는 "선두" 였는데, 다음 묶음에 여섯이 들어가면 그중 하나를 선두로
      세우는 것이 곧 없는 등수를 매기는 일이다. 묶음 자체를 가리킨다. */
   repKpiAreaHs: d("다음 묶음", "The next group", "Sonraki grup"),
-  repKpiNextNone: d("없음 — 한 묶음뿐", "None — a single group", "Yok — tek grup"),
+  repKpiNextNone: d("없음 (한 묶음뿐)", "None (a single group)", "Yok (tek grup)"),
   repPlanM1Hs: d("이번 학기", "This term", "Bu dönem"),
   repPlanM2Hs: d("다음 방학", "Next break", "Sonraki tatil"),
   repPlanM3Hs: d("다음 학년", "Next year", "Gelecek yıl"),
@@ -555,7 +555,7 @@ export const UI = {
     "Soruların doğrudan ölçtüğü birim budur. Her alan için 14 soru yanıtladınız; ortalama 100 üzerinden ölçeklendi.",
   ),
   repNote02Hs: d(
-    "계열 여덟 개를 공학 활동 여덟 가지로 옮긴 값입니다. 이 여덟 축은 대학에 가서 다시 검사해도 같은 축입니다 — 지금 잰 값과 그때 잰 값을 나란히 놓을 수 있습니다.",
+    "계열 여덟 개를 공학 활동 여덟 가지로 옮긴 값입니다. 이 여덟 축은 대학에 가서 다시 검사해도 같은 축입니다. 지금 잰 값과 그때 잰 값을 나란히 놓을 수 있습니다.",
     "The eight fields mapped onto eight engineering activities. These axes stay the same when you retake the assessment at university, so today's numbers and those can sit side by side.",
     "Sekiz alanın sekiz mühendislik faaliyetine aktarılmış hâli. Üniversitede yeniden çözdüğünüzde de aynı eksenlerdir.",
   ),
@@ -565,13 +565,13 @@ export const UI = {
     "112 sorunun 96'sı çalışma eğilimi taşır. Önemli olan altısının birbirine göre konumudur. En yüksek {hi}; en düşük {lo}.",
   ),
   repNote04Hs: d(
-    "문항 응답 75% + 업무 성향 25%로 계산했습니다. 등수를 매기지 않고 묶음으로 보여드립니다 — 같은 묶음 안의 계열은 이 검사로 우열을 가릴 수 없습니다. 가는 막대가 그 폭입니다.",
+    "문항 응답 75% + 업무 성향 25%로 계산했습니다. 등수를 매기지 않고 묶음으로 보여드립니다. 같은 묶음 안의 계열은 이 검사로 우열을 가릴 수 없습니다. 가는 막대가 그 폭입니다.",
     "Computed as 75% item response + 25% work style. We group rather than rank: this assessment cannot separate fields inside the same group. The thin bar shows that margin.",
     "Hesaplama: %75 soru yanıtı + %25 çalışma eğilimi. Sıralamak yerine gruplandırıyoruz; ince çubuk bu payı gösterir.",
   ),
   repTierNoteHs: d(
-    "1군에 계열이 {n}개 있습니다. 이 검사로는 그 안에서 우열을 가릴 수 없습니다. {n}개를 다 열어 두고 직접 해 보십시오 — 지금 하나로 좁힐 이유가 없습니다.",
-    "Your top group holds {n} fields. This assessment cannot separate them. Keep all {n} open and try them — there is no reason to narrow down yet.",
+    "1군에 계열이 {n}개 있습니다. 이 검사로는 그 안에서 우열을 가릴 수 없습니다. {n}개를 다 열어 두고 직접 해 보십시오. 지금 하나로 좁힐 이유가 없습니다.",
+    "Your top group holds {n} fields. This assessment cannot separate them. Keep all {n} open and try them. There is no reason to narrow down yet.",
     "İlk grubunuzda {n} alan var. Bu test onları ayıramaz. {n} alanı da açık tutup deneyin.",
   ),
   repPlan1Hs: d(
@@ -585,8 +585,8 @@ export const UI = {
     "{area} sorularında yüksek puan verdiğiniz etkinlikleri gerçekten yapın ve kaydını tutun.",
   ),
   repPlan3Hs: d(
-    "{job} 쪽도 한 번은 해 봅니다. 묶음이 겹치는 안에서는 이 검사가 아니라 해 본 경험이 답을 줍니다.",
-    "Try the {job} side at least once too. Inside an overlapping group, experience answers the question — this assessment cannot.",
+    "{job} 쪽도 한 번은 해 봅니다. 묶음이 겹치는 안에서는 해 본 경험이 답을 줍니다. 이 검사로는 여기까지입니다.",
+    "Try the {job} side at least once too. Inside an overlapping group, experience answers the question; this assessment cannot.",
     "{job} tarafını da bir kez deneyin. Çakışan grup içinde yanıtı bu test değil, deneyim verir.",
   ),
   repRetestHs: d(
@@ -621,9 +621,9 @@ export const UI = {
   // 증거 입력
   evTitle: d("역량 증거", "Competency evidence", "Yetkinlik kanıtı"),
   evLead: d(
-    "보유 수준은 고르는 것이 아니라 쌓이는 것입니다. 들은 과목, 딴 자격증, 끝낸 프로젝트를 적으면 배점과 신뢰도를 곱해 레벨이 계산됩니다.",
-    "Held level is not something you pick; it accumulates. Add the courses you passed, the certificates you hold and the projects you finished — each carries its own weight and reliability, and the level follows.",
-    "Sahip olunan seviye seçilmez, birikir. Geçtiğiniz dersleri, aldığınız sertifikaları ve bitirdiğiniz projeleri ekleyin — her biri kendi ağırlığını ve güvenilirliğini taşır, seviye buradan çıkar.",
+    "보유 수준은 고르지 않고 쌓입니다. 들은 과목, 딴 자격증, 끝낸 프로젝트를 적으면 배점과 신뢰도를 곱해 레벨이 계산됩니다.",
+    "Held level is not something you pick; it accumulates. Add the courses you passed, the certificates you hold and the projects you finished; each carries its own weight and reliability, and the level follows.",
+    "Sahip olunan seviye seçilmez, birikir. Geçtiğiniz dersleri, aldığınız sertifikaları ve bitirdiğiniz projeleri ekleyin; her biri kendi ağırlığını ve güvenilirliğini taşır, seviye buradan çıkar.",
   ),
   evWhyNotAsk: d(
     "“ANSYS 몇 레벨입니까” 를 묻지 않는 이유는 그렇게 물으면 거의 모두가 3이라고 답하기 때문입니다.",
@@ -741,8 +741,8 @@ export const UI = {
   // 업그레이드 결제는 결과가 다르다 — 풀 것이 생기는 것이 아니라
   // 이미 낸 결과지가 넓어진다. 문장도 링크도 갈라야 한다.
   payDoneUpgradeBody: d(
-    "결과지의 남은 절이 열렸습니다. 문항을 다시 풀지 않습니다 — 같은 결과지가 그대로 넓어집니다.",
-    "The rest of your report is open. You do not retake the items — the same report simply opens up.",
+    "결과지의 남은 절이 열렸습니다. 문항을 다시 풀지 않습니다. 같은 결과지가 그대로 넓어집니다.",
+    "The rest of your report is open. You do not retake the items. The same report simply opens up.",
     "Raporunuzun kalanı açıldı. Soruları tekrar çözmezsiniz.",
   ),
   payGoReport: d("결과지 보기", "Open the report", "Raporu aç"),
@@ -795,9 +795,9 @@ export const UI = {
   // 주문서에 찍히는 이름이므로 "무엇을 사는가" 가 보여야 한다.
   // "전체 결과지" 라고만 적으면 결제 후에야 무엇을 샀는지 안다.
   prodHS_UPGRADE: d(
-    "커리어메트리 플러스 — 현장 사슬과 과목 처방",
-    "Careermetri Plus — the chain and the course prescription",
-    "Careermetri Plus — zincir ve ders reçetesi",
+    "커리어메트리 플러스: 현장 사슬과 과목 처방",
+    "Careermetri Plus: the chain and the course prescription",
+    "Careermetri Plus: zincir ve ders reçetesi",
   ),
 } as const;
 
