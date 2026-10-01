@@ -3,7 +3,7 @@ import { requireRole } from "@/lib/session";
 import { contractsOf, orgsOf } from "@/lib/org";
 import SessionForm from "./session-form";
 
-export const metadata = { title: "회차 열기 — Careermetri" };
+export const metadata = { title: "회차 열기 · Careermetri" };
 
 export default async function NewSession() {
   const user = await requireRole(["org_admin"]);
@@ -15,7 +15,7 @@ export default async function NewSession() {
       <div className="panel" style={{ maxWidth: 560 }}>
         <h1>회차 열기</h1>
         <p className="sub">
-          응시 기간과 좌석을 댈 계약을 고릅니다. 결과 공개는 기본이 승인제입니다 —
+          응시 기간과 좌석을 댈 계약을 고릅니다. 결과 공개는 기본이 승인제입니다.
           학과가 먼저 보고 나서 학생에게 엽니다.
         </p>
         {contracts.length === 0 ? (

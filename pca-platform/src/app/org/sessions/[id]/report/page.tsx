@@ -6,7 +6,7 @@ import { buildCohort } from "@/lib/cohort";
 import { residencyShift, satisfaction } from "@/lib/survey";
 import { Radar, RankBars } from "@/components/report-charts";
 
-export const metadata = { title: "단체 리포트 — Careermetri" };
+export const metadata = { title: "단체 리포트 · Careermetri" };
 
 /**
  * 단체 리포트.
@@ -53,7 +53,7 @@ export default async function CohortReport({ params }: { params: Promise<{ id: s
               <h2>아직 집계를 낼 수 없습니다</h2>
             </div>
             <p className="notice warn">
-              채점이 끝난 학생이 {c.scored}명입니다. {MIN_CELL}명 미만인 칸은 숫자를 내지 않습니다 —
+              채점이 끝난 학생이 {c.scored}명입니다. {MIN_CELL}명 미만인 칸은 숫자를 내지 않습니다.
               익명 집계가 개인 식별이 되는 순간 이 리포트는 쓸 수 없게 됩니다. 응시가 더 쌓이면
               자동으로 열립니다.
             </p>
@@ -201,7 +201,7 @@ export default async function CohortReport({ params }: { params: Promise<{ id: s
                   <h2>지역 연계 · 진단 만족도</h2>
                 </div>
                 <p className="rp-note">
-                  응시 전과 후에 같은 문항을 물었습니다. <b>두 시점을 모두 답한 학생만</b> 셉니다 —
+                  응시 전과 후에 같은 문항을 물었습니다. <b>두 시점을 모두 답한 학생만</b> 셉니다.
                   한쪽만 답한 사람을 섞으면 두 평균이 서로 다른 사람들의 평균이 되어 변화가
                   뜻을 잃습니다. 5점 척도입니다.
                 </p>

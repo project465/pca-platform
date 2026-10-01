@@ -36,7 +36,7 @@ export default function OrgForm({ parents }: { parents: ParentOption[] }) {
         <div className="field">
           <label htmlFor="parentId">소속 대학</label>
           <select id="parentId" name="parentId" defaultValue="">
-            <option value="">— 고르세요 —</option>
+            <option value="">고르세요</option>
             {parents.map((p) => (
               <option key={p.id} value={p.id}>
                 {p.label}
@@ -105,7 +105,7 @@ export default function OrgForm({ parents }: { parents: ParentOption[] }) {
           placeholder="Dept. of Mechanical Engineering, Hanyang Univ."
         />
         <span className="help">
-          비워둬도 됩니다. 이름은 컬럼이 아니라 translations 의 행으로 저장됩니다.
+          비워둬도 됩니다. 이름은 컬럼 대신 translations 의 행으로 저장됩니다.
         </span>
       </div>
 

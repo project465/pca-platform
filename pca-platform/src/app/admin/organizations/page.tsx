@@ -4,7 +4,7 @@ import { namesOf } from "@/lib/i18n";
 import { requireRole } from "@/lib/session";
 import AdminShell from "@/components/admin-shell";
 
-export const metadata = { title: "기관 목록 — 단체 PCA 플랫폼" };
+export const metadata = { title: "기관 목록 · 단체 PCA 플랫폼" };
 export const dynamic = "force-dynamic";
 
 type Row = {

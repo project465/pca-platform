@@ -22,7 +22,7 @@ export default function SessionForm({ contracts }: { contracts: ContractRef[] })
         <select id="contractId" name="contractId" required>
           {contracts.map((c) => (
             <option key={c.id} value={c.id}>
-              {c.title} — 남은 좌석 {c.seatsFree} / {c.seatCount}
+              {c.title} · 남은 좌석 {c.seatsFree} / {c.seatCount}
             </option>
           ))}
         </select>

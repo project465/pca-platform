@@ -7,7 +7,7 @@ import RosterPanel from "./roster-panel";
 import ReissueButton from "./reissue-button";
 import { release } from "../../actions";
 
-export const metadata = { title: "회차 — Careermetri" };
+export const metadata = { title: "회차 · Careermetri" };
 
 export default async function SessionPage({
   params,

@@ -50,6 +50,14 @@ const files = process.argv.slice(2).length
      // 결과지의 공통 원고는 코드 안에 문자열로 있다. JSON 만 보면 절반을 놓친다
      "sites/pca-platform/assets/report.js",
      "sites/pca-platform/assets/app.js",
+     // 관리자·담당자 화면도 사람이 읽는 원고다. 여기만 감사 밖이었고,
+     // 넣어 보니 한글 1000자당 대시가 13.5개(한도 0.3)였다
+     ...readdirSync("src/app/admin", { recursive: true })
+       .filter((f) => String(f).endsWith(".tsx"))
+       .map((f) => `src/app/admin/${f}`),
+     ...readdirSync("src/app/org", { recursive: true })
+       .filter((f) => String(f).endsWith(".tsx"))
+       .map((f) => `src/app/org/${f}`),
      ...readdirSync("sites/careermetri/legal")
        .filter((f) => f.endsWith(".md"))
        .map((f) => `sites/careermetri/legal/${f}`),
@@ -60,23 +68,35 @@ const files = process.argv.slice(2).length
        .filter((f) => /^\d\d[a-z]?-.*\.html$/.test(f) && !f.includes("head-code"))
        .map((f) => `sites/careermetri/imweb-en/${f}`)];
 
+/**
+ * 빈칸 표시는 원고가 아니다.
+ *
+ * 결과지와 관리자 표에서 값이 없는 칸은 `—` 로 둔다(CLAUDE.md — 증거가
+ * 없으면 추정해 채우지 않는다). 그 한 글자가 문자열 전체인 경우는 문장
+ * 부호가 아니라 데이터 자리라서 문체 규칙으로 셀 것이 아니다. 문장 안에
+ * 끼어든 대시는 그대로 센다.
+ */
+function dropBlanks(lits) {
+  return lits.filter((s) => !/^(?::\s*)?["'][\s—]+["'],?$/.test(s));
+}
+
 /** 사람이 읽는 글만 본다. 코드·주석·태그는 문체와 상관이 없다. */
 function prose(path) {
   const raw = readFileSync(path, "utf8");
   if (path.endsWith(".js") || path.endsWith(".mjs")) {
     // 작은따옴표 문자열만. 주석에 쓴 설계 메모는 원고가 아니다
     const noComment = raw.replace(/\/\*[\s\S]*?\*\//g, " ").replace(/^\s*\/\/.*$/gm, " ");
-    return (noComment.match(/'(?:[^'\\]|\\.)*'/g) ?? []).join(" ");
+    return dropBlanks(noComment.match(/'(?:[^'\\]|\\.)*'/g) ?? []).join(" ");
   }
   if (path.endsWith(".json")) {
     // 값(문자열)만 본다. 키는 원고가 아니다
-    return (raw.match(/:\s*"(?:[^"\\]|\\.)*"/g) ?? []).join(" ") +
-      (raw.match(/^\s*"(?:[^"\\]|\\.)*",?$/gm) ?? []).join(" ");
+    return dropBlanks(raw.match(/:\s*"(?:[^"\\]|\\.)*"/g) ?? []).join(" ") +
+      dropBlanks(raw.match(/^\s*"(?:[^"\\]|\\.)*",?$/gm) ?? []).join(" ");
   }
-  if (path.endsWith(".ts")) {
+  if (path.endsWith(".ts") || path.endsWith(".tsx")) {
     // 큰따옴표 문자열만. 주석에 쓴 설계 메모는 원고가 아니다
     const noComment = raw.replace(/\/\*[\s\S]*?\*\//g, " ").replace(/^\s*\/\/.*$/gm, " ");
-    return (noComment.match(/"(?:[^"\\]|\\.)*"/g) ?? []).join(" ");
+    return dropBlanks(noComment.match(/"(?:[^"\\]|\\.)*"/g) ?? []).join(" ");
   }
   return raw
     .replace(/<style[\s\S]*?<\/style>|<script[\s\S]*?<\/script>|<!--[\s\S]*?-->/g, " ")

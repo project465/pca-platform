@@ -3,7 +3,7 @@ import { requireRole } from "@/lib/session";
 import AdminShell from "@/components/admin-shell";
 import { briefing } from "@/lib/ops";
 
-export const metadata = { title: "운영 — 단체 PCA 플랫폼" };
+export const metadata = { title: "운영 · 단체 PCA 플랫폼" };
 export const dynamic = "force-dynamic";
 
 const won = (n: number) => `${n.toLocaleString("ko-KR")}원`;
@@ -197,7 +197,7 @@ export default async function OpsPage({
         <h2>팔 수 있는 상태인가</h2>
         <ul className="ops-gates">
           <li className={b.gates.card && !b.gates.mock ? "on" : "off"}>
-            카드 결제 —{" "}
+            카드 결제:{" "}
             {b.gates.card
               ? b.gates.mock
                 ? "가짜 결제(mock)입니다. 돈은 들어오지 않습니다"
@@ -205,13 +205,13 @@ export default async function OpsPage({
               : "PORTONE_* 가 비어 있습니다"}
           </li>
           <li className={b.gates.codes ? "on" : "off"}>
-            코드 교환 — {b.gates.codes ? "열려 있습니다" : "쓸 수 있는 코드가 없습니다"}
+            코드 교환: {b.gates.codes ? "열려 있습니다" : "쓸 수 있는 코드가 없습니다"}
           </li>
           <li className={b.gates.mail ? "on" : "off"}>
-            알림 — {b.gates.mail ? "나갑니다" : "쌓기만 합니다"}
+            알림: {b.gates.mail ? "나갑니다" : "쌓기만 합니다"}
           </li>
           <li className="on">
-            켜져 있는 상품 {b.products.length}개 — {b.products.map((p) => p.code).join(", ")}
+            켜져 있는 상품 {b.products.length}개: {b.products.map((p) => p.code).join(", ")}
           </li>
         </ul>
       </section>

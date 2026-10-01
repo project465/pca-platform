@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/session";
 import LoginForm from "./login-form";
 
-export const metadata = { title: "로그인 — Careermetri" };
+export const metadata = { title: "로그인 · Careermetri" };
 
 export default async function LoginPage({
   searchParams,

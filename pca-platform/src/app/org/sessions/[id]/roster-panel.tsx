@@ -52,7 +52,7 @@ export default function RosterPanel({
           </label>
 
           <label className="field">
-            <span>또는 붙여넣기 — 한 줄에 한 명</span>
+            <span>또는 붙여넣기 (한 줄에 한 명)</span>
             <textarea
               name="roster"
               rows={6}
@@ -81,8 +81,8 @@ export default function RosterPanel({
             새 계정 {r.created.length}개 · 기존 계정 {r.reused}개 · 건너뜀 {r.skipped.length}개
             {r.columns && (
               <>
-                {" "}
-                — <b>{r.columns.name}</b> 칸을 이름으로, <b>{r.columns.ident}</b> 칸을 학번으로
+                {". "}
+                <b>{r.columns.name}</b> 칸을 이름으로, <b>{r.columns.ident}</b> 칸을 학번으로
                 읽었습니다.
               </>
             )}
@@ -121,7 +121,7 @@ export default function RosterPanel({
             <ul className="skiplist">
               {r.skipped.map((s, i) => (
                 <li key={i}>
-                  <code>{s.line}</code> — {s.why}
+                  <code>{s.line}</code>: {s.why}
                 </li>
               ))}
             </ul>

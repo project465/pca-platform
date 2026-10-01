@@ -50,8 +50,8 @@ export default function StaffPanel({ orgId, staff }: { orgId: string; staff: Sta
           <label className="field">
             <span>역할</span>
             <select name="role" defaultValue="org_admin">
-              <option value="org_admin">학과 담당자 — 회차·명단·공개 승인</option>
-              <option value="instructor">교수 — 현황과 단체 리포트만</option>
+              <option value="org_admin">학과 담당자 (회차·명단·공개 승인)</option>
+              <option value="instructor">교수 (현황과 단체 리포트만)</option>
             </select>
           </label>
           <label className="field">

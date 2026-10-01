@@ -5,7 +5,7 @@ import { findAttempt } from "@/lib/attempts";
 import { surveyItems, surveyDone, surveyApplies, type SurveyPhase } from "@/lib/survey";
 import SurveyForm from "./survey-form";
 
-export const metadata = { title: "추가 문항 — Careermetri" };
+export const metadata = { title: "추가 문항 · Careermetri" };
 export const dynamic = "force-dynamic";
 
 /**

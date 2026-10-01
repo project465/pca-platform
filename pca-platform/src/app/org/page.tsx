@@ -4,7 +4,7 @@ import { ROLE_LABEL } from "@/lib/roles";
 import { requireRole } from "@/lib/session";
 import { contractsOf, orgsOf, sessionsOf } from "@/lib/org";
 
-export const metadata = { title: "기관 담당자 — Careermetri" };
+export const metadata = { title: "기관 담당자 · Careermetri" };
 
 /**
  * 교수와 담당자가 같은 문으로 들어오지만 할 일이 다르다.
@@ -39,8 +39,8 @@ export default async function OrgHome() {
         <p className="page-sub">
           {orgs.length > 0 ? orgs.map((o) => o.name).join(" · ") : "소속 기관이 없습니다."}
           {isAdmin
-            ? " — 회차를 열고 명단을 올리면 학생이 바로 응시합니다. 결과지는 공개를 누르셔야 학생에게 보입니다."
-            : " — 담당자가 연 회차의 진행 상황과 단체 리포트를 봅니다."}
+            ? ". 회차를 열고 명단을 올리면 학생이 바로 응시합니다. 결과지는 공개를 누르셔야 학생에게 보입니다."
+            : ". 담당자가 연 회차의 진행 상황과 단체 리포트를 봅니다."}
         </p>
 
         <div className="statrow">

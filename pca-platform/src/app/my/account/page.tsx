@@ -6,7 +6,7 @@ import { resolveLang } from "@/lib/locale-server";
 import LangSwitch from "@/components/lang-switch";
 import EraseForm from "./erase-form";
 
-export const metadata = { title: "계정 — Careermetri" };
+export const metadata = { title: "계정 · Careermetri" };
 
 export default async function AccountPage({
   searchParams,
