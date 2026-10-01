@@ -1,5 +1,5 @@
 /**
- * 응시 — 좌석 하나를 실제 검사 한 번으로 바꾼다.
+ * 응시: 좌석 하나를 실제 검사 한 번으로 바꾼다.
  *
  * 좌석은 두 경로로 생긴다.
  *   B2B  학과가 계약하고 회차를 열면 seats.contract_id 가 찬다.
@@ -62,7 +62,7 @@ export async function findAttempt(attemptId: string, userId: string): Promise<At
   );
 }
 
-/** 이 사람이 지금 볼 수 있는 응시. 없으면 null — 결제나 명단 등록이 먼저다. */
+/** 이 사람이 지금 볼 수 있는 응시. 없으면 null: 결제나 명단 등록이 먼저다. */
 export async function currentAttempt(userId: string): Promise<AttemptView | null> {
   const row = await queryOne<{ id: string }>(
     `SELECT a.id FROM attempts a
@@ -76,7 +76,7 @@ export async function currentAttempt(userId: string): Promise<AttemptView | null
 /**
  * 이 사람이 지금 향하는 검사지의 트랙(`HS` · `UNIV_LOW`…).
  *
- * 화면 제목을 정하는 데 쓴다. **응시가 아직 없을 때가 문제다** — `/test`
+ * 화면 제목을 정하는 데 쓴다. **응시가 아직 없을 때가 문제다**: `/test`
  * 안내 화면은 `generateMetadata` 가 먼저 돌고 그 다음 본문에서 응시가
  * 만들어진다. 그래서 응시만 보면 처음 들어온 사람에게는 늘 null 이 나오고,
  * 고교 응시자가 탭에서 "Careermetri" 를 보게 된다. 아직 안 쓴 좌석이 가리키는
@@ -108,7 +108,7 @@ export async function pendingTrack(userId: string): Promise<string | null> {
  * 채점이 끝난 마지막 응시. 없으면 null.
  *
  * `currentAttempt` 는 `status <> 'scored'` 라서 다 끝낸 사람에게는 null 을
- * 준다. 그건 맞다 — 끝난 검사를 또 풀 일은 없다. 그런데 그 null 을 "좌석이
+ * 준다. 그건 맞다. 끝난 검사를 또 풀 일은 없다. 그런데 그 null 을 "좌석이
  * 없다" 로만 읽으면, 무료로 다 풀고 결과지까지 받은 학생이 검사 화면에
  * 다시 들어왔을 때 **자기 결과지가 있는데도 결제 안내를 본다.**
  * 그 사람에게 필요한 것은 결제창이 아니라 이미 받은 결과지다.
@@ -147,7 +147,7 @@ export async function openAttempt(userId: string, instrumentId?: string): Promis
    * 산 상품이 정한다. 예전에는 id 가 가장 큰 검사지를 집었는데, 고교판을
    * 올리는 순간 29,000원을 내고 대학판을 산 사람이 고교 문항을 받게 된다.
    * 상품에 붙은 트랙(products.track_code)이 검사지를 가리키고, 트랙이
-   * 없으면 대학판으로 떨어진다 — 기존 주문이 그렇다.
+   * 없으면 대학판으로 떨어진다. 기존 주문이 그렇다.
    */
   const inst = instrumentId
     ? await queryOne<{ id: string }>(`SELECT id FROM instruments WHERE id = $1`, [instrumentId])
@@ -169,7 +169,7 @@ export async function openAttempt(userId: string, instrumentId?: string): Promis
   const attemptId = await tx(async (c) => {
     let sessionId: string;
     if (seat.order_id) {
-      // 개인 결제 — 주문 하나당 1인용 회차 하나. 유니크 인덱스가 중복을 막는다.
+      // 개인 결제: 주문 하나당 1인용 회차 하나. 유니크 인덱스가 중복을 막는다.
       const found = await c.query<{ id: string }>(
         `SELECT id FROM test_sessions WHERE kind = 'solo' AND order_id = $1`,
         [seat.order_id],

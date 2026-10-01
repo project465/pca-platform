@@ -4,7 +4,7 @@
 
 전공 3개 · 역량 148개 · 직무군 24개
 
-필수도 표기 — ★★★ 필수 / ★★ 중요 / ★ 보조. 요구 수준은 1~5.
+필수도 표기: ★★★ 필수 / ★★ 중요 / ★ 보조. 요구 수준은 1~5.
 
 ## 기계공학 (ME)
 
@@ -86,11 +86,11 @@
 
 ### 직무군과 요구 역량
 
-#### 기계설계 — `ME.MECH_DESIGN`
+#### 기계설계: `ME.MECH_DESIGN`
 
 O*NET `17-2141.00` · 산업 MACH, AUTO, SEMI, ROBOT · 트랙 UNIV_LOW, UNIV_HIGH, GRAD
 
-활동 지표 가중치 — DESIGN 0.34 · ANALYZE 0.2 · BUILD 0.16 · OPTIMIZE 0.12 · FIELD 0.1 · ORCHESTRATE 0.08
+활동 지표 가중치: DESIGN 0.34 · ANALYZE 0.2 · BUILD 0.16 · OPTIMIZE 0.12 · FIELD 0.1 · ORCHESTRATE 0.08
 
 | 역량 | 요구 수준 | 필수도 |
 |---|---|---|
@@ -107,11 +107,11 @@ O*NET `17-2141.00` · 산업 MACH, AUTO, SEMI, ROBOT · 트랙 UNIV_LOW, UNIV_HI
 | 기술문서 작성 `CM.DOC` | 3 | ★★ |
 | 규격·안전 준수 `CM.STD` | 2 | ★ |
 
-#### 구조·유동 해석 (CAE) — `ME.CAE`
+#### 구조·유동 해석 (CAE): `ME.CAE`
 
 O*NET `17-2141.00` · 산업 AUTO, AERO, BATT, MACH · 트랙 UNIV_HIGH, GRAD
 
-활동 지표 가중치 — ANALYZE 0.4 · RESEARCH 0.2 · DESIGN 0.14 · CODE 0.12 · OPTIMIZE 0.1 · BUILD 0.04
+활동 지표 가중치: ANALYZE 0.4 · RESEARCH 0.2 · DESIGN 0.14 · CODE 0.12 · OPTIMIZE 0.1 · BUILD 0.04
 
 | 역량 | 요구 수준 | 필수도 |
 |---|---|---|
@@ -128,11 +128,11 @@ O*NET `17-2141.00` · 산업 AUTO, AERO, BATT, MACH · 트랙 UNIV_HIGH, GRAD
 | 기계진동 `ME.VIB` | 2 | ★ |
 | 기술문서 작성 `CM.DOC` | 3 | ★★ |
 
-#### 생산기술·제조엔지니어링 — `ME.MFG_ENG`
+#### 생산기술·제조엔지니어링: `ME.MFG_ENG`
 
 O*NET `17-2112.00` · 산업 AUTO, SEMI, BATT, MACH · 트랙 HS, UNIV_LOW, UNIV_HIGH
 
-활동 지표 가중치 — FIELD 0.3 · OPTIMIZE 0.26 · BUILD 0.16 · ORCHESTRATE 0.14 · ANALYZE 0.1 · DESIGN 0.04
+활동 지표 가중치: FIELD 0.3 · OPTIMIZE 0.26 · BUILD 0.16 · ORCHESTRATE 0.14 · ANALYZE 0.1 · DESIGN 0.04
 
 | 역량 | 요구 수준 | 필수도 |
 |---|---|---|
@@ -149,11 +149,11 @@ O*NET `17-2112.00` · 산업 AUTO, SEMI, BATT, MACH · 트랙 HS, UNIV_LOW, UNIV
 | 협업·형상관리 `CM.COLLAB` | 3 | ★★ |
 | 계측·시험 장비 `SW.MEASURE` | 3 | ★★ |
 
-#### 품질·신뢰성 — `ME.QUALITY`
+#### 품질·신뢰성: `ME.QUALITY`
 
 O*NET `17-2112.00` · 산업 AUTO, SEMI, MED, MACH · 트랙 HS, UNIV_LOW, UNIV_HIGH
 
-활동 지표 가중치 — OPTIMIZE 0.28 · ANALYZE 0.24 · FIELD 0.2 · ORCHESTRATE 0.14 · BUILD 0.1 · DESIGN 0.04
+활동 지표 가중치: OPTIMIZE 0.28 · ANALYZE 0.24 · FIELD 0.2 · ORCHESTRATE 0.14 · BUILD 0.1 · DESIGN 0.04
 
 | 역량 | 요구 수준 | 필수도 |
 |---|---|---|
@@ -168,11 +168,11 @@ O*NET `17-2112.00` · 산업 AUTO, SEMI, MED, MACH · 트랙 HS, UNIV_LOW, UNIV_
 | Python `SW.PYTHON` | 2 | ★ |
 | 생산가공 `ME.MFG` | 3 | ★★ |
 
-#### 자동차·전동화 R&D — `ME.AUTO_RD`
+#### 자동차·전동화 R&D: `ME.AUTO_RD`
 
 O*NET `17-2141.00` · 산업 AUTO, BATT · 트랙 UNIV_HIGH, GRAD
 
-활동 지표 가중치 — ANALYZE 0.26 · DESIGN 0.24 · BUILD 0.18 · RESEARCH 0.14 · OPTIMIZE 0.12 · CODE 0.06
+활동 지표 가중치: ANALYZE 0.26 · DESIGN 0.24 · BUILD 0.18 · RESEARCH 0.14 · OPTIMIZE 0.12 · CODE 0.06
 
 | 역량 | 요구 수준 | 필수도 |
 |---|---|---|
@@ -188,11 +188,11 @@ O*NET `17-2141.00` · 산업 AUTO, BATT · 트랙 UNIV_HIGH, GRAD
 | 연소·내연기관 `ME.COMB` | 2 | ★ |
 | 영문 기술 커뮤니케이션 `CM.ENG` | 3 | ★★ |
 
-#### 항공우주·방산 R&D — `ME.AEROSPACE`
+#### 항공우주·방산 R&D: `ME.AEROSPACE`
 
 O*NET `17-2011.00` · 산업 AERO, DEF · 트랙 UNIV_HIGH, GRAD
 
-활동 지표 가중치 — RESEARCH 0.28 · ANALYZE 0.28 · DESIGN 0.2 · BUILD 0.12 · OPTIMIZE 0.08 · ORCHESTRATE 0.04
+활동 지표 가중치: RESEARCH 0.28 · ANALYZE 0.28 · DESIGN 0.2 · BUILD 0.12 · OPTIMIZE 0.08 · ORCHESTRATE 0.04
 
 | 역량 | 요구 수준 | 필수도 |
 |---|---|---|
@@ -209,11 +209,11 @@ O*NET `17-2011.00` · 산업 AERO, DEF · 트랙 UNIV_HIGH, GRAD
 | 영문 기술 커뮤니케이션 `CM.ENG` | 3 | ★★ |
 | MATLAB `SW.MATLAB` | 3 | ★★ |
 
-#### 로봇·자동화 엔지니어 — `ME.ROBOT_AUTO`
+#### 로봇·자동화 엔지니어: `ME.ROBOT_AUTO`
 
 O*NET `17-2199.08` · 산업 ROBOT, SEMI, AUTO, MACH · 트랙 UNIV_LOW, UNIV_HIGH, GRAD
 
-활동 지표 가중치 — BUILD 0.26 · CODE 0.22 · DESIGN 0.2 · ANALYZE 0.16 · FIELD 0.12 · OPTIMIZE 0.04
+활동 지표 가중치: BUILD 0.26 · CODE 0.22 · DESIGN 0.2 · ANALYZE 0.16 · FIELD 0.12 · OPTIMIZE 0.04
 
 | 역량 | 요구 수준 | 필수도 |
 |---|---|---|
@@ -229,11 +229,11 @@ O*NET `17-2199.08` · 산업 ROBOT, SEMI, AUTO, MACH · 트랙 UNIV_LOW, UNIV_HI
 | 3D 프린팅·시작품 `SW.3DPRINT` | 2 | ★ |
 | 협업·형상관리 `CM.COLLAB` | 3 | ★★ |
 
-#### 반도체·디스플레이 장비 — `ME.SEMI_EQ`
+#### 반도체·디스플레이 장비: `ME.SEMI_EQ`
 
 O*NET `17-2199.00` · 산업 SEMI · 트랙 HS, UNIV_LOW, UNIV_HIGH
 
-활동 지표 가중치 — FIELD 0.28 · DESIGN 0.22 · ANALYZE 0.18 · BUILD 0.16 · OPTIMIZE 0.12 · ORCHESTRATE 0.04
+활동 지표 가중치: FIELD 0.28 · DESIGN 0.22 · ANALYZE 0.18 · BUILD 0.16 · OPTIMIZE 0.12 · ORCHESTRATE 0.04
 
 | 역량 | 요구 수준 | 필수도 |
 |---|---|---|
@@ -330,11 +330,11 @@ O*NET `17-2199.00` · 산업 SEMI · 트랙 HS, UNIV_LOW, UNIV_HIGH
 
 ### 직무군과 요구 역량
 
-#### 반도체 소자·공정 — `EE.SEMI_DEV`
+#### 반도체 소자·공정: `EE.SEMI_DEV`
 
 O*NET `17-2072.00` · 산업 SEMI · 트랙 UNIV_HIGH, GRAD
 
-활동 지표 가중치 — RESEARCH 0.28 · ANALYZE 0.26 · FIELD 0.18 · BUILD 0.14 · OPTIMIZE 0.1 · DESIGN 0.04
+활동 지표 가중치: RESEARCH 0.28 · ANALYZE 0.26 · FIELD 0.18 · BUILD 0.14 · OPTIMIZE 0.1 · DESIGN 0.04
 
 | 역량 | 요구 수준 | 필수도 |
 |---|---|---|
@@ -350,11 +350,11 @@ O*NET `17-2072.00` · 산업 SEMI · 트랙 UNIV_HIGH, GRAD
 | 기술문서 작성 `CM.DOC` | 3 | ★★ |
 | 영문 기술 커뮤니케이션 `CM.ENG` | 3 | ★★ |
 
-#### 아날로그·RF 회로 설계 — `EE.ANALOG_RF`
+#### 아날로그·RF 회로 설계: `EE.ANALOG_RF`
 
 O*NET `17-2072.00` · 산업 SEMI, TELCO, MED · 트랙 UNIV_HIGH, GRAD
 
-활동 지표 가중치 — ANALYZE 0.32 · DESIGN 0.28 · RESEARCH 0.18 · BUILD 0.14 · CODE 0.04 · OPTIMIZE 0.04
+활동 지표 가중치: ANALYZE 0.32 · DESIGN 0.28 · RESEARCH 0.18 · BUILD 0.14 · CODE 0.04 · OPTIMIZE 0.04
 
 | 역량 | 요구 수준 | 필수도 |
 |---|---|---|
@@ -370,11 +370,11 @@ O*NET `17-2072.00` · 산업 SEMI, TELCO, MED · 트랙 UNIV_HIGH, GRAD
 | EMC·신호무결성 `EE.EMC` | 3 | ★★ |
 | 영문 기술 커뮤니케이션 `CM.ENG` | 3 | ★★ |
 
-#### 디지털 IC·SoC 설계 — `EE.DIGITAL_SOC`
+#### 디지털 IC·SoC 설계: `EE.DIGITAL_SOC`
 
 O*NET `17-2061.00` · 산업 SEMI, AI, TELCO · 트랙 UNIV_HIGH, GRAD
 
-활동 지표 가중치 — CODE 0.28 · DESIGN 0.26 · ANALYZE 0.22 · RESEARCH 0.12 · OPTIMIZE 0.08 · BUILD 0.04
+활동 지표 가중치: CODE 0.28 · DESIGN 0.26 · ANALYZE 0.22 · RESEARCH 0.12 · OPTIMIZE 0.08 · BUILD 0.04
 
 | 역량 | 요구 수준 | 필수도 |
 |---|---|---|
@@ -390,11 +390,11 @@ O*NET `17-2061.00` · 산업 SEMI, AI, TELCO · 트랙 UNIV_HIGH, GRAD
 | EMC·신호무결성 `EE.EMC` | 2 | ★ |
 | 영문 기술 커뮤니케이션 `CM.ENG` | 3 | ★★ |
 
-#### 임베디드 SW·펌웨어 — `EE.EMBEDDED`
+#### 임베디드 SW·펌웨어: `EE.EMBEDDED`
 
 O*NET `17-2061.00` · 산업 AUTO, ROBOT, MED, MACH · 트랙 HS, UNIV_LOW, UNIV_HIGH, GRAD
 
-활동 지표 가중치 — CODE 0.36 · BUILD 0.22 · DESIGN 0.16 · ANALYZE 0.14 · OPTIMIZE 0.08 · FIELD 0.04
+활동 지표 가중치: CODE 0.36 · BUILD 0.22 · DESIGN 0.16 · ANALYZE 0.14 · OPTIMIZE 0.08 · FIELD 0.04
 
 | 역량 | 요구 수준 | 필수도 |
 |---|---|---|
@@ -410,11 +410,11 @@ O*NET `17-2061.00` · 산업 AUTO, ROBOT, MED, MACH · 트랙 HS, UNIV_LOW, UNIV
 | 자동차 전장·ADAS `DM.AUTO_E` | 2 | ★ |
 | 협업·이슈관리 `CM.COLLAB` | 3 | ★★ |
 
-#### 전력전자·전력시스템 — `EE.POWER`
+#### 전력전자·전력시스템: `EE.POWER`
 
 O*NET `17-2071.00` · 산업 POWER, BATT, AUTO · 트랙 HS, UNIV_LOW, UNIV_HIGH
 
-활동 지표 가중치 — ANALYZE 0.28 · DESIGN 0.22 · BUILD 0.18 · FIELD 0.18 · OPTIMIZE 0.1 · RESEARCH 0.04
+활동 지표 가중치: ANALYZE 0.28 · DESIGN 0.22 · BUILD 0.18 · FIELD 0.18 · OPTIMIZE 0.1 · RESEARCH 0.04
 
 | 역량 | 요구 수준 | 필수도 |
 |---|---|---|
@@ -430,11 +430,11 @@ O*NET `17-2071.00` · 산업 POWER, BATT, AUTO · 트랙 HS, UNIV_LOW, UNIV_HIGH
 | 규격·인증 `CM.STD_EE` | 3 | ★★ |
 | 배터리 BMS `DM.BMS` | 2 | ★ |
 
-#### 자동차 전장·ADAS — `EE.AUTO_ELEC`
+#### 자동차 전장·ADAS: `EE.AUTO_ELEC`
 
 O*NET `17-2072.00` · 산업 AUTO · 트랙 UNIV_LOW, UNIV_HIGH, GRAD
 
-활동 지표 가중치 — DESIGN 0.24 · CODE 0.22 · ANALYZE 0.2 · BUILD 0.18 · OPTIMIZE 0.1 · FIELD 0.06
+활동 지표 가중치: DESIGN 0.24 · CODE 0.22 · ANALYZE 0.2 · BUILD 0.18 · OPTIMIZE 0.1 · FIELD 0.06
 
 | 역량 | 요구 수준 | 필수도 |
 |---|---|---|
@@ -450,11 +450,11 @@ O*NET `17-2072.00` · 산업 AUTO · 트랙 UNIV_LOW, UNIV_HIGH, GRAD
 | 형상관리 (Git) `SW.GIT` | 3 | ★★ |
 | 영문 기술 커뮤니케이션 `CM.ENG` | 3 | ★★ |
 
-#### 통신·네트워크 시스템 — `EE.COMM_SYS`
+#### 통신·네트워크 시스템: `EE.COMM_SYS`
 
 O*NET `17-2072.00` · 산업 TELCO, DEF, AERO · 트랙 UNIV_HIGH, GRAD
 
-활동 지표 가중치 — ANALYZE 0.3 · CODE 0.22 · RESEARCH 0.2 · DESIGN 0.14 · BUILD 0.1 · FIELD 0.04
+활동 지표 가중치: ANALYZE 0.3 · CODE 0.22 · RESEARCH 0.2 · DESIGN 0.14 · BUILD 0.1 · FIELD 0.04
 
 | 역량 | 요구 수준 | 필수도 |
 |---|---|---|
@@ -469,11 +469,11 @@ O*NET `17-2072.00` · 산업 TELCO, DEF, AERO · 트랙 UNIV_HIGH, GRAD
 | FPGA 툴체인 `SW.FPGA` | 2 | ★ |
 | 영문 기술 커뮤니케이션 `CM.ENG` | 3 | ★★ |
 
-#### 하드웨어 시험·신뢰성 — `EE.HW_TEST`
+#### 하드웨어 시험·신뢰성: `EE.HW_TEST`
 
 O*NET `17-3023.00` · 산업 SEMI, AUTO, MED, TELCO · 트랙 HS, UNIV_LOW, UNIV_HIGH
 
-활동 지표 가중치 — BUILD 0.28 · OPTIMIZE 0.22 · ANALYZE 0.2 · FIELD 0.18 · ORCHESTRATE 0.08 · CODE 0.04
+활동 지표 가중치: BUILD 0.28 · OPTIMIZE 0.22 · ANALYZE 0.2 · FIELD 0.18 · ORCHESTRATE 0.08 · CODE 0.04
 
 | 역량 | 요구 수준 | 필수도 |
 |---|---|---|
@@ -568,11 +568,11 @@ O*NET `17-3023.00` · 산업 SEMI, AUTO, MED, TELCO · 트랙 HS, UNIV_LOW, UNIV
 
 ### 직무군과 요구 역량
 
-#### 백엔드 개발 — `CE.BACKEND`
+#### 백엔드 개발: `CE.BACKEND`
 
 O*NET `15-1252.00` · 산업 SW, AI, TELCO · 트랙 HS, UNIV_LOW, UNIV_HIGH, GRAD
 
-활동 지표 가중치 — CODE 0.38 · DESIGN 0.22 · ANALYZE 0.16 · OPTIMIZE 0.14 · ORCHESTRATE 0.06 · BUILD 0.04
+활동 지표 가중치: CODE 0.38 · DESIGN 0.22 · ANALYZE 0.16 · OPTIMIZE 0.14 · ORCHESTRATE 0.06 · BUILD 0.04
 
 | 역량 | 요구 수준 | 필수도 |
 |---|---|---|
@@ -589,11 +589,11 @@ O*NET `15-1252.00` · 산업 SW, AI, TELCO · 트랙 HS, UNIV_LOW, UNIV_HIGH, GR
 | 알고리즘 `CE.ALGO` | 3 | ★★ |
 | 애자일 협업 `CM.AGILE` | 3 | ★★ |
 
-#### 프론트엔드·웹 개발 — `CE.FRONTEND`
+#### 프론트엔드·웹 개발: `CE.FRONTEND`
 
 O*NET `15-1254.00` · 산업 SW, AI · 트랙 HS, UNIV_LOW, UNIV_HIGH
 
-활동 지표 가중치 — CODE 0.36 · DESIGN 0.26 · OPTIMIZE 0.14 · ANALYZE 0.1 · ORCHESTRATE 0.08 · BUILD 0.06
+활동 지표 가중치: CODE 0.36 · DESIGN 0.26 · OPTIMIZE 0.14 · ANALYZE 0.1 · ORCHESTRATE 0.08 · BUILD 0.06
 
 | 역량 | 요구 수준 | 필수도 |
 |---|---|---|
@@ -608,11 +608,11 @@ O*NET `15-1254.00` · 산업 SW, AI · 트랙 HS, UNIV_LOW, UNIV_HIGH
 | 제품·도메인 이해 `CM.PRODUCT` | 3 | ★★ |
 | 애자일 협업 `CM.AGILE` | 3 | ★★ |
 
-#### 데이터 엔지니어 — `CE.DATAENG`
+#### 데이터 엔지니어: `CE.DATAENG`
 
 O*NET `15-2051.01` · 산업 AI, SW, SEMI · 트랙 UNIV_HIGH, GRAD
 
-활동 지표 가중치 — CODE 0.3 · ANALYZE 0.26 · DESIGN 0.18 · OPTIMIZE 0.18 · ORCHESTRATE 0.08
+활동 지표 가중치: CODE 0.3 · ANALYZE 0.26 · DESIGN 0.18 · OPTIMIZE 0.18 · ORCHESTRATE 0.08
 
 | 역량 | 요구 수준 | 필수도 |
 |---|---|---|
@@ -628,11 +628,11 @@ O*NET `15-2051.01` · 산업 AI, SW, SEMI · 트랙 UNIV_HIGH, GRAD
 | 확률·통계 `CE.PROB` | 3 | ★★ |
 | Git `SW.GIT` | 3 | ★★ |
 
-#### AI·ML 엔지니어 — `CE.ML`
+#### AI·ML 엔지니어: `CE.ML`
 
 O*NET `15-2051.00` · 산업 AI, SW, AUTO, MED · 트랙 UNIV_HIGH, GRAD
 
-활동 지표 가중치 — RESEARCH 0.3 · CODE 0.28 · ANALYZE 0.24 · OPTIMIZE 0.1 · DESIGN 0.08
+활동 지표 가중치: RESEARCH 0.3 · CODE 0.28 · ANALYZE 0.24 · OPTIMIZE 0.1 · DESIGN 0.08
 
 | 역량 | 요구 수준 | 필수도 |
 |---|---|---|
@@ -648,11 +648,11 @@ O*NET `15-2051.00` · 산업 AI, SW, AUTO, MED · 트랙 UNIV_HIGH, GRAD
 | 영문 기술 커뮤니케이션 `CM.ENG` | 4 | ★★★ |
 | Git `SW.GIT` | 3 | ★★ |
 
-#### 시스템·임베디드 SW — `CE.SYSSW`
+#### 시스템·임베디드 SW: `CE.SYSSW`
 
 O*NET `15-1252.00` · 산업 SEMI, AUTO, ROBOT, TELCO · 트랙 UNIV_LOW, UNIV_HIGH, GRAD
 
-활동 지표 가중치 — CODE 0.34 · ANALYZE 0.24 · BUILD 0.18 · OPTIMIZE 0.16 · DESIGN 0.08
+활동 지표 가중치: CODE 0.34 · ANALYZE 0.24 · BUILD 0.18 · OPTIMIZE 0.16 · DESIGN 0.08
 
 | 역량 | 요구 수준 | 필수도 |
 |---|---|---|
@@ -667,11 +667,11 @@ O*NET `15-1252.00` · 산업 SEMI, AUTO, ROBOT, TELCO · 트랙 UNIV_LOW, UNIV_H
 | 테스트 자동화 `SW.TEST` | 3 | ★★ |
 | 기술문서 작성 `CM.DOC` | 3 | ★★ |
 
-#### 클라우드·인프라 (DevOps·SRE) — `CE.DEVOPS`
+#### 클라우드·인프라 (DevOps·SRE): `CE.DEVOPS`
 
 O*NET `15-1244.00` · 산업 SW, AI, TELCO · 트랙 HS, UNIV_LOW, UNIV_HIGH
 
-활동 지표 가중치 — OPTIMIZE 0.28 · FIELD 0.22 · CODE 0.22 · ANALYZE 0.16 · ORCHESTRATE 0.12
+활동 지표 가중치: OPTIMIZE 0.28 · FIELD 0.22 · CODE 0.22 · ANALYZE 0.16 · ORCHESTRATE 0.12
 
 | 역량 | 요구 수준 | 필수도 |
 |---|---|---|
@@ -686,11 +686,11 @@ O*NET `15-1244.00` · 산업 SW, AI, TELCO · 트랙 HS, UNIV_LOW, UNIV_HIGH
 | 정보보안 `CE.SEC` | 3 | ★★ |
 | Git `SW.GIT` | 4 | ★★★ |
 
-#### 보안 엔지니어 — `CE.SECURITY`
+#### 보안 엔지니어: `CE.SECURITY`
 
 O*NET `15-1212.00` · 산업 SW, POWER, DEF, TELCO · 트랙 UNIV_HIGH, GRAD
 
-활동 지표 가중치 — ANALYZE 0.3 · RESEARCH 0.22 · CODE 0.2 · FIELD 0.16 · OPTIMIZE 0.12
+활동 지표 가중치: ANALYZE 0.3 · RESEARCH 0.22 · CODE 0.2 · FIELD 0.16 · OPTIMIZE 0.12
 
 | 역량 | 요구 수준 | 필수도 |
 |---|---|---|
@@ -705,11 +705,11 @@ O*NET `15-1212.00` · 산업 SW, POWER, DEF, TELCO · 트랙 UNIV_HIGH, GRAD
 | 기술문서 작성 `CM.DOC` | 3 | ★★ |
 | 영문 기술 커뮤니케이션 `CM.ENG` | 3 | ★★ |
 
-#### SW 품질·테스트 엔지니어 — `CE.QA`
+#### SW 품질·테스트 엔지니어: `CE.QA`
 
 O*NET `15-1253.00` · 산업 SW, AUTO, MED, SEMI · 트랙 HS, UNIV_LOW, UNIV_HIGH
 
-활동 지표 가중치 — OPTIMIZE 0.26 · ANALYZE 0.24 · CODE 0.22 · ORCHESTRATE 0.16 · BUILD 0.12
+활동 지표 가중치: OPTIMIZE 0.26 · ANALYZE 0.24 · CODE 0.22 · ORCHESTRATE 0.16 · BUILD 0.12
 
 | 역량 | 요구 수준 | 필수도 |
 |---|---|---|

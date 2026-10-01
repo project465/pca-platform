@@ -19,7 +19,7 @@ const ALLOWED = new Set(["org_admin", "instructor"]);
  * 학생은 명단 업로드로 생기지만 담당자는 어디서도 생기지 않아, 지금까지는
  * SQL 을 직접 쳐야 했다.
  *
- * 임시 비밀번호는 여기서 한 번만 보여주고 저장하지 않는다 — 명단 발급과
+ * 임시 비밀번호는 여기서 한 번만 보여주고 저장하지 않는다. 명단 발급과
  * 같은 규칙이다. must_reset_pw 로 첫 로그인 때 반드시 바꾸게 한다.
  */
 export async function issueStaff(_prev: StaffState, form: FormData): Promise<StaffState> {
@@ -61,7 +61,7 @@ export async function issueStaff(_prev: StaffState, form: FormData): Promise<Sta
 
   if (existing) {
     // 계정을 새로 만들지 않고 이 기관에 붙이기만 한다. 비밀번호는 건드리지
-    // 않는다 — 다른 기관에서 쓰고 있을 수 있다.
+    // 않는다. 다른 기관에서 쓰고 있을 수 있다.
     await query(
       `INSERT INTO memberships (user_id, org_id, role) VALUES ($1, $2, $3)
        ON CONFLICT (user_id, org_id, role) DO NOTHING`,

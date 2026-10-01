@@ -1,7 +1,7 @@
 /**
  * Careermetri 채점 엔진.
  *
- * 원칙 하나만 지킨다 — 점수는 산식이 만들고, 문장은 모델이 만든다.
+ * 원칙 하나만 지킨다. 점수는 산식이 만들고, 문장은 모델이 만든다.
  * 이 파일은 점수만 만든다. 여기서 나온 숫자가 결과지의 82점이 되고,
  * LLM 이 쓴 문장은 이 숫자를 읽기만 할 뿐 절대 이 숫자를 바꾸지 않는다.
  *
@@ -17,7 +17,7 @@
  *                       고교판은 전공(major_fit_weights) 을 향한다.
  *   5. 응답 품질         신뢰구간의 폭을 정한다.
  *
- * 3번의 변환 행렬도 4번의 가중치도 코드가 아니라 테이블에 있다.
+ * 3번의 변환 행렬도 4번의 가중치도 코드 말고 테이블에 있다.
  * 전공이 늘거나 가중치를 바꿀 때 이 파일은 건드리지 않는다.
  */
 import { query, tx } from "./db";
@@ -29,7 +29,7 @@ export function scale100(mean1to5: number): number {
 
 /**
  * 리커트 5점에서 이보다 작은 흩어짐은 신호가 아니다.
- * 표준편차가 정확히 0 이 아니라 1e-16 으로 남는 경우를 함께 막는다.
+ * 표준편차가 0 으로 딱 떨어지지 않고 1e-16 으로 남는 경우를 함께 막는다.
  */
 const SPREAD_FLOOR = 0.05;
 
@@ -54,7 +54,7 @@ export type AttemptScore = {
     p: number;
     band: [number, number];
     rank: number;
-    /** 구간이 겹치는 직무끼리 같은 번호. 결과지는 등수가 아니라 이것을 읽는다 */
+    /** 구간이 겹치는 직무끼리 같은 번호. 결과지는 등수 말고 이것을 읽는다 */
     tier: number;
   }[];
   quality: Quality;
@@ -213,7 +213,7 @@ export async function score(attemptId: string): Promise<AttemptScore> {
   if (!areaCodes.length) throw new Error(`검사지 ${instrumentKey ?? "(이름 없음)"} 에 영역이 없습니다`);
   /**
    * 분야 점수의 표준오차. 25문항 평균이므로 sd/√25 이다.
-   * 이 값이 적합도 신뢰구간의 근거가 된다 — 예전에는 ±6 이라는 상수를 썼는데,
+   * 이 값이 적합도 신뢰구간의 근거가 된다. 예전에는 ±6 이라는 상수를 썼는데,
    * 그건 근거 없는 숫자였고 1위와 2위 차이(보통 1~2점)보다 훨씬 넓어서
    * 500명 시뮬레이션에서 100% 겹쳤다. 구간은 재서 나와야 한다.
    */
@@ -257,7 +257,7 @@ export async function score(attemptId: string): Promise<AttemptScore> {
     ]),
   );
 
-  // 2. 업무성향 — 성향은 절대값보다 6개 사이의 상대 높낮이가 정보다.
+  // 2. 업무성향: 성향은 절대값보다 6개 사이의 상대 높낮이가 정보다.
   const traitCodes = await query<{ code: string }>(
     `SELECT code FROM indicator_axes WHERE kind = 'trait' ORDER BY code`,
   );
@@ -272,7 +272,7 @@ export async function score(attemptId: string): Promise<AttemptScore> {
   // 여섯 성향이 사실상 같게 나오는 응시자가 있다. 이때 표준편차는 정확히 0 이
   // 아니라 1e-16 쯤으로 남아서, 나누면 부동소수점 찌꺼기가 z=±1 로 부풀어
   // 오른다. 리커트 5점에서 0.05 미만의 차이는 신호가 아니므로 0 으로 본다.
-  //   — "성향이 고르다" 를 "성향이 뚜렷하다" 로 읽지 않기 위한 바닥값이다.
+  //: "성향이 고르다" 를 "성향이 뚜렷하다" 로 읽지 않기 위한 바닥값이다.
   const traitZ = new Map(
     traits.map((t) => [
       t.code,
@@ -282,7 +282,7 @@ export async function score(attemptId: string): Promise<AttemptScore> {
     ]),
   );
 
-  // 3. activity 축 — 변환 행렬은 테이블에 있다.
+  // 3. activity 축: 변환 행렬은 테이블에 있다.
   const matrix = await query<{ area_code: string; axis_code: string; weight: string }>(
     `SELECT area_code, axis_code, weight FROM job_area_axis_weights`,
   );
@@ -301,14 +301,14 @@ export async function score(attemptId: string): Promise<AttemptScore> {
   const axes = [...axisRaw.keys()].map((code) => ({ code, scaled: scale100(axisRaw.get(code)!) }));
 
   /**
-   * 직무 순위를 매길 때는 축의 절대 높이가 아니라 **그 사람 안에서의 높낮이**
-   * 를 쓴다. 축마다 몇 개 분야에서 오는지가 달라서 그렇다 —
+   * 직무 순위를 매길 때는 축의 절대 높이 말고 **그 사람 안에서의 높낮이**
+   * 를 쓴다. 축마다 몇 개 분야에서 오는지가 달라서 그렇다.
    * ANALYZE 는 열 분야 중 여덟에서 평균돼 평평해지고, CODE 는 둘뿐이라 크게
    * 흔들린다. 날것을 그대로 쓰면 CODE 에 가중치를 둔 직무가 사람과 무관하게
    * 유리해진다(500명 시뮬레이션에서 로봇·자동화 28% 대 품질·신뢰성 2%).
    *
    * 성향(traitZ)에 이미 쓰던 방법을 활동 축에도 그대로 쓴다.
-   * 절대 높이는 결과지의 8축 레이더가 따로 보여준다 — 거기서는 날것이 맞다.
+   * 절대 높이는 결과지의 8축 레이더가 따로 보여준다. 거기서는 날것이 맞다.
    */
   // 분야 오차를 축으로 옮긴다. axis = Σ(w·area)/Σw 이므로 오차도 같은 계수로 간다.
   const axisSe = new Map<string, number>();
@@ -342,8 +342,8 @@ export async function score(attemptId: string): Promise<AttemptScore> {
   //    현재 트랙(재학생)은 증거(S)와 맥락(C)이 아직 없으므로 A·P 만 쓴다.
   /**
    * 적합 대상의 축 가중치.
-   *   대학판 — 그 전공에 달린 직무들 (job_axis_weights)
-   *   고교판 — 전공 8개              (major_fit_weights)
+   *   대학판: 그 전공에 달린 직무들 (job_axis_weights)
+   *   고교판: 전공 8개              (major_fit_weights)
    * 둘 다 (대상 코드 × 축 × 무게) 모양이라 아래 산식은 하나로 간다.
    *
    * 대학판의 범위를 전공 코드로 잡는다. 예전에는 'ME.%' 가 코드에 박혀
@@ -371,18 +371,18 @@ export async function score(attemptId: string): Promise<AttemptScore> {
   /**
    * 고교판에서 전공 하나가 어느 영역에서 재어졌는지.
    *
-   * 대학판은 직무를 문항이 직접 재지 않는다 — 문항은 직무분야를 재고, 축을
+   * 대학판은 직무를 문항이 직접 재지 않는다. 문항은 직무분야를 재고, 축을
    * 거쳐야 직무에 닿는다. 고교판은 다르다. 계열 14문항이 그 계열을 바로
    * 재고 있어서, 축을 한 번 거치면 신호가 섞이기만 한다.
    *
    * 실제로 섞였다. 500명 시뮬레이션에서 전기·전자 문항만 높게 답한 학생의
-   * 1순위가 컴퓨터공학 74% 로 나왔다. W·Wᵀ 를 보면 이유가 분명하다 —
+   * 1순위가 컴퓨터공학 74% 로 나왔다. W·Wᵀ 를 보면 이유가 분명하다.
    * 전기·전자의 축 분포는 평평해서(ANALYZE .24 가 최대) 자기 자신을 가리키는
    * 힘이 0.155 인데, 컴퓨터공학은 CODE .38 로 뾰족해 0.250 이다. 축을 거치는
    * 순간 뾰족한 전공이 남의 학생까지 가져간다.
    *
-   * 그래서 고교판의 A 는 축이 아니라 **그 전공의 영역 점수**에서 온다.
-   * 축 8개는 결과지의 레이더와 대학판과의 연속성에 그대로 쓰인다 —
+   * 그래서 고교판의 A 는 축이 아닌 **그 전공의 영역 점수**에서 온다.
+   * 축 8개는 결과지의 레이더와 대학판과의 연속성에 그대로 쓰인다.
    * 재는 데 안 쓸 뿐, 없애지 않는다.
    */
   const areaOfMajor = new Map<string, string>();
@@ -401,7 +401,7 @@ export async function score(attemptId: string): Promise<AttemptScore> {
     byJob.get(r.code)!.push({ axis: r.axis_code, w: Number(r.weight) });
   }
 
-  // 직무별 선호 성향 — 직무분야 연결에서 유도하지 않고, 축 가중치에서 읽는다.
+  // 직무별 선호 성향: 직무분야 연결에서 유도하지 않고, 축 가중치에서 읽는다.
   //   설계·해석이 무거우면 품질, 현장·조율이 무거우면 협력, 탐구면 독립.
   const traitAffinity: Record<string, string[]> = {
     ANALYZE: ["QUALITY", "INDEP"],
@@ -445,7 +445,7 @@ export async function score(attemptId: string): Promise<AttemptScore> {
        *
        * lean 은 축 z 의 가중합이고, 축마다 표준오차가 있다. 그것을 모아
        * lean 의 오차를 만들고, 로지스틱의 기울기(120·σ·(1-σ))를 곱해
-       * 적합도 점수 단위로 옮긴다. 여기에 응답 품질에서 온 벌점을 더한다 —
+       * 적합도 점수 단위로 옮긴다. 여기에 응답 품질에서 온 벌점을 더한다.
        * 같은 보기를 연타한 사람은 측정 자체가 덜 믿을 만하기 때문이다.
        */
       let leanVar = 0;
@@ -497,7 +497,7 @@ export async function score(attemptId: string): Promise<AttemptScore> {
    * 그 상태로 "1위 · 2위" 를 적으면 없는 정밀도를 파는 것이다. 구간이
    * 겹치면 같은 묶음으로 둔다.
    *
-   * 비교 대상은 바로 앞 직무가 아니라 그 묶음의 머리다. 앞 직무와만
+   * 비교 대상은 바로 앞 직무 말고 그 묶음의 머리다. 앞 직무와만
    * 비교하면 조금씩 겹치는 것이 사슬처럼 이어져 여덟 개가 한 묶음이 된다.
    */
   const tiered = jobs.map((j) => ({ ...j, tier: 1 }));

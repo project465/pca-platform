@@ -17,7 +17,7 @@ export type FreeState = { error?: string };
 export async function openFreeAction(_prev: FreeState, formData: FormData): Promise<FreeState> {
   const user = await requireUser();
   // 폼에서 온 값을 그대로 상품 코드로 쓰지 않는다. 아는 갈래 둘 중 하나로
-  // 접어서 쓴다 — 주소를 고쳐 다른 상품의 좌석을 받아 갈 수 없어야 한다
+  // 접어서 쓴다. 주소를 고쳐 다른 상품의 좌석을 받아 갈 수 없어야 한다
   const track = resolveTrack(String(formData.get("track") ?? ""));
   try {
     await openFreeOrder(user.id, TRACKS[track].product);
@@ -29,7 +29,7 @@ export async function openFreeAction(_prev: FreeState, formData: FormData): Prom
   const done = await lastScoredAttempt(user.id);
   if (done) redirect(`/report/${done}`);
 
-  // 좌석이 생겼으면 /test 가 응시로 바꾼다. 풀던 것이 있으면 이어 준다 —
+  // 좌석이 생겼으면 /test 가 응시로 바꾼다. 풀던 것이 있으면 이어 준다.
   // openFreeOrder 가 주문을 하나로 묶어 두기 때문이다.
   redirect("/test");
 }

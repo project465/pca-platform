@@ -42,7 +42,7 @@ pca-platform/
    └─ src/content/*.ts     원고는 전부 여기. 컴포넌트에 한국어가 박혀 있지 않다
 ```
 
-둘을 섞지 않는다 — `CLAUDE.md` 설계 원칙 5.
+둘을 섞지 않는다: `CLAUDE.md` 설계 원칙 5.
 
 ---
 
@@ -67,7 +67,7 @@ SITE=global npm run dev      # 영어판
 ```
 
 의존성 두 가지는 이유가 있어서 고정돼 있다.
-- `next@15.5.25` — 15.5.4 는 CVE-2025-66478 이 있다. 내리지 말 것
+- `next@15.5.25`: 15.5.4 는 CVE-2025-66478 이 있다. 내리지 말 것
 - 폰트 Pretendard 는 npm 패키지에서 자체 호스팅한다. jsDelivr 는 이 환경의
   프록시가 막는다
 
@@ -89,19 +89,19 @@ node scripts/export-preview.mjs kr out-kr.html
 넘기게 만든다. 자바스크립트 없이 동작한다. 결과 파일을 아티팩트로 올리면 된다.
 
 다른 스크립트
-- `scripts/gen-world-map.mjs` — world-atlas 로 세계지도 SVG 를 굽는다
-- `scripts/gen-og.mjs` — 공유 썸네일
-- `scripts/shots.mjs`, `../scripts/screenshots.mjs` — 화면 촬영
+- `scripts/gen-world-map.mjs`: world-atlas 로 세계지도 SVG 를 굽는다
+- `scripts/gen-og.mjs`: 공유 썸네일
+- `scripts/shots.mjs`, `../scripts/screenshots.mjs`: 화면 촬영
 
 ---
 
 ## 4. 지금까지 된 것
 
-**플랫폼 (`src/`)** — 개발 순서 1단계까지
+**플랫폼 (`src/`)**: 개발 순서 1단계까지
 - PostgreSQL 스키마 적용. `password_reset_tokens` 를 schema.sql 10절에 추가했다
 - Auth.js(next-auth 5 beta) Credentials + JWT, bcryptjs 12 라운드
 - 로그인 / 비밀번호 재설정
-- 운영사 관리자 — 기관 생성, 기관 목록
+- 운영사 관리자: 기관 생성, 기관 목록
 
 주의할 구현 두 가지
 - `src/lib/db.ts` 의 풀은 **게으르게** 만든다. 모듈 로드 시점에 만들면
@@ -112,23 +112,23 @@ node scripts/export-preview.mjs kr out-kr.html
 **소개 사이트 (`marketing/`)**
 - 라우트 7개. 한국 `/ /pca /anchor /adopt /pricing /about /contact`,
   글로벌은 `/anchor /adopt` 대신 `/localisation /partnership`
-- 원고 `src/content/kr.ts` · `global.ts`. 번역판이 아니라 **말 거는 상대가 다르다**
+- 원고 `src/content/kr.ts` · `global.ts`. 번역판이 아닌 **말 거는 상대가 다른 원고다**
   (한국은 학과·앵커사업, 글로벌은 대학·부처·현지 파트너)
-- 결과지 뷰어 — 한국 11개 섹션, 글로벌 10개 (09 지역연계는 한국 전용).
+- 결과지 뷰어: 한국 11개 섹션, 글로벌 10개 (09 지역연계는 한국 전용).
   라디오 기반이라 JS 없이 탭이 넘어간다
-- 예시 결과지 — 홈 첫 화면 바로 다음. 직무 10개 순위 막대, 성향 6축 레이더,
+- 예시 결과지: 홈 첫 화면 바로 다음. 직무 10개 순위 막대, 성향 6축 레이더,
   12개월 할 일, 지역 연계 집계
-- 세계지도 — 운영 6개국(KR/DE/US/JP/CN/TR), 예정 4개국(KZ/FR/ZA/PH)
+- 세계지도, 운영 6개국(KR/DE/US/JP/CN/TR), 예정 4개국(KZ/FR/ZA/PH)
 - 국가 선택 드롭다운(글로벌 헤더), 요금제 3단, 문의 폼(간단형·전체형)
 
 ---
 
 ## 5. 아직 안 된 것
 
-**플랫폼** — 개발 순서 2~4단계가 통째로 남았다
+**플랫폼**: 개발 순서 2~4단계가 통째로 남았다
 계약·좌석, 회차, 명단 업로드, 응시 화면, 응답 저장, 채점, 결과지, 단체 리포트
 
-**소개 사이트 — 공개 전에 반드시**
+**소개 사이트: 공개 전에 반드시**
 - 문의 폼 백엔드. 지금은 서버 액션이 JSONL 파일에 쓴다. 서버리스에 올리면 날아간다.
   DB 나 메일로 바꿔야 한다
 - 한국판 개인정보 수집·이용 동의 체크박스와 개인정보처리방침 페이지 (PIPA)
@@ -173,9 +173,9 @@ node scripts/export-preview.mjs kr out-kr.html
 
 이 환경의 프록시가 CONNECT 단계에서 403 을 준다. 우회할 방법은 없다.
 
-- `www.academix.co.kr` — 실제 사이트. 스크린샷을 사람이 올려서 해결했다
-- `www.moe.go.kr` — 교육부 보도자료. PDF 를 사람이 올려서 해결했다
-- `cdn.jsdelivr.net` — 폰트. npm 패키지 자체 호스팅으로 해결했다
+- `www.academix.co.kr`: 실제 사이트. 스크린샷을 사람이 올려서 해결했다
+- `www.moe.go.kr`: 교육부 보도자료. PDF 를 사람이 올려서 해결했다
+- `cdn.jsdelivr.net`: 폰트. npm 패키지 자체 호스팅으로 해결했다
 
 같은 자료가 또 필요하면 `docs/reference/` 에 원본을 넣어 뒀으니 그걸 읽으면 된다.
 
@@ -214,14 +214,14 @@ PostgreSQL 16 에서 세 파일 전부 적용해 확인했다 (역량 138 · 직
 
 - **나누는 축은 학교급이 아니라 전공이다.** 기계 → 전기전자 → 컴퓨터
 - **고교는 트랙 하나(`HS`)**. 일반계고·마이스터고를 나누지 않고 `goal` 값으로만 갈린다
-- **검사지는 두 벌** — 고교판·대학판. 트랙 4개는 `scoring_profiles` 의 행일 뿐이다
+- **검사지는 두 벌**: 고교판·대학판. 트랙 4개는 `scoring_profiles` 의 행일 뿐이다
 - **B2B(학과)와 B2C(개인)를 동시에 연다.** 셀프 가입·개인 결제가 1차 범위로 올라왔다
 - **1차는 한국만.** 미국 JD 는 설계만 해두고 만들지 않는다
 - 제안서 vs 플랫폼 스펙 충돌 3건은 전부 "데이터로 흡수" 로 정리됐다 (`CLAUDE.md` 참조)
 
 ## 다음에 이어받는 사람이 먼저 할 일
 
-1. `docs/metri/07_mvp.md` 의 12주 계획 1주차 — **워크넷 Open API 수집기.** 공고 20,000건에 30~60일 걸린다. 화면보다 먼저다
+1. `docs/metri/07_mvp.md` 의 12주 계획 1주차: **워크넷 Open API 수집기.** 공고 20,000건에 30~60일 걸린다. 화면보다 먼저다
 2. 문항 110개 추가 집필 (예시 30개만 있다)
-3. 기계공학 Skill Tree 현직자 검수 — 요구 수준·필수도가 전부 추정치다
+3. 기계공학 Skill Tree 현직자 검수: 요구 수준·필수도가 전부 추정치다
 4. 100명 검증. **Top-3 수용률 70% 가 유일한 관문이다**

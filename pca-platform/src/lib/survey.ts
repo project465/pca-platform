@@ -1,10 +1,10 @@
 import { query, queryOne } from "./db";
 
 /**
- * 지역 정주와 진단 만족도 — 점수를 만들지 않는 문항.
+ * 지역 정주와 진단 만족도, 점수를 만들지 않는 문항.
  *
  * 제안서가 의뢰 기관에 약속한 성과지표다(RISE·지자체 보고용). 검사
- * 문항과 **표를 나눠 둔 것이 핵심**이다 — 채점(`scoring.ts`)은 이 표를
+ * 문항과 **표를 나눠 둔 것이 핵심**이다. 채점(`scoring.ts`)은 이 표를
  * 아예 읽지 않는다. 섞이면 정주 의향이 직무 적합도를 흔든다.
  *
  * **응시 전과 후에 같은 문장을 묻는다.** 그래야 "이 진단을 보고
@@ -55,7 +55,7 @@ export async function surveyItems(phase: SurveyPhase, lang = "ko"): Promise<Surv
 
 /**
  * 한 문항 답을 적는다. 응시와 같은 규칙으로 **누를 때마다 즉시** 저장한다.
- * 남의 응시에는 적을 수 없다 — attempt 주인을 함께 본다.
+ * 남의 응시에는 적을 수 없다. attempt 주인을 함께 본다.
  */
 export async function saveSurvey(
   attemptId: string,
@@ -102,7 +102,7 @@ export type ShiftRow = {
 };
 
 /**
- * 응시 전·후 변화. **짝이 맞는 응답만 센다** — 앞만 답하고 나간 사람을
+ * 응시 전·후 변화. **짝이 맞는 응답만 센다**: 앞만 답하고 나간 사람을
  * 한쪽에 넣으면 두 평균이 다른 사람들의 평균이 되어 뺄셈이 거짓말을 한다.
  */
 export async function residencyShift(sessionId: string): Promise<ShiftRow[]> {

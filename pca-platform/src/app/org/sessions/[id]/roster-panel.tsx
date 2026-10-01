@@ -7,7 +7,7 @@ import { uploadRoster, type RosterState } from "../../actions";
  * 명단 붙여넣기.
  *
  * 임시 비밀번호는 만든 직후 한 번만 보여준다. 저장하지 않으므로 이 화면을
- * 닫으면 다시 볼 수 없고 재발급만 된다 — 평문을 DB 에 남기지 않기 위해서다.
+ * 닫으면 다시 볼 수 없고 재발급만 된다. 평문을 DB 에 남기지 않기 위해서다.
  * 담당자가 그 사실을 모르면 낭패를 보므로 화면에 그대로 적는다.
  */
 export default function RosterPanel({

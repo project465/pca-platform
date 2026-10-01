@@ -1,5 +1,5 @@
 /**
- * 과목 처방 — 고교학점제 2022 개정 교육과정.
+ * 과목 처방: 고교학점제 2022 개정 교육과정.
  *
  * 고교판 결과지의 마지막 칸이다. "기계공학이 앞에 있습니다" 로 끝나면 학생이
  * 다음 주에 할 일이 없다. 2학년 과목 신청서에 무엇을 적을지까지 내려가야
@@ -89,9 +89,9 @@ export type Prescription = {
   curriculum: string;
   /** 처방의 대상. 결과지 1군이다 */
   majors: { code: string; name: string }[];
-  /** 1군 전부에 걸리는 과목 — 먼저 듣는다 */
+  /** 1군 전부에 걸리는 과목: 먼저 듣는다 */
   shared: PrescribedSubject[];
-  /** 일부 계열에만 걸리는 과목 — 여기서 갈린다 */
+  /** 일부 계열에만 걸리는 과목: 여기서 갈린다 */
   split: PrescribedSubject[];
   /** 여유가 되면 */
   optional: PrescribedSubject[];
@@ -101,7 +101,7 @@ export type Prescription = {
   totalCredits: number;
   /**
    * 계열이 갈리지 않아 "필수" 만으로도 한 학년 정원을 넘었는가.
-   * 이 값이 true 면 처방이 아니라 학생이 먼저 좁혀야 한다는 뜻이고,
+   * 이 값이 true 면 처방보다 학생이 먼저 좁히는 쪽이 맞다는 뜻이고,
    * 결과지가 그렇게 말해야 한다.
    */
   tooMany: boolean;
@@ -150,7 +150,7 @@ type Row = {
 /**
  * 1군 계열에 걸리는 과목을 전부 끌어온다.
  *
- * 공통과목(고1 전원 이수)은 처방에서 뺀다 — 고르는 과목이 아니라서
+ * 공통과목(고1 전원 이수)은 처방에서 뺀다. 고르는 과목이 아니어서
  * 신청서에 적을 일이 없다. 다만 선수과목으로는 계속 쓰인다.
  */
 async function load(majorCodes: string[], lang: string, country = "KR") {
@@ -193,7 +193,7 @@ export async function prescribe(
   attemptId: string,
   lang = "ko",
 ): Promise<Prescription | null> {
-  // 1. 처방의 대상 — 결과지의 1군.
+  // 1. 처방의 대상: 결과지의 1군.
   //    tier 가 없던 옛 응시는 상위 두 개로 본다.
   const majors = await query<{ code: string; name: string; tier: number }>(
     `SELECT mj.code, ${NAME("majors", "mj")} AS name,
@@ -279,7 +279,7 @@ export async function prescribe(
    *
    * 필요도 3(사실상 필수)은 그대로 두고, 2(권장)는 학년 정원이 찰 때까지만
    * 담는다. 같은 필요도 안에서는 **1군 중 더 많은 계열이 요구하는 과목**이
-   * 먼저다 — 아직 하나로 좁히지 않은 학생에게는 그쪽이 덜 위험한 선택이다.
+   * 먼저다. 아직 하나로 좁히지 않은 학생에게는 그쪽이 덜 위험한 선택이다.
    */
   const rank = (s: PrescribedSubject) =>
     [-s.necessity, -(s.shared ? 99 : s.forMajors.length), s.code] as const;
@@ -294,8 +294,8 @@ export async function prescribe(
   }
 
   /**
-   * 1군이 넓으면 — 이 검사가 계열을 못 가른 경우다 — 소수 계열만 요구하는
-   * 과목은 "지금 들어야 할 것" 이 아니라 "그쪽으로 정하면 필요한 것" 이다.
+   * 1군이 넓으면: 이 검사가 계열을 못 가른 경우다. 소수 계열만 요구하는
+   * 과목은 "지금 들어야 할 것" 이 아닌 "그쪽으로 정하면 필요한 것" 이다.
    * 여덟 계열이 전부 1군인 학생에게 여덟 갈래의 필수를 다 담아 주면 23과목
    * 짜리 장바구니가 되고, 그건 처방이 아니다.
    *
@@ -341,7 +341,7 @@ export async function prescribe(
    *
    * 미적분Ⅱ 만 적어 놓으면 학생은 그 신청서를 낼 수 없다. 정원 안에 남은
    * 과목의 선수과목을 따라 올라가며 빠진 것을 채운다. 채워 넣은 과목은
-   * 표시해 둔다 — 계열이 요구해서 들어온 것과 순서 때문에 들어온 것은
+   * 표시해 둔다. 계열이 요구해서 들어온 것과 순서 때문에 들어온 것은
    * 다른 말이기 때문이다.
    */
   const keptCodes = new Set(kept.map((s) => s.code));
@@ -396,7 +396,7 @@ export async function prescribe(
     if (p.addedForPrereq) p.shared = true;
   }
 
-  // 현장 쓰임을 붙인다. 과목마다 최대 두 줄까지 — 세 줄이 넘으면 목록이 된다.
+  // 현장 쓰임을 붙인다. 과목마다 최대 두 줄까지: 세 줄이 넘으면 목록이 된다.
   const uses = await subjectUses(picked.map((m) => m.code), lang);
   for (const p of byCode.values()) p.usedAt = (uses.get(p.code) ?? []).slice(0, 2);
 

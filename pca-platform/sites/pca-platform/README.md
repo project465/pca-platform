@@ -1,4 +1,4 @@
-# PCA Platform — 전공 기반 진로·직무 진단
+# PCA Platform: 전공 기반 진로·직무 진단
 
 홈페이지 버튼에서 바로 진입해 응시하고 결과까지 보는 웹 플랫폼입니다.
 빌드 도구 없이 정적 파일만으로 동작하며 GitHub Pages에 그대로 올라갑니다.
@@ -24,10 +24,10 @@ python3 -m http.server 8000
 ```
 index.html              화면 5개(시작/학과선택/응시자정보/문항/결과)의 마크업
 assets/app.css          공통 스타일
-assets/engine.js        채점 엔진 — 순수 계산만, DOM을 건드리지 않음
+assets/engine.js        채점 엔진: 순수 계산만, DOM을 건드리지 않음
 assets/app.js           화면 흐름과 결과 렌더링
 data/majors.js          학과 목록과 공개 여부(status)
-data/me.js              기계공학과 데이터 (자동 생성물 — 직접 수정 금지)
+data/me.js              기계공학과 데이터 (자동 생성물: 직접 수정 금지)
 content/me.json         기계공학과 직무별 서술 콘텐츠 + 직무 코드 (사람이 쓰는 파일)
 tools/build_major.py    계산엔진 xlsx → data/<code>.js 생성기
 tools/make_links.py     단체 응시용 1인 1링크 CSV 생성기

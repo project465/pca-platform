@@ -8,7 +8,7 @@
  *   1. 응시권을 사고 **문항을 한 개도 안 풀었으면** 전액 환불
  *   2. **첫 문항에 답하는 순간** 환불선을 넘는다
  *   3. 업그레이드는 **결과지를 열기 전까지** 환불된다
- *      — 응시는 이미 끝난 사람이라 응시 시작을 경계로 쓸 수 없다
+ *: 응시는 이미 끝난 사람이라 응시 시작을 경계로 쓸 수 없다
  *   4. 결과지를 열면 환불되지 않는다. **처음 연 시각은 덮어쓰지 않는다**
  *   5. 7일이 지나면 업그레이드는 닫힌다. 응시 전 응시권은 기간과 무관하다
  *   6. 기간권은 **남은 기간만큼** 일할로 돌려준다 (계속거래)
@@ -114,7 +114,7 @@ async function main() {
     const c = await student("refund-c@example.com");
   await openFreeOrder(c);
   // 업그레이드는 **어느 응시를 여는 결제인지** 들고 다닌다. 비워 두면
-  // 응시권으로 읽혀 다른 경계가 적용된다 — 처음 이 검사가 그래서 통과했다
+  // 응시권으로 읽혀 다른 경계가 적용된다. 처음 이 검사가 그래서 통과했다
   const cAtt = await openAttempt(c);
   const oc = await queryOne<{ id: string }>(
     `INSERT INTO orders (order_no, user_id, product_code, amount, currency, status, paid_at, upgrades_attempt_id)
@@ -188,7 +188,7 @@ async function main() {
     check(seatLeft!.n === 0, "좌석이 회수된다", `${seatLeft!.n}개`);
   }
 
-  // 응시를 시작한 코드는 거절되는가 — 1절의 주문이 그 상태다
+  // 응시를 시작한 코드는 거절되는가, 1절의 주문이 그 상태다
   const startedRow = await queryOne<{ id: string }>(
     `SELECT id FROM redemption_codes WHERE order_id = $1`, [oa]);
   if (!startedRow) {

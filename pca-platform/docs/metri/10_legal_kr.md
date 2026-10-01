@@ -1,4 +1,4 @@
-# 법적 범위 — 한국 · 터키 · 카자흐스탄
+# 법적 범위: 한국 · 터키 · 카자흐스탄
 
 > **이 문서는 법률 자문이 아니다.** 아래는 공개 자료로 확인한 내용이고,
 > 사업을 확정하기 전에 **노무사 또는 행정사 확인을 반드시 거친다.**
@@ -17,7 +17,7 @@
 |---|---|---|
 | 절차 | **신고** (고용노동부) | **등록** (국내는 시·군·구) |
 | 하는 일 | 신문·간행물·방송·**컴퓨터통신 등으로 구인·구직 정보를 제공** | 구인·구직 신청을 받아 **고용계약 성립을 알선** |
-| 우리 상태 | **보유** — J1700020220007호 | 없음 |
+| 우리 상태 | **보유**: J1700020220007호 | 없음 |
 
 **가르는 기준은 "알선(중개)을 하느냐"다.**
 정보를 띄우고 구직자가 스스로 지원하면 정보제공,
@@ -51,7 +51,7 @@
 
 ## 3. 그래서 우리 설계를 이렇게 고친다
 
-### 3-1. 할 수 있는 것 — 지금 신고만으로
+### 3-1. 할 수 있는 것: 지금 신고만으로
 
 | 기능 | 근거 |
 |---|---|
@@ -64,7 +64,7 @@
 
 **1차 MVP 매출(학과 B2B + 개인 B2C)은 전부 이 안에 있다.**
 
-### 3-2. 못 하는 것 — 등록 없이는
+### 3-2. 못 하는 것: 등록 없이는
 
 | 하려던 것 | 왜 막히나 | 등록 전 대체안 |
 |---|---|---|
@@ -76,7 +76,7 @@
 ### 3-3. 기업 채널을 다시 짠다
 
 ```
-[등록 전 — 지금]                        [등록 후 — 선택]
+[등록 전: 지금]                        [등록 후: 선택]
 기업이 공고를 올린다                     기업이 인재를 검색한다
    ↓                                        ↓
 그 공고가 적합한 학생의                   학생 동의 후 연결
@@ -88,7 +88,7 @@
                 + 직무 콘텐츠
 ```
 
-**등록 전 기업 과금은 "매칭"이 아니라 "노출과 데이터"로 받는다.**
+**등록 전 기업 과금은 "매칭" 말고 "노출과 데이터"로 받는다.**
 
 ---
 
@@ -103,7 +103,7 @@
 | 기업 매출 | 구독·노출·콘텐츠만 | + 채용 성공 수수료 |
 | 리스크 | 없음 | 요금 고시 규제를 받는다 |
 
-**권고 — 1차에는 등록하지 않는다.** 기업 채널 자체가 2차 이후이고,
+**권고: 1차에는 등록하지 않는다.** 기업 채널 자체가 2차 이후이고,
 인재풀에 학생 1,000명이 차기 전에는 팔 것이 없다.
 **기업 매출을 실제로 붙일 때 등록을 같이 준비한다.**
 
@@ -124,7 +124,7 @@ JOBINDUSTRY(STEM 석·박사) 브랜드와 묶으면 등록의 값어치가 커�
 
 ---
 
-## 6. 터키 — İŞKUR özel istihdam bürosu
+## 6. 터키: İŞKUR özel istihdam bürosu
 
 **한국보다 기준이 빡빡하다.** 면제 조건이 좁다.
 
@@ -146,14 +146,14 @@ JOBINDUSTRY(STEM 석·박사) 브랜드와 묶으면 등록의 값어치가 커�
 | 자격 | 대표자 4년제 학사 학위, 파산·화의 없음 증명 |
 | 무허가 제재 | 4904호 제20조 행정 제재. 별도로 취업허가 없는 외국인 알선은 1인당 5,000 TL 과태료 |
 
-**판단** — 터키는 **공고 기능을 켜지 않고 진단·리포트만으로 출시한다.**
+**판단**: 터키는 **공고 기능을 켜지 않고 진단·리포트만으로 출시한다.**
 기업 채널이 없어졌으므로 알선 요소는 이미 없고, 남는 것은 "회원제 화면 안에서 공고를 보여주는가" 하나다.
-그것만 빼면 허가 없이 운영된다. 공고 대신 **집계 통계**(이 직무 공고 412건에서 뽑은 요구 역량)를 쓴다 —
+그것만 빼면 허가 없이 운영된다. 공고 대신 **집계 통계**(이 직무 공고 412건에서 뽑은 요구 역량)를 쓴다.
 통계는 구인정보 제공이 아니라 노동시장 정보다.
 
 ---
 
-## 7. 카자흐스탄 — ЧАЗ (частное агентство занятости)
+## 7. 카자흐스탄: ЧАЗ (частное агентство занятости)
 
 **규제가 지금 바뀌고 있다.** 확정된 자리에 들어가지 말고 지켜본다.
 
@@ -165,7 +165,7 @@ JOBINDUSTRY(STEM 석·박사) 브랜드와 묶으면 등록의 값어치가 커�
 | 국외 알선 | 카자흐 국민의 해외 취업 알선은 별도 규정. 60여 개 업체가 등록돼 있다 |
 | 공공 플랫폼 | **Enbek.kz** (전자노동거래소)가 국가 채널이다 |
 
-**판단** — 면허제가 도입되는 중이라 **기업·알선 쪽은 아예 건드리지 않는다.**
+**판단**: 면허제가 도입되는 중이라 **기업·알선 쪽은 아예 건드리지 않는다.**
 진단·리포트·학과 집계만으로 출시하고, Enbek.kz 와의 연계는 등록 요건이 확정된 뒤에 본다.
 
 ---
@@ -180,7 +180,7 @@ JOBINDUSTRY(STEM 석·박사) 브랜드와 묶으면 등록의 값어치가 커�
 | 공고 **집계 통계**만 보여주기 | ✅ | ✅ | ✅ |
 | 기업에 인재 추천 | ❌ 등록 필요 | ❌ 허가 필요 | ❌ 면허 도입 중 |
 
-**코드에 미치는 것 하나** — `jd_sources` 에 이미 나라별 설정이 있다.
+**코드에 미치는 것 하나**: `jd_sources` 에 이미 나라별 설정이 있다.
 여기에 **나라별 공고 노출 스위치**를 둔다. 한국은 개별 공고까지, 터키·카자흐스탄은 집계 통계까지.
 화면을 나라마다 새로 만들지 않는다.
 
@@ -196,13 +196,13 @@ JOBINDUSTRY(STEM 석·박사) 브랜드와 묶으면 등록의 값어치가 커�
 - [유료직업소개사업 등록요건 해설](https://www.help-me.kr/blog/article/%EC%A7%81%EC%97%85%EC%86%8C%EA%B0%9C%EC%82%AC%EC%97%85%EB%B2%95%EC%9D%B8%EC%84%A4%EB%A6%BD/)
 
 **터키**
-- [İŞKUR — 어떤 경우 özel istihdam bürosu 허가가 필요 없는가](https://www.iskur.gov.tr/sikca-sorulan-sorular/ozel-istihdam-burolari/hangi-durumlarda-ozel-istihdam-burosu-izni-alinmasina-gerek-bulunmamaktadir/)
-- [İŞKUR — Özel İstihdam Büroları 안내](https://www.iskur.gov.tr/ozel-istihdam-burolari/basvuru-bilgileri/) · [자주 묻는 질문](https://www.iskur.gov.tr/sikca-sorulan-sorular/ozel-istihdam-burolari/)
+- [İŞKUR: 어떤 경우 özel istihdam bürosu 허가가 필요 없는가](https://www.iskur.gov.tr/sikca-sorulan-sorular/ozel-istihdam-burolari/hangi-durumlarda-ozel-istihdam-burosu-izni-alinmasina-gerek-bulunmamaktadir/)
+- [İŞKUR: Özel İstihdam Büroları 안내](https://www.iskur.gov.tr/ozel-istihdam-burolari/basvuru-bilgileri/) · [자주 묻는 질문](https://www.iskur.gov.tr/sikca-sorulan-sorular/ozel-istihdam-burolari/)
 - [4904 sayılı Türkiye İş Kurumu Kanunu](https://www.lexpera.com.tr/mevzuat/kanunlar/turkiye-is-kurumu-kanunu-4904)
 - [Özel İstihdam Büroları Yönetmeliği](https://www.lexpera.com.tr/resmi-gazete/metin/ozel-istihdam-burolari-yonetmeligi-26954)
 
 **카자흐스탄**
 - [Закон «О занятости населения» (Adilet)](https://adilet.zan.kz/eng/docs/Z1600000482)
-- [Enbek.kz — Частные агентства занятости](https://enbek.kz/ru/chaz)
+- [Enbek.kz: Частные агентства занятости](https://enbek.kz/ru/chaz)
 - [ЧАЗ 면허제 도입 추진](https://mybuh.kz/news/chastnye-agentstva-zanyatosti-dolzhny-budut-poluchit-litsenziyu/) · [국가 통제 강화](https://vlast.kz/novosti/69892-v-kazahstane-usilat-kontrol-za-castnymi-agentstvami-zanatosti.html)
-- [МТСЗН — ЧАЗ 해외취업 알선 규정](https://www.gov.kz/memleket/entities/enbek/press/news/details/884796?lang=ru)
+- [МТСЗН: ЧАЗ 해외취업 알선 규정](https://www.gov.kz/memleket/entities/enbek/press/news/details/884796?lang=ru)

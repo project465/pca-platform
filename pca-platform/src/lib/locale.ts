@@ -33,7 +33,7 @@ export function isLang(v: string | undefined): v is Lang {
  * 다 보여줘야 하는 것은 아니다. 영문 시장에 한국어 탭이 떠 있으면 파는 쪽이
  * 아니라 만든 쪽 사정을 보여주는 것이 된다.
  *
- * `NEXT_PUBLIC_LANGS=en` 이면 영어만, 비워 두면 예전처럼 셋 다다 —
+ * `NEXT_PUBLIC_LANGS=en` 이면 영어만, 비워 두면 예전처럼 셋 다다.
  * 값을 안 채운 배포본의 동작이 바뀌면 한국 쪽이 조용히 달라진다.
  * 지원하지 않는 값이 섞여 들어오면 걸러내고, 전부 걸러지면 세 언어로 돌아간다.
  */
@@ -51,7 +51,7 @@ type Dict = Record<Lang, string>;
 const d = (ko: string, en: string, tr: string): Dict => ({ ko, en, tr });
 
 /**
- * 화면 문구. 여기 없는 문장은 화면에 못 나온다 — 새 문구를 쓸 때 세 언어를
+ * 화면 문구. 여기 없는 문장은 화면에 못 나온다. 새 문구를 쓸 때 세 언어를
  * 같이 쓰게 만들려는 제약이다.
  */
 export const UI = {
@@ -209,7 +209,7 @@ export const UI = {
     "250 soru ne yapmak istediğinizi ölçer: yetkinliğinizi değil, ilginizin yönünü.",
   ),
   /* "1순위" 라고 쓰지 않는다. 구간이 겹치는 것은 묶어서 보여주기로 했는데,
-     라벨이 다시 등수를 주장하면 "1순위 직무 — 4개 직무" 가 찍힌다. */
+     라벨이 다시 등수를 주장하면 "1순위 직무, 4개 직무" 가 찍힌다. */
   repLeadTop: d(
     "가장 높게 나온 직무 분야는 {area}이고, 그 아래 직무로 내려가면 {job}[이/가] 가장 앞에 있습니다.",
     // 묶음이 들어올 수 있으므로 단수 동사를 쓰지 않는다 ("4 roles sits")
@@ -262,7 +262,7 @@ export const UI = {
   ),
   // 여섯 축이 같은 값으로 나오는 일이 실제로 있다(문항을 고르게 답하면
   // 그렇다). 그때 "가장 높은 쪽이 X" 라고 쓰면 없는 차이를 주장하게 된다.
-  // 직무 묶음에서 이미 지킨 원칙 — 못 가리면 못 가린다고 적는다.
+  // 직무 묶음에서 이미 지킨 원칙: 못 가리면 못 가린다고 적는다.
   repNote03Flat: d(
     "250문항 중 120문항에 성향이 심어져 있습니다. 여섯 축은 절대값으로 읽지 않고 서로 견줘 읽는데, 이번 응답에서는 여섯이 같은 값으로 나왔습니다. 더 뚜렷한 쪽이 없습니다.",
     "120 of the 250 items carry a work-style signal. What matters is the relative height of the six, and in this response all six came out level. None of them stands out over the others.",
@@ -356,7 +356,7 @@ export const UI = {
   ),
   // ── 무료 구간이 끝나는 자리 ──────────────────────────────
   // 여기 문구가 이 제품의 매출을 정한다. 그래서 무엇을 더 주는지
-  // 항목으로 적는다 — "전체 결과지를 보세요" 는 무엇을 사는지 모르게 한다.
+  // 항목으로 적는다. "전체 결과지를 보세요" 는 무엇을 사는지 모르게 한다.
   repLockTitle: d(
     "여기까지가 무료입니다",
     "The free part ends here",
@@ -467,7 +467,7 @@ export const UI = {
 
   freeCta: d("무료로 시작하기", "Start free", "Ücretsiz başla"),
 
-  // 응시권 코드 — 밖에서 산 것을 여기서 좌석으로 바꾼다
+  // 응시권 코드: 밖에서 산 것을 여기서 좌석으로 바꾼다
   redeemTitle: d("응시권 코드 입력", "Enter your access code", "Erişim kodunuzu girin"),
   redeemSub: d(
     "구매하신 곳에서 받은 코드를 적어 주세요. 하이픈과 대소문자는 신경 쓰지 않으셔도 됩니다.",
@@ -540,7 +540,7 @@ export const UI = {
   ),
   repKpiJobHs: d("가장 앞에 있는 계열", "Field furthest ahead", "En öndeki alan"),
   /* 고교판에서는 계열이 곧 전공이라, 대학판의 "1순위 분야" 칸에 같은 이름이
-     한 번 더 찍힌다. 그 자리에 다음 묶음의 선두를 놓는다 — 학생이 실제로
+     한 번 더 찍힌다. 그 자리에 다음 묶음의 선두를 놓는다. 학생이 실제로
      다음에 볼 곳이다. */
   /* 예전에는 "선두" 였는데, 다음 묶음에 여섯이 들어가면 그중 하나를 선두로
      세우는 것이 곧 없는 등수를 매기는 일이다. 묶음 자체를 가리킨다. */
@@ -738,7 +738,7 @@ export const UI = {
     "Your assessment credit is ready. You can start right now.",
     "Değerlendirme hakkınız hazır. Hemen başlayabilirsiniz.",
   ),
-  // 업그레이드 결제는 결과가 다르다 — 풀 것이 생기는 것이 아니라
+  // 업그레이드 결제는 결과가 다르다. 풀 것이 새로 생기지 않고
   // 이미 낸 결과지가 넓어진다. 문장도 링크도 갈라야 한다.
   payDoneUpgradeBody: d(
     "결과지의 남은 절이 열렸습니다. 문항을 다시 푸실 필요는 없고, 보고 계시던 결과지가 그대로 넓어집니다.",
@@ -811,7 +811,7 @@ export const UI = {
  * 읽는 사람은 이걸 먼저 본다.
  *
  * 한글 음절은 U+AC00 부터 28개씩 묶여 있고, 그 안에서의 자리가 0 이면
- * 받침이 없다. 한글이 아닌 글자로 끝나면(영문·숫자) 받침 없음으로 본다 —
+ * 받침이 없다. 한글이 아닌 글자로 끝나면(영문·숫자) 받침 없음으로 본다.
  * 틀릴 수 있지만 "가" 쪽이 덜 어색하다.
  */
 export function josa(word: string, withBatchim: string, without: string): string {
@@ -831,25 +831,25 @@ export type UiKey = keyof typeof UI;
 
 /** t("pageOf", lang, { a: 3, b: 26 }) */
 /**
- * 조사를 앞말에 맞춘다 — `{job}[이/가]` 처럼 적어 두면 여기서 고른다.
+ * 조사를 앞말에 맞춘다: `{job}[이/가]` 처럼 적어 두면 여기서 고른다.
  *
  * 값에 이름이 들어오므로 받침이 있는지는 넣어 보고야 안다. "직무이" 나
- * "기계공학가" 는 한 글자 틀린 정도가 아니라 문장을 읽다 멈추게 한다 —
+ * "기계공학가" 는 한 글자 틀린 정도가 아니라 문장을 읽다 멈추게 한다.
  * 결과지는 학부모가 읽는 문서다.
  *
  * 한글 음절은 (코드 − 0xAC00) % 28 이 0 이 아니면 받침이 있다.
- * 숫자는 읽는 소리로 본다 — 1(일)·3(삼)·6(육)·7(칠)·8(팔)·0(영)에 받침이 있다.
+ * 숫자는 읽는 소리로 본다. 1(일)·3(삼)·6(육)·7(칠)·8(팔)·0(영)에 받침이 있다.
  */
 const JONG_DIGIT: Record<string, boolean> = {
   "0": true, "1": true, "2": false, "3": true, "4": false,
   "5": false, "6": true, "7": true, "8": true, "9": false,
 };
 /**
- * 영문 한 글자를 한국어로 읽었을 때 받침이 있는 것 — 엘·엠·엔·알 넷이다.
+ * 영문 한 글자를 한국어로 읽었을 때 받침이 있는 것: 엘·엠·엔·알 넷이다.
  * 직무 이름이 "구조·유동 해석 (CAE)" 처럼 약어로 끝나는 일이 잦다.
  *
  * 한 글자씩 읽는 약어(CAE·R&D·ANSYS)는 이 규칙으로 맞는다. 단어로 읽는
- * 약어는 못 맞춘다 — MATLAB 은 "매트랩" 이라 "매트랩과" 인데 B(비)로 읽어
+ * 약어는 못 맞춘다: MATLAB 은 "매트랩" 이라 "매트랩과" 인데 B(비)로 읽어
  * "와" 가 된다. 그런 이름은 지금 조사가 붙는 자리에 오지 않고(역량 목록에만
  * 있다), 오게 되면 그때 예외 표를 두는 것이 규칙을 비틀는 것보다 낫다.
  */
@@ -868,7 +868,7 @@ function hasFinalConsonant(word: string): boolean {
 
 /** 앞말 + `[받침있을때/없을때]` 를 한 조사로 줄인다 */
 function resolveParticles(s: string): string {
-  // 조사 바로 앞의 덩어리를 통째로 넘긴다 — 괄호로 끝나면 그 안을 읽어야 한다
+  // 조사 바로 앞의 덩어리를 통째로 넘긴다. 괄호로 끝나면 그 안을 읽어야 한다
   return s.replace(/([^\[\]\s]+)\[([^/\]]+)\/([^/\]]+)\]/g, (_m, prev, withJong, without) =>
     prev + (hasFinalConsonant(prev) ? withJong : without),
   );

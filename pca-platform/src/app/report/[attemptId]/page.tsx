@@ -66,7 +66,7 @@ export default async function ReportPage({
    * 고교판이면 "Hs" 가 붙은 문구를 고른다.
    *
    * 결과지 화면을 한 벌 더 만들지 않는다. 그리는 것(막대·레이더·묶음)은
-   * 두 제품이 완전히 같고, 다른 것은 부르는 이름뿐이다 —
+   * 두 제품이 완전히 같고, 다른 것은 부르는 이름뿐이다.
    * 직무 ↔ 계열, 여섯 달 ↔ 한 학기, 역량 격차는 고교판에 없다.
    */
   const hs = r.kind === "major";
@@ -76,7 +76,7 @@ export default async function ReportPage({
    */
     const paid = r.level === "full";
   /**
-   * 업그레이드 환불의 경계가 여기다 — **넓어진 결과지를 처음 연 때.**
+   * 업그레이드 환불의 경계가 여기다: **넓어진 결과지를 처음 연 때.**
    * 결제하고 한 번도 열지 않았으면 돌려준다. 한 번만 적고 덮어쓰지 않는다.
    * 무료 응시에는 적을 줄이 없으므로(report_grants 가 없다) 그냥 지나간다.
    */
@@ -85,7 +85,7 @@ export default async function ReportPage({
   /**
    * 결과를 본 뒤에 묻는 문항이 남아 있는가.
    *
-   * **결과지를 막지 않는다.** 산 것을 먼저 보여주고, 안내만 얹는다 —
+   * **결과지를 막지 않는다.** 산 것을 먼저 보여주고, 안내만 얹는다.
    * 설문을 통과해야 결과가 열리면 그건 산 것을 볼모로 잡는 것이다.
    */
   const askAfter =
@@ -93,7 +93,7 @@ export default async function ReportPage({
   const rx = hs && paid ? await prescribe(attemptId, lang) : null;
   /**
    * 과목 앞에 "왜" 가 와야 한다. 현장에서 하는 일이 이것을 요구하기 때문에
-   * 이 과목이라는 순서다 — 과목부터 내밀면 "그래서 왜" 가 남는다.
+   * 이 과목이라는 순서다. 과목부터 내밀면 "그래서 왜" 가 남는다.
    */
   const cc = hs && paid ? await careerChain(attemptId, lang) : null;
     /**
@@ -125,7 +125,7 @@ export default async function ReportPage({
    * 이라고 쓰면 없는 차이를 주장하는 것이 된다. 직무 묶음에서 이미 지킨
    * 원칙이고(오차가 차이보다 크면 그 등수는 없다), 성향에서도 같다.
    *
-   * 여섯이 전부 같은 값으로 나오는 일도 실제로 있다 — 고르게 답하면
+   * 여섯이 전부 같은 값으로 나오는 일도 실제로 있다. 고르게 답하면
    * 그렇다. 그때는 위도 아래도 없으므로 문장을 아예 바꾼다.
    *
    * 아슬아슬한 차이(50 대 51)는 아직 못 가른다. 성향에는 직무처럼 전파된
@@ -134,11 +134,11 @@ export default async function ReportPage({
   /**
    * 같은 값(또는 겹치는 구간)으로 묶인 것들을 한 칸에 적는 방법.
    *
-   * 셋까지는 이름을 다 적는다. 넷을 넘으면 개수로 적는다 — 요약 칸에 여섯
+   * 셋까지는 이름을 다 적는다. 넷을 넘으면 개수로 적는다. 요약 칸에 여섯
    * 이름이 들어가면 읽히지 않고, 안 읽히는 칸은 없는 칸과 같다. 이름은
    * 04절 표에 전부 있다.
    */
-  /** 찍히는 자리까지만 비교한다 — 보이지 않는 소수점으로 가른 등수는 설명할 수 없다 */
+  /** 찍히는 자리까지만 비교한다. 보이지 않는 소수점으로 가른 등수는 설명할 수 없다 */
   const shown = (v: number) => v.toFixed(1);
   const joinNames = (xs: { name: string }[]) => xs.map((x) => x.name).join(" · ");
   const groupLabel = (xs: { name: string }[], nKey: UiKey) =>
@@ -156,7 +156,7 @@ export default async function ReportPage({
    * 학부모가 가장 먼저 읽는 칸에 한쪽 이름만 찍으면, 04절이 "2개를 다 열어
    * 두십시오" 라고 말해도 이미 한쪽으로 정해 준 셈이 된다.
    *
-   * 묶음이 둘 이상이면 점추정(80.7)을 쓰지 않는다 — 1군은 같은 값이라서
+   * 묶음이 둘 이상이면 점추정(80.7)을 쓰지 않는다. 1군은 같은 값이라서
    * 묶인 것이 아니라 구간이 겹쳐서 묶인 것이므로, 한 숫자를 두 이름 옆에
    * 놓으면 어느 쪽 값인지 알 수 없다. 묶음 전체를 덮는 구간만 적는다.
    */
@@ -346,7 +346,7 @@ export default async function ReportPage({
         {/* 고교판에는 이 절이 없다. 고1에게 "요구 레벨 3 · 보유 0" 을 보여 주면
             아직 아무것도 안 한 것이 부족한 것으로 읽힌다. 역량은 증거에서만
             나오고, 증거는 대학에서 쌓인다.
-            대학판 무료 구간에도 없다 — 성향 6축과 같은 층이다. */}
+            대학판 무료 구간에도 없다. 성향 6축과 같은 층이다. */}
         {!hs && paid && (
         <section className="rp-sec">
           <div className="rp-sec-head">
@@ -438,7 +438,7 @@ export default async function ReportPage({
 
         {/*
           무료 구간이 끝나는 자리.
-          유료 절이 있던 곳에 그대로 놓는다 — 아래로 내려가다 멈추는
+          유료 절이 있던 곳에 그대로 놓는다. 아래로 내려가다 멈추는
           지점이어야 무엇이 남았는지 알 수 있다. 항목을 적어서 무엇을
           사는지 알게 한다.
         */}
@@ -457,7 +457,7 @@ export default async function ReportPage({
             </ul>
             <p className="rp-lock-keep">{t("repLockNote", lang)}</p>
             <div className="rp-lock-act">
-              {/* 결제가 아직 안 열렸으면 버튼을 그리지 않는다 — 누르면
+              {/* 결제가 아직 안 열렸으면 버튼을 그리지 않는다. 누르면
                   오류 화면이 나오고, 그건 안내가 아니다. */}
               {checkoutReady() ? (
                 <Link

@@ -3,7 +3,7 @@
  *
  * **켜는 것은 문항이 있는 학과뿐이다.** 제안서에는 28개가 적혀 있지만
  * 실제 문항 은행은 기계공학 하나다. 나머지를 켜 두면 학생이 전공을 고르고
- * 들어갔다가 빈 검사를 만난다 — 스키마의 CHECK 도 검사지 없는 학과를
+ * 들어갔다가 빈 검사를 만난다. 스키마의 CHECK 도 검사지 없는 학과를
  * 켜지 못하게 막는다.
  *
  *   npm run metri:majors
@@ -22,7 +22,7 @@ async function main() {
 
   for (const [i, p] of programs.entries()) {
     // 검사지가 실제로 적재돼 있을 때만 붙인다. JSON 에 적혀 있어도
-    // DB 에 없으면 NULL 로 둔다 — 없는 것을 있다고 적지 않는다
+    // DB 에 없으면 NULL 로 둔다. 없는 것을 있다고 적지 않는다
     const inst = p.instrumentKey
       ? await queryOne<{ instrument_key: string }>(
           `SELECT instrument_key FROM instruments

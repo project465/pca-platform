@@ -48,7 +48,7 @@ async function main() {
   const o = (await competencies(u.id)).find((c) => c.id === other.id)!;
   console.log(`\n성적 비운 과목 → 합 ${o.heldRaw}   (기대 2.0 × 0.35 × 0.95 = 0.66)`);
 
-  // 상한 확인 — 같은 역량에 자격증을 여러 개 밀어 넣어도 6.0 을 안 넘는다
+  // 상한 확인: 같은 역량에 자격증을 여러 개 밀어 넣어도 6.0 을 안 넘는다
   for (let i = 0; i < 5; i++) {
     await addEvidence(u.id, {
       competencyId: target.id,
@@ -66,7 +66,7 @@ async function main() {
   now = (await competencies(u.id)).find((c) => c.id === target.id)!;
   console.log(`자격증 전부 삭제 → 합 ${now.heldRaw} · 레벨 ${now.heldLevel}   (다시 2.8 / 3)`);
 
-  // 증거가 0이 되면 행 자체가 사라져야 한다 — 0레벨과 "모름" 은 다르다
+  // 증거가 0이 되면 행 자체가 사라져야 한다. 0레벨과 "모름" 은 다르다
   for (const r of await evidenceOf(u.id)) await removeEvidence(u.id, r.id);
   const gone = await queryOne<{ n: number }>(
     `SELECT count(*)::int AS n FROM learner_competency_levels WHERE user_id = $1`, [u.id]);

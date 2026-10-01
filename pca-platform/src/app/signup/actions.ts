@@ -39,7 +39,7 @@ export async function signupAction(_prev: SignupState, form: FormData): Promise<
     [email, name, hash],
   );
 
-  // 인사 한 줄을 대기열에 적는다. 메일 서버를 여기서 기다리지 않는다 —
+  // 인사 한 줄을 대기열에 적는다. 메일 서버를 여기서 기다리지 않는다.
   // 기다리면 메일이 느린 날 가입 버튼이 느려진다.
   await enqueue({
     kind: "signup",

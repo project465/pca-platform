@@ -3,13 +3,13 @@
  *
  * 밤에 사람이 없어도 되는 이유는 알림이 자동으로 나가서가 아니라,
  * **알림이 실패해도 결제와 가입이 그대로 끝나기 때문이다.** 메일 서버
- * 하나 때문에 돈이 안 들어오면 자동화가 아니라 새 고장점이다.
+ * 하나 때문에 돈이 안 들어오면 자동화가 아닌 새 고장점이다.
  *
  * 보는 것 일곱.
  *
  *   1. 가입하면 한 줄 쌓이고, 화면은 기다리지 않는다
  *   2. 채점이 끝나면 한 줄 쌓인다. 두 번 제출해도 한 줄이다
- *      — 승인제 회차는 담당자가 공개를 누를 때까지 접어 둔다
+ *: 승인제 회차는 담당자가 공개를 누를 때까지 접어 둔다
  *   3. 업그레이드 결제가 확정되면 한 줄. 같은 웹훅이 또 와도 한 줄이다
  *   4. **대기열이 통째로 고장 나도 결제는 확정된다**
  *   5. 자격증명이 없으면 보내지 않고 그대로 둔다 (붙는 날 나간다)
@@ -42,7 +42,7 @@ async function student(email: string): Promise<string> {
   );
   const uid = u!.id;
   await query(`DELETE FROM outbox WHERE user_id = $1`, [uid]);
-  // 지우는 순서가 있다 — 응답 → 응시 → 개인 회차 → 좌석 → 주문.
+  // 지우는 순서가 있다. 응답 → 응시 → 개인 회차 → 좌석 → 주문.
   // 회차와 좌석이 주문을 붙들고 있어서 거꾸로 가면 FK 에 걸린다.
   await query(`DELETE FROM responses WHERE attempt_id IN (SELECT id FROM attempts WHERE user_id = $1)`, [uid]);
   await query(`DELETE FROM report_grants WHERE attempt_id IN (SELECT id FROM attempts WHERE user_id = $1)`, [uid]);
@@ -92,7 +92,7 @@ async function main() {
   const b = await student("outbox-b@example.com");
   const attempt = await finishFree(b);
   check((await outboxCount("report_ready", b)) === 1, "채점이 끝나면 한 줄 쌓인다");
-  // 같은 응시로 또 적어 본다 — dedupe_key 가 같으므로 늘지 않아야 한다
+  // 같은 응시로 또 적어 본다. dedupe_key 가 같으므로 늘지 않아야 한다
   await enqueue({ kind: "report_ready", userId: b, dedupeKey: `report_ready:${attempt}` });
   check((await outboxCount("report_ready", b)) === 1, "같은 응시로는 두 번 쌓이지 않는다",
     `${await outboxCount("report_ready", b)}줄`);

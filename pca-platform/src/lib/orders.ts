@@ -43,7 +43,7 @@ export async function getProduct(code: string): Promise<Product | null> {
 /**
  * 주문을 만들고 결제창에 넘길 값을 돌려준다.
  *
- * **금액은 여기서만 정해진다.** 화면에서 넘어온 금액을 쓰지 않는다 —
+ * **금액은 여기서만 정해진다.** 화면에서 넘어온 금액을 쓰지 않는다.
  * 그렇게 하면 개발자 도구에서 29000 을 100 으로 고쳐 결제할 수 있다.
  */
 export async function startCheckout(
@@ -54,7 +54,7 @@ export async function startCheckout(
   /**
    * 이미 무료로 본 응시를 여는 결제라면 그 응시 번호.
    *
-   * "가장 최근 응시" 로 추측하지 않는다 — 학생이 두 번 봤으면 어느 쪽을
+   * "가장 최근 응시" 로 추측하지 않는다. 학생이 두 번 봤으면 어느 쪽을
    * 열지 알 수 없고, 틀린 쪽을 열면 돈을 받고 아무것도 안 준 셈이 된다.
    * 남의 응시 번호를 넣어도 자기 것이 아니면 여기서 걸린다.
    */
@@ -102,7 +102,7 @@ export type SettleResult =
       /**
        * 업그레이드 결제였으면 열린 응시 번호, 새 응시권 결제였으면 null.
        *
-       * 완료 화면이 이 값을 본다. 두 결제의 결과가 다르기 때문이다 —
+       * 완료 화면이 이 값을 본다. 두 결제의 결과가 다르기 때문이다.
        * 하나는 풀 검사가 생기고, 하나는 이미 낸 결과지가 넓어진다.
        * 둘을 같은 문장으로 안내하면 업그레이드한 사람에게 "지금 바로
        * 시작하실 수 있습니다" 라고 말하게 되고, 시작할 것이 없다.
@@ -114,7 +114,7 @@ export type SettleResult =
 /**
  * PG 에 직접 물어보고 주문을 확정한다.
  *
- * 리다이렉트로도 웹훅으로도 같은 함수가 불린다. 두 번 불려도 좌석은 하나만 생긴다 —
+ * 리다이렉트로도 웹훅으로도 같은 함수가 불린다. 두 번 불려도 좌석은 하나만 생긴다.
  * payments 의 UNIQUE(provider, provider_payment_id) 와 seats 의 부분 UNIQUE 인덱스가
  * 그걸 DB 차원에서 막고, 여기서는 그 위에 트랜잭션을 덮는다.
  */
@@ -160,7 +160,7 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
     /**
      * 업그레이드 결제인가, 새 응시권 결제인가.
      *
-     * 업그레이드면 좌석을 발급하지 않는다 — 새로 풀 문항이 없고, 좌석을
+     * 업그레이드면 좌석을 발급하지 않는다. 새로 풀 문항이 없고, 좌석을
      * 주면 학생이 115문항을 한 번 더 풀 수 있게 되어 규준이 오염된다.
      * 대신 report_grants 에 줄을 남겨 그 응시의 유료 구간을 연다.
      *
@@ -244,7 +244,7 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
 }
 
 /**
- * 무료 진단을 연다 — 결제창을 거치지 않는다.
+ * 무료 진단을 연다. 결제창을 거치지 않는다.
  *
  * 금액이 0원인 상품은 PG 를 태울 것이 없다. 그런데 좌석·회차·응시는
  * 유료와 똑같은 길을 타야 한다(설계 원칙: 좌석 하나 = 응시 하나).
@@ -252,7 +252,7 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
  * 무료 전용 경로를 따로 파면 유료 경로만 고치고 무료를 잊는 일이 생긴다.
  *
  * 한 사람에게 한 번만 준다. 무료를 무한히 받을 수 있으면 유료 구간을
- * 살 이유가 사라지는 것이 아니라 — 무료 응시가 쌓여 규준이 오염된다.
+ * 살 이유가 사라지는 것이 아니라: 무료 응시가 쌓여 규준이 오염된다.
  * 두 번째부터는 이미 만든 무료 주문을 그대로 돌려준다.
  */
 export async function openFreeOrder(

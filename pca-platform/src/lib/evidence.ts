@@ -89,7 +89,7 @@ const NAME = (t: string, alias: string, langParam: string) =>
  * 이 학생에게 보여줄 역량 목록.
  *
  * 전공 역량 + 전공을 가리지 않는 공통 역량(major_id IS NULL)을 합친다.
- * 1순위 직무가 요구하는 것이 위로 오고, 그 다음이 요구 수준 순이다 —
+ * 1순위 직무가 요구하는 것이 위로 오고, 그 다음이 요구 수준 순이다.
  * 49개를 알파벳순으로 늘어놓으면 학생은 어디부터 채울지 모른다.
  */
 export async function competencies(userId: string, lang = "ko"): Promise<CompetencyRow[]> {

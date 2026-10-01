@@ -1,5 +1,5 @@
 /**
- * 결제 경로를 실제 DB 로 확인한다 — 국내 카드와 해외 카드(Visa·Mastercard) 둘 다.
+ * 결제 경로를 실제 DB 로 확인한다. 국내 카드와 해외 카드(Visa·Mastercard) 둘 다.
  *
  * 보는 것 넷.
  *   1. 두 수단 모두 주문이 서고 좌석이 나가는가
@@ -55,7 +55,7 @@ async function main() {
     console.log(`  같은 웹훅 재수신: ${again.ok ? "성공" : "실패"} · 좌석 ${await seats(uid)}개 (그대로여야 한다)`);
   }
 
-  // 금액 조작 — 29,000원 주문에 100원만 승인된 경우
+  // 금액 조작: 29,000원 주문에 100원만 승인된 경우
   const uid = await user("pay-tamper@example.com");
   const { ticket: t } = await startCheckout(uid, "REPORT_UNIV", "http://localhost:3000", "global");
   await markMockPaid({

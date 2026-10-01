@@ -14,7 +14,7 @@ import { query, queryOne } from "./db";
 export type OutboxKind = "signup" | "report_ready" | "upgrade_done" | "code_low";
 
 /**
- * 보낼 것을 적는다. 실패해도 던지지 않는다 — 알림 하나 때문에 결제나
+ * 보낼 것을 적는다. 실패해도 던지지 않는다. 알림 하나 때문에 결제나
  * 가입이 되돌아가면 안 된다. 못 적었으면 안 나가는 것으로 끝난다.
  */
 export async function enqueue(opts: {
@@ -46,11 +46,11 @@ export async function enqueue(opts: {
 /**
  * 결과지가 열렸다고 알린다. **열린 것이 확인된 뒤에만 적는다.**
  *
- * 채점과 공개가 같은 순간이 아니기 때문이다 — 개인 결제는 채점이 곧
+ * 채점과 공개가 같은 순간이 아니기 때문이다. 개인 결제는 채점이 곧
  * 공개지만, 승인제 회차는 담당자가 누를 때까지 학생에게 `"pending"` 이
  * 간다. 채점 직후에 보내면 그 학생은 메일을 받고 들어와 빈 화면을 본다.
  *
- * 그래서 두 곳에서 부른다 — 제출 직후(승인제면 여기서 조용히 접힌다)와
+ * 그래서 두 곳에서 부른다. 제출 직후(승인제면 여기서 조용히 접힌다)와
  * 담당자가 공개를 누를 때. 같은 응시로 두 번 쌓이지는 않는다.
  */
 export async function notifyReportReady(attemptId: string): Promise<boolean> {
@@ -107,11 +107,11 @@ type Row = {
 };
 
 /**
- * 문면은 보낼 때 만든다. **표에 본문을 저장하지 않는다** — 결과지 내용이
+ * 문면은 보낼 때 만든다. **표에 본문을 저장하지 않는다**: 결과지 내용이
  * 메일 표로 복사되면 파기(익명화)가 반쪽이 된다.
  *
  * 링크에 결과지 번호를 담지 않는다. 받는 사람이 로그인해서 자기 목록에서
- * 고르게 한다 — 메일은 전달 과정에서 남의 눈에 띌 수 있다.
+ * 고르게 한다. 메일은 전달 과정에서 남의 눈에 띌 수 있다.
  */
 function compose(r: Row): { subject: string; text: string } | null {
   const name = r.display_name ?? "회원";
@@ -150,7 +150,7 @@ export type FlushResult = {
   /** 보낼 곳이나 문면이 없어 접은 것. 다시 시도하지 않는다 */
   skipped: number;
   failed: number;
-  /** 자격증명이 없어 그대로 둔 것. 붙는 날 나간다 — 접은 것과 다르다 */
+  /** 자격증명이 없어 그대로 둔 것. 붙는 날 나간다. 접은 것과 다르다 */
   held: number;
 };
 

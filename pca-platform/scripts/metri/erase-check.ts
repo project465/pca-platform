@@ -30,7 +30,7 @@ async function main() {
      VALUES ('erase@example.com','지울사람',$1,false,'active') RETURNING id`, [hash]);
   const uid = u!.id;
 
-  // 결제하고, 응시하고, 증거까지 넣어 둔다 — 지울 거리를 다 만든다
+  // 결제하고, 응시하고, 증거까지 넣어 둔다. 지울 거리를 다 만든다
   const { ticket } = await startCheckout(uid, "REPORT_UNIV", "http://localhost:3000", "domestic");
   await markMockPaid({ providerPaymentId: ticket.providerPaymentId, status: "paid",
     amount: ticket.amount, currency: ticket.currency, orderNo: ticket.orderNo, raw: {} });

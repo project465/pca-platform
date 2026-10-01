@@ -20,7 +20,7 @@ export async function generateMetadata({
 /**
  * 무료 구간으로 들어오는 문.
  *
- * 결제 화면과 나란한 자리다. 다른 점 하나 — **어디까지 무료인지 먼저
+ * 결제 화면과 나란한 자리다. 다른 점 하나: **어디까지 무료인지 먼저
  * 적는다.** 무료를 누르게 하는 것은 쉽고, 그 뒤에 "이건 유료입니다" 가
  * 나오면 무료로 얻은 신뢰가 그 자리에서 사라진다. 그래서 무료로 나오는
  * 것과 나오지 않는 것을 같은 크기로 나란히 둔다.
@@ -33,7 +33,7 @@ export default async function FreePage({
   const { lang: q, track: rawTrack } = await searchParams;
   const lang = await resolveLang(q);
   /**
-   * 고교판과 대학판이 같은 문을 쓴다. 구조가 같기 때문이다 — 문항을 무료로
+   * 고교판과 대학판이 같은 문을 쓴다. 구조가 같기 때문이다. 문항을 무료로
    * 열고 지표까지 보여준 뒤 나머지를 판다. 문구만 갈린다.
    */
   const track = resolveTrack(rawTrack);
@@ -41,7 +41,7 @@ export default async function FreePage({
   const tt = (key: UiKey) =>
     univ && `${key}Univ` in UI ? t(`${key}Univ` as UiKey, lang) : t(key, lang);
 
-  // 결제 화면과 같은 이유로 로그인 폼으로 막지 않는다 — 처음 온 사람은
+  // 결제 화면과 같은 이유로 로그인 폼으로 막지 않는다. 처음 온 사람은
   // 계정이 없다. 가입이 끝나면 이 화면으로 돌아온다.
     const user = await currentUser();
   if (!user) redirect(`/signup?next=${encodeURIComponent(`/free?track=${track}`)}`);

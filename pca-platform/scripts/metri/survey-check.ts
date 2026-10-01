@@ -5,9 +5,9 @@
  * 보는 것 여섯.
  *
  *   1. 응시 전 2문항 · 응시 후 5문항이 제 시점에만 나온다
- *   2. **채점이 이 표를 읽지 않는다** — 정주 의향이 직무 점수를 흔들지 않는다
+ *   2. **채점이 이 표를 읽지 않는다**: 정주 의향이 직무 점수를 흔들지 않는다
  *   3. 같은 문항을 다시 답하면 덮어쓴다 (한 사람 한 줄)
- *   4. **짝이 맞는 사람만 센다** — 앞만 답하고 나간 사람은 변화에서 빠진다
+ *   4. **짝이 맞는 사람만 센다**: 앞만 답하고 나간 사람은 변화에서 빠진다
  *   5. 남의 응시에는 적을 수 없다
  *   6. **5명 미만이면 숫자를 내지 않는다**
  *
@@ -25,7 +25,7 @@ function check(ok: boolean, label: string, detail = "") {
   if (!ok) failed++;
 }
 
-/** 회차 하나와 응시자 n명. 채점까지 가지 않는다 — 여기서 보는 것은 부가 문항뿐이다. */
+/** 회차 하나와 응시자 n명. 채점까지 가지 않는다. 여기서 보는 것은 부가 문항뿐이다. */
 async function cohort(n: number): Promise<{ sessionId: string; attempts: string[]; users: string[] }> {
   const pw = await hashPassword("test-pass-1234");
   const org = await queryOne<{ id: string }>(
@@ -105,7 +105,7 @@ async function main() {
   check(await surveyDone(attempts[0], "before"), "앞 문항을 다 답하면 done");
   check(!(await surveyDone(attempts[7], "after")), "뒤를 안 답했으면 done 이 아니다");
 
-  // 덮어쓰기 — 같은 문항을 다시 답한다
+  // 덮어쓰기: 같은 문항을 다시 답한다
   await saveSurvey(attempts[0], users[0], before[0].id, 5);
   const one = await queryOne<{ n: number; v: number }>(
     `SELECT count(*)::int AS n, max(value)::int AS v FROM survey_responses

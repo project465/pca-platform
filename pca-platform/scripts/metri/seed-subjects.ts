@@ -7,7 +7,7 @@
  * 옮길 뿐이다. 과목을 고칠 일이 생기면 JSON 을 고치고 다시 돌린다.
  *
  * 문항 은행과 달리 이 표는 "버전을 올려 보존" 하지 않는다. 교육과정이 바뀌면
- * 과거 학생의 처방도 함께 바뀌어야 맞기 때문이다 — 2028년에 없어진 과목을
+ * 과거 학생의 처방도 함께 바뀌어야 맞기 때문이다. 2028년에 없어진 과목을
  * 계속 권하는 결과지가 더 나쁘다.
  */
 import { readFileSync } from "node:fs";
@@ -169,7 +169,7 @@ async function main() {
       await putText(c, "hs_subject_major_map", row!.id, "why", { ko: n.why });
     }
 
-    // 4. 대학 권장 — 대학이 이름을 걸고 밝힌 것만
+    // 4. 대학 권장: 대학이 이름을 걸고 밝힌 것만
     await c.query(`DELETE FROM hs_univ_subject_recs`);
     for (const r of bank.univRecommendations) {
       const sid = subjectId.get(r.subject);

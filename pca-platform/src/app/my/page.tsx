@@ -9,7 +9,7 @@ import LangSwitch from "@/components/lang-switch";
 export const metadata = { title: "내 검사 · Careermetri" };
 
 /**
- * 학생의 첫 화면. 지금 눌러야 할 것 하나를 맨 위에 둔다 —
+ * 학생의 첫 화면. 지금 눌러야 할 것 하나를 맨 위에 둔다.
  * 응시 전이면 검사, 응시 후면 결과지, 결과지를 봤으면 증거 채우기.
  */
 export default async function StudentHome({

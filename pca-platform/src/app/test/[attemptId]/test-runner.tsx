@@ -12,7 +12,7 @@ import { answer, submit } from "./actions";
  *
  * 보기를 누르면 화면은 곧바로 칠해지고 저장은 뒤에서 돈다. 250문항을 서버 왕복
  * 기다리며 찍게 하면 아무도 끝내지 않는다. 대신 저장이 실패하면 그 문항만
- * 빨갛게 되돌려 다시 누르게 한다 — 조용히 삼키지 않는다.
+ * 빨갛게 되돌려 다시 누르게 한다. 조용히 삼키지 않는다.
  */
 export default function TestRunner({
   attemptId,

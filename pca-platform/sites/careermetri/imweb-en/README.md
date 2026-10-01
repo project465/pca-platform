@@ -106,7 +106,7 @@ hamburger and the current-page marker attach themselves.
 Four things, and none of them is a picture.
 
 **A second typeface, for data only.** IBM Plex Mono carries every figure and
-every label that *names a measurement* — axis names, scale heads, item codes,
+every label that *names a measurement*: axis names, scale heads, item codes,
 table heads, the step markers. Prose never uses it. An engineering document
 sets its text in one face and its data in another; doing the same here is what
 separates a specification from a brochure, and it costs one stylesheet.

@@ -69,7 +69,7 @@ function daysSince(iso: string): number {
 /**
  * 이 주문을 지금 환불할 수 있는가, 얼마를.
  *
- * 금액을 부르는 쪽에서 정하지 않는다 — 결제 금액을 화면에서 받지 않는 것과
+ * 금액을 부르는 쪽에서 정하지 않는다. 결제 금액을 화면에서 받지 않는 것과
  * 같은 이유다(`startCheckout` 주석 참고).
  */
 export async function refundable(orderId: string): Promise<Verdict> {
@@ -81,7 +81,7 @@ export async function refundable(orderId: string): Promise<Verdict> {
   if (o.refunded > 0 || o.status === "refunded") return { ok: false, deny: "already" };
   if (o.status !== "paid" || !o.paid_at) return { ok: false, deny: "not_paid" };
 
-  // ── 기간권 — 가분적이라 남은 기간을 돌려준다(계속거래) ────────────
+  // ── 기간권: 가분적이라 남은 기간을 돌려준다(계속거래) ────────────
   if (o.kind === "pass") {
     const ent = await queryOne<{ starts_at: string; ends_at: string }>(
       `SELECT starts_at::text, ends_at::text FROM entitlements
@@ -92,13 +92,13 @@ export async function refundable(orderId: string): Promise<Verdict> {
     const total = new Date(ent.ends_at).getTime() - new Date(ent.starts_at).getTime();
     const left = new Date(ent.ends_at).getTime() - Date.now();
     if (left <= 0) return { ok: false, deny: "expired_window" };
-    // 일할 계산. **위약금을 떼지 않는다** — 계속거래의 위약금 상한을 계산해
+    // 일할 계산. **위약금을 떼지 않는다**: 계속거래의 위약금 상한을 계산해
     // 다투느니 안 떼는 쪽이 싸고, 분쟁이 없다
     const amount = Math.floor((o.amount * left) / total);
     return { ok: true, amount, reason: "pass_remaining", note: `잔여 ${Math.ceil(left / 86_400_000)}일` };
   }
 
-  // ── 업그레이드 — 경계는 응시가 아니라 **결과지를 연 때** ──────────
+  // ── 업그레이드: 경계는 응시가 아니라 **결과지를 연 때** ──────────
   //    이 결제를 하는 사람은 이미 응시를 끝냈다. "응시를 시작하면 불가" 를
   //    그대로 쓰면 사자마자 환불 불가가 되어 버린다.
   if (o.upgrades_attempt_id) {
@@ -111,7 +111,7 @@ export async function refundable(orderId: string): Promise<Verdict> {
     return { ok: true, amount: o.amount, reason: "not_viewed" };
   }
 
-  // ── 응시권 — 경계는 첫 문항에 답한 때 ────────────────────────────
+  // ── 응시권: 경계는 첫 문항에 답한 때 ────────────────────────────
   const started = await queryOne<{ n: number }>(
     `SELECT count(*)::int AS n
        FROM responses r
@@ -122,7 +122,7 @@ export async function refundable(orderId: string): Promise<Verdict> {
   );
   if ((started?.n ?? 0) > 0) return { ok: false, deny: "started" };
 
-  // 응시 전이면 **기간과 관계없이** 돌려준다. 법이 주는 7일보다 넓다 —
+  // 응시 전이면 **기간과 관계없이** 돌려준다. 법이 주는 7일보다 넓다.
   // 아직 아무것도 제공되지 않았기 때문이다
   const code = await queryOne<{ id: string }>(
     `SELECT id FROM redemption_codes WHERE order_id = $1`, [o.id]);
@@ -134,10 +134,10 @@ export async function refundable(orderId: string): Promise<Verdict> {
 }
 
 /**
- * 환불을 기록한다. **돈을 보내지는 않는다** — PG 가 붙기 전이라 집행할
+ * 환불을 기록한다. **돈을 보내지는 않는다**: PG 가 붙기 전이라 집행할
  * 길이 없고, 학교 계약과 쇼핑몰 판매는 애초에 이쪽에서 보내지 않는다.
  *
- * 좌석은 회수한다. 응시를 시작하지 않은 좌석만 지운다 —
+ * 좌석은 회수한다. 응시를 시작하지 않은 좌석만 지운다:
  * `refundable` 이 이미 막지만, 여기서도 조건을 걸어 두 곳이 어긋날 때
  * 좌석이 조용히 사라지는 일을 막는다.
  */
@@ -179,7 +179,7 @@ export async function recordRefund(
  * 넓어진 결과지를 처음 연 시각을 적는다.
  *
  * **한 번만 적고 덮어쓰지 않는다.** 덮어쓰면 "언제 처음 봤는가" 가 사라져
- * 환불 경계가 흐려진다. 무엇을 읽었는지는 남기지 않는다 — 시각 하나면
+ * 환불 경계가 흐려진다. 무엇을 읽었는지는 남기지 않는다. 시각 하나면
  * 판정에 충분하고, 그 이상은 필요 없는 개인정보다.
  */
 export async function markReportViewed(attemptId: string): Promise<void> {
@@ -193,7 +193,7 @@ export async function markReportViewed(attemptId: string): Promise<void> {
 /**
  * 아직 쓰지 않은 응시권 코드를 되돌린다. 쇼핑몰에서 환불했을 때 쓴다.
  *
- * 이미 응시를 시작했으면 거절한다 — 그 사람의 결과지를 빼앗는 셈이 된다.
+ * 이미 응시를 시작했으면 거절한다. 그 사람의 결과지를 빼앗는 셈이 된다.
  */
 export async function revokeRedemption(
   codeTailOrId: string,

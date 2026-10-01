@@ -9,7 +9,7 @@ import { mailReady } from "./outbox";
  * 새로고침 한 번이 발송 한 번이 된다. 내보내는 것은 밤 당번
  * (`POST /api/ops/tick`)의 일이고, 이 함수는 읽기만 한다.
  *
- * 화면(`/admin/ops`)과 터미널(`npm run metri:ops`)이 같은 것을 본다 —
+ * 화면(`/admin/ops`)과 터미널(`npm run metri:ops`)이 같은 것을 본다.
  * 두 곳에서 따로 세면 숫자가 갈리고, 갈리는 순간 둘 다 못 믿는다.
  */
 export type Briefing = Awaited<ReturnType<typeof briefing>>;
@@ -76,7 +76,7 @@ export async function briefing(days = 1) {
 
   /**
    * 돈은 받았는데 아무것도 안 열린 주문. 배선 사고다. 좌석을 주는
-   * 상품인지는 `products.seat_count` 가 안다 — 업그레이드는 좌석이 0이고
+   * 상품인지는 `products.seat_count` 가 안다. 업그레이드는 좌석이 0이고
    * `report_grants` 로 열린다.
    */
   const orphan = await query<{ orderNo: string; product: string; amount: number }>(

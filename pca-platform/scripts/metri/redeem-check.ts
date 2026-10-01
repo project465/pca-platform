@@ -6,14 +6,14 @@
  * 확인하는 것 여덟.
  *
  *   1. 만든 코드로 좌석이 생기고 응시가 열리는가
- *   2. **금액이 0 으로 적히는가** — 돈은 저쪽 장부에 있다. 두 번 잡으면 안 된다
+ *   2. **금액이 0 으로 적히는가**: 돈은 저쪽 장부에 있다. 두 번 잡으면 안 된다
  *   3. 같은 코드를 다시 내면 거절되는가
  *   4. **두 사람이 동시에 같은 코드를 내도 한 명만 받는가**
  *   5. 없는 코드·취소된 코드·기간 지난 코드가 각각 제 이유로 거절되는가
  *   6. 하이픈·소문자·공백을 섞어 적어도 같은 코드로 읽는가
  *   7. 코드로 연 결과지 등급이 그 상품의 등급과 같은가
  *   8. **좌석을 주지 않는 상품으로는 코드를 찍지 않는가**
- *      — 업그레이드는 어느 응시를 여는지가 있어야 열린다. 코드에는 그
+ *: 업그레이드는 어느 응시를 여는지가 있어야 열린다. 코드에는 그
  *        자리가 없어서, 막지 않으면 돈만 건너가고 아무 일도 안 생긴다
  *
  *   npm run metri:redeem
@@ -45,7 +45,7 @@ async function main() {
   const BATCH = `check-${Date.now()}`;
 
     // 지난 회차가 남아 있으면 숫자가 겹친다.
-  // **좌석을 먼저 지운다** — seats.order_id 는 ON DELETE SET NULL 이라
+  // **좌석을 먼저 지운다**: seats.order_id 는 ON DELETE SET NULL 이라
   // 주문만 지우면 주인 없는 좌석이 남아 "좌석이 늘지 않았다" 가 매번 실패한다
   const stale = `SELECT id FROM users WHERE email LIKE 'redeem-%@example.com'`;
   await query(`DELETE FROM attempts WHERE user_id IN (${stale})`);
@@ -126,7 +126,7 @@ async function main() {
   check(voided === 1, "안 쓴 코드를 묶음째 막을 수 있다", `${voided}장`);
   const vr = await redeemCode(b, toVoid.display);
   check(!vr.ok && vr.reason === "voided", "취소된 코드 → voided");
-  // 이미 쓴 코드는 막히지 않아야 한다 — 산 사람의 결과지를 빼앗는 셈이 된다
+  // 이미 쓴 코드는 막히지 않아야 한다. 산 사람의 결과지를 빼앗는 셈이 된다
   const usedStill = await queryOne<{ v: string | null }>(
     `SELECT voided_at::text AS v FROM redemption_codes WHERE id = (SELECT redemption_code_id FROM orders WHERE id = $1)`,
     [r1.orderId]);

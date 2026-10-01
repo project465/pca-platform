@@ -10,7 +10,7 @@ import StaffPanel from "./staff-panel";
 export const metadata = { title: "기관 · Careermetri" };
 
 /**
- * 기관 한 곳의 전부 — 담당자, 계약, 회차.
+ * 기관 한 곳의 전부: 담당자, 계약, 회차.
  *
  * 계약을 맺은 학과를 실제로 굴리려면 세 가지가 차례로 있어야 한다.
  *   1. 기관        /admin/organizations/new

@@ -21,7 +21,7 @@ import type {
  *   PORTONE_API_SECRET            V2 API secret (비밀. 서버에만)
  *   PORTONE_WEBHOOK_SECRET        웹훅 시크릿 (비밀. base64)
  *
- * 채널을 둘 두는 이유 — 국내 PG 의 일반 카드결제로는 해외 발급 Visa·Mastercard 가
+ * 채널을 둘 두는 이유: 국내 PG 의 일반 카드결제로는 해외 발급 Visa·Mastercard 가
  * 승인되지 않는다. 해외카드는 해외결제 채널(Eximbay·Paypal·Stripe 등)로 나가야 한다.
  */
 const API = "https://api.portone.io";

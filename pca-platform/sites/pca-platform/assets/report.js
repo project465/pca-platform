@@ -1,7 +1,7 @@
-/* PCA Platform — 긴 형식 결과지 (STANDARD · PRO)
+/* PCA Platform: 긴 형식 결과지 (STANDARD · PRO)
  *
  * 화면과 인쇄를 같은 마크업으로 낸다. 9개 절 · 53개 소절이고, 절마다
- * 표지가 한 장씩 들어간다. 계산은 하지 않는다 — engine.js 가 낸 결과와
+ * 표지가 한 장씩 들어간다. 계산은 하지 않는다. engine.js 가 낸 결과와
  * content/<code>.json 의 원고를 엮어 문서로 만들 뿐이다.
  *
  * 원고가 없는 직무는 그 소절을 그리지 않는다. 비어 있는 칸을 그럴듯한
@@ -59,7 +59,7 @@ window.PCAReport = (function () {
   function note(t) { return '<div class="rp-note">' + t + '</div>'; }
 
   /* 직무별 서술 원고. content/<code>.json 의 narr[소절번호] 를 문단으로 낸다.
-     없는 소절은 아무것도 내지 않는다 — 빈 칸을 문장으로 채우지 않기 위해서다. */
+     없는 소절은 아무것도 내지 않는다. 빈 칸을 문장으로 채우지 않기 위해서다. */
   var NARR = null;
   function nar(id) {
     if (!NARR) return '';
@@ -745,7 +745,7 @@ window.PCAReport = (function () {
           : '') +
         note('이 절은 <b>무엇을 해 봤는지</b>를 재지 않습니다. 여덟 축은 일하는 방식과 하고 싶은 방향이고, 실제 경험은 바로 다음 소절에서 따로 봅니다. 두 값을 섞어 읽지 마십시오.'));
 
-      /* 경험 근거 상세 — EXPERIENCE 문항이 있는 상품에서만 */
+      /* 경험 근거 상세: EXPERIENCE 문항이 있는 상품에서만 */
       var exQs = (major.questions || []).filter(function (q) {
         return q.type === 'EXPERIENCE' && TIER_ORDER[q.tier] && TIER_ORDER[q.tier] <= TIER_ORDER[r.product_type];
       });
@@ -772,7 +772,7 @@ window.PCAReport = (function () {
           note('경험 문항은 스스로 답한 값이라 <b>증빙이 아닙니다.</b> 서류와 면접에서는 같은 내용을 결과물과 숫자로 보여줘야 하고, 05절이 그 결과물을 만드는 절입니다.'));
       }
 
-      /* 1군이 둘 이상일 때만 — 무엇이 둘을 가르는가 */
+      /* 1군이 둘 이상일 때만, 무엇이 둘을 가르는가 */
       if (g1.length > 1) {
         var g1jobs = g1.map(function (x) {
           return (major.jobs || []).filter(function (j) { return j.name === x.name; })[0];
@@ -797,7 +797,7 @@ window.PCAReport = (function () {
       }
     }
 
-    /* ── R 연구 역량 8축 — 대학원·연구 단계에서만 ──── */
+    /* ── R 연구 역량 8축: 대학원·연구 단계에서만 ──── */
     if (r.grad && gradBank) {
       var gr = r.grad, gd = gradBank.dims;
       var gname = function (code) {

@@ -17,7 +17,9 @@ import { readFileSync, readdirSync } from "node:fs";
 const RULES = [
   ["대시(—) 부가설명", /—/g, 0.3,
    "한국어에서 이만큼 쓰는 사람은 드물다. 쉼표·괄호·문장 분리로 푼다"],
-  ["'A가 아니라 B' 대구", /(?:이|가|은|는|을|를)\s*아니라|것이\s*아니|것은\s*아닙/g, 0.4,
+  // 대구만 센다. "파는 것이 아니다" 같은 평범한 부정까지 세면, 고치는 쪽이
+  // 뜻을 비틀게 된다. 버릇은 "A가 아니라 B" 로 짝을 맞출 때 생긴다.
+  ["'A가 아니라 B' 대구", /(?:이|가|은|는|을|를)\s*아니라/g, 0.4,
    "한 원고에 한두 번이면 수사, 그 위로는 버릇이다"],
   ["'~하는 이유다' 도치", /이유(?:다|입니다)[.\s]/g, 0.2,
    "문단을 잠언으로 닫는 습관. 순방향 단언으로 편다"],
@@ -61,6 +63,26 @@ const files = process.argv.slice(2).length
      ...readdirSync("src/components")
        .filter((f) => f.endsWith(".tsx"))
        .map((f) => `src/components/${f}`),
+     // 설계 문서. 다음 사람이 이 저장소에서 가장 오래 읽는 글이다
+     "CLAUDE.md", "LAUNCH.md", "docs/HANDOFF.md",
+     ...readdirSync("docs/metri")
+       .filter((f) => f.endsWith(".md"))
+       .map((f) => `docs/metri/${f}`),
+     // 주석. 경로 뒤에 #주석 을 붙이면 주석만 뽑아 센다.
+     // `copy-audit.mjs` 자신은 뺀다. 금지한 패턴을 예시로 적어 두는 파일이라,
+     // 자기를 세면 규칙을 고칠 때마다 자기가 걸린다
+     ...[
+       "db/schema.sql", "db/schema_metri.sql",
+       "sites/pca-platform/assets/app.js",
+       "sites/pca-platform/assets/engine.js",
+       "sites/pca-platform/assets/report.js",
+       ...readdirSync("src/lib", { recursive: true })
+         .filter((f) => String(f).endsWith(".ts"))
+         .map((f) => `src/lib/${f}`),
+       ...readdirSync("scripts/metri")
+         .filter((f) => f.endsWith(".ts") || f.endsWith(".mjs"))
+         .map((f) => `scripts/metri/${f}`),
+     ].map((f) => `${f}#주석`),
      // 학생이 읽는 결과지·화면 문구가 전부 이 사전에 있다. 한글 4,200자다
      "src/lib/locale.ts",
      "src/lib/prescribe.ts",
@@ -82,17 +104,38 @@ const files = process.argv.slice(2).length
 /**
  * 빈칸 표시는 원고가 아니다.
  *
- * 결과지와 관리자 표에서 값이 없는 칸은 `—` 로 둔다(CLAUDE.md — 증거가
+ * 결과지와 관리자 표에서 값이 없는 칸은 `—` 로 둔다(CLAUDE.md: 증거가
  * 없으면 추정해 채우지 않는다). 그 한 글자가 문자열 전체인 경우는 문장
  * 부호가 아니라 데이터 자리라서 문체 규칙으로 셀 것이 아니다. 문장 안에
  * 끼어든 대시는 그대로 센다.
  */
+/** 표에서 값이 없는 칸(`| — |`)은 부호가 아니라 빈자리 표시다. */
+function dropTableBlanks(t) {
+  return t.replace(/\|\s*—\s*(?=\|)/g, "| ");
+}
+
 function dropBlanks(lits) {
   return lits.filter((s) => !/^(?::\s*)?["'][\s—]+["'],?$/.test(s));
 }
 
-/** 사람이 읽는 글만 본다. 코드·주석·태그는 문체와 상관이 없다. */
+/**
+ * 주석도 사람이 읽는 글이다.
+ *
+ * 처음에는 "주석은 원고가 아니다" 로 빼 뒀다. 그런데 다음 사람이 이 저장소에서
+ * 가장 오래 읽는 글이 설계 문서와 주석이고, 거기 밴 버릇이 화면 문구로 다시
+ * 흘러나온다. 그래서 `#주석` 을 붙인 경로는 주석만 뽑아 같은 자로 잰다.
+ */
+function commentsOf(path) {
+  const raw = readFileSync(path, "utf8");
+  const out = [];
+  for (const m of raw.matchAll(/\/\*[\s\S]*?\*\//g)) out.push(m[0]);
+  for (const m of raw.matchAll(/^[ \t]*(?:\/\/|--).*$/gm)) out.push(m[0]);
+  return out.join("\n");
+}
+
+/** 사람이 읽는 글만 본다. 코드와 태그는 문체와 상관이 없다. */
 function prose(path) {
+  if (path.endsWith("#주석")) return commentsOf(path.slice(0, -3));
   const raw = readFileSync(path, "utf8");
   if (path.endsWith(".js") || path.endsWith(".mjs")) {
     // 작은따옴표 문자열만. 주석에 쓴 설계 메모는 원고가 아니다
@@ -103,6 +146,13 @@ function prose(path) {
     // 값(문자열)만 본다. 키는 원고가 아니다
     return dropBlanks(raw.match(/:\s*"(?:[^"\\]|\\.)*"/g) ?? []).join(" ") +
       dropBlanks(raw.match(/^\s*"(?:[^"\\]|\\.)*",?$/gm) ?? []).join(" ");
+  }
+  if (path.endsWith(".md")) {
+    // 코드 블록과 인라인 코드는 원고가 아니다. 특히 `a < b` 같은 조각을 두면
+    // 뒤쪽 태그 제거가 한 문단을 통째로 삼켜서 글자 수가 반으로 줄어든다.
+    return dropTableBlanks(raw)
+      .replace(/```[\s\S]*?```/g, " ")
+      .replace(/`[^`\n]*`/g, " ");
   }
   if (path.endsWith(".ts") || path.endsWith(".tsx")) {
     // 화면 문구의 대부분은 문자열이 아니라 **JSX 본문**이다. 큰따옴표만
@@ -121,7 +171,7 @@ function prose(path) {
         /\b(?:className|style|href|src|id|key|type|name|value|htmlFor|rel|target|method|action|scope|colSpan|rowSpan|width|height|viewBox|fill|stroke|d|x|y|cx|cy|r)=(?:"[^"]*"|\{[^{}]*\})/g,
         " ",
       );
-    // 대시는 한글 조각 밖에도 선다 — `<b>{t("repQuality")}</b> — {t(flag)}`
+    // 대시는 한글 조각 밖에도 선다: `<b>{t("repQuality")}</b> — {t(flag)}`
     // 처럼 코드 사이에 홀로 놓인 것이 화면에서는 문장 가운데에 찍힌다.
     // 그래서 값이 없는 칸의 `—` 만 걷어낸 뒤 **남은 대시를 전부** 센다.
     const body = t.replace(/(["'])\s*—\s*\1|>\s*—\s*</g, " ");
@@ -147,6 +197,7 @@ function prose(path) {
  * 않고 비율로 본다.
  */
 function chunks(path) {
+  if (path.endsWith("#주석")) return commentsOf(path.slice(0, -3)).split(/\n\s*\n/);
   const raw = readFileSync(path, "utf8");
   if (path.endsWith(".json")) {
     return (raw.match(/"(?:[^"\\]|\\.)*"/g) ?? []).map((t) => t.slice(1, -1));
@@ -159,7 +210,7 @@ function chunks(path) {
     const t = raw.replace(/\/\*[\s\S]*?\*\//g, " ").replace(/(^|[^:/])\/\/.*$/gm, "$1");
     return (t.match(/"(?:[^"\\]|\\.)*"/g) ?? []).map((x) => x.slice(1, -1));
   }
-  if (path.endsWith(".md")) return raw.split(/\n\s*\n/);
+  if (path.endsWith(".md")) return dropTableBlanks(raw).split(/\n\s*\n/);
   return raw
     .replace(/<(style|script)[\s\S]*?<\/\1>|<!--[\s\S]*?-->/g, " ")
     .split(/<[^>]+>/);
@@ -212,7 +263,7 @@ for (const path of files.filter((f) => {
   const ko = (t.match(/[가-힣]/g) ?? []).length;
   // 한글이 적은 파일. 영문 원고이거나, 문구가 사전에 있고 화면 파일에는
   // 조각만 남은 경우다. 길이로 거르던 규칙은 **결과지 화면을 통째로
-  // 빠뜨렸다** — 한글 아홉 자뿐이라 양쪽 검사에 다 들지 않았다.
+  // 빠뜨렸다**: 한글 아홉 자뿐이라 양쪽 검사에 다 들지 않았다.
   return ko < 200 && t.replace(/\s/g, "").length > 0;
 })) {
   const n = (prose(path).match(/—/g) ?? []).length;

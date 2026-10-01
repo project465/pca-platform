@@ -8,8 +8,8 @@ export const metadata = { title: "기관 담당자 · Careermetri" };
 
 /**
  * 교수와 담당자가 같은 문으로 들어오지만 할 일이 다르다.
- *   담당자(org_admin) — 회차를 열고, 명단을 올리고, 공개를 승인한다
- *   교수(instructor)  — 진행 상황과 단체 리포트를 읽는다
+ *   담당자(org_admin): 회차를 열고, 명단을 올리고, 공개를 승인한다
+ *   교수(instructor): 진행 상황과 단체 리포트를 읽는다
  */
 export default async function OrgHome() {
   const user = await requireRole(["org_admin", "instructor"]);

@@ -1,19 +1,19 @@
 /**
  * 무료 구간과 유료 구간을 가르는 한 곳.
  *
- * 커리어메트리 플러스가 파는 것은 지표가 아니라 사슬이다. 지표(115문항 →
+ * 커리어메트리 플러스가 파는 것은 지표가 아닌 사슬이다. 지표(115문항 →
  * 8계열 적합)는 커리어넷·워크넷이 무료로 주는 층이고, 규준이 없어서
- * "상위 몇 %" 를 말할 수도 없다. 규준 없이 팔 수 있는 것은 사슬 쪽이다 —
+ * "상위 몇 %" 를 말할 수도 없다. 규준 없이 팔 수 있는 것은 사슬 쪽이다.
  * "구조해석 엔지니어가 하중 조건을 세운다" 는 그 학생의 점수가 조금
  * 틀려도 참이다.
  *
  * 등급을 정하는 순서가 중요하다.
  *
- *   1. report_grants 에 줄이 있으면 full — 무료로 보고 나중에 결제한 경우
- *   2. 학과·학교 단체 좌석(contract_id)이면 full — 학교가 사는 것이 사슬이다
+ *   1. report_grants 에 줄이 있으면 full: 무료로 보고 나중에 결제한 경우
+ *   2. 학과·학교 단체 좌석(contract_id)이면 full: 학교가 사는 것이 사슬이다
  *   3. 응시 시점에 살아 있던 PASS 가 있으면 full
  *   4. 개인 결제 좌석이면 그 상품의 report_level
- *   5. 아무것도 없으면 free — 등급을 못 가리면 덜 주는 쪽으로 떨어진다
+ *   5. 아무것도 없으면 free: 등급을 못 가리면 덜 주는 쪽으로 떨어진다
  *
  * 4번이 기본값인 이유: 새 결제 경로를 잘못 배선하면 유료 구간이 공짜로
  * 나가는데, 그건 조용히 돈이 새는 쪽이라 눈에 안 띈다. 반대로 떨어지면
@@ -32,7 +32,7 @@ export async function reportLevel(attemptId: string): Promise<ReportLevel | null
                             WHERE g.attempt_id = a.id AND g.level = 'full') THEN 'full'
               -- 2. 학과·학교 단체 좌석. 학교가 사는 것이 바로 사슬이다
               WHEN s.contract_id IS NOT NULL THEN 'full'
-              -- 3. PASS. 기준은 **지금 시각이 아니라 응시 시각**이고,
+              -- 3. PASS. 기준은 **지금 시각이 아닌 응시 시각**이고,
               --    보는 것은 끝날 밖에 없다(a.started_at < e.ends_at).
               --
               --    지금 시각으로 보면 만료된 날 결과지가 닫혀, 돈을 낸
@@ -48,7 +48,7 @@ export async function reportLevel(attemptId: string): Promise<ReportLevel | null
                             WHERE e.user_id = a.user_id
                               AND e.kind = 'pass'
                               AND a.started_at < e.ends_at) THEN 'full'
-              -- 4. 개인 결제 좌석 — 상품이 정한다
+              -- 4. 개인 결제 좌석: 상품이 정한다
               WHEN p.report_level IS NOT NULL THEN p.report_level
               -- 5. 못 가리면 덜 주는 쪽
               ELSE 'free'
@@ -66,7 +66,7 @@ export async function reportLevel(attemptId: string): Promise<ReportLevel | null
 /**
  * 무료로 본 응시를 유료 구간까지 연다.
  *
- * 같은 응시를 연다 — 115문항을 다시 풀게 하면 아무도 결제하지 않는다.
+ * 같은 응시를 연다. 115문항을 다시 풀게 하면 아무도 결제하지 않는다.
  * 결제가 확정된 주문만 통과시킨다. `paid` 가 아닌 주문으로 열리면
  * 결제 창을 닫아 버린 사람에게 유료 구간이 나간다.
  */
@@ -91,14 +91,14 @@ export async function grantFull(attemptId: string, orderId: string, userId: stri
 }
 
 /**
- * PASS 를 발급한다 — 기간 동안 열리는 권한.
+ * PASS 를 발급한다. 기간 동안 열리는 권한.
  *
  * 좌석을 주지 않는다. PASS 는 "이 기간에 검사를 볼 수 있다" 는 권한이고,
  * 실제 응시권은 회차마다 따로 발급한다. 여기서 좌석을 같이 주면 1년짜리
  * PASS 하나로 115문항을 무한히 풀 수 있게 되어 규준이 오염된다.
  *
  * 기간은 상품이 정한다(products.duration_days). 결제 화면에서 넘어온
- * 날짜를 쓰지 않는다 — 금액을 화면에서 받지 않는 것과 같은 이유다.
+ * 날짜를 쓰지 않는다. 금액을 화면에서 받지 않는 것과 같은 이유다.
  */
 export async function grantPass(
   userId: string,

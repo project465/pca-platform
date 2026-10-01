@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { requireRole } from "@/lib/session";
 import { saveSurvey, surveyDone, type SurveyPhase } from "@/lib/survey";
 
-/** 한 문항. 누를 때마다 바로 적는다 — 검사 문항과 같은 규칙이다. */
+/** 한 문항. 누를 때마다 바로 적는다. 검사 문항과 같은 규칙이다. */
 export async function answerSurvey(
   attemptId: string,
   itemId: string,

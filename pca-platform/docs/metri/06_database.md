@@ -1,6 +1,6 @@
 # 데이터베이스
 
-파일 — `db/schema.sql`(기존) → `db/schema_metri.sql`(확장) → `db/seed/metri/skill_tree.sql`(시드)
+파일: `db/schema.sql`(기존) → `db/schema_metri.sql`(확장) → `db/seed/metri/skill_tree.sql`(시드)
 
 ```bash
 psql "$DATABASE_URL" -f db/schema.sql
@@ -9,7 +9,7 @@ psql "$DATABASE_URL" -f db/seed/metri/skill_tree.sql
 ```
 
 **셋 다 실제 PostgreSQL 16 에 적용해 확인했다.**
-시드 결과 — 역량 138 · 직무군 24 · 요구관계 261 · 동의어 565 · 번역 396행.
+시드 결과, 역량 138 · 직무군 24 · 요구관계 261 · 동의어 565 · 번역 396행.
 
 ---
 
@@ -26,7 +26,7 @@ psql "$DATABASE_URL" -f db/seed/metri/skill_tree.sql
 | 2. 이름은 전부 `translations` | 역량·직무·산업·트랙 이름이 전부 행으로 들어간다. 396행 |
 | 3. 산식은 데이터 | `scoring_profiles` · `job_axis_weights` · `evidence_sources` |
 
-**원칙 4를 하나 더한다 — 점수는 산식이, 문장은 모델이.**
+**원칙 4를 하나 더한다. 점수는 산식이, 문장은 모델이.**
 LLM 이 만든 값은 `job_fit_scores` 에 들어가지 않는다.
 
 ---
@@ -61,7 +61,7 @@ LLM 이 만든 값은 `job_fit_scores` 에 들어가지 않는다.
 
 ## 3. 설계 판단 열 가지
 
-### (1) 트랙은 상품이 아니라 행이다
+### (1) 트랙은 상품 말고 행이다
 
 ```sql
 CREATE TABLE tracks (
@@ -172,7 +172,7 @@ prototypes/metri/data.js            (자동 생성)
 
 ## 6. 아직 안 만든 것
 
-- **`payments`** — 정기결제가 생기면
-- **인덱스 튜닝** — `jd_postings` 가 10만 행을 넘으면 그때 실측하고 잡는다
-- **파티셔닝** — `jd_skill_stats` 월별. 2년치가 쌓이면
-- **감사 로그** — 기업이 학생 정보를 열람한 기록. 기업 화면을 만들 때 같이
+- **`payments`**: 정기결제가 생기면
+- **인덱스 튜닝**: `jd_postings` 가 10만 행을 넘으면 그때 실측하고 잡는다
+- **파티셔닝**: `jd_skill_stats` 월별. 2년치가 쌓이면
+- **감사 로그**: 기업이 학생 정보를 열람한 기록. 기업 화면을 만들 때 같이

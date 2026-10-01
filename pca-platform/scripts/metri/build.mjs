@@ -1,7 +1,7 @@
 // data/metri/*.json 하나를 원본으로 삼아 세 가지를 만든다.
-//   1. db/seed/metri/skill_tree.sql        — 시드 SQL
-//   2. docs/metri/generated/skill_tree.md  — 문서용 표
-//   3. prototypes/metri/data.js            — 프리뷰 사이트가 읽는 데이터
+//   1. db/seed/metri/skill_tree.sql: 시드 SQL
+//   2. docs/metri/generated/skill_tree.md: 문서용 표
+//   3. prototypes/metri/data.js: 프리뷰 사이트가 읽는 데이터
 // 스킬 트리를 고칠 때는 JSON만 고치고 `npm run metri:build` 를 돌린다.
 
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
@@ -218,7 +218,7 @@ writeFileSync(
   `// 자동 생성 파일. 원본은 data/metri/*.json\nwindow.Careermetri_DATA = ${JSON.stringify(bundle)};\n`
 )
 
-// 아티팩트로 게시할 자립형 파일 — data.js 를 인라인으로 박는다
+// 아티팩트로 게시할 자립형 파일: data.js 를 인라인으로 박는다
 try {
   const page = readFileSync(join(root, 'prototypes/metri/index.html'), 'utf8')
   const inlined = page.replace(

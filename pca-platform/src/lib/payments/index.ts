@@ -9,7 +9,7 @@ export { globalChannelReady } from "./portone";
 /**
  * PAYMENTS_PROVIDER 로 고른다. 기본값은 mock 이다.
  *
- * 운영에서 mock 이 켜지면 돈을 안 받고 좌석이 나간다. 그래서 막는다 —
+ * 운영에서 mock 이 켜지면 돈을 안 받고 좌석이 나간다. 그래서 막는다.
  * 설정 실수 하나로 매출이 새는 종류의 사고는 코드가 거절해야 한다.
  */
 export function paymentProvider(): PaymentProvider {
@@ -32,7 +32,7 @@ export function paymentProvider(): PaymentProvider {
 /**
  * 지금 결제를 받을 수 있는 상태인가. **던지지 않는다.**
  *
- * `paymentProvider()` 는 운영에서 mock 이면 예외를 던진다(그게 맞다 —
+ * `paymentProvider()` 는 운영에서 mock 이면 예외를 던진다(그게 맞다.
  * 돈을 안 받고 좌석이 나가는 것을 막는다). 그런데 무료 구간은 PG 를
  * 거치지 않으므로, 가맹점 심사가 끝나기 전에도 무료로 켤 수 있다.
  * 그 상태에서 결과지가 "남은 절 열기" 버튼을 그리면 학생이 그 버튼을

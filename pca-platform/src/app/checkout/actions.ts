@@ -23,7 +23,7 @@ export async function createOrderAction(
   const productCode = String(formData.get("product") ?? "");
   const region: PayRegion = formData.get("region") === "global" ? "global" : "domestic";
   // 무료로 본 결과지를 여는 결제라면 어느 응시인지 함께 온다.
-  // 본인 것인지는 startCheckout 이 확인한다 — 여기서 믿지 않는다.
+  // 본인 것인지는 startCheckout 이 확인한다. 여기서 믿지 않는다.
   const upgrades = String(formData.get("attempt") ?? "").trim() || undefined;
 
   try {
@@ -43,7 +43,7 @@ export async function createOrderAction(
 /**
  * 가짜 결제창의 "결제하기". mock 일 때만 동작한다.
  *
- * 실제 PG 라면 이 자리에서 카드사 창이 뜬다. 그 뒤는 똑같다 —
+ * 실제 PG 라면 이 자리에서 카드사 창이 뜬다. 그 뒤는 똑같다.
  * 리다이렉트로 돌아오고 서버가 조회해서 확정한다.
  */
 export async function mockPayAction(formData: FormData): Promise<void> {

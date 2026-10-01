@@ -1,12 +1,12 @@
 /**
  * 문항 은행 파일 하나를 Careermetri 검사지로 올린다.
  *
- *   npm run metri:items       대학판 PCA_ME_V1 — 기계공학 253문항
- *   npm run metri:items:hs    고교판 HS_V1    — 커리어메트리 플러스 115문항
+ *   npm run metri:items       대학판 PCA_ME_V1: 기계공학 253문항
+ *   npm run metri:items:hs    고교판 HS_V1: 커리어메트리 플러스 115문항
  *
  * 대학판은 단체 PCA 기계공학과 엑셀 세 벌(한국어·영어·튀르키예어)에서 뽑아낸
  * 것이고, 문항 번호·직무분야·성향 배정이 원본과 완전히 같다. 고교판은 새로
- * 썼다 — 전공 용어가 들어간 문장은 중·고등학생에게 성향이 아니라 어휘를 묻게
+ * 썼다. 전공 용어가 들어간 문장은 중·고등학생에게 성향 말고 어휘를 묻게
  * 되기 때문이다(docs/metri/14_metri_plus.md).
  *
  *   대학판  10 직무분야 × 25 = 250,  6 성향 × 20 = 120(겹침),  성실도 3
@@ -60,7 +60,7 @@ const bank: Bank = JSON.parse(readFileSync(join(process.cwd(), bankPath), "utf8"
 /** 은행에 없는 언어는 넣지 않는다. 빈 문자열을 넣으면 결과지가 빈칸으로 나온다 */
 const langsIn = LANGS.filter((l) => bank.scale.labels[l]?.length === bank.scale.points);
 
-/** 사람이 읽는 문장은 전부 translations 로. 컬럼이 아니라 행이 늘어난다. */
+/** 사람이 읽는 문장은 전부 translations 로. 컬럼 말고 행이 늘어난다. */
 async function putText(
   c: PoolClient,
   table: string,
@@ -171,7 +171,7 @@ async function main() {
     }
     await q(`DELETE FROM questions WHERE instrument_id = $1`, [instrumentId]);
 
-    // 3. 지표 — 검사 버전마다 새로 생기되 고정 축(indicator_axes)에 붙는다.
+    // 3. 지표: 검사 버전마다 새로 생기되 고정 축(indicator_axes)에 붙는다.
     const axes = [...new Set(bank.areas.flatMap((a) => Object.keys(a.axisWeights)))];
     const traits = [...new Set(bank.items.map((i) => i.trait).filter(Boolean))] as string[];
     const indicatorId = new Map<string, string>();
@@ -186,7 +186,7 @@ async function main() {
     }
 
     // 4. 문항과 선택지. 성향 문항은 성향 지표에, 일반 직무문항은 지표 없이
-    //    직무분야로만 채점한다 — 원본 엑셀의 '직무점수 O / 성향점수 X' 그대로다.
+    //    직무분야로만 채점한다. 원본 엑셀의 '직무점수 O / 성향점수 X' 그대로다.
     for (const item of bank.items) {
       const isAttention = item.attention !== undefined;
       const q = await q1<{ id: string }>(
@@ -224,7 +224,7 @@ async function main() {
       }
     }
 
-    // 5. 직무 클러스터를 직무분야 아래 붙인다 — 결과지가 분야에서 직무로 내려간다.
+    // 5. 직무 클러스터를 직무분야 아래 붙인다. 결과지가 분야에서 직무로 내려간다.
     //    고교판은 직무가 아니라 전공으로 내려가므로 이 단계가 없다.
     const links: Record<string, string[]> = bank.major !== "ME" ? {} : {
       DESIGN_DEV: ["ME.MECH_DESIGN"],
