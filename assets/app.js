@@ -1,4 +1,4 @@
-/* PCA Platform — 화면 흐름 / 결과 렌더링
+/* PCA Platform: 화면 흐름 / 결과 렌더링
  *
  * 홈페이지 버튼에서 바로 들어오는 방법 (쿼리스트링)
  *   index.html                      → 소개 화면부터
@@ -27,7 +27,7 @@
     TRADEOFF: '둘 중 하나를 선택해 주세요',
     EXPERIENCE: '해당 경험의 수준을 선택해 주세요'
   };
-  /* 단계. 무엇이 달라지는지를 화면에 그대로 적는다 — 고르는 사람이 고른
+  /* 단계. 무엇이 달라지는지를 화면에 그대로 적는다. 고르는 사람이 고른
      결과를 알 수 있어야 한다. 대학원·연구 단계에서만 연구 역량 문항이 붙는다. */
   var STAGES = [
     { code: 'UNDERGRAD', label: '학부 재학 / 졸업예정', tag: 'UNDERGRAD',
@@ -95,7 +95,7 @@
     mem = null;
   }
 
-  /* 처음으로 돌아간다. 주소의 major·form·stage 는 그대로 두고 응답만 지운다 —
+  /* 처음으로 돌아간다. 주소의 major·form·stage 는 그대로 두고 응답만 지운다.
      학과 링크로 들어온 사람이 처음으로를 눌렀다고 학과 선택으로 떨어지면
      자기가 무엇을 푸는지 다시 골라야 한다. */
   function resetAll() {
@@ -407,7 +407,7 @@
     r.stage = S.stage || null;
     r.grad = gr;
 
-    /* STANDARD·PRO 는 긴 형식 결과지로 간다. QUICK 은 아래의 짧은 판 그대로다 —
+    /* STANDARD·PRO 는 긴 형식 결과지로 간다. QUICK 은 아래의 짧은 판 그대로다.
        무료 구간이 유료 구간과 같은 분량이면 경계가 없어진다. */
     if (r.product_type !== 'QUICK' && window.PCAReport) {
       var cmap = {};
@@ -461,7 +461,7 @@
       '않습니다. 순서 대신 함께 살펴볼 묶음으로 읽어 주세요.',
       cards(r.top_jobs.map(jobCard))));
 
-    /* 연구 역량 8축 — 대학원·연구 단계에서만 */
+    /* 연구 역량 8축: 대학원·연구 단계에서만 */
     if (gr) {
       var grRows = GRAD.dims.map(function (d) {
         var v = gr.scores[d.code], n = gr.items[d.code] || 0;
@@ -503,7 +503,7 @@
     out.push(sect(no(), 'Work Style', '성향의 좋고 나쁨보다 잘 맞는 업무 환경을 보는 축입니다.', styleRows(r)));
 
     if (r.product_type === 'QUICK') {
-      /* QUICK — 즉시 행동 1개 + 안내 */
+      /* QUICK: 즉시 행동 1개 + 안내 */
       out.push(sect(no(), '지금 해볼 행동 1개', '',
         '<div class="card contentcard"><div class="eyebrow">NEXT ACTION</div>' +
         '<h3>' + esc(top.name) + ' 채용공고 3개를 찾아 반복되는 업무를 적어보세요.</h3>' +
@@ -704,7 +704,7 @@
     }
 
     /* 무료 구간의 끝. 여기까지가 BASIC 이고 다음이 무엇인지 적는다.
-       **결제창을 만들지 않는다** — 정적 사이트에는 결제를 검증할 서버가 없어서
+       **결제창을 만들지 않는다**: 정적 사이트에는 결제를 검증할 서버가 없어서
        버튼만 두면 '돈 내면 열린다' 가 거짓이 된다. 실제로 살 수 있는 경로로만 잇는다. */
     if (r.product_type === 'QUICK') {
       out.push('<div class="section"><div class="card pad buybox">' +
@@ -859,7 +859,7 @@
     if (STAGE_BY[st]) { S.stage = st; buildStageList(); }
 
     var code = (p.major || '').toUpperCase();
-    /* 단계를 먼저 묻는다. 학과가 주소에 있어도 단계가 없으면 단계부터다 —
+    /* 단계를 먼저 묻는다. 학과가 주소에 있어도 단계가 없으면 단계부터다.
        단계에 따라 출제 문항 수가 달라져서, 나중에 물으면 이미 시작한 사람의
        문항 수가 도중에 바뀐다. */
     if (!S.stage) {

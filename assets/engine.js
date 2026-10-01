@@ -1,4 +1,4 @@
-/* PCA Platform — 채점 엔진 (Career Matri V2.0 기준)
+/* PCA Platform: 채점 엔진 (Career Matri V2.0 기준)
  *
  * 원칙
  *  - FIT(적합도) / READY(준비도) / EVIDENCE(경험근거)는 서로 분리한다.
@@ -150,7 +150,7 @@ window.PCAEngine = (function () {
     return r1(clamp(50 + 50 * cos));
   }
 
-  /* EVIDENCE — 직무별 경험문항 가중평균. 근거 문항 수를 함께 반환 */
+  /* EVIDENCE: 직무별 경험문항 가중평균. 근거 문항 수를 함께 반환 */
   function evidence(major, qs, answers, jobCode) {
     var num = 0, den = 0, basis = 0, answered = 0;
     qs.forEach(function (q) {
@@ -168,7 +168,7 @@ window.PCAEngine = (function () {
     return { score: den ? r1(num / den) : 0, basis: basis, answered: answered };
   }
 
-  /* FutureWork — FUTURE 문항 평균 (0~100) */
+  /* FutureWork: FUTURE 문항 평균 (0~100) */
   function futureWork(qs, answers) {
     var vals = [];
     qs.forEach(function (q) {
@@ -179,7 +179,7 @@ window.PCAEngine = (function () {
     return vals.length ? mean(vals) : 50;
   }
 
-  /* Application Readiness — ME087~092 (PRO 전용) */
+  /* Application Readiness: ME087~092 (PRO 전용) */
   function applyReadiness(qs, answers) {
     var vals = [];
     qs.forEach(function (q) {
@@ -221,7 +221,7 @@ window.PCAEngine = (function () {
     return { items: vals.length, extremeRatio: r1(extreme * 100) };
   }
 
-  /* 전 문항 동일응답 / 극단응답 비율 — 결과 신뢰도 안내용 */
+  /* 전 문항 동일응답 / 극단응답 비율: 결과 신뢰도 안내용 */
   function responseQuality(qs, answers) {
     var likert = [], same = {}, extreme = 0;
     qs.forEach(function (q) {
@@ -287,7 +287,7 @@ window.PCAEngine = (function () {
       r.group = gno;
     });
 
-    // Career Pattern — 상위 2개 특성으로 명명
+    // Career Pattern: 상위 2개 특성으로 명명
     var sorted = dims.slice().sort(function (a, b2) { return dna[b2] - dna[a]; });
     var PATTERN = {
       APS: 'ANALYZE', ST: 'STRUCTURE', EI: 'EXPLORE', VP: 'VERIFY',
@@ -331,7 +331,7 @@ window.PCAEngine = (function () {
     };
   }
 
-  /* GRAD — 연구 역량 8축. 직무 적합도와 같은 방식으로 이론적 최소·최대에
+  /* GRAD: 연구 역량 8축. 직무 적합도와 같은 방식으로 이론적 최소·최대에
      맞춰 0~100 으로 옮긴다. 축마다 몇 문항으로 잰 값인지 함께 돌려주는 것은,
      두 문항으로 잰 축과 다섯 문항으로 잰 축을 같은 무게로 읽으면 안 되기
      때문이다. 화면이 그 숫자를 같이 적는다. */
