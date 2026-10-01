@@ -37,6 +37,8 @@ const files = process.argv.slice(2).length
      "sites/metri-plus/index.html", "sites/metri-plus-print/index.html",
      "sites/imweb/copy.md", "sites/careermetri/index.html",
      "sites/careermetri/imweb/README.md",
+     // 화면 모음 페이지. 밖으로 나가는 링크라 다른 원고와 같은 기준으로 센다
+     "sites/screens/index.html",
      // 아임웹 위젯은 실제로 붙여 넣는 원고다. index.html 만 보다가
      // 위젯 쪽 문장을 놓치면 사이트에 남는 것은 위젯 쪽이다
      ...readdirSync("sites/careermetri/imweb")
