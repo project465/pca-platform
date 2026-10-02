@@ -52,10 +52,10 @@
                 out: '화면 요약 한 장',
                 desc: '직무 적합도 상위 셋과 공학 활동 8축까지 화면에서 봅니다. 결과지는 나오지 않습니다.' },
     STANDARD: { n: 68, time: '12~15분', label: 'STANDARD',
-                out: '결과지 71쪽',
+                out: '결과지 74쪽',
                 desc: '직무마다 하는 일과 필요한 역량, 자기소개서 문장과 면접 질문, 30일 체크리스트까지 들어갑니다.' },
     PRO:      { n: 92, time: '18~25분', label: 'PRO',
-                out: '결과지 77쪽',
+                out: '결과지 81쪽',
                 desc: 'STANDARD 에 창업 절이 붙고, 직무를 가르는 근거를 더 자세히 적습니다.' }
   };
   var FORM_ORDER = ['QUICK', 'STANDARD', 'PRO'];
@@ -193,8 +193,9 @@
         '<small>' + m.n + '문항 · ' + esc(m.time) + ' · ' + esc(m.out) + '</small>' +
         '<small>' + esc(m.desc) + '</small></button>';
     }).join('') + '</div>' +
-    '<p class="note">지금은 셋 다 열려 있습니다. 학과가 계약하면 학생은 결제 없이 ' +
-    '그대로 보고, 개인 결제는 도메인과 통신판매업 신고, 전자결제 심사가 끝나야 붙습니다.</p>';
+    '<p class="note">지금은 셋 다 열려 있어서 어느 쪽을 고르셔도 끝까지 푸실 수 있습니다. ' +
+    '학과가 계약하면 학생은 결제 없이 그대로 보고, 개인 결제는 도메인과 통신판매업 신고, ' +
+    '전자결제 심사가 끝나야 붙습니다.</p>';
     if (S.form) document.getElementById('btnFormNext').disabled = false;
     box.addEventListener('click', function (e) {
       var b = e.target.closest('.major');
@@ -553,7 +554,7 @@
       $('#resultBody').innerHTML =
         '<div class="rp-act">' +
           '<div class="rp-act-t"><b>' + esc(FORM_META[r.product_type] ? r.product_type : '') +
-            ' 결과지</b><span>' + (r.product_type === 'PRO' ? '77쪽' : '71쪽') +
+            ' 결과지</b><span>' + (r.product_type === 'PRO' ? '81쪽' : '74쪽') +
             ' · 이 기기에만 저장됩니다</span></div>' +
           '<button type="button" class="rp-act-b" id="btnPrint">인쇄 · PDF로 저장</button>' +
         '</div>' +
@@ -680,8 +681,8 @@
          읽는 사람은 그 직무가 무슨 일인지 모른 채로 창을 닫는다. */
       var sc = (c.scenarios || [])[0];
       out.push(sect(no(), top.name + josa(top.name, '은', '는') + ' 어떤 일인가',
-        '적합도가 가장 앞선 직무입니다. 하는 일과 하루의 모양을 먼저 보시고, ' +
-        '아래의 판단 기준으로 스스로 한 번 맞춰 보십시오.',
+        '적합도가 가장 앞선 직무라서, 하는 일과 하루의 모양을 먼저 보시고 아래의 ' +
+        '판단 기준으로 스스로 한 번 맞춰 보십시오.',
         '<div class="card contentcard">' +
           '<div class="eyebrow">' + esc(c.field || '') + '</div>' +
           '<p>' + esc(firstSent(c.overview, 4)) + '</p>' +
@@ -714,6 +715,82 @@
       /* 응답 신뢰도. 전문적인 검사는 자기 측정의 한계를 먼저 적는다. */
       out.push(sect(no(), '이번 응답의 신뢰도', '',
         qualityPanel(r)));
+
+      /* 자기소개서. 무료 화면에서는 완성 문장 대신 '무엇이 읽히는가' 와
+         쓰기 전에 정리할 것까지 준다. 문장 세 개는 STANDARD 의 몫이다. */
+      out.push(sect(no(), '자기소개서는 무엇을 보고 읽는가',
+        '이 직무 서류에서 사람이 먼저 보는 곳과, 쓰기 전에 손으로 정리해 두면 ' +
+        '글이 훨씬 빨리 나오는 것들입니다.',
+        '<div class="card contentcard"><div class="eyebrow">읽히는 곳</div>' +
+          '<p>' + esc(c.resume_angle || '') + '</p></div>' +
+        '<div class="card contentcard" style="margin-top:10px">' +
+          '<h4>쓰기 전에 표로 정리할 것</h4>' +
+          '<ul class="qlist">' +
+          '<li>맡은 과제 하나와 그때의 조건(기간·인원·제약)</li>' +
+          '<li>내가 고른 것과 고르면서 포기한 것</li>' +
+          '<li>그 선택의 근거로 쓴 숫자 하나</li>' +
+          '<li>결과와, 다시 한다면 바꿀 것</li>' +
+          '</ul>' +
+          '<p class="note" style="margin-top:8px">네 칸이 채워지면 문단 하나가 거의 ' +
+          '그대로 나옵니다. 채워지지 않는 과제는 아직 글감이 아닙니다.</p></div>' +
+        ((c.resume_caution || []).length
+          ? '<div class="card contentcard" style="margin-top:10px">' +
+            '<h4>이렇게 쓰면 손해를 봅니다</h4><ul class="qlist">' +
+            c.resume_caution.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') +
+            '</ul></div>'
+          : '') +
+        '<p class="note" style="margin-top:10px">이 직무에 맞춰 쓴 자기소개서 문장 ' +
+        '세 개와 쓰면 안 되는 서술은 STANDARD 결과지에 들어갑니다.</p>'));
+
+      /* 면접. 질문 두 개와 그 질문이 확인하려는 것까지 연다 */
+      var il = (c.interview_long || []).slice(0, 2);
+      out.push(sect(no(), '면접에서 받게 되는 질문',
+        '이 직무에서 자주 나오는 질문과, 그 질문으로 면접관이 확인하려는 것입니다. ' +
+        '답을 외우기보다 자기 사례를 하나씩 붙여 두십시오.',
+        (il.length
+          ? '<div class="grid">' + il.map(function (x, i) {
+              return '<div class="card contentcard"><div class="eyebrow">질문 ' + pad2(i + 1) +
+                '</div><h4>' + esc(x.q) + '</h4>' +
+                '<p><b>답하는 틀</b> ' + esc(x.f) + '</p>' +
+                ((x.k || []).length
+                  ? '<div class="divider"></div>' + x.k.map(function (t) {
+                      return '<span class="tag">' + esc(t) + '</span>'; }).join('')
+                  : '') + '</div>';
+            }).join('') + '</div>'
+          : '') +
+        '<div class="card contentcard" style="margin-top:10px">' +
+          '<h4>준비하는 순서</h4><ul class="qlist">' +
+          '<li>자기소개서에 적은 과제 하나를 골라 3분 길이로 말해 봅니다</li>' +
+          '<li>그 과제에서 받을 만한 반문 세 개를 스스로 적어 답을 만듭니다</li>' +
+          '<li>모르는 것을 물었을 때 어떻게 답할지 한 문장을 정해 둡니다</li>' +
+          '</ul><p class="note" style="margin-top:8px">마지막 줄이 중요합니다. ' +
+          '신입 면접에서 모르는 것이 나오는 쪽이 보통이고, 거기서 어떻게 ' +
+          '말하는지를 봅니다.</p></div>' +
+        '<p class="note" style="margin-top:10px">질문 다섯 개와 답변 구성법, ' +
+        '강조할 키워드는 STANDARD 결과지에 들어갑니다.</p>'));
+
+      /* 학과 수업. 지금 당장 손댈 수 있는 것이 수업이다 */
+      if ((c.courses || []).length) {
+        out.push(sect(no(), '학과 수업에서 챙길 것',
+          '이 직무로 가려면 어느 수업에서 무엇을 챙겨야 하는지입니다. 과목 이름은 ' +
+          '학교마다 조금씩 달라서 강의계획서의 내용으로 맞춰 보셔야 합니다.',
+          '<div class="grid">' + c.courses.map(function (x) {
+            return '<div class="card contentcard"><h4>' + esc(x.n) + '</h4>' +
+              '<p>' + esc(x.w) + '</p></div>';
+          }).join('') + '</div>'));
+      }
+
+      /* 자격증. 무엇을 언제, 그리고 무엇이 먼저인지까지 적는다 */
+      if (c.certs && (c.certs.items || []).length) {
+        out.push(sect(no(), '자격증은 무엇부터',
+          esc(c.certs.note),
+          '<div class="tw"><table><thead><tr><th>자격</th><th>응시 시기</th>' +
+          '<th>어디에 쓰이는가</th></tr></thead><tbody>' +
+          c.certs.items.map(function (x) {
+            return '<tr><th scope="row">' + esc(x.n) + '</th><td>' + esc(x.t) +
+              '</td><td>' + esc(x.w) + '</td></tr>';
+          }).join('') + '</tbody></table></div>'));
+      }
 
       /* 다음 이레. 한 가지만 고르게 한다 */
       var n30 = (c.next30 || []).slice(0, 2);
@@ -925,10 +1002,11 @@
         '<div class="buy-tw"><table><thead><tr>' +
           '<th>구분</th><th>BASIC</th><th>STANDARD</th><th>PRO</th></tr></thead><tbody>' +
           '<tr><th scope="row">문항</th><td>28</td><td>68</td><td>92</td></tr>' +
-          '<tr><th scope="row">결과지</th><td>이 화면</td><td>71쪽</td><td>77쪽</td></tr>' +
+          '<tr><th scope="row">결과지</th><td>이 화면</td><td>74쪽</td><td>81쪽</td></tr>' +
           '<tr><th scope="row">업무성향 6유형</th><td>없음</td><td>있음</td><td>있음</td></tr>' +
           '<tr><th scope="row">역량 격차 (요구 대비 현재)</th><td>없음</td><td>있음</td><td>있음</td></tr>' +
-          '<tr><th scope="row">자기소개서·면접</th><td>없음</td><td>있음</td><td>있음</td></tr>' +
+          '<tr><th scope="row">자기소개서·면접</th><td>준비 방향과 질문 2개</td><td>문장 3개 · 질문 5개</td><td>문장 3개 · 질문 5개</td></tr>' +
+          '<tr><th scope="row">학과 수업·자격증</th><td>1순위 직무 기준</td><td>1군 전체 기준</td><td>1군 전체 기준</td></tr>' +
           '<tr><th scope="row">경험 근거 문항</th><td>없음</td><td>6개</td><td>30개</td></tr>' +
           '<tr><th scope="row">창업 준비 전략</th><td>없음</td><td>없음</td><td>있음</td></tr>' +
         '</tbody></table></div>' +

@@ -432,3 +432,12 @@ h1{font-size:34px;line-height:1.16;letter-spacing:-.04em;color:var(--navy)}
 .qlist li{position:relative;font-size:13.5px;line-height:1.75;color:var(--ink);padding:3px 0}
 .qlist li::before{content:"";position:absolute;left:-12px;top:13px;width:4px;height:4px;
   border-radius:50%;background:var(--green)}
+
+/* 결과 화면의 표. 자격증처럼 칸이 셋인 것을 담는다 */
+.tw{border:1px solid var(--line);border-radius:14px;background:#fff;overflow-x:auto}
+.tw table{width:100%;border-collapse:collapse;font-size:13px;min-width:460px}
+.tw th,.tw td{padding:11px 13px;text-align:left;vertical-align:top;
+  border-bottom:1px solid var(--line);line-height:1.65;word-break:keep-all}
+.tw thead th{background:#f7f9fa;font-size:11px;letter-spacing:.02em;color:var(--muted)}
+.tw tbody th{font-weight:800;color:var(--navy);white-space:nowrap}
+.tw tr:last-child th,.tw tr:last-child td{border-bottom:0}
