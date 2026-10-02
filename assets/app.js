@@ -399,24 +399,57 @@
   ];
 
   function h(cls, inner) { return '<div class="' + cls + '">' + inner + '</div>'; }
+  /** 긴 원고에서 앞 몇 문장만 가져온다. 무료 화면은 요지까지만 적는다. */
+  function firstSent(t, n) {
+    if (!t) return '';
+    var ss = String(t).split(/(?<=\.)\s+/);
+    return ss.slice(0, n || 2).join(' ');
+  }
+
+  /** 받침을 보고 조사를 고른다. '기술기획·PM 는' 은 읽다가 걸린다. */
+  function josa(word, withJong, noJong) {
+    var w = String(word || '').replace(/[)\]」』·\s]+$/, '');
+    var ch = w.charCodeAt(w.length - 1);
+    var jong;
+    if (ch >= 0xac00 && ch <= 0xd7a3) jong = (ch - 0xac00) % 28 !== 0;
+    else if (/[1360LMNRlmnr]$/.test(w)) jong = true;   // 일·삼·육·공·엘·엠·엔·알
+    else jong = false;
+    return jong ? withJong : noJong;
+  }
+
+  /** 축 코드 배열을 사람이 읽는 이름으로 */
+  function dnaName(d) { return (major.dna_labels || {})[d] || d; }
+
   function sect(no, title, sub, body) {
     return '<div class="section"><h2 class="sect">' + (no ? no + '. ' : '') + esc(title) + '</h2>' +
       (sub ? '<p class="subdesc">' + sub + '</p>' : '') + body + '</div>';
   }
   function cards(arr) { return '<div class="grid">' + arr.join('') + '</div>'; }
 
-  function jobCard(j, i) {
+  function jobCard(j, i, lite) {
     var m = '<div class="metricgrid">' +
-      '<div class="metric fit"><span>FIT</span><b>' + j.fit + '</b></div>' +
-      (j.ready === null ? '' :
-        '<div class="metric"><span>READY</span><b>' + j.ready + '</b></div>' +
-        '<div class="metric"><span>EVIDENCE</span><b>' + j.evidence + '</b></div>') +
+      '<div class="metric fit"><span>적합도</span><b>' + j.fit + '</b></div>' +
+      (j.ready === null
+        ? '<div class="metric"><span>구간</span><b>±' + (window.PCA_RESULT_SE || '') + '</b></div>' +
+          '<div class="metric"><span>묶음</span><b>' + (j.group || 1) + '군</b></div>'
+        : '<div class="metric"><span>READY</span><b>' + j.ready + '</b></div>' +
+          '<div class="metric"><span>EVIDENCE</span><b>' + j.evidence + '</b></div>') +
       '</div>';
     /* 번호 대신 군을 적는다. 01·02·03 은 그 순서가 실제로 갈린다는 뜻이고,
        여기서는 갈리지 않는다. */
     var badge = j.group ? j.group + '군' : pad2(i + 1);
+    /* 무료 화면에서는 이름과 점수만 두지 않는다. 그 직무가 무슨 일인지
+       한 줄과 대표 업무 두 개를 같이 적어야 고를 거리가 된다. */
+    var more = '';
+    if (lite && j.job) {
+      more = (j.job.field ? '<p class="note" style="margin:10px 0 0">' + esc(j.job.field) + '</p>' : '') +
+        ((j.job.tasks || []).length
+          ? '<div style="margin-top:8px">' + j.job.tasks.slice(0, 2).map(function (t) {
+              return '<span class="tag">' + esc(t) + '</span>'; }).join('') + '</div>'
+          : '');
+    }
     return '<div class="card job"><div class="jobtop"><div class="rank">' + badge +
-      '</div><div class="jobname">' + esc(j.name) + '</div></div>' + m + '</div>';
+      '</div><div class="jobname">' + esc(j.name) + '</div></div>' + m + more + '</div>';
   }
 
   function dnaRows(r) {
@@ -426,6 +459,73 @@
         '<div class="bar"><i style="width:' + r.career_dna[d] + '%"></i></div></div>';
     }));
   }
+  /** 기운 쪽 성향의 '부담이 되는 국면' 한 줄. 원고는 데이터에 이미 있다. */
+  function styleLoadNotes(r) {
+    var load = major.style_load || {};
+    var rows = major.style.map(function (d) {
+      var v = r.work_style[d], l = major.style_labels[d];
+      var side = (v >= 50 ? l[1] : l[0]);
+      var pole = (side === '속도' || side === '품질') ? side + '중시형' : side + '형';
+      var t = load[pole];
+      if (!t) return '';
+      return '<div class="card contentcard"><div class="eyebrow">' + esc(pole) +
+        ' 쪽으로 기울었습니다</div><p>' + esc(firstSent(t, 2)) + '</p></div>';
+    }).filter(Boolean);
+    return rows.length ? '<div class="grid" style="margin-top:10px">' + rows.join('') + '</div>' : '';
+  }
+
+  /**
+   * 왜 이 직무가 앞에 왔는가.
+   *
+   * 점수만 던지면 읽는 사람이 해석을 지어내고, 지어낸 해석은 대체로 틀린다.
+   * 그래서 직무가 크게 기대는 축과 응답자의 축 순위를 나란히 둔다.
+   * **요구값 자체와 격차는 적지 않는다.** 그건 STANDARD 의 몫이다.
+   */
+  function matchWhy(r, top) {
+    var dims = major.dna;
+    var need = top.job.v || {};
+    var lean = dims.slice().sort(function (a, b) { return (need[b] || 0) - (need[a] || 0); }).slice(0, 3);
+    var mineRank = {};
+    r.dna_ranked.forEach(function (d, i) { mineRank[d] = i + 1; });
+    var rows = lean.map(function (d) {
+      return '<div class="card dnarow"><div class="dnatop"><span>' + esc(dnaName(d)) +
+        '</span><span>' + r.career_dna[d] + '</span></div>' +
+        '<div class="bar"><i style="width:' + r.career_dna[d] + '%"></i></div>' +
+        '<p class="note" style="margin:8px 0 0">여덟 축 가운데 ' + mineRank[d] + '위</p></div>';
+    }).join('');
+    var hit = lean.filter(function (d) { return mineRank[d] <= 4; });
+    var line = hit.length >= 2
+      ? '이 직무가 크게 기대는 축 셋 가운데 ' + hit.length + '개가 응답자의 상위 네 축 안에 들어왔습니다. 적합도가 앞선 것은 이 겹침 때문입니다.'
+      : '이 직무가 기대는 축과 응답자의 상위 축이 크게 겹치지는 않았습니다. 그래도 앞에 온 것은 나머지 직무와의 거리가 더 멀었기 때문이라, 1군 안의 다른 직무와 함께 보시는 편이 맞습니다.';
+    return '<div class="card contentcard"><p>' + esc(line) + '</p>' +
+      '<p class="note" style="margin-top:8px">적합도는 응답자의 여덟 축 모양과 직무가 요구하는 모양이 ' +
+      '얼마나 닮았는지를 하나로 줄인 값입니다. 요구 수준과의 차이를 축마다 펼친 표는 ' +
+      'STANDARD 결과지의 역량 격차 절에 들어갑니다.</p></div>' +
+      '<div class="grid" style="margin-top:10px">' + rows + '</div>';
+  }
+
+  /** 이번 응답을 얼마나 믿을 수 있는가. 검사가 자기 한계를 먼저 적는다. */
+  function qualityPanel(r) {
+    var q = r.quality;
+    var items = [];
+    items.push(['답한 문항', r.answered + ' / ' + r.question_count]);
+    items.push(['적합도 구간', '±' + r.fit_se + '점']);
+    items.push(['같은 값으로 답한 비율', q ? Math.round(q.straightLining) + '%' : '—']);
+    var grid = '<div class="metricgrid">' + items.map(function (x) {
+      return '<div class="metric"><span>' + esc(x[0]) + '</span><b>' + esc(x[1]) + '</b></div>';
+    }).join('') + '</div>';
+    var warn = q && (q.straightLining >= 70 || q.extremeRatio >= 80);
+    return '<div class="card contentcard">' + grid +
+      '<p class="note" style="margin-top:12px">' + r.question_count + '문항으로 재면 적합도의 구간이 ±' +
+      r.fit_se + '점입니다. 1군 안의 직무들은 이 폭 안에서 서로 갈리지 않아 순위를 매기지 ' +
+      '않았습니다. 68문항으로 보시면 이 폭이 ±11.7점으로, 92문항에서는 ±11.3점으로 좁아집니다.' +
+      (q ? ' 양 끝(전혀 아니다·매우 그렇다)으로 답하신 비율은 ' + Math.round(q.extremeRatio) +
+        '%였습니다.' : '') + '</p>' +
+      (warn ? '<p class="danger" style="margin-top:8px">같은 값이나 양 끝으로 답한 비율이 높게 ' +
+        '나왔습니다. 결과가 실제와 다르게 느껴지시면 다시 응시해 비교해 보십시오.</p>' : '') +
+      '</div>';
+  }
+
   function styleRows(r) {
     return cards(major.style.map(function (d) {
       var v = r.work_style[d], l = major.style_labels[d];
@@ -453,7 +553,7 @@
       $('#resultBody').innerHTML =
         '<div class="rp-act">' +
           '<div class="rp-act-t"><b>' + esc(FORM_META[r.product_type] ? r.product_type : '') +
-            ' 결과지</b><span>' + (r.product_type === 'PRO' ? '약 84쪽' : '약 73쪽') +
+            ' 결과지</b><span>' + (r.product_type === 'PRO' ? '77쪽' : '71쪽') +
             ' · 이 기기에만 저장됩니다</span></div>' +
           '<button type="button" class="rp-act-b" id="btnPrint">인쇄 · PDF로 저장</button>' +
         '</div>' +
@@ -490,12 +590,25 @@
 
     var n = 0, no = function () { return pad2(++n); };
 
+    /* 읽는 법을 맨 앞에 둔다. 점수부터 보면 숫자를 등수로 읽는다. */
+    if (r.product_type === 'QUICK') {
+      out.push('<div class="section"><div class="card contentcard">' +
+        '<div class="eyebrow">이 결과를 읽는 법</div>' +
+        '<ul class="qlist">' +
+        '<li>적합도는 일하는 방식이 닮은 정도입니다. 합격 가능성이나 실력을 잰 값이 아닙니다.</li>' +
+        '<li>같은 군에 묶인 직무는 이 검사로 우열을 가릴 수 없습니다. 둘 다 열어 두고 보십시오.</li>' +
+        '<li>28문항으로 재서 구간이 ±' + r.fit_se + '점입니다. 문항이 늘면 이 폭이 좁아집니다.</li>' +
+        '</ul></div></div>');
+    }
+
     /* 직무 적합도 */
-    out.push(sect(no(), r.product_type === 'QUICK' ? 'TOP 3 직무 적합도' : 'TOP 5 직무 적합도',
-      'FIT은 업무방식의 유사성입니다. 취업 가능성 점수가 아닙니다. ' +
-      '같은 군에 있는 직무는 측정 오차(±' + r.fit_se + '점) 안에서 서로 갈리지 ' +
-      '않습니다. 순서 대신 함께 살펴볼 묶음으로 읽어 주세요.',
-      cards(r.top_jobs.map(jobCard))));
+    var lite = r.product_type === 'QUICK';
+    window.PCA_RESULT_SE = r.fit_se;
+    out.push(sect(no(), lite ? '적합도가 앞선 직무 셋' : 'TOP 5 직무 적합도',
+      '적합도는 일하는 방식이 얼마나 닮았는지를 보는 값이고, 붙을 가능성을 매긴 ' +
+      '점수가 아닙니다. 같은 군에 있는 직무는 측정 오차(±' + r.fit_se + '점) 안에서 ' +
+      '서로 갈리지 않아 순위를 매기지 않았습니다. 함께 살펴볼 묶음으로 읽어 주십시오.',
+      cards(r.top_jobs.map(function (j, i) { return jobCard(j, i, lite); }))));
 
     /* 연구 역량 8축: 대학원·연구 단계에서만 */
     if (gr) {
@@ -523,33 +636,96 @@
         '</p></div>'));
     }
 
-    /* Career DNA */
+    /* 공학 활동 축. 무료 화면은 넷까지 열고, 축마다 그 축이 무엇을 보는
+       축인지 한두 문장을 붙인다. 숫자만 주면 읽는 사람이 해석을 지어낸다. */
     if (r.product_type === 'QUICK') {
-      out.push(sect(no(), 'Core Career DNA', '가장 뚜렷하게 나타난 4개 특성입니다.',
-        cards(r.dna_ranked.slice(0, 4).map(function (d) {
+      var four = r.dna_ranked.slice(0, 4);
+      var lowOfFour = four.slice().sort(function (a, b) {
+        return r.career_dna[a] - r.career_dna[b];
+      })[0];
+      out.push(sect(no(), '공학 활동 축 · 뚜렷한 넷',
+        '여덟 축 가운데 이번 응답에서 가장 뚜렷하게 올라온 넷입니다. ' +
+        '값은 검사지 기준 0에서 100이고, 다른 학생과 견준 값이 아닙니다.',
+        cards(four.map(function (d) {
+          var desc = (major.dna_desc || {})[d] || '';
           return '<div class="card dnarow"><div class="dnatop"><span>' +
-            esc(major.dna_labels[d]) + '</span><span>' + r.career_dna[d] + '</span></div>' +
-            '<div class="bar"><i style="width:' + r.career_dna[d] + '%"></i></div></div>';
-        }))));
+            esc(dnaName(d)) + '</span><span>' + r.career_dna[d] + '</span></div>' +
+            '<div class="bar"><i style="width:' + r.career_dna[d] + '%"></i></div>' +
+            (desc ? '<p class="note" style="margin:10px 0 0">' + esc(firstSent(desc, 2)) + '</p>' : '') +
+            '</div>';
+        }))) );
+      var lowTxt = (major.dna_low || {})[lowOfFour];
+      if (lowTxt) {
+        out.push('<div class="section"><div class="card contentcard">' +
+          '<div class="eyebrow">넷 가운데 가장 낮은 축</div>' +
+          '<h4>' + esc(dnaName(lowOfFour)) + ' · ' + r.career_dna[lowOfFour] + '</h4>' +
+          '<p>' + esc(firstSent(lowTxt, 3)) + '</p></div></div>');
+      }
     } else {
       out.push(sect(no(), 'Career DNA 8', '', dnaRows(r)));
     }
 
     /* Work Style */
-    out.push(sect(no(), 'Work Style', '성향의 좋고 나쁨보다 잘 맞는 업무 환경을 보는 축입니다.', styleRows(r)));
+    if (r.product_type === 'QUICK') {
+      out.push(sect(no(), '업무 성향 3축',
+        '좋고 나쁨을 가리는 축이 아니라 어느 환경에서 덜 소모되는지를 보는 축입니다. ' +
+        '기운 쪽이 부담이 되는 국면도 함께 적었습니다.',
+        styleRows(r) + styleLoadNotes(r)));
+    } else {
+      out.push(sect(no(), 'Work Style', '성향의 좋고 나쁨보다 잘 맞는 업무 환경을 보는 축입니다.', styleRows(r)));
+    }
 
     if (r.product_type === 'QUICK') {
-      /* QUICK: 즉시 행동 1개 + 안내 */
-      out.push(sect(no(), '지금 해볼 행동 1개', '',
-        '<div class="card contentcard"><div class="eyebrow">NEXT ACTION</div>' +
-        '<h3>' + esc(top.name) + ' 채용공고 3개를 찾아 반복되는 업무를 적어보세요.</h3>' +
-        '<p>' + esc(c.summary) + '</p><div class="divider"></div>' +
-        c.tasks.map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join('') +
+      /* 1순위 직무를 한 절로 펼친다. 무료 화면이라고 이름과 점수만 던지면
+         읽는 사람은 그 직무가 무슨 일인지 모른 채로 창을 닫는다. */
+      var sc = (c.scenarios || [])[0];
+      out.push(sect(no(), top.name + josa(top.name, '은', '는') + ' 어떤 일인가',
+        '적합도가 가장 앞선 직무입니다. 하는 일과 하루의 모양을 먼저 보시고, ' +
+        '아래의 판단 기준으로 스스로 한 번 맞춰 보십시오.',
+        '<div class="card contentcard">' +
+          '<div class="eyebrow">' + esc(c.field || '') + '</div>' +
+          '<p>' + esc(firstSent(c.overview, 4)) + '</p>' +
+          '<div class="divider"></div>' +
+          (c.keywords || []).map(function (k) { return '<span class="tag">' + esc(k) + '</span>'; }).join('') +
+        '</div>' +
+        '<div class="card contentcard" style="margin-top:10px">' +
+          '<h4>하는 일</h4>' +
+          '<ul class="qlist">' + (c.tasks || []).map(function (t) {
+            return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' +
+        '</div>' +
+        (sc ? '<div class="card contentcard" style="margin-top:10px">' +
+          '<div class="eyebrow">현장에서 받는 요청 한 가지</div>' +
+          '<h4>' + esc(sc.t) + '</h4><p>' + esc(sc.s) + '</p>' +
+          '<p class="note" style="margin-top:10px">이 요청을 어떤 순서로 푸는지, ' +
+          '무엇을 내놓아야 일이 끝나는지는 STANDARD 결과지에 적습니다.</p></div>' : '') +
+        '<div class="card contentcard" style="margin-top:10px">' +
+          '<h4>이 직무가 맞는지 스스로 묻는 기준</h4>' +
+          '<ul class="qlist">' + (c.criteria || []).slice(0, 3).map(function (t) {
+            return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' +
+          '<p class="note" style="margin-top:8px">세 질문에 바로 답이 나오지 않는다면, ' +
+          '그 자체가 지금 더 알아봐야 한다는 신호입니다.</p>' +
         '</div>'));
-      out.push('<div class="section"><div class="locked"><h4>현재 준비도까지 확인하려면</h4>' +
-        '<p>STANDARD(68문항)에서는 FIT과 별도로 <b>READY(준비도)</b>, <b>EVIDENCE(경험근거)</b>,<br>' +
-        '핵심 GAP과 30·60·90일 실행계획까지 제공합니다.<br>' +
-        '지금까지 응답한 ' + Q.length + '문항은 그대로 이어집니다.</p></div></div>');
+
+      /* 왜 이 직무가 앞에 왔는지. 숫자를 설명 없이 두지 않는다.
+         요구값 자체는 적지 않는다. 요구 대비 격차는 STANDARD 의 몫이다. */
+      out.push(sect(no(), '이 직무가 앞에 온 까닭', '',
+        matchWhy(r, top)));
+
+      /* 응답 신뢰도. 전문적인 검사는 자기 측정의 한계를 먼저 적는다. */
+      out.push(sect(no(), '이번 응답의 신뢰도', '',
+        qualityPanel(r)));
+
+      /* 다음 이레. 한 가지만 고르게 한다 */
+      var n30 = (c.next30 || []).slice(0, 2);
+      out.push(sect(no(), '다음 이레 동안 할 것',
+        '많이 적어 두면 아무것도 하지 않게 됩니다. 두 가지만 적었습니다.',
+        '<div class="card contentcard">' +
+          '<ul class="qlist">' + n30.map(function (t) {
+            return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' +
+          '<p class="note" style="margin-top:10px">' + esc(top.name) +
+          josa(top.name, '은', '는') + ' 결과물보다 판단의 근거가 읽히는 자리라, 한 가지를 끝까지 해 보고 ' +
+          '그 과정을 적어 두는 쪽이 자격증 한 줄보다 오래 남습니다.</p>' +
+        '</div>'));
     } else {
       /* 핵심 강점 */
       out.push(sect(no(), '핵심 강점 프로파일', '',
@@ -749,16 +925,17 @@
         '<div class="buy-tw"><table><thead><tr>' +
           '<th>구분</th><th>BASIC</th><th>STANDARD</th><th>PRO</th></tr></thead><tbody>' +
           '<tr><th scope="row">문항</th><td>28</td><td>68</td><td>92</td></tr>' +
-          '<tr><th scope="row">결과지</th><td>이 화면</td><td>약 73쪽</td><td>약 84쪽</td></tr>' +
+          '<tr><th scope="row">결과지</th><td>이 화면</td><td>71쪽</td><td>77쪽</td></tr>' +
           '<tr><th scope="row">업무성향 6유형</th><td>없음</td><td>있음</td><td>있음</td></tr>' +
           '<tr><th scope="row">역량 격차 (요구 대비 현재)</th><td>없음</td><td>있음</td><td>있음</td></tr>' +
           '<tr><th scope="row">자기소개서·면접</th><td>없음</td><td>있음</td><td>있음</td></tr>' +
           '<tr><th scope="row">경험 근거 문항</th><td>없음</td><td>6개</td><td>30개</td></tr>' +
           '<tr><th scope="row">창업 준비 전략</th><td>없음</td><td>없음</td><td>있음</td></tr>' +
         '</tbody></table></div>' +
-        '<p class="note" style="margin-top:14px">BASIC 은 28문항으로, STANDARD·PRO 와 ' +
-          '<b>다른 검사</b>입니다. 문항 수가 달라 점수의 폭도 다르므로 두 결과의 점수를 ' +
-          '서로 비교하지 마십시오.</p>' +
+        '<p class="note" style="margin-top:14px">셋은 같은 문항 은행에서 뽑고 같은 산식으로 ' +
+          '채점합니다. 다만 문항이 늘수록 적합도의 구간이 좁아져서(±12.6 → ±11.7 → ±11.3점), ' +
+          '지금 한 묶음으로 나온 직무가 더 많은 문항에서는 갈리기도 합니다. ' +
+          '상품을 바꾸시면 문항을 처음부터 다시 푸셔야 합니다.</p>' +
         '<div class="buy-how">' +
           '<b>지금 받는 방법</b>' +
           '<p>학과나 취업지원처가 계약한 회차에 포함되어 있으면 결제 없이 열립니다. ' +
