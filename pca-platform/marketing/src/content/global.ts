@@ -8,16 +8,18 @@ import type { SiteContent } from "./types";
 export const global: SiteContent = {
   key: "global",
   lang: "en",
-  domain: "metri.example",
-  brand: "METRI",
+  /* 등록된 도메인은 careermatri.com 하나다 (R069). 영어판은 아직 자기
+     주소가 없어 같은 도메인을 가리킨다 — 없는 주소를 적지 않기 위해서다 */
+  domain: "careermatri.com",
+  brand: "CareerMatri",
   org: "ACADEMIX",
   orgTagline: "EDUCATION & CONFERENCE",
-  platformUrl: "https://pcagroup.haricareer.com",
+  platformUrl: "https://app.careermatri.com",
   /* 처리방침은 이 사이트 자체 페이지다 (R022). 라이브 플랫폼에는 없다 */
   privacyUrl: "/privacy",
 
   meta: {
-    title: "METRI — A career strategy built around the major you already chose",
+    title: "CareerMatri — A career strategy built around the major you already chose",
     description:
       "Personalized Career Analysis reads job fit, work style and execution strategy together, then tells students what to prepare — projects, applications, interviews, founding, and employers in their own region.",
   },
@@ -32,7 +34,7 @@ export const global: SiteContent = {
     nextLabel: "NEXT",
     nextHeading: "What would this look like at your institution?",
     pageTitles: {
-      metri: "METRI",
+      metri: "CareerMatri",
       adopt: "Adoption",
       pricing: "Pricing",
       about: "About",
@@ -66,7 +68,7 @@ export const global: SiteContent = {
 
   nav: {
     items: [
-      { label: "METRI", href: "/metri" },
+      { label: "CareerMatri", href: "/metri" },
       { label: "LOCALISATION", href: "/localisation" },
       { label: "PARTNERSHIP", href: "/partnership" },
       { label: "PRICING", href: "/pricing" },
@@ -82,24 +84,24 @@ export const global: SiteContent = {
   },
 
   hero: {
-    /* METRI 는 약자가 아니다. 옆 문구는 브랜드 풀이가 아니라 제품 설명이다 (R022) */
-    eyebrow: "METRI · CAREER-FIT ASSESSMENT FOR UNIVERSITIES",
+    /* CareerMatri 는 약자가 아니다. 옆 문구는 브랜드 풀이가 아니라 제품 설명이다 (R022) */
+    eyebrow: "CareerMatri · CAREER-FIT ASSESSMENT FOR UNIVERSITIES",
     title: ["Your students already know their major.", "{Nobody has told them what to do next.}"],
     lead:
-      "METRI ranks the job areas of a student's own field out of 100, maps six work styles across 120 items, and writes each student a plan — credentials, projects, applications, interviews, founding, and employers in their own region. Built in Korea, rebuilt in your country from your own labour-market data.",
+      "CareerMatri ranks the job areas of a student's own field out of 100, maps six work styles across 120 items, and writes each student a plan — credentials, projects, applications, interviews, founding, and employers in their own region. Built in Korea, rebuilt in your country from your own labour-market data.",
     primary: { label: "Talk to us", href: "/contact" },
     secondary: { label: "See a real report", href: "#sample" },
-    watermark: "METRI",
+    watermark: "CareerMatri",
   },
 
   sample: {
     label: "A REAL REPORT",
     heading: "Before the method, look at what a student is handed",
     lead:
-      "What METRI measures is the second question. Below are four pages of the report put on one screen. A student does not receive a type name. They receive this.",
+      "What CareerMatri measures is the second question. Below are four pages of the report put on one screen. A student does not receive a type name. They receive this.",
     disclaimer:
       "An illustrative screen showing the format of the report — not a real student’s submission. The job areas shown are one field's; the six work styles and the regional method are exactly as they ship.",
-    docTag: "METRI INDIVIDUAL REPORT",
+    docTag: "CareerMatri INDIVIDUAL REPORT",
     page: "extract · ch.1 · ch.5–6 · annex",
     person: {
       name: "Sample student",
@@ -181,7 +183,7 @@ export const global: SiteContent = {
 
   who: {
     label: "WHO IS IT FOR",
-    heading: "Who brings METRI into a country",
+    heading: "Who brings CareerMatri into a country",
     items: [
       {
         no: "01",
@@ -205,8 +207,8 @@ export const global: SiteContent = {
   },
 
   analyze: {
-    label: "WHAT METRI ANALYZES",
-    heading: "METRI analyses three things together",
+    label: "WHAT CareerMatri ANALYZES",
+    heading: "CareerMatri analyses three things together",
     lead:
       "The three are not read separately. They are joined, which is why the result lands as something to do rather than something to know.",
     items: [
@@ -232,7 +234,7 @@ export const global: SiteContent = {
   },
 
   why: {
-    label: "WHY METRI",
+    label: "WHY CareerMatri",
     heading: "The result connects straight through to a roadmap",
     vs: "VS",
     before: {
@@ -243,7 +245,7 @@ export const global: SiteContent = {
     },
     after: {
       tag: "Strategy-led",
-      title: "METRI",
+      title: "CareerMatri",
       steps: [
         "Analyse the job areas that fit",
         "Map work style across six axes",
@@ -257,7 +259,7 @@ export const global: SiteContent = {
     label: "RESULT SHEET",
     heading: "What the report contains",
     lead: [
-      "METRI runs diagnosis → strengths → application → strategy → execution.",
+      "CareerMatri runs diagnosis → strengths → application → strategy → execution.",
       "Open a section to see how the report is built.",
     ],
     more: "continues in the report",
@@ -525,7 +527,7 @@ export const global: SiteContent = {
 
   evidence: {
     label: "EVIDENCE BASE",
-    heading: "METRI was built from data",
+    heading: "CareerMatri was built from data",
     lead:
       "Not a personality inventory. A student sample and real recruitment-market material, combined so the diagnosis reflects the capability the market actually asks for.",
     stats: [
@@ -543,18 +545,18 @@ export const global: SiteContent = {
         { name: "Engineering department selection indicators", no: "C-2025-059731" },
         { name: "Graduate career confirmation indicators", no: "C-2025-059732" },
       ],
-      note: "The core diagnostic items in the METRI indicator family are registered with the Korea Copyright Commission and legally protected.",
+      note: "The core diagnostic items in the CareerMatri indicator family are registered with the Korea Copyright Commission and legally protected.",
     },
     standards: {
       title: "Standards referenced in the design",
-      head: ["Framework", "Issued by / lineage", "How it informed METRI"],
+      head: ["Framework", "Issued by / lineage", "How it informed CareerMatri"],
       rows: [
         ["NCS", "Ministry of Employment and Labor · HRD Korea", "Alignment of job areas and required capability with the national standard"],
         ["O*NET lineage", "US Department of Labor occupational information", "Reference for job areas and task-level design"],
         ["RIASEC lineage", "Standard vocational-psychology model", "Conceptual frame for partitioning interest areas"],
         ["NACE competencies", "National Association of Colleges and Employers", "Benchmark for defining student career readiness"],
         ["OECD frameworks", "OECD DeSeCo · Learning Compass", "Reference for transferable core-competency structure"],
-        ["Field-of-study classification", "UNESCO ISCED-F 2013", "The ten broad fields METRI is organised by"],
+        ["Field-of-study classification", "UNESCO ISCED-F 2013", "The ten broad fields CareerMatri is organised by"],
         ["Measurement standards", "AERA · APA · NCME lineage", "Basis for the validity and reliability regime"],
       ],
       note: "These frameworks were referenced and benchmarked during design. Reference does not imply joint development, certification or endorsement by the bodies named.",
@@ -562,12 +564,12 @@ export const global: SiteContent = {
   },
 
   choose: {
-    label: "WHY CHOOSE METRI",
+    label: "WHY CHOOSE CareerMatri",
     heading: "Why this and not another test",
     items: [
       {
         title: "What a free test cannot give you",
-        body: "Public career services produce results you cannot file as institutional evidence. METRI gives the student a written plan and the institution an anonymised aggregate report it can submit.",
+        body: "Public career services produce results you cannot file as institutional evidence. CareerMatri gives the student a written plan and the institution an anonymised aggregate report it can submit.",
       },
       {
         title: "Recruitment market, not personality theory",
@@ -596,7 +598,7 @@ export const global: SiteContent = {
     label: "ABOUT US",
     heading: "Developed by ACADEMIX",
     body:
-      "ACADEMIX designs education programmes and runs events for universities and public institutions. METRI was developed in-house.",
+      "ACADEMIX designs education programmes and runs events for universities and public institutions. CareerMatri was developed in-house.",
     highlight:
       "Staffed by people out of government-funded research institutes and backed by a wide industry network, guiding career preparation from undergraduates through doctoral graduates.",
     brandsLabel: "Brands",
@@ -625,7 +627,7 @@ export const global: SiteContent = {
     label: "PROGRAM",
     heading: "The diagnosis is one part of a programme",
     lead:
-      "METRI is not sold as a test in isolation. The result feeds the lectures, mentoring and recruitment events that follow it.",
+      "CareerMatri is not sold as a test in isolation. The result feeds the lectures, mentoring and recruitment events that follow it.",
     items: [
       {
         title: "Employment lectures and industry speakers",
@@ -869,7 +871,7 @@ export const global: SiteContent = {
 
   fields: {
     label: "FIELDS",
-    heading: "METRI sits on ten fields of study",
+    heading: "CareerMatri sits on ten fields of study",
     lead:
       "The fields follow UNESCO's International Standard Classification of Education (ISCED-F 2013). The same ten are used in every country, so departments, universities and markets stay comparable.",
     items: [
@@ -960,20 +962,26 @@ export const global: SiteContent = {
     liveLabel: "Site ready",
     soonLabel: "In preparation",
     note:
-      "The sites are written; the domains are placeholders and not connected yet. If your country is not listed, talk to us — that is how a new one starts.",
-    /* live 는 "그 나라 사이트 원고가 있는가" 다. 지금 있는 것은 셋뿐이고
-       도메인은 아직 연결되지 않았다. 나라별 계약 현황과 다른 값이다 */
+      "One address is registered so far — careermatri.com, which the Korean site runs on. The other countries have their pages written but no address of their own; we open one as the first institution there signs. If your country is not listed, talk to us — that is how a new one starts.",
+    /* R069 (2026-10-02) · **주소가 없는 나라에 주소를 적지 않는다.**
+       전에는 metri.de · metri.us 처럼 나라별 도메인을 적어 두고 note 로만
+       "placeholder" 라고 밝혔는데, 등록된 주소가 하나로 정해진 지금은 그
+       열 줄이 우리가 가진 것처럼 읽힌다. 빈 domain 은 화면이 그리지 않는다
+       (components/sections.tsx).
+
+       live 는 "지금 가서 볼 수 있는가" 다. 카자흐판은 원고가 있지만 주소가
+       없어 아직 갈 곳이 없다 (R037 의 원어민 검수도 남았다) */
     items: [
-      { code: "KR", name: "Korea", native: "한국", domain: "metri.co.kr", href: "https://metri.co.kr", live: true },
-      { code: "KZ", name: "Kazakhstan", native: "Қазақстан", domain: "metri.kz", href: "https://metri.kz", live: true },
-      { code: "TR", name: "Türkiye", native: "Türkiye", domain: "metri.com.tr", href: "#contact", live: false },
-      { code: "DE", name: "Germany", native: "Deutschland", domain: "metri.de", href: "#contact", live: false },
-      { code: "US", name: "United States", native: "United States", domain: "metri.us", href: "#contact", live: false },
-      { code: "JP", name: "Japan", native: "日本", domain: "metri.jp", href: "#contact", live: false },
-      { code: "CN", name: "China", native: "中国", domain: "metri.cn", href: "#contact", live: false },
-      { code: "FR", name: "France", native: "France", domain: "metri.fr", href: "#contact", live: false },
-      { code: "ZA", name: "South Africa", native: "South Africa", domain: "metri.co.za", href: "#contact", live: false },
-      { code: "PH", name: "Philippines", native: "Pilipinas", domain: "metri.ph", href: "#contact", live: false },
+      { code: "KR", name: "Korea", native: "한국", domain: "careermatri.com", href: "https://careermatri.com", live: true },
+      { code: "KZ", name: "Kazakhstan", native: "Қазақстан", domain: "", href: "#contact", live: false },
+      { code: "TR", name: "Türkiye", native: "Türkiye", domain: "", href: "#contact", live: false },
+      { code: "DE", name: "Germany", native: "Deutschland", domain: "", href: "#contact", live: false },
+      { code: "US", name: "United States", native: "United States", domain: "", href: "#contact", live: false },
+      { code: "JP", name: "Japan", native: "日本", domain: "", href: "#contact", live: false },
+      { code: "CN", name: "China", native: "中国", domain: "", href: "#contact", live: false },
+      { code: "FR", name: "France", native: "France", domain: "", href: "#contact", live: false },
+      { code: "ZA", name: "South Africa", native: "South Africa", domain: "", href: "#contact", live: false },
+      { code: "PH", name: "Philippines", native: "Pilipinas", domain: "", href: "#contact", live: false },
     ],
   },
 
@@ -997,7 +1005,7 @@ export const global: SiteContent = {
     typeLabel: "What is this about",
     types: [
       { value: "org", label: "University or department rollout" },
-      { value: "partner", label: "Operating METRI in my country" },
+      { value: "partner", label: "Operating CareerMatri in my country" },
       { value: "individual", label: "An individual assessment" },
     ],
     afterLabel: "What happens next",
@@ -1027,15 +1035,16 @@ export const global: SiteContent = {
   footer: {
     imageNote:
       "The images on this site are AI-generated and are not photographs of real events. The people and scenes in them do not exist.",
-    note: "METRI · developed by ACADEMIX",
+    note: "CareerMatri · developed by ACADEMIX",
     sitesLabel: "Countries",
     sites: [
-      { label: "Global (English)", href: "https://metri.example", ready: true },
-      { label: "한국", href: "https://metri.co.kr", ready: true },
+      /* 주소가 있는 것은 careermatri.com 하나다 (R069) */
+      { label: "Global (English)", href: "#", ready: false },
+      { label: "한국", href: "https://careermatri.com", ready: true },
       /* 카자흐판은 원어민 검수가 끝난 뒤에 연다 (R037). 열지 않은 판으로
          링크를 걸면 죽은 링크가 된다 */
-      { label: "Қазақстан", href: "https://metri.kz", ready: false },
-      { label: "Türkiye", href: "https://metri.com.tr", ready: false },
+      { label: "Қазақстан", href: "#", ready: false },
+      { label: "Türkiye", href: "#", ready: false },
     ],
     soonLabel: "coming soon",
     privacyLabel: "Privacy notice",
@@ -1043,7 +1052,7 @@ export const global: SiteContent = {
   },
 
   map: {
-    heading: "Where METRI runs",
+    heading: "Where CareerMatri runs",
     lead:
       "The instrument, the job areas and the work-style framework are shared worldwide. What is filled in per country is the university, its local employers, and the translations.",
     /* 실측한 것만 적는다. 2026-09-09 확인 — 라이브 플랫폼의 계약 대학

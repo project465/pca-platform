@@ -15,15 +15,20 @@ import type { NextConfig } from "next";
  * 배포 기록의 이 한 줄이 유일한 신호다.
  */
 console.info(
-  `[metri] SITE=${process.env.SITE ?? "(없음 → global)"}`,
+  `[careermatri] SITE=${process.env.SITE ?? "(없음 → global)"}`,
 );
 
 const nextConfig: NextConfig = {
   /**
-   * 정적으로 내보낸다. Firebase Hosting 은 정적 파일만 서빙한다 (R033).
+   * 정적으로 내보낸다. 나가는 곳은 `out/` 이다.
    *
-   * 그래서 서버 액션을 쓸 수 없다 — 문의 폼은 브라우저에서 창구를 직접
-   * 부른다(`src/lib/contact.ts`). 여기를 되돌리려면 폼도 함께 되돌려야 한다.
+   * 처음에는 Firebase Hosting 때문이었고(R033), 2026-10-02 지시로 배포는
+   * 대표 Vercel 팀에서 이 저장소를 Import 하는 방식이 됐다. 어느 쪽이든
+   * 정적이라는 조건은 같다 — **서버 액션을 쓸 수 없다.** 문의 폼은
+   * 브라우저에서 창구를 직접 부른다(`src/lib/contact.ts`). 여기를
+   * 되돌리려면 폼도 함께 되돌려야 한다.
+   *
+   * Vercel 설정은 README 의 "Vercel 설정" 절에 적어 두었다.
    */
   output: "export",
   reactStrictMode: true,

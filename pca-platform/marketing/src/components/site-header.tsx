@@ -6,21 +6,20 @@ export default function SiteHeader({ site }: { site: SiteContent }) {
   return (
     <header className="site-header">
       <div className="wrap bar">
-        {/* 머리에 서는 이름은 제품(METRI)이고, 만든 곳은 그 아래에 작게 둔다.
-            ACADEMIX 의 A 글리프는 뺐다 — 다른 브랜드 자산이다.
+        {/* 머리에 서는 이름은 제품(CareerMatri)이고, 만든 곳은 그 아래에
+            작게 둔다. ACADEMIX 의 A 글리프는 뺐다 — 다른 브랜드 자산이다.
 
-            **어두운 판에는 그림 로고를 걸지 않는다.** 받은 워드마크는
-            #3F56C9 라 어두운 바탕 위에서 글자로 읽히지 않는다. 어두운 판용
-            판(v2)이 오기 전까지 카자흐판은 글자 로고를 그대로 쓴다 —
-            2026-09-10 총괄 확인 */}
+            **세 판 모두 글자 로고다** (R059 · 2026-10-02). 가지고 있는
+            워드마크 그림은 METRI 라고 적혀 있어 이제 쓸 수 없다. 새 워드마크가
+            오면 여기 글자 자리에 그림을 넣는다 — `public/logo/` 의 옛 파일은
+            지우지 않고 두었다(이름이 METRI 인 자산이라는 기록이 남아야 한다).
+
+            그때도 어두운 판(카자흐)은 그림을 걸지 않는다 — 받은 워드마크는
+            #3F56C9 라 어두운 바탕 위에서 글자로 읽히지 않는다 (2026-09-10
+            총괄 확인). */}
         <a className="brandmark" href="#top">
           <span>
-            {site.theme ? (
-              <b>{site.brand}</b>
-            ) : (
-              /* eslint-disable-next-line @next/next/no-img-element */
-              <img className="wordmark" src="/logo/metri-wordmark.png" alt={site.brand} />
-            )}
+            <b>{site.brand}</b>
             <span>{site.nav.byLine}</span>
           </span>
         </a>

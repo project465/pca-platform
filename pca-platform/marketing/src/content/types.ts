@@ -172,7 +172,13 @@ export type PrivacySection = {
   table?: { head: string[]; rows: string[][] };
 };
 
-export type PrivacyDoc = {
+/**
+ * 법적 문서 한 장. 처리방침·이용약관·환불 정책이 같은 모양이다.
+ *
+ * 셋을 한 모양으로 둔 것은 PG 심사가 이 셋을 함께 보기 때문이다 — 하나만
+ * 다른 틀로 그려 두면 다음에 넷째가 올 때 또 새 틀을 만든다.
+ */
+export type LegalDoc = {
   label: string;
   heading: string;
   version: string;
@@ -181,6 +187,9 @@ export type PrivacyDoc = {
   /** 맨 아래 사업자 정보 한 줄 */
   operator: string;
 };
+
+/** 옛 이름. 처리방침만 있던 때의 것이라 그대로 둔다 */
+export type PrivacyDoc = LegalDoc;
 
 export type FieldsBlock = {
   label: string;
@@ -446,6 +455,19 @@ export type SiteContent = {
   /** 개인정보 처리방침 전문. 이 사이트의 /privacy 가 그린다 */
   privacy?: PrivacyDoc;
 
+  /**
+   * 이용약관과 환불·취소 정책. `/terms` · `/refund` 가 그린다.
+   *
+   * **PG(KCP) 심사가 이 두 장을 본다.** 상품·가격·약관·환불·개인정보·
+   * 사업자정보가 한 주소 안에 있어야 신청이 통과한다 (2026-10-02 지시).
+   *
+   * 한국판에만 있다. 영어·카자흐어 법률 문구는 번역이 아니라 그 나라
+   * 법률의 문제라 이 방이 지어내지 않는다 — 블록이 없으면 그 판은
+   * 페이지 자체가 404 다.
+   */
+  terms?: LegalDoc;
+  refund?: LegalDoc;
+
   pricing: Pricing;
   regions?: Regions;
 
@@ -510,6 +532,17 @@ export type SiteContent = {
     /* 처리방침은 플랫폼에 있다. 아직 그 나라 말로 된 판이 없으면 비워 둔다 —
        없는 문서로 링크를 걸어 두는 것보다 링크가 없는 편이 낫다 */
     privacyLabel?: string;
+    /* 이용약관·환불 정책의 꼬리 링크. 그 판에 문서가 있을 때만 적는다 */
+    termsLabel?: string;
+    refundLabel?: string;
+    /**
+     * 꼬리의 사업자 정보 한 줄.
+     *
+     * PG 심사와 전자상거래법이 요구하는 표기다. **등록된 표기를 그대로
+     * 옮긴 판에만 적는다** — 영문 상호와 대표자 영문 이름은 아직 받지
+     * 못했으므로 해외판은 비어 있고, 비어 있으면 그리지 않는다.
+     */
+    biz?: string;
   /** 사진이 AI 생성물임을 밝히는 한 줄. 꼬리에 한 번만 나온다 */
   imageNote: string;
   };

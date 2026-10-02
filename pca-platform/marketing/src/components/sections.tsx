@@ -304,6 +304,18 @@ export function SiteFooter({ site }: { site: SiteContent }) {
                   <a href={site.privacyUrl}>{site.footer.privacyLabel}</a>
                 </li>
               ) : null}
+              {/* 약관과 환불 정책도 같은 규칙이다 — 그 판에 문서가 있을
+                  때만 건다. PG 심사가 꼬리에서 이 셋을 찾는다 */}
+              {site.footer.termsLabel && site.terms ? (
+                <li>
+                  <a href="/terms">{site.footer.termsLabel}</a>
+                </li>
+              ) : null}
+              {site.footer.refundLabel && site.refund ? (
+                <li>
+                  <a href="/refund">{site.footer.refundLabel}</a>
+                </li>
+              ) : null}
             </ul>
           </div>
           <div>
@@ -323,6 +335,11 @@ export function SiteFooter({ site }: { site: SiteContent }) {
             </ul>
           </div>
         </div>
+
+        {/* 사업자 정보. 전자상거래법 표기이고 PG 심사가 찾는 줄이다.
+            등록된 표기를 그대로 옮긴 판에만 있다 — 영문 상호를 받지 못해
+            해외판은 비어 있고, 비어 있으면 그리지 않는다 */}
+        {site.footer.biz ? <p className="bizline">{site.footer.biz}</p> : null}
 
         {/* 이 사이트의 사진은 AI 로 만든 것이다. 그 사실을 밝히지 않으면
             특강·멘토링·채용박람회를 설명하는 자리에 붙은 그림이 운영
@@ -615,7 +632,10 @@ export function RegionsSection({ site }: { site: SiteContent }) {
             >
               <span className="code">{c.code}</span>
               <span className="nm">{c.native}</span>
-              <span className="dm">{c.domain}</span>
+              {/* 주소가 없는 나라는 주소 줄을 그리지 않는다 (R069). 빈
+                  칸이라도 자리를 잡아 두면 "주소가 있는데 안 보인다" 로
+                  읽힌다 */}
+              {c.domain ? <span className="dm">{c.domain}</span> : null}
               <span className="st">{c.live ? r.liveLabel : r.soonLabel}</span>
             </a>
           ))}

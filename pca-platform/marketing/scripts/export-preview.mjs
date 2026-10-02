@@ -37,9 +37,9 @@ await page.waitForTimeout(700);
    사이트의 meta title 은 검색 결과용이라 길다. 미리보기는 목록에서 골라
    여는 것이므로 짧고 구별되는 이름이 낫다 */
 const PREVIEW_NAME = {
-  global: "METRI Global",
-  kr: "METRI 코리아",
-  kz: "METRI Қазақстан",
+  global: "CareerMatri Global",
+  kr: "CareerMatri 코리아",
+  kz: "CareerMatri Қазақстан",
 };
 const title = PREVIEW_NAME[site] ?? (await page.title());
 const lang = await page.getAttribute("html", "lang");
