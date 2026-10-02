@@ -418,3 +418,11 @@ h1{font-size:34px;line-height:1.16;letter-spacing:-.04em;color:var(--navy)}
   .rp-toc{break-after:page;page-break-after:always}
   .rp-tw tbody tr:hover td{background:none}
 }
+
+/* 상세 화면의 순서 안내. 네 걸음이 전부라는 것을 먼저 보여준다 */
+.flowlist{margin:14px 0 16px;padding:0 0 0 18px;list-style:none;counter-reset:f}
+.flowlist li{counter-increment:f;position:relative;font-size:13px;color:var(--muted);
+  line-height:1.7;padding-left:6px}
+.flowlist li::before{content:counter(f);position:absolute;left:-18px;top:3px;
+  width:16px;height:16px;border-radius:50%;background:var(--mint);color:var(--navy);
+  font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center}
