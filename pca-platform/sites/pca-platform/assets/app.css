@@ -426,3 +426,9 @@ h1{font-size:34px;line-height:1.16;letter-spacing:-.04em;color:var(--navy)}
 .flowlist li::before{content:counter(f);position:absolute;left:-18px;top:3px;
   width:16px;height:16px;border-radius:50%;background:var(--mint);color:var(--navy);
   font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center}
+
+/* 결과 화면의 목록. 글머리를 작게 두고 줄 간격을 넓힌다 */
+.qlist{margin:10px 0 0;padding:0 0 0 16px;list-style:none}
+.qlist li{position:relative;font-size:13.5px;line-height:1.75;color:var(--ink);padding:3px 0}
+.qlist li::before{content:"";position:absolute;left:-12px;top:13px;width:4px;height:4px;
+  border-radius:50%;background:var(--green)}
