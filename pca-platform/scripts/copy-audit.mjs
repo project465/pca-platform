@@ -51,6 +51,8 @@ const files = process.argv.slice(2).length
      // 약관도 사람이 읽는 글이다. 법 문장이라 딱딱해도 기계 티는 따로 난다
      // 결과지 원고. 학생이 실제로 읽는 문장이라 위젯 원고와 같은 기준으로 센다
      "sites/pca-platform/content/me.json",
+     // 화면 자체의 문구. 상세·상품·단계 화면은 코드가 아니라 여기 적혀 있다
+     "sites/pca-platform/index.html",
      // 결과지의 공통 원고는 코드 안에 문자열로 있다. JSON 만 보면 절반을 놓친다
      "sites/pca-platform/assets/report.js",
      "sites/pca-platform/assets/app.js",

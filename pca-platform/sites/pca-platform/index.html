@@ -68,22 +68,42 @@
 
       <div class="card pad">
         <div class="statgrid">
-          <div class="stat"><strong id="stQ">28</strong><span>문항</span></div>
-          <div class="stat"><strong id="stT">4~6분</strong><span>소요시간</span></div>
+          <div class="stat"><strong id="stQ">28~92</strong><span>문항</span></div>
+          <div class="stat"><strong id="stT">4~25분</strong><span>소요시간</span></div>
           <div class="stat"><strong id="stJ">8</strong><span>직무 분석</span></div>
         </div>
-        <button class="primary" id="btnStart">검사 시작하기</button>
+        <ol class="flowlist">
+          <li>어느 검사로 볼지 고릅니다</li>
+          <li>지금 어느 단계인지 고릅니다</li>
+          <li>학과를 고르고 이름과 학번을 적습니다</li>
+          <li>문항에 답하면 그 자리에서 결과지가 열립니다</li>
+        </ol>
+        <button class="primary" id="btnStart">시작하기</button>
         <p class="note">
           결과는 직무를 확정하는 판정이 아니라 <b>탐색 우선순위</b>입니다.
-          중간에 나가도 같은 기기·같은 브라우저에서 이어서 진행할 수 있습니다.
+          중간에 나가도 같은 기기와 같은 브라우저에서 이어서 하실 수 있습니다.
         </p>
       </div>
     </section>
 
-    <!-- 1-2. 단계 선택 -->
-    <section class="screen" id="s-stage">
+    <!-- 1-2. 상품 선택 -->
+    <section class="screen" id="s-form">
       <div class="hero">
         <div class="eyebrow">STEP 1</div>
+        <h1>어느 검사로 보시겠어요?</h1>
+        <p class="desc">문항 수가 다르고, 그만큼 결과지에 들어가는 절이 달라집니다.
+          어느 쪽을 고르셔도 채점하는 자는 같습니다.</p>
+      </div>
+      <div id="formList"></div>
+      <div class="nav" id="navForm" style="display:none">
+        <div class="navin"><button class="primary" id="btnFormNext" disabled>다음</button></div>
+      </div>
+    </section>
+
+    <!-- 1-3. 단계 선택 -->
+    <section class="screen" id="s-stage">
+      <div class="hero">
+        <div class="eyebrow">STEP 2</div>
         <h1>지금 어디에 계신가요?</h1>
         <p class="desc">단계마다 묻는 것과 결과지에 붙는 절이 다릅니다. 대학원·연구 단계에서는 연구 역량 문항이 더 나옵니다.</p>
       </div>
@@ -96,7 +116,7 @@
     <!-- 2. 학과 선택 -->
     <section class="screen" id="s-major">
       <div class="hero">
-        <div class="eyebrow">STEP 2</div>
+        <div class="eyebrow">STEP 3</div>
         <h1>학과를 선택해 주세요</h1>
         <p class="desc">학과마다 직무 구조와 문항이 다릅니다. 현재는 기계공학과가 열려 있고, 나머지 학과는 순차적으로 추가됩니다.</p>
       </div>
@@ -109,7 +129,7 @@
     <!-- 3. 응시자 정보 -->
     <section class="screen" id="s-profile">
       <div class="hero">
-        <div class="eyebrow">STEP 3</div>
+        <div class="eyebrow">STEP 4</div>
         <h1>응시자 정보</h1>
         <p class="desc" id="profileDesc">결과지 발급과 기관 제출용으로만 사용합니다.</p>
       </div>

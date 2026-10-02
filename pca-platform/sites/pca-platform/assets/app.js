@@ -45,11 +45,20 @@
   STAGES.forEach(function (x) { STAGE_BY[x.code] = x; });
   var GRAD = window.PCA_GRAD || null;
 
+  /* 상품. 고르는 사람이 무엇을 받는지 알고 고르도록 화면에 적을 것까지 둔다.
+     쪽수는 인쇄로 찍어 센 값이다(학부 기준). */
   var FORM_META = {
-    QUICK: { n: 28, time: '4~6분' },
-    STANDARD: { n: 68, time: '12~15분' },
-    PRO: { n: 92, time: '18~25분' }
+    QUICK:    { n: 28, time: '4~6분',   label: 'BASIC',
+                out: '화면 요약 한 장',
+                desc: '직무 적합도 상위 셋과 공학 활동 8축까지 화면에서 봅니다. 결과지는 나오지 않습니다.' },
+    STANDARD: { n: 68, time: '12~15분', label: 'STANDARD',
+                out: '결과지 71쪽',
+                desc: '직무마다 하는 일과 필요한 역량, 자기소개서 문장과 면접 질문, 30일 체크리스트까지 들어갑니다.' },
+    PRO:      { n: 92, time: '18~25분', label: 'PRO',
+                out: '결과지 77쪽',
+                desc: 'STANDARD 에 창업 절이 붙고, 직무를 가르는 근거를 더 자세히 적습니다.' }
   };
+  var FORM_ORDER = ['QUICK', 'STANDARD', 'PRO'];
 
   /* ── 상태 ─────────────────────────────────────────── */
   var S = {
@@ -104,7 +113,7 @@
   }
 
   function screen(id) {
-    ['s-resume', 's-start', 's-stage', 's-major', 's-profile', 's-question', 's-result'].forEach(function (x) {
+    ['s-resume', 's-start', 's-form', 's-stage', 's-major', 's-profile', 's-question', 's-result'].forEach(function (x) {
       var el = document.getElementById(x);
       if (el) el.classList.toggle('active', x === id);
     });
@@ -116,6 +125,8 @@
     $('#navMajor').style.display = (id === 's-major') ? 'block' : 'none';
     var ns = document.getElementById('navStage');
     if (ns) ns.style.display = (id === 's-stage') ? 'block' : 'none';
+    var nf = document.getElementById('navForm');
+    if (nf) nf.style.display = (id === 's-form') ? 'block' : 'none';
     window.scrollTo(0, 0);
   }
 
@@ -169,6 +180,31 @@
       b.classList.add('selected');
       S.majorCode = b.dataset.code;
       $('#btnMajorNext').disabled = false;
+    });
+  }
+
+  function buildFormList() {
+    var box = document.getElementById('formList');
+    if (!box) return;
+    box.innerHTML = '<div class="majorgrid">' + FORM_ORDER.map(function (code) {
+      var m = FORM_META[code];
+      return '<button class="major' + (S.form === code ? ' selected' : '') +
+        '" data-code="' + code + '"><b>' + esc(m.label) + '</b>' +
+        '<small>' + m.n + '문항 · ' + esc(m.time) + ' · ' + esc(m.out) + '</small>' +
+        '<small>' + esc(m.desc) + '</small></button>';
+    }).join('') + '</div>' +
+    '<p class="note">지금은 셋 다 열려 있습니다. 학과가 계약하면 학생은 결제 없이 ' +
+    '그대로 보고, 개인 결제는 도메인과 통신판매업 신고, 전자결제 심사가 끝나야 붙습니다.</p>';
+    if (S.form) document.getElementById('btnFormNext').disabled = false;
+    box.addEventListener('click', function (e) {
+      var b = e.target.closest('.major');
+      if (!b) return;
+      Array.prototype.forEach.call(box.querySelectorAll('.major'), function (x) {
+        x.classList.remove('selected');
+      });
+      b.classList.add('selected');
+      S.form = b.dataset.code;
+      document.getElementById('btnFormNext').disabled = false;
     });
   }
 
@@ -780,9 +816,14 @@
     });
 
     $('#btnStart').addEventListener('click', function () {
-      if (!S.stage) { screen('s-stage'); return; }
-      if (S.majorCode && window.PCA_DATA[S.majorCode]) { applyMajor(S.majorCode); screen('s-profile'); }
-      else screen('s-major');
+      buildFormList();
+      screen('s-form');
+    });
+    document.getElementById('btnFormNext').addEventListener('click', function () {
+      if (!S.form) return;
+      save();
+      buildStageList();
+      screen('s-stage');
     });
     document.getElementById('btnStageNext').addEventListener('click', function () {
       if (!S.stage) return;
@@ -862,14 +903,13 @@
     /* 단계를 먼저 묻는다. 학과가 주소에 있어도 단계가 없으면 단계부터다.
        단계에 따라 출제 문항 수가 달라져서, 나중에 물으면 이미 시작한 사람의
        문항 수가 도중에 바뀐다. */
-    if (!S.stage) {
-      if (code && window.PCA_DATA[code]) S.majorCode = code;
-      screen('s-stage');
-    } else if (code && window.PCA_DATA[code]) {
-      applyMajor(code);
-      screen('s-profile');
-    } else if (p.start === '1' || p.start === 'true') {
-      screen('s-major');
+    /* 주소에 학과와 상품이 적혀 있어도 설명을 건너뛰지 않는다. 무엇을 푸는
+       검사인지 모르고 1번 문항을 만나면 거기서 그대로 나간다. 적힌 값은
+       골라 둔 상태로만 쓰고, 고르는 화면은 그대로 보여준다. */
+    if (code && window.PCA_DATA[code]) S.majorCode = code;
+    if (S.stage && S.majorCode) {
+      applyMajor(S.majorCode);
+      screen('s-profile');          // 단체 링크(단계까지 지정)는 바로 들어간다
     } else {
       screen('s-start');
     }
