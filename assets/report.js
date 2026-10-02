@@ -694,6 +694,66 @@ window.PCAReport = (function () {
         }).join('') + '</div>' +
         note('아홉 개 중 셋 이상이 걸렸다면 오늘 제출하지 마십시오. 하루를 더 쓰는 비용이 다시 지원하는 비용보다 훨씬 작습니다.'));
 
+    /* ── C 수업과 자격 ────────────────────────────
+       학생이 오늘 당장 손댈 수 있는 것은 수업 신청과 자격 일정뿐이다.
+       1군이 여럿이면 그 전부에서 모아 한 번만 적는다. 같은 과목이 세 번
+       나오면 읽는 사람이 세 번 다 건너뛴다. */
+    (function () {
+      var g1jobs = (major.jobs || []).filter(function (j) {
+        return g1.some(function (x) { return x.name === j.name; });
+      });
+      if (!g1jobs.length) g1jobs = (major.jobs || []).filter(function (j) { return j.name === top.name; });
+
+      var seen = {}, courses = [];
+      g1jobs.forEach(function (j) {
+        (j.courses || []).forEach(function (cs) {
+          if (seen[cs.n]) { seen[cs.n].push(j.name); return; }
+          seen[cs.n] = [j.name];
+          courses.push(cs);
+        });
+      });
+      if (!courses.length) return;
+
+      sec('C', '수업과 자격');
+
+      sub('C-1', '이 직무로 가는 수업',
+        p('적합도와 격차는 지금 당장 바꿀 수 있는 값이 아닙니다. 반면 다음 학기 수강신청은 이번 달에 손댈 수 있습니다. 아래는 1군 직무가 실제로 쓰는 과목이고, 과목 이름은 학교마다 달라서 강의계획서의 내용으로 맞춰 보셔야 합니다.') +
+        table(['과목', '이 직무에서 쓰이는 곳', '걸리는 직무'],
+          courses.map(function (cs) {
+            return [esc(cs.n), esc(cs.w), esc(seen[cs.n].join(' · '))];
+          })) +
+        note('여러 직무에 함께 걸리는 과목부터 들으십시오. 1군을 아직 하나로 좁히지 못한 상태에서 어느 쪽으로 가도 쓸모가 남는 과목이 그것입니다.'));
+
+      sub('C-2', '수업을 결과물로 남기는 법',
+        p('성적표는 등수만 남고 무엇을 했는지는 남지 않습니다. 같은 수업을 듣고도 서류에 쓸 것이 있는 사람과 없는 사람이 갈리는 지점이 여기입니다.') +
+        ol(['과제 하나를 고를 때 점수가 잘 나올 주제 대신 조건이 분명한 주제를 고릅니다. 조건이 있어야 판단이 생기고, 판단이 있어야 쓸 문장이 생깁니다',
+            '풀이 과정을 그때그때 적어 둡니다. 학기가 끝나고 복원하면 결론만 남고 왜 그렇게 갔는지가 사라집니다',
+            '숫자가 나오는 과제는 전후를 같이 남깁니다. 바꾸기 전 값이 없으면 개선했다는 말을 쓸 수 없습니다',
+            '팀 과제는 본인이 맡은 범위를 날짜와 함께 적어 둡니다. 면접에서 가장 자주 흔들리는 자리입니다']) +
+        note('학기마다 이렇게 남긴 과제가 둘이면 4학년 때 쓸 것이 여덟 개가 됩니다. 그때 가서 만들 수 있는 것이 아닙니다.'));
+
+      var cert = (g1jobs[0] || {}).certs;
+      if (cert && (cert.items || []).length) {
+        sub('C-3', '자격증은 무엇부터',
+          p(esc(cert.note)) +
+          table(['자격', '응시 시기', '어디에 쓰이는가'],
+            cert.items.map(function (x) { return [esc(x.n), esc(x.t), esc(x.w)]; })) +
+          note('기사 자격은 4년제 졸업예정자부터 응시할 수 있습니다. 3학년 겨울에 과목을 훑고 4학년 1회차에 한 번 보는 일정이 가장 흔합니다.'));
+
+        var others = g1jobs.slice(1).filter(function (j) { return j.certs; });
+        if (others.length) {
+          sub('C-4', '1군의 다른 직무는 무엇을 보는가',
+            p('같은 1군 안에서도 자격은 조금씩 갈립니다. 어느 쪽으로 기울지 아직 정하지 못했다면, 두 직무에 함께 걸리는 자격부터 보는 편이 안전합니다.') +
+            others.map(function (j) {
+              return '<div class="rp-inner"><b>' + esc(j.name) + '</b>' +
+                ul((j.certs.items || []).slice(0, 3).map(function (x) {
+                  return '<b>' + esc(x.n) + '</b> · ' + esc(x.t);
+                })) + '</div>';
+            }).join(''));
+        }
+      }
+    }());
+
     /* ── G 역량 격차 ──────────────────────────────
        직무 매트릭스의 요구 벡터(major.jobs[].v)와 응답자의 8축을 직접 견준다.
        두 값 모두 이미 계산되어 있던 것이고, 여기서 새로 만드는 숫자는 뺄셈뿐이다. */
