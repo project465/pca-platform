@@ -5,7 +5,9 @@ import WorldMap from "@/components/world-map";
 import { Localisation } from "@/components/sections";
 import { NextLink, PageHead, PhotoSlot } from "@/components/visuals";
 
-export const metadata = { title: "Localisation" };
+export function generateMetadata() {
+  return { title: getSite().ui.pageTitles.localisation ?? "" };
+}
 
 /** 글로벌 전용 */
 export default function LocalisationPage() {
@@ -16,11 +18,11 @@ export default function LocalisationPage() {
   return (
     <Shell>
       <PageHead label={l.label} title={l.heading} lead={l.lead} />
-      <Localisation site={site} />
+      <Localisation site={site} bare />
       {site.map ? <WorldMap map={site.map} /> : null}
       <section className="divided">
         <div className="wrap photosplit">
-          <PhotoSlot caption="Photo — a localisation workshop with a partner university" ratio="4 / 3" />
+          <PhotoSlot caption={site.ui.photos.localisation} src="/photos/09.jpg" ratio="4 / 3" />
           <div>
             <span className="label-sm">NEXT</span>
             <h2 style={{ margin: "16px 0 20px" }}>Who does what, and how a rollout starts</h2>

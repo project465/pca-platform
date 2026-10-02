@@ -4,7 +4,9 @@ import Shell from "@/components/shell";
 import { University } from "@/components/sections";
 import { NextLink, PageHead, PhotoSlot, PullQuote } from "@/components/visuals";
 
-export const metadata = { title: "지역·앵커" };
+export function generateMetadata() {
+  return { title: getSite().ui.pageTitles.anchor ?? "" };
+}
 
 /** 한국 전용. 다른 나라 원고에는 이 절이 없다 */
 export default function AnchorPage() {
@@ -15,7 +17,7 @@ export default function AnchorPage() {
   return (
     <Shell>
       <PageHead label={u.label} title={u.heading} lead={u.lead} />
-      <University site={site} />
+      <University site={site} bare />
       <section className="divided tinted">
         <div className="wrap photosplit">
           <div>
@@ -28,12 +30,12 @@ export default function AnchorPage() {
               나누어 정리했습니다.
             </PullQuote>
             <div style={{ marginTop: 24 }}>
-              <a className="btn lg solid" href="/pca">
+              <a className="btn lg solid" href="/metri">
                 결과지 9번 섹션 보기
               </a>
             </div>
           </div>
-          <PhotoSlot caption="사진 자리 — 지역 기관·기업 방문 또는 지역 채용 행사" ratio="4 / 3" />
+          <PhotoSlot caption="지역 기관·기업 방문" src="/photos/10.jpg" ratio="4 / 3" />
         </div>
       </section>
       <section className="divided">

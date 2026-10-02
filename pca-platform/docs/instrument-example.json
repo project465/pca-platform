@@ -1,0 +1,57 @@
+{
+  "_note": "예시 문항입니다. mockups/01_test_screen.html 의 시안 문항을 그대로 옮긴 것으로, 실제 검사 문항이 아닙니다. 실제 문항이 정해지면 같은 형태로 파일을 하나 더 만들어 적재하세요.",
+  "major": { "code": "ME", "name": { "ko": "기계공학", "en": "Mechanical Engineering" } },
+  "version": "v0.1-example",
+  "indicators": [
+    { "code": "ANALYTIC", "name": { "ko": "분석·수리", "en": "Analytical" } },
+    { "code": "DESIGN",   "name": { "ko": "설계·구상", "en": "Design" } },
+    { "code": "FIELD",    "name": { "ko": "현장·실행", "en": "Field" } },
+    { "code": "TOOL",     "name": { "ko": "도구 활용", "en": "Tooling" } },
+    { "code": "DOC",      "name": { "ko": "문서·정리", "en": "Documentation" } },
+    { "code": "DEPTH",    "name": { "ko": "탐구 지속", "en": "Depth" } }
+  ],
+  "questions": [
+    { "order": 1, "indicator": "ANALYTIC", "type": "likert5",
+      "text": { "ko": "수식으로 표현된 물리 현상을 직접 계산해 확인해보는 일이 즐겁다." } },
+    { "order": 2, "indicator": "DESIGN", "type": "likert5",
+      "text": { "ko": "완성된 도면보다, 아직 형상이 정해지지 않은 아이디어 단계가 더 흥미롭다." } },
+    { "order": 3, "indicator": "ANALYTIC", "type": "likert5",
+      "text": { "ko": "실험 결과가 이론값과 다를 때 원인을 끝까지 추적하는 편이다." } },
+    { "order": 4, "indicator": "DOC", "type": "likert5",
+      "text": { "ko": "규격서나 기준 문서를 읽고 정리하는 일이 크게 부담스럽지 않다." } },
+    { "order": 5, "indicator": "TOOL", "type": "choice",
+      "text": { "ko": "3D 모델링 도구를 사용해 본 경험은 어느 정도인가요?" },
+      "options": [
+        { "order": 1, "score": 1, "label": { "ko": "써본 적 없다" } },
+        { "order": 2, "score": 2, "label": { "ko": "수업에서 따라 해봤다" } },
+        { "order": 3, "score": 3, "label": { "ko": "과제 부품을 직접 그려봤다" } },
+        { "order": 4, "score": 4, "label": { "ko": "조립체까지 설계해봤다" } }
+      ] },
+    { "order": 6, "indicator": "FIELD", "type": "likert5",
+      "text": { "ko": "설비가 멈춘 상황이라면, 현장에 직접 가서 확인하는 쪽이 나에게 맞다." } },
+    { "order": 7, "indicator": "TOOL", "type": "choice",
+      "text": { "ko": "반복되는 계산을 코드로 자동화해 본 경험은 어느 정도인가요?" },
+      "options": [
+        { "order": 1, "score": 1, "label": { "ko": "없다" } },
+        { "order": 2, "score": 2, "label": { "ko": "예제를 실행해봤다" } },
+        { "order": 3, "score": 3, "label": { "ko": "과제에 직접 작성해 썼다" } },
+        { "order": 4, "score": 4, "label": { "ko": "반복 작업용 도구를 만들어봤다" } }
+      ] },
+    { "order": 8, "indicator": "DEPTH", "type": "likert5",
+      "text": { "ko": "하나의 주제를 오래 파고드는 편이다." } },
+    { "order": 9, "indicator": "TOOL", "type": "choice",
+      "text": { "ko": "유한요소해석을 수업이나 스터디에서 접해본 적이 있나요?" },
+      "options": [
+        { "order": 1, "score": 1, "label": { "ko": "들어본 적 없다" } },
+        { "order": 2, "score": 2, "label": { "ko": "이름만 안다" } },
+        { "order": 3, "score": 3, "label": { "ko": "수업에서 다뤄봤다" } },
+        { "order": 4, "score": 4, "label": { "ko": "직접 해석을 돌려봤다" } }
+      ] },
+    { "order": 10, "indicator": "DESIGN", "type": "likert5",
+      "text": { "ko": "도면에 표기된 공차의 의미를 읽을 수 있다." } },
+    { "order": 11, "indicator": "DOC", "type": "likert5",
+      "text": { "ko": "팀 과제에서 결과 정리와 발표를 맡는 경우가 많다." } },
+    { "order": 12, "indicator": "DEPTH", "type": "likert5",
+      "text": { "ko": "졸업 후 대학원 진학을 고려하고 있다." } }
+  ]
+}

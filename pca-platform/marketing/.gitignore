@@ -1,6 +1,9 @@
 node_modules/
 .next/
 out/
+out-global/
+out-kr/
+out-kz/
 *.tsbuildinfo
 next-env.d.ts
 
@@ -8,5 +11,5 @@ next-env.d.ts
 .env.local
 .env*.local
 
-# 문의 접수 임시 저장. 운영에서는 메일/CRM 으로 보낸다
+# 옛 서버 액션이 쓰던 자리. 정적으로 바뀌며 없어졌다
 .inquiries/

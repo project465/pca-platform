@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PCA 단체 도입 제안</title>
+<style>
+:root{
+  --field:#EBEEF0; --paper:#FFFFFF; --ink:#16232E; --rule:#C9D2D8;
+  --muted:#61717D; --met:#1B6B57; --partial:#C08A0B; --gap:#C0392B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--field);color:var(--ink);
+  font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,-apple-system,sans-serif;
+  font-size:15px;line-height:1.6;font-variant-numeric:tabular-nums;
+  padding:28px 18px 70px;
+}
+.sheet{max-width:900px;margin:0 auto;background:var(--paper);border:1px solid var(--rule)}
+
+.draft{background:#FCF4F3;border-bottom:1px solid var(--gap);color:var(--gap);
+  padding:12px 40px;font-size:13px;font-weight:600}
+
+.top{padding:26px 40px;border-bottom:2px solid var(--ink);display:flex;
+  flex-wrap:wrap;gap:8px 24px;align-items:baseline}
+.top h1{font-size:24px;font-weight:800;letter-spacing:-.03em}
+.top .who{margin-left:auto;font-size:13px;color:var(--muted)}
+
+section{padding:28px 40px;border-bottom:1px solid var(--rule)}
+section:last-of-type{border-bottom:0}
+h2{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;margin-bottom:14px}
+h3{font-size:16px;font-weight:700;letter-spacing:-.02em;margin-bottom:6px}
+p{max-width:70ch;margin-bottom:8px}
+p.lead{font-size:16.5px;line-height:1.55;max-width:56ch}
+.mut{color:var(--muted);font-size:13.5px}
+b.blank{color:var(--gap);font-weight:700}
+
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:22px 34px}
+.cols ul{list-style:none}
+.cols li{font-size:14px;padding:7px 0;border-top:1px solid var(--rule)}
+.cols li:first-child{border-top:0}
+
+table{border-collapse:collapse;width:100%;margin-top:6px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule);font-size:14px;vertical-align:top}
+th{font-size:11.5px;color:var(--muted);border-bottom:1px solid var(--ink);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+
+ol.flow{list-style:none;counter-reset:f;display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+ol.flow li{counter-increment:f;border-top:2px solid var(--ink);padding-top:10px;font-size:13.5px}
+ol.flow li::before{content:counter(f);display:block;font-size:11px;font-weight:800;
+  color:var(--muted);margin-bottom:4px}
+ol.flow li b{display:block;font-size:14.5px;margin-bottom:3px}
+
+.cant{background:#F7F9FA;border:1px solid var(--rule);padding:16px 18px;margin-top:14px}
+.cant b{color:var(--gap)}
+
+.foot{padding:18px 40px;background:#F7F9FA;color:var(--muted);font-size:12.5px}
+
+@media (max-width:680px){
+  body{padding:0 0 40px}
+  .sheet{border-left:0;border-right:0}
+  .top,section,.foot,.draft{padding-left:20px;padding-right:20px}
+  .cols{grid-template-columns:1fr}
+}
+@media print{
+  body{background:#fff;padding:0}
+  .sheet{border:0;max-width:none}
+  section{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="draft">
+    초안입니다. 사업자 정보·단가·처리방침 검토가 끝나기 전에는 학교에 보내지 않습니다.
+    붉게 표시된 곳이 채워야 할 값입니다.
+  </div>
+
+  <div class="top">
+    <h1>PCA 단체 도입 제안</h1>
+    <span class="who"><b class="blank">⟨사업자명⟩</b> · Personalized Career Analysis</span>
+  </div>
+
+  <section>
+    <p class="lead">“내 전공으로 어디 가야 하죠”에 유형 이름이 아니라
+      <b>다음 학기에 할 일이 적힌 문서</b>로 답합니다.</p>
+    <p class="mut">학생은 개인 전략서를 받고, 학과는 집계 리포트를 받습니다.
+      개인이 누구인지는 학과 리포트에 나오지 않습니다.</p>
+  </section>
+
+  <section>
+    <h2>드리는 것</h2>
+    <div class="cols">
+      <div>
+        <h3>학생 — 개인 전략서</h3>
+        <ul>
+          <li>직무 영역별 적합도 (100점 순위)</li>
+          <li>업무 성향 6유형 — 독립 · 협력 · 도전 · 안정 · 속도중시 · 품질중시</li>
+          <li>자격 · 프로젝트 · 포트폴리오 · 면접 · 창업 전략</li>
+          <li>소재지 실제 기업 매칭 (대전 사례 184곳 · 적합 144)</li>
+        </ul>
+      </div>
+      <div>
+        <h3>학과 — 단체 리포트</h3>
+        <ul>
+          <li>학생들이 몰린 직무 분포</li>
+          <li>학과 전체에서 비어 있는 역량과 충족률</li>
+          <li>커리큘럼 검토가 필요한 과목</li>
+          <li>응시 · 미응시 현황</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>진행</h2>
+    <ol class="flow">
+      <li><b>전용 링크</b>계약하면 학과 링크를 드립니다. 명단은 필요 없습니다</li>
+      <li><b>학생 등록</b>학번과 이메일 도메인 조건을 걸 수 있습니다</li>
+      <li><b>응시</b>문항마다 즉시 저장. 끊겨도 이어집니다</li>
+      <li><b>결과 공개</b>학과가 정한 시점에 학생에게 열립니다</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>정산</h2>
+    <table>
+      <thead><tr><th>방식</th><th>이럴 때</th><th>세는 것</th><th>단가</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>선불</b></td>
+          <td>학과 자체 예산</td>
+          <td>계약한 인원분</td>
+          <td><b class="blank">⟨선불 단가⟩</b>원 / 1인</td>
+        </tr>
+        <tr>
+          <td><b>건당 정산</b></td>
+          <td>산학협력단 · 일자리경제진흥원 · 고용노동부 위탁사업</td>
+          <td><b>제출을 마친 응시 한 건</b><br>
+            <span class="mut">시작만 하고 만 건은 청구하지 않습니다</span></td>
+          <td><b class="blank">⟨건당 단가⟩</b>원 / 1건</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="mut" style="margin-top:12px">
+      건당 정산은 미리 사시는 것이 없습니다. 사업 예산이 정해져 있으면 건수 상한을 걸어
+      그 수를 넘지 않게 합니다. 월별 실적 집계가 그대로 검수 자료가 됩니다.
+      결제는 세금계산서 후불입니다.
+    </p>
+  </section>
+
+  <section>
+    <h2>앵커사업</h2>
+    <p>2026년 지역성장 인재양성체계(앵커)는 예산 21,403억 원 가운데 약 4,000억 원을
+      성과평가 인센티브로 씁니다. 평가는 ① 예산 나눠먹기 ② 지방정부–대학 소통
+      ③ <b>학생·인재에 대한 충분한 고려</b>를 점검하고, 17개 지방정부 결과는 공개됩니다.</p>
+    <p class="mut">출처: 교육부 「지역성장 인재양성체계(앵커) 추진방안」 보도자료 (2026.4.2)</p>
+    <div class="cant">
+      <p><b>PCA가 대지 못하는 것</b> — 지역정주 취업률. 졸업 후 취업 통계로 확정되는
+        지표이므로 PCA가 산출한다고 말씀드리지 않습니다.</p>
+      <p style="margin:0"><b style="color:var(--met)">PCA가 대는 것</b> — 학생이 손에 쥔 개인 전략서,
+        지역 기업 매칭 결과, 학과별 역량 갭 집계. ‘학생 고려’를 문서로 증명하는 자료입니다.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>근거</h2>
+    <div class="cols">
+      <div>
+        <ul>
+          <li>전공자 2,346명 · 설문 2,091명</li>
+          <li>채용공고 428건 · 직무기술서 137건</li>
+          <li>NCS 62건 · 현직자 인터뷰 48명</li>
+        </ul>
+      </div>
+      <div>
+        <ul>
+          <li>준거 — NCS · O*NET 계열 · RIASEC 계열 · NACE · OECD · AERA/APA/NCME</li>
+          <li>저작권 등록 C-2025-058658 / 059731 / 059732 (한국저작권위원회)</li>
+          <li>전개 — 독일 · 미국 · 일본 · 중국 · 터키 · 한국</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>개인정보</h2>
+    <p>받는 것은 이름 · 학번 · 비밀번호 · 검사 응답입니다. 학과가 요구하시면 학교 이메일을
+      더 받습니다. 비밀번호는 되돌릴 수 없는 형태로 저장하고, 학생 개인 결과는 본인과 학과
+      담당자만 봅니다. 등록 화면에서 수집·이용 동의를 필수로 받고 어느 판의 방침에
+      동의했는지 기록에 남깁니다.</p>
+    <p class="mut">처리방침 전문과 계약 검토용 체크리스트를 함께 보내드립니다.
+      <b class="blank">⟨처리방침은 법률 검토 전 초안입니다⟩</b></p>
+  </section>
+
+  <div class="foot">
+    학과명과 대략적인 인원만 주시면 적용안과 견적을 정리해 회신드립니다. ·
+    <b class="blank">⟨연락처⟩</b> · <b class="blank">⟨이메일⟩</b>
+  </div>
+</div>
+</body>
+</html>

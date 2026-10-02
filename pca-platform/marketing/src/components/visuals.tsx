@@ -32,13 +32,28 @@ export function PageHead({
  */
 export function PhotoSlot({
   caption,
+  src,
   ratio = "16 / 9",
-  tone = "gold",
+  tone = "brand",
 }: {
   caption: string;
+  /** 그림 주소. 없으면 빈 칸이 그대로 나간다 */
+  src?: string;
   ratio?: string;
-  tone?: "gold" | "ink";
+  tone?: "brand" | "ink";
 }) {
+  /* 그림이 있으면 그림을 건다. 설명은 alt 로 넘어간다 — 화면에 겹쳐
+     띄우지 않는다. 이 그림들은 AI 로 만든 것이고, 그 사실은 꼬리에서
+     한 번 밝힌다. 장마다 적으면 읽는 사람이 그것만 보게 된다 */
+  if (src) {
+    return (
+      <figure className="photoslot filled" style={{ aspectRatio: ratio }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={src} alt={caption} loading="lazy" decoding="async" />
+      </figure>
+    );
+  }
+
   return (
     <figure className={`photoslot ${tone}`} style={{ aspectRatio: ratio }}>
       <div className="inner">

@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "metri-site"
+  },
+  "targets": {
+    "metri-site": {
+      "hosting": {
+        "global": ["metri-global"],
+        "kr": ["metri-kr"],
+        "kz": ["metri-kz"]
+      }
+    }
+  }
+}
