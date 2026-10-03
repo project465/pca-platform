@@ -527,6 +527,18 @@
       '</div>';
   }
 
+  /** 다음 상품으로 넘어가는 칸. 무엇이 더 나오는지를 적고 바로 누를 수 있게 둔다. */
+  function nextStep(o) {
+    return '<div class="section"><div class="card pad nextstep">' +
+      '<div class="ns-eye">' + esc(o.eye) + '</div>' +
+      '<h3 class="ns-h">' + esc(o.h) + '</h3>' +
+      '<p class="ns-p">' + esc(o.p) + '</p>' +
+      '<ul class="ns-li">' + o.li.map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ul>' +
+      '<a class="ns-btn" href="' + esc(o.href) + '">' + esc(o.cta) + '</a>' +
+      '<p class="note ns-note">' + esc(o.note) + '</p>' +
+      '</div></div>';
+  }
+
   function styleRows(r) {
     return cards(major.style.map(function (d) {
       var v = r.work_style[d], l = major.style_labels[d];
@@ -559,6 +571,22 @@
           '<button type="button" class="rp-act-b" id="btnPrint">인쇄 · PDF로 저장</button>' +
         '</div>' +
         window.PCAReport.render(r, major, cmap, S, GRAD);
+      if (r.product_type === 'STANDARD') {
+        $('#resultBody').insertAdjacentHTML('beforeend', nextStep({
+          eye: '다음 단계',
+          h: 'PRO 는 여기에 무엇을 더 얹는가',
+          p: '92문항이고 6분쯤 더 걸립니다. 전공을 살려 창업까지 생각하고 계시거나, ' +
+             '직무를 하나로 좁히기 전에 근거를 더 보고 싶으실 때 고르십시오.',
+          li: ['전공을 살린 <b>창업 아이템 다섯 개</b>와 시장 진입 전략, 4주 준비 계획',
+               '경험 근거 문항이 여섯 개에서 서른 개로 늘어, 준비도가 훨씬 촘촘해집니다',
+               '지원 준비도(Application Readiness)가 따로 계산됩니다',
+               '직무를 가르는 근거를 더 자세히 적은 81쪽 결과지'],
+          href: '?major=' + encodeURIComponent(S.majorCode || 'ME') + '&form=PRO&fresh=1',
+          cta: 'PRO 로 다시 풀기 · 92문항',
+          note: '창업을 생각하지 않으신다면 STANDARD 로 충분합니다. 두 상품의 ' +
+                '직무 적합도 산식은 같습니다.'
+        }));
+      }
       var bp = document.getElementById('btnPrint');
       if (bp) bp.addEventListener('click', function () { window.print(); });
       window.PCA_RESULT = r;
@@ -768,6 +796,57 @@
           '말하는지를 봅니다.</p></div>' +
         '<p class="note" style="margin-top:10px">질문 다섯 개와 답변 구성법, ' +
         '강조할 키워드는 STANDARD 결과지에 들어갑니다.</p>'));
+
+      /* 공고에서 이 직무를 찾는 법. 결과지를 덮고 나서 바로 하는 일이 검색이다. */
+      if (c.jd) {
+        out.push(sect(no(), '채용공고에서 이 직무 찾기',
+          '같은 일을 회사마다 다른 이름으로 올립니다. 아래 이름으로 검색하시고, ' +
+          '공고를 열었을 때 무엇을 먼저 볼지도 함께 적었습니다.',
+          '<div class="card contentcard"><div class="eyebrow">공고에 쓰이는 이름</div>' +
+            '<div style="margin-top:8px">' + (c.jd.names || []).map(function (t) {
+              return '<span class="tag">' + esc(t) + '</span>'; }).join('') + '</div></div>' +
+          '<div class="card contentcard" style="margin-top:10px">' +
+            '<h4>공고에서 먼저 볼 곳</h4><ul class="qlist">' +
+            (c.jd.watch || []).map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') +
+            '<li>자격 요건보다 <b>주요 업무</b> 쪽을 먼저 읽으십시오. 자격 요건은 복사되는 경우가 많고, ' +
+            '주요 업무에 그 팀이 실제로 하는 일이 적힙니다.</li>' +
+            '</ul></div>' +
+          '<div class="card contentcard" style="margin-top:10px">' +
+            '<h4>공고 세 건으로 할 일</h4><ol class="qlist">' +
+            '<li>같은 직무 공고 세 건을 띄워 놓고 주요 업무를 한 줄씩 옮겨 적습니다</li>' +
+            '<li>세 곳에 모두 나오는 항목을 표시해 두면 그것이 이 직무의 기본값입니다</li>' +
+            '<li>표시된 항목 가운데 지금 증명할 수 있는 것과 없는 것을 가릅니다. ' +
+            '없는 쪽이 이번 학기에 만들 결과물입니다</li>' +
+            '</ol><p class="note" style="margin-top:8px">30분이면 끝나고, 자기소개서를 ' +
+            '쓸 때 가장 많이 다시 열어 보게 되는 표입니다.</p></div>'));
+      }
+
+      /* 들어가고 나서의 길. 1년차만 보고 고르면 3년 뒤에 다시 고민한다. */
+      if ((c.path || []).length) {
+        out.push(sect(no(), '들어가면 몇 년 뒤에 무엇을 하는가',
+          '첫 1년만 보고 고르면 3년 뒤에 같은 고민을 다시 하게 됩니다. ' +
+          '이 직무가 시간에 따라 어떻게 바뀌는지 적었습니다.',
+          '<div class="grid">' + c.path.map(function (x) {
+            return '<div class="card contentcard"><div class="eyebrow">' + esc(x.t) +
+              '</div><p>' + esc(x.w) + '</p></div>';
+          }).join('') + '</div>'));
+      }
+
+      /* 이미 일하고 있거나 전공을 바꿔 오는 분. 단계가 그 자리일 때만 연다. */
+      if (c['switch'] && (S.stage === 'EARLY' || S.stage === 'RESEARCH')) {
+        out.push(sect(no(), '옮겨 오실 때 가져갈 수 있는 것',
+          '지금까지 한 일이 이 직무에서 어떻게 읽히는지와, 옮기는 이유를 ' +
+          '어떻게 말하면 좋은지입니다.',
+          '<div class="card contentcard"><h4>그대로 쓰이는 경험</h4><ul class="qlist">' +
+            c['switch']['from'].map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') +
+            '</ul></div>' +
+          '<div class="card contentcard" style="margin-top:10px">' +
+            '<div class="eyebrow">옮기는 이유를 말하는 틀</div>' +
+            '<p>' + esc(c['switch'].why) + '</p>' +
+            '<p class="note" style="margin-top:10px">경력 기술서는 한 일을 나열하지 말고 ' +
+            '맡은 과제 두세 개만 골라, 과제마다 어떤 조건이었고 무엇을 골랐고 ' +
+            '결과가 어땠는지를 세 줄로 적으면 한 장이 채워집니다.</p></div>'));
+      }
 
       /* 학과 수업. 지금 당장 손댈 수 있는 것이 수업이다 */
       if ((c.courses || []).length) {
@@ -1025,6 +1104,23 @@
             '<a href="mailto:hari_info@hari.re.kr">hari_info@hari.re.kr</a></p>' +
         '</div>' +
         '</div></div>');
+
+      out.push(nextStep({
+        eye: '다음 단계',
+        h: 'STANDARD 로 보시면 무엇이 더 나오는가',
+        p: '68문항이라 12~15분이 더 걸리는데, 지금 보신 묶음이 그 안에서 ' +
+           '갈리는지와 1순위 직무가 요구하는 수준에 지금 어디까지 와 있는지가 ' +
+           '거기서 나옵니다.',
+        li: ['업무 성향 6유형과 그 성향이 부담이 되는 국면',
+             '요구 수준과 지금의 나를 축마다 견준 <b>역량 격차</b> 표',
+             '이 직무에 맞춰 쓴 <b>자기소개서 문장 세 개</b>와 쓰면 안 되는 서술',
+             '<b>면접 질문 다섯 개</b>와 답변 구성법, 강조할 키워드',
+             '한 달 단위 실행 계획과 74쪽짜리 결과지'],
+        href: '?major=' + encodeURIComponent(S.majorCode || 'ME') + '&form=STANDARD&fresh=1',
+        cta: 'STANDARD 로 다시 풀기 · 68문항',
+        note: '상품마다 출제되는 문항이 달라서 지금 답을 그대로 옮길 수 없고, ' +
+              '문항은 처음부터 다시 푸셔야 합니다.'
+      }));
     }
 
     /* 버전 표기 */
@@ -1056,6 +1152,11 @@
 
   function init() {
     var p = params();
+    /* 결과지 아래의 '다음 상품으로' 단추. 앞 응시를 지우고 그 상품으로 바로
+       들어간다. **'이어서 하기' 검사보다 먼저** 지워야 한다. 뒤에 두면 방금
+       끝낸 응시가 남아 있어 이어서 하기 화면이 먼저 뜬다. */
+    var fresh = (p.fresh === '1');
+    if (fresh) clearSession();
     buildStageList();
     buildMajorList();
     bindProfile();
@@ -1165,6 +1266,9 @@
     if (S.stage && S.majorCode) {
       applyMajor(S.majorCode);
       screen('s-profile');          // 단체 링크(단계까지 지정)는 바로 들어간다
+    } else if (fresh) {
+      buildStageList();
+      screen('s-stage');            // 상품은 이미 고르고 온 길이다
     } else {
       screen('s-start');
     }
