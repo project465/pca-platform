@@ -456,3 +456,9 @@ h1{font-size:34px;line-height:1.16;letter-spacing:-.04em;color:var(--navy)}
   font-weight:800;font-size:15px;padding:15px;border-radius:13px}
 .ns-btn:hover{background:#0f1d30}
 .ns-note{margin-top:10px}
+
+/* 예시 문장 표시. 지어낸 숫자를 자기 경험으로 옮겨 쓰는 것을 막는 자리라
+   눈에 띄어야 한다. 흐리게 두면 표시가 없는 것과 같다. */
+.rp-tag{display:inline-block;font-size:11px;letter-spacing:.02em;color:#8a6d1f;
+  background:#fdf6e3;border:1px solid #efe0b5;border-radius:3px;
+  padding:1px 6px;margin-right:6px;vertical-align:1px;font-weight:700}

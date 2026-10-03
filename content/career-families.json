@@ -1,0 +1,203 @@
+{
+  "schema_version": "1.0",
+  "major_id": "ME",
+  "note": "직무 하나에 나라마다 다른 이름이 붙는다. 내부 id 는 어느 나라 이름에도 기대지 않는다. crosswalk 는 공개된 분류 체계의 코드이고, confidence 는 그 대응이 얼마나 정확한지를 적어 둔 값이다. exact 가 아닌 것을 exact 로 쓰지 않는다.",
+  "families": [
+    {
+      "career_family_id": "ME_DESIGN_PRODUCT",
+      "job_code": "ME_DESIGN",
+      "name_ko": "기계설계·제품개발",
+      "name_en": "Mechanical Design & Product Engineering",
+      "search_titles_en": [
+        "Mechanical Design Engineer",
+        "Product Design Engineer",
+        "Product Development Engineer",
+        "Design Engineer",
+        "Equipment Design Engineer"
+      ],
+      "crosswalk": {
+        "onet_soc": [
+          "17-2141.00"
+        ],
+        "isco": [
+          "2144"
+        ],
+        "confidence": "medium"
+      }
+    },
+    {
+      "career_family_id": "ME_CAE_SIM",
+      "job_code": "ME_CAE",
+      "name_ko": "CAE·해석",
+      "name_en": "CAE / Simulation / Computational Engineering",
+      "search_titles_en": [
+        "CAE Engineer",
+        "Simulation Engineer",
+        "FEA Engineer",
+        "CFD Engineer",
+        "Structural Analysis Engineer"
+      ],
+      "crosswalk": {
+        "onet_soc": [
+          "17-2141.00"
+        ],
+        "isco": [
+          "2144"
+        ],
+        "confidence": "low"
+      }
+    },
+    {
+      "career_family_id": "ME_RND",
+      "job_code": "ME_RD",
+      "name_ko": "R&D·선행개발",
+      "name_en": "Research & Development / Advanced Development",
+      "search_titles_en": [
+        "R&D Engineer",
+        "Research Engineer",
+        "Advanced Development Engineer",
+        "Research Scientist"
+      ],
+      "crosswalk": {
+        "onet_soc": [
+          "17-2141.00",
+          "19-2099.01"
+        ],
+        "isco": [
+          "2144",
+          "2111"
+        ],
+        "confidence": "low"
+      }
+    },
+    {
+      "career_family_id": "ME_MANUFACTURING",
+      "job_code": "ME_PRODUCTION",
+      "name_ko": "생산기술",
+      "name_en": "Manufacturing / Production Engineering",
+      "search_titles_en": [
+        "Manufacturing Engineer",
+        "Production Engineer",
+        "Industrial Engineer",
+        "Tooling Engineer"
+      ],
+      "crosswalk": {
+        "onet_soc": [
+          "17-2112.00"
+        ],
+        "isco": [
+          "2141"
+        ],
+        "confidence": "medium"
+      }
+    },
+    {
+      "career_family_id": "ME_PROCESS",
+      "job_code": "ME_PROCESS",
+      "name_ko": "공정기술",
+      "name_en": "Process / Industrialization Engineering",
+      "search_titles_en": [
+        "Process Engineer",
+        "Process Integration Engineer",
+        "Yield Engineer",
+        "Industrialization Engineer"
+      ],
+      "crosswalk": {
+        "onet_soc": [
+          "17-2112.00"
+        ],
+        "isco": [
+          "2141"
+        ],
+        "confidence": "low"
+      }
+    },
+    {
+      "career_family_id": "ME_QUALITY_RELIABILITY",
+      "job_code": "ME_QUALITY",
+      "name_ko": "품질·신뢰성",
+      "name_en": "Quality / Reliability / Failure Analysis",
+      "search_titles_en": [
+        "Quality Engineer",
+        "Reliability Engineer",
+        "Failure Analysis Engineer",
+        "Supplier Quality Engineer"
+      ],
+      "crosswalk": {
+        "onet_soc": [
+          "17-2112.00"
+        ],
+        "isco": [
+          "2141"
+        ],
+        "confidence": "low"
+      }
+    },
+    {
+      "career_family_id": "ME_EQUIPMENT_MAINT",
+      "job_code": "ME_MAINT",
+      "name_ko": "설비·유지보수",
+      "name_en": "Equipment / Maintenance / Facilities Engineering",
+      "search_titles_en": [
+        "Maintenance Engineer",
+        "Equipment Engineer",
+        "Facilities Engineer",
+        "Field Service Engineer"
+      ],
+      "crosswalk": {
+        "onet_soc": [
+          "49-9041.00",
+          "17-2112.00"
+        ],
+        "isco": [
+          "3115"
+        ],
+        "confidence": "low"
+      }
+    },
+    {
+      "career_family_id": "ME_SYSTEMS_TPM",
+      "job_code": "ME_PM",
+      "name_ko": "기술기획·PM",
+      "name_en": "Systems Engineering / Technical Program Management",
+      "search_titles_en": [
+        "Technical Program Manager",
+        "Project Engineer",
+        "Systems Engineer",
+        "Product Manager (Hardware)"
+      ],
+      "crosswalk": {
+        "onet_soc": [
+          "11-9041.00"
+        ],
+        "isco": [
+          "2149"
+        ],
+        "confidence": "low"
+      }
+    }
+  ],
+  "not_yet_covered": {
+    "note": "규격 5장이 열여섯 갈래를 들었는데 지금 문항이 가르는 것은 여덟 갈래다. 없는 갈래를 목록에만 올려 두면 결과지에 나오지 않는 이름이 생기므로, 여기 적어 두고 화면에는 내보내지 않는다.",
+    "families": [
+      "Test / Verification / Validation",
+      "Automation / Robotics / Mechatronics",
+      "Thermal / Fluids / HVAC / Energy Systems",
+      "Materials / Tribology / Mechanical Failure",
+      "Applications / Field / Customer Engineering",
+      "Technical Consulting / Engineering Services",
+      "Research Scientist / Academic Research",
+      "Engineering Data / Digital Engineering / Digital Twin"
+    ]
+  },
+  "source_provenance": [
+    {
+      "claim": "O*NET SOC · ISCO 코드 대응",
+      "source_type": "onet, isco",
+      "verified_at": null,
+      "geography": "US, global",
+      "confidence": "low",
+      "note": "코드를 눈으로 맞춘 초기값이고 공식 crosswalk 파일로 대조하지 않았다. 대조 전에는 결과지 본문에 코드를 내보내지 않는다."
+    }
+  ]
+}
