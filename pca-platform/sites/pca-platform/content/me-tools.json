@@ -1,0 +1,235 @@
+{
+  "schema_version": "1.0",
+  "major_id": "ME",
+  "note": "도구·기술 목록. **이 목록은 고르기 쉬우라고 있는 것이지 이 안에 들어야 인정된다는 뜻이 아니다.** 직접 적은 이름도 같은 자리에 들어간다. 도구 이름만으로는 활동(E0)까지만 확인되고, 숙련으로 읽지 않는다. 개수를 점수로 쓰지 않는다.",
+  "usage_levels": [
+    {
+      "id": "exposed",
+      "n": "접해봤습니다",
+      "ladder": "E0"
+    },
+    {
+      "id": "basic",
+      "n": "기본적으로 씁니다",
+      "ladder": "E0"
+    },
+    {
+      "id": "project",
+      "n": "프로젝트에서 직접 썼습니다",
+      "ladder": "E0"
+    },
+    {
+      "id": "repeated",
+      "n": "여러 프로젝트에서 반복해 썼습니다",
+      "ladder": "E0"
+    }
+  ],
+  "level_note": "사용 수준은 **얼마나 자주 썼는가**이지 증거 단계가 아니다. 단계는 그 도구로 무엇을 판단하고 무엇을 남겼는지에서 올라간다.",
+  "categories": [
+    {
+      "id": "cad",
+      "n": "설계 · CAD",
+      "families": [
+        "ME_DESIGN_PRODUCT",
+        "ME_MANUFACTURING",
+        "ME_EQUIPMENT_MAINT"
+      ],
+      "domains": [
+        "cad_drawing",
+        "machine_design"
+      ],
+      "tools": [
+        "SolidWorks",
+        "CATIA",
+        "Creo",
+        "NX",
+        "AutoCAD",
+        "Fusion 360",
+        "Inventor"
+      ],
+      "intake": [
+        "cad"
+      ]
+    },
+    {
+      "id": "fea",
+      "n": "CAE · 구조해석",
+      "families": [
+        "ME_CAE_SIM",
+        "ME_DESIGN_PRODUCT",
+        "ME_MATERIALS"
+      ],
+      "domains": [
+        "fea",
+        "solid_mechanics",
+        "numerical"
+      ],
+      "tools": [
+        "ANSYS Mechanical",
+        "Abaqus",
+        "Nastran",
+        "LS-DYNA",
+        "Altair HyperWorks",
+        "COMSOL",
+        "Simcenter 3D"
+      ],
+      "intake": [
+        "cae"
+      ]
+    },
+    {
+      "id": "cfd",
+      "n": "유동 · 열해석",
+      "families": [
+        "ME_CAE_SIM",
+        "ME_THERMAL_FLUID"
+      ],
+      "domains": [
+        "cfd",
+        "fluid_mechanics",
+        "heat_transfer"
+      ],
+      "tools": [
+        "ANSYS Fluent",
+        "ANSYS CFX",
+        "STAR-CCM+",
+        "OpenFOAM",
+        "COMSOL",
+        "Icepak"
+      ],
+      "intake": [
+        "cfd"
+      ]
+    },
+    {
+      "id": "sim_control",
+      "n": "제어 · 시뮬레이션",
+      "families": [
+        "ME_AUTOMATION",
+        "ME_RND",
+        "ME_DIGITAL"
+      ],
+      "domains": [
+        "control",
+        "mechatronics",
+        "numerical"
+      ],
+      "tools": [
+        "MATLAB",
+        "Simulink",
+        "LabVIEW",
+        "Modelica",
+        "Amesim",
+        "Adams"
+      ],
+      "intake": [
+        "num"
+      ]
+    },
+    {
+      "id": "code",
+      "n": "프로그래밍 · 데이터",
+      "families": [
+        "ME_DIGITAL",
+        "ME_RESEARCH_SCIENTIST",
+        "ME_QUALITY_RELIABILITY"
+      ],
+      "domains": [
+        "programming",
+        "statistics",
+        "numerical"
+      ],
+      "tools": [
+        "Python",
+        "C",
+        "C++",
+        "MATLAB",
+        "R",
+        "SQL",
+        "Excel · VBA",
+        "Minitab"
+      ],
+      "intake": [
+        "code",
+        "data"
+      ]
+    },
+    {
+      "id": "manufacturing",
+      "n": "제조 · 생산",
+      "families": [
+        "ME_MANUFACTURING",
+        "ME_PROCESS",
+        "ME_AUTOMATION"
+      ],
+      "domains": [
+        "manufacturing",
+        "robotics"
+      ],
+      "tools": [
+        "CAM",
+        "CNC",
+        "3D 프린팅",
+        "PLC",
+        "MES",
+        "로봇 티칭",
+        "용접"
+      ],
+      "intake": [
+        "cam"
+      ]
+    },
+    {
+      "id": "test",
+      "n": "시험 · 계측",
+      "families": [
+        "ME_TEST_VV",
+        "ME_QUALITY_RELIABILITY",
+        "ME_EQUIPMENT_MAINT"
+      ],
+      "domains": [
+        "measurement",
+        "experiment",
+        "vibration_nvh"
+      ],
+      "tools": [
+        "DAQ",
+        "스트레인 게이지",
+        "열화상 카메라",
+        "진동 측정",
+        "오실로스코프",
+        "만능시험기",
+        "3차원 측정기"
+      ],
+      "intake": [
+        "test"
+      ]
+    },
+    {
+      "id": "plm",
+      "n": "형상관리 · 협업",
+      "families": [
+        "ME_SYSTEMS_TPM",
+        "ME_DESIGN_PRODUCT",
+        "ME_DIGITAL"
+      ],
+      "domains": [
+        "systems_engineering",
+        "cad_drawing"
+      ],
+      "tools": [
+        "Teamcenter",
+        "Windchill",
+        "3DEXPERIENCE",
+        "Jira",
+        "Confluence",
+        "Git"
+      ],
+      "intake": [
+        "plm",
+        "doc"
+      ]
+    }
+  ],
+  "intake_note": "경험 입력 화면의 도구 갈래 코드(evidence-rules.json 의 tool_categories)와 여기 갈래를 잇는다. 두 목록이 따로 자란 것이라 한쪽을 고치면 이 줄이 끊긴다."
+}

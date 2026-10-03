@@ -47,9 +47,17 @@ const EVIDENCE = {
       outputs: ["도면", "해석 리포트"], result: "", measurable_result: "",
       difficulty: "", what_changed: "", what_i_learned: "",
     }],
-    tools: [{ cat: "cad", name: "SolidWorks", level: "used", where: "", why: "형상 비교" }],
+    tools: [{
+      cat: "cad", name: "SolidWorks", level: "used", where: "", why: "형상안 비교",
+      exp_id: "p1", decision: "리브 배치를 고름", output: "도면 · 해석 리포트",
+      validation: "허용 응력 기준과 비교",
+    }, {
+      cat: "cae", name: "ANSYS Mechanical", level: "used", where: "", why: "",
+      exp_id: "", decision: "", output: "", validation: "",
+    }],
   },
   rp: [],
+  org: "private_company",
 };
 
 const PROFILES = {
@@ -85,6 +93,7 @@ async function run({ tier, stage, profile, evidence, tag, steps }) {
       const EV = window.PCAEvidence;
       EV.saveEvidence(Object.assign(EV.emptyEvidence(), e.ev));
       EV.saveResearch(e.rp || []);
+      if (e.org) EV.saveTarget(Object.assign(EV.loadTarget(), { target_org_type: e.org }));
     }, evidence);
   }
   await p.goto(`${B}?fresh=1&tier=${tier}&stage=${stage}`, { waitUntil: "networkidle" });
@@ -135,6 +144,26 @@ async function run({ tier, stage, profile, evidence, tag, steps }) {
   await p.waitForTimeout(200);
   await shot(p, tag + "_첫화면");
   await shot(p, tag + "_전체", true);
+  // 시그니처 화면은 따로 찍는다. 전체 캡처에서는 너무 작다
+  for (const [key, name] of [
+    ["전공지식이 실제 업무", "전공지식의_실무전환"],
+    ["어디까지 증거가 되었나", "증거사다리"],
+    ["조직에 따라 성과가 달라집니다", "같은전공_다른조직"],
+    ["성과 언어로 번역되지 않은 경험", "번역안된경험"],
+    ["쓰신 도구가 무엇을 받쳐", "도구증거"],
+    ["다음에 만들 경험", "다음에만들경험"],
+  ]) {
+    const box = await p.evaluateHandle((k) =>
+      [...document.querySelectorAll("#v2ResultBody .section")]
+        .find((s) => (s.querySelector("h2.sect")?.textContent || "").includes(k)) || null, key);
+    const el = box.asElement();
+    if (el) {
+      await el.scrollIntoViewIfNeeded();
+      await p.waitForTimeout(80);
+      const f = join(OUT, tag + "_" + name + ".png");
+      await el.screenshot({ path: f }).then(() => shots.push(f)).catch(() => {});
+    }
+  }
   await c.close();
 }
 

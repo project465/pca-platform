@@ -2,7 +2,9 @@
   "assessment_version": "ME_V2_DECISION_2026",
   "note": "직무군마다 다섯 값을 따로 내고, 그 조합으로 '지금 무엇을 할 자리인가' 를 정한다. 다섯을 평균 내지 않는다. 평균을 내면 숫자 하나가 남고 그 숫자로는 아무것도 못 한다.",
   "bands": {
-    "high": "62 이상", "medium": "39~61", "low": "38 이하",
+    "high": "62 이상",
+    "medium": "39~61",
+    "low": "38 이하",
     "caution": "규준이 없으므로 이 경계는 추정값이다. 파일럿에서 가장 먼저 조정될 값이다."
   },
   "statuses": {
@@ -40,24 +42,98 @@
     }
   },
   "rules": [
-    { "if": { "interest": "high", "exposure": "high", "evidence": ["medium", "high"] }, "then": "READY_TO_APPLY" },
-    { "if": { "interest": "high", "exposure": "high" }, "then": "READY_TO_COMPARE_JOBS" },
-    { "if": { "interest": "high", "exposure": "medium", "evidence": ["low"] }, "then": "BUILD_EVIDENCE" },
-    { "if": { "interest": "high", "exposure": "low", "learning": "high" }, "then": "TEST_FIRST" },
-    { "if": { "interest": "high", "exposure": "low" }, "then": "EXPLORE_FIRST" },
-    { "if": { "interest": "low", "exposure": ["medium", "high"] }, "then": "ADJACENT_OPTION" },
-    { "if": { "interest": "low", "exposure": "low" }, "then": "DEPRIORITIZE_FOR_NOW" },
-    { "if": {}, "then": "EXPLORE_FIRST" }
+    {
+      "if": {
+        "interest": "high",
+        "exposure": "high",
+        "evidence": [
+          "medium",
+          "high"
+        ]
+      },
+      "then": "READY_TO_APPLY"
+    },
+    {
+      "if": {
+        "interest": "high",
+        "exposure": "high"
+      },
+      "then": "READY_TO_COMPARE_JOBS"
+    },
+    {
+      "if": {
+        "interest": "high",
+        "exposure": "medium",
+        "evidence": [
+          "low"
+        ]
+      },
+      "then": "BUILD_EVIDENCE"
+    },
+    {
+      "if": {
+        "interest": "high",
+        "exposure": "low",
+        "learning": "high"
+      },
+      "then": "TEST_FIRST"
+    },
+    {
+      "if": {
+        "interest": "high",
+        "exposure": "low"
+      },
+      "then": "EXPLORE_FIRST"
+    },
+    {
+      "if": {
+        "interest": "low",
+        "exposure": [
+          "medium",
+          "high"
+        ]
+      },
+      "then": "ADJACENT_OPTION"
+    },
+    {
+      "if": {
+        "interest": "low",
+        "exposure": "low"
+      },
+      "then": "DEPRIORITIZE_FOR_NOW"
+    },
+    {
+      "if": {},
+      "then": "EXPLORE_FIRST"
+    }
   ],
   "work_mode_labels": {
     "note": "규격 12장. 검증 전에는 숫자를 내지 않는다. 83.7 같은 값은 없는 정밀도를 파는 것이다.",
-    "closer": "가까움", "mixed": "혼합", "farther": "먼 편"
+    "closer": "가까움",
+    "mixed": "혼합",
+    "farther": "먼 편"
   },
   "ui_copy": {
     "note": "규격 21장. 바꾼 말과 그 까닭.",
     "replace": [
-      { "from": "가장 잘 맞는 직무", "to": "먼저 살펴볼 직무", "why": "검사는 맞고 안 맞음을 재지 않는다" },
-      { "from": "직무 적합도", "to": "업무방식 유사도", "why": "적합도는 능력이나 합격 가능성으로 읽힌다" }
+      {
+        "from": "가장 잘 맞는 직무",
+        "to": "먼저 살펴볼 직무",
+        "why": "검사는 맞고 안 맞음을 재지 않는다"
+      },
+      {
+        "from": "직무 적합도",
+        "to": "업무방식 유사도",
+        "why": "적합도는 능력이나 합격 가능성으로 읽힌다"
+      }
     ]
+  },
+  "apply_gate": {
+    "note": "'지원 준비 단계' 는 서류와 면접에서 꺼낼 것이 있다는 말이다. 준비도 신호(수강·도구)는 그 자리에 쓸 수 있는 물건이 아니라 활동까지만 말해 준다. 그래서 증거 사다리가 산출물(E2)에 닿지 않으면 지원 준비로 올리지 않고 근거 만들기로 내린다. 올리는 쪽으로만 막고 내리는 쪽으로는 건드리지 않는다.",
+    "status": "READY_TO_APPLY",
+    "requires_evidence_ladder": "E2",
+    "fallback_with_ladder": "BUILD_EVIDENCE",
+    "fallback_without_ladder": "READY_TO_COMPARE_JOBS",
+    "fallback_without_ladder_note": "경험을 아직 안 적으신 분은 사다리 자체가 없다. 없는 것을 낮은 것으로 읽으면 안 적었다는 이유로 깎이게 된다. 그때는 지원 준비 대신 직무 비교로 둔다."
   }
 }

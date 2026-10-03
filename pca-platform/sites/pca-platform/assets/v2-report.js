@@ -201,8 +201,42 @@ window.PCAV2Report = (function () {
       J.decision_table.slice(0, lvl === 'basic' ? 1 : 3)
         .map(function (r) { return why(J, r); }).join('')));
 
+    /* 전공지식 → 실제 업무 → 판단 → 산출물 → 조직 성과 → 내 증거.
+       **이 자리가 제품의 중심이다.** 적합도만 내놓으면 '기계설계가 맞습니다'
+       에서 끝나고, 읽는 사람은 그래서 무엇을 하라는 것인지 모른다. */
+    var VR = window.PCAV2ValueReport;
+    if (VR) {
+      var chainN = lvl === 'basic' ? 1 : (lvl === 'standard' ? 3 : 5);
+      var chains = VR.academiaToWork(J, chainN);
+      if (chains) {
+        out.push(sect(no(), '전공지식이 실제 업무에서 어떻게 쓰이는가',
+          '배운 것에서 조직이 결과로 치는 것까지 한 줄로 잇고, 그 줄 위에 ' +
+          '지금 가진 증거를 올려 뒀습니다.', chains));
+      }
+    }
+
     out.push(sect(no(), '업무 방식', '어느 쪽 응답이 더 많았는지를 보는 축입니다.',
       workMode(J)));
+
+    if (VR && J.evidence_supplied) {
+      var el2 = VR.ladder(J, lvl === 'basic' ? 2 : (lvl === 'standard' ? 4 : 10));
+      if (el2) {
+        out.push(sect(no(), '내 경험은 어디까지 증거가 되었나',
+          '활동에서 반복 가능성까지 여섯 칸입니다. 아래 칸이 비면 위 칸을 ' +
+          '확정으로 올리지 않습니다.', el2));
+      }
+      var ut = VR.untranslated(J, lvl === 'basic' ? 2 : 4);
+      if (ut) {
+        out.push(sect(no(), '아직 성과 언어로 번역되지 않은 경험',
+          '겪으셨는데 아직 적지 않으신 칸이 있는 경험입니다.', ut));
+      }
+      var tb = VR.toolBox(J, lvl === 'pro');
+      if (tb) {
+        out.push(sect(no(), '쓰신 도구가 무엇을 받쳐 주는가',
+          '도구 → 어디에 썼는가 → 무엇을 판단했는가 → 무엇이 남았는가 → ' +
+          '무엇과 견주었는가.', tb));
+      }
+    }
 
     if (J.education_stage_lens) {
       var st = J.education_stage_lens;
@@ -223,6 +257,19 @@ window.PCAV2Report = (function () {
           esc(LV[J.evidence_quality.level]) + '</h3>' +
           '<p class="note" style="margin-top:8px">증거 준비도로 갑니다. ' +
           '업무 방식 값에는 들어가지 않습니다.</p></div>' : '')));
+
+      if (VR) {
+        var sm = VR.sameMajor(J);
+        if (sm) {
+          out.push(sect(no(), '같은 전공도 조직에 따라 성과가 달라집니다',
+            '같은 지식으로 어디에서는 제품이 나오고 어디에서는 논문이 나옵니다.', sm));
+        }
+        var gp = VR.gap(J);
+        if (gp) {
+          out.push(sect(no(), '아직 비어 있는 증거',
+            '그 직무가 보고 싶어 하는 것 가운데 지금 적어 주신 범위에 없는 것입니다.', gp));
+        }
+      }
 
       var mapped = J.decision_table.slice(0, 3).filter(function (r) { return r.evidence_readiness; });
       if (mapped.length) {
@@ -253,6 +300,24 @@ window.PCAV2Report = (function () {
             '<b>다음 칸으로 가려면</b> ' + esc(m.missing_for_next_level.join(' · ')) +
             '</p>' : '') + '</div>'));
       }
+      if (VR) {
+        var pf = VR.portfolio(J);
+        if (pf) {
+          out.push(sect(no(), '직무별 가치 사슬 묶음',
+            '위에서 본 사슬을 한 표로 모았습니다.', pf));
+        }
+        var rp2 = VR.repeat(J);
+        if (rp2) {
+          out.push(sect(no(), '한 번 낸 결과를 다시 쓸 수 있는가',
+            '석사·박사·학위 후 연구 경력에서 가장 크게 갈리는 자리입니다.', rp2));
+        }
+        var cv = VR.cvBank(J);
+        if (cv) {
+          out.push(sect(no(), '자기소개서와 면접으로 옮기기',
+            '적어 주신 판단과 결과물을 그대로 문장으로 옮겼습니다.', cv));
+        }
+      }
+
       out.push(sect(no(), '서류·면접·포트폴리오로 가져갈 것',
         '적어 주신 경험 가운데 밖으로 보여 줄 형태가 된 것과 아직 안 된 것입니다.',
         '<div class="card contentcard"><ul class="qlist">' +
@@ -261,6 +326,14 @@ window.PCAV2Report = (function () {
         '고른 이유와 포기한 것을 같이 준비해 두세요.</li>' +
         '<li><b>포트폴리오</b> 결과물 사진보다 조건표 한 장이 먼저 읽힙니다.</li>' +
         '</ul></div>'));
+    }
+
+    if (VR) {
+      var np = VR.nextProject(J);
+      if (np) {
+        out.push(sect(no(), '다음에 만들 경험',
+          '지금 비어 있는 칸을 채우는 한 건입니다.', np));
+      }
     }
 
     out.push(sect(no(), '다음에 할 것', '',

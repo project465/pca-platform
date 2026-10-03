@@ -82,7 +82,20 @@ const EVIDENCE = {
       outputs: ["도면", "해석 리포트"], result: "", measurable_result: "",
       difficulty: "", what_changed: "", what_i_learned: "",
     }],
-    tools: [{ cat: "cad", name: "SolidWorks", level: "used", where: "", why: "형상 비교" }],
+    tools: [{
+      cat: "cad", name: "SolidWorks", level: "used", where: "", why: "형상 비교",
+      exp_id: "p1", decision: "리브 배치를 고름", output: "도면",
+      validation: "허용 응력 기준과 비교",
+    }],
+  },
+  rp: [],
+};
+
+/* 도구 이름만 적은 사람. 활동까지만 확인돼야 한다 */
+const EVIDENCE_NAME_ONLY = {
+  ev: {
+    kinds: ["tool"],
+    tools: [{ cat: "cae", name: "ANSYS Mechanical", level: "used", where: "", why: "" }],
   },
   rp: [],
 };
@@ -100,6 +113,7 @@ async function runV2(browser, { tier, stage, profile, evidence }) {
       const EV = window.PCAEvidence;
       EV.saveEvidence(Object.assign(EV.emptyEvidence(), e.ev));
       EV.saveResearch(e.rp || []);
+      if (e.org) EV.saveTarget(Object.assign(EV.loadTarget(), { target_org_type: e.org }));
     }, evidence);
   }
   await p.goto(`${B}?fresh=1&tier=${tier}&stage=${stage}`, { waitUntil: "networkidle" });
@@ -250,12 +264,94 @@ ok("7 경험을 넣으면 증거 준비도가 생긴다",
     bad.length === 0 && !/종합\s*적합도|Career Score|Employability/i.test(txt),
     bad.join(","));
 }
-/* ── 조직 가치 다리 자리가 비어 있다 ─────────────────────────────── */
+/* ── 조직 가치 다리가 실제로 채워진다 ────────────────────────────── */
 {
-  const J = got["4 박사 PRO"].J;
-  ok("다음에 붙일 칸이 준비돼 있다",
-    J.organization_context === null && J.value_path === null &&
-    Array.isArray(J.performance_evidence));
+  const r = got["4 박사 PRO"], J = r.J;
+  const vp = J.value_path && J.value_path.paths;
+  const first = vp && vp[J.value_path.order[0]];
+  ok("비어 있던 세 칸이 채워졌다",
+    !!J.organization_context && !!first && Array.isArray(J.performance_evidence) &&
+    J.performance_evidence.length > 0,
+    `사슬 ${vp ? Object.keys(vp).length : 0}개 · 경험 ${J.performance_evidence.length}건`);
+  ok("ValuePath 가 규격의 칸을 다 가진다", !!first &&
+    ["career_family_id", "organization_type", "academic_inputs", "tools_technologies",
+     "work_activities", "technical_decisions", "outputs", "performance_criteria",
+     "organizational_value", "user_evidence", "untranslated_evidence",
+     "missing_evidence", "next_validation_actions"].every((k) => k in first),
+    first ? Object.keys(first).length + "칸" : "");
+  ok("전공지식이 노출과 사용으로 갈린다", !!first &&
+    first.academic_inputs.some((a) => a.confidence !== "unknown"),
+    first ? first.academic_inputs.map((a) => a.label + ":" + a.confidence).slice(0, 3).join(" ") : "");
+  const four = {
+    "전공지식의 실무 전환": /전공지식이 실제 업무/.test(r.text),
+    "증거 사다리": /어디까지 증거가 되었나/.test(r.text),
+    "같은 전공 다른 조직": /조직에 따라 성과가 달라집니다/.test(r.text),
+  };
+  ok("결과지에 시그니처 화면이 보인다",
+    four["전공지식의 실무 전환"] && four["증거 사다리"] && four["같은 전공 다른 조직"],
+    Object.keys(four).filter((k) => !four[k]).join(" · ") || "셋 다");
+  // 네 번째(번역 안 된 경험)는 번역이 덜 된 경험이 있을 때만 뜬다.
+  // 다 채우신 분에게 빈 절을 띄우면 없는 문제를 만들어 보이게 된다.
+  const thin = await runV2(browser, {
+    tier: "PRO", stage: "phd", profile: "researcher", evidence: EVIDENCE_NAME_ONLY,
+  });
+  ok("번역이 덜 된 경험이 있을 때만 그 절이 뜬다",
+    /성과 언어로 번역되지 않은 경험/.test(thin.text) &&
+    !/성과 언어로 번역되지 않은 경험/.test(r.text),
+    "다 채운 분에게는 안 뜬다");
+}
+/* ── 증거가 모자라면 지원 준비로 올리지 않는다 ───────────────────── */
+{
+  const weak = await runV2(browser, {
+    tier: "BASIC", stage: "bachelor", profile: "design_rich",
+    evidence: EVIDENCE_NAME_ONLY,
+  });
+  const anyApply = weak.J.decision_table.some((r) => r.decision_status === "READY_TO_APPLY");
+  ok("도구 이름만으로는 지원 준비가 되지 않는다", !anyApply,
+    weak.J.decision_table.slice(0, 2).map((r) => r.decision_status).join(" / "));
+  const strong = got["1 학사 BASIC"];
+  const row = strong.J.decision_table[0];
+  ok("산출물까지 있으면 지원 준비로 간다",
+    row.evidence_ladder && ["E2", "E3", "E4", "E5"].indexOf(row.evidence_ladder) >= 0 &&
+    row.decision_status === "READY_TO_APPLY",
+    `${row.evidence_ladder} → ${row.decision_status}`);
+  const bare2 = await runV2(browser, { tier: "BASIC", stage: "bachelor", profile: "design_rich" });
+  ok("경험을 안 적으셨다고 깎지 않는다",
+    !bare2.J.decision_table.some((r) => r.decision_status === "BUILD_EVIDENCE" && !r.evidence_readiness),
+    bare2.J.decision_table[0].decision_status);
+}
+/* ── 조직을 바꿔도 다섯 값이 그대로다 ───────────────────────────── */
+{
+  const a = await runV2(browser, {
+    tier: "STANDARD", stage: "master", profile: "design_rich",
+    evidence: Object.assign({}, EVIDENCE, { org: "private_company" }),
+  });
+  const b = await runV2(browser, {
+    tier: "STANDARD", stage: "master", profile: "design_rich",
+    evidence: Object.assign({}, EVIDENCE, { org: "government_research_institute" }),
+  });
+  const same = ["actual_work_interest", "exposure", "decision_ownership", "work_mode",
+    "learning_intent"].every((k) => JSON.stringify(a.J[k]) === JSON.stringify(b.J[k]));
+  const fa = a.J.value_path.paths[a.J.value_path.order[0]];
+  const fb = b.J.value_path.paths[b.J.value_path.order[0]];
+  ok("조직을 바꿔도 다섯 값이 그대로다", same);
+  ok("조직을 바꾸면 ValuePath 만 갈린다",
+    fa.outputs[0] !== fb.outputs[0] &&
+    fa.evidence_top_level === fb.evidence_top_level,
+    `${fa.outputs[0]} ↔ ${fb.outputs[0]}`);
+}
+/* ── 도구 이름을 숙련으로 읽지 않는다 ───────────────────────────── */
+{
+  const r = await runV2(browser, {
+    tier: "STANDARD", stage: "bachelor", profile: "design_rich",
+    evidence: EVIDENCE_NAME_ONLY,
+  });
+  const t = r.J.tool_evidence[0];
+  ok("도구 이름만이면 활동까지만 적는다", t && t.evidence_level === "E0",
+    t && t.evidence_level);
+  ok("역량 보유라고 쓰지 않는다",
+    !/ANSYS[^.]{0,20}(역량|능력|숙련|다룰 수 있)/.test(r.text) &&
+    !/도구를?\s*\d+개/.test(r.text));
 }
 /* ── 상품마다 깊이가 다르다 ──────────────────────────────────────── */
 {

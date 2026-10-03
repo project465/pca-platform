@@ -27,7 +27,39 @@ window.PCAV2ResultJSON = (function () {
         { job_fit: v2.families.map(function (f) { return { career_family_id: f }; }) },
         evRaw, rpList);
     }
-    var rows = window.PCAV2Decision.table(v2, v2.families, readiness);
+    /* ── 전공과 경험을 조직의 성과로 옮긴다 ─────────────────────────
+       여기서도 점수를 만들지 않는다. 사슬과 단계와 근거만 나온다. */
+    var VE = window.PCAValue;
+    var exps = VE ? VE.experiences(evRaw, rpList) : [];
+    var toolEv = VE ? VE.toolEvidence(evRaw, exps) : [];
+    var orgCtx = VE ? VE.organizationContext(tgt) : null;
+    var orgPick = (tgt && tgt.target_org_type) || null;
+
+    /* ValuePath 는 상위 직무군에만 만든다. 열여섯을 전부 그리면 읽는
+       사람이 어디를 볼지 모른다. 상품마다 깊이가 다르다 */
+    var topN = v2.tier === 'PRO' ? 6 : (v2.tier === 'STANDARD' ? 4 : 3);
+    var order = window.PCAV2Decision.table(v2, v2.families, readiness)
+      .map(function (r) { return r.career_family_id; });
+    var paths = {};
+    if (VE) {
+      order.slice(0, topN).forEach(function (fid) {
+        /* 조직을 안 고르셨으면 그 직무가 실제로 가는 자리 가운데 첫 번째를
+           기본으로 쓴다. 지어낸 기관이 아니라 유형이다 */
+        var fam = VE.vpById(fid);
+        var fallback = fam ? Object.keys(fam.org_variants || {})[0] : null;
+        var p = VE.valuePath(fid, orgPick || fallback, evRaw, exps, toolEv);
+        if (p) {
+          p.organization_type_is_default = !orgPick;
+          paths[fid] = p;
+        }
+      });
+    }
+    var ladder = VE ? VE.ladderByFamily(paths) : null;
+
+    /* 증거 사다리가 모자라면 '지원 준비' 로 올리지 않는다. 경험을 아직
+       안 적으신 분은 사다리 자체가 없으므로 깎지 않는다 */
+    var rows = window.PCAV2Decision.table(v2, v2.families, readiness,
+      hasEv ? ladder : null);
 
     var stage = window.PCAStage ? window.PCAStage.of(S.stage || '') : null;
     var ctry = window.PCACountry
@@ -85,9 +117,29 @@ window.PCAV2ResultJSON = (function () {
       /* ── 다음에 붙일 자리. 지금은 비어 있다고 적어 둔다 ──────────────
          규격 29~64장(조직 가치 다리)이 여기로 들어온다. 비워 두는 것과
          없는 것은 다르므로 칸을 먼저 만들어 둔다. */
-      organization_context: null,
-      value_path: null,
-      performance_evidence: [],
+      /* ── 조직 가치 번역 ─────────────────────────────────────────── */
+      organization_context: orgCtx,
+      value_path: {
+        note: '같은 전공과 같은 경험이라도 조직이 결과로 치는 것이 다릅니다. ' +
+          '적합도는 조직을 바꿔도 그대로입니다.',
+        selected_organization_type: orgPick,
+        order: order.slice(0, topN),
+        paths: paths
+      },
+      performance_evidence: VE ? VE.performanceEvidence(exps) : [],
+      tool_evidence: toolEv,
+      evidence_ladder: VE ? VE.LADDER : [],
+      repeatability: VE ? VE.repeatability(exps, evRaw) : null,
+      untranslated_evidence: (exps || []).filter(function (x) {
+        return !x.top || window.PCAValue.LV[x.top.id] < 3;
+      }).map(function (x) {
+        return {
+          experience_id: x.id, title: x.title || '(제목 없음)',
+          confirmed_up_to: x.top ? { id: x.top.id, name: x.top.name } : null,
+          next_rung: x.next ? x.next.name : null,
+          follow_up: x.next ? x.next.questions : []
+        };
+      }),
       _meta: { evidence_raw: evRaw, tier: v2.tier }
     };
   }

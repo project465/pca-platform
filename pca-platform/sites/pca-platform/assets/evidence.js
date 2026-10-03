@@ -184,7 +184,14 @@ window.PCAEvidence = (function () {
   function loadResearch() { return get(K_RP) || []; }
   function saveResearch(a) { set(K_RP, a); return a; }
   function loadTarget() {
-    return get(K_TG) || { target_country: '', target_industries: [], target_roles: [] };
+    var v = get(K_TG) || {};
+    return {
+      target_country: v.target_country || '',
+      target_industries: v.target_industries || [],
+      target_roles: v.target_roles || [],
+      /* 가고 싶은 조직 유형. 적합도에 들어가지 않고 번역만 바꾼다 */
+      target_org_type: v.target_org_type || ''
+    };
   }
   function saveTarget(v) { set(K_TG, v); return v; }
   function clearAll() {

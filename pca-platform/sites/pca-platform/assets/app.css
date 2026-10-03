@@ -549,3 +549,87 @@ h1{font-size:34px;line-height:1.16;letter-spacing:-.04em;color:var(--navy)}
   .v2tw{break-inside:avoid;page-break-inside:avoid}
   .v2q{break-inside:avoid}
 }
+
+/* ── 전공 → 조직 성과 번역 ──────────────────────────────────────────
+   표와 사슬이 섞여 있어서 카드마다 테두리를 돌리면 화면이 상자밭이 된다.
+   사슬은 왼쪽 세로줄 하나로 묶고 칸마다 이름표만 붙인다. */
+.vpgrid { grid-template-columns: 1fr; gap: 16px }
+.vpcard { padding: 20px 22px }
+.vpprob { margin: 8px 0 0; font-size: 15px; color: var(--ink2); line-height: 1.6 }
+.vpchain { margin-top: 16px; border-left: 2px solid var(--line); padding-left: 16px }
+.vpstep { position: relative; padding: 10px 0 }
+.vpstep + .vpstep { border-top: 1px dashed var(--line) }
+.vpstep::before {
+  content: ''; position: absolute; left: -21px; top: 17px;
+  width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+}
+.vplab {
+  font-size: 12px; font-weight: 700; letter-spacing: .02em;
+  color: var(--accent); margin-bottom: 6px;
+}
+.vpbody { font-size: 14px; line-height: 1.7 }
+.vpstep .note { margin-top: 6px }
+.vpask { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line) }
+
+/* 증거 사다리. 색으로만 상태를 말하지 않는다 */
+.elbox { margin-top: 10px; border-top: 1px solid var(--line) }
+.elrow {
+  display: grid; grid-template-columns: 90px 44px 1fr; gap: 10px;
+  align-items: baseline; padding: 9px 0; border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+.elname { font-weight: 600 }
+.elstate {
+  font-size: 11px; font-weight: 700; text-align: center; border-radius: 999px;
+  padding: 2px 0; border: 1px solid var(--line);
+}
+.el-confirmed .elstate { color: #0f6b58; border-color: #0f6b58 }
+.el-partial .elstate { color: #8a6d1f; border-color: #d9c48a }
+.el-not_yet .elstate { color: var(--ink3); background: var(--bg2) }
+.elby { color: var(--ink2); font-size: 12px; line-height: 1.6 }
+
+/* 같은 전공, 다른 조직 */
+.orggrid { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)) }
+.orgline { margin: 10px 0 0; font-size: 13px; line-height: 1.7; color: var(--ink2) }
+.orgline b { color: var(--ink); font-size: 12px }
+
+/* 도구 증거 */
+.toolst {
+  display: inline-block; margin-top: 8px; font-size: 12px; font-weight: 700;
+  color: var(--accent); border: 1px solid var(--accent); border-radius: 999px;
+  padding: 2px 10px;
+}
+.tooltb { margin-top: 12px; border-top: 1px solid var(--line) }
+.toolrow {
+  display: grid; grid-template-columns: 120px 1fr; gap: 10px;
+  padding: 7px 0; border-bottom: 1px solid var(--line); font-size: 13px;
+}
+.toolrow > span:first-child { color: var(--ink3); font-size: 12px }
+.toolrow i { font-style: normal }
+
+/* 증거 격차 표 */
+.v2gap { width: 100%; border-collapse: collapse; font-size: 13px }
+.v2gap th, .v2gap td {
+  text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line);
+  vertical-align: top; line-height: 1.6;
+}
+.v2gap th { font-size: 12px; color: var(--ink3); font-weight: 700 }
+
+.cvline { margin: 10px 0 0; font-size: 14px; line-height: 1.7 }
+
+/* 경험 입력 화면의 도구 사슬 */
+.evtchain {
+  grid-column: 1 / -1; display: grid; gap: 8px; margin-top: 8px;
+  padding-top: 10px; border-top: 1px dashed var(--line);
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+}
+.evorg { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line) }
+
+@media (min-width: 900px) {
+  .vpgrid { grid-template-columns: 1fr 1fr }
+}
+@media print {
+  .vpcard, .orggrid .card { break-inside: avoid }
+  .elrow { break-inside: avoid }
+  #btnEvidenceFix { display: none }
+}

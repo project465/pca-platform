@@ -1,0 +1,259 @@
+{
+  "schema_version": "1.0",
+  "major_id": "ME",
+  "note": "전공지식 28갈래. **과목을 들었다는 것은 학문 노출(academic_exposure)이고 역량이 아니다.** 여기 적힌 work·decisions·outputs·performance 는 그 지식이 실제 업무에서 쓰이는 자리이지, 수강생이 그것을 할 수 있다는 뜻이 아니다. 응시자의 증거가 걸릴 때만 그 자리를 켠다. aliases 는 수강과목 입력과 맞춰 보는 말이고, 한 과목이 여러 갈래에 걸릴 수 있다.",
+  "domains": [
+    {
+      "id": "statics", "name_ko": "정역학",
+      "aliases": ["정역학", "statics", "공업역학", "응용역학"],
+      "work": ["하중 경로를 따라가며 힘이 어디로 가는지 보는 일", "지지 조건과 반력을 세우는 일", "구조 개념안을 거르는 일"],
+      "decisions": ["하중 가정", "지지 방식", "단면과 부재 배치"],
+      "outputs": ["하중 조건표", "개념 설계안", "설계 계산서"],
+      "performance": ["강도", "안전율", "무게"],
+      "families": ["ME_DESIGN_PRODUCT", "ME_CAE_SIM", "ME_MATERIALS", "ME_TEST_VV"]
+    },
+    {
+      "id": "dynamics", "name_ko": "동역학",
+      "aliases": ["동역학", "dynamics", "기구학", "kinematics", "메커니즘"],
+      "work": ["움직이는 부분의 속도와 가속도를 보는 일", "링크와 기구를 설계하는 일", "관성 하중을 따지는 일"],
+      "decisions": ["기구 방식", "구동 조건", "관성 하중 가정"],
+      "outputs": ["운동 해석 결과", "기구 설계안", "구동 사양"],
+      "performance": ["동작 정밀도", "속도", "내구"],
+      "families": ["ME_DESIGN_PRODUCT", "ME_AUTOMATION", "ME_CAE_SIM"]
+    },
+    {
+      "id": "solid_mechanics", "name_ko": "재료역학",
+      "aliases": ["재료역학", "고체역학", "mechanics of materials", "solid mechanics", "강도학"],
+      "work": ["응력과 변형을 계산하는 일", "하중을 고려한 구조 설계", "파손 원인을 되짚는 일", "설계 검토"],
+      "decisions": ["두께", "형상", "재질", "안전 여유", "보강 위치", "하중 가정"],
+      "outputs": ["설계 계산서", "해석 결과", "도면 개정", "시험 계획", "기술 보고서"],
+      "performance": ["강도", "강성", "무게", "안전", "신뢰성", "제조 가능성"],
+      "families": ["ME_DESIGN_PRODUCT", "ME_CAE_SIM", "ME_MATERIALS", "ME_TEST_VV", "ME_QUALITY_RELIABILITY"]
+    },
+    {
+      "id": "thermodynamics", "name_ko": "열역학",
+      "aliases": ["열역학", "thermodynamics", "응용열역학"],
+      "work": ["에너지 수지를 맞추는 일", "사이클을 해석하는 일", "효율을 따지는 일", "에너지 시스템 설계"],
+      "decisions": ["운전 조건", "시스템 구성", "효율과 비용의 맞바꿈", "열용량"],
+      "outputs": ["계산서", "성능 모델", "사양서", "시험 결과"],
+      "performance": ["효율", "출력", "에너지 비용"],
+      "families": ["ME_THERMAL_FLUID", "ME_RND", "ME_PROCESS", "ME_RESEARCH_SCIENTIST"]
+    },
+    {
+      "id": "fluid_mechanics", "name_ko": "유체역학",
+      "aliases": ["유체역학", "fluid mechanics", "유체기계", "수력학"],
+      "work": ["압력 손실을 보는 일", "유량 분배를 맞추는 일", "펌프와 팬 계통을 고르는 일", "냉각 설계", "공력·수력 설계"],
+      "decisions": ["유로 형상", "펌프·팬 사양", "작동점", "유량 배분"],
+      "outputs": ["유동 해석 결과", "계통도", "사양서", "시험 결과"],
+      "performance": ["유량", "압력 손실", "열 관리", "효율", "안정성", "소음"],
+      "families": ["ME_THERMAL_FLUID", "ME_CAE_SIM", "ME_PROCESS", "ME_RND"]
+    },
+    {
+      "id": "heat_transfer", "name_ko": "열전달",
+      "aliases": ["열전달", "heat transfer", "전열"],
+      "work": ["냉각 설계", "열저항을 쌓아 온도를 보는 일", "열 성능을 검토하는 일"],
+      "decisions": ["냉각 방식", "방열 면적", "재질과 계면", "유량과 온도 조건"],
+      "outputs": ["열 해석 결과", "냉각 설계안", "시험 결과", "기술 보고서"],
+      "performance": ["온도", "열저항", "신뢰성", "소비 전력", "원가"],
+      "families": ["ME_THERMAL_FLUID", "ME_CAE_SIM", "ME_DESIGN_PRODUCT", "ME_RND"]
+    },
+    {
+      "id": "machine_design", "name_ko": "기계요소설계",
+      "aliases": ["기계요소설계", "기계설계", "machine design", "기계요소"],
+      "work": ["요구조건을 치수와 공차로 옮기는 일", "요소를 고르고 조합하는 일", "설계 검토"],
+      "decisions": ["요소 선정", "공차", "체결 방식", "안전 여유", "수명 가정"],
+      "outputs": ["도면", "사양서", "설계 계산서", "부품표"],
+      "performance": ["성능", "수명", "조립성", "원가"],
+      "families": ["ME_DESIGN_PRODUCT", "ME_EQUIPMENT_MAINT", "ME_MANUFACTURING"]
+    },
+    {
+      "id": "cad_drawing", "name_ko": "CAD · 도면",
+      "aliases": ["기계제도", "cad", "도면", "제도", "기하공차", "gd&t", "3d모델링"],
+      "work": ["형상을 모델로 만드는 일", "도면으로 뜻을 전달하는 일", "설계 변경을 이력으로 남기는 일"],
+      "decisions": ["기준면", "공차 배분", "분할과 조립 순서"],
+      "outputs": ["3D 모델", "도면", "부품표", "변경 이력"],
+      "performance": ["해석 없이도 읽히는가", "제조 가능성", "재작업"],
+      "families": ["ME_DESIGN_PRODUCT", "ME_MANUFACTURING", "ME_DIGITAL"]
+    },
+    {
+      "id": "manufacturing", "name_ko": "제조공학",
+      "aliases": ["제조공학", "생산공학", "가공학", "manufacturing", "기계가공", "소성가공", "용접"],
+      "work": ["공정을 고르는 일", "공정을 다듬는 일", "라인을 설계하는 일", "제조 가능성 검토", "현장 문제 해결"],
+      "decisions": ["공정 조건", "작업 순서", "치공구", "검사 지점", "공정 창"],
+      "outputs": ["공정도", "작업 표준", "검사 기준", "개선 보고"],
+      "performance": ["수율", "생산량", "불량", "원가", "사이클 타임", "재현성"],
+      "families": ["ME_MANUFACTURING", "ME_PROCESS", "ME_QUALITY_RELIABILITY", "ME_DESIGN_PRODUCT"]
+    },
+    {
+      "id": "materials", "name_ko": "재료공학",
+      "aliases": ["기계재료", "재료공학", "재료과학", "금속재료", "복합재료", "열처리"],
+      "work": ["재질을 고르는 일", "파면을 보고 원인을 찾는 일", "열처리와 표면 처리를 정하는 일"],
+      "decisions": ["재질", "열처리 조건", "표면 처리", "대체재"],
+      "outputs": ["재질 선정 근거", "파손 분석 보고", "시험 결과"],
+      "performance": ["강도", "내식", "내마모", "원가", "수급"],
+      "families": ["ME_MATERIALS", "ME_QUALITY_RELIABILITY", "ME_DESIGN_PRODUCT", "ME_RESEARCH_SCIENTIST"]
+    },
+    {
+      "id": "vibration_nvh", "name_ko": "기계진동 · NVH",
+      "aliases": ["기계진동", "진동학", "nvh", "소음진동", "vibration"],
+      "work": ["고유진동수를 보는 일", "공진을 피하는 일", "소음과 진동을 줄이는 일"],
+      "decisions": ["강성 배분", "감쇠 방식", "지지 위치", "운전 영역"],
+      "outputs": ["모달 해석 결과", "진동 측정 보고", "대책안"],
+      "performance": ["진동 수준", "소음", "내구", "승차감"],
+      "families": ["ME_CAE_SIM", "ME_TEST_VV", "ME_DESIGN_PRODUCT", "ME_EQUIPMENT_MAINT"]
+    },
+    {
+      "id": "control", "name_ko": "제어",
+      "aliases": ["자동제어", "제어공학", "control", "선형제어", "현대제어"],
+      "work": ["제어기를 설계하는 일", "응답을 맞추는 일", "모델을 세워 거동을 보는 일"],
+      "decisions": ["제어 구조", "이득", "센서와 구동기 선정", "안전 로직"],
+      "outputs": ["제어 설계안", "시뮬레이션 결과", "시운전 기록"],
+      "performance": ["응답성", "안정성", "정밀도", "안전"],
+      "families": ["ME_AUTOMATION", "ME_RND", "ME_CAE_SIM"]
+    },
+    {
+      "id": "mechatronics", "name_ko": "메카트로닉스",
+      "aliases": ["메카트로닉스", "mechatronics", "센서공학", "구동기", "액추에이터"],
+      "work": ["기구와 전장을 맞물리게 하는 일", "센서와 구동기를 붙이는 일", "통합 시운전"],
+      "decisions": ["부품 선정", "인터페이스", "신호 처리 방식"],
+      "outputs": ["시작품", "회로와 배선 자료", "시운전 기록"],
+      "performance": ["동작 신뢰성", "정밀도", "원가"],
+      "families": ["ME_AUTOMATION", "ME_RND", "ME_DESIGN_PRODUCT"]
+    },
+    {
+      "id": "robotics", "name_ko": "로봇",
+      "aliases": ["로봇공학", "robotics", "로봇", "매니퓰레이터"],
+      "work": ["로봇 작업을 설계하는 일", "경로를 만드는 일", "셀을 구성하는 일"],
+      "decisions": ["로봇 선정", "배치", "경로와 속도", "안전 울타리"],
+      "outputs": ["셀 레이아웃", "로봇 프로그램", "검증 기록"],
+      "performance": ["사이클 타임", "반복 정밀도", "안전", "가동률"],
+      "families": ["ME_AUTOMATION", "ME_MANUFACTURING", "ME_RND"]
+    },
+    {
+      "id": "numerical", "name_ko": "수치해석",
+      "aliases": ["수치해석", "numerical methods", "공업수학", "전산해석"],
+      "work": ["방정식을 수치로 푸는 일", "수렴을 확인하는 일", "격자와 시간 간격을 정하는 일"],
+      "decisions": ["해법 선택", "격자 크기", "수렴 기준", "경계 조건"],
+      "outputs": ["해석 스크립트", "수렴 검토 자료"],
+      "performance": ["정확도", "계산 비용", "재현성"],
+      "families": ["ME_CAE_SIM", "ME_RESEARCH_SCIENTIST", "ME_DIGITAL"]
+    },
+    {
+      "id": "fea", "name_ko": "유한요소해석",
+      "aliases": ["유한요소해석", "fea", "유한요소법", "구조해석", "fem"],
+      "work": ["구조 해석 모델을 세우는 일", "설계안을 견주는 일", "시험값과 맞춰 보는 일"],
+      "decisions": ["요소와 격자", "경계 조건과 하중", "재료 모델", "설계안 선택"],
+      "outputs": ["해석 결과", "설계 검토 자료", "해석 보고서"],
+      "performance": ["응력과 변형 기준 충족", "시험과의 차이", "설계 결정 기여"],
+      "families": ["ME_CAE_SIM", "ME_DESIGN_PRODUCT", "ME_MATERIALS", "ME_RESEARCH_SCIENTIST"]
+    },
+    {
+      "id": "cfd", "name_ko": "전산유체해석",
+      "aliases": ["전산유체", "cfd", "유동해석", "열유동해석"],
+      "work": ["유동과 열 해석 모델을 세우는 일", "조건을 바꿔 견주는 일", "실험과 맞춰 보는 일"],
+      "decisions": ["난류 모델", "격자", "경계 조건", "형상안 선택"],
+      "outputs": ["해석 결과", "설계 검토 자료", "보고서"],
+      "performance": ["압력 손실과 온도 기준 충족", "실험과의 차이", "설계 결정 기여"],
+      "families": ["ME_CAE_SIM", "ME_THERMAL_FLUID", "ME_RND", "ME_RESEARCH_SCIENTIST"]
+    },
+    {
+      "id": "experiment", "name_ko": "실험방법",
+      "aliases": ["기계공학실험", "실험계획법", "doe", "실험방법", "계측실험"],
+      "work": ["시험을 설계하는 일", "조건을 통제하는 일", "결과를 판정하는 일"],
+      "decisions": ["시험 조건", "반복 수", "판정 기준", "계측 지점"],
+      "outputs": ["시험 계획서", "시험 결과", "판정 보고"],
+      "performance": ["재현성", "불확도", "기준 부합"],
+      "families": ["ME_TEST_VV", "ME_RESEARCH_SCIENTIST", "ME_QUALITY_RELIABILITY"]
+    },
+    {
+      "id": "statistics", "name_ko": "통계 · 데이터 분석",
+      "aliases": ["공업통계", "통계", "데이터분석", "statistics", "품질통계", "spc"],
+      "work": ["산포를 보는 일", "공정을 통계로 보는 일", "요인을 가려내는 일"],
+      "decisions": ["표본 수", "관리 한계", "유의 판단", "모델 선택"],
+      "outputs": ["관리도", "분석 보고", "요인 분석 결과"],
+      "performance": ["공정 능력", "불량률", "예측 정확도"],
+      "families": ["ME_QUALITY_RELIABILITY", "ME_DIGITAL", "ME_PROCESS", "ME_RESEARCH_SCIENTIST"]
+    },
+    {
+      "id": "programming", "name_ko": "프로그래밍",
+      "aliases": ["프로그래밍", "python", "matlab", "c++", "전산", "컴퓨터프로그래밍"],
+      "work": ["계산을 자동으로 돌리는 일", "데이터를 다루는 일", "해석을 묶어 반복하는 일"],
+      "decisions": ["자동화 범위", "자료 구조", "검증 방법"],
+      "outputs": ["스크립트", "도구", "데이터 처리 결과"],
+      "performance": ["시간 절감", "재사용", "오류 감소"],
+      "families": ["ME_DIGITAL", "ME_CAE_SIM", "ME_RESEARCH_SCIENTIST", "ME_AUTOMATION"]
+    },
+    {
+      "id": "optimization", "name_ko": "최적화",
+      "aliases": ["최적설계", "최적화", "optimization", "설계최적화"],
+      "work": ["목적과 제약을 세우는 일", "설계 변수를 훑는 일", "맞바꿈을 보는 일"],
+      "decisions": ["목적 함수", "제약 조건", "탐색 범위", "최종안"],
+      "outputs": ["최적화 결과", "설계안 비교표", "민감도 분석"],
+      "performance": ["무게", "원가", "성능", "맞바꿈의 근거"],
+      "families": ["ME_CAE_SIM", "ME_DESIGN_PRODUCT", "ME_RND", "ME_RESEARCH_SCIENTIST"]
+    },
+    {
+      "id": "systems_engineering", "name_ko": "시스템공학",
+      "aliases": ["시스템공학", "systems engineering", "요구공학", "형상관리"],
+      "work": ["요구사항을 나누고 추적하는 일", "인터페이스를 정하는 일", "검증 계획을 세우는 일"],
+      "decisions": ["요구 배분", "인터페이스 규정", "검증 방법", "변경 승인"],
+      "outputs": ["요구사항 문서", "추적표", "검증 계획", "변경 이력"],
+      "performance": ["요구 충족", "추적 가능성", "일정", "재작업"],
+      "families": ["ME_SYSTEMS_TPM", "ME_TEST_VV", "ME_DESIGN_PRODUCT"]
+    },
+    {
+      "id": "reliability", "name_ko": "신뢰성",
+      "aliases": ["신뢰성공학", "reliability", "수명시험", "fmea", "내구"],
+      "work": ["고장 모드를 뽑는 일", "수명을 보는 일", "가속 시험을 설계하는 일"],
+      "decisions": ["고장 기준", "시험 조건", "설계 여유", "보증 수준"],
+      "outputs": ["FMEA", "수명 시험 결과", "신뢰성 보고"],
+      "performance": ["고장률", "수명", "보증 비용"],
+      "families": ["ME_QUALITY_RELIABILITY", "ME_TEST_VV", "ME_DESIGN_PRODUCT", "ME_EQUIPMENT_MAINT"]
+    },
+    {
+      "id": "quality", "name_ko": "품질",
+      "aliases": ["품질공학", "품질관리", "quality", "검사", "측정시스템"],
+      "work": ["검사 기준을 세우는 일", "불량 원인을 찾는 일", "공정을 지키는 일"],
+      "decisions": ["검사 항목과 주기", "합격 기준", "시정 조치"],
+      "outputs": ["검사 기준서", "부적합 보고", "시정 조치 기록"],
+      "performance": ["불량률", "고객 클레임", "공정 능력"],
+      "families": ["ME_QUALITY_RELIABILITY", "ME_MANUFACTURING", "ME_PROCESS"]
+    },
+    {
+      "id": "tribology", "name_ko": "트라이볼로지",
+      "aliases": ["트라이볼로지", "tribology", "윤활", "마찰", "마모"],
+      "work": ["마찰과 마모를 보는 일", "윤활 방식을 정하는 일", "접촉면을 설계하는 일"],
+      "decisions": ["윤활 방식", "표면 거칠기", "접촉 압력", "소재 조합"],
+      "outputs": ["마모 시험 결과", "윤활 사양", "설계 개선안"],
+      "performance": ["수명", "마찰 손실", "유지보수 주기"],
+      "families": ["ME_MATERIALS", "ME_EQUIPMENT_MAINT", "ME_DESIGN_PRODUCT"]
+    },
+    {
+      "id": "energy_systems", "name_ko": "에너지 시스템",
+      "aliases": ["에너지시스템", "발전공학", "신재생에너지", "energy systems", "열기관"],
+      "work": ["에너지 계통을 설계하는 일", "운전 효율을 보는 일", "설비를 고르는 일"],
+      "decisions": ["계통 구성", "용량", "운전 전략", "연료와 열원"],
+      "outputs": ["계통 설계안", "성능 모델", "운전 기준"],
+      "performance": ["효율", "연간 에너지 비용", "배출", "가동률"],
+      "families": ["ME_THERMAL_FLUID", "ME_PROCESS", "ME_RND", "ME_CONSULTING"]
+    },
+    {
+      "id": "hvac", "name_ko": "공조 · 열시스템",
+      "aliases": ["공기조화", "hvac", "냉동공학", "공조", "열시스템"],
+      "work": ["부하를 계산하는 일", "공조 계통을 설계하는 일", "운전 조건을 맞추는 일"],
+      "decisions": ["장비 용량", "덕트와 배관", "제어 방식", "운전 설정"],
+      "outputs": ["부하 계산서", "계통도", "장비 사양", "시운전 기록"],
+      "performance": ["온습도 유지", "에너지 사용량", "소음", "초기 비용"],
+      "families": ["ME_THERMAL_FLUID", "ME_APPLICATIONS_FIELD", "ME_CONSULTING", "ME_EQUIPMENT_MAINT"]
+    },
+    {
+      "id": "measurement", "name_ko": "계측",
+      "aliases": ["계측공학", "센서", "measurement", "instrumentation", "정밀측정"],
+      "work": ["무엇을 어떻게 잴지 정하는 일", "센서를 붙이는 일", "불확도를 따지는 일"],
+      "decisions": ["센서 선정", "측정 지점", "교정 주기", "불확도 허용"],
+      "outputs": ["계측 계획", "측정 데이터", "교정 기록"],
+      "performance": ["정확도", "불확도", "추적성"],
+      "families": ["ME_TEST_VV", "ME_QUALITY_RELIABILITY", "ME_EQUIPMENT_MAINT", "ME_RESEARCH_SCIENTIST"]
+    }
+  ]
+}

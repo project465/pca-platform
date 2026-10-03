@@ -56,7 +56,23 @@ window.PCAV2Decision = (function () {
    * 막대 하나로 줄이지 않는 것이 요점이다. 다섯 칸이 각각 다른 것을 재고,
    * 마지막 칸이 그래서 지금 무엇을 할 자리인지를 적는다.
    */
-  function table(v2, families, readiness) {
+  /* '지원 준비 단계' 를 증거 사다리로 한 번 더 막는다.
+     준비도 신호(수강·도구)는 그 일을 **해봤을 법하다**까지만 말해 주고,
+     서류와 면접에서 꺼낼 물건이 있다는 말은 아니다. 산출물(E2)에 닿지
+     않으면 지원 준비로 올리지 않는다. **올리는 쪽으로만 막는다**: 다른
+     판정은 건드리지 않는다. 그리고 **경험을 안 적으신 분은 깎지 않는다**:
+     사다리가 없는 것과 낮은 것은 다르다. */
+  function gate(status, ladderLevel, hasLadder) {
+    var R = rules(), G = R && R.apply_gate;
+    if (!G || status !== G.status) return status;
+    var need = ORDER.indexOf(G.requires_evidence_ladder);
+    if (!hasLadder) return G.fallback_without_ladder;
+    var got = ORDER.indexOf(ladderLevel || '');
+    return got >= need ? status : G.fallback_with_ladder;
+  }
+  var ORDER = ['E0', 'E1', 'E2', 'E3', 'E4', 'E5'];
+
+  function table(v2, families, readiness, ladder) {
     var NAME = {};
     var fam = (window.PCA_FAMILIES && window.PCA_FAMILIES.ME);
     if (fam) fam.families.forEach(function (f) { NAME[f.career_family_id] = f.name_ko; });
@@ -71,7 +87,8 @@ window.PCAV2Decision = (function () {
         evidence_readiness: (readiness && readiness[id]) || null,
         work_mode: window.PCAV2.modeCloseness(v2.work_mode, id)
       };
-      row.decision_status = statusOf(row);
+      row.evidence_ladder = (ladder && ladder[id]) || null;
+      row.decision_status = gate(statusOf(row), row.evidence_ladder, !!ladder);
       return row;
     });
     /* 관심을 먼저 보되 **순위를 매기지 않는다.** 표는 비교하는 자리이고,
