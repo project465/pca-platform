@@ -508,3 +508,44 @@ h1{font-size:34px;line-height:1.16;letter-spacing:-.04em;color:var(--navy)}
   .evpair{grid-template-columns:1fr}
   .evrow{grid-template-columns:1fr;gap:6px}
 }
+
+/* ── ME_V2 응시 화면 ───────────────────────────────────────────────────
+   한 화면에 한 척도만 둔다. 보기 다섯 개가 가로로 서면 좁은 화면에서
+   글자가 깨지므로 세로로 쌓고, 넓은 화면에서만 가로로 편다. */
+.v2q{border-top:1px solid var(--line);padding:20px 0}
+.v2q:first-of-type{border-top:0}
+.v2q.v2miss{background:#fff8f8;border-radius:8px;padding:20px 14px}
+.v2qh{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
+.v2no{flex:0 0 auto;font-size:12px;font-weight:700;color:var(--green);
+  background:#eef4f0;border-radius:5px;padding:3px 8px;margin-top:2px}
+.v2qh p{margin:0;line-height:1.7}
+.v2opts{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.v2opt{display:flex;flex-direction:column;align-items:center;gap:5px;
+  border:1px solid var(--line);background:#fff;border-radius:9px;
+  padding:11px 7px;cursor:pointer;color:var(--ink);transition:.12s;min-width:0}
+.v2opt b{font-size:13px;color:var(--muted)}
+.v2opt span{font-size:11.5px;line-height:1.35;text-align:center;word-break:keep-all}
+.v2opt:hover{border-color:var(--navy)}
+.v2opt.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.v2opt.on b,.v2opt.on span{color:#fff}
+.v2choice{display:flex;flex-wrap:wrap;gap:7px}
+.v2chip{border:1px solid var(--line);background:#fff;border-radius:999px;
+  padding:8px 15px;font-size:13.5px;cursor:pointer;color:var(--ink)}
+.v2chip.on{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:600}
+/* 결정 표. 여섯 칸이 각각 다른 것을 재므로 한 칸으로 줄이지 않는다 */
+.v2tw{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:#fff}
+.v2tw table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:620px}
+.v2tw th,.v2tw td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--line)}
+.v2tw thead th{background:#f7f9f8;font-size:12px;color:var(--muted);font-weight:600;
+  white-space:nowrap}
+.v2tw tbody tr:last-child th,.v2tw tbody tr:last-child td{border-bottom:0}
+@media (max-width:640px){
+  .v2opts{grid-template-columns:1fr}
+  .v2opt{flex-direction:row;justify-content:flex-start;gap:10px;padding:10px 13px}
+  .v2opt span{text-align:left}
+}
+@media print{
+  .top,.evnav,.rp-act{display:none!important}
+  .v2tw{break-inside:avoid;page-break-inside:avoid}
+  .v2q{break-inside:avoid}
+}

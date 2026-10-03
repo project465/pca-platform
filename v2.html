@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>커리어메트리 · 진로 결정 검사 (ME_V2)</title>
+<meta name="description" content="해보고 싶은 일, 해본 일, 직접 정한 것, 일하는 방식, 더 배우고 싶은 것을 따로 묻고 따로 보여 드립니다. 종합 점수를 만들지 않습니다.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2314263d'/%3E%3Cpath d='M9 22V10h5a4 4 0 0 1 0 8H9' stroke='%230f6b58' stroke-width='2.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+<div class="app">
+
+  <header class="top">
+    <div class="topin">
+      <div class="row">
+        <div class="brand">커리어메트리 · 진로 결정 검사</div>
+        <div class="row" style="gap:8px;flex:0 0 auto">
+          <button type="button" class="ghost" id="v2Reset">처음부터</button>
+          <div class="badge">ME_V2</div>
+        </div>
+      </div>
+      <div id="v2Prog" style="display:none">
+        <div class="progwrap"><div class="prog" id="v2Bar"></div></div>
+        <div class="meta"><span id="v2Count">0 / 0문항</span>
+          <span class="saved">문항마다 자동 저장됩니다</span></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell">
+
+    <!-- 1. 상품 -->
+    <section class="screen active" id="s2-start">
+      <div class="evhead">
+        <div class="eyebrow">STEP 1</div>
+        <h2>어느 검사로 보시겠습니까</h2>
+        <p class="desc">세 상품은 같은 문항에서 시작하고 뒤로 갈수록 묻는 것이
+          늘어납니다. 어느 쪽을 고르셔도 종합 점수는 만들지 않습니다. 해보고 싶은
+          일, 해본 일, 직접 정한 것, 일하는 방식, 더 배우고 싶은 것을 따로 묻고
+          따로 보여 드립니다.</p>
+      </div>
+      <div class="grid" id="v2TierList"></div>
+      <div class="evnav">
+        <a class="ghost" href="index.html">예전 검사로</a>
+        <button type="button" class="primary" id="v2ToStage">다음</button>
+      </div>
+    </section>
+
+    <!-- 2. 학위 단계 -->
+    <section class="screen" id="s2-stage">
+      <div class="evhead">
+        <div class="eyebrow">STEP 2</div>
+        <h2>지금 어느 단계이십니까</h2>
+        <p class="desc">단계에 따라 뒷부분 문항의 문장이 달라집니다. 묻는 것은
+          같고 장면만 갈립니다. 학위가 올라간다고 점수가 자동으로 오르지 않습니다.</p>
+      </div>
+      <div class="grid" id="v2StageList"></div>
+      <div class="evnav">
+        <button type="button" class="ghost" id="v2Back">뒤로</button>
+        <button type="button" class="primary" id="v2ToQ">검사 시작</button>
+      </div>
+    </section>
+
+    <!-- 3. 문항 -->
+    <section class="screen" id="s2-question">
+      <div id="v2QBody"></div>
+    </section>
+
+    <!-- 4. 경험 입력 -->
+    <section class="screen" id="s2-evidence">
+      <div id="evBody"></div>
+    </section>
+
+    <!-- 5. 결과 -->
+    <section class="screen" id="s2-result">
+      <div id="v2ResultBody"></div>
+    </section>
+
+  </main>
+</div>
+
+<script src="data/families.js"></script>
+<script src="data/evidence-rules.js"></script>
+<!-- ME_V2 문항 은행. V1 과 전역 이름이 겹치지 않는다 -->
+<script src="data/me-v2.js"></script>
+<script src="assets/stage.js"></script>
+<script src="assets/country.js"></script>
+<script src="assets/research.js"></script>
+<script src="assets/evidence.js"></script>
+<script src="assets/readiness.js"></script>
+<script src="assets/evidence-ui.js"></script>
+<script src="assets/v2-scoring.js"></script>
+<script src="assets/v2-decision.js"></script>
+<script src="assets/v2-result-json.js"></script>
+<script src="assets/v2-report.js"></script>
+<script src="assets/v2-app.js"></script>
+</body>
+</html>

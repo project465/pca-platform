@@ -19,6 +19,9 @@ window.PCAEvidenceUI = (function () {
   var EV = window.PCAEvidence;
   var RULES = (window.PCA_EVIDENCE_RULES && window.PCA_EVIDENCE_RULES.ME) || {};
   var ev = null, rp = null, tg = null, stage = 'bachelor', onDone = null, step = 1;
+  /* 나가는 단추의 말. 결과지에서 고치러 들어오면 '그만두기' 가 맞지만,
+     검사 흐름 한가운데서는 그만두는 것이 아니라 건너뛰는 것이다 */
+  var cancelLabel = '그만두기';
 
   function esc(s) {
     return String(s === null || s === undefined ? '' : s)
@@ -45,7 +48,8 @@ window.PCAEvidenceUI = (function () {
         return '<button type="button" class="evkind' + (on ? ' on' : '') +
           '" data-k="' + k.id + '">' + esc(k.n) + '</button>';
       }).join('') + '</div>' +
-      '<div class="evnav"><button type="button" class="ghost" id="evCancel">그만두기</button>' +
+      '<div class="evnav"><button type="button" class="ghost" id="evCancel">' +
+        esc(cancelLabel) + '</button>' +
       '<button type="button" class="primary" id="evNext">다음</button></div>';
   }
 
@@ -421,6 +425,7 @@ window.PCAEvidenceUI = (function () {
   function open(opts) {
     stage = (opts && opts.stage) || 'bachelor';
     onDone = opts && opts.onDone;
+    cancelLabel = (opts && opts.cancelLabel) || '그만두기';
     ev = EV.loadEvidence(); rp = EV.loadResearch(); tg = EV.loadTarget();
     ev.courseEtc = (ev.courses || []).filter(function (c) { return c.etc; })
       .map(function (c) { return c.n; });
