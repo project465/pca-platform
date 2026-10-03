@@ -25,6 +25,8 @@
     "metri:prescribe": "tsx scripts/metri/prescribe-check.ts",
     "domains:check": "node scripts/domains-check.mjs",
     "copy:audit": "node scripts/copy-audit.mjs",
+    "writing:check": "node scripts/writing-check.mjs",
+    "golden:check": "node scripts/golden-check.mjs",
     "metri:refund": "tsx scripts/metri/refund-check.ts",
     "metri:legal": "tsx scripts/metri/legal-check.ts",
     "metri:codes": "tsx scripts/metri/make-codes.ts",
