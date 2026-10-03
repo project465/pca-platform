@@ -61,6 +61,11 @@ const files = process.argv.slice(2).length
      "sites/pca-platform/assets/writing.js",
      // 경험 입력 화면의 문구. 응시자가 실제로 읽는 글이다
      "sites/pca-platform/assets/evidence-ui.js",
+     // ME_V2 화면과 결과지. **문항 은행(`data/me-v2.js`)은 넣지 않는다**:
+     // 규격이 준 문장 그대로라 문체 규칙으로 다듬으면 문항이 바뀐다
+     "sites/pca-platform/v2.html",
+     "sites/pca-platform/assets/v2-app.js",
+     "sites/pca-platform/assets/v2-report.js",
      // 플랫폼 화면 전부. 관리자·담당자만 넣었다가 **학생이 보는 화면이
      // 밖에 남아 있는 것**을 알았다. 결과지 문구는 화면 파일이 아니라
      // 사전(`locale.ts`)에 있어서, 화면만 훑는 규칙으로는 영원히 안 걸린다
@@ -91,6 +96,11 @@ const files = process.argv.slice(2).length
        "sites/pca-platform/assets/stage.js",
        "sites/pca-platform/assets/country.js",
        "sites/pca-platform/assets/research.js",
+       "sites/pca-platform/assets/v2-scoring.js",
+       "sites/pca-platform/assets/v2-decision.js",
+       "sites/pca-platform/assets/v2-result-json.js",
+       "sites/pca-platform/assets/v2-report.js",
+       "sites/pca-platform/assets/v2-app.js",
        ...readdirSync("src/lib", { recursive: true })
          .filter((f) => String(f).endsWith(".ts"))
          .map((f) => `src/lib/${f}`),

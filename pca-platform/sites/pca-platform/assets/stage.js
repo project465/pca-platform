@@ -19,7 +19,11 @@ window.PCAStage = (function () {
 
   var TO_SPEC = {
     UNDERGRAD: 'bachelor', EARLY: 'bachelor',
-    MS: 'master', PHD: 'phd', RESEARCH: 'postdoc'
+    MS: 'master', PHD: 'phd', RESEARCH: 'postdoc',
+    /* 규격이 쓰는 이름 넷도 그대로 받는다. ME_V2 화면은 화면 코드 대신
+       규격 이름을 들고 다니는데, 받지 않으면 조용히 학부로 떨어져서
+       박사와 박사후연구원이 같은 질문을 받는다 */
+    bachelor: 'bachelor', master: 'master', phd: 'phd', postdoc: 'postdoc'
   };
 
   var S = {
