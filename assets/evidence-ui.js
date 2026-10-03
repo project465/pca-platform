@@ -70,9 +70,11 @@ window.PCAEvidenceUI = (function () {
 
   function toolBox() {
     var cats = RULES.tool_categories || [], lv = RULES.tool_levels || [];
-    return '<div class="evsec"><h3>사용해 본 도구</h3>' +
+    return '<div class="evsec"><h3>사용해 본 도구 · 기술</h3>' +
       '<p class="note">프로그램 이름만으로는 무엇을 할 줄 아는지 알 수 없어서, ' +
-      '어디서 썼고 무엇을 하려고 썼는지를 같이 받습니다.</p>' +
+      '어디에 썼고 무엇을 판단했고 무엇이 남았고 무엇과 견주었는지를 같이 ' +
+      '받습니다. 네 칸을 채우실수록 결과지가 구체적으로 바뀝니다. ' +
+      '비워 두셔도 됩니다.</p>' +
       '<div id="evTools">' + (ev.tools || []).map(function (t, i) {
         return toolRow(t, i, cats, lv);
       }).join('') + '</div>' +
@@ -89,8 +91,19 @@ window.PCAEvidenceUI = (function () {
         return '<option value="' + x.id + '"' + (t.level === x.id ? ' selected' : '') + '>' +
           esc(x.n) + '</option>';
       }).join('') + '</select>' +
-      '<input type="text" data-f="why" placeholder="무엇을 하려고 썼는가" value="' + esc(t.why) + '">' +
-      '<button type="button" class="evdel" data-del="tool">지우기</button></div>';
+      '<input type="text" data-f="why" placeholder="어디에 썼는가" value="' + esc(t.why) + '">' +
+      '<button type="button" class="evdel" data-del="tool">지우기</button>' +
+      /* 도구 → 판단 → 산출물 → 검증. 이름만 받으면 활동까지밖에 못 간다 */
+      '<div class="evtchain">' +
+      '<select data-f="exp_id"><option value="">연결할 경험 없음</option>' +
+      (ev.projects || []).map(function (p) {
+        return '<option value="' + esc(p.id) + '"' + (t.exp_id === p.id ? ' selected' : '') +
+          '>' + esc(p.title || '(제목 없는 경험)') + '</option>';
+      }).join('') + '</select>' +
+      '<input type="text" data-f="decision" placeholder="이걸로 무엇을 판단했는가" value="' + esc(t.decision) + '">' +
+      '<input type="text" data-f="output" placeholder="무엇이 남았는가" value="' + esc(t.output) + '">' +
+      '<input type="text" data-f="validation" placeholder="무엇과 견주어 확인했는가" value="' + esc(t.validation) + '">' +
+      '</div></div>';
   }
 
   function projectBox() {
@@ -257,7 +270,27 @@ window.PCAEvidenceUI = (function () {
         '<label class="evlab">목표 국가<input type="text" id="evCountry" placeholder="KR · US · DE …" value="' + esc(tg.target_country) + '"></label>' +
         '<label class="evlab">목표 산업<input type="text" id="evInd" placeholder="쉼표로" value="' + esc(join(tg.target_industries)) + '"></label>' +
       '</div>' +
-      '<label class="evlab">목표 직무<input type="text" id="evRoles" placeholder="쉼표로" value="' + esc(join(tg.target_roles)) + '"></label></div>';
+      '<label class="evlab">목표 직무<input type="text" id="evRoles" placeholder="쉼표로" value="' + esc(join(tg.target_roles)) + '"></label>' +
+      orgPick() + '</div>';
+  }
+
+  /* 가고 싶은 조직 유형. **적합도를 바꾸지 않는다.** 같은 전공과 같은
+     경험이라도 조직마다 결과로 치는 것이 달라서, 그 번역만 갈린다.
+     고르지 않으시면 네 유형을 나란히 보여 드린다. */
+  function orgPick() {
+    var types = (window.PCA_ORG_TYPES && window.PCA_ORG_TYPES.organization_types) || [];
+    if (!types.length) return '';
+    return '<div class="evorg"><div class="evlab">관심 있는 조직 유형</div>' +
+      '<p class="note">점수에 들어가지 않습니다. 같은 지식이 어떤 결과물로 ' +
+      '읽히는지만 달라집니다. 고르지 않으셔도 됩니다.</p>' +
+      '<div class="evkinds">' +
+      '<button type="button" class="evkind' + (!tg.target_org_type ? ' on' : '') +
+      '" data-org="">고르지 않음</button>' +
+      types.map(function (o) {
+        return '<button type="button" class="evkind' +
+          (tg.target_org_type === o.id ? ' on' : '') + '" data-org="' + esc(o.id) + '">' +
+          esc(o.name_ko) + '</button>';
+      }).join('') + '</div></div>';
   }
 
   function stepDetail() {
@@ -291,7 +324,11 @@ window.PCAEvidenceUI = (function () {
     if (tool) {
       ev.tools = [].slice.call(tool.querySelectorAll('.evrow')).map(function (row) {
         var g = function (f) { var e2 = row.querySelector('[data-f="' + f + '"]'); return e2 ? e2.value.trim() : ''; };
-        return { cat: g('cat'), name: g('name'), level: g('level'), where: '', why: g('why') };
+        return {
+          cat: g('cat'), name: g('name'), level: g('level'), where: '', why: g('why'),
+          exp_id: g('exp_id'), decision: g('decision'),
+          output: g('output'), validation: g('validation')
+        };
       }).filter(function (t) { return t.name; });
     }
     var ps = el('evProjects');
@@ -364,7 +401,8 @@ window.PCAEvidenceUI = (function () {
       tg = {
         target_country: c.value.trim().toUpperCase(),
         target_industries: lines((el('evInd') || {}).value),
-        target_roles: lines((el('evRoles') || {}).value)
+        target_roles: lines((el('evRoles') || {}).value),
+        target_org_type: tg.target_org_type || ''
       };
     }
   }
@@ -373,6 +411,13 @@ window.PCAEvidenceUI = (function () {
     var host = el('evBody');
     host.onclick = function (e) {
       var t = e.target;
+      if (t.classList.contains('evkind') && t.hasAttribute('data-org')) {
+        collect();
+        tg.target_org_type = t.getAttribute('data-org');
+        EV.saveTarget(tg);
+        render();
+        return;
+      }
       if (t.classList.contains('evkind')) {
         var k = t.getAttribute('data-k'), i = ev.kinds.indexOf(k);
         if (i >= 0) ev.kinds.splice(i, 1); else ev.kinds.push(k);
@@ -404,7 +449,8 @@ window.PCAEvidenceUI = (function () {
         return;
       }
       if (t.id === 'evAddProj') { collect(); ev.projects.push(EV.emptyProject()); render(); return; }
-      if (t.id === 'evAddTool') { collect(); ev.tools.push({ cat: 'cad', name: '', level: 'used', where: '', why: '' }); render(); return; }
+      if (t.id === 'evAddTool') { collect(); ev.tools.push({ cat: 'cad', name: '', level: 'used', where: '', why: '',
+        exp_id: '', decision: '', output: '', validation: '' }); render(); return; }
       if (t.id === 'evAddRp') { collect(); rp.push(EV.emptyResearch()); render(); return; }
       if (t.id === 'evNext') {
         collect();

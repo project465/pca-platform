@@ -204,7 +204,7 @@
       window.PCAV2Report.render(J);
     var bp = el('v2Print');
     if (bp) bp.addEventListener('click', function () { window.print(); });
-    [el('v2Evi'), el('btnEvidence')].forEach(function (b) {
+    [el('v2Evi'), el('btnEvidence'), el('btnEvidenceFix')].forEach(function (b) {
       if (b) b.addEventListener('click', function () { openEvidence(false); });
     });
     screen('s2-result');
