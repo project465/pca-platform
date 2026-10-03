@@ -113,7 +113,7 @@
   }
 
   function screen(id) {
-    ['s-resume', 's-start', 's-form', 's-stage', 's-major', 's-profile', 's-question', 's-result'].forEach(function (x) {
+    ['s-resume', 's-start', 's-form', 's-stage', 's-major', 's-profile', 's-question', 's-result', 's-evidence'].forEach(function (x) {
       var el = document.getElementById(x);
       if (el) el.classList.toggle('active', x === id);
     });
@@ -550,6 +550,103 @@
       '갈리는 자리가 오히려 할 일을 알려 줍니다.</p>';
   }
 
+  /**
+   * 경험 지도. 넷으로 가른다.
+   *
+   * 해본 것과 관심만 있는 것을 섞어 두면 둘 다 읽히지 않는다. 지금 할 일이
+   * 갈리는 자리가 여기다: 해본 쪽은 서류에 쓰고, 안 해본 쪽은 이번 학기에
+   * 하나 만든다.
+   */
+  function experienceMap(J) {
+    if (!J || !J.evidence_supplied) return '';
+    var top = (J.job_fit || [])[0];
+    var rd = top && top.evidence_readiness;
+    var ev2 = J.evidence;
+    var box = function (t, items, note) {
+      if (!items.length) return '';
+      return '<div class="card contentcard"><div class="eyebrow">' + esc(t) + '</div>' +
+        '<div style="margin-top:8px">' + items.slice(0, 10).map(function (x) {
+          return '<span class="tag">' + esc(x) + '</span>';
+        }).join('') + '</div>' +
+        (note ? '<p class="note" style="margin-top:10px">' + esc(note) + '</p>' : '') + '</div>';
+    };
+    var done = [].concat(ev2.projects, ev2.research, ev2.internships, ev2.employment);
+    return '<div class="grid">' +
+      box('이미 해보신 것', done, '서류에서 바로 꺼내 쓸 수 있는 재료입니다') +
+      box('배우신 것', ev2.coursework, '수업은 경험의 바탕이고, 결과물이 붙어야 근거가 됩니다') +
+      box('써 보신 도구', ev2.tools, '이름만으로는 무엇을 할 줄 아는지 말할 수 없어서, 쓴 자리와 함께 읽습니다') +
+      box('남은 결과물', ev2.outputs, '') +
+      '</div>' +
+      (rd ? '<div class="card contentcard" style="margin-top:10px">' +
+        '<div class="eyebrow">아직 비어 있는 것</div>' +
+        '<ul class="qlist" style="margin-top:8px">' +
+        rd.missing.slice(0, 4).map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') +
+        '</ul><p class="note" style="margin-top:8px">못한다는 뜻이 아니라 지금 ' +
+        '적어 주신 자료로는 말할 수 없다는 뜻이고, 이 가운데 하나를 이번 ' +
+        '학기 결과물로 잡으시면 됩니다.</p></div>' : '');
+  }
+
+  /**
+   * 준비 정도. 숫자를 내지 않고 걸린 신호와 안 걸린 신호를 센다.
+   *
+   * 검증된 모형이 없는 상태에서 소수점을 내면 그 숫자가 근거처럼 보인다.
+   * 무엇 때문에 걸렸는지를 같이 적어야 응시자가 고칠 데를 안다.
+   */
+  function readinessPanel(J) {
+    if (!J || !J.evidence_supplied) return '';
+    var rows = (J.job_fit || []).slice(0, 3).filter(function (f) { return f.evidence_readiness; });
+    if (!rows.length) return '';
+    var LV = { high: '넉넉함', medium: '보통', low: '아직 적음' };
+    return '<div class="grid">' + rows.map(function (f) {
+      var r2 = f.evidence_readiness;
+      return '<div class="card contentcard"><div class="eyebrow">' + esc(f.job) + '</div>' +
+        '<h3 style="margin:6px 0 0">' + esc(LV[r2.level]) + '</h3>' +
+        (r2.supported_by.length
+          ? '<p class="note" style="margin-top:8px"><b>걸린 것</b> ' +
+            esc(r2.supported_by.slice(0, 3).join(' · ')) + '</p>' : '') +
+        (r2.missing.length
+          ? '<p class="note" style="margin-top:6px"><b>비어 있는 것</b> ' +
+            esc(r2.missing.slice(0, 2).join(' · ')) + '</p>' : '') +
+        '</div>';
+    }).join('') + '</div>' +
+    '<p class="note" style="margin-top:10px">이 값은 적합도와 다릅니다. 적합도는 ' +
+    '문항이 재는 업무 방식 유사도이고, 이쪽은 적어 주신 경험이 그 자리의 ' +
+    '신호에 걸리는지만 봅니다. 점수로 내지 않는 것은 검증된 모형이 아직 없어서입니다.</p>';
+  }
+
+  /** 적어 주신 연구 과제를 그대로 되돌려 준다. 없는 칸은 비워 둔다. */
+  function researchDossier(J) {
+    if (!J || !(J.research_projects || []).length) return '';
+    var m = J.research_maturity;
+    var cards = J.research_projects.slice(0, 3).map(function (r2) {
+      var f = r2.funding_context || {}, t = r2.team || {}, o = r2.objective || {},
+          x = r2.execution || {}, b2 = r2.budget || {};
+      var row = function (k, v) {
+        if (window.PCAEvidence.isBlank(v) || (Array.isArray(v) && !v.length)) return '';
+        return '<li><b>' + esc(k) + '</b> ' + esc(Array.isArray(v) ? v.join(', ') : v) + '</li>';
+      };
+      return '<div class="card contentcard"><h4>' + esc(r2.project_title) + '</h4>' +
+        '<ul class="qlist" style="margin-top:8px">' +
+        row('발주·지원', f.sponsor_name) + row('사업·공고', f.program_name) +
+        row('기간', r2.period && r2.period.start_date) +
+        row('총 연구비', b2.total_amount) + row('팀', t.total_people) +
+        row('내 역할', t.my_role) + row('내가 맡은 목표', o.my_objective) +
+        row('직접 고른 지점', x.key_decisions) +
+        '</ul><p class="note" style="margin-top:8px">비어 있는 칸은 적어 주신 것이 ' +
+        '없어서 비워 둔 자리입니다. 지어내서 채우지 않습니다.</p></div>';
+    }).join('');
+    return (m ? '<div class="card contentcard"><div class="eyebrow">' + esc(m.level) +
+      ' · ' + esc(m.label) + '</div>' +
+      '<p class="note" style="margin-top:8px"><b>이렇게 읽었습니다</b> ' +
+      esc(m.evidence.join(' · ')) + '</p>' +
+      (m.missing_for_next_level.length
+        ? '<p class="note" style="margin-top:6px"><b>다음 칸으로 가려면</b> ' +
+          esc(m.missing_for_next_level.join(' · ')) + '</p>' : '') +
+      '<p class="note" style="margin-top:8px">학위로 정한 값이 아니고 적어 주신 ' +
+      '과제에서 읽은 값이라, 적으신 것이 늘면 이 칸도 달라집니다.</p></div>' : '') +
+      '<div class="grid" style="margin-top:10px">' + cards + '</div>';
+  }
+
   /** 이번 응답을 얼마나 믿을 수 있는가. 검사가 자기 한계를 먼저 적는다. */
   function qualityPanel(r) {
     var q = r.quality;
@@ -569,6 +666,49 @@
       (warn ? '<p class="danger" style="margin-top:8px">같은 값이나 양 끝으로 답한 비율이 높게 ' +
         '나왔습니다. 결과가 실제와 다르게 느껴지시면 다시 응시해 비교해 보십시오.</p>' : '') +
       '</div>';
+  }
+
+  /**
+   * 경험 입력 화면을 연다.
+   *
+   * 채점이 끝난 뒤에만 연다. 경험은 적합도에 들어가지 않으므로 응시 중에
+   * 받을 이유가 없고, 문항을 푸는 중에 끼워 넣으면 이탈만 는다.
+   */
+  function openEvidence() {
+    if (!window.PCAEvidenceUI) return;
+    var st = (window.PCAStage && S.stage) ? window.PCAStage.of(S.stage).id : 'bachelor';
+    window.PCAEvidenceUI.open({
+      stage: st,
+      onDone: function () { showResult(); }
+    });
+    screen('s-evidence');
+  }
+  window.PCAOpenEvidence = openEvidence;
+
+  /**
+   * 경험이 없을 때 결과지 맨 위에 붙는 칸.
+   *
+   * **빈 상태를 조용히 두지 않는다.** 경험을 받지 않은 결과지는 할 수 있는
+   * 말이 줄어드는데, 그 사실을 적지 않으면 읽는 사람은 이 검사가 원래 그
+   * 정도인 줄 안다.
+   */
+  function evidenceBanner(J) {
+    if (!J) return '';
+    var has = J.evidence_supplied;
+    var n = has ? ((J.evidence.projects || []).length + (J.research_projects || []).length) : 0;
+    return '<div class="section"><div class="card pad evbanner' + (has ? ' on' : '') + '">' +
+      '<div class="ns-eye">' + (has ? '경험 반영됨' : '경험이 아직 없습니다') + '</div>' +
+      '<p class="ns-p">' + (has
+        ? '적어 두신 경험 ' + n + '건을 읽어 준비 정도와 경험 지도, 자기소개서 ' +
+          '쪽에 반영했습니다. 더 적으시면 그만큼 자세해집니다.'
+        : '지금 등록된 프로젝트·연구·인턴 경험이 없어 경험을 바탕으로 한 ' +
+          '분석은 제한적으로만 나갑니다. 수업과 프로젝트와 도구를 적어 두시면 ' +
+          '준비 정도와 경험 지도, 자기소개서에 쓸 재료가 함께 나옵니다.') + '</p>' +
+      '<button type="button" class="ns-btn" id="btnEvidence">' +
+      (has ? '경험 고치기' : '경험 추가하기') + '</button>' +
+      '<p class="note ns-note">여기 적는 내용은 적합도 점수를 바꾸지 않습니다. ' +
+      '같은 응답이면 적합도는 늘 같은 값으로 나옵니다.</p>' +
+      '</div></div>';
   }
 
   /** 다음 상품으로 넘어가는 칸. 무엇이 더 나오는지를 적고 바로 누를 수 있게 둔다. */
@@ -624,6 +764,7 @@
             ' · 이 기기에만 저장됩니다</span></div>' +
           '<button type="button" class="rp-act-b" id="btnPrint">인쇄 · PDF로 저장</button>' +
         '</div>' +
+        (J ? evidenceBanner(J) : '') +
         window.PCAReport.render(r, major, cmap, S, GRAD);
       if (r.product_type === 'STANDARD') {
         $('#resultBody').insertAdjacentHTML('beforeend', nextStep({
@@ -643,6 +784,8 @@
       }
       var bp = document.getElementById('btnPrint');
       if (bp) bp.addEventListener('click', function () { window.print(); });
+      var be = document.getElementById('btnEvidence');
+      if (be) be.addEventListener('click', openEvidence);
       window.PCA_RESULT = r;
       screen('s-result');
       return;
@@ -672,6 +815,9 @@
       '</p></div></div>');
 
     var n = 0, no = function () { return pad2(++n); };
+
+    /* 경험이 있으면 어디에 쓰였는지, 없으면 무엇이 빠지는지 먼저 적는다. */
+    out.push(evidenceBanner(J));
 
     /* 읽는 법을 맨 앞에 둔다. 점수부터 보면 숫자를 등수로 읽는다. */
     if (r.product_type === 'QUICK') {
@@ -834,6 +980,18 @@
           '</div>'));
       }
 
+      /* 경험 지도. 넣으신 것이 있을 때만 뜬다. */
+      if (J && J.evidence_supplied) {
+        out.push(sect(no(), '이미 가지고 계신 것',
+          '적어 주신 경험을 넷으로 갈랐습니다. 해보신 쪽은 서류에서 바로 쓰시고, ' +
+          '비어 있는 쪽이 이번 학기에 만들 것입니다.',
+          experienceMap(J)));
+        var rp2 = readinessPanel(J);
+        if (rp2) {
+          out.push(sect(no(), '이 자리에 쓸 근거가 얼마나 되는가', '', rp2));
+        }
+      }
+
       /* 연구 과제를 어떻게 수행해 왔는가 (석사 이상).
          "연구 역량이 우수합니다" 는 아무 말도 아니다. 실제로 갈리는 것은
          받은 과제를 수행한 것과 한 덩어리를 맡아 끌고 간 것이고, 둘은 다른
@@ -842,6 +1000,13 @@
       if (window.PCAResearch && J && J.education_stage_lens &&
           J.education_stage_lens.id !== 'bachelor') {
         var RS = window.PCAResearch;
+        var dossier = researchDossier(J);
+        if (dossier) {
+          out.push(sect(no(), '적어 주신 연구 과제',
+            '적어 주신 그대로 되돌려 드리고 비어 있는 칸은 채우지 않았습니다. ' +
+            '연구직 서류에서 가장 자주 비는 곳이 그 칸들입니다.',
+            dossier));
+        }
         out.push(sect(no(), '연구를 어떻게 수행해 왔는가',
           '아래는 지금까지 맡아 본 범위를 스스로 놓아 보는 자리입니다. 학위가 ' +
           '올라간다고 이 칸이 자동으로 올라가지 않아서, 응시자가 직접 고르는 ' +
@@ -1024,7 +1189,17 @@
           '<p class="note" style="margin-top:10px">' + esc(top.name) +
           josa(top.name, '은', '는') + ' 결과물보다 판단의 근거가 읽히는 자리라, 한 가지를 끝까지 해 보고 ' +
           '그 과정을 적어 두는 쪽이 자격증 한 줄보다 오래 남습니다.</p>' +
-        '</div>'));
+        '</div>' +
+        /* 적어 주신 경험이 있으면 일반론 대신 **비어 있는 칸 하나**를 집는다 */
+        (function () {
+          var f3 = J ? (J.job_fit || [])[0] : null;
+          var miss = f3 && f3.evidence_readiness ? f3.evidence_readiness.missing : [];
+          if (!miss || !miss.length) return '';
+          return '<div class="card contentcard" style="margin-top:10px">' +
+            '<div class="eyebrow">적어 주신 것을 보고 고른 하나</div>' +
+            '<p>' + esc(miss[0]) + '. 이번 주에 여기부터 손대시면 ' +
+            esc(top.name) + ' 쪽 서류에서 가장 빨리 표가 납니다.</p></div>';
+        }())));
     } else {
       /* 응답이 가장 많이 들어온 축 셋. 이미 갖춘 능력을 말하는 자리가 아니다. */
       out.push(sect(no(), '응답이 가장 많이 들어온 축 셋',
@@ -1278,6 +1453,8 @@
       '</div>');
 
     $('#resultBody').innerHTML = out.join('');
+    var be2 = document.getElementById('btnEvidence');
+    if (be2) be2.addEventListener('click', openEvidence);
     window.PCA_RESULT = r;   // 운영 연동 시 서버 저장용
     screen('s-result');
   }

@@ -183,6 +183,11 @@
       <div id="resultBody"></div>
     </section>
 
+    <!-- 경험 입력. 적합도 점수와 따로 저장하고 따로 읽는다 -->
+    <section class="screen" id="s-evidence">
+      <div id="evBody"></div>
+    </section>
+
   </main>
 </div>
 
@@ -191,6 +196,8 @@
 <script src="data/me.js"></script>
 <!-- 직무군 표: 내부 id · 영문 이름 · 공고에서 찾을 이름 -->
 <script src="data/families.js"></script>
+<!-- 직무군별 준비 신호. 걸린 것과 안 걸린 것만 센다 -->
+<script src="data/evidence-rules.js"></script>
 <!-- 학과 추가 시 이 아래에 <script src="data/<code>.js"></script> 한 줄만 추가하세요 -->
 <script src="assets/engine.js"></script>
 <!-- 학위 단계 · 목표 국가 · 연구 수행 근거. 셋 다 점수를 바꾸지 않는다 -->
@@ -198,6 +205,10 @@
 <script src="assets/country.js"></script>
 <script src="assets/research.js"></script>
 <!-- 채점 결과를 결과지가 읽는 한 가지 모양으로 옮긴다. 점수는 만들지 않는다 -->
+<!-- 경험. 적합도에 들어가지 않는다 -->
+<script src="assets/evidence.js"></script>
+<script src="assets/readiness.js"></script>
+<script src="assets/evidence-ui.js"></script>
 <script src="assets/result-json.js"></script>
 <!-- 세 상품이 같이 쓰는 문장 엔진. 상품은 말투가 아니라 깊이로 갈린다 -->
 <script src="assets/writing.js"></script>

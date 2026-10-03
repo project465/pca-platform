@@ -462,3 +462,49 @@ h1{font-size:34px;line-height:1.16;letter-spacing:-.04em;color:var(--navy)}
 .rp-tag{display:inline-block;font-size:11px;letter-spacing:.02em;color:#8a6d1f;
   background:#fdf6e3;border:1px solid #efe0b5;border-radius:3px;
   padding:1px 6px;margin-right:6px;vertical-align:1px;font-weight:700}
+
+/* ── 경험 입력 ─────────────────────────────────────────────────────────
+   폼이 길어지면 사람이 닫는다. 고른 것만 보이게 하고, 한 줄에 둘씩 묶어
+   세로 길이를 줄였다. 선택 항목은 접어 둔다. */
+.evhead{margin-bottom:22px}
+.evhead h2{font-size:26px;letter-spacing:-.02em;margin:6px 0 10px}
+.evhead .desc{color:var(--muted);line-height:1.75;max-width:62ch}
+.evkinds{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.evkind{border:1px solid var(--line);background:#fff;border-radius:999px;
+  padding:9px 16px;font-size:14px;cursor:pointer;color:var(--ink);transition:.15s}
+.evkind:hover{border-color:var(--navy)}
+.evkind.on{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:600}
+.evsec{border-top:1px solid var(--line);padding-top:22px;margin-top:22px}
+.evsec:first-child{border-top:0;padding-top:0;margin-top:0}
+.evsec h3{font-size:17px;margin:0 0 6px}
+.evchips{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.evchip{border:1px solid var(--line);background:#fff;border-radius:6px;
+  padding:6px 11px;font-size:13px;cursor:pointer;color:var(--ink)}
+.evchip.on{background:#eef4f0;border-color:var(--green);color:var(--green);font-weight:600}
+.evlab{display:block;margin:10px 0;font-size:13px;color:var(--muted)}
+.evlab input,.evlab select,.evlab textarea,.evsec>textarea{display:block;width:100%;
+  margin-top:5px;padding:10px 12px;border:1px solid var(--line);border-radius:7px;
+  font:inherit;font-size:14px;color:var(--ink);background:#fff;box-sizing:border-box}
+.evlab textarea,.evsec>textarea{resize:vertical;line-height:1.6}
+.evpair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.evcard{border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:12px 0;background:#fff}
+.evcard-h{display:flex;justify-content:space-between;align-items:center;
+  font-size:13px;color:var(--muted);margin-bottom:4px}
+.evrow{display:grid;grid-template-columns:1fr 1fr 1fr 1.4fr auto;gap:8px;
+  align-items:center;margin:8px 0}
+.evrow select,.evrow input{padding:9px 10px;border:1px solid var(--line);
+  border-radius:7px;font:inherit;font-size:13px;background:#fff;min-width:0}
+.evdel{border:0;background:none;color:#b24;font-size:12px;cursor:pointer;padding:4px 6px}
+.evmore{margin-top:10px}
+.evmore-b{border:1px dashed var(--line);background:none;border-radius:7px;
+  padding:8px 14px;font-size:13px;color:var(--muted);cursor:pointer}
+.evmore .evmore-c{display:none;margin-top:10px}
+.evmore[data-open="1"] .evmore-c{display:block}
+.evnav{display:flex;gap:10px;justify-content:space-between;margin-top:30px;
+  padding-top:20px;border-top:1px solid var(--line)}
+.evbanner{border-left:3px solid var(--line)}
+.evbanner.on{border-left-color:var(--green)}
+@media (max-width:640px){
+  .evpair{grid-template-columns:1fr}
+  .evrow{grid-template-columns:1fr;gap:6px}
+}

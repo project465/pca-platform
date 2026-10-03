@@ -58,12 +58,21 @@ async function take(browser, { stage, form }) {
   }
   await p.fill("#pfName", "이수민"); await p.click('#pfGender .seg[data-v="F"]');
   await p.fill("#pfSid", "20231234"); await p.check("#pfAgree"); await p.click("#btnProfileNext");
-  for (let i = 0; i < 600; i++) {
+  /* **문항 번호로 고른다.** 반복 횟수로 고르면 클릭이 늦게 먹힌 날 같은
+     문항에 다른 보기를 눌러 응답 묶음이 통째로 달라진다. */
+  const qidx = () => p.evaluate(() => {
+    try { return JSON.parse(localStorage.getItem("pca_session_v1")).idx; } catch { return -1; }
+  });
+  for (let guard = 0; guard < 600; guard++) {
     if ((await at()) === "s-result") break;
     const n = await p.$$eval("#opts .opt", (e) => e.length).catch(() => 0);
     if (!n) break;
-    await p.click(`#opts .opt:nth-child(${Math.min(n, PATTERN(i))})`).catch(() => {});
-    await p.waitForTimeout(35);
+    const at0 = await qidx();
+    await p.click(`#opts .opt:nth-child(${Math.min(n, PATTERN(at0))})`).catch(() => {});
+    for (let w = 0; w < 40; w++) {
+      if ((await qidx()) !== at0 || (await at()) === "s-result") break;
+      await p.waitForTimeout(25);
+    }
   }
   await p.waitForTimeout(700);
   const r = await p.evaluate(() => {

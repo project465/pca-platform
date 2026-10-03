@@ -148,13 +148,16 @@ window.PCAResultJSON = (function () {
      measurement_error 는 문항으로 잰 통계값이고, information_coverage 는
      응시자에 대해 우리가 **얼마나 알고 있는가**다. 둘을 한 칸에 담으면
      "자료가 적어서 넓은 구간" 과 "문항이 적어서 넓은 구간" 이 구별되지 않는다. */
-  function coverage(r, S) {
+  function coverage(r, S, ev, rpList, tgt) {
     var missing = [];
     if (!(S && S.stage)) missing.push('학위 단계');
-    if (!(S && S.targetCountry)) missing.push('목표 국가');
-    missing.push('프로젝트·연구 경험');
-    missing.push('사용해 본 도구');
-    missing.push('수강 과목');
+    if (!((S && S.targetCountry) || (tgt && tgt.target_country))) missing.push('목표 국가');
+    var e = ev || {};
+    if (!((e.projects || []).length + (e.research || []).length + (rpList || []).length)) {
+      missing.push('프로젝트·연구 경험');
+    }
+    if (!(e.tools || []).length) missing.push('사용해 본 도구');
+    if (!(e.coursework || []).length) missing.push('수강 과목');
     if (r.product_type === 'QUICK') missing.push('경험 근거 문항(STANDARD 이상)');
     var answeredAll = r.question_count && r.answered === r.question_count;
     var level = missing.length <= 2 && answeredAll ? 'high'
@@ -169,15 +172,23 @@ window.PCAResultJSON = (function () {
   }
 
   function build(r, major, S) {
+    /* 경험은 **채점 뒤에** 붙는다. 넣어도 r 의 값은 하나도 바뀌지 않는다.
+       바뀌는 것은 준비 정도와 경험 지도와 그 뒤로 이어지는 절들이다. */
+    var EVm = window.PCAEvidence;
+    var evRaw = EVm ? EVm.loadEvidence() : null;
+    var rpList = EVm ? EVm.loadResearch() : [];
+    var tgt = EVm ? EVm.loadTarget() : null;
+    var hasEv = EVm ? EVm.has(evRaw, rpList) : false;
     var level = LEVEL[r.product_type] || 'basic';
     var q = r.quality || {};
     var paid = level !== 'basic';
 
     var stage = window.PCAStage ? window.PCAStage.of((S && S.stage) || '') : null;
     var ctry = window.PCACountry
-      ? window.PCACountry.profile((S && S.targetCountry) || null) : null;
+      ? window.PCACountry.profile((S && S.targetCountry) ||
+          (tgt && tgt.target_country) || null) : null;
 
-    return {
+    var out = {
       schema_version: SCHEMA_VERSION,
       report_level: level,
       report_language: 'ko',
@@ -192,10 +203,10 @@ window.PCAResultJSON = (function () {
         /* 국적은 받지 않는다. 받아도 적합도에 넣지 않는다. */
         citizenship_country: null,
         current_country: null,
-        target_country: (S && S.targetCountry) || null,
+        target_country: (S && S.targetCountry) || (tgt && tgt.target_country) || null,
         target_region: null,
-        target_industries: [],
-        target_roles: [],
+        target_industries: (tgt && tgt.target_industries) || [],
+        target_roles: (tgt && tgt.target_roles) || [],
         work_authorization_status: null
       },
       /* 아래 user 는 예전 모양이다. 화면이 아직 보고 있어 남겨 둔다. */
@@ -243,11 +254,17 @@ window.PCAResultJSON = (function () {
       work_style: workStyle(r, major),
       trait_axes: traitAxes(r, major),
       interest_experience: interestExperience(r),
-      /* 응시자에게 묻지 않은 것들. 빈 채로 둔다(규격 20장). */
-      evidence: {
-        courses: [], projects: [], research: [],
-        internships: [], tools: [], certifications: [], achievements: []
+      /* 응시자가 낸 것만 담는다. 안 낸 칸은 빈 배열이고, 문장 쪽이 그 사실을
+         그대로 적는다. **빈칸을 채워 넣지 않는다**(규격 20·48장). */
+      evidence: EVm ? EVm.normalize(evRaw, rpList) : {
+        coursework: [], projects: [], research: [], internships: [], employment: [],
+        tools: [], methods: [], publications: [], patents: [], presentations: [],
+        awards: [], certifications: [], leadership: [], mentoring: [], outputs: []
       },
+      evidence_supplied: hasEv,
+      /* 연구 과제는 응시자가 적은 그대로 담는다. 금액도 인원도 지어내지 않는다. */
+      research_projects: rpList,
+      research_maturity: window.PCAReadiness ? window.PCAReadiness.maturity(rpList) : null,
       job_reference: jobReference((r.jobs[0] || {}).job || {}),
       generation_constraints: {
         max_section_words: level === 'basic' ? 120 : (level === 'standard' ? 260 : 420),
@@ -267,12 +284,15 @@ window.PCAResultJSON = (function () {
           experience: j.evidence === null ? null : r1(j.evidence),
           learning_intent: r.future_work === null || r.future_work === undefined
             ? null : r1(r.future_work),
-          evidence_readiness: j.ready === null ? null : r1(j.ready),
+          /* 경험 기반 준비 정도. 문항이 재는 READY 와 다른 값이라 따로 담는다. */
+          evidence_readiness: null,
+          /* 문항으로 잰 준비도. 경험을 넣어도 이 값은 바뀌지 않는다. */
+          item_readiness: j.ready === null ? null : r1(j.ready),
           reasons: evidenceAxes(j.job || {}, major)
         };
       }),
       /* 통계로 잰 오차와, 우리가 아는 것이 얼마나 되는가는 다른 값이다. */
-      information_coverage: coverage(r, S),
+      information_coverage: coverage(r, S, EVm ? EVm.normalize(evRaw, rpList) : null, rpList, tgt),
       /* 학위 단계가 바꾸는 것은 질문과 기대하는 근거이지 점수가 아니다. */
       education_stage_lens: stage ? {
         id: stage.id, label: stage.label, question: stage.question,
@@ -283,11 +303,29 @@ window.PCAResultJSON = (function () {
       country_context: ctry,
       /* 화면이 쓰는 꼬리표. 규격에 없는 칸이라 아래로 모았다. */
       _meta: {
+        evidence_raw: evRaw,
         product_type: r.product_type,
         group_size: r.group_size,
         grad: r.grad ? { ranked: r.grad.ranked, scores: r.grad.scores } : null
       }
     };
+
+    /* 준비 정도는 **경험에서만** 나온다. 경험이 없으면 비워 두고, 문장 쪽이
+       "지금 자료로는 말할 수 없다" 로 받는다. 점수를 추측해 채우지 않는다. */
+    if (hasEv && window.PCAReadiness) {
+      var rd = window.PCAReadiness.all(out, evRaw, rpList);
+      if (rd) {
+        out.career_family_candidates.forEach(function (c2) {
+          var x = rd[c2.career_family_id];
+          if (x) c2.evidence_readiness = { level: x.level, supported_by: x.supported_by, missing: x.missing };
+        });
+        out.job_fit.forEach(function (f2) {
+          var x = rd[f2.career_family_id];
+          if (x) f2.evidence_readiness = { level: x.level, supported_by: x.supported_by, missing: x.missing };
+        });
+      }
+    }
+    return out;
   }
 
   return { build: build, SECTIONS: SECTIONS, FORBIDDEN: FORBIDDEN, band: band };

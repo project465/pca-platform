@@ -59,6 +59,8 @@ const files = process.argv.slice(2).length
      // 결과지 문장의 절반이 이제 여기 있다. 세 상품이 같이 읽는 파일이라
      // 여기 밴 버릇은 세 결과지에 한꺼번에 나간다
      "sites/pca-platform/assets/writing.js",
+     // 경험 입력 화면의 문구. 응시자가 실제로 읽는 글이다
+     "sites/pca-platform/assets/evidence-ui.js",
      // 플랫폼 화면 전부. 관리자·담당자만 넣었다가 **학생이 보는 화면이
      // 밖에 남아 있는 것**을 알았다. 결과지 문구는 화면 파일이 아니라
      // 사전(`locale.ts`)에 있어서, 화면만 훑는 규칙으로는 영원히 안 걸린다
@@ -83,6 +85,12 @@ const files = process.argv.slice(2).length
        "sites/pca-platform/assets/writing.js",
        "sites/pca-platform/assets/result-json.js",
        "sites/pca-platform/assets/report.js",
+       "sites/pca-platform/assets/evidence.js",
+       "sites/pca-platform/assets/readiness.js",
+       "sites/pca-platform/assets/evidence-ui.js",
+       "sites/pca-platform/assets/stage.js",
+       "sites/pca-platform/assets/country.js",
+       "sites/pca-platform/assets/research.js",
        ...readdirSync("src/lib", { recursive: true })
          .filter((f) => String(f).endsWith(".ts"))
          .map((f) => `src/lib/${f}`),
