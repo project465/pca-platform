@@ -1,0 +1,59 @@
+{
+  "assessment_version": "ME_V2_DECISION_2026",
+  "note": "척도마다 재는 것이 다르다. 경험 척도는 '해봤는가' 를 재지 '잘하는가' 를 재지 않는다. 결정 소유 척도는 참여와 소유를 가르는 자리라 가장 중요하다.",
+  "scales": {
+    "interest": {
+      "label": "관심",
+      "measures": "이 일을 해보고 싶은가",
+      "points": [
+        "전혀 하고 싶지 않다", "별로 하고 싶지 않다", "잘 모르겠다",
+        "해보고 싶다", "매우 해보고 싶다"
+      ]
+    },
+    "experience": {
+      "label": "경험",
+      "measures": "이 일을 해본 적이 있는가. 잘하는지는 재지 않는다",
+      "points": [
+        "해본 적 없다", "수업/관찰 수준으로 접했다", "일부 직접 해봤다",
+        "직접 수행해봤다", "반복적으로 수행해봤다"
+      ]
+    },
+    "ownership": {
+      "label": "결정 소유",
+      "measures": "그 일에서 내가 무엇을 정했는가",
+      "points": [
+        "내가 결정한 적 없다", "정해진 방법을 따라 수행했다", "일부 선택을 직접 했다",
+        "핵심 방법/조건을 직접 정했다", "다른 사람의 업무까지 포함해 결정·조정했다"
+      ]
+    },
+    "learning": {
+      "label": "학습 의향",
+      "measures": "앞으로 더 배울 뜻이 있는가",
+      "points": [
+        "더 배우고 싶지 않다", "우선순위가 낮다", "잘 모르겠다",
+        "더 배우고 싶다", "깊게 배워 실제로 활용하고 싶다"
+      ]
+    },
+    "agreement": {
+      "label": "업무 방식",
+      "measures": "어느 쪽이 더 편한가. 좋고 나쁨을 가르지 않는다",
+      "points": [
+        "전혀 그렇지 않다", "그렇지 않은 편이다", "중간이다",
+        "그런 편이다", "매우 그렇다"
+      ]
+    },
+    "evidence_count": {
+      "label": "증거",
+      "measures": "보여 줄 수 있는 사례가 몇 건인가",
+      "points": ["없음", "일부 있음", "명확한 사례 1개", "명확한 사례 2개 이상", "반복적으로 있음"]
+    },
+    "choice_one": { "label": "하나 고르기", "measures": "맥락. 점수에 넣지 않는다", "scored": false },
+    "choice_multi2": { "label": "최대 둘 고르기", "measures": "맥락. 점수에 넣지 않는다", "scored": false }
+  },
+  "not_scored_constructs": [
+    "career_path_preferences",
+    "decision_constraints",
+    "organization_preference",
+    "market_transition_intent"
+  ]
+}

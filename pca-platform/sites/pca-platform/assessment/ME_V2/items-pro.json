@@ -1,0 +1,287 @@
+{
+ "assessment_version": "ME_V2_DECISION_2026",
+ "tier": "PRO",
+ "adds": 24,
+ "total_with_core_standard": 92,
+ "items": [
+  {
+   "item_id": "ME_DEC_WBS_69",
+   "question_no": 69,
+   "construct": "decision_ownership",
+   "scale": "ownership",
+   "ko-KR": "프로젝트 시작 전에 목표를 구체적인 작업 단위로 나눠 본 경험이 있다.",
+   "career_family_weights": {},
+   "score_direction": "positive",
+   "group": "complex_decision"
+  },
+  {
+   "item_id": "ME_DEC_DEPEND_70",
+   "question_no": 70,
+   "construct": "decision_ownership",
+   "scale": "ownership",
+   "ko-KR": "어떤 작업이 먼저 끝나야 다음 작업을 시작할 수 있는지 의존관계를 고려해 일정을 짠 경험이 있다.",
+   "career_family_weights": {},
+   "score_direction": "positive",
+   "group": "complex_decision"
+  },
+  {
+   "item_id": "ME_DEC_TRADE_71",
+   "question_no": 71,
+   "construct": "decision_ownership",
+   "scale": "ownership",
+   "ko-KR": "시간·비용·성능·정확도처럼 서로 충돌하는 조건 사이에서 우선순위를 정한 경험이 있다.",
+   "career_family_weights": {},
+   "score_direction": "positive",
+   "group": "complex_decision"
+  },
+  {
+   "item_id": "ME_DEC_RESOURCE_72",
+   "question_no": 72,
+   "construct": "decision_ownership",
+   "scale": "ownership",
+   "ko-KR": "사용할 장비·데이터·소프트웨어·재료 중 필요한 자원을 직접 정하거나 확보한 경험이 있다.",
+   "career_family_weights": {},
+   "score_direction": "positive",
+   "group": "complex_decision"
+  },
+  {
+   "item_id": "ME_DEC_GATE_73",
+   "question_no": 73,
+   "construct": "decision_ownership",
+   "scale": "ownership",
+   "ko-KR": "프로젝트 중간에 결과를 확인하고 계획을 계속할지 바꿀지 판단하는 기준을 사용한 경험이 있다.",
+   "career_family_weights": {},
+   "score_direction": "positive",
+   "group": "complex_decision"
+  },
+  {
+   "item_id": "ME_DEC_RISK_74",
+   "question_no": 74,
+   "construct": "decision_ownership",
+   "scale": "ownership",
+   "ko-KR": "문제가 생길 가능성을 미리 생각하고 대안이나 우회 방법을 준비한 경험이 있다.",
+   "career_family_weights": {},
+   "score_direction": "positive",
+   "group": "complex_decision"
+  },
+  {
+   "item_id": "ME_DEC_EXPLAIN_75",
+   "question_no": 75,
+   "construct": "decision_ownership",
+   "scale": "ownership",
+   "ko-KR": "기술적인 결과를 비전공자 또는 다른 분야 사람도 이해할 수 있도록 설명한 경험이 있다.",
+   "career_family_weights": {},
+   "score_direction": "positive",
+   "group": "complex_decision"
+  },
+  {
+   "item_id": "ME_DEC_LIMIT_76",
+   "question_no": 76,
+   "construct": "decision_ownership",
+   "scale": "ownership",
+   "ko-KR": "프로젝트가 끝난 뒤 결과뿐 아니라 한계와 추가로 확인해야 할 부분까지 정리한 경험이 있다.",
+   "career_family_weights": {},
+   "score_direction": "positive",
+   "group": "complex_decision"
+  },
+  {
+   "item_id": "ME_OWN_OBJ_77",
+   "question_no": 77,
+   "construct": "research_project_evidence",
+   "scale": "ownership",
+   "stage_adaptive": true,
+   "facet": "objective_interpretation",
+   "career_family_weights": {},
+   "score_direction": "positive",
+   "group": "project_ownership"
+  },
+  {
+   "item_id": "ME_OWN_PLAN_78",
+   "question_no": 78,
+   "construct": "research_project_evidence",
+   "scale": "ownership",
+   "stage_adaptive": true,
+   "facet": "planning",
+   "career_family_weights": {},
+   "score_direction": "positive",
+   "group": "project_ownership"
+  },
+  {
+   "item_id": "ME_OWN_RES_79",
+   "question_no": 79,
+   "construct": "research_project_evidence",
+   "scale": "ownership",
+   "stage_adaptive": true,
+   "facet": "resource_allocation",
+   "career_family_weights": {},
+   "score_direction": "positive",
+   "group": "project_ownership"
+  },
+  {
+   "item_id": "ME_OWN_BUDGET_80",
+   "question_no": 80,
+   "construct": "research_project_evidence",
+   "scale": "ownership",
+   "stage_adaptive": true,
+   "facet": "budget_exposure",
+   "career_family_weights": {},
+   "score_direction": "positive",
+   "group": "project_ownership"
+  },
+  {
+   "item_id": "ME_OWN_MILE_81",
+   "question_no": 81,
+   "construct": "research_project_evidence",
+   "scale": "ownership",
+   "stage_adaptive": true,
+   "facet": "milestone",
+   "career_family_weights": {},
+   "score_direction": "positive",
+   "group": "project_ownership"
+  },
+  {
+   "item_id": "ME_OWN_KPI_82",
+   "question_no": 82,
+   "construct": "research_project_evidence",
+   "scale": "ownership",
+   "stage_adaptive": true,
+   "facet": "success_criteria",
+   "career_family_weights": {},
+   "score_direction": "positive",
+   "group": "project_ownership"
+  },
+  {
+   "item_id": "ME_OWN_DELIV_83",
+   "question_no": 83,
+   "construct": "research_project_evidence",
+   "scale": "ownership",
+   "stage_adaptive": true,
+   "facet": "deliverable_ownership",
+   "career_family_weights": {},
+   "score_direction": "positive",
+   "group": "project_ownership"
+  },
+  {
+   "item_id": "ME_OWN_TEAM_84",
+   "question_no": 84,
+   "construct": "research_project_evidence",
+   "scale": "ownership",
+   "stage_adaptive": true,
+   "facet": "team_coordination",
+   "career_family_weights": {},
+   "score_direction": "positive",
+   "group": "project_ownership"
+  },
+  {
+   "item_id": "ME_OWN_RFP_85",
+   "question_no": 85,
+   "construct": "research_project_evidence",
+   "scale": "ownership",
+   "stage_adaptive": true,
+   "facet": "proposal_rfp",
+   "career_family_weights": {},
+   "score_direction": "positive",
+   "group": "project_ownership"
+  },
+  {
+   "item_id": "ME_OWN_COMPLY_86",
+   "question_no": 86,
+   "construct": "research_project_evidence",
+   "scale": "ownership",
+   "stage_adaptive": true,
+   "facet": "compliance",
+   "career_family_weights": {},
+   "score_direction": "positive",
+   "group": "project_ownership"
+  },
+  {
+   "item_id": "ME_OWN_EXT_87",
+   "question_no": 87,
+   "construct": "research_project_evidence",
+   "scale": "ownership",
+   "stage_adaptive": true,
+   "facet": "external_collaboration",
+   "career_family_weights": {},
+   "score_direction": "positive",
+   "group": "project_ownership"
+  },
+  {
+   "item_id": "ME_OWN_IMPACT_88",
+   "question_no": 88,
+   "construct": "research_project_evidence",
+   "scale": "ownership",
+   "stage_adaptive": true,
+   "facet": "impact_use",
+   "career_family_weights": {},
+   "score_direction": "positive",
+   "group": "project_ownership"
+  },
+  {
+   "item_id": "ME_CTX_WANT_89",
+   "question_no": 89,
+   "construct": "market_transition_intent",
+   "scale": "choice_multi2",
+   "ko-KR": "현재 결과에서 가장 알고 싶은 것은 무엇입니까?",
+   "options": [
+    "어떤 직무를 우선할지",
+    "어떤 산업을 우선할지",
+    "대학원 진학 여부",
+    "연구직과 기업직 비교",
+    "현재 경험의 활용 방법",
+    "부족한 경험",
+    "이직/전환 가능 직무",
+    "해외 진출",
+    "포트폴리오",
+    "자기소개서/면접",
+    "연구기관 지원",
+    "기타"
+   ],
+   "career_family_weights": {},
+   "scored": false
+  },
+  {
+   "item_id": "ME_CTX_ROLE_90",
+   "question_no": 90,
+   "construct": "market_transition_intent",
+   "scale": "choice_one",
+   "ko-KR": "현재 목표 직무가 있습니까?",
+   "options": [
+    "없다",
+    "후보가 2개 이상",
+    "하나의 직무군이 있음",
+    "구체적인 직무명이 있음"
+   ],
+   "career_family_weights": {},
+   "scored": false
+  },
+  {
+   "item_id": "ME_CTX_IND_91",
+   "question_no": 91,
+   "construct": "market_transition_intent",
+   "scale": "choice_one",
+   "ko-KR": "현재 목표 산업이 있습니까?",
+   "options": [
+    "없다",
+    "후보가 여러 개",
+    "특정 산업이 있음"
+   ],
+   "career_family_weights": {},
+   "scored": false
+  },
+  {
+   "item_id": "ME_CTX_COUNTRY_92",
+   "question_no": 92,
+   "construct": "market_transition_intent",
+   "scale": "choice_one",
+   "ko-KR": "현재 목표 국가가 있습니까?",
+   "options": [
+    "없다 / 글로벌 기준으로 보고 싶다",
+    "현재 거주 국가",
+    "특정 국가가 있음",
+    "여러 국가를 비교하고 싶다"
+   ],
+   "career_family_weights": {},
+   "scored": false
+  }
+ ]
+}

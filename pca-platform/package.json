@@ -28,6 +28,7 @@
     "writing:check": "node scripts/writing-check.mjs",
     "golden:check": "node scripts/golden-check.mjs",
     "evidence:check": "node scripts/evidence-check.mjs",
+    "v2:check": "node scripts/v2-check.mjs",
     "metri:refund": "tsx scripts/metri/refund-check.ts",
     "metri:legal": "tsx scripts/metri/legal-check.ts",
     "metri:codes": "tsx scripts/metri/make-codes.ts",

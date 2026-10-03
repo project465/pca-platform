@@ -1,0 +1,63 @@
+{
+  "assessment_version": "ME_V2_DECISION_2026",
+  "note": "직무군마다 다섯 값을 따로 내고, 그 조합으로 '지금 무엇을 할 자리인가' 를 정한다. 다섯을 평균 내지 않는다. 평균을 내면 숫자 하나가 남고 그 숫자로는 아무것도 못 한다.",
+  "bands": {
+    "high": "62 이상", "medium": "39~61", "low": "38 이하",
+    "caution": "규준이 없으므로 이 경계는 추정값이다. 파일럿에서 가장 먼저 조정될 값이다."
+  },
+  "statuses": {
+    "READY_TO_COMPARE_JOBS": {
+      "label": "직무 비교 단계",
+      "line": "관심과 실제 경험이 함께 있습니다. 이제 직무 자체보다 산업·회사별 업무 차이를 비교할 단계입니다."
+    },
+    "READY_TO_APPLY": {
+      "label": "지원 준비 단계",
+      "line": "관심·경험·보여 줄 근거가 함께 있습니다. 공고의 요구와 내 근거를 한 줄씩 맞춰 보실 단계입니다."
+    },
+    "TEST_FIRST": {
+      "label": "먼저 해보기",
+      "line": "이 직무는 우선 확인할 가치가 있지만 아직 실제 경험이 적습니다. 작은 프로젝트로 업무 자체를 먼저 경험해 보세요."
+    },
+    "BUILD_EVIDENCE": {
+      "label": "근거 만들기",
+      "line": "해보신 적은 있는데 밖에 보여 줄 형태로 남은 것이 적습니다. 한 건을 골라 조건·판단·결과를 기록으로 남기는 것이 먼저입니다."
+    },
+    "EXPLORE_FIRST": {
+      "label": "먼저 살펴보기",
+      "line": "업무 방식은 가까운 편이지만 아직 이 일이 무엇인지 보실 단계입니다. 공고와 현직자의 하루를 먼저 확인해 보세요."
+    },
+    "ADJACENT_OPTION": {
+      "label": "곁에 두기",
+      "line": "관련 경험은 있지만 앞으로도 이 업무를 계속하고 싶은지는 별도로 확인할 필요가 있습니다. 경험은 다른 직무에도 활용할 수 있습니다."
+    },
+    "DEPRIORITIZE_FOR_NOW": {
+      "label": "지금은 뒤로",
+      "line": "지금은 우선순위를 낮춰도 되는 후보입니다. 다른 직무를 먼저 비교한 뒤 필요할 때 다시 확인해 보세요."
+    },
+    "INSUFFICIENT_DATA": {
+      "label": "자료 부족",
+      "line": "지금 답하신 범위로는 이 직무에 대해 말할 수 있는 것이 적습니다. 해당 문항에 답을 더하시면 달라집니다."
+    }
+  },
+  "rules": [
+    { "if": { "interest": "high", "exposure": "high", "evidence": ["medium", "high"] }, "then": "READY_TO_APPLY" },
+    { "if": { "interest": "high", "exposure": "high" }, "then": "READY_TO_COMPARE_JOBS" },
+    { "if": { "interest": "high", "exposure": "medium", "evidence": ["low"] }, "then": "BUILD_EVIDENCE" },
+    { "if": { "interest": "high", "exposure": "low", "learning": "high" }, "then": "TEST_FIRST" },
+    { "if": { "interest": "high", "exposure": "low" }, "then": "EXPLORE_FIRST" },
+    { "if": { "interest": "low", "exposure": ["medium", "high"] }, "then": "ADJACENT_OPTION" },
+    { "if": { "interest": "low", "exposure": "low" }, "then": "DEPRIORITIZE_FOR_NOW" },
+    { "if": {}, "then": "EXPLORE_FIRST" }
+  ],
+  "work_mode_labels": {
+    "note": "규격 12장. 검증 전에는 숫자를 내지 않는다. 83.7 같은 값은 없는 정밀도를 파는 것이다.",
+    "closer": "가까움", "mixed": "혼합", "farther": "먼 편"
+  },
+  "ui_copy": {
+    "note": "규격 21장. 바꾼 말과 그 까닭.",
+    "replace": [
+      { "from": "가장 잘 맞는 직무", "to": "먼저 살펴볼 직무", "why": "검사는 맞고 안 맞음을 재지 않는다" },
+      { "from": "직무 적합도", "to": "업무방식 유사도", "why": "적합도는 능력이나 합격 가능성으로 읽힌다" }
+    ]
+  }
+}
