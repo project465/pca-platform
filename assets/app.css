@@ -441,3 +441,18 @@ h1{font-size:34px;line-height:1.16;letter-spacing:-.04em;color:var(--navy)}
 .tw thead th{background:#f7f9fa;font-size:11px;letter-spacing:.02em;color:var(--muted)}
 .tw tbody th{font-weight:800;color:var(--navy);white-space:nowrap}
 .tw tr:last-child th,.tw tr:last-child td{border-bottom:0}
+
+/* 다음 상품으로 넘어가는 칸. 결과를 다 읽은 사람이 마지막에 만나는 자리라
+   본문보다 한 단계 진하게 두되, 광고처럼 보이지 않게 테두리만 쓴다 */
+.nextstep{border:2px solid var(--navy);background:#fff;margin-top:14px}
+.ns-eye{font-size:11px;font-weight:800;letter-spacing:.12em;color:var(--green)}
+.ns-h{margin:8px 0 10px;font-size:18px;letter-spacing:-.02em;color:var(--navy)}
+.ns-p{font-size:13.5px;line-height:1.75;color:#3c4b5d;margin:0 0 12px}
+.ns-li{margin:0 0 16px;padding:0 0 0 16px;list-style:none}
+.ns-li li{position:relative;font-size:13.5px;line-height:1.75;padding:3px 0}
+.ns-li li::before{content:"";position:absolute;left:-12px;top:13px;width:4px;height:4px;
+  border-radius:50%;background:var(--navy)}
+.ns-btn{display:block;text-align:center;background:var(--navy);color:#fff;text-decoration:none;
+  font-weight:800;font-size:15px;padding:15px;border-radius:13px}
+.ns-btn:hover{background:#0f1d30}
+.ns-note{margin-top:10px}
