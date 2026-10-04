@@ -113,6 +113,17 @@ export type SettleResult =
        * 시작하실 수 있습니다" 라고 말하게 되고, 시작할 것이 없다.
        */
       upgradedAttemptId: string | null;
+      /**
+       * 이 결제가 어느 검사의 이용권을 만들었는가.
+       *
+       * 완료 화면이 다음에 보낼 곳을 이 값으로 고른다. ME_V2 는
+       * `/assessment/start` 고 옛 검사는 `/test` 다. **화면이 상품 코드를
+       * 보고 짐작하지 않는다**: 코드 규칙은 상품이 늘 때마다 바뀌고,
+       * 짐작이 틀리면 돈을 낸 사람이 빈 화면을 만난다.
+       */
+      assessmentVersion: string | null;
+      /** 산 등급. 완료 화면이 적기만 한다 */
+      tier: string | null;
     }
   | { ok: false; reason: string };
 
@@ -191,6 +202,8 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
         orderNo: order.order_no,
         alreadyDone: true,
         upgradedAttemptId: isUpgrade ? attemptId : null,
+        assessmentVersion: product?.assessment_version ?? null,
+        tier: product?.tier ?? null,
       };
     }
 
@@ -250,6 +263,8 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
       orderNo: order.order_no,
       alreadyDone: false,
       upgradedAttemptId: isUpgrade ? attemptId : null,
+      assessmentVersion: product?.assessment_version ?? null,
+      tier: product?.tier ?? null,
     };
   });
 

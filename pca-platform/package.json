@@ -55,7 +55,8 @@
     "metri:survey": "tsx scripts/metri/survey-check.ts",
     "metri:radar": "tsx scripts/metri/make-radar.ts",
     "metri:head": "node scripts/metri/sync-head.mjs",
-    "metri:screens": "node scripts/metri/embed-screens.mjs"
+    "metri:screens": "node scripts/metri/embed-screens.mjs",
+    "phase2:report": "tsx scripts/phase2-report.ts"
   },
   "dependencies": {
     "@types/nodemailer": "^8.0.1",

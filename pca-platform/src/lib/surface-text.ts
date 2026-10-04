@@ -166,6 +166,44 @@ export const TX = {
   pxFree: p("값이 아직 정해지지 않았습니다", "Price not set yet"),
   pxQuestions: p("문항", "questions"),
   pxPaySuccess: p("결제가 완료되었습니다.", "Payment complete."),
+  pxSignIn: p("로그인", "Sign in"),
+  pxMarketKR: p("한국", "Korea"),
+  pxMarketGlobal: p("글로벌", "Global"),
+  pxWhatYouGet: p("무엇이 들어 있는가", "What you get"),
+  pxOnceVat: p("한 번 결제 · 부가세 포함", "One-time payment, tax included"),
+  pxOnce: p("한 번 결제", "One-time payment"),
+  pxNote1: p(
+    "결제가 끝나면 바로 검사를 시작할 수 있습니다. 담당자가 열어 줄 때까지 기다리지 않습니다.",
+    "You can start the assessment the moment payment goes through. Nobody has to unlock it for you.",
+  ),
+  pxNote2: p(
+    "첫 문항에 답하기 전에는 기간 제한 없이 환불됩니다. 응시가 시작된 뒤에는 환불되지 않습니다.",
+    "Full refund any time before you answer the first question. Once the assessment has started it is not refundable.",
+  ),
+  pxNote3: p(
+    "아직 인지 면접과 파일럿을 거치지 않았으므로 검증된 검사로 팔지 않습니다. 순위나 상위 몇 %도 적지 않습니다.",
+    "Cognitive interviews and the pilot are still ahead, so we do not sell this as a validated instrument. We also publish no rankings or percentiles.",
+  ),
+  pxEmpty: p(
+    "이 시장에서 지금 파는 등급이 없습니다.",
+    "No tier is on sale in this market right now.",
+  ),
+  pxEmptyBody: p(
+    "가격이 정해지면 여기 세 등급이 열립니다. 값을 지어내 미리 띄우지 않습니다.",
+    "The three tiers appear here once prices are set. We do not post a made-up price in the meantime.",
+  ),
+  pxHaveGrant: p("이미 사신 검사가 있습니다", "You already have an assessment"),
+  pxGoAssessment: p("검사로 가기", "Go to the assessment"),
+
+  /* ── 결제가 끝난 뒤 ───────────────────────────────────────────── */
+  okOrderNo: p("주문 번호", "Order number"),
+  okTier: p("산 등급", "Tier"),
+  okNext: p("다음", "Next"),
+  okStart: p("검사 시작하기", "Start the assessment"),
+  okBody: p(
+    "이용권이 발급되었습니다. 92문항 가운데 등급에 해당하는 문항을 묻고, 답은 넘어갈 때마다 서버에 저장됩니다. 창을 닫으셔도 이어서 하실 수 있습니다.",
+    "Your entitlement is issued. You will see the questions for your tier, and your answers are stored on the server as you go. You can close the window and pick up where you left off.",
+  ),
 
   /* ── 기관 ─────────────────────────────────────────────────────── */
   navOverview: p("한눈에", "Overview"),

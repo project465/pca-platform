@@ -4,6 +4,7 @@ import { settlePayment } from "@/lib/orders";
 import { paymentProvider } from "@/lib/payments";
 import { t } from "@/lib/locale";
 import { resolveLang } from "@/lib/locale-server";
+import { BRAND, toLang2, txer } from "@/lib/surface-text";
 
 export const metadata = { title: "결제 결과 · Careermetri" };
 
@@ -58,6 +59,42 @@ export default async function CompletePage({
   }
 
   const result = await settlePayment(key);
+
+  /**
+   * ME_V2 를 사면 결제 다음 걸음이 '검사 시작' 이다.
+   *
+   * 옛 검사와 같은 화면으로 보내면 `/test` 로 가고, 거기는 좌석을 찾는다.
+   * ME_V2 는 좌석이 아니라 이용권이 문을 여므로 그 화면이 "응시권이
+   * 없습니다" 를 띄운다. **돈을 낸 사람에게 그 문장이 나가면 안 된다.**
+   */
+  if (result.ok && result.assessmentVersion === "ME_V2" && !result.upgradedAttemptId) {
+    const L = toLang2(lang);
+    const T = txer(L);
+    return (
+      <div className="pub">
+        <div className="pubwrap">
+          <div className="asdone">
+            <div className="sf-eyebrow">{BRAND.root}</div>
+            <h1 className="sf-h1" style={{ marginTop: 10 }}>{T("pxPaySuccess")}</h1>
+            <p className="sf-sub">{T("okBody")}</p>
+            <dl className="sf-defs" style={{ marginTop: 20 }}>
+              <div className="sf-def">
+                <dt>{T("okOrderNo")}</dt>
+                <dd>{result.orderNo}</dd>
+              </div>
+              <div className="sf-def">
+                <dt>{T("okTier")}</dt>
+                <dd>{result.tier ?? "—"}</dd>
+              </div>
+            </dl>
+            <Link href="/assessment/start" className="sf-btn accent" style={{ marginTop: 24 }}>
+              {T("okStart")}
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <main className="main">

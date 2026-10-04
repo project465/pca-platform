@@ -581,3 +581,69 @@
 
 /* 끝낸 뒤 */
 .asdone { max-width: 620px; margin: 0 auto; padding: 72px 20px }
+
+/* ── 파는 쪽 (로그인 전) ────────────────────────────────────────────
+   로그인한 뒤 화면은 왼쪽 띠를 쓰지만 여기는 아직 계정이 없다. 띠 안에
+   메뉴를 그려 두면 전부 로그인으로 튕기는 메뉴가 된다. 그래서 위쪽 띠
+   하나와 가운데 한 줄이다. */
+.pub { min-height: 100vh; background: var(--sf-bg); display: flex; flex-direction: column }
+.pubtop {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; gap: 14px;
+  padding: 0 24px; height: 60px;
+  background: rgba(255, 255, 255, .92); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--sf-line);
+}
+.pubtop .sf-brand { margin: 0; padding: 0; border: 0 }
+.pubtop-r { margin-left: auto; display: flex; align-items: center; gap: 10px }
+.pubwrap { flex: 1; width: 100%; max-width: 1080px; margin: 0 auto; padding: 32px 24px 72px }
+
+.pxhero { text-align: center; padding: 20px 0 8px }
+.pxhero .sf-eyebrow { justify-content: center }
+.pxhero h1 {
+  margin: 10px 0 0; font-size: 34px; line-height: 1.25; letter-spacing: -.02em;
+  color: var(--sf-ink); text-wrap: balance;
+}
+.pxhero p {
+  margin: 14px auto 0; max-width: 62ch; font-size: 15px; line-height: 1.75;
+  color: var(--sf-ink-2);
+}
+.pxmkt { margin-top: 18px; display: inline-flex; gap: 6px; padding: 4px;
+  border: 1px solid var(--sf-line); border-radius: 999px; background: var(--sf-surface) }
+.pxmkt a {
+  padding: 6px 15px; border-radius: 999px; font-size: 13px; font-weight: 600;
+  color: var(--sf-ink-2); text-decoration: none;
+}
+.pxmkt a[aria-current="true"] { background: var(--sf-ink); color: #fff }
+
+/* 등급 세 칸. PRO 를 띄우지 않는다: 어느 등급이 맞는지는 쓰는 쪽이 정한다 */
+.pxtiers { margin-top: 34px; display: grid; gap: 18px;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) }
+.pxtier {
+  display: flex; flex-direction: column;
+  background: var(--sf-surface); border: 1px solid var(--sf-line);
+  border-radius: var(--sf-r); padding: 24px 22px 22px;
+}
+.pxtier.is-mid { border-color: #b9d2f0; box-shadow: 0 10px 28px rgba(21, 57, 110, .09) }
+.pxtier h2 { margin: 0; font-size: 15px; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--sf-accent-ink) }
+.pxprice { margin: 14px 0 0; font-size: 28px; font-weight: 700; color: var(--sf-ink);
+  font-variant-numeric: tabular-nums; letter-spacing: -.02em }
+.pxprice small { display: block; margin-top: 4px; font-size: 12.5px; font-weight: 500;
+  letter-spacing: 0; color: var(--sf-ink-3) }
+.pxtbd { margin: 14px 0 0; font-size: 14px; font-weight: 600; color: var(--sf-warn) }
+.pxwhat { margin: 16px 0 0; font-size: 14px; line-height: 1.7; color: var(--sf-ink-2) }
+.pxq { margin-top: 14px; font-size: 12.5px; color: var(--sf-ink-3);
+  font-variant-numeric: tabular-nums }
+.pxtier .sf-btn { margin-top: auto; justify-content: center; width: 100% }
+.pxtier form { margin-top: auto }
+
+.pxnote { margin-top: 28px; display: grid; gap: 10px }
+.pxnote li { font-size: 13.5px; line-height: 1.7; color: var(--sf-ink-3) }
+
+@media (max-width: 900px) {
+  .pxtiers { grid-template-columns: 1fr }
+  .pxhero h1 { font-size: 27px }
+  .pubwrap { padding: 24px 16px 56px }
+  .pubtop { padding: 0 16px }
+}

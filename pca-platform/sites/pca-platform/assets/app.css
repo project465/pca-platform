@@ -7,8 +7,12 @@
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{
+  /* **깔린 글꼴 이름을 하나만 적지 않는다.** 서버에서 PDF 를 뽑는
+     컨테이너에는 Pretendard 도 맑은 고딕도 없고, 리눅스에 깔리는 한글
+     글꼴 이름이 "Noto Sans CJK KR" 이다. 그 이름이 빠져 있으면 한글이
+     중국어 글꼴로 떨어져 자형이 달라진다 */
   font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",
-    "Apple SD Gothic Neo","Malgun Gothic",Arial,sans-serif;
+    "Noto Sans CJK KR","Apple SD Gothic Neo","Malgun Gothic",Arial,sans-serif;
   color:var(--text); background:linear-gradient(#f4f7f8,#fff 38%,#f7f9fa);
   -webkit-text-size-adjust:100%;
 }
