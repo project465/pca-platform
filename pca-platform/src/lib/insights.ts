@@ -34,8 +34,16 @@ export async function minCellFor(orgId: number): Promise<number> {
 export type Overview = {
   seats: number; used: number; remaining: number;
   invited: number; started: number; completed: number;
+  /** 좌석을 받았지만 아직 시작하지 않은 사람 */
+  claimed: number;
+  available: number;
   completion_rate: number | null;
   cohorts: number;
+  /**
+   * 참여 흐름. **누적으로 센다**: 완료한 사람도 한때 초대를 받았다.
+   * 상태별 개수를 그대로 단계에 넣으면 뒤 단계가 앞 단계보다 커진다.
+   */
+  funnel: { invited: number; registered: number; started: number; completed: number };
 };
 
 export async function orgOverview(orgId: number): Promise<Overview> {
@@ -51,6 +59,9 @@ export async function orgOverview(orgId: number): Promise<Overview> {
   const co = await query<{ n: string }>(
     `SELECT count(*)::text AS n FROM cohorts WHERE org_id = $1`, [orgId],
   );
+  const everStarted = g("started") + g("completed");
+  const everClaimed = g("claimed") + everStarted;
+  const everInvited = g("invited") + everClaimed;
   return {
     seats,
     used,
@@ -58,9 +69,17 @@ export async function orgOverview(orgId: number): Promise<Overview> {
     invited: g("invited"),
     started: g("started"),
     completed: g("completed"),
+    claimed: g("claimed"),
+    available: g("available"),
     /* 나눌 바닥이 0 이면 비율을 만들지 않는다. 0% 는 거짓말이다 */
     completion_rate: used > 0 ? Math.round((g("completed") / used) * 100) : null,
     cohorts: Number(co[0]?.n ?? 0),
+    funnel: {
+      invited: everInvited,
+      registered: everClaimed,
+      started: everStarted,
+      completed: g("completed"),
+    },
   };
 }
 
@@ -73,14 +92,29 @@ export async function careerDistribution(orgId: number): Promise<{
   cells: Cell[]; min_cell: number; note: string;
 }> {
   const minCell = await minCellFor(orgId);
+  /**
+   * **칸 이름이 둘 다 틀려 있었다.** `f.cluster_id` 와 `jc.name_key` 는
+   * 표에 없는 칸이고(`job_fit_scores.job_id` · `job_clusters.code` 가
+   * 맞다), 아래 `catch` 가 그 오류를 삼켜서 이 집계가 늘 빈 줄을 돌려
+   * 주고 있었다. 화면에는 '아직 채점된 응시가 없습니다' 로 보여서 자료가
+   * 없는 것과 구별되지 않았다.
+   *
+   * 이름은 `translations` 를 먼저 보고 없으면 코드로 떨어진다. 결과지가
+   * 쓰는 것과 같은 순서다.
+   */
   const rows = await query<{ label: string; n: string }>(
-    `SELECT jc.name_key AS label, count(*)::text AS n
+    `SELECT COALESCE(
+              (SELECT value FROM translations
+                WHERE table_name = 'job_clusters' AND row_id = jc.id
+                  AND lang = 'ko' AND field = 'name'),
+              jc.code) AS label,
+            count(*)::text AS n
        FROM job_fit_scores f
        JOIN attempts a ON a.id = f.attempt_id
        JOIN test_sessions ts ON ts.id = a.session_id
-       JOIN job_clusters jc ON jc.id = f.cluster_id
+       JOIN job_clusters jc ON jc.id = f.job_id
       WHERE ts.org_id = $1 AND f.rank_no = 1
-      GROUP BY jc.name_key ORDER BY count(*) DESC`,
+      GROUP BY 1 ORDER BY count(*) DESC`,
     [orgId],
   ).catch(() => [] as { label: string; n: string }[]);
   return {

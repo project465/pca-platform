@@ -30,7 +30,9 @@ export const ROLE_LABEL: Record<Role, string> = {
 export function homePathFor(role: Role): string {
   switch (role) {
     case "superadmin":
-      return "/admin/organizations";
+      /* **기관 목록이 아니라 한눈에 보는 쪽으로 보낸다.** 운영자가 아침에
+         여는 자리가 기관 목록이면 개인 쪽이 멈춘 날을 아무도 못 본다 */
+      return "/admin";
     case "org_admin":
     case "instructor":
       return "/org";

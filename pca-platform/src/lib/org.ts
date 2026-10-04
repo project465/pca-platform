@@ -36,9 +36,17 @@ export type SessionRow = {
   scored: number;
 };
 
+/**
+ * 사람이 읽는 이름.
+ *
+ * **번역 줄이 없으면 표의 이름 칸으로 떨어진다.** 예전에는 바로 코드로
+ * 떨어져서 화면에 `DEMO_HANBIT_ME` 가 찍혔다. 코드는 운영자가 쓰는 값이고
+ * 담당자가 찾는 것은 '한빛대학교 기계공학과' 다. 코드는 마지막 자리다.
+ */
 const NAME = (t: string, alias: string) =>
   `COALESCE((SELECT value FROM translations WHERE table_name = '${t}'
-              AND row_id = ${alias}.id AND lang = 'ko' AND field = 'name'), ${alias}.code)`;
+              AND row_id = ${alias}.id AND lang = 'ko' AND field = 'name'),
+            ${alias}.name, ${alias}.code)`;
 
 /** 이 사람이 담당자·교수로 들어가 있는 기관. 여기 없는 기관은 못 본다. */
 export async function orgsOf(userId: string): Promise<OrgRef[]> {
@@ -55,7 +63,10 @@ export async function orgsOf(userId: string): Promise<OrgRef[]> {
 export async function contractsOf(orgIds: string[]): Promise<ContractRef[]> {
   if (!orgIds.length) return [];
   return query<ContractRef>(
-    `SELECT c.id, c.title, c.seat_count AS "seatCount", c.ends_on AS "endsOn",
+    /* **날짜를 글자로 받는다.** 타입은 string 이라고 적어 두고 값은 Date 가
+       오고 있었다. 화면이 그 칸을 그리는 순간 React 가 터진다. 쓰는 쪽을
+       고치면 다음에 또 쓰는 사람이 같은 데서 넘어진다 */
+    `SELECT c.id, c.title, c.seat_count AS "seatCount", c.ends_on::text AS "endsOn",
             (SELECT count(*)::int FROM seats s
               WHERE s.contract_id = c.id AND s.user_id IS NULL) AS "seatsFree"
        FROM contracts c
@@ -68,8 +79,9 @@ export async function contractsOf(orgIds: string[]): Promise<ContractRef[]> {
 export async function sessionsOf(orgIds: string[]): Promise<SessionRow[]> {
   if (!orgIds.length) return [];
   return query<SessionRow>(
-    `SELECT ts.id, ts.name, ts.opens_at AS "opensAt", ts.closes_at AS "closesAt",
-            ts.release_mode AS "releaseMode", ts.released_at AS "releasedAt",
+    `SELECT ts.id, ts.name, ts.opens_at::date::text AS "opensAt",
+            ts.closes_at::date::text AS "closesAt",
+            ts.release_mode AS "releaseMode", ts.released_at::text AS "releasedAt",
             (SELECT count(*)::int FROM attempts a WHERE a.session_id = ts.id) AS enrolled,
             (SELECT count(*)::int FROM attempts a
               WHERE a.session_id = ts.id AND a.status <> 'ready') AS started,

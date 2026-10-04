@@ -1,118 +1,140 @@
 import Link from "next/link";
-import { query } from "@/lib/db";
-import { namesOf } from "@/lib/i18n";
 import { requireRole } from "@/lib/session";
-import AdminShell from "@/components/admin-shell";
+import { resolveLang } from "@/lib/locale-server";
+import { orgRows, orgSummary } from "@/lib/admin-overview";
+import { ROLE_LABEL } from "@/lib/roles";
+import { BRAND, toLang2, txer } from "@/lib/surface-text";
+import { Shell, PageHead, Section } from "@/components/sf/shell";
+import { NAV_ADMIN } from "@/components/sf/nav";
+import { BarList, Card, Empty, Kpi, Pill } from "@/components/sf/parts";
+import LangSelect from "@/components/sf/lang-select";
 
-export const metadata = { title: "기관 목록 · 단체 PCA 플랫폼" };
-export const dynamic = "force-dynamic";
+export const metadata = { title: `기관 · ${BRAND.admin}` };
 
-type Row = {
-  id: string;
-  code: string;
-  country: string;
-  org_type: string;
-  status: string;
-  parent_id: string | null;
-  member_count: string;
-  created_at: string;
+const TYPE_KO: Record<string, string> = {
+  university: "대학", department: "학과", company: "기업",
+  school: "학교", public: "공공", 미지정: "미지정",
 };
 
-const TYPE_LABEL: Record<string, string> = {
-  university: "대학",
-  department: "학과",
-  company: "기업",
-};
-
-export default async function OrganizationsPage() {
+/**
+ * 기관 목록.
+ *
+ * **내부 코드를 첫 칸에 두지 않는다.** 예전 화면은 `HYU` 가 맨 앞이었는데,
+ * 운영자가 찾는 것은 '한양대학교' 이고 코드는 그 다음이다. 코드는 이름
+ * 아래 메타로 내린다.
+ */
+export default async function AdminOrganizations({
+  searchParams,
+}: { searchParams: Promise<{ lang?: string; q?: string }> }) {
   const user = await requireRole(["superadmin"]);
+  const sp = await searchParams;
+  const L = toLang2(await resolveLang(sp.lang));
+  const T = txer(L);
 
-  const rows = await query<Row>(
-    `SELECT o.id, o.code, o.country, o.org_type, o.status, o.parent_id,
-            (SELECT count(*) FROM memberships m WHERE m.org_id = o.id)::text AS member_count,
-            to_char(o.created_at, 'YYYY-MM-DD') AS created_at
-       FROM organizations o
-       LEFT JOIN organizations p ON p.id = o.parent_id
-      ORDER BY o.country,
-               COALESCE(p.code, o.code),      -- 대학 바로 아래에 그 대학의 학과가 붙는다
-               o.parent_id NULLS FIRST,
-               o.code`,
-  );
-
-  const ids = rows.map((r) => r.id);
-  const parentIds = rows.map((r) => r.parent_id).filter((v): v is string => v !== null);
-  const names = await namesOf("organizations", [...ids, ...parentIds], user.locale);
+  const [sum, rows] = await Promise.all([orgSummary(), orgRows()]);
+  const q = (sp.q ?? "").trim().toLowerCase();
+  const shown = q
+    ? rows.filter((r) =>
+        r.name.toLowerCase().includes(q) || r.code.toLowerCase().includes(q))
+    : rows;
 
   return (
-    <AdminShell user={user} current="/admin/organizations">
-      <div className="page-head">
-        <h1>기관</h1>
-        <span className="count">{rows.length}곳</span>
-        <div className="right">
-          <Link className="act solid" href="/admin/organizations/new">
-            기관 등록
-          </Link>
-        </div>
+    <Shell
+      surface="admin" lang={L} nav={NAV_ADMIN} active="/admin/organizations"
+      who={{ name: user.name, role: ROLE_LABEL[user.role] ?? "" }}
+      topTitle={BRAND.admin} topRight={<LangSelect current={L} />}
+    >
+      <PageHead
+        eyebrow={BRAND.admin}
+        title={T("navOrganizations")}
+        actions={
+          <Link href="/admin/organizations/new" className="sf-btn accent">기관 추가</Link>
+        }
+      />
+
+      <div className="sf-grid sf-g4">
+        <Kpi label={T("adminOrgsTotal")} value={sum.total} icon="building" accent />
+        <Kpi label={T("adminActiveContracts")} value={sum.with_active_contract}
+          icon="contract" />
+        <Kpi label={T("adminOrgTypes")} value={sum.types.length} />
+        <Kpi label={T("adminCountries")} value={sum.countries.length} icon="globe" />
       </div>
 
-      {rows.length === 0 ? (
-        <div className="empty">
-          <b>등록된 기관이 없습니다</b>
-          계약이 성사된 학과를 등록하면 여기에 표시됩니다. 대학을 먼저 만들고 그
-          아래에 학과를 붙이는 순서를 권합니다.
+      <Section>
+        <div className="sf-grid sf-g2">
+          <Card title={T("adminOrgTypes")}>
+            <BarList
+              hiddenLabel={T("privacyHidden")}
+              rows={sum.types.map((t) => ({
+                label: TYPE_KO[t.label] ?? t.label, value: t.n, suffix: "곳",
+              }))}
+              emptyLabel="아직 기관이 없습니다."
+            />
+          </Card>
+          <Card title={T("adminCountries")}>
+            <BarList
+              hiddenLabel={T("privacyHidden")}
+              rows={sum.countries.map((c) => ({ label: c.label, value: c.n, suffix: "곳" }))}
+              emptyLabel="아직 기관이 없습니다."
+            />
+          </Card>
         </div>
-      ) : (
-        <div className="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>코드</th>
-                <th>기관명</th>
-                <th>유형</th>
-                <th>국가</th>
-                <th>소속 대학</th>
-                <th style={{ textAlign: "right" }}>계정</th>
-                <th>상태</th>
-                <th>등록일</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((r) => (
-                <tr key={r.id}>
-                  <td className="mono">{r.code}</td>
-                  <td>
-                    <Link href={`/admin/organizations/${r.id}`}>
-                      {names.get(r.id) ?? <span style={{ color: "var(--muted)" }}>이름 없음</span>}
-                    </Link>
-                  </td>
-                  <td>
-                    <span
-                      className={`tag ${r.org_type === "university" ? "univ" : "dept"}`}
-                    >
-                      {TYPE_LABEL[r.org_type] ?? r.org_type}
-                    </span>
-                  </td>
-                  <td className="mono">{r.country}</td>
-                  <td>
-                    {r.parent_id ? (
-                      (names.get(r.parent_id) ?? "—")
-                    ) : (
-                      <span style={{ color: "var(--muted)" }}>—</span>
-                    )}
-                  </td>
-                  <td className="num">{Number(r.member_count).toLocaleString("ko-KR")}</td>
-                  <td>
-                    <span className={`tag ${r.status}`}>
-                      {r.status === "active" ? "정상" : r.status}
-                    </span>
-                  </td>
-                  <td className="mono">{r.created_at}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-    </AdminShell>
+      </Section>
+
+      <Section>
+        {rows.length ? (
+          <Card pad={false}>
+            <form className="sf-toolbar" method="get">
+              <input className="sf-input" type="search" name="q" defaultValue={sp.q ?? ""}
+                placeholder={`${T("search")}: 이름 · 코드`} />
+              <button type="submit" className="sf-btn ghost sm">{T("search")}</button>
+              <span className="sf-meta">
+                {shown.length.toLocaleString()} / {rows.length.toLocaleString()}
+              </span>
+            </form>
+            <div className="sf-tw">
+              <table className="sf-table">
+                <thead>
+                  <tr>
+                    <th>{T("adminColOrg")}</th><th>{T("adminColType")}</th>
+                    <th>{T("adminColCountry")}</th><th>{T("adminColContract")}</th>
+                    <th>{T("adminColSeats")}</th><th>{T("adminColUsers")}</th>
+                    <th>{T("adminColStatus")}</th><th>{T("adminColUpdated")}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {shown.map((r) => (
+                    <tr key={r.id}>
+                      <td>
+                        <Link href={`/admin/organizations/${r.id}`} className="sf-strong">
+                          {r.name}
+                        </Link>
+                        <div className="sf-code">{r.code}</div>
+                      </td>
+                      <td>{TYPE_KO[r.org_type ?? ""] ?? r.org_type ?? "—"}</td>
+                      <td>{r.country ?? "—"}</td>
+                      <td>
+                        {r.active_contract
+                          ? <Pill tone="ok">{T("adminActive")}</Pill>
+                          : <Pill tone="not">{T("adminInactive")}</Pill>}
+                      </td>
+                      <td className="num">{r.seats.toLocaleString()}</td>
+                      <td className="num">{r.users.toLocaleString()}</td>
+                      <td><Pill tone={r.active_contract ? "ok" : "not"}>
+                        {r.active_contract ? "운영 중" : "대기"}</Pill></td>
+                      <td className="sf-meta">{r.updated ?? "—"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        ) : (
+          <Empty icon="building" title="아직 기관이 없습니다."
+            body="기관을 만들고 계약을 등록하면 좌석이 생기고 참여자가 응시할 수 있습니다."
+            cta={{ href: "/admin/organizations/new", label: "기관 추가" }} />
+        )}
+      </Section>
+    </Shell>
   );
 }

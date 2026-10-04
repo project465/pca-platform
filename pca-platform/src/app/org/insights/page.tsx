@@ -1,91 +1,125 @@
-import LogoutButton from "@/components/logout-button";
-import OrgNav from "@/components/org-nav";
 import { requireRole } from "@/lib/session";
+import { resolveLang } from "@/lib/locale-server";
 import { orgsOf } from "@/lib/org";
-import { careerDistribution, orgOverview, minCellFor } from "@/lib/insights";
+import { careerDistribution, orgOverview } from "@/lib/insights";
+import { breakdowns } from "@/lib/evidence-insights";
+import { ROLE_LABEL } from "@/lib/roles";
+import { BRAND, toLang2, txer } from "@/lib/surface-text";
+import { Shell, PageHead, Section } from "@/components/sf/shell";
+import { NAV_CAMPUS } from "@/components/sf/nav";
+import { BarList, Card, Empty, Kpi, pct } from "@/components/sf/parts";
+import { toBars } from "@/components/sf/cells";
+import LangSelect from "@/components/sf/lang-select";
 
-export const metadata = { title: "집계 · Careermetri" };
+export const metadata = { title: `직무 집계 · ${BRAND.campus}` };
+
+const SEAT_KO: Record<string, string> = {
+  available: "미배정", invited: "초대", claimed: "받음",
+  started: "응시 중", completed: "완료", revoked: "거둠", expired: "기간 지남",
+};
 
 /**
- * 기관이 보는 집계.
+ * 직무 집계.
  *
- * **등수를 매기지 않는다.** "학생의 32% 가 CAE 에 적합" 이 아니라
- * "32명이 지금 CAE 를 먼저 살펴보고 있다" 로 적는다. 적합은 이 검사가
- * 만들 수 있는 값이 아니다.
- *
- * **5명 미만 칸은 숫자를 내지 않는다.** 감춘 칸을 0 으로 적지도 않는다.
- * 0 과 '적어서 안 보여 준다' 는 다른 말이다.
+ * **등수를 매기지 않는다.** "32% 가 CAE 에 적합" 이 아니라 "32명이 지금
+ * CAE 를 먼저 살펴보고 있다" 로 적는다. 그래서 도넛도 파이도 쓰지 않고
+ * 가로 막대만 쓴다: 길이는 사람 수이고 그 이상 읽히지 않는다.
  */
-export default async function Insights() {
+export default async function CampusCareerInsights({
+  searchParams,
+}: { searchParams: Promise<{ lang?: string }> }) {
   const user = await requireRole(["org_admin", "instructor"]);
+  const { lang: q } = await searchParams;
+  const L = toLang2(await resolveLang(q));
+  const T = txer(L);
+
   const orgs = await orgsOf(user.id);
-  if (orgs.length === 0) {
-    return <main className="main"><p className="empty">소속 기관이 없습니다.</p></main>;
+  const org = orgs[0];
+
+  if (!org) {
+    return (
+      <Shell surface="campus" lang={L} nav={NAV_CAMPUS} active="/org/insights"
+        who={{ name: user.name, role: ROLE_LABEL[user.role] ?? "" }}
+        topTitle={BRAND.campus} topRight={<LangSelect current={L} />}>
+        <PageHead title={T("navCareerInsights")} />
+        <Empty icon="compass" title={T("campusNoContractTitle")} body={T("campusNoContractBody")} />
+      </Shell>
+    );
   }
-  const orgId = Number(orgs[0].id);
-  const [ov, career, minCell] = await Promise.all([
-    orgOverview(orgId), careerDistribution(orgId), minCellFor(orgId),
+
+  const orgId = Number(org.id);
+  const [ov, career, bd] = await Promise.all([
+    orgOverview(orgId), careerDistribution(orgId), breakdowns(orgId),
   ]);
 
   return (
-    <div className="shell">
-      <header className="topbar">
-        <span className="brand">Careermetri</span>
-        <div className="who"><span>{user.name}</span><LogoutButton /></div>
-      </header>
-      <main className="main">
-        <OrgNav current="/org/insights" />
-        <h1 className="page-h1">집계</h1>
-        <p className="page-sub">
-          개인 결과지는 본인에게만 열립니다. 여기 있는 것은 사람 수뿐이고,
-          {minCell}명 미만인 칸은 숫자를 내지 않습니다.
-        </p>
+    <Shell
+      surface="campus" lang={L} nav={NAV_CAMPUS} active="/org/insights"
+      who={{ name: user.name, role: ROLE_LABEL[user.role] ?? "" }}
+      topTitle={org.name} topRight={<LangSelect current={L} />}
+    >
+      <PageHead
+        eyebrow={org.name}
+        title={T("navCareerInsights")}
+        sub={T("campusCareerNote")}
+      />
 
-        <section className="card">
-          <h2>참여</h2>
-          <dl className="stat-row">
-            <div><dt>계약 좌석</dt><dd>{ov.seats}</dd></div>
-            <div><dt>쓴 좌석</dt><dd>{ov.used}</dd></div>
-            <div><dt>남은 좌석</dt><dd>{ov.remaining}</dd></div>
-            <div><dt>초대함</dt><dd>{ov.invited}</dd></div>
-            <div><dt>끝남</dt><dd>{ov.completed}</dd></div>
-            <div>
-              <dt>끝낸 비율</dt>
-              <dd>{ov.completion_rate === null ? "—" : `${ov.completion_rate}%`}</dd>
-            </div>
-            <div><dt>기수</dt><dd>{ov.cohorts}</dd></div>
-          </dl>
-          {ov.completion_rate === null && (
-            <p className="muted">
-              아직 응시를 시작한 분이 없어 비율을 내지 않았습니다.
-            </p>
-          )}
-        </section>
+      <div className="sf-grid sf-g4">
+        <Kpi label={T("campusCompleted")} value={ov.completed} icon="clipboard" accent
+          note={ov.completion_rate === null ? undefined : `완료율 ${ov.completion_rate}%`} />
+        <Kpi label={T("campusStarted")} value={ov.started} />
+        <Kpi label={T("campusUsed")} value={ov.used} fill={pct(ov.used, ov.seats)} />
+        <Kpi label={T("navCohorts")} value={ov.cohorts} icon="group" />
+      </div>
 
-        <section className="card">
-          <h2>지금 먼저 살펴보고 있는 직무</h2>
-          <p className="muted">{career.note}</p>
-          {career.cells.length === 0 ? (
-            <p className="empty">아직 채점된 응시가 없습니다.</p>
-          ) : (
-            <table className="table">
-              <thead><tr><th>직무</th><th>사람 수</th></tr></thead>
-              <tbody>
-                {career.cells.map((c) => (
-                  <tr key={c.label}>
-                    <td>{c.label}</td>
-                    <td>
-                      {"hidden" in c
-                        ? <span className="muted">{career.min_cell}명 미만이라 내지 않습니다</span>
-                        : c.n}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </section>
-      </main>
-    </div>
+      <Section>
+        <div className="sf-grid sf-g-2-1">
+          <Card title={T("campusCareer")} note={T("privacyHiddenWhy")}>
+            {career.cells.length ? (
+              <BarList rows={toBars(career.cells)} hiddenLabel={T("privacyHidden")} />
+            ) : (
+              <Empty icon="compass" tight title="아직 채점된 응시가 없습니다."
+                body="참여자가 검사를 끝내면 먼저 살펴보는 직무가 여기 쌓입니다." />
+            )}
+          </Card>
+          <Card title={T("campusStage")} note={T("privacyHiddenWhy")}>
+            {bd.stages.length ? (
+              <BarList rows={toBars(bd.stages)} hiddenLabel={T("privacyHidden")} />
+            ) : (
+              <p className="sf-meta" style={{ margin: 0 }}>아직 집계할 자료가 없습니다.</p>
+            )}
+          </Card>
+        </div>
+      </Section>
+
+      <Section>
+        <div className="sf-grid sf-g2">
+          <Card title={T("campusExplorationStatus")}>
+            <BarList
+              hiddenLabel={T("privacyHidden")}
+              rows={bd.status.map((s) => ({
+                label: SEAT_KO[s.label] ?? s.label, value: s.n, suffix: "명",
+              }))}
+            />
+          </Card>
+          <Card title={T("campusCohortCompare")}>
+            {bd.cohorts.length ? (
+              <BarList
+                hiddenLabel={T("privacyHidden")}
+                max={Math.max(1, ...bd.cohorts.map((c) => c.total))}
+                rows={bd.cohorts.map((c) => ({
+                  label: `${c.label} (${c.total}명)`,
+                  value: c.completed,
+                  suffix: c.rate === null ? "명" : `명 · ${c.rate}%`,
+                  tone: "ok" as const,
+                }))}
+              />
+            ) : (
+              <p className="sf-meta" style={{ margin: 0 }}>견줄 기수가 아직 없습니다.</p>
+            )}
+          </Card>
+        </div>
+      </Section>
+    </Shell>
   );
 }

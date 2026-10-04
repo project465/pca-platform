@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
+/* CareerMatri 제품 화면의 디자인 시스템. `globals.css` 다음에 와야
+   같은 이름이 겹칠 때 이쪽이 이긴다 */
+import "./surface.css";
 
 export const metadata: Metadata = {
-  title: "Careermetri · 공학 진로 진단",
-  description: "전공·역량·채용공고를 잇는 공학 커리어 엔진",
+  title: "CareerMatri",
+  description: "전공과 경험을 실제 커리어 선택으로 잇는 공학 진로 엔진",
 };
 
 export default function RootLayout({

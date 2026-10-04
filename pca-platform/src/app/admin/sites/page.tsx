@@ -1,83 +1,75 @@
-import AdminShell from "@/components/admin-shell";
 import { requireRole } from "@/lib/session";
+import { resolveLang } from "@/lib/locale-server";
 import { listSites } from "@/lib/sites";
-import { query } from "@/lib/db";
+import { ROLE_LABEL } from "@/lib/roles";
+import { BRAND, toLang2, txer } from "@/lib/surface-text";
+import { Shell, PageHead } from "@/components/sf/shell";
+import { NAV_ADMIN } from "@/components/sf/nav";
+import { Card, Empty, Pill } from "@/components/sf/parts";
+import LangSelect from "@/components/sf/lang-select";
 
-export const metadata = { title: "사이트와 나라 · Careermetri" };
+export const metadata = { title: `사이트 · ${BRAND.admin}` };
 
 /**
- * 사이트와 나라.
+ * 사이트.
  *
- * **도메인을 코드에 적지 않는다.** 여기 한 표에서만 읽는다. 철자가 바뀌어도
- * 고칠 곳이 한 줄이다.
+ * **국가 묶음과 갈라 두었다.** 예전에는 둘이 한 쪽에 붙어 있어서, 도메인을
+ * 보러 온 사람이 나라별 검수 상태를 먼저 읽었다. 둘은 다른 질문이다:
+ * 여기는 '어느 주소로 무엇을 파는가' 이고, 국가 쪽은 '그 나라 자료가
+ * 확인됐는가' 다.
  *
- * **화면 언어 · 사이트 지역 · 목표 국가는 다른 값이다.** 한국 사이트를
- * 한국어로 쓰면서 미국 시장을 보는 사람이 가장 흔하다.
+ * **읽기 전용이다.** 도메인을 화면에서 고치지 않는다: 한 글자가 틀리면
+ * 남의 주소로 간다. 고치는 자리는 `site_configs` 한 곳뿐이다.
  */
-export default async function Sites() {
+export default async function AdminSites({
+  searchParams,
+}: { searchParams: Promise<{ lang?: string }> }) {
   const user = await requireRole(["superadmin"]);
-  const sites = await listSites();
-  const packs = await query<{
-    country_code: string; version: string; status: string; verified_at: string | null;
-  }>(`SELECT country_code, version, status, verified_at::text
-        FROM country_packs ORDER BY country_code, version`);
+  const { lang: q } = await searchParams;
+  const L = toLang2(await resolveLang(q));
+  const T = txer(L);
+  const sites = await listSites().catch(() => []);
 
   return (
-    <AdminShell user={user} current="/admin/sites">
-      <h1 className="page-h1">사이트와 나라</h1>
-      <p className="page-sub">
-        도메인·언어·통화·결제 시장은 여기서만 정합니다. 화면 어디에도 도메인을
-        적어 두지 않았습니다.
-      </p>
+    <Shell
+      surface="admin" lang={L} nav={NAV_ADMIN} active="/admin/sites"
+      who={{ name: user.name, role: ROLE_LABEL[user.role] ?? "" }}
+      topTitle={BRAND.admin} topRight={<LangSelect current={L} />}
+    >
+      <PageHead
+        eyebrow={BRAND.admin}
+        title={T("adminSitesTitle")}
+        sub="도메인은 이 표 한 곳에만 있습니다. 화면에도 코드에도 적어 두지 않습니다."
+        actions={<Pill tone="not">{T("readOnly")}</Pill>}
+      />
 
-      <section className="card">
-        <h2>사이트</h2>
-        <table className="table">
-          <thead>
-            <tr><th>id</th><th>도메인</th><th>기본 언어</th><th>통화</th>
-              <th>결제 시장</th><th>사이트 지역</th><th>내놓는 언어</th></tr>
-          </thead>
-          <tbody>
-            {sites.map((s) => (
-              <tr key={s.site_id}>
-                <td>{s.site_id}</td><td>{s.domain}</td>
-                <td>{s.default_language}</td><td>{s.default_currency}</td>
-                <td>{s.payment_market}</td><td>{s.site_region ?? "—"}</td>
-                <td>{s.offered_languages.join(" · ")}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <p className="muted">
-          사이트 지역은 목표 국가가 아닙니다. 응시 한 건마다 목표 국가를 따로
-          담습니다.
-        </p>
-      </section>
-
-      <section className="card">
-        <h2>나라 묶음</h2>
-        {packs.length === 0 ? (
-          <>
-            <p className="empty">확인된 나라 자료가 아직 없습니다.</p>
-            <p className="muted">
-              그래서 결과지는 전부 Global Reference Mode 로 나갑니다. 임금·비자·
-              면허를 지어내지 않습니다. 확인된 자료가 생기면 여기에 줄이 늡니다.
-            </p>
-          </>
-        ) : (
-          <table className="table">
-            <thead><tr><th>나라</th><th>판</th><th>상태</th><th>확인한 날</th></tr></thead>
-            <tbody>
-              {packs.map((p) => (
-                <tr key={`${p.country_code}-${p.version}`}>
-                  <td>{p.country_code}</td><td>{p.version}</td>
-                  <td>{p.status}</td><td>{p.verified_at ?? "—"}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </section>
-    </AdminShell>
+      {sites.length ? (
+        <div className="sf-grid sf-g2">
+          {sites.map((s) => (
+            <div className="sf-site" key={s.site_id}>
+              <div className="sf-site-h">
+                <h3>{s.site_id === "global" ? "Global" : s.site_id === "kr" ? "Korea" : s.site_id}</h3>
+                <Pill tone={s.active ? "ok" : "not"}>
+                  {s.active ? T("adminActive") : T("adminInactive")}
+                </Pill>
+              </div>
+              <div className="sf-site-d">
+                <div className="sf-site-dom">{s.domain}</div>
+                <div className="sf-chips">
+                  <Pill>{s.default_language.toUpperCase()}</Pill>
+                  <Pill>{s.default_currency}</Pill>
+                  <Pill>{s.payment_market}</Pill>
+                  {s.site_region ? <Pill tone="accent">{s.site_region}</Pill> : null}
+                </div>
+                
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <Empty icon="window" title="사이트 설정이 없습니다."
+          body="site_configs 에 줄이 있어야 어느 주소로 무엇을 파는지가 정해집니다." />
+      )}
+    </Shell>
   );
 }
