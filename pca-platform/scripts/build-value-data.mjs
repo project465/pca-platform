@@ -15,6 +15,8 @@ const knowledge = read("me-knowledge.json");
 const tools = read("me-tools.json");
 const paths = read("me-value-paths.json");
 const orgs = read("org-types.json");
+const evmap = read("me-evidence-map.json");
+const follow = read("followups.json");
 
 const out = `/* 전공지식 → 조직 성과 번역에 쓰는 참조 자료.
    content/me-knowledge.json · me-tools.json · me-value-paths.json ·
@@ -25,7 +27,11 @@ window.PCA_KNOWLEDGE = ${JSON.stringify(knowledge, null, 1)};
 window.PCA_TOOLS = ${JSON.stringify(tools, null, 1)};
 window.PCA_VALUE_PATHS = ${JSON.stringify(paths, null, 1)};
 window.PCA_ORG_TYPES = ${JSON.stringify(orgs, null, 1)};
+window.PCA_EVIDENCE_MAP = ${JSON.stringify(evmap, null, 1)};
+window.PCA_FOLLOWUPS = ${JSON.stringify(follow, null, 1)};
 `;
 writeFileSync("sites/pca-platform/data/value-data.js", out);
+const reqs = evmap.families.reduce((a, f) => a + f.evidence_requirements.length, 0);
 console.log(`지식 ${knowledge.domains.length} · 도구 갈래 ${tools.categories.length} · ` +
-  `직무군 ${paths.families.length} · 조직 유형 ${orgs.organization_types.length}`);
+  `직무군 ${paths.families.length} · 조직 유형 ${orgs.organization_types.length} · ` +
+  `증거 영역 ${reqs} · 되물음 ${follow.gaps.length}갈래`);

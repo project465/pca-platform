@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "note": "직무군마다 어느 업무 방식 쪽에 가까운가. **숫자를 결과지에 내보내지 않는다**: 가까움·혼합·먼 편 세 마디로만 말한다.",
+  "major": {
+    "ME": {
+      "ME_DESIGN_PRODUCT": {
+        "SQ": "품질"
+      },
+      "ME_CAE_SIM": {
+        "IC": "독립",
+        "SQ": "품질"
+      },
+      "ME_RND": {
+        "CS": "도전"
+      },
+      "ME_TEST_VV": {
+        "CS": "안정",
+        "SQ": "품질"
+      },
+      "ME_MANUFACTURING": {
+        "IC": "협력",
+        "SQ": "속도"
+      },
+      "ME_PROCESS": {
+        "CS": "도전",
+        "SQ": "속도"
+      },
+      "ME_QUALITY_RELIABILITY": {
+        "CS": "안정",
+        "SQ": "품질"
+      },
+      "ME_EQUIPMENT_MAINT": {
+        "SQ": "속도"
+      },
+      "ME_AUTOMATION": {
+        "CS": "도전"
+      },
+      "ME_THERMAL_FLUID": {
+        "IC": "독립",
+        "SQ": "품질"
+      },
+      "ME_MATERIALS": {
+        "SQ": "품질"
+      },
+      "ME_SYSTEMS_TPM": {
+        "IC": "협력"
+      },
+      "ME_APPLICATIONS_FIELD": {
+        "IC": "협력",
+        "SQ": "속도"
+      },
+      "ME_CONSULTING": {
+        "IC": "협력"
+      },
+      "ME_RESEARCH_SCIENTIST": {
+        "IC": "독립",
+        "CS": "도전"
+      },
+      "ME_DIGITAL": {
+        "IC": "독립"
+      }
+    }
+  }
+}

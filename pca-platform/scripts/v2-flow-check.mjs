@@ -300,24 +300,44 @@ ok("7 경험을 넣으면 증거 준비도가 생긴다",
     !/성과 언어로 번역되지 않은 경험/.test(r.text),
     "다 채운 분에게는 안 뜬다");
 }
-/* ── 증거가 모자라면 지원 준비로 올리지 않는다 ───────────────────── */
+/* ── 역할별 증거 범위 ────────────────────────────────────────────── */
+{
+  const r = got["4 박사 PRO"], J = r.J;
+  const cv = J.role_evidence_coverage;
+  const first = cv && cv[J.decision_table[0].career_family_id];
+  ok("직무마다 증거 범위가 나온다",
+    !!first && Array.isArray(first.coverage) && first.coverage.length >= 8,
+    first ? `${Object.keys(cv).length}개 직무 · 영역 ${first.coverage.length}` : "");
+  ok("깊이와 범위를 따로 담는다",
+    !!J.evidence_depth && !!J.role_evidence_coverage &&
+    !("coverage" in (J.evidence_depth || {})),
+    `깊이 ${JSON.stringify(J.evidence_depth).slice(0, 40)}`);
+  ok("범위를 점수로 바꾸지 않는다",
+    !/\d+\s*점|\d+\s*%\s*확인|커리어 ?점수/.test(r.text) &&
+    typeof first.summary.core.confirmed === "number" &&
+    !("score" in first.summary));
+  ok("결과지에 확인·부분·아직이 보인다",
+    /현재 확인된 것|일부 확인|아직 확인되지 않음/.test(r.text) &&
+    /핵심 영역/.test(r.text));
+  ok("못 한다고 쓰지 않는다",
+    !/능력이 부족|실력이 없|못 하십니다|미달/.test(r.text));
+}
+/* ── 증거가 모자라면 설명할 근거 있음으로 올리지 않는다 ─────────── */
 {
   const weak = await runV2(browser, {
     tier: "BASIC", stage: "bachelor", profile: "design_rich",
     evidence: EVIDENCE_NAME_ONLY,
   });
-  const anyApply = weak.J.decision_table.some((r) => r.decision_status === "READY_TO_APPLY");
-  ok("도구 이름만으로는 지원 준비가 되지 않는다", !anyApply,
+  const anyApply = weak.J.decision_table.some(
+    (r) => r.decision_status === "APPLICATION_EVIDENCE_AVAILABLE");
+  ok("도구 이름만으로는 설명할 근거 있음이 되지 않는다", !anyApply,
     weak.J.decision_table.slice(0, 2).map((r) => r.decision_status).join(" / "));
-  const strong = got["1 학사 BASIC"];
-  const row = strong.J.decision_table[0];
-  ok("산출물까지 있으면 지원 준비로 간다",
-    row.evidence_ladder && ["E2", "E3", "E4", "E5"].indexOf(row.evidence_ladder) >= 0 &&
-    row.decision_status === "READY_TO_APPLY",
-    `${row.evidence_ladder} → ${row.decision_status}`);
+  ok("옛 상태를 더 쓰지 않는다",
+    !weak.J.decision_table.some((r) => r.decision_status === "READY_TO_APPLY") &&
+    !/지원 준비 단계/.test(weak.text));
   const bare2 = await runV2(browser, { tier: "BASIC", stage: "bachelor", profile: "design_rich" });
   ok("경험을 안 적으셨다고 깎지 않는다",
-    !bare2.J.decision_table.some((r) => r.decision_status === "BUILD_EVIDENCE" && !r.evidence_readiness),
+    bare2.J.decision_table[0].decision_status === "COMPARE_ROLES",
     bare2.J.decision_table[0].decision_status);
 }
 /* ── 조직을 바꿔도 다섯 값이 그대로다 ───────────────────────────── */
@@ -335,6 +355,9 @@ ok("7 경험을 넣으면 증거 준비도가 생긴다",
   const fa = a.J.value_path.paths[a.J.value_path.order[0]];
   const fb = b.J.value_path.paths[b.J.value_path.order[0]];
   ok("조직을 바꿔도 다섯 값이 그대로다", same);
+  ok("조직을 바꿔도 증거 범위가 같다",
+    JSON.stringify(a.J.role_evidence_coverage) ===
+      JSON.stringify(b.J.role_evidence_coverage));
   ok("조직을 바꾸면 ValuePath 만 갈린다",
     fa.outputs[0] !== fb.outputs[0] &&
     fa.evidence_top_level === fb.evidence_top_level,
@@ -352,6 +375,32 @@ ok("7 경험을 넣으면 증거 준비도가 생긴다",
   ok("역량 보유라고 쓰지 않는다",
     !/ANSYS[^.]{0,20}(역량|능력|숙련|다룰 수 있)/.test(r.text) &&
     !/도구를?\s*\d+개/.test(r.text));
+}
+/* ── 계획이 비어 있는 자리에서 나온다 ───────────────────────────── */
+{
+  const phd = got["4 박사 PRO"], pd = got["5 포닥 PRO"];
+  ok("박사와 포닥의 계획 문장이 다르다",
+    /직접 정한 것과 받은 것/.test(phd.text) &&
+    /맡아서 끌고 간 범위/.test(pd.text) &&
+    !/맡아서 끌고 간 범위/.test(phd.text));
+  ok("PRO 는 30·90·365 를 다 낸다",
+    /30일 동안/.test(phd.text) && /90일 동안/.test(phd.text) &&
+    /365일 동안/.test(phd.text));
+  const b1 = got["1 학사 BASIC"];
+  ok("BASIC 은 30일만 낸다",
+    /30일 동안/.test(b1.text) && !/365일 동안/.test(b1.text));
+}
+/* ── 비어 있는 자리를 고르기로 채우게 한다 ─────────────────────── */
+{
+  const thin = await runV2(browser, {
+    tier: "STANDARD", stage: "bachelor", profile: "design_rich",
+    evidence: EVIDENCE_NAME_ONLY,
+  });
+  ok("되물음이 보기로 나온다",
+    /고르기만 하시면 됩니다/.test(thin.text) &&
+    /비교하지 않았습니다|남은 것이 없습니다|확인하지 못했습니다/.test(thin.text));
+  ok("긴 주관식을 요구하지 않는다",
+    !/자유롭게 서술|상세히 적어|구체적으로 서술/.test(thin.text));
 }
 /* ── 상품마다 깊이가 다르다 ──────────────────────────────────────── */
 {

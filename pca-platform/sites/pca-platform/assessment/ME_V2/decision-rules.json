@@ -8,13 +8,17 @@
     "caution": "규준이 없으므로 이 경계는 추정값이다. 파일럿에서 가장 먼저 조정될 값이다."
   },
   "statuses": {
-    "READY_TO_COMPARE_JOBS": {
+    "COMPARE_ROLES": {
       "label": "직무 비교 단계",
       "line": "관심과 실제 경험이 함께 있습니다. 이제 직무 자체보다 산업·회사별 업무 차이를 비교할 단계입니다."
     },
-    "READY_TO_APPLY": {
-      "label": "지원 준비 단계",
-      "line": "관심·경험·보여 줄 근거가 함께 있습니다. 공고의 요구와 내 근거를 한 줄씩 맞춰 보실 단계입니다."
+    "APPLICATION_EVIDENCE_AVAILABLE": {
+      "label": "설명할 근거 있음",
+      "line": "이 직무를 지원서와 면접에서 설명할 근거가 일부 모였습니다. 합격 가능성을 잰 값이 아니고, 꺼낼 재료가 있다는 뜻입니다."
+    },
+    "TARGETED_PREPARATION": {
+      "label": "한 군데만 채우기",
+      "line": "핵심 영역이 거의 확인됐고 비어 있는 자리가 적습니다. 그 한두 자리를 채우는 것이 지금 가장 값싼 한 걸음입니다."
     },
     "TEST_FIRST": {
       "label": "먼저 해보기",
@@ -45,20 +49,9 @@
     {
       "if": {
         "interest": "high",
-        "exposure": "high",
-        "evidence": [
-          "medium",
-          "high"
-        ]
-      },
-      "then": "READY_TO_APPLY"
-    },
-    {
-      "if": {
-        "interest": "high",
         "exposure": "high"
       },
-      "then": "READY_TO_COMPARE_JOBS"
+      "then": "COMPARE_ROLES"
     },
     {
       "if": {
@@ -129,11 +122,16 @@
     ]
   },
   "apply_gate": {
-    "note": "'지원 준비 단계' 는 서류와 면접에서 꺼낼 것이 있다는 말이다. 준비도 신호(수강·도구)는 그 자리에 쓸 수 있는 물건이 아니라 활동까지만 말해 준다. 그래서 증거 사다리가 산출물(E2)에 닿지 않으면 지원 준비로 올리지 않고 근거 만들기로 내린다. 올리는 쪽으로만 막고 내리는 쪽으로는 건드리지 않는다.",
-    "status": "READY_TO_APPLY",
-    "requires_evidence_ladder": "E2",
-    "fallback_with_ladder": "BUILD_EVIDENCE",
-    "fallback_without_ladder": "READY_TO_COMPARE_JOBS",
-    "fallback_without_ladder_note": "경험을 아직 안 적으신 분은 사다리 자체가 없다. 없는 것을 낮은 것으로 읽으면 안 적었다는 이유로 깎이게 된다. 그때는 지원 준비 대신 직무 비교로 둔다."
+    "note": "문항만으로는 '지원서에서 설명할 수 있다' 를 말할 수 없다. 관심과 경험이 높다고 해서 꺼낼 물건이 있는 것은 아니기 때문이다. 그래서 문항이 낸 판정을 역할별 증거 범위(Role Evidence Coverage)와 깊이로 한 번 더 거른다. **올리는 쪽으로만 거른다**: 내리는 판정은 건드리지 않는다. 그리고 **경험을 안 적으신 분은 깎지 않는다**: 범위가 없는 것과 좁은 것은 다르다.",
+    "from_status": "COMPARE_ROLES",
+    "to_if_application_ready": "APPLICATION_EVIDENCE_AVAILABLE",
+    "to_if_one_gap_left": "TARGETED_PREPARATION",
+    "to_if_core_thin": "BUILD_EVIDENCE",
+    "one_gap_left_max": 1,
+    "core_thin_note": "핵심 영역이 하나도 확인되지 않았으면 비교 단계로 두지 않고 근거 만들기로 내린다. 비교는 꺼낼 것이 있을 때 쓸모 있는 말이다.",
+    "retired": {
+      "READY_TO_APPLY": "뺐다. '지원 준비' 가 합격 가능성으로 읽혔고, 문항과 신호만으로는 그 말을 할 수 없다. APPLICATION_EVIDENCE_AVAILABLE 이 대신 들어가고 그 말의 뜻은 '설명할 재료가 모였다' 까지다.",
+      "READY_TO_COMPARE_JOBS": "COMPARE_ROLES 로 이름만 바꿨다."
+    }
   }
 }

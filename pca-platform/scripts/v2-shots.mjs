@@ -152,6 +152,10 @@ async function run({ tier, stage, profile, evidence, tag, steps }) {
     ["성과 언어로 번역되지 않은 경험", "번역안된경험"],
     ["쓰신 도구가 무엇을 받쳐", "도구증거"],
     ["다음에 만들 경험", "다음에만들경험"],
+    ["이 직무에서 지금 확인되는 근거", "증거범위"],
+    ["비어 있는 자리를 고르기로", "고르기되물음"],
+    ["직무별 증거 범위 전체", "증거범위_전체"],
+    ["다음에 할 것", "계획"],
   ]) {
     const box = await p.evaluateHandle((k) =>
       [...document.querySelectorAll("#v2ResultBody .section")]

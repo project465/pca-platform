@@ -73,8 +73,9 @@ window.PCAV2Report = (function () {
     return '<div class="card contentcard"><div class="eyebrow">' + esc(row.name) +
       ' 이 앞에 온 까닭</div>' +
       '<ul class="qlist" style="margin-top:8px">' + lines.join('') + '</ul>' +
-      '<p class="note" style="margin-top:10px">문항 번호를 그대로 적습니다. ' +
-      '어느 답이 이 줄을 만들었는지 되짚을 수 있어야 고칠 데도 보입니다.</p></div>';
+      '<p class="note" style="margin-top:10px">문항 번호를 그대로 적어 두는 것은, ' +
+      '어느 답이 이 줄을 만들었는지 되짚을 수 있어야 고칠 데도 보이기 ' +
+      '때문입니다.</p></div>';
   }
 
   /* ── 업무 방식 (숫자를 내지 않는다) ─────────────────────────────── */
@@ -185,7 +186,8 @@ window.PCAV2Report = (function () {
       '<div class="eyebrow">이 자료를 읽는 법</div><ul class="qlist">' +
       '<li>여기 나오는 값은 어느 것도 합격 가능성이나 실력을 잰 값이 아닙니다.</li>' +
       '<li>관심·경험·학습의향·업무 방식은 서로 다른 문항에서 나와 따로 읽습니다.</li>' +
-      '<li>종합 점수를 만들지 않습니다. 칸이 갈리는 자리가 할 일을 알려 줍니다.</li>' +
+      '<li>종합 점수를 만들지 않는 것은, 어느 칸이 갈리는지가 지금 할 일을 ' +
+      '알려 주기 때문입니다.</li>' +
       '</ul></div></div>');
 
     /* 경험 안내는 맨 위에. 빈 상태를 조용히 두지 않는다 */
@@ -196,6 +198,29 @@ window.PCAV2Report = (function () {
     out.push(sect(no(), '어디부터 볼지',
       '여섯 칸이 각각 다른 것을 재고, 마지막 칸이 지금 할 일을 적습니다.',
       decisionTable(J, lvl === 'basic' ? 6 : (lvl === 'standard' ? 10 : 16))));
+
+    /* 결정 표 바로 다음이 **이 직무에서 무엇이 확인되고 무엇이 비었는가**
+       다. 적합도 다음에 바로 '왜' 를 놓으면 읽는 사람이 결론부터 받고,
+       그 결론을 받칠 근거가 자기에게 있는지는 끝까지 모른다. */
+    var CR = window.PCAV2CoverageReport;
+    var topId = top ? top.career_family_id : null;
+    if (CR && J.role_evidence_coverage) {
+      var covN = lvl === 'basic' ? 1 : (lvl === 'standard' ? 3 : 5);
+      var covBody = CR.coverage(J, covN, lvl === 'basic');
+      if (covBody) {
+        out.push(sect(no(), '이 직무에서 지금 확인되는 근거',
+          '직무마다 보고 싶어 하는 영역이 다르고, 경험 하나가 얼마나 깊은지와 ' +
+          '영역을 얼마나 넓게 덮었는지는 다른 값이라 따로 적어 두었습니다.',
+          CR.sentence(J, topId) + covBody +
+          (lvl === 'basic' ? '' : CR.applicationBox(J, topId))));
+      }
+      var ask = CR.askBox(J, topId);
+      if (ask) {
+        out.push(sect(no(), '비어 있는 자리를 고르기로 채우기',
+          '긴 글을 적지 않으셔도 됩니다. 아래에서 고르시면 확인되는 범위가 ' +
+          '달라집니다.', ask));
+      }
+    }
 
     out.push(sect(no(), '왜 이 직무가 앞에 왔는가', '',
       J.decision_table.slice(0, lvl === 'basic' ? 1 : 3)
@@ -255,8 +280,8 @@ window.PCAV2Report = (function () {
         (J.evidence_quality ? '<div class="card contentcard" style="margin-top:10px">' +
           '<div class="eyebrow">보여 줄 수 있는 사례</div><h3 style="margin:6px 0 0">' +
           esc(LV[J.evidence_quality.level]) + '</h3>' +
-          '<p class="note" style="margin-top:8px">증거 준비도로 갑니다. ' +
-          '업무 방식 값에는 들어가지 않습니다.</p></div>' : '')));
+          '<p class="note" style="margin-top:8px">이 값은 증거 준비도로만 ' +
+          '가고 업무 방식에는 들어가지 않습니다.</p></div>' : '')));
 
       if (VR) {
         var sm = VR.sameMajor(J);
@@ -318,6 +343,15 @@ window.PCAV2Report = (function () {
         }
       }
 
+      if (CR && J.role_evidence_coverage) {
+        var full = CR.coverage(J, 5, false);
+        if (full) {
+          out.push(sect(no(), '직무별 증거 범위 전체',
+            '핵심·뒷받침·선택을 모두 폅니다. 선택이 비어 있다고 불리하게 ' +
+            '보지 않습니다.', full));
+        }
+      }
+
       out.push(sect(no(), '서류·면접·포트폴리오로 가져갈 것',
         '적어 주신 경험 가운데 밖으로 보여 줄 형태가 된 것과 아직 안 된 것입니다.',
         '<div class="card contentcard"><ul class="qlist">' +
@@ -328,7 +362,14 @@ window.PCAV2Report = (function () {
         '</ul></div>'));
     }
 
-    if (VR) {
+    if (CR && J.role_evidence_coverage) {
+      var ne = CR.nextEvidence(J, topId);
+      if (ne) {
+        out.push(sect(no(), '다음에 만들 경험',
+          '핵심 가운데 비어 있는 자리를 하나 골라 그것만 채우는 한 건입니다.', ne));
+      }
+    }
+    if (VR && !(CR && J.role_evidence_coverage)) {
       var np = VR.nextProject(J);
       if (np) {
         out.push(sect(no(), '다음에 만들 경험',
@@ -336,8 +377,12 @@ window.PCAV2Report = (function () {
       }
     }
 
-    out.push(sect(no(), '다음에 할 것', '',
-      plan(J, lvl === 'basic' ? 30 : (lvl === 'standard' ? 90 : 365))));
+    var days = lvl === 'basic' ? [30] : (lvl === 'standard' ? [30, 90] : [30, 90, 365]);
+    out.push(sect(no(), '다음에 할 것',
+      '지금 비어 있는 자리와 학위 단계에서 만든 계획입니다.',
+      '<div class="grid">' + days.map(function (d) {
+        return CR ? CR.plan(J, d, topId) : plan(J, d);
+      }).join('') + '</div>'));
 
     if (J.country_context && J.country_context.notice) {
       out.push('<div class="section"><div class="card contentcard">' +

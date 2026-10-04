@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "major_id": "ME",
+  "note": "직무군 열여섯의 사람이 읽는 이름. 규격 18장의 가중치 키와 짝이다.",
+  "names": {
+    "ME_DESIGN_PRODUCT": "기계설계·제품개발",
+    "ME_CAE_SIM": "CAE·해석",
+    "ME_RND": "R&D·선행개발",
+    "ME_TEST_VV": "시험·검증",
+    "ME_MANUFACTURING": "생산기술",
+    "ME_PROCESS": "공정기술",
+    "ME_QUALITY_RELIABILITY": "품질·신뢰성",
+    "ME_EQUIPMENT_MAINT": "설비·유지보수",
+    "ME_AUTOMATION": "자동화·로봇",
+    "ME_THERMAL_FLUID": "열·유체·에너지",
+    "ME_MATERIALS": "재료·파손",
+    "ME_SYSTEMS_TPM": "기술기획·PM",
+    "ME_APPLICATIONS_FIELD": "기술지원·현장",
+    "ME_CONSULTING": "기술 컨설팅",
+    "ME_RESEARCH_SCIENTIST": "연구원·학술 연구",
+    "ME_DIGITAL": "엔지니어링 데이터·디지털"
+  }
+}
