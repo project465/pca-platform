@@ -56,10 +56,22 @@ window.PCAV2ResultJSON = (function () {
     }
     var ladder = VE ? VE.ladderByFamily(paths) : null;
 
-    /* 증거 사다리가 모자라면 '지원 준비' 로 올리지 않는다. 경험을 아직
-       안 적으신 분은 사다리 자체가 없으므로 깎지 않는다 */
+    /* ── 직무가 바라는 증거를 얼마나 넓게 확인했는가 ───────────────
+       사다리(깊이)와 합치지 않는다. 깊이는 경험 하나가 얼마나 멀리
+       갔는가이고, 여기는 그 직무의 영역을 얼마나 덮었는가다. */
+    var CV = window.PCACoverage;
+    var covered = CV ? CV.all(order, exps, toolEv, evRaw) : null;
+    var ready = {};
+    if (CV && covered) {
+      Object.keys(covered).forEach(function (fid) {
+        ready[fid] = CV.applicationReady(covered[fid], exps);
+      });
+    }
+
+    /* 문항이 낸 판정을 증거 범위로 한 번 더 거른다. 올리는 쪽으로만
+       거르고, 경험을 아직 안 적으신 분은 깎지 않는다 */
     var rows = window.PCAV2Decision.table(v2, v2.families, readiness,
-      hasEv ? ladder : null);
+      covered, ready, hasEv);
 
     var stage = window.PCAStage ? window.PCAStage.of(S.stage || '') : null;
     var ctry = window.PCACountry
@@ -127,6 +139,11 @@ window.PCAV2ResultJSON = (function () {
         paths: paths
       },
       performance_evidence: VE ? VE.performanceEvidence(exps) : [],
+      /* 깊이와 범위를 **따로** 담는다. 한 칸에 넣으면 둘이 섞여 읽힌다 */
+      evidence_depth: ladder,
+      role_evidence_coverage: covered,
+      application_evidence: ready,
+      evidence_map_version: (window.PCA_EVIDENCE_MAP || {}).schema_version || null,
       tool_evidence: toolEv,
       evidence_ladder: VE ? VE.LADDER : [],
       repeatability: VE ? VE.repeatability(exps, evRaw) : null,

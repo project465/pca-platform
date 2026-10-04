@@ -633,3 +633,72 @@ h1{font-size:34px;line-height:1.16;letter-spacing:-.04em;color:var(--navy)}
   .elrow { break-inside: avoid }
   #btnEvidenceFix { display: none }
 }
+
+/* ── 역할별 증거 범위 ───────────────────────────────────────────────
+   확인·부분·아직을 색으로만 가르지 않는다. 기호와 머리말이 먼저 읽히고,
+   색은 거드는 자리다. 빨강으로 '아직' 을 칠하면 시험지가 된다. */
+.cvgrid { grid-template-columns: 1fr; gap: 16px }
+.cvcard { padding: 20px 22px }
+.cvsum {
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: baseline;
+  margin: 10px 0 14px; padding-bottom: 12px; border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+.cvsum b { font-size: 12px; color: var(--ink3); font-weight: 700 }
+.cvsum span {
+  border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px;
+  font-variant-numeric: tabular-nums;
+}
+.cvsum i { color: var(--ink3); font-style: normal; font-size: 12px; margin-left: auto }
+.cvgrp + .cvgrp { margin-top: 14px }
+.cvgh {
+  font-size: 12px; font-weight: 700; letter-spacing: .02em;
+  color: var(--ink3); margin-bottom: 6px;
+}
+.cv-confirmed .cvgh { color: #0f6b58 }
+.cvrow {
+  /* 근거를 같은 줄 오른쪽에 붙이면 제목 칸이 눌려 글자가 한 자씩 끊긴다.
+     아래 줄로 내리고 왼쪽 정렬로 둔다 */
+  display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 4px 8px;
+  padding: 6px 0; font-size: 13.5px; line-height: 1.6;
+}
+.cvmk { font-weight: 700; color: var(--ink3) }
+.cv-confirmed .cvmk { color: #0f6b58 }
+.cv-partial .cvmk { color: #8a6d1f }
+.cvlb i { font-style: normal; font-size: 11px; color: var(--ink3) }
+.cvby { grid-column: 2; color: var(--ink3); font-size: 12px; line-height: 1.5 }
+.cvby:empty { display: none }
+.cvline { margin: 0 0 14px; font-size: 15px; line-height: 1.75 }
+
+/* 고르기로 채우는 되물음 */
+.cvask { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line) }
+.cvaskh { font-size: 13px; font-weight: 700 }
+.cvq { margin-top: 10px }
+.cvqq { font-size: 13px; margin-bottom: 6px }
+.cvqq i { font-style: normal; font-size: 11px; color: var(--ink3) }
+.cvopts { display: flex; flex-wrap: wrap; gap: 6px }
+.cvopt {
+  border: 1px solid var(--line); border-radius: 999px; padding: 4px 11px;
+  font-size: 12.5px; background: var(--bg2); color: var(--ink2);
+}
+
+/* 다음에 만들 경험의 단계 */
+.cvsteps { margin-top: 14px; border-top: 1px solid var(--line) }
+.cvstep {
+  display: grid; grid-template-columns: 22px 1fr; gap: 10px;
+  padding: 8px 0; border-bottom: 1px solid var(--line);
+  font-size: 13.5px; line-height: 1.6;
+}
+.cvstep > span {
+  font-size: 11px; font-weight: 700; color: var(--accent);
+  border: 1px solid var(--line); border-radius: 999px; text-align: center;
+  line-height: 18px; height: 18px;
+}
+
+@media (min-width: 900px) {
+  .cvgrid { grid-template-columns: 1fr 1fr }
+}
+@media print {
+  .cvcard, .cvask, .cvstep { break-inside: avoid }
+  .cvask .evnav { display: none }
+}

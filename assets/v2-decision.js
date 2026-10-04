@@ -56,23 +56,29 @@ window.PCAV2Decision = (function () {
    * 막대 하나로 줄이지 않는 것이 요점이다. 다섯 칸이 각각 다른 것을 재고,
    * 마지막 칸이 그래서 지금 무엇을 할 자리인지를 적는다.
    */
-  /* '지원 준비 단계' 를 증거 사다리로 한 번 더 막는다.
-     준비도 신호(수강·도구)는 그 일을 **해봤을 법하다**까지만 말해 주고,
-     서류와 면접에서 꺼낼 물건이 있다는 말은 아니다. 산출물(E2)에 닿지
-     않으면 지원 준비로 올리지 않는다. **올리는 쪽으로만 막는다**: 다른
-     판정은 건드리지 않는다. 그리고 **경험을 안 적으신 분은 깎지 않는다**:
-     사다리가 없는 것과 낮은 것은 다르다. */
-  function gate(status, ladderLevel, hasLadder) {
+  /* 문항이 낸 판정을 **역할별 증거 범위**로 한 번 더 거른다.
+   *
+   * 관심과 경험이 높다고 해서 지원서에서 꺼낼 물건이 있는 것은 아니다.
+   * 그 말을 하려면 그 직무가 보고 싶어 하는 영역이 실제로 확인돼 있어야
+   * 하고, 그것은 적어 주신 경험에서만 나온다. 문항은 말해 주지 못한다.
+   *
+   * **올리는 쪽으로만 거른다.** 내리는 판정은 건드리지 않는다. 그리고
+   * **경험을 안 적으신 분은 깎지 않는다**: 범위가 없는 것과 좁은 것은
+   * 다르다. 다만 경험을 적으셨는데 핵심이 하나도 안 걸리면 비교 단계로
+   * 두지 않는다. 비교는 꺼낼 것이 있을 때 쓸모 있는 말이다. */
+  function gate(status, cov, ready, hasEvidence) {
     var R = rules(), G = R && R.apply_gate;
-    if (!G || status !== G.status) return status;
-    var need = ORDER.indexOf(G.requires_evidence_ladder);
-    if (!hasLadder) return G.fallback_without_ladder;
-    var got = ORDER.indexOf(ladderLevel || '');
-    return got >= need ? status : G.fallback_with_ladder;
+    if (!G || !cov || status !== G.from_status) return status;
+    if (!hasEvidence) return status;
+    if (ready && ready.ok) return G.to_if_application_ready;
+    var core = cov.summary.core;
+    if (core.confirmed === 0) return G.to_if_core_thin;
+    var left = core.partial + core.not_yet;
+    if (left > 0 && left <= (G.one_gap_left_max || 1)) return G.to_if_one_gap_left;
+    return status;
   }
-  var ORDER = ['E0', 'E1', 'E2', 'E3', 'E4', 'E5'];
 
-  function table(v2, families, readiness, ladder) {
+  function table(v2, families, readiness, coverage, ready, hasEvidence) {
     var NAME = {};
     var fam = (window.PCA_FAMILIES && window.PCA_FAMILIES.ME);
     if (fam) fam.families.forEach(function (f) { NAME[f.career_family_id] = f.name_ko; });
@@ -87,8 +93,11 @@ window.PCAV2Decision = (function () {
         evidence_readiness: (readiness && readiness[id]) || null,
         work_mode: window.PCAV2.modeCloseness(v2.work_mode, id)
       };
-      row.evidence_ladder = (ladder && ladder[id]) || null;
-      row.decision_status = gate(statusOf(row), row.evidence_ladder, !!ladder);
+      var cov = (coverage && coverage[id]) || null;
+      row.evidence_coverage = cov ? cov.summary : null;
+      row.evidence_depth = cov ? depthOf(cov) : null;
+      row.decision_status = gate(statusOf(row), cov,
+        (ready && ready[id]) || null, !!hasEvidence);
       return row;
     });
     /* 관심을 먼저 보되 **순위를 매기지 않는다.** 표는 비교하는 자리이고,
@@ -99,5 +108,18 @@ window.PCAV2Decision = (function () {
     return rows;
   }
 
-  return { statusOf: statusOf, label: label, line: line, modeLabel: modeLabel, table: table };
+  /* 그 직무에 걸린 경험 가운데 가장 깊이 간 칸. **범위와 합치지 않는다** */
+  function depthOf(cov) {
+    var ORDER = ['E0', 'E1', 'E2', 'E3', 'E4', 'E5'], best = -1;
+    cov.coverage.forEach(function (r) {
+      var i = ORDER.indexOf(r.depth || '');
+      if (i > best) best = i;
+    });
+    return best >= 0 ? ORDER[best] : null;
+  }
+
+  return {
+    statusOf: statusOf, label: label, line: line, modeLabel: modeLabel,
+    table: table, depthOf: depthOf
+  };
 })();
