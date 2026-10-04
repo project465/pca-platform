@@ -18,6 +18,26 @@
 
 .report { color: var(--rp-ink); }
 
+/* ── 결과지 안에서 옮겨 가기 ───────────────────────────────────────
+   머리에 붙는 띠 하나. 규격이 요구한 자리다. 쪽이 열 개를 넘으면 위아래로
+   긁어 찾게 되는데, 그때 찾는 것은 늘 '요약' 과 '다음 행동' 둘이다.
+   **인쇄에서는 사라진다**: 종이에서 누를 수 없는 것을 남기지 않는다. */
+.rpnav {
+  position: sticky; top: 0; z-index: 5;
+  display: flex; flex-wrap: wrap; gap: 2px;
+  margin: 0 0 4px; padding: 10px 0;
+  background: #fff; border-bottom: 1px solid var(--rp-line);
+}
+.rpnav a {
+  font-size: 12.5px; font-weight: 700; color: var(--rp-ink2);
+  text-decoration: none; padding: 6px 11px; border-radius: 999px;
+  border: 1px solid transparent;
+}
+.rpnav a:hover, .rpnav a:focus-visible {
+  color: var(--rp-accent); border-color: var(--rp-line); background: var(--rp-bg);
+}
+.rpnav .rpnav-a { margin-left: auto; color: var(--rp-ink3); }
+
 /* ── 표지 ─────────────────────────────────────────────────────────── */
 .rcover {
   padding: 56px 0 40px;
@@ -165,6 +185,14 @@
   color: var(--rp-accent); text-transform: uppercase;
 }
 .apsec { margin-top: 32px; }
+/* 상세 분석을 접는 단추. 화면에서만 뜻이 있다 */
+.apfold {
+  margin-top: 16px; font: inherit; font-size: 13.5px; font-weight: 700;
+  color: var(--rp-accent); background: #fff; cursor: pointer;
+  border: 1px solid var(--rp-line); border-radius: 999px; padding: 9px 18px;
+}
+.apfold:hover { background: var(--rp-bg); }
+.apbody.is-folded { display: none; }
 .apsec h3 {
   margin: 0 0 10px; font-size: 17px;
   padding-bottom: 8px; border-bottom: 1px solid var(--rp-line);
@@ -182,18 +210,21 @@
    다시 짠다.
    **브라우저가 붙이는 주소와 날짜는 CSS 로 못 끈다.** 인쇄 대화상자의
    '머리글과 바닥글' 설정이라, 화면에서 그 한 줄을 안내한다. */
+/* 규격이 못 박은 값이다: A4 세로 · 여백 16~20mm. 좌우를 14mm 로 두면
+   글 폭이 182mm 가 되어 한 줄이 길어지고, 규격 아래로 떨어진다 */
 @page {
   size: A4;
-  margin: 16mm 14mm 18mm;
+  margin: 18mm 16mm;
 }
 
 @media print {
   html, body { background: #fff; }
 
-  /* **A4 글 폭은 688px 다.** 화면 반응형 분기점(860·900px)보다 좁아서,
+  /* **A4 글 폭은 673px 다.** 화면 반응형 분기점(860·900px)보다 좁아서,
      아무 것도 안 하면 인쇄에서 격자가 전부 한 줄로 쌓인다. 그러면 쪽수가
      세 배로 부풀고 규격이 깨진다. 인쇄는 폭이 고정이니 **여기서 칸 수를
-     직접 못 박는다**: 좁은 화면 규칙이 끼어들 자리가 없다 */
+     직접 못 박는다**: 좁은 화면 규칙이 끼어들 자리가 없다.
+     (여백을 규격대로 16mm 로 올린 뒤 글 폭은 673px 다) */
   .dstop { grid-template-columns: repeat(3, 1fr); gap: 3mm; }
   .dsgrid { grid-template-columns: 1.4fr 1fr; gap: 3mm; margin-top: 4mm; }
   .rdgrid { grid-template-columns: 1fr 1fr; gap: 4mm; margin-top: 4mm; }
@@ -236,6 +267,9 @@
     grid-template-columns: 20mm 11mm minmax(0, 1fr); gap: 2mm; }
   .elby { font-size: 7.5pt; line-height: 1.4; }
   .toolrow { padding: 1.2mm 0; font-size: 8.5pt; grid-template-columns: 28mm 1fr; }
+  .utrow { padding: 1.2mm 0; font-size: 8.5pt; grid-template-columns: 26mm 1fr; gap: 2mm; }
+  .utrow .qlist li { font-size: 8.5pt; }
+  .report .grid.three { grid-template-columns: repeat(3, 1fr); gap: 3mm; }
   .tooltb { margin-top: 2mm; }
   .v2gap { font-size: 8.5pt; }
   .v2gap th, .v2gap td { padding: 1.4mm 1.5mm; line-height: 1.45; }
@@ -253,6 +287,12 @@
   .rdact { margin-top: 3mm; padding: 2.5mm 3mm; font-size: 9pt; line-height: 1.55; }
   .rdhead { padding-bottom: 2.5mm; }
   .report .grid.two { grid-template-columns: 1fr 1fr; }
+  /* **카드가 하나뿐인 격자는 반 폭으로 두지 않는다.** 두 칸짜리 격자에
+     카드 하나만 들어가면 글이 절반 폭에서 꺾여 줄 수가 배로 늘고, 옆은
+     그냥 빈다. 종이에서는 그만큼이 한 장을 더 먹는다 */
+  .report .grid:has(> :only-child),
+  .report .cvgrid:has(> :only-child),
+  .report .vpgrid:has(> :only-child) { grid-template-columns: 1fr; }
 
   /* 카드 안 여백도 종이 기준으로 다시 잡는다. 화면에서 숨 쉬게 둔 여백을
      그대로 찍으면 한 쪽에 한 카드만 들어간다 */
@@ -271,9 +311,15 @@
   .dsgapname { font-size: 12pt; }
   .rdhead h3 { font-size: 14pt; }
   .rcover h1 { letter-spacing: -.02em; }
-  .top, .evnav, .rp-act, #btnEvidence, #btnEvidenceFix, .cvask .evnav { display: none !important; }
+  .top, .evnav, .rp-act, #btnEvidence, #btnEvidenceFix, .cvask .evnav,
+  .rpnav, .apfold { display: none !important; }
+  /* 접어 둔 부록은 종이에서 **반드시 펼친다.** 인쇄본에서 접힌 자리는
+     없어진 자리와 같다 */
+  .apbody.is-folded { display: block !important; }
 
-  .report { font-size: 10.5pt; line-height: 1.6; }
+  /* 규격: 본문 11~12pt. 10.5pt 로 두면 쪽수는 줄지만 종이에서 읽기가
+     나빠진다. 11pt 로 올리고, 대신 쪽마다 들어가는 양을 줄였다 */
+  .report { font-size: 11pt; line-height: 1.55; }
 
   /* 쪽마다 끊는다. 한 쪽에 메시지 하나 */
   .rpage { break-after: page; border-bottom: 0; padding: 0 0 3mm; }
@@ -327,6 +373,22 @@
    종이에는 단추가 없으니 이 안내가 그 자리를 받는다 */
 .rponly { display: none; }
 @media print { .rponly { display: block; } }
+
+/* 번역이 덜 된 경험 카드의 세 칸. 이름표와 내용을 나란히 둔다 */
+.utrow {
+  display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 10px;
+  padding: 7px 0; border-top: 1px solid var(--rp-line); font-size: 13px;
+  line-height: 1.6;
+}
+.utrow.utfirst { border-top: 0; padding-top: 0 }
+.utrow.utfirst > span:last-child { font-weight: 700; color: var(--rp-ink) }
+.utrow > span:first-child { color: var(--rp-ink3); font-size: 12px }
+.utrow .qlist { margin: 0 }
+.utrow .qlist li { font-size: 13px }
+
+/* 셋을 나란히. 좁은 화면에서는 쌓는다 */
+.report .grid.three { grid-template-columns: 1fr }
+@media (min-width: 720px) { .report .grid.three { grid-template-columns: repeat(3, 1fr) } }
 
 /* 한 쪽 안에서 묶음이 둘일 때. **BASIC 처럼 쪽수가 묶인 등급에서만**
    쓴다: 증거와 공백을 한 쪽에 올려야 네댓 쪽을 지킨다. 선 하나로

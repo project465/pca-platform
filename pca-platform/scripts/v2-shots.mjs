@@ -188,6 +188,15 @@ async function run({ tier, stage, profile, evidence, tag, steps }) {
     const f = join(OUT, `${tag}_09_직무${i + 1}.png`);
     await el.screenshot({ path: f }).then(() => shots.push(f)).catch(() => {});
   }
+  /* 규격 §46 은 부록 캡처도 요구한다. **펼친 뒤에 찍는다**: 화면에서는
+     접혀 있어서 그냥 찍으면 단추 하나만 나온다 */
+  const fold = await p.$("#apFold");
+  if (fold) { await fold.click(); await p.waitForTimeout(150); }
+  const apx = await p.$("#v2ResultBody .appendix");
+  if (apx) {
+    const f = join(OUT, `${tag}_10_부록.png`);
+    await apx.screenshot({ path: f }).then(() => shots.push(f)).catch(() => {});
+  }
   if (miss.length) console.log(`  (${tag} 에 없는 쪽: ${miss.join(" · ")})`);
   await c.close();
 }

@@ -211,6 +211,17 @@
     [el('v2Evi'), el('btnEvidence'), el('btnEvidenceFix')].forEach(function (b) {
       if (b) b.addEventListener('click', function () { openEvidence(false); });
     });
+    /* 상세 분석을 접었다 펼친다. **접어 두는 것이 기본이다**: 부록은
+       되짚을 때만 보는 자리라, 처음부터 펼쳐 두면 본문이 길어 보인다 */
+    var af = el('apFold'), ab = el('apBody');
+    if (af && ab) {
+      af.addEventListener('click', function () {
+        var folded = ab.classList.toggle('is-folded');
+        af.setAttribute('aria-expanded', String(!folded));
+        af.textContent = folded ? '상세 분석 펼치기' : '상세 분석 접기';
+        if (!folded) ab.scrollIntoView({ block: 'start' });
+      });
+    }
     screen('s2-result');
   }
 

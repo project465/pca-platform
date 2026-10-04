@@ -72,11 +72,11 @@ mkdirSync(OUT, { recursive: true });
 
 /* 머리말과 꼬리말을 우리가 그린다. 주소도 브라우저 날짜도 안 들어간다 */
 const HEADER = `<div style="width:100%;font-size:7pt;color:#76859b;
-  font-family:'Pretendard',sans-serif;padding:0 14mm;
+  font-family:'Pretendard',sans-serif;padding:0 16mm;
   display:flex;justify-content:space-between;letter-spacing:.06em">
   <span>CAREERMATRI</span><span>진로 결정 자료</span></div>`;
 const FOOTER = `<div style="width:100%;font-size:7pt;color:#76859b;
-  font-family:'Pretendard',sans-serif;padding:0 14mm;
+  font-family:'Pretendard',sans-serif;padding:0 16mm;
   display:flex;justify-content:space-between">
   <span>합격 가능성이나 실력을 잰 값이 아닙니다</span>
   <span><span class="pageNumber"></span> / <span class="totalPages"></span></span></div>`;
@@ -126,14 +126,14 @@ async function run(tier, stage, name) {
   await p.pdf({
     path: file, format: "A4", printBackground: true,
     displayHeaderFooter: true, headerTemplate: HEADER, footerTemplate: FOOTER,
-    margin: { top: "18mm", bottom: "18mm", left: "14mm", right: "14mm" },
+    margin: { top: "18mm", bottom: "18mm", left: "16mm", right: "16mm" },
   });
   const pages = await p.evaluate(() => document.querySelectorAll(".rpage").length);
   const apx = await p.evaluate(() => document.querySelectorAll(".apsec").length);
   /* **어느 묶음이 종이를 몇 장 먹는지 센다.** 묶음 수만 보면 규격을 지킨
      것처럼 보이는데 실제로 찍히면 한 묶음이 세 장을 먹는 일이 있다.
      A4 한 장의 글 들어가는 높이는 297-36mm, 폭은 210-28mm 다 */
-  await p.setViewportSize({ width: 688, height: 986 });
+  await p.setViewportSize({ width: 673, height: 986 });
   await p.waitForTimeout(250);
   const fit = await p.evaluate((DEEP) => {
     const H = 986;

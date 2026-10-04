@@ -117,6 +117,16 @@ const R = await p.evaluate(() => {
     action: document.querySelector("#v2ResultBody .dsact p")?.textContent.trim() ?? "",
     appendix: [...document.querySelectorAll("#v2ResultBody .apsec h3")].map((x) => x.textContent.trim()),
     warnings: window.PCA_V2_INPUT_WARNINGS ?? [],
+    /* 규격 §30: 머리에 붙는 띠와 접히는 상세 분석 */
+    nav: [...document.querySelectorAll("#v2ResultBody .rpnav a")].map((x) => x.textContent.trim()),
+    navTargets: [...document.querySelectorAll("#v2ResultBody .rpnav a")]
+      .map((x) => !!document.querySelector(x.getAttribute("href"))),
+    folded: !!document.querySelector("#v2ResultBody .apbody.is-folded"),
+    /* 규격 §37: 첫 쪽을 만드는 객체 하나 */
+    summary: window.PCA_V2_DECISION_SUMMARY ?? null,
+    /* 규격 §10: 번역이 덜 된 경험 카드의 세 칸 */
+    utLabels: [...document.querySelectorAll("#v2ResultBody .utrow > span:first-child")]
+      .map((x) => x.textContent.trim()),
   };
 });
 
@@ -167,6 +177,35 @@ ok("뜻 없는 입력을 안쪽 경고로 남긴다", R.warnings.length > 0,
   `${R.warnings.length}건`);
 ok("뜻 없는 입력의 의도를 지어내지 않는다",
   !/추정|아마|로 보입니다/.test(R.all));
+
+/* ── 규격 §30: 웹에서 옮겨 다니기 ───────────────────────────────── */
+ok("결과지 안에서 옮겨 갈 띠가 있다", R.nav.length >= 5, R.nav.join(" · "));
+ok("띠가 가리키는 쪽이 실제로 있다", R.navTargets.every(Boolean),
+  `${R.navTargets.filter(Boolean).length}/${R.navTargets.length}`);
+ok("띠에 요약과 다음 행동이 있다",
+  R.nav.includes("요약") && R.nav.includes("다음 행동"), R.nav.join(" · "));
+ok("상세 분석이 처음에는 접혀 있다", R.folded);
+
+/* ── 규격 §37: 첫 쪽을 만드는 객체 ──────────────────────────────── */
+{
+  const S = R.summary || {};
+  const keys = ["top_roles", "key_findings", "critical_gap", "next_action", "confidence_note"];
+  const miss = keys.filter((k) => !(k in S));
+  ok("첫 쪽이 객체 하나에서 나온다", miss.length === 0, miss.join(" ") || keys.join(" · "));
+  ok("그 객체의 직무 셋이 첫 쪽과 같다",
+    (S.top_roles || []).map((r) => r.name).join("|") === R.top3.join("|"),
+    (S.top_roles || []).map((r) => r.name).join(" · "));
+  ok("그 객체에 합산 점수가 없다",
+    !JSON.stringify(S).match(/"(score|total_score|fit)"/), "");
+}
+
+/* ── 규격 §10: 번역이 덜 된 경험의 세 칸 ────────────────────────── */
+if (R.utLabels.length) {
+  const want = ["지금 적어 주신 것", "지금 확인되는 것", "아직 확인되지 않음"];
+  ok("번역이 덜 된 경험이 세 칸으로 적힌다",
+    want.every((w) => R.utLabels.includes(w)),
+    R.utLabels.slice(0, 3).join(" / "));
+}
 
 /* ── 중복 ───────────────────────────────────────────────────────── */
 {
