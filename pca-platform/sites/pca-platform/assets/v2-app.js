@@ -200,7 +200,11 @@
       '<div class="rp-act"><div class="rp-act-t"><b>' + esc(S.tier) +
       ' 결과</b><span>이 기기에만 저장됩니다</span></div>' +
       '<button type="button" class="rp-act-b" id="v2Print">인쇄 · PDF로 저장</button>' +
-      '<button type="button" class="rp-act-b ghost" id="v2Evi">경험 고치기</button></div>' +
+      '<button type="button" class="rp-act-b ghost" id="v2Evi">경험 고치기</button>' +
+      /* 주소와 날짜는 브라우저가 붙이는 것이라 CSS 로 못 끈다. 인쇄
+         대화상자의 설정이므로 그 한 줄을 여기서 안내한다 */
+      '<p class="rp-act-n">인쇄 대화상자에서 \'머리글과 바닥글\' 을 꺼 주시면 ' +
+      '주소와 날짜가 빠집니다.</p></div>' +
       window.PCAV2Report.render(J);
     var bp = el('v2Print');
     if (bp) bp.addEventListener('click', function () { window.print(); });

@@ -197,7 +197,7 @@ ALTER TABLE attempts ADD COLUMN IF NOT EXISTS cohort_id BIGINT REFERENCES cohort
 --  7. 사이트 설정
 --
 --  **화면 언어 · 사이트 지역 · 목표 국가는 서로 다른 값이다.**
---  careermetri.co.kr 을 한국어로 쓰면서 미국 시장을 보는 사람이 가장 흔한
+--  careermatri.co.kr 을 한국어로 쓰면서 미국 시장을 보는 사람이 가장 흔한
 --  경우다. 셋을 하나로 묶으면 그 사람에게 한국 공고를 내보낸다.
 -- ============================================================
 
@@ -213,17 +213,16 @@ CREATE TABLE IF NOT EXISTS site_configs (
   note               TEXT
 );
 
--- **도메인 철자는 저장소가 쓰던 것을 따른다.** 받은 규격은
--- careermatri 로 적혀 있는데 이 저장소와 docs/metri/20_domains.md 는
--- careermetri 다. 한 글자 차이라 사는 순간 되돌리기 어렵다. 어느 쪽이
--- 맞는지 확인되면 **이 두 줄만 고치면 된다**: 화면과 코드 어디에도
--- 도메인을 적어 두지 않았다.
+-- **도메인이 사는 자리는 여기 한 곳이다.** 화면에도 코드에도 적어 두지
+-- 않았다. 2026-10-04 에 careermetri → careermatri 로 바로잡았는데, 그때
+-- 고친 것이 이 두 줄과 검사 한 줄뿐이었다. 적어 두는 자리를 늘리지 않는
+-- 값은 이렇게 싸게 고쳐진다.
 INSERT INTO site_configs
   (site_id, domain, default_language, default_currency, payment_market,
    site_region, offered_languages, active, note) VALUES
-  ('global', 'careermetri.com',   'en', 'USD', 'GLOBAL', NULL, '{en}', true,
+  ('global', 'careermatri.com',   'en', 'USD', 'GLOBAL', NULL, '{en}', true,
    '영문 개인 이용자. 결제 수단은 아직 고르지 않았다'),
-  ('kr',     'careermetri.co.kr', 'ko', 'KRW', 'KR',     'KR', '{ko}', true,
+  ('kr',     'careermatri.co.kr', 'ko', 'KRW', 'KR',     'KR', '{ko}', true,
    '한국 개인과 기관')
 ON CONFLICT (site_id) DO NOTHING;
 

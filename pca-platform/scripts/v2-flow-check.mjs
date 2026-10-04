@@ -164,8 +164,11 @@ async function runV2(browser, { tier, stage, profile, evidence }) {
     J: window.PCA_V2_RESULT_JSON,
     v1key: localStorage.getItem("pca_session_v1"),
     v2key: !!localStorage.getItem("pca_v2_session_v1"),
-    heads: [...document.querySelectorAll("#v2ResultBody .section h2.sect")]
-      .map((x) => x.textContent.replace(/^\d+\.\s*/, "").trim()),
+    /* 새 결과지는 모듈이 아니라 **쪽**으로 센다. 한 쪽에 메시지 하나 */
+    heads: [...document.querySelectorAll("#v2ResultBody .rpage .rptitle")]
+      .map((x) => x.textContent.trim()),
+    appendix: [...document.querySelectorAll("#v2ResultBody .apsec h3")]
+      .map((x) => x.textContent.trim()),
     rows: [...document.querySelectorAll("#v2ResultBody .v2tw tbody tr")].length,
     text: document.getElementById("v2ResultBody")?.innerText || "",
   }));
@@ -283,22 +286,21 @@ ok("7 경험을 넣으면 증거 준비도가 생긴다",
     first.academic_inputs.some((a) => a.confidence !== "unknown"),
     first ? first.academic_inputs.map((a) => a.label + ":" + a.confidence).slice(0, 3).join(" ") : "");
   const four = {
-    "전공지식의 실무 전환": /전공지식이 실제 업무/.test(r.text),
-    "증거 사다리": /어디까지 증거가 되었나/.test(r.text),
-    "같은 전공 다른 조직": /조직에 따라 성과가 달라집니다/.test(r.text),
+    "전공지식의 실무 전환": /배운 것이 실제 업무에서/.test(r.text),
+    "지금 내 증거": /지금 내가 가진 증거/.test(r.text),
+    "같은 전공 다른 조직": /같은 전공도 조직에 따라/.test(r.text),
   };
   ok("결과지에 시그니처 화면이 보인다",
-    four["전공지식의 실무 전환"] && four["증거 사다리"] && four["같은 전공 다른 조직"],
+    Object.values(four).every(Boolean),
     Object.keys(four).filter((k) => !four[k]).join(" · ") || "셋 다");
   // 네 번째(번역 안 된 경험)는 번역이 덜 된 경험이 있을 때만 뜬다.
   // 다 채우신 분에게 빈 절을 띄우면 없는 문제를 만들어 보이게 된다.
   const thin = await runV2(browser, {
     tier: "PRO", stage: "phd", profile: "researcher", evidence: EVIDENCE_NAME_ONLY,
   });
-  ok("번역이 덜 된 경험이 있을 때만 그 절이 뜬다",
-    /성과 언어로 번역되지 않은 경험/.test(thin.text) &&
-    !/성과 언어로 번역되지 않은 경험/.test(r.text),
-    "다 채운 분에게는 안 뜬다");
+  ok("번역이 덜 된 경험이 있으면 그 자리가 뜬다",
+    /성과 언어로 번역되지 않은 경험/.test(thin.text),
+    "도구 이름만 적은 분에게 뜬다");
 }
 /* ── 역할별 증거 범위 ────────────────────────────────────────────── */
 {
@@ -399,15 +401,23 @@ ok("7 경험을 넣으면 증거 준비도가 생긴다",
   ok("되물음이 보기로 나온다",
     /고르기만 하시면 됩니다/.test(thin.text) &&
     /비교하지 않았습니다|남은 것이 없습니다|확인하지 못했습니다/.test(thin.text));
+  ok("되물음이 아직 확인되지 않은 자리에 붙는다",
+    thin.heads.some((h) => /아직 확인되지 않은 것/.test(h)), thin.heads.join(" / "));
   ok("긴 주관식을 요구하지 않는다",
     !/자유롭게 서술|상세히 적어|구체적으로 서술/.test(thin.text));
 }
 /* ── 상품마다 깊이가 다르다 ──────────────────────────────────────── */
 {
   const b = got["1 학사 BASIC"], s = got["3 석사 STANDARD"], p = got["2 학사 PRO"];
-  ok("BASIC < STANDARD < PRO 로 절이 는다",
+  ok("BASIC < STANDARD < PRO 로 쪽이 는다",
     b.heads.length < s.heads.length && s.heads.length < p.heads.length,
-    `${b.heads.length} → ${s.heads.length} → ${p.heads.length}`);
+    `${b.heads.length} → ${s.heads.length} → ${p.heads.length}쪽`);
+  /* 본문이 다시 부풀지 않게 위도 막는다. 스무 쪽짜리로 돌아가면 실패다 */
+  ok("본문이 열한 쪽을 넘지 않는다", p.heads.length <= 11, `PRO ${p.heads.length}쪽`);
+  ok("BASIC 이 네댓 쪽이다", b.heads.length >= 4 && b.heads.length <= 6,
+    `${b.heads.length}쪽`);
+  ok("부록이 본문 밖에 따로 있다", p.appendix.length >= 5,
+    p.appendix.join(" / "));
 }
 /* ── 단계마다 문장이 갈린다 ──────────────────────────────────────── */
 {

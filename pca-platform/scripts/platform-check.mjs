@@ -216,6 +216,15 @@ const g = sites.find((s) => s.site_id === "global"), k = sites.find((s) => s.sit
 ok("S1 글로벌 사이트의 기본 언어는 영어다", g && g.default_language === "en", g && g.domain);
 ok("S2 한국 사이트의 기본 언어는 한국어다", k && k.default_language === "ko" && k.default_currency === "KRW",
   k && k.domain);
+/* 철자가 한 글자 틀리면 남의 주소로 간다. 눈으로 보지 말고 세어서 막는다 */
+ok("S1-b 도메인 철자", g.domain === "careermatri.com" && k.domain === "careermatri.co.kr",
+  `${g.domain} · ${k.domain}`);
+{
+  const files = ["src/lib/sites.ts", "src/lib/rbac.ts", "src/lib/licenses.ts",
+    "src/lib/insights.ts", "src/app/admin/sites/page.tsx"];
+  const bad = files.filter((f) => /careermatri|careermetri/.test(readFileSync(f, "utf8")));
+  ok("도메인을 코드에 적어 두지 않는다", bad.length === 0, bad.join(" "));
+}
 await q(`UPDATE attempts SET id = id WHERE false`);
 ok("S3 목표 국가가 도메인과 따로 담긴다",
   (await q(`SELECT count(*)::int n FROM information_schema.columns

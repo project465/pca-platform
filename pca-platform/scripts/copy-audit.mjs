@@ -68,6 +68,8 @@ const files = process.argv.slice(2).length
      "sites/pca-platform/assets/v2-report.js",
      "sites/pca-platform/assets/v2-value-report.js",
      "sites/pca-platform/assets/v2-coverage-report.js",
+     // 응시자가 적은 글을 거르는 자리. 여기 문구가 결과지에 그대로 나간다
+     "sites/pca-platform/assets/report-sanitize.js",
      // 플랫폼 화면 전부. 관리자·담당자만 넣었다가 **학생이 보는 화면이
      // 밖에 남아 있는 것**을 알았다. 결과지 문구는 화면 파일이 아니라
      // 사전(`locale.ts`)에 있어서, 화면만 훑는 규칙으로는 영원히 안 걸린다
@@ -107,6 +109,7 @@ const files = process.argv.slice(2).length
        "sites/pca-platform/assets/v2-value-report.js",
        "sites/pca-platform/assets/v2-coverage-report.js",
        "sites/pca-platform/assets/coverage-engine.js",
+       "sites/pca-platform/assets/report-sanitize.js",
        ...readdirSync("src/lib", { recursive: true })
          .filter((f) => String(f).endsWith(".ts"))
          .map((f) => `src/lib/${f}`),

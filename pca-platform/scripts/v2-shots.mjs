@@ -144,30 +144,51 @@ async function run({ tier, stage, profile, evidence, tag, steps }) {
   await p.waitForTimeout(200);
   await shot(p, tag + "_첫화면");
   await shot(p, tag + "_전체", true);
-  // 시그니처 화면은 따로 찍는다. 전체 캡처에서는 너무 작다
-  for (const [key, name] of [
-    ["전공지식이 실제 업무", "전공지식의_실무전환"],
-    ["어디까지 증거가 되었나", "증거사다리"],
-    ["조직에 따라 성과가 달라집니다", "같은전공_다른조직"],
-    ["성과 언어로 번역되지 않은 경험", "번역안된경험"],
-    ["쓰신 도구가 무엇을 받쳐", "도구증거"],
-    ["다음에 만들 경험", "다음에만들경험"],
-    ["이 직무에서 지금 확인되는 근거", "증거범위"],
-    ["비어 있는 자리를 고르기로", "고르기되물음"],
-    ["직무별 증거 범위 전체", "증거범위_전체"],
-    ["다음에 할 것", "계획"],
-  ]) {
+  /* 쪽마다 따로 찍는다. **이름이 새 구조의 쪽 제목과 묶여 있다**: 결과지를
+     다시 짜면서 제목이 바뀌면 여기도 같이 바꿔야 빈 캡처가 나오지 않는다.
+     찍히지 않은 이름은 아래에서 세어 알려 준다 */
+  const want = [
+    ["지금 먼저 보실 세 가지", "01_결정요약"],
+    ["먼저 볼 직무를 견주면", "02_직무견주기"],
+    ["배운 것이 실제 업무에서", "03_전공지식의_실무전환"],
+    ["지금 내가 가진 증거", "04_증거사다리"],
+    ["같은 전공도 조직에 따라", "05_같은전공_다른조직"],
+    ["아직 확인되지 않은 것", "06_아직확인되지않은것"],
+    ["다음에 만들 경험 하나", "07_다음에만들경험"],
+    ["언제 무엇을 할 것인가", "08_계획"],
+  ];
+  const miss = [];
+  for (const [key, name] of want) {
     const box = await p.evaluateHandle((k) =>
-      [...document.querySelectorAll("#v2ResultBody .section")]
-        .find((s) => (s.querySelector("h2.sect")?.textContent || "").includes(k)) || null, key);
+      [...document.querySelectorAll("#v2ResultBody .rpage")]
+        .find((s) => (s.querySelector(".rptitle")?.textContent || "").includes(k)) || null, key);
     const el = box.asElement();
     if (el) {
       await el.scrollIntoViewIfNeeded();
       await p.waitForTimeout(80);
       const f = join(OUT, tag + "_" + name + ".png");
       await el.screenshot({ path: f }).then(() => shots.push(f)).catch(() => {});
+    } else {
+      miss.push(key);
     }
   }
+  /* 직무 쪽은 제목이 직무 이름이라 위 목록으로 못 집는다. 따로 센다 */
+  const roles = await p.evaluate(() =>
+    [...document.querySelectorAll("#v2ResultBody .rpage")]
+      .filter((s) => /WHY · EVIDENCE/.test(s.querySelector(".eyebrow")?.textContent || ""))
+      .map((s) => s.querySelector(".rptitle")?.textContent || ""));
+  for (let i = 0; i < roles.length; i++) {
+    const box = await p.evaluateHandle((n) =>
+      [...document.querySelectorAll("#v2ResultBody .rpage")]
+        .filter((s) => /WHY · EVIDENCE/.test(s.querySelector(".eyebrow")?.textContent || ""))[n] || null, i);
+    const el = box.asElement();
+    if (!el) continue;
+    await el.scrollIntoViewIfNeeded();
+    await p.waitForTimeout(80);
+    const f = join(OUT, `${tag}_09_직무${i + 1}.png`);
+    await el.screenshot({ path: f }).then(() => shots.push(f)).catch(() => {});
+  }
+  if (miss.length) console.log(`  (${tag} 에 없는 쪽: ${miss.join(" · ")})`);
   await c.close();
 }
 
