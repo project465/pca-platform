@@ -133,14 +133,16 @@ async function flow({ market, tier, stage, prefix, langShots }) {
   at(page, "/checkout", `${prefix} 가입 뒤 결제로 돌아옴`);
   await shot(page, `${prefix}03_checkout`);
   /* 결제 단추가 두 번 선다: 주문을 만드는 것과 가짜 결제창의 '결제하기'.
-     누르는 순간 폼이 바뀌어 사라지므로 떼어진 것을 실패로 세지 않는다 */
-  for (let i = 0; i < 4; i++) {
-    if (new URL(page.url()).pathname.startsWith("/checkout/complete")) break;
-    const b = page.locator('button[type="submit"]').first();
-    if (!(await b.count())) break;
-    await b.click({ timeout: 15000 }).catch(() => {});
-    await page.waitForTimeout(900);
-    await page.waitForLoadState("networkidle").catch(() => {});
+     **둘을 같은 고리로 돌리지 않는다**: 첫 번째가 끝나기 전에 두 번째를
+     세면 아직 안 뜬 폼을 눌렀다고 기록하게 된다 */
+  await page.locator('button[type="submit"]').first().click({ timeout: 15000 })
+    .catch(() => {});
+  const pay = page.locator('.mockpay button[type="submit"]');
+  await pay.waitFor({ state: "visible", timeout: 40000 })
+    .catch(() => problems.push(`${prefix}: 결제창이 뜨지 않았다`));
+  if (await pay.count()) {
+    await pay.first().click({ timeout: 15000 }).catch(() => {});
+    await waitPath(page, "/checkout/complete", 60000);
   }
 
   /* 4. 결제 완료 → 검사 시작 */
@@ -235,6 +237,20 @@ async function flow({ market, tier, stage, prefix, langShots }) {
   await page.waitForSelector('a[href$="/report/pdf"]', { timeout: 120000 })
     .catch(() => problems.push(`${prefix}: 결과지가 만들어지지 않았다`));
   await page.waitForTimeout(2500);
+  /* **창이 섰다고 그려진 것은 아니다.** 결과지를 그리는 창은 제 안에서
+     오류를 잡아 한 줄짜리 안내로 바꾸는데, 바깥에서 보면 쪽이 멀쩡히
+     선 것처럼 보인다. 쪽 수를 세어야 그린 것이 확인된다 */
+  const frame = page.frames().find((f) => f.url().includes("report-host"));
+  const drawn = frame ? await frame.evaluate(() =>
+    ({ pages: document.querySelectorAll(".rpage").length,
+       wait: document.querySelector(".rpwait")?.textContent?.trim() ?? "" })
+  ).catch(() => null) : null;
+  if (!drawn || drawn.pages < 4) {
+    problems.push(`${prefix}: 결과지가 그려지지 않았다 ` +
+      `(쪽 ${drawn?.pages ?? "?"}${drawn?.wait ? ` · ${drawn.wait}` : ""})`);
+  } else {
+    log.push(`${`${prefix}결과지`.padEnd(46)} ${drawn.pages}쪽`);
+  }
   await shot(page, `${prefix}11_report`);
   await shot(page, `${prefix}11_report`, "tablet");
 

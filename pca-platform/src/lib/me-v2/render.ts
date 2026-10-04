@@ -196,7 +196,14 @@ async function drawInBrowser(opts: {
   baseUrl: string;
 }): Promise<Drawn> {
   const { chromium } = await import("playwright");
-  const browser = await chromium.launch({ args: ["--no-sandbox"] });
+  /* **운영 이미지에 브라우저를 두 벌 넣지 않는다.** 알파인에는 패키지로
+     깔린 크로미움이 있고, 플레이라이트가 받아 오는 것은 거기서 돌지
+     않는다. 경로가 주어지면 깔린 것을 쓰고, 없으면 개발 기계의 것을 쓴다 */
+  const bin = process.env.CHROMIUM_PATH || undefined;
+  const browser = await chromium.launch({
+    args: ["--no-sandbox", "--disable-dev-shm-usage"],
+    ...(bin ? { executablePath: bin } : {}),
+  });
   try {
     const ctx = await browser.newContext({ viewport: { width: 1180, height: 1000 } });
     const page = await ctx.newPage();
