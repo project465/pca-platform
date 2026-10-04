@@ -221,7 +221,15 @@ async function flow({ market, tier, stage, prefix, langShots }) {
 
   /* 7. 경험 적기 */
   await page.goto(`${B}/assessment/${attempt}/evidence?flow=1`, { waitUntil: "networkidle" });
-  await page.waitForTimeout(700);
+  await page.waitForTimeout(1200);
+  /* **창이 섰다고 그려진 것은 아니다**(결과지 쪽과 같은 함정이다). 첫
+     걸음의 고르는 칸이 실제로 섰는지 센다 */
+  const evFrame = page.frames().find((f) => f.url().includes("evidence-host"));
+  const chips = evFrame
+    ? await evFrame.locator(".evchip, .evpick, button, label").count().catch(() => 0)
+    : 0;
+  if (chips < 5) problems.push(`${prefix}: 경험 입력 화면이 그려지지 않았다 (칸 ${chips})`);
+  else log.push(`${`${prefix}경험 화면`.padEnd(46)} 칸 ${chips}`);
   await shot(page, `${prefix}09_evidence`);
 
   /* 8. 결과지. 아직 안 만든 자리를 먼저 찍는다 */
