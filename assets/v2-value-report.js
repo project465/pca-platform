@@ -152,13 +152,20 @@ window.PCAV2ValueReport = (function () {
     var list = (J.untranslated_evidence || []).slice(0, n || 4);
     if (!list.length) return '';
     return '<div class="grid">' + list.map(function (ue) {
-      return '<div class="card contentcard"><div class="eyebrow">' +
-        (u(ue.title) || '(제목 없는 경험)') + '</div>' +
-        '<p class="note" style="margin-top:6px"><b>지금 확인되는 데까지</b> ' +
-        esc(ue.confirmed_up_to ? ue.confirmed_up_to.name : '아직 없습니다') + '</p>' +
-        '<p class="note" style="margin-top:6px"><b>더하시면 좋은 것</b></p>' +
+      /* 규격이 요구한 세 칸이다: 지금 적어 주신 것 / 지금 확인되는 것 /
+         아직 확인되지 않은 것. **'아직 확인되지 않음' 이라고 쓴다**:
+         '더하시면 좋은 것' 은 권유로 읽혀서, 무엇이 비어 있는지가 흐려진다 */
+      /* 제목을 두 번 적지 않는다. '지금 적어 주신 것' 칸이 곧 제목이라,
+         위에 머리글로 또 달면 같은 글자가 카드마다 두 번 나온다 */
+      return '<div class="card contentcard">' +
+        '<div class="utrow utfirst"><span>지금 적어 주신 것</span><span>' +
+        (u(ue.title) || '(제목 없는 경험)') + '</span></div>' +
+        '<div class="utrow"><span>지금 확인되는 것</span><span>' +
+        esc(ue.confirmed_up_to ? ue.confirmed_up_to.name : '아직 없습니다') +
+        '</span></div>' +
+        '<div class="utrow"><span>아직 확인되지 않음</span><span>' +
         '<ul class="qlist">' + (ue.follow_up || []).map(function (q) {
-          return '<li>' + esc(q) + '</li>'; }).join('') + '</ul></div>';
+          return '<li>' + esc(q) + '</li>'; }).join('') + '</ul></span></div></div>';
     }).join('') + '</div>' +
       '<p class="note" style="margin-top:10px">경험이 적다는 말이 아닙니다. ' +
       '겪으신 것 가운데 아직 적지 않으신 칸이 있다는 말입니다.</p>' +

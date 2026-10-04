@@ -41,8 +41,9 @@ window.PCAV2Report = (function () {
 
   /* ── 쪽 ─────────────────────────────────────────────────────────────
      한 쪽에 핵심 메시지 하나. 인쇄에서 쪽이 갈리는 자리가 여기다. */
-  function page(n, eyebrow, title, sub, body, cls) {
-    return '<section class="rpage' + (cls ? ' ' + cls : '') + '">' +
+  function page(n, eyebrow, title, sub, body, cls, nav) {
+    return '<section class="rpage' + (cls ? ' ' + cls : '') + '"' +
+      ' id="rp' + n + '"' + (nav ? ' data-nav="' + esc(nav) + '"' : '') + '>' +
       '<div class="rpnum">' + pad2(n) + '</div>' +
       (eyebrow ? '<div class="eyebrow">' + esc(eyebrow) + '</div>' : '') +
       '<h2 class="rptitle">' + esc(title) + '</h2>' +
@@ -121,44 +122,74 @@ window.PCAV2Report = (function () {
     return out.slice(0, 3);
   }
 
-  function decisionSummary(J) {
-    var rows = J.decision_table.slice(0, 3);
+  /**
+   * 첫 쪽을 만드는 **객체 하나**.
+   *
+   * 규격이 요구한 모양이다: `top_roles` · `key_findings` · `critical_gap` ·
+   * `next_action` · `confidence_note`. **웹과 PDF 가 같은 객체를 받는다.**
+   * 그리기 전에 이 객체를 먼저 만들어 두면, 첫 쪽에 무엇이 들어가는지가
+   * 그리는 코드를 읽지 않고도 보인다. 여기서 점수를 만들지 않는다.
+   */
+  function summary(J) {
     var g = biggestGap(J);
+    return {
+      top_roles: J.decision_table.slice(0, 3).map(function (r, i) {
+        return {
+          rank: i + 1,
+          career_family_id: r.career_family_id,
+          name: r.name,
+          interest: LV[r.interest && r.interest.level] || null,
+          exposure: LV[r.exposure && r.exposure.level] || null,
+          core_confirmed: r.evidence_coverage ? r.evidence_coverage.core.confirmed : null,
+          core_total: r.evidence_coverage ? r.evidence_coverage.core.total : null,
+          decision_status: r.decision_status,
+          decision_status_label: DEC.label(r.decision_status)
+        };
+      }),
+      key_findings: findings(J),
+      critical_gap: g ? { label: g.gap.label, family: g.family, why: g.gap.description } : null,
+      next_action: nextOneThing(J),
+      confidence_note: '여기 나오는 값은 합격 가능성이나 실력을 잰 값이 아닙니다. ' +
+        '지금 적어 주신 응답과 경험에서 확인되는 것만 적었습니다.'
+    };
+  }
+
+  function decisionSummary(J) {
+    var S = summary(J);
+    var g = S.critical_gap;
     return '<div class="dsum">' +
       '<div class="dstop">' +
-      rows.map(function (r, i) {
+      S.top_roles.map(function (r, i) {
         return '<div class="dscard">' +
-          '<div class="dsrank">' + (i + 1) + '</div>' +
+          '<div class="dsrank">' + r.rank + '</div>' +
           '<h3>' + esc(r.name) + '</h3>' +
           '<div class="dsmeta">' +
-          '<span>관심 ' + esc(LV[r.interest && r.interest.level] || '—') + '</span>' +
-          '<span>경험 ' + esc(LV[r.exposure && r.exposure.level] || '—') + '</span>' +
-          (r.evidence_coverage
-            ? '<span>핵심 ' + r.evidence_coverage.core.confirmed + '/' +
-              r.evidence_coverage.core.total + ' 확인</span>' : '') +
+          '<span>관심 ' + esc(r.interest || '—') + '</span>' +
+          '<span>경험 ' + esc(r.exposure || '—') + '</span>' +
+          (r.core_total !== null
+            ? '<span>핵심 ' + r.core_confirmed + '/' + r.core_total + ' 확인</span>' : '') +
           '</div>' +
-          '<div class="dsnow">' + esc(DEC.label(r.decision_status)) + '</div>' +
+          '<div class="dsnow">' + esc(r.decision_status_label) + '</div>' +
           '</div>';
       }).join('') + '</div>' +
 
       '<div class="dsgrid">' +
       '<div class="dsbox"><h4>지금 결과에서 가장 중요한 것</h4><ul class="qlist">' +
-      findings(J).map(function (t) { return '<li>' + t + '</li>'; }).join('') +
+      S.key_findings.map(function (t) { return '<li>' + t + '</li>'; }).join('') +
       '</ul></div>' +
 
       '<div class="dsbox dsgap"><h4>가장 큰 공백</h4>' +
       (g
-        ? '<p class="dsgapname">' + esc(g.gap.label) + '</p>' +
-          '<p class="note">' + esc(g.family) + ' · ' + esc(g.gap.description) + '</p>'
+        ? '<p class="dsgapname">' + esc(g.label) + '</p>' +
+          '<p class="note">' + esc(g.family) + ' · ' + esc(g.why) + '</p>'
         : '<p class="note">핵심 영역에서 비어 있는 자리가 없습니다.</p>') +
       '</div>' +
       '</div>' +
 
       '<div class="dsact"><div class="eyebrow">지금 할 일</div>' +
-      '<p>' + nextOneThing(J) + '</p></div>' +
+      '<p>' + S.next_action + '</p></div>' +
 
-      '<p class="note dsfoot">여기 나오는 값은 합격 가능성이나 실력을 잰 값이 ' +
-      '아닙니다. 지금 적어 주신 응답과 경험에서 확인되는 것만 적었습니다.</p>' +
+      '<p class="note dsfoot">' + esc(S.confidence_note) + '</p>' +
       '</div>';
   }
 
@@ -327,8 +358,7 @@ window.PCAV2Report = (function () {
     var ut = VR ? VR.untranslated(J, lvl === 'basic' ? 1 : 4) : '';
     if (ut) {
       out += '<h3 class="rpsub2">아직 성과 언어로 번역되지 않은 경험</h3>' +
-        '<p class="note">겪으신 일은 적혀 있는데, 조직이 결과로 읽는 칸이 ' +
-        '아직 비어 있는 경험입니다.</p>' + ut;
+        '<p class="note">조직이 결과로 읽는 칸이 아직 비어 있는 경험입니다.</p>' + ut;
     }
     /* 비어 있는 자리를 고르기로 채우는 칸. **긴 주관식을 요구하지 않는다**:
        적는 일이 길어지면 거기서 닫고 나간다 */
@@ -336,18 +366,30 @@ window.PCAV2Report = (function () {
       var ask = CR.askBox(J, J.decision_table[0].career_family_id);
       if (ask) out += '<div style="margin-top:16px">' + ask + '</div>';
     }
+    /* 직무별로 핵심 영역이 어디까지 확인되었나. **BASIC 은 한 줄만 받는다**:
+       네댓 장 안에서 세 직무를 다 펼치면 자리가 없고, 첫 쪽이 이미 가장 큰
+       공백을 이름으로 적었다. 그래도 세 상태(확인·일부·아직)는 등급에
+       관계없이 보여야 해서 표 자체를 없애지는 않는다 */
     var cv = J.role_evidence_coverage || {};
-    var rows = J.decision_table.slice(0, 3).map(function (r) { return cv[r.career_family_id]; })
+    var rows = J.decision_table.slice(0, lvl === 'basic' ? 1 : 3)
+      .map(function (r) { return cv[r.career_family_id]; })
       .filter(function (c) { return c && c.priority_gaps.length; });
     if (rows.length) {
+      /* **세 상태를 글자로 적는다.** 색으로만 말하지 않고, '확인 / 일부
+         확인 / 아직 확인되지 않음' 을 칸 이름으로 둔다. 직무 쪽을 받지
+         않는 등급(BASIC·STANDARD)에서도 세 상태가 그대로 보여야 한다 */
       out += '<div class="card contentcard" style="margin-top:16px">' +
-        '<div class="eyebrow">직무별로 비어 있는 것</div>' +
-        '<table class="v2gap"><thead><tr><th>직무</th><th>지금 확인되는 데까지</th>' +
-        '<th>아직 확인되지 않음</th></tr></thead><tbody>' +
+        '<div class="eyebrow">직무별로 핵심 영역이 어디까지 확인되었나</div>' +
+        '<table class="v2gap"><thead><tr><th>직무</th><th>현재 확인된 것</th>' +
+        '<th>일부 확인</th><th>아직 확인되지 않음</th>' +
+        '<th>먼저 채울 자리</th></tr></thead><tbody>' +
         rows.map(function (c) {
+          var k = c.summary.core;
           return '<tr><td><b>' + esc(c.career_family_name) + '</b></td>' +
-            '<td>핵심 ' + c.summary.core.confirmed + ' / ' + c.summary.core.total + '</td>' +
-            '<td>' + esc(c.priority_gaps.slice(0, 3).map(function (g) { return g.label; })
+            '<td>' + k.confirmed + ' / ' + k.total + '</td>' +
+            '<td>' + k.partial + '</td>' +
+            '<td>' + k.not_yet + '</td>' +
+            '<td>' + esc(c.priority_gaps.slice(0, 2).map(function (g) { return g.label; })
               .join(' · ')) + '</td></tr>';
         }).join('') + '</tbody></table></div>';
     }
@@ -373,17 +415,46 @@ window.PCAV2Report = (function () {
         esc(x.next ? (x.next.questions || [])[0] : '그 판단을 되돌린다면 무엇을 다르게 하시겠습니까') +
         '</p></div>';
     }).filter(Boolean).join('');
+    /* 서류·면접·포트폴리오는 **셋을 나란히 둔다.** 한 상자 안의 목록으로
+       두면 셋 중 어느 것을 지금 손볼 차례인지가 안 보인다. 카드가 셋이면
+       고르는 일이 된다 */
+    var three = [
+      ['서류', '한 일보다 직접 정한 것을 한 줄로 적으십시오. 위 문장을 그대로 ' +
+        '옮기셔도 됩니다.'],
+      ['면접', esc(top.name) + ' 쪽은 판단의 근거를 되묻습니다. 고른 이유와 ' +
+        '포기한 것을 같이 준비해 두십시오.'],
+      ['포트폴리오', '결과물 사진보다 조건표 한 장이 먼저 읽힙니다.']
+    ].map(function (t) {
+      return '<div class="card contentcard"><div class="eyebrow">' + esc(t[0]) +
+        '</div><p class="cvline">' + t[1] + '</p></div>';
+    }).join('');
     return (cards ? '<div class="grid">' + cards + '</div>' : '') +
-      '<div class="card contentcard" style="margin-top:16px"><ul class="qlist">' +
-      '<li><b>서류</b> 한 일보다 직접 정한 것을 한 줄로 적으십시오. 위 문장을 ' +
-      '그대로 옮기셔도 됩니다.</li>' +
-      '<li><b>면접</b> ' + esc(top.name) + ' 쪽은 판단의 근거를 되묻습니다. ' +
-      '고른 이유와 포기한 것을 같이 준비해 두십시오.</li>' +
-      '<li><b>포트폴리오</b> 결과물 사진보다 조건표 한 장이 먼저 읽힙니다.</li>' +
-      '</ul></div>';
+      '<div class="rpgap"><h3 class="rpsub2">지원서 · 면접 · 포트폴리오</h3>' +
+      '<div class="grid three">' + three + '</div></div>';
   }
 
   /* ── 부록 ───────────────────────────────────────────────────────── */
+  /**
+   * 쪽에 붙여 둔 내비 이름을 모아 **머리에 붙는 띠**를 만든다.
+   *
+   * 규격이 요구한 자리다. 쪽을 그린 뒤에 긁어모으기 때문에, 등급마다
+   * 없는 쪽(BASIC 의 조직 비교 같은 것)은 **띠에도 나오지 않는다**:
+   * 없는 데로 데려가는 단추를 만들지 않는다.
+   */
+  function navBar(html) {
+    var items = [];
+    html.replace(/id="(rp\d+)" data-nav="([^"]+)"/g, function (_, id, name) {
+      items.push({ id: id, name: name });
+      return _;
+    });
+    if (items.length < 3) return '';
+    return '<nav class="rpnav" aria-label="결과지 안에서 옮겨 가기">' +
+      items.map(function (x) {
+        return '<a href="#' + x.id + '">' + x.name + '</a>';
+      }).join('') +
+      '<a href="#rpapx" class="rpnav-a">상세 분석</a></nav>';
+  }
+
   function appendix(J) {
     var out = [];
     var A = function (title, body, note) {
@@ -496,10 +567,15 @@ window.PCAV2Report = (function () {
       '<tr><th>만든 때</th><td>' + new Date().toISOString().slice(0, 10) + '</td></tr>' +
       '</tbody></table>'));
 
-    return '<div class="appendix">' +
+    return '<div class="appendix" id="rpapx">' +
       '<div class="apmark">부록</div>' +
       '<p class="note">본문에서 뺀 것들입니다. 되짚어 보실 때 쓰십시오.</p>' +
-      out.join('') + '</div>';
+      /* 화면에서는 접어 둔다. **종이에서는 늘 펼친다**: 인쇄본에서 접힌
+         자리는 사라진 자리와 같다. `<details>` 를 쓰지 않은 이유가 이것이다
+         (닫힌 `<details>` 는 인쇄 규칙으로 못 펼친다) */
+      '<button type="button" class="apfold" id="apFold" aria-expanded="false" ' +
+      'aria-controls="apBody">상세 분석 펼치기</button>' +
+      '<div class="apbody is-folded" id="apBody">' + out.join('') + '</div></div>';
   }
 
   /* ── 전체 ───────────────────────────────────────────────────────── */
@@ -538,31 +614,43 @@ window.PCAV2Report = (function () {
     var plan = '<div class="grid">' + days.map(function (d) {
       return CR ? CR.plan(J, d, topId) : '';
     }).join('') + '</div>';
-    var deepN = isB ? 0 : (isP ? 3 : 2);
+    /* **직무 쪽은 PRO 만 받는다.** 규격의 등급 구성이 그렇다: BASIC 은
+       결정·사슬·증거·할 일 네 가지(§14), STANDARD 는 거기에 조직 비교와
+       공백을 더한 견주기 깊이(§15, "STANDARD value = comparison depth"),
+       직무 하나를 파고드는 쪽(§9)은 PRO 의 값이다. 앞서 STANDARD 에 둘을
+       넣었더니 규격 쪽수를 넘기면서 등급 값도 흐려졌다 */
+    var deepN = isP ? 3 : 0;
 
     /* 1. 결정. 서른 초에 읽는 쪽이다 */
     out.push(page(no(), 'DECISION', '지금 먼저 보실 세 가지',
-      '', decisionSummary(J), 'p-decision'));
+      '', decisionSummary(J), 'p-decision', '요약'));
 
     /* 2. 견주기 */
     out.push(page(no(), 'DECISION', '먼저 볼 직무를 견주면',
-      '칸이 갈리는 자리가 지금 할 일을 알려 줍니다.', topComparison(J)));
+      '칸이 갈리는 자리가 지금 할 일을 알려 줍니다.', topComparison(J), '', '직무 비교'));
 
     /* 3. 왜. 배운 것에서 조직이 결과로 치는 것까지 잇는다. **맨 앞 직무
        하나만.**
        조직 넷을 견주는 쪽은 바로 다음 쪽이 받는다(STANDARD 이상) */
     if (chains) {
       out.push(page(no(), 'WHY', '배운 것이 실제 업무에서 어떻게 쓰이는가',
-        '배운 것에서 조직이 결과로 치는 것까지 한 줄로 이었습니다.', chains));
+        '배운 것에서 조직이 결과로 치는 것까지 한 줄로 이었습니다.', chains,
+        '', '전공 → 실무'));
     }
 
-    /* 4. 내 증거 */
-    out.push(page(no(), 'EVIDENCE', '지금 내가 가진 증거',
+    /* 4. 내 증거. **BASIC 은 비어 있는 것까지 이 쪽에서 끝낸다**(규격 §14 의
+       "Current Evidence + Gap"). 그러면 다섯째 쪽이 할 일만 받는다 */
+    out.push(page(no(), 'EVIDENCE',
+      isB ? '지금 내가 가진 증거와 아직 확인되지 않은 것' : '지금 내가 가진 증거',
       J.evidence_supplied
         ? (isB ? LOW_RUNG
           : '경험 하나가 활동에서 반복 가능성까지 어디쯤 와 있는지 봅니다. ' + LOW_RUNG)
         : '',
-      evidenceToday(J, isB ? 2 : (isP ? 8 : 4), isB)));
+      evidenceToday(J, isB ? 2 : (isP ? 8 : 4), isB) +
+      (isB && miss ? '<div class="rpgap">' +
+        '<h3 class="rpsub2">아직 확인되지 않은 것</h3>' +
+        '<p class="note">' + NOT_ABILITY + '</p>' + miss + '</div>' : ''),
+      '', '내 Evidence'));
 
     /* 5. 조직이 보는 결과. **BASIC 은 이 쪽을 받지 않는다**: 네댓 장
        안에서는 결정·사슬·증거·할 일이 먼저다. BASIC 의 사슬에도 '어느
@@ -571,42 +659,46 @@ window.PCAV2Report = (function () {
     if (!isB && (sm || tr)) {
       out.push(page(no(), 'ORGANIZATION VALUE', '같은 전공도 조직에 따라 결과가 달라집니다',
         '같은 지식으로 어디에서는 제품이 나오고 어디에서는 논문이 나옵니다.',
-        sm + tr));
+        sm + tr, '', '조직 비교'));
     }
 
     /* 6~8. 직무 하나씩 깊게. **한 자리에서 끝낸다.**
        BASIC 은 이 쪽을 받지 않는다: 네댓 쪽 안에서는 앞의 결정 쪽이
        먼저다. 직무별 자료는 STANDARD 부터 */
     J.decision_table.slice(0, deepN).forEach(function (r, i) {
-      out.push(page(no(), 'WHY · EVIDENCE', r.name, '', roleDeepDive(J, r)));
+      out.push(page(no(), 'WHY · EVIDENCE', r.name, '', roleDeepDive(J, r), '',
+        i === 0 ? '직무 자세히' : ''));
     });
 
-    /* 9~10. 비어 있는 것과 할 일.
-       **BASIC·STANDARD 는 둘을 한 쪽에 합친다**: 더해도 종이 한 장에
-       들어가고, '아직 비어 있는 것 → 그래서 지금 이것' 이 한 눈에 이어진다.
-       PRO 만 둘을 따로 낸다. PRO 의 할 일 쪽은 30·90·365 세 칸에 서류·면접
-       번역 표까지 붙어서 혼자 한 장을 다 쓴다 */
-    var joinGap = !isP && miss;
-    if (!joinGap && miss) {
-      out.push(page(no(), 'GAP', '아직 확인되지 않은 것', NOT_ABILITY, miss));
+    /* 9. 비어 있는 것. BASIC 은 넷째 쪽에서 이미 봤다 */
+    if (!isB && miss) {
+      out.push(page(no(), 'GAP', '아직 확인되지 않은 것', NOT_ABILITY, miss,
+        '', '아직 없는 것'));
     }
-    out.push(page(no(), joinGap ? 'GAP · ACTION' : 'ACTION',
-      joinGap ? '아직 확인되지 않은 것과 다음에 할 일'
-        : (ne ? '다음에 만들 경험 하나' : '언제 무엇을 할 것인가'),
-      joinGap ? NOT_ABILITY
-        : (ne ? '여러 개를 벌이지 마십시오. 지금 가장 크게 비어 있는 한 자리만 채웁니다.' : ''),
-      (joinGap ? miss + '<div class="rpgap"><h3 class="rpsub2">다음에 만들 경험 하나</h3>' +
-        (ne || '') + '</div>' : (ne || '')) +
-      '<div class="rpgap"><h3 class="rpsub2">언제 무엇을 할 것인가</h3>' + plan + '</div>'));
+
+    /* 10. 다음에 만들 경험 **하나**, 그리고 그 뒤 일정 */
+    out.push(page(no(), 'ACTION',
+      ne ? '다음에 만들 경험 하나' : '언제 무엇을 할 것인가',
+      ne ? '여러 개를 벌이지 마십시오. 지금 가장 크게 비어 있는 한 자리만 채웁니다.' : '',
+      (ne || '') +
+      '<div class="rpgap"><h3 class="rpsub2">언제 무엇을 할 것인가</h3>' + plan + '</div>',
+      '', '다음 행동'));
 
     /* 부록 */
     out.push(appendix(J));
 
     /* 안쪽 경고는 화면에 내보내지 않는다. 뜻 없는 입력을 고쳐 주지도 않는다 */
     if (SN) window.PCA_V2_INPUT_WARNINGS = SN.warnings();
+    /* 첫 쪽을 만든 객체를 그대로 내보낸다. 결과 JSON·플랫폼·검사가 화면을
+       긁지 않고 같은 값을 읽을 수 있어야 '웹과 PDF 가 같은 객체' 가 된다 */
+    window.PCA_V2_DECISION_SUMMARY = summary(J);
 
-    return '<div class="report">' + out.join('') + '</div>';
+    var body = out.join('');
+    return '<div class="report">' + navBar(body) + body + '</div>';
   }
 
-  return { render: render, decisionSummary: decisionSummary, roleDeepDive: roleDeepDive };
+  return {
+    render: render, summary: summary,
+    decisionSummary: decisionSummary, roleDeepDive: roleDeepDive
+  };
 })();
