@@ -108,6 +108,65 @@ export const TX = {
     "Once your report exists, the lines to carry into a resume, an interview and a portfolio collect here.",
   ),
 
+  /* ── 응시 ─────────────────────────────────────────────────────── */
+  asSaving: p("저장 중", "Saving…"),
+  asSaved: p("저장됨", "Saved"),
+  asRetry: p("다시 보내는 중", "Retrying…"),
+  asPrev: p("이전", "Back"),
+  asNext: p("다음", "Next"),
+  asSubmit: p("제출하기", "Submit"),
+  asNotAll: p("남은 문항이 있습니다", "Some questions are unanswered"),
+  asResume: p("이어서 응시하기", "Continue"),
+  asSectionOf: p("단계", "Step"),
+  asDoneTitle: p("응시가 끝났습니다.", "Assessment complete."),
+  asDoneBody: p(
+    "이어서 경험을 적으시면 결과지가 훨씬 구체적으로 바뀝니다. 지금 바로 결과를 보셔도 됩니다.",
+    "Adding your experience next makes the report far more specific. You can also see the result right away.",
+  ),
+  asAddEvidence: p("경험 적기", "Add experience"),
+  asSeeResult: p("결과 보기", "See result"),
+  asStageTitle: p("학위 단계를 골라 주십시오.", "Which stage are you at?"),
+  asStageBody: p(
+    "묻는 장면이 단계마다 달라집니다. 점수가 달라지지는 않습니다.",
+    "The wording of some questions changes by stage. Your scores do not.",
+  ),
+  asStageBachelor: p("학부", "Bachelor"),
+  asStageMaster: p("석사", "Master"),
+  asStagePhd: p("박사", "PhD"),
+  asStagePostdoc: p("박사후연구원", "Postdoc"),
+  asStart: p("검사 시작", "Start"),
+  asTargetTitle: p("어느 나라를 목표로 보십니까?", "Which country are you targeting?"),
+  asTargetBody: p(
+    "사이트나 접속 위치로 짐작하지 않습니다. 확인된 자료가 없는 나라는 기준 자료로 보여 드립니다.",
+    "We never infer this from your site or location. Where we have no verified data we fall back to the global reference set.",
+  ),
+  asTargetSkip: p("아직 정하지 않았습니다", "Not decided yet"),
+
+  /* 응시 단계 이름. **`43/92` 만 보여주지 않는다**(규격 §43) */
+  secInterest: p("해보고 싶은 일", "Career interest"),
+  secExposure: p("해본 경험", "Experience"),
+  secOwnership: p("직접 정한 것", "Decision ownership"),
+  secWorkMode: p("업무 방식", "Work style"),
+  secLearning: p("배울 뜻", "Learning intent"),
+  secContext: p("진로 맥락", "Career context"),
+
+  /* ── 상품 ─────────────────────────────────────────────────────── */
+  pxTitle: p("기계공학 진로 진단", "Mechanical Engineering career diagnostic"),
+  pxBody: p(
+    "전공과 경험을 실제 직무 선택으로 잇습니다. 먼저 볼 직무와 지금 비어 있는 증거, 다음에 만들 경험 하나를 정리해 드립니다.",
+    "We connect your major and experience to an actual role decision: which roles to look at first, which evidence is missing, and the one experience to build next.",
+  ),
+  pxBasic: p("먼저 볼 직무와 다음 할 일", "Where to look first, and what to do next"),
+  pxStandard: p("직무 견주기와 비어 있는 증거, 조직 비교", "Role comparison, evidence gaps, organization comparison"),
+  pxPro: p(
+    "증거 구조와 연구·과제 소유, 조직 가치, 다음에 만들 경험, 30·90·365일 계획",
+    "Evidence architecture, research ownership, organization value, next evidence project, 30/90/365 plan",
+  ),
+  pxBuy: p("시작하기", "Get started"),
+  pxFree: p("값이 아직 정해지지 않았습니다", "Price not set yet"),
+  pxQuestions: p("문항", "questions"),
+  pxPaySuccess: p("결제가 완료되었습니다.", "Payment complete."),
+
   /* ── 기관 ─────────────────────────────────────────────────────── */
   navOverview: p("한눈에", "Overview"),
   navParticipants: p("참여자", "Participants"),
