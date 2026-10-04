@@ -11,6 +11,10 @@ export type Product = {
   seat_count: number;
   /** free = 지표까지만 · full = 사슬과 과목 처방까지 */
   report_level: "free" | "full";
+  /** ME_V2 면 좌석 대신 이용권이 생긴다. 없으면 옛 상품이다 */
+  assessment_version: string | null;
+  tier: string | null;
+  major_code: string | null;
 };
 
 export type Order = {
@@ -34,7 +38,8 @@ export function orderName(code: string): string {
 
 export async function getProduct(code: string): Promise<Product | null> {
   return queryOne<Product>(
-    `SELECT code, kind, amount, currency, seat_count, report_level
+    `SELECT code, kind, amount, currency, seat_count, report_level,
+            assessment_version, tier, major_code
        FROM products WHERE code = $1 AND active`,
     [code],
   );
@@ -206,6 +211,27 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
          VALUES ($1, $2, 'full')
          ON CONFLICT (attempt_id) DO NOTHING`,
         [attemptId, order.id],
+      );
+    } else if (product?.assessment_version === "ME_V2") {
+      /**
+       * ME_V2 는 좌석 대신 **이용권**이 문을 연다.
+       *
+       * 좌석은 기관 계약의 단위라 계약 없이 쓰면 숫자가 어디에도 안 잡힌다.
+       * 개인 결제는 `entitlements` 한 줄이고, 그 줄이 어느 등급을 여는지를
+       * 들고 있다. 주소의 `?tier=PRO` 가 여기까지 오지 못한다.
+       *
+       * **중복 웹훅이 둘째 줄을 만들지 않는다**: `entitlements_order_uniq`
+       * 가 주문 하나에 이용권 하나를 DB 에서 못 박는다. 코드의 if 로 막으면
+       * 고쳐 쓰다 빠뜨릴 수 있다.
+       */
+      await c.query(
+        `INSERT INTO entitlements
+           (user_id, order_id, product_code, kind, tier, major_code,
+            assessment_version, status, starts_at)
+         VALUES ($1, $2, $3, 'report', $4, $5, 'ME_V2', 'active', now())
+         ON CONFLICT (order_id) WHERE order_id IS NOT NULL DO NOTHING`,
+        [order.user_id, order.id, order.product_code,
+         product.tier ?? "BASIC", product.major_code ?? "ME"],
       );
     } else {
       // 좌석 발급. 계약 없이 주문에 붙는다
