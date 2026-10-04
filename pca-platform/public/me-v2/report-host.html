@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>결과지</title>
+<!--
+  결과지를 그리는 자리.
+
+  **그리는 코드가 한 벌이다.** 화면과 PDF 가 같은 `PCAV2Report.render(J)` 를
+  부르고, 넘기는 `J` 도 같은 줄에서 온다: 결과 스냅샷이 품고 있는 그 객체다.
+  여기서 다시 채점하지 않으므로 화면과 PDF 가 다른 글을 낼 수 없다.
+
+  **응답을 받지 않는다.** 주소로 오는 것은 응시 번호 하나이고, 그 응시의
+  주인인지는 자료를 내주는 서버가 본다.
+-->
+<link rel="stylesheet" href="/pca/assets/app.css">
+<link rel="stylesheet" href="/pca/assets/report-print.css">
+<style>
+  body { background: #fff; margin: 0 }
+  .rphost { max-width: 980px; margin: 0 auto; padding: 8px 18px 56px }
+  .rpwait { padding: 48px 18px; color: #5a6b80; font-size: 14px; text-align: center }
+</style>
+</head>
+<body>
+<div class="rphost"><p class="rpwait" id="rpWait">결과지를 불러오는 중입니다.</p></div>
+
+<script src="/pca/data/families.js"></script>
+<script src="/pca/data/evidence-rules.js"></script>
+<script src="/pca/data/value-data.js"></script>
+<script src="/pca/assets/evidence.js"></script>
+<script src="/pca/assets/readiness.js"></script>
+<script src="/pca/assets/value-engine.js"></script>
+<script src="/pca/assets/coverage-engine.js"></script>
+<script src="/pca/assets/stage.js"></script>
+<script src="/pca/assets/country.js"></script>
+<script src="/pca/assets/report-sanitize.js"></script>
+<script src="/pca/assets/v2-decision.js"></script>
+<script src="/pca/assets/v2-value-report.js"></script>
+<script src="/pca/assets/v2-coverage-report.js"></script>
+<script src="/pca/assets/v2-report.js"></script>
+<script>
+(function () {
+  'use strict';
+  var host = document.querySelector('.rphost');
+  var at = new URLSearchParams(location.search).get('attempt') || '';
+
+  function fail(msg) {
+    host.innerHTML = '<p class="rpwait">' + msg + '</p>';
+  }
+
+  /* 상세 분석은 접어 두는 것이 기본이다. 부록은 되짚을 때만 보는 자리라
+     처음부터 펼쳐 두면 본문이 길어 보인다 */
+  function wireFold() {
+    var af = document.getElementById('apFold');
+    var ab = document.getElementById('apBody');
+    if (!af || !ab) return;
+    af.addEventListener('click', function () {
+      var folded = ab.classList.toggle('is-folded');
+      af.setAttribute('aria-expanded', String(!folded));
+      af.textContent = folded ? '상세 분석 펼치기' : '상세 분석 접기';
+    });
+  }
+
+  fetch('/assessment/' + encodeURIComponent(at) + '/report/data', {
+    credentials: 'same-origin'
+  }).then(function (r) {
+    if (!r.ok) throw new Error(r.status === 404
+      ? '아직 만들어 둔 결과지가 없습니다.'
+      : '결과지를 불러오지 못했습니다.');
+    return r.json();
+  }).then(function (d) {
+    if (!d || !d.result) throw new Error('결과지가 비어 있습니다.');
+    host.innerHTML = window.PCAV2Report.render(d.result);
+    wireFold();
+    /* 바깥 화면이 창 높이를 맞출 수 있게 알려 준다. 고정 높이로 두면
+       등급마다 빈자리나 두 겹 스크롤이 생긴다 */
+    function tell() {
+      try {
+        parent.postMessage({
+          type: 'cm.report.height',
+          height: document.documentElement.scrollHeight
+        }, location.origin);
+      } catch (e) {}
+    }
+    tell();
+    setTimeout(tell, 300);
+    window.addEventListener('resize', tell);
+  }).catch(function (e) { fail(e.message); });
+})();
+</script>
+</body>
+</html>

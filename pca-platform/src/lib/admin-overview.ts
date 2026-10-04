@@ -53,7 +53,7 @@ export type B2B = {
 export type ProductStat = {
   tiers: { label: string; n: number }[];
   majors: { label: string; n: number }[];
-  /** 채점은 끝났는데 결과지 판본이 안 남은 응시. **조용히 지나가면 안 되는 수다** */
+  /** 제출은 됐는데 아직 결과지를 안 만든 ME_V2 응시. 막힌 것은 `Blocked` 가 받는다 */
   report_errors: number;
 };
 
@@ -62,12 +62,28 @@ export type MarketStat = {
   targets: { label: string; n: number }[];
 };
 
+/**
+ * 사람이 손봐야 하는 것.
+ *
+ * **막힌 것과 아직 안 한 것을 가른다.** 둘 다 "결과지가 없다" 로 세면 결과
+ * 생성이 깨진 날 아무도 모른다(Phase 1 에서 실제로 그랬다). `job_failures`
+ * 는 사람이 봐야 하는 실패만 적고, 거기 줄이 있으면 그날 할 일이 있다.
+ *
+ * **개인 서술을 담지 않는다.** 무엇이 몇 번 깨졌는지와 되짚을 번호까지다.
+ */
+export type Blocked = {
+  open: number;
+  kinds: { label: string; n: number; last: string | null }[];
+  recent: { kind: string; trace: string; message: string; at: string }[];
+};
+
 export type AdminOverview = {
   period: Period;
   b2c: B2C;
   b2b: B2B;
   product: ProductStat;
   market: MarketStat;
+  blocked: Blocked;
 };
 
 const n = (v: unknown) => Number(v ?? 0);
@@ -135,10 +151,20 @@ export async function adminOverview(period: Period = "30d"): Promise<AdminOvervi
       GROUP BY 1 ORDER BY count(*) DESC LIMIT 8`,
   ).catch(() => []);
 
-  /* 채점이 끝났는데 결과지 판본이 없는 응시. 숫자가 0 이 아니면 사람이 본다 */
+  /**
+   * 제출은 됐는데 아직 결과지가 없는 응시.
+   *
+   * **막힌 것과 아직 안 만든 것을 가른다.** 막힌 것은 `job_failures` 가
+   * 받고(위의 `blocked`), 여기는 **사람이 아직 안 누른 것**이다. 둘을 한
+   * 숫자로 세면 어느 쪽인지 모르는 숫자가 하나 생긴다.
+   *
+   * **옛 검사를 여기 섞지 않는다.** ME_V1 은 `report_snapshots` 에 줄을
+   * 남기지 않아서, 범위를 안 좁히면 지난 응시가 전부 실패로 잡힌다.
+   */
   const errs = await queryOne<{ n: string }>(
     `SELECT count(*)::text AS n FROM attempts a
       WHERE a.submitted_at IS NOT NULL
+        AND a.assessment_version = 'ME_V2'
         AND NOT EXISTS (SELECT 1 FROM report_snapshots r WHERE r.attempt_id = a.id)
         ${w("a.submitted_at")}`,
   ).catch(() => null);
@@ -158,6 +184,21 @@ export async function adminOverview(period: Period = "30d"): Promise<AdminOvervi
     `SELECT COALESCE(target_country, '미지정') AS label, count(*)::text AS n
        FROM attempts ${wh("started_at")}
       GROUP BY 1 ORDER BY count(*) DESC LIMIT 8`,
+  ).catch(() => []);
+
+  /* ── 막힌 것 ──────────────────────────────────────────────────── */
+  const jobKinds = await query<{ label: string; n: string; last: string | null }>(
+    `SELECT kind AS label, count(*)::text AS n,
+            max(created_at)::text AS last
+       FROM job_failures WHERE resolved_at IS NULL
+      GROUP BY kind ORDER BY count(*) DESC`,
+  ).catch(() => []);
+  const jobRecent = await query<{
+    kind: string; trace_id: string; message: string; created_at: string;
+  }>(
+    `SELECT kind, trace_id, message, created_at::text
+       FROM job_failures WHERE resolved_at IS NULL
+      ORDER BY created_at DESC LIMIT 8`,
   ).catch(() => []);
 
   const seats = n(b2bRow?.seats);
@@ -193,6 +234,17 @@ export async function adminOverview(period: Period = "30d"): Promise<AdminOvervi
         label: r.label, domain: r.domain, region: r.region, n: n(r.n),
       })),
       targets: targets.map((r) => ({ label: r.label, n: n(r.n) })),
+    },
+    blocked: {
+      open: jobKinds.reduce((a, r) => a + n(r.n), 0),
+      kinds: jobKinds.map((r) => ({
+        label: r.label, n: n(r.n),
+        last: r.last ? String(r.last).slice(0, 16) : null,
+      })),
+      recent: jobRecent.map((r) => ({
+        kind: r.kind, trace: r.trace_id, message: r.message,
+        at: String(r.created_at).slice(0, 16),
+      })),
     },
   };
 }

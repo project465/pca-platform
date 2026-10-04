@@ -195,6 +195,18 @@ export const TX = {
   pxHaveGrant: p("이미 사신 검사가 있습니다", "You already have an assessment"),
   pxGoAssessment: p("검사로 가기", "Go to the assessment"),
 
+  /* ── 경험 ─────────────────────────────────────────────────────── */
+  evTitle: p("겪으신 것을 적어 주십시오.", "Tell us what you have done."),
+  evBody: p(
+    "적지 않으셔도 결과지는 나갑니다. 다만 증거 사다리와 역할별 범위가 비어 " +
+    "있는 채로 나가고, 결과지가 그 사실을 적습니다. 점수는 경험으로 바뀌지 않습니다.",
+    "The report comes out either way. Without this, the evidence ladder and role coverage " +
+    "stay empty and the report says so. Your scores do not change with experience.",
+  ),
+  evHave: p("적어 주신 줄", "Recorded"),
+  evNone: p("아직 적어 주신 것이 없습니다", "Nothing recorded yet"),
+  evLater: p("나중에 적기", "Later"),
+
   /* ── 결제가 끝난 뒤 ───────────────────────────────────────────── */
   okOrderNo: p("주문 번호", "Order number"),
   okTier: p("산 등급", "Tier"),
@@ -203,6 +215,74 @@ export const TX = {
   okBody: p(
     "이용권이 발급되었습니다. 92문항 가운데 등급에 해당하는 문항을 묻고, 답은 넘어갈 때마다 서버에 저장됩니다. 창을 닫으셔도 이어서 하실 수 있습니다.",
     "Your entitlement is issued. You will see the questions for your tier, and your answers are stored on the server as you go. You can close the window and pick up where you left off.",
+  ),
+
+  /* ── 결과지 ───────────────────────────────────────────────────── */
+  rpTitle: p("진로 결정 자료", "Career decision brief"),
+  rpMadeAt: p("만든 때", "Generated"),
+  rpPdf: p("PDF 받기", "Download PDF"),
+  rpMake: p("결과지 만들기", "Generate the report"),
+  rpMaking: p("만들고 있습니다", "Generating…"),
+  rpRetry: p("다시 만들기", "Try again"),
+  rpAgain: p("다시 만들기", "Regenerate"),
+  rpAgainWhy: p(
+    "경험을 더 적으셨으면 다시 만드십시오. 앞서 만든 판본은 그대로 남습니다.",
+    "Added more experience? Regenerate. The earlier version stays as it was.",
+  ),
+  rpFailed: p(
+    "결과지를 만들지 못했습니다. 운영 쪽에 기록이 남았습니다.",
+    "We could not generate the report. Operations has a record of it.",
+  ),
+  rpNoneTitle: p("아직 만들어 둔 결과지가 없습니다.", "No report has been generated yet."),
+  rpNoneBody: p(
+    "응시는 끝났습니다. 결과지는 지금 만드실 수 있고, 경험을 먼저 적으시면 " +
+    "증거 사다리와 역할별 범위까지 채워진 채로 나옵니다.",
+    "Your assessment is complete. You can generate the report now; adding your " +
+    "experience first fills in the evidence ladder and role coverage.",
+  ),
+  rpBareTitle: p(
+    "경험을 적지 않으셔서 비어 있는 자리가 있습니다.",
+    "Some sections are empty because no experience was recorded.",
+  ),
+  rpBareBody: p(
+    "증거 사다리와 역할별 증거 범위가 빈 양식으로 나갑니다. 못 한다는 뜻이 " +
+    "아니라 지금 적어 주신 것으로는 확인되지 않는다는 뜻입니다.",
+    "The evidence ladder and role coverage come out as blank forms. That does not " +
+    "mean you cannot do these things; it means nothing you recorded confirms them yet.",
+  ),
+
+  /* ── 개인 첫 화면의 ME_V2 상태 ───────────────────────────────── */
+  v2BoughtTitle: p("검사를 시작하실 수 있습니다.", "Your assessment is ready."),
+  v2BoughtBody: p(
+    "학위 단계를 고르시면 바로 시작합니다. 답은 넘어갈 때마다 서버에 저장되고, " +
+    "창을 닫으셔도 이어서 하실 수 있습니다.",
+    "Pick your stage and you start right away. Answers are stored on the server as " +
+    "you go, so you can close the window and pick up where you left off.",
+  ),
+  v2Grants: p("쓸 수 있는 이용권", "Available entitlements"),
+  v2ResumeTitle: p("이어서 하시면 됩니다.", "Pick up where you left off."),
+  v2ResumeBody: p(
+    "안 찬 묶음으로 바로 갑니다. 처음부터 다시 풀지 않습니다.",
+    "You go straight back to the section you had not finished. You never start over.",
+  ),
+  v2EvidenceTitle: p("응시가 끝났습니다.", "Your assessment is complete."),
+  v2EvidenceBody: p(
+    "경험을 적으시면 증거 사다리와 역할별 범위가 채워집니다. 점수는 바뀌지 않습니다.",
+    "Adding your experience fills in the evidence ladder and role coverage. Your scores do not change.",
+  ),
+  v2StuckTitle: p("결과지를 만들다 막혔습니다.", "Report generation got stuck."),
+  v2StuckBody: p(
+    "운영 쪽에 기록이 남았습니다. 다시 눌러 보실 수 있고, 같은 자리에서 또 막히면 " +
+    "저희가 고치는 동안 기다리지 않으셔도 됩니다.",
+    "Operations has a record of it. You can try again; if it stops at the same place, " +
+    "you do not have to wait around while we fix it.",
+  ),
+  v2StuckAt: p("막힌 때", "Last failure"),
+  v2DoneBody: p(
+    "먼저 볼 직무와 지금 비어 있는 증거, 다음에 만들 경험 하나가 들어 있습니다. " +
+    "합격 가능성이나 실력을 잰 값은 아닙니다.",
+    "It names the roles to look at first, the evidence that is missing, and the one " +
+    "experience to build next. It does not measure your ability or your odds.",
   ),
 
   /* ── 기관 ─────────────────────────────────────────────────────── */
@@ -293,7 +373,9 @@ export const TX = {
   adminCompletion: p("완료율", "Completion"),
   adminTierUse: p("등급별 발급", "Report tiers issued"),
   adminMajorUse: p("전공별 응시", "Assessments by major"),
-  adminReportErrors: p("결과지 생성 실패", "Report generation errors"),
+  /* **'실패' 가 아니다.** 깨진 것은 `adminBlocked` 가 받고, 이 숫자는
+     제출은 됐는데 아직 아무도 안 누른 것이다 */
+  adminReportErrors: p("결과지 미생성", "Reports not generated yet"),
   adminPeriod: p("기간", "Period"),
   adminPeriod7: p("7일", "7 days"),
   adminPeriod30: p("30일", "30 days"),
@@ -323,6 +405,20 @@ export const TX = {
   ),
   adminNoCountryPacks: p("아직 확인된 국가 묶음이 없습니다.", "No verified country packs yet."),
   adminActive: p("사용", "Active"),
+  adminBlocked: p("사람이 손봐야 하는 것", "Needs a person"),
+  adminBlockedKind: p("갈래", "Kind"),
+  adminBlockedWhen: p("때", "When"),
+  adminBlockedWhat: p("무엇이", "What"),
+  adminBlockedTrace: p("되짚을 번호", "Trace"),
+  adminBlockedRecent: p("최근에 막힌 것", "Recent failures"),
+  adminBlockedNoneTitle: p("지금 막힌 것이 없습니다.", "Nothing is stuck right now."),
+  adminBlockedNoneBody: p(
+    "결과지 생성 · PDF · 결제 · 알림에서 사람이 봐야 하는 실패가 쌓이면 여기 섭니다. " +
+    "비어 있는 것과 검사하지 않는 것은 다릅니다: 이 줄은 표를 실제로 세고 있습니다.",
+    "Failures in report generation, PDF, payment and email that need a person show up here. " +
+    "Empty is not the same as unchecked: this really counts the table.",
+  ),
+
   adminInactive: p("중지", "Inactive"),
 } as const;
 

@@ -59,6 +59,56 @@ export default async function AdminOverview({
         }
       />
 
+      {/* **맨 위가 사람이 할 일이다.** 이 화면을 여는 이유가 그것이다:
+          숫자는 그 아래에서도 읽히지만, 막힌 것은 아침에 눈에 띄어야 한다 */}
+      <Section title={T("adminBlocked")}>
+        {ov.blocked.open > 0 ? (
+          <>
+            <div className="sf-grid sf-g3">
+              {ov.blocked.kinds.map((k) => (
+                <Kpi
+                  key={k.label}
+                  label={T("adminBlockedKind")}
+                  value={`${k.label} ${k.n}`}
+                  note={k.last ?? undefined}
+                  icon="log"
+                />
+              ))}
+            </div>
+            <Card title={T("adminBlockedRecent")} pad={false}>
+              <table className="sf-table">
+                <thead>
+                  <tr>
+                    <th>{T("adminBlockedKind")}</th>
+                    <th>{T("adminBlockedWhen")}</th>
+                    <th>{T("adminBlockedWhat")}</th>
+                    <th>{T("adminBlockedTrace")}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ov.blocked.recent.map((r) => (
+                    <tr key={r.trace + r.at}>
+                      <td><Pill tone="warn">{r.kind}</Pill></td>
+                      <td className="sf-num">{r.at}</td>
+                      <td>{r.message}</td>
+                      {/* 되짚을 번호까지다. 개인 서술은 이 표에 오지 않는다 */}
+                      <td className="sf-mono">{r.trace.slice(0, 8)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </Card>
+          </>
+        ) : (
+          <Empty
+            icon="spark"
+            title={T("adminBlockedNoneTitle")}
+            body={T("adminBlockedNoneBody")}
+            tight
+          />
+        )}
+      </Section>
+
       <Section title={T("adminB2C")}>
         <div className="sf-grid sf-g6">
           <Kpi label={T("adminSignups")} value={ov.b2c.signups} icon="user" accent />
@@ -98,7 +148,7 @@ export default async function AdminOverview({
       <Section>
         <div className="sf-grid sf-g2">
           <Card title={T("adminProduct")}
-            note={ov.product.report_errors > 0 ? undefined : "결과지 생성 실패 0"}
+            note={ov.product.report_errors > 0 ? undefined : "밀린 결과지 0"}
             actions={ov.product.report_errors > 0
               ? <Pill tone="warn">{T("adminReportErrors")} {ov.product.report_errors}</Pill>
               : undefined}>

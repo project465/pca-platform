@@ -647,3 +647,32 @@
   .pubwrap { padding: 24px 16px 56px }
   .pubtop { padding: 0 16px }
 }
+
+/* 승인된 경험 입력 화면을 품는 창. 높이를 고정하지 않으면 단계마다 창
+   안에서 따로 스크롤이 생겨 바깥 스크롤과 둘이 된다 */
+.evframe {
+  display: block; width: 100%; min-height: 72vh;
+  border: 1px solid var(--sf-line); border-radius: var(--sf-r);
+  background: var(--sf-surface);
+}
+@media (max-width: 760px) { .evframe { min-height: 78vh } }
+
+/* 결과지를 품는 창. 높이는 안쪽이 알려 준다 */
+.rpframe {
+  display: block; width: 100%; border: 0; background: #fff;
+  border-radius: var(--sf-r); box-shadow: 0 1px 0 var(--sf-line);
+}
+.rpmake {
+  margin-top: 24px; padding: 18px 20px;
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  background: var(--sf-surface); border: 1px solid var(--sf-line);
+  border-radius: var(--sf-r);
+}
+.rpmake .sf-meta { flex: 1; min-width: 220px }
+
+/* 숫자와 되짚을 번호는 자리를 맞춘다. 눈으로 두 줄을 견주는 칸이다 */
+.sf-num { font-variant-numeric: tabular-nums; white-space: nowrap }
+.sf-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12.5px; color: var(--sf-ink-3); white-space: nowrap;
+}

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireRole } from "@/lib/session";
 import { resolveLang } from "@/lib/locale-server";
 import { myState } from "@/lib/my-home";
+import { v2State, type V2State } from "@/lib/me-v2/lifecycle";
 import { BRAND, toLang2, txer } from "@/lib/surface-text";
 import { ROLE_LABEL } from "@/lib/roles";
 import { Shell, PageHead, Section } from "@/components/sf/shell";
@@ -37,6 +38,10 @@ export default async function MyHome({
   const T = txer(L);
 
   const st = await myState(user.id, lang);
+  /* ME_V2 가 먼저다. 지금 파는 검사가 그것이고, 옛 검사는 이미 응시한
+     사람에게만 남아 있다. 둘을 같은 칸에 섞으면 어느 결과지를 보라는
+     것인지가 읽히지 않는다 */
+  const v2 = await v2State(user.id);
 
   return (
     <Shell
@@ -48,9 +53,11 @@ export default async function MyHome({
       topTitle={T("navHome")}
       topRight={<LangSelect current={L} />}
     >
-      {st.kind === "none" ? <NoAssessment T={T} ready={st.seatReady} /> : null}
-      {st.kind === "progress" ? <InProgress T={T} st={st} /> : null}
-      {st.kind === "done" ? <Done T={T} st={st} /> : null}
+      {v2.kind !== "none" ? <V2Panel T={T} v2={v2} /> : null}
+      {v2.kind === "none" && st.kind === "none"
+        ? <NoAssessment T={T} ready={st.seatReady} /> : null}
+      {v2.kind === "none" && st.kind === "progress" ? <InProgress T={T} st={st} /> : null}
+      {v2.kind === "none" && st.kind === "done" ? <Done T={T} st={st} /> : null}
     </Shell>
   );
 }
@@ -66,7 +73,10 @@ function NoAssessment({ T, ready }: { T: Tr; ready: boolean }) {
         <h1>{T("myHeroTitle")}</h1>
         <p>{T("myHeroBody")}</p>
         <div className="sf-hero-a">
-          <Link href={ready ? "/test" : "/free"} className="sf-btn">
+          {/* **지금 파는 것으로 보낸다.** 좌석이 있으면 옛 검사를 이어서
+              쓰고, 없으면 가격표다: `/free` 로 보내면 파는 검사가 아닌
+              쪽이 첫 걸음이 된다 */}
+          <Link href={ready ? "/test" : "/pricing"} className="sf-btn">
             {T("myStart")}
           </Link>
           <Link href="/my/evidence" className="sf-btn ghost">{T("myAddEvidence")}</Link>
@@ -251,4 +261,172 @@ function ACTION_TEXT(kind: string | null): string {
     case "online": return "온라인 과정을 하나 끝까지 들으십시오.";
     default: return "작은 프로젝트 하나로 직접 해보십시오.";
   }
+}
+
+/* ── ME_V2 다섯 상태 ───────────────────────────────────────────────
+   **주된 단추가 어느 상태에서도 하나다.** 둘을 같은 굵기로 두면 고르는
+   일이 생기고, 고르는 일이 생기면 거기서 멈춘다. */
+function V2Panel({ T, v2 }: { T: Tr; v2: V2State }) {
+  if (v2.kind === "purchased") {
+    return (
+      <>
+        <PageHead
+          eyebrow={v2.tier}
+          title={T("v2BoughtTitle")}
+          sub={T("v2BoughtBody")}
+          actions={
+            <Link href="/assessment/start" className="sf-btn accent">{T("asStart")}</Link>
+          }
+        />
+        <div className="sf-grid sf-g3">
+          <Kpi label={T("okTier")} value={v2.tier} icon="report" />
+          <Kpi label={T("v2Grants")} value={v2.grants} icon="box" />
+          <Kpi label={T("myProgress")} value="0" unit="%" fill={0} icon="clipboard" />
+        </div>
+      </>
+    );
+  }
+
+  if (v2.kind === "progress") {
+    return (
+      <>
+        <PageHead
+          eyebrow={`${v2.tier} · ${T("myInProgress")}`}
+          title={T("v2ResumeTitle")}
+          sub={T("v2ResumeBody")}
+          actions={
+            <Link href={`/assessment/${v2.attemptId}`} className="sf-btn accent">
+              {T("asResume")}
+            </Link>
+          }
+        />
+        <div className="sf-grid sf-g3">
+          <Kpi
+            label={T("myProgress")} value={v2.percent} unit="%" fill={v2.percent}
+            note={`${v2.answered.toLocaleString()} / ${v2.total.toLocaleString()}`}
+            accent icon="clipboard"
+          />
+          <Kpi label={T("okTier")} value={v2.tier} icon="report" />
+          {/* 어디까지 왔는지를 숫자만으로 적지 않는다(규격 §43) */}
+          <Kpi
+            label={T("asSectionOf")}
+            value={v2.section ? T(SECTION_KEY(v2.section)) : "—"}
+            icon="compass"
+          />
+        </div>
+      </>
+    );
+  }
+
+  if (v2.kind === "evidence") {
+    return (
+      <>
+        <PageHead
+          eyebrow={v2.tier}
+          title={T("v2EvidenceTitle")}
+          sub={T("v2EvidenceBody")}
+          actions={
+            <Link href={`/assessment/${v2.attemptId}/evidence?flow=1`}
+              className="sf-btn accent">{T("asAddEvidence")}</Link>
+          }
+        />
+        <Section>
+          {/* 경험으로 막지 않는다. 지금 바로 받고 싶은 사람의 길도 둔다 */}
+          <Empty
+            icon="report"
+            title={T("rpNoneTitle")}
+            body={T("rpNoneBody")}
+            cta={{ href: `/assessment/${v2.attemptId}/report`, label: T("rpMake") }}
+            tight
+          />
+        </Section>
+      </>
+    );
+  }
+
+  if (v2.kind === "generating") {
+    return (
+      <>
+        <PageHead
+          eyebrow={v2.tier}
+          title={v2.failedAt ? T("v2StuckTitle") : T("rpNoneTitle")}
+          sub={v2.failedAt ? T("v2StuckBody") : T("rpNoneBody")}
+          actions={
+            <Link href={`/assessment/${v2.attemptId}/report`} className="sf-btn accent">
+              {v2.failedAt ? T("rpRetry") : T("rpMake")}
+            </Link>
+          }
+        />
+        {v2.failedAt ? (
+          <div className="sf-grid sf-g3">
+            <Kpi label={T("v2StuckAt")} value={v2.failedAt} icon="log" />
+          </div>
+        ) : null}
+      </>
+    );
+  }
+
+  /* 끝났다 */
+  const done = v2 as Extract<V2State, { kind: "done" }>;
+  return (
+    <>
+      <PageHead
+        eyebrow={`${done.tier} · ${done.generatedAt}`}
+        title={T("rpTitle")}
+        sub={T("v2DoneBody")}
+        actions={
+          <>
+            <Link href={`/assessment/${done.attemptId}/report`} className="sf-btn accent">
+              {T("myOpenReport")}
+            </Link>
+            {done.hasPdf ? (
+              <a href={`/assessment/${done.attemptId}/report/pdf`} className="sf-btn ghost">
+                {T("rpPdf")}
+              </a>
+            ) : null}
+          </>
+        }
+      />
+      <div className="sf-grid sf-g3">
+        <Kpi label={T("okTier")} value={done.tier} icon="report" />
+        <Kpi label={T("evHave")} value={done.evidenceItems} icon="layers" />
+        <Kpi label={T("rpMadeAt")} value={done.generatedAt} icon="clipboard" />
+      </div>
+      <Section title={T("navEvidence")}>
+        {done.evidenceItems > 0 ? (
+          <div className="sf-card">
+            <p className="sf-sub" style={{ fontSize: 13.5, margin: 0 }}>
+              {T("rpAgainWhy")}
+            </p>
+            <Link href={`/assessment/${done.attemptId}/evidence`}
+              className="sf-btn ghost sm" style={{ marginTop: 14 }}>
+              {T("asAddEvidence")}
+            </Link>
+          </div>
+        ) : (
+          <Empty
+            icon="layers"
+            title={T("rpBareTitle")}
+            body={T("rpBareBody")}
+            cta={{ href: `/assessment/${done.attemptId}/evidence`, label: T("asAddEvidence") }}
+            tight
+          />
+        )}
+      </Section>
+    </>
+  );
+}
+
+/** 묶음 이름. 대시보드와 응시 화면이 같은 사전을 쓴다 */
+function SECTION_KEY(key: string) {
+  const m: Record<string, "secInterest" | "secExposure" | "secOwnership"
+    | "secWorkMode" | "secLearning" | "secContext"> = {
+    actual_work_interest: "secInterest",
+    exposure: "secExposure",
+    decision_ownership: "secOwnership",
+    work_mode: "secWorkMode",
+    learning_intent: "secLearning",
+    career_context: "secContext",
+  };
+  return m[key] ?? "secContext";
 }

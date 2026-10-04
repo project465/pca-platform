@@ -39,6 +39,10 @@ async function reset(userId: string) {
   await query(`DELETE FROM entitlements WHERE user_id = $1`, [userId]);
   await query(`DELETE FROM payments WHERE order_id IN
                  (SELECT id FROM orders WHERE user_id = $1)`, [userId]);
+  /* 개인 응시가 걸리는 회차가 주문을 가리킨다. 주문부터 지우면 외래키가
+     막는다. 몇 번을 돌려도 같은 결과가 나와야 하므로 순서를 맞춘다 */
+  await query(`DELETE FROM test_sessions WHERE order_id IN
+                 (SELECT id FROM orders WHERE user_id = $1)`, [userId]);
   await query(`DELETE FROM orders WHERE user_id = $1`, [userId]);
 }
 

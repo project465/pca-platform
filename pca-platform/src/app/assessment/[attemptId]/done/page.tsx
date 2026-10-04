@@ -39,8 +39,12 @@ export default async function AssessmentDone({
         <h1 className="asH1">{T("asDoneTitle")}</h1>
         <p className="sf-sub">{T("asDoneBody")}</p>
         <div style={{ marginTop: 28, display: "flex", gap: 10, flexWrap: "wrap" }}>
-          <Link href="/evidence" className="sf-btn accent">{T("asAddEvidence")}</Link>
-          <Link href="/my" className="sf-btn ghost">{T("navHome")}</Link>
+          {/* 경험 쪽을 먼저 둔다. 흐름 한가운데라 `flow=1` 이 들어가고,
+              그래서 나가는 단추가 '지금은 건너뛰기' 로 읽힌다 */}
+          <Link href={`/assessment/${attemptId}/evidence?flow=1`}
+            className="sf-btn accent">{T("asAddEvidence")}</Link>
+          <Link href={`/assessment/${attemptId}/report`}
+            className="sf-btn ghost">{T("asSeeResult")}</Link>
         </div>
       </main>
     </div>

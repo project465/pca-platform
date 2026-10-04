@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>경험 적기</title>
+<!--
+  경험 입력 화면을 플랫폼이 품는 자리.
+
+  **승인된 화면을 다시 짜지 않는다.** 되묻는 말 일흔다섯 보기와 빈칸의 뜻
+  셋(모른다 · 아직 안 적었다 · 그런 것이 없었다)이 전부
+  `assets/evidence-ui.js` 에 있다. React 로 옮겨 적으면 보기 하나가 빠져도
+  아무도 모르고, 빠진 보기는 "아무거나 고르게" 만든다.
+
+  **브라우저 저장소가 진실이 아니다.** 들어올 때 서버가 들고 있던 것을
+  넣어 주고, 끝나면 그 세 묶음을 부모 창으로 넘긴다. 저장은 서버가 한다.
+-->
+<link rel="stylesheet" href="/pca/assets/app.css">
+<style>
+  body { background: #fff; margin: 0; padding: 0 }
+  #evBody { max-width: 760px; margin: 0 auto; padding: 8px 16px 40px }
+</style>
+</head>
+<body>
+<div id="evBody"></div>
+
+<script src="/pca/data/families.js"></script>
+<script src="/pca/data/evidence-rules.js"></script>
+<script src="/pca/assets/evidence.js"></script>
+<script src="/pca/assets/research.js"></script>
+<script src="/pca/assets/evidence-ui.js"></script>
+<script>
+(function () {
+  'use strict';
+  var EV = window.PCAEvidence;
+  var UI = window.PCAEvidenceUI;
+  function q(k) {
+    return new URLSearchParams(location.search).get(k) || '';
+  }
+  /* 부모와 같은 출처일 때만 말을 섞는다. 플랫폼이 내주는 두 주소라
+     출처가 같고, 다르면 밖에서 끼워 넣은 창이다 */
+  function send(msg) {
+    try { parent.postMessage(msg, location.origin); } catch (e) {}
+  }
+
+  function start(seed) {
+    if (seed) {
+      EV.saveEvidence(Object.assign(EV.emptyEvidence(), seed.evidence || {}));
+      EV.saveResearch(seed.research || []);
+      EV.saveTarget(Object.assign(EV.loadTarget(), seed.target || {}));
+    }
+    UI.open({
+      stage: q('stage') || 'bachelor',
+      /* 흐름 한가운데서 '그만두기' 라고 쓰면 검사를 접는 단추로 읽힌다 */
+      cancelLabel: q('flow') === '1' ? '지금은 건너뛰기' : '그만두기',
+      /* `true` 는 저장하고 나간 것이고 `false` 는 그만둔 것이다
+         (`evidence-ui.js` 의 evSave · evCancel). 뒤집으면 그만둔 사람의
+         빈 경험이 서버에 저장돼 적어 둔 것을 지운다 */
+      onDone: function (saved) {
+        send({
+          type: 'cm.evidence.done',
+          saved: !!saved,
+          evidence: EV.loadEvidence(),
+          research: EV.loadResearch(),
+          target: EV.loadTarget()
+        });
+      }
+    });
+    send({ type: 'cm.evidence.ready' });
+  }
+
+  /* 부모가 서버에서 읽은 것을 건넨다. 주소에 담으면 길이 제한에 걸리고
+     브라우저 기록에 경험이 남는다 */
+  window.addEventListener('message', function (e) {
+    if (e.origin !== location.origin) return;
+    if (!e.data || e.data.type !== 'cm.evidence.seed') return;
+    try { localStorage.clear(); } catch (x) {}
+    start(e.data.payload);
+  });
+
+  send({ type: 'cm.evidence.hello' });
+})();
+</script>
+</body>
+</html>

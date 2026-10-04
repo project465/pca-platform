@@ -80,9 +80,9 @@ const FOOTER = `<div style="width:100%;font-size:7pt;color:#76859b;
 /**
  * 결과지 한 판본을 만든다.
  *
- * `baseUrl` 은 이 플랫폼 자신이다. 밖에서 받아 쓰는 것이 아니라 부르는
- * 쪽(서버 액션)이 자기 주소를 넘긴다: 머리 없는 브라우저가 `/pca/v2.html`
- * 을 열어야 하고, 그 주소는 배포마다 다르다.
+ * `baseUrl` 은 이 플랫폼 자신이다. 부르는 쪽(서버 액션)이 자기 주소를
+ * 넘긴다. 머리 없는 브라우저가 `/pca/v2.html` 을 열어야 하는데, 그 주소는
+ * 배포마다 달라서 코드에 적어 둘 수 없다.
  */
 export async function generateReport(opts: {
   attemptId: string;
