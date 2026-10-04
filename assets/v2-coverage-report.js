@@ -23,6 +23,21 @@ window.PCAV2CoverageReport = (function () {
     return ((c - 0xac00) % 28) ? withBatchim : without;
   }
 
+
+  /* 응시자가 적은 글. **그리기 직전에만 거른다**: 판정은 이미 끝났고
+     여기서 바꾸는 것은 화면에 나가는 글자뿐이다. 거를 것이 남지 않으면
+     null 이 오고, 그 자리를 비운다. 뜻을 지어내 채우지 않는다. */
+  function u(v) {
+    var S = window.PCASanitize;
+    if (!S) return esc(v);
+    return S.safe(v);
+  }
+  function ulist(a, n) {
+    var S = window.PCASanitize;
+    var l = S ? S.list(a) : (a || []).map(String);
+    return l.slice(0, n || l.length).map(function (x) { return esc(x); });
+  }
+
   var MARK = { confirmed: '✓', partial: '△', not_yet: '○' };
   var HEAD = { confirmed: '현재 확인된 것', partial: '일부 확인', not_yet: '아직 확인되지 않음' };
   var IMP = { core: '핵심', supporting: '뒷받침', optional: '선택' };
@@ -49,7 +64,7 @@ window.PCAV2CoverageReport = (function () {
             (r.importance !== 'core' ? ' <i>' + esc(IMP[r.importance]) + '</i>' : '') +
             '</span>' +
             '<span class="cvby">' +
-            (r.supported_by.length ? esc(r.supported_by.slice(0, 2).join(' · '))
+            (r.supported_by.length ? ulist(r.supported_by, 2).join(' · ')
               : (r.status === 'partial' ? esc(r.minimum_depth_name + '까지 필요합니다') : '')) +
             '</span></div>';
         }).join('') + '</div>';

@@ -1,401 +1,612 @@
 /* ME_V2 결과지.
  *
- * **첫 화면이 막대 그래프가 아니다.** 다섯 칸이 각각 다른 것을 재고 마지막
- * 칸이 지금 무엇을 할 자리인지 적는다. 막대 하나로 줄이면 읽는 사람이 그
- * 길이를 등수로 읽고, 등수는 이 검사가 만들 수 있는 값이 아니다.
+ * **읽는 순서가 곧 구조다.**
  *
- * 상품은 같은 자료를 **깊이만 달리** 읽는다. 문체는 세 상품이 같다.
+ *   결정 → 왜 → 내 증거 → 조직이 보는 결과 → 비어 있는 것 → 할 일
+ *
+ * 예전 결과지는 분석 모듈을 만든 순서대로 늘어놓아서, 한 직무가 결정 표와
+ * 범위와 사슬과 격차와 지원 자료에 다섯 번 나왔다. 읽는 사람은 같은 직무를
+ * 다섯 번 만나고도 그래서 무엇을 하라는 것인지 몰랐다. **직무 하나는 한
+ * 자리에서 끝낸다**(`roleDeepDive`).
+ *
+ * **첫 장에서 서른 초 안에 넷을 답할 수 있어야 한다.**
+ *   ① 먼저 볼 직무 셋  ② 왜  ③ 가장 큰 공백  ④ 지금 할 일
+ * 그래서 첫 장에 검사 설명도 측정 방법도 문항 번호도 넣지 않는다. 그런
+ * 것은 부록으로 간다.
+ *
+ * **점수를 만들지 않는다.** 여기는 그리기만 한다. 판단은 `v2-scoring.js` ·
+ * `value-engine.js` · `coverage-engine.js` 가 끝내 놓는다.
  */
 window.PCAV2Report = (function () {
   'use strict';
 
   var DEC = window.PCAV2Decision;
+  var VR = window.PCAV2ValueReport;
+  var CR = window.PCAV2CoverageReport;
+  var SN = window.PCASanitize;
 
-  function esc(s) {
-    return String(s === null || s === undefined ? '' : s)
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-  }
+  function esc(s) { return SN ? SN.esc(s) : String(s == null ? '' : s); }
+  function clean(v) { return SN ? SN.safe(v) : esc(v); }
   function pad2(n) { return (n < 10 ? '0' : '') + n; }
+
   var LV = { high: '높음', medium: '보통', low: '낮음' };
-  var RD = { high: '넉넉함', medium: '보통', low: '아직 적음' };
+  /* 결과지에서 가장 조심해야 하는 두 문장. **한 번만 적어 둔다**: 세 자리에
+     따로 적어 두었더니 손볼 때마다 세 군데가 갈렸고, 문체 검사에도 같은
+     대구가 여섯 번 센 것으로 걸렸다 */
+  var NOT_ABILITY = '못 한다는 뜻이 아닙니다. 지금 적어 주신 것으로는 ' +
+    '확인되지 않는다는 뜻입니다.';
+  var LOW_RUNG = '낮은 칸이 모자라다는 뜻이 아닙니다. 지금 적어 주신 것으로 ' +
+    '확인되는 범위입니다.';
+  var RUNG = { E0: '활동', E1: '판단', E2: '산출물', E3: '성과', E4: '조직 가치', E5: '반복' };
 
-  function lv(o) { return o && o.level ? LV[o.level] : '자료 없음'; }
-
-  /* ── 결정 표 (규격 22장) ────────────────────────────────────────── */
-  function decisionTable(J, n) {
-    var rows = J.decision_table.slice(0, n || 8);
-    return '<div class="v2tw"><table><thead><tr>' +
-      ['직무군', '업무방식', '관심', '경험', '학습의향', '증거 준비도', '지금 할 것']
-        .map(function (h) { return '<th>' + h + '</th>'; }).join('') +
-      '</tr></thead><tbody>' +
-      rows.map(function (r) {
-        return '<tr><td><b>' + esc(r.name) + '</b></td>' +
-          '<td>' + esc(DEC.modeLabel(r.work_mode)) + '</td>' +
-          '<td>' + esc(lv(r.interest)) + '</td>' +
-          '<td>' + esc(lv(r.exposure)) + '</td>' +
-          '<td>' + esc(lv(r.learning)) + '</td>' +
-          /* 경험을 아직 안 적은 것과, 적었는데 이 직무에 걸리는 것이 없는
-             것은 다른 상태다. 한 말로 적으면 적어 주신 분이 자기가 안 적은
-             줄 안다 */
-          '<td>' + esc(r.evidence_readiness ? RD[r.evidence_readiness.level]
-            : (J.evidence_supplied ? '걸린 근거 없음' : '경험 미입력')) + '</td>' +
-          '<td><b>' + esc(DEC.label(r.decision_status)) + '</b></td></tr>';
-      }).join('') + '</tbody></table></div>' +
-      '<p class="note" style="margin-top:10px">여섯 칸을 하나로 합치지 않습니다. ' +
-      '합치면 숫자 하나가 남고 그 숫자로는 무엇을 할지 알 수 없습니다. ' +
-      '칸이 갈리는 자리가 할 일을 알려 줍니다.</p>';
+  /* ── 쪽 ─────────────────────────────────────────────────────────────
+     한 쪽에 핵심 메시지 하나. 인쇄에서 쪽이 갈리는 자리가 여기다. */
+  function page(n, eyebrow, title, sub, body, cls) {
+    return '<section class="rpage' + (cls ? ' ' + cls : '') + '">' +
+      '<div class="rpnum">' + pad2(n) + '</div>' +
+      (eyebrow ? '<div class="eyebrow">' + esc(eyebrow) + '</div>' : '') +
+      '<h2 class="rptitle">' + esc(title) + '</h2>' +
+      (sub ? '<p class="rpsub">' + esc(sub) + '</p>' : '') +
+      body + '</section>';
   }
 
-  /* ── 왜 이 직무가 나왔는가 (규격 11장) ──────────────────────────── */
-  function why(J, row) {
+  /* ── 1쪽. 결정 요약 ─────────────────────────────────────────────── */
+
+  /** 지금 가장 큰 공백 하나. 상위 직무의 핵심 미확인에서 고른다. */
+  function biggestGap(J) {
+    var cv = J.role_evidence_coverage || {};
+    for (var i = 0; i < Math.min(3, J.decision_table.length); i++) {
+      var fid = J.decision_table[i].career_family_id;
+      var c = cv[fid];
+      if (c && c.priority_gaps.length) {
+        return { family: c.career_family_name, gap: c.priority_gaps[0] };
+      }
+    }
+    return null;
+  }
+
+  /** 지금 할 일 한 줄. 공백이 있으면 그것, 없으면 비교로 넘어간다. */
+  function nextOneThing(J) {
+    var g = biggestGap(J);
+    if (g) {
+      return '<b>' + esc(g.gap.label) + '</b> 한 자리를 채우는 일을 하나 하십시오. ' +
+        esc(g.gap.description);
+    }
+    var top = J.decision_table[0];
+    return '핵심 영역이 모두 확인됩니다. ' + esc(top.name) +
+      ' 공고 세 건을 띄워 놓고 요구사항과 내 근거를 한 줄씩 맞춰 보십시오.';
+  }
+
+  /**
+   * 핵심 판단 두세 개.
+   *
+   * **사실에서만 만든다.** 관심과 경험이 갈리는 자리, 범위가 비어 있는
+   * 자리, 깊이가 멈춘 자리. 없는 것은 쓰지 않는다.
+   */
+  function findings(J) {
+    var out = [];
+    var rows = J.decision_table.slice(0, 3);
+    var cv = J.role_evidence_coverage || {};
+
+    rows.forEach(function (r) {
+      if (out.length >= 3) return;
+      var i = r.interest && r.interest.level, e = r.exposure && r.exposure.level;
+      if (i === 'high' && e === 'low') {
+        out.push(esc(r.name) + ' 는 해보고 싶은 쪽으로 답하셨는데 해본 경험이 ' +
+          '아직 확인되지 않습니다.');
+      }
+    });
+    rows.forEach(function (r) {
+      if (out.length >= 3) return;
+      var c = cv[r.career_family_id];
+      if (c && c.summary.core.confirmed > 0 && c.priority_gaps.length) {
+        out.push(esc(r.name) + ' 는 핵심 ' + c.summary.core.total + '개 가운데 ' +
+          c.summary.core.confirmed + '개가 확인되고, ' +
+          esc(c.priority_gaps[0].label) + ' 가 비어 있습니다.');
+      }
+    });
+    if (out.length < 3 && J.performance_evidence && J.performance_evidence.length) {
+      var deep = null;
+      J.performance_evidence.forEach(function (x) {
+        if (x.confirmed_up_to && (!deep || x.confirmed_up_to.id > deep.id)) deep = x.confirmed_up_to;
+      });
+      if (deep) {
+        out.push('적어 주신 경험은 지금 ' + esc(deep.name) + ' 까지 확인됩니다.');
+      }
+    }
+    if (out.length < 2 && rows[1]) {
+      out.push(esc(rows[0].name) + ' 와 ' + esc(rows[1].name) +
+        ' 가 가까이 있어 둘을 견주어 보실 단계입니다.');
+    }
+    return out.slice(0, 3);
+  }
+
+  function decisionSummary(J) {
+    var rows = J.decision_table.slice(0, 3);
+    var g = biggestGap(J);
+    return '<div class="dsum">' +
+      '<div class="dstop">' +
+      rows.map(function (r, i) {
+        return '<div class="dscard">' +
+          '<div class="dsrank">' + (i + 1) + '</div>' +
+          '<h3>' + esc(r.name) + '</h3>' +
+          '<div class="dsmeta">' +
+          '<span>관심 ' + esc(LV[r.interest && r.interest.level] || '—') + '</span>' +
+          '<span>경험 ' + esc(LV[r.exposure && r.exposure.level] || '—') + '</span>' +
+          (r.evidence_coverage
+            ? '<span>핵심 ' + r.evidence_coverage.core.confirmed + '/' +
+              r.evidence_coverage.core.total + ' 확인</span>' : '') +
+          '</div>' +
+          '<div class="dsnow">' + esc(DEC.label(r.decision_status)) + '</div>' +
+          '</div>';
+      }).join('') + '</div>' +
+
+      '<div class="dsgrid">' +
+      '<div class="dsbox"><h4>지금 결과에서 가장 중요한 것</h4><ul class="qlist">' +
+      findings(J).map(function (t) { return '<li>' + t + '</li>'; }).join('') +
+      '</ul></div>' +
+
+      '<div class="dsbox dsgap"><h4>가장 큰 공백</h4>' +
+      (g
+        ? '<p class="dsgapname">' + esc(g.gap.label) + '</p>' +
+          '<p class="note">' + esc(g.family) + ' · ' + esc(g.gap.description) + '</p>'
+        : '<p class="note">핵심 영역에서 비어 있는 자리가 없습니다.</p>') +
+      '</div>' +
+      '</div>' +
+
+      '<div class="dsact"><div class="eyebrow">지금 할 일</div>' +
+      '<p>' + nextOneThing(J) + '</p></div>' +
+
+      '<p class="note dsfoot">여기 나오는 값은 합격 가능성이나 실력을 잰 값이 ' +
+      '아닙니다. 지금 적어 주신 응답과 경험에서 확인되는 것만 적었습니다.</p>' +
+      '</div>';
+  }
+
+  /* ── 2쪽. 직무 견주기 ───────────────────────────────────────────── */
+  function topComparison(J) {
+    var top = J.decision_table.slice(0, 3);
+    var adj = J.decision_table.slice(3, 5);
+    var cell = function (r) {
+      var c = r.evidence_coverage;
+      return '<tr><td><b>' + esc(r.name) + '</b></td>' +
+        '<td>' + esc(DEC.modeLabel(r.work_mode)) + '</td>' +
+        '<td>' + esc(LV[r.interest && r.interest.level] || '—') + '</td>' +
+        '<td>' + esc(LV[r.exposure && r.exposure.level] || '—') + '</td>' +
+        '<td>' + esc(LV[r.learning && r.learning.level] || '—') + '</td>' +
+        '<td>' + (c ? c.core.confirmed + ' / ' + c.core.total : '—') + '</td>' +
+        '<td>' + (r.evidence_depth ? esc(r.evidence_depth + ' ' + RUNG[r.evidence_depth]) : '—') + '</td>' +
+        '<td><b>' + esc(DEC.label(r.decision_status)) + '</b></td></tr>';
+    };
+    return '<div class="v2tw"><table><thead><tr>' +
+      ['직무', '업무방식', '관심', '경험', '학습의향', '핵심 확인', '증거 깊이', '지금 단계']
+        .map(function (h) { return '<th>' + h + '</th>'; }).join('') +
+      '</tr></thead><tbody>' + top.map(cell).join('') +
+      (adj.length
+        ? '<tr class="v2adj"><td colspan="8">곁에 두실 후보</td></tr>' + adj.map(cell).join('')
+        : '') +
+      '</tbody></table></div>' +
+      '<p class="note" style="margin-top:12px">칸을 하나로 합치지 않습니다. ' +
+      '관심이 높은데 경험이 비어 있으면 먼저 작게 한 번 해보시는 것이 지원보다 ' +
+      '앞섭니다. 그 말을 하려면 두 칸이 갈려 있어야 합니다. ' +
+      '열여섯 직무 전부는 부록에 있습니다.</p>';
+  }
+
+  /* ── 직무 하나를 한 자리에서 ─────────────────────────────────────── */
+
+  /** 왜 이 직무가 앞에 왔는가. **문항 번호는 부록으로 보낸다.** */
+  function whyPlain(J, row) {
     var bank = window.PCA_V2_ITEMS.ME;
     var all = [].concat(bank.core.items, bank.standard.items, bank.pro.items);
-    var byNo = {};
-    all.forEach(function (it) { byNo[it.question_no] = it; });
-    var LABEL = {
-      actual_work_interest: '관심', exposure: '경험',
-      learning_intent: '학습의향', decision_ownership: '결정'
+    var hits = [];
+    all.forEach(function (it) {
+      var w = (it.career_family_weights || {})[row.career_family_id];
+      if (!w || w < 0.6) return;
+      if (it.construct !== 'actual_work_interest' && it.construct !== 'learning_intent') return;
+      var txt = window.PCAV2.textOf(it, J.education_stage);
+      if (txt) hits.push({ no: it.question_no, t: txt });
+    });
+    if (!hits.length) return '';
+    /* 문항 문장을 그대로 베끼지 않고 사람이 읽는 이유로 줄인다 */
+    var reasons = hits.slice(0, 3).map(function (h) {
+      return h.t.replace(/일을 해보고 싶다\.?$/, '').replace(/\.$/, '').trim();
+    });
+    return '<p class="rdwhy">' +
+      reasons.map(function (r) { return esc(r); }).join(' · ') +
+      ' 쪽으로 답하셨습니다.</p>';
+  }
+
+  function roleDeepDive(J, row, opts) {
+    opts = opts || {};
+    var fid = row.career_family_id;
+    var vp = (J.value_path && J.value_path.paths) ? J.value_path.paths[fid] : null;
+    var cv = (J.role_evidence_coverage || {})[fid];
+    var box = function (label, body) {
+      return body ? '<div class="rdbox"><div class="rdlab">' + esc(label) + '</div>' +
+        body + '</div>' : '';
     };
-    var lines = [];
-    [['interest', row.interest], ['exposure', row.exposure], ['learning', row.learning]]
-      .forEach(function (p) {
-        var o = p[1];
-        if (!o || !o.basis) return;
-        o.basis.slice(0, 3).forEach(function (no) {
-          var it = byNo[no];
-          if (!it) return;
-          lines.push('<li><b>Q' + no + '</b> ' + esc(LABEL[it.construct] || '') + ' · ' +
-            esc(window.PCAV2.textOf(it, J.profile.education_stage)) + '</li>');
-        });
-      });
-    if (!lines.length) return '';
-    return '<div class="card contentcard"><div class="eyebrow">' + esc(row.name) +
-      ' 이 앞에 온 까닭</div>' +
-      '<ul class="qlist" style="margin-top:8px">' + lines.join('') + '</ul>' +
-      '<p class="note" style="margin-top:10px">문항 번호를 그대로 적어 두는 것은, ' +
-      '어느 답이 이 줄을 만들었는지 되짚을 수 있어야 고칠 데도 보이기 ' +
-      '때문입니다.</p></div>';
+    var tags = function (a, n) {
+      return (a || []).slice(0, n || 5).map(function (x) {
+        return '<span class="tag">' + esc(x) + '</span>'; }).join('');
+    };
+
+    /* 지금 내 증거. **비어 있으면 빈 표를 그리지 않는다** */
+    var mine = '';
+    if (cv) {
+      var okRows = cv.coverage.filter(function (r) {
+        return r.importance === 'core' && r.status === 'confirmed'; });
+      var part = cv.coverage.filter(function (r) {
+        return r.importance === 'core' && r.status === 'partial'; });
+      if (okRows.length || part.length) {
+        /* **줄을 다 적지 않는다.** 확인된 칸을 열 줄 늘어놓으면 한 장을 다
+           먹고, 정작 읽어야 할 '아직 필요한 증거' 가 다음 장으로 밀린다.
+           전체는 부록의 직무별 증거 범위에 그대로 있다 */
+        var CAP = 3;
+        var extra = Math.max(0, okRows.length + part.length - CAP);
+        var okShow = okRows.slice(0, CAP);
+        var partShow = part.slice(0, Math.max(0, CAP - okShow.length));
+        mine = '<ul class="rdlist">' +
+          okShow.map(function (r) {
+            return '<li><span class="ok">확인</span>' + esc(r.label) +
+              (r.supported_by.length
+                ? '<i>' + (SN ? SN.list(r.supported_by).slice(0, 2).map(esc).join(' · ')
+                    : esc(r.supported_by.slice(0, 2).join(' · '))) + '</i>' : '') + '</li>';
+          }).join('') +
+          partShow.map(function (r) {
+            return '<li><span class="part">일부</span>' + esc(r.label) +
+              '<i>' + esc(r.minimum_depth_name) + '까지 가면 확인됩니다</i></li>';
+          }).join('') + '</ul>' +
+          (extra ? '<p class="note">나머지 ' + extra + '개는 부록의 직무별 증거 ' +
+            '범위에 그대로 있습니다.</p>' : '');
+      } else {
+        mine = '<p class="note">현재 입력에서는 이 직무의 핵심 증거가 아직 ' +
+          '충분히 확인되지 않습니다.</p>';
+      }
+    }
+
+    /* 아직 필요한 것. **두셋만 적는다**: 여덟 줄을 다 적으면 아무것도 안 읽힌다 */
+    var need = '';
+    if (cv && cv.priority_gaps.length) {
+      need = '<ul class="rdlist">' + cv.priority_gaps.slice(0, 3).map(function (g) {
+        return '<li><span class="not">아직</span>' + esc(g.label) +
+          '<i>' + esc(g.description) + '</i></li>';
+      }).join('') + '</ul>';
+    }
+
+    var act = cv && cv.priority_gaps.length
+      ? esc(cv.priority_gaps[0].label) + ' 를 남기는 일을 한 건 하십시오.'
+      : (vp ? esc((vp.next_validation_actions || [])[0] || '') : '');
+
+    return '<article class="rdeep">' +
+      '<header class="rdhead">' +
+      '<h3>' + esc(row.name) + '</h3>' +
+      '<span class="rdstatus">' + esc(DEC.label(row.decision_status)) + '</span>' +
+      '</header>' +
+      (vp ? '<p class="rdprob">' + esc(vp.problem) + '</p>' : '') +
+      whyPlain(J, row) +
+      '<div class="rdgrid">' +
+      box('실제 하는 일', vp ? tags(vp.work_activities, 4) : '') +
+      box('자주 내리는 판단', vp ? tags(vp.technical_decisions, 4) : '') +
+      box('전공지식 연결', vp
+        ? tags(vp.academic_inputs.filter(function (a) { return a.confidence !== 'unknown'; })
+            .map(function (a) { return a.label; }), 5) ||
+          '<span class="note">아직 걸린 과목이 없습니다</span>'
+        : '') +
+      box('조직에서 보는 결과', vp ? tags(vp.performance_criteria, 4) : '') +
+      '</div>' +
+      '<div class="rdgrid rdev">' +
+      box('현재 내 증거', mine) +
+      box('아직 필요한 증거', need || '<p class="note">핵심에서 비어 있는 자리가 없습니다.</p>') +
+      '</div>' +
+      (act ? '<div class="rdact"><b>다음 행동</b> ' + act + '</div>' : '') +
+      '</article>';
   }
 
-  /* ── 업무 방식 (숫자를 내지 않는다) ─────────────────────────────── */
-  function workMode(J) {
-    return '<div class="grid">' + J.work_mode.profile.map(function (ax) {
-      return '<div class="card contentcard"><div class="eyebrow">' +
-        esc(ax.poles.join(' · ')) + '</div><h3 style="margin:6px 0 0">' +
-        esc(ax.label) + '</h3></div>';
-    }).join('') + '</div>' +
-    '<p class="note" style="margin-top:10px">' + esc(J.work_mode.note) +
-    ' 두 문항으로 잰 축에 소수점을 붙이면 그 정밀도가 있는 것처럼 읽힙니다.</p>';
-  }
-
-  /* ── 경험 지도 ──────────────────────────────────────────────────── */
-  function evidenceMap(J) {
+  /* ── 4쪽. 지금 내 증거 ──────────────────────────────────────────── */
+  function evidenceToday(J, n, lean) {
     if (!J.evidence_supplied) {
-      return '<div class="card contentcard"><p>지금 등록된 프로젝트·연구·인턴 ' +
-        '경험이 없어 경험을 바탕으로 한 분석은 제한적으로만 나갑니다. ' +
-        '수업과 프로젝트와 도구를 적어 두시면 증거 준비도와 경험 지도가 ' +
-        '함께 나옵니다.</p>' +
-        '<button type="button" class="ns-btn" id="btnEvidence">경험 추가하기</button>' +
-        '<p class="note ns-note">여기 적는 내용은 관심·경험·업무 방식 값을 ' +
-        '바꾸지 않습니다.</p></div>';
+      return '<div class="card contentcard"><p>아직 등록된 경험이 없습니다.</p>' +
+        '<p class="note" style="margin-top:8px">프로젝트·연구·인턴 경험을 ' +
+        '더하시면 직무별 증거가 구체적으로 바뀝니다. 지금 결과지는 응답만으로 ' +
+        '말할 수 있는 데까지입니다.</p>' +
+        '<div class="evnav" style="margin-top:12px">' +
+        '<button type="button" class="primary" id="btnEvidence">경험 추가하기</button>' +
+        '</div></div>';
     }
-    var e = J.evidence;
-    var box = function (t, items, note) {
-      if (!items || !items.length) return '';
-      return '<div class="card contentcard"><div class="eyebrow">' + esc(t) + '</div>' +
-        '<div style="margin-top:8px">' + items.slice(0, 10).map(function (x) {
-          return '<span class="tag">' + esc(x) + '</span>';
-        }).join('') + '</div>' +
-        (note ? '<p class="note" style="margin-top:10px">' + esc(note) + '</p>' : '') + '</div>';
-    };
-    return '<div class="grid">' +
-      box('이미 해보신 것', [].concat(e.projects, e.research, e.internships, e.employment),
-        '서류에서 바로 꺼내 쓸 수 있는 재료입니다') +
-      box('배우신 것', e.coursework, '수업은 바탕이고, 결과물이 붙어야 근거가 됩니다') +
-      box('써 보신 도구', e.tools, '이름만으로는 무엇을 할 줄 아는지 말할 수 없습니다') +
-      box('남은 결과물', e.outputs, '') + '</div>';
+    /* `lean` 은 BASIC. 도구 상자는 한 장을 더 먹는데, BASIC 은 이 쪽에
+       비어 있는 것까지 같이 올려야 해서 자리가 없다. 도구는 STANDARD 부터 */
+    return (VR ? VR.ladder(J, n) : '') +
+      (lean ? '' : (VR ? VR.toolBox(J, false) : ''));
   }
 
-  /* ── 상품마다 다른 깊이 ─────────────────────────────────────────── */
-  function plan(J, days) {
+  /* ── 8쪽. 아직 번역되지 않은 것과 비어 있는 것 ──────────────────── */
+  function missingEvidence(J, lvl) {
+    var out = '';
+    /* **이름을 붙여 둔다.** 결과지를 쪽으로 다시 짜면서 절 제목을 없앴더니
+       이 카드들이 이름 없이 떠 있었다. 무엇을 보는 칸인지 모르면 '적다는
+       뜻이 아니다' 라는 다음 줄도 무슨 말인지 알 수 없다 */
+    var ut = VR ? VR.untranslated(J, lvl === 'basic' ? 1 : 4) : '';
+    if (ut) {
+      out += '<h3 class="rpsub2">아직 성과 언어로 번역되지 않은 경험</h3>' +
+        '<p class="note">겪으신 일은 적혀 있는데, 조직이 결과로 읽는 칸이 ' +
+        '아직 비어 있는 경험입니다.</p>' + ut;
+    }
+    /* 비어 있는 자리를 고르기로 채우는 칸. **긴 주관식을 요구하지 않는다**:
+       적는 일이 길어지면 거기서 닫고 나간다 */
+    if (CR) {
+      var ask = CR.askBox(J, J.decision_table[0].career_family_id);
+      if (ask) out += '<div style="margin-top:16px">' + ask + '</div>';
+    }
+    var cv = J.role_evidence_coverage || {};
+    var rows = J.decision_table.slice(0, 3).map(function (r) { return cv[r.career_family_id]; })
+      .filter(function (c) { return c && c.priority_gaps.length; });
+    if (rows.length) {
+      out += '<div class="card contentcard" style="margin-top:16px">' +
+        '<div class="eyebrow">직무별로 비어 있는 것</div>' +
+        '<table class="v2gap"><thead><tr><th>직무</th><th>지금 확인되는 데까지</th>' +
+        '<th>아직 확인되지 않음</th></tr></thead><tbody>' +
+        rows.map(function (c) {
+          return '<tr><td><b>' + esc(c.career_family_name) + '</b></td>' +
+            '<td>핵심 ' + c.summary.core.confirmed + ' / ' + c.summary.core.total + '</td>' +
+            '<td>' + esc(c.priority_gaps.slice(0, 3).map(function (g) { return g.label; })
+              .join(' · ')) + '</td></tr>';
+        }).join('') + '</tbody></table></div>';
+    }
+    return out;
+  }
+
+  /* ── 10쪽. 서류·면접·포트폴리오 ─────────────────────────────────── */
+  function translation(J) {
+    var list = (J.performance_evidence || []).filter(function (x) {
+      return x.decided || (x.made || []).length; });
     var top = J.decision_table[0];
-    var miss = top.evidence_readiness ? top.evidence_readiness.missing : [];
-    var acts = [
-      DEC.line(top.decision_status),
-      '같은 직무 공고 세 건을 띄워 놓고 주요 업무를 한 줄씩 옮겨 적어 보세요.'
-    ];
-    if (miss.length) {
-      acts.push('비어 있는 것 가운데 ' + miss[0] + '. 여기부터 손대시면 가장 빨리 표가 납니다.');
-    }
-    return '<div class="card contentcard"><div class="eyebrow">' + days + '일 동안</div>' +
-      '<ul class="qlist" style="margin-top:8px">' +
-      acts.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul></div>';
+    var cards = list.slice(0, 3).map(function (x) {
+      var line = [];
+      if (x.decided) line.push(clean(x.decided));
+      if ((x.made || []).length) line.push(SN.list(x.made).slice(0, 2).join(' · ') + ' 를 남김');
+      if ((x.checked_against || []).length) line.push(SN.list(x.checked_against)[0] + ' 와 견줌');
+      line = line.filter(Boolean);
+      if (!line.length) return '';
+      return '<div class="card contentcard"><div class="eyebrow">' +
+        (clean(x.title) || '(제목 없는 경험)') + '</div>' +
+        '<p class="cvline">' + line.join(', ') + '</p>' +
+        '<p class="note" style="margin-top:8px"><b>면접에서 받을 질문</b> ' +
+        esc(x.next ? (x.next.questions || [])[0] : '그 판단을 되돌린다면 무엇을 다르게 하시겠습니까') +
+        '</p></div>';
+    }).filter(Boolean).join('');
+    return (cards ? '<div class="grid">' + cards + '</div>' : '') +
+      '<div class="card contentcard" style="margin-top:16px"><ul class="qlist">' +
+      '<li><b>서류</b> 한 일보다 직접 정한 것을 한 줄로 적으십시오. 위 문장을 ' +
+      '그대로 옮기셔도 됩니다.</li>' +
+      '<li><b>면접</b> ' + esc(top.name) + ' 쪽은 판단의 근거를 되묻습니다. ' +
+      '고른 이유와 포기한 것을 같이 준비해 두십시오.</li>' +
+      '<li><b>포트폴리오</b> 결과물 사진보다 조건표 한 장이 먼저 읽힙니다.</li>' +
+      '</ul></div>';
   }
 
-  function ownershipBox(J) {
-    var o = J.decision_ownership;
-    if (!o) return '';
-    return '<div class="card contentcard"><div class="eyebrow">결정 소유</div>' +
-      '<h3 style="margin:6px 0 0">' + esc(LV[o.level]) + '</h3>' +
-      '<p class="note" style="margin-top:8px">' + o.items + '문항에서 나온 값입니다. ' +
-      '참여와 소유를 가르는 자리라, 같은 프로젝트를 해도 무엇을 직접 정했는지에 ' +
-      '따라 갈립니다.</p></div>';
-  }
-
-  function researchBox(J) {
-    var r = J.research_project_evidence;
-    if (!r) return '';
-    var FACET = {
-      objective_interpretation: '목표 해석', planning: '일정 설계',
-      resource_allocation: '자원 배분', budget_exposure: '연구비',
-      milestone: '중간 점검', success_criteria: '성공 기준',
-      deliverable_ownership: '산출물', team_coordination: '팀 조율',
-      proposal_rfp: '공고·제안서', compliance: '규정·안전',
-      external_collaboration: '외부 협업', impact_use: '쓰임'
+  /* ── 부록 ───────────────────────────────────────────────────────── */
+  function appendix(J) {
+    var out = [];
+    var A = function (title, body, note) {
+      return '<section class="apsec"><h3>' + esc(title) + '</h3>' +
+        (note ? '<p class="note">' + esc(note) + '</p>' : '') + body + '</section>';
     };
-    var rows = Object.keys(r.facets || {}).map(function (k) {
-      return '<tr><th>' + esc(FACET[k] || k) + '</th><td>' + r.facets[k] + ' / 5</td></tr>';
+
+    /* 열여섯 직무 전부 */
+    out.push(A('직무군 열여섯 전부',
+      '<div class="v2tw"><table><thead><tr>' +
+      ['직무', '업무방식', '관심', '경험', '학습의향', '핵심 확인', '지금 단계']
+        .map(function (h) { return '<th>' + h + '</th>'; }).join('') +
+      '</tr></thead><tbody>' + J.decision_table.map(function (r) {
+        var c = r.evidence_coverage;
+        return '<tr><td>' + esc(r.name) + '</td>' +
+          '<td>' + esc(DEC.modeLabel(r.work_mode)) + '</td>' +
+          '<td>' + esc(LV[r.interest && r.interest.level] || '—') + '</td>' +
+          '<td>' + esc(LV[r.exposure && r.exposure.level] || '—') + '</td>' +
+          '<td>' + esc(LV[r.learning && r.learning.level] || '—') + '</td>' +
+          '<td>' + (c ? c.core.confirmed + ' / ' + c.core.total : '—') + '</td>' +
+          '<td>' + esc(DEC.label(r.decision_status)) + '</td></tr>';
+      }).join('') + '</tbody></table></div>',
+      '본문에는 먼저 보실 셋과 곁에 두실 둘만 담았습니다.'));
+
+    /* 근거 문항 */
+    var bank = window.PCA_V2_ITEMS.ME;
+    var all = [].concat(bank.core.items, bank.standard.items, bank.pro.items);
+    var trace = J.decision_table.slice(0, 5).map(function (r) {
+      var nos = all.filter(function (it) {
+        return ((it.career_family_weights || {})[r.career_family_id] || 0) >= 0.6;
+      }).map(function (it) { return 'Q' + it.question_no; });
+      return nos.length
+        ? '<tr><td>' + esc(r.name) + '</td><td>' + esc(nos.join(', ')) + '</td></tr>' : '';
     }).join('');
-    return '<div class="card contentcard"><div class="eyebrow">연구·과제 소유</div>' +
-      '<h3 style="margin:6px 0 0">' + esc(LV[r.level]) + '</h3>' +
-      (rows ? '<table class="tw" style="margin-top:10px"><tbody>' + rows + '</tbody></table>' : '') +
-      '<p class="note" style="margin-top:8px">학위로 정한 값이 아니고 답하신 ' +
-      '것에서 읽은 값입니다. 학위가 올라간다고 이 칸이 자동으로 오르지 않습니다.</p></div>';
+    if (trace) {
+      out.push(A('어느 문항이 이 줄을 만들었는가',
+        '<table class="v2gap"><thead><tr><th>직무</th><th>근거 문항</th></tr></thead>' +
+        '<tbody>' + trace + '</tbody></table>',
+        '본문에서는 문항 번호를 빼고 사람이 읽는 이유로 적었습니다. 되짚고 ' +
+        '싶으실 때 쓰시라고 여기 남깁니다.'));
+    }
+
+    /* 업무 방식 자세히 */
+    if (J.work_mode && J.work_mode.profile) {
+      out.push(A('업무 방식 자세히',
+        '<table class="v2gap"><thead><tr><th>축</th><th>기운 쪽</th><th>문항 수</th></tr></thead><tbody>' +
+        J.work_mode.profile.map(function (p) {
+          return '<tr><td>' + esc(p.poles.join(' ↔ ')) + '</td>' +
+            '<td>' + esc(p.leaning === null ? '어느 쪽도 아님' : p.leaning) + '</td>' +
+            '<td>' + (p.items || 2) + '</td></tr>';
+        }).join('') + '</tbody></table>',
+        '두 문항으로 잰 축이라 숫자를 붙이지 않습니다. 검증 전까지 ' +
+        '가까움·혼합·먼 편 세 마디로만 말합니다.'));
+    }
+
+    /* 연구·과제 소유 */
+    if (J.research_maturity) {
+      var m = J.research_maturity;
+      out.push(A('연구·과제를 어디까지 맡아 봤는가',
+        '<p><b>' + esc(m.level) + ' · ' + esc(m.label) + '</b></p>' +
+        '<p class="note"><b>이렇게 읽었습니다</b> ' + esc(m.evidence.join(' · ')) + '</p>' +
+        (m.missing_for_next_level.length
+          ? '<p class="note"><b>다음 칸으로 가려면</b> ' +
+            esc(m.missing_for_next_level.join(' · ')) + '</p>' : ''),
+        '학위로 배정하지 않습니다. 적어 주신 과제에서만 올라갑니다.'));
+    }
+
+    /* 반복 가능성 */
+    if (VR && J.repeatability) {
+      out.push(A('한 번 낸 결과를 다시 쓸 수 있는가', VR.repeat(J)));
+    }
+
+    /* 전체 증거 범위 */
+    if (CR) {
+      var full = CR.coverage(J, 5, false);
+      if (full) {
+        out.push(A('직무별 증거 범위 전체', full,
+          '핵심·뒷받침·선택을 모두 폅니다. 선택이 비어 있다고 불리하게 보지 않습니다.'));
+      }
+    }
+
+    /* 방법과 한계 */
+    out.push(A('어떻게 만든 자료인가',
+      '<ul class="qlist">' +
+      '<li>관심·경험·결정 소유·업무 방식·학습 의향은 서로 다른 문항에서 나와 ' +
+      '따로 읽습니다. 합쳐서 하나의 점수로 만들지 않습니다.</li>' +
+      '<li>경험은 적합도에 들어가지 않습니다. 증거가 어디까지 확인되는지만 ' +
+      '달라집니다.</li>' +
+      '<li>증거 사다리는 경험 하나의 깊이이고, 증거 범위는 그 직무의 영역을 ' +
+      '얼마나 덮었는가입니다. 둘을 합치지 않습니다.</li>' +
+      '<li>학위로 증거 단계를 올리지 않습니다.</li>' +
+      '</ul>'));
+
+    out.push(A('한계',
+      '<ul class="qlist">' +
+      '<li>인지 면접과 파일럿을 돌리기 전이라 측정 오차를 산출하지 않습니다.</li>' +
+      '<li>합격 가능성이나 실력을 잰 값이 아닙니다.</li>' +
+      '<li>' + esc((J.country_context && J.country_context.notice) ||
+        '목표 국가의 확인된 자료가 없어 나라별 내용을 넣지 않았습니다.') + '</li>' +
+      '<li>직무군 열여섯과 증거 영역은 기계공학과에서만 맞습니다.</li>' +
+      '</ul>'));
+
+    out.push(A('판본',
+      '<table class="v2gap"><tbody>' +
+      '<tr><th>검사</th><td>' + esc(J.assessment_version) + '</td></tr>' +
+      '<tr><th>결과 스키마</th><td>' + esc(J.schema_version) + '</td></tr>' +
+      '<tr><th>증거 지도</th><td>' + esc(J.evidence_map_version || '—') + '</td></tr>' +
+      '<tr><th>문항 수</th><td>' + J.assessment.item_count + ' 가운데 ' +
+      J.assessment.answered + ' 응답</td></tr>' +
+      '<tr><th>만든 때</th><td>' + new Date().toISOString().slice(0, 10) + '</td></tr>' +
+      '</tbody></table>'));
+
+    return '<div class="appendix">' +
+      '<div class="apmark">부록</div>' +
+      '<p class="note">본문에서 뺀 것들입니다. 되짚어 보실 때 쓰십시오.</p>' +
+      out.join('') + '</div>';
   }
 
-  function sect(no, title, sub, body) {
-    return '<div class="section"><h2 class="sect">' + (no ? no + '. ' : '') + esc(title) + '</h2>' +
-      (sub ? '<p class="subdesc">' + esc(sub) + '</p>' : '') + body + '</div>';
-  }
-
+  /* ── 전체 ───────────────────────────────────────────────────────── */
   function render(J) {
-    var out = [], n = 0, no = function () { return pad2(++n); };
+    if (SN) SN.reset();
+    var out = [], n = 0, no = function () { return ++n; };
     var lvl = J.report_level;
     var top = J.decision_table[0];
+    var topId = top.career_family_id;
     var TIER = { basic: 'BASIC', standard: 'STANDARD', pro: 'PRO' };
 
-    out.push('<div class="resulthead">' +
-      '<div class="eyebrow">기계공학과 · ' + esc((J.education_stage_lens || {}).label || '') +
-      ' · ' + esc(TIER[lvl]) + ' · ' + esc(J.assessment_version) + '</div>' +
-      '<h1>' + esc(J.profile.name || '응시자') + '님의<br>진로 결정 자료</h1>' +
-      '<p class="desc">' + J.assessment.item_count + '문항 가운데 ' + J.assessment.answered +
-      '문항 응답 · ' + esc(J.assessment.measurement_note) + '</p></div>');
+    /* 표지. 쪽 번호를 받지 않는다 */
+    out.push('<header class="rcover">' +
+      '<div class="rceyebrow">CAREERMATRI · 진로 결정 자료</div>' +
+      '<h1>' + esc(clean(J.profile.name) || '응시자') + '</h1>' +
+      '<p class="rcmeta">기계공학과 · ' +
+      esc((J.education_stage_lens || {}).label || '') + ' · ' + esc(TIER[lvl]) +
+      ' · ' + new Date().toISOString().slice(0, 10) + '</p>' +
+      '</header>');
 
-    out.push('<div class="section"><div class="card contentcard">' +
-      '<div class="eyebrow">이 자료를 읽는 법</div><ul class="qlist">' +
-      '<li>여기 나오는 값은 어느 것도 합격 가능성이나 실력을 잰 값이 아닙니다.</li>' +
-      '<li>관심·경험·학습의향·업무 방식은 서로 다른 문항에서 나와 따로 읽습니다.</li>' +
-      '<li>종합 점수를 만들지 않는 것은, 어느 칸이 갈리는지가 지금 할 일을 ' +
-      '알려 주기 때문입니다.</li>' +
-      '</ul></div></div>');
+    /* 쪽을 짜는 자리. **등급마다 쪽수가 규격에 묶여 있다**:
+       BASIC 네댓 쪽 · STANDARD 여섯에서 여덟 · PRO 아홉에서 열하나.
+       그래서 아래는 "있으면 다 넣는다" 가 아니라 **등급마다 무엇을 한
+       쪽에 합치는지**를 적어 둔 표다. 쪽을 더 쓰고 싶으면 합친 것을
+       풀지 말고 등급을 올려야 한다. */
+    var isB = lvl === 'basic', isP = lvl === 'pro';
+    /* **사슬은 맨 앞 직무 하나만 그린다.** 둘째·셋째 직무의 사슬을 여기
+       같이 그리면 아래 직무 쪽(`roleDeepDive`)과 같은 말이 두 번 나온다.
+       예전 결과지가 한 직무를 다섯 번 보여 준 자리가 바로 여기였다 */
+    var chains = VR ? VR.academiaToWork(J, 1) : '';
+    var sm = VR ? VR.sameMajor(J) : '';
+    var tr = lvl === 'pro' ? translation(J) : '';
+    var miss = missingEvidence(J, lvl);
+    var ne = CR ? CR.nextEvidence(J, topId) : '';
+    var days = isB ? [30] : (isP ? [30, 90, 365] : [30, 90]);
+    var plan = '<div class="grid">' + days.map(function (d) {
+      return CR ? CR.plan(J, d, topId) : '';
+    }).join('') + '</div>';
+    var deepN = isB ? 0 : (isP ? 3 : 2);
 
-    /* 경험 안내는 맨 위에. 빈 상태를 조용히 두지 않는다 */
-    out.push(sect(no(), '이미 가지고 계신 것',
-      J.evidence_supplied ? '적어 주신 경험을 넷으로 갈랐습니다.' : '',
-      evidenceMap(J)));
+    /* 1. 결정. 서른 초에 읽는 쪽이다 */
+    out.push(page(no(), 'DECISION', '지금 먼저 보실 세 가지',
+      '', decisionSummary(J), 'p-decision'));
 
-    out.push(sect(no(), '어디부터 볼지',
-      '여섯 칸이 각각 다른 것을 재고, 마지막 칸이 지금 할 일을 적습니다.',
-      decisionTable(J, lvl === 'basic' ? 6 : (lvl === 'standard' ? 10 : 16))));
+    /* 2. 견주기 */
+    out.push(page(no(), 'DECISION', '먼저 볼 직무를 견주면',
+      '칸이 갈리는 자리가 지금 할 일을 알려 줍니다.', topComparison(J)));
 
-    /* 결정 표 바로 다음이 **이 직무에서 무엇이 확인되고 무엇이 비었는가**
-       다. 적합도 다음에 바로 '왜' 를 놓으면 읽는 사람이 결론부터 받고,
-       그 결론을 받칠 근거가 자기에게 있는지는 끝까지 모른다. */
-    var CR = window.PCAV2CoverageReport;
-    var topId = top ? top.career_family_id : null;
-    if (CR && J.role_evidence_coverage) {
-      var covN = lvl === 'basic' ? 1 : (lvl === 'standard' ? 3 : 5);
-      var covBody = CR.coverage(J, covN, lvl === 'basic');
-      if (covBody) {
-        out.push(sect(no(), '이 직무에서 지금 확인되는 근거',
-          '직무마다 보고 싶어 하는 영역이 다르고, 경험 하나가 얼마나 깊은지와 ' +
-          '영역을 얼마나 넓게 덮었는지는 다른 값이라 따로 적어 두었습니다.',
-          CR.sentence(J, topId) + covBody +
-          (lvl === 'basic' ? '' : CR.applicationBox(J, topId))));
-      }
-      var ask = CR.askBox(J, topId);
-      if (ask) {
-        out.push(sect(no(), '비어 있는 자리를 고르기로 채우기',
-          '긴 글을 적지 않으셔도 됩니다. 아래에서 고르시면 확인되는 범위가 ' +
-          '달라집니다.', ask));
-      }
+    /* 3. 왜. 배운 것에서 조직이 결과로 치는 것까지 잇는다. **맨 앞 직무
+       하나만.**
+       조직 넷을 견주는 쪽은 바로 다음 쪽이 받는다(STANDARD 이상) */
+    if (chains) {
+      out.push(page(no(), 'WHY', '배운 것이 실제 업무에서 어떻게 쓰이는가',
+        '배운 것에서 조직이 결과로 치는 것까지 한 줄로 이었습니다.', chains));
     }
 
-    out.push(sect(no(), '왜 이 직무가 앞에 왔는가', '',
-      J.decision_table.slice(0, lvl === 'basic' ? 1 : 3)
-        .map(function (r) { return why(J, r); }).join('')));
+    /* 4. 내 증거 */
+    out.push(page(no(), 'EVIDENCE', '지금 내가 가진 증거',
+      J.evidence_supplied
+        ? (isB ? LOW_RUNG
+          : '경험 하나가 활동에서 반복 가능성까지 어디쯤 와 있는지 봅니다. ' + LOW_RUNG)
+        : '',
+      evidenceToday(J, isB ? 2 : (isP ? 8 : 4), isB)));
 
-    /* 전공지식 → 실제 업무 → 판단 → 산출물 → 조직 성과 → 내 증거.
-       **이 자리가 제품의 중심이다.** 적합도만 내놓으면 '기계설계가 맞습니다'
-       에서 끝나고, 읽는 사람은 그래서 무엇을 하라는 것인지 모른다. */
-    var VR = window.PCAV2ValueReport;
-    if (VR) {
-      var chainN = lvl === 'basic' ? 1 : (lvl === 'standard' ? 3 : 5);
-      var chains = VR.academiaToWork(J, chainN);
-      if (chains) {
-        out.push(sect(no(), '전공지식이 실제 업무에서 어떻게 쓰이는가',
-          '배운 것에서 조직이 결과로 치는 것까지 한 줄로 잇고, 그 줄 위에 ' +
-          '지금 가진 증거를 올려 뒀습니다.', chains));
-      }
+    /* 5. 조직이 보는 결과. **BASIC 은 이 쪽을 받지 않는다**: 네댓 장
+       안에서는 결정·사슬·증거·할 일이 먼저다. BASIC 의 사슬에도 '어느
+       조직 기준으로 적었다' 는 줄은 들어 있어서, 조직이 결과를 가른다는
+       말 자체는 빠지지 않는다. 조직 넷을 나란히 견주는 쪽은 STANDARD 부터 */
+    if (!isB && (sm || tr)) {
+      out.push(page(no(), 'ORGANIZATION VALUE', '같은 전공도 조직에 따라 결과가 달라집니다',
+        '같은 지식으로 어디에서는 제품이 나오고 어디에서는 논문이 나옵니다.',
+        sm + tr));
     }
 
-    out.push(sect(no(), '업무 방식', '어느 쪽 응답이 더 많았는지를 보는 축입니다.',
-      workMode(J)));
+    /* 6~8. 직무 하나씩 깊게. **한 자리에서 끝낸다.**
+       BASIC 은 이 쪽을 받지 않는다: 네댓 쪽 안에서는 앞의 결정 쪽이
+       먼저다. 직무별 자료는 STANDARD 부터 */
+    J.decision_table.slice(0, deepN).forEach(function (r, i) {
+      out.push(page(no(), 'WHY · EVIDENCE', r.name, '', roleDeepDive(J, r)));
+    });
 
-    if (VR && J.evidence_supplied) {
-      var el2 = VR.ladder(J, lvl === 'basic' ? 2 : (lvl === 'standard' ? 4 : 10));
-      if (el2) {
-        out.push(sect(no(), '내 경험은 어디까지 증거가 되었나',
-          '활동에서 반복 가능성까지 여섯 칸입니다. 아래 칸이 비면 위 칸을 ' +
-          '확정으로 올리지 않습니다.', el2));
-      }
-      var ut = VR.untranslated(J, lvl === 'basic' ? 2 : 4);
-      if (ut) {
-        out.push(sect(no(), '아직 성과 언어로 번역되지 않은 경험',
-          '겪으셨는데 아직 적지 않으신 칸이 있는 경험입니다.', ut));
-      }
-      var tb = VR.toolBox(J, lvl === 'pro');
-      if (tb) {
-        out.push(sect(no(), '쓰신 도구가 무엇을 받쳐 주는가',
-          '도구 → 어디에 썼는가 → 무엇을 판단했는가 → 무엇이 남았는가 → ' +
-          '무엇과 견주었는가.', tb));
-      }
+    /* 9~10. 비어 있는 것과 할 일.
+       **BASIC·STANDARD 는 둘을 한 쪽에 합친다**: 더해도 종이 한 장에
+       들어가고, '아직 비어 있는 것 → 그래서 지금 이것' 이 한 눈에 이어진다.
+       PRO 만 둘을 따로 낸다. PRO 의 할 일 쪽은 30·90·365 세 칸에 서류·면접
+       번역 표까지 붙어서 혼자 한 장을 다 쓴다 */
+    var joinGap = !isP && miss;
+    if (!joinGap && miss) {
+      out.push(page(no(), 'GAP', '아직 확인되지 않은 것', NOT_ABILITY, miss));
     }
+    out.push(page(no(), joinGap ? 'GAP · ACTION' : 'ACTION',
+      joinGap ? '아직 확인되지 않은 것과 다음에 할 일'
+        : (ne ? '다음에 만들 경험 하나' : '언제 무엇을 할 것인가'),
+      joinGap ? NOT_ABILITY
+        : (ne ? '여러 개를 벌이지 마십시오. 지금 가장 크게 비어 있는 한 자리만 채웁니다.' : ''),
+      (joinGap ? miss + '<div class="rpgap"><h3 class="rpsub2">다음에 만들 경험 하나</h3>' +
+        (ne || '') + '</div>' : (ne || '')) +
+      '<div class="rpgap"><h3 class="rpsub2">언제 무엇을 할 것인가</h3>' + plan + '</div>'));
 
-    if (J.education_stage_lens) {
-      var st = J.education_stage_lens;
-      out.push(sect(no(), st.label + ' 단계에서 읽는 법', st.question + '.',
-        '<div class="card contentcard"><p>' + esc(st.now) + '</p>' +
-        '<div style="margin-top:10px">' + st.evidence.map(function (x) {
-          return '<span class="tag">' + esc(x) + '</span>'; }).join('') + '</div>' +
-        '<p class="note" style="margin-top:10px">지금 단계에서 무게를 두지 않아도 ' +
-        '되는 것들입니다. ' + esc(st.deemphasize.join(', ')) + '.</p></div>'));
-    }
+    /* 부록 */
+    out.push(appendix(J));
 
-    /* STANDARD 부터: 결정 소유 · 증거 매핑 · 90일 */
-    if (lvl !== 'basic') {
-      out.push(sect(no(), '무엇을 직접 정해 왔는가', '',
-        ownershipBox(J) +
-        (J.evidence_quality ? '<div class="card contentcard" style="margin-top:10px">' +
-          '<div class="eyebrow">보여 줄 수 있는 사례</div><h3 style="margin:6px 0 0">' +
-          esc(LV[J.evidence_quality.level]) + '</h3>' +
-          '<p class="note" style="margin-top:8px">이 값은 증거 준비도로만 ' +
-          '가고 업무 방식에는 들어가지 않습니다.</p></div>' : '')));
+    /* 안쪽 경고는 화면에 내보내지 않는다. 뜻 없는 입력을 고쳐 주지도 않는다 */
+    if (SN) window.PCA_V2_INPUT_WARNINGS = SN.warnings();
 
-      if (VR) {
-        var sm = VR.sameMajor(J);
-        if (sm) {
-          out.push(sect(no(), '같은 전공도 조직에 따라 성과가 달라집니다',
-            '같은 지식으로 어디에서는 제품이 나오고 어디에서는 논문이 나옵니다.', sm));
-        }
-        var gp = VR.gap(J);
-        if (gp) {
-          out.push(sect(no(), '아직 비어 있는 증거',
-            '그 직무가 보고 싶어 하는 것 가운데 지금 적어 주신 범위에 없는 것입니다.', gp));
-        }
-      }
-
-      var mapped = J.decision_table.slice(0, 3).filter(function (r) { return r.evidence_readiness; });
-      if (mapped.length) {
-        out.push(sect(no(), '내 경험이 어느 직무에 걸리는가', '',
-          '<div class="grid">' + mapped.map(function (r) {
-            var x = r.evidence_readiness;
-            return '<div class="card contentcard"><div class="eyebrow">' + esc(r.name) + '</div>' +
-              '<h3 style="margin:6px 0 0">' + esc(RD[x.level]) + '</h3>' +
-              (x.supported_by.length ? '<p class="note" style="margin-top:8px"><b>걸린 것</b> ' +
-                esc(x.supported_by.slice(0, 3).join(' · ')) + '</p>' : '') +
-              (x.missing.length ? '<p class="note" style="margin-top:6px"><b>비어 있는 것</b> ' +
-                esc(x.missing.slice(0, 2).join(' · ')) + '</p>' : '') + '</div>';
-          }).join('') + '</div>'));
-      }
-    }
-
-    /* PRO: 과제 소유 · 근거 구조 */
-    if (lvl === 'pro') {
-      var rb = researchBox(J);
-      if (rb) out.push(sect(no(), '연구·과제를 어디까지 맡아 봤는가', '', rb));
-      if (J.research_maturity) {
-        var m = J.research_maturity;
-        out.push(sect(no(), '적어 주신 과제에서 읽은 자리', '',
-          '<div class="card contentcard"><div class="eyebrow">' + esc(m.level) + ' · ' +
-          esc(m.label) + '</div><p class="note" style="margin-top:8px"><b>이렇게 읽었습니다</b> ' +
-          esc(m.evidence.join(' · ')) + '</p>' +
-          (m.missing_for_next_level.length ? '<p class="note" style="margin-top:6px">' +
-            '<b>다음 칸으로 가려면</b> ' + esc(m.missing_for_next_level.join(' · ')) +
-            '</p>' : '') + '</div>'));
-      }
-      if (VR) {
-        var pf = VR.portfolio(J);
-        if (pf) {
-          out.push(sect(no(), '직무별 가치 사슬 묶음',
-            '위에서 본 사슬을 한 표로 모았습니다.', pf));
-        }
-        var rp2 = VR.repeat(J);
-        if (rp2) {
-          out.push(sect(no(), '한 번 낸 결과를 다시 쓸 수 있는가',
-            '석사·박사·학위 후 연구 경력에서 가장 크게 갈리는 자리입니다.', rp2));
-        }
-        var cv = VR.cvBank(J);
-        if (cv) {
-          out.push(sect(no(), '자기소개서와 면접으로 옮기기',
-            '적어 주신 판단과 결과물을 그대로 문장으로 옮겼습니다.', cv));
-        }
-      }
-
-      if (CR && J.role_evidence_coverage) {
-        var full = CR.coverage(J, 5, false);
-        if (full) {
-          out.push(sect(no(), '직무별 증거 범위 전체',
-            '핵심·뒷받침·선택을 모두 폅니다. 선택이 비어 있다고 불리하게 ' +
-            '보지 않습니다.', full));
-        }
-      }
-
-      out.push(sect(no(), '서류·면접·포트폴리오로 가져갈 것',
-        '적어 주신 경험 가운데 밖으로 보여 줄 형태가 된 것과 아직 안 된 것입니다.',
-        '<div class="card contentcard"><ul class="qlist">' +
-        '<li><b>서류</b> 무엇을 했는지보다 무엇을 직접 정했는지를 한 줄로 적으십시오.</li>' +
-        '<li><b>면접</b> ' + esc(top.name) + ' 쪽은 판단의 근거를 되묻습니다. ' +
-        '고른 이유와 포기한 것을 같이 준비해 두세요.</li>' +
-        '<li><b>포트폴리오</b> 결과물 사진보다 조건표 한 장이 먼저 읽힙니다.</li>' +
-        '</ul></div>'));
-    }
-
-    if (CR && J.role_evidence_coverage) {
-      var ne = CR.nextEvidence(J, topId);
-      if (ne) {
-        out.push(sect(no(), '다음에 만들 경험',
-          '핵심 가운데 비어 있는 자리를 하나 골라 그것만 채우는 한 건입니다.', ne));
-      }
-    }
-    if (VR && !(CR && J.role_evidence_coverage)) {
-      var np = VR.nextProject(J);
-      if (np) {
-        out.push(sect(no(), '다음에 만들 경험',
-          '지금 비어 있는 칸을 채우는 한 건입니다.', np));
-      }
-    }
-
-    var days = lvl === 'basic' ? [30] : (lvl === 'standard' ? [30, 90] : [30, 90, 365]);
-    out.push(sect(no(), '다음에 할 것',
-      '지금 비어 있는 자리와 학위 단계에서 만든 계획입니다.',
-      '<div class="grid">' + days.map(function (d) {
-        return CR ? CR.plan(J, d, topId) : plan(J, d);
-      }).join('') + '</div>'));
-
-    if (J.country_context && J.country_context.notice) {
-      out.push('<div class="section"><div class="card contentcard">' +
-        '<div class="eyebrow">나라별 내용</div><p class="note">' +
-        esc(J.country_context.notice) + '</p></div></div>');
-    }
-
-    out.push('<div class="section"><p class="foot">' +
-      esc(J.assessment_version) + ' · 파일럿 검증 전입니다. 이 자료는 어디부터 ' +
-      '살펴볼지를 좁히는 데 쓰이고, 합격 가능성을 말하지 않습니다.</p></div>');
-
-    return out.join('');
+    return '<div class="report">' + out.join('') + '</div>';
   }
 
-  return { render: render, decisionTable: decisionTable };
+  return { render: render, decisionSummary: decisionSummary, roleDeepDive: roleDeepDive };
 })();

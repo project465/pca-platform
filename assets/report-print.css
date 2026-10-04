@@ -1,0 +1,339 @@
+/* 결과지. 화면과 인쇄가 같은 객체를 쓰고 그리는 법만 다르다.
+ *
+ * 느낌은 셋을 섞는다: 기술 SaaS · 전략 보고서 · 기술 경력 자료.
+ * 심리검사도 정부 보고서도 워드 출력물도 아니다.
+ *
+ * **한 쪽에 핵심 메시지 하나.** 인쇄에서 쪽이 갈리는 자리가 곧 이 규칙이다. */
+
+:root {
+  --rp-ink: #10213a;
+  --rp-ink2: #42546d;
+  --rp-ink3: #76859b;
+  --rp-line: #dfe5ee;
+  --rp-bg: #fbfcfe;
+  --rp-accent: #1f5fa8;     /* 눌러 둔 파랑 하나. 강조는 이것만 */
+  --rp-ok: #0f6b58;
+  --rp-part: #8a6d1f;
+}
+
+.report { color: var(--rp-ink); }
+
+/* ── 표지 ─────────────────────────────────────────────────────────── */
+.rcover {
+  padding: 56px 0 40px;
+  border-bottom: 3px solid var(--rp-ink);
+  margin-bottom: 8px;
+}
+.rceyebrow {
+  font-size: 12px; font-weight: 700; letter-spacing: .14em;
+  color: var(--rp-accent); text-transform: uppercase;
+}
+.rcover h1 {
+  margin: 14px 0 0; font-size: 44px; line-height: 1.1; letter-spacing: -.02em;
+  text-wrap: balance;
+}
+.rcmeta { margin: 14px 0 0; color: var(--rp-ink2); font-size: 14px; }
+
+/* ── 쪽 ───────────────────────────────────────────────────────────── */
+.rpage {
+  position: relative;
+  padding: 44px 0 40px;
+  border-bottom: 1px solid var(--rp-line);
+}
+.rpage:last-of-type { border-bottom: 0; }
+.rpnum {
+  position: absolute; top: 46px; right: 0;
+  font-size: 12px; font-weight: 700; color: var(--rp-ink3);
+  font-variant-numeric: tabular-nums;
+}
+.rpage > .eyebrow {
+  font-size: 11px; font-weight: 700; letter-spacing: .14em;
+  color: var(--rp-accent); text-transform: uppercase;
+}
+.rptitle {
+  margin: 10px 0 0; font-size: 28px; line-height: 1.25; letter-spacing: -.01em;
+  text-wrap: balance;
+}
+.rpsub {
+  margin: 10px 0 0; max-width: 62ch; color: var(--rp-ink2);
+  font-size: 15px; line-height: 1.75;
+}
+.rpage > :not(.rpnum):not(.eyebrow):not(.rptitle):not(.rpsub) { margin-top: 24px; }
+
+/* ── 1쪽. 결정 요약 ───────────────────────────────────────────────── */
+.dstop { display: grid; gap: 14px; grid-template-columns: 1fr; }
+.dscard {
+  position: relative; border: 1px solid var(--rp-line); border-radius: 14px;
+  padding: 20px 22px 18px; background: #fff;
+}
+.dscard:first-child { border-color: var(--rp-accent); border-width: 1.5px; }
+.dsrank {
+  font-size: 12px; font-weight: 700; color: var(--rp-accent);
+  font-variant-numeric: tabular-nums;
+}
+.dscard h3 { margin: 6px 0 0; font-size: 20px; letter-spacing: -.01em; }
+.dsmeta {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px;
+  font-size: 12px; color: var(--rp-ink2);
+}
+.dsmeta span {
+  border: 1px solid var(--rp-line); border-radius: 999px; padding: 2px 10px;
+}
+.dsnow {
+  margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--rp-line);
+  font-size: 14px; font-weight: 700;
+}
+.dsgrid { display: grid; gap: 14px; grid-template-columns: 1fr; margin-top: 18px; }
+.dsbox {
+  border: 1px solid var(--rp-line); border-radius: 14px; padding: 20px 22px;
+  background: #fff;
+}
+.dsbox h4 {
+  margin: 0 0 10px; font-size: 12px; font-weight: 700; letter-spacing: .02em;
+  color: var(--rp-ink3);
+}
+.dsgap { background: var(--rp-bg); }
+.dsgapname { margin: 0; font-size: 19px; font-weight: 700; }
+.dsact {
+  margin-top: 18px; border-radius: 14px; padding: 22px 24px;
+  background: var(--rp-ink); color: #fff;
+}
+.dsact .eyebrow { color: #9dc3ec; }
+.dsact p { margin: 8px 0 0; font-size: 17px; line-height: 1.7; }
+.dsact b { color: #fff; }
+.dsfoot { margin-top: 16px; }
+
+/* ── 직무 한 자리 ─────────────────────────────────────────────────── */
+.rdeep {
+  border: 1px solid var(--rp-line); border-radius: 16px; padding: 24px 26px;
+  background: #fff;
+}
+.rdhead {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap;
+  padding-bottom: 14px; border-bottom: 1px solid var(--rp-line);
+}
+.rdhead h3 { margin: 0; font-size: 24px; letter-spacing: -.01em; }
+.rdstatus {
+  font-size: 12px; font-weight: 700; color: var(--rp-accent);
+  border: 1px solid var(--rp-accent); border-radius: 999px; padding: 3px 12px;
+}
+.rdprob { margin: 14px 0 0; font-size: 15px; line-height: 1.75; color: var(--rp-ink2); }
+.rdwhy {
+  margin: 12px 0 0; padding: 12px 16px; border-left: 3px solid var(--rp-accent);
+  background: var(--rp-bg); font-size: 14.5px; line-height: 1.7;
+}
+.rdgrid { display: grid; gap: 16px; grid-template-columns: 1fr; margin-top: 20px; }
+.rdbox { }
+.rdlab {
+  font-size: 11px; font-weight: 700; letter-spacing: .08em; color: var(--rp-ink3);
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.rdlist { list-style: none; margin: 0; padding: 0; }
+.rdlist li {
+  display: grid; grid-template-columns: 42px 1fr; gap: 10px;
+  padding: 7px 0; border-bottom: 1px solid var(--rp-line);
+  font-size: 14px; line-height: 1.6;
+}
+.rdlist li > span {
+  font-size: 10.5px; font-weight: 700; text-align: center; border-radius: 999px;
+  padding: 2px 0; border: 1px solid var(--rp-line); height: fit-content;
+}
+.rdlist .ok { color: var(--rp-ok); border-color: var(--rp-ok); }
+.rdlist .part { color: var(--rp-part); border-color: #d9c48a; }
+.rdlist .not { color: var(--rp-ink3); background: var(--rp-bg); }
+.rdlist i {
+  display: block; font-style: normal; font-size: 12px; color: var(--rp-ink3);
+  margin-top: 2px;
+}
+.rdact {
+  margin-top: 20px; padding: 14px 18px; border-radius: 12px;
+  background: var(--rp-bg); border: 1px solid var(--rp-line);
+  font-size: 14.5px; line-height: 1.7;
+}
+.rdact b { margin-right: 8px; color: var(--rp-accent); }
+
+.v2adj td {
+  font-size: 11px; font-weight: 700; color: var(--rp-ink3);
+  background: var(--rp-bg); letter-spacing: .04em;
+}
+
+/* ── 부록 ─────────────────────────────────────────────────────────── */
+.appendix { margin-top: 48px; padding-top: 32px; border-top: 3px solid var(--rp-ink); }
+.apmark {
+  font-size: 12px; font-weight: 700; letter-spacing: .14em;
+  color: var(--rp-accent); text-transform: uppercase;
+}
+.apsec { margin-top: 32px; }
+.apsec h3 {
+  margin: 0 0 10px; font-size: 17px;
+  padding-bottom: 8px; border-bottom: 1px solid var(--rp-line);
+}
+
+@media (min-width: 860px) {
+  .dstop { grid-template-columns: repeat(3, 1fr); }
+  .dsgrid { grid-template-columns: 1.4fr 1fr; }
+  .rdgrid { grid-template-columns: 1fr 1fr; }
+  .rdev { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── 인쇄 ─────────────────────────────────────────────────────────
+   브라우저로 그냥 찍은 것처럼 보이면 실패다. A4 한 쪽을 전제로
+   다시 짠다.
+   **브라우저가 붙이는 주소와 날짜는 CSS 로 못 끈다.** 인쇄 대화상자의
+   '머리글과 바닥글' 설정이라, 화면에서 그 한 줄을 안내한다. */
+@page {
+  size: A4;
+  margin: 16mm 14mm 18mm;
+}
+
+@media print {
+  html, body { background: #fff; }
+
+  /* **A4 글 폭은 688px 다.** 화면 반응형 분기점(860·900px)보다 좁아서,
+     아무 것도 안 하면 인쇄에서 격자가 전부 한 줄로 쌓인다. 그러면 쪽수가
+     세 배로 부풀고 규격이 깨진다. 인쇄는 폭이 고정이니 **여기서 칸 수를
+     직접 못 박는다**: 좁은 화면 규칙이 끼어들 자리가 없다 */
+  .dstop { grid-template-columns: repeat(3, 1fr); gap: 3mm; }
+  .dsgrid { grid-template-columns: 1.4fr 1fr; gap: 3mm; margin-top: 4mm; }
+  .rdgrid { grid-template-columns: 1fr 1fr; gap: 4mm; margin-top: 4mm; }
+  .rdev, .cvgrid, .evpair,
+  .orggrid, .report .grid { grid-template-columns: 1fr 1fr; gap: 4mm; }
+  /* 사슬은 줄이 길다. 반 폭에 넣으면 글자가 토막나서 더 길어진다 */
+  .vpgrid { grid-template-columns: 1fr; gap: 4mm; }
+
+  /* 사슬 한 칸을 **이름표와 내용 두 칸으로 눕힌다.** 화면에서는 이름표가
+     위로 올라가 있어서 칸마다 두 줄을 쓰는데, 종이에서는 그 한 줄이
+     일곱 번 쌓여 한 장을 더 먹는다 */
+  .vpchain { margin-top: 3mm; padding-left: 4mm; }
+  .vpstep {
+    display: grid; grid-template-columns: 26mm minmax(0, 1fr);
+    gap: 3mm; padding: 1.8mm 0; align-items: baseline;
+  }
+  .vpstep::before { top: 3mm; left: -5.1mm; width: 1.4mm; height: 1.4mm; }
+  .vplab { margin-bottom: 0; font-size: 8pt; }
+  .vpbody { font-size: 9pt; line-height: 1.5; }
+  /* 칸을 두 칸으로 눕히면 **덧말이 첫 칸으로 떨어진다.** 26mm 폭에서
+     한 줄이 여섯 줄로 늘어나 칸마다 종이를 먹었다. 둘째 칸에 붙인다 */
+  .vpstep > .note { grid-column: 2; margin-top: 1mm; }
+  .vpprob { font-size: 9.5pt; line-height: 1.55; margin-top: 1.5mm; }
+  .vpask { margin-top: 3mm; padding-top: 2.5mm; }
+
+  /* 알약과 목록. 화면 크기 그대로 찍으면 한 쪽에 대여섯 줄만 들어간다 */
+  .report .tag { font-size: 8pt; padding: 0.6mm 2mm; margin: 0.6mm 1mm 0.6mm 0; }
+  .report .note { font-size: 8pt; line-height: 1.5; margin: 2mm 0; }
+  .report .qlist { margin-top: 1.5mm; }
+  .report .qlist li { font-size: 9pt; line-height: 1.55; padding: 0.8mm 0; }
+  .report .qlist li::before { top: 2.6mm; }
+  .report .eyebrow { margin-bottom: 2mm; }
+  .report .contentcard h3, .report .contentcard h4 { font-size: 10.5pt; }
+  .report .contentcard p { font-size: 9pt; line-height: 1.55; }
+  .report .cvline { font-size: 9pt; line-height: 1.55; margin-top: 2mm; }
+
+  /* 증거 사다리와 표. 칸마다 줄 높이를 깎는다 */
+  .elbox { margin-top: 2mm; }
+  .elrow { padding: 1.2mm 0; font-size: 8.5pt;
+    grid-template-columns: 20mm 11mm minmax(0, 1fr); gap: 2mm; }
+  .elby { font-size: 7.5pt; line-height: 1.4; }
+  .toolrow { padding: 1.2mm 0; font-size: 8.5pt; grid-template-columns: 28mm 1fr; }
+  .tooltb { margin-top: 2mm; }
+  .v2gap { font-size: 8.5pt; }
+  .v2gap th, .v2gap td { padding: 1.4mm 1.5mm; line-height: 1.45; }
+  .v2tw table { font-size: 8.5pt; }
+  .orgline { font-size: 8.5pt; line-height: 1.5; margin-top: 2mm; }
+
+  /* 직무 한 자리. 네 상자를 두 줄로 두되 줄 높이를 깎는다 */
+  .rdprob { font-size: 9.5pt; line-height: 1.55; margin-top: 2mm; }
+  .rdwhy { font-size: 9pt; line-height: 1.5; padding: 2mm 3mm; margin-top: 2mm; }
+  .rdlab { font-size: 7.5pt; margin-bottom: 1.5mm; }
+  .rdlist li { padding: 1.2mm 0; font-size: 8.5pt; line-height: 1.45;
+    grid-template-columns: 11mm 1fr; gap: 2mm; }
+  .rdlist li > span { font-size: 7pt; }
+  .rdlist i { font-size: 7.5pt; }
+  .rdact { margin-top: 3mm; padding: 2.5mm 3mm; font-size: 9pt; line-height: 1.55; }
+  .rdhead { padding-bottom: 2.5mm; }
+  .report .grid.two { grid-template-columns: 1fr 1fr; }
+
+  /* 카드 안 여백도 종이 기준으로 다시 잡는다. 화면에서 숨 쉬게 둔 여백을
+     그대로 찍으면 한 쪽에 한 카드만 들어간다 */
+  .dscard { padding: 4mm 4.5mm; border-radius: 2mm; }
+  .dsbox { padding: 4mm 4.5mm; border-radius: 2mm; }
+  .dsact { padding: 4mm 5mm; border-radius: 2mm; margin-top: 4mm; }
+  .dsact p { font-size: 11pt; margin-top: 2mm; }
+  .dsfoot { margin-top: 3mm; }
+  .rdeep { padding: 4mm 5mm; border-radius: 2mm; }
+  .report .card, .report .vpcard, .report .cvcard { padding: 3mm 3.5mm; }
+  .rpage > :not(.rpnum):not(.eyebrow):not(.rptitle):not(.rpsub) { margin-top: 5mm; }
+  .rpgap { margin-top: 4mm; padding-top: 3mm; }
+  .rpsub { max-width: none; line-height: 1.5; }
+  .rpsub2 { font-size: 10.5pt; }
+  .dscard h3 { font-size: 12pt; }
+  .dsgapname { font-size: 12pt; }
+  .rdhead h3 { font-size: 14pt; }
+  .rcover h1 { letter-spacing: -.02em; }
+  .top, .evnav, .rp-act, #btnEvidence, #btnEvidenceFix, .cvask .evnav { display: none !important; }
+
+  .report { font-size: 10.5pt; line-height: 1.6; }
+
+  /* 쪽마다 끊는다. 한 쪽에 메시지 하나 */
+  .rpage { break-after: page; border-bottom: 0; padding: 0 0 3mm; }
+  .rpage:last-of-type { break-after: auto; }
+  .rcover { break-after: page; padding: 30mm 0 0; border-bottom: 0; }
+  .rcover h1 { font-size: 30pt; }
+  .appendix { break-before: page; }
+  .apsec { break-inside: avoid; margin-top: 7mm; }
+  .apsec h3 { font-size: 12pt; margin-bottom: 2.5mm; padding-bottom: 2mm; }
+  .cvrow { padding: 1.2mm 0; font-size: 8.5pt; }
+  .cvby { font-size: 7.5pt; line-height: 1.4; }
+  .appendix { margin-top: 0; padding-top: 0; border-top: 0; }
+
+  .rptitle { font-size: 15.5pt; margin-top: 1.5mm; }
+  .rpsub { font-size: 10pt; }
+  .rpnum { top: 0; }
+
+  /* 카드가 쪽을 넘어 쪼개지지 않게 */
+  .dscard, .dsbox, .dsact, .rdeep, .card, .vpcard, .cvcard,
+  .elbox, .cvstep, .orggrid .card { break-inside: avoid; }
+
+  /* 표는 머리글을 쪽마다 다시 찍는다 */
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  tr, .elrow, .cvrow, .toolrow { break-inside: avoid; }
+
+  /* 바탕색을 쓰는 자리는 테두리로 바꾼다. 잉크를 아끼고 더 읽힌다 */
+  .dsact { background: #fff; color: var(--rp-ink); border: 1.5pt solid var(--rp-ink); }
+  .dsact .eyebrow { color: var(--rp-accent); }
+  .dsact b { color: var(--rp-ink); }
+
+  /* 머리말과 꼬리말을 우리가 그린다 */
+  .rpage::before {
+    content: 'CAREERMATRI · 진로 결정 자료';
+    display: block; font-size: 7.5pt; letter-spacing: .08em;
+    color: var(--rp-ink3); padding-bottom: 2.5mm; margin-bottom: 4mm;
+    border-bottom: .5pt solid var(--rp-line);
+  }
+  .rpage .rpnum { top: 0; font-size: 8pt; }
+
+  a[href]::after { content: ''; }
+}
+
+.rp-act-n {
+  flex-basis: 100%; margin: 10px 0 0; font-size: 12px; color: #9dc3ec;
+  line-height: 1.6;
+}
+@media print { .rp-act-n { display: none; } }
+
+/* 종이에만 나오는 줄. 화면에는 단추가 있으니 이 안내가 필요 없고,
+   종이에는 단추가 없으니 이 안내가 그 자리를 받는다 */
+.rponly { display: none; }
+@media print { .rponly { display: block; } }
+
+/* 한 쪽 안에서 묶음이 둘일 때. **BASIC 처럼 쪽수가 묶인 등급에서만**
+   쓴다: 증거와 공백을 한 쪽에 올려야 네댓 쪽을 지킨다. 선 하나로
+   끊고 작은 머리글을 얹는 것까지만 하고, 카드를 더 쌓지 않는다 */
+.rpgap { margin-top: 26px; padding-top: 20px; border-top: 1px solid var(--rp-line) }
+.rpsub2 {
+  margin: 0 0 4px; font-size: 15px; font-weight: 700; letter-spacing: -.01em;
+  color: var(--rp-ink);
+}
+.rpgap > .note { margin: 0 0 12px }
