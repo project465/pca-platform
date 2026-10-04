@@ -46,6 +46,19 @@ COMMENT ON TABLE tracks IS
    만들어야 하는 검사지는 instrument_key 가 말해주듯 두 벌뿐이다.
    고교를 일반계/마이스터로 쪼개지 않는다 — 문항은 같고 결과지 뒷부분만 goal 로 갈린다';
 
+-- 트랙 네 줄은 **스키마에 둔다.** 내용이 아니라 검사지를 고르는 열쇠이고,
+-- 이 파일 아래쪽(scoring_profiles · products.track_code)이 이 값을 바로
+-- 참조한다. 시드 파일에만 두면 **빈 DB 에 스키마를 올릴 수 없다**:
+-- 실제로 그래서 fresh 적용이 FK 위반으로 멈췄다. 생성되는 시드
+-- (db/seed/metri/skill_tree.sql)가 같은 줄을 ON CONFLICT 로 다시 써도
+-- 결과는 같다.
+INSERT INTO tracks (code, stage, instrument_key, sort_no) VALUES
+  ('HS',        'high', 'HS_V1',   1),
+  ('UNIV_LOW',  'univ', 'UNIV_V1', 2),
+  ('UNIV_HIGH', 'univ', 'UNIV_V1', 3),
+  ('GRAD',      'grad', 'UNIV_V1', 4)
+ON CONFLICT (code) DO NOTHING;
+
 CREATE TABLE learner_goals (
   id       BIGSERIAL PRIMARY KEY,
   code     TEXT NOT NULL UNIQUE,          -- univ(진학형) | job(취업형) | any(대학 트랙)

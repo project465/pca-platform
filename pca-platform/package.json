@@ -34,6 +34,7 @@
     "value:build": "node scripts/build-value-data.mjs",
     "value:check": "node scripts/value-check.mjs",
     "coverage:check": "node scripts/coverage-check.mjs",
+    "platform:check": "node scripts/platform-check.mjs",
     "metri:refund": "tsx scripts/metri/refund-check.ts",
     "metri:legal": "tsx scripts/metri/legal-check.ts",
     "metri:codes": "tsx scripts/metri/make-codes.ts",
