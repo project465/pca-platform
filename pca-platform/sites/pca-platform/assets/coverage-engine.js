@@ -29,6 +29,9 @@ window.PCACoverage = (function () {
   var LV = { E0: 0, E1: 1, E2: 2, E3: 3, E4: 4, E5: 5 };
   var NAME = { E0: '활동', E1: '판단', E2: '산출물', E3: '성과', E4: '조직 가치', E5: '반복 가능성' };
 
+  /** 되묻는 말은 묶음으로 온다. 잎마다 부르면 보기 하나를 빠뜨린다 */
+  function DEEP(v) { return window.PCAI18N ? window.PCAI18N.deep(v) : v; }
+
   function s(v) { return String(v === null || v === undefined ? '' : v).trim(); }
   function low(v) { return s(v).toLowerCase(); }
   function arr(v) { return Array.isArray(v) ? v.filter(function (x) { return s(x); }) : []; }
@@ -129,11 +132,13 @@ window.PCACoverage = (function () {
 
       return {
         evidence_id: req.evidence_id,
-        label: req.label,
+        /* **증거 지도에서 온 이름표는 사전을 거친다.** 아니면 영어 결과지에
+           영역 이름만 한국어로 남는다. 번호(`evidence_id`)는 안 바뀐다 */
+        label: T(req.label),
         importance: req.importance,
         minimum_depth: req.minimum_depth,
         minimum_depth_name: TX(NAME, req.minimum_depth),
-        description: req.description,
+        description: T(req.description),
         status: status,
         depth: depth,
         depth_name: depth ? TX(NAME, depth) : null,
@@ -141,7 +146,7 @@ window.PCACoverage = (function () {
         matched_words: uniq(why).slice(0, 4),
         /* 부분 확인일 때 되묻는 말. 긴 주관식을 요구하지 않는다 */
         gap_kind: status === 'confirmed' ? null : req.gap_kind,
-        follow_up: status === 'confirmed' ? null : followOf(req.gap_kind)
+        follow_up: status === 'confirmed' ? null : DEEP(followOf(req.gap_kind))
       };
     });
 

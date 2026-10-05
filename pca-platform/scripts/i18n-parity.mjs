@@ -183,6 +183,9 @@ await browser.close();
 srv.close();
 
 if (process.argv.includes("--dump")) {
+  writeFileSync("docs/metri/generated/i18n-missing.json",
+    JSON.stringify([...missingAll].sort(), null, 1) + "\n");
+  console.log(`사전에 없는 문구 ${missingAll.size}가지 → docs/metri/generated/i18n-missing.json`);
   mkdirSync(dirname(BASE), { recursive: true });
   writeFileSync("docs/metri/generated/i18n-leaked.json",
     JSON.stringify([...leaked].sort(), null, 1) + "\n");

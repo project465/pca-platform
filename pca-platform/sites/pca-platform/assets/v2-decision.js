@@ -42,11 +42,13 @@ window.PCAV2Decision = (function () {
 
   function label(id) {
     var R = rules();
-    return (R && R.statuses[id]) ? R.statuses[id].label : id;
+    /* 상태 이름표도 데이터 파일에서 온다. 사전을 거치지 않으면
+       영어 결과지에 '근거 만들기' 가 그대로 남는다 */
+    return (R && R.statuses[id]) ? T(R.statuses[id].label) : id;
   }
   function line(id) {
     var R = rules();
-    return (R && R.statuses[id]) ? R.statuses[id].line : '';
+    return (R && R.statuses[id]) ? T(R.statuses[id].line) : '';
   }
   function modeLabel(k) {
     var R = rules();

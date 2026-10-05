@@ -30,15 +30,21 @@ window.PCAValue = (function () {
   /* ── 증거 사다리 여섯 칸 ────────────────────────────────────────────
      아래 칸이 비어 있으면 위 칸을 확정으로 올리지 않는다. 도구를 썼다는
      말만으로 성과까지 건너뛰면 그 줄이 거짓이 된다. */
+  /* **배열도 모듈 최상위다.** 여기서 `T()` 를 부르면 불러올 때 한 번만
+     평가돼 한국어로 굳는다. 사다리는 꺼내 쓰는 자리에서 옮긴다 */
   var LADDER = [
-    { id: 'E0', n: T('활동'), q: T('무엇을 했는가') },
-    { id: 'E1', n: T('판단'), q: T('무엇을 직접 정했는가') },
-    { id: 'E2', n: T('산출물'), q: T('무엇을 남겼는가') },
-    { id: 'E3', n: T('성과'), q: T('어떤 기준과 견주었는가') },
-    { id: 'E4', n: T('조직 가치'), q: T('어디에 쓰였는가') },
-    { id: 'E5', n: T('반복 가능성'), q: T('다시 쓸 수 있는가') }
+    { id: 'E0', n: '활동', q: '무엇을 했는가' },
+    { id: 'E1', n: '판단', q: '무엇을 직접 정했는가' },
+    { id: 'E2', n: '산출물', q: '무엇을 남겼는가' },
+    { id: 'E3', n: '성과', q: '어떤 기준과 견주었는가' },
+    { id: 'E4', n: '조직 가치', q: '어디에 쓰였는가' },
+    { id: 'E5', n: '반복 가능성', q: '다시 쓸 수 있는가' }
   ];
   var LV = { E0: 0, E1: 1, E2: 2, E3: 3, E4: 4, E5: 5 };
+
+  /** 가치 사슬은 데이터 파일에서 묶음으로 온다. 잎마다 부르면 빠뜨린다 */
+  function DEEP(v) { return window.PCAI18N ? window.PCAI18N.deep(v) : v; }
+
 
   function s(v) { return String(v === null || v === undefined ? '' : v).trim(); }
   function nz(v) { return s(v).length > 0; }
@@ -75,7 +81,7 @@ window.PCAValue = (function () {
 
     /* 상태를 정한다. 아래가 비었으면 위는 확정으로 가지 않는다. */
     var out = [], capped = false;
-    LADDER.forEach(function (r) {
+    (window.PCAI18N ? window.PCAI18N.deep(LADDER) : LADDER).forEach(function (r) {
       var by = uniq(hit[r.id]);
       var state = by.length ? 'confirmed' : 'not_yet';
       if (capped && state === 'confirmed') state = 'partial';
@@ -438,23 +444,23 @@ window.PCAValue = (function () {
         ? window.PCAI18N.family(familyId)
         : ((window.PCA_V2_FAMILY_NAMES || {})[familyId] || familyId)),
       organization_type: orgTypeId || null,
-      organization_type_name: org ? org.name_ko : null,
+      organization_type_name: org ? T(org.name_ko) : null,
       target_organization_id: null,
-      problem: fam.problem,
+      problem: DEEP(fam.problem),
 
       academic_inputs: academicInputs(fam.knowledge, evRaw, exps),
       tools_technologies: myTools,
-      work_activities: fam.work,
-      technical_decisions: fam.decisions,
+      work_activities: DEEP(fam.work),
+      technical_decisions: DEEP(fam.decisions),
       /* 조직별 줄을 맨 앞에 두고 공통 줄을 잇는다. 같은 말이 두 번
          나오면 읽는 사람이 둘을 다른 것으로 읽는다 */
-      outputs: uniq(variant ? [variant.output].concat(fam.outputs) : fam.outputs),
-      performance_criteria: uniq(variant
+      outputs: DEEP(uniq(variant ? [variant.output].concat(fam.outputs) : fam.outputs)),
+      performance_criteria: DEEP(uniq(variant
         ? s(variant.performance).split(' · ').map(function (x) { return s(x); })
             .concat(fam.performance)
-        : fam.performance),
-      organizational_value: org ? org.what_counts_as_value : [],
-      reads_your_work_as: org ? org.reads_your_work_as : null,
+        : fam.performance)),
+      organizational_value: org ? DEEP(org.what_counts_as_value) : [],
+      reads_your_work_as: org ? T(org.reads_your_work_as) : null,
 
       user_evidence: mine.map(function (x) {
         return {
@@ -557,7 +563,7 @@ window.PCAValue = (function () {
   }
 
   return {
-    LADDER: LADDER, LV: LV,
+    LADDER: (window.PCAI18N ? window.PCAI18N.deep(LADDER) : LADDER), LV: LV,
     experiences: experiences,
     toolEvidence: toolEvidence,
     organizationContext: organizationContext,
@@ -566,6 +572,9 @@ window.PCAValue = (function () {
     repeatability: repeatability,
     ladderByFamily: ladderByFamily,
     orgById: orgById, vpById: vpById, domainById: domainById,
-    ORG_TYPES: ORG, PATHS: VP, KNOWLEDGE: K, TOOL_CATS: TOOLS.categories
+    /* 조직 유형·전공지식 이름표도 데이터 파일에서 온다. 내보낼 때
+       옮기지 않으면 조직 비교표만 한국어로 남는다 */
+    ORG_TYPES: DEEP(ORG), PATHS: VP, KNOWLEDGE: DEEP(K),
+    TOOL_CATS: DEEP(TOOLS.categories)
   };
 })();

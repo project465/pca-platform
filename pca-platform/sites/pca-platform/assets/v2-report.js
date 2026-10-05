@@ -44,10 +44,14 @@ window.PCAV2Report = (function () {
   /* 결과지에서 가장 조심해야 하는 두 문장. **한 번만 적어 둔다**: 세 자리에
      따로 적어 두었더니 손볼 때마다 세 군데가 갈렸고, 문체 검사에도 같은
      대구가 여섯 번 센 것으로 걸렸다 */
-  var NOT_ABILITY = T('못 한다는 뜻이 아닙니다. 지금 적어 주신 것으로는 ') +
-    T('확인되지 않는다는 뜻입니다.');
-  var LOW_RUNG = T('낮은 칸이 모자라다는 뜻이 아닙니다. 지금 적어 주신 것으로 ') +
-    T('확인되는 범위입니다.');
+  /* **이어붙인 상수도 모듈 최상위다.** 불러올 때 한 번 평가되면
+     그 뒤로 언어를 바꿔도 한국어가 남는다. 부를 때마다 옮긴다 */
+  function NOT_ABILITY() { return T('못 한다는 뜻이 아닙니다. 지금 적어 주신 것으로는 ') +
+    T('확인되지 않는다는 뜻입니다.'); }
+  /* **이어붙인 상수도 모듈 최상위다.** 불러올 때 한 번 평가되면
+     그 뒤로 언어를 바꿔도 한국어가 남는다. 부를 때마다 옮긴다 */
+  function LOW_RUNG() { return T('낮은 칸이 모자라다는 뜻이 아닙니다. 지금 적어 주신 것으로 ') +
+    T('확인되는 범위입니다.'); }
   var RUNG = { E0: '활동', E1: '판단', E2: '산출물', E3: '성과', E4: '조직 가치', E5: '반복' };
 
   /* ── 쪽 ─────────────────────────────────────────────────────────────
@@ -250,7 +254,12 @@ window.PCAV2Report = (function () {
       var w = (it.career_family_weights || {})[row.career_family_id];
       if (!w || w < 0.6) return;
       if (it.construct !== 'actual_work_interest' && it.construct !== 'learning_intent') return;
-      var txt = window.PCAV2.textOf(it, J.education_stage);
+      /* **문항은 사전이 아니라 문항 은행이 들고 있다.** 결과지 문구와
+         달리 문항은 승인된 영어가 JSON 안에 따로 있고, 학위 단계마다
+         묻는 장면이 갈린다 */
+      var txt = (window.PCAI18N && window.PCAI18N.itemText)
+        ? window.PCAI18N.itemText(it, J.education_stage)
+        : window.PCAV2.textOf(it, J.education_stage);
       if (txt) hits.push({ no: it.question_no, t: txt });
     });
     if (!hits.length) return '';
@@ -660,13 +669,13 @@ window.PCAV2Report = (function () {
     out.push(page(no(), 'EVIDENCE',
       isB ? T('지금 내가 가진 증거와 아직 확인되지 않은 것') : T('지금 내가 가진 증거'),
       J.evidence_supplied
-        ? (isB ? LOW_RUNG
-          : T('경험 하나가 활동에서 반복 가능성까지 어디쯤 와 있는지 봅니다. ') + LOW_RUNG)
+        ? (isB ? LOW_RUNG()
+          : T('경험 하나가 활동에서 반복 가능성까지 어디쯤 와 있는지 봅니다. ') + LOW_RUNG())
         : '',
       evidenceToday(J, isB ? 2 : (isP ? 8 : 4), isB) +
       (isB && miss ? '<div class="rpgap">' +
         T('<h3 class="rpsub2">아직 확인되지 않은 것</h3>') +
-        '<p class="note">' + NOT_ABILITY + '</p>' + miss + '</div>' : ''),
+        '<p class="note">' + NOT_ABILITY() + '</p>' + miss + '</div>' : ''),
       '', T('내 Evidence')));
 
     /* 5. 조직이 보는 결과. **BASIC 은 이 쪽을 받지 않는다**: 네댓 장
@@ -689,7 +698,7 @@ window.PCAV2Report = (function () {
 
     /* 9. 비어 있는 것. BASIC 은 넷째 쪽에서 이미 봤다 */
     if (!isB && miss) {
-      out.push(page(no(), 'GAP', T('아직 확인되지 않은 것'), NOT_ABILITY, miss,
+      out.push(page(no(), 'GAP', T('아직 확인되지 않은 것'), NOT_ABILITY(), miss,
         '', T('아직 없는 것')));
     }
 

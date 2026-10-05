@@ -89,11 +89,32 @@ window.PCAI18N = (function () {
     return s.points || [];
   }
 
+  /**
+   * 묶음을 통째로 옮긴다.
+   *
+   * **구조와 키는 그대로 두고 글자만 바꾼다.** 데이터 파일에서 온 이름표는
+   * 묶음으로 오는 일이 많아서, 잎마다 손으로 부르면 한 자리를 빠뜨린다.
+   * 빠뜨린 자리는 영어 화면에 한국어로 남는다.
+   *
+   * **응시자가 적은 글에는 쓰지 않는다.** 그쪽은 사전에 없을뿐더러, 있어도
+   * 남의 글을 우리 말로 바꾸는 셈이 된다.
+   */
+  function deep(v) {
+    if (typeof v === 'string') return T(v);
+    if (Array.isArray(v)) return v.map(deep);
+    if (v && typeof v === 'object') {
+      var o = {};
+      for (var k in v) if (Object.prototype.hasOwnProperty.call(v, k)) o[k] = deep(v[k]);
+      return o;
+    }
+    return v;
+  }
+
   function missing() { return Object.keys(miss); }
   function resetMissing() { miss = {}; }
 
   return {
-    setLang: setLang, lang: getLang, T: T, family: family,
+    setLang: setLang, lang: getLang, T: T, deep: deep, family: family,
     itemText: itemText, optionText: optionText, scalePoints: scalePoints,
     missing: missing, resetMissing: resetMissing
   };
