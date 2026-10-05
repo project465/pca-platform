@@ -3,8 +3,16 @@
 import { useActionState } from "react";
 import { t, type Lang } from "@/lib/locale";
 import { signupAction, type SignupState } from "./actions";
+import ConsentBlock, { type ConsentItem, type ConsentLabels } from "./consent-block";
 
-export default function SignupForm({ next, lang }: { next: string; lang: Lang }) {
+export default function SignupForm({
+  next, lang, consent, consentLabels,
+}: {
+  next: string;
+  lang: Lang;
+  consent: ConsentItem[];
+  consentLabels: ConsentLabels;
+}) {
   const [state, action, pending] = useActionState<SignupState, FormData>(signupAction, {});
   const err = state.errors ?? {};
 
@@ -33,6 +41,8 @@ export default function SignupForm({ next, lang }: { next: string; lang: Lang })
                aria-invalid={err.password ? true : undefined} />
         {err.password && <span className="err">{err.password}</span>}
       </div>
+
+      <ConsentBlock items={consent} labels={consentLabels} />
 
       {state.message && <p className="notice warn" role="alert">{state.message}</p>}
 

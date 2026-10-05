@@ -163,6 +163,33 @@ export const TX = {
     "Evidence architecture, research ownership, organization value, next evidence project, 30/90/365 plan",
   ),
   pxBuy: p("시작하기", "Get started"),
+
+  /* ── 동의 ───────────────────────────────────────────────────────
+     **`locale.ts` 에 넣지 않는다.** 저쪽은 세 언어를 한 줄에 쓰게 묶여
+     있어서, 새 문구를 더하려면 승인되지 않은 튀르키예어까지 지어내야
+     한다. 여기는 두 언어다 */
+  cnTitle: p("약관에 동의해 주십시오", "Please agree to the terms"),
+  cnRequired: p("필수", "Required"),
+  cnOptional: p("선택", "Optional"),
+  cnView: p("전문 보기", "Read in full"),
+  cnAgreeAll: p("모두 동의합니다", "I agree to all of these"),
+  cnMissing: p(
+    "필수 항목에 동의하셔야 가입할 수 있습니다.",
+    "You can only sign up once you have agreed to the required items.",
+  ),
+  /* **번역이 없는 것을 없다고 적는다.** 구속력 있는 문서를 기계로 옮겨
+     올리면 그걸 읽고 동의한 사람이 생긴다 */
+  cnPending: p(
+    "영문 번역을 준비하고 있습니다. 지금은 한국어 본문이 기준입니다.",
+    "An English translation is in preparation. The Korean text governs for now.",
+  ),
+  cnPendingShort: p("한국어 본문", "Korean text"),
+  cnWithdraw: p("수신 철회", "Withdraw"),
+  cnAgreedAt: p("동의한 때", "Agreed on"),
+  cnWithdrawnAt: p("철회한 때", "Withdrawn on"),
+  cnNotAgreed: p("동의하지 않음", "Not agreed"),
+  cnMine: p("내가 동의한 것", "What I have agreed to"),
+  cnVersion: p("판", "Version"),
   /* **세 상태를 한 문구로 적지 않는다.** 승인된 0원(무료 구간)과 값을
      아직 못 정한 것은 다른 말이어야 한다. 전에는 둘 다 이 한 줄을
      받았는데, 무료 구간에 "값이 아직 정해지지 않았습니다" 가 뜨면 공짜로

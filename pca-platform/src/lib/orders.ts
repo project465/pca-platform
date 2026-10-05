@@ -279,11 +279,18 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
    * 확정이 그만큼 늦어진다. enqueue 는 실패해도 던지지 않는다.
    */
   if (done.ok && !done.alreadyDone && done.upgradedAttemptId) {
+    /* 넓어진 **그 응시**를 본 언어로 보낸다. 결과지가 그 언어로
+       나갔으니 알림도 같은 언어여야 한다 */
+    const lang = await queryOne<{ lang: string | null }>(
+      `SELECT interface_language AS lang FROM attempts WHERE id = $1`,
+      [done.upgradedAttemptId],
+    ).catch(() => null);
     await enqueue({
       kind: "upgrade_done",
       userId: order.user_id,
       payload: { orderNo: done.orderNo },
       dedupeKey: `upgrade_done:${order.id}`,
+      locale: lang?.lang ?? null,
     });
   }
   return done;

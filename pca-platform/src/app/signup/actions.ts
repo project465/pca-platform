@@ -7,6 +7,8 @@ import { hashPassword } from "@/lib/password";
 import { signIn } from "@/lib/auth";
 import { fieldErrors, signupSchema, type FieldErrors } from "@/lib/validation";
 import { enqueue } from "@/lib/outbox";
+import { resolveLang } from "@/lib/locale-server";
+import { record as consentRecord } from "@/lib/consent";
 
 export type SignupState = { errors?: FieldErrors; message?: string };
 
@@ -39,6 +41,26 @@ export async function signupAction(_prev: SignupState, form: FormData): Promise<
     [email, name, hash],
   );
 
+  /**
+   * 동의를 적는다. **가입과 같은 요청에서 적는다**: 다음 화면으로
+   * 넘기고 거기서 받으면, 그 사이에 창을 닫은 사람이 동의 없이 계정을
+   * 가진 상태로 남는다.
+   *
+   * **필수가 빠지면 가입을 되돌린다.** 화면의 `required` 는 안내이고,
+   * 막는 것은 여기다(개발자 도구로 지울 수 있는 것은 막는 것이 아니다).
+   */
+  const lang2 = (await resolveLang().catch(() => "ko")) === "en" ? "en" : "ko";
+  if (created) {
+    const agreed = form.getAll("consent").map(String).filter(Boolean);
+    const saved = await consentRecord({
+      userId: created.id, locale: lang2, siteId: null, agreedIds: agreed,
+    });
+    if (!saved.ok) {
+      await queryOne(`DELETE FROM users WHERE id = $1`, [created.id]).catch(() => null);
+      return { message: saved.reason };
+    }
+  }
+
   // 인사 한 줄을 대기열에 적는다. 메일 서버를 여기서 기다리지 않는다.
   // 기다리면 메일이 느린 날 가입 버튼이 느려진다.
   await enqueue({
@@ -46,6 +68,10 @@ export async function signupAction(_prev: SignupState, form: FormData): Promise<
     userId: created?.id ?? null,
     toAddr: email,
     dedupeKey: created ? `signup:${created.id}` : undefined,
+    /* **가입한 화면의 언어로 보낸다.** 응시보다 먼저 나가는 메일이라
+       응시의 언어를 볼 수 없다. 여기서 적지 않으면 영어로 가입한
+       사람에게 한국어 인사가 간다 */
+    locale: lang2,
   });
 
   try {

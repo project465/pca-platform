@@ -676,3 +676,38 @@
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 12.5px; color: var(--sf-ink-3); white-space: nowrap;
 }
+
+/* ── 동의 ─────────────────────────────────────────────────────────
+   **필수와 선택을 한 칸으로 묶지 않는다.** '모두 동의' 만 두면 선택
+   항목까지 받게 되고, 그건 받은 동의가 아니다. 그래서 칸이 따로 서고
+   이름표가 둘을 가른다 */
+.cnbox {
+  margin: 18px 0 4px; padding: 14px 14px 10px;
+  border: 1px solid var(--sf-line, #dfe5ee); border-radius: 10px;
+  background: var(--sf-bg2, #fbfcfe);
+}
+.cnbox legend { padding: 0 6px; font-size: 13px; font-weight: 700 }
+.cnrow {
+  display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 9px;
+  align-items: start; padding: 6px 0; font-size: 13px; line-height: 1.55;
+}
+.cnrow input { margin-top: 3px }
+.cnrow.cnall {
+  padding-bottom: 9px; margin-bottom: 4px; font-weight: 700;
+  border-bottom: 1px solid var(--sf-line, #dfe5ee);
+}
+.cntag {
+  display: inline-block; font-size: 11px; font-weight: 700;
+  padding: 1px 6px; border-radius: 999px; letter-spacing: .02em;
+  background: #eef2f8; color: #5a6b80;
+}
+.cntag.is-req { background: #e7f0fa; color: #1f5fa8 }
+.cnnote { margin: 8px 0 2px; font-size: 12px; line-height: 1.6; color: #76859b }
+
+/* 약관 전문. **줄바꿈을 지킨다**: 조문 번호가 접히면 어느 조항인지
+   읽을 수 없다 */
+.lgbody {
+  margin: 14px 0 0; padding: 0; font-size: 13.5px; line-height: 1.75;
+  white-space: pre-wrap; word-break: break-word;
+  font-family: inherit; color: var(--sf-ink2, #42546d);
+}

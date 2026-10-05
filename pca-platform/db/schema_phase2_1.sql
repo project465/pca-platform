@@ -174,3 +174,88 @@ CREATE UNIQUE INDEX IF NOT EXISTS consent_records_once_idx
 
 CREATE INDEX IF NOT EXISTS consent_records_user_idx
   ON consent_records(user_id, agreed_at DESC);
+
+
+-- ============================================================
+--  6. 거래 메일의 언어
+--
+--  **메일은 받는 사람의 언어로 간다.** 영어로 결제한 사람에게 한국어
+--  메일이 가면 그 사람은 결제가 됐는지 모른다. 그런데 메일을 보내는
+--  때는 그 사람이 화면에 없어서, 보낼 때 언어를 고를 수 없다. 쌓을 때
+--  적어 두어야 한다.
+--
+--  `attempts.interface_language` 와 따로 두는 것은 가입 메일처럼
+--  응시보다 먼저 나가는 것이 있어서다.
+-- ============================================================
+
+ALTER TABLE outbox ADD COLUMN IF NOT EXISTS locale CHAR(2);
+
+COMMENT ON COLUMN outbox.locale IS
+  '받는 사람의 언어. **쌓을 때 적는다**: 보낼 때는 그 사람이 화면에
+   없어서 고를 수 없다. 비어 있으면 한국어로 간다';
+
+
+-- ============================================================
+--  7. 동의문의 번역 상태
+--
+--  **약관을 지어서 번역하지 않는다.** 한국어 약관·개인정보 처리방침은
+--  이미 있고(`sites/careermetri/legal/`), 영어판은 없다. 기계로 옮겨
+--  'English Terms' 라고 올리면, 그걸 읽고 동의한 사람이 생긴다. 구속력
+--  있는 문서를 확인 없이 내놓는 것은 값을 지어내는 것과 같은 종류의
+--  일이다.
+--
+--  그래서 영어 줄을 **만들어 두고 번역이 아직 없다고 적는다.** 화면은
+--  영어로 "영문 번역이 준비 중이고 한국어 본문이 기준이다" 를 적고 그
+--  본문으로 링크한다. 없는 것을 없다고 적는 쪽이 지어낸 것을 올리는
+--  쪽보다 낫다.
+-- ============================================================
+
+ALTER TABLE consent_documents ADD COLUMN IF NOT EXISTS translation_status TEXT
+  NOT NULL DEFAULT 'translated';
+
+DO $$ BEGIN
+  ALTER TABLE consent_documents ADD CONSTRAINT consent_documents_translation_chk
+    CHECK (translation_status IN ('translated', 'pending'));
+EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+
+-- 번역이 없는 줄은 **어느 본문이 기준인지** 가리켜야 한다
+ALTER TABLE consent_documents ADD COLUMN IF NOT EXISTS governing_locale CHAR(2);
+
+DO $$ BEGIN
+  ALTER TABLE consent_documents ADD CONSTRAINT consent_documents_governing_chk
+    CHECK (translation_status = 'translated' OR governing_locale IS NOT NULL);
+EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+
+COMMENT ON COLUMN consent_documents.translation_status IS
+  'translated = 그 언어의 본문이 있다 · pending = 아직 없다.
+   **지어서 올리지 않는다**: 구속력 있는 문서를 확인 없이 내놓으면
+   그걸 읽고 동의한 사람이 생긴다';
+
+COMMENT ON COLUMN consent_documents.governing_locale IS
+  '번역이 없을 때 기준이 되는 본문의 언어. 화면이 그 본문으로 링크한다';
+
+
+-- 한국어 본문이 있는 셋. **판을 v1.0 으로 둔다**: 고칠 때마다 올린다
+INSERT INTO consent_documents
+  (kind, version, locale, title, body_path, required, translation_status)
+VALUES
+  ('terms',   'v1.0', 'ko', '커리어메트리 이용약관',
+   'sites/careermetri/legal/01-terms.md',   true,  'translated'),
+  ('privacy', 'v1.0', 'ko', '개인정보 처리방침',
+   'sites/careermetri/legal/02-privacy.md', true,  'translated'),
+  ('marketing', 'v1.0', 'ko', '광고·정보 수신 (선택)',
+   NULL, false, 'translated')
+ON CONFLICT (kind, version, locale) DO NOTHING;
+
+-- 영어 줄. **본문이 아직 없다**고 적고 한국어 본문을 기준으로 가리킨다
+INSERT INTO consent_documents
+  (kind, version, locale, title, body_path, required,
+   translation_status, governing_locale)
+VALUES
+  ('terms',   'v1.0', 'en', 'Terms of Service',
+   'sites/careermetri/legal/01-terms.md',   true,  'pending', 'ko'),
+  ('privacy', 'v1.0', 'en', 'Privacy Policy',
+   'sites/careermetri/legal/02-privacy.md', true,  'pending', 'ko'),
+  ('marketing', 'v1.0', 'en', 'Marketing messages (optional)',
+   NULL, false, 'pending', 'ko')
+ON CONFLICT (kind, version, locale) DO NOTHING;

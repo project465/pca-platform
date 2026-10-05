@@ -24,11 +24,19 @@ export async function enqueue(opts: {
   payload?: Record<string, unknown>;
   /** 같은 일로 두 번 쌓이지 않게. 예: `report_ready:7978` */
   dedupeKey?: string;
+  /**
+   * 받는 사람의 언어.
+   *
+   * **쌓을 때 적는다.** 보낼 때는 그 사람이 화면에 없어서 고를 수 없고,
+   * 그 자리에서 짐작하면 영어로 결제한 사람에게 한국어 메일이 간다.
+   * 모르면 비워 두고, 비면 한국어로 나간다(`DEFAULT_LANG`).
+   */
+  locale?: string | null;
 }): Promise<void> {
   try {
     await query(
-      `INSERT INTO outbox (kind, user_id, to_addr, payload, dedupe_key)
-       VALUES ($1,$2,$3,$4::jsonb,$5)
+      `INSERT INTO outbox (kind, user_id, to_addr, payload, dedupe_key, locale)
+       VALUES ($1,$2,$3,$4::jsonb,$5,$6)
        ON CONFLICT (dedupe_key) DO NOTHING`,
       [
         opts.kind,
@@ -36,6 +44,7 @@ export async function enqueue(opts: {
         opts.toAddr ?? null,
         JSON.stringify(opts.payload ?? {}),
         opts.dedupeKey ?? null,
+        opts.locale === "en" ? "en" : opts.locale === "ko" ? "ko" : null,
       ],
     );
   } catch {
@@ -54,8 +63,8 @@ export async function enqueue(opts: {
  * 담당자가 공개를 누를 때. 같은 응시로 두 번 쌓이지는 않는다.
  */
 export async function notifyReportReady(attemptId: string): Promise<boolean> {
-  const a = await queryOne<{ user_id: string; open: boolean }>(
-    `SELECT a.user_id,
+  const a = await queryOne<{ user_id: string; open: boolean; lang: string | null }>(
+    `SELECT a.user_id, a.interface_language AS lang,
             (a.scored_at IS NOT NULL
              AND (ts.release_mode <> 'manual' OR ts.released_at IS NOT NULL)) AS open
        FROM attempts a JOIN test_sessions ts ON ts.id = a.session_id
@@ -63,7 +72,13 @@ export async function notifyReportReady(attemptId: string): Promise<boolean> {
     [attemptId],
   );
   if (!a || !a.open) return false;
-  await enqueue({ kind: "report_ready", userId: a.user_id, dedupeKey: `report_ready:${attemptId}` });
+  await enqueue({
+    kind: "report_ready", userId: a.user_id,
+    dedupeKey: `report_ready:${attemptId}`,
+    /* 그 응시를 본 언어로 보낸다. 결과지가 그 언어로 나갔으니 알림도
+       같은 언어여야 한다 */
+    locale: a.lang,
+  });
   return true;
 }
 
@@ -104,7 +119,56 @@ type Row = {
   display_name: string | null;
   payload: Record<string, string>;
   attempts: number;
+  locale: string | null;
 };
+
+/**
+ * 거래 메일 문면. 두 언어이고 **글자만 갈린다**.
+ *
+ * **표에 본문을 저장하지 않는다**: 결과지 내용이 메일 표로 복사되면
+ * 파기(익명화)가 반쪽이 된다. 그래서 보낼 때 여기서 만든다.
+ *
+ * **링크에 결과지 번호를 담지 않는다.** 받는 사람이 로그인해서 자기
+ * 목록에서 고르게 한다. 메일은 전달 과정에서 남의 눈에 띌 수 있다.
+ */
+const MAIL = {
+  ko: {
+    you: "회원",
+    signup: (n: string, base: string) => ({
+      subject: "가입이 끝났습니다",
+      text: `${n}님, 가입이 끝났습니다.\n\n` +
+        `로그인하시면 바로 시작하실 수 있습니다.\n${base}/login\n`,
+    }),
+    report_ready: (n: string, base: string) => ({
+      subject: "결과지가 준비됐습니다",
+      text: `${n}님, 채점이 끝나 결과지가 열렸습니다.\n\n` +
+        `로그인하신 뒤 내 검사에서 보실 수 있습니다.\n${base}/my\n`,
+    }),
+    upgrade_done: (n: string, base: string) => ({
+      subject: "결과지가 넓어졌습니다",
+      text: `${n}님, 결제가 확인되어 남은 절이 열렸습니다.\n` +
+        `문항을 다시 푸실 필요는 없습니다.\n\n${base}/my\n`,
+    }),
+  },
+  en: {
+    you: "there",
+    signup: (n: string, base: string) => ({
+      subject: "Your account is ready",
+      text: `${n}, your account is ready.\n\n` +
+        `Sign in and you can start straight away.\n${base}/login\n`,
+    }),
+    report_ready: (n: string, base: string) => ({
+      subject: "Your report is ready",
+      text: `${n}, scoring is finished and your report is open.\n\n` +
+        `Sign in and you will find it under your assessments.\n${base}/my\n`,
+    }),
+    upgrade_done: (n: string, base: string) => ({
+      subject: "Your report now covers more",
+      text: `${n}, your payment came through and the remaining sections are open.\n` +
+        `You do not need to answer the items again.\n\n${base}/my\n`,
+    }),
+  },
+} as const;
 
 /**
  * 문면은 보낼 때 만든다. **표에 본문을 저장하지 않는다**: 결과지 내용이
@@ -114,24 +178,20 @@ type Row = {
  * 고르게 한다. 메일은 전달 과정에서 남의 눈에 띌 수 있다.
  */
 function compose(r: Row): { subject: string; text: string } | null {
-  const name = r.display_name ?? "회원";
+  /* 비어 있으면 한국어다. **짐작하지 않는다**: 쌓을 때 모른 것을 보낼
+     때 알아낼 방법이 없다 */
+  const M = r.locale === "en" ? MAIL.en : MAIL.ko;
+  const name = r.display_name ?? M.you;
   const base = process.env.PLATFORM_URL ?? "";
   switch (r.kind) {
     case "signup":
-      return {
-        subject: "가입이 끝났습니다",
-        text: `${name}님, 가입이 끝났습니다.\n\n로그인하시면 바로 시작하실 수 있습니다.\n${base}/login\n`,
-      };
+      return M.signup(name, base);
     case "report_ready":
-      return {
-        subject: "결과지가 준비됐습니다",
-        text: `${name}님, 채점이 끝나 결과지가 열렸습니다.\n\n로그인하신 뒤 내 검사에서 보실 수 있습니다.\n${base}/my\n`,
-      };
+      return M.report_ready(name, base);
     case "upgrade_done":
-      return {
-        subject: "결과지가 넓어졌습니다",
-        text: `${name}님, 결제가 확인되어 남은 절이 열렸습니다.\n문항을 다시 푸실 필요는 없습니다.\n\n${base}/my\n`,
-      };
+      return M.upgrade_done(name, base);
+    /* 운영 경보는 **한국어만이다.** 받는 사람이 우리 쪽 운영자이고,
+       두 언어로 두면 고칠 곳만 늘고 읽는 사람은 그대로다 */
     case "code_low":
       return {
         subject: `[운영] 응시권 코드가 ${r.payload.left ?? "?"}장 남았습니다`,
@@ -143,6 +203,21 @@ function compose(r: Row): { subject: string; text: string } | null {
     default:
       return null;
   }
+}
+
+/**
+ * 문면 하나를 꺼내 본다. **검사가 두 언어를 눌러 보기 위한 자리다.**
+ *
+ * `compose` 를 그대로 열지 않는 것은 그쪽이 DB 줄 모양을 받기 때문이다.
+ * 검사에 DB 줄을 만들게 하면 메일 문면을 보려고 사용자를 만들게 된다.
+ */
+export function renderMail(
+  kind: OutboxKind, locale: string | null, displayName?: string | null,
+): { subject: string; text: string } | null {
+  return compose({
+    id: "0", kind, to_addr: null, email: null,
+    display_name: displayName ?? null, payload: {}, attempts: 0, locale,
+  });
 }
 
 export type FlushResult = {
@@ -162,7 +237,8 @@ export type FlushResult = {
  */
 export async function flushOutbox(limit = 50): Promise<FlushResult> {
   const rows = await query<Row>(
-    `SELECT o.id, o.kind, o.to_addr, u.email, u.display_name, o.payload, o.attempts
+    `SELECT o.id, o.kind, o.to_addr, u.email, u.display_name, o.payload,
+            o.attempts, o.locale
        FROM outbox o LEFT JOIN users u ON u.id = o.user_id
       WHERE o.status = 'queued'
       ORDER BY o.id

@@ -219,7 +219,109 @@ async function main() {
       looksReal ? "긴 값이 있다" : "값이 비어 있다");
   }
 
-  /* ── 11. 우리 밖에서 정해져야 하는 것 ──────────────────────────── */
+  /* ── 11. 거래 메일이 두 언어인가 ───────────────────────────────── */
+  const { renderMail } = await import("../src/lib/outbox");
+  const HAN = /[가-힣]/;
+  for (const kind of ["signup", "report_ready", "upgrade_done"] as const) {
+    const k = renderMail(kind, "ko");
+    const e = renderMail(kind, "en");
+    ok(`${kind} 메일이 두 언어로 있다`, !!k && !!e,
+      `${k?.subject ?? "없음"} / ${e?.subject ?? "없음"}`);
+    /* **영어 메일에 한국어가 섞이면 받은 사람이 결제가 됐는지 모른다** */
+    ok(`${kind} 영어 메일에 한국어가 없다`,
+      !!e && !HAN.test(e.subject) && !HAN.test(e.text),
+      e ? (HAN.test(e.subject + e.text) ? "섞였다" : "없음") : "없음");
+    ok(`${kind} 한국어 메일이 그대로다`, !!k && HAN.test(k.subject));
+  }
+  /* 언어를 모르면 한국어로 간다. **짐작하지 않는다** */
+  const fallback = renderMail("signup", null);
+  ok("언어를 모르는 메일은 한국어로 간다",
+    !!fallback && HAN.test(fallback.subject), fallback?.subject);
+  /* 운영 경보는 한국어만이다. 받는 사람이 우리 쪽 운영자다 */
+  ok("운영 경보는 두 언어로 두지 않는다",
+    renderMail("code_low", "en")?.subject === renderMail("code_low", "ko")?.subject);
+  const loc = await queryOne<{ n: string }>(
+    `SELECT count(*)::text AS n FROM information_schema.columns
+      WHERE table_name = 'outbox' AND column_name = 'locale'`);
+  ok("대기열이 받는 사람의 언어를 들고 있다", Number(loc?.n ?? 0) === 1,
+    `칸 ${loc?.n}개`);
+
+  /* ── 12. 동의가 실제로 돌아가는가 ──────────────────────────────── */
+  const CS = await import("../src/lib/consent");
+  for (const l of ["ko", "en"] as const) {
+    const docs = await CS.activeDocs(l);
+    ok(`${l} 동의문이 등록돼 있다`, docs.length >= 3,
+      docs.map((d) => `${d.kind}/${d.version}`).join(" · ") || "없음");
+    ok(`${l} 필수와 선택이 갈려 있다`,
+      docs.some((d) => d.required) && docs.some((d) => !d.required),
+      `필수 ${docs.filter((d) => d.required).length} · ` +
+      `선택 ${docs.filter((d) => !d.required).length}`);
+  }
+  /* **번역이 없는 것을 없다고 적는가.** 기계로 옮긴 약관을 올리면
+     그걸 읽고 동의한 사람이 생긴다 */
+  const en = await CS.activeDocs("en");
+  const pend = en.filter((d) => d.translation_status === "pending");
+  ok("영문 번역이 없는 동의문은 그렇다고 적혀 있다", pend.length === en.length,
+    `${pend.length}/${en.length}`);
+  ok("번역이 없는 동의문은 기준 본문을 가리킨다",
+    pend.every((d) => !!d.governing_locale),
+    pend.map((d) => d.governing_locale ?? "없음").join(" "));
+
+  /* 실제로 적고 읽어 본다. **필수가 빠지면 거절해야 한다** */
+  const u = await queryOne<{ id: string }>(
+    `INSERT INTO users (email, display_name, password_hash, status)
+     VALUES ('commercial.consent@example.test', 'consent check', 'x', 'active')
+     ON CONFLICT (email) DO UPDATE SET display_name = EXCLUDED.display_name
+     RETURNING id::text`);
+  if (u) {
+    await query(`DELETE FROM consent_records WHERE user_id = $1`, [u.id]);
+    const docs = await CS.activeDocs("ko");
+    const need = CS.requiredIds(docs);
+    const opt = docs.filter((d) => !d.required).map((d) => d.id);
+
+    const partial = await CS.record({
+      userId: u.id, locale: "ko", agreedIds: need.slice(1),
+    });
+    ok("필수 동의가 빠지면 거절한다", !partial.ok,
+      partial.ok ? "통과했다" : partial.reason);
+    ok("거절했으면 아무것도 적지 않는다",
+      !(await CS.hasRequired(u.id, "ko")));
+
+    const full = await CS.record({
+      userId: u.id, locale: "ko", siteId: "kr", agreedIds: [...need, ...opt],
+    });
+    ok("필수를 다 받으면 적는다", full.ok, full.ok ? `${full.saved}줄` : full.reason);
+    ok("필수 동의를 다 받은 것이 읽힌다", await CS.hasRequired(u.id, "ko"));
+
+    /* **같은 판에 두 줄을 만들지 않는다** */
+    await CS.record({ userId: u.id, locale: "ko", agreedIds: [...need, ...opt] });
+    const n = await queryOne<{ n: string }>(
+      `SELECT count(*)::text AS n FROM consent_records WHERE user_id = $1`, [u.id]);
+    ok("같은 판에 두 번 동의해도 한 줄이다", Number(n?.n ?? 0) === docs.length,
+      `${n?.n}줄 / 문서 ${docs.length}개`);
+
+    /* 선택은 철회된다. 필수는 철회로 끄지 않는다(그건 탈퇴다) */
+    ok("선택 동의는 철회된다", opt.length > 0 && await CS.withdraw(u.id, opt[0]));
+    ok("필수 동의는 철회로 끄지 않는다", !(await CS.withdraw(u.id, need[0])));
+    const st = await CS.statusOf(u.id, "ko");
+    const w = st.find((x) => x.id === opt[0]);
+    ok("철회한 때가 남는다", !!w?.withdrawn_at && !w.agreed,
+      w?.withdrawn_at ? "남는다" : "없다");
+    ok("철회해도 줄을 지우지 않는다", st.length === docs.length, `${st.length}줄`);
+
+    /* 판을 올리면 다시 받아야 한다. **종류만 보면 고친 약관에 동의
+       없이 서비스가 계속된다** */
+    await query(
+      `INSERT INTO consent_documents
+         (kind, version, locale, title, body_path, required, translation_status)
+       VALUES ('terms','v-probe','ko','판 올림 검사',NULL,true,'translated')
+       ON CONFLICT (kind, version, locale) DO NOTHING`);
+    const after = await CS.hasRequired(u.id, "ko");
+    ok("판을 올리면 다시 받아야 한다", !after, after ? "그냥 통과했다" : "다시 받는다");
+    await query(`DELETE FROM consent_documents WHERE version = 'v-probe'`);
+  }
+
+  /* ── 13. 우리 밖에서 정해져야 하는 것 ──────────────────────────── */
   for (const m of ["KR", "GLOBAL"] as const) {
     const r = marketReadiness(m);
     if (!r.ready && r.blocker) blocker(`${m} 결제`, r.blocker, "결제 대행사·심사");
@@ -235,6 +337,12 @@ async function main() {
   blocker("사업자 정보", "전자상거래법 제10조 표시(상호·대표자·주소·전화·" +
     "사업자등록번호·통신판매업 신고번호)가 비어 있습니다. 지어내지 않았습니다",
     "사업자 등록");
+  if (pend.length) {
+    blocker("영문 약관", `${pend.length}개 문서의 영문 번역이 없습니다. ` +
+      "구조는 다 되어 있고 본문만 넣으면 됩니다 " +
+      "(지금은 한국어 본문이 기준이라고 영어로 적어 두었습니다)",
+      "법률 검토·번역");
+  }
 
   report();
 }
