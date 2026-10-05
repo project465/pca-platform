@@ -55,7 +55,16 @@
 (function () {
   'use strict';
   var host = document.querySelector('.rphost');
-  var at = new URLSearchParams(location.search).get('attempt') || '';
+  var qs = new URLSearchParams(location.search);
+  var at = qs.get('attempt') || '';
+  /* **파는 쪽에 보여 주는 견본.** 가짜 응시자 한 사람을 실제 엔진으로
+     그려 둔 것이고, 그리는 코드가 산 사람의 결과지와 같은 한 벌이다.
+     따로 손으로 만들어 두면 제품을 고친 날 견본만 옛것으로 남는다.
+     **로그인 없이 열린다**: 담긴 값이 지어낸 것이라 개인정보가 없다 */
+  var sample = qs.get('sample');
+  var url = sample
+    ? '/me-v2/sample.' + (sample === 'en' ? 'en' : 'ko') + '.json'
+    : '/assessment/' + encodeURIComponent(at) + '/report/data';
   var T = window.PCAI18N ? window.PCAI18N.T : function (s) { return s; };
 
   function fail(msg) {
@@ -75,9 +84,7 @@
     });
   }
 
-  fetch('/assessment/' + encodeURIComponent(at) + '/report/data', {
-    credentials: 'same-origin'
-  }).then(function (r) {
+  fetch(url, { credentials: 'same-origin' }).then(function (r) {
     if (!r.ok) throw new Error(T(r.status === 404
       ? '아직 만들어 둔 결과지가 없습니다.'
       : '결과지를 불러오지 못했습니다.'));

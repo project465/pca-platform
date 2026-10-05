@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { openGrants, openV2Attempt, isStage } from "@/lib/me-v2/attempt";
 import { siteForMarket, productByCode, isMarket } from "@/lib/catalog";
+import { step } from "@/lib/funnel-server";
 
 /**
  * 응시를 연다.
@@ -38,5 +39,11 @@ export async function startAttemptAction(form: FormData) {
     lang: market === "GLOBAL" ? "en" : "ko",
     targetCountry: target && target !== "NONE" ? target.slice(0, 2) : null,
   });
-  if (a) redirect(`/assessment/${a.id}`);
+  if (a) {
+    await step("assessment_start", {
+      userId: user.id,
+      props: { tier: g.tier, market, product: g.product_code },
+    });
+    redirect(`/assessment/${a.id}`);
+  }
 }

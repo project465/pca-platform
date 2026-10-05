@@ -9,6 +9,8 @@ import { fieldErrors, signupSchema, type FieldErrors } from "@/lib/validation";
 import { enqueue } from "@/lib/outbox";
 import { resolveLang } from "@/lib/locale-server";
 import { record as consentRecord } from "@/lib/consent";
+import { sendVerification } from "@/lib/verify-email";
+import { headers } from "next/headers";
 
 export type SignupState = { errors?: FieldErrors; message?: string };
 
@@ -73,6 +75,16 @@ export async function signupAction(_prev: SignupState, form: FormData): Promise<
        사람에게 한국어 인사가 간다 */
     locale: lang2,
   });
+
+  /* 주소가 닿는지 확인하는 링크를 보낸다. **가입을 막지 않는다**:
+     못 보냈으면 지원 화면에 다시 보내는 단추가 선다 */
+  if (created) {
+    const h = await headers();
+    const host = h.get("x-forwarded-host") ?? h.get("host") ?? "localhost:3000";
+    const proto = h.get("x-forwarded-proto")
+      ?? (host.startsWith("localhost") || host.startsWith("127.") ? "http" : "https");
+    await sendVerification(created.id, `${proto}://${host}`).catch(() => null);
+  }
 
   try {
     await signIn("credentials", { identifier: email, password, redirect: false });

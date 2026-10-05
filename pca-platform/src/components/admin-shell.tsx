@@ -9,6 +9,10 @@ type NavItem = { href: string; label: string; ready: boolean };
 const NAV: NavItem[] = [
   { href: "/admin/ops", label: "운영", ready: true },
   /* 상용화 준비와 지역화 덮임. **막힌 것을 아침에 보이게 둔다** */
+  { href: "/admin/launch", label: "런칭 준비", ready: true },
+  { href: "/admin/incidents", label: "사고", ready: true },
+  { href: "/admin/refunds", label: "환불 요청", ready: true },
+  { href: "/admin/funnel", label: "퍼널", ready: true },
   { href: "/admin/readiness", label: "상용화 준비", ready: true },
   { href: "/admin/localization", label: "지역화 덮임", ready: true },
   { href: "/admin/organizations", label: "기관", ready: true },

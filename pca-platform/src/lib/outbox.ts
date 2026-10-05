@@ -11,7 +11,27 @@ import { query, queryOne } from "./db";
  * 자격증명이 없으면 **쌓아만 둔다.** 나중에 붙는 날 순서대로 나간다.
  */
 
-export type OutboxKind = "signup" | "report_ready" | "upgrade_done" | "code_low";
+export type OutboxKind =
+  | "signup"
+  | "report_ready"
+  | "upgrade_done"
+  | "purchase_done"
+  | "refund_requested"
+  | "refund_done"
+  | "code_low";
+
+/**
+ * **열쇠가 들어가는 메일은 대기열에 쌓지 않는다.**
+ *
+ * 비밀번호 재설정과 주소 확인은 링크에 한 번 쓰는 열쇠가 들어간다. 그
+ * 링크를 `outbox.payload` 에 적어 두면 **DB 가 새는 순간 남의 계정이
+ * 되고**, 보내진 뒤에도 그 줄이 표에 남는다(임시 비밀번호를 저장하지
+ * 않는 것과 같은 규칙이다).
+ *
+ * 그래서 그 둘은 `sendNow()` 로 **그 자리에서 보내고 아무것도 적지
+ * 않는다.** 돈길 옆이 아니라서 실패하면 다시 누르면 된다.
+ */
+export type DirectKind = "password_reset" | "verify_email";
 
 /**
  * 보낼 것을 적는다. 실패해도 던지지 않는다. 알림 하나 때문에 결제나
@@ -149,6 +169,41 @@ const MAIL = {
       text: `${n}님, 결제가 확인되어 남은 절이 열렸습니다.\n` +
         `문항을 다시 푸실 필요는 없습니다.\n\n${base}/my\n`,
     }),
+    /* **금액을 메일에서 다시 계산하지 않는다.** 주문 번호만 적고, 금액은
+       로그인해서 보시게 한다. 여기서 따로 적으면 두 숫자가 갈릴 수 있다 */
+    purchase_done: (n: string, base: string, p: Record<string, string>) => ({
+      subject: "결제가 확인됐습니다",
+      text: `${n}님, 결제가 확인됐습니다.\n` +
+        `주문 번호 ${p.orderNo ?? "-"}\n\n` +
+        `로그인하시면 바로 시작하실 수 있습니다.\n${base}/my\n`,
+    }),
+    /* **처리 기간을 약속하지 않는다.** 며칠이 걸리는지는 대행사와
+       사업자가 정하고, 아직 정해지지 않았다. 지어내면 그것이 약속이 된다 */
+    refund_requested: (n: string, base: string, p: Record<string, string>) => ({
+      subject: "환불 요청이 접수됐습니다",
+      text: `${n}님, 환불 요청이 접수됐습니다.\n` +
+        `주문 번호 ${p.orderNo ?? "-"}\n\n` +
+        `진행 상태는 아래에서 보실 수 있습니다.\n${base}/support\n`,
+    }),
+    refund_done: (n: string, base: string, p: Record<string, string>) => ({
+      subject: "환불이 처리됐습니다",
+      text: `${n}님, 환불이 처리됐습니다.\n` +
+        `주문 번호 ${p.orderNo ?? "-"}\n\n` +
+        `카드사에 반영되는 시점은 카드사마다 다릅니다.\n${base}/support\n`,
+    }),
+    password_reset: (n: string, _base: string, p: Record<string, string>) => ({
+      subject: "비밀번호를 다시 정하실 수 있습니다",
+      text: `${n}님, 아래 링크에서 비밀번호를 다시 정하실 수 있습니다.\n\n` +
+        `${p.link ?? ""}\n\n` +
+        `${p.hours ?? "24"}시간 뒤에는 열리지 않습니다. 요청하지 않으셨다면 ` +
+        `이 메일을 버리시면 됩니다.\n`,
+    }),
+    verify_email: (n: string, _base: string, p: Record<string, string>) => ({
+      subject: "메일 주소를 확인해 주세요",
+      text: `${n}님, 아래 링크를 누르시면 이 주소로 연락이 닿는 것을 ` +
+        `확인합니다.\n\n${p.link ?? ""}\n\n` +
+        `확인하지 않으셔도 검사와 결과지는 그대로 이용하실 수 있습니다.\n`,
+    }),
   },
   en: {
     you: "there",
@@ -166,6 +221,37 @@ const MAIL = {
       subject: "Your report now covers more",
       text: `${n}, your payment came through and the remaining sections are open.\n` +
         `You do not need to answer the items again.\n\n${base}/my\n`,
+    }),
+    purchase_done: (n: string, base: string, p: Record<string, string>) => ({
+      subject: "Your payment is confirmed",
+      text: `${n}, your payment is confirmed.\n` +
+        `Order ${p.orderNo ?? "-"}\n\n` +
+        `Sign in and you can start straight away.\n${base}/my\n`,
+    }),
+    refund_requested: (n: string, base: string, p: Record<string, string>) => ({
+      subject: "We have your refund request",
+      text: `${n}, we have your refund request.\n` +
+        `Order ${p.orderNo ?? "-"}\n\n` +
+        `You can follow it here.\n${base}/support\n`,
+    }),
+    refund_done: (n: string, base: string, p: Record<string, string>) => ({
+      subject: "Your refund has been processed",
+      text: `${n}, your refund has been processed.\n` +
+        `Order ${p.orderNo ?? "-"}\n\n` +
+        `When it appears on your statement is up to your card issuer.\n` +
+        `${base}/support\n`,
+    }),
+    password_reset: (n: string, _base: string, p: Record<string, string>) => ({
+      subject: "Set a new password",
+      text: `${n}, you can set a new password here.\n\n${p.link ?? ""}\n\n` +
+        `The link closes after ${p.hours ?? "24"} hours. If you did not ask ` +
+        `for it, you can discard this message.\n`,
+    }),
+    verify_email: (n: string, _base: string, p: Record<string, string>) => ({
+      subject: "Confirm your email address",
+      text: `${n}, following this link confirms that we can reach you at ` +
+        `this address.\n\n${p.link ?? ""}\n\n` +
+        `You can use the assessment and your report without confirming.\n`,
     }),
   },
 } as const;
@@ -190,6 +276,12 @@ function compose(r: Row): { subject: string; text: string } | null {
       return M.report_ready(name, base);
     case "upgrade_done":
       return M.upgrade_done(name, base);
+    case "purchase_done":
+      return M.purchase_done(name, base, r.payload);
+    case "refund_requested":
+      return M.refund_requested(name, base, r.payload);
+    case "refund_done":
+      return M.refund_done(name, base, r.payload);
     /* 운영 경보는 **한국어만이다.** 받는 사람이 우리 쪽 운영자이고,
        두 언어로 두면 고칠 곳만 늘고 읽는 사람은 그대로다 */
     case "code_low":
@@ -327,4 +419,48 @@ export async function outboxCount(kind: OutboxKind, userId: string): Promise<num
   const r = await queryOne<{ n: number }>(
     `SELECT count(*)::int AS n FROM outbox WHERE kind=$1 AND user_id=$2`, [kind, userId]);
   return r?.n ?? 0;
+}
+
+/**
+ * 열쇠가 들어간 메일을 **그 자리에서 보내고 아무것도 적지 않는다.**
+ *
+ * 대기열은 돈길에서 메일을 떼어 놓으려고 있는 것이다. 비밀번호 재설정과
+ * 주소 확인은 돈길에 없고, 대신 **링크에 한 번 쓰는 열쇠가 있다.** 그것을
+ * 표에 적으면 DB 가 새는 순간 남의 계정이 되고, 보낸 뒤에도 그 줄이 남는다.
+ *
+ * 그래서 보내고 잊는다. 실패하면 `false` 를 돌려주고, 화면이 그 사실을
+ * 적고 다른 길(담당자 발급)을 안내한다. **조용히 성공한 척하지 않는다**:
+ * 보냈다고 적으면 받은 적 없는 사람이 메일함을 계속 들여다본다.
+ */
+export async function sendNow(opts: {
+  kind: DirectKind;
+  userId: string;
+  link: string;
+  hours?: number;
+}): Promise<boolean> {
+  const tx = transport();
+  if (!tx) return false;
+
+  const u = await queryOne<{ email: string | null; display_name: string; locale: string | null }>(
+    `SELECT email, display_name, locale FROM users WHERE id = $1`,
+    [opts.userId],
+  ).catch(() => null);
+  if (!u?.email) return false;
+
+  const M = u.locale === "en" ? MAIL.en : MAIL.ko;
+  const name = u.display_name ?? M.you;
+  const payload = { link: opts.link, hours: String(opts.hours ?? 24) };
+  const msg = opts.kind === "password_reset"
+    ? M.password_reset(name, "", payload)
+    : M.verify_email(name, "", payload);
+
+  try {
+    await tx.sendMail({
+      from: process.env.MAIL_FROM, to: u.email,
+      subject: msg.subject, text: msg.text,
+    });
+    return true;
+  } catch {
+    return false;
+  }
 }

@@ -125,6 +125,9 @@ const files = process.argv.slice(2).length
      "src/lib/refund.ts",
      "src/lib/redeem.ts",
      "src/lib/survey.ts",
+     // 사는 사람이 읽는 원고. 등급 값과 상품 쪽이 여기 있다
+     "src/lib/product-copy.ts",
+     "src/lib/tiers.ts",
      ...readdirSync("sites/careermetri/legal")
        .filter((f) => f.endsWith(".md"))
        .map((f) => `sites/careermetri/legal/${f}`),

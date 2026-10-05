@@ -2,22 +2,19 @@ import Link from "next/link";
 import { currentUser } from "@/lib/session";
 import { resolveLang } from "@/lib/locale-server";
 import {
-  catalogFor, priceState, sellable, type CatalogItem, type Tier,
+  catalogFor, priceState, sellable, type CatalogItem,
 } from "@/lib/catalog";
 import { money, resolveMarket } from "@/lib/market";
 import { itemsFor } from "@/lib/me-v2/bank";
 import { openGrants } from "@/lib/me-v2/attempt";
-import { BRAND, toLang2, txer, type TxKey } from "@/lib/surface-text";
+import { BRAND, toLang2, txer } from "@/lib/surface-text";
+import { valueOf } from "@/lib/tiers";
+import { PRODUCT } from "@/lib/product-copy";
+import { step } from "@/lib/funnel-server";
 import { Empty } from "@/components/sf/parts";
 import LangSelect from "@/components/sf/lang-select";
 
 export const metadata = { title: `가격 · ${BRAND.root}` };
-
-const WHAT: Record<Tier, TxKey> = {
-  BASIC: "pxBasic",
-  STANDARD: "pxStandard",
-  PRO: "pxPro",
-};
 
 /**
  * 가격표.
@@ -53,6 +50,13 @@ export default async function PricingPage({
   const user = await currentUser();
   const grants = user ? await openGrants(user.id) : [];
 
+  /* 가격표를 본 것을 센다. **결제를 시작한 것과 가른다**: 가격표에서
+     떠나는 것과 결제창에서 떠나는 것은 전혀 다른 문제다 */
+  await step("pricing", {
+    userId: user?.id ?? null,
+    props: { market: mk.market, locale: L },
+  });
+
   const qs = (m: string) => `/pricing?market=${m}${sp.lang ? `&lang=${sp.lang}` : ""}`;
 
   return (
@@ -64,6 +68,9 @@ export default async function PricingPage({
         </span>
         <div className="pubtop-r">
           <LangSelect current={L} />
+          <Link href="/sample" className="sf-btn ghost sm">
+            {PRODUCT.nav.sample[L]}
+          </Link>
           <Link href={user ? "/my" : "/login"} className="sf-btn ghost sm">
             {user ? T("navHome") : T("pxSignIn")}
           </Link>
@@ -124,6 +131,7 @@ function TierCard({
   const label = money(p.amount, p.currency, lang);
   const ok = sellable(p);
   const n = itemsFor(p.tier).length;
+  const v = valueOf(p.tier, lang);
   return (
     <article className={p.tier === "STANDARD" ? "pxtier is-mid" : "pxtier"}>
       <h2>{p.tier}</h2>
@@ -146,7 +154,14 @@ function TierCard({
           <small>{T("pxPriceNotApprovedWhy")}</small>
         </p>
       )}
-      <p className="pxwhat">{T(WHAT[p.tier])}</p>
+      {/* **받는 것을 줄로 적고 문항 수는 아래로 내린다**(규격 §4). 문항
+          수를 앞세우면 비싼 등급이 "문항이 더 많은 것" 으로 읽히고,
+          그러면 같은 값을 더 내는 이유가 없다 */}
+      <p className="pxwhat"><b>{v.headline}</b></p>
+      <ul className="pdlist" style={{ marginTop: 14 }}>
+        {v.gets.map((g) => <li key={g}>{g}</li>)}
+      </ul>
+      <p className="pxq" style={{ marginTop: 16 }}>{v.who}</p>
       <p className="pxq">{n.toLocaleString()} {T("pxQuestions")}</p>
       {ok.ok ? (
         <Link href={`/checkout?product=${encodeURIComponent(p.code)}`}

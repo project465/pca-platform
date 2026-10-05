@@ -5,6 +5,7 @@ import { requireUser } from "@/lib/session";
 import { startCheckout } from "@/lib/orders";
 import { markMockPaid, paymentProvider } from "@/lib/payments";
 import type { CheckoutTicket, PayRegion } from "@/lib/payments";
+import { step } from "@/lib/funnel-server";
 
 export type CheckoutState = { error?: string; ticket?: CheckoutTicket };
 
@@ -34,8 +35,18 @@ export async function createOrderAction(
       region,
       upgrades,
     );
+    await step("checkout_start", {
+      userId: user.id,
+      props: { product: productCode, market: region === "global" ? "GLOBAL" : "KR" },
+    });
     return { ticket };
   } catch (e) {
+    /* **실패도 센다.** 결제창을 못 띄운 것과 띄웠는데 안 낸 것은 다른
+       문제이고, 섞어 두면 어느 쪽을 고쳐야 하는지 알 수 없다 */
+    await step("checkout_start", {
+      userId: user.id,
+      props: { product: productCode, reason: "failed" },
+    });
     return { error: e instanceof Error ? e.message : "주문을 만들지 못했습니다." };
   }
 }

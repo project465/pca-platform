@@ -5,6 +5,7 @@ import { resolveLang } from "@/lib/locale-server";
 import { attemptOf } from "@/lib/me-v2/attempt";
 import { countOf, profileOf } from "@/lib/me-v2/evidence";
 import { latestSnapshot } from "@/lib/me-v2/render";
+import { step } from "@/lib/funnel-server";
 import { BRAND, toLang2, txer } from "@/lib/surface-text";
 import { Empty } from "@/components/sf/parts";
 import LangSelect from "@/components/sf/lang-select";
@@ -41,6 +42,9 @@ export default async function ReportPage({
   if (!a.submitted_at) redirect(`/assessment/${attemptId}`);
 
   const snap = await latestSnapshot(attemptId);
+  /* **결과지가 실제로 있을 때만 센다.** 만드는 단추가 선 화면까지 세면
+     '결과지를 본 사람' 이 본 적 없는 사람으로 불어난다 */
+  if (snap) await step("result_viewed", { userId: user.id, props: { tier: a.tier } });
   const prof = await profileOf(user.id);
   const n = countOf(prof);
   const bare = n.items === 0 && n.research === 0;
@@ -74,12 +78,26 @@ export default async function ReportPage({
           <div className="sf-head-a">
             {snap ? (
               <>
-                <a href={`/assessment/${attemptId}/report/pdf`} className="sf-btn">
-                  {T("rpPdf")}
-                </a>
+                {/* **없는 파일로 가는 단추를 그리지 않는다.** PDF 만들기가
+                    깨진 날에도 이 자리에 단추가 서 있었고, 누르면 404 가
+                    떴다. 웹 결과지는 그대로 열려 있으므로 그 사실을 적고
+                    다시 만드는 쪽으로 보낸다(규격 §16) */}
+                {snap.pdf_path ? (
+                  <a href={`/assessment/${attemptId}/report/pdf`} className="sf-btn">
+                    {T("rpPdf")}
+                  </a>
+                ) : null}
                 <Link href={`/assessment/${attemptId}/evidence`} className="sf-btn ghost">
                   {T("asAddEvidence")}
                 </Link>
+                {/* **통제 파일럿에서만 띄운다**(규격 §19). 일반 손님에게
+                    늘 보이면 결과지 머리에 설문 단추가 서고, 산 사람이
+                    받으러 온 것은 결과지다 */}
+                {process.env.PILOT_OPEN === "yes" ? (
+                  <Link href={`/pilot/${attemptId}`} className="sf-btn ghost">
+                    {L === "en" ? "Ten questions" : "열 가지 알려 주기"}
+                  </Link>
+                ) : null}
               </>
             ) : null}
           </div>
@@ -115,7 +133,9 @@ export default async function ReportPage({
             {/* 다시 만드는 단추는 아래에 둔다. 위에 두면 이미 있는 결과지를
                 덮는 단추로 읽힌다 */}
             <div className="rpmake">
-              <span className="sf-meta">{T("rpAgainWhy")}</span>
+              <span className="sf-meta">
+                {snap.pdf_path ? T("rpAgainWhy") : T("rpPdfMissing")}
+              </span>
               <GenerateButton
                 attemptId={attemptId}
                 labels={{

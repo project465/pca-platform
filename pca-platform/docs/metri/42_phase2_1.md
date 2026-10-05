@@ -111,7 +111,7 @@ BASIC     12장    STANDARD  14장    PRO  17장
 **'TODO' 로 적지 않았다.** TODO 는 개발이 할 일로 읽히고, 그러면 아무도
 결정하지 않는다.
 
-## 6. 아직 아닌 것 — 팔 때 말하지 않을 것
+## 6. 아직 아닌 것 (팔 때 말하지 않을 것)
 
 - **인지 면접과 파일럿 200명을 돌리지 않았다.** 영어 문항이 한국어 문항과
   같은 것을 재는지는 확인되지 않았다. "검증된 영어판" 이라고 팔지 않는다
@@ -126,7 +126,7 @@ BASIC     12장    STANDARD  14장    PRO  17장
 npm run intake:i18n      # 응시·경험 화면 두 언어 (+ 한국어 회귀)
 npm run i18n:parity      # 결과지 두 언어 판정 대조 (+ 한국어 회귀)
 npm run i18n:coverage    # 데이터 파일 덮임 (화면을 그리지 않는다)
-npm run v2:pdf           # 쪽수 — 두 언어 × 두 입력
+npm run v2:pdf           # 쪽수 · 두 언어 × 두 입력
 npm run commercial:check # 끝낸 것과 막힌 것
 npm run domains:audit    # 도메인 철자
 npm run global:check     # 결제 → PDF 영어 한 바퀴 (실제 DB · 실제 브라우저)

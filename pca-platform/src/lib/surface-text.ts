@@ -263,7 +263,19 @@ export const TX = {
   /* ── 결과지 ───────────────────────────────────────────────────── */
   rpTitle: p("진로 결정 자료", "Career decision brief"),
   rpMadeAt: p("만든 때", "Generated"),
+  navSupport: p("문의", "Support"),
+  navLaunch: p("런칭 준비", "Launch readiness"),
+  navIncidents: p("사고", "Incidents"),
+  navRefunds: p("환불 요청", "Refund requests"),
+  navFunnel: p("퍼널", "Funnel"),
   rpPdf: p("PDF 받기", "Download PDF"),
+  /* PDF 만들기가 깨진 자리. **웹 결과지는 그대로 열려 있다**(규격 §16):
+     PDF 하나 때문에 산 사람이 자기 결과지를 못 보면 안 된다 */
+  rpPdfMissing: p(
+    "PDF 는 아직 없습니다. 웹 결과지는 그대로 보실 수 있고, 다시 만들면 PDF 도 함께 나옵니다.",
+    "The PDF is not there yet. The web report is open as it is, and generating " +
+      "again produces the PDF with it.",
+  ),
   rpMake: p("결과지 만들기", "Generate the report"),
   rpMaking: p("만들고 있습니다", "Generating…"),
   rpRetry: p("다시 만들기", "Try again"),

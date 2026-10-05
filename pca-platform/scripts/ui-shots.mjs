@@ -28,6 +28,9 @@ const SIZES = {
 };
 
 const WHO = {
+  /* 로그인 전 화면. **계정 없이 찍는다**: 사는 사람이 처음 보는 것이
+     로그인한 머리띠가 아니다 */
+  guest: { skip: true },
   /* 참여자는 첫 로그인에 비밀번호를 바꿔야 한다. 그래서 **두 벌을 들고
      간다**: 시드 그대로면 앞엣것, 이 스크립트가 한 번 바꿨으면 뒤엣것.
      그래야 같은 DB 에서 두 번 돌릴 수 있다 */
@@ -43,6 +46,8 @@ const SHOTS = [
   ["individual", "/my/results", "03_individual_results", ["w1440"]],
   ["individual", "/my/evidence", "04_individual_evidence", ["w1440"]],
   ["individual", "/my/applications", "05_individual_applications", ["w1440"]],
+  /* 지원 경로. **막혔을 때 들어오는 자리다**(규격 §15) */
+  ["individual", "/support", "21_individual_support", ["w1440", "mobile"]],
 
   ["campus", "/org", "06_campus_overview", ["w1440", "w1280", "mobile"]],
   ["campus", "/org/participants", "07_campus_participants", ["w1440", "tablet"]],
@@ -61,6 +66,17 @@ const SHOTS = [
   /* 상용화 준비와 지역화 덮임. **막힌 것을 아침에 보이게 둔 자리다** */
   ["admin", "/admin/readiness", "19_admin_readiness", ["w1440", "mobile"]],
   ["admin", "/admin/localization", "20_admin_localization", ["w1440"]],
+  /* 런칭과 사고. **아침에 여는 자리** */
+  ["admin", "/admin/launch", "22_admin_launch", ["w1440", "mobile"]],
+  ["admin", "/admin/incidents", "23_admin_incidents", ["w1440"]],
+  ["admin", "/admin/refunds", "24_admin_refunds", ["w1440"]],
+  ["admin", "/admin/funnel", "25_admin_funnel", ["w1440"]],
+
+  /* 사는 쪽 화면. 로그인하지 않고 찍는다 */
+  ["guest", "/product", "26_product", ["w1440", "mobile"]],
+  ["guest", "/product?lang=en", "27_product_en", ["w1440"]],
+  ["guest", "/sample", "28_sample", ["w1440"]],
+  ["guest", "/pricing", "29_pricing", ["w1440", "mobile"]],
 ];
 
 /* `--only=readiness,localization` 로 몇 장만 찍는다. 스무 장을 한
@@ -114,7 +130,7 @@ for (const role of Object.keys(WHO)) {
   const jobs = PICK.filter((s) => s[0] === role);
   if (!jobs.length) continue;
   const ctx = await browser.newContext({ viewport: SIZES.w1440 });
-  await login(ctx, WHO[role]);
+  if (!WHO[role].skip) await login(ctx, WHO[role]);
 
   for (const [, path, name, sizes] of jobs) {
     for (const size of sizes) {
@@ -126,6 +142,8 @@ for (const role of Object.keys(WHO)) {
       const r = await p.goto(B + path, { waitUntil: "networkidle" });
       await p.waitForTimeout(250);
       const at = new URL(p.url()).pathname;
+      /* 주소에 `?lang=en` 처럼 질의가 붙은 목록은 경로만 견준다 */
+      const want = path.split("?")[0];
       const code = r ? r.status() : 0;
       /* **가로 스크롤은 버그로 센다.** 좁은 화면에서 표가 쪽을 밀어내면
          규격의 반응형 요구가 깨진 것이다(표 자체의 넘침은 제 상자 안이다) */
@@ -142,9 +160,9 @@ for (const role of Object.keys(WHO)) {
       await p.waitForTimeout(120);
       await p.screenshot({ path: file, fullPage: true });
       const tag = `${name} ${size}`;
-      log.push(`${tag.padEnd(42)} ${code} ${at === path ? "" : `→ ${at} `}` +
+      log.push(`${tag.padEnd(42)} ${code} ${at === want ? "" : `→ ${at} `}` +
         `${overflow ? "가로스크롤 " : ""}${errs.length ? `오류 ${errs.length}` : ""}`.trim());
-      if (at !== path) problems.push(`${tag}: ${path} 가 ${at} 로 갔다`);
+      if (at !== want) problems.push(`${tag}: ${path} 가 ${at} 로 갔다`);
       if (overflow) problems.push(`${tag}: 가로 스크롤이 생긴다`);
       if (errs.length) problems.push(`${tag}: ${errs[0]}`);
       await p.close();

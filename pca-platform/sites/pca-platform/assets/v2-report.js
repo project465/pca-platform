@@ -75,7 +75,7 @@ window.PCAV2Report = (function () {
       var fid = J.decision_table[i].career_family_id;
       var c = cv[fid];
       if (c && c.priority_gaps.length) {
-        /* **이름이 아니라 번호도 같이 들고 간다.** 이름은 언어마다
+        /* **번호도 같이 들고 간다.** 이름은 언어마다
            다르므로, 두 언어가 같은 판단을 했는지 견주려면 변하지
            않는 값이 있어야 한다 */
         return { family_id: fid, family: c.career_family_name,
@@ -254,7 +254,7 @@ window.PCAV2Report = (function () {
       var w = (it.career_family_weights || {})[row.career_family_id];
       if (!w || w < 0.6) return;
       if (it.construct !== 'actual_work_interest' && it.construct !== 'learning_intent') return;
-      /* **문항은 사전이 아니라 문항 은행이 들고 있다.** 결과지 문구와
+      /* **문항은 문항 은행이 들고 있고 사전에는 없다.** 결과지 문구와
          달리 문항은 승인된 영어가 JSON 안에 따로 있고, 학위 단계마다
          묻는 장면이 갈린다 */
       var txt = (window.PCAI18N && window.PCAI18N.itemText)

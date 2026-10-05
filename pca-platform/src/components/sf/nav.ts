@@ -17,6 +17,9 @@ export const NAV_INDIVIDUAL: NavItem[] = [
   { href: "/my/evidence", label: "navEvidence", icon: "layers" },
   { href: "/my/applications", label: "navApplications", icon: "send", soon: true },
   { href: "/my/account", label: "navAccount", icon: "user" },
+  /* **지원 경로가 메뉴에 있어야 한다**(규격 §15). 주소를 아는 사람만
+     쓰는 화면이면 결제가 막힌 사람은 그 화면을 못 찾는다 */
+  { href: "/support", label: "navSupport", icon: "log" },
 ];
 
 export const NAV_CAMPUS: NavItem[] = [
@@ -44,4 +47,10 @@ export const NAV_ADMIN: NavItem[] = [
   { href: "/admin/sites", label: "navSites", icon: "window" },
   { href: "/admin/audit", label: "navAudit", icon: "log", soon: true },
   { href: "/admin/ops", label: "navSettings", icon: "gear" },
+  /* 런칭과 사고를 아침에 보이게 둔다. **로그에만 두면 돈 낸 사람이
+     먼저 알고 우리가 나중에 안다**(규격 §26) */
+  { href: "/admin/launch", label: "navLaunch", icon: "compass" },
+  { href: "/admin/incidents", label: "navIncidents", icon: "alert" },
+  { href: "/admin/refunds", label: "navRefunds", icon: "cart" },
+  { href: "/admin/funnel", label: "navFunnel", icon: "spark" },
 ];

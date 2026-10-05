@@ -64,7 +64,11 @@
     "domains:audit": "node scripts/domains-audit.mjs",
     "db:phase2_1": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 -f db/schema_phase2_1.sql",
     "commercial:check": "tsx scripts/commercial-check.ts",
-    "intake:i18n": "node scripts/intake-i18n.mjs"
+    "intake:i18n": "node scripts/intake-i18n.mjs",
+    "launch:check": "tsx scripts/launch-check.ts",
+    "db:phase2_2": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 -f db/schema_phase2_2.sql",
+    "sample:build": "node scripts/sample-report.mjs",
+    "launch:e2e": "tsx scripts/launch-e2e.ts"
   },
   "dependencies": {
     "@types/nodemailer": "^8.0.1",

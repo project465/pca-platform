@@ -2,6 +2,18 @@ import { NextResponse, type NextRequest } from "next/server";
 import { isLang, LANG_COOKIE } from "@/lib/locale";
 
 /**
+ * 로그인 전 방문을 세는 열쇠.
+ *
+ * **방문을 세지 않으면 전환율의 분모가 없다.** 가격표를 본 사람과 산
+ * 사람만 알면 "몇 명이 와서 몇 명이 샀는가" 에 답할 수 없다.
+ *
+ * 서버 컴포넌트는 렌더 중에 쿠키를 심지 못하므로 여기서 심는다(언어
+ * 쿠키와 같은 까닭이다). **임의 문자열 하나뿐이고 IP·User-Agent 를 함께
+ * 적지 않는다** — 그 둘이 붙으면 이 값이 개인정보가 된다.
+ */
+export const ANON_COOKIE = "cm_a";
+
+/**
  * ?lang= 을 쿠키로 굳힌다.
  *
  * 이게 없으면 언어 지정이 그 화면 한 장에만 먹는다. 해외 대학 담당자가
@@ -11,14 +23,26 @@ import { isLang, LANG_COOKIE } from "@/lib/locale";
  */
 export function middleware(req: NextRequest) {
   const lang = req.nextUrl.searchParams.get("lang");
-  if (!isLang(lang ?? undefined)) return NextResponse.next();
+  const needLang = isLang(lang ?? undefined);
+  const needAnon = !req.cookies.get(ANON_COOKIE);
+  if (!needLang && !needAnon) return NextResponse.next();
 
   const res = NextResponse.next();
-  res.cookies.set(LANG_COOKIE, lang as string, {
-    path: "/",
-    maxAge: 60 * 60 * 24 * 365,
-    sameSite: "lax",
-  });
+  if (needLang) {
+    res.cookies.set(LANG_COOKIE, lang as string, {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 365,
+      sameSite: "lax",
+    });
+  }
+  if (needAnon) {
+    res.cookies.set(ANON_COOKIE, crypto.randomUUID(), {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 180,
+      sameSite: "lax",
+      httpOnly: true,
+    });
+  }
   return res;
 }
 

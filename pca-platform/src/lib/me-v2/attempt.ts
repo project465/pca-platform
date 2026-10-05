@@ -10,6 +10,7 @@
  * 여기까지 오지 못한다.
  */
 import { query, queryOne } from "@/lib/db";
+import { track } from "@/lib/funnel";
 import { itemsFor, type Stage, type Tier, bank } from "./bank";
 
 export type V2Attempt = {
@@ -270,6 +271,7 @@ export async function submitV2(attemptId: string, userId: string): Promise<boole
       WHERE id = $1 AND user_id = $2 AND submitted_at IS NULL`,
     [attemptId, userId],
   );
+  await track("assessment_complete", { userId, props: { tier: a.tier } });
   return true;
 }
 

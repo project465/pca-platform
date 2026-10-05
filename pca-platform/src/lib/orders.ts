@@ -5,6 +5,7 @@ import {
   type CheckoutTicket, type PaymentFact, type PayRegion,
 } from "@/lib/payments";
 import { enqueue } from "@/lib/outbox";
+import { track } from "@/lib/funnel";
 
 export type Product = {
   code: string;
@@ -148,9 +149,13 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
   }
 
   const orderNo = fact.orderNo ?? providerPaymentId.replace(/^mock_/, "");
-  const order = await queryOne<Order>(
-    `SELECT id, order_no, user_id, product_code, amount, currency, status
-       FROM orders WHERE order_no = $1`,
+  /* 받는 사람의 언어를 **여기서 함께 읽는다.** 보낼 때는 그 사람이
+     화면에 없어서 고를 수 없다(`outbox.enqueue` 의 locale 주석) */
+  const order = await queryOne<Order & { locale: string | null }>(
+    `SELECT o.id, o.order_no, o.user_id, o.product_code, o.amount, o.currency,
+            o.status, u.locale
+       FROM orders o JOIN users u ON u.id = o.user_id
+      WHERE o.order_no = $1`,
     [orderNo],
   );
   if (!order) return { ok: false, reason: "주문을 찾을 수 없습니다." };
@@ -278,6 +283,27 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
    * 결제에도 "결제가 확인됐습니다" 가 나가고, 메일 쪽이 느린 날 결제
    * 확정이 그만큼 늦어진다. enqueue 는 실패해도 던지지 않는다.
    */
+  if (done.ok && !done.alreadyDone) {
+    /* **결제 확인 메일은 모든 결제에 나간다.** 업그레이드만 알리고 응시권
+       결제를 조용히 두면, 산 사람은 영수 한 통도 못 받는다(규격 §14) */
+    await enqueue({
+      kind: "purchase_done",
+      userId: order.user_id,
+      payload: { orderNo: done.orderNo },
+      dedupeKey: `purchase_done:${order.id}`,
+      locale: order.locale ?? null,
+    });
+    /* 퍼널. **결제가 확정된 순간만 센다**: 결제창을 연 것은 따로 센다 */
+    await track("purchase", {
+      userId: order.user_id,
+      props: {
+        product: order.product_code,
+        tier: done.tier ?? undefined,
+        market: order.currency?.trim() === "KRW" ? "KR" : "GLOBAL",
+      },
+    });
+  }
+
   if (done.ok && !done.alreadyDone && done.upgradedAttemptId) {
     /* 넓어진 **그 응시**를 본 언어로 보낸다. 결과지가 그 언어로
        나갔으니 알림도 같은 언어여야 한다 */

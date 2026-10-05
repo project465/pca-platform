@@ -113,7 +113,7 @@ refund.ts 의 refundable(orderId)   얼마를 돌려줄 것인가  (판정)
 **가짜 어댑터는 집행했다고 적지 않는다.** 적으면 검사가 환불을
 통과시키고, 운영에서 돈이 안 돌아간 것을 아무도 모른다.
 
-## 8. 아직 정해지지 않은 것 — **지어내지 않았다**
+## 8. 아직 정해지지 않은 것 (**지어내지 않았다**)
 
 ### 해외 결제 대행사
 
@@ -122,7 +122,7 @@ refund.ts 의 refundable(orderId)   얼마를 돌려줄 것인가  (판정)
 
 ```
 PORTONE_CHANNEL_KEY          국내 카드
-PORTONE_CHANNEL_KEY_GLOBAL   해외 카드 — **비어 있다**
+PORTONE_CHANNEL_KEY_GLOBAL   해외 카드 · **비어 있다**
 ```
 
 비어 있으면 `marketReadiness('GLOBAL')` 이 `ready: false` 와 그 까닭을

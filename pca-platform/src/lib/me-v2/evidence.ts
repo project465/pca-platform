@@ -16,6 +16,7 @@
  * 바뀌는 것은 증거 사다리와 역할별 범위, 그리고 문장이다.
  */
 import { query, queryOne } from "@/lib/db";
+import { track } from "@/lib/funnel";
 
 /** 정적 엔진이 쓰는 세 묶음. 서버는 담아 두기만 한다 */
 export type EvidencePayload = {
@@ -74,6 +75,9 @@ export async function saveProfile(
       target: p.target ?? {},
     })],
   );
+  /* **처음 적으신 때만 센다.** 고칠 때마다 세면 한 사람이 열 명으로
+     보이고, 그러면 '경험을 적는 비율' 이 백 퍼센트를 넘는다 */
+  if ((row?.version ?? 1) === 1) await track("evidence_complete", { userId });
   return { version: row?.version ?? 1 };
 }
 

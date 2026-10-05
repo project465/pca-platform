@@ -34,6 +34,8 @@ export type ErasureResult = {
  */
 const REMOVE: { table: string; why: string }[] = [
   { table: "password_reset_tokens", why: "남기면 계정을 되살리는 열쇠가 된다" },
+  { table: "email_verify_tokens", why: "같음. 주소 확인 링크도 열쇠다" },
+  { table: "pilot_feedback", why: "파일럿 자유입력. 어디가 헷갈렸는지는 그 사람의 말이다" },
   { table: "learner_evidence", why: "과목·프로젝트 이름이 자유입력이라 본문에 사람이 들어갈 수 있다" },
   { table: "learner_competency_levels", why: "증거가 사라지면 근거 없는 값이 된다" },
   { table: "learner_preferences", why: "희망 지역·산업은 사람을 좁히는 값이다" },

@@ -69,7 +69,7 @@ export default async function ReadinessPage() {
       </section>
 
       <section className="panel" style={{ marginBottom: 20 }}>
-        <h2>가격 — 승인 {approved} / {r.prices.length}</h2>
+        <h2>가격 · 승인 {approved} / {r.prices.length}</h2>
         <div className="sf-tw"><table className="sf-table">
           <thead>
             <tr><th>상품</th><th>시장</th><th>등급</th><th>값</th><th>상태</th></tr>
@@ -95,7 +95,7 @@ export default async function ReadinessPage() {
       </section>
 
       <section className="panel" style={{ marginBottom: 20 }}>
-        <h2>결제 — 받을 수 있는 시장 {live} / {r.payments.length}</h2>
+        <h2>결제 · 받을 수 있는 시장 {live} / {r.payments.length}</h2>
         <div className="sf-tw"><table className="sf-table">
           <thead>
             <tr><th>시장</th><th>채널</th><th>대행사</th><th>지금</th></tr>
@@ -114,12 +114,12 @@ export default async function ReadinessPage() {
         <p className="sub">
           국내 PG 의 일반 카드결제로는 해외 발급 Visa·Mastercard 가 승인되지
           않습니다. 그래서 채널이 둘이고, <b>해외 쪽은 비어 있으면 닫혀
-          있는 것이 맞습니다</b> — 누르면 오류가 나는 버튼은 안내가 아닙니다.
+          있는 것이 맞습니다.</b> 누르면 오류가 나는 버튼은 안내가 아닙니다.
         </p>
       </section>
 
       <section className="panel" style={{ marginBottom: 20 }}>
-        <h2>동의문 — 번역 {translated} / {r.consent.length}</h2>
+        <h2>동의문 · 번역 {translated} / {r.consent.length}</h2>
         <div className="sf-tw"><table className="sf-table">
           <thead>
             <tr><th>종류</th><th>판</th><th>언어</th><th>필수</th><th>본문</th></tr>
@@ -134,7 +134,7 @@ export default async function ReadinessPage() {
                 <td>
                   {c.translation_status === "translated"
                     ? "있습니다"
-                    : `없습니다 — ${c.governing_locale ?? "?"} 본문이 기준`}
+                    : `없습니다 (${c.governing_locale ?? "?"} 본문이 기준)`}
                 </td>
               </tr>
             ))}

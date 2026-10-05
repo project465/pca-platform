@@ -47,7 +47,7 @@ window.PCAV2ResultJSON = (function () {
     if (VE) {
       order.slice(0, topN).forEach(function (fid) {
         /* 조직을 안 고르셨으면 그 직무가 실제로 가는 자리 가운데 첫 번째를
-           기본으로 쓴다. 지어낸 기관이 아니라 유형이다 */
+           기본으로 쓴다. 지어낸 기관은 없고 유형까지만 적는다 */
         var fam = VE.vpById(fid);
         var fallback = fam ? Object.keys(fam.org_variants || {})[0] : null;
         var p = VE.valuePath(fid, orgPick || fallback, evRaw, exps, toolEv);

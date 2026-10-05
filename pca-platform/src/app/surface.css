@@ -711,3 +711,92 @@
   white-space: pre-wrap; word-break: break-word;
   font-family: inherit; color: var(--sf-ink2, #42546d);
 }
+
+/* ── 상품 쪽 (사기 전에 읽는 자리) ──────────────────────────────────
+   가격표와 같은 틀(`pub`)을 쓰고 안쪽 절만 다르다. 파는 쪽 화면을 따로
+   만들면 머리띠와 글자 크기가 두 벌이 되고, 둘 중 하나는 뒤처진다. */
+.pdsec { margin-top: 56px }
+.pdsec > h2 {
+  margin: 0 0 18px; font-size: 21px; line-height: 1.35; letter-spacing: -.01em;
+  color: var(--sf-ink); text-wrap: balance;
+}
+.pdsec > p { margin: 0 0 16px; max-width: 68ch; font-size: 15px; line-height: 1.8;
+  color: var(--sf-ink-2) }
+.pdlist { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px }
+.pdlist li {
+  position: relative; padding-left: 20px; font-size: 14.5px; line-height: 1.75;
+  color: var(--sf-ink-2);
+}
+.pdlist li::before {
+  content: ""; position: absolute; left: 2px; top: .68em;
+  width: 6px; height: 6px; border-radius: 50%; background: var(--sf-accent-ink);
+}
+/* 두 칸짜리 (맞는 사람 · 아닌 사람 / 하는 것 · 안 하는 것) */
+.pdsplit { display: grid; gap: 18px; grid-template-columns: repeat(2, minmax(0, 1fr)) }
+.pdcard {
+  background: var(--sf-surface); border: 1px solid var(--sf-line);
+  border-radius: var(--sf-r); padding: 22px 20px;
+}
+.pdcard h3 { margin: 0 0 14px; font-size: 13px; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--sf-ink-3) }
+/* 걸음 네 개. 번호가 뜻이 있는 자리라 번호를 그린다 */
+.pdsteps { margin: 0; padding: 0; list-style: none; counter-reset: pd;
+  display: grid; gap: 14px }
+.pdsteps li {
+  counter-increment: pd; position: relative; padding-left: 40px;
+  font-size: 14.5px; line-height: 1.75; color: var(--sf-ink-2);
+}
+.pdsteps li::before {
+  content: counter(pd); position: absolute; left: 0; top: 0;
+  width: 26px; height: 26px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--sf-ink); color: #fff; font-size: 12.5px; font-weight: 700;
+}
+.pdfaq { display: grid; gap: 2px }
+.pdfaq details {
+  border-bottom: 1px solid var(--sf-line); padding: 15px 2px;
+}
+.pdfaq summary {
+  cursor: pointer; font-size: 14.5px; font-weight: 600; color: var(--sf-ink);
+  list-style: none;
+}
+.pdfaq summary::-webkit-details-marker { display: none }
+.pdfaq summary::after { content: " +"; color: var(--sf-ink-3); font-weight: 400 }
+.pdfaq details[open] summary::after { content: " −" }
+.pdfaq p { margin: 12px 0 0; font-size: 14px; line-height: 1.8; color: var(--sf-ink-2) }
+/* 견본 띠. **지우기 어렵게 크게 둔다**: 작게 두면 견본이 진짜로 읽힌다 */
+.pdsample {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 14px 18px; border-radius: var(--sf-r);
+  background: #fff8e6; border: 1px solid #e8d49a; color: #6b5412;
+  font-size: 13.5px; line-height: 1.7;
+}
+.pdsample b { font-weight: 700 }
+/* 사업자 표시. 비어 있으면 금색으로 뜬다 */
+.pdbiz { margin-top: 64px; padding-top: 26px; border-top: 1px solid var(--sf-line);
+  display: grid; gap: 7px }
+.pdbiz dl { margin: 0; display: flex; gap: 8px; flex-wrap: wrap;
+  font-size: 12.5px; line-height: 1.7; color: var(--sf-ink-3) }
+.pdbiz dt { font-weight: 600 }
+.pdbiz dd { margin: 0 }
+.pdbiz .is-missing { color: var(--sf-warn); font-weight: 600 }
+.pdcta { margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap }
+
+@media (max-width: 760px) {
+  .pdsplit { grid-template-columns: 1fr }
+  .pdsec { margin-top: 44px }
+  .pdsec > h2 { font-size: 19px }
+}
+
+/* 파일럿 5점 척도. 보기마다 숫자와 양 끝 이름만 적는다 */
+.pfscale { display: flex; gap: 10px; flex-wrap: wrap }
+.pfscale label {
+  display: grid; justify-items: center; gap: 3px; min-width: 56px;
+  padding: 9px 8px; border: 1px solid var(--sf-line); border-radius: var(--sf-r);
+  background: var(--sf-surface); cursor: pointer; font-size: 13px;
+}
+.pfscale label:has(input:checked) {
+  border-color: var(--sf-accent-ink); background: var(--sf-accent-soft);
+}
+.pfscale small { font-size: 11px; color: var(--sf-ink-3); text-align: center }
+.pfscale input { margin: 0 }

@@ -10,6 +10,7 @@ import path from "node:path";
 import { requireUser } from "@/lib/session";
 import { attemptOf } from "@/lib/me-v2/attempt";
 import { latestSnapshot, PDF_DIR } from "@/lib/me-v2/render";
+import { track } from "@/lib/funnel";
 
 export async function GET(
   _req: Request,
@@ -32,6 +33,7 @@ export async function GET(
 
   try {
     const buf = await readFile(file);
+    await track("pdf_downloaded", { userId: user.id, props: { tier: a.tier } });
     return new Response(new Uint8Array(buf), {
       headers: {
         "content-type": "application/pdf",

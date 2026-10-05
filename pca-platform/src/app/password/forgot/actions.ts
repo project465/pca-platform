@@ -2,6 +2,8 @@
 
 import { query, queryOne, tx } from "@/lib/db";
 import { createResetToken } from "@/lib/password";
+import { sendNow } from "@/lib/outbox";
+import { headers } from "next/headers";
 
 export type ForgotState = { done?: boolean; devLink?: string };
 
@@ -11,8 +13,12 @@ const TOKEN_TTL_HOURS = 24;
  * 계정이 있든 없든 같은 화면을 돌려준다.
  * 응답이 다르면 남의 학번이 등록돼 있는지 확인하는 수단이 된다.
  *
- * 메일 발송은 아직 붙어 있지 않다. 학생 계정은 email 이 없는 경우가 많아
- * 실제 운영에서는 학과 담당자가 재설정 링크를 발급해 전달하는 경로가 주가 된다.
+ * **메일은 그 자리에서 보내고 아무것도 적지 않는다.** 링크에 한 번 쓰는
+ * 열쇠가 들어 있어서, 대기열 표에 적으면 DB 가 새는 순간 남의 계정이 된다
+ * (`outbox.sendNow` 주석). 돈길 옆도 아니라서 실패하면 다시 누르면 된다.
+ *
+ * 학생 계정은 email 이 없는 경우가 많아, 그쪽은 학과 담당자가 재설정
+ * 링크를 발급해 전달하는 경로가 그대로 남는다.
  */
 export async function forgotAction(
   _prev: ForgotState,
@@ -46,16 +52,22 @@ export async function forgotAction(
     );
   });
 
-  const base = process.env.AUTH_URL ?? "http://localhost:3000";
-  const link = `${base}/password/reset/${token}`;
+  /* 주소는 **요청이 들어온 그 호스트**에서 가져온다. 환경변수에 적어 둔
+     것이 staging 이면 메일에 staging 링크가 나간다(규격 §11) */
+  const h = await headers();
+  const host = h.get("x-forwarded-host") ?? h.get("host") ?? "localhost:3000";
+  const proto = h.get("x-forwarded-proto")
+    ?? (host.startsWith("localhost") || host.startsWith("127.") ? "http" : "https");
+  const link = `${proto}://${host}/password/reset/${token}`;
 
-  if (process.env.NODE_ENV === "production") {
-    // TODO: 메일 발송 연결. 그 전까지는 담당자 발급 경로만 실제로 동작한다.
-    console.info("[password-reset] issued for user", user.id);
-    return { done: true };
-  }
+  const sent = await sendNow({
+    kind: "password_reset", userId: user.id, link, hours: TOKEN_TTL_HOURS,
+  }).catch(() => false);
 
-  return { done: true, devLink: link };
+  /* 개발에서는 링크를 화면에 적어 둔다. 운영에서는 적지 않는다:
+     **화면에 적으면 남의 화면에서도 보인다** */
+  if (process.env.NODE_ENV === "production") return { done: true };
+  return { done: true, devLink: sent ? undefined : link };
 }
 
 export async function countActiveTokens(userId: string): Promise<number> {
