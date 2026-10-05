@@ -1,3 +1,4 @@
+import { PLATFORM_URL, SITE_DOMAIN, MARKET_LINKS } from "@/lib/domains";
 import type { SiteContent } from "./types";
 
 /**
@@ -7,11 +8,11 @@ import type { SiteContent } from "./types";
 export const kr: SiteContent = {
   key: "kr",
   lang: "ko",
-  domain: "careermetri.co.kr",
+  domain: SITE_DOMAIN.kr,
   brand: "Careermetri",
   org: "ACADEMIX",
   orgTagline: "EDUCATION & CONFERENCE",
-  platformUrl: "https://app.careermetri.com",
+  platformUrl: PLATFORM_URL,
 
   meta: {
     title: "Careermetri | 전공에서 기업까지 이어지는 공학 진로 진단",
@@ -1095,8 +1096,7 @@ export const kr: SiteContent = {
     note: "Careermetri · PCA 진단 엔진 · ACADEMIX가 개발했습니다 · 직업정보제공사업 신고 J1700020220007호",
     sitesLabel: "다른 나라",
     sites: [
-      { label: "Global (English)", href: "https://careermetri.com", ready: false },
-      { label: "한국", href: "https://careermetri.co.kr", ready: false },
+    ...MARKET_LINKS,
       { label: "Қазақстан", href: "https://metri.kz", ready: false },
       { label: "Türkiye", href: "https://metri.com.tr", ready: false },
     ],

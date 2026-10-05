@@ -58,9 +58,13 @@ window.PCACoverage = (function () {
   }
   function toolTextOf(x) { return low(arr(x.tools).join(' ')); }
 
+  /* 걸린 말을 돌려준다. **검색어를 두 언어로 퍼뜨려 찾는다**: 영어로
+     적어 주신 경험이 한국어 검색어에 걸리지 않으면, 같은 내용을 적은
+     분이 적어 주신 언어 때문에 공백을 더 받는다 */
   function hitWords(hay, words) {
     var got = [];
-    (words || []).forEach(function (w) {
+    var W = window.PCAI18N ? window.PCAI18N.expand(words) : (words || []);
+    W.forEach(function (w) {
       if (w && hay.indexOf(low(w)) >= 0) got.push(w);
     });
     return got;

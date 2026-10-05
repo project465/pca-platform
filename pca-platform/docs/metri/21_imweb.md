@@ -112,8 +112,8 @@ DB 가 새도 그대로 공짜 좌석이 되지는 않는다.
 없으면 신고가 안 되고, 신고가 없으면 결제를 못 받는다. 도메인은 편의가
 아니라 앞 단계다.
 
-도메인은 `careermetri.co.kr`(한국 소개) · `careermetri.com`(글로벌 소개) ·
-`app.careermetri.com`(플랫폼)으로 정했다. **다만 아직 사지 않았다**: DNS 가
+도메인은 `careermatri.co.kr`(한국 소개) · `careermatri.com`(글로벌 소개) ·
+`app.careermatri.com`(플랫폼)으로 정했다. **다만 아직 사지 않았다**: DNS 가
 조용하다고 비어 있다는 뜻은 아니어서, 등록대행자에서 한 번 조회하고 산다.
 KIPRIS 41·42류 조회도 같이 한다(`docs/metri/20_domains.md` 0-1절).
 

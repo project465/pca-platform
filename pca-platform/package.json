@@ -60,7 +60,8 @@
     "i18n:build": "node scripts/build-report-i18n.mjs",
     "i18n:parity": "node scripts/i18n-parity.mjs",
     "i18n:coverage": "node scripts/i18n-coverage.mjs",
-    "global:check": "tsx scripts/global-check.ts"
+    "global:check": "tsx scripts/global-check.ts",
+    "domains:audit": "node scripts/domains-audit.mjs"
   },
   "dependencies": {
     "@types/nodemailer": "^8.0.1",

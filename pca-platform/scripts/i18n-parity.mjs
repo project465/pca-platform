@@ -7,6 +7,7 @@
  *   1. 한국어 결과지가 **예전과 한 글자도 다르지 않은가**(지역화 공사 회귀)
  *   2. 같은 응답 ID 가 두 언어에서 같은 직무·증거·격차·다음행동 ID 를 내는가
  *   3. 영어 결과지에 한글이 새지 않는가
+ *   4. 맞추기 어휘가 **한국어로 적어 주신 분의 결과지를 건드리지 않는가**
  *
  *   node scripts/i18n-parity.mjs            대조
  *   node scripts/i18n-parity.mjs --bless    지금 한국어를 기준으로 굳힌다
@@ -55,6 +56,28 @@ const FILL = (it, fam) => {
    낱말이라(전공지식 갈래 이름과 같다), 사전을 아무 데나 들이대면
    영어 결과지에서 'Mechanics of materials' 로 바뀌어 버린다 */
 const MINE = "재료역학";
+/* 전부 한국어로 적어 주신 분. 맞추기 어휘를 켜고 끄고 그려 봐서 **그
+   어휘가 이분의 결과지를 건드리지 않는지** 본다. 어휘는 영어로 적어 주신
+   분의 경험을 찾으려고 넣은 것이라, 한국어 쪽에서 한 글자라도 달라지면
+   찾는 말이 번역돼 버린 것이다 */
+const MINE_ONLY = {
+  kinds: ["course", "project", "tool"],
+  courses: ["정역학", "재료역학", "유한요소해석"].map((n) => ({ n })),
+  projects: [{
+    id: "p1", title: "브래킷 경량화 캡스톤", type: "capstone",
+    period: { start: "2025-03", end: "2025-12" }, team_size: "4",
+    my_role: "구조 검토", objective: "강성 유지하며 무게 줄이기",
+    what_i_did: "요구조건을 치수로 옮기고 하중 경로를 나눠 설계안 세 개를 비교했습니다",
+    decisions_i_made: "가공비가 덜 오르는 쪽으로 리브 배치와 두께를 골랐습니다",
+    tools: ["SolidWorks"], methods: ["하중 경로 분석", "메시 민감도"],
+    outputs: ["도면", "해석 리포트"], result: "",
+    measurable_result: "시험 결과 허용 응력 기준 대비 15% 여유",
+    difficulty: "", what_changed: "최종 설계안으로 채택됐습니다", what_i_learned: "",
+  }],
+  tools: [{ cat: "cae", name: "ANSYS Mechanical", level: "used", where: "", why: "",
+    exp_id: "p1", decision: "", output: "", validation: "" }],
+};
+
 const EVIDENCE = {
   kinds: ["course", "project", "tool"],
   courses: ["Statics", MINE, "Finite element analysis"].map((n) => ({ n })),
@@ -81,7 +104,8 @@ const browser = await chromium.launch({
 });
 
 /** 한 등급 · 한 언어를 그려서 본문과 판정 ID 를 돌려준다 */
-async function render(tier, stage, lang) {
+async function render(tier, stage, lang, opt) {
+  opt = opt || {};
   const c = await browser.newContext({ viewport: { width: 1180, height: 1000 } });
   const p = await c.newPage();
   const errs = [];
@@ -94,9 +118,13 @@ async function render(tier, stage, lang) {
     EV.saveEvidence(Object.assign(EV.emptyEvidence(), s.ev));
     EV.saveResearch([]);
     EV.saveTarget(Object.assign(EV.loadTarget(), { target_org_type: "private_company" }));
-  }, { ev: EVIDENCE });
+  }, { ev: opt.ev || EVIDENCE });
 
   await p.goto(`${B}?fresh=0&lang=${lang}`, { waitUntil: "networkidle" });
+  if (opt.noGlossary) {
+    /* 어휘를 비워서 그려 본다. 켠 쪽과 한 글자도 다르지 않아야 한다 */
+    await p.evaluate(() => { window.PCA_MATCH_GLOSSARY = { en: {} }; });
+  }
   const got = await p.evaluate((a) => {
     const bk = window.PCA_V2_ITEMS.ME;
     const all = [].concat(bk.core.items, bk.standard.items, bk.pro.items);
@@ -129,6 +157,13 @@ async function render(tier, stage, lang) {
   }, { tier, stage, lang, fill: FILL.toString() });
   await c.close();
   return { ...got, errs };
+}
+
+/** 같은 한국어 입력을 어휘 켜고 · 끄고 그려서 견준다 */
+async function glossaryIsQuiet(tier, stage) {
+  const on = await render(tier, stage, "ko", { ev: MINE_ONLY });
+  const off = await render(tier, stage, "ko", { ev: MINE_ONLY, noGlossary: true });
+  return { same: on.html === off.html, errs: on.errs.concat(off.errs) };
 }
 
 const CASES = [
@@ -185,8 +220,14 @@ for (const [tier, stage] of CASES) {
   for (const h of han) leaked.add(h.trim());
   if (en.language !== "en") bad.push(`${key} 영어 결과지가 report_language=${en.language}`);
 
+  /* 4. 맞추기 어휘가 한국어로 적어 주신 분의 결과지를 건드리지 않는가 */
+  const quiet = await glossaryIsQuiet(tier, stage);
+  if (!quiet.same) {
+    bad.push(`${key} 맞추기 어휘가 한국어로 적어 주신 분의 결과지를 바꿨다`);
+  }
+
   out.push(`${key.padEnd(18)} ko ${koHash} · 직무 ${ko.roles.length} · ` +
-    `영어 한글 ${han.length}`);
+    `영어 한글 ${han.length} · 어휘 ${quiet.same ? "조용함" : "건드림"}`);
 }
 
 await browser.close();

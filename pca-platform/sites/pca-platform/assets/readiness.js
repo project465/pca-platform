@@ -18,12 +18,15 @@ window.PCAReadiness = (function () {
   var RULES = (window.PCA_EVIDENCE_RULES && window.PCA_EVIDENCE_RULES.ME) || null;
 
   function lower(s) { return String(s || '').toLowerCase(); }
+  /* **검색어를 두 언어로 퍼뜨려 찾는다.** 자세한 까닭은 `i18n.js` 의
+     `terms()` 주석에 적었다 */
   function hit(hay, needles) {
     if (!needles || !needles.length) return null;
+    var N = window.PCAI18N ? window.PCAI18N.expand(needles) : needles;
     for (var i = 0; i < hay.length; i++) {
       var h = lower(hay[i]);
-      for (var j = 0; j < needles.length; j++) {
-        if (h.indexOf(lower(needles[j])) >= 0) return hay[i];
+      for (var j = 0; j < N.length; j++) {
+        if (h.indexOf(lower(N[j])) >= 0) return hay[i];
       }
     }
     return null;

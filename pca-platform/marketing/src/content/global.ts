@@ -1,3 +1,4 @@
+import { PLATFORM_URL, SITE_DOMAIN, MARKET_LINKS } from "@/lib/domains";
 import type { SiteContent } from "./types";
 
 /**
@@ -8,11 +9,11 @@ import type { SiteContent } from "./types";
 export const global: SiteContent = {
   key: "global",
   lang: "en",
-  domain: "careermetri.com",
+  domain: SITE_DOMAIN.global,
   brand: "Careermetri",
   org: "ACADEMIX",
   orgTagline: "EDUCATION & CONFERENCE",
-  platformUrl: "https://app.careermetri.com",
+  platformUrl: PLATFORM_URL,
 
   meta: {
     title: "Careermetri | Engineering majors, read against the roles that hire them",
@@ -1050,7 +1051,8 @@ export const global: SiteContent = {
     note:
       "No country site is open yet. The domains below are reserved names, not live addresses. The assessment itself runs; what is pending is the domain and the local rollout. If your country is not listed, talk to us. That is how one starts.",
     items: [
-      { code: "KR", name: "Korea", native: "한국", domain: "careermetri.co.kr", href: "https://careermetri.co.kr", live: false },
+      { code: "KR", name: "Korea", native: "한국", domain: SITE_DOMAIN.kr,
+        href: `https://${SITE_DOMAIN.kr}`, live: false },
       { code: "DE", name: "Germany", native: "Deutschland", domain: "metri.de", href: "https://metri.de", live: false },
       { code: "US", name: "United States", native: "United States", domain: "metri.us", href: "https://metri.us", live: false },
       { code: "JP", name: "Japan", native: "日本", domain: "metri.jp", href: "https://metri.jp", live: false },
@@ -1139,8 +1141,7 @@ export const global: SiteContent = {
     note: "PCA · developed by ACADEMIX",
     sitesLabel: "Countries",
     sites: [
-      { label: "Global (English)", href: "https://careermetri.com", ready: false },
-      { label: "한국", href: "https://careermetri.co.kr", ready: false },
+    ...MARKET_LINKS,
       { label: "Қазақстан", href: "https://metri.kz", ready: false },
       { label: "Türkiye", href: "https://metri.com.tr", ready: false },
     ],

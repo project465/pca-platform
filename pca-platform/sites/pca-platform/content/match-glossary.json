@@ -1,0 +1,2707 @@
+{
+ "en": {
+  "3d 모델": [
+   "3d model"
+  ],
+  "a/s 체계": [
+   "after-sales",
+   "service network"
+  ],
+  "g코드": [
+   "g-code"
+  ],
+  "plm 연계": [
+   "plm integration"
+  ],
+  "spc 도구": [
+   "spc"
+  ],
+  "가공 경로": [
+   "toolpath",
+   "tool path"
+  ],
+  "가공 방법": [
+   "machining method"
+  ],
+  "가공 조건": [
+   "machining condition",
+   "cutting condition"
+  ],
+  "가공성": [
+   "machinability"
+  ],
+  "가동": [
+   "uptime",
+   "in operation"
+  ],
+  "가동률": [
+   "availability",
+   "uptime rate"
+  ],
+  "가설": [
+   "hypothesis"
+  ],
+  "가속 시험": [
+   "accelerated test"
+  ],
+  "가속도계": [
+   "accelerometer"
+  ],
+  "가이드": [
+   "guide"
+  ],
+  "가정": [
+   "assumption"
+  ],
+  "가중치": [
+   "weighting",
+   "weight factor"
+  ],
+  "간섭": [
+   "interference"
+  ],
+  "간섭 확인": [
+   "interference check"
+  ],
+  "감소": [
+   "reduction",
+   "reduced"
+  ],
+  "강도 검토": [
+   "strength check",
+   "strength review"
+  ],
+  "개념 검증": [
+   "proof of concept",
+   "poc"
+  ],
+  "개선": [
+   "improvement",
+   "improved"
+  ],
+  "개선 보고서": [
+   "improvement report"
+  ],
+  "개선 요청": [
+   "improvement request"
+  ],
+  "개선 전후": [
+   "before and after improvement"
+  ],
+  "개선 지점": [
+   "point of improvement"
+  ],
+  "개선 효과": [
+   "improvement effect"
+  ],
+  "개선 후": [
+   "after the improvement"
+  ],
+  "개선안": [
+   "improvement proposal"
+  ],
+  "개정": [
+   "revision",
+   "revised"
+  ],
+  "개조": [
+   "retrofit",
+   "modification"
+  ],
+  "검도": [
+   "drawing check"
+  ],
+  "검사": [
+   "inspection"
+  ],
+  "검사 기록": [
+   "inspection record"
+  ],
+  "검사 기준서": [
+   "inspection standard"
+  ],
+  "검사 주기": [
+   "inspection interval"
+  ],
+  "검증": [
+   "validation",
+   "verification",
+   "validated"
+  ],
+  "검증 계획": [
+   "validation plan"
+  ],
+  "검증 항목": [
+   "validation item"
+  ],
+  "검토": [
+   "review",
+   "reviewed"
+  ],
+  "검토 대상": [
+   "subject of review"
+  ],
+  "검토서": [
+   "review report"
+  ],
+  "격자": [
+   "mesh",
+   "grid"
+  ],
+  "격자 독립": [
+   "mesh independence",
+   "grid independence"
+  ],
+  "격자 크기 비교": [
+   "mesh size comparison"
+  ],
+  "결과 보고": [
+   "result report"
+  ],
+  "결과 분석": [
+   "result analysis"
+  ],
+  "결과 해석": [
+   "interpretation of results"
+  ],
+  "결정": [
+   "decision",
+   "decided"
+  ],
+  "결정립": [
+   "grain"
+  ],
+  "결정에 사용": [
+   "used in the decision"
+  ],
+  "결함 유형": [
+   "defect type",
+   "flaw type"
+  ],
+  "결합": [
+   "joining",
+   "coupling"
+  ],
+  "경계": [
+   "boundary"
+  ],
+  "경계 정의": [
+   "boundary definition"
+  ],
+  "경계 조건": [
+   "boundary condition"
+  ],
+  "경계조건": [
+   "boundary condition"
+  ],
+  "경도": [
+   "hardness"
+  ],
+  "경량화 소재": [
+   "lightweight material"
+  ],
+  "경영진": [
+   "management",
+   "executives"
+  ],
+  "경향": [
+   "trend",
+   "tendency"
+  ],
+  "계산 결과": [
+   "calculation result"
+  ],
+  "계속": [
+   "continue"
+  ],
+  "계측": [
+   "instrumentation",
+   "metrology"
+  ],
+  "계측 결과": [
+   "measurement result"
+  ],
+  "계통": [
+   "system layout",
+   "piping system"
+  ],
+  "계획 대비": [
+   "against the plan"
+  ],
+  "계획 수립": [
+   "planning"
+  ],
+  "계획서": [
+   "plan document"
+  ],
+  "고객 대응": [
+   "customer response"
+  ],
+  "고객 불만": [
+   "customer complaint"
+  ],
+  "고객 응대": [
+   "customer support"
+  ],
+  "고장 건수": [
+   "number of failures"
+  ],
+  "고장 모드": [
+   "failure mode"
+  ],
+  "고장 분석": [
+   "failure analysis"
+  ],
+  "고장 이력": [
+   "failure history"
+  ],
+  "고장 진단": [
+   "fault diagnosis",
+   "failure diagnosis"
+  ],
+  "고정구": [
+   "fixture"
+  ],
+  "고정단": [
+   "fixed support",
+   "clamped"
+  ],
+  "공고": [
+   "call for proposals",
+   "job posting"
+  ],
+  "공공": [
+   "public sector"
+  ],
+  "공급사": [
+   "supplier"
+  ],
+  "공기조화": [
+   "air conditioning",
+   "hvac"
+  ],
+  "공동연구": [
+   "joint research"
+  ],
+  "공법": [
+   "construction method",
+   "process method"
+  ],
+  "공수": [
+   "man-hours"
+  ],
+  "공업통계": [
+   "engineering statistics"
+  ],
+  "공유": [
+   "shared with",
+   "shared it"
+  ],
+  "공저": [
+   "co-author"
+  ],
+  "공정 능력": [
+   "process capability"
+  ],
+  "공정 데이터": [
+   "process data"
+  ],
+  "공정 모델": [
+   "process model"
+  ],
+  "공정 분석": [
+   "process analysis"
+  ],
+  "공정 비교": [
+   "process comparison"
+  ],
+  "공정 선정": [
+   "process selection"
+  ],
+  "공정 순서": [
+   "process sequence"
+  ],
+  "공정 창": [
+   "process window"
+  ],
+  "공정도": [
+   "process chart",
+   "process flow"
+  ],
+  "공조": [
+   "hvac",
+   "air conditioning"
+  ],
+  "공차": [
+   "tolerance"
+  ],
+  "공학실험": [
+   "engineering laboratory"
+  ],
+  "공학통계 · 실험계획법": [
+   "engineering statistics",
+   "design of experiments"
+  ],
+  "과도": [
+   "transient"
+  ],
+  "과부하": [
+   "overload"
+  ],
+  "과업 범위": [
+   "scope of work"
+  ],
+  "과제": [
+   "project"
+  ],
+  "과제 선정": [
+   "project selection"
+  ],
+  "과제 정의": [
+   "project definition"
+  ],
+  "과제 책임": [
+   "project ownership"
+  ],
+  "과제요청서": [
+   "request for proposal",
+   "statement of work"
+  ],
+  "관리 계획": [
+   "control plan"
+  ],
+  "관리 기준": [
+   "control standard"
+  ],
+  "관리 범위": [
+   "scope of control"
+  ],
+  "관리 한계": [
+   "control limit"
+  ],
+  "관리 항목": [
+   "control item"
+  ],
+  "관리도": [
+   "control chart"
+  ],
+  "교육": [
+   "training"
+  ],
+  "교정": [
+   "calibration"
+  ],
+  "교차 확인": [
+   "cross-check"
+  ],
+  "교체": [
+   "replacement",
+   "replaced"
+  ],
+  "구매": [
+   "procurement",
+   "purchasing"
+  ],
+  "구성": [
+   "configuration"
+  ],
+  "구속": [
+   "constraint",
+   "restraint"
+  ],
+  "구조 검토": [
+   "structural review",
+   "structural check"
+  ],
+  "국가과제": [
+   "national project"
+  ],
+  "국제 협력": [
+   "international collaboration"
+  ],
+  "국책": [
+   "state-funded"
+  ],
+  "규격": [
+   "standard",
+   "specification"
+  ],
+  "규격 시험": [
+   "standard test"
+  ],
+  "규격 한계": [
+   "specification limit"
+  ],
+  "규제 환경": [
+   "regulatory environment"
+  ],
+  "균열": [
+   "crack"
+  ],
+  "그래프": [
+   "graph",
+   "chart"
+  ],
+  "그리퍼": [
+   "gripper"
+  ],
+  "근본 원인": [
+   "root cause"
+  ],
+  "글로벌 고객": [
+   "global customer"
+  ],
+  "금형": [
+   "mould",
+   "mold",
+   "die"
+  ],
+  "기각": [
+   "rejected"
+  ],
+  "기계공학실험": [
+   "mechanical engineering laboratory"
+  ],
+  "기계요소설계": [
+   "machine element design"
+  ],
+  "기계재료": [
+   "engineering materials"
+  ],
+  "기계진동": [
+   "mechanical vibration"
+  ],
+  "기구 설계": [
+   "mechanism design"
+  ],
+  "기구학": [
+   "kinematics"
+  ],
+  "기동": [
+   "start-up"
+  ],
+  "기록": [
+   "record",
+   "logged"
+  ],
+  "기법": [
+   "technique"
+  ],
+  "기술 설명": [
+   "technical explanation"
+  ],
+  "기술이전": [
+   "technology transfer"
+  ],
+  "기업 적용": [
+   "adopted by a company"
+  ],
+  "기여도": [
+   "contribution"
+  ],
+  "기존 연구": [
+   "prior work",
+   "existing research"
+  ],
+  "기준 대비": [
+   "against the standard"
+  ],
+  "기준과 비교": [
+   "compared against the standard"
+  ],
+  "기준선": [
+   "baseline"
+  ],
+  "기하공차": [
+   "geometric tolerance",
+   "gd&t"
+  ],
+  "기한": [
+   "deadline"
+  ],
+  "기획": [
+   "planning"
+  ],
+  "끼워맞춤": [
+   "fit tolerance"
+  ],
+  "난류 모델": [
+   "turbulence model"
+  ],
+  "납기": [
+   "lead time",
+   "delivery date"
+  ],
+  "내구": [
+   "durability"
+  ],
+  "냉각 방식": [
+   "cooling method"
+  ],
+  "냉각수": [
+   "coolant",
+   "cooling water"
+  ],
+  "냉동공학": [
+   "refrigeration"
+  ],
+  "논문": [
+   "paper",
+   "journal",
+   "thesis"
+  ],
+  "다른 과제에도": [
+   "on another project"
+  ],
+  "다음 단계": [
+   "next stage"
+  ],
+  "단가": [
+   "unit cost"
+  ],
+  "단계 평가": [
+   "stage gate review"
+  ],
+  "단면": [
+   "cross-section"
+  ],
+  "단순화": [
+   "simplification",
+   "simplified"
+  ],
+  "단순화 조건": [
+   "simplifying assumption"
+  ],
+  "단축": [
+   "shortened",
+   "cut the time"
+  ],
+  "달성률": [
+   "attainment rate"
+  ],
+  "담금질": [
+   "quenching"
+  ],
+  "대상 선정": [
+   "target selection"
+  ],
+  "대시보드": [
+   "dashboard"
+  ],
+  "대안": [
+   "alternative",
+   "option"
+  ],
+  "대안 비교": [
+   "comparison of alternatives"
+  ],
+  "대응 계획": [
+   "response plan"
+  ],
+  "대조군": [
+   "control group"
+  ],
+  "대책": [
+   "countermeasure"
+  ],
+  "대체재": [
+   "substitute material"
+  ],
+  "대칭": [
+   "symmetry"
+  ],
+  "덕트": [
+   "duct"
+  ],
+  "데이터 구조": [
+   "data structure"
+  ],
+  "데이터 분석": [
+   "data analysis"
+  ],
+  "데이터 수집": [
+   "data collection",
+   "data acquisition"
+  ],
+  "데이터 처리 자동화": [
+   "automated data processing"
+  ],
+  "데이터셋": [
+   "dataset"
+  ],
+  "도구 개발": [
+   "tool development"
+  ],
+  "도금": [
+   "plating"
+  ],
+  "도메인": [
+   "domain"
+  ],
+  "도면": [
+   "drawing",
+   "blueprint"
+  ],
+  "동역학": [
+   "dynamics"
+  ],
+  "동향": [
+   "trend"
+  ],
+  "되먹임": [
+   "feedback",
+   "fed back"
+  ],
+  "두께": [
+   "thickness"
+  ],
+  "등록": [
+   "registered"
+  ],
+  "디버깅": [
+   "debugging"
+  ],
+  "디스플레이": [
+   "display"
+  ],
+  "디지털 트윈": [
+   "digital twin"
+  ],
+  "라이트 커튼": [
+   "light curtain"
+  ],
+  "라인": [
+   "production line"
+  ],
+  "라인 구성": [
+   "line layout"
+  ],
+  "래더": [
+   "ladder logic"
+  ],
+  "레이아웃": [
+   "layout"
+  ],
+  "레트로핏": [
+   "retrofit"
+  ],
+  "로드맵": [
+   "roadmap"
+  ],
+  "로봇 프로그램": [
+   "robot program"
+  ],
+  "로봇공학": [
+   "robotics"
+  ],
+  "루프": [
+   "control loop"
+  ],
+  "리드타임": [
+   "lead time"
+  ],
+  "리뷰": [
+   "review"
+  ],
+  "리브": [
+   "rib"
+  ],
+  "리비전": [
+   "revision"
+  ],
+  "리스크": [
+   "risk"
+  ],
+  "리포트": [
+   "report"
+  ],
+  "리포트 자동 생성": [
+   "automated report generation"
+  ],
+  "마감": [
+   "surface finish",
+   "deadline"
+  ],
+  "마모": [
+   "wear"
+  ],
+  "마일스톤": [
+   "milestone"
+  ],
+  "마찰": [
+   "friction"
+  ],
+  "맞춤": [
+   "custom-fitted"
+  ],
+  "매뉴얼": [
+   "manual"
+  ],
+  "매크로": [
+   "macro"
+  ],
+  "매트릭스": [
+   "matrix"
+  ],
+  "머시닝": [
+   "machining"
+  ],
+  "머신러닝": [
+   "machine learning"
+  ],
+  "메시": [
+   "mesh"
+  ],
+  "메시 민감도": [
+   "mesh sensitivity"
+  ],
+  "메카트로닉스": [
+   "mechatronics"
+  ],
+  "메타데이터": [
+   "metadata"
+  ],
+  "멘토링": [
+   "mentoring"
+  ],
+  "모델": [
+   "model"
+  ],
+  "모델 구축": [
+   "model building"
+  ],
+  "모델 변수": [
+   "model parameter"
+  ],
+  "모델 보정": [
+   "model calibration"
+  ],
+  "모델 선택": [
+   "model selection"
+  ],
+  "모델 설계": [
+   "model design"
+  ],
+  "모델링": [
+   "modelling",
+   "modeling"
+  ],
+  "모델링 도구": [
+   "modelling tool"
+  ],
+  "모터": [
+   "motor"
+  ],
+  "목표 성능": [
+   "target performance"
+  ],
+  "목표치": [
+   "target value"
+  ],
+  "무엇을 먼저": [
+   "what came first"
+  ],
+  "무엇을 묻": [
+   "what to ask"
+  ],
+  "무엇을 해석": [
+   "what to analyse",
+   "what to analyze"
+  ],
+  "문서화": [
+   "documentation",
+   "documented"
+  ],
+  "문제 정의": [
+   "problem definition"
+  ],
+  "문제 제기": [
+   "raised the problem"
+  ],
+  "문제 해결": [
+   "problem solving"
+  ],
+  "문헌": [
+   "literature"
+  ],
+  "물류": [
+   "logistics",
+   "material handling"
+  ],
+  "물성": [
+   "material property"
+  ],
+  "물성 비교": [
+   "material property comparison"
+  ],
+  "미세조직": [
+   "microstructure"
+  ],
+  "민감도": [
+   "sensitivity"
+  ],
+  "밀폐 공간": [
+   "confined space"
+  ],
+  "반도체": [
+   "semiconductor"
+  ],
+  "반복": [
+   "repeated",
+   "iteration"
+  ],
+  "반복 시험": [
+   "repeat test"
+  ],
+  "반복 실험": [
+   "repeat experiment"
+  ],
+  "반복 작업": [
+   "repetitive task"
+  ],
+  "반복성": [
+   "repeatability"
+  ],
+  "반영": [
+   "reflected",
+   "applied"
+  ],
+  "반품": [
+   "return",
+   "rma"
+  ],
+  "발열": [
+   "heat generation"
+  ],
+  "발전": [
+   "power generation"
+  ],
+  "발표": [
+   "presentation",
+   "presented"
+  ],
+  "방문": [
+   "site visit"
+  ],
+  "방법 선택": [
+   "method selection"
+  ],
+  "방법론": [
+   "methodology"
+  ],
+  "방식 비교": [
+   "comparison of approaches"
+  ],
+  "방호": [
+   "guarding"
+  ],
+  "배관": [
+   "piping"
+  ],
+  "배분": [
+   "allocation"
+  ],
+  "배치": [
+   "arrangement",
+   "layout"
+  ],
+  "배포": [
+   "deployment",
+   "released"
+  ],
+  "밸브 제어": [
+   "valve control"
+  ],
+  "버린 것": [
+   "what was dropped"
+  ],
+  "버전": [
+   "version"
+  ],
+  "범위": [
+   "scope",
+   "range"
+  ],
+  "범위 밖": [
+   "out of scope"
+  ],
+  "범위 조정": [
+   "scope adjustment"
+  ],
+  "법규": [
+   "regulation",
+   "statute"
+  ],
+  "법정 검사": [
+   "statutory inspection"
+  ],
+  "변경 관리": [
+   "change control"
+  ],
+  "변경 영향": [
+   "impact of the change"
+  ],
+  "변동": [
+   "variation"
+  ],
+  "변수 연구": [
+   "parametric study"
+  ],
+  "변수 통제": [
+   "variable control"
+  ],
+  "변형": [
+   "deformation",
+   "strain"
+  ],
+  "병렬": [
+   "parallel"
+  ],
+  "병목": [
+   "bottleneck"
+  ],
+  "보강": [
+   "reinforcement"
+  ],
+  "보고서": [
+   "report"
+  ],
+  "보일러": [
+   "boiler"
+  ],
+  "보전 계획": [
+   "maintenance plan"
+  ],
+  "보호구": [
+   "personal protective equipment",
+   "ppe"
+  ],
+  "복구": [
+   "recovery",
+   "restored"
+  ],
+  "복합재": [
+   "composite"
+  ],
+  "부서": [
+   "department"
+  ],
+  "부서 간": [
+   "cross-functional",
+   "between departments"
+  ],
+  "부식": [
+   "corrosion"
+  ],
+  "부품표": [
+   "bill of materials",
+   "bom"
+  ],
+  "부하 계산": [
+   "load calculation"
+  ],
+  "분류": [
+   "classification"
+  ],
+  "분석": [
+   "analysis"
+  ],
+  "분석 결과": [
+   "analysis result"
+  ],
+  "분포": [
+   "distribution"
+  ],
+  "분해": [
+   "disassembly"
+  ],
+  "분해 점검": [
+   "teardown inspection",
+   "overhaul"
+  ],
+  "불량": [
+   "defect",
+   "defective"
+  ],
+  "불량 감소": [
+   "defect reduction"
+  ],
+  "불량 대응": [
+   "defect response"
+  ],
+  "불량 유형": [
+   "defect type"
+  ],
+  "불량률": [
+   "defect rate"
+  ],
+  "불합격": [
+   "fail",
+   "rejected"
+  ],
+  "불확도": [
+   "uncertainty"
+  ],
+  "불확실성": [
+   "uncertainty"
+  ],
+  "브랜치": [
+   "branch"
+  ],
+  "브리핑": [
+   "briefing"
+  ],
+  "비교": [
+   "comparison",
+   "compared"
+  ],
+  "비교 검증": [
+   "comparative validation"
+  ],
+  "비교 기준": [
+   "basis for comparison"
+  ],
+  "비교표": [
+   "comparison table"
+  ],
+  "비상 정지": [
+   "emergency stop",
+   "e-stop"
+  ],
+  "비용": [
+   "cost"
+  ],
+  "비용 관리": [
+   "cost control"
+  ],
+  "비용 대비": [
+   "against the cost"
+  ],
+  "비전": [
+   "machine vision"
+  ],
+  "비전공": [
+   "non-specialist"
+  ],
+  "사내 사용": [
+   "used in-house"
+  ],
+  "사양": [
+   "specification"
+  ],
+  "사양 조정": [
+   "specification adjustment"
+  ],
+  "사업": [
+   "programme",
+   "business"
+  ],
+  "사업화": [
+   "commercialisation",
+   "commercialization"
+  ],
+  "사용 건수": [
+   "number of uses"
+  ],
+  "사용 교육": [
+   "user training"
+  ],
+  "사용 설명": [
+   "usage instructions"
+  ],
+  "사용 조건": [
+   "operating condition"
+  ],
+  "사용자": [
+   "user"
+  ],
+  "사이클": [
+   "cycle"
+  ],
+  "사이클 타임": [
+   "cycle time"
+  ],
+  "사출": [
+   "injection moulding",
+   "injection molding"
+  ],
+  "산업 이해": [
+   "industry understanding"
+  ],
+  "산업공학 · 생산관리": [
+   "industrial engineering",
+   "production management"
+  ],
+  "산포": [
+   "variability",
+   "spread"
+  ],
+  "산포 감소": [
+   "reduced variability"
+  ],
+  "산학": [
+   "industry-academia"
+  ],
+  "상관": [
+   "correlation"
+  ],
+  "상담": [
+   "consultation"
+  ],
+  "상용화": [
+   "commercialisation",
+   "commercialization"
+  ],
+  "상하한": [
+   "upper and lower limit"
+  ],
+  "샘플링": [
+   "sampling"
+  ],
+  "생산 관리 시스템": [
+   "production management system",
+   "mes"
+  ],
+  "생산량": [
+   "output volume",
+   "throughput"
+  ],
+  "서보": [
+   "servo"
+  ],
+  "서비스": [
+   "service"
+  ],
+  "선정": [
+   "selection",
+   "selected"
+  ],
+  "선택과 집중": [
+   "prioritisation",
+   "prioritization"
+  ],
+  "선행 연구": [
+   "prior work",
+   "literature review"
+  ],
+  "선행연구": [
+   "prior work",
+   "literature review"
+  ],
+  "설계 검토": [
+   "design review"
+  ],
+  "설계 반영": [
+   "reflected in the design"
+  ],
+  "설계 반영 요청": [
+   "design change request"
+  ],
+  "설계 조건": [
+   "design condition"
+  ],
+  "설계 피드백": [
+   "design feedback"
+  ],
+  "설계변경": [
+   "design change"
+  ],
+  "설계안": [
+   "design option"
+  ],
+  "설계안 선택": [
+   "design option selection"
+  ],
+  "설명": [
+   "explained"
+  ],
+  "설비": [
+   "equipment",
+   "plant"
+  ],
+  "설비 변경": [
+   "equipment modification"
+  ],
+  "설비 상태": [
+   "equipment condition"
+  ],
+  "설정 변경": [
+   "setting change"
+  ],
+  "설정값": [
+   "setpoint"
+  ],
+  "설치": [
+   "installation",
+   "installed"
+  ],
+  "설치 조건": [
+   "installation condition"
+  ],
+  "성공 기준": [
+   "success criteria"
+  ],
+  "성과지표": [
+   "performance indicator",
+   "kpi"
+  ],
+  "성능 시험": [
+   "performance test"
+  ],
+  "성적서": [
+   "test certificate"
+  ],
+  "성형 조건": [
+   "forming condition"
+  ],
+  "세부 과제": [
+   "work package",
+   "subtask"
+  ],
+  "센서": [
+   "sensor"
+  ],
+  "센서 데이터": [
+   "sensor data"
+  ],
+  "셀": [
+   "cell"
+  ],
+  "셋업": [
+   "setup"
+  ],
+  "소성": [
+   "plasticity"
+  ],
+  "소성 모델": [
+   "plasticity model"
+  ],
+  "소음": [
+   "noise"
+  ],
+  "소재": [
+   "material"
+  ],
+  "소재 선택": [
+   "material selection"
+  ],
+  "손 계산": [
+   "hand calculation"
+  ],
+  "손계산과 비교": [
+   "compared against a hand calculation"
+  ],
+  "손상 기구": [
+   "damage mechanism"
+  ],
+  "손상 모델": [
+   "damage model"
+  ],
+  "손실": [
+   "loss"
+  ],
+  "수급": [
+   "supply"
+  ],
+  "수렴": [
+   "convergence",
+   "converged"
+  ],
+  "수리": [
+   "repair"
+  ],
+  "수명 시험": [
+   "life test"
+  ],
+  "수소": [
+   "hydrogen"
+  ],
+  "수율": [
+   "yield"
+  ],
+  "수입 검사": [
+   "incoming inspection"
+  ],
+  "수작업": [
+   "manual work",
+   "by hand"
+  ],
+  "수주": [
+   "contract won",
+   "order received"
+  ],
+  "수치 기법": [
+   "numerical scheme"
+  ],
+  "수치해석": [
+   "numerical analysis"
+  ],
+  "수탁": [
+   "contract research"
+  ],
+  "수평 전개": [
+   "horizontal deployment",
+   "rollout"
+  ],
+  "슈퍼컴": [
+   "supercomputer",
+   "hpc"
+  ],
+  "스케일업": [
+   "scale-up"
+  ],
+  "스크리닝": [
+   "screening"
+  ],
+  "스크립트": [
+   "script"
+  ],
+  "스키마": [
+   "schema"
+  ],
+  "스트레인": [
+   "strain"
+  ],
+  "스팀": [
+   "steam"
+  ],
+  "스펙": [
+   "spec"
+  ],
+  "스펙 범위": [
+   "spec range"
+  ],
+  "승인": [
+   "approval",
+   "approved"
+  ],
+  "시각화": [
+   "visualisation",
+   "visualization"
+  ],
+  "시간 단축": [
+   "time saved"
+  ],
+  "시간 응답": [
+   "time response"
+  ],
+  "시나리오": [
+   "scenario"
+  ],
+  "시뮬레이션": [
+   "simulation"
+  ],
+  "시운전": [
+   "commissioning"
+  ],
+  "시작품": [
+   "prototype"
+  ],
+  "시장": [
+   "market"
+  ],
+  "시정": [
+   "corrective action"
+  ],
+  "시제품": [
+   "prototype"
+  ],
+  "시퀀스": [
+   "sequence"
+  ],
+  "시편": [
+   "specimen",
+   "coupon"
+  ],
+  "시험": [
+   "test",
+   "testing"
+  ],
+  "시험 가동": [
+   "trial run"
+  ],
+  "시험 결과": [
+   "test result"
+  ],
+  "시험 계획": [
+   "test plan"
+  ],
+  "시험 보고서": [
+   "test report"
+  ],
+  "시험 비교": [
+   "comparison with test"
+  ],
+  "시험 생산": [
+   "trial production"
+  ],
+  "시험 성적서": [
+   "test certificate"
+  ],
+  "시험 수행": [
+   "ran the test"
+  ],
+  "시험 조건": [
+   "test condition"
+  ],
+  "시험 해석 비교": [
+   "test-analysis correlation"
+  ],
+  "시험대": [
+   "test rig",
+   "test bench"
+  ],
+  "식품": [
+   "food"
+  ],
+  "신뢰성 시험": [
+   "reliability test"
+  ],
+  "신소재": [
+   "advanced material"
+  ],
+  "신재생": [
+   "renewable"
+  ],
+  "실린더": [
+   "cylinder"
+  ],
+  "실사": [
+   "due diligence",
+   "site audit"
+  ],
+  "실적": [
+   "track record",
+   "actuals"
+  ],
+  "실적 집계": [
+   "actuals reporting"
+  ],
+  "실측": [
+   "measured value",
+   "field measurement"
+  ],
+  "실패 분석": [
+   "failure analysis"
+  ],
+  "실험": [
+   "experiment"
+  ],
+  "실험 방법": [
+   "experimental method"
+  ],
+  "실험 설계": [
+   "design of experiments"
+  ],
+  "실험 장치": [
+   "test rig",
+   "experimental apparatus"
+  ],
+  "실험값": [
+   "experimental value"
+  ],
+  "실험계획": [
+   "experimental plan"
+  ],
+  "실험계획법": [
+   "design of experiments",
+   "doe"
+  ],
+  "실험노트": [
+   "lab notebook"
+  ],
+  "심사": [
+   "audit",
+   "assessment"
+  ],
+  "안을 비교": [
+   "compared the options"
+  ],
+  "안전": [
+   "safety"
+  ],
+  "안전 교육": [
+   "safety training"
+  ],
+  "안전 등급": [
+   "safety category",
+   "performance level"
+  ],
+  "안전 점검": [
+   "safety inspection"
+  ],
+  "안전율": [
+   "safety factor"
+  ],
+  "압력 손실": [
+   "pressure drop"
+  ],
+  "압축공기": [
+   "compressed air"
+  ],
+  "액추에이터": [
+   "actuator"
+  ],
+  "양산": [
+   "volume production",
+   "mass production"
+  ],
+  "양산 이관": [
+   "transfer to production"
+  ],
+  "양산 준비": [
+   "production readiness"
+  ],
+  "양산성": [
+   "manufacturability"
+  ],
+  "업계": [
+   "industry"
+  ],
+  "에너지": [
+   "energy"
+  ],
+  "에너지 사용량": [
+   "energy consumption"
+  ],
+  "엑셀": [
+   "excel",
+   "spreadsheet"
+  ],
+  "연계": [
+   "integration",
+   "linked"
+  ],
+  "연구 문제": [
+   "research problem"
+  ],
+  "연구 질문": [
+   "research question"
+  ],
+  "연구비": [
+   "research funding",
+   "grant"
+  ],
+  "연동": [
+   "interlocked",
+   "integrated"
+  ],
+  "연료전지": [
+   "fuel cell"
+  ],
+  "열교환기": [
+   "heat exchanger"
+  ],
+  "열량": [
+   "heat load",
+   "calorific"
+  ],
+  "열역학": [
+   "thermodynamics"
+  ],
+  "열전달": [
+   "heat transfer"
+  ],
+  "열전대": [
+   "thermocouple"
+  ],
+  "열처리": [
+   "heat treatment"
+  ],
+  "열해석": [
+   "thermal analysis"
+  ],
+  "염수분무": [
+   "salt spray"
+  ],
+  "영상 검사": [
+   "vision inspection"
+  ],
+  "영어 대응": [
+   "handled in english"
+  ],
+  "예방 보전": [
+   "preventive maintenance"
+  ],
+  "예비품": [
+   "spare part"
+  ],
+  "예산": [
+   "budget"
+  ],
+  "예지 보전": [
+   "predictive maintenance"
+  ],
+  "예측": [
+   "prediction"
+  ],
+  "예측 모델": [
+   "predictive model"
+  ],
+  "오류 감소": [
+   "fewer errors"
+  ],
+  "오버홀": [
+   "overhaul"
+  ],
+  "오차": [
+   "error",
+   "deviation"
+  ],
+  "오프라인 프로그래밍": [
+   "offline programming"
+  ],
+  "온도 분포": [
+   "temperature distribution"
+  ],
+  "온도 측정": [
+   "temperature measurement"
+  ],
+  "옵션": [
+   "option"
+  ],
+  "완료": [
+   "completed"
+  ],
+  "외주": [
+   "outsourced",
+   "subcontract"
+  ],
+  "요건 정의": [
+   "requirements definition"
+  ],
+  "요구 추적": [
+   "requirements traceability"
+  ],
+  "요구사항": [
+   "requirement"
+  ],
+  "요구조건": [
+   "requirement"
+  ],
+  "요소": [
+   "element"
+  ],
+  "요약": [
+   "summary"
+  ],
+  "요인": [
+   "factor"
+  ],
+  "용량": [
+   "capacity"
+  ],
+  "용량 산정": [
+   "capacity sizing"
+  ],
+  "용수": [
+   "process water"
+  ],
+  "용접": [
+   "welding",
+   "weld"
+  ],
+  "용접 조건": [
+   "welding condition"
+  ],
+  "우선순위": [
+   "priority",
+   "prioritised"
+  ],
+  "운전 전략": [
+   "operating strategy"
+  ],
+  "운전 조건": [
+   "operating condition"
+  ],
+  "운전 지침": [
+   "operating guidance"
+  ],
+  "원가": [
+   "cost"
+  ],
+  "원인": [
+   "cause"
+  ],
+  "원인 분석": [
+   "root cause analysis"
+  ],
+  "원인 조치": [
+   "action on the cause"
+  ],
+  "원인 추적": [
+   "cause tracing"
+  ],
+  "위상 최적": [
+   "topology optimisation",
+   "topology optimization"
+  ],
+  "위험": [
+   "risk",
+   "hazard"
+  ],
+  "위험 분석": [
+   "risk analysis"
+  ],
+  "위험 작업": [
+   "hazardous work"
+  ],
+  "위험성 평가": [
+   "risk assessment"
+  ],
+  "유니버설": [
+   "universal robots"
+  ],
+  "유동해석": [
+   "flow analysis",
+   "cfd"
+  ],
+  "유량 계산": [
+   "flow rate calculation"
+  ],
+  "유량계": [
+   "flow meter"
+  ],
+  "유로": [
+   "flow path"
+  ],
+  "유의": [
+   "significant",
+   "significance"
+  ],
+  "유체역학": [
+   "fluid mechanics"
+  ],
+  "유틸리티": [
+   "utilities"
+  ],
+  "유한요소해석": [
+   "finite element analysis",
+   "fea"
+  ],
+  "유효성 확인": [
+   "validation"
+  ],
+  "윤활": [
+   "lubrication"
+  ],
+  "응력": [
+   "stress"
+  ],
+  "응력 부식": [
+   "stress corrosion"
+  ],
+  "의료기기": [
+   "medical device"
+  ],
+  "의사결정": [
+   "decision making"
+  ],
+  "의존": [
+   "dependency"
+  ],
+  "이관": [
+   "handover",
+   "transfer"
+  ],
+  "이력": [
+   "history",
+   "change log"
+  ],
+  "이력 관리": [
+   "change history"
+  ],
+  "이론값": [
+   "theoretical value"
+  ],
+  "이미지": [
+   "image"
+  ],
+  "이상": [
+   "anomaly",
+   "abnormality"
+  ],
+  "이상 감지": [
+   "anomaly detection"
+  ],
+  "이상 징후": [
+   "early warning sign"
+  ],
+  "이상화": [
+   "idealisation",
+   "idealization"
+  ],
+  "이송": [
+   "feed",
+   "conveying"
+  ],
+  "이차전지": [
+   "secondary battery",
+   "li-ion"
+  ],
+  "이해관계": [
+   "stakeholder"
+  ],
+  "인력": [
+   "staffing",
+   "manpower"
+  ],
+  "인버터": [
+   "inverter"
+  ],
+  "인수인계": [
+   "handover"
+  ],
+  "인자": [
+   "factor"
+  ],
+  "인장": [
+   "tensile"
+  ],
+  "인증": [
+   "certification"
+  ],
+  "인증 시험": [
+   "certification test"
+  ],
+  "인터록": [
+   "interlock"
+  ],
+  "인터페이스": [
+   "interface"
+  ],
+  "일정": [
+   "schedule"
+  ],
+  "일정 준수": [
+   "kept to the schedule"
+  ],
+  "입력 조건": [
+   "input condition"
+  ],
+  "자동 측정": [
+   "automated measurement"
+  ],
+  "자동제어": [
+   "automatic control"
+  ],
+  "자동화": [
+   "automation",
+   "automated"
+  ],
+  "자동화 검토": [
+   "automation review"
+  ],
+  "자동화 대상": [
+   "candidate for automation"
+  ],
+  "자동화 범위": [
+   "scope of automation"
+  ],
+  "자동화 추가": [
+   "added automation"
+  ],
+  "자동화 코드": [
+   "automation code"
+  ],
+  "자료": [
+   "data",
+   "material"
+  ],
+  "자릿수": [
+   "order of magnitude"
+  ],
+  "자원": [
+   "resource"
+  ],
+  "자재": [
+   "materials",
+   "parts"
+  ],
+  "작동점": [
+   "operating point"
+  ],
+  "작업 관찰": [
+   "work observation",
+   "time study"
+  ],
+  "작업 기록": [
+   "work log"
+  ],
+  "작업 순서": [
+   "work sequence"
+  ],
+  "작업 지시": [
+   "work instruction"
+  ],
+  "작업 표준": [
+   "work standard"
+  ],
+  "작업 허가": [
+   "work permit"
+  ],
+  "작업자": [
+   "operator"
+  ],
+  "작업표준": [
+   "work standard"
+  ],
+  "잔차": [
+   "residual"
+  ],
+  "장비 확보": [
+   "equipment procurement"
+  ],
+  "재고": [
+   "inventory",
+   "stock"
+  ],
+  "재료 규격": [
+   "material specification"
+  ],
+  "재료 모델": [
+   "material model"
+  ],
+  "재료 비교": [
+   "material comparison"
+  ],
+  "재료공학": [
+   "materials engineering"
+  ],
+  "재료역학": [
+   "mechanics of materials",
+   "solid mechanics"
+  ],
+  "재발 방지": [
+   "prevention of recurrence"
+  ],
+  "재사용": [
+   "reuse",
+   "reused"
+  ],
+  "재설계": [
+   "redesign"
+  ],
+  "재정의": [
+   "redefinition",
+   "reframed"
+  ],
+  "재질": [
+   "material"
+  ],
+  "재질 변경": [
+   "material change"
+  ],
+  "재질 선정": [
+   "material selection"
+  ],
+  "재현": [
+   "reproduce",
+   "reproduced"
+  ],
+  "재현성": [
+   "reproducibility"
+  ],
+  "적용 결과": [
+   "result of applying it"
+  ],
+  "적용 사양": [
+   "applied specification"
+  ],
+  "적층": [
+   "additive",
+   "laminate"
+  ],
+  "전력": [
+   "electric power"
+  ],
+  "전제": [
+   "premise",
+   "assumption"
+  ],
+  "전후 비교": [
+   "before and after comparison"
+  ],
+  "전후 비교표": [
+   "before and after table"
+  ],
+  "절감": [
+   "saving",
+   "reduced"
+  ],
+  "절감액": [
+   "cost saving"
+  ],
+  "절삭 조건": [
+   "cutting condition"
+  ],
+  "절차": [
+   "procedure"
+  ],
+  "절차서": [
+   "written procedure"
+  ],
+  "점검": [
+   "inspection",
+   "check"
+  ],
+  "점검 기록": [
+   "inspection log"
+  ],
+  "점검 순서": [
+   "inspection sequence"
+  ],
+  "점검 주기": [
+   "inspection interval"
+  ],
+  "접근": [
+   "approach"
+  ],
+  "접근 방식": [
+   "approach"
+  ],
+  "접촉": [
+   "contact"
+  ],
+  "정규화": [
+   "normalisation",
+   "normalization"
+  ],
+  "정량 목표": [
+   "quantified target"
+  ],
+  "정비": [
+   "maintenance"
+  ],
+  "정비 계약": [
+   "maintenance contract"
+  ],
+  "정비 계획": [
+   "maintenance plan"
+  ],
+  "정비 보고서": [
+   "maintenance report"
+  ],
+  "정비 이력": [
+   "maintenance history"
+  ],
+  "정역학": [
+   "statics"
+  ],
+  "정지": [
+   "stoppage",
+   "shutdown"
+  ],
+  "정지 시간": [
+   "downtime"
+  ],
+  "정지 원인": [
+   "cause of the stoppage"
+  ],
+  "정책": [
+   "policy"
+  ],
+  "제도": [
+   "scheme",
+   "institutional"
+  ],
+  "제안": [
+   "proposal",
+   "proposed"
+  ],
+  "제안서": [
+   "proposal document"
+  ],
+  "제약": [
+   "constraint"
+  ],
+  "제어": [
+   "control"
+  ],
+  "제어 로직": [
+   "control logic"
+  ],
+  "제작": [
+   "fabrication",
+   "built"
+  ],
+  "제조 방식": [
+   "manufacturing method"
+  ],
+  "제조공학 · 가공": [
+   "manufacturing engineering",
+   "machining"
+  ],
+  "제조성": [
+   "manufacturability"
+  ],
+  "제조성 검토": [
+   "manufacturability review"
+  ],
+  "조건 변경": [
+   "condition change"
+  ],
+  "조건 비교": [
+   "condition comparison"
+  ],
+  "조건 설계": [
+   "condition design"
+  ],
+  "조건을 바꿔": [
+   "varied the condition"
+  ],
+  "조립": [
+   "assembly"
+  ],
+  "조립도": [
+   "assembly drawing"
+  ],
+  "조립성": [
+   "assemblability"
+  ],
+  "조율": [
+   "coordination",
+   "aligned"
+  ],
+  "조직": [
+   "microstructure"
+  ],
+  "주관": [
+   "lead organisation",
+   "principal"
+  ],
+  "주제 선정": [
+   "topic selection"
+  ],
+  "주효과": [
+   "main effect"
+  ],
+  "중간 점검": [
+   "interim review"
+  ],
+  "중단": [
+   "stopped",
+   "discontinued"
+  ],
+  "지그": [
+   "jig"
+  ],
+  "지도": [
+   "supervision",
+   "supervised"
+  ],
+  "지연": [
+   "delay"
+  ],
+  "지열": [
+   "geothermal"
+  ],
+  "지자체": [
+   "local government"
+  ],
+  "지표": [
+   "indicator",
+   "metric"
+  ],
+  "진단": [
+   "diagnosis"
+  ],
+  "진동 시험": [
+   "vibration test"
+  ],
+  "진동 측정": [
+   "vibration measurement"
+  ],
+  "질문": [
+   "question"
+  ],
+  "집중": [
+   "focused"
+  ],
+  "집행": [
+   "budget execution"
+  ],
+  "창고 자동화": [
+   "warehouse automation"
+  ],
+  "채택": [
+   "adopted"
+  ],
+  "처리량": [
+   "throughput"
+  ],
+  "체결": [
+   "fastening"
+  ],
+  "체크리스트": [
+   "checklist"
+  ],
+  "초기 조정": [
+   "initial tuning"
+  ],
+  "초도": [
+   "first article"
+  ],
+  "총괄": [
+   "overall lead"
+  ],
+  "최적화": [
+   "optimisation",
+   "optimization"
+  ],
+  "추이": [
+   "trend"
+  ],
+  "추적표": [
+   "traceability matrix"
+  ],
+  "출원": [
+   "patent application",
+   "filed"
+  ],
+  "출장": [
+   "field trip",
+   "travelled"
+  ],
+  "출하 검사": [
+   "final inspection",
+   "outgoing inspection"
+  ],
+  "충격": [
+   "impact",
+   "shock"
+  ],
+  "측정": [
+   "measurement",
+   "measured"
+  ],
+  "측정 데이터": [
+   "measurement data"
+  ],
+  "측정 시스템": [
+   "measurement system"
+  ],
+  "측정 지점": [
+   "measurement point"
+  ],
+  "측정값": [
+   "measured value"
+  ],
+  "치공구": [
+   "tooling"
+  ],
+  "치수": [
+   "dimension"
+  ],
+  "치수 변경": [
+   "dimensional change"
+  ],
+  "침탄": [
+   "carburising",
+   "carburizing"
+  ],
+  "카메라": [
+   "camera"
+  ],
+  "컨베이어": [
+   "conveyor"
+  ],
+  "컨소시엄": [
+   "consortium"
+  ],
+  "컨틴전시": [
+   "contingency"
+  ],
+  "케이스 비교": [
+   "case comparison"
+  ],
+  "코드 공개": [
+   "open-sourced",
+   "published the code"
+  ],
+  "코팅": [
+   "coating"
+  ],
+  "크리프": [
+   "creep"
+  ],
+  "클러스터": [
+   "cluster"
+  ],
+  "클레임": [
+   "claim",
+   "warranty claim"
+  ],
+  "클레임 대응": [
+   "claim handling"
+  ],
+  "클린룸": [
+   "cleanroom"
+  ],
+  "타 기관": [
+   "another institution"
+  ],
+  "타 라인": [
+   "another line"
+  ],
+  "타당성": [
+   "feasibility"
+  ],
+  "탄성": [
+   "elastic"
+  ],
+  "태양열": [
+   "solar thermal"
+  ],
+  "택트": [
+   "takt time"
+  ],
+  "테스트": [
+   "test"
+  ],
+  "테이블": [
+   "table"
+  ],
+  "템플릿": [
+   "template"
+  ],
+  "통계": [
+   "statistics",
+   "statistical"
+  ],
+  "통계 도구": [
+   "statistical tool"
+  ],
+  "통과": [
+   "passed"
+  ],
+  "통합": [
+   "integration",
+   "integrated"
+  ],
+  "투자": [
+   "investment"
+  ],
+  "툴링": [
+   "tooling"
+  ],
+  "튜닝": [
+   "tuning"
+  ],
+  "트라이볼로지": [
+   "tribology"
+  ],
+  "트러블": [
+   "trouble",
+   "troubleshooting"
+  ],
+  "트레이닝": [
+   "training"
+  ],
+  "트레이드오프": [
+   "trade-off",
+   "tradeoff"
+  ],
+  "트렌드": [
+   "trend"
+  ],
+  "특성요인": [
+   "cause and effect",
+   "fishbone"
+  ],
+  "특허": [
+   "patent"
+  ],
+  "티칭": [
+   "teaching",
+   "robot teaching"
+  ],
+  "파단": [
+   "fracture"
+  ],
+  "파라미터": [
+   "parameter"
+  ],
+  "파면": [
+   "fracture surface",
+   "fractography"
+  ],
+  "파손": [
+   "failure",
+   "breakage"
+  ],
+  "파이프라인": [
+   "pipeline"
+  ],
+  "파일럿": [
+   "pilot"
+  ],
+  "판단": [
+   "judgement",
+   "judgment"
+  ],
+  "판단 기준": [
+   "basis for the judgement"
+  ],
+  "판독": [
+   "read out",
+   "interpretation"
+  ],
+  "판정": [
+   "verdict",
+   "determination"
+  ],
+  "판정 기준": [
+   "acceptance criteria"
+  ],
+  "판정 기준서": [
+   "acceptance criteria document"
+  ],
+  "팬": [
+   "fan"
+  ],
+  "펌프": [
+   "pump"
+  ],
+  "평가 기준": [
+   "evaluation criteria"
+  ],
+  "포맷": [
+   "format"
+  ],
+  "포스터": [
+   "poster"
+  ],
+  "포트폴리오": [
+   "portfolio"
+  ],
+  "표면 처리": [
+   "surface treatment"
+  ],
+  "표준": [
+   "standard"
+  ],
+  "표준서": [
+   "standard document"
+  ],
+  "표준품": [
+   "standard part"
+  ],
+  "표준화": [
+   "standardisation",
+   "standardization"
+  ],
+  "품질 시스템": [
+   "quality system"
+  ],
+  "품질 포인트": [
+   "quality control point"
+  ],
+  "품질공학": [
+   "quality engineering"
+  ],
+  "프로시딩": [
+   "proceedings"
+  ],
+  "프로토콜": [
+   "protocol"
+  ],
+  "프로토타입": [
+   "prototype"
+  ],
+  "피로": [
+   "fatigue"
+  ],
+  "피로 수명 해석": [
+   "fatigue life analysis"
+  ],
+  "필드 불량": [
+   "field failure"
+  ],
+  "하중 조건": [
+   "load case",
+   "load condition"
+  ],
+  "학습": [
+   "learning"
+  ],
+  "학위 논문": [
+   "thesis",
+   "dissertation"
+  ],
+  "학회": [
+   "conference",
+   "society"
+  ],
+  "한계": [
+   "limitation"
+  ],
+  "합격": [
+   "pass",
+   "accepted"
+  ],
+  "합격 기준": [
+   "pass criteria"
+  ],
+  "합의": [
+   "agreement",
+   "agreed"
+  ],
+  "항공 규격": [
+   "aerospace standard",
+   "as9100"
+  ],
+  "항목": [
+   "item"
+  ],
+  "항온항습": [
+   "temperature and humidity chamber"
+  ],
+  "해석": [
+   "analysis",
+   "simulation"
+  ],
+  "해석 결과": [
+   "analysis result"
+  ],
+  "해석 도구": [
+   "analysis tool"
+  ],
+  "해석 리포트": [
+   "analysis report"
+  ],
+  "해석 목적": [
+   "purpose of the analysis"
+  ],
+  "해석 범위": [
+   "scope of the analysis"
+  ],
+  "해석 보고서": [
+   "analysis report"
+  ],
+  "해석 수행": [
+   "ran the analysis"
+  ],
+  "해석과 비교": [
+   "compared against the analysis"
+  ],
+  "해외": [
+   "overseas",
+   "abroad"
+  ],
+  "핵심 난제": [
+   "key technical challenge"
+  ],
+  "핸들링": [
+   "handling"
+  ],
+  "허용": [
+   "allowable"
+  ],
+  "허용 범위": [
+   "allowable range"
+  ],
+  "현미경": [
+   "microscope",
+   "micrograph"
+  ],
+  "현장": [
+   "site",
+   "shop floor"
+  ],
+  "현장 보고": [
+   "site report"
+  ],
+  "현장 의견": [
+   "feedback from site"
+  ],
+  "현장 조정": [
+   "adjustment on site"
+  ],
+  "현지": [
+   "local"
+  ],
+  "현황 문서": [
+   "status document"
+  ],
+  "협력": [
+   "collaboration",
+   "collaborated"
+  ],
+  "협력사": [
+   "supplier",
+   "partner company"
+  ],
+  "협업": [
+   "collaboration"
+  ],
+  "협의": [
+   "discussion",
+   "consultation"
+  ],
+  "협의서": [
+   "memorandum"
+  ],
+  "형상": [
+   "geometry",
+   "shape"
+  ],
+  "형상 관리": [
+   "configuration management"
+  ],
+  "형상 변경": [
+   "geometry change"
+  ],
+  "형상 최적": [
+   "shape optimisation",
+   "shape optimization"
+  ],
+  "형상관리": [
+   "configuration management"
+  ],
+  "형상안": [
+   "geometry option"
+  ],
+  "화학": [
+   "chemical"
+  ],
+  "확대 적용": [
+   "rollout",
+   "extended to"
+  ],
+  "환경": [
+   "environmental"
+  ],
+  "환경 시험": [
+   "environmental test"
+  ],
+  "회귀": [
+   "regression"
+  ],
+  "회수": [
+   "payback",
+   "recovered"
+  ],
+  "회의록": [
+   "meeting minutes"
+  ],
+  "회의체": [
+   "steering committee"
+  ],
+  "효과 확인": [
+   "confirmed the effect"
+  ],
+  "효율": [
+   "efficiency"
+  ],
+  "후배": [
+   "junior colleague"
+  ],
+  "흐름": [
+   "flow"
+  ]
+ },
+ "note": "맞추기 어휘. 응시자가 적은 글에서 **무엇을 찾을지**를 늘린다. 사전(report-i18n.json)과 다른 물건이다: 사전은 화면에 나갈 글자를 바꾸고, 여기는 찾는 말을 늘린다. 섞어 두면 검색어가 번역되어 한국어로 적은 분의 경험이 안 걸린다. 언어에 따라 갈리지 않는다: 한국어 결과지를 보는 분이 영어로 적는 일도, 그 반대도 있어서 늘 양쪽을 함께 찾는다.",
+ "rules": "① 열쇠는 `me-evidence-map.json` 의 `match.keywords`·`match.courses` 와 `evidence-rules.json` 의 `signals[].methods`·`outputs`·`courses` 에 실제로 적힌 한국어 낱말이다. ② 값은 **부분 일치로 찾을 수 있는 짧은 말**이다: 문장을 넣으면 걸리지 않는다. ③ 영어 쪽은 소문자로 적는다(매처가 소문자로 견준다). ④ 너무 흔한 말(`test`·`data` 하나만)은 넣지 않는다: 아무 글에나 걸려서 확인되지 않은 것을 확인된 것으로 만든다. ⑤ 이미 라틴 글자인 검색어(ansys·cad·fmea)는 양쪽에서 그대로 걸리므로 여기 넣지 않는다.",
+ "schema_version": "1.0"
+}

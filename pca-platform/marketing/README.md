@@ -16,8 +16,8 @@ SITE=kr     npm run dev     # 한국어판
 
 | SITE | 도메인(예정) | 언어 | 상태 |
 |---|---|---|---|
-| `global` | careermetri.com | en | 있음 |
-| `kr` | careermetri.co.kr | ko | 있음 |
+| `global` | careermatri.com | en | 있음 |
+| `kr` | careermatri.co.kr | ko | 있음 |
 | `kz` | metri.kz | kk | **있음** (현지 검수 필요) |
 | `tr` | metri.com.tr | tr | **있음** (현지 검수 필요) |
 

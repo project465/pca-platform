@@ -1,3 +1,4 @@
+import { PLATFORM_URL, MARKET_LINKS } from "@/lib/domains";
 import type { SiteContent } from "./types";
 
 /**
@@ -17,7 +18,7 @@ export const kz: SiteContent = {
   brand: "Careermetri",
   org: "ACADEMIX",
   orgTagline: "Университеттер мен мемлекеттік мекемелерге арналған білім бағдарламалары",
-  platformUrl: "https://app.careermetri.com",
+  platformUrl: PLATFORM_URL,
 
   meta: {
     title: "Careermetri — инженерлік мамандықтар жұмысқа алатын рөлдер тұрғысынан оқылады",
@@ -676,8 +677,7 @@ export const kz: SiteContent = {
     note: "Careermetri · PCA бағалау қозғалтқышы · ACADEMIX әзірледі",
     sitesLabel: "Басқа елдер",
     sites: [
-      { label: "Global (English)", href: "https://careermetri.com", ready: false },
-      { label: "한국", href: "https://careermetri.co.kr", ready: false },
+    ...MARKET_LINKS,
       { label: "Қазақстан", href: "https://metri.kz", ready: false },
       { label: "Türkiye", href: "https://metri.com.tr", ready: false },
     ],

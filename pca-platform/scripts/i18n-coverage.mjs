@@ -97,6 +97,28 @@ const SPECS = [
   },
 ];
 
+/* 맞추기 어휘는 **화면 글자와 따로 센다.** 여기 빠진 것은 영어로 적어
+   주신 경험이 걸리지 않는 자리이고, 화면에 한국어가 보이는 것과 달리
+   눈에 띄지 않는다: 같은 내용을 적었는데 공백만 더 받는다 */
+const GLOS = `${ROOT}/content/match-glossary.json`;
+const MATCHERS = [
+  {
+    file: "content/me-evidence-map.json", where: "증거 지도 검색어",
+    pick: (d) => (d.families || []).flatMap((f) =>
+      (f.evidence_requirements || []).flatMap((r) => [
+        ...((r.match || {}).keywords || []),
+        ...((r.match || {}).courses || []),
+      ])),
+  },
+  {
+    file: "content/evidence-rules.json", where: "준비도 신호 매처",
+    pick: (d) => (d.families || []).flatMap((f) =>
+      (f.signals || []).flatMap((g) => [
+        ...(g.methods || []), ...(g.outputs || []), ...(g.courses || []),
+      ])),
+  },
+];
+
 const dict = JSON.parse(readFileSync(DICT, "utf8")).en;
 const bad = [];
 const uncovered = [];
@@ -121,12 +143,32 @@ for (const sp of SPECS) {
   }
 }
 
+/* ── 맞추기 어휘 ──────────────────────────────────────────────────── */
+const glos = JSON.parse(readFileSync(GLOS, "utf8")).en || {};
+const noWord = [];
+for (const sp of MATCHERS) {
+  const d = J(sp.file);
+  /* 이미 라틴 글자인 검색어(ansys · cad · fmea)는 양쪽에서 그대로
+     걸리므로 셀 것이 없다 */
+  const all = [...new Set(sp.pick(d)
+    .filter((x) => typeof x === "string" && HAN.test(x)))];
+  const miss = all.filter((x) => !(glos[x] && glos[x].length));
+  rows.push(`${sp.file.padEnd(44)} ${all.length - miss.length}/${all.length}  ${sp.where}`);
+  if (miss.length) {
+    bad.push(`${sp.where} 영어로 찾을 말이 없는 검색어 ${miss.length}가지 (${sp.file})`);
+    for (const m of miss) noWord.push(m);
+  }
+}
+
 console.log(rows.join("\n"));
 
 if (process.argv.includes("--dump")) {
   mkdirSync(dirname(OUT), { recursive: true });
   writeFileSync(OUT, JSON.stringify([...new Set(uncovered)].sort(), null, 1) + "\n");
   console.log(`\n덮이지 않은 것 ${new Set(uncovered).size}가지 → ${OUT}`);
+  const O2 = "docs/metri/generated/i18n-nomatch.json";
+  writeFileSync(O2, JSON.stringify([...new Set(noWord)].sort(), null, 1) + "\n");
+  console.log(`영어로 찾을 말이 없는 검색어 ${new Set(noWord).size}가지 → ${O2}`);
 }
 
 if (bad.length) {
@@ -134,4 +176,4 @@ if (bad.length) {
   for (const b of bad) console.error("  " + b);
   process.exit(1);
 }
-console.log("\n데이터 파일에서 사람이 읽는 칸이 전부 두 언어로 있다.");
+console.log("\n사람이 읽는 칸과 경험에서 찾는 말이 전부 두 언어로 있다.");

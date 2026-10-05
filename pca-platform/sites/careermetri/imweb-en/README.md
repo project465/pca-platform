@@ -334,7 +334,7 @@ twice or said nothing.
 
 ## 12. What is still open
 
-- The domain. `careermetri.com` is the reserved name in
+- The domain. `careermatri.com` is the reserved name in
   `marketing/src/content/global.ts`, not a live address
 - Company details for the footer, same eight fields as the Korean site
 - Terms, privacy and refunds in English. The Korean set in

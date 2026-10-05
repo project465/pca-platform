@@ -143,8 +143,8 @@
 서 있어서 그쪽을 지킨다. **고칠 것은 제안서 쪽이다**: 문서 본문과
 기관 리포트 화면 22장의 이름, 그리고 푸터의 `www.hari.re.kr`.
 
-도메인은 `careermetri.co.kr`(한국 소개) · `careermetri.com`(글로벌) ·
-`app.careermetri.com`(플랫폼). 넷 다 DNS 가 조용하지만 **아직 사지
+도메인은 `careermatri.co.kr`(한국 소개) · `careermatri.com`(글로벌) ·
+`app.careermatri.com`(플랫폼). 넷 다 DNS 가 조용하지만 **아직 사지
 않았다**: 조용한 것과 비어 있는 것은 다르다.
 
 ### ② 범위: **이공계부터, 비이공계는 나중**

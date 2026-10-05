@@ -130,6 +130,33 @@ window.PCAI18N = (function () {
     return v;
   }
 
+  /**
+   * 맞추기 어휘. 한국어 검색어 하나를 영어 낱말 여럿으로 퍼뜨린다.
+   *
+   * **이것은 사전과 다른 물건이다.** 사전은 화면에 나갈 글자를 바꾸는
+   * 것이고, 여기는 응시자가 적은 글에서 **무엇을 찾을지**를 늘리는 것이다.
+   * 섞어 두면 검색어가 번역되어 한국어로 적은 분의 경험이 안 걸리게 된다.
+   *
+   * **언어에 따라 갈리지 않는다.** 한국어 결과지를 보는 분이 경험을
+   * 영어로 적는 일도, 그 반대도 있다. 양쪽을 늘 함께 찾는다.
+   */
+  function terms(word) {
+    var g = (window.PCA_MATCH_GLOSSARY && window.PCA_MATCH_GLOSSARY.en) || null;
+    var ex = g ? g[word] : null;
+    if (!ex || !ex.length) return [word];
+    return [word].concat(ex);
+  }
+
+  /** 검색어 묶음을 통째로 퍼뜨린다 */
+  function expand(words) {
+    var out = [];
+    (words || []).forEach(function (w) {
+      var t = terms(w);
+      for (var i = 0; i < t.length; i++) if (out.indexOf(t[i]) < 0) out.push(t[i]);
+    });
+    return out;
+  }
+
   function missing() { return Object.keys(miss); }
   function resetMissing() { miss = {}; }
 
@@ -138,6 +165,7 @@ window.PCAI18N = (function () {
   return {
     setLang: setLang, lang: getLang, fromUrl: fromUrl, T: T, deep: deep, family: family,
     itemText: itemText, optionText: optionText, scalePoints: scalePoints,
+    terms: terms, expand: expand,
     missing: missing, resetMissing: resetMissing
   };
 })();

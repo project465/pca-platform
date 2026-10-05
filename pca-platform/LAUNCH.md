@@ -92,7 +92,7 @@ PORTONE_WEBHOOK_SECRET=...
 | 배포 | **코드는 됐다** | `docker compose up -d` 한 줄. `docs/metri/23_operations.md` |
 | 밤 당번 | **됐다** | `tick` 컨테이너가 5분마다 `/api/ops/tick` 을 두드린다 |
 | 아침 브리핑 | **됐다** | `npm run metri:ops`: 막힌 것과 사람이 할 일이 한 장 |
-| 도메인 | **이름 확정, 미구매** | `careermetri.co.kr`(한국 소개) · `careermetri.com`(글로벌) · `app.careermetri.com`(플랫폼). DNS 는 조용하지만 등록 여부는 대행자에서 확인하고 산다 |
+| 도메인 | **이름 확정, 미구매** | `careermatri.co.kr`(한국 소개) · `careermatri.com`(글로벌) · `app.careermatri.com`(플랫폼). DNS 는 조용하지만 등록 여부는 대행자에서 확인하고 산다 |
 | HTTPS | 필수 | 쿠키가 세션이므로 없으면 안 된다 |
 | `AUTH_SECRET` | 필수 | `openssl rand -base64 32`. 개발용 값을 그대로 쓰지 말 것 |
 | 웹훅 주소 | 필수 | PortOne 콘솔에 `https://.../api/payments/webhook` 등록 |
