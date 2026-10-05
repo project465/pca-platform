@@ -29,12 +29,20 @@ export type TierValue = {
   gets: Pair[];
   /** 누구에게 맞는가 */
   who: Pair;
+  /**
+   * **언제 이 등급을 고르는가.** 알약 한 줄로 카드 머리에 붙는다.
+   *
+   * '권해 드리는 등급' 한 마디만 붙여 두었더니 왜 권하는지가 안 보였고,
+   * 그러면 위 등급이 '줄이 더 많은 상품' 으로 읽힌다. 세 등급이 서로
+   * **다른 처지**를 맡고 있다는 것을 여기서 적는다.
+   */
+  when: Pair;
 };
 
 export const TIER_VALUE: Record<Tier, TierValue> = {
   BASIC: {
     tier: "BASIC",
-    headline: p("먼저 볼 방향", "A direction to look first"),
+    headline: p("어디부터 볼지 정하기", "Find where to start"),
     gets: [
       p("먼저 살펴볼 직무 묶음", "The role group to look at first"),
       p("그 묶음이 나온 근거 다섯 갈래", "The five readings behind it"),
@@ -45,10 +53,11 @@ export const TIER_VALUE: Record<Tier, TierValue> = {
       "전공은 정했고 어느 직무로 갈지 아직 못 정하신 분",
       "You have your major and have not settled on a role yet",
     ),
+    when: p("아직 후보가 없다면", "No candidates yet"),
   },
   STANDARD: {
     tier: "STANDARD",
-    headline: p("직무를 견주는 깊이", "Depth to compare roles"),
+    headline: p("견주고 고르기", "Compare and decide"),
     gets: [
       p("BASIC 에 있는 것 전부", "Everything in BASIC"),
       p("직무 둘 이상을 나란히 견주는 표", "A table comparing two or more roles side by side"),
@@ -60,10 +69,11 @@ export const TIER_VALUE: Record<Tier, TierValue> = {
       "후보가 둘셋 있고 그 가운데서 고르셔야 하는 분",
       "You have two or three candidates and need to choose between them",
     ),
+    when: p("후보를 좁혀야 한다면", "You need to choose between roles"),
   },
   PRO: {
     tier: "PRO",
-    headline: p("증거 구조와 실행 전략", "Evidence architecture and a strategy"),
+    headline: p("증거 전략과 실행 계획", "Build an evidence strategy and an action plan"),
     gets: [
       p("STANDARD 에 있는 것 전부", "Everything in STANDARD"),
       p("직무 하나를 끝까지 파고드는 쪽", "One role worked through end to end"),
@@ -77,6 +87,7 @@ export const TIER_VALUE: Record<Tier, TierValue> = {
       "방향은 정하셨고 증거를 쌓는 순서를 짜셔야 하는 분",
       "You know the direction and need an order for building evidence",
     ),
+    when: p("방향은 이미 정해졌다면", "The direction is already set"),
   },
 };
 
@@ -90,6 +101,7 @@ export function valueOf(tier: Tier, lang: "ko" | "en") {
     headline: v.headline[lang],
     gets: v.gets.map((g) => g[lang]),
     who: v.who[lang],
+    when: v.when[lang],
   };
 }
 

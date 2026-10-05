@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { isLang, LANG_COOKIE } from "@/lib/locale";
+import { isMarket, MARKET_COOKIE } from "@/lib/market-def";
 
 /**
  * 로그인 전 방문을 세는 열쇠.
@@ -23,13 +24,27 @@ export const ANON_COOKIE = "cm_a";
  */
 export function middleware(req: NextRequest) {
   const lang = req.nextUrl.searchParams.get("lang");
+  const market = req.nextUrl.searchParams.get("market");
   const needLang = isLang(lang ?? undefined);
+  /* **고른 시장을 굳힌다.** 가격표에서 한국을 골랐는데 결제 화면이 다시
+     기본값으로 돌아가면 손님이 본 값과 주문서의 값이 갈린다. 언어 쿠키와
+     같은 자리에서 심는 것은 서버 컴포넌트가 렌더 중에 쿠키를 못 쓰기
+     때문이다 */
+  const needMarket = isMarket(market ?? undefined)
+    && req.cookies.get(MARKET_COOKIE)?.value !== market;
   const needAnon = !req.cookies.get(ANON_COOKIE);
-  if (!needLang && !needAnon) return NextResponse.next();
+  if (!needLang && !needMarket && !needAnon) return NextResponse.next();
 
   const res = NextResponse.next();
   if (needLang) {
     res.cookies.set(LANG_COOKIE, lang as string, {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 365,
+      sameSite: "lax",
+    });
+  }
+  if (needMarket) {
+    res.cookies.set(MARKET_COOKIE, market as string, {
       path: "/",
       maxAge: 60 * 60 * 24 * 365,
       sameSite: "lax",

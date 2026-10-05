@@ -12,6 +12,16 @@ import { mailReady } from "./outbox";
  * 화면(`/admin/ops`)과 터미널(`npm run metri:ops`)이 같은 것을 본다.
  * 두 곳에서 따로 세면 숫자가 갈리고, 갈리는 순간 둘 다 못 믿는다.
  */
+/**
+ * 시연 자료가 아닌 줄만.
+ *
+ * 시드와 검사 스크립트가 만든 사람에게는 `users.is_demo` 가 붙는다
+ * (들어올 때 트리거가 한 번 본다). **아침 브리핑과 운영 지표는 전부
+ * 이것을 거친다**: 가짜 48명 뒤에 진짜 첫 손님이 숨으면 안 된다.
+ */
+const REAL = (col: string) =>
+  `WHERE NOT EXISTS (SELECT 1 FROM users du WHERE du.id = ${col} AND du.is_demo)`;
+
 export type Briefing = Awaited<ReturnType<typeof briefing>>;
 
 export async function briefing(days = 1) {
@@ -36,18 +46,24 @@ export async function briefing(days = 1) {
     `SELECT status, count(*)::int AS n FROM outbox GROUP BY status ORDER BY status`,
   );
 
+  /* **시연 자료를 아침 브리핑에 섞지 않는다.** 시드가 만든 48명이
+     어제 들어온 사람으로 적히면, 진짜 첫 손님이 온 날 아무도 못 알아본다
+     (`users.is_demo`, `db/schema_phase2_4.sql`) */
   const people = await queryOne<{ signups: number; started: number; scored: number }>(
     `SELECT (SELECT count(*)::int FROM users
-              WHERE created_at >= ${since} AND status = 'active') AS signups,
-            (SELECT count(*)::int FROM attempts WHERE started_at >= ${since}) AS started,
-            (SELECT count(*)::int FROM attempts WHERE scored_at >= ${since}) AS scored`,
+              WHERE created_at >= ${since} AND status = 'active' AND NOT is_demo) AS signups,
+            (SELECT count(*)::int FROM attempts a ${REAL("a.user_id")}
+              AND a.started_at >= ${since}) AS started,
+            (SELECT count(*)::int FROM attempts a ${REAL("a.user_id")}
+              AND a.scored_at >= ${since}) AS scored`,
   );
 
   // 0원 주문은 매출이 아니다. 같은 표에 섞으면 건수가 부풀어 전환율이
   // 실제보다 좋아 보인다.
   const sales = await query<{ product: string; n: number; sum: number }>(
     `SELECT product_code AS product, count(*)::int AS n, coalesce(sum(amount),0)::int AS sum
-       FROM orders WHERE status = 'paid' AND paid_at >= ${since} AND amount > 0
+       FROM orders o ${REAL("o.user_id")}
+        AND o.status = 'paid' AND o.paid_at >= ${since} AND o.amount > 0
       GROUP BY product_code ORDER BY sum DESC`,
   );
   const codesUsed = (await queryOne<{ n: number }>(
@@ -55,7 +71,7 @@ export async function briefing(days = 1) {
 
   const funnel = await queryOne<{ free: number; upgraded: number }>(
     `SELECT (SELECT count(*)::int FROM orders o JOIN products p ON p.code = o.product_code
-              WHERE o.created_at >= ${since} AND p.amount = 0) AS free,
+              ${REAL("o.user_id")} AND o.created_at >= ${since} AND p.amount = 0) AS free,
             (SELECT count(*)::int FROM report_grants WHERE granted_at >= ${since}) AS upgraded`,
   );
 
@@ -69,9 +85,10 @@ export async function briefing(days = 1) {
   const stale = await query<{ orderNo: string; product: string; amount: number; age: string }>(
     `SELECT order_no AS "orderNo", product_code AS product, amount,
             to_char(now() - created_at, 'DD"일 "HH24"시간"') AS age
-       FROM orders
-      WHERE status = 'pending' AND amount > 0 AND created_at < now() - interval '1 hour'
-      ORDER BY created_at LIMIT 20`,
+       FROM orders o ${REAL("o.user_id")}
+        AND o.status = 'pending' AND o.amount > 0
+        AND o.created_at < now() - interval '1 hour'
+      ORDER BY o.created_at LIMIT 20`,
   );
 
   /**
@@ -82,7 +99,8 @@ export async function briefing(days = 1) {
   const orphan = await query<{ orderNo: string; product: string; amount: number }>(
     `SELECT o.order_no AS "orderNo", o.product_code AS product, o.amount
        FROM orders o JOIN products p ON p.code = o.product_code
-      WHERE o.status = 'paid'
+      ${REAL("o.user_id")}
+        AND o.status = 'paid'
         AND NOT EXISTS (SELECT 1 FROM seats s WHERE s.order_id = o.id)
         AND NOT EXISTS (SELECT 1 FROM report_grants g WHERE g.order_id = o.id)
         AND NOT EXISTS (SELECT 1 FROM entitlements e WHERE e.order_id = o.id)

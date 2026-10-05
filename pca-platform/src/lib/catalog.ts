@@ -9,8 +9,12 @@
  * 바뀌어도 그 주문의 진실은 그때 적은 값이다.
  */
 import { query, queryOne } from "@/lib/db";
+/* 시장 이름은 **미들웨어도 보는 값**이라 import 없는 파일에 둔다 */
+import { isMarket, type Market } from "@/lib/market-def";
 
-export type Market = "KR" | "GLOBAL";
+export { isMarket };
+export type { Market };
+
 export type Tier = "BASIC" | "STANDARD" | "PRO";
 
 /** DB 의 `products.price_status`. 값이 정해졌는가만 말한다 */
@@ -57,10 +61,6 @@ export function priceState(p: {
      상태가 비어 있으면 승인된 무료로 보지 않고 미승인으로 본다 */
   if (p.price_status == null && p.amount <= 0) return "PRICE_NOT_APPROVED";
   return p.amount > 0 ? "PAID_APPROVED" : "FREE_APPROVED";
-}
-
-export function isMarket(v: string | undefined | null): v is Market {
-  return v === "KR" || v === "GLOBAL";
 }
 
 /** 이 시장에서 지금 파는 것. 등급 순서로 돌려준다. */

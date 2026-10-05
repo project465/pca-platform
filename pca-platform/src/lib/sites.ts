@@ -48,9 +48,30 @@ export async function siteById(siteId: string): Promise<SiteConfig | null> {
   return rows[0] ?? null;
 }
 
+/** 호스트 글자를 견주는 꼴로 다듬는다. `www.` 와 포트를 뗀다 */
+export function hostKey(host: string | null): string {
+  return (host ?? "").toLowerCase().replace(/^www\./, "").split(":")[0];
+}
+
+/**
+ * 이 호스트가 **실제로 어느 사이트인가.** 못 찾으면 `null` 이다.
+ *
+ * `siteByHost` 와 나눠 둔 까닭이 있다. 저쪽은 못 찾으면 global 로
+ * 돌려주는데, 그 값이 시장을 정하는 데 쓰이면 **모르는 호스트가 조용히
+ * 글로벌 시장이 된다.** 플랫폼은 전 세계 하나라(설계 원칙 5)
+ * `app.careermatri.com` 은 어느 시장도 아니고, 거기서 시장은 손님이
+ * 고르거나 소개 사이트가 들고 온다.
+ */
+export async function siteForHostExact(host: string | null): Promise<SiteConfig | null> {
+  const h = hostKey(host);
+  if (!h) return null;
+  const sites = await listSites().catch(() => [] as SiteConfig[]);
+  return sites.find((s) => s.domain.toLowerCase() === h) ?? null;
+}
+
 /** 들어온 호스트로 사이트를 고른다. 못 찾으면 global 로 둔다. */
 export async function siteByHost(host: string | null): Promise<SiteConfig | null> {
-  const h = (host ?? "").toLowerCase().replace(/^www\./, "").split(":")[0];
+  const h = hostKey(host);
   const sites = await listSites();
   return sites.find((s) => s.domain.toLowerCase() === h) ?? sites.find((s) => s.site_id === "global") ?? null;
 }

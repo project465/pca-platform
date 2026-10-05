@@ -3,6 +3,7 @@ import { requireRole } from "@/lib/session";
 import AdminShell from "@/components/admin-shell";
 import { launchReport, type Status } from "@/lib/launch";
 import { Pill } from "@/components/sf/parts";
+import { PageHead, Section } from "@/components/sf/shell";
 
 export const metadata = { title: "런칭 준비 · 단체 PCA 플랫폼" };
 export const dynamic = "force-dynamic";
@@ -28,13 +29,17 @@ export default async function LaunchPage() {
 
   return (
     <AdminShell user={user} current="/admin/launch">
-      <h1>런칭 준비</h1>
-      <p className="sub">
-        터미널의 <code>npm run launch:check</code> 와 같은 값을 읽습니다.
-        {" "}{r.checkedAt} 기준이고, 여는 것만으로 아무것도 바꾸지 않습니다.
-      </p>
+      <PageHead
+        eyebrow="런칭 준비"
+        title="켜기 전에 남은 일"
+        sub={`터미널의 launch:check 와 같은 값을 읽습니다. ${r.checkedAt} 기준이고, 여는 것만으로 아무것도 바꾸지 않습니다.`}
+      />
 
-      {/* 갈래 묶음을 맨 위에 둔다. **누가 고칠지가 갈래로 갈린다** */}
+      {/* **여기서 끝낼 수 있는 일을 맨 위에 둔다.** 막혔다고 적어 두고
+          끝내면 운영자가 어디로 가야 하는지를 매번 다시 찾는다 */}
+      <TodoCard rows={r.markets.flatMap((m) => m.rows)} />
+
+      {/* 갈래 묶음. **누가 고칠지가 갈래로 갈린다** */}
       <section className="panel" style={{ marginBottom: 20 }}>
         <h2>갈래별</h2>
         <div className="sf-tw">
@@ -83,7 +88,7 @@ export default async function LaunchPage() {
                     <th>갈래</th>
                     <th>상태</th>
                     <th>무엇이 남았는가</th>
-                    <th>누가 정하는가</th>
+                    <th>다음 걸음</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -93,9 +98,17 @@ export default async function LaunchPage() {
                       <td className="sf-meta">{x.area}</td>
                       <td><Pill tone={TONE[x.status]}>{x.status}</Pill></td>
                       <td>{x.detail}</td>
-                      {/* **'개발' 이 아니다.** 우리가 끝낼 수 있는 것은 이
-                          칸이 비고, 그러면 그것은 우리 일이다 */}
-                      <td>{x.who ?? ""}</td>
+                      {/* **여기서 끝낼 수 있으면 그 자리로 보낸다.** 밖에서
+                          해야 하는 일에는 단추를 달지 않고 누가 하는지만
+                          적는다: 결제 대행사 가입을 화면이 해결하는 척하면
+                          눌러 본 사람이 그 다음에 할 일을 모른다 */}
+                      <td>
+                        {x.action
+                          ? <Link href={x.action.href} className="sf-btn ghost sm">
+                              {x.action.label}
+                            </Link>
+                          : <span className="sf-meta">{x.who ?? ""}</span>}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -120,5 +133,59 @@ export default async function LaunchPage() {
         </p>
       </section>
     </AdminShell>
+  );
+}
+
+/**
+ * 지금 우리가 끝낼 수 있는 일.
+ *
+ * **밖에서 해야 하는 것과 섞지 않는다.** 섞어 두면 '열한 가지가 막혀
+ * 있다' 가 되고, 읽은 사람은 무엇부터 할지 모른다.
+ */
+function TodoCard({ rows }: { rows: { key: string; label: string; detail: string; status: Status; who: string | null; action: { href: string; label: string } | null }[] }) {
+  const seen = new Set<string>();
+  const inside = rows.filter((x) => {
+    if (!x.action || x.status === "READY") return false;
+    const k = x.action.href + x.label;
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
+  const outside = new Map<string, number>();
+  for (const x of rows) {
+    if (x.status === "READY" || x.action) continue;
+    const who = x.who ?? "밖에서 정해집니다";
+    outside.set(who, (outside.get(who) ?? 0) + 1);
+  }
+
+  return (
+    <div className="sf-card is-lift" style={{ marginBottom: 20 }}>
+      <h2 className="sf-h3">여기서 끝낼 수 있는 일</h2>
+      {inside.length ? (
+        <ul className="actlist">
+          {inside.map((x) => (
+            <li key={x.action!.href + x.label}>
+              <span>
+                <b>{x.label}</b>
+                <em>{x.detail}</em>
+              </span>
+              <Link href={x.action!.href} className="sf-btn ghost sm">{x.action!.label}</Link>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="sf-meta" style={{ marginTop: 8 }}>
+          운영 화면에서 끝낼 수 있는 일은 지금 없습니다.
+        </p>
+      )}
+
+      {outside.size ? (
+        <p className="sf-meta" style={{ marginTop: 14 }}>
+          밖에서 끝나는 일{" "}
+          {[...outside].map(([who, n]) => `${who} ${n}가지`).join(" · ")}.
+          {" "}이 자리에서는 못 끝내므로 단추를 달지 않았습니다.
+        </p>
+      ) : null}
+    </div>
   );
 }

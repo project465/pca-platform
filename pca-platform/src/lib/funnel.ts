@@ -120,9 +120,13 @@ export type FunnelReport = {
 export async function funnelReport(days = 30): Promise<FunnelReport> {
   const rows = await query<{ name: string; people: number }>(
     `SELECT name, count(DISTINCT coalesce(user_id::text, anon_id))::int AS people
-       FROM analytics_events
-      WHERE created_at > now() - ($1 || ' days')::interval
-        AND name = ANY($2::text[])
+       FROM analytics_events e
+      WHERE e.created_at > now() - ($1 || ' days')::interval
+        AND e.name = ANY($2::text[])
+        -- **시연 자료를 전환율에 섞지 않는다.** 로그인 전 방문은 누구인지
+        -- 모르므로 그대로 세고, 사람이 붙은 줄만 거른다
+        AND NOT EXISTS (
+          SELECT 1 FROM users du WHERE du.id = e.user_id AND du.is_demo)
       GROUP BY name`,
     [String(days), FUNNEL_STEPS as unknown as string[]],
   ).catch(() => []);

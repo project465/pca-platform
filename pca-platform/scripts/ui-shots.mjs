@@ -74,14 +74,15 @@ const SHOTS = [
   /* 사업자 표시. **사업자가 직접 넣는 자리다** */
   ["admin", "/admin/business", "30_admin_business", ["w1440"]],
 
-  /* 사는 쪽 화면. 로그인하지 않고 찍는다 */
-  ["guest", "/product", "26_product", ["w1440", "mobile"]],
-  ["guest", "/product?lang=en", "27_product_en", ["w1440"]],
+  /* 사는 쪽 화면. 로그인하지 않고 찍는다.
+     **시장을 주소로 못 박는다**: 쿠키가 남아 있으면 지난번에 고른 시장이
+     따라오고, 그러면 캡처마다 값이 달라진다 */
+  ["guest", "/product?market=KR", "26_product", ["w1440", "mobile"]],
+  ["guest", "/product?market=GLOBAL&lang=en", "27_product_en", ["w1440", "mobile"]],
   ["guest", "/sample", "28_sample", ["w1440"]],
-  ["guest", "/pricing", "29_pricing", ["w1440", "mobile"]],
-  /* 한국 시장. **먼저 켜는 시장이다**(규격 §1). 호스트가 127.0.0.1 이라
-     기본이 글로벌로 잡히므로 여기서는 주소로 고른다 */
-  ["guest", "/pricing?market=KR", "31_pricing_kr", ["w1440"]],
+  ["guest", "/pricing?market=GLOBAL&lang=en", "29_pricing", ["w1440", "mobile"]],
+  /* 한국 시장. **먼저 켜는 시장이다**(규격 §1) */
+  ["guest", "/pricing?market=KR", "31_pricing_kr", ["w1440", "mobile"]],
 ];
 
 /* `--only=readiness,localization` 로 몇 장만 찍는다. 스무 장을 한

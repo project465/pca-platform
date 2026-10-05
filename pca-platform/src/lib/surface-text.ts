@@ -253,7 +253,6 @@ export const TX = {
   pxTrust1: p("결제하면 바로 시작합니다", "Start the moment you pay"),
   pxTrust2: p("첫 문항 전에는 전액 환불", "Full refund before the first question"),
   pxTrust3: p("웹 결과지와 A4 PDF", "Web report and an A4 PDF"),
-  pxPick: p("권해 드리는 등급", "Our recommendation"),
   pxFor: p("이런 분께", "Who it is for"),
   pxIncluded: p("포함되는 것", "What is included"),
   pxCommon: p("세 등급에 모두 들어 있는 것", "In all three tiers"),
@@ -277,11 +276,27 @@ export const TX = {
     "중간에 닫으셔도 답한 곳에서 이어집니다.",
     "Close it midway and you resume where you stopped.",
   ),
-  pxAsk: p("사기 전에 많이 묻는 것", "Asked before buying"),
+  pxAsk: p("사기 전에 묻는 것", "Before you buy"),
   pxAsk1: p("언제부터 응시할 수 있나요", "When can I start?"),
   pxAsk2: p("마음에 안 들면 환불되나요", "Can I get a refund?"),
   pxAsk3: p("검증된 검사인가요", "Is this a validated instrument?"),
   pxMore: p("상품 설명 보기", "Read the full description"),
+
+  /* ── 제품의 사고 순서 ─────────────────────────────────────────
+     CareerMatri 가 무엇을 하는 물건인지 **한 줄로 보여 주는 자리**다.
+     가격표와 상품 쪽과 개인 첫 화면이 같은 다섯 걸음을 쓴다: 쪽마다 다른
+     그림을 그리면 읽는 사람이 매번 새로 배운다 */
+  flowTitle: p("CareerMatri 가 읽는 순서", "How CareerMatri reads it"),
+  flow1: p("전공·학업", "Academic background"),
+  flow1b: p("무엇을 배우셨는가", "What you studied"),
+  flow2: p("경험", "Experience"),
+  flow2b: p("무엇을 해보셨는가", "What you have done"),
+  flow3: p("직무 후보", "Career paths"),
+  flow3b: p("어디로 갈 수 있는가", "Where it can take you"),
+  flow4: p("부족한 Evidence", "Evidence gap"),
+  flow4b: p("무엇이 비어 있는가", "What is still missing"),
+  flow5: p("다음 행동", "Next action"),
+  flow5b: p("지금 무엇을 하는가", "What to do next"),
 
   /* ── 경험 ─────────────────────────────────────────────────────── */
   evTitle: p("겪으신 것을 적어 주십시오.", "Tell us what you have done."),

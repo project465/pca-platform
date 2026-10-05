@@ -63,6 +63,15 @@ export type LaunchRow = {
   detail: string;
   /** 우리가 못 끝내는 것이면 누가 정하는가. 끝낼 수 있으면 null */
   who: string | null;
+  /**
+   * **운영 화면 안에서 끝낼 수 있는 일이면 그 자리로 보낸다.**
+   *
+   * 막혔다고 적어 두고 끝내면 운영자가 어디로 가야 하는지를 매번 다시
+   * 찾는다. 다만 **밖에서 해야 하는 일에는 단추를 달지 않는다**: 결제
+   * 대행사 가입과 도메인 구매를 화면 안에서 해결하는 척하면, 눌러 본
+   * 사람이 그 다음에 무엇을 할지 모른 채 돌아온다.
+   */
+  action: { href: string; label: string } | null;
 };
 
 export type MarketLaunch = {
@@ -93,10 +102,30 @@ export type LaunchReport = {
 const worst = (xs: Status[]): Status =>
   xs.includes("BLOCKED") ? "BLOCKED" : xs.includes("WARNING") ? "WARNING" : "READY";
 
+/**
+ * 갈래마다 **운영 화면 안에 고치는 자리가 있는가.**
+ *
+ * 여기 없는 갈래는 코드 밖에서 끝난다(결제 대행사 심사 · 도메인 구매 ·
+ * 운영 DB 이전 · 메일 자격증명). 그런 줄에는 단추가 붙지 않는다.
+ */
+const INSIDE: Partial<Record<Area, { href: string; label: string }>> = {
+  LEGAL: { href: "/admin/business", label: "사업자 표시 넣기" },
+  BUSINESS_INFO: { href: "/admin/business", label: "사업자 표시 넣기" },
+  SUPPORT: { href: "/admin/business", label: "지원 메일 넣기" },
+  LOCALIZATION: { href: "/admin/localization", label: "덮인 자리 보기" },
+  REPORT: { href: "/admin/incidents", label: "막힌 것 보기" },
+  PDF: { href: "/admin/incidents", label: "막힌 것 보기" },
+};
+
 const row = (
   key: string, area: Area, label: string, status: Status, detail: string,
   who: string | null = null,
-): LaunchRow => ({ key, area, label, status, detail, who });
+): LaunchRow => ({
+  key, area, label, status, detail, who,
+  /* **끝난 줄에는 단추를 달지 않는다.** READY 인데 '고치러 가기' 가
+     붙어 있으면 아직 할 일이 남은 것처럼 읽힌다 */
+  action: status === "READY" ? null : (INSIDE[area] ?? null),
+});
 
 /**
  * 복구 시험을 한 날.

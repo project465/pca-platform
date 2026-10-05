@@ -24,13 +24,16 @@ export const metadata = { title: `한눈에 · ${BRAND.admin}` };
  */
 export default async function AdminOverview({
   searchParams,
-}: { searchParams: Promise<{ lang?: string; p?: string }> }) {
+}: { searchParams: Promise<{ lang?: string; p?: string; demo?: string }> }) {
   const user = await requireRole(["superadmin"]);
   const sp = await searchParams;
   const L = toLang2(await resolveLang(sp.lang));
   const T = txer(L);
   const period: Period = isPeriod(sp.p) ? sp.p : "30d";
-  const ov = await adminOverview(period);
+  /* **시연 자료는 기본으로 빠진다.** 시드가 만든 48명이 지표에 섞여
+     있으면 진짜 첫 손님이 온 날 아무도 못 알아본다. 눌러 볼 때만 섞는다 */
+  const demo = sp.demo === "1";
+  const ov = await adminOverview(period, demo);
 
   const money = (v: number, cur: string) =>
     `${v.toLocaleString()} ${cur}`;
@@ -49,13 +52,22 @@ export default async function AdminOverview({
       <PageHead
         eyebrow={BRAND.admin}
         title={T("navOverview")}
-        sub="개인 · 기관 · 제품 · 시장 네 묶음입니다. 기간을 바꾸면 전부 같이 바뀝니다."
+        sub={demo
+          ? "시드와 검사가 만든 줄까지 섞어서 봅니다. 이 숫자는 손님이 아닙니다."
+          : "개인 · 기관 · 제품 · 시장 네 묶음입니다. 시드와 검사가 만든 줄은 빠져 있습니다."}
         actions={
-          <div className="sf-seg">
-            {periods.map(([k, label]) => (
-              <Link key={k} href={`/admin?p=${k}`} aria-current={k === period}>{label}</Link>
-            ))}
-          </div>
+          <>
+            <div className="sf-seg">
+              {periods.map(([k, label]) => (
+                <Link key={k} href={`/admin?p=${k}${demo ? "&demo=1" : ""}`}
+                  aria-current={k === period}>{label}</Link>
+              ))}
+            </div>
+            <div className="sf-seg">
+              <Link href={`/admin?p=${period}`} aria-current={!demo}>실제</Link>
+              <Link href={`/admin?p=${period}&demo=1`} aria-current={demo}>시연 포함</Link>
+            </div>
+          </>
         }
       />
 

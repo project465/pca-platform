@@ -3,6 +3,7 @@ import { currentUser } from "@/lib/session";
 import { resolveLang } from "@/lib/locale-server";
 import { toLang2, BRAND } from "@/lib/surface-text";
 import { PRODUCT } from "@/lib/product-copy";
+import CareerFlow from "@/components/sf/career-flow";
 import { TIERS, valueOf } from "@/lib/tiers";
 import { catalogFor, priceState, sellable } from "@/lib/catalog";
 import { money, resolveMarket } from "@/lib/market";
@@ -43,7 +44,9 @@ export default async function ProductPage({
   const license = await jobInfoLicense();
   const sup = supportConfig();
   const P = PRODUCT;
-  const q = sp.lang ? `?lang=${sp.lang}` : "";
+  /* **링크가 시장을 떨어뜨리지 않게 들고 다닌다.** 쿠키가 있어도 주소에
+     적어 두면, 누가 그 주소를 그대로 복사해 보내도 같은 값이 보인다 */
+  const q = `?market=${mk.market}${sp.lang ? `&lang=${sp.lang}` : ""}`;
 
   await step("landing", {
     userId: user?.id ?? null,
@@ -87,6 +90,9 @@ export default async function ProductPage({
             <Link href={`/sample${q}`} className="sf-btn ghost big">{P.sample.cta[L]}</Link>
           </div>
         </div>
+
+        {/* 제품의 사고 순서. **가격표와 같은 한 벌을 쓴다** */}
+        <CareerFlow lang={L} />
 
         {/* 2. 겪고 있는 것 */}
         <section className="pdsec">

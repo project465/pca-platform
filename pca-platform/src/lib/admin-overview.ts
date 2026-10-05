@@ -91,30 +91,52 @@ function rate(part: number, whole: number): number | null {
   return whole > 0 ? Math.round((part / whole) * 100) : null;
 }
 
-export async function adminOverview(period: Period = "30d"): Promise<AdminOverview> {
+/**
+ * 시연 자료를 지표에서 뺀다.
+ *
+ * **첫 손님이 들어온 날 그 한 사람이 48명 뒤에 숨으면 안 된다.** 시드와
+ * 검사 스크립트가 만든 줄에는 `users.is_demo` 가 붙고(트리거가 들어올 때
+ * 한 번 본다), 여기서 전부 거른다.
+ *
+ * **지우지 않고 거른다**: 시연 자료는 화면을 눌러 보는 데 계속 쓰이고,
+ * 지우면 `db:demo` 를 다시 돌려야 한다. `?demo=1` 로 열면 섞어서 보여
+ * 주는데, 그때는 화면이 그 사실을 적는다.
+ */
+const NOT_DEMO = (alias: string) =>
+  `NOT EXISTS (SELECT 1 FROM users du WHERE du.id = ${alias} AND du.is_demo)`;
+
+export async function adminOverview(
+  period: Period = "30d",
+  /** 시연 자료까지 섞어서 본다. **기본은 끈다** */
+  withDemo = false,
+): Promise<AdminOverview> {
   const iv = since(period);
+  /* 시연 자료를 빼는 조건. 섞어 보기로 했으면 늘 참이다 */
+  const nd = (alias: string) => (withDemo ? "TRUE" : NOT_DEMO(alias));
   /* 기간 조건을 문자열로 붙이지만 값은 고른 네 가지뿐이라 밖에서 들어온
      글자가 그대로 들어가지 않는다(`isPeriod` 가 먼저 막는다) */
   const w = (col: string) => (iv ? `AND ${col} >= now() - interval '${iv}'` : "");
-  const wh = (col: string) => (iv ? `WHERE ${col} >= now() - interval '${iv}'` : "");
 
   /* ── 개인 ─────────────────────────────────────────────────────── */
   const signups = await queryOne<{ n: string }>(
     `SELECT count(*)::text AS n FROM users u
       WHERE NOT EXISTS (SELECT 1 FROM memberships m WHERE m.user_id = u.id)
+        AND ${withDemo ? "TRUE" : "NOT u.is_demo"}
         ${w("u.created_at")}`,
   ).catch(() => null);
 
   const pay = await queryOne<{ n: string; amount: string; currency: string | null }>(
     `SELECT count(*)::text AS n, COALESCE(sum(amount), 0)::text AS amount,
             min(currency) AS currency
-       FROM orders WHERE status = 'paid' ${w("paid_at")}`,
+       FROM orders o WHERE o.status = 'paid'
+        AND ${nd("o.user_id")} ${w("o.paid_at")}`,
   ).catch(() => null);
 
   const att = await query<{ k: string; n: string }>(
     `SELECT CASE WHEN a.submitted_at IS NOT NULL THEN 'completed' ELSE 'started' END AS k,
             count(*)::text AS n
-       FROM attempts a ${wh("a.started_at")}
+       FROM attempts a
+      WHERE ${nd("a.user_id")} ${w("a.started_at")}
       GROUP BY 1`,
   ).catch(() => []);
   const byAtt = Object.fromEntries(att.map((r) => [r.k, n(r.n)]));
@@ -130,14 +152,19 @@ export async function adminOverview(period: Period = "30d"): Promise<AdminOvervi
             count(s.id)::text AS seats,
             count(s.id) FILTER (WHERE s.status IN ('started', 'completed'))::text AS used,
             count(s.id) FILTER (WHERE s.status = 'completed')::text AS done
-       FROM contracts c LEFT JOIN seats s ON s.contract_id = c.id
-      WHERE c.status = 'active'`,
+       FROM contracts c
+       JOIN organizations og ON og.id = c.org_id
+       LEFT JOIN seats s ON s.contract_id = c.id
+      WHERE c.status = 'active'
+        AND ${withDemo ? "TRUE" : "NOT og.is_demo"}`,
   ).catch(() => null);
 
   /* ── 제품 ─────────────────────────────────────────────────────── */
   const tiers = await query<{ label: string; n: string }>(
-    `SELECT report_level AS label, count(*)::text AS n
-       FROM report_snapshots ${wh("generated_at")}
+    `SELECT rs.report_level AS label, count(*)::text AS n
+       FROM report_snapshots rs
+       JOIN attempts a ON a.id = rs.attempt_id
+      WHERE ${nd("a.user_id")} ${w("rs.generated_at")}
       GROUP BY 1 ORDER BY count(*) DESC`,
   ).catch(() => []);
 
@@ -147,7 +174,7 @@ export async function adminOverview(period: Period = "30d"): Promise<AdminOvervi
        JOIN test_sessions ts ON ts.id = a.session_id
        JOIN instruments i ON i.id = ts.instrument_id
        LEFT JOIN majors mj ON mj.id = i.major_id
-      ${iv ? `WHERE a.started_at >= now() - interval '${iv}'` : ""}
+      WHERE ${nd("a.user_id")} ${w("a.started_at")}
       GROUP BY 1 ORDER BY count(*) DESC LIMIT 8`,
   ).catch(() => []);
 
@@ -165,6 +192,7 @@ export async function adminOverview(period: Period = "30d"): Promise<AdminOvervi
     `SELECT count(*)::text AS n FROM attempts a
       WHERE a.submitted_at IS NOT NULL
         AND a.assessment_version = 'ME_V2'
+        AND ${nd("a.user_id")}
         AND NOT EXISTS (SELECT 1 FROM report_snapshots r WHERE r.attempt_id = a.id)
         ${w("a.submitted_at")}`,
   ).catch(() => null);
@@ -175,14 +203,16 @@ export async function adminOverview(period: Period = "30d"): Promise<AdminOvervi
             count(a.id)::text AS n
        FROM site_configs sc
        LEFT JOIN attempts a ON a.site_id = sc.site_id
+         AND ${nd("a.user_id")}
          ${iv ? `AND a.started_at >= now() - interval '${iv}'` : ""}
       GROUP BY sc.site_id, sc.domain, sc.site_region
       ORDER BY sc.site_id`,
   ).catch(() => []);
 
   const targets = await query<{ label: string; n: string }>(
-    `SELECT COALESCE(target_country, '미지정') AS label, count(*)::text AS n
-       FROM attempts ${wh("started_at")}
+    `SELECT COALESCE(a.target_country, '미지정') AS label, count(*)::text AS n
+       FROM attempts a
+      WHERE ${nd("a.user_id")} ${w("a.started_at")}
       GROUP BY 1 ORDER BY count(*) DESC LIMIT 8`,
   ).catch(() => []);
 

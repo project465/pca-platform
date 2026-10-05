@@ -14,6 +14,7 @@ import { step } from "@/lib/funnel-server";
 import { startFreeAction } from "@/app/free-start/actions";
 import { Empty } from "@/components/sf/parts";
 import LangSelect from "@/components/sf/lang-select";
+import CareerFlow from "@/components/sf/career-flow";
 
 export const metadata = { title: `가격 · ${BRAND.root}` };
 
@@ -64,7 +65,8 @@ export default async function PricingPage({
   });
 
   const qs = (m: string) => `/pricing?market=${m}${sp.lang ? `&lang=${sp.lang}` : ""}`;
-  const q = sp.lang ? `?lang=${sp.lang}` : "";
+  /* **링크가 시장을 떨어뜨리지 않게 들고 다닌다** */
+  const q = `?market=${mk.market}${sp.lang ? `&lang=${sp.lang}` : ""}`;
 
   const common: [string, string][] = [
     [T("pxCommon1"), T("pxCommon1b")],
@@ -117,6 +119,9 @@ export default async function PricingPage({
             <li>{T("pxTrust3")}</li>
           </ul>
         </section>
+
+        {/* 제품의 사고 순서. **가격을 보기 전에 무엇을 사는지 보인다** */}
+        <CareerFlow lang={L} tight />
 
         {grants.length ? (
           <div className="sf-section">
@@ -187,7 +192,10 @@ function TierCard({
     <article className={mid ? "pxtier is-mid" : "pxtier"}>
       <header className="pxtier-h">
         <h2>{p.tier}</h2>
-        {mid ? <span className="sf-pill gold">{T("pxPick")}</span> : null}
+        {/* **왜 이 등급인지를 알약에 적는다.** '권해 드리는 등급' 한 마디만
+            붙여 두면 왜 권하는지가 안 보이고, 그러면 위 등급이 '줄이 더
+            많은 상품' 으로 읽힌다. 세 등급은 서로 다른 처지를 맡는다 */}
+        <span className={mid ? "sf-pill gold" : "sf-pill plain"}>{v.when}</span>
       </header>
       <p className="pxwhat">{v.headline}</p>
 
