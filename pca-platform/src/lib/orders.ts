@@ -96,18 +96,28 @@ export async function startCheckout(
   if (!order) throw new Error("주문을 만들지 못했습니다.");
 
   /**
-   * 되돌아오는 주소는 **정규 주소**다.
+   * 되돌아오는 주소.
    *
-   * 대행사가 결제를 끝내고 돌려보내는 자리라, 지금 요청이 들어온
-   * 호스트를 그대로 쓰면 staging 에서 시작한 결제가 staging 으로
-   * 돌아온다. 정규 주소가 없을 때만 지금 호스트로 되돌린다(개발).
+   * **진짜 대행사는 정규 주소로 돌려보낸다.** 결제를 끝내고 돌아오는
+   * 자리라, 지금 요청이 들어온 호스트를 그대로 쓰면 staging 에서 시작한
+   * 결제가 staging 으로 돌아오고 운영 주문이 거기서 확정된다.
+   *
+   * **가짜 결제는 그러면 안 된다.** mock 은 개발과 staging 에서만 쓰는데,
+   * 거기서 누른 사람을 운영 도메인으로 보내면 그 주소에는 지금 아무것도
+   * 없거나 남의 사이트가 떠 있다. 실제로 그랬다: 로컬에서 결제를 누르면
+   * 브라우저가 `https://careermatri.com/checkout/complete` 로 가서 죽었고,
+   * 눌러 본 사람은 결제가 깨진 줄 안다. **가짜로 받을 때는 지금 선
+   * 자리로 돌아온다.**
    */
+  const provider = paymentProvider();
   const { publicBase } = await import("@/lib/urls");
-  const base = (await publicBase(product.market === "GLOBAL" ? "GLOBAL" : "KR")
-    .catch(() => null))
-    ?? origin.replace(/\/$/, "");
+  const here = origin.replace(/\/$/, "");
+  const base = provider.name === "mock"
+    ? here
+    : ((await publicBase(product.market === "GLOBAL" ? "GLOBAL" : "KR")
+        .catch(() => null)) ?? here);
 
-  const ticket = await paymentProvider().createCheckout({
+  const ticket = await provider.createCheckout({
     orderNo,
     orderName: orderName(product.code),
     amount: product.amount,

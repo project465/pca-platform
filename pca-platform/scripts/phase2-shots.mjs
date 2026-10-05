@@ -47,14 +47,22 @@ async function shot(page, name, size = "w1440") {
   const overflow = await page.evaluate(() =>
     document.documentElement.scrollWidth > window.innerWidth + 1);
   /* 붙어 있는 띠를 잠깐 떼고 찍는다. `fullPage` 가 쪽을 굴리면서 찍어서
-     sticky 띠가 굴러간 자리에 한 번 더 그려진다 */
-  await page.addStyleTag({
-    content: ".sf-top, .sf-side, .pubtop, .asnav, .rpnav { position: static !important }" +
+     sticky 띠가 굴러간 자리에 한 번 더 그려진다.
+     **찍고 나서 도로 뗀다.** 이 쪽 하나로 열몇 장을 이어 찍는데, 넣어
+     둔 규칙이 남아 있으면 다음 장의 자리까지 바꾼다: 띠를 static 으로
+     돌린 뒤의 응시 화면이 19px 넓어져서, 제품은 멀쩡한데 검사만 '가로
+     스크롤' 이라고 적는 일이 실제로 있었다 */
+  const tag = await page.addStyleTag({
+    /* **응시 화면의 띠는 건드리지 않는다.** static 으로 돌리면 걸음
+         띠의 가로 스크롤 상자가 폭을 잃어 캡처가 19px 넓어진다: 제품은
+         멀쩡한데 그림만 틀린다 */
+    content: ".sf-top, .sf-side, .pubtop { position: static !important }" +
       /* 개발 서버가 왼쪽 아래에 띄우는 동그라미는 제품이 아니다 */
       " nextjs-portal, [data-nextjs-toast], #__next-build-watcher { display: none !important }",
   });
   await page.waitForTimeout(100);
   await page.screenshot({ path: `${OUT}/${name}__${size}.png`, fullPage: true });
+  await tag.evaluate((el) => el.remove()).catch(() => {});
   log.push(`${`${name} ${size}`.padEnd(46)} ${overflow ? "가로스크롤" : "ok"}`);
   if (overflow) problems.push(`${name} ${size}: 가로 스크롤이 생긴다`);
 }
