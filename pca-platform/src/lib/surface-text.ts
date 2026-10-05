@@ -239,6 +239,50 @@ export const TX = {
   pxHaveGrant: p("이미 사신 검사가 있습니다", "You already have an assessment"),
   pxGoAssessment: p("검사로 가기", "Go to the assessment"),
 
+  /* 가격표를 다시 짜면서 더한 것. **값보다 받는 것이 먼저 읽히게** 한다 */
+  pxLead: p(
+    "전공과 경험을 직무 선택으로 옮깁니다",
+    "Turn your major and experience into a role decision",
+  ),
+  /* 머리글 아래에 **같은 말을 다시 적지 않는다.** 머리글이 무엇을 하는지
+     말했으면 여기서는 무엇을 받는지 적는다 */
+  pxLeadSub: p(
+    "먼저 볼 직무 묶음과 그 근거, 지금 비어 있는 증거, 다음 30일 안에 만들 경험 하나를 한 장에 정리해 드립니다.",
+    "One document: the role group to look at first and why, the evidence you are missing, and the one experience to build in the next 30 days.",
+  ),
+  pxTrust1: p("결제하면 바로 시작합니다", "Start the moment you pay"),
+  pxTrust2: p("첫 문항 전에는 전액 환불", "Full refund before the first question"),
+  pxTrust3: p("웹 결과지와 A4 PDF", "Web report and an A4 PDF"),
+  pxPick: p("권해 드리는 등급", "Our recommendation"),
+  pxFor: p("이런 분께", "Who it is for"),
+  pxIncluded: p("포함되는 것", "What is included"),
+  pxCommon: p("세 등급에 모두 들어 있는 것", "In all three tiers"),
+  pxCommon1: p("웹 결과지와 A4 PDF", "Web report and an A4 PDF"),
+  pxCommon1b: p(
+    "결과지는 로그인하시면 언제든 다시 열립니다.",
+    "The report reopens any time you sign in.",
+  ),
+  pxCommon2: p("한국어와 영어", "Korean and English"),
+  pxCommon2b: p(
+    "같은 엔진이 두 언어로 같은 판정을 냅니다.",
+    "One engine, the same verdicts in both languages.",
+  ),
+  pxCommon3: p("담당자 승인이 필요 없습니다", "No approval step"),
+  pxCommon3b: p(
+    "결제가 끝나면 그 자리에서 응시가 열립니다.",
+    "The assessment opens as soon as payment goes through.",
+  ),
+  pxCommon4: p("20분에서 40분", "20 to 40 minutes"),
+  pxCommon4b: p(
+    "중간에 닫으셔도 답한 곳에서 이어집니다.",
+    "Close it midway and you resume where you stopped.",
+  ),
+  pxAsk: p("사기 전에 많이 묻는 것", "Asked before buying"),
+  pxAsk1: p("언제부터 응시할 수 있나요", "When can I start?"),
+  pxAsk2: p("마음에 안 들면 환불되나요", "Can I get a refund?"),
+  pxAsk3: p("검증된 검사인가요", "Is this a validated instrument?"),
+  pxMore: p("상품 설명 보기", "Read the full description"),
+
   /* ── 경험 ─────────────────────────────────────────────────────── */
   evTitle: p("겪으신 것을 적어 주십시오.", "Tell us what you have done."),
   evBody: p(

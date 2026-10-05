@@ -7,7 +7,9 @@ import { resolveLang } from "@/lib/locale-server";
 import LangSwitch from "@/components/lang-switch";
 import SignupForm from "./signup-form";
 import { activeDocs } from "@/lib/consent";
-import { toLang2, txer } from "@/lib/surface-text";
+import { BRAND, toLang2, txer } from "@/lib/surface-text";
+import AuthBrand from "@/components/auth-brand";
+import { formatMoney } from "@/lib/money";
 
 export const metadata = { title: "가입하고 시작 · CareerMatri" };
 
@@ -46,7 +48,9 @@ export default async function SignupPage({
 
   return (
     <div className="center-wrap">
-      <div className="panel narrow">
+      <div className="authwrap">
+        <AuthBrand name={BRAND.root} />
+        <div className="panel narrow">
         <div className="panel-top">
           <LangSwitch current={lang} />
         </div>
@@ -55,7 +59,9 @@ export default async function SignupPage({
           {product
             ? t("suLeadPaid", lang, {
                 item: productName(product.code, lang),
-                price: `${product.amount.toLocaleString("ko-KR")} KRW`,
+                /* **통화를 보고 적는다.** `KRW` 를 박아 두면 $14.99 짜리
+                   글로벌 상품이 `1499 KRW` 로 나간다(`src/lib/money.ts`) */
+                price: formatMoney(product.amount, product.currency, L) ?? "",
               })
             : t("suLead", lang)}
         </p>
@@ -66,6 +72,7 @@ export default async function SignupPage({
           <Link href={`/login?next=${encodeURIComponent(safeNext)}`}>{t("signIn", lang)}</Link>
         </p>
         <p className="panel-foot">{t("suFromSchool", lang)}</p>
+        </div>
       </div>
     </div>
   );

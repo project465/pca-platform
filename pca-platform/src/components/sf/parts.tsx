@@ -118,9 +118,15 @@ export function Funnel({
 }
 
 export function Pill({
-  tone, children,
-}: { tone?: "ok" | "part" | "not" | "accent" | "warn"; children: ReactNode }) {
-  return <span className={tone ? `sf-pill ${tone}` : "sf-pill"}>{children}</span>;
+  tone, plain, children,
+}: {
+  tone?: "ok" | "part" | "not" | "accent" | "warn" | "gold";
+  /** 앞의 점을 뗀다. 상태가 아니라 이름표로 쓰는 자리 */
+  plain?: boolean;
+  children: ReactNode;
+}) {
+  const cls = ["sf-pill", tone, plain ? "plain" : null].filter(Boolean).join(" ");
+  return <span className={cls}>{children}</span>;
 }
 
 export function Card({

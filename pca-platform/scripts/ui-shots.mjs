@@ -160,7 +160,7 @@ for (const role of Object.keys(WHO)) {
          화면 가운데에 동그라미가 떠 있는 그림이 나온다. 화면은 멀쩡하고
          그림만 틀리는 것이라, 찍을 때만 뗀다 */
       await p.addStyleTag({
-        content: ".sf-top, .sf-side, .sf-rpnav { position: static !important }",
+        content: ".sf-top, .sf-side, .pubtop, .sf-rpnav, .sfm-save { position: static !important }",
       });
       await p.waitForTimeout(120);
       await p.screenshot({ path: file, fullPage: true });

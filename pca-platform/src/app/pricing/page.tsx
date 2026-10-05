@@ -35,6 +35,11 @@ export const metadata = { title: `가격 · ${BRAND.root}` };
  * 무료 구간에 "값이 정해지지 않았습니다" 가 떠서 공짜로 풀 수 있다는 것을
  * 아무도 모르고, 반대로 못 정한 값이 '무료' 로 읽히면 파는 쪽이 공짜로
  * 약속한 셈이 된다.
+ *
+ * **값보다 받는 것을 먼저 읽게 짠다.** 카드 안의 차례가 등급 이름 → 한
+ * 마디 → 값 → 누구에게 맞는가 → 할 일 → 포함되는 것이다. 값을 맨 위에
+ * 놓으면 세 칸이 '싸다/비싸다' 로만 견주어지고, 그러면 비싼 칸을 고를
+ * 이유가 가격표 안에 없다.
  */
 export default async function PricingPage({
   searchParams,
@@ -59,17 +64,30 @@ export default async function PricingPage({
   });
 
   const qs = (m: string) => `/pricing?market=${m}${sp.lang ? `&lang=${sp.lang}` : ""}`;
+  const q = sp.lang ? `?lang=${sp.lang}` : "";
+
+  const common: [string, string][] = [
+    [T("pxCommon1"), T("pxCommon1b")],
+    [T("pxCommon3"), T("pxCommon3b")],
+    [T("pxCommon4"), T("pxCommon4b")],
+    [T("pxCommon2"), T("pxCommon2b")],
+  ];
+  const asks: [string, string][] = [
+    [T("pxAsk1"), T("pxNote1")],
+    [T("pxAsk2"), T("pxNote2")],
+    [T("pxAsk3"), T("pxNote3")],
+  ];
 
   return (
     <div className="pub">
       <header className="pubtop">
-        <span className="sf-brand">
+        <Link href={`/product${q}`} className="sf-brand">
           <span className="sf-brand-mark" aria-hidden="true">CM</span>
           <span className="sf-brand-name">{BRAND.root}</span>
-        </span>
+        </Link>
         <div className="pubtop-r">
           <LangSelect current={L} />
-          <Link href="/sample" className="sf-btn ghost sm">
+          <Link href={`/sample${q}`} className="sf-btn quiet sm">
             {PRODUCT.nav.sample[L]}
           </Link>
           <Link href={user ? "/my" : "/login"} className="sf-btn ghost sm">
@@ -79,10 +97,10 @@ export default async function PricingPage({
       </header>
 
       <div className="pubwrap">
-        <div className="pxhero">
-          <div className="sf-eyebrow">{BRAND.root}</div>
-          <h1>{T("pxTitle")}</h1>
-          <p>{T("pxBody")}</p>
+        <section className="pxhero">
+          <div className="sf-eyebrow">{T("pxTitle")}</div>
+          <h1>{T("pxLead")}</h1>
+          <p>{T("pxLeadSub")}</p>
           <nav className="pxmkt" aria-label={T("pxMarketKR")}>
             <Link href={qs("KR")} aria-current={mk.market === "KR" ? "true" : undefined}>
               {T("pxMarketKR")}
@@ -91,7 +109,14 @@ export default async function PricingPage({
               {T("pxMarketGlobal")}
             </Link>
           </nav>
-        </div>
+          {/* 사기 전에 가장 많이 걸리는 셋을 머리에 둔다. **지키지 못할 말을
+              적지 않는다**: 셋 다 지금 코드가 실제로 하는 일이다 */}
+          <ul className="pxtrust">
+            <li>{T("pxTrust1")}</li>
+            <li>{T("pxTrust2")}</li>
+            <li>{T("pxTrust3")}</li>
+          </ul>
+        </section>
 
         {grants.length ? (
           <div className="sf-section">
@@ -115,11 +140,32 @@ export default async function PricingPage({
           </div>
         )}
 
-        <ul className="pxnote">
-          <li>{T("pxNote1")}</li>
-          <li>{T("pxNote2")}</li>
-          <li>{T("pxNote3")}</li>
-        </ul>
+        <section className="pxband">
+          <h2>{T("pxCommon")}</h2>
+          <div className="pxband-g">
+            {common.map(([t, b]) => (
+              <div key={t} className="pxband-i">
+                <b>{t}</b>
+                <span>{b}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="pxask">
+          <h2>{T("pxAsk")}</h2>
+          <div className="pxask-g">
+            {asks.map(([q2, a]) => (
+              <div key={q2} className="pxask-i">
+                <b>{q2}</b>
+                <p>{a}</p>
+              </div>
+            ))}
+          </div>
+          <p className="pxask-more">
+            <Link href={`/product${q}`}>{T("pxMore")}</Link>
+          </p>
+        </section>
       </div>
     </div>
   );
@@ -133,9 +179,18 @@ function TierCard({
   const ok = sellable(p);
   const n = itemsFor(p.tier).length;
   const v = valueOf(p.tier, lang);
+  const mid = p.tier === "STANDARD";
+
+  /* 고르기를 권하는 칸 하나에만 금색이 나온다. **색만으로 가르지 않는다**:
+     알약에 글자가 적혀 있고 테가 거든다 */
   return (
-    <article className={p.tier === "STANDARD" ? "pxtier is-mid" : "pxtier"}>
-      <h2>{p.tier}</h2>
+    <article className={mid ? "pxtier is-mid" : "pxtier"}>
+      <header className="pxtier-h">
+        <h2>{p.tier}</h2>
+        {mid ? <span className="sf-pill gold">{T("pxPick")}</span> : null}
+      </header>
+      <p className="pxwhat">{v.headline}</p>
+
       {state === "PAID_APPROVED" && label ? (
         <p className="pxprice">
           {label}
@@ -155,31 +210,23 @@ function TierCard({
           <small>{T("pxPriceNotApprovedWhy")}</small>
         </p>
       )}
-      {/* **받는 것을 줄로 적고 문항 수는 아래로 내린다**(규격 §4). 문항
-          수를 앞세우면 비싼 등급이 "문항이 더 많은 것" 으로 읽히고,
-          그러면 같은 값을 더 내는 이유가 없다 */}
-      <p className="pxwhat">{v.headline}</p>
-      <ul className="pdlist">
-        {v.gets.map((g) => <li key={g}>{g}</li>)}
-      </ul>
-      <p className="pxq">{v.who}</p>
-      <p className="pxq">{n.toLocaleString()} {T("pxQuestions")}</p>
+
       {state === "FREE_APPROVED" ? (
         /**
          * 승인된 무료는 **결제창을 거치지 않는다.**
          *
          * `POST` 로만 연다. 주소만 눌러도 주문이 생기면 링크 미리보기나
          * 크롤러가 계정에 주문을 만든다. 로그인하지 않았으면 서버가
-         * 가입으로 보내고, 끝나면 이 자리로 돌아온다.
+         * 가입으로 보냈다가 끝나면 이 자리로 돌려보낸다.
          */
         <form action={startFreeAction} className="pxcta">
           <input type="hidden" name="product" value={p.code} />
-          <button className="sf-btn ghost">{T("pxStartFree")}</button>
+          <button className="sf-btn ghost wide">{T("pxStartFree")}</button>
         </form>
       ) : ok.ok ? (
         <div className="pxcta">
           <Link href={`/checkout?product=${encodeURIComponent(p.code)}`}
-            className={p.tier === "STANDARD" ? "sf-btn accent" : "sf-btn ghost"}>
+            className={mid ? "sf-btn accent wide" : "sf-btn ghost wide"}>
             {T("pxBuy")}
           </Link>
         </div>
@@ -187,9 +234,22 @@ function TierCard({
         /* `sellable` 의 거절 이유는 한국어 한 줄이라 영어 화면에 그대로 쓰지
            않는다. 까닭은 위의 값 자리에 이미 적혀 있다 */
         <div className="pxcta">
-          <span className="sf-btn ghost" aria-disabled="true">{T("pxBuy")}</span>
+          <span className="sf-btn ghost wide" aria-disabled="true">{T("pxBuy")}</span>
         </div>
       )}
+
+      <p className="pxwho"><span>{T("pxFor")}</span>{v.who}</p>
+
+      {/* **받는 것을 줄로 적고 문항 수는 맨 아래로 내린다**(규격 §4).
+          문항 수를 앞세우면 비싼 등급이 "문항이 더 많은 것" 으로 읽히고,
+          그러면 같은 값을 더 내는 이유가 없다 */}
+      <div className="pxgets">
+        <h3>{T("pxIncluded")}</h3>
+        <ul>
+          {v.gets.map((g) => <li key={g}>{g}</li>)}
+        </ul>
+      </div>
+      <p className="pxq">{n.toLocaleString()} {T("pxQuestions")}</p>
     </article>
   );
 }

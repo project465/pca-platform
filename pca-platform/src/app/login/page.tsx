@@ -2,6 +2,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/session";
 import LoginForm from "./login-form";
+import AuthBrand from "@/components/auth-brand";
+import { BRAND } from "@/lib/surface-text";
 
 export const metadata = { title: "로그인 · CareerMatri" };
 
@@ -17,19 +19,22 @@ export default async function LoginPage({
 
   return (
     <main className="center-wrap">
-      <div className="panel narrow">
-        <h1>CareerMatri</h1>
-        <p className="sub">
-          학교에서 받은 아이디나, 개인으로 가입하신 이메일로 들어오세요.
-        </p>
+      <div className="authwrap">
+        <AuthBrand name={BRAND.root} />
+        <div className="panel narrow">
+          <h1>다시 오셨군요</h1>
+          <p className="sub">
+            학교에서 받은 아이디나, 개인으로 가입하신 이메일로 들어오세요.
+          </p>
 
-        <LoginForm next={safeNext} />
+          <LoginForm next={safeNext} />
 
-        <div className="foot-links">
-          <Link href="/password/forgot">비밀번호를 잊으셨나요?</Link>
-          <Link href={`/signup${safeNext ? `?next=${encodeURIComponent(safeNext)}` : ""}`}>
-            개인으로 가입하기
-          </Link>
+          <div className="foot-links">
+            <Link href="/password/forgot">비밀번호를 잊으셨나요?</Link>
+            <Link href={`/signup${safeNext ? `?next=${encodeURIComponent(safeNext)}` : ""}`}>
+              개인으로 가입하기
+            </Link>
+          </div>
         </div>
       </div>
     </main>

@@ -43,6 +43,7 @@
     "platform:check": "node scripts/platform-check.mjs",
     "platform:roles": "node scripts/platform-roles-probe.mjs",
     "ui:shots": "node scripts/ui-shots.mjs",
+    "a11y:check": "node scripts/a11y-check.mjs",
     "db:demo": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 -f db/seed/platform_demo.sql -f db/seed/platform_demo_people.sql",
     "metri:refund": "tsx scripts/metri/refund-check.ts",
     "metri:legal": "tsx scripts/metri/legal-check.ts",

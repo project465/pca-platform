@@ -164,7 +164,10 @@ button.act.full { width: 100%; }
   font-size: 13px; color: var(--muted);
   display: flex; gap: var(--sp-3); flex-wrap: wrap;
 }
-.foot-links a { font-weight: 600; color: var(--ink-2); }
+.foot-links a {
+  display: inline-flex; align-items: center; min-height: 26px;
+  font-weight: 600; color: var(--ink-2);
+}
 
 /* ---------- 위쪽 띠를 쓰는 셸 ----------
    운영 화면은 왼쪽 띠(`surface.css` 의 `.sf`)로 옮겼다. 여기 남은 것은

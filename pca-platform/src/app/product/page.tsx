@@ -81,10 +81,10 @@ export default async function ProductPage({
           <h1>{P.hero.title[L]}</h1>
           <p>{P.hero.body[L]}</p>
           <div className="pdcta" style={{ justifyContent: "center" }}>
-            <Link href={`/pricing${q}`} className="sf-btn accent">
+            <Link href={`/pricing${q}`} className="sf-btn accent big">
               {P.hero.cta[L]}{from ? ` · ${from}` : ""}
             </Link>
-            <Link href={`/sample${q}`} className="sf-btn ghost">{P.sample.cta[L]}</Link>
+            <Link href={`/sample${q}`} className="sf-btn ghost big">{P.sample.cta[L]}</Link>
           </div>
         </div>
 
@@ -142,7 +142,7 @@ export default async function ProductPage({
           <h2>{P.sample.title[L]}</h2>
           <p>{P.sample.body[L]}</p>
           <div className="pdcta">
-            <Link href={`/sample${q}`} className="sf-btn ghost">{P.sample.cta[L]}</Link>
+            <Link href={`/sample${q}`} className="sf-btn ghost big">{P.sample.cta[L]}</Link>
           </div>
         </section>
 
