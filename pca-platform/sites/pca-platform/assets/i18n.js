@@ -25,9 +25,29 @@ window.PCAI18N = (function () {
 
   function setLang(l) {
     lang = (l === 'en') ? 'en' : 'ko';
+    try { document.documentElement.setAttribute('lang', lang === 'en' ? 'en' : 'ko'); }
+    catch (e) { /* 머리 없는 브라우저에서 문서가 아직 없을 수 있다 */ }
     return lang;
   }
   function getLang() { return lang; }
+
+  /**
+   * 주소가 언어를 들고 온다.
+   *
+   * **싣는 쪽마다 따로 부르게 두지 않는다.** 결과지를 싣는 자리가
+   * 셋이고(정적 `v2.html` · 플랫폼 결과지 틀 · PDF 를 찍는 머리 없는
+   * 브라우저) 한 자리라도 부르는 것을 빠뜨리면 그 자리만 한국어로 나간다.
+   * 그래서 사전이 올라오는 순간 스스로 한 번 읽는다.
+   */
+  function fromUrl() {
+    try {
+      var q = new URLSearchParams(location.search).get('lang');
+      if (q) return setLang(q);
+      var h = document.documentElement.getAttribute('lang');
+      if (h) return setLang(h.slice(0, 2));
+    } catch (e) { /* 주소가 없는 자리도 있다 */ }
+    return lang;
+  }
 
   /**
    * 한 문구를 지금 언어로.
@@ -113,8 +133,10 @@ window.PCAI18N = (function () {
   function missing() { return Object.keys(miss); }
   function resetMissing() { miss = {}; }
 
+  fromUrl();
+
   return {
-    setLang: setLang, lang: getLang, T: T, deep: deep, family: family,
+    setLang: setLang, lang: getLang, fromUrl: fromUrl, T: T, deep: deep, family: family,
     itemText: itemText, optionText: optionText, scalePoints: scalePoints,
     missing: missing, resetMissing: resetMissing
   };

@@ -12,6 +12,9 @@ window.PCAV2ResultJSON = (function () {
   'use strict';
 
   var LEVEL = { BASIC: 'basic', STANDARD: 'standard', PRO: 'pro' };
+  /* 결과지의 두 언어. **글자만 갈리고 판단은 갈리지 않는다** */
+  function T(x) { return window.PCAI18N ? window.PCAI18N.T(x) : x; }
+  function DEEP(v) { return window.PCAI18N ? window.PCAI18N.deep(v) : v; }
 
   function build(v2, S) {
     var EVm = window.PCAEvidence;
@@ -87,7 +90,7 @@ window.PCAV2ResultJSON = (function () {
          들고 가고, 영어로 뽑은 결과지가 'ko' 라고 적혀 있으면 되짚을 수 없다 */
       report_language: (window.PCAI18N ? window.PCAI18N.lang() : 'ko'),
       profile: {
-        major_id: 'ME', major_name: '기계공학과',
+        major_id: 'ME', major_name: T('기계공학과'),
         name: (S.profile && S.profile.name) || null,
         education_stage: v2.education_stage,
         /* 국적은 받지 않는다. 받아도 결과에 넣지 않는다. */
@@ -103,13 +106,17 @@ window.PCAV2ResultJSON = (function () {
         /* V2 는 아직 검증 전이라 측정오차를 내지 않는다. 숫자를 지어내는
            것보다 없다고 적는 쪽이 낫다. */
         measurement_error: null,
-        measurement_note: '파일럿 검증 전이라 측정 오차를 산출하지 않습니다.'
+        measurement_note: T('파일럿 검증 전이라 측정 오차를 산출하지 않습니다.')
       },
       /* ── 다섯을 따로 담는다 ─────────────────────────────────────── */
       actual_work_interest: v2.actual_work_interest,
       exposure: v2.exposure,
       decision_ownership: v2.decision_ownership,
-      work_mode: v2.work_mode,
+      /* **업무 방식의 이름표는 채점이 아니라 글자다.** 축을 가리키는 것은
+         `axis`(IC · CS · SQ)이고, `poles` · `leaning` · `label` · `note` 는
+         사람이 읽는 말이다. 그래서 채점 파일을 건드리지 않고 담는 자리에서
+         옮긴다: 숫자는 한 칸도 지나가지 않는다 */
+      work_mode: DEEP(v2.work_mode),
       learning_intent: v2.learning_intent,
       research_project_evidence: v2.research_project_evidence,
       evidence_quality: v2.evidence_quality,
@@ -135,8 +142,8 @@ window.PCAV2ResultJSON = (function () {
       /* ── 조직 가치 번역 ─────────────────────────────────────────── */
       organization_context: orgCtx,
       value_path: {
-        note: '같은 전공과 같은 경험이라도 조직이 결과로 치는 것이 다릅니다. ' +
-          '적합도는 조직을 바꿔도 그대로입니다.',
+        note: T('같은 전공과 같은 경험이라도 조직이 결과로 치는 것이 다릅니다. ') +
+          T('적합도는 조직을 바꿔도 그대로입니다.'),
         selected_organization_type: orgPick,
         order: order.slice(0, topN),
         paths: paths

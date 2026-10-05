@@ -579,9 +579,10 @@ window.PCAValue = (function () {
     repeatability: repeatability,
     ladderByFamily: ladderByFamily,
     orgById: orgById, vpById: vpById, domainById: domainById,
-    /* 조직 유형·전공지식 이름표도 데이터 파일에서 온다. 내보낼 때
-       옮기지 않으면 조직 비교표만 한국어로 남는다 */
-    ORG_TYPES: DEEP(ORG), PATHS: VP, KNOWLEDGE: DEEP(K),
-    TOOL_CATS: DEEP(TOOLS.categories)
+    /* 표는 **날것으로 내보낸다.** 여기서 옮기면 두 가지가 틀어진다:
+       이 줄이 파일을 읽을 때 한 번 돌아서 그때의 언어로 굳고, 묶음을
+       통째로 옮기므로 별칭·검색어·과목 목록까지 영어가 되어 응시자가
+       적은 글과 견주는 쪽이 조용히 깨진다. 옮기는 것은 **그리는 자리**다 */
+    ORG_TYPES: ORG, PATHS: VP, KNOWLEDGE: K, TOOL_CATS: TOOLS.categories
   };
 })();

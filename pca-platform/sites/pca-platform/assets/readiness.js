@@ -82,8 +82,10 @@ window.PCAReadiness = (function () {
     var supported = [], missing = [];
     fam.signals.forEach(function (sig) {
       var m = match(sig, ev, { rawProjects: rawProjects }, toolCats);
-      if (m) supported.push({ signal: sig.label, by: m.by });
-      else missing.push(sig.label);
+      /* 신호 이름은 데이터 파일에서 온다. 사전을 거치지 않으면 영어
+         결과지의 이 칸만 한국어로 남는다 */
+      if (m) supported.push({ signal: T(sig.label), by: m.by });
+      else missing.push(T(sig.label));
     });
     var n = fam.signals.length;
     var level = supported.length >= Math.ceil(n * 2 / 3) ? 'high'
@@ -188,7 +190,7 @@ window.PCAReadiness = (function () {
     };
     return {
       level: LADDER[level].id,
-      label: LADDER[level].n,
+      label: T(LADDER[level].n),
       evidence: ev.filter(function (x) { return x.lv <= level; })
         .map(function (x) { return x.t; })
         .filter(function (v, i, a) { return a.indexOf(v) === i; }),

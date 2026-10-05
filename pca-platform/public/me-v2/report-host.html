@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>결과지</title>
+<title>Report · 결과지</title>
 <!--
   결과지를 그리는 자리.
 
@@ -23,11 +23,16 @@
 </style>
 </head>
 <body>
-<div class="rphost"><p class="rpwait" id="rpWait">결과지를 불러오는 중입니다.</p></div>
+<div class="rphost"><p class="rpwait" id="rpWait">Loading · 결과지를 불러오는 중입니다.</p></div>
 
 <!-- **`v2.html` 이 싣는 것과 같은 벌이다.** 흐름을 모는 `v2-app.js` 와
      경험을 받는 `evidence-ui.js` 만 빠진다. 한 줄이라도 빠지면 그리는
      도중에 조용히 멈춘다: 결과지 안쪽이 문항 은행을 되짚어 읽는다 -->
+<!-- **엔진보다 먼저 올린다.** 엔진 파일들은 올라오는 순간 PCAI18N.T 를
+     붙들어 두기 때문에, 뒤에 오면 그 파일들은 번역 없는 함수를 평생
+     들고 있게 되고 그 자리만 한국어로 나간다 -->
+<script src="/pca/assets/i18n.js"></script>
+<script src="/pca/data/report-i18n.js"></script>
 <script src="/pca/data/families.js"></script>
 <script src="/pca/data/evidence-rules.js"></script>
 <script src="/pca/data/me-v2.js"></script>
@@ -50,6 +55,7 @@
   'use strict';
   var host = document.querySelector('.rphost');
   var at = new URLSearchParams(location.search).get('attempt') || '';
+  var T = window.PCAI18N ? window.PCAI18N.T : function (s) { return s; };
 
   function fail(msg) {
     host.innerHTML = '<p class="rpwait">' + msg + '</p>';
@@ -64,19 +70,26 @@
     af.addEventListener('click', function () {
       var folded = ab.classList.toggle('is-folded');
       af.setAttribute('aria-expanded', String(!folded));
-      af.textContent = folded ? '상세 분석 펼치기' : '상세 분석 접기';
+      af.textContent = T(folded ? '상세 분석 펼치기' : '상세 분석 접기');
     });
   }
 
   fetch('/assessment/' + encodeURIComponent(at) + '/report/data', {
     credentials: 'same-origin'
   }).then(function (r) {
-    if (!r.ok) throw new Error(r.status === 404
+    if (!r.ok) throw new Error(T(r.status === 404
       ? '아직 만들어 둔 결과지가 없습니다.'
-      : '결과지를 불러오지 못했습니다.');
+      : '결과지를 불러오지 못했습니다.'));
     return r.json();
   }).then(function (d) {
-    if (!d || !d.result) throw new Error('결과지가 비어 있습니다.');
+    if (!d || !d.result) throw new Error(T('결과지가 비어 있습니다.'));
+    /* **만들어 둔 결과지는 그때의 언어로 읽는다.** 결과 객체 안에는
+       그릴 때 이미 옮겨 둔 글이 들어 있어서, 다른 언어로 그리면 한
+       쪽에서 두 언어가 섞인다. 주소로 넘어온 값보다 스냅샷이 적어
+       둔 것이 먼저다 */
+    if (window.PCAI18N && d.result.report_language) {
+      window.PCAI18N.setLang(d.result.report_language);
+    }
     host.innerHTML = window.PCAV2Report.render(d.result);
     wireFold();
     /* 바깥 화면이 창 높이를 맞출 수 있게 알려 준다. 고정 높이로 두면

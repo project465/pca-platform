@@ -74,6 +74,13 @@ const SPECS = [
       (f.evidence_requirements || []).flatMap((r) => [r.label, r.description])),
   },
   {
+    file: "content/evidence-rules.json", where: "준비도 신호",
+    /* `outputs` · `methods` · `courses` 는 응시자가 적은 글에서 찾는
+       검색어다. 번역하면 찾는 쪽이 조용히 깨진다 */
+    pick: (d) => (d.families || []).flatMap((f) =>
+      (f.signals || []).map((g) => g.label)),
+  },
+  {
     file: "assessment/ME_V2/decision-rules.json", where: "결정 상태와 업무 방식",
     pick: (d) => [
       ...Object.values(d.statuses || {}).flatMap((s) => [s.label, s.line]),

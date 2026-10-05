@@ -108,7 +108,10 @@ export default async function ReportPage({
 
         {snap ? (
           <>
-            <ReportFrame attemptId={attemptId} />
+            {/* 결과지 본문은 **만들 때의 언어**로 읽는다. 화면 언어를
+                바꿔도 이미 나간 결과지의 글은 그대로다 */}
+            <ReportFrame attemptId={attemptId}
+              lang={snap.interface_language ?? L} />
             {/* 다시 만드는 단추는 아래에 둔다. 위에 두면 이미 있는 결과지를
                 덮는 단추로 읽힌다 */}
             <div className="rpmake">

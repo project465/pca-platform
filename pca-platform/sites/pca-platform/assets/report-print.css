@@ -399,3 +399,151 @@
   color: var(--rp-ink);
 }
 .rpgap > .note { margin: 0 0 12px }
+
+/* ── 영어판 조판 ─────────────────────────────────────────────────────
+   같은 내용이 영어로는 길다. 재 보니 PRO 가 한국어 17장 · 영어 23장이고,
+   규격(스무 장)과 '한 쪽에 메시지 하나' 가 둘 다 깨졌다. 세 묶음이 종이
+   두 장씩 먹었는데 넘친 폭은 3~11% 였다.
+
+   **글을 깎아서 맞추지 않는다.** 영어판에서 문장을 덜어내면 두 언어가
+   다른 제품이 되고, 어느 쪽이 덜 받았는지는 받은 사람만 안다. 맞추는
+   것은 조판이다: 라틴 글자는 한글보다 작은 호수에서도 읽히므로 본문을
+   한 호수 내리고 줄 간격을 좁힌다.
+
+   `html[lang]` 을 쓰는 것은 사전이 언어를 정할 때 그 칸을 같이 적어
+   두기 때문이다(`PCAI18N.setLang`). 한국어 쪽 선택자에는 걸리지 않아서
+   **한국어 조판은 한 줄도 바뀌지 않는다.** */
+@media print {
+  html[lang="en"] .report { font-size: 10pt; line-height: 1.42; }
+  html[lang="en"] .report .contentcard p,
+  html[lang="en"] .report .cvline,
+  html[lang="en"] .vpbody,
+  html[lang="en"] .orgline { font-size: 8.5pt; line-height: 1.42; }
+  html[lang="en"] .rdprob,
+  html[lang="en"] .vpprob { font-size: 9pt; line-height: 1.42; }
+  html[lang="en"] .rdwhy,
+  html[lang="en"] .rdact,
+  html[lang="en"] .dsact p { font-size: 8.5pt; line-height: 1.45; }
+  html[lang="en"] .report .qlist li,
+  html[lang="en"] .report .note { font-size: 8pt; line-height: 1.4; }
+  html[lang="en"] .rdlist li { font-size: 8pt; line-height: 1.4; }
+  html[lang="en"] .rpage > :not(.rpnum):not(.eyebrow):not(.rptitle):not(.rpsub) {
+    margin-top: 4mm;
+  }
+  html[lang="en"] .report .card,
+  html[lang="en"] .report .vpcard,
+  html[lang="en"] .report .cvcard { padding: 2.6mm 3mm; }
+  html[lang="en"] .dscard,
+  html[lang="en"] .dsbox { padding: 3.4mm 3.8mm; }
+  html[lang="en"] .rdeep { padding: 3.4mm 4mm; }
+
+  /* 부록의 표가 영어에서 가장 많이 번진다. '직무군 열여섯 전부' 가
+     한국어 758px · 영어 1324px 로, 직무군 이름이 길어 줄마다 두 줄이
+     된다. 표는 훑어보는 자리라 본문보다 작게 두어도 읽는 데 지장이 없다 */
+  html[lang="en"] .v2gap,
+  html[lang="en"] .v2tw table { font-size: 7.5pt; }
+  html[lang="en"] .v2gap th,
+  html[lang="en"] .v2gap td,
+  html[lang="en"] .v2tw th,
+  html[lang="en"] .v2tw td { padding: 1mm 1.2mm; line-height: 1.32; }
+  html[lang="en"] .apsec { margin-top: 5mm; }
+  html[lang="en"] .elrow { font-size: 8pt; padding: 1mm 0; }
+  html[lang="en"] .elby { font-size: 7pt; line-height: 1.32; }
+  html[lang="en"] .toolrow,
+  html[lang="en"] .utrow { font-size: 8pt; padding: 1mm 0; }
+  html[lang="en"] .utrow .qlist li { font-size: 8pt; }
+
+  /* 직무 한 자리는 네 상자가 한 쪽에 들어가야 '한 쪽에 메시지 하나' 가
+     지켜진다. 영어에서 CAE 쪽이 1013px 로 2.7% 넘쳤다 */
+  html[lang="en"] .rdhead { padding-bottom: 2mm; }
+  html[lang="en"] .rdhead h3 { font-size: 12.5pt; }
+  html[lang="en"] .rdlab { font-size: 7pt; margin-bottom: 1mm; }
+  html[lang="en"] .rdgrid { gap: 3mm; margin-top: 3mm; }
+  html[lang="en"] .rdact { margin-top: 2.4mm; padding: 2mm 2.6mm; }
+
+  /* 응시자가 **영어로 적어 넣은** 경우가 가장 길다. 직무 한 자리와 증거
+     묶음, 다음 경험 묶음이 거기서 넘쳤다(1139 · 1051 · BASIC 증거) */
+  html[lang="en"] .report { line-height: 1.38; }
+  html[lang="en"] .rpage > :not(.rpnum):not(.eyebrow):not(.rptitle):not(.rpsub) {
+    margin-top: 3.2mm;
+  }
+  html[lang="en"] .rdprob,
+  html[lang="en"] .vpprob { font-size: 8.5pt; line-height: 1.38; }
+  html[lang="en"] .rdlist li { padding: 0.9mm 0; line-height: 1.34; }
+  html[lang="en"] .elbox { margin-top: 1.4mm; }
+  html[lang="en"] .dsact { padding: 3mm 3.6mm; margin-top: 3mm; }
+  html[lang="en"] .dsact p { font-size: 9.5pt; }
+  html[lang="en"] .dscard h3,
+  html[lang="en"] .dsgapname { font-size: 11pt; }
+  html[lang="en"] .rpsub2 { font-size: 9.5pt; }
+  html[lang="en"] .report .contentcard h3,
+  html[lang="en"] .report .contentcard h4 { font-size: 9.5pt; }
+  html[lang="en"] .vpstep { padding: 1.3mm 0; }
+  html[lang="en"] .vpchain { margin-top: 2.4mm; }
+  html[lang="en"] .tooltb { margin-top: 1.4mm; }
+
+  /* 되묻는 말과 다음 경험 단계는 **인쇄 크기를 따로 받은 적이 없다.**
+     화면 크기(13px · 알약 12.5px)로 그대로 찍히는데, 영어에서는 보기가
+     길어 한 쪽을 넘긴다. BASIC 의 '증거 + 공백' 한 쪽이 1244px 였고 그중
+     820px 이 이 묶음이었다 */
+  html[lang="en"] .cvask { margin-top: 2.6mm; padding-top: 2.2mm; }
+  html[lang="en"] .cvaskh { font-size: 9pt; }
+  html[lang="en"] .cvq { margin-top: 1.8mm; }
+  html[lang="en"] .cvqq { font-size: 8.5pt; margin-bottom: 1.2mm; }
+  html[lang="en"] .cvqq i { font-size: 7pt; }
+  html[lang="en"] .cvopts { gap: 1.2mm; }
+  html[lang="en"] .cvopt { font-size: 7.5pt; padding: 0.5mm 1.8mm; }
+  html[lang="en"] .cvsteps { margin-top: 2.6mm; }
+  html[lang="en"] .cvstep {
+    padding: 1.3mm 0; font-size: 8.5pt; line-height: 1.4;
+    grid-template-columns: 5mm 1fr; gap: 2mm;
+  }
+  html[lang="en"] .cvstep > span { font-size: 7pt; line-height: 4mm; height: 4mm; }
+
+  /* 쪽 머리(눈썹 · 제목 · 덧말)가 영어에서 111px 를 먹는다. 직무 한 자리
+     안쪽이 990px 로 들어갔는데도 쪽이 1101px 이 된 까닭이 이것이었다 */
+  html[lang="en"] .rptitle { font-size: 14pt; margin-top: 1mm; }
+  html[lang="en"] .rpsub { font-size: 9pt; line-height: 1.42; }
+  html[lang="en"] .rpage > .eyebrow { margin-bottom: 1.2mm; }
+  html[lang="en"] .rdlist li { padding: 0.8mm 0; }
+  html[lang="en"] .rdbox { min-width: 0; }
+  html[lang="en"] .rdwhy { padding: 1.6mm 2.4mm; margin-top: 1.6mm; }
+
+  /* 마지막 한 뼘. 라틴 글자는 같은 호수에서 한글보다 작게 보이므로 본문
+     글줄을 반 호수 더 내려도 종이에서 읽힌다(한국어 11pt ↔ 영어 9.5pt).
+     **이름표 칸은 반대로 넓힌다**: 11mm 에서 영어 이름표가 세 줄로
+     꺾이면서 줄마다 종이를 먹고 있었다 */
+  html[lang="en"] .report .contentcard p,
+  html[lang="en"] .report .cvline,
+  html[lang="en"] .vpbody,
+  html[lang="en"] .orgline,
+  html[lang="en"] .rdprob,
+  html[lang="en"] .vpprob,
+  html[lang="en"] .rdwhy,
+  html[lang="en"] .rdact,
+  html[lang="en"] .cvqq,
+  html[lang="en"] .cvstep { font-size: 8pt; }
+  html[lang="en"] .rdlist li {
+    font-size: 7.5pt; grid-template-columns: 15mm 1fr; gap: 1.6mm;
+  }
+  html[lang="en"] .elrow { grid-template-columns: 24mm 11mm minmax(0, 1fr); }
+  html[lang="en"] .rpgap { margin-top: 3mm; padding-top: 2.4mm; }
+  html[lang="en"] .report .card,
+  html[lang="en"] .report .vpcard,
+  html[lang="en"] .report .cvcard { padding: 2.2mm 2.6mm; }
+
+  /* BASIC 은 '증거' 와 '아직 확인되지 않은 것' 을 한 쪽에 올려야 네댓
+     쪽을 지킨다(`.rpgap`). 영어에서 그 쪽이 1063px 로 8% 넘쳤다. 쪽
+     머리와 묶음 사이 여백에서 걷어낸다 */
+  html[lang="en"] .rptitle { font-size: 13pt; }
+  html[lang="en"] .rpsub { font-size: 8.5pt; }
+  html[lang="en"] .rpgap { margin-top: 2.4mm; padding-top: 2mm; }
+  html[lang="en"] .cvask { margin-top: 2.2mm; padding-top: 1.8mm; }
+  html[lang="en"] .cvq { margin-top: 1.5mm; }
+  html[lang="en"] .elrow { padding: 0.8mm 0; }
+  html[lang="en"] .report .grid,
+  html[lang="en"] .report .cvgrid { gap: 3mm; }
+  html[lang="en"] .rpage > :not(.rpnum):not(.eyebrow):not(.rptitle):not(.rpsub) {
+    margin-top: 2.8mm;
+  }
+}

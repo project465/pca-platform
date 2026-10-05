@@ -11,7 +11,7 @@ import { generateAction } from "./actions";
  * 빈자리가 남고 PRO 에는 안쪽 스크롤이 하나 더 생긴다. 안쪽이 자기 높이를
  * 알려 주고 이쪽이 맞춘다.
  */
-export function ReportFrame({ attemptId }: { attemptId: string }) {
+export function ReportFrame({ attemptId, lang }: { attemptId: string; lang: string }) {
   const [h, setH] = useState(1400);
   const ref = useRef<HTMLIFrameElement | null>(null);
 
@@ -26,11 +26,18 @@ export function ReportFrame({ attemptId }: { attemptId: string }) {
     return () => window.removeEventListener("message", onMsg);
   }, []);
 
+  /* **언어를 주소로 넘긴다.** 안쪽 사전이 엔진 파일들보다 먼저 올라오면서
+     이 값을 읽는다. 다 올라온 뒤에 바꾸면 그 사이에 굳은 자리가 한국어로
+     남는다. 넘기는 값은 **그 결과지를 만들 때의 언어**다: 본문 글이 이미
+     그 언어로 들어 있어서, 다른 언어로 그리면 한 쪽에서 두 언어가 섞인다 */
+  const src = `/me-v2/report-host.html?attempt=${encodeURIComponent(attemptId)}`
+    + `&lang=${encodeURIComponent(lang)}`;
+
   return (
     <iframe
       ref={ref}
-      src={`/me-v2/report-host.html?attempt=${encodeURIComponent(attemptId)}`}
-      title="결과지"
+      src={src}
+      title={lang === "en" ? "Report" : "결과지"}
       className="rpframe"
       style={{ height: h }}
     />

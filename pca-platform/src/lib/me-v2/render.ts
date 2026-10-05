@@ -66,16 +66,28 @@ export type RenderResult =
 
 /* 머리말과 꼬리말을 우리가 그린다. **브라우저가 붙이는 주소와 날짜를 쓰지
    않는다**: 인쇄 대화상자의 설정이라 CSS 로 못 끄고, 그대로 두면 파는
-   문서에 `localhost:3100` 이 찍힌다 */
-const HEADER = `<div style="width:100%;font-size:7pt;color:#76859b;
-  font-family:'Noto Sans CJK KR',sans-serif;padding:0 16mm;
-  display:flex;justify-content:space-between;letter-spacing:.06em">
-  <span>CAREERMATRI</span><span>진로 결정 자료</span></div>`;
-const FOOTER = `<div style="width:100%;font-size:7pt;color:#76859b;
-  font-family:'Noto Sans CJK KR',sans-serif;padding:0 16mm;
-  display:flex;justify-content:space-between">
-  <span>합격 가능성이나 실력을 잰 값이 아닙니다</span>
-  <span><span class="pageNumber"></span> / <span class="totalPages"></span></span></div>`;
+   문서에 `localhost:3100` 이 찍힌다.
+   **여기는 사전을 쓸 수 없다.** 인쇄 대화상자에 넘기는 조각이라 결과지를
+   그리는 브라우저 문맥 밖에서 만들어진다. 그래서 두 벌을 적어 둔다 */
+const EDGE = {
+  ko: { kind: "진로 결정 자료", note: "합격 가능성이나 실력을 잰 값이 아닙니다" },
+  en: { kind: "Career decision material",
+        note: "This is not a measure of ability or of your chances of being hired" },
+} as const;
+
+const chrome = (lang: string) => {
+  const t = lang === "en" ? EDGE.en : EDGE.ko;
+  const base = `width:100%;font-size:7pt;color:#76859b;`
+    + `font-family:'Noto Sans CJK KR',sans-serif;padding:0 16mm;`
+    + `display:flex;justify-content:space-between`;
+  return {
+    header: `<div style="${base};letter-spacing:.06em">`
+      + `<span>CAREERMATRI</span><span>${t.kind}</span></div>`,
+    footer: `<div style="${base}"><span>${t.note}</span>`
+      + `<span><span class="pageNumber"></span> / `
+      + `<span class="totalPages"></span></span></div>`,
+  };
+};
 
 /**
  * 결과지 한 판본을 만든다.
@@ -113,10 +125,15 @@ export async function generateReport(opts: {
     return { ok: false, traceId, reason: "저장된 응답이 없습니다." };
   }
 
+  /* **결과지 글 언어는 응시가 들고 있던 값이다.** 부르는 쪽이 넘긴 값을
+     앞세우면 주소를 고쳐 남의 응시를 다른 언어로 다시 찍을 수 있고, 그러면
+     같은 응시에 언어가 다른 판본이 쌓인다 */
+  const lang = (a.interface_language ?? opts.lang ?? "ko") === "en" ? "en" : "ko";
+
   try {
     const out = await drawInBrowser({
       attempt: a, answers, evidence: frozen.payload,
-      baseUrl: opts.baseUrl,
+      baseUrl: opts.baseUrl, lang,
     });
 
     await mkdir(PDF_DIR, { recursive: true });
@@ -148,7 +165,7 @@ export async function generateReport(opts: {
           input_warnings: out.warnings,
           sheets: out.sheets,
         }),
-        frozen.snapshotId, file, traceId, a.interface_language ?? opts.lang ?? "ko",
+        frozen.snapshotId, file, traceId, lang,
       ],
     );
     if (!row) {
@@ -194,6 +211,8 @@ async function drawInBrowser(opts: {
   answers: Record<string, unknown>;
   evidence: EvidencePayload;
   baseUrl: string;
+  /** 'ko' 또는 'en'. 주소로 넘겨서 결과지 엔진이 올라올 때 집게 한다 */
+  lang: string;
 }): Promise<Drawn> {
   const { chromium } = await import("playwright");
   /* **운영 이미지에 브라우저를 두 벌 넣지 않는다.** 알파인에는 패키지로
@@ -207,7 +226,11 @@ async function drawInBrowser(opts: {
   try {
     const ctx = await browser.newContext({ viewport: { width: 1180, height: 1000 } });
     const page = await ctx.newPage();
-    const url = `${opts.baseUrl.replace(/\/$/, "")}/pca/v2.html`;
+    /* **언어를 주소로 넘긴다.** 사전은 엔진 파일들보다 먼저 올라오고,
+       올라오면서 주소의 `lang` 을 읽는다. 다 올라온 뒤에 바꾸면 그 사이에
+       굳은 자리가 한국어로 남는다 */
+    const url = `${opts.baseUrl.replace(/\/$/, "")}/pca/v2.html`
+      + `?lang=${encodeURIComponent(opts.lang)}`;
 
     const errs: string[] = [];
     page.on("pageerror", (e) => errs.push(e.message));
@@ -270,9 +293,11 @@ async function drawInBrowser(opts: {
     if (!got.pages) throw new Error("결과지 쪽이 그려지지 않았습니다.");
 
     await page.emulateMedia({ media: "print" });
+    const edge = chrome(opts.lang);
     const pdf = await page.pdf({
       format: "A4", printBackground: true,
-      displayHeaderFooter: true, headerTemplate: HEADER, footerTemplate: FOOTER,
+      displayHeaderFooter: true,
+      headerTemplate: edge.header, footerTemplate: edge.footer,
       margin: { top: "18mm", bottom: "18mm", left: "16mm", right: "16mm" },
     });
     await ctx.close();
