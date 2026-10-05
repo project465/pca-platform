@@ -1,8 +1,9 @@
-import type { PaymentProvider } from "./types";
+import type { PaymentProvider, PayRegion } from "./types";
 import { mockProvider } from "./mock";
 import { portoneProvider } from "./portone";
 
 export * from "./types";
+export { matchesOrder } from "./verify";
 export { markMockPaid } from "./mock";
 export { globalChannelReady } from "./portone";
 
@@ -27,6 +28,77 @@ export function paymentProvider(): PaymentProvider {
   }
 
   throw new Error(`알 수 없는 PAYMENTS_PROVIDER: ${name}`);
+}
+
+/** 시장과 그 시장의 결제를 받을 준비가 얼마나 됐는가 */
+export type MarketReadiness = {
+  market: "KR" | "GLOBAL";
+  region: PayRegion;
+  /** 이 시장의 결제를 지금 받을 수 있는가 */
+  ready: boolean;
+  /** 받을 수 없으면 무엇이 없어서인가. 받을 수 있으면 null */
+  blocker: string | null;
+  /** 어느 대행사가 받는가. 아직 안 정했으면 null */
+  provider: string | null;
+};
+
+/**
+ * 이 시장의 결제를 누가 받는가.
+ *
+ * **대행사가 시장마다 다를 수 있다.** 국내 PG 의 일반 카드결제로는 해외
+ * 발급 Visa·Mastercard 가 승인되지 않아서, 글로벌은 해외결제 채널이나
+ * 다른 대행사를 거쳐야 한다.
+ *
+ * **없는 것을 켜 두지 않는다.** 글로벌 쪽 대행사가 아직 정해지지 않았고,
+ * 그래서 여기는 '정해지지 않았다' 를 **값으로** 돌려준다. 주석으로만
+ * 적어 두면 화면이 결제 버튼을 그리고, 누른 사람이 예외 화면을 만난다.
+ * 상용화를 막는 항목은 코드가 말해야 검사가 셀 수 있다.
+ */
+export function marketReadiness(market: "KR" | "GLOBAL"): MarketReadiness {
+  const region: PayRegion = market === "KR" ? "domestic" : "global";
+  const name = process.env.PAYMENTS_PROVIDER ?? "mock";
+
+  if (name === "mock") {
+    /* 가짜는 두 시장을 다 흉내 낸다. 운영에서는 `paymentProvider()` 가
+       예외를 던져 막는다 */
+    const devOk = process.env.NODE_ENV !== "production";
+    return {
+      market, region, ready: devOk, provider: devOk ? "mock" : null,
+      blocker: devOk ? null : "운영에서 mock 결제를 쓸 수 없습니다.",
+    };
+  }
+
+  if (name !== "portone") {
+    return { market, region, ready: false, provider: null,
+      blocker: `알 수 없는 PAYMENTS_PROVIDER: ${name}` };
+  }
+
+  if (!process.env.PORTONE_STORE_ID || !process.env.PORTONE_API_SECRET) {
+    return { market, region, ready: false, provider: "portone",
+      blocker: "PORTONE_STORE_ID · PORTONE_API_SECRET 이 채워지지 않았습니다." };
+  }
+  if (!process.env.PORTONE_WEBHOOK_SECRET) {
+    return { market, region, ready: false, provider: "portone",
+      blocker: "PORTONE_WEBHOOK_SECRET 이 없어 웹훅을 검증할 수 없습니다." };
+  }
+
+  if (region === "domestic") {
+    return process.env.PORTONE_CHANNEL_KEY
+      ? { market, region, ready: true, provider: "portone", blocker: null }
+      : { market, region, ready: false, provider: "portone",
+          blocker: "PORTONE_CHANNEL_KEY(국내 카드 채널)가 없습니다." };
+  }
+
+  /* 글로벌. **채널 값이 비어 있으면 닫혀 있는 것이 맞다**: 해외 PG 를
+     아직 고르지 않았고, 고르지 않은 것을 열어 두면 해외 응시자가 결제
+     버튼을 누르고 예외를 만난다 */
+  return process.env.PORTONE_CHANNEL_KEY_GLOBAL
+    ? { market, region, ready: true, provider: "portone", blocker: null }
+    : {
+        market, region, ready: false, provider: null,
+        blocker: "해외 결제 대행사가 정해지지 않았습니다 " +
+          "(PORTONE_CHANNEL_KEY_GLOBAL 이 비어 있습니다).",
+      };
 }
 
 /**

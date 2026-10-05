@@ -47,10 +47,31 @@ export type WebhookResult =
   | { ok: true; eventId: string | null; providerPaymentId: string | null }
   | { ok: false; reason: string };
 
+/** 환불 집행 결과. **판정은 `refund.ts` 가 하고 여기는 집행만 한다** */
+export type RefundResult =
+  | { ok: true; providerRefundId: string | null; amount: number }
+  | { ok: false; reason: string };
+
+/**
+ * 결제 대행사 하나가 할 수 있어야 하는 일.
+ *
+ * 규격 §27 이 이름을 다섯 개로 적어 두었고 여기가 그 다섯이다.
+ * `createCheckout`(결제창 값) · `getPaymentStatus`(상태 조회) ·
+ * `verifyPayment`(서버 확정 전 검증) · `handleWebhook`(웹훅 검증) ·
+ * `refundPayment`(환불 집행).
+ *
+ * **상태 조회와 검증을 한 함수로 합치지 않는다.** 조회는 지금 상태를
+ * 묻는 것이고, 검증은 "이 결제가 이 주문의 금액과 통화로 승인됐는가" 를
+ * 묻는 것이다. 합치면 부르는 쪽이 금액 대조를 잊어도 통과한다.
+ */
 export interface PaymentProvider {
   readonly name: string;
+
+  /** 이 대행사가 받을 수 있는 시장. 비어 있으면 아직 고르지 않았다 */
+  readonly markets: readonly PayRegion[];
+
   /** 결제창을 띄우기 위한 값. 서버가 만든 주문에서만 나온다 */
-  ticket(input: {
+  createCheckout(input: {
     orderNo: string;
     orderName: string;
     amount: number;
@@ -60,8 +81,31 @@ export interface PaymentProvider {
   }): Promise<CheckoutTicket>;
 
   /** PG 에 직접 물어본다. 리다이렉트 파라미터는 믿지 않는다 */
-  fetchPayment(providerPaymentId: string): Promise<PaymentFact>;
+  getPaymentStatus(providerPaymentId: string): Promise<PaymentFact>;
+
+  /**
+   * 이 결제가 **이 주문**의 금액과 통화로 승인됐는가.
+   *
+   * 기본 구현을 두지 않는다. 대행사마다 돌려주는 통화 표기가 다르고,
+   * 그 차이를 공통 코드에 숨기면 어느 대행사에서 대조가 느슨해졌는지
+   * 모른다.
+   */
+  verifyPayment(input: {
+    providerPaymentId: string;
+    expectAmount: number;
+    expectCurrency: string;
+  }): Promise<{ ok: true; fact: PaymentFact } | { ok: false; reason: string }>;
 
   /** 웹훅 서명을 검증하고 어떤 결제에 대한 것인지만 알려준다 */
-  verifyWebhook(rawBody: string, headers: Record<string, string>): Promise<WebhookResult>;
+  handleWebhook(rawBody: string, headers: Record<string, string>): Promise<WebhookResult>;
+
+  /**
+   * 환불을 집행한다. **얼마를 돌려줄지는 여기서 정하지 않는다**:
+   * 그 판단은 `src/lib/refund.ts` 의 `refundable()` 한 곳이다.
+   */
+  refundPayment(input: {
+    providerPaymentId: string;
+    amount: number;
+    reason: string;
+  }): Promise<RefundResult>;
 }

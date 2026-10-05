@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { currentUser } from "@/lib/session";
 import { resolveLang } from "@/lib/locale-server";
-import { catalogFor, sellable, type CatalogItem, type Tier } from "@/lib/catalog";
+import {
+  catalogFor, priceState, sellable, type CatalogItem, type Tier,
+} from "@/lib/catalog";
 import { money, resolveMarket } from "@/lib/market";
 import { itemsFor } from "@/lib/me-v2/bank";
 import { openGrants } from "@/lib/me-v2/attempt";
@@ -29,9 +31,12 @@ const WHAT: Record<Tier, TxKey> = {
  * 읽어 굳힌다. 그래서 `?market=` 으로 시장을 바꿔도 남의 가격으로 결제되지
  * 않는다.
  *
- * **값이 0 인 등급은 '무료' 로 적지 않는다.** 0 은 승인된 가격이 아직 없다는
- * 뜻이다. 그 자리에는 정해지지 않았다고 적고 단추는 운영 결제가 꺼져 있을
- * 때만 열린다.
+ * **값 자리에 세 가지 가운데 하나를 적는다**(`catalog.priceState`).
+ * 승인된 가격이면 금액, 승인된 0원이면 '무료', 아직 못 정했으면
+ * `PRICE_NOT_APPROVED`. 예전에는 뒤의 둘이 같은 문구를 받았는데, 그러면
+ * 무료 구간에 "값이 정해지지 않았습니다" 가 떠서 공짜로 풀 수 있다는 것을
+ * 아무도 모르고, 반대로 못 정한 값이 '무료' 로 읽히면 파는 쪽이 공짜로
+ * 약속한 셈이 된다.
  */
 export default async function PricingPage({
   searchParams,
@@ -115,20 +120,31 @@ export default async function PricingPage({
 function TierCard({
   p, lang, T,
 }: { p: CatalogItem; lang: "ko" | "en"; T: ReturnType<typeof txer> }) {
+  const state = priceState(p);
   const label = money(p.amount, p.currency, lang);
   const ok = sellable(p);
   const n = itemsFor(p.tier).length;
   return (
     <article className={p.tier === "STANDARD" ? "pxtier is-mid" : "pxtier"}>
       <h2>{p.tier}</h2>
-      {label ? (
+      {state === "PRICE_APPROVED" && label ? (
         <p className="pxprice">
           {label}
           <small>{p.currency === "KRW" ? T("pxOnceVat") : T("pxOnce")}</small>
         </p>
+      ) : state === "FREE" ? (
+        <p className="pxprice">
+          {T("pxFreeTier")}
+          <small>{T("pxFreeTierWhy")}</small>
+        </p>
       ) : (
-        /* 금액을 지어내지 않는다. 비어 있는 것을 비어 있다고 적는다 */
-        <p className="pxtbd">{T("pxFree")}</p>
+        /* 금액을 지어내지 않는다. 비어 있는 것을 비어 있다고 적는다.
+           **상태 이름을 화면에도 남긴다**: 운영자가 캡처 한 장으로
+           '0원으로 팔리는 중' 과 '아직 승인 안 됨' 을 가를 수 있다 */
+        <p className="pxtbd" data-price-state="PRICE_NOT_APPROVED">
+          {T("pxPriceNotApproved")}
+          <small>{T("pxPriceNotApprovedWhy")}</small>
+        </p>
       )}
       <p className="pxwhat">{T(WHAT[p.tier])}</p>
       <p className="pxq">{n.toLocaleString()} {T("pxQuestions")}</p>

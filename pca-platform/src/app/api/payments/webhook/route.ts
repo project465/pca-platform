@@ -20,7 +20,7 @@ export async function POST(req: Request) {
   });
 
   const provider = paymentProvider();
-  const result = await provider.verifyWebhook(raw, headers);
+  const result = await provider.handleWebhook(raw, headers);
 
   await query(
     `INSERT INTO payment_events (provider, event_id, kind, payload)

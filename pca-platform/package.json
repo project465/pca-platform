@@ -61,7 +61,9 @@
     "i18n:parity": "node scripts/i18n-parity.mjs",
     "i18n:coverage": "node scripts/i18n-coverage.mjs",
     "global:check": "tsx scripts/global-check.ts",
-    "domains:audit": "node scripts/domains-audit.mjs"
+    "domains:audit": "node scripts/domains-audit.mjs",
+    "db:phase2_1": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 -f db/schema_phase2_1.sql",
+    "commercial:check": "tsx scripts/commercial-check.ts"
   },
   "dependencies": {
     "@types/nodemailer": "^8.0.1",

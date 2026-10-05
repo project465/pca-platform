@@ -57,7 +57,7 @@ const ALLOWED = new Set([
   "marketing/src/lib/domains.ts",
   /* 주소를 재 보는 검사와 이 감사 자신 */
   "scripts/domains-check.mjs", "scripts/domains-audit.mjs",
-  "scripts/platform-check.mjs",
+  "scripts/platform-check.mjs", "scripts/commercial-check.ts",
   /* 손으로 고치는 정적 페이지. 모듈이 없어서 글자로 적는다 */
   "sites/careermetri/imweb-en/16-markets.html",
   "sites/metri-plus/index.html",
@@ -80,8 +80,14 @@ function walk(dir, out) {
   return out;
 }
 
+/* **설계 문서는 두 철자를 같이 적어도 된다.** 철자가 왜 갈렸고 무엇을
+   정해야 하는지를 적어 둔 기록이라, 거기서 옛 철자를 지우면 기록이
+   거짓이 된다. 고쳐야 하는 자리는 코드와 원고다 */
+const isRecord = (f) => f.startsWith("docs/");
+
 const hits = { careermatri: [], careermetri: [] };
 for (const f of walk(".", [])) {
+  if (isRecord(f)) continue;
   let text;
   try { text = readFileSync(f, "utf8"); } catch { continue; }
   if (!text.includes("careerm")) continue;
@@ -131,7 +137,7 @@ const hard = [...hits.careermatri, ...hits.careermetri]
   .filter((x) => DOM.test(x.line))
   /* 적어도 되는 자리: 도메인이 사는 한 곳과, 그 자리를 설명하는 문서,
      그리고 주소를 재 보는 검사 */
-  .filter((x) => !ALLOWED.has(x.f) && !x.f.startsWith("docs/") && !x.f.endsWith(".md"));
+  .filter((x) => !ALLOWED.has(x.f) && !x.f.endsWith(".md"));
 console.log(`\n── 도메인을 코드에 박아 둔 자리 ${hard.length}곳 ───────────`);
 for (const h of hard.slice(0, 20)) console.log(`  ${h.f}:${h.n}  ${h.line}`);
 if (hard.length) {

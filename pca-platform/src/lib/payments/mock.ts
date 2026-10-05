@@ -1,5 +1,8 @@
 import { query, queryOne } from "@/lib/db";
-import type { PaymentProvider, PaymentFact, CheckoutTicket, WebhookResult } from "./types";
+import type {
+  PaymentProvider, PaymentFact, CheckoutTicket, WebhookResult, RefundResult,
+} from "./types";
+import { matchesOrder } from "./verify";
 
 /**
  * 심사가 끝나기 전에 흐름 전체를 눌러 보기 위한 가짜 PG.
@@ -22,8 +25,11 @@ export async function markMockPaid(fact: PaymentFact) {
 
 export const mockProvider: PaymentProvider = {
   name: "mock",
+  /* 가짜라서 두 시장을 다 흉내 낸다. 흉내라는 것은 `checkoutReady()` 가
+     운영에서 막는다 */
+  markets: ["domestic", "global"],
 
-  async ticket(input): Promise<CheckoutTicket> {
+  async createCheckout(input): Promise<CheckoutTicket> {
     return {
       provider: "mock",
       providerPaymentId: `mock_${input.orderNo}`,
@@ -36,7 +42,7 @@ export const mockProvider: PaymentProvider = {
     };
   },
 
-  async fetchPayment(providerPaymentId): Promise<PaymentFact> {
+  async getPaymentStatus(providerPaymentId): Promise<PaymentFact> {
     const row = await queryOne<{ payload: PaymentFact }>(
       `SELECT payload FROM payment_events
         WHERE provider = 'mock' AND kind = 'mock_paid' AND event_id = $1`,
@@ -53,12 +59,26 @@ export const mockProvider: PaymentProvider = {
     };
   },
 
-  async verifyWebhook(rawBody): Promise<WebhookResult> {
+  /* 대조는 **한 곳에만 있다**(`verify.ts`). 어댑터마다 적으면 한쪽이
+     느슨해지고, 느슨해진 쪽이 확정 경로면 돈이 통과한다 */
+  async verifyPayment({ providerPaymentId, expectAmount, expectCurrency }) {
+    const fact = await mockProvider.getPaymentStatus(providerPaymentId);
+    const m = matchesOrder(fact, { amount: expectAmount, currency: expectCurrency });
+    return m.ok ? { ok: true, fact } : m;
+  },
+
+  async handleWebhook(rawBody): Promise<WebhookResult> {
     try {
       const body = JSON.parse(rawBody) as { paymentId?: string };
       return { ok: true, eventId: null, providerPaymentId: body.paymentId ?? null };
     } catch {
       return { ok: false, reason: "본문이 JSON 이 아닙니다" };
     }
+  },
+
+  /* 가짜는 돈을 움직이지 않는다. **집행했다고 적지 않는다**: 적으면
+     검사가 환불을 통과시키고, 운영에서 돈이 안 돌아간 것을 아무도 모른다 */
+  async refundPayment({ amount }): Promise<RefundResult> {
+    return { ok: true, providerRefundId: null, amount };
   },
 };

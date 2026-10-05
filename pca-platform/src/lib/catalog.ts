@@ -13,6 +13,24 @@ import { query, queryOne } from "@/lib/db";
 export type Market = "KR" | "GLOBAL";
 export type Tier = "BASIC" | "STANDARD" | "PRO";
 
+/** DB 의 `products.price_status`. 값이 정해졌는가만 말한다 */
+export type PriceStatus = "approved" | "not_approved";
+
+/**
+ * 이 상품의 값이 지금 어떤 상태인가.
+ *
+ * **0 하나로 두 가지를 말하지 않는다.** 예전에는 `amount = 0` 이
+ * '진짜 무료' 와 '아직 값을 못 정했다' 를 동시에 뜻했고, 표에서 둘이
+ * 똑같이 생겼다. 그래서 '0원이면 팔지 않는다' 로 막았더니 **법이
+ * 요구하는 무료 구간까지 닫혔다**(전자상거래법 제17조 제6항의 시용
+ * 장치). 뜻을 칸으로 꺼냈다.
+ *
+ *   PRICE_APPROVED       값이 정해진 유료 상품
+ *   FREE                 승인된 0원. 무료 구간이고 **닫으면 안 된다**
+ *   PRICE_NOT_APPROVED   아직 못 정했다. **0원이라고 적지 않는다**
+ */
+export type PriceState = "PRICE_APPROVED" | "FREE" | "PRICE_NOT_APPROVED";
+
 export type CatalogItem = {
   code: string;
   market: Market;
@@ -22,7 +40,19 @@ export type CatalogItem = {
   currency: string;
   active: boolean;
   assessment_version: string;
+  price_status: PriceStatus;
 };
+
+/** 값의 상태. 화면도 주문도 이 한 함수를 본다 */
+export function priceState(p: {
+  amount: number; price_status?: PriceStatus | null;
+}): PriceState {
+  if (p.price_status === "not_approved") return "PRICE_NOT_APPROVED";
+  /* 칸이 없는 옛 상품은 금액으로 읽는다. **모르면 덜 준다**: 0 인데
+     상태가 비어 있으면 승인된 무료로 보지 않고 미승인으로 본다 */
+  if (p.price_status == null && p.amount <= 0) return "PRICE_NOT_APPROVED";
+  return p.amount > 0 ? "PRICE_APPROVED" : "FREE";
+}
 
 export function isMarket(v: string | undefined | null): v is Market {
   return v === "KR" || v === "GLOBAL";
@@ -32,7 +62,7 @@ export function isMarket(v: string | undefined | null): v is Market {
 export async function catalogFor(market: Market, major = "ME"): Promise<CatalogItem[]> {
   const rows = await query<CatalogItem>(
     `SELECT code, market, tier, major_code, amount, currency, active,
-            assessment_version
+            assessment_version, price_status
        FROM products
       WHERE market = $1 AND major_code = $2 AND active
         AND assessment_version IS NOT NULL
@@ -45,7 +75,7 @@ export async function catalogFor(market: Market, major = "ME"): Promise<CatalogI
 export async function productByCode(code: string): Promise<CatalogItem | null> {
   return queryOne<CatalogItem>(
     `SELECT code, market, tier, major_code, amount, currency, active,
-            assessment_version
+            assessment_version, price_status
        FROM products WHERE code = $1`,
     [code],
   ).catch(() => null);
@@ -54,15 +84,18 @@ export async function productByCode(code: string): Promise<CatalogItem | null> {
 /**
  * 지금 이 상품을 팔아도 되는가.
  *
- * **금액이 0 인 상품은 운영 결제가 켜진 데서 팔지 않는다.** 0 은 '아직 값을
- * 못 정했다' 는 뜻이고(승인된 가격이 없어 지어내지 않았다), 그대로 열어
- * 두면 공짜로 팔리는 상품이 운영에 나간다. 개발·시험에서는 0원 주문이 그냥
- * 지나간다: 그래야 흐름 전체를 사람 없이 한 바퀴 돌 수 있다.
+ * **값이 승인되지 않은 상품은 운영 결제가 켜진 데서 팔지 않는다.** 그대로
+ * 열어 두면 값을 못 정한 상품이 0원으로 팔린다. 개발·시험에서는 지나간다:
+ * 그래야 흐름 전체를 사람 없이 한 바퀴 돌 수 있다.
+ *
+ * **무료 구간은 막지 않는다.** 승인된 0원은 법이 요구하는 시용 장치라,
+ * 여기서 닫으면 유료 상품의 환불 거절이 무효가 된다(전자상거래법 제17조
+ * 제6항: 제공 개시 후 철회를 제한하려면 시험 사용을 제공해야 한다).
  */
 export function sellable(p: CatalogItem): { ok: true } | { ok: false; why: string } {
   if (!p.active) return { ok: false, why: "지금 팔지 않는 상품입니다." };
   const live = process.env.PAYMENTS_PROVIDER === "portone";
-  if (live && p.amount <= 0) {
+  if (live && priceState(p) === "PRICE_NOT_APPROVED") {
     return { ok: false, why: "가격이 정해지지 않은 상품입니다." };
   }
   return { ok: true };

@@ -1,6 +1,9 @@
 import { randomBytes } from "node:crypto";
 import { query, queryOne, tx } from "@/lib/db";
-import { paymentProvider, type CheckoutTicket, type PaymentFact, type PayRegion } from "@/lib/payments";
+import {
+  matchesOrder, paymentProvider,
+  type CheckoutTicket, type PaymentFact, type PayRegion,
+} from "@/lib/payments";
 import { enqueue } from "@/lib/outbox";
 
 export type Product = {
@@ -87,7 +90,7 @@ export async function startCheckout(
   );
   if (!order) throw new Error("주문을 만들지 못했습니다.");
 
-  const ticket = await paymentProvider().ticket({
+  const ticket = await paymentProvider().createCheckout({
     orderNo,
     orderName: orderName(product.code),
     amount: product.amount,
@@ -139,7 +142,7 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
 
   let fact: PaymentFact;
   try {
-    fact = await provider.fetchPayment(providerPaymentId);
+    fact = await provider.getPaymentStatus(providerPaymentId);
   } catch (e) {
     return { ok: false, reason: e instanceof Error ? e.message : "결제 조회에 실패했습니다." };
   }
@@ -160,14 +163,14 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
     return { ok: false, reason: `결제가 완료되지 않았습니다 (${fact.status}).` };
   }
 
-  // 금액 대조. PG 가 승인한 금액이 주문 금액과 다르면 확정하지 않는다.
-  if (fact.amount !== order.amount) {
+  /* 금액과 통화를 대조한다. **대조는 `payments/verify.ts` 한 곳이다** */
+  const match = matchesOrder(fact, { amount: order.amount, currency: order.currency });
+  if (!match.ok) {
     await query(`UPDATE orders SET status = 'failed' WHERE id = $1`, [order.id]);
-    return {
-      ok: false,
-      reason: `승인 금액이 주문 금액과 다릅니다 (주문 ${order.amount} / 승인 ${fact.amount}).`,
-    };
+    return { ok: false, reason: match.reason };
   }
+  const paidCur = (fact.currency || "").trim().toUpperCase();
+  const wantCur = (order.currency || "").trim().toUpperCase();
 
   const product = await getProduct(order.product_code);
   const seatCount = product?.seat_count ?? 1;
@@ -208,9 +211,11 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
     }
 
     await c.query(
-      `INSERT INTO payments (order_id, provider, provider_payment_id, status, amount, method, raw)
-       VALUES ($1, $2, $3, 'paid', $4, $5, $6)`,
-      [order.id, provider.name, fact.providerPaymentId, fact.amount, fact.method ?? null, fact.raw],
+      `INSERT INTO payments
+         (order_id, provider, provider_payment_id, status, amount, currency, method, raw)
+       VALUES ($1, $2, $3, 'paid', $4, $5, $6, $7)`,
+      [order.id, provider.name, fact.providerPaymentId, fact.amount,
+       paidCur || wantCur || null, fact.method ?? null, fact.raw],
     );
 
     await c.query(

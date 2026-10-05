@@ -4,9 +4,11 @@ import type {
   PaymentFact,
   CheckoutTicket,
   WebhookResult,
+  RefundResult,
   PaymentStatus,
   PayRegion,
 } from "./types";
+import { matchesOrder } from "./verify";
 
 /**
  * PortOne V2.
@@ -77,8 +79,13 @@ type PortOnePayment = {
 
 export const portoneProvider: PaymentProvider = {
   name: "portone",
+  /* 국내는 채널이 정해졌고 해외는 채널 값이 채워졌을 때만 열린다.
+     **없는 것을 켜 두지 않는다** */
+  get markets(): readonly PayRegion[] {
+    return globalChannelReady() ? ["domestic", "global"] : ["domestic"];
+  },
 
-  async ticket(input): Promise<CheckoutTicket> {
+  async createCheckout(input): Promise<CheckoutTicket> {
     return {
       provider: "portone",
       // paymentId 는 영문·숫자만 40자 이내. 주문번호를 그대로 쓴다
@@ -94,7 +101,7 @@ export const portoneProvider: PaymentProvider = {
     };
   },
 
-  async fetchPayment(providerPaymentId): Promise<PaymentFact> {
+  async getPaymentStatus(providerPaymentId): Promise<PaymentFact> {
     const res = await fetch(`${API}/payments/${encodeURIComponent(providerPaymentId)}`, {
       headers: { Authorization: `PortOne ${env("PORTONE_API_SECRET")}` },
       cache: "no-store",
@@ -117,10 +124,58 @@ export const portoneProvider: PaymentProvider = {
   },
 
   /**
+   * 이 결제가 이 주문의 금액과 통화로 승인됐는가.
+   *
+   * **통화를 반드시 본다.** PortOne 의 통화는 `KRW` · `USD` 처럼 오는데,
+   * 금액만 대조하면 USD 29 가 KRW 29 주문을 확정시킨다. 숫자가 같아서
+   * 금액 대조를 그대로 통과한다.
+   */
+  /* 대조는 **한 곳에만 있다**(`verify.ts`). 어댑터마다 적으면 한쪽이
+     느슨해지고, 느슨해진 쪽이 확정 경로면 돈이 통과한다 */
+  async verifyPayment({ providerPaymentId, expectAmount, expectCurrency }) {
+    const fact = await portoneProvider.getPaymentStatus(providerPaymentId);
+    const m = matchesOrder(fact, { amount: expectAmount, currency: expectCurrency });
+    return m.ok ? { ok: true, fact } : m;
+  },
+
+  /**
+   * 환불 집행.
+   *
+   * **얼마를 돌려줄지는 여기서 정하지 않는다**: 그 판단은
+   * `src/lib/refund.ts` 의 `refundable()` 한 곳이고, 여기는 그 금액을
+   * PG 에 넘긴다. 둘을 합치면 환불선이 두 곳에서 정해진다.
+   */
+  async refundPayment({ providerPaymentId, amount, reason }): Promise<RefundResult> {
+    const res = await fetch(
+      `${API}/payments/${encodeURIComponent(providerPaymentId)}/cancel`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `PortOne ${env("PORTONE_API_SECRET")}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ amount, reason }),
+        cache: "no-store",
+      },
+    );
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      return { ok: false, reason: `PortOne 환불 실패 (${res.status}) ${body.slice(0, 200)}` };
+    }
+    const body = (await res.json().catch(() => null)) as
+      { cancellation?: { id?: string; totalAmount?: number } } | null;
+    return {
+      ok: true,
+      providerRefundId: body?.cancellation?.id ?? null,
+      amount: body?.cancellation?.totalAmount ?? amount,
+    };
+  },
+
+  /**
    * Standard Webhooks 규격이다. 서명 대상은 `{id}.{timestamp}.{body}` 이고
    * 시크릿은 base64 다. 타이밍 공격을 피하려고 timingSafeEqual 로 비교한다.
    */
-  async verifyWebhook(rawBody, headers): Promise<WebhookResult> {
+  async handleWebhook(rawBody, headers): Promise<WebhookResult> {
     const id = headers["webhook-id"];
     const ts = headers["webhook-timestamp"];
     const sig = headers["webhook-signature"];

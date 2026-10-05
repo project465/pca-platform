@@ -163,7 +163,23 @@ export const TX = {
     "Evidence architecture, research ownership, organization value, next evidence project, 30/90/365 plan",
   ),
   pxBuy: p("시작하기", "Get started"),
-  pxFree: p("값이 아직 정해지지 않았습니다", "Price not set yet"),
+  /* **세 상태를 한 문구로 적지 않는다.** 승인된 0원(무료 구간)과 값을
+     아직 못 정한 것은 다른 말이어야 한다. 전에는 둘 다 이 한 줄을
+     받았는데, 무료 구간에 "값이 아직 정해지지 않았습니다" 가 뜨면 공짜로
+     풀 수 있다는 것을 아무도 모른다 */
+  pxPriceNotApproved: p(
+    "값이 아직 승인되지 않았습니다",
+    "Price not approved yet",
+  ),
+  pxPriceNotApprovedWhy: p(
+    "정해지면 이 자리에 적습니다. 지어낸 값을 띄우지 않습니다.",
+    "It will appear here once it is set. We do not display an invented figure.",
+  ),
+  pxFreeTier: p("무료", "Free"),
+  pxFreeTierWhy: p(
+    "결제 없이 풀어 보실 수 있습니다.",
+    "You can take it without paying.",
+  ),
   pxQuestions: p("문항", "questions"),
   pxPaySuccess: p("결제가 완료되었습니다.", "Payment complete."),
   pxSignIn: p("로그인", "Sign in"),
