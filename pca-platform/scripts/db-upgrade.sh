@@ -9,6 +9,17 @@ set -euo pipefail
 
 : "${DATABASE_URL:?DATABASE_URL 을 정하십시오}"
 
+# **빈 DB 에 쓰지 않는다.** 여기 있는 파일은 전부 ALTER 라, 표가 없는
+# DB 에 부으면 첫 줄에서 멈춘다. 그 실패를 "업그레이드가 깨졌다" 로
+# 읽으면 사람이 엉뚱한 데를 고친다.
+have=$(psql "$DATABASE_URL" -tAc \
+  "SELECT count(*) FROM information_schema.tables WHERE table_schema='public'")
+if [ "${have:-0}" -eq 0 ]; then
+  echo "이 DB 는 비어 있습니다. 올릴 것이 없습니다." >&2
+  echo "처음 세우는 자리라면: bash scripts/db-init.sh" >&2
+  exit 1
+fi
+
 run() { echo; echo "── $*"; "$@"; }
 
 run npm run -s db:phase2
@@ -22,5 +33,7 @@ run npm run -s v2:build
 run npm run -s value:build
 run npm run -s metri:items
 
+echo
+bash deploy/ops/db-verify.sh
 echo
 echo "올렸습니다. 막힌 것은 `npm run launch:check` 가 셉니다."

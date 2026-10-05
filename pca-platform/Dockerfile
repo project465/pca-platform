@@ -16,6 +16,19 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 
+# **DB 를 세우는 두 스크립트만 한 덩이로 묶는다.**
+#
+# 운영 이미지에 개발 의존성을 통째로 넣지 않는다. 그런데 DB 를 세우려면
+# TypeScript 로 적힌 둘(`make-admin` · `seed-instrument`)이 필요하다.
+# 개발 의존성이 다 있는 이 층에서 미리 묶어 두면, 밖에서는 node 하나로
+# 돈다. `pg` 는 이미 standalone 에 들어 있으니 묶지 않고 빌려 쓴다.
+RUN npx esbuild scripts/make-admin.ts \
+      --bundle --platform=node --format=cjs --target=node22 \
+      --external:pg --outfile=ops-build/make-admin.cjs \
+ && npx esbuild scripts/metri/seed-instrument.ts \
+      --bundle --platform=node --format=cjs --target=node22 \
+      --external:pg --outfile=ops-build/seed-instrument.cjs
+
 FROM node:22-alpine AS run
 WORKDIR /app
 # HOSTNAME 을 못 박는다. 도커는 이 값을 컨테이너 ID 로 채워 두는데,
@@ -36,7 +49,11 @@ ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 PORT=3000 HOSTNAME=0.0.0.0
 #   font-noto-cjk   한글. 없으면 결과지가 네모로 찍힌다
 #   fonts-ko.conf   WenQuanYi 같은 중국어 글꼴이 같이 깔렸을 때 fontconfig
 #                   가 `lang=ko` 에도 그쪽을 먼저 고르는 것을 막는다
-RUN apk add --no-cache chromium nss freetype harfbuzz font-noto-cjk ca-certificates su-exec
+# postgresql-client 와 bash 는 **DB 를 세울 때만** 쓴다. 앱은 쓰지 않는다.
+# 넣어 두는 까닭: 이 이미지 밖에서 DB 를 세우려면 사람 PC 에 psql 과
+# node 를 깔아야 하고, 그러면 복구할 때마다 그 PC 가 있어야 한다.
+RUN apk add --no-cache chromium nss freetype harfbuzz font-noto-cjk ca-certificates su-exec \
+      postgresql-client bash
 ENV CHROMIUM_PATH=/usr/bin/chromium-browser \
     PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
     REPORT_PDF_DIR=/app/var/reports
@@ -48,6 +65,15 @@ COPY --from=build --chown=metri:nodejs /app/.next/static ./.next/static
 COPY --from=build --chown=metri:nodejs /app/public ./public
 # 스키마와 시드는 컨테이너 안에 둔다. 처음 띄울 때 psql 로 부어 쓴다
 COPY --from=build --chown=metri:nodejs /app/db ./db
+# **DB 를 세우는 길.** 앱이 뜰 때 돌지 않는다 — 사람이 `npm run db:init` 을
+# 쳐야만 돈다. 여기 적힌 package.json 은 standalone 이 넣어 둔 것을 덮는데,
+# 그 안의 스크립트는 개발 의존성을 전제해서 이 이미지에서는 어차피 돌지
+# 않는다. **시드와 시연 자료는 적지 않는다**: 적을 자리가 없으면 실수로도
+# 안 돈다.
+COPY --from=build --chown=metri:nodejs /app/ops-build ./ops
+COPY --from=build --chown=metri:nodejs /app/data/metri/items_pca_me_v1.json ./data/metri/
+COPY --chown=metri:nodejs deploy/ops/db-init.sh deploy/ops/db-upgrade.sh deploy/ops/db-verify.sh ./ops/
+COPY --chown=metri:nodejs deploy/ops/package.json ./package.json
 # **결과지 엔진을 같이 담는다.** 플랫폼이 `/pca/*` 로 이 파일들을 내주고
 # 결과지와 PDF 를 만들 때 불러 쓴다. 빠지면 결과지가 404 로 멈춘다
 COPY --from=build --chown=metri:nodejs /app/sites/pca-platform ./sites/pca-platform

@@ -41,5 +41,7 @@ run npm run -s metri:items
 
 echo
 echo "표와 문항이 섰습니다. **시드와 시연 자료는 넣지 않았습니다.**"
+bash deploy/ops/db-verify.sh
+echo
 echo "운영자 계정은 아래로 하나만 만드십시오:"
 echo "  DATABASE_URL=... npx tsx scripts/make-admin.ts <아이디> <이메일> <이름>"

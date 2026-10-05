@@ -932,8 +932,28 @@ GitHub 에 올리면 Railway 가 받아서 띄우는 구조로 맞췄다. 자세
 ```bash
 npm run db:init      # 빈 운영 DB 처음 한 번
 npm run db:upgrade   # 그 다음 배포마다
+npm run db:verify    # 팔 수 있는 상태인가 (읽기만 한다)
 npm run make:admin   # 운영자 하나
 ```
+
+**같은 네 명령이 컨테이너 안에서도 돈다.** 사람 PC 에 psql 과 node 를
+깔아 두는 것을 전제로 하면 복구할 때마다 그 PC 가 있어야 하고, 없는 날에
+DB 가 깨진다. 운영 이미지에 `postgresql-client` 와 `bash` 만 더하고,
+TypeScript 로 적힌 둘(`make-admin` · `seed-instrument`)은 **빌드 층에서
+esbuild 로 묶어** `/app/ops/*.cjs` 로 넣는다(합쳐 46KB). **개발 의존성을
+통째로 넣지 않는다.** 컨테이너의 `package.json` 은 따로이고
+(`deploy/ops/package.json`) **적는 것은 넷뿐이다**: 시드와 시연 자료는
+적을 자리가 없으면 실수로도 안 돈다.
+
+**앱이 뜰 때 저절로 돌지 않는다.** 띄울 때마다 마이그레이션이 도는
+구조는 배포 한 번이 DB 를 바꾸는 구조이고, 그러면 되돌리기가 배포
+되돌리기로 끝나지 않는다. **파일 하나가 통째로 들어가거나 통째로 안
+들어간다**: 모든 psql 이 `--single-transaction` 이다.
+
+**`make:admin` 이 칸 이름을 틀리고 있었다.** `organizations.name_key` ·
+`type` 과 `memberships.role_code` 를 쓰는데 실제 칸은 `name` ·
+`org_type` · `role` 이다. **계정은 만들어지고 권한만 조용히 안 붙었다**:
+들어가는데 운영 화면이 전부 막힌 상태라 받은 사람은 비밀번호를 의심한다.
 
 `deploy/docker-compose.*.yml` 과 `deploy/Caddyfile` 은 **VPS 를 손으로
 꾸릴 때의 길**이고 Railway 는 그것을 보지 않는다. 지우지 않는 까닭은

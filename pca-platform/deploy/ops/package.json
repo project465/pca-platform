@@ -1,0 +1,12 @@
+{
+  "name": "pca-platform",
+  "version": "0.1.0",
+  "private": true,
+  "_comment": "컨테이너 안에서만 쓰는 package.json. 운영 이미지에는 개발 의존성이 없어서 소스의 스크립트(tsx · 생성기 · 시드)가 그대로 돌지 않는다. 사람이 손으로 돌리는 DB 명령 넷만 남긴다. 시드와 시연 자료는 여기 없다: 적을 자리가 없으면 실수로도 안 돈다.",
+  "scripts": {
+    "db:init": "bash ops/db-init.sh",
+    "db:upgrade": "bash ops/db-upgrade.sh",
+    "db:verify": "bash ops/db-verify.sh",
+    "make:admin": "node ops/make-admin.cjs"
+  }
+}

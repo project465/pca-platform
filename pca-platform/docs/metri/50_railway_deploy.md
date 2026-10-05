@@ -59,6 +59,56 @@ GitHub ──▶ Railway App (Dockerfile)
 `CREATE TABLE` 이라 이미 선 DB 에서는 첫 줄에서 깨지고, 그 깨짐을 보고
 사람이 당황하는 것보다 미리 막는 쪽이 낫다.
 
+## 2-1. DB 를 세우는 자리는 컨테이너 안이다
+
+**사람 PC 에 psql 과 node 를 깔아 두는 것을 전제로 하지 않는다.** 그렇게
+두면 복구할 때마다 그 PC 가 있어야 하고, 없는 날에 DB 가 깨진다. 그래서
+운영 이미지가 제 DB 를 세울 수 있게 해 두었다.
+
+Railway → 서비스 → **Console** 에서 그대로 친다.
+
+```bash
+npm run db:init                                   # 빈 DB 처음 한 번
+npm run make:admin -- <아이디> <이메일> <이름>     # 운영자 하나
+npm run db:verify                                 # 팔 수 있는 상태인가
+
+npm run db:upgrade                                # 이미 선 DB 는 이쪽
+```
+
+**이미지에 개발 의존성을 통째로 넣지 않았다.** `make-admin` 과
+`seed-instrument` 는 TypeScript 라 `tsx` 가 필요한데, 그 둘만 빌드 층에서
+esbuild 로 한 덩이씩 묶어 `/app/ops/*.cjs` 로 넣는다(둘이 합쳐 46KB).
+`pg` 는 standalone 에 이미 있으니 묶지 않고 빌려 쓴다. 밖에서 더해지는
+것은 `postgresql-client` 와 `bash` 뿐이다.
+
+**컨테이너 안의 `package.json` 은 따로다**(`deploy/ops/package.json`).
+standalone 이 넣어 둔 것을 덮는데, 그 안의 스크립트는 개발 의존성을
+전제해서 이 이미지에서는 어차피 돌지 않는다. **적는 것은 넷뿐이고 시드와
+시연 자료는 적지 않는다**: 적을 자리가 없으면 실수로도 안 돈다.
+
+**앱이 뜰 때 저절로 돌지 않는다.** `deploy/entrypoint.sh` 는 이 길을
+모른다. 띄울 때마다 마이그레이션이 도는 구조는 **배포 한 번이 DB 를
+바꾸는 구조**이고, 그러면 되돌리기가 배포 되돌리기로 끝나지 않는다.
+
+**파일 하나가 통째로 들어가거나 통째로 안 들어간다.** 모든 `psql` 이
+`--single-transaction` 이다(`CONCURRENTLY` 를 쓰는 곳이 없어 묶을 수 있다).
+가운데서 끊기면 표 절반만 선 DB 가 남고, 그 상태는 `db:init` 도
+`db:upgrade` 도 맞지 않는 자리가 된다.
+
+**`db:upgrade` 도 빈 DB 를 거절한다.** 여기 있는 파일은 전부 `ALTER` 라
+표가 없는 DB 에 부으면 첫 줄에서 멈춘다. 그 실패를 "업그레이드가 깨졌다"
+로 읽으면 사람이 엉뚱한 데를 고친다.
+
+`npm run db:verify` 는 읽기만 한다. 가격표가 비어 보이는 원인은 거의 늘
+셋 가운데 하나였다: 표가 없다 · 상품이 없다 · **동의문이 없다**. 셋째는
+화면에 안 보이는데 가입을 통째로 되돌린다(`src/lib/consent.ts`).
+
+**`make:admin` 이 칸 이름을 틀리고 있었다.** `organizations.name_key` ·
+`type` 과 `memberships.role_code` 를 쓰는데 실제 칸은 `name` · `org_type` ·
+`role` 이다. 그래서 **계정은 만들어지고 권한만 조용히 안 붙었다**: 들어가는
+데 운영 화면이 전부 막힌 상태라, 받은 사람은 비밀번호를 의심한다. 이제
+붙은 권한을 출력에 적는다.
+
 ## 3. Railway 에서 쓰지 않는 것
 
 `deploy/docker-compose.staging.yml` · `deploy/docker-compose.prod.yml` ·

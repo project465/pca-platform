@@ -44,23 +44,39 @@ async function main() {
     await query(`UPDATE users SET is_demo = false WHERE id = $1`, [u.id]);
   }
 
-  /* 운영사 조직 한 줄과 권한. 없으면 만든다 */
+  /* 운영사 조직 한 줄과 권한. 없으면 만든다.
+   *
+   * **칸 이름을 표에서 확인하고 적는다.** 여기가 한동안 `name_key` ·
+   * `type` · `role_code` · `status` 를 쓰고 있었는데 `organizations` 에는
+   * `name` 과 `org_type` 이, `memberships` 에는 `role` 만 있다. 그래서
+   * 계정은 만들어지고 **권한만 조용히 안 붙었다**: 들어가지는데 운영
+   * 화면이 전부 막힌 상태라, 받은 사람은 비밀번호를 의심한다. */
   const org = await queryOne<{ id: string }>(
-    `INSERT INTO organizations (code, name_key, country, type, status)
-     VALUES ('VENDOR', 'org.vendor', 'KR', 'vendor', 'active')
+    `INSERT INTO organizations (code, country, org_type, status, name)
+     VALUES ('VENDOR', 'KR', 'company', 'active', '커리어메트리 운영사')
      ON CONFLICT (code) DO UPDATE SET status = 'active'
      RETURNING id::text`,
   );
   if (org) {
     await query(
-      `INSERT INTO memberships (user_id, org_id, role_code, status)
-       VALUES ($1, $2, 'superadmin', 'active')
-       ON CONFLICT (user_id, org_id) DO UPDATE SET role_code = 'superadmin'`,
+      `INSERT INTO memberships (user_id, org_id, role)
+       VALUES ($1, $2, 'superadmin')
+       ON CONFLICT (user_id, org_id, role) DO NOTHING`,
       [u.id, org.id],
     );
+    /* 화면이 이름을 번역표에서 읽는 자리가 있다. 코드가 찍히지 않게 둘 다 적는다 */
+    for (const [lang, value] of [["ko", "커리어메트리 운영사"], ["en", "CareerMatri"]] as const) {
+      await query(
+        `INSERT INTO translations (table_name, row_id, lang, field, value)
+         VALUES ('organizations', $1, $2, 'name', $3)
+         ON CONFLICT (table_name, row_id, lang, field) DO NOTHING`,
+        [org.id, lang, value],
+      ).catch(() => null);
+    }
   }
 
   console.log(`\n운영자 계정을 만들었습니다.\n`);
+  console.log(`  권한      ${org ? "superadmin" : "**못 붙였습니다**"}`);
   console.log(`  아이디    ${loginId}`);
   console.log(`  비밀번호  ${pw}`);
   console.log(`\n**이 비밀번호는 다시 보여 주지 않습니다.** 들어가신 뒤 바꾸십시오.`);
