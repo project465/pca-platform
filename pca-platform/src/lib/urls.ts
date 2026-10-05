@@ -30,6 +30,18 @@ function usable(url: string | null | undefined): string | null {
  * 링크 없는 메일이 낫고, 비어 있는 것은 `launch:check` 가 막는다.
  */
 export async function publicBase(market: "KR" | "GLOBAL" = "KR"): Promise<string | null> {
+  /**
+   * **공개 전 배포본에서는 이 배포본의 주소가 먼저다.**
+   *
+   * `site_configs` 의 정규 주소는 소개 사이트가 설 자리(`careermatri.co.kr`
+   * · `careermatri.com`)인데, 공개 전에는 거기에 플랫폼이 없다. 그 주소로
+   * 메일 링크와 결제 콜백을 보내면 눌러 본 사람이 빈 도메인에 떨어진다.
+   * 실제로 가짜 결제가 그렇게 끊겼다.
+   */
+  if ((process.env.APP_ENV ?? "").toLowerCase() === "staging") {
+    const here = usable(process.env.PLATFORM_URL);
+    if (here) return here;
+  }
   const fromSite = usable(await canonicalFor(market).catch(() => null));
   if (fromSite) return fromSite;
   return usable(process.env.PLATFORM_URL);

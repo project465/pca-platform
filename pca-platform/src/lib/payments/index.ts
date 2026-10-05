@@ -1,5 +1,6 @@
 import type { PaymentProvider, PayRegion } from "./types";
 import { mockProvider } from "./mock";
+import { mockPaymentsAllowed } from "@/lib/env";
 import { portoneProvider } from "./portone";
 
 export * from "./types";
@@ -10,8 +11,16 @@ export { globalChannelReady } from "./portone";
 /**
  * PAYMENTS_PROVIDER 로 고른다. 기본값은 mock 이다.
  *
- * 운영에서 mock 이 켜지면 돈을 안 받고 좌석이 나간다. 그래서 막는다.
- * 설정 실수 하나로 매출이 새는 종류의 사고는 코드가 거절해야 한다.
+ * **운영에서 가짜 결제는 어떤 환경변수로도 열리지 않는다.** 전에는
+ * `NODE_ENV=production` 을 보고 `ALLOW_MOCK_PAYMENTS=yes` 가 그 문을
+ * 열 수 있었는데, 두 가지가 다 틀렸다.
+ *
+ *   1. `NODE_ENV` 는 **빌드가 최적화됐다는 뜻**이지 손님이 돈을 내는
+ *      자리라는 뜻이 아니다. staging 도 똑같이 production 으로 빌드된다
+ *   2. 열쇠가 있는 자물쇠는 언젠가 열린다. 그 한 줄이 운영 설정에 섞여
+ *      들어가면 **돈을 안 받고 이용권이 나간다**
+ *
+ * 그래서 판단을 `APP_ENV` 로 옮기고 문을 없앴다(`src/lib/env.ts`).
  */
 export function paymentProvider(): PaymentProvider {
   const name = process.env.PAYMENTS_PROVIDER ?? "mock";
@@ -19,9 +28,11 @@ export function paymentProvider(): PaymentProvider {
   if (name === "portone") return portoneProvider;
 
   if (name === "mock") {
-    if (process.env.NODE_ENV === "production" && process.env.ALLOW_MOCK_PAYMENTS !== "yes") {
+    if (!mockPaymentsAllowed()) {
       throw new Error(
-        "운영에서 mock 결제를 쓸 수 없습니다. PAYMENTS_PROVIDER=portone 으로 바꾸세요.",
+        "운영(APP_ENV=production)에서는 가짜 결제를 쓸 수 없습니다. " +
+        "PAYMENTS_PROVIDER=portone 으로 바꾸거나, 아직 심사 중이면 " +
+        "APP_ENV=staging 으로 띄우십시오.",
       );
     }
     return mockProvider;

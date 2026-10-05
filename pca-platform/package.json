@@ -47,6 +47,7 @@
     "market:check": "tsx scripts/market-check.ts",
     "demo:check": "tsx scripts/demo-check.ts",
     "dev:setup": "bash scripts/dev-setup.sh",
+    "staging:check": "tsx scripts/staging-check.ts",
     "db:phase2_4": "psql \"$DATABASE_URL\" -f db/schema_phase2_4.sql",
     "db:demo": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 -f db/seed/platform_demo.sql -f db/seed/platform_demo_people.sql",
     "metri:refund": "tsx scripts/metri/refund-check.ts",

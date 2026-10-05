@@ -50,4 +50,4 @@ run npm run -s db:demo
 echo
 echo "끝났습니다. 띄우려면:"
 echo "  DATABASE_URL=\"\$DATABASE_URL\" AUTH_SECRET=\$(openssl rand -base64 48) \\"
-echo "    ALLOW_MOCK_PAYMENTS=yes npx next dev -p 3100"
+echo "    npx next dev -p 3100"

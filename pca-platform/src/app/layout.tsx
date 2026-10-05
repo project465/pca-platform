@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import StagingMark from "@/components/staging-mark";
 import "./globals.css";
 /* CareerMatri 제품 화면의 디자인 시스템. `globals.css` 다음에 와야
    같은 이름이 겹칠 때 이쪽이 이긴다 */
@@ -16,6 +17,8 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
+        {/* 공개 전 배포본이면 쪽마다 그 사실을 적는다 */}
+        <StagingMark />
         {children}
         {/* 결제창 모듈. portone 일 때만 내려보낸다. mock 으로 도는 동안
             외부 스크립트를 붙일 이유가 없다 */}

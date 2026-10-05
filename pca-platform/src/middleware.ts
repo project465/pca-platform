@@ -22,7 +22,46 @@ export const ANON_COOKIE = "cm_a";
  * 화면이 한국어로 돌아가 버린다. 서버 컴포넌트는 렌더 중에 쿠키를 못 쓰므로
  * 여기서 처리한다.
  */
+/**
+ * 공개 전 자물쇠.
+ *
+ * **밖에서 열리지만 아직 손님에게 열지 않은 자리**에 건다. 주소를 아는
+ * 사람만 막는 것은 자물쇠가 아니다: 검색엔진이 먼저 찾아내고, 찾아낸
+ * 자리에 가짜 결제가 열려 있다.
+ *
+ * 비밀번호를 **코드에 적지 않는다**. `STAGING_BASIC_AUTH` 가 비어 있으면
+ * 자물쇠가 아예 없는 것이고, 그 사실은 `staging:check` 가 센다.
+ *
+ * `/api/health` 는 뺀다: 앞단이 살아 있는지 물어보는 자리라 열쇠를
+ * 들고 다니지 않는다.
+ */
+function gateFails(req: NextRequest): NextResponse | null {
+  if ((process.env.APP_ENV ?? "").toLowerCase() !== "staging") return null;
+  const raw = (process.env.STAGING_BASIC_AUTH ?? "").trim();
+  if (!raw.includes(":")) return null;
+  if (req.nextUrl.pathname === "/api/health") return null;
+
+  const sent = req.headers.get("authorization") ?? "";
+  if (sent.startsWith("Basic ")) {
+    let decoded = "";
+    try { decoded = atob(sent.slice(6)); } catch { decoded = ""; }
+    if (decoded === raw) return null;
+  }
+  return new NextResponse("공개 전입니다.", {
+    status: 401,
+    headers: {
+      "WWW-Authenticate": 'Basic realm="CareerMatri staging", charset="UTF-8"',
+      /* **검색엔진에 올리지 않는다.** 자물쇠를 풀어 준 뒤에도 마찬가지라
+         아래 응답 헤더에도 같은 것을 붙인다 */
+      "X-Robots-Tag": "noindex, nofollow",
+    },
+  });
+}
+
 export function middleware(req: NextRequest) {
+  const blocked = gateFails(req);
+  if (blocked) return blocked;
+
   const lang = req.nextUrl.searchParams.get("lang");
   const market = req.nextUrl.searchParams.get("market");
   const needLang = isLang(lang ?? undefined);
@@ -33,9 +72,12 @@ export function middleware(req: NextRequest) {
   const needMarket = isMarket(market ?? undefined)
     && req.cookies.get(MARKET_COOKIE)?.value !== market;
   const needAnon = !req.cookies.get(ANON_COOKIE);
-  if (!needLang && !needMarket && !needAnon) return NextResponse.next();
+  const staging = (process.env.APP_ENV ?? "").toLowerCase() === "staging";
+  if (!needLang && !needMarket && !needAnon && !staging) return NextResponse.next();
 
   const res = NextResponse.next();
+  /* 공개 전 배포본은 색인하지 않는다 */
+  if (staging) res.headers.set("X-Robots-Tag", "noindex, nofollow");
   if (needLang) {
     res.cookies.set(LANG_COOKIE, lang as string, {
       path: "/",

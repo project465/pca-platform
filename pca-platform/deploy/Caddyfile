@@ -1,0 +1,29 @@
+# HTTPS 를 앞단이 맡는다.
+#
+# **인증서를 손으로 받지 않는다.** Caddy 가 Let's Encrypt 에서 받아 두고
+# 만료 전에 갈아 끼운다. 사람이 날짜를 기억해야 하는 일은 그 날짜에
+# 반드시 잊힌다.
+#
+# `app.careermatri.com` 하나만 받는다. 소개 사이트(`careermatri.com`)는
+# 지금 서 있는 자리를 그대로 두고 **건드리지 않는다.**
+
+app.careermatri.com {
+	encode zstd gzip
+
+	# 공개 전에는 색인하지 않는다. 자물쇠는 앱이 걸지만(`STAGING_BASIC_AUTH`)
+	# 이 머리글은 앞단에서도 한 번 더 붙인다
+	header {
+		X-Robots-Tag "noindex, nofollow"
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+	}
+
+	# 결과지 PDF 는 앱을 거쳐서만 나간다. **앞단에서 파일을 직접 내주지
+	# 않는다**: 주소만 알면 열리는 자리에 두면 번호를 하나씩 올려 남의
+	# 결과지를 받아 갈 수 있다
+	reverse_proxy app:3000 {
+		health_uri /api/health
+		health_interval 15s
+	}
+}

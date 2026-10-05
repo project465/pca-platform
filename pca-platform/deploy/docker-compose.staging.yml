@@ -1,0 +1,75 @@
+# 공개 전 시험 배포. 한 대에 올리는 가장 작은 구성.
+#
+#   cp .env.staging.example .env.staging   # 값을 채운다
+#   docker compose -f deploy/docker-compose.staging.yml --env-file .env.staging up -d
+#   docker compose -f deploy/docker-compose.staging.yml exec -T app npm run dev:setup
+#
+# **운영과 파일을 나눠 둔다.** 한 파일을 돌려 쓰면 어느 날 운영에 가짜
+# 결제가 켜져 있다. 운영은 `deploy/docker-compose.prod.yml` 이다.
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: metri
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD 를 정하십시오}
+      POSTGRES_DB: metri
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U metri -d metri"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    # 밖으로 열지 않는다. 앱만 같은 네트워크에서 붙는다
+    expose: ["5432"]
+
+  app:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: [../.env.staging]
+    environment:
+      DATABASE_URL: postgres://metri:${POSTGRES_PASSWORD}@db:5432/metri
+      # **이 한 줄이 가짜 결제의 문을 연다.** 운영에서는 production 이다
+      APP_ENV: staging
+    volumes:
+      # 결과지 PDF. **컨테이너 안에 두지 않는다**: 다시 띄우면 사라진다
+      - reports:/app/var/reports
+    depends_on:
+      db: { condition: service_healthy }
+    expose: ["3000"]
+
+  # HTTPS 와 인증서
+  web:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports: ["80:80", "443:443"]
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddydata:/data
+      - caddyconfig:/config
+    depends_on: [app]
+
+  # 밤 당번. 5분마다 앱을 한 번 두드린다
+  tick:
+    image: curlimages/curl:8.11.1
+    restart: unless-stopped
+    env_file: [../.env.staging]
+    depends_on: [app]
+    entrypoint: ["sh", "-c"]
+    command:
+      - |
+        while true; do
+          curl -fsS -X POST -H "Authorization: Bearer $$OPS_TOKEN" \
+            http://app:3000/api/ops/tick || echo "tick 실패 $$(date -Iseconds)"
+          sleep 300
+        done
+
+volumes:
+  dbdata:
+  reports:
+  caddydata:
+  caddyconfig:

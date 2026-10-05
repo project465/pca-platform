@@ -79,28 +79,36 @@ async function main() {
   const provider = process.env.PAYMENTS_PROVIDER ?? "mock";
   /* **운영에서 mock 이 켜지면 서버가 뜨지 않아야 한다.** 코드가 그렇게
      짜여 있는지 여기서 실제로 불러 본다 */
-  const save = { env: process.env.NODE_ENV, allow: process.env.ALLOW_MOCK_PAYMENTS };
+  /* 판단은 `APP_ENV` 가 한다. **`NODE_ENV` 가 아니다**: 그 값은 빌드가
+     최적화됐다는 뜻이고 staging 도 똑같이 production 으로 빌드된다 */
+  const save = { app: process.env.APP_ENV, allow: process.env.ALLOW_MOCK_PAYMENTS };
   let refused = false;
+  let stagingOpen = false;
   try {
-    /* `process.env.NODE_ENV = ...` 는 쓰기가 막혀 있어서 통째로 바꾼다.
-       **`= undefined` 로 지우지 않는다**: 그러면 문자열 "undefined" 가
-       들어가서 비교가 조용히 틀린다 */
     const env = process.env as Record<string, string | undefined>;
-    env.NODE_ENV = "production";
-    delete env.ALLOW_MOCK_PAYMENTS;
+    env.APP_ENV = "production";
+    /* **열쇠가 있는 자물쇠는 언젠가 열린다.** 옛 열쇠를 꽂아 두고도
+       거절하는지 본다 */
+    env.ALLOW_MOCK_PAYMENTS = "yes";
     const { paymentProvider } = await import("../src/lib/payments");
     try {
       const p = paymentProvider();
       refused = p.name !== "mock";
     } catch { refused = true; }
+
+    /* staging 에서는 열려야 한다. 안 열리면 공개 전 QA 를 못 한다 */
+    env.APP_ENV = "staging";
+    try { stagingOpen = paymentProvider().name === "mock"; } catch { stagingOpen = false; }
   } finally {
     const env = process.env as Record<string, string | undefined>;
-    if (save.env === undefined) delete env.NODE_ENV; else env.NODE_ENV = save.env;
+    if (save.app === undefined) delete env.APP_ENV; else env.APP_ENV = save.app;
     if (save.allow === undefined) delete env.ALLOW_MOCK_PAYMENTS;
     else env.ALLOW_MOCK_PAYMENTS = save.allow;
   }
   ok("운영에서 가짜 결제가 거절된다", refused,
-    "src/lib/payments/index.ts 의 paymentProvider");
+    "APP_ENV=production 에서는 옛 열쇠(ALLOW_MOCK_PAYMENTS)로도 안 열린다");
+  ok("staging 에서는 가짜 결제가 열린다", stagingOpen,
+    "공개 전 QA 가 막히면 안 된다");
 
   if (provider === "mock") {
     blocked("PAYMENT", "결제 대행사",
