@@ -528,8 +528,8 @@ window.PCAV2Report = (function () {
       out.push(A(T('업무 방식 자세히'),
         T('<table class="v2gap"><thead><tr><th>축</th><th>기운 쪽</th><th>문항 수</th></tr></thead><tbody>') +
         J.work_mode.profile.map(function (p) {
-          return '<tr><td>' + esc(p.poles.join(' ↔ ')) + '</td>' +
-            '<td>' + esc(p.leaning === null ? T('어느 쪽도 아님') : p.leaning) + '</td>' +
+          return '<tr><td>' + esc(p.poles.map(function (x) { return T(x); }).join(' ↔ ')) + '</td>' +
+            '<td>' + esc(p.leaning === null ? T('어느 쪽도 아님') : T(p.leaning)) + '</td>' +
             '<td>' + (p.items || 2) + '</td></tr>';
         }).join('') + '</tbody></table>',
         T('두 문항으로 잰 축이라 숫자를 붙이지 않습니다. 검증 전까지 ') +

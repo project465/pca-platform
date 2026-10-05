@@ -52,7 +52,7 @@ window.PCAV2Decision = (function () {
   }
   function modeLabel(k) {
     var R = rules();
-    return (R && R.work_mode_labels[k]) ? R.work_mode_labels[k] : k;
+    return (R && R.work_mode_labels[k]) ? T(R.work_mode_labels[k]) : k;
   }
 
   /**

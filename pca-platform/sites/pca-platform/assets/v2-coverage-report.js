@@ -142,7 +142,7 @@ window.PCAV2CoverageReport = (function () {
     return '<div class="card contentcard">' +
       T('<div class="eyebrow">고르기만 하시면 됩니다</div>') +
       '<p class="note" style="margin-top:6px">' +
-      esc((window.PCA_FOLLOWUPS || {}).answer_note || '') + '</p>' +
+      esc(T((window.PCA_FOLLOWUPS || {}).answer_note || '')) + '</p>' +
       gaps.slice(0, 2).map(function (g) {
         return '<div class="cvask"><div class="cvaskh">' + esc(g.label) +
           ' · ' + esc(g.f.title) + '</div>' +

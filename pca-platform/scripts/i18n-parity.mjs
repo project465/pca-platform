@@ -50,9 +50,14 @@ const FILL = (it, fam) => {
   return 4;
 };
 
+/* 응시자가 적은 글은 **옮기지 않는다**. 그것을 지키는지 보려고 한국어
+   과목 이름 하나를 일부러 남겨 둔다. 이 이름은 사전에도 들어 있는
+   낱말이라(전공지식 갈래 이름과 같다), 사전을 아무 데나 들이대면
+   영어 결과지에서 'Mechanics of materials' 로 바뀌어 버린다 */
+const MINE = "재료역학";
 const EVIDENCE = {
   kinds: ["course", "project", "tool"],
-  courses: ["정역학", "재료역학", "유한요소해석"].map((n) => ({ n })),
+  courses: ["Statics", MINE, "Finite element analysis"].map((n) => ({ n })),
   projects: [{
     id: "p1", title: "bracket weight reduction capstone", type: "capstone",
     period: { start: "2025-03", end: "2025-12" }, team_size: "4",
@@ -162,8 +167,13 @@ for (const [tier, stage] of CASES) {
   if (ko.gap !== en.gap) bad.push(`${key} 가장 큰 공백이 언어마다 다르다`);
   if (ko.next !== en.next) bad.push(`${key} 다음 할 일이 언어마다 다르다`);
 
-  /* 3. 영어에 한글이 새지 않는가 */
-  const text = en.html.replace(/<[^>]*>/g, " ");
+  /* 3. 영어에 한글이 새지 않는가.
+     **응시자가 적은 글은 세지 않는다**: 그 글자가 한국어로 남는 것이
+     옳은 동작이라, 세면 고치는 쪽이 사람의 글을 번역하게 된다 */
+  if (en.html.indexOf(MINE) < 0) {
+    bad.push(`${key} 응시자가 적은 과목 이름(${MINE})이 영어 결과지에서 사라졌다`);
+  }
+  const text = en.html.replace(/<[^>]*>/g, " ").split(MINE).join(" ");
   const han = [...new Set((text.match(/[가-힣][가-힣\s·]{0,24}/g) || []))];
   if (han.length) {
     bad.push(`${key} 영어 결과지에 한글이 ${han.length}군데 남았다: ` +

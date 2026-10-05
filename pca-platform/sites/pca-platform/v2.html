@@ -89,15 +89,18 @@
 <script src="data/me-v2.js"></script>
 <!-- 전공지식 · 도구 · 직무군 가치 사슬 · 조직 유형. content/*.json 에서 만든다 -->
 <script src="data/value-data.js"></script>
+<!-- 결과지 두 언어. **엔진보다 먼저 올린다**: 엔진 파일들이 올라오는
+     순간 PCAI18N.T 를 붙들어 두기 때문에, 뒤에 오면 그 파일들은 번역
+     없는 함수를 평생 들고 있게 된다 -->
+<script src="assets/i18n.js"></script>
+<script src="data/report-i18n.js"></script>
+<script src="assets/report-sanitize.js"></script>
 <script src="assets/stage.js"></script>
 <script src="assets/country.js"></script>
 <script src="assets/research.js"></script>
 <script src="assets/evidence.js"></script>
 <script src="assets/readiness.js"></script>
 <script src="assets/evidence-ui.js"></script>
-<script src="assets/i18n.js"></script>
-  <script src="data/report-i18n.js"></script>
-  <script src="assets/report-sanitize.js"></script>
 <script src="assets/value-engine.js"></script>
 <script src="assets/coverage-engine.js"></script>
 <script src="assets/v2-scoring.js"></script>

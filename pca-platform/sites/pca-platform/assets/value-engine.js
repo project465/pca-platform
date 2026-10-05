@@ -131,7 +131,10 @@ window.PCAValue = (function () {
     var table = kind === 'tool' ? ASK_TOOL : ASK_NEXT;
     for (var i = 0; i < rungs.length; i++) {
       if (rungs[i].state !== 'confirmed') {
-        return { rung: rungs[i].id, name: rungs[i].name, questions: table[rungs[i].id] || [] };
+        return {
+          rung: rungs[i].id, name: T(rungs[i].name),
+          questions: DEEP(table[rungs[i].id] || [])
+        };
       }
     }
     return null;
@@ -287,7 +290,7 @@ window.PCAValue = (function () {
       return {
         tool_name: t.name,
         category: c ? c.id : (t.cat || null),
-        category_name: c ? c.n : null,
+        category_name: c ? T(c.n) : null,
         linked_experience_id: exp ? exp.id : null,
         linked_experience: exp ? exp.title : null,
         usage_level: t.level || null,
@@ -337,10 +340,12 @@ window.PCAValue = (function () {
       /* **수강은 노출이지 역량이 아니다.** 쓴 자리가 보여야 known 으로 간다 */
       var conf = byUse.length ? 'known' : (byCourse.length ? 'inferred_from_course' : 'unknown');
       return {
-        domain_id: d.id, label: d.name_ko,
+        domain_id: d.id, label: T(d.name_ko),
+        /* 과목 이름은 응시자가 적은 글이라 **옮기지 않는다** */
         user_evidence: uniq(byUse.concat(byCourse.map(function (c) { return T('수강: ') + c; }))),
         confidence: conf,
-        work: d.work, decisions: d.decisions, outputs: d.outputs, performance: d.performance
+        work: DEEP(d.work), decisions: DEEP(d.decisions),
+        outputs: DEEP(d.outputs), performance: DEEP(d.performance)
       };
     }).filter(Boolean);
   }
@@ -360,15 +365,17 @@ window.PCAValue = (function () {
     var picked = target && target.target_org_type ? orgById(target.target_org_type) : null;
     return {
       selected: picked ? picked.id : null,
-      selected_name: picked ? picked.name_ko : null,
+      selected_name: picked ? T(picked.name_ko) : null,
       note: picked
         ? T('조직 유형은 적합도를 바꾸지 않습니다. 같은 응답이라도 결과물과 성과 기준이 달라집니다.')
         : T('조직 유형을 고르지 않으셨습니다. 네 유형을 나란히 두고 같은 지식이 어떻게 달리 읽히는지 보여 드립니다.'),
       available: ORG.map(function (o) {
         return {
-          id: o.id, name: o.name_ko, one_line: o.one_line,
-          output_types: o.output_types, performance_criteria: o.performance_criteria,
-          what_counts_as_value: o.what_counts_as_value, reads_your_work_as: o.reads_your_work_as
+          id: o.id, name: T(o.name_ko), one_line: T(o.one_line),
+          output_types: DEEP(o.output_types),
+          performance_criteria: DEEP(o.performance_criteria),
+          what_counts_as_value: DEEP(o.what_counts_as_value),
+          reads_your_work_as: DEEP(o.reads_your_work_as)
         };
       }),
       target_organization: null,
@@ -389,7 +396,7 @@ window.PCAValue = (function () {
       var d = domainById(id);
       if (d) aliases = aliases.concat(d.aliases || []);
     });
-    var evShow = fam.evidence_you_can_show || [];
+    var evShow = DEEP(fam.evidence_you_can_show || []);
     return (exps || []).filter(function (x) {
       if (famTools[x.id]) return true;
       var t = low([x.title, x.did, x.decided, arr(x.methods).join(' '),
@@ -432,7 +439,7 @@ window.PCAValue = (function () {
     var shown = mine.length ? low(mine.map(function (x) {
       return [x.title, x.did, x.decided, arr(x.outputs).join(' '), arr(x.methods).join(' ')].join(' ');
     }).join(' ')) : '';
-    var missing = (fam.evidence_you_can_show || []).filter(function (e) {
+    var missing = DEEP(fam.evidence_you_can_show || []).filter(function (e) {
       var head = low(e).split(/[ ·]/)[0];
       return !(head.length >= 2 && shown.indexOf(head) >= 0);
     });
@@ -456,7 +463,7 @@ window.PCAValue = (function () {
          나오면 읽는 사람이 둘을 다른 것으로 읽는다 */
       outputs: DEEP(uniq(variant ? [variant.output].concat(fam.outputs) : fam.outputs)),
       performance_criteria: DEEP(uniq(variant
-        ? s(variant.performance).split(' · ').map(function (x) { return s(x); })
+        ? s(T(variant.performance)).split(' · ').map(function (x) { return s(x); })
             .concat(fam.performance)
         : fam.performance)),
       organizational_value: org ? DEEP(org.what_counts_as_value) : [],
@@ -477,8 +484,8 @@ window.PCAValue = (function () {
       evidence_top_level: best,
       untranslated_evidence: untranslated,
       missing_evidence: missing,
-      next_validation_actions: (fam.check_missing || []).slice(0, 3),
-      org_variants: fam.org_variants || {},
+      next_validation_actions: DEEP((fam.check_missing || []).slice(0, 3)),
+      org_variants: DEEP(fam.org_variants || {}),
       limitations: []
     };
   }
