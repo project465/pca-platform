@@ -18,7 +18,8 @@
     "ME_SYSTEMS_TPM": 0.3,
     "ME_MATERIALS": 0.2
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I want to work on weighing competing requirements and deciding the structure and shape of a product or a part."
   },
   {
    "item_id": "ME_INT_CAE_02",
@@ -33,7 +34,8 @@
     "ME_RND": 0.3,
     "ME_DIGITAL": 0.2
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I want to work on verifying by calculation or simulation whether a design holds up under real load, temperature and flow conditions."
   },
   {
    "item_id": "ME_INT_RND_03",
@@ -47,7 +49,8 @@
     "ME_RESEARCH_SCIENTIST": 0.6,
     "ME_CAE_SIM": 0.2
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I want to work on narrowing down technical problems that have no predetermined answer, using hypotheses and experiments."
   },
   {
    "item_id": "ME_INT_TEST_04",
@@ -60,7 +63,8 @@
     "ME_TEST_VV": 1.0,
     "ME_QUALITY_RELIABILITY": 0.7
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I want to work on testing whether a product or a piece of equipment meets defined criteria, and judging the results."
   },
   {
    "item_id": "ME_INT_MFG_05",
@@ -74,7 +78,8 @@
     "ME_PROCESS": 0.5,
     "ME_EQUIPMENT_MAINT": 0.2
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I want to work on deciding the production sequence, equipment and operating conditions that make a design actually buildable."
   },
   {
    "item_id": "ME_INT_PROC_06",
@@ -89,7 +94,8 @@
     "ME_DIGITAL": 0.3,
     "ME_QUALITY_RELIABILITY": 0.2
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I want to work on reading data from a process already running and changing conditions to improve quality or productivity."
   },
   {
    "item_id": "ME_INT_REL_07",
@@ -103,7 +109,8 @@
     "ME_MATERIALS": 0.4,
     "ME_EQUIPMENT_MAINT": 0.4
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I want to work on tracing the cause when a failure or a defect occurs, and changing the criteria or the structure so it does not recur."
   },
   {
    "item_id": "ME_INT_MAINT_08",
@@ -116,7 +123,8 @@
     "ME_EQUIPMENT_MAINT": 1.0,
     "ME_MANUFACTURING": 0.3
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I want to work on keeping equipment from going down, and finding the cause and restoring it when something does go wrong."
   },
   {
    "item_id": "ME_INT_AUTO_09",
@@ -130,7 +138,8 @@
     "ME_DESIGN_PRODUCT": 0.3,
     "ME_EQUIPMENT_MAINT": 0.2
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I want to work on connecting sensors, motors, controllers and mechanisms so a machine or a robot performs the motion I intend."
   },
   {
    "item_id": "ME_INT_THERM_10",
@@ -144,7 +153,8 @@
     "ME_CAE_SIM": 0.4,
     "ME_RND": 0.2
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I want to work on calculating or measuring heat, fluid and energy flows to improve how a system performs."
   },
   {
    "item_id": "ME_INT_MAT_11",
@@ -158,7 +168,8 @@
     "ME_QUALITY_RELIABILITY": 0.5,
     "ME_RND": 0.2
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I want to work on identifying why a material wears, fails or deforms, and changing the material or the conditions."
   },
   {
    "item_id": "ME_INT_SYS_12",
@@ -171,7 +182,8 @@
     "ME_SYSTEMS_TPM": 1.0,
     "ME_CONSULTING": 0.3
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I want to work on organising how technology, schedule, cost and people relate, so that several teams deliver one result."
   },
   {
    "item_id": "ME_INT_FIELD_13",
@@ -185,7 +197,8 @@
     "ME_CONSULTING": 0.6,
     "ME_EQUIPMENT_MAINT": 0.2
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I want to work on hearing a technical problem from a customer or a site, confirming the cause, and proposing how to apply a solution."
   },
   {
    "item_id": "ME_INT_SCI_14",
@@ -198,7 +211,8 @@
     "ME_RESEARCH_SCIENTIST": 1.0,
     "ME_RND": 0.7
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I want to work on reviewing papers, patents and technical literature to find unsolved problems and shape new research topics."
   },
   {
    "item_id": "ME_INT_DATA_15",
@@ -213,7 +227,8 @@
     "ME_QUALITY_RELIABILITY": 0.3,
     "ME_CAE_SIM": 0.2
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I want to work on organising large sets of measurements, operating data and simulation results to find patterns or anomalies."
   },
   {
    "item_id": "ME_INT_TRADE_16",
@@ -228,7 +243,8 @@
     "ME_RND": 0.4,
     "ME_CONSULTING": 0.3
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I want to work on comparing several technically feasible options against cost, risk, performance and schedule, and settling on one direction."
   },
   {
    "item_id": "ME_EXP_DESIGN_17",
@@ -240,7 +256,8 @@
     "ME_DESIGN_PRODUCT": 1.0,
     "ME_SYSTEMS_TPM": 0.2
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I have set out requirements and then designed the structure or the geometry of a part, a product or a system."
   },
   {
    "item_id": "ME_EXP_SIM_18",
@@ -253,7 +270,8 @@
     "ME_THERMAL_FLUID": 0.4,
     "ME_DIGITAL": 0.2
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I have used analysis, simulation or numerical computation to model real conditions."
   },
   {
    "item_id": "ME_EXP_EXPT_19",
@@ -266,7 +284,8 @@
     "ME_RESEARCH_SCIENTIST": 0.5,
     "ME_TEST_VV": 0.3
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I have set experimental conditions myself and compared the results."
   },
   {
    "item_id": "ME_EXP_CRIT_20",
@@ -278,7 +297,8 @@
     "ME_TEST_VV": 1.0,
     "ME_QUALITY_RELIABILITY": 0.8
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I have defined test or measurement criteria and checked whether the results met them."
   },
   {
    "item_id": "ME_EXP_MAKE_21",
@@ -291,7 +311,8 @@
     "ME_PROCESS": 0.4,
     "ME_EQUIPMENT_MAINT": 0.3
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I have watched a product being built, assembled, machined or produced, and corrected problems as they came up."
   },
   {
    "item_id": "ME_EXP_DATA_22",
@@ -304,7 +325,8 @@
     "ME_PROCESS": 0.5,
     "ME_QUALITY_RELIABILITY": 0.3
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I have organised data to find a cause or a trend."
   },
   {
    "item_id": "ME_EXP_RCA_23",
@@ -317,7 +339,8 @@
     "ME_EQUIPMENT_MAINT": 0.5,
     "ME_MATERIALS": 0.3
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I have separated the cause of a failure, a defect or an error into several candidates and checked them one by one."
   },
   {
    "item_id": "ME_EXP_MECHA_24",
@@ -329,7 +352,8 @@
     "ME_AUTOMATION": 1.0,
     "ME_EQUIPMENT_MAINT": 0.4
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I have connected or tuned sensors, controls, automation equipment or mechanical systems."
   },
   {
    "item_id": "ME_EXP_CROSS_25",
@@ -342,7 +366,8 @@
     "ME_APPLICATIONS_FIELD": 0.4,
     "ME_CONSULTING": 0.3
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I have negotiated technical criteria or schedules with people from another discipline, department or organisation."
   },
   {
    "item_id": "ME_EXP_RECORD_26",
@@ -357,7 +382,8 @@
     "ME_DIGITAL": 0.3,
     "ME_QUALITY_RELIABILITY": 0.3
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I have left project results in a reusable form such as drawings, reports, code, experiment records, prototypes, papers or presentations."
   },
   {
    "item_id": "ME_OWN_METHOD_27",
@@ -366,7 +392,8 @@
    "scale": "ownership",
    "ko-KR": "프로젝트에서 사용할 방법이나 접근 순서를 내가 직접 선택한 적이 있다.",
    "career_family_weights": {},
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I have chosen, myself, the method or the order of approach to use on a project."
   },
   {
    "item_id": "ME_OWN_CHOICE_28",
@@ -375,7 +402,8 @@
    "scale": "ownership",
    "ko-KR": "여러 대안 중 하나를 선택하고 그 이유를 다른 사람에게 설명한 적이 있다.",
    "career_family_weights": {},
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I have chosen one option among several and explained to others why."
   },
   {
    "item_id": "ME_OWN_NEXT_29",
@@ -384,7 +412,8 @@
    "scale": "ownership",
    "ko-KR": "결과가 예상과 달랐을 때 다음에 무엇을 확인할지 내가 정한 적이 있다.",
    "career_family_weights": {},
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I have decided what to check next when a result came out differently from what was expected."
   },
   {
    "item_id": "ME_OWN_PRIOR_30",
@@ -393,7 +422,8 @@
    "scale": "ownership",
    "ko-KR": "시간·장비·재료·예산 중 하나가 부족할 때 무엇을 우선할지 결정한 적이 있다.",
    "career_family_weights": {},
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I have decided what to prioritise when time, equipment, materials or budget ran short."
   },
   {
    "item_id": "ME_OWN_SEQ_31",
@@ -402,7 +432,8 @@
    "scale": "ownership",
    "ko-KR": "내 업무가 다른 사람의 작업과 연결될 때 순서나 조건을 조정한 적이 있다.",
    "career_family_weights": {},
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I have adjusted the sequence or the conditions where my work connected to someone else's."
   },
   {
    "item_id": "ME_OWN_CRIT_32",
@@ -411,7 +442,8 @@
    "scale": "ownership",
    "ko-KR": "결과가 충분한지 판단하기 위한 기준을 직접 정하거나 수정한 적이 있다.",
    "career_family_weights": {},
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I have set or revised the criteria for judging whether a result was good enough."
   },
   {
    "item_id": "ME_OWN_REPLAN_33",
@@ -420,7 +452,8 @@
    "scale": "ownership",
    "ko-KR": "프로젝트 도중 계획이 맞지 않아 방법이나 일정을 바꾼 적이 있다.",
    "career_family_weights": {},
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I have changed the method or the schedule partway through a project when the plan stopped fitting."
   },
   {
    "item_id": "ME_OWN_INTEG_34",
@@ -429,7 +462,8 @@
    "scale": "ownership",
    "ko-KR": "최종 결과를 만들기 위해 여러 사람의 결과를 모아 하나의 결론이나 산출물로 정리한 적이 있다.",
    "career_family_weights": {},
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I have brought several people's results together into one conclusion or deliverable."
   },
   {
    "item_id": "ME_MODE_IND_35",
@@ -440,7 +474,8 @@
    "axis": "IC",
    "pole": 0,
    "career_family_weights": {},
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "When the scope is clear, I am more comfortable organising it and moving ahead on my own than checking in often."
   },
   {
    "item_id": "ME_MODE_COL_36",
@@ -451,7 +486,8 @@
    "axis": "IC",
    "pole": 1,
    "career_family_weights": {},
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I am more comfortable exchanging information as I go and aligning results with others than finishing only my own part."
   },
   {
    "item_id": "ME_MODE_STA_37",
@@ -462,7 +498,8 @@
    "axis": "CS",
    "pole": 1,
    "career_family_weights": {},
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I find it easier to start when the criteria and the procedure are already settled to some degree."
   },
   {
    "item_id": "ME_MODE_CHA_38",
@@ -473,7 +510,8 @@
    "axis": "CS",
    "pole": 0,
    "career_family_weights": {},
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I find a problem more interesting when the method is not fixed and I have to find the direction myself."
   },
   {
    "item_id": "ME_MODE_SPD_39",
@@ -484,7 +522,8 @@
    "axis": "SQ",
    "pole": 0,
    "career_family_weights": {},
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I prefer to settle a direction and act within the schedule even when the information is not complete."
   },
   {
    "item_id": "ME_MODE_QUA_40",
@@ -495,7 +534,8 @@
    "axis": "SQ",
    "pole": 1,
    "career_family_weights": {},
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I prefer to keep time to check the conditions and the results once more before reaching a conclusion."
   },
   {
    "item_id": "ME_LRN_DESIGN_41",
@@ -506,7 +546,8 @@
    "career_family_weights": {
     "ME_DESIGN_PRODUCT": 1.0
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I want to go deeper into design, drawings, tolerances and product development."
   },
   {
    "item_id": "ME_LRN_SIM_42",
@@ -518,7 +559,8 @@
     "ME_CAE_SIM": 1.0,
     "ME_THERMAL_FLUID": 0.4
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I want to go deeper into analysis, simulation and numerical computation."
   },
   {
    "item_id": "ME_LRN_RND_43",
@@ -531,7 +573,8 @@
     "ME_RESEARCH_SCIENTIST": 0.7,
     "ME_TEST_VV": 0.3
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I want to go deeper into experimental design, research methods and R&D work."
   },
   {
    "item_id": "ME_LRN_MFG_44",
@@ -545,7 +588,8 @@
     "ME_QUALITY_RELIABILITY": 0.6,
     "ME_EQUIPMENT_MAINT": 0.6
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I want to go deeper into production, process, quality, equipment and the real manufacturing floor."
   },
   {
    "item_id": "ME_LRN_AUTO_45",
@@ -556,7 +600,8 @@
    "career_family_weights": {
     "ME_AUTOMATION": 1.0
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I want to go deeper into automation, control, robotics and mechatronics."
   },
   {
    "item_id": "ME_LRN_DATA_46",
@@ -567,7 +612,8 @@
    "career_family_weights": {
     "ME_DIGITAL": 1.0
    },
-   "score_direction": "positive"
+   "score_direction": "positive",
+   "en-US": "I want to go deeper into data analysis, programming and digital engineering."
   },
   {
    "item_id": "ME_CTX_DIR_47",
@@ -592,7 +638,24 @@
     "아직 모르겠다"
    ],
    "career_family_weights": {},
-   "scored": false
+   "scored": false,
+   "en-US": "Which career directions would you most like to look into first?",
+   "options-en": [
+    "Product design and development",
+    "Corporate R&D",
+    "Test, evaluation and verification",
+    "Production and process",
+    "Quality and reliability",
+    "Equipment and maintenance",
+    "Automation and robotics",
+    "Data and digital engineering",
+    "Technical planning and PM",
+    "Technical support and consulting",
+    "Public or government research institute",
+    "University and academic research",
+    "Starting a company",
+    "Not sure yet"
+   ]
   },
   {
    "item_id": "ME_CTX_BLOCK_48",
@@ -612,7 +675,19 @@
     "기타"
    ],
    "career_family_weights": {},
-   "scored": false
+   "scored": false,
+   "en-US": "What do you most need to resolve before you can settle on a career direction?",
+   "options-en": [
+    "I do not know which role suits me",
+    "I have a role in mind but not enough experience",
+    "I have the experience but I am not sure I want to keep doing it",
+    "I am weighing whether to go to graduate school",
+    "I am weighing industry against research",
+    "I do not know which of several roles to put first",
+    "I have not decided which country or region to apply to",
+    "I do not know what my applications are missing",
+    "Something else"
+   ]
   }
  ]
 }

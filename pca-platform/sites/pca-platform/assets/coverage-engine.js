@@ -14,11 +14,14 @@
  */
 window.PCACoverage = (function () {
   'use strict';
+  /* 결과지의 두 언어. **글자만 갈리고 판단은 갈리지 않는다**:
+     한국어면 받은 것을 그대로 돌려주므로 한국어 쪽은 손대지 않은 것과 같다 */
+  var T = window.PCAI18N ? window.PCAI18N.T : function (s) { return s; };
 
   var MAP = (window.PCA_EVIDENCE_MAP || {}).families || [];
   var FOLLOW = (window.PCA_FOLLOWUPS || {}).gaps || [];
   var LV = { E0: 0, E1: 1, E2: 2, E3: 3, E4: 4, E5: 5 };
-  var NAME = { E0: '활동', E1: '판단', E2: '산출물', E3: '성과', E4: '조직 가치', E5: '반복 가능성' };
+  var NAME = { E0: T('활동'), E1: T('판단'), E2: T('산출물'), E3: T('성과'), E4: T('조직 가치'), E5: T('반복 가능성') };
 
   function s(v) { return String(v === null || v === undefined ? '' : v).trim(); }
   function low(v) { return s(v).toLowerCase(); }
@@ -91,7 +94,7 @@ window.PCACoverage = (function () {
       var byCourse = [];
       (m.courses || []).forEach(function (c) {
         courses.forEach(function (mine) {
-          if (mine.indexOf(low(c)) >= 0) byCourse.push('수강: ' + c);
+          if (mine.indexOf(low(c)) >= 0) byCourse.push(T('수강: ') + c);
         });
       });
 
@@ -99,7 +102,7 @@ window.PCACoverage = (function () {
       var byTool = [];
       if (m.tool_only_ok) {
         (m.tool_categories || []).forEach(function (c) {
-          if (toolCats[c]) byTool.push('도구: ' + toolCats[c].tool_name);
+          if (toolCats[c]) byTool.push(T('도구: ') + toolCats[c].tool_name);
         });
       }
 
@@ -156,8 +159,8 @@ window.PCACoverage = (function () {
         optional: { confirmed: cnt('optional', 'confirmed'),
                     partial: cnt('optional', 'partial'),
                     not_yet: cnt('optional', 'not_yet') },
-        note: '숫자를 하나로 합치지 않습니다. 선택 영역이 비어 있다고 불리하게 ' +
-          '보지 않습니다.'
+        note: T('숫자를 하나로 합치지 않습니다. 선택 영역이 비어 있다고 불리하게 ') +
+          T('보지 않습니다.')
       },
       /* 다음에 채울 자리. 핵심부터, 그 안에서는 사다리를 덜 요구하는 것부터 */
       priority_gaps: rows.filter(function (r) {
@@ -192,7 +195,7 @@ window.PCACoverage = (function () {
      **임의의 숫자를 과학적 기준처럼 쓰지 않는다.** 여기 셋은 '여럿' 을
      절반으로 잡은 운영상의 선이고, 파일럿 뒤에 다시 본다. */
   function applicationReady(cov, exps) {
-    if (!cov) return { ok: false, reasons: ['자료 없음'], met: [] };
+    if (!cov) return { ok: false, reasons: [T('자료 없음')], met: [] };
     var core = cov.summary.core;
     var half = Math.max(2, Math.ceil(core.total / 2));
     var depths = (exps || []).map(function (x) { return x.top ? LV[x.top.id] : -1; });
@@ -203,18 +206,18 @@ window.PCACoverage = (function () {
 
     var need = [
       { id: 'core', ok: core.confirmed >= half,
-        t: '핵심 영역 ' + half + '개 이상 확인 (지금 ' + core.confirmed + '개)' },
-      { id: 'output', ok: hasOutput, t: '산출물까지 간 경험 하나 이상' },
-      { id: 'performance', ok: hasPerf, t: '기준과 견준 경험 하나 이상' },
-      { id: 'decision', ok: hasDecision, t: '직접 정한 것이 적힌 경험 하나 이상' }
+        t: T('핵심 영역 ') + half + T('개 이상 확인 (지금 ') + core.confirmed + T('개)') },
+      { id: 'output', ok: hasOutput, t: T('산출물까지 간 경험 하나 이상') },
+      { id: 'performance', ok: hasPerf, t: T('기준과 견준 경험 하나 이상') },
+      { id: 'decision', ok: hasDecision, t: T('직접 정한 것이 적힌 경험 하나 이상') }
     ];
     return {
       ok: need.every(function (n) { return n.ok; }),
       met: need.filter(function (n) { return n.ok; }).map(function (n) { return n.t; }),
       reasons: need.filter(function (n) { return !n.ok; }).map(function (n) { return n.t; }),
       max_depth: maxD >= 0 ? Object.keys(LV)[maxD] : null,
-      note: '지원서와 면접에서 설명할 재료가 모였는지를 보는 값입니다. ' +
-        '합격 가능성을 잰 값이 아닙니다.'
+      note: T('지원서와 면접에서 설명할 재료가 모였는지를 보는 값입니다. ') +
+        T('합격 가능성을 잰 값이 아닙니다.')
     };
   }
 

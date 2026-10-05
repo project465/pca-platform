@@ -33,6 +33,9 @@ const out = `/* ME_V2 문항 은행. assessment/ME_V2/*.json 에서 만든다.
 window.PCA_V2_ITEMS = window.PCA_V2_ITEMS || {};
 window.PCA_V2_ITEMS.ME = ${JSON.stringify(bank)};
 window.PCA_V2_FAMILY_NAMES = ${JSON.stringify(names.names, null, 1)};
+/* 영어 이름은 따로 담는다. 같은 칸에 덮어쓰면 한국어 결과지가 영어 직무명을
+   받는다: 바뀌는 것은 글자뿐이고 직무군 키는 두 언어가 같다 */
+window.PCA_V2_FAMILY_NAMES_EN = ${JSON.stringify(names["names-en"] || {}, null, 1)};
 window.PCA_V2_MODE_FIT = ${JSON.stringify(modeFit.major, null, 1)};
 `;
 writeFileSync("sites/pca-platform/data/me-v2.js", out);

@@ -12,7 +12,8 @@
    "ko-KR": "프로젝트 시작 전에 목표를 구체적인 작업 단위로 나눠 본 경험이 있다.",
    "career_family_weights": {},
    "score_direction": "positive",
-   "group": "complex_decision"
+   "group": "complex_decision",
+   "en-US": "I have broken a goal into concrete work items before a project started."
   },
   {
    "item_id": "ME_DEC_DEPEND_70",
@@ -22,7 +23,8 @@
    "ko-KR": "어떤 작업이 먼저 끝나야 다음 작업을 시작할 수 있는지 의존관계를 고려해 일정을 짠 경험이 있다.",
    "career_family_weights": {},
    "score_direction": "positive",
-   "group": "complex_decision"
+   "group": "complex_decision",
+   "en-US": "I have built a schedule that accounts for which task has to finish before the next one can start."
   },
   {
    "item_id": "ME_DEC_TRADE_71",
@@ -32,7 +34,8 @@
    "ko-KR": "시간·비용·성능·정확도처럼 서로 충돌하는 조건 사이에서 우선순위를 정한 경험이 있다.",
    "career_family_weights": {},
    "score_direction": "positive",
-   "group": "complex_decision"
+   "group": "complex_decision",
+   "en-US": "I have set priorities between conditions that pull against each other, such as time, cost, performance and accuracy."
   },
   {
    "item_id": "ME_DEC_RESOURCE_72",
@@ -42,7 +45,8 @@
    "ko-KR": "사용할 장비·데이터·소프트웨어·재료 중 필요한 자원을 직접 정하거나 확보한 경험이 있다.",
    "career_family_weights": {},
    "score_direction": "positive",
-   "group": "complex_decision"
+   "group": "complex_decision",
+   "en-US": "I have decided or secured the equipment, data, software or materials a piece of work needed."
   },
   {
    "item_id": "ME_DEC_GATE_73",
@@ -52,7 +56,8 @@
    "ko-KR": "프로젝트 중간에 결과를 확인하고 계획을 계속할지 바꿀지 판단하는 기준을 사용한 경험이 있다.",
    "career_family_weights": {},
    "score_direction": "positive",
-   "group": "complex_decision"
+   "group": "complex_decision",
+   "en-US": "I have used a criterion partway through a project to judge whether to carry on with the plan or change it."
   },
   {
    "item_id": "ME_DEC_RISK_74",
@@ -62,7 +67,8 @@
    "ko-KR": "문제가 생길 가능성을 미리 생각하고 대안이나 우회 방법을 준비한 경험이 있다.",
    "career_family_weights": {},
    "score_direction": "positive",
-   "group": "complex_decision"
+   "group": "complex_decision",
+   "en-US": "I have thought ahead about what could go wrong and prepared an alternative or a way around it."
   },
   {
    "item_id": "ME_DEC_EXPLAIN_75",
@@ -72,7 +78,8 @@
    "ko-KR": "기술적인 결과를 비전공자 또는 다른 분야 사람도 이해할 수 있도록 설명한 경험이 있다.",
    "career_family_weights": {},
    "score_direction": "positive",
-   "group": "complex_decision"
+   "group": "complex_decision",
+   "en-US": "I have explained a technical result so that a non-specialist or someone from another field could follow it."
   },
   {
    "item_id": "ME_DEC_LIMIT_76",
@@ -82,7 +89,8 @@
    "ko-KR": "프로젝트가 끝난 뒤 결과뿐 아니라 한계와 추가로 확인해야 할 부분까지 정리한 경험이 있다.",
    "career_family_weights": {},
    "score_direction": "positive",
-   "group": "complex_decision"
+   "group": "complex_decision",
+   "en-US": "After a project ended I have written up not only the result but also its limits and what still needs checking."
   },
   {
    "item_id": "ME_OWN_OBJ_77",
@@ -237,7 +245,22 @@
     "기타"
    ],
    "career_family_weights": {},
-   "scored": false
+   "scored": false,
+   "en-US": "What do you most want to get out of this result?",
+   "options-en": [
+    "Which role to put first",
+    "Which industry to put first",
+    "Whether to go to graduate school",
+    "Research roles compared with industry roles",
+    "How to use the experience I already have",
+    "What experience I am missing",
+    "Roles I could move or switch into",
+    "Working abroad",
+    "Portfolio",
+    "Application and interview material",
+    "Applying to research institutes",
+    "Something else"
+   ]
   },
   {
    "item_id": "ME_CTX_ROLE_90",
@@ -252,7 +275,14 @@
     "구체적인 직무명이 있음"
    ],
    "career_family_weights": {},
-   "scored": false
+   "scored": false,
+   "en-US": "Do you have a target role right now?",
+   "options-en": [
+    "No",
+    "Two or more candidates",
+    "One role family",
+    "A specific job title"
+   ]
   },
   {
    "item_id": "ME_CTX_IND_91",
@@ -266,7 +296,13 @@
     "특정 산업이 있음"
    ],
    "career_family_weights": {},
-   "scored": false
+   "scored": false,
+   "en-US": "Do you have a target industry right now?",
+   "options-en": [
+    "No",
+    "Several candidates",
+    "A specific industry"
+   ]
   },
   {
    "item_id": "ME_CTX_COUNTRY_92",
@@ -281,7 +317,14 @@
     "여러 국가를 비교하고 싶다"
    ],
    "career_family_weights": {},
-   "scored": false
+   "scored": false,
+   "en-US": "Do you have a target country right now?",
+   "options-en": [
+    "No, show me the global reference view",
+    "The country I live in now",
+    "Yes, a specific country",
+    "I want to compare several countries"
+   ]
   }
  ]
 }

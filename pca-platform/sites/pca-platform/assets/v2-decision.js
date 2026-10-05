@@ -8,6 +8,9 @@
  */
 window.PCAV2Decision = (function () {
   'use strict';
+  /* 결과지의 두 언어. **글자만 갈리고 판단은 갈리지 않는다**:
+     한국어면 받은 것을 그대로 돌려주므로 한국어 쪽은 손대지 않은 것과 같다 */
+  var T = window.PCAI18N ? window.PCAI18N.T : function (s) { return s; };
 
   function rules() {
     return (window.PCA_V2_ITEMS && window.PCA_V2_ITEMS.ME &&

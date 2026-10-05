@@ -9,6 +9,9 @@
  */
 window.PCAV2ValueReport = (function () {
   'use strict';
+  /* 결과지의 두 언어. **글자만 갈리고 판단은 갈리지 않는다**:
+     한국어면 받은 것을 그대로 돌려주므로 한국어 쪽은 손대지 않은 것과 같다 */
+  var T = window.PCAI18N ? window.PCAI18N.T : function (s) { return s; };
 
   function esc(s) {
     return String(s === null || s === undefined ? '' : s)
@@ -38,11 +41,11 @@ window.PCAV2ValueReport = (function () {
   function has(o) { return o && Object.keys(o.paths || {}).length > 0; }
 
   var CONF = {
-    known: '쓴 자리가 보입니다',
-    inferred_from_course: '수업에서 들으셨습니다',
-    unknown: '아직 걸린 것이 없습니다'
+    known: T('쓴 자리가 보입니다'),
+    inferred_from_course: T('수업에서 들으셨습니다'),
+    unknown: T('아직 걸린 것이 없습니다')
   };
-  var STATE = { confirmed: '확인', partial: '일부', not_yet: '아직' };
+  var STATE = { confirmed: T('확인'), partial: T('일부'), not_yet: T('아직') };
 
   /* ── 1. 전공지식의 실무 전환 ─────────────────────────────────────── */
   function chain(p) {
@@ -61,32 +64,32 @@ window.PCAV2ValueReport = (function () {
       '<div class="eyebrow">' + esc(p.career_family_name) + '</div>' +
       '<p class="vpprob">' + esc(p.problem) + '</p>' +
       '<div class="vpchain">' +
-      step('배운 것',
-        tags(lead.map(function (a) { return a.label; }), 5) || '<span class="note">아직 걸린 과목이 없습니다</span>',
-        known.length ? '쓴 자리가 보이는 지식입니다'
-          : (course.length ? '수업에서 들으신 것입니다. 들었다는 것과 할 수 있다는 것은 다릅니다' : '')) +
+      step(T('배운 것'),
+        tags(lead.map(function (a) { return a.label; }), 5) || T('<span class="note">아직 걸린 과목이 없습니다</span>'),
+        known.length ? T('쓴 자리가 보이는 지식입니다')
+          : (course.length ? T('수업에서 들으신 것입니다. 들었다는 것과 할 수 있다는 것은 다릅니다') : '')) +
       /* **칸마다 셋까지.** 여기 들어오는 것은 낱말이 아니라 문장이라서,
          넷을 넣으면 한 칸이 일곱 줄이 되고 사슬 하나가 종이 두 장을
          먹는다. 전부는 아래 직무 쪽과 부록에 있다 */
-      step('실제 업무', tags(p.work_activities, 3)) +
-      step('기술 판단', tags(p.technical_decisions, 3)) +
-      step('산출물', tags(p.outputs, 3)) +
-      step('조직이 보는 결과', tags(p.performance_criteria, 3),
+      step(T('실제 업무'), tags(p.work_activities, 3)) +
+      step(T('기술 판단'), tags(p.technical_decisions, 3)) +
+      step(T('산출물'), tags(p.outputs, 3)) +
+      step(T('조직이 보는 결과'), tags(p.performance_criteria, 3),
         p.organization_type_name
           ? (p.organization_type_name + (p.organization_type_is_default
-              ? ' 를 기준으로 적었습니다. 조직 유형을 고르시면 이 줄이 바뀝니다.' : ' 기준입니다.'))
+              ? T(' 를 기준으로 적었습니다. 조직 유형을 고르시면 이 줄이 바뀝니다.') : T(' 기준입니다.')))
           : '') +
-      step('현재 내 증거',
+      step(T('현재 내 증거'),
         mine.length
           ? mine.slice(0, 4).map(function (e) {
-              return '<span class="tag">' + (u(e.title) || '(제목 없음)') +
+              return '<span class="tag">' + (u(e.title) || T('(제목 없음)')) +
                 (e.evidence_level_name ? ' · ' + esc(e.evidence_level_name) : '') + '</span>';
             }).join('')
-          : '<span class="note">이 직무에 걸리는 경험이 아직 없습니다</span>') +
-      step('아직 필요한 증거',
+          : T('<span class="note">이 직무에 걸리는 경험이 아직 없습니다</span>')) +
+      step(T('아직 필요한 증거'),
         (p.missing_evidence || []).length
           ? tags(p.missing_evidence, 3)
-          : '<span class="note">적어 주신 범위에서는 비어 있는 것이 없습니다</span>') +
+          : T('<span class="note">적어 주신 범위에서는 비어 있는 것이 없습니다</span>')) +
       '</div>' +
       /* **'다음에 확인할 것' 목록을 여기 다시 적지 않는다.** 할 일은 결과지
          뒤쪽의 ACTION 쪽이 한 번만 말한다. 사슬에도 적으면 같은 할 일이
@@ -116,10 +119,10 @@ window.PCAV2ValueReport = (function () {
     if (!list.length) return '';
     return '<div class="grid">' + list.map(function (x) {
       return '<div class="card contentcard"><div class="eyebrow">' +
-        (u(x.title) || '(제목 없는 경험)') + '</div>' +
+        (u(x.title) || T('(제목 없는 경험)')) + '</div>' +
         '<div class="elbox">' + x.rungs.map(rungRow).join('') + '</div>' +
         (x.next ? '<p class="note" style="margin-top:10px"><b>' + esc(x.next.name) +
-          '까지 가려면</b> ' + esc((x.next.questions || [])[0] || '') + '</p>' : '') +
+          T('까지 가려면</b> ') + esc((x.next.questions || [])[0] || '') + '</p>' : '') +
         '</div>';
     }).join('') + '</div>';
     /* 여기 있던 '낮은 칸이라는 뜻이 아니고…' 한 줄은 뺐다. 이 사다리를
@@ -140,11 +143,11 @@ window.PCAV2ValueReport = (function () {
     ((J.organization_context || {}).available || []).forEach(function (o) { names[o.id] = o.name; });
     return '<div class="grid orggrid">' + keys.map(function (k) {
       return '<div class="card contentcard"><div class="eyebrow">' + esc(names[k] || k) + '</div>' +
-        '<p class="orgline"><b>결과물</b><br>' + esc(variants[k].output) + '</p>' +
-        '<p class="orgline"><b>성과 기준</b><br>' + esc(variants[k].performance) + '</p></div>';
+        T('<p class="orgline"><b>결과물</b><br>') + esc(variants[k].output) + '</p>' +
+        T('<p class="orgline"><b>성과 기준</b><br>') + esc(variants[k].performance) + '</p></div>';
     }).join('') + '</div>' +
-      '<p class="note" style="margin-top:10px">같은 ' + esc(p.career_family_name) +
-      ' 지식이 조직마다 다른 결과로 읽힙니다. 적합도는 조직을 바꿔도 그대로입니다.</p>';
+      T('<p class="note" style="margin-top:10px">같은 ') + esc(p.career_family_name) +
+      T(' 지식이 조직마다 다른 결과로 읽힙니다. 적합도는 조직을 바꿔도 그대로입니다.</p>');
   }
 
   /* ── 4. 아직 성과 언어로 번역되지 않은 경험 ──────────────────────── */
@@ -158,50 +161,50 @@ window.PCAV2ValueReport = (function () {
       /* 제목을 두 번 적지 않는다. '지금 적어 주신 것' 칸이 곧 제목이라,
          위에 머리글로 또 달면 같은 글자가 카드마다 두 번 나온다 */
       return '<div class="card contentcard">' +
-        '<div class="utrow utfirst"><span>지금 적어 주신 것</span><span>' +
-        (u(ue.title) || '(제목 없는 경험)') + '</span></div>' +
-        '<div class="utrow"><span>지금 확인되는 것</span><span>' +
-        esc(ue.confirmed_up_to ? ue.confirmed_up_to.name : '아직 없습니다') +
+        T('<div class="utrow utfirst"><span>지금 적어 주신 것</span><span>') +
+        (u(ue.title) || T('(제목 없는 경험)')) + '</span></div>' +
+        T('<div class="utrow"><span>지금 확인되는 것</span><span>') +
+        esc(ue.confirmed_up_to ? ue.confirmed_up_to.name : T('아직 없습니다')) +
         '</span></div>' +
-        '<div class="utrow"><span>아직 확인되지 않음</span><span>' +
+        T('<div class="utrow"><span>아직 확인되지 않음</span><span>') +
         '<ul class="qlist">' + (ue.follow_up || []).map(function (q) {
           return '<li>' + esc(q) + '</li>'; }).join('') + '</ul></span></div></div>';
     }).join('') + '</div>' +
-      '<p class="note" style="margin-top:10px">경험이 적다는 말이 아닙니다. ' +
-      '겪으신 것 가운데 아직 적지 않으신 칸이 있다는 말입니다.</p>' +
+      T('<p class="note" style="margin-top:10px">경험이 적다는 말이 아닙니다. ') +
+      T('겪으신 것 가운데 아직 적지 않으신 칸이 있다는 말입니다.</p>') +
       /* 화면에서는 단추, 종이에서는 안내 한 줄. **같은 객체를 쓰고 그리는
          법만 다르다**: 인쇄본에 누를 수 없는 단추를 남기지 않는다 */
       '<div class="evnav" style="margin-top:12px"><button type="button" class="primary" ' +
-      'id="btnEvidenceFix">경험 보완하기</button></div>' +
-      '<p class="note rponly">웹 결과지에서 경험 보완하기를 누르시면 이 칸을 ' +
-      '채우실 수 있습니다. 채우신 뒤 결과지를 다시 받으시면 이 자리가 바뀝니다.</p>';
+      T('id="btnEvidenceFix">경험 보완하기</button></div>') +
+      T('<p class="note rponly">웹 결과지에서 경험 보완하기를 누르시면 이 칸을 ') +
+      T('채우실 수 있습니다. 채우신 뒤 결과지를 다시 받으시면 이 자리가 바뀝니다.</p>');
   }
 
   /* ── 5. 도구·기술 증거 ───────────────────────────────────────────── */
-  var TLV = { E0: '사용 경험', E1: '판단까지', E2: '산출물까지', E3: '성과까지', E4: '조직 가치까지' };
+  var TLV = { E0: T('사용 경험'), E1: T('판단까지'), E2: T('산출물까지'), E3: T('성과까지'), E4: T('조직 가치까지') };
   function toolBox(J, deep) {
     var list = J.tool_evidence || [];
     if (!list.length) return '';
     return '<div class="grid">' + list.slice(0, deep ? 12 : 5).map(function (t) {
       var rows = [
-        ['사용 경험', '확인'],
-        ['연결된 경험', u(t.linked_experience) || '연결 안 됨'],
-        ['어디에 썼는가', u(t.usage_purpose) || ''],
-        ['무엇을 판단했는가', u(t.decision_supported) || ''],
-        ['무엇이 남았는가', u(t.output) || ''],
-        ['무엇과 견주었는가', u(t.validation) || '']
+        [T('사용 경험'), T('확인')],
+        [T('연결된 경험'), u(t.linked_experience) || T('연결 안 됨')],
+        [T('어디에 썼는가'), u(t.usage_purpose) || ''],
+        [T('무엇을 판단했는가'), u(t.decision_supported) || ''],
+        [T('무엇이 남았는가'), u(t.output) || ''],
+        [T('무엇과 견주었는가'), u(t.validation) || '']
       ].filter(function (r) { return deep || r[1]; });
       return '<div class="card contentcard"><div class="eyebrow">' +
-        (u(t.tool_name) || '(이름 없는 도구)') +
+        (u(t.tool_name) || T('(이름 없는 도구)')) +
         (t.category_name ? ' · ' + esc(t.category_name) : '') + '</div>' +
         '<div class="toolst">' + esc(TLV[t.evidence_level] || t.evidence_level) + '</div>' +
         '<div class="tooltb">' + rows.map(function (r) {
           return '<div class="toolrow"><span>' + esc(r[0]) + '</span><span>' +
-            (r[1] ? r[1] : '<i class="note">아직 비어 있습니다</i>') + '</span></div>';
+            (r[1] ? r[1] : T('<i class="note">아직 비어 있습니다</i>')) + '</span></div>';
         }).join('') + '</div></div>';
     }).join('') + '</div>' +
-      '<p class="note" style="margin-top:10px">도구 이름만으로는 활동까지입니다. ' +
-      '개수를 점수로 쓰지 않습니다.</p>';
+      T('<p class="note" style="margin-top:10px">도구 이름만으로는 활동까지입니다. ') +
+      T('개수를 점수로 쓰지 않습니다.</p>');
   }
 
   /* ── 6. 비어 있는 증거 ───────────────────────────────────────────── */
@@ -212,12 +215,12 @@ window.PCAV2ValueReport = (function () {
       .filter(function (p) { return p && p.missing_evidence.length; });
     if (!rows.length) return '';
     return '<div class="card contentcard"><table class="v2gap"><thead><tr>' +
-      '<th>직무군</th><th>지금 확인되는 데까지</th><th>아직 비어 있는 것</th></tr></thead><tbody>' +
+      T('<th>직무군</th><th>지금 확인되는 데까지</th><th>아직 비어 있는 것</th></tr></thead><tbody>') +
       rows.map(function (p) {
         return '<tr><td><b>' + esc(p.career_family_name) + '</b></td>' +
           '<td>' + esc(p.evidence_top_level ? (p.evidence_top_level + ' ' +
-            ({ E0: '활동', E1: '판단', E2: '산출물', E3: '성과', E4: '조직 가치', E5: '반복' }[p.evidence_top_level] || ''))
-            : '걸린 경험 없음') + '</td>' +
+            ({ E0: T('활동'), E1: T('판단'), E2: T('산출물'), E3: T('성과'), E4: T('조직 가치'), E5: T('반복') }[p.evidence_top_level] || ''))
+            : T('걸린 경험 없음')) + '</td>' +
           '<td>' + esc(p.missing_evidence.slice(0, 3).join(' · ')) + '</td></tr>';
       }).join('') + '</tbody></table></div>';
   }
@@ -247,16 +250,16 @@ window.PCAV2ValueReport = (function () {
       if (!firstGap && x.next) firstGap = x.next;
     });
     return '<div class="card contentcard">' +
-      '<div class="eyebrow">' + esc(p.career_family_name) + ' 쪽으로 한 건</div>' +
+      '<div class="eyebrow">' + esc(p.career_family_name) + T(' 쪽으로 한 건</div>') +
       '<ul class="qlist">' +
-      '<li><b>무엇을</b> ' + esc(need.length ? need.join(' · ') : (p.outputs || [])[0] || '') +
-      ' 를 남기는 일 한 건</li>' +
-      '<li><b>왜</b> 지금 ' +
-      esc(p.evidence_top_level ? (p.evidence_top_level + ' 까지 확인됩니다') : '걸리는 경험이 없습니다') +
-      '. 그 위 칸이 서류와 면접에서 읽히는 자리입니다</li>' +
-      '<li><b>무엇을 정할 것인가</b> ' + esc((p.technical_decisions || []).slice(0, 3).join(' · ')) + '</li>' +
-      '<li><b>무엇과 견줄 것인가</b> ' + esc((p.performance_criteria || []).slice(0, 3).join(' · ')) + '</li>' +
-      (firstGap ? '<li><b>이미 하신 것부터</b> ' + esc(firstGap.questions[0] || '') + '</li>' : '') +
+      T('<li><b>무엇을</b> ') + esc(need.length ? need.join(' · ') : (p.outputs || [])[0] || '') +
+      T(' 를 남기는 일 한 건</li>') +
+      T('<li><b>왜</b> 지금 ') +
+      esc(p.evidence_top_level ? (p.evidence_top_level + T(' 까지 확인됩니다')) : T('걸리는 경험이 없습니다')) +
+      T('. 그 위 칸이 서류와 면접에서 읽히는 자리입니다</li>') +
+      T('<li><b>무엇을 정할 것인가</b> ') + esc((p.technical_decisions || []).slice(0, 3).join(' · ')) + '</li>' +
+      T('<li><b>무엇과 견줄 것인가</b> ') + esc((p.performance_criteria || []).slice(0, 3).join(' · ')) + '</li>' +
+      (firstGap ? T('<li><b>이미 하신 것부터</b> ') + esc(firstGap.questions[0] || '') + '</li>' : '') +
       '</ul></div>';
   }
 
@@ -269,17 +272,17 @@ window.PCAV2ValueReport = (function () {
     return '<div class="grid">' + list.slice(0, 5).map(function (x) {
       var line = [];
       if (x.decided) line.push(x.decided);
-      if ((x.made || []).length) line.push((x.made || []).slice(0, 2).join(' · ') + ' 를 남김');
-      if ((x.checked_against || []).length) line.push((x.checked_against || [])[0] + ' 와 견줌');
+      if ((x.made || []).length) line.push((x.made || []).slice(0, 2).join(' · ') + T(' 를 남김'));
+      if ((x.checked_against || []).length) line.push((x.checked_against || [])[0] + T(' 와 견줌'));
       return '<div class="card contentcard"><div class="eyebrow">' +
-        (u(x.title) || '(제목 없는 경험)') + '</div>' +
+        (u(x.title) || T('(제목 없는 경험)')) + '</div>' +
         '<p class="cvline">' + line.join(', ') + '</p>' +
-        '<p class="note" style="margin-top:8px"><b>면접에서 받을 질문</b> ' +
-        esc(x.next ? (x.next.questions || [])[0] : '그 판단을 되돌린다면 무엇을 다르게 하시겠습니까') +
+        T('<p class="note" style="margin-top:8px"><b>면접에서 받을 질문</b> ') +
+        esc(x.next ? (x.next.questions || [])[0] : T('그 판단을 되돌린다면 무엇을 다르게 하시겠습니까')) +
         '</p></div>';
     }).join('') + '</div>' +
-      '<p class="note" style="margin-top:10px">한 일보다 직접 정한 것이 먼저 읽힙니다. ' +
-      '위 줄을 그대로 자기소개서 문장으로 옮기셔도 됩니다.</p>';
+      T('<p class="note" style="margin-top:10px">한 일보다 직접 정한 것이 먼저 읽힙니다. ') +
+      T('위 줄을 그대로 자기소개서 문장으로 옮기셔도 됩니다.</p>');
   }
 
   /* ── 10. ValuePath 묶음 (PRO) ────────────────────────────────────── */
@@ -287,15 +290,15 @@ window.PCAV2ValueReport = (function () {
     var vp = J.value_path;
     if (!has(vp)) return '';
     return '<div class="card contentcard"><table class="v2gap"><thead><tr>' +
-      '<th>직무군</th><th>조직 기준</th><th>산출물</th><th>내 증거</th></tr></thead><tbody>' +
+      T('<th>직무군</th><th>조직 기준</th><th>산출물</th><th>내 증거</th></tr></thead><tbody>') +
       vp.order.map(function (fid) {
         var p = vp.paths[fid];
         if (!p) return '';
         return '<tr><td><b>' + esc(p.career_family_name) + '</b></td>' +
-          '<td>' + esc(p.organization_type_name || '고르지 않음') + '</td>' +
+          '<td>' + esc(p.organization_type_name || T('고르지 않음')) + '</td>' +
           '<td>' + esc((p.outputs || []).slice(0, 2).join(' · ')) + '</td>' +
           '<td>' + esc(p.user_evidence.length
-            ? (p.user_evidence.length + '건 · ' + (p.evidence_top_level || '')) : '없음') +
+            ? (p.user_evidence.length + T('건 · ') + (p.evidence_top_level || '')) : T('없음')) +
           '</td></tr>';
       }).join('') + '</tbody></table></div>';
   }

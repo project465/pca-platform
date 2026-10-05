@@ -11,6 +11,9 @@
  */
 window.PCAReadiness = (function () {
   'use strict';
+  /* 결과지의 두 언어. **글자만 갈리고 판단은 갈리지 않는다**:
+     한국어면 받은 것을 그대로 돌려주므로 한국어 쪽은 손대지 않은 것과 같다 */
+  var T = window.PCAI18N ? window.PCAI18N.T : function (s) { return s; };
 
   var RULES = (window.PCA_EVIDENCE_RULES && window.PCA_EVIDENCE_RULES.ME) || null;
 
@@ -32,11 +35,11 @@ window.PCAReadiness = (function () {
     var why = null;
     if (sig.courses) {
       why = hit(ev.coursework, sig.courses);
-      if (why) return { by: '수강: ' + why };
+      if (why) return { by: T('수강: ') + why };
     }
     if (sig.tools) {
       for (var i = 0; i < sig.tools.length; i++) {
-        if (toolCats[sig.tools[i]]) return { by: '도구: ' + toolCats[sig.tools[i]] };
+        if (toolCats[sig.tools[i]]) return { by: T('도구: ') + toolCats[sig.tools[i]] };
       }
     }
     var text = [].concat(
@@ -49,7 +52,7 @@ window.PCAReadiness = (function () {
     }
     if (sig.outputs) {
       why = hit(ev.outputs.concat(ev.publications, ev.patents), sig.outputs);
-      if (why) return { by: '결과물: ' + why };
+      if (why) return { by: T('결과물: ') + why };
     }
     if (sig.project_types) {
       /* 프로젝트 종류는 원본 객체에서만 알 수 있다 */
@@ -124,11 +127,11 @@ window.PCAReadiness = (function () {
      **학위로 배정하지 않는다.** 응시자가 적은 과제에서 근거를 찾아 올린다.
      근거가 없으면 올라가지 않고, 왜 못 올라갔는지를 같이 적는다. */
   var LADDER = [
-    { id: 'RP0', n: '참여' },
-    { id: 'RP1', n: '과업 수행' },
-    { id: 'RP2', n: '과제 덩어리' },
-    { id: 'RP3', n: '과제 설계 참여' },
-    { id: 'RP4', n: '과제 총괄' }
+    { id: 'RP0', n: T('참여') },
+    { id: 'RP1', n: T('과업 수행') },
+    { id: 'RP2', n: T('과제 덩어리') },
+    { id: 'RP3', n: T('과제 설계 참여') },
+    { id: 'RP4', n: T('과제 총괄') }
   ];
 
   function nonEmpty(a) { return Array.isArray(a) ? a.filter(Boolean).length > 0 : !!a; }
@@ -143,31 +146,31 @@ window.PCAReadiness = (function () {
 
       /* RP1. 내 과업을 내가 끌고 갔다 */
       if (filled(r.objective && r.objective.my_objective)) {
-        ev.push({ lv: 1, t: '내가 맡은 목표를 적었다' });
+        ev.push({ lv: 1, t: T('내가 맡은 목표를 적었다') });
       }
       if (nonEmpty(ex.methods) || nonEmpty(ex.experiments) || nonEmpty(ex.simulations)) {
-        ev.push({ lv: 1, t: '쓴 방법을 적었다' });
+        ev.push({ lv: 1, t: T('쓴 방법을 적었다') });
       }
       /* RP2. 덩어리를 맡아 안팎을 맞췄다 */
-      if (nonEmpty(pl.work_packages)) ev.push({ lv: 2, t: '세부 과제를 나눠 적었다' });
-      if (filled(pl.timeline_role)) ev.push({ lv: 2, t: '일정에 관여했다' });
-      if (nonEmpty(pl.milestones)) ev.push({ lv: 2, t: '중간 점검 기준이 있었다' });
-      if (nonEmpty(ex.key_decisions)) ev.push({ lv: 2, t: '직접 고른 지점을 적었다' });
-      if (nonEmpty(tm.collaborating_orgs)) ev.push({ lv: 2, t: '다른 기관과 맞물려 일했다' });
+      if (nonEmpty(pl.work_packages)) ev.push({ lv: 2, t: T('세부 과제를 나눠 적었다') });
+      if (filled(pl.timeline_role)) ev.push({ lv: 2, t: T('일정에 관여했다') });
+      if (nonEmpty(pl.milestones)) ev.push({ lv: 2, t: T('중간 점검 기준이 있었다') });
+      if (nonEmpty(ex.key_decisions)) ev.push({ lv: 2, t: T('직접 고른 지점을 적었다') });
+      if (nonEmpty(tm.collaborating_orgs)) ev.push({ lv: 2, t: T('다른 기관과 맞물려 일했다') });
       /* RP3. 계획서 단계부터 들어갔다 */
-      if (pl.rfp_reviewed === true) ev.push({ lv: 3, t: '공고와 과제요청서를 읽었다' });
-      if (nonEmpty(pl.kpis)) ev.push({ lv: 3, t: '성과지표를 다뤘다' });
-      if (nonEmpty(pl.deliverables)) ev.push({ lv: 3, t: '결과물 목록을 다뤘다' });
-      if (filled(pl.risk_planning)) ev.push({ lv: 3, t: '위험 요인을 적었다' });
+      if (pl.rfp_reviewed === true) ev.push({ lv: 3, t: T('공고와 과제요청서를 읽었다') });
+      if (nonEmpty(pl.kpis)) ev.push({ lv: 3, t: T('성과지표를 다뤘다') });
+      if (nonEmpty(pl.deliverables)) ev.push({ lv: 3, t: T('결과물 목록을 다뤘다') });
+      if (filled(pl.risk_planning)) ev.push({ lv: 3, t: T('위험 요인을 적었다') });
       if (filled(bd.my_budget_role) && ['B3', 'B4', 'B5'].indexOf(bd.my_budget_role) >= 0) {
-        ev.push({ lv: 3, t: '예산 산정에 들어갔다' });
+        ev.push({ lv: 3, t: T('예산 산정에 들어갔다') });
       }
       /* RP4. 끌고 갔다 */
-      if (bd.my_budget_role === 'B5') ev.push({ lv: 4, t: '예산을 맡아 집행했다' });
+      if (bd.my_budget_role === 'B5') ev.push({ lv: 4, t: T('예산을 맡아 집행했다') });
       if (filled(tm.my_role) && /총괄|책임|리드|PI|과제책임/i.test(tm.my_role)) {
-        ev.push({ lv: 4, t: '과제 책임 자리에 있었다' });
+        ev.push({ lv: 4, t: T('과제 책임 자리에 있었다') });
       }
-      if (nonEmpty(ex.plan_changes)) ev.push({ lv: 4, t: '조건이 바뀌었을 때 계획을 고쳤다' });
+      if (nonEmpty(ex.plan_changes)) ev.push({ lv: 4, t: T('조건이 바뀌었을 때 계획을 고쳤다') });
     });
 
     /* 한 칸을 올리려면 그 칸의 근거가 둘 이상 있어야 한다. 하나로 올리면
@@ -178,10 +181,10 @@ window.PCAReadiness = (function () {
     }
     var next = level + 1;
     var NEED = {
-      1: ['내가 맡은 목표', '쓴 방법'],
-      2: ['세부 과제 나누기', '일정 관여', '중간 점검 기준', '직접 고른 지점'],
-      3: ['공고·과제요청서 해석', '성과지표', '결과물 목록', '위험 요인', '예산 산정'],
-      4: ['예산 집행', '과제 책임', '계획 변경 결정']
+      1: [T('내가 맡은 목표'), T('쓴 방법')],
+      2: [T('세부 과제 나누기'), T('일정 관여'), T('중간 점검 기준'), T('직접 고른 지점')],
+      3: [T('공고·과제요청서 해석'), T('성과지표'), T('결과물 목록'), T('위험 요인'), T('예산 산정')],
+      4: [T('예산 집행'), T('과제 책임'), T('계획 변경 결정')]
     };
     return {
       level: LADDER[level].id,

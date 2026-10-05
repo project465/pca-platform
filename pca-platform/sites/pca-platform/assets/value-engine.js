@@ -12,6 +12,9 @@
  */
 window.PCAValue = (function () {
   'use strict';
+  /* 결과지의 두 언어. **글자만 갈리고 판단은 갈리지 않는다**:
+     한국어면 받은 것을 그대로 돌려주므로 한국어 쪽은 손대지 않은 것과 같다 */
+  var T = window.PCAI18N ? window.PCAI18N.T : function (s) { return s; };
 
   var K = (window.PCA_KNOWLEDGE || {}).domains || [];
   var TOOLS = window.PCA_TOOLS || { categories: [] };
@@ -22,12 +25,12 @@ window.PCAValue = (function () {
      아래 칸이 비어 있으면 위 칸을 확정으로 올리지 않는다. 도구를 썼다는
      말만으로 성과까지 건너뛰면 그 줄이 거짓이 된다. */
   var LADDER = [
-    { id: 'E0', n: '활동', q: '무엇을 했는가' },
-    { id: 'E1', n: '판단', q: '무엇을 직접 정했는가' },
-    { id: 'E2', n: '산출물', q: '무엇을 남겼는가' },
-    { id: 'E3', n: '성과', q: '어떤 기준과 견주었는가' },
-    { id: 'E4', n: '조직 가치', q: '어디에 쓰였는가' },
-    { id: 'E5', n: '반복 가능성', q: '다시 쓸 수 있는가' }
+    { id: 'E0', n: T('활동'), q: T('무엇을 했는가') },
+    { id: 'E1', n: T('판단'), q: T('무엇을 직접 정했는가') },
+    { id: 'E2', n: T('산출물'), q: T('무엇을 남겼는가') },
+    { id: 'E3', n: T('성과'), q: T('어떤 기준과 견주었는가') },
+    { id: 'E4', n: T('조직 가치'), q: T('어디에 쓰였는가') },
+    { id: 'E5', n: T('반복 가능성'), q: T('다시 쓸 수 있는가') }
   ];
   var LV = { E0: 0, E1: 1, E2: 2, E3: 3, E4: 4, E5: 5 };
 
@@ -87,30 +90,30 @@ window.PCAValue = (function () {
   /* 다음 칸을 채우려면 무엇을 더 적어야 하는가. '경험이 부족하다' 고
      쓰지 않는다. 적지 않은 것과 없는 것은 다르다. */
   var ASK_NEXT = {
-    E1: ['그 일에서 직접 정한 것은 무엇이었습니까',
-         '고를 수 있던 다른 안은 무엇이었습니까',
-         '그 안을 고른 기준은 무엇이었습니까'],
-    E2: ['남은 결과물은 무엇입니까 (도면 · 보고서 · 코드 · 데이터)',
-         '그 결과물을 지금도 꺼내 보실 수 있습니까'],
-    E3: ['결과가 맞다는 것을 무엇으로 확인했습니까',
-         '견준 기준이나 숫자가 있었습니까',
-         '시험값이나 다른 방법과 맞춰 보셨습니까'],
-    E4: ['그 결과가 실제로 어디에 쓰였습니까',
-         '그것 때문에 무엇이 달라졌습니까',
-         '다른 사람이 그 결과를 받아 썼습니까'],
-    E5: ['같은 방법을 다른 과제에도 쓰셨습니까',
-         '다른 사람이 그대로 따라 할 수 있게 적어 두셨습니까']
+    E1: [T('그 일에서 직접 정한 것은 무엇이었습니까'),
+         T('고를 수 있던 다른 안은 무엇이었습니까'),
+         T('그 안을 고른 기준은 무엇이었습니까')],
+    E2: [T('남은 결과물은 무엇입니까 (도면 · 보고서 · 코드 · 데이터)'),
+         T('그 결과물을 지금도 꺼내 보실 수 있습니까')],
+    E3: [T('결과가 맞다는 것을 무엇으로 확인했습니까'),
+         T('견준 기준이나 숫자가 있었습니까'),
+         T('시험값이나 다른 방법과 맞춰 보셨습니까')],
+    E4: [T('그 결과가 실제로 어디에 쓰였습니까'),
+         T('그것 때문에 무엇이 달라졌습니까'),
+         T('다른 사람이 그 결과를 받아 썼습니까')],
+    E5: [T('같은 방법을 다른 과제에도 쓰셨습니까'),
+         T('다른 사람이 그대로 따라 할 수 있게 적어 두셨습니까')]
   };
   /* 도구 한 줄은 되묻는 말이 다르다. 규격 11장이 든 예가 이 자리다 */
   var ASK_TOOL = {
-    E1: ['무엇을 분석하셨습니까',
-         '어떤 조건을 바꿔 가며 견주셨습니까',
-         '그 결과로 무엇을 정하셨습니까'],
-    E2: ['무엇을 결과물로 남기셨습니까 (보고서 · 도면 · 데이터)'],
-    E3: ['결과를 어떻게 검증하셨습니까',
-         '시험값이나 다른 방법과 맞춰 보셨습니까'],
-    E4: ['그 결과가 실제 과제나 제품에 쓰였습니까'],
-    E5: ['같은 방법을 다른 과제에도 쓰셨습니까']
+    E1: [T('무엇을 분석하셨습니까'),
+         T('어떤 조건을 바꿔 가며 견주셨습니까'),
+         T('그 결과로 무엇을 정하셨습니까')],
+    E2: [T('무엇을 결과물로 남기셨습니까 (보고서 · 도면 · 데이터)')],
+    E3: [T('결과를 어떻게 검증하셨습니까'),
+         T('시험값이나 다른 방법과 맞춰 보셨습니까')],
+    E4: [T('그 결과가 실제 과제나 제품에 쓰였습니까')],
+    E5: [T('같은 방법을 다른 과제에도 쓰셨습니까')]
   };
   function nextAsk(rungs, kind) {
     var table = kind === 'tool' ? ASK_TOOL : ASK_NEXT;
@@ -173,7 +176,7 @@ window.PCAValue = (function () {
       if (s(t.exp_id) || !nz(t.name)) return;
       out.push({
         id: 'tool' + i, title: t.name, kind: 'tool',
-        did: nz(t.why) ? t.why : (t.name + ' 를 써 봤습니다'),
+        did: nz(t.why) ? t.why : (t.name + T(' 를 써 봤습니다')),
         decided: t.decision,
         outputs: arr([t.output]),
         validations: arr([t.validation]),
@@ -223,8 +226,8 @@ window.PCAValue = (function () {
     out.forEach(function (x) {
       var reuse = arr(x.methods).filter(function (m) { return methodCount[low(m)] >= 2; });
       var rt = arr(x.tools).filter(function (t) { return repeatedTools[low(t)]; });
-      if (reuse.length) x.reused = '다른 경험에서도 쓴 방법: ' + uniq(reuse).join(', ');
-      else if (rt.length) x.reused = '여러 과제에서 반복해 쓴 도구: ' + uniq(rt).join(', ');
+      if (reuse.length) x.reused = T('다른 경험에서도 쓴 방법: ') + uniq(reuse).join(', ');
+      else if (rt.length) x.reused = T('여러 과제에서 반복해 쓴 도구: ') + uniq(rt).join(', ');
     });
 
     out.forEach(function (x) {
@@ -285,10 +288,10 @@ window.PCAValue = (function () {
         families: c ? (c.families || []) : [],
         /* 비어 있는 칸을 되묻는다. 모자라다고 적지 않는다 */
         missing: [
-          nz(t.why) ? null : '어디에 썼는지',
-          nz(t.decision) ? null : '무엇을 판단했는지',
-          nz(t.output) ? null : '무엇을 남겼는지',
-          nz(t.validation) ? null : '무엇과 견주었는지'
+          nz(t.why) ? null : T('어디에 썼는지'),
+          nz(t.decision) ? null : T('무엇을 판단했는지'),
+          nz(t.output) ? null : T('무엇을 남겼는지'),
+          nz(t.validation) ? null : T('무엇과 견주었는지')
         ].filter(Boolean)
       };
     });
@@ -323,7 +326,7 @@ window.PCAValue = (function () {
       var conf = byUse.length ? 'known' : (byCourse.length ? 'inferred_from_course' : 'unknown');
       return {
         domain_id: d.id, label: d.name_ko,
-        user_evidence: uniq(byUse.concat(byCourse.map(function (c) { return '수강: ' + c; }))),
+        user_evidence: uniq(byUse.concat(byCourse.map(function (c) { return T('수강: ') + c; }))),
         confidence: conf,
         work: d.work, decisions: d.decisions, outputs: d.outputs, performance: d.performance
       };
@@ -347,8 +350,8 @@ window.PCAValue = (function () {
       selected: picked ? picked.id : null,
       selected_name: picked ? picked.name_ko : null,
       note: picked
-        ? '조직 유형은 적합도를 바꾸지 않습니다. 같은 응답이라도 결과물과 성과 기준이 달라집니다.'
-        : '조직 유형을 고르지 않으셨습니다. 네 유형을 나란히 두고 같은 지식이 어떻게 달리 읽히는지 보여 드립니다.',
+        ? T('조직 유형은 적합도를 바꾸지 않습니다. 같은 응답이라도 결과물과 성과 기준이 달라집니다.')
+        : T('조직 유형을 고르지 않으셨습니다. 네 유형을 나란히 두고 같은 지식이 어떻게 달리 읽히는지 보여 드립니다.'),
       available: ORG.map(function (o) {
         return {
           id: o.id, name: o.name_ko, one_line: o.one_line,
@@ -357,7 +360,7 @@ window.PCAValue = (function () {
         };
       }),
       target_organization: null,
-      target_organization_note: '특정 기관의 평가 지표는 확인된 자료가 있을 때만 넣습니다. 지금은 넣지 않았습니다.'
+      target_organization_note: T('특정 기관의 평가 지표는 확인된 자료가 있을 때만 넣습니다. 지금은 넣지 않았습니다.')
     };
   }
 
@@ -407,7 +410,7 @@ window.PCAValue = (function () {
       return !x.top || LV[x.top.id] < 2;
     }).map(function (x) {
       return {
-        experience_id: x.id, title: x.title || '(제목 없음)',
+        experience_id: x.id, title: x.title || T('(제목 없음)'),
         confirmed_up_to: x.top ? x.top.name : null,
         follow_up: x.next ? x.next.questions : []
       };
@@ -448,12 +451,12 @@ window.PCAValue = (function () {
       user_evidence: mine.map(function (x) {
         return {
           evidence_id: x.id, source_experience_id: x.id,
-          title: x.title || '(제목 없음)',
+          title: x.title || T('(제목 없음)'),
           evidence_level: x.top ? x.top.id : null,
           evidence_level_name: x.top ? x.top.name : null,
           rungs: x.rungs,
           why_it_matters: x.top
-            ? (fam.career_family_id + ' 에서 ' + x.top.name + ' 까지 확인됩니다')
+            ? (fam.career_family_id + T(' 에서 ') + x.top.name + T(' 까지 확인됩니다'))
             : null
         };
       }),
@@ -470,7 +473,7 @@ window.PCAValue = (function () {
   function performanceEvidence(exps) {
     return (exps || []).map(function (x) {
       return {
-        experience_id: x.id, title: x.title || '(제목 없음)', kind: x.kind,
+        experience_id: x.id, title: x.title || T('(제목 없음)'), kind: x.kind,
         did: s(x.did) || null,
         decided: s(x.decided) || null,
         made: arr(x.outputs),
@@ -490,10 +493,10 @@ window.PCAValue = (function () {
      **학위로 올리지 않는다.** 네 칸 전부 적어 주신 것에서만 나온다. */
   function repeatability(exps, evRaw) {
     var steps = [
-      { id: 'once', n: '한 번 결과를 냈습니다', by: [] },
-      { id: 'reusable', n: '같은 방법을 다시 썼습니다', by: [] },
-      { id: 'transferable', n: '다른 문제에도 옮겼습니다', by: [] },
-      { id: 'teachable', n: '다른 사람이 쓰도록 넘겼습니다', by: [] }
+      { id: 'once', n: T('한 번 결과를 냈습니다'), by: [] },
+      { id: 'reusable', n: T('같은 방법을 다시 썼습니다'), by: [] },
+      { id: 'transferable', n: T('다른 문제에도 옮겼습니다'), by: [] },
+      { id: 'teachable', n: T('다른 사람이 쓰도록 넘겼습니다'), by: [] }
     ];
     var byMethod = {};
     (exps || []).forEach(function (x) {
@@ -518,10 +521,10 @@ window.PCAValue = (function () {
       if (nz(n)) steps[3].by.push(n);
     });
     (ev.tools || []).forEach(function (t) {
-      if (t.level === 'taught' && nz(t.name)) steps[3].by.push(t.name + ' 를 남에게 설명해 봄');
+      if (t.level === 'taught' && nz(t.name)) steps[3].by.push(t.name + T(' 를 남에게 설명해 봄'));
     });
     (exps || []).forEach(function (x) {
-      if (x.kind === 'research' && nz(x.changed)) steps[3].by.push(x.title + ': 계획을 고쳐 끌고 감');
+      if (x.kind === 'research' && nz(x.changed)) steps[3].by.push(x.title + T(': 계획을 고쳐 끌고 감'));
     });
 
     var level = null;
@@ -532,7 +535,7 @@ window.PCAValue = (function () {
     }
     return {
       level: level, steps: steps,
-      note: '학위로 올리지 않습니다. 적어 주신 과제와 방법에서만 올라갑니다.'
+      note: T('학위로 올리지 않습니다. 적어 주신 과제와 방법에서만 올라갑니다.')
     };
   }
 

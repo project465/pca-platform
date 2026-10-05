@@ -7,84 +7,156 @@
    "bachelor": "과제나 캡스톤의 요구사항을 읽고 내가 해야 할 목표를 구체적으로 정리한 경험이 있다.",
    "master": "연구과제나 논문의 전체 목표를 보고 내가 담당할 연구 목표를 구체적으로 정리한 경험이 있다.",
    "phd": "연구과제·논문·제안서의 큰 목표를 세부 연구질문이나 가설로 나눈 경험이 있다.",
-   "postdoc": "연구공고·제안서·프로젝트 목표를 검토해 새로운 연구과제나 work package의 목표를 구체화한 경험이 있다."
+   "postdoc": "연구공고·제안서·프로젝트 목표를 검토해 새로운 연구과제나 work package의 목표를 구체화한 경험이 있다.",
+   "en": {
+    "bachelor": "I have read the requirements of a coursework or capstone project and written out concretely what I had to achieve.",
+    "master": "I have looked at the overall goal of a research project or a thesis and written out concretely the research goal I was responsible for.",
+    "phd": "I have broken the broad goal of a research project, thesis or proposal into specific research questions or hypotheses.",
+    "postdoc": "I have reviewed a research call, proposal or project goal and shaped it into the objective of a new research task or work package."
+   }
   },
   "ME_OWN_PLAN_78": {
    "facet": "planning",
    "bachelor": "프로젝트 완료일까지 해야 할 일을 나눠 일정으로 정리한 경험이 있다.",
    "master": "실험·해석·분석 순서를 정하고 연구 일정을 직접 관리한 경험이 있다.",
    "phd": "여러 연구과업의 의존관계를 고려해 중간 목표와 일정을 설계한 경험이 있다.",
-   "postdoc": "여러 사람 또는 기관이 참여하는 연구에서 work package·milestone·일정을 설계하거나 조정한 경험이 있다."
+   "postdoc": "여러 사람 또는 기관이 참여하는 연구에서 work package·milestone·일정을 설계하거나 조정한 경험이 있다.",
+   "en": {
+    "bachelor": "I have divided up the work to be done by a project deadline and laid it out as a schedule.",
+    "master": "I have set the order of experiments, analysis and interpretation and managed my own research schedule.",
+    "phd": "I have designed interim goals and a schedule taking the dependencies between research tasks into account.",
+    "postdoc": "I have designed or adjusted work packages, milestones and schedules for research involving several people or institutions."
+   }
   },
   "ME_OWN_RES_79": {
    "facet": "resource_allocation",
    "bachelor": "한정된 시간·장비·재료 안에서 프로젝트 방법을 조정한 경험이 있다.",
    "master": "연구에 필요한 장비·재료·데이터·계산자원을 고려해 방법을 정한 경험이 있다.",
    "phd": "연구 목표에 맞춰 장비·재료·인력·계산자원의 우선순위를 정한 경험이 있다.",
-   "postdoc": "과제 목표를 기준으로 인력·시설·장비·연구비 등 자원 배분에 참여한 경험이 있다."
+   "postdoc": "과제 목표를 기준으로 인력·시설·장비·연구비 등 자원 배분에 참여한 경험이 있다.",
+   "en": {
+    "bachelor": "I have adjusted a project method to fit limited time, equipment or materials.",
+    "master": "I have settled on a method with the equipment, materials, data and computing resources my research needed in mind.",
+    "phd": "I have set priorities across equipment, materials, people and computing resources to match a research goal.",
+    "postdoc": "I have taken part in allocating people, facilities, equipment and funding against project goals."
+   }
   },
   "ME_OWN_BUDGET_80": {
    "facet": "budget_exposure",
    "bachelor": "프로젝트 비용이나 구매 가능한 범위를 고려해 방법을 바꾼 경험이 있다.",
    "master": "내 연구에 필요한 재료·장비·외주 등의 비용을 확인하거나 산정한 경험이 있다.",
    "phd": "세부 연구과업의 비용을 추정하거나 연구비 사용계획에 의견을 낸 경험이 있다.",
-   "postdoc": "연구과제 예산 또는 budget justification 작성·조정에 참여한 경험이 있다."
+   "postdoc": "연구과제 예산 또는 budget justification 작성·조정에 참여한 경험이 있다.",
+   "en": {
+    "bachelor": "I have changed a method because of what a project cost or what could be purchased.",
+    "master": "I have checked or estimated the cost of materials, equipment or outsourcing my research needed.",
+    "phd": "I have estimated the cost of a research task or given input on how research funds would be spent.",
+    "postdoc": "I have taken part in writing or revising a project budget or a budget justification."
+   }
   },
   "ME_OWN_MILE_81": {
    "facet": "milestone",
    "bachelor": "프로젝트 중간에 어디까지 완료되어야 하는지 기준을 정한 경험이 있다.",
    "master": "연구 중간 결과를 확인할 milestone을 정하거나 관리한 경험이 있다.",
    "phd": "세부 연구과제의 단계별 완료 조건이나 milestone을 설계한 경험이 있다.",
-   "postdoc": "전체 과제 또는 work package의 milestone을 정하고 진행상태를 관리한 경험이 있다."
+   "postdoc": "전체 과제 또는 work package의 milestone을 정하고 진행상태를 관리한 경험이 있다.",
+   "en": {
+    "bachelor": "I have set a criterion for how far a project had to be complete at its midpoint.",
+    "master": "I have set or managed milestones for checking interim research results.",
+    "phd": "I have designed the completion conditions or milestones for each stage of a research task.",
+    "postdoc": "I have set milestones for a whole project or work package and tracked progress against them."
+   }
   },
   "ME_OWN_KPI_82": {
    "facet": "success_criteria",
    "bachelor": "결과가 성공했다고 판단할 기준을 프로젝트 시작 전에 정해 본 경험이 있다.",
    "master": "실험·해석 결과가 충분한지 판단할 정량·정성 기준을 정한 경험이 있다.",
    "phd": "연구목표 달성 여부를 판단할 성과기준이나 KPI를 설계한 경험이 있다.",
-   "postdoc": "과제의 KPI·성과지표·acceptance criteria 설정이나 검토에 참여한 경험이 있다."
+   "postdoc": "과제의 KPI·성과지표·acceptance criteria 설정이나 검토에 참여한 경험이 있다.",
+   "en": {
+    "bachelor": "I have set, before a project started, the criteria for calling the result a success.",
+    "master": "I have set the quantitative or qualitative criteria for judging whether an experimental or analytical result was sufficient.",
+    "phd": "I have designed the performance criteria or KPIs for judging whether a research goal was met.",
+    "postdoc": "I have taken part in setting or reviewing a project's KPIs, performance indicators or acceptance criteria."
+   }
   },
   "ME_OWN_DELIV_83": {
    "facet": "deliverable_ownership",
    "bachelor": "최종 결과물의 형식과 제출 수준을 확인하며 프로젝트를 진행한 경험이 있다.",
    "master": "논문·보고서·데이터·시제품 등 최종 산출물 기준을 고려해 연구를 진행한 경험이 있다.",
    "phd": "여러 연구결과를 과제 산출물이나 논문·특허 형태로 통합한 경험이 있다.",
-   "postdoc": "과제 deliverable의 책임 범위와 제출 기준을 관리한 경험이 있다."
+   "postdoc": "과제 deliverable의 책임 범위와 제출 기준을 관리한 경험이 있다.",
+   "en": {
+    "bachelor": "I have run a project while keeping the format and the required standard of the final deliverable in view.",
+    "master": "I have run research with the standard for the final output in view, whether a paper, report, dataset or prototype.",
+    "phd": "I have consolidated several research results into project deliverables, papers or patents.",
+    "postdoc": "I have managed the scope of responsibility and the submission standard for project deliverables."
+   }
   },
   "ME_OWN_TEAM_84": {
    "facet": "team_coordination",
    "bachelor": "팀원과 역할을 나누고 서로의 결과를 맞춰 최종 결과물을 만든 경험이 있다.",
    "master": "다른 연구원·학생·협업자와 실험/분석 일정이나 결과를 조율한 경험이 있다.",
    "phd": "후배 연구자 또는 협력 연구자의 업무를 조정하거나 결과를 통합한 경험이 있다.",
-   "postdoc": "여러 연구자·팀·외부기관 사이의 업무 의존관계를 관리한 경험이 있다."
+   "postdoc": "여러 연구자·팀·외부기관 사이의 업무 의존관계를 관리한 경험이 있다.",
+   "en": {
+    "bachelor": "I have split roles with teammates and aligned our results into one final deliverable.",
+    "master": "I have coordinated experiment or analysis schedules and results with other researchers, students or collaborators.",
+    "phd": "I have coordinated the work of junior or collaborating researchers, or consolidated their results.",
+    "postdoc": "I have managed the dependencies between several researchers, teams or external institutions."
+   }
   },
   "ME_OWN_RFP_85": {
    "facet": "proposal_rfp",
    "bachelor": "공모전·캡스톤·지원사업 등의 요구사항을 읽고 평가기준에 맞춰 계획을 세운 경험이 있다.",
    "master": "연구과제 RFP·공고·연구계획서를 확인해 내 연구범위를 이해한 경험이 있다.",
    "phd": "RFP·사업공고·funding call을 검토하거나 연구계획서 작성에 참여한 경험이 있다.",
-   "postdoc": "funding call/RFP를 분석해 제안서의 목표·방법·work package를 설계한 경험이 있다."
+   "postdoc": "funding call/RFP를 분석해 제안서의 목표·방법·work package를 설계한 경험이 있다.",
+   "en": {
+    "bachelor": "I have read the requirements of a competition, capstone or funding scheme and planned against its assessment criteria.",
+    "master": "I have read a research RFP, call or research plan to understand the scope of my own work.",
+    "phd": "I have reviewed an RFP, call or funding opportunity, or taken part in writing a research proposal.",
+    "postdoc": "I have analysed a funding call or RFP and designed the objectives, methods and work packages of a proposal."
+   }
   },
   "ME_OWN_COMPLY_86": {
    "facet": "compliance",
    "bachelor": "안전수칙·시험기준·설계규격 등 반드시 지켜야 할 조건을 프로젝트에 반영한 경험이 있다.",
    "master": "연구에 적용되는 안전·윤리·품질·데이터 관리 규정을 확인한 경험이 있다.",
    "phd": "연구 설계 단계에서 안전·윤리·보안·품질·IP·데이터 관리 요구를 고려한 경험이 있다.",
-   "postdoc": "과제 수준에서 규제·안전·윤리·보안·품질·IP 요구사항을 검토하거나 관리한 경험이 있다."
+   "postdoc": "과제 수준에서 규제·안전·윤리·보안·품질·IP 요구사항을 검토하거나 관리한 경험이 있다.",
+   "en": {
+    "bachelor": "I have built requirements that had to be met, such as safety rules, test standards or design codes, into a project.",
+    "master": "I have checked the safety, ethics, quality and data-management rules that applied to my research.",
+    "phd": "I have taken safety, ethics, security, quality, IP and data-management requirements into account at the research design stage.",
+    "postdoc": "I have reviewed or managed regulatory, safety, ethics, security, quality and IP requirements at project level."
+   }
   },
   "ME_OWN_EXT_87": {
    "facet": "external_collaboration",
    "bachelor": "학교 밖 기업·기관·고객 또는 다른 전공 사람과 프로젝트를 진행한 경험이 있다.",
    "master": "다른 연구실·기업·기관과 연구자료·장비·결과를 주고받으며 협업한 경험이 있다.",
    "phd": "기관 간 공동연구에서 역할·데이터·일정·산출물을 조정한 경험이 있다.",
-   "postdoc": "외부 파트너 또는 컨소시엄의 역할을 조정하거나 공동과제 운영에 참여한 경험이 있다."
+   "postdoc": "외부 파트너 또는 컨소시엄의 역할을 조정하거나 공동과제 운영에 참여한 경험이 있다.",
+   "en": {
+    "bachelor": "I have run a project with a company, an institution, a customer or people from another discipline outside my school.",
+    "master": "I have collaborated with another lab, company or institution, exchanging research material, equipment or results.",
+    "phd": "I have coordinated roles, data, schedules and deliverables across institutions in a joint research project.",
+    "postdoc": "I have coordinated the roles of external partners or a consortium, or taken part in running a joint project."
+   }
   },
   "ME_OWN_IMPACT_88": {
    "facet": "impact_use",
    "bachelor": "내 결과물이 실제 제품·시제품·문제 해결·후속 프로젝트에 어떻게 쓰였는지 설명할 수 있다.",
    "master": "내 연구결과가 후속 연구·제품개발·시험·논문 등에 어떻게 이어졌는지 설명할 수 있다.",
    "phd": "내 연구의 학술적·기술적 기여와 실제 활용 가능성을 구분해 설명할 수 있다.",
-   "postdoc": "연구 결과의 후속 과제·기술이전·산업·정책·학술적 활용 경로를 근거와 함께 설명할 수 있다."
+   "postdoc": "연구 결과의 후속 과제·기술이전·산업·정책·학술적 활용 경로를 근거와 함께 설명할 수 있다.",
+   "en": {
+    "bachelor": "I can explain how my output was actually used, in a product, a prototype, a solved problem or a follow-on project.",
+    "master": "I can explain how my research results fed into follow-on research, product development, testing or publication.",
+    "phd": "I can explain, separately, the academic contribution of my research and its practical applicability.",
+    "postdoc": "I can explain, with evidence, how research results carried into follow-on projects, technology transfer, industry, policy or the literature."
+   }
   }
  }
 }

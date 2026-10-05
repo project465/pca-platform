@@ -17,7 +17,8 @@
     "ME_MANUFACTURING": 0.4
    },
    "score_direction": "positive",
-   "group": "role_reality"
+   "group": "role_reality",
+   "en-US": "Finding and fixing problems in an existing product or system interests me as much as building something new from scratch."
   },
   {
    "item_id": "ME_REAL_DESK_50",
@@ -31,7 +32,8 @@
     "ME_DIGITAL": 0.6
    },
    "score_direction": "positive",
-   "group": "role_reality"
+   "group": "role_reality",
+   "en-US": "I am fine with work that means long stretches at a computer with models, drawings and data."
   },
   {
    "item_id": "ME_REAL_FIELD_51",
@@ -46,7 +48,8 @@
     "ME_PROCESS": 0.4
    },
    "score_direction": "positive",
-   "group": "role_reality"
+   "group": "role_reality",
+   "en-US": "I am fine with work that means checking conditions in person in a lab, on a production floor or at a machine."
   },
   {
    "item_id": "ME_REAL_DOC_52",
@@ -60,7 +63,8 @@
     "ME_SYSTEMS_TPM": 0.4
    },
    "score_direction": "positive",
-   "group": "role_reality"
+   "group": "role_reality",
+   "en-US": "I am fine with work that means recording not just the result but why that conclusion was reached."
   },
   {
    "item_id": "ME_REAL_TRADE_53",
@@ -74,7 +78,8 @@
     "ME_SYSTEMS_TPM": 0.5
    },
    "score_direction": "positive",
-   "group": "role_reality"
+   "group": "role_reality",
+   "en-US": "I find it interesting to pick a workable answer that weighs cost, lead time and manufacturability rather than the technically best one."
   },
   {
    "item_id": "ME_REAL_REPEAT_54",
@@ -88,7 +93,8 @@
     "ME_RND": 0.4
    },
    "score_direction": "positive",
-   "group": "role_reality"
+   "group": "role_reality",
+   "en-US": "I am fine with repeating the same measurement under controlled conditions to confirm reproducibility."
   },
   {
    "item_id": "ME_REAL_ALIGN_55",
@@ -102,7 +108,8 @@
     "ME_APPLICATIONS_FIELD": 0.3
    },
    "score_direction": "positive",
-   "group": "role_reality"
+   "group": "role_reality",
+   "en-US": "I want to work on hearing out what different departments or organisations each need, and setting common criteria."
   },
   {
    "item_id": "ME_REAL_DEPTH_56",
@@ -117,7 +124,8 @@
     "ME_MATERIALS": 0.4
    },
    "score_direction": "positive",
-   "group": "role_reality"
+   "group": "role_reality",
+   "en-US": "A path where I stay with one subject for a long time and build real depth appeals to me."
   },
   {
    "item_id": "ME_EVQ_MEASURE_57",
@@ -127,7 +135,8 @@
    "ko-KR": "프로젝트나 연구 경험 중 결과를 숫자나 기준으로 비교할 수 있는 사례가 있다.",
    "career_family_weights": {},
    "score_direction": "positive",
-   "note": "증거 준비도로 간다. 심리측정 FIT 에 들어가지 않는다."
+   "note": "증거 준비도로 간다. 심리측정 FIT 에 들어가지 않는다.",
+   "en-US": "I have project or research experience where the result can be compared against a number or a criterion."
   },
   {
    "item_id": "ME_EVQ_CRITERIA_58",
@@ -137,7 +146,8 @@
    "ko-KR": "내가 어떤 기준으로 방법이나 대안을 골랐는지 설명할 수 있는 경험이 있다.",
    "career_family_weights": {},
    "score_direction": "positive",
-   "note": "증거 준비도로 간다. 심리측정 FIT 에 들어가지 않는다."
+   "note": "증거 준비도로 간다. 심리측정 FIT 에 들어가지 않는다.",
+   "en-US": "I have experience where I can explain the criteria I used to choose a method or an option."
   },
   {
    "item_id": "ME_EVQ_FAIL_59",
@@ -147,7 +157,8 @@
    "ko-KR": "실패하거나 예상과 다르게 나온 결과를 원인 분석 후 수정한 사례가 있다.",
    "career_family_weights": {},
    "score_direction": "positive",
-   "note": "증거 준비도로 간다. 심리측정 FIT 에 들어가지 않는다."
+   "note": "증거 준비도로 간다. 심리측정 FIT 에 들어가지 않는다.",
+   "en-US": "I have a case where something failed or came out unexpectedly and I analysed the cause and corrected it."
   },
   {
    "item_id": "ME_EVQ_RECORD_60",
@@ -157,7 +168,8 @@
    "ko-KR": "내 결과를 다른 사람이 검토·재사용할 수 있도록 기록이나 문서로 남긴 사례가 있다.",
    "career_family_weights": {},
    "score_direction": "positive",
-   "note": "증거 준비도로 간다. 심리측정 FIT 에 들어가지 않는다."
+   "note": "증거 준비도로 간다. 심리측정 FIT 에 들어가지 않는다.",
+   "en-US": "I have a case where I left a record or a document so that others could review or reuse my result."
   },
   {
    "item_id": "ME_EVQ_CROSS_61",
@@ -167,7 +179,8 @@
    "ko-KR": "기술적인 문제를 다른 전공·부서·기관 사람과 함께 해결한 사례가 있다.",
    "career_family_weights": {},
    "score_direction": "positive",
-   "note": "증거 준비도로 간다. 심리측정 FIT 에 들어가지 않는다."
+   "note": "증거 준비도로 간다. 심리측정 FIT 에 들어가지 않는다.",
+   "en-US": "I have a case where I solved a technical problem together with people from another discipline, department or institution."
   },
   {
    "item_id": "ME_EVQ_SCOPE_62",
@@ -177,7 +190,8 @@
    "ko-KR": "내가 한 일과 팀 전체가 한 일을 명확히 구분해서 설명할 수 있는 프로젝트가 있다.",
    "career_family_weights": {},
    "score_direction": "positive",
-   "note": "증거 준비도로 간다. 심리측정 FIT 에 들어가지 않는다."
+   "note": "증거 준비도로 간다. 심리측정 FIT 에 들어가지 않는다.",
+   "en-US": "I have a project where I can clearly separate what I did from what the team did."
   },
   {
    "item_id": "ME_CTX_PATH_63",
@@ -192,7 +206,14 @@
     "아직 모르겠다"
    ],
    "career_family_weights": {},
-   "scored": false
+   "scored": false,
+   "en-US": "Which path is closer to what you want next?",
+   "options-en": [
+    "An industry path that actually builds products or services",
+    "A research path that creates new knowledge or technology",
+    "I want to compare both",
+    "Not sure yet"
+   ]
   },
   {
    "item_id": "ME_CTX_TRACK_64",
@@ -207,7 +228,14 @@
     "아직 모르겠다"
    ],
    "career_family_weights": {},
-   "scored": false
+   "scored": false,
+   "en-US": "Between going deeper as a specialist and coordinating people and schedules, which interests you more right now?",
+   "options-en": [
+    "Technical specialist",
+    "Project or technical lead",
+    "Both",
+    "Not sure yet"
+   ]
   },
   {
    "item_id": "ME_CTX_PLACE_65",
@@ -224,7 +252,16 @@
     "아직 모르겠다"
    ],
    "career_family_weights": {},
-   "scored": false
+   "scored": false,
+   "en-US": "Where would you prefer to work?",
+   "options-en": [
+    "Mostly office, design or analysis settings",
+    "Laboratory",
+    "Production floor, site or equipment",
+    "Customer or external sites",
+    "A mix",
+    "Not sure yet"
+   ]
   },
   {
    "item_id": "ME_CTX_ORG_66",
@@ -242,7 +279,17 @@
     "아직 모르겠다"
    ],
    "career_family_weights": {},
-   "scored": false
+   "scored": false,
+   "en-US": "Which kind of organisation interests you most right now?",
+   "options-en": [
+    "Large or mid-size company",
+    "Specialist technology company",
+    "Startup or deep tech",
+    "Government-funded or public research institute",
+    "University or academic institution",
+    "Technical services or consulting",
+    "Not sure yet"
+   ]
   },
   {
    "item_id": "ME_CTX_DEGREE_67",
@@ -258,7 +305,15 @@
     "아직 모르겠다"
    ],
    "career_family_weights": {},
-   "scored": false
+   "scored": false,
+   "en-US": "Can you consider a further degree as a career option?",
+   "options-en": [
+    "Not considering it",
+    "Possible, depending on circumstances",
+    "Actively considering it",
+    "Already at master's, PhD or postdoc stage",
+    "Not sure yet"
+   ]
   },
   {
    "item_id": "ME_CTX_MOBILITY_68",
@@ -274,7 +329,15 @@
     "아직 결정하지 않음"
    ],
    "career_family_weights": {},
-   "scored": false
+   "scored": false,
+   "en-US": "What are your current conditions for moving country or region for work?",
+   "options-en": [
+    "Staying in my current region",
+    "Can move within my country",
+    "Can move, including abroad",
+    "I have a specific target country",
+    "Not decided yet"
+   ]
   }
  ]
 }
