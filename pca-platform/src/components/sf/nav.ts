@@ -34,24 +34,46 @@ export const NAV_CAMPUS: NavItem[] = [
   { href: "/org/settings", label: "navSettings", icon: "gear", soon: true },
 ];
 
+/**
+ * 운영 메뉴.
+ *
+ * **한 벌만 둔다.** 예전에는 `/admin` 이 이 목록을, 나머지 열 쪽이
+ * `admin-shell.tsx` 의 평평한 열다섯 줄을 따로 들고 있었다. 두 메뉴가
+ * 서로를 모르니 쪽을 더할 때마다 한쪽만 늘었고, 운영자가 지금 어디인지도
+ * 쪽마다 다르게 보였다.
+ *
+ * **묶음은 누가 그 줄을 보는가로 가른다.** 아침에 여는 세 줄이 맨 위고,
+ * 켜기 전에 한 번 보는 줄과 손님이 생긴 뒤에 보는 줄이 그 아래다. 쪽수가
+ * 아니라 묻는 때가 다르다.
+ *
+ * **자리만 잡아 둔 쪽은 `soon` 으로 흐리게 그린다**(들어가면 '아직 열려
+ * 있지 않다' 를 적는다). 아직 쪽 자체가 없는 자리는 메뉴에 두지 않는다:
+ * 눌러서 404 가 뜨는 줄은 자리를 잡아 둔 것이 아니다.
+ */
 export const NAV_ADMIN: NavItem[] = [
-  { href: "/admin", label: "navOverview", icon: "grid" },
-  { href: "/admin/users", label: "navUsers", icon: "users", soon: true },
-  { href: "/admin/organizations", label: "navOrganizations", icon: "building" },
-  { href: "/admin/contracts", label: "navContracts", icon: "contract" },
-  { href: "/admin/products", label: "navProducts", icon: "box", soon: true },
-  { href: "/admin/orders", label: "navOrders", icon: "cart", soon: true },
-  { href: "/admin/assessments", label: "navAssessments", icon: "clipboard", soon: true },
-  { href: "/admin/reports", label: "navReports", icon: "doc", soon: true },
-  { href: "/admin/countries", label: "navCountries", icon: "globe" },
-  { href: "/admin/sites", label: "navSites", icon: "window" },
-  { href: "/admin/audit", label: "navAudit", icon: "log", soon: true },
-  { href: "/admin/ops", label: "navSettings", icon: "gear" },
-  /* 런칭과 사고를 아침에 보이게 둔다. **로그에만 두면 돈 낸 사람이
+  { href: "/admin", label: "navOverview", icon: "grid", group: "navGroupToday" },
+  { href: "/admin/ops", label: "navOps", icon: "gear", group: "navGroupToday" },
+  { href: "/admin/incidents", label: "navIncidents", icon: "alert", group: "navGroupToday" },
+
+  /* 런칭을 막는 것을 아침에 보이게 둔다. **로그에만 두면 돈 낸 사람이
      먼저 알고 우리가 나중에 안다**(규격 §26) */
-  { href: "/admin/launch", label: "navLaunch", icon: "compass" },
-  { href: "/admin/incidents", label: "navIncidents", icon: "alert" },
-  { href: "/admin/refunds", label: "navRefunds", icon: "cart" },
-  { href: "/admin/funnel", label: "navFunnel", icon: "spark" },
-  { href: "/admin/business", label: "navBusiness", icon: "building" },
+  { href: "/admin/launch", label: "navLaunch", icon: "compass", group: "navGroupLaunch" },
+  { href: "/admin/readiness", label: "navReadiness", icon: "spark", group: "navGroupLaunch" },
+  { href: "/admin/localization", label: "navLocalization", icon: "globe", group: "navGroupLaunch" },
+  { href: "/admin/business", label: "navBusiness", icon: "building", group: "navGroupLaunch" },
+
+  { href: "/admin/funnel", label: "navFunnel", icon: "spark", group: "navGroupCustomers" },
+  { href: "/admin/orders", label: "navOrders", icon: "cart", soon: true, group: "navGroupCustomers" },
+  { href: "/admin/refunds", label: "navRefunds", icon: "cart", group: "navGroupCustomers" },
+  { href: "/admin/organizations", label: "navOrganizations", icon: "building", group: "navGroupCustomers" },
+  { href: "/admin/contracts", label: "navContracts", icon: "contract", group: "navGroupCustomers" },
+  { href: "/admin/users", label: "navUsers", icon: "users", soon: true, group: "navGroupCustomers" },
+
+  { href: "/admin/products", label: "navProducts", icon: "box", soon: true, group: "navGroupCatalog" },
+  { href: "/admin/assessments", label: "navAttempts", icon: "clipboard", soon: true, group: "navGroupCatalog" },
+  { href: "/admin/reports", label: "navReports", icon: "doc", soon: true, group: "navGroupCatalog" },
+
+  { href: "/admin/sites", label: "navSites", icon: "window", group: "navGroupSystem" },
+  { href: "/admin/countries", label: "navCountries", icon: "globe", group: "navGroupSystem" },
+  { href: "/admin/audit", label: "navAudit", icon: "log", soon: true, group: "navGroupSystem" },
 ];

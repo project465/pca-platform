@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ attemptId
   const { attemptId } = await params;
   const user = await currentUser();
   const a = user ? await findAttempt(attemptId, user.id) : null;
-  return { title: a?.trackCode === "HS" ? "커리어메트리 플러스" : "Careermetri" };
+  return { title: a?.trackCode === "HS" ? "커리어메트리 플러스" : "CareerMatri" };
 }
 
 /** attempt_quality.flag 세 값을 문구 키로 옮긴다. */

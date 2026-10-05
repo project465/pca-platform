@@ -55,7 +55,7 @@ const d = (ko: string, en: string, tr: string): Dict => ({ ko, en, tr });
  * 같이 쓰게 만들려는 제약이다.
  */
 export const UI = {
-  brand: d("Careermetri", "Careermetri", "Careermetri"),
+  brand: d("CareerMatri", "CareerMatri", "CareerMatri"),
 
   // 진입
   doorTitle: d(
@@ -177,9 +177,9 @@ export const UI = {
 
   // 결과지
   repKicker: d(
-    "Careermetri · 공학 진로 인텔리전스",
-    "Careermetri · Engineering Career Intelligence",
-    "Careermetri · Mühendislik Kariyer Zekâsı",
+    "CareerMatri · 공학 진로 인텔리전스",
+    "CareerMatri · Engineering Career Intelligence",
+    "CareerMatri · Mühendislik Kariyer Zekâsı",
   ),
   repTitle: d("직무적합 진단 결과지", "Career Fit Report", "Kariyer Uyum Raporu"),
 
@@ -778,26 +778,26 @@ export const UI = {
 
   // 상품 이름. 주문서에 찍히는 이름이라 결제 화면과 같은 말이어야 한다.
   prodREPORT_UNIV: d(
-    "Careermetri 진로 결과지 (대학)",
-    "Careermetri Career Report (university)",
-    "Careermetri Kariyer Raporu (üniversite)",
+    "CareerMatri 진로 결과지 (대학)",
+    "CareerMatri Career Report (university)",
+    "CareerMatri Kariyer Raporu (üniversite)",
   ),
   prodREPORT_HS: d(
-    "Careermetri 진로 결과지 (고교)",
-    "Careermetri Career Report (high school)",
-    "Careermetri Kariyer Raporu (lise)",
+    "CareerMatri 진로 결과지 (고교)",
+    "CareerMatri Career Report (high school)",
+    "CareerMatri Kariyer Raporu (lise)",
   ),
   prodHS_FREE: d(
     "커리어메트리 플러스 무료 진단",
-    "Careermetri Plus free assessment",
-    "Careermetri Plus ücretsiz değerlendirme",
+    "CareerMatri Plus free assessment",
+    "CareerMatri Plus ücretsiz değerlendirme",
   ),
   // 주문서에 찍히는 이름이므로 "무엇을 사는가" 가 보여야 한다.
   // "전체 결과지" 라고만 적으면 결제 후에야 무엇을 샀는지 안다.
   prodHS_UPGRADE: d(
     "커리어메트리 플러스: 현장 사슬과 과목 처방",
-    "Careermetri Plus: the chain and the course prescription",
-    "Careermetri Plus: zincir ve ders reçetesi",
+    "CareerMatri Plus: the chain and the course prescription",
+    "CareerMatri Plus: zincir ve ders reçetesi",
   ),
 } as const;
 

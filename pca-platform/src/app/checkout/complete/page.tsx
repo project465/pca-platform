@@ -6,7 +6,7 @@ import { t } from "@/lib/locale";
 import { resolveLang } from "@/lib/locale-server";
 import { BRAND, toLang2, txer } from "@/lib/surface-text";
 
-export const metadata = { title: "결제 결과 · Careermetri" };
+export const metadata = { title: "결제 결과 · CareerMatri" };
 
 /**
  * 결제창에서 돌아오는 자리.

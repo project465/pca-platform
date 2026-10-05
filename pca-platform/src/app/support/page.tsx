@@ -64,7 +64,7 @@ export default async function SupportPage({
         </div>
       </header>
 
-      <div className="pubwrap" style={{ maxWidth: 900 }}>
+      <div className="pubwrap spwrap">
         <div className="sf-head">
           <div className="sf-head-t">
             <h1 className="sf-h1">{S.title[L]}</h1>

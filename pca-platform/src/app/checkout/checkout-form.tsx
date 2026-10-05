@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useState } from "react";
 import { t, type Lang } from "@/lib/locale";
 import { createOrderAction, mockPayAction, type CheckoutState } from "./actions";
+import { formatMoney } from "@/lib/money";
 
 declare global {
   interface Window {
@@ -83,7 +84,7 @@ export default function CheckoutForm({
           </div>
           <div>
             <dt>결제금액</dt>
-            <dd>{ticket.amount.toLocaleString("ko-KR")}원</dd>
+            <dd>{formatMoney(ticket.amount, ticket.currency, lang === "ko" ? "ko" : "en")}</dd>
           </div>
         </dl>
         <form
@@ -96,7 +97,7 @@ export default function CheckoutForm({
           <input type="hidden" name="orderNo" value={ticket.orderNo} />
           <input type="hidden" name="amount" value={ticket.amount} />
           <input type="hidden" name="currency" value={ticket.currency} />
-          <button className="btn solid lg" type="submit">
+          <button className="act solid full" type="submit">
             결제하기 (테스트)
           </button>
         </form>
@@ -132,7 +133,7 @@ export default function CheckoutForm({
 
       {state.error ? <p className="err">{state.error}</p> : null}
       {sdkError ? <p className="err">{sdkError}</p> : null}
-      <button className="btn solid lg" type="submit" disabled={pending || launching}>
+      <button className="act solid full" type="submit" disabled={pending || launching}>
         {pending || launching ? t("payOpening", lang) : t("payGo", lang)}
       </button>
     </form>

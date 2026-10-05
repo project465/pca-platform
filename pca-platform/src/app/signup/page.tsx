@@ -9,7 +9,7 @@ import SignupForm from "./signup-form";
 import { activeDocs } from "@/lib/consent";
 import { toLang2, txer } from "@/lib/surface-text";
 
-export const metadata = { title: "가입하고 시작 · Careermetri" };
+export const metadata = { title: "가입하고 시작 · CareerMatri" };
 
 export default async function SignupPage({
   searchParams,

@@ -7,7 +7,7 @@
  */
 export const TRACKS = {
   hs: { product: "HS_FREE", brand: "커리어메트리 플러스" },
-  univ: { product: "UNIV_FREE", brand: "Careermetri" },
+  univ: { product: "UNIV_FREE", brand: "CareerMatri" },
 } as const;
 
 export type TrackKey = keyof typeof TRACKS;

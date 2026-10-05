@@ -1,28 +1,25 @@
-import Link from "next/link";
-import LogoutButton from "@/components/logout-button";
+/**
+ * 운영 화면의 껍데기.
+ *
+ * **세 제품 화면이 같은 껍데기를 쓴다**(`src/components/sf/shell.tsx`).
+ * 예전에는 `/admin` 만 그 왼쪽 띠를 쓰고 나머지 열 쪽이 여기 있던 위쪽
+ * 띠를 썼다. 메뉴가 열다섯 줄로 늘면서 그 띠가 두 줄로 접혔고, 지금
+ * 어디인지가 접힌 줄 아래로 밀려 내려갔다. **쪽마다 메뉴가 다르게
+ * 보이면 운영자는 쪽마다 길을 다시 찾는다.**
+ *
+ * 그래서 이 파일은 더 이상 메뉴를 들지 않는다. 목록은
+ * `NAV_ADMIN` 한 곳이고, 여기 남은 일은 옛 호출부(`user` · `current`)를
+ * 그 껍데기에 넘기는 것뿐이다. 쪽 열 개를 한꺼번에 고치지 않으려고
+ * 이름과 인자를 그대로 뒀다.
+ *
+ * 메뉴를 숨기는 것은 안내이고 막는 것은 서버다: 여기 없는 주소도 손으로
+ * 치면 각 쪽의 `requireRole()` 이 다시 본다.
+ */
 import { ROLE_LABEL } from "@/lib/roles";
 import type { SessionUser } from "@/lib/session";
-
-type NavItem = { href: string; label: string; ready: boolean };
-
-/** 화면 목록(CLAUDE.md)의 운영사 관리자 1~5번. 만든 것만 링크가 된다. */
-const NAV: NavItem[] = [
-  { href: "/admin/ops", label: "운영", ready: true },
-  /* 상용화 준비와 지역화 덮임. **막힌 것을 아침에 보이게 둔다** */
-  { href: "/admin/launch", label: "런칭 준비", ready: true },
-  { href: "/admin/incidents", label: "사고", ready: true },
-  { href: "/admin/refunds", label: "환불 요청", ready: true },
-  { href: "/admin/funnel", label: "퍼널", ready: true },
-  { href: "/admin/business", label: "사업자 표시", ready: true },
-  { href: "/admin/readiness", label: "상용화 준비", ready: true },
-  { href: "/admin/localization", label: "지역화 덮임", ready: true },
-  { href: "/admin/organizations", label: "기관", ready: true },
-  { href: "/admin/contracts", label: "계약·응시권", ready: false },
-  { href: "/admin/sites", label: "사이트·나라", ready: true },
-  { href: "/admin/instruments", label: "검사 문항", ready: false },
-  { href: "/admin/mappings", label: "매핑 데이터", ready: false },
-  { href: "/admin/attempts", label: "응시 현황", ready: false },
-];
+import { BRAND } from "@/lib/surface-text";
+import { Shell } from "@/components/sf/shell";
+import { NAV_ADMIN } from "@/components/sf/nav";
 
 export default function AdminShell({
   user,
@@ -34,34 +31,17 @@ export default function AdminShell({
   children: React.ReactNode;
 }) {
   return (
-    <div className="shell">
-      <header className="topbar">
-        <span className="brand">단체 PCA</span>
-        <nav>
-          {NAV.map((item) =>
-            item.ready ? (
-              <Link
-                key={item.href}
-                href={item.href}
-                aria-current={item.href === current ? "page" : undefined}
-              >
-                {item.label}
-              </Link>
-            ) : (
-              <span key={item.href} className="soon" title="아직 만들지 않았습니다">
-                {item.label}
-              </span>
-            ),
-          )}
-        </nav>
-        <div className="who">
-          <span>
-            {user.name} · {ROLE_LABEL[user.role]}
-          </span>
-          <LogoutButton />
-        </div>
-      </header>
-      <main className="main">{children}</main>
-    </div>
+    <Shell
+      surface="admin"
+      /* 운영 화면은 한국어로 돈다. 쪽마다 `?lang=` 을 받지 않으므로
+         껍데기가 언어를 지어내지 않고 기본값을 쓴다 */
+      lang="ko"
+      nav={NAV_ADMIN}
+      active={current}
+      who={{ name: user.name, role: ROLE_LABEL[user.role] ?? "" }}
+      topTitle={BRAND.admin}
+    >
+      {children}
+    </Shell>
   );
 }

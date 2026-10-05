@@ -3,11 +3,12 @@ import { currentUser } from "@/lib/session";
 import { getProduct } from "@/lib/orders";
 import { globalChannelReady, paymentProvider } from "@/lib/payments";
 import { t, productName } from "@/lib/locale";
+import { formatMoney } from "@/lib/money";
 import { resolveLang } from "@/lib/locale-server";
 import LangSwitch from "@/components/lang-switch";
 import CheckoutForm from "./checkout-form";
 
-export const metadata = { title: "결제 · Careermetri" };
+export const metadata = { title: "결제 · CareerMatri" };
 
 export default async function CheckoutPage({
   searchParams,
@@ -51,7 +52,10 @@ export default async function CheckoutPage({
         <h1>{t("payTitle", lang)}</h1>
         <div className="payitem">
           <span>{productName(product.code, lang)}</span>
-          <b>{product.amount.toLocaleString("ko-KR")}원</b>
+          {/* **통화를 보고 적는다.** 금액에 `원` 을 박아 두면 $14.99 짜리가
+              `1499원` 으로 나간다: `products.amount` 는 통화의 최소 단위
+              정수이고, 쪼개지는 자릿수는 통화만 안다(`src/lib/money.ts`) */}
+          <b>{formatMoney(product.amount, product.currency, lang === "ko" ? "ko" : "en")}</b>
         </div>
         <ul className="paynote">
           <li>{t("payNote1", lang)}</li>

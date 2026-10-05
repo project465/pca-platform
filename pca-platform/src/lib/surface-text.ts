@@ -413,6 +413,20 @@ export const TX = {
   navCountries: p("국가", "Countries"),
   navSites: p("사이트", "Sites"),
   navAudit: p("감사 기록", "Audit logs"),
+  navReadiness: p("상용화 준비", "Commercial readiness"),
+  navLocalization: p("지역화 덮임", "Localization coverage"),
+  navInstruments: p("검사 문항", "Instruments"),
+  navMappings: p("매핑 데이터", "Mapping data"),
+  navAttempts: p("응시 현황", "Attempts"),
+  navOps: p("운영 당번", "Daily ops"),
+
+  /* 메뉴 묶음 머리말. 운영 메뉴가 스물에 가까워서, 묶지 않으면 찾는 데
+     스크롤이 필요하다. **묶음 이름은 누가 그 줄을 보는가로 가른다** */
+  navGroupToday: p("오늘", "Today"),
+  navGroupLaunch: p("켜기 전에", "Before launch"),
+  navGroupCustomers: p("손님과 돈", "Customers and money"),
+  navGroupCatalog: p("검사와 자료", "Instruments and data"),
+  navGroupSystem: p("시스템", "System"),
 
   adminB2C: p("개인", "B2C"),
   adminB2B: p("기관", "B2B"),

@@ -36,12 +36,12 @@ export type Order = {
 };
 
 const NAMES: Record<string, string> = {
-  REPORT_UNIV: "Careermetri 진로 결과지 (대학)",
-  REPORT_HS: "Careermetri 진로 결과지 (고교)",
+  REPORT_UNIV: "CareerMatri 진로 결과지 (대학)",
+  REPORT_HS: "CareerMatri 진로 결과지 (고교)",
 };
 
 export function orderName(code: string): string {
-  return NAMES[code] ?? "Careermetri 진로 결과지";
+  return NAMES[code] ?? "CareerMatri 진로 결과지";
 }
 
 export async function getProduct(code: string): Promise<Product | null> {

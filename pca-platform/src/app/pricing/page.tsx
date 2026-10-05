@@ -158,11 +158,11 @@ function TierCard({
       {/* **받는 것을 줄로 적고 문항 수는 아래로 내린다**(규격 §4). 문항
           수를 앞세우면 비싼 등급이 "문항이 더 많은 것" 으로 읽히고,
           그러면 같은 값을 더 내는 이유가 없다 */}
-      <p className="pxwhat"><b>{v.headline}</b></p>
-      <ul className="pdlist" style={{ marginTop: 14 }}>
+      <p className="pxwhat">{v.headline}</p>
+      <ul className="pdlist">
         {v.gets.map((g) => <li key={g}>{g}</li>)}
       </ul>
-      <p className="pxq" style={{ marginTop: 16 }}>{v.who}</p>
+      <p className="pxq">{v.who}</p>
       <p className="pxq">{n.toLocaleString()} {T("pxQuestions")}</p>
       {state === "FREE_APPROVED" ? (
         /**
@@ -172,24 +172,23 @@ function TierCard({
          * 크롤러가 계정에 주문을 만든다. 로그인하지 않았으면 서버가
          * 가입으로 보내고, 끝나면 이 자리로 돌아온다.
          */
-        <form action={startFreeAction} style={{ marginTop: 18 }}>
+        <form action={startFreeAction} className="pxcta">
           <input type="hidden" name="product" value={p.code} />
-          <button className="sf-btn ghost" style={{ width: "100%" }}>
-            {T("pxStartFree")}
-          </button>
+          <button className="sf-btn ghost">{T("pxStartFree")}</button>
         </form>
       ) : ok.ok ? (
-        <Link href={`/checkout?product=${encodeURIComponent(p.code)}`}
-          className={p.tier === "STANDARD" ? "sf-btn accent" : "sf-btn ghost"}
-          style={{ marginTop: 18 }}>
-          {T("pxBuy")}
-        </Link>
+        <div className="pxcta">
+          <Link href={`/checkout?product=${encodeURIComponent(p.code)}`}
+            className={p.tier === "STANDARD" ? "sf-btn accent" : "sf-btn ghost"}>
+            {T("pxBuy")}
+          </Link>
+        </div>
       ) : (
         /* `sellable` 의 거절 이유는 한국어 한 줄이라 영어 화면에 그대로 쓰지
            않는다. 까닭은 위의 값 자리에 이미 적혀 있다 */
-        <span className="sf-btn ghost" aria-disabled="true" style={{ marginTop: 18 }}>
-          {T("pxBuy")}
-        </span>
+        <div className="pxcta">
+          <span className="sf-btn ghost" aria-disabled="true">{T("pxBuy")}</span>
+        </div>
       )}
     </article>
   );
