@@ -112,7 +112,7 @@ async function playThrough(opts: {
   const batch: Record<string, unknown> = {};
   for (const it of items) batch[it.item_id] = FILL(it);
   await saveAnswers(a.id, opts.userId, batch);
-  if (!(await submitV2(a.id, opts.userId))) throw new Error("제출이 되지 않았다");
+  if (!(await submitV2(a.id, opts.userId)).ok) throw new Error("제출이 되지 않았다");
   return a.id;
 }
 

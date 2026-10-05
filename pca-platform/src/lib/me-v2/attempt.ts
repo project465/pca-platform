@@ -260,11 +260,18 @@ export async function progressOf(a: V2Attempt): Promise<Progress> {
  * **덜 푼 응시를 닫지 않는다**: 닫히면 응답을 더 받지 않으므로, 빠진 문항이
  * 있는 채로 결과가 나간다.
  */
-export async function submitV2(attemptId: string, userId: string): Promise<boolean> {
+export type SubmitResult =
+  | { ok: true }
+  /** **거절한 까닭을 값으로 돌려준다.** 거짓만 돌려주면 화면이 할 수 있는
+   *  일이 없어서, 누른 사람은 단추가 고장 난 줄 안다 */
+  | { ok: false; reason: "gone" | "already" | "incomplete"; progress?: Progress };
+
+export async function submitV2(attemptId: string, userId: string): Promise<SubmitResult> {
   const a = await attemptOf(attemptId, userId);
-  if (!a || a.submitted_at) return false;
+  if (!a) return { ok: false, reason: "gone" };
+  if (a.submitted_at) return { ok: false, reason: "already" };
   const p = await progressOf(a);
-  if (p.answered < p.total) return false;
+  if (p.answered < p.total) return { ok: false, reason: "incomplete", progress: p };
   await query(
     `UPDATE attempts SET status = 'submitted', submitted_at = now(),
             last_saved_at = now()
@@ -272,7 +279,13 @@ export async function submitV2(attemptId: string, userId: string): Promise<boole
     [attemptId, userId],
   );
   await track("assessment_complete", { userId, props: { tier: a.tier } });
-  return true;
+  return { ok: true };
+}
+
+/** 이 응시의 지금 상태. **서버가 센 값**이다. */
+export async function progressFor(attemptId: string, userId: string): Promise<Progress | null> {
+  const a = await attemptOf(attemptId, userId);
+  return a ? progressOf(a) : null;
 }
 
 export function assessmentVersion(): string {

@@ -78,11 +78,13 @@ export default async function AssessmentPage({
         {secs.map((s, i) => {
           const p = prog.sections[i];
           const state = p.answered >= p.total ? "done" : i === idx ? "now" : "todo";
+          /* **누를 수 있게 둔다.** 남은 묶음을 보고도 그리로 갈 길이
+             없으면 응시자는 처음부터 다시 훑는다 */
           return (
-            <span key={s.key} className={`asstep is-${state}`}>
+            <a key={s.key} href={`/assessment/${a.id}?s=${i}`} className={`asstep is-${state}`}>
               <b>{T(SECTION_LABEL[s.key] ?? "secContext")}</b>
               <i>{p.answered}/{p.total}</i>
-            </span>
+            </a>
           );
         })}
       </nav>
@@ -99,10 +101,12 @@ export default async function AssessmentPage({
           lastSection={idx === secs.length - 1}
           questions={questions}
           initial={initial}
+          sectionLabels={secs.map((x) => T(SECTION_LABEL[x.key] ?? "secContext"))}
           labels={{
             saving: T("asSaving"), saved: T("asSaved"), retry: T("asRetry"),
             prev: T("asPrev"), next: T("asNext"), submit: T("asSubmit"),
-            notAll: T("asNotAll"),
+            notAll: T("asNotAll"), missingHead: T("asMissingHead"),
+            missingLeft: T("asMissingLeft"), gone: T("asGone"),
           }}
         />
       </main>

@@ -173,7 +173,7 @@ async function main() {
     Number(dupRows[0].n) === secs[0].items.length, `${dupRows[0].n}줄`);
 
   /* 덜 푼 응시는 닫히지 않는다 */
-  ok("덜 푼 응시를 닫지 않는다", (await submitV2(at!.id, kuser)) === false);
+  ok("덜 푼 응시를 닫지 않는다", (await submitV2(at!.id, kuser)).ok === false);
 
   /* 나머지를 다 푼다 */
   for (const s of secs.slice(1)) {
@@ -182,7 +182,7 @@ async function main() {
   }
   const p2 = await progressOf((await attemptOf(at!.id, kuser))!);
   ok("다 풀면 100% 가 된다", p2.percent === 100, `${p2.percent}%`);
-  ok("K8 응시가 닫힌다", await submitV2(at!.id, kuser));
+  ok("K8 응시가 닫힌다", (await submitV2(at!.id, kuser)).ok);
 
   /* ── S1·S2. 남의 응시를 못 연다 ───────────────────────────────── */
   const other = await user("phase2-other@example.com", "다른 사람");

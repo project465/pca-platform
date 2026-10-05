@@ -116,6 +116,12 @@ export const TX = {
   asNext: p("다음", "Next"),
   asSubmit: p("제출하기", "Submit"),
   asNotAll: p("남은 문항이 있습니다", "Some questions are unanswered"),
+  /* **어디에 몇 개가 남았는지 적는다.** '남은 문항이 있습니다' 만 적으면
+     누른 사람은 어느 묶음으로 돌아가야 하는지 모른 채 처음부터 다시 훑는다 */
+  asMissingHead: p("아직 못 고르신 문항이 있습니다. 눌러서 그 자리로 갑니다.",
+                   "Some questions are still unanswered. Tap one to jump there."),
+  asMissingLeft: p("남음", "left"),
+  asGone: p("이 응시를 찾을 수 없습니다.", "This attempt could not be found."),
   asResume: p("이어서 응시하기", "Continue"),
   asSectionOf: p("단계", "Step"),
   asDoneTitle: p("응시가 끝났습니다.", "Assessment complete."),

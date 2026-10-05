@@ -105,7 +105,7 @@ async function playThrough(userId: string, code: string, stage:
   const batch: Record<string, unknown> = {};
   for (const it of items) batch[it.item_id] = FILL(it);
   await saveAnswers(a.id, userId, batch);
-  if (!(await submitV2(a.id, userId))) throw new Error("제출이 되지 않았다");
+  if (!(await submitV2(a.id, userId)).ok) throw new Error("제출이 되지 않았다");
   return a.id;
 }
 
