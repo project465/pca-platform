@@ -63,7 +63,8 @@
     "global:check": "tsx scripts/global-check.ts",
     "domains:audit": "node scripts/domains-audit.mjs",
     "db:phase2_1": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 -f db/schema_phase2_1.sql",
-    "commercial:check": "tsx scripts/commercial-check.ts"
+    "commercial:check": "tsx scripts/commercial-check.ts",
+    "intake:i18n": "node scripts/intake-i18n.mjs"
   },
   "dependencies": {
     "@types/nodemailer": "^8.0.1",

@@ -73,6 +73,7 @@ export default async function EvidencePage({
           seed={{ evidence: prof.evidence, research: prof.research, target: prof.target }}
           nextHref={back}
           labels={{ saving: T("asSaving"), retry: T("asRetry") }}
+          lang={L}
         />
       </div>
     </div>

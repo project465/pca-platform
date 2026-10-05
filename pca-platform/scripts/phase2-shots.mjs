@@ -89,14 +89,27 @@ async function waitPath(page, want, ms = 30000) {
  * `market` 은 주소로 넘긴다. 운영에서는 도메인이 정하지만 개발 서버는
  * 호스트가 하나라서, 시장을 바꿔 보려면 주소뿐이다.
  */
-async function flow({ market, tier, stage, prefix, langShots }) {
+async function flow({ market, tier, stage, prefix, langShots, lang }) {
   const ctx = await browser.newContext({ viewport: SIZES.w1440 });
   const page = await ctx.newPage();
   const errs = [];
   page.on("pageerror", (e) => errs.push(String(e.message).slice(0, 140)));
 
+  /**
+   * 화면 언어.
+   *
+   * **글로벌 흐름은 영어로 끝까지 돈다.** 가격표만 영어로 찍고 나머지를
+   * 한국어로 돌면, 영어로 산 사람이 실제로 보는 응시·경험·결과지 화면을
+   * 아무도 본 적이 없는 상태로 팔게 된다.
+   *
+   * `middleware.ts` 가 `?lang` 을 쿠키로 굳히므로 첫 쪽에서 한 번만
+   * 붙이면 그 창 전체가 그 언어로 간다. 창이 갈려 있어서 한국 흐름에는
+   * 섞이지 않는다.
+   */
+  const q = lang ? `&lang=${lang}` : "";
+
   /* 1. 가격표 */
-  await page.goto(`${B}/pricing?market=${market}`, { waitUntil: "networkidle" });
+  await page.goto(`${B}/pricing?market=${market}${q}`, { waitUntil: "networkidle" });
   at(page, "/pricing", `${prefix} 가격표`);
   await shot(page, `${prefix}01_pricing`);
   await shot(page, `${prefix}01_pricing`, "mobile");
@@ -113,7 +126,7 @@ async function flow({ market, tier, stage, prefix, langShots }) {
   /* 2. 가입. **가격표에서 고른 등급을 들고 간다** */
   const code = `ME_V2_${tier}_${market === "KR" ? "KR" : "GL"}`;
   await page.setViewportSize(SIZES.w1440);
-  await page.goto(`${B}/checkout?product=${code}`, { waitUntil: "networkidle" });
+  await page.goto(`${B}/checkout?product=${code}${q}`, { waitUntil: "networkidle" });
   if (!at(page, /^\/signup/, `${prefix} 가입으로 넘어감`)) {
     problems.push(`${prefix}: 로그인 안 한 사람이 결제 화면에 그대로 섰다`);
   }
@@ -125,6 +138,20 @@ async function flow({ market, tier, stage, prefix, langShots }) {
   await page.fill('input[name="password"]', PW);
   const confirm = await page.$('input[name="confirm"], input[name="password2"]');
   if (confirm) await confirm.fill(PW);
+
+  /* 필수 동의를 체크한다. **빠지면 서버가 가입을 거절한다**(체크박스의
+     `required` 는 안내이고 막는 것은 `consent.record()` 다). 여기서
+     '모두 동의' 를 누르는 것은 그 칸이 실제로 다 체크하는지도 같이
+     보기 위해서다 */
+  const all = page.locator(".cnall input[type=checkbox]");
+  if (await all.count()) {
+    await all.first().check().catch(() => {});
+    const left = await page.locator("input[name=consent]:not(:checked)").count();
+    if (left) problems.push(`${prefix}: '모두 동의' 를 눌렀는데 ${left}칸이 안 켜졌다`);
+  } else {
+    problems.push(`${prefix}: 가입 화면에 동의 칸이 없다`);
+  }
+
   await page.locator('button[type="submit"]').first().click({ timeout: 15000 })
     .catch(() => {});
   await waitPath(page, "/checkout");
@@ -291,7 +318,8 @@ await flow({
 });
 await flow({
   market: "GLOBAL", tier: "PRO", stage: "phd",
-  prefix: "gl_", langShots: false,
+  /* **영어로 끝까지 돈다.** 글로벌 응시자가 실제로 보는 화면이다 */
+  prefix: "gl_", langShots: false, lang: "en",
 });
 
 /* 운영 화면: 막힌 것이 아침에 보이는가 */

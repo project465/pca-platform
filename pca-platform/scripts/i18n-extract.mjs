@@ -25,6 +25,10 @@ export const FILES = [
   "sites/pca-platform/assets/stage.js",
   "sites/pca-platform/assets/country.js",
   "sites/pca-platform/assets/research.js",
+  /* 응시 화면과 경험 입력 화면. **결과지만 옮기면 반만 팔린다**: 영어로
+     산 사람이 한국어 문항 화면에서 92문항을 푼다 */
+  "sites/pca-platform/assets/v2-app.js",
+  "sites/pca-platform/assets/evidence-ui.js",
 ];
 
 const HAN = /[가-힣]/;
@@ -136,7 +140,13 @@ const wrap = process.argv.includes("--wrap");
 const all = new Map();
 let wrappedCount = 0, already = 0;
 
-for (const f of FILES) {
+/* `--only=` 로 몇 파일만 감싼다. **이미 감싼 파일을 다시 감싸면**
+   `T(T(...))` 가 되고, 그 안쪽은 사전에 없는 글자가 되어 영어가 깨진다 */
+const only = (process.argv.find((x) => x.startsWith("--only=")) || "").slice(7)
+  .split(",").map((x) => x.trim()).filter(Boolean);
+const TARGET = only.length ? FILES.filter((f) => only.some((o) => f.includes(o))) : FILES;
+
+for (const f of TARGET) {
   const src = readFileSync(f, "utf8");
   const lits = literalsOf(src);
   let outSrc = src;

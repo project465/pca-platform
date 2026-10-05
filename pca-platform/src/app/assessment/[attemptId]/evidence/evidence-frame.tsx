@@ -27,7 +27,7 @@ type Msg =
  * 캡스톤 서술이 남는다.
  */
 export default function EvidenceFrame({
-  attemptId, stage, inFlow, seed, nextHref, labels,
+  attemptId, stage, inFlow, seed, nextHref, labels, lang,
 }: {
   attemptId: string;
   stage: string;
@@ -35,12 +35,14 @@ export default function EvidenceFrame({
   seed: EvidencePayload;
   nextHref: string;
   labels: { saving: string; retry: string };
+  /** 창 안쪽 화면의 언어. **주소로 넘긴다**: 사전이 그 값을 읽고 올라온다 */
+  lang: string;
 }) {
   const router = useRouter();
   const frame = useRef<HTMLIFrameElement | null>(null);
   const [state, setState] = useState<"idle" | "saving" | "retry">("idle");
   const src = `/me-v2/evidence-host.html?stage=${encodeURIComponent(stage)}` +
-    `&flow=${inFlow ? "1" : "0"}`;
+    `&flow=${inFlow ? "1" : "0"}&lang=${encodeURIComponent(lang)}`;
 
   useEffect(() => {
     const onMsg = async (e: MessageEvent) => {

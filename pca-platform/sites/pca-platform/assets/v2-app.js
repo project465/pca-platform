@@ -17,6 +17,11 @@
 (function () {
   'use strict';
 
+
+  /* 화면의 두 언어. **글자만 갈리고 묻는 것은 갈리지 않는다**:
+     한국어면 받은 것을 그대로 돌려주므로 한국어 쪽은 손대지 않은 것과
+     같다. 사전은 `i18n.js` 가 이 파일보다 **먼저** 올라와야 한다 */
+  var T = window.PCAI18N ? window.PCAI18N.T : function (s) { return s; };
   var KEY = 'pca_v2_session_v1';
   var V2 = window.PCAV2, DEC = window.PCAV2Decision;
 
@@ -58,33 +63,33 @@
   }
 
   var TIERS = [
-    { id: 'BASIC', n: 'BASIC', q: 48, t: '10~14분', d: '어디부터 볼지와 그 까닭, 다음 한 달에 할 것까지 봅니다.' },
-    { id: 'STANDARD', n: 'STANDARD', q: 68, t: '15~20분', d: '직무를 견주고, 내 경험이 어디에 걸리는지와 90일 계획이 더 붙습니다.' },
-    { id: 'PRO', n: 'PRO', q: 92, t: '20~28분', d: '무엇을 직접 정해 왔는지와 연구·과제 소유, 서류·면접·포트폴리오까지 갑니다.' }
+    { id: 'BASIC', n: 'BASIC', q: 48, t: T('10~14분'), d: T('어디부터 볼지와 그 까닭, 다음 한 달에 할 것까지 봅니다.') },
+    { id: 'STANDARD', n: 'STANDARD', q: 68, t: T('15~20분'), d: T('직무를 견주고, 내 경험이 어디에 걸리는지와 90일 계획이 더 붙습니다.') },
+    { id: 'PRO', n: 'PRO', q: 92, t: T('20~28분'), d: T('무엇을 직접 정해 왔는지와 연구·과제 소유, 서류·면접·포트폴리오까지 갑니다.') }
   ];
   var STAGES = [
-    { id: 'bachelor', n: '학사', d: '학부 재학 또는 졸업' },
-    { id: 'master', n: '석사', d: '석사 재학 또는 졸업' },
-    { id: 'phd', n: '박사', d: '박사 재학 또는 졸업' },
-    { id: 'postdoc', n: '포닥', d: '학위 후 연구 경력' }
+    { id: 'bachelor', n: T('학사'), d: T('학부 재학 또는 졸업') },
+    { id: 'master', n: T('석사'), d: T('석사 재학 또는 졸업') },
+    { id: 'phd', n: T('박사'), d: T('박사 재학 또는 졸업') },
+    { id: 'postdoc', n: T('포닥'), d: T('학위 후 연구 경력') }
   ];
 
   /* ── 섹션 나누기 ──────────────────────────────────────────────────
      구성개념이 바뀌면 척도도 바뀐다. 한 화면에 한 척도만 두면 응시자가
      보기 방식을 다시 익히지 않아도 된다. */
   var SEC_META = {
-    actual_work_interest: { n: '해보고 싶은 일', d: '각 문장을 읽고 그 일을 해보고 싶은 정도를 고르십시오. 잘하는지를 묻는 것이 아닙니다.' },
-    exposure: { n: '해본 적 있는 일', d: '얼마나 해봤는지만 고르십시오. 잘했는지는 묻지 않습니다.' },
-    decision_ownership: { n: '내가 정한 것', d: '그 일에서 무엇을 직접 정했는지를 고르십시오. 참여와 소유는 다릅니다.' },
-    work_mode: { n: '일하는 방식', d: '어느 쪽이 더 편한지만 고르십시오. 좋고 나쁨을 가르지 않습니다.' },
-    learning_intent: { n: '더 배우고 싶은 것', d: '앞으로 더 배울 뜻이 있는지를 고르십시오.' },
-    evidence_quality: { n: '보여 줄 수 있는 사례', d: '밖에 보여 줄 수 있는 사례가 몇 건인지 고르십시오.' },
-    research_project_evidence: { n: '과제를 맡아 본 정도', d: '단계에 맞는 문장으로 묻습니다. 학위가 올라간다고 점수가 오르지 않습니다.' },
-    context: { n: '진로 맥락', d: '여기 고르신 것은 점수에 들어가지 않습니다. 결과를 읽는 자리를 좁히는 데만 씁니다.' },
-    career_path_preferences: { n: '진로 맥락', d: '점수에 들어가지 않습니다. 결과를 읽는 자리를 좁히는 데만 씁니다.' },
-    decision_constraints: { n: '지금의 조건', d: '점수에 들어가지 않습니다.' },
-    organization_preference: { n: '관심 있는 조직', d: '점수에 들어가지 않습니다.' },
-    market_transition_intent: { n: '지금 알고 싶은 것', d: '점수에 들어가지 않습니다.' }
+    actual_work_interest: { n: T('해보고 싶은 일'), d: T('각 문장을 읽고 그 일을 해보고 싶은 정도를 고르십시오. 잘하는지를 묻는 것이 아닙니다.') },
+    exposure: { n: T('해본 적 있는 일'), d: T('얼마나 해봤는지만 고르십시오. 잘했는지는 묻지 않습니다.') },
+    decision_ownership: { n: T('내가 정한 것'), d: T('그 일에서 무엇을 직접 정했는지를 고르십시오. 참여와 소유는 다릅니다.') },
+    work_mode: { n: T('일하는 방식'), d: T('어느 쪽이 더 편한지만 고르십시오. 좋고 나쁨을 가르지 않습니다.') },
+    learning_intent: { n: T('더 배우고 싶은 것'), d: T('앞으로 더 배울 뜻이 있는지를 고르십시오.') },
+    evidence_quality: { n: T('보여 줄 수 있는 사례'), d: T('밖에 보여 줄 수 있는 사례가 몇 건인지 고르십시오.') },
+    research_project_evidence: { n: T('과제를 맡아 본 정도'), d: T('단계에 맞는 문장으로 묻습니다. 학위가 올라간다고 점수가 오르지 않습니다.') },
+    context: { n: T('진로 맥락'), d: T('여기 고르신 것은 점수에 들어가지 않습니다. 결과를 읽는 자리를 좁히는 데만 씁니다.') },
+    career_path_preferences: { n: T('진로 맥락'), d: T('점수에 들어가지 않습니다. 결과를 읽는 자리를 좁히는 데만 씁니다.') },
+    decision_constraints: { n: T('지금의 조건'), d: T('점수에 들어가지 않습니다.') },
+    organization_preference: { n: T('관심 있는 조직'), d: T('점수에 들어가지 않습니다.') },
+    market_transition_intent: { n: T('지금 알고 싶은 것'), d: T('점수에 들어가지 않습니다.') }
   };
 
   /* 점수에 들어가지 않는 맥락 문항은 한 화면에 모은다. 구성개념대로 쪼개면
@@ -122,7 +127,22 @@
   }
 
   /* ── 문항 그리기 ───────────────────────────────────────────────── */
+
+  /* 문항 본문과 보기는 **문항 은행이 두 언어로 들고 있다**(`en-US` ·
+     `options-en` · `points-en`). 사전을 거치지 않는 까닭은 문항이 규격이
+     준 그대로라서다: 사전에 넣으면 문체 규칙이 문항을 다듬게 되고, 그
+     순간 문항이 바뀐다(설계 원칙 4) */
+  function itemText(it) {
+    return window.PCAI18N
+      ? window.PCAI18N.itemText(it, S.stage)
+      : V2.textOf(it, S.stage);
+  }
+
   function scalePoints(scaleId) {
+    if (window.PCAI18N) {
+      var p = window.PCAI18N.scalePoints(scaleId);
+      if (p && p.length) return p;
+    }
     var sc = window.PCA_V2_ITEMS.ME.scales.scales[scaleId];
     return (sc && sc.points) || null;
   }
@@ -142,17 +162,21 @@
     var cur = S.answers[it.item_id];
     var sel = multi ? (Array.isArray(cur) ? cur : []) : [cur];
     return '<div class="v2choice" data-id="' + esc(it.item_id) + '" data-multi="' + (multi ? 1 : 0) + '">' +
-      (it.options || []).map(function (o) {
+      (it.options || []).map(function (o, i) {
+        /* **담기는 값은 한국어 그대로다.** 보기 글자만 갈린다: 값까지
+           갈리면 같은 응답이 언어마다 다른 답으로 저장되고, 그러면
+           영어로 푼 사람과 한국어로 푼 사람을 같은 자로 못 잰다 */
+        var label = window.PCAI18N ? window.PCAI18N.optionText(it, i) : o;
         return '<button type="button" class="v2chip' + (sel.indexOf(o) >= 0 ? ' on' : '') +
-          '" data-v="' + esc(o) + '">' + esc(o) + '</button>';
+          '" data-v="' + esc(o) + '">' + esc(label || o) + '</button>';
       }).join('') + '</div>' +
-      (multi ? '<p class="note">최대 둘까지 고르실 수 있습니다.</p>' : '');
+      (multi ? T('<p class="note">최대 둘까지 고르실 수 있습니다.</p>') : '');
   }
 
   function renderSection() {
     var sec = SECTIONS[S.sec];
     if (!sec) return;
-    var meta = SEC_META[sec.construct] || { n: '문항', d: '' };
+    var meta = SEC_META[sec.construct] || { n: T('문항'), d: '' };
     var base = 0;
     for (var i = 0; i < S.sec; i++) base += SECTIONS[i].items.length;
     var total = V2.itemsFor(S.tier).length;
@@ -167,17 +191,17 @@
       sec.items.map(function (it, k) {
         return '<div class="v2q" data-id="' + esc(it.item_id) + '">' +
           '<div class="v2qh"><span class="v2no">Q' + it.question_no + '</span>' +
-          '<p>' + esc(V2.textOf(it, S.stage)) + '</p></div>' +
+          '<p>' + esc(itemText(it)) + '</p></div>' +
           optionRow(it) + '</div>';
       }).join('') +
       '<div class="evnav">' +
-      '<button type="button" class="ghost" id="v2Prev"' + (S.sec === 0 ? ' disabled' : '') + '>뒤로</button>' +
+      '<button type="button" class="ghost" id="v2Prev"' + (S.sec === 0 ? ' disabled' : '') + T('>뒤로</button>') +
       '<button type="button" class="primary" id="v2Next">' +
-      (S.sec === SECTIONS.length - 1 ? '제출하고 결과 보기' : '다음') + '</button></div>';
+      (S.sec === SECTIONS.length - 1 ? T('제출하고 결과 보기') : T('다음')) + '</button></div>';
 
     var done = Object.keys(S.answers).length;
     el('v2Bar').style.width = Math.round((done / total) * 100) + '%';
-    el('v2Count').textContent = done + ' / ' + total + '문항';
+    el('v2Count').textContent = done + ' / ' + total + T('문항');
     window.scrollTo(0, 0);
   }
 
@@ -198,13 +222,13 @@
     window.PCA_V2_RESULT_JSON = J;
     el('v2ResultBody').innerHTML =
       '<div class="rp-act"><div class="rp-act-t"><b>' + esc(S.tier) +
-      ' 결과</b><span>이 기기에만 저장됩니다</span></div>' +
-      '<button type="button" class="rp-act-b" id="v2Print">인쇄 · PDF로 저장</button>' +
-      '<button type="button" class="rp-act-b ghost" id="v2Evi">경험 고치기</button>' +
+      T(' 결과</b><span>이 기기에만 저장됩니다</span></div>') +
+      T('<button type="button" class="rp-act-b" id="v2Print">인쇄 · PDF로 저장</button>') +
+      T('<button type="button" class="rp-act-b ghost" id="v2Evi">경험 고치기</button>') +
       /* 주소와 날짜는 브라우저가 붙이는 것이라 CSS 로 못 끈다. 인쇄
          대화상자의 설정이므로 그 한 줄을 여기서 안내한다 */
-      '<p class="rp-act-n">인쇄 대화상자에서 \'머리글과 바닥글\' 을 꺼 주시면 ' +
-      '주소와 날짜가 빠집니다.</p></div>' +
+      T('<p class="rp-act-n">인쇄 대화상자에서 \'머리글과 바닥글\' 을 꺼 주시면 ') +
+      T('주소와 날짜가 빠집니다.</p></div>') +
       window.PCAV2Report.render(J);
     var bp = el('v2Print');
     if (bp) bp.addEventListener('click', function () { window.print(); });
@@ -218,7 +242,7 @@
       af.addEventListener('click', function () {
         var folded = ab.classList.toggle('is-folded');
         af.setAttribute('aria-expanded', String(!folded));
-        af.textContent = folded ? '상세 분석 펼치기' : '상세 분석 접기';
+        af.textContent = folded ? T('상세 분석 펼치기') : T('상세 분석 접기');
         if (!folded) ab.scrollIntoView({ block: 'start' });
       });
     }
@@ -232,7 +256,7 @@
     if (!window.PCAEvidenceUI) { showResult(); return; }
     window.PCAEvidenceUI.open({
       stage: S.stage,
-      cancelLabel: inFlow ? '지금은 건너뛰기' : '그만두기',
+      cancelLabel: inFlow ? T('지금은 건너뛰기') : T('그만두기'),
       onDone: function () { showResult(); }
     });
     screen('s2-evidence');
@@ -243,7 +267,7 @@
     el('v2TierList').innerHTML = TIERS.map(function (t) {
       return '<button type="button" class="major' + (S.tier === t.id ? ' on' : '') +
         '" data-code="' + t.id + '"><b>' + esc(t.n) + '</b>' +
-        '<span>' + t.q + '문항 · ' + esc(t.t) + '</span>' +
+        '<span>' + t.q + T('문항 · ') + esc(t.t) + '</span>' +
         '<small>' + esc(t.d) + '</small></button>';
     }).join('');
   }
@@ -273,7 +297,7 @@
     });
     el('v2Back').addEventListener('click', function () { screen('s2-start'); });
     el('v2Reset').addEventListener('click', function () {
-      if (!confirm('응답을 지우고 처음부터 다시 하시겠습니까?')) return;
+      if (!confirm(T('응답을 지우고 처음부터 다시 하시겠습니까?'))) return;
       clearSession(); location.reload();
     });
 
@@ -287,7 +311,7 @@
         save();
         var done = Object.keys(S.answers).length, total = V2.itemsFor(S.tier).length;
         el('v2Bar').style.width = Math.round((done / total) * 100) + '%';
-        el('v2Count').textContent = done + ' / ' + total + '문항';
+        el('v2Count').textContent = done + ' / ' + total + T('문항');
         return;
       }
       var c = e.target.closest('.v2chip');
@@ -317,7 +341,7 @@
         if (miss.length) {
           var first = el('v2QBody').querySelector('[data-id="' + miss[0].item_id + '"]');
           if (first) { first.classList.add('v2miss'); first.scrollIntoView({ block: 'center' }); }
-          alert('답하지 않은 문항이 ' + miss.length + '개 있습니다.');
+          alert(T('답하지 않은 문항이 ') + miss.length + T('개 있습니다.'));
           return;
         }
         if (S.sec === SECTIONS.length - 1) { save(); openEvidence(true); return; }

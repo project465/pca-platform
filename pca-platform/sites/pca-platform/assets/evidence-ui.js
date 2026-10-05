@@ -16,12 +16,17 @@
 window.PCAEvidenceUI = (function () {
   'use strict';
 
+
+  /* 화면의 두 언어. **글자만 갈리고 묻는 것은 갈리지 않는다**:
+     한국어면 받은 것을 그대로 돌려주므로 한국어 쪽은 손대지 않은 것과
+     같다. 사전은 `i18n.js` 가 이 파일보다 **먼저** 올라와야 한다 */
+  var T = window.PCAI18N ? window.PCAI18N.T : function (s) { return s; };
   var EV = window.PCAEvidence;
   var RULES = (window.PCA_EVIDENCE_RULES && window.PCA_EVIDENCE_RULES.ME) || {};
   var ev = null, rp = null, tg = null, stage = 'bachelor', onDone = null, step = 1;
   /* 나가는 단추의 말. 결과지에서 고치러 들어오면 '그만두기' 가 맞지만,
      검사 흐름 한가운데서는 그만두는 것이 아니라 건너뛰는 것이다 */
-  var cancelLabel = '그만두기';
+  var cancelLabel = T('그만두기');
 
   function esc(s) {
     return String(s === null || s === undefined ? '' : s)
@@ -39,116 +44,116 @@ window.PCAEvidenceUI = (function () {
   function stepKinds() {
     var ks = EV.kindsFor(stage);
     return '<div class="evhead"><div class="eyebrow">1 / 3</div>' +
-      '<h2>어떤 경험이 있나요</h2>' +
-      '<p class="desc">고르신 것만 다음 화면에서 묻습니다. 없는 것은 고르지 ' +
-      '않으셔도 되고, 나중에 다시 들어와 더하실 수 있습니다. 여기 적는 내용은 ' +
-      '적합도 점수를 바꾸지 않습니다.</p></div>' +
+      T('<h2>어떤 경험이 있나요</h2>') +
+      T('<p class="desc">고르신 것만 다음 화면에서 묻습니다. 없는 것은 고르지 ') +
+      T('않으셔도 되고, 나중에 다시 들어와 더하실 수 있습니다. 여기 적는 내용은 ') +
+      T('적합도 점수를 바꾸지 않습니다.</p></div>') +
       '<div class="evkinds">' + ks.map(function (k) {
         var on = ev.kinds.indexOf(k.id) >= 0;
         return '<button type="button" class="evkind' + (on ? ' on' : '') +
-          '" data-k="' + k.id + '">' + esc(k.n) + '</button>';
+          '" data-k="' + k.id + '">' + esc(T(k.n)) + '</button>';
       }).join('') + '</div>' +
       '<div class="evnav"><button type="button" class="ghost" id="evCancel">' +
         esc(cancelLabel) + '</button>' +
-      '<button type="button" class="primary" id="evNext">다음</button></div>';
+      T('<button type="button" class="primary" id="evNext">다음</button></div>');
   }
 
   /* ── 2단계 ─────────────────────────────────────────────────────────── */
   function courseBox() {
     var cat = RULES.course_catalog || [];
     var mine = (ev.courses || []).map(function (c) { return c.n; });
-    return '<div class="evsec"><h3>수강과목</h3>' +
-      '<p class="note">들으신 과목을 고르시면 됩니다. 성적은 적지 않으셔도 되고, ' +
-      '적으셔도 적합도에는 쓰지 않습니다.</p>' +
+    return T('<div class="evsec"><h3>수강과목</h3>') +
+      T('<p class="note">들으신 과목을 고르시면 됩니다. 성적은 적지 않으셔도 되고, ') +
+      T('적으셔도 적합도에는 쓰지 않습니다.</p>') +
       '<div class="evchips">' + cat.map(function (c) {
         return '<button type="button" class="evchip' + (mine.indexOf(c) >= 0 ? ' on' : '') +
           '" data-course="' + esc(c) + '">' + esc(c) + '</button>';
       }).join('') + '</div>' +
-      '<label class="evlab">목록에 없는 과목<input type="text" id="evCourseEtc" ' +
-      'placeholder="쉼표로 구분" value="' + esc(join(ev.courseEtc)) + '"></label></div>';
+      T('<label class="evlab">목록에 없는 과목<input type="text" id="evCourseEtc" ') +
+      T('placeholder="쉼표로 구분" value="') + esc(join(ev.courseEtc)) + '"></label></div>';
   }
 
   function toolBox() {
     var cats = RULES.tool_categories || [], lv = RULES.tool_levels || [];
-    return '<div class="evsec"><h3>사용해 본 도구 · 기술</h3>' +
-      '<p class="note">프로그램 이름만으로는 무엇을 할 줄 아는지 알 수 없어서, ' +
-      '어디에 썼고 무엇을 판단했고 무엇이 남았고 무엇과 견주었는지를 같이 ' +
-      '받습니다. 네 칸을 채우실수록 결과지가 구체적으로 바뀝니다. ' +
-      '비워 두셔도 됩니다.</p>' +
+    return T('<div class="evsec"><h3>사용해 본 도구 · 기술</h3>') +
+      T('<p class="note">프로그램 이름만으로는 무엇을 할 줄 아는지 알 수 없어서, ') +
+      T('어디에 썼고 무엇을 판단했고 무엇이 남았고 무엇과 견주었는지를 같이 ') +
+      T('받습니다. 네 칸을 채우실수록 결과지가 구체적으로 바뀝니다. ') +
+      T('비워 두셔도 됩니다.</p>') +
       '<div id="evTools">' + (ev.tools || []).map(function (t, i) {
         return toolRow(t, i, cats, lv);
       }).join('') + '</div>' +
-      '<button type="button" class="ghost small" id="evAddTool">도구 추가</button></div>';
+      T('<button type="button" class="ghost small" id="evAddTool">도구 추가</button></div>');
   }
   function toolRow(t, i, cats, lv) {
     return '<div class="evrow" data-ti="' + i + '">' +
       '<select data-f="cat">' + cats.map(function (c) {
         return '<option value="' + c.id + '"' + (t.cat === c.id ? ' selected' : '') + '>' +
-          esc(c.n) + '</option>';
+          esc(T(c.n)) + '</option>';
       }).join('') + '</select>' +
-      '<input type="text" data-f="name" placeholder="프로그램 이름" value="' + esc(t.name) + '">' +
+      T('<input type="text" data-f="name" placeholder="프로그램 이름" value="') + esc(t.name) + '">' +
       '<select data-f="level">' + lv.map(function (x) {
         return '<option value="' + x.id + '"' + (t.level === x.id ? ' selected' : '') + '>' +
-          esc(x.n) + '</option>';
+          esc(T(x.n)) + '</option>';
       }).join('') + '</select>' +
-      '<input type="text" data-f="why" placeholder="어디에 썼는가" value="' + esc(t.why) + '">' +
-      '<button type="button" class="evdel" data-del="tool">지우기</button>' +
+      T('<input type="text" data-f="why" placeholder="어디에 썼는가" value="') + esc(t.why) + '">' +
+      T('<button type="button" class="evdel" data-del="tool">지우기</button>') +
       /* 도구 → 판단 → 산출물 → 검증. 이름만 받으면 활동까지밖에 못 간다 */
       '<div class="evtchain">' +
-      '<select data-f="exp_id"><option value="">연결할 경험 없음</option>' +
+      T('<select data-f="exp_id"><option value="">연결할 경험 없음</option>') +
       (ev.projects || []).map(function (p) {
         return '<option value="' + esc(p.id) + '"' + (t.exp_id === p.id ? ' selected' : '') +
-          '>' + esc(p.title || '(제목 없는 경험)') + '</option>';
+          '>' + esc(p.title || T('(제목 없는 경험)')) + '</option>';
       }).join('') + '</select>' +
-      '<input type="text" data-f="decision" placeholder="이걸로 무엇을 판단했는가" value="' + esc(t.decision) + '">' +
-      '<input type="text" data-f="output" placeholder="무엇이 남았는가" value="' + esc(t.output) + '">' +
-      '<input type="text" data-f="validation" placeholder="무엇과 견주어 확인했는가" value="' + esc(t.validation) + '">' +
+      T('<input type="text" data-f="decision" placeholder="이걸로 무엇을 판단했는가" value="') + esc(t.decision) + '">' +
+      T('<input type="text" data-f="output" placeholder="무엇이 남았는가" value="') + esc(t.output) + '">' +
+      T('<input type="text" data-f="validation" placeholder="무엇과 견주어 확인했는가" value="') + esc(t.validation) + '">' +
       '</div></div>';
   }
 
   function projectBox() {
-    return '<div class="evsec"><h3>프로젝트 · 인턴 · 직장</h3>' +
-      '<p class="note">한 건씩 적습니다. <b>무엇을 했는가</b>와 <b>무엇을 ' +
-      '직접 골랐는가</b>를 따로 받는 것은, 서류와 면접에서 읽히는 쪽이 ' +
-      '뒤엣것이기 때문입니다.</p>' +
+    return T('<div class="evsec"><h3>프로젝트 · 인턴 · 직장</h3>') +
+      T('<p class="note">한 건씩 적습니다. <b>무엇을 했는가</b>와 <b>무엇을 ') +
+      T('직접 골랐는가</b>를 따로 받는 것은, 서류와 면접에서 읽히는 쪽이 ') +
+      T('뒤엣것이기 때문입니다.</p>') +
       '<div id="evProjects">' + (ev.projects || []).map(projectCard).join('') + '</div>' +
-      '<button type="button" class="ghost small" id="evAddProj">경험 추가</button></div>';
+      T('<button type="button" class="ghost small" id="evAddProj">경험 추가</button></div>');
   }
   function projectCard(p, i) {
     return '<div class="evcard" data-pi="' + i + '">' +
       '<div class="evcard-h"><b>' + (i + 1) + '</b>' +
-      '<button type="button" class="evdel" data-del="proj">지우기</button></div>' +
-      '<label class="evlab">제목<input type="text" data-f="title" value="' + esc(p.title) + '"></label>' +
-      '<label class="evlab">종류<select data-f="type">' + EV.PROJECT_TYPES.map(function (t) {
+      T('<button type="button" class="evdel" data-del="proj">지우기</button></div>') +
+      T('<label class="evlab">제목<input type="text" data-f="title" value="') + esc(p.title) + '"></label>' +
+      T('<label class="evlab">종류<select data-f="type">') + EV.PROJECT_TYPES.map(function (t) {
         return '<option value="' + t.id + '"' + (p.type === t.id ? ' selected' : '') + '>' +
-          esc(t.n) + '</option>';
+          esc(T(t.n)) + '</option>';
       }).join('') + '</select></label>' +
       '<div class="evpair">' +
-        '<label class="evlab">시작<input type="text" data-f="start" placeholder="2025-03" value="' + esc(p.period.start) + '"></label>' +
-        '<label class="evlab">끝<input type="text" data-f="end" placeholder="2025-12" value="' + esc(p.period.end) + '"></label>' +
+        T('<label class="evlab">시작<input type="text" data-f="start" placeholder="2025-03" value="') + esc(p.period.start) + '"></label>' +
+        T('<label class="evlab">끝<input type="text" data-f="end" placeholder="2025-12" value="') + esc(p.period.end) + '"></label>' +
       '</div>' +
       '<div class="evpair">' +
-        '<label class="evlab">인원<input type="text" data-f="team_size" placeholder="모르면 비워 두십시오" value="' + esc(p.team_size) + '"></label>' +
-        '<label class="evlab">내 역할<input type="text" data-f="my_role" value="' + esc(p.my_role) + '"></label>' +
+        T('<label class="evlab">인원<input type="text" data-f="team_size" placeholder="모르면 비워 두십시오" value="') + esc(p.team_size) + '"></label>' +
+        T('<label class="evlab">내 역할<input type="text" data-f="my_role" value="') + esc(p.my_role) + '"></label>' +
       '</div>' +
-      '<label class="evlab">목표<input type="text" data-f="objective" placeholder="무엇을 하려던 일이었는가" value="' + esc(p.objective) + '"></label>' +
-      '<label class="evlab">한 일<textarea data-f="what_i_did" rows="2">' + esc(p.what_i_did) + '</textarea></label>' +
-      '<label class="evlab"><b>직접 고른 것</b><textarea data-f="decisions_i_made" rows="2" ' +
-        'placeholder="무엇을 놓고 고민했고 무엇을 골랐는가">' + esc(p.decisions_i_made) + '</textarea></label>' +
+      T('<label class="evlab">목표<input type="text" data-f="objective" placeholder="무엇을 하려던 일이었는가" value="') + esc(p.objective) + '"></label>' +
+      T('<label class="evlab">한 일<textarea data-f="what_i_did" rows="2">') + esc(p.what_i_did) + '</textarea></label>' +
+      T('<label class="evlab"><b>직접 고른 것</b><textarea data-f="decisions_i_made" rows="2" ') +
+        T('placeholder="무엇을 놓고 고민했고 무엇을 골랐는가">') + esc(p.decisions_i_made) + '</textarea></label>' +
       '<div class="evpair">' +
-        '<label class="evlab">쓴 도구<input type="text" data-f="tools" placeholder="쉼표로" value="' + esc(join(p.tools)) + '"></label>' +
-        '<label class="evlab">쓴 방법<input type="text" data-f="methods" placeholder="쉼표로" value="' + esc(join(p.methods)) + '"></label>' +
+        T('<label class="evlab">쓴 도구<input type="text" data-f="tools" placeholder="쉼표로" value="') + esc(join(p.tools)) + '"></label>' +
+        T('<label class="evlab">쓴 방법<input type="text" data-f="methods" placeholder="쉼표로" value="') + esc(join(p.methods)) + '"></label>' +
       '</div>' +
-      '<label class="evlab">남은 결과물<input type="text" data-f="outputs" placeholder="도면, 보고서, 코드, 시제품 …" value="' + esc(join(p.outputs)) + '"></label>' +
+      T('<label class="evlab">남은 결과물<input type="text" data-f="outputs" placeholder="도면, 보고서, 코드, 시제품 …" value="') + esc(join(p.outputs)) + '"></label>' +
       '<div class="evmore" data-open="0">' +
-        '<button type="button" class="evmore-b">더 적기 (선택)</button>' +
+        T('<button type="button" class="evmore-b">더 적기 (선택)</button>') +
         '<div class="evmore-c">' +
-          '<label class="evlab">결과<input type="text" data-f="result" value="' + esc(p.result) + '"></label>' +
-          '<label class="evlab">숫자로 남은 것<input type="text" data-f="measurable_result" ' +
-            'placeholder="실제로 잰 값만 적으십시오" value="' + esc(p.measurable_result) + '"></label>' +
-          '<label class="evlab">가장 막혔던 곳<input type="text" data-f="difficulty" value="' + esc(p.difficulty) + '"></label>' +
-          '<label class="evlab">계획에서 바뀐 것<input type="text" data-f="what_changed" value="' + esc(p.what_changed) + '"></label>' +
-          '<label class="evlab">남은 것<input type="text" data-f="what_i_learned" value="' + esc(p.what_i_learned) + '"></label>' +
+          T('<label class="evlab">결과<input type="text" data-f="result" value="') + esc(p.result) + '"></label>' +
+          T('<label class="evlab">숫자로 남은 것<input type="text" data-f="measurable_result" ') +
+            T('placeholder="실제로 잰 값만 적으십시오" value="') + esc(p.measurable_result) + '"></label>' +
+          T('<label class="evlab">가장 막혔던 곳<input type="text" data-f="difficulty" value="') + esc(p.difficulty) + '"></label>' +
+          T('<label class="evlab">계획에서 바뀐 것<input type="text" data-f="what_changed" value="') + esc(p.what_changed) + '"></label>' +
+          T('<label class="evlab">남은 것<input type="text" data-f="what_i_learned" value="') + esc(p.what_i_learned) + '"></label>' +
         '</div>' +
       '</div></div>';
   }
@@ -156,30 +161,30 @@ window.PCAEvidenceUI = (function () {
   function listBox(key, title, note) {
     return '<div class="evsec"><h3>' + esc(title) + '</h3>' +
       (note ? '<p class="note">' + esc(note) + '</p>' : '') +
-      '<textarea data-list="' + key + '" rows="3" placeholder="한 줄에 하나씩">' +
+      '<textarea data-list="' + key + T('" rows="3" placeholder="한 줄에 하나씩">') +
       esc((ev[key] || []).join('\n')) + '</textarea></div>';
   }
 
   function stepForms() {
     var k = ev.kinds, out = [];
     out.push('<div class="evhead"><div class="eyebrow">2 / 3</div>' +
-      '<h2>고르신 것만 적습니다</h2>' +
-      '<p class="desc">3~5분이면 끝납니다. 모르는 칸은 비워 두셔도 되고, ' +
-      '비워 둔다고 결과가 불리해지지 않습니다.</p></div>');
+      T('<h2>고르신 것만 적습니다</h2>') +
+      T('<p class="desc">3~5분이면 끝납니다. 모르는 칸은 비워 두셔도 되고, ') +
+      T('비워 둔다고 결과가 불리해지지 않습니다.</p></div>'));
     if (k.indexOf('course') >= 0) out.push(courseBox());
     if (k.indexOf('project') >= 0 || k.indexOf('research') >= 0 ||
         k.indexOf('internship') >= 0 || k.indexOf('work') >= 0 ||
         k.indexOf('competition') >= 0) out.push(projectBox());
     if (k.indexOf('tool') >= 0) out.push(toolBox());
-    if (k.indexOf('paper') >= 0) out.push(listBox('publications', '논문'));
-    if (k.indexOf('patent') >= 0) out.push(listBox('patents', '특허'));
-    if (k.indexOf('talk') >= 0) out.push(listBox('presentations', '발표 · 학회'));
-    if (k.indexOf('cert') >= 0) out.push(listBox('certifications', '자격증'));
-    if (k.indexOf('mentor') >= 0) out.push(listBox('mentoring', '지도 · 리더십',
-      '후배나 학생을 지도한 것, 작은 묶음을 맡아 본 것을 적습니다.'));
-    if (k.indexOf('etc') >= 0) out.push(listBox('awards', '그 밖에'));
-    out.push('<div class="evnav"><button type="button" class="ghost" id="evBack">뒤로</button>' +
-      '<button type="button" class="primary" id="evNext">다음</button></div>');
+    if (k.indexOf('paper') >= 0) out.push(listBox('publications', T('논문')));
+    if (k.indexOf('patent') >= 0) out.push(listBox('patents', T('특허')));
+    if (k.indexOf('talk') >= 0) out.push(listBox('presentations', T('발표 · 학회')));
+    if (k.indexOf('cert') >= 0) out.push(listBox('certifications', T('자격증')));
+    if (k.indexOf('mentor') >= 0) out.push(listBox('mentoring', T('지도 · 리더십'),
+      T('후배나 학생을 지도한 것, 작은 묶음을 맡아 본 것을 적습니다.')));
+    if (k.indexOf('etc') >= 0) out.push(listBox('awards', T('그 밖에')));
+    out.push(T('<div class="evnav"><button type="button" class="ghost" id="evBack">뒤로</button>') +
+      T('<button type="button" class="primary" id="evNext">다음</button></div>'));
     return out.join('');
   }
 
@@ -187,90 +192,90 @@ window.PCAEvidenceUI = (function () {
   function researchBox() {
     var ask = EV.askFor(stage);
     if (!ask.research_detail) {
-      return '<div class="evsec"><h3>연구 과제 상세</h3>' +
-        '<p class="note">학부 단계에서는 연구비와 공고 해석을 묻지 않습니다. ' +
-        '연구 과제에 들어가 보신 적이 있으면 아래를 열어 적으실 수 있습니다.</p>' +
-        '<button type="button" class="ghost small" id="evAddRp">연구 과제 적기</button>' +
+      return T('<div class="evsec"><h3>연구 과제 상세</h3>') +
+        T('<p class="note">학부 단계에서는 연구비와 공고 해석을 묻지 않습니다. ') +
+        T('연구 과제에 들어가 보신 적이 있으면 아래를 열어 적으실 수 있습니다.</p>') +
+        T('<button type="button" class="ghost small" id="evAddRp">연구 과제 적기</button>') +
         '<div id="evRps">' + rp.map(researchCard).join('') + '</div></div>';
     }
-    return '<div class="evsec"><h3>연구 과제</h3>' +
-      '<p class="note">과제 한 건을 적어 두시면 결과지에서 과제 카드와 면접 ' +
-      '질문으로 이어집니다. 모르는 칸은 비워 두시고, 지어내서 적으시면 ' +
-      '면접에서 바로 갈립니다.</p>' +
+    return T('<div class="evsec"><h3>연구 과제</h3>') +
+      T('<p class="note">과제 한 건을 적어 두시면 결과지에서 과제 카드와 면접 ') +
+      T('질문으로 이어집니다. 모르는 칸은 비워 두시고, 지어내서 적으시면 ') +
+      T('면접에서 바로 갈립니다.</p>') +
       '<div id="evRps">' + rp.map(researchCard).join('') + '</div>' +
-      '<button type="button" class="ghost small" id="evAddRp">연구 과제 추가</button></div>';
+      T('<button type="button" class="ghost small" id="evAddRp">연구 과제 추가</button></div>');
   }
   function researchCard(r, i) {
     var f = r.funding_context, b = r.budget, t = r.team, o = r.objective,
         p = r.planning, x = r.execution;
     var adv = stage === 'phd' || stage === 'postdoc';
     return '<div class="evcard" data-ri="' + i + '">' +
-      '<div class="evcard-h"><b>과제 ' + (i + 1) + '</b>' +
-      '<button type="button" class="evdel" data-del="rp">지우기</button></div>' +
-      '<label class="evlab">과제명<input type="text" data-f="project_title" value="' + esc(r.project_title) + '"></label>' +
+      T('<div class="evcard-h"><b>과제 ') + (i + 1) + '</b>' +
+      T('<button type="button" class="evdel" data-del="rp">지우기</button></div>') +
+      T('<label class="evlab">과제명<input type="text" data-f="project_title" value="') + esc(r.project_title) + '"></label>' +
       '<div class="evpair">' +
-        '<label class="evlab">발주 · 지원 기관<input type="text" data-f="sponsor_name" placeholder="모르면 비워 두십시오" value="' + esc(f.sponsor_name) + '"></label>' +
-        '<label class="evlab">전문기관<input type="text" data-f="management_agency" value="' + esc(f.management_agency) + '"></label>' +
+        T('<label class="evlab">발주 · 지원 기관<input type="text" data-f="sponsor_name" placeholder="모르면 비워 두십시오" value="') + esc(f.sponsor_name) + '"></label>' +
+        T('<label class="evlab">전문기관<input type="text" data-f="management_agency" value="') + esc(f.management_agency) + '"></label>' +
       '</div>' +
       '<div class="evpair">' +
-        '<label class="evlab">사업 · 공고 이름<input type="text" data-f="program_name" value="' + esc(f.program_name) + '"></label>' +
-        '<label class="evlab">기간<input type="text" data-f="period" placeholder="2024-03 ~ 2025-02" value="' +
+        T('<label class="evlab">사업 · 공고 이름<input type="text" data-f="program_name" value="') + esc(f.program_name) + '"></label>' +
+        T('<label class="evlab">기간<input type="text" data-f="period" placeholder="2024-03 ~ 2025-02" value="') +
           esc(r.period.start_date + (r.period.end_date ? ' ~ ' + r.period.end_date : '')) + '"></label>' +
       '</div>' +
       '<div class="evpair">' +
-        '<label class="evlab">총 연구비<input type="text" data-f="total_amount" placeholder="모르면 비워 두십시오" value="' +
+        T('<label class="evlab">총 연구비<input type="text" data-f="total_amount" placeholder="모르면 비워 두십시오" value="') +
           esc(EV.isBlank(b.total_amount) ? '' : b.total_amount) + '"></label>' +
-        '<label class="evlab">연구비에 닿은 정도<select data-f="my_budget_role">' +
-          '<option value="">고르지 않음</option>' +
+        T('<label class="evlab">연구비에 닿은 정도<select data-f="my_budget_role">') +
+          T('<option value="">고르지 않음</option>') +
           (window.PCAResearch.BUDGET || []).map(function (x2) {
             return '<option value="' + x2.id + '"' + (b.my_budget_role === x2.id ? ' selected' : '') +
               '>' + esc(x2.id + ' · ' + x2.w) + '</option>';
           }).join('') + '</select></label>' +
       '</div>' +
       '<div class="evpair">' +
-        '<label class="evlab">팀 인원<input type="text" data-f="total_people" placeholder="모르면 비워 두십시오" value="' +
+        T('<label class="evlab">팀 인원<input type="text" data-f="total_people" placeholder="모르면 비워 두십시오" value="') +
           esc(EV.isBlank(t.total_people) ? '' : t.total_people) + '"></label>' +
-        '<label class="evlab">내 역할<input type="text" data-f="my_role" value="' + esc(t.my_role) + '"></label>' +
+        T('<label class="evlab">내 역할<input type="text" data-f="my_role" value="') + esc(t.my_role) + '"></label>' +
       '</div>' +
-      '<label class="evlab">협력 기관<input type="text" data-f="collaborating_orgs" placeholder="쉼표로" value="' + esc(join(t.collaborating_orgs)) + '"></label>' +
-      '<label class="evlab">과제 목표<input type="text" data-f="project_objective" value="' + esc(o.project_objective) + '"></label>' +
-      '<label class="evlab"><b>내가 맡은 목표</b><input type="text" data-f="my_objective" value="' + esc(o.my_objective) + '"></label>' +
-      '<label class="evlab">쓴 방법<input type="text" data-f="methods" placeholder="쉼표로" value="' + esc(join(x.methods)) + '"></label>' +
-      '<label class="evlab"><b>직접 고른 지점</b><textarea data-f="key_decisions" rows="2" placeholder="한 줄에 하나씩">' +
+      T('<label class="evlab">협력 기관<input type="text" data-f="collaborating_orgs" placeholder="쉼표로" value="') + esc(join(t.collaborating_orgs)) + '"></label>' +
+      T('<label class="evlab">과제 목표<input type="text" data-f="project_objective" value="') + esc(o.project_objective) + '"></label>' +
+      T('<label class="evlab"><b>내가 맡은 목표</b><input type="text" data-f="my_objective" value="') + esc(o.my_objective) + '"></label>' +
+      T('<label class="evlab">쓴 방법<input type="text" data-f="methods" placeholder="쉼표로" value="') + esc(join(x.methods)) + '"></label>' +
+      T('<label class="evlab"><b>직접 고른 지점</b><textarea data-f="key_decisions" rows="2" placeholder="한 줄에 하나씩">') +
         esc((x.key_decisions || []).join('\n')) + '</textarea></label>' +
-      (adv ? '<div class="evmore" data-open="0"><button type="button" class="evmore-b">기획 · 규정까지 적기 (선택)</button>' +
+      (adv ? T('<div class="evmore" data-open="0"><button type="button" class="evmore-b">기획 · 규정까지 적기 (선택)</button>') +
         '<div class="evmore-c">' +
-        '<label class="evlab">공고 · 과제요청서를 보셨습니까<select data-f="rfp_reviewed">' +
-          '<option value="not_supplied"' + (p.rfp_reviewed === 'not_supplied' ? ' selected' : '') + '>아직 안 적음</option>' +
-          '<option value="true"' + (p.rfp_reviewed === true ? ' selected' : '') + '>읽고 반영했다</option>' +
-          '<option value="false"' + (p.rfp_reviewed === false ? ' selected' : '') + '>확인하지 않았다</option>' +
-          '<option value="not_applicable"' + (p.rfp_reviewed === 'not_applicable' ? ' selected' : '') + '>해당 없음</option>' +
+        T('<label class="evlab">공고 · 과제요청서를 보셨습니까<select data-f="rfp_reviewed">') +
+          '<option value="not_supplied"' + (p.rfp_reviewed === 'not_supplied' ? ' selected' : '') + T('>아직 안 적음</option>') +
+          '<option value="true"' + (p.rfp_reviewed === true ? ' selected' : '') + T('>읽고 반영했다</option>') +
+          '<option value="false"' + (p.rfp_reviewed === false ? ' selected' : '') + T('>확인하지 않았다</option>') +
+          '<option value="not_applicable"' + (p.rfp_reviewed === 'not_applicable' ? ' selected' : '') + T('>해당 없음</option>') +
         '</select></label>' +
-        '<label class="evlab">세부 과제<input type="text" data-f="work_packages" placeholder="쉼표로" value="' + esc(join(p.work_packages)) + '"></label>' +
-        '<label class="evlab">일정에 관여한 범위<input type="text" data-f="timeline_role" value="' + esc(p.timeline_role) + '"></label>' +
-        '<label class="evlab">중간 점검<input type="text" data-f="milestones" placeholder="쉼표로" value="' + esc(join(p.milestones)) + '"></label>' +
-        '<label class="evlab">성과지표<input type="text" data-f="kpis" placeholder="관여하지 않았으면 비워 두십시오" value="' + esc(join(p.kpis)) + '"></label>' +
-        '<label class="evlab">결과물<input type="text" data-f="deliverables" placeholder="쉼표로" value="' + esc(join(p.deliverables)) + '"></label>' +
-        '<label class="evlab">위험 요인<input type="text" data-f="risk_planning" value="' + esc(p.risk_planning) + '"></label>' +
-        '<label class="evlab">계획에서 바뀐 것<textarea data-f="plan_changes" rows="2" placeholder="한 줄에 하나씩">' +
+        T('<label class="evlab">세부 과제<input type="text" data-f="work_packages" placeholder="쉼표로" value="') + esc(join(p.work_packages)) + '"></label>' +
+        T('<label class="evlab">일정에 관여한 범위<input type="text" data-f="timeline_role" value="') + esc(p.timeline_role) + '"></label>' +
+        T('<label class="evlab">중간 점검<input type="text" data-f="milestones" placeholder="쉼표로" value="') + esc(join(p.milestones)) + '"></label>' +
+        T('<label class="evlab">성과지표<input type="text" data-f="kpis" placeholder="관여하지 않았으면 비워 두십시오" value="') + esc(join(p.kpis)) + '"></label>' +
+        T('<label class="evlab">결과물<input type="text" data-f="deliverables" placeholder="쉼표로" value="') + esc(join(p.deliverables)) + '"></label>' +
+        T('<label class="evlab">위험 요인<input type="text" data-f="risk_planning" value="') + esc(p.risk_planning) + '"></label>' +
+        T('<label class="evlab">계획에서 바뀐 것<textarea data-f="plan_changes" rows="2" placeholder="한 줄에 하나씩">') +
           esc((x.plan_changes || []).join('\n')) + '</textarea></label>' +
-        '<label class="evlab">안전 · 규정 · 보안<input type="text" data-f="compliance" placeholder="쉼표로. 없으면 비워 두십시오" value="' +
+        T('<label class="evlab">안전 · 규정 · 보안<input type="text" data-f="compliance" placeholder="쉼표로. 없으면 비워 두십시오" value="') +
           esc(join((r.compliance || {}).regulatory)) + '"></label>' +
         '</div></div>' : '') +
       '</div>';
   }
 
   function targetBox() {
-    return '<div class="evsec"><h3>목표</h3>' +
-      '<p class="note">목표 국가를 적으시면 그 나라에서 쓰는 직무 이름과 ' +
-      '채용 관행을 결과지에 넣습니다. 지금은 확인된 자료가 있는 나라가 없어 ' +
-      '비워 두셔도 결과가 달라지지 않습니다. <b>국적은 묻지 않습니다.</b> ' +
-      '국적은 적합도와 아무 관계가 없습니다.</p>' +
+    return T('<div class="evsec"><h3>목표</h3>') +
+      T('<p class="note">목표 국가를 적으시면 그 나라에서 쓰는 직무 이름과 ') +
+      T('채용 관행을 결과지에 넣습니다. 지금은 확인된 자료가 있는 나라가 없어 ') +
+      T('비워 두셔도 결과가 달라지지 않습니다. <b>국적은 묻지 않습니다.</b> ') +
+      T('국적은 적합도와 아무 관계가 없습니다.</p>') +
       '<div class="evpair">' +
-        '<label class="evlab">목표 국가<input type="text" id="evCountry" placeholder="KR · US · DE …" value="' + esc(tg.target_country) + '"></label>' +
-        '<label class="evlab">목표 산업<input type="text" id="evInd" placeholder="쉼표로" value="' + esc(join(tg.target_industries)) + '"></label>' +
+        T('<label class="evlab">목표 국가<input type="text" id="evCountry" placeholder="KR · US · DE …" value="') + esc(tg.target_country) + '"></label>' +
+        T('<label class="evlab">목표 산업<input type="text" id="evInd" placeholder="쉼표로" value="') + esc(join(tg.target_industries)) + '"></label>' +
       '</div>' +
-      '<label class="evlab">목표 직무<input type="text" id="evRoles" placeholder="쉼표로" value="' + esc(join(tg.target_roles)) + '"></label>' +
+      T('<label class="evlab">목표 직무<input type="text" id="evRoles" placeholder="쉼표로" value="') + esc(join(tg.target_roles)) + '"></label>' +
       orgPick() + '</div>';
   }
 
@@ -280,27 +285,27 @@ window.PCAEvidenceUI = (function () {
   function orgPick() {
     var types = (window.PCA_ORG_TYPES && window.PCA_ORG_TYPES.organization_types) || [];
     if (!types.length) return '';
-    return '<div class="evorg"><div class="evlab">관심 있는 조직 유형</div>' +
-      '<p class="note">점수에 들어가지 않습니다. 같은 지식이 어떤 결과물로 ' +
-      '읽히는지만 달라집니다. 고르지 않으셔도 됩니다.</p>' +
+    return T('<div class="evorg"><div class="evlab">관심 있는 조직 유형</div>') +
+      T('<p class="note">점수에 들어가지 않습니다. 같은 지식이 어떤 결과물로 ') +
+      T('읽히는지만 달라집니다. 고르지 않으셔도 됩니다.</p>') +
       '<div class="evkinds">' +
       '<button type="button" class="evkind' + (!tg.target_org_type ? ' on' : '') +
-      '" data-org="">고르지 않음</button>' +
+      T('" data-org="">고르지 않음</button>') +
       types.map(function (o) {
         return '<button type="button" class="evkind' +
           (tg.target_org_type === o.id ? ' on' : '') + '" data-org="' + esc(o.id) + '">' +
-          esc(o.name_ko) + '</button>';
+          esc(T(o.name_ko)) + '</button>';
       }).join('') + '</div></div>';
   }
 
   function stepDetail() {
     return '<div class="evhead"><div class="eyebrow">3 / 3</div>' +
-      '<h2>더 적으실 수 있는 것</h2>' +
-      '<p class="desc">여기는 선택입니다. 적지 않으셔도 2단계까지로 결과지가 ' +
-      '달라집니다. STANDARD·PRO 에서는 이 칸들이 쓰이는 곳이 더 많습니다.</p></div>' +
+      T('<h2>더 적으실 수 있는 것</h2>') +
+      T('<p class="desc">여기는 선택입니다. 적지 않으셔도 2단계까지로 결과지가 ') +
+      T('달라집니다. STANDARD·PRO 에서는 이 칸들이 쓰이는 곳이 더 많습니다.</p></div>') +
       researchBox() + targetBox() +
-      '<div class="evnav"><button type="button" class="ghost" id="evBack">뒤로</button>' +
-      '<button type="button" class="primary" id="evSave">저장하고 결과 보기</button></div>';
+      T('<div class="evnav"><button type="button" class="ghost" id="evBack">뒤로</button>') +
+      T('<button type="button" class="primary" id="evSave">저장하고 결과 보기</button></div>');
   }
 
   /* ── 그리기와 저장 ─────────────────────────────────────────────────── */
@@ -454,7 +459,7 @@ window.PCAEvidenceUI = (function () {
       if (t.id === 'evAddRp') { collect(); rp.push(EV.emptyResearch()); render(); return; }
       if (t.id === 'evNext') {
         collect();
-        if (step === 1 && !ev.kinds.length) { alert('하나 이상 고르십시오.'); return; }
+        if (step === 1 && !ev.kinds.length) { alert(T('하나 이상 고르십시오.')); return; }
         step += 1; render(); return;
       }
       if (t.id === 'evBack') { collect(); step -= 1; render(); return; }
@@ -471,7 +476,7 @@ window.PCAEvidenceUI = (function () {
   function open(opts) {
     stage = (opts && opts.stage) || 'bachelor';
     onDone = opts && opts.onDone;
-    cancelLabel = (opts && opts.cancelLabel) || '그만두기';
+    cancelLabel = (opts && opts.cancelLabel) || T('그만두기');
     ev = EV.loadEvidence(); rp = EV.loadResearch(); tg = EV.loadTarget();
     ev.courseEtc = (ev.courses || []).filter(function (c) { return c.etc; })
       .map(function (c) { return c.n; });
