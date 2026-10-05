@@ -4,6 +4,7 @@ import { query, queryOne, tx } from "@/lib/db";
 import { createResetToken } from "@/lib/password";
 import { sendNow } from "@/lib/outbox";
 import { headers } from "next/headers";
+import { publicBase } from "@/lib/urls";
 
 export type ForgotState = { done?: boolean; devLink?: string };
 
@@ -52,13 +53,20 @@ export async function forgotAction(
     );
   });
 
-  /* 주소는 **요청이 들어온 그 호스트**에서 가져온다. 환경변수에 적어 둔
-     것이 staging 이면 메일에 staging 링크가 나간다(규격 §11) */
+  /**
+   * 링크의 바탕 주소는 **정규 주소**다(`site_configs.canonical_url`).
+   *
+   * 받는 사람은 다른 날 다른 자리에서 이 링크를 연다. 지금 요청이 들어온
+   * 호스트를 그대로 적으면, staging 에서 누른 재설정이 staging 링크로
+   * 나가고 그 주소는 밖에서 안 열린다. 정규 주소가 없을 때만(개발)
+   * 지금 호스트로 되돌린다.
+   */
   const h = await headers();
   const host = h.get("x-forwarded-host") ?? h.get("host") ?? "localhost:3000";
   const proto = h.get("x-forwarded-proto")
     ?? (host.startsWith("localhost") || host.startsWith("127.") ? "http" : "https");
-  const link = `${proto}://${host}/password/reset/${token}`;
+  const base = (await publicBase("KR").catch(() => null)) ?? `${proto}://${host}`;
+  const link = `${base}/password/reset/${token}`;
 
   const sent = await sendNow({
     kind: "password_reset", userId: user.id, link, hours: TOKEN_TTL_HOURS,

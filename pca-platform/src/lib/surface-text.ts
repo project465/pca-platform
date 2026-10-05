@@ -203,6 +203,7 @@ export const TX = {
     "It will appear here once it is set. We do not display an invented figure.",
   ),
   pxFreeTier: p("무료", "Free"),
+  pxStartFree: p("무료로 시작하기", "Start for free"),
   pxFreeTierWhy: p(
     "결제 없이 풀어 보실 수 있습니다.",
     "You can take it without paying.",
@@ -268,6 +269,7 @@ export const TX = {
   navIncidents: p("사고", "Incidents"),
   navRefunds: p("환불 요청", "Refund requests"),
   navFunnel: p("퍼널", "Funnel"),
+  navBusiness: p("사업자 표시", "Business details"),
   rpPdf: p("PDF 받기", "Download PDF"),
   /* PDF 만들기가 깨진 자리. **웹 결과지는 그대로 열려 있다**(규격 §16):
      PDF 하나 때문에 산 사람이 자기 결과지를 못 보면 안 된다 */

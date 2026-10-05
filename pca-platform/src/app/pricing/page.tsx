@@ -11,6 +11,7 @@ import { BRAND, toLang2, txer } from "@/lib/surface-text";
 import { valueOf } from "@/lib/tiers";
 import { PRODUCT } from "@/lib/product-copy";
 import { step } from "@/lib/funnel-server";
+import { startFreeAction } from "@/app/free-start/actions";
 import { Empty } from "@/components/sf/parts";
 import LangSelect from "@/components/sf/lang-select";
 
@@ -135,12 +136,12 @@ function TierCard({
   return (
     <article className={p.tier === "STANDARD" ? "pxtier is-mid" : "pxtier"}>
       <h2>{p.tier}</h2>
-      {state === "PRICE_APPROVED" && label ? (
+      {state === "PAID_APPROVED" && label ? (
         <p className="pxprice">
           {label}
           <small>{p.currency === "KRW" ? T("pxOnceVat") : T("pxOnce")}</small>
         </p>
-      ) : state === "FREE" ? (
+      ) : state === "FREE_APPROVED" ? (
         <p className="pxprice">
           {T("pxFreeTier")}
           <small>{T("pxFreeTierWhy")}</small>
@@ -163,7 +164,21 @@ function TierCard({
       </ul>
       <p className="pxq" style={{ marginTop: 16 }}>{v.who}</p>
       <p className="pxq">{n.toLocaleString()} {T("pxQuestions")}</p>
-      {ok.ok ? (
+      {state === "FREE_APPROVED" ? (
+        /**
+         * 승인된 무료는 **결제창을 거치지 않는다.**
+         *
+         * `POST` 로만 연다. 주소만 눌러도 주문이 생기면 링크 미리보기나
+         * 크롤러가 계정에 주문을 만든다. 로그인하지 않았으면 서버가
+         * 가입으로 보내고, 끝나면 이 자리로 돌아온다.
+         */
+        <form action={startFreeAction} style={{ marginTop: 18 }}>
+          <input type="hidden" name="product" value={p.code} />
+          <button className="sf-btn ghost" style={{ width: "100%" }}>
+            {T("pxStartFree")}
+          </button>
+        </form>
+      ) : ok.ok ? (
         <Link href={`/checkout?product=${encodeURIComponent(p.code)}`}
           className={p.tier === "STANDARD" ? "sf-btn accent" : "sf-btn ghost"}
           style={{ marginTop: 18 }}>

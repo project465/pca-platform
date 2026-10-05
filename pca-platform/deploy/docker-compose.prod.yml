@@ -1,0 +1,125 @@
+# 운영 한 벌. **조각을 나눠 둔다**(규격 §4).
+#
+# 뿌리의 `docker-compose.yml` 은 한 대에 전부 올리는 가장 작은 구성이고,
+# 이것은 파는 상태를 전제한다. 나누는 까닭은 **각 조각이 서로 다른 이유로
+# 죽기 때문**이다: 앱은 배포할 때, DB 는 디스크가 찰 때, 파일은 볼륨을
+# 못 붙일 때, 메일과 결제는 남의 사정으로 죽는다. 한 덩어리로 두면 어느
+# 쪽이 죽었는지 로그를 다 뒤져야 안다.
+#
+#   application      이 파일의 `app`
+#   PostgreSQL       이 파일의 `db` (또는 관리형 DB. 아래 설명)
+#   report/PDF       이름 붙인 볼륨 `reports` (또는 S3 호환 저장소)
+#   email            밖에 있다. SMTP 대행사
+#   payment          밖에 있다. PortOne
+#   secrets          `.env.production` 또는 호스팅의 비밀 관리
+#   logs/monitoring  `logs` 가 표준 출력을 모은다
+#   backup           `backup` 이 하루 한 번 받는다
+#
+#   cp .env.example .env.production
+#   docker compose -f deploy/docker-compose.prod.yml up -d
+#
+# **관리형 DB 를 쓰면 `db` 를 지운다.** `DATABASE_URL` 만 그쪽으로 돌리고
+# `DB_IS_PERSISTENT=yes` 를 채우면 된다. 백업은 그래도 받는다: 관리형
+# 스냅샷은 그 회사 안에서만 되돌아오고, 계정을 잃으면 같이 잃는다.
+
+name: careermatri
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: metri
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD 를 정하십시오}
+      POSTGRES_DB: metri
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U metri -d metri"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    # **밖으로 열지 않는다.** 같은 네트워크의 앱과 백업만 붙는다
+    expose: ["5432"]
+    logging: &logs
+      driver: json-file
+      options: { max-size: "20m", max-file: "5" }
+
+  app:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: [../.env.production]
+    environment:
+      DATABASE_URL: postgres://metri:${POSTGRES_PASSWORD}@db:5432/metri
+      DB_IS_PERSISTENT: "yes"
+      # 결과지 PDF 가 사는 자리. **컨테이너 안에 두지 않는다**:
+      # 배포할 때마다 사라지고, 산 사람이 어제 받은 PDF 를 다시 못 받는다
+      REPORT_PDF_DIR: /var/reports
+    volumes:
+      - reports:/var/reports
+    depends_on:
+      db: { condition: service_healthy }
+    # 앞단(Caddy·nginx·클라우드 LB)이 인증서와 도메인을 맡는다
+    ports: ["127.0.0.1:3000:3000"]
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/api/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    logging: *logs
+
+  # 밤 당번. 쌓인 알림을 내보내고 코드 재고를 센다.
+  # **앱 안에서 타이머를 돌리지 않는다**: 앱을 여러 개로 늘리면 타이머도
+  # 같이 늘어 같은 메일이 여러 번 나간다.
+  tick:
+    image: curlimages/curl:8.11.1
+    restart: unless-stopped
+    env_file: [../.env.production]
+    depends_on: [app]
+    entrypoint: ["sh", "-c"]
+    command:
+      - |
+        while true; do
+          curl -fsS -X POST -H "Authorization: Bearer $$OPS_TOKEN" \
+            http://app:3000/api/ops/tick || echo "tick 실패 $$(date -Iseconds)"
+          sleep 300
+        done
+    logging: *logs
+
+  # 하루 한 번 받는다. **복구는 사람이 해 본다**(`npm run backup:restore`):
+  # 받는 것을 자동으로 두고 되돌아오는지를 안 보면, 되돌아오지 않는 파일을
+  # 한 달치 모으게 된다.
+  backup:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://metri:${POSTGRES_PASSWORD}@db:5432/metri
+      BACKUP_DIR: /var/backups/careermatri
+      BACKUP_KEEP_DAYS: ${BACKUP_KEEP_DAYS:-35}
+    volumes:
+      - ../deploy/backup.sh:/usr/local/bin/backup.sh:ro
+      - backups:/var/backups/careermatri
+    depends_on:
+      db: { condition: service_healthy }
+    entrypoint: ["sh", "-c"]
+    command:
+      - |
+        while true; do
+          # 17:00 UTC 는 한국 새벽 두 시다. 되돌릴 일이 생기면 그 시각이
+          # 복구 지점이 되고, 영업시간 한가운데면 잃는 것이 많다.
+          NOW="$$(date -u +%H%M)"
+          if [ "$$NOW" = "1700" ]; then sh /usr/local/bin/backup.sh; sleep 3600; fi
+          sleep 50
+        done
+    logging: *logs
+
+volumes:
+  # DB. **이것이 사라지면 결제 기록 5년 보존이 그 자리에서 깨진다**
+  dbdata:
+  # 결과지 PDF. 배포와 무관하게 남아야 한다
+  reports:
+  # 받아 둔 백업. 같은 디스크에 두는 것은 임시다:
+  # 디스크가 통째로 죽는 날 백업도 같이 죽는다. 밖으로 복사할 것
+  backups:

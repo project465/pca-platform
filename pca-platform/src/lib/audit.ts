@@ -14,6 +14,7 @@ export const AUDITED = [
   "report.individual.access",
   "refund.record",
   "product.update", "site.update", "country_pack.update",
+  "business.update",
 ] as const;
 export type AuditAction = (typeof AUDITED)[number];
 

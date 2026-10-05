@@ -14,7 +14,15 @@
  * 적으면 법인이 바뀌는 날 배포를 해야 하고, DB 에 두면 운영 화면에서
  * 고칠 수 있게 되는데 그 값은 운영자가 고칠 것이 아니다.
  */
-export type BusinessField = { key: string; label: { ko: string; en: string }; value: string | null };
+export type BusinessField = {
+  key: string;
+  label: { ko: string; en: string };
+  value: string | null;
+  /** 어느 환경변수가 이 칸을 채우는가. 운영 화면이 안내에 쓴다 */
+  env: string;
+  /** 표에서 왔는가 환경변수에서 왔는가 */
+  from: "settings" | "env" | "none";
+};
 
 const FIELDS: { key: string; env: string; ko: string; en: string }[] = [
   { key: "name", env: "BUSINESS_NAME", ko: "상호", en: "Legal name" },
@@ -29,6 +37,8 @@ const FIELDS: { key: string; env: string; ko: string; en: string }[] = [
   },
 ];
 
+import { get, getAll, sourceOf } from "./settings";
+
 export type BusinessInfo = {
   fields: BusinessField[];
   /** 아직 비어 있는 칸의 이름 */
@@ -37,14 +47,32 @@ export type BusinessInfo = {
   complete: boolean;
 };
 
-export function businessInfo(): BusinessInfo {
-  const fields = FIELDS.map((f) => ({
-    key: f.key,
-    label: { ko: f.ko, en: f.en },
-    value: (process.env[f.env] ?? "").trim() || null,
-  }));
+/**
+ * 일곱 칸을 읽는다.
+ *
+ * **읽는 자리가 하나다**(`settings.get`): 운영 화면에 넣은 값이 있으면
+ * 그것을, 없으면 환경변수를, 둘 다 없으면 비어 있다고 말한다. 두 곳을
+ * 각각 읽으면 화면과 `launch:check` 가 다른 답을 낸다.
+ */
+export async function businessInfo(): Promise<BusinessInfo> {
+  const vals = await getAll(FIELDS.map((f) => ({ key: f.key, env: f.env })));
+  const fields: BusinessField[] = [];
+  for (const f of FIELDS) {
+    fields.push({
+      key: f.key,
+      label: { ko: f.ko, en: f.en },
+      value: vals[f.key],
+      env: f.env,
+      from: await sourceOf(f.key, f.env),
+    });
+  }
   const missing = fields.filter((f) => !f.value).map((f) => f.key);
   return { fields, missing, complete: missing.length === 0 };
+}
+
+/** 운영 화면이 넣을 칸 목록. 라벨과 환경변수 이름을 같이 준다 */
+export function businessFields(): { key: string; env: string; ko: string; en: string }[] {
+  return FIELDS.map((f) => ({ ...f }));
 }
 
 /**
@@ -54,6 +82,7 @@ export function businessInfo(): BusinessInfo {
  * **알선 · 취업추천서 · 이력서 발송 대행을 하지 않는다**(CLAUDE.md 법적
  * 범위). 번호를 화면에 적는 것은 그 범위를 밝히는 일이다.
  */
-export function jobInfoLicense(): string | null {
-  return (process.env.JOBINFO_LICENSE_NO ?? "J1700020220007").trim() || null;
+export async function jobInfoLicense(): Promise<string | null> {
+  return (await get("jobinfo_license", "JOBINFO_LICENSE_NO"))
+    ?? "J1700020220007";
 }

@@ -34,6 +34,30 @@ export default async function LaunchPage() {
         {" "}{r.checkedAt} 기준이고, 여는 것만으로 아무것도 바꾸지 않습니다.
       </p>
 
+      {/* 갈래 묶음을 맨 위에 둔다. **누가 고칠지가 갈래로 갈린다** */}
+      <section className="panel" style={{ marginBottom: 20 }}>
+        <h2>갈래별</h2>
+        <div className="sf-tw">
+          <table className="sf-table">
+            <thead>
+              <tr><th>갈래</th><th>상태</th><th>막혀 있는 자리</th></tr>
+            </thead>
+            <tbody>
+              {r.areas.map((a) => (
+                <tr key={a.area}>
+                  <td className="sf-strong">
+                    {a.label}
+                    <div className="sf-meta">{a.area}</div>
+                  </td>
+                  <td><Pill tone={TONE[a.status]}>{a.status}</Pill></td>
+                  <td>{a.blocked.join(" · ") || "없습니다"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       {r.markets.map((m) => {
         const blocked = m.rows.filter((x) => x.status === "BLOCKED");
         return (
@@ -56,6 +80,7 @@ export default async function LaunchPage() {
                 <thead>
                   <tr>
                     <th>항목</th>
+                    <th>갈래</th>
                     <th>상태</th>
                     <th>무엇이 남았는가</th>
                     <th>누가 정하는가</th>
@@ -65,6 +90,7 @@ export default async function LaunchPage() {
                   {m.rows.map((x) => (
                     <tr key={`${m.market}-${x.key}`}>
                       <td className="sf-strong">{x.label}</td>
+                      <td className="sf-meta">{x.area}</td>
                       <td><Pill tone={TONE[x.status]}>{x.status}</Pill></td>
                       <td>{x.detail}</td>
                       {/* **'개발' 이 아니다.** 우리가 끝낼 수 있는 것은 이

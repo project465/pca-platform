@@ -29,7 +29,7 @@ export type OutboxKind =
  * 않는 것과 같은 규칙이다).
  *
  * 그래서 그 둘은 `sendNow()` 로 **그 자리에서 보내고 아무것도 적지
- * 않는다.** 돈길 옆이 아니라서 실패하면 다시 누르면 된다.
+ * 않는다.** 돈길에서 비켜 있어 실패하면 다시 누르면 된다.
  */
 export type DirectKind = "password_reset" | "verify_email";
 
@@ -117,6 +117,16 @@ export function mailReady(): boolean {
 }
 
 let cached: Transporter | null = null;
+
+/**
+ * 기억해 둔 연결을 비운다.
+ *
+ * 한 과정 안에서 자격증명을 바꿔 가며 확인할 때 쓴다. 운영에서는 부를
+ * 일이 없다: 환경변수가 도중에 바뀌지 않는다.
+ */
+export function resetMailTransport(): void {
+  cached = null;
+}
 function transport(): Transporter | null {
   if (!mailReady()) return null;
   if (cached) return cached;
@@ -263,12 +273,11 @@ const MAIL = {
  * 링크에 결과지 번호를 담지 않는다. 받는 사람이 로그인해서 자기 목록에서
  * 고르게 한다. 메일은 전달 과정에서 남의 눈에 띌 수 있다.
  */
-function compose(r: Row): { subject: string; text: string } | null {
+function compose(r: Row, base = ""): { subject: string; text: string } | null {
   /* 비어 있으면 한국어다. **짐작하지 않는다**: 쌓을 때 모른 것을 보낼
      때 알아낼 방법이 없다 */
   const M = r.locale === "en" ? MAIL.en : MAIL.ko;
   const name = r.display_name ?? M.you;
-  const base = process.env.PLATFORM_URL ?? "";
   switch (r.kind) {
     case "signup":
       return M.signup(name, base);
@@ -340,9 +349,15 @@ export async function flushOutbox(limit = 50): Promise<FlushResult> {
   const out: FlushResult = { sent: 0, skipped: 0, failed: 0, held: 0 };
   const tx = transport();
 
+  /* 링크의 바탕 주소는 **정규 주소**다. 보내는 지금의 요청 호스트가
+     아니라, 받는 사람이 다른 날 열어도 닿는 주소여야 한다 */
+  const { publicBaseForLocale } = await import("./urls");
+  const baseKo = (await publicBaseForLocale("ko")) ?? "";
+  const baseEn = (await publicBaseForLocale("en")) ?? "";
+
   for (const r of rows) {
     const to = r.to_addr ?? r.email;
-    const msg = compose(r);
+    const msg = compose(r, r.locale === "en" ? baseEn : baseKo);
     // 보낼 곳이 없거나(익명화된 사람) 문면이 없으면 조용히 접는다
     if (!to || !msg) {
       await query(`UPDATE outbox SET status='skipped' WHERE id=$1`, [r.id]);

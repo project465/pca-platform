@@ -18,15 +18,22 @@
  */
 import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { query, queryOne } from "../src/lib/db";
-import { launchReport } from "../src/lib/launch";
+import { launchReport, AREAS, AREA_LABEL, type Area } from "../src/lib/launch";
 import { tiersDistinct } from "../src/lib/tiers";
 import { businessInfo } from "../src/lib/business";
 import { supportConfig } from "../src/lib/support";
 
 const T: { n: string; pass: boolean; fix?: string }[] = [];
-const B: { n: string; why: string; who: string }[] = [];
+const B: { area: Area; n: string; why: string; who: string }[] = [];
 const ok = (n: string, pass: boolean, fix?: string) => T.push({ n, pass, fix });
-const blocked = (n: string, why: string, who: string) => B.push({ n, why, who });
+/** **갈래를 붙여서 적는다**(규격 §9): 누가 고칠지가 갈래로 갈린다 */
+const blocked = (area: Area, n: string, why: string, who: string) => {
+  /* **같은 까닭을 두 번 적지 않는다.** 사업자 표시 한 가지가 시장마다
+     한 줄씩 더 나오면 "스물한 가지" 가 되고, 읽은 사람은 할 일이 그만큼
+     있는 줄 안다. 고칠 자리가 같으면 한 줄이다 */
+  if (B.some((b) => b.area === area && b.why === why)) return;
+  B.push({ area, n, why, who });
+};
 
 /** 파일을 통째로 훑어 금지한 것을 찾는다 */
 function filesUnder(dir: string, ext: string[]): string[] {
@@ -47,7 +54,7 @@ async function main() {
     for (const x of m.rows) {
       if (x.status !== "BLOCKED") continue;
       /* 우리가 못 끝내는 것은 막힘으로, 끝낼 수 있는데 깨진 것은 실패로 */
-      if (x.who) blocked(`${m.market} ${x.label}`, x.detail, x.who);
+      if (x.who) blocked(x.area, `${m.market} ${x.label}`, x.detail, x.who);
       else ok(`${m.market} ${x.label}`, false, x.detail);
     }
   }
@@ -62,9 +69,9 @@ async function main() {
 
   const approved = prices.filter((p) => p.price_status === "approved" && p.amount > 0);
   if (!approved.length) {
-    blocked("가격 승인",
+    blocked("PRICE", "가격 승인",
       `ME_V2 ${prices.length}개 등급의 값이 승인되지 않았습니다. ` +
-      `db/seed 에서 products.amount 와 price_status 를 함께 고칩니다.`,
+      `db/schema_phase2_3.sql 에서 amount 와 price_status 를 함께 고칩니다.`,
       "사업 결정");
   }
 
@@ -96,7 +103,7 @@ async function main() {
     "src/lib/payments/index.ts 의 paymentProvider");
 
   if (provider === "mock") {
-    blocked("결제 대행사",
+    blocked("PAYMENT", "결제 대행사",
       "PAYMENTS_PROVIDER 가 mock 입니다. 가맹점 심사가 끝나면 " +
       "LAUNCH.md 의 다섯 줄을 .env 에 넣습니다.",
       "결제 대행사·심사");
@@ -158,16 +165,16 @@ async function main() {
     `${probe.map((p) => p.kind).join(" · ")} — npm run db:phase2_2`);
 
   if (!mailReady()) {
-    blocked("거래 메일",
+    blocked("EMAIL", "거래 메일",
       "MAIL_HOST · MAIL_FROM 이 비어 있어 한 통도 나가지 않습니다. " +
       "메일 대행사를 붙이고 보내는 주소를 우리 도메인으로 맞춥니다.",
       "운영 담당");
   }
 
   /* ── 6. 법적 본문과 사업자 표시 ─────────────────────────────────── */
-  const biz = businessInfo();
+  const biz = await businessInfo();
   if (!biz.complete) {
-    blocked("사업자 표시",
+    blocked("BUSINESS_INFO", "사업자 표시",
       `전자상거래법 제10조 표시가 ${biz.missing.length}칸 비어 있습니다 ` +
       `(${biz.missing.join(" · ")}). BUSINESS_* 환경변수에 넣습니다. ` +
       `지어내지 않았습니다.`,
@@ -182,7 +189,7 @@ async function main() {
     `${docs.length}개`);
   const pending = docs.filter((d) => d.translation_status === "pending");
   if (pending.length) {
-    blocked("영문 약관 본문",
+    blocked("LEGAL", "영문 약관 본문",
       `${pending.length}개 문서가 번역 전입니다. 지금은 한국어가 기준이라고 ` +
       `영어로 적어 두었고, 기계로 번역해 두지 않았습니다.`,
       "법률 검토·번역");
@@ -191,7 +198,7 @@ async function main() {
   /* ── 7. 지원 경로 ───────────────────────────────────────────────── */
   const sup = supportConfig();
   if (!sup.ready) {
-    blocked("지원 메일",
+    blocked("SUPPORT", "지원 메일",
       "SUPPORT_EMAIL 이 비어 있습니다. 주소를 지어내지 않았습니다.",
       "사업 결정");
   }
@@ -203,10 +210,17 @@ async function main() {
   ok("백업 스크립트와 복구 절차가 저장소에 있다",
     existsSync("deploy/backup.sh") && existsSync("docs/metri/44_production_infra.md"),
     "deploy/backup.sh · docs/metri/44_production_infra.md");
-  if (!(process.env.DB_BACKUP_VERIFIED_AT ?? "").trim()) {
-    blocked("복구 시험",
-      "DB_BACKUP_VERIFIED_AT 이 비어 있습니다. **백업은 복구해 보기 전까지 " +
-      "완료가 아닙니다**(규격 §13). 한 번 복구해 보고 그 날짜를 적습니다.",
+  /* **사람이 적는 날짜를 믿지 않는다.** 기록은 `backup:restore` 가 끝까지
+     돈 자리에서만 생긴다 */
+  const { get } = await import("../src/lib/settings");
+  const restoredAt = await get("backup_restore_verified_at").catch(() => null);
+  ok("복구 시험 기록이 손으로 적는 값이 아니다",
+    readFileSync("src/lib/launch.ts", "utf8").includes("backup_restore_verified_at"),
+    "src/lib/launch.ts 의 backupRow");
+  if (!restoredAt) {
+    blocked("BACKUP_RESTORE", "복구 시험",
+      "복구를 한 번도 해 보지 않았습니다. `npm run backup:restore` 를 " +
+      "돌리면 받고 · 붓고 · 세고 · 기록까지 남깁니다.",
       "운영 담당");
   }
 
@@ -318,7 +332,19 @@ function report(): void {
   }
   console.log("\n── 켜기 전에 밖에서 정해져야 하는 것 ─────────────");
   if (!B.length) console.log("  없음");
-  for (const b of B) console.log(`  · ${b.n}  [${b.who}]\n      ${b.why}`);
+  /* **갈래로 모아서 적는다.** "스물한 가지" 는 읽은 사람이 무엇부터
+     할지 모르고, 갈래로 나누면 전화 두 통과 서류 한 장으로 갈린다 */
+  for (const a of AREAS) {
+    const mine = B.filter((b) => b.area === a);
+    if (!mine.length) continue;
+    console.log(`\n  [${a}] ${AREA_LABEL[a]} — ${mine.length}가지`);
+    for (const b of mine) console.log(`    · ${b.n}  [${b.who}]\n        ${b.why}`);
+  }
+
+  const openAreas = [...new Set(B.map((b) => b.area))];
+  const clear = AREAS.filter((a) => !openAreas.includes(a));
+  console.log(`\n  막힌 갈래 ${openAreas.length} / ${AREAS.length}` +
+    `  ·  열린 갈래: ${clear.join(" ") || "없음"}`);
 
   console.log(bad.length
     ? `\n${bad.length}개가 깨져 있다. 켜지 않는다.`

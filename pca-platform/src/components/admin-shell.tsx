@@ -13,6 +13,7 @@ const NAV: NavItem[] = [
   { href: "/admin/incidents", label: "사고", ready: true },
   { href: "/admin/refunds", label: "환불 요청", ready: true },
   { href: "/admin/funnel", label: "퍼널", ready: true },
+  { href: "/admin/business", label: "사업자 표시", ready: true },
   { href: "/admin/readiness", label: "상용화 준비", ready: true },
   { href: "/admin/localization", label: "지역화 덮임", ready: true },
   { href: "/admin/organizations", label: "기관", ready: true },

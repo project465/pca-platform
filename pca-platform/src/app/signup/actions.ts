@@ -10,6 +10,7 @@ import { enqueue } from "@/lib/outbox";
 import { resolveLang } from "@/lib/locale-server";
 import { record as consentRecord } from "@/lib/consent";
 import { sendVerification } from "@/lib/verify-email";
+import { publicBase } from "@/lib/urls";
 import { headers } from "next/headers";
 
 export type SignupState = { errors?: FieldErrors; message?: string };
@@ -83,7 +84,10 @@ export async function signupAction(_prev: SignupState, form: FormData): Promise<
     const host = h.get("x-forwarded-host") ?? h.get("host") ?? "localhost:3000";
     const proto = h.get("x-forwarded-proto")
       ?? (host.startsWith("localhost") || host.startsWith("127.") ? "http" : "https");
-    await sendVerification(created.id, `${proto}://${host}`).catch(() => null);
+    /* 확인 링크도 정규 주소로 나간다. 같은 까닭이다 */
+    const base = (await publicBase(lang2 === "en" ? "GLOBAL" : "KR").catch(() => null))
+      ?? `${proto}://${host}`;
+    await sendVerification(created.id, base).catch(() => null);
   }
 
   try {

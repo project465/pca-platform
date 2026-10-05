@@ -68,7 +68,11 @@
     "launch:check": "tsx scripts/launch-check.ts",
     "db:phase2_2": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 -f db/schema_phase2_2.sql",
     "sample:build": "node scripts/sample-report.mjs",
-    "launch:e2e": "tsx scripts/launch-e2e.ts"
+    "launch:e2e": "tsx scripts/launch-e2e.ts",
+    "domains:verify": "tsx scripts/domains-verify.ts",
+    "db:phase2_3": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 -f db/schema_phase2_3.sql",
+    "backup:restore": "bash scripts/backup-restore.sh",
+    "mail:check": "tsx scripts/mail-check.ts"
   },
   "dependencies": {
     "@types/nodemailer": "^8.0.1",

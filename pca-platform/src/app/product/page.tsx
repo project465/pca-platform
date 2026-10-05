@@ -39,7 +39,8 @@ export default async function ProductPage({
   const user = await currentUser();
   const mk = await resolveMarket(sp.market);
   const list = await catalogFor(mk.market);
-  const biz = businessInfo();
+  const biz = await businessInfo();
+  const license = await jobInfoLicense();
   const sup = supportConfig();
   const P = PRODUCT;
   const q = sp.lang ? `?lang=${sp.lang}` : "";
@@ -52,7 +53,7 @@ export default async function ProductPage({
   /* 값이 승인된 등급 가운데 가장 싼 것을 단추 옆에 적는다. 하나도
      승인되지 않았으면 금액 자리를 비운다. **지어내지 않는다** */
   const priced = list
-    .filter((p) => priceState(p) === "PRICE_APPROVED" && p.amount > 0)
+    .filter((p) => priceState(p) === "PAID_APPROVED")
     .sort((a, b) => a.amount - b.amount);
   const from = priced.length ? money(priced[0].amount, priced[0].currency, L) : null;
   const canBuy = list.some((p) => sellable(p).ok);
@@ -246,7 +247,7 @@ export default async function ProductPage({
           ))}
           <dl>
             <dt>{L === "en" ? "Career information filing" : "직업정보제공사업 신고"}</dt>
-            <dd>{jobInfoLicense() ?? (L === "en" ? "not set" : "확인 필요")}</dd>
+            <dd>{license ?? (L === "en" ? "not set" : "확인 필요")}</dd>
           </dl>
           <dl>
             <dt>{L === "en" ? "Terms" : "약관"}</dt>

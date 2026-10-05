@@ -53,4 +53,5 @@ export const NAV_ADMIN: NavItem[] = [
   { href: "/admin/incidents", label: "navIncidents", icon: "alert" },
   { href: "/admin/refunds", label: "navRefunds", icon: "cart" },
   { href: "/admin/funnel", label: "navFunnel", icon: "spark" },
+  { href: "/admin/business", label: "navBusiness", icon: "building" },
 ];

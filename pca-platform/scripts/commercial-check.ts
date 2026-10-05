@@ -19,6 +19,7 @@ import {
   catalogFor, priceState, productByCode, sellable, type CatalogItem,
 } from "../src/lib/catalog";
 import { marketReadiness, matchesOrder } from "../src/lib/payments";
+import { formatMoney } from "../src/lib/money";
 import type { PaymentFact } from "../src/lib/payments";
 
 const T: { n: string; pass: boolean; d?: string }[] = [];
@@ -47,13 +48,30 @@ async function main() {
   ok("승인되지 않은 가격에 금액이 적혀 있지 않다", lying.length === 0,
     lying.map((r) => r.code).join(" · ") || "없음");
 
-  /* **0원 두 가지가 갈려 있는가.** 무료 구간과 미승인이 같은 모양이면
-     '0원이면 팔지 않는다' 로 막을 때 법이 요구하는 시용 장치가 닫힌다 */
+  /**
+   * **0원 두 가지가 갈려 있는가.**
+   *
+   * 무료 구간과 미승인이 같은 모양이면 '0원이면 팔지 않는다' 로 막을 때
+   * 법이 요구하는 시용 장치가 닫힌다.
+   *
+   * **표의 상태로 세지 않는다.** 여섯 등급의 값이 승인된 뒤로 표에
+   * 미승인 줄이 없는데, 그것을 "갈려 있지 않다" 로 읽으면 검사가
+   * 가격 승인 때문에 빨갛게 된다. 재는 것은 **함수가 둘을 가르는가**다.
+   */
+  ok("승인된 0원과 미승인 0원이 다른 상태다",
+    priceState({ amount: 0, price_status: "approved" }) === "FREE_APPROVED"
+      && priceState({ amount: 0, price_status: "not_approved" }) === "PRICE_NOT_APPROVED",
+    `${priceState({ amount: 0, price_status: "approved" })} / ` +
+    `${priceState({ amount: 0, price_status: "not_approved" })}`);
+
+  /* 칸이 비어 있는 옛 상품은 **모르면 덜 준다**: 미승인으로 본다 */
+  ok("상태 칸이 없는 0원은 미승인으로 본다",
+    priceState({ amount: 0 }) === "PRICE_NOT_APPROVED",
+    priceState({ amount: 0 }));
+
   const free = rows.filter((r) => r.amount === 0 && r.price_status === "approved");
-  const tbd = rows.filter((r) => r.price_status === "not_approved");
-  ok("무료 구간과 미승인이 갈려 있다", free.length > 0 && tbd.length > 0,
-    `무료 ${free.map((r) => r.code).join("·") || "없음"} / ` +
-    `미승인 ${tbd.length}개`);
+  ok("법이 요구하는 무료 구간이 표에 있다", free.length > 0,
+    free.map((r) => r.code).join(" · ") || "없음");
 
   const hsFree = rows.find((r) => r.code === "HS_FREE");
   const univFree = rows.find((r) => r.code === "UNIV_FREE");
@@ -65,10 +83,17 @@ async function main() {
   const keep = process.env.PAYMENTS_PROVIDER;
   process.env.PAYMENTS_PROVIDER = "portone";
   const freeP = await productByCode("UNIV_FREE");
-  const tbdP = await productByCode("ME_V2_PRO_KR");
+  /* 승인되지 않은 상품을 하나 지어서 물어본다. **표의 상품을 쓰지
+     않는다**: 여섯 등급의 값이 승인된 뒤로 표에는 미승인이 없고,
+     그렇다고 이 규칙을 안 보면 승인이 풀린 날 조용히 팔린다 */
+  const tbdP = {
+    code: "TBD", market: "KR", tier: "PRO", major_code: "ME",
+    amount: 0, currency: "KRW", active: true,
+    assessment_version: "ME_V2", price_status: "not_approved",
+  } as CatalogItem;
   ok("운영에서 미승인 상품은 팔지 않는다",
-    !!tbdP && !sellable(tbdP as CatalogItem).ok,
-    tbdP ? (sellable(tbdP as CatalogItem).ok ? "팔린다" : "거절") : "상품 없음");
+    !sellable(tbdP).ok,
+    sellable(tbdP).ok ? "팔린다" : "거절");
   ok("운영에서도 무료 구간은 막지 않는다",
     !!freeP && sellable(freeP as CatalogItem).ok,
     freeP ? priceState(freeP) : "상품 없음");
@@ -82,9 +107,39 @@ async function main() {
   const gl = await catalogFor("GLOBAL");
   ok("두 시장에 같은 등급 셋이 있다",
     kr.length === 3 && gl.length === 3, `KR ${kr.length} · GLOBAL ${gl.length}`);
-  ok("ME_V2 여섯 상품이 전부 미승인이다",
-    [...kr, ...gl].every((p) => priceState(p) === "PRICE_NOT_APPROVED"),
-    [...kr, ...gl].map((p) => priceState(p)).join(" "));
+  /**
+   * 승인된 런칭 가격이 표에 들어 있는가.
+   *
+   * **값을 코드에 또 적지 않는다.** 여기서 14,900 을 다시 쓰면 가격을
+   * 정하는 자리가 둘이 된다. 검사가 보는 것은 **상태**다: 여섯 등급이
+   * 전부 승인됐고, 등급마다 BASIC 이 무료이고 위로 갈수록 비싼가.
+   */
+  ok("ME_V2 여섯 상품의 값이 전부 승인됐다",
+    [...kr, ...gl].every((p) => priceState(p) !== "PRICE_NOT_APPROVED"),
+    [...kr, ...gl].map((p) => `${p.tier}=${priceState(p)}`).join(" "));
+
+  for (const [name, list] of [["KR", kr], ["GLOBAL", gl]] as const) {
+    const by = (t: string) => list.find((p) => p.tier === t);
+    const b = by("BASIC"), st = by("STANDARD"), pr = by("PRO");
+    ok(`${name} BASIC 이 승인된 무료다`,
+      !!b && priceState(b) === "FREE_APPROVED",
+      b ? priceState(b) : "없음");
+    /* **등급 값이 거꾸로 서면 가격표가 설명을 못 한다**: 더 받는 등급이
+       더 싸면 사는 쪽에서 위 등급을 고를 이유가 없다 */
+    ok(`${name} 등급 값이 BASIC < STANDARD < PRO 다`,
+      !!st && !!pr && b!.amount < st.amount && st.amount < pr.amount,
+      `${b?.amount} < ${st?.amount} < ${pr?.amount}`);
+    ok(`${name} 통화가 한 가지다`,
+      new Set(list.map((p) => p.currency.trim())).size === 1,
+      [...new Set(list.map((p) => p.currency.trim()))].join(" "));
+  }
+
+  /* **USD 가 최소 단위로 들어 있는가.** $14.99 를 14.99 로 적으면
+     INTEGER 가 14 로 자르고, 그러면 $0.14 에 팔린다 */
+  const gst = gl.find((p) => p.tier === "STANDARD");
+  ok("USD 금액이 최소 단위 정수다",
+    !!gst && Number.isInteger(gst.amount) && gst.amount >= 100,
+    `${gst?.amount} → ${formatMoney(gst?.amount ?? 0, "USD", "en")}`);
 
   /* ── 2. 결제 대조 ──────────────────────────────────────────────── */
   ok("금액이 다르면 거절한다",
@@ -329,9 +384,12 @@ async function main() {
     `상품 ${state.prices.length} · 시장 ${state.payments.length}`);
   /* **운영 화면과 터미널이 같은 숫자를 봐야 한다.** 따로 세면 갈리고,
      갈리는 순간 둘 다 못 믿는다 */
+  /* 표를 직접 세어 화면과 맞춰 본다. **두 곳이 따로 세면 갈린다** */
+  const tbdRows = rows.filter((r) => r.price_status === "not_approved"
+    && r.assessment_version === "ME_V2");
   ok("미승인 상품 수가 화면과 같다",
-    state.prices.filter((p) => p.state === "PRICE_NOT_APPROVED").length === tbd.length,
-    `${tbd.length}개`);
+    state.prices.filter((p) => p.state === "PRICE_NOT_APPROVED").length === tbdRows.length,
+    `${tbdRows.length}개`);
   ok("동의문 번역 상태가 화면과 같다",
     state.consent.filter((c) => c.translation_status === "pending").length === pend.length,
     `${pend.length}개`);

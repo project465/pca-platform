@@ -23,11 +23,33 @@
 
 ## 2. 올리는 것
 
-컨테이너 한 장과 DB 하나다.
+**조각을 나눈 한 벌이 `deploy/docker-compose.prod.yml` 이다.**
 
 ```bash
-docker compose up -d          # Dockerfile · docker-compose.yml
+cp .env.example .env.production
+docker compose -f deploy/docker-compose.prod.yml up -d
 ```
+
+| 조각 | 어디 |
+|---|---|
+| application | `app` |
+| PostgreSQL | `db` (관리형을 쓰면 이 줄을 지우고 `DATABASE_URL` 만 돌린다) |
+| report/PDF | 이름 붙인 볼륨 `reports` (`REPORT_PDF_DIR=/var/reports`) |
+| email | 밖. SMTP 대행사 |
+| payment | 밖. PortOne |
+| secrets | `.env.production` 또는 호스팅의 비밀 관리 |
+| logs | `json-file` 20MB × 5 |
+| backup | `backup` 이 하루 한 번 |
+
+**각 조각이 서로 다른 이유로 죽는다.** 앱은 배포할 때, DB 는 디스크가 찰
+때, 파일은 볼륨을 못 붙일 때, 메일과 결제는 남의 사정으로. 한 덩어리로
+두면 어느 쪽이 죽었는지 로그를 다 뒤져야 안다.
+
+**결과지 PDF 를 컨테이너 안에 두지 않는다**: 배포할 때마다 사라지고, 산
+사람이 어제 받은 PDF 를 다시 못 받는다.
+
+뿌리의 `docker-compose.yml` 은 한 대에 전부 올리는 가장 작은 구성으로
+남겨 두었다. 눌러 볼 때 쓴다.
 
 `HOSTNAME` 을 못 박는 줄이 있다. 도커가 이 값을 컨테이너 ID 로 채워 두면
 standalone 서버가 그것을 바인딩 주소로 읽어 밖에서 붙을 수 없다.
@@ -47,6 +69,7 @@ psql "$DATABASE_URL" -f db/schema_platform.sql
 psql "$DATABASE_URL" -f db/schema_phase2.sql
 npm run db:phase2_1
 npm run db:phase2_2
+npm run db:phase2_3     # 승인된 런칭 가격 · 운영 설정 · 도메인 소유
 ```
 
 마지막 두 줄을 빼먹으면 환불 요청과 퍼널과 메일 확인이 **조용히** 안
@@ -79,7 +102,12 @@ DB 가 들고 있는 것이고, 백업은 사고에서 되돌아오기 위한 �
 **보존기간이 지나도 마지막 하나는 남긴다.** 기간을 잘못 적어 둔 날 전부
 지워지면 그날이 복구 불가능한 날이 된다.
 
-## 5. 복구 절차
+## 5. 복구 절차 (손으로 하는 것)
+
+**스크립트가 한 바퀴를 다 돈다**: `npm run backup:restore`. 받고 · 읽어
+보고 · 빈 DB 에 붓고 · 일곱 표의 줄 수를 운영과 대조하고 · 제약 여덟
+가지가 살아 있는지 보고 · 결과지가 열리는지 보고 · 기록을 남긴다.
+아래는 그 안에서 무슨 일이 일어나는지다.
 
 **이것을 한 번 해 보기 전까지 백업은 완료가 아니다.** 그래서
 `npm run launch:check` 가 `DB_BACKUP_VERIFIED_AT` 이 비어 있으면 런칭을
@@ -113,11 +141,10 @@ psql cm_restore_test -c "
 dropdb cm_restore_test
 ```
 
-그리고 **그 날짜를 적는다.**
-
-```
-DB_BACKUP_VERIFIED_AT=2026-10-05
-```
+**날짜를 손으로 적지 않는다.** `npm run backup:restore` 가 끝까지 돈
+자리에서만 `site_settings` 에 기록이 생기고, 런칭 화면이 그것을 읽는다.
+어느 DB 에서 해 봤는지도 함께 적어서, 개발 DB 에서 한 번 돌린 것을 운영
+백업이 돌아온다는 말로 쓰지 않는다.
 
 90일이 지나면 `/admin/launch` 가 그 줄을 WARNING 으로 돌린다. 스키마가
 바뀌면 복구 절차도 같이 바뀌므로, 한 번 해 보고 끝나는 일이 아니다.
@@ -153,6 +180,7 @@ POST /api/ops/tick        쌓인 알림을 내보낸다 (OPS_TOKEN 필요)
 | `/admin/ops` | 밤사이 무엇이 쌓였는가 |
 | `/admin/funnel` | 방문이 결제가 되는가 |
 | `/admin/readiness` | 팔 수 있는 상태인가 |
+| `/admin/business` | 사업자 표시를 넣는 자리 |
 
 ## 8. 환경변수 한 벌
 
@@ -187,8 +215,10 @@ BUSINESS_MAILORDER_NO=
 JOBINFO_LICENSE_NO=J1700020220007
 
 OPS_TOKEN=                         # 16자 이상
-DB_BACKUP_VERIFIED_AT=             # 복구를 해 본 날짜
+DB_IS_PERSISTENT=                  # 지속형 DB 가 맞으면 yes
 DB_BACKUP_CRON=0 17 * * *
+BACKUP_KEEP_DAYS=35
+BACKUP_GPG_RECIPIENT=              # 채우면 받은 파일을 잠근다
 
 NEXT_PUBLIC_LANGS=                 # 비우면 내놓는 언어가 전부다
 ```

@@ -71,12 +71,17 @@ const SHOTS = [
   ["admin", "/admin/incidents", "23_admin_incidents", ["w1440"]],
   ["admin", "/admin/refunds", "24_admin_refunds", ["w1440"]],
   ["admin", "/admin/funnel", "25_admin_funnel", ["w1440"]],
+  /* 사업자 표시. **사업자가 직접 넣는 자리다** */
+  ["admin", "/admin/business", "30_admin_business", ["w1440"]],
 
   /* 사는 쪽 화면. 로그인하지 않고 찍는다 */
   ["guest", "/product", "26_product", ["w1440", "mobile"]],
   ["guest", "/product?lang=en", "27_product_en", ["w1440"]],
   ["guest", "/sample", "28_sample", ["w1440"]],
   ["guest", "/pricing", "29_pricing", ["w1440", "mobile"]],
+  /* 한국 시장. **먼저 켜는 시장이다**(규격 §1). 호스트가 127.0.0.1 이라
+     기본이 글로벌로 잡히므로 여기서는 주소로 고른다 */
+  ["guest", "/pricing?market=KR", "31_pricing_kr", ["w1440"]],
 ];
 
 /* `--only=readiness,localization` 로 몇 장만 찍는다. 스무 장을 한

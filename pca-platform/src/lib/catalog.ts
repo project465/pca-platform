@@ -25,11 +25,16 @@ export type PriceStatus = "approved" | "not_approved";
  * 요구하는 무료 구간까지 닫혔다**(전자상거래법 제17조 제6항의 시용
  * 장치). 뜻을 칸으로 꺼냈다.
  *
- *   PRICE_APPROVED       값이 정해진 유료 상품
- *   FREE                 승인된 0원. 무료 구간이고 **닫으면 안 된다**
+ *   PAID_APPROVED        값이 승인된 유료 상품
+ *   FREE_APPROVED        **승인된 무료 상품.** 값을 0 으로 정한 것이고
+ *                        못 정한 것이 아니다. 닫으면 안 된다
  *   PRICE_NOT_APPROVED   아직 못 정했다. **0원이라고 적지 않는다**
+ *
+ * **이름에 전부 APPROVED 가 들어간 것이 일부러다.** 앞의 둘은 승인된
+ * 상태이고 뒤의 하나만 아니다. `FREE` 라고만 적어 두었더니 코드를 읽는
+ * 쪽에서 그것이 승인된 값인지 기본값인지 매번 되짚어야 했다.
  */
-export type PriceState = "PRICE_APPROVED" | "FREE" | "PRICE_NOT_APPROVED";
+export type PriceState = "PAID_APPROVED" | "FREE_APPROVED" | "PRICE_NOT_APPROVED";
 
 export type CatalogItem = {
   code: string;
@@ -51,7 +56,7 @@ export function priceState(p: {
   /* 칸이 없는 옛 상품은 금액으로 읽는다. **모르면 덜 준다**: 0 인데
      상태가 비어 있으면 승인된 무료로 보지 않고 미승인으로 본다 */
   if (p.price_status == null && p.amount <= 0) return "PRICE_NOT_APPROVED";
-  return p.amount > 0 ? "PRICE_APPROVED" : "FREE";
+  return p.amount > 0 ? "PAID_APPROVED" : "FREE_APPROVED";
 }
 
 export function isMarket(v: string | undefined | null): v is Market {

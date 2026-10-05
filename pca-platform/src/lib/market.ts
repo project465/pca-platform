@@ -54,21 +54,10 @@ export async function resolveMarket(override?: string): Promise<MarketCtx> {
 }
 
 /**
- * 값을 적는다.
+ * 값을 적는다. 셈은 `money.ts` 한 곳에서 한다.
  *
- * **0 을 '무료' 로 적지 않는다.** 0 은 승인된 가격이 아직 없다는 뜻이고
- * (`catalog.sellable` 과 같은 판단), 무료라고 적으면 파는 쪽이 공짜로 약속한
- * 셈이 된다.
+ * **0 을 '무료' 로 적지 않는다.** 0 이 승인된 무료인지 아직 못 정한
+ * 값인지는 `priceState()` 가 정하고, 화면이 그 상태를 보고 문구를
+ * 고른다(`catalog.PriceState`).
  */
-export function money(amount: number, currency: string, lang: "ko" | "en"): string | null {
-  if (!Number.isFinite(amount) || amount <= 0) return null;
-  if (currency === "KRW") {
-    return lang === "ko"
-      ? `${amount.toLocaleString("ko-KR")}원`
-      : `KRW ${amount.toLocaleString("en-US")}`;
-  }
-  const n = amount.toLocaleString(lang === "ko" ? "ko-KR" : "en-US", {
-    minimumFractionDigits: 0, maximumFractionDigits: 2,
-  });
-  return currency === "USD" ? `$${n}` : `${currency} ${n}`;
-}
+export { formatMoney as money } from "./money";

@@ -20,8 +20,8 @@ export const dynamic = "force-dynamic";
  * **여는 것만으로 아무것도 바꾸지 않는다.** 읽기만 한다.
  */
 const PRICE_LABEL: Record<string, string> = {
-  PRICE_APPROVED: "승인됨",
-  FREE: "무료 (승인된 0원)",
+  PAID_APPROVED: "승인된 유료",
+  FREE_APPROVED: "승인된 무료",
   PRICE_NOT_APPROVED: "아직 승인되지 않음",
 };
 
@@ -30,7 +30,7 @@ export default async function ReadinessPage() {
   const r = await commercialReport();
 
   const live = r.payments.filter((p) => p.ready).length;
-  const approved = r.prices.filter((p) => p.state === "PRICE_APPROVED").length;
+  const approved = r.prices.filter((p) => p.state === "PAID_APPROVED").length;
   const translated = r.consent.filter((c) => c.translation_status === "translated").length;
 
   return (

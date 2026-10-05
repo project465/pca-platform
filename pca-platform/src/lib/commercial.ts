@@ -32,7 +32,10 @@ export type ConsentRow = {
   governing_locale: string | null;
 };
 
-export type SiteRow = { site_id: string; domain: string; payment_market: string };
+export type SiteRow = {
+  site_id: string; domain: string; payment_market: string;
+  ownership: string; canonical_url: string | null;
+};
 
 /** 우리 밖에서 정해져야 하는 것 한 줄 */
 export type Blocker = {
@@ -74,8 +77,8 @@ export async function commercialReport(): Promise<CommercialReport> {
   const payments = (["KR", "GLOBAL"] as const).map(marketReadiness);
 
   const sites = await query<SiteRow>(
-    `SELECT site_id, domain, payment_market FROM site_configs
-      WHERE active ORDER BY site_id`,
+    `SELECT site_id, domain, payment_market, ownership, canonical_url
+       FROM site_configs WHERE active ORDER BY site_id`,
   ).catch(() => []);
 
   const consent = await query<ConsentRow>(
@@ -126,15 +129,25 @@ export async function commercialReport(): Promise<CommercialReport> {
     });
   }
 
-  /* **도메인은 아직 사지 않았다.** DNS 가 뜨는 것과 우리 것인 것은 다르고,
-     이 컨테이너에서는 WHOIS 가 막혀 확인할 수 없다. `npm run domains:check`
-     가 지금 누가 그 주소로 서버를 띄워 두었는지만 말한다 */
-  blockers.push({
-    what: "도메인 소유",
-    why: `${sites.map((s) => s.domain).join(" · ")} 를 아직 사지 않았습니다. ` +
-      `등록대행자 조회가 먼저입니다 (npm run domains:check)`,
-    who: "도메인 구매",
-  });
+  /**
+   * 도메인 소유.
+   *
+   * **DNS 가 뜨는 것과 우리 것인 것은 다르다.** 한 번
+   * `careermatri.com` 에 남의 IP 가 응답한다는 것만으로 제3자 소유라고
+   * 적어 두었다가 틀렸다. 조회로 알 수 있는 것은 지금 누가 그 주소로
+   * 서버를 띄워 두었는가뿐이고, 소유는 소유자가 확인해 준다
+   * (`site_configs.ownership`).
+   */
+  const unowned = sites.filter((s) => s.ownership !== "confirmed");
+  if (unowned.length) {
+    blockers.push({
+      what: "도메인 소유",
+      why: `${unowned.map((s) => s.domain).join(" · ")} 의 소유가 아직 ` +
+        `확인되지 않았습니다. 가지고 계시면 site_configs.ownership 을 ` +
+        `confirmed 로 바꿉니다`,
+      who: "도메인 구매",
+    });
+  }
 
   /* **사업자 정보를 지어내지 않았다.** 전자상거래법 제10조 표시가 없으면
      결제를 받을 수 없다 */

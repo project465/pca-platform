@@ -18,22 +18,31 @@ export type SiteConfig = {
   site_region: string | null;
   offered_languages: string[];
   active: boolean;
+  /**
+   * 소유자가 확인해 주었는가.
+   *
+   * **DNS 조회로 정하지 않는다.** 한 번 `careermatri.com` 에 남의 IP 가
+   * 응답한다는 것만으로 '제3자 소유' 라고 적어 두었다가 틀렸다. 지금
+   * 누가 그 주소로 서버를 띄워 두었는지와 도메인이 누구 것인지는 별개다.
+   */
+  ownership: "confirmed" | "unconfirmed";
+  /** 정규 주소. 메일 링크·결제 콜백·결과지 주소가 이 값을 읽는다 */
+  canonical_url: string | null;
 };
+
+const COLS = `site_id, domain, default_language, default_currency, payment_market,
+              site_region, offered_languages, active, ownership, canonical_url`;
 
 export async function listSites(): Promise<SiteConfig[]> {
   const rows = await query<SiteConfig>(
-    `SELECT site_id, domain, default_language, default_currency, payment_market,
-            site_region, offered_languages, active
-       FROM site_configs ORDER BY site_id`,
+    `SELECT ${COLS} FROM site_configs ORDER BY site_id`,
   );
   return rows;
 }
 
 export async function siteById(siteId: string): Promise<SiteConfig | null> {
   const rows = await query<SiteConfig>(
-    `SELECT site_id, domain, default_language, default_currency, payment_market,
-            site_region, offered_languages, active
-       FROM site_configs WHERE site_id = $1`,
+    `SELECT ${COLS} FROM site_configs WHERE site_id = $1`,
     [siteId],
   );
   return rows[0] ?? null;
@@ -44,6 +53,25 @@ export async function siteByHost(host: string | null): Promise<SiteConfig | null
   const h = (host ?? "").toLowerCase().replace(/^www\./, "").split(":")[0];
   const sites = await listSites();
   return sites.find((s) => s.domain.toLowerCase() === h) ?? sites.find((s) => s.site_id === "global") ?? null;
+}
+
+/**
+ * 이 시장의 정규 주소.
+ *
+ * **메일 링크와 결제 콜백과 결과지 주소가 전부 여기서 온다.** 코드에
+ * 적어 두면 도메인을 옮기는 날 저장소를 뒤져야 하고, 뒤지다 하나를
+ * 빠뜨리면 그 링크만 옛 주소를 가리킨다.
+ *
+ * **요청 호스트를 그대로 쓰지 않는 자리가 있다.** 메일은 받는 사람이
+ * 다른 날 열고, 그때 staging 호스트가 적혀 있으면 닿지 않는다. 그래서
+ * 메일과 콜백은 정규 주소를 쓰고, 화면 안에서 끝나는 이동만 요청
+ * 호스트를 따른다.
+ */
+export async function canonicalFor(market: string): Promise<string | null> {
+  const sites = await listSites().catch(() => []);
+  const s = sites.find((x) => x.payment_market === market && x.active);
+  if (!s) return null;
+  return s.canonical_url ?? (s.domain ? `https://${s.domain}` : null);
 }
 
 /**

@@ -19,6 +19,10 @@ export type Product = {
   assessment_version: string | null;
   tier: string | null;
   major_code: string | null;
+  /** 어느 시장의 상품인가. 되돌아오는 주소를 이 값으로 고른다 */
+  market: string | null;
+  /** 값이 승인됐는가. **금액만 보고 무료로 열지 않는다** */
+  price_status: "approved" | "not_approved";
 };
 
 export type Order = {
@@ -43,7 +47,7 @@ export function orderName(code: string): string {
 export async function getProduct(code: string): Promise<Product | null> {
   return queryOne<Product>(
     `SELECT code, kind, amount, currency, seat_count, report_level,
-            assessment_version, tier, major_code
+            assessment_version, tier, major_code, market, price_status
        FROM products WHERE code = $1 AND active`,
     [code],
   );
@@ -91,12 +95,24 @@ export async function startCheckout(
   );
   if (!order) throw new Error("주문을 만들지 못했습니다.");
 
+  /**
+   * 되돌아오는 주소는 **정규 주소**다.
+   *
+   * 대행사가 결제를 끝내고 돌려보내는 자리라, 지금 요청이 들어온
+   * 호스트를 그대로 쓰면 staging 에서 시작한 결제가 staging 으로
+   * 돌아온다. 정규 주소가 없을 때만 지금 호스트로 되돌린다(개발).
+   */
+  const { publicBase } = await import("@/lib/urls");
+  const base = (await publicBase(product.market === "GLOBAL" ? "GLOBAL" : "KR")
+    .catch(() => null))
+    ?? origin.replace(/\/$/, "");
+
   const ticket = await paymentProvider().createCheckout({
     orderNo,
     orderName: orderName(product.code),
     amount: product.amount,
     currency: product.currency,
-    redirectUrl: `${origin}/checkout/complete?order=${orderNo}`,
+    redirectUrl: `${base}/checkout/complete?order=${orderNo}`,
     region,
   });
 
@@ -323,16 +339,21 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
 }
 
 /**
- * 무료 진단을 연다. 결제창을 거치지 않는다.
+ * 무료 상품을 연다. 결제창을 거치지 않는다.
  *
- * 금액이 0원인 상품은 PG 를 태울 것이 없다. 그런데 좌석·회차·응시는
+ * 금액이 0원인 상품은 PG 를 태울 것이 없다. 그런데 좌석·이용권·응시는
  * 유료와 똑같은 길을 타야 한다(설계 원칙: 좌석 하나 = 응시 하나).
- * 그래서 **0원 주문을 만들어 바로 paid 로 확정하고 좌석을 발급한다.**
- * 무료 전용 경로를 따로 파면 유료 경로만 고치고 무료를 잊는 일이 생긴다.
+ * 그래서 **0원 주문을 만들어 바로 paid 로 확정하고** 상품 종류에 맞는
+ * 문을 연다. 무료 전용 경로를 따로 파면 유료 경로만 고치고 무료를
+ * 잊는 일이 생긴다.
  *
- * 한 사람에게 한 번만 준다. 무료를 무한히 받을 수 있으면 유료 구간을
- * 살 이유가 사라지는 것이 아니라: 무료 응시가 쌓여 규준이 오염된다.
- * 두 번째부터는 이미 만든 무료 주문을 그대로 돌려준다.
+ * **승인된 무료만 연다.** 값을 아직 못 정한 0원(`PRICE_NOT_APPROVED`)은
+ * 여기서 거절한다. 둘이 표에서 같은 모양이라, 금액만 보고 열면 값을 못
+ * 정한 상품이 공짜로 나간다.
+ *
+ * **한 사람에게 한 번만 준다.** 무료 응시가 쌓이면 같은 사람의 응답이 두
+ * 벌이 되어 규준이 오염된다. 막는 자리는 **DB 의 유일 제약**이다: 주문 번호를 사람과 상품으로 정해 두면, 두 요청이 같은 순간에
+ * 들어와도 두 번째가 그 자리에서 거절된다. 읽고 나서 쓰면 둘 다 통과한다.
  */
 export async function openFreeOrder(
   userId: string,
@@ -342,32 +363,64 @@ export async function openFreeOrder(
   if (!product) throw new Error("판매하지 않는 상품입니다.");
   if (product.amount !== 0) throw new Error("무료 상품이 아닙니다.");
 
-  const existing = await queryOne<{ id: string }>(
-    `SELECT id FROM orders
-      WHERE user_id = $1 AND product_code = $2 AND status = 'paid'
-      ORDER BY id LIMIT 1`,
-    [userId, productCode],
-  );
-  if (existing) return { orderId: existing.id, reused: true };
+  const { priceState } = await import("@/lib/catalog");
+  const state = priceState({
+    amount: product.amount, price_status: product.price_status,
+  });
+  if (state !== "FREE_APPROVED") {
+    throw new Error("승인된 무료 상품이 아닙니다.");
+  }
 
-  const orderNo = `F${Date.now().toString(36)}${randomBytes(5).toString("hex")}`.toUpperCase();
-  const orderId = await tx(async (c) => {
+  /* 사람과 상품으로 정해지는 번호. 영문·숫자 40자 안이다 */
+  const compact = productCode.replace(/[^A-Za-z0-9]/g, "").toUpperCase();
+  const orderNo = `F${userId}${compact}`.slice(0, 40);
+
+  const made = await tx(async (c) => {
     const o = await c.query<{ id: string }>(
       `INSERT INTO orders (order_no, user_id, product_code, amount, currency, status, paid_at)
        VALUES ($1, $2, $3, 0, $4, 'paid', now())
+       ON CONFLICT (order_no) DO NOTHING
        RETURNING id`,
       [orderNo, userId, product.code, product.currency],
     );
+    /* 두 번째 요청이다. 이미 만든 주문을 그대로 쓴다 */
+    if (!o.rows[0]) return null;
     const id = o.rows[0].id;
-    for (let i = 0; i < product.seat_count; i++) {
+
+    if (product.assessment_version === "ME_V2") {
+      /**
+       * ME_V2 는 좌석이 아니라 **이용권**이 문을 연다.
+       *
+       * 어느 등급을 여는지는 **상품이 정한다.** 화면이 보낸 값이 여기까지
+       * 오지 못하므로, 주소에 `?tier=PRO` 를 적어도 무료로 PRO 가 열리지
+       * 않는다(유료 경로와 같은 규칙이다).
+       */
       await c.query(
-        `INSERT INTO seats (contract_id, order_id, user_id, assigned_at)
-         VALUES (NULL, $1, $2, now())
-         ON CONFLICT DO NOTHING`,
-        [id, userId],
+        `INSERT INTO entitlements
+           (user_id, order_id, product_code, kind, tier, major_code,
+            assessment_version, status, starts_at)
+         VALUES ($1, $2, $3, 'report', $4, $5, 'ME_V2', 'active', now())
+         ON CONFLICT (order_id) WHERE order_id IS NOT NULL DO NOTHING`,
+        [userId, id, product.code, product.tier ?? "BASIC", product.major_code ?? "ME"],
       );
+    } else {
+      for (let i = 0; i < product.seat_count; i++) {
+        await c.query(
+          `INSERT INTO seats (contract_id, order_id, user_id, assigned_at)
+           VALUES (NULL, $1, $2, now())
+           ON CONFLICT DO NOTHING`,
+          [id, userId],
+        );
+      }
     }
     return id;
   });
-  return { orderId, reused: false };
+
+  if (made) return { orderId: made, reused: false };
+
+  const existing = await queryOne<{ id: string }>(
+    `SELECT id FROM orders WHERE order_no = $1`, [orderNo],
+  );
+  if (!existing) throw new Error("무료 주문을 만들지 못했습니다.");
+  return { orderId: existing.id, reused: true };
 }
