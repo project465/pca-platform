@@ -49,9 +49,9 @@ window.PCAV2ValueReport = (function () {
   function has(o) { return o && Object.keys(o.paths || {}).length > 0; }
 
   var CONF = {
-    known: T('쓴 자리가 보입니다'),
-    inferred_from_course: T('수업에서 들으셨습니다'),
-    unknown: T('아직 걸린 것이 없습니다')
+    known: '쓴 자리가 보입니다',
+    inferred_from_course: '수업에서 들으셨습니다',
+    unknown: '아직 걸린 것이 없습니다'
   };
   var STATE = { confirmed: '확인', partial: '일부', not_yet: '아직' };
 

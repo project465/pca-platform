@@ -14,6 +14,12 @@
  */
 window.PCACoverage = (function () {
   'use strict';
+  /* **표는 한국어로 둔다.** 모듈 최상위에서 `T()` 를 부르면 불러올 때
+     한 번만 평가돼 그 뒤로 언어를 바꿔도 한국어가 그대로 남는다 */
+  function TX(tbl, key, dflt) {
+    var v = tbl && tbl[key];
+    return (typeof v === 'string' && v) ? T(v) : (dflt === undefined ? '' : dflt);
+  }
   /* 결과지의 두 언어. **글자만 갈리고 판단은 갈리지 않는다**:
      한국어면 받은 것을 그대로 돌려주므로 한국어 쪽은 손대지 않은 것과 같다 */
   var T = window.PCAI18N ? window.PCAI18N.T : function (s) { return s; };
@@ -21,7 +27,7 @@ window.PCACoverage = (function () {
   var MAP = (window.PCA_EVIDENCE_MAP || {}).families || [];
   var FOLLOW = (window.PCA_FOLLOWUPS || {}).gaps || [];
   var LV = { E0: 0, E1: 1, E2: 2, E3: 3, E4: 4, E5: 5 };
-  var NAME = { E0: T('활동'), E1: T('판단'), E2: T('산출물'), E3: T('성과'), E4: T('조직 가치'), E5: T('반복 가능성') };
+  var NAME = { E0: '활동', E1: '판단', E2: '산출물', E3: '성과', E4: '조직 가치', E5: '반복 가능성' };
 
   function s(v) { return String(v === null || v === undefined ? '' : v).trim(); }
   function low(v) { return s(v).toLowerCase(); }
@@ -126,11 +132,11 @@ window.PCACoverage = (function () {
         label: req.label,
         importance: req.importance,
         minimum_depth: req.minimum_depth,
-        minimum_depth_name: NAME[req.minimum_depth],
+        minimum_depth_name: TX(NAME, req.minimum_depth),
         description: req.description,
         status: status,
         depth: depth,
-        depth_name: depth ? NAME[depth] : null,
+        depth_name: depth ? TX(NAME, depth) : null,
         supported_by: uniq(by.concat(byCourse, byTool)).slice(0, 4),
         matched_words: uniq(why).slice(0, 4),
         /* 부분 확인일 때 되묻는 말. 긴 주관식을 요구하지 않는다 */
