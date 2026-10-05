@@ -59,6 +59,15 @@ async function main() {
     !/^https:\/\/(www\.)?careermatri\.(com|co\.kr)\/?$/.test(url),
     "소개 사이트 자리에 플랫폼을 올리지 않는다");
 
+  /* ── 4-2. 결과지 파일이 사라지지 않는 자리에 있는가 ──────────── */
+  const dir = (process.env.REPORT_PDF_DIR ?? "").trim();
+  ok("결과지 폴더가 환경변수로 정해져 있다", dir.length > 0,
+    dir || "REPORT_PDF_DIR 이 비어 있다");
+  /* **다시 띄우면 사라지는 자리에 두지 않는다.** 컨테이너 안의 임시
+     폴더에 쓰면 배포 한 번에 산 사람의 결과지가 없어진다 */
+  ok("결과지 폴더가 임시 자리가 아니다",
+    dir.length > 0 && !/^\/tmp|^\/var\/tmp/.test(dir), dir);
+
   /* ── 5. 실제로 떠 있는가 ──────────────────────────────────────── */
   if (!BASE) {
     ok("띄워 둔 배포본 확인", false, "STAGING_BASE 가 없어 건너뛴다");

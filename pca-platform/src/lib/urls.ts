@@ -31,20 +31,23 @@ function usable(url: string | null | undefined): string | null {
  */
 export async function publicBase(market: "KR" | "GLOBAL" = "KR"): Promise<string | null> {
   /**
-   * **공개 전 배포본에서는 이 배포본의 주소가 먼저다.**
+   * **플랫폼 주소가 먼저다.**
    *
-   * `site_configs` 의 정규 주소는 소개 사이트가 설 자리(`careermatri.co.kr`
-   * · `careermatri.com`)인데, 공개 전에는 거기에 플랫폼이 없다. 그 주소로
-   * 메일 링크와 결제 콜백을 보내면 눌러 본 사람이 빈 도메인에 떨어진다.
-   * 실제로 가짜 결제가 그렇게 끊겼다.
+   * 여기서 돌려주는 값이 가는 자리는 셋이다: 메일 링크 · 결제 콜백 ·
+   * 결과지 주소. 셋 다 **플랫폼이 떠 있는 자리로 돌아와야 한다.**
+   *
+   * `site_configs` 의 정규 주소는 소개 사이트가 서는 자리
+   * (`careermatri.co.kr` · `careermatri.com`)다. 플랫폼은 그 옆
+   * (`app.careermatri.com`)에 따로 서므로, 정규 주소를 먼저 보면 결제를
+   * 끝낸 사람이 **소개 사이트로 떨어진다.** 공개 전에는 아예 빈
+   * 도메인으로 떨어졌고, 실제로 가짜 결제가 그렇게 끊겼다.
+   *
+   * `PLATFORM_URL` 이 비어 있을 때만 시장의 정규 주소로 되돌아간다.
+   * 소개 사이트와 플랫폼이 한 주소에 있던 때의 설정을 위해 남겨 둔다.
    */
-  if ((process.env.APP_ENV ?? "").toLowerCase() === "staging") {
-    const here = usable(process.env.PLATFORM_URL);
-    if (here) return here;
-  }
-  const fromSite = usable(await canonicalFor(market).catch(() => null));
-  if (fromSite) return fromSite;
-  return usable(process.env.PLATFORM_URL);
+  const platform = usable(process.env.PLATFORM_URL);
+  if (platform) return platform;
+  return usable(await canonicalFor(market).catch(() => null));
 }
 
 /**

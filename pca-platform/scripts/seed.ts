@@ -23,6 +23,22 @@ function loadEnv(file: string) {
 loadEnv(".env.local");
 
 
+/**
+ * **운영 DB 에는 붓지 않는다.**
+ *
+ * 여기 들어 있는 것은 눌러 볼 계정과 시연 기관이고, 비밀번호가 이
+ * 파일에 적혀 있다. 운영에 한 번 들어가면 **아이디와 비밀번호가 공개된
+ * 운영자 계정**이 생긴다. 운영자는 `scripts/make-admin.ts` 로 하나만
+ * 만든다.
+ */
+if ((process.env.APP_ENV ?? "").toLowerCase() === "production") {
+  console.error(
+    "APP_ENV=production 에서는 시드를 넣지 않습니다.\n" +
+    "운영자 계정은 `npx tsx scripts/make-admin.ts <아이디> <이메일> <이름>` 로 만드십시오.",
+  );
+  process.exit(2);
+}
+
 const PW_ADMIN = "pca-dev-admin-1234";
 const PW_ORG = "pca-dev-org-1234";
 const PW_STUDENT = "TempPass2026";
