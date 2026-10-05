@@ -72,7 +72,8 @@
     "domains:verify": "tsx scripts/domains-verify.ts",
     "db:phase2_3": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 -f db/schema_phase2_3.sql",
     "backup:restore": "bash scripts/backup-restore.sh",
-    "mail:check": "tsx scripts/mail-check.ts"
+    "mail:check": "tsx scripts/mail-check.ts",
+    "whats:live": "node scripts/whats-live.mjs"
   },
   "dependencies": {
     "@types/nodemailer": "^8.0.1",
