@@ -321,28 +321,40 @@ async function main() {
     await query(`DELETE FROM consent_documents WHERE version = 'v-probe'`);
   }
 
-  /* ── 13. 우리 밖에서 정해져야 하는 것 ──────────────────────────── */
-  for (const m of ["KR", "GLOBAL"] as const) {
-    const r = marketReadiness(m);
-    if (!r.ready && r.blocker) blocker(`${m} 결제`, r.blocker, "결제 대행사·심사");
-  }
-  if (tbd.length) {
-    blocker("ME_V2 가격", `${tbd.length}개 상품의 값이 승인되지 않았습니다 ` +
-      `(${tbd.map((r) => r.code).join(" · ")})`, "사업 결정");
-  }
-  /* 도메인. 규격 철자의 `.com` 에 이미 남이 있다 */
-  blocker("도메인", "careermatri.com 에 이미 남의 서버가 응답합니다. " +
-    "어느 철자를 살지와 소유 확인이 남아 있습니다 (WHOIS 가 이 컨테이너에서 막혀 있습니다)",
-    "도메인 구매");
-  blocker("사업자 정보", "전자상거래법 제10조 표시(상호·대표자·주소·전화·" +
-    "사업자등록번호·통신판매업 신고번호)가 비어 있습니다. 지어내지 않았습니다",
-    "사업자 등록");
-  if (pend.length) {
-    blocker("영문 약관", `${pend.length}개 문서의 영문 번역이 없습니다. ` +
-      "구조는 다 되어 있고 본문만 넣으면 됩니다 " +
-      "(지금은 한국어 본문이 기준이라고 영어로 적어 두었습니다)",
-      "법률 검토·번역");
-  }
+  /* ── 13. 운영 화면과 같은 값을 읽는가 ──────────────────────────── */
+  const { commercialReport } = await import("../src/lib/commercial");
+  const state = await commercialReport();
+  ok("상용화 준비 상태가 한 함수에서 온다",
+    state.prices.length === 6 && state.payments.length === 2,
+    `상품 ${state.prices.length} · 시장 ${state.payments.length}`);
+  /* **운영 화면과 터미널이 같은 숫자를 봐야 한다.** 따로 세면 갈리고,
+     갈리는 순간 둘 다 못 믿는다 */
+  ok("미승인 상품 수가 화면과 같다",
+    state.prices.filter((p) => p.state === "PRICE_NOT_APPROVED").length === tbd.length,
+    `${tbd.length}개`);
+  ok("동의문 번역 상태가 화면과 같다",
+    state.consent.filter((c) => c.translation_status === "pending").length === pend.length,
+    `${pend.length}개`);
+  ok("도메인 철자가 하나다", state.oneSpelling);
+
+  /* ── 14. 지역화 덮임이 한 함수에서 오는가 ──────────────────────── */
+  const { localizationReport } = await import("../src/lib/localization");
+  const lr = localizationReport();
+  ok("지역화 덮임이 한 함수에서 온다", lr.screen.length > 0 && lr.matchers.length > 0,
+    `화면 ${lr.screen.length}묶음 · 맞추기 ${lr.matchers.length}묶음`);
+  ok("사람이 읽는 칸이 다 덮였다",
+    lr.screen.every((x) => !x.missing.length),
+    lr.screen.flatMap((x) => x.missing).slice(0, 3).join(" · ") || "전부");
+  ok("경험에서 찾는 말이 다 덮였다",
+    lr.matchers.every((x) => !x.missing.length),
+    lr.matchers.flatMap((x) => x.missing).slice(0, 3).join(" · ") || "전부");
+  ok("직무군 열여섯이 영어 이름을 가진다", !lr.families.missing.length,
+    `${lr.families.covered}/${lr.families.total}`);
+
+  /* ── 15. 우리 밖에서 정해져야 하는 것 ──────────────────────────── */
+  /* **블로커도 한 함수에서 온다.** 검사와 화면이 다른 목록을 보면
+     터미널에서 끝난 것이 화면에 남아 있거나 그 반대가 된다 */
+  for (const b of state.blockers) blocker(b.what, b.why, b.who);
 
   report();
 }

@@ -58,7 +58,18 @@ const SHOTS = [
   ["admin", "/admin/sites", "16_admin_sites", ["w1440"]],
   ["admin", "/admin/countries", "17_admin_countries", ["w1440"]],
   ["admin", "/admin/users", "18_admin_notopen", ["w1440"]],
+  /* 상용화 준비와 지역화 덮임. **막힌 것을 아침에 보이게 둔 자리다** */
+  ["admin", "/admin/readiness", "19_admin_readiness", ["w1440", "mobile"]],
+  ["admin", "/admin/localization", "20_admin_localization", ["w1440"]],
 ];
+
+/* `--only=readiness,localization` 로 몇 장만 찍는다. 스무 장을 한
+   브라우저로 찍으면 컨테이너가 메모리에서 죽는다(실제로 죽었다) */
+const only = (process.argv.find((x) => x.startsWith("--only=")) || "").slice(7)
+  .split(",").map((x) => x.trim()).filter(Boolean);
+const PICK = only.length
+  ? SHOTS.filter((s) => only.some((o) => s[2].includes(o)))
+  : SHOTS;
 
 const { chromium } = await import("playwright");
 const browser = await chromium.launch({ args: ["--no-sandbox"] });
@@ -100,7 +111,7 @@ async function login(ctx, who) {
 const log = [];
 const problems = [];
 for (const role of Object.keys(WHO)) {
-  const jobs = SHOTS.filter((s) => s[0] === role);
+  const jobs = PICK.filter((s) => s[0] === role);
   if (!jobs.length) continue;
   const ctx = await browser.newContext({ viewport: SIZES.w1440 });
   await login(ctx, WHO[role]);

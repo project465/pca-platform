@@ -59,7 +59,7 @@
     "phase2:report": "tsx scripts/phase2-report.ts",
     "i18n:build": "node scripts/build-report-i18n.mjs",
     "i18n:parity": "node scripts/i18n-parity.mjs",
-    "i18n:coverage": "node scripts/i18n-coverage.mjs",
+    "i18n:coverage": "tsx scripts/i18n-coverage.ts",
     "global:check": "tsx scripts/global-check.ts",
     "domains:audit": "node scripts/domains-audit.mjs",
     "db:phase2_1": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 -f db/schema_phase2_1.sql",

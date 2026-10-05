@@ -8,6 +8,9 @@ type NavItem = { href: string; label: string; ready: boolean };
 /** 화면 목록(CLAUDE.md)의 운영사 관리자 1~5번. 만든 것만 링크가 된다. */
 const NAV: NavItem[] = [
   { href: "/admin/ops", label: "운영", ready: true },
+  /* 상용화 준비와 지역화 덮임. **막힌 것을 아침에 보이게 둔다** */
+  { href: "/admin/readiness", label: "상용화 준비", ready: true },
+  { href: "/admin/localization", label: "지역화 덮임", ready: true },
   { href: "/admin/organizations", label: "기관", ready: true },
   { href: "/admin/contracts", label: "계약·응시권", ready: false },
   { href: "/admin/sites", label: "사이트·나라", ready: true },
