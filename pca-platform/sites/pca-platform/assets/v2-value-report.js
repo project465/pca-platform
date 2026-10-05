@@ -9,6 +9,14 @@
  */
 window.PCAV2ValueReport = (function () {
   'use strict';
+  /* **표는 한국어로 둔다.** 모듈 최상위에서 `T()` 를 부르면 불러올 때
+     한 번만 평가돼 그 뒤로 언어를 바꿔도 한국어가 그대로 남는다.
+     옮기는 것은 꺼내 쓰는 자리(`TX()`)다 */
+  /** 표에서 꺼낸 한국어를 지금 언어로. 꺼낼 때마다 다시 본다 */
+  function TX(tbl, key, dflt) {
+    var v = tbl && tbl[key];
+    return (typeof v === 'string' && v) ? T(v) : (dflt === undefined ? '' : dflt);
+  }
   /* 결과지의 두 언어. **글자만 갈리고 판단은 갈리지 않는다**:
      한국어면 받은 것을 그대로 돌려주므로 한국어 쪽은 손대지 않은 것과 같다 */
   var T = window.PCAI18N ? window.PCAI18N.T : function (s) { return s; };
@@ -45,7 +53,7 @@ window.PCAV2ValueReport = (function () {
     inferred_from_course: T('수업에서 들으셨습니다'),
     unknown: T('아직 걸린 것이 없습니다')
   };
-  var STATE = { confirmed: T('확인'), partial: T('일부'), not_yet: T('아직') };
+  var STATE = { confirmed: '확인', partial: '일부', not_yet: '아직' };
 
   /* ── 1. 전공지식의 실무 전환 ─────────────────────────────────────── */
   function chain(p) {
@@ -110,7 +118,7 @@ window.PCAV2ValueReport = (function () {
   function rungRow(r) {
     return '<div class="elrow el-' + r.state + '">' +
       '<span class="elname">' + esc(r.name) + '</span>' +
-      '<span class="elstate">' + esc(STATE[r.state]) + '</span>' +
+      '<span class="elstate">' + esc(TX(STATE, r.state)) + '</span>' +
       '<span class="elby">' + ulist(r.by, 2).join(' · ') + '</span>' +
       '</div>';
   }
@@ -181,7 +189,7 @@ window.PCAV2ValueReport = (function () {
   }
 
   /* ── 5. 도구·기술 증거 ───────────────────────────────────────────── */
-  var TLV = { E0: T('사용 경험'), E1: T('판단까지'), E2: T('산출물까지'), E3: T('성과까지'), E4: T('조직 가치까지') };
+  var TLV = { E0: '사용 경험', E1: '판단까지', E2: '산출물까지', E3: '성과까지', E4: '조직 가치까지' };
   function toolBox(J, deep) {
     var list = J.tool_evidence || [];
     if (!list.length) return '';
@@ -197,7 +205,7 @@ window.PCAV2ValueReport = (function () {
       return '<div class="card contentcard"><div class="eyebrow">' +
         (u(t.tool_name) || T('(이름 없는 도구)')) +
         (t.category_name ? ' · ' + esc(t.category_name) : '') + '</div>' +
-        '<div class="toolst">' + esc(TLV[t.evidence_level] || t.evidence_level) + '</div>' +
+        '<div class="toolst">' + esc(TX(TLV, t.evidence_level) || t.evidence_level) + '</div>' +
         '<div class="tooltb">' + rows.map(function (r) {
           return '<div class="toolrow"><span>' + esc(r[0]) + '</span><span>' +
             (r[1] ? r[1] : T('<i class="note">아직 비어 있습니다</i>')) + '</span></div>';
@@ -233,7 +241,7 @@ window.PCAV2ValueReport = (function () {
       r.steps.map(function (st) {
         return '<div class="elrow el-' + st.state + '">' +
           '<span class="elname">' + esc(st.n) + '</span>' +
-          '<span class="elstate">' + esc(STATE[st.state]) + '</span>' +
+          '<span class="elstate">' + esc(TX(STATE, st.state)) + '</span>' +
           '<span class="elby">' + ulist(st.by, 2).join(' · ') +
           '</span></div>';
       }).join('') + '</div><p class="note" style="margin-top:10px">' + esc(r.note) + '</p></div>';

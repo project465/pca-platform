@@ -8,6 +8,14 @@
  */
 window.PCAV2CoverageReport = (function () {
   'use strict';
+  /* **표는 한국어로 둔다.** 모듈 최상위에서 `T()` 를 부르면 불러올 때
+     한 번만 평가돼 그 뒤로 언어를 바꿔도 한국어가 그대로 남는다.
+     옮기는 것은 꺼내 쓰는 자리(`TX()`)다 */
+  /** 표에서 꺼낸 한국어를 지금 언어로. 꺼낼 때마다 다시 본다 */
+  function TX(tbl, key, dflt) {
+    var v = tbl && tbl[key];
+    return (typeof v === 'string' && v) ? T(v) : (dflt === undefined ? '' : dflt);
+  }
   /* 결과지의 두 언어. **글자만 갈리고 판단은 갈리지 않는다**:
      한국어면 받은 것을 그대로 돌려주므로 한국어 쪽은 손대지 않은 것과 같다 */
   var T = window.PCAI18N ? window.PCAI18N.T : function (s) { return s; };
@@ -42,8 +50,8 @@ window.PCAV2CoverageReport = (function () {
   }
 
   var MARK = { confirmed: '✓', partial: '△', not_yet: '○' };
-  var HEAD = { confirmed: T('현재 확인된 것'), partial: T('일부 확인'), not_yet: T('아직 확인되지 않음') };
-  var IMP = { core: T('핵심'), supporting: T('뒷받침'), optional: T('선택') };
+  var HEAD = { confirmed: '현재 확인된 것', partial: '일부 확인', not_yet: '아직 확인되지 않음' };
+  var IMP = { core: '핵심', supporting: '뒷받침', optional: '선택' };
 
   function group(rows, st) {
     return rows.filter(function (r) { return r.status === st; });
@@ -60,11 +68,11 @@ window.PCAV2CoverageReport = (function () {
       var list = group(rows, st);
       if (!list.length) return '';
       return '<div class="cvgrp cv-' + st + '">' +
-        '<div class="cvgh">' + esc(HEAD[st]) + '</div>' +
+        '<div class="cvgh">' + esc(TX(HEAD, st)) + '</div>' +
         list.map(function (r) {
           return '<div class="cvrow"><span class="cvmk">' + MARK[r.status] + '</span>' +
             '<span class="cvlb">' + esc(r.label) +
-            (r.importance !== 'core' ? ' <i>' + esc(IMP[r.importance]) + '</i>' : '') +
+            (r.importance !== 'core' ? ' <i>' + esc(TX(IMP, r.importance)) + '</i>' : '') +
             '</span>' +
             '<span class="cvby">' +
             (r.supported_by.length ? ulist(r.supported_by, 2).join(' · ')

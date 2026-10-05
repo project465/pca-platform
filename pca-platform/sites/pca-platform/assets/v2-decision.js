@@ -82,10 +82,19 @@ window.PCAV2Decision = (function () {
   }
 
   function table(v2, families, readiness, coverage, ready, hasEvidence) {
+    /* 직무군 이름은 **한 곳에서만** 고른다(`PCAI18N.family`). 이름표가
+       둘(`PCA_FAMILIES` 의 `name_ko` 와 `PCA_V2_FAMILY_NAMES`)이라, 앞엣것이
+       먼저 걸리면 영어 화면에도 한국어가 나간다. 키는 두 언어가 같으므로
+       판정은 갈리지 않고 글자만 갈린다 */
     var NAME = {};
     var fam = (window.PCA_FAMILIES && window.PCA_FAMILIES.ME);
-    if (fam) fam.families.forEach(function (f) { NAME[f.career_family_id] = f.name_ko; });
-    var extra = (window.PCA_V2_FAMILY_NAMES || {});
+    var isEn = !!(window.PCAI18N && window.PCAI18N.lang() === 'en');
+    if (fam && !isEn) {
+      fam.families.forEach(function (f) { NAME[f.career_family_id] = f.name_ko; });
+    }
+    var extra = (isEn
+      ? (window.PCA_V2_FAMILY_NAMES_EN || window.PCA_V2_FAMILY_NAMES || {})
+      : (window.PCA_V2_FAMILY_NAMES || {}));
     var rows = (families || v2.families).map(function (id) {
       var row = {
         career_family_id: id,

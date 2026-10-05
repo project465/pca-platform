@@ -428,7 +428,9 @@ window.PCAValue = (function () {
     return {
       value_path_id: familyId + '::' + (orgTypeId || 'any'),
       career_family_id: familyId,
-      career_family_name: (window.PCA_V2_FAMILY_NAMES || {})[familyId] || familyId,
+      career_family_name: (window.PCAI18N
+        ? window.PCAI18N.family(familyId)
+        : ((window.PCA_V2_FAMILY_NAMES || {})[familyId] || familyId)),
       organization_type: orgTypeId || null,
       organization_type_name: org ? org.name_ko : null,
       target_organization_id: null,

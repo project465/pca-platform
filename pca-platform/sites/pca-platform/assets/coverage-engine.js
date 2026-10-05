@@ -146,7 +146,9 @@ window.PCACoverage = (function () {
     };
     return {
       career_family_id: familyId,
-      career_family_name: (window.PCA_V2_FAMILY_NAMES || {})[familyId] || familyId,
+      career_family_name: (window.PCAI18N
+        ? window.PCAI18N.family(familyId)
+        : ((window.PCA_V2_FAMILY_NAMES || {})[familyId] || familyId)),
       coverage: rows,
       /* **숫자를 점수로 바꾸지 않는다.** 센 것을 그대로 적는다 */
       summary: {

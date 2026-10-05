@@ -109,13 +109,24 @@ function alreadyWrapped(src, start) {
   return /(^|[^\w$])T\(\s*$/.test(src.slice(Math.max(0, start - 8), start));
 }
 
+/**
+ * 문자열 하나의 **실제 값**.
+ *
+ * **원본 글자를 열쇠로 쓰면 한 건도 안 맞는다.** 소스에 `"a=\\"b\\""` 라고
+ * 적혀 있어도 `T()` 가 받는 것은 역슬래시가 풀린 `a="b"` 다. 열쇠는 받는
+ * 쪽 모양이어야 한다.
+ */
+export function valueOf(raw) {
+  try { return Function("return (" + raw + ")")(); } catch { return null; }
+}
+
 export function literalsOf(src) {
   const found = [];
   for (const t of scan(src)) {
     if (t.kind !== "string") continue;
     const raw = src.slice(t.start, t.end);
-    const body = raw.slice(1, -1);
-    if (!HAN.test(body)) continue;
+    const body = valueOf(raw);
+    if (typeof body !== "string" || !HAN.test(body)) continue;
     found.push({ ...t, raw, body, wrapped: alreadyWrapped(src, t.start) });
   }
   return found;

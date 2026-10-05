@@ -19,6 +19,14 @@
  */
 window.PCAV2Report = (function () {
   'use strict';
+  /* **표는 한국어로 둔다.** 모듈 최상위에서 `T()` 를 부르면 불러올 때
+     한 번만 평가돼 그 뒤로 언어를 바꿔도 한국어가 그대로 남는다.
+     옮기는 것은 꺼내 쓰는 자리(`TX()`)다 */
+  /** 표에서 꺼낸 한국어를 지금 언어로. 꺼낼 때마다 다시 본다 */
+  function TX(tbl, key, dflt) {
+    var v = tbl && tbl[key];
+    return (typeof v === 'string' && v) ? T(v) : (dflt === undefined ? '' : dflt);
+  }
   /* 결과지의 두 언어. **글자만 갈리고 판단은 갈리지 않는다**:
      한국어면 받은 것을 그대로 돌려주므로 한국어 쪽은 손대지 않은 것과 같다 */
   var T = window.PCAI18N ? window.PCAI18N.T : function (s) { return s; };
@@ -32,7 +40,7 @@ window.PCAV2Report = (function () {
   function clean(v) { return SN ? SN.safe(v) : esc(v); }
   function pad2(n) { return (n < 10 ? '0' : '') + n; }
 
-  var LV = { high: T('높음'), medium: T('보통'), low: T('낮음') };
+  var LV = { high: '높음', medium: '보통', low: '낮음' };
   /* 결과지에서 가장 조심해야 하는 두 문장. **한 번만 적어 둔다**: 세 자리에
      따로 적어 두었더니 손볼 때마다 세 군데가 갈렸고, 문체 검사에도 같은
      대구가 여섯 번 센 것으로 걸렸다 */
@@ -40,7 +48,7 @@ window.PCAV2Report = (function () {
     T('확인되지 않는다는 뜻입니다.');
   var LOW_RUNG = T('낮은 칸이 모자라다는 뜻이 아닙니다. 지금 적어 주신 것으로 ') +
     T('확인되는 범위입니다.');
-  var RUNG = { E0: T('활동'), E1: T('판단'), E2: T('산출물'), E3: T('성과'), E4: T('조직 가치'), E5: T('반복') };
+  var RUNG = { E0: '활동', E1: '판단', E2: '산출물', E3: '성과', E4: '조직 가치', E5: '반복' };
 
   /* ── 쪽 ─────────────────────────────────────────────────────────────
      한 쪽에 핵심 메시지 하나. 인쇄에서 쪽이 갈리는 자리가 여기다. */
@@ -63,7 +71,11 @@ window.PCAV2Report = (function () {
       var fid = J.decision_table[i].career_family_id;
       var c = cv[fid];
       if (c && c.priority_gaps.length) {
-        return { family: c.career_family_name, gap: c.priority_gaps[0] };
+        /* **이름이 아니라 번호도 같이 들고 간다.** 이름은 언어마다
+           다르므로, 두 언어가 같은 판단을 했는지 견주려면 변하지
+           않는 값이 있어야 한다 */
+        return { family_id: fid, family: c.career_family_name,
+          gap: c.priority_gaps[0] };
       }
     }
     return null;
@@ -141,8 +153,8 @@ window.PCAV2Report = (function () {
           rank: i + 1,
           career_family_id: r.career_family_id,
           name: r.name,
-          interest: LV[r.interest && r.interest.level] || null,
-          exposure: LV[r.exposure && r.exposure.level] || null,
+          interest: TX(LV, r.interest && r.interest.level) || null,
+          exposure: TX(LV, r.exposure && r.exposure.level) || null,
           core_confirmed: r.evidence_coverage ? r.evidence_coverage.core.confirmed : null,
           core_total: r.evidence_coverage ? r.evidence_coverage.core.total : null,
           decision_status: r.decision_status,
@@ -150,7 +162,9 @@ window.PCAV2Report = (function () {
         };
       }),
       key_findings: findings(J),
-      critical_gap: g ? { label: g.gap.label, family: g.family, why: g.gap.description } : null,
+      /* 번호를 같이 담는다. 이름은 언어마다 다르고 번호는 안 다르다 */
+      critical_gap: g ? { label: g.gap.label, family_id: g.family_id,
+        family: g.family, why: g.gap.description } : null,
       next_action: nextOneThing(J),
       confidence_note: T('여기 나오는 값은 합격 가능성이나 실력을 잰 값이 아닙니다. ') +
         T('지금 적어 주신 응답과 경험에서 확인되는 것만 적었습니다.')
@@ -204,11 +218,11 @@ window.PCAV2Report = (function () {
       var c = r.evidence_coverage;
       return '<tr><td><b>' + esc(r.name) + '</b></td>' +
         '<td>' + esc(DEC.modeLabel(r.work_mode)) + '</td>' +
-        '<td>' + esc(LV[r.interest && r.interest.level] || '—') + '</td>' +
-        '<td>' + esc(LV[r.exposure && r.exposure.level] || '—') + '</td>' +
-        '<td>' + esc(LV[r.learning && r.learning.level] || '—') + '</td>' +
+        '<td>' + esc(TX(LV, r.interest && r.interest.level) || '—') + '</td>' +
+        '<td>' + esc(TX(LV, r.exposure && r.exposure.level) || '—') + '</td>' +
+        '<td>' + esc(TX(LV, r.learning && r.learning.level) || '—') + '</td>' +
         '<td>' + (c ? c.core.confirmed + ' / ' + c.core.total : '—') + '</td>' +
-        '<td>' + (r.evidence_depth ? esc(r.evidence_depth + ' ' + RUNG[r.evidence_depth]) : '—') + '</td>' +
+        '<td>' + (r.evidence_depth ? esc(r.evidence_depth + ' ' + TX(RUNG, r.evidence_depth)) : '—') + '</td>' +
         '<td><b>' + esc(DEC.label(r.decision_status)) + '</b></td></tr>';
     };
     return '<div class="v2tw"><table><thead><tr>' +
@@ -474,9 +488,9 @@ window.PCAV2Report = (function () {
         var c = r.evidence_coverage;
         return '<tr><td>' + esc(r.name) + '</td>' +
           '<td>' + esc(DEC.modeLabel(r.work_mode)) + '</td>' +
-          '<td>' + esc(LV[r.interest && r.interest.level] || '—') + '</td>' +
-          '<td>' + esc(LV[r.exposure && r.exposure.level] || '—') + '</td>' +
-          '<td>' + esc(LV[r.learning && r.learning.level] || '—') + '</td>' +
+          '<td>' + esc(TX(LV, r.interest && r.interest.level) || '—') + '</td>' +
+          '<td>' + esc(TX(LV, r.exposure && r.exposure.level) || '—') + '</td>' +
+          '<td>' + esc(TX(LV, r.learning && r.learning.level) || '—') + '</td>' +
           '<td>' + (c ? c.core.confirmed + ' / ' + c.core.total : '—') + '</td>' +
           '<td>' + esc(DEC.label(r.decision_status)) + '</td></tr>';
       }).join('') + '</tbody></table></div>',

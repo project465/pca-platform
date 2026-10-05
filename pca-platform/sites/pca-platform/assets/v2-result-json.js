@@ -82,7 +82,10 @@ window.PCAV2ResultJSON = (function () {
       assessment_version: v2.assessment_version,
       legacy_version: v2.legacy_version,
       report_level: LEVEL[v2.tier] || 'basic',
-      report_language: 'ko',
+      /* **언어를 못 박지 않는다.** 결과 객체 하나가 두 언어로 그려지므로
+         이 칸도 그때 그린 언어를 적어야 한다. 스냅샷이 이 값을 그대로
+         들고 가고, 영어로 뽑은 결과지가 'ko' 라고 적혀 있으면 되짚을 수 없다 */
+      report_language: (window.PCAI18N ? window.PCAI18N.lang() : 'ko'),
       profile: {
         major_id: 'ME', major_name: '기계공학과',
         name: (S.profile && S.profile.name) || null,

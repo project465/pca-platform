@@ -117,7 +117,7 @@ async function render(tier, stage, lang) {
       roles: (J.decision_table || []).map((r) => r.career_family_id),
       states: (J.decision_table || []).map((r) => r.status || r.decision_status || ""),
       coverage: Object.keys(J.role_evidence_coverage || {}).sort(),
-      gap: sum && sum.critical_gap ? sum.critical_gap.family : null,
+      gap: sum && sum.critical_gap ? (sum.critical_gap.family_id || sum.critical_gap.family) : null,
       next: sum && sum.next_action ? (sum.next_action.id || sum.next_action.kind || "") : "",
       missing: window.PCAI18N ? window.PCAI18N.missing() : [],
     };
@@ -137,6 +137,7 @@ const out = [];
 const baseline = existsSync(BASE) ? JSON.parse(readFileSync(BASE, "utf8")) : {};
 const fresh = {};
 const missingAll = new Set();
+const leaked = new Set();
 
 for (const [tier, stage] of CASES) {
   const ko = await render(tier, stage, "ko");
@@ -169,6 +170,9 @@ for (const [tier, stage] of CASES) {
       han.slice(0, 4).map((s) => s.trim()).join(" | "));
   }
   for (const m of en.missing || []) missingAll.add(m);
+  /* 샌 글자를 그대로 모아 둔다. 사전에 없는 것이 아니라 **사전을 거치지
+     않는 자리**(데이터 파일)에서 오는 것이라, 세는 것만으로는 못 찾는다 */
+  for (const h of han) leaked.add(h.trim());
   if (en.language !== "en") bad.push(`${key} 영어 결과지가 report_language=${en.language}`);
 
   out.push(`${key.padEnd(18)} ko ${koHash} · 직무 ${ko.roles.length} · ` +
@@ -177,6 +181,13 @@ for (const [tier, stage] of CASES) {
 
 await browser.close();
 srv.close();
+
+if (process.argv.includes("--dump")) {
+  mkdirSync(dirname(BASE), { recursive: true });
+  writeFileSync("docs/metri/generated/i18n-leaked.json",
+    JSON.stringify([...leaked].sort(), null, 1) + "\n");
+  console.log(`영어에 샌 글자 ${leaked.size}가지 → docs/metri/generated/i18n-leaked.json`);
+}
 
 if (process.argv.includes("--bless")) {
   mkdirSync(dirname(BASE), { recursive: true });
