@@ -75,6 +75,28 @@ function smtpSink(port: number): Promise<() => void> {
   });
 }
 
+/**
+ * 받은 메일의 몸통을 사람이 읽는 글자로 되돌린다.
+ *
+ * 머리와 몸통은 빈 줄로 갈리고, 몸통을 어떻게 쌌는지는
+ * `Content-Transfer-Encoding` 이 적는다. 한국어는 7bit 로 못 가서 거의
+ * 늘 base64 이고, 영어만 있으면 그대로 온다.
+ */
+function decodeBody(raw: string): string {
+  const head = raw.indexOf("\r\n\r\n");
+  if (head < 0) return raw;
+  const enc = (raw.slice(0, head).match(/^Content-Transfer-Encoding:\s*(\S+)/mi) ?? [])[1];
+  const body = raw.slice(head + 4).replace(/\r\n\.\r\n[\s\S]*$/, "");
+  if (/^base64$/i.test(enc ?? "")) {
+    return Buffer.from(body.replace(/\r?\n/g, ""), "base64").toString("utf8");
+  }
+  if (/^quoted-printable$/i.test(enc ?? "")) {
+    return body.replace(/=\r?\n/g, "")
+      .replace(/=([0-9A-F]{2})/gi, (_, h) => String.fromCharCode(parseInt(h, 16)));
+  }
+  return body;
+}
+
 async function main() {
   const PORT = 2526;
   const stop = await smtpSink(PORT);
@@ -130,8 +152,14 @@ async function main() {
   ok("보낸 메일에 제목이 들어 있다", subjects.length >= kinds.length,
     `${subjects.length}개`);
   /* **본문에 링크가 있는가.** 정규 주소가 비어 있으면 링크 없는 메일이
-     나가고, 받은 사람은 어디로 가야 하는지 모른다 */
-  const withLink = inbox.filter((m) => /https?:\/\//.test(m.body)).length;
+     나가고, 받은 사람은 어디로 가야 하는지 모른다.
+
+     **몸통을 먼저 푼다.** 한국어 본문은 7bit 로 못 보내서 nodemailer 가
+     base64 로 싸고, 그러면 날것에서 `https://` 를 찾는 검사는 링크가
+     멀쩡히 들어 있어도 늘 실패한다. 실제로 그랬다: 이 줄이 `0 / 5통` 으로
+     오래 빨간 채였고 풀어 보니 `https://careermatri.co.kr/login` 이 그대로
+     들어 있었다. **거짓 경보를 내는 검사는 그 다음부터 아무도 안 본다** */
+  const withLink = inbox.filter((m) => /https?:\/\//.test(decodeBody(m.body))).length;
   ok("본문에 돌아올 주소가 들어 있다", withLink > 0,
     `${withLink} / ${inbox.length}통. 비었으면 site_configs.canonical_url 을 봅니다`);
 

@@ -207,3 +207,43 @@ KR      BUSINESS_INFO  READY   7칸이 다 찼습니다
 KR      LEGAL          READY   필수 동의 2개의 본문이 ko 로 있습니다
 GLOBAL  LEGAL          BLOCKED en 약관 2개의 본문이 없습니다
 ```
+
+---
+
+## 보내는 도메인을 이름으로 재지 않는다 (2026-10-06)
+
+거래메일 발신주소가 `hari_info@hari.re.kr` 로 확정됐다. 고객지원 주소와
+같은 주소를 쓴다.
+
+준비 검사는 `MAIL_FROM` 의 도메인이 소개 사이트 도메인과 다르면 경고를
+냈다. **그 규칙이 재는 것은 이름이 같은가뿐이다.** 받는 쪽 메일 서버는
+이름을 보지 않고 **그 도메인이 이 발신을 허락했는가**를 본다. 브랜드
+도메인이어도 SPF 가 없으면 스팸으로 떨어지고, 다른 도메인이어도
+SPF·DKIM·DMARC 가 서 있으면 들어간다.
+
+판단을 DNS 로 옮겼다(`src/lib/mail-domain.ts`). 두 도메인을 실제로
+찍어 보니 확정하신 쪽이 오히려 서 있는 쪽이다.
+
+```
+hari.re.kr        SPF 있음 (include:spf.worksmobile.com include:_spf.google.com ~all)
+                  DMARC 있음 (p=none, 감시만)
+careermatri.com   SPF 없음 · DMARC 없음
+```
+
+```
+자격증명이 없다                  BLOCKED   한 통도 안 나간다
+SPF 나 DMARC 가 비어 있다        WARNING   나가지만 스팸으로 떨어진다
+DNS 를 못 물어봤다               WARNING   모른다
+둘 다 있다                       READY
+```
+
+**DKIM 은 조회하지 않는다.** 셀렉터 이름을 대행사가 정해서
+(`google._domainkey` · `work._domainkey` · 임의 문자열) 밖에서 찍어 볼 수
+없다. 없는 것을 '없다' 고 적으면 멀쩡한 설정을 틀렸다고 말하게 된다.
+한 통 보내 받은 쪽 헤더에서 확인한다.
+
+**`mail:check` 의 링크 검사가 거짓으로 실패하고 있었다.** 한국어 본문은
+7bit 로 못 보내서 nodemailer 가 base64 로 싸는데, 날것에서 `https://` 를
+찾고 있었다. `0 / 5통` 으로 오래 빨간 채였고 풀어 보니 링크가 그대로
+들어 있었다. **거짓 경보를 내는 검사는 그 다음부터 아무도 안 본다.**
+몸통을 풀고 보도록 고쳤고 열한 가지가 전부 지나간다.

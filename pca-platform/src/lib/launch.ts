@@ -25,6 +25,7 @@ import { mailReady } from "./outbox";
 import { supportConfig } from "./support";
 import { businessInfo } from "./business";
 import { appDomain, probeAppDomain } from "./app-domain";
+import { mailDns } from "./mail-domain";
 import { localizationReport } from "./localization";
 import { tiersDistinct } from "./tiers";
 import { get } from "./settings";
@@ -253,6 +254,8 @@ export async function launchReport(): Promise<LaunchReport> {
   const backup = await backupRow();
   const mail = mailReady();
   const mailFrom = (process.env.MAIL_FROM ?? "").trim();
+  /* 보내는 도메인은 시장이 둘이어도 하나다. 한 번만 물어본다 */
+  const dns = mail ? await mailDns() : null;
 
   /* **앱 주소를 한 번만 두드린다.** 시장이 둘이어도 앱은 하나다
      (설계 원칙 5). 시장마다 두드리면 같은 주소에 두 번 나간다 */
@@ -344,29 +347,39 @@ export async function launchReport(): Promise<LaunchReport> {
           "결제 대행사·심사"));
 
     /**
-     * 보내는 주소가 우리 도메인인가(규격 §14). 다른 도메인에서 나가면
-     * 스팸으로 떨어지고, 떨어진 메일은 아무도 못 센다.
+     * 거래 메일이 실제로 도착하는가(규격 §14).
      *
-     * **우리 도메인이 둘이다**: 앱이 선 자리(`app.careermatri.com`)와
-     * 소개 사이트(`careermatri.com`). 메일은 보통 브랜드 도메인에서
-     * 나가므로 둘 중 어느 쪽에 걸려도 우리 것으로 본다. 전에는 소개
-     * 사이트 도메인만 보고 있었고, 그러면 한국 시장에서
-     * `@careermatri.com` 으로 나가는 메일이 남의 도메인으로 읽혔다.
+     * **브랜드 도메인과 같은지로 판단하지 않는다.** 전에는 `MAIL_FROM` 의
+     * 도메인이 소개 사이트 도메인과 다르면 경고를 냈는데, 그 규칙이 재는
+     * 것은 이름이 같은가뿐이다. 받는 쪽 메일 서버는 이름을 보지 않고
+     * **그 도메인이 이 발신을 허락했는가**를 본다. 브랜드 도메인이어도
+     * SPF 가 없으면 스팸으로 떨어진다.
+     *
+     * 판단을 DNS 로 옮겼다(`mail-domain.ts`). 보내는 도메인을 운영자가
+     * 고르는 것은 사업 결정이고, 검사가 할 일은 **그 선택이 서 있는지**를
+     * 보는 것이다.
+     *
+     * 층이 셋이다: 자격증명이 없으면 한 통도 안 나가므로 BLOCKED,
+     * 나가는데 SPF·DMARC 가 비어 있으면 스팸으로 떨어지므로 WARNING,
+     * DNS 를 못 물어본 자리도 WARNING(모름)이다.
      */
-    const fromDomain = (mailFrom.split("@")[1] ?? "").toLowerCase();
-    const ours = [site?.domain, app.ok ? app.host : null]
-      .filter((d): d is string => Boolean(d))
-      .map((d) => d.toLowerCase());
-    const fromOurs = fromDomain
-      && ours.some((d) => d === fromDomain || d.endsWith(`.${fromDomain}`));
     rows.push(!mail
       ? row("email", "EMAIL", "거래 메일", "BLOCKED",
         "MAIL_HOST · MAIL_FROM 이 비어 있어 한 통도 나가지 않습니다.", "운영 담당")
-      : fromDomain && ours.length && !fromOurs
+      : !dns
         ? row("email", "EMAIL", "거래 메일", "WARNING",
-          `보내는 주소가 ${mailFrom} 인데 우리 도메인은 ${ours.join(" · ")} 입니다. ` +
-          `다른 도메인에서 나가면 스팸으로 떨어집니다.`)
-        : row("email", "EMAIL", "거래 메일", "READY", `${mailFrom} 로 나갑니다.`));
+          `${mailFrom} 로 나갑니다. 보내는 주소에서 도메인을 읽지 못해 ` +
+          `SPF·DMARC 를 확인하지 못했습니다.`)
+        : dns.spf === false || dns.dmarc === false
+          ? row("email", "EMAIL", "거래 메일", "WARNING",
+            `${mailFrom} 로 나가는데 ${dns.detail}. 비어 있는 줄을 채우지 ` +
+            `않으면 Gmail·네이버가 스팸으로 떨어뜨립니다.`)
+          : dns.spf === null || dns.dmarc === null
+            ? row("email", "EMAIL", "거래 메일", "WARNING",
+              `${mailFrom} 로 나갑니다. ${dns.detail} — 이 자리에서 DNS 를 ` +
+              `못 물어봤습니다.`)
+            : row("email", "EMAIL", "거래 메일", "READY",
+              `${mailFrom} 로 나갑니다. ${dns.detail}`));
 
     /**
      * 전자상거래법 제10조 표시 일곱 칸.
