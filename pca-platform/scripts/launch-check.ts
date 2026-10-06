@@ -22,6 +22,7 @@ import { launchReport, AREAS, AREA_LABEL, type Area } from "../src/lib/launch";
 import { tiersDistinct } from "../src/lib/tiers";
 import { businessInfo } from "../src/lib/business";
 import { supportConfig } from "../src/lib/support";
+import { appDomain } from "../src/lib/app-domain";
 
 const T: { n: string; pass: boolean; fix?: string }[] = [];
 const B: { area: Area; n: string; why: string; who: string }[] = [];
@@ -131,10 +132,12 @@ async function main() {
     !/staging|localhost|127\.0\.0\.1|vercel\.app/i.test(mailFrom),
     `MAIL_FROM=${mailFrom || "(비어 있음)"}`);
 
-  const platformUrl = (process.env.PLATFORM_URL ?? "").trim();
-  ok("메일 링크의 바탕 주소에 localhost 가 없다",
-    !/localhost|127\.0\.0\.1/i.test(platformUrl),
-    `PLATFORM_URL=${platformUrl || "(비어 있음)"}`);
+  /* **앱 주소를 보는 자리가 하나다**(`app-domain.ts`). 런칭 준비 화면 ·
+     메일 링크 · 결제 콜백이 전부 같은 함수를 읽으므로, 여기서 따로
+     판단하면 어느 날 둘이 갈린다 */
+  const app = appDomain();
+  ok("앱 주소가 밖에서 열리는 https 다", app.ok,
+    app.ok ? app.url : app.reason);
 
   /* 결제 콜백이 localhost 로 적혀 있지 않은가. 주문을 만드는 쪽이
      요청 호스트에서 가져오므로 코드에 박힌 것이 없어야 한다 */

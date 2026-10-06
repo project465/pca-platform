@@ -15,6 +15,7 @@
  *   DOMAINS_VERIFY_TIMEOUT=8000 npx tsx scripts/domains-verify.ts
  */
 import { listSites } from "../src/lib/sites";
+import { appDomain, probeAppDomain, forgetAppProbe } from "../src/lib/app-domain";
 
 const TIMEOUT = Number(process.env.DOMAINS_VERIFY_TIMEOUT ?? 8000);
 
@@ -108,8 +109,34 @@ async function main() {
     console.log("이 자리는 프록시를 거칩니다. 바깥에서 오는 대답과 다를 수 "
       + "있으니, 배포한 뒤 운영 망에서 한 번 더 돌립니다.");
   }
+  /**
+   * **앱 도메인을 먼저 본다.**
+   *
+   * `site_configs` 에 있는 것은 소개 사이트 도메인이고, 손님이 가입하고
+   * 결제하고 응시하는 자리는 `PLATFORM_URL` 이 가리키는 한 곳이다. 그
+   * 주소가 안 열리면 소개 도메인이 전부 초록이어도 아무도 못 산다.
+   */
+  const app = appDomain();
+  const appChecks: Probe["checks"] = [];
+  if (!app.ok) {
+    appChecks.push({ name: "PLATFORM_URL 이 밖에서 열리는 https 다", ok: false, detail: app.reason });
+  } else {
+    forgetAppProbe();
+    const pr = await probeAppDomain(TIMEOUT);
+    appChecks.push({ name: "PLATFORM_URL 이 밖에서 열리는 https 다", ok: true, detail: app.url });
+    appChecks.push({
+      name: "DNS · HTTPS · 인증서 · /api/health 200",
+      ok: pr.ok, detail: pr.detail,
+    });
+  }
+  const out: Probe[] = [{
+    domain: app.ok ? `${app.host} (앱)` : "PLATFORM_URL (앱)",
+    canonical: app.ok ? app.url : null,
+    ownership: "n/a",
+    checks: appChecks,
+  }];
+
   const live = sites.filter((s) => s.active);
-  const out: Probe[] = [];
   for (const s of live) {
     out.push(await probe(s.domain, s.canonical_url, s.ownership));
   }

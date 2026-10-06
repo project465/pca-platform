@@ -24,6 +24,7 @@ import { marketReadiness } from "./payments";
 import { mailReady } from "./outbox";
 import { supportConfig } from "./support";
 import { businessInfo } from "./business";
+import { appDomain, probeAppDomain } from "./app-domain";
 import { localizationReport } from "./localization";
 import { tiersDistinct } from "./tiers";
 import { get } from "./settings";
@@ -208,8 +209,11 @@ function databaseRow(): LaunchRow {
 }
 
 export async function launchReport(): Promise<LaunchReport> {
-  const sites = await query<{ site_id: string; domain: string; payment_market: string }>(
-    `SELECT site_id, domain, payment_market FROM site_configs WHERE active`,
+  const sites = await query<{
+    site_id: string; domain: string; payment_market: string; ownership: string;
+  }>(
+    `SELECT site_id, domain, payment_market, ownership
+       FROM site_configs WHERE active`,
   ).catch(() => []);
 
   const products = await query<{
@@ -250,6 +254,11 @@ export async function launchReport(): Promise<LaunchReport> {
   const mail = mailReady();
   const mailFrom = (process.env.MAIL_FROM ?? "").trim();
 
+  /* **앱 주소를 한 번만 두드린다.** 시장이 둘이어도 앱은 하나다
+     (설계 원칙 5). 시장마다 두드리면 같은 주소에 두 번 나간다 */
+  const app = appDomain();
+  const appProbe = await probeAppDomain();
+
   const markets = (["KR", "GLOBAL"] as const).map((market): MarketLaunch => {
     const site = sites.find((s) => s.payment_market === market) ?? null;
     const mine = products.filter((p) => p.market === market);
@@ -266,12 +275,54 @@ export async function launchReport(): Promise<LaunchReport> {
     rows.push(row("market", "DOMAIN", "시장", "READY",
       market === "KR" ? "한국 B2C 를 먼저 켭니다." : "글로벌 영어는 한국 다음입니다."));
 
-    rows.push(site
-      ? row("domain", "DOMAIN", "도메인", "BLOCKED",
-        `${site.domain} 를 아직 사지 않았습니다. HTTPS·정규 주소·리다이렉트는 ` +
-        `도메인이 생긴 뒤에 확인합니다.`, "도메인 구매")
-      : row("domain", "DOMAIN", "도메인", "BLOCKED",
-        `${market} 시장의 사이트 설정이 없습니다.`, "운영 담당"));
+    /**
+     * **앱 도메인이 런칭을 막는 자리다.**
+     *
+     * 전에는 `site_configs` 의 소개 사이트 도메인을 앱 도메인으로 보고
+     * 무조건 BLOCKED 를 적었다. 실제 구조는 다르다: 손님이 가입하고
+     * 결제하고 응시하는 자리는 `app.careermatri.com` 하나이고, KR 과
+     * GLOBAL 은 호스트로 갈리지 않고 `market`·`locale` 로 갈린다(설계 원칙 5).
+     * 그래서 **한국 소개 도메인을 안 샀다는 이유로 한국 판매가 막히면
+     * 안 된다.**
+     *
+     * 보는 값은 `PLATFORM_URL` 하나다. 메일 링크·결제 콜백·결과지 주소가
+     * 이미 그 값을 쓰므로, 여기가 다른 값을 보면 둘 중 하나가 거짓말을
+     * 한다(설계 원칙 10).
+     *
+     * **못 열어 봤다고 막지 않는다.** 제 주소를 제가 두드리는 것이라
+     * 사내망이나 프록시에서 막히는 일이 있고, 그것은 밖에서 안 열린다는
+     * 뜻이 아니다. 설정이 틀린 것만 BLOCKED 고, 두드려서 모르면
+     * WARNING 이다.
+     */
+    rows.push(!app.ok
+      ? row("domain", "DOMAIN", "앱 도메인", "BLOCKED",
+        `${app.reason} 손님이 가입하고 결제하는 자리이고, 메일 링크와 결제 ` +
+        `콜백도 이 주소로 돌아옵니다.`, "운영 담당")
+      : appProbe.ok === true
+        ? row("domain", "DOMAIN", "앱 도메인", "READY", appProbe.detail)
+        : row("domain", "DOMAIN", "앱 도메인",
+          appProbe.ok === null ? "WARNING" : "BLOCKED",
+          `${app.url} · ${appProbe.detail}`,
+          appProbe.ok === null ? null : "운영 담당"));
+
+    /**
+     * 소개 사이트 도메인은 **앱의 런타임 조건이 아니다.**
+     *
+     * 영업과 검색에 쓰는 자리라 없으면 아쉽지만, 없다고 손님이 못 사는
+     * 것은 아니다. 한국 소개 도메인(`careermatri.co.kr`)은 살 수도 있고
+     * 안 살 수도 있다. **WARNING 위로 올리지 않는다.**
+     */
+    rows.push(!site
+      ? row("site", "DOMAIN", "소개 사이트 도메인", "WARNING",
+        `${market} 시장의 사이트 설정이 없습니다. 앱은 ` +
+        `${app.ok ? app.url : "PLATFORM_URL"} 로 돕니다.`)
+      : site.ownership === "confirmed"
+        ? row("site", "DOMAIN", "소개 사이트 도메인", "READY",
+          `${site.domain} 의 소유가 확인됐습니다.`)
+        : row("site", "DOMAIN", "소개 사이트 도메인", "WARNING",
+          `${site.domain} 는 아직 우리 것이 아닙니다. 소개와 검색에 쓰는 ` +
+          `자리이고 앱은 ${app.ok ? app.url : "PLATFORM_URL"} 로 돕니다. ` +
+          `판매를 막지 않습니다.`));
 
     rows.push(approved.length
       ? row("price", "PRICE", "가격", "READY", `${approved.length}개 등급의 값이 승인됐습니다.`)
@@ -292,16 +343,28 @@ export async function launchReport(): Promise<LaunchReport> {
         : row("payment", "PAYMENT", "결제", "BLOCKED", pay.blocker ?? "결제를 받을 수 없습니다.",
           "결제 대행사·심사"));
 
-    /* 보내는 주소가 우리 도메인인가(규격 §14). 다른 도메인에서 나가면
-       스팸으로 떨어지고, 떨어진 메일은 아무도 못 센다 */
-    const fromDomain = mailFrom.split("@")[1] ?? "";
-    const siteDomain = site?.domain ?? "";
+    /**
+     * 보내는 주소가 우리 도메인인가(규격 §14). 다른 도메인에서 나가면
+     * 스팸으로 떨어지고, 떨어진 메일은 아무도 못 센다.
+     *
+     * **우리 도메인이 둘이다**: 앱이 선 자리(`app.careermatri.com`)와
+     * 소개 사이트(`careermatri.com`). 메일은 보통 브랜드 도메인에서
+     * 나가므로 둘 중 어느 쪽에 걸려도 우리 것으로 본다. 전에는 소개
+     * 사이트 도메인만 보고 있었고, 그러면 한국 시장에서
+     * `@careermatri.com` 으로 나가는 메일이 남의 도메인으로 읽혔다.
+     */
+    const fromDomain = (mailFrom.split("@")[1] ?? "").toLowerCase();
+    const ours = [site?.domain, app.ok ? app.host : null]
+      .filter((d): d is string => Boolean(d))
+      .map((d) => d.toLowerCase());
+    const fromOurs = fromDomain
+      && ours.some((d) => d === fromDomain || d.endsWith(`.${fromDomain}`));
     rows.push(!mail
       ? row("email", "EMAIL", "거래 메일", "BLOCKED",
         "MAIL_HOST · MAIL_FROM 이 비어 있어 한 통도 나가지 않습니다.", "운영 담당")
-      : fromDomain && siteDomain && !siteDomain.endsWith(fromDomain)
+      : fromDomain && ours.length && !fromOurs
         ? row("email", "EMAIL", "거래 메일", "WARNING",
-          `보내는 주소가 ${mailFrom} 인데 사이트는 ${siteDomain} 입니다. ` +
+          `보내는 주소가 ${mailFrom} 인데 우리 도메인은 ${ours.join(" · ")} 입니다. ` +
           `다른 도메인에서 나가면 스팸으로 떨어집니다.`)
         : row("email", "EMAIL", "거래 메일", "READY", `${mailFrom} 로 나갑니다.`));
 

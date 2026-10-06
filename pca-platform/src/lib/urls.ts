@@ -13,6 +13,7 @@
  * 그대로 써도 된다. 그쪽은 **지금 보고 있는 창**에서 끝난다.
  */
 import { canonicalFor } from "./sites";
+import { appDomain } from "./app-domain";
 
 /** 비었거나 localhost·staging 이면 믿지 않는다 */
 function usable(url: string | null | undefined): string | null {
@@ -45,8 +46,11 @@ export async function publicBase(market: "KR" | "GLOBAL" = "KR"): Promise<string
    * `PLATFORM_URL` 이 비어 있을 때만 시장의 정규 주소로 되돌아간다.
    * 소개 사이트와 플랫폼이 한 주소에 있던 때의 설정을 위해 남겨 둔다.
    */
-  const platform = usable(process.env.PLATFORM_URL);
-  if (platform) return platform;
+  /* **앱 주소를 읽는 자리가 하나다**(`app-domain.ts`). 런칭 준비 화면도
+     같은 함수를 보므로, 화면이 초록인데 메일 링크가 빈 도메인으로 가는
+     일이 생기지 않는다 */
+  const app = appDomain();
+  if (app.ok) return app.url;
   return usable(await canonicalFor(market).catch(() => null));
 }
 
