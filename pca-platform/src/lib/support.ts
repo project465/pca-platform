@@ -14,6 +14,7 @@
  * 답을 기다린다. 없으면 없다고 화면에 적는 쪽이 낫다.
  */
 import { query } from "./db";
+import { get } from "./settings";
 
 export type SupportConfig = {
   email: string | null;
@@ -23,13 +24,28 @@ export type SupportConfig = {
   blocker: string | null;
 };
 
-export function supportConfig(): SupportConfig {
-  const email = (process.env.SUPPORT_EMAIL ?? "").trim() || null;
-  const hours = (process.env.SUPPORT_HOURS ?? "").trim() || null;
+/**
+ * 지원 주소와 응대 시간.
+ *
+ * **읽는 자리를 `settings.get` 으로 옮겼다.** 전에는 환경변수만 봤는데,
+ * `/admin/business` 는 그 두 값을 표에 적고 `/admin/launch` 의 `SUPPORT`
+ * 줄은 고치러 가는 단추를 **그 화면으로** 보낸다. 그래서 시키는 대로
+ * 넣어도 블로커가 안 풀리고, 상품 쪽은 계속 '지원 메일 주소가 아직
+ * 설정되지 않았습니다' 를 적었다. **화면이 가리키는 자리와 값을 읽는
+ * 자리가 다르면 둘 중 하나는 거짓말을 한다**(설계 원칙 10).
+ *
+ * 열쇠는 사업자 표시의 이메일 칸과 **같은 `email`** 이다. 지원 주소와
+ * 전자상거래법 표시의 이메일을 따로 받으면, 손님이 본 주소와 우리가
+ * 보는 주소가 갈린다.
+ */
+export async function supportConfig(): Promise<SupportConfig> {
+  const email = await get("email", "SUPPORT_EMAIL");
+  const hours = await get("support_hours", "SUPPORT_HOURS");
   if (!email) {
     return {
       email: null, hours, ready: false,
-      blocker: "SUPPORT_EMAIL 이 비어 있습니다. 주소를 지어내지 않았습니다.",
+      blocker: "지원 메일 주소가 비어 있습니다. 주소를 지어내지 않았습니다. "
+        + "`/admin/business` 에 넣거나 SUPPORT_EMAIL 로 주십시오.",
     };
   }
   return { email, hours, ready: true, blocker: null };

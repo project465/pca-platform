@@ -28,7 +28,7 @@ export async function publicCommerceGate(): Promise<PublicGate> {
   if (appEnv() !== "production") return { open: true, missing: [] };
 
   const biz = await businessInfo();
-  const sup = supportConfig();
+  const sup = await supportConfig();
   const missing = [...biz.missing];
   if (!sup.ready) missing.push("support_email");
   return missing.length === 0

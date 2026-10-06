@@ -41,7 +41,7 @@ export default async function SupportPage({
   const L = toLang2(await resolveLang(sp.lang));
   const S = SUPPORT;
 
-  const sup = supportConfig();
+  const sup = await supportConfig();
   const refs = await myReferences(user.id);
   const verified = await isVerified(user.id);
   const mine = await listRequests({ userId: user.id, limit: 10 });

@@ -245,7 +245,7 @@ export async function launchReport(): Promise<LaunchReport> {
 
   const loc = localizationReport();
   const biz = await businessInfo();
-  const sup = supportConfig();
+  const sup = await supportConfig();
   const backup = await backupRow();
   const mail = mailReady();
   const mailFrom = (process.env.MAIL_FROM ?? "").trim();

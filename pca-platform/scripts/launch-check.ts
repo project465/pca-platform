@@ -204,7 +204,7 @@ async function main() {
   }
 
   /* ── 7. 지원 경로 ───────────────────────────────────────────────── */
-  const sup = supportConfig();
+  const sup = await supportConfig();
   if (!sup.ready) {
     blocked("SUPPORT", "지원 메일",
       "SUPPORT_EMAIL 이 비어 있습니다. 주소를 지어내지 않았습니다.",

@@ -52,7 +52,7 @@ export default async function ProductPage({
   const list = await catalogFor(mk.market);
   const biz = await businessInfo();
   const license = await jobInfoLicense();
-  const sup = supportConfig();
+  const sup = await supportConfig();
   const P = PRODUCT;
   /* **링크가 시장을 떨어뜨리지 않게 들고 다닌다.** 쿠키가 있어도 주소에
      적어 두면, 누가 그 주소를 그대로 복사해 보내도 같은 값이 보인다 */
