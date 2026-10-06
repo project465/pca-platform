@@ -20,6 +20,7 @@ import path from "node:path";
 import { query, queryOne } from "@/lib/db";
 import { answersOf, attemptOf, type V2Attempt } from "./attempt";
 import { freezeForAttempt, frozenOf, type EvidencePayload } from "./evidence";
+import { stagingGate } from "@/lib/env";
 import { engineVersions } from "./versions";
 
 /** PDF 를 두는 곳. 웹에서 직접 열리지 않고 로그인한 본인에게만 흘러나간다 */
@@ -224,7 +225,17 @@ async function drawInBrowser(opts: {
     ...(bin ? { executablePath: bin } : {}),
   });
   try {
-    const ctx = await browser.newContext({ viewport: { width: 1180, height: 1000 } });
+    /* **공개 전 자물쇠를 우리 자신도 지나야 한다.** 결과지를 그리는
+       브라우저는 이 플랫폼의 `/pca/v2.html` 을 제 주소로 열러 가는데,
+       `APP_ENV=staging` 이면 미들웨어가 그 요청도 401 로 돌려보낸다.
+       그래서 staging 에서만 결과 생성이 `ERR_INVALID_AUTH_CREDENTIALS`
+       로 끊겼다(운영에는 자물쇠가 없어 드러나지 않는 탈이다). 열쇠를
+       만들어 내지 않고 **서버가 이미 들고 있는 것**을 그대로 쓴다. */
+    const gate = stagingGate();
+    const ctx = await browser.newContext({
+      viewport: { width: 1180, height: 1000 },
+      ...(gate ? { httpCredentials: { username: gate.user, password: gate.pass } } : {}),
+    });
     const page = await ctx.newPage();
     /* **언어를 주소로 넘긴다.** 사전은 엔진 파일들보다 먼저 올라오고,
        올라오면서 주소의 `lang` 을 읽는다. 다 올라온 뒤에 바꾸면 그 사이에

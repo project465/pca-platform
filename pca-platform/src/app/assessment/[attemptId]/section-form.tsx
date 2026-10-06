@@ -157,8 +157,11 @@ export default function SectionForm({
     const ok = await flush();
     setBusy(false);
     if (!ok) return;                       // 저장이 안 됐으면 넘어가지 않는다
+    /* **`router.refresh()` 를 같이 부르지 않는다.** 주소를 옮기는 중에
+       지금 쪽을 다시 받아 오면 둘이 경쟁해서 옮기던 것이 취소된다.
+       실제로 그래서 첫 묶음에서 더 못 나갔다. 주소가 바뀌면 서버가
+       다시 그리므로 띠의 수도 그때 같이 새로 온다 */
     router.push(`/assessment/${attemptId}?s=${to}`);
-    router.refresh();                      // 띠의 수를 서버에서 다시 받는다
   };
 
   /** 이 묶음을 화면이 다 들고 있는가 */

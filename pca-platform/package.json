@@ -83,7 +83,8 @@
     "db:phase2_3": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 --single-transaction -f db/schema_phase2_3.sql",
     "backup:restore": "bash scripts/backup-restore.sh",
     "mail:check": "tsx scripts/mail-check.ts",
-    "whats:live": "node scripts/whats-live.mjs"
+    "whats:live": "node scripts/whats-live.mjs",
+    "josa:check": "node scripts/josa-check.mjs"
   },
   "dependencies": {
     "@types/nodemailer": "^8.0.1",

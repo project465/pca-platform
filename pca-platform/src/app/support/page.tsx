@@ -7,6 +7,7 @@ import { supportConfig, myReferences } from "@/lib/support";
 import { isVerified } from "@/lib/verify-email";
 import { listRequests, REASONS, REASON_LABEL } from "@/lib/refund-requests";
 import { money } from "@/lib/market";
+import { amountLabel, orderStatusLabel, productLabel } from "@/lib/labels";
 import { Empty, Pill } from "@/components/sf/parts";
 import LangSelect from "@/components/sf/lang-select";
 import { ResendVerify, RefundForm } from "./support-forms";
@@ -98,12 +99,14 @@ export default async function SupportPage({
                   {refs.orders.map((o) => (
                     <tr key={o.orderNo}>
                       <td className="sf-strong">{o.orderNo}</td>
-                      <td>{o.productCode}</td>
-                      <td className="num">{money(o.amount, o.currency, L) ?? "0"}</td>
+                      {/* **안쪽 이름을 손님에게 보여 주지 않는다.** 원본
+                          코드와 상태는 운영 화면에 그대로 남는다 */}
+                      <td>{productLabel(o.productCode, L)}</td>
+                      <td className="num">{amountLabel(o.amount, o.currency, L)}</td>
                       <td>
                         <Pill tone={o.status === "paid" ? "ok"
                           : o.status === "refunded" ? "not" : "part"}>
-                          {o.status}
+                          {orderStatusLabel(o.status, o.amount, L)}
                         </Pill>
                         {o.refundRequested ? ` · ${S.refundOpen[L]}` : ""}
                       </td>
@@ -191,7 +194,8 @@ export default async function SupportPage({
             <RefundForm
               orders={refundable.map((o) => ({
                 orderNo: o.orderNo,
-                label: `${o.orderNo} · ${o.productCode}`,
+                /* 고르는 자리에도 안쪽 코드를 적지 않는다 */
+                label: `${o.orderNo} · ${productLabel(o.productCode, L)}`,
               }))}
               reasons={REASONS.map((c) => ({ code: c, label: REASON_LABEL[c][L] }))}
               labels={{

@@ -21,6 +21,10 @@ window.PCAValue = (function () {
   /* 결과지의 두 언어. **글자만 갈리고 판단은 갈리지 않는다**:
      한국어면 받은 것을 그대로 돌려주므로 한국어 쪽은 손대지 않은 것과 같다 */
   var T = window.PCAI18N ? window.PCAI18N.T : function (s) { return s; };
+  /* 조사는 앞말이 정한다. 영어에서는 빈 글자가 돌아온다 */
+  var JO = function (w, k) {
+    return window.PCAI18N ? window.PCAI18N.josa(w, k) : (' ' + k);
+  };
 
   var K = (window.PCA_KNOWLEDGE || {}).domains || [];
   var TOOLS = window.PCA_TOOLS || { categories: [] };
@@ -191,7 +195,7 @@ window.PCAValue = (function () {
       if (s(t.exp_id) || !nz(t.name)) return;
       out.push({
         id: 'tool' + i, title: t.name, kind: 'tool',
-        did: nz(t.why) ? t.why : (t.name + T(' 를 써 봤습니다')),
+        did: nz(t.why) ? t.why : (t.name + JO(t.name, '를') + T(' 써 봤습니다')),
         decided: t.decision,
         outputs: arr([t.output]),
         validations: arr([t.validation]),
@@ -542,7 +546,7 @@ window.PCAValue = (function () {
       if (nz(n)) steps[3].by.push(n);
     });
     (ev.tools || []).forEach(function (t) {
-      if (t.level === 'taught' && nz(t.name)) steps[3].by.push(t.name + T(' 를 남에게 설명해 봄'));
+      if (t.level === 'taught' && nz(t.name)) steps[3].by.push(t.name + JO(t.name, '를') + T(' 남에게 설명해 봄'));
     });
     (exps || []).forEach(function (x) {
       if (x.kind === 'research' && nz(x.changed)) steps[3].by.push(x.title + T(': 계획을 고쳐 끌고 감'));

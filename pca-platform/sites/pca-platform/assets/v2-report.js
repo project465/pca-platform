@@ -30,6 +30,10 @@ window.PCAV2Report = (function () {
   /* 결과지의 두 언어. **글자만 갈리고 판단은 갈리지 않는다**:
      한국어면 받은 것을 그대로 돌려주므로 한국어 쪽은 손대지 않은 것과 같다 */
   var T = window.PCAI18N ? window.PCAI18N.T : function (s) { return s; };
+  /* 조사는 앞말이 정한다. 영어에서는 빈 글자가 돌아온다 */
+  var JO = function (w, k) {
+    return window.PCAI18N ? window.PCAI18N.josa(w, k) : (' ' + k);
+  };
 
   var DEC = window.PCAV2Decision;
   var VR = window.PCAV2ValueReport;
@@ -112,7 +116,7 @@ window.PCAV2Report = (function () {
       if (out.length >= 3) return;
       var i = r.interest && r.interest.level, e = r.exposure && r.exposure.level;
       if (i === 'high' && e === 'low') {
-        out.push(esc(r.name) + T(' 는 해보고 싶은 쪽으로 답하셨는데 해본 경험이 ') +
+        out.push(esc(r.name) + JO(r.name, '는') + T(' 해보고 싶은 쪽으로 답하셨는데 해본 경험이 ') +
           T('아직 확인되지 않습니다.'));
       }
     });
@@ -120,9 +124,9 @@ window.PCAV2Report = (function () {
       if (out.length >= 3) return;
       var c = cv[r.career_family_id];
       if (c && c.summary.core.confirmed > 0 && c.priority_gaps.length) {
-        out.push(esc(r.name) + T(' 는 핵심 ') + c.summary.core.total + T('개 가운데 ') +
+        out.push(esc(r.name) + JO(r.name, '는') + T(' 핵심 ') + c.summary.core.total + T('개 가운데 ') +
           c.summary.core.confirmed + T('개가 확인되고, ') +
-          esc(c.priority_gaps[0].label) + T(' 가 비어 있습니다.'));
+          esc(c.priority_gaps[0].label) + JO(c.priority_gaps[0].label, '가') + T(' 비어 있습니다.'));
       }
     });
     if (out.length < 3 && J.performance_evidence && J.performance_evidence.length) {
@@ -135,8 +139,8 @@ window.PCAV2Report = (function () {
       }
     }
     if (out.length < 2 && rows[1]) {
-      out.push(esc(rows[0].name) + T(' 와 ') + esc(rows[1].name) +
-        T(' 가 가까이 있어 둘을 견주어 보실 단계입니다.'));
+      out.push(esc(rows[0].name) + JO(rows[0].name, '와') + ' ' + esc(rows[1].name) +
+        JO(rows[1].name, '가') + T(' 가까이 있어 둘을 견주어 보실 단계입니다.'));
     }
     return out.slice(0, 3);
   }
@@ -152,9 +156,20 @@ window.PCAV2Report = (function () {
   function summary(J) {
     var g = biggestGap(J);
     return {
+      /**
+       * **순위가 아니다.** `decision_table` 은 관심이 높은 쪽을 앞에 둔
+       * 비교표이고(`v2-decision.js` 의 `table`), 그 정렬은 관심 점수
+       * 하나만 본다. BASIC 은 직무군마다 문항이 하나씩이라 열여섯이 같은
+       * 점수로 묶이는 일이 흔한데, 그때 앞에 오는 것은 문항 은행에 적힌
+       * 차례일 뿐이어서 그 자리에 `1` 을 찍으면 동률이 1위로 읽힌다.
+       * 그래서 번호 대신 읽는 사람이 할 일을 적고, 판정은
+       * `decision_status` 가 들고 있게 두었다.
+       */
       top_roles: J.decision_table.slice(0, 3).map(function (r, i) {
         return {
-          rank: i + 1,
+          order: i + 1,
+          slot: i === 0 ? T('먼저 확인할 직무')
+            : i === 1 ? T('함께 비교할 직무') : T('그다음으로 볼 직무'),
           career_family_id: r.career_family_id,
           name: r.name,
           interest: TX(LV, r.interest && r.interest.level) || null,
@@ -171,7 +186,8 @@ window.PCAV2Report = (function () {
         family: g.family, why: g.gap.description } : null,
       next_action: nextOneThing(J),
       confidence_note: T('여기 나오는 값은 합격 가능성이나 실력을 잰 값이 아닙니다. ') +
-        T('지금 적어 주신 응답과 경험에서 확인되는 것만 적었습니다.')
+        T('지금 적어 주신 응답과 경험에서 확인되는 것만 적었습니다. ') +
+        T('아래 세 직무는 등수가 아니라 먼저 살펴볼 차례입니다. 차이가 작으면 차례도 쉽게 바뀝니다.')
     };
   }
 
@@ -182,7 +198,7 @@ window.PCAV2Report = (function () {
       '<div class="dstop">' +
       S.top_roles.map(function (r, i) {
         return '<div class="dscard">' +
-          '<div class="dsrank">' + r.rank + '</div>' +
+          '<div class="dsrank">' + esc(r.slot) + '</div>' +
           '<h3>' + esc(r.name) + '</h3>' +
           '<div class="dsmeta">' +
           T('<span>관심 ') + esc(r.interest || '—') + '</span>' +
@@ -330,7 +346,7 @@ window.PCAV2Report = (function () {
     }
 
     var act = cv && cv.priority_gaps.length
-      ? esc(cv.priority_gaps[0].label) + T(' 를 남기는 일을 한 건 하십시오.')
+      ? esc(cv.priority_gaps[0].label) + JO(cv.priority_gaps[0].label, '를') + T(' 남기는 일을 한 건 하십시오.')
       : (vp ? esc((vp.next_validation_actions || [])[0] || '') : '');
 
     return '<article class="rdeep">' +
@@ -430,8 +446,10 @@ window.PCAV2Report = (function () {
     var cards = list.slice(0, 3).map(function (x) {
       var line = [];
       if (x.decided) line.push(clean(x.decided));
-      if ((x.made || []).length) line.push(SN.list(x.made).slice(0, 2).join(' · ') + T(' 를 남김'));
-      if ((x.checked_against || []).length) line.push(SN.list(x.checked_against)[0] + T(' 와 견줌'));
+      if ((x.made || []).length) { var md = SN.list(x.made).slice(0, 2).join(' · ');
+        line.push(md + JO(md, '를') + T(' 남김')); }
+      if ((x.checked_against || []).length) { var ca = SN.list(x.checked_against)[0];
+        line.push(ca + JO(ca, '와') + T(' 견줌')); }
       line = line.filter(Boolean);
       if (!line.length) return '';
       return '<div class="card contentcard"><div class="eyebrow">' +
@@ -593,9 +611,18 @@ window.PCAV2Report = (function () {
       T('<tr><th>만든 때</th><td>') + new Date().toISOString().slice(0, 10) + '</td></tr>' +
       '</tbody></table>'));
 
-    return '<div class="appendix" id="rpapx">' +
-      T('<div class="apmark">부록</div>') +
-      T('<p class="note">본문에서 뺀 것들입니다. 되짚어 보실 때 쓰십시오.</p>') +
+    /* **본문이 끝났다는 것을 종이에서 보이게 한다.** 부록이 종이 한 장을
+       새로 받아도 앞 쪽과 글자 크기가 같으면 읽는 사람은 본문이 이어지는
+       줄 알고 끝까지 읽으므로, 쪽수를 깎는 대신 위계를 세워 본문이
+       여기까지라고 적고 부록은 한 단 작게 간다 */
+    return '<div class="apend">' +
+      T('<p>본문은 여기까지이고, 아래는 되짚어 보실 때 쓰는 부록입니다.</p>') +
+      '</div>' +
+      '<div class="appendix" id="rpapx">' +
+      T('<div class="apmark">부록 · 되짚어 보기</div>') +
+      T('<h2 class="aptitle">본문에서 뺀 자료</h2>') +
+      T('<p class="note">열여섯 직무 전부와 문항 되짚기, 증거 범위, 만든 방법이 들어 있고, ') +
+      T('본문의 판정은 이 자료에서 나왔으므로 여기서 바뀌는 것은 없습니다.</p>') +
       /* 화면에서는 접어 둔다. **종이에서는 늘 펼친다**: 인쇄본에서 접힌
          자리는 사라진 자리와 같다. `<details>` 를 쓰지 않은 이유가 이것이다
          (닫힌 `<details>` 는 인쇄 규칙으로 못 펼친다) */

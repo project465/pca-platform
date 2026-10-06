@@ -33,15 +33,29 @@ export function isLang(v: string | undefined): v is Lang {
  * 다 보여줘야 하는 것은 아니다. 영문 시장에 한국어 탭이 떠 있으면 파는 쪽이
  * 아니라 만든 쪽 사정을 보여주는 것이 된다.
  *
- * `NEXT_PUBLIC_LANGS=en` 이면 영어만, 비워 두면 예전처럼 셋 다다.
+ * `NEXT_PUBLIC_LANGS=en` 이면 영어만, 비워 두면 파는 두 언어(ko·en)다.
  * 값을 안 채운 배포본의 동작이 바뀌면 한국 쪽이 조용히 달라진다.
  * 지원하지 않는 값이 섞여 들어오면 걸러내고, 전부 걸러지면 세 언어로 돌아간다.
  */
+/**
+ * **승인되지 않은 언어는 내놓지 않는다.**
+ *
+ * 문항과 문구가 세 언어로 들어 있다고 해서 셋을 다 파는 것은 아니다.
+ * 튀르키예어는 현지 검수를 거치지 않았고 결과지 사전도 ko·en 두 벌뿐이라,
+ * 전환기에 `Türkçe` 가 떠 있으면 고른 사람은 **번역이 끝난 제품**을
+ * 기대하고 들어와 한국어 결과지를 받는다. 기본값을 둘로 좁혔다.
+ *
+ * 켜는 길은 그대로 남는다: `NEXT_PUBLIC_LANGS=ko,en,tr`. 지어낸 번역을
+ * 지우지 않고 **내놓는 자리만** 닫는 것이라, 검수가 끝나는 날 한 줄로
+ * 되돌아온다.
+ */
+export const SOLD_LANGS: readonly Lang[] = ["ko", "en"];
+
 export const OFFERED_LANGS: readonly Lang[] = (() => {
   const raw = process.env.NEXT_PUBLIC_LANGS;
-  if (!raw) return LANGS;
+  if (!raw) return SOLD_LANGS;
   const picked = raw.split(",").map((v) => v.trim()).filter(isLang);
-  return picked.length ? (picked as Lang[]) : LANGS;
+  return picked.length ? (picked as Lang[]) : SOLD_LANGS;
 })();
 
 /** 골라 둔 것이 없을 때 쓸 언어. 내놓는 언어 중 첫 번째다. */

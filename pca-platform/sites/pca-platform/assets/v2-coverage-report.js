@@ -19,6 +19,10 @@ window.PCAV2CoverageReport = (function () {
   /* 결과지의 두 언어. **글자만 갈리고 판단은 갈리지 않는다**:
      한국어면 받은 것을 그대로 돌려주므로 한국어 쪽은 손대지 않은 것과 같다 */
   var T = window.PCAI18N ? window.PCAI18N.T : function (s) { return s; };
+  /* 조사는 앞말이 정한다. 영어에서는 빈 글자가 돌아온다 */
+  var JO = function (w, k) {
+    return window.PCAI18N ? window.PCAI18N.josa(w, k) : (' ' + k);
+  };
 
   function esc(s) {
     return String(s === null || s === undefined ? '' : s)
@@ -166,12 +170,14 @@ window.PCAV2CoverageReport = (function () {
     var vp = (J.value_path && J.value_path.paths) ? J.value_path.paths[fid] : null;
     if (!cv || !cv.priority_gaps.length) return '';
     var g = cv.priority_gaps[0];
+    /* 조사는 앞말이 정하므로 앞말을 먼저 굳힌다 */
+    var cmp = (vp && vp.performance_criteria)
+      ? vp.performance_criteria.slice(0, 2).join(' · ') : T('기준');
     var steps = [
       T('작게 잡을 수 있는 ') + esc(cv.career_family_name) + T(' 쪽 문제를 하나 고릅니다'),
       T('조건과 가정을 먼저 적어 둡니다'),
       esc(g.label) + T(' 에 해당하는 것을 직접 합니다'),
-      (vp && vp.performance_criteria ? vp.performance_criteria.slice(0, 2).join(' · ') : T('기준')) +
-        T(' 와 견주어 맞는지 확인합니다'),
+      cmp + JO(cmp, '와') + T(' 견주어 맞는지 확인합니다'),
       T('차이가 났다면 왜 났는지 적고 고칩니다'),
       T('두 쪽짜리 기록으로 남깁니다')
     ];

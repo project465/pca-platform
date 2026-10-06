@@ -846,6 +846,35 @@
 .assave.is-saved { color: var(--sf-ok) }
 .assave.is-retry { color: var(--sf-warn) }
 
+/* 두 가지가 다르다는 것을 적는 한 줄. 경고가 아니라 설명이라 금색이 아니다 */
+.sf-note {
+  margin: 0 0 20px; padding: 12px 16px;
+  border: 1px solid var(--sf-line); border-left: 3px solid var(--sf-accent);
+  border-radius: var(--r-md); background: var(--sf-surface-2);
+  font-size: 13.5px; line-height: 1.6; color: var(--sf-ink-2);
+}
+
+/* ── 결과지 창 ──────────────────────────────────────────────────────
+ *
+ * **규칙이 없으면 300px 이다.** `.rpframe` 에 CSS 가 한 줄도 없어서
+ * iframe 이 HTML 기본 크기로 섰다. 데스크톱에서 결과지가 왼쪽 좁은 띠에
+ * 몰리고 오른쪽이 비었던 까닭이다(`.btn` 과 `--sf-r` 에 이어 세 번째다:
+ * **쓰는 이름이 CSS 에 있는지 보지 않으면 조용히 기본값으로 선다**).
+ *
+ * 안쪽 문서가 이미 반응형이다(`report-host.html` 이 980px 로 가운데
+ * 정렬한다). 그래서 여기서 할 일은 **폭을 내주는 것**뿐이고, 줄이거나
+ * 늘려 보이게 하지 않는다. transform 으로 축소하면 PDF 를 사진으로
+ * 보여 주는 꼴이 되어 글자가 흐려지고 손가락으로 집지도 못한다. */
+.rpframe {
+  display: block; width: 100%; max-width: 100%;
+  border: 1px solid var(--sf-line); border-radius: var(--r-lg);
+  background: #fff;
+}
+.rpmake {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  margin-top: 16px;
+}
+
 /* 끝낸 뒤 */
 .asdone { max-width: 620px; margin: 0 auto; padding: 72px 20px }
 
@@ -1412,7 +1441,14 @@
 .stgmark b { font-weight: 700 }
 .stgmark span { color: var(--sf-ink-2) }
 body:has(.stgmark) { padding-bottom: 44px }
+/* **공개 전 띠가 응시의 단추를 덮지 않는다.** 둘 다 바닥에 붙는 고정
+   요소이고 띠가 `z-index: 90`, 응시의 단추 띠가 `5` 라서 띠가 위에
+   깔렸다. 눈으로는 단추가 보이는데 누르면 띠가 받아 갔고, 그래서
+   staging 에서만 묶음을 넘어가지 못했다. **운영에는 띠가 없어 안
+   드러나는 탈이다.** 띠가 있는 동안 단추 띠를 그만큼 올린다 */
+body:has(.stgmark) .asnav { bottom: 44px }
 @media (max-width: 620px) {
   .stgmark { font-size: 11.5px; padding: 8px 12px; gap: 4px }
   body:has(.stgmark) { padding-bottom: 56px }
+  body:has(.stgmark) .asnav { bottom: 56px }
 }

@@ -7,10 +7,21 @@
  *
  * 메뉴에서 빼는 것은 권한이 아니다. 막는 일은 각 쪽의 `requireRole()` 이
  * 한다. 여기 없는 주소도 손으로 치면 서버가 다시 본다.
+ *
+ * **손님 메뉴에서는 `soon` 을 쓰지 않는다.** 운영자는 무엇이 아직 안
+ * 열렸는지 알고 있어야 하지만, 돈을 낸 사람에게 흐린 줄은 "덜 만든
+ * 제품" 으로 읽힌다. 눌러서 '아직 열려 있지 않습니다' 가 뜨면 더 그렇다.
+ * 그래서 개인 메뉴는 **켜질 때까지 줄 자체를 빼고**, 켜는 자리는
+ * `FEATURE_APPLY` 한 곳이다(Phase 3 Apply 가 나오는 날 `yes` 로 둔다).
+ * 쪽은 지우지 않는다: 주소로 들어오면 그대로 '아직 열려 있지 않습니다' 다.
  */
 import type { NavItem } from "./shell";
 
-export const NAV_INDIVIDUAL: NavItem[] = [
+/** Phase 3 Apply 가 켜졌는가. 비어 있으면 꺼져 있다 */
+export const applyOpen = (): boolean =>
+  (process.env.FEATURE_APPLY ?? "").trim().toLowerCase() === "yes";
+
+const INDIVIDUAL_ALL: NavItem[] = [
   { href: "/my", label: "navHome", icon: "home" },
   { href: "/my/assessments", label: "navAssessments", icon: "clipboard" },
   { href: "/my/results", label: "navResults", icon: "report" },
@@ -21,6 +32,10 @@ export const NAV_INDIVIDUAL: NavItem[] = [
      쓰는 화면이면 결제가 막힌 사람은 그 화면을 못 찾는다 */
   { href: "/support", label: "navSupport", icon: "log" },
 ];
+
+export const NAV_INDIVIDUAL: NavItem[] = INDIVIDUAL_ALL.filter(
+  (it) => it.href !== "/my/applications" || applyOpen(),
+);
 
 export const NAV_CAMPUS: NavItem[] = [
   { href: "/org", label: "navOverview", icon: "grid" },

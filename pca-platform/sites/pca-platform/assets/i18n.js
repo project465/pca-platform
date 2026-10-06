@@ -160,12 +160,71 @@ window.PCAI18N = (function () {
   function missing() { return Object.keys(miss); }
   function resetMissing() { miss = {}; }
 
+  /* ── 조사 ─────────────────────────────────────────────────────────
+   *
+   * **이름 뒤에 조사를 박아 두면 틀린다.** `name + ' 를 기준으로'` 는
+   * 받침이 있는 이름에서 `민간기업 를` 이 된다. 받침은 앞말이 정하므로
+   * 붙이는 자리에서 골라야 한다.
+   *
+   * 영어에는 조사가 없으므로 빈 글자를 돌려준다. 그래서 같은 코드가 두
+   * 언어에서 다 돈다.
+   *
+   * 라틴 글자와 숫자는 **읽는 소리**로 받침을 본다(PM → 피엠 → ㅁ).
+   * 표에 없는 글자는 받침이 없는 쪽으로 둔다: 모르면 덜 틀리는 쪽이다. */
+  var TAIL_ALPHA = {
+    l: true, m: true, n: true, r: true,
+    b: false, c: false, d: false, e: false, f: true, g: false, h: false,
+    i: false, j: false, k: false, o: false, p: false, q: false, s: false,
+    t: false, u: false, v: false, w: false, x: false, y: false, z: false,
+    a: false
+  };
+  var TAIL_DIGIT = { 0: true, 1: true, 3: true, 6: true, 7: true, 8: true,
+    2: false, 4: false, 5: false, 9: false };
+
+  /** 앞말에 받침이 있는가. 모르면 false */
+  function hasTail(word) {
+    var w = String(word == null ? '' : word).replace(/[\s)\]}”'"·.,]+$/, '');
+    if (!w) return false;
+    var ch = w.charAt(w.length - 1);
+    var code = w.charCodeAt(w.length - 1);
+    if (code >= 0xac00 && code <= 0xd7a3) return (code - 0xac00) % 28 !== 0;
+    if (/[0-9]/.test(ch)) return !!TAIL_DIGIT[ch];
+    if (/[A-Za-z]/.test(ch)) return !!TAIL_ALPHA[ch.toLowerCase()];
+    return false;
+  }
+
+  /**
+   * 앞말에 맞는 조사.
+   *
+   *   josa(name, '을')   을/를   josa(name, '과')  과/와
+   *   josa(name, '이')   이/가   josa(name, '은')  은/는
+   *   josa(name, '으로') 으로/로
+   */
+  var PAIR = {
+    '을': ['을', '를'], '를': ['을', '를'],
+    '과': ['과', '와'], '와': ['과', '와'],
+    '이': ['이', '가'], '가': ['이', '가'],
+    '은': ['은', '는'], '는': ['은', '는'],
+    '으로': ['으로', '로'], '로': ['으로', '로']
+  };
+  function josa(word, kind) {
+    if (getLang() === 'en') return '';
+    var pair = PAIR[kind];
+    if (!pair) return kind || '';
+    /* '으로' 만 ㄹ 받침을 예외로 둔다: 서울로, 결과물로 */
+    var w = String(word == null ? '' : word).replace(/[\s)\]}”'"·.,]+$/, '');
+    var last = w.charCodeAt(w.length - 1);
+    if (pair[0] === '으로' && last >= 0xac00 && last <= 0xd7a3
+        && (last - 0xac00) % 28 === 8) return '로';
+    return hasTail(w) ? pair[0] : pair[1];
+  }
+
   fromUrl();
 
   return {
     setLang: setLang, lang: getLang, fromUrl: fromUrl, T: T, deep: deep, family: family,
     itemText: itemText, optionText: optionText, scalePoints: scalePoints,
-    terms: terms, expand: expand,
+    terms: terms, expand: expand, josa: josa, hasTail: hasTail,
     missing: missing, resetMissing: resetMissing
   };
 })();

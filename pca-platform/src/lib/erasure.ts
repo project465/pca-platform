@@ -127,3 +127,77 @@ export async function anonymizeUser(
 export function erasurePlan(): { remove: { table: string; why: string }[]; keep: Record<string, string> } {
   return { remove: REMOVE, keep: KEEP };
 }
+
+/**
+ * 같은 일을 **손님의 말로** 적는다.
+ *
+ * 위의 `REMOVE`·`KEEP` 은 표 이름이라 지우는 코드가 읽는 값이고, 그것을
+ * 그대로 화면에 찍으면 탈퇴 직전의 사람이 `jd_match_scores` 를 읽는다.
+ * 읽을 수 없는 글자를 보여 주면서 돌이킬 수 없는 단추를 누르라고 하는
+ * 셈이다. **묶음은 사람이 무엇을 잃는가로 가른다.**
+ *
+ * 표가 늘면 여기도 늘려야 한다. 그래서 묶음마다 어느 표를 담았는지
+ * 적어 두고, `erasure:check` 가 빠진 표가 없는지 센다.
+ */
+export const ERASE_GROUPS: {
+  ko: string; en: string; detail: { ko: string; en: string }; tables: string[];
+}[] = [
+  {
+    ko: "계정 정보", en: "Account details",
+    detail: { ko: "이름 · 이메일 · 아이디 · 비밀번호", en: "Name, email, login id, password" },
+    tables: ["users"],
+  },
+  {
+    ko: "적어 주신 경험과 설정", en: "Your experience and settings",
+    detail: {
+      ko: "프로젝트 · 수업 · 도구 · 희망 지역과 산업 · 학교와 학년",
+      en: "Projects, courses, tools, preferred regions and industries, school and year",
+    },
+    tables: ["learner_evidence", "learner_competency_levels", "learner_preferences",
+      "learner_profiles", "pilot_feedback", "match_feedback"],
+  },
+  {
+    ko: "지원 준비 자료", en: "Application material",
+    detail: {
+      ko: "공고와 맞춰 본 기록 · 지원과 합격 이력",
+      en: "Job-match records, applications and outcomes",
+    },
+    tables: ["jd_match_scores", "outcome_records"],
+  },
+  {
+    ko: "소속", en: "Membership",
+    detail: { ko: "어느 학과·기관에 속해 있었는지", en: "Which department or institution you belonged to" },
+    tables: ["memberships"],
+  },
+  {
+    ko: "인증과 재설정 정보", en: "Sign-in and reset material",
+    detail: {
+      ko: "비밀번호 재설정 링크 · 주소 확인 링크",
+      en: "Password-reset links and address-verification links",
+    },
+    tables: ["password_reset_tokens", "email_verify_tokens"],
+  },
+];
+
+/** 남는 것도 같은 말로 적는다. 법이 요구하는 자리와 그 까닭까지다 */
+export const KEEP_GROUPS: {
+  ko: string; en: string; detail: { ko: string; en: string }; tables: string[];
+}[] = [
+  {
+    ko: "주문과 결제 기록", en: "Orders and payments",
+    detail: {
+      ko: `전자상거래법 제6조에 따라 ${ORDER_RETENTION_YEARS}년 보존합니다. 누가 샀는지는 지워지고 거래만 남습니다.`,
+      en: `Kept for ${ORDER_RETENTION_YEARS} years under Korean e-commerce law. Who bought is erased; the transaction remains.`,
+    },
+    tables: ["orders", "payments", "seats"],
+  },
+  {
+    ko: "사람과 이어지지 않는 응답과 점수", en: "Answers and scores, no longer linked to you",
+    detail: {
+      ko: "규준의 근거로 남습니다. 지우면 그 해 학과 집계가 뒤늦게 흔들립니다.",
+      en: "Kept as the basis for norms. Removing them would shift cohort statistics after the fact.",
+    },
+    tables: ["attempts", "responses", "area_scores", "indicator_scores",
+      "job_fit_scores", "attempt_quality"],
+  },
+];

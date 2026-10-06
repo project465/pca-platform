@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
-import { erasurePlan } from "@/lib/erasure";
+import { ERASE_GROUPS, KEEP_GROUPS } from "@/lib/erasure";
 import { t } from "@/lib/locale";
 import { resolveLang } from "@/lib/locale-server";
 import LangSwitch from "@/components/lang-switch";
@@ -16,7 +16,7 @@ export default async function AccountPage({
   const user = await requireUser();
   const { lang: q } = await searchParams;
   const lang = await resolveLang(q);
-  const plan = erasurePlan();
+  const en = lang === "en";
 
   return (
     <div className="shell">
@@ -35,30 +35,30 @@ export default async function AccountPage({
         <p className="page-sub">{t("erLead", lang)}</p>
         <p className="notice warn">{t("erWhyKeep", lang)}</p>
 
+        {/* **표 이름을 손님에게 보여 주지 않는다.** 되돌릴 수 없는 단추
+            앞에서 `jd_match_scores` 를 읽게 하면, 무엇을 잃는지 모른 채
+            누르거나 무서워서 못 누른다. 묶음은 사람이 무엇을 잃는가로
+            가르고, 표 이름은 지우는 코드와 감사 기록에만 남는다 */}
         <div className="erasecols">
           <section>
             <h2 className="page-h2">{t("erRemoveTitle", lang)}</h2>
             <ul className="eraselist">
-              {plan.remove.map((r) => (
-                <li key={r.table}>
-                  <code>{r.table}</code>
-                  <span>{r.why}</span>
+              {ERASE_GROUPS.map((g) => (
+                <li key={g.ko}>
+                  <b>{en ? g.en : g.ko}</b>
+                  <span>{en ? g.detail.en : g.detail.ko}</span>
                 </li>
               ))}
-              <li>
-                <code>users</code>
-                <span>이름 · 이메일 · 아이디 · 비밀번호</span>
-              </li>
             </ul>
           </section>
 
           <section>
             <h2 className="page-h2">{t("erKeepTitle", lang)}</h2>
             <ul className="eraselist keep">
-              {Object.entries(plan.keep).map(([table, why]) => (
-                <li key={table}>
-                  <code>{table}</code>
-                  <span>{why}</span>
+              {KEEP_GROUPS.map((g) => (
+                <li key={g.ko}>
+                  <b>{en ? g.en : g.ko}</b>
+                  <span>{en ? g.detail.en : g.detail.ko}</span>
                 </li>
               ))}
             </ul>

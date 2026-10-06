@@ -20,6 +20,10 @@ window.PCAV2ValueReport = (function () {
   /* 결과지의 두 언어. **글자만 갈리고 판단은 갈리지 않는다**:
      한국어면 받은 것을 그대로 돌려주므로 한국어 쪽은 손대지 않은 것과 같다 */
   var T = window.PCAI18N ? window.PCAI18N.T : function (s) { return s; };
+  /* 조사는 앞말이 정한다. 영어에서는 빈 글자가 돌아온다 */
+  var JO = function (w, k) {
+    return window.PCAI18N ? window.PCAI18N.josa(w, k) : (' ' + k);
+  };
 
   function esc(s) {
     return String(s === null || s === undefined ? '' : s)
@@ -85,7 +89,9 @@ window.PCAV2ValueReport = (function () {
       step(T('조직이 보는 결과'), tags(p.performance_criteria, 3),
         p.organization_type_name
           ? (p.organization_type_name + (p.organization_type_is_default
-              ? T(' 를 기준으로 적었습니다. 조직 유형을 고르시면 이 줄이 바뀝니다.') : T(' 기준입니다.')))
+              ? JO(p.organization_type_name, '를')
+                + T(' 기준으로 적었습니다. 조직 유형을 고르시면 이 줄이 바뀝니다.')
+              : T(' 기준입니다.')))
           : '') +
       step(T('현재 내 증거'),
         mine.length
@@ -253,6 +259,8 @@ window.PCAV2ValueReport = (function () {
     if (!has(vp)) return '';
     var p = vp.paths[vp.order[0]];
     var need = (p.missing_evidence || []).slice(0, 2);
+    /* 조사는 앞말이 정하므로 앞말을 먼저 굳힌다 */
+    var whatOne = need.length ? need.join(' · ') : ((p.outputs || [])[0] || '');
     var firstGap = null;
     (J.performance_evidence || []).forEach(function (x) {
       if (!firstGap && x.next) firstGap = x.next;
@@ -260,8 +268,7 @@ window.PCAV2ValueReport = (function () {
     return '<div class="card contentcard">' +
       '<div class="eyebrow">' + esc(p.career_family_name) + T(' 쪽으로 한 건</div>') +
       '<ul class="qlist">' +
-      T('<li><b>무엇을</b> ') + esc(need.length ? need.join(' · ') : (p.outputs || [])[0] || '') +
-      T(' 를 남기는 일 한 건</li>') +
+      T('<li><b>무엇을</b> ') + esc(whatOne) + JO(whatOne, '를') + T(' 남기는 일 한 건</li>') +
       T('<li><b>왜</b> 지금 ') +
       esc(p.evidence_top_level ? (p.evidence_top_level + T(' 까지 확인됩니다')) : T('걸리는 경험이 없습니다')) +
       T('. 그 위 칸이 서류와 면접에서 읽히는 자리입니다</li>') +
@@ -280,8 +287,10 @@ window.PCAV2ValueReport = (function () {
     return '<div class="grid">' + list.slice(0, 5).map(function (x) {
       var line = [];
       if (x.decided) line.push(x.decided);
-      if ((x.made || []).length) line.push((x.made || []).slice(0, 2).join(' · ') + T(' 를 남김'));
-      if ((x.checked_against || []).length) line.push((x.checked_against || [])[0] + T(' 와 견줌'));
+      if ((x.made || []).length) { var md2 = (x.made || []).slice(0, 2).join(' · ');
+        line.push(md2 + JO(md2, '를') + T(' 남김')); }
+      if ((x.checked_against || []).length) { var ca2 = (x.checked_against || [])[0];
+        line.push(ca2 + JO(ca2, '와') + T(' 견줌')); }
       return '<div class="card contentcard"><div class="eyebrow">' +
         (u(x.title) || T('(제목 없는 경험)')) + '</div>' +
         '<p class="cvline">' + line.join(', ') + '</p>' +

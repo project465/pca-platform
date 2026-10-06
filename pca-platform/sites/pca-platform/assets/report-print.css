@@ -87,9 +87,10 @@
   padding: 20px 22px 18px; background: #fff;
 }
 .dscard:first-child { border-color: var(--rp-accent); border-width: 1.5px; }
+/* 등수 번호가 서 있던 자리. **숫자가 아니라 할 일이 적힌다** */
 .dsrank {
-  font-size: 12px; font-weight: 700; color: var(--rp-accent);
-  font-variant-numeric: tabular-nums;
+  font-size: 11.5px; font-weight: 700; color: var(--rp-accent);
+  letter-spacing: .02em;
 }
 .dscard h3 { margin: 6px 0 0; font-size: 20px; letter-spacing: -.01em; }
 .dsmeta {
@@ -184,6 +185,18 @@
   font-size: 12px; font-weight: 700; letter-spacing: .14em;
   color: var(--rp-accent); text-transform: uppercase;
 }
+/* **본문이 끝난 자리.** 부록과 본문이 같은 굵기로 이어지면 읽는 사람은
+   열세 장을 전부 본문으로 읽는다 */
+.apend {
+  margin-top: 40px; padding: 18px 20px;
+  border: 1px solid var(--rp-line); border-radius: 10px;
+  background: var(--rp-soft, #f6f8fb);
+}
+.apend p { margin: 0; font-size: 15px; font-weight: 700; color: var(--rp-ink); }
+.apend .note { margin-top: 4px; font-size: 13px; font-weight: 400; }
+.aptitle { margin: 6px 0 0; font-size: 22px; letter-spacing: -.01em; }
+/* 부록은 본문보다 한 단 작게 간다. 내용은 그대로고 위계만 갈린다 */
+.apbody { font-size: 95% }
 .apsec { margin-top: 32px; }
 /* 상세 분석을 접는 단추. 화면에서만 뜻이 있다 */
 .apfold {
@@ -326,7 +339,15 @@
   .rpage:last-of-type { break-after: auto; }
   .rcover { break-after: page; padding: 30mm 0 0; border-bottom: 0; }
   .rcover h1 { font-size: 30pt; }
+  /* 부록은 새 장에서 시작하고, 본문이 끝났다는 쪽지는 본문 마지막
+     장에 붙여 둔다. 둘을 같은 장에 두면 그 쪽지가 부록의 머리말로
+     읽혀서 아무것도 가르지 못한다 */
+  .apend { break-after: page; break-inside: avoid; margin-top: 10mm; }
+  .apend p { font-size: 12pt; }
+  .apend .note { font-size: 10pt; }
   .appendix { break-before: page; }
+  .aptitle { font-size: 18pt; }
+  .apbody { font-size: 10pt; }
   .apsec { break-inside: avoid; margin-top: 7mm; }
   .apsec h3 { font-size: 12pt; margin-bottom: 2.5mm; padding-bottom: 2mm; }
   .cvrow { padding: 1.2mm 0; font-size: 8.5pt; }
