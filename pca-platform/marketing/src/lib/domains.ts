@@ -20,14 +20,23 @@
 /** 플랫폼. 어느 나라 사이트에서 눌러도 여기로 간다(설계 원칙 5) */
 export const PLATFORM_URL = "https://app.careermatri.com";
 
-/** 소개 사이트. 나라마다 하나다 */
+/**
+ * 공식 홈페이지. **한 주소가 두 시장을 다 받는다** (2026-10-06).
+ *
+ * 전에는 글로벌 `careermatri.com` · 한국 `careermatri.co.kr` 로 나눠 두었다.
+ * 그런데 시장은 호스트로 갈리지 않고 앱 안의 market·locale 로 갈린다(설계
+ * 원칙 5). 호스트로 가르면 `careermatri.co.kr` 을 사기 전까지 한국 판매가
+ * 막히고, 그것은 앱이 아니라 소개 사이트의 사정이다.
+ */
+export const HOME_DOMAIN = "careermatri.com";
+
+/** 옛 이름. 두 칸이 같은 주소를 가리킨다 */
 export const SITE_DOMAIN = {
-  global: "careermatri.com",
-  kr: "careermatri.co.kr",
+  global: HOME_DOMAIN,
+  kr: HOME_DOMAIN,
 } as const;
 
 /** 밖에 띄우는 시장 목록. 준비 중인 곳은 `ready: false` 로 둔다 */
 export const MARKET_LINKS = [
-  { label: "Global (English)", href: `https://${SITE_DOMAIN.global}`, ready: false },
-  { label: "한국", href: `https://${SITE_DOMAIN.kr}`, ready: false },
+  { label: "Careermatri", href: `https://${HOME_DOMAIN}`, ready: false },
 ] as const;

@@ -9,21 +9,7 @@ export type SiteKey = "global" | "kr" | "kz" | "tr";
 export type Link = { label: string; href: string };
 export type Named = { title: string; body: string };
 
-/* ── 결과지 뷰어 ────────────────────────────────── */
-
-export type SheetTable = { head: string[]; rows: string[][] };
-
-export type SheetBlock = {
-  /** SUBSECTION 2-1 같은 표시 */
-  sub?: string;
-  title?: string;
-  /** 문단. 줄바꿈은 배열로 나눈다 */
-  body?: string[];
-  bullets?: string[];
-  table?: SheetTable;
-  /** 라벨 + 값 형태의 작은 상자들 */
-  fields?: { label: string; value: string }[];
-};
+/* ── 홈페이지의 결과지 미리보기 ───────────────────── */
 
 export type SheetTab = {
   /** 00-1, 01 … */
@@ -36,7 +22,6 @@ export type SheetTab = {
   chart?: "jobs" | "styles";
   /** 레이더 위에 놓는 요약 상자 */
   meta?: { label: string; value: string }[];
-  blocks?: SheetBlock[];
   /** 레이더 아래 한 줄 */
   chartNote?: string;
   /** 목차 아래 설명 상자 */
@@ -521,7 +506,6 @@ export type SiteContent = {
     nextLabel: string;
     nextSheetToAdopt: string;
     /** 요금 페이지 끝의 다음 링크 두 개 */
-    nextDiagnosis: string;
     nextContact: string;
     /**
      * 약관·방침 화면의 머리.

@@ -48,7 +48,7 @@ export const tr: SiteContent = {
   },
   nav: {
     items: [
-      { label: "Careermetri", href: "/pca" },
+      { label: "Örnek rapor", href: "/sample" },
       { label: "Kimler için", href: "/#channels" },
       { label: "Kurulum", href: "/adopt" },
       { label: "Fiyatlandırma", href: "/pricing" },
@@ -82,7 +82,7 @@ export const tr: SiteContent = {
     label: "ÖRNEK RAPOR",
     heading: "Açıklamadan önce, öğrencinin eline aldığı belgeye bakın",
     lead:
-      "Careermetri'nin neyi analiz ettiği sonraki konu. Aşağıda 15–20 sayfalık rapordan dört sayfa alınıp tek ekrana taşındı.",
+      "Careermetri'nin neyi analiz ettiği sonraki konu. Aşağıda rapordan dört sayfa alınıp tek ekrana taşındı.",
     disclaimer:
       "Bu, raporun biçimini göstermek için hazırlanmış örnek bir ekrandır. Gerçek bir öğrencinin verisi değildir. Görev alanları, altı çalışma tarzı ve bölgesel eşleştirme gerçek rapordaki gibidir.",
     docTag: "Careermetri bireysel rapor",
@@ -93,7 +93,7 @@ export const tr: SiteContent = {
       meta: [
         { l: "Tarih", v: "2026-03-11" },
         { l: "Süre", v: "32 dakika" },
-        { l: "Rapor", v: "18 sayfa" },
+        { l: "Kademe", v: "STANDARD" },
       ],
     },
     jobsLabel: "00-1 Görev alanı uygunluğu · 100 puanlık ölçek",
@@ -265,7 +265,7 @@ export const tr: SiteContent = {
 
   sheet: {
     label: "Rapor yapısı",
-    heading: "15–20 sayfa, on bölüm",
+    heading: "Bölümler birbirine bağlanır",
     lead: [
       "Rapor tek sayfalık bir özet değildir. Her bölüm bir soruyu yanıtlar ve bir sonrakine bağlanır.",
     ],
@@ -299,26 +299,6 @@ export const tr: SiteContent = {
         no: "05",
         nav: "Eksik beceri",
         title: "Eksik yetkinlikler",
-        blocks: [
-          {
-            title: "Beş yetkinlik",
-            body: ["Aranan düzey ile mevcut düzey karşılaştırılır. Hepsi değil, en kritik beşi verilir."],
-            table: {
-              head: ["Yetkinlik", "Aranan", "Mevcut", "İlan talebi"],
-              rows: [
-                ["ANSYS", "4", "2", "%67"],
-                ["Sonlu elemanlar yöntemi", "4", "3", "%54"],
-                ["Teknik resim (GD&T)", "3", "2", "%53"],
-                ["ABAQUS", "3", "1", "%31"],
-                ["Python", "3", "3", "%44"],
-              ],
-            },
-            bullets: [
-              "Sıralama hocanın görüşüne göre değil, ilanlarda geçme sıklığına göre belirlenir.",
-              "Yirmi yetkinlik önermek hiçbir şey önermemekle aynıdır.",
-            ],
-          },
-        ],
         capTitle: "Neden sadece beş",
         capBody: "Yirmi satırlık bir rapor, hiçbir satırı uygulanmayan bir rapordur.",
         capArrow: "Sırada — altı aylık plan",
@@ -327,18 +307,6 @@ export const tr: SiteContent = {
         no: "09",
         nav: "Bölgesel bağlantı",
         title: "Bölgedeki gerçek şirketler",
-        blocks: [
-          {
-            body: [
-              "Üniversitenin bulunduğu bölgedeki şirketler uygunluk düzeyine göre ayrılır. Öğrenci «nereye başvuracağım?» sorusunun yanıtını bu sayfada bulur.",
-            ],
-            fields: [
-              { label: "Uygunluk yüksek", value: "Açık ilanı olan şirketler" },
-              { label: "Uygunluk orta", value: "Becerilerin bir kısmı örtüşüyor" },
-              { label: "Bölgesel program", value: "Yerel programlara bağlı olanlar" },
-            ],
-          },
-        ],
         capTitle: "Neden bölge",
         capBody: "Yalnızca büyük şehirdeki ilanları göstermek, taşradaki üniversite için başkasının hikâyesidir.",
         capArrow: "Rapor burada biter",
@@ -539,7 +507,7 @@ export const tr: SiteContent = {
         features: [
           "Pozisyon uygunluğu 100 puanlık ölçek",
           "Altı çalışma tarzı",
-          "15–20 sayfalık bireysel rapor",
+          "Adına düzenlenmiş bireysel rapor",
           "Altı aylık plan",
         ],
         cta: { ready: "Başvur", ask: "Bireysel değerlendirme için yazın" },
@@ -573,7 +541,7 @@ export const tr: SiteContent = {
           who: "Öğrenci · iş arayan",
           steps: [
             "Talep bırakırsınız; fiyatı ve takvimi size iletiriz",
-            "253 soru, yaklaşık 15-20 dakika. Her yanıt anında kaydedilir, ara verip devam edebilirsiniz",
+            "Aldığınız kademeye göre 20-40 dakika. Her yanıt anında kaydedilir, ara verip devam edebilirsiniz",
             "Rapor puanlanır puanlanmaz açılır — bölüm onayı beklenmez",
           ],
         },
@@ -654,7 +622,6 @@ export const tr: SiteContent = {
     deeperHeading: "Sizin için önemli olan yerden başlayın",
     nextLabel: "Sıradaki",
     nextSheetToAdopt: "Bu bizim bölümde nasıl işler?",
-    nextDiagnosis: "Değerlendirme hakkında",
     nextContact: "Görüşme talep et",
     policy: {
       termsLabel: "Kullanım şartları",

@@ -110,7 +110,7 @@ const COPY = {
         순서는 없는 정밀도입니다. 아래 값은 시뮬레이션 응시이고 실제 학생이
         아닙니다.`,
     twoH2: "같은 학과, 같은 학년, 다른 답",
-    twoLead: `둘 다 기계공학과이고 같은 253문항을 풀었습니다. 학과 평균으로 보면
+    twoLead: `둘 다 기계공학과이고 같은 문항에 답했습니다. 학과 평균으로 보면
     같은 칸에 들어갑니다. 정작 이 둘에게 도움이 되는 지원은 같지 않습니다.`,
     twoNote: `단체 리포트가 있는 이유가 이것입니다. 평균이 아니라 어느 쪽이 몇 명인지를
         내야, 취업지원팀이 어떤 특강을 열고 어떤 현직자를 부를지 정할 수 있습니다.
@@ -146,7 +146,7 @@ const COPY = {
         cannot resolve is precision it does not have. These figures are one
         simulated sitting, not a real student.`,
     twoH2: "Same department, same year, different answer",
-    twoLead: `Both of these read mechanical engineering and sat the same 253 items.
+    twoLead: `Both of these read mechanical engineering and answered the same items.
     A cohort average would put them in the same row of a spreadsheet. The support
     that would actually help them is not the same.`,
     twoNote: `This is what the cohort report is for: not an average, but how many of

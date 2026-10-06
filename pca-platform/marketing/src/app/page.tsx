@@ -11,7 +11,7 @@ import {
   Who,
 } from "@/components/sections";
 import { FlowDiagram, NextLink, PhotoSlot, PullQuote, ReportMini } from "@/components/visuals";
-import { hrefSlug } from "@/lib/platform";
+import { appHref, hrefSlug } from "@/lib/platform";
 import SampleReport from "@/components/sample-report";
 
 export default function Home() {
@@ -48,7 +48,9 @@ export default function Home() {
             <h2 style={{ margin: "16px 0 16px" }}>{site.sheet.heading}</h2>
             <p className="lead">{site.sheet.lead[0]}</p>
             <div style={{ marginTop: 24 }}>
-              <a className="btn lg solid" href="/pca">
+              {/* 결과지는 앱 하나다. 홈페이지가 또 들고 있으면 절 수와
+                  구성이 두 곳에서 따로 자란다 */}
+              <a className="btn lg solid" href={appHref(site, "/sample")}>
                 {c.seeSheet}
               </a>
             </div>

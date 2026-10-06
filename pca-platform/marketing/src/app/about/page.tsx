@@ -2,6 +2,7 @@ import { getSite } from "@/content";
 import Shell from "@/components/shell";
 import { About, Evidence, ProgramSection } from "@/components/sections";
 import { NextLink, PageHead, PhotoSlot } from "@/components/visuals";
+import { hrefSlug } from "@/lib/platform";
 
 export const metadata = { title: "About" };
 
@@ -22,7 +23,11 @@ export default function AboutPage() {
       <Evidence site={site} />
       <section className="divided">
         <div className="wrap nextgrid">
-          <NextLink label="pca" title={site.nav.items[0].label} href={site.nav.items[0].href} />
+          <NextLink
+            label={hrefSlug(site.nav.items[0].href)}
+            title={site.nav.items[0].label}
+            href={site.nav.items[0].href}
+          />
           <NextLink
             label="contact"
             title={site.nav.items[site.nav.items.length - 1].label}

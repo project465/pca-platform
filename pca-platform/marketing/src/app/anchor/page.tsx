@@ -3,6 +3,7 @@ import { getSite } from "@/content";
 import Shell from "@/components/shell";
 import { University } from "@/components/sections";
 import { NextLink, PageHead, PhotoSlot, PullQuote } from "@/components/visuals";
+import { appHref } from "@/lib/platform";
 
 export const metadata = { title: "지역·앵커" };
 
@@ -28,8 +29,8 @@ export default function AnchorPage() {
               나누어 정리했습니다.
             </PullQuote>
             <div style={{ marginTop: 24 }}>
-              <a className="btn lg solid" href="/pca">
-                결과지 9번 섹션 보기
+              <a className="btn lg solid" href={appHref(site, "/sample")}>
+                결과지 보기
               </a>
             </div>
           </div>

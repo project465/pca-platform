@@ -38,6 +38,9 @@ export function platformStart(site: SiteContent, path = "/start"): string {
  */
 const APP_PATHS = new Set([
   "/pricing", "/login", "/signup", "/product", "/start", "/free", "/support",
+  /* 공개 샘플 결과지도 앱 하나다. 홈페이지가 결과지를 따로 들고 있으면
+     절 수와 구성이 두 곳에서 따로 자란다 */
+  "/sample",
 ]);
 
 /** 앱이 맡은 길이면 플랫폼 주소로, 아니면 그대로 */

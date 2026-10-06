@@ -1,4 +1,5 @@
 import { PLATFORM_URL, SITE_DOMAIN, MARKET_LINKS } from "@/lib/domains";
+import { GLOBAL_TIERS, priceRange, tierLines } from "@/lib/prices";
 import type { SiteContent } from "./types";
 
 /**
@@ -22,15 +23,24 @@ export const global: SiteContent = {
   },
 
   legal: {
-    company: "",
-    ceo: "",
-    address: "",
-    tel: "",
-    email: "",
-    bizNo: "",
+    /* Taken from the business registration certificate; nothing invented.
+       **Only the mail-order licence number is left empty**: it has not been
+       issued yet, and an empty field is printed as "Not confirmed". Hiding it
+       would leave the page looking finished while the shop still has no
+       licence number.
+
+       On the app side the source of truth is the `site_settings` table behind
+       `/admin/business`. This site is a static build and cannot read it, so
+       there are two places to change. */
+    company: "HARI Research Institute Co., Ltd.",
+    ceo: "Geonhui Jo, Jeongin Han",
+    address: "704, 2143 Hannuri-daero, Sejong, Republic of Korea",
+    tel: "+82 44-867-7211",
+    email: "hari_info@hari.re.kr",
+    bizNo: "375-88-02588",
     mailOrderNo: "",
     jobInfoNo: "J1700020220007",
-    privacyOfficer: "",
+    privacyOfficer: "Geonhui Jo, Jeongin Han",
     labels: {
       heading: "Business information",
       company: "Company", ceo: "Representative", address: "Address", tel: "Phone",
@@ -42,7 +52,7 @@ export const global: SiteContent = {
   },
   nav: {
     items: [
-      { label: "PCA", href: "/pca" },
+      { label: "Sample report", href: "/sample" },
       { label: "Localisation", href: "/localisation" },
       { label: "Partnership", href: "/partnership" },
       { label: "Pricing", href: "/pricing" },
@@ -63,7 +73,7 @@ export const global: SiteContent = {
     primary: { label: "Start free", href: "/pricing" },
     secondary: { label: "Talk to us", href: "/contact" },
     priceline:
-      "253 items, about 15 to 20 minutes. The job groups come free; the rest of the report opens for ₩29,000. Departments contract by cohort size.",
+      "Three tiers. BASIC costs nothing; STANDARD is $14.99 when you still have roles to weigh up, and PRO is $24.99 once the direction is set. Departments contract by cohort size.",
     watermark: "Careermetri",
     proof: [
       { value: "250", label: "items, in three languages" },
@@ -77,7 +87,7 @@ export const global: SiteContent = {
     label: "A real report",
     heading: "Before the method, look at what a student is handed",
     lead:
-      "What PCA measures is the second question. Below is a 15–20 page report with four of its pages put on one screen. A student does not receive a type name. They receive this.",
+      "What PCA measures is the second question. Below are four pages of the report put on one screen. A student does not receive a type name. They receive this.",
     disclaimer:
       "An illustrative screen showing the format of the report. It is not a real student’s submission. The ten job areas, the six work styles and the regional method are exactly as they ship.",
     docTag: "Careermetri individual report",
@@ -88,7 +98,7 @@ export const global: SiteContent = {
       meta: [
         { l: "Sat", v: "11 March 2026" },
         { l: "Time taken", v: "32 min" },
-        { l: "Report", v: "18 pages" },
+        { l: "Tier", v: "STANDARD" },
       ],
     },
     jobsLabel: "00-1 Job-area fit · ten areas, scored out of 100",
@@ -347,32 +357,6 @@ export const global: SiteContent = {
         no: "01",
         nav: "Core summary",
         title: "Section 1. Core diagnostic summary",
-        blocks: [
-          {
-            sub: "SUBSECTION 1-1",
-            title: "The highest area",
-            body: [
-              "The highest area in this result is Simulation & CAE, at 80. This is the field that works out how a part or structure behaves under load, vibration, heat and flow before anything is built, and turns that into grounds for changing the design.",
-              "Mechanics of materials, dynamics, heat transfer, fluid mechanics and finite element analysis are used directly here. The result does not fix a single role; it says that analysis and design-verification roles are the ones to examine first.",
-            ],
-          },
-          {
-            sub: "SUBSECTION 1-2",
-            title: "Group summary",
-            body: [
-              "The report groups rather than ranks. In a 500-respondent simulation the gap between first and second was a median 3.7 points while the measurement error was 7.3. When the error is larger than the gap, that rank is precision the instrument does not have. Areas whose intervals overlap form one group, and the report makes no claim about the order inside it.",
-            ],
-            table: {
-              head: ["Group", "Area", "Score (interval)", "How the report uses it"],
-              rows: [
-                ["Group 1", "Simulation & CAE", "80 (75–85)", "No order claimed inside the group"],
-                ["Group 1", "Aerospace & defence R&D", "76 (71–81)", "No order claimed inside the group"],
-                ["Group 1", "Mechanical design", "73 (68–78)", "No order claimed inside the group"],
-                ["Group 2", "Automotive & electrification R&D", "62 (57–67)", "Interval clears group 1"],
-              ],
-            },
-          },
-        ],
         capTitle: "Core diagnostic summary",
         capBody: "The top group with its intervals, plus work style, in one place.",
         capArrow: "The reference point for everything after",
@@ -381,25 +365,6 @@ export const global: SiteContent = {
         no: "02",
         nav: "Strength profile",
         title: "Section 2. Strength profile",
-        blocks: [
-          {
-            sub: "SUBSECTION 2-1",
-            title: "Three representative strengths",
-            bullets: [
-              "1. Turning a physical situation into a solvable problem, by translating a real part into boundary conditions, loads and material properties.",
-              "2. Distrusting a number until it is checked, by testing mesh dependence, convergence and the gap against measured data before believing a result.",
-              "3. Carrying analysis through to a design change, proposing geometry, thickness, material and joint alternatives instead of stopping at “the stress is high”.",
-            ],
-          },
-          {
-            sub: "SUBSECTION 2-2",
-            title: "First strength: turning a physical situation into a solvable problem",
-            body: [
-              "Analysis does not begin with knowing the software. Most of the answer is decided by which loads actually apply, what counts as fixed, and which material data is used. The same part can differ by several times in stress if the boundary conditions are set wrongly.",
-              "In applications, “I have used ANSYS” carries less than being able to say why those boundary conditions were chosen, and how the answer would change if that assumption were wrong.",
-            ],
-          },
-        ],
         capTitle: "Strength profile",
         capBody: "Three strengths and how to use them in applications.",
         capArrow: "Straight into the cover letter and interview",
@@ -408,34 +373,6 @@ export const global: SiteContent = {
         no: "03",
         nav: "The work itself",
         title: "Section 3. What the work looks like",
-        blocks: [
-          {
-            sub: "SUBSECTION 3-1",
-            title: "Scenario 1: vibration durability of an EV battery pack housing",
-            fields: [{ label: "Linked area", value: "Simulation & CAE" }],
-          },
-          {
-            title: "The situation",
-            body: [
-              "You are placed in the analysis team of an automotive supplier. A new battery pack housing has raised concern about weld cracking under road vibration, and the vehicle test is two months away. Your lead asks you to identify the risk locations before the test.",
-              "The output is an analysis report covering load conditions, the finite element model, a fatigue life assessment and a proposed design change.",
-            ],
-          },
-          {
-            title: "What is asked of you",
-            body: [
-              "Convert real driving conditions into a load history that can be analysed, assess the fatigue life of the welds, and propose a change the design team can act on directly.",
-            ],
-          },
-          {
-            title: "The capability required",
-            bullets: [
-              "1. Finite element modelling: choosing element size and shape where stress concentrates, so the result is not driven by the mesh.",
-              "2. Fatigue and material data: applying S-N curves and mean-stress correction to put a number on life under repeated load.",
-              "3. Test correlation: explaining the gap between accelerometer measurements and the model, and justifying how the model is corrected.",
-            ],
-          },
-        ],
         capTitle: "What the work looks like",
         capBody: "A real scenario in the area, and the capability it demands.",
         capArrow: "Fit tested before committing",
@@ -444,52 +381,6 @@ export const global: SiteContent = {
         no: "04",
         nav: "Roles and direction",
         title: "Section 4. Roles and career direction",
-        blocks: [
-          {
-            sub: "SUBSECTION 4-1",
-            title: "Understanding the area",
-            body: [
-              "Simulation & CAE is the field that checks by calculation before anything is built. Building and fixing prototypes repeatedly does not survive cost or schedule, so most manufacturers screen candidate designs by analysis first.",
-              "The portfolio to aim for shows the analysis conditions, the modelling judgement, the verification, and what changed in the design as a result.",
-            ],
-          },
-          {
-            sub: "SUBSECTION 4-2",
-            title: "Roles the area connects to",
-            body: [
-              "Every role here shares one thing: a calculation changes a design decision. Rather than fixing on one, compare the duties, the kind of analysis and the tools named in job postings.",
-            ],
-            table: {
-              head: ["No.", "Role", "What the work is", "Experience to prepare"],
-              rows: [
-                [
-                  "1",
-                  "Structural analysis engineer",
-                  "Calculates strength, stiffness and fatigue life to justify design changes.",
-                  "Mechanics of materials, an FEA project, comparison against test data",
-                ],
-                [
-                  "2",
-                  "Thermal / flow analysis engineer",
-                  "Calculates cooling performance, pressure loss and temperature distribution to fix flow paths.",
-                  "Heat transfer and fluid mechanics, a CFD project, measured comparison",
-                ],
-                [
-                  "3",
-                  "NVH engineer",
-                  "Finds the source of vibration and noise through modal analysis and revises the structure.",
-                  "Dynamics, modal analysis, accelerometer measurement",
-                ],
-                [
-                  "4",
-                  "Mechanical design engineer",
-                  "Takes the analysis result and fixes geometry, tolerance and joints into drawings.",
-                  "CAD modelling, machine element design, tolerance stack-up",
-                ],
-              ],
-            },
-          },
-        ],
         capTitle: "Roles and direction",
         capBody: "Connected roles, what to examine first, and how to choose.",
         capArrow: "Roles grouped, not just listed",
@@ -498,39 +389,6 @@ export const global: SiteContent = {
         no: "05",
         nav: "Projects",
         title: "Section 5. Projects and portfolio",
-        blocks: [
-          {
-            sub: "SUBSECTION 5-1",
-            title: "Why a project is needed",
-            body: [
-              "Analysis work is comparatively easy to show. What matters is not the tool but which assumptions were made, what they were checked against, and how the result changed the design. A colour plot with no verification is not evidence.",
-            ],
-          },
-          {
-            sub: "SUBSECTION 5-2",
-            title: "Project directions from the area",
-            body: [
-              "A project does not end at “the analysis ran”. What counts is how it connects to the verification flow of the company being applied to.",
-            ],
-            table: {
-              head: ["Direction", "Why it fits", "What to use", "Output"],
-              rows: [
-                [
-                  "Structural analysis of a capstone part, with test verification",
-                  "Explaining the gap between calculated and measured values is the same work as industrial correlation.",
-                  "The capstone part, a universal testing machine or strain gauges, a free FEA tool",
-                  "Analysis-to-test comparison report",
-                ],
-                [
-                  "Thermal and flow analysis of a cooling structure",
-                  "Electrification keeps raising demand for cooling design.",
-                  "Open-source CFD, thermocouple measurement, component heat specifications",
-                  "Comparison of three flow-path alternatives",
-                ],
-              ],
-            },
-          },
-        ],
         capTitle: "Projects and portfolio",
         capBody: "Directions, worked examples and a four-week plan.",
         capArrow: "A portfolio to start this week",
@@ -539,24 +397,6 @@ export const global: SiteContent = {
         no: "06",
         nav: "Applications",
         title: "Section 6. Cover letter and interview",
-        blocks: [
-          {
-            sub: "SUBSECTION 6-1",
-            title: "How to write",
-          },
-          {
-            title: "1. Connecting coursework to the work",
-            body: [
-              "Mechanics of materials, dynamics, heat transfer and fluid mechanics carry straight into structural analysis, thermal and flow analysis, NVH and reliability verification. Coursework persuades as evidence of “what I calculated, under which conditions”, not as a claim of interest.",
-            ],
-          },
-          {
-            title: "2. Showing a project as capability",
-            body: [
-              "Rather than naming the software, write the grounds for the load conditions, how the mesh was decided, how the result was verified, and what changed in the design. The most frequent interview questions come from exactly these points.",
-            ],
-          },
-        ],
         capTitle: "Cover letter and interview",
         capBody: "How to write, and how to structure likely questions.",
         capArrow: "Example sentences and expected questions",
@@ -565,27 +405,6 @@ export const global: SiteContent = {
         no: "07",
         nav: "Technical venture",
         title: "Section 7. Starting a technical venture",
-        blocks: [
-          {
-            sub: "SUBSECTION 7-1",
-            title: "The direction this area suggests",
-            body: [
-              "Analysis is one of the few engineering capabilities that can be sold without equipment. Smaller manufacturers know they need it but cannot carry the staff and licences, so there is steady demand for work taken job by job. Validating that demand in small pieces is more realistic than building a product first.",
-            ],
-          },
-          {
-            sub: "SUBSECTION 7-2",
-            title: "A worked example",
-            fields: [
-              { label: "Venture idea 1", value: "Structural verification service for small manufacturers" },
-            ],
-            body: [
-              "What it is. A job-by-job analysis service that takes drawings and load conditions and returns a strength and fatigue review.",
-              "The problem it solves. Smaller manufacturers need grounds for a design change but cannot keep analysis staff and licences on hand.",
-              "Who buys it. Small manufacturers and design offices in automotive parts, industrial machinery, tooling and construction equipment.",
-            ],
-          },
-        ],
         capTitle: "Starting a technical venture",
         capBody: "Venture ideas from the major, and how to enter.",
         capArrow: "A route other than employment",
@@ -594,39 +413,6 @@ export const global: SiteContent = {
         no: "08",
         nav: "Growth points",
         title: "Section 8. Growth points and next steps",
-        blocks: [
-          {
-            sub: "SUBSECTION 8-1",
-            title: "The strengths this result surfaced",
-            bullets: [
-              "A clear tendency to move a physical situation into a model and decide by calculation, which reads across to simulation and CAE roles.",
-              "Quality-oriented came out highest among the work styles, which fits work that keeps verifying results and re-examining conditions.",
-            ],
-          },
-          {
-            sub: "SUBSECTION 8-2",
-            title: "Roles to examine first",
-            bullets: [
-              "Structural analysis, thermal and flow analysis, NVH, reliability verification and mechanical design.",
-              "Compare the kind of analysis and the verification each posting asks for, rather than fixing on one immediately.",
-            ],
-          },
-          {
-            sub: "SUBSECTION 8-3",
-            title: "The project to start first",
-            bullets: [
-              "Structural analysis of a capstone part with test verification produces an output that carries an analysis-to-measurement comparison.",
-              "Present it as a report showing the grounds for the load conditions, the verification method, and the design conclusion.",
-            ],
-          },
-          {
-            sub: "SUBSECTION 8-4",
-            title: "What to carry into applications and interviews",
-            bullets: [
-              "Coursework, analysis assignments and test experience together evidence the ability to set an assumption and then check it.",
-            ],
-          },
-        ],
         capTitle: "Growth points and next steps",
         capBody: "What to watch for, and a 30-day checklist.",
         capArrow: "Down to what to do today",
@@ -635,24 +421,6 @@ export const global: SiteContent = {
         no: "09",
         nav: "Regional careers",
         title: "Section 9. Regional careers and settling",
-        blocks: [
-          {
-            sub: "SUBSECTION 9-1",
-            title: "Employers around the campus that match this result",
-            bullets: [
-              "Employers and institutions in the commissioning region are compared against the leading job areas and the three strongest work styles, then ordered by fit.",
-              "Each row carries the reason it matched, so a student can tell whether the fit came from the work itself or from how the organisation works.",
-            ],
-          },
-          {
-            sub: "SUBSECTION 9-2",
-            title: "What this section is not",
-            bullets: [
-              "Information is provided up to the point of ordering by fit. Applying on a student's behalf, referrals and recommendation letters are outside what is offered.",
-              "This section runs only where the regional module has been localised for that country. Elsewhere the report ends at section 8.",
-            ],
-          },
-        ],
         capTitle: "Regional careers and settling",
         capBody: "Employers and institutions around the campus, connected to the leading job areas and ordered by fit.",
         capArrow: "Carries the result through to a route into work in the region",
@@ -953,23 +721,25 @@ export const global: SiteContent = {
 
   pricing: {
     label: "Pricing",
-    heading: "Job groups free, the rest for ₩29,000",
+    heading: "BASIC costs nothing; the two tiers above it are a choice",
     lead:
-            "Answer all 253 items first and read your job groups, then decide. Departments contract by cohort size, and most run one department first and widen from there. A single year group is enough to see what the reports change.",
+            "Take BASIC first and decide from there. The tiers differ in what you get back, and you pick one on the pricing page. Departments contract by cohort size, and most run one department first and widen from there. A single year group is enough to see what the reports change.",
     planLabel: "What you are interested in",
     plans: [
       {
         key: "individual",
         name: "Individual",
-        who: "A student, a job seeker, a would-be founder",
-        price: "₩29,000",
-        unit: "per person",
-                note: "The ten job areas and the eight activity axes come at no charge. Billed in Korean won; overseas Visa and Mastercard are accepted. Card payment opens once the merchant review clears.",
+        who: "A student, a job seeker, a graduate-school applicant",
+        /* Prices live in `src/lib/prices.ts`. Written here, one of the four
+           content files is left behind the day the approved value changes */
+        price: priceRange(GLOBAL_TIERS),
+        unit: "three tiers, per person",
+        note: "BASIC costs nothing. Which tier to take is a decision you make on the pricing page, against what each one returns. Overseas Visa and Mastercard are accepted once the merchant review clears.",
         features: [
-                    "Six work styles as a hexagon",
+          ...tierLines(GLOBAL_TIERS),
+          "Six work styles as a hexagon",
           "Competency gaps: required level against held level",
-          "A 15–20 page personal plan across ten sections",
-          "Projects, applications, interviews, founding",
+          "Projects, applications, interviews",
         ],
         cta: { ready: "Buy now", ask: "Request an assessment" },
       },
@@ -1015,13 +785,13 @@ export const global: SiteContent = {
       tracks: [
         {
           key: "individual",
-                    name: "Individual: free to sit, ₩29,000 to widen",
+          name: "Individual: take BASIC, then pick a tier",
           who: "A student or a job seeker",
           steps: [
-            "Start opens the sign-up screen. Signing up logs you in and returns you to where you were",
-            "253 questions, about 15 to 20 minutes, at no charge. Every answer saves as you go, so you can close the tab and come back",
-            "The job areas and activity axes open as soon as it is scored. No departmental approval to wait on",
-            "Read it, and open the rest for ₩29,000 if you want it. You never retake the items",
+            "Start free opens the pricing page. Signing up logs you in and returns you to where you were",
+            "BASIC costs nothing. Every answer saves as you go, so you can close the tab and come back",
+            "The role group to look at first, and one next step, open as soon as it is scored. No departmental approval to wait on",
+            "Take STANDARD if roles still need weighing up, or PRO once the direction is set",
           ],
         },
         {
@@ -1121,7 +891,6 @@ export const global: SiteContent = {
     deeperHeading: "Start where it matters to you",
     nextLabel: "Next",
     nextSheetToAdopt: "What would this look like at your institution?",
-    nextDiagnosis: "The diagnosis",
     nextContact: "Talk to us",
     policy: {
       termsLabel: "Terms of service",

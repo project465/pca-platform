@@ -30,7 +30,6 @@ export type {
   SiteKey,
   MapContent,
   DeployStatus,
-  SheetBlock,
   SheetTab,
   Named,
   Link,
