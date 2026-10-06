@@ -1,5 +1,6 @@
 import Link from "next/link";
 import BrandHome from "@/components/sf/brand-home";
+import PublicFooter from "@/components/sf/public-footer";
 import { resolveLang } from "@/lib/locale-server";
 import { toLang2, BRAND } from "@/lib/surface-text";
 import { PRODUCT } from "@/lib/product-copy";
@@ -76,6 +77,8 @@ export default async function SamplePage({
           </Link>
         </div>
       </div>
+
+      <PublicFooter lang={L} />
     </div>
   );
 }

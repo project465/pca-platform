@@ -9,6 +9,7 @@ import SignupForm from "./signup-form";
 import { activeDocs } from "@/lib/consent";
 import { BRAND, toLang2, txer } from "@/lib/surface-text";
 import AuthBrand from "@/components/auth-brand";
+import PublicFooter from "@/components/sf/public-footer";
 import { formatMoney } from "@/lib/money";
 
 export const metadata = { title: "가입하고 시작 · CareerMatri" };
@@ -73,6 +74,10 @@ export default async function SignupPage({
         </p>
         <p className="panel-foot">{t("suFromSchool", lang)}</p>
         </div>
+
+        {/* 한 가지만 하는 쪽이라 법적 표시 전체는 두지 않는다. 약관과
+            고객지원으로 가는 길만 남긴다 */}
+        <PublicFooter lang={L} compact />
       </div>
     </div>
   );

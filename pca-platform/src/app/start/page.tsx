@@ -6,6 +6,7 @@ import { resolveLang } from "@/lib/locale-server";
 import { toLang2 } from "@/lib/surface-text";
 import { START } from "@/lib/start-copy";
 import BrandHome from "@/components/sf/brand-home";
+import PublicFooter from "@/components/sf/public-footer";
 import LangSwitch from "@/components/lang-switch";
 
 export const metadata = { title: "CareerMatri" };
@@ -85,6 +86,8 @@ export default async function StartPage({
           <Link href="/product">{START.about[L]}</Link>
         </p>
       </main>
+
+      <PublicFooter lang={L} />
     </div>
   );
 }

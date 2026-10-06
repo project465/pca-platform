@@ -1456,3 +1456,69 @@ body:has(.stgmark) .asnav { bottom: 44px }
   body:has(.stgmark) { --stg-h: 56px }
   body:has(.stgmark) .asnav { bottom: 56px }
 }
+
+/* ── 공개 판매 표면의 꼬리말 ──────────────────────────────────────────
+ *
+ * **전자상거래법 제10조 표시다.** 장식이 아니므로 눈에 띄려고 하지
+ * 않지만, 빈칸은 눈에 띄어야 한다(`.is-missing`). 값은 전부
+ * `/admin/business` 한 자리에서 온다.
+ *
+ * 새 토큰을 만들지 않았다. 바탕 · 선 · 메타 글자색 · 여백 · 글 폭이
+ * 전부 `:root` 에 있던 것이다.
+ */
+.pfoot {
+  margin-top: auto;
+  padding: var(--sp-6) var(--sp-4) var(--sp-5);
+  background: var(--sf-surface-2);
+  border-top: 1px solid var(--sf-line);
+  /* **쪽을 넘치게 하지 않는다.** 꼬리말은 늘 쪽 맨 아래라, 여기서
+     가로로 1px 만 비져 나와도 문서 전체에 가로 스크롤바가 선다 */
+  width: 100%; max-width: 100%;
+}
+.pfoot-in {
+  max-width: 1180px; margin: 0 auto;
+  display: flex; flex-direction: column; gap: var(--sp-3);
+}
+.pfoot-name {
+  font-size: 13.5px; font-weight: 700; color: var(--sf-ink);
+  letter-spacing: -.015em;
+}
+.pfoot-biz {
+  margin: 0;
+  display: flex; flex-wrap: wrap; gap: 4px 18px;
+  font-size: 12.5px; line-height: 1.8; color: var(--sf-ink-3);
+}
+/* 한 칸이 이름과 값 한 쌍이다. 좁아지면 쌍째로 줄이 바뀌어서
+   `대표자` 와 그 값이 갈라지지 않는다 */
+.pfoot-biz > div { display: flex; gap: 6px; max-width: 100%; }
+.pfoot-biz dt { font-weight: 600; flex: 0 0 auto }
+.pfoot-biz dd { margin: 0; min-width: 0; overflow-wrap: break-word }
+/* **누르는 자리를 24px 로 둔다**(규격 §44 · WCAG 2.2 2.5.8). 글 한가운데
+   있는 링크는 그 예외지만 여기는 칸 하나가 링크 하나라 예외가 아니다.
+   손전화에서 메일 주소를 누르려다 옆 줄이 눌린다 */
+.pfoot-biz a { color: inherit; text-decoration: underline;
+  text-underline-offset: 2px; text-decoration-color: var(--sf-line);
+  display: inline-flex; align-items: center; min-height: 24px }
+.pfoot-biz a:hover { color: var(--sf-ink); text-decoration-color: currentColor }
+/* **빈칸은 숨기지 않고 눈에 띄게 둔다.** 지우면 화면만 멀쩡해지고
+   가게는 여전히 상호가 없다 */
+.pfoot .is-missing { color: var(--sf-warn); font-weight: 700 }
+.pfoot-sup { margin: 0; font-size: 12.5px; color: var(--sf-ink-3) }
+.pfoot-links {
+  display: flex; flex-wrap: wrap; gap: 6px 16px;
+  font-size: 12.5px; padding-top: var(--sp-2);
+  border-top: 1px solid var(--sf-line-2);
+}
+.pfoot-links a { color: var(--sf-ink-2); text-decoration: none; font-weight: 600;
+  display: inline-flex; align-items: center; min-height: 24px }
+.pfoot-links a:hover { color: var(--sf-accent); text-decoration: underline }
+.pfoot-c { margin: 0; font-size: 12px; color: var(--sf-ink-3) }
+.pfoot.is-compact { padding: var(--sp-4) var(--sp-4) var(--sp-5); background: transparent }
+.pfoot.is-compact .pfoot-links { border-top: 0; padding-top: 0 }
+
+@media (max-width: 620px) {
+  .pfoot { padding: var(--sp-5) var(--sp-3) var(--sp-4) }
+  /* 손전화에서는 한 쌍씩 한 줄이다. 가로로 흘리면 `세종특별자치시
+     한누리대로 2143, 704호` 같은 긴 값이 쪽을 밀어낸다 */
+  .pfoot-biz { flex-direction: column; gap: 2px }
+}

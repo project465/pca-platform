@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/session";
 import LoginForm from "./login-form";
 import AuthBrand from "@/components/auth-brand";
+import PublicFooter from "@/components/sf/public-footer";
 import { BRAND } from "@/lib/surface-text";
 
 export const metadata = { title: "로그인 · CareerMatri" };
@@ -36,6 +37,10 @@ export default async function LoginPage({
             </Link>
           </div>
         </div>
+
+        {/* 한 가지만 하는 쪽이라 법적 표시 전체는 두지 않는다. 약관과
+            고객지원으로 가는 길만 남긴다 */}
+        <PublicFooter lang="ko" compact />
       </div>
     </main>
   );

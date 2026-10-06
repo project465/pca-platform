@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import BrandHome from "@/components/sf/brand-home";
+import PublicFooter from "@/components/sf/public-footer";
 import { readFile } from "node:fs/promises";
 import { resolveLang } from "@/lib/locale-server";
 import { activeDocs, type ConsentKind } from "@/lib/consent";
@@ -20,6 +21,25 @@ import { toLang2, txer } from "@/lib/surface-text";
  */
 const KINDS: ConsentKind[] = ["terms", "privacy", "marketing", "third_party"];
 
+/**
+ * 환불정책은 동의 문서가 아니다.
+ *
+ * 약관과 처리방침은 가입할 때 **동의를 받는** 글이라 `consent_documents`
+ * 에 판과 효력 시점이 적힌다. 환불정책은 동의를 받지 않고 **알리기만**
+ * 하는 글이고(전자상거래법 제13조 제2항의 청약철회 조건 표시), 그
+ * 표의 `kind` CHECK 에도 들어가지 않는다.
+ *
+ * 그래서 줄 없이 파일만 읽는다. 전에는 상품 쪽 꼬리말이 `/legal/refund`
+ * 를 가리키는데 이 쪽이 404 였다: **환불 조건을 적어 두었다고 링크를
+ * 걸어 놓고 눌리면 없는 쪽으로 보냈다.**
+ */
+const STANDALONE: Record<string, { path: string; ko: string; en: string }> = {
+  refund: {
+    path: "sites/careermetri/legal/03-refund.md",
+    ko: "환불정책", en: "Refund policy",
+  },
+};
+
 export default async function LegalPage({
   params, searchParams,
 }: {
@@ -28,10 +48,43 @@ export default async function LegalPage({
 }) {
   const { kind } = await params;
   const sp = await searchParams;
-  if (!KINDS.includes(kind as ConsentKind)) notFound();
+  const solo = STANDALONE[kind];
+  if (!solo && !KINDS.includes(kind as ConsentKind)) notFound();
 
   const L = toLang2(await resolveLang(sp.lang));
   const T = txer(L);
+
+  if (solo) {
+    const text = await readFile(solo.path, "utf8").catch(() => null);
+    return (
+      <div className="pub">
+        <header className="pubtop">
+          <BrandHome />
+          <div className="pubtop-r">
+            <Link href="/" className="sf-btn ghost sm">{T("navHome")}</Link>
+          </div>
+        </header>
+        <div className="pubwrap" style={{ maxWidth: 760 }}>
+          <div className="sf-head">
+            <div className="sf-head-t">
+              <h1 className="sf-h1">{L === "en" ? solo.en : solo.ko}</h1>
+            </div>
+          </div>
+          {text ? (
+            <pre className="lgbody">{text}</pre>
+          ) : (
+            /* 없는 것을 있는 척하지 않는다 */
+            <p className="sf-sub">
+              {L === "en"
+                ? "The refund policy text is not available yet."
+                : "환불정책 본문을 아직 올리지 못했습니다."}
+            </p>
+          )}
+        </div>
+        <PublicFooter lang={L} />
+      </div>
+    );
+  }
   const docs = await activeDocs(L);
   const doc = docs.find((d) => d.kind === kind);
   if (!doc) notFound();
@@ -74,6 +127,8 @@ export default async function LegalPage({
           <p className="sf-sub">{T("cnNotAgreed")}</p>
         )}
       </div>
+
+      <PublicFooter lang={L} />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import BrandHome from "@/components/sf/brand-home";
+import PublicFooter from "@/components/sf/public-footer";
 import { currentUser } from "@/lib/session";
 import { resolveLang } from "@/lib/locale-server";
 import { toLang2, BRAND } from "@/lib/surface-text";
@@ -8,7 +9,6 @@ import CareerFlow from "@/components/sf/career-flow";
 import { TIERS, valueOf } from "@/lib/tiers";
 import { catalogFor, priceState, sellable } from "@/lib/catalog";
 import { money, resolveMarket } from "@/lib/market";
-import { businessInfo, jobInfoLicense } from "@/lib/business";
 import { supportConfig } from "@/lib/support";
 import { step } from "@/lib/funnel-server";
 import LangSelect from "@/components/sf/lang-select";
@@ -50,8 +50,6 @@ export default async function ProductPage({
   const user = await currentUser();
   const mk = await resolveMarket(sp.market);
   const list = await catalogFor(mk.market);
-  const biz = await businessInfo();
-  const license = await jobInfoLicense();
   const sup = await supportConfig();
   const P = PRODUCT;
   /* **링크가 시장을 떨어뜨리지 않게 들고 다닌다.** 쿠키가 있어도 주소에
@@ -250,32 +248,12 @@ export default async function ProductPage({
           )}
         </section>
 
-        {/* 13. 사업자 표시 (전자상거래법 제10조) */}
-        <div className="pdbiz">
-          {biz.fields.map((f) => (
-            <dl key={f.key}>
-              <dt>{f.label[L]}</dt>
-              <dd className={f.value ? undefined : "is-missing"}>
-                {f.value ?? (L === "en" ? "not set" : "확인 필요")}
-              </dd>
-            </dl>
-          ))}
-          <dl>
-            <dt>{L === "en" ? "Career information filing" : "직업정보제공사업 신고"}</dt>
-            <dd>{license ?? (L === "en" ? "not set" : "확인 필요")}</dd>
-          </dl>
-          <dl>
-            <dt>{L === "en" ? "Terms" : "약관"}</dt>
-            <dd>
-              <Link href={`/legal/terms${q}`}>{L === "en" ? "Terms of service" : "이용약관"}</Link>
-              {" · "}
-              <Link href={`/legal/privacy${q}`}>
-                {L === "en" ? "Privacy policy" : "개인정보 처리방침"}
-              </Link>
-            </dd>
-          </dl>
-        </div>
       </div>
+
+      {/* 13. 사업자 표시 (전자상거래법 제10조). **쪽 안에 또 적지 않는다**:
+          공개 쪽 전부가 같은 꼬리말 한 벌을 쓰고, 값은 `/admin/business`
+          한 자리에서 온다 */}
+      <PublicFooter lang={L} />
     </div>
   );
 }

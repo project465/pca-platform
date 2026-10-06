@@ -1,5 +1,6 @@
 import Link from "next/link";
 import BrandHome from "@/components/sf/brand-home";
+import PublicFooter from "@/components/sf/public-footer";
 import { currentUser } from "@/lib/session";
 import { resolveLang } from "@/lib/locale-server";
 import {
@@ -181,6 +182,8 @@ export default async function PricingPage({
           </p>
         </section>
       </div>
+
+      <PublicFooter lang={L} />
     </div>
   );
 }
