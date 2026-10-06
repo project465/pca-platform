@@ -1,5 +1,6 @@
 import Link from "next/link";
 import BrandHome from "./brand-home";
+import PublicFooter from "./public-footer";
 import type { Lang2 } from "@/lib/surface-text";
 
 /**
@@ -35,6 +36,10 @@ export default function NotOpen({ lang }: { lang: Lang2 }) {
           </Link>
         </p>
       </div>
+
+      {/* **닫아 두었다고 법적 표시까지 치우지 않는다.** 여기 닿은 사람도
+          약관과 문의 경로가 필요하고, 비어 있는 칸은 비어 있다고 적힌다 */}
+      <PublicFooter lang={L} />
     </div>
   );
 }
