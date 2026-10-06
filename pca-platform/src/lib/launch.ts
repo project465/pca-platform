@@ -368,16 +368,34 @@ export async function launchReport(): Promise<LaunchReport> {
           `다른 도메인에서 나가면 스팸으로 떨어집니다.`)
         : row("email", "EMAIL", "거래 메일", "READY", `${mailFrom} 로 나갑니다.`));
 
-    rows.push(!biz.complete
-      ? row("legal", "LEGAL", "법적 표시", "BLOCKED",
+    /**
+     * 전자상거래법 제10조 표시 일곱 칸.
+     *
+     * **줄을 `LEGAL` 에서 떼어 냈다.** 전에는 법적 표시와 약관 본문을 한
+     * 줄에서 보고 `launch:check` 만 `BUSINESS_INFO` 줄을 따로 더 냈다.
+     * 그래서 같은 사실을 화면은 `LEGAL` 로, 명령줄은 `LEGAL` 과
+     * `BUSINESS_INFO` 둘로 적었다. **화면과 검사가 다른 코드를 보면 둘 중
+     * 하나가 거짓말을 한다**(설계 원칙 10).
+     *
+     * 갈래를 가른 것이 일부러다: 일곱 칸은 **사업자가 운영 화면에서
+     * 채우는 것**이고 약관 본문은 **법률 검토와 번역이 끝나야 들어오는
+     * 것**이다. 한 줄로 묶으면 읽은 사람이 누구에게 말해야 할지 모른다.
+     */
+    rows.push(biz.complete
+      ? row("business", "BUSINESS_INFO", "사업자 표시", "READY",
+        `${biz.fields.length}칸이 다 찼습니다. 공개 꼬리말과 상품 쪽이 ` +
+        `같은 값을 읽습니다.`)
+      : row("business", "BUSINESS_INFO", "사업자 표시", "BLOCKED",
         `전자상거래법 제10조 표시가 ${biz.missing.length}칸 비어 있습니다 ` +
-        `(${biz.missing.join(" · ")}). 지어내지 않았습니다.`, "사업자 등록")
-      : pending.length
-        ? row("legal", "LEGAL", "법적 표시", "BLOCKED",
-          `${locale} 약관 ${pending.length}개의 본문이 없습니다. 기계로 번역해 ` +
-          `두지 않았습니다.`, "법률 검토·번역")
-        : row("legal", "LEGAL", "법적 표시", "READY",
-          `사업자 표시 일곱 칸과 필수 동의 ${docs.length}개가 있습니다.`));
+        `(${biz.missing.join(" · ")}). 지어내지 않았습니다.`, "사업자 등록"));
+
+    /* 약관 본문. **일곱 칸은 위에서 따로 본다** */
+    rows.push(pending.length
+      ? row("legal", "LEGAL", "법적 표시", "BLOCKED",
+        `${locale} 약관 ${pending.length}개의 본문이 없습니다. 기계로 번역해 ` +
+        `두지 않았습니다.`, "법률 검토·번역")
+      : row("legal", "LEGAL", "법적 표시", "READY",
+        `필수 동의 ${docs.length}개의 본문이 ${locale} 로 있습니다.`));
 
     /* 지역화는 글로벌에서만 런칭을 막는다. 한국판은 사전을 거치지 않고
        그대로 나가므로 영어 공백이 한국 런칭을 막을 일이 없다 */

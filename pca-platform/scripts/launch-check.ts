@@ -20,8 +20,6 @@ import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { query, queryOne } from "../src/lib/db";
 import { launchReport, AREAS, AREA_LABEL, type Area } from "../src/lib/launch";
 import { tiersDistinct } from "../src/lib/tiers";
-import { businessInfo } from "../src/lib/business";
-import { supportConfig } from "../src/lib/support";
 import { appDomain } from "../src/lib/app-domain";
 
 const T: { n: string; pass: boolean; fix?: string }[] = [];
@@ -46,7 +44,19 @@ function filesUnder(dir: string, ext: string[]): string[] {
 }
 
 async function main() {
-  /* ── 1. 런칭 표가 그대로 서는가 ─────────────────────────────────── */
+  /**
+   * ── 1. 런칭 표가 그대로 서는가 ──────────────────────────────────
+   *
+   * **막힌 것은 전부 여기서 온다.** 전에는 가격 · 결제 · 메일 · 사업자
+   * 표시 · 약관 · 지원 · 복구를 이 파일이 한 번 더 판정했고, 문면이
+   * 조금씩 갈려서 같은 사실이 `2가지` 로 세어졌다. `/admin/launch` 에만
+   * 없던 `BUSINESS_INFO` 도 그 자리에서 생긴 차이다.
+   *
+   * 지금은 `launchReport()` 하나가 상태와 까닭과 누가 고치는지를 정하고,
+   * 화면과 이 검사가 **같은 줄을 읽는다**(설계 원칙 10). 아래 `ok()` 들은
+   * 성격이 다르다: 저쪽은 "오늘 켤 수 있는가" 이고 여기는 "코드가 그렇게
+   * 짜여 있는가" 다.
+   */
   const r = await launchReport();
   ok("런칭 표가 두 시장을 따로 센다", r.markets.length === 2,
     "src/lib/launch.ts 의 markets");
@@ -68,16 +78,8 @@ async function main() {
   ok("승인되지 않은 가격에 금액이 적혀 있지 않다", lying.length === 0,
     lying.map((p) => p.code).join(" · "));
 
-  const approved = prices.filter((p) => p.price_status === "approved" && p.amount > 0);
-  if (!approved.length) {
-    blocked("PRICE", "가격 승인",
-      `ME_V2 ${prices.length}개 등급의 값이 승인되지 않았습니다. ` +
-      `db/schema_phase2_3.sql 에서 amount 와 price_status 를 함께 고칩니다.`,
-      "사업 결정");
-  }
 
   /* ── 3. 결제: 운영에서 가짜가 켜지지 않는가 ─────────────────────── */
-  const provider = process.env.PAYMENTS_PROVIDER ?? "mock";
   /* **운영에서 mock 이 켜지면 서버가 뜨지 않아야 한다.** 코드가 그렇게
      짜여 있는지 여기서 실제로 불러 본다 */
   /* 판단은 `APP_ENV` 가 한다. **`NODE_ENV` 가 아니다**: 그 값은 빌드가
@@ -111,12 +113,6 @@ async function main() {
   ok("staging 에서는 가짜 결제가 열린다", stagingOpen,
     "공개 전 QA 가 막히면 안 된다");
 
-  if (provider === "mock") {
-    blocked("PAYMENT", "결제 대행사",
-      "PAYMENTS_PROVIDER 가 mock 입니다. 가맹점 심사가 끝나면 " +
-      "LAUNCH.md 의 다섯 줄을 .env 에 넣습니다.",
-      "결제 대행사·심사");
-  }
 
   /* ── 4. 도메인: 한 철자이고 staging 이 메일에 안 들어가는가 ──────── */
   const sites = await query<{ domain: string }>(
@@ -150,7 +146,7 @@ async function main() {
   ok("결제·메일 주소가 코드에 박혀 있지 않다", hard.length === 0, hard.join(" · "));
 
   /* ── 5. 메일 ────────────────────────────────────────────────────── */
-  const { mailReady, renderMail } = await import("../src/lib/outbox");
+  const { renderMail } = await import("../src/lib/outbox");
   ok("거래 메일 여섯 가지가 두 언어로 있다",
     (["signup", "purchase_done", "report_ready", "upgrade_done",
       "refund_requested", "refund_done"] as const)
@@ -175,22 +171,8 @@ async function main() {
   ok("DB 가 거래 메일 종류를 전부 받는다", probe.length === 0,
     `${probe.map((p) => p.kind).join(" · ")} — npm run db:phase2_2`);
 
-  if (!mailReady()) {
-    blocked("EMAIL", "거래 메일",
-      "MAIL_HOST · MAIL_FROM 이 비어 있어 한 통도 나가지 않습니다. " +
-      "메일 대행사를 붙이고 보내는 주소를 우리 도메인으로 맞춥니다.",
-      "운영 담당");
-  }
 
   /* ── 6. 법적 본문과 사업자 표시 ─────────────────────────────────── */
-  const biz = await businessInfo();
-  if (!biz.complete) {
-    blocked("BUSINESS_INFO", "사업자 표시",
-      `전자상거래법 제10조 표시가 ${biz.missing.length}칸 비어 있습니다 ` +
-      `(${biz.missing.join(" · ")}). BUSINESS_* 환경변수에 넣습니다. ` +
-      `지어내지 않았습니다.`,
-      "사업자 등록");
-  }
   const docs = await query<{ kind: string; locale: string; translation_status: string }>(
     `SELECT kind, locale, translation_status FROM consent_documents
       WHERE retired_at IS NULL AND required`,
@@ -198,21 +180,8 @@ async function main() {
   ok("필수 동의문이 두 언어로 들어 있다",
     ["ko", "en"].every((l) => docs.some((d) => d.locale === l)),
     `${docs.length}개`);
-  const pending = docs.filter((d) => d.translation_status === "pending");
-  if (pending.length) {
-    blocked("LEGAL", "영문 약관 본문",
-      `${pending.length}개 문서가 번역 전입니다. 지금은 한국어가 기준이라고 ` +
-      `영어로 적어 두었고, 기계로 번역해 두지 않았습니다.`,
-      "법률 검토·번역");
-  }
 
   /* ── 7. 지원 경로 ───────────────────────────────────────────────── */
-  const sup = await supportConfig();
-  if (!sup.ready) {
-    blocked("SUPPORT", "지원 메일",
-      "SUPPORT_EMAIL 이 비어 있습니다. 주소를 지어내지 않았습니다.",
-      "사업 결정");
-  }
   ok("지원 화면이 본인 것만 읽는다",
     readFileSync("src/lib/support.ts", "utf8").includes("WHERE o.user_id = $1"),
     "src/lib/support.ts");
@@ -223,17 +192,9 @@ async function main() {
     "deploy/backup.sh · docs/metri/44_production_infra.md");
   /* **사람이 적는 날짜를 믿지 않는다.** 기록은 `backup:restore` 가 끝까지
      돈 자리에서만 생긴다 */
-  const { get } = await import("../src/lib/settings");
-  const restoredAt = await get("backup_restore_verified_at").catch(() => null);
   ok("복구 시험 기록이 손으로 적는 값이 아니다",
     readFileSync("src/lib/launch.ts", "utf8").includes("backup_restore_verified_at"),
     "src/lib/launch.ts 의 backupRow");
-  if (!restoredAt) {
-    blocked("BACKUP_RESTORE", "복구 시험",
-      "복구를 한 번도 해 보지 않았습니다. `npm run backup:restore` 를 " +
-      "돌리면 받고 · 붓고 · 세고 · 기록까지 남깁니다.",
-      "운영 담당");
-  }
 
   /* ── 9. 영어 덮임 (글로벌만) ───────────────────────────────────── */
   const { localizationReport } = await import("../src/lib/localization");
