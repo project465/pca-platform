@@ -52,6 +52,7 @@ export const global: SiteContent = {
     menu: "Menu",
     floating: "Contact",
     start: "Start",
+    signin: "Sign in",
   },
 
   hero: {
@@ -59,7 +60,7 @@ export const global: SiteContent = {
     title: ["They chose engineering.", "Nobody told them which engineering."],
     lead:
       "Mechanical, electrical and computer engineering: 24 job clusters and 138 competencies, checked against real postings. The report does not say “you are collaborative”. It says “Simulation & CAE 80, ANSYS held 2 of 4, asked for in 89 of 132 postings for this role”. The activity axes are the same in every country, which is why the instrument travels.",
-    primary: { label: "See a real report", href: "#sample" },
+    primary: { label: "Start free", href: "/pricing" },
     secondary: { label: "Talk to us", href: "/contact" },
     priceline:
       "253 items, about 15 to 20 minutes. The job groups come free; the rest of the report opens for ₩29,000. Departments contract by cohort size.",
@@ -158,7 +159,7 @@ export const global: SiteContent = {
       line: "Every student in the department gets one of these, with their own name on it.",
       sub: "Tell us the department and the cohort size; we come back within a day with a plan and a quote.",
       primary: { label: "Talk to us", href: "/contact" },
-      secondary: { label: "See all ten sections", href: "/pca" },
+      secondary: { label: "See the product in detail", href: "/product" },
     },
   },
 

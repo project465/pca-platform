@@ -11,6 +11,7 @@ import {
   Who,
 } from "@/components/sections";
 import { FlowDiagram, NextLink, PhotoSlot, PullQuote, ReportMini } from "@/components/visuals";
+import { hrefSlug } from "@/lib/platform";
 import SampleReport from "@/components/sample-report";
 
 export default function Home() {
@@ -77,7 +78,7 @@ export default function Home() {
           </div>
           <div className="nextgrid">
             {site.nav.items.slice(0, 4).map((i) => (
-              <NextLink key={i.href} label={i.href.replace("/", "")} title={i.label} href={i.href} />
+              <NextLink key={i.href} label={hrefSlug(i.href)} title={i.label} href={i.href} />
             ))}
           </div>
         </div>

@@ -314,8 +314,12 @@ export type SiteContent = {
     contact: string;
     menu: string;
     floating: string;
-    /** 플랫폼으로 들어가는 버튼. 소개만 읽고 나가지 않게 헤더에 둔다 */
+    /** 플랫폼으로 들어가는 버튼. 소개만 읽고 나가지 않게 헤더에 둔다.
+        **가장 강한 단추는 가격표로 간다**: 문 고르는 쪽(`/start`)은 개인과
+        기관을 가르는 보조 통로이고, 개인 고객이 사는 자리는 가격표다 */
     start: string;
+    /** 이미 계정이 있는 사람. 앱의 로그인으로 간다 */
+    signin: string;
   };
 
   hero: {

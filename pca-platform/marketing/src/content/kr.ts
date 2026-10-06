@@ -53,6 +53,7 @@ export const kr: SiteContent = {
     menu: "메뉴",
     floating: "문의",
     start: "시작하기",
+    signin: "로그인",
   },
 
   hero: {
@@ -60,7 +61,7 @@ export const kr: SiteContent = {
     title: ["전공은 정했다. 그런데", "어디에 지원하지"],
     lead:
       "기계, 전기전자, 컴퓨터 세 전공의 직무군 24개와 역량 138개를 실제 채용공고에 대조합니다. 결과지에 적히는 건 “당신은 협력형입니다”가 아니라 “구조·유동 해석 80점, ANSYS 보유 2 / 요구 4, 이 직무 공고 132건 중 89건이 요구”입니다.",
-    primary: { label: "결과지 먼저 보기", href: "#sample" },
+    primary: { label: "무료로 시작하기", href: "/pricing" },
     secondary: { label: "도입·상담 문의", href: "/contact" },
     priceline:
       "253문항 약 15~20분. 직무 묶음까지는 무료로 받아 보시고, 나머지 절을 29,000원에 여십니다. 학과는 인원 단가로 계약합니다.",
@@ -154,7 +155,7 @@ export const kr: SiteContent = {
       line: "학과 학생 전원이 각자 자기 이름이 붙은 이 문서를 한 부씩 받습니다. 개인은 직무 묶음까지 무료로 보시고 나머지를 29,000원에 여십니다.",
       sub: "학과명과 인원만 주시면 적용안과 견적을 하루 안에 회신드립니다. 개인 신청도 같은 창구입니다.",
       primary: { label: "우리 학과 도입 문의", href: "/contact" },
-      secondary: { label: "결과지 11개 섹션 전체 보기", href: "/pca" },
+      secondary: { label: "상품 자세히 보기", href: "/product" },
     },
   },
 
@@ -775,7 +776,7 @@ export const kr: SiteContent = {
     heading: ["기계공학과 한 곳으로 시작해", "전 공대로 넓힙니다"],
     lead: "학과명과 인원만 적어 주시면 적용안과 견적을 정리해 보내 드립니다. 지금 문항이 준비된 전공은 기계공학이고, 전기전자·컴퓨터는 문항 작성 중입니다.",
     primary: { label: "도입·상담 문의하기", href: "/contact" },
-    secondary: { label: "결과지 먼저 보기", href: "/pca" },
+    secondary: { label: "상품 자세히 보기", href: "/product" },
   },
 
   about: {

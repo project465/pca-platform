@@ -12,7 +12,7 @@
  * 화면 안에서 끝나는 이동(버튼이 다음 쪽으로 보내는 것)은 요청 호스트를
  * 그대로 써도 된다. 그쪽은 **지금 보고 있는 창**에서 끝난다.
  */
-import { canonicalFor } from "./sites";
+import { canonicalFor, listSites } from "./sites";
 import { appDomain } from "./app-domain";
 
 /** 비었거나 localhost·staging 이면 믿지 않는다 */
@@ -67,4 +67,35 @@ export async function publicBaseForLocale(locale: string | null): Promise<string
 /** 개발에서만 쓰는 되돌림. 운영에서는 정규 주소가 늘 있어야 한다 */
 export function devFallback(origin: string): string {
   return origin.replace(/\/$/, "");
+}
+
+/**
+ * 공식 홈페이지.
+ *
+ * **앱과 홈페이지는 다른 자리다.** `app.careermatri.com` 은 가입하고
+ * 결제하고 응시하는 SaaS 이고, `careermatri.com` 은 서비스를 설명하고
+ * 영업하는 홈페이지다. 로그인하지 않은 사람이 머리띠의 로고를 누르면
+ * 그쪽으로 돌아간다.
+ *
+ * **주소를 코드에 적지 않는다.** `site_configs` 에서 읽고, 운영 쪽에서
+ * 급히 돌려야 하면 `MARKETING_URL` 로 덮는다.
+ *
+ * **소유가 확인된 자리만 가리킨다.** 안 산 도메인으로 손님을 보내면
+ * 주차 페이지나 남의 사이트에 떨어진다. `careermatri.co.kr` 이 아직
+ * 그 상태라, 한국 시장이어도 소유가 확인된 쪽으로 간다.
+ *
+ * 가리킬 자리가 없으면 `null` 이고, 부르는 쪽이 앱 안의 길로 되돌린다.
+ * **지어낸 주소를 내보내지 않는다.**
+ */
+export async function marketingHome(
+  market: "KR" | "GLOBAL" = "KR",
+): Promise<string | null> {
+  const forced = usable(process.env.MARKETING_URL);
+  if (forced) return forced;
+
+  const sites = await listSites().catch(() => []);
+  const owned = sites.filter((s) => s.active && s.ownership === "confirmed");
+  const pick = owned.find((s) => s.payment_market === market) ?? owned[0];
+  if (!pick) return null;
+  return usable(pick.canonical_url ?? (pick.domain ? `https://${pick.domain}` : null));
 }

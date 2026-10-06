@@ -28,8 +28,15 @@ export default function SiteHeader({ site }: { site: SiteContent }) {
 
         <div className="right">
           <RegionPicker site={site} />
-          {/* 소개만 읽고 나갈 수는 없어야 한다. 플랫폼으로 가는 문을 헤더에 둔다 */}
-          <a className="btn" href={platformStart(site)}>
+          {/* 이미 계정이 있는 사람은 설명을 읽을 일이 없다. 앱의 로그인으로
+              곧장 보낸다 */}
+          <a className="btn quiet" href={platformStart(site, "/login")}>
+            {site.nav.signin}
+          </a>
+          {/* **가장 강한 단추는 가격표로 간다.** 문 고르는 쪽(`/start`)은
+              개인과 기관을 가르는 보조 통로이고, 개인 고객이 사는 자리는
+              가격표다. 한 걸음 줄이면 그만큼 덜 샌다 */}
+          <a className="btn" href={platformStart(site, "/pricing")}>
             {site.nav.start}
           </a>
           <a className="btn solid" href="/contact">

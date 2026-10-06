@@ -58,6 +58,7 @@ export const kz: SiteContent = {
     menu: "Мәзір",
     floating: "Сұрау",
     start: "Бастау",
+    signin: "Кіру",
   },
 
   hero: {
@@ -140,7 +141,7 @@ export const kz: SiteContent = {
       line: "Студент қолына осындай құжат алады.",
       sub: "Факультет сол құжаттардың жасырын жиынтығын алады.",
       primary: { label: "Енгізу туралы сұрау", href: "/contact" },
-      secondary: { label: "Есеп құрылымы", href: "/pca" },
+      secondary: { label: "Өнімді толық көру", href: "/product" },
     },
   },
 

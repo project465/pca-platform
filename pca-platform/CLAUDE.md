@@ -1774,14 +1774,42 @@ revoked · expired. **초대를 좌석 사용으로 치지 않는다**: 쓴 것�
 상표는 보호 범위도 좁다. **판단은 변리사가 한다.** KIPRIS 41류(교육·검사)·
 42류(SaaS) 조회 때 이 질문을 그대로 들고 간다.
 
-- 한국 소개 `careermatri.co.kr` · 글로벌 소개 `careermatri.com` ·
-  플랫폼 `app.careermatri.com` (설계 원칙 5: 플랫폼은 전 세계 하나)
+- 공식 홈페이지 `careermatri.com` · 앱 `app.careermatri.com` (설계 원칙 5:
+  플랫폼은 전 세계 하나). **한 홈페이지가 두 시장을 다 받는다** — 시장은
+  호스트로 갈리지 않고 앱 안의 market/locale 로 갈린다. `careermatri.co.kr`
+  은 KR 런칭의 필수 조건이 아니다 (2026-10-06)
 - **내부 경로와 명령은 `metri` 로 둔다**: `docs/metri/` · `npm run metri:*` ·
   `db/schema_metri.sql`. 새 이름이 '메트리' 를 품고 있어 줄임말이 그대로
   맞고, 바꾸면 고칠 곳만 늘고 얻는 것이 없다
 - 이름 후보 27개와 고른 기준은 `docs/metri/24_naming.md`. 접은 내력은
   `docs/metri/20_domains.md` 0-1절. **두 문서의 '메트리' 는 옛 이름이거나
   남의 회사라 바꾸지 않았다**
+
+**집이 둘이고 문은 한 방향이다.** (2026-10-06)
+
+`careermatri.com` 은 설명하고 파는 쪽이고, `app.careermatri.com` 은 가입·
+결제·응시·결과·PDF·Evidence 를 맡는 쪽이다. **홈페이지에는 검사도 결제도
+두지 않는다.** 둘을 한 집에 두면 결제와 응시가 마케팅 배포 주기에 묶이고,
+홈페이지를 고치다 결제가 멈춘 날이 생긴다.
+
+- 홈페이지의 공개 단추는 전부 앱으로 간다. 돌리는 자리는 원고 네 벌이
+  아니라 **읽는 자리 한 곳**이다 (`marketing/src/lib/platform.ts` 의
+  `withAppLinks`, `getSite()` 가 한 번 부른다). 단추마다 고치면 열두 곳
+  중 한 곳을 빠뜨리고, 빠뜨린 그 단추가 홈페이지 안에서 404 로 끝난다
+- 앱의 로고는 반대 방향이다. **로그인하지 않았으면** 홈페이지
+  (`marketingHome()` → `site_configs` 의 소유 확인된 주소), **로그인했으면**
+  그 면의 첫 화면(개인 `/my` · Campus `/org` · Admin `/admin`).
+  `src/components/sf/brand-home.tsx` 한 곳이 정한다
+- **세션을 두 사이트가 나눠 쓰지 않는다.** 홈페이지는 로그인을 모르고,
+  쿠키도 토큰도 건네지 않는다. 넘어가는 것은 `?lang` 하나다
+- **같은 탭에서 간다.** `target="_blank"` 를 쓰지 않는다: 새 탭으로 열면
+  뒤로 가기가 끊기고, 돌아오려는 사람이 창을 닫는다
+
+**이름표를 주소에서 뽑을 때 앞 글자만 떼지 않는다.** `href.replace("/", "")`
+는 `/pricing` 에서는 맞고 `https://app.careermatri.com/pricing?lang=ko`
+에서는 `https:/app.careermatri.com/...` 를 띠 위에 찍는다. 주소가 이름표
+자리에 보이면 읽는 사람은 고장으로 본다. `hrefSlug()` 가 마지막 칸만
+쓴다.
 
 **업그레이드는 코드로 팔 수 없다.** (2026-09-15)
 

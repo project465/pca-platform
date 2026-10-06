@@ -59,6 +59,7 @@ export const tr: SiteContent = {
     menu: "Menü",
     floating: "İletişim",
     start: "Başla",
+    signin: "Giriş yap",
   },
 
   hero: {
@@ -141,7 +142,7 @@ export const tr: SiteContent = {
       line: "Öğrencinin eline böyle bir belge geçiyor.",
       sub: "Bölüm ise aynı belgelerin anonim toplamını alıyor.",
       primary: { label: "Kurulum için yazın", href: "/contact" },
-      secondary: { label: "Rapor yapısı", href: "/pca" },
+      secondary: { label: "Ürünü ayrıntılı gör", href: "/product" },
     },
   },
 

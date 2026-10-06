@@ -3,6 +3,7 @@ import Shell from "@/components/shell";
 import ResultSheet from "@/components/result-sheet";
 import { Analyze, Choose, Styles, Why } from "@/components/sections";
 import { NextLink, PageHead, PhotoSlot } from "@/components/visuals";
+import { hrefSlug } from "@/lib/platform";
 
 export const metadata = { title: "PCA" };
 
@@ -29,7 +30,7 @@ export default function PcaPage() {
             </h2>
             <div className="nextgrid" style={{ gridTemplateColumns: "1fr" }}>
               {site.nav.items.slice(1, 3).map((i) => (
-                <NextLink key={i.href} label={i.href.replace("/", "")} title={i.label} href={i.href} />
+                <NextLink key={i.href} label={hrefSlug(i.href)} title={i.label} href={i.href} />
               ))}
             </div>
           </div>

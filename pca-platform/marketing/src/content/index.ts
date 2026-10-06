@@ -1,4 +1,5 @@
 import type { SiteContent, SiteKey } from "./types";
+import { withAppLinks } from "@/lib/platform";
 import { global } from "./global";
 import { kr } from "./kr";
 import { kz } from "./kz";
@@ -18,7 +19,10 @@ export function getSite(): SiteContent {
     const known = Object.keys(SITES).join(", ");
     throw new Error(`SITE=${key} 에 해당하는 원고가 없습니다. 지금 있는 것: ${known}`);
   }
-  return site;
+  /* **앱이 맡은 길은 앱으로 보낸다.** 원고에 `/pricing` · `/login` 처럼
+     상대 주소로 적혀 있어서 눌리면 홈페이지 안에서 끝났다. 원고를 네 벌
+     고치는 대신 읽는 자리에서 한 번 돌린다(`lib/platform.ts`) */
+  return withAppLinks(site, site);
 }
 
 export type {

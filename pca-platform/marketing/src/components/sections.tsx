@@ -794,7 +794,10 @@ export function PricingSection({ site }: { site: SiteContent }) {
                   payable 이 켜지기 전에는 값만 보여주고 접수는 문의로 받는다. */}
               <a
                 className={`btn${pl.featured ? " solid" : ""}`}
-                href={pl.payable ? platformStart(site) : "/contact"}
+                /* 살 수 있는 요금제는 **가격표로** 보낸다. 문 고르는 쪽은
+                   개인과 기관을 가르는 자리라, 이미 요금제를 고른 사람에게는
+                   한 걸음 더다 */
+                href={pl.payable ? platformStart(site, "/pricing") : "/contact"}
               >
                 {pl.payable ? pl.cta.ready : pl.cta.ask}
               </a>

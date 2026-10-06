@@ -127,3 +127,86 @@ marketing/src/content/global.ts   같은 두 줄
   비어 있다는 뜻이 아니다
 - **'메트리' 상표.** KIPRIS 도 막혀 있다. 이름을 확정하기 전에 볼 것
 - **호스팅.** 도메인이 정해져야 인증서와 DNS 레코드를 정한다
+
+## 6. 2026-10-06: 공식 웹 구조를 확정했다
+
+### 6-1. 역할
+
+| 호스트 | 맡는 것 | 맡지 않는 것 |
+|---|---|---|
+| `careermatri.com` | 공식 홈페이지 · 서비스 설명 · 영업 | 회원가입 · 로그인 · 결제 · 검사 · 결과지 · PDF |
+| `app.careermatri.com` | 가입 · 로그인 · 결제 · 검사 · 결과 · PDF · Evidence | 마케팅 원고 |
+
+시장(KR / GLOBAL)은 **호스트로 갈리지 않는다.** 앱 안의 market 과 locale
+로 갈린다. 그래서 `careermatri.co.kr` 은 KR 런칭의 필수 조건이 아니다.
+
+`PLATFORM_URL=https://app.careermatri.com` 이 앱 도메인의 단일 원본이고
+(`src/lib/app-domain.ts`), 홈페이지 주소는 `site_configs` 에서 읽는다
+(`marketingHome()`, 소유가 확인된 것만).
+
+### 6-2. 홈페이지 → 앱 (공개 단추)
+
+돌리는 자리는 원고 네 벌이 아니라 **읽는 자리 한 곳**이다:
+`marketing/src/lib/platform.ts` 의 `withAppLinks` 를 `getSite()` 가 한 번
+부른다. `APP_PATHS` 에 적힌 경로(`/pricing` · `/login` · `/signup` ·
+`/product` · `/start` · `/free` · `/support`)만 앱으로 돌아가고, 언어는
+`?lang` 으로 들고 간다.
+
+| 홈페이지 단추 | 가는 곳 |
+|---|---|
+| 머리띠 `시작하기` | `app.careermatri.com/pricing?lang=…` |
+| 머리띠 `로그인` | `app.careermatri.com/login?lang=…` |
+| 머리띠 `요금제` | `app.careermatri.com/pricing?lang=…` |
+| 첫 화면 `무료로 시작하기` | `app.careermatri.com/pricing?lang=…` |
+| `상품 자세히 보기` | `app.careermatri.com/product?lang=…` |
+| 요금제 칸의 `바로 신청하기` (payable) | `app.careermatri.com/pricing?lang=…` |
+| 개인/기관 문 고르기 `시작하기` | `app.careermatri.com/start?lang=…` |
+| 기관·학과 단추 | 홈페이지 `/contact` (앱으로 보내지 않는다) |
+
+`payable` 이 꺼진 요금제는 지금도 `/contact` 로 간다. 값만 적어 두고
+접수는 문의로 받는 자리다.
+
+### 6-3. 앱 → 홈페이지 (로고)
+
+`src/components/sf/brand-home.tsx` 한 곳이 정한다.
+
+| 상태 | 로고를 누르면 |
+|---|---|
+| 비로그인 | `https://careermatri.com` (`marketingHome()`; 없으면 `/start`) |
+| 개인 | `/my` |
+| Campus (`org_admin` · `instructor`) | `/org` |
+| Admin (`superadmin`) | `/admin` |
+
+`/my` · `/org` · `/admin` 안에서는 `Shell` 이 `HOME[surface]` 를 넘겨서
+**면이 섞이지 않는다.** 공개 화면(`/pricing` · `/product` · `/sample` ·
+`/legal/*`)에서는 세션을 읽어 그 사람의 첫 화면으로 간다.
+
+**세션은 두 사이트가 나눠 쓰지 않는다.** 홈페이지는 로그인을 모르고,
+넘어가는 것은 `?lang` 하나다. 이동은 같은 탭이다.
+
+### 6-4. 남아 있는 구 결과지 구조 (삭제는 보고 후)
+
+| 자리 | 무엇인가 | 운영과 충돌하나 |
+|---|---|---|
+| `marketing/src/app/pca/page.tsx` + `components/result-sheet.tsx` | 홈페이지 안의 옛 결과지 구성 뷰어. 머리띠 `결과지` 항목이 가리킨다 | 충돌은 없다(앱과 호스트가 다르다). 공식 홈페이지 역할과는 맞지 않는다 |
+| `marketing/src/app/pricing/page.tsx` | 홈페이지가 따로 들고 있는 요금 페이지 | **값이 갈릴 수 있다.** 머리띠 `요금제` 가 앱으로 가면서 들어오는 길이 끊겨 떠 있다 |
+| `sites/careermetri/imweb/05-result.html` | 아임웹에 붙이는 '개인 결과 리포트' 절. "여덟 개 섹션 · PDF 70쪽" 이라 적혀 있다 | 지금 결과지는 11절이다. **숫자가 갈려 있다** |
+| `sites/careermetri/imweb/01-hero.html` · `19-cta.html` 의 `href="/result"` | 아임웹 CMS 에 만든 결과 예시 페이지로 간다 | 그 페이지는 **저장소에 없다.** 지우려면 아임웹에서 지워야 하고, 지우면 이 두 단추가 끊긴다 |
+| `sites/careermetri/index.html` 의 `#result` | 혼자 서는 한 장 안의 절 앵커 | 충돌 없다 |
+| `sites/careermetri-print/index.html` | 인쇄용 전단. 28문항 프로토타입 주소와 `HARI CO.,LTD` · `010-7392-7211` 이 적혀 있다 | 확정된 사업자 정보(주식회사 에이치에이연구원 · 044-867-7211)와 **다르다** |
+
+`src/app/pca/[...path]/route.ts` 는 **옛 결과지가 아니다.** 채점 엔진
+(`sites/pca-platform/assets/*.js`)을 앱이 같은 주소에서 내주는 자리이고
+결과지와 PDF 가 그것을 불러 쓴다. 지우면 결과지가 선다.
+
+### 6-5. 이번에 돌린 것
+
+아임웹 조각 네 곳(`01-hero` · `01c-try` · `19-cta` · `21-dock`)의 "무료
+진단 4분" 단추가 `project465.github.io/pca-platform` **프로토타입**을 새
+탭으로 열고 있었다. 검사는 앱에서만 돈다는 규칙과 같은 탭 규칙을 둘 다
+어기는 자리라 `https://app.careermatri.com/pricing` 으로 돌리고
+`target="_blank"` 를 뗐다. 28문항 프로토타입은 68~92문항 결과지와 다른
+검사라 문항 수를 적던 글도 지웠다.
+
+**아임웹은 저장소 밖이다.** 이 조각들은 붙여 넣는 원본이라, 고친 것이
+실제 `careermatri.com` 에 반영되려면 아임웹에서 다시 붙여야 한다.
