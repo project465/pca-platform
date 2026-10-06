@@ -11,7 +11,8 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import LogoutButton from "@/components/logout-button";
-import { BRAND, type Lang2, txer, type TxKey } from "@/lib/surface-text";
+import { type Lang2, txer, type TxKey } from "@/lib/surface-text";
+import BrandHome from "./brand-home";
 import { Icon, type IconName } from "./icon";
 
 export type NavItem = {
@@ -30,6 +31,13 @@ const SUB: Record<Surface, string | null> = {
   individual: null,
   campus: "Campus",
   admin: "Admin",
+};
+
+/** 면마다의 첫 화면. 로고를 누르면 가는 곳이고 **면을 넘지 않는다** */
+const HOME: Record<Surface, string> = {
+  individual: "/my",
+  campus: "/org",
+  admin: "/admin",
 };
 
 function initials(name: string): string {
@@ -72,13 +80,10 @@ export function Shell({
   return (
     <div className="sf">
       <aside className="sf-side">
-        <div className="sf-brand">
-          <span className="sf-brand-mark" aria-hidden="true">CM</span>
-          <span className="sf-brand-name">
-            {BRAND.root}
-            {sub ? <span className="sf-brand-sub">{sub}</span> : null}
-          </span>
-        </div>
+        {/* 로고와 브랜드 글자가 **한 덩어리로** 이 면의 첫 화면으로 간다.
+            면을 섞지 않는다: 개인은 `/my`, Campus 는 `/org`, Admin 은
+            `/admin` 이고 그 표가 `HOME` 한 곳에 있다 */}
+        <BrandHome href={HOME[surface]} sub={sub} />
 
         <nav className="sf-nav">
           {nav.map((it) => {

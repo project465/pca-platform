@@ -3,7 +3,7 @@ import { queryOne } from "@/lib/db";
 import { hashToken } from "@/lib/password";
 import ResetForm from "./reset-form";
 
-export const metadata = { title: "새 비밀번호 설정 · 단체 PCA 플랫폼" };
+export const metadata = { title: "새 비밀번호 설정 · CareerMatri" };
 
 export default async function ResetPage({
   params,

@@ -5,7 +5,7 @@ import { launchReport, type Status } from "@/lib/launch";
 import { Pill } from "@/components/sf/parts";
 import { PageHead, Section } from "@/components/sf/shell";
 
-export const metadata = { title: "런칭 준비 · 단체 PCA 플랫폼" };
+export const metadata = { title: "런칭 준비 · CareerMatri" };
 export const dynamic = "force-dynamic";
 
 /**

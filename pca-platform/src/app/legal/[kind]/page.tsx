@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import BrandHome from "@/components/sf/brand-home";
 import { readFile } from "node:fs/promises";
 import { resolveLang } from "@/lib/locale-server";
 import { activeDocs, type ConsentKind } from "@/lib/consent";
-import { BRAND, toLang2, txer } from "@/lib/surface-text";
+import { toLang2, txer } from "@/lib/surface-text";
 
 /**
  * 약관·개인정보 처리방침 전문.
@@ -43,10 +44,9 @@ export default async function LegalPage({
   return (
     <div className="pub">
       <header className="pubtop">
-        <span className="sf-brand">
-          <span className="sf-brand-mark" aria-hidden="true">CM</span>
-          <span className="sf-brand-name">{BRAND.root}</span>
-        </span>
+        {/* 로고와 브랜드 글자가 한 덩어리로 홈으로 간다. 로그인했으면 그
+            역할의 첫 화면, 아니면 공개 홈이다 */}
+        <BrandHome />
         <div className="pubtop-r">
           <Link href="/" className="sf-btn ghost sm">{T("navHome")}</Link>
         </div>

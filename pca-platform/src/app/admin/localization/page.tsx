@@ -5,7 +5,7 @@ import {
   missingTranslations, missingScaleTranslations, missingFamilyTranslations,
 } from "@/lib/me-v2/bank";
 
-export const metadata = { title: "지역화 덮임 · 단체 PCA 플랫폼" };
+export const metadata = { title: "지역화 덮임 · CareerMatri" };
 export const dynamic = "force-dynamic";
 
 /**

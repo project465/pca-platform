@@ -103,7 +103,7 @@
      표가 좁아질 때 `LOCALIZATI / ON` 처럼 낱말 가운데서 갈린다.
      `break-word` 는 줄이 정말 안 들어갈 때만 자른다 */
   overflow-wrap: break-word;
-  min-height: 100vh;
+  min-height: calc(100vh - var(--stg-h));
   display: grid;
   grid-template-columns: var(--sf-sidebar) minmax(0, 1fr);
   background: var(--sf-bg);
@@ -116,7 +116,7 @@
 /* 왼쪽 띠. **위쪽의 작은 글자 메뉴를 쓰지 않는다** */
 .sf-side {
   position: sticky; top: 0; align-self: start;
-  height: 100vh; display: flex; flex-direction: column;
+  height: calc(100vh - var(--stg-h)); display: flex; flex-direction: column;
   background: var(--sf-surface);
   border-right: 1px solid var(--sf-line);
 }
@@ -741,7 +741,7 @@
    동안 다른 데로 갈 일이 없고, 띄워 두면 그리로 나간다.
    모바일이 먼저다(규격 §57): 응시는 손에서 일어난다. */
 .aswrap {
-  min-height: 100vh; background: var(--sf-bg); color: var(--sf-ink-2);
+  min-height: calc(100vh - var(--stg-h)); background: var(--sf-bg); color: var(--sf-ink-2);
   word-break: keep-all; overflow-wrap: anywhere;
 }
 .astop {
@@ -884,7 +884,7 @@
  * 메뉴를 그려 두면 전부 로그인으로 튕기는 메뉴가 된다. 그래서 위쪽 띠
  * 하나와 가운데 한 줄이다.
  */
-.pub { min-height: 100vh; background: var(--sf-bg); display: flex; flex-direction: column }
+.pub { min-height: calc(100vh - var(--stg-h)); background: var(--sf-bg); display: flex; flex-direction: column }
 .pubtop {
   position: sticky; top: 0; z-index: 20;
   display: flex; align-items: center; gap: 14px;
@@ -1440,7 +1440,11 @@
 }
 .stgmark b { font-weight: 700 }
 .stgmark span { color: var(--sf-ink-2) }
-body:has(.stgmark) { padding-bottom: 44px }
+/* **띠는 쪽 높이를 늘리지 않는다.** 바닥 여백만 띄우고, 그만큼을
+   `--stg-h` 로 알려 100vh 뼈대가 빼고 선다. 여기서 끝내면 문서가
+   창보다 44px 높아져서 **짧은 쪽에도 세로 스크롤바가 생기고**, 그때
+   쪽 폭이 스크롤바만큼 줄어든다. 공개 전에만 폭이 다른 제품이 된다 */
+body:has(.stgmark) { --stg-h: 44px; padding-bottom: var(--stg-h) }
 /* **공개 전 띠가 응시의 단추를 덮지 않는다.** 둘 다 바닥에 붙는 고정
    요소이고 띠가 `z-index: 90`, 응시의 단추 띠가 `5` 라서 띠가 위에
    깔렸다. 눈으로는 단추가 보이는데 누르면 띠가 받아 갔고, 그래서
@@ -1449,6 +1453,6 @@ body:has(.stgmark) { padding-bottom: 44px }
 body:has(.stgmark) .asnav { bottom: 44px }
 @media (max-width: 620px) {
   .stgmark { font-size: 11.5px; padding: 8px 12px; gap: 4px }
-  body:has(.stgmark) { padding-bottom: 56px }
+  body:has(.stgmark) { --stg-h: 56px }
   body:has(.stgmark) .asnav { bottom: 56px }
 }

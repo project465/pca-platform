@@ -4,7 +4,7 @@ import { funnelReport, STEP_LABEL } from "@/lib/funnel";
 import { summary as pilotSummary, MIN_CELL } from "@/lib/pilot";
 import { Funnel } from "@/components/sf/parts";
 
-export const metadata = { title: "퍼널 · 단체 PCA 플랫폼" };
+export const metadata = { title: "퍼널 · CareerMatri" };
 export const dynamic = "force-dynamic";
 
 /**

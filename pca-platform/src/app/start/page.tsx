@@ -2,19 +2,24 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/session";
 import { homePathFor } from "@/lib/roles";
-import { t } from "@/lib/locale";
 import { resolveLang } from "@/lib/locale-server";
+import { toLang2 } from "@/lib/surface-text";
+import { START } from "@/lib/start-copy";
+import BrandHome from "@/components/sf/brand-home";
 import LangSwitch from "@/components/lang-switch";
 
 export const metadata = { title: "CareerMatri" };
 
 /**
- * 문 고르는 화면.
+ * 공개 홈. 로그인하지 않은 사람이 처음 닿는 자리다.
  *
- * 다섯 부류가 온다. 개인, 학교 소속 학생, 학과 교수, 인재개발원·대학일자리플러스
- * 담당자, 해외 대학 담당자. 뒤의 셋은 결국 같은 로그인으로 들어가지만, 화면에
- * 자기 이름이 없으면 사람은 자기가 맞게 온 것인지 모른다. 그래서 길은 셋이되
- * 문패는 다섯 개를 단다.
+ * **갈리는 길은 둘이다.** 개인은 가격표로 가서 등급을 고르고 바로
+ * 응시로 들어가고, 대학·기관은 계약으로 받은 계정으로 Campus 에
+ * 들어온다. 옛 판은 문패가 다섯이었는데(교수 · 인재개발원 ·
+ * 대학일자리플러스 · 해외 대학 담당자까지) 그 넷이 전부 같은 로그인으로
+ * 들어가서, 고르는 사람만 다섯 번 재고 길은 하나였다.
+ *
+ * 원고와 지운 내력은 `src/lib/start-copy.ts` 에 적어 뒀다.
  */
 export default async function StartPage({
   searchParams,
@@ -26,42 +31,42 @@ export default async function StartPage({
 
   const { lang: q } = await searchParams;
   const lang = await resolveLang(q);
+  const L = toLang2(lang);
 
   const doors = [
     {
       key: "individual",
-      // 개인은 **지금 파는 것**으로 보낸다. 가격표가 등급 셋과 들어 있는
-      // 것을 먼저 보여 주고, 고른 뒤에 가입으로 간다. 로그인을 먼저
-      // 요구하면 처음 온 사람은 거기서 나간다.
-      //
-      // 전자상거래법 제17조 제6항은 제공 개시 뒤 철회를 제한하려면 ①
-      // 불가 사실 표시와 ② 시험 사용을 둘 다 하라고 한다. ME_V2 는 둘째
-      // 대신 **첫 문항에 답하기 전까지 기간 제한 없이 환불**하는 쪽으로
-      // 간다(법보다 넓게 준다). 그 문장이 가격표에 적혀 있다.
-      //
-      // 옛 검사의 무료 구간(`/free`)은 그대로 열려 있다. 길을 없애지
-      // 않았고, 첫 문패가 가리키는 곳만 바뀌었다.
+      /* 개인은 **지금 파는 것**으로 보낸다. 가격표가 등급 셋과 들어 있는
+         것을 먼저 보여 주고, 고른 뒤에 가입으로 간다. 로그인을 먼저
+         요구하면 처음 온 사람은 거기서 나간다.
+
+         옛 검사의 무료 구간(`/free`)은 그대로 열려 있다. 길을 없애지
+         않았고, 첫 문패가 가리키는 곳만 바뀌었다. */
       href: "/pricing",
-      title: t("doorIndividual", lang),
-      note: t("doorIndividualNote", lang),
+      title: START.individual[L],
+      note: START.individualNote[L],
       primary: true,
     },
-    { key: "student", href: "/login", title: t("doorStudent", lang), note: t("doorStudentNote", lang) },
-    { key: "professor", href: "/login", title: t("doorProfessor", lang), note: t("doorProfessorNote", lang) },
-    { key: "center", href: "/login", title: t("doorCenter", lang), note: t("doorCenterNote", lang) },
-    { key: "intl", href: "/login", title: t("doorIntl", lang), note: t("doorIntlNote", lang) },
+    {
+      key: "campus",
+      /* 기관 화면은 계약이 먼저다. 공개 가입이 없으므로 문패가 가리키는
+         곳은 로그인이고, 받은 계정으로 들어오면 Campus 가 열린다 */
+      href: "/login",
+      title: START.campus[L],
+      note: START.campusNote[L],
+    },
   ];
 
   return (
     <div className="door">
       <header className="door-bar">
-        <span className="brand">{t("brand", lang)}</span>
+        <BrandHome />
         <LangSwitch current={lang} />
       </header>
 
       <main className="door-main">
-        <h1>{t("doorTitle", lang)}</h1>
-        <p className="door-sub">{t("doorSub", lang)}</p>
+        <h1>{START.title[L]}</h1>
+        <p className="door-sub">{START.sub[L]}</p>
 
         <ul className="doors">
           {doors.map((dr) => (
@@ -75,7 +80,9 @@ export default async function StartPage({
         </ul>
 
         <p className="door-foot">
-          {t("doorHasAccount", lang)} <Link href="/login">{t("signIn", lang)}</Link>
+          {START.hasAccount[L]} <Link href="/login">{START.signIn[L]}</Link>
+          {" · "}
+          <Link href="/product">{START.about[L]}</Link>
         </p>
       </main>
     </div>

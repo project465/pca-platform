@@ -71,52 +71,10 @@ const d = (ko: string, en: string, tr: string): Dict => ({ ko, en, tr });
 export const UI = {
   brand: d("CareerMatri", "CareerMatri", "CareerMatri"),
 
-  // 진입
-  doorTitle: d(
-    "어떤 분이신가요?",
-    "Who are you here as?",
-    "Hangi sıfatla geldiniz?",
-  ),
-  doorSub: d(
-    "고르시면 필요한 화면으로 바로 갑니다. 계정이 없어도 개인으로 시작할 수 있습니다.",
-    "Pick one and we take you straight to the right screen. No account needed to start as an individual.",
-    "Birini seçin, doğrudan ilgili ekrana götürelim. Bireysel başlamak için hesaba gerek yok.",
-  ),
-  doorIndividual: d("개인으로 검사받기", "Take the assessment yourself", "Testi kendim almak istiyorum"),
-    doorIndividualNote: d(
-    "253문항을 무료로 풀고 직무 묶음까지 받아 보신 뒤에 정하시면 됩니다. 소속이 없어도 됩니다.",
-    "Answer all 253 items for free and see your job groups before deciding. No institution required.",
-    "253 soruyu ücretsiz yanıtlayıp görev gruplarınızı gördükten sonra karar verin. Kuruma bağlı olmanız gerekmez.",
-  ),
-  doorStudent: d("학교에서 받은 계정으로", "Sign in with a school account", "Okulumdan aldığım hesapla"),
-  doorStudentNote: d(
-    "학과가 명단에 올렸다면 아이디와 첫 비밀번호를 받으셨을 겁니다.",
-    "If your department enrolled you, you were given an ID and a first password.",
-    "Bölümünüz sizi listeye eklediyse bir kullanıcı adı ve ilk şifre aldınız.",
-  ),
-  doorProfessor: d("학과 교수", "Faculty", "Öğretim üyesi"),
-  doorProfessorNote: d(
-    "우리 과 학생들의 응시 현황과 단체 리포트를 봅니다.",
-    "See your students' progress and the cohort report.",
-    "Öğrencilerinizin durumunu ve toplu raporu görün.",
-  ),
-  doorCenter: d(
-    "인재개발원 · 대학일자리플러스",
-    "Career center · Talent development",
-    "Kariyer merkezi · İnsan kaynakları",
-  ),
-  doorCenterNote: d(
-    "회차를 열고 명단을 올리고 결과 공개를 승인합니다.",
-    "Open a round, upload the roster, release results.",
-    "Dönem açın, listeyi yükleyin, sonuçları yayınlayın.",
-  ),
-  doorIntl: d("해외 대학 담당자", "International partner institution", "Yurt dışı kurum yetkilisi"),
-  doorIntlNote: d(
-    "화면과 문항이 영어·튀르키예어로 나옵니다. 결과지는 같은 자로 비교됩니다.",
-    "Screens and items in English or Turkish. Results are on the same scale as everyone else.",
-    "Ekranlar ve sorular İngilizce veya Türkçe. Sonuçlar herkesle aynı ölçekte.",
-  ),
-  doorHasAccount: d("이미 계정이 있으신가요?", "Already have an account?", "Hesabınız var mı?"),
+  // 진입. **문패 원고는 `start-copy.ts` 로 옮겼다**: 여기는 세 언어를 한
+  // 줄에 묶어 둔 사전이라, 한 줄을 더하려면 승인되지 않은 튀르키예어까지
+  // 지어내야 한다. 옛 문패 다섯(개인 · 학교 계정 · 학과 교수 ·
+  // 대학일자리플러스 · 해외 대학 담당자)은 지웠다
   signIn: d("로그인", "Sign in", "Giriş yap"),
 
   // 응시

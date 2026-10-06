@@ -1,7 +1,7 @@
 import Link from "next/link";
 import ForgotForm from "./forgot-form";
 
-export const metadata = { title: "비밀번호 재설정 · 단체 PCA 플랫폼" };
+export const metadata = { title: "비밀번호 재설정 · CareerMatri" };
 
 export default function ForgotPage() {
   return (

@@ -5,7 +5,7 @@ import { incidents } from "@/lib/incidents";
 import { Pill } from "@/components/sf/parts";
 import { resolveAction } from "./actions";
 
-export const metadata = { title: "사고 · 단체 PCA 플랫폼" };
+export const metadata = { title: "사고 · CareerMatri" };
 export const dynamic = "force-dynamic";
 
 /**

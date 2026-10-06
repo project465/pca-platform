@@ -31,7 +31,26 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { -webkit-text-size-adjust: 100%; }
+/* 공개 전 띠가 쪽 바닥에 깔리는 높이. 띠가 없으면 0 이고, 띠가 있으면
+   `body:has(.stgmark)` 가 채운다. **문서를 그만큼 길게 만드는 자리가
+   아니다**: 100vh 로 선 뼈대가 이 값을 빼고 서야 문서가 창보다 높아지지
+   않고, 그래야 짧은 쪽에서 세로 스크롤바가 괜히 생기지 않는다 */
+:root { --stg-h: 0px; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  /* **바탕과 배색을 뿌리에 적는다.** 선언이 없으면 브라우저가 OS 배색을
+     따라 스크롤바 트랙과 기본 폼을 어둡게 칠한다. 어두운 트랙은 쪽
+     오른쪽 끝에서 **문서 밖의 검은 띠**처럼 읽힌다 */
+  color-scheme: light;
+  background: var(--field);
+  /* **`scrollbar-gutter: stable` 을 쓰지 않는다.** 폭이 흔들리는 것을
+     막으려고 넣어 봤는데, 그 자리를 늘 비워 두면 **쪽 전체가 15px 좁아진
+     채로** 서고 오른쪽에 빈 띠가 남는다. 신고된 증상이 바로 그 모양이라,
+     막으려던 것을 제품에 만들어 넣는 셈이다. 손전화(390px)에서도 15px 를
+     먹는다. 폭이 변하지 않게 하는 올바른 자리는 **쓸데없는 스크롤바를
+     만들지 않는 쪽**이고, 그것이 위의 `--stg-h` 다 */
+}
 
 body {
   background: var(--field);
@@ -67,7 +86,7 @@ a { color: inherit; }
 /* ---------- 레이아웃 ---------- */
 /* 로그인·가입처럼 **한 가지만 하는 쪽**. 가운데 한 장만 세운다 */
 .center-wrap {
-  min-height: 100vh;
+  min-height: calc(100vh - var(--stg-h));
   display: flex; align-items: center; justify-content: center;
   padding: var(--sp-6) var(--sp-3);
   background:
@@ -173,7 +192,7 @@ button.act.full { width: 100%; }
    운영 화면은 왼쪽 띠(`surface.css` 의 `.sf`)로 옮겼다. 여기 남은 것은
    메뉴가 두세 개뿐인 쪽(회차 하나 · 내 계정)이고, 거기서는 왼쪽 띠가
    본문을 밀어내기만 한다. */
-.shell { min-height: 100vh; display: flex; flex-direction: column; background: var(--field); }
+.shell { min-height: calc(100vh - var(--stg-h)); display: flex; flex-direction: column; background: var(--field); }
 .topbar {
   position: sticky; top: 0; z-index: 20;
   background: rgba(255, 255, 255, .92);
@@ -408,7 +427,7 @@ td .sub { display: block; font-size: 12.5px; color: var(--muted); }
    응시 화면 — mockups/01_test_screen.html 의 규칙을 따른다.
    보기는 다섯 개가 한 줄에 놓이되 좁은 화면에서는 세로로 쌓인다.
    ============================================================ */
-.test-shell { min-height: 100vh; display: flex; flex-direction: column; }
+.test-shell { min-height: calc(100vh - var(--stg-h)); display: flex; flex-direction: column; }
 
 .test-bar {
   position: sticky; top: 0; z-index: 10;
@@ -496,7 +515,7 @@ td .sub { display: block; font-size: 12.5px; color: var(--muted); }
 /* ============================================================
    결과지 — 어두운 표지 + 흰 문서. 인쇄를 전제로 만든다.
    ============================================================ */
-.report { background: var(--field); min-height: 100vh; }
+.report { background: var(--field); min-height: calc(100vh - var(--stg-h)); }
 
 .rp-cover { background: var(--ink); color: #fff; padding: 56px 20px 52px; }
 .rp-cover-in { max-width: 880px; margin: 0 auto; }
@@ -650,13 +669,18 @@ td .sub { display: block; font-size: 12.5px; color: var(--muted); }
 /* ============================================================
    문 고르는 화면 — 로그인 폼보다 먼저 오는 곳.
    ============================================================ */
-.door { min-height: 100vh; display: flex; flex-direction: column; }
+.door { min-height: calc(100vh - var(--stg-h)); display: flex; flex-direction: column; }
 .door-bar {
   background: var(--ink); color: #fff;
   padding: 14px 20px;
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
 }
 .door-bar .brand { font-weight: 800; letter-spacing: 0.06em; font-size: 16px; }
+/* 공개 홈의 머리띠는 어두운 바탕이다. 로고 조각이 `--sf-ink` 를 그대로
+   쓰면 바탕과 같은 색이 되어 **로고가 안 보이는 홈 링크**가 된다 */
+.door-bar .sf-brand { padding: 0; text-decoration: none; }
+.door-bar .sf-brand-mark { background: #fff; color: var(--ink); }
+.door-bar .sf-brand-name { color: #fff; font-size: 16px; }
 
 .door-main { max-width: 760px; margin: 0 auto; padding: 48px 20px 72px; width: 100%; }
 .door-main h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.03em; }
@@ -735,7 +759,7 @@ td .sub { display: block; font-size: 12.5px; color: var(--muted); }
 /* ============================================================
    증거 입력 — 역량마다 접히는 폼 하나.
    ============================================================ */
-.ev { min-height: 100vh; }
+.ev { min-height: calc(100vh - var(--stg-h)); }
 .ev-bar { background: var(--ink); color: #fff; }
 .ev-bar-in {
   max-width: 900px; margin: 0 auto; padding: 13px 20px;

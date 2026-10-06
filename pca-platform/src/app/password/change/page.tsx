@@ -1,7 +1,7 @@
 import { requireUser } from "@/lib/session";
 import ChangeForm from "./change-form";
 
-export const metadata = { title: "비밀번호 변경 · 단체 PCA 플랫폼" };
+export const metadata = { title: "비밀번호 변경 · CareerMatri" };
 
 export default async function ChangePasswordPage() {
   const user = await requireUser({ skipPasswordGate: true });

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import BrandHome from "@/components/sf/brand-home";
 import { currentUser } from "@/lib/session";
 import { resolveLang } from "@/lib/locale-server";
 import { toLang2, BRAND } from "@/lib/surface-text";
@@ -11,6 +12,8 @@ import { businessInfo, jobInfoLicense } from "@/lib/business";
 import { supportConfig } from "@/lib/support";
 import { step } from "@/lib/funnel-server";
 import LangSelect from "@/components/sf/lang-select";
+import NotOpen from "@/components/sf/not-open";
+import { publicCommerceGate } from "@/lib/public-gate";
 
 export const metadata = { title: `${BRAND.root}` };
 
@@ -37,6 +40,13 @@ export default async function ProductPage({
 }) {
   const sp = await searchParams;
   const L = toLang2(await resolveLang(sp.lang));
+
+  /* **운영에서는 빈칸이 있는 동안 상거래 화면을 열지 않는다.** 전자상거래법
+     제10조 표시와 환불 연락처가 비어 있으면 `확인 필요` 가 사는 사람의
+     화면에 찍힌다. 공개 전에는 그게 할 일 목록이라 그대로 두고, 운영에서는
+     닫는다(`public-gate.ts`) */
+  const gate = await publicCommerceGate();
+  if (!gate.open) return <NotOpen lang={L} />;
   const user = await currentUser();
   const mk = await resolveMarket(sp.market);
   const list = await catalogFor(mk.market);
@@ -64,10 +74,9 @@ export default async function ProductPage({
   return (
     <div className="pub">
       <header className="pubtop">
-        <span className="sf-brand">
-          <span className="sf-brand-mark" aria-hidden="true">CM</span>
-          <span className="sf-brand-name">{BRAND.root}</span>
-        </span>
+        {/* 로고와 브랜드 글자가 한 덩어리로 홈으로 간다. 로그인했으면 그
+            역할의 첫 화면, 아니면 공개 홈이다 */}
+        <BrandHome />
         <div className="pubtop-r">
           <LangSelect current={L} />
           <Link href={`/pricing${q}`} className="sf-btn ghost sm">{P.nav.pricing[L]}</Link>

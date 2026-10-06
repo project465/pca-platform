@@ -4,7 +4,7 @@ import { listRequests, REASON_LABEL } from "@/lib/refund-requests";
 import { Pill } from "@/components/sf/parts";
 import { decideAction } from "./actions";
 
-export const metadata = { title: "환불 요청 · 단체 PCA 플랫폼" };
+export const metadata = { title: "환불 요청 · CareerMatri" };
 export const dynamic = "force-dynamic";
 
 /**

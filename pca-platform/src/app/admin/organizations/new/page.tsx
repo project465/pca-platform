@@ -4,7 +4,7 @@ import { requireRole } from "@/lib/session";
 import AdminShell from "@/components/admin-shell";
 import OrgForm, { type ParentOption } from "./org-form";
 
-export const metadata = { title: "기관 등록 · 단체 PCA 플랫폼" };
+export const metadata = { title: "기관 등록 · CareerMatri" };
 export const dynamic = "force-dynamic";
 
 export default async function NewOrganizationPage() {

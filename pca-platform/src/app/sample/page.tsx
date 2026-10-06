@@ -1,4 +1,5 @@
 import Link from "next/link";
+import BrandHome from "@/components/sf/brand-home";
 import { resolveLang } from "@/lib/locale-server";
 import { toLang2, BRAND } from "@/lib/surface-text";
 import { PRODUCT } from "@/lib/product-copy";
@@ -32,10 +33,9 @@ export default async function SamplePage({
   return (
     <div className="pub">
       <header className="pubtop">
-        <span className="sf-brand">
-          <span className="sf-brand-mark" aria-hidden="true">CM</span>
-          <span className="sf-brand-name">{BRAND.root}</span>
-        </span>
+        {/* 로고와 브랜드 글자가 한 덩어리로 홈으로 간다. 로그인했으면 그
+            역할의 첫 화면, 아니면 공개 홈이다 */}
+        <BrandHome />
         <div className="pubtop-r">
           <LangSelect current={L} />
           <Link href={`/product${q}`} className="sf-btn ghost sm">

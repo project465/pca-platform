@@ -2,7 +2,7 @@ import { requireRole } from "@/lib/session";
 import AdminShell from "@/components/admin-shell";
 import { commercialReport } from "@/lib/commercial";
 
-export const metadata = { title: "상용화 준비 · 단체 PCA 플랫폼" };
+export const metadata = { title: "상용화 준비 · CareerMatri" };
 export const dynamic = "force-dynamic";
 
 /**

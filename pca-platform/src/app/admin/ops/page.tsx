@@ -3,7 +3,7 @@ import { requireRole } from "@/lib/session";
 import AdminShell from "@/components/admin-shell";
 import { briefing } from "@/lib/ops";
 
-export const metadata = { title: "운영 · 단체 PCA 플랫폼" };
+export const metadata = { title: "운영 · CareerMatri" };
 export const dynamic = "force-dynamic";
 
 const won = (n: number) => `${n.toLocaleString("ko-KR")}원`;
