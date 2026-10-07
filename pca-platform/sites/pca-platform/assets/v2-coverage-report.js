@@ -218,6 +218,58 @@ window.PCAV2CoverageReport = (function () {
     }
   };
 
+  /** 번역한 문장에 값을 끼운다 */
+  function fill(tpl, vals) {
+    return String(tpl).replace(/\{(\w+)\}/g, function (m, k) {
+      return (k in vals) ? vals[k] : m;
+    });
+  }
+
+  /**
+   * 그 직무에서 **아직 묻지 못한 것**을 되묻는 말 하나.
+   *
+   * 영역마다 `follow_up.questions` 가 붙어 있다. 그 가운데 비어 있는
+   * 자리의 것을 꺼내 쓰면, 모든 사람에게 같은 문장이 나가는 일이 없다.
+   */
+  function askOf(cv, idx) {
+    if (!cv) return null;
+    /* **같은 갈래를 두 번 묻지 않는다.** 영역마다 `gap_kind` 가 붙어 있고
+       그것이 같으면 되묻는 말도 같다. 갈래로 한 번 걸러야 30일과 90일에
+       같은 문장이 또 나오지 않는다 */
+    var seen = {};
+    var open = [];
+    (cv.coverage || []).forEach(function (r) {
+      if (r.status === 'confirmed') return;
+      if (!r.follow_up || !(r.follow_up.questions || []).length) return;
+      var kind = r.gap_kind || r.follow_up.id || r.label;
+      if (seen[kind]) return;
+      seen[kind] = 1;
+      open.push(r);
+    });
+    var r = open[idx || 0];
+    if (!r) return null;
+    var q = r.follow_up.questions[0];
+    return { area: r.label, q: (q && q.q) || r.follow_up.title, why: r.follow_up.why };
+  }
+
+  /**
+   * 30 / 90 / 365 일.
+   *
+   * **같은 템플릿이 모든 사람에게 나가면 실패다.** 전에는 세 묶음 가운데
+   * 30·90 만 비어 있는 자리를 읽고 365 는 학위별 문장 셋을 그대로 냈다.
+   * 그래서 PRO 의 365 일 칸이 전 사용자 동일했다.
+   *
+   * 이제 묶음마다 **다른 자리에서** 재료를 꺼낸다. 새로 재지 않고 이미
+   * 나온 것만 쓴다.
+   *
+   *   30일   `priority_gaps[0]` + 그 영역의 되묻는 말
+   *   90일   `priority_gaps[1..2]` + 그 직무의 성과 기준
+   *   365일  `evidence_readiness.missing` (뒷받침·선택에서 비어 있는 것)
+   *          + 반복 가능성 + 조직 유형
+   *
+   * 꺼낼 것이 없을 때만 학위별 문장으로 되돌아가고, 그때는 **왜 일반적인
+   * 말이 나왔는지**를 같이 적는다.
+   */
   function plan(J, days, fid) {
     var cv = (J.role_evidence_coverage || {})[fid];
     var stage = (J.education_stage_lens || {}).id || 'bachelor';
@@ -225,23 +277,65 @@ window.PCAV2CoverageReport = (function () {
        묶음을 넘기면 빈 글자가 돌아오고, 그러면 계획 문장이 통째로 사라진다 */
     var sp = STAGE_PLAN[stage] || STAGE_PLAN.bachelor;
     var gaps = cv ? cv.priority_gaps : [];
+    var row = (J.decision_table || []).filter(function (r) {
+      return r.career_family_id === fid;
+    })[0] || null;
+    var vp = (J.value_path && J.value_path.paths) ? J.value_path.paths[fid] : null;
+    var rname = (cv && cv.career_family_name) || (row && row.name) || '';
+    var miss = (row && row.evidence_readiness && row.evidence_readiness.missing) || [];
     var acts = [];
     if (days === 30) {
+      var a1 = askOf(cv, 0);
       acts.push(gaps.length
         ? '<b>' + esc(gaps[0].label) + T('</b> 한 자리만 채웁니다. ') + esc(gaps[0].description)
-        : T('핵심 영역이 모두 확인됩니다. 같은 직무 공고 세 건과 내 근거를 한 줄씩 맞춰 보세요.'));
-      acts.push(T(sp[30]));
+        : fill(T('{role}{jo} 핵심 영역이 모두 확인됐습니다. 공고 세 건과 내 근거를 한 줄씩 맞춰 보세요.'),
+          { role: esc(rname), jo: JO(rname, '은') }));
+      /* 되묻는 말을 그대로 할 일로 바꾼다. 영역 이름이 들어가므로
+         사람마다 다른 문장이 된다 */
+      acts.push(a1
+        ? fill(T('적어 두실 것 하나 — {area}에서 ‘{q}’'),
+          { area: esc(a1.area), q: esc(a1.q) })
+        : T(sp[30]));
     } else if (days === 90) {
+      var cmp = (vp && vp.performance_criteria)
+        ? vp.performance_criteria.slice(0, 2).join(' · ') : '';
       acts.push(gaps.length
         ? '<b>' + esc(gaps.slice(0, 2).map(function (g) { return g.label; }).join(' · ')) +
           T('</b> 를 결과물과 기준 비교까지 끌고 갑니다')
         : T('확인된 근거를 산출물과 성과 수준으로 넓힙니다'));
-      acts.push(T(sp[90]));
-      acts.push(T('직무를 둘 놓고 같은 근거가 어느 쪽에서 더 잘 읽히는지 견줍니다'));
+      acts.push(cmp
+        ? fill(T('{role}에서 결과를 {cmp}에 대고 견준 기록을 남깁니다'),
+          { role: esc(rname), cmp: esc(cmp) })
+        : T(sp[90]));
+      var a2 = askOf(cv, 1);
+      acts.push(a2
+        ? fill(T('{area}에 대해 ‘{q}’ 를 답할 수 있게 해 둡니다'),
+          { area: esc(a2.area), q: esc(a2.q) })
+        : T('직무를 둘 놓고 같은 근거가 어느 쪽에서 더 잘 읽히는지 견줍니다'));
     } else {
-      acts.push(T(sp[365]));
-      acts.push(T('가려는 조직 유형에 맞춰 같은 경험을 다르게 적은 판을 둘 만들어 둡니다'));
-      acts.push(T('같은 방법을 다른 문제에 한 번 더 써서 반복 가능성을 남깁니다'));
+      /* **365일은 뒷받침·선택에서 비어 있는 것으로 짠다.** 핵심은 앞의 두
+         묶음에서 이미 다룬다. 여기가 전 사용자 같은 문장이던 자리다 */
+      if (miss.length) {
+        var w1 = miss.slice(0, 2).join(' · ');
+        acts.push(fill(T('{role}에서 아직 남은 {what}{jo} 채웁니다'),
+          { role: esc(rname), what: esc(w1), jo: JO(w1, '을') }));
+      }
+      if (miss.length > 2) {
+        var w2 = miss.slice(2, 4).join(' · ');
+        acts.push(fill(T('그다음으로 {what}{jo} 더합니다'),
+          { what: esc(w2), jo: JO(w2, '을') }));
+      }
+      if (acts.length < 2) acts.push(T(sp[365]));
+      var org = (J.organization_context && J.organization_context.selected_name)
+        || (vp && vp.organization_type_name) || '';
+      acts.push(org
+        ? fill(T('{org} 기준으로 같은 경험을 다시 적은 판을 하나 만들어 둡니다'),
+          { org: esc(org) })
+        : T('가려는 조직 유형에 맞춰 같은 경험을 다르게 적은 판을 둘 만들어 둡니다'));
+      acts.push(gaps.length
+        ? fill(T('{gap}에 쓴 방법을 다른 문제에 한 번 더 써서 반복 가능성을 남깁니다'),
+          { gap: esc(gaps[0].label) })
+        : T('같은 방법을 다른 문제에 한 번 더 써서 반복 가능성을 남깁니다'));
     }
     return '<div class="card contentcard"><div class="eyebrow">' + days + T('일 동안</div>') +
       '<ul class="qlist" style="margin-top:8px">' +

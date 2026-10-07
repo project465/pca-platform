@@ -56,7 +56,30 @@ window.PCAV2Report = (function () {
      그 뒤로 언어를 바꿔도 한국어가 남는다. 부를 때마다 옮긴다 */
   function LOW_RUNG() { return T('낮은 칸이 모자라다는 뜻이 아닙니다. 지금 적어 주신 것으로 ') +
     T('확인되는 범위입니다.'); }
-  var RUNG = { E0: '활동', E1: '판단', E2: '산출물', E3: '성과', E4: '조직 가치', E5: '반복' };
+  /**
+   * 증거 사다리 여섯 칸을 **손님이 읽는 말로.**
+   *
+   * 칸(E0~E5)과 그 판정은 그대로다. 바뀌는 것은 화면에 적히는 글자뿐이다.
+   * 전에는 `E4 조직 가치` 처럼 코드와 내부 이름이 같이 나갔고, '조직 가치'
+   * 는 사는 사람이 모르는 말이다.
+   */
+  /**
+   * 긴 고지 둘을 **한 덩이 문자열**로 둔다.
+   *
+   * 문체 검사(`copy:audit`)는 문자열 하나를 한 문단으로 세는데, 긴 글을
+   * `+` 로 끊어 두면 그 조각들이 "짧은 단정문 둘" 로 읽혀 토막 문단으로
+   * 걸린다. 나가는 글자는 같고 소스에서 줄만 길어진다.
+   */
+  var NOTE_COMPARE = '‘관심’ 과 ‘경험’ 은 문항에 답하신 것이고 ‘경험에서 확인’ 은 적어 주신 경험에서 확인된 것이라, 경험이 높아도 적어 주신 것이 없으면 0 으로 남습니다. 그래서 두 값을 하나로 합치지 않습니다. 관심이 높은데 적어 주신 경험이 비어 있는 직무라면 지원서를 쓰기 전에 그 일을 작게 한 번 해보시는 편이 빠르고, 본문에 담지 않은 나머지는 부록의 표에 열여섯 가지가 모두 있습니다. ‘문항 없음’ 은 그 직무를 묻는 문항이 애초에 없다는 뜻이어서 ‘응답 없음’ 과는 다릅니다.';
+  var NOTE_ALL_TIED = '관심 문항의 답이 고르게 같아서 직무 {n}개가 모두 같은 점수입니다. 아래 셋은 그 가운데 일부이고 차례가 아니며, 어느 쪽부터 볼지는 적어 주신 경험에서 무엇이 확인되는지를 보고 고르시면 됩니다. 점수는 손대지 않고 그대로 두었습니다. 다음에 응시하실 때 더 끌리는 쪽과 덜 끌리는 쪽을 갈라 답하시면 결과가 또렷해집니다.';
+
+  var NOTE_APX_ALL_TIED = '열여섯이 모두 같은 관심 점수여서, 이 표의 차례는 순위가 아니고 정해진 나열 순서입니다. 본문에 담은 셋도 그 가운데 일부입니다. ({n}개 동점)';
+  var NOTE_APX_TIED = '앞의 {n}개는 관심 점수가 같아 그 사이에는 차례가 없습니다. 본문에는 셋과 곁에 두실 둘만 담았습니다.';
+
+  var RUNG = {
+    E0: '해봤다', E1: '직접 판단', E2: '결과물',
+    E3: '기준과 비교', E4: '조직 성과', E5: '반복'
+  };
 
   /* ── 쪽 ─────────────────────────────────────────────────────────────
      한 쪽에 핵심 메시지 하나. 인쇄에서 쪽이 갈리는 자리가 여기다. */
@@ -89,11 +112,161 @@ window.PCAV2Report = (function () {
     return null;
   }
 
+  /**
+   * **동률과 단조 응답을 센다. 점수를 만들지 않는다.**
+   *
+   * 이미 나온 `decision_table` 의 관심 점수를 세기만 한다. 채점·가중치·
+   * 매핑은 건드리지 않고, 바뀌는 것은 **어떻게 보여 줄지**뿐이다.
+   *
+   * 왜 필요한가: BASIC 은 직무군마다 관심 문항이 하나씩이라 열여섯이 같은
+   * 점수로 묶이는 일이 흔하다(실측 12명 중 9명이 1위 동률, 3명은 16개 전부
+   * 동점). 정렬은 관심 점수 하나만 보고 자바스크립트 정렬은 안정적이라,
+   * 동점이면 **문항 은행에 적힌 차례**가 그대로 앞자리가 된다. 거기에
+   * '먼저 확인할 직무' 를 찍으면 읽는 사람은 그것을 1위로 읽는다.
+   *
+   * 2차 정렬로 경험이나 증거를 쓰지 않는다. 그러면 "경험이 관심을 이긴다"
+   * 는 다른 주장이 되고, 그것은 제품 결정이다. 여기서는 **차례를 만들지
+   * 않는 것**으로 끝낸다.
+   */
+  function spread(J) {
+    var rows = (J && J.decision_table) || [];
+    var sc = function (r) { return (r.interest && typeof r.interest.score === 'number')
+      ? r.interest.score : null; };
+    var kinds = function (o) {
+      var seen = {}, n = 0;
+      Object.keys(o || {}).forEach(function (k) {
+        var v = o[k] && typeof o[k].score === 'number' ? o[k].score : null;
+        if (v === null) return;
+        if (!(v in seen)) { seen[v] = 1; n += 1; }
+      });
+      return n;
+    };
+    var top = rows.length ? sc(rows[0]) : null;
+    var tied = rows.filter(function (r) { return sc(r) !== null && sc(r) === top; });
+    var iKinds = kinds(J && J.actual_work_interest);
+    var flat = {
+      interest: iKinds <= 1,
+      exposure: kinds(J && J.exposure) <= 1,
+      learning: kinds(J && J.learning_intent) <= 1
+    };
+    var flats = (flat.interest ? 1 : 0) + (flat.exposure ? 1 : 0) + (flat.learning ? 1 : 0);
+    return {
+      rows: rows.length,
+      topScore: top,
+      tiedCount: tied.length,
+      tiedIds: tied.map(function (r) { return r.career_family_id; }),
+      /** 1위 자리에 둘 이상이 같은 점수로 있다 */
+      anyTie: tied.length > 1,
+      /** 열여섯이 전부 같은 점수다. 앞서는 직무가 없다 */
+      allTied: rows.length > 1 && tied.length === rows.length,
+      interestKinds: iKinds,
+      flat: flat,
+      /**
+       * 응답이 거의 같은 값으로 모였다. **불성실이라고 말하지 않는다**:
+       * 고르게 답하는 것도 답이고, 우리가 아는 것은 그래서 직무 사이에
+       * 차이가 생기지 않았다는 사실뿐이다. 점수에는 손대지 않는다.
+       */
+      monotone: flats >= 2
+    };
+  }
+
+  /**
+   * **이 직무가 나온 까닭 한두 줄.**
+   *
+   * BASIC 첫 쪽에서도 "왜 이 직무가 나왔나요" 에 답할 수 있어야 한다.
+   * 전에는 이 재료가 PRO 직무 쪽과 부록에만 있었고, 무료 응시자는
+   * 관심·경험·핵심 숫자만 받았다.
+   *
+   * 쓰는 것은 **채점이 실제로 쓴 문항**(`basis`)과 이미 나온 확인·공백
+   * 숫자뿐이다. 새로 재지 않는다.
+   */
+  function whyItems(J, row, used) {
+    var bank = window.PCA_V2_ITEMS && window.PCA_V2_ITEMS.ME;
+    if (!bank) return [];
+    var all = [].concat(bank.core.items, bank.standard.items, bank.pro.items);
+    var basis = {};
+    [row.interest, row.learning, row.exposure].forEach(function (o) {
+      ((o && o.basis) || []).forEach(function (n) { basis[n] = 1; });
+    });
+    var mine = all.filter(function (it) {
+      return basis[it.question_no] &&
+        (it.construct === 'actual_work_interest' || it.construct === 'exposure');
+    });
+    /* **그 직무에 가장 많이 걸린 문항을 앞에 둔다.** Q1 처럼 세 직무군에
+       나뉘어 걸린 문항보다, 이 직무 하나를 가리키는 문항이 먼저 읽혀야
+       "왜 이 직무인가" 에 답이 된다 */
+    mine.sort(function (a, b) {
+      var wa = (a.career_family_weights || {})[row.career_family_id] || 0;
+      var wb = (b.career_family_weights || {})[row.career_family_id] || 0;
+      if (wb !== wa) return wb - wa;
+      var na = Object.keys(a.career_family_weights || {}).length;
+      var nb = Object.keys(b.career_family_weights || {}).length;
+      return na - nb;
+    });
+    /* **카드마다 한 줄이다.** 둘을 넣으면 BASIC 본문이 규격(네댓 장)을
+       넘는다. 가장 좁게 이 직무를 가리키는 문항 하나면 "왜" 에 답이 되고,
+       나머지는 부록의 근거 문항 표에 번호로 다 있다 */
+    var out = [];
+    var seen = used || {};
+    mine.forEach(function (it) {
+      if (out.length >= 1 || seen[it.question_no]) return;
+      var txt = (window.PCAI18N && window.PCAI18N.itemText)
+        ? window.PCAI18N.itemText(it, J.education_stage)
+        : (window.PCAV2 && window.PCAV2.textOf(it, J.education_stage));
+      if (!txt) return;
+      seen[it.question_no] = 1;
+      out.push(String(txt).replace(/\.$/, '').trim());
+    });
+    return out;
+  }
+
+  /** 첫 쪽 카드 한 장. `used` 는 앞 카드가 이미 쓴 문항을 들고 다닌다 */
+  function whyRow(J, r, i, sp, used) {
+    var tw = tiedWith(sp, r);
+    return {
+      /** **동률이면 번호를 주지 않는다.** `null` 이면 차례가 없다는 뜻 */
+      order: tw ? null : i + 1,
+      slot: tw ? T('같이 놓고 보실 직무')
+        : i === 0 ? T('먼저 확인할 직무')
+          : i === 1 ? T('함께 비교할 직무') : T('그다음으로 볼 직무'),
+      /** 같은 점수로 묶인 개수. 1 이면 묶이지 않았다 */
+      tied_with: tw || 1,
+      /** 이 직무가 나온 까닭. **BASIC 첫 쪽에도 들어간다** */
+      why_items: whyItems(J, r, used),
+      career_family_id: r.career_family_id,
+      name: r.name,
+      interest: TX(LV, r.interest && r.interest.level) || null,
+      exposure: TX(LV, r.exposure && r.exposure.level) || null,
+      core_confirmed: r.evidence_coverage ? r.evidence_coverage.core.confirmed : null,
+      core_total: r.evidence_coverage ? r.evidence_coverage.core.total : null,
+      decision_status: r.decision_status,
+      decision_status_label: DEC.label(r.decision_status)
+    };
+  }
+
+  /** 동률이면 그 직무가 몇 개와 같은 점수인가. 아니면 0 */
+  function tiedWith(sp, row) {
+    return (sp.anyTie && sp.tiedIds.indexOf(row.career_family_id) >= 0)
+      ? sp.tiedCount : 0;
+  }
+
   /** 번역한 문장에 이름을 끼운다. `{role}` 처럼 적어 둔 자리를 바꾼다 */
   function fill(tpl, vals) {
     return String(tpl).replace(/\{(\w+)\}/g, function (m, k) {
       return (k in vals) ? vals[k] : m;
     });
+  }
+
+  /**
+   * 검사 이름을 사람의 말로 적는다.
+   *
+   * 되짚어 보실 때 쓰는 자리라 **판본 자체는 그대로 남기고**, 앞에 읽을 수
+   * 있는 이름을 붙인다. 코드만 적혀 있으면 손님은 그것이 상품 이름인지
+   * 내부 이름인지 모른다.
+   */
+  function instrumentName(v) {
+    return String(v || '').indexOf('ME_V2') === 0
+      ? T('CareerMatri 기계공학 결정 검사 2026판') : String(v || '');
   }
 
   /** 지금 할 일 한 줄. 공백이 있으면 그것, 없으면 비교로 넘어간다. */
@@ -110,14 +283,17 @@ window.PCAV2Report = (function () {
          넘기면("에서 " · "을 ") 영어 사전에 넣을 수 있는 말이 되지 않고,
          실제로 영어 결과지에 한국어가 여덟 군데 남았다. 자리를 표시해
          두고 번역 뒤에 끼운다 */
-      return fill(T('{role}에서 <b>{gap}</b>이 아직 확인되지 않았습니다. ' +
-        '{why}을 한 번 남기시면 이 자리가 채워집니다.'),
-        { role: esc(g.family), gap: esc(g.gap.label), why: esc(g.gap.description) });
+      /* 조사는 앞말이 정한다. 빈 자리에 '이' 와 '을' 을 박아 두어서
+         `요구사항 분해이 아직 확인되지 않았습니다` 가 그대로 나갔다 */
+      return fill(T('{role}에서 <b>{gap}</b>{jo} 아직 확인되지 않았습니다. ' +
+        '{why}{jo2} 한 번 남기시면 이 자리가 채워집니다.'),
+        { role: esc(g.family), gap: esc(g.gap.label), why: esc(g.gap.description),
+          jo: JO(g.gap.label, '이'), jo2: JO(g.gap.description, '을') });
     }
     var top = J.decision_table[0];
-    return fill(T('{role}은 핵심 영역이 모두 확인됐습니다. 공고 세 건을 띄워 놓고 ' +
+    return fill(T('{role}{jo} 핵심 영역이 모두 확인됐습니다. 공고 세 건을 띄워 놓고 ' +
       '요구사항과 내 근거를 한 줄씩 맞춰 보시면 지원서에서 어느 줄이 약한지 ' +
-      '바로 드러납니다.'), { role: esc(top.name) });
+      '바로 드러납니다.'), { role: esc(top.name), jo: JO(top.name, '은') });
   }
 
   /**
@@ -160,8 +336,15 @@ window.PCAV2Report = (function () {
       }
     }
     if (out.length < 2 && rows[1]) {
-      out.push(esc(rows[0].name) + JO(rows[0].name, '와') + ' ' + esc(rows[1].name) +
-        JO(rows[1].name, '가') + T(' 가까이 있어 둘을 견주어 보실 단계입니다.'));
+      /* 점수가 **같은** 것을 "가까이 있다" 고 적으면 차이가 있는 것처럼
+         읽힌다. 같은 것은 같다고 적는다 */
+      var sp2 = spread(J);
+      out.push(sp2.anyTie
+        ? fill(T('{a}{jo1} {b}{jo2} 관심 점수가 같습니다. 어느 쪽이 앞이라고 말할 근거가 지금은 없습니다.'),
+          { a: esc(rows[0].name), b: esc(rows[1].name),
+            jo1: JO(rows[0].name, '와'), jo2: JO(rows[1].name, '는') })
+        : esc(rows[0].name) + JO(rows[0].name, '와') + ' ' + esc(rows[1].name) +
+          JO(rows[1].name, '가') + T(' 가까이 있어 둘을 견주어 보실 단계입니다.'));
     }
     return out.slice(0, 3);
   }
@@ -176,7 +359,17 @@ window.PCAV2Report = (function () {
    */
   function summary(J) {
     var g = biggestGap(J);
+    var sp = spread(J);
     return {
+      /**
+       * 동률과 응답 고름. **첫 쪽을 그리는 쪽이 이 값을 보고 차례를 만들지
+       * 말지 정한다.** 웹·PDF·플랫폼이 같은 객체를 받으므로 한 곳에서만
+       * 정해 둔다.
+       */
+      spread: {
+        tied_count: sp.tiedCount, all_tied: sp.allTied, any_tie: sp.anyTie,
+        monotone: sp.monotone, interest_kinds: sp.interestKinds
+      },
       /**
        * **순위가 아니다.** `decision_table` 은 관심이 높은 쪽을 앞에 둔
        * 비교표이고(`v2-decision.js` 의 `table`), 그 정렬은 관심 점수
@@ -186,36 +379,71 @@ window.PCAV2Report = (function () {
        * 그래서 번호 대신 읽는 사람이 할 일을 적고, 판정은
        * `decision_status` 가 들고 있게 두었다.
        */
-      top_roles: J.decision_table.slice(0, 3).map(function (r, i) {
-        return {
-          order: i + 1,
-          slot: i === 0 ? T('먼저 확인할 직무')
-            : i === 1 ? T('함께 비교할 직무') : T('그다음으로 볼 직무'),
-          career_family_id: r.career_family_id,
-          name: r.name,
-          interest: TX(LV, r.interest && r.interest.level) || null,
-          exposure: TX(LV, r.exposure && r.exposure.level) || null,
-          core_confirmed: r.evidence_coverage ? r.evidence_coverage.core.confirmed : null,
-          core_total: r.evidence_coverage ? r.evidence_coverage.core.total : null,
-          decision_status: r.decision_status,
-          decision_status_label: DEC.label(r.decision_status)
-        };
-      }),
+      /* **세 카드가 같은 문항을 되풀이하지 않게 한다.** Q1 처럼 세 직무군에
+         걸린 문항은 전부 1순위 근거로 뽑혀서, 같은 줄이 석 장에 또 나왔다.
+         이미 쓴 것은 뒤 카드에서 뺀다 */
+      top_roles: (function () {
+        var used = {};
+        return J.decision_table.slice(0, 3).map(function (r, i) {
+          return whyRow(J, r, i, sp, used);
+        });
+      })(),
       key_findings: findings(J),
       /* 번호를 같이 담는다. 이름은 언어마다 다르고 번호는 안 다르다 */
       critical_gap: g ? { label: g.gap.label, family_id: g.family_id,
         family: g.family, why: g.gap.description } : null,
       next_action: nextOneThing(J),
+      /* 고지도 동률에 따라 갈린다. 동점인데 "차이가 작으면" 이라고 적으면
+         차이가 있는 것처럼 읽힌다 */
       confidence_note: T('여기 나오는 값은 합격 가능성이나 실력을 잰 값이 아닙니다. ') +
         T('지금 적어 주신 응답과 경험에서 확인되는 것만 적었습니다. ') +
-        T('아래 세 직무는 등수가 아니라 먼저 살펴볼 차례입니다. 차이가 작으면 차례도 쉽게 바뀝니다.')
+        (sp.allTied
+          ? T('아래는 차례가 아닙니다. 지금 응답만으로는 어느 직무도 앞서지 않았습니다.')
+          : sp.anyTie
+            ? T('아래는 차례가 아닙니다. 앞의 몇 가지는 점수가 같아 순서를 매기지 않았습니다.')
+            : T('아래 세 직무는 등수가 아니라 먼저 살펴볼 차례입니다. 차이가 작으면 차례도 쉽게 바뀝니다.'))
     };
   }
 
   function decisionSummary(J) {
     var S = summary(J);
     var g = S.critical_gap;
+    var sp = S.spread;
     return '<div class="dsum">' +
+
+      /* **동점이면 그 사실을 맨 위에 적는다.** 아래 카드가 차례로 읽히기
+         전에 읽혀야 한다 */
+      /**
+       * **동점이면 그 사실을 맨 위에 적는다.** 아래 카드가 차례로 읽히기
+       * 전에 읽혀야 한다.
+       *
+       * 응답이 고르게 같아서 동점이 된 경우에는 두 알림을 한 덩이로 묶는다.
+       * 따로 띄우면 같은 말을 두 번 하는 셈이고, BASIC 은 그만큼 종이가
+       * 늘어 규격 장수를 넘긴다.
+       *
+       * **불성실이라고 말하지 않는다**: 고르게 답하는 것도 답이고, 우리가
+       * 아는 것은 그래서 직무 사이에 차이가 생기지 않았다는 사실뿐이다.
+       * 점수는 손대지 않는다.
+       */
+      (sp.all_tied
+        ? '<p class="dstie">' +
+          T('지금 응답만으로는 특정 직무가 앞서지 않았습니다.') + '</p>' +
+          '<p class="note dstien">' +
+          fill(T(NOTE_ALL_TIED), { n: sp.tied_count }) + '</p>'
+        : sp.any_tie
+          ? '<p class="dstie">' +
+            fill(T('앞의 {n}개는 점수가 같아 순서를 매기지 않았습니다.'),
+              { n: sp.tied_count }) + '</p>' +
+            (sp.monotone ? '<p class="note dsflat">' +
+              T('응답이 거의 같은 값으로 모여서 직무 사이에 차이가 거의 생기지 ' +
+                '않았습니다. 점수는 손대지 않고 그대로 두었습니다.') + '</p>' : '')
+          : sp.monotone
+            ? '<p class="note dsflat">' +
+              T('응답이 거의 같은 값으로 모여서 직무 사이에 차이가 거의 생기지 ' +
+                '않았습니다. 점수는 손대지 않고 그대로 두었고, 더 끌리는 쪽과 덜 ' +
+                '끌리는 쪽을 갈라 답하시면 결과가 또렷해집니다.') + '</p>'
+            : '') +
+
       '<div class="dstop">' +
       S.top_roles.map(function (r, i) {
         return '<div class="dscard">' +
@@ -227,6 +455,12 @@ window.PCAV2Report = (function () {
           (r.core_total !== null
             ? T('<span>핵심 ') + r.core_confirmed + '/' + r.core_total + T(' 확인</span>') : '') +
           '</div>' +
+          /* **왜 이 직무인지를 여기서 답한다.** 전에는 이 재료가 PRO 직무
+             쪽과 부록에만 있어서, 무료 응시자는 숫자만 받았다 */
+          (r.why_items && r.why_items.length
+            ? '<p class="dswhy">' + T('이 문항에 그렇다고 답하셨습니다') + '</p>' +
+              '<p class="dswhyq">' + esc(r.why_items[0]) + '</p>'
+            : '') +
           '<div class="dsnow">' + esc(r.decision_status_label) + '</div>' +
           '</div>';
       }).join('') + '</div>' +
@@ -239,7 +473,11 @@ window.PCAV2Report = (function () {
       T('<div class="dsbox dsgap"><h4>가장 큰 공백</h4>') +
       (g
         ? '<p class="dsgapname">' + esc(g.label) + '</p>' +
-          '<p class="note">' + esc(g.family) + ' · ' + esc(g.why) + '</p>'
+          '<p class="note">' + esc(g.family) + ' · ' + esc(g.why) + '</p>' +
+          /* 동점이면 이 공백이 "가장 중요한 직무" 의 것이라고 말할 수 없다 */
+          (sp.all_tied ? '<p class="note">' +
+            T('직무가 모두 같은 점수여서, 위 셋 가운데 공백이 먼저 보이는 곳을 적었습니다.') +
+            '</p>' : '')
         : T('<p class="note">핵심 영역에서 비어 있는 자리가 없습니다.</p>')) +
       '</div>' +
       '</div>' +
@@ -253,25 +491,51 @@ window.PCAV2Report = (function () {
 
   /* ── 2쪽. 직무 견주기 ───────────────────────────────────────────── */
   function topComparison(J) {
+    var sp = spread(J);
     var top = J.decision_table.slice(0, 3);
     var adj = J.decision_table.slice(3, 5);
+    /**
+     * **빈 칸의 뜻이 둘이다.** 그 직무에 그 문항이 애초에 없는 것과,
+     * 있는데 답이 없는 것은 다르다. 전에는 둘 다 한 글자(`—`)였다.
+     * 학습 의향 문항(Q41~46)은 여섯 직무군만 덮으므로, 나머지 열에
+     * 서던 그 한 글자는 "안 답하셨다" 가 아니고 "묻지 않았다" 다.
+     */
+    var lv = function (o) {
+      if (!o) return '<span class="v2na" title="' + T('이 직무를 묻는 문항이 없습니다') +
+        '">' + T('문항 없음') + '</span>';
+      var t = TX(LV, o.level);
+      return t ? esc(t) : '<span class="v2na">' + T('응답 없음') + '</span>';
+    };
     var cell = function (r) {
       var c = r.evidence_coverage;
-      return '<tr><td><b>' + esc(r.name) + '</b></td>' +
+      var tw = tiedWith(sp, r);
+      return '<tr><td><b>' + esc(r.name) + '</b>' +
+        /* 같은 점수로 묶인 줄에 표시를 둔다. 표가 위에서 아래로 읽히므로
+           표시가 없으면 첫 줄이 1위로 읽힌다 */
+        (tw ? ' <span class="v2tie">' + T('같은 점수') + '</span>' : '') + '</td>' +
         '<td>' + esc(DEC.modeLabel(r.work_mode)) + '</td>' +
-        '<td>' + esc(TX(LV, r.interest && r.interest.level) || '—') + '</td>' +
-        '<td>' + esc(TX(LV, r.exposure && r.exposure.level) || '—') + '</td>' +
-        '<td>' + esc(TX(LV, r.learning && r.learning.level) || '—') + '</td>' +
-        '<td>' + (c ? c.core.confirmed + ' / ' + c.core.total : '—') + '</td>' +
-        '<td>' + (r.evidence_depth ? esc(r.evidence_depth + ' ' + TX(RUNG, r.evidence_depth)) : '—') + '</td>' +
+        '<td>' + lv(r.interest) + '</td>' +
+        '<td>' + lv(r.exposure) + '</td>' +
+        '<td>' + lv(r.learning) + '</td>' +
+        '<td>' + (c ? c.core.confirmed + ' / ' + c.core.total
+          : '<span class="v2na">' + T('없음') + '</span>') + '</td>' +
+        /* 사다리 코드(E4)를 손님에게 내보내지 않는다. 뜻만 적는다 */
+        '<td>' + (r.evidence_depth ? esc(TX(RUNG, r.evidence_depth) || r.evidence_depth)
+          : '<span class="v2na">' + T('아직 없음') + '</span>') + '</td>' +
         '<td><b>' + esc(DEC.label(r.decision_status)) + '</b></td></tr>';
     };
-    return '<div class="v2tw"><table><thead><tr>' +
-      [T('직무'), T('업무방식'), T('관심'), T('경험'), T('학습의향'), T('핵심 확인'), T('증거 깊이'), T('지금 단계')]
+    return (sp.allTied
+      ? '<p class="dstie">' + T('지금 응답만으로는 특정 직무가 앞서지 않았습니다.') + '</p>'
+      : '') +
+      '<div class="v2tw"><table><thead><tr>' +
+      [T('직무'), T('업무방식'), T('관심'), T('경험'), T('학습의향'),
+        T('경험에서 확인'), T('설명 깊이'), T('지금 단계')]
         .map(function (h) { return '<th>' + h + '</th>'; }).join('') +
       '</tr></thead><tbody>' + top.map(cell).join('') +
       (adj.length
-        ? T('<tr class="v2adj"><td colspan="8">곁에 두실 후보</td></tr>') + adj.map(cell).join('')
+        ? '<tr class="v2adj"><td colspan="8">' +
+          (sp.allTied ? T('같은 점수로 묶인 나머지 가운데 둘') : T('곁에 두실 후보')) +
+          '</td></tr>' + adj.map(cell).join('')
         : '') +
       '</tbody></table></div>' +
       /* **두 열이 서로 다른 입력에서 온다는 것을 적는다.** '경험 높음' 과
@@ -279,13 +543,7 @@ window.PCAV2Report = (function () {
          문항에 답하신 것이고 뒤엣것은 적어 주신 경험에서 확인된 것이다.
          실제로 경험을 한 줄도 안 적은 사람의 쪽이 그렇게 나왔다 */
       '<p class="note" style="margin-top:12px">' +
-      T('‘관심’ 과 ‘경험’ 은 문항에 답하신 것이고, ‘핵심 확인’ 은 적어 주신 경험에서 ' +
-        '확인된 것입니다. 그래서 경험이 높아도 적어 주신 것이 없으면 핵심이 0 으로 ' +
-        '남습니다. 두 값을 하나로 합치지 않는 까닭도 그것입니다.') + '</p>' +
-      '<p class="note">' +
-      T('관심이 높은데 적어 주신 경험이 비어 있는 직무라면, 지원서를 쓰기 전에 ' +
-        '그 일을 작게 한 번 해보시는 편이 빠릅니다. 본문에 담지 않은 나머지 직무는 ' +
-        '부록의 표에 열여섯 가지가 모두 들어 있습니다.') + '</p>';
+      T(NOTE_COMPARE) + '</p>';
   }
 
   /* ── 직무 하나를 한 자리에서 ─────────────────────────────────────── */
@@ -294,10 +552,21 @@ window.PCAV2Report = (function () {
   function whyPlain(J, row) {
     var bank = window.PCA_V2_ITEMS.ME;
     var all = [].concat(bank.core.items, bank.standard.items, bank.pro.items);
+    /**
+     * **실제로 이 점수를 만든 문항만 인용한다.**
+     *
+     * 전에는 문항 은행 전체를 훑어 가중치가 0.6 이상인 것을 골랐다. 그래서
+     * 두 가지가 틀렸다: 등급에 없는 문항(BASIC 응시자에게 Q50·Q53)이
+     * 인용되고, **낮게 답한 문항도 "그렇다고 답하셨습니다" 로 적혔다.**
+     * `basis` 는 채점이 그 직무 점수를 만들 때 실제로 쓴 문항 번호다.
+     */
+    var basis = {};
+    [row.interest, row.learning].forEach(function (o) {
+      ((o && o.basis) || []).forEach(function (n) { basis[n] = 1; });
+    });
     var hits = [];
     all.forEach(function (it) {
-      var w = (it.career_family_weights || {})[row.career_family_id];
-      if (!w || w < 0.6) return;
+      if (!basis[it.question_no]) return;
       if (it.construct !== 'actual_work_interest' && it.construct !== 'learning_intent') return;
       /* **문항은 문항 은행이 들고 있고 사전에는 없다.** 결과지 문구와
          달리 문항은 승인된 영어가 JSON 안에 따로 있고, 학위 단계마다
@@ -317,8 +586,11 @@ window.PCAV2Report = (function () {
        '쪽으로 답하셨습니다' 가 붙어 한 문장으로 읽히지 않는다. 기계가
        조립한 티가 여기서 가장 많이 났다. 따옴표로 묶어 인용으로 적고,
        낱낱이 줄바꿈한다 */
+    var sp = spread(J);
     return '<p class="rdwhy">' +
-      T('이 직무가 먼저 온 까닭은 아래 문항에 그렇다고 답하신 것입니다.') + '</p>' +
+      T(tiedWith(sp, row)
+        ? '이 직무가 함께 올라온 까닭은 아래 문항에 그렇다고 답하신 것입니다.'
+        : '이 직무가 먼저 온 까닭은 아래 문항에 그렇다고 답하신 것입니다.') + '</p>' +
       '<ul class="qlist rdwhyq">' +
       reasons.map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('') +
       '</ul>';
@@ -543,6 +815,7 @@ window.PCAV2Report = (function () {
     };
 
     /* 열여섯 직무 전부 */
+    var apsp = spread(J);
     out.push(A(T('직무군 열여섯 전부'),
       '<div class="v2tw"><table><thead><tr>' +
       [T('직무'), T('업무방식'), T('관심'), T('경험'), T('학습의향'), T('핵심 확인'), T('지금 단계')]
@@ -557,15 +830,30 @@ window.PCAV2Report = (function () {
           '<td>' + (c ? c.core.confirmed + ' / ' + c.core.total : '—') + '</td>' +
           '<td>' + esc(DEC.label(r.decision_status)) + '</td></tr>';
       }).join('') + '</tbody></table></div>',
-      T('본문에는 먼저 보실 셋과 곁에 두실 둘만 담았습니다.')));
+      apsp.allTied
+        ? fill(T(NOTE_APX_ALL_TIED), { n: apsp.tiedCount })
+        : apsp.anyTie
+          ? fill(T(NOTE_APX_TIED), { n: apsp.tiedCount })
+          : T('본문에는 먼저 보실 셋과 곁에 두실 둘만 담았습니다.')));
 
     /* 근거 문항 */
     var bank = window.PCA_V2_ITEMS.ME;
     var all = [].concat(bank.core.items, bank.standard.items, bank.pro.items);
     var trace = J.decision_table.slice(0, 5).map(function (r) {
-      var nos = all.filter(function (it) {
-        return ((it.career_family_weights || {})[r.career_family_id] || 0) >= 0.6;
-      }).map(function (it) { return 'Q' + it.question_no; });
+      /**
+       * **응시자가 실제로 답한 문항만 적는다.**
+       *
+       * 전에는 문항 은행 전체에서 가중치 0.6 이상인 것을 골랐다. 그래서
+       * BASIC(48문항) 결과지의 이 표에 Q50·Q53 처럼 **그 사람이 본 적 없는
+       * 문항 번호**가 적혔다. 되짚으라고 둔 표가 되짚을 수 없는 번호를
+       * 내놓고 있었다. `basis` 는 채점이 그 점수를 만들 때 쓴 번호다.
+       */
+      var basis = {};
+      [r.interest, r.exposure, r.learning].forEach(function (o) {
+        ((o && o.basis) || []).forEach(function (n) { basis[n] = 1; });
+      });
+      var nos = all.filter(function (it) { return basis[it.question_no]; })
+        .map(function (it) { return 'Q' + it.question_no; });
       return nos.length
         ? '<tr><td>' + esc(r.name) + '</td><td>' + esc(nos.join(', ')) + '</td></tr>' : '';
     }).join('');
@@ -594,7 +882,9 @@ window.PCAV2Report = (function () {
     if (J.research_maturity) {
       var m = J.research_maturity;
       out.push(A(T('연구·과제를 어디까지 맡아 봤는가'),
-        '<p><b>' + esc(m.level) + ' · ' + esc(m.label) + '</b></p>' +
+        /* 안쪽 코드(`RP2`)를 손님 화면에 적지 않는다. 사다리 칸의 이름만
+           읽히면 되고, 코드는 결과 객체와 스냅샷에 그대로 남는다 */
+        '<p><b>' + esc(m.label) + '</b></p>' +
         T('<p class="note"><b>이렇게 읽었습니다</b> ') + esc(m.evidence.join(' · ')) + '</p>' +
         (m.missing_for_next_level.length
           ? T('<p class="note"><b>다음 칸으로 가려면</b> ') +
@@ -619,7 +909,7 @@ window.PCAV2Report = (function () {
     /* 방법과 한계 */
     out.push(A(T('어떻게 만든 자료인가'),
       '<ul class="qlist">' +
-      T('<li>관심·경험·결정 소유·업무 방식·학습 의향은 서로 다른 문항에서 나와 ') +
+      T('<li>관심·경험·직접 정한 것·업무 방식·학습 의향은 서로 다른 문항에서 나와 ') +
       T('따로 읽습니다. 합쳐서 하나의 점수로 만들지 않습니다.</li>') +
       T('<li>경험은 적합도에 들어가지 않습니다. 증거가 어디까지 확인되는지만 ') +
       T('달라집니다.</li>') +
@@ -639,7 +929,8 @@ window.PCAV2Report = (function () {
 
     out.push(A(T('판본'),
       '<table class="v2gap"><tbody>' +
-      T('<tr><th>검사</th><td>') + esc(J.assessment_version) + '</td></tr>' +
+      T('<tr><th>검사</th><td>') + esc(instrumentName(J.assessment_version)) +
+      ' <span class="note">(' + esc(J.assessment_version) + ')</span></td></tr>' +
       T('<tr><th>결과 스키마</th><td>') + esc(J.schema_version) + '</td></tr>' +
       T('<tr><th>증거 지도</th><td>') + esc(J.evidence_map_version || '—') + '</td></tr>' +
       T('<tr><th>문항 수</th><td>') + J.assessment.item_count + T(' 가운데 ') +
@@ -715,25 +1006,28 @@ window.PCAV2Report = (function () {
     var deepN = isP ? 3 : 0;
 
     /* 1. 결정. 서른 초에 읽는 쪽이다 */
-    out.push(page(no(), 'DECISION', T('지금 먼저 보실 세 가지'),
+    var sp0 = spread(J);
+    out.push(page(no(), T('어디부터 볼까'),
+      sp0.allTied ? T('지금 같이 놓고 보실 세 가지') : T('지금 먼저 보실 세 가지'),
       '', decisionSummary(J), 'p-decision', T('요약')));
 
     /* 2. 견주기 */
-    out.push(page(no(), 'DECISION', T('먼저 볼 직무를 견주면'),
+    out.push(page(no(), T('견주기'),
+      sp0.allTied ? T('같은 점수로 묶인 직무를 견주면') : T('먼저 볼 직무를 견주면'),
       T('칸이 갈리는 자리가 지금 할 일을 알려 줍니다.'), topComparison(J), '', T('직무 비교')));
 
     /* 3. 왜. 배운 것에서 조직이 결과로 치는 것까지 잇는다. **맨 앞 직무
        하나만.**
        조직 넷을 견주는 쪽은 바로 다음 쪽이 받는다(STANDARD 이상) */
     if (chains) {
-      out.push(page(no(), 'WHY', T('배운 것이 실제 업무에서 어떻게 쓰이는가'),
+      out.push(page(no(), T('왜 이 일인가'), T('배운 것이 실제 업무에서 어떻게 쓰이는가'),
         T('배운 것에서 조직이 결과로 치는 것까지 한 줄로 이었습니다.'), chains,
         '', T('전공 → 실무')));
     }
 
     /* 4. 내 증거. **BASIC 은 비어 있는 것까지 이 쪽에서 끝낸다**(규격 §14 의
        "Current Evidence + Gap"). 그러면 다섯째 쪽이 할 일만 받는다 */
-    out.push(page(no(), 'EVIDENCE',
+    out.push(page(no(), T('내가 가진 근거'),
       isB ? T('지금 내가 가진 증거와 아직 확인되지 않은 것') : T('지금 내가 가진 증거'),
       J.evidence_supplied
         ? (isB ? LOW_RUNG()
@@ -750,7 +1044,7 @@ window.PCAV2Report = (function () {
        조직 기준으로 적었다' 는 줄은 들어 있어서, 조직이 결과를 가른다는
        말 자체는 빠지지 않는다. 조직 넷을 나란히 견주는 쪽은 STANDARD 부터 */
     if (!isB && (sm || tr)) {
-      out.push(page(no(), 'ORGANIZATION VALUE', T('같은 전공도 조직에 따라 결과가 달라집니다'),
+      out.push(page(no(), T('조직에 따라'), T('같은 전공도 조직에 따라 결과가 달라집니다'),
         T('같은 지식으로 어디에서는 제품이 나오고 어디에서는 논문이 나옵니다.'),
         sm + tr, '', T('조직 비교')));
     }
@@ -759,18 +1053,18 @@ window.PCAV2Report = (function () {
        BASIC 은 이 쪽을 받지 않는다: 네댓 쪽 안에서는 앞의 결정 쪽이
        먼저다. 직무별 자료는 STANDARD 부터 */
     J.decision_table.slice(0, deepN).forEach(function (r, i) {
-      out.push(page(no(), 'WHY · EVIDENCE', r.name, '', roleDeepDive(J, r), '',
+      out.push(page(no(), T('왜 이 일인가 · 내 근거'), r.name, '', roleDeepDive(J, r), '',
         i === 0 ? T('직무 자세히') : ''));
     });
 
     /* 9. 비어 있는 것. BASIC 은 넷째 쪽에서 이미 봤다 */
     if (!isB && miss) {
-      out.push(page(no(), 'GAP', T('아직 확인되지 않은 것'), NOT_ABILITY(), miss,
+      out.push(page(no(), T('아직 비어 있는 것'), T('아직 확인되지 않은 것'), NOT_ABILITY(), miss,
         '', T('아직 없는 것')));
     }
 
     /* 10. 다음에 만들 경험 **하나**, 그리고 그 뒤 일정 */
-    out.push(page(no(), 'ACTION',
+    out.push(page(no(), T('다음에 할 일'),
       ne ? T('다음에 만들 경험 하나') : T('언제 무엇을 할 것인가'),
       /* 권하는 말로 적는다. 받는 사람이 읽으러 온 것은 지시가 아니고
          자기 응답을 검토한 결과다 */
@@ -794,6 +1088,8 @@ window.PCAV2Report = (function () {
 
   return {
     render: render, summary: summary,
-    decisionSummary: decisionSummary, roleDeepDive: roleDeepDive
+    decisionSummary: decisionSummary, roleDeepDive: roleDeepDive,
+    /* 검사가 동률·응답 고름을 직접 세어 볼 수 있게 내놓는다 */
+    spread: spread
   };
 })();

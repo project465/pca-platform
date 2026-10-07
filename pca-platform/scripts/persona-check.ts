@@ -98,6 +98,9 @@ const PERSONAS: Persona[] = [
   { key: "K", name: "모든 문항에 5 (묵종 응답)", stage: "bachelor",
     likes: ["*"], did: ["*"], own: 5, mode: 5, evq: 5, evidence: EV_RICH,
     expect: "전부 1군이 되면 쓸모가 없다" },
+  { key: "M", name: "모든 문항에 1 (전부 아니라고)", stage: "bachelor",
+    likes: [], did: [], own: 1, mode: 1, evq: 1, evidence: null,
+    expect: "억지 추천 없음 + 응답 품질 안내" },
   { key: "L", name: "박사후연구원 · 응답은 학부생 G 와 같음", stage: "postdoc",
     likes: ["ME_DESIGN_PRODUCT", "ME_CAE_SIM"], did: [],
     own: 1, mode: 3, evq: 1, evidence: null,
@@ -109,6 +112,8 @@ function answerOf(p: Persona, it: Item): unknown {
   const fams = Object.keys(it.career_family_weights ?? {});
   const hitLike = p.likes.includes("*") || fams.some((f) => p.likes.includes(f));
   const hitDid = p.did.includes("*") || fams.some((f) => p.did.includes(f));
+  /* M 은 전 문항 1. 묵종(K)의 거울이다 */
+  if (p.key === "M") return it.scale === "choice_multi2" ? [1] : it.scale === "choice_one" ? 1 : 1;
   switch (it.construct) {
     case "actual_work_interest": return hitLike ? 5 : p.likes.length ? 2 : 3;
     case "learning_intent": return hitLike ? 5 : p.likes.length ? 2 : 3;
@@ -167,8 +172,9 @@ async function run(p: Persona, code: string): Promise<Record<string, unknown>> {
   if (!r.ok) throw new Error(`결과지 실패 ${r.reason}`);
   const snap = await latestSnapshot(a.id);
   const pay = snap!.payload as Record<string, unknown>;
+  const sum = pay.summary as Record<string, unknown>;
   return { persona: p, tier: a.tier, attemptId: a.id,
-    summary: pay.summary, result: pay.result, sheets: r.sheets };
+    summary: sum, spread: sum.spread, result: pay.result, sheets: r.sheets };
 }
 
 async function main() {

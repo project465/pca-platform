@@ -36,14 +36,28 @@ const srv = await new Promise((ok) => {
   s.listen(PORT, "127.0.0.1", () => ok(s));
 });
 
-/** 설계 쪽으로 기운 사람. `v2-pdf` 가 쓰는 것과 같은 모양이다 */
-const FILL = (it, fam) => {
-  const hit = fam.includes("ME_DESIGN_PRODUCT") || fam.includes("ME_CAE_SIM");
-  if (it.construct === "actual_work_interest") return hit ? 5 : 2;
-  if (it.construct === "exposure") return hit ? 4 : 2;
-  if (it.construct === "learning_intent") return hit ? 5 : 2;
-  return 4;
+/**
+ * 어떤 사람으로 풀 것인가. `PROFILE` 로 고른다.
+ *
+ *   tilted   설계·해석 쪽으로 기운 사람 (기본)
+ *   flat3    전 문항 3 — 열여섯이 모두 같은 점수가 된다
+ *   flat5    전 문항 5 — 같음. 묵종 응답
+ */
+const PROFILE = process.env.PROFILE ?? "tilted";
+/* **브라우저 안으로 글자로 넘어간다.** 그래서 밖의 변수를 붙들 수 없고,
+   고른 사람을 함수 안에 박아 둔다 */
+const FILLS = {
+  flat3: "() => 3",
+  flat5: "() => 5",
+  tilted: `(it, fam) => {
+    const hit = fam.includes("ME_DESIGN_PRODUCT") || fam.includes("ME_CAE_SIM");
+    if (it.construct === "actual_work_interest") return hit ? 5 : 2;
+    if (it.construct === "exposure") return hit ? 4 : 2;
+    if (it.construct === "learning_intent") return hit ? 5 : 2;
+    return 4;
+  }`,
 };
+const FILL_SRC = FILLS[PROFILE] ?? FILLS.tilted;
 
 const EV = {
   kinds: ["course", "project", "tool"],
@@ -97,7 +111,7 @@ for (const tier of tiers) {
         else n.querySelector(`.v2opt[data-v="${Math.max(1, Math.min(5, by(it, fam)))}"]`)?.click();
       }
       return !!document.getElementById("v2Next");
-    }, FILL.toString());
+    }, FILL_SRC);
     if (!more) break;
     await p.click("#v2Next"); await p.waitForTimeout(90);
     const at = await p.evaluate(() =>
@@ -130,7 +144,7 @@ for (const tier of tiers) {
       ({ kind: "부록", no: i + 1, text: txt(n) }));
     return main.concat(apx);
   });
-  const file = join(OUT, `${tier}${rich ? "" : "_경험없음"}.txt`);
+  const file = join(OUT, `${tier}_${PROFILE}${rich ? "" : "_경험없음"}.txt`);
   writeFileSync(file, pages.map((x) =>
     `\n${"=".repeat(70)}\n[${x.kind} ${x.no}]\n${"=".repeat(70)}\n${x.text}`).join("\n"));
   console.log(`  ${tier.padEnd(9)} 본문 ${pages.filter((x) => x.kind === "본문").length}쪽 · ` +
