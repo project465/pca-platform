@@ -64,25 +64,12 @@ const STANDALONE_GIVES = ["server.js", "package.json", "node_modules", ".next/se
  *
  * **깨지는 결과를 같이 적는다.** 경로만 적어 두면 다음 사람이 지워도 되는
  * 줄인지 알 수 없다.
+ *
+ * **목록은 `deploy/runtime-needs.json` 한 곳에 있다.** 이 검사는 배포 전에
+ * Dockerfile 을 정적으로 읽고, `ops:check` 는 배포 뒤 컨테이너 안에서 그
+ * 자리가 실제로 있는지 본다. 두 벌로 적어 두면 한쪽만 늘어나는 날이 온다.
  */
-const NEED = [
-  ["server.js", "앱이 뜨지 않는다"],
-  [".next/static", "CSS·JS 가 안 와서 화면이 맨몸으로 선다"],
-  ["public", "파비콘·이미지가 404"],
-  ["db", "`db:init` 으로 DB 를 세울 수 없다"],
-  ["ops/make-admin.cjs", "운영자 계정을 만들 수 없다"],
-  ["ops/seed-instrument.cjs", "문항을 적재할 수 없다"],
-  ["ops/db-init.sh", "빈 운영 DB 를 세울 수 없다"],
-  ["ops/db-upgrade.sh", "배포마다 스키마를 올릴 수 없다"],
-  ["ops/db-verify.sh", "팔 수 있는 상태인지 볼 수 없다"],
-  ["data/metri/items_pca_me_v1.json", "옛 검사 문항 적재가 막힌다"],
-  ["sites/pca-platform/v2.html", "결과지 엔진이 404 — 결과지와 PDF 가 멈춘다"],
-  ["sites/pca-platform/assets", "채점·문장 엔진이 없다"],
-  ["sites/pca-platform/data", "문항 은행과 가치 사슬 자료가 없다"],
-  ["sites/careermetri/legal/01-terms.md", "`/legal/terms` 본문이 빈다"],
-  ["sites/careermetri/legal/02-privacy.md", "`/legal/privacy` 본문이 빈다"],
-  ["sites/careermetri/legal/03-refund.md", "`/legal/refund` 본문이 빈다"],
-];
+const NEED = JSON.parse(readFileSync("deploy/runtime-needs.json", "utf8")).needs;
 
 /**
  * 이미지 안의 경로 하나를 어느 COPY 가 넣어 주는가.

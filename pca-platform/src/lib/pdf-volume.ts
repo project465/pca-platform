@@ -20,7 +20,7 @@
  * 것은 당연하고, 그것으로 "운영에서 PDF 가 사라진다" 고 적으면 거짓이다.
  * 그 자리는 `unknown` 이고, 거짓과 섞지 않는다.
  */
-import { existsSync, readFileSync, writeFileSync, unlinkSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, writeFileSync, unlinkSync } from "node:fs";
 import path from "node:path";
 
 export type PdfVolume = {
@@ -65,12 +65,32 @@ export function pdfVolume(): PdfVolume {
         how: "운영 컨테이너에서 돌립니다." };
   }
 
+  /**
+   * **써 보고 읽어 본다. 그리고 쓴 것만 지운다.**
+   *
+   * 빈 파일을 만들었다 지우는 것으로는 모자랐다: 결과지 PDF 는 1MB 쯤이고,
+   * 용량이 찬 볼륨은 0바이트는 받아 주면서 1MB 에서 실패한다. 그래서
+   * **PDF 한 장 크기**를 쓰고 되읽어 바이트가 같은지까지 본다.
+   *
+   * 이름에 `.probe-` 와 프로세스 번호를 넣는다. 손님의 PDF 는 `<응시번호>-
+   * <시각>.pdf` 꼴이라 겹칠 수 없고, **지우는 것은 이 파일 하나뿐이다.**
+   * 다른 파일은 열어 보지도 않는다.
+   */
   let writable = false;
+  let wrote = 0;
   try {
-    const probe = path.join(dir, `.volume-probe-${process.pid}`);
-    writeFileSync(probe, "x");
+    const probe = path.join(dir, `.probe-${process.pid}.pdf`);
+    /* 앞머리를 PDF 로 둔다. 남아 버린 파일을 본 사람이 무엇인지 알게 */
+    const body = Buffer.concat([
+      Buffer.from("%PDF-1.4\n% CareerMatri ops:check 쓰기 시험용. 지워도 됩니다.\n"),
+      Buffer.alloc(1_000_000, 0x20),
+    ]);
+    writeFileSync(probe, body);
+    const back = readFileSync(probe);
+    wrote = back.length;
+    const same = back.length === body.length && back.subarray(0, 5).toString() === "%PDF-";
     unlinkSync(probe);
-    writable = true;
+    writable = same;
   } catch { /* 못 쓰는 것도 답이다 */ }
   if (!writable) {
     return { dir, persistent: null, writable: false,
@@ -103,13 +123,30 @@ export function pdfVolume(): PdfVolume {
     if (!at || at === "/") return false;
     return at === resolved || resolved.startsWith(at + "/");
   });
+  /* **이미 쌓인 것이 몇 장이고 아직 읽히는가.** 쓸 수 있다는 것과 어제
+     찍은 것이 아직 있다는 것은 다른 질문이다. 읽기만 하고 고치지 않는다 */
+  let kept = 0;
+  let readable: string | null = null;
+  try {
+    const files = readdirSync(dir).filter((f) => f.endsWith(".pdf") && !f.startsWith(".probe-"));
+    kept = files.length;
+    if (files.length) {
+      const one = readFileSync(path.join(dir, files[0]));
+      readable = one.subarray(0, 5).toString() === "%PDF-" ? "읽힙니다" : "앞머리가 PDF 가 아닙니다";
+    }
+  } catch { /* 못 세도 아래 판정은 선다 */ }
+  const held = kept
+    ? ` 이미 ${kept}장이 쌓여 있고 그 중 한 장이 ${readable}.`
+    : " 아직 쌓인 것은 없습니다.";
+
   return mounted
     ? { dir, persistent: true, writable: true,
-      detail: `${dir} 가 붙여 준 디스크이고 쓸 수 있습니다. 재배포를 넘깁니다.`,
+      detail: `${dir} 가 붙여 준 디스크이고 ${(wrote / 1000) | 0}KB 를 쓰고 ` +
+        `되읽었습니다. 재배포를 넘깁니다.${held}`,
       how: null }
     : { dir, persistent: false, writable: true,
       detail: `${dir} 가 이미지 안쪽입니다. **다음 재배포에 구매자의 PDF 가 ` +
-        `전부 사라집니다.** Railway → 서비스 → Settings → Volumes 에서 ` +
+        `전부 사라집니다.**${held} Railway → 서비스 → Settings → Volumes 에서 ` +
         `${dir} 에 볼륨을 걸어야 합니다.`,
       how: null };
 }

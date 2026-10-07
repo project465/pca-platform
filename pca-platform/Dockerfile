@@ -16,10 +16,13 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 
-# **DB 를 세우는 두 스크립트만 한 덩이로 묶는다.**
+# **운영에서 사람이 쳐야 하는 셋만 한 덩이로 묶는다.**
 #
 # 운영 이미지에 개발 의존성을 통째로 넣지 않는다. 그런데 DB 를 세우려면
-# TypeScript 로 적힌 둘(`make-admin` · `seed-instrument`)이 필요하다.
+# TypeScript 로 적힌 둘(`make-admin` · `seed-instrument`)이 필요하고,
+# **운영 상태를 묻는 `ops-check` 도 거기서 돌아야 한다**: 볼륨이 붙어
+# 있는지와 이미지 안에 무엇이 들어왔는지는 **그 컨테이너 안에서만**
+# 답할 수 있는 질문이다. 밖에서 돌리면 그 두 줄이 영원히 UNKNOWN 이다.
 # 개발 의존성이 다 있는 이 층에서 미리 묶어 두면, 밖에서는 node 하나로
 # 돈다. `pg` 는 이미 standalone 에 들어 있으니 묶지 않고 빌려 쓴다.
 RUN npx esbuild scripts/make-admin.ts \
@@ -27,7 +30,10 @@ RUN npx esbuild scripts/make-admin.ts \
       --external:pg --outfile=ops-build/make-admin.cjs \
  && npx esbuild scripts/metri/seed-instrument.ts \
       --bundle --platform=node --format=cjs --target=node22 \
-      --external:pg --outfile=ops-build/seed-instrument.cjs
+      --external:pg --outfile=ops-build/seed-instrument.cjs \
+ && npx esbuild scripts/ops-check.ts \
+      --bundle --platform=node --format=cjs --target=node22 \
+      --external:pg --outfile=ops-build/ops-check.cjs
 
 FROM node:22-alpine AS run
 WORKDIR /app
@@ -73,6 +79,9 @@ COPY --from=build --chown=metri:nodejs /app/db ./db
 COPY --from=build --chown=metri:nodejs /app/ops-build ./ops
 COPY --from=build --chown=metri:nodejs /app/data/metri/items_pca_me_v1.json ./data/metri/
 COPY --chown=metri:nodejs deploy/ops/db-init.sh deploy/ops/db-upgrade.sh deploy/ops/db-verify.sh ./ops/
+# `ops:check` 가 "이 자리가 이미지 안에 실제로 있는가" 를 셀 때 읽는 목록.
+# `image:check` 가 배포 전에 읽는 것과 **같은 파일**이다
+COPY --chown=metri:nodejs deploy/runtime-needs.json ./deploy/runtime-needs.json
 COPY --chown=metri:nodejs deploy/ops/package.json ./package.json
 # **결과지 엔진을 같이 담는다.** 플랫폼이 `/pca/*` 로 이 파일들을 내주고
 # 결과지와 PDF 를 만들 때 불러 쓴다. 빠지면 결과지가 404 로 멈춘다

@@ -180,6 +180,26 @@ export async function generateReport(opts: {
       [opts.attemptId],
     ).catch(() => undefined);
 
+    /**
+     * **결과지가 열렸다고 알린다.**
+     *
+     * 여기가 ME_V2 에서 결과지가 실제로 열리는 순간이다: 스냅샷이 적혔고
+     * 응시가 `scored` 가 됐다. 전에는 이 줄이 없어서 **지금 파는 상품
+     * (BASIC·STANDARD·PRO)을 산 사람에게 결과지 알림이 한 통도 가지
+     * 않았다.** 옛 검사(ME_V1)의 제출 처리에만 그 호출이 있었고, 화면으로는
+     * 결과지가 멀쩡히 열려서 빠진 것이 안 보였다. 돈을 낸 사람은 메일을
+     * 기다리다 직접 들어와 본다.
+     *
+     * **승인제 회차는 `notifyReportReady` 가 다시 본다**: 담당자가 공개를
+     * 누르기 전이면 적지 않고, 누를 때 `notifySessionReleased` 가 보낸다.
+     * 여기서 그 판단을 따로 하지 않는다(설계 원칙 10).
+     *
+     * **알림이 결과지를 막지 않는다.** 메일 쪽이 무슨 일을 겪어도 이미
+     * 만들어진 결과지를 실패로 돌리지 않는다.
+     */
+    const { notifyReportReady } = await import("../outbox");
+    await notifyReportReady(opts.attemptId).catch(() => false);
+
     return { ok: true, snapshotId: row.id, traceId, pdfPath: file, sheets: out.sheets };
   } catch (e) {
     const msg = e instanceof Error ? e.message : "결과를 만들지 못했습니다.";

@@ -27,7 +27,7 @@
  *   DATABASE_URL=... npm run ops:check     # DB·백업까지 본다
  */
 import { execFileSync } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { appEnv, stagingGate, mockPaymentsAllowed } from "../src/lib/env";
 import { appDomain, probeAppDomain } from "../src/lib/app-domain";
@@ -152,9 +152,34 @@ function deployRow() {
    재지 않고 `image:check` 를 그대로 부른다. 두 곳에서 따로 세면 어느 날
    한쪽만 고쳐진다. */
 function dockerRow() {
+  /**
+   * **컨테이너 안에서는 Dockerfile 을 읽을 필요가 없다.**
+   *
+   * 거기서는 더 좋은 증거가 있다: 그 자리가 **실제로 있는지** 보면 된다.
+   * Dockerfile 을 정적으로 읽는 것은 "들어올 것이다" 까지이고, 여기는
+   * "들어와 있다" 다. 그래서 배포본 안에서는 이 줄이 UNKNOWN 이 아니라
+   * READY 나 BLOCKED 로 선다.
+   *
+   * 보는 목록은 `image:check` 와 **같은 파일**이다
+   * (`deploy/runtime-needs.json`). 두 벌로 적어 두면 한쪽만 늘어난다.
+   */
   if (!existsSync("Dockerfile")) {
-    return add("DOCKER_RUNTIME", "UNKNOWN", "이 자리에 Dockerfile 이 없습니다.",
-      "저장소 뿌리에서 돌립니다. 운영 이미지 안에서는 이 검사를 할 수 없습니다.");
+    const list = "deploy/runtime-needs.json";
+    if (!existsSync(list)) {
+      return add("DOCKER_RUNTIME", "UNKNOWN",
+        `Dockerfile 도 ${list} 도 없어 무엇이 있어야 하는지 알 수 없습니다.`,
+        "저장소 뿌리에서 `npm run image:check` 를 돌립니다.");
+    }
+    const needs = (JSON.parse(readFileSync(list, "utf8")) as
+      { needs: [string, string][] }).needs;
+    const miss = needs.filter(([want]) => !existsSync(want));
+    return miss.length
+      ? add("DOCKER_RUNTIME", "BLOCKED",
+        `이미지 안에 ${miss.length}가지가 없습니다 — ` +
+        miss.slice(0, 3).map(([w, why]) => `${w}(${why})`).join(" · "))
+      : add("DOCKER_RUNTIME", "READY",
+        `이미지 안에서 ${needs.length}자리를 실제로 확인했습니다 ` +
+        `(결과지 엔진 · 법정 문서 · db · ops · 문항).`);
   }
   try {
     execFileSync("node", ["scripts/image-check.mjs"], { stdio: ["ignore", "pipe", "pipe"] });
@@ -254,17 +279,61 @@ async function databaseRow() {
     return add("DATABASE", "BLOCKED",
       `핵심 표 7개 중 ${tables.n}개만 있습니다. \`npm run db:init\` 으로 세웁니다.`);
   }
+  /**
+   * 표가 서 있는 것과 **팔 수 있는 상태**는 다르다.
+   *
+   * 다섯을 더 본다. 전부 조회로 답할 수 있고, 하나라도 틀리면 그 자리에서
+   * 장사가 안 되거나 같은 결제가 두 번 적힌다.
+   */
+  const deep = await queryOne<{
+    products: number; admins: number; demo: number; fks: number; uniqs: number;
+  }>(
+    `SELECT
+       (SELECT count(*)::int FROM products
+         WHERE assessment_version='ME_V2' AND price_status='approved' AND active) AS products,
+       (SELECT count(*)::int FROM memberships
+         WHERE role IN ('superadmin','platform_super_admin')) AS admins,
+       (SELECT count(*)::int FROM users WHERE is_demo) AS demo,
+       (SELECT count(*)::int FROM pg_constraint
+         WHERE contype='f' AND connamespace='public'::regnamespace) AS fks,
+       (SELECT count(*)::int FROM (
+          SELECT conname AS n FROM pg_constraint
+          UNION ALL SELECT indexname FROM pg_indexes WHERE schemaname='public'
+        ) x WHERE n IN ('orders_order_no_key','entitlements_order_uniq')) AS uniqs`,
+  ).catch(() => null);
+
+  const bad: string[] = [];
+  if (!deep) bad.push("깊은 조회가 돌지 않았습니다");
+  else {
+    if (deep.products !== 6) bad.push(`승인된 ME_V2 상품이 ${deep.products}개(6개여야 합니다)`);
+    if (deep.admins < 1) bad.push("운영자가 없습니다 — `npm run make:admin`");
+    if (deep.uniqs < 2) bad.push(`중복 결제를 막는 제약이 ${deep.uniqs}/2`);
+    if (deep.fks < 50) bad.push(`외래키가 ${deep.fks}개뿐입니다 — 스키마가 반쪽입니다`);
+  }
+  if (bad.length) {
+    return add("DATABASE", "BLOCKED", bad.join(" · "));
+  }
+
+  /* **시연 자료는 막지 않고 경고한다.** 지우는 것은 사람이 판단할 일이고,
+     지우라고 막아 버리면 그 줄 때문에 다른 줄을 못 본다 */
+  const contam = (deep?.demo ?? 0) > 0
+    ? ` **시연 사람 ${deep!.demo}명이 섞여 있습니다** — 공개 전에 걷어냅니다.`
+    : "";
+  const sound = `핵심 표 7개 · 승인 상품 6개 · 운영자 ${deep!.admins}명 · ` +
+    `외래키 ${deep!.fks}개 · 중복 결제 제약 2개 · 시연 ${deep!.demo}명.`;
+
   if (local) {
     return add("DATABASE", "WARNING",
-      "핵심 표 7개가 다 있는데 **이 자리에서만 사는 DB** 입니다. " +
-      "운영 기록을 여기에 두면 세션이 끝날 때 결제 기록까지 사라집니다.");
+      `${sound} 다만 **이 자리에서만 사는 DB** 입니다. 운영 기록을 여기에 ` +
+      `두면 세션이 끝날 때 결제 기록까지 사라집니다.${contam}`);
   }
   if ((process.env.DB_IS_PERSISTENT ?? "").trim() !== "yes") {
     return add("DATABASE", "WARNING",
-      "바깥 호스트의 DB 에 핵심 표 7개가 다 있습니다. 지속형이 맞으면 " +
-      "DB_IS_PERSISTENT=yes 로 확인해 주십시오. 조회로는 거기까지 알 수 없습니다.");
+      `바깥 호스트의 DB 입니다. ${sound} 지속형이 맞으면 DB_IS_PERSISTENT=yes 로 ` +
+      `확인해 주십시오. 조회로는 거기까지 알 수 없습니다.${contam}`);
   }
-  add("DATABASE", "READY", "지속형 PostgreSQL 에 핵심 표 7개가 다 있습니다.");
+  add("DATABASE", contam ? "WARNING" : "READY",
+    `지속형 PostgreSQL. ${sound}${contam}`);
 }
 
 /* ── PDF_VOLUME ─────────────────────────────────────────────────────

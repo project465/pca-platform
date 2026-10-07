@@ -290,6 +290,62 @@ async function main() {
     !app.ok || (baseKo === app.url && baseEn === app.url),
     app.ok ? `PLATFORM_URL=${app.url}` : `PLATFORM_URL 이 아직 없다 (${app.reason})`);
 
+  /* ── 6-b. 일곱 가지 모두에 **실제로 부르는 자리**가 있는가 ───────
+     문면이 서는 것과 그것이 나가는 것은 다른 질문이다. 실제로 하나가
+     빠져 있었다: `report_ready` 의 호출이 **옛 검사(ME_V1) 제출 처리에만**
+     있어서, 지금 파는 ME_V2 를 산 사람에게 결과지 알림이 한 통도 가지
+     않았다. 화면으로는 결과지가 멀쩡히 열려서 빠진 것이 안 보인다.
+
+     그래서 **문면이 아니라 부르는 자리를 센다.** 코드를 글자로 읽는
+     검사라 투박하지만, 빠지는 쪽이 조용하다는 것이 이 탈의 성질이다. */
+  {
+    const { readFileSync: rf } = await import("node:fs");
+    const { readdirSync: rd } = await import("node:fs");
+    const src: string[] = [];
+    const walk = (d: string): void => {
+      for (const e of rd(d, { withFileTypes: true })) {
+        const f = `${d}/${e.name}`;
+        if (e.isDirectory()) { walk(f); continue; }
+        if (/\.tsx?$/.test(e.name) && f !== "src/lib/outbox.ts") src.push(rf(f, "utf8"));
+      }
+    };
+    walk("src");
+    const all = src.join("\n");
+    /** 손님에게 가는 일곱 갈래. 왼쪽이 사람 말이고 오른쪽이 부르는 자리다 */
+    const WIRED: [string, string[]][] = [
+      ["가입", ['kind: "signup"', "kind: 'signup'"]],
+      ["주문·결제", ['"purchase_done"', "'purchase_done'"]],
+      ["등급 상향 결제", ['"upgrade_done"', "'upgrade_done'"]],
+      ["결과지 완료", ["notifyReportReady", "notifySessionReleased"]],
+      ["환불 접수", ['"refund_requested"', "'refund_requested'"]],
+      ["환불 처리", ['"refund_done"', "'refund_done'"]],
+      ["운영 알림(재고)", ["checkCodeStock"]],
+      ["비밀번호 재설정", ['"password_reset"', "'password_reset'"]],
+      ["주소 확인", ['"verify_email"', "'verify_email'"]],
+    ];
+    const unwired = WIRED.filter(([, pats]) => !pats.some((x) => all.includes(x)))
+      .map(([n]) => n);
+    ok("아홉 갈래 모두에 부르는 자리가 있다", unwired.length === 0,
+      unwired.length ? `${unwired.join(" · ")} 가 문면만 있고 부르는 자리가 없다` : "src/ 전체");
+
+    /* **지금 파는 검사에서 결과지 알림이 나가는가.** 위 줄은 어딘가에서
+       부르는 것만 보는데, 그 어딘가가 옛 검사뿐이었던 적이 있다 */
+    ok("ME_V2 결과지가 열릴 때 알림이 나간다",
+      rf("src/lib/me-v2/render.ts", "utf8").includes("notifyReportReady"),
+      "src/lib/me-v2/render.ts 의 generateReport 끝");
+  }
+
+  /* ── 6-c. 운영 알림이 갈 자리 ──────────────────────────────────── */
+  {
+    const opsTo = (process.env.OPS_EMAIL ?? "").trim();
+    /* 비면 `MAIL_FROM` 으로 간다(`outbox.ts` 의 `checkCodeStock`). 그래서
+       비어 있어도 나가기는 하는데, **보내는 주소로 받는 것**이라 받은
+       편지함이 아니라 발신함에서 찾게 된다. 막지 않고 적어 둔다 */
+    ok("운영 알림 받을 자리가 정해져 있다", true,
+      opsTo ? `OPS_EMAIL=${opsTo}` :
+        `OPS_EMAIL 이 비어 MAIL_FROM(${REAL.from || "미정"}) 으로 갑니다`);
+  }
+
   /* ── 7. 발신 주소의 꼴 ─────────────────────────────────────────── */
   const addr = REAL.from.replace(/^.*<|>.*$/g, "").trim();
   ok("MAIL_FROM 이 주소 꼴이다",

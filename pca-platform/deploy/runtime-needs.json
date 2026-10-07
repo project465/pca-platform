@@ -1,0 +1,21 @@
+{
+  "_comment": "최종 runtime image 안에 있어야 하는 자리와, 없으면 무엇이 깨지는가. 두 검사가 이 한 파일을 읽는다: `image:check` 는 Dockerfile 을 정적으로 읽어 들어올지 보고(배포 전), `ops:check` 는 컨테이너 안에서 실제로 있는지 본다(배포 뒤). 목록을 두 벌 두면 한쪽만 늘어나는 날이 온다.",
+  "needs": [
+    ["server.js", "앱이 뜨지 않는다"],
+    [".next/static", "CSS·JS 가 안 와서 화면이 맨몸으로 선다"],
+    ["public", "파비콘·이미지가 404"],
+    ["db", "`db:init` 으로 DB 를 세울 수 없다"],
+    ["ops/make-admin.cjs", "운영자 계정을 만들 수 없다"],
+    ["ops/seed-instrument.cjs", "문항을 적재할 수 없다"],
+    ["ops/db-init.sh", "빈 운영 DB 를 세울 수 없다"],
+    ["ops/db-upgrade.sh", "배포마다 스키마를 올릴 수 없다"],
+    ["ops/db-verify.sh", "팔 수 있는 상태인지 볼 수 없다"],
+    ["data/metri/items_pca_me_v1.json", "옛 검사 문항 적재가 막힌다"],
+    ["sites/pca-platform/v2.html", "결과지 엔진이 404 — 결과지와 PDF 가 멈춘다"],
+    ["sites/pca-platform/assets", "채점·문장 엔진이 없다"],
+    ["sites/pca-platform/data", "문항 은행과 가치 사슬 자료가 없다"],
+    ["sites/careermetri/legal/01-terms.md", "`/legal/terms` 본문이 빈다"],
+    ["sites/careermetri/legal/02-privacy.md", "`/legal/privacy` 본문이 빈다"],
+    ["sites/careermetri/legal/03-refund.md", "`/legal/refund` 본문이 빈다"]
+  ]
+}
