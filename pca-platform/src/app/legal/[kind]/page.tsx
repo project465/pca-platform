@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import BrandHome from "@/components/sf/brand-home";
 import PublicFooter from "@/components/sf/public-footer";
-import { readFile } from "node:fs/promises";
+import { readLegalBody } from "@/lib/legal-doc";
 import { resolveLang } from "@/lib/locale-server";
 import { activeDocs, type ConsentKind } from "@/lib/consent";
 import { toLang2, txer } from "@/lib/surface-text";
@@ -55,7 +55,8 @@ export default async function LegalPage({
   const T = txer(L);
 
   if (solo) {
-    const text = await readFile(solo.path, "utf8").catch(() => null);
+    const got = await readLegalBody(solo.path);
+    const text = got.ok ? got.text : null;
     return (
       <div className="pub">
         <header className="pubtop">
@@ -91,7 +92,8 @@ export default async function LegalPage({
 
   let body: string | null = null;
   if (doc.body_path) {
-    body = await readFile(doc.body_path, "utf8").catch(() => null);
+    const got = await readLegalBody(doc.body_path);
+    body = got.ok ? got.text : null;
   }
 
   return (

@@ -77,6 +77,11 @@ COPY --chown=metri:nodejs deploy/ops/package.json ./package.json
 # **결과지 엔진을 같이 담는다.** 플랫폼이 `/pca/*` 로 이 파일들을 내주고
 # 결과지와 PDF 를 만들 때 불러 쓴다. 빠지면 결과지가 404 로 멈춘다
 COPY --from=build --chown=metri:nodejs /app/sites/pca-platform ./sites/pca-platform
+# 법정 문서 본문. **빠뜨리면 약관이 통째로 사라진다**: `/legal/terms` ·
+# `/legal/privacy` · `/legal/refund` 가 이 파일들을 읽고(`consent_documents.
+# body_path`), 없으면 셋이 전부 "본문을 아직 올리지 못했습니다" 로 선다.
+# 화면은 멀쩡해 보이고 가게는 약관이 없는 상태가 된다.
+COPY --from=build --chown=metri:nodejs /app/sites/careermetri/legal ./sites/careermetri/legal
 COPY --chown=metri:nodejs deploy/fonts-ko.conf /etc/fonts/conf.d/60-careermatri-ko.conf
 # 찍은 PDF 를 두는 자리. 웹에서 직접 열리지 않고, 내려받는 길에서 본인인지 본다
 RUN mkdir -p /app/var/reports && chown -R metri:nodejs /app/var

@@ -1924,6 +1924,42 @@ DNS · HTTPS · 상태코드 · 리디렉션 · 세션 쿠키 · 사업자 표�
 npm run prod:check   # BASE=https://app.careermatri.com (기본값)
 ```
 
+**법정 문서가 운영 이미지에 안 들어가 있었다.** (2026-10-07)
+
+`/legal/terms` · `/legal/privacy` · `/legal/refund` 가 본문을 **파일에서**
+읽는데(`consent_documents.body_path`), `Dockerfile` 이 옮기는 `sites/` 는
+`pca-platform` 하나뿐이었다. 운영 컨테이너 안에 법정 문서가 없어서 세 쪽이
+전부 빈 본문으로 섰다. **화면은 200 으로 멀쩡해 보이고 가게는 약관이 없는
+상태였다.** 환불정책 하나가 아니라 셋 다였다.
+
+standalone 서버를 그 상태로 띄워 재현했다: 폴더 없이 셋 다 본문 0자,
+폴더를 넣으면 3,824 · 3,668 · 2,038자.
+
+- `Dockerfile` 이 `sites/careermetri/legal` 을 넣는다
+- 읽는 자리를 `src/lib/legal-doc.ts` 로 모으고 **기준 자리를 못 박았다**:
+  상대 경로는 `process.cwd()` 를 따르는데 standalone 서버의 cwd 는 빌드한
+  자리와 다르다. 올려 둔 자리 밖으로 나가는 경로도 끊는다 — 이 값은 DB 의
+  `body_path` 에서도 온다
+- `launch:check` 가 세 본문을 **실제로 읽어** 본다. 저장소에 파일이 있다는
+  것과 손님이 그것을 읽는다는 것은 다른 말이다
+- **못 읽은 까닭을 삼키지 않는다.** 전에는 `.catch(() => null)` 이라 파일이
+  없는 것과 권한이 없는 것과 경로가 틀린 것이 화면에서 똑같이 생겼다
+
+**운영에 올라간 것과 저장소가 한 달 갈려 있다.** `origin/main` 이
+2026-09-08 에 멈춰 있고 작업 브랜치가 177 커밋 앞선다. `main` 에는
+`sites/careermetri/legal/` 이 한 파일도 없다. **합치는 것은 배포라** 여기서
+하지 않았다.
+
+**통신판매업 신고번호는 저장소 어디에도 없다.** `launch:check` 가 그
+모양의 번호를 `src`·`sites`·`db`·`marketing/src`·`scripts` 에서 찾아 센다.
+채우는 자리는 `/admin/business` 하나이고, 화면에 보이는 번호가 있다면 남은
+자리는 운영 DB 의 `site_settings` 다.
+
+**한 시장에서 두 등급을 잇따라 돌리면 가입이 거절된다.** 흐름 검사가 계정
+주소를 시장 이름으로만 만들어서 두 번째가 "이미 있는 주소" 로 막혔고,
+화면에서는 결제가 안 뜬 것처럼 보였다. 주소에 등급을 넣었다. 흐름은
+`FLOWS=KR:BASIC:bachelor,...` 로 고른다.
+
 **업그레이드는 코드로 팔 수 없다.** (2026-09-15)
 
 `issueCodes` 가 `HS_UPGRADE`·`UNIV_UPGRADE` 코드를 순순히 찍어 줬다. 그

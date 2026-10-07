@@ -140,7 +140,11 @@ async function flow({ market, tier, stage, prefix, langShots, lang }) {
   }
   await shot(page, `${prefix}02_signup`);
 
-  const email = `phase2.${market.toLowerCase()}.${RUN}@example.test`;
+  /* **주소에 등급을 넣는다.** 한 시장에서 두 등급을 잇따라 돌리면 시장
+     이름만으로는 같은 주소가 나오고, 두 번째 가입이 "이미 있는 주소" 로
+     거절되어 가입 화면에 그대로 머문다. 그러면 결제가 안 뜬 것으로 보여
+     엉뚱한 데를 보게 된다 */
+  const email = `phase2.${market.toLowerCase()}.${tier.toLowerCase()}.${RUN}@example.test`;
   await page.fill('input[name="email"]', email);
   await page.fill('input[name="name"]', market === "KR" ? "검사 사용자" : "Test User");
   await page.fill('input[name="password"]', PW);
@@ -320,15 +324,28 @@ async function flow({ market, tier, stage, prefix, langShots, lang }) {
   await ctx.close();
 }
 
-await flow({
-  market: "KR", tier: "STANDARD", stage: "master",
-  prefix: "kr_", langShots: true,
-});
-await flow({
-  market: "GLOBAL", tier: "PRO", stage: "phd",
-  /* **영어로 끝까지 돈다.** 글로벌 응시자가 실제로 보는 화면이다 */
-  prefix: "gl_", langShots: false, lang: "en",
-});
+/**
+ * 어느 흐름을 돌 것인가.
+ *
+ * 기본은 **파는 쪽이 가장 자주 보는 두 벌**이다. 등급을 바꿔 보고 싶으면
+ * `FLOWS` 로 넘긴다(`시장:등급:학위` 를 쉼표로 잇는다):
+ *
+ *   FLOWS=KR:BASIC:bachelor,KR:STANDARD:master,GLOBAL:STANDARD:master
+ *
+ * **셋을 다 돌면 한참 걸린다.** 한 번에 하나씩 보는 것이 보통이고, 그래서
+ * 기본값을 늘리지 않았다.
+ */
+const DEFAULT_FLOWS = "KR:STANDARD:master,GLOBAL:PRO:phd";
+for (const spec of (process.env.FLOWS ?? DEFAULT_FLOWS).split(",")) {
+  const [market, tier, stage] = spec.trim().split(":");
+  const global = market === "GLOBAL";
+  await flow({
+    market, tier, stage,
+    prefix: `${global ? "gl" : "kr"}_${tier.toLowerCase()}_`,
+    /* **영어로 끝까지 돈다.** 글로벌 응시자가 실제로 보는 화면이다 */
+    langShots: !global, lang: global ? "en" : undefined,
+  });
+}
 
 /* 운영 화면: 막힌 것이 아침에 보이는가 */
 {

@@ -21,6 +21,7 @@ import { query, queryOne } from "../src/lib/db";
 import { launchReport, AREAS, AREA_LABEL, type Area } from "../src/lib/launch";
 import { tiersDistinct } from "../src/lib/tiers";
 import { appDomain } from "../src/lib/app-domain";
+import { LEGAL_FILES, readLegalBody } from "../src/lib/legal-doc";
 
 const T: { n: string; pass: boolean; fix?: string }[] = [];
 const B: { area: Area; n: string; why: string; who: string }[] = [];
@@ -291,6 +292,51 @@ async function main() {
   ok("파기 목록이 파일럿 자유입력과 확인 링크를 품는다",
     er.includes("pilot_feedback") && er.includes("email_verify_tokens"),
     "src/lib/erasure.ts 의 REMOVE");
+
+  /**
+   * 법정 문서 본문이 **운영 이미지 안에서** 서는가.
+   *
+   * 본문을 표에 담지 않고 파일에서 읽는데, 운영 이미지가 그 폴더를 안
+   * 넣고 있었다. 세 쪽이 전부 "본문을 아직 올리지 못했습니다" 로 섰고
+   * 화면은 멀쩡해 보였다. 저장소에 파일이 있다는 것과 손님이 그것을
+   * 읽는다는 것은 다른 말이라, **읽어 보고** 센다.
+   */
+  for (const rel of LEGAL_FILES) {
+    const got = await readLegalBody(rel);
+    ok(`법정 문서 본문이 열린다 — ${rel.split("/").pop()}`,
+      got.ok && got.text.trim().length > 200,
+      got.ok ? "본문이 너무 짧습니다" : `${got.why}: ${got.detail}. Dockerfile 이 sites/careermetri/legal 를 넣는지 보십시오`);
+  }
+  {
+    const df = readFileSync("Dockerfile", "utf8");
+    ok("운영 이미지가 법정 문서 폴더를 넣는다",
+      df.includes("sites/careermetri/legal"),
+      "Dockerfile 의 COPY 한 줄");
+  }
+
+  /**
+   * 통신판매업 신고번호를 코드에 박아 두지 않는가.
+   *
+   * 아직 받지 않은 번호다. 저장소 어딘가에 적혀 있으면 그것이 화면으로
+   * 흘러나오고, **신고증에 없는 번호를 적으면 그 표시 자체가 거짓이 된다.**
+   * 채우는 자리는 `/admin/business` 하나다.
+   */
+  {
+    const PAT = /20\d{2}-[가-힣]{2,10}-\d{4}/;
+    const dirs = ["src", "sites", "db", "marketing/src", "scripts"];
+    const hits: string[] = [];
+    const walk = (d: string): void => {
+      for (const e of readdirSync(d, { withFileTypes: true })) {
+        const f = `${d}/${e.name}`;
+        if (e.isDirectory()) { if (e.name !== "node_modules" && e.name !== ".next") walk(f); continue; }
+        if (!/\.(ts|tsx|js|mjs|sql|md|html|json)$/.test(e.name)) continue;
+        if (PAT.test(readFileSync(f, "utf8"))) hits.push(f);
+      }
+    };
+    for (const d of dirs) if (existsSync(d)) walk(d);
+    ok("통신판매업 신고번호가 코드에 박혀 있지 않다", hits.length === 0,
+      `적힌 곳: ${hits.join(", ")}. 채우는 자리는 /admin/business 하나입니다`);
+  }
 
   report();
 }

@@ -360,3 +360,63 @@ BASIC 이고 `FREE_APPROVED` 라 팔려도 맞는 상품이다. **승인된 무�
 따로 적는다. 모르는 것을 모른다고 적어야 다음 사람이 엉뚱한 데를 고치지
 않는다. DNS 는 나가므로 A 레코드까지는 이 자리에서도 보인다
 (`app.careermatri.com` → 69.46.46.89 · `careermatri.com` → 216.198.79.1).
+
+### 6-12. 2026-10-07: 운영에 올라간 것과 저장소가 한 달 갈려 있다
+
+`origin/main` 이 **2026-09-08** 에 멈춰 있고 작업 브랜치가 177 커밋 앞서
+있다. Railway 는 `railway.json` 대로 `Dockerfile` 을 빌드하는데, **어느
+브랜치를 빌드하는지는 Railway 쪽 설정이고 저장소가 들고 있지 않다.**
+
+`origin/main` 에는 `sites/careermetri/legal/` 이 **한 파일도 없다.**
+`/legal/refund` 라우트도 없고 Dockerfile 의 법정 문서 COPY 도 없다. 운영이
+그 가지를 빌드하고 있다면 지금 떠 있는 것은 한 달 전 물건이고, 이번 회차
+전까지 고친 것이 **하나도 올라가 있지 않다.**
+
+**합치는 것은 배포다.** 그래서 여기서 하지 않았다. 올릴 때 보는 자리:
+
+```bash
+git log --oneline origin/main..claude/amazing-thompson-w3f2o2 | wc -l   # 177
+npm run launch:check                                                   # 올리기 전
+```
+
+### 6-13. 법정 문서가 운영 이미지에 안 들어가 있었다
+
+`/legal/terms` · `/legal/privacy` · `/legal/refund` 는 본문을 **파일에서**
+읽는다(`consent_documents.body_path`). 그런데 `Dockerfile` 이 옮기는
+`sites/` 는 `pca-platform` 하나뿐이었다. 그래서 운영 컨테이너 안에 법정
+문서가 없고, 세 쪽이 전부 빈 본문으로 선다.
+
+standalone 서버를 그 상태로 띄워 재현했다.
+
+| 쪽 | 폴더 없이 | 폴더를 넣은 뒤 |
+|---|---|---|
+| `/legal/terms` | 본문 0자 | 본문 3,824자 |
+| `/legal/privacy` | 본문 0자 | 본문 3,668자 |
+| `/legal/refund` | 본문 0자 (`본문을 아직 올리지 못했습니다`) | 본문 2,038자 |
+
+**화면은 200 으로 멀쩡해 보이고 가게는 약관이 없는 상태였다.** 환불정책
+하나가 아니라 셋 다였다.
+
+고친 것 셋이다.
+
+1. `Dockerfile` 이 `sites/careermetri/legal` 을 넣는다
+2. 읽는 자리를 `src/lib/legal-doc.ts` 로 모았다. **기준 자리를 못 박는다**:
+   상대 경로를 그냥 넘기면 `process.cwd()` 를 따르는데 standalone 서버의
+   cwd 는 빌드한 자리와 다르다. 올려 둔 자리 밖으로 나가는 경로도 끊는다
+   (이 값은 DB 의 `body_path` 에서도 온다)
+3. `launch:check` 가 세 본문을 **실제로 읽어** 본다. 저장소에 파일이
+   있다는 것과 손님이 그것을 읽는다는 것은 다른 말이다
+
+**못 읽은 까닭을 삼키지 않는다.** 전에는 `.catch(() => null)` 이라 파일이
+없는 것과 권한이 없는 것과 경로가 틀린 것이 화면에서 똑같이 생겼다. 셋은
+고치는 사람이 다르다.
+
+### 6-14. 통신판매업 신고번호는 저장소 어디에도 없다
+
+`2024-대전유성-0234` 도 `2020-대전동구-0033호` 도 `src` · `sites` · `db` ·
+`marketing/src` · `scripts` 어디에도 없다. `launch:check` 가 그 모양의
+번호를 코드에서 찾아 세고, 하나라도 있으면 걸린다. **채우는 자리는
+`/admin/business` 하나다.**
+
+운영 화면에 그 번호가 보인다면 남은 자리는 **운영 DB 의 `site_settings`**
+다. 거기 들어간 값은 `/admin/business` 에서 비우면 된다.
