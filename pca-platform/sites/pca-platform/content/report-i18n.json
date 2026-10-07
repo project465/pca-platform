@@ -1994,7 +1994,17 @@
   "후배나 동료에게 방법을 넘긴 것": "Handed the method to a junior or a colleague",
   "후속 과제 연결": "Led on to a follow-up project",
   "후속 연구 인용": "Cited by later research",
-  "흔한 기술 문제를 스스로 풀었다": "solved common technical problems myself"
+  "흔한 기술 문제를 스스로 풀었다": "solved common technical problems myself",
+  "{role}에서 <b>{gap}</b>이 아직 확인되지 않았습니다. {why}을 한 번 남기시면 이 자리가 채워집니다.": "In {role}, <b>{gap}</b> is not confirmed yet. Record one case of {why} and this slot fills in.",
+  "{role}은 핵심 영역이 모두 확인됐습니다. 공고 세 건을 띄워 놓고 요구사항과 내 근거를 한 줄씩 맞춰 보시면 지원서에서 어느 줄이 약한지 바로 드러납니다.": "Every core area for {role} is confirmed. Put three postings side by side and match each requirement against your own evidence line by line; the weak lines in your application show up straight away.",
+  "이 직무가 먼저 온 까닭은 아래 문항에 그렇다고 답하신 것입니다.": "This role came first because of how you answered the items below.",
+  "지금 비어 있는 자리를 기준으로 세운 계획입니다. 경험을 더 적으시면 이 줄이 달라집니다.": "This plan is built from what is currently empty. Adding more experience changes these lines.",
+  "적어 주신 경험은 {level}까지 확인됩니다.": "What you recorded is confirmed as far as {level}.",
+  "지금은 여러 경험을 동시에 늘리기보다, 가장 크게 비어 있는 한 자리를 먼저 채우는 편이 빠릅니다.": "Rather than building several experiences at once, filling the single largest gap first is the faster route.",
+  "아직 이 일이 무엇인지 보실 단계입니다. 공고와 현직자의 하루를 먼저 확인해 보세요.": "This is the stage for finding out what the work actually is. Start with postings and with how people in the role spend a day.",
+  "‘관심’ 과 ‘경험’ 은 문항에 답하신 것이고, ‘핵심 확인’ 은 적어 주신 경험에서 확인된 것입니다. 그래서 경험이 높아도 적어 주신 것이 없으면 핵심이 0 으로 남습니다. 두 값을 하나로 합치지 않는 까닭도 그것입니다.": "‘Interest’ and ‘experience’ come from how you answered the items. ‘Core confirmed’ comes from the experience you wrote out. That is why experience can read high while core stays at 0 when nothing is written down, and why the two are never merged into one figure.",
+  "관심이 높은데 적어 주신 경험이 비어 있으면, 지원보다 먼저 작게 한 번 해보시는 편이 빠릅니다. 열여섯 직무 전부는 부록에 있습니다.": "Where interest is high but nothing is written down, trying the work once on a small scale gets you further than applying. All sixteen roles are in the appendix.",
+  "관심이 높은데 적어 주신 경험이 비어 있는 직무라면, 지원서를 쓰기 전에 그 일을 작게 한 번 해보시는 편이 빠릅니다. 본문에 담지 않은 나머지 직무는 부록의 표에 열여섯 가지가 모두 들어 있습니다.": "Where interest is high but nothing is written down for a role, trying that work once on a small scale gets you further than writing an application. The appendix table carries all sixteen roles, including the ones not shown here."
  },
  "note": "결과지 문구 영어판. 열쇠가 한국어 원문이라 한국어는 거쳐도 그대로다."
 }

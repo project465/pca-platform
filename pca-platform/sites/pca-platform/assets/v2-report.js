@@ -89,16 +89,35 @@ window.PCAV2Report = (function () {
     return null;
   }
 
+  /** 번역한 문장에 이름을 끼운다. `{role}` 처럼 적어 둔 자리를 바꾼다 */
+  function fill(tpl, vals) {
+    return String(tpl).replace(/\{(\w+)\}/g, function (m, k) {
+      return (k in vals) ? vals[k] : m;
+    });
+  }
+
   /** 지금 할 일 한 줄. 공백이 있으면 그것, 없으면 비교로 넘어간다. */
   function nextOneThing(J) {
     var g = biggestGap(J);
     if (g) {
-      return '<b>' + esc(g.gap.label) + T('</b> 한 자리를 채우는 일을 하나 하십시오. ') +
-        esc(g.gap.description);
+      /* **어느 직무의 공백인지 함께 적는다.** 앞쪽에서 '먼저 확인할
+         직무' 를 읽은 사람이 여기서 다른 직무의 공백을 받으면, 그 일이
+         어디서 나온 것인지 모른 채 지시만 읽는다. 실측에서 1순위가
+         6/6 으로 다 찬 사람의 '지금 할 일' 이 2순위 직무의 공백이었다.
+         그리고 **문장 끝을 잘라 붙이지 않는다**: 설명이 '…정한 것' 으로
+         끝나 명사구가 덩그러니 남아 있었다 */
+      /* **한 문장을 한 열쇠로 둔다.** 조사를 토막으로 끊어 `T()` 에
+         넘기면("에서 " · "을 ") 영어 사전에 넣을 수 있는 말이 되지 않고,
+         실제로 영어 결과지에 한국어가 여덟 군데 남았다. 자리를 표시해
+         두고 번역 뒤에 끼운다 */
+      return fill(T('{role}에서 <b>{gap}</b>이 아직 확인되지 않았습니다. ' +
+        '{why}을 한 번 남기시면 이 자리가 채워집니다.'),
+        { role: esc(g.family), gap: esc(g.gap.label), why: esc(g.gap.description) });
     }
     var top = J.decision_table[0];
-    return T('핵심 영역이 모두 확인됩니다. ') + esc(top.name) +
-      T(' 공고 세 건을 띄워 놓고 요구사항과 내 근거를 한 줄씩 맞춰 보십시오.');
+    return fill(T('{role}은 핵심 영역이 모두 확인됐습니다. 공고 세 건을 띄워 놓고 ' +
+      '요구사항과 내 근거를 한 줄씩 맞춰 보시면 지원서에서 어느 줄이 약한지 ' +
+      '바로 드러납니다.'), { role: esc(top.name) });
   }
 
   /**
@@ -135,7 +154,9 @@ window.PCAV2Report = (function () {
         if (x.confirmed_up_to && (!deep || x.confirmed_up_to.id > deep.id)) deep = x.confirmed_up_to;
       });
       if (deep) {
-        out.push(T('적어 주신 경험은 지금 ') + esc(deep.name) + T(' 까지 확인됩니다.'));
+        /* 조사는 붙여 쓴다. '조직 가치 까지' 로 나가고 있었다 */
+        out.push(fill(T('적어 주신 경험은 {level}까지 확인됩니다.'),
+          { level: esc(deep.name) }));
       }
     }
     if (out.length < 2 && rows[1]) {
@@ -253,10 +274,18 @@ window.PCAV2Report = (function () {
         ? T('<tr class="v2adj"><td colspan="8">곁에 두실 후보</td></tr>') + adj.map(cell).join('')
         : '') +
       '</tbody></table></div>' +
-      T('<p class="note" style="margin-top:12px">칸을 하나로 합치지 않습니다. ') +
-      T('관심이 높은데 경험이 비어 있으면 먼저 작게 한 번 해보시는 것이 지원보다 ') +
-      T('앞섭니다. 그 말을 하려면 두 칸이 갈려 있어야 합니다. ') +
-      T('열여섯 직무 전부는 부록에 있습니다.</p>');
+      /* **두 열이 서로 다른 입력에서 온다는 것을 적는다.** '경험 높음' 과
+         '핵심 0/6' 이 나란히 서면 읽는 사람이 둘을 모순으로 읽는다. 앞엣것은
+         문항에 답하신 것이고 뒤엣것은 적어 주신 경험에서 확인된 것이다.
+         실제로 경험을 한 줄도 안 적은 사람의 쪽이 그렇게 나왔다 */
+      '<p class="note" style="margin-top:12px">' +
+      T('‘관심’ 과 ‘경험’ 은 문항에 답하신 것이고, ‘핵심 확인’ 은 적어 주신 경험에서 ' +
+        '확인된 것입니다. 그래서 경험이 높아도 적어 주신 것이 없으면 핵심이 0 으로 ' +
+        '남습니다. 두 값을 하나로 합치지 않는 까닭도 그것입니다.') + '</p>' +
+      '<p class="note">' +
+      T('관심이 높은데 적어 주신 경험이 비어 있는 직무라면, 지원서를 쓰기 전에 ' +
+        '그 일을 작게 한 번 해보시는 편이 빠릅니다. 본문에 담지 않은 나머지 직무는 ' +
+        '부록의 표에 열여섯 가지가 모두 들어 있습니다.') + '</p>';
   }
 
   /* ── 직무 하나를 한 자리에서 ─────────────────────────────────────── */
@@ -283,9 +312,16 @@ window.PCAV2Report = (function () {
     var reasons = hits.slice(0, 3).map(function (h) {
       return h.t.replace(/일을 해보고 싶다\.?$/, '').replace(/\.$/, '').trim();
     });
+    /* **문장 세 개를 가운뎃점으로 이어 붙이지 않는다.** 앞의 두 개는
+       어미가 잘린 채로 남고("…형상을 정하는 · …배우고 싶다"), 뒤에
+       '쪽으로 답하셨습니다' 가 붙어 한 문장으로 읽히지 않는다. 기계가
+       조립한 티가 여기서 가장 많이 났다. 따옴표로 묶어 인용으로 적고,
+       낱낱이 줄바꿈한다 */
     return '<p class="rdwhy">' +
-      reasons.map(function (r) { return esc(r); }).join(' · ') +
-      T(' 쪽으로 답하셨습니다.</p>');
+      T('이 직무가 먼저 온 까닭은 아래 문항에 그렇다고 답하신 것입니다.') + '</p>' +
+      '<ul class="qlist rdwhyq">' +
+      reasons.map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('') +
+      '</ul>';
   }
 
   function roleDeepDive(J, row, opts) {
@@ -666,7 +702,11 @@ window.PCAV2Report = (function () {
     var days = isB ? [30] : (isP ? [30, 90, 365] : [30, 90]);
     var plan = '<div class="grid">' + days.map(function (d) {
       return CR ? CR.plan(J, d, topId) : '';
-    }).join('') + '</div>';
+    }).join('') + '</div>' +
+      /* 고지는 쪽 아래에 한 번. 묶음마다 붙이면 PRO 에서 셋이 된다 */
+      '<p class="note" style="margin-top:10px">' +
+      T('지금 비어 있는 자리를 기준으로 세운 계획입니다. 경험을 더 적으시면 이 줄이 달라집니다.') +
+      '</p>';
     /* **직무 쪽은 PRO 만 받는다.** 규격의 등급 구성이 그렇다: BASIC 은
        결정·사슬·증거·할 일 네 가지(§14), STANDARD 는 거기에 조직 비교와
        공백을 더한 견주기 깊이(§15, "STANDARD value = comparison depth"),
@@ -732,7 +772,9 @@ window.PCAV2Report = (function () {
     /* 10. 다음에 만들 경험 **하나**, 그리고 그 뒤 일정 */
     out.push(page(no(), 'ACTION',
       ne ? T('다음에 만들 경험 하나') : T('언제 무엇을 할 것인가'),
-      ne ? T('여러 개를 벌이지 마십시오. 지금 가장 크게 비어 있는 한 자리만 채웁니다.') : '',
+      /* 권하는 말로 적는다. 받는 사람이 읽으러 온 것은 지시가 아니고
+         자기 응답을 검토한 결과다 */
+      ne ? T('지금은 여러 경험을 동시에 늘리기보다, 가장 크게 비어 있는 한 자리를 먼저 채우는 편이 빠릅니다.') : '',
       (ne || '') +
       T('<div class="rpgap"><h3 class="rpsub2">언제 무엇을 할 것인가</h3>') + plan + '</div>',
       '', T('다음 행동')));

@@ -245,9 +245,12 @@ window.PCAV2CoverageReport = (function () {
     }
     return '<div class="card contentcard"><div class="eyebrow">' + days + T('일 동안</div>') +
       '<ul class="qlist" style="margin-top:8px">' +
-      acts.map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ul>' +
-      T('<p class="note" style="margin-top:10px">지금 비어 있는 자리에서 만든 계획입니다. ') +
-      T('경험을 더 적으시면 이 줄이 바뀝니다.</p></div>');
+      acts.map(function (t) { return '<li>' + t + '</li>'; }).join('') +
+      '</ul></div>';
+      /* **같은 고지를 묶음마다 붙이지 않는다.** PRO 는 30·90·365 세 묶음이
+         서는데 그때마다 "지금 비어 있는 자리에서 만든 계획입니다" 가 또
+         나왔다. 한 쪽에 같은 문장이 셋이면 자동 생성 문서로 읽힌다.
+         쪽 아래에 한 번만 적는다(`actionPage`) */
   }
 
   /* ── 지원서에서 설명할 수 있는가 ─────────────────────────────────── */

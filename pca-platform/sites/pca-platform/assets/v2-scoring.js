@@ -169,7 +169,20 @@ window.PCAV2 = (function () {
       if (ax.leaning === want[ax.axis]) hit += 1;
     });
     if (!seen) return 'mixed';
-    return hit >= seen - 0.5 ? 'closer' : (hit === 0 ? 'farther' : 'mixed');
+    /* **기운 쪽이 없는 것과 반대쪽으로 기운 것은 다르다.**
+       `leaning === null` 은 두 극의 점수 차가 15 미만, 곧 "어느 쪽도
+       아님" 이다. 그것을 맞히지 못한 것으로 세면 `hit` 이 0 이 되고
+       아래 줄이 '먼 편' 을 돌려준다. 업무방식 문항에 고르게 답한 사람이
+       **열여섯 직무 전부에서 '먼 편'** 을 받았다(실측). 그 사람은
+       기계공학 어느 직무에도 안 맞는다는 말을 읽는다.
+       그래서 **잴 수 있었던 축만 센다.** 한 축도 재지지 않으면 '혼합'
+       이고, 그것이 부록의 '어느 쪽도 아님' 과 같은 말이다.
+       이 값은 `statusOf()` 가 읽지 않으므로 판정은 바뀌지 않는다 */
+    var measured = (wm.profile || []).filter(function (ax) {
+      return want[ax.axis] && ax.leaning !== null;
+    }).length;
+    if (!measured) return 'mixed';
+    return hit >= measured - 0.5 ? 'closer' : (hit === 0 ? 'farther' : 'mixed');
   }
 
   function score(tier, stage, answers) {

@@ -72,7 +72,7 @@ export const TX = {
   myOpenReport: p("결과지 열기", "Open report"),
   myWhatWeRead: p("무엇을 읽는가", "What CareerMatri reads"),
   myWhatWeReadBody: p(
-    "관심 · 해본 경험 · 결정 소유 · 업무 방식 · 학습 의향을 따로 둡니다. 합쳐서 하나의 점수로 만들지 않습니다.",
+    "해보고 싶은 일, 해본 일, 직접 정해 본 일, 일하는 방식, 더 배우고 싶은 것을 따로 읽습니다. 합쳐서 하나의 점수로 만들지 않습니다.",
     "Interest, exposure, decision ownership, work mode and learning intent stay separate. They are never collapsed into one score.",
   ),
   myTiers: p("등급", "Tiers"),
@@ -82,7 +82,7 @@ export const TX = {
   ),
   myEvidenceIntro: p("경험과 증거", "Evidence profile"),
   myEvidenceIntroBody: p(
-    "적어 주신 프로젝트와 도구가 어느 단계까지 증거로 확인되는지 봅니다. 활동에서 반복 가능성까지 여섯 칸입니다.",
+    "적어 주신 프로젝트와 도구가 어디까지 설명할 수 있는 근거가 되는지 봅니다. 해봤다에서 그치는지, 결과와 그 쓰임까지 남았는지를 가릅니다.",
     "We check how far your projects and tools are confirmed as evidence, across six rungs from activity to repeatability.",
   ),
   myInProgress: p("응시 중", "In progress"),
@@ -165,7 +165,7 @@ export const TX = {
   pxBasic: p("먼저 볼 직무와 다음 할 일", "Where to look first, and what to do next"),
   pxStandard: p("직무 견주기와 비어 있는 증거, 조직 비교", "Role comparison, evidence gaps, organization comparison"),
   pxPro: p(
-    "증거 구조와 연구·과제 소유, 조직 가치, 다음에 만들 경험, 30·90·365일 계획",
+    "직무 셋을 하나씩 파고들어, 내 경험이 그 직무에서 어떻게 읽히는지와 다음에 무엇을 만들지까지 적습니다",
     "Evidence architecture, research ownership, organization value, next evidence project, 30/90/365 plan",
   ),
   pxBuy: p("시작하기", "Get started"),
@@ -299,7 +299,7 @@ export const TX = {
   flow2b: p("무엇을 해보셨는가", "What you have done"),
   flow3: p("직무 후보", "Career paths"),
   flow3b: p("어디로 갈 수 있는가", "Where it can take you"),
-  flow4: p("부족한 Evidence", "Evidence gap"),
+  flow4: p("아직 비어 있는 근거", "Evidence gap"),
   flow4b: p("무엇이 비어 있는가", "What is still missing"),
   flow5: p("다음 행동", "Next action"),
   flow5b: p("지금 무엇을 하는가", "What to do next"),
@@ -307,8 +307,9 @@ export const TX = {
   /* ── 경험 ─────────────────────────────────────────────────────── */
   evTitle: p("겪으신 것을 적어 주십시오.", "Tell us what you have done."),
   evBody: p(
-    "적지 않으셔도 결과지는 나갑니다. 다만 증거 사다리와 역할별 범위가 비어 " +
-    "있는 채로 나가고, 결과지가 그 사실을 적습니다. 점수는 경험으로 바뀌지 않습니다.",
+    "적지 않으셔도 결과지는 나갑니다. 다만 어디까지 설명할 수 있는 근거가 되는지와 " +
+    "직무마다 무엇이 비어 있는지가 빈 채로 나가고, 결과지가 그 사실을 적습니다. " +
+    "점수는 경험으로 바뀌지 않습니다.",
     "The report comes out either way. Without this, the evidence ladder and role coverage " +
     "stay empty and the report says so. Your scores do not change with experience.",
   ),
@@ -322,7 +323,7 @@ export const TX = {
   okNext: p("다음", "Next"),
   okStart: p("검사 시작하기", "Start the assessment"),
   okBody: p(
-    "이용권이 발급되었습니다. 92문항 가운데 등급에 해당하는 문항을 묻고, 답은 넘어갈 때마다 서버에 저장됩니다. 창을 닫으셔도 이어서 하실 수 있습니다.",
+    "이용권이 발급되었습니다. 답은 넘어갈 때마다 서버에 저장되니 창을 닫으셔도 이어서 하실 수 있습니다.",
     "Your entitlement is issued. You will see the questions for your tier, and your answers are stored on the server as you go. You can close the window and pick up where you left off.",
   ),
 
@@ -358,7 +359,7 @@ export const TX = {
   rpNoneTitle: p("아직 만들어 둔 결과지가 없습니다.", "No report has been generated yet."),
   rpNoneBody: p(
     "응시는 끝났습니다. 결과지는 지금 만드실 수 있고, 경험을 먼저 적으시면 " +
-    "증거 사다리와 역할별 범위까지 채워진 채로 나옵니다.",
+    "직무마다 무엇이 확인되고 무엇이 비어 있는지까지 채워진 채로 나옵니다.",
     "Your assessment is complete. You can generate the report now; adding your " +
     "experience first fills in the evidence ladder and role coverage.",
   ),
@@ -367,7 +368,7 @@ export const TX = {
     "Some sections are empty because no experience was recorded.",
   ),
   rpBareBody: p(
-    "증거 사다리와 역할별 증거 범위가 빈 양식으로 나갑니다. 못 한다는 뜻이 " +
+    "직무마다 무엇이 확인되는지를 적는 자리가 빈 양식으로 나갑니다. 못 한다는 뜻이 " +
     "아니라 지금 적어 주신 것으로는 확인되지 않는다는 뜻입니다.",
     "The evidence ladder and role coverage come out as blank forms. That does not " +
     "mean you cannot do these things; it means nothing you recorded confirms them yet.",
@@ -389,7 +390,7 @@ export const TX = {
   ),
   v2EvidenceTitle: p("응시가 끝났습니다.", "Your assessment is complete."),
   v2EvidenceBody: p(
-    "경험을 적으시면 증거 사다리와 역할별 범위가 채워집니다. 점수는 바뀌지 않습니다.",
+    "경험을 적으시면 어디까지 설명할 수 있는 근거가 되는지, 직무마다 무엇이 비어 있는지가 채워집니다. 점수는 바뀌지 않습니다.",
     "Adding your experience fills in the evidence ladder and role coverage. Your scores do not change.",
   ),
   v2StuckTitle: p("결과지를 만들다 막혔습니다.", "Report generation got stuck."),
