@@ -1,0 +1,476 @@
+{
+ "schema_version": "role-packs.1",
+ "core": "ME_CORE_V3",
+ "note": "공고 직무명 단위의 깊이 모듈이다. **새 축을 만들지 않는다**: `core_ref` 로 Core 의 기술영역과 역할기능을 가리킨다",
+ "caps": {
+  "industry_items_max": 6,
+  "role_items_max": 6,
+  "deep_industry_max": 1,
+  "deep_role_max": 1
+ },
+ "packs": [
+  {
+   "code": "ROLE_DESIGN_V1",
+   "version": 1,
+   "name_ko": "설계",
+   "name_en": "Design",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD01"
+    ],
+    "rf": [
+     "RF1"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J5"
+   ],
+   "items": [
+    {
+     "id": "ROLE_DESIGN_V1_R1",
+     "axis": "J3",
+     "ask": "치수나 공차를 바꿀 권한을 가지고 정해 본 경험"
+    },
+    {
+     "id": "ROLE_DESIGN_V1_R2",
+     "axis": "J5",
+     "ask": "제작에 나간 도면과 부품표를 낸 경험"
+    },
+    {
+     "id": "ROLE_DESIGN_V1_R3",
+     "axis": "J2",
+     "ask": "부딪히는 요구의 우선순위를 정한 경험"
+    },
+    {
+     "id": "ROLE_DESIGN_V1_R4",
+     "axis": "J6",
+     "ask": "간섭이나 공차 누적을 검토해 확인한 경험"
+    },
+    {
+     "id": "ROLE_DESIGN_V1_R5",
+     "axis": "J7",
+     "ask": "조립이나 파손 문제를 겪고 치수를 고친 경험"
+    },
+    {
+     "id": "ROLE_DESIGN_V1_R6",
+     "axis": "J8",
+     "ask": "설계 검토에서 내 안이 채택된 경험"
+    }
+   ],
+   "compare_with": [
+    "ROLE_CAE_V1",
+    "ROLE_MFG_V1"
+   ],
+   "application_material": [
+    "조립도와 부품도 한 벌",
+    "설계계산서",
+    "공차 배분의 근거 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_CAE_V1",
+   "version": 1,
+   "name_ko": "CAE",
+   "name_en": "Simulation",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD02",
+     "TD03",
+     "TD04"
+    ],
+    "rf": [
+     "RF2"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "items": [
+    {
+     "id": "ROLE_CAE_V1_R1",
+     "axis": "J3",
+     "ask": "경계조건과 이상화 수준을 직접 정한 경험"
+    },
+    {
+     "id": "ROLE_CAE_V1_R2",
+     "axis": "J4",
+     "ask": "격자 수렴이나 민감도를 확인한 경험"
+    },
+    {
+     "id": "ROLE_CAE_V1_R3",
+     "axis": "J6",
+     "ask": "해석 결과를 손계산이나 시험과 대조한 경험"
+    },
+    {
+     "id": "ROLE_CAE_V1_R4",
+     "axis": "J5",
+     "ask": "가정과 한계가 적힌 해석 보고서를 낸 경험"
+    },
+    {
+     "id": "ROLE_CAE_V1_R5",
+     "axis": "J7",
+     "ask": "해석과 시험이 어긋난 원인을 좁힌 경험"
+    },
+    {
+     "id": "ROLE_CAE_V1_R6",
+     "axis": "J8",
+     "ask": "내 해석으로 설계가 바뀐 경험"
+    }
+   ],
+   "compare_with": [
+    "ROLE_DESIGN_V1",
+    "ROLE_TEST_V1",
+    "ROLE_RND_V1"
+   ],
+   "application_material": [
+    "해석 보고서 한 벌",
+    "시험 대조표",
+    "모델 가정 정리 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_RND_V1",
+   "version": 1,
+   "name_ko": "R&D",
+   "name_en": "Research & Development",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD01",
+     "TD02",
+     "TD03",
+     "TD05",
+     "TD06"
+    ],
+    "rf": [
+     "RF7"
+    ]
+   },
+   "required_axes": [
+    "J1",
+    "J6"
+   ],
+   "items": [
+    {
+     "id": "ROLE_RND_V1_R1",
+     "axis": "J1",
+     "ask": "사양이 없는 상태에서 다룰 문제를 정한 경험"
+    },
+    {
+     "id": "ROLE_RND_V1_R2",
+     "axis": "J3",
+     "ask": "방법과 가정을 골라 세운 경험"
+    },
+    {
+     "id": "ROLE_RND_V1_R3",
+     "axis": "J6",
+     "ask": "결과를 다른 방법이나 선행 연구와 견준 경험"
+    },
+    {
+     "id": "ROLE_RND_V1_R4",
+     "axis": "J5",
+     "ask": "논문이나 특허나 시작품으로 남긴 경험"
+    },
+    {
+     "id": "ROLE_RND_V1_R5",
+     "axis": "J7",
+     "ask": "재현이 안 돼 원인을 좁힌 경험"
+    },
+    {
+     "id": "ROLE_RND_V1_R6",
+     "axis": "J8",
+     "ask": "연구 결과가 과제나 제품으로 넘어간 경험"
+    }
+   ],
+   "compare_with": [
+    "ROLE_CAE_V1",
+    "ROLE_DESIGN_V1"
+   ],
+   "application_material": [
+    "연구 요약 한 장",
+    "방법과 가정 정리",
+    "산출물 목록"
+   ]
+  },
+  {
+   "code": "ROLE_TEST_V1",
+   "version": 1,
+   "name_ko": "시험·검증",
+   "name_en": "Test & Validation",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD07"
+    ],
+    "rf": [
+     "RF3"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J5"
+   ],
+   "items": [
+    {
+     "id": "ROLE_TEST_V1_R1",
+     "axis": "J3",
+     "ask": "판정 기준과 샘플 수를 정한 경험"
+    },
+    {
+     "id": "ROLE_TEST_V1_R2",
+     "axis": "J4",
+     "ask": "교정과 분해능을 따져 측정 체인을 구성한 경험"
+    },
+    {
+     "id": "ROLE_TEST_V1_R3",
+     "axis": "J5",
+     "ask": "불확도가 적힌 시험 성적서를 낸 경험"
+    },
+    {
+     "id": "ROLE_TEST_V1_R4",
+     "axis": "J6",
+     "ask": "반복 측정이나 다른 방법으로 교차 확인한 경험"
+    },
+    {
+     "id": "ROLE_TEST_V1_R5",
+     "axis": "J7",
+     "ask": "결과 산포의 원인을 좁힌 경험"
+    },
+    {
+     "id": "ROLE_TEST_V1_R6",
+     "axis": "J8",
+     "ask": "내 판정으로 승인이나 설계 변경이 결정된 경험"
+    }
+   ],
+   "compare_with": [
+    "ROLE_CAE_V1",
+    "ROLE_QUALITY_V1"
+   ],
+   "application_material": [
+    "시험 계획서",
+    "성적서 한 벌",
+    "불확도 평가 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_MFG_V1",
+   "version": 1,
+   "name_ko": "생산기술",
+   "name_en": "Manufacturing Engineering",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD08"
+    ],
+    "rf": [
+     "RF4"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "items": [
+    {
+     "id": "ROLE_MFG_V1_R1",
+     "axis": "J3",
+     "ask": "공법이나 가공 조건과 조건창을 정한 경험"
+    },
+    {
+     "id": "ROLE_MFG_V1_R2",
+     "axis": "J4",
+     "ask": "실험 계획으로 인자와 수준을 설계한 경험"
+    },
+    {
+     "id": "ROLE_MFG_V1_R3",
+     "axis": "J5",
+     "ask": "작업 표준이나 공정도를 낸 경험"
+    },
+    {
+     "id": "ROLE_MFG_V1_R4",
+     "axis": "J6",
+     "ask": "공정능력을 계산해 관리 상태를 확인한 경험"
+    },
+    {
+     "id": "ROLE_MFG_V1_R5",
+     "axis": "J7",
+     "ask": "불량 원인을 설비·재료·조건·작업 가운데로 좁힌 경험"
+    },
+    {
+     "id": "ROLE_MFG_V1_R6",
+     "axis": "J8",
+     "ask": "내 표준으로 양산이 돌아간 경험"
+    }
+   ],
+   "compare_with": [
+    "ROLE_DESIGN_V1",
+    "ROLE_QUALITY_V1"
+   ],
+   "application_material": [
+    "작업 표준 한 벌",
+    "조건 실험 결과",
+    "공정능력 보고"
+   ]
+  },
+  {
+   "code": "ROLE_QUALITY_V1",
+   "version": 1,
+   "name_ko": "품질·신뢰성",
+   "name_en": "Quality & Reliability",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD10"
+    ],
+    "rf": [
+     "RF3",
+     "RF6"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "items": [
+    {
+     "id": "ROLE_QUALITY_V1_R1",
+     "axis": "J3",
+     "ask": "관리 한계나 가속 조건이나 시정조치 기준을 정한 경험"
+    },
+    {
+     "id": "ROLE_QUALITY_V1_R2",
+     "axis": "J4",
+     "ask": "고장 모드 분석이나 수명 분포 추정을 쓴 경험"
+    },
+    {
+     "id": "ROLE_QUALITY_V1_R3",
+     "axis": "J6",
+     "ask": "규격과 공정능력을 계산해 대조한 경험"
+    },
+    {
+     "id": "ROLE_QUALITY_V1_R4",
+     "axis": "J7",
+     "ask": "발생과 유출을 갈라 각각의 대책을 세운 경험"
+    },
+    {
+     "id": "ROLE_QUALITY_V1_R5",
+     "axis": "J5",
+     "ask": "시정조치서나 신뢰성 보고를 낸 경험"
+    },
+    {
+     "id": "ROLE_QUALITY_V1_R6",
+     "axis": "J8",
+     "ask": "내 판단으로 출하 승인이 결정된 경험"
+    }
+   ],
+   "compare_with": [
+    "ROLE_TEST_V1",
+    "ROLE_MFG_V1"
+   ],
+   "application_material": [
+    "시정조치서 한 벌",
+    "신뢰성 보고",
+    "관리 기준 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_PM_V1",
+   "version": 1,
+   "name_ko": "PM·기술기획",
+   "name_en": "Technical PM & Planning",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD11"
+    ],
+    "rf": [
+     "RF6"
+    ]
+   },
+   "required_axes": [
+    "J2",
+    "J5"
+   ],
+   "items": [
+    {
+     "id": "ROLE_PM_V1_R1",
+     "axis": "J2",
+     "ask": "상위 요구를 쪼개 검증 방법과 담당을 배정한 경험"
+    },
+    {
+     "id": "ROLE_PM_V1_R2",
+     "axis": "J3",
+     "ask": "요구 사이의 상충을 조정해 우선순위를 정한 경험"
+    },
+    {
+     "id": "ROLE_PM_V1_R3",
+     "axis": "J5",
+     "ask": "추적표와 검증 계획이 함께 있는 사양서를 낸 경험"
+    },
+    {
+     "id": "ROLE_PM_V1_R4",
+     "axis": "J4",
+     "ask": "변경 영향 분석과 형상 관리를 돌린 경험"
+    },
+    {
+     "id": "ROLE_PM_V1_R5",
+     "axis": "J6",
+     "ask": "요구마다 검증 결과를 대조해 충족률을 낸 경험"
+    },
+    {
+     "id": "ROLE_PM_V1_R6",
+     "axis": "J8",
+     "ask": "내 사양으로 개발이 진행되고 검수가 통과한 경험"
+    }
+   ],
+   "compare_with": [
+    "ROLE_DESIGN_V1",
+    "ROLE_RND_V1"
+   ],
+   "application_material": [
+    "요구 사양서 한 벌",
+    "추적표",
+    "변경 이력 한 장"
+   ]
+  }
+ ]
+}

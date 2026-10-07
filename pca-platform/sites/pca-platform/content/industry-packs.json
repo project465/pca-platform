@@ -1,0 +1,918 @@
+{
+ "schema_version": "industry-packs.1",
+ "core": "ME_CORE_V3",
+ "note": "산업 맥락과 추가 질문과 Evidence 해석과 직무 연결을 담는다. **산업이 점수를 바꾸지 않는다**: `axis_emphasis` 는 그 산업이 더 보는 축이고 축 수준 계산에 들어가지 않는다",
+ "caps": {
+  "industry_items_max": 6,
+  "role_items_max": 6,
+  "deep_industry_max": 1,
+  "deep_role_max": 1
+ },
+ "packs": [
+  {
+   "code": "INDUSTRY_SEMICON_V1",
+   "version": 1,
+   "name_ko": "반도체",
+   "name_en": "Semiconductor",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "나노에서 마이크론 단위의 위치와 형상 정밀도를 공정 내내 지킨다",
+    "진공과 열과 진동이 동시에 걸린 조건에서 장비가 같은 값을 반복한다",
+    "파티클과 오염이 수율로 바로 나타나므로 재질과 표면과 기류를 함께 본다",
+    "장비 가동률과 평균 고장 간격이 고객과의 계약 조건이다"
+   ],
+   "axis_emphasis": {
+    "TD01": [
+     "J3",
+     "J6"
+    ],
+    "TD03": [
+     "J3",
+     "J6"
+    ],
+    "TD04": [
+     "J6"
+    ],
+    "TD07": [
+     "J5"
+    ],
+    "TD09": [
+     "J7"
+    ],
+    "TD12": [
+     "J8"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_SEMICON_V1_I1",
+     "axis": "J3",
+     "domain": "TD01",
+     "ask": "진공이나 챔버 조건에서 형상과 재질을 정해 본 경험"
+    },
+    {
+     "id": "INDUSTRY_SEMICON_V1_I2",
+     "axis": "J3",
+     "domain": "TD01",
+     "ask": "마이크론 이하 공차나 위치 정밀도를 배분해 본 경험"
+    },
+    {
+     "id": "INDUSTRY_SEMICON_V1_I3",
+     "axis": "J1",
+     "domain": "TD06",
+     "ask": "파티클이나 오염을 설계 조건으로 다뤄 본 경험"
+    },
+    {
+     "id": "INDUSTRY_SEMICON_V1_I4",
+     "axis": "J6",
+     "domain": "TD04",
+     "ask": "스테이지나 이송부의 진동과 정렬을 측정으로 확인한 경험"
+    },
+    {
+     "id": "INDUSTRY_SEMICON_V1_I5",
+     "axis": "J8",
+     "domain": "TD09",
+     "ask": "장비 가동률이나 평균 고장 간격을 지표로 관리한 경험"
+    },
+    {
+     "id": "INDUSTRY_SEMICON_V1_I6",
+     "axis": "J5",
+     "domain": "TD07",
+     "ask": "클린룸 환경에서 시험하고 불확도를 적어 본 경험"
+    }
+   ],
+   "evidence_reading": [
+    {
+     "same": "유한요소 해석",
+     "reads_as": "열변형과 정렬 오차를 나노 단위로 예측한 근거"
+    },
+    {
+     "same": "진동 측정",
+     "reads_as": "장비 정밀도를 가르는 외란 평가"
+    },
+    {
+     "same": "공정 조건 실험",
+     "reads_as": "수율로 바로 환산되는 조건창 설정"
+    }
+   ],
+   "job_aliases": [
+    "반도체 장비 설계",
+    "장비 기구 설계",
+    "열·유동 해석(장비)",
+    "장비 신뢰성",
+    "설비기술(팹)"
+   ],
+   "org_mix": {
+    "OC2": "많다",
+    "OC1": "있다",
+    "OC3": "있다",
+    "OC4": "드물다",
+    "OC5": "드물다",
+    "OC6": "드물다",
+    "OC7": "있다"
+   },
+   "vocabulary": [
+    "챔버",
+    "진공",
+    "스테이지",
+    "파티클",
+    "오버레이",
+    "가동률",
+    "평균 고장 간격",
+    "클린룸"
+   ]
+  },
+  {
+   "code": "INDUSTRY_DEFENSE_V1",
+   "version": 1,
+   "name_ko": "방산·항공우주",
+   "name_en": "Defense & Aerospace",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "요구가 문서로 내려오고 그 요구마다 검증 방법과 증빙이 따라붙는다",
+    "소량 다품종이고 설계 변경이 형상 관리 절차를 거친다",
+    "환경 시험(진동·열충격·전자파)과 규격 적합이 납품 조건이다",
+    "중량과 수명이 설계 공간을 좁히는 가장 큰 제약이다"
+   ],
+   "axis_emphasis": {
+    "TD11": [
+     "J2",
+     "J5",
+     "J6"
+    ],
+    "TD07": [
+     "J5"
+    ],
+    "TD02": [
+     "J6"
+    ],
+    "TD10": [
+     "J4"
+    ],
+    "TD01": [
+     "J2"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_DEFENSE_V1_I1",
+     "axis": "J2",
+     "domain": "TD11",
+     "ask": "요구 추적표를 만들어 검증 방법까지 배정해 본 경험"
+    },
+    {
+     "id": "INDUSTRY_DEFENSE_V1_I2",
+     "axis": "J2",
+     "domain": "TD07",
+     "ask": "군이나 항공 규격을 시험 조건으로 옮겨 본 경험"
+    },
+    {
+     "id": "INDUSTRY_DEFENSE_V1_I3",
+     "axis": "J4",
+     "domain": "TD07",
+     "ask": "진동이나 열충격 같은 환경 시험을 다뤄 본 경험"
+    },
+    {
+     "id": "INDUSTRY_DEFENSE_V1_I4",
+     "axis": "J3",
+     "domain": "TD01",
+     "ask": "중량 목표를 지키려고 형상이나 재질을 바꿔 본 경험"
+    },
+    {
+     "id": "INDUSTRY_DEFENSE_V1_I5",
+     "axis": "J4",
+     "domain": "TD11",
+     "ask": "형상·변경 관리 절차 안에서 설계를 바꿔 본 경험"
+    },
+    {
+     "id": "INDUSTRY_DEFENSE_V1_I6",
+     "axis": "J4",
+     "domain": "TD10",
+     "ask": "고장 모드와 영향을 따져 수명이나 신뢰성을 예측한 경험"
+    }
+   ],
+   "evidence_reading": [
+    {
+     "same": "구조 해석",
+     "reads_as": "규격 하중에 대한 적합 입증 자료"
+    },
+    {
+     "same": "시험 성적",
+     "reads_as": "납품 심사에 그대로 들어가는 증빙"
+    },
+    {
+     "same": "요구 분해",
+     "reads_as": "계약 요구와 검증의 추적 가능성"
+    }
+   ],
+   "job_aliases": [
+    "체계 설계",
+    "구조 설계(항공)",
+    "시험평가(환경)",
+    "신뢰성·정비성",
+    "형상관리",
+    "기술 PM"
+   ],
+   "org_mix": {
+    "OC1": "많다",
+    "OC4": "많다",
+    "OC2": "있다",
+    "OC6": "있다",
+    "OC3": "있다",
+    "OC5": "드물다",
+    "OC7": "드물다"
+   },
+   "vocabulary": [
+    "요구 추적",
+    "형상 관리",
+    "환경 시험",
+    "규격 적합",
+    "중량 관리",
+    "정비성"
+   ]
+  },
+  {
+   "code": "INDUSTRY_MOBILITY_V1",
+   "version": 1,
+   "name_ko": "자동차·모빌리티",
+   "name_en": "Automotive & Mobility",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "양산 물량이 커서 원가와 공정능력이 설계 판단에 바로 들어온다",
+    "내구와 소음·진동이 고객 체감 품질을 가르고 전담 조직이 따로 있다",
+    "전동화로 배터리와 모터의 열관리가 기계설계의 중심 문제가 됐다",
+    "협력사 품질 절차와 공차 관리가 개발 일정을 함께 정한다"
+   ],
+   "axis_emphasis": {
+    "TD02": [
+     "J6"
+    ],
+    "TD04": [
+     "J6"
+    ],
+    "TD03": [
+     "J3"
+    ],
+    "TD08": [
+     "J6"
+    ],
+    "TD01": [
+     "J3"
+    ],
+    "TD10": [
+     "J3"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_MOBILITY_V1_I1",
+     "axis": "J6",
+     "domain": "TD02",
+     "ask": "내구 시험 모드를 해석과 대조해 본 경험"
+    },
+    {
+     "id": "INDUSTRY_MOBILITY_V1_I2",
+     "axis": "J6",
+     "domain": "TD04",
+     "ask": "소음이나 진동 목표를 측정으로 확인한 경험"
+    },
+    {
+     "id": "INDUSTRY_MOBILITY_V1_I3",
+     "axis": "J3",
+     "domain": "TD03",
+     "ask": "배터리나 모터의 열관리를 설계 조건으로 정한 경험"
+    },
+    {
+     "id": "INDUSTRY_MOBILITY_V1_I4",
+     "axis": "J6",
+     "domain": "TD08",
+     "ask": "공정능력이나 협력사 품질 절차를 다뤄 본 경험"
+    },
+    {
+     "id": "INDUSTRY_MOBILITY_V1_I5",
+     "axis": "J3",
+     "domain": "TD01",
+     "ask": "원가 목표나 경량화 목표를 지키려고 안을 바꿔 본 경험"
+    },
+    {
+     "id": "INDUSTRY_MOBILITY_V1_I6",
+     "axis": "J3",
+     "domain": "TD01",
+     "ask": "조립 공차와 산포를 배분해 본 경험"
+    }
+   ],
+   "evidence_reading": [
+    {
+     "same": "피로 해석",
+     "reads_as": "내구 주행 거리로 환산되는 수명 근거"
+    },
+    {
+     "same": "모달 해석",
+     "reads_as": "정숙성 목표 달성의 설계 근거"
+    },
+    {
+     "same": "공정 조건 실험",
+     "reads_as": "양산 단가와 불량률의 근거"
+    }
+   ],
+   "job_aliases": [
+    "차체·샤시 설계",
+    "내구개발",
+    "NVH",
+    "열관리 설계",
+    "생산기술",
+    "품질보증"
+   ],
+   "org_mix": {
+    "OC1": "많다",
+    "OC2": "많다",
+    "OC3": "있다",
+    "OC4": "있다",
+    "OC5": "드물다",
+    "OC6": "드물다",
+    "OC7": "있다"
+   },
+   "vocabulary": [
+    "내구",
+    "NVH",
+    "공정능력",
+    "경량화",
+    "열관리",
+    "협력사 품질",
+    "양산 이관"
+   ]
+  },
+  {
+   "code": "INDUSTRY_ROBOT_V1",
+   "version": 1,
+   "name_ko": "로봇·자동화",
+   "name_en": "Robotics & Automation",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "셀 전체의 택트와 반복 정밀도가 납품 기준이다",
+    "안전 요구가 설계 범위를 정하고 위험성 평가가 문서로 남는다",
+    "기구와 구동과 제어와 비전이 한 사람의 판단 범위에 함께 들어온다",
+    "현장 시운전에서 생기는 문제를 설계로 되돌리는 일이 많다"
+   ],
+   "axis_emphasis": {
+    "TD05": [
+     "J3",
+     "J5",
+     "J6"
+    ],
+    "TD01": [
+     "J3"
+    ],
+    "TD12": [
+     "J8"
+    ],
+    "TD09": [
+     "J7"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_ROBOT_V1_I1",
+     "axis": "J3",
+     "domain": "TD05",
+     "ask": "택트 목표를 맞추려고 구동이나 시퀀스를 정한 경험"
+    },
+    {
+     "id": "INDUSTRY_ROBOT_V1_I2",
+     "axis": "J6",
+     "domain": "TD05",
+     "ask": "반복 정밀도를 측정으로 확인한 경험"
+    },
+    {
+     "id": "INDUSTRY_ROBOT_V1_I3",
+     "axis": "J2",
+     "domain": "TD05",
+     "ask": "안전 범주나 위험성 평가를 설계 조건으로 옮긴 경험"
+    },
+    {
+     "id": "INDUSTRY_ROBOT_V1_I4",
+     "axis": "J3",
+     "domain": "TD01",
+     "ask": "셀 레이아웃과 간섭을 검토해 배치를 정한 경험"
+    },
+    {
+     "id": "INDUSTRY_ROBOT_V1_I5",
+     "axis": "J4",
+     "domain": "TD07",
+     "ask": "비전이나 센서로 검사 공정을 구성한 경험"
+    },
+    {
+     "id": "INDUSTRY_ROBOT_V1_I6",
+     "axis": "J7",
+     "domain": "TD05",
+     "ask": "현장 시운전에서 생긴 문제를 설계로 되돌린 경험"
+    }
+   ],
+   "evidence_reading": [
+    {
+     "same": "제어 구현",
+     "reads_as": "셀 택트와 가동률을 책임지는 판단"
+    },
+    {
+     "same": "기구 설계",
+     "reads_as": "간섭과 강성으로 정밀도를 지키는 근거"
+    },
+    {
+     "same": "스크립트",
+     "reads_as": "다른 사람이 쓰는 셋업 절차"
+    }
+   ],
+   "job_aliases": [
+    "로봇 엔지니어",
+    "자동화 설계",
+    "셀 통합",
+    "비전·검사",
+    "시운전 엔지니어"
+   ],
+   "org_mix": {
+    "OC2": "많다",
+    "OC7": "많다",
+    "OC1": "있다",
+    "OC3": "있다",
+    "OC4": "있다",
+    "OC5": "드물다",
+    "OC6": "드물다"
+   },
+   "vocabulary": [
+    "택트",
+    "반복 정밀도",
+    "안전 범주",
+    "위험성 평가",
+    "셀 통합",
+    "시운전"
+   ]
+  },
+  {
+   "code": "INDUSTRY_BATTERY_V1",
+   "version": 1,
+   "name_ko": "이차전지",
+   "name_en": "Secondary Battery",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "전극과 조립 공정의 조건창이 수율과 안전을 동시에 정한다",
+    "열폭주를 막는 구조와 냉각이 팩 설계의 중심 문제다",
+    "체결과 가압이 셀 수명에 직접 영향을 준다",
+    "안전 시험과 인증이 출하 조건이다"
+   ],
+   "axis_emphasis": {
+    "TD08": [
+     "J3",
+     "J6"
+    ],
+    "TD03": [
+     "J1",
+     "J3"
+    ],
+    "TD02": [
+     "J3"
+    ],
+    "TD10": [
+     "J4"
+    ],
+    "TD06": [
+     "J3"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_BATTERY_V1_I1",
+     "axis": "J3",
+     "domain": "TD08",
+     "ask": "전극이나 조립 공정의 조건을 바꿔 본 경험"
+    },
+    {
+     "id": "INDUSTRY_BATTERY_V1_I2",
+     "axis": "J1",
+     "domain": "TD03",
+     "ask": "열폭주나 냉각을 설계 문제로 다뤄 본 경험"
+    },
+    {
+     "id": "INDUSTRY_BATTERY_V1_I3",
+     "axis": "J3",
+     "domain": "TD02",
+     "ask": "모듈이나 팩의 체결과 가압 조건을 정한 경험"
+    },
+    {
+     "id": "INDUSTRY_BATTERY_V1_I4",
+     "axis": "J6",
+     "domain": "TD08",
+     "ask": "수율이나 불량률을 전후로 견준 경험"
+    },
+    {
+     "id": "INDUSTRY_BATTERY_V1_I5",
+     "axis": "J4",
+     "domain": "TD10",
+     "ask": "안전 시험이나 가속 시험을 다뤄 본 경험"
+    },
+    {
+     "id": "INDUSTRY_BATTERY_V1_I6",
+     "axis": "J3",
+     "domain": "TD08",
+     "ask": "롤투롤 장력이나 코팅 균일도를 다뤄 본 경험"
+    }
+   ],
+   "evidence_reading": [
+    {
+     "same": "열 해석",
+     "reads_as": "열폭주 전파를 막는 구조의 근거"
+    },
+    {
+     "same": "실험 계획",
+     "reads_as": "수율을 올린 조건창의 근거"
+    },
+    {
+     "same": "구조 해석",
+     "reads_as": "가압과 팽창을 견디는 팩 설계 근거"
+    }
+   ],
+   "job_aliases": [
+    "전지 셀 공정기술",
+    "모듈·팩 설계",
+    "열관리 설계",
+    "전지 신뢰성",
+    "장비기술(전지)"
+   ],
+   "org_mix": {
+    "OC2": "많다",
+    "OC1": "있다",
+    "OC4": "있다",
+    "OC3": "있다",
+    "OC7": "있다",
+    "OC5": "드물다",
+    "OC6": "드물다"
+   },
+   "vocabulary": [
+    "조건창",
+    "수율",
+    "열폭주",
+    "가압",
+    "코팅 균일도",
+    "가속 시험"
+   ]
+  },
+  {
+   "code": "INDUSTRY_SHIP_V1",
+   "version": 1,
+   "name_ko": "조선·해양",
+   "name_en": "Shipbuilding & Offshore",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "선급 규칙이 설계 조건이고 승인 절차가 일정을 정한다",
+    "대형 구조라 용접과 피로가 수명을 가른다",
+    "블록 단위 생산이라 공정과 탑재 순서가 설계에 들어온다",
+    "프로젝트 단위로 돌아가고 도면 승인이 공정의 관문이다"
+   ],
+   "axis_emphasis": {
+    "TD02": [
+     "J2",
+     "J6"
+    ],
+    "TD06": [
+     "J4"
+    ],
+    "TD04": [
+     "J6"
+    ],
+    "TD11": [
+     "J6"
+    ],
+    "TD08": [
+     "J3"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_SHIP_V1_I1",
+     "axis": "J2",
+     "domain": "TD02",
+     "ask": "선급 규칙이나 코드를 해석 조건으로 옮긴 경험"
+    },
+    {
+     "id": "INDUSTRY_SHIP_V1_I2",
+     "axis": "J4",
+     "domain": "TD06",
+     "ask": "용접 설계나 용접부 검사를 다뤄 본 경험"
+    },
+    {
+     "id": "INDUSTRY_SHIP_V1_I3",
+     "axis": "J6",
+     "domain": "TD02",
+     "ask": "대형 구조의 피로 수명을 평가해 본 경험"
+    },
+    {
+     "id": "INDUSTRY_SHIP_V1_I4",
+     "axis": "J6",
+     "domain": "TD04",
+     "ask": "선체나 탑재 장비의 진동을 다뤄 본 경험"
+    },
+    {
+     "id": "INDUSTRY_SHIP_V1_I5",
+     "axis": "J3",
+     "domain": "TD08",
+     "ask": "블록 공정이나 탑재 순서를 설계에 반영한 경험"
+    },
+    {
+     "id": "INDUSTRY_SHIP_V1_I6",
+     "axis": "J6",
+     "domain": "TD11",
+     "ask": "도면 승인 절차 안에서 요구 충족을 확인한 경험"
+    }
+   ],
+   "evidence_reading": [
+    {
+     "same": "구조 해석",
+     "reads_as": "선급 승인에 쓰이는 적합 근거"
+    },
+    {
+     "same": "용접 시험",
+     "reads_as": "수명과 검사 기준의 근거"
+    },
+    {
+     "same": "진동 측정",
+     "reads_as": "거주성과 장비 보호의 근거"
+    }
+   ],
+   "job_aliases": [
+    "선체 구조 설계",
+    "기계·배관 설계",
+    "용접·생산 설계",
+    "진동·소음",
+    "프로젝트 기술관리"
+   ],
+   "org_mix": {
+    "OC1": "많다",
+    "OC2": "있다",
+    "OC3": "있다",
+    "OC6": "있다",
+    "OC4": "있다",
+    "OC5": "드물다",
+    "OC7": "드물다"
+   },
+   "vocabulary": [
+    "선급",
+    "용접",
+    "피로",
+    "블록",
+    "탑재",
+    "도면 승인"
+   ]
+  },
+  {
+   "code": "INDUSTRY_ENERGY_V1",
+   "version": 1,
+   "name_ko": "원전·에너지",
+   "name_en": "Nuclear & Energy",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "안전등급과 코드가 설계와 시험의 범위를 정한다",
+    "품질보증 절차와 기록이 산출물의 일부다",
+    "내진과 열수력이 핵심 해석 영역이다",
+    "수명 연장과 열화 평가가 긴 주기로 돌아간다"
+   ],
+   "axis_emphasis": {
+    "TD10": [
+     "J2",
+     "J5"
+    ],
+    "TD02": [
+     "J2",
+     "J6"
+    ],
+    "TD03": [
+     "J4"
+    ],
+    "TD07": [
+     "J5"
+    ],
+    "TD09": [
+     "J3"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_ENERGY_V1_I1",
+     "axis": "J2",
+     "domain": "TD10",
+     "ask": "안전등급이나 코드를 설계·시험 조건으로 옮긴 경험"
+    },
+    {
+     "id": "INDUSTRY_ENERGY_V1_I2",
+     "axis": "J2",
+     "domain": "TD02",
+     "ask": "내진이나 지진 하중을 해석 조건으로 다뤄 본 경험"
+    },
+    {
+     "id": "INDUSTRY_ENERGY_V1_I3",
+     "axis": "J4",
+     "domain": "TD03",
+     "ask": "열수력이나 냉각 계통을 해석해 본 경험"
+    },
+    {
+     "id": "INDUSTRY_ENERGY_V1_I4",
+     "axis": "J5",
+     "domain": "TD10",
+     "ask": "품질보증 절차에 맞춰 기록을 남긴 경험"
+    },
+    {
+     "id": "INDUSTRY_ENERGY_V1_I5",
+     "axis": "J4",
+     "domain": "TD06",
+     "ask": "재료 열화나 수명 평가를 다뤄 본 경험"
+    },
+    {
+     "id": "INDUSTRY_ENERGY_V1_I6",
+     "axis": "J5",
+     "domain": "TD07",
+     "ask": "인허가 자료로 쓰이는 시험 성적을 낸 경험"
+    }
+   ],
+   "evidence_reading": [
+    {
+     "same": "구조 해석",
+     "reads_as": "코드 적합과 인허가의 근거"
+    },
+    {
+     "same": "열 해석",
+     "reads_as": "안전 해석 계통의 입력"
+    },
+    {
+     "same": "시험 성적",
+     "reads_as": "규제 기관에 제출되는 기록"
+    }
+   ],
+   "job_aliases": [
+    "기기 설계",
+    "구조·내진 해석",
+    "열수력 해석",
+    "품질보증",
+    "설비기술(발전)"
+   ],
+   "org_mix": {
+    "OC1": "많다",
+    "OC4": "많다",
+    "OC6": "많다",
+    "OC2": "있다",
+    "OC3": "있다",
+    "OC5": "있다",
+    "OC7": "드물다"
+   },
+   "vocabulary": [
+    "안전등급",
+    "코드",
+    "내진",
+    "열수력",
+    "품질보증",
+    "수명 연장"
+   ]
+  },
+  {
+   "code": "INDUSTRY_SMARTFACTORY_V1",
+   "version": 1,
+   "name_ko": "스마트팩토리",
+   "name_en": "Smart Factory",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "설비에서 나오는 값을 모아 판단으로 바꾸는 일이 중심이다",
+    "가동률과 설비 종합효율이 공통 지표다",
+    "예지 보전과 시뮬레이션이 보전 계획을 바꾼다",
+    "현장 시스템과 잇는 일이 기계 지식과 데이터 지식을 함께 요구한다"
+   ],
+   "axis_emphasis": {
+    "TD12": [
+     "J5",
+     "J8"
+    ],
+    "TD09": [
+     "J4",
+     "J7"
+    ],
+    "TD08": [
+     "J6"
+    ],
+    "TD05": [
+     "J4"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_SMARTFACTORY_V1_I1",
+     "axis": "J4",
+     "domain": "TD12",
+     "ask": "설비 데이터를 모아 정리해 본 경험"
+    },
+    {
+     "id": "INDUSTRY_SMARTFACTORY_V1_I2",
+     "axis": "J6",
+     "domain": "TD08",
+     "ask": "가동률이나 설비 종합효율을 전후로 견준 경험"
+    },
+    {
+     "id": "INDUSTRY_SMARTFACTORY_V1_I3",
+     "axis": "J4",
+     "domain": "TD09",
+     "ask": "예지 보전 모델이나 진단을 다뤄 본 경험"
+    },
+    {
+     "id": "INDUSTRY_SMARTFACTORY_V1_I4",
+     "axis": "J4",
+     "domain": "TD12",
+     "ask": "공정이나 설비를 모형으로 만들어 돌려 본 경험"
+    },
+    {
+     "id": "INDUSTRY_SMARTFACTORY_V1_I5",
+     "axis": "J8",
+     "domain": "TD12",
+     "ask": "현장 시스템과 이어 다른 사람이 쓰게 한 경험"
+    },
+    {
+     "id": "INDUSTRY_SMARTFACTORY_V1_I6",
+     "axis": "J7",
+     "domain": "TD09",
+     "ask": "예측이 틀려 기준이나 모델을 고친 경험"
+    }
+   ],
+   "evidence_reading": [
+    {
+     "same": "데이터 분석",
+     "reads_as": "보전 주기와 설비 투자의 근거"
+    },
+    {
+     "same": "스크립트",
+     "reads_as": "현장이 매일 쓰는 판정 절차"
+    },
+    {
+     "same": "시뮬레이션",
+     "reads_as": "라인 변경 전에 택트를 확인한 근거"
+    }
+   ],
+   "job_aliases": [
+    "스마트팩토리 엔지니어",
+    "설비 데이터",
+    "예지 보전",
+    "공정 시뮬레이션",
+    "제어·시스템 연동"
+   ],
+   "org_mix": {
+    "OC1": "많다",
+    "OC2": "많다",
+    "OC3": "있다",
+    "OC7": "있다",
+    "OC4": "있다",
+    "OC5": "드물다",
+    "OC6": "드물다"
+   },
+   "vocabulary": [
+    "가동률",
+    "설비 종합효율",
+    "예지 보전",
+    "디지털 트윈",
+    "시스템 연동"
+   ]
+  }
+ ]
+}

@@ -7,9 +7,15 @@
  *
  *   npm run v3:items
  */
-import { readFileSync } from "node:fs";
+import { core, coreFile, registry } from "../src/lib/me-v3/core-registry";
 
-const DIR = "sites/pca-platform/content";
+function pickCore(): string {
+  if (process.env.CORE) return process.env.CORE;
+  const b = registry().cores.filter((c) => c.status === "building");
+  if (b.length !== 1) throw new Error(`CORE 를 적어 주십시오. 짓고 있는 core ${b.length}개`);
+  return b[0].code;
+}
+
 const AX = ["J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8"] as const;
 
 type Slot = {
@@ -26,8 +32,11 @@ function ok(n: string, good: boolean, d = ""): void {
 }
 
 function main(): void {
-  const bp = JSON.parse(readFileSync(`${DIR}/me-v3-items-blueprint.json`, "utf8"));
-  const dom = JSON.parse(readFileSync(`${DIR}/me-v3-domains.json`, "utf8"));
+  const code = pickCore();
+  console.log(`  core  ${code} — ${core(code).name_ko}\n`);
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const bp = coreFile<any>(code, "items_blueprint");
+  const dom = coreFile<any>(code, "domains");
   const slots: Slot[] = bp.slots;
   const SEC = new Set(Object.keys(bp.result_sections));
 

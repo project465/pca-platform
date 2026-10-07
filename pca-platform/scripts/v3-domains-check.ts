@@ -9,10 +9,18 @@
  *   npm run v3:domains
  */
 import { readFileSync, existsSync } from "node:fs";
+import {
+  CONTENT_DIR as DIR, core, coreFile, hasCoreFile, contractGaps, registry,
+} from "../src/lib/me-v3/core-registry";
 
-const DIR = "sites/pca-platform/content";
 const AX = ["J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8"] as const;
-const TD = Array.from({ length: 12 }, (_, i) => `TD${String(i + 1).padStart(2, "0")}`);
+
+function pickCore(): string {
+  if (process.env.CORE) return process.env.CORE;
+  const b = registry().cores.filter((c) => c.status === "building");
+  if (b.length !== 1) throw new Error(`CORE 를 적어 주십시오. 짓고 있는 core ${b.length}개`);
+  return b[0].code;
+}
 
 let fail = 0;
 let pass = 0;
@@ -21,29 +29,30 @@ function ok(name: string, good: boolean, detail = ""): void {
   else { fail += 1; console.log(`  걸림  ${name}${detail ? " — " + detail : ""}`); }
 }
 
-function read<T>(n: string): T {
-  return JSON.parse(readFileSync(`${DIR}/${n}`, "utf8")) as T;
-}
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 function main(): void {
-  for (const f of ["me-v3-taxonomy.json", "me-v3-domains.json",
-                   "me-v3-evidence-remap.json", "me-v3-checklist-additions.json",
-                   "me-v3-checklists.json"]) {
-    if (!existsSync(`${DIR}/${f}`)) {
-      console.log(`  없음  ${f} — \`npm run v3:build\` 를 먼저 돌리십시오`);
-      process.exit(1);
-    }
-  }
-  const tax = read<any>("me-v3-taxonomy.json");
-  const dom = read<any>("me-v3-domains.json");
-  const remap = read<any>("me-v3-evidence-remap.json");
-  const lists = read<any>("me-v3-checklists.json");
-  const src = JSON.parse(readFileSync(`${DIR}/me-evidence-map.json`, "utf8"));
+  const code = pickCore();
+  console.log(`  core  ${code} — ${core(code).name_ko}\n`);
 
-  // 1. 축 개수
-  ok("축 셋의 개수", tax.technical_domains.length === 12 &&
-     tax.role_functions.length === 7 && tax.org_contexts.length === 7,
+  const gaps = contractGaps(code);
+  ok("core 가 등록부 계약을 지킨다", gaps.length === 0,
+     gaps.length ? gaps.join(" · ") : "required 파일과 열쇠");
+  if (gaps.length) { console.log("\n계약을 먼저 맞추십시오"); process.exit(1); }
+
+  const tax = coreFile<any>(code, "taxonomy");
+  const dom = coreFile<any>(code, "domains");
+  const lists = coreFile<any>(code, "checklists");
+  const remap = hasCoreFile(code, "evidence_remap")
+    ? coreFile<any>(code, "evidence_remap") : { rows: [] };
+  const src = hasCoreFile(code, "legacy_evidence_map")
+    ? coreFile<any>(code, "legacy_evidence_map") : null;
+  const TD: string[] = dom.domains.map((d: any) => d.code);
+
+  // 1. 축 셋이 비어 있지 않고 등록부에 적힌 수와 맞는다
+  const want = core(code).domain_count;
+  ok("축 셋의 개수", tax.technical_domains.length > 0 &&
+     tax.role_functions.length > 0 && tax.org_contexts.length > 0 &&
+     (want === null || tax.technical_domains.length === want),
      `TD ${tax.technical_domains.length} · RF ${tax.role_functions.length} · OC ${tax.org_contexts.length}`);
 
   // 2. 별칭이 조합으로 풀린다
@@ -57,10 +66,11 @@ function main(): void {
   ok("별칭이 조합으로 풀린다", badAlias.length === 0,
      `${tax.job_aliases.length}줄 · 못 푼 줄 ${badAlias.length}`);
 
-  // 3. 경계표의 구분 질문
+  // 3. 경계표의 구분 질문. 영역 수에 비례해 요구한다
   const badB = tax.boundaries.filter((b: any) => !b.a_question || !b.b_question);
-  ok("경계 쌍마다 구분 질문 둘", tax.boundaries.length >= 10 && badB.length === 0,
-     `${tax.boundaries.length}쌍`);
+  const needB = Math.max(5, Math.ceil(tax.technical_domains.length * 0.8));
+  ok("경계 쌍마다 구분 질문 둘", tax.boundaries.length >= needB && badB.length === 0,
+     `${tax.boundaries.length}쌍 (최소 ${needB})`);
 
   // 4. 필수 축이 둘이고 축 목록 안에 있다
   const badReq = dom.domains.filter((d: any) =>
@@ -72,7 +82,7 @@ function main(): void {
     d.workflow.length !== 8 || d.workflow.some((w: any) => !w.detail));
   ok("영역마다 업무 흐름 여덟 걸음", badW.length === 0);
 
-  // 6. 축 칸이 전부 채워져 있다
+  // 6. 축 칸이 전부 채워져 있다 (영역 수 × 축 수)
   const emptyCell: string[] = [];
   for (const d of dom.domains) {
     for (const a of AX) {
@@ -80,13 +90,14 @@ function main(): void {
       if (!c || !c.l2 || !c.l3) emptyCell.push(`${d.code}.${a}`);
     }
   }
-  ok("축 칸 96개에 수행과 소유 조건", emptyCell.length === 0,
-     emptyCell.length ? emptyCell.join(" ") : "96 / 96");
+  ok("축 칸마다 수행과 소유 조건", emptyCell.length === 0,
+     emptyCell.length ? emptyCell.join(" ") : `${dom.domains.length * AX.length} / ${dom.domains.length * AX.length}`);
 
-  // 7. 조직별 성과 이름이 일곱씩
-  const badOC = dom.domains.filter((d: any) => Object.keys(d.org_outcomes).length !== 7);
+  // 7. 조직별 성과 이름이 조직 수만큼
+  const ocN = tax.org_contexts.length;
+  const badOC = dom.domains.filter((d: any) => Object.keys(d.org_outcomes).length !== ocN);
   ok("영역 × 조직환경 성과 이름", badOC.length === 0,
-     `${dom.domains.length * 7}칸`);
+     `${dom.domains.length * ocN}칸`);
 
   // 8. 기관 이름을 적지 않았다
   const named = /서울대|포스텍|삼성|현대|한국항공우주|ETRI|코레일|원자력/;
@@ -94,13 +105,18 @@ function main(): void {
     Object.values(d.org_outcomes).some((v: any) => named.test(String(v))));
   ok("조직은 유형까지만 적는다", hitNamed.length === 0);
 
-  // 9. 199영역이 전부 재배치됐고 고아가 없다
-  const srcIds = new Set<string>();
-  for (const f of src.families) for (const r of f.evidence_requirements) srcIds.add(r.evidence_id);
-  const mapped = new Set<string>(remap.rows.map((r: any) => r.evidence_id));
-  const orphan = [...srcIds].filter((i) => !mapped.has(i));
-  ok("증거 지도 199영역의 고아", orphan.length === 0,
-     `원본 ${srcIds.size} · 재배치 ${mapped.size} · 고아 ${orphan.length}`);
+  // 9. 옛 증거 지도가 있으면 고아가 없다. 없는 core 는 지나간다
+  if (src) {
+    const srcIds = new Set<string>();
+    for (const f of src.families) for (const r of f.evidence_requirements) srcIds.add(r.evidence_id);
+    const mapped = new Set<string>(remap.rows.map((r: any) => r.evidence_id));
+    const orphan = [...srcIds].filter((i) => !mapped.has(i));
+    ok("옛 증거 지도의 고아", orphan.length === 0,
+       `원본 ${srcIds.size} · 재배치 ${mapped.size} · 고아 ${orphan.length}`);
+  } else {
+    pass += 1;
+    console.log("  지나감 옛 증거 지도 — 이 core 에는 재배치할 옛 자산이 없다");
+  }
 
   // 10. 버킷과 판정 값이 정해진 것 안에 있다
   const BK = new Set(["TD", "COMMON", "RF", "OC", "DROP"]);
@@ -115,8 +131,8 @@ function main(): void {
   for (const c of TD) for (const a of AX) {
     if ((lists.domains[c]?.[a] ?? []).length === 0) holes.push(`${c}.${a}`);
   }
-  ok("영역 × 축 96칸에 고를 항목", holes.length === 0,
-     holes.length ? holes.join(" ") : "96 / 96");
+  ok("영역 × 축 칸마다 고를 항목", holes.length === 0,
+     holes.length ? holes.join(" ") : `${TD.length * AX.length} / ${TD.length * AX.length}`);
 
   // 12. 필수 축에 항목이 둘 이상
   const thin: string[] = [];
@@ -126,7 +142,7 @@ function main(): void {
     }
   }
   ok("필수 축마다 항목 둘 이상", thin.length === 0,
-     thin.length ? thin.join(" ") : "24 / 24");
+     thin.length ? thin.join(" ") : `${dom.domains.length * 2} / ${dom.domains.length * 2}`);
 
   // --- coverage matrix ---
   console.log("\n영역 × 측정축 coverage (고를 항목 수. * 는 필수 축)\n");

@@ -97,7 +97,9 @@
     "v1:audit": "tsx scripts/v1-audit.ts",
     "v3:build": "tsx scripts/v3-build.ts",
     "v3:domains": "tsx scripts/v3-domains-check.ts",
-    "v3:items": "tsx scripts/v3-items-check.ts"
+    "v3:items": "tsx scripts/v3-items-check.ts",
+    "v3:arch": "tsx scripts/v3-arch-check.ts",
+    "v3:extend": "tsx scripts/v3-extend-check.ts"
   },
   "dependencies": {
     "@types/nodemailer": "^8.0.1",
