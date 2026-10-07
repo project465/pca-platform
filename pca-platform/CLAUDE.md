@@ -1897,6 +1897,33 @@ npm run global:check    # 영어 한 바퀴
 npm run a11y:check      # 10쪽
 ```
 
+**공개 브랜드 철자는 `CareerMatri` 하나다.** (2026-10-07)
+
+도메인 철자는 전부터 `careermatri` 하나였는데 **브랜드 글자**가 앱
+`CareerMatri` · 홈페이지 `Careermetri` 로 두 벌이었다. 한 사람이 두 쪽을
+이어서 보면 다른 회사로 읽힌다. 공개 화면과 마케팅 원고 61곳을 맞췄다.
+
+**매처를 원고와 같이 고친다.** 홈페이지 비교표가 우리 줄을
+`r[0].includes("Careermetri")` 로 찾아 강조하고 있었다. 원고만 고쳤으면
+강조가 조용히 꺼졌다.
+
+**바꾸면 고장 나는 것은 목록만 남겼다**: `sites/careermetri/` 디렉터리
+(운영 DB 의 `consent_documents.source_path` 가 값으로 들고 있다) ·
+옛 철자를 찾아내는 검사 두 개 · 글자를 path 로 그린 Plus 워드마크 ·
+프로토타입 · 내력을 적어 둔 문서. 자세한 것은 `docs/metri/20_domains.md`
+6-10 절.
+
+**운영 배포본을 밖에서 훑는 명령을 만들었다**(`npm run prod:check`).
+DNS · HTTPS · 상태코드 · 리디렉션 · 세션 쿠키 · 사업자 표시 · 꼬리말 ·
+가로 넘침 · 5xx 를 열한 쪽에서 본다. **저장소 코드를 보지 않는다**:
+`launch:check` 는 "코드가 그렇게 짜여 있는가" 를 묻고 이것은 "거기서
+그렇게 도는가" 를 묻는다. 세션 컨테이너에서는 프록시가 막아
+`프록시 막힘` 으로 적힌다 — **운영이 죽은 것이 아니다.**
+
+```bash
+npm run prod:check   # BASE=https://app.careermatri.com (기본값)
+```
+
 **업그레이드는 코드로 팔 수 없다.** (2026-09-15)
 
 `issueCodes` 가 `HS_UPGRADE`·`UNIV_UPGRADE` 코드를 순순히 찍어 줬다. 그

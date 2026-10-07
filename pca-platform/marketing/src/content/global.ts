@@ -11,13 +11,13 @@ export const global: SiteContent = {
   key: "global",
   lang: "en",
   domain: SITE_DOMAIN.global,
-  brand: "Careermetri",
+  brand: "CareerMatri",
   org: "ACADEMIX",
   orgTagline: "EDUCATION & CONFERENCE",
   platformUrl: PLATFORM_URL,
 
   meta: {
-    title: "Careermetri | Engineering majors, read against the roles that hire them",
+    title: "CareerMatri | Engineering majors, read against the roles that hire them",
     description:
       "Twenty-four engineering job clusters and 138 competencies across mechanical, electrical and computer engineering, checked against real postings. Not a personality type: ANSYS held 2 of 4, asked for in 89 of 132 postings for this role.",
   },
@@ -66,7 +66,7 @@ export const global: SiteContent = {
   },
 
   hero: {
-    eyebrow: "Careermetri · Engineering career diagnostics",
+    eyebrow: "CareerMatri · Engineering career diagnostics",
     title: ["They chose engineering.", "Nobody told them which engineering."],
     lead:
       "Mechanical, electrical and computer engineering: 24 job clusters and 138 competencies, checked against real postings. The report does not say “you are collaborative”. It says “Simulation & CAE 80, ANSYS held 2 of 4, asked for in 89 of 132 postings for this role”. The activity axes are the same in every country, which is why the instrument travels.",
@@ -74,7 +74,7 @@ export const global: SiteContent = {
     secondary: { label: "Talk to us", href: "/contact" },
     priceline:
       "Three tiers. BASIC costs nothing; STANDARD is $14.99 when you still have roles to weigh up, and PRO is $24.99 once the direction is set. Departments contract by cohort size.",
-    watermark: "Careermetri",
+    watermark: "CareerMatri",
     proof: [
       { value: "250", label: "items, in three languages" },
       { value: "24", label: "engineering job clusters" },
@@ -90,7 +90,7 @@ export const global: SiteContent = {
       "What PCA measures is the second question. Below are four pages of the report put on one screen. A student does not receive a type name. They receive this.",
     disclaimer:
       "An illustrative screen showing the format of the report. It is not a real student’s submission. The ten job areas, the six work styles and the regional method are exactly as they ship.",
-    docTag: "Careermetri individual report",
+    docTag: "CareerMatri individual report",
     page: "extract · 00-1 · 00-2 · 05–06 · regional annex",
     person: {
       name: "Sample student",
@@ -219,7 +219,7 @@ export const global: SiteContent = {
 
   who: {
     label: "Whose problem this is",
-    heading: "Who brings Careermetri into a country",
+    heading: "Who brings CareerMatri into a country",
     items: [
       {
         no: "01",
@@ -483,7 +483,7 @@ export const global: SiteContent = {
     label: "After the assessment",
     heading: "The assessment is the entrance. The expensive problem sits behind it.",
     lead:
-      "When a department spends its training budget, the thing it knows least is who needs which training. Put 300 courses on a shelf and the coordinator picks by instinct. Careermetri names that cell with a number.",
+      "When a department spends its training budget, the thing it knows least is who needs which training. Put 300 courses on a shelf and the coordinator picks by instinct. CareerMatri names that cell with a number.",
     funnel: [
       { value: "487", label: "students in one mechanical engineering department" },
       { value: "31%", label: "meet the required geometric tolerancing (GD&T) level" },
@@ -500,20 +500,20 @@ export const global: SiteContent = {
         ["National competency frameworks", "A standard dictionary of roles and skills", "No student assessment"],
         ["Free public career tests", "Free, open to everyone", "Neither engineering focus nor cohort view"],
         ["Vocational training platforms", "Hundreds of courses and a university channel", "No diagnosis, no idea who to sell to"],
-        ["Careermetri", "Individual assessment → cohort aggregate → named training demand", "Training delivery runs through partners"],
+        ["CareerMatri", "Individual assessment → cohort aggregate → named training demand", "Training delivery runs through partners"],
       ],
       note:
         "We list kinds of tool rather than company names. Each does its own job well; what is empty is the cell where all five meet.",
     },
   },
   choose: {
-    label: "Why Careermetri",
+    label: "Why CareerMatri",
     heading: "Why institutions pick this over a generic career test",
     items: [
       {
         title: "Engineering-specific, not engineering-adjacent",
         body:
-          "General career tests end at “technical field”. Careermetri separates mechanical design from structural analysis from process engineering from equipment engineering, because those four hire differently, pay differently and require different software.",
+          "General career tests end at “technical field”. CareerMatri separates mechanical design from structural analysis from process engineering from equipment engineering, because those four hire differently, pay differently and require different software.",
       },
       {
         title: "Scores you can recompute",
@@ -846,7 +846,7 @@ export const global: SiteContent = {
     typeLabel: "What is this about",
     types: [
       { value: "org", label: "University, department or school rollout" },
-      { value: "partner", label: "Operating Careermetri in my country" },
+      { value: "partner", label: "Operating CareerMatri in my country" },
       { value: "individual", label: "An individual assessment" },
     ],
     afterLabel: "What happens next",

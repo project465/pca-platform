@@ -313,3 +313,50 @@ BASIC 이고 `FREE_APPROVED` 라 팔려도 맞는 상품이다. **승인된 무�
 싶던 것을 못 묻고 돌아간다. 번호가 붙는 자리(주문 · 환불 · 막힌 것)는
 그대로 본인에게만 보이고, 사람에게 닿는 주소와 비밀번호 복구만 먼저
 내놓는다.
+
+### 6-10. 2026-10-07: 공개 브랜드 철자를 `CareerMatri` 로 모았다
+
+도메인 철자는 전부터 `careermatri` 하나였는데(`domains:audit`), **브랜드
+글자**는 앱이 `CareerMatri` · 홈페이지가 `Careermetri` 로 두 벌이었다. 한
+사람이 두 쪽을 이어서 보면 다른 회사로 읽힌다.
+
+공개 화면과 마케팅 원고 **61곳**을 `CareerMatri` 로 맞췄다: 원고 네
+벌(kr 9 · global 11 · tr 14 · kz 14) · 홈페이지 약관 쪽 2 · 비교표 매처 1 ·
+영문 아임웹 조각 7 · 개발 현황 쪽 3.
+
+**매처를 원고와 같이 고친다.** `sections.tsx` 가 비교표에서 우리 줄을
+`r[0].includes("Careermetri")` 로 찾아 강조하고 있었다. 원고만 고쳤으면
+강조가 조용히 꺼졌다.
+
+**바꾸지 않은 것은 고장 나기 때문이다.** 아래는 목록만 남긴다.
+
+| 자리 | 왜 두는가 |
+|---|---|
+| `sites/careermetri/` 디렉터리 이름 | `src/app/legal/[kind]/page.tsx` 와 `db/schema_phase2_1.sql` 의 `consent_documents.source_path` 가 이 경로를 값으로 들고 있다. 바꾸면 운영 DB 의 줄이 가리키는 파일이 사라진다 |
+| `sites/pca-platform/README-careermetri.md` 파일 이름 | 같은 이유. 가리키는 문서가 있다 |
+| `scripts/domains-audit.mjs` · `scripts/copy-audit.mjs` | **옛 철자를 찾아내는 검사다.** 여기서 지우면 다음에 섞여 들어와도 아무도 못 센다 |
+| `brand/metri-plus/*.svg` · `sites/metri-plus/index.html` 의 워드마크 | 글자를 path 로 그린 그림이다. `aria-label` 만 고치면 그림과 이름이 어긋난다. **그림을 다시 그려야 바뀐다** |
+| `prototypes/metri/*` | 눌러 보는 프로토타입이고 파는 화면이 아니다 |
+| `docs/metri/41_domain_spelling.md` · `CLAUDE.md` 의 내력 | 왜 두 철자가 있었는지를 적어 둔 글이다. 고치면 기록이 사라진다 |
+| `db/schema_metri.sql` · `schema_platform.sql` 의 주석 | 안쪽 주석이고 화면에 나가지 않는다 |
+| `scripts/metri/*` · `marketing/README.md` 의 안내 글 | 안쪽 문서 |
+
+### 6-11. 운영 배포본은 이 자리에서 못 두드린다
+
+`npm run prod:check` 를 만들었다. DNS · HTTPS · 상태코드 · 리디렉션 ·
+세션 쿠키 · 사업자 표시 · 꼬리말 · 가로 넘침 · 5xx 를 열한 쪽에서 한 번에
+훑는다. **저장소 코드를 보지 않고 실제로 떠 있는 것만 두드린다**:
+`launch:check` 는 "코드가 그렇게 짜여 있는가" 를 묻고 이것은 "거기서
+그렇게 도는가" 를 묻는다.
+
+세션 컨테이너에서는 막힌다. 프록시가 그대로 적어 준다:
+
+```
+403 Host not in allowlist: app.careermatri.com.
+    Add this host to your network egress settings to allow access.
+```
+
+**운영이 죽은 것이 아니다.** 그래서 스크립트가 그 경우를 `프록시 막힘` 으로
+따로 적는다. 모르는 것을 모른다고 적어야 다음 사람이 엉뚱한 데를 고치지
+않는다. DNS 는 나가므로 A 레코드까지는 이 자리에서도 보인다
+(`app.careermatri.com` → 69.46.46.89 · `careermatri.com` → 216.198.79.1).
