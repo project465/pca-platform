@@ -9,6 +9,7 @@
  */
 import { coreFile, registry, CONTENT_DIR } from "../src/lib/me-v3/core-registry";
 import { readFileSync } from "node:fs";
+import { counts, minutes, DOMAINS_BY_TIER } from "../src/lib/me-v3/response-count";
 
 type Item = {
   item_id: string; module: string; tier: string;
@@ -122,13 +123,45 @@ function main(): void {
   ok("영역 × 축 칸마다 문항", holes.length === 0,
      holes.length ? holes.join(" ") : `${TD.length * AX.length} / ${TD.length * AX.length}`);
 
-  // 7. 과대표집. Core 깊이 문항은 영역마다 같아야 한다
-  const deep: Record<string, number> = {};
-  for (const t of TD) deep[t] = core.filter((i) => i.technical_domain === t &&
-    i.measurement_axis === "axis_level").length;
-  const vals = TD.map((t) => deep[t]);
-  ok("Core 깊이 문항의 영역 쏠림", Math.min(...vals) === Math.max(...vals),
-     `영역마다 ${vals[0]}개`);
+  /* 7. 선별 네 축은 영역마다 문항 하나다.
+     BASIC 응답 수가 영역에 따라 달라지면 판정 경로가 갈린다 */
+  const probePer: Record<string, number> = {};
+  const deepPer: Record<string, number> = {};
+  for (const t of TD) {
+    probePer[t] = core.filter((i) => i.module === "PROBE-J4" && i.technical_domain === t).length;
+    deepPer[t] = core.filter((i) => i.module === "DEEP-J8" && i.technical_domain === t).length;
+  }
+  const badProbe = TD.filter((t) => probePer[t] !== 4);
+  ok("선별 네 축은 영역마다 문항 하나", badProbe.length === 0,
+     badProbe.length ? badProbe.map((t) => `${t}(${probePer[t]})`).join(" ")
+                     : "BASIC 응답 수가 영역마다 같다");
+  /* 심화 축은 한 칸에 문항이 둘일 수 있다. 서로 다른 판단이면 나눠 묻는다 */
+  const badDeep = TD.filter((t) => deepPer[t] < 4 || deepPer[t] > 5);
+  const extra = TD.filter((t) => deepPer[t] === 5);
+  ok("심화 축 문항은 영역마다 넷이나 다섯", badDeep.length === 0,
+     badDeep.length ? badDeep.map((t) => `${t}(${deepPer[t]})`).join(" ")
+                    : `한 칸에 둘인 영역 ${extra.join(" · ") || "없음"}`);
+
+  /* 7-1. 문면이 l2 쪽에 가까운가.
+     문면에 l3 를 적으면 **도면을 그렸지만 제작에 나가지 않은 학부생이
+     `없다` 로 떨어진다.** 소유는 보기 넷이 가르고 l3 는 체크리스트 근거가
+     받친다. 글자 삼중쌍으로 두 정의와의 닮음을 재어 l3 쪽이 더 가까운
+     자리를 찾는다 */
+  const l3ish: string[] = [];
+  for (const i of core) {
+    if (i.measurement_axis !== "axis_level" || !i.technical_domain || !i.evidence_axis) continue;
+    const d = (dom.domains as any[]).find((x) => x.code === i.technical_domain);
+    const c = d?.axes?.[i.evidence_axis];
+    if (!c) continue;
+    const toL2 = sim(i.wording, c.l2), toL3 = sim(i.wording, c.l3);
+    /* 닮음이 양쪽 다 낮으면 자카드가 재는 것이 없다. 문면이 실제로 l3 를
+       옮겨 적은 자리만 잡게 바닥을 둔다 */
+    if (toL3 >= 0.2 && toL3 > toL2 + 0.05) {
+      l3ish.push(`${i.item_id}(${toL2.toFixed(2)}<${toL3.toFixed(2)})`);
+    }
+  }
+  ok("문면이 소유가 아니라 행동을 묻는다", l3ish.length === 0,
+     l3ish.length ? l3ish.slice(0, 6).join(" ") : "l2 쪽에 가깝다");
 
   // 8. measurement_axis 누락
   const noAxis = items.filter((i) => !i.measurement_axis);
@@ -152,6 +185,19 @@ function main(): void {
   const packScored = packs.filter((i) => i.measurement_axis !== "axis_level");
   ok("팩 문항이 축 수준만 받는다", packScored.length === 0,
      "팩은 축 수준을 올릴 수 있어도 Core 묶음 조건을 바꾸지 않는다");
+
+  /* 10-1. 산업팩은 산업 상식 퀴즈가 아니다.
+     용어를 모르는 사람이 `없다` 로 떨어지지 않게 문항마다 그 판단을 일반
+     기계공학 말로 바꿔 적은 줄이 있어야 한다 */
+  const ip = JSON.parse(readFileSync(`${CONTENT_DIR}/industry-packs.json`, "utf8"));
+  const indItems = (ip.packs as any[]).flatMap((p) => p.items as any[]);
+  const noGloss = indItems.filter((i) => !i.gloss || String(i.gloss).length < 10);
+  ok("산업팩 문항에 쉬운 말 풀이가 있다", noGloss.length === 0,
+     noGloss.length ? noGloss.map((i) => i.id).join(" ") : `${indItems.length} / ${indItems.length}`);
+  const gatedPacks = [ip, JSON.parse(readFileSync(`${CONTENT_DIR}/role-packs.json`, "utf8"))]
+    .filter((x) => x.exploration?.browse !== "all" || x.exploration?.subscription_gate !== false);
+  ok("팩이 구독으로 막혀 있지 않다", gatedPacks.length === 0,
+     "여덟 산업과 일곱 역할 전부를 탐색할 수 있고 한 응시에 깊게 묻는 것은 하나다");
 
   // 11. 학위·계열이 scoring 에 들어가지 않는다
   const stageWeighted = items.filter((i) => {
@@ -226,10 +272,19 @@ function main(): void {
   const noWhy = items.filter((i) => !i.rationale);
   ok("문항마다 왜 묻는지 적혀 있다", noWhy.length === 0);
 
-  // --- 응답 수와 시간 ---
+  /* --- 응답 수와 추정 시간 ---
+     세는 산식은 `src/lib/me-v3/response-count.ts` 하나다. 두 검사가 같은
+     수를 따로 세다 84 와 88 로 갈린 적이 있다 */
   const n = (m: string) => core.filter((i) => i.module === m).length;
-  const perDeepDomain = 4;
-  const CORE_FIXED = n("CORE-GRID") + n("CORE-JUDGE") + n("CORE-FORCE");
+  const deepOf = (t: string) =>
+    core.filter((i) => i.module === "DEEP-J8" && i.technical_domain === t).length;
+  const deepMax = Math.max(...TD.map(deepOf));
+  const base = {
+    grid: n("CORE-GRID"), judge: n("CORE-JUDGE"), force: n("CORE-FORCE"),
+    probePerDomain: 4, deepPerDomain: 4,
+    pref: n("PREF-RF-OC"), consist: n("CONSIST"),
+    trans: n("TRANS-10"), target: n("TARGET"), branch: 0, pack: 12,
+  };
   const branch: [string, string, number][] = [
     ["학사", "-", n("UG-COURSE")],
     ["석사 이상", "STEM", n("GRAD-STEM")],
@@ -237,17 +292,37 @@ function main(): void {
     ["석사 이상", "BUSINESS", n("GRAD-BIZ")],
     ["석사 이상", "OTHER_INTERDISCIPLINARY", n("GRAD-MIX")],
   ];
-  console.log("\n한 사람이 받는 응답 수 (괄호는 넷째 영역 · 팩 포함)\n");
-  console.log("  학위        계열                       BASIC   STANDARD        PRO");
+  console.log("\n한 사람이 받는 응답 수 (처음부터 그 등급으로 시작할 때)\n");
+  console.log("  학위        계열                       BASIC  STANDARD       PRO");
   for (const [st, fd, b] of branch) {
-    const basic = CORE_FIXED + perDeepDomain * 2 + b;
-    const std = basic + perDeepDomain * 3 + n("PREF-RF-OC") + n("CONSIST");
-    const std4 = basic + perDeepDomain * 4 + n("PREF-RF-OC") + n("CONSIST");
-    const pro = std + n("TRANS-10") + n("TARGET");
-    const proPack = std4 + n("TRANS-10") + n("TARGET") + 12;
-    console.log(`  ${st.padEnd(10)}  ${fd.padEnd(24)}  ${String(basic).padStart(4)}` +
-      `   ${String(std).padStart(4)}(${std4})   ${String(pro).padStart(4)}(${proPack})`);
+    const c = counts({ ...base, branch: b });
+    console.log(`  ${st.padEnd(10)}  ${fd.padEnd(24)}  ${String(c.basic).padStart(4)}` +
+      `  ${String(c.standard).padStart(4)}(${c.standard4})` +
+      `  ${String(c.pro).padStart(4)}(${c.proFull})`);
   }
+  console.log("  괄호는 넷째 영역이 열리고 산업·역할 팩을 하나씩 본 경우다.");
+  console.log(`  한 칸에 문항이 둘인 영역(${TD.filter((t) => deepOf(t) === deepMax).join(" · ")})을 ` +
+    `고르면 영역마다 ${deepMax - 4}개 더한다.`);
+
+  const c0 = counts({ ...base, branch: n("GRAD-STEM") });
+  console.log("\n등급을 올릴 때 새로 묻는 응답 (앞 응답은 그대로 쓴다)\n");
+  console.log(`  BASIC → STANDARD   ${c0.upgradeBasicToStandard}개  ` +
+    `(심화 영역 ${DOMAINS_BY_TIER.standard}개의 남은 축 · 역할·조직 선호 ` +
+    `${base.pref} · 일관성 ${base.consist})`);
+  console.log(`  STANDARD → PRO     ${c0.upgradeStandardToPro}개  ` +
+    `(경험 번역 ${base.trans} · 목표 입력 ${base.target})`);
+  console.log(`  그 뒤 선택으로      산업팩 6 · 역할팩 6 · ` +
+    `넷째 영역 ${c0.extraFourthDomain}`);
+
+  const mm = minutes({ ...base, branch: n("GRAD-STEM") });
+  console.log("\n추정 시간 (블록마다 한 응답에 드는 시간을 곱한 값. 실측이 아니다)\n");
+  console.log(`  BASIC                        약 ${mm.basic}분`);
+  console.log(`  처음부터 STANDARD            약 ${mm.standardFresh}분`);
+  console.log(`  처음부터 PRO                 약 ${mm.proFresh}분 ` +
+    `(팩까지 ${mm.proFreshWithPack}분)`);
+  console.log(`  BASIC 끝낸 뒤 STANDARD       약 ${mm.upgradeToStandard}분`);
+  console.log(`  STANDARD 끝낸 뒤 PRO         약 ${mm.upgradeToPro}분 ` +
+    `(팩까지 ${mm.upgradeToProWithPack}분)`);
 
   console.log(`\n문항 은행 ${items.length}개 (Core ${core.length} · 팩 ${packs.length})`);
   console.log(`확인 ${pass + fail}가지 — 통과 ${pass} · 걸림 ${fail} · 보고 ${warn}`);

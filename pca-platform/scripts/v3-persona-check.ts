@@ -94,13 +94,14 @@ function derive(a: Answers, req: Record<string, string[]>, tds: string[]): Deriv
     const needOk = (req[td] ?? []).every((ax) => conf2(ax as Axis));
     /* 산출물이 비면 근거라고 적지 않는다. 연구 축만 높은 자리가 여기 걸린다 */
     const artefact = conf2("J5");
-    if (a.tier !== "BASIC" && g8[td] >= 4 && needOk && artefact && I !== "낮음")
-      zones.Z1.push(td);
-    /* 산출물이 비면 축이 여럿 확인돼도 근거가 얕은 쪽으로 간다.
-       '아직 판단할 수 없는 영역' 으로 보내면, 많이 답한 사람에게 답이
+    const z1ok = a.tier !== "BASIC" && g8[td] >= 4 && needOk && artefact;
+    if (z1ok && I !== "낮음") zones.Z1.push(td);
+    /* **근거가 아직 덜 선 자리**는 전부 여기로 온다: 확인된 축이 적은
+       경우와, 축은 여럿인데 필수 축이 비거나 산출물이 없는 경우다.
+       '아직 판단할 수 없는 영역' 으로 보내면 많이 답한 사람에게 답이
        모자란다고 말하는 셈이 된다 */
     else if (I === "높음"
-             && ((a.tier === "BASIC" ? g4[td] <= 1 : g8[td] <= 2) || !artefact))
+             && (a.tier === "BASIC" ? (g4[td] <= 1 || !artefact) : !z1ok))
       zones.Z2.push(td);
     else if (I === "낮음" && (a.tier === "BASIC" ? g4[td] >= 2 : g8[td] >= 3)) zones.Z3.push(td);
     else zones.Z4.push(td);
@@ -186,6 +187,30 @@ const PEOPLE: Record<string, Answers> = {
    axes: { TD02: { ...HIGH }, TD04: { ...HIGH },
            TD03: { J1: "L2", J3: "L2", J4: "L2", J6: "L1" } },
    corroboration: { TD02: { ...CORR2 }, TD04: { ...CORR2 } },
+ }),
+ "I 관심만 높고 남은 것이 없는 학생": person({
+   interest: { ...flat(3 as const), TD03: 5 },
+   exposure: { ...flat(0 as const), TD03: 1 },
+   axes: { TD03: { J1: "L1", J3: "L2", J5: "L0", J6: "L1", J8: "L0" } },
+ }),
+ "J 판단은 많고 남은 것이 없는 사람": person({
+   interest: { ...flat(3 as const), TD08: 5 },
+   exposure: { ...flat(0 as const), TD08: 2 },
+   axes: { TD08: { J1: "L2", J2: "L2", J3: "L3", J4: "L2", J6: "L2", J7: "L2",
+                   J5: "L0", J8: "L1" } },
+   corroboration: { TD08: { J3: 2 } },
+ }),
+ "K 산출물은 있고 판단은 적은 사람": person({
+   interest: { ...flat(3 as const), TD01: 5 },
+   exposure: { ...flat(0 as const), TD01: 2 },
+   axes: { TD01: { J1: "L1", J2: "L2", J3: "L0", J4: "L2", J5: "L3", J6: "L1",
+                   J8: "L1" } },
+   corroboration: { TD01: { J5: 2 } },
+ }),
+ "L 판단·산출물·검증이 다 있는 사람": person({
+   interest: { ...flat(3 as const), TD02: 5 },
+   exposure: { ...flat(0 as const), TD02: 2 },
+   axes: { TD02: { J1: "L2", J3: "L2", J5: "L2", J6: "L2", J8: "L1" } },
  }),
  "H 산업을 모르는 포닥": person({
    stage: "postdoc", field: "STEM", tier: "PRO",
@@ -312,6 +337,28 @@ function main(): void {
      !H.zones.Z4.includes("TD02") && !H.zones.Z4.includes("TD03") &&
      H.surfaced.length > 0,
      `H 는 ${H.surfaced.join(",")} 을 먼저 본다`);
+
+  /* 12~15. Z1·Z2 를 고친 뒤 네 유형이 제대로 갈리는가.
+     '근거가 섰다' 와 '경험은 있으나 아직 근거가 완성되지 않았다' 가
+     갈리는 자리다 */
+  const z2has = (name: string, td: string) => {
+    const d = out[name];
+    return d.zones.Z1.length === 0 && d.zones.Z2.includes(td) &&
+      !d.zones.Z4.includes(td);
+  };
+  ok("관심만 높고 남은 것이 없으면 근거가 서지 않는다",
+     z2has("I 관심만 높고 남은 것이 없는 학생", "TD03"),
+     `TD03 확인 ${out["I 관심만 높고 남은 것이 없는 학생"].g8.TD03}`);
+  ok("판단이 많아도 남은 것이 없으면 근거가 서지 않는다",
+     z2has("J 판단은 많고 남은 것이 없는 사람", "TD08"),
+     `TD08 확인 ${out["J 판단은 많고 남은 것이 없는 사람"].g8.TD08} · 산출물이 비어 있다`);
+  ok("산출물만 있고 직접 판단이 비면 근거가 서지 않는다",
+     z2has("K 산출물은 있고 판단은 적은 사람", "TD01"),
+     `TD01 필수 축 J3 가 비어 있다`);
+  const L = out["L 판단·산출물·검증이 다 있는 사람"];
+  ok("판단과 산출물과 검증이 다 있으면 근거가 선다",
+     L.zones.Z1.includes("TD02"),
+     `TD02 확인 ${L.g8.TD02} · 필수 축 둘과 산출물이 모두 L2 이상`);
 
   console.log(`\n사람 ${Object.keys(PEOPLE).length}벌 · 확인 ${pass + fail}가지 — ` +
               `통과 ${pass} · 걸림 ${fail}`);

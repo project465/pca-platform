@@ -17,6 +17,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 const DIR = process.env.CONTENT_DIR ?? "sites/pca-platform/content";
 const OUT = "docs/metri/55_items_02_domain_qa.md";
 const OUT_PACKS = "docs/metri/55_items_03_packs.md";
+const OUT_EXPERT = "docs/metri/56_me_v3_expert_review.md";
 const AX = ["J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8"];
 
 const read = (f) => JSON.parse(readFileSync(`${DIR}/${f}`, "utf8"));
@@ -85,15 +86,24 @@ for (const d of domains.domains) {
   put("| 축 | 문면 (`id`) | 확인 L2 | 소유 L3 | 증거 | 결과 절 |");
   put("|---|---|---|---|---|---|");
   for (const ax of AX) {
-    const it = byId[`${d.code}_${ax}`];
     const cell = d.axes[ax] ?? {};
     const list = (checks.domains[d.code]?.[ax] ?? []);
     const ev = list.length
       ? `${list.length}개 · 예: ${list[0].text}`
       : "**없다**";
-    put(`| ${ax} | ${it ? it.wording : "**없다**"} (\`${d.code}_${ax}\`) `
-      + `| ${cell.l2 ?? ""} | ${cell.l3 ?? ""} | ${ev} `
-      + `| ${sections[ax] ?? ""} |`);
+    /* 한 칸에 문항이 둘인 자리가 있다. 높은 응답을 축 수준으로 쓴다 */
+    const items = bank.items.filter((i) => i.technical_domain === d.code &&
+      i.evidence_axis === ax && ["PROBE-J4", "DEEP-J8"].includes(i.module));
+    if (!items.length) {
+      put(`| ${ax} | **없다** | ${cell.l2 ?? ""} | ${cell.l3 ?? ""} | ${ev} `
+        + `| ${sections[ax] ?? ""} |`);
+      continue;
+    }
+    for (const it of items) {
+      put(`| ${ax} | ${it.wording} (\`${it.item_id}\`) `
+        + `| ${cell.l2 ?? ""} | ${cell.l3 ?? ""} | ${ev} `
+        + `| ${sections[ax] ?? ""} |`);
+    }
   }
   put();
 }
@@ -104,13 +114,18 @@ put();
 put(`| | |`);
 put(`|---|---|`);
 put(`| 기술영역 | ${n} |`);
-put(`| 영역 깊이 문항 | ${n * AX.length} |`);
+put(`| 영역 깊이 문항 | ${bank.items.filter((i) =>
+  ["PROBE-J4", "DEEP-J8"].includes(i.module)).length} |`);
 put(`| 증거 항목이 없는 칸 | ${
   domains.domains.reduce((s, d) =>
     s + AX.filter((ax) => !(checks.domains[d.code]?.[ax] ?? []).length).length, 0)} |`);
-put(`| 문항이 없는 칸 | ${
+put(`| 항목이 하나뿐인 칸 | ${
   domains.domains.reduce((s, d) =>
-    s + AX.filter((ax) => !byId[`${d.code}_${ax}`]).length, 0)} |`);
+    s + AX.filter((ax) => (checks.domains[d.code]?.[ax] ?? []).length === 1).length, 0)} |`);
+put(`| 문항이 없는 칸 | ${
+  domains.domains.reduce((s, d) => s + AX.filter((ax) => !bank.items.some((i) =>
+    i.technical_domain === d.code && i.evidence_axis === ax &&
+    ["PROBE-J4", "DEEP-J8"].includes(i.module))).length, 0)} |`);
 put();
 
 writeFileSync(OUT, lines.join("\n") + "\n");
@@ -201,3 +216,118 @@ say();
 
 writeFileSync(OUT_PACKS, pk.join("\n") + "\n");
 console.log(`  ${OUT_PACKS} · 팩 ${industry.packs.length + roles.packs.length} · 줄 ${pk.length}`);
+
+/* ---------- 전공자 검토용 묶음 ---------- */
+
+const ex = [];
+const w = (s = "") => ex.push(s);
+const CHECK = "| | | | | | |";
+
+w("# ME_V3 문항 전공자 검토");
+w();
+w("`npm run v3:qa` 가 만든다. **읽고 판단하기 위한 문서**라 코드 설명을 두지");
+w("않았다. 고칠 곳은 문항 은행과 팩 원본이다.");
+w();
+w("## 읽는 법");
+w();
+w("| 보기 | 뜻 |");
+w("|---|---|");
+w("| 없다 | 그 일을 해 본 적이 없다 |");
+w("| 남이 한 것을 받아 썼다 | 남이 정한 조건이나 결과를 받아 썼다 |");
+w("| 내가 했다 | 내가 그 일을 했다 |");
+w("| 내가 정하고 그 결과가 쓰였다 | 조건이나 기준을 내가 정했고 그 결과가 다음 작업에 쓰였다 |");
+w();
+w("**문면은 `확인(L2)` 줄의 행동을 묻는다.** 소유는 보기 넷이 가르고,");
+w("`소유(L3)` 줄은 체크리스트 근거가 받쳐야 결과지에 적힌다. 문면에 소유를");
+w("적으면 도면을 그렸지만 제작에 나가지 않은 학부생이 `없다` 로 떨어진다.");
+w();
+w("검토할 때 보실 것 일곱입니다.");
+w();
+w("1. 기계공학 현장에 **실제로 있는 행동**인가");
+w("2. 도구를 썼다와 기술 판단을 했다를 섞지 않았는가");
+w("3. 학부생이 겪지 않았다는 이유로 불리해지지 않는가");
+w("4. 석·박사가 참여만 하고도 소유로 읽히지 않는가");
+w("5. 확인과 소유의 차이가 또렷한가");
+w("6. 다른 영역의 문항과 사실상 같지 않은가");
+w("7. 읽고 **자기 경험 하나가 떠오르는가**");
+w();
+w("## Part 1. 기술영역 열둘 × 여덟 축");
+w();
+for (const d of domains.domains) {
+  w(`### ${d.code} ${d.name}`);
+  w();
+  w(`필수 축 **${d.required_axes.join(" · ")}**. 격자 줄은 \`${gridRow(d.code)}\` 입니다.`);
+  w();
+  w("| 축 | 문항 | 무엇을 확인하려는지 | 확인 L2 | 소유 L3 | 현장과 맞음 | 표현 수정 | 기술적으로 틀림 | 두 가지를 동시에 물음 | 다른 영역과 중복 | 삭제 필요 |");
+  w("|---|---|---|---|---|---|---|---|---|---|---|");
+  for (const ax of AX) {
+    const list = bank.items.filter((i) => i.technical_domain === d.code &&
+      i.evidence_axis === ax && ["PROBE-J4", "DEEP-J8"].includes(i.module));
+    const cell = d.axes[ax] ?? {};
+    for (const it of list) {
+      w(`| ${ax} ${axisName[ax] ?? ""} | ${it.wording} | ${axisQ[ax] ?? ""} `
+        + `| ${cell.l2 ?? ""} | ${cell.l3 ?? ""} |  |  |  |  |  |  |`);
+    }
+  }
+  w();
+}
+
+w("## Part 2. 산업팩 여덟 × 여섯");
+w();
+w("산업팩은 산업 상식 퀴즈가 아닙니다. 보는 것은 **기존 기계공학 경험을 그");
+w("산업의 문제 상황에서 알아보고 이을 수 있는가**입니다. 그래서 문항마다");
+w("쉬운 말 풀이를 함께 띄웁니다. 용어를 모른다고 부적합으로 적지 않습니다.");
+w();
+for (const p of industry.packs) {
+  w(`### ${p.name_ko}`);
+  w();
+  w("| 영역 | 축 | 문항 | 쉬운 말 풀이 | 현장과 맞음 | 표현 수정 | 기술적으로 틀림 | 두 가지를 동시에 물음 | 다른 영역과 중복 | 삭제 필요 |");
+  w("|---|---|---|---|---|---|---|---|---|---|");
+  for (const i of p.items) {
+    w(`| ${i.domain} ${domName[i.domain] ?? ""} | ${i.axis} `
+      + `| ${byId[i.id]?.wording ?? ""} | ${i.gloss ?? ""} |  |  |  |  |  |  |`);
+  }
+  w();
+}
+
+w("## Part 3. 역할팩 일곱 × 여섯");
+w();
+w("역할팩은 기술영역이 아닙니다. 역할이 더 묻는 것은 **그 자리에서 가진");
+w("권한과 범위**이고, 영역과 축은 Core 것을 가리킵니다.");
+w();
+for (const p of roles.packs) {
+  w(`### ${p.name_ko}`);
+  w();
+  w(`Core 참조 **${p.core_ref.td.join(" · ")}** · 필수 축 **${p.required_axes.join(" · ")}**`);
+  w();
+  w("| 축 | 문항 | 필수 | 현장과 맞음 | 표현 수정 | 기술적으로 틀림 | 두 가지를 동시에 물음 | 다른 영역과 중복 | 삭제 필요 |");
+  w("|---|---|---|---|---|---|---|---|---|");
+  for (const i of p.items) {
+    w(`| ${i.axis} | ${byId[i.id]?.wording ?? ""} `
+      + `| ${p.required_axes.includes(i.axis) ? "필수" : ""} |  |  |  |  |  |  |`);
+  }
+  w();
+}
+
+w("## Part 4. 검토 칸 쓰는 법");
+w();
+w("| 칸 | 언제 표시합니까 |");
+w("|---|---|");
+w("| 현장과 맞음 | 그대로 둬도 되는 문항 |");
+w("| 표현 수정 | 묻는 것은 맞고 말이 어색한 문항. 고칠 문장을 적어 주십시오 |");
+w("| 기술적으로 틀림 | 그 영역에서 그렇게 하지 않는 문항 |");
+w("| 두 가지를 동시에 물음 | 행동이나 판단이 둘인 문항. 어떻게 나눌지 적어 주십시오 |");
+w("| 다른 영역과 중복 | 어느 영역의 어느 축과 겹치는지 적어 주십시오 |");
+w("| 삭제 필요 | 빼야 하는 문항. 그 축이 비게 되므로 까닭을 적어 주십시오 |");
+w();
+w("**빈칸은 검토 안 됨으로 읽습니다.** 맞는 문항에도 표시를 남겨 주십시오.");
+w();
+w("| | 수 |");
+w("|---|---|");
+w(`| 영역 문항 | ${bank.items.filter((i) => ["PROBE-J4", "DEEP-J8"].includes(i.module)).length} |`);
+w(`| 산업팩 문항 | ${industry.packs.reduce((s, p) => s + p.items.length, 0)} |`);
+w(`| 역할팩 문항 | ${roles.packs.reduce((s, p) => s + p.items.length, 0)} |`);
+w();
+
+writeFileSync(OUT_EXPERT, ex.join("\n") + "\n");
+console.log(`  ${OUT_EXPERT} · 줄 ${ex.length}`);

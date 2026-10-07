@@ -144,6 +144,31 @@ function main(): void {
   ok("필수 축마다 항목 둘 이상", thin.length === 0,
      thin.length ? thin.join(" ") : `${dom.domains.length * 2} / ${dom.domains.length * 2}`);
 
+  /* 13. 칸마다 항목이 둘 이상이다.
+         소유는 근거 둘 이상일 때만 올라가므로 항목이 하나인 칸에서는
+         소유가 구조적으로 못 선다 */
+  const single: string[] = [];
+  for (const c of TD) for (const a of AX) {
+    if ((lists.domains[c]?.[a] ?? []).length === 1) single.push(`${c}.${a}`);
+  }
+  ok("축 칸마다 항목 둘 이상", single.length === 0,
+     single.length ? single.join(" ") : `${TD.length * AX.length}칸`);
+
+  /* 14. 받은 검토 관점이 어느 축에서 받히는가.
+         목록만 적어 두면 다음 사람이 항목을 지웠을 때 아무도 모른다 */
+  const uncovered: string[] = [];
+  let seen = 0;
+  for (const d of dom.domains) {
+    for (const r of (d.review_perspectives ?? []) as { name: string; axis: string }[]) {
+      seen += 1;
+      if ((lists.domains[d.code]?.[r.axis] ?? []).length < 2) {
+        uncovered.push(`${d.code} ${r.name}(${r.axis})`);
+      }
+    }
+  }
+  ok("검토 관점마다 고를 항목 둘 이상", uncovered.length === 0,
+     uncovered.length ? uncovered.join(" · ") : `관점 ${seen}가지`);
+
   // --- coverage matrix ---
   console.log("\n영역 × 측정축 coverage (고를 항목 수. * 는 필수 축)\n");
   console.log("      " + AX.map((a) => a.padStart(5)).join("") + "   합");

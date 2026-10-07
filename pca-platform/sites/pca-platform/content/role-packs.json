@@ -313,7 +313,7 @@
     {
      "id": "ROLE_MFG_V1_R3",
      "axis": "J5",
-     "ask": "작업 표준이나 공정도를 낸 경험"
+     "ask": "내 이름으로 작업 표준을 내고 개정까지 맡은 경험"
     },
     {
      "id": "ROLE_MFG_V1_R4",
@@ -472,5 +472,12 @@
     "변경 이력 한 장"
    ]
   }
- ]
+ ],
+ "exploration": {
+  "browse": "all",
+  "deep_per_attempt": 1,
+  "add_later": true,
+  "subscription_gate": false,
+  "note": "일곱 역할 전부를 견줄 수 있다. 한 번에 마흔둘을 묻지 않고 고른 역할 하나를 깊게 확인하고, 나머지는 **Core 의 확인된 축으로** 견준다. 역할팩 문항이 없어도 비교가 서는 까닭은 역할의 필수 축이 Core 축이기 때문이다"
+ }
 }

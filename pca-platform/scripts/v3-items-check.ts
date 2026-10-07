@@ -8,6 +8,7 @@
  *   npm run v3:items
  */
 import { core, coreFile, registry } from "../src/lib/me-v3/core-registry";
+import { counts } from "../src/lib/me-v3/response-count";
 
 function pickCore(): string {
   if (process.env.CORE) return process.env.CORE;
@@ -110,15 +111,16 @@ function main(): void {
      rules.some((r) => /동작 하나/.test(r)) && rules.some((r) => /셋 이상/.test(r)),
      "문면은 6단계에서 센다");
 
-  // --- 등급 × 학위 × 계열 응답 수 ---
+  /* --- 등급 × 학위 × 계열 응답 수 ---
+     산식은 `src/lib/me-v3/response-count.ts` 하나다. 여기는 blueprint 의
+     자리로 세고 `v3:wording` 은 문항으로 센다. 같은 수가 나와야 한다 */
   const count = (b: string) => slots.filter((s) => s.block === b).length;
-  const CORE = count("CORE-GRID") + count("CORE-JUDGE") + count("CORE-FORCE");
-  const PROBE = count("PROBE-J4") * 2;          // 영역 최대 둘
-  const DEEP3 = count("DEEP-J8") * 3;           // 영역 셋
-  const DEEP4 = count("DEEP-J8") * 4;           // 넷째가 열릴 때
-  const STD = count("PREF-RF-OC") + count("CONSIST");
-  const PRO = count("TRANS-10") + count("TARGET");
-
+  const base = {
+    grid: count("CORE-GRID"), judge: count("CORE-JUDGE"), force: count("CORE-FORCE"),
+    probePerDomain: count("PROBE-J4"), deepPerDomain: count("DEEP-J8"),
+    pref: count("PREF-RF-OC"), consist: count("CONSIST"),
+    trans: count("TRANS-10"), target: count("TARGET"), branch: 0, pack: 12,
+  };
   const branch: [string, string, number][] = [
     ["학사", "해당 없음", count("UG-COURSE")],
     ["석사 이상", "STEM", count("GRAD-STEM")],
@@ -126,17 +128,13 @@ function main(): void {
     ["석사 이상", "BUSINESS", count("GRAD-BIZ")],
     ["석사 이상", "OTHER_INTERDISCIPLINARY", count("GRAD-MIX")],
   ];
-
   console.log("\n등급 × 학위 × 계열 응답 수 (넷째 영역이 열리면 괄호)\n");
   console.log("  학위        계열                      BASIC  STANDARD       PRO");
   for (const [st, fd, b] of branch) {
-    const basic = CORE + PROBE + b;
-    const std = basic + DEEP3 + STD;
-    const std4 = basic + DEEP4 + STD;
-    const pro = std + PRO;
-    const pro4 = std4 + PRO;
-    console.log(`  ${st.padEnd(10)}  ${fd.padEnd(24)}  ${String(basic).padStart(4)}` +
-      `  ${String(std).padStart(4)}(${std4})  ${String(pro).padStart(4)}(${pro4})`);
+    const c = counts({ ...base, branch: b });
+    console.log(`  ${st.padEnd(10)}  ${fd.padEnd(24)}  ${String(c.basic).padStart(4)}` +
+      `  ${String(c.standard).padStart(4)}(${c.standard4})` +
+      `  ${String(c.pro).padStart(4)}(${c.pro4})`);
   }
 
   // --- 축 × 등급 도달 ---
