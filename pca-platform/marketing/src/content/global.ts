@@ -19,7 +19,7 @@ export const global: SiteContent = {
   meta: {
     title: "CareerMatri | Engineering majors, read against the roles that hire them",
     description:
-      "Twenty-four engineering job clusters and 138 competencies across mechanical, electrical and computer engineering, checked against real postings. Not a personality type: ANSYS held 2 of 4, asked for in 89 of 132 postings for this role.",
+      "Mechanical engineering coursework, projects and research read as the work judgements of real engineering roles. Not a personality type: the report names the evidence you already hold and the evidence a role has not seen yet.",
   },
 
   legal: {
@@ -69,18 +69,15 @@ export const global: SiteContent = {
     eyebrow: "CareerMatri · Engineering career diagnostics",
     title: ["They chose engineering.", "Nobody told them which engineering."],
     lead:
-      "Mechanical, electrical and computer engineering: 24 job clusters and 138 competencies, checked against real postings. The report does not say “you are collaborative”. It says “Simulation & CAE 80, ANSYS held 2 of 4, asked for in 89 of 132 postings for this role”. The activity axes are the same in every country, which is why the instrument travels.",
+      "Mechanical engineering coursework, projects and research laid against the areas an engineering role actually checks. The report does not say “you are collaborative”. It names the role group to look at first and the evidence that role has not seen yet. The activity axes are the same in every country, which is why the instrument travels.",
     primary: { label: "Start free", href: "/pricing" },
     secondary: { label: "Talk to us", href: "/contact" },
     priceline:
       "Three tiers. BASIC costs nothing; STANDARD is $14.99 when you still have roles to weigh up, and PRO is $24.99 once the direction is set. Departments contract by cohort size.",
     watermark: "CareerMatri",
-    proof: [
-      { value: "250", label: "items, in three languages" },
-      { value: "24", label: "engineering job clusters" },
-      { value: "138", label: "competencies mapped" },
-      { value: "3", label: "copyright registrations" },
-    ],
+    /* The number bar is gone. Of the four values, three were either wrong
+       against the data or unverifiable, and none of them is something the
+       product computes. */
   },
 
   sample: {
@@ -89,7 +86,7 @@ export const global: SiteContent = {
     lead:
       "What PCA measures is the second question. Below are four pages of the report put on one screen. A student does not receive a type name. They receive this.",
     disclaimer:
-      "An illustrative screen showing the format of the report. It is not a real student’s submission. The ten job areas, the six work styles and the regional method are exactly as they ship.",
+      `An illustrative screen showing the format of the report. It is not a real student's submission, and it shows the report a student receives under a department contract. The three individual tiers are rendered by the live engine at ${PLATFORM_URL}/sample.`,
     docTag: "CareerMatri individual report",
     page: "extract · 00-1 · 00-2 · 05–06 · regional annex",
     person: {
@@ -132,18 +129,13 @@ export const global: SiteContent = {
     plan: [
       {
         when: "Month 1",
-        what: "Register for the quality-management certificate your country’s employers ask for most",
-        why: "It appears in the majority of postings in this student’s top area",
+        what: "Register for the quality-management certificate named in the report",
+        why: "It sits in the gap the report named for this student",
       },
       {
         when: "Months 2–3",
         what: "Reframe the capstone project around defect-rate reduction",
         why: "Leaves a number the student can say out loud in an interview",
-      },
-      {
-        when: "Month 4",
-        what: "Apply for the placements at the local plants listed in the regional annex",
-        why: "Placements are how these employers actually hire",
       },
       {
         when: "Month 6",
@@ -157,14 +149,10 @@ export const global: SiteContent = {
       },
     ],
     localLabel: "Regional annex · where they can go, near where they live",
-    localNote:
-      "Figures from the Korean edition, for a student in Daejeon: 184 organisations in the city were screened and sorted into 144 high fit, 40 moderate, 0 low, with 101 of them tied to the region’s priority industries. In your country the same method runs on your own labour-market data, and the report names the employers.",
-    local: [
-      { name: "184", note: "organisations screened in the city" },
-      { name: "144", note: "high fit" },
-      { name: "40", note: "moderate fit" },
-      { name: "101", note: "tied to priority industries" },
-    ],
+    localNote: "",
+    /* Emptied. The employer and posting tables hold no rows, so there is no
+       screening by fit to show. An empty array removes the block. */
+    local: [],
     cta: {
       line: "Every student in the department gets one of these, with their own name on it.",
       sub: "Tell us the department and the cohort size; we come back within a day with a plan and a quote.",
@@ -444,17 +432,12 @@ export const global: SiteContent = {
 
   evidence: {
     label: "What it rests on",
-    heading: "The items were worked backwards from job postings",
+    heading: "The items were worked backwards from what a role checks",
     lead:
-      "We read 428 job postings and 137 job descriptions first, to see what each role is actually asked to do, then put that to 2,346 graduates in the field to check it against the work. The traits did not come first with occupations attached afterwards.",
-    stats: [
-      { label: "Students took part", value: "2,346", unit: "" },
-      { label: "Survey responses", value: "2,091", unit: "" },
-      { label: "Job postings analysed", value: "428", unit: "" },
-      { label: "Job descriptions analysed", value: "137", unit: "" },
-      { label: "NCS references compared", value: "62", unit: "" },
-      { label: "Practitioners reviewed it", value: "48", unit: "" },
-    ],
+      "For each role we first wrote down what has to be confirmed before someone can explain that work, and the items were derived from those areas. The cognitive interviews and the pilot have not been run, so we do not call this a validated psychometric test.",
+    /* The six sample figures are gone. They come from a proposal we cannot
+       verify, and they describe a different instrument from the one on sale. */
+    stats: [],
     copyright: {
       title: "Registered copyright (Republic of Korea)",
       rows: [
@@ -464,18 +447,13 @@ export const global: SiteContent = {
       ],
       note: "The core diagnostic items in the PCA indicator family are registered with the Korea Copyright Commission and legally protected.",
     },
+    /* The framework table is gone. Every row claimed a reference we cannot
+       show in the product. */
     standards: {
       title: "Standards referenced in the design",
-      head: ["Framework", "Issued by / lineage", "How it informed PCA"],
-      rows: [
-        ["NCS", "Ministry of Employment and Labor · HRD Korea", "Alignment of job areas and required capability with the national standard"],
-        ["O*NET lineage", "US Department of Labor occupational information", "Reference for job areas and task-level design"],
-        ["RIASEC lineage", "Standard vocational-psychology model", "Conceptual frame for partitioning interest areas"],
-        ["NACE competencies", "National Association of Colleges and Employers", "Benchmark for defining student career readiness"],
-        ["OECD frameworks", "OECD DeSeCo · Learning Compass", "Reference for transferable core-competency structure"],
-        ["Measurement standards", "AERA · APA · NCME lineage", "Basis for the validity and reliability regime"],
-      ],
-      note: "These frameworks were referenced and benchmarked during design. Reference does not imply joint development, certification or endorsement by the bodies named.",
+      head: ["Framework", "Issued by / lineage", "How it informed the design"],
+      rows: [],
+      note: "",
     },
   },
 
@@ -483,15 +461,11 @@ export const global: SiteContent = {
     label: "After the assessment",
     heading: "The assessment is the entrance. The expensive problem sits behind it.",
     lead:
-      "When a department spends its training budget, the thing it knows least is who needs which training. Put 300 courses on a shelf and the coordinator picks by instinct. CareerMatri names that cell with a number.",
-    funnel: [
-      { value: "487", label: "students in one mechanical engineering department" },
-      { value: "31%", label: "meet the required geometric tolerancing (GD&T) level" },
-      { value: "67%", label: "of 1,240 regional postings ask for GD&T" },
-      { value: "372", label: "the overlap, students who need this training" },
-    ],
-    funnelNote:
-      "That last figure is the quote. The department has already accepted the problem before choosing a remedy, which is a different conversion from a cold offer. The numbers above illustrate how the calculation runs; they are not a real department's data.",
+      "When a department spends its training budget, the thing it knows least is who needs which training. Put a shelf of courses in front of students and the coordinator picks by instinct. CareerMatri aggregates the cohort anonymously and names which evidence is missing across it.",
+    /* The four funnel cells are gone. Two of them came from regional posting
+       data, and that table holds no rows. */
+    funnel: [],
+    funnelNote: "",
     matrix: {
       head: ["Kind of tool", "What it has", "What it lacks"],
       rows: [
@@ -586,7 +560,7 @@ export const global: SiteContent = {
       },
       {
         title: "Career fairs and networking",
-        body: "Large-scale recruitment events, connected to the employers surfaced by the regional matching where that module runs.",
+        body: "Large-scale recruitment events run with universities and employers.",
       },
       {
         title: "AI-assisted career matching",
@@ -714,7 +688,7 @@ export const global: SiteContent = {
       },
       {
         q: "Is it validated?",
-        a: "It was built from a 2,346-student sample together with 428 job postings, 137 job descriptions and 62 NCS references. Area definitions and interpretation criteria reference NCS, the O*NET lineage, RIASEC, NACE, OECD frameworks and AERA/APA/NCME measurement standards. The core items are registered with the Korea Copyright Commission.",
+        a: "It is not a personality test. For each role we wrote down what has to be confirmed before someone can explain that work, and the items were derived from those areas. The same answers always produce the same scores and the weights are visible in the data, so a department can re-score an answer sheet. The cognitive interviews and the pilot have not been run, so we do not call it validated.",
       },
     ],
   },

@@ -2,8 +2,7 @@ import { notFound } from "next/navigation";
 import { getSite } from "@/content";
 import Shell from "@/components/shell";
 import { University } from "@/components/sections";
-import { NextLink, PageHead, PhotoSlot, PullQuote } from "@/components/visuals";
-import { appHref } from "@/lib/platform";
+import { NextLink, PageHead } from "@/components/visuals";
 
 export const metadata = { title: "지역·앵커" };
 
@@ -17,26 +16,12 @@ export default function AnchorPage() {
     <Shell>
       <PageHead label={u.label} title={u.heading} lead={u.lead} />
       <University site={site} />
-      <section className="divided tinted">
-        <div className="wrap photosplit">
-          <div>
-            <span className="label-sm">지역 연계</span>
-            <h2 style={{ margin: "16px 0 18px" }}>
-              소재지의 실제 기관·기업으로 이어집니다
-            </h2>
-            <PullQuote source="실제 결과지 · 섹션 9 도입부">
-              대전광역시 내 소재 기관·기업 184곳을 적합도(높음 144 · 보통 40 · 낮음 0)로
-              나누어 정리했습니다.
-            </PullQuote>
-            <div style={{ marginTop: 24 }}>
-              <a className="btn lg solid" href={appHref(site, "/sample")}>
-                결과지 보기
-              </a>
-            </div>
-          </div>
-          <PhotoSlot caption="사진 자리 — 지역 기관·기업 방문 또는 지역 채용 행사" ratio="4 / 3" />
-        </div>
-      </section>
+      {/* 지역 연계 절을 지웠다. 소재지 기관·기업 184곳을 적합도로 나눠
+          준다고 적어 두었는데, `companies` 와 `jd_postings` 표가 **0줄**
+          이고 기업을 적합도로 정렬하는 코드도 없다. 지금 받아 두는 것은
+          희망 지역과 이동 범위와 정주·만족도 문항뿐이고, 그것은 위
+          `University` 절이 이미 적는다. 자리만 비워 두지 않고 절째로
+          내린 까닭은 사진과 단추까지 그 주장을 거드는 자리였기 때문이다 */}
       <section className="divided">
         <div className="wrap nextgrid">
           <NextLink label="adopt" title="도입 안내" href="/adopt" />

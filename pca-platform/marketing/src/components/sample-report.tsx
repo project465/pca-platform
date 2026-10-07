@@ -127,18 +127,22 @@ export default function SampleReport({ site }: { site: SiteContent }) {
             <p className="rnote">{s.planNote}</p>
           </div>
 
-          <div className="rblock wide">
-            <h3>{s.localLabel}</h3>
-            <ul className="localrow">
-              {s.local.map((l) => (
-                <li key={l.name}>
-                  <b>{l.name}</b>
-                  <span>{l.note}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="rnote">{s.localNote}</p>
-          </div>
+          {/* 지역 기업 묶음은 **자료가 있을 때만** 선다. 기업 표가 비어
+              있는데 숫자를 적어 두면 없는 기능을 파는 셈이 된다 */}
+          {s.local.length ? (
+            <div className="rblock wide">
+              <h3>{s.localLabel}</h3>
+              <ul className="localrow">
+                {s.local.map((l) => (
+                  <li key={l.name}>
+                    <b>{l.name}</b>
+                    <span>{l.note}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="rnote">{s.localNote}</p>
+            </div>
+          ) : null}
 
           <figcaption className="rfoot">{s.disclaimer}</figcaption>
         </figure>

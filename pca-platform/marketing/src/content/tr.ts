@@ -24,7 +24,7 @@ export const tr: SiteContent = {
   meta: {
     title: "CareerMatri — mühendislik bölümleri, işe alan rollere göre okunur",
     description:
-      "Makine, elektrik-elektronik ve bilgisayar mühendisliğinde 24 görev kümesi ve 138 yetkinlik, gerçek ilanlarla karşılaştırılır. Kişilik tipi değil: ANSYS 4 üzerinden 2, 132 ilanın 89'unda isteniyor.",
+      "",
   },
 
   legal: {
@@ -66,16 +66,12 @@ export const tr: SiteContent = {
     eyebrow: "CareerMatri · Mühendislik kariyer tanılaması",
     title: ["Mühendisliği seçtiler.", "Hangi mühendisliği, kimse söylemedi."],
     lead:
-      "Makine, elektrik-elektronik ve bilgisayar mühendisliği — 24 görev kümesi ve 138 yetkinlik, gerçek ilanlarla karşılaştırılıyor. “İş birlikçisiniz” değil; “Simülasyon ve CAE 80, ANSYS 4 üzerinden 2, bu rolün 132 ilanının 89'unda isteniyor”. 250 sorunun tamamı Türkçe olarak hazır.",
+      "250 sorunun tamamı Türkçe olarak hazır.",
     primary: { label: "Görüşme talep et", href: "/contact" },
     secondary: { label: "Örnek raporu gör", href: "#sample" },
     watermark: "CareerMatri",
-    proof: [
-      { value: "250", label: "soru, Türkçe olarak hazır" },
-      { value: "24", label: "mühendislik görev kümesi" },
-      { value: "138", label: "yetkinlik haritası" },
-      { value: "3", label: "telif tescili" },
-    ],
+    /* 숫자 띠를 뺐다. 네 값 가운데 제품이 계산하는 것이 없다 */
+    proof: [],
   },
 
   sample: {
@@ -133,11 +129,8 @@ export const tr: SiteContent = {
     ],
     localLabel: "09 Bölgesel bağlantı",
     localNote: "Üniversitenin bulunduğu bölgedeki gerçek şirketler uygunluk düzeyine göre ayrılır.",
-    local: [
-      { name: "Bölgedeki makine üreticisi", note: "Uygunluk yüksek · açık ilan var" },
-      { name: "Otomotiv yan sanayi", note: "Uygunluk yüksek" },
-      { name: "Lojistik operatörü", note: "Uygunluk orta" },
-    ],
+    /* 지역 기업 묶음을 비웠다. 기업 표가 0줄이다 */
+    local: [],
     cta: {
       line: "Öğrencinin eline böyle bir belge geçiyor.",
       sub: "Bölüm ise aynı belgelerin anonim toplamını alıyor.",
@@ -345,13 +338,8 @@ export const tr: SiteContent = {
     label: "Neye dayanır",
     heading: "Veriyle tasarlandı",
     lead: "Envanter tek bir uzmanın görüşünden değil, toplanan veriden çıktı.",
-    stats: [
-      { label: "Bölüm mezunu", value: "2.346", unit: "kişi" },
-      { label: "Anket", value: "2.091", unit: "yanıt" },
-      { label: "İlan analizi", value: "428", unit: "ilan" },
-      { label: "Görev tanımı", value: "137", unit: "belge" },
-      { label: "Sektör uzmanı", value: "48", unit: "kişi" },
-    ],
+    /* 표본 수치를 비웠다. 확인할 수 없는 값이다 */
+    stats: [],
     copyright: {
       title: "Telif tescili",
       rows: [
@@ -380,14 +368,9 @@ export const tr: SiteContent = {
     heading: "Değerlendirme giriştir. Pahalı sorun onun arkasında durur.",
     lead:
       "Bir bölüm eğitim bütçesini harcarken en az bildiği şey, kime hangi eğitimin gerektiğidir. Rafa 300 kurs koyarsanız koordinatör sezgiyle seçer. CareerMatri o hücreyi bir sayıyla adlandırır.",
-    funnel: [
-      { value: "487", label: "bir makine mühendisliği bölümünün öğrencisi" },
-      { value: "%31", label: "GD&T gerekli seviyesini karşılıyor" },
-      { value: "%67", label: "1.240 bölgesel ilanın GD&T istediği oran" },
-      { value: "372", label: "kesişim — bu eğitime ihtiyacı olan öğrenciler" },
-    ],
-    funnelNote:
-      "Son sayı teklifin kendisidir. Bölüm, çözümü seçmeden önce sorunu zaten kabul etmiştir; bu, soğuk bir teklifle aynı şey değildir. Yukarıdaki sayılar hesabın nasıl işlediğini gösterir, gerçek bir bölümün verisi değildir.",
+    /* 네 칸을 비웠다. 지역 공고 자료가 없다 */
+    funnel: [],
+    funnelNote: "",
     matrix: {
       head: ["Araç türü", "Sahip olduğu", "Eksik olanı"],
       rows: [

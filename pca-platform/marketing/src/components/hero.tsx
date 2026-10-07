@@ -42,7 +42,8 @@ export default function Hero({ site }: { site: SiteContent }) {
               가격은 대부분 안 읽힌다. */}
           {h.priceline ? <p className="priceline">{h.priceline}</p> : null}
 
-          {h.proof ? (
+          {/* 확인할 수 없는 수치를 띠에 올리지 않는다. 비면 띠 자체가 없다 */}
+          {h.proof && h.proof.length ? (
             <ul className="proofbar">
               {h.proof.map((x) => (
                 <li key={x.label}>

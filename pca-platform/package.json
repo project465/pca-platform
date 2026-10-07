@@ -52,6 +52,7 @@
     "db:upgrade": "bash scripts/db-upgrade.sh",
     "db:verify": "bash deploy/ops/db-verify.sh",
     "make:admin": "tsx scripts/make-admin.ts",
+    "claims:check": "tsx scripts/claims-check.ts",
     "pg:smoke": "tsx scripts/pg-smoke.ts",
     "pg:confirm": "tsx scripts/pg-confirm.ts",
     "pilot:check": "tsx scripts/pilot-check.ts",

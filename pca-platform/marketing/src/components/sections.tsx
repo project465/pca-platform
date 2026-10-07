@@ -218,17 +218,20 @@ export function Evidence({ site }: { site: SiteContent }) {
           <p className="lead">{e.lead}</p>
         </div>
 
-        <div className="stats">
-          {e.stats.map((s) => (
-            <div key={s.label}>
-              <span className="l">{s.label}</span>
-              <b>
-                {s.value}
-                {s.unit ? <em>{s.unit}</em> : null}
-              </b>
-            </div>
-          ))}
-        </div>
+        {/* 확인되지 않은 표본 수치를 올리지 않는다. 비면 묶음이 없다 */}
+        {e.stats.length ? (
+          <div className="stats">
+            {e.stats.map((s) => (
+              <div key={s.label}>
+                <span className="l">{s.label}</span>
+                <b>
+                  {s.value}
+                  {s.unit ? <em>{s.unit}</em> : null}
+                </b>
+              </div>
+            ))}
+          </div>
+        ) : null}
 
         <div className="panelbox">
           <h3>
@@ -248,6 +251,7 @@ export function Evidence({ site }: { site: SiteContent }) {
           <p className="note">{e.copyright.note}</p>
         </div>
 
+        {e.standards.rows.length ? (
         <div className="panelbox">
           <h3>{e.standards.title}</h3>
           <div className="tablescroll">
@@ -272,6 +276,7 @@ export function Evidence({ site }: { site: SiteContent }) {
           </div>
           <p className="note">{e.standards.note}</p>
         </div>
+        ) : null}
       </div>
     </section>
   );
@@ -292,6 +297,8 @@ export function GapSection({ site }: { site: SiteContent }) {
         </div>
         <p className="lead">{g.lead}</p>
 
+        {/* 예시 숫자라도 **없는 자료로 만든 칸**은 올리지 않는다 */}
+        {g.funnel.length ? (
         <ol className="funnel">
           {g.funnel.map((f, i) => (
             <li key={f.label}>
@@ -301,7 +308,8 @@ export function GapSection({ site }: { site: SiteContent }) {
             </li>
           ))}
         </ol>
-        <p className="funnel-note">{g.funnelNote}</p>
+        ) : null}
+        {g.funnelNote ? <p className="funnel-note">{g.funnelNote}</p> : null}
 
         <div className="tablewrap">
           <table className="matrix">

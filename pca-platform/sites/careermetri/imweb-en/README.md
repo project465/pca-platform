@@ -10,7 +10,7 @@ things, so several sections have no counterpart.
 | The Korean site has | The international site has instead |
 |---|---|
 | Regional retention as a headline product | Retention as an optional module under Localisation |
-| 42 Korean cities, 13,920 employers | The same figures, stated as Korea, the first market |
+| Regional employer data | Stated as not yet in place in any market |
 | 14 department rows in Korean names | The same rows in field and discipline names |
 | Korean e-commerce footer | imweb required-footer fields, labels in English |
 | The Korean career-information registration as a credential | The same number, labelled as a Korean registration |
