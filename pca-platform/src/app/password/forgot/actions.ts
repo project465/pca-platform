@@ -2,11 +2,26 @@
 
 import { query, queryOne, tx } from "@/lib/db";
 import { createResetToken } from "@/lib/password";
-import { sendNow } from "@/lib/outbox";
+import { mailReady, sendNow } from "@/lib/outbox";
 import { headers } from "next/headers";
 import { publicBase } from "@/lib/urls";
 
-export type ForgotState = { done?: boolean; devLink?: string };
+export type ForgotState = {
+  done?: boolean;
+  devLink?: string;
+  /**
+   * 이 배포본에 메일이 붙어 있지 않다.
+   *
+   * **보낸 척하지 않는다.** `MAIL_HOST`·`MAIL_FROM` 이 비어 있으면 한 통도
+   * 나가지 않는데, 화면이 "보냈습니다" 로만 끝나면 기다리는 사람은 받은
+   * 편지함만 들여다본다.
+   *
+   * **이 값은 계정이 있는지와 무관하다.** 배포본의 설정 하나만 보고 정하므로
+   * 답이 사람마다 갈리지 않는다 — 갈리면 그 답이 남의 학번이 등록돼 있는지
+   * 확인하는 수단이 된다.
+   */
+  mailOff?: boolean;
+};
 
 const TOKEN_TTL_HOURS = 24;
 
@@ -25,8 +40,11 @@ export async function forgotAction(
   _prev: ForgotState,
   formData: FormData,
 ): Promise<ForgotState> {
+  /* 계정을 찾기 전에 정한다. 뒤에서 정하면 못 찾은 갈래에만 빠진다 */
+  const mailOff = !mailReady();
+
   const identifier = String(formData.get("identifier") ?? "").trim();
-  if (!identifier) return { done: true };
+  if (!identifier) return { done: true, mailOff };
 
   const user = await queryOne<{ id: string; email: string | null }>(
     `SELECT id, email FROM users
@@ -35,7 +53,7 @@ export async function forgotAction(
     [identifier],
   );
 
-  if (!user) return { done: true };
+  if (!user) return { done: true, mailOff };
 
   const { token, tokenHash } = createResetToken();
 
@@ -74,8 +92,8 @@ export async function forgotAction(
 
   /* 개발에서는 링크를 화면에 적어 둔다. 운영에서는 적지 않는다:
      **화면에 적으면 남의 화면에서도 보인다** */
-  if (process.env.NODE_ENV === "production") return { done: true };
-  return { done: true, devLink: sent ? undefined : link };
+  if (process.env.NODE_ENV === "production") return { done: true, mailOff };
+  return { done: true, mailOff, devLink: sent ? undefined : link };
 }
 
 export async function countActiveTokens(userId: string): Promise<number> {

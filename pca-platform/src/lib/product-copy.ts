@@ -271,6 +271,17 @@ export const PRODUCT = {
  */
 export const SUPPORT = {
   title: p("문의와 지원", "Support"),
+  /* 로그인하지 않은 사람에게 보이는 것. **공개 꼬리말의 '고객지원' 이
+     여기를 가리키므로 로그인 벽으로 끝내지 않는다**: 아직 손님이 아닌
+     사람에게 계정을 먼저 요구하면 묻던 것을 못 묻고 돌아간다 */
+  guestTitle: p("문의", "Contact us"),
+  guestBody: p(
+    "주문·환불·막힌 것은 로그인하시면 이 자리에서 번호까지 함께 보입니다. " +
+      "계정이 없으셔도 아래 주소로 물어보실 수 있습니다.",
+    "Sign in and this page shows your orders, refunds and anything that stalled, " +
+      "with the reference numbers. Without an account, the address below still reaches us.",
+  ),
+  guestSignIn: p("로그인하고 내 주문 보기", "Sign in to see your orders"),
   body: p(
     "주문 번호와 참조 번호가 아래에 있습니다. 문의하실 때 그 번호를 함께 " +
       "적어 주시면 바로 찾을 수 있습니다.",

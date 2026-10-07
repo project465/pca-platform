@@ -10,6 +10,7 @@
  */
 import { readFile, stat } from "node:fs/promises";
 import { query, queryOne } from "../src/lib/db";
+import { requireEngine } from "./_engine-up";
 import { hashPassword } from "../src/lib/password";
 import { settlePayment, startCheckout } from "../src/lib/orders";
 import {
@@ -114,12 +115,7 @@ async function main() {
 
   /* 서버가 떠 있는지 먼저 본다. 안 떠 있으면 아래 전부가 같은 이유로
      떨어져서 무엇이 틀렸는지 안 보인다 */
-  const probe = await fetch(`${BASE}/pca/v2.html`).catch(() => null);
-  if (!probe?.ok) {
-    console.error(`결과지 엔진을 ${BASE}/pca/v2.html 에서 열 수 없다. ` +
-      `서버를 띄우고 BASE_URL 을 맞춰 주십시오.`);
-    process.exit(1);
-  }
+  await requireEngine(BASE);
   ok("엔진을 플랫폼이 같은 주소에서 내준다", true, `${BASE}/pca/v2.html`);
 
   const V = engineVersions();

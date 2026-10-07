@@ -12,9 +12,18 @@ export default function ForgotForm() {
   if (state.done) {
     return (
       <div className="form">
-        <p className="notice ok">
-          입력하신 계정이 등록돼 있다면 재설정 링크를 보냈습니다.
-        </p>
+        {state.mailOff ? (
+          /* 메일이 안 붙어 있으면 그 사실을 적는다. "보냈습니다" 로 끝내면
+             기다리는 사람은 받은 편지함만 들여다본다 */
+          <p className="notice">
+            이 서버는 메일 발송이 아직 연결되지 않아 재설정 링크를 보내지
+            못했습니다. 기다리셔도 메일은 오지 않습니다.
+          </p>
+        ) : (
+          <p className="notice ok">
+            입력하신 계정이 등록돼 있다면 재설정 링크를 보냈습니다.
+          </p>
+        )}
         <p className="sub" style={{ marginBottom: 0 }}>
           메일이 없는 학생 계정은 학과 담당자가 직접 재설정 링크를 발급합니다.
           담당자에게 문의하세요.

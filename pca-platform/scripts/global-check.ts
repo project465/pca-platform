@@ -15,6 +15,7 @@
  */
 import { readFile } from "node:fs/promises";
 import { query, queryOne } from "../src/lib/db";
+import { requireEngine } from "./_engine-up";
 import { hashPassword } from "../src/lib/password";
 import { settlePayment, startCheckout } from "../src/lib/orders";
 import { openGrants, openV2Attempt, saveAnswers, submitV2 } from "../src/lib/me-v2/attempt";
@@ -171,12 +172,7 @@ async function checkOrder(file: string, label: string): Promise<void> {
 async function main() {
   process.env.PAYMENTS_PROVIDER ??= "mock";
 
-  const probe = await fetch(`${BASE}/pca/v2.html`).catch(() => null);
-  if (!probe?.ok) {
-    console.error(`결과지 엔진을 ${BASE}/pca/v2.html 에서 열 수 없다. ` +
-      `서버를 띄우고 BASE_URL 을 맞춰 주십시오.`);
-    process.exit(1);
-  }
+  await requireEngine(BASE);
 
   /* ── 0. 문항 은행이 두 언어인가 ──────────────────────────────────── */
   ok("92문항 전부 영어판이 있다", missingTranslations("en").length === 0,

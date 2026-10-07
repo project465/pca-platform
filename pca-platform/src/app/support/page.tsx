@@ -1,6 +1,6 @@
 import Link from "next/link";
 import BrandHome from "@/components/sf/brand-home";
-import { requireUser } from "@/lib/session";
+import { currentUser, requireUser } from "@/lib/session";
 import { resolveLang } from "@/lib/locale-server";
 import { toLang2, BRAND } from "@/lib/surface-text";
 import { SUPPORT, PRODUCT } from "@/lib/product-copy";
@@ -11,6 +11,7 @@ import { money } from "@/lib/market";
 import { amountLabel, orderStatusLabel, productLabel } from "@/lib/labels";
 import { Empty, Pill } from "@/components/sf/parts";
 import LangSelect from "@/components/sf/lang-select";
+import PublicFooter from "@/components/sf/public-footer";
 import { ResendVerify, RefundForm } from "./support-forms";
 import { withdrawAction } from "./actions";
 
@@ -36,12 +37,64 @@ export default async function SupportPage({
 }: {
   searchParams: Promise<{ lang?: string; verify?: string }>;
 }) {
-  const user = await requireUser();
   const sp = await searchParams;
   const L = toLang2(await resolveLang(sp.lang));
   const S = SUPPORT;
-
   const sup = await supportConfig();
+
+  /**
+   * **로그인 벽으로 끝내지 않는다.**
+   *
+   * 공개 꼬리말의 `고객지원` 이 이 주소를 가리킨다. 아직 사지 않은 사람이
+   * 그것을 누르고 로그인 폼을 만나면, 묻고 싶던 것을 못 묻고 돌아간다.
+   * 번호가 붙는 자리(주문 · 환불 · 막힌 것)는 그대로 본인에게만 보이고,
+   * 사람에게 닿는 주소와 비밀번호 복구만 먼저 내놓는다.
+   */
+  const guest = await currentUser();
+  if (!guest) {
+    return (
+      <div className="pub">
+        <header className="pubtop">
+          <BrandHome />
+          <div className="pubtop-r">
+            <LangSelect current={L} />
+            <Link href="/login" className="sf-btn ghost sm">
+              {L === "en" ? "Sign in" : "로그인"}
+            </Link>
+          </div>
+        </header>
+
+        <div className="pubwrap spwrap">
+          <div className="sf-head">
+            <div className="sf-head-t">
+              <h1 className="sf-h1">{S.guestTitle[L]}</h1>
+              <p className="sf-sub">{S.guestBody[L]}</p>
+            </div>
+          </div>
+
+          <section className="pdsec">
+            <h2>{S.mail[L]}</h2>
+            {sup.email ? (
+              <p>
+                <a href={`mailto:${sup.email}`}>{sup.email}</a>
+                {sup.hours ? ` · ${sup.hours}` : ""}
+              </p>
+            ) : (
+              <Empty icon="box" title={S.mailOff[L]} body={S.mailOffBody[L]} tight />
+            )}
+            <div className="sf-row" style={{ marginTop: 16 }}>
+              <Link href="/login" className="sf-btn sm">{S.guestSignIn[L]}</Link>
+              <Link href="/password/forgot" className="sf-btn ghost sm">{S.pwLink[L]}</Link>
+            </div>
+          </section>
+        </div>
+
+        <PublicFooter lang={L} />
+      </div>
+    );
+  }
+
+  const user = await requireUser();
   const refs = await myReferences(user.id);
   const verified = await isVerified(user.id);
   const mine = await listRequests({ userId: user.id, limit: 10 });

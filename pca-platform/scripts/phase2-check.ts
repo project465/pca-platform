@@ -10,7 +10,7 @@
  */
 import { query, queryOne } from "../src/lib/db";
 import { hashPassword } from "../src/lib/password";
-import { catalogFor, productByCode, sellable, siteForMarket } from "../src/lib/catalog";
+import { catalogFor, priceState, productByCode, sellable, siteForMarket } from "../src/lib/catalog";
 import { settlePayment, startCheckout } from "../src/lib/orders";
 import {
   answersOf, attemptOf, currentV2, openGrants, openV2Attempt,
@@ -84,15 +84,25 @@ async function main() {
     [...kr, ...gl].every((p) => p.assessment_version === "ME_V2"),
     "ME_V2_KR 과 ME_V2_GLOBAL 로 가르지 않았다");
 
-  /* P5. 값을 지어내지 않았고, 운영 결제가 켜지면 0원 상품을 거절한다 */
+  /* P5. 값을 지어내지 않았고, 운영 결제가 켜지면 **미승인 가격**을 거절한다.
+     **표에서 아무 상품이나 집어 오지 않는다.** 전에는 `kr[0]` 을 썼는데
+     그것이 BASIC 이고, 값이 승인된 날부터 BASIC 은 `FREE_APPROVED` 라
+     팔려도 맞는 상품이 됐다. 그래서 이 검사가 승인 이후로 계속 빨갰다.
+     **승인된 무료는 법이 요구하는 시용 장치라 막으면 안 된다**(전자상거래법
+     제17조 제6항). 재는 것을 미승인 상품 하나로 좁힌다 */
   {
-    const p = kr[0];
+    const unapproved = { ...kr[0], code: "QA_NOT_APPROVED", amount: 0,
+      price_status: "not_approved" as const };
+    const free = kr.find((x) => priceState(x) === "FREE_APPROVED");
     process.env.PAYMENTS_PROVIDER = "portone";
-    const live = sellable(p);
+    const live = sellable(unapproved);
+    const liveFree = free ? sellable(free) : { ok: false as const, why: "무료 등급이 없다" };
     process.env.PAYMENTS_PROVIDER = "mock";
-    const test = sellable(p);
+    const test = sellable(unapproved);
     ok("P5 값이 없는 상품은 운영에서 안 팔린다",
       !live.ok && test.ok, live.ok ? "열려 있다" : (live as { why: string }).why);
+    ok("P5-b 승인된 무료는 운영에서도 열린다",
+      liveFree.ok, free ? `${free.tier} ${free.amount}${free.currency}` : "무료 등급이 없다");
   }
 
   /* ── K1~K5. 가입 → 결제 → 이용권 → 응시 ───────────────────────── */
