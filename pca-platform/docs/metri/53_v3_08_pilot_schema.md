@@ -1,11 +1,37 @@
 # I. 파일럿 데이터 schema 수정안
 
-## 1. 왜 지금 받아야 하는가
+## 1. 본 파일럿을 V3 뒤로 미룬다 (2026-10-07 결정)
 
-파일럿은 **지금 제품(ME_V2)으로 돌린다.** 그런데 분석은 ME_V3 의 가정을
-재는 데 쓴다. 그래서 학위와 전공계열을 **파일럿을 돌리기 전에** 받아
-두어야 한다. 받지 않고 돌리면 끝난 뒤에 되물을 수 없고, 되물으면 그
-답이 결과지를 본 뒤의 답이 된다.
+**ME_V2 로 20~30명 본 파일럿을 돌리지 않는다.** V3 에서 taxonomy 와 문항
+routing 과 측정축과 경험 번역과 결과모델이 크게 바뀌므로, V2 로 모은
+직무 적합성 자료를 V3 검증에 그대로 쓸 수 없다. 쓸 수 없는 자료를 모으면
+스무 명의 시간을 쓰고 결론을 못 내린다.
+
+| 무엇 | 언제 | 인원 | 무엇을 재는가 |
+|---|---|---|---|
+| ME_V2 사용성 확인 | 지금 해도 된다 | 5~8명 | 화면 흐름 · 문구 이해 · 진행 중 막히는 자리 |
+| V3 본 파일럿 | V3 MVP 가 나온 뒤 | 20~30명 | 아래 일곱 가지 |
+
+### 1-1. V3 본 파일럿이 재는 일곱
+
+| 측정 | 왜 이것인가 |
+|---|---|
+| taxonomy 이해도 | 영역 열둘의 이름과 경계가 전공자에게 읽히는가 |
+| 결과 납득성 | 내 경험이 그 영역으로 읽히는 것이 맞는가 |
+| 직무 이유 설명 가능 여부 | 왜 그 영역인지를 본인이 남에게 설명할 수 있는가 |
+| 현장직무역량 공백 이해 | 비어 있는 축의 이름과 채우는 조건이 전달되는가 |
+| 대학원 경험 번역 정확도 | 번역된 문장이 실제로 한 일과 맞는가 |
+| 다음 행동 실행 가능성 | 30일 안에 실제로 할 수 있는 일인가 |
+| 등급 사이의 가치 차이 | 개수에서 이름으로, 이름에서 번역으로 넘어가는 값이 느껴지는가 |
+
+**다섯째가 이번 설계의 가장 큰 가정이다.** 번역이 PRO 의 값이고, 번역된
+문장이 틀리면 그 등급이 설 자리가 없다. 틀린 번역은 만족도보다 비싸다.
+
+### 1-2. 그런데 칸은 지금 올린다
+
+사용성 확인 5~8명에게도 학위와 전공계열을 받아 둔다. 이유는 둘이다.
+**어느 계열의 사람이 어느 문구에서 막혔는지**를 뒤에 가려야 하고, 칸을
+올리는 일이 5단계이므로 V3 구현의 첫 코드 작업과 겹친다.
 
 지금 `attempts` 에 있는 것은 `education_stage` 하나다. 전공과 계열과
 현재 상태가 없으므로 **대학원생 응답을 계열별로 가를 수 없다.**
@@ -26,10 +52,13 @@ ALTER TABLE attempts ADD COLUMN IF NOT EXISTS grad_major_name TEXT;
 ALTER TABLE attempts ADD COLUMN IF NOT EXISTS current_status  TEXT;
 ALTER TABLE attempts ADD COLUMN IF NOT EXISTS target_interest TEXT;
 
+/* 전공계열 네 값. 인문·사회와 경상을 묶지 않는다 */
 ALTER TABLE attempts DROP CONSTRAINT IF EXISTS attempts_field_chk;
 ALTER TABLE attempts ADD CONSTRAINT attempts_field_chk
-  CHECK ((ug_major_field IS NULL OR ug_major_field IN ('stem','hss','interdisc'))
-     AND (grad_field     IS NULL OR grad_field     IN ('stem','hss','interdisc')));
+  CHECK ((ug_major_field IS NULL OR ug_major_field IN
+            ('STEM','HUMANITIES_SOCIAL','BUSINESS','OTHER_INTERDISCIPLINARY'))
+     AND (grad_field     IS NULL OR grad_field     IN
+            ('STEM','HUMANITIES_SOCIAL','BUSINESS','OTHER_INTERDISCIPLINARY')));
 
 ALTER TABLE attempts DROP CONSTRAINT IF EXISTS attempts_status_chk;
 ALTER TABLE attempts ADD CONSTRAINT attempts_status_chk
@@ -126,15 +155,19 @@ ME_V3 부터 TD 코드가 들어온다. 두 판본을 한 표에서 섞어 보�
 
 ### 4-2. 20~30명을 어떻게 나누는가
 
+V3 본 파일럿의 집단이다. ME_V2 사용성 확인(5~8명)은 집단을 나누지 않고
+학사 셋과 대학원 셋 정도로만 맞춘다.
+
 | 집단 | 인원 | 왜 |
 |---|---|---|
 | 학사 · 무료 | 6~8 | 무료 완료율과 소요 시간을 재는 집단 |
 | 학사 · 유료 | 4~5 | 개수에서 이름으로 바뀌는 값을 재는 집단 |
 | 이공계 석박 · 유료 | 7~9 | 번역이 값인지 재는 주 집단 |
-| 인문·사회·경상 석박 · 유료 | 3~5 | 계열 번역이 서는지 재는 집단 |
+| 비이공계 석박 · 유료 | 3~5 | 계열 번역이 서는지 재는 집단 |
 
-인문·사회·경상 칸이 작다. **그 칸에서는 평균을 내지 않고 면담으로만
-읽는다.** 숫자를 내려면 2차 파일럿이 필요하고, 그 사실을 미리 적어 둔다.
+비이공계 칸이 작고 그 안에서 인문·사회와 경상이 또 갈린다. **그 칸에서는
+평균을 내지 않고 면담으로만 읽는다.** 숫자를 내려면 2차 파일럿이 필요하고,
+그 사실을 미리 적어 둔다.
 
 ## 5. 개인정보
 

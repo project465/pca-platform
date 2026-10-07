@@ -1,0 +1,2022 @@
+{
+ "schema_version": "me-v3-items-blueprint.1",
+ "assessment_version": "ME_V3_DOMAIN_2026",
+ "note": "문항 **자리와 쓰임**만 정한 blueprint 다. 문면은 6단계에서 쓴다. `result_sections` 가 빈 자리가 하나도 없어야 한다: 받고 쓰지 않는 문항을 0 으로 두는 것이 이 파일의 목적이다",
+ "rules": [
+  "한 문항에 동작 하나 · 대상 하나 · 축 하나",
+  "접속사와 가운뎃점으로 이어진 명사가 셋 이상이면 쓰기 전에 다시 본다",
+  "역방향 문항은 격자 밖에 둔다",
+  "함정 문항을 쓰지 않는다. 응답과 체크리스트의 어긋남을 신호로 쓴다",
+  "보기 넷은 L0·L1·L2·L3 이고 수준 이름을 문면에 적지 않는다",
+  "같은 응답이면 학위와 계열이 달라도 수준이 같다"
+ ],
+ "result_sections": {
+  "A": "강하게 드러난 기술영역",
+  "B": "비교가 필요한 영역",
+  "C": "아직 판단하기 어려운 영역",
+  "D": "실제 해본 업무",
+  "E": "직접 해본 기술 판단",
+  "F": "이미 있는 근거",
+  "G": "부족한 근거",
+  "H": "직무로 번역 가능한 경험",
+  "I": "다음 행동",
+  "J": "비교할 직무"
+ },
+ "slots": [
+  {
+   "id": "G_TD01_INT",
+   "block": "CORE-GRID",
+   "construct": "interest",
+   "domain": "TD01",
+   "axis": null,
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD01_EXP",
+   "block": "CORE-GRID",
+   "construct": "exposure",
+   "domain": "TD01",
+   "axis": null,
+   "scale": "없음·한두 번·여러 번",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "D"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD01_LEA",
+   "block": "CORE-GRID",
+   "construct": "learning_intent",
+   "domain": "TD01",
+   "axis": null,
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD02_INT",
+   "block": "CORE-GRID",
+   "construct": "interest",
+   "domain": "TD02",
+   "axis": null,
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD02_EXP",
+   "block": "CORE-GRID",
+   "construct": "exposure",
+   "domain": "TD02",
+   "axis": null,
+   "scale": "없음·한두 번·여러 번",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "D"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD02_LEA",
+   "block": "CORE-GRID",
+   "construct": "learning_intent",
+   "domain": "TD02",
+   "axis": null,
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD03_INT",
+   "block": "CORE-GRID",
+   "construct": "interest",
+   "domain": "TD03",
+   "axis": null,
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD03_EXP",
+   "block": "CORE-GRID",
+   "construct": "exposure",
+   "domain": "TD03",
+   "axis": null,
+   "scale": "없음·한두 번·여러 번",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "D"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD03_LEA",
+   "block": "CORE-GRID",
+   "construct": "learning_intent",
+   "domain": "TD03",
+   "axis": null,
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD04_INT",
+   "block": "CORE-GRID",
+   "construct": "interest",
+   "domain": "TD04",
+   "axis": null,
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD04_EXP",
+   "block": "CORE-GRID",
+   "construct": "exposure",
+   "domain": "TD04",
+   "axis": null,
+   "scale": "없음·한두 번·여러 번",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "D"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD04_LEA",
+   "block": "CORE-GRID",
+   "construct": "learning_intent",
+   "domain": "TD04",
+   "axis": null,
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD05_INT",
+   "block": "CORE-GRID",
+   "construct": "interest",
+   "domain": "TD05",
+   "axis": null,
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD05_EXP",
+   "block": "CORE-GRID",
+   "construct": "exposure",
+   "domain": "TD05",
+   "axis": null,
+   "scale": "없음·한두 번·여러 번",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "D"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD05_LEA",
+   "block": "CORE-GRID",
+   "construct": "learning_intent",
+   "domain": "TD05",
+   "axis": null,
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD06_INT",
+   "block": "CORE-GRID",
+   "construct": "interest",
+   "domain": "TD06",
+   "axis": null,
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD06_EXP",
+   "block": "CORE-GRID",
+   "construct": "exposure",
+   "domain": "TD06",
+   "axis": null,
+   "scale": "없음·한두 번·여러 번",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "D"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD06_LEA",
+   "block": "CORE-GRID",
+   "construct": "learning_intent",
+   "domain": "TD06",
+   "axis": null,
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD07_INT",
+   "block": "CORE-GRID",
+   "construct": "interest",
+   "domain": "TD07",
+   "axis": null,
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD07_EXP",
+   "block": "CORE-GRID",
+   "construct": "exposure",
+   "domain": "TD07",
+   "axis": null,
+   "scale": "없음·한두 번·여러 번",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "D"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD07_LEA",
+   "block": "CORE-GRID",
+   "construct": "learning_intent",
+   "domain": "TD07",
+   "axis": null,
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD08_INT",
+   "block": "CORE-GRID",
+   "construct": "interest",
+   "domain": "TD08",
+   "axis": null,
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD08_EXP",
+   "block": "CORE-GRID",
+   "construct": "exposure",
+   "domain": "TD08",
+   "axis": null,
+   "scale": "없음·한두 번·여러 번",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "D"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD08_LEA",
+   "block": "CORE-GRID",
+   "construct": "learning_intent",
+   "domain": "TD08",
+   "axis": null,
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD09_INT",
+   "block": "CORE-GRID",
+   "construct": "interest",
+   "domain": "TD09",
+   "axis": null,
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD09_EXP",
+   "block": "CORE-GRID",
+   "construct": "exposure",
+   "domain": "TD09",
+   "axis": null,
+   "scale": "없음·한두 번·여러 번",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "D"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD09_LEA",
+   "block": "CORE-GRID",
+   "construct": "learning_intent",
+   "domain": "TD09",
+   "axis": null,
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD10_INT",
+   "block": "CORE-GRID",
+   "construct": "interest",
+   "domain": "TD10",
+   "axis": null,
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD10_EXP",
+   "block": "CORE-GRID",
+   "construct": "exposure",
+   "domain": "TD10",
+   "axis": null,
+   "scale": "없음·한두 번·여러 번",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "D"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD10_LEA",
+   "block": "CORE-GRID",
+   "construct": "learning_intent",
+   "domain": "TD10",
+   "axis": null,
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD11_INT",
+   "block": "CORE-GRID",
+   "construct": "interest",
+   "domain": "TD11",
+   "axis": null,
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD11_EXP",
+   "block": "CORE-GRID",
+   "construct": "exposure",
+   "domain": "TD11",
+   "axis": null,
+   "scale": "없음·한두 번·여러 번",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "D"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD11_LEA",
+   "block": "CORE-GRID",
+   "construct": "learning_intent",
+   "domain": "TD11",
+   "axis": null,
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD12_INT",
+   "block": "CORE-GRID",
+   "construct": "interest",
+   "domain": "TD12",
+   "axis": null,
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD12_EXP",
+   "block": "CORE-GRID",
+   "construct": "exposure",
+   "domain": "TD12",
+   "axis": null,
+   "scale": "없음·한두 번·여러 번",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "D"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "G_TD12_LEA",
+   "block": "CORE-GRID",
+   "construct": "learning_intent",
+   "domain": "TD12",
+   "axis": null,
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "관심·경험·학습 의향을 한 칸에 담지 않는다"
+  },
+  {
+   "id": "CJ_COMPARE",
+   "block": "CORE-JUDGE",
+   "construct": "common_judgement",
+   "domain": null,
+   "axis": "J6",
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "B",
+    "E"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "여러 안을 같은 기준으로 견주어 하나를 골랐는가"
+  },
+  {
+   "id": "CJ_PROBLEM",
+   "block": "CORE-JUDGE",
+   "construct": "common_judgement",
+   "domain": null,
+   "axis": "J1",
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "B",
+    "E"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "주어진 문제를 받기보다 다룰 문제를 정했는가"
+  },
+  {
+   "id": "CJ_VERIFY",
+   "block": "CORE-JUDGE",
+   "construct": "common_judgement",
+   "domain": null,
+   "axis": "J6",
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "B",
+    "E"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "결과를 다른 방법이나 값과 대조하는 습관이 있는가"
+  },
+  {
+   "id": "CJ_ASSUME_REV",
+   "block": "CORE-JUDGE",
+   "construct": "common_judgement",
+   "domain": null,
+   "axis": "J1",
+   "scale": "5점",
+   "tier": "BASIC",
+   "result_sections": [
+    "B",
+    "E"
+   ],
+   "reverse": true,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "남이 정한 가정을 그대로 받는 편이 편하다 (역방향)"
+  },
+  {
+   "id": "CF_PAIR_1",
+   "block": "CORE-FORCE",
+   "construct": "forced_choice",
+   "domain": "dynamic",
+   "axis": null,
+   "scale": "둘 중 하나",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "묶인 영역 안의 제시 순서만 정한다. 점수로 바꾸지 않는다"
+  },
+  {
+   "id": "CF_PAIR_2",
+   "block": "CORE-FORCE",
+   "construct": "forced_choice",
+   "domain": "dynamic",
+   "axis": null,
+   "scale": "둘 중 하나",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "묶인 영역 안의 제시 순서만 정한다. 점수로 바꾸지 않는다"
+  },
+  {
+   "id": "P4_J3",
+   "block": "PROBE-J4",
+   "construct": "axis_level",
+   "domain": "selected",
+   "axis": "J3",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "instances": "영역 최대 2",
+   "note": "보기 넷이 L0·L1·L2·L3 이고 수준 이름을 문면에 적지 않는다"
+  },
+  {
+   "id": "P4_J5",
+   "block": "PROBE-J4",
+   "construct": "axis_level",
+   "domain": "selected",
+   "axis": "J5",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "instances": "영역 최대 2",
+   "note": "보기 넷이 L0·L1·L2·L3 이고 수준 이름을 문면에 적지 않는다"
+  },
+  {
+   "id": "P4_J6",
+   "block": "PROBE-J4",
+   "construct": "axis_level",
+   "domain": "selected",
+   "axis": "J6",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "instances": "영역 최대 2",
+   "note": "보기 넷이 L0·L1·L2·L3 이고 수준 이름을 문면에 적지 않는다"
+  },
+  {
+   "id": "P4_J8",
+   "block": "PROBE-J4",
+   "construct": "axis_level",
+   "domain": "selected",
+   "axis": "J8",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "instances": "영역 최대 2",
+   "note": "보기 넷이 L0·L1·L2·L3 이고 수준 이름을 문면에 적지 않는다"
+  },
+  {
+   "id": "UG_SCOPE",
+   "block": "UG-COURSE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J1",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "bachelor",
+   "note": "캡스톤 주제나 과제 범위를 좁혀 정했는가"
+  },
+  {
+   "id": "UG_DECIDE",
+   "block": "UG-COURSE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J3",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "bachelor",
+   "note": "설계나 실험 조건을 직접 정했는가"
+  },
+  {
+   "id": "UG_OUTPUT",
+   "block": "UG-COURSE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J5",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "bachelor",
+   "note": "도면·보고·시작품 가운데 남은 것이 있는가"
+  },
+  {
+   "id": "UG_FIX",
+   "block": "UG-COURSE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J7",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "bachelor",
+   "note": "결과가 안 나와 조건을 바꿔 다시 했는가"
+  },
+  {
+   "id": "GS_PROBLEM",
+   "block": "GRAD-STEM",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J1",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · STEM",
+   "note": "연구 문제를 누가 정했는가"
+  },
+  {
+   "id": "GS_METHOD",
+   "block": "GRAD-STEM",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J3",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · STEM",
+   "note": "왜 그 방법을 골랐는가"
+  },
+  {
+   "id": "GS_ASSUME",
+   "block": "GRAD-STEM",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J3",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · STEM",
+   "note": "무엇을 고정하고 무엇을 바꿨는가"
+  },
+  {
+   "id": "GS_VERIFY",
+   "block": "GRAD-STEM",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J6",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · STEM",
+   "note": "무엇과 견주었는가"
+  },
+  {
+   "id": "GS_OUTPUT",
+   "block": "GRAD-STEM",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J5",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · STEM",
+   "note": "무엇이 남았는가"
+  },
+  {
+   "id": "GS_USE",
+   "block": "GRAD-STEM",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J8",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · STEM",
+   "note": "누가 무엇에 썼는가"
+  },
+  {
+   "id": "GH_SCOPE",
+   "block": "GRAD-HS",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J1",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · HUMANITIES_SOCIAL",
+   "note": "조사 대상과 범위를 누가 정했는가"
+  },
+  {
+   "id": "GH_SAMPLE",
+   "block": "GRAD-HS",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J3",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · HUMANITIES_SOCIAL",
+   "note": "표본과 수집 방법을 정했는가"
+  },
+  {
+   "id": "GH_METHOD",
+   "block": "GRAD-HS",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J4",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · HUMANITIES_SOCIAL",
+   "note": "분석 방법을 골라 돌렸는가"
+  },
+  {
+   "id": "GH_VALID",
+   "block": "GRAD-HS",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J6",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · HUMANITIES_SOCIAL",
+   "note": "해석의 타당성을 무엇으로 확인했는가"
+  },
+  {
+   "id": "GH_REPORT",
+   "block": "GRAD-HS",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J5",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · HUMANITIES_SOCIAL",
+   "note": "보고서나 도구가 남았는가"
+  },
+  {
+   "id": "GH_USE",
+   "block": "GRAD-HS",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J8",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · HUMANITIES_SOCIAL",
+   "note": "그 결과가 결정이나 제도에 쓰였는가"
+  },
+  {
+   "id": "GB_SCOPE",
+   "block": "GRAD-BIZ",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J1",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · BUSINESS",
+   "note": "다룰 문제의 범위를 누가 정했는가"
+  },
+  {
+   "id": "GB_CRITERIA",
+   "block": "GRAD-BIZ",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J2",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · BUSINESS",
+   "note": "기준과 지표를 수치로 세웠는가"
+  },
+  {
+   "id": "GB_ESTIMATE",
+   "block": "GRAD-BIZ",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J4",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · BUSINESS",
+   "note": "자료와 가정으로 추정했는가"
+  },
+  {
+   "id": "GB_COMPARE",
+   "block": "GRAD-BIZ",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J6",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · BUSINESS",
+   "note": "대안을 같은 기준으로 견주었는가"
+  },
+  {
+   "id": "GB_REPORT",
+   "block": "GRAD-BIZ",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J5",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · BUSINESS",
+   "note": "사업계획이나 보고가 남았는가"
+  },
+  {
+   "id": "GB_USE",
+   "block": "GRAD-BIZ",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J8",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · BUSINESS",
+   "note": "그 결과가 의사결정에 쓰였는가"
+  },
+  {
+   "id": "GM_PROBLEM",
+   "block": "GRAD-MIX",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J1",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · OTHER_INTERDISCIPLINARY",
+   "note": "무엇을 다루기로 정했는가"
+  },
+  {
+   "id": "GM_METHOD",
+   "block": "GRAD-MIX",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J3",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · OTHER_INTERDISCIPLINARY",
+   "note": "왜 그 방법인가"
+  },
+  {
+   "id": "GM_DO",
+   "block": "GRAD-MIX",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J4",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · OTHER_INTERDISCIPLINARY",
+   "note": "무엇으로 어떻게 했는가"
+  },
+  {
+   "id": "GM_VERIFY",
+   "block": "GRAD-MIX",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J6",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · OTHER_INTERDISCIPLINARY",
+   "note": "무엇과 견주었는가"
+  },
+  {
+   "id": "GM_OUTPUT",
+   "block": "GRAD-MIX",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J5",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · OTHER_INTERDISCIPLINARY",
+   "note": "무엇이 남았는가"
+  },
+  {
+   "id": "GM_USE",
+   "block": "GRAD-MIX",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J8",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · OTHER_INTERDISCIPLINARY",
+   "note": "누가 무엇에 썼는가"
+  },
+  {
+   "id": "GM_OBJECT",
+   "block": "GRAD-MIX",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J1",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · OTHER_INTERDISCIPLINARY",
+   "note": "다룬 대상이 물리 시스템인가 사람·조직인가 돈·시장인가"
+  },
+  {
+   "id": "GM_BUILD",
+   "block": "GRAD-MIX",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J4",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "master+ · OTHER_INTERDISCIPLINARY",
+   "note": "수치 모델이나 실험 장치를 직접 만들었는가"
+  },
+  {
+   "id": "D8_J1",
+   "block": "DEEP-J8",
+   "construct": "axis_level",
+   "domain": "selected",
+   "axis": "J1",
+   "scale": "L0~L3",
+   "tier": "STANDARD",
+   "result_sections": [
+    "A",
+    "B",
+    "D",
+    "E",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "instances": "영역 3 (조건 맞으면 4)",
+   "note": "BASIC 의 선별 네 축에 없던 넷이다"
+  },
+  {
+   "id": "D8_J2",
+   "block": "DEEP-J8",
+   "construct": "axis_level",
+   "domain": "selected",
+   "axis": "J2",
+   "scale": "L0~L3",
+   "tier": "STANDARD",
+   "result_sections": [
+    "A",
+    "B",
+    "D",
+    "E",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "instances": "영역 3 (조건 맞으면 4)",
+   "note": "BASIC 의 선별 네 축에 없던 넷이다"
+  },
+  {
+   "id": "D8_J4",
+   "block": "DEEP-J8",
+   "construct": "axis_level",
+   "domain": "selected",
+   "axis": "J4",
+   "scale": "L0~L3",
+   "tier": "STANDARD",
+   "result_sections": [
+    "A",
+    "B",
+    "D",
+    "E",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "instances": "영역 3 (조건 맞으면 4)",
+   "note": "BASIC 의 선별 네 축에 없던 넷이다"
+  },
+  {
+   "id": "D8_J7",
+   "block": "DEEP-J8",
+   "construct": "axis_level",
+   "domain": "selected",
+   "axis": "J7",
+   "scale": "L0~L3",
+   "tier": "STANDARD",
+   "result_sections": [
+    "A",
+    "B",
+    "D",
+    "E",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "instances": "영역 3 (조건 맞으면 4)",
+   "note": "BASIC 의 선별 네 축에 없던 넷이다"
+  },
+  {
+   "id": "PR_RF1",
+   "block": "PREF-RF-OC",
+   "construct": "role_preference",
+   "domain": null,
+   "axis": null,
+   "scale": "5점",
+   "tier": "STANDARD",
+   "result_sections": [
+    "J"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "점수를 만들지 않는다. 직무 비교와 지역 layer 가 읽는다"
+  },
+  {
+   "id": "PR_RF2",
+   "block": "PREF-RF-OC",
+   "construct": "role_preference",
+   "domain": null,
+   "axis": null,
+   "scale": "5점",
+   "tier": "STANDARD",
+   "result_sections": [
+    "J"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "점수를 만들지 않는다. 직무 비교와 지역 layer 가 읽는다"
+  },
+  {
+   "id": "PR_RF3",
+   "block": "PREF-RF-OC",
+   "construct": "role_preference",
+   "domain": null,
+   "axis": null,
+   "scale": "5점",
+   "tier": "STANDARD",
+   "result_sections": [
+    "J"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "점수를 만들지 않는다. 직무 비교와 지역 layer 가 읽는다"
+  },
+  {
+   "id": "PR_RF4",
+   "block": "PREF-RF-OC",
+   "construct": "role_preference",
+   "domain": null,
+   "axis": null,
+   "scale": "5점",
+   "tier": "STANDARD",
+   "result_sections": [
+    "J"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "점수를 만들지 않는다. 직무 비교와 지역 layer 가 읽는다"
+  },
+  {
+   "id": "PR_RF5",
+   "block": "PREF-RF-OC",
+   "construct": "role_preference",
+   "domain": null,
+   "axis": null,
+   "scale": "5점",
+   "tier": "STANDARD",
+   "result_sections": [
+    "J"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "점수를 만들지 않는다. 직무 비교와 지역 layer 가 읽는다"
+  },
+  {
+   "id": "PR_RF6",
+   "block": "PREF-RF-OC",
+   "construct": "role_preference",
+   "domain": null,
+   "axis": null,
+   "scale": "5점",
+   "tier": "STANDARD",
+   "result_sections": [
+    "J"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "점수를 만들지 않는다. 직무 비교와 지역 layer 가 읽는다"
+  },
+  {
+   "id": "PR_RF7",
+   "block": "PREF-RF-OC",
+   "construct": "role_preference",
+   "domain": null,
+   "axis": null,
+   "scale": "5점",
+   "tier": "STANDARD",
+   "result_sections": [
+    "J"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "점수를 만들지 않는다. 직무 비교와 지역 layer 가 읽는다"
+  },
+  {
+   "id": "PO_OC1",
+   "block": "PREF-RF-OC",
+   "construct": "org_preference",
+   "domain": null,
+   "axis": null,
+   "scale": "5점",
+   "tier": "STANDARD",
+   "result_sections": [
+    "J"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "같다"
+  },
+  {
+   "id": "PO_OC2",
+   "block": "PREF-RF-OC",
+   "construct": "org_preference",
+   "domain": null,
+   "axis": null,
+   "scale": "5점",
+   "tier": "STANDARD",
+   "result_sections": [
+    "J"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "같다"
+  },
+  {
+   "id": "PO_OC3",
+   "block": "PREF-RF-OC",
+   "construct": "org_preference",
+   "domain": null,
+   "axis": null,
+   "scale": "5점",
+   "tier": "STANDARD",
+   "result_sections": [
+    "J"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "같다"
+  },
+  {
+   "id": "PO_OC4",
+   "block": "PREF-RF-OC",
+   "construct": "org_preference",
+   "domain": null,
+   "axis": null,
+   "scale": "5점",
+   "tier": "STANDARD",
+   "result_sections": [
+    "J"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "같다"
+  },
+  {
+   "id": "PO_OC5",
+   "block": "PREF-RF-OC",
+   "construct": "org_preference",
+   "domain": null,
+   "axis": null,
+   "scale": "5점",
+   "tier": "STANDARD",
+   "result_sections": [
+    "J"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "같다"
+  },
+  {
+   "id": "PO_OC6",
+   "block": "PREF-RF-OC",
+   "construct": "org_preference",
+   "domain": null,
+   "axis": null,
+   "scale": "5점",
+   "tier": "STANDARD",
+   "result_sections": [
+    "J"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "같다"
+  },
+  {
+   "id": "PO_OC7",
+   "block": "PREF-RF-OC",
+   "construct": "org_preference",
+   "domain": null,
+   "axis": null,
+   "scale": "5점",
+   "tier": "STANDARD",
+   "result_sections": [
+    "J"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "같다"
+  },
+  {
+   "id": "CN_1A",
+   "block": "CONSIST",
+   "construct": "consistency",
+   "domain": "selected",
+   "axis": "J3",
+   "scale": "L0~L3",
+   "tier": "STANDARD",
+   "result_sections": [
+    "B"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "수업 장면과 연구 장면. 어긋나면 낮은 쪽으로 적고 점수를 깎지 않는다"
+  },
+  {
+   "id": "CN_1B",
+   "block": "CONSIST",
+   "construct": "consistency",
+   "domain": "selected",
+   "axis": "J3",
+   "scale": "L0~L3",
+   "tier": "STANDARD",
+   "result_sections": [
+    "B"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "수업 장면과 연구 장면. 어긋나면 낮은 쪽으로 적고 점수를 깎지 않는다"
+  },
+  {
+   "id": "CN_2A",
+   "block": "CONSIST",
+   "construct": "consistency",
+   "domain": "selected",
+   "axis": "J6",
+   "scale": "L0~L3",
+   "tier": "STANDARD",
+   "result_sections": [
+    "B"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "수업 장면과 연구 장면. 어긋나면 낮은 쪽으로 적고 점수를 깎지 않는다"
+  },
+  {
+   "id": "CN_2B",
+   "block": "CONSIST",
+   "construct": "consistency",
+   "domain": "selected",
+   "axis": "J6",
+   "scale": "L0~L3",
+   "tier": "STANDARD",
+   "result_sections": [
+    "B"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "수업 장면과 연구 장면. 어긋나면 낮은 쪽으로 적고 점수를 깎지 않는다"
+  },
+  {
+   "id": "TR_T1",
+   "block": "TRANS-10",
+   "construct": "translation_step",
+   "domain": null,
+   "axis": "J1",
+   "scale": "보기 선택 + 한 줄",
+   "tier": "PRO",
+   "result_sections": [
+    "E",
+    "F",
+    "H",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "계열 module 이 보기를 정한다",
+   "note": "연구·과제 문제"
+  },
+  {
+   "id": "TR_T2",
+   "block": "TRANS-10",
+   "construct": "translation_step",
+   "domain": null,
+   "axis": "J2",
+   "scale": "보기 선택 + 한 줄",
+   "tier": "PRO",
+   "result_sections": [
+    "E",
+    "F",
+    "H",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "계열 module 이 보기를 정한다",
+   "note": "왜 그것이 문제인가"
+  },
+  {
+   "id": "TR_T3",
+   "block": "TRANS-10",
+   "construct": "translation_step",
+   "domain": null,
+   "axis": "J3",
+   "scale": "보기 선택 + 한 줄",
+   "tier": "PRO",
+   "result_sections": [
+    "E",
+    "F",
+    "H",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "계열 module 이 보기를 정한다",
+   "note": "방법 선택"
+  },
+  {
+   "id": "TR_T4",
+   "block": "TRANS-10",
+   "construct": "translation_step",
+   "domain": null,
+   "axis": "J3",
+   "scale": "보기 선택 + 한 줄",
+   "tier": "PRO",
+   "result_sections": [
+    "E",
+    "F",
+    "H",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "계열 module 이 보기를 정한다",
+   "note": "변수·가정"
+  },
+  {
+   "id": "TR_T5",
+   "block": "TRANS-10",
+   "construct": "translation_step",
+   "domain": null,
+   "axis": "J4",
+   "scale": "보기 선택 + 한 줄",
+   "tier": "PRO",
+   "result_sections": [
+    "E",
+    "F",
+    "H",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "계열 module 이 보기를 정한다",
+   "note": "수행"
+  },
+  {
+   "id": "TR_T6",
+   "block": "TRANS-10",
+   "construct": "translation_step",
+   "domain": null,
+   "axis": "J6",
+   "scale": "보기 선택 + 한 줄",
+   "tier": "PRO",
+   "result_sections": [
+    "E",
+    "F",
+    "H",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "계열 module 이 보기를 정한다",
+   "note": "비교·검증"
+  },
+  {
+   "id": "TR_T7",
+   "block": "TRANS-10",
+   "construct": "translation_step",
+   "domain": null,
+   "axis": "J6",
+   "scale": "보기 선택 + 한 줄",
+   "tier": "PRO",
+   "result_sections": [
+    "E",
+    "F",
+    "H",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "계열 module 이 보기를 정한다",
+   "note": "오차·불확실성"
+  },
+  {
+   "id": "TR_T8",
+   "block": "TRANS-10",
+   "construct": "translation_step",
+   "domain": null,
+   "axis": "J3",
+   "scale": "보기 선택 + 한 줄",
+   "tier": "PRO",
+   "result_sections": [
+    "E",
+    "F",
+    "H",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "계열 module 이 보기를 정한다",
+   "note": "기술·실무 판단"
+  },
+  {
+   "id": "TR_T9",
+   "block": "TRANS-10",
+   "construct": "translation_step",
+   "domain": null,
+   "axis": "J5",
+   "scale": "보기 선택 + 한 줄",
+   "tier": "PRO",
+   "result_sections": [
+    "E",
+    "F",
+    "H",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "계열 module 이 보기를 정한다",
+   "note": "산출물"
+  },
+  {
+   "id": "TR_T10",
+   "block": "TRANS-10",
+   "construct": "translation_step",
+   "domain": null,
+   "axis": "J8",
+   "scale": "보기 선택 + 한 줄",
+   "tier": "PRO",
+   "result_sections": [
+    "E",
+    "F",
+    "H",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "계열 module 이 보기를 정한다",
+   "note": "조직·산업 활용"
+  },
+  {
+   "id": "TR_TAG_1",
+   "block": "TRANS-10",
+   "construct": "domain_tagging",
+   "domain": "selected",
+   "axis": null,
+   "scale": "영역 고르기",
+   "tier": "PRO",
+   "result_sections": [
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "번역한 경험이 어느 영역에 붙는지 고른다"
+  },
+  {
+   "id": "TR_TAG_2",
+   "block": "TRANS-10",
+   "construct": "domain_tagging",
+   "domain": "selected",
+   "axis": null,
+   "scale": "영역 고르기",
+   "tier": "PRO",
+   "result_sections": [
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "번역한 경험이 어느 영역에 붙는지 고른다"
+  },
+  {
+   "id": "TG_ROLE",
+   "block": "TARGET",
+   "construct": "target_input",
+   "domain": null,
+   "axis": null,
+   "scale": "고르기",
+   "tier": "PRO",
+   "result_sections": [
+    "J",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "목표 직무명(별칭표에서 고른다)"
+  },
+  {
+   "id": "TG_INDUSTRY",
+   "block": "TARGET",
+   "construct": "target_input",
+   "domain": null,
+   "axis": null,
+   "scale": "고르기",
+   "tier": "PRO",
+   "result_sections": [
+    "J",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "목표 산업"
+  },
+  {
+   "id": "TG_OC",
+   "block": "TARGET",
+   "construct": "target_input",
+   "domain": null,
+   "axis": null,
+   "scale": "고르기",
+   "tier": "PRO",
+   "result_sections": [
+    "J",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "목표 조직환경"
+  }
+ ]
+}

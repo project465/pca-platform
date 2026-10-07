@@ -1,0 +1,27 @@
+{
+  "note": "잠근 판본의 지문이다. 값이 바뀌면 이미 응시한 사람의 결과가 달라진다. 고칠 곳은 ME_V3 이고, 여기를 다시 적는 것은 새 판본을 잠글 때뿐이다.",
+  "versions": {
+    "ME_V2_DECISION_2026": {
+      "note": "92문항 · 보존 판본. 새 응시는 ME_V3 로 간다",
+      "files": {
+        "sites/pca-platform/assessment/ME_V2/decision-rules.json": "156f21161b534856896b11ae6e8bdb6ae4196071594c5309ace55f907559847a",
+        "sites/pca-platform/assessment/ME_V2/family-names.json": "f8a4543ea24bbe3870a69b14af95d9fe58279e02659807193fef622856ebc662",
+        "sites/pca-platform/assessment/ME_V2/items-core.json": "f66c2cad3247486bcb406261394ef35bd306eb1cf32a5215b67f8c5efd83795f",
+        "sites/pca-platform/assessment/ME_V2/items-pro.json": "765f7817676b2a4e1199dcabdbe38741cf8162fd0572595d7da9a39a6fe6dc67",
+        "sites/pca-platform/assessment/ME_V2/items-standard.json": "9b80ffb24cd0883e3b540062247903719c158e749eceed716e53744dab8b57bb",
+        "sites/pca-platform/assessment/ME_V2/mode-fit.json": "9eec42d90479c61b1deb4a1e75a19b2078a4a275401f6e223d4cb7e5856461c6",
+        "sites/pca-platform/assessment/ME_V2/response-scales.json": "16d8e341c854d009b10af541a04c4638af288f8dd5633c2d49e572ea97c08721",
+        "sites/pca-platform/assessment/ME_V2/stage-variants.json": "bb3cd4d15e3dde355c920c48b8aca6eea1bdce382a289d0a03fbcab6611fb8d3"
+      }
+    },
+    "PCA_ME_V1": {
+      "note": "253문항 · 학과 계약 판본. 신규 진입은 막고 읽기와 재현만 남긴다",
+      "files": {
+        "data/metri/items_pca_me_v1.json": "33a4f1c560a1fa5c0c075eb184455c0b60968a1a02a647d53b0a1b74d5fe6c81",
+        "data/metri/major_ME.json": "be9e99cc8ab145b28093734caa01073e98e5a56df9949d154249cb832e5a08d7",
+        "data/metri/major_EE.json": "3594505f79dc5a2535c99ce8c6f0c9ec94375e394b744bfdbd43daee661e4eb4",
+        "data/metri/major_CE.json": "3ab99fbce5969c3847b8b0c421dc8bdd2c19f353a98683e75f7546b7a52f5769"
+      }
+    }
+  }
+}

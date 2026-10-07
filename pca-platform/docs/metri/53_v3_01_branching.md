@@ -10,14 +10,28 @@
 | `education_stage` | 항상 | `bachelor` · `master` · `phd` · `postdoc` | `attempts.education_stage` (있음) | 문면 장면 · 분기 블록 | 안 들어감 |
 | `major_module` | 항상 | `ME` (1차는 하나) | `attempts.major_module` (새 칸) | 어느 선별 문항 묶음을 푸는가 | 안 들어감 |
 | `ug_major_name` | 항상 | 자유입력 짧은 글 | `attempts.ug_major_name` (새 칸) | 결과지 호칭 · 파일럿 분석 | 안 들어감 |
-| `ug_major_field` | 항상 | `stem` · `hss` · `interdisc` | `attempts.ug_major_field` (새 칸) | 학사의 번역 module | 안 들어감 |
-| `grad_field` | 석사 이상 **필수** | `stem` · `hss` · `interdisc` | `attempts.grad_field` (새 칸) | 대학원 번역 module · 연구 문면 | 안 들어감 |
+| `ug_major_field` | 항상 | 아래 네 값 | `attempts.ug_major_field` (새 칸) | 학사의 번역 module | 안 들어감 |
+| `grad_field` | 석사 이상 **필수** | 아래 네 값 | `attempts.grad_field` (새 칸) | 대학원 번역 module · 연구 문면 | 안 들어감 |
 | `grad_major_name` | 석사 이상 선택 | 자유입력 짧은 글 | `attempts.grad_major_name` (새 칸) | 결과지 호칭 · 파일럿 분석 | 안 들어감 |
 | `current_status` | 항상 | `enrolled_ug` · `enrolled_grad` · `graduated` · `employed` · `preparing` | `attempts.current_status` (새 칸) | 다음 행동의 기간 가정 | 안 들어감 |
 
-`stem` 은 이공계, `hss` 는 인문·사회·경상계열, `interdisc` 는 기타·융합이다.
-코드로 적는 까닭은 한국어 표기가 바뀌어도 저장된 값이 흔들리지 않게 하려는
-것이고, 사람이 읽는 이름은 사전에서 온다(설계 원칙 2).
+전공계열은 **넷이다**(2026-10-07 결정).
+
+| 코드 | 이름 | 번역 module |
+|---|---|---|
+| `STEM` | 이공계 | `TRANS-STEM` |
+| `HUMANITIES_SOCIAL` | 인문·사회 | `TRANS-HS` |
+| `BUSINESS` | 경상 | `TRANS-BIZ` |
+| `OTHER_INTERDISCIPLINARY` | 기타·융합 | `TRANS-MIX` |
+
+**인문·사회와 경상을 한 칸으로 묶지 않는다.** 연구와 조사와 정책과 텍스트
+중심의 경험은 산출물이 보고서와 논문과 설문 도구이고, 경영과 재무와
+마케팅과 사업기획 경험은 산출물이 사업계획과 원가 모형과 수요 추정이다.
+번역해야 하는 산출물과 판단과 업무 맥락이 달라서, 묶으면 보기 메뉴가
+한쪽에 맞춰지고 다른 쪽이 자기 경험을 못 고른다.
+
+코드를 대문자로 적는 까닭은 한국어 표기가 바뀌어도 저장된 값이 흔들리지
+않게 하려는 것이고, 사람이 읽는 이름은 사전에서 온다(설계 원칙 2).
 
 ### 1-1. 전공명을 자유입력으로 받는 값의 취급
 
@@ -43,9 +57,10 @@
 └─ master · phd · postdoc
     ├─ 전공 모듈: major_module (학부 전공이 정한다)
     ├─ grad_field 를 **반드시** 받는다
-    │   ├─ stem      → 분기 블록 GRAD-STEM (연구 장면 6)
-    │   ├─ hss       → 분기 블록 GRAD-HSS  (조사·분석 장면 6)
-    │   └─ interdisc → 분기 블록 GRAD-MIX  (공통 6 + 전공정보 확인 2)
+    │   ├─ STEM                    → GRAD-STEM (연구·실험·해석 장면 6)
+    │   ├─ HUMANITIES_SOCIAL       → GRAD-HS   (조사·분석·정책 장면 6)
+    │   ├─ BUSINESS                → GRAD-BIZ  (기획·재무·시장 장면 6)
+    │   └─ OTHER_INTERDISCIPLINARY → GRAD-MIX  (공통 6 + 전공정보 확인 2)
     └─ 번역 module: grad_field 로 고르고, 학부 계열이 다르면 두 메뉴를 함께 연다
 ```
 
@@ -86,7 +101,7 @@
    화면이 넘기고, 그러면 주소로 결과를 바꾸는 길이 생긴다.
 2. **채점 모듈에 그 이름이 없는지 검사한다.** `value:check` 가
    `value-engine.js` 에서 학위를 가리키는 말을 찾는 것과 같은 방식이다.
-   찾는 말은 `grad_field` · `ug_major_field` · `hss` · `stem` 이다.
+   찾는 말은 `grad_field` · `ug_major_field` 와 네 계열 코드다.
 3. **같은 응답에 계열만 바꿔 돌린다.** 영역 묶음과 확인된 축과 결과
    항목 아홉 가지가 글자까지 같은지 본다. 다른 것은 `읽는 법` 절
    하나뿐이어야 한다.
@@ -102,12 +117,13 @@
 | `CORE-FORCE` | 전원 | 강제 선택 둘. 격자에서 묶인 영역을 받아 동적으로 만든다 | 2 |
 | `PROBE-J4` | 전원 | 경험이 있다고 답한 영역 최대 둘 × 선별 축 넷 | 8 |
 | `UG-COURSE` | 학사 | 수업·캡스톤 장면의 소유 네 가지 | 4 |
-| `GRAD-STEM` | 석사 이상 · `stem` | 연구 문제 · 방법 선택 · 변수·가정 · 검증 · 산출물 · 결과 사용 | 6 |
-| `GRAD-HSS` | 석사 이상 · `hss` | 조사 설계 · 자료 수집 · 분석 방법 · 해석 타당성 · 보고 산출물 · 의사결정 반영 | 6 |
-| `GRAD-MIX` | 석사 이상 · `interdisc` | 두 블록의 교집합 여섯 + 전공 정보 확인 둘 | 8 |
+| `GRAD-STEM` | 석사 이상 · `STEM` | 연구 문제 · 방법 선택 · 변수·가정 · 검증 · 산출물 · 결과 사용 | 6 |
+| `GRAD-HS` | 석사 이상 · `HUMANITIES_SOCIAL` | 조사 설계 · 자료 수집 · 분석 방법 · 해석 타당성 · 보고 산출물 · 의사결정 반영 | 6 |
+| `GRAD-BIZ` | 석사 이상 · `BUSINESS` | 문제 범위 · 기준과 지표 · 자료와 추정 · 대안 비교 · 보고 산출물 · 결정 반영 | 6 |
+| `GRAD-MIX` | 석사 이상 · `OTHER_INTERDISCIPLINARY` | 세 블록의 교집합 여섯 + 전공 정보 확인 둘 | 8 |
 | `DEEP-J8` | STANDARD 이상 | 고른 영역 셋 × 판단 여덟 축 가운데 `PROBE-J4` 에 없던 넷 | 12 |
 | `DEEP-CHECK` | STANDARD 이상 | 영역별 판단 체크리스트 · 산출물 체크 · 검증 대상 선택 | 선택 입력 |
-| `PREF-RF-OC` | STANDARD 이상 | 역할 선호 여섯 · 조직환경 선호 여섯 | 12 |
+| `PREF-RF-OC` | STANDARD 이상 | 역할 일곱마다 하나 · 조직환경 일곱마다 하나 | 14 |
 | `CONSIST` | STANDARD 이상 | 같은 축을 다른 장면으로 다시 묻는 두 쌍 | 4 |
 | `TRANS-10` | PRO | 번역 열 단계. 보기 메뉴는 계열 module 이 정한다 | 10~14 |
 | `TARGET` | PRO | 목표 직무명 · 목표 산업 · 조직환경 선택 | 3 |
@@ -117,13 +133,18 @@
 | 등급 | 학위 | 계열 | 받는 블록 | 응답 수 | 예상 시간 |
 |---|---|---|---|---|---|
 | BASIC | 학사 | 해당 없음 | `CORE-GRID` · `CORE-JUDGE` · `CORE-FORCE` · `PROBE-J4` · `UG-COURSE` | 54 | 10~12분 |
-| BASIC | 석사 이상 | `stem` | 위 넷 + `GRAD-STEM` | 56 | 11~13분 |
-| BASIC | 석사 이상 | `hss` | 위 넷 + `GRAD-HSS` | 56 | 11~13분 |
-| BASIC | 석사 이상 | `interdisc` | 위 넷 + `GRAD-MIX` | 58 | 12~14분 |
-| STANDARD | 학사 | 해당 없음 | BASIC 전부 + `DEEP-J8` · `DEEP-CHECK` · `PREF-RF-OC` · `CONSIST` | 82 + 체크 | 25~32분 |
-| STANDARD | 석사 이상 | 계열별 | 같다 | 84~86 + 체크 | 27~34분 |
-| PRO | 학사 | 해당 없음 | STANDARD 전부 + `TRANS-10`(수업·캡스톤 메뉴) · `TARGET` | 95 + 체크 | 35~45분 |
-| PRO | 석사 이상 | 계열별 | STANDARD 전부 + `TRANS-10`(계열 메뉴) · `TARGET` | 97~101 + 체크 | 38~48분 |
+| BASIC | 석사 이상 | `STEM` | 위 넷 + `GRAD-STEM` | 56 | 11~13분 |
+| BASIC | 석사 이상 | `HUMANITIES_SOCIAL` | 위 넷 + `GRAD-HS` | 56 | 11~13분 |
+| BASIC | 석사 이상 | `BUSINESS` | 위 넷 + `GRAD-BIZ` | 56 | 11~13분 |
+| BASIC | 석사 이상 | `OTHER_INTERDISCIPLINARY` | 위 넷 + `GRAD-MIX` | 58 | 12~14분 |
+| STANDARD | 학사 | 해당 없음 | BASIC 전부 + `DEEP-J8` · `DEEP-CHECK` · `PREF-RF-OC` · `CONSIST` | 84 + 체크 | 25~32분 |
+| STANDARD | 석사 이상 | 계열별 | 같다 | 86~88 + 체크 | 27~34분 |
+| PRO | 학사 | 해당 없음 | STANDARD 전부 + `TRANS-10`(수업·캡스톤 메뉴) · `TARGET` | 99 + 체크 | 35~45분 |
+| PRO | 석사 이상 | 계열별 | STANDARD 전부 + `TRANS-10`(계열 메뉴) · `TARGET` | 101~103 + 체크 | 38~48분 |
+
+넷째 영역이 자동으로 열리면 등급마다 네 응답이 더 붙는다(STANDARD 88에서
+92, PRO 103에서 107). 그 수는 `npm run v3:items` 가 blueprint 에서 세고,
+이 표를 손으로 고치지 않는다.
 
 **응답 수와 문항 수를 가른다.** `CORE-GRID` 는 화면 하나에 열두 줄 세
 칸이고 사람이 세는 문항으로는 하나로 읽힌다. 문항 수를 세어 등급을 팔지
@@ -153,7 +174,26 @@
 | 석사 이상인데 `grad_field` 가 비었다 | 응시를 시작하지 않는다. 필수 값이고 뒤에서 되묻는 비용이 더 크다 |
 | 계열을 잘못 골랐다고 중간에 말한다 | 분기 블록만 다시 받는다. `CORE-GRID` 응답은 그대로 둔다 |
 | 학부 계열과 대학원 계열이 다르다 | 번역 보기 메뉴를 합집합으로 열고 결과지에 출처를 적는다 |
-| `interdisc` 를 골랐다 | 교집합 블록을 주고 **전공 정보 확인 둘**로 실제 한 일을 좁힌다 |
+| `OTHER_INTERDISCIPLINARY` 를 골랐다 | 교집합 블록을 주고 **전공 정보 확인 둘**로 실제 한 일을 좁힌다 |
 | 보기 메뉴에 자기가 한 일이 없다 | `이 목록에 없는 일을 하셨습니까` 를 두고 다른 모듈 메뉴를 연다 |
 
 마지막 줄이 계열 분기의 안전장치다. **계열이 천장이 되면 안 된다.**
+
+## 7. 심화 영역을 몇 개 여는가
+
+기본은 **셋**이다. 다만 아래 셋 가운데 하나라도 걸리면 **네 번째를 추가
+결제 없이 자동으로 연다**(2026-10-07 결정).
+
+| 자동 개방 조건 | 판단 방법 |
+|---|---|
+| 3위와 4위가 사실상 구분되지 않는다 | 선별 관심과 경험을 합친 선별 순위에서 3위와 4위의 차이가 척도 한 칸 미만 |
+| 동점이다 | 관심과 경험 응답이 같다 |
+| 판단 불가 때문에 셋만으로 설명이 왜곡된다 | 고른 셋 가운데 둘 이상이 Z4(응답 부족)로 떨어진다 |
+
+**네 번째를 매출용 문으로 만들지 않는다.** 자동으로 열리고, 열렸다는
+사실과 왜 열렸는지를 화면에 적는다.
+
+그리고 **없는 차이를 만들어 셋만 고르지 않는다.** 차이가 없으면 차이가
+없다고 적고 넷을 연다. 셋으로 자르려고 3위와 4위 사이에 선을 그으면,
+그 선이 측정이 말한 것이 아닌 운영 편의가 된다. 다섯 번째 이상은 열지
+않되 그 사실과 까닭(소요 시간)을 적는다.

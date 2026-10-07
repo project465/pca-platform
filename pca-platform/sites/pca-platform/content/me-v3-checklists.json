@@ -1,0 +1,1348 @@
+{
+ "schema_version": "me-v3-checklists.1",
+ "generated_note": "`npm run v3:build` 가 만든다. 직접 고치지 말고 원본 셋을 고친다",
+ "domains": {
+  "TD01": {
+   "J1": [
+    {
+     "text": "설계 범위와 다루지 않을 것을 적었다",
+     "from": "new"
+    },
+    {
+     "text": "요구가 없는 부분의 가정을 세워 적었다",
+     "from": "new"
+    }
+   ],
+   "J2": [
+    {
+     "text": "요구사항 해석",
+     "from": "MD_REQUIREMENT"
+    },
+    {
+     "text": "제조 가능성",
+     "from": "MD_DFM"
+    },
+    {
+     "text": "산업 규격",
+     "from": "MD_STANDARD"
+    },
+    {
+     "text": "제조 가능성 검토",
+     "from": "MF_DFM_REVIEW"
+    }
+   ],
+   "J3": [
+    {
+     "text": "형상·치수·재질 판단",
+     "from": "MD_SIZING"
+    },
+    {
+     "text": "공차",
+     "from": "MD_TOLERANCE"
+    },
+    {
+     "text": "원가",
+     "from": "MD_COST"
+    },
+    {
+     "text": "인터페이스",
+     "from": "MD_INTERFACE"
+    }
+   ],
+   "J4": [
+    {
+     "text": "체결력이나 강성이나 베어링 수명을 손계산으로 확인했다",
+     "from": "new"
+    },
+    {
+     "text": "공차 누적을 계산해 조립 가능성을 확인했다",
+     "from": "new"
+    }
+   ],
+   "J5": [
+    {
+     "text": "CAD·도면 산출물",
+     "from": "MD_CAD_OUTPUT"
+    },
+    {
+     "text": "변경 관리",
+     "from": "MD_CHANGE"
+    },
+    {
+     "text": "기구·셀 설계",
+     "from": "AU_MECH"
+    }
+   ],
+   "J6": [
+    {
+     "text": "설계안 생성과 비교",
+     "from": "MD_ALTERNATIVES"
+    },
+    {
+     "text": "구조·기능 검토",
+     "from": "MD_REVIEW"
+    },
+    {
+     "text": "검증 또는 설계 리뷰",
+     "from": "MD_VALIDATION"
+    }
+   ],
+   "J7": [
+    {
+     "text": "실제 제작·시험 되먹임",
+     "from": "MD_BUILD_FEEDBACK"
+    }
+   ],
+   "J8": [
+    {
+     "text": "내 도면으로 제작이나 발주가 진행됐다",
+     "from": "new"
+    },
+    {
+     "text": "설계 검토에서 내 안이 채택됐다",
+     "from": "new"
+    }
+   ]
+  },
+  "TD02": {
+   "J1": [
+    {
+     "text": "문제 정의",
+     "from": "CAE_PROBLEM"
+    },
+    {
+     "text": "어떤 하중 조건과 현상을 볼지 정했다",
+     "from": "new"
+    }
+   ],
+   "J2": [
+    {
+     "text": "요구 수명과 허용 응력을 해석 조건으로 옮겼다",
+     "from": "new"
+    },
+    {
+     "text": "시험 규격의 하중 이력을 해석 입력으로 바꿨다",
+     "from": "new"
+    }
+   ],
+   "J3": [
+    {
+     "text": "가정 정리",
+     "from": "CAE_ASSUMPTION"
+    },
+    {
+     "text": "경계 조건과 하중",
+     "from": "CAE_BOUNDARY"
+    },
+    {
+     "text": "재료·모델 변수",
+     "from": "CAE_MATERIAL"
+    }
+   ],
+   "J4": [
+    {
+     "text": "모델 생성",
+     "from": "CAE_MODEL_SETUP"
+    },
+    {
+     "text": "해석 수행",
+     "from": "CAE_RUN"
+    },
+    {
+     "text": "수렴 확인",
+     "from": "CAE_CONVERGENCE"
+    },
+    {
+     "text": "재료 모델링",
+     "from": "MT_SIM"
+    }
+   ],
+   "J5": [
+    {
+     "text": "결과 해석",
+     "from": "CAE_INTERPRET"
+    },
+    {
+     "text": "해석 문서화",
+     "from": "CAE_DOC"
+    }
+   ],
+   "J6": [
+    {
+     "text": "검증",
+     "from": "CAE_VALIDATION"
+    },
+    {
+     "text": "격자 독립성",
+     "from": "CAE_MESH_INDEP"
+    },
+    {
+     "text": "변수 연구",
+     "from": "CAE_PARAM_STUDY"
+    },
+    {
+     "text": "최적화",
+     "from": "CAE_OPT"
+    },
+    {
+     "text": "해석과 맞춰 보기",
+     "from": "TV_CORRELATION"
+    }
+   ],
+   "J7": [
+    {
+     "text": "해석과 시험이 어긋난 원인을 경계조건·재료·격자 가운데로 좁혔다",
+     "from": "new"
+    },
+    {
+     "text": "예상과 다른 파단 위치를 모델로 설명했다",
+     "from": "new"
+    }
+   ],
+   "J8": [
+    {
+     "text": "설계 판단 연결",
+     "from": "CAE_DECISION_LINK"
+    }
+   ]
+  },
+  "TD03": {
+   "J1": [
+    {
+     "text": "문제 정의",
+     "from": "CAE_PROBLEM"
+    },
+    {
+     "text": "계통 구성",
+     "from": "TF_CONCEPT"
+    }
+   ],
+   "J2": [
+    {
+     "text": "부하 계산",
+     "from": "TF_LOAD"
+    }
+   ],
+   "J3": [
+    {
+     "text": "가정 정리",
+     "from": "CAE_ASSUMPTION"
+    },
+    {
+     "text": "경계 조건과 하중",
+     "from": "CAE_BOUNDARY"
+    },
+    {
+     "text": "장비·조건 선정",
+     "from": "TF_SIZING"
+    },
+    {
+     "text": "운전 제어",
+     "from": "TF_CONTROL"
+    }
+   ],
+   "J4": [
+    {
+     "text": "모델 생성",
+     "from": "CAE_MODEL_SETUP"
+    },
+    {
+     "text": "해석 수행",
+     "from": "CAE_RUN"
+    },
+    {
+     "text": "수렴 확인",
+     "from": "CAE_CONVERGENCE"
+    },
+    {
+     "text": "해석·계산 결과",
+     "from": "TF_ANALYSIS"
+    },
+    {
+     "text": "과도 상태",
+     "from": "TF_TRANSIENT"
+    },
+    {
+     "text": "실험 장치",
+     "from": "TF_EXPERIMENT"
+    }
+   ],
+   "J5": [
+    {
+     "text": "결과 해석",
+     "from": "CAE_INTERPRET"
+    },
+    {
+     "text": "해석 문서화",
+     "from": "CAE_DOC"
+    },
+    {
+     "text": "효율·에너지",
+     "from": "TF_EFFICIENCY"
+    },
+    {
+     "text": "공조 설계",
+     "from": "TF_HVAC"
+    }
+   ],
+   "J6": [
+    {
+     "text": "검증",
+     "from": "CAE_VALIDATION"
+    },
+    {
+     "text": "격자 독립성",
+     "from": "CAE_MESH_INDEP"
+    },
+    {
+     "text": "변수 연구",
+     "from": "CAE_PARAM_STUDY"
+    },
+    {
+     "text": "성능 확인",
+     "from": "TF_VALIDATION"
+    }
+   ],
+   "J7": [
+    {
+     "text": "예상보다 온도가 높은 원인을 유로·접촉 열저항·송풍 가운데로 좁혔다",
+     "from": "new"
+    },
+    {
+     "text": "압력손실이 계산과 달라 유로 형상을 고쳤다",
+     "from": "new"
+    }
+   ],
+   "J8": [
+    {
+     "text": "설계 판단 연결",
+     "from": "CAE_DECISION_LINK"
+    },
+    {
+     "text": "설계 반영",
+     "from": "TF_DECISION"
+    }
+   ]
+  },
+  "TD04": {
+   "J1": [
+    {
+     "text": "문제 정의",
+     "from": "CAE_PROBLEM"
+    },
+    {
+     "text": "어느 주파수 대역의 문제인지 정했다",
+     "from": "new"
+    },
+    {
+     "text": "구조 전달과 공기 전달 가운데 지배 경로를 가렸다",
+     "from": "new"
+    }
+   ],
+   "J2": [
+    {
+     "text": "허용 소음과 진동 수준을 측정 지점과 조건으로 옮겼다",
+     "from": "new"
+    },
+    {
+     "text": "체감 지표를 측정 가능한 양으로 바꿨다",
+     "from": "new"
+    }
+   ],
+   "J3": [
+    {
+     "text": "가정 정리",
+     "from": "CAE_ASSUMPTION"
+    },
+    {
+     "text": "측정 지점과 가진 조건을 정했다",
+     "from": "new"
+    },
+    {
+     "text": "감쇠와 결합 조건을 정했다",
+     "from": "new"
+    },
+    {
+     "text": "대책 방향을 강성·질량·감쇠 가운데로 골랐다",
+     "from": "new"
+    }
+   ],
+   "J4": [
+    {
+     "text": "모델 생성",
+     "from": "CAE_MODEL_SETUP"
+    },
+    {
+     "text": "해석 수행",
+     "from": "CAE_RUN"
+    },
+    {
+     "text": "모달 해석이나 진동 측정을 했다",
+     "from": "new"
+    },
+    {
+     "text": "주파수 응답이나 오더 분석을 썼다",
+     "from": "new"
+    }
+   ],
+   "J5": [
+    {
+     "text": "결과 해석",
+     "from": "CAE_INTERPRET"
+    },
+    {
+     "text": "해석 문서화",
+     "from": "CAE_DOC"
+    },
+    {
+     "text": "모달·진동 측정 보고를 냈다",
+     "from": "new"
+    },
+    {
+     "text": "대책 전후 비교표를 남겼다",
+     "from": "new"
+    }
+   ],
+   "J6": [
+    {
+     "text": "검증",
+     "from": "CAE_VALIDATION"
+    },
+    {
+     "text": "해석 모드와 측정 모드를 대조했다",
+     "from": "new"
+    },
+    {
+     "text": "대책 전후를 같은 조건으로 측정했다",
+     "from": "new"
+    }
+   ],
+   "J7": [
+    {
+     "text": "대책이 듣지 않은 원인을 공진·가진원·전달경로 가운데로 좁혔다",
+     "from": "new"
+    },
+    {
+     "text": "측정 산포가 커서 지그와 센서 부착을 다시 잡았다",
+     "from": "new"
+    }
+   ],
+   "J8": [
+    {
+     "text": "설계 판단 연결",
+     "from": "CAE_DECISION_LINK"
+    },
+    {
+     "text": "내 결과로 마운트나 차음 사양이 바뀌었다",
+     "from": "new"
+    }
+   ]
+  },
+  "TD05": {
+   "J1": [
+    {
+     "text": "자동화 범위 결정",
+     "from": "AU_SCOPE"
+    },
+    {
+     "text": "제어 대상과 외란을 가려 제어 범위를 정했다",
+     "from": "new"
+    }
+   ],
+   "J2": [
+    {
+     "text": "안전 설계",
+     "from": "AU_SAFETY"
+    }
+   ],
+   "J3": [
+    {
+     "text": "구동기·센서 선정",
+     "from": "AU_COMPONENT"
+    },
+    {
+     "text": "투자 회수",
+     "from": "AU_ROI"
+    },
+    {
+     "text": "운전 제어",
+     "from": "TF_CONTROL"
+    }
+   ],
+   "J4": [
+    {
+     "text": "제어 구현",
+     "from": "AU_CONTROL"
+    },
+    {
+     "text": "비전·검사",
+     "from": "AU_VISION"
+    }
+   ],
+   "J5": [
+    {
+     "text": "기구·셀 설계",
+     "from": "AU_MECH"
+    },
+    {
+     "text": "물류 자동화",
+     "from": "AU_AGV"
+    }
+   ],
+   "J6": [
+    {
+     "text": "시운전",
+     "from": "AU_COMMISSION"
+    },
+    {
+     "text": "오프라인 검증",
+     "from": "AU_SIM"
+    }
+   ],
+   "J7": [
+    {
+     "text": "동작이 멈추거나 떨린 원인을 기계 강성·제어 이득·센서 가운데로 좁혔다",
+     "from": "new"
+    },
+    {
+     "text": "사이클 타임이 안 나와 시퀀스를 다시 짰다",
+     "from": "new"
+    }
+   ],
+   "J8": [
+    {
+     "text": "자동화 결과",
+     "from": "AU_RESULT"
+    }
+   ]
+  },
+  "TD06": {
+   "J1": [
+    {
+     "text": "손상 현상을 무엇으로 볼지 정했다",
+     "from": "new"
+    },
+    {
+     "text": "손상 기구 후보를 세워 분석 범위를 정했다",
+     "from": "new"
+    }
+   ],
+   "J2": [
+    {
+     "text": "재료 규격",
+     "from": "MT_CERT"
+    }
+   ],
+   "J3": [
+    {
+     "text": "재료·모델 변수",
+     "from": "CAE_MATERIAL"
+    },
+    {
+     "text": "재질 선정",
+     "from": "MT_SELECTION"
+    },
+    {
+     "text": "열처리·표면 처리",
+     "from": "MT_PROCESS"
+    },
+    {
+     "text": "복합재·신소재",
+     "from": "MT_COMPOSITE"
+    }
+   ],
+   "J4": [
+    {
+     "text": "물성 확인",
+     "from": "MT_PROPERTY"
+    },
+    {
+     "text": "파손 분석",
+     "from": "MT_FAILURE"
+    },
+    {
+     "text": "조직 관찰",
+     "from": "MT_MICRO"
+    },
+    {
+     "text": "재료 모델링",
+     "from": "MT_SIM"
+    },
+    {
+     "text": "마찰·윤활",
+     "from": "MT_TRIBOLOGY"
+    }
+   ],
+   "J5": [
+    {
+     "text": "재질 사양이나 분석 보고를 냈다",
+     "from": "new"
+    },
+    {
+     "text": "판정 근거를 문서로 남겼다",
+     "from": "new"
+    }
+   ],
+   "J6": [
+    {
+     "text": "규격값이나 문헌값과 대조했다",
+     "from": "new"
+    },
+    {
+     "text": "같은 조건의 다른 재질과 비교 시험을 했다",
+     "from": "new"
+    },
+    {
+     "text": "현장 사용 이력과 대조했다",
+     "from": "new"
+    }
+   ],
+   "J7": [
+    {
+     "text": "손상 기구 판단",
+     "from": "MT_MECHANISM"
+    }
+   ],
+   "J8": [
+    {
+     "text": "대책과 확인",
+     "from": "MT_COUNTERMEASURE"
+    }
+   ]
+  },
+  "TD07": {
+   "J1": [
+    {
+     "text": "무엇을 확인할 시험인지 정했다",
+     "from": "new"
+    },
+    {
+     "text": "그 시험으로 답할 수 없는 질문을 가려 적었다",
+     "from": "new"
+    }
+   ],
+   "J2": [
+    {
+     "text": "검증 대상 정의",
+     "from": "TV_REQUIREMENT"
+    },
+    {
+     "text": "시험 규격",
+     "from": "TV_STANDARD"
+    }
+   ],
+   "J3": [
+    {
+     "text": "시험 계획",
+     "from": "TV_PLAN"
+    },
+    {
+     "text": "센서와 측정 범위를 골랐다",
+     "from": "new"
+    },
+    {
+     "text": "샘플 수와 판정 기준을 정했다",
+     "from": "new"
+    },
+    {
+     "text": "지그 구속 조건을 정했다",
+     "from": "new"
+    }
+   ],
+   "J4": [
+    {
+     "text": "지그·계측 구성",
+     "from": "TV_SETUP"
+    },
+    {
+     "text": "시험 수행",
+     "from": "TV_EXECUTE"
+    },
+    {
+     "text": "환경 시험",
+     "from": "TV_ENV"
+    },
+    {
+     "text": "신뢰성 시험",
+     "from": "QR_TEST"
+    },
+    {
+     "text": "비전·검사",
+     "from": "AU_VISION"
+    },
+    {
+     "text": "실험 장치",
+     "from": "TF_EXPERIMENT"
+    }
+   ],
+   "J5": [
+    {
+     "text": "시험 보고",
+     "from": "TV_REPORT"
+    },
+    {
+     "text": "불확도",
+     "from": "TV_UNCERTAINTY"
+    }
+   ],
+   "J6": [
+    {
+     "text": "판정",
+     "from": "TV_JUDGE"
+    },
+    {
+     "text": "해석과 맞춰 보기",
+     "from": "TV_CORRELATION"
+    },
+    {
+     "text": "측정 시스템",
+     "from": "QR_MSA"
+    }
+   ],
+   "J7": [
+    {
+     "text": "결과 산포의 원인을 지그·센서·시료·환경 가운데로 좁혔다",
+     "from": "new"
+    },
+    {
+     "text": "판정이 뒤집혀 측정 체인을 다시 구성했다",
+     "from": "new"
+    }
+   ],
+   "J8": [
+    {
+     "text": "설계 되먹임",
+     "from": "TV_FEEDBACK"
+    }
+   ]
+  },
+  "TD08": {
+   "J1": [
+    {
+     "text": "어느 공정의 무엇이 문제인지 정했다",
+     "from": "new"
+    },
+    {
+     "text": "수율·택트·원가 가운데 먼저 잡을 것을 정했다",
+     "from": "new"
+    }
+   ],
+   "J2": [
+    {
+     "text": "제조 가능성",
+     "from": "MD_DFM"
+    },
+    {
+     "text": "제조 가능성 검토",
+     "from": "MF_DFM_REVIEW"
+    },
+    {
+     "text": "안전",
+     "from": "MF_SAFETY"
+    }
+   ],
+   "J3": [
+    {
+     "text": "공정 선정",
+     "from": "MF_PROCESS_SELECT"
+    },
+    {
+     "text": "작업 순서",
+     "from": "MF_SEQUENCE"
+    },
+    {
+     "text": "가공 조건",
+     "from": "MF_CONDITION"
+    },
+    {
+     "text": "검사 지점",
+     "from": "MF_INSPECTION"
+    },
+    {
+     "text": "공정 창 설정",
+     "from": "PR_WINDOW"
+    },
+    {
+     "text": "에너지·원가",
+     "from": "PR_ENERGY"
+    }
+   ],
+   "J4": [
+    {
+     "text": "공정 데이터 읽기",
+     "from": "PR_DATA_READ"
+    },
+    {
+     "text": "조건 실험",
+     "from": "PR_EXPERIMENT"
+    },
+    {
+     "text": "공정 모델",
+     "from": "PR_MODEL"
+    }
+   ],
+   "J5": [
+    {
+     "text": "치공구·설비",
+     "from": "MF_TOOLING"
+    },
+    {
+     "text": "작업 표준",
+     "from": "MF_STANDARD_DOC"
+    },
+    {
+     "text": "관리 기준화",
+     "from": "PR_CONTROL"
+    }
+   ],
+   "J6": [
+    {
+     "text": "개선 결과",
+     "from": "MF_RESULT"
+    },
+    {
+     "text": "전후 비교",
+     "from": "PR_RESULT"
+    }
+   ],
+   "J7": [
+    {
+     "text": "원인 인자 가려내기",
+     "from": "PR_FACTOR"
+    }
+   ],
+   "J8": [
+    {
+     "text": "양산 이관",
+     "from": "MF_TRANSFER"
+    },
+    {
+     "text": "확대 적용",
+     "from": "PR_SCALEUP"
+    }
+   ]
+  },
+  "TD09": {
+   "J1": [
+    {
+     "text": "어느 설비의 무엇을 볼지 정했다",
+     "from": "new"
+    },
+    {
+     "text": "고장 모드와 영향으로 우선순위를 정했다",
+     "from": "new"
+    }
+   ],
+   "J2": [
+    {
+     "text": "안전·법정 점검",
+     "from": "EQ_SAFETY"
+    },
+    {
+     "text": "유틸리티",
+     "from": "EQ_UTILITY"
+    }
+   ],
+   "J3": [
+    {
+     "text": "수리·교체 판단",
+     "from": "EQ_DECISION"
+    },
+    {
+     "text": "예비품 관리",
+     "from": "EQ_SPARE"
+    }
+   ],
+   "J4": [
+    {
+     "text": "설비 상태 파악",
+     "from": "EQ_CONDITION"
+    },
+    {
+     "text": "고장 진단",
+     "from": "EQ_DIAGNOSIS"
+    },
+    {
+     "text": "예지 보전",
+     "from": "EQ_PREDICT"
+    }
+   ],
+   "J5": [
+    {
+     "text": "보전 계획",
+     "from": "EQ_PLAN"
+    },
+    {
+     "text": "정비 이력",
+     "from": "EQ_RECORD"
+    }
+   ],
+   "J6": [
+    {
+     "text": "가동 결과",
+     "from": "EQ_RESULT"
+    }
+   ],
+   "J7": [
+    {
+     "text": "설비 개조",
+     "from": "EQ_IMPROVE"
+    },
+    {
+     "text": "같은 고장이 재발한 원인을 설계·운전·보전 가운데로 좁혔다",
+     "from": "new"
+    },
+    {
+     "text": "예비품이 없어 멈춘 일을 겪고 보유 기준을 고쳤다",
+     "from": "new"
+    }
+   ],
+   "J8": [
+    {
+     "text": "내 기준이 보전 계획이나 설비 투자에 반영됐다",
+     "from": "new"
+    }
+   ]
+  },
+  "TD10": {
+   "J1": [
+    {
+     "text": "고장 모드 도출",
+     "from": "QR_FAILURE_MODE"
+    }
+   ],
+   "J2": [
+    {
+     "text": "산업 규격",
+     "from": "MD_STANDARD"
+    },
+    {
+     "text": "시험 규격",
+     "from": "TV_STANDARD"
+    },
+    {
+     "text": "산업 규격",
+     "from": "QR_INDUSTRY_STD"
+    },
+    {
+     "text": "재료 규격",
+     "from": "MT_CERT"
+    }
+   ],
+   "J3": [
+    {
+     "text": "검사 지점",
+     "from": "MF_INSPECTION"
+    },
+    {
+     "text": "판정 기준",
+     "from": "QR_CRITERIA"
+    }
+   ],
+   "J4": [
+    {
+     "text": "신뢰성 시험",
+     "from": "QR_TEST"
+    },
+    {
+     "text": "불량 데이터 분석",
+     "from": "QR_DATA"
+    }
+   ],
+   "J5": [
+    {
+     "text": "관리 기준화",
+     "from": "PR_CONTROL"
+    },
+    {
+     "text": "검사 체계",
+     "from": "QR_INSPECTION"
+    },
+    {
+     "text": "품질 경영 체계",
+     "from": "QR_SYSTEM"
+    }
+   ],
+   "J6": [
+    {
+     "text": "측정 시스템",
+     "from": "QR_MSA"
+    },
+    {
+     "text": "규격과 공정능력을 계산해 대조했다",
+     "from": "new"
+    },
+    {
+     "text": "개선 전후를 같은 기준으로 견주었다",
+     "from": "new"
+    },
+    {
+     "text": "수명 시험 결과를 목표 수명과 대조했다",
+     "from": "new"
+    }
+   ],
+   "J7": [
+    {
+     "text": "원인 추적",
+     "from": "QR_ROOT_CAUSE"
+    },
+    {
+     "text": "고객 클레임",
+     "from": "QR_CLAIM"
+    },
+    {
+     "text": "재발한 불량의 발생과 유출을 갈라 각각의 대책을 세웠다",
+     "from": "new"
+    }
+   ],
+   "J8": [
+    {
+     "text": "시정 조치와 확인",
+     "from": "QR_ACTION"
+    },
+    {
+     "text": "협력사 품질",
+     "from": "QR_SUPPLIER"
+    }
+   ]
+  },
+  "TD11": {
+   "J1": [
+    {
+     "text": "위험 관리",
+     "from": "PM_RISK"
+    }
+   ],
+   "J2": [
+    {
+     "text": "제안서·공고 해석",
+     "from": "RND_PROPOSAL"
+    },
+    {
+     "text": "성과지표",
+     "from": "RND_KPI"
+    },
+    {
+     "text": "요구사항 분해",
+     "from": "PM_REQUIREMENT"
+    },
+    {
+     "text": "검증 계획",
+     "from": "PM_VERIFICATION"
+    }
+   ],
+   "J3": [
+    {
+     "text": "인터페이스",
+     "from": "MD_INTERFACE"
+    },
+    {
+     "text": "예산·자원",
+     "from": "RND_RESOURCE"
+    },
+    {
+     "text": "인터페이스 정의",
+     "from": "PM_INTERFACE"
+    },
+    {
+     "text": "우선순위 판단",
+     "from": "PM_TRADEOFF"
+    },
+    {
+     "text": "원가·예산",
+     "from": "PM_COST"
+    }
+   ],
+   "J4": [
+    {
+     "text": "변경 관리",
+     "from": "PM_CHANGE"
+    }
+   ],
+   "J5": [
+    {
+     "text": "변경 관리",
+     "from": "MD_CHANGE"
+    },
+    {
+     "text": "중간 점검",
+     "from": "RND_MILESTONE"
+    },
+    {
+     "text": "일정과 자원",
+     "from": "PM_PLAN"
+    }
+   ],
+   "J6": [
+    {
+     "text": "요구마다 검증 결과를 대조해 충족률을 냈다",
+     "from": "new"
+    },
+    {
+     "text": "완성품이 요구를 만족하는지 확인했다",
+     "from": "new"
+    }
+   ],
+   "J7": [
+    {
+     "text": "요구 변경의 파급을 추적해 영향 범위를 좁혔다",
+     "from": "new"
+    },
+    {
+     "text": "일정이 밀린 원인을 공정별로 갈랐다",
+     "from": "new"
+    }
+   ],
+   "J8": [
+    {
+     "text": "일정 안에 끝냄",
+     "from": "PM_DELIVERY"
+    }
+   ]
+  },
+  "TD12": {
+   "J1": [
+    {
+     "text": "무엇을 자동화할지 고르기",
+     "from": "DG_PROBLEM"
+    }
+   ],
+   "J2": [
+    {
+     "text": "데이터 구조 설계",
+     "from": "DG_DATA"
+    }
+   ],
+   "J3": [
+    {
+     "text": "처리 절차와 판정 기준을 정했다",
+     "from": "new"
+    },
+    {
+     "text": "검증 규칙과 실패 처리를 정했다",
+     "from": "new"
+    }
+   ],
+   "J4": [
+    {
+     "text": "자동화·스크립트",
+     "from": "CAE_AUTOMATION"
+    },
+    {
+     "text": "시험 자동화",
+     "from": "TV_AUTOMATION"
+    },
+    {
+     "text": "공정 모델",
+     "from": "PR_MODEL"
+    },
+    {
+     "text": "예지 보전",
+     "from": "EQ_PREDICT"
+    },
+    {
+     "text": "도구·스크립트 제작",
+     "from": "DG_BUILD"
+    },
+    {
+     "text": "이력 관리",
+     "from": "DG_VERSION"
+    },
+    {
+     "text": "기존 체계와 잇기",
+     "from": "DG_INTEGRATION"
+    },
+    {
+     "text": "예측 모델",
+     "from": "DG_ML"
+    }
+   ],
+   "J5": [
+    {
+     "text": "사용 설명",
+     "from": "DG_DOC"
+    },
+    {
+     "text": "시각화",
+     "from": "DG_VIS"
+    }
+   ],
+   "J6": [
+    {
+     "text": "오프라인 검증",
+     "from": "AU_SIM"
+    },
+    {
+     "text": "결과 검증",
+     "from": "DG_VERIFY"
+    }
+   ],
+   "J7": [
+    {
+     "text": "틀린 값의 원인을 입력·가정·구현 가운데로 좁혀 검증을 더했다",
+     "from": "new"
+    },
+    {
+     "text": "쓰는 사람이 틀리게 쓰던 자리를 찾아 입력 규격을 고쳤다",
+     "from": "new"
+    }
+   ],
+   "J8": [
+    {
+     "text": "쓰인 결과",
+     "from": "DG_IMPACT"
+    },
+    {
+     "text": "다른 사람이 씀",
+     "from": "DG_USERS"
+    }
+   ]
+  }
+ },
+ "common": {
+  "J1": [
+   {
+    "text": "연구 문제 정의",
+    "from": "RND_QUESTION"
+   },
+   {
+    "text": "가설과 목표",
+    "from": "RND_HYPOTHESIS"
+   },
+   {
+    "text": "질문 다시 세우기",
+    "from": "CS_REFRAME"
+   },
+   {
+    "text": "연구 질문",
+    "from": "RS_QUESTION"
+   }
+  ],
+  "J2": [
+   {
+    "text": "선행 연구 정리",
+    "from": "RS_LITERATURE"
+   },
+   {
+    "text": "주어진 목표를 측정 가능한 지표로 옮겼다",
+    "from": "new"
+   },
+   {
+    "text": "이해관계자의 요구를 제약 조건으로 적었다",
+    "from": "new"
+   }
+  ],
+  "J3": [
+   {
+    "text": "방법 선택",
+    "from": "RND_METHOD"
+   },
+   {
+    "text": "결과 판단",
+    "from": "RND_JUDGEMENT"
+   },
+   {
+    "text": "과제 소유",
+    "from": "RND_OWNERSHIP"
+   },
+   {
+    "text": "가정 공개",
+    "from": "CS_ASSUMPTION"
+   },
+   {
+    "text": "방법 선택",
+    "from": "RS_METHOD"
+   }
+  ],
+  "J4": [
+   {
+    "text": "실험·모델 설계",
+    "from": "RND_DESIGN"
+   },
+   {
+    "text": "데이터 해석",
+    "from": "RND_DATA"
+   },
+   {
+    "text": "대안 분석",
+    "from": "CS_ANALYSIS"
+   },
+   {
+    "text": "실험·해석 수행",
+    "from": "RS_EXECUTE"
+   },
+   {
+    "text": "자료 해석",
+    "from": "RS_ANALYSIS"
+   }
+  ],
+  "J5": [
+   {
+    "text": "산출물",
+    "from": "RND_OUTPUT"
+   },
+   {
+    "text": "보고서·발표",
+    "from": "CS_DELIVERABLE"
+   },
+   {
+    "text": "논문·발표",
+    "from": "RS_OUTPUT"
+   },
+   {
+    "text": "특허",
+    "from": "RS_PATENT"
+   }
+  ],
+  "J6": [
+   {
+    "text": "검증",
+    "from": "RND_VALIDATION"
+   },
+   {
+    "text": "비교 기준 설정",
+    "from": "CS_CRITERIA"
+   },
+   {
+    "text": "타당성 확인",
+    "from": "RS_VALIDATION"
+   },
+   {
+    "text": "재현 가능하게 남기기",
+    "from": "RS_REPRODUCIBLE"
+   }
+  ],
+  "J7": [
+   {
+    "text": "예상과 다른 결과가 나와 원인 후보를 좁혀 갔다",
+    "from": "new"
+   },
+   {
+    "text": "재현이 안 돼 조건이나 절차를 바꿔 다시 했다",
+    "from": "new"
+   },
+   {
+    "text": "방법의 한계를 정리해 다음 설계를 바꿨다",
+    "from": "new"
+   }
+  ],
+  "J8": [
+   {
+    "text": "기술이전",
+    "from": "RND_TRANSFER"
+   },
+   {
+    "text": "고객 결정 연결",
+    "from": "CS_DECISION"
+   },
+   {
+    "text": "방법 재사용",
+    "from": "CS_REUSE"
+   },
+   {
+    "text": "산업 연결",
+    "from": "RS_INDUSTRY_LINK"
+   }
+  ]
+ }
+}
