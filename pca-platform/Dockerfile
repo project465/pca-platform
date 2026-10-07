@@ -33,7 +33,16 @@ RUN npx esbuild scripts/make-admin.ts \
       --external:pg --outfile=ops-build/seed-instrument.cjs \
  && npx esbuild scripts/ops-check.ts \
       --bundle --platform=node --format=cjs --target=node22 \
-      --external:pg --outfile=ops-build/ops-check.cjs
+      --external:pg --outfile=ops-build/ops-check.cjs \
+ && npx esbuild scripts/pg-smoke.ts \
+      --bundle --platform=node --format=cjs --target=node22 \
+      --external:pg --outfile=ops-build/pg-smoke.cjs \
+ && npx esbuild scripts/pg-confirm.ts \
+      --bundle --platform=node --format=cjs --target=node22 \
+      --external:pg --outfile=ops-build/pg-confirm.cjs \
+ && npx esbuild scripts/pilot-check.ts \
+      --bundle --platform=node --format=cjs --target=node22 \
+      --external:pg --outfile=ops-build/pilot-check.cjs
 
 FROM node:22-alpine AS run
 WORKDIR /app

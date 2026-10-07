@@ -6,13 +6,14 @@ import { resolveLang } from "@/lib/locale-server";
 import { toLang2, BRAND } from "@/lib/surface-text";
 import { attemptOf } from "@/lib/me-v2/attempt";
 import { items, done } from "@/lib/pilot";
+import { reportLevel } from "@/lib/entitlement";
 import LangSelect from "@/components/sf/lang-select";
 import { PilotForm } from "./pilot-form";
 
 export const metadata = { title: `파일럿 · ${BRAND.root}` };
 
 /**
- * 파일럿 열 문항.
+ * 파일럿 문항.
  *
  * **결과지를 설문으로 막지 않는다.** 결과지를 먼저 보여 주고 여기로 오는
  * 길만 둔다(부가 문항 화면과 같은 규칙). 답하지 않아도 잃는 것이 없다.
@@ -36,7 +37,18 @@ export default async function PilotPage({
      이해와 다음 행동이다 */
   if (!a.submitted_at) notFound();
 
-  const all = await items(L);
+  /**
+   * 유료 결과를 받으신 분인가. 그 값으로 '유료에만 있는 부분' 문항을
+   * 띄울지 가른다.
+   *
+   * **ME_V2 는 등급이 문항 수를 정한다**(48 · 68 · 92). 그래서 유료
+   * 여부가 `attempts.tier` 에 있고, 그것이 이용권에서 왔다. 거기에
+   * 학교 좌석과 기간권으로 열린 경우를 `reportLevel()` 로 한 번 더
+   * 더한다(설계 원칙 10: 등급을 정하는 자리는 그 함수 하나다).
+   */
+  const paid = a.tier !== "BASIC"
+    || (await reportLevel(attemptId).catch(() => null)) === "full";
+  const all = await items(L, { paid });
   const already = await done(attemptId);
 
   return (
@@ -58,7 +70,9 @@ export default async function PilotPage({
           <div className="sf-head-t">
             <div className="sf-eyebrow">{a.tier}</div>
             <h1 className="sf-h1">
-              {L === "en" ? "Ten questions about the report" : "결과지에 대한 열 가지"}
+              {L === "en"
+                ? `${all.length} questions about the report`
+                : `결과지에 대한 ${all.length}가지`}
             </h1>
             <p className="sf-sub">
               {L === "en"

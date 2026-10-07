@@ -95,7 +95,7 @@ export default async function ReportPage({
                     받으러 온 것은 결과지다 */}
                 {process.env.PILOT_OPEN === "yes" ? (
                   <Link href={`/pilot/${attemptId}`} className="sf-btn ghost">
-                    {L === "en" ? "Ten questions" : "열 가지 알려 주기"}
+                    {L === "en" ? "Tell us how it read" : "읽은 느낌 알려 주기"}
                   </Link>
                 ) : null}
               </>

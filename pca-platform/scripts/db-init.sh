@@ -33,6 +33,7 @@ run npm run -s db:phase2_1
 run npm run -s db:phase2_2
 run npm run -s db:phase2_3
 run npm run -s db:phase2_4
+run npm run -s db:pilot
 
 # 검사 문항. 생성물을 먼저 만들고 적재한다
 run npm run -s v2:build

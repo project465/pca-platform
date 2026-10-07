@@ -27,6 +27,7 @@ run npm run -s db:phase2_1
 run npm run -s db:phase2_2
 run npm run -s db:phase2_3
 run npm run -s db:phase2_4
+run npm run -s db:pilot
 
 # 문항이 바뀌었으면 다시 적재한다. 같은 문항이면 아무것도 안 바뀐다
 run npm run -s v2:build

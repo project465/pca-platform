@@ -184,7 +184,29 @@ async function main() {
   ok("거래 메일 다섯 가지가 대기열에 쌓인다", (queued?.n ?? 0) === kinds.length,
     `${queued?.n}통`);
 
-  const r = await flushOutbox(50);
+  /**
+   * **쌓여 있던 것까지 비운다.**
+   *
+   * 한 번만 `flushOutbox(50)` 를 부르면, 앞에 쌓인 줄이 쉰을 넘는 날
+   * 이 검사가 넣은 다섯 통이 차례를 못 받는다. 그러면 바로 아래 줄이
+   * "보낸 것이 대기열에 남았다" 로 빨갛게 서는데, **고장 난 것은 메일이
+   * 아니라 검사다.** 거짓 경보를 내는 검사는 그 다음부터 아무도 안 본다.
+   *
+   * 그래서 이 검사가 넣은 줄이 없어질 때까지, 또는 더 나가지 않을 때까지
+   * 돌린다. 열 바퀴를 못 박아 두는 것은 끝이 없는 되돌이를 만들지 않으려는
+   * 것이다.
+   */
+  const r = { sent: 0, skipped: 0, held: 0, failed: 0 };
+  for (let i = 0; i < 10; i++) {
+    const one = await flushOutbox(50);
+    r.sent += one.sent; r.skipped += one.skipped;
+    r.held += one.held; r.failed += one.failed;
+    const mine = await queryOne<{ n: number }>(
+      `SELECT count(*)::int AS n FROM outbox WHERE user_id = $1 AND status='queued'`,
+      [uid]);
+    if ((mine?.n ?? 0) === 0) break;
+    if (one.sent + one.skipped + one.held + one.failed === 0) break;
+  }
   ok("대기열이 실제로 나간다", r.sent >= kinds.length,
     `보냄 ${r.sent} · 건너뜀 ${r.skipped} · 보류 ${r.held} · 실패 ${r.failed}`);
   ok("받는 쪽에 그만큼 도착한다", inbox.length >= kinds.length,

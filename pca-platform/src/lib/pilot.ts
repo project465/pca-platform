@@ -19,19 +19,60 @@ export type PilotItem = {
   orderNo: number;
   kind: "scale" | "text";
   text: string;
+  /** 무엇을 재는 칸인가. 덮임을 세는 자리가 이 값을 읽는다 */
+  topic: string | null;
+  cohort: "all" | "paid";
 };
 
-export async function items(lang = "ko"): Promise<PilotItem[]> {
+/**
+ * 이번 파일럿이 **반드시 받아 와야 하는 여덟 가지.**
+ *
+ * 코드 이름이 아니라 칸 이름(`pilot_items.topic`)으로 적는다. 문항을 하나
+ * 더 넣거나 문면을 다듬어도 그 칸이 비지 않으면 덮인 것이고, 그 판단을
+ * `npm run pilot:check` 가 한다. **묻는 것을 코드가 짐작하지 않는다.**
+ */
+export const REQUIRED_TOPICS: { topic: string; what: string }[] = [
+  { topic: "fit", what: "결과가 본인과 맞는지" },
+  { topic: "why", what: "왜 그 직무가 나왔는지 이해했는지" },
+  { topic: "newrole", what: "새롭게 알게 된 직무가 있는지" },
+  { topic: "gap_clear", what: "부족한 근거가 무엇인지 이해했는지" },
+  { topic: "doable", what: "다음 행동이 실제로 실행 가능한지" },
+  { topic: "tier_value", what: "무료와 유료 결과의 가치 차이가 느껴지는지" },
+  { topic: "wording", what: "결과에서 이해하기 어려운 표현" },
+  { topic: "changed", what: "결과를 받고 진로 판단이 달라졌는지" },
+];
+
+/**
+ * 무엇을 보여 드릴까.
+ *
+ * **받은 적 없는 것을 견주게 하지 않는다.** 유료 구간이 열리지 않은
+ * 응시에는 `cohort='paid'` 문항을 띄우지 않는다. 등급은 화면이 짐작하지
+ * 않고 `reportLevel()` 하나가 정한다(설계 원칙 10).
+ */
+export async function items(
+  lang = "ko", opts: { paid?: boolean } = {},
+): Promise<PilotItem[]> {
   const rows = await query<{
     code: string; order_no: number; kind: string; ko: string; en: string;
+    topic: string | null; cohort: string;
   }>(
-    `SELECT code, order_no, kind, ko, en FROM pilot_items
-      WHERE active ORDER BY order_no`,
+    `SELECT code, order_no, kind, ko, en, topic, cohort FROM pilot_items
+      WHERE active AND (cohort = 'all' OR $1::boolean)
+      ORDER BY order_no`,
+    [opts.paid === true],
   ).catch(() => []);
   return rows.map((r) => ({
     code: r.code, orderNo: r.order_no, kind: r.kind as "scale" | "text",
     text: lang === "en" ? r.en : r.ko,
+    topic: r.topic, cohort: r.cohort === "paid" ? "paid" : "all",
   }));
+}
+
+/** 여덟 가지가 실제로 물어지는가. 비어 있으면 그 칸 이름을 돌려준다 */
+export async function uncovered(): Promise<string[]> {
+  const all = await items("ko", { paid: true });
+  const have = new Set(all.map((i) => i.topic).filter(Boolean) as string[]);
+  return REQUIRED_TOPICS.filter((r) => !have.has(r.topic)).map((r) => r.what);
 }
 
 /** 이 응시로 이미 답했는가 */
@@ -74,8 +115,10 @@ export async function save(opts: {
   return n;
 }
 
-export type ScaleRow = { code: string; text: string; n: number; avg: number | null };
-export type TextRow = { code: string; text: string; n: number; answers: string[] };
+export type ScaleRow = { code: string; text: string; topic: string | null;
+  n: number; avg: number | null };
+export type TextRow = { code: string; text: string; topic: string | null;
+  n: number; answers: string[] };
 
 export type PilotSummary = {
   /** 끝까지 답한 사람 수 */
@@ -97,7 +140,9 @@ export const MIN_CELL = 5;
 const TARGET = 20;
 
 export async function summary(lang = "ko"): Promise<PilotSummary> {
-  const all = await items(lang);
+  /* 집계에서는 유료 전용 문항까지 전부 본다. 안 물어본 사람의
+     빈칸은 0명으로 세어지고, 그 사실이 곧 자료다 */
+  const all = await items(lang, { paid: true });
   const people = (await queryOne<{ n: number }>(
     `SELECT count(DISTINCT attempt_id)::int AS n FROM pilot_feedback`,
   ).catch(() => null))?.n ?? 0;
@@ -127,7 +172,7 @@ export async function summary(lang = "ko"): Promise<PilotSummary> {
         [it.code],
       ).catch(() => [])).map((r) => r.text)
       : [];
-    texts.push({ code: it.code, text: it.text, n, answers });
+    texts.push({ code: it.code, text: it.text, topic: it.topic, n, answers });
   }
 
   const flow = await queryOne<{ completed: number; started: number; med: string | null }>(
@@ -144,7 +189,7 @@ export async function summary(lang = "ko"): Promise<PilotSummary> {
     scales: all.filter((x) => x.kind === "scale").map((it) => {
       const r = scaleRows.find((s) => s.item_code === it.code);
       return {
-        code: it.code, text: it.text, n: r?.n ?? 0,
+        code: it.code, text: it.text, topic: it.topic, n: r?.n ?? 0,
         /* 5명 미만은 평균을 내지 않는다 */
         avg: r && r.n >= MIN_CELL && r.avg
           ? Math.round(Number(r.avg) * 10) / 10 : null,
