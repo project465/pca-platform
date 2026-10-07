@@ -33,7 +33,8 @@
    "checklist_additions",
    "common_additions",
    "evidence_remap",
-   "legacy_evidence_map"
+   "legacy_evidence_map",
+   "items"
   ]
  },
  "cores": [
@@ -57,7 +58,8 @@
     "checklist_additions": "me-v3-checklist-additions.json",
     "common_additions": "me-v3-common-additions.json",
     "evidence_remap": "me-v3-evidence-remap.json",
-    "legacy_evidence_map": "me-evidence-map.json"
+    "legacy_evidence_map": "me-evidence-map.json",
+    "items": "me-v3-items.json"
    },
    "domain_count": 12,
    "axis_count": 8,

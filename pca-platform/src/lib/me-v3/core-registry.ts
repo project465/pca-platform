@@ -23,7 +23,7 @@ export const CONTENT_DIR = process.env.CONTENT_DIR ?? "sites/pca-platform/conten
 export type CoreFile =
   | "taxonomy" | "domains" | "checklists" | "items_blueprint"
   | "checklist_additions" | "common_additions" | "evidence_remap"
-  | "legacy_evidence_map";
+  | "legacy_evidence_map" | "items";
 
 export type CoreEntry = {
   code: string;
