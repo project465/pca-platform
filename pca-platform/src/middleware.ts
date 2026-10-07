@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { isLang, LANG_COOKIE } from "@/lib/locale";
 import { isMarket, MARKET_COOKIE } from "@/lib/market-def";
+import { isStaging } from "@/lib/env";
 
 /**
  * 로그인 전 방문을 세는 열쇠.
@@ -36,7 +37,12 @@ export const ANON_COOKIE = "cm_a";
  * 들고 다니지 않는다.
  */
 function gateFails(req: NextRequest): NextResponse | null {
-  if ((process.env.APP_ENV ?? "").toLowerCase() !== "staging") return null;
+  /* **`APP_ENV` 를 여기서 직접 읽지 않는다**(설계 원칙 10). 전에는 이
+     줄이 `"staging"` 과 글자로 비교했는데, `appEnv()` 는 `stage` 도
+     staging 으로 읽는다. 그 한 글자 차이로 **배너는 뜨고 가짜 결제도
+     열리는데 자물쇠와 noindex 만 빠지는** 상태가 만들어진다. 검색엔진이
+     먼저 찾아내고, 찾아낸 자리에 가짜 결제가 열려 있다. */
+  if (!isStaging()) return null;
   const raw = (process.env.STAGING_BASIC_AUTH ?? "").trim();
   if (!raw.includes(":")) return null;
   if (req.nextUrl.pathname === "/api/health") return null;
@@ -72,7 +78,7 @@ export function middleware(req: NextRequest) {
   const needMarket = isMarket(market ?? undefined)
     && req.cookies.get(MARKET_COOKIE)?.value !== market;
   const needAnon = !req.cookies.get(ANON_COOKIE);
-  const staging = (process.env.APP_ENV ?? "").toLowerCase() === "staging";
+  const staging = isStaging();
   if (!needLang && !needMarket && !needAnon && !staging) return NextResponse.next();
 
   const res = NextResponse.next();

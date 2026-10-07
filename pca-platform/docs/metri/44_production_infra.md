@@ -110,7 +110,7 @@ DB 가 들고 있는 것이고, 백업은 사고에서 되돌아오기 위한 �
 아래는 그 안에서 무슨 일이 일어나는지다.
 
 **이것을 한 번 해 보기 전까지 백업은 완료가 아니다.** 그래서
-`npm run launch:check` 가 `DB_BACKUP_VERIFIED_AT` 이 비어 있으면 런칭을
+`npm run launch:check` 가 복구 시험 기록이 비어 있으면 런칭을
 막는다.
 
 ```bash

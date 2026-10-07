@@ -29,6 +29,7 @@ import { mailDns } from "./mail-domain";
 import { localizationReport } from "./localization";
 import { tiersDistinct } from "./tiers";
 import { get } from "./settings";
+import { pdfVolume } from "./pdf-volume";
 
 export type Status = "READY" | "WARNING" | "BLOCKED";
 
@@ -439,6 +440,28 @@ export async function launchReport(): Promise<LaunchReport> {
       : (made?.pdfs ?? 0) > 0
         ? row("pdf", "PDF", "PDF", "READY", `PDF ${made!.pdfs}장이 나갔습니다.`)
         : row("pdf", "PDF", "PDF", "WARNING", "아직 한 장도 나간 적이 없습니다."));
+
+    /**
+     * **찍은 PDF 가 재배포를 넘기는가.**
+     *
+     * 위 줄은 "PDF 가 나간 적이 있는가" 를 묻는다. 그것이 초록이어도
+     * 쌓이는 자리가 이미지 안쪽이면 **다음 배포에 구매자의 결과지가 전부
+     * 사라진다.** 화면은 멀쩡하고 `/my` 의 내려받기만 404 가 되므로,
+     * 사라졌다는 것을 손님이 먼저 안다.
+     *
+     * 재는 자리는 `pdf-volume.ts` 하나이고 `npm run ops:check` 가 같은
+     * 함수를 읽는다(설계 원칙 10).
+     *
+     * **못 봤으면 막지 않는다**: 개발 PC 에서는 붙여 준 디스크인지 알 수
+     * 없고, 그것으로 런칭을 막으면 거짓으로 막는 것이다.
+     */
+    const vol = pdfVolume();
+    rows.push(vol.persistent === true
+      ? row("volume", "PDF", "PDF 저장소", "READY", vol.detail)
+      : vol.persistent === false
+        ? row("volume", "PDF", "PDF 저장소", "BLOCKED", vol.detail, "운영 담당")
+        : row("volume", "PDF", "PDF 저장소", "WARNING",
+          `${vol.detail}${vol.how ? ` ${vol.how}` : ""}`));
 
     rows.push(sup.ready
       ? row("support", "SUPPORT", "지원 경로", "READY", `${sup.email} 로 받습니다.`)

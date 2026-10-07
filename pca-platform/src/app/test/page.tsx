@@ -36,7 +36,7 @@ export default async function TestEntry({
     /**
      * 좌석이 없는 사람에게 무엇을 권하는가.
      *
-     * 여기까지 온 고교 응시자에게 29,000원짜리 대학 상품을 내밀면 안 된다.
+     * 여기까지 온 고교 응시자에게 대학 유료 상품을 내밀면 안 된다.
      * 무료 문(`/free`)이 그 사람이 갈 곳이다. 대학 쪽은 그대로 결제로 간다.
      */
         const fromPlus = (await pendingTrack(user.id)) === "HS";

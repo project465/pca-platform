@@ -330,12 +330,98 @@ async function main() {
         const f = `${d}/${e.name}`;
         if (e.isDirectory()) { if (e.name !== "node_modules" && e.name !== ".next") walk(f); continue; }
         if (!/\.(ts|tsx|js|mjs|sql|md|html|json)$/.test(e.name)) continue;
+        /* **이 검사 자신은 세지 않는다.** 아래 '옛 법인 표시' 줄이 막아야
+           하는 번호를 글자로 들고 있어서, 안 빼면 제 꼬리를 물고 늘 걸린다 */
+        if (f.endsWith("scripts/launch-check.ts")) continue;
         if (PAT.test(readFileSync(f, "utf8"))) hits.push(f);
       }
     };
     for (const d of dirs) if (existsSync(d)) walk(d);
     ok("통신판매업 신고번호가 코드에 박혀 있지 않다", hits.length === 0,
       `적힌 곳: ${hits.join(", ")}. 채우는 자리는 /admin/business 하나입니다`);
+  }
+
+  /**
+   * **옛 법인 표시와 옛 상품 문구가 손님에게 닿을 수 있는가.**
+   *
+   * 다른 회사의 상호·전화·신고번호였고, 옛 검사의 문항 수와 값이었다.
+   * 한 자리라도 손님 화면으로 흘러나가면 제10조 표시가 거짓이 되고
+   * 가격표가 두 벌이 된다. 전수로 한 번 지웠으니 **다시 들어오는 것을
+   * 여기서 막는다** — 지운 것을 지켜 주는 장치가 없으면 다음 사람이
+   * 모르고 되돌린다.
+   *
+   * **주석은 세지 않는다.** 이 저장소는 "왜 지웠는가" 를 주석으로 남기는
+   * 쪽을 택했고, 그 기록에는 지운 글자가 그대로 들어 있다. 주석까지 세면
+   * 이 검사가 그 기록을 지우라고 요구하게 되고, 그러면 다음 사람이 같은
+   * 실수를 되돌릴 때 막아 줄 설명이 남지 않는다. 그래서 **나가는 글자만**
+   * 센다: 코드에서 주석을 걷어 내고, 문서 중에서는 **손님이 읽는 것**
+   * (법정 문서 본문 · 공개 사이트 HTML)만 본다.
+   */
+  {
+    const OLD = [
+      "HARI CO.,LTD", "HARI CO., LTD", "010-7392-7211",
+      "2024-대전유성-0234", "2020-대전동구-0033",
+      "253문항", "29,000원", "Careermetri", "CareerMetri", "단체 PCA 플랫폼",
+    ];
+    /** 주석을 걷어 낸다. 남는 것이 **실제로 나가는 글자**다 */
+    const strip = (f: string, text: string): string => {
+      if (/\.(ts|tsx|js|mjs)$/.test(f)) {
+        return text.replace(/\/\*[\s\S]*?\*\//g, " ").replace(/(^|[^:])\/\/.*$/gm, "$1");
+      }
+      if (/\.sql$/.test(f)) return text.replace(/--.*$/gm, "");
+      return text;
+    };
+    /** 손님이 읽는 문서. README 와 `docs/` 는 우리가 읽는 것이라 뺀다 */
+    const customerDoc = (f: string): boolean =>
+      /^sites\/careermetri\/legal\/0\d-.*\.md$/.test(f) || /\.html$/.test(f);
+
+    /**
+     * **검사와 빌드 도구는 보지 않는다.**
+     *
+     * `scripts/` 는 손님에게 한 글자도 안 내보낸다. 그런데 그 안에는 옛
+     * 검사(253문항짜리 PCA_ME_V1)가 실제로 몇 문항인지 적어 둔 검사
+     * 이름이 있고, 그것은 **틀린 문구가 아니라 맞는 사실**이다. 세면
+     * 맞는 말을 지우라고 요구하게 된다.
+     *
+     * 함께 빠지는 식별자 하나를 적어 둔다: `window.Careermetri_DATA`
+     * (`scripts/metri/build.mjs` 가 만들고 `sites/pca-platform/assets`
+     * 가 읽는다). **고치면 결과지 엔진이 멈춘다.** 공개 글자가 아니라
+     * 자바스크립트 전역 이름이라 브랜드 철자 통일에서 뺀다.
+     */
+    const dirs = ["src", "sites", "db", "marketing/src"];
+    const found: string[] = [];
+    const walk = (d: string): void => {
+      for (const e of readdirSync(d, { withFileTypes: true })) {
+        const f = `${d}/${e.name}`;
+        if (e.isDirectory()) { if (e.name !== "node_modules" && e.name !== ".next") walk(f); continue; }
+        /* 결과지 엔진이 읽는 전역 이름. 고치면 엔진이 멈춘다 */
+        if (e.name === "v2-data.js" || e.name === "metri-data.js") continue;
+        const code = /\.(ts|tsx|js|mjs|sql|json|css)$/.test(e.name);
+        if (!code && !customerDoc(f)) continue;
+        const text = strip(f, readFileSync(f, "utf8"));
+        for (const bad of OLD) if (text.includes(bad)) found.push(`${f}: ${bad}`);
+      }
+    };
+    for (const d of dirs) if (existsSync(d)) walk(d);
+    ok("옛 법인 표시와 옛 상품 문구가 나가는 글자에 없다", found.length === 0,
+      found.slice(0, 5).join(" · "));
+  }
+
+  /**
+   * `확인 필요` 는 **통신판매업 신고번호 한 칸에만** 뜨는가.
+   *
+   * 그 글자가 상호나 전화번호 자리에 뜨면 사는 사람이 보는 것은 "이 가게는
+   * 누가 하는지 모른다" 다. 신고번호 한 칸은 아직 신청하지 않았으니 일부러
+   * 그렇게 둔 것이고, **일부러인 한 칸과 실수인 여섯 칸을 가른다.**
+   */
+  {
+    const { businessInfo } = await import("../src/lib/business");
+    const biz = await businessInfo();
+    const blank = biz.fields.filter((f) => !f.value).map((f) => f.key);
+    const onlyMailorder = blank.length === 0
+      || (blank.length === 1 && blank[0] === "mailorder");
+    ok("`확인 필요` 가 통신판매업 신고번호 말고는 안 뜬다", onlyMailorder,
+      `비어 있는 칸: ${blank.join(" · ") || "없음"}. /admin/business 에서 채웁니다`);
   }
 
   report();

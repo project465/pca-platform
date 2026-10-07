@@ -4,7 +4,7 @@
 #
 # **백업은 복구해 보기 전까지 완료가 아니다**(규격 §13). 이 스크립트는
 # 받는 일만 하고, 복구 절차와 시험은 `docs/metri/44_production_infra.md`
-# 에 적혀 있다. 복구를 한 번 해 본 날짜를 `DB_BACKUP_VERIFIED_AT` 에
+# 에 적혀 있다. 복구를 한 번 해 본 기록은 `scripts/backup-restore.sh` 가
 # 적어야 `npm run launch:check` 가 그 줄을 통과시킨다.
 #
 # 쓰는 법 (운영 호스트의 cron):

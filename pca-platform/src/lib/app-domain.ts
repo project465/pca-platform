@@ -129,3 +129,39 @@ export async function probeAppDomain(timeoutMs = 5000): Promise<AppProbe> {
 export function forgetAppProbe(): void {
   cached = null;
 }
+
+/**
+ * 이 주소가 **오래 가는 주소인가.**
+ *
+ * 메일 링크·결제 콜백은 받는 사람이 **다른 날** 연다. 그래서 지금 열리는
+ * 것으로는 모자라고, **그때도 그 자리에 있어야 한다.**
+ *
+ * 오래 가지 않는 자리가 넷이다.
+ *
+ *   localhost·사설 주소     밖에서 아예 안 열린다
+ *   staging 호스트          공개 전 배포본. 손님에게 보낼 자리가 아니다
+ *   `*.up.railway.app`      **관리형 플랫폼이 붙여 주는 임시 주소.**
+ *                           서비스를 다시 만들거나 도메인을 붙이면 바뀐다.
+ *                           바뀐 뒤에 열린 메일 링크는 아무 데도 닿지 않고,
+ *                           그 메일은 되돌릴 수 없다
+ *   `*.vercel.app` 미리보기 커밋마다 새로 생긴다
+ *
+ * `appDomain()` 이 앞의 둘을 막는다. 임시 주소는 **막지 않고 이름을
+ * 돌려준다**: 도메인을 붙이기 전까지는 그 주소로 띄워 보는 것이 맞고,
+ * 그 상태로 손님에게 메일을 보내지 않는 것이 요점이다.
+ */
+export function ephemeralHost(url: string | null | undefined): string | null {
+  const raw = (url ?? "").trim();
+  if (!raw) return null;
+  let host: string;
+  try { host = new URL(raw).hostname; } catch { return null; }
+  if (/\.up\.railway\.app$/i.test(host)) {
+    return "Railway 가 붙여 주는 임시 주소입니다. 도메인을 붙이거나 서비스를 " +
+      "다시 만들면 바뀌고, 그 뒤에 열린 메일 링크는 아무 데도 닿지 않습니다.";
+  }
+  if (/\.vercel\.app$/i.test(host)) return "커밋마다 새로 생기는 미리보기 주소입니다.";
+  if (/\.onrender\.com$/i.test(host) || /\.fly\.dev$/i.test(host)) {
+    return "관리형 플랫폼이 붙여 주는 임시 주소입니다.";
+  }
+  return null;
+}

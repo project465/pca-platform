@@ -410,32 +410,12 @@ export const UI = {
     "Decide after you have read the report. You will not retake the items.",
     "Raporu okuduktan sonra karar verin. Soruları tekrar çözmezsiniz.",
   ),
-      // 대학판 무료 구간. 고교판과 같은 구조지만 브랜드와 나오는 것이 다르다
-  freeTitleUniv: d(
-    "직무 묶음까지는 무료입니다",
-    "The job groups are free",
-    "Görev grupları ücretsizdir",
-  ),
-  freeSubUniv: d(
-    "253문항이고 30분쯤 걸립니다. 답을 다 하시면 결과지가 바로 열리고, 중간에 결제 정보를 넣는 곳은 없습니다.",
-    "253 items, about 30 minutes. The report opens as soon as you finish. There is no card field anywhere in this path.",
-    "253 soru, yaklaşık 30 dakika. Bitirdiğinizde rapor hemen açılır.",
-  ),
-  freeInc1Univ: d(
-    "직무 영역 10개 적합도: 구간과 묶음으로 냅니다. 등수는 매기지 않습니다",
-    "Fit across the ten job areas: bands and groups. No ranking",
-    "On görev alanında uyum: sıralama değil, aralık",
-  ),
-  freeExc1Univ: d(
-    "업무 성향 6축과 역량 격차, 기업 매칭은 유료 구간입니다",
-    "The six work styles, the competency gaps and employer matching are the paid part",
-    "Altı çalışma eğilimi, yetkinlik farkları ve işveren eşleştirmesi ücretli bölümdür",
-  ),
-  freeExc2Univ: d(
-    "결과지를 본 뒤에 정하면 됩니다. 문항을 다시 풀지 않습니다.",
-    "Decide after you have read the report. You will not retake the items.",
-    "Raporu okuduktan sonra karar verin. Soruları tekrar çözmezsiniz.",
-  ),
+  /* **대학판 무료 구간 다섯 줄을 지웠다.**
+     옛 검사(PCA_ME_V1)의 문항 수를 그대로 들고 있던 사전이다 — 한 줄은
+     "253문항이고 30분쯤 걸립니다" 였다. 지금 파는 것은 ME_V2 이고 문항
+     수도 다르다. 읽는 화면이 하나도 없어서 눈에 안 띄었는데, **아무도
+     안 읽는 틀린 문구가 사전에 남아 있으면 다음 사람이 그것을 집어
+     쓴다.** 등급으로 갈리는 지금 구조에서는 `tiers.ts` 가 그 자리다. */
 
   freeCta: d("무료로 시작하기", "Start free", "Ücretsiz başla"),
 

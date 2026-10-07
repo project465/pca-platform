@@ -145,7 +145,7 @@ export async function openAttempt(userId: string, instrumentId?: string): Promis
    * 어떤 검사지를 푸는가.
    *
    * 산 상품이 정한다. 예전에는 id 가 가장 큰 검사지를 집었는데, 고교판을
-   * 올리는 순간 29,000원을 내고 대학판을 산 사람이 고교 문항을 받게 된다.
+   * 올리는 순간 돈을 내고 대학판을 산 사람이 고교 문항을 받게 된다.
    * 상품에 붙은 트랙(products.track_code)이 검사지를 가리키고, 트랙이
    * 없으면 대학판으로 떨어진다. 기존 주문이 그렇다.
    */

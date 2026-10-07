@@ -11,7 +11,38 @@
  * **쌓이기만 하는 것과 나가는 것은 다른 상태다.** 대행사를 붙인 날
  * 처음 보내 보면, 그날 못 나가는 까닭을 손님이 먼저 안다.
  *
+ * ## 거래 메일 여덟 가지 — 무엇이 언제 나가는가
+ *
+ * | 종류 | 쌓는 자리 | 보내는 길 | 언어 | 링크 바탕 | 다시 시도 |
+ * |---|---|---|---|---|---|
+ * | `signup` | 가입 처리 | `flushOutbox` | 쌓을 때 적은 `locale` | `publicBaseForLocale` | 3번 |
+ * | `purchase_done` | 결제 확인(웹훅·mock) | `flushOutbox` | 주문의 `locale` | 같음 | 3번 |
+ * | `report_ready` | 채점·공개 확인 뒤 | `flushOutbox` | 응시자 `locale` | 같음 | 3번 |
+ * | `upgrade_done` | 등급 상향 결제 확인 | `flushOutbox` | 주문의 `locale` | 같음 | 3번 |
+ * | `refund_requested` | 환불 요청 접수 | `flushOutbox` | 주문의 `locale` | 같음 | 3번 |
+ * | `refund_done` | 환불 처리 | `flushOutbox` | 주문의 `locale` | 같음 | 3번 |
+ * | `code_low` | 재고 점검(야간) | `flushOutbox` | **한국어만** (받는 사람이 운영자) | 같음 | 3번 |
+ * | `password_reset`·`verify_email` | **쌓지 않는다** | `sendNow` 즉시 | 부르는 쪽이 넘긴다 | 링크를 그 자리에서 만든다 | 없음 — 다시 누르면 된다 |
+ *
+ * 규칙 넷이 이 표를 받친다.
+ *
+ *   1. **언어는 쌓을 때 적는다.** 보낼 때는 그 사람이 화면에 없어서
+ *      고를 수 없고, 짐작하면 영어로 결제한 사람에게 한국어가 간다
+ *   2. **링크 바탕은 요청 호스트가 아니다.** 받는 사람은 다른 날 다른
+ *      자리에서 연다. `PLATFORM_URL` 하나에서 읽는다
+ *   3. **열쇠가 든 메일은 표에 적지 않는다.** 재설정 링크가
+ *      `outbox.payload` 에 남으면 DB 가 새는 순간 남의 계정이 된다
+ *   4. **못 보낸 것을 보냈다고 적지 않는다.** 자격증명이 없으면
+ *      `held`(그대로 둠)이고 `sent` 가 아니다. 셋을 가른다:
+ *      `sent` 나갔다 · `held` 아직 못 보낸다 · `skipped` 보낼 곳이 없다
+ *
  *   DATABASE_URL=... npx tsx scripts/mail-check.ts
+ *
+ * 자격증명을 들고 돌리면 **진짜 서버까지** 본다. 없으면 그 줄은 BLOCKED 로
+ * 끝낸다 — 실패처럼 숨기지 않는다.
+ *
+ *   MAIL_HOST=... MAIL_PORT=587 MAIL_USER=... MAIL_PASS=... \
+ *   MAIL_FROM=... MAIL_CHECK_TO=나@example.com npx tsx scripts/mail-check.ts
  */
 import { createServer, type Socket } from "node:net";
 import { query, queryOne } from "../src/lib/db";
@@ -96,6 +127,25 @@ function decodeBody(raw: string): string {
   }
   return body;
 }
+
+/**
+ * 대행사 자격증명을 **main() 이 덮어쓰기 전에** 떠 둔다.
+ *
+ * 아래에서 가짜 SMTP 로 바꿔 꽂으므로, 그 뒤에 읽으면 늘 가짜가 보인다.
+ */
+const REAL = {
+  host: (process.env.MAIL_HOST ?? "").trim(),
+  port: (process.env.MAIL_PORT ?? "").trim(),
+  user: (process.env.MAIL_USER ?? "").trim(),
+  pass: (process.env.MAIL_PASS ?? "").trim(),
+  from: (process.env.MAIL_FROM ?? "").trim(),
+  to: (process.env.MAIL_CHECK_TO ?? "").trim(),
+  platform: (process.env.PLATFORM_URL ?? "").trim(),
+};
+
+/** 아직 못 본 것. 실패와 섞지 않는다 */
+const BLOCKED: { n: string; why: string }[] = [];
+const blocked = (n: string, why: string) => BLOCKED.push({ n, why });
 
 async function main() {
   const PORT = 2526;
@@ -204,6 +254,88 @@ async function main() {
       .every((k) => renderMail(k, "ko")?.subject && renderMail(k, "en")?.subject),
     "src/lib/outbox.ts 의 MAIL");
 
+  /* ── 6. 손님에게 닿는 주소인가 ─────────────────────────────────
+     **문면이 서는 것과 그 링크가 닿는 것은 다른 질문이다.** 여기까지는
+     가짜 SMTP 가 받아 줬으므로 전부 초록이었다. 링크가 `localhost` 를
+     가리키고 있어도 그렇다. */
+  const { publicBaseForLocale } = await import("../src/lib/urls");
+  const { ephemeralHost, appDomain } = await import("../src/lib/app-domain");
+  /* 가짜 SMTP 를 꽂느라 지운 값을 되돌려 놓고 본다 */
+  if (REAL.platform) process.env.PLATFORM_URL = REAL.platform;
+  const baseKo = (await publicBaseForLocale("ko")) ?? "";
+  const baseEn = (await publicBaseForLocale("en")) ?? "";
+
+  ok("메일 링크의 바탕 주소가 있다", Boolean(baseKo && baseEn),
+    `ko=${baseKo || "(빈 값)"} · en=${baseEn || "(빈 값)"}`);
+  /* **localhost 가 적힌 메일은 되돌릴 수 없다.** 받은 사람이 눌러도 제
+     컴퓨터를 열고, 우리는 그것을 알 방법이 없다 */
+  ok("링크 바탕이 localhost·사설 주소가 아니다",
+    ![baseKo, baseEn].some((b) => /localhost|127\.0\.0\.1|0\.0\.0\.0|\.local(?::|$)|^http:\/\//i.test(b)),
+    `ko=${baseKo} · en=${baseEn}`);
+  /* **관리형 플랫폼의 임시 주소도 안 된다.** 도메인을 붙이는 날 그
+     주소가 바뀌고, 그 전에 나간 메일은 전부 끊긴다 */
+  const temp = [baseKo, baseEn].map(ephemeralHost).find(Boolean) ?? null;
+  ok("링크 바탕이 임시 주소가 아니다", temp === null, temp ?? `ko=${baseKo}`);
+  /* **PLATFORM_URL 하나가 정본이다**(설계 원칙 10). 메일이 다른 자리에서
+     주소를 읽으면 어느 날 화면은 초록인데 링크가 빈 도메인으로 간다 */
+  const app = appDomain();
+  /* **적혀 있는데 못 쓰는 것이 비어 있는 것보다 나쁘다.** 그러면
+     `publicBase` 가 조용히 소개 사이트 주소로 되돌아가고, 결제를 끝낸
+     사람이 가격표 쪽으로 떨어진다. 비어 있는 것은 아직 안 넣은 것이라
+     `launch:check` 가 막지만, 틀린 것은 초록을 지나간다 */
+  ok("PLATFORM_URL 이 적혀 있으면 쓸 수 있다",
+    REAL.platform === "" || app.ok,
+    app.ok ? app.url : `${REAL.platform || "(빈 값)"} — ${app.ok ? "" : app.reason}`);
+  ok("링크 바탕이 PLATFORM_URL 과 같다",
+    !app.ok || (baseKo === app.url && baseEn === app.url),
+    app.ok ? `PLATFORM_URL=${app.url}` : `PLATFORM_URL 이 아직 없다 (${app.reason})`);
+
+  /* ── 7. 발신 주소의 꼴 ─────────────────────────────────────────── */
+  const addr = REAL.from.replace(/^.*<|>.*$/g, "").trim();
+  ok("MAIL_FROM 이 주소 꼴이다",
+    REAL.from === "" || /^[^@\s<>]+@[^@\s<>.]+\.[^@\s<>]+$/.test(addr),
+    REAL.from === "" ? "아직 비어 있다 — 아래 BLOCKED 를 본다" : REAL.from);
+
+  /* ── 8. 진짜 서버까지 ──────────────────────────────────────────
+     **자격증명이 없으면 BLOCKED 로 끝낸다.** 여기를 초록으로 적으면
+     "메일 다 됐다" 로 읽히고, 그 상태로 켜면 가입한 사람이 먼저 안다.
+     실패(빨강)로 적어도 안 된다 — 고칠 코드가 없는 빨간 줄은 다음부터
+     아무도 안 본다. */
+  if (!REAL.host || !REAL.from) {
+    blocked("진짜 SMTP 에 붙어 본다",
+      "MAIL_HOST · MAIL_FROM 이 없다. 대행사 다섯 줄(MAIL_HOST · MAIL_PORT · " +
+      "MAIL_USER · MAIL_PASS · MAIL_FROM)을 받아야 한다");
+    blocked("진짜로 한 통 보내 본다",
+      "같은 다섯 줄과 받을 주소(MAIL_CHECK_TO)가 없다");
+  } else {
+    const { createTransport } = await import("nodemailer");
+    const port = Number(REAL.port || 587);
+    const tx = createTransport({
+      host: REAL.host, port, secure: port === 465,
+      auth: REAL.user ? { user: REAL.user, pass: REAL.pass } : undefined,
+    });
+    let why = "";
+    const up = await tx.verify().then(() => true).catch((e) => { why = String(e).slice(0, 160); return false; });
+    ok("진짜 SMTP 에 붙어 본다", up, up ? `${REAL.host}:${port}` : why);
+
+    if (!REAL.to) {
+      blocked("진짜로 한 통 보내 본다",
+        "받을 주소가 없다. MAIL_CHECK_TO=나@example.com 을 넣고 다시 돌린다");
+    } else if (up) {
+      let sendWhy = "";
+      const went = await tx.sendMail({
+        from: REAL.from, to: REAL.to,
+        subject: "[CareerMatri] 발송 점검",
+        text: "이 메일이 보이면 거래 메일이 실제로 나갑니다.\n" +
+          `보낸 자리: ${app.ok ? app.url : "(PLATFORM_URL 없음)"}\n`,
+      }).then(() => true).catch((e) => { sendWhy = String(e).slice(0, 160); return false; });
+      ok("진짜로 한 통 보내 본다", went, went ? `${REAL.to} 로 보냈다` : sendWhy);
+    } else {
+      blocked("진짜로 한 통 보내 본다", "서버에 못 붙어서 보내 보지 못했다");
+    }
+    tx.close();
+  }
+
   await query(`DELETE FROM outbox WHERE user_id = $1`, [uid]);
   stop();
 
@@ -211,9 +343,15 @@ async function main() {
   for (const t of T) {
     console.log(`  ${t.pass ? "OK  " : "실패"} ${t.n}${t.d ? `  (${t.d})` : ""}`);
   }
+  /* **못 본 것을 따로 적는다.** 초록도 빨강도 아니다. 섞으면 둘 다
+     쓸모가 없어진다 */
+  for (const b of BLOCKED) console.log(`  막힘 ${b.n}  (${b.why})`);
   console.log(bad.length
     ? `\n${bad.length}개가 걸렸다.`
-    : `\n메일 검사 OK — ${T.length}가지. 대행사만 꽂으면 나간다.`);
+    : BLOCKED.length
+      ? `\n코드 쪽 ${T.length}가지 OK. ${BLOCKED.length}가지는 자격증명이 없어 ` +
+        `아직 못 봤다 — 대행사만 꽂으면 나간다.`
+      : `\n메일 검사 OK — ${T.length}가지. 진짜 서버까지 나갔다.`);
   process.exit(bad.length ? 1 : 0);
 }
 

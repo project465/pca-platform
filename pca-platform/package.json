@@ -85,7 +85,9 @@
     "mail:check": "tsx scripts/mail-check.ts",
     "whats:live": "node scripts/whats-live.mjs",
     "josa:check": "node scripts/josa-check.mjs",
-    "prod:check": "node scripts/prod-check.mjs"
+    "prod:check": "node scripts/prod-check.mjs",
+    "image:check": "node scripts/image-check.mjs",
+    "ops:check": "tsx scripts/ops-check.ts"
   },
   "dependencies": {
     "@types/nodemailer": "^8.0.1",
