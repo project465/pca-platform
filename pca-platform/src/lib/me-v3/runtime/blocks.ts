@@ -21,6 +21,9 @@
 import type { Tier } from "../scoring/types";
 import type { BankItem } from "../scoring/normalize";
 import { DEEP_BLOCK, PROBE_BLOCK } from "../scoring/normalize";
+import {
+  BRANCH_COPY, INDUSTRY_DEEP_MAX, ROLE_SECOND_MAX, type BranchBlock,
+} from "./routing";
 
 /** 응시자가 지나는 큰 단계. 진행률의 윗칸이다 */
 export const STAGES = [
@@ -37,7 +40,7 @@ export const STAGES = [
 export type StageCode = typeof STAGES[number]["code"];
 
 export type ScreenKind =
-  | "profile" | "sweep" | "single" | "checklist" | "scene"
+  | "profile" | "sweep" | "single" | "pair" | "group" | "checklist" | "scene"
   | "pick-industry" | "pick-role" | "pick-org" | "transition" | "done";
 
 export type Screen = {
@@ -83,7 +86,7 @@ export type Plan = {
 export type PlanInput = {
   tier: Tier;
   stage: "bachelor" | "master" | "phd" | "postdoc";
-  branchBlock: "ug-core" | "grad-stem";
+  branchBlock: BranchBlock;
   /** 대학원이 타계열이면 번역 맥락 묶음을 더 받는다 */
   crossField: boolean;
   probe: string[];
@@ -93,7 +96,58 @@ export type PlanInput = {
   roleInterest: string[];
   /** 격자에서 묶인 영역 둘. 비어 있으면 강제 선택을 띄우지 않는다 */
   tiedPair: string[];
+  /**
+   * Core 선별에서 이미 강하게 답한 (영역 · 축). `routing/strongCells` 가 센다.
+   *
+   * **쓰는 자리가 하나다**: 산업 판단에서 비어 있는 축을 먼저 세우는 순서.
+   * 판정에는 들어가지 않는다.
+   */
+  strongCells?: string[];
+  /** 일관성 짝을 어느 축으로 물을지. 비면 은행의 첫 짝 */
+  consistAxis?: string | null;
+  /**
+   * 영역 훑기에서 **해 본 적이 있다고 답한** 영역.
+   *
+   * 선별 축의 둘째 문항은 이 영역에서만 뜬다. 한 칸에 문항을 둘 둔 까닭은
+   * 체크리스트를 고르지 않은 사람도 소유까지 갈 수 있게 하려는 것인데,
+   * **해 본 적이 없다고 답한 영역에서는 소유가 설 자리가 없다.** 그 영역에
+   * 같은 축을 두 번 묻는 것은 `없다` 를 두 번 받는 일이다.
+   *
+   * 비어 있으면 거르지 않는다(옛 응시와 검사 틀).
+   */
+  touched?: string[];
 };
+
+/** 목록을 둘씩 묶는다. 홀수면 마지막 하나는 혼자 선다 */
+function byTwo<T>(list: T[]): T[][] {
+  const out: T[][] = [];
+  for (let i = 0; i < list.length; i += 2) out.push(list.slice(i, i + 2));
+  return out;
+}
+
+/** 선별 네 축을 묻는 차례. 화면 묶기에 쓴다 */
+const AX_ORDER = ["J3", "J5", "J6", "J7"] as const;
+
+/**
+ * 경험 번역 열 단계를 묶는 네 덩이.
+ *
+ * 단계를 줄이지 않았다. 열 단계가 그대로 있고 **한 화면에 두세 단계**를
+ * 세운다: 문제와 조건 · 방법과 판단 · 결과와 검증 · 조직과 전이.
+ */
+const TRANS_GROUPS = [
+  { key: "frame", ids: ["TR_T1", "TR_T2", "TR_T3"] as string[],
+    subject: "무엇을 풀었나",
+    question: "그 일의 문제와 조건을 골라주세요" },
+  { key: "method", ids: ["TR_T4", "TR_T5"] as string[],
+    subject: "어떻게 했나",
+    question: "쓴 방법과 직접 정한 것을 골라주세요" },
+  { key: "result", ids: ["TR_T6", "TR_T7", "TR_T8"] as string[],
+    subject: "무엇이 남았나",
+    question: "남긴 것과 확인한 방법을 골라주세요" },
+  { key: "handoff", ids: ["TR_T9", "TR_T10"] as string[],
+    subject: "어디에 쓰였나",
+    question: "그 결과가 쓰인 자리를 골라주세요" },
+] as const;
 
 const AX_LABEL: Record<string, string> = {
   J1: "문제 정의", J2: "요구 해석", J3: "직접 판단", J4: "방법과 도구",
@@ -118,8 +172,21 @@ export type Deps = {
   roleName: (code: string) => string;
 };
 
+/** 등급이 겹쳐 쌓이는 차례. BASIC ⊂ STANDARD ⊂ PRO */
+const TIER_RANK: Record<string, number> = { BASIC: 0, STANDARD: 1, PRO: 2 };
+
 export function buildPlan(input: PlanInput, d: Deps): Plan {
-  const { items, domainName, wording, gridRow } = d;
+  const { domainName, wording, gridRow } = d;
+  /**
+   * **등급 거름막을 한자리에 둔다.**
+   *
+   * 묶음마다 `tier !== "BASIC"` 을 적어 두고 있었는데, 그러면 한 묶음 안에서
+   * 등급이 갈리는 문항(선별 축의 둘째 문항)을 아무도 거르지 않는다. 실제로
+   * 그랬다: 둘째 문항을 STANDARD 로 올렸는데 선별 등급 응답 수가 그대로
+   * 쉰넷이었다. 판정 쪽(`normalize/routedFor`)과 같은 규칙이다.
+   */
+  const items = d.items.filter((i) =>
+    (TIER_RANK[i.tier] ?? 0) <= (TIER_RANK[input.tier] ?? 0));
   const screens: Screen[] = [];
   const add = (s: Screen) => screens.push(s);
   const byModule = (m: string) => items.filter((i) => i.module === m);
@@ -204,24 +271,36 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
     });
   }
 
-  /* ── 공통 판단과 학위 장면 ── */
-  for (const i of byModule("CORE-JUDGE")) {
+  /* ── 공통 판단과 학위 장면 ──
+        **둘씩 묶어 세운다.** 보기 넷을 쓰는 문항을 한 화면에 하나씩 띄우면
+        머리말과 도움말을 열두 번 다시 읽는다. 둘이면 같은 머리말 아래에서
+        이어 답한다. **응답은 줄지 않는다** */
+  for (const [n, pair] of byTwo(byModule("CORE-JUDGE")).entries()) {
     add({
-      id: `judge-${i.item_id}`, stage: "JUDGE", kind: "single", required: true, auto: true,
+      id: `judge-${n + 1}`, stage: "JUDGE",
+      kind: pair.length > 1 ? "pair" : "single",
+      required: true, auto: pair.length === 1,
       eyebrow: "일하는 방식",
-      question: wording(i.item_id, input.stage),
-      items: [i.item_id],
+      question: pair.length > 1
+        ? "해 보신 적이 있는 쪽을 골라주세요"
+        : wording(pair[0].item_id, input.stage),
+      items: pair.map((i) => i.item_id),
     });
   }
-  for (const i of items.filter((x) => x.education_routing === input.branchBlock)) {
+  /* 학위 묶음. 학위마다 다른 여섯 자리를 묻는다 */
+  const bc = BRANCH_COPY[input.branchBlock];
+  const branch = items.filter((x) => x.education_routing === input.branchBlock);
+  for (const [n, pair] of byTwo(branch).entries()) {
     add({
-      id: `branch-${i.item_id}`, stage: "JUDGE", kind: "single", required: false, auto: true,
-      eyebrow: input.branchBlock === "ug-core" ? "수업과 과제" : "연구와 과제",
-      question: wording(i.item_id, input.stage),
-      help: input.branchBlock === "ug-core"
-        ? "수업, 실험, 캡스톤, 인턴 경험을 모두 포함해 답해주세요."
-        : "연구, 과제, 논문 작업을 모두 포함해 답해주세요.",
-      items: [i.item_id],
+      id: `branch-${n + 1}`, stage: "JUDGE",
+      kind: pair.length > 1 ? "pair" : "single",
+      required: false, auto: pair.length === 1,
+      eyebrow: bc.eyebrow,
+      question: pair.length > 1
+        ? "해 보신 적이 있는 쪽을 골라주세요"
+        : wording(pair[0].item_id, input.stage),
+      help: n === 0 ? bc.help : undefined,
+      items: pair.map((i) => i.item_id),
     });
   }
   if (input.crossField) {
@@ -249,14 +328,26 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
   }
   for (const td of input.probe) {
     const list = items.filter((x) => x.module === PROBE_BLOCK && x.technical_domain === td);
-    for (const i of list) {
+    /* **한 축의 두 문항을 한 화면에 세운다.** 같은 축의 서로 다른 판단
+       둘이라, 나란히 읽으면 응시자가 그 축이 무엇을 묻는지 안다. 따로
+       띄우면 비슷한 문장을 두 번 읽은 것으로 읽히고 화면이 배로 늘어난다.
+       **응답은 줄지 않는다**: 두 문항을 그대로 받는다 */
+    /* 해 본 적이 없다고 답한 영역은 축마다 하나만 묻는다 */
+    const both = !input.touched || input.touched.includes(td);
+    for (const ax of AX_ORDER) {
+      const all = list.filter((x) => x.evidence_axis === ax);
+      const cell = both ? all : all.slice(0, 1);
+      if (!cell.length) continue;
       add({
-        id: `probe-${i.item_id}`, stage: "JUDGE", kind: "single",
-        required: false, auto: true,
+        id: `probe-${td}-${ax}`, stage: "JUDGE",
+        kind: cell.length > 1 ? "pair" : "single",
+        required: false, auto: cell.length === 1,
         eyebrow: domainName(td),
-        subject: AX_LABEL[i.evidence_axis ?? ""] ?? "",
-        question: wording(i.item_id, input.stage),
-        items: [i.item_id], domain: td,
+        subject: AX_LABEL[ax] ?? "",
+        question: cell.length > 1
+          ? `${domainName(td)}에서 ${AX_LABEL[ax]}에 해당하는 일`
+          : wording(cell[0].item_id, input.stage),
+        items: cell.map((x) => x.item_id), domain: td,
       });
     }
   }
@@ -271,14 +362,19 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
       items: [],
     });
     for (const td of input.deep) {
-      for (const i of items.filter((x) => x.module === DEEP_BLOCK && x.technical_domain === td)) {
+      const list = items.filter((x) => x.module === DEEP_BLOCK && x.technical_domain === td);
+      /* 심화 네 축을 둘씩 세운다. 영역 이름을 네 번 다시 읽지 않는다 */
+      for (const [n, pair] of byTwo(list).entries()) {
         add({
-          id: `deep-${i.item_id}`, stage: "DEEP", kind: "single",
-          required: false, auto: true,
+          id: `deep-${td}-${n + 1}`, stage: "DEEP",
+          kind: pair.length > 1 ? "pair" : "single",
+          required: false, auto: pair.length === 1,
           eyebrow: domainName(td),
-          subject: AX_LABEL[i.evidence_axis ?? ""] ?? "",
-          question: wording(i.item_id, input.stage),
-          items: [i.item_id], domain: td,
+          subject: pair.map((i) => AX_LABEL[i.evidence_axis ?? ""] ?? "").join(" · "),
+          question: pair.length > 1
+            ? "해 보신 적이 있는 쪽을 골라주세요"
+            : wording(pair[0].item_id, input.stage),
+          items: pair.map((i) => i.item_id), domain: td,
         });
       }
     }
@@ -296,14 +392,20 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
       items: [], domain: td,
     });
   }
+  /* **일관성은 한 짝만 묻는다.** 두 짝을 다 물으면 네 화면이 되는데, 이
+     묶음이 내놓는 것은 응답과 근거의 어긋남 하나뿐이라 짝 하나로 선다.
+     어느 짝을 물을지는 Core 에서 덜 확인된 축이 정한다 */
   if (input.tier !== "BASIC") {
-    for (const i of byModule("CONSIST")) {
+    const cn = byModule("CONSIST");
+    const axis = input.consistAxis ?? cn[0]?.evidence_axis ?? "J3";
+    const pair = cn.filter((i) => i.evidence_axis === axis);
+    if (pair.length) {
       add({
-        id: `consist-${i.item_id}`, stage: "EVIDENCE", kind: "single",
-        required: false, auto: true,
+        id: `consist-${axis}`, stage: "EVIDENCE", kind: "pair",
+        required: false, auto: false,
         eyebrow: "경험 확인",
-        question: wording(i.item_id, input.stage),
-        items: [i.item_id],
+        question: "두 자리에서 같은 일을 해 보셨는지 묻습니다",
+        items: pair.map((i) => i.item_id),
       });
     }
   }
@@ -325,9 +427,13 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
     items: [],
   });
   if (input.tier !== "BASIC") {
-    for (const code of input.roleInterest) {
-      const list = items.filter((x) =>
+    for (const [n, code] of input.roleInterest.entries()) {
+      const all = items.filter((x) =>
         x.module === "ROLE" && x.item_id.startsWith(`${code}_`));
+      /* 둘째 역할은 **PRO 에서만** 앞머리 셋을 묻는다. 견주기 위한
+         자리이고, STANDARD 에서 둘을 똑같이 묻으면 응답이 열 늘어난다 */
+      const list = n === 0 ? all
+        : input.tier === "PRO" ? all.slice(0, ROLE_SECOND_MAX) : [];
       if (!list.length) continue;
       for (const i of list) {
         add({
@@ -345,8 +451,18 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
   /* ── 산업 판단. PRO 에서 고른 산업 하나를 깊게 ── */
   const deepIndustry = input.tier === "PRO" ? input.industryInterest[0] : undefined;
   if (deepIndustry) {
-    const list = items.filter((x) =>
+    const pool = items.filter((x) =>
       x.module === "INDUSTRY" && x.item_id.startsWith(`${deepIndustry}_`));
+    /* **비어 있는 축을 먼저 세운다.** Core 에서 이미 강하게 답한 축을 그
+       산업 말로 한 번 더 묻는 것은 같은 판단을 표현만 바꿔 되묻는 일이다.
+       순서만 바꾸고 판정은 바꾸지 않는다 */
+    const strong = new Set(input.strongCells ?? []);
+    const list = [...pool]
+      .sort((a, b) => {
+        const k = (x: BankItem) => strong.has(`${x.technical_domain}.${x.evidence_axis}`) ? 1 : 0;
+        return k(a) - k(b);
+      })
+      .slice(0, INDUSTRY_DEEP_MAX);
     const sc = d.scene(deepIndustry);
     if (list.length) {
       add({
@@ -379,22 +495,31 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
       help: "열 단계로 나누어 묻습니다. 직접 적는 칸은 건너뛰어도 됩니다.",
       items: [],
     });
-    for (const i of byModule("TRANS-10")) {
+    /* **열 단계를 열 화면으로 띄우지 않는다.** 한 경험을 열 번 끊어 물으면
+       응시자가 매번 그 경험을 처음부터 떠올린다. 네 덩이로 묶으면 같은
+       경험을 한 자리에서 이어 적는다. **단계는 그대로 열이다** */
+    const trans = byModule("TRANS-10");
+    for (const g of TRANS_GROUPS) {
+      const list = trans.filter((i) => g.ids.includes(i.item_id));
+      if (!list.length) continue;
       add({
-        id: `trans-${i.item_id}`, stage: "TRANSLATE", kind: "single",
+        id: `trans-${g.key}`, stage: "TRANSLATE", kind: "group",
         required: false, auto: false,
         eyebrow: "경험 번역",
-        question: wording(i.item_id, input.stage),
-        items: [i.item_id],
+        subject: g.subject,
+        question: g.question,
+        items: list.map((i) => i.item_id),
       });
     }
-    for (const i of byModule("TARGET")) {
+    const target = byModule("TARGET");
+    if (target.length) {
       add({
-        id: `target-${i.item_id}`, stage: "TRANSLATE", kind: "single",
-        required: false, auto: true,
+        id: "target", stage: "TRANSLATE", kind: "group",
+        required: false, auto: false,
         eyebrow: "목표",
-        question: wording(i.item_id, input.stage),
-        items: [i.item_id],
+        question: "지금 보고 있는 방향을 골라주세요",
+        help: "결과에서 이 선택과 확인된 근거를 나란히 놓고 봅니다.",
+        items: target.map((i) => i.item_id),
       });
     }
   }

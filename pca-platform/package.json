@@ -120,7 +120,8 @@
     "v3:pilot:purge": "tsx scripts/v3-pilot-purge.ts",
     "v3:result:shots": "node scripts/v3-result-shots.mjs",
     "v3:result:pdf": "node scripts/v3-result-pdf.mjs",
-    "v3:migrate": "tsx scripts/v3-migrate-check.ts"
+    "v3:migrate": "tsx scripts/v3-migrate-check.ts",
+    "v3:length": "tsx scripts/v3-length-check.ts"
   },
   "dependencies": {
     "@types/nodemailer": "^8.0.1",

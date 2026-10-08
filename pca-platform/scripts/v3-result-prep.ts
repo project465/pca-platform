@@ -56,11 +56,14 @@ async function pick(a: V3Attempt, id: string, lv: Level): Promise<Answer | null>
   }
   /* 보기 셋. 값은 은행이 들고 있고 여기서 만들지 않는다 */
   if (c.kind === "pick3") {
-    const n = c.options.length;
-    const pick = c.options[lvl === "none" ? n - 1 : lvl === "mid" ? 1 : 0];
+    /* `잘 모르겠다` 자리를 빼고 고른다. 그 보기는 값이 `null` 이라 수로
+       저장되지 않는다 */
+    const opts = c.options.filter((o) => o.value !== null);
+    const n = opts.length;
+    const pick = opts[lvl === "none" ? n - 1 : lvl === "mid" ? 1 : 0];
     return c.answer === "exposure"
-      ? { kind: "exposure", value: pick.value }
-      : { kind: "scale5", value: pick.value };
+      ? { kind: "exposure", value: pick.value as number }
+      : { kind: "scale5", value: pick.value as number };
   }
   const o = c.options[0];
   return o ? { kind: "choice", value: o.value } : null;

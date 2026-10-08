@@ -2,13 +2,14 @@
 
 import { useCallback, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import type { Answer } from "@/lib/me-v3/scoring/types";
+import { UNKNOWN, type Answer } from "@/lib/me-v3/scoring/types";
 import {
   answerAction, cursorAction, finishAction, noteAction, picksAction,
   picksAction3, profileAction,
 } from "./actions";
 import {
-  FIELD_LABEL, STAGE_LABEL, UNDERGRAD_GLOSS, UNDERGRAD_LABEL,
+  FIELD_LABEL, STAGE_LABEL, UNDERGRAD_ASK, UNDERGRAD_GLOSS, UNDERGRAD_HELP,
+  UNDERGRAD_LABEL,
 } from "../tier-text";
 import type { Field, ProgressModel, ScreenModel } from "./model";
 
@@ -240,14 +241,15 @@ export default function Screen({
                 </div>
               </fieldset>
             ) : null}
-            {/* 대학원이 인문사회나 경상 계열일 때만 묻는다. 이 검사는
-                기계공학 경험을 읽으므로, 학부도 기계공학이 아니면 읽을
-                것이 없다. 학부가 기계공학이면 경험이 실제로 있다 */}
-            {stage !== "bachelor"
-              && (field === "HUMANITIES_SOCIAL" || field === "BUSINESS") ? (
+            {/* **대학원생 전부에게 묻는다.** 학부 전공과 대학원 전공계열은
+                다른 값이고, 대학원 경험을 번역할 때 학부에서 무엇을 했는지가
+                그 번역의 출발점이다. 대학원이 인문·사회나 경상 계열이면 이
+                값이 응시 자격까지 가른다 */}
+            {stage !== "bachelor" && field ? (
                 <fieldset className="qs-opts">
-                  <legend>학부 전공</legend>
-                  <p className="qs-eyebrow" aria-hidden>학부 전공</p>
+                  <legend>{UNDERGRAD_ASK}</legend>
+                  <p className="qs-eyebrow" aria-hidden>{UNDERGRAD_ASK}</p>
+                  <p className="qs-gloss" aria-hidden>{UNDERGRAD_HELP}</p>
                   <div className="qs-list">
                     {(["ME", "OTHER"] as const).map((v) => (
                       <label key={v} className={`qs-opt${undergrad === v ? " is-on" : ""}`}>
@@ -533,14 +535,20 @@ function Sweep({
       <span className="qs-sw-row" aria-hidden>{f.label}</span>
       <div className="qs-p3">
         {c.options.map((o) => {
-          const on = value === o.value;
+          /* **`잘 모르겠다` 는 수가 아니다.** 보기 목록의 그 자리에 값이
+             없어서(`null`) 가운데 값으로 저장될 길이 없다. 판정은 그것을
+             관심 수준이 아니라 `아직 고르지 않았다` 로 읽는다 */
+          const unknown = o.value === null;
+          const on = unknown ? value === UNKNOWN : value === o.value;
           return (
-            <label key={o.value} className={`qs-p3b${on ? " is-on" : ""}`}>
+            <label key={o.label} className={`qs-p3b${on ? " is-on" : ""}${unknown ? " is-unknown" : ""}`}>
               <input type="radio" name={f.itemId} checked={on}
                 aria-label={`${f.label ?? ""} · ${o.label}`}
-                onChange={() => onPick(f, o.value, c.answer === "exposure"
-                  ? { kind: "exposure", value: o.value }
-                  : { kind: "scale5", value: o.value })} />
+                onChange={() => onPick(f, unknown ? UNKNOWN : (o.value as number),
+                  unknown ? { kind: "choice", value: UNKNOWN }
+                  : c.answer === "exposure"
+                  ? { kind: "exposure", value: o.value as number }
+                  : { kind: "scale5", value: o.value as number })} />
               {o.label}
             </label>
           );

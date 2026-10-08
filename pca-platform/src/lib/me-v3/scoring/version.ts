@@ -15,11 +15,32 @@ import { CONTENT_DIR, packFile, type PackKind } from "../core-registry";
  * 바뀌었다. 축 상태를 내는 규칙과 묶음 판정과 근거 세는 법은 한 줄도
  * 바뀌지 않았지만, **선별 등급에서 세는 축이 달라지면 같은 응답이 다른
  * 묶음으로 간다.** 그것은 판단 규칙이 바뀐 것이므로 판본을 올린다.
+ *
+ * `.3` 으로 올린 까닭 셋.
+ *
+ * ① `잘 모르겠다` 가 **수에서 상태로** 바뀌었다. 영역 훑기의 관심과 배울
+ * 뜻에서 그 보기가 가운데 값(3)으로 저장되고 있었고, 그래서 아직 모르는
+ * 사람이 `보통 관심` 으로 판정됐다. 이제 `ANSWERED_UNKNOWN` 으로 보존하고
+ * 구간을 내지 않는다. **같은 응답이 다른 구간으로 간다**: 판단 규칙이다.
+ *
+ * ② 학위 묶음이 하나에서 **넷**으로 갈렸다. 어느 묶음이 열리는지가 학위로
+ * 정해지고, 받지 않은 묶음의 응답은 세지 않는다.
+ *
+ * ③ 선별 축의 **둘째 문항이 STANDARD 부터**다. 선별 등급에는 소유 판정이
+ * 없어서 둘째 자리가 뜻을 가지지 않는다. 그 등급에서 묻지 않으므로 그
+ * 문항은 `NOT_ROUTED` 다.
  */
-export const SCORING_VERSION = "me-v3-scoring.2";
+export const SCORING_VERSION = "me-v3-scoring.3";
 
-/** 2차 문항 은행. 1차는 `me-v3-items.json` 에 동결해 둔다 */
-export const ITEM_BANK_VERSION = "ME_V3_ITEM_BANK_V2";
+/**
+ * 2차 문항 은행. 1차는 `me-v3-items.json` 에 동결해 둔다.
+ *
+ * `.1` 로 올린 까닭. 문면이 바뀐 것이 아니라 **문항이 바뀌었다**: 석사 이상
+ * 한 묶음 여섯이 석사·박사·포닥 세 묶음 열여덟로 갈렸고, 영역 훑기의
+ * `잘 모르겠다` 가 값 자리에 `null` 을 들게 됐고, 선별 축 둘째 문항의
+ * 등급이 STANDARD 로 올라갔다.
+ */
+export const ITEM_BANK_VERSION = "ME_V3_ITEM_BANK_V2.1";
 
 export type ModuleVersions = {
   core_version: string;

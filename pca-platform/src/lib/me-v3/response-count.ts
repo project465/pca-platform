@@ -16,7 +16,17 @@ export type Blocks = {
   /** 영역 훑기에서 **고정으로** 받는 수. 관심 열둘 + 경험 열둘 */
   grid: number;
   judge: number; force: number;
-  probePerDomain: number; deepPerDomain: number;
+  /** 영역 하나에서 **선별 등급에 받는** 선별 축 자리 (축마다 하나) */
+  probePerDomain: number;
+  /**
+   * 영역 하나에서 **STANDARD 부터 받는** 선별 축의 둘째 자리.
+   *
+   * 한 칸에 문항을 둘 둔 까닭은 체크리스트를 고르지 않은 사람도 소유까지
+   * 갈 수 있게 하려는 것인데, 선별 등급에는 소유 판정이 없다. 그래서 둘째
+   * 자리는 소유를 말하는 등급에서만 뜬다.
+   */
+  probeSecondPerDomain: number;
+  deepPerDomain: number;
   /** 영역 하나당 학습 의향. 선별된 영역에만 묻는다 */
   learningPerDomain: number;
   consist: number; trans: number; target: number;
@@ -43,9 +53,9 @@ export function counts(b: Blocks): Counts {
   /** 선별 영역 하나를 여는 값. 그 영역의 선별 축과 학습 의향 */
   const openProbe = b.probePerDomain + b.learningPerDomain;
   const basic = fixed + b.branch + openProbe * DOMAINS_BY_TIER.basic;
-  /** 심화 영역 하나를 여는 값. 선별 축이 아직 없으면 그것까지 */
-  const openDomain = openProbe + b.deepPerDomain;
-  const deepOnly = b.deepPerDomain * DOMAINS_BY_TIER.basic;
+  /** 심화 영역 하나를 여는 값. 선별 축 둘째 자리와 심화 축까지 */
+  const openDomain = openProbe + b.probeSecondPerDomain + b.deepPerDomain;
+  const deepOnly = (b.deepPerDomain + b.probeSecondPerDomain) * DOMAINS_BY_TIER.basic;
   const stdAdd = deepOnly + openDomain + b.consist;
   const standard = basic + stdAdd;
   const standard4 = standard + openDomain;
@@ -63,9 +73,25 @@ export function counts(b: Blocks): Counts {
   };
 }
 
-/** 추정 시간. **실측이 아니다.** 파일럿에서 재서 고친다 */
+/**
+ * 추정 시간. **실측이 아니다.** 파일럿에서 재서 고친다.
+ *
+ * 노리는 길이는 BASIC 8~12분 · STANDARD 15~22분 · PRO 22~35분이다. 박사와
+ * 포닥은 분기 때문에 조금 더 길어질 수 있다. `npm run v3:length` 가 실제
+ * 계획으로 세어 이 선을 넘는지 본다.
+ */
 export const SECONDS = {
-  grid: 5, lv4: 18, five: 8, force: 15, pick: 20, trans: 40,
+  grid: 5,
+  /**
+   * 보기 넷 하나를 읽고 고르는 시간.
+   *
+   * 18 에서 13 으로 내렸다. 한 선택으로 끝나는 화면이 **눌리면 저절로
+   * 넘어가서** 두 번째 누르기가 없어졌고, 한 축의 두 문항이 한 화면에
+   * 서면서 머리말과 영역 이름을 두 번 읽지 않는다. **실측이 아니다.**
+   */
+  lv4: 13, five: 8, force: 15, pick: 20, trans: 40,
+  /** 화면이 넘어가는 사이 */
+  turn: 2,
   /** 산업 장면 한 절. 읽기만 한다 */
   scene: 25,
   /** 영역마다 한 번 띄우는 판단·산출물·검증 체크리스트 */

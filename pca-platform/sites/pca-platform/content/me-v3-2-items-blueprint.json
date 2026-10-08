@@ -860,8 +860,8 @@
    "note": "학부 장면. 수업과 실험과 캡스톤과 인턴에서도 소유까지 갈 수 있게 보기를 넷까지 둔다"
   },
   {
-   "id": "GS_PROBLEM",
-   "block": "GRAD-CORE",
+   "id": "MS_PROBLEM",
+   "block": "MS-CORE",
    "construct": "experience_translation",
    "domain": null,
    "axis": "J1",
@@ -874,12 +874,12 @@
    ],
    "reverse": false,
    "stage_variants": false,
-   "field_routing": "master+ · STEM",
-   "note": "석사 이상 이공계 장면. 참여와 소유를 가르는 문면으로 적는다"
+   "field_routing": "master · STEM",
+   "note": "석사 장면. 연구 문제와 방법과 검증. 연구에서 한 일을 산업 말로 옮길 수 있는가. 보기 넷과 판정 규칙은 네 학위가 같다: 학위가 높다고 저절로 올라가지 않는다"
   },
   {
-   "id": "GS_CONDITION",
-   "block": "GRAD-CORE",
+   "id": "MS_CONDITION",
+   "block": "MS-CORE",
    "construct": "experience_translation",
    "domain": null,
    "axis": "J2",
@@ -892,12 +892,12 @@
    ],
    "reverse": false,
    "stage_variants": false,
-   "field_routing": "master+ · STEM",
-   "note": "석사 이상 이공계 장면. 참여와 소유를 가르는 문면으로 적는다"
+   "field_routing": "master · STEM",
+   "note": "석사 장면. 연구 문제와 방법과 검증. 연구에서 한 일을 산업 말로 옮길 수 있는가. 보기 넷과 판정 규칙은 네 학위가 같다: 학위가 높다고 저절로 올라가지 않는다"
   },
   {
-   "id": "GS_METHOD",
-   "block": "GRAD-CORE",
+   "id": "MS_METHOD",
+   "block": "MS-CORE",
    "construct": "experience_translation",
    "domain": null,
    "axis": "J3",
@@ -910,12 +910,12 @@
    ],
    "reverse": false,
    "stage_variants": false,
-   "field_routing": "master+ · STEM",
-   "note": "석사 이상 이공계 장면. 참여와 소유를 가르는 문면으로 적는다"
+   "field_routing": "master · STEM",
+   "note": "석사 장면. 연구 문제와 방법과 검증. 연구에서 한 일을 산업 말로 옮길 수 있는가. 보기 넷과 판정 규칙은 네 학위가 같다: 학위가 높다고 저절로 올라가지 않는다"
   },
   {
-   "id": "GS_OUTPUT",
-   "block": "GRAD-CORE",
+   "id": "MS_OUTPUT",
+   "block": "MS-CORE",
    "construct": "experience_translation",
    "domain": null,
    "axis": "J5",
@@ -928,12 +928,12 @@
    ],
    "reverse": false,
    "stage_variants": false,
-   "field_routing": "master+ · STEM",
-   "note": "석사 이상 이공계 장면. 참여와 소유를 가르는 문면으로 적는다"
+   "field_routing": "master · STEM",
+   "note": "석사 장면. 연구 문제와 방법과 검증. 연구에서 한 일을 산업 말로 옮길 수 있는가. 보기 넷과 판정 규칙은 네 학위가 같다: 학위가 높다고 저절로 올라가지 않는다"
   },
   {
-   "id": "GS_VERIFY",
-   "block": "GRAD-CORE",
+   "id": "MS_VERIFY",
+   "block": "MS-CORE",
    "construct": "experience_translation",
    "domain": null,
    "axis": "J6",
@@ -946,15 +946,15 @@
    ],
    "reverse": false,
    "stage_variants": false,
-   "field_routing": "master+ · STEM",
-   "note": "석사 이상 이공계 장면. 참여와 소유를 가르는 문면으로 적는다"
+   "field_routing": "master · STEM",
+   "note": "석사 장면. 연구 문제와 방법과 검증. 연구에서 한 일을 산업 말로 옮길 수 있는가. 보기 넷과 판정 규칙은 네 학위가 같다: 학위가 높다고 저절로 올라가지 않는다"
   },
   {
-   "id": "GS_FIX",
-   "block": "GRAD-CORE",
+   "id": "MS_TRANSLATE",
+   "block": "MS-CORE",
    "construct": "experience_translation",
    "domain": null,
-   "axis": "J7",
+   "axis": "J8",
    "scale": "L0~L3",
    "tier": "BASIC",
    "result_sections": [
@@ -964,8 +964,224 @@
    ],
    "reverse": false,
    "stage_variants": false,
-   "field_routing": "master+ · STEM",
-   "note": "석사 이상 이공계 장면. 참여와 소유를 가르는 문면으로 적는다"
+   "field_routing": "master · STEM",
+   "note": "석사 장면. 연구 문제와 방법과 검증. 연구에서 한 일을 산업 말로 옮길 수 있는가. 보기 넷과 판정 규칙은 네 학위가 같다: 학위가 높다고 저절로 올라가지 않는다"
+  },
+  {
+   "id": "PHD_FRAME",
+   "block": "PHD-CORE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J1",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "phd · STEM",
+   "note": "박사 장면. 문제를 세우고 가정과 변수를 고르고 한계를 적는가. 보기 넷과 판정 규칙은 네 학위가 같다: 학위가 높다고 저절로 올라가지 않는다"
+  },
+  {
+   "id": "PHD_ASSUME",
+   "block": "PHD-CORE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J2",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "phd · STEM",
+   "note": "박사 장면. 문제를 세우고 가정과 변수를 고르고 한계를 적는가. 보기 넷과 판정 규칙은 네 학위가 같다: 학위가 높다고 저절로 올라가지 않는다"
+  },
+  {
+   "id": "PHD_PICK",
+   "block": "PHD-CORE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J3",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "phd · STEM",
+   "note": "박사 장면. 문제를 세우고 가정과 변수를 고르고 한계를 적는가. 보기 넷과 판정 규칙은 네 학위가 같다: 학위가 높다고 저절로 올라가지 않는다"
+  },
+  {
+   "id": "PHD_VAR",
+   "block": "PHD-CORE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J4",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "phd · STEM",
+   "note": "박사 장면. 문제를 세우고 가정과 변수를 고르고 한계를 적는가. 보기 넷과 판정 규칙은 네 학위가 같다: 학위가 높다고 저절로 올라가지 않는다"
+  },
+  {
+   "id": "PHD_UNCERT",
+   "block": "PHD-CORE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J6",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "phd · STEM",
+   "note": "박사 장면. 문제를 세우고 가정과 변수를 고르고 한계를 적는가. 보기 넷과 판정 규칙은 네 학위가 같다: 학위가 높다고 저절로 올라가지 않는다"
+  },
+  {
+   "id": "PHD_LIMIT",
+   "block": "PHD-CORE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J7",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "phd · STEM",
+   "note": "박사 장면. 문제를 세우고 가정과 변수를 고르고 한계를 적는가. 보기 넷과 판정 규칙은 네 학위가 같다: 학위가 높다고 저절로 올라가지 않는다"
+  },
+  {
+   "id": "PD_SCOPE",
+   "block": "POSTDOC-CORE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J1",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "postdoc · STEM",
+   "note": "박사후연구원 장면. 책임 범위와 독립 판단과 과제 운영과 성과 전환. 보기 넷과 판정 규칙은 네 학위가 같다: 학위가 높다고 저절로 올라가지 않는다"
+  },
+  {
+   "id": "PD_RUN",
+   "block": "POSTDOC-CORE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J2",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "postdoc · STEM",
+   "note": "박사후연구원 장면. 책임 범위와 독립 판단과 과제 운영과 성과 전환. 보기 넷과 판정 규칙은 네 학위가 같다: 학위가 높다고 저절로 올라가지 않는다"
+  },
+  {
+   "id": "PD_ALONE",
+   "block": "POSTDOC-CORE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J3",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "postdoc · STEM",
+   "note": "박사후연구원 장면. 책임 범위와 독립 판단과 과제 운영과 성과 전환. 보기 넷과 판정 규칙은 네 학위가 같다: 학위가 높다고 저절로 올라가지 않는다"
+  },
+  {
+   "id": "PD_TEAM",
+   "block": "POSTDOC-CORE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J4",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "postdoc · STEM",
+   "note": "박사후연구원 장면. 책임 범위와 독립 판단과 과제 운영과 성과 전환. 보기 넷과 판정 규칙은 네 학위가 같다: 학위가 높다고 저절로 올라가지 않는다"
+  },
+  {
+   "id": "PD_OUT",
+   "block": "POSTDOC-CORE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J5",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "postdoc · STEM",
+   "note": "박사후연구원 장면. 책임 범위와 독립 판단과 과제 운영과 성과 전환. 보기 넷과 판정 규칙은 네 학위가 같다: 학위가 높다고 저절로 올라가지 않는다"
+  },
+  {
+   "id": "PD_LINK",
+   "block": "POSTDOC-CORE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J8",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "postdoc · STEM",
+   "note": "박사후연구원 장면. 책임 범위와 독립 판단과 과제 운영과 성과 전환. 보기 넷과 판정 규칙은 네 학위가 같다: 학위가 높다고 저절로 올라가지 않는다"
   },
   {
    "id": "XF_FIELD",
@@ -1059,7 +1275,7 @@
    "domain": "selected",
    "axis": "J3",
    "scale": "L0~L3",
-   "tier": "BASIC",
+   "tier": "STANDARD",
    "result_sections": [
     "A",
     "D",
@@ -1101,7 +1317,7 @@
    "domain": "selected",
    "axis": "J5",
    "scale": "L0~L3",
-   "tier": "BASIC",
+   "tier": "STANDARD",
    "result_sections": [
     "A",
     "D",
@@ -1143,7 +1359,7 @@
    "domain": "selected",
    "axis": "J6",
    "scale": "L0~L3",
-   "tier": "BASIC",
+   "tier": "STANDARD",
    "result_sections": [
     "A",
     "D",
@@ -1185,7 +1401,7 @@
    "domain": "selected",
    "axis": "J7",
    "scale": "L0~L3",
-   "tier": "BASIC",
+   "tier": "STANDARD",
    "result_sections": [
     "A",
     "D",

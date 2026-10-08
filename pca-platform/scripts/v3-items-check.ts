@@ -95,8 +95,13 @@ function main(): void {
 
   // 7. 학위 분기 블록 셋이 다 있다
   const blocks = new Set(slots.map((s) => s.block));
-  const need = ["UG-CORE", "GRAD-CORE", "GRAD-XFIELD"];
-  ok("학위 분기 블록", need.every((b) => blocks.has(b)), need.join(" "));
+  /* 학위 묶음이 **넷**이다. 석사 이상을 한 묶음으로 묶어 두면 박사와
+     포닥이 석사와 같은 여섯 문항을 받고, 학위를 바꿔도 무엇이 달라지는지
+     결과에 남지 않는다 */
+  const need = ["UG-CORE", "MS-CORE", "PHD-CORE", "POSTDOC-CORE", "GRAD-XFIELD"];
+  ok("학위 분기 블록 넷과 번역 맥락", need.every((b) => blocks.has(b)), need.join(" "));
+  ok("석사 이상을 한 묶음으로 묶지 않는다", !blocks.has("GRAD-CORE"),
+     "석사·박사·포닥이 서로 다른 여섯 자리를 받는다");
   ok("비이공계 대학원 분기 묶음을 받지 않는다",
      !blocks.has("GRAD-HS") && !blocks.has("GRAD-BIZ") && !blocks.has("GRAD-MIX"),
      "학부가 기계공학인 경우만 받고 대학원 경험은 번역 맥락으로만 다룬다");
@@ -137,20 +142,24 @@ function main(): void {
   const base = {
     grid: count("CORE-GRID") - 12, judge: count("CORE-JUDGE"),
     force: count("CORE-FORCE"),
-    probePerDomain: count("PROBE-S4"), deepPerDomain: count("DEEP-S8"),
+    probePerDomain: count("PROBE-S4") / 2,
+    probeSecondPerDomain: count("PROBE-S4") / 2,
+    deepPerDomain: count("DEEP-S8"),
     learningPerDomain: 1, consist: count("CONSIST"),
     trans: count("TRANS-10"), target: count("TARGET"), branch: 0, pack: 24,
   };
   const branch: [string, string, number][] = [
     ["학사", "해당 없음", count("UG-CORE")],
-    ["석사 이상", "이공계·융합", count("GRAD-CORE")],
+    ["석사", "이공계·융합", count("MS-CORE")],
+    ["박사", "이공계·융합", count("PHD-CORE")],
+    ["박사후연구원", "이공계·융합", count("POSTDOC-CORE")],
     ["석사 이상", "타계열 (학부 기계)", count("UG-CORE") + count("GRAD-XFIELD")],
   ];
   console.log("\n등급 × 학위 × 계열 응답 수 (넷째 영역이 열리면 괄호)\n");
-  console.log("  학위        계열                      BASIC  STANDARD       PRO");
+  console.log("  학위           계열                      BASIC  STANDARD       PRO");
   for (const [st, fd, b] of branch) {
     const c = counts({ ...base, branch: b });
-    console.log(`  ${st.padEnd(10)}  ${fd.padEnd(24)}  ${String(c.basic).padStart(4)}` +
+    console.log(`  ${st.padEnd(13)}  ${fd.padEnd(24)}  ${String(c.basic).padStart(4)}` +
       `  ${String(c.standard).padStart(4)}(${c.standard4})` +
       `  ${String(c.pro).padStart(4)}(${c.pro4})`);
   }

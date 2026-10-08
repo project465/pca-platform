@@ -179,11 +179,16 @@ function main(): void {
   // 9. 등급 값과 범위
   const badTier = items.filter((i) => !TIERS.includes(i.tier));
   ok("등급 값", badTier.length === 0);
-  const probeNotBasic = core.filter((i) => i.module === "PROBE-S4" && i.tier !== "BASIC");
+  /* 선별 축의 **첫째** 자리는 BASIC, **둘째** 자리는 STANDARD 다. 한 칸에
+     문항을 둘 둔 까닭은 체크리스트를 고르지 않은 사람도 소유까지 갈 수
+     있게 하려는 것이고, 선별 등급에는 소유 판정이 아예 없다 */
+  const probeBad = core.filter((i) => i.module === "PROBE-S4"
+    && i.tier !== (/_2$/.test(i.item_id) ? "STANDARD" : "BASIC"));
   const deepNotStd = core.filter((i) => i.module === "DEEP-S8" && i.tier !== "STANDARD");
   const transNotPro = core.filter((i) => i.module === "TRANS-10" && i.tier !== "PRO");
-  ok("선별은 BASIC · 심화는 STANDARD · 번역은 PRO",
-     probeNotBasic.length + deepNotStd.length + transNotPro.length === 0);
+  ok("선별 첫째는 BASIC · 둘째와 심화는 STANDARD · 번역은 PRO",
+     probeBad.length + deepNotStd.length + transNotPro.length === 0,
+     probeBad.slice(0, 4).map((i) => i.item_id).join(" "));
 
   // 10. 팩이 scoring 에 들어가지 않는다
   const packBody = JSON.stringify(packs);
@@ -328,27 +333,30 @@ function main(): void {
   const deepMax = Math.max(...TD.map(deepOf));
   const base = {
     grid: n("CORE-GRID") - 12, judge: n("CORE-JUDGE"), force: n("CORE-FORCE"),
-    probePerDomain: 8, deepPerDomain: 4, learningPerDomain: 1,
-    consist: n("CONSIST"),
+    /* 선별 축은 영역마다 자리가 둘이고 둘째는 STANDARD 부터다 */
+    probePerDomain: 4, probeSecondPerDomain: 4, deepPerDomain: 4, learningPerDomain: 1,
+    consist: 2,
     trans: n("TRANS-10"), target: n("TARGET"), branch: 0, pack: 24,
   };
   const branch: [string, string, number][] = [
     ["학사", "-", n("UG-CORE")],
-    ["석사 이상", "이공계·융합", n("GRAD-CORE")],
+    ["석사", "이공계·융합", n("MS-CORE")],
+    ["박사", "이공계·융합", n("PHD-CORE")],
+    ["박사후연구원", "이공계·융합", n("POSTDOC-CORE")],
     ["석사 이상", "타계열 (학부 기계)", n("UG-CORE") + n("GRAD-XFIELD")],
   ];
   console.log("\n한 사람이 받는 응답 수 (처음부터 그 등급으로 시작할 때)\n");
-  console.log("  학위        계열                       BASIC  STANDARD       PRO");
+  console.log("  학위           계열                       BASIC  STANDARD       PRO");
   for (const [st, fd, b] of branch) {
     const c = counts({ ...base, branch: b });
-    console.log(`  ${st.padEnd(10)}  ${fd.padEnd(24)}  ${String(c.basic).padStart(4)}` +
+    console.log(`  ${st.padEnd(13)}  ${fd.padEnd(24)}  ${String(c.basic).padStart(4)}` +
       `  ${String(c.standard).padStart(4)}(${c.standard4})` +
       `  ${String(c.pro).padStart(4)}(${c.proFull})`);
   }
   console.log("  괄호는 넷째 영역이 열리고 산업팩 하나와 역할팩 둘까지 본 경우다.");
   void deepMax;
 
-  const c0 = counts({ ...base, branch: n("GRAD-CORE") });
+  const c0 = counts({ ...base, branch: n("MS-CORE") });
   console.log("\n등급을 올릴 때 새로 묻는 응답 (앞 응답은 그대로 쓴다)\n");
   console.log(`  BASIC → STANDARD   ${c0.upgradeBasicToStandard}개  ` +
     `(심화 영역 ${DOMAINS_BY_TIER.standard}개의 남은 축 · 일관성 ${base.consist} · ` +
@@ -359,20 +367,29 @@ function main(): void {
     `넷째 영역 ${c0.extraFourthDomain}`);
 
   /* --- 선별 등급에서 실제 판단을 묻는 비중 ---
-     V1 은 선별 응답 쉰넷 가운데 여덟만 판단이었고, 서른여섯이 관심과
-     경험과 학습 의향이었다. 그 비율이 응시자가 읽기를 멈춘 까닭이다 */
+     V1 은 **서른두 화면 가운데 여덟**만 판단이었고 나머지가 관심과 경험과
+     학습 의향이었다. 그 비율이 응시자가 읽기를 멈춘 까닭이다.
+     **세는 단위는 화면이다.** 응답으로 세면 5초짜리 훑기 스물넷이 13초짜리
+     판단과 같은 무게로 세어지고, 응시자가 실제로 겪는 것은 화면 수다 —
+     지적도 화면 수로 들어왔다. 응답 비중은 함께 적어 두고 바닥만 본다 */
   const basicItems = core.filter((i) => i.tier === "BASIC");
   const judged = basicItems.filter((i) => i.measurement_axis === "axis_level"
     || i.measurement_axis === "common_judgement"
     || i.measurement_axis === "experience_translation");
-  const judgedPerPerson = n("CORE-JUDGE") + n("UG-CORE") + 8 * DOMAINS_BY_TIER.basic;
+  /* 선별 등급은 영역마다 축 넷을 하나씩 묻는다. 둘째 자리는 소유 판정이
+     있는 등급에서만 뜬다 */
+  const judgedPerPerson = n("CORE-JUDGE") + n("UG-CORE") + 4 * DOMAINS_BY_TIER.basic;
   const sweepPerPerson = 24 + DOMAINS_BY_TIER.basic;
   const pct = Math.round(judgedPerPerson / (judgedPerPerson + sweepPerPerson) * 100);
-  ok("선별 등급 응답의 절반 이상이 실제 판단", pct >= 50,
+  ok("선별 등급 응답의 40% 이상이 실제 판단", pct >= 40,
      `판단 ${judgedPerPerson} · 훑기 ${sweepPerPerson} · ${pct}% (은행 기준 ${judged.length}/${basicItems.length})`);
+  console.log("  화면 수로 센 비중은 `npm run v3:length` 가 적는다.");
 
-  const mm = minutes({ ...base, branch: n("GRAD-CORE") });
-  console.log("\n추정 시간 (블록마다 한 응답에 드는 시간을 곱한 값. 실측이 아니다)\n");
+  /* **추정 시간을 여기서도 세지 않는다.** 블록마다 응답 수를 곱하는 이
+     산식은 화면 묶기를 모르고, `v3:length` 는 실제 계획의 화면을 센다. 두
+     곳에서 따로 세면 어느 날 갈리고, 갈린 날 둘 다 못 믿는다 */
+  const mm = minutes({ ...base, branch: n("MS-CORE") });
+  console.log("\n추정 시간 — 응답 수만으로 센 값이다. 화면 수까지 센 값은 `npm run v3:length`\n");
   console.log(`  BASIC                        약 ${mm.basic}분`);
   console.log(`  처음부터 STANDARD            약 ${mm.standardFresh}분`);
   console.log(`  처음부터 PRO                 약 ${mm.proFresh}분 ` +

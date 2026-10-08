@@ -27,6 +27,18 @@ export type Axis = "J1" | "J2" | "J3" | "J4" | "J5" | "J6" | "J7" | "J8";
  * 답한 것과, 근거가 확인되지 않은 것은 서로 다른 상태다. 하나로 뭉개면
  * 결과지가 안 물어본 것을 `없다` 로 적는다.
  */
+/**
+ * 영역 훑기에서 `잘 모르겠다` 를 보내는 값.
+ *
+ * **수가 아니다.** 문항 은행의 `option_values` 에서 그 자리는 `null` 이라
+ * 보기 목록 안에 수가 없고, 어떤 코드도 그것을 가운데 값으로 쓸 수 없다.
+ * 화면이 이 글자를 보내고 `normalize/read` 가 `ANSWERED_UNKNOWN` 으로 받는다.
+ *
+ * 여기 둔 까닭은 **화면과 판정이 같은 글자를 봐야** 하는데 화면은 브라우저에서
+ * 돌고 판정 쪽 파일은 파일시스템을 끌고 들어오기 때문이다.
+ */
+export const UNKNOWN = "UNKNOWN";
+
 export type Answer =
   /** 보기 넷(L0~L3). `index` 는 0에서 3 */
   | { kind: "level"; index: number }
@@ -65,10 +77,29 @@ export type Submission = {
   org_interest?: string[];
   industry_pack?: string | null;
   role_pack?: string | null;
+  /**
+   * 실제로 화면에 선 팩 문항의 목록.
+   *
+   * 산업 판단은 비어 있는 축을 먼저 세우고 여섯에서 끊고, 둘째 역할은
+   * 앞머리 셋만 묻는다. **묻지 않은 문항을 공백으로 적지 않으려고** 열린
+   * 목록을 응시가 들고 다닌다. 비어 있으면 상한 없이 전부 센다(옛 응시).
+   */
+  asked?: string[];
 };
 
+/**
+ * 빈 것의 뜻 다섯.
+ *
+ * `ANSWERED_UNKNOWN` 이 다섯째로 들어온 까닭이 이렇다. 영역 훑기의 관심과
+ * 배울 뜻에 `잘 모르겠다` 가 있는데, 그 보기를 **가운데 값**으로 두고
+ * 있었다. 그러면 **아직 모르는 사람이 보통 관심으로 판정된다.** 모른다는
+ * 것은 중간 수준을 뜻하지 않는다. 정보가 없다는 뜻이다. 값 자리에 수를 두지 않고
+ * 상태로 보존해서, 결과지가 그 영역을 `보통 관심` 으로 적는 대신 `아직
+ * 고르지 않았다` 로 적는다.
+ */
 export type MissingKind =
-  | "NOT_ROUTED" | "SKIPPED" | "ANSWERED_NONE" | "NONE_MISSING";
+  | "NOT_ROUTED" | "SKIPPED" | "ANSWERED_NONE" | "ANSWERED_UNKNOWN"
+  | "NONE_MISSING";
 
 export type AxisState = "NOT_OBSERVED" | "PARTICIPATED" | "CONFIRMED" | "OWNED";
 

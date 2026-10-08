@@ -30,7 +30,7 @@ export type Control =
    * 열두 줄을 한 화면에 올릴 수 있다.
    */
   | { kind: "pick3"; answer: "scale5" | "exposure";
-      options: { value: number; label: string }[] }
+      options: { value: number | null; label: string }[] }
   /** 고르기. 값은 코드이고 보이는 것은 `label` */
   | { kind: "choice"; options: { value: string; label: string }[];
       note?: { label: string; placeholder: string } };
@@ -187,8 +187,10 @@ export function controlOf(item: Item, ctx: MenuContext): Control {
     return {
       kind: "pick3",
       answer: item.measurement_axis === "exposure" ? "exposure" : "scale5",
+      /* 값이 `null` 인 자리는 `잘 모르겠다` 다. **수를 주지 않는다**:
+         가운데 값으로 두면 아직 모르는 사람이 보통 관심으로 판정된다 */
       options: item.options.map((label, i) => ({
-        value: (item.option_values as number[])[i], label,
+        value: (item.option_values as (number | null)[])[i] ?? null, label,
       })),
     };
   }

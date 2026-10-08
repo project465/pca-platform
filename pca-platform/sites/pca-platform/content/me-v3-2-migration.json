@@ -12,7 +12,7 @@
  },
  "summary": {
   "v1_items": 294,
-  "v2_items": 357,
+  "v2_items": 369,
   "planned": {
    "MERGE": 50,
    "DELETE": 13,
@@ -21,14 +21,14 @@
    "MOVE": 35
   },
   "actual": {
-   "REWRITE": 206,
-   "MOVE": 36,
-   "MERGE": 13,
+   "REWRITE": 201,
+   "MOVE": 42,
+   "MERGE": 12,
    "KEEP": 2,
    "DELETE": 37
   },
-  "diverged": 214,
-  "new_in_v2": 194
+  "diverged": 215,
+  "new_in_v2": 204
  },
  "divergences": {
   "KEEP → REWRITE": "감사는 문면을 그대로 두기로 했지만, 선별 축의 자리를 영역마다 둘로 늘리면서 같은 축의 두 문항이 서로 다른 판단을 묻게 다시 배치했다. 문말도 `경험이 있다` 에서 `적이 있다` 로 통일했다: 294줄이 같은 문말로 끝나던 것이 응시자가 읽기를 멈추는 까닭 가운데 하나였다",
@@ -39,6 +39,7 @@
   "DELETE → MOVE": "감사는 학습 의향 열둘을 버린다고 적었다. 실제로는 문항을 남기고 선별된 영역에만 묻게 routing 으로 줄였다. 결과지의 다음 행동 절이 이 값을 읽어, 버리면 그 절의 입력이 사라진다",
   "REWRITE → MOVE": "문면을 다시 쓰기로 한 자리 가운데 묻는 것이 그대로이고 등급이나 묶음만 바뀐 것은 자리 이동으로 적는다",
   "MOVE → REWRITE": "자리를 옮기기로 한 자리 가운데 묶음은 그대로이고 문면만 바뀐 것은 다시 쓴 것으로 적는다",
+  "MERGE → MOVE": "감사는 석사 이상 묶음의 한 자리를 다른 문항에 흡수한다고 적었다. 학위 묶음을 석사·박사·포닥 셋으로 가르면서 그 판단이 어느 학위의 장면인지가 정해졌고, 흡수 대신 그 학위 묶음으로 옮겼다",
   "MOVE → MERGE": "융합 계열 대학원 묶음을 이공계 묶음으로 합쳤다. 옮길 자리가 따로 없고 기존 묶음이 같은 여섯 자리를 이미 묻는다",
   "REWRITE → DELETE": "팩을 다시 설계하면서 그 축의 자리가 줄어 대응하는 문항이 없어진 자리다",
   "KEEP → DELETE": "번역 단계의 영역 태깅과 일부 팩 문항처럼, 이미 다른 화면에서 받은 판단을 다시 묻던 자리다",
@@ -2228,11 +2229,11 @@
    "v1_domain": null,
    "v1_wording": "다룰 연구 문제를 지도교수가 아니라 내가 좁혀 정한 적이 있다",
    "planned": "MERGE",
-   "actual": "REWRITE",
+   "actual": "MOVE",
    "v2_items": [
-    "GS_PROBLEM"
+    "MS_PROBLEM"
    ],
-   "reason": "묻는 것은 그대로다. 문말을 `정한 적이 있다` 에서 `정해 본 적이 있다` 로 고쳐 은행 전체의 문말을 한 꼴로 맞췄다",
+   "reason": "석사 이상을 한 묶음으로 묶어 두던 것을 학위마다 갈랐다. 이 문항은 석사 묶음으로 옮겼다",
    "agrees": false,
    "planned_reason": "DEEP 과 중복이다. 영역에 묶어 흡수한다"
   },
@@ -2243,11 +2244,11 @@
    "v1_domain": null,
    "v1_wording": "쓸 수 있는 방법이 둘 이상일 때 어느 쪽으로 갈지 내가 정한 적이 있다",
    "planned": "MERGE",
-   "actual": "REWRITE",
+   "actual": "MOVE",
    "v2_items": [
-    "GS_METHOD"
+    "MS_METHOD"
    ],
-   "reason": "`어느 쪽으로 갈지 내가 정한` 은 고르기만 해도 걸렸다. 정한 조건으로 실제로 돌렸는지를 묻는다",
+   "reason": "석사 묶음으로 옮겼다",
    "agrees": false,
    "planned_reason": "DEEP 과 중복이다. 영역에 묶어 흡수한다"
   },
@@ -2258,11 +2259,11 @@
    "v1_domain": null,
    "v1_wording": "무엇을 고정하고 무엇을 변수로 둘지 내가 정해 적어 둔 적이 있다",
    "planned": "MERGE",
-   "actual": "REWRITE",
+   "actual": "MOVE",
    "v2_items": [
-    "GS_CONDITION"
+    "PHD_VAR"
    ],
-   "reason": "`무엇을 고정하고 무엇을 변수로 둘지` 는 직접 판단 쪽이었고 요구 해석 축이 비어 있었다. 목표를 조건으로 옮기는 쪽으로 다시 적었다",
+   "reason": "V1 의 `무엇을 고정하고 무엇을 변수로 둘지` 를 박사 묶음으로 옮겼다. 변수 설계는 박사 장면의 판단이다",
    "agrees": false,
    "planned_reason": "DEEP 과 중복이다. 영역에 묶어 흡수한다"
   },
@@ -2273,11 +2274,11 @@
    "v1_domain": null,
    "v1_wording": "결과를 이론값이나 선행 연구나 실측 가운데 하나와 견주어 본 적이 있다",
    "planned": "MERGE",
-   "actual": "REWRITE",
+   "actual": "MOVE",
    "v2_items": [
-    "GS_VERIFY"
+    "MS_VERIFY"
    ],
-   "reason": "`이론값이나 선행 연구나 실측 가운데 하나와 견주어` 는 보기 목록이 길어 무엇을 묻는지 흐려졌다",
+   "reason": "석사 묶음으로 옮겼다",
    "agrees": false,
    "planned_reason": "DEEP 과 중복이다. 영역에 묶어 흡수한다"
   },
@@ -2288,11 +2289,12 @@
    "v1_domain": null,
    "v1_wording": "연구에서 논문이나 특허나 시작품이나 코드가 남은 적이 있다",
    "planned": "MERGE",
-   "actual": "REWRITE",
+   "actual": "MOVE",
    "v2_items": [
-    "GS_OUTPUT"
+    "MS_OUTPUT",
+    "PD_OUT"
    ],
-   "reason": "`논문이나 특허나 시작품이나 코드가 남은 적` 은 산출물의 종류를 세는 문면이었다. 다시 할 수 있는 모양인지를 묻는다",
+   "reason": "석사 묶음으로 옮겼다",
    "agrees": false,
    "planned_reason": "DEEP 과 중복이다. 영역에 묶어 흡수한다"
   },
@@ -2303,12 +2305,12 @@
    "v1_domain": null,
    "v1_wording": "내 연구 결과를 다른 사람이나 다른 과제가 가져다 쓴 적이 있다",
    "planned": "MERGE",
-   "actual": "MERGE",
+   "actual": "MOVE",
    "v2_items": [
-    "CJ_HANDOFF"
+    "PD_LINK"
    ],
-   "reason": "석사 이상 묶음의 조직 활용을 공통 판단의 조직 활용 하나로 묶었다. 영역마다의 조직 활용은 심화에서 따로 받는다",
-   "agrees": true,
+   "reason": "V1 의 `다른 사람이나 다른 과제가 가져다 쓴 적` 을 포닥 묶음으로 옮겼다. 기관 연결은 포닥 장면의 판단이다",
+   "agrees": false,
    "planned_reason": "DEEP 과 중복이다. 영역에 묶어 흡수한다"
   },
   {
@@ -2476,9 +2478,9 @@
    "planned": "MOVE",
    "actual": "MERGE",
    "v2_items": [
-    "GRAD-CORE"
+    "MS_PROBLEM"
    ],
-   "reason": "융합 계열 대학원 묶음을 이공계 묶음 하나로 합쳤다. 두 묶음이 같은 여섯 자리를 다른 문면으로 물었고, 융합 계열이라고 판정이 달라지지 않는다. 융합 계열은 이제 이공계 묶음으로 간다",
+   "reason": "융합 계열 대학원 묶음을 석사 묶음으로 합쳤다. 두 묶음이 같은 여섯 자리를 다른 문면으로 물었고, 융합 계열이라고 판정이 달라지지 않는다. 학위 묶음이 넷으로 갈리면서 묶음을 고르는 값이 계열이 아니라 학위가 됐다",
    "agrees": false,
    "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
   },
@@ -2491,9 +2493,9 @@
    "planned": "MOVE",
    "actual": "MERGE",
    "v2_items": [
-    "GRAD-CORE"
+    "MS_METHOD"
    ],
-   "reason": "융합 계열 대학원 묶음을 이공계 묶음 하나로 합쳤다. 두 묶음이 같은 여섯 자리를 다른 문면으로 물었고, 융합 계열이라고 판정이 달라지지 않는다. 융합 계열은 이제 이공계 묶음으로 간다",
+   "reason": "융합 계열 대학원 묶음을 석사 묶음으로 합쳤다. 두 묶음이 같은 여섯 자리를 다른 문면으로 물었고, 융합 계열이라고 판정이 달라지지 않는다. 학위 묶음이 넷으로 갈리면서 묶음을 고르는 값이 계열이 아니라 학위가 됐다",
    "agrees": false,
    "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
   },
@@ -2506,9 +2508,9 @@
    "planned": "MOVE",
    "actual": "MERGE",
    "v2_items": [
-    "GRAD-CORE"
+    "MS_METHOD"
    ],
-   "reason": "융합 계열 대학원 묶음을 이공계 묶음 하나로 합쳤다. 두 묶음이 같은 여섯 자리를 다른 문면으로 물었고, 융합 계열이라고 판정이 달라지지 않는다. 융합 계열은 이제 이공계 묶음으로 간다",
+   "reason": "융합 계열 대학원 묶음을 석사 묶음으로 합쳤다. 두 묶음이 같은 여섯 자리를 다른 문면으로 물었고, 융합 계열이라고 판정이 달라지지 않는다. 학위 묶음이 넷으로 갈리면서 묶음을 고르는 값이 계열이 아니라 학위가 됐다",
    "agrees": false,
    "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
   },
@@ -2521,9 +2523,9 @@
    "planned": "MOVE",
    "actual": "MERGE",
    "v2_items": [
-    "GRAD-CORE"
+    "MS_VERIFY"
    ],
-   "reason": "융합 계열 대학원 묶음을 이공계 묶음 하나로 합쳤다. 두 묶음이 같은 여섯 자리를 다른 문면으로 물었고, 융합 계열이라고 판정이 달라지지 않는다. 융합 계열은 이제 이공계 묶음으로 간다",
+   "reason": "융합 계열 대학원 묶음을 석사 묶음으로 합쳤다. 두 묶음이 같은 여섯 자리를 다른 문면으로 물었고, 융합 계열이라고 판정이 달라지지 않는다. 학위 묶음이 넷으로 갈리면서 묶음을 고르는 값이 계열이 아니라 학위가 됐다",
    "agrees": false,
    "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
   },
@@ -2536,9 +2538,9 @@
    "planned": "MOVE",
    "actual": "MERGE",
    "v2_items": [
-    "GRAD-CORE"
+    "MS_OUTPUT"
    ],
-   "reason": "융합 계열 대학원 묶음을 이공계 묶음 하나로 합쳤다. 두 묶음이 같은 여섯 자리를 다른 문면으로 물었고, 융합 계열이라고 판정이 달라지지 않는다. 융합 계열은 이제 이공계 묶음으로 간다",
+   "reason": "융합 계열 대학원 묶음을 석사 묶음으로 합쳤다. 두 묶음이 같은 여섯 자리를 다른 문면으로 물었고, 융합 계열이라고 판정이 달라지지 않는다. 학위 묶음이 넷으로 갈리면서 묶음을 고르는 값이 계열이 아니라 학위가 됐다",
    "agrees": false,
    "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
   },
@@ -2551,9 +2553,9 @@
    "planned": "MOVE",
    "actual": "MERGE",
    "v2_items": [
-    "GRAD-CORE"
+    "CJ_HANDOFF"
    ],
-   "reason": "융합 계열 대학원 묶음을 이공계 묶음 하나로 합쳤다. 두 묶음이 같은 여섯 자리를 다른 문면으로 물었고, 융합 계열이라고 판정이 달라지지 않는다. 융합 계열은 이제 이공계 묶음으로 간다",
+   "reason": "융합 계열 대학원 묶음을 석사 묶음으로 합쳤다. 두 묶음이 같은 여섯 자리를 다른 문면으로 물었고, 융합 계열이라고 판정이 달라지지 않는다. 학위 묶음이 넷으로 갈리면서 묶음을 고르는 값이 계열이 아니라 학위가 됐다",
    "agrees": false,
    "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
   },
@@ -2566,9 +2568,9 @@
    "planned": "MOVE",
    "actual": "MERGE",
    "v2_items": [
-    "GRAD-CORE"
+    "MS_CONDITION"
    ],
-   "reason": "융합 계열 대학원 묶음을 이공계 묶음 하나로 합쳤다. 두 묶음이 같은 여섯 자리를 다른 문면으로 물었고, 융합 계열이라고 판정이 달라지지 않는다. 융합 계열은 이제 이공계 묶음으로 간다",
+   "reason": "융합 계열 대학원 묶음을 석사 묶음으로 합쳤다. 두 묶음이 같은 여섯 자리를 다른 문면으로 물었고, 융합 계열이라고 판정이 달라지지 않는다. 학위 묶음이 넷으로 갈리면서 묶음을 고르는 값이 계열이 아니라 학위가 됐다",
    "agrees": false,
    "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
   },
@@ -2581,9 +2583,9 @@
    "planned": "MOVE",
    "actual": "MERGE",
    "v2_items": [
-    "GRAD-CORE"
+    "MS_OUTPUT"
    ],
-   "reason": "융합 계열 대학원 묶음을 이공계 묶음 하나로 합쳤다. 두 묶음이 같은 여섯 자리를 다른 문면으로 물었고, 융합 계열이라고 판정이 달라지지 않는다. 융합 계열은 이제 이공계 묶음으로 간다",
+   "reason": "융합 계열 대학원 묶음을 석사 묶음으로 합쳤다. 두 묶음이 같은 여섯 자리를 다른 문면으로 물었고, 융합 계열이라고 판정이 달라지지 않는다. 학위 묶음이 넷으로 갈리면서 묶음을 고르는 값이 계열이 아니라 학위가 됐다",
    "agrees": false,
    "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
   },
@@ -4425,12 +4427,92 @@
    "reason": "조직 활용을 학부 장면에서 받는 자리가 V1 에 없었다. 회사가 아니라 팀으로 적으면 학부생도 답할 수 있다"
   },
   {
-   "v2_item": "GS_FIX",
-   "module": "GRAD-CORE",
+   "v2_item": "MS_CONDITION",
+   "module": "MS-CORE",
+   "axis": "J2",
+   "domain": null,
+   "wording": "과제 목표를 측정할 수 있는 조건으로 옮겨 적어 본 적이 있다",
+   "reason": "석사 묶음을 가르면서 요구 해석 자리를 새로 열었다. 연구 목표를 측정 조건으로 옮기는 일이 석사 과정에서 가장 자주 하는 판단인데 V1 에 자리가 없었다"
+  },
+  {
+   "v2_item": "MS_TRANSLATE",
+   "module": "MS-CORE",
+   "axis": "J8",
+   "domain": null,
+   "wording": "연구에서 한 일을 산업에서 쓰는 말로 바꿔 적어 본 적이 있다",
+   "reason": "석사의 가장 큰 벽은 연구 경험을 직무 언어로 옮기는 자리다. 그 자리를 학위 묶음에서 한 번 묻는다"
+  },
+  {
+   "v2_item": "PHD_FRAME",
+   "module": "PHD-CORE",
+   "axis": "J1",
+   "domain": null,
+   "wording": "풀 수 있는 크기로 문제를 다시 잘라 본 적이 있다",
+   "reason": "박사 묶음을 새로 썼다. 박사는 주제를 받는 쪽이 아니라 세우는 쪽이다"
+  },
+  {
+   "v2_item": "PHD_ASSUME",
+   "module": "PHD-CORE",
+   "axis": "J2",
+   "domain": null,
+   "wording": "세운 가정이 깨지는 조건을 미리 적어 본 적이 있다",
+   "reason": "박사 묶음을 새로 썼다. 가정을 세웠는지가 아니라 그 가정의 경계를 적었는지를 묻는다"
+  },
+  {
+   "v2_item": "PHD_PICK",
+   "module": "PHD-CORE",
+   "axis": "J3",
+   "domain": null,
+   "wording": "쓸 수 있는 방법이 여럿일 때 하나를 고르고 그 까닭을 남겨 본 적이 있다",
+   "reason": "박사 묶음을 새로 썼다"
+  },
+  {
+   "v2_item": "PHD_UNCERT",
+   "module": "PHD-CORE",
+   "axis": "J6",
+   "domain": null,
+   "wording": "결과에 남은 불확실성의 크기를 적어 본 적이 있다",
+   "reason": "박사 묶음을 새로 썼다. 맞다고 말하는 것과 얼마나 맞는지를 적는 것은 다르다"
+  },
+  {
+   "v2_item": "PHD_LIMIT",
+   "module": "PHD-CORE",
    "axis": "J7",
    "domain": null,
-   "wording": "재현이 안 돼 원인을 좁혀 조건을 바꿔 본 적이 있다",
-   "reason": "석사 이상 장면에서 실패와 수정을 묻는 자리가 V1 에 없었다. 선별 네 축에 들어온 축인데 학위 묶음에서 비어 있었다"
+   "wording": "내 방법이 안 되는 범위를 찾아 적어 본 적이 있다",
+   "reason": "박사 묶음을 새로 썼다. 연구 주제의 어려움을 재지 않는다"
+  },
+  {
+   "v2_item": "PD_SCOPE",
+   "module": "POSTDOC-CORE",
+   "axis": "J1",
+   "domain": null,
+   "wording": "내가 끝까지 책임지는 범위와 남에게 맡긴 범위를 갈라 본 적이 있다",
+   "reason": "포닥 묶음을 새로 썼다. 포닥의 자리는 혼자 하는 것이 아니라 나누는 것이다"
+  },
+  {
+   "v2_item": "PD_RUN",
+   "module": "POSTDOC-CORE",
+   "axis": "J2",
+   "domain": null,
+   "wording": "과제 일정과 자원을 직접 나눠 본 적이 있다",
+   "reason": "포닥 묶음을 새로 썼다"
+  },
+  {
+   "v2_item": "PD_ALONE",
+   "module": "POSTDOC-CORE",
+   "axis": "J3",
+   "domain": null,
+   "wording": "지도 없이 내가 정하고 그대로 간 적이 있다",
+   "reason": "포닥 묶음을 새로 썼다. 독립 판단을 직접 묻는다"
+  },
+  {
+   "v2_item": "PD_TEAM",
+   "module": "POSTDOC-CORE",
+   "axis": "J4",
+   "domain": null,
+   "wording": "다른 사람이 낸 결과를 받아 내 작업에 이어 붙여 본 적이 있다",
+   "reason": "포닥 묶음을 새로 썼다. 협업을 `같이 했다` 가 아니라 `받아서 이었다` 로 묻는다"
   },
   {
    "v2_item": "XF_FIELD",

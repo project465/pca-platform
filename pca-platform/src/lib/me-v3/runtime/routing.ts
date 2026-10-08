@@ -41,6 +41,34 @@ export const PROBE_MAX = 2;
 export const DEEP_BASE = 3;
 export const DEEP_MAX = 4;
 
+/**
+ * 산업 판단에서 **차례만 바꾸고 수를 끊지 않는다.**
+ *
+ * 처음에는 여섯에서 끊었다. Core 에서 이미 강하게 확인된 축을 그 산업 말로
+ * 한 번 더 묻는 자리가 섞여 있어서, 비어 있는 축을 먼저 세우고 넷을 버리는
+ * 쪽이 짧다고 봤다. 그런데 **버린 넷은 어느 응시에서도 서지 않는다**:
+ * 산업팩 셋에는 같은 (영역 · 축)을 가리키는 문항이 둘이나 셋 있어서, 어떤
+ * 응답으로도 뒤쪽 문항이 앞으로 올라오지 못한다. `v3:ui` 가 그것을 잡았다.
+ *
+ * 받고 쓰지 않는 문항을 0 으로 두는 것이 이 제품의 선이라, **묻지 않을
+ * 문항은 은행에서 빼야 한다.** 어느 넷을 뺄지는 그 산업 경력자가 읽어
+ * 주셔야 정해진다. 그 전까지는 열을 다 묻고 차례만 바꾼다: 비어 있는 축이
+ * 앞에 서면 응시자가 먼저 만나는 질문이 자기에게 없는 쪽이 된다.
+ */
+export const INDUSTRY_DEEP_MAX = Number.POSITIVE_INFINITY;
+
+/**
+ * 둘째로 고른 역할에서 묻는 문항 수의 상한.
+ *
+ * 첫째 역할은 일곱 자리를 다 묻고 둘째는 앞머리 셋만 묻는다. 둘을 똑같이
+ * 묻으면 응답이 열넷 늘고, 둘째 역할은 **견주기 위한 자리**라 그 역할이
+ * 요구하는 판단의 앞머리만 있으면 견줄 수 있다.
+ */
+export const ROLE_SECOND_MAX = 3;
+
+/** 보기 넷에서 `내가 했다` 의 자리. 이 아래는 받아 쓴 것이다 */
+export const STRONG_INDEX = 2;
+
 /** 한 응시에서 깊게 보는 산업과 역할의 수 */
 export const INDUSTRY_PICK_MAX = 2;
 export const ROLE_PICK_MAX = 2;
@@ -117,14 +145,77 @@ export function crossField(stage: Stage, field: GradField | null): boolean {
   return field === "HUMANITIES_SOCIAL" || field === "BUSINESS";
 }
 
-/** 학위와 계열이 고르는 분기 묶음. **점수에 들어가지 않는다** */
+/**
+ * 학위 묶음 넷.
+ *
+ * **학위를 바꾸면 무엇이 달라지는지 응시자가 체감해야 한다.** 앞 판본은
+ * 석사 이상을 한 묶음(`grad-stem`)으로 묶어 박사와 포닥이 석사와 같은 여섯
+ * 문항을 받았다. 학위마다 책임지는 범위가 다른데 같은 것을 물으면 그
+ * 차이가 결과에 남지 않는다.
+ *
+ * - 학부: 수업 · 설계 과제 · 캡스톤 · 실험 · 동아리 · 인턴 · 개인 프로젝트
+ * - 석사: 연구 문제 · 측정 조건 · 방법 · 산출물 · 검증 · 산업 말로 옮기기
+ * - 박사: 문제 세우기 · 가정 · 방법 선택 · 변수 · 불확실성 · 한계
+ * - 포닥: 책임 범위 · 과제 운영 · 독립 판단 · 협업 · 성과 전환 · 기관 연결
+ *
+ * **점수에 들어가지 않는다.** 네 묶음이 같은 보기 넷을 쓰고 가중치가 없다:
+ * 포닥이 박사보다 저절로 높게 나오지 않는다.
+ */
+export type BranchBlock = "ug-core" | "ms-core" | "phd-core" | "postdoc-core";
+
 export function branchBlock(
   stage: Stage, field: GradField | null,
-): "ug-core" | "grad-stem" {
+): BranchBlock {
   /* 타계열 대학원이면 학부 기계공학 묶음을 받는다. 그 사람의 기계공학
      경험은 학부에 있고, 대학원 경험은 번역 맥락으로만 다룬다 */
   if (stage === "bachelor" || crossField(stage, field)) return "ug-core";
-  return "grad-stem";
+  if (stage === "master") return "ms-core";
+  if (stage === "phd") return "phd-core";
+  return "postdoc-core";
+}
+
+/** 학위 묶음의 머리말과 도움말. 화면이 읽는다 */
+export const BRANCH_COPY: Record<BranchBlock, { eyebrow: string; help: string }> = {
+  "ug-core": {
+    eyebrow: "수업과 과제",
+    help: "수업, 실험, 캡스톤, 동아리, 인턴을 모두 포함해 답해주세요.",
+  },
+  "ms-core": {
+    eyebrow: "연구와 과제",
+    help: "연구 주제의 난이도를 묻는 자리가 아닙니다. 무엇을 직접 정했는지만 봅니다.",
+  },
+  "phd-core": {
+    eyebrow: "문제를 세우는 자리",
+    help: "가정과 변수와 한계를 누가 정했는지를 묻습니다.",
+  },
+  "postdoc-core": {
+    eyebrow: "맡아서 끌고 간 범위",
+    help: "혼자 한 범위와 나눠 맡긴 범위를 갈라 답해주세요.",
+  },
+};
+
+/**
+ * Core 선별에서 **이미 강하게 답한** (영역 · 축).
+ *
+ * **이 값은 판정이 아니다.** 축 상태는 끝에서 `scoring/engine.ts` 가 한 번
+ * 정하고, 여기서 세는 것은 `다음에 무엇을 물을까` 뿐이다. 쓰는 자리도 하나다:
+ * 산업 판단에서 **비어 있는 축을 먼저 세우는 순서**.
+ *
+ * 한 칸에 문항이 둘인 자리는 둘 가운데 높은 쪽을 본다.
+ */
+export function strongCells(
+  levels: Record<string, number>,
+  cells: { item_id: string; technical_domain: string | null; evidence_axis: string | null }[],
+): string[] {
+  const best = new Map<string, number>();
+  for (const c of cells) {
+    if (!c.technical_domain || !c.evidence_axis) continue;
+    const v = levels[c.item_id];
+    if (v === undefined) continue;
+    const k = `${c.technical_domain}.${c.evidence_axis}`;
+    best.set(k, Math.max(best.get(k) ?? 0, v));
+  }
+  return [...best].filter(([, v]) => v >= STRONG_INDEX).map(([k]) => k);
 }
 
 /**

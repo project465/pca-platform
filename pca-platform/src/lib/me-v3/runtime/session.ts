@@ -20,10 +20,13 @@ import type {
 } from "../scoring/types";
 import type { Bank, BankItem } from "../scoring/normalize";
 import { ITEM_BANK_VERSION, SCORING_VERSION } from "../scoring/version";
-import { buildPlan, type IndustryScene, type Plan, type Screen } from "./blocks";
+import {
+  buildPlan, type IndustryScene, type Plan, type PlanInput, type Screen,
+} from "./blocks";
 import { progressOf, type Progress } from "./progress";
 import {
-  branchBlock, crossField, pickDomains, type GridAnswer,
+  branchBlock, crossField, pickDomains, ROLE_SECOND_MAX,
+  strongCells, type GridAnswer,
 } from "./routing";
 import { counts, minutes } from "../response-count";
 import { controlOf, type MenuContext } from "./menus";
@@ -210,20 +213,26 @@ export function estimate(stage: Stage, field: GradField | null): {
 } {
   const bp = coreFile<{ slots: { block: string }[] }>(CORE, "items_blueprint");
   const n = (b: string) => bp.slots.filter((x) => x.block === b).length;
-  const branch = branchBlock(stage, field) === "ug-core"
-    ? n("UG-CORE") : n("GRAD-CORE");
+  const BRANCH_BLOCK: Record<string, string> = {
+    "ug-core": "UG-CORE", "ms-core": "MS-CORE",
+    "phd-core": "PHD-CORE", "postdoc-core": "POSTDOC-CORE",
+  };
+  const branch = n(BRANCH_BLOCK[branchBlock(stage, field)]);
   const blocks = {
     /* 학습 의향 열둘은 선별된 영역에만 묻는다. 고정으로 받는 것은
        관심과 경험 스물넷이다 */
     grid: n("CORE-GRID") - 12, judge: n("CORE-JUDGE"), force: n("CORE-FORCE"),
-    probePerDomain: n("PROBE-S4"), deepPerDomain: n("DEEP-S8"),
+    probePerDomain: n("PROBE-S4") / 2, probeSecondPerDomain: n("PROBE-S4") / 2,
+    deepPerDomain: n("DEEP-S8"),
     learningPerDomain: 1,
-    consist: n("CONSIST"),
+    /* 일관성은 **한 짝만** 묻는다. 은행에는 두 짝이 있고 그 가운데 덜
+       확인된 축의 짝 하나가 선다 */
+    consist: 2,
     trans: n("TRANS-10"), target: n("TARGET"),
     branch: branch + (crossField(stage, field) ? n("GRAD-XFIELD") : 0),
     /* 팩은 blueprint 밖이라 은행에서 센다. 한 응시에 깊게 묻는 것은
        산업 하나와 역할 둘까지다 */
-    pack: packSize("industry") + packSize("role"),
+    pack: packSize("industry") + packSize("role") + ROLE_SECOND_MAX,
   };
   const c = counts(blocks);
   return {
@@ -508,18 +517,69 @@ function planDeps() {
   };
 }
 
-export async function planFor(a: V3Attempt): Promise<Plan> {
-  const answers = await answersOf(a.id);
+/**
+ * 계획을 세우는 입력 한 벌.
+ *
+ * **한자리에서 만든다.** 등급을 올릴 때 쓰는 `before` 계획과 지금 계획이
+ * 따로 적혀 있었고, adaptive 값(강하게 답한 축 · 일관성 축)이 늘면 한쪽이
+ * 반드시 빠진다.
+ */
+function planInput(
+  a: V3Attempt, answers: Record<string, Answer>,
+  over: { tier?: Tier; deep?: string[] } = {},
+): PlanInput {
   const tds = content().domains.domains.map((d) => d.code);
-  return buildPlan({
-    tier: a.tier, stage: a.education_stage,
+  const items = content().bank.items;
+  /* 보기 넷의 자리만 본다. 이 값은 판정이 아니고 **다음에 무엇을 물을지**다 */
+  const levels: Record<string, number> = {};
+  for (const [id, v] of Object.entries(answers)) {
+    if (v.kind === "level") levels[id] = v.index;
+  }
+  const probeItems = items.filter((i) => i.module === "PROBE-S4");
+  const strong = strongCells(levels, probeItems);
+  /* 일관성은 한 짝만 묻는다. **덜 확인된 축**으로 묻는다: 이미 강하게
+     답한 축을 또 물으면 같은 판단을 표현만 바꿔 되묻는 일이 된다 */
+  const axes = [...new Set(items
+    .filter((i) => i.module === "CONSIST")
+    .map((i) => String(i.evidence_axis)))];
+  const openCount = (ax: string) =>
+    a.opened_probe.filter((td) => !strong.includes(`${td}.${ax}`)).length;
+  const consistAxis = [...axes].sort((x, y) => openCount(y) - openCount(x))[0] ?? null;
+  return {
+    tier: over.tier ?? a.tier, stage: a.education_stage,
     branchBlock: branchBlock(a.education_stage, a.grad_field),
     crossField: crossField(a.education_stage, a.grad_field),
-    probe: a.opened_probe, deep: a.opened_deep,
+    probe: a.opened_probe, deep: over.deep ?? a.opened_deep,
     industryInterest: a.industry_interest ?? [],
     roleInterest: a.role_interest ?? [],
     tiedPair: tiedPairIn(answers, tds),
-  }, planDeps());
+    strongCells: strong,
+    consistAxis,
+    touched: tds.filter((td) => {
+      const a = answers[`G_${td}_EXP`];
+      return !!a && a.kind === "exposure" && a.value >= 1;
+    }),
+  };
+}
+
+export async function planFor(a: V3Attempt): Promise<Plan> {
+  const answers = await answersOf(a.id);
+  return buildPlan(planInput(a, answers), planDeps());
+}
+
+/**
+ * 실제로 화면에 선 팩 문항.
+ *
+ * 산업 판단은 비어 있는 축을 먼저 세우고 여섯에서 끊고 둘째 역할은 앞머리
+ * 셋만 묻는다. **묻지 않은 문항을 공백으로 적지 않으려고** 이 목록을 판정에
+ * 넘긴다.
+ */
+function askedPackItems(plan: Plan): string[] {
+  const out: string[] = [];
+  for (const sc of plan.screens) {
+    if (sc.id.startsWith("ind-") || sc.id.startsWith("role-")) out.push(...sc.items);
+  }
+  return out;
 }
 
 export type View = {
@@ -653,16 +713,9 @@ export async function newScreensAfterUpgrade(
   a: V3Attempt, from: Tier,
 ): Promise<{ added: Screen[]; answered: number }> {
   const answers = await answersOf(a.id);
-  const tds = content().domains.domains.map((d) => d.code);
-  const before = buildPlan({
-    tier: from, stage: a.education_stage,
-    branchBlock: branchBlock(a.education_stage, a.grad_field),
-    crossField: crossField(a.education_stage, a.grad_field),
-    probe: a.opened_probe, deep: from === "BASIC" ? [] : a.opened_deep,
-    industryInterest: a.industry_interest ?? [],
-    roleInterest: a.role_interest ?? [],
-    tiedPair: tiedPairIn(answers, tds),
-  }, planDeps());
+  const before = buildPlan(
+    planInput(a, answers, { tier: from, deep: from === "BASIC" ? [] : a.opened_deep }),
+    planDeps());
   const plan = await planFor(a);
   const had = new Set(before.screens.map((s) => s.id));
   const added = plan.screens.filter((s) => !had.has(s.id) && s.items.length > 0);
@@ -674,9 +727,11 @@ export async function newScreensAfterUpgrade(
 export async function submissionOf(a: V3Attempt): Promise<Submission> {
   const answers = await answersOf(a.id);
   const picks = await picksOf(a.id);
+  const plan = buildPlan(planInput(a, answers), planDeps());
   return {
     attempt_id: a.id, tier: a.tier, stage: a.education_stage, grad_field: a.grad_field,
     undergrad_core: a.undergrad_core,
+    asked: askedPackItems(plan),
     answers, ...picks,
     opened: { probe: a.opened_probe, deep: a.opened_deep },
     industry_interest: a.industry_interest ?? [],

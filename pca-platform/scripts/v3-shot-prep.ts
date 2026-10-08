@@ -59,11 +59,15 @@ async function pick(a: V3Attempt, id: string, lv: Level): Promise<Answer | null>
   }
   /* 보기 셋. 값은 은행이 들고 있고 여기서 만들지 않는다 */
   if (c.kind === "pick3") {
-    const n = c.options.length;
-    const got = c.options[lv === "none" ? n - 1 : lv === "mid" ? 1 : 0];
+    /* `잘 모르겠다` 자리를 빼고 고른다. 그 보기는 값이 `null` 이라 수로
+       저장되지 않고, 사람 벌을 만들 때 쓰면 그 사람이 관심을 안 고른 것이
+       된다 */
+    const opts = c.options.filter((o) => o.value !== null);
+    const n = opts.length;
+    const got = opts[lv === "none" ? n - 1 : lv === "mid" ? 1 : 0];
     return c.answer === "exposure"
-      ? { kind: "exposure", value: got.value }
-      : { kind: "scale5", value: got.value };
+      ? { kind: "exposure", value: got.value as number }
+      : { kind: "scale5", value: got.value as number };
   }
   const o = c.options[0];
   return o ? { kind: "choice", value: o.value } : null;

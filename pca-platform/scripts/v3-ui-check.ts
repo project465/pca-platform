@@ -39,6 +39,22 @@ function ok(n: string, good: boolean, d = ""): void {
 
 const TDS = content().domains.domains.map((d) => d.code);
 const ITEMS = content().bank.items;
+/** 일관성 짝이 걸릴 수 있는 축 전부 */
+const CONSIST_AXES = [...new Set(ITEMS
+  .filter((i) => i.module === "CONSIST").map((i) => String(i.evidence_axis)))];
+/**
+ * 앞머리 넷의 칸이 뒤쪽 문항과 겹치는 산업이 있다.
+ *
+ * 한 산업팩 안에서 두 문항이 같은 (영역 · 축)을 가리키면 앞머리 넷을
+ * 강하게 답한 것으로 넘겨도 그 짝이 함께 뒤로 밀린다. 그래서 **문항마다**
+ * 그 문항 하나만 밀어 보는 벌도 돈다.
+ */
+function allButOne(pack: string, keep: string): string[] {
+  return ITEMS
+    .filter((i) => i.module === "INDUSTRY" && i.item_id.startsWith(`${pack}_`)
+      && i.item_id !== keep)
+    .map((i) => `${i.technical_domain}.${i.evidence_axis}`);
+}
 
 function ctx(tied: string[]): MenuContext {
   return {
@@ -59,6 +75,7 @@ function plan(args: {
   tier: Tier; stage: Stage; field: GradField | null;
   probe: string[]; deep: string[];
   industry?: string[] | null; role?: string[] | null; tied?: string[];
+  consistAxis?: string | null; strong?: string[];
 }): Plan {
   return buildPlan({
     tier: args.tier, stage: args.stage,
@@ -68,6 +85,12 @@ function plan(args: {
     industryInterest: args.industry ?? [],
     roleInterest: args.role ?? [],
     tiedPair: args.tied ?? [],
+    /* 선별 축의 둘째 문항은 해 본 적이 있다고 답한 영역에서만 뜬다.
+       검사는 **전부 해 봤다고 답한 사람**으로 돈다: 그래야 은행의 문항이
+       전부 어느 화면엔가 서는지 셀 수 있다 */
+    touched: TDS,
+    consistAxis: args.consistAxis ?? null,
+    strongCells: args.strong ?? [],
   }, DEPS);
 }
 
@@ -100,23 +123,50 @@ function main(): void {
   /* --- 1. 은행의 문항이 전부 어느 화면엔가 선다 --- */
   const seen = new Set<string>();
   const tiers: Tier[] = ["BASIC", "STANDARD", "PRO"];
+  /* 학위 넷을 전부 돈다. 학위 묶음이 넷으로 갈려서 하나를 빼면 그 묶음
+     여섯 문항이 **어느 화면에도 서지 않는 채로** 통과한다 */
   const branches: [Stage, GradField | null][] = [
-    ["bachelor", null], ["master", "STEM"], ["master", "HUMANITIES_SOCIAL"],
-    ["master", "BUSINESS"], ["phd", "OTHER_INTERDISCIPLINARY"],
+    ["bachelor", null], ["master", "STEM"], ["phd", "STEM"], ["postdoc", "STEM"],
+    ["master", "HUMANITIES_SOCIAL"], ["master", "BUSINESS"],
+    ["phd", "OTHER_INTERDISCIPLINARY"],
   ];
   for (const tier of tiers) {
     for (const [stage, field] of branches) {
-      for (const ind of [[], ...industryChoices().map((x) => [x.code])]) {
-        for (const role of [[], ...roleChoices().map((x) => [x.code])]) {
-          const p = plan({
-            tier, stage, field, probe: TDS, deep: TDS,
-            industry: ind, role, tied: [TDS[0], TDS[1]],
-          });
-          for (const s of p.screens) for (const id of s.items) seen.add(id);
-        }
+      /* 일관성 짝은 축마다 하나만 선다. 한 벌만 돌리면 나머지 짝이
+         **어느 화면에도 서지 않는 채로** 통과한다 */
+      for (const consistAxis of CONSIST_AXES) {
+        const p = plan({
+          tier, stage, field, probe: TDS, deep: TDS,
+          industry: [], role: [], tied: [TDS[0], TDS[1]], consistAxis,
+        });
+        for (const s of p.screens) for (const id of s.items) seen.add(id);
       }
     }
   }
+  /* 팩은 따로 돈다. 산업과 역할과 등급과 학위를 한 겹으로 돌리면 벌이
+     수천이 되고, 팩 문항이 서는 자리는 학위와 무관하다 */
+  for (const x of industryChoices()) {
+    const mine = ITEMS.filter((i) => i.module === "INDUSTRY"
+      && i.item_id.startsWith(`${x.code}_`));
+    /* 산업 판단은 비어 있는 축을 먼저 세우고 여섯에서 끊는다. 문항마다
+       그 문항만 비어 있는 경우를 돌려 열 자리 전부가 서는지 센다 */
+    for (const keep of mine) {
+      const p = plan({
+        tier: "PRO", stage: "bachelor", field: null, probe: TDS, deep: TDS,
+        industry: [x.code], strong: allButOne(x.code, keep.item_id),
+      });
+      for (const s of p.screens) for (const id of s.items) seen.add(id);
+    }
+  }
+  for (const x of roleChoices()) {
+    /* 둘째로 고른 역할은 앞머리 셋만 묻는다. 첫째 자리로도 한 번 돈다 */
+    const p = plan({
+      tier: "PRO", stage: "bachelor", field: null, probe: TDS, deep: TDS,
+      role: [x.code, roleChoices()[0].code],
+    });
+    for (const s of p.screens) for (const id of s.items) seen.add(id);
+  }
+
   const orphan = ITEMS.filter((i) => !seen.has(i.item_id)).map((i) => i.item_id);
   ok("은행의 문항이 전부 어느 화면엔가 선다", orphan.length === 0,
      orphan.length ? `서지 않는 문항 ${orphan.length}: ${orphan.slice(0, 6).join(",")}`
@@ -145,13 +195,19 @@ function main(): void {
   const ge = itemOf("G_TD01_EXP");
   const ci = gi ? controlOf(gi, ctx([])) : null;
   const ce = ge ? controlOf(ge, ctx([])) : null;
-  ok("훑기는 보기 셋이고 저장되는 값이 전과 같다",
+  /* `잘 모르겠다` 의 값이 **수가 아니다.** 가운데 값(3)으로 두면 아직
+     모르는 사람이 보통 관심으로 판정된다. 화면이 그 자리에서 `UNKNOWN` 을
+     보내고 판정이 `ANSWERED_UNKNOWN` 으로 받는다 */
+  ok("관심 보기의 `잘 모르겠다` 에 수가 없다",
      !!ci && ci.kind === "pick3" && ci.options.length === 3 &&
      ci.answer === "scale5" &&
-     ci.options.map((o) => o.value).join(",") === "5,3,1" &&
+     ci.options.map((o) => (o.value === null ? "-" : o.value)).join(",") === "5,1,-",
+     ci && ci.kind === "pick3"
+       ? ci.options.map((o) => `${o.label}=${o.value ?? "UNKNOWN"}`).join(" · ") : "");
+  ok("해 본 적 보기의 값은 전과 같다",
      !!ce && ce.kind === "pick3" && ce.answer === "exposure" &&
      ce.options.map((o) => o.value).join(",") === "2,1,0",
-     "관심은 5·3·1 · 경험은 2·1·0");
+     "경험은 2·1·0 — 결과지의 경험 이름을 고치지 않았다");
 
   /* --- 5. 화면에 내부 코드가 새지 않는다 --- */
   const pPro = plan({
@@ -166,10 +222,17 @@ function main(): void {
   ok("화면 문면에 내부 코드가 없다", leaked.length === 0,
      leaked.length ? leaked.slice(0, 5).join(",") : "머리말·주제·질문·도움말·보기");
 
-  /* --- 6. 한 화면에 한 문항 --- */
-  const many = pPro.screens.filter((s) => s.items.length > 1 && s.kind !== "sweep");
-  ok("한 화면에 한 문항이다", many.length === 0,
-     many.length ? many.map((s) => s.id).join(",") : "영역 훑기만 예외");
+  /* --- 6. 한 화면에 묶는 자리는 넷뿐이다 ---
+        훑기(열두 줄을 견준다) · 한 축의 두 문항 · 같은 묶음의 판단 둘 ·
+        번역 한 덩이. **그 밖에는 한 화면에 한 문항이다**: 보기 넷을 쌓아
+        놓으면 빠르게 넘기다 오선택이 쌓인다 */
+  const GROUPED = new Set(["sweep", "pair", "group"]);
+  const many = pPro.screens.filter((s) => s.items.length > 1 && !GROUPED.has(s.kind));
+  ok("묶어 세우는 자리는 정해진 넷뿐이다", many.length === 0,
+     many.length ? many.map((s) => s.id).join(",") : "훑기 · 한 축의 두 문항 · 판단 둘 · 번역 덩이");
+  const bigPair = pPro.screens.filter((s) => s.kind === "pair" && s.items.length > 2);
+  ok("한 화면에 묶는 문항은 둘까지다", bigPair.length === 0,
+     bigPair.map((s) => s.id).join(","));
 
   /* --- 7. BASIC 은 심화와 번역과 팩 문항을 열지 않는다 --- */
   const pBasic = plan({
@@ -279,14 +342,15 @@ function main(): void {
      order.indexOf(scene.id) < atFirstProbe,
      scene ? `${scene.subject} · ${(scene.body ?? []).length}줄` : "없다");
 
-  /* --- 18. 선별 등급 응답의 절반 이상이 실제 판단이다 --- */
-  const judgeIds = pBasic.screens.filter((s) => s.kind === "single")
-    .flatMap((s) => s.items);
-  const sweepIds = pBasic.screens.filter((s) => s.kind === "sweep")
-    .flatMap((s) => s.items);
-  const ratio = judgeIds.length / (judgeIds.length + sweepIds.length);
-  ok("선별 등급 응답의 절반 이상이 실제 판단 문항이다", ratio >= 0.5,
-     `판단 ${judgeIds.length} · 훑기 ${sweepIds.length} · ${Math.round(ratio * 100)}%`);
+  /* --- 18. 선별 등급 **화면**의 절반 이상이 실제 판단이다 ---
+        V1 은 서른두 화면 가운데 여덟만 판단이었다. 지적이 화면 수로 들어
+        왔고, 응답으로 세면 5초짜리 훑기 스물넷이 13초짜리 판단과 같은
+        무게로 세어진다. 응답 비중은 `v3:wording` 이 따로 적는다 */
+  const judgeScreens = pBasic.screens.filter((s) =>
+    s.id.startsWith("probe-") || s.id.startsWith("judge-") || s.id.startsWith("branch-"));
+  const ratio = judgeScreens.length / pBasic.screens.length;
+  ok("선별 등급 화면의 절반 이상이 실제 판단이다", ratio >= 0.5,
+     `판단 ${judgeScreens.length} / 전체 ${pBasic.screens.length} 화면 · ${Math.round(ratio * 100)}%`);
 
   /* --- 19. 관심 역할은 Core 심화 뒤에 고른다 --- */
   const atRole = order.indexOf("pick-role");
@@ -296,17 +360,24 @@ function main(): void {
 
   /* --- 20. 산업 문항에는 쉬운 말 풀이가 함께 뜬다 --- */
   const indScreens = pPro.screens.filter((s) => s.id.startsWith("ind-"));
+  /* 산업 판단은 **비어 있는 축을 먼저 세우고 여섯에서 끊는다.** Core 에서
+     이미 강하게 답한 축을 그 산업 말로 한 번 더 묻는 것은 같은 판단을
+     표현만 바꿔 되묻는 일이다 */
   ok("산업 문항마다 쉬운 말 풀이가 함께 뜬다",
      indScreens.length >= 8 && indScreens.every((s) => (s.help ?? "").length > 10),
-     `${indScreens.length}개`);
+     `${indScreens.length}개 — 수를 끊지 않고 차례만 바꾼다`);
 
   /* --- 21. 타계열 대학원은 학부 묶음과 번역 맥락을 받는다 --- */
   const xf = plan({ tier: "BASIC", stage: "master", field: "HUMANITIES_SOCIAL",
     probe: TDS.slice(0, 2), deep: [] });
-  const xfIds = xf.screens.filter((s) => s.id.startsWith("xfield-")).length;
-  const ugIds = xf.screens.filter((s) => s.id.startsWith("branch-")).length;
+  /* **화면이 아니라 문항을 센다.** 학위 묶음은 둘씩 묶어 세우므로 화면
+     수는 문항 수의 절반이다 */
+  const xfIds = xf.screens.filter((s) => s.id.startsWith("xfield-"))
+    .flatMap((s) => s.items).length;
+  const ugIds = xf.screens.filter((s) => s.id.startsWith("branch-"))
+    .flatMap((s) => s.items).length;
   ok("타계열 대학원은 학부 묶음과 번역 맥락을 받는다", xfIds === 4 && ugIds === 6,
-     `학부 묶음 ${ugIds} · 번역 맥락 ${xfIds}`);
+     `학부 묶음 ${ugIds}문항 · 번역 맥락 ${xfIds}문항`);
 
   console.log(`\n  통과 ${pass} · 걸림 ${fail}`);
   if (fail) process.exitCode = 1;
