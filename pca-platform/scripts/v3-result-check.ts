@@ -400,6 +400,87 @@ const packLeak = ["INDUSTRY", "ROLE"]
   .filter((mod) => VARIANTS.some((v) => coreOf(v) !== coreOf(v, mod)));
 ok("팩 문항이 영역 축 수준을 만들지 않는다", packLeak.length === 0, packLeak.join(" "));
 
+/* ── 입력 없는 결과 문장 0 ────────────────────────────────────────
+   앞의 검사는 **받고 쓰지 않는 입력**을 센다. 이것은 반대 방향이다:
+   **입력 없이 서는 문장**을 센다. 둘 다 있어야 `결과의 모든 문장이 실제
+   응답에서 왔는가` 에 답할 수 있다.
+
+   재는 법은 가장 모진 쪽으로 잡는다. **아무것도 답하지 않은 응시**를
+   만들어 결과를 뽑고, 거기에 확인 판정이 한 줄이라도 서면 그 줄은 응답이
+   아닌 데서 왔다는 뜻이다 */
+const bare: Submission = {
+  attempt_id: "BARE", tier: "PRO", stage: "bachelor", grad_field: null,
+  undergrad_core: null, answers: {}, checklists: {}, artifacts: {}, verifications: {},
+  opened: { probe: [], deep: [] },
+  industry_interest: [], role_interest: [], org_interest: [],
+  industry_pack: null, role_pack: null,
+};
+const bareS = score(bare, loaded);
+const bareM = buildResult(bareS, loaded, { packs: { industries: [], roles: [] } });
+const bareBad: string[] = [];
+if (bareM.overview.counts.confirmed_axes > 0) bareBad.push("확인된 축");
+if (bareM.overview.counts.owned_axes > 0) bareBad.push("직접 정한 축");
+if (bareM.overview.counts.evidence_items > 0) bareBad.push("고른 항목");
+if (bareM.evidence.ready.length || bareM.evidence.partial.length) bareBad.push("근거 묶음");
+if (bareM.industry_context || bareM.role_context) bareBad.push("산업·직무 절");
+if (bareM.translation) bareBad.push("번역 절");
+if (bareM.domains.some((d) => d.zone === "Z1_EVIDENCE_ESTABLISHED")) bareBad.push("Z1");
+if (bareM.common.axes.some((a) => a.confirmed)) bareBad.push("공통 판단 확인");
+if (bareM.targets.orgs.length || bareM.targets.goal.role) bareBad.push("고르신 자리");
+if (bareM.overview.tied_pick.length) bareBad.push("고르신 쪽");
+ok("아무것도 답하지 않은 응시에 확인 판정이 없다", bareBad.length === 0,
+   bareBad.length ? bareBad.join(" ") : "머리글 " + headlineKo(bareM).title.slice(0, 18));
+
+/* 그리고 그런 응시에도 **다음 걸음은 받는다.** 빈 결과를 빈 화면으로
+   두면 읽는 사람은 자기 결과가 덜 만들어진 줄 안다 */
+ok("아무것도 답하지 않은 응시도 다음 걸음을 받는다", bareM.actions.length > 0,
+   bareM.actions.length ? actionKo(bareM.actions[0], "", bareM.stage).do.slice(0, 34) : "0개");
+
+/* ── 고른 항목은 전부 제출에 있던 글자다 ──────────────────────────
+   모델이 돌려주는 `picks` 는 응시자가 고른 글자다. 지어낸 줄이 하나라도
+   섞이면 그 사람이 고른 적 없는 말이 자기 답으로 적힌다 */
+const ghostPick: string[] = [];
+for (const f of fx.personas) {
+  const sub = expand(f, core);
+  const sent = new Set<string>([
+    ...Object.values(sub.checklists ?? {}).flat(),
+    ...Object.values(sub.artifacts ?? {}).flat(),
+    ...Object.values(sub.verifications ?? {}).flat(),
+  ]);
+  const m = models.get(f.id)!;
+  for (const d of m.domains) {
+    for (const a of d.axes) {
+      for (const pick of a.picks) if (!sent.has(pick)) ghostPick.push(`${f.id} ${pick}`);
+    }
+  }
+}
+ok("결과에 적힌 고른 항목이 전부 제출에 있던 글자다", ghostPick.length === 0,
+   ghostPick.length ? ghostPick.slice(0, 3).join(" / ") : `사람 ${fx.personas.length}벌`);
+
+/* ── 확인된 축마다 그 칸의 응답이 있다 ───────────────────────────
+   축 상태는 응답에서만 선다. 체크리스트만 고르고 문항에 답하지 않은 칸이
+   확인으로 서면, **고르기만 한 사람이 해 본 사람으로 적힌다** */
+const noAnswer: string[] = [];
+for (const [id, m] of models) {
+  const s2 = snaps.get(id)!;
+  for (const d of m.domains) {
+    for (const ax of d.confirmed) {
+      const from = s2.domains.find((x) => x.code === d.code)?.axes[ax].from ?? [];
+      if (!from.length) noAnswer.push(`${id} ${d.code}.${ax}`);
+    }
+  }
+}
+ok("확인된 축마다 그 칸의 응답이 있다", noAnswer.length === 0,
+   noAnswer.length ? noAnswer.slice(0, 3).join(" ") : "사람 12벌");
+
+/* ── 팩 절은 고른 팩이 있을 때만 선다 ────────────────────────────── */
+const packGhost = [...models].filter(([id, m]) => {
+  const f = fx.personas.find((x) => x.id === id)!;
+  return (!!m.industry_context !== !!f.industry) || (!!m.role_context !== !!f.role);
+});
+ok("산업·직무 절은 고르신 분께만 선다", packGhost.length === 0,
+   packGhost.map(([id]) => id).join(" "));
+
 /* 16. 사람마다 한 줄 */
 console.log("");
 for (const f of fx.personas) {

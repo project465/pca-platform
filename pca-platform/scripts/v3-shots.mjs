@@ -12,7 +12,7 @@
  *   node scripts/v3-shots.mjs /tmp/targets.json
  */
 import { execFileSync } from "node:child_process";
-import { mkdirSync, readFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 const B = process.env.UI_BASE ?? "http://127.0.0.1:3100";
 const OUT = "docs/metri/shots/v3";
@@ -80,6 +80,41 @@ const NARROW = new Set([
 const log = [];
 const problems = [];
 for (const t of plan.targets) {
+  /* **종이는 화면으로 찍지 않는다.** PDF 길은 내려받기라 브라우저로 열면
+     빈 쪽이 뜬다. 받아서 첫 쪽을 그림으로 떠 둔다: 빈 쪽과 잘린 카드는
+     그림으로 봐야 보인다 */
+  if (t.pdf) {
+    const p = await ctx[t.who].newPage();
+    const res = await p.request.get(B + t.path, { timeout: 120000 });
+    const code = res.status();
+    if (code === 200) {
+      const buf = await res.body();
+      const raw = `${OUT}/${t.name}.pdf`;
+      writeFileSync(raw, buf);
+      try {
+        execFileSync("pdftoppm", ["-png", "-r", "80", "-f", "1", "-l", "2",
+          raw, `${OUT}/${t.name}`]);
+      } catch { problems.push(`${t.name}: pdftoppm 이 없습니다`); }
+      /* **빈 쪽과 글자 없는 쪽을 센다.** 쪽수를 목표로 삼지 않는 대신
+         빈 쪽이 없는지는 본다 */
+      try {
+        const txt = execFileSync("pdftotext", [raw, "-"], { encoding: "utf8" });
+        const pages = txt.split("\f");
+        const blank = pages.filter((x, i) => i < pages.length - 1 && x.trim().length < 20);
+        const leaked = INTERNAL.map((re) => (txt.match(re) ?? [])[0]).filter(Boolean);
+        log.push(`${t.name.padEnd(26)} ${code} 종이 ${pages.length - 1}쪽`
+          + `${blank.length ? ` 빈쪽 ${blank.length}` : ""}`
+          + `${leaked.length ? ` 내부코드 ${leaked.join(",")}` : ""}`);
+        if (blank.length) problems.push(`${t.name}: 빈 쪽이 ${blank.length}장 있다`);
+        if (leaked.length) problems.push(`${t.name}: 종이에 내부 코드 — ${leaked.join(", ")}`);
+      } catch { problems.push(`${t.name}: pdftotext 가 없습니다`); }
+    } else {
+      log.push(`${t.name.padEnd(26)} ${code}`);
+      problems.push(`${t.name}: ${code}`);
+    }
+    await p.close();
+    continue;
+  }
   const sizes = NARROW.has(t.name)
     ? ["desktop", "mobile", "narrow"] : ["desktop", "mobile"];
   for (const size of sizes) {
@@ -118,7 +153,7 @@ for (const t of plan.targets) {
    컨테이너가 메모리에서 죽는다.
    **누르는 점검이라 응답이 바뀐다.** 그래서 다 찍은 뒤에 하고, 자리도
    맨 끝 것을 쓴다 */
-const qa = plan.targets[plan.targets.length - 1];
+const qa = [...plan.targets].reverse().find((t) => !t.pdf);
 /**
  * **키보드 점검은 보기 넷이 있는 자리에서만 한다.**
  *
@@ -126,7 +161,7 @@ const qa = plan.targets[plan.targets.length - 1];
  * 목록에 들어오면서 맨 끝이 라디오가 없는 쪽이 됐고 **멀쩡한 화면이
  * `키보드로 보기에 닿지 않는다` 로 걸렸다.** 자리를 성격으로 고른다.
  */
-const KB = [...plan.targets].reverse()
+const KB = [...plan.targets].filter((t) => !t.pdf).reverse()
   .find((t) => /^\/v3\/[^/]+\?s=/.test(t.path)) ?? qa;
 {
   const p = await ctx[qa.who].newPage();
@@ -177,7 +212,7 @@ const KB = [...plan.targets].reverse()
     ".qs-tag", ".qs-save", ".qs-count", ".qs-crumb .now", ".qs-chip", ".qs-help",
     ".qs-guide", ".qs-btn-main", ".qs-btn-ghost", ".qs-next li"];
   const seen = new Map();
-  for (const t of plan.targets.slice(1)) {
+  for (const t of plan.targets.slice(1).filter((x) => !x.pdf)) {
     const p = await ctx[t.who].newPage();
     await p.setViewportSize(SIZES.desktop);
     await p.goto(B + t.path, { waitUntil: "networkidle" });

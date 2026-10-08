@@ -27,9 +27,12 @@ export default async function Experiences() {
 
       {pending > 0 ? (
         <div className="cm-soon" style={{ marginBottom: 18 }}>
-          <b>다시 계산할 일이 {pending}건 쌓여 있습니다.</b> 저장한 경험이
-          근거와 Gap에 반영되는 자동 재분석은 아직 돌지 않습니다. 적어 두신
-          것은 그대로 남아 있고, 재분석이 켜지는 날 한 번에 들어갑니다.
+          <b>다시 계산할 일이 {pending}건 쌓여 있습니다.</b> 적어 두신 경험이
+          어느 판단축으로 가고 묶음이 어떻게 달라지는지 먼저 보시고 반영하실
+          수 있습니다.
+          <p style={{ marginTop: 10 }}>
+            <Link href="/me/recompute">재분석 보기</Link>
+          </p>
         </div>
       ) : null}
 
@@ -45,7 +48,8 @@ export default async function Experiences() {
             <thead>
               <tr>
                 <th>경험</th><th>종류</th><th>기술영역</th>
-                <th>직접 정한 것</th><th>남긴 것</th><th />
+                <th>문제</th><th>직접 정한 것</th><th>남긴 것</th>
+                <th>확인</th><th>쓰인 자리</th><th />
               </tr>
             </thead>
             <tbody>
@@ -54,8 +58,11 @@ export default async function Experiences() {
                   <td><b>{e.title}</b></td>
                   <td>{KIND.get(e.kind) ?? e.kind}</td>
                   <td>{e.td_codes.map((c) => domainName(c)).join(" · ") || "—"}</td>
+                  <td>{(e.problems ?? []).length}개</td>
                   <td>{e.decisions.length}개</td>
                   <td>{e.artifacts.length}개</td>
+                  <td>{e.verifications.length}개</td>
+                  <td>{(e.used_where ?? []).length}개</td>
                   <td>
                     <form action={dropExperience}>
                       <input type="hidden" name="id" value={e.id} />

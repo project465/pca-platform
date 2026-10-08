@@ -16,7 +16,9 @@ export const metadata = { title: "CareerMatri Track" };
  * **마케팅 랜딩처럼 쓰지 않는다.** 기능을 짧게 적고 지금 되는 것과 안
  * 되는 것을 가른다. 과장한 문장은 켜는 날 지켜야 하는 약속이 된다.
  */
-const FEATURES = [
+const FEATURES: {
+  code: string; label: string; body: string; blocked: string; href?: string;
+}[] = [
   { code: "posting.watch", label: "새 채용공고 추적",
     body: "관심 산업과 직무에 새 공고가 뜨면 모아 둡니다.", blocked: "공고 자료 검토 전" },
   { code: "industry.shift", label: "산업별 요구역량 변화",
@@ -29,8 +31,17 @@ const FEATURES = [
     body: "한 달에 한 번 바뀐 것만 모아 보냅니다.", blocked: "메일 연결 전" },
   { code: "target.change", label: "목표를 바꾸면 다시 분석",
     body: "관심 산업이나 직무를 바꾸면 Gap을 다시 계산합니다.", blocked: "자동 재분석 전" },
+  /* **지금 되는 것을 `준비 중` 으로 적지 않는다.** 관심 산업과 직무를 바꾸는
+     일은 탐색 화면에서 이미 되고, Track 이 더할 것은 바꾼 뒤의 자동 재계산이다 */
+  { code: "target.edit", label: "관심 산업·직무 바꾸기",
+    body: "탐색 화면에서 언제든 바꾸실 수 있습니다.", blocked: "지금 됩니다",
+    href: "/me/explore" },
   { code: "apply.track", label: "지원한 곳 관리",
-    body: "직접 지원한 공고와 결과를 기록합니다.", blocked: "공고 자료 검토 전" },
+    body: "직접 지원한 곳과 그 결과를 적어 둡니다.", blocked: "직접 적는 데까지",
+    href: "/me/apply" },
+  { code: "apply.role", label: "지원 직무별로 모아 보기",
+    body: "같은 직무에 낸 곳을 묶어 어디서 막혔는지 봅니다.", blocked: "지원 기록이 쌓인 뒤",
+    href: "/me/apply" },
 ];
 
 export default async function Track() {
@@ -58,6 +69,11 @@ export default async function Track() {
             <h2>{f.label} <em>{f.blocked}</em></h2>
             <p>{f.body}</p>
             <div className="cm-grow" />
+            {f.href ? (
+              <div className="cm-acts" style={{ marginBottom: 8 }}>
+                <Link className="cm-btn" href={f.href}>지금 열기</Link>
+              </div>
+            ) : null}
             <form action={toggleInterest}>
               <input type="hidden" name="feature" value={f.code} />
               <input type="hidden" name="on" value={on.has(f.code) ? "0" : "1"} />

@@ -16,6 +16,7 @@
  */
 import { query, queryOne } from "@/lib/db";
 import type { ResultModel } from "./result/model";
+import { orgTypesFor } from "./region";
 
 export const CORE = "ME_CORE_V3";
 
@@ -23,7 +24,8 @@ export const CORE = "ME_CORE_V3";
 
 /** 경험 여덟 갈래. **응시자가 자기 경험을 찾을 수 있는 말로 적는다** */
 export const EXPERIENCE_KINDS = [
-  { code: "course", label: "수업·과제", hint: "전공 수업에서 조건을 직접 정해 본 과제" },
+  { code: "course", label: "수업", hint: "들으면서 직접 계산하거나 정해 본 것" },
+  { code: "assignment", label: "과제", hint: "제출물이 남은 과제나 레포트" },
   { code: "capstone", label: "캡스톤·설계 과제", hint: "한 학기 이상 끌고 간 설계" },
   { code: "research", label: "연구·실험", hint: "연구실에서 돌린 실험이나 해석" },
   { code: "paper", label: "논문·학회", hint: "쓴 논문이나 발표" },
@@ -38,6 +40,8 @@ export type ExperienceKind = typeof EXPERIENCE_KINDS[number]["code"];
 export type Experience = {
   id: string;
   kind: ExperienceKind;
+  problems?: string[];
+  used_where?: string[];
   title: string;
   started_on: string | null;
   ended_on: string | null;
@@ -54,8 +58,8 @@ export type Experience = {
 export async function experiencesOf(userId: string): Promise<Experience[]> {
   return query<Experience>(
     `SELECT id::text, kind, title, started_on::text, ended_on::text,
-            td_codes, axis_codes, decisions, artifacts, verifications,
-            note_text, status, created_at::text
+            td_codes, axis_codes, problems, decisions, artifacts, verifications,
+            used_where, note_text, status, created_at::text
        FROM v3_experiences
       WHERE user_id = $1 AND core_code = $2
       ORDER BY created_at DESC`,
@@ -72,21 +76,25 @@ export async function experiencesOf(userId: string): Promise<Experience[]> {
 export async function addExperience(userId: string, e: {
   kind: string; title: string; started_on?: string | null; ended_on?: string | null;
   td_codes?: string[]; axis_codes?: string[];
-  decisions?: string[]; artifacts?: string[]; verifications?: string[];
+  problems?: string[]; decisions?: string[]; artifacts?: string[];
+  verifications?: string[]; used_where?: string[];
   note_text?: string | null;
 }): Promise<string> {
   const row = await queryOne<{ id: string }>(
     `INSERT INTO v3_experiences
        (user_id, core_code, kind, title, started_on, ended_on,
-        td_codes, axis_codes, decisions, artifacts, verifications,
-        note_text, purge_after)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,
-             CASE WHEN $12 IS NULL THEN NULL ELSE current_date + 365 END)
+        td_codes, axis_codes, problems, decisions, artifacts, verifications,
+        used_where, note_text, purge_after)
+     -- 꼴을 못 박는다. 같은 자리가 값과 IS NULL 두 곳에 서는데,
+     -- 한쪽에 꼴을 일러 주는 자리가 없으면 타입을 못 정해 멈춘다
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14::text,
+             CASE WHEN $14::text IS NULL THEN NULL ELSE current_date + 365 END)
      RETURNING id::text`,
     [userId, CORE, e.kind, e.title.slice(0, 120),
      e.started_on || null, e.ended_on || null,
      e.td_codes ?? [], e.axis_codes ?? [],
-     e.decisions ?? [], e.artifacts ?? [], e.verifications ?? [],
+     e.problems ?? [], e.decisions ?? [], e.artifacts ?? [], e.verifications ?? [],
+     e.used_where ?? [],
      (e.note_text ?? "").trim() || null]);
   /* **다시 계산할 일을 줄로 쌓는다.** 여기서 바로 계산하면 저장이 느려지고,
      계산이 깨진 날 저장까지 막힌다 */
@@ -134,7 +142,10 @@ export async function pendingRecompute(userId: string): Promise<number> {
 export type Profile = {
   target_industry: string[];
   target_role: string[];
+  /** 보고 싶은 기관 유형(ORG_*). 지역 화면에서 고른다 */
   target_org: string[];
+  /** 검사에서 고른 조직환경(OC1~OC7). **ORG 와 다른 층이다** */
+  target_org_context: string[];
   home_region: string | null;
   move_range: string | null;
   recomputed_at: string | null;
@@ -142,7 +153,7 @@ export type Profile = {
 
 export async function profileOf(userId: string): Promise<Profile | null> {
   return (await queryOne<Profile>(
-    `SELECT target_industry, target_role, target_org,
+    `SELECT target_industry, target_role, target_org, target_org_context,
             home_region, move_range, recomputed_at::text
        FROM career_profiles WHERE user_id=$1 AND core_code=$2`,
     [userId, CORE])) ?? null;
@@ -158,32 +169,44 @@ export async function syncProfile(userId: string, from: {
   attemptId: string;
   industry: string[]; role: string[]; org: string[];
 }): Promise<void> {
+  /* 검사에서 고른 조직환경(OC)을 그 자리에 적고, **기관 유형은 거기서
+     씨만 뿌린다.** 아직 지역 화면에서 고르지 않으신 분께 빈 칸을 보여
+     주는 것보다, 검사에서 고르신 것으로 미리 채워 두고 고치시게 하는
+     편이 낫다. 이미 고르신 분의 것은 덮지 않는다 */
+  const seed = [...new Set(from.org.flatMap(
+    (oc) => orgTypesFor(oc).map((o) => o.code)))].slice(0, 3);
   await query(
     `INSERT INTO career_profiles
        (user_id, core_code, market_code, base_attempt_id,
-        target_industry, target_role, target_org)
-     VALUES ($1,$2,'KR',$3,$4,$5,$6)
+        target_industry, target_role, target_org_context, target_org)
+     VALUES ($1,$2,'KR',$3,$4,$5,$6,$7)
      ON CONFLICT (user_id, core_code) DO UPDATE
-       SET base_attempt_id = EXCLUDED.base_attempt_id,
-           target_industry = EXCLUDED.target_industry,
-           target_role     = EXCLUDED.target_role,
-           target_org      = EXCLUDED.target_org,
-           recomputed_at   = now()`,
-    [userId, CORE, from.attemptId, from.industry, from.role, from.org]);
+       SET base_attempt_id    = EXCLUDED.base_attempt_id,
+           target_industry    = EXCLUDED.target_industry,
+           target_role        = EXCLUDED.target_role,
+           target_org_context = EXCLUDED.target_org_context,
+           target_org         = CASE
+             WHEN career_profiles.target_org = '{}' THEN EXCLUDED.target_org
+             ELSE career_profiles.target_org END,
+           recomputed_at      = now()`,
+    [userId, CORE, from.attemptId, from.industry, from.role, from.org, seed]);
 }
 
 /** 희망 지역과 이동 범위. **Core 판정에 들어가지 않는다** */
 export async function saveRegion(
   userId: string, region: string | null, move: string | null,
+  orgs: string[] = [],
 ): Promise<void> {
   await query(
-    `INSERT INTO career_profiles (user_id, core_code, market_code, home_region, move_range)
-     VALUES ($1,$2,'KR',$3,$4)
+    `INSERT INTO career_profiles
+       (user_id, core_code, market_code, home_region, move_range, target_org)
+     VALUES ($1,$2,'KR',$3,$4,$5)
      ON CONFLICT (user_id, core_code) DO UPDATE
        SET home_region = EXCLUDED.home_region,
-           move_range  = EXCLUDED.move_range`,
-    [userId, CORE, region, move]);
-  await enqueue(userId, "region.changed", { region, move });
+           move_range  = EXCLUDED.move_range,
+           target_org  = EXCLUDED.target_org`,
+    [userId, CORE, region, move, orgs.slice(0, 3)]);
+  await enqueue(userId, "region.changed", { region, move, orgs });
 }
 
 /** 관심 산업과 역할을 내 CareerMatri 에서 바꾼다 */
@@ -249,6 +272,79 @@ export async function importActions(
     if (got) n += 1;
   }
   return n;
+}
+
+/* ── 지원한 곳 ─────────────────────────────────────────────────────── */
+
+/**
+ * 본인이 적는 지원 이력.
+ *
+ * **알선하지 않는다.** 우리가 넣어 주는 일은 없고, 직접 지원하신 사실을
+ * 적어 두는 자리다. 기업 이름은 자유입력이라 기한을 들고 다닌다.
+ */
+export type Application = {
+  id: string;
+  org_name: string | null;
+  role_code: string | null;
+  role_label: string | null;
+  industry_code: string | null;
+  region_code: string | null;
+  org_type_code: string | null;
+  applied_on: string | null;
+  state: "watching" | "applied" | "interview" | "offer" | "closed";
+  note_text: string | null;
+  created_at: string;
+};
+
+export const APPLY_STATES = [
+  { code: "watching", label: "보는 중" },
+  { code: "applied", label: "냈습니다" },
+  { code: "interview", label: "면접까지" },
+  { code: "offer", label: "합격" },
+  { code: "closed", label: "끝났습니다" },
+] as const;
+
+export async function applicationsOf(userId: string): Promise<Application[]> {
+  return query<Application>(
+    `SELECT id::text, org_name, role_code, role_label, industry_code,
+            region_code, org_type_code, applied_on::text, state, note_text,
+            created_at::text
+       FROM v3_applications
+      WHERE user_id=$1 AND core_code=$2
+      ORDER BY coalesce(applied_on, created_at::date) DESC, id DESC`,
+    [userId, CORE]);
+}
+
+export async function addApplication(userId: string, a: {
+  org_name?: string | null; role_code?: string | null; industry_code?: string | null;
+  region_code?: string | null; org_type_code?: string | null;
+  applied_on?: string | null; state?: string; note_text?: string | null;
+}): Promise<void> {
+  await query(
+    `INSERT INTO v3_applications
+       (user_id, core_code, org_name, role_code, industry_code, region_code,
+        org_type_code, applied_on, state, note_text, purge_after)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,
+             CASE WHEN $3 IS NULL AND $10 IS NULL THEN NULL
+                  ELSE current_date + 365 END)`,
+    [userId, CORE, (a.org_name ?? "").trim().slice(0, 120) || null,
+     a.role_code || null, a.industry_code || null,
+     a.region_code || null, a.org_type_code || null,
+     a.applied_on || null, a.state ?? "applied",
+     (a.note_text ?? "").trim().slice(0, 300) || null]);
+  await enqueue(userId, "target.changed", { applied: true });
+}
+
+export async function setApplicationState(
+  userId: string, id: string, state: string,
+): Promise<void> {
+  await query(
+    `UPDATE v3_applications SET state=$3, updated_at=now()
+      WHERE id=$1 AND user_id=$2`, [id, userId, state]);
+}
+
+export async function removeApplication(userId: string, id: string): Promise<void> {
+  await query(`DELETE FROM v3_applications WHERE id=$1 AND user_id=$2`, [id, userId]);
 }
 
 /* ── 공고 · Track ──────────────────────────────────────────────────── */

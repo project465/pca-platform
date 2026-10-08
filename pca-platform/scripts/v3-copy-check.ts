@@ -73,6 +73,14 @@ const TICS: { re: RegExp; limit: number; what: string }[] = [
   { re: /할 수 있습니다|실 수 있습니다/g, limit: 4, what: "~할 수 있습니다" },
   { re: /확인합니다|확인됩니다/g, limit: 3, what: "~확인합니다" },
   { re: /제공합니다/g, limit: 0, what: "~제공합니다" },
+  /* 사업주가 짚은 틀 셋을 더 센다. 판정 개념은 그대로 두고 **문장만** 사람이
+     쓴 말로 간다: 같은 틀이 한 화면에 여러 번 서면 그것만으로 기계가 쓴 글로
+     읽힌다 */
+  { re: /연결됩니다|연결해 드립니다/g, limit: 1, what: "~연결됩니다" },
+  { re: /확인됐습니다|확인된 것입니다/g, limit: 3, what: "~확인됐습니다" },
+  { re: /반영됩니다|반영되지 않습니다/g, limit: 2, what: "~반영됩니다" },
+  { re: /바탕으로|토대로/g, limit: 0, what: "~바탕으로" },
+  { re: /제시합니다|도출합니다|산출합니다/g, limit: 0, what: "~제시합니다" },
 ];
 
 /** 주석을 걷어 낸다. **왜 그렇게 썼는지 적어 둔 글까지 세면** 기록을 지우게 된다 */
@@ -102,6 +110,8 @@ const FILES = [
   "src/app/me/jobs/page.tsx",
   "src/app/me/track/page.tsx",
   "src/app/me/gap/page.tsx",
+  "src/app/me/apply/page.tsx",
+  "src/app/me/recompute/page.tsx",
 ];
 
 const out: string[] = [];

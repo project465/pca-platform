@@ -8,6 +8,23 @@ import Picker from "./picker";
 export const metadata = { title: "경험 추가 · 내 CareerMatri" };
 
 /**
+ * 그 결과가 어디로 갔는가.
+ *
+ * **`없음` 을 보기에 둔다.** 그 답도 자료이고, 그 칸을 없애면 아무거나
+ * 고르게 된다. 그리고 쓰인 자리가 없는 것은 흔한 일이지 흠이 아니다.
+ */
+const USED_WHERE = [
+  "수업이나 과제 평가에 들어갔다",
+  "제작이나 발주로 이어졌다",
+  "시제품이나 장비에 적용됐다",
+  "공정이나 운전 기준이 바뀌었다",
+  "논문이나 학회 발표가 됐다",
+  "보고서나 과제 산출물로 제출됐다",
+  "팀이나 다음 사람이 이어받았다",
+  "아직 쓰인 자리가 없다",
+];
+
+/**
  * 경험 추가.
  *
  * **자유입력을 주 입력으로 두지 않는다.** 커리어메트리는 적어 주신 글을
@@ -20,7 +37,11 @@ export const metadata = { title: "경험 추가 · 내 CareerMatri" };
  */
 export default async function NewExperience() {
   await requireUser();
-  const domains = content().domains.domains;
+  const c = content();
+  const domains = c.domains.domains;
+  const lists = c.checklists.domains as Record<string, Record<string, { text: string }[]>>;
+  const pick = (td: string, ax: string, n: number) =>
+    (lists[td]?.[ax] ?? []).map((x) => x.text).slice(0, n);
   const axes = ["J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8"];
 
   return (
@@ -71,6 +92,10 @@ export default async function NewExperience() {
           <Picker
             domains={domains.map((d) => ({
               code: d.code, name: domainName(d.code),
+              /* 문제와 판단은 **그 영역의 체크리스트에서** 온다. 지어낸
+                 보기를 두면 고르는 사람이 자기 일과 다른 말을 고른다 */
+              problems: pick(d.code, "J1", 6),
+              decisions: pick(d.code, "J3", 8),
               artifacts: d.artifacts, verify: d.verify_targets,
             }))}
           />
@@ -84,6 +109,21 @@ export default async function NewExperience() {
               <label className="cm-pick" key={a}>
                 <input type="checkbox" name="axis" value={a} />
                 {axisLabel(a)}
+              </label>
+            ))}
+          </div>
+        </fieldset>
+
+        {/* **어디에 쓰였나를 고정 메뉴로 받는다.** 영역마다 다른 말이
+            아니고 `그 결과가 어디로 갔는가` 한 가지 물음이라, 영역별
+            체크리스트에 두면 같은 보기가 열두 번 선다 */}
+        <fieldset className="cm-field">
+          <legend><span>그 결과가 어디에 쓰였나요</span></legend>
+          <em>쓰인 자리가 없으면 비워 두세요. 비웠다고 불리해지지 않습니다.</em>
+          <div className="cm-pickset">
+            {USED_WHERE.map((u) => (
+              <label className="cm-pick" key={u}>
+                <input type="checkbox" name="used_where" value={u} />{u}
               </label>
             ))}
           </div>

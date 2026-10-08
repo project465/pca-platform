@@ -146,7 +146,10 @@ async function main() {
   /* 같은 계정에 응시가 쌓이면 어느 것을 보는지 알 수 없다 */
   await query(`DELETE FROM v3_attempts WHERE user_id = ANY($1)`, [[shots, starter]]);
 
-  const out: { name: string; path: string; note: string; full?: boolean; who: string }[] = [];
+  const out: {
+    name: string; path: string; note: string;
+    full?: boolean; who: string; pdf?: boolean;
+  }[] = [];
   out.push({
     name: "00_start", path: "/v3/start", who: "starter", full: true,
     note: "검사 시작",
@@ -239,8 +242,17 @@ async function main() {
     path: `/v3/${a09.id}/result#role` });
   out.push({ name: "20_result_evidence", who: "shots", note: "Evidence 와 Gap",
     path: `/v3/${a09.id}/result#evidence` });
+  out.push({ name: "20b_result_gap", who: "shots", note: "앞으로 채울 것",
+    path: `/v3/${a09.id}/result#gaps` });
+  out.push({ name: "20c_result_action", who: "shots", note: "다음에 할 일",
+    path: `/v3/${a09.id}/result#plan` });
   out.push({ name: "21_result_region", who: "shots", note: "결과의 지역·기관 절",
     path: `/v3/${a09.id}/result#region` });
+  out.push({ name: "21b_result_howto", who: "shots", note: "결과를 어떻게 읽을 것인가",
+    path: `/v3/${a09.id}/result#howto` });
+  /* 종이로 가는 길. **쪽 하나를 그림으로 떠서 같이 본다** */
+  out.push({ name: "30_pdf", who: "shots", note: "결과 PDF",
+    path: `/v3/${a09.id}/result/pdf`, pdf: true });
 
   /* ── 내 CareerMatri 여섯 자리 ──
      **검사를 끝낸 사람이 다시 들어오는 자리다.** 여기가 비면 결과 PDF 를
@@ -261,6 +273,10 @@ async function main() {
     path: "/me/track" });
   out.push({ name: "29_jobs", who: "shots", note: "공고 비교 (자료 없음)", full: true,
     path: "/me/jobs" });
+  out.push({ name: "29b_apply", who: "shots", note: "직접 지원한 곳", full: true,
+    path: "/me/apply" });
+  out.push({ name: "29c_recompute", who: "shots", note: "재분석 미리 보기", full: true,
+    path: "/me/recompute" });
 
   console.log(JSON.stringify({
     users: { shots: SHOT_LOGIN, starter: START_LOGIN },

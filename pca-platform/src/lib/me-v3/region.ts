@@ -16,7 +16,20 @@ import { CONTENT_DIR } from "./core-registry";
 export type RegionEntry = {
   code: string; name: string; includes: string[]; scene: string;
 };
-export type OrgTypeEntry = { oc: string; label: string; scene: string };
+/**
+ * 기관 유형. **Core 의 조직환경(OC)과 다른 층이다.**
+ *
+ * OC 는 그 일을 하는 자리의 성격(완성품 기업 · 엔지니어링 서비스 …)이고
+ * ORG 는 그 자리를 가진 기관의 종류(대기업 · 중소기업 …)다. 전에는 둘 다
+ * `OC1` 으로 적혀 있어서, 검사 화면이 말하는 `완성품 기업` 과 결과지가
+ * 말하는 `대기업` 이 같은 코드를 쓰고 다른 뜻이었다. **이름이 겹치는 것이
+ * 곧 버그다**(`.btn` · `--sf-r` · `.lg` · `empty` · `industries` 에 이어
+ * 여섯 번째다). `from_oc` 가 둘 사이의 다리이고, 한 OC 가 여러 ORG 에
+ * 걸린다. 그 사실을 감추지 않는다.
+ */
+export type OrgTypeEntry = {
+  code: string; label: string; scene: string; from_oc: string[];
+};
 export type MoveRange = { code: string; label: string };
 
 export type RegionLayer = {
@@ -51,8 +64,22 @@ export function regionName(code: string | null, dir = CONTENT_DIR): string | nul
   return regionLayer(dir).regions.find((r) => r.code === code)?.name ?? null;
 }
 
-export function orgLabel(oc: string, dir = CONTENT_DIR): string {
-  return regionLayer(dir).org_types.find((o) => o.oc === oc)?.label ?? oc;
+export function orgTypes(dir = CONTENT_DIR): OrgTypeEntry[] {
+  return regionLayer(dir).org_types;
+}
+
+export function orgLabel(code: string, dir = CONTENT_DIR): string {
+  return regionLayer(dir).org_types.find((o) => o.code === code)?.label ?? code;
+}
+
+/**
+ * 그 조직환경을 고르신 분이 흔히 보는 기관 유형.
+ *
+ * **하나로 못 박지 않는다.** 완성품 기업은 대기업에도 중견기업에도 있다.
+ * 한 쪽만 적으면 다른 쪽을 보고 계신 분이 자기 자리가 빠졌다고 읽는다.
+ */
+export function orgTypesFor(oc: string, dir = CONTENT_DIR): OrgTypeEntry[] {
+  return regionLayer(dir).org_types.filter((o) => o.from_oc.includes(oc));
 }
 
 export function moveLabel(code: string | null, dir = CONTENT_DIR): string | null {

@@ -12,7 +12,7 @@
 export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V2";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
-export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.2";
+export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.4";
 
 /*
  * `V2` 로 올린 까닭. **화면 수를 줄였다.** PRO 가 106화면이었고, 자동 진행
@@ -82,4 +82,17 @@ export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.2";
  * `ASSESSMENT_COPY_VERSION` 은 그대로 두고 지문만 다시 적는다. 두 판본을
  * 함께 적어 두는 까닭은 **어떤 채점으로 받은 응답인지**가 그 자리에서
  * 보여야 하기 때문이다.
+ */
+
+/*
+ * 화면 한국어를 `.3` 으로 올린 까닭. **번역 열 단계에 수정(J7)을 묻는 자리가
+ * 생겼다.** 전에는 `산포나 한계를 어떻게 다뤘는지` 를 검증으로 한 번 더 묻고
+ * 있었고, 경험 번역이 문제에서 활용까지 가는 길에 수정 한 칸이 비어 있었다.
+ * 그 자리의 보기 다섯을 새로 적었다. **화면 구조는 그대로**라
+ * `ASSESSMENT_UI_VERSION` 은 올리지 않는다.
+ */
+
+/*
+ * `.4` 로 올린 까닭. **`바탕으로` 가 번역투라 완료 화면의 한 줄을 고쳤다.**
+ * `v3:copy` 에 사업주가 짚은 문장 틀 다섯을 더해 세다가 걸렸다.
  */

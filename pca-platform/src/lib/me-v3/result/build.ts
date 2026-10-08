@@ -336,6 +336,15 @@ function packView(
     answered: p.answers.filter((a) => a.confirmed).map((a) => ({
       domain: a.domain, axis: a.axis, owned: a.ownership === "DECIDED_USED",
     })),
+    /* 물었는데 아직 확인되지 않은 자리. **안 물어본 것과 가르려고 따로 둔다** */
+    not_yet: p.answers.filter((a) => !a.confirmed)
+      .map((a) => ({ domain: a.domain, axis: a.axis })),
+    /* 둘 다 확인된 자리. 한 경험을 두 쪽 언어로 설명할 수 있는 자리다 */
+    overlap: p.answers
+      .filter((a) => a.confirmed && a.domain && a.axis
+        && (s.domains.find((d) => d.code === a.domain)?.confirmed ?? []).includes(a.axis))
+      .map((a) => ({ domain: a.domain as string, axis: a.axis as Axis })),
+    domains: p.domains_in_focus,
   };
 }
 

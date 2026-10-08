@@ -181,6 +181,23 @@ export type PackView = {
    * **Core 판정에 들어가지 않는다.** 산업을 바꿔도 영역 축 수준은 그대로다.
    */
   answered: { domain: string | null; axis: Axis | null; owned: boolean }[];
+  /**
+   * 그 팩에서 물었는데 **아직 확인되지 않은** 판단.
+   *
+   * `requested` 와 다른 칸이다. 저쪽은 Core 판정에서 비어 있는 자리이고,
+   * 이쪽은 **그 산업·직무 문항에 직접 `없다` 로 답하신 자리**다. 둘을
+   * 한 칸에 담으면 안 물어본 것과 없다고 답하신 것이 같아 보인다.
+   */
+  not_yet: { domain: string | null; axis: Axis | null }[];
+  /**
+   * Core 와 팩이 **둘 다** 확인한 자리.
+   *
+   * 지원서에서 가장 먼저 쓸 자리다. 기술영역에서도 확인됐고 그 산업·직무가
+   * 묻는 말로도 확인됐으므로, 한 경험을 두 쪽 언어로 설명할 수 있다.
+   */
+  overlap: { domain: string; axis: Axis }[];
+  /** 그 팩이 보는 기술영역. 결과지가 이름으로 적는다 */
+  domains: string[];
 };
 
 export type TranslationView = {

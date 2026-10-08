@@ -34,6 +34,11 @@ export default async function Jobs() {
           + "내가 이미 가진 근거와 아직 없는 근거를 가릅니다."}
       />
 
+      <div className="cm-acts" style={{ marginBottom: 18 }}>
+        <Link className="cm-btn is-primary" href="/me/apply">직접 지원한 곳 적기</Link>
+        <Link className="cm-btn" href="/me/track">Track이 하는 일</Link>
+      </div>
+
       {postings === 0 ? (
         <>
           <div className="cm-soon" style={{ marginBottom: 20 }}>

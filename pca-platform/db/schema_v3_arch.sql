@@ -114,15 +114,28 @@ CREATE TABLE IF NOT EXISTS industry_td_demand (
   PRIMARY KEY (industry_code, core_code, td_code, base_year)
 );
 
+/* 기관 수를 담을 자리. **지금 줄이 0 이다.**
+   열쇠가 넷인 까닭은 사용자가 탐색에서 고르는 것이 넷이기 때문이다:
+   산업 × 직무 × 권역 × 기관 유형. 하나라도 빠지면 그 조합으로 물어볼 수
+   없고, 나중에 칸을 더하면 이미 쌓인 줄의 뜻이 달라진다.
+
+   `org_type_code` 는 `region-layer.json` 의 ORG_* 다. **Core 의 조직환경
+   (OC)과 다른 층이다**: OC 는 그 일을 하는 자리의 성격이고 ORG 는 그 자리를
+   가진 기관의 종류다. 전에 한 칸에 `oc_code` 로 적어 두어서 두 뜻이
+   겹쳤다. 옛 칸은 지우지 않고 남긴다 — 지우면 그 칸을 읽던 줄이 사라진다 */
 CREATE TABLE IF NOT EXISTS org_registry (
   region_code   TEXT NOT NULL REFERENCES regions(code),
-  oc_code       TEXT NOT NULL,           -- OC1~OC7
+  oc_code       TEXT NOT NULL,           -- 옛 칸. ORG 로 옮겼다
   industry_code TEXT,                      -- 산업팩의 코드
   org_count     INTEGER NOT NULL,
   base_year     SMALLINT NOT NULL,
   source        TEXT NOT NULL,
   PRIMARY KEY (region_code, oc_code, industry_code, base_year)
 );
+ALTER TABLE org_registry ADD COLUMN IF NOT EXISTS org_type_code TEXT;
+ALTER TABLE org_registry ADD COLUMN IF NOT EXISTS role_code TEXT;
+CREATE INDEX IF NOT EXISTS org_registry_pick_idx
+  ON org_registry (industry_code, role_code, region_code, org_type_code);
 
 CREATE TABLE IF NOT EXISTS region_notes (
   region_code TEXT NOT NULL REFERENCES regions(code),
@@ -166,13 +179,20 @@ CREATE TABLE IF NOT EXISTS career_profiles (
      옮겨 오고, 내 CareerMatri 에서 더하거나 지울 수 있다 */
   target_industry TEXT[] NOT NULL DEFAULT '{}',
   target_role     TEXT[] NOT NULL DEFAULT '{}',
-  /* 선호 조직 유형. **Core 판정에 들어가지 않는다** */
+  /* 보고 싶은 기관 유형(ORG_*). **Core 판정에 들어가지 않는다** */
   target_org      TEXT[] NOT NULL DEFAULT '{}',
   home_region     TEXT REFERENCES regions(code),
   move_range      TEXT,
   recomputed_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
   UNIQUE (user_id, core_code)
 );
+
+/* 검사에서 고른 **조직환경**(OC1~OC7). 기관 유형(ORG_*)과 다른 층이다:
+   OC 는 그 일을 하는 자리의 성격이고 ORG 는 그 자리를 가진 기관의 종류다.
+   한 칸에 둘을 담고 있다가, 검사가 쓴 `OC1` 을 지역 화면이 `대기업` 으로
+   읽는 자리가 생겼다. **이름이 겹치는 것이 곧 버그다** */
+ALTER TABLE career_profiles
+  ADD COLUMN IF NOT EXISTS target_org_context TEXT[] NOT NULL DEFAULT '{}';
 
 COMMENT ON TABLE career_profiles IS
   '지금 값. 스냅샷은 굳은 값이라 따로 둔다. 자유입력을 담지 않는다';

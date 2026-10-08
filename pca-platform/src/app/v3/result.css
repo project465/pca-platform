@@ -561,8 +561,8 @@
   .rs-count { margin-top: 12px; gap: 6px 20px; }
   .rs-count b { font-size: 14pt; }
 
-  /* 첫 화면 네 칸 → 종이에서는 네 쪽으로 나란히 선 요약 띠 */
-  .rs-top { grid-template-columns: repeat(4, 1fr); margin-top: 14px; }
+  /* 첫 화면 세 칸 → 종이에서도 세 쪽으로 나란히 선 요약 띠 */
+  .rs-top { grid-template-columns: repeat(3, 1fr); margin-top: 14px; }
   .rs-top > div { padding: 10px 12px; }
   .rs-top h3 { font-size: 7.5pt; }
   .rs-top p { font-size: 9.5pt; }
@@ -577,10 +577,17 @@
   /* **묶음 전체를 붙여 두지 않는다.** 아홉 줄짜리 묶음에 `avoid` 를 걸면
      통째로 다음 쪽으로 밀리고 그 앞 쪽이 절반 비어 뽑힌다. 쪼개지면 뜻이
      사라지는 것은 줄 하나지 묶음 전체가 아니다 */
-  .rs-domain, .rs-gap, .rs-draft, .rs-axis,
+  .rs-gap, .rs-draft, .rs-axis,
   .rs-when li, .rs-steps li, .rs-rows li, .rs-ev .row {
     break-inside: avoid;
   }
+  /* **영역 패널은 쪽을 넘게 둔다.** 한 쪽에 안 들어가는 상자에 `avoid` 가
+     걸려 있으면 그 앞 쪽이 통째로 빈다. 첫 쪽이 머리글 두 줄만 남기고
+     비어 뽑혔다. 쪼개지면 뜻이 사라지는 것은 줄 하나지 패널 전체가 아니다 */
+  .rs-domain { break-inside: auto; }
+  .rs-domain > header { break-after: avoid; }
+  /* 공개 전 띠는 화면에만 둔다. 종이에 찍히면 결과지 쪽마다 띠가 선다 */
+  .stgmark, .stgbar { display: none !important; }
   /* 화면에서 통째로 붙여 둔 큰 상자들을 종이에서는 푼다. 한 쪽을 넘는
      상자에 `avoid` 가 걸려 있으면 그 앞 쪽이 통째로 빈다 */
   .rs-when, .rs-ev > section, .rs-pack, .rs-steps { break-inside: auto; }
@@ -589,7 +596,9 @@
   /* **접어 둔 자리를 종이에서 편다.** 종이에는 누를 사람이 없다. 뽑기
      직전에 브라우저가 쪽 폭을 좁히면서 `matchMedia` 가 다시 울려 접히는데,
      그 상태로 뽑히면 여덟 축이 통째로 사라진다. 한 번 그렇게 뽑혔다 */
-  .rs-foldbtn, .rs-discbtn, .rs-save { display: none !important; }
+  /* 종이에서 눌릴 수 없는 것은 내보내지 않는다. `결과 PDF 저장` 이 그
+     PDF 안에 찍혀 있으면 읽는 사람이 한 번 더 누르려고 한다 */
+  .rs-foldbtn, .rs-discbtn, .rs-save, .rs-pdf { display: none !important; }
   .rs-fold > [hidden], .rs-disc > [hidden] { display: block !important; }
 
   /* **A4 의 글 폭은 690px 안팎이다.** 좁은 화면 규칙(719px)이 종이에서도
@@ -628,6 +637,23 @@
   border-radius: 0 8px 8px 0;
   font-size: 15.5px; line-height: 1.75; color: var(--r-ink, var(--sf-ink));
 }
+
+/* ── 종이로 가는 길 ───────────────────────────────────────────────── */
+
+.rs-pdf {
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px;
+  margin: 18px 0 0;
+}
+.rs-pdf a {
+  display: inline-flex; align-items: center; min-height: 40px;
+  padding: 0 16px; border-radius: 10px;
+  border: 1px solid var(--r-line, var(--sf-line));
+  background: var(--r-paper, var(--sf-surface));
+  color: var(--r-ink, var(--sf-ink));
+  font-size: 14.5px; font-weight: 600; text-decoration: none;
+}
+.rs-pdf a:hover { background: var(--r-soft, var(--sf-surface-2)); }
+.rs-pdf small { color: var(--r-ink-3, var(--sf-ink-3)); font-size: 12.5px; }
 
 /* ── 결과 다음에 갈 자리 ──────────────────────────────────────────── */
 .rs-next {

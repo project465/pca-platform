@@ -452,7 +452,7 @@ export const TRANS_STEP_KO: Record<string, string> = {
   TR_T4: "무엇을 바꿨나",
   TR_T5: "몇 번 돌렸나",
   TR_T6: "무엇과 비교했나",
-  TR_T7: "흩어짐은 어떻게 다뤘나",
+  TR_T7: "안 됐을 때 무엇을 고쳤나",
   TR_T8: "무엇을 직접 정했나",
   TR_T9: "무엇이 남았나",
   TR_T10: "그 결과가 어디에 쓰였나",
@@ -548,7 +548,11 @@ export function draftKo(
 ): string[] {
   const by = new Map(steps.filter((x) => x.choice).map((x) => [x.item_id, x.choice as string]));
   const out: string[] = [];
-  for (const id of ["TR_T1", "TR_T2", "TR_T3", "TR_T4", "TR_T6", "TR_T8", "TR_T9"]) {
+  /* 지원서에서 말하는 차례. **문항 번호 차례가 아니다**: 그렇게 적으면
+     `무엇을 직접 정했나` 가 맨 뒤로 밀려서, 가장 먼저 읽혀야 할 것이
+     마지막에 선다 */
+  for (const id of ["TR_T1", "TR_T2", "TR_T4", "TR_T8", "TR_T3",
+                    "TR_T9", "TR_T6", "TR_T7"]) {
     const v = by.get(id);
     if (v) out.push(`${polite(v)}.`);
   }
@@ -563,9 +567,16 @@ export function draftKo(
  * 열 단계가 이야기고, `TR_TAG_*` 는 그 과제가 어느 영역에 닿았는지를
  * 적어 두는 꼬리표다. 둘을 한 표에 섞으면 `열 단계` 가 열두 줄이 된다.
  */
+/**
+ * 읽는 차례. **물은 차례를 그대로 쓰지 않고 설명하는 차례로 바꾼다.**
+ *
+ * 문제 → 요구 → 내가 정한 것 → 결과를 보고 정한 것 → 방법 → 한 일 →
+ * 남은 것 → 견준 것 → 고친 것 → 쓰인 자리. 지원서와 면접에서 말하는 길이
+ * 이것이고, 문항 번호 차례(T1~T10)로 적으면 판단이 맨 뒤로 밀린다.
+ */
 export const TRANS_ORDER = [
-  "TR_T1", "TR_T2", "TR_T3", "TR_T4", "TR_T5",
-  "TR_T6", "TR_T7", "TR_T8", "TR_T9", "TR_T10",
+  "TR_T1", "TR_T2", "TR_T4", "TR_T8", "TR_T3",
+  "TR_T5", "TR_T9", "TR_T6", "TR_T7", "TR_T10",
 ] as const;
 
 /**

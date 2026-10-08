@@ -26,9 +26,11 @@ export async function saveExperience(form: FormData): Promise<void> {
     ended_on: String(form.get("ended_on") ?? "") || null,
     td_codes: form.getAll("td").map(String),
     axis_codes: form.getAll("axis").map(String),
+    problems: form.getAll("problem").map(String),
     decisions: form.getAll("decision").map(String),
     artifacts: form.getAll("artifact").map(String),
     verifications: form.getAll("verification").map(String),
+    used_where: form.getAll("used_where").map(String),
     note_text: String(form.get("note") ?? ""),
   });
   revalidatePath("/me");

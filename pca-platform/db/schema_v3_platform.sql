@@ -50,6 +50,12 @@ CREATE TABLE IF NOT EXISTS v3_experiences (
   decisions     TEXT[] NOT NULL DEFAULT '{}',
   artifacts     TEXT[] NOT NULL DEFAULT '{}',
   verifications TEXT[] NOT NULL DEFAULT '{}',
+  /* 어떤 문제였나 · 어디에 쓰였나. **보기에서 고른 열쇠다.**
+     문제는 그 영역의 J1 체크리스트에서 오고, 쓰인 자리는 고정 메뉴다.
+     전에는 둘을 받지 않아서 경험 하나가 `무엇을 했나` 와 `무엇이 남았나`
+     사이를 건너뛰었다: 그 사이가 지원서에서 읽히는 자리다 */
+  problems      TEXT[] NOT NULL DEFAULT '{}',
+  used_where    TEXT[] NOT NULL DEFAULT '{}',
   /* 한 줄 메모. **판정에 들어가지 않는다**: 줄 하나로 축이 섰다고 세면
      적는 사람에게만 유리해진다. 결과지가 그 사람의 말로 옮길 때 읽는다 */
   note_text   TEXT,
@@ -60,6 +66,18 @@ CREATE TABLE IF NOT EXISTS v3_experiences (
   created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+ALTER TABLE v3_experiences ADD COLUMN IF NOT EXISTS problems TEXT[] NOT NULL DEFAULT '{}';
+ALTER TABLE v3_experiences ADD COLUMN IF NOT EXISTS used_where TEXT[] NOT NULL DEFAULT '{}';
+
+/* 갈래가 여덟에서 **아홉**이 됐다. 수업과 과제를 한 칸에 두었는데, 수업을
+   들은 것과 그 수업에서 조건을 직접 정해 본 것은 지원서에서 다르게 읽힌다.
+   CHECK 는 덧붙일 수 없으므로 지우고 다시 건다 — `IF EXISTS` 라 여러 번
+   돌려도 같은 자리에 선다 */
+ALTER TABLE v3_experiences DROP CONSTRAINT IF EXISTS v3_experiences_kind_check;
+ALTER TABLE v3_experiences ADD CONSTRAINT v3_experiences_kind_check
+  CHECK (kind IN ('course','assignment','capstone','research','paper',
+                  'internship','project','work','credential'));
 
 CREATE INDEX IF NOT EXISTS v3_experiences_user
   ON v3_experiences(user_id, created_at DESC);
@@ -190,11 +208,58 @@ CREATE TABLE IF NOT EXISTS v3_track_interest (
                'gap.timeline',     -- Gap 변화 추적
                'monthly.report',   -- 월간 Career Report
                'target.change',    -- 목표 변경 시 재분석
-               'apply.track'       -- 지원 기업과 직무 관리
+               'target.edit',      -- 관심 산업·직무 바꾸기 (지금 됩니다)
+               'apply.track',      -- 지원한 곳 관리
+               'apply.role'        -- 지원 직무별 결과 모아 보기
              )),
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   PRIMARY KEY (user_id, feature)
 );
 
+/* 갈래가 일곱에서 **아홉**이 됐다. CHECK 는 덧붙일 수 없으므로 지우고
+   다시 건다 — `IF EXISTS` 라 여러 번 돌려도 같은 자리에 선다 */
+ALTER TABLE v3_track_interest DROP CONSTRAINT IF EXISTS v3_track_interest_feature_check;
+ALTER TABLE v3_track_interest ADD CONSTRAINT v3_track_interest_feature_check
+  CHECK (feature IN ('posting.watch','industry.shift','evidence.match',
+                     'gap.timeline','monthly.report','target.change',
+                     'target.edit','apply.track','apply.role'));
+
 COMMENT ON TABLE v3_track_interest IS
   '구독 전에 받는 관심 표시. **결제가 아니다**: 켜는 차례를 정하는 데만 쓴다';
+
+
+/* ── 지원한 곳 ──────────────────────────────────────────────────────
+   **알선하지 않는다.** 사용자가 직접 지원하고 여기에 그 사실만 적는다.
+   `v3_saved_jobs` 와 나눠 둔 까닭은, 공고 자료가 없는 동안에도 지원 기록은
+   쌓을 수 있어야 하기 때문이다: 공고 줄에 외래키를 걸면 공고가 들어오기
+   전까지 이 표가 영원히 빈다.
+
+   **기업 이름을 담는다.** 저장한 공고(`v3_job_postings`)와 다른 규칙이다:
+   저쪽은 우리가 모아 와서 띄우는 자료라 직업정보제공사업의 범위를 따지지만,
+   여기는 **본인이 자기 지원 이력을 적어 두는 자리**이고 본인에게만 보인다.
+   그래서 파기 목록에 들어간다 */
+CREATE TABLE IF NOT EXISTS v3_applications (
+  id          BIGSERIAL PRIMARY KEY,
+  user_id     BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  core_code   TEXT NOT NULL DEFAULT 'ME_CORE_V3',
+  /* 본인이 적는 자유입력. 기한을 들고 다닌다 */
+  org_name    TEXT,
+  role_code   TEXT,
+  role_label  TEXT,
+  industry_code TEXT,
+  region_code TEXT REFERENCES regions(code),
+  org_type_code TEXT,
+  applied_on  DATE,
+  state       TEXT NOT NULL DEFAULT 'applied'
+              CHECK (state IN ('watching','applied','interview','offer','closed')),
+  note_text   TEXT,
+  purge_after DATE,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS v3_applications_user
+  ON v3_applications(user_id, created_at DESC);
+
+COMMENT ON TABLE v3_applications IS
+  '본인이 적는 지원 이력. 알선하지 않는다. 자유입력은 기한을 들고 다닌다';

@@ -15,7 +15,8 @@ export async function pickRegion(form: FormData): Promise<void> {
   await saveRegion(
     user.id,
     String(form.get("region") ?? "") || null,
-    String(form.get("move") ?? "") || null);
+    String(form.get("move") ?? "") || null,
+    form.getAll("org").map(String).filter(Boolean));
   revalidatePath("/me");
   revalidatePath("/me/region");
 }

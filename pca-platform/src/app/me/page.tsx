@@ -6,7 +6,22 @@ import {
 } from "@/lib/me-v3/platform";
 import { currentAttempt, domainName, industryChoices, roleName } from "@/lib/me-v3/runtime/session";
 import { moveLabel, regionName } from "@/lib/me-v3/region";
+import { gapShortKo } from "@/lib/me-v3/result/text.ko";
 import { CmShell, CmHead } from "./shell";
+
+/**
+ * 할 일 세 층. **날수를 그대로 보여 주지 않는다.**
+ *
+ * `30일 안` 은 읽는 사람에게 마감으로 읽히는데, 이 값은 마감이 아니라
+ * **할 수 있는 때**다. 지금 바로 할 수 있는 것과 다음 과제를 기다려야 하는
+ * 것은 준비가 다르다.
+ */
+const LANES = [
+  ["NOW", "지금 할 것", "오늘 앉아서 시작할 수 있습니다"],
+  ["NEXT", "다음 과제에서", "맡는 일이 생겨야 합니다"],
+  ["LATER", "나중에 볼 것", "앞의 둘이 끝난 뒤입니다"],
+] as const;
+const lane = (days: number) => (days <= 30 ? "NOW" : days <= 90 ? "NEXT" : "LATER");
 
 export const metadata = { title: "내 CareerMatri" };
 
@@ -55,7 +70,7 @@ export default async function MyCareerMatri() {
   const ready = result?.evidence.ready ?? [];
   const readyDomains = [...new Set(ready.map((g) => g.domain))];
   const gaps = (result?.gaps ?? []).slice(0, 3);
-  const openActions = actions.filter((a) => a.state !== "done").slice(0, 3);
+  const openActions = actions.filter((a) => a.state !== "done").slice(0, 9);
 
   /* 결과를 아직 만들지 않은 사람에게 빈 카드를 줄줄이 세우지 않는다 */
   const hasResult = !!result;
@@ -140,13 +155,18 @@ export default async function MyCareerMatri() {
           </div>
         </div>
 
-        {/* ── Gap ── */}
+        {/* ── Gap ──
+            **영역 이름만 적지 않는다.** `구조·내구 해석` 세 칸은 무엇이
+            비었는지를 말하지 않는다. 가장 급한 셋을 문장으로 적는다 */}
         <div className="cm-card">
-          <h2>먼저 채울 것 <em>비어 있는 자리</em></h2>
+          <h2>먼저 채울 것 <em>가장 급한 셋</em></h2>
           {gaps.length ? (
-            <div className="cm-chips">
-              {gaps.map((g) => (
-                <span className="cm-chip is-gap" key={g.id}>{domainName(g.domain)}</span>
+            <div className="cm-rows">
+              {gaps.map((g, i) => (
+                <p className="cm-row" key={g.id}>
+                  <b>{i + 1}</b>
+                  <span>{gapShortKo(g, domainName(g.domain))}</span>
+                </p>
               ))}
             </div>
           ) : hasResult ? (
@@ -161,17 +181,25 @@ export default async function MyCareerMatri() {
           </div>
         </div>
 
-        {/* ── 다음 행동 ── */}
-        <div className="cm-card">
-          <h2>이번 달 할 일 <em>{actions.filter((a) => a.state !== "done").length}개</em></h2>
+        {/* ── 다음 행동 ──
+            **한 줄로 늘어놓지 않는다.** 지금 할 수 있는 것과 다음 과제에서
+            할 것과 나중에 볼 것은 준비가 다르다. 한 묶음으로 두면 읽는
+            사람이 전부 오늘 해야 하는 줄 안다 */}
+        <div className="cm-card is-wide">
+          <h2>다음에 할 일 <em>{actions.filter((a) => a.state !== "done").length}개</em></h2>
           {openActions.length ? (
-            <div className="cm-rows">
-              {openActions.map((a) => (
-                <p className="cm-row" key={a.id}>
-                  <span>{a.body}</span>
-                  <span className="cm-when">{a.horizon}일 안</span>
-                </p>
-              ))}
+            <div className="cm-lanes">
+              {LANES.map(([key, title, hint]) => {
+                const mine = openActions.filter((a) => lane(a.horizon) === key);
+                return (
+                  <section key={key}>
+                    <h3>{title}<small>{hint}</small></h3>
+                    {mine.length ? (
+                      <ul>{mine.map((a) => <li key={a.id}>{a.body}</li>)}</ul>
+                    ) : <p className="cm-none">여기에 올 일은 아직 없습니다</p>}
+                  </section>
+                );
+              })}
             </div>
           ) : (
             <p>
@@ -197,10 +225,13 @@ export default async function MyCareerMatri() {
           </div>
           {pending > 0 ? (
             <p style={{ fontSize: 13, color: "var(--sf-part)" }}>
-              다시 계산할 일이 {pending}건 쌓여 있습니다. 자동 재분석은 아직
-              돌지 않습니다.
+              다시 계산할 일이 {pending}건 쌓여 있습니다.
             </p>
           ) : null}
+          <div className="cm-grow" />
+          <div className="cm-acts">
+            <Link className="cm-btn" href="/me/recompute">재분석 보기</Link>
+          </div>
         </div>
 
         {/* ── 경험 ── */}

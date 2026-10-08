@@ -1,6 +1,7 @@
 import { requireUser } from "@/lib/session";
 import { profileOf } from "@/lib/me-v3/platform";
 import { regionGaps, regionLayer, regionOpen } from "@/lib/me-v3/region";
+import { industryChoices, roleChoices } from "@/lib/me-v3/runtime/session";
 import { CmShell, CmHead } from "../shell";
 import { pickRegion } from "./actions";
 
@@ -63,16 +64,79 @@ export default async function Region() {
             </div>
           </fieldset>
 
+          {/* **기관 유형을 읽기만 하는 카드로 두지 않는다.** 고를 수 없으면
+              그 줄은 설명이고, 설명은 탐색의 열쇠가 되지 못한다. 산업 ·
+              직무 · 권역 · 기관 유형 넷이 모여야 뒤에 올 자료를 물어볼 수
+              있다 */}
+          <fieldset className="cm-field">
+            <legend>
+              <span>보고 싶은 기관 유형</span>
+              <small>셋까지 고르실 수 있습니다</small>
+            </legend>
+            <div className="cm-pickset">
+              {L.org_types.map((o) => (
+                <label className="cm-pick" key={o.code}>
+                  <input type="checkbox" name="org" value={o.code}
+                    defaultChecked={(profile?.target_org ?? []).includes(o.code)} />
+                  {o.label}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
           <div className="cm-acts" style={{ marginBottom: 24 }}>
             <button className="cm-btn is-primary" type="submit">저장하기</button>
           </div>
         </form>
       )}
 
-      <h2 className="cm-h1" style={{ fontSize: 18, margin: "8px 0 12px" }}>기관 유형</h2>
+      {/* ── 네 가지가 모이면 무엇을 물어볼 수 있는가 ──
+          **자료가 0줄이어도 열쇠는 보여 준다.** 무엇이 모이면 답이 나오는지
+          알아야, 비어 있는 것이 고장이 아니라 아직인 줄로 읽힌다 */}
+      <h2 className="cm-h1" style={{ fontSize: 18, margin: "8px 0 12px" }}>
+        지금 고르신 네 가지
+      </h2>
+      <div className="cm-card" style={{ marginBottom: 24 }}>
+        <dl className="cm-dl">
+          <div>
+            <dt>산업</dt>
+            <dd>{(profile?.target_industry ?? []).length
+              ? (profile!.target_industry).map((c) =>
+                  industryChoices().find((x) => x.code === c)?.name ?? c).join(" · ")
+              : "아직 고르지 않으셨습니다"}</dd>
+          </div>
+          <div>
+            <dt>직무</dt>
+            <dd>{(profile?.target_role ?? []).length
+              ? (profile!.target_role).map((c) =>
+                  roleChoices().find((x) => x.code === c)?.name ?? c).join(" · ")
+              : "아직 고르지 않으셨습니다"}</dd>
+          </div>
+          <div>
+            <dt>권역</dt>
+            <dd>{L.regions.find((r) => r.code === profile?.home_region)?.name
+              ?? "아직 고르지 않으셨습니다"}</dd>
+          </div>
+          <div>
+            <dt>기관 유형</dt>
+            <dd>{(profile?.target_org ?? []).length
+              ? (profile!.target_org).map((c) =>
+                  L.org_types.find((o) => o.code === c)?.label ?? c).join(" · ")
+              : "아직 고르지 않으셨습니다"}</dd>
+          </div>
+        </dl>
+        <p className="cm-note">
+          이 넷이 모이면 그 조합의 기관 수와 공고를 물어볼 수 있습니다. 지금은
+          물어볼 자료가 없어서 답을 내지 않습니다.
+        </p>
+      </div>
+
+      <h2 className="cm-h1" style={{ fontSize: 18, margin: "8px 0 12px" }}>
+        기관마다 일이 서는 모양이 다릅니다
+      </h2>
       <div className="cm-grid">
         {L.org_types.map((o) => (
-          <div className="cm-card" key={o.oc}>
+          <div className="cm-card" key={o.code}>
             <h2>{o.label}</h2>
             <p>{o.scene}</p>
           </div>

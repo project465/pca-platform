@@ -48,6 +48,11 @@ export const CM_NAV: CmNavItem[] = [
     icon: "spark", tab: true },
   { href: "/me/jobs", label: "공고", hint: "내 근거와 공고를 맞춰 보는 자리",
     icon: "send", soon: true },
+  /* 지원 기록과 재분석은 왼쪽 띠에만 둔다. 아래 띠는 다섯 자리까지다 */
+  { href: "/me/apply", label: "지원한 곳", hint: "직접 지원한 곳과 그 결과",
+    icon: "send" },
+  { href: "/me/recompute", label: "재분석", hint: "적어 둔 경험이 어디로 가는지",
+    icon: "spark" },
   { href: "/my/account", label: "설정", hint: "계정과 파기", icon: "user" },
 ];
 

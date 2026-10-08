@@ -398,6 +398,74 @@ function main(): void {
   console.log(`  STANDARD 끝낸 뒤 PRO         약 ${mm.upgradeToPro}분 ` +
     `(팩까지 ${mm.upgradeToProWithPack}분)`);
 
+  /* ── 모듈을 건너뛰는 중복 ────────────────────────────────────────
+     같은 판단을 심화에서 한 번, 역할팩에서 한 번, 산업팩에서 한 번, 번역에서
+     또 한 번 묻는 자리가 있으면 응시자는 같은 데를 네 번 도는 줄 안다.
+
+     **한 묶음 안의 겹침과 따로 센다.** 영역 안에서는 영역 이름만 바꾼 복붙을
+     막는 것이 목적이고, 여기서는 **다른 묶음이 같은 (영역 · 축)을 같은 말로
+     묻는 것**을 막는 것이 목적이라 선이 다르다. 묶음이 다르면 장면이 다르므로
+     0.5 가 아니라 0.42 에서 본다 */
+  const CROSS = ["DEEP-S8", "ROLE", "INDUSTRY", "TRANS-10", "PROBE-S4"];
+  type Row = { id: string; mod: string; cell: string; text: string };
+  const cross: Row[] = items
+    .filter((i) => CROSS.includes(i.module))
+    .map((i) => ({
+      id: i.item_id, mod: i.module,
+      cell: `${i.technical_domain ?? "-"}.${i.evidence_axis ?? "-"}`,
+      text: String(i.wording ?? ""),
+    }))
+    .filter((r) => r.text.length > 0);
+  const crossDup: string[] = [];
+  for (let a = 0; a < cross.length; a += 1) {
+    for (let b = a + 1; b < cross.length; b += 1) {
+      if (cross[a].mod === cross[b].mod) continue;
+      const v = sim(cross[a].text, cross[b].text);
+      if (v >= 0.42) {
+        crossDup.push(
+          `${cross[a].mod}:${cross[a].id}~${cross[b].mod}:${cross[b].id}(${v.toFixed(2)})`);
+      }
+    }
+  }
+  ok("묶음을 건너뛰어 같은 말로 묻는 자리가 없다", crossDup.length === 0,
+     crossDup.length ? crossDup.slice(0, 4).join(" / ")
+       : `${cross.length}문항 · ${(cross.length * (cross.length - 1) / 2).toLocaleString()}쌍`);
+
+  /* 그리고 **한 응시가 한 칸에 받는 문항이 넷을 넘지 않는다.**
+     처음에는 `한 칸을 세 묶음 이상이 묻지 않는다` 로 셌는데 그 규칙이
+     설계와 어긋났다. 팩이 Core 의 칸을 가리키는 것은 **같은 자리를 그
+     산업과 직무의 말로 다시 읽으려는 것**이고, 그것이 이 제품이 파는
+     자리다. 막아야 하는 것은 겹치는 칸이 아니라 **한 사람이 같은 데를
+     여섯 번 도는 일**이다. 그래서 산업 하나와 역할 하나를 고른 실제 응시
+     기준으로 센다 */
+  const cellCount = (ip: string, rp: string) => {
+    const c = new Map<string, number>();
+    for (const i of items) {
+      const td = i.technical_domain, ax = i.evidence_axis;
+      if (!td || !ax) continue;
+      const mine = i.module === "PROBE-S4" || i.module === "DEEP-S8"
+        || (i.module === "INDUSTRY" && i.item_id.startsWith(`${ip}_`))
+        || (i.module === "ROLE" && i.item_id.startsWith(`${rp}_`));
+      if (!mine) continue;
+      const k = `${td}.${ax}`;
+      c.set(k, (c.get(k) ?? 0) + 1);
+    }
+    return c;
+  };
+  const packCodes = (mod: string) =>
+    [...new Set(items.filter((i) => i.module === mod)
+      .map((i) => i.item_id.replace(/_[A-Z]?\d+$/, "")))];
+  let worstCell = "", worstN = 0;
+  for (const ip of packCodes("INDUSTRY")) {
+    for (const rp of packCodes("ROLE")) {
+      for (const [k, n] of cellCount(ip, rp)) {
+        if (n > worstN) { worstN = n; worstCell = `${k} (${ip}+${rp})`; }
+      }
+    }
+  }
+  ok("한 응시가 한 칸에 받는 문항이 넷을 넘지 않는다", worstN <= 4,
+     `가장 많은 자리 ${worstCell} — ${worstN}문항`);
+
   console.log(`\n문항 은행 ${items.length}개 (Core ${core.length} · 팩 ${packs.length})`);
   console.log(`확인 ${pass + fail}가지 — 통과 ${pass} · 걸림 ${fail} · 보고 ${warn}`);
   process.exit(fail ? 1 : 0);

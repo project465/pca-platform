@@ -47,10 +47,22 @@ function main(): void {
   const lock = JSON.parse(readFileSync(LOCK, "utf8")) as
     { item_bank_version: string; files: Record<string, string> };
   const drift: string[] = [];
-  for (const [file, want] of Object.entries(lock.files)) {
+  const fresh: Record<string, string> = {};
+  for (const file of Object.keys(lock.files)) {
     const got = createHash("sha256")
       .update(readFileSync(`${CONTENT_DIR}/${file}`)).digest("hex");
-    if (got !== want) drift.push(file);
+    fresh[file] = got;
+    if (got !== lock.files[file]) drift.push(file);
+  }
+  /* **지문을 다시 적는 길을 둔다.** 전에는 손으로 고쳐야 했고, 손으로
+     고치면 판본을 올리는 것을 빠뜨린다. 일부러 고쳤을 때만 쓴다 */
+  if (process.env.BANK === "update") {
+    lock.files = fresh;
+    lock.item_bank_version = ITEM_BANK_VERSION;
+    (lock as unknown as Record<string, unknown>).scoring_version = SCORING_VERSION;
+    writeFileSync(LOCK, `${JSON.stringify(lock, null, 1)}\n`);
+    console.log(`  적었다  ${LOCK} — ${Object.keys(fresh).length}벌 · ${ITEM_BANK_VERSION}`);
+    drift.length = 0;
   }
   ok("문항 은행이 잠긴 판본과 같다", drift.length === 0 && lock.item_bank_version === ITEM_BANK_VERSION,
      drift.length ? `${drift.join(" ")} — 바꿨다면 판본을 올리고 ${LOCK} 을 다시 적는다`

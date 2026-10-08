@@ -7,7 +7,7 @@ import {
 import { domainArtifacts } from "@/lib/me-v3/runtime/domain-facts";
 import type { Axis } from "@/lib/me-v3/scoring/types";
 import type {
-  Action, Gap, ResultDomain, ResultModel, TranslationView,
+  Action, Gap, PackView, ResultDomain, ResultModel, TranslationView,
 } from "@/lib/me-v3/result/model";
 import {
   actionKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO, BASIC_GROUP_KO, bridgeKo,
@@ -15,7 +15,7 @@ import {
   HORIZON_KO, QUALITY_KO, TIER_NOTE_KO, TRANS_ORDER, TRANS_STEP_KO, XFIELD_KO,
   XFIELD_ORDER, ZONE_LEAD_KO, ZONE_TITLE_KO,
 } from "@/lib/me-v3/result/text.ko";
-import { regionLayer } from "@/lib/me-v3/region";
+import { orgTypesFor, regionLayer } from "@/lib/me-v3/region";
 import { profileOf } from "@/lib/me-v3/platform";
 import { participantOf, savedActions } from "@/lib/me-v3/pilot/store";
 import { TIER_WHAT } from "../../tier-text";
@@ -36,24 +36,84 @@ const ZONE_CLASS: Record<string, string> = {
 const BASIC_GROUPS = ["do_now", "scan", "low", "unseen"] as const;
 
 /**
- * 팩 문항에서 확인된 판단을 한 줄씩 적는다.
+ * 산업과 직무 절의 본문.
  *
- * **영역이 없는 줄도 버리지 않는다.** 역할팩의 경계 문항은 기술영역에 붙지
- * 않고, 그 줄을 떨어뜨리면 답하신 것이 또 사라진다.
+ * **두 절이 같은 함수를 쓴다.** 전에는 산업과 직무가 거의 같은 markup 을
+ * 두 벌 들고 있었고, 한쪽에 줄을 더하면 다른 쪽이 조용히 뒤처졌다. 갈리는
+ * 것은 머리글과 한 줄짜리 설명과 끝의 안내뿐이다.
  */
-function packRows(
-  rows: { domain: string | null; axis: Axis | null; owned: boolean }[],
-): string[] {
-  const seen = new Set<string>();
-  const out: string[] = [];
-  for (const r of rows) {
-    const label = [r.domain ? domainName(r.domain) : null, r.axis ? AXIS_KO[r.axis] : null]
-      .filter(Boolean).join(" · ") || "이 직무에서 맡는 범위";
-    if (seen.has(label)) continue;
-    seen.add(label);
-    out.push(label);
-  }
-  return out.slice(0, 8);
+function PackBody(
+  { v, name, domainName: dn, action, say }: {
+    v: PackView; name: string;
+    domainName: (c: string) => string;
+    action: Action | null;
+    say: (a: Action) => string;
+  },
+) {
+  const cell = (d: string | null, ax: Axis | null) =>
+    [d ? dn(d) : null, ax ? AXIS_KO[ax] : null].filter(Boolean).join(" · ")
+      || "이 자리에서 맡는 범위";
+  const uniq = (xs: string[]) => [...new Set(xs)].slice(0, 8);
+  return (
+    <div className="rs-pack">
+      <h3>이 자리에서 자주 묻는 것</h3>
+      <p>{v.vocabulary.slice(0, 6).join(" · ")}</p>
+      <dl>
+        {/* **둘 다 확인된 자리를 맨 위에 둔다.** 기술영역에서도 확인됐고
+            이 자리가 묻는 말로도 확인된 경험이라, 지원서에서 가장 먼저 쓸
+            수 있다 */}
+        {v.overlap.length ? (
+          <div>
+            <dt>기술영역과 {name} 양쪽에서 확인된 경험</dt>
+            <dd><Picks items={uniq(v.overlap.map((o) => cell(o.domain, o.axis)))} own /></dd>
+          </div>
+        ) : null}
+        <div>
+          <dt>기술영역 결과에서 확인된 경험</dt>
+          <dd>
+            <Picks items={v.established.map((e) =>
+              `${dn(e.domain)} · ${e.axes.slice(0, 3).map((x) => AXIS_KO[x]).join(", ")}`
+              + `${e.axes.length > 3 ? " 외" : ""}`)} own />
+          </dd>
+        </div>
+        {v.answered.length ? (
+          <div>
+            <dt>{name} 문항에서 확인된 판단</dt>
+            <dd><Picks items={uniq(v.answered.map((a) => cell(a.domain, a.axis)))} own /></dd>
+          </div>
+        ) : null}
+        {/* **`없다` 로 답하신 자리와 안 물어본 자리를 가른다.** 한 칸에
+            담으면 묻지 않은 것이 `없다` 로 적힌다 */}
+        {v.not_yet.length ? (
+          <div>
+            <dt>{name} 문항에서 아직 없다고 답하신 판단</dt>
+            <dd><Picks items={uniq(v.not_yet.map((a) => cell(a.domain, a.axis)))} /></dd>
+          </div>
+        ) : null}
+        <div>
+          <dt>여기서 한 번 더 확인하는 경험</dt>
+          <dd>
+            <Picks items={v.requested.slice(0, 8)
+              .map((r) => `${dn(r.domain)} · ${AXIS_KO[r.axis]}`)} />
+          </dd>
+        </div>
+        {v.domains.length ? (
+          <div>
+            <dt>관련된 기술영역</dt>
+            <dd>{v.domains.map((c) => dn(c)).join(" · ")}</dd>
+          </div>
+        ) : null}
+      </dl>
+      {/* **절마다 다음 한 걸음으로 닫는다.** 확인된 것과 비어 있는 것만
+          적고 끝내면 읽는 사람이 그래서 무엇을 하라는 것인지 모른다 */}
+      {action ? (
+        <p className="rs-do">
+          <b>다음에 만들 근거</b>
+          {say(action)}
+        </p>
+      ) : null}
+    </div>
+  );
 }
 
 /** 고른 항목. **스무 개를 한 줄에 깔면 그 가운데 무엇도 안 읽힌다** */
@@ -400,8 +460,25 @@ export default async function V3Result({
     if (first) return { text: say(first), usedId: first.id };
     return { text: "응답이 적어 다음 걸음까지 적지 못했습니다.", usedId: null };
   };
-  const { text: moveText, usedId } = moveOf();
-  const nextAction = model.actions.find((x) => x.id !== usedId);
+  const { text: moveText } = moveOf();
+
+  /**
+   * 첫 화면 둘째 칸. **보고 있는 산업과 직무를 기준으로 적는다.**
+   *
+   * 고르신 산업·직무가 있으면 그쪽에서 한 번 더 확인하는 자리를 적고,
+   * 없으면 Core 에서 비어 있는 자리를 적는다. **없는 것을 지어내지
+   * 않는다**: 둘 다 없으면 그 사실을 적는다.
+   */
+  const packLack = model.industry_context ?? model.role_context;
+  const packLackName = model.industry_context
+    ? industryName(model.industry_context.code)
+    : model.role_context ? roleName(model.role_context.code) : null;
+  const lackTitle = packLackName
+    ? `${packLackName} 쪽에서 비어 있는 것` : "아직 비어 있는 것";
+  const lackText = packLack && packLack.requested.length
+    ? packLack.requested.slice(0, 2)
+      .map((r) => `${domainName(r.domain)} · ${AXIS_KO[r.axis]}`).join(" · ")
+    : topGap ? gapTile(topGap) : "";
 
   const zoneRows = ([
     "Z1_EVIDENCE_ESTABLISHED", "Z2_EVIDENCE_INCOMPLETE",
@@ -414,7 +491,19 @@ export default async function V3Result({
      않은 자리라 영역별 판정과 섞이면 안 된다 */
   const cm = commonKo(model.common);
   const orgName = (c: string) => orgChoices().find((x) => x.code === c)?.name ?? c;
+  const orgKinds = [...new Set(model.targets.orgs
+    .flatMap((oc) => orgTypesFor(oc).map((o) => o.label)))];
   const goal = model.targets.goal;
+  /* 넷이 모이면 물어볼 수 있는 것. **자료가 0줄이어도 열쇠는 보여 준다**:
+     무엇이 모이면 답이 나오는지 알아야 비어 있는 것이 아직으로 읽힌다 */
+  const exploreKey: [string, string][] = [
+    ["산업", model.industry_context ? industryName(model.industry_context.code)
+      : (model.targets.industries.map(industryName).join(" · ") || "아직 없음")],
+    ["직무", model.role_context ? roleName(model.role_context.code)
+      : (model.targets.roles.map(roleName).join(" · ") || "아직 없음")],
+    ["권역", regionPicked ?? "아직 고르지 않으셨습니다"],
+    ["기관 유형", orgKinds.join(" · ") || "아직 고르지 않으셨습니다"],
+  ];
 
   return (
     <div className="rs">
@@ -440,6 +529,13 @@ export default async function V3Result({
           <p className="rs-lead">{h.lead}</p>
           {/* **첫 서른 초에 무엇까지 봤는지가 보여야 한다.** 깊게 물은
               응시에서만 센 숫자라, 네 축만 물은 응시에는 두지 않는다 */}
+          {/* **종이로 가는 길을 결과 안에 둔다.** 전에는 스크립트로만
+              뽑혔고, 사업주가 직접 눌러 볼 자리가 없었다. 웹과 종이가 같은
+              결과 모델을 읽으므로 둘의 판단이 갈리지 않는다 */}
+          <p className="rs-pdf">
+            <a href={`/v3/${attemptId}/result/pdf`}>결과 PDF 저장</a>
+            <small>만드는 데 몇 초 걸립니다</small>
+          </p>
           {deep ? (
             <ul className="rs-count">
               <li><b>{counts.confirmed_axes}</b>직접 해 본 것으로 확인된 판단</li>
@@ -450,49 +546,43 @@ export default async function V3Result({
         </section>
 
         {/* 열 초 안에 셋을 답한다: 어디부터 · 왜 · 지금 무엇을 */}
+        {/* ── 첫 화면 세 칸 ──
+            **읽는 사람이 열 초 안에 답해야 하는 것이 셋이다**: 지금 무엇이
+            확인됐는가 · 보고 있는 산업과 직무에서 무엇이 비어 있는가 · 지금
+            무엇을 하면 되는가. 전에는 넷이었고 둘째 칸이 `그렇게 본 까닭`
+            이었다. 까닭은 아래 영역 절이 한 자리에서 말하므로, 첫 화면의
+            자리는 **비어 있는 것**에 내준다 */}
         <div className="rs-top">
           <div>
-            <h3>먼저 볼 영역</h3>
-            {focus.length
-              ? <p>{focus.map((d) => domainName(d.code)).join(" · ")}</p>
-              : <p className="none">아직 앞서는 영역이 없습니다</p>}
-            {compare.length
-              ? <p>같이 놓고 볼 영역 {compare.map((d) => domainName(d.code)).join(" · ")}</p>
-              : null}
+            <h3>지금 확인된 것</h3>
+            {focus.length ? (<>
+              <p>{focus.map((d) => domainName(d.code)).join(" · ")}</p>
+              {deep ? (
+                <p style={{ fontWeight: 400 }}>
+                  {(focus[0].decided.length ? focus[0].decided : focus[0].did)
+                    .slice(0, 2).join(" · ") || "해 본 일이 확인됐습니다"}
+                </p>
+              ) : (
+                /* 여덟 축을 묻지 않은 응시에서 `직접 정한 것` 을 적지 않는다.
+                   받은 것은 관심과 경험과 배울 뜻 셋뿐이다 */
+                <p style={{ fontWeight: 400 }}>
+                  {focus[0].interest === "HIGH" ? "관심이 높고 " : "관심이 보통이고 "}
+                  {focus[0].experience === "NONE" ? "아직 해 본 적이 없습니다"
+                    : "해 본 적이 있습니다"}
+                </p>
+              )}
+            </>) : <p className="none">응답만으로는 영역 사이에 차이가 생기지 않았습니다</p>}
           </div>
           <div>
-            <h3>그렇게 본 까닭</h3>
-            {/* **조사를 문장으로 붙이지 않는다.** 뒤에 오는 것이 응시자가 고른
-                항목이라 앞말이 늘 달라지고, 그때마다 `~다을` 이 나온다 */}
-            {focus.length ? (deep ? (
-              <>
-                <p>{domainName(focus[0].code)}에서 직접 정한 것</p>
-                <p>{(focus[0].decided.length ? focus[0].decided : focus[0].did)
-                  .slice(0, 2).join(" · ") || "해 본 일이 확인됐습니다"}</p>
-              </>
-            ) : (
-              /* 여덟 축을 묻지 않은 응시에서 `직접 정한 것` 을 적지 않는다.
-                 받은 것은 관심과 경험과 배울 뜻 셋뿐이다 */
-              <>
-                <p>{domainName(focus[0].code)}</p>
-                <p>{[
-                  focus[0].interest === "HIGH" ? "관심이 높고" : "관심이 보통이고",
-                  focus[0].experience === "NONE" ? "아직 해 본 적이 없습니다"
-                    : "해 본 적이 있습니다",
-                ].join(" ")}</p>
-              </>
-            )) : <p className="none">응답만으로는 영역 사이에 차이가 생기지 않았습니다</p>}
+            <h3>{lackTitle}</h3>
+            {lackText
+              ? <p>{lackText}</p>
+              : <p className="none">지금 응답에서 비어 있다고 적을 자리가 없습니다</p>}
           </div>
           <div>
             <h3>{FIRST_MOVE_KO[move]}</h3>
             <p>{moveText}</p>
           </div>
-          {nextAction ? (
-            <div>
-              <h3>그다음</h3>
-              <p style={{ fontWeight: 400 }}>{say(nextAction)}</p>
-            </div>
-          ) : null}
         </div>
 
         {model.response_quality.flag !== "OK" ? (
@@ -715,43 +805,17 @@ export default async function V3Result({
               같은 경험을 {industryName(model.industry_context.code)}에서 쓰는
               표현으로 놓았습니다. 맞는다거나 맞지 않는다고 판정하지 않습니다.
             </p>
-            <div className="rs-pack">
-              <h3>이 산업에서 자주 묻는 것</h3>
-              <p>{model.industry_context.vocabulary.slice(0, 6).join(" · ")}</p>
-              <dl>
-                <dt>이미 확인된 경험</dt>
-                <dd>
-                  <Picks items={model.industry_context.established
-                    .map((e) => `${domainName(e.domain)} · ${e.axes.slice(0, 3)
-                      .map((x) => AXIS_KO[x]).join(", ")}${e.axes.length > 3 ? " 외" : ""}`)} own />
-                </dd>
-                {/* **`비어 있다` 로 적지 않는다.** 이 사람에게 없는 것이
-                    아니라, 이 직무에서 한 번 더 묻는 자리다 */}
-                <dt>이 직무에서 추가로 확인해볼 경험</dt>
-                <dd>
-                  <Picks items={model.industry_context.requested.slice(0, 8)
-                    .map((r) => `${domainName(r.domain)} · ${AXIS_KO[r.axis]}`)} />
-                </dd>
-                {/* **이 산업 문항에 답하신 내용을 따로 적는다.** 위의 두 줄은
-                    기술영역 판정을 이 산업 기준으로 읽은 것이고, 이 줄은 이
-                    산업 문항에 직접 답하신 것이다. 한 칸에 담으면 어느 쪽에서
-                    온 값인지 알 수 없다 */}
-                {model.industry_context.answered.length ? (
-                  <>
-                    <dt>이 산업 문항에서 확인된 판단</dt>
-                    <dd>
-                      <Picks items={packRows(model.industry_context.answered)} own />
-                    </dd>
-                  </>
-                ) : null}
-              </dl>
-              {model.industry_context.others.length ? (
-                <p className="rs-others">
-                  다른 산업에서 보시려면 다시 응시하지 않아도 됩니다. 기술영역
-                  결과는 산업을 바꿔도 그대로입니다.
-                </p>
-              ) : null}
-            </div>
+            <PackBody v={model.industry_context}
+              name={industryName(model.industry_context.code)}
+              domainName={domainName} say={say}
+              action={model.actions.find((a) => model.industry_context?.requested
+                .some((r) => r.domain === a.domain)) ?? model.actions[0] ?? null} />
+            {model.industry_context.others.length ? (
+              <p className="rs-others">
+                다른 산업에서 보시려면 다시 응시하지 않아도 됩니다. 기술영역
+                결과는 산업을 바꿔도 그대로입니다.
+              </p>
+            ) : null}
           </section>
         ) : null}
 
@@ -769,37 +833,21 @@ export default async function V3Result({
               같은 경험을 {roleName(model.role_context.code)}에서 먼저 읽는 차례로
               놓았습니다. 기술영역 결과는 그대로입니다.
             </p>
-            <div className="rs-pack">
-              <h3>이 직무가 먼저 보는 판단</h3>
-              <p>{model.role_context.explain_order.map((x) => AXIS_KO[x]).join(" · ")}</p>
-              <dl>
-                <dt>이미 확인된 경험</dt>
-                <dd>
-                  <Picks items={model.role_context.established
-                    .map((e) => `${domainName(e.domain)} · ${e.axes.slice(0, 3)
-                      .map((x) => AXIS_KO[x]).join(", ")}${e.axes.length > 3 ? " 외" : ""}`)} own />
-                </dd>
-                <dt>이 직무에서 추가로 확인해볼 경험</dt>
-                <dd>
-                  <Picks items={model.role_context.requested.slice(0, 8)
-                    .map((r) => `${domainName(r.domain)} · ${AXIS_KO[r.axis]}`)} />
-                </dd>
-                {model.role_context.answered.length ? (
-                  <>
-                    <dt>이 직무 문항에서 확인된 판단</dt>
-                    <dd>
-                      <Picks items={packRows(model.role_context.answered)} own />
-                    </dd>
-                  </>
-                ) : null}
-              </dl>
-              {model.role_context.compare_with.length ? (
-                <p className="rs-others">
-                  같이 놓고 보실 직무 {model.role_context.compare_with
-                    .map((c) => roleName(c)).join(" · ")}
-                </p>
-              ) : null}
-            </div>
+            <p className="rs-note">
+              이 직무가 먼저 보는 판단 {model.role_context.explain_order
+                .map((x) => AXIS_KO[x]).join(" · ")}
+            </p>
+            <PackBody v={model.role_context}
+              name={roleName(model.role_context.code)}
+              domainName={domainName} say={say}
+              action={model.actions.find((a) => model.role_context?.requested
+                .some((r) => r.domain === a.domain)) ?? model.actions[0] ?? null} />
+            {model.role_context.compare_with.length ? (
+              <p className="rs-others">
+                같이 놓고 보실 직무 {model.role_context.compare_with
+                  .map((c) => roleName(c)).join(" · ")}
+              </p>
+            ) : null}
           </section>
         ) : null}
 
@@ -852,6 +900,19 @@ export default async function V3Result({
               전까지 짐작으로 채우지 않습니다.
             </p>
           </div>
+          <div className="rs-pack">
+            <h3>이 넷이 모이면 그 조합을 물어볼 수 있습니다</h3>
+            <dl>
+              {exploreKey.map(([k, v]) => (
+                <div key={k}><dt>{k}</dt><dd>{v}</dd></div>
+              ))}
+            </dl>
+            <p className="rs-others">
+              지금은 물어볼 자료가 없어서 답을 내지 않습니다. 고르신 넷은
+              내 CareerMatri에 남아 있고, 공고와 기관 자료가 들어오면 그
+              조합부터 보여드립니다.
+            </p>
+          </div>
           {/* **고르신 것을 돌려드린다.** 관심 기관 유형과 목표는 응시 중에
               받아 두고 결과지에 한 글자도 나오지 않았다. 판정에 들어가지
               않는다는 것도 함께 적는다 */}
@@ -865,8 +926,18 @@ export default async function V3Result({
               <dl>
                 {model.targets.orgs.length ? (
                   <div>
-                    <dt>관심 기관 유형</dt>
+                    <dt>고르신 조직환경</dt>
                     <dd>{model.targets.orgs.map(orgName).join(" · ")}</dd>
+                  </div>
+                ) : null}
+                {/* **조직환경과 기관 유형은 다른 층이다.** 앞엣것은 그 일을
+                    하는 자리의 성격이고 뒤엣것은 그 자리를 가진 기관의
+                    종류다. 하나로 못 박지 않는다: 완성품 기업은 대기업에도
+                    중견기업에도 있다 */}
+                {orgKinds.length ? (
+                  <div>
+                    <dt>그런 자리가 있는 기관</dt>
+                    <dd>{orgKinds.join(" · ")}</dd>
                   </div>
                 ) : null}
                 {goal.industry ? (
@@ -946,9 +1017,16 @@ export default async function V3Result({
               ["/me/gap", "Gap 관리", "비어 있는 자리와 그것을 메우는 일"],
               ["/me/explore", "산업과 직무 다시 보기", "여덟 산업과 여덟 직무 전부"],
               ["/me/track", "CareerMatri Track", "상황이 바뀔 때 다시 계산해 주는 자리"],
+              [`/v3/${attemptId}/result/pdf`, "결과 PDF 저장", "웹과 같은 아홉 절을 종이로"],
             ].map(([href, label, note]) => (
               <li key={href}>
-                <Link href={href}><b>{label}</b><small>{note}</small></Link>
+                {/* **종이 길은 `Link` 로 걸지 않는다.** Next 가 화면에 들어온
+                    `Link` 를 미리 불러오는데, 그 길은 머리 없는 브라우저를
+                    띄워 종이를 만드는 자리다. 아래까지 내려 읽기만 해도
+                    종이가 한 벌씩 만들어졌다 */}
+                {href.endsWith("/pdf")
+                  ? <a href={href}><b>{label}</b><small>{note}</small></a>
+                  : <Link href={href}><b>{label}</b><small>{note}</small></Link>}
               </li>
             ))}
           </ul>
