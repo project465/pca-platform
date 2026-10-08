@@ -20,6 +20,14 @@ export type CmNavItem = {
   label: string;
   /** 왼쪽 띠에서 한 줄 더 적는다. 손전화 띠에서는 쓰지 않는다 */
   hint?: string;
+  /**
+   * 손전화 아래 띠에 적는 짧은 이름.
+   *
+   * `내 CareerMatri` 가 띠에서 두 줄로 접혀 그 칸만 키가 커졌다. 다섯
+   * 칸이 같은 높이여야 어디를 누르는지가 읽힌다. **긴 이름은 읽는 이름으로
+   * 남긴다**: `aria-label` 이 그것을 들고 간다.
+   */
+  tabLabel?: string;
   icon: IconName;
   /** 손전화 아래 띠에 세우는가 */
   tab?: boolean;
@@ -28,8 +36,8 @@ export type CmNavItem = {
 };
 
 export const CM_NAV: CmNavItem[] = [
-  { href: "/me", label: "내 CareerMatri", hint: "방향 · 근거 · Gap · 다음 행동",
-    icon: "home", tab: true },
+  { href: "/me", label: "내 CareerMatri", tabLabel: "홈",
+    hint: "방향 · 근거 · Gap · 다음 행동", icon: "home", tab: true },
   { href: "/cores", label: "검사", hint: "전공 Core 고르기 · 이어하기",
     icon: "clipboard", tab: true },
   { href: "/me/explore", label: "탐색", hint: "산업 · 직무 · 지역과 기관",

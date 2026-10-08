@@ -51,9 +51,10 @@ export function CmShell({
         {CM_TABS.map((it) => (
           <Link key={it.href} href={it.href}
             className={navOn(it.href, active) ? "is-on" : ""}
+            aria-label={it.label}
             aria-current={navOn(it.href, active) ? "page" : undefined}>
             <Icon name={it.icon} />
-            <span>{it.label}</span>
+            <span>{it.tabLabel ?? it.label}</span>
           </Link>
         ))}
       </nav>
