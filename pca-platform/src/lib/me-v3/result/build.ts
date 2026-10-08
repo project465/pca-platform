@@ -122,22 +122,34 @@ function gapsOf(
        것을 `확인되지 않았습니다` 로 적으면 응시자가 자기가 빠뜨린 줄 안다 */
     if (!d.opened.deep) continue;
     const dd = data.get(code);
+    /* **한 축에 두 번 적지 않는다.** 필수 축과 산출물·검증이 같은 축을
+       가리키면(`J5` · `J6`) 같은 자리가 두 줄로 서고, 거의 같은 할 일이
+       두 번 붙는다. 먼저 들어온 쪽이 남는다 */
     const push = (axis: Axis | null, kind: Gap["kind"], why: Gap["why"],
       reason: Gap["reason"], rank: number) => {
+      const id = `${code}.${axis ?? kind}`;
+      if (out.some((g) => g.id === id)) return;
       out.push({
-        id: `${code}.${axis ?? kind}`, domain: code, axis, kind, why, reason,
+        id, domain: code, axis, kind, why, reason,
         rank: axis && wanted.has(`${code}.${axis}`) ? rank - 1 : rank,
         action_id: null,
       });
     };
+    /* **같은 축이면 구체적인 쪽을 먼저 적는다.** `비교와 검증 경험이
+       확인되지 않았습니다` 보다 `무엇과 비교해 확인했는지가 비어 있습니다`
+       가 다음에 할 일을 더 또렷하게 만든다. 급한 차례는 그대로다: 그
+       영역이 꼭 보는 축이면 1단이고 아니면 2단이다 */
+    const req = new Set<Axis>(d.required);
+    const tier1 = (ax: Axis) => (req.has(ax) ? 1 : 2);
+    if (!d.output_ok) push("J5", "OUTPUT", "BLOCKS_EVIDENCE", "MISSING_OUTPUT", tier1("J5"));
+    if (!d.verification_ok) {
+      push("J6", "VERIFICATION", "BLOCKS_EVIDENCE", "MISSING_VERIFICATION", tier1("J6"));
+    }
     /* 1단 — 그 영역이 꼭 보는 판단이 아직 확인되지 않았다 */
     for (const ax of d.required) {
       if (d.confirmed.includes(ax)) continue;
       push(ax, "REQUIRED_AXIS", "REQUIRED_FOR_DOMAIN", "MISSING_REQUIRED_AXIS", 1);
     }
-    /* 2단 — 남긴 것과 비교한 것. 둘이 없으면 나머지가 설명으로 서지 못한다 */
-    if (!d.output_ok) push("J5", "OUTPUT", "BLOCKS_EVIDENCE", "MISSING_OUTPUT", 2);
-    if (!d.verification_ok) push("J6", "VERIFICATION", "BLOCKS_EVIDENCE", "MISSING_VERIFICATION", 2);
     /* 3단 — 반쯤 선 자리. 산출물은 있는데 근거가 모자라거나, 해 본 것은
        확인됐고 직접 정했다고 보기에는 모자란 축이다 */
     if (d.output_ok && !d.output_evidence_ok) {
@@ -163,11 +175,19 @@ function gapsOf(
     }
     void dd;
   }
-  /* 차례는 급한 쪽 · 먼저 볼 영역 · 영역 코드 순이다. 같은 급이면 영역
-     코드로 정해 **같은 스냅샷이 늘 같은 차례**를 내놓게 한다 */
-  const focusAt = (c: string) => (s.focus.includes(c) ? 0 : 1);
+  /**
+   * 차례는 **어느 영역인가가 먼저**고, 그다음이 급한 쪽이다.
+   *
+   * 급한 쪽을 앞에 두었더니 첫 화면의 `가장 먼저 채울 것` 이 관심이 낮은
+   * 영역을 가리켰다. 바로 위 칸에는 `먼저 볼 영역` 으로 다른 이름이
+   * 적혀 있어서, 두 칸이 서로 다른 곳을 가리켰다. 같은 영역 안에서는
+   * 필수 축 → 산출물과 검증 → 반쯤 선 자리 순이다. 끝은 영역 코드로
+   * 정해 **같은 스냅샷이 늘 같은 차례**를 내놓게 한다.
+   */
+  const low = new Set(s.zones.Z3_EVIDENCE_LOW_INTEREST);
+  const scopeAt = (c: string) => (s.focus.includes(c) ? 0 : low.has(c) ? 2 : 1);
   return out.sort((a, b) =>
-    a.rank - b.rank || focusAt(a.domain) - focusAt(b.domain)
+    scopeAt(a.domain) - scopeAt(b.domain) || a.rank - b.rank
     || a.domain.localeCompare(b.domain) || a.id.localeCompare(b.id));
 }
 
@@ -176,6 +196,24 @@ function actionsOf(
   s: Snapshot, gaps: Gap[], data: Map<string, DomainData>,
 ): Action[] {
   const out: Action[] = [];
+  const lowInterest = new Set(s.zones.Z3_EVIDENCE_LOW_INTEREST);
+  /**
+   * 언제 할 수 있는 일인가. **급한 차례가 아니라 할 수 있는 때로 묶는다.**
+   *
+   * 급한 쪽을 `지금 할 일` 로 적었더니, 그 칸 안에 `다음 과제에서는
+   * 결과물을 하나 남겨보세요` 가 들어갔다. 제목과 문장이 서로 다른 때를
+   * 가리킨 것이다. 적어 두기만 하면 되는 일은 오늘 할 수 있고, 산출물과
+   * 검증은 다음 과제가 있어야 한다.
+   */
+  const WHEN: Record<ActionCode, Action["horizon"]> = {
+    EXPLORE_BROADLY: "NOW", TRY_SHORT_EXPERIENCE: "NOW",
+    DEEPEN_OWNERSHIP: "NOW", WRITE_UP: "NOW",
+    BUILD_OUTPUT: "NEXT", ADD_VERIFICATION: "NEXT",
+    /* 수업은 과제를 기다리지 않는다. `다음 과제에서 교육을 들어보세요`
+       는 때를 잘못 적은 말이다 */
+    FILL_AXIS: "NEXT", STUDY_NEXT: "NOW",
+    RECHECK_DIRECTION: "LATER",
+  };
   const add = (
     id: string, domain: string | null, axis: Axis | null, code: ActionCode,
     horizon: Action["horizon"], fromGap: string | null,
@@ -204,7 +242,11 @@ function actionsOf(
         : g.kind === "PARTIAL_EVIDENCE" ? "DEEPEN_OWNERSHIP" : "FILL_AXIS";
     const id = `A.${g.id}`;
     g.action_id = id;
-    add(id, g.domain, g.axis, code, g.rank <= 2 ? "NOW" : "NEXT", g.id);
+    /* **관심이 낮다고 답한 영역을 `지금 할 일` 로 적지 않는다.** 같은
+       결과지에서 `원하는 방향인지 한 번 더 보세요` 와 `지금 이것부터
+       하세요` 가 같은 영역에 나란히 섰다 */
+    add(id, g.domain, g.axis, code,
+      lowInterest.has(g.domain) ? "LATER" : WHEN[code], g.id);
   }
 
   /* 아직 아무 근거가 없는 사람에게도 방향은 남긴다. 스냅샷의 `next` 를
@@ -217,7 +259,7 @@ function actionsOf(
       }
       const id = `A.${d.code}.${n}`;
       if (out.some((a) => a.id === id)) continue;
-      add(id, d.code, null, n, n === "RECHECK_DIRECTION" ? "LATER" : "NOW", null);
+      add(id, d.code, null, n, lowInterest.has(d.code) ? "LATER" : WHEN[n], null);
     }
   }
   /* 근거가 다 선 영역. **비어 있는 자리가 없다고 할 일이 없는 것은
@@ -226,7 +268,8 @@ function actionsOf(
   if (s.tier_limits.allows_evidence_established) {
     for (const code of s.zones.Z1_EVIDENCE_ESTABLISHED) {
       if (out.some((a) => a.domain === code && a.from_gap)) continue;
-      add(`A.${code}.WRITE_UP`, code, null, "WRITE_UP", "NEXT", null);
+      add(`A.${code}.WRITE_UP`, code, null, "WRITE_UP",
+        lowInterest.has(code) ? "LATER" : "NOW", null);
     }
   }
 
@@ -240,9 +283,11 @@ function actionsOf(
      먼저 적으면, 해 보기 전에 책부터 사라고 말하는 셈이다 */
   const H = { NOW: 0, NEXT: 1, LATER: 2 };
   const C: Record<ActionCode, number> = {
-    EXPLORE_BROADLY: 0, TRY_SHORT_EXPERIENCE: 1, BUILD_OUTPUT: 2,
-    ADD_VERIFICATION: 3, FILL_AXIS: 4, DEEPEN_OWNERSHIP: 5, STUDY_NEXT: 6,
-    WRITE_UP: 7, RECHECK_DIRECTION: 8,
+    /* `한 번 더 볼 것` 묶음에서는 방향을 다시 보라는 말이 맨 앞이다.
+       그 말이 뒤에 있으면 앞의 두 줄이 그냥 할 일로 읽힌다 */
+    RECHECK_DIRECTION: 0, EXPLORE_BROADLY: 0, TRY_SHORT_EXPERIENCE: 1,
+    DEEPEN_OWNERSHIP: 2, WRITE_UP: 3, BUILD_OUTPUT: 4,
+    ADD_VERIFICATION: 5, FILL_AXIS: 6, STUDY_NEXT: 7,
   };
   return out.sort((a, b) =>
     H[a.horizon] - H[b.horizon] || C[a.code] - C[b.code] || a.id.localeCompare(b.id));

@@ -31,9 +31,10 @@ const BASIC_GROUPS = ["do_now", "scan", "low", "unseen"] as const;
 
 /** 고른 항목. **스무 개를 한 줄에 깔면 그 가운데 무엇도 안 읽힌다** */
 function Picks(
-  { items, own, max = 8 }: { items: string[]; own?: boolean; max?: number },
+  { items, own, max = 8, none = "아직 고른 것이 없습니다" }:
+  { items: string[]; own?: boolean; max?: number; none?: string },
 ) {
-  if (!items.length) return <span className="rs-none">아직 고른 것이 없습니다</span>;
+  if (!items.length) return <span className="rs-none">{none}</span>;
   const head = items.slice(0, max);
   return (
     <>
@@ -191,7 +192,11 @@ function EvidenceRow(
       </p>
       <div className="keys">
         <span className="rs-keylabel">고르신 항목</span>
-        <Picks items={picks} max={4} own={own} />
+        {/* **`아직 고른 것이 없습니다` 를 여기 그대로 쓰지 않는다.** 바로
+            위에 `확인됐습니다` 가 적혀 있어서 두 줄이 서로를 부순다.
+            이 자리에서 비어 있다는 것은 **설명할 재료가 없다**는 뜻이다 */}
+        <Picks items={picks} max={4} own={own}
+          none="고르신 근거 항목이 없어, 지금은 설명할 재료가 없습니다" />
       </div>
     </div>
   );
