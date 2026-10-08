@@ -33,12 +33,12 @@ export default async function V3PilotOne({
   if (!/^\d+$/.test(attemptId)) notFound();
 
   const a = await queryOne<{
-    id: string; tier: string; status: string; stage: string; grad_field: string | null;
+    id: string; tier: string; status: string; grad_field: string | null;
     started_at: string; submitted_at: string | null;
     code: string; wave: number; education_stage: string; purge_after: string;
     quality: string | null; opened_deep: number;
   }>(
-    `SELECT a.id::text, a.tier, a.status, a.stage, a.grad_field,
+    `SELECT a.id::text, a.tier, a.status, a.grad_field,
             a.started_at::text, a.submitted_at::text,
             p.code, p.wave, p.education_stage, p.purge_after::text,
             s.response_quality AS quality,

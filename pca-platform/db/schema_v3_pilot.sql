@@ -436,3 +436,41 @@ DO $$ BEGIN
     CHECK (kind IN ('result_open','section_view','action_click',
                     'action_save','action_unsave','pdf_fail'));
 EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+
+/* ── 9. 파일럿이 등급을 열어 준다 ──────────────────────────────────
+
+   **등급은 이용권이 정한다**(`startV3` 가 폼에서 등급을 받지 않는다). 그런데
+   ME_V3 상품이 한 줄도 없어서, 파일럿 참가자는 무엇을 받든 BASIC 으로만
+   시작했다. 운영자가 손으로 DB 에 이용권을 꽂지 않으면 STANDARD 와 PRO 를
+   시험할 길이 없었다.
+
+   그래서 초대 자리가 등급을 든다. **상품은 꺼 둔 채로 만든다**: `active`
+   가 false 라 가격표에도 결제에도 나타나지 않고(`catalog.ts` 가 `active` 로
+   거른다), 이용권이 가리킬 자리만 생긴다. 금액은 승인된 값 그대로다 —
+   파일럿에서는 받지 않지만, 다른 값을 적어 두면 그 값이 어느 날 켜진다.    */
+
+INSERT INTO products
+  (code, kind, amount, currency, seat_count, active, report_level,
+   market, major_code, tier, assessment_version, price_status)
+VALUES
+  ('ME_V3_BASIC_KR',    'assessment',     0, 'KRW', 1, false, 'free',
+   'KR', 'ME', 'BASIC',    'ME_V3_DOMAIN_2026', 'approved'),
+  ('ME_V3_STANDARD_KR', 'assessment', 14900, 'KRW', 1, false, 'full',
+   'KR', 'ME', 'STANDARD', 'ME_V3_DOMAIN_2026', 'approved'),
+  ('ME_V3_PRO_KR',      'assessment', 21900, 'KRW', 1, false, 'full',
+   'KR', 'ME', 'PRO',      'ME_V3_DOMAIN_2026', 'approved')
+ON CONFLICT (code) DO UPDATE
+  SET amount = EXCLUDED.amount, tier = EXCLUDED.tier,
+      assessment_version = EXCLUDED.assessment_version, active = false;
+
+COMMENT ON COLUMN products.active IS
+  '파는가. 파일럿용 ME_V3 상품 셋은 false 다 — 이용권이 가리킬 자리만 필요하다';
+
+-- 초대 한 자리가 등급을 든다. **참가자가 고르지 않는다**: 고르게 두면
+-- 무엇을 시험하는 wave 인지가 참가자 손에 넘어간다
+ALTER TABLE v3_pilot_enrollments
+  ADD COLUMN IF NOT EXISTS tier TEXT NOT NULL DEFAULT 'BASIC';
+DO $$ BEGIN
+  ALTER TABLE v3_pilot_enrollments ADD CONSTRAINT v3_pilot_enrollments_tier_chk
+    CHECK (tier IN ('BASIC','STANDARD','PRO'));
+EXCEPTION WHEN duplicate_object THEN NULL; END $$;

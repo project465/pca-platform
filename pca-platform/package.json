@@ -115,6 +115,8 @@
     "v3:result:freeze": "tsx scripts/v3-result-freeze.ts",
     "v3:pilot": "tsx scripts/v3-pilot-check.ts",
     "v3:pilot:report": "tsx scripts/v3-pilot-report.ts",
+    "v3:pilot:dry": "tsx scripts/v3-pilot-dry.ts",
+    "stage:serve": "bash scripts/stage-serve.sh",
     "v3:pilot:purge": "tsx scripts/v3-pilot-purge.ts",
     "v3:result:shots": "node scripts/v3-result-shots.mjs",
     "v3:result:pdf": "node scripts/v3-result-pdf.mjs"

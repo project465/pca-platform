@@ -123,9 +123,10 @@ ok("가명으로는 등록이 열리지 않는다",
 ok("퍼널 이름에 꼬리표가 붙는다",
    /PREFIX = "v3_pilot\."/.test(funnel) && /name LIKE \$1/.test(funnel));
 
-/* 19. 같은 걸음을 두 번 세지 않는다 */
-ok("같은 응시의 같은 걸음은 한 번만 적힌다",
-   /props->>'attempt' = \$2 LIMIT 1/.test(funnel));
+/* 19. 같은 걸음을 두 번 세지 않는다. 응시 번호가 있으면 그것으로,
+       없으면 가명으로 가른다 — 참가 화면은 응시 전에도 열린다 */
+ok("같은 사람의 같은 걸음은 한 번만 적힌다",
+   /props->>\$2 = \$3 LIMIT 1/.test(funnel) && /col: "participant"/.test(funnel));
 
 /* 20. 자리를 비운 시간을 섞지 않는다 */
 ok("20분 넘는 틈은 빼고 센다",

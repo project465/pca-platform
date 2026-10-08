@@ -156,8 +156,13 @@ export default async function V3Screen({
     percent: Math.round((v.progress.screen.index / v.progress.screen.total) * 100),
   };
 
+  /* **화면이 바뀌면 다시 세운다.** `?s=` 만 바뀌는 이동이라 React 가 같은
+     자리의 같은 컴포넌트로 보고 상태를 그대로 들고 간다. 그러면 앞 화면의
+     답이 남고, 넘어가는 동안 켜 둔 `moving` 이 꺼지지 않아 **`다음` 이 한 번
+     눌린 뒤로 영원히 꺼진 채** 선다. 자리 목록으로 한 쪽씩 열어 보는
+     캡처에서는 쪽마다 새로 뜨므로 드러나지 않았고, 사람이 눌러야 보였다 */
   return (
-    <Screen s={model} prog={prog}
+    <Screen key={`${model.attemptId}:${model.index}`} s={model} prog={prog}
       tier={v.attempt.tier} tierLabel={TIER_WHAT[v.attempt.tier].label} />
   );
 }

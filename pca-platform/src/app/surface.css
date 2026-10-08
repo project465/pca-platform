@@ -1451,10 +1451,16 @@ body:has(.stgmark) { --stg-h: 44px; padding-bottom: var(--stg-h) }
    staging 에서만 묶음을 넘어가지 못했다. **운영에는 띠가 없어 안
    드러나는 탈이다.** 띠가 있는 동안 단추 띠를 그만큼 올린다 */
 body:has(.stgmark) .asnav { bottom: 44px }
+/* **같은 탈이 새 응시 화면에서 다시 났다.** ME_V3 의 단추 띠는
+   `.qs-nav` 이고 `z-index: 4` 라, 고친 자리에 그 이름이 없어서 공개 전
+   배포본에서 `다음` 이 눌리지 않았다. 예행에서 첫 화면을 넘지 못하는
+   것으로 드러났다. 이름을 늘릴 때 이 줄을 같이 늘린다 */
+body:has(.stgmark) .qs-nav { bottom: var(--stg-h) }
 @media (max-width: 620px) {
   .stgmark { font-size: 11.5px; padding: 8px 12px; gap: 4px }
   body:has(.stgmark) { --stg-h: 56px }
   body:has(.stgmark) .asnav { bottom: 56px }
+  body:has(.stgmark) .qs-nav { bottom: var(--stg-h) }
 }
 
 /* ── 공개 판매 표면의 꼬리말 ──────────────────────────────────────────

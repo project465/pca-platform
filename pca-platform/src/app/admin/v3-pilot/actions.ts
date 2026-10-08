@@ -2,7 +2,9 @@
 
 import { headers } from "next/headers";
 import { requireRole } from "@/lib/session";
-import { createInvites, inviteLink, WAVES } from "@/lib/me-v3/pilot/enroll";
+import {
+  createInvites, inviteLink, TIERS, WAVES, type PilotTier,
+} from "@/lib/me-v3/pilot/enroll";
 import { syncFunnel } from "@/lib/me-v3/pilot/sync";
 
 /**
@@ -13,8 +15,8 @@ import { syncFunnel } from "@/lib/me-v3/pilot/sync";
  * 날것으로 저장해야 하고, 그러면 DB 가 새는 순간 전부가 샌다.
  */
 export type InviteState = {
-  links?: { code: string; url: string }[];
-  error?: "wave" | "count";
+  links?: { code: string; tier: string; url: string }[];
+  error?: "wave" | "count" | "tier";
 };
 
 export async function makeInvites(
@@ -27,6 +29,10 @@ export async function makeInvites(
   const count = Number(form.get("count"));
   if (!Number.isInteger(count) || count < 1 || count > 20) return { error: "count" };
   const note = String(form.get("note") ?? "").trim().slice(0, 200) || undefined;
+  /* 등급은 초대가 정한다. 참가자가 고를 수 있으면 어느 등급을 시험하는
+     wave 인지가 참가자 손에 넘어가고, 그러면 분석에서 등급 칸이 섞인다 */
+  const tier = String(form.get("tier") ?? "");
+  if (!(TIERS as readonly string[]).includes(tier)) return { error: "tier" };
 
   /* 받는 사람이 실제로 누르는 주소여야 한다. 공개 전 배포본에서는
      `PLATFORM_URL` 이 그 자리이고, 없으면 지금 들어온 자리를 쓴다 */
@@ -34,9 +40,11 @@ export async function makeInvites(
   const base = (process.env.PLATFORM_URL ?? "").trim()
     || `${h.get("x-forwarded-proto") ?? "http"}://${h.get("host") ?? "127.0.0.1:3000"}`;
 
-  const made = await createInvites(wave, count, note);
+  const made = await createInvites(wave, count, note, tier as PilotTier);
   return {
-    links: made.map((m) => ({ code: m.code, url: inviteLink(base, m.token) })),
+    links: made.map((m) => ({
+      code: m.code, tier: m.tier, url: inviteLink(base, m.token),
+    })),
   };
 }
 

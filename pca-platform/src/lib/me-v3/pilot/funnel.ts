@@ -74,12 +74,18 @@ export type Who = {
  */
 export async function mark(step: FunnelStep, who: Who): Promise<void> {
   const name = PREFIX + step;
+  /* **같은 사람의 같은 걸음은 한 번이다.** 응시 번호가 있으면 그것으로,
+     없으면 참가자 가명으로 가른다. 참가 화면은 응시 전에도 열리므로
+     응시 번호로만 가르면 **링크를 세 번 연 사람이 세 명으로 세어진다** */
+  const key = who.attemptId
+    ? { col: "attempt", val: who.attemptId }
+    : who.participant ? { col: "participant", val: who.participant } : null;
   try {
-    if (who.attemptId) {
+    if (key) {
       const had = await query<{ id: string }>(
         `SELECT id FROM analytics_events
-          WHERE name = $1 AND props->>'attempt' = $2 LIMIT 1`,
-        [name, who.attemptId]);
+          WHERE name = $1 AND props->>$2 = $3 LIMIT 1`,
+        [name, key.col, key.val]);
       if (had.length) return;
     }
     await query(
@@ -113,7 +119,8 @@ export type FunnelRow = { step: FunnelStep; people: number };
  */
 export async function funnelByWave(wave?: number): Promise<FunnelRow[]> {
   const rows = await query<{ name: string; people: string }>(
-    `SELECT name, count(DISTINCT COALESCE(props->>'attempt', id::text)) AS people
+    `SELECT name, count(DISTINCT COALESCE(props->>'attempt',
+                                           props->>'participant', id::text)) AS people
        FROM analytics_events
       WHERE name LIKE $1
         AND ($2::int IS NULL OR (props->>'wave')::int = $2)

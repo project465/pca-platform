@@ -669,11 +669,22 @@ export default async function V3Result({
         {/* ── 다음에 할 일 ── */}
         <section className="rs-sect" id="plan">
           <h2>다음에 할 일</h2>
-          <p className="rs-note">
-            그 영역에서 실제로 할 수 있는 한 걸음으로 적었습니다.
-          </p>
-          <Plan actions={model.actions} stage={model.stage}
-            attemptId={attemptId} saved={saved} />
+          {model.actions.length ? (<>
+            <p className="rs-note">
+              그 영역에서 실제로 할 수 있는 한 걸음으로 적었습니다.
+            </p>
+            <Plan actions={model.actions} stage={model.stage}
+              attemptId={attemptId} saved={saved} />
+          </>) : (
+            /* **머리글만 세워 두지 않는다.** 할 일이 없는 응시에서 약속하는
+               문장 아래가 비어 있었다. 빈 자리는 고장으로 읽히고, 읽는
+               사람은 자기 결과가 덜 만들어졌다고 본다. 까닭을 적는다 */
+            <p className="rs-note">
+              지금 응답만으로는 다음 한 걸음을 적을 만큼 영역 사이에 차이가
+              생기지 않았습니다. 위의 영역 가운데 하나를 짧은 과제로 한 번
+              해보신 뒤에 다시 보시면 그 자리에 적힙니다.
+            </p>
+          )}
         </section>
 
         {/* **단서를 결과의 마지막 인상으로 만들지 않는다.** 필요한 사람이

@@ -64,7 +64,19 @@ async function nextCode(wave: number): Promise<string> {
   return `V3-${letter}${String(randomInt(10000, 99999))}`;
 }
 
-export type Invite = { id: string; code: string; token: string; wave: number };
+export const TIERS = ["BASIC", "STANDARD", "PRO"] as const;
+export type PilotTier = typeof TIERS[number];
+
+/** 이용권이 가리킬 자리. **꺼 둔 상품이다** — 가격표에 나오지 않는다 */
+const PRODUCT: Record<PilotTier, string> = {
+  BASIC: "ME_V3_BASIC_KR",
+  STANDARD: "ME_V3_STANDARD_KR",
+  PRO: "ME_V3_PRO_KR",
+};
+
+export type Invite = {
+  id: string; code: string; token: string; wave: number; tier: PilotTier;
+};
 
 /**
  * 초대 자리를 만든다. **열쇠는 여기서 한 번만 돌려준다.**
@@ -74,36 +86,37 @@ export type Invite = { id: string; code: string; token: string; wave: number };
  * 새는 순간 전부가 샌다.
  */
 export async function createInvites(
-  wave: number, count: number, note?: string,
+  wave: number, count: number, note?: string, tier: PilotTier = "BASIC",
 ): Promise<Invite[]> {
   const out: Invite[] = [];
   for (let i = 0; i < Math.max(1, Math.min(50, count)); i += 1) {
     const t = token();
     const code = await nextCode(wave);
     const row = await queryOne<{ id: string }>(
-      `INSERT INTO v3_pilot_enrollments (code, token_hash, cohort, wave, note)
-       VALUES ($1,$2,$3,$4,$5) RETURNING id::text`,
-      [code, sha(t), COHORT, wave, note ?? null]);
-    out.push({ id: row?.id as string, code, token: t, wave });
+      `INSERT INTO v3_pilot_enrollments (code, token_hash, cohort, wave, note, tier)
+       VALUES ($1,$2,$3,$4,$5,$6) RETURNING id::text`,
+      [code, sha(t), COHORT, wave, note ?? null, tier]);
+    out.push({ id: row?.id as string, code, token: t, wave, tier });
   }
   return out;
 }
 
 export type Enrollment = {
-  id: string; code: string; wave: number; cohort: string;
+  id: string; code: string; wave: number; cohort: string; tier: PilotTier;
   used_at: string | null; used_by: string | null; expires_at: string | null;
 };
 
 export async function enrollmentByToken(t: string): Promise<Enrollment | null> {
   if (!t || t.length < 8) return null;
   return queryOne<Enrollment>(
-    `SELECT id::text, code, wave, cohort, used_at::text, used_by::text, expires_at::text
+    `SELECT id::text, code, wave, cohort, tier, used_at::text, used_by::text,
+            expires_at::text
        FROM v3_pilot_enrollments WHERE token_hash = $1`,
     [sha(t)]);
 }
 
 export type RedeemResult =
-  | { ok: true; code: string; wave: number; already: boolean }
+  | { ok: true; code: string; wave: number; tier: PilotTier; already: boolean }
   /* **거절 이유를 뭉개지 않는다.** 하나로 뭉개면 이미 초대를 받은 사람이
      자기를 의심한다 */
   | { ok: false; reason: "unknown" | "used" | "expired" };
@@ -140,7 +153,22 @@ export async function redeem(t: string, userId: string): Promise<RedeemResult> {
      ON CONFLICT (user_id, cohort)
        DO UPDATE SET enrollment_id = EXCLUDED.enrollment_id, wave = EXCLUDED.wave`,
     [userId, e.code, e.cohort, e.id, e.wave]);
-  return { ok: true, code: e.code, wave: e.wave, already };
+
+  /* 등급을 열어 주는 이용권. **주문을 만들지 않는다** — 돈은 한 푼도
+     움직이지 않았고, 주문을 지어 적으면 매상이 그만큼 늘어난다.
+     다시 눌러도 한 줄만 생긴다: 이용권이 늘면 같은 사람이 한 번 더 풀 수
+     있고, 그러면 스무 명짜리 표본에 같은 사람이 두 번 서서 규준이 오염된다 */
+  await query(
+    `INSERT INTO entitlements
+       (user_id, product_code, kind, tier, major_code, assessment_version, status)
+     SELECT $1, $2, 'report', $3, 'ME', 'ME_V3_DOMAIN_2026', 'active'
+      WHERE NOT EXISTS (
+        SELECT 1 FROM entitlements x
+         WHERE x.user_id = $1 AND x.assessment_version = 'ME_V3_DOMAIN_2026'
+           AND x.status = 'active')`,
+    [userId, PRODUCT[e.tier], e.tier]);
+
+  return { ok: true, code: e.code, wave: e.wave, tier: e.tier, already };
 }
 
 /** 초대 한 줄의 링크. 열쇠는 만들 때만 손에 있다 */

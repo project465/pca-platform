@@ -18,4 +18,14 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.1";
  * 문장 하나를 고친 날 화면 판본까지 올리면, 되짚을 때 무엇이 바뀐
  * 것인지 알 수 없다. 넷이 따로 간다: 화면 · 문장 · 모델 · 판단.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V1";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V1.1";
+
+/*
+ * `V1.1` 로 올린 까닭. 할 일이 하나도 없는 응시에서 `다음에 할 일` 절이
+ * **머리글과 약속하는 문장만 세우고 그 아래가 비어 있었다.** 열두 영역에
+ * 비슷하게 답하면 비어 있는 자리가 안 잡혀 할 일이 0 이 되는데, 읽는
+ * 사람에게 그 자리는 고장으로 보인다.
+ *
+ * 고친 것은 그 절의 문장 하나다. 판정도 모델도 그대로라
+ * `RESULT_MODEL_VERSION` 과 채점 판본은 올리지 않는다.
+ */

@@ -23,6 +23,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { MIN_CELL, pilotRows } from "../src/lib/me-v3/pilot/store";
 import { FUNNEL, funnelByWave } from "../src/lib/me-v3/pilot/funnel";
+import { syncFunnel } from "../src/lib/me-v3/pilot/sync";
 import { WAVE_KO } from "../src/lib/me-v3/pilot/enroll";
 import {
   blockTimes, choiceSpread, ISSUE_KO, issues, metrics, ownershipSpread,
@@ -74,6 +75,10 @@ const n0 = (x: number | null | undefined) => (x === null || x === undefined ? "�
 const mn = (sec: number | null) => (sec === null ? "—" : `${Math.round(sec / 60)}분`);
 
 async function main(): Promise<void> {
+  /* **앞 걸음을 먼저 옮긴다.** 검사 시작과 등급 완료는 응시 화면이 적지
+     못한다(동결돼 있다). 응답과 `submitted_at` 에 이미 적혀 있는 사실을
+     퍼널 표로 옮기는 것이고, 여러 번 돌려도 같은 자리에 선다 */
+  await syncFunnel();
   const rows = await pilotRows({ wave: WAVE ?? null });
   const scope = WAVE === undefined ? "전체" : (WAVE_KO[WAVE] ?? `wave ${WAVE}`);
 
