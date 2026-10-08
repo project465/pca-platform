@@ -109,31 +109,40 @@ export default function Screen({
 
   return (
     <div className="qs">
-      <header className="qs-top">
-        <span className="qs-brand">CareerMatri</span>
-        <span className="qs-tier">{tier} · <b>{tierLabel}</b></span>
-      </header>
-
-      <div className="qs-prog">
-        <ol className="qs-stages">
-          {prog.stages.map((st) => (
-            <li key={st.label} className={`is-${st.state}`}
-              aria-current={st.state === "current" ? "step" : undefined}>{st.label}</li>
-          ))}
-        </ol>
-        <span className="qs-stage-now">{prog.inStage.label}</span>
-        <span className="qs-inblock">{prog.inStage.index} / {prog.inStage.total}</span>
-        <div className="qs-bar" role="progressbar" aria-valuenow={prog.percent}
-          aria-valuemin={0} aria-valuemax={100} aria-label="검사 진행">
-          <span style={{ width: `${prog.percent}%` }} />
+      <header className="qs-head">
+        <div className="qs-head-in">
+          <div className="qs-top">
+            <span className="qs-brand">CareerMatri</span>
+            <span className="qs-tier">{tier} · <b>{tierLabel}</b></span>
+          </div>
+          <div className="qs-prog">
+            <span className="qs-crumb">
+              {prog.prev ? <><span className="prev">{prog.prev}</span><i>›</i></> : null}
+              <span className="now">{prog.now}</span>
+              {prog.next ? <><i>›</i><span className="next">{prog.next}</span></> : null}
+            </span>
+            <span className="qs-count">{prog.inStage.index} / {prog.inStage.total}</span>
+          </div>
+          <div className="qs-bar" role="progressbar" aria-valuenow={prog.percent}
+            aria-valuemin={0} aria-valuemax={100}
+            aria-label={`검사 진행 · ${prog.now}`}>
+            <span style={{ width: `${prog.percent}%` }} />
+          </div>
         </div>
-      </div>
+      </header>
 
       <main className={`qs-main${mid ? " qs-mid" : ""}`}>
         {s.eyebrow ? <p className="qs-eyebrow">{s.eyebrow}</p> : null}
         {s.subject ? <p className="qs-subject">{s.subject}</p> : null}
         {s.question ? <h1 className="qs-q">{s.question}</h1> : null}
-        {s.help ? <p className="qs-help">{s.help}</p> : null}
+        {/* 전환 화면의 도움말은 **이제 볼 영역의 목록**이다. 한 줄로 이어
+            붙이면 가운뎃점으로 묶인 긴 문장이 되고, 쉬는 자리가 빈 화면이
+            된다. 줄로 세우면 무엇을 보러 가는지가 그대로 읽힌다 */}
+        {s.kind === "transition" && s.help ? (
+          <ul className="qs-next">
+            {s.help.split(" · ").map((x) => <li key={x}>{x}</li>)}
+          </ul>
+        ) : s.help ? <p className="qs-help">{s.help}</p> : null}
 
         {/* ── 기본 정보를 고치는 자리 ── */}
         {s.profile ? (
@@ -198,25 +207,39 @@ export default function Screen({
 
         {s.guide ? <p className="qs-guide">{s.guide}</p> : null}
 
-        {/* ── 근거 고르기 ── */}
-        {s.groups?.map((g) => (
-          <div className="qs-group" key={g.slot}>
-            <h3>{g.label}</h3>
-            <div className="qs-chips">
-              {g.items.map((it) => {
-                const on = (picks[g.slot] ?? []).includes(it);
-                return (
-                  <label key={it} className={`qs-opt is-box${on ? " is-on" : ""}`}>
-                    <input type="checkbox" checked={on}
-                      onChange={() => toggle(g.slot, it)} />
-                    <span className="qs-mark" aria-hidden />
-                    <span className="qs-body"><span className="qs-label">{it}</span></span>
-                  </label>
-                );
-              })}
-            </div>
-          </div>
-        ))}
+        {/* ── 근거 고르기 ── **스무 줄짜리 목록으로 세우지 않는다** */}
+        {s.groups ? (
+          <>
+            <p className="qs-picked">
+              <span>고르신 것 <b>{Object.values(picks).reduce((n, v) => n + v.length, 0)}</b>개</span>
+              <span className="qs-grow" />
+              <span>여러 개 고르실 수 있습니다</span>
+            </p>
+            {s.groups.map((g) => {
+              const on = picks[g.slot] ?? [];
+              return (
+                <div className="qs-group" key={g.slot}>
+                  <h3>
+                    {g.label}
+                    {on.length ? <em>{on.length}개</em> : null}
+                  </h3>
+                  <div className="qs-chips">
+                    {g.items.map((it) => {
+                      const checked = on.includes(it);
+                      return (
+                        <label key={it} className={`qs-chip${checked ? " is-on" : ""}`}>
+                          <input type="checkbox" checked={checked}
+                            onChange={() => toggle(g.slot, it)} />
+                          {it}
+                        </label>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+          </>
+        ) : null}
 
         {/* ── 산업과 역할 고르기 ── */}
         {s.packs ? (
@@ -260,10 +283,13 @@ export default function Screen({
               onClick={() => go(s.prevIndex)} disabled={moving}>이전</button>
           ) : null}
           <span className="qs-grow" />
+          {/* 전환과 완료에는 저장할 것이 없다. 거기 띄우면 뜻 없는 글자가
+              다음 걸음 옆에 선다 */}
           {warn ? <span className="qs-need">답을 고르신 뒤 넘어갑니다</span>
-            : saving > 0 ? <span className="qs-save">저장 중</span>
-              : sent ? <span className="qs-save">저장됨</span>
-                : <span className="qs-save">문항마다 저장됩니다</span>}
+            : mid ? null
+              : saving > 0 ? <span className="qs-save">저장 중</span>
+                : sent ? <span className="qs-save">저장됨</span>
+                  : <span className="qs-save">문항마다 저장됩니다</span>}
           {s.kind === "done" ? (
             s.done ? null : (
               <button type="button" className="qs-btn qs-btn-main"
@@ -307,6 +333,8 @@ function One({
                 <span className="qs-label">{label}</span>
                 {f.optionHelp?.[i] ? <span className="qs-gloss">{f.optionHelp[i]}</span> : null}
               </span>
+              {/* 두 번째와 세 번째가 끝까지 읽어야 갈리므로 네 글자를 옆에 적는다 */}
+              {f.optionTag?.[i] ? <span className="qs-tag">{f.optionTag[i]}</span> : null}
             </label>
           ))}
         </div>

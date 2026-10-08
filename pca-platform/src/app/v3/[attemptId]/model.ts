@@ -17,6 +17,8 @@ export type Field = {
   note?: string;
   /** 보기마다 붙는 짧은 뜻. 보기 넷에서만 쓴다 */
   optionHelp?: string[];
+  /** 보기마다 붙는 네 글자 꼬리표. 보기 넷에서만 쓴다 */
+  optionTag?: string[];
 };
 
 export type Group = {
@@ -24,6 +26,9 @@ export type Group = {
 };
 
 export type PackChoice = { code: string; name: string; gloss: string };
+
+/** 보기 넷을 한눈에 가르는 꼬리표. 보기 넷 화면에서만 */
+export type OptionTag = string[];
 
 export type ScreenModel = {
   attemptId: string;
@@ -52,7 +57,10 @@ export type ScreenModel = {
 };
 
 export type ProgressModel = {
-  stages: { label: string; state: "done" | "current" | "todo" }[];
-  inStage: { index: number; total: number; label: string };
+  /** 지나온 단계 하나 · 지금 · 다음 하나. **여덟을 늘어놓지 않는다** */
+  prev: string | null;
+  now: string;
+  next: string | null;
+  inStage: { index: number; total: number };
   percent: number;
 };

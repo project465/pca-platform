@@ -148,6 +148,98 @@ const qa = plan.targets[plan.targets.length - 1];
   await p.close();
 }
 
+/* ── 대비와 누르는 자리 ──
+   눈으로는 다 괜찮아 보인다. 전에 `a11y:check` 를 처음 돌렸을 때 마흔
+   가지가 걸린 자리가 그것이라, 검사 화면도 세어 둔다 */
+{
+  const ROLES = [".qs-q", ".qs-subject", ".qs-eyebrow", ".qs-label", ".qs-gloss",
+    ".qs-tag", ".qs-save", ".qs-count", ".qs-crumb .now", ".qs-chip", ".qs-help",
+    ".qs-guide", ".qs-btn-main", ".qs-btn-ghost", ".qs-next li"];
+  const seen = new Map();
+  for (const t of plan.targets.slice(1)) {
+    const p = await ctx[t.who].newPage();
+    await p.setViewportSize(SIZES.desktop);
+    await p.goto(B + t.path, { waitUntil: "networkidle" });
+    const rows = await p.evaluate((sel) => {
+      const lum = (c) => {
+        const [r, g, b] = c.map((v) => {
+          const x = v / 255;
+          return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
+        });
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+      };
+      /* **색 적는 법이 둘이다.** 크로뮴은 `color-mix` 를 거친 값을
+         `color(srgb 1 1 1 / 0.94)` 로 돌려주는데, 거기서 숫자 셋을 그냥
+         집으면 흰색이 `rgb(1,1,1)` 즉 검정이 된다. 그러면 멀쩡한 글자색이
+         전부 대비 미달로 걸린다. 거짓 경보를 내는 검사는 그 다음부터
+         아무도 안 본다 */
+      const parse = (c) => {
+        const n = (c.match(/-?\d*\.?\d+/g) ?? []).map(Number);
+        if (n.length < 3) return null;
+        const srgb = c.startsWith("color(");
+        const v = n.slice(0, 3).map((x) => (srgb ? x * 255 : x));
+        const a = n.length > 3 ? n[3] : 1;
+        return { v, a };
+      };
+      /* 반투명이면 **아래와 섞어서** 본다. 머리띠와 바닥 띠가 그렇다 */
+      const bgOf = (el) => {
+        let acc = null, left = 1;
+        for (let n = el; n && left > 0.01; n = n.parentElement) {
+          const c = parse(getComputedStyle(n).backgroundColor);
+          if (!c || c.a <= 0.01) continue;
+          const w = left * c.a;
+          acc = acc ? acc.map((x, i) => x + c.v[i] * w) : c.v.map((x) => x * w);
+          left -= w;
+        }
+        const base = acc ?? [0, 0, 0];
+        return base.map((x) => x + 255 * left);
+      };
+      const out = [];
+      for (const q of sel) {
+        for (const el of document.querySelectorAll(q)) {
+          const st = getComputedStyle(el);
+          if (!el.textContent?.trim()) continue;
+          const fgc = parse(st.color);
+          if (!fgc) continue;
+          const fg = fgc.v, bg = bgOf(el);
+          const L1 = lum(fg), L2 = lum(bg);
+          const ratio = (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05);
+          const px = parseFloat(st.fontSize);
+          const big = px >= 24 || (px >= 18.66 && parseInt(st.fontWeight, 10) >= 700);
+          const r = el.getBoundingClientRect();
+          out.push({ q, ratio: Math.round(ratio * 100) / 100, need: big ? 3 : 4.5,
+                     h: Math.round(r.height) });
+          break;   /* 같은 꼴은 한 번만 */
+        }
+      }
+      return out;
+    }, ROLES);
+    for (const r of rows) if (!seen.has(r.q) || seen.get(r.q).ratio > r.ratio) seen.set(r.q, r);
+    await p.close();
+  }
+  const bad = [...seen.values()].filter((r) => r.ratio < r.need);
+  for (const r of bad) problems.push(`대비 ${r.q} ${r.ratio}:1 (${r.need} 필요)`);
+  log.push("대비".padEnd(26) + ` ${seen.size}꼴 · 가장 낮은 ` +
+    `${Math.min(...[...seen.values()].map((r) => r.ratio))}:1`);
+
+  /* 누르는 자리 */
+  const p = await ctx[qa.who].newPage();
+  await p.setViewportSize(SIZES.mobile);
+  await p.goto(B + plan.targets.find((t) => t.name === "08_checklist").path,
+    { waitUntil: "networkidle" });
+  const small = await p.evaluate(() => {
+    const out = [];
+    for (const el of document.querySelectorAll(".qs-opt, .qs-cell, .qs-chip, .qs-btn")) {
+      const h = el.getBoundingClientRect().height;
+      if (h < 40) out.push(`${el.className.split(" ")[0]} ${Math.round(h)}px`);
+    }
+    return out;
+  });
+  for (const x of small) problems.push(`누르는 자리가 40px 아래다 — ${x}`);
+  log.push("누르는 자리".padEnd(26) + ` ${small.length ? small.join(",") : "40px 이상"}`);
+  await p.close();
+}
+
 await browser.close();
 console.log(log.join("\n"));
 if (problems.length) {

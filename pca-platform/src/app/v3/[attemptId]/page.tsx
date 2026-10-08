@@ -7,7 +7,9 @@ import {
   menuContextOf, moveTo, optionGuidance, roleChoices, viewOf, wordingOf,
 } from "@/lib/me-v3/runtime/session";
 import type { Field, Group, ProgressModel, ScreenModel } from "./model";
-import { TIER_WHAT } from "../tier-text";
+import {
+  INDUSTRY_HINT, OWNERSHIP_TAG, ROLE_HINT, TIER_WHAT,
+} from "../tier-text";
 import Screen from "./screen";
 
 export const metadata = { title: "검사 · CareerMatri" };
@@ -59,6 +61,7 @@ export default async function V3Screen({
       /* 보기 넷의 뜻은 `ownership.ts` 하나에서 온다. 화면이 따로 적으면
          어느 날 채점과 다른 말을 한다 */
       optionHelp: control.kind === "level" ? OWNERSHIP.map((o) => o.means) : undefined,
+      optionTag: control.kind === "level" ? OWNERSHIP_TAG : undefined,
     };
   };
 
@@ -76,8 +79,9 @@ export default async function V3Screen({
   const groups: Group[] | undefined = sc.kind === "checklist" && dom
     ? checklistFor(dom).map((g) => ({
         slot: g.slot,
-        label: g.slot === "ARTIFACT" || g.slot === "VERIFY" ? g.label
-          : `${axisLabel(g.slot)} · 내가 정한 것`,
+        /* 묶음마다 `· 내가 정한 것` 을 되풀이하지 않는다. 그 말은 질문이
+           이미 하고 있고, 열 번 되풀이되면 묶음 이름이 안 읽힌다 */
+        label: g.slot === "ARTIFACT" || g.slot === "VERIFY" ? g.label : axisLabel(g.slot),
         items: g.items,
         picked: g.slot === "ARTIFACT" ? (v.picks.artifacts[dom] ?? [])
           : g.slot === "VERIFY" ? (v.picks.verifications[dom] ?? [])
@@ -85,11 +89,16 @@ export default async function V3Screen({
       }))
     : undefined;
 
+  /* 고르기 전에 읽는 한 줄. 팩의 `demands` 는 문항이 서는 장면이라 길고,
+     역할에 영역 이름을 늘어놓으면 **우리 분류를 읽으라는 화면**이 된다 */
   const packs = sc.kind === "pick-industry"
-    ? industryChoices().map((p) => ({ code: p.code, name: p.name, gloss: p.first }))
+    ? industryChoices().map((p) => ({
+        code: p.code, name: p.name, gloss: INDUSTRY_HINT[p.code] ?? p.first,
+      }))
     : sc.kind === "pick-role"
       ? roleChoices().map((p) => ({
-          code: p.code, name: p.name, gloss: p.domains.slice(0, 3).join(" · "),
+          code: p.code, name: p.name,
+          gloss: ROLE_HINT[p.code] ?? p.domains.slice(0, 3).join(" · "),
         }))
       : undefined;
 
@@ -120,9 +129,15 @@ export default async function V3Screen({
       ? { stage, field: v.attempt.grad_field } : undefined,
   };
 
+  /* 지나온 단계 하나와 지금과 다음 하나만 적는다. 여덟을 늘어놓으면
+     그것이 질문보다 큰 덩이가 되고 좁은 화면에서는 세 줄로 접힌다 */
+  const list = v.progress.stages;
+  const at = list.findIndex((x) => x.state === "current");
   const prog: ProgressModel = {
-    stages: v.progress.stages.map((x) => ({ label: x.label, state: x.state })),
-    inStage: v.progress.inStage,
+    prev: at > 0 ? list[at - 1].label : null,
+    now: list[at]?.label ?? "",
+    next: at >= 0 && at < list.length - 1 ? list[at + 1].label : null,
+    inStage: { index: v.progress.inStage.index, total: v.progress.inStage.total },
     percent: Math.round((v.progress.screen.index / v.progress.screen.total) * 100),
   };
 

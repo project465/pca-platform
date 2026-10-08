@@ -44,9 +44,13 @@ export default async function V3Start({
 
   return (
     <div className="qs">
-      <header className="qs-top">
-        <span className="qs-brand">CareerMatri</span>
-        <span className="qs-tier">{tier} · <b>{t.label}</b></span>
+      <header className="qs-head">
+        <div className="qs-head-in">
+          <div className="qs-top" style={{ paddingBottom: 14 }}>
+            <span className="qs-brand">CareerMatri</span>
+            <span className="qs-tier">{tier} · <b>{t.label}</b></span>
+          </div>
+        </div>
       </header>
 
       <main className="qs-intro">
@@ -86,7 +90,9 @@ export default async function V3Start({
         <section className="qs-sect">
           <h2>미리 알아 두실 것</h2>
           <ul className="qs-steps">
-            <li>겪어 본 적이 없는 영역은 <b>없다</b>를 고르시면 됩니다. 그것도 자료입니다</li>
+            {/* 굵게 한 낱말을 문장 가운데 끼우면 조사 앞이 벌어진다 */}
+            <li>겪어 본 적이 없는 영역은 그렇다고 답하시면 됩니다. 그것도 자료입니다</li>
+            <li>학위가 높다고 결과가 좋아지지 않습니다. 묻는 장면만 달라집니다</li>
             <li>답하신 것은 문항마다 저장됩니다. 창을 닫으셔도 보던 자리에서 이어집니다</li>
             <li>이전으로 돌아가 고치실 수 있고, 고치면 뒤에 묻는 것이 다시 정해집니다</li>
           </ul>

@@ -60,7 +60,6 @@ export default function StartForm({ error }: { error?: string }) {
 
       <div className="qs-start-nav">
         <button type="submit" className="qs-btn qs-btn-main">검사 시작</button>
-        <span className="qs-save">답하신 것은 문항마다 저장됩니다</span>
       </div>
     </form>
   );
