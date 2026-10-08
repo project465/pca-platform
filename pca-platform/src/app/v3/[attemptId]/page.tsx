@@ -3,8 +3,9 @@ import { requireUser } from "@/lib/session";
 import { OWNERSHIP } from "@/lib/me-v3/scoring/ownership";
 import { controlOf } from "@/lib/me-v3/runtime/menus";
 import {
-  answersOf, attemptOf, axisLabel, checklistFor, industryChoices, itemOf,
-  menuContextOf, moveTo, optionGuidance, roleChoices, viewOf, wordingOf,
+  answersOf, attemptOf, axisLabel, checklistFor, content, domainName,
+  industryChoices, itemOf, menuContextOf, moveTo, optionGuidance, roleChoices,
+  viewOf, wordingOf,
 } from "@/lib/me-v3/runtime/session";
 import type { Field, Group, ProgressModel, ScreenModel } from "./model";
 import {
@@ -124,6 +125,20 @@ export default async function V3Screen({
       : sc.kind === "pick-role" ? v.attempt.role_pack : null,
     answered,
     done: v.attempt.status !== "in_progress",
+    /* 끝낸 자리가 적는 것. 전부 **무엇을 물었고 무엇을 받았는가**이고
+       판정은 한 줄도 들어가지 않는다 */
+    summary: sc.kind === "done" ? {
+      explored: content().domains.domains.length,
+      deep: (v.attempt.opened_deep.length ? v.attempt.opened_deep : v.attempt.opened_probe)
+        .map(domainName),
+      evidence: Object.values(v.picks.checklists).flat().length
+        + Object.values(v.picks.artifacts).flat().length
+        + Object.values(v.picks.verifications).flat().length,
+      industry: v.attempt.industry_pack
+        ? (industryChoices().find((x) => x.code === v.attempt.industry_pack)?.name ?? null) : null,
+      role: v.attempt.role_pack
+        ? (roleChoices().find((x) => x.code === v.attempt.role_pack)?.name ?? null) : null,
+    } : undefined,
     /* 기본 정보는 시작 화면에서 받았다. 이 화면은 **고치는 자리**다 */
     profile: sc.kind === "profile"
       ? { stage, field: v.attempt.grad_field } : undefined,

@@ -9,7 +9,7 @@ ME_V3 판단 엔진을 실제 응시에 붙이고 검사 화면을 세운 회차
 |---|---|
 | `58_v3_assessment_01_runtime.md` | STEP 1~5. runtime · DB · routing · 이어보기 · 등급 올리기 |
 | `58_v3_assessment_02_interface.md` | STEP 6. 화면이 하는 일과 서버에 쓰는 자리 |
-| `58_v3_assessment_03_design.md` | STEP 7. 정보 계층과 화면 여덟 자리, 반응형과 접근성 |
+| `58_v3_assessment_03_design.md` | STEP 7. 정보 계층과 화면 여덟 자리, 화면 성격별 폭과 component role 다섯, 1차·2차 Before/After, 반응형과 접근성 |
 
 ## 이 회차에서 지킨 것
 

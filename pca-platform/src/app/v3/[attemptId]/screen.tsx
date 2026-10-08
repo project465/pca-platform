@@ -106,9 +106,13 @@ export default function Screen({
   };
 
   const mid = s.kind === "transition" || s.kind === "done";
+  /* **폭을 화면 성격으로 가른다.** 질문은 좁게 모으고, 고르거나 훑거나
+     쉬는 자리는 넓게 편다 */
+  const width = s.kind === "checklist" || s.kind === "pick-industry" || s.kind === "pick-role"
+    ? " is-explore" : mid ? " is-calm" : "";
 
   return (
-    <div className="qs">
+    <div className={`qs${width}`}>
       <header className="qs-head">
         <div className="qs-head-in">
           <div className="qs-top">
@@ -139,8 +143,10 @@ export default function Screen({
             붙이면 가운뎃점으로 묶인 긴 문장이 되고, 쉬는 자리가 빈 화면이
             된다. 줄로 세우면 무엇을 보러 가는지가 그대로 읽힌다 */}
         {s.kind === "transition" && s.help ? (
-          <ul className="qs-next">
-            {s.help.split(" · ").map((x) => <li key={x}>{x}</li>)}
+          <ul className="qs-strip">
+            {s.help.split(" · ").map((x, i) => (
+              <li key={x}><small>{i + 1}</small>{x}</li>
+            ))}
           </ul>
         ) : s.help ? <p className="qs-help">{s.help}</p> : null}
 
@@ -243,36 +249,57 @@ export default function Screen({
 
         {/* ── 산업과 역할 고르기 ── */}
         {s.packs ? (
-          <div className="qs-list" style={{ marginTop: 24 }}>
-            {s.packs.map((p) => (
-              <label key={p.code} className={`qs-opt${pack === p.code ? " is-on" : ""}`}>
-                <input type="radio" name="pack" value={p.code} checked={pack === p.code}
-                  onChange={() => choosePack(s.kind === "pick-industry" ? "industry" : "role", p.code)} />
-                <span className="qs-mark" aria-hidden />
-                <span className="qs-body">
-                  <span className="qs-label">{p.name}</span>
-                  <span className="qs-gloss">{p.gloss}</span>
-                </span>
-              </label>
-            ))}
-          </div>
+          <fieldset className="qs-opts" style={{ margin: 0, border: 0, padding: 0 }}>
+            <legend>{s.question}</legend>
+            <div className="qs-cards">
+              {s.packs.map((p) => (
+                <label key={p.code} className={`qs-card${pack === p.code ? " is-on" : ""}`}>
+                  <input type="radio" name="pack" value={p.code} checked={pack === p.code}
+                    onChange={() => choosePack(
+                      s.kind === "pick-industry" ? "industry" : "role", p.code)} />
+                  <b>{p.name}</b>
+                  <span>{p.gloss}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
         ) : null}
 
-        {/* ── 완료 ── */}
+        {/* ── 완료 ── **판정을 적지 않는다.** 무엇을 물었고 무엇을 받았는가까지 */}
         {s.kind === "done" ? (
-          <div style={{ marginTop: 28 }}>
-            {s.done ? (
-              <p className="qs-lead">
-                답하신 {s.answered}개를 받아 결과를 만들어 두었습니다. 읽는 화면은
-                준비되는 대로 이 자리에서 열립니다.
-              </p>
-            ) : (
-              <p className="qs-lead">
-                답하신 {s.answered}개로 결과를 만듭니다. 만든 뒤에도 이전으로
-                돌아가 고치실 수 있고, 고치면 다시 만듭니다.
-              </p>
-            )}
-          </div>
+          <>
+            {s.summary ? (
+              <ul className="qs-summary">
+                <li>
+                  <span>기술영역</span>
+                  <b>{s.summary.explored}개 영역을 보았습니다</b>
+                </li>
+                {s.summary.deep.length ? (
+                  <li>
+                    <span>깊게 본 영역</span>
+                    <b>{s.summary.deep.join(" · ")}</b>
+                  </li>
+                ) : null}
+                <li>
+                  <span>응답과 근거</span>
+                  <b>{s.answered}개 응답
+                    {s.summary.evidence ? <em> · 고르신 근거 {s.summary.evidence}개</em> : null}
+                  </b>
+                </li>
+                {s.summary.industry || s.summary.role ? (
+                  <li>
+                    <span>산업과 역할</span>
+                    <b>{[s.summary.industry, s.summary.role].filter(Boolean).join(" · ")}</b>
+                  </li>
+                ) : null}
+              </ul>
+            ) : null}
+            <p className="qs-help" style={{ marginTop: 24 }}>
+              {s.done
+                ? "결과를 만들어 두었습니다. 읽는 화면은 준비되는 대로 이 자리에서 열립니다."
+                : "이제 받은 응답을 정리합니다. 만든 뒤에도 이전으로 돌아가 고치실 수 있습니다."}
+            </p>
+          </>
         ) : null}
       </main>
 
@@ -329,6 +356,12 @@ function One({
               <input type="radio" name={f.itemId} checked={value === i}
                 onChange={() => onPick(f, i, { kind: "level", index: i })} />
               <span className="qs-mark" aria-hidden />
+              {/* 네 칸 눈금. **점수가 아니라 누가 정했는가의 단계다** */}
+              {f.optionTag ? (
+                <span className="qs-step" aria-hidden>
+                  {[0, 1, 2, 3].map((k) => <i key={k} className={k <= i ? "on" : ""} />)}
+                </span>
+              ) : null}
               <span className="qs-body">
                 <span className="qs-label">{label}</span>
                 {f.optionHelp?.[i] ? <span className="qs-gloss">{f.optionHelp[i]}</span> : null}

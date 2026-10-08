@@ -64,11 +64,11 @@ export const INDUSTRY_HINT: Record<string, string> = {
 
 /** 그 역할이 실제로 내리는 판단. **순위를 뜻하지 않는다** */
 export const ROLE_HINT: Record<string, string> = {
-  ROLE_DESIGN_V1: "형상과 치수와 공차를 정해 도면이나 사양으로 남긴다",
-  ROLE_CAE_V1: "모델과 조건을 세우고 결과를 검증해 설계 판단을 받친다",
-  ROLE_RND_V1: "답이 없는 문제에서 방법부터 세워 범위를 좁힌다",
-  ROLE_TEST_V1: "무엇을 어떻게 잴지 정하고 기준에 맞는지 판정한다",
-  ROLE_MFG_V1: "같은 품질로 반복 생산되도록 공정 조건을 잡는다",
-  ROLE_QUALITY_V1: "불량의 원인을 찾아 기준과 절차로 되돌려 둔다",
-  ROLE_PM_V1: "요구와 일정과 위험을 묶어 기술 결정을 조율한다",
+  ROLE_DESIGN_V1: "형상과 치수와 공차를 정한다",
+  ROLE_CAE_V1: "조건을 세우고 결과를 검증한다",
+  ROLE_RND_V1: "방법부터 세워 범위를 좁힌다",
+  ROLE_TEST_V1: "무엇을 어떻게 잴지 정하고 판정한다",
+  ROLE_MFG_V1: "같은 품질로 나오게 조건을 잡는다",
+  ROLE_QUALITY_V1: "불량의 원인을 기준으로 되돌린다",
+  ROLE_PM_V1: "요구와 일정과 위험을 묶어 정한다",
 };

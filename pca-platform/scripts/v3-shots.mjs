@@ -68,10 +68,16 @@ for (const [key, login_] of Object.entries(plan.users)) {
   await login(ctx[key], login_);
 }
 
+/* 320px 은 세 자리에서 본다. 좁은 화면이 실제로 달라지는 곳은 머리띠가
+   접히는 자리(시작) · 눈금이 선 자리(소유) · 칩이 깔린 자리(근거)다 */
+const NARROW = new Set(["01_start", "07_ownership", "08_checklist"]);
+
 const log = [];
 const problems = [];
 for (const t of plan.targets) {
-  for (const size of ["desktop", "mobile"]) {
+  const sizes = NARROW.has(t.name)
+    ? ["desktop", "mobile", "narrow"] : ["desktop", "mobile"];
+  for (const size of sizes) {
     const p = await ctx[t.who].newPage();
     await p.setViewportSize(SIZES[size]);
     const errs = [];

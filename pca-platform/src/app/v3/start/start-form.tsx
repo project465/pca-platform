@@ -59,7 +59,7 @@ export default function StartForm({ error }: { error?: string }) {
       </p> : null}
 
       <div className="qs-start-nav">
-        <button type="submit" className="qs-btn qs-btn-main">검사 시작</button>
+        <button type="submit" className="qs-btn qs-btn-main qs-btn-go">검사 시작</button>
       </div>
     </form>
   );

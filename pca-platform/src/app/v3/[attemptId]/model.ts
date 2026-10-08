@@ -51,9 +51,16 @@ export type ScreenModel = {
   picked?: string | null;
   /** 기본 정보를 고치는 화면 */
   profile?: { stage: string; field: string | null };
-  /** 완료 화면이 적는 것 */
+  /** 완료 화면이 적는 것. **판정은 담지 않는다** */
   answered?: number;
   done?: boolean;
+  summary?: {
+    explored: number;
+    deep: string[];
+    evidence: number;
+    industry: string | null;
+    role: string | null;
+  };
 };
 
 export type ProgressModel = {

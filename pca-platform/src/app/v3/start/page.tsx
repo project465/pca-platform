@@ -28,6 +28,7 @@ export default async function V3Start({
   const grants = await v3Grants(user.id);
   const tier: Tier = grants[0]?.tier ?? "BASIC";
   const t = TIER_WHAT[tier];
+  void t.what;
   /* 학부 기준으로 적는다. 계열 분기가 둘 더 붙는 자리는 범위에 들어 있다 */
   const low = estimate("bachelor", null);
   const high = estimate("master", "OTHER_INTERDISCIPLINARY");
@@ -43,7 +44,7 @@ export default async function V3Start({
   const mins = Math.max(5, Math.round(raw / 5) * 5);
 
   return (
-    <div className="qs">
+    <div className="qs is-explore">
       <header className="qs-head">
         <div className="qs-head-in">
           <div className="qs-top" style={{ paddingBottom: 14 }}>
@@ -57,22 +58,36 @@ export default async function V3Start({
         <p className="qs-kicker">기계공학 진로 진단</p>
         <h1 className="qs-h1">해 본 일에서 확인되는 판단을 찾습니다</h1>
         <p className="qs-lead">
-          적성이나 성격을 묻지 않습니다. 열두 기술영역에서 <b>무엇을 직접
-          정했는지</b>를 묻고, 그 응답으로 확인되는 판단과 아직 비어 있는
-          자리를 그대로 적어 드립니다.
+          적성이나 성격을 묻지 않습니다. 열두 기술영역에서 직접 정한 것을
+          묻고, 그 응답으로 확인되는 판단을 그대로 적어 드립니다.
         </p>
+
+        {/* 무엇을 보는 검사인지 먼저. 분량은 아래로 내린다 */}
+        <ul className="qs-three">
+          <li>
+            <b>무엇을 해 봤는지</b>
+            <span>열두 기술영역에서 겪어 본 일을 영역마다 따로 받습니다</span>
+          </li>
+          <li>
+            <b>무엇을 직접 판단했는지</b>
+            <span>같은 일도 받아 쓴 것과 직접 정한 것을 갈라 묻습니다</span>
+          </li>
+          <li>
+            <b>무엇이 아직 비어 있는지</b>
+            <span>확인되지 않은 자리를 이름으로 적어 다음 걸음을 남깁니다</span>
+          </li>
+        </ul>
 
         <ul className="qs-facts">
           <li><b>{items}</b>문항</li>
           <li><b>{mins}</b>분 안팎</li>
-          <li><b>{tier}</b> {t.label}</li>
+          <li><b>{tier}</b>{t.label}</li>
+          <li>문항마다 저장</li>
         </ul>
 
-        <section className="qs-sect">
-          <h2>이번 검사에서 받으시는 것</h2>
-          <p style={{ margin: 0, fontSize: "var(--t-sm)" }}>{t.what}</p>
-        </section>
-
+        {/* 둘 다 읽히기는 해야 하지만 둘 다 주인공은 아니다. 가로로 벌려
+            세로 길이를 줄이면 시작 단추가 한 화면 안에 들어온다 */}
+        <div className="qs-two">
         <section className="qs-sect">
           <h2>묻는 순서</h2>
           <ul className="qs-steps">
@@ -90,13 +105,12 @@ export default async function V3Start({
         <section className="qs-sect">
           <h2>미리 알아 두실 것</h2>
           <ul className="qs-steps">
-            {/* 굵게 한 낱말을 문장 가운데 끼우면 조사 앞이 벌어진다 */}
             <li>겪어 본 적이 없는 영역은 그렇다고 답하시면 됩니다. 그것도 자료입니다</li>
             <li>학위가 높다고 결과가 좋아지지 않습니다. 묻는 장면만 달라집니다</li>
-            <li>답하신 것은 문항마다 저장됩니다. 창을 닫으셔도 보던 자리에서 이어집니다</li>
-            <li>이전으로 돌아가 고치실 수 있고, 고치면 뒤에 묻는 것이 다시 정해집니다</li>
+            <li>창을 닫으셔도 보던 자리에서 이어집니다. 이전으로 돌아가 고치실 수 있습니다</li>
           </ul>
         </section>
+        </div>
 
         <div className="qs-sect">
           <StartForm error={e} />

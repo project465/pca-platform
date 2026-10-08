@@ -28,7 +28,10 @@
    활자는 다섯 단과 보조 둘이다. 한 화면에서 쓰는 크기가 일곱을 넘으면
    무엇이 중요한지가 크기로 안 읽힌다 */
 .qs {
-  --q-col: 672px;              /* 글 폭. 한국어 본문 한 줄 */
+  /* **폭을 화면 성격으로 가른다.** 질문은 한 줄에 집중시키는 자리라 좁고,
+     고르거나 훑는 자리는 넓어야 한눈에 들어온다. 숫자 하나만 키우면
+     질문이 두 줄에서 한 줄이 되어 읽는 속도가 떨어진다 */
+  --q-col: 672px;              /* 질문 · 보기 넷 · 격자 */
   --q-gutter: 20px;
 
   --q-t-q: clamp(23px, 2.6vw, 30px);   /* 질문 */
@@ -75,6 +78,11 @@
   font-family: "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo",
                "Malgun Gothic", system-ui, sans-serif;
 }
+
+/* 고르고 훑는 자리 */
+.qs.is-explore { --q-col: 880px; }
+/* 쉬는 자리와 끝내는 자리. 한 덩이가 가운데 서는 폭 */
+.qs.is-calm { --q-col: 820px; }
 
 /* ── 머리띠 ── 브랜드와 등급과 진행을 **한 띠**에 넣는다 */
 .qs-head {
@@ -152,18 +160,31 @@
   position: absolute; width: 1px; height: 1px;
   overflow: hidden; clip-path: inset(50%);
 }
-.qs-list { display: flex; flex-direction: column; gap: var(--q-s2); }
+/**
+ * 보기 묶음은 **한 판**이다.
+ *
+ * 보기마다 테두리를 돌리면 화면에 흰 둥근 상자가 넷 서고, 그것이 모든
+ * 화면에서 되풀이되면 제품이 설문지로 읽힌다. 판 하나를 깔고 줄 사이를
+ * 실선으로만 가른다. 고른 줄은 바탕과 왼쪽 선으로 뜬다.
+ */
+.qs-list {
+  display: flex; flex-direction: column;
+  background: var(--q-paper);
+  border: 1px solid var(--q-line);
+  border-radius: var(--q-r);
+  overflow: hidden;
+}
 .qs-opt {
   position: relative;
   display: flex; align-items: flex-start; gap: 13px;
   min-height: var(--q-hit); padding: 17px 18px;
-  background: var(--q-paper);
-  border: 1px solid var(--q-line);
-  border-radius: var(--q-r);
+  background: transparent;
+  border: 0; border-top: 1px solid var(--q-line-soft);
   cursor: pointer;
-  transition: border-color .12s ease, background .12s ease;
+  transition: background .12s ease;
 }
-.qs-opt:hover { border-color: var(--q-accent-line); }
+.qs-opt:first-child { border-top: 0; }
+.qs-opt:hover { background: var(--sf-surface-2); }
 .qs-opt input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .qs-mark {
   flex: none; width: 19px; height: 19px; margin-top: 3px;
@@ -187,7 +208,7 @@
   letter-spacing: -.01em; white-space: nowrap;
 }
 .qs-opt.is-on {
-  border-color: var(--q-accent); background: var(--q-accent-soft);
+  background: var(--q-accent-soft);
   box-shadow: inset 3px 0 0 var(--q-accent);
 }
 .qs-opt.is-on .qs-mark {
@@ -198,12 +219,73 @@
 .qs-opt.is-on .qs-tag { color: var(--q-accent-ink); }
 .qs-opt:has(input:focus-visible) { outline: 2px solid var(--q-accent); outline-offset: 2px; }
 
+/**
+ * 보기 넷은 **단계**다.
+ *
+ * 넷의 차이가 글에만 있으면 끝까지 읽어야 갈린다. 왼쪽에 네 칸짜리
+ * 눈금을 두어 어디쯤인지 보이게 하고, 고른 줄만 눈금이 짙어진다.
+ * **점수를 뜻하지 않는다**: 네 칸은 소유의 단계이고 높을수록 좋다는 말이
+ * 아니라 누가 정했는가가 다르다는 말이다.
+ */
+.qs-step {
+  flex: none; display: flex; align-items: flex-end; gap: 2px;
+  width: 26px; height: 16px; margin-top: 5px;
+}
+.qs-step i {
+  flex: 1 1 0; border-radius: 1px;
+  background: var(--q-line); transition: background .12s ease;
+}
+.qs-step i:nth-child(1) { height: 25%; }
+.qs-step i:nth-child(2) { height: 50%; }
+.qs-step i:nth-child(3) { height: 75%; }
+.qs-step i:nth-child(4) { height: 100%; }
+.qs-step i.on { background: var(--sf-ink-3); }
+.qs-opt.is-on .qs-step i.on { background: var(--q-accent); }
+.qs-opt.is-on .qs-step i { background: var(--q-accent-line); }
+
 /* 보기 읽는 법. 보기 넷 아래 한 줄 */
 .qs-guide {
   margin: var(--q-s3) 0 0; padding-top: var(--q-s3);
   border-top: 1px solid var(--q-line-soft);
   font-size: var(--q-t-gloss); color: var(--q-ink-3);
 }
+
+/**
+ * 탐색 카드. **고르는 자리이고 차례가 아니다.**
+ *
+ * 세로로 여덟을 쌓으면 위에서부터 읽게 되고, 그 차례가 추천처럼 읽힌다.
+ * 두 칸으로 깔면 한눈에 여덟이 같이 보인다.
+ */
+.qs-cards {
+  display: grid; gap: var(--q-s2);
+  grid-template-columns: 1fr;
+  margin-top: var(--q-s5);
+}
+@media (min-width: 760px) { .qs-cards { grid-template-columns: 1fr 1fr; } }
+.qs-card {
+  position: relative;
+  display: flex; flex-direction: column; gap: 5px;
+  min-height: 84px; padding: 16px 18px;
+  background: var(--q-paper);
+  border: 1px solid var(--q-line); border-radius: var(--q-r);
+  cursor: pointer;
+  transition: border-color .12s ease, background .12s ease;
+}
+.qs-card:hover { border-color: var(--q-accent-line); background: #fcfdff; }
+.qs-card input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.qs-card b {
+  font-size: var(--q-t-subject); font-weight: 650; color: var(--q-ink);
+  letter-spacing: -.015em;
+}
+.qs-card span {
+  font-size: var(--q-t-gloss); color: var(--q-ink-3); line-height: 1.5;
+}
+.qs-card.is-on {
+  border-color: var(--q-accent); background: var(--q-accent-soft);
+  box-shadow: inset 0 0 0 1px var(--q-accent);
+}
+.qs-card.is-on b, .qs-card.is-on span { color: var(--q-accent-ink); }
+.qs-card:has(input:focus-visible) { outline: 2px solid var(--q-accent); outline-offset: 2px; }
 
 /* ── 다섯 칸과 세 칸 ── 서로 견주는 척도라 한 줄에 세운다 */
 .qs-scale { display: flex; gap: 6px; margin-top: var(--q-s2); }
@@ -223,6 +305,14 @@
   color: var(--q-ink-3); word-break: keep-all;
 }
 .qs-cell b { font-size: var(--q-t-gloss); font-weight: 600; color: var(--q-ink-2); }
+/* **숫자가 없는 칸은 낱말이 값이다.** 1~5 는 숫자가 크기를 지고 낱말은 뜻만
+   보태지만, 없다·한두 번·여러 번은 낱말 말고 읽을 것이 없다. 같은 12px
+   흐린 글씨로 두면 고르는 자리가 설명처럼 보인다 */
+.qs-cell:not(:has(b)) { min-height: 60px; }
+.qs-cell:not(:has(b)) i {
+  font-size: var(--q-t-opt); font-weight: 600; color: var(--q-ink);
+}
+.qs-cell.is-on:not(:has(b)) i { color: var(--q-accent-ink); }
 .qs-cell.is-on { border-color: var(--q-accent); background: var(--q-accent-soft); }
 .qs-cell.is-on b, .qs-cell.is-on i { color: var(--q-accent-ink); }
 .qs-cell:has(input:focus-visible) { outline: 2px solid var(--q-accent); outline-offset: 2px; }
@@ -236,44 +326,53 @@
 
 /* ── 근거 고르기 ── **스무 줄짜리 체크리스트로 세우지 않는다.**
    줄로 쌓으면 읽어야 할 목록이 되고, 칩으로 깔면 훑어보는 낱말판이 된다 */
+/**
+ * 근거 고르기. **묶음 사이를 벌리고 제목을 올린다.**
+ *
+ * 묶음이 열이고 항목이 스물을 넘는다. 사이가 좁으면 어디서 묶음이 바뀌는지
+ * 안 보이고 스무 칸짜리 한 덩이로 읽힌다. 고른 수는 **늘 묶음 제목 오른쪽
+ * 끝**에 둔다: 자리가 묶음마다 달라지면 세는 눈이 매번 다시 찾는다.
+ */
 .qs-picked {
   display: flex; align-items: baseline; gap: var(--q-s2);
-  margin: var(--q-s5) 0 0; padding-bottom: var(--q-s2);
-  border-bottom: 1px solid var(--q-line);
-  font-size: var(--q-t-meta); color: var(--q-ink-3);
+  margin: var(--q-s4) 0 0;
+  font-size: var(--q-t-gloss); color: var(--q-ink-3);
 }
-.qs-picked b { color: var(--q-accent-ink); font-weight: 650; font-variant-numeric: tabular-nums; }
-.qs-group { margin-top: var(--q-s4); }
+.qs-picked b { color: var(--q-ink); font-weight: 650; font-variant-numeric: tabular-nums; }
+.qs-group { margin-top: var(--q-s5); padding-top: var(--q-s3); border-top: 1px solid var(--q-line); }
 .qs-group > h3 {
   display: flex; align-items: baseline; gap: var(--q-s2);
-  margin: 0 0 var(--q-s2);
-  font-size: var(--q-t-gloss); font-weight: 650; color: var(--q-ink-2);
-  letter-spacing: -.01em;
+  margin: 0 0 var(--q-s3);
+  font-size: var(--q-t-subject); font-weight: 650; color: var(--q-ink);
+  letter-spacing: -.015em;
 }
 .qs-group > h3 em {
-  font-style: normal; font-size: var(--q-t-meta); font-weight: 500;
+  margin-left: auto;
+  font-style: normal; font-size: var(--q-t-meta); font-weight: 600;
   color: var(--q-accent-ink); font-variant-numeric: tabular-nums;
 }
 .qs-chips { display: flex; flex-wrap: wrap; gap: 7px; }
 .qs-chip {
   position: relative;
-  display: inline-flex; align-items: center; gap: 7px;
+  display: inline-flex; align-items: center; gap: 8px;
   min-height: var(--q-hit-sm); padding: 9px 14px;
-  background: var(--q-paper);
-  border: 1px solid var(--q-line); border-radius: var(--q-r-sm);
-  font-size: var(--q-t-gloss); color: var(--q-ink-2);
+  background: transparent;
+  border: 1px solid var(--q-line-soft); border-radius: var(--q-r-sm);
+  font-size: var(--q-t-gloss); color: var(--q-ink-3);
   cursor: pointer; line-height: 1.45;
-  transition: border-color .12s ease, background .12s ease;
+  transition: border-color .12s ease, background .12s ease, color .12s ease;
 }
-.qs-chip:hover { border-color: var(--q-accent-line); }
+.qs-chip:hover { border-color: var(--q-accent-line); color: var(--q-ink-2); }
 .qs-chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .qs-chip::before {
   content: ""; flex: none; width: 14px; height: 14px;
   border: 1.5px solid var(--sf-ink-3); border-radius: 4px;
 }
+/* 고른 것과 안 고른 것의 차이를 키운다. 안 고른 쪽은 조용히 눕는다 */
 .qs-chip.is-on {
   border-color: var(--q-accent); background: var(--q-accent-soft);
   color: var(--q-accent-ink); font-weight: 600;
+  box-shadow: inset 0 0 0 1px var(--q-accent);
 }
 .qs-chip.is-on::before {
   border-color: var(--q-accent); background: var(--q-accent);
@@ -308,22 +407,71 @@
   /* 가운데보다 조금 위에 둔다. 정확히 가운데면 아래 띠와 사이가 비어 보인다 */
   padding-bottom: clamp(48px, 12vh, 140px);
 }
-/* 이제 볼 영역. 쉬는 자리에 **무엇을 보러 가는지**를 적는다 */
-.qs-next {
-  margin: var(--q-s4) 0 0; padding: var(--q-s3) 0 0;
-  border-top: 1px solid var(--q-line);
-  list-style: none;
-  display: flex; flex-direction: column; gap: var(--q-s2);
+/**
+ * 이제 볼 영역. **한 띠에 나란히 세운다.**
+ *
+ * 글머리표로 세로로 쌓으면 할 일 목록처럼 읽힌다. 가로 띠 하나에 칸을
+ * 갈라 세우면 `이 셋을 본다` 가 한눈에 들어오고, 쉬는 자리가 비어 보이지
+ * 않는다. 좁은 화면에서는 한 줄씩 쌓는다.
+ */
+.qs-strip {
+  display: flex; flex-wrap: wrap;
+  margin: var(--q-s5) 0 0; padding: 0; list-style: none;
+  background: var(--q-paper);
+  border: 1px solid var(--q-line); border-radius: var(--q-r);
+  overflow: hidden;
 }
-.qs-next li {
-  display: flex; align-items: baseline; gap: var(--q-s2);
-  font-size: var(--q-t-subject); font-weight: 600; color: var(--q-ink-2);
+.qs-strip li {
+  flex: 1 1 180px; min-width: 0;
+  padding: 18px 20px;
+  border-left: 1px solid var(--q-line-soft);
+  font-size: var(--q-t-subject); font-weight: 650; color: var(--q-ink);
+  letter-spacing: -.015em;
+}
+.qs-strip li:first-child { border-left: 0; }
+.qs-strip li small {
+  display: block; margin-bottom: 4px;
+  font-size: var(--q-t-meta); font-weight: 600; color: var(--q-accent);
+  letter-spacing: .06em;
+}
+@media (max-width: 759px) {
+  .qs-strip li { flex: 1 1 100%; border-left: 0; border-top: 1px solid var(--q-line-soft); padding: 14px 16px; }
+  .qs-strip li:first-child { border-top: 0; }
+}
+
+/**
+ * 끝낸 자리. **지금까지 무엇을 봤는지**를 줄로 적는다.
+ *
+ * `결과를 만들 준비가 됐습니다` 한 줄만 있으면 서른 분을 쓴 사람이 받는
+ * 것이 그 한 줄이다. **판정은 적지 않는다**: 여기 적는 것은 무엇을
+ * 물었고 무엇을 받았는가까지다.
+ */
+.qs-summary {
+  margin: var(--q-s5) 0 0; padding: 0; list-style: none;
+  background: var(--q-paper);
+  border: 1px solid var(--q-line); border-radius: var(--q-r);
+}
+.qs-summary li {
+  display: flex; align-items: baseline; gap: var(--q-s3);
+  padding: 16px 20px;
+  border-top: 1px solid var(--q-line-soft);
+}
+.qs-summary li:first-child { border-top: 0; }
+.qs-summary li > span {
+  flex: none; width: 104px;
+  font-size: var(--q-t-meta); font-weight: 600; color: var(--q-ink-3);
+  letter-spacing: .04em; word-break: keep-all;
+}
+.qs-summary li > b {
+  font-size: var(--q-t-body); font-weight: 600; color: var(--q-ink);
   letter-spacing: -.012em;
 }
-.qs-next li::before {
-  content: ""; flex: none; width: 5px; height: 5px;
-  border-radius: 50%; background: var(--q-accent);
-  transform: translateY(-3px);
+.qs-summary li > b em {
+  font-style: normal; font-weight: 500; color: var(--q-ink-3);
+}
+@media (max-width: 559px) {
+  .qs-summary li { flex-direction: column; gap: 4px; padding: 14px 16px; }
+  .qs-summary li > span { width: auto; }
 }
 .qs-mid .qs-eyebrow { margin-bottom: var(--q-s2); }
 .qs-mid .qs-subject {
@@ -379,21 +527,47 @@
   text-wrap: balance;
 }
 .qs-lead { margin: 0; font-size: var(--q-t-subject); color: var(--q-ink-2); line-height: 1.75; }
+/**
+ * 시작 화면이 먼저 말하는 셋. **이 검사가 무엇을 보는가**다.
+ *
+ * 문항 수와 시간을 맨 위에 두면 사는 쪽이 분량으로 값을 매긴다. 그 둘은
+ * 아래 한 줄로 내리고, 위에는 무엇을 보는지를 셋으로 적는다.
+ */
+.qs-three {
+  display: grid; gap: var(--q-s2);
+  grid-template-columns: 1fr;
+  margin: var(--q-s5) 0 0; padding: 0; list-style: none;
+}
+@media (min-width: 720px) { .qs-three { grid-template-columns: repeat(3, 1fr); gap: var(--q-s3); } }
+.qs-three li {
+  padding: 18px 20px;
+  background: var(--q-paper);
+  border: 1px solid var(--q-line); border-radius: var(--q-r);
+}
+.qs-three b {
+  display: block; margin-bottom: 6px;
+  font-size: var(--q-t-subject); font-weight: 650; color: var(--q-ink);
+  letter-spacing: -.015em;
+}
+.qs-three span {
+  display: block; font-size: var(--q-t-gloss); color: var(--q-ink-3); line-height: 1.55;
+}
+/* 문항 수와 시간. **보조 정보라 한 줄로 눕힌다** */
 .qs-facts {
-  display: flex; flex-wrap: wrap; gap: var(--q-s3) 0;
-  margin: var(--q-s5) 0 0; padding: var(--q-s3) 0; list-style: none;
-  border-top: 1px solid var(--q-line); border-bottom: 1px solid var(--q-line);
+  display: flex; flex-wrap: wrap; gap: var(--q-s1) var(--q-s4);
+  margin: var(--q-s4) 0 0; padding: 0; list-style: none;
+  font-size: var(--q-t-gloss); color: var(--q-ink-3);
 }
-.qs-facts li {
-  flex: 1 1 110px; min-width: 100px;
-  font-size: var(--q-t-meta); color: var(--q-ink-3);
-}
+.qs-facts li { display: flex; align-items: baseline; gap: 6px; }
 .qs-facts b {
-  display: block; margin-bottom: 2px;
-  font-size: 19px; font-weight: 650; color: var(--q-ink);
-  font-variant-numeric: tabular-nums; letter-spacing: -.02em;
+  font-size: var(--q-t-body); font-weight: 650; color: var(--q-ink-2);
+  font-variant-numeric: tabular-nums; letter-spacing: -.01em;
 }
 .qs-sect { margin-top: var(--q-s5); }
+/* **곁가지 둘을 세로로 쌓지 않는다.** 넓은 화면에서 한 단으로 쌓으면
+   오른쪽 절반이 비고 시작 단추가 접힌 자리 아래로 밀린다 */
+.qs-two { display: grid; grid-template-columns: 1fr; gap: 0 var(--q-s6); }
+@media (min-width: 760px) { .qs-two { grid-template-columns: 1fr 1fr; } }
 .qs-sect > h2 {
   margin: 0 0 var(--q-s2); font-size: var(--q-t-gloss); font-weight: 650;
   letter-spacing: .04em; color: var(--q-ink-3);
@@ -412,9 +586,13 @@
   border-radius: 50%; background: var(--q-accent-line);
 }
 .qs-start-nav {
-  margin-top: var(--q-s5);
+  margin-top: var(--q-s5); padding-top: var(--q-s4);
+  border-top: 1px solid var(--q-line);
   display: flex; gap: var(--q-s3); align-items: center; flex-wrap: wrap;
 }
+/* 시작은 이 쪽의 한 가지 행동이다. 다른 단추보다 크다 */
+.qs-btn-go { min-height: 54px; padding: 0 34px; font-size: var(--q-t-subject); }
+.qs-lead { max-width: 56ch; }
 .qs-fine { margin: var(--q-s4) 0 0; font-size: var(--q-t-meta); color: var(--q-ink-3); }
 
 @media (max-width: 719px) {
@@ -423,6 +601,7 @@
   .qs-opt { padding: 15px 16px; }
   .qs-rows { margin-top: var(--q-s4); gap: var(--q-s4); }
   .qs-cell i { font-size: 11px; }
+  .qs-cell:not(:has(b)) i { font-size: 15px; }
   .qs-crumb .prev, .qs-crumb .next, .qs-crumb i { display: none; }
   .qs-tag { display: none; }   /* 좁은 화면에서는 보기 말과 뜻만 남긴다 */
 }
