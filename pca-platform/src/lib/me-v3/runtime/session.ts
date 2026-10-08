@@ -1,0 +1,430 @@
+/**
+ * 응시 하나의 생애. **서버가 진실이고 브라우저는 사본이다.**
+ *
+ * 브라우저 저장소가 진실이면 기기를 바꾸는 순간 사라진다. 그래서 응답은
+ * 받은 자리에서 DB 에 적고, 이어 들어오면 **마지막 화면부터** 다시 연다.
+ *
+ * **등급을 올려도 새 응시를 만들지 않는다.** BASIC ⊂ STANDARD ⊂ PRO 라
+ * 같은 응시의 `tier` 를 올리고 추가 묶음만 연다. 앞에서 답한 것은 그대로
+ * 쓴다: 처음부터 다시 풀게 하면 그 사람은 두 번째 응답을 성실하게 하지
+ * 않고, 같은 사람의 응답이 두 벌 쌓여 규준이 오염된다.
+ *
+ * **routing 과 scoring 을 갈라 둔다.** 여기서는 무엇을 물을지만 정하고,
+ * 판정은 `scoring/engine.ts` 가 끝에서 한 번 한다.
+ */
+import { readFileSync } from "node:fs";
+import { query, queryOne } from "@/lib/db";
+import { CONTENT_DIR, coreFile } from "../core-registry";
+import { load, score } from "../scoring/engine";
+import type {
+  Answer, GradField, Snapshot, Stage, Submission, Tier,
+} from "../scoring/types";
+import type { Bank, BankItem } from "../scoring/normalize";
+import { ITEM_BANK_VERSION, SCORING_VERSION } from "../scoring/version";
+import { buildPlan, type Plan, type Screen } from "./blocks";
+import { progressOf, type Progress } from "./progress";
+import { branchBlock, pickDomains, type GridAnswer } from "./routing";
+
+export const CORE = "ME_CORE_V3";
+
+export type V3Attempt = {
+  id: string; user_id: string; tier: Tier; core_code: string; market_code: string;
+  education_stage: Stage; grad_field: GradField | null;
+  status: "in_progress" | "submitted" | "scored";
+  current_screen: string | null;
+  opened_probe: string[]; opened_deep: string[]; fourth_reason: string | null;
+  industry_pack: string | null; role_pack: string | null;
+  item_bank_version: string; scoring_version: string;
+};
+
+type Domains = {
+  domains: { code: string; name: string; artifacts: string[]; verify_targets: string[];
+             axes: Record<string, { l2: string; l3: string }> }[];
+};
+type Checklists = { domains: Record<string, Record<string, { text: string }[]>> };
+
+let cache: {
+  bank: Bank; domains: Domains; checklists: Checklists;
+} | null = null;
+
+export function content() {
+  if (!cache) {
+    cache = {
+      bank: coreFile<Bank>(CORE, "items"),
+      domains: coreFile<Domains>(CORE, "domains"),
+      checklists: coreFile<Checklists>(CORE, "checklists"),
+    };
+  }
+  return cache;
+}
+
+/* 팩은 core 파일 계약 밖이라 따로 읽는다. 팩을 더하는 일이 core 계약을
+   고치는 일이 되면 안 된다 */
+function industryPacks(): { packs: { code: string; name_ko: string; demands: string[] }[] } {
+  return JSON.parse(readFileSync(`${CONTENT_DIR}/industry-packs.json`, "utf8"));
+}
+function rolePacks(): { packs: { code: string; name_ko: string; core_ref: { td: string[] } }[] } {
+  return JSON.parse(readFileSync(`${CONTENT_DIR}/role-packs.json`, "utf8"));
+}
+
+export function domainName(td: string): string {
+  return content().domains.domains.find((d) => d.code === td)?.name ?? td;
+}
+export function gridRowOf(td: string): string {
+  const i = content().bank.items.find((x) => x.item_id === `G_${td}_INT`) as
+    (BankItem & { grid_row?: string }) | undefined;
+  return i?.grid_row ?? domainName(td);
+}
+export function wordingOf(id: string, stage: string): string {
+  const i = content().bank.items.find((x) => x.item_id === id) as
+    (BankItem & { wording: string; stage_wording?: Record<string, string> }) | undefined;
+  if (!i) return id;
+  return i.stage_wording?.[stage] ?? i.wording;
+}
+export function itemOf(id: string): (BankItem & {
+  wording: string; options?: string[] | null; grid_row?: string | null;
+  grid_stem?: string | null; response_scale?: string | null;
+}) | undefined {
+  return content().bank.items.find((x) => x.item_id === id) as never;
+}
+export function levelOptions(): string[] {
+  return (content().bank as unknown as { level_options: string[] }).level_options;
+}
+export function optionGuidance(): string {
+  return (content().bank as unknown as { option_guidance: string }).option_guidance;
+}
+export function checklistFor(td: string): { slot: string; label: string; items: string[] }[] {
+  const c = content().checklists.domains[td] ?? {};
+  const dom = content().domains.domains.find((d) => d.code === td);
+  const out = Object.entries(c).map(([axis, list]) => ({
+    slot: axis, label: axisLabel(axis), items: list.map((x) => x.text),
+  }));
+  if (dom) {
+    out.push({ slot: "ARTIFACT", label: "남은 산출물", items: dom.artifacts });
+    out.push({ slot: "VERIFY", label: "무엇과 견주었는가", items: dom.verify_targets });
+  }
+  return out;
+}
+const AXIS_LABEL: Record<string, string> = {
+  J1: "문제 정의", J2: "요구 해석", J3: "직접 판단", J4: "방법과 도구",
+  J5: "산출물", J6: "비교와 검증", J7: "실패와 수정", J8: "조직 활용",
+};
+export function axisLabel(a: string): string { return AXIS_LABEL[a] ?? a; }
+
+export function industryChoices() {
+  return industryPacks().packs
+    .map((p) => ({ code: p.code, name: p.name_ko, first: p.demands[0] ?? "" }));
+}
+export function roleChoices() {
+  return rolePacks().packs
+    .map((p) => ({ code: p.code, name: p.name_ko, domains: p.core_ref.td.map(domainName) }));
+}
+
+/* ── 응시 열기와 이어보기 ─────────────────────────────────────────── */
+
+export async function openAttempt(args: {
+  userId: string; tier: Tier; stage: Stage; gradField: GradField | null;
+  entitlementId?: string | null; market?: string;
+}): Promise<V3Attempt> {
+  /* 이어보기가 먼저다. 중복 응시를 만들지 않는다 */
+  const open = await currentAttempt(args.userId);
+  if (open) return open;
+  const row = await queryOne<{ id: string }>(
+    `INSERT INTO v3_attempts
+       (user_id, entitlement_id, tier, market_code, education_stage, grad_field,
+        item_bank_version, scoring_version, current_screen)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,'profile')
+     RETURNING id::text`,
+    [args.userId, args.entitlementId ?? null, args.tier, args.market ?? "KR",
+     args.stage, args.gradField, ITEM_BANK_VERSION, SCORING_VERSION],
+  );
+  return (await attemptOf(row?.id as string, args.userId)) as V3Attempt;
+}
+
+export async function currentAttempt(userId: string): Promise<V3Attempt | null> {
+  return queryOne<V3Attempt>(
+    `SELECT id::text, user_id::text, tier, core_code, market_code, education_stage,
+            grad_field, status, current_screen, opened_probe, opened_deep,
+            fourth_reason, industry_pack, role_pack,
+            item_bank_version, scoring_version
+       FROM v3_attempts
+      WHERE user_id = $1 AND status = 'in_progress'
+      ORDER BY started_at DESC LIMIT 1`, [userId]);
+}
+
+export async function attemptOf(id: string, userId: string): Promise<V3Attempt | null> {
+  return queryOne<V3Attempt>(
+    `SELECT id::text, user_id::text, tier, core_code, market_code, education_stage,
+            grad_field, status, current_screen, opened_probe, opened_deep,
+            fourth_reason, industry_pack, role_pack,
+            item_bank_version, scoring_version
+       FROM v3_attempts WHERE id = $1 AND user_id = $2`, [id, userId]);
+}
+
+/* ── 응답 ─────────────────────────────────────────────────────────── */
+
+export async function saveAnswer(
+  attemptId: string, itemId: string, a: Answer,
+): Promise<void> {
+  const int = a.kind === "level" ? a.index
+    : a.kind === "scale5" || a.kind === "exposure" ? a.value : null;
+  const text = a.kind === "choice" ? a.value : null;
+  await query(
+    `INSERT INTO v3_responses (attempt_id, item_id, kind, value_int, value_text)
+     VALUES ($1,$2,$3,$4,$5)
+     ON CONFLICT (attempt_id, item_id)
+       DO UPDATE SET kind = $3, value_int = $4, value_text = $5, answered_at = now()`,
+    [attemptId, itemId, a.kind, int, text],
+  );
+  await query(`UPDATE v3_attempts SET last_saved_at = now() WHERE id = $1`, [attemptId]);
+}
+
+export async function savePicks(
+  attemptId: string, domain: string, slot: string, items: string[],
+): Promise<void> {
+  await query(
+    `DELETE FROM v3_evidence_picks WHERE attempt_id=$1 AND domain_code=$2 AND slot=$3`,
+    [attemptId, domain, slot]);
+  for (const t of items) {
+    await query(
+      `INSERT INTO v3_evidence_picks (attempt_id, domain_code, slot, item_text)
+       VALUES ($1,$2,$3,$4) ON CONFLICT DO NOTHING`, [attemptId, domain, slot, t]);
+  }
+  await query(`UPDATE v3_attempts SET last_saved_at = now() WHERE id = $1`, [attemptId]);
+}
+
+export async function answersOf(attemptId: string): Promise<Record<string, Answer>> {
+  const rows = await query<{ item_id: string; kind: string; value_int: number | null; value_text: string | null }>(
+    `SELECT item_id, kind, value_int, value_text FROM v3_responses WHERE attempt_id = $1`,
+    [attemptId]);
+  const out: Record<string, Answer> = {};
+  for (const r of rows) {
+    if (r.kind === "level") out[r.item_id] = { kind: "level", index: r.value_int ?? 0 };
+    else if (r.kind === "scale5") out[r.item_id] = { kind: "scale5", value: r.value_int ?? 3 };
+    else if (r.kind === "exposure") out[r.item_id] = { kind: "exposure", value: r.value_int ?? 0 };
+    else if (r.kind === "choice") out[r.item_id] = { kind: "choice", value: r.value_text ?? "" };
+    else out[r.item_id] = { kind: "skipped" };
+  }
+  return out;
+}
+
+export async function picksOf(attemptId: string): Promise<{
+  checklists: Record<string, string[]>;
+  artifacts: Record<string, string[]>;
+  verifications: Record<string, string[]>;
+}> {
+  const rows = await query<{ domain_code: string; slot: string; item_text: string }>(
+    `SELECT domain_code, slot, item_text FROM v3_evidence_picks WHERE attempt_id = $1`,
+    [attemptId]);
+  const checklists: Record<string, string[]> = {};
+  const artifacts: Record<string, string[]> = {};
+  const verifications: Record<string, string[]> = {};
+  for (const r of rows) {
+    if (r.slot === "ARTIFACT") artifacts[r.domain_code] = [...(artifacts[r.domain_code] ?? []), r.item_text];
+    else if (r.slot === "VERIFY") verifications[r.domain_code] = [...(verifications[r.domain_code] ?? []), r.item_text];
+    else {
+      const k = `${r.domain_code}.${r.slot}`;
+      checklists[k] = [...(checklists[k] ?? []), r.item_text];
+    }
+  }
+  return { checklists, artifacts, verifications };
+}
+
+/* ── routing ───────────────────────────────────────────────────────── */
+
+function gridOf(answers: Record<string, Answer>, tds: string[]): Record<string, GridAnswer> {
+  const num = (a: Answer | undefined) =>
+    a && a.kind !== "choice" && a.kind !== "skipped"
+      ? ("index" in a ? a.index : a.value) : null;
+  const out: Record<string, GridAnswer> = {};
+  for (const td of tds) {
+    out[td] = {
+      interest: num(answers[`G_${td}_INT`]),
+      exposure: num(answers[`G_${td}_EXP`]),
+      learning: num(answers[`G_${td}_LEA`]),
+    };
+  }
+  return out;
+}
+
+/**
+ * 격자 응답이 다 들어오면 영역을 확정한다.
+ *
+ * **뒤로 가서 격자를 고치면 다시 센다.** 그래야 routing 이 응답과 어긋나지
+ * 않는다. 이미 답한 심화 응답은 지우지 않는다: 영역이 빠지면 그 응답은
+ * 채점에서 읽히지 않을 뿐이고, 되돌아오면 그대로 쓰인다.
+ */
+export async function recomputeRouting(a: V3Attempt): Promise<V3Attempt> {
+  const tds = content().domains.domains.map((d) => d.code);
+  const answers = await answersOf(a.id);
+  const grid = gridOf(answers, tds);
+  const filled = tds.filter((td) => grid[td].interest !== null).length;
+  if (filled < tds.length) return a;
+  const pick = pickDomains(grid, a.tier, tds);
+  await query(
+    `UPDATE v3_attempts SET opened_probe=$2, opened_deep=$3, fourth_reason=$4 WHERE id=$1`,
+    [a.id, pick.probe, pick.deep, pick.fourth_reason]);
+  return { ...a, opened_probe: pick.probe, opened_deep: pick.deep,
+           fourth_reason: pick.fourth_reason };
+}
+
+export function tiedInGrid(answers: Record<string, Answer>, tds: string[]): boolean {
+  const grid = gridOf(answers, tds);
+  const keys = tds.map((td) => `${grid[td].exposure ?? 0}:${grid[td].interest ?? 0}`);
+  const top = keys.filter((k) => k === [...keys].sort().reverse()[0]).length;
+  return top > 1;
+}
+
+export async function planFor(a: V3Attempt): Promise<Plan> {
+  const answers = await answersOf(a.id);
+  const tds = content().domains.domains.map((d) => d.code);
+  return buildPlan({
+    tier: a.tier, stage: a.education_stage,
+    branchBlock: branchBlock(a.education_stage, a.grad_field),
+    probe: a.opened_probe, deep: a.opened_deep,
+    industryPack: a.industry_pack, rolePack: a.role_pack,
+    tied: tiedInGrid(answers, tds),
+  }, content().bank.items, domainName, wordingOf, gridRowOf);
+}
+
+export type View = {
+  attempt: V3Attempt;
+  plan: Plan;
+  screen: Screen;
+  progress: Progress;
+  answers: Record<string, Answer>;
+  picks: Awaited<ReturnType<typeof picksOf>>;
+  prevId: string | null;
+  nextId: string | null;
+};
+
+/** 지금 보여 줄 화면. 이어 들어오면 마지막 자리부터 */
+export async function viewOf(a0: V3Attempt, want?: string | null): Promise<View> {
+  const a = await recomputeRouting(a0);
+  const plan = await planFor(a);
+  const answers = await answersOf(a.id);
+  const picks = await picksOf(a.id);
+  const ids = plan.screens.map((s) => s.id);
+  const target = want && ids.includes(want) ? want
+    : a.current_screen && ids.includes(a.current_screen) ? a.current_screen
+      : ids[0];
+  const at = ids.indexOf(target);
+  return {
+    attempt: a, plan, screen: plan.screens[at], progress: progressOf(plan, target),
+    answers, picks,
+    prevId: at > 0 ? ids[at - 1] : null,
+    nextId: at < ids.length - 1 ? ids[at + 1] : null,
+  };
+}
+
+export async function moveTo(attemptId: string, screenId: string): Promise<void> {
+  await query(`UPDATE v3_attempts SET current_screen=$2, last_saved_at=now() WHERE id=$1`,
+    [attemptId, screenId]);
+}
+
+export async function choosePack(
+  attemptId: string, kind: "industry" | "role", code: string | null,
+): Promise<void> {
+  const col = kind === "industry" ? "industry_pack" : "role_pack";
+  await query(`UPDATE v3_attempts SET ${col}=$2, last_saved_at=now() WHERE id=$1`,
+    [attemptId, code]);
+}
+
+/* ── 등급 올리기 ───────────────────────────────────────────────────── */
+
+const RANK: Record<Tier, number> = { BASIC: 0, STANDARD: 1, PRO: 2 };
+
+/**
+ * 같은 응시의 등급을 올린다. **앞 응답을 지우지 않는다.**
+ *
+ * 내려가는 길은 없다: 이미 열린 묶음을 닫으면 답한 것이 사라진 것처럼
+ * 보이고, 결과지도 좁아진다.
+ */
+export async function upgradeTier(
+  attemptId: string, userId: string, to: Tier, entitlementId?: string | null,
+): Promise<V3Attempt> {
+  const a = await attemptOf(attemptId, userId);
+  if (!a) throw new Error("응시를 찾을 수 없다");
+  if (RANK[to] <= RANK[a.tier]) throw new Error(`등급을 내리지 않는다: ${a.tier} → ${to}`);
+  await query(
+    `INSERT INTO v3_tier_events (attempt_id, from_tier, to_tier, entitlement_id)
+     VALUES ($1,$2,$3,$4)`, [attemptId, a.tier, to, entitlementId ?? null]);
+  await query(
+    `UPDATE v3_attempts
+        SET tier=$2, status='in_progress', submitted_at=NULL, last_saved_at=now()
+      WHERE id=$1`, [attemptId, to]);
+  const up0 = { ...a, tier: to, status: "in_progress" as const };
+  /* 심화 영역은 등급이 올라가면 다시 고른다. 선별 둘만 보던 자리에
+     셋째가 열리기 때문이다 */
+  const up = await recomputeRouting(up0);
+  /* **끝난 자리에 두지 않는다.** 올리고 들어온 사람은 새로 묻는 첫 화면에서
+     이어야 한다. `done` 에 그대로 두면 더 풀 것이 없는 줄 안다 */
+  const { added } = await newScreensAfterUpgrade(up, a.tier);
+  const first = added[0]?.id;
+  if (first) {
+    await moveTo(up.id, first);
+    return { ...up, current_screen: first };
+  }
+  return up;
+}
+
+/** 올린 뒤 **새로 묻는** 화면만. 앞에서 답한 자리는 세지 않는다 */
+export async function newScreensAfterUpgrade(
+  a: V3Attempt, from: Tier,
+): Promise<{ added: Screen[]; answered: number }> {
+  const answers = await answersOf(a.id);
+  const tds = content().domains.domains.map((d) => d.code);
+  const before = buildPlan({
+    tier: from, stage: a.education_stage,
+    branchBlock: branchBlock(a.education_stage, a.grad_field),
+    probe: a.opened_probe, deep: from === "BASIC" ? [] : a.opened_deep,
+    industryPack: from === "PRO" ? a.industry_pack : null,
+    rolePack: from === "PRO" ? a.role_pack : null,
+    tied: tiedInGrid(answers, tds),
+  }, content().bank.items, domainName, wordingOf, gridRowOf);
+  const plan = await planFor(a);
+  const had = new Set(before.screens.map((s) => s.id));
+  const added = plan.screens.filter((s) => !had.has(s.id) && s.items.length > 0);
+  return { added, answered: Object.keys(answers).length };
+}
+
+/* ── 제출과 판정 ───────────────────────────────────────────────────── */
+
+export async function submissionOf(a: V3Attempt): Promise<Submission> {
+  const answers = await answersOf(a.id);
+  const picks = await picksOf(a.id);
+  return {
+    attempt_id: a.id, tier: a.tier, stage: a.education_stage, grad_field: a.grad_field,
+    answers, ...picks,
+    opened: { probe: a.opened_probe, deep: a.opened_deep },
+    industry_pack: a.industry_pack, role_pack: a.role_pack,
+  };
+}
+
+/**
+ * 제출하고 판정을 한 줄 적는다.
+ *
+ * **만들어 둔 판정을 고치지 않는다**: 줄이 쌓이기만 한다. 등급을 올려 다시
+ * 제출하면 새 줄이 생기고, 앞 줄은 그때의 판본과 함께 남는다.
+ */
+export async function submit(a: V3Attempt): Promise<{ snapshot: Snapshot; id: string }> {
+  const sub = await submissionOf(a);
+  const snapshot = score(sub, load(a.core_code));
+  const row = await queryOne<{ id: string }>(
+    `INSERT INTO v3_snapshots (attempt_id, module_versions, response_quality, payload)
+     VALUES ($1,$2,$3,$4) RETURNING id::text`,
+    [a.id, JSON.stringify(snapshot.module_versions),
+     snapshot.response_quality.flag, JSON.stringify(snapshot)],
+  );
+  await query(
+    `UPDATE v3_attempts SET status='scored', submitted_at=now(), current_screen='done'
+      WHERE id=$1`, [a.id]);
+  return { snapshot, id: row?.id as string };
+}
+
+export async function latestSnapshot(attemptId: string): Promise<Snapshot | null> {
+  const row = await queryOne<{ payload: Snapshot }>(
+    `SELECT payload FROM v3_snapshots WHERE attempt_id=$1
+      ORDER BY created_at DESC, id DESC LIMIT 1`, [attemptId]);
+  return row?.payload ?? null;
+}

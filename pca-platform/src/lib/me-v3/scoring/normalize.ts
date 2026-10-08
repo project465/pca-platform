@@ -11,6 +11,7 @@ import type { Answer, Axis, MissingKind, Submission } from "./types";
 export type BankItem = {
   item_id: string; module: string; tier: string;
   technical_domain: string | null; evidence_axis: Axis | null;
+  industry_pack: string | null; role_function: string | null;
   measurement_axis: string; education_routing: string;
   response_scale: string | null; reverse_flag: boolean;
   consistency_pair: string | null;

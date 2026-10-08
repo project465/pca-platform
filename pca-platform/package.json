@@ -104,7 +104,8 @@
     "v3:persona": "tsx scripts/v3-persona-check.ts",
     "v3:qa": "node scripts/v3-qa-doc.mjs",
     "v3:scoring": "tsx scripts/v3-scoring-check.ts",
-    "v3:all": "npm run v2:frozen && npm run v3:build && npm run v3:domains && npm run v3:items && npm run v3:arch && npm run v3:extend && npm run v3:wording && npm run v3:persona && npm run v3:scoring"
+    "v3:runtime": "tsx scripts/v3-runtime-check.ts",
+    "v3:all": "npm run v2:frozen && npm run v3:build && npm run v3:domains && npm run v3:items && npm run v3:arch && npm run v3:extend && npm run v3:wording && npm run v3:persona && npm run v3:scoring && npm run v3:runtime"
   },
   "dependencies": {
     "@types/nodemailer": "^8.0.1",
