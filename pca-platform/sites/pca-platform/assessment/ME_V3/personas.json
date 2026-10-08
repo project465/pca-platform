@@ -1,0 +1,1154 @@
+{
+ "schema_version": "me-v3-personas.1",
+ "core": "ME_CORE_V3",
+ "note": "판단 엔진의 고정 fixture 다. 기대하는 묶음과 까닭을 **자료보다 먼저** 적어 두었고, 규칙을 고치면 여기서 먼저 깨진다. `golden` 은 Core 판정의 지문이고 `GOLDEN=update npm run v3:scoring` 으로만 다시 적는다",
+ "shorthand": {
+  "grid": "영역마다 [관심 1~5, 경험 0~2, 학습 의향 1~5]",
+  "axes": "영역마다 축별 보기 번호(0~3). 한 칸에 문항이 둘이면 배열로 적는다",
+  "checklist": "영역·축마다 고른 항목 수. 실제 체크리스트에서 앞에서부터 센다",
+  "artifacts": "영역마다 고른 산출물 수",
+  "verify": "영역마다 고른 검증 대상 수",
+  "note": "심화를 연 영역은 선별 네 축도 함께 열린다(expander 가 더해 준다)"
+ },
+ "personas": [
+  {
+   "id": "P01",
+   "name": "경험 없는 학부생",
+   "tier": "BASIC",
+   "stage": "bachelor",
+   "field": null,
+   "probe": [
+    "TD01",
+    "TD02"
+   ],
+   "deep": [],
+   "grid": {
+    "TD01": [
+     3,
+     0,
+     3
+    ],
+    "TD02": [
+     3,
+     0,
+     3
+    ]
+   },
+   "axes": {
+    "TD01": {
+     "J3": 0,
+     "J5": 0,
+     "J6": 0,
+     "J8": 0
+    },
+    "TD02": {
+     "J3": 0,
+     "J5": 0,
+     "J6": 0,
+     "J8": 0
+    }
+   },
+   "expect": {
+    "TD01": {
+     "zone": "Z4_INSUFFICIENT_EVIDENCE",
+     "reasons": [
+      "TIER_WITHOUT_DEEP_AXES",
+      "NO_CONFIRMED_AXIS"
+     ]
+    },
+    "TD02": {
+     "zone": "Z4_INSUFFICIENT_EVIDENCE",
+     "reasons": [
+      "TIER_WITHOUT_DEEP_AXES",
+      "NO_CONFIRMED_AXIS"
+     ]
+    }
+   },
+   "expect_focus": [],
+   "expect_quality": "LOW_VARIANCE",
+   "golden": "8bba703c3a14385e"
+  },
+  {
+   "id": "P02",
+   "name": "관심만 높은 학부생",
+   "tier": "BASIC",
+   "stage": "bachelor",
+   "field": null,
+   "probe": [
+    "TD01",
+    "TD02"
+   ],
+   "deep": [],
+   "grid": {
+    "TD01": [
+     5,
+     0,
+     5
+    ],
+    "TD02": [
+     5,
+     0,
+     4
+    ]
+   },
+   "axes": {
+    "TD01": {
+     "J3": 0,
+     "J5": 0,
+     "J6": 0,
+     "J8": 0
+    },
+    "TD02": {
+     "J3": 0,
+     "J5": 0,
+     "J6": 0,
+     "J8": 0
+    }
+   },
+   "expect": {
+    "TD01": {
+     "zone": "Z4_INSUFFICIENT_EVIDENCE",
+     "reasons": [
+      "TIER_WITHOUT_DEEP_AXES",
+      "NO_CONFIRMED_AXIS"
+     ],
+     "next": [
+      "TRY_SHORT_EXPERIENCE",
+      "STUDY_NEXT"
+     ],
+     "quadrant": "B_HIGH_LOW"
+    }
+   },
+   "expect_focus": [
+    "TD01",
+    "TD02"
+   ],
+   "expect_quality": "OK",
+   "golden": "de704600fdef98f4"
+  },
+  {
+   "id": "P03",
+   "name": "설계 캡스톤 학생",
+   "tier": "STANDARD",
+   "stage": "bachelor",
+   "field": null,
+   "probe": [
+    "TD01",
+    "TD08"
+   ],
+   "deep": [
+    "TD01",
+    "TD08",
+    "TD02"
+   ],
+   "grid": {
+    "TD01": [
+     5,
+     2,
+     5
+    ],
+    "TD08": [
+     4,
+     1,
+     4
+    ],
+    "TD02": [
+     3,
+     1,
+     3
+    ]
+   },
+   "axes": {
+    "TD01": {
+     "J1": 2,
+     "J2": 2,
+     "J3": 3,
+     "J4": 2,
+     "J5": 3,
+     "J6": 2,
+     "J7": 2,
+     "J8": 2
+    },
+    "TD08": {
+     "J1": 2,
+     "J3": 2,
+     "J5": 1,
+     "J6": 1
+    },
+    "TD02": {
+     "J1": 1,
+     "J3": 1,
+     "J4": 1,
+     "J5": 0,
+     "J6": 0
+    }
+   },
+   "checklist": {
+    "TD01": {
+     "J3": 2,
+     "J5": 1,
+     "J6": 2,
+     "J7": 1,
+     "J8": 2
+    }
+   },
+   "artifacts": {
+    "TD01": 2
+   },
+   "verify": {
+    "TD01": 1
+   },
+   "expect": {
+    "TD01": {
+     "zone": "Z1_EVIDENCE_ESTABLISHED",
+     "reasons": [],
+     "owned_has": [
+      "J3",
+      "J5"
+     ]
+    },
+    "TD08": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "reasons": [
+      "MISSING_REQUIRED_AXIS",
+      "MISSING_OUTPUT",
+      "INSUFFICIENT_CONFIRMED_AXES",
+      "MISSING_VERIFICATION"
+     ]
+    },
+    "TD02": {
+     "zone": "Z4_INSUFFICIENT_EVIDENCE",
+     "reasons": [
+      "NO_CONFIRMED_AXIS"
+     ]
+    }
+   },
+   "expect_focus": [
+    "TD01"
+   ],
+   "expect_quality": "OK",
+   "golden": "ad9d458cb279913f"
+  },
+  {
+   "id": "P04",
+   "name": "구조해석 석사",
+   "tier": "STANDARD",
+   "stage": "master",
+   "field": "STEM",
+   "probe": [
+    "TD02",
+    "TD07"
+   ],
+   "deep": [
+    "TD02",
+    "TD07",
+    "TD01"
+   ],
+   "grid": {
+    "TD02": [
+     5,
+     2,
+     5
+    ],
+    "TD07": [
+     4,
+     1,
+     3
+    ],
+    "TD01": [
+     4,
+     1,
+     3
+    ]
+   },
+   "axes": {
+    "TD02": {
+     "J1": 2,
+     "J2": 2,
+     "J3": 3,
+     "J4": 2,
+     "J5": 2,
+     "J6": 3,
+     "J7": 2,
+     "J8": 2
+    },
+    "TD07": {
+     "J3": 2,
+     "J4": 2,
+     "J5": 1,
+     "J6": 2
+    },
+    "TD01": {
+     "J2": 2,
+     "J3": 1,
+     "J5": 0,
+     "J6": 1
+    }
+   },
+   "checklist": {
+    "TD02": {
+     "J3": 2,
+     "J6": 2,
+     "J5": 1
+    },
+    "TD07": {
+     "J3": 1
+    }
+   },
+   "artifacts": {
+    "TD02": 2
+   },
+   "verify": {
+    "TD02": 2
+   },
+   "expect": {
+    "TD02": {
+     "zone": "Z1_EVIDENCE_ESTABLISHED",
+     "reasons": [],
+     "owned_has": [
+      "J3",
+      "J6"
+     ]
+    },
+    "TD07": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "reasons": [
+      "MISSING_REQUIRED_AXIS",
+      "MISSING_OUTPUT",
+      "INSUFFICIENT_CONFIRMED_AXES"
+     ]
+    },
+    "TD01": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "reasons": [
+      "MISSING_REQUIRED_AXIS",
+      "MISSING_OUTPUT",
+      "INSUFFICIENT_CONFIRMED_AXES",
+      "MISSING_VERIFICATION"
+     ]
+    }
+   },
+   "expect_focus": [
+    "TD02"
+   ],
+   "expect_quality": "OK",
+   "golden": "75cdacd27b1a34b6"
+  },
+  {
+   "id": "P05",
+   "name": "열유체 석사",
+   "tier": "STANDARD",
+   "stage": "master",
+   "field": "STEM",
+   "probe": [
+    "TD03"
+   ],
+   "deep": [
+    "TD03",
+    "TD07",
+    "TD02"
+   ],
+   "grid": {
+    "TD03": [
+     5,
+     2,
+     5
+    ],
+    "TD07": [
+     4,
+     1,
+     3
+    ],
+    "TD02": [
+     3,
+     1,
+     3
+    ]
+   },
+   "axes": {
+    "TD03": {
+     "J1": 2,
+     "J2": 2,
+     "J3": 3,
+     "J4": 2,
+     "J5": 2,
+     "J6": 2,
+     "J7": 2,
+     "J8": 1
+    },
+    "TD07": {
+     "J3": 2,
+     "J4": 2,
+     "J5": 2,
+     "J6": 1
+    },
+    "TD02": {
+     "J1": 1,
+     "J3": 1,
+     "J4": 2,
+     "J5": 1
+    }
+   },
+   "checklist": {
+    "TD03": {
+     "J3": 2,
+     "J5": 1,
+     "J6": 1
+    }
+   },
+   "artifacts": {
+    "TD03": 1,
+    "TD07": 1
+   },
+   "verify": {
+    "TD03": 1
+   },
+   "expect": {
+    "TD03": {
+     "zone": "Z1_EVIDENCE_ESTABLISHED",
+     "reasons": []
+    },
+    "TD07": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "reasons": [
+      "INSUFFICIENT_CONFIRMED_AXES",
+      "MISSING_VERIFICATION"
+     ]
+    }
+   },
+   "expect_focus": [
+    "TD03"
+   ],
+   "expect_quality": "OK",
+   "golden": "312b07bd83e75dcf"
+  },
+  {
+   "id": "P06",
+   "name": "제어 프로젝트 학생",
+   "tier": "STANDARD",
+   "stage": "bachelor",
+   "field": null,
+   "probe": [
+    "TD05"
+   ],
+   "deep": [
+    "TD05",
+    "TD01",
+    "TD12"
+   ],
+   "grid": {
+    "TD05": [
+     5,
+     2,
+     5
+    ],
+    "TD01": [
+     4,
+     1,
+     4
+    ],
+    "TD12": [
+     4,
+     1,
+     4
+    ]
+   },
+   "axes": {
+    "TD05": {
+     "J1": 2,
+     "J2": 2,
+     "J3": 3,
+     "J4": [
+      2,
+      2
+     ],
+     "J5": 2,
+     "J6": 2,
+     "J7": 2,
+     "J8": 1
+    },
+    "TD01": {
+     "J3": 2,
+     "J5": 1,
+     "J6": 1
+    },
+    "TD12": {
+     "J4": 2,
+     "J5": 1
+    }
+   },
+   "checklist": {
+    "TD05": {
+     "J3": 2,
+     "J4": 2,
+     "J5": 1,
+     "J6": 2
+    }
+   },
+   "artifacts": {
+    "TD05": 1
+   },
+   "verify": {
+    "TD05": 1
+   },
+   "expect": {
+    "TD05": {
+     "zone": "Z1_EVIDENCE_ESTABLISHED",
+     "reasons": [],
+     "confirmed_min": 7
+    },
+    "TD01": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "reasons": [
+      "MISSING_REQUIRED_AXIS",
+      "MISSING_OUTPUT",
+      "INSUFFICIENT_CONFIRMED_AXES",
+      "MISSING_VERIFICATION"
+     ]
+    }
+   },
+   "expect_focus": [
+    "TD05"
+   ],
+   "expect_quality": "OK",
+   "golden": "e82f02dcb3ac49a0"
+  },
+  {
+   "id": "P07",
+   "name": "생산기술 경험자",
+   "tier": "STANDARD",
+   "stage": "bachelor",
+   "field": null,
+   "probe": [
+    "TD08"
+   ],
+   "deep": [
+    "TD08",
+    "TD09",
+    "TD10"
+   ],
+   "grid": {
+    "TD08": [
+     5,
+     2,
+     4
+    ],
+    "TD09": [
+     4,
+     1,
+     4
+    ],
+    "TD10": [
+     4,
+     1,
+     3
+    ],
+    "TD12": [
+     1,
+     0,
+     2
+    ]
+   },
+   "axes": {
+    "TD08": {
+     "J1": 2,
+     "J2": 2,
+     "J3": 3,
+     "J4": 2,
+     "J5": 3,
+     "J6": 3,
+     "J7": 2,
+     "J8": 2
+    },
+    "TD09": {
+     "J3": 2,
+     "J4": [
+      2,
+      1
+     ],
+     "J7": 2,
+     "J5": 1
+    },
+    "TD10": {
+     "J3": 2,
+     "J6": 2,
+     "J5": 1,
+     "J8": 1
+    }
+   },
+   "checklist": {
+    "TD08": {
+     "J3": 2,
+     "J5": 2,
+     "J6": 2,
+     "J7": 1
+    },
+    "TD09": {
+     "J7": 1
+    }
+   },
+   "artifacts": {
+    "TD08": 2
+   },
+   "verify": {
+    "TD08": 2
+   },
+   "expect": {
+    "TD08": {
+     "zone": "Z1_EVIDENCE_ESTABLISHED",
+     "reasons": [],
+     "owned_has": [
+      "J3",
+      "J5",
+      "J6"
+     ]
+    },
+    "TD09": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "reasons": [
+      "MISSING_OUTPUT",
+      "INSUFFICIENT_CONFIRMED_AXES",
+      "MISSING_VERIFICATION"
+     ]
+    },
+    "TD10": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "reasons": [
+      "MISSING_OUTPUT",
+      "INSUFFICIENT_CONFIRMED_AXES"
+     ]
+    },
+    "TD12": {
+     "zone": "NOT_EXPLORED",
+     "reasons": [
+      "NOT_ROUTED"
+     ],
+     "quadrant": "D_LOW_LOW",
+     "next": [
+      "NOT_A_PRIORITY"
+     ]
+    }
+   },
+   "expect_focus": [
+    "TD08"
+   ],
+   "expect_quality": "OK",
+   "golden": "461bbc961d32432d"
+  },
+  {
+   "id": "P08",
+   "name": "설비 경험자",
+   "tier": "STANDARD",
+   "stage": "bachelor",
+   "field": null,
+   "probe": [
+    "TD09"
+   ],
+   "deep": [
+    "TD09",
+    "TD08",
+    "TD05"
+   ],
+   "grid": {
+    "TD09": [
+     5,
+     2,
+     4
+    ],
+    "TD08": [
+     4,
+     1,
+     3
+    ],
+    "TD05": [
+     3,
+     1,
+     3
+    ]
+   },
+   "axes": {
+    "TD09": {
+     "J1": 2,
+     "J2": 2,
+     "J3": 3,
+     "J4": [
+      2,
+      2
+     ],
+     "J5": 2,
+     "J6": 2,
+     "J7": 3,
+     "J8": 2
+    },
+    "TD08": {
+     "J3": 2,
+     "J5": 1,
+     "J6": 2
+    },
+    "TD05": {
+     "J4": [
+      1,
+      0
+     ],
+     "J5": 0
+    }
+   },
+   "checklist": {
+    "TD09": {
+     "J3": 2,
+     "J7": 2,
+     "J5": 1,
+     "J4": 2
+    }
+   },
+   "artifacts": {
+    "TD09": 2
+   },
+   "verify": {
+    "TD09": 1
+   },
+   "expect": {
+    "TD09": {
+     "zone": "Z1_EVIDENCE_ESTABLISHED",
+     "reasons": [],
+     "owned_has": [
+      "J3",
+      "J7"
+     ]
+    },
+    "TD05": {
+     "zone": "Z4_INSUFFICIENT_EVIDENCE",
+     "reasons": [
+      "NO_CONFIRMED_AXIS"
+     ]
+    }
+   },
+   "expect_focus": [
+    "TD09"
+   ],
+   "expect_quality": "OK",
+   "golden": "00a3d3762e5d4501"
+  },
+  {
+   "id": "P09",
+   "name": "재료·파손 박사",
+   "tier": "PRO",
+   "stage": "phd",
+   "field": "STEM",
+   "probe": [
+    "TD06"
+   ],
+   "deep": [
+    "TD06",
+    "TD07",
+    "TD10"
+   ],
+   "grid": {
+    "TD06": [
+     5,
+     2,
+     5
+    ],
+    "TD07": [
+     4,
+     1,
+     4
+    ],
+    "TD10": [
+     2,
+     1,
+     2
+    ]
+   },
+   "axes": {
+    "TD06": {
+     "J1": 2,
+     "J2": 2,
+     "J3": 2,
+     "J4": 3,
+     "J5": 2,
+     "J6": 3,
+     "J7": 2,
+     "J8": 2
+    },
+    "TD07": {
+     "J3": 2,
+     "J4": 3,
+     "J5": 2,
+     "J6": 2
+    },
+    "TD10": {
+     "J1": 2,
+     "J4": 2,
+     "J6": 2,
+     "J7": 2,
+     "J5": 1
+    }
+   },
+   "checklist": {
+    "TD06": {
+     "J4": 2,
+     "J6": 2,
+     "J5": 1
+    },
+    "TD07": {
+     "J4": 2,
+     "J5": 1
+    }
+   },
+   "artifacts": {
+    "TD06": 2,
+    "TD07": 1
+   },
+   "verify": {
+    "TD06": 2,
+    "TD07": 1
+   },
+   "expect": {
+    "TD06": {
+     "zone": "Z1_EVIDENCE_ESTABLISHED",
+     "reasons": [],
+     "owned_has": [
+      "J4",
+      "J6"
+     ]
+    },
+    "TD07": {
+     "zone": "Z1_EVIDENCE_ESTABLISHED",
+     "reasons": []
+    },
+    "TD10": {
+     "zone": "Z3_EVIDENCE_LOW_INTEREST",
+     "reasons": [
+      "MISSING_REQUIRED_AXIS",
+      "MISSING_OUTPUT",
+      "LOW_INTEREST_WITH_EVIDENCE"
+     ]
+    }
+   },
+   "expect_focus": [
+    "TD06",
+    "TD07"
+   ],
+   "expect_quality": "OK",
+   "golden": "b1f9e0b99ca40960"
+  },
+  {
+   "id": "P10",
+   "name": "연구성과는 많지만 직접 판단이 적은 박사",
+   "tier": "PRO",
+   "stage": "phd",
+   "field": "STEM",
+   "probe": [
+    "TD02"
+   ],
+   "deep": [
+    "TD02",
+    "TD03",
+    "TD06"
+   ],
+   "grid": {
+    "TD02": [
+     5,
+     2,
+     4
+    ],
+    "TD03": [
+     4,
+     1,
+     4
+    ],
+    "TD06": [
+     3,
+     1,
+     3
+    ]
+   },
+   "axes": {
+    "TD02": {
+     "J1": 2,
+     "J2": 2,
+     "J3": 1,
+     "J4": 2,
+     "J5": 3,
+     "J6": 2,
+     "J7": 2,
+     "J8": 2
+    },
+    "TD03": {
+     "J1": 2,
+     "J3": 1,
+     "J4": 2,
+     "J5": 2
+    },
+    "TD06": {
+     "J4": 1,
+     "J5": 1
+    }
+   },
+   "checklist": {
+    "TD02": {
+     "J5": 2,
+     "J1": 2,
+     "J6": 1
+    }
+   },
+   "artifacts": {
+    "TD02": 2,
+    "TD03": 1
+   },
+   "verify": {
+    "TD02": 1
+   },
+   "expect": {
+    "TD02": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "reasons": [
+      "MISSING_REQUIRED_AXIS"
+     ],
+     "owned_has": [
+      "J5"
+     ]
+    },
+    "TD03": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "reasons": [
+      "MISSING_REQUIRED_AXIS",
+      "INSUFFICIENT_CONFIRMED_AXES",
+      "MISSING_VERIFICATION"
+     ]
+    }
+   },
+   "expect_focus": [
+    "TD02",
+    "TD03"
+   ],
+   "expect_quality": "OK",
+   "golden": "0c768db40b5b103d"
+  },
+  {
+   "id": "P11",
+   "name": "판단은 많지만 산출물이 없는 포닥",
+   "tier": "PRO",
+   "stage": "postdoc",
+   "field": "STEM",
+   "probe": [
+    "TD02"
+   ],
+   "deep": [
+    "TD02",
+    "TD03",
+    "TD04"
+   ],
+   "grid": {
+    "TD02": [
+     4,
+     2,
+     4
+    ],
+    "TD03": [
+     4,
+     2,
+     4
+    ],
+    "TD04": [
+     3,
+     1,
+     3
+    ]
+   },
+   "axes": {
+    "TD02": {
+     "J1": 3,
+     "J2": 2,
+     "J3": 3,
+     "J4": 3,
+     "J5": 1,
+     "J6": 3,
+     "J7": 2,
+     "J8": 0
+    },
+    "TD03": {
+     "J1": 3,
+     "J2": 2,
+     "J3": 3,
+     "J4": 3,
+     "J5": 1,
+     "J6": 3,
+     "J7": 2,
+     "J8": 0
+    },
+    "TD04": {
+     "J4": [
+      2,
+      1
+     ],
+     "J6": 2,
+     "J5": 0
+    }
+   },
+   "checklist": {
+    "TD02": {
+     "J1": 2,
+     "J3": 2,
+     "J4": 2,
+     "J6": 2
+    },
+    "TD03": {
+     "J1": 2,
+     "J3": 2,
+     "J4": 2,
+     "J6": 2
+    }
+   },
+   "artifacts": {},
+   "verify": {
+    "TD02": 1,
+    "TD03": 1
+   },
+   "expect": {
+    "TD02": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "reasons": [
+      "MISSING_OUTPUT"
+     ],
+     "confirmed_min": 6,
+     "next_has": [
+      "BUILD_OUTPUT"
+     ]
+    },
+    "TD03": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "reasons": [
+      "MISSING_OUTPUT"
+     ]
+    }
+   },
+   "expect_focus": [
+    "TD02",
+    "TD03",
+    "TD04"
+   ],
+   "expect_quality": "OK",
+   "golden": "81edfc159b3e86b9"
+  },
+  {
+   "id": "P12",
+   "name": "판단과 산출물과 검증이 모두 강한 포닥",
+   "tier": "PRO",
+   "stage": "postdoc",
+   "field": "STEM",
+   "probe": [
+    "TD02"
+   ],
+   "deep": [
+    "TD02",
+    "TD04",
+    "TD07"
+   ],
+   "grid": {
+    "TD02": [
+     5,
+     2,
+     4
+    ],
+    "TD04": [
+     4,
+     2,
+     4
+    ],
+    "TD07": [
+     4,
+     1,
+     3
+    ]
+   },
+   "axes": {
+    "TD02": {
+     "J1": 3,
+     "J2": 2,
+     "J3": 3,
+     "J4": 3,
+     "J5": 3,
+     "J6": 3,
+     "J7": 2,
+     "J8": 2
+    },
+    "TD04": {
+     "J1": 2,
+     "J2": 2,
+     "J3": 2,
+     "J4": [
+      3,
+      2
+     ],
+     "J5": 2,
+     "J6": 3,
+     "J7": 2,
+     "J8": 2
+    },
+    "TD07": {
+     "J3": 2,
+     "J4": 2,
+     "J5": 2,
+     "J6": 2
+    }
+   },
+   "checklist": {
+    "TD02": {
+     "J1": 2,
+     "J3": 2,
+     "J4": 2,
+     "J5": 2,
+     "J6": 2
+    },
+    "TD04": {
+     "J4": 2,
+     "J6": 2,
+     "J5": 1
+    },
+    "TD07": {
+     "J5": 1
+    }
+   },
+   "artifacts": {
+    "TD02": 2,
+    "TD04": 2,
+    "TD07": 1
+   },
+   "verify": {
+    "TD02": 2,
+    "TD04": 2,
+    "TD07": 1
+   },
+   "expect": {
+    "TD02": {
+     "zone": "Z1_EVIDENCE_ESTABLISHED",
+     "reasons": [],
+     "owned_has": [
+      "J1",
+      "J3",
+      "J4",
+      "J5",
+      "J6"
+     ]
+    },
+    "TD04": {
+     "zone": "Z1_EVIDENCE_ESTABLISHED",
+     "reasons": []
+    },
+    "TD07": {
+     "zone": "Z1_EVIDENCE_ESTABLISHED",
+     "reasons": []
+    }
+   },
+   "expect_focus": [
+    "TD02",
+    "TD04",
+    "TD07"
+   ],
+   "expect_quality": "OK",
+   "golden": "d9693c23f64ddc56"
+  }
+ ]
+}

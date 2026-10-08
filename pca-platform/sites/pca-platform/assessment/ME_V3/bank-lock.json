@@ -1,0 +1,15 @@
+{
+ "schema_version": "me-v3-bank-lock.1",
+ "item_bank_version": "ME_V3_ITEM_BANK_V1",
+ "note": "1차 동결한 문항 은행의 지문이다. **문면을 고치면 이 파일이 걸린다**: 그때 판본을 올리고(`version.ts` 의 ITEM_BANK_VERSION) 여기를 다시 적는다. 잠그는 까닭은 산 사람의 결과가 조용히 달라지지 않게 하는 것이고, 고치지 못하게 막는 것이 아니다",
+ "files": {
+  "me-v3-items.json": "22b947ec3a15fd5bab5f2dee73f72545ba98fbdf4758e0abf65aa6321c4a6c92",
+  "me-v3-taxonomy.json": "52a153df02dc8ea0e2debf2450ec94faa1df45bd281ff81f60faa7b945253f66",
+  "me-v3-domains.json": "a413a440f795f92b48e94db58b183e1b506437aa6b55e02c1146827c7335ea4d",
+  "me-v3-items-blueprint.json": "3f8c8545575c50f5ebafdc32f0de37772720e85823b556741aabb9454b21aaa6",
+  "industry-packs.json": "738083fd6c6664148c4b5cb377e64e80b6dcdb83fbf9d1b2ea521cd0dd73704e",
+  "role-packs.json": "3108e8e57c41baf4d6f2db94738a196bde91440cb3976d2c60c2a8bafaae5bcc",
+  "me-v3-checklist-additions.json": "e2334724b16a6cc4a96e331135fa7112779f70afb5ceb6f3728bd8182a78ade0",
+  "me-v3-common-additions.json": "8fef4bc85fd1ad3b6aaf86ca65112719c7981a1e05eed565a0a16b9873ade15b"
+ }
+}
