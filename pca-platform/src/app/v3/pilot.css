@@ -1,0 +1,57 @@
+/**
+ * 파일럿 화면이 더 쓰는 것.
+ *
+ * **`result.css` 를 건드리지 않는다.** 그 파일은 `ME_V3_RESULT_UI_V1` 으로
+ * 굳어 있고, 거기에 줄을 더하면 동결 기록에 `결과지 화면이 바뀌었다` 가
+ * 남는다. 바뀐 것은 파일럿이 묻는 자리인데 기록은 결과지를 가리킨다.
+ *
+ * 쓰는 토큰은 `result.css` 의 `.rs` 가 들고 있는 `--r-*` 이고, 파일럿 화면이
+ * 두 파일을 함께 싣는다. 색을 여기서 새로 정하지 않는 까닭은 같은 제품이
+ * 두 가지 색으로 서면 한 쪽씩 볼 때는 안 보이고 이어서 누를 때만 보인다.
+ */
+
+/* ── 물어보는 묶음 ──
+   열아홉 문항을 한 줄로 늘어놓지 않는다. 묶음 이름이 지금 묻는 것이
+   문항인지 결과인지를 알려 주어서, 읽는 사람이 답할 자리를 바꿔 들어온다 */
+.rs-fbg { display: grid; gap: var(--r-s3); }
+.rs-fbg > h3 {
+  margin: var(--r-s4) 0 0; font-size: var(--r-t-meta); font-weight: 700;
+  letter-spacing: .04em; color: var(--r-ink-3);
+}
+.rs-fbg:first-child > h3 { margin-top: 0; }
+
+/* 고르는 문항은 칸을 세로로 쌓는다. 보기가 문장이라 다섯 칸짜리 줄에
+   들어가지 않고, 들어가게 줄이면 고르는 사람이 보기를 끝까지 읽지 않는다 */
+.rs-pick { display: grid; gap: 8px; margin-top: var(--r-s3); }
+.rs-pick label {
+  display: flex; gap: 10px; align-items: flex-start; cursor: pointer;
+  padding: 12px 14px; min-height: 48px;
+  border: 1px solid var(--r-line); border-radius: var(--r-r-sm);
+  background: var(--sf-surface-2);
+  font-size: var(--r-t-body); color: var(--r-ink-2);
+}
+.rs-pick input {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+.rs-pick label > span {
+  flex: none; width: 18px; height: 18px; margin-top: 2px; border-radius: 50%;
+  border: 2px solid var(--r-line); background: #fff;
+}
+.rs-pick label > b { font-weight: 450; }
+.rs-pick label > b > i {
+  display: block; margin-top: 3px; font-style: normal;
+  font-size: var(--r-t-gloss); color: var(--r-ink-3);
+}
+.rs-pick label:has(input:checked) {
+  background: var(--r-accent-soft); border-color: var(--r-accent-line);
+}
+.rs-pick label:has(input:checked) > span {
+  border-color: var(--r-accent); box-shadow: inset 0 0 0 3px #fff;
+  background: var(--r-accent);
+}
+.rs-pick label:has(input:checked) > b { color: var(--r-accent-ink); }
+.rs-pick label:has(input:focus-visible) {
+  outline: 2px solid var(--r-accent); outline-offset: 2px;
+}
+

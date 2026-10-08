@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { requireUser } from "@/lib/session";
 import { attemptOf } from "@/lib/me-v3/runtime/session";
 import { isEventKind, participantOf, record } from "@/lib/me-v3/pilot/store";
+import { mark, stepForSection } from "@/lib/me-v3/pilot/funnel";
 
 export const dynamic = "force-dynamic";
 
@@ -47,6 +48,21 @@ export async function POST(req: Request) {
   /* **한 번에 모아서 적는다.** 한 줄씩 보내면 쪽을 한 번 굴리는 동안
      아홉 벌이 줄을 서고, 재는 일이 읽는 일을 느리게 만든다 */
   await record(attemptId, kind, refs);
+
+  /* 같은 발자국이 퍼널의 한 걸음도 된다. **둘을 한 표에 두지 않는다**:
+     발자국은 어느 절을 봤는가를 묻고 퍼널은 어느 걸음에서 사람이 줄었는가를
+     묻는다. 한 표에 섞으면 줄어든 자리가 조회 수에 묻힌다 */
+  const who = {
+    userId: user.id, attemptId, participant: p.code, wave: p.wave, tier: a.tier,
+  };
+  if (kind === "result_open") await mark("result_opened", who);
+  if (kind === "action_save") await mark("action_saved", who);
+  if (kind === "section_view") {
+    for (const step of new Set(refs.map(stepForSection))) {
+      if (step) await mark(step, who);
+    }
+  }
+
   return NextResponse.json({ ok: true, recorded: refs.length || 1 },
     { headers: { "cache-control": "no-store" } });
 }

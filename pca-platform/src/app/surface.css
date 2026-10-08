@@ -1522,3 +1522,43 @@ body:has(.stgmark) .asnav { bottom: 44px }
      한누리대로 2143, 704호` 같은 긴 값이 쪽을 밀어낸다 */
   .pfoot-biz { flex-direction: column; gap: 2px }
 }
+
+/* ── 파일럿 운영 화면 ────────────────────────────────────────────────
+ *
+ * 거르는 자리를 알약으로 둔다. `select` 넷을 세우면 고른 뒤에 단추를 한 번
+ * 더 눌러야 하고, 지금 무엇으로 걸러져 있는지가 접힌 메뉴 안에 숨는다.
+ * 여기 적는 것은 레이아웃뿐이고 색은 `surface.css` 의 토큰을 그대로 쓴다.      */
+.v3filt { display: grid; gap: 10px; }
+.v3filt p { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 0; }
+.v3filt p > b {
+  flex: none; width: 64px; font-size: 12.5px; font-weight: 700; color: var(--sf-ink-3);
+}
+.v3filt a {
+  min-height: 32px; display: inline-flex; align-items: center; padding: 0 12px;
+  border: 1px solid var(--sf-line); border-radius: 999px;
+  font-size: 13px; font-weight: 600; color: var(--sf-ink-2);
+  background: var(--sf-surface-2); text-decoration: none;
+}
+.v3filt a:hover { border-color: var(--sf-line-2); color: var(--sf-ink); }
+.v3filt a.on {
+  color: #fff; background: var(--sf-ink); border-color: var(--sf-ink);
+}
+
+.v3inv { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+.v3inv label { display: grid; gap: 4px; }
+.v3inv label > span { font-size: 12.5px; font-weight: 600; color: var(--sf-ink-3); }
+.v3inv input, .v3inv select {
+  min-height: 38px; padding: 0 10px; font: inherit; font-size: 14px;
+  color: var(--sf-ink); background: #fff;
+  border: 1px solid var(--sf-line); border-radius: var(--sf-radius-sm);
+}
+.v3inv input[type="number"] { width: 90px; }
+.v3inv input[type="text"] { min-width: 200px; }
+
+/* 만든 링크는 이 자리에서만 보인다. 골라 복사하기 쉽게 글상자로 둔다 */
+.v3links {
+  width: 100%; margin-top: 10px; padding: 10px 12px; resize: vertical;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px;
+  color: var(--sf-ink); background: var(--sf-surface-2);
+  border: 1px solid var(--sf-line); border-radius: var(--sf-radius-sm);
+}

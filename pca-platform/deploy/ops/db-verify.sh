@@ -42,6 +42,18 @@ if [ "${core:-0}" -lt 7 ]; then
   bad=$((bad + 1))
 fi
 
+# **ME_V3 표 다섯.** 파일럿이 여기서 돈다. 빠지면 `/v3/start` 가 500 이고
+# 화면은 멀쩡해 보인다
+v3=$(q "SELECT count(*) FROM information_schema.tables
+         WHERE table_schema='public'
+           AND table_name IN ('v3_attempts','v3_responses','v3_snapshots',
+                              'v3_pilot_participants','v3_pilot_feedback')")
+echo "ME_V3 표        ${v3} / 5"
+if [ "${v3:-0}" -lt 5 ]; then
+  echo "실패 ME_V3 표가 모자랍니다. npm run db:upgrade 로 올립니다." >&2
+  bad=$((bad + 1))
+fi
+
 # **외래키가 살아 있는가.** 표만 돌아오고 외래키가 빠지면 지운 사람의
 # 주문이 남고, 파기(익명화)가 반쪽이 된다. 복구본에서 실제로 일어난다.
 fks=$(q "SELECT count(*) FROM pg_constraint

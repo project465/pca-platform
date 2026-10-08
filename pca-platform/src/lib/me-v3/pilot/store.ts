@@ -19,17 +19,20 @@ export type Participant = {
   id: string;
   code: string;
   cohort: string;
+  wave: number;
   education_stage: string;
   major_field: string | null;
   current_status: string | null;
+  experience_level: string | null;
+  interest_area: string | null;
   purge_after: string;
   purged_at: string | null;
 };
 
 export async function participantOf(userId: string): Promise<Participant | null> {
   return queryOne<Participant>(
-    `SELECT id::text, code, cohort, education_stage, major_field, current_status,
-            purge_after::text, purged_at::text
+    `SELECT id::text, code, cohort, wave, education_stage, major_field, current_status,
+            experience_level, interest_area, purge_after::text, purged_at::text
        FROM v3_pilot_participants
       WHERE user_id = $1
       ORDER BY created_at DESC
@@ -38,7 +41,9 @@ export async function participantOf(userId: string): Promise<Participant | null>
 }
 
 export type EventKind =
-  | "result_open" | "section_view" | "action_click" | "action_save" | "action_unsave";
+  | "result_open" | "section_view" | "action_click" | "action_save" | "action_unsave"
+  /* 종이를 못 뽑은 자리. **화면이 보내는 것이 아니라 서버가 적는다** */
+  | "pdf_fail";
 
 const KINDS: EventKind[] = [
   "result_open", "section_view", "action_click", "action_save", "action_unsave",
@@ -152,6 +157,7 @@ export function blockOf(itemId: string): string {
 export type PilotRow = {
   code: string;
   cohort: string;
+  wave: number;
   education_stage: string;
   major_field: string | null;
   attempt_id: string | null;
@@ -159,24 +165,58 @@ export type PilotRow = {
   status: string | null;
   started_at: string | null;
   submitted_at: string | null;
-  seconds: number | null;
+  /** 창을 열어 둔 시간이 아니고 **손을 움직인 시간**. 20분 넘는 틈은 뺀다 */
+  active_seconds: number | null;
+  /** 처음부터 끝까지. 둘을 같이 두는 까닭은 차이가 곧 자리를 비운 시간이다 */
+  wall_seconds: number | null;
   response_quality: string | null;
   opened_deep: number;
   /** 묶음 코드 → 영역 수. **화면이 사람 말로 옮긴다** */
   zones: Record<string, number> | null;
   answered: number;
+  /** 결과를 한 번이라도 열었는가 */
+  result_opened: boolean;
   feedback: number;
+  /** 그 등급이 받는 문항을 다 적었는가 */
+  feedback_items: number;
   /** 냈는데 결과가 안 만들어졌는가. `job_failures` 는 V2 응시를 가리킨다 */
   broken: boolean;
 };
 
-export async function pilotRows(cohort?: string): Promise<PilotRow[]> {
+export type RowFilter = {
+  wave?: number | null;
+  tier?: string | null;
+  /** `done` 끝낸 것 · `open` 아직 하는 중 · `none` 시작도 안 한 것 */
+  completion?: "done" | "open" | "none" | null;
+};
+
+/**
+ * 운영 표.
+ *
+ * **거르는 자리를 넷으로 둔다** — wave · 등급 · 진행 · 손볼 일. 검색 칸과
+ * 내보내기를 달면 스무 명을 보는 화면이 관리 시스템이 되고, 파일럿이 끝난
+ * 뒤 아무도 안 쓰는 화면이 하나 남는다.
+ *
+ * **전공명을 뽑지 않는다.** 뽑는 질의가 없으면 그 칸이 샐 자리가 없다.
+ */
+export async function pilotRows(f: RowFilter = {}): Promise<PilotRow[]> {
   return query<PilotRow>(
-    `SELECT p.code, p.cohort, p.education_stage, p.major_field,
+    `WITH act AS (
+       SELECT attempt_id, SUM(d)::int AS secs FROM (
+         SELECT attempt_id, EXTRACT(EPOCH FROM (answered_at
+                  - lag(answered_at) OVER (PARTITION BY attempt_id
+                                           ORDER BY answered_at))) AS d
+           FROM v3_responses) g
+        WHERE d > 0 AND d < 1200
+        GROUP BY attempt_id
+     )
+     SELECT p.code, p.cohort, p.wave, p.education_stage, p.major_field,
             a.id::text AS attempt_id, a.tier, a.status,
             a.started_at::text, a.submitted_at::text,
+            act.secs AS active_seconds,
             CASE WHEN a.submitted_at IS NULL THEN NULL
-                 ELSE EXTRACT(EPOCH FROM (a.submitted_at - a.started_at))::int END AS seconds,
+                 ELSE EXTRACT(EPOCH FROM (a.submitted_at - a.started_at))::int END
+              AS wall_seconds,
             s.response_quality,
             COALESCE(array_length(a.opened_deep, 1), 0) AS opened_deep,
             CASE WHEN s.payload IS NULL THEN NULL ELSE (
@@ -184,8 +224,18 @@ export async function pilotRows(cohort?: string): Promise<PilotRow[]> {
                 FROM jsonb_each(s.payload->'zones') AS z(k, v)
                WHERE jsonb_array_length(z.v) > 0
             ) END AS zones,
-            (SELECT count(*) FROM v3_responses r WHERE r.attempt_id = a.id)::int AS answered,
-            (SELECT count(*) FROM v3_pilot_feedback f WHERE f.attempt_id = a.id)::int AS feedback,
+            (SELECT count(*) FROM v3_responses r WHERE r.attempt_id = a.id)::int
+              AS answered,
+            EXISTS (SELECT 1 FROM v3_pilot_events e
+                     WHERE e.attempt_id = a.id AND e.kind = 'result_open')
+              AS result_opened,
+            (SELECT count(*) FROM v3_pilot_feedback fb WHERE fb.attempt_id = a.id)::int
+              AS feedback,
+            (SELECT count(*) FROM v3_pilot_items i
+              WHERE i.active AND i.tier_scope = ANY (
+                CASE WHEN a.tier = 'BASIC' THEN ARRAY['all','BASIC']
+                     ELSE ARRAY['all','PAID', COALESCE(a.tier,'STANDARD')] END))::int
+              AS feedback_items,
             -- 냈는데 결과가 없다 — 이 자리에서 보려는 오류가 그것이다.
             -- job_failures.attempt_id 는 V2 응시를 가리켜 여기 쓸 수 없다
             (a.submitted_at IS NOT NULL AND s.id IS NULL) AS broken
@@ -198,9 +248,15 @@ export async function pilotRows(cohort?: string): Promise<PilotRow[]> {
          SELECT * FROM v3_snapshots y
           WHERE y.attempt_id = a.id ORDER BY y.id DESC LIMIT 1
        ) s ON true
-      WHERE ($1::text IS NULL OR p.cohort = $1)
-      ORDER BY p.created_at`,
-    [cohort ?? null]);
+       LEFT JOIN act ON act.attempt_id = a.id
+      WHERE ($1::int IS NULL OR p.wave = $1)
+        AND ($2::text IS NULL OR a.tier = $2)
+        AND ($3::text IS NULL
+             OR ($3 = 'done' AND a.submitted_at IS NOT NULL)
+             OR ($3 = 'open' AND a.id IS NOT NULL AND a.submitted_at IS NULL)
+             OR ($3 = 'none' AND a.id IS NULL))
+      ORDER BY p.wave, p.created_at`,
+    [f.wave ?? null, f.tier ?? null, f.completion ?? null]);
 }
 
 /**
@@ -245,38 +301,60 @@ export function cells(
   })).sort((a, b) => a.key.localeCompare(b.key));
 }
 
+export type Choice = { value: string; label: string };
 export type FeedbackItem = {
-  code: string; order_no: number; kind: "scale" | "text";
+  code: string; order_no: number; kind: "scale" | "text" | "choice" | "action";
   topic: string; tier_scope: string; ko: string; hint: string | null;
+  choices: Choice[] | null;
 };
 
-/** 그 등급이 받는 문항만. 받은 적 없는 것을 묻지 않는다 */
+/**
+ * 그 등급이 받는 문항만.
+ *
+ * **받은 적 없는 것을 묻지 않는다.** 무료로 받으신 분께 `치른 값에 견주어`
+ * 를 물으면 그 자리에서 답할 것이 없고, 그 빈칸이 집계에서 0 으로 세어진다.
+ */
 export async function feedbackItems(tier: string): Promise<FeedbackItem[]> {
-  const scope = tier === "BASIC" ? "BASIC" : "PAID";
+  const scopes = tier === "BASIC" ? ["all", "BASIC"] : ["all", "PAID", tier];
   return query<FeedbackItem>(
-    `SELECT code, order_no, kind, topic, tier_scope, ko, hint
+    `SELECT code, order_no, kind, topic, tier_scope, ko, hint, choices
        FROM v3_pilot_items
-      WHERE active AND tier_scope IN ('all', $1)
+      WHERE active AND tier_scope = ANY($1::text[])
       ORDER BY order_no, code`,
-    [scope]);
+    [scopes]);
 }
+
+/** 의견 문항을 묶음으로 나눈다. 열일곱 줄을 한 줄로 늘어놓지 않는다 */
+export const TOPIC_KO: Record<string, string> = {
+  item: "문항",
+  result: "결과",
+  ui: "화면",
+  product: "상품",
+  price: "값",
+};
+export const TOPIC_ORDER = ["item", "result", "ui", "product", "price"];
 
 export async function feedbackOf(
   attemptId: string,
-): Promise<Record<string, { value: number | null; text: string | null }>> {
-  const rows = await query<{ item_code: string; value: number | null; text: string | null }>(
-    `SELECT item_code, value, text FROM v3_pilot_feedback WHERE attempt_id = $1`,
+): Promise<Record<string, { value: number | null; text: string | null; choice: string | null }>> {
+  const rows = await query<{
+    item_code: string; value: number | null; text: string | null; choice: string | null;
+  }>(
+    `SELECT item_code, value, text, choice FROM v3_pilot_feedback WHERE attempt_id = $1`,
     [attemptId]);
-  return Object.fromEntries(rows.map((r) => [r.item_code, { value: r.value, text: r.text }]));
+  return Object.fromEntries(rows.map((r) =>
+    [r.item_code, { value: r.value, text: r.text, choice: r.choice }]));
 }
 
 export async function saveFeedback(
-  attemptId: string, itemCode: string, value: number | null, text: string | null,
+  attemptId: string, itemCode: string,
+  value: number | null, text: string | null, choice: string | null = null,
 ): Promise<void> {
   await query(
-    `INSERT INTO v3_pilot_feedback (attempt_id, item_code, value, text)
-     VALUES ($1,$2,$3,$4)
+    `INSERT INTO v3_pilot_feedback (attempt_id, item_code, value, text, choice)
+     VALUES ($1,$2,$3,$4,$5)
      ON CONFLICT (attempt_id, item_code)
-     DO UPDATE SET value = EXCLUDED.value, text = EXCLUDED.text, answered_at = now()`,
-    [attemptId, itemCode, value, text]);
+     DO UPDATE SET value = EXCLUDED.value, text = EXCLUDED.text,
+                   choice = EXCLUDED.choice, answered_at = now()`,
+    [attemptId, itemCode, value, text, choice]);
 }

@@ -1,44 +1,32 @@
 "use server";
 
-import { randomInt } from "node:crypto";
 import { redirect } from "next/navigation";
 import { query, queryOne } from "@/lib/db";
 import { requireUser } from "@/lib/session";
+import { participantOf } from "@/lib/me-v3/pilot/store";
 
 /**
- * 파일럿 참가 등록.
+ * 파일럿 참가자가 적는 넷.
  *
- * 받는 것 넷뿐이다: 전공명 · 전공계열 · 지금 상태 · 가고 싶은 쪽. 학위는
- * 응시가 이미 들고 있고, 이름과 학교와 학번은 **받지 않는다.** 분석에
- * 쓰이지 않는 칸을 받아 두면 보관할 이유가 생기고, 보관하면 지울 일이
- * 생긴다.
+ * 받는 것은 전공명 · 전공계열 · 지금 상태 · 겪은 정도 · 가고 싶은 쪽뿐이다.
+ * 학위는 응시가 이미 들고 있고, **이름과 학교와 학번과 연락처는 받지
+ * 않는다.** 분석에 쓰이지 않는 칸을 받아 두면 보관할 이유가 생기고,
+ * 보관하면 지울 일이 생긴다.
  *
- * 전공명은 준식별자다. 학위·계열과 함께 놓으면 사람이 좁혀져서, 받는
- * 자리에서 바로 **보존 기한**을 박는다. 기한은 분석을 끝낼 수 있는
- * 길이로 정한다(90일).
+ * **여기서 받은 것은 Core 판정에 들어가지 않는다.** 섞임을 보려고 받는
+ * 분석용 칸이다.
  */
-const KEEP_DAYS = 90;
-
-/** 가명. 사람 이름도 학번도 아니고, 헷갈리는 글자는 빼 둔다 */
-const ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-
-async function freshCode(): Promise<string> {
-  for (let i = 0; i < 40; i += 1) {
-    let x = "";
-    for (let j = 0; j < 5; j += 1) x += ALPHABET[randomInt(ALPHABET.length)];
-    const had = await queryOne<{ code: string }>(
-      `SELECT code FROM v3_pilot_participants WHERE code = $1`, [`V3-${x}`]);
-    if (!had) return `V3-${x}`;
-  }
-  throw new Error("가명을 만들지 못했습니다");
-}
-
 const FIELDS = ["STEM", "HUMANITIES_SOCIAL", "BUSINESS", "OTHER_INTERDISCIPLINARY"];
 const STATUS = ["enrolled", "on_leave", "graduated", "employed", "job_seeking", "other"];
 const STAGES = ["bachelor", "master", "phd", "postdoc"];
+const LEVELS = ["none", "coursework", "lab", "internship", "industry"];
 
-export async function joinPilot(form: FormData): Promise<void> {
+export async function saveProfile(form: FormData): Promise<void> {
   const user = await requireUser();
+  const p = await participantOf(user.id);
+  /* 초대를 지나지 않은 사람은 여기서 만들지 않는다. 링크가 자리를 만든다 */
+  if (!p) redirect("/v3/pilot?e=invite");
+
   const pick = (k: string, allow: string[]) => {
     const v = String(form.get(k) ?? "");
     return allow.includes(v) ? v : null;
@@ -49,27 +37,40 @@ export async function joinPilot(form: FormData): Promise<void> {
   const major = String(form.get("major_name") ?? "").trim().slice(0, 80) || null;
   const interest = String(form.get("career_interest") ?? "").trim().slice(0, 120) || null;
 
-  const cohort = "V3_PILOT_1";
-  const had = await queryOne<{ id: string }>(
-    `SELECT id::text FROM v3_pilot_participants WHERE user_id = $1 AND cohort = $2`,
-    [user.id, cohort]);
-
-  if (had) {
-    await query(
-      `UPDATE v3_pilot_participants
-          SET education_stage = $2, major_name = $3, major_field = $4,
-              current_status = $5, career_interest = $6
-        WHERE id = $1`,
-      [had.id, stage, major, pick("major_field", FIELDS), pick("current_status", STATUS), interest]);
-  } else {
-    await query(
-      `INSERT INTO v3_pilot_participants
-         (user_id, code, cohort, education_stage, major_name, major_field,
-          current_status, career_interest, purge_after)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8, (now() + ($9 || ' days')::interval)::date)`,
-      [user.id, await freshCode(), cohort, stage, major,
-        pick("major_field", FIELDS), pick("current_status", STATUS), interest,
-        String(KEEP_DAYS)]);
-  }
+  await query(
+    `UPDATE v3_pilot_participants
+        SET education_stage = $2, major_name = $3, major_field = $4,
+            current_status = $5, career_interest = $6, experience_level = $7,
+            interest_area = $8
+      WHERE id = $1`,
+    [p.id, stage, major, pick("major_field", FIELDS), pick("current_status", STATUS),
+      interest, pick("experience_level", LEVELS),
+      String(form.get("interest_area") ?? "").trim().slice(0, 40) || null]);
   redirect("/v3/pilot?ok=1");
+}
+
+/** 적어 주신 것을 지금 지운다. 그만두는 길을 단추 하나로 둔다 */
+export async function leavePilot(): Promise<void> {
+  const user = await requireUser();
+  const p = await participantOf(user.id);
+  if (!p) redirect("/my");
+  await query(
+    `UPDATE v3_pilot_feedback f SET text = NULL
+       FROM v3_attempts a
+      WHERE a.id = f.attempt_id AND a.user_id = $1 AND f.text IS NOT NULL`,
+    [user.id]);
+  await query(
+    `UPDATE v3_pilot_participants
+        SET major_name = NULL, career_interest = NULL, purged_at = now()
+      WHERE id = $1`, [p.id]);
+  redirect("/v3/pilot?left=1");
+}
+
+/** 그 사람의 가장 최근 응시. 이어서 할 자리를 적어 주려고 본다 */
+export async function latestAttemptOf(userId: string): Promise<
+  { id: string; tier: string; status: string } | null
+> {
+  return queryOne<{ id: string; tier: string; status: string }>(
+    `SELECT id::text, tier, status FROM v3_attempts
+      WHERE user_id = $1 ORDER BY started_at DESC LIMIT 1`, [userId]);
 }

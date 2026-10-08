@@ -34,6 +34,9 @@ pour "PHASE2.1" -f db/schema_phase2_1.sql
 pour "PHASE2.2" -f db/schema_phase2_2.sql
 pour "PHASE2.3" -f db/schema_phase2_3.sql
 pour "PHASE2.4" -f db/schema_phase2_4.sql
+# ME_V3. 여기 적지 않아 **배포된 적이 없는 표**가 넉 달 있었다
+pour "ME_V3"    -f db/schema_v3_runtime.sql
+pour "ME_V3 파일럿" -f db/schema_v3_pilot.sql
 
 echo; echo "── 검사 문항"
 node ops/seed-instrument.cjs
