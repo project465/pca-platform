@@ -151,7 +151,7 @@ export default async function V3PilotOne({
         <h2>그 사람이 본 것</h2>
         <p className="sub">
           응시자가 보는 화면 그대로 엽니다. 운영자 전용 화면을 따로 그리지
-          않습니다 — 따로 그리면 둘이 갈리고, 갈린 쪽을 보고 판단하게 됩니다.
+          않습니다. 따로 그리면 둘이 갈리고, 갈린 쪽을 보고 판단하게 됩니다.
           {a.quality ? ` 응답 품질 ${a.quality}.` : ""}
           {` 깊게 본 영역 ${a.opened_deep}개.`}
         </p>

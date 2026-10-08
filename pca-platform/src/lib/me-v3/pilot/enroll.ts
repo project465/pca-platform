@@ -67,7 +67,7 @@ async function nextCode(wave: number): Promise<string> {
 export const TIERS = ["BASIC", "STANDARD", "PRO"] as const;
 export type PilotTier = typeof TIERS[number];
 
-/** 이용권이 가리킬 자리. **꺼 둔 상품이다** — 가격표에 나오지 않는다 */
+/** 이용권이 가리킬 자리. **꺼 둔 상품이라** 가격표에 나오지 않는다 */
 const PRODUCT: Record<PilotTier, string> = {
   BASIC: "ME_V3_BASIC_KR",
   STANDARD: "ME_V3_STANDARD_KR",
@@ -154,7 +154,7 @@ export async function redeem(t: string, userId: string): Promise<RedeemResult> {
        DO UPDATE SET enrollment_id = EXCLUDED.enrollment_id, wave = EXCLUDED.wave`,
     [userId, e.code, e.cohort, e.id, e.wave]);
 
-  /* 등급을 열어 주는 이용권. **주문을 만들지 않는다** — 돈은 한 푼도
+  /* 등급을 열어 주는 이용권. **주문을 만들지 않는다.** 돈은 한 푼도
      움직이지 않았고, 주문을 지어 적으면 매상이 그만큼 늘어난다.
      다시 눌러도 한 줄만 생긴다: 이용권이 늘면 같은 사람이 한 번 더 풀 수
      있고, 그러면 스무 명짜리 표본에 같은 사람이 두 번 서서 규준이 오염된다 */

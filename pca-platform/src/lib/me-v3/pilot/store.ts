@@ -193,7 +193,7 @@ export type RowFilter = {
 /**
  * 운영 표.
  *
- * **거르는 자리를 넷으로 둔다** — wave · 등급 · 진행 · 손볼 일. 검색 칸과
+ * **거르는 자리를 넷으로 둔다**(wave · 등급 · 진행 · 손볼 일). 검색 칸과
  * 내보내기를 달면 스무 명을 보는 화면이 관리 시스템이 되고, 파일럿이 끝난
  * 뒤 아무도 안 쓰는 화면이 하나 남는다.
  *
@@ -236,7 +236,7 @@ export async function pilotRows(f: RowFilter = {}): Promise<PilotRow[]> {
                 CASE WHEN a.tier = 'BASIC' THEN ARRAY['all','BASIC']
                      ELSE ARRAY['all','PAID', COALESCE(a.tier,'STANDARD')] END))::int
               AS feedback_items,
-            -- 냈는데 결과가 없다 — 이 자리에서 보려는 오류가 그것이다.
+            -- 냈는데 결과가 없다. 이 자리에서 보려는 오류가 그것이다.
             -- job_failures.attempt_id 는 V2 응시를 가리켜 여기 쓸 수 없다
             (a.submitted_at IS NOT NULL AND s.id IS NULL) AS broken
        FROM v3_pilot_participants p

@@ -81,9 +81,9 @@ const DONE_KO: Record<string, string> = {
 /**
  * 본 파일럿 한 표.
  *
- * **거르는 자리를 넷으로 둔다** — wave · 등급 · 진행 · 손볼 일. 스무 명에서
+ * **거르는 자리를 넷으로 둔다**(wave · 등급 · 진행 · 손볼 일). 스무 명에서
  * 서른 명을 보는 자리에 검색과 내보내기를 달면, 파일럿이 끝난 뒤 아무도
- * 안 쓰는 화면이 하나 남는다. 여기서 답해야 하는 물음은 다섯이다 — 누가
+ * 안 쓰는 화면이 하나 남는다. 여기서 답해야 하는 물음은 다섯이다. 누가
  * 끝냈는가 · 얼마나 걸렸는가 · 결과가 나왔는가 · 의견을 적었는가 · 오늘
  * 손볼 것이 무엇인가.
  *
@@ -91,7 +91,7 @@ const DONE_KO: Record<string, string> = {
  * 아예 뽑지 않는다(준식별자라서 학위·계열과 같이 놓으면 사람이 좁혀진다).
  *
  * **다섯 명이 안 되는 묶음은 평균을 내지 않는다.** 가려서 보여 주는 것이
- * 아니라 값을 만들지 않는다 — 값이 없어야 캡처에도 안 남는다.
+ * 아니라 값을 만들지 않는다. 값이 없어야 캡처에도 안 남는다.
  */
 export default async function V3PilotPage({
   searchParams,
@@ -259,7 +259,7 @@ export default async function V3PilotPage({
         <h2>퍼널</h2>
         <p className="sub">
           사람 수로 셉니다. 같은 응시의 같은 걸음은 한 번만 적히므로 줄
-          수가 곧 사람 수입니다. 비율은 여기서 만들지 않습니다 — 바닥이 0 인데
+          수가 곧 사람 수입니다. 비율은 여기서 만들지 않습니다. 바닥이 0 인데
           0% 를 찍으면 거짓말입니다. 검사 시작과 등급 완료는 응답과 제출 시각에서
           옮겨 적습니다. <SyncButton />
         </p>
@@ -282,7 +282,7 @@ export default async function V3PilotPage({
         <h2>묶음마다 걸린 시간</h2>
         <p className="sub">
           답이 찍힌 시각에서 읽습니다. 답 사이가 20분을 넘으면 그 틈은 빼고
-          셉니다 — 창을 열어 둔 채 밥을 먹고 온 것을 어려웠다고 읽으면 안 됩니다.
+          셉니다. 창을 열어 둔 채 밥을 먹고 온 것을 어려웠다고 읽으면 안 됩니다.
           중앙값과 1·3사분위를 적고 평균은 내지 않습니다.
         </p>
         {blocks.every((b) => b.n === 0) ? (
@@ -314,7 +314,7 @@ export default async function V3PilotPage({
             {own.map((o) => (
               <tr key={o.label}>
                 <td>{o.label}</td><td>{o.n}</td>
-                <td>{o.share === null ? "— (적음)" : `${o.share}%`}</td>
+                <td>{o.share === null ? "적음" : `${o.share}%`}</td>
               </tr>
             ))}
           </tbody>
@@ -354,7 +354,7 @@ export default async function V3PilotPage({
         <h2>지표마다 따로</h2>
         <p className="sub">
           {MIN_CELL}명이 안 되는 지표는 평균을 내지 않고 수만 적습니다.
-          여섯 지표를 한 숫자로 합치지 않습니다 — 합치면 무엇을 고쳐야
+          여섯 지표를 한 숫자로 합치지 않습니다. 합치면 무엇을 고쳐야
           할지 알 수 없습니다. 값에 대한 답은 치러 본 값이 아닌 짐작입니다.
         </p>
         {mets.length === 0 ? (
@@ -367,7 +367,7 @@ export default async function V3PilotPage({
               {mets.map((m) => (
                 <tr key={m.code}>
                   <td>{m.label}</td><td>{m.n}</td>
-                  <td>{m.mean ?? `— (${MIN_CELL}명 미만)`}</td>
+                  <td>{m.mean ?? `${MIN_CELL}명 미만`}</td>
                 </tr>
               ))}
             </tbody>
