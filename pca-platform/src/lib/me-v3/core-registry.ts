@@ -23,7 +23,9 @@ export const CONTENT_DIR = process.env.CONTENT_DIR ?? "sites/pca-platform/conten
 export type CoreFile =
   | "taxonomy" | "domains" | "checklists" | "items_blueprint"
   | "checklist_additions" | "common_additions" | "evidence_remap"
-  | "legacy_evidence_map" | "items";
+  | "legacy_evidence_map" | "items" | "relations" | "migration";
+
+export type PackKind = "industry" | "role";
 
 export type CoreEntry = {
   code: string;
@@ -35,9 +37,12 @@ export type CoreEntry = {
   status: "building" | "planned" | "live" | "archived";
   markets: string[];
   files: Partial<Record<CoreFile, string>>;
-  packs?: { industry?: string; role?: string };
+  packs?: Partial<Record<PackKind, string>>;
   domain_count: number | null;
   axis_count: number;
+  /** 지난 판본의 파일. 새 응시는 쓰지 않고 되만들기에만 쓴다 */
+  frozen?: { assessment_version: string; item_bank_version: string;
+             note: string; files: Record<string, string> }[];
 };
 
 export type Registry = {
@@ -84,6 +89,24 @@ export function coreFile<T>(code: string, kind: CoreFile, dir = CONTENT_DIR): T 
   const at = join(dir, name);
   if (!existsSync(at)) throw new Error(`${code} 의 ${kind} 파일이 없습니다: ${at}`);
   return JSON.parse(readFileSync(at, "utf8")) as T;
+}
+
+/**
+ * 그 core 의 산업팩이나 역할팩 파일.
+ *
+ * **파일 이름을 코드에 적지 않는다.** 처음에는 `industry-packs.json` 을 엔진과
+ * 검사와 화면에 각각 적어 두었는데, 판본을 올리는 날 그 세 자리를 따로 고쳐야
+ * 했고 한 자리를 놓치면 옛 팩과 새 팩이 한 응시에 섞인다.
+ */
+export function packFile(code: string, kind: PackKind, dir = CONTENT_DIR): string {
+  const name = core(code, dir).packs?.[kind];
+  if (!name) throw new Error(`${code} 에 ${kind} 팩이 등록되지 않았습니다`);
+  return join(dir, name);
+}
+
+/** 팩 파일을 읽는다 */
+export function packs<T>(code: string, kind: PackKind, dir = CONTENT_DIR): T {
+  return JSON.parse(readFileSync(packFile(code, kind, dir), "utf8")) as T;
 }
 
 /**

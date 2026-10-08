@@ -1,0 +1,1626 @@
+{
+ "schema_version": "me-v3-items-blueprint.2",
+ "assessment_version": "ME_V3_2",
+ "note": "문항 자리와 쓰임만 정한 blueprint 다. 문면은 문항 은행이 든다. `result_sections` 가 빈 자리가 하나도 없어야 한다: 받고 쓰지 않는 문항을 0 으로 두는 것이 이 파일의 목적이다. ME_V3_2 에서 바뀐 것은 선별 축의 자리가 영역마다 둘로 늘어난 것, 선별 축의 넷째가 조직 활용에서 실패·수정으로 바뀐 것, 역할·조직 선호 다섯 점 척도 열넷이 빠진 것, 비이공계 대학원 분기 묶음 셋이 빠지고 번역 맥락 묶음 하나가 들어온 것이다",
+ "rules": [
+  "한 문항에 동작 하나 · 대상 하나 · 축 하나",
+  "접속사와 가운뎃점으로 이어진 명사가 셋 이상이면 쓰기 전에 다시 본다",
+  "역방향 문항은 영역 훑기 밖에 둔다",
+  "함정 문항을 쓰지 않는다. 응답과 체크리스트의 어긋남을 신호로 쓴다",
+  "보기 넷은 네 단계이고 수준 이름을 문면에 적지 않는다",
+  "같은 응답이면 학위와 계열이 달라도 수준이 같다",
+  "선호를 묻는 자리는 점수를 만들지 않는다. 고르기로 받고 결과 맥락과 다음 화면만 정한다",
+  "산업과 역할 선택이 Core 판정을 바꾸지 않는다"
+ ],
+ "result_sections": {
+  "A": "강하게 드러난 기술영역",
+  "B": "비교가 필요한 영역",
+  "C": "아직 판단하기 어려운 영역",
+  "D": "실제 해본 업무",
+  "E": "직접 해본 기술 판단",
+  "F": "이미 있는 근거",
+  "G": "부족한 근거",
+  "H": "직무로 번역 가능한 경험",
+  "I": "다음 행동",
+  "J": "비교할 직무"
+ },
+ "slots": [
+  {
+   "id": "G_TD01_INT",
+   "block": "CORE-GRID",
+   "construct": "interest",
+   "domain": "TD01",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD01_EXP",
+   "block": "CORE-GRID",
+   "construct": "exposure",
+   "domain": "TD01",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "D"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD01_LEA",
+   "block": "CORE-GRID",
+   "construct": "learning_intent",
+   "domain": "TD01",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD02_INT",
+   "block": "CORE-GRID",
+   "construct": "interest",
+   "domain": "TD02",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD02_EXP",
+   "block": "CORE-GRID",
+   "construct": "exposure",
+   "domain": "TD02",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "D"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD02_LEA",
+   "block": "CORE-GRID",
+   "construct": "learning_intent",
+   "domain": "TD02",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD03_INT",
+   "block": "CORE-GRID",
+   "construct": "interest",
+   "domain": "TD03",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD03_EXP",
+   "block": "CORE-GRID",
+   "construct": "exposure",
+   "domain": "TD03",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "D"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD03_LEA",
+   "block": "CORE-GRID",
+   "construct": "learning_intent",
+   "domain": "TD03",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD04_INT",
+   "block": "CORE-GRID",
+   "construct": "interest",
+   "domain": "TD04",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD04_EXP",
+   "block": "CORE-GRID",
+   "construct": "exposure",
+   "domain": "TD04",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "D"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD04_LEA",
+   "block": "CORE-GRID",
+   "construct": "learning_intent",
+   "domain": "TD04",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD05_INT",
+   "block": "CORE-GRID",
+   "construct": "interest",
+   "domain": "TD05",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD05_EXP",
+   "block": "CORE-GRID",
+   "construct": "exposure",
+   "domain": "TD05",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "D"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD05_LEA",
+   "block": "CORE-GRID",
+   "construct": "learning_intent",
+   "domain": "TD05",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD06_INT",
+   "block": "CORE-GRID",
+   "construct": "interest",
+   "domain": "TD06",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD06_EXP",
+   "block": "CORE-GRID",
+   "construct": "exposure",
+   "domain": "TD06",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "D"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD06_LEA",
+   "block": "CORE-GRID",
+   "construct": "learning_intent",
+   "domain": "TD06",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD07_INT",
+   "block": "CORE-GRID",
+   "construct": "interest",
+   "domain": "TD07",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD07_EXP",
+   "block": "CORE-GRID",
+   "construct": "exposure",
+   "domain": "TD07",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "D"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD07_LEA",
+   "block": "CORE-GRID",
+   "construct": "learning_intent",
+   "domain": "TD07",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD08_INT",
+   "block": "CORE-GRID",
+   "construct": "interest",
+   "domain": "TD08",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD08_EXP",
+   "block": "CORE-GRID",
+   "construct": "exposure",
+   "domain": "TD08",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "D"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD08_LEA",
+   "block": "CORE-GRID",
+   "construct": "learning_intent",
+   "domain": "TD08",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD09_INT",
+   "block": "CORE-GRID",
+   "construct": "interest",
+   "domain": "TD09",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD09_EXP",
+   "block": "CORE-GRID",
+   "construct": "exposure",
+   "domain": "TD09",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "D"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD09_LEA",
+   "block": "CORE-GRID",
+   "construct": "learning_intent",
+   "domain": "TD09",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD10_INT",
+   "block": "CORE-GRID",
+   "construct": "interest",
+   "domain": "TD10",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD10_EXP",
+   "block": "CORE-GRID",
+   "construct": "exposure",
+   "domain": "TD10",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "D"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD10_LEA",
+   "block": "CORE-GRID",
+   "construct": "learning_intent",
+   "domain": "TD10",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD11_INT",
+   "block": "CORE-GRID",
+   "construct": "interest",
+   "domain": "TD11",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD11_EXP",
+   "block": "CORE-GRID",
+   "construct": "exposure",
+   "domain": "TD11",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "D"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD11_LEA",
+   "block": "CORE-GRID",
+   "construct": "learning_intent",
+   "domain": "TD11",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD12_INT",
+   "block": "CORE-GRID",
+   "construct": "interest",
+   "domain": "TD12",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD12_EXP",
+   "block": "CORE-GRID",
+   "construct": "exposure",
+   "domain": "TD12",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "D"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "G_TD12_LEA",
+   "block": "CORE-GRID",
+   "construct": "learning_intent",
+   "domain": "TD12",
+   "axis": null,
+   "scale": "3보기",
+   "tier": "BASIC",
+   "result_sections": [
+    "C",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+  },
+  {
+   "id": "CJ_SCOPE",
+   "block": "CORE-JUDGE",
+   "construct": "common_judgement",
+   "domain": null,
+   "axis": "J1",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "B",
+    "E"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "영역과 무관한 판단을 묻는다. 선별 네 축에 없는 축을 선별 등급에서도 한 번은 받는 자리다"
+  },
+  {
+   "id": "CJ_REQUIRE",
+   "block": "CORE-JUDGE",
+   "construct": "common_judgement",
+   "domain": null,
+   "axis": "J2",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "B",
+    "E"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "영역과 무관한 판단을 묻는다. 선별 네 축에 없는 축을 선별 등급에서도 한 번은 받는 자리다"
+  },
+  {
+   "id": "CJ_METHOD",
+   "block": "CORE-JUDGE",
+   "construct": "common_judgement",
+   "domain": null,
+   "axis": "J4",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "B",
+    "E"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "영역과 무관한 판단을 묻는다. 선별 네 축에 없는 축을 선별 등급에서도 한 번은 받는 자리다"
+  },
+  {
+   "id": "CJ_COMPARE",
+   "block": "CORE-JUDGE",
+   "construct": "common_judgement",
+   "domain": null,
+   "axis": "J6",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "B",
+    "E"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "영역과 무관한 판단을 묻는다. 선별 네 축에 없는 축을 선별 등급에서도 한 번은 받는 자리다"
+  },
+  {
+   "id": "CJ_HANDOFF",
+   "block": "CORE-JUDGE",
+   "construct": "common_judgement",
+   "domain": null,
+   "axis": "J8",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "B",
+    "E"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "영역과 무관한 판단을 묻는다. 선별 네 축에 없는 축을 선별 등급에서도 한 번은 받는 자리다"
+  },
+  {
+   "id": "CJ_GIVEN_REV",
+   "block": "CORE-JUDGE",
+   "construct": "common_judgement",
+   "domain": null,
+   "axis": "J3",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "B",
+    "E"
+   ],
+   "reverse": true,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "영역과 무관한 판단을 묻는다. 선별 네 축에 없는 축을 선별 등급에서도 한 번은 받는 자리다"
+  },
+  {
+   "id": "UG_SCOPE",
+   "block": "UG-CORE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J1",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "bachelor 또는 학부 기계공학 + 타계열 대학원",
+   "note": "학부 장면. 수업과 실험과 캡스톤과 인턴에서도 소유까지 갈 수 있게 보기를 넷까지 둔다"
+  },
+  {
+   "id": "UG_DECIDE",
+   "block": "UG-CORE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J3",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "bachelor 또는 학부 기계공학 + 타계열 대학원",
+   "note": "학부 장면. 수업과 실험과 캡스톤과 인턴에서도 소유까지 갈 수 있게 보기를 넷까지 둔다"
+  },
+  {
+   "id": "UG_OUTPUT",
+   "block": "UG-CORE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J5",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "bachelor 또는 학부 기계공학 + 타계열 대학원",
+   "note": "학부 장면. 수업과 실험과 캡스톤과 인턴에서도 소유까지 갈 수 있게 보기를 넷까지 둔다"
+  },
+  {
+   "id": "UG_CHECK",
+   "block": "UG-CORE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J6",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "bachelor 또는 학부 기계공학 + 타계열 대학원",
+   "note": "학부 장면. 수업과 실험과 캡스톤과 인턴에서도 소유까지 갈 수 있게 보기를 넷까지 둔다"
+  },
+  {
+   "id": "UG_FIX",
+   "block": "UG-CORE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J7",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "bachelor 또는 학부 기계공학 + 타계열 대학원",
+   "note": "학부 장면. 수업과 실험과 캡스톤과 인턴에서도 소유까지 갈 수 있게 보기를 넷까지 둔다"
+  },
+  {
+   "id": "UG_USED",
+   "block": "UG-CORE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J8",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "bachelor 또는 학부 기계공학 + 타계열 대학원",
+   "note": "학부 장면. 수업과 실험과 캡스톤과 인턴에서도 소유까지 갈 수 있게 보기를 넷까지 둔다"
+  },
+  {
+   "id": "GS_PROBLEM",
+   "block": "GRAD-CORE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J1",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "master+ · STEM",
+   "note": "석사 이상 이공계 장면. 참여와 소유를 가르는 문면으로 적는다"
+  },
+  {
+   "id": "GS_CONDITION",
+   "block": "GRAD-CORE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J2",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "master+ · STEM",
+   "note": "석사 이상 이공계 장면. 참여와 소유를 가르는 문면으로 적는다"
+  },
+  {
+   "id": "GS_METHOD",
+   "block": "GRAD-CORE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J3",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "master+ · STEM",
+   "note": "석사 이상 이공계 장면. 참여와 소유를 가르는 문면으로 적는다"
+  },
+  {
+   "id": "GS_OUTPUT",
+   "block": "GRAD-CORE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J5",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "master+ · STEM",
+   "note": "석사 이상 이공계 장면. 참여와 소유를 가르는 문면으로 적는다"
+  },
+  {
+   "id": "GS_VERIFY",
+   "block": "GRAD-CORE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J6",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "master+ · STEM",
+   "note": "석사 이상 이공계 장면. 참여와 소유를 가르는 문면으로 적는다"
+  },
+  {
+   "id": "GS_FIX",
+   "block": "GRAD-CORE",
+   "construct": "experience_translation",
+   "domain": null,
+   "axis": "J7",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "D",
+    "E",
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "master+ · STEM",
+   "note": "석사 이상 이공계 장면. 참여와 소유를 가르는 문면으로 적는다"
+  },
+  {
+   "id": "XF_FIELD",
+   "block": "GRAD-XFIELD",
+   "construct": "translation_context",
+   "domain": null,
+   "axis": null,
+   "scale": "고르기",
+   "tier": "BASIC",
+   "result_sections": [
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "master+ · 타계열 (학부 기계공학)",
+   "note": "학부가 기계공학이고 대학원이 타계열인 사람의 맥락만 받는다. 축 수준에 들어가지 않는다: 타계열 대학원 경험을 기계공학 판단으로 세면 두 경험이 섞이고 어느 쪽도 아닌 값이 나온다"
+  },
+  {
+   "id": "XF_BRIDGE",
+   "block": "GRAD-XFIELD",
+   "construct": "translation_context",
+   "domain": null,
+   "axis": null,
+   "scale": "고르기",
+   "tier": "BASIC",
+   "result_sections": [
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "master+ · 타계열 (학부 기계공학)",
+   "note": "학부가 기계공학이고 대학원이 타계열인 사람의 맥락만 받는다. 축 수준에 들어가지 않는다: 타계열 대학원 경험을 기계공학 판단으로 세면 두 경험이 섞이고 어느 쪽도 아닌 값이 나온다"
+  },
+  {
+   "id": "XF_ME_RECENT",
+   "block": "GRAD-XFIELD",
+   "construct": "translation_context",
+   "domain": null,
+   "axis": null,
+   "scale": "고르기",
+   "tier": "BASIC",
+   "result_sections": [
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "master+ · 타계열 (학부 기계공학)",
+   "note": "학부가 기계공학이고 대학원이 타계열인 사람의 맥락만 받는다. 축 수준에 들어가지 않는다: 타계열 대학원 경험을 기계공학 판단으로 세면 두 경험이 섞이고 어느 쪽도 아닌 값이 나온다"
+  },
+  {
+   "id": "XF_ME_DEPTH",
+   "block": "GRAD-XFIELD",
+   "construct": "translation_context",
+   "domain": null,
+   "axis": null,
+   "scale": "고르기",
+   "tier": "BASIC",
+   "result_sections": [
+    "H"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "master+ · 타계열 (학부 기계공학)",
+   "note": "학부가 기계공학이고 대학원이 타계열인 사람의 맥락만 받는다. 축 수준에 들어가지 않는다: 타계열 대학원 경험을 기계공학 판단으로 세면 두 경험이 섞이고 어느 쪽도 아닌 값이 나온다"
+  },
+  {
+   "id": "P4_J3_1",
+   "block": "PROBE-S4",
+   "construct": "axis_level",
+   "domain": "selected",
+   "axis": "J3",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "instances": "영역 최대 2 (유료는 심화 영역 전부)",
+   "note": "보기 넷이 네 단계이고 수준 이름을 문면에 적지 않는다. 선별 축은 자리가 둘이다: 하나면 체크리스트를 고르지 않은 사람에게 소유가 구조적으로 설 수 없다"
+  },
+  {
+   "id": "P4_J3_2",
+   "block": "PROBE-S4",
+   "construct": "axis_level",
+   "domain": "selected",
+   "axis": "J3",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "instances": "영역 최대 2 (유료는 심화 영역 전부)",
+   "note": "보기 넷이 네 단계이고 수준 이름을 문면에 적지 않는다. 선별 축은 자리가 둘이다: 하나면 체크리스트를 고르지 않은 사람에게 소유가 구조적으로 설 수 없다"
+  },
+  {
+   "id": "P4_J5_1",
+   "block": "PROBE-S4",
+   "construct": "axis_level",
+   "domain": "selected",
+   "axis": "J5",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "instances": "영역 최대 2 (유료는 심화 영역 전부)",
+   "note": "보기 넷이 네 단계이고 수준 이름을 문면에 적지 않는다. 선별 축은 자리가 둘이다: 하나면 체크리스트를 고르지 않은 사람에게 소유가 구조적으로 설 수 없다"
+  },
+  {
+   "id": "P4_J5_2",
+   "block": "PROBE-S4",
+   "construct": "axis_level",
+   "domain": "selected",
+   "axis": "J5",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "instances": "영역 최대 2 (유료는 심화 영역 전부)",
+   "note": "보기 넷이 네 단계이고 수준 이름을 문면에 적지 않는다. 선별 축은 자리가 둘이다: 하나면 체크리스트를 고르지 않은 사람에게 소유가 구조적으로 설 수 없다"
+  },
+  {
+   "id": "P4_J6_1",
+   "block": "PROBE-S4",
+   "construct": "axis_level",
+   "domain": "selected",
+   "axis": "J6",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "instances": "영역 최대 2 (유료는 심화 영역 전부)",
+   "note": "보기 넷이 네 단계이고 수준 이름을 문면에 적지 않는다. 선별 축은 자리가 둘이다: 하나면 체크리스트를 고르지 않은 사람에게 소유가 구조적으로 설 수 없다"
+  },
+  {
+   "id": "P4_J6_2",
+   "block": "PROBE-S4",
+   "construct": "axis_level",
+   "domain": "selected",
+   "axis": "J6",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "instances": "영역 최대 2 (유료는 심화 영역 전부)",
+   "note": "보기 넷이 네 단계이고 수준 이름을 문면에 적지 않는다. 선별 축은 자리가 둘이다: 하나면 체크리스트를 고르지 않은 사람에게 소유가 구조적으로 설 수 없다"
+  },
+  {
+   "id": "P4_J7_1",
+   "block": "PROBE-S4",
+   "construct": "axis_level",
+   "domain": "selected",
+   "axis": "J7",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "instances": "영역 최대 2 (유료는 심화 영역 전부)",
+   "note": "보기 넷이 네 단계이고 수준 이름을 문면에 적지 않는다. 선별 축은 자리가 둘이다: 하나면 체크리스트를 고르지 않은 사람에게 소유가 구조적으로 설 수 없다"
+  },
+  {
+   "id": "P4_J7_2",
+   "block": "PROBE-S4",
+   "construct": "axis_level",
+   "domain": "selected",
+   "axis": "J7",
+   "scale": "L0~L3",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "instances": "영역 최대 2 (유료는 심화 영역 전부)",
+   "note": "보기 넷이 네 단계이고 수준 이름을 문면에 적지 않는다. 선별 축은 자리가 둘이다: 하나면 체크리스트를 고르지 않은 사람에게 소유가 구조적으로 설 수 없다"
+  },
+  {
+   "id": "D8_J1_1",
+   "block": "DEEP-S8",
+   "construct": "axis_level",
+   "domain": "selected",
+   "axis": "J1",
+   "scale": "L0~L3",
+   "tier": "STANDARD",
+   "result_sections": [
+    "A",
+    "B",
+    "D",
+    "E",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "instances": "영역 3 (조건 맞으면 4)",
+   "note": "보기 넷이 네 단계이고 수준 이름을 문면에 적지 않는다. 선별 축은 자리가 둘이다: 하나면 체크리스트를 고르지 않은 사람에게 소유가 구조적으로 설 수 없다"
+  },
+  {
+   "id": "D8_J2_1",
+   "block": "DEEP-S8",
+   "construct": "axis_level",
+   "domain": "selected",
+   "axis": "J2",
+   "scale": "L0~L3",
+   "tier": "STANDARD",
+   "result_sections": [
+    "A",
+    "B",
+    "D",
+    "E",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "instances": "영역 3 (조건 맞으면 4)",
+   "note": "보기 넷이 네 단계이고 수준 이름을 문면에 적지 않는다. 선별 축은 자리가 둘이다: 하나면 체크리스트를 고르지 않은 사람에게 소유가 구조적으로 설 수 없다"
+  },
+  {
+   "id": "D8_J4_1",
+   "block": "DEEP-S8",
+   "construct": "axis_level",
+   "domain": "selected",
+   "axis": "J4",
+   "scale": "L0~L3",
+   "tier": "STANDARD",
+   "result_sections": [
+    "A",
+    "B",
+    "D",
+    "E",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "instances": "영역 3 (조건 맞으면 4)",
+   "note": "보기 넷이 네 단계이고 수준 이름을 문면에 적지 않는다. 선별 축은 자리가 둘이다: 하나면 체크리스트를 고르지 않은 사람에게 소유가 구조적으로 설 수 없다"
+  },
+  {
+   "id": "D8_J8_1",
+   "block": "DEEP-S8",
+   "construct": "axis_level",
+   "domain": "selected",
+   "axis": "J8",
+   "scale": "L0~L3",
+   "tier": "STANDARD",
+   "result_sections": [
+    "A",
+    "B",
+    "D",
+    "E",
+    "G"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "instances": "영역 3 (조건 맞으면 4)",
+   "note": "보기 넷이 네 단계이고 수준 이름을 문면에 적지 않는다. 선별 축은 자리가 둘이다: 하나면 체크리스트를 고르지 않은 사람에게 소유가 구조적으로 설 수 없다"
+  },
+  {
+   "id": "CN_1A",
+   "block": "CONSIST",
+   "construct": "consistency",
+   "domain": null,
+   "axis": "J3",
+   "scale": "L0~L3",
+   "tier": "STANDARD",
+   "result_sections": [
+    "B"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "짝과 크게 어긋나면 낮은 쪽으로 적고 점수를 깎지 않는다. 함정 문항이 아니라 응답과 근거의 어긋남을 보는 신호다"
+  },
+  {
+   "id": "CN_1B",
+   "block": "CONSIST",
+   "construct": "consistency",
+   "domain": null,
+   "axis": "J3",
+   "scale": "L0~L3",
+   "tier": "STANDARD",
+   "result_sections": [
+    "B"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "짝과 크게 어긋나면 낮은 쪽으로 적고 점수를 깎지 않는다. 함정 문항이 아니라 응답과 근거의 어긋남을 보는 신호다"
+  },
+  {
+   "id": "CN_2A",
+   "block": "CONSIST",
+   "construct": "consistency",
+   "domain": null,
+   "axis": "J5",
+   "scale": "L0~L3",
+   "tier": "STANDARD",
+   "result_sections": [
+    "B"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "짝과 크게 어긋나면 낮은 쪽으로 적고 점수를 깎지 않는다. 함정 문항이 아니라 응답과 근거의 어긋남을 보는 신호다"
+  },
+  {
+   "id": "CN_2B",
+   "block": "CONSIST",
+   "construct": "consistency",
+   "domain": null,
+   "axis": "J5",
+   "scale": "L0~L3",
+   "tier": "STANDARD",
+   "result_sections": [
+    "B"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "짝과 크게 어긋나면 낮은 쪽으로 적고 점수를 깎지 않는다. 함정 문항이 아니라 응답과 근거의 어긋남을 보는 신호다"
+  },
+  {
+   "id": "TR_T1",
+   "block": "TRANS-10",
+   "construct": "translation_step",
+   "domain": null,
+   "axis": "J1",
+   "scale": "보기 선택 + 한 줄",
+   "tier": "PRO",
+   "result_sections": [
+    "E",
+    "F",
+    "H",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "번역 열 단계. 보기 메뉴는 화면이 정하고 단계와 수준은 전 계열이 같다"
+  },
+  {
+   "id": "TR_T2",
+   "block": "TRANS-10",
+   "construct": "translation_step",
+   "domain": null,
+   "axis": "J2",
+   "scale": "보기 선택 + 한 줄",
+   "tier": "PRO",
+   "result_sections": [
+    "E",
+    "F",
+    "H",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "번역 열 단계. 보기 메뉴는 화면이 정하고 단계와 수준은 전 계열이 같다"
+  },
+  {
+   "id": "TR_T3",
+   "block": "TRANS-10",
+   "construct": "translation_step",
+   "domain": null,
+   "axis": "J3",
+   "scale": "보기 선택 + 한 줄",
+   "tier": "PRO",
+   "result_sections": [
+    "E",
+    "F",
+    "H",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "번역 열 단계. 보기 메뉴는 화면이 정하고 단계와 수준은 전 계열이 같다"
+  },
+  {
+   "id": "TR_T4",
+   "block": "TRANS-10",
+   "construct": "translation_step",
+   "domain": null,
+   "axis": "J3",
+   "scale": "보기 선택 + 한 줄",
+   "tier": "PRO",
+   "result_sections": [
+    "E",
+    "F",
+    "H",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "번역 열 단계. 보기 메뉴는 화면이 정하고 단계와 수준은 전 계열이 같다"
+  },
+  {
+   "id": "TR_T5",
+   "block": "TRANS-10",
+   "construct": "translation_step",
+   "domain": null,
+   "axis": "J4",
+   "scale": "보기 선택 + 한 줄",
+   "tier": "PRO",
+   "result_sections": [
+    "E",
+    "F",
+    "H",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "번역 열 단계. 보기 메뉴는 화면이 정하고 단계와 수준은 전 계열이 같다"
+  },
+  {
+   "id": "TR_T6",
+   "block": "TRANS-10",
+   "construct": "translation_step",
+   "domain": null,
+   "axis": "J6",
+   "scale": "보기 선택 + 한 줄",
+   "tier": "PRO",
+   "result_sections": [
+    "E",
+    "F",
+    "H",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "번역 열 단계. 보기 메뉴는 화면이 정하고 단계와 수준은 전 계열이 같다"
+  },
+  {
+   "id": "TR_T7",
+   "block": "TRANS-10",
+   "construct": "translation_step",
+   "domain": null,
+   "axis": "J6",
+   "scale": "보기 선택 + 한 줄",
+   "tier": "PRO",
+   "result_sections": [
+    "E",
+    "F",
+    "H",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "번역 열 단계. 보기 메뉴는 화면이 정하고 단계와 수준은 전 계열이 같다"
+  },
+  {
+   "id": "TR_T8",
+   "block": "TRANS-10",
+   "construct": "translation_step",
+   "domain": null,
+   "axis": "J3",
+   "scale": "보기 선택 + 한 줄",
+   "tier": "PRO",
+   "result_sections": [
+    "E",
+    "F",
+    "H",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "번역 열 단계. 보기 메뉴는 화면이 정하고 단계와 수준은 전 계열이 같다"
+  },
+  {
+   "id": "TR_T9",
+   "block": "TRANS-10",
+   "construct": "translation_step",
+   "domain": null,
+   "axis": "J5",
+   "scale": "보기 선택 + 한 줄",
+   "tier": "PRO",
+   "result_sections": [
+    "E",
+    "F",
+    "H",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "번역 열 단계. 보기 메뉴는 화면이 정하고 단계와 수준은 전 계열이 같다"
+  },
+  {
+   "id": "TR_T10",
+   "block": "TRANS-10",
+   "construct": "translation_step",
+   "domain": null,
+   "axis": "J8",
+   "scale": "보기 선택 + 한 줄",
+   "tier": "PRO",
+   "result_sections": [
+    "E",
+    "F",
+    "H",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": true,
+   "field_routing": "all",
+   "note": "번역 열 단계. 보기 메뉴는 화면이 정하고 단계와 수준은 전 계열이 같다"
+  },
+  {
+   "id": "TG_ROLE",
+   "block": "TARGET",
+   "construct": "target_input",
+   "domain": null,
+   "axis": null,
+   "scale": "고르기",
+   "tier": "PRO",
+   "result_sections": [
+    "J",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "목표 입력. 결과의 대조표와 지역 층이 읽는다"
+  },
+  {
+   "id": "TG_INDUSTRY",
+   "block": "TARGET",
+   "construct": "target_input",
+   "domain": null,
+   "axis": null,
+   "scale": "고르기",
+   "tier": "PRO",
+   "result_sections": [
+    "J",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "목표 입력. 결과의 대조표와 지역 층이 읽는다"
+  },
+  {
+   "id": "TG_OC",
+   "block": "TARGET",
+   "construct": "target_input",
+   "domain": null,
+   "axis": null,
+   "scale": "고르기",
+   "tier": "PRO",
+   "result_sections": [
+    "J",
+    "I"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "목표 입력. 결과의 대조표와 지역 층이 읽는다"
+  },
+  {
+   "id": "CF_PAIR_1",
+   "block": "CORE-FORCE",
+   "construct": "forced_choice",
+   "domain": "dynamic",
+   "axis": null,
+   "scale": "둘 중 하나",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "전 영역을 같은 값으로 답한 사람을 가른다. 보기는 묶인 영역의 줄을 그대로 쓴다. 점수로 바꾸지 않고 제시 순서만 정한다"
+  },
+  {
+   "id": "CF_PAIR_2",
+   "block": "CORE-FORCE",
+   "construct": "forced_choice",
+   "domain": "dynamic",
+   "axis": null,
+   "scale": "둘 중 하나",
+   "tier": "BASIC",
+   "result_sections": [
+    "A",
+    "B"
+   ],
+   "reverse": false,
+   "stage_variants": false,
+   "field_routing": "all",
+   "note": "전 영역을 같은 값으로 답한 사람을 가른다. 보기는 묶인 영역의 줄을 그대로 쓴다. 점수로 바꾸지 않고 제시 순서만 정한다"
+  }
+ ]
+}

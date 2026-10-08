@@ -1,0 +1,2185 @@
+{
+ "schema_version": "me-v3-2-relations.1",
+ "core": "ME_CORE_V3",
+ "note": "기술영역과 산업, 기술영역과 역할의 관계를 두 표로 둔다. 세 축을 미리 곱해 두지 않는다: 열두 영역과 여덟 산업과 일곱 역할을 곱하면 육백일흔두 줄이 되고 그만큼의 줄을 사람이 손으로 유지할 수 없다. 산업과 역할을 함께 읽을 때는 런타임이 두 표를 같은 영역에서 맞붙인다. 어느 줄도 점수를 만들지 않는다: `strength` 는 설명하는 차례를 정하고 `appears_as` 는 결과지가 그 말로 옮겨 적을 때 읽는다",
+ "combine_rule": "산업 하나와 역할 하나를 함께 고른 사람에게는 두 표에서 같은 영역의 줄을 뽑아 나란히 놓는다. 둘 다 `중심` 인 영역이 먼저 서고, 한쪽만 중심인 영역이 다음이고, 양쪽이 드문 영역은 적지 않는다",
+ "td_industry": [
+  {
+   "td": "TD01",
+   "td_name": "기구·제품 설계",
+   "industry": "INDUSTRY_SEMICON_V2",
+   "industry_name": "반도체",
+   "strength": "있음",
+   "appears_as": "나노에서 마이크론 단위의 위치를 지키는 구조와 공차 배분으로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "정밀도를 부품마다 나눠 주는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "구조·내구 해석",
+   "industry": "INDUSTRY_SEMICON_V2",
+   "industry_name": "반도체",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "열·유체 시스템",
+   "industry": "INDUSTRY_SEMICON_V2",
+   "industry_name": "반도체",
+   "strength": "있음",
+   "appears_as": "챔버와 스테이지의 온도차가 곧 위치 오차가 되므로 열설계가 정밀도 설계입니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "열로 생기는 변형을 설계 단계에서 잡는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "동역학·진동·NVH",
+   "industry": "INDUSTRY_SEMICON_V2",
+   "industry_name": "반도체",
+   "strength": "있음",
+   "appears_as": "이송부의 떨림이 정렬 오차로 바로 나타나 측정으로 확인합니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "움직이는 축의 떨림을 측정으로 확인하는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "구동·전달·동작 설계",
+   "industry": "INDUSTRY_SEMICON_V2",
+   "industry_name": "반도체",
+   "strength": "있음",
+   "appears_as": "스테이지의 반복 정지 정확도가 장비 사양으로 적힙니다",
+   "axes_watched": [],
+   "dimensions": [
+    "정지 정확도를 반복해서 재는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·강도·파손",
+   "industry": "INDUSTRY_SEMICON_V2",
+   "industry_name": "반도체",
+   "strength": "있음",
+   "appears_as": "가스가 나오지 않는 재질과 표면 처리가 오염 조건으로 들어옵니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "진공과 청정 조건을 재료 조건으로 옮기는가",
+    "오염이 들어오는 길을 설계로 끊는가",
+    "재료와 표면 처리 조합을 바꿔 보는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "시험·계측",
+   "industry": "INDUSTRY_SEMICON_V2",
+   "industry_name": "반도체",
+   "strength": "있음",
+   "appears_as": "같은 값이 다시 나오는지가 판정의 조건입니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "같은 값이 다시 나오는지를 보는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "생산·공정기술",
+   "industry": "INDUSTRY_SEMICON_V2",
+   "industry_name": "반도체",
+   "strength": "있음",
+   "appears_as": "공정이 되는 조건의 폭이 수율로 바로 환산됩니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "조건을 바꿔 가며 되는 범위를 찾는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "장비·설비 운용",
+   "industry": "INDUSTRY_SEMICON_V2",
+   "industry_name": "반도체",
+   "strength": "중심",
+   "appears_as": "장비가 멈춘 시간과 고장 간격이 고객과의 계약 조건입니다",
+   "axes_watched": [
+    "J8",
+    "J7"
+   ],
+   "dimensions": [
+    "장비가 멈춘 시간을 숫자로 관리하는가",
+    "고장이 또 나지 않게 원인을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질·신뢰성",
+   "industry": "INDUSTRY_SEMICON_V2",
+   "industry_name": "반도체",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "요구조건·제약·일정",
+   "industry": "INDUSTRY_SEMICON_V2",
+   "industry_name": "반도체",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "반복작업 자동화·데이터",
+   "industry": "INDUSTRY_SEMICON_V2",
+   "industry_name": "반도체",
+   "strength": "있음",
+   "appears_as": "장비 종류가 많아 같은 계산과 판정을 남겨 다시 씁니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "반복 계산과 판정을 남겨 다시 쓰게 하는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "기구·제품 설계",
+   "industry": "INDUSTRY_DEFENSE_V2",
+   "industry_name": "방산·항공",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "구조·내구 해석",
+   "industry": "INDUSTRY_DEFENSE_V2",
+   "industry_name": "방산·항공",
+   "strength": "있음",
+   "appears_as": "무게를 줄이는 모든 결정이 강도 근거를 요구합니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "무게와 강도를 맞바꾸는 근거를 세우는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "열·유체 시스템",
+   "industry": "INDUSTRY_DEFENSE_V2",
+   "industry_name": "방산·항공",
+   "strength": "있음",
+   "appears_as": "쓰는 온도 범위가 민간 제품보다 넓어 최악 조건을 함께 봅니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "넓은 온도 범위를 조건으로 두는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "동역학·진동·NVH",
+   "industry": "INDUSTRY_DEFENSE_V2",
+   "industry_name": "방산·항공",
+   "strength": "있음",
+   "appears_as": "충격과 진동 시험이 규격으로 정해져 설계 단계에서 예상합니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "충격과 진동 시험을 설계 단계에서 예상하는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "구동·전달·동작 설계",
+   "industry": "INDUSTRY_DEFENSE_V2",
+   "industry_name": "방산·항공",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·강도·파손",
+   "industry": "INDUSTRY_DEFENSE_V2",
+   "industry_name": "방산·항공",
+   "strength": "있음",
+   "appears_as": "쓸 수 있는 재질이 목록으로 제한되고 안전계수의 근거를 적습니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "안전계수를 어디에 둘지 정하는가",
+    "재질과 공정을 규격 안에서 고르는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "시험·계측",
+   "industry": "INDUSTRY_DEFENSE_V2",
+   "industry_name": "방산·항공",
+   "strength": "있음",
+   "appears_as": "시험은 합격 도장이 아니라 설계를 되돌리는 입력입니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "시험 결과로 설계를 되돌리는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "생산·공정기술",
+   "industry": "INDUSTRY_DEFENSE_V2",
+   "industry_name": "방산·항공",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "장비·설비 운용",
+   "industry": "INDUSTRY_DEFENSE_V2",
+   "industry_name": "방산·항공",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질·신뢰성",
+   "industry": "INDUSTRY_DEFENSE_V2",
+   "industry_name": "방산·항공",
+   "strength": "있음",
+   "appears_as": "한 번의 고장이 임무 실패가 되므로 고장 모드를 미리 뽑습니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "고장 모드를 미리 뽑아 보는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "요구조건·제약·일정",
+   "industry": "INDUSTRY_DEFENSE_V2",
+   "industry_name": "방산·항공",
+   "strength": "중심",
+   "appears_as": "요구가 규격 문서로 들어오고 요구마다 검증 방법이 함께 정해집니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5"
+   ],
+   "dimensions": [
+    "요구를 규격 문서에서 설계 조건으로 옮기는가",
+    "요구마다 무엇으로 됐다고 할지 정하는가",
+    "추적할 수 있게 근거를 남기는가",
+    "여러 팀의 인터페이스를 맞추는가",
+    "일정과 변경을 기록으로 관리하는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "반복작업 자동화·데이터",
+   "industry": "INDUSTRY_DEFENSE_V2",
+   "industry_name": "방산·항공",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "기구·제품 설계",
+   "industry": "INDUSTRY_MOBILITY_V2",
+   "industry_name": "자동차·모빌리티",
+   "strength": "중심",
+   "appears_as": "원가와 무게와 성능을 같은 표에 놓고 치수를 정합니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ],
+   "dimensions": [
+    "원가와 성능을 같은 표에서 결정하는가",
+    "공차 누적을 계산해 조립을 확인하는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "구조·내구 해석",
+   "industry": "INDUSTRY_MOBILITY_V2",
+   "industry_name": "자동차·모빌리티",
+   "strength": "중심",
+   "appears_as": "연비와 주행거리가 무게에 걸려 경량화 근거가 늘 필요합니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ],
+   "dimensions": [
+    "무게를 줄이는 근거를 세우는가",
+    "시험과 해석을 맞춰 보는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "열·유체 시스템",
+   "industry": "INDUSTRY_MOBILITY_V2",
+   "industry_name": "자동차·모빌리티",
+   "strength": "있음",
+   "appears_as": "전동화로 열을 어디로 뺄지가 성능을 가릅니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "열을 어디로 뺄지 정하는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "동역학·진동·NVH",
+   "industry": "INDUSTRY_MOBILITY_V2",
+   "industry_name": "자동차·모빌리티",
+   "strength": "있음",
+   "appears_as": "소리와 떨림이 고객이 바로 느끼는 품질입니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "소리와 떨림의 전달 경로를 가르는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "구동·전달·동작 설계",
+   "industry": "INDUSTRY_MOBILITY_V2",
+   "industry_name": "자동차·모빌리티",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·강도·파손",
+   "industry": "INDUSTRY_MOBILITY_V2",
+   "industry_name": "자동차·모빌리티",
+   "strength": "있음",
+   "appears_as": "필드 불량의 원인을 재질과 조건 가운데로 좁히는 일이 회수 비용을 가릅니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "필드 불량의 원인을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "시험·계측",
+   "industry": "INDUSTRY_MOBILITY_V2",
+   "industry_name": "자동차·모빌리티",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "생산·공정기술",
+   "industry": "INDUSTRY_MOBILITY_V2",
+   "industry_name": "자동차·모빌리티",
+   "strength": "있음",
+   "appears_as": "만들 수 없는 설계는 설계가 아니어서 양산성이 설계 조건입니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "양산이 되는 범위를 설계에 넣는가",
+    "조립과 가공 공수를 보고 형상을 고치는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "장비·설비 운용",
+   "industry": "INDUSTRY_MOBILITY_V2",
+   "industry_name": "자동차·모빌리티",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질·신뢰성",
+   "industry": "INDUSTRY_MOBILITY_V2",
+   "industry_name": "자동차·모빌리티",
+   "strength": "중심",
+   "appears_as": "보증 기간을 가속 시험으로 보증해야 합니다",
+   "axes_watched": [
+    "J6",
+    "J3"
+   ],
+   "dimensions": [
+    "수명을 가속 시험으로 확인하는가",
+    "관리할 특성을 가려 기준을 세우는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "요구조건·제약·일정",
+   "industry": "INDUSTRY_MOBILITY_V2",
+   "industry_name": "자동차·모빌리티",
+   "strength": "있음",
+   "appears_as": "부품 하나의 변경이 여러 팀의 일정을 바꿉니다",
+   "axes_watched": [],
+   "dimensions": [
+    "변경의 영향 범위를 짚는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "반복작업 자동화·데이터",
+   "industry": "INDUSTRY_MOBILITY_V2",
+   "industry_name": "자동차·모빌리티",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "기구·제품 설계",
+   "industry": "INDUSTRY_ROBOT_V2",
+   "industry_name": "로봇·자동화",
+   "strength": "있음",
+   "appears_as": "전달계의 강성과 백래시가 제어로 덮이지 않아 기구가 성능을 가릅니다",
+   "axes_watched": [],
+   "dimensions": [
+    "전달계의 강성과 백래시를 보는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "구조·내구 해석",
+   "industry": "INDUSTRY_ROBOT_V2",
+   "industry_name": "로봇·자동화",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "열·유체 시스템",
+   "industry": "INDUSTRY_ROBOT_V2",
+   "industry_name": "로봇·자동화",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "동역학·진동·NVH",
+   "industry": "INDUSTRY_ROBOT_V2",
+   "industry_name": "로봇·자동화",
+   "strength": "있음",
+   "appears_as": "떨림의 원인을 기구 강성과 조정 가운데로 갈라야 대책이 섭니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "떨림의 원인을 강성과 이득 가운데로 가르는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "구동·전달·동작 설계",
+   "industry": "INDUSTRY_ROBOT_V2",
+   "industry_name": "로봇·자동화",
+   "strength": "중심",
+   "appears_as": "부하와 관성을 보고 구동과 전달계를 정하는 일이 이 산업의 중심입니다",
+   "axes_watched": [
+    "J3",
+    "J6",
+    "J1",
+    "J4",
+    "J5"
+   ],
+   "dimensions": [
+    "부하와 관성을 따져 구동을 고르는가",
+    "사이클 시간과 정밀도를 맞바꾸는가",
+    "반복 정지 정확도를 여러 번 재는가",
+    "손으로 할 일과 장치가 할 일을 가르는가",
+    "시운전 기록을 남기는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·강도·파손",
+   "industry": "INDUSTRY_ROBOT_V2",
+   "industry_name": "로봇·자동화",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "시험·계측",
+   "industry": "INDUSTRY_ROBOT_V2",
+   "industry_name": "로봇·자동화",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "생산·공정기술",
+   "industry": "INDUSTRY_ROBOT_V2",
+   "industry_name": "로봇·자동화",
+   "strength": "있음",
+   "appears_as": "라인 전체의 흐름을 보지 않으면 한 공정만 빨라집니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "장비·설비 운용",
+   "industry": "INDUSTRY_ROBOT_V2",
+   "industry_name": "로봇·자동화",
+   "strength": "있음",
+   "appears_as": "라인이 서면 손실이 바로 생겨 멈춘 원인을 좁힙니다",
+   "axes_watched": [
+    "J8"
+   ],
+   "dimensions": [
+    "장비가 멈춘 원인을 좁히는가",
+    "쓰는 사람에게 조작과 복구를 넘기는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질·신뢰성",
+   "industry": "INDUSTRY_ROBOT_V2",
+   "industry_name": "로봇·자동화",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "요구조건·제약·일정",
+   "industry": "INDUSTRY_ROBOT_V2",
+   "industry_name": "로봇·자동화",
+   "strength": "있음",
+   "appears_as": "사람과 같은 공간에서 움직여 안전 조건이 설계 조건입니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "안전 조건을 설계 조건으로 옮기는가",
+    "현장 조건에 맞춰 사양을 조정하는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "반복작업 자동화·데이터",
+   "industry": "INDUSTRY_ROBOT_V2",
+   "industry_name": "로봇·자동화",
+   "strength": "있음",
+   "appears_as": "호기마다 같은 선정 계산을 해서 남겨 다시 씁니다",
+   "axes_watched": [],
+   "dimensions": [
+    "반복되는 선정 계산을 남겨 다시 쓰는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "기구·제품 설계",
+   "industry": "INDUSTRY_BATTERY_V2",
+   "industry_name": "이차전지",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "구조·내구 해석",
+   "industry": "INDUSTRY_BATTERY_V2",
+   "industry_name": "이차전지",
+   "strength": "있음",
+   "appears_as": "셀이 부풀고 눌리는 것을 전제로 구조가 그 힘을 받습니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "부풀고 눌리는 힘을 구조로 받는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "열·유체 시스템",
+   "industry": "INDUSTRY_BATTERY_V2",
+   "industry_name": "이차전지",
+   "strength": "있음",
+   "appears_as": "열을 어디로 빼는가가 안전과 수명을 같이 가릅니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "열을 어디로 뺄지 정하는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "동역학·진동·NVH",
+   "industry": "INDUSTRY_BATTERY_V2",
+   "industry_name": "이차전지",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "구동·전달·동작 설계",
+   "industry": "INDUSTRY_BATTERY_V2",
+   "industry_name": "이차전지",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·강도·파손",
+   "industry": "INDUSTRY_BATTERY_V2",
+   "industry_name": "이차전지",
+   "strength": "있음",
+   "appears_as": "전해액과 닿는 재질이 제한되어 궁합을 따집니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "재질과 환경의 궁합을 보는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "시험·계측",
+   "industry": "INDUSTRY_BATTERY_V2",
+   "industry_name": "이차전지",
+   "strength": "있음",
+   "appears_as": "측정 편차가 조건 폭보다 크면 판단이 서지 않습니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "측정값이 다시 나오는지 보는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "생산·공정기술",
+   "industry": "INDUSTRY_BATTERY_V2",
+   "industry_name": "이차전지",
+   "strength": "중심",
+   "appears_as": "조건이 되는 폭이 좁고 그 폭이 수율로 바로 나옵니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ],
+   "dimensions": [
+    "조건이 되는 폭을 찾는가",
+    "수율과 공정 시간을 같이 보는가",
+    "불량의 원인을 재료와 설비와 조건 가운데로 가르는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "장비·설비 운용",
+   "industry": "INDUSTRY_BATTERY_V2",
+   "industry_name": "이차전지",
+   "strength": "있음",
+   "appears_as": "정한 조건을 지키는 것은 결국 설비의 일입니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "설비가 조건을 지키는지 보는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질·신뢰성",
+   "industry": "INDUSTRY_BATTERY_V2",
+   "industry_name": "이차전지",
+   "strength": "중심",
+   "appears_as": "한 건의 안전 사고가 전체를 멈추므로 안전 시험을 설계에서 예상합니다",
+   "axes_watched": [
+    "J6",
+    "J3"
+   ],
+   "dimensions": [
+    "안전 시험을 설계 단계에서 예상하는가",
+    "관리할 특성을 가리는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "요구조건·제약·일정",
+   "industry": "INDUSTRY_BATTERY_V2",
+   "industry_name": "이차전지",
+   "strength": "있음",
+   "appears_as": "증설 일정이 먼저 정해지고 설계가 그 일정에 맞춰 갑니다",
+   "axes_watched": [],
+   "dimensions": [
+    "증설 일정과 설계를 함께 묶는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "반복작업 자동화·데이터",
+   "industry": "INDUSTRY_BATTERY_V2",
+   "industry_name": "이차전지",
+   "strength": "있음",
+   "appears_as": "공정 변수가 많아 사람 손으로는 조건을 다시 잡을 수 없습니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "데이터를 모아 조건을 다시 잡는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "기구·제품 설계",
+   "industry": "INDUSTRY_SHIP_V2",
+   "industry_name": "조선·해양",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "구조·내구 해석",
+   "industry": "INDUSTRY_SHIP_V2",
+   "industry_name": "조선·해양",
+   "strength": "있음",
+   "appears_as": "두껍고 긴 구조는 작은 부품과 다르게 거동합니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "큰 구조의 강도를 따지는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "열·유체 시스템",
+   "industry": "INDUSTRY_SHIP_V2",
+   "industry_name": "조선·해양",
+   "strength": "있음",
+   "appears_as": "기관과 보조 기기의 작동점이 계통 성능을 가릅니다",
+   "axes_watched": [],
+   "dimensions": [
+    "열과 유량 작동점을 잡는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "동역학·진동·NVH",
+   "industry": "INDUSTRY_SHIP_V2",
+   "industry_name": "조선·해양",
+   "strength": "있음",
+   "appears_as": "거주 구역의 진동과 소음이 규정 항목으로 들어옵니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "진동과 소음을 다루는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "구동·전달·동작 설계",
+   "industry": "INDUSTRY_SHIP_V2",
+   "industry_name": "조선·해양",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·강도·파손",
+   "industry": "INDUSTRY_SHIP_V2",
+   "industry_name": "조선·해양",
+   "strength": "있음",
+   "appears_as": "바다에서 수십 년을 버티는 재질과 부식 대책이 조건입니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "부식과 긴 수명을 재질 조건으로 두는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "시험·계측",
+   "industry": "INDUSTRY_SHIP_V2",
+   "industry_name": "조선·해양",
+   "strength": "있음",
+   "appears_as": "실제로 띄워 보는 시운전이 마지막 판정입니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "시운전으로 성능을 확인하는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "생산·공정기술",
+   "industry": "INDUSTRY_SHIP_V2",
+   "industry_name": "조선·해양",
+   "strength": "중심",
+   "appears_as": "공장이 아니라 도크에서 만들고 용접이 치수를 바꿉니다",
+   "axes_watched": [
+    "J3",
+    "J2"
+   ],
+   "dimensions": [
+    "용접 변형을 설계에 넣는가",
+    "현장에서 만들 수 있게 설계하는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "장비·설비 운용",
+   "industry": "INDUSTRY_SHIP_V2",
+   "industry_name": "조선·해양",
+   "strength": "있음",
+   "appears_as": "대체 설비가 없어 한 대뿐인 장비를 세우지 않는 것이 일입니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "한 대뿐인 설비를 세우지 않는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질·신뢰성",
+   "industry": "INDUSTRY_SHIP_V2",
+   "industry_name": "조선·해양",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "요구조건·제약·일정",
+   "industry": "INDUSTRY_SHIP_V2",
+   "industry_name": "조선·해양",
+   "strength": "중심",
+   "appears_as": "선급 규정이 설계의 출발점이고 변경이 현장 작업을 바꿉니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5"
+   ],
+   "dimensions": [
+    "규정을 설계 조건으로 옮기는가",
+    "배관과 장비 배치를 맞추는가",
+    "변경의 영향 범위를 짚는가",
+    "도면과 기술 자료를 남기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "반복작업 자동화·데이터",
+   "industry": "INDUSTRY_SHIP_V2",
+   "industry_name": "조선·해양",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "기구·제품 설계",
+   "industry": "INDUSTRY_ENERGY_V2",
+   "industry_name": "에너지·플랜트",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "구조·내구 해석",
+   "industry": "INDUSTRY_ENERGY_V2",
+   "industry_name": "에너지·플랜트",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "열·유체 시스템",
+   "industry": "INDUSTRY_ENERGY_V2",
+   "industry_name": "에너지·플랜트",
+   "strength": "있음",
+   "appears_as": "계통 전체의 성능이 열과 유량의 작동점에서 결정됩니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "열과 유량의 작동점을 잡는가",
+    "계통의 압력과 유량을 맞추는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "동역학·진동·NVH",
+   "industry": "INDUSTRY_ENERGY_V2",
+   "industry_name": "에너지·플랜트",
+   "strength": "있음",
+   "appears_as": "떨림을 재서 고장을 미리 보는 것이 예지 보전의 입구입니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "진동으로 고장을 미리 보는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "구동·전달·동작 설계",
+   "industry": "INDUSTRY_ENERGY_V2",
+   "industry_name": "에너지·플랜트",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·강도·파손",
+   "industry": "INDUSTRY_ENERGY_V2",
+   "industry_name": "에너지·플랜트",
+   "strength": "있음",
+   "appears_as": "교체가 어렵고 비싸 수십 년 수명이 재질 조건입니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "수십 년 수명을 재질 조건으로 두는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "시험·계측",
+   "industry": "INDUSTRY_ENERGY_V2",
+   "industry_name": "에너지·플랜트",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "생산·공정기술",
+   "industry": "INDUSTRY_ENERGY_V2",
+   "industry_name": "에너지·플랜트",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "장비·설비 운용",
+   "industry": "INDUSTRY_ENERGY_V2",
+   "industry_name": "에너지·플랜트",
+   "strength": "중심",
+   "appears_as": "점검 주기와 예비품이 돈으로 계산되고 가동률이 수익입니다",
+   "axes_watched": [
+    "J4",
+    "J3",
+    "J8",
+    "J7"
+   ],
+   "dimensions": [
+    "회전 기계의 상태를 읽는가",
+    "점검 주기와 교체 기준을 정하는가",
+    "멈춘 시간을 숫자로 관리하는가",
+    "고장이 또 나지 않게 원인을 좁히는가",
+    "예비품 보유 기준을 정하는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질·신뢰성",
+   "industry": "INDUSTRY_ENERGY_V2",
+   "industry_name": "에너지·플랜트",
+   "strength": "있음",
+   "appears_as": "사고의 영향이 밖으로 나가 안전과 환경 조건이 설계에 들어옵니다",
+   "axes_watched": [],
+   "dimensions": [
+    "안전과 환경 조건을 설계에 넣는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "요구조건·제약·일정",
+   "industry": "INDUSTRY_ENERGY_V2",
+   "industry_name": "에너지·플랜트",
+   "strength": "있음",
+   "appears_as": "법으로 정해진 점검과 인증이 일정을 정합니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "법정 점검을 요구로 넣는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "반복작업 자동화·데이터",
+   "industry": "INDUSTRY_ENERGY_V2",
+   "industry_name": "에너지·플랜트",
+   "strength": "있음",
+   "appears_as": "오래 돌리면 운전 기록이 쌓여 기준을 다시 잡는 근거가 됩니다",
+   "axes_watched": [],
+   "dimensions": [
+    "운전 기록을 모아 기준을 고치는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "기구·제품 설계",
+   "industry": "INDUSTRY_SMARTFACTORY_V2",
+   "industry_name": "스마트팩토리·장비",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "구조·내구 해석",
+   "industry": "INDUSTRY_SMARTFACTORY_V2",
+   "industry_name": "스마트팩토리·장비",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "열·유체 시스템",
+   "industry": "INDUSTRY_SMARTFACTORY_V2",
+   "industry_name": "스마트팩토리·장비",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "동역학·진동·NVH",
+   "industry": "INDUSTRY_SMARTFACTORY_V2",
+   "industry_name": "스마트팩토리·장비",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "구동·전달·동작 설계",
+   "industry": "INDUSTRY_SMARTFACTORY_V2",
+   "industry_name": "스마트팩토리·장비",
+   "strength": "중심",
+   "appears_as": "현장에 맞는 움직이는 장치는 사 올 수 없어 직접 만듭니다",
+   "axes_watched": [
+    "J1",
+    "J5",
+    "J6"
+   ],
+   "dimensions": [
+    "어디까지 자동화할지 선을 긋는가",
+    "움직이는 장치를 직접 만드는가",
+    "사이클 시간을 재서 맞추는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·강도·파손",
+   "industry": "INDUSTRY_SMARTFACTORY_V2",
+   "industry_name": "스마트팩토리·장비",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "시험·계측",
+   "industry": "INDUSTRY_SMARTFACTORY_V2",
+   "industry_name": "스마트팩토리·장비",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "생산·공정기술",
+   "industry": "INDUSTRY_SMARTFACTORY_V2",
+   "industry_name": "스마트팩토리·장비",
+   "strength": "있음",
+   "appears_as": "한 공정만 빨라지면 다른 데가 막혀 라인 전체를 봅니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "라인 전체의 흐름을 보는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "장비·설비 운용",
+   "industry": "INDUSTRY_SMARTFACTORY_V2",
+   "industry_name": "스마트팩토리·장비",
+   "strength": "있음",
+   "appears_as": "기존 설비를 고쳐 쓰는 일이 새로 만드는 일보다 많습니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "기존 설비와 이어 붙이는가",
+    "설비가 멈춘 원인을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질·신뢰성",
+   "industry": "INDUSTRY_SMARTFACTORY_V2",
+   "industry_name": "스마트팩토리·장비",
+   "strength": "드묾",
+   "appears_as": "이 산업에서 이 영역을 중심으로 맡는 자리는 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "요구조건·제약·일정",
+   "industry": "INDUSTRY_SMARTFACTORY_V2",
+   "industry_name": "스마트팩토리·장비",
+   "strength": "있음",
+   "appears_as": "사람과 설비가 같은 공간에 있어 동선과 안전이 조건입니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "안전과 사람의 동선을 보는가",
+    "투자와 효과를 숫자로 견주는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "반복작업 자동화·데이터",
+   "industry": "INDUSTRY_SMARTFACTORY_V2",
+   "industry_name": "스마트팩토리·장비",
+   "strength": "중심",
+   "appears_as": "측정과 기록이 없으면 개선을 증명할 수 없습니다",
+   "axes_watched": [
+    "J6",
+    "J5",
+    "J4",
+    "J8"
+   ],
+   "dimensions": [
+    "측정과 기록으로 개선을 증명하는가",
+    "데이터를 쓸 수 있는 모양으로 모으는가",
+    "쓰는 사람에게 넘기는가",
+    "반복되는 정리와 판정을 자동으로 돌리는가"
+   ]
+  }
+ ],
+ "td_role": [
+  {
+   "td": "TD01",
+   "td_name": "기구·제품 설계",
+   "role": "ROLE_DESIGN_V2",
+   "role_name": "설계",
+   "strength": "중심",
+   "appears_as": "이 역할이 치수와 공차를 바꿀 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J6",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "구조·내구 해석",
+   "role": "ROLE_DESIGN_V2",
+   "role_name": "설계",
+   "strength": "있음",
+   "appears_as": "강도 근거는 받아 쓰지만 치수를 바꾸는 쪽이 이 역할입니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "열·유체 시스템",
+   "role": "ROLE_DESIGN_V2",
+   "role_name": "설계",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "동역학·진동·NVH",
+   "role": "ROLE_DESIGN_V2",
+   "role_name": "설계",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "구동·전달·동작 설계",
+   "role": "ROLE_DESIGN_V2",
+   "role_name": "설계",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·강도·파손",
+   "role": "ROLE_DESIGN_V2",
+   "role_name": "설계",
+   "strength": "중심",
+   "appears_as": "쓸 재질과 등급을 정하는 판단이 설계 결정에 들어옵니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "시험·계측",
+   "role": "ROLE_DESIGN_V2",
+   "role_name": "설계",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "생산·공정기술",
+   "role": "ROLE_DESIGN_V2",
+   "role_name": "설계",
+   "strength": "있음",
+   "appears_as": "만들 수 있는 범위를 조건으로 받습니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "장비·설비 운용",
+   "role": "ROLE_DESIGN_V2",
+   "role_name": "설계",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질·신뢰성",
+   "role": "ROLE_DESIGN_V2",
+   "role_name": "설계",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "요구조건·제약·일정",
+   "role": "ROLE_DESIGN_V2",
+   "role_name": "설계",
+   "strength": "중심",
+   "appears_as": "부딪히는 요구의 우선순위를 정하는 일이 설계 앞에 옵니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "반복작업 자동화·데이터",
+   "role": "ROLE_DESIGN_V2",
+   "role_name": "설계",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "기구·제품 설계",
+   "role": "ROLE_CAE_V2",
+   "role_name": "해석·예측",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "구조·내구 해석",
+   "role": "ROLE_CAE_V2",
+   "role_name": "해석·예측",
+   "strength": "중심",
+   "appears_as": "구속과 하중과 물성을 정하고 예측의 타당성을 책임집니다",
+   "axes_watched": [
+    "J3",
+    "J4",
+    "J5",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "열·유체 시스템",
+   "role": "ROLE_CAE_V2",
+   "role_name": "해석·예측",
+   "strength": "중심",
+   "appears_as": "열과 유동의 경계 조건을 정하고 작동점을 예측합니다",
+   "axes_watched": [
+    "J4"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "동역학·진동·NVH",
+   "role": "ROLE_CAE_V2",
+   "role_name": "해석·예측",
+   "strength": "중심",
+   "appears_as": "모드와 전달 경로를 예측해 대책의 근거를 냅니다",
+   "axes_watched": [
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "구동·전달·동작 설계",
+   "role": "ROLE_CAE_V2",
+   "role_name": "해석·예측",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·강도·파손",
+   "role": "ROLE_CAE_V2",
+   "role_name": "해석·예측",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "시험·계측",
+   "role": "ROLE_CAE_V2",
+   "role_name": "해석·예측",
+   "strength": "있음",
+   "appears_as": "시험값과 대조해 예측을 교정합니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "생산·공정기술",
+   "role": "ROLE_CAE_V2",
+   "role_name": "해석·예측",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "장비·설비 운용",
+   "role": "ROLE_CAE_V2",
+   "role_name": "해석·예측",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질·신뢰성",
+   "role": "ROLE_CAE_V2",
+   "role_name": "해석·예측",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "요구조건·제약·일정",
+   "role": "ROLE_CAE_V2",
+   "role_name": "해석·예측",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "반복작업 자동화·데이터",
+   "role": "ROLE_CAE_V2",
+   "role_name": "해석·예측",
+   "strength": "있음",
+   "appears_as": "같은 해석 절차를 남겨 다른 사람이 돌리게 합니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "기구·제품 설계",
+   "role": "ROLE_RND_V2",
+   "role_name": "탐색·선행개발",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "구조·내구 해석",
+   "role": "ROLE_RND_V2",
+   "role_name": "탐색·선행개발",
+   "strength": "있음",
+   "appears_as": "방법의 타당성을 스스로 세워야 합니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "열·유체 시스템",
+   "role": "ROLE_RND_V2",
+   "role_name": "탐색·선행개발",
+   "strength": "중심",
+   "appears_as": "검증할 가정을 세우고 그것부터 확인합니다",
+   "axes_watched": [
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "동역학·진동·NVH",
+   "role": "ROLE_RND_V2",
+   "role_name": "탐색·선행개발",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "구동·전달·동작 설계",
+   "role": "ROLE_RND_V2",
+   "role_name": "탐색·선행개발",
+   "strength": "중심",
+   "appears_as": "요구 동작 자체가 정해지지 않은 상태에서 범위를 좁힙니다",
+   "axes_watched": [
+    "J1"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·강도·파손",
+   "role": "ROLE_RND_V2",
+   "role_name": "탐색·선행개발",
+   "strength": "중심",
+   "appears_as": "쓸 방법이 없을 때 재료와 처리 조합을 새로 세웁니다",
+   "axes_watched": [
+    "J1",
+    "J4",
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "시험·계측",
+   "role": "ROLE_RND_V2",
+   "role_name": "탐색·선행개발",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "생산·공정기술",
+   "role": "ROLE_RND_V2",
+   "role_name": "탐색·선행개발",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "장비·설비 운용",
+   "role": "ROLE_RND_V2",
+   "role_name": "탐색·선행개발",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질·신뢰성",
+   "role": "ROLE_RND_V2",
+   "role_name": "탐색·선행개발",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "요구조건·제약·일정",
+   "role": "ROLE_RND_V2",
+   "role_name": "탐색·선행개발",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "반복작업 자동화·데이터",
+   "role": "ROLE_RND_V2",
+   "role_name": "탐색·선행개발",
+   "strength": "있음",
+   "appears_as": "다시 할 수 있게 방법과 조건을 남깁니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "기구·제품 설계",
+   "role": "ROLE_TEST_V2",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "구조·내구 해석",
+   "role": "ROLE_TEST_V2",
+   "role_name": "시험·검증",
+   "strength": "있음",
+   "appears_as": "해석값과 시험값을 대조하는 쪽입니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "열·유체 시스템",
+   "role": "ROLE_TEST_V2",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "동역학·진동·NVH",
+   "role": "ROLE_TEST_V2",
+   "role_name": "시험·검증",
+   "strength": "중심",
+   "appears_as": "떨림과 소리를 재서 어디서 오는지 가릅니다",
+   "axes_watched": [
+    "J4"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "구동·전달·동작 설계",
+   "role": "ROLE_TEST_V2",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·강도·파손",
+   "role": "ROLE_TEST_V2",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "시험·계측",
+   "role": "ROLE_TEST_V2",
+   "role_name": "시험·검증",
+   "strength": "중심",
+   "appears_as": "측정 항목과 합격 기준과 지그를 정하고 판정을 냅니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5",
+    "J6",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "생산·공정기술",
+   "role": "ROLE_TEST_V2",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "장비·설비 운용",
+   "role": "ROLE_TEST_V2",
+   "role_name": "시험·검증",
+   "strength": "있음",
+   "appears_as": "판정을 내는 장비의 상태가 결과를 가릅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질·신뢰성",
+   "role": "ROLE_TEST_V2",
+   "role_name": "시험·검증",
+   "strength": "있음",
+   "appears_as": "한 건의 판정을 내고 양산 보증은 품질이 받습니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "요구조건·제약·일정",
+   "role": "ROLE_TEST_V2",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "반복작업 자동화·데이터",
+   "role": "ROLE_TEST_V2",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "기구·제품 설계",
+   "role": "ROLE_MFG_V2",
+   "role_name": "생산기술",
+   "strength": "중심",
+   "appears_as": "만들기 쉬운지를 보고 설계를 고치자고 합니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "구조·내구 해석",
+   "role": "ROLE_MFG_V2",
+   "role_name": "생산기술",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "열·유체 시스템",
+   "role": "ROLE_MFG_V2",
+   "role_name": "생산기술",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "동역학·진동·NVH",
+   "role": "ROLE_MFG_V2",
+   "role_name": "생산기술",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "구동·전달·동작 설계",
+   "role": "ROLE_MFG_V2",
+   "role_name": "생산기술",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·강도·파손",
+   "role": "ROLE_MFG_V2",
+   "role_name": "생산기술",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "시험·계측",
+   "role": "ROLE_MFG_V2",
+   "role_name": "생산기술",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "생산·공정기술",
+   "role": "ROLE_MFG_V2",
+   "role_name": "생산기술",
+   "strength": "중심",
+   "appears_as": "공법과 가공 순서와 조건의 범위를 정합니다",
+   "axes_watched": [
+    "J3",
+    "J4",
+    "J5",
+    "J6",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "장비·설비 운용",
+   "role": "ROLE_MFG_V2",
+   "role_name": "생산기술",
+   "strength": "있음",
+   "appears_as": "그 설비로 무엇을 어떤 조건으로 만들지 정합니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질·신뢰성",
+   "role": "ROLE_MFG_V2",
+   "role_name": "생산기술",
+   "strength": "있음",
+   "appears_as": "정한 조건이 지켜지는지는 품질과 함께 봅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "요구조건·제약·일정",
+   "role": "ROLE_MFG_V2",
+   "role_name": "생산기술",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "반복작업 자동화·데이터",
+   "role": "ROLE_MFG_V2",
+   "role_name": "생산기술",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "기구·제품 설계",
+   "role": "ROLE_MAINT_V2",
+   "role_name": "설비·보전",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "구조·내구 해석",
+   "role": "ROLE_MAINT_V2",
+   "role_name": "설비·보전",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "열·유체 시스템",
+   "role": "ROLE_MAINT_V2",
+   "role_name": "설비·보전",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "동역학·진동·NVH",
+   "role": "ROLE_MAINT_V2",
+   "role_name": "설비·보전",
+   "strength": "있음",
+   "appears_as": "떨림과 소리로 상태를 읽습니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "구동·전달·동작 설계",
+   "role": "ROLE_MAINT_V2",
+   "role_name": "설비·보전",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·강도·파손",
+   "role": "ROLE_MAINT_V2",
+   "role_name": "설비·보전",
+   "strength": "있음",
+   "appears_as": "닳고 깨지는 원인을 재질과 조건 가운데로 가릅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "시험·계측",
+   "role": "ROLE_MAINT_V2",
+   "role_name": "설비·보전",
+   "strength": "있음",
+   "appears_as": "교정과 표준 시료로 장비 상태를 확인합니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "생산·공정기술",
+   "role": "ROLE_MAINT_V2",
+   "role_name": "설비·보전",
+   "strength": "중심",
+   "appears_as": "설비가 돌아야 공정 조건이 지켜집니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "장비·설비 운용",
+   "role": "ROLE_MAINT_V2",
+   "role_name": "설비·보전",
+   "strength": "중심",
+   "appears_as": "점검 항목과 주기와 교체 기준을 정하는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J4",
+    "J5",
+    "J6",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질·신뢰성",
+   "role": "ROLE_MAINT_V2",
+   "role_name": "설비·보전",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "요구조건·제약·일정",
+   "role": "ROLE_MAINT_V2",
+   "role_name": "설비·보전",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "반복작업 자동화·데이터",
+   "role": "ROLE_MAINT_V2",
+   "role_name": "설비·보전",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "기구·제품 설계",
+   "role": "ROLE_QUALITY_V2",
+   "role_name": "품질·신뢰성",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "구조·내구 해석",
+   "role": "ROLE_QUALITY_V2",
+   "role_name": "품질·신뢰성",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "열·유체 시스템",
+   "role": "ROLE_QUALITY_V2",
+   "role_name": "품질·신뢰성",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "동역학·진동·NVH",
+   "role": "ROLE_QUALITY_V2",
+   "role_name": "품질·신뢰성",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "구동·전달·동작 설계",
+   "role": "ROLE_QUALITY_V2",
+   "role_name": "품질·신뢰성",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·강도·파손",
+   "role": "ROLE_QUALITY_V2",
+   "role_name": "품질·신뢰성",
+   "strength": "있음",
+   "appears_as": "파손 분석 결과를 재발 방지 기준으로 옮깁니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "시험·계측",
+   "role": "ROLE_QUALITY_V2",
+   "role_name": "품질·신뢰성",
+   "strength": "중심",
+   "appears_as": "판정 결과를 양산과 수명 전체로 묶어 봅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "생산·공정기술",
+   "role": "ROLE_QUALITY_V2",
+   "role_name": "품질·신뢰성",
+   "strength": "있음",
+   "appears_as": "조건이 지켜지는지를 기준으로 봅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "장비·설비 운용",
+   "role": "ROLE_QUALITY_V2",
+   "role_name": "품질·신뢰성",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질·신뢰성",
+   "role": "ROLE_QUALITY_V2",
+   "role_name": "품질·신뢰성",
+   "strength": "중심",
+   "appears_as": "관리할 특성과 범위와 합격 기준을 정하고 보증합니다",
+   "axes_watched": [
+    "J1",
+    "J3",
+    "J4",
+    "J5",
+    "J6",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "요구조건·제약·일정",
+   "role": "ROLE_QUALITY_V2",
+   "role_name": "품질·신뢰성",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "반복작업 자동화·데이터",
+   "role": "ROLE_QUALITY_V2",
+   "role_name": "품질·신뢰성",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "기구·제품 설계",
+   "role": "ROLE_PM_V2",
+   "role_name": "기술기획·과제관리",
+   "strength": "있음",
+   "appears_as": "한 부분을 확정하지 않고 여러 부분이 맞물리게 순서를 세웁니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "구조·내구 해석",
+   "role": "ROLE_PM_V2",
+   "role_name": "기술기획·과제관리",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "열·유체 시스템",
+   "role": "ROLE_PM_V2",
+   "role_name": "기술기획·과제관리",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "동역학·진동·NVH",
+   "role": "ROLE_PM_V2",
+   "role_name": "기술기획·과제관리",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "구동·전달·동작 설계",
+   "role": "ROLE_PM_V2",
+   "role_name": "기술기획·과제관리",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·강도·파손",
+   "role": "ROLE_PM_V2",
+   "role_name": "기술기획·과제관리",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "시험·계측",
+   "role": "ROLE_PM_V2",
+   "role_name": "기술기획·과제관리",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "생산·공정기술",
+   "role": "ROLE_PM_V2",
+   "role_name": "기술기획·과제관리",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "장비·설비 운용",
+   "role": "ROLE_PM_V2",
+   "role_name": "기술기획·과제관리",
+   "strength": "드묾",
+   "appears_as": "이 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질·신뢰성",
+   "role": "ROLE_PM_V2",
+   "role_name": "기술기획·과제관리",
+   "strength": "있음",
+   "appears_as": "기준을 누가 언제 맞출지를 정합니다",
+   "axes_watched": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "요구조건·제약·일정",
+   "role": "ROLE_PM_V2",
+   "role_name": "기술기획·과제관리",
+   "strength": "중심",
+   "appears_as": "요구를 쪼개고 합격 기준과 일정과 인터페이스를 정합니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J4",
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "반복작업 자동화·데이터",
+   "role": "ROLE_PM_V2",
+   "role_name": "기술기획·과제관리",
+   "strength": "중심",
+   "appears_as": "요구와 판단을 되짚을 수 있게 남깁니다",
+   "axes_watched": [
+    "J8"
+   ]
+  }
+ ]
+}

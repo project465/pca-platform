@@ -1,0 +1,5942 @@
+{
+ "schema_version": "me-v3-2-migration.1",
+ "from": "ME_V3_ITEM_BANK_V1",
+ "to": "ME_V3_ITEM_BANK_V2",
+ "note": "V1 294문항이 V2 에서 어디로 갔는지 한 줄씩 적는다. `planned` 는 2026-10-08 전수 감사가 적은 판정이고 `actual` 은 새 은행에 실제로 반영된 결과다. 둘이 다르면 `agrees` 가 거짓이고 까닭을 `reason` 에 적었다. 이 파일이 있는 까닭은 하나다: 감사에서 버리기로 한 문항이 조용히 살아 있거나 다시 쓰기로 한 문항이 그대로 복사되는 일을 사람이 눈으로 찾을 수 없다. `npm run v3:migrate` 가 이 파일과 두 은행을 맞춰 센다",
+ "verdicts": {
+  "KEEP": "문면과 자리를 그대로 둔다",
+  "REWRITE": "묻는 것은 맞고 문면을 다시 썼다",
+  "MOVE": "묻는 자리나 등급이나 routing 을 옮겼다",
+  "MERGE": "다른 문항이 같은 것을 물어 흡수했다",
+  "DELETE": "버렸다"
+ },
+ "summary": {
+  "v1_items": 294,
+  "v2_items": 357,
+  "planned": {
+   "MERGE": 50,
+   "DELETE": 13,
+   "REWRITE": 96,
+   "KEEP": 100,
+   "MOVE": 35
+  },
+  "actual": {
+   "REWRITE": 191,
+   "MOVE": 36,
+   "KEEP": 17,
+   "MERGE": 13,
+   "DELETE": 37
+  },
+  "diverged": 204,
+  "new_in_v2": 194
+ },
+ "divergences": {
+  "KEEP → REWRITE": "감사는 문면을 그대로 두기로 했지만, 선별 축의 자리를 영역마다 둘로 늘리면서 같은 축의 두 문항이 서로 다른 판단을 묻게 다시 배치했다. 문말도 `경험이 있다` 에서 `적이 있다` 로 통일했다: 294줄이 같은 문말로 끝나던 것이 응시자가 읽기를 멈추는 까닭 가운데 하나였다",
+  "MERGE → REWRITE": "감사는 영역 훑기의 관심과 경험을 한 격자로 접어 흡수한다고 적었다. 실제로는 문항을 남기고 보기를 다섯에서 셋으로 줄여 한 화면에 열두 줄을 올렸다. 문항이 남았으므로 흡수가 아니라 다시 쓴 것이다",
+  "MERGE → DELETE": "감사는 비이공계 대학원 묶음을 다른 묶음에 흡수한다고 적었다. 확정된 결정은 비이공계 대학원생을 이 Core 에서 받지 않는 것이라 흡수할 자리가 없다. 학부가 기계공학인 경우는 학부 묶음과 번역 맥락 묶음으로 간다",
+  "KEEP → MOVE": "조직 활용을 선별에서 심화로, 실패·수정을 심화에서 선별로 옮겼다. 문면은 다시 썼지만 묻는 것은 같아서 자리 이동으로 적는다",
+  "MOVE → DELETE": "감사는 역할·조직 선호 열넷을 다른 자리로 옮긴다고 적었다. 확정된 결정은 다섯 점 척도를 없애고 고르기로 받는 것이라, 문항 자체가 사라진다",
+  "DELETE → MOVE": "감사는 학습 의향 열둘을 버린다고 적었다. 실제로는 문항을 남기고 선별된 영역에만 묻게 routing 으로 줄였다. 결과지의 다음 행동 절이 이 값을 읽어, 버리면 그 절의 입력이 사라진다",
+  "REWRITE → MOVE": "문면을 다시 쓰기로 한 자리 가운데 묻는 것이 그대로이고 등급이나 묶음만 바뀐 것은 자리 이동으로 적는다",
+  "MOVE → REWRITE": "자리를 옮기기로 한 자리 가운데 묶음은 그대로이고 문면만 바뀐 것은 다시 쓴 것으로 적는다",
+  "MOVE → MERGE": "융합 계열 대학원 묶음을 이공계 묶음으로 합쳤다. 옮길 자리가 따로 없고 기존 묶음이 같은 여섯 자리를 이미 묻는다",
+  "REWRITE → DELETE": "팩을 다시 설계하면서 그 축의 자리가 줄어 대응하는 문항이 없어진 자리다",
+  "KEEP → DELETE": "번역 단계의 영역 태깅과 일부 팩 문항처럼, 이미 다른 화면에서 받은 판단을 다시 묻던 자리다",
+  "MOVE → KEEP": "옮기기로 했으나 같은 자리에서 그대로 쓰는 것이 맞다고 본 자리다. 목표 입력 셋은 번역 뒤에 그대로 둔다",
+  "KEEP → MERGE": "한 칸에 문항이 둘이던 자리를 하나로 합쳤다. 심화 축의 응답 수가 영역에 따라 달라지면 판정 경로가 갈린다",
+  "MERGE → KEEP": "흡수하기로 했으나 묻는 것이 달라 그대로 남긴 자리다",
+  "DELETE → MERGE": "버리기로 했으나 같은 축의 다른 문항이 그 판단을 받아 흡수로 적은 자리다"
+ },
+ "rows": [
+  {
+   "v1_item": "G_TD01_INT",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD01",
+   "v1_wording": "요구를 보고 부품의 형상과 치수와 재질과 공차를 정하는 일, 해 보고 싶다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "G_TD01_INT"
+   ],
+   "reason": "줄은 그대로 두고 보기만 다섯 칸에서 셋으로 줄였다. 열두 줄을 한 화면에서 훑으려면 칸이 셋이어야 한다",
+   "agrees": false,
+   "planned_reason": "screening 으로는 맞지만 **무료 응답의 67%** 를 차지한다. 12화면 × 3문항을 한 화면 격자로 접고 학습 의향은 뒤로 뺀다"
+  },
+  {
+   "v1_item": "G_TD01_EXP",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD01",
+   "v1_wording": "요구를 보고 부품의 형상과 치수와 재질과 공차를 정하는 일, 해 본 적이 있다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "G_TD01_EXP"
+   ],
+   "reason": "줄은 그대로 두고 보기만 다섯 칸에서 셋으로 줄였다. 열두 줄을 한 화면에서 훑으려면 칸이 셋이어야 한다",
+   "agrees": false,
+   "planned_reason": "screening 으로는 맞지만 **무료 응답의 67%** 를 차지한다. 12화면 × 3문항을 한 화면 격자로 접고 학습 의향은 뒤로 뺀다"
+  },
+  {
+   "v1_item": "G_TD01_LEA",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD01",
+   "v1_wording": "요구를 보고 부품의 형상과 치수와 재질과 공차를 정하는 일, 지금 시간을 들여 배우겠다",
+   "planned": "DELETE",
+   "actual": "MOVE",
+   "v2_items": [
+    "G_TD01_LEA"
+   ],
+   "reason": "열두 영역에 다 묻던 것을 선별된 영역에만 묻게 옮겼다. 문항은 남기고 routing 으로 줄였다: 결과지의 다음 행동 절이 이 값을 읽는다",
+   "agrees": false,
+   "planned_reason": "열두 영역마다 배울 뜻을 따로 묻는다. 깊게 볼 두세 영역에서만 물으면 되고, 열둘을 다 물으면 같은 칸을 세 번 지난다"
+  },
+  {
+   "v1_item": "G_TD02_INT",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD02",
+   "v1_wording": "하중을 받는 구조가 깨지는지와 몇 번을 버티는지 계산으로 보는 일, 해 보고 싶다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "G_TD02_INT"
+   ],
+   "reason": "줄은 그대로 두고 보기만 다섯 칸에서 셋으로 줄였다. 열두 줄을 한 화면에서 훑으려면 칸이 셋이어야 한다",
+   "agrees": false,
+   "planned_reason": "screening 으로는 맞지만 **무료 응답의 67%** 를 차지한다. 12화면 × 3문항을 한 화면 격자로 접고 학습 의향은 뒤로 뺀다"
+  },
+  {
+   "v1_item": "G_TD02_EXP",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD02",
+   "v1_wording": "하중을 받는 구조가 깨지는지와 몇 번을 버티는지 계산으로 보는 일, 해 본 적이 있다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "G_TD02_EXP"
+   ],
+   "reason": "줄은 그대로 두고 보기만 다섯 칸에서 셋으로 줄였다. 열두 줄을 한 화면에서 훑으려면 칸이 셋이어야 한다",
+   "agrees": false,
+   "planned_reason": "screening 으로는 맞지만 **무료 응답의 67%** 를 차지한다. 12화면 × 3문항을 한 화면 격자로 접고 학습 의향은 뒤로 뺀다"
+  },
+  {
+   "v1_item": "G_TD02_LEA",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD02",
+   "v1_wording": "하중을 받는 구조가 깨지는지와 몇 번을 버티는지 계산으로 보는 일, 지금 시간을 들여 배우겠다",
+   "planned": "DELETE",
+   "actual": "MOVE",
+   "v2_items": [
+    "G_TD02_LEA"
+   ],
+   "reason": "열두 영역에 다 묻던 것을 선별된 영역에만 묻게 옮겼다. 문항은 남기고 routing 으로 줄였다: 결과지의 다음 행동 절이 이 값을 읽는다",
+   "agrees": false,
+   "planned_reason": "열두 영역마다 배울 뜻을 따로 묻는다. 깊게 볼 두세 영역에서만 물으면 되고, 열둘을 다 물으면 같은 칸을 세 번 지난다"
+  },
+  {
+   "v1_item": "G_TD03_INT",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD03",
+   "v1_wording": "열을 어디로 빼고 유량과 압력을 어떻게 맞출지 정하는 일, 해 보고 싶다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "G_TD03_INT"
+   ],
+   "reason": "줄은 그대로 두고 보기만 다섯 칸에서 셋으로 줄였다. 열두 줄을 한 화면에서 훑으려면 칸이 셋이어야 한다",
+   "agrees": false,
+   "planned_reason": "screening 으로는 맞지만 **무료 응답의 67%** 를 차지한다. 12화면 × 3문항을 한 화면 격자로 접고 학습 의향은 뒤로 뺀다"
+  },
+  {
+   "v1_item": "G_TD03_EXP",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD03",
+   "v1_wording": "열을 어디로 빼고 유량과 압력을 어떻게 맞출지 정하는 일, 해 본 적이 있다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "G_TD03_EXP"
+   ],
+   "reason": "줄은 그대로 두고 보기만 다섯 칸에서 셋으로 줄였다. 열두 줄을 한 화면에서 훑으려면 칸이 셋이어야 한다",
+   "agrees": false,
+   "planned_reason": "screening 으로는 맞지만 **무료 응답의 67%** 를 차지한다. 12화면 × 3문항을 한 화면 격자로 접고 학습 의향은 뒤로 뺀다"
+  },
+  {
+   "v1_item": "G_TD03_LEA",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD03",
+   "v1_wording": "열을 어디로 빼고 유량과 압력을 어떻게 맞출지 정하는 일, 지금 시간을 들여 배우겠다",
+   "planned": "DELETE",
+   "actual": "MOVE",
+   "v2_items": [
+    "G_TD03_LEA"
+   ],
+   "reason": "열두 영역에 다 묻던 것을 선별된 영역에만 묻게 옮겼다. 문항은 남기고 routing 으로 줄였다: 결과지의 다음 행동 절이 이 값을 읽는다",
+   "agrees": false,
+   "planned_reason": "열두 영역마다 배울 뜻을 따로 묻는다. 깊게 볼 두세 영역에서만 물으면 되고, 열둘을 다 물으면 같은 칸을 세 번 지난다"
+  },
+  {
+   "v1_item": "G_TD04_INT",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD04",
+   "v1_wording": "어느 주파수에서 흔들리고 소음이 어디로 전달되는지 보는 일, 해 보고 싶다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "G_TD04_INT"
+   ],
+   "reason": "줄은 그대로 두고 보기만 다섯 칸에서 셋으로 줄였다. 열두 줄을 한 화면에서 훑으려면 칸이 셋이어야 한다",
+   "agrees": false,
+   "planned_reason": "screening 으로는 맞지만 **무료 응답의 67%** 를 차지한다. 12화면 × 3문항을 한 화면 격자로 접고 학습 의향은 뒤로 뺀다"
+  },
+  {
+   "v1_item": "G_TD04_EXP",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD04",
+   "v1_wording": "어느 주파수에서 흔들리고 소음이 어디로 전달되는지 보는 일, 해 본 적이 있다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "G_TD04_EXP"
+   ],
+   "reason": "줄은 그대로 두고 보기만 다섯 칸에서 셋으로 줄였다. 열두 줄을 한 화면에서 훑으려면 칸이 셋이어야 한다",
+   "agrees": false,
+   "planned_reason": "screening 으로는 맞지만 **무료 응답의 67%** 를 차지한다. 12화면 × 3문항을 한 화면 격자로 접고 학습 의향은 뒤로 뺀다"
+  },
+  {
+   "v1_item": "G_TD04_LEA",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD04",
+   "v1_wording": "어느 주파수에서 흔들리고 소음이 어디로 전달되는지 보는 일, 지금 시간을 들여 배우겠다",
+   "planned": "DELETE",
+   "actual": "MOVE",
+   "v2_items": [
+    "G_TD04_LEA"
+   ],
+   "reason": "열두 영역에 다 묻던 것을 선별된 영역에만 묻게 옮겼다. 문항은 남기고 routing 으로 줄였다: 결과지의 다음 행동 절이 이 값을 읽는다",
+   "agrees": false,
+   "planned_reason": "열두 영역마다 배울 뜻을 따로 묻는다. 깊게 볼 두세 영역에서만 물으면 되고, 열둘을 다 물으면 같은 칸을 세 번 지난다"
+  },
+  {
+   "v1_item": "G_TD05_INT",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD05",
+   "v1_wording": "구동기와 제어로 장비가 원하는 동작을 하게 만드는 일, 해 보고 싶다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "G_TD05_INT"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 줄을 다시 적었다. 보기도 다섯 칸에서 셋으로 줄여 열두 줄을 한 화면에서 훑게 했다",
+   "agrees": false,
+   "planned_reason": "screening 으로는 맞지만 **무료 응답의 67%** 를 차지한다. 12화면 × 3문항을 한 화면 격자로 접고 학습 의향은 뒤로 뺀다"
+  },
+  {
+   "v1_item": "G_TD05_EXP",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD05",
+   "v1_wording": "구동기와 제어로 장비가 원하는 동작을 하게 만드는 일, 해 본 적이 있다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "G_TD05_EXP"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 줄을 다시 적었다. 보기도 다섯 칸에서 셋으로 줄여 열두 줄을 한 화면에서 훑게 했다",
+   "agrees": false,
+   "planned_reason": "screening 으로는 맞지만 **무료 응답의 67%** 를 차지한다. 12화면 × 3문항을 한 화면 격자로 접고 학습 의향은 뒤로 뺀다"
+  },
+  {
+   "v1_item": "G_TD05_LEA",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD05",
+   "v1_wording": "구동기와 제어로 장비가 원하는 동작을 하게 만드는 일, 지금 시간을 들여 배우겠다",
+   "planned": "DELETE",
+   "actual": "MOVE",
+   "v2_items": [
+    "G_TD05_LEA"
+   ],
+   "reason": "열두 영역에 다 묻던 것을 선별된 영역에만 묻게 옮겼다. 문항은 남기고 routing 으로 줄였다: 결과지의 다음 행동 절이 이 값을 읽는다",
+   "agrees": false,
+   "planned_reason": "열두 영역마다 배울 뜻을 따로 묻는다. 깊게 볼 두세 영역에서만 물으면 되고, 열둘을 다 물으면 같은 칸을 세 번 지난다"
+  },
+  {
+   "v1_item": "G_TD06_INT",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD06",
+   "v1_wording": "어떤 재질로 갈지 정하고 왜 깨졌는지 밝히는 일, 해 보고 싶다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "G_TD06_INT"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 줄을 다시 적었다. 보기도 다섯 칸에서 셋으로 줄여 열두 줄을 한 화면에서 훑게 했다",
+   "agrees": false,
+   "planned_reason": "screening 으로는 맞지만 **무료 응답의 67%** 를 차지한다. 12화면 × 3문항을 한 화면 격자로 접고 학습 의향은 뒤로 뺀다"
+  },
+  {
+   "v1_item": "G_TD06_EXP",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD06",
+   "v1_wording": "어떤 재질로 갈지 정하고 왜 깨졌는지 밝히는 일, 해 본 적이 있다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "G_TD06_EXP"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 줄을 다시 적었다. 보기도 다섯 칸에서 셋으로 줄여 열두 줄을 한 화면에서 훑게 했다",
+   "agrees": false,
+   "planned_reason": "screening 으로는 맞지만 **무료 응답의 67%** 를 차지한다. 12화면 × 3문항을 한 화면 격자로 접고 학습 의향은 뒤로 뺀다"
+  },
+  {
+   "v1_item": "G_TD06_LEA",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD06",
+   "v1_wording": "어떤 재질로 갈지 정하고 왜 깨졌는지 밝히는 일, 지금 시간을 들여 배우겠다",
+   "planned": "DELETE",
+   "actual": "MOVE",
+   "v2_items": [
+    "G_TD06_LEA"
+   ],
+   "reason": "열두 영역에 다 묻던 것을 선별된 영역에만 묻게 옮겼다. 문항은 남기고 routing 으로 줄였다: 결과지의 다음 행동 절이 이 값을 읽는다",
+   "agrees": false,
+   "planned_reason": "열두 영역마다 배울 뜻을 따로 묻는다. 깊게 볼 두세 영역에서만 물으면 되고, 열둘을 다 물으면 같은 칸을 세 번 지난다"
+  },
+  {
+   "v1_item": "G_TD07_INT",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD07",
+   "v1_wording": "무엇을 어떻게 재서 기준을 만족하는지 판정하는 일, 해 보고 싶다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "G_TD07_INT"
+   ],
+   "reason": "줄은 그대로 두고 보기만 다섯 칸에서 셋으로 줄였다. 열두 줄을 한 화면에서 훑으려면 칸이 셋이어야 한다",
+   "agrees": false,
+   "planned_reason": "screening 으로는 맞지만 **무료 응답의 67%** 를 차지한다. 12화면 × 3문항을 한 화면 격자로 접고 학습 의향은 뒤로 뺀다"
+  },
+  {
+   "v1_item": "G_TD07_EXP",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD07",
+   "v1_wording": "무엇을 어떻게 재서 기준을 만족하는지 판정하는 일, 해 본 적이 있다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "G_TD07_EXP"
+   ],
+   "reason": "줄은 그대로 두고 보기만 다섯 칸에서 셋으로 줄였다. 열두 줄을 한 화면에서 훑으려면 칸이 셋이어야 한다",
+   "agrees": false,
+   "planned_reason": "screening 으로는 맞지만 **무료 응답의 67%** 를 차지한다. 12화면 × 3문항을 한 화면 격자로 접고 학습 의향은 뒤로 뺀다"
+  },
+  {
+   "v1_item": "G_TD07_LEA",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD07",
+   "v1_wording": "무엇을 어떻게 재서 기준을 만족하는지 판정하는 일, 지금 시간을 들여 배우겠다",
+   "planned": "DELETE",
+   "actual": "MOVE",
+   "v2_items": [
+    "G_TD07_LEA"
+   ],
+   "reason": "열두 영역에 다 묻던 것을 선별된 영역에만 묻게 옮겼다. 문항은 남기고 routing 으로 줄였다: 결과지의 다음 행동 절이 이 값을 읽는다",
+   "agrees": false,
+   "planned_reason": "열두 영역마다 배울 뜻을 따로 묻는다. 깊게 볼 두세 영역에서만 물으면 되고, 열둘을 다 물으면 같은 칸을 세 번 지난다"
+  },
+  {
+   "v1_item": "G_TD08_INT",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD08",
+   "v1_wording": "어떤 공법과 조건으로 반복 생산할지 정하는 일, 해 보고 싶다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "G_TD08_INT"
+   ],
+   "reason": "줄은 그대로 두고 보기만 다섯 칸에서 셋으로 줄였다. 열두 줄을 한 화면에서 훑으려면 칸이 셋이어야 한다",
+   "agrees": false,
+   "planned_reason": "screening 으로는 맞지만 **무료 응답의 67%** 를 차지한다. 12화면 × 3문항을 한 화면 격자로 접고 학습 의향은 뒤로 뺀다"
+  },
+  {
+   "v1_item": "G_TD08_EXP",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD08",
+   "v1_wording": "어떤 공법과 조건으로 반복 생산할지 정하는 일, 해 본 적이 있다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "G_TD08_EXP"
+   ],
+   "reason": "줄은 그대로 두고 보기만 다섯 칸에서 셋으로 줄였다. 열두 줄을 한 화면에서 훑으려면 칸이 셋이어야 한다",
+   "agrees": false,
+   "planned_reason": "screening 으로는 맞지만 **무료 응답의 67%** 를 차지한다. 12화면 × 3문항을 한 화면 격자로 접고 학습 의향은 뒤로 뺀다"
+  },
+  {
+   "v1_item": "G_TD08_LEA",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD08",
+   "v1_wording": "어떤 공법과 조건으로 반복 생산할지 정하는 일, 지금 시간을 들여 배우겠다",
+   "planned": "DELETE",
+   "actual": "MOVE",
+   "v2_items": [
+    "G_TD08_LEA"
+   ],
+   "reason": "열두 영역에 다 묻던 것을 선별된 영역에만 묻게 옮겼다. 문항은 남기고 routing 으로 줄였다: 결과지의 다음 행동 절이 이 값을 읽는다",
+   "agrees": false,
+   "planned_reason": "열두 영역마다 배울 뜻을 따로 묻는다. 깊게 볼 두세 영역에서만 물으면 되고, 열둘을 다 물으면 같은 칸을 세 번 지난다"
+  },
+  {
+   "v1_item": "G_TD09_INT",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD09",
+   "v1_wording": "설비가 멈추지 않게 상태를 보고 보전 기준을 정하는 일, 해 보고 싶다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "G_TD09_INT"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 줄을 다시 적었다. 보기도 다섯 칸에서 셋으로 줄여 열두 줄을 한 화면에서 훑게 했다",
+   "agrees": false,
+   "planned_reason": "screening 으로는 맞지만 **무료 응답의 67%** 를 차지한다. 12화면 × 3문항을 한 화면 격자로 접고 학습 의향은 뒤로 뺀다"
+  },
+  {
+   "v1_item": "G_TD09_EXP",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD09",
+   "v1_wording": "설비가 멈추지 않게 상태를 보고 보전 기준을 정하는 일, 해 본 적이 있다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "G_TD09_EXP"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 줄을 다시 적었다. 보기도 다섯 칸에서 셋으로 줄여 열두 줄을 한 화면에서 훑게 했다",
+   "agrees": false,
+   "planned_reason": "screening 으로는 맞지만 **무료 응답의 67%** 를 차지한다. 12화면 × 3문항을 한 화면 격자로 접고 학습 의향은 뒤로 뺀다"
+  },
+  {
+   "v1_item": "G_TD09_LEA",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD09",
+   "v1_wording": "설비가 멈추지 않게 상태를 보고 보전 기준을 정하는 일, 지금 시간을 들여 배우겠다",
+   "planned": "DELETE",
+   "actual": "MOVE",
+   "v2_items": [
+    "G_TD09_LEA"
+   ],
+   "reason": "열두 영역에 다 묻던 것을 선별된 영역에만 묻게 옮겼다. 문항은 남기고 routing 으로 줄였다: 결과지의 다음 행동 절이 이 값을 읽는다",
+   "agrees": false,
+   "planned_reason": "열두 영역마다 배울 뜻을 따로 묻는다. 깊게 볼 두세 영역에서만 물으면 되고, 열둘을 다 물으면 같은 칸을 세 번 지난다"
+  },
+  {
+   "v1_item": "G_TD10_INT",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD10",
+   "v1_wording": "양산과 사용 기간 내내 요구가 지켜지는지 관리하는 일, 해 보고 싶다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "G_TD10_INT"
+   ],
+   "reason": "줄은 그대로 두고 보기만 다섯 칸에서 셋으로 줄였다. 열두 줄을 한 화면에서 훑으려면 칸이 셋이어야 한다",
+   "agrees": false,
+   "planned_reason": "screening 으로는 맞지만 **무료 응답의 67%** 를 차지한다. 12화면 × 3문항을 한 화면 격자로 접고 학습 의향은 뒤로 뺀다"
+  },
+  {
+   "v1_item": "G_TD10_EXP",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD10",
+   "v1_wording": "양산과 사용 기간 내내 요구가 지켜지는지 관리하는 일, 해 본 적이 있다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "G_TD10_EXP"
+   ],
+   "reason": "줄은 그대로 두고 보기만 다섯 칸에서 셋으로 줄였다. 열두 줄을 한 화면에서 훑으려면 칸이 셋이어야 한다",
+   "agrees": false,
+   "planned_reason": "screening 으로는 맞지만 **무료 응답의 67%** 를 차지한다. 12화면 × 3문항을 한 화면 격자로 접고 학습 의향은 뒤로 뺀다"
+  },
+  {
+   "v1_item": "G_TD10_LEA",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD10",
+   "v1_wording": "양산과 사용 기간 내내 요구가 지켜지는지 관리하는 일, 지금 시간을 들여 배우겠다",
+   "planned": "DELETE",
+   "actual": "MOVE",
+   "v2_items": [
+    "G_TD10_LEA"
+   ],
+   "reason": "열두 영역에 다 묻던 것을 선별된 영역에만 묻게 옮겼다. 문항은 남기고 routing 으로 줄였다: 결과지의 다음 행동 절이 이 값을 읽는다",
+   "agrees": false,
+   "planned_reason": "열두 영역마다 배울 뜻을 따로 묻는다. 깊게 볼 두세 영역에서만 물으면 되고, 열둘을 다 물으면 같은 칸을 세 번 지난다"
+  },
+  {
+   "v1_item": "G_TD11_INT",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD11",
+   "v1_wording": "요구를 쪼개 담당과 검증을 배정하고 변경을 추적하는 일, 해 보고 싶다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "G_TD11_INT"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 줄을 다시 적었다. 보기도 다섯 칸에서 셋으로 줄여 열두 줄을 한 화면에서 훑게 했다",
+   "agrees": false,
+   "planned_reason": "screening 으로는 맞지만 **무료 응답의 67%** 를 차지한다. 12화면 × 3문항을 한 화면 격자로 접고 학습 의향은 뒤로 뺀다"
+  },
+  {
+   "v1_item": "G_TD11_EXP",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD11",
+   "v1_wording": "요구를 쪼개 담당과 검증을 배정하고 변경을 추적하는 일, 해 본 적이 있다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "G_TD11_EXP"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 줄을 다시 적었다. 보기도 다섯 칸에서 셋으로 줄여 열두 줄을 한 화면에서 훑게 했다",
+   "agrees": false,
+   "planned_reason": "screening 으로는 맞지만 **무료 응답의 67%** 를 차지한다. 12화면 × 3문항을 한 화면 격자로 접고 학습 의향은 뒤로 뺀다"
+  },
+  {
+   "v1_item": "G_TD11_LEA",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD11",
+   "v1_wording": "요구를 쪼개 담당과 검증을 배정하고 변경을 추적하는 일, 지금 시간을 들여 배우겠다",
+   "planned": "DELETE",
+   "actual": "MOVE",
+   "v2_items": [
+    "G_TD11_LEA"
+   ],
+   "reason": "열두 영역에 다 묻던 것을 선별된 영역에만 묻게 옮겼다. 문항은 남기고 routing 으로 줄였다: 결과지의 다음 행동 절이 이 값을 읽는다",
+   "agrees": false,
+   "planned_reason": "열두 영역마다 배울 뜻을 따로 묻는다. 깊게 볼 두세 영역에서만 물으면 되고, 열둘을 다 물으면 같은 칸을 세 번 지난다"
+  },
+  {
+   "v1_item": "G_TD12_INT",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD12",
+   "v1_wording": "반복 계산과 판정을 코드로 남겨 다시 쓰게 만드는 일, 해 보고 싶다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "G_TD12_INT"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 줄을 다시 적었다. 보기도 다섯 칸에서 셋으로 줄여 열두 줄을 한 화면에서 훑게 했다",
+   "agrees": false,
+   "planned_reason": "screening 으로는 맞지만 **무료 응답의 67%** 를 차지한다. 12화면 × 3문항을 한 화면 격자로 접고 학습 의향은 뒤로 뺀다"
+  },
+  {
+   "v1_item": "G_TD12_EXP",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD12",
+   "v1_wording": "반복 계산과 판정을 코드로 남겨 다시 쓰게 만드는 일, 해 본 적이 있다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "G_TD12_EXP"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 줄을 다시 적었다. 보기도 다섯 칸에서 셋으로 줄여 열두 줄을 한 화면에서 훑게 했다",
+   "agrees": false,
+   "planned_reason": "screening 으로는 맞지만 **무료 응답의 67%** 를 차지한다. 12화면 × 3문항을 한 화면 격자로 접고 학습 의향은 뒤로 뺀다"
+  },
+  {
+   "v1_item": "G_TD12_LEA",
+   "v1_module": "CORE-GRID",
+   "v1_axis": null,
+   "v1_domain": "TD12",
+   "v1_wording": "반복 계산과 판정을 코드로 남겨 다시 쓰게 만드는 일, 지금 시간을 들여 배우겠다",
+   "planned": "DELETE",
+   "actual": "MOVE",
+   "v2_items": [
+    "G_TD12_LEA"
+   ],
+   "reason": "열두 영역에 다 묻던 것을 선별된 영역에만 묻게 옮겼다. 문항은 남기고 routing 으로 줄였다: 결과지의 다음 행동 절이 이 값을 읽는다",
+   "agrees": false,
+   "planned_reason": "열두 영역마다 배울 뜻을 따로 묻는다. 깊게 볼 두세 영역에서만 물으면 되고, 열둘을 다 물으면 같은 칸을 세 번 지난다"
+  },
+  {
+   "v1_item": "CJ_COMPARE",
+   "v1_module": "CORE-JUDGE",
+   "v1_axis": "J6",
+   "v1_domain": null,
+   "v1_wording": "선택지를 둘 이상 놓고 같은 기준으로 견주어 하나를 고른 적이 있다",
+   "planned": "MERGE",
+   "actual": "KEEP",
+   "v2_items": [
+    "CJ_COMPARE"
+   ],
+   "reason": "문면과 자리를 그대로 두었다",
+   "agrees": false,
+   "planned_reason": "`둘 이상 놓고 같은 기준으로 견주었다` 는 모든 영역의 J6 과 같은 말이다. 영역 J6 으로 흡수한다"
+  },
+  {
+   "v1_item": "CJ_PROBLEM",
+   "v1_module": "CORE-JUDGE",
+   "v1_axis": "J1",
+   "v1_domain": null,
+   "v1_wording": "주어진 과제를 받기보다 무엇을 다룰지 내가 정한 적이 있다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "CJ_SCOPE"
+   ],
+   "reason": "`무엇을 다룰지 내가 정한 적이 있다` 는 범위를 좁힌 것과 주제를 받은 것을 가르지 못했다. 까닭을 적었는지까지 묻는다",
+   "agrees": false,
+   "planned_reason": "모든 영역의 J1 과 같은 말이다. 영역 J1 으로 흡수한다"
+  },
+  {
+   "v1_item": "CJ_VERIFY",
+   "v1_module": "CORE-JUDGE",
+   "v1_axis": "J6",
+   "v1_domain": null,
+   "v1_wording": "결과를 낼 때 다른 방법이나 다른 값으로 한 번 더 확인하는 편이다",
+   "planned": "DELETE",
+   "actual": "MERGE",
+   "v2_items": [
+    "CJ_COMPARE"
+   ],
+   "reason": "`다른 방법이나 다른 값으로 한 번 더 확인하는 편이다` 와 `같은 기준으로 견주어 하나를 골랐다` 가 같은 축을 두 번 물었다. 뒤쪽 하나로 묶었다",
+   "agrees": false,
+   "planned_reason": "`확인하는 편이다` 는 성향 문항이다. 같은 것을 J6 이 행동으로 묻는다"
+  },
+  {
+   "v1_item": "CJ_ASSUME_REV",
+   "v1_module": "CORE-JUDGE",
+   "v1_axis": "J1",
+   "v1_domain": null,
+   "v1_wording": "남이 정해 둔 가정을 그대로 받아서 계산만 하는 편이 편하다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "CJ_GIVEN_REV"
+   ],
+   "reason": "`남이 정해 둔 가정을 그대로 받아서 계산만 하는 편이 편하다` 는 가정이라는 말이 해석 쪽으로 좁게 읽혔다. 조건으로 바꿔 모든 영역에 걸리게 했다",
+   "agrees": true,
+   "planned_reason": "역문항은 은행에 이것 하나뿐이라 남긴다. 다만 `편이 편하다` 를 겪은 장면으로 바꾼다"
+  },
+  {
+   "v1_item": "CF_PAIR_1",
+   "v1_module": "CORE-FORCE",
+   "v1_axis": null,
+   "v1_domain": "dynamic",
+   "v1_wording": "둘 중 하나만 먼저 해 본다면 어느 쪽입니까",
+   "planned": "KEEP",
+   "actual": "KEEP",
+   "v2_items": [
+    "CF_PAIR_1"
+   ],
+   "reason": "문면과 자리를 그대로 두었다",
+   "agrees": true,
+   "planned_reason": "동점을 가르는 싼 문항이고 점수에 들어가지 않는다"
+  },
+  {
+   "v1_item": "CF_PAIR_2",
+   "v1_module": "CORE-FORCE",
+   "v1_axis": null,
+   "v1_domain": "dynamic",
+   "v1_wording": "두 영역 가운데 지금 더 알아보고 싶은 쪽은 어디입니까",
+   "planned": "KEEP",
+   "actual": "KEEP",
+   "v2_items": [
+    "CF_PAIR_2"
+   ],
+   "reason": "문면과 자리를 그대로 두었다",
+   "agrees": true,
+   "planned_reason": "동점을 가르는 싼 문항이고 점수에 들어가지 않는다"
+  },
+  {
+   "v1_item": "TD01_J1",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J1",
+   "v1_domain": "TD01",
+   "v1_wording": "설계할 범위와 이번에 다루지 않을 부분을 직접 적어 구분해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD01_J1_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD01_J2",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J2",
+   "v1_domain": "TD01",
+   "v1_wording": "요구 성능을 치수나 하중이나 수명처럼 따질 수 있는 값으로 옮겨 적어 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD01_J2_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD01_J3",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J3",
+   "v1_domain": "TD01",
+   "v1_wording": "하중과 재질을 근거로 두께나 단면 치수를 직접 정해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD01_J3_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD01_J4",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J4",
+   "v1_domain": "TD01",
+   "v1_wording": "3차원 모델로 형상과 조립 상태를 직접 만들어 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD01_J4_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": true,
+   "planned_reason": "3차원 모델을 만든 것은 도구 사용이다. 모델에서 무엇을 단순화하고 무엇을 남겼는지 묻는다"
+  },
+  {
+   "v1_item": "TD01_J5",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J5",
+   "v1_domain": "TD01",
+   "v1_wording": "부품도나 조립도를 내 손으로 그려 낸 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD01_J5_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD01_J6",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J6",
+   "v1_domain": "TD01",
+   "v1_wording": "설계안을 둘 이상 만들어 같은 기준으로 견주어 하나를 고른 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD01_J6_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD01_J7",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J7",
+   "v1_domain": "TD01",
+   "v1_wording": "조립 간섭이나 파손을 겪고 치수를 고쳐 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "MOVE",
+   "v2_items": [
+    "TD01_J7_1"
+   ],
+   "reason": "실패·수정을 심화에서 선별로 옮겼다. 조직 활용을 선별에서 빼면서 학부생도 답할 수 있는 축을 그 자리에 넣었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD01_J8",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J8",
+   "v1_domain": "TD01",
+   "v1_wording": "내 설계안을 설계 검토 회의에 올려 설명해 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "MOVE",
+   "v2_items": [
+    "TD01_J8_1"
+   ],
+   "reason": "조직 활용을 선별에서 심화로 옮겼다. 내가 낸 것이 조직에 쓰였는가는 들어간 자리가 있어야 답할 수 있어 학부생에게 구조적으로 불리했다",
+   "agrees": false,
+   "planned_reason": "`올렸다·넘겼다·공유했다` 는 전달이다. 조직 활용은 **그 뒤에 무엇이 바뀌었는가**로 물어야 한다"
+  },
+  {
+   "v1_item": "TD02_J1",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J1",
+   "v1_domain": "TD02",
+   "v1_wording": "해석에서 어떤 하중 조건을 볼지 직접 정해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD02_J1_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD02_J2",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J2",
+   "v1_domain": "TD02",
+   "v1_wording": "요구 수명이나 허용 응력을 해석 입력 조건으로 옮겨 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD02_J2_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD02_J3",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J3",
+   "v1_domain": "TD02",
+   "v1_wording": "구속 조건과 하중을 직접 정해 해석 모델에 반영해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD02_J3_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD02_J4",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J4",
+   "v1_domain": "TD02",
+   "v1_wording": "상용 해석 도구로 모델을 만들어 직접 돌려 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD02_J4_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": true,
+   "planned_reason": "`상용 도구로 돌려 본` 은 도구 사용만 묻는다. 이상화 수준과 요소·접촉 조건을 누가 정했는지 묻는다"
+  },
+  {
+   "v1_item": "TD02_J5",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J5",
+   "v1_domain": "TD02",
+   "v1_wording": "해석 결과를 보고서로 정리해 낸 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD02_J5_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": true,
+   "planned_reason": "`보고서로 정리해 냈다` 는 어떤 보고서든 참이다. 가정과 한계가 적혔는지까지 묻는다"
+  },
+  {
+   "v1_item": "TD02_J6",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J6",
+   "v1_domain": "TD02",
+   "v1_wording": "해석 결과를 손계산이나 시험값이나 기존 결과 가운데 하나와 견주어 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD02_J6_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD02_J7",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J7",
+   "v1_domain": "TD02",
+   "v1_wording": "결과가 시험이나 예상과 어긋나 해석 모델을 고쳐 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "MOVE",
+   "v2_items": [
+    "TD02_J7_1"
+   ],
+   "reason": "실패·수정을 심화에서 선별로 옮겼다. 조직 활용을 선별에서 빼면서 학부생도 답할 수 있는 축을 그 자리에 넣었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD02_J8",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J8",
+   "v1_domain": "TD02",
+   "v1_wording": "해석 결과를 설계를 고칠 자리에 올려 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "MOVE",
+   "v2_items": [
+    "TD02_J8_1"
+   ],
+   "reason": "조직 활용을 선별에서 심화로 옮겼다. 내가 낸 것이 조직에 쓰였는가는 들어간 자리가 있어야 답할 수 있어 학부생에게 구조적으로 불리했다",
+   "agrees": false,
+   "planned_reason": "`올렸다·넘겼다·공유했다` 는 전달이다. 조직 활용은 **그 뒤에 무엇이 바뀌었는가**로 물어야 한다"
+  },
+  {
+   "v1_item": "TD03_J1",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J1",
+   "v1_domain": "TD03",
+   "v1_wording": "열이 문제인지 유량이 문제인지 가려 볼 범위를 정해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD03_J1_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD03_J2",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J2",
+   "v1_domain": "TD03",
+   "v1_wording": "허용 온도나 압력손실 목표를 경계조건 값으로 옮겨 적어 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD03_J2_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD03_J3",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J3",
+   "v1_domain": "TD03",
+   "v1_wording": "유입 온도나 유량 같은 경계조건과 설계 작동점을 직접 정해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD03_J3_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD03_J4",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J4",
+   "v1_domain": "TD03",
+   "v1_wording": "전산유체 해석이나 열회로 계산으로 값을 직접 내 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD03_J4_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": true,
+   "planned_reason": "`값을 직접 내 본` 은 도구 사용만 묻는다. 격자와 난류 모델과 경계조건 가운데 무엇을 정했는지 묻는다"
+  },
+  {
+   "v1_item": "TD03_J5",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J5",
+   "v1_domain": "TD03",
+   "v1_wording": "열설계 사양서나 유로 설계안을 산출물로 낸 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD03_J5_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD03_J6",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J6",
+   "v1_domain": "TD03",
+   "v1_wording": "해석으로 구한 온도나 유량을 실측값이나 손계산과 견주어 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD03_J6_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD03_J7",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J7",
+   "v1_domain": "TD03",
+   "v1_wording": "예상보다 온도가 높아 유로나 냉각 방식을 고쳐 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "MOVE",
+   "v2_items": [
+    "TD03_J7_1"
+   ],
+   "reason": "실패·수정을 심화에서 선별로 옮겼다. 조직 활용을 선별에서 빼면서 학부생도 답할 수 있는 축을 그 자리에 넣었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD03_J8",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J8",
+   "v1_domain": "TD03",
+   "v1_wording": "냉각 구조나 팬 선정 회의에서 내 계산을 근거로 내놓은 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "MOVE",
+   "v2_items": [
+    "TD03_J8_1"
+   ],
+   "reason": "조직 활용을 선별에서 심화로 옮겼다. 내가 낸 것이 조직에 쓰였는가는 들어간 자리가 있어야 답할 수 있어 학부생에게 구조적으로 불리했다",
+   "agrees": false,
+   "planned_reason": "`올렸다·넘겼다·공유했다` 는 전달이다. 조직 활용은 **그 뒤에 무엇이 바뀌었는가**로 물어야 한다"
+  },
+  {
+   "v1_item": "TD04_J1",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J1",
+   "v1_domain": "TD04",
+   "v1_wording": "문제가 되는 주파수 대역을 가려 볼 범위를 정해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD04_J1_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD04_J2",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J2",
+   "v1_domain": "TD04",
+   "v1_wording": "허용 진동이나 소음 수준을 측정 지점과 운전 조건으로 옮겨 적어 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD04_J2_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD04_J3",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J3",
+   "v1_domain": "TD04",
+   "v1_wording": "가진 조건과 측정 지점을 직접 정해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD04_J3_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD04_J4",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J4",
+   "v1_domain": "TD04",
+   "v1_wording": "모달 해석으로 고유진동수와 모드 형상을 구해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD04_J4_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD04_J4B",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J4",
+   "v1_domain": "TD04",
+   "v1_wording": "가속도계를 붙여 진동을 직접 측정해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "MERGE",
+   "v2_items": [
+    "TD04_J4_1"
+   ],
+   "reason": "한 칸에 두 문항을 두었던 자리다. 선별 축을 둘로 늘리면서 심화 축은 하나로 맞췄다: 영역에 따라 응답 수가 달라지면 판정 경로가 갈린다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD04_J5",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J5",
+   "v1_domain": "TD04",
+   "v1_wording": "진동이나 소음 수준을 수치로 적은 보고를 낸 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD04_J5_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD04_J6",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J6",
+   "v1_domain": "TD04",
+   "v1_wording": "해석으로 구한 모드를 측정한 모드와 대조해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD04_J6_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD04_J7",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J7",
+   "v1_domain": "TD04",
+   "v1_wording": "대책이 듣지 않아 가진원이나 전달경로를 다시 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "MOVE",
+   "v2_items": [
+    "TD04_J7_1"
+   ],
+   "reason": "실패·수정을 심화에서 선별로 옮겼다. 조직 활용을 선별에서 빼면서 학부생도 답할 수 있는 축을 그 자리에 넣었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD04_J8",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J8",
+   "v1_domain": "TD04",
+   "v1_wording": "진동이나 소음 측정 결과를 대책 회의에서 내놓은 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "MOVE",
+   "v2_items": [
+    "TD04_J8_1"
+   ],
+   "reason": "조직 활용을 선별에서 심화로 옮겼다. 내가 낸 것이 조직에 쓰였는가는 들어간 자리가 있어야 답할 수 있어 학부생에게 구조적으로 불리했다",
+   "agrees": false,
+   "planned_reason": "`올렸다·넘겼다·공유했다` 는 전달이다. 조직 활용은 **그 뒤에 무엇이 바뀌었는가**로 물어야 한다"
+  },
+  {
+   "v1_item": "TD05_J1",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J1",
+   "v1_domain": "TD05",
+   "v1_wording": "제어할 동작과 사이클을 정리해 범위를 적어 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD05_J1_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD05_J2",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J2",
+   "v1_domain": "TD05",
+   "v1_wording": "요구 동작 속도나 정지 정확도를 수치 조건으로 적어 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD05_J2_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD05_J3",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J3",
+   "v1_domain": "TD05",
+   "v1_wording": "부하와 관성을 따져 모터 용량과 감속비를 직접 정해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD05_J3_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD05_J4",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J4",
+   "v1_domain": "TD05",
+   "v1_wording": "제어기나 PLC 로 동작 시퀀스를 직접 구현해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD05_J4_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD05_J4B",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J4",
+   "v1_domain": "TD05",
+   "v1_wording": "응답을 보며 제어 이득이나 속도 곡선을 직접 조정해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "MERGE",
+   "v2_items": [
+    "TD05_J4_1"
+   ],
+   "reason": "한 칸에 두 문항을 두었던 자리다. 선별 축을 둘로 늘리면서 심화 축은 하나로 맞췄다: 영역에 따라 응답 수가 달라지면 판정 경로가 갈린다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD05_J5",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J5",
+   "v1_domain": "TD05",
+   "v1_wording": "동작하는 장치나 셀을 산출물로 낸 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD05_J5_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD05_J6",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J6",
+   "v1_domain": "TD05",
+   "v1_wording": "사이클 타임이나 반복 정밀도를 측정해 목표와 견주어 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD05_J6_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD05_J7",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J7",
+   "v1_domain": "TD05",
+   "v1_wording": "동작이 떨리거나 멈춰 원인을 찾아 고쳐 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "MOVE",
+   "v2_items": [
+    "TD05_J7_1"
+   ],
+   "reason": "실패·수정을 심화에서 선별로 옮겼다. 조직 활용을 선별에서 빼면서 학부생도 답할 수 있는 축을 그 자리에 넣었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD05_J8",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J8",
+   "v1_domain": "TD05",
+   "v1_wording": "내가 만든 장치나 시퀀스를 현장에 인수인계해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "MOVE",
+   "v2_items": [
+    "TD05_J8_1"
+   ],
+   "reason": "조직 활용을 선별에서 심화로 옮겼다. 내가 낸 것이 조직에 쓰였는가는 들어간 자리가 있어야 답할 수 있어 학부생에게 구조적으로 불리했다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD06_J1",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J1",
+   "v1_domain": "TD06",
+   "v1_wording": "깨짐과 마모와 부식 가운데 무엇을 다룰 문제로 볼지 정해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD06_J1_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD06_J2",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J2",
+   "v1_domain": "TD06",
+   "v1_wording": "사용 환경 조건을 재질 요구 사양으로 옮겨 적어 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD06_J2_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD06_J3",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J3",
+   "v1_domain": "TD06",
+   "v1_wording": "요구 물성과 원가를 근거로 재질이나 열처리 조건을 직접 정해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD06_J3_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD06_J4",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J4",
+   "v1_domain": "TD06",
+   "v1_wording": "재료 시험이나 조직 관찰로 손상 상태를 직접 확인해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD06_J4_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD06_J5",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J5",
+   "v1_domain": "TD06",
+   "v1_wording": "시험 성적이나 파손 분석 보고를 낸 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD06_J5_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD06_J6",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J6",
+   "v1_domain": "TD06",
+   "v1_wording": "측정한 물성을 규격값이나 문헌값과 견주어 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD06_J6_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD06_J7",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J7",
+   "v1_domain": "TD06",
+   "v1_wording": "깨진 원인을 다시 보고 재질이나 조건을 고쳐 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "MOVE",
+   "v2_items": [
+    "TD06_J7_1"
+   ],
+   "reason": "실패·수정을 심화에서 선별로 옮겼다. 조직 활용을 선별에서 빼면서 학부생도 답할 수 있는 축을 그 자리에 넣었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD06_J8",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J8",
+   "v1_domain": "TD06",
+   "v1_wording": "파손 분석 결과를 재질이나 공정 담당자에게 넘겨 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "MOVE",
+   "v2_items": [
+    "TD06_J8_1"
+   ],
+   "reason": "조직 활용을 선별에서 심화로 옮겼다. 내가 낸 것이 조직에 쓰였는가는 들어간 자리가 있어야 답할 수 있어 학부생에게 구조적으로 불리했다",
+   "agrees": false,
+   "planned_reason": "`올렸다·넘겼다·공유했다` 는 전달이다. 조직 활용은 **그 뒤에 무엇이 바뀌었는가**로 물어야 한다"
+  },
+  {
+   "v1_item": "TD07_J1",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J1",
+   "v1_domain": "TD07",
+   "v1_wording": "그 시험으로 무엇을 확인할지 직접 정해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD07_J1_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD07_J2",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J2",
+   "v1_domain": "TD07",
+   "v1_wording": "규격의 합격 기준을 측정할 양과 판정선으로 옮겨 적어 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD07_J2_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD07_J3",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J3",
+   "v1_domain": "TD07",
+   "v1_wording": "측정 지점과 시험 조건을 직접 정해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD07_J3_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD07_J4",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J4",
+   "v1_domain": "TD07",
+   "v1_wording": "계측 장비로 측정 체인을 꾸려 데이터를 직접 받아 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD07_J4_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD07_J5",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J5",
+   "v1_domain": "TD07",
+   "v1_wording": "시험 결과를 성적서로 정리해 낸 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD07_J5_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD07_J6",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J6",
+   "v1_domain": "TD07",
+   "v1_wording": "같은 조건을 여러 번 측정해 산포를 확인해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD07_J6_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD07_J7",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J7",
+   "v1_domain": "TD07",
+   "v1_wording": "측정값이 흔들려 지그나 센서나 조건을 고쳐 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "MOVE",
+   "v2_items": [
+    "TD07_J7_1"
+   ],
+   "reason": "실패·수정을 심화에서 선별로 옮겼다. 조직 활용을 선별에서 빼면서 학부생도 답할 수 있는 축을 그 자리에 넣었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD07_J8",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J8",
+   "v1_domain": "TD07",
+   "v1_wording": "시험 성적서를 판정이 필요한 쪽에 넘겨 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "MOVE",
+   "v2_items": [
+    "TD07_J8_1"
+   ],
+   "reason": "조직 활용을 선별에서 심화로 옮겼다. 내가 낸 것이 조직에 쓰였는가는 들어간 자리가 있어야 답할 수 있어 학부생에게 구조적으로 불리했다",
+   "agrees": false,
+   "planned_reason": "`올렸다·넘겼다·공유했다` 는 전달이다. 조직 활용은 **그 뒤에 무엇이 바뀌었는가**로 물어야 한다"
+  },
+  {
+   "v1_item": "TD08_J1",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J1",
+   "v1_domain": "TD08",
+   "v1_wording": "어느 공정의 무엇이 문제인지 가려 개선 대상을 정해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD08_J1_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD08_J2",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J2",
+   "v1_domain": "TD08",
+   "v1_wording": "도면 공차를 공정에서 지킬 수 있는 조건으로 옮겨 검토해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD08_J2_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD08_J3",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J3",
+   "v1_domain": "TD08",
+   "v1_wording": "가공이나 성형 조건의 관리 범위를 직접 정해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD08_J3_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD08_J4",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J4",
+   "v1_domain": "TD08",
+   "v1_wording": "조건을 바꿔 가며 시험 생산을 직접 돌려 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD08_J4_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD08_J5",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J5",
+   "v1_domain": "TD08",
+   "v1_wording": "작업 표준이나 공정도를 낸 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD08_J5_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD08_J6",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J6",
+   "v1_domain": "TD08",
+   "v1_wording": "개선 전후 불량률이나 택트를 견주어 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD08_J6_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD08_J7",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J7",
+   "v1_domain": "TD08",
+   "v1_wording": "불량이 늘어 가공이나 성형 조건을 되돌려 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "MOVE",
+   "v2_items": [
+    "TD08_J7_1"
+   ],
+   "reason": "실패·수정을 심화에서 선별로 옮겼다. 조직 활용을 선별에서 빼면서 학부생도 답할 수 있는 축을 그 자리에 넣었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD08_J8",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J8",
+   "v1_domain": "TD08",
+   "v1_wording": "내가 정한 조건이나 표준을 라인에 적용해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "MOVE",
+   "v2_items": [
+    "TD08_J8_1"
+   ],
+   "reason": "조직 활용을 선별에서 심화로 옮겼다. 내가 낸 것이 조직에 쓰였는가는 들어간 자리가 있어야 답할 수 있어 학부생에게 구조적으로 불리했다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD09_J1",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J1",
+   "v1_domain": "TD09",
+   "v1_wording": "고장이 잦은 설비 가운데 먼저 볼 대상을 직접 정해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD09_J1_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD09_J2",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J2",
+   "v1_domain": "TD09",
+   "v1_wording": "요구 가동률이나 생산 계획을 점검 항목과 주기로 옮겨 적어 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD09_J2_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD09_J3",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J3",
+   "v1_domain": "TD09",
+   "v1_wording": "설비 점검 항목과 주기를 직접 정해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD09_J3_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD09_J4",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J4",
+   "v1_domain": "TD09",
+   "v1_wording": "진동이나 열화상 같은 진단 값으로 설비 상태를 직접 확인해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD09_J4_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD09_J4B",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J4",
+   "v1_domain": "TD09",
+   "v1_wording": "고장 이력이나 추세 자료로 교체 시점을 예측해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "MERGE",
+   "v2_items": [
+    "TD09_J4_1"
+   ],
+   "reason": "한 칸에 두 문항을 두었던 자리다. 선별 축을 둘로 늘리면서 심화 축은 하나로 맞췄다: 영역에 따라 응답 수가 달라지면 판정 경로가 갈린다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD09_J5",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J5",
+   "v1_domain": "TD09",
+   "v1_wording": "점검표나 고장 보고를 낸 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD09_J5_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD09_J6",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J6",
+   "v1_domain": "TD09",
+   "v1_wording": "개선 전후 가동률이나 고장 간격을 견주어 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD09_J6_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD09_J7",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J7",
+   "v1_domain": "TD09",
+   "v1_wording": "같은 고장이 또 나서 원인을 찾아 고쳐 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "MOVE",
+   "v2_items": [
+    "TD09_J7_1"
+   ],
+   "reason": "실패·수정을 심화에서 선별로 옮겼다. 조직 활용을 선별에서 빼면서 학부생도 답할 수 있는 축을 그 자리에 넣었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD09_J8",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J8",
+   "v1_domain": "TD09",
+   "v1_wording": "보전 이력이나 점검 결과를 운전·생산 담당자와 공유해 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "MOVE",
+   "v2_items": [
+    "TD09_J8_1"
+   ],
+   "reason": "조직 활용을 선별에서 심화로 옮겼다. 내가 낸 것이 조직에 쓰였는가는 들어간 자리가 있어야 답할 수 있어 학부생에게 구조적으로 불리했다",
+   "agrees": false,
+   "planned_reason": "`올렸다·넘겼다·공유했다` 는 전달이다. 조직 활용은 **그 뒤에 무엇이 바뀌었는가**로 물어야 한다"
+  },
+  {
+   "v1_item": "TD10_J1",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J1",
+   "v1_domain": "TD10",
+   "v1_wording": "어느 품질 특성을 관리할지 직접 정해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD10_J1_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD10_J2",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J2",
+   "v1_domain": "TD10",
+   "v1_wording": "고객 요구나 규격을 관리 한계나 수명 목표로 옮겨 적어 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD10_J2_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD10_J3",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J3",
+   "v1_domain": "TD10",
+   "v1_wording": "검사 항목과 샘플링 방식을 직접 정해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD10_J3_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD10_J4",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J4",
+   "v1_domain": "TD10",
+   "v1_wording": "관리도나 수명 시험으로 품질 상태를 직접 확인해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD10_J4_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD10_J5",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J5",
+   "v1_domain": "TD10",
+   "v1_wording": "품질 보고나 시정조치서를 낸 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD10_J5_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD10_J6",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J6",
+   "v1_domain": "TD10",
+   "v1_wording": "검사 결과를 규격과 대조해 합격 여부를 가려 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD10_J6_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD10_J7",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J7",
+   "v1_domain": "TD10",
+   "v1_wording": "불량이 유출되어 원인을 찾아본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "MOVE",
+   "v2_items": [
+    "TD10_J7_1"
+   ],
+   "reason": "실패·수정을 심화에서 선별로 옮겼다. 조직 활용을 선별에서 빼면서 학부생도 답할 수 있는 축을 그 자리에 넣었다",
+   "agrees": false,
+   "planned_reason": "`불량이 유출되어 원인을 찾아본` 은 유출을 겪은 사람만 답할 수 있다. 발생과 유출을 가른 경험으로 넓힌다"
+  },
+  {
+   "v1_item": "TD10_J8",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J8",
+   "v1_domain": "TD10",
+   "v1_wording": "검사 결과나 관리 기준을 품질 회의에 올려 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "MOVE",
+   "v2_items": [
+    "TD10_J8_1"
+   ],
+   "reason": "조직 활용을 선별에서 심화로 옮겼다. 내가 낸 것이 조직에 쓰였는가는 들어간 자리가 있어야 답할 수 있어 학부생에게 구조적으로 불리했다",
+   "agrees": false,
+   "planned_reason": "`올렸다·넘겼다·공유했다` 는 전달이다. 조직 활용은 **그 뒤에 무엇이 바뀌었는가**로 물어야 한다"
+  },
+  {
+   "v1_item": "TD11_J1",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J1",
+   "v1_domain": "TD11",
+   "v1_wording": "여러 팀의 요구 가운데 이번 개발에서 다룰 범위를 적어 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD11_J1_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD11_J2",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J2",
+   "v1_domain": "TD11",
+   "v1_wording": "상위 요구를 하위 항목으로 쪼개 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD11_J2_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": true,
+   "planned_reason": "`하위 항목으로 쪼개 본` 에서 멈춘다. 할당과 검증 방법까지 묻는다"
+  },
+  {
+   "v1_item": "TD11_J3",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J3",
+   "v1_domain": "TD11",
+   "v1_wording": "맞물리는 부분의 인터페이스 규격을 직접 정해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD11_J3_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD11_J4",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J4",
+   "v1_domain": "TD11",
+   "v1_wording": "요구 추적표를 써서 항목을 관리해 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD11_J4_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": true,
+   "planned_reason": "`추적표를 써서 관리해 본` 은 서식 사용이다. 추적이 끊긴 자리를 어떻게 메웠는지 묻는다"
+  },
+  {
+   "v1_item": "TD11_J5",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J5",
+   "v1_domain": "TD11",
+   "v1_wording": "요구 사양서를 정리해 낸 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD11_J5_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD11_J6",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J6",
+   "v1_domain": "TD11",
+   "v1_wording": "완성품이 요구를 만족하는지 항목마다 확인해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD11_J6_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD11_J7",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J7",
+   "v1_domain": "TD11",
+   "v1_wording": "요구가 바뀌어 일정이나 담당을 다시 배정해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "MOVE",
+   "v2_items": [
+    "TD11_J7_1"
+   ],
+   "reason": "실패·수정을 심화에서 선별로 옮겼다. 조직 활용을 선별에서 빼면서 학부생도 답할 수 있는 축을 그 자리에 넣었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD11_J8",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J8",
+   "v1_domain": "TD11",
+   "v1_wording": "내가 쓴 사양서를 팀에 배포해 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "MOVE",
+   "v2_items": [
+    "TD11_J8_1"
+   ],
+   "reason": "조직 활용을 선별에서 심화로 옮겼다. 내가 낸 것이 조직에 쓰였는가는 들어간 자리가 있어야 답할 수 있어 학부생에게 구조적으로 불리했다",
+   "agrees": false,
+   "planned_reason": "`올렸다·넘겼다·공유했다` 는 전달이다. 조직 활용은 **그 뒤에 무엇이 바뀌었는가**로 물어야 한다"
+  },
+  {
+   "v1_item": "TD12_J1",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J1",
+   "v1_domain": "TD12",
+   "v1_wording": "어느 반복 작업을 줄일지 직접 정해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD12_J1_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD12_J2",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J2",
+   "v1_domain": "TD12",
+   "v1_wording": "쓰는 사람의 입력과 출력 형식을 정리해 적어 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD12_J2_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD12_J3",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J3",
+   "v1_domain": "TD12",
+   "v1_wording": "자동화할 처리 절차를 직접 정해 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD12_J3_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD12_J4",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J4",
+   "v1_domain": "TD12",
+   "v1_wording": "반복 계산이나 자료 처리를 스크립트로 만들어 돌려 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD12_J4_1"
+   ],
+   "reason": "영역의 소유 범위를 고쳐 문면을 그 말로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD12_J5",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J5",
+   "v1_domain": "TD12",
+   "v1_wording": "돌아가는 코드나 대시보드를 산출물로 낸 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD12_J5_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD12_J6",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J6",
+   "v1_domain": "TD12",
+   "v1_wording": "손으로 한 결과와 자동화한 결과를 견주어 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "TD12_J6_1"
+   ],
+   "reason": "선별 축의 문항이 영역마다 하나뿐이어서 소유가 구조적으로 설 수 없었다. 둘로 늘리고 문면을 그 영역의 실제 업무 장면으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 직접 판단·산출물·검증·활용을 묻는다. 은행에서 가장 쓸모 있는 묶음이다"
+  },
+  {
+   "v1_item": "TD12_J7",
+   "v1_module": "DEEP-J8",
+   "v1_axis": "J7",
+   "v1_domain": "TD12",
+   "v1_wording": "틀린 값이 나와 원인을 찾아 고쳐 본 경험이 있다",
+   "planned": "KEEP",
+   "actual": "MOVE",
+   "v2_items": [
+    "TD12_J7_1"
+   ],
+   "reason": "실패·수정을 심화에서 선별로 옮겼다. 조직 활용을 선별에서 빼면서 학부생도 답할 수 있는 축을 그 자리에 넣었다",
+   "agrees": false,
+   "planned_reason": "영역에 묶여 있고 여덟 축을 채운다"
+  },
+  {
+   "v1_item": "TD12_J8",
+   "v1_module": "PROBE-J4",
+   "v1_axis": "J8",
+   "v1_domain": "TD12",
+   "v1_wording": "내가 만든 것을 팀에 공유해 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "MOVE",
+   "v2_items": [
+    "TD12_J8_1"
+   ],
+   "reason": "조직 활용을 선별에서 심화로 옮겼다. 내가 낸 것이 조직에 쓰였는가는 들어간 자리가 있어야 답할 수 있어 학부생에게 구조적으로 불리했다",
+   "agrees": false,
+   "planned_reason": "`팀에 공유해 본` 은 가장 약한 문면이다. 남이 그것을 계속 쓰는지까지 묻는다"
+  },
+  {
+   "v1_item": "UG_SCOPE",
+   "v1_module": "UG-COURSE",
+   "v1_axis": "J1",
+   "v1_domain": null,
+   "v1_wording": "캡스톤이나 설계 과제에서 다룰 범위를 팀에서 직접 좁혀 정한 적이 있다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "UG_SCOPE"
+   ],
+   "reason": "`팀에서 직접` 이 팀이 정한 것과 내가 정한 것을 섞었다. `직접` 하나로 좁혔다",
+   "agrees": false,
+   "planned_reason": "DEEP 의 J1·J3·J5·J7 과 묻는 것이 같은데 영역이 없다. 영역에 묶어 흡수한다"
+  },
+  {
+   "v1_item": "UG_DECIDE",
+   "v1_module": "UG-COURSE",
+   "v1_axis": "J3",
+   "v1_domain": null,
+   "v1_wording": "과제나 실험에서 조건이나 치수를 내가 정해 진행한 적이 있다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "UG_DECIDE"
+   ],
+   "reason": "`정해 진행한 적이 있다` 는 진행만 해도 걸렸다. 결과에 들어갔는지까지 묻는다",
+   "agrees": false,
+   "planned_reason": "DEEP 의 J1·J3·J5·J7 과 묻는 것이 같은데 영역이 없다. 영역에 묶어 흡수한다"
+  },
+  {
+   "v1_item": "UG_OUTPUT",
+   "v1_module": "UG-COURSE",
+   "v1_axis": "J5",
+   "v1_domain": null,
+   "v1_wording": "과제 결과로 도면이나 보고서나 작동하는 물건이 남은 적이 있다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "UG_OUTPUT"
+   ],
+   "reason": "`남은 적이 있다` 는 제출만 해도 걸렸다. 다른 사람이 쓸 수 있는 모양인지를 묻는다",
+   "agrees": false,
+   "planned_reason": "DEEP 의 J1·J3·J5·J7 과 묻는 것이 같은데 영역이 없다. 영역에 묶어 흡수한다"
+  },
+  {
+   "v1_item": "UG_FIX",
+   "v1_module": "UG-COURSE",
+   "v1_axis": "J7",
+   "v1_domain": null,
+   "v1_wording": "결과가 예상과 달라 조건을 바꿔 다시 해 본 적이 있다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "UG_FIX"
+   ],
+   "reason": "`조건을 바꿔 다시 해 본` 은 아무 조건이나 바꿔도 걸렸다. 원인을 좁혔는지를 묻는다",
+   "agrees": false,
+   "planned_reason": "DEEP 의 J1·J3·J5·J7 과 묻는 것이 같은데 영역이 없다. 영역에 묶어 흡수한다"
+  },
+  {
+   "v1_item": "GS_PROBLEM",
+   "v1_module": "GRAD-STEM",
+   "v1_axis": "J1",
+   "v1_domain": null,
+   "v1_wording": "다룰 연구 문제를 지도교수가 아니라 내가 좁혀 정한 적이 있다",
+   "planned": "MERGE",
+   "actual": "KEEP",
+   "v2_items": [
+    "GS_PROBLEM"
+   ],
+   "reason": "문면과 자리를 그대로 두었다",
+   "agrees": false,
+   "planned_reason": "DEEP 과 중복이다. 영역에 묶어 흡수한다"
+  },
+  {
+   "v1_item": "GS_METHOD",
+   "v1_module": "GRAD-STEM",
+   "v1_axis": "J3",
+   "v1_domain": null,
+   "v1_wording": "쓸 수 있는 방법이 둘 이상일 때 어느 쪽으로 갈지 내가 정한 적이 있다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "GS_METHOD"
+   ],
+   "reason": "`어느 쪽으로 갈지 내가 정한` 은 고르기만 해도 걸렸다. 정한 조건으로 실제로 돌렸는지를 묻는다",
+   "agrees": false,
+   "planned_reason": "DEEP 과 중복이다. 영역에 묶어 흡수한다"
+  },
+  {
+   "v1_item": "GS_ASSUME",
+   "v1_module": "GRAD-STEM",
+   "v1_axis": "J3",
+   "v1_domain": null,
+   "v1_wording": "무엇을 고정하고 무엇을 변수로 둘지 내가 정해 적어 둔 적이 있다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "GS_CONDITION"
+   ],
+   "reason": "`무엇을 고정하고 무엇을 변수로 둘지` 는 직접 판단 쪽이었고 요구 해석 축이 비어 있었다. 목표를 조건으로 옮기는 쪽으로 다시 적었다",
+   "agrees": false,
+   "planned_reason": "DEEP 과 중복이다. 영역에 묶어 흡수한다"
+  },
+  {
+   "v1_item": "GS_VERIFY",
+   "v1_module": "GRAD-STEM",
+   "v1_axis": "J6",
+   "v1_domain": null,
+   "v1_wording": "결과를 이론값이나 선행 연구나 실측 가운데 하나와 견주어 본 적이 있다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "GS_VERIFY"
+   ],
+   "reason": "`이론값이나 선행 연구나 실측 가운데 하나와 견주어` 는 보기 목록이 길어 무엇을 묻는지 흐려졌다",
+   "agrees": false,
+   "planned_reason": "DEEP 과 중복이다. 영역에 묶어 흡수한다"
+  },
+  {
+   "v1_item": "GS_OUTPUT",
+   "v1_module": "GRAD-STEM",
+   "v1_axis": "J5",
+   "v1_domain": null,
+   "v1_wording": "연구에서 논문이나 특허나 시작품이나 코드가 남은 적이 있다",
+   "planned": "MERGE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "GS_OUTPUT"
+   ],
+   "reason": "`논문이나 특허나 시작품이나 코드가 남은 적` 은 산출물의 종류를 세는 문면이었다. 다시 할 수 있는 모양인지를 묻는다",
+   "agrees": false,
+   "planned_reason": "DEEP 과 중복이다. 영역에 묶어 흡수한다"
+  },
+  {
+   "v1_item": "GS_USE",
+   "v1_module": "GRAD-STEM",
+   "v1_axis": "J8",
+   "v1_domain": null,
+   "v1_wording": "내 연구 결과를 다른 사람이나 다른 과제가 가져다 쓴 적이 있다",
+   "planned": "MERGE",
+   "actual": "MERGE",
+   "v2_items": [
+    "CJ_HANDOFF"
+   ],
+   "reason": "석사 이상 묶음의 조직 활용을 공통 판단의 조직 활용 하나로 묶었다. 영역마다의 조직 활용은 심화에서 따로 받는다",
+   "agrees": true,
+   "planned_reason": "DEEP 과 중복이다. 영역에 묶어 흡수한다"
+  },
+  {
+   "v1_item": "GH_SCOPE",
+   "v1_module": "GRAD-HS",
+   "v1_axis": "J1",
+   "v1_domain": null,
+   "v1_wording": "조사할 대상과 범위를 내가 좁혀 정한 적이 있다",
+   "planned": "MOVE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "인문·사회 계열 대학원 분기 묶음을 없앴다. 기계공학 Core 의 축 수준이 다른 전공의 경험으로 섰다. 학부가 기계공학인 경우만 받고 그때는 학부 묶음과 번역 맥락 묶음으로 간다. 비이공계 전공자용 Core 는 따로 짓는다",
+   "agrees": false,
+   "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
+  },
+  {
+   "v1_item": "GH_SAMPLE",
+   "v1_module": "GRAD-HS",
+   "v1_axis": "J3",
+   "v1_domain": null,
+   "v1_wording": "표본을 어떻게 뽑고 무엇을 물을지 내가 정한 적이 있다",
+   "planned": "MOVE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "인문·사회 계열 대학원 분기 묶음을 없앴다. 기계공학 Core 의 축 수준이 다른 전공의 경험으로 섰다. 학부가 기계공학인 경우만 받고 그때는 학부 묶음과 번역 맥락 묶음으로 간다. 비이공계 전공자용 Core 는 따로 짓는다",
+   "agrees": false,
+   "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
+  },
+  {
+   "v1_item": "GH_METHOD",
+   "v1_module": "GRAD-HS",
+   "v1_axis": "J4",
+   "v1_domain": null,
+   "v1_wording": "분석 방법을 골라 자료에 직접 적용해 본 적이 있다",
+   "planned": "MOVE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "인문·사회 계열 대학원 분기 묶음을 없앴다. 기계공학 Core 의 축 수준이 다른 전공의 경험으로 섰다. 학부가 기계공학인 경우만 받고 그때는 학부 묶음과 번역 맥락 묶음으로 간다. 비이공계 전공자용 Core 는 따로 짓는다",
+   "agrees": false,
+   "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
+  },
+  {
+   "v1_item": "GH_VALID",
+   "v1_module": "GRAD-HS",
+   "v1_axis": "J6",
+   "v1_domain": null,
+   "v1_wording": "해석이 맞는지 다른 자료원이나 다른 방법으로 확인해 본 적이 있다",
+   "planned": "MOVE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "인문·사회 계열 대학원 분기 묶음을 없앴다. 기계공학 Core 의 축 수준이 다른 전공의 경험으로 섰다. 학부가 기계공학인 경우만 받고 그때는 학부 묶음과 번역 맥락 묶음으로 간다. 비이공계 전공자용 Core 는 따로 짓는다",
+   "agrees": false,
+   "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
+  },
+  {
+   "v1_item": "GH_REPORT",
+   "v1_module": "GRAD-HS",
+   "v1_axis": "J5",
+   "v1_domain": null,
+   "v1_wording": "조사에서 보고서나 설문 도구나 자료집이 남은 적이 있다",
+   "planned": "MOVE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "인문·사회 계열 대학원 분기 묶음을 없앴다. 기계공학 Core 의 축 수준이 다른 전공의 경험으로 섰다. 학부가 기계공학인 경우만 받고 그때는 학부 묶음과 번역 맥락 묶음으로 간다. 비이공계 전공자용 Core 는 따로 짓는다",
+   "agrees": false,
+   "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
+  },
+  {
+   "v1_item": "GH_USE",
+   "v1_module": "GRAD-HS",
+   "v1_axis": "J8",
+   "v1_domain": null,
+   "v1_wording": "내 조사 결과가 결정이나 제도나 사업에 쓰인 적이 있다",
+   "planned": "MOVE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "인문·사회 계열 대학원 분기 묶음을 없앴다. 기계공학 Core 의 축 수준이 다른 전공의 경험으로 섰다. 학부가 기계공학인 경우만 받고 그때는 학부 묶음과 번역 맥락 묶음으로 간다. 비이공계 전공자용 Core 는 따로 짓는다",
+   "agrees": false,
+   "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
+  },
+  {
+   "v1_item": "GB_SCOPE",
+   "v1_module": "GRAD-BIZ",
+   "v1_axis": "J1",
+   "v1_domain": null,
+   "v1_wording": "다룰 문제의 범위를 내가 좁혀 정한 적이 있다",
+   "planned": "MOVE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "경영·경제 계열 대학원 분기 묶음을 없앴다. 까닭은 인문·사회 묶음과 같다",
+   "agrees": false,
+   "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
+  },
+  {
+   "v1_item": "GB_CRITERIA",
+   "v1_module": "GRAD-BIZ",
+   "v1_axis": "J2",
+   "v1_domain": null,
+   "v1_wording": "판단에 쓸 기준이나 지표를 수치로 세워 본 적이 있다",
+   "planned": "MOVE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "경영·경제 계열 대학원 분기 묶음을 없앴다. 까닭은 인문·사회 묶음과 같다",
+   "agrees": false,
+   "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
+  },
+  {
+   "v1_item": "GB_ESTIMATE",
+   "v1_module": "GRAD-BIZ",
+   "v1_axis": "J4",
+   "v1_domain": null,
+   "v1_wording": "자료와 가정을 놓고 비용이나 수요를 직접 추정해 본 적이 있다",
+   "planned": "MOVE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "경영·경제 계열 대학원 분기 묶음을 없앴다. 까닭은 인문·사회 묶음과 같다",
+   "agrees": false,
+   "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
+  },
+  {
+   "v1_item": "GB_COMPARE",
+   "v1_module": "GRAD-BIZ",
+   "v1_axis": "J6",
+   "v1_domain": null,
+   "v1_wording": "대안을 같은 기준으로 견주어 하나를 고른 적이 있다",
+   "planned": "MOVE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "경영·경제 계열 대학원 분기 묶음을 없앴다. 까닭은 인문·사회 묶음과 같다",
+   "agrees": false,
+   "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
+  },
+  {
+   "v1_item": "GB_REPORT",
+   "v1_module": "GRAD-BIZ",
+   "v1_axis": "J5",
+   "v1_domain": null,
+   "v1_wording": "사업계획이나 타당성 보고나 원가 모형이 남은 적이 있다",
+   "planned": "MOVE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "경영·경제 계열 대학원 분기 묶음을 없앴다. 까닭은 인문·사회 묶음과 같다",
+   "agrees": false,
+   "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
+  },
+  {
+   "v1_item": "GB_USE",
+   "v1_module": "GRAD-BIZ",
+   "v1_axis": "J8",
+   "v1_domain": null,
+   "v1_wording": "내 분석이 투자나 사업 결정에 쓰인 적이 있다",
+   "planned": "MOVE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "경영·경제 계열 대학원 분기 묶음을 없앴다. 까닭은 인문·사회 묶음과 같다",
+   "agrees": false,
+   "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
+  },
+  {
+   "v1_item": "GM_PROBLEM",
+   "v1_module": "GRAD-MIX",
+   "v1_axis": "J1",
+   "v1_domain": null,
+   "v1_wording": "주어진 주제를 그대로 받지 않고 다룰 범위를 바꾼 적이 있다",
+   "planned": "MOVE",
+   "actual": "MERGE",
+   "v2_items": [
+    "GRAD-CORE"
+   ],
+   "reason": "융합 계열 대학원 묶음을 이공계 묶음 하나로 합쳤다. 두 묶음이 같은 여섯 자리를 다른 문면으로 물었고, 융합 계열이라고 판정이 달라지지 않는다. 융합 계열은 이제 이공계 묶음으로 간다",
+   "agrees": false,
+   "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
+  },
+  {
+   "v1_item": "GM_METHOD",
+   "v1_module": "GRAD-MIX",
+   "v1_axis": "J3",
+   "v1_domain": null,
+   "v1_wording": "쓸 방법이 둘 이상일 때 무엇을 기준으로 골랐는지 적어 둔 적이 있다",
+   "planned": "MOVE",
+   "actual": "MERGE",
+   "v2_items": [
+    "GRAD-CORE"
+   ],
+   "reason": "융합 계열 대학원 묶음을 이공계 묶음 하나로 합쳤다. 두 묶음이 같은 여섯 자리를 다른 문면으로 물었고, 융합 계열이라고 판정이 달라지지 않는다. 융합 계열은 이제 이공계 묶음으로 간다",
+   "agrees": false,
+   "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
+  },
+  {
+   "v1_item": "GM_DO",
+   "v1_module": "GRAD-MIX",
+   "v1_axis": "J4",
+   "v1_domain": null,
+   "v1_wording": "고른 방법을 자료나 장치에 직접 적용해 돌려 본 적이 있다",
+   "planned": "MOVE",
+   "actual": "MERGE",
+   "v2_items": [
+    "GRAD-CORE"
+   ],
+   "reason": "융합 계열 대학원 묶음을 이공계 묶음 하나로 합쳤다. 두 묶음이 같은 여섯 자리를 다른 문면으로 물었고, 융합 계열이라고 판정이 달라지지 않는다. 융합 계열은 이제 이공계 묶음으로 간다",
+   "agrees": false,
+   "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
+  },
+  {
+   "v1_item": "GM_VERIFY",
+   "v1_module": "GRAD-MIX",
+   "v1_axis": "J6",
+   "v1_domain": null,
+   "v1_wording": "결과가 맞는지 확인하려고 자료나 방법을 하나 더 가져온 적이 있다",
+   "planned": "MOVE",
+   "actual": "MERGE",
+   "v2_items": [
+    "GRAD-CORE"
+   ],
+   "reason": "융합 계열 대학원 묶음을 이공계 묶음 하나로 합쳤다. 두 묶음이 같은 여섯 자리를 다른 문면으로 물었고, 융합 계열이라고 판정이 달라지지 않는다. 융합 계열은 이제 이공계 묶음으로 간다",
+   "agrees": false,
+   "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
+  },
+  {
+   "v1_item": "GM_OUTPUT",
+   "v1_module": "GRAD-MIX",
+   "v1_axis": "J5",
+   "v1_domain": null,
+   "v1_wording": "작업이 끝났을 때 무엇이 남았는지 댈 수 있다",
+   "planned": "MOVE",
+   "actual": "MERGE",
+   "v2_items": [
+    "GRAD-CORE"
+   ],
+   "reason": "융합 계열 대학원 묶음을 이공계 묶음 하나로 합쳤다. 두 묶음이 같은 여섯 자리를 다른 문면으로 물었고, 융합 계열이라고 판정이 달라지지 않는다. 융합 계열은 이제 이공계 묶음으로 간다",
+   "agrees": false,
+   "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
+  },
+  {
+   "v1_item": "GM_USE",
+   "v1_module": "GRAD-MIX",
+   "v1_axis": "J8",
+   "v1_domain": null,
+   "v1_wording": "내 결과가 다른 사람의 다음 작업에 입력으로 들어간 적이 있다",
+   "planned": "MOVE",
+   "actual": "MERGE",
+   "v2_items": [
+    "GRAD-CORE"
+   ],
+   "reason": "융합 계열 대학원 묶음을 이공계 묶음 하나로 합쳤다. 두 묶음이 같은 여섯 자리를 다른 문면으로 물었고, 융합 계열이라고 판정이 달라지지 않는다. 융합 계열은 이제 이공계 묶음으로 간다",
+   "agrees": false,
+   "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
+  },
+  {
+   "v1_item": "GM_OBJECT",
+   "v1_module": "GRAD-MIX",
+   "v1_axis": "J1",
+   "v1_domain": null,
+   "v1_wording": "연구에서 다룬 대상은 어느 쪽에 가깝습니까",
+   "planned": "MOVE",
+   "actual": "MERGE",
+   "v2_items": [
+    "GRAD-CORE"
+   ],
+   "reason": "융합 계열 대학원 묶음을 이공계 묶음 하나로 합쳤다. 두 묶음이 같은 여섯 자리를 다른 문면으로 물었고, 융합 계열이라고 판정이 달라지지 않는다. 융합 계열은 이제 이공계 묶음으로 간다",
+   "agrees": false,
+   "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
+  },
+  {
+   "v1_item": "GM_BUILD",
+   "v1_module": "GRAD-MIX",
+   "v1_axis": "J4",
+   "v1_domain": null,
+   "v1_wording": "수치 모델이나 실험 장치를 직접 만들어 본 적이 있다",
+   "planned": "MOVE",
+   "actual": "MERGE",
+   "v2_items": [
+    "GRAD-CORE"
+   ],
+   "reason": "융합 계열 대학원 묶음을 이공계 묶음 하나로 합쳤다. 두 묶음이 같은 여섯 자리를 다른 문면으로 물었고, 융합 계열이라고 판정이 달라지지 않는다. 융합 계열은 이제 이공계 묶음으로 간다",
+   "agrees": false,
+   "planned_reason": "기계공학 Core 가 재는 것이 아니다. 비이공계 Core 판본으로 옮긴다"
+  },
+  {
+   "v1_item": "PR_RF1",
+   "v1_module": "PREF-RF-OC",
+   "v1_axis": null,
+   "v1_domain": null,
+   "v1_wording": "만들 것을 정하고 도면이나 사양으로 남기는 자리에 가고 싶다",
+   "planned": "MERGE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "역할 선호 다섯 점 척도를 없앴다. 점수에 쓰지 않는 값을 일곱 줄로 받아 결과지에 한 번도 나가지 않았다. 관심 역할을 둘까지 고르는 화면이 그 자리를 대신하고, 고른 역할은 다음 화면을 정한다",
+   "agrees": false,
+   "planned_reason": "일곱 줄을 이어 세운 자기평가라 일직선 응답이 나온다. 고르기와 짝비교로 접는다"
+  },
+  {
+   "v1_item": "PR_RF2",
+   "v1_module": "PREF-RF-OC",
+   "v1_axis": null,
+   "v1_domain": null,
+   "v1_wording": "만들기 전에 계산으로 결과를 미리 아는 자리에 가고 싶다",
+   "planned": "MERGE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "역할 선호 다섯 점 척도를 없앴다. 점수에 쓰지 않는 값을 일곱 줄로 받아 결과지에 한 번도 나가지 않았다. 관심 역할을 둘까지 고르는 화면이 그 자리를 대신하고, 고른 역할은 다음 화면을 정한다",
+   "agrees": false,
+   "planned_reason": "일곱 줄을 이어 세운 자기평가라 일직선 응답이 나온다. 고르기와 짝비교로 접는다"
+  },
+  {
+   "v1_item": "PR_RF3",
+   "v1_module": "PREF-RF-OC",
+   "v1_axis": null,
+   "v1_domain": null,
+   "v1_wording": "만든 것이 기준을 만족하는지 재서 판정하는 자리에 가고 싶다",
+   "planned": "MERGE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "역할 선호 다섯 점 척도를 없앴다. 점수에 쓰지 않는 값을 일곱 줄로 받아 결과지에 한 번도 나가지 않았다. 관심 역할을 둘까지 고르는 화면이 그 자리를 대신하고, 고른 역할은 다음 화면을 정한다",
+   "agrees": false,
+   "planned_reason": "일곱 줄을 이어 세운 자기평가라 일직선 응답이 나온다. 고르기와 짝비교로 접는다"
+  },
+  {
+   "v1_item": "PR_RF4",
+   "v1_module": "PREF-RF-OC",
+   "v1_axis": null,
+   "v1_domain": null,
+   "v1_wording": "같은 품질로 반복 생산되게 조건을 잡는 자리에 가고 싶다",
+   "planned": "MERGE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "역할 선호 다섯 점 척도를 없앴다. 점수에 쓰지 않는 값을 일곱 줄로 받아 결과지에 한 번도 나가지 않았다. 관심 역할을 둘까지 고르는 화면이 그 자리를 대신하고, 고른 역할은 다음 화면을 정한다",
+   "agrees": false,
+   "planned_reason": "일곱 줄을 이어 세운 자기평가라 일직선 응답이 나온다. 고르기와 짝비교로 접는다"
+  },
+  {
+   "v1_item": "PR_RF5",
+   "v1_module": "PREF-RF-OC",
+   "v1_axis": null,
+   "v1_domain": null,
+   "v1_wording": "돌고 있는 설비나 현장이 멈추지 않게 하는 자리에 가고 싶다",
+   "planned": "MERGE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "역할 선호 다섯 점 척도를 없앴다. 점수에 쓰지 않는 값을 일곱 줄로 받아 결과지에 한 번도 나가지 않았다. 관심 역할을 둘까지 고르는 화면이 그 자리를 대신하고, 고른 역할은 다음 화면을 정한다",
+   "agrees": false,
+   "planned_reason": "일곱 줄을 이어 세운 자기평가라 일직선 응답이 나온다. 고르기와 짝비교로 접는다"
+  },
+  {
+   "v1_item": "PR_RF6",
+   "v1_module": "PREF-RF-OC",
+   "v1_axis": null,
+   "v1_domain": null,
+   "v1_wording": "여러 팀의 결정을 묶어 요구와 일정을 맞추는 자리에 가고 싶다",
+   "planned": "MERGE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "역할 선호 다섯 점 척도를 없앴다. 점수에 쓰지 않는 값을 일곱 줄로 받아 결과지에 한 번도 나가지 않았다. 관심 역할을 둘까지 고르는 화면이 그 자리를 대신하고, 고른 역할은 다음 화면을 정한다",
+   "agrees": false,
+   "planned_reason": "일곱 줄을 이어 세운 자기평가라 일직선 응답이 나온다. 고르기와 짝비교로 접는다"
+  },
+  {
+   "v1_item": "PR_RF7",
+   "v1_module": "PREF-RF-OC",
+   "v1_axis": null,
+   "v1_domain": null,
+   "v1_wording": "아직 답이 없는 문제를 방법부터 세워 좁히는 자리에 가고 싶다",
+   "planned": "MERGE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "역할 선호 다섯 점 척도를 없앴다. 점수에 쓰지 않는 값을 일곱 줄로 받아 결과지에 한 번도 나가지 않았다. 관심 역할을 둘까지 고르는 화면이 그 자리를 대신하고, 고른 역할은 다음 화면을 정한다",
+   "agrees": false,
+   "planned_reason": "일곱 줄을 이어 세운 자기평가라 일직선 응답이 나온다. 고르기와 짝비교로 접는다"
+  },
+  {
+   "v1_item": "PO_OC1",
+   "v1_module": "PREF-RF-OC",
+   "v1_axis": null,
+   "v1_domain": null,
+   "v1_wording": "완성품을 만드는 회사에서 여러 부품을 통합하는 환경이 나와 맞는다",
+   "planned": "MERGE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "조직 선호 다섯 점 척도를 없앴다. 점수에 쓰지 않는 값을 일곱 줄로 받아 결과지에 한 번도 나가지 않았다. 선호 조직유형을 둘까지 고르는 화면이 그 자리를 대신한다",
+   "agrees": false,
+   "planned_reason": "일곱 줄을 이어 세운 자기평가라 일직선 응답이 나온다. 고르기와 짝비교로 접는다"
+  },
+  {
+   "v1_item": "PO_OC2",
+   "v1_module": "PREF-RF-OC",
+   "v1_axis": null,
+   "v1_domain": null,
+   "v1_wording": "부품이나 장비나 소재를 만들어 고객 사양을 맞추는 환경이 나와 맞는다",
+   "planned": "MERGE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "조직 선호 다섯 점 척도를 없앴다. 점수에 쓰지 않는 값을 일곱 줄로 받아 결과지에 한 번도 나가지 않았다. 선호 조직유형을 둘까지 고르는 화면이 그 자리를 대신한다",
+   "agrees": false,
+   "planned_reason": "일곱 줄을 이어 세운 자기평가라 일직선 응답이 나온다. 고르기와 짝비교로 접는다"
+  },
+  {
+   "v1_item": "PO_OC3",
+   "v1_module": "PREF-RF-OC",
+   "v1_axis": null,
+   "v1_domain": null,
+   "v1_wording": "의뢰를 받아 기한 안에 기술 답을 내놓는 환경이 나와 맞는다",
+   "planned": "MERGE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "조직 선호 다섯 점 척도를 없앴다. 점수에 쓰지 않는 값을 일곱 줄로 받아 결과지에 한 번도 나가지 않았다. 선호 조직유형을 둘까지 고르는 화면이 그 자리를 대신한다",
+   "agrees": false,
+   "planned_reason": "일곱 줄을 이어 세운 자기평가라 일직선 응답이 나온다. 고르기와 짝비교로 접는다"
+  },
+  {
+   "v1_item": "PO_OC4",
+   "v1_module": "PREF-RF-OC",
+   "v1_axis": null,
+   "v1_domain": null,
+   "v1_wording": "국가 과제 목표와 중간 평가로 일정이 정해지는 환경이 나와 맞는다",
+   "planned": "MERGE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "조직 선호 다섯 점 척도를 없앴다. 점수에 쓰지 않는 값을 일곱 줄로 받아 결과지에 한 번도 나가지 않았다. 선호 조직유형을 둘까지 고르는 화면이 그 자리를 대신한다",
+   "agrees": false,
+   "planned_reason": "일곱 줄을 이어 세운 자기평가라 일직선 응답이 나온다. 고르기와 짝비교로 접는다"
+  },
+  {
+   "v1_item": "PO_OC5",
+   "v1_module": "PREF-RF-OC",
+   "v1_axis": null,
+   "v1_domain": null,
+   "v1_wording": "방법의 타당성을 스스로 세워야 하는 대학 연구실 환경이 나와 맞는다",
+   "planned": "MERGE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "조직 선호 다섯 점 척도를 없앴다. 점수에 쓰지 않는 값을 일곱 줄로 받아 결과지에 한 번도 나가지 않았다. 선호 조직유형을 둘까지 고르는 화면이 그 자리를 대신한다",
+   "agrees": false,
+   "planned_reason": "일곱 줄을 이어 세운 자기평가라 일직선 응답이 나온다. 고르기와 짝비교로 접는다"
+  },
+  {
+   "v1_item": "PO_OC6",
+   "v1_module": "PREF-RF-OC",
+   "v1_axis": null,
+   "v1_domain": null,
+   "v1_wording": "기준에 맞는지 판단하고 그 근거를 남기는 공공·인증 환경이 나와 맞는다",
+   "planned": "MERGE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "조직 선호 다섯 점 척도를 없앴다. 점수에 쓰지 않는 값을 일곱 줄로 받아 결과지에 한 번도 나가지 않았다. 선호 조직유형을 둘까지 고르는 화면이 그 자리를 대신한다",
+   "agrees": false,
+   "planned_reason": "일곱 줄을 이어 세운 자기평가라 일직선 응답이 나온다. 고르기와 짝비교로 접는다"
+  },
+  {
+   "v1_item": "PO_OC7",
+   "v1_module": "PREF-RF-OC",
+   "v1_axis": null,
+   "v1_domain": null,
+   "v1_wording": "적은 인원이 여러 역할을 겹쳐 맡는 작은 조직 환경이 나와 맞는다",
+   "planned": "MERGE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "조직 선호 다섯 점 척도를 없앴다. 점수에 쓰지 않는 값을 일곱 줄로 받아 결과지에 한 번도 나가지 않았다. 선호 조직유형을 둘까지 고르는 화면이 그 자리를 대신한다",
+   "agrees": false,
+   "planned_reason": "일곱 줄을 이어 세운 자기평가라 일직선 응답이 나온다. 고르기와 짝비교로 접는다"
+  },
+  {
+   "v1_item": "CN_1A",
+   "v1_module": "CONSIST",
+   "v1_axis": "J3",
+   "v1_domain": null,
+   "v1_wording": "방금 고르신 영역에서 학교 과제 때 판단 기준을 내가 세운 적이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "CN_1A"
+   ],
+   "reason": "장면 두 벌이 학교와 회사였는데 학부생에게 회사 장면이 비어 있었다. 학교 안과 학교 밖으로 바꿔 두 장면 모두 답할 수 있게 했다",
+   "agrees": false,
+   "planned_reason": "학교와 실무를 가르는 일관성 짝이다"
+  },
+  {
+   "v1_item": "CN_1B",
+   "v1_module": "CONSIST",
+   "v1_axis": "J3",
+   "v1_domain": null,
+   "v1_wording": "같은 영역에서 실무나 인턴 때 판단 기준을 내가 세운 적이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "CN_1B"
+   ],
+   "reason": "장면 두 벌이 학교와 회사였는데 학부생에게 회사 장면이 비어 있었다. 학교 안과 학교 밖으로 바꿔 두 장면 모두 답할 수 있게 했다",
+   "agrees": false,
+   "planned_reason": "학교와 실무를 가르는 일관성 짝이다"
+  },
+  {
+   "v1_item": "CN_2A",
+   "v1_module": "CONSIST",
+   "v1_axis": "J6",
+   "v1_domain": null,
+   "v1_wording": "방금 고르신 영역에서 학교 과제 때 결과를 다른 값과 대조한 적이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "CN_2A"
+   ],
+   "reason": "장면 두 벌이 학교와 회사였는데 학부생에게 회사 장면이 비어 있었다. 학교 안과 학교 밖으로 바꿔 두 장면 모두 답할 수 있게 했다",
+   "agrees": false,
+   "planned_reason": "학교와 실무를 가르는 일관성 짝이다"
+  },
+  {
+   "v1_item": "CN_2B",
+   "v1_module": "CONSIST",
+   "v1_axis": "J6",
+   "v1_domain": null,
+   "v1_wording": "같은 영역에서 실무나 현장 자료로 결과를 대조한 적이 있다",
+   "planned": "KEEP",
+   "actual": "REWRITE",
+   "v2_items": [
+    "CN_2B"
+   ],
+   "reason": "장면 두 벌이 학교와 회사였는데 학부생에게 회사 장면이 비어 있었다. 학교 안과 학교 밖으로 바꿔 두 장면 모두 답할 수 있게 했다",
+   "agrees": false,
+   "planned_reason": "학교와 실무를 가르는 일관성 짝이다"
+  },
+  {
+   "v1_item": "TR_T1",
+   "v1_module": "TRANS-10",
+   "v1_axis": "J1",
+   "v1_domain": null,
+   "v1_wording": "그 연구나 과제에서 다룬 문제를 한두 줄로 적어 주십시오",
+   "planned": "KEEP",
+   "actual": "KEEP",
+   "v2_items": [
+    "TR_T1"
+   ],
+   "reason": "문면과 자리를 그대로 두었다",
+   "agrees": true,
+   "planned_reason": "은행에서 가장 전문적인 묶음이다. 자리를 앞으로 옮긴다"
+  },
+  {
+   "v1_item": "TR_T2",
+   "v1_module": "TRANS-10",
+   "v1_axis": "J2",
+   "v1_domain": null,
+   "v1_wording": "그것이 왜 문제였는지 가장 가까운 것을 고르고 한 줄을 적어 주십시오",
+   "planned": "KEEP",
+   "actual": "KEEP",
+   "v2_items": [
+    "TR_T2"
+   ],
+   "reason": "문면과 자리를 그대로 두었다",
+   "agrees": true,
+   "planned_reason": "은행에서 가장 전문적인 묶음이다. 자리를 앞으로 옮긴다"
+  },
+  {
+   "v1_item": "TR_T3",
+   "v1_module": "TRANS-10",
+   "v1_axis": "J3",
+   "v1_domain": null,
+   "v1_wording": "쓴 방법을 고르고, 함께 검토했다가 안 쓴 방법이 있으면 적어 주십시오",
+   "planned": "KEEP",
+   "actual": "KEEP",
+   "v2_items": [
+    "TR_T3"
+   ],
+   "reason": "문면과 자리를 그대로 두었다",
+   "agrees": true,
+   "planned_reason": "은행에서 가장 전문적인 묶음이다. 자리를 앞으로 옮긴다"
+  },
+  {
+   "v1_item": "TR_T4",
+   "v1_module": "TRANS-10",
+   "v1_axis": "J3",
+   "v1_domain": null,
+   "v1_wording": "고정한 것과 바꾼 것을 골라 주십시오",
+   "planned": "KEEP",
+   "actual": "KEEP",
+   "v2_items": [
+    "TR_T4"
+   ],
+   "reason": "문면과 자리를 그대로 두었다",
+   "agrees": true,
+   "planned_reason": "은행에서 가장 전문적인 묶음이다. 자리를 앞으로 옮긴다"
+  },
+  {
+   "v1_item": "TR_T5",
+   "v1_module": "TRANS-10",
+   "v1_axis": "J4",
+   "v1_domain": null,
+   "v1_wording": "실제로 한 일을 고르고 반복 횟수를 적어 주십시오",
+   "planned": "KEEP",
+   "actual": "KEEP",
+   "v2_items": [
+    "TR_T5"
+   ],
+   "reason": "문면과 자리를 그대로 두었다",
+   "agrees": true,
+   "planned_reason": "은행에서 가장 전문적인 묶음이다. 자리를 앞으로 옮긴다"
+  },
+  {
+   "v1_item": "TR_T6",
+   "v1_module": "TRANS-10",
+   "v1_axis": "J6",
+   "v1_domain": null,
+   "v1_wording": "결과를 무엇과 견주었는지 골라 주십시오",
+   "planned": "KEEP",
+   "actual": "KEEP",
+   "v2_items": [
+    "TR_T6"
+   ],
+   "reason": "문면과 자리를 그대로 두었다",
+   "agrees": true,
+   "planned_reason": "은행에서 가장 전문적인 묶음이다. 자리를 앞으로 옮긴다"
+  },
+  {
+   "v1_item": "TR_T7",
+   "v1_module": "TRANS-10",
+   "v1_axis": "J6",
+   "v1_domain": null,
+   "v1_wording": "산포나 한계를 어떻게 다뤘는지 골라 주십시오",
+   "planned": "KEEP",
+   "actual": "KEEP",
+   "v2_items": [
+    "TR_T7"
+   ],
+   "reason": "문면과 자리를 그대로 두었다",
+   "agrees": true,
+   "planned_reason": "은행에서 가장 전문적인 묶음이다. 자리를 앞으로 옮긴다"
+  },
+  {
+   "v1_item": "TR_T8",
+   "v1_module": "TRANS-10",
+   "v1_axis": "J3",
+   "v1_domain": null,
+   "v1_wording": "결과를 보고 내가 정한 것을 골라 주십시오",
+   "planned": "KEEP",
+   "actual": "KEEP",
+   "v2_items": [
+    "TR_T8"
+   ],
+   "reason": "문면과 자리를 그대로 두었다",
+   "agrees": true,
+   "planned_reason": "은행에서 가장 전문적인 묶음이다. 자리를 앞으로 옮긴다"
+  },
+  {
+   "v1_item": "TR_T9",
+   "v1_module": "TRANS-10",
+   "v1_axis": "J5",
+   "v1_domain": null,
+   "v1_wording": "남은 것을 골라 주십시오",
+   "planned": "KEEP",
+   "actual": "KEEP",
+   "v2_items": [
+    "TR_T9"
+   ],
+   "reason": "문면과 자리를 그대로 두었다",
+   "agrees": true,
+   "planned_reason": "은행에서 가장 전문적인 묶음이다. 자리를 앞으로 옮긴다"
+  },
+  {
+   "v1_item": "TR_T10",
+   "v1_module": "TRANS-10",
+   "v1_axis": "J8",
+   "v1_domain": null,
+   "v1_wording": "이 결과를 누가 어디에 쓸 수 있는지 고르고 한 줄을 적어 주십시오",
+   "planned": "KEEP",
+   "actual": "KEEP",
+   "v2_items": [
+    "TR_T10"
+   ],
+   "reason": "문면과 자리를 그대로 두었다",
+   "agrees": true,
+   "planned_reason": "은행에서 가장 전문적인 묶음이다. 자리를 앞으로 옮긴다"
+  },
+  {
+   "v1_item": "TR_TAG_1",
+   "v1_module": "TRANS-10",
+   "v1_axis": null,
+   "v1_domain": null,
+   "v1_wording": "이 경험이 어느 기술영역에 가장 가까운지 골라 주십시오",
+   "planned": "KEEP",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "번역 단계의 영역 태깅을 없앴다. 응시자가 자기 경험을 어느 영역으로 볼지 다시 고르게 했는데, 그 판단은 이미 영역 훑기와 심화에서 받았다",
+   "agrees": false,
+   "planned_reason": "번역한 경험을 영역에 잇는 유일한 자리다"
+  },
+  {
+   "v1_item": "TR_TAG_2",
+   "v1_module": "TRANS-10",
+   "v1_axis": null,
+   "v1_domain": null,
+   "v1_wording": "두 번째로 가까운 기술영역이 있으면 골라 주십시오",
+   "planned": "KEEP",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "번역 단계의 영역 태깅을 없앴다. 응시자가 자기 경험을 어느 영역으로 볼지 다시 고르게 했는데, 그 판단은 이미 영역 훑기와 심화에서 받았다",
+   "agrees": false,
+   "planned_reason": "두 번째 영역을 받는다"
+  },
+  {
+   "v1_item": "TG_ROLE",
+   "v1_module": "TARGET",
+   "v1_axis": null,
+   "v1_domain": null,
+   "v1_wording": "목표로 보고 있는 공고 직무명을 골라 주십시오",
+   "planned": "MOVE",
+   "actual": "KEEP",
+   "v2_items": [
+    "TG_ROLE"
+   ],
+   "reason": "문면과 자리를 그대로 두었다",
+   "agrees": false,
+   "planned_reason": "지금은 PRO 의 맨 뒤다. 검사 맨 앞으로 옮겨 이후 장면을 바꾸는 입력으로 쓴다"
+  },
+  {
+   "v1_item": "TG_INDUSTRY",
+   "v1_module": "TARGET",
+   "v1_axis": null,
+   "v1_domain": null,
+   "v1_wording": "목표로 보고 있는 산업을 골라 주십시오",
+   "planned": "MOVE",
+   "actual": "KEEP",
+   "v2_items": [
+    "TG_INDUSTRY"
+   ],
+   "reason": "문면과 자리를 그대로 두었다",
+   "agrees": false,
+   "planned_reason": "지금은 PRO 의 맨 뒤다. 검사 맨 앞으로 옮겨 이후 장면을 바꾸는 입력으로 쓴다"
+  },
+  {
+   "v1_item": "TG_OC",
+   "v1_module": "TARGET",
+   "v1_axis": null,
+   "v1_domain": null,
+   "v1_wording": "가고 싶은 조직 유형을 골라 주십시오",
+   "planned": "MOVE",
+   "actual": "KEEP",
+   "v2_items": [
+    "TG_OC"
+   ],
+   "reason": "문면과 자리를 그대로 두었다",
+   "agrees": false,
+   "planned_reason": "지금은 PRO 의 맨 뒤다. 검사 맨 앞으로 옮겨 이후 장면을 바꾸는 입력으로 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_SEMICON_V1_I1",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J3",
+   "v1_domain": "TD01",
+   "v1_wording": "진공이나 챔버 조건에서 형상과 재질을 정해 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_SEMICON_V2_I1"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_SEMICON_V1_I2",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J3",
+   "v1_domain": "TD01",
+   "v1_wording": "마이크론 이하 공차나 위치 정밀도를 배분해 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_SEMICON_V2_I2"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_SEMICON_V1_I3",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J1",
+   "v1_domain": "TD06",
+   "v1_wording": "파티클이나 오염을 설계 조건으로 다뤄 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_SEMICON_V2_I4"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_SEMICON_V1_I4",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J6",
+   "v1_domain": "TD04",
+   "v1_wording": "스테이지나 이송부의 진동과 정렬을 측정으로 확인한 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_SEMICON_V2_I5"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_SEMICON_V1_I5",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J8",
+   "v1_domain": "TD09",
+   "v1_wording": "장비 가동률이나 평균 고장 간격을 지표로 관리한 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_SEMICON_V2_I8"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_SEMICON_V1_I6",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J5",
+   "v1_domain": "TD07",
+   "v1_wording": "클린룸 환경에서 시험하고 불확도를 적어 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_SEMICON_V2_I10"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_DEFENSE_V1_I1",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J2",
+   "v1_domain": "TD11",
+   "v1_wording": "요구 추적표를 만들어 검증 방법까지 배정해 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_DEFENSE_V2_I1"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_DEFENSE_V1_I2",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J2",
+   "v1_domain": "TD07",
+   "v1_wording": "군이나 항공 규격을 시험 조건으로 옮겨 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_DEFENSE_V2_I2"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_DEFENSE_V1_I3",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J4",
+   "v1_domain": "TD07",
+   "v1_wording": "진동이나 열충격 같은 환경 시험을 다뤄 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "새 팩에서 J4 축의 자리가 줄어 대응하는 문항이 없다. 그 산업이나 역할에서 더 크게 보는 판단을 먼저 넣고 자리를 열로 맞췄다",
+   "agrees": false,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_DEFENSE_V1_I4",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J3",
+   "v1_domain": "TD01",
+   "v1_wording": "중량 목표를 지키려고 형상이나 재질을 바꿔 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_DEFENSE_V2_I3"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_DEFENSE_V1_I5",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J4",
+   "v1_domain": "TD11",
+   "v1_wording": "형상·변경 관리 절차 안에서 설계를 바꿔 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "새 팩에서 J4 축의 자리가 줄어 대응하는 문항이 없다. 그 산업이나 역할에서 더 크게 보는 판단을 먼저 넣고 자리를 열로 맞췄다",
+   "agrees": false,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_DEFENSE_V1_I6",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J4",
+   "v1_domain": "TD10",
+   "v1_wording": "고장 모드와 영향을 따져 수명이나 신뢰성을 예측한 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "새 팩에서 J4 축의 자리가 줄어 대응하는 문항이 없다. 그 산업이나 역할에서 더 크게 보는 판단을 먼저 넣고 자리를 열로 맞췄다",
+   "agrees": false,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_MOBILITY_V1_I1",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J6",
+   "v1_domain": "TD02",
+   "v1_wording": "내구 시험 모드를 해석과 대조해 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_MOBILITY_V2_I5"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_MOBILITY_V1_I2",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J6",
+   "v1_domain": "TD04",
+   "v1_wording": "소음이나 진동 목표를 측정으로 확인한 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_MOBILITY_V2_I7"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_MOBILITY_V1_I3",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J3",
+   "v1_domain": "TD03",
+   "v1_wording": "배터리나 모터의 열관리를 설계 조건으로 정한 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_MOBILITY_V2_I1"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_MOBILITY_V1_I4",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J6",
+   "v1_domain": "TD08",
+   "v1_wording": "공정능력이나 협력사 품질 절차를 다뤄 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_MOBILITY_V2_I10"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_MOBILITY_V1_I5",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J3",
+   "v1_domain": "TD01",
+   "v1_wording": "원가 목표나 경량화 목표를 지키려고 안을 바꿔 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_MOBILITY_V2_I3"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_MOBILITY_V1_I6",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J3",
+   "v1_domain": "TD01",
+   "v1_wording": "조립 공차와 산포를 배분해 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_MOBILITY_V2_I6"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_ROBOT_V1_I1",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J3",
+   "v1_domain": "TD05",
+   "v1_wording": "택트 목표를 맞추려고 구동이나 시퀀스를 정한 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_ROBOT_V2_I1"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_ROBOT_V1_I2",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J6",
+   "v1_domain": "TD05",
+   "v1_wording": "반복 정밀도를 측정으로 확인한 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_ROBOT_V2_I4"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_ROBOT_V1_I3",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J2",
+   "v1_domain": "TD05",
+   "v1_wording": "안전 범주나 위험성 평가를 설계 조건으로 옮긴 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_ROBOT_V2_I6"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_ROBOT_V1_I4",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J3",
+   "v1_domain": "TD01",
+   "v1_wording": "셀 레이아웃과 간섭을 검토해 배치를 정한 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_ROBOT_V2_I2"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_ROBOT_V1_I5",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J4",
+   "v1_domain": "TD07",
+   "v1_wording": "비전이나 센서로 검사 공정을 구성한 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_ROBOT_V2_I8"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_ROBOT_V1_I6",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J7",
+   "v1_domain": "TD05",
+   "v1_wording": "현장 시운전에서 생긴 문제를 설계로 되돌린 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_ROBOT_V2_I5"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_BATTERY_V1_I1",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J3",
+   "v1_domain": "TD08",
+   "v1_wording": "전극이나 조립 공정의 조건을 바꿔 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_BATTERY_V2_I1"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_BATTERY_V1_I2",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J1",
+   "v1_domain": "TD03",
+   "v1_wording": "열폭주나 냉각을 설계 문제로 다뤄 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "새 팩에서 J1 축의 자리가 줄어 대응하는 문항이 없다. 그 산업이나 역할에서 더 크게 보는 판단을 먼저 넣고 자리를 열로 맞췄다",
+   "agrees": false,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_BATTERY_V1_I3",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J3",
+   "v1_domain": "TD02",
+   "v1_wording": "모듈이나 팩의 체결과 가압 조건을 정한 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_BATTERY_V2_I2"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_BATTERY_V1_I4",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J6",
+   "v1_domain": "TD08",
+   "v1_wording": "수율이나 불량률을 전후로 견준 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_BATTERY_V2_I4"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_BATTERY_V1_I5",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J4",
+   "v1_domain": "TD10",
+   "v1_wording": "안전 시험이나 가속 시험을 다뤄 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "새 팩에서 J4 축의 자리가 줄어 대응하는 문항이 없다. 그 산업이나 역할에서 더 크게 보는 판단을 먼저 넣고 자리를 열로 맞췄다",
+   "agrees": false,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_BATTERY_V1_I6",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J3",
+   "v1_domain": "TD08",
+   "v1_wording": "롤투롤 장력이나 코팅 균일도를 다뤄 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_BATTERY_V2_I3"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_SHIP_V1_I1",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J2",
+   "v1_domain": "TD02",
+   "v1_wording": "선급 규칙이나 코드를 해석 조건으로 옮긴 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_SHIP_V2_I1"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_SHIP_V1_I2",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J4",
+   "v1_domain": "TD06",
+   "v1_wording": "용접 설계나 용접부 검사를 다뤄 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_SHIP_V2_I7"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_SHIP_V1_I3",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J6",
+   "v1_domain": "TD02",
+   "v1_wording": "대형 구조의 피로 수명을 평가해 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_SHIP_V2_I9"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_SHIP_V1_I4",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J6",
+   "v1_domain": "TD04",
+   "v1_wording": "선체나 탑재 장비의 진동을 다뤄 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_SHIP_V2_I9"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_SHIP_V1_I5",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J3",
+   "v1_domain": "TD08",
+   "v1_wording": "블록 공정이나 탑재 순서를 설계에 반영한 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_SHIP_V2_I2"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_SHIP_V1_I6",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J6",
+   "v1_domain": "TD11",
+   "v1_wording": "도면 승인 절차 안에서 요구 충족을 확인한 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_SHIP_V2_I9"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_ENERGY_V1_I1",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J2",
+   "v1_domain": "TD10",
+   "v1_wording": "안전등급이나 코드를 설계·시험 조건으로 옮긴 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_ENERGY_V2_I5"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_ENERGY_V1_I2",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J2",
+   "v1_domain": "TD02",
+   "v1_wording": "내진이나 지진 하중을 해석 조건으로 다뤄 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_ENERGY_V2_I5"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_ENERGY_V1_I3",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J4",
+   "v1_domain": "TD03",
+   "v1_wording": "열수력이나 냉각 계통을 해석해 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_ENERGY_V2_I2"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_ENERGY_V1_I4",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J5",
+   "v1_domain": "TD10",
+   "v1_wording": "품질보증 절차에 맞춰 기록을 남긴 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "새 팩에서 J5 축의 자리가 줄어 대응하는 문항이 없다. 그 산업이나 역할에서 더 크게 보는 판단을 먼저 넣고 자리를 열로 맞췄다",
+   "agrees": false,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_ENERGY_V1_I5",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J4",
+   "v1_domain": "TD06",
+   "v1_wording": "재료 열화나 수명 평가를 다뤄 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_ENERGY_V2_I2"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_ENERGY_V1_I6",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J5",
+   "v1_domain": "TD07",
+   "v1_wording": "인허가 자료로 쓰이는 시험 성적을 낸 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "새 팩에서 J5 축의 자리가 줄어 대응하는 문항이 없다. 그 산업이나 역할에서 더 크게 보는 판단을 먼저 넣고 자리를 열로 맞췄다",
+   "agrees": false,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_SMARTFACTORY_V1_I1",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J4",
+   "v1_domain": "TD12",
+   "v1_wording": "설비 데이터를 모아 정리해 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_SMARTFACTORY_V2_I9"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_SMARTFACTORY_V1_I2",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J6",
+   "v1_domain": "TD08",
+   "v1_wording": "가동률이나 설비 종합효율을 전후로 견준 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_SMARTFACTORY_V2_I4"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_SMARTFACTORY_V1_I3",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J4",
+   "v1_domain": "TD09",
+   "v1_wording": "예지 보전 모델이나 진단을 다뤄 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_SMARTFACTORY_V2_I9"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_SMARTFACTORY_V1_I4",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J4",
+   "v1_domain": "TD12",
+   "v1_wording": "공정이나 설비를 모형으로 만들어 돌려 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_SMARTFACTORY_V2_I9"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_SMARTFACTORY_V1_I5",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J8",
+   "v1_domain": "TD12",
+   "v1_wording": "현장 시스템과 이어 다른 사람이 쓰게 한 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "INDUSTRY_SMARTFACTORY_V2_I10"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "INDUSTRY_SMARTFACTORY_V1_I6",
+   "v1_module": "INDUSTRY",
+   "v1_axis": "J7",
+   "v1_domain": "TD09",
+   "v1_wording": "예측이 틀려 기준이나 모델을 고친 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "새 팩에서 J7 축의 자리가 줄어 대응하는 문항이 없다. 그 산업이나 역할에서 더 크게 보는 판단을 먼저 넣고 자리를 열로 맞췄다",
+   "agrees": false,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다. 장면을 붙이고 본류로 옮기고 산업마다 더 쓴다"
+  },
+  {
+   "v1_item": "ROLE_DESIGN_V1_R1",
+   "v1_module": "ROLE",
+   "v1_axis": "J3",
+   "v1_domain": "TD01",
+   "v1_wording": "치수나 공차를 바꿀 권한을 가지고 정해 본 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_DESIGN_V2_R1"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_DESIGN_V1_R2",
+   "v1_module": "ROLE",
+   "v1_axis": "J5",
+   "v1_domain": "TD01",
+   "v1_wording": "제작에 나간 도면과 부품표를 낸 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_DESIGN_V2_R2"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_DESIGN_V1_R3",
+   "v1_module": "ROLE",
+   "v1_axis": "J2",
+   "v1_domain": "TD01",
+   "v1_wording": "부딪히는 요구의 우선순위를 정한 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_DESIGN_V2_R3"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_DESIGN_V1_R4",
+   "v1_module": "ROLE",
+   "v1_axis": "J6",
+   "v1_domain": "TD01",
+   "v1_wording": "간섭이나 공차 누적을 검토해 확인한 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_DESIGN_V2_R4"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_DESIGN_V1_R5",
+   "v1_module": "ROLE",
+   "v1_axis": "J7",
+   "v1_domain": "TD01",
+   "v1_wording": "조립이나 파손 문제를 겪고 치수를 고친 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_DESIGN_V2_R5"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_DESIGN_V1_R6",
+   "v1_module": "ROLE",
+   "v1_axis": "J8",
+   "v1_domain": "TD01",
+   "v1_wording": "설계 검토에서 내 안이 채택된 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_DESIGN_V2_R7"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_CAE_V1_R1",
+   "v1_module": "ROLE",
+   "v1_axis": "J3",
+   "v1_domain": null,
+   "v1_wording": "경계조건과 이상화 수준을 직접 정한 경험이 있다",
+   "planned": "MOVE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_CAE_V2_R1"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": false,
+   "planned_reason": "`technical_domain` 이 비어 있어 **어느 영역의 근거로도 못 읽힌다.** 응시자가 고른 해석 영역에 묶는다"
+  },
+  {
+   "v1_item": "ROLE_CAE_V1_R2",
+   "v1_module": "ROLE",
+   "v1_axis": "J4",
+   "v1_domain": null,
+   "v1_wording": "격자 수렴이나 민감도를 확인한 경험이 있다",
+   "planned": "MOVE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_CAE_V2_R2"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": false,
+   "planned_reason": "`technical_domain` 이 비어 있어 **어느 영역의 근거로도 못 읽힌다.** 응시자가 고른 해석 영역에 묶는다"
+  },
+  {
+   "v1_item": "ROLE_CAE_V1_R3",
+   "v1_module": "ROLE",
+   "v1_axis": "J6",
+   "v1_domain": null,
+   "v1_wording": "해석 결과를 손계산이나 시험과 대조한 경험이 있다",
+   "planned": "MOVE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_CAE_V2_R3"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": false,
+   "planned_reason": "`technical_domain` 이 비어 있어 **어느 영역의 근거로도 못 읽힌다.** 응시자가 고른 해석 영역에 묶는다"
+  },
+  {
+   "v1_item": "ROLE_CAE_V1_R4",
+   "v1_module": "ROLE",
+   "v1_axis": "J5",
+   "v1_domain": null,
+   "v1_wording": "가정과 한계가 적힌 해석 보고서를 낸 경험이 있다",
+   "planned": "MOVE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_CAE_V2_R4"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": false,
+   "planned_reason": "`technical_domain` 이 비어 있어 **어느 영역의 근거로도 못 읽힌다.** 응시자가 고른 해석 영역에 묶는다"
+  },
+  {
+   "v1_item": "ROLE_CAE_V1_R5",
+   "v1_module": "ROLE",
+   "v1_axis": "J7",
+   "v1_domain": null,
+   "v1_wording": "해석과 시험이 어긋난 원인을 좁힌 경험이 있다",
+   "planned": "MOVE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_CAE_V2_R7"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": false,
+   "planned_reason": "`technical_domain` 이 비어 있어 **어느 영역의 근거로도 못 읽힌다.** 응시자가 고른 해석 영역에 묶는다"
+  },
+  {
+   "v1_item": "ROLE_CAE_V1_R6",
+   "v1_module": "ROLE",
+   "v1_axis": "J8",
+   "v1_domain": null,
+   "v1_wording": "내 해석으로 설계가 바뀐 경험이 있다",
+   "planned": "MOVE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_CAE_V2_R6"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": false,
+   "planned_reason": "`technical_domain` 이 비어 있어 **어느 영역의 근거로도 못 읽힌다.** 응시자가 고른 해석 영역에 묶는다"
+  },
+  {
+   "v1_item": "ROLE_RND_V1_R1",
+   "v1_module": "ROLE",
+   "v1_axis": "J1",
+   "v1_domain": null,
+   "v1_wording": "사양이 없는 상태에서 다룰 문제를 정한 경험이 있다",
+   "planned": "MOVE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_RND_V2_R2"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": false,
+   "planned_reason": "`technical_domain` 이 비어 있어 **어느 영역의 근거로도 못 읽힌다.** 응시자가 고른 영역에 묶는다"
+  },
+  {
+   "v1_item": "ROLE_RND_V1_R2",
+   "v1_module": "ROLE",
+   "v1_axis": "J3",
+   "v1_domain": null,
+   "v1_wording": "방법과 가정을 골라 세운 경험이 있다",
+   "planned": "MOVE",
+   "actual": "DELETE",
+   "v2_items": [],
+   "reason": "새 팩에서 J3 축의 자리가 줄어 대응하는 문항이 없다. 그 산업이나 역할에서 더 크게 보는 판단을 먼저 넣고 자리를 열로 맞췄다",
+   "agrees": false,
+   "planned_reason": "`technical_domain` 이 비어 있어 **어느 영역의 근거로도 못 읽힌다.** 응시자가 고른 영역에 묶는다"
+  },
+  {
+   "v1_item": "ROLE_RND_V1_R3",
+   "v1_module": "ROLE",
+   "v1_axis": "J6",
+   "v1_domain": null,
+   "v1_wording": "결과를 다른 방법이나 선행 연구와 견준 경험이 있다",
+   "planned": "MOVE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_RND_V2_R3"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": false,
+   "planned_reason": "`technical_domain` 이 비어 있어 **어느 영역의 근거로도 못 읽힌다.** 응시자가 고른 영역에 묶는다"
+  },
+  {
+   "v1_item": "ROLE_RND_V1_R4",
+   "v1_module": "ROLE",
+   "v1_axis": "J5",
+   "v1_domain": null,
+   "v1_wording": "논문이나 특허나 시작품으로 남긴 경험이 있다",
+   "planned": "MOVE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_RND_V2_R6"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": false,
+   "planned_reason": "`technical_domain` 이 비어 있어 **어느 영역의 근거로도 못 읽힌다.** 응시자가 고른 영역에 묶는다"
+  },
+  {
+   "v1_item": "ROLE_RND_V1_R5",
+   "v1_module": "ROLE",
+   "v1_axis": "J7",
+   "v1_domain": null,
+   "v1_wording": "재현이 안 돼 원인을 좁힌 경험이 있다",
+   "planned": "MOVE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_RND_V2_R5"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": false,
+   "planned_reason": "`technical_domain` 이 비어 있어 **어느 영역의 근거로도 못 읽힌다.** 응시자가 고른 영역에 묶는다"
+  },
+  {
+   "v1_item": "ROLE_RND_V1_R6",
+   "v1_module": "ROLE",
+   "v1_axis": "J8",
+   "v1_domain": null,
+   "v1_wording": "연구 결과가 과제나 제품으로 넘어간 경험이 있다",
+   "planned": "MOVE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_RND_V2_R7"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": false,
+   "planned_reason": "`technical_domain` 이 비어 있어 **어느 영역의 근거로도 못 읽힌다.** 응시자가 고른 영역에 묶는다"
+  },
+  {
+   "v1_item": "ROLE_TEST_V1_R1",
+   "v1_module": "ROLE",
+   "v1_axis": "J3",
+   "v1_domain": "TD07",
+   "v1_wording": "판정 기준과 샘플 수를 정한 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_TEST_V2_R2"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_TEST_V1_R2",
+   "v1_module": "ROLE",
+   "v1_axis": "J4",
+   "v1_domain": "TD07",
+   "v1_wording": "교정과 분해능을 따져 측정 체인을 구성한 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_TEST_V2_R6"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_TEST_V1_R3",
+   "v1_module": "ROLE",
+   "v1_axis": "J5",
+   "v1_domain": "TD07",
+   "v1_wording": "불확도가 적힌 시험 성적서를 낸 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_TEST_V2_R3"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_TEST_V1_R4",
+   "v1_module": "ROLE",
+   "v1_axis": "J6",
+   "v1_domain": "TD07",
+   "v1_wording": "반복 측정이나 다른 방법으로 교차 확인한 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_TEST_V2_R4"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_TEST_V1_R5",
+   "v1_module": "ROLE",
+   "v1_axis": "J7",
+   "v1_domain": "TD07",
+   "v1_wording": "결과 산포의 원인을 좁힌 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_TEST_V2_R5"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_TEST_V1_R6",
+   "v1_module": "ROLE",
+   "v1_axis": "J8",
+   "v1_domain": "TD07",
+   "v1_wording": "내 판정으로 승인이나 설계 변경이 결정된 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_TEST_V2_R7"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_MFG_V1_R1",
+   "v1_module": "ROLE",
+   "v1_axis": "J3",
+   "v1_domain": "TD08",
+   "v1_wording": "공법이나 가공 조건과 조건창을 정한 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_MFG_V2_R1"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_MFG_V1_R2",
+   "v1_module": "ROLE",
+   "v1_axis": "J4",
+   "v1_domain": "TD08",
+   "v1_wording": "실험 계획으로 인자와 수준을 설계한 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_MFG_V2_R2"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_MFG_V1_R3",
+   "v1_module": "ROLE",
+   "v1_axis": "J5",
+   "v1_domain": "TD08",
+   "v1_wording": "내 이름으로 작업 표준을 내고 개정까지 맡은 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_MFG_V2_R3"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_MFG_V1_R4",
+   "v1_module": "ROLE",
+   "v1_axis": "J6",
+   "v1_domain": "TD08",
+   "v1_wording": "공정능력을 계산해 관리 상태를 확인한 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_MFG_V2_R4"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_MFG_V1_R5",
+   "v1_module": "ROLE",
+   "v1_axis": "J7",
+   "v1_domain": "TD08",
+   "v1_wording": "불량 원인을 설비·재료·조건·작업 가운데로 좁힌 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_MFG_V2_R5"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_MFG_V1_R6",
+   "v1_module": "ROLE",
+   "v1_axis": "J8",
+   "v1_domain": "TD08",
+   "v1_wording": "내 표준으로 양산이 돌아간 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_MFG_V2_R7"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_QUALITY_V1_R1",
+   "v1_module": "ROLE",
+   "v1_axis": "J3",
+   "v1_domain": "TD10",
+   "v1_wording": "관리 한계나 가속 조건이나 시정조치 기준을 정한 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_QUALITY_V2_R2"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_QUALITY_V1_R2",
+   "v1_module": "ROLE",
+   "v1_axis": "J4",
+   "v1_domain": "TD10",
+   "v1_wording": "고장 모드 분석이나 수명 분포 추정을 쓴 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_QUALITY_V2_R3"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_QUALITY_V1_R3",
+   "v1_module": "ROLE",
+   "v1_axis": "J6",
+   "v1_domain": "TD10",
+   "v1_wording": "규격과 공정능력을 계산해 대조한 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_QUALITY_V2_R4"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_QUALITY_V1_R4",
+   "v1_module": "ROLE",
+   "v1_axis": "J7",
+   "v1_domain": "TD10",
+   "v1_wording": "발생과 유출을 갈라 각각의 대책을 세운 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_QUALITY_V2_R5"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_QUALITY_V1_R5",
+   "v1_module": "ROLE",
+   "v1_axis": "J5",
+   "v1_domain": "TD10",
+   "v1_wording": "시정조치서나 신뢰성 보고를 낸 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_QUALITY_V2_R6"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_QUALITY_V1_R6",
+   "v1_module": "ROLE",
+   "v1_axis": "J8",
+   "v1_domain": "TD10",
+   "v1_wording": "내 판단으로 출하 승인이 결정된 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_QUALITY_V2_R7"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_PM_V1_R1",
+   "v1_module": "ROLE",
+   "v1_axis": "J2",
+   "v1_domain": "TD11",
+   "v1_wording": "상위 요구를 쪼개 검증 방법과 담당을 배정한 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_PM_V2_R1"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_PM_V1_R2",
+   "v1_module": "ROLE",
+   "v1_axis": "J3",
+   "v1_domain": "TD11",
+   "v1_wording": "요구 사이의 상충을 조정해 우선순위를 정한 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_PM_V2_R3"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_PM_V1_R3",
+   "v1_module": "ROLE",
+   "v1_axis": "J5",
+   "v1_domain": "TD11",
+   "v1_wording": "일정과 담당까지 적힌 개발 계획서를 내 이름으로 낸 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_PM_V2_R5"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_PM_V1_R4",
+   "v1_module": "ROLE",
+   "v1_axis": "J4",
+   "v1_domain": "TD11",
+   "v1_wording": "변경 영향 분석과 형상 관리를 돌린 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_PM_V2_R4"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_PM_V1_R5",
+   "v1_module": "ROLE",
+   "v1_axis": "J6",
+   "v1_domain": "TD11",
+   "v1_wording": "요구마다 검증 결과를 대조해 충족률을 낸 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_PM_V2_R6"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  },
+  {
+   "v1_item": "ROLE_PM_V1_R6",
+   "v1_module": "ROLE",
+   "v1_axis": "J8",
+   "v1_domain": "TD11",
+   "v1_wording": "내가 정한 범위대로 다른 팀이 일정을 잡고 움직인 경험이 있다",
+   "planned": "REWRITE",
+   "actual": "REWRITE",
+   "v2_items": [
+    "ROLE_PM_V2_R7"
+   ],
+   "reason": "팩을 다시 설계했다. 산업팩은 여섯에서 열로 늘리고 쉬운 말 풀이를 모든 문항에 붙였고, 역할팩은 역할마다 다른 판단을 묻게 고쳤다",
+   "agrees": true,
+   "planned_reason": "묻는 것은 맞는데 장면이 없고 PRO 의 맨 뒤에 있다"
+  }
+ ],
+ "new_in_v2": [
+  {
+   "v2_item": "CJ_REQUIRE",
+   "module": "CORE-JUDGE",
+   "axis": "J2",
+   "domain": null,
+   "wording": "말로 받은 요구를 숫자로 바꿔 적어 본 적이 있다",
+   "reason": "요구 해석을 영역 밖에서 묻는 자리가 V1 에 없었다. 결과지의 요구 해석 절이 선별 등급에서 비어 있었다"
+  },
+  {
+   "v2_item": "CJ_METHOD",
+   "module": "CORE-JUDGE",
+   "axis": "J4",
+   "domain": null,
+   "wording": "쓸 방법을 고르고 왜 그것인지 적어 본 적이 있다",
+   "reason": "방법과 도구를 영역 밖에서 묻는 자리가 V1 에 없었다"
+  },
+  {
+   "v2_item": "CJ_HANDOFF",
+   "module": "CORE-JUDGE",
+   "axis": "J8",
+   "domain": null,
+   "wording": "내가 낸 것을 다른 사람이 받아 쓴 적이 있다",
+   "reason": "조직 활용을 선별에서 뺐으므로 영역 밖에서 한 번은 묻는다. 학부생도 팀 안에서 답할 수 있는 문면으로 적는다"
+  },
+  {
+   "v2_item": "UG_CHECK",
+   "module": "UG-CORE",
+   "axis": "J6",
+   "domain": null,
+   "wording": "실험값과 계산값을 대조해 차이의 까닭을 적어 본 적이 있다",
+   "reason": "학부 장면에서 비교와 검증을 묻는 자리가 V1 에 없었다. 선별 네 축 가운데 하나인데 학위 묶음에서 비어 있었다"
+  },
+  {
+   "v2_item": "UG_USED",
+   "module": "UG-CORE",
+   "axis": "J8",
+   "domain": null,
+   "wording": "내가 만든 것이 팀의 다음 작업에 그대로 쓰인 적이 있다",
+   "reason": "조직 활용을 학부 장면에서 받는 자리가 V1 에 없었다. 회사가 아니라 팀으로 적으면 학부생도 답할 수 있다"
+  },
+  {
+   "v2_item": "GS_FIX",
+   "module": "GRAD-CORE",
+   "axis": "J7",
+   "domain": null,
+   "wording": "재현이 안 돼 원인을 좁혀 조건을 바꿔 본 적이 있다",
+   "reason": "석사 이상 장면에서 실패와 수정을 묻는 자리가 V1 에 없었다. 선별 네 축에 들어온 축인데 학위 묶음에서 비어 있었다"
+  },
+  {
+   "v2_item": "XF_FIELD",
+   "module": "GRAD-XFIELD",
+   "axis": null,
+   "domain": null,
+   "wording": "대학원에서 다룬 분야를 골라 주십시오",
+   "reason": "V1 은 인문사회와 경영 계열 대학원생에게 여섯 문항짜리 분기 묶음을 주고 그 응답을 축 수준으로 셌다. 기계공학 Core 의 판정이 다른 전공의 경험으로 섰다는 뜻이다. ME_V3_2 는 비이공계 대학원생을 이 Core 에서 받지 않고, 학부가 기계공학인 경우만 받아 대학원 경험은 번역 맥락으로만 다룬다"
+  },
+  {
+   "v2_item": "XF_BRIDGE",
+   "module": "GRAD-XFIELD",
+   "axis": null,
+   "domain": null,
+   "wording": "대학원에서 쓴 방법 가운데 기계공학 문제에도 쓸 수 있는 것이 있습니까",
+   "reason": "V1 은 인문사회와 경영 계열 대학원생에게 여섯 문항짜리 분기 묶음을 주고 그 응답을 축 수준으로 셌다. 기계공학 Core 의 판정이 다른 전공의 경험으로 섰다는 뜻이다. ME_V3_2 는 비이공계 대학원생을 이 Core 에서 받지 않고, 학부가 기계공학인 경우만 받아 대학원 경험은 번역 맥락으로만 다룬다"
+  },
+  {
+   "v2_item": "XF_ME_RECENT",
+   "module": "GRAD-XFIELD",
+   "axis": null,
+   "domain": null,
+   "wording": "기계공학 쪽 작업을 마지막으로 한 때가 언제입니까",
+   "reason": "V1 은 인문사회와 경영 계열 대학원생에게 여섯 문항짜리 분기 묶음을 주고 그 응답을 축 수준으로 셌다. 기계공학 Core 의 판정이 다른 전공의 경험으로 섰다는 뜻이다. ME_V3_2 는 비이공계 대학원생을 이 Core 에서 받지 않고, 학부가 기계공학인 경우만 받아 대학원 경험은 번역 맥락으로만 다룬다"
+  },
+  {
+   "v2_item": "XF_ME_DEPTH",
+   "module": "GRAD-XFIELD",
+   "axis": null,
+   "domain": null,
+   "wording": "학부 때 기계공학 쪽에서 가장 깊게 간 작업을 골라 주십시오",
+   "reason": "V1 은 인문사회와 경영 계열 대학원생에게 여섯 문항짜리 분기 묶음을 주고 그 응답을 축 수준으로 셌다. 기계공학 Core 의 판정이 다른 전공의 경험으로 섰다는 뜻이다. ME_V3_2 는 비이공계 대학원생을 이 Core 에서 받지 않고, 학부가 기계공학인 경우만 받아 대학원 경험은 번역 맥락으로만 다룬다"
+  },
+  {
+   "v2_item": "TD01_J3_2",
+   "module": "PROBE-S4",
+   "axis": "J3",
+   "domain": "TD01",
+   "wording": "끼워 맞춤과 공차 등급을 직접 정해 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD01_J5_2",
+   "module": "PROBE-S4",
+   "axis": "J5",
+   "domain": "TD01",
+   "wording": "조립도와 부품표를 한 벌로 묶어 남겨 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD01_J6_2",
+   "module": "PROBE-S4",
+   "axis": "J6",
+   "domain": "TD01",
+   "wording": "시작품을 만들어 도면값과 실제 치수를 대조해 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD01_J7_2",
+   "module": "PROBE-S4",
+   "axis": "J7",
+   "domain": "TD01",
+   "wording": "시작품이 깨지거나 휘어서 단면이나 재질을 바꿔 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD02_J3_2",
+   "module": "PROBE-S4",
+   "axis": "J3",
+   "domain": "TD02",
+   "wording": "쓸 재료 모델과 물성값을 어디서 가져올지 직접 정해 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD02_J5_2",
+   "module": "PROBE-S4",
+   "axis": "J5",
+   "domain": "TD02",
+   "wording": "해석 조건과 가정을 따로 적어 남겨 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD02_J6_2",
+   "module": "PROBE-S4",
+   "axis": "J6",
+   "domain": "TD02",
+   "wording": "규격이 정한 허용값과 해석 결과를 견주어 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD02_J7_2",
+   "module": "PROBE-S4",
+   "axis": "J7",
+   "domain": "TD02",
+   "wording": "해석과 시험이 맞지 않아 차이의 까닭을 좁혀 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD03_J3_2",
+   "module": "PROBE-S4",
+   "axis": "J3",
+   "domain": "TD03",
+   "wording": "유로 단면과 허용 압력손실을 직접 정해 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD03_J5_2",
+   "module": "PROBE-S4",
+   "axis": "J5",
+   "domain": "TD03",
+   "wording": "작동점과 여유율이 함께 적힌 자료를 남겨 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD03_J6_2",
+   "module": "PROBE-S4",
+   "axis": "J6",
+   "domain": "TD03",
+   "wording": "요구 유량과 실제로 나온 유량을 견주어 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD03_J7_2",
+   "module": "PROBE-S4",
+   "axis": "J7",
+   "domain": "TD03",
+   "wording": "원인을 유량과 열저항과 접촉 가운데로 좁혀 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD04_J3_2",
+   "module": "PROBE-S4",
+   "axis": "J3",
+   "domain": "TD04",
+   "wording": "떨림을 줄이려고 마운트나 감쇠 사양을 직접 정해 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD04_J5_2",
+   "module": "PROBE-S4",
+   "axis": "J5",
+   "domain": "TD04",
+   "wording": "대책 전후의 값이 함께 적힌 자료를 남겨 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD04_J6_2",
+   "module": "PROBE-S4",
+   "axis": "J6",
+   "domain": "TD04",
+   "wording": "대책을 넣기 전과 뒤의 진동 수준을 견주어 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD04_J7_2",
+   "module": "PROBE-S4",
+   "axis": "J7",
+   "domain": "TD04",
+   "wording": "원인을 가진원과 전달 경로와 공진 가운데로 좁혀 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD05_J3_2",
+   "module": "PROBE-S4",
+   "axis": "J3",
+   "domain": "TD05",
+   "wording": "요구 정밀도에 맞춰 감속비와 전달 방식을 직접 정해 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD05_J5_2",
+   "module": "PROBE-S4",
+   "axis": "J5",
+   "domain": "TD05",
+   "wording": "구동 선정 계산서를 근거까지 적어 남겨 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD05_J6_2",
+   "module": "PROBE-S4",
+   "axis": "J6",
+   "domain": "TD05",
+   "wording": "같은 자리에 몇 번 멈추는지 여러 번 재 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD05_J7_2",
+   "module": "PROBE-S4",
+   "axis": "J7",
+   "domain": "TD05",
+   "wording": "원인을 관성과 마찰과 강성 가운데로 좁혀 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD06_J3_2",
+   "module": "PROBE-S4",
+   "axis": "J3",
+   "domain": "TD06",
+   "wording": "안전계수나 허용응력을 얼마로 둘지 직접 정해 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD06_J5_2",
+   "module": "PROBE-S4",
+   "axis": "J5",
+   "domain": "TD06",
+   "wording": "왜 그 재질인지 판단 근거를 적어 남겨 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD06_J6_2",
+   "module": "PROBE-S4",
+   "axis": "J6",
+   "domain": "TD06",
+   "wording": "같은 조건에서 다른 재질과 비교 시험을 해 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD06_J7_2",
+   "module": "PROBE-S4",
+   "axis": "J7",
+   "domain": "TD06",
+   "wording": "깨진 원인의 후보를 증거로 하나씩 지워 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD07_J3_2",
+   "module": "PROBE-S4",
+   "axis": "J3",
+   "domain": "TD07",
+   "wording": "지그와 구속 방식을 직접 정해 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD07_J5_2",
+   "module": "PROBE-S4",
+   "axis": "J5",
+   "domain": "TD07",
+   "wording": "시험 조건과 장비와 오차 범위를 적어 남겨 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD07_J6_2",
+   "module": "PROBE-S4",
+   "axis": "J6",
+   "domain": "TD07",
+   "wording": "규격이 정한 기준값과 측정 결과를 대조해 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD07_J7_2",
+   "module": "PROBE-S4",
+   "axis": "J7",
+   "domain": "TD07",
+   "wording": "원인을 시료와 지그와 계측 가운데로 좁혀 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD08_J3_2",
+   "module": "PROBE-S4",
+   "axis": "J3",
+   "domain": "TD08",
+   "wording": "가공이나 성형 조건의 범위를 직접 정해 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD08_J5_2",
+   "module": "PROBE-S4",
+   "axis": "J5",
+   "domain": "TD08",
+   "wording": "조건 범위와 관리 항목이 함께 적힌 자료를 남겨 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD08_J6_2",
+   "module": "PROBE-S4",
+   "axis": "J6",
+   "domain": "TD08",
+   "wording": "목표 공정 시간과 실제로 걸린 시간을 견주어 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD08_J7_2",
+   "module": "PROBE-S4",
+   "axis": "J7",
+   "domain": "TD08",
+   "wording": "원인을 설비와 재료와 조건 가운데로 좁혀 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD09_J3_2",
+   "module": "PROBE-S4",
+   "axis": "J3",
+   "domain": "TD09",
+   "wording": "예비품이나 소모품을 얼마나 둘지 직접 정해 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD09_J5_2",
+   "module": "PROBE-S4",
+   "axis": "J5",
+   "domain": "TD09",
+   "wording": "교정 기록이나 인수인계 문서를 남겨 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD09_J6_2",
+   "module": "PROBE-S4",
+   "axis": "J6",
+   "domain": "TD09",
+   "wording": "손보기 전과 뒤의 상태를 견주어 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD09_J7_2",
+   "module": "PROBE-S4",
+   "axis": "J7",
+   "domain": "TD09",
+   "wording": "원인을 장비와 조건과 쓰는 방법 가운데로 갈라 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD10_J3_2",
+   "module": "PROBE-S4",
+   "axis": "J3",
+   "domain": "TD10",
+   "wording": "표본 수와 검사 주기를 직접 정해 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD10_J5_2",
+   "module": "PROBE-S4",
+   "axis": "J5",
+   "domain": "TD10",
+   "wording": "시정조치 보고를 원인과 대책까지 적어 남겨 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD10_J6_2",
+   "module": "PROBE-S4",
+   "axis": "J6",
+   "domain": "TD10",
+   "wording": "가속 시험 결과와 실제로 쓰는 수명을 견주어 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD10_J7_2",
+   "module": "PROBE-S4",
+   "axis": "J7",
+   "domain": "TD10",
+   "wording": "불량이 생긴 쪽과 걸러내지 못한 쪽을 갈라 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD11_J3_2",
+   "module": "PROBE-S4",
+   "axis": "J3",
+   "domain": "TD11",
+   "wording": "부딪히는 요구 가운데 무엇을 먼저 지킬지 직접 정해 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD11_J5_2",
+   "module": "PROBE-S4",
+   "axis": "J5",
+   "domain": "TD11",
+   "wording": "일정표와 바뀐 내용을 함께 남겨 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD11_J6_2",
+   "module": "PROBE-S4",
+   "axis": "J6",
+   "domain": "TD11",
+   "wording": "계획한 일정과 실제로 걸린 시간을 견주어 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD11_J7_2",
+   "module": "PROBE-S4",
+   "axis": "J7",
+   "domain": "TD11",
+   "wording": "일정이 밀린 원인을 작업별로 갈라 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD12_J3_2",
+   "module": "PROBE-S4",
+   "axis": "J3",
+   "domain": "TD12",
+   "wording": "틀렸을 때 걸러낼 규칙을 직접 정해 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD12_J5_2",
+   "module": "PROBE-S4",
+   "axis": "J5",
+   "domain": "TD12",
+   "wording": "쓰는 법과 입력 규격을 적어 남겨 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD12_J6_2",
+   "module": "PROBE-S4",
+   "axis": "J6",
+   "domain": "TD12",
+   "wording": "여러 사례에 돌려 같은 값이 나오는지 확인해 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "TD12_J7_2",
+   "module": "PROBE-S4",
+   "axis": "J7",
+   "domain": "TD12",
+   "wording": "원인을 입력과 가정과 만든 것 가운데로 좁혀 본 적이 있다",
+   "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
+  },
+  {
+   "v2_item": "INDUSTRY_SEMICON_V2_I1",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD01",
+   "wording": "진공이나 고온 같은 특별한 환경을 조건으로 두고 형상과 재질을 정해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SEMICON_V2_I2",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD01",
+   "wording": "전체 정밀도를 맞추려고 부품마다 공차를 나눠 준 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SEMICON_V2_I3",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD03",
+   "wording": "온도차 때문에 생기는 변형을 미리 계산해 설계를 고쳐 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SEMICON_V2_I4",
+   "module": "INDUSTRY",
+   "axis": "J1",
+   "domain": "TD06",
+   "wording": "오염이 들어오는 길이나 청정도를 설계 조건으로 다뤄 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SEMICON_V2_I5",
+   "module": "INDUSTRY",
+   "axis": "J6",
+   "domain": "TD04",
+   "wording": "움직이는 축의 떨림이나 위치 오차를 측정으로 확인해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SEMICON_V2_I6",
+   "module": "INDUSTRY",
+   "axis": "J6",
+   "domain": "TD07",
+   "wording": "같은 조건에서 여러 번 재서 값이 다시 나오는지 확인해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SEMICON_V2_I7",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD08",
+   "wording": "조건을 바꿔 가며 되는 범위를 찾아 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SEMICON_V2_I8",
+   "module": "INDUSTRY",
+   "axis": "J8",
+   "domain": "TD09",
+   "wording": "장비가 멈춘 시간을 줄이려고 고장 간격을 기록해 관리해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SEMICON_V2_I9",
+   "module": "INDUSTRY",
+   "axis": "J7",
+   "domain": "TD09",
+   "wording": "같은 이상이 반복돼 장비 쪽과 공정 쪽을 갈라 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SEMICON_V2_I10",
+   "module": "INDUSTRY",
+   "axis": "J5",
+   "domain": "TD12",
+   "wording": "반복되는 계산이나 판정을 남겨 다른 사람이 쓰게 해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_DEFENSE_V2_I1",
+   "module": "INDUSTRY",
+   "axis": "J2",
+   "domain": "TD11",
+   "wording": "문장으로 온 요구를 지킬 수 있는 수치 조건으로 쪼개 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_DEFENSE_V2_I2",
+   "module": "INDUSTRY",
+   "axis": "J2",
+   "domain": "TD11",
+   "wording": "요구마다 무엇으로 됐다고 할지 합격 기준을 붙여 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_DEFENSE_V2_I3",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD02",
+   "wording": "안전계수를 깎으면서도 버틴다는 근거를 계산으로 세워 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_DEFENSE_V2_I4",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD06",
+   "wording": "쓸 값을 규격값과 시험값 사이에서 직접 골라 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_DEFENSE_V2_I5",
+   "module": "INDUSTRY",
+   "axis": "J2",
+   "domain": "TD03",
+   "wording": "쓰는 온도 범위가 넓은 조건을 설계 조건으로 다뤄 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_DEFENSE_V2_I6",
+   "module": "INDUSTRY",
+   "axis": "J6",
+   "domain": "TD04",
+   "wording": "충격이나 진동 시험을 예상해 설계를 미리 고쳐 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_DEFENSE_V2_I7",
+   "module": "INDUSTRY",
+   "axis": "J1",
+   "domain": "TD10",
+   "wording": "고장 모드를 미리 뽑아 영향을 따져 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_DEFENSE_V2_I8",
+   "module": "INDUSTRY",
+   "axis": "J7",
+   "domain": "TD07",
+   "wording": "시험 결과를 받아 설계를 되돌려 고쳐 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_DEFENSE_V2_I9",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD11",
+   "wording": "여러 팀이나 여러 부품 사이에 맞춰야 할 것을 정해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_DEFENSE_V2_I10",
+   "module": "INDUSTRY",
+   "axis": "J5",
+   "domain": "TD11",
+   "wording": "판단의 근거를 나중에 되짚을 수 있게 남겨 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_MOBILITY_V2_I1",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD01",
+   "wording": "원가나 가공 공수를 보고 형상이나 재질을 고쳐 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_MOBILITY_V2_I2",
+   "module": "INDUSTRY",
+   "axis": "J2",
+   "domain": "TD08",
+   "wording": "많이 만들 수 있는 범위를 설계 조건에 넣어 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_MOBILITY_V2_I3",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD02",
+   "wording": "원가를 올리지 않고 무게를 줄이는 안을 찾아 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_MOBILITY_V2_I4",
+   "module": "INDUSTRY",
+   "axis": "J4",
+   "domain": "TD04",
+   "wording": "소리나 떨림이 어디로 전달되는지 갈라 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_MOBILITY_V2_I5",
+   "module": "INDUSTRY",
+   "axis": "J6",
+   "domain": "TD10",
+   "wording": "보증 기간을 뒷받침하려고 수명을 짧게 앞당겨 확인해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_MOBILITY_V2_I6",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD03",
+   "wording": "열을 어디로 뺄지 경로를 정해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_MOBILITY_V2_I7",
+   "module": "INDUSTRY",
+   "axis": "J6",
+   "domain": "TD01",
+   "wording": "많이 만들었을 때 생기는 치수 편차를 미리 계산해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_MOBILITY_V2_I8",
+   "module": "INDUSTRY",
+   "axis": "J7",
+   "domain": "TD06",
+   "wording": "쓰다가 생긴 불량의 원인을 재질과 조건 가운데로 좁혀 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_MOBILITY_V2_I9",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD10",
+   "wording": "관리할 특성을 가려 기준을 세워 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_MOBILITY_V2_I10",
+   "module": "INDUSTRY",
+   "axis": "J6",
+   "domain": "TD02",
+   "wording": "해석 결과와 시험 결과를 맞춰 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_ROBOT_V2_I1",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD05",
+   "wording": "움직일 것의 무게와 관성을 따져 모터 용량을 정해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_ROBOT_V2_I2",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD05",
+   "wording": "요구 정밀도에 맞춰 감속비나 전달 방식을 정해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_ROBOT_V2_I3",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD05",
+   "wording": "빠르게 하는 것과 정확하게 하는 것을 맞바꿔 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_ROBOT_V2_I4",
+   "module": "INDUSTRY",
+   "axis": "J6",
+   "domain": "TD05",
+   "wording": "반복 정지 정확도를 여러 번 재서 편차를 확인해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_ROBOT_V2_I5",
+   "module": "INDUSTRY",
+   "axis": "J7",
+   "domain": "TD04",
+   "wording": "떨림의 원인을 기계 강성과 제어 이득 가운데로 갈라 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_ROBOT_V2_I6",
+   "module": "INDUSTRY",
+   "axis": "J2",
+   "domain": "TD11",
+   "wording": "사람과 같이 쓰는 장치의 안전 조건을 설계 조건으로 옮겨 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_ROBOT_V2_I7",
+   "module": "INDUSTRY",
+   "axis": "J1",
+   "domain": "TD05",
+   "wording": "사람이 할 동작과 장치가 할 동작을 갈라 적어 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_ROBOT_V2_I8",
+   "module": "INDUSTRY",
+   "axis": "J4",
+   "domain": "TD05",
+   "wording": "움직여 보고 측정한 응답으로 가감속을 고쳐 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_ROBOT_V2_I9",
+   "module": "INDUSTRY",
+   "axis": "J8",
+   "domain": "TD09",
+   "wording": "만든 장치를 쓰는 사람에게 조작법까지 넘겨 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_ROBOT_V2_I10",
+   "module": "INDUSTRY",
+   "axis": "J5",
+   "domain": "TD05",
+   "wording": "동작 순서표나 시운전 기록을 남겨 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_BATTERY_V2_I1",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD03",
+   "wording": "뜨거워지는 부분의 열을 어디로 뺄지 경로를 정해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_BATTERY_V2_I2",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD02",
+   "wording": "부풀거나 눌리는 변형을 받아 주는 구조를 정해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_BATTERY_V2_I3",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD08",
+   "wording": "조건을 바꿔 가며 되는 폭을 찾아 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_BATTERY_V2_I4",
+   "module": "INDUSTRY",
+   "axis": "J6",
+   "domain": "TD08",
+   "wording": "목표로 잡은 수율에 못 미쳐 어디서 빠지는지 찾아 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_BATTERY_V2_I5",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD06",
+   "wording": "쓰는 환경과 닿는 재질의 궁합을 따져 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_BATTERY_V2_I6",
+   "module": "INDUSTRY",
+   "axis": "J6",
+   "domain": "TD10",
+   "wording": "안전 쪽 시험을 예상해 설계를 미리 고쳐 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_BATTERY_V2_I7",
+   "module": "INDUSTRY",
+   "axis": "J7",
+   "domain": "TD09",
+   "wording": "설비가 정한 조건을 지키는지 확인해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_BATTERY_V2_I8",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD10",
+   "wording": "변수가 많아 관리할 항목을 골라 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_BATTERY_V2_I9",
+   "module": "INDUSTRY",
+   "axis": "J6",
+   "domain": "TD07",
+   "wording": "측정한 값이 다시 나오는지 반복해서 확인해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_BATTERY_V2_I10",
+   "module": "INDUSTRY",
+   "axis": "J5",
+   "domain": "TD12",
+   "wording": "쌓인 데이터를 정리해 조건을 다시 잡아 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SHIP_V2_I1",
+   "module": "INDUSTRY",
+   "axis": "J2",
+   "domain": "TD11",
+   "wording": "규정이나 기준을 설계 조건으로 옮겨 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SHIP_V2_I2",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD02",
+   "wording": "크고 두꺼운 구조의 강도를 따져 치수를 정해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SHIP_V2_I3",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD08",
+   "wording": "용접이나 가공으로 생기는 변형을 설계에 넣어 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SHIP_V2_I4",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD06",
+   "wording": "부식이나 긴 수명을 전제로 재질을 고른 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SHIP_V2_I5",
+   "module": "INDUSTRY",
+   "axis": "J2",
+   "domain": "TD08",
+   "wording": "현장에서 만들 수 있는지를 보고 설계를 고친 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SHIP_V2_I6",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD11",
+   "wording": "좁은 공간에서 배관이나 장비 배치를 맞춰 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SHIP_V2_I7",
+   "module": "INDUSTRY",
+   "axis": "J4",
+   "domain": "TD04",
+   "wording": "진동이나 소음을 줄이려고 구조를 고쳐 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SHIP_V2_I8",
+   "module": "INDUSTRY",
+   "axis": "J7",
+   "domain": "TD09",
+   "wording": "대체할 것이 없는 장비를 멈추지 않게 관리해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SHIP_V2_I9",
+   "module": "INDUSTRY",
+   "axis": "J6",
+   "domain": "TD07",
+   "wording": "실제로 돌려 보고 성능을 확인해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SHIP_V2_I10",
+   "module": "INDUSTRY",
+   "axis": "J5",
+   "domain": "TD11",
+   "wording": "도면이나 기술 자료를 인수에 쓸 수 있게 남겨 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_ENERGY_V2_I1",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD03",
+   "wording": "열이나 유량의 작동점을 잡아 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_ENERGY_V2_I2",
+   "module": "INDUSTRY",
+   "axis": "J4",
+   "domain": "TD09",
+   "wording": "돌아가는 기계의 소리나 떨림으로 상태를 판정해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_ENERGY_V2_I3",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD06",
+   "wording": "오래 쓰는 것을 전제로 재질이나 두께를 정해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_ENERGY_V2_I4",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD09",
+   "wording": "점검 항목이나 주기를 정해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_ENERGY_V2_I5",
+   "module": "INDUSTRY",
+   "axis": "J2",
+   "domain": "TD11",
+   "wording": "법이나 규정으로 정해진 점검을 요구에 넣어 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_ENERGY_V2_I6",
+   "module": "INDUSTRY",
+   "axis": "J8",
+   "domain": "TD09",
+   "wording": "멈춘 시간이나 고장 간격을 숫자로 관리해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_ENERGY_V2_I7",
+   "module": "INDUSTRY",
+   "axis": "J7",
+   "domain": "TD09",
+   "wording": "같은 고장이 또 나지 않게 원인을 좁혀 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_ENERGY_V2_I8",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD03",
+   "wording": "계통 전체의 압력과 유량을 맞춰 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_ENERGY_V2_I9",
+   "module": "INDUSTRY",
+   "axis": "J6",
+   "domain": "TD04",
+   "wording": "떨림을 재서 고장을 미리 알아본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_ENERGY_V2_I10",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD09",
+   "wording": "떨어지면 설비가 서는 부품을 골라 보유 기준을 정해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SMARTFACTORY_V2_I1",
+   "module": "INDUSTRY",
+   "axis": "J1",
+   "domain": "TD05",
+   "wording": "어디까지 자동으로 하고 어디서 사람이 할지 선을 그어 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SMARTFACTORY_V2_I2",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD09",
+   "wording": "기존 장비나 설비에 새 장치를 이어 붙여 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SMARTFACTORY_V2_I3",
+   "module": "INDUSTRY",
+   "axis": "J3",
+   "domain": "TD08",
+   "wording": "한 공정만 빨라져 다른 데가 막히는 것을 보고 흐름을 맞춰 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SMARTFACTORY_V2_I4",
+   "module": "INDUSTRY",
+   "axis": "J6",
+   "domain": "TD12",
+   "wording": "측정과 기록으로 개선 전후를 숫자로 견주어 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SMARTFACTORY_V2_I5",
+   "module": "INDUSTRY",
+   "axis": "J5",
+   "domain": "TD12",
+   "wording": "흩어진 데이터를 모아 쓸 수 있는 모양으로 정리해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SMARTFACTORY_V2_I6",
+   "module": "INDUSTRY",
+   "axis": "J5",
+   "domain": "TD05",
+   "wording": "현장에 맞는 움직이는 장치를 직접 만들어 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SMARTFACTORY_V2_I7",
+   "module": "INDUSTRY",
+   "axis": "J6",
+   "domain": "TD05",
+   "wording": "사이클 시간을 재서 목표와 맞춰 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SMARTFACTORY_V2_I8",
+   "module": "INDUSTRY",
+   "axis": "J2",
+   "domain": "TD11",
+   "wording": "사람의 동선과 안전을 조건으로 두고 배치를 정해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SMARTFACTORY_V2_I9",
+   "module": "INDUSTRY",
+   "axis": "J4",
+   "domain": "TD12",
+   "wording": "반복되는 정리나 판정을 자동으로 돌려 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "INDUSTRY_SMARTFACTORY_V2_I10",
+   "module": "INDUSTRY",
+   "axis": "J8",
+   "domain": "TD12",
+   "wording": "만든 것을 쓰는 사람에게 넘겨 계속 쓰이게 해 본 경험이 있다",
+   "reason": "V1 은 산업팩을 여섯 문항짜리 부가 묶음으로 맨 뒤에 붙였고 PRO 에서만 열렸다. ME_V3_2 는 산업을 응시 처음에 고르고 장면을 Core 앞에서 읽히고 깊이 문항을 열로 늘렸다"
+  },
+  {
+   "v2_item": "ROLE_DESIGN_V2_R1",
+   "module": "ROLE",
+   "axis": "J3",
+   "domain": "TD01",
+   "wording": "치수나 공차를 바꿀 권한을 가지고 직접 정해 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_DESIGN_V2_R2",
+   "module": "ROLE",
+   "axis": "J5",
+   "domain": "TD01",
+   "wording": "제작에 나간 도면과 부품표를 낸 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_DESIGN_V2_R3",
+   "module": "ROLE",
+   "axis": "J2",
+   "domain": "TD11",
+   "wording": "부딪히는 요구 가운데 무엇을 먼저 지킬지 정해 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_DESIGN_V2_R4",
+   "module": "ROLE",
+   "axis": "J6",
+   "domain": "TD01",
+   "wording": "공차 누적을 계산해 조립이 되는지 확인해 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_DESIGN_V2_R5",
+   "module": "ROLE",
+   "axis": "J7",
+   "domain": "TD01",
+   "wording": "조립이나 파손 문제를 겪고 치수를 고쳐 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_DESIGN_V2_R6",
+   "module": "ROLE",
+   "axis": "J3",
+   "domain": "TD06",
+   "wording": "쓸 재질과 등급을 직접 정해 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_DESIGN_V2_R7",
+   "module": "ROLE",
+   "axis": "J8",
+   "domain": "TD01",
+   "wording": "설계 검토에서 내 안이 채택돼 그대로 제작된 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_CAE_V2_R1",
+   "module": "ROLE",
+   "axis": "J3",
+   "domain": "TD02",
+   "wording": "구속 조건과 하중 작용점을 직접 정해 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_CAE_V2_R2",
+   "module": "ROLE",
+   "axis": "J4",
+   "domain": "TD02",
+   "wording": "격자를 바꿔 결과가 수렴하는지 확인해 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_CAE_V2_R3",
+   "module": "ROLE",
+   "axis": "J6",
+   "domain": "TD02",
+   "wording": "해석값과 시험값을 대조해 차이의 까닭을 적어 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_CAE_V2_R4",
+   "module": "ROLE",
+   "axis": "J5",
+   "domain": "TD02",
+   "wording": "해석 조건과 가정을 문서로 남겨 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_CAE_V2_R5",
+   "module": "ROLE",
+   "axis": "J4",
+   "domain": "TD03",
+   "wording": "손계산으로 해석 결과의 크기를 가늠해 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_CAE_V2_R6",
+   "module": "ROLE",
+   "axis": "J8",
+   "domain": "TD02",
+   "wording": "내 해석으로 설계 변경이 승인된 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_CAE_V2_R7",
+   "module": "ROLE",
+   "axis": "J7",
+   "domain": "TD04",
+   "wording": "결과가 이상해 조건이나 모델을 고쳐 다시 돌려 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_RND_V2_R1",
+   "module": "ROLE",
+   "axis": "J4",
+   "domain": "TD06",
+   "wording": "쓸 방법이 없어서 방법을 새로 세워 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_RND_V2_R2",
+   "module": "ROLE",
+   "axis": "J1",
+   "domain": "TD06",
+   "wording": "다룰 문제를 내가 좁혀 정해 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_RND_V2_R3",
+   "module": "ROLE",
+   "axis": "J6",
+   "domain": "TD03",
+   "wording": "검증할 가정을 세우고 그것부터 확인해 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_RND_V2_R4",
+   "module": "ROLE",
+   "axis": "J1",
+   "domain": "TD05",
+   "wording": "요구 가운데 포기할 것을 정해 범위를 좁혀 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_RND_V2_R5",
+   "module": "ROLE",
+   "axis": "J7",
+   "domain": "TD06",
+   "wording": "안 되는 것을 확인하고 방향을 바꿔 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_RND_V2_R6",
+   "module": "ROLE",
+   "axis": "J5",
+   "domain": "TD06",
+   "wording": "다른 사람이 같은 결과를 내도록 방법과 조건을 공개해 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_RND_V2_R7",
+   "module": "ROLE",
+   "axis": "J8",
+   "domain": "TD03",
+   "wording": "내 결과가 다음 개발의 출발점이 된 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_TEST_V2_R1",
+   "module": "ROLE",
+   "axis": "J2",
+   "domain": "TD07",
+   "wording": "합격과 불합격을 가르는 기준을 미리 적어 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_TEST_V2_R2",
+   "module": "ROLE",
+   "axis": "J3",
+   "domain": "TD07",
+   "wording": "지그를 만들어 하중이나 구속을 실제처럼 걸어 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_TEST_V2_R3",
+   "module": "ROLE",
+   "axis": "J5",
+   "domain": "TD07",
+   "wording": "시험 성적서를 판정까지 적어 낸 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_TEST_V2_R4",
+   "module": "ROLE",
+   "axis": "J6",
+   "domain": "TD07",
+   "wording": "여러 번 재서 편차를 확인해 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_TEST_V2_R5",
+   "module": "ROLE",
+   "axis": "J7",
+   "domain": "TD07",
+   "wording": "값이 흔들려 측정 방법이나 지그를 고쳐 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_TEST_V2_R6",
+   "module": "ROLE",
+   "axis": "J4",
+   "domain": "TD04",
+   "wording": "떨림이나 소리를 재서 어디서 오는지 갈라 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_TEST_V2_R7",
+   "module": "ROLE",
+   "axis": "J8",
+   "domain": "TD07",
+   "wording": "내 판정으로 출하나 설계 변경이 결정된 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_MFG_V2_R1",
+   "module": "ROLE",
+   "axis": "J3",
+   "domain": "TD08",
+   "wording": "쓸 공법과 가공 순서를 직접 정해 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_MFG_V2_R2",
+   "module": "ROLE",
+   "axis": "J4",
+   "domain": "TD08",
+   "wording": "시험 가공으로 조건의 범위를 잡아 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_MFG_V2_R3",
+   "module": "ROLE",
+   "axis": "J5",
+   "domain": "TD08",
+   "wording": "작업 표준이나 공정도를 낸 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_MFG_V2_R4",
+   "module": "ROLE",
+   "axis": "J6",
+   "domain": "TD08",
+   "wording": "목표 수율이나 공정 시간과 실제를 견주어 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_MFG_V2_R5",
+   "module": "ROLE",
+   "axis": "J7",
+   "domain": "TD08",
+   "wording": "불량이 나서 조건이나 치공구를 고쳐 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_MFG_V2_R6",
+   "module": "ROLE",
+   "axis": "J2",
+   "domain": "TD01",
+   "wording": "만들기 쉬운지를 보고 설계를 고치자고 해 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_MFG_V2_R7",
+   "module": "ROLE",
+   "axis": "J8",
+   "domain": "TD08",
+   "wording": "내가 정한 조건으로 양산이 돌고 있는 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_MAINT_V2_R1",
+   "module": "ROLE",
+   "axis": "J3",
+   "domain": "TD09",
+   "wording": "점검 항목이나 주기를 직접 정해 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_MAINT_V2_R2",
+   "module": "ROLE",
+   "axis": "J4",
+   "domain": "TD09",
+   "wording": "소리와 열과 떨림으로 이상 징후를 판정해 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_MAINT_V2_R3",
+   "module": "ROLE",
+   "axis": "J7",
+   "domain": "TD09",
+   "wording": "같은 증상이 또 나서 원인을 장비와 조건과 쓰는 방법 가운데로 갈라 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_MAINT_V2_R4",
+   "module": "ROLE",
+   "axis": "J6",
+   "domain": "TD09",
+   "wording": "교정 기준이나 표준 시료로 장비 상태를 확인해 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_MAINT_V2_R5",
+   "module": "ROLE",
+   "axis": "J5",
+   "domain": "TD09",
+   "wording": "점검표나 조치 기록을 다른 사람이 따라 할 수 있게 남겨 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_MAINT_V2_R6",
+   "module": "ROLE",
+   "axis": "J3",
+   "domain": "TD09",
+   "wording": "예비품이나 소모품을 얼마나 둘지 정해 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_MAINT_V2_R7",
+   "module": "ROLE",
+   "axis": "J8",
+   "domain": "TD09",
+   "wording": "장비 쓰는 법을 가르쳐 넘겨 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_QUALITY_V2_R1",
+   "module": "ROLE",
+   "axis": "J1",
+   "domain": "TD10",
+   "wording": "고객이 쓰는 조건에서 무엇이 가장 위험한지 따져 관리 대상을 정해 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_QUALITY_V2_R2",
+   "module": "ROLE",
+   "axis": "J3",
+   "domain": "TD10",
+   "wording": "관리할 항목과 관리 범위를 직접 정해 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_QUALITY_V2_R3",
+   "module": "ROLE",
+   "axis": "J4",
+   "domain": "TD10",
+   "wording": "공정 능력 지수를 계산해 관리 상태를 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_QUALITY_V2_R4",
+   "module": "ROLE",
+   "axis": "J6",
+   "domain": "TD10",
+   "wording": "가속 시험이나 반복 시험으로 수명을 확인해 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_QUALITY_V2_R5",
+   "module": "ROLE",
+   "axis": "J7",
+   "domain": "TD10",
+   "wording": "같은 불량이 또 나서 발생과 유출을 갈라 대책을 세워 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_QUALITY_V2_R6",
+   "module": "ROLE",
+   "axis": "J5",
+   "domain": "TD10",
+   "wording": "원인과 대책과 확인 결과를 한 보고로 묶어 승인받아 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_QUALITY_V2_R7",
+   "module": "ROLE",
+   "axis": "J8",
+   "domain": "TD10",
+   "wording": "내 기준으로 공정이나 검사가 바뀐 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_PM_V2_R1",
+   "module": "ROLE",
+   "axis": "J2",
+   "domain": "TD11",
+   "wording": "여러 사람이 말한 요구를 한 표로 모아 서로 부딪히는 자리를 찾아 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_PM_V2_R2",
+   "module": "ROLE",
+   "axis": "J2",
+   "domain": "TD11",
+   "wording": "요구조건마다 무엇으로 됐다고 할지 붙여 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_PM_V2_R3",
+   "module": "ROLE",
+   "axis": "J3",
+   "domain": "TD11",
+   "wording": "부품이나 팀 사이에 맞춰야 할 것을 정해 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_PM_V2_R4",
+   "module": "ROLE",
+   "axis": "J4",
+   "domain": "TD11",
+   "wording": "바뀐 요구의 영향 범위를 짚어 일정을 다시 세워 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_PM_V2_R5",
+   "module": "ROLE",
+   "axis": "J5",
+   "domain": "TD11",
+   "wording": "요구조건 표와 변경 이력을 남겨 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_PM_V2_R6",
+   "module": "ROLE",
+   "axis": "J6",
+   "domain": "TD11",
+   "wording": "끝낼 때 요구조건 표를 열어 빠진 항목을 가려내 본 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  },
+  {
+   "v2_item": "ROLE_PM_V2_R7",
+   "module": "ROLE",
+   "axis": "J8",
+   "domain": "TD12",
+   "wording": "내가 세운 일정과 분담으로 팀이 움직인 경험이 있다",
+   "reason": "V1 은 역할팩이 일곱이고 둘이 같은 역할기능을 가리켰고 해석팩과 탐색팩에 영역이 붙어 있지 않았다. ME_V3_2 는 여덟이 되고 역할기능과 하나씩 맞물린다"
+  }
+ ]
+}
