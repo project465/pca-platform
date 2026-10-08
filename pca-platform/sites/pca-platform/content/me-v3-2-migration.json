@@ -21,13 +21,13 @@
    "MOVE": 35
   },
   "actual": {
-   "REWRITE": 193,
+   "REWRITE": 206,
    "MOVE": 36,
    "MERGE": 13,
-   "KEEP": 15,
+   "KEEP": 2,
    "DELETE": 37
   },
-  "diverged": 204,
+  "diverged": 214,
   "new_in_v2": 194
  },
  "divergences": {
@@ -42,7 +42,6 @@
   "MOVE → MERGE": "융합 계열 대학원 묶음을 이공계 묶음으로 합쳤다. 옮길 자리가 따로 없고 기존 묶음이 같은 여섯 자리를 이미 묻는다",
   "REWRITE → DELETE": "팩을 다시 설계하면서 그 축의 자리가 줄어 대응하는 문항이 없어진 자리다",
   "KEEP → DELETE": "번역 단계의 영역 태깅과 일부 팩 문항처럼, 이미 다른 화면에서 받은 판단을 다시 묻던 자리다",
-  "MOVE → KEEP": "옮기기로 했으나 같은 자리에서 그대로 쓰는 것이 맞다고 본 자리다. 목표 입력 셋은 번역 뒤에 그대로 둔다",
   "KEEP → MERGE": "한 칸에 문항이 둘이던 자리를 하나로 합쳤다. 심화 축의 응답 수가 영역에 따라 달라지면 판정 경로가 갈린다",
   "DELETE → MERGE": "버리기로 했으나 같은 축의 다른 문항이 그 판단을 받아 흡수로 적은 자리다"
  },
@@ -2837,12 +2836,12 @@
    "v1_domain": null,
    "v1_wording": "그 연구나 과제에서 다룬 문제를 한두 줄로 적어 주십시오",
    "planned": "KEEP",
-   "actual": "KEEP",
+   "actual": "REWRITE",
    "v2_items": [
     "TR_T1"
    ],
-   "reason": "문면과 자리를 그대로 두었다",
-   "agrees": true,
+   "reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다. 한 흐름 안에서 `주십시오` 와 `주세요` 가 섞이면 응시자가 두 사람이 쓴 글을 읽는다",
+   "agrees": false,
    "planned_reason": "은행에서 가장 전문적인 묶음이다. 자리를 앞으로 옮긴다"
   },
   {
@@ -2852,12 +2851,12 @@
    "v1_domain": null,
    "v1_wording": "그것이 왜 문제였는지 가장 가까운 것을 고르고 한 줄을 적어 주십시오",
    "planned": "KEEP",
-   "actual": "KEEP",
+   "actual": "REWRITE",
    "v2_items": [
     "TR_T2"
    ],
-   "reason": "문면과 자리를 그대로 두었다",
-   "agrees": true,
+   "reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다. 한 흐름 안에서 `주십시오` 와 `주세요` 가 섞이면 응시자가 두 사람이 쓴 글을 읽는다",
+   "agrees": false,
    "planned_reason": "은행에서 가장 전문적인 묶음이다. 자리를 앞으로 옮긴다"
   },
   {
@@ -2867,12 +2866,12 @@
    "v1_domain": null,
    "v1_wording": "쓴 방법을 고르고, 함께 검토했다가 안 쓴 방법이 있으면 적어 주십시오",
    "planned": "KEEP",
-   "actual": "KEEP",
+   "actual": "REWRITE",
    "v2_items": [
     "TR_T3"
    ],
-   "reason": "문면과 자리를 그대로 두었다",
-   "agrees": true,
+   "reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다. 한 흐름 안에서 `주십시오` 와 `주세요` 가 섞이면 응시자가 두 사람이 쓴 글을 읽는다",
+   "agrees": false,
    "planned_reason": "은행에서 가장 전문적인 묶음이다. 자리를 앞으로 옮긴다"
   },
   {
@@ -2882,12 +2881,12 @@
    "v1_domain": null,
    "v1_wording": "고정한 것과 바꾼 것을 골라 주십시오",
    "planned": "KEEP",
-   "actual": "KEEP",
+   "actual": "REWRITE",
    "v2_items": [
     "TR_T4"
    ],
-   "reason": "문면과 자리를 그대로 두었다",
-   "agrees": true,
+   "reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다. 한 흐름 안에서 `주십시오` 와 `주세요` 가 섞이면 응시자가 두 사람이 쓴 글을 읽는다",
+   "agrees": false,
    "planned_reason": "은행에서 가장 전문적인 묶음이다. 자리를 앞으로 옮긴다"
   },
   {
@@ -2897,12 +2896,12 @@
    "v1_domain": null,
    "v1_wording": "실제로 한 일을 고르고 반복 횟수를 적어 주십시오",
    "planned": "KEEP",
-   "actual": "KEEP",
+   "actual": "REWRITE",
    "v2_items": [
     "TR_T5"
    ],
-   "reason": "문면과 자리를 그대로 두었다",
-   "agrees": true,
+   "reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다. 한 흐름 안에서 `주십시오` 와 `주세요` 가 섞이면 응시자가 두 사람이 쓴 글을 읽는다",
+   "agrees": false,
    "planned_reason": "은행에서 가장 전문적인 묶음이다. 자리를 앞으로 옮긴다"
   },
   {
@@ -2912,12 +2911,12 @@
    "v1_domain": null,
    "v1_wording": "결과를 무엇과 견주었는지 골라 주십시오",
    "planned": "KEEP",
-   "actual": "KEEP",
+   "actual": "REWRITE",
    "v2_items": [
     "TR_T6"
    ],
-   "reason": "문면과 자리를 그대로 두었다",
-   "agrees": true,
+   "reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다. 한 흐름 안에서 `주십시오` 와 `주세요` 가 섞이면 응시자가 두 사람이 쓴 글을 읽는다",
+   "agrees": false,
    "planned_reason": "은행에서 가장 전문적인 묶음이다. 자리를 앞으로 옮긴다"
   },
   {
@@ -2927,12 +2926,12 @@
    "v1_domain": null,
    "v1_wording": "산포나 한계를 어떻게 다뤘는지 골라 주십시오",
    "planned": "KEEP",
-   "actual": "KEEP",
+   "actual": "REWRITE",
    "v2_items": [
     "TR_T7"
    ],
-   "reason": "문면과 자리를 그대로 두었다",
-   "agrees": true,
+   "reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다. 한 흐름 안에서 `주십시오` 와 `주세요` 가 섞이면 응시자가 두 사람이 쓴 글을 읽는다",
+   "agrees": false,
    "planned_reason": "은행에서 가장 전문적인 묶음이다. 자리를 앞으로 옮긴다"
   },
   {
@@ -2942,12 +2941,12 @@
    "v1_domain": null,
    "v1_wording": "결과를 보고 내가 정한 것을 골라 주십시오",
    "planned": "KEEP",
-   "actual": "KEEP",
+   "actual": "REWRITE",
    "v2_items": [
     "TR_T8"
    ],
-   "reason": "문면과 자리를 그대로 두었다",
-   "agrees": true,
+   "reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다. 한 흐름 안에서 `주십시오` 와 `주세요` 가 섞이면 응시자가 두 사람이 쓴 글을 읽는다",
+   "agrees": false,
    "planned_reason": "은행에서 가장 전문적인 묶음이다. 자리를 앞으로 옮긴다"
   },
   {
@@ -2957,12 +2956,12 @@
    "v1_domain": null,
    "v1_wording": "남은 것을 골라 주십시오",
    "planned": "KEEP",
-   "actual": "KEEP",
+   "actual": "REWRITE",
    "v2_items": [
     "TR_T9"
    ],
-   "reason": "문면과 자리를 그대로 두었다",
-   "agrees": true,
+   "reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다. 한 흐름 안에서 `주십시오` 와 `주세요` 가 섞이면 응시자가 두 사람이 쓴 글을 읽는다",
+   "agrees": false,
    "planned_reason": "은행에서 가장 전문적인 묶음이다. 자리를 앞으로 옮긴다"
   },
   {
@@ -2972,12 +2971,12 @@
    "v1_domain": null,
    "v1_wording": "이 결과를 누가 어디에 쓸 수 있는지 고르고 한 줄을 적어 주십시오",
    "planned": "KEEP",
-   "actual": "KEEP",
+   "actual": "REWRITE",
    "v2_items": [
     "TR_T10"
    ],
-   "reason": "문면과 자리를 그대로 두었다",
-   "agrees": true,
+   "reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다. 한 흐름 안에서 `주십시오` 와 `주세요` 가 섞이면 응시자가 두 사람이 쓴 글을 읽는다",
+   "agrees": false,
    "planned_reason": "은행에서 가장 전문적인 묶음이다. 자리를 앞으로 옮긴다"
   },
   {
@@ -3013,11 +3012,11 @@
    "v1_domain": null,
    "v1_wording": "목표로 보고 있는 공고 직무명을 골라 주십시오",
    "planned": "MOVE",
-   "actual": "KEEP",
+   "actual": "REWRITE",
    "v2_items": [
     "TG_ROLE"
    ],
-   "reason": "문면과 자리를 그대로 두었다",
+   "reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다",
    "agrees": false,
    "planned_reason": "지금은 PRO 의 맨 뒤다. 검사 맨 앞으로 옮겨 이후 장면을 바꾸는 입력으로 쓴다"
   },
@@ -3028,11 +3027,11 @@
    "v1_domain": null,
    "v1_wording": "목표로 보고 있는 산업을 골라 주십시오",
    "planned": "MOVE",
-   "actual": "KEEP",
+   "actual": "REWRITE",
    "v2_items": [
     "TG_INDUSTRY"
    ],
-   "reason": "문면과 자리를 그대로 두었다",
+   "reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다",
    "agrees": false,
    "planned_reason": "지금은 PRO 의 맨 뒤다. 검사 맨 앞으로 옮겨 이후 장면을 바꾸는 입력으로 쓴다"
   },
@@ -3043,11 +3042,11 @@
    "v1_domain": null,
    "v1_wording": "가고 싶은 조직 유형을 골라 주십시오",
    "planned": "MOVE",
-   "actual": "KEEP",
+   "actual": "REWRITE",
    "v2_items": [
     "TG_OC"
    ],
-   "reason": "문면과 자리를 그대로 두었다",
+   "reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다",
    "agrees": false,
    "planned_reason": "지금은 PRO 의 맨 뒤다. 검사 맨 앞으로 옮겨 이후 장면을 바꾸는 입력으로 쓴다"
   },
@@ -4438,7 +4437,7 @@
    "module": "GRAD-XFIELD",
    "axis": null,
    "domain": null,
-   "wording": "대학원에서 다룬 분야를 골라 주십시오",
+   "wording": "대학원에서 다룬 분야를 골라주세요",
    "reason": "V1 은 인문사회와 경영 계열 대학원생에게 여섯 문항짜리 분기 묶음을 주고 그 응답을 축 수준으로 셌다. 기계공학 Core 의 판정이 다른 전공의 경험으로 섰다는 뜻이다. ME_V3_2 는 비이공계 대학원생을 이 Core 에서 받지 않고, 학부가 기계공학인 경우만 받아 대학원 경험은 번역 맥락으로만 다룬다"
   },
   {
@@ -4446,7 +4445,7 @@
    "module": "GRAD-XFIELD",
    "axis": null,
    "domain": null,
-   "wording": "대학원에서 쓴 방법 가운데 기계공학 문제에도 쓸 수 있는 것이 있습니까",
+   "wording": "대학원에서 쓴 방법 가운데 기계공학 문제에도 쓸 수 있는 것을 골라주세요",
    "reason": "V1 은 인문사회와 경영 계열 대학원생에게 여섯 문항짜리 분기 묶음을 주고 그 응답을 축 수준으로 셌다. 기계공학 Core 의 판정이 다른 전공의 경험으로 섰다는 뜻이다. ME_V3_2 는 비이공계 대학원생을 이 Core 에서 받지 않고, 학부가 기계공학인 경우만 받아 대학원 경험은 번역 맥락으로만 다룬다"
   },
   {
@@ -4454,7 +4453,7 @@
    "module": "GRAD-XFIELD",
    "axis": null,
    "domain": null,
-   "wording": "기계공학 쪽 작업을 마지막으로 한 때가 언제입니까",
+   "wording": "기계공학 쪽 작업을 마지막으로 한 때를 골라주세요",
    "reason": "V1 은 인문사회와 경영 계열 대학원생에게 여섯 문항짜리 분기 묶음을 주고 그 응답을 축 수준으로 셌다. 기계공학 Core 의 판정이 다른 전공의 경험으로 섰다는 뜻이다. ME_V3_2 는 비이공계 대학원생을 이 Core 에서 받지 않고, 학부가 기계공학인 경우만 받아 대학원 경험은 번역 맥락으로만 다룬다"
   },
   {
@@ -4462,7 +4461,7 @@
    "module": "GRAD-XFIELD",
    "axis": null,
    "domain": null,
-   "wording": "학부 때 기계공학 쪽에서 가장 깊게 간 작업을 골라 주십시오",
+   "wording": "학부 때 기계공학 쪽에서 가장 깊게 간 작업을 골라주세요",
    "reason": "V1 은 인문사회와 경영 계열 대학원생에게 여섯 문항짜리 분기 묶음을 주고 그 응답을 축 수준으로 셌다. 기계공학 Core 의 판정이 다른 전공의 경험으로 섰다는 뜻이다. ME_V3_2 는 비이공계 대학원생을 이 Core 에서 받지 않고, 학부가 기계공학인 경우만 받아 대학원 경험은 번역 맥락으로만 다룬다"
   },
   {

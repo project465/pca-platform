@@ -1824,7 +1824,7 @@
    "education_routing": "xfield",
    "measurement_axis": "translation_context",
    "evidence_axis": null,
-   "wording": "대학원에서 다룬 분야를 골라 주십시오",
+   "wording": "대학원에서 다룬 분야를 골라주세요",
    "stage_wording": null,
    "options": [
     "인문·사회",
@@ -1856,7 +1856,7 @@
    "education_routing": "xfield",
    "measurement_axis": "translation_context",
    "evidence_axis": null,
-   "wording": "대학원에서 쓴 방법 가운데 기계공학 문제에도 쓸 수 있는 것이 있습니까",
+   "wording": "대학원에서 쓴 방법 가운데 기계공학 문제에도 쓸 수 있는 것을 골라주세요",
    "stage_wording": null,
    "options": [
     "데이터를 모으고 정리하는 방법",
@@ -1887,7 +1887,7 @@
    "education_routing": "xfield",
    "measurement_axis": "translation_context",
    "evidence_axis": null,
-   "wording": "기계공학 쪽 작업을 마지막으로 한 때가 언제입니까",
+   "wording": "기계공학 쪽 작업을 마지막으로 한 때를 골라주세요",
    "stage_wording": null,
    "options": [
     "1년 안",
@@ -1917,7 +1917,7 @@
    "education_routing": "xfield",
    "measurement_axis": "translation_context",
    "evidence_axis": null,
-   "wording": "학부 때 기계공학 쪽에서 가장 깊게 간 작업을 골라 주십시오",
+   "wording": "학부 때 기계공학 쪽에서 가장 깊게 간 작업을 골라주세요",
    "stage_wording": null,
    "options": [
     "캡스톤이나 설계 과제",
@@ -7128,12 +7128,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J1",
-   "wording": "그 연구나 과제에서 다룬 문제를 한두 줄로 적어 주십시오",
+   "wording": "그 연구나 과제에서 다룬 문제를 한두 줄로 적어주세요",
    "stage_wording": {
-    "bachelor": "그 연구나 과제에서 다룬 문제를 한두 줄로 적어 주십시오",
-    "master": "그 연구나 과제에서 다룬 문제를 한두 줄로 적어 주십시오",
-    "phd": "그 연구나 과제에서 다룬 문제를 한두 줄로 적어 주십시오",
-    "postdoc": "그 연구나 과제에서 다룬 문제를 한두 줄로 적어 주십시오"
+    "bachelor": "그 연구나 과제에서 다룬 문제를 한두 줄로 적어주세요",
+    "master": "그 연구나 과제에서 다룬 문제를 한두 줄로 적어주세요",
+    "phd": "그 연구나 과제에서 다룬 문제를 한두 줄로 적어주세요",
+    "postdoc": "그 연구나 과제에서 다룬 문제를 한두 줄로 적어주세요"
    },
    "options": null,
    "grid_row": null,
@@ -7144,9 +7144,9 @@
    "consistency_pair": null,
    "requirement": "optional",
    "rationale": "번역 열 단계. 보기 메뉴는 화면이 정하고 단계와 수준은 전 계열이 같다",
-   "origin": "v1_keep",
+   "origin": "v1_rewrite",
    "old_item_id": "TR_T1",
-   "change_reason": null
+   "change_reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다. 한 흐름 안에서 `주십시오` 와 `주세요` 가 섞이면 응시자가 두 사람이 쓴 글을 읽는다"
   },
   {
    "item_id": "TR_T2",
@@ -7158,12 +7158,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J2",
-   "wording": "그것이 왜 문제였는지 가장 가까운 것을 고르고 한 줄을 적어 주십시오",
+   "wording": "그것이 왜 문제였는지 가장 가까운 것을 고르고 한 줄을 적어주세요",
    "stage_wording": {
-    "bachelor": "그것이 왜 문제였는지 가장 가까운 것을 고르고 한 줄을 적어 주십시오",
-    "master": "그것이 왜 문제였는지 가장 가까운 것을 고르고 한 줄을 적어 주십시오",
-    "phd": "그것이 왜 문제였는지 가장 가까운 것을 고르고 한 줄을 적어 주십시오",
-    "postdoc": "그것이 왜 문제였는지 가장 가까운 것을 고르고 한 줄을 적어 주십시오"
+    "bachelor": "그것이 왜 문제였는지 가장 가까운 것을 고르고 한 줄을 적어주세요",
+    "master": "그것이 왜 문제였는지 가장 가까운 것을 고르고 한 줄을 적어주세요",
+    "phd": "그것이 왜 문제였는지 가장 가까운 것을 고르고 한 줄을 적어주세요",
+    "postdoc": "그것이 왜 문제였는지 가장 가까운 것을 고르고 한 줄을 적어주세요"
    },
    "options": null,
    "grid_row": null,
@@ -7174,9 +7174,9 @@
    "consistency_pair": null,
    "requirement": "optional",
    "rationale": "번역 열 단계. 보기 메뉴는 화면이 정하고 단계와 수준은 전 계열이 같다",
-   "origin": "v1_keep",
+   "origin": "v1_rewrite",
    "old_item_id": "TR_T2",
-   "change_reason": null
+   "change_reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다. 한 흐름 안에서 `주십시오` 와 `주세요` 가 섞이면 응시자가 두 사람이 쓴 글을 읽는다"
   },
   {
    "item_id": "TR_T3",
@@ -7188,12 +7188,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J3",
-   "wording": "쓴 방법을 고르고, 함께 검토했다가 안 쓴 방법이 있으면 적어 주십시오",
+   "wording": "쓴 방법을 고르고, 함께 검토했다가 안 쓴 방법이 있으면 적어주세요",
    "stage_wording": {
-    "bachelor": "쓴 방법을 고르고, 함께 검토했다가 안 쓴 방법이 있으면 적어 주십시오",
-    "master": "쓴 방법을 고르고, 함께 검토했다가 안 쓴 방법이 있으면 적어 주십시오",
-    "phd": "쓴 방법을 고르고, 함께 검토했다가 안 쓴 방법이 있으면 적어 주십시오",
-    "postdoc": "쓴 방법을 고르고, 함께 검토했다가 안 쓴 방법이 있으면 적어 주십시오"
+    "bachelor": "쓴 방법을 고르고, 함께 검토했다가 안 쓴 방법이 있으면 적어주세요",
+    "master": "쓴 방법을 고르고, 함께 검토했다가 안 쓴 방법이 있으면 적어주세요",
+    "phd": "쓴 방법을 고르고, 함께 검토했다가 안 쓴 방법이 있으면 적어주세요",
+    "postdoc": "쓴 방법을 고르고, 함께 검토했다가 안 쓴 방법이 있으면 적어주세요"
    },
    "options": null,
    "grid_row": null,
@@ -7204,9 +7204,9 @@
    "consistency_pair": null,
    "requirement": "optional",
    "rationale": "번역 열 단계. 보기 메뉴는 화면이 정하고 단계와 수준은 전 계열이 같다",
-   "origin": "v1_keep",
+   "origin": "v1_rewrite",
    "old_item_id": "TR_T3",
-   "change_reason": null
+   "change_reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다. 한 흐름 안에서 `주십시오` 와 `주세요` 가 섞이면 응시자가 두 사람이 쓴 글을 읽는다"
   },
   {
    "item_id": "TR_T4",
@@ -7218,12 +7218,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J3",
-   "wording": "고정한 것과 바꾼 것을 골라 주십시오",
+   "wording": "고정한 것과 바꾼 것을 골라주세요",
    "stage_wording": {
-    "bachelor": "고정한 것과 바꾼 것을 골라 주십시오",
-    "master": "고정한 것과 바꾼 것을 골라 주십시오",
-    "phd": "고정한 것과 바꾼 것을 골라 주십시오",
-    "postdoc": "고정한 것과 바꾼 것을 골라 주십시오"
+    "bachelor": "고정한 것과 바꾼 것을 골라주세요",
+    "master": "고정한 것과 바꾼 것을 골라주세요",
+    "phd": "고정한 것과 바꾼 것을 골라주세요",
+    "postdoc": "고정한 것과 바꾼 것을 골라주세요"
    },
    "options": null,
    "grid_row": null,
@@ -7234,9 +7234,9 @@
    "consistency_pair": null,
    "requirement": "optional",
    "rationale": "번역 열 단계. 보기 메뉴는 화면이 정하고 단계와 수준은 전 계열이 같다",
-   "origin": "v1_keep",
+   "origin": "v1_rewrite",
    "old_item_id": "TR_T4",
-   "change_reason": null
+   "change_reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다. 한 흐름 안에서 `주십시오` 와 `주세요` 가 섞이면 응시자가 두 사람이 쓴 글을 읽는다"
   },
   {
    "item_id": "TR_T5",
@@ -7248,12 +7248,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J4",
-   "wording": "실제로 한 일을 고르고 반복 횟수를 적어 주십시오",
+   "wording": "실제로 한 일을 고르고 반복 횟수를 적어주세요",
    "stage_wording": {
-    "bachelor": "실제로 한 일을 고르고 반복 횟수를 적어 주십시오",
-    "master": "실제로 한 일을 고르고 반복 횟수를 적어 주십시오",
-    "phd": "실제로 한 일을 고르고 반복 횟수를 적어 주십시오",
-    "postdoc": "실제로 한 일을 고르고 반복 횟수를 적어 주십시오"
+    "bachelor": "실제로 한 일을 고르고 반복 횟수를 적어주세요",
+    "master": "실제로 한 일을 고르고 반복 횟수를 적어주세요",
+    "phd": "실제로 한 일을 고르고 반복 횟수를 적어주세요",
+    "postdoc": "실제로 한 일을 고르고 반복 횟수를 적어주세요"
    },
    "options": null,
    "grid_row": null,
@@ -7264,9 +7264,9 @@
    "consistency_pair": null,
    "requirement": "optional",
    "rationale": "번역 열 단계. 보기 메뉴는 화면이 정하고 단계와 수준은 전 계열이 같다",
-   "origin": "v1_keep",
+   "origin": "v1_rewrite",
    "old_item_id": "TR_T5",
-   "change_reason": null
+   "change_reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다. 한 흐름 안에서 `주십시오` 와 `주세요` 가 섞이면 응시자가 두 사람이 쓴 글을 읽는다"
   },
   {
    "item_id": "TR_T6",
@@ -7278,12 +7278,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J6",
-   "wording": "결과를 무엇과 견주었는지 골라 주십시오",
+   "wording": "결과를 무엇과 견주었는지 골라주세요",
    "stage_wording": {
-    "bachelor": "결과를 무엇과 견주었는지 골라 주십시오",
-    "master": "결과를 무엇과 견주었는지 골라 주십시오",
-    "phd": "결과를 무엇과 견주었는지 골라 주십시오",
-    "postdoc": "결과를 무엇과 견주었는지 골라 주십시오"
+    "bachelor": "결과를 무엇과 견주었는지 골라주세요",
+    "master": "결과를 무엇과 견주었는지 골라주세요",
+    "phd": "결과를 무엇과 견주었는지 골라주세요",
+    "postdoc": "결과를 무엇과 견주었는지 골라주세요"
    },
    "options": null,
    "grid_row": null,
@@ -7294,9 +7294,9 @@
    "consistency_pair": null,
    "requirement": "optional",
    "rationale": "번역 열 단계. 보기 메뉴는 화면이 정하고 단계와 수준은 전 계열이 같다",
-   "origin": "v1_keep",
+   "origin": "v1_rewrite",
    "old_item_id": "TR_T6",
-   "change_reason": null
+   "change_reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다. 한 흐름 안에서 `주십시오` 와 `주세요` 가 섞이면 응시자가 두 사람이 쓴 글을 읽는다"
   },
   {
    "item_id": "TR_T7",
@@ -7308,12 +7308,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J6",
-   "wording": "산포나 한계를 어떻게 다뤘는지 골라 주십시오",
+   "wording": "산포나 한계를 어떻게 다뤘는지 골라주세요",
    "stage_wording": {
-    "bachelor": "산포나 한계를 어떻게 다뤘는지 골라 주십시오",
-    "master": "산포나 한계를 어떻게 다뤘는지 골라 주십시오",
-    "phd": "산포나 한계를 어떻게 다뤘는지 골라 주십시오",
-    "postdoc": "산포나 한계를 어떻게 다뤘는지 골라 주십시오"
+    "bachelor": "산포나 한계를 어떻게 다뤘는지 골라주세요",
+    "master": "산포나 한계를 어떻게 다뤘는지 골라주세요",
+    "phd": "산포나 한계를 어떻게 다뤘는지 골라주세요",
+    "postdoc": "산포나 한계를 어떻게 다뤘는지 골라주세요"
    },
    "options": null,
    "grid_row": null,
@@ -7324,9 +7324,9 @@
    "consistency_pair": null,
    "requirement": "optional",
    "rationale": "번역 열 단계. 보기 메뉴는 화면이 정하고 단계와 수준은 전 계열이 같다",
-   "origin": "v1_keep",
+   "origin": "v1_rewrite",
    "old_item_id": "TR_T7",
-   "change_reason": null
+   "change_reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다. 한 흐름 안에서 `주십시오` 와 `주세요` 가 섞이면 응시자가 두 사람이 쓴 글을 읽는다"
   },
   {
    "item_id": "TR_T8",
@@ -7338,12 +7338,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J3",
-   "wording": "결과를 보고 내가 정한 것을 골라 주십시오",
+   "wording": "결과를 보고 내가 정한 것을 골라주세요",
    "stage_wording": {
-    "bachelor": "결과를 보고 내가 정한 것을 골라 주십시오",
-    "master": "결과를 보고 내가 정한 것을 골라 주십시오",
-    "phd": "결과를 보고 내가 정한 것을 골라 주십시오",
-    "postdoc": "결과를 보고 내가 정한 것을 골라 주십시오"
+    "bachelor": "결과를 보고 내가 정한 것을 골라주세요",
+    "master": "결과를 보고 내가 정한 것을 골라주세요",
+    "phd": "결과를 보고 내가 정한 것을 골라주세요",
+    "postdoc": "결과를 보고 내가 정한 것을 골라주세요"
    },
    "options": null,
    "grid_row": null,
@@ -7354,9 +7354,9 @@
    "consistency_pair": null,
    "requirement": "optional",
    "rationale": "번역 열 단계. 보기 메뉴는 화면이 정하고 단계와 수준은 전 계열이 같다",
-   "origin": "v1_keep",
+   "origin": "v1_rewrite",
    "old_item_id": "TR_T8",
-   "change_reason": null
+   "change_reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다. 한 흐름 안에서 `주십시오` 와 `주세요` 가 섞이면 응시자가 두 사람이 쓴 글을 읽는다"
   },
   {
    "item_id": "TR_T9",
@@ -7368,12 +7368,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J5",
-   "wording": "남은 것을 골라 주십시오",
+   "wording": "남은 것을 골라주세요",
    "stage_wording": {
-    "bachelor": "남은 것을 골라 주십시오",
-    "master": "남은 것을 골라 주십시오",
-    "phd": "남은 것을 골라 주십시오",
-    "postdoc": "남은 것을 골라 주십시오"
+    "bachelor": "남은 것을 골라주세요",
+    "master": "남은 것을 골라주세요",
+    "phd": "남은 것을 골라주세요",
+    "postdoc": "남은 것을 골라주세요"
    },
    "options": null,
    "grid_row": null,
@@ -7384,9 +7384,9 @@
    "consistency_pair": null,
    "requirement": "optional",
    "rationale": "번역 열 단계. 보기 메뉴는 화면이 정하고 단계와 수준은 전 계열이 같다",
-   "origin": "v1_keep",
+   "origin": "v1_rewrite",
    "old_item_id": "TR_T9",
-   "change_reason": null
+   "change_reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다. 한 흐름 안에서 `주십시오` 와 `주세요` 가 섞이면 응시자가 두 사람이 쓴 글을 읽는다"
   },
   {
    "item_id": "TR_T10",
@@ -7398,12 +7398,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J8",
-   "wording": "이 결과를 누가 어디에 쓸 수 있는지 고르고 한 줄을 적어 주십시오",
+   "wording": "이 결과를 누가 어디에 쓸 수 있는지 고르고 한 줄을 적어주세요",
    "stage_wording": {
-    "bachelor": "이 결과를 누가 어디에 쓸 수 있는지 고르고 한 줄을 적어 주십시오",
-    "master": "이 결과를 누가 어디에 쓸 수 있는지 고르고 한 줄을 적어 주십시오",
-    "phd": "이 결과를 누가 어디에 쓸 수 있는지 고르고 한 줄을 적어 주십시오",
-    "postdoc": "이 결과를 누가 어디에 쓸 수 있는지 고르고 한 줄을 적어 주십시오"
+    "bachelor": "이 결과를 누가 어디에 쓸 수 있는지 고르고 한 줄을 적어주세요",
+    "master": "이 결과를 누가 어디에 쓸 수 있는지 고르고 한 줄을 적어주세요",
+    "phd": "이 결과를 누가 어디에 쓸 수 있는지 고르고 한 줄을 적어주세요",
+    "postdoc": "이 결과를 누가 어디에 쓸 수 있는지 고르고 한 줄을 적어주세요"
    },
    "options": null,
    "grid_row": null,
@@ -7414,9 +7414,9 @@
    "consistency_pair": null,
    "requirement": "optional",
    "rationale": "번역 열 단계. 보기 메뉴는 화면이 정하고 단계와 수준은 전 계열이 같다",
-   "origin": "v1_keep",
+   "origin": "v1_rewrite",
    "old_item_id": "TR_T10",
-   "change_reason": null
+   "change_reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다. 한 흐름 안에서 `주십시오` 와 `주세요` 가 섞이면 응시자가 두 사람이 쓴 글을 읽는다"
   },
   {
    "item_id": "TG_ROLE",
@@ -7428,7 +7428,7 @@
    "education_routing": "all",
    "measurement_axis": "target_input",
    "evidence_axis": null,
-   "wording": "목표로 보고 있는 공고 직무명을 골라 주십시오",
+   "wording": "목표로 보고 있는 공고 직무명을 골라주세요",
    "stage_wording": null,
    "options": null,
    "grid_row": null,
@@ -7439,9 +7439,9 @@
    "consistency_pair": null,
    "requirement": "optional",
    "rationale": "목표 입력. 결과의 대조표와 지역 층이 읽는다",
-   "origin": "v1_keep",
+   "origin": "v1_rewrite",
    "old_item_id": "TG_ROLE",
-   "change_reason": null
+   "change_reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다"
   },
   {
    "item_id": "TG_INDUSTRY",
@@ -7453,7 +7453,7 @@
    "education_routing": "all",
    "measurement_axis": "target_input",
    "evidence_axis": null,
-   "wording": "목표로 보고 있는 산업을 골라 주십시오",
+   "wording": "목표로 보고 있는 산업을 골라주세요",
    "stage_wording": null,
    "options": null,
    "grid_row": null,
@@ -7464,9 +7464,9 @@
    "consistency_pair": null,
    "requirement": "optional",
    "rationale": "목표 입력. 결과의 대조표와 지역 층이 읽는다",
-   "origin": "v1_keep",
+   "origin": "v1_rewrite",
    "old_item_id": "TG_INDUSTRY",
-   "change_reason": null
+   "change_reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다"
   },
   {
    "item_id": "TG_OC",
@@ -7478,7 +7478,7 @@
    "education_routing": "all",
    "measurement_axis": "target_input",
    "evidence_axis": null,
-   "wording": "가고 싶은 조직 유형을 골라 주십시오",
+   "wording": "가고 싶은 조직 유형을 골라주세요",
    "stage_wording": null,
    "options": null,
    "grid_row": null,
@@ -7489,9 +7489,9 @@
    "consistency_pair": null,
    "requirement": "optional",
    "rationale": "목표 입력. 결과의 대조표와 지역 층이 읽는다",
-   "origin": "v1_keep",
+   "origin": "v1_rewrite",
    "old_item_id": "TG_OC",
-   "change_reason": null
+   "change_reason": "묻는 것은 그대로다. 문말을 화면의 말투(`주세요`)에 맞췄다"
   },
   {
    "item_id": "CF_PAIR_1",
