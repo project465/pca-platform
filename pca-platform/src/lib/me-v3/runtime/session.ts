@@ -103,8 +103,8 @@ export function checklistFor(td: string): { slot: string; label: string; items: 
     slot: axis, label: axisLabel(axis), items: list.map((x) => x.text),
   }));
   if (dom) {
-    out.push({ slot: "ARTIFACT", label: "남은 산출물", items: dom.artifacts });
-    out.push({ slot: "VERIFY", label: "무엇과 견주었는가", items: dom.verify_targets });
+    out.push({ slot: "ARTIFACT", label: "남긴 산출물", items: dom.artifacts });
+    out.push({ slot: "VERIFY", label: "비교한 대상", items: dom.verify_targets });
   }
   return out;
 }

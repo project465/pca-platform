@@ -154,7 +154,7 @@ export default function Screen({
         {s.profile ? (
           <>
             <fieldset className="qs-opts">
-              <legend>지금 학업 단계</legend>
+              <legend>현재 학업 단계</legend>
               <div className="qs-list">
                 {(["bachelor", "master", "phd", "postdoc"] as const).map((v) => (
                   <label key={v} className={`qs-opt${stage === v ? " is-on" : ""}`}>
@@ -217,9 +217,9 @@ export default function Screen({
         {s.groups ? (
           <>
             <p className="qs-picked">
-              <span>고르신 것 <b>{Object.values(picks).reduce((n, v) => n + v.length, 0)}</b>개</span>
+              <span>선택한 항목 <b>{Object.values(picks).reduce((n, v) => n + v.length, 0)}</b>개</span>
               <span className="qs-grow" />
-              <span>여러 개 고르실 수 있습니다</span>
+              <span>여러 개 선택할 수 있습니다</span>
             </p>
             {s.groups.map((g) => {
               const on = picks[g.slot] ?? [];
@@ -271,24 +271,24 @@ export default function Screen({
             {s.summary ? (
               <ul className="qs-summary">
                 <li>
-                  <span>기술영역</span>
-                  <b>{s.summary.explored}개 영역을 보았습니다</b>
+                  <span>확인한 기술영역</span>
+                  <b>{s.summary.explored}개 영역</b>
                 </li>
                 {s.summary.deep.length ? (
                   <li>
-                    <span>깊게 본 영역</span>
+                    <span>자세히 확인한 영역</span>
                     <b>{s.summary.deep.join(" · ")}</b>
                   </li>
                 ) : null}
                 <li>
-                  <span>응답과 근거</span>
-                  <b>{s.answered}개 응답
-                    {s.summary.evidence ? <em> · 고르신 근거 {s.summary.evidence}개</em> : null}
+                  <span>응답과 선택</span>
+                  <b>답변 {s.answered}개
+                    {s.summary.evidence ? <em> · 선택한 항목 {s.summary.evidence}개</em> : null}
                   </b>
                 </li>
                 {s.summary.industry || s.summary.role ? (
                   <li>
-                    <span>산업과 역할</span>
+                    <span>산업·역할</span>
                     <b>{[s.summary.industry, s.summary.role].filter(Boolean).join(" · ")}</b>
                   </li>
                 ) : null}
@@ -296,8 +296,8 @@ export default function Screen({
             ) : null}
             <p className="qs-help" style={{ marginTop: 24 }}>
               {s.done
-                ? "결과를 만들어 두었습니다. 읽는 화면은 준비되는 대로 이 자리에서 열립니다."
-                : "이제 받은 응답을 정리합니다. 만든 뒤에도 이전으로 돌아가 고치실 수 있습니다."}
+                ? "결과를 저장했습니다. 결과 화면은 준비되는 대로 여기서 열립니다."
+                : "답변을 바탕으로 결과를 정리합니다. 만든 뒤에도 이전으로 돌아가 고칠 수 있습니다."}
             </p>
           </>
         ) : null}
@@ -312,11 +312,11 @@ export default function Screen({
           <span className="qs-grow" />
           {/* 전환과 완료에는 저장할 것이 없다. 거기 띄우면 뜻 없는 글자가
               다음 걸음 옆에 선다 */}
-          {warn ? <span className="qs-need">답을 고르신 뒤 넘어갑니다</span>
+          {warn ? <span className="qs-need">답을 고른 뒤 다음으로 넘어가세요</span>
             : mid ? null
               : saving > 0 ? <span className="qs-save">저장 중</span>
                 : sent ? <span className="qs-save">저장됨</span>
-                  : <span className="qs-save">문항마다 저장됩니다</span>}
+                  : <span className="qs-save">답변은 자동으로 저장됩니다</span>}
           {s.kind === "done" ? (
             s.done ? null : (
               <button type="button" className="qs-btn qs-btn-main"

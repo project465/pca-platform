@@ -84,8 +84,8 @@ export function buildPlan(
   add({
     id: "profile", stage: "PROFILE", kind: "profile", required: true,
     eyebrow: "기본 정보",
-    question: "지금 학업 단계를 알려 주십시오",
-    help: "묻는 장면이 달라집니다. 판정 기준은 같습니다.",
+    question: "현재 학업 단계를 골라주세요",
+    help: "단계에 따라 질문 속 상황만 달라집니다. 평가 기준은 같습니다.",
     items: [],
   });
 
@@ -99,7 +99,7 @@ export function buildPlan(
       eyebrow: `기술영역 ${n + 1} / ${domains.length}`,
       subject: domainName(td),
       question: gridRow(td),
-      help: "해 보고 싶은 정도와 겪어 본 횟수와 지금 배울 뜻을 따로 받습니다.",
+      help: "관심도와 경험, 학습 의향을 각각 골라주세요.",
       items: three, domain: td,
     });
   });
@@ -119,9 +119,9 @@ export function buildPlan(
     for (const i of items.filter((x) => x.module === "CORE-FORCE")) {
       add({
         id: `force-${i.item_id}`, stage: "EXPLORE", kind: "single", required: true,
-        eyebrow: "둘 중 하나",
+        eyebrow: "한 가지만 더",
         question: wording(i.item_id, input.stage),
-        help: "같은 값으로 묶인 영역이 있어 한 번 더 묻습니다. 점수에는 들어가지 않습니다.",
+        help: "비슷하게 답하신 영역이 있어 한 가지만 더 묻습니다. 점수에는 반영되지 않습니다.",
         items: [i.item_id],
       });
     }
@@ -134,8 +134,8 @@ export function buildPlan(
       eyebrow: input.stage === "bachelor" ? "수업과 과제" : "연구와 과제",
       question: wording(i.item_id, input.stage),
       help: input.stage === "bachelor"
-        ? "수업과 실험과 캡스톤과 인턴 경험을 모두 포함할 수 있습니다."
-        : "연구와 과제와 논문 작업을 모두 포함할 수 있습니다.",
+        ? "수업, 실험, 캡스톤, 인턴 경험을 모두 포함해 답해주세요."
+        : "연구, 과제, 논문 작업을 모두 포함해 답해주세요.",
       items: [i.item_id],
     });
   }
@@ -147,7 +147,7 @@ export function buildPlan(
       subject: "기본 탐색이 끝났습니다",
       /* **영역 이름을 머리글에 이어 붙이지 않는다.** 이름 셋을 가운뎃점으로
          묶어 조사를 붙이면 앞말에 따라 조사가 틀리고, 줄이 두 줄로 접힌다 */
-      question: "겪어 보신 영역을 조금 더 봅니다",
+      question: "해 보신 영역을 조금 더 살펴봅니다",
       help: `${input.probe.map(domainName).join(" · ")}`,
       items: [],
     });
@@ -169,8 +169,8 @@ export function buildPlan(
   if (input.tier !== "BASIC") {
     add({
       id: "t-deep", stage: "DEEP", kind: "transition", required: false,
-      subject: "앞에서 나타난 영역을 깊게 봅니다",
-      question: "같은 판단을 여덟 가지로 나눠 묻습니다",
+      subject: "기본 질문이 끝났습니다",
+      question: "경험이 있는 영역을 자세히 살펴봅니다",
       help: `${input.deep.map(domainName).join(" · ")}`,
       items: [],
     });
@@ -188,8 +188,8 @@ export function buildPlan(
         id: `check-${td}`, stage: "DEEP", kind: "checklist", required: false,
         eyebrow: "근거 고르기",
         subject: domainName(td),
-        question: "그 영역에서 직접 정하거나 남긴 것을 모두 골라 주십시오",
-        help: "고르신 항목이 근거가 됩니다. 없으면 비워 두셔도 됩니다.",
+        question: "직접 정했거나 결과물로 남긴 것을 모두 골라주세요",
+        help: "해당하는 것이 없으면 비워두셔도 됩니다.",
         items: [], domain: td,
       });
     }
@@ -205,23 +205,23 @@ export function buildPlan(
     if (rf.length) {
       add({
         id: "pref-rf", stage: "DEEP", kind: "multi", required: false,
-        eyebrow: "가고 싶은 자리", subject: "일곱 가지 역할",
-        question: "어느 자리에 가고 싶은지 각각 답해 주십시오",
+        eyebrow: "역할 선호", subject: "일곱 가지 역할",
+        question: "각 역할을 얼마나 하고 싶은지 골라주세요",
         items: rf,
       });
     }
     if (oc.length) {
       add({
         id: "pref-oc", stage: "DEEP", kind: "multi", required: false,
-        eyebrow: "일하고 싶은 곳", subject: "일곱 가지 조직",
-        question: "어느 조직에서 일하고 싶은지 각각 답해 주십시오",
+        eyebrow: "조직 선호", subject: "일곱 가지 조직",
+        question: "각 조직에서 일하고 싶은 정도를 골라주세요",
         items: oc,
       });
     }
     for (const i of items.filter((x) => x.module === "CONSIST")) {
       add({
         id: `consist-${i.item_id}`, stage: "DEEP", kind: "single", required: false,
-        eyebrow: "같은 판단, 다른 장면",
+        eyebrow: "경험 확인",
         question: wording(i.item_id, input.stage),
         items: [i.item_id],
       });
@@ -231,9 +231,9 @@ export function buildPlan(
   if (input.tier === "PRO") {
     add({
       id: "t-trans", stage: "TRANSLATE", kind: "transition", required: false,
-      subject: "지금까지 확인된 경험을 직무 언어로 옮깁니다",
-      question: "연구나 프로젝트 하나를 떠올려 주십시오",
-      help: "열 단계로 나눠 묻고, 적으실 칸은 선택입니다.",
+      subject: "경험 번역을 시작합니다",
+      question: "연구나 프로젝트 하나를 떠올려주세요",
+      help: "열 단계로 나누어 묻습니다. 직접 적는 칸은 건너뛰어도 됩니다.",
       items: [],
     });
     for (const i of items.filter((x) => x.module === "TRANS-10")) {
@@ -248,8 +248,8 @@ export function buildPlan(
     if (tg.length) {
       add({
         id: "target", stage: "TRANSLATE", kind: "multi", required: false,
-        eyebrow: "목표", subject: "보고 계신 자리",
-        question: "지금 목표로 보고 있는 것을 골라 주십시오",
+        eyebrow: "목표", subject: "희망하는 진로",
+        question: "목표로 두고 있는 것을 골라주세요",
         items: tg,
       });
     }
@@ -257,8 +257,8 @@ export function buildPlan(
     add({
       id: "pick-industry", stage: "INDUSTRY", kind: "pick-industry", required: false,
       eyebrow: "산업 탐색",
-      question: "어느 산업을 먼저 깊게 보시겠습니까",
-      help: "여덟 산업 전부를 결과에서 견주실 수 있고, 지금 고르신 하나를 깊게 묻습니다.",
+      question: "어느 산업을 먼저 살펴볼까요?",
+      help: "고른 산업은 조금 더 자세히 묻습니다.",
       items: [],
     });
     if (input.industryPack) {
@@ -274,8 +274,8 @@ export function buildPlan(
     add({
       id: "pick-role", stage: "ROLE", kind: "pick-role", required: false,
       eyebrow: "역할 탐색",
-      question: "어느 역할을 먼저 깊게 보시겠습니까",
-      help: "일곱 역할 전부를 결과에서 견주실 수 있습니다.",
+      question: "어떤 역할을 먼저 살펴볼까요?",
+      help: "고른 역할은 조금 더 자세히 묻습니다.",
       items: [],
     });
     if (input.rolePack) {
@@ -293,7 +293,7 @@ export function buildPlan(
 
   add({
     id: "done", stage: "DONE", kind: "done", required: false,
-    subject: "응답이 끝났습니다", question: "결과를 만들 준비가 됐습니다",
+    subject: "응답이 모두 끝났습니다", question: "결과를 만들 준비가 됐습니다",
     items: [],
   });
 

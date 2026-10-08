@@ -19,8 +19,8 @@ export default function StartForm({ error }: { error?: string }) {
   return (
     <form action={startV3}>
       <fieldset className="qs-opts">
-        <legend>지금 학업 단계</legend>
-        <h2 className="qs-eyebrow" aria-hidden>지금 학업 단계</h2>
+        <legend>현재 학업 단계</legend>
+        <h2 className="qs-eyebrow" aria-hidden>현재 학업 단계</h2>
         <div className="qs-list">
           {(["bachelor", "master", "phd", "postdoc"] as const).map((v) => (
             <label key={v} className={`qs-opt${stage === v ? " is-on" : ""}`}>
@@ -49,13 +49,14 @@ export default function StartForm({ error }: { error?: string }) {
               ))}
           </div>
           <p className="qs-guide">
-            계열은 묻는 장면과 보기를 고릅니다. 판정 기준은 네 계열이 같습니다.
+            전공계열에 따라 질문과 선택지가 달라집니다. 평가 기준은 네 계열이
+            모두 같습니다.
           </p>
         </fieldset>
       ) : null}
 
       {error ? <p className="qs-need" role="alert" style={{ marginTop: 16 }}>
-        {error === "field" ? "대학원 전공계열을 골라 주십시오." : "학업 단계를 골라 주십시오."}
+        {error === "field" ? "대학원 전공계열을 선택해주세요." : "학업 단계를 선택해주세요."}
       </p> : null}
 
       <div className="qs-start-nav">
