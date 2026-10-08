@@ -14,7 +14,9 @@ import { load, score } from "../src/lib/me-v3/scoring/engine";
 import { expand, type Fixture } from "../src/lib/me-v3/scoring/fixtures";
 import { buildResult } from "../src/lib/me-v3/result/build";
 import {
-  actionKo, gapKo, headlineKo, QUALITY_KO, TIER_NOTE_KO, ZONE_TITLE_KO,
+  actionKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO, BASIC_GROUP_KO, draftKo,
+  FIRST_MOVE_KO, gapKo, headlineKo, HORIZON_KO, QUALITY_KO, TIER_NOTE_KO,
+  TRANS_STEP_KO, ZONE_LEAD_KO, ZONE_TITLE_KO,
 } from "../src/lib/me-v3/result/text.ko";
 import { RESULT_MODEL_VERSION } from "../src/lib/me-v3/result/version";
 import type { Snapshot } from "../src/lib/me-v3/scoring/types";
@@ -90,29 +92,97 @@ const readsKo = ["build.ts", "model.ts"].filter((f) =>
   /from\s+["'][^"']*text\.ko/.test(body(readFileSync(`${RESULT_DIR}/${f}`, "utf8"))));
 ok("모델이 번역표를 읽지 않는다", readsKo.length === 0, readsKo.join(" "));
 
-/* 5. 내부 코드가 사람이 읽는 문장에 새지 않는다 */
-const CODE = /\bTD\d\d\b|\bJ[1-8]\b|\bZ[1-4]\b|NOT_EXPLORED|_V1\b|[A-Z]{3,}_[A-Z0-9_]{2,}/;
-const leaked: string[] = [];
-for (const [id, m] of models) {
-  const lines: string[] = [headlineKo(m).title, headlineKo(m).lead,
-    ...Object.values(ZONE_TITLE_KO), ...Object.values(TIER_NOTE_KO),
-    ...Object.values(QUALITY_KO)];
+/* 5. 내부 코드가 사람이 읽는 문장에 새지 않는다.
+ *
+ * **전에 쓴 그림이 `TR_TAG_1` 을 놓쳤다.** `[A-Z]{3,}_[A-Z0-9_]{2,}` 는
+ * 밑줄 앞에 큰 글자 셋을 요구해서 `TR_` 을 못 봤고, 캡처 쪽 그림은
+ * `\b[A-Z]{2,3}_[A-Z0-9]{2,}\b` 라 `TAG_1` 의 꼬리 한 글자에서 걸렸다.
+ * 그래서 두 그림을 **모양 하나**로 합친다: 큰 글자나 숫자 묶음이 밑줄로
+ * 이어지면 무엇이든 내부 코드로 본다. 세는 자리도 늘린다 — 번역 단계
+ * 이름과 축 표와 묶음 설명까지, **화면에 서는 글자 전부**다.
+ */
+const CODE = new RegExp([
+  "\\bTD\\d\\d\\b", "\\bJ[1-8]\\b", "\\bZ[1-4]\\b", "\\bOC[1-7]\\b",
+  "NOT_EXPLORED", "\\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+\\b",
+  "\\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\\b",
+  "\\b(?:undefined|null|NaN|TODO|TBD)\\b",
+].join("|"));
+
+/** 화면과 종이에 서는 글자 전부. **여기 빠진 자리가 다음에 새는 자리다** */
+function rendered(m: ReturnType<typeof buildResult>): string[] {
+  const out: string[] = [headlineKo(m).title, headlineKo(m).lead,
+    ...Object.values(ZONE_TITLE_KO), ...Object.values(ZONE_LEAD_KO),
+    ...Object.values(TIER_NOTE_KO), ...Object.values(QUALITY_KO),
+    ...Object.values(AXIS_KO), ...Object.values(AXIS_WHAT_KO),
+    ...Object.values(TRANS_STEP_KO), ...Object.values(FIRST_MOVE_KO),
+    ...Object.values(HORIZON_KO),
+    ...Object.values(BASIC_GROUP_KO).flatMap((g) => [g.title, g.lead])];
   for (const g of m.gaps) {
     const k = gapKo(g, NAME.get(g.domain) ?? g.domain);
-    lines.push(k.title, k.why, k.detail);
+    out.push(k.title, k.why, k.detail);
   }
-  for (const a of m.actions) lines.push(actionKo(a, (a.domain && NAME.get(a.domain)) ?? ""));
-  for (const l of lines) if (CODE.test(l)) leaked.push(`${id}: ${l}`);
+  for (const a of m.actions) {
+    const t = actionKo(a, (a.domain && NAME.get(a.domain)) ?? "", m.stage);
+    out.push(t.do, t.note ?? "");
+  }
+  for (const d of m.domains) {
+    out.push(NAME.get(d.code) ?? d.code, ...d.did, ...d.decided,
+      ...d.artifacts, ...d.verifications);
+    for (const ax of d.axes) out.push(axisStateKo(ax.axis, ax.state), ...ax.picks);
+  }
+  for (const e of [...m.evidence.ready, ...m.evidence.partial]) {
+    out.push(axisStateKo(e.axis, e.state), ...e.picks);
+  }
+  /* **번역 단계는 이름이 없으면 화면이 세우지 않는다.** 그 규칙이 지켜지는
+     지도 여기서 센다: 이름이 없는 단계가 하나라도 있으면 걸린다 */
+  for (const st of m.translation?.steps ?? []) {
+    out.push(TRANS_STEP_KO[st.item_id] ?? st.item_id, st.choice ?? "");
+  }
+  out.push(...draftKo(m.translation?.steps ?? []));
+  return out.filter(Boolean);
+}
+
+const leaked: string[] = [];
+for (const [id, m] of models) {
+  for (const l of rendered(m)) if (CODE.test(l)) leaked.push(`${id}: ${l}`);
 }
 ok("사람이 읽는 문장에 내부 코드가 없다", leaked.length === 0, leaked.slice(0, 3).join(" | "));
+
+/* 5b. 번역 단계마다 **사람이 읽는 이름이 있다.**
+ *
+ * 여기가 `TR_TAG_1` 을 놓친 자리다. 사람 열두 벌의 고정 응답에는 번역
+ * 열 단계의 답이 없어서, 검사가 도는 동안 번역 줄은 **한 번도 서지
+ * 않았다.** 그래서 사람 응답을 기다리지 않고 **문항 은행에서 바로** 센다:
+ * `TRANS-10` 에 든 문항 전부가 이름을 가져야 한다. 문항이 늘면 이 검사가
+ * 먼저 걸린다.
+ */
+const transIds = loaded.bank.items
+  .filter((i) => i.module === "TRANS-10").map((i) => i.item_id);
+const unnamed = transIds.filter((id) => !TRANS_STEP_KO[id]);
+ok("번역 문항마다 사람이 읽는 이름이 있다", unnamed.length === 0,
+   unnamed.length ? unnamed.slice(0, 4).join(" ") : `문항 ${transIds.length}개`);
+
+/* 5c. 번역 줄이 **실제로 서는 상태**로도 코드가 새지 않는다 */
+const proFx = fx.personas.find((f) => f.tier === "PRO")!;
+const proSnap = score(expand(proFx, core), loaded);
+const withTrans = buildResult(
+  { ...proSnap, context: { ...proSnap.context, translation_steps: transIds } },
+  loaded,
+  { translation: transIds.map((id) => ({ item_id: id, choice: "하중 조건을 직접 정했다" })) },
+);
+const transLeak = rendered(withTrans).filter((l) => CODE.test(l));
+ok("번역 열 단계가 선 결과지에도 내부 코드가 없다", transLeak.length === 0,
+   transLeak.length ? transLeak.slice(0, 3).join(" | ")
+     : `단계 ${withTrans.translation?.steps.length ?? 0}줄`);
 
 /* 6. 과한 칭찬과 재지 않은 단정을 쓰지 않는다 */
 const BRAG = /뛰어난|뛰어납|탁월|최적|완벽|혁신적|형 인재|우수한|훌륭/;
 const brag: string[] = [];
 for (const [id, m] of models) {
   for (const a of m.actions) {
-    const t = actionKo(a, (a.domain && NAME.get(a.domain)) ?? "");
-    if (BRAG.test(t)) brag.push(`${id}: ${t}`);
+    const t = actionKo(a, (a.domain && NAME.get(a.domain)) ?? "", m.stage);
+    const all = `${t.do} ${t.note ?? ""}`;
+    if (BRAG.test(all)) brag.push(`${id}: ${t.do}`);
   }
   for (const g of m.gaps) {
     const k = gapKo(g, NAME.get(g.domain) ?? g.domain);
@@ -126,8 +196,8 @@ const VAGUE = /역량을 (강화|키우)|경험을 쌓|전문성을 높|노력�
 const vague: string[] = [];
 for (const [id, m] of models) {
   for (const a of m.actions) {
-    const t = actionKo(a, (a.domain && NAME.get(a.domain)) ?? "");
-    if (VAGUE.test(t)) vague.push(`${id}: ${t}`);
+    const t = actionKo(a, (a.domain && NAME.get(a.domain)) ?? "", m.stage);
+    if (VAGUE.test(`${t.do} ${t.note ?? ""}`)) vague.push(`${id}: ${t.do}`);
   }
 }
 ok("막연한 할 일이 없다", vague.length === 0, vague.slice(0, 3).join(" | "));

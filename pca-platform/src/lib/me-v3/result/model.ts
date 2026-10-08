@@ -30,7 +30,14 @@ export type HeadlineCode =
 
 /** 무엇이 비어 있는가 */
 export type GapKind =
-  | "REQUIRED_AXIS" | "OUTPUT" | "OUTPUT_EVIDENCE" | "VERIFICATION" | "AXIS";
+  | "REQUIRED_AXIS" | "OUTPUT" | "OUTPUT_EVIDENCE" | "VERIFICATION" | "AXIS"
+  /**
+   * 해 본 것은 확인됐고 직접 정했다고 보기에는 근거가 모자란 축.
+   *
+   * **비어 있는 것과 반쯤 선 것을 한 칸에 두지 않는다.** 둘을 섞으면
+   * 첫 화면이 `채울 것이 없다` 와 `아직 못 해봤다` 를 같은 뜻으로 쓴다.
+   */
+  | "PARTIAL_EVIDENCE";
 
 /** 왜 그 자리가 중요한가. **`부족합니다` 로 끝내지 않는 까닭이 이 칸이다** */
 export type GapWhy =
@@ -46,9 +53,34 @@ export type ActionCode =
   /** 어느 영역도 앞서지 않았다. **없는 차례를 지어내지 않고 그 사실을 적는다** */
   | "EXPLORE_BROADLY"
   /** 근거는 다 섰다. 남은 일은 그것을 설명할 문장으로 만드는 것이다 */
-  | "WRITE_UP";
+  | "WRITE_UP"
+  /** 해 본 것은 확인됐다. 남은 일은 어디까지 직접 정했는지를 적는 것이다 */
+  | "DEEPEN_OWNERSHIP";
 
 export type Horizon = "NOW" | "NEXT" | "LATER";
+
+/** 첫 화면 세 번째 칸이 가리키는 곳 */
+export type FirstMove =
+  /** 비어 있는 자리가 있다. 그 자리를 적는다 */
+  | "FILL_GAP"
+  /** 빈자리는 없고 근거가 섰다. 남은 일은 정리다 */
+  | "WRITE_UP"
+  /** 여덟 축을 묻지 않았다. 지금 해볼 것을 적는다 */
+  | "TRY"
+  /** 정말 아무것도 없다 */
+  | "NONE";
+
+/** 여덟 축을 묻지 않은 응시의 영역 묶음. 관심과 배울 뜻에서만 온다 */
+export type BasicGroups = {
+  /** 관심도 배울 뜻도 높다 */
+  do_now: string[];
+  /** 둘 가운데 하나가 높거나 관심이 보통이다 */
+  scan: string[];
+  /** 관심이 낮다 */
+  low: string[];
+  /** 이번에 묻지 않았다 */
+  unseen: string[];
+};
 
 export type AxisView = {
   axis: Axis;
@@ -120,6 +152,8 @@ export type Action = {
     artifacts: string[];
     verify_targets: string[];
     checklist_hint: string[];
+    /** 그 영역이 실제로 일하는 차례. 할 일을 영역마다 다르게 적는 재료 */
+    workflow: { decide: string; method: string; output: string; on_fail: string };
   };
 };
 
@@ -188,6 +222,23 @@ export type ResultModel = {
     top_action: string | null;
     /** 응답만으로 어느 영역도 앞서지 않았다 */
     no_basis: boolean;
+    /**
+     * 첫 화면이 세 번째 칸에 무엇을 적을 것인가.
+     *
+     * **`비어 있는 자리가 없다` 와 `더 할 것이 없다` 를 같은 뜻으로 쓰지
+     * 않으려고 둔 칸이다.** 여덟 축을 묻지 않은 응시에는 빈자리를 셀 근거가
+     * 없으니 `TRY` 로 가고, 빈자리가 없고 근거가 선 사람은 `WRITE_UP` 으로
+     * 간다. `NONE` 은 정말 아무것도 없을 때 하나뿐이다.
+     */
+    first_move: FirstMove;
+    /**
+     * 여덟 축을 묻지 않은 응시의 영역 네 묶음.
+     *
+     * 관심과 배울 뜻에서 **그 사람이 답한 것만으로** 묶는다. 근거를 재지
+     * 않았으니 여기에 Evidence 판정이 섞이면 안 된다. 깊게 물은 응시는
+     * `null` 이고 묶음은 Z1~Z4 를 쓴다.
+     */
+    basic_groups: BasicGroups | null;
   };
   domains: ResultDomain[];
   evidence: {

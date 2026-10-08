@@ -13,6 +13,35 @@
 import { execFileSync } from "node:child_process";
 import { mkdirSync, readFileSync, statSync } from "node:fs";
 
+/**
+ * 종이에도 내부 코드가 없어야 한다.
+ *
+ * 화면만 재던 동안 `TR_TAG_1` 이 **종이로도** 나갔다. 그 자리는 상담에서
+ * 손에 들리는 쪽이라 화면보다 오래 남는다. 그래서 뽑은 다음에 글자를 다시
+ * 꺼내 센다(`pdftotext`). 한글은 글꼴에 따라 깨져 나올 수 있지만, 우리가
+ * 찾는 것은 라틴 글자와 밑줄이라 그대로 걸린다.
+ */
+const INTERNAL = [
+  /\bTD\d{2}\b/, /\bJ[1-8]\b/, /\bOC[1-7]\b/,
+  /\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+\b/,
+  /\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b/,
+  /\bZ[1-4]\b/, /NOT_OBSERVED|PARTICIPATED|CONFIRMED|OWNED|NOT_EXPLORED/,
+  /\b(?:undefined|null|NaN|TODO|TBD)\b/,
+];
+
+/** 등급마다 몇 쪽이 알맞은가. 쪽수가 목표가 아니라 **한 쪽의 완성도**다 */
+const PAGES = { r1_basic: [3, 4], r2_standard: [6, 8], r3_pro: [8, 10] };
+
+/** 쪽 하나의 글자. `pdftotext` 가 없으면 빈 글자를 돌려준다 */
+function pageText(file, n) {
+  try {
+    return execFileSync("pdftotext", ["-f", String(n), "-l", String(n), file, "-"],
+      { encoding: "utf8" });
+  } catch {
+    return "";
+  }
+}
+
 const B = process.env.UI_BASE ?? "http://127.0.0.1:3100";
 const OUT = "docs/metri/shots/v3r";
 mkdirSync(OUT, { recursive: true });
@@ -79,9 +108,30 @@ for (const t of plan.targets.filter((x) => x.full)) {
   /* 쪽수는 PDF 안의 `/Type /Page` 를 센다. 라이브러리를 더 들이지 않는다 */
   const raw = readFileSync(file, "latin1");
   const pages = (raw.match(/\/Type\s*\/Page[^s]/g) ?? []).length;
-  log.push(`${t.name.padEnd(14)} ${String(pages).padStart(2)}쪽 · ${Math.round(bytes / 1024)}KB`);
+
+  /* 뽑은 종이에서 글자를 다시 꺼내 **내부 코드와 빈 쪽**을 센다 */
+  const perPage = [];
+  for (let n = 1; n <= pages; n += 1) perPage.push(pageText(file, n));
+  const all = perPage.join("\n");
+  for (const re of INTERNAL) {
+    const hit = (all.match(re) ?? [])[0];
+    if (hit) problems.push(`${t.name}: 종이에 내부 코드 — ${hit}`);
+  }
+  /* 글자 수로 빈 쪽을 잰다. 마지막 쪽이 손바닥만 하면 그 쪽이 회색 바닥이
+     된다. 한글이 안 뽑히는 환경에서는 글자가 0 이라 재지 않는다 */
+  const len = perPage.map((x) => x.replace(/\s+/g, "").length);
+  const thin = all.replace(/\s+/g, "").length > 200
+    ? len.map((n, i) => [i + 1, n]).filter(([, n]) => n < 120).map(([i]) => i)
+    : [];
+  if (thin.length) problems.push(`${t.name}: ${thin.join("·")}쪽이 거의 비어 있다`);
+  const want = PAGES[t.name];
+  if (want && (pages < want[0] || pages > want[1])) {
+    problems.push(`${t.name}: ${pages}쪽 — ${want[0]}~${want[1]}쪽으로 맞춘다`);
+  }
+
+  log.push(`${t.name.padEnd(14)} ${String(pages).padStart(2)}쪽 · `
+    + `${Math.round(bytes / 1024)}KB · 쪽별 글자 ${len.join("/")}`);
   if (pages < 1) problems.push(`${t.name}: 쪽이 없다`);
-  if (pages > 24) problems.push(`${t.name}: ${pages}쪽 — 너무 길다`);
   await p.close();
 }
 

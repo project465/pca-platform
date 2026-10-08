@@ -38,15 +38,21 @@ type Level = "none" | "mid" | "strong";
 async function pick(a: V3Attempt, id: string, lv: Level): Promise<Answer | null> {
   const it = itemOf(id);
   if (!it) return null;
+  /* **뒤집어 묻는 문항은 뒤집어 답한다.** `강하게` 로 전부 밀면 반대
+     방향 문항까지 높게 답한 꼴이 되고, 응답 품질 검사가 `다시 볼 것` 을
+     붙인다. 사람이 그렇게 답하지도 않는다 */
+  const lvl: Level = (it as { reverse_flag?: boolean }).reverse_flag
+    ? (lv === "strong" ? "none" : lv === "none" ? "strong" : "mid")
+    : lv;
   const c = controlOf(it, await menuContextOf(a));
   if (c.kind === "level") {
-    return { kind: "level", index: lv === "none" ? 0 : lv === "mid" ? 2 : 3 };
+    return { kind: "level", index: lvl === "none" ? 0 : lvl === "mid" ? 2 : 3 };
   }
   if (c.kind === "scale5") {
-    return { kind: "scale5", value: lv === "none" ? 2 : lv === "mid" ? 4 : 5 };
+    return { kind: "scale5", value: lvl === "none" ? 2 : lvl === "mid" ? 4 : 5 };
   }
   if (c.kind === "exposure") {
-    return { kind: "exposure", value: lv === "none" ? 0 : lv === "mid" ? 1 : 2 };
+    return { kind: "exposure", value: lvl === "none" ? 0 : lvl === "mid" ? 1 : 2 };
   }
   const o = c.options[0];
   return o ? { kind: "choice", value: o.value } : null;
@@ -161,10 +167,18 @@ async function main() {
     path: `/v3/${a12.id}/result#role` });
   out.push({ name: "r10_pro_plan", who: "shots", note: "PRO · 다음에 할 일",
     path: `/v3/${a12.id}/result#plan` });
-  out.push({ name: "r11_standard_focus", who: "shots", note: "STANDARD · 먼저 볼 영역",
+  out.push({ name: "r11_pro_translation", who: "shots", note: "PRO · 연구 번역",
+    path: `/v3/${a12.id}/result#translation` });
+  out.push({ name: "r12_standard_focus", who: "shots", note: "STANDARD · 먼저 볼 영역",
     path: `/v3/${a04.id}/result#focus` });
-  out.push({ name: "r12_basic_zones", who: "shots", note: "BASIC · 열두 영역",
+  out.push({ name: "r13_standard_evidence", who: "shots", note: "STANDARD · 근거",
+    path: `/v3/${a04.id}/result#evidence` });
+  out.push({ name: "r14_standard_plan", who: "shots", note: "STANDARD · 다음에 할 일",
+    path: `/v3/${a04.id}/result#plan` });
+  out.push({ name: "r15_basic_zones", who: "shots", note: "BASIC · 열두 영역",
     path: `/v3/${a02.id}/result#zones` });
+  out.push({ name: "r16_basic_plan", who: "shots", note: "BASIC · 다음에 할 일",
+    path: `/v3/${a02.id}/result#plan` });
 
   console.log(JSON.stringify({ users: { shots: LOGIN }, targets: out }));
 }

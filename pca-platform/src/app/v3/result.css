@@ -102,6 +102,21 @@
   max-width: 62ch;
 }
 
+/* **첫 서른 초에 등급의 차이가 보여야 한다.** 네 축만 물은 응시에는 이
+   띠가 없고, 깊게 물은 응시에만 센 숫자가 선다. 등수가 아니라 개수다 */
+.rs-count {
+  margin: var(--r-s4) 0 0; padding: 0; list-style: none;
+  display: flex; flex-wrap: wrap; gap: var(--r-s2) var(--r-s4);
+}
+.rs-count li {
+  font-size: var(--r-t-gloss); color: var(--r-ink-3);
+  display: flex; align-items: baseline; gap: 6px; word-break: keep-all;
+}
+.rs-count b {
+  font-size: 21px; font-weight: 750; color: var(--r-ink);
+  font-variant-numeric: tabular-nums; letter-spacing: -.02em;
+}
+
 /* 첫 화면 네 칸. **점수 타일이 아니다**: 숫자가 아니라 이름이 들어간다 */
 .rs-top {
   display: grid; gap: 1px; margin-top: var(--r-s5);
@@ -130,6 +145,7 @@
   max-width: 62ch;
 }
 .rs-rule { margin-top: var(--r-s6); border: 0; border-top: 1px solid var(--r-line); }
+.rs-sect > .rs-h2b { margin-top: var(--r-s6); }
 
 /* ── 영역 한 자리 ── 그 영역을 여기서 끝낸다 */
 .rs-domain {
@@ -163,6 +179,10 @@
   letter-spacing: .05em; color: var(--r-ink-3);
 }
 .rs-why dd { margin: 6px 0 0; display: flex; flex-wrap: wrap; gap: 6px; }
+/* 네 축을 묻지 않은 응시의 세 칸. 한 줄씩 쌓으면 빈 종이가 길어진다 */
+.rs-why3 dl { grid-template-columns: repeat(3, 1fr); column-gap: var(--r-s4); }
+.rs-why3 dt { grid-row: 1; }
+.rs-why3 dd { grid-row: 2; }
 .rs-pick {
   display: inline-block; padding: 5px 11px; border-radius: var(--r-r-sm);
   font-size: var(--r-t-gloss); color: var(--r-ink); background: var(--sf-surface-2);
@@ -175,27 +195,42 @@
 .rs-none { font-size: var(--r-t-gloss); color: var(--r-ink-3); }
 .rs-more { font-size: var(--r-t-gloss); color: var(--r-ink-3); align-self: center; }
 
-/* 여덟 축 눈금. **비율을 만들지 않는다**: 네 칸 가운데 몇 칸인지만 적는다 */
-.rs-axes { border-top: 1px solid var(--r-line-soft); }
+/* 영역 소개. 응답에서 온 값이 아니라 **그 영역이 어떤 일인지**다 */
+.rs-intro {
+  padding: 14px 22px 16px; border-top: 1px solid var(--r-line-soft);
+  background: var(--sf-surface-2);
+}
+.rs-intro dl { margin: 0; }
+.rs-intro dt {
+  font-size: var(--r-t-meta); font-weight: 650; letter-spacing: .05em;
+  color: var(--r-ink-3);
+}
+.rs-intro dt + dd { margin: 3px 0 0; font-size: var(--r-t-gloss); color: var(--r-ink-2); }
+.rs-intro dd + dt { margin-top: 10px; }
+
+/* 여덟 축. **칸 셋에 색을 채우지 않는다**: `3점 가운데 2점` 으로 읽힌다.
+   네 상태는 글자가 말하고, 색은 왼쪽 선 하나로만 거든다 */
+.rs-axes {
+  margin: 0; padding: 0; list-style: none;
+  border-top: 1px solid var(--r-line-soft);
+  display: grid; grid-template-columns: 1fr;
+}
+@media (min-width: 760px) { .rs-axes { grid-template-columns: 1fr 1fr; } }
 .rs-axis {
-  display: grid; grid-template-columns: 104px 1fr auto auto;
-  align-items: center; gap: var(--r-s3);
-  padding: 10px 22px; border-top: 1px solid var(--r-line-soft);
-  font-size: var(--r-t-gloss);
+  padding: 11px 22px 11px 19px;
+  border-top: 1px solid var(--r-line-soft);
+  border-left: 3px solid var(--r-line);
 }
-.rs-axis:first-child { border-top: 0; }
-.rs-axis > b { font-weight: 650; color: var(--r-ink-2); }
-.rs-axis > span { color: var(--r-ink-3); }
-.rs-step { display: flex; gap: 3px; }
-.rs-step i {
-  display: block; width: 14px; height: 8px; border-radius: 2px;
-  background: var(--r-line); 
+.rs-axis.s-participated { border-left-color: var(--sf-part-line); }
+.rs-axis.s-confirmed { border-left-color: var(--r-accent-line); }
+.rs-axis.s-owned { border-left-color: var(--sf-ok); }
+.rs-axis-s {
+  margin: 0; font-size: var(--r-t-gloss); font-weight: 600; color: var(--r-ink-2);
+  word-break: keep-all;
 }
-.rs-step i.on { background: var(--sf-not); }
-.rs-axis.s-confirmed .rs-step i.on { background: var(--r-accent); }
-.rs-axis.s-owned .rs-step i.on { background: var(--sf-ok); }
-.rs-axis.s-owned > b, .rs-axis.s-confirmed > b { color: var(--r-ink); }
-.rs-axis .state { font-size: var(--r-t-meta); color: var(--r-ink-3); min-width: 62px; text-align: right; }
+.rs-axis.s-owned .rs-axis-s, .rs-axis.s-confirmed .rs-axis-s { color: var(--r-ink); }
+.rs-axis.s-not_observed .rs-axis-s { font-weight: 400; color: var(--r-ink-3); }
+.rs-axis-q { margin: 2px 0 0; font-size: var(--r-t-meta); color: var(--r-ink-3); }
 
 /* ── 묶음 표 ── 열두 영역을 한눈에. 등수를 매기지 않는다 */
 .rs-zones { margin-top: var(--r-s3); }
@@ -213,6 +248,23 @@
   background: var(--r-paper); border: 1px solid var(--r-line); color: var(--r-ink-2);
 }
 .rs-zones .none { color: var(--r-ink-3); font-size: var(--r-t-gloss); }
+.rs-zempty {
+  margin: 0; padding: 14px 0 2px; border-top: 1px solid var(--r-line);
+  font-size: var(--r-t-gloss); color: var(--r-ink-3);
+}
+
+/* 영역 이름 옆에 그 일이 어떤 차례인지 한 줄. 고를 거리를 만든다 */
+.rs-zones ul.rs-rows { display: block; }
+.rs-zones ul.rs-rows li {
+  display: flex; align-items: baseline; gap: var(--r-s3); flex-wrap: wrap;
+  padding: 11px 14px; margin-top: 6px; background: var(--r-paper);
+  break-inside: avoid;
+}
+.rs-zones ul.rs-rows li > b {
+  flex: none; width: 150px; font-weight: 680; color: var(--r-ink);
+  word-break: keep-all;
+}
+.rs-zones ul.rs-rows li > span { flex: 1; min-width: 0; color: var(--r-ink-3); }
 
 /* ── 비어 있는 자리와 할 일 ── 한 묶음으로 선다 */
 .rs-gap {
@@ -255,6 +307,12 @@
   flex: none; width: 112px; font-size: var(--r-t-meta); color: var(--r-ink-3);
   font-weight: 650; letter-spacing: .02em; word-break: keep-all;
 }
+.rs-doit { flex: 1; min-width: 0; }
+.rs-doit > b { display: block; font-weight: 500; color: var(--r-ink-2); }
+.rs-doit > i {
+  display: block; margin-top: 4px; font-style: normal;
+  font-size: var(--r-t-gloss); color: var(--r-ink-3);
+}
 
 /* ── 근거 세 층 ── */
 .rs-ev { margin-top: var(--r-s3); display: grid; gap: var(--r-s4); }
@@ -265,12 +323,23 @@
 }
 .rs-ev h3 { margin: 0; font-size: var(--r-t-h3); font-weight: 680; color: var(--r-ink); }
 .rs-ev > section > p { margin: var(--r-s1) 0 var(--r-s3); font-size: var(--r-t-gloss); color: var(--r-ink-3); }
-.rs-ev .row { margin-top: 14px; }
-.rs-ev .row > b {
-  display: block; font-size: var(--r-t-meta); font-weight: 650; color: var(--r-ink-3);
-  letter-spacing: .04em; margin-bottom: 6px;
+/* **판단과 근거를 같은 알약으로 섞지 않는다.** 위는 우리가 읽은 문장이고
+   아래는 그 사람이 고른 글자다. 섞이면 어느 쪽이 자기 답인지 모른다 */
+.rs-ev .row {
+  margin-top: var(--r-s3); padding-top: var(--r-s3);
+  border-top: 1px solid var(--r-line-soft);
 }
-.rs-ev .row > div { display: flex; flex-wrap: wrap; gap: 6px; }
+.rs-ev .row:first-of-type { border-top: 0; padding-top: 0; }
+.rs-ev .judge {
+  margin: 0; font-size: var(--r-t-body); color: var(--r-ink-2); word-break: keep-all;
+}
+.rs-ev .judge > b { font-weight: 700; color: var(--r-ink); }
+.rs-ev .keys { margin-top: var(--r-s2); display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.rs-keylabel {
+  font-size: var(--r-t-meta); font-weight: 650; letter-spacing: .05em;
+  color: var(--r-ink-3); margin-right: 2px;
+}
+.rs-evmore { margin-top: var(--r-s3) !important; }
 
 /* ── 산업과 역할 ── 같은 근거를 그 말로 다시 읽는다 */
 .rs-pack {
@@ -305,6 +374,22 @@
 }
 .rs-steps li > b { font-weight: 500; color: var(--r-ink); }
 
+/* **열 줄짜리 표를 한 문단으로 되돌려 준다.** 표는 빠진 자리를 보여주고,
+   문단은 그 표를 지원서에 그대로 옮길 수 있게 만든다 */
+.rs-draft {
+  margin-top: var(--r-s3); padding: 20px 22px;
+  background: var(--r-accent-soft); border: 1px solid var(--r-accent-line);
+  border-radius: var(--r-r); break-inside: avoid;
+}
+.rs-draft > h3 {
+  margin: 0 0 var(--r-s2); font-size: var(--r-t-h3); font-weight: 700;
+  color: var(--r-accent-ink);
+}
+.rs-draft > p { margin: 0; font-size: var(--r-t-body); color: var(--r-ink); }
+.rs-draft > .rs-note {
+  margin-top: var(--r-s2); font-size: var(--r-t-meta); color: var(--r-ink-3);
+}
+
 /* ── 알림 한 줄 ── */
 .rs-flag {
   margin-top: var(--r-s4); padding: 14px 18px; border-radius: var(--r-r-sm);
@@ -315,6 +400,19 @@
   margin-top: var(--r-s6); padding-top: var(--r-s4); border-top: 1px solid var(--r-line);
   font-size: var(--r-t-meta); color: var(--r-ink-3); line-height: 1.7;
 }
+.rs-fine p { margin: 0; }
+.rs-fine > p { margin-top: var(--r-s3); }
+
+/* 접어 두는 단서. **결과의 마지막 인상이 고지문이 되지 않게 한다** */
+.rs-discbtn {
+  display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
+  min-height: 40px; padding: 0; font-family: inherit;
+  font-size: var(--r-t-gloss); font-weight: 650; color: var(--r-ink-3);
+  background: none; border: 0; text-align: left;
+}
+.rs-discbtn:hover { color: var(--r-accent-ink); }
+.rs-discbtn i { font-style: normal; }
+.rs-disc > div > p + p { margin-top: 6px; }
 
 /* ── 접는 자리 ── 좁은 화면에서만 접는다 */
 .rs-foldbtn {
@@ -330,7 +428,7 @@
 @media (max-width: 719px) {
   .rs { --r-gutter: 16px; }
   /* **두 줄로 접히면 브랜드 줄을 덮는다.** 한 줄로 두고 옆으로 민다 */
-  .rs-head-in { gap: var(--r-s2); }
+  .rs-head-in { gap: var(--r-s2); flex-wrap: wrap; padding-bottom: 6px; }
   .rs-head nav {
     width: 100%; margin: 0; order: 3; gap: 14px;
     overflow-x: auto; -webkit-overflow-scrolling: touch;
@@ -338,39 +436,104 @@
   }
   .rs-head nav::-webkit-scrollbar { display: none; }
   .rs-head nav a { white-space: nowrap; min-height: 40px; }
-  .rs-head-in { flex-wrap: wrap; padding-bottom: 6px; }
   .rs-hero { padding-top: var(--r-s5); }
-  .rs-axis { grid-template-columns: 88px 1fr auto; padding: 9px 16px; gap: 4px var(--r-s2); }
-  .rs-axis > span:nth-of-type(1) { grid-column: 1 / -1; order: 3; font-size: 12px; }
-  .rs-axis .state { min-width: 0; font-size: 11px; }
-  .rs-domain > header, .rs-why { padding-left: 16px; padding-right: 16px; }
+  .rs-count { gap: var(--r-s2) var(--r-s3); }
+  .rs-count b { font-size: 18px; }
+  .rs-axis { padding: 10px 16px 10px 13px; }
+  .rs-domain > header, .rs-why, .rs-intro { padding-left: 16px; padding-right: 16px; }
   .rs-when li { flex-direction: column; gap: 4px; padding: 13px 16px; }
   .rs-when li > span { width: auto; }
   .rs-steps li { flex-direction: column; gap: 3px; }
   .rs-steps li > span { width: auto; }
   .rs-top > div { padding: 16px 18px; }
+  .rs-draft { padding: 16px 18px; }
+  .rs-zones ul.rs-rows li { gap: 2px; }
+  .rs-zones ul.rs-rows li > b { width: 100%; }
 }
 
-/* ── 종이 ── 묶음이 쪽 가운데에서 잘리지 않는다 */
+/* ── 종이 ──
+ *
+ * **웹을 그대로 종이에 얹지 않는다.** 화면은 위에서 아래로 굴리면서 읽고
+ * 종이는 한 쪽을 한 번에 본다. 그래서 종이에서는 첫 화면 네 칸이 좁은
+ * 머리띠가 되고, 절 사이 빈자리가 줄고, 접어 둔 단서가 각주로 펴진다.
+ *
+ * **쪽을 통째로 비우지 않는다.** 절마다 `avoid-page` 를 걸어 뒀더니 긴
+ * 절이 다음 쪽으로 밀리면서 그 앞에 손바닥만 한 회색 바닥이 남았다. 쪽
+ * 수가 목표가 아니라 **한 쪽의 완성도**가 목표라서, 쪼개지면 안 되는
+ * 것(묶음 하나 · 할 일 하나 · 표 한 줄)에만 걸고 절에는 걸지 않는다.
+ */
 @media print {
-  .rs { background: #fff; }
-  .rs-head { position: static; backdrop-filter: none; }
+  /* **바탕을 종이 끝까지 희게 한다.** 결과지는 `.rs` 안에서 끝나고 그
+     아래로는 `body` 의 연회색이 그대로 깔린다. 화면에서는 안 보이지만
+     종이에서는 마지막 쪽의 남은 자리가 통째로 회색 바닥으로 뽑혔다 */
+  html, body { background: #fff; }
+  .rs { background: #fff; font-size: 10.5pt; line-height: 1.55; min-height: 0; }
+  /* 쪽머리에 이미 `CareerMatri` 가 찍힌다. 한 쪽에 두 번 적지 않는다 */
+  .rs-head { position: static; backdrop-filter: none; background: #fff; border: 0; }
+  .rs-brand { display: none; }
   .rs-head nav { display: none; }
+  .rs-head-in { padding: 0 0 6px; }
+  .rs-main { max-width: none; padding: 0; }
+
+  .rs-hero { padding: 16px 0 10px; max-width: none; }
+  .rs-h1 { font-size: 19pt; }
+  .rs-lead { font-size: 10.5pt; margin-top: 8px; }
+  /* 숫자 띠는 종이에서 머리띠 바로 아래 한 줄로 붙인다 */
+  .rs-count { margin-top: 12px; gap: 6px 20px; }
+  .rs-count b { font-size: 14pt; }
+
+  /* 첫 화면 네 칸 → 종이에서는 네 쪽으로 나란히 선 요약 띠 */
+  .rs-top { grid-template-columns: repeat(4, 1fr); margin-top: 14px; }
+  .rs-top > div { padding: 10px 12px; }
+  .rs-top h3 { font-size: 7.5pt; }
+  .rs-top p { font-size: 9.5pt; }
+  .rs-top p + p { font-size: 8.5pt; }
+
+  .rs-sect { margin-top: 22px; }
+  .rs-sect > h2 { font-size: 13pt; break-after: avoid; }
+  .rs-sect > .rs-h2b { margin-top: 24px; }
+  /* **머리글만 붙여 둔다.** 안내 줄까지 `avoid` 를 걸면 크롬이 다음
+     덩이 전체를 끌고 가고, 그 앞 쪽이 머리글 두 줄만 남긴 채 비었다 */
+  .rs-sect > .rs-note { margin-bottom: 12px; }
+  /* **묶음 전체를 붙여 두지 않는다.** 아홉 줄짜리 묶음에 `avoid` 를 걸면
+     통째로 다음 쪽으로 밀리고 그 앞 쪽이 절반 비어 뽑힌다. 쪼개지면 뜻이
+     사라지는 것은 줄 하나지 묶음 전체가 아니다 */
+  .rs-domain, .rs-gap, .rs-draft, .rs-axis,
+  .rs-when li, .rs-steps li, .rs-rows li, .rs-ev .row {
+    break-inside: avoid;
+  }
+  /* 화면에서 통째로 붙여 둔 큰 상자들을 종이에서는 푼다. 한 쪽을 넘는
+     상자에 `avoid` 가 걸려 있으면 그 앞 쪽이 통째로 빈다 */
+  .rs-when, .rs-ev > section, .rs-pack, .rs-steps { break-inside: auto; }
+  .rs-when > h3, .rs-zones h3 { break-after: avoid; }
+
   /* **접어 둔 자리를 종이에서 편다.** 종이에는 누를 사람이 없다. 뽑기
      직전에 브라우저가 쪽 폭을 좁히면서 `matchMedia` 가 다시 울려 접히는데,
      그 상태로 뽑히면 여덟 축이 통째로 사라진다. 한 번 그렇게 뽑혔다 */
-  .rs-foldbtn { display: none !important; }
-  .rs-fold > [hidden] { display: block !important; }
-  .rs-sect { margin-top: 28px; break-inside: avoid-page; }
-  .rs-domain, .rs-gap, .rs-when, .rs-pack, .rs-ev > section { break-inside: avoid; }
-  .rs-main { max-width: none; padding: 0; }
+  .rs-foldbtn, .rs-discbtn { display: none !important; }
+  .rs-fold > [hidden], .rs-disc > [hidden] { display: block !important; }
+
   /* **A4 의 글 폭은 690px 안팎이다.** 좁은 화면 규칙(719px)이 종이에서도
      걸리므로 여기서 되돌린다. 안 되돌리면 인쇄본이 손전화 화면이 된다 */
-  .rs-axis { grid-template-columns: 104px 1fr auto auto; padding: 9px 20px; gap: var(--r-s3); }
-  .rs-axis > span:nth-of-type(1) { grid-column: auto; order: 0; font-size: var(--r-t-gloss); }
-  .rs-axis .state { font-size: var(--r-t-meta); min-width: 62px; }
+  .rs-axes { grid-template-columns: 1fr 1fr; }
+  .rs-axis { padding: 7px 16px 7px 13px; }
+  /* **격자 상자는 쪽을 넘지 못한다.** 두 칸으로 둔 채 뽑았더니 묶음
+     전체가 다음 쪽으로 통째로 밀렸고, 그 앞 쪽이 머리글 두 줄만 남긴 채
+     비었다. 종이에서는 한 칸으로 풀어 줄 단위로 흐르게 둔다 */
+  .rs-ev { display: block; }
+  .rs-ev > section {
+    border: 0; border-top: 1px solid var(--r-line); border-radius: 0;
+    padding: 10px 0 0; margin-top: 16px;
+  }
+  .rs-ev > section:first-child { margin-top: 10px; }
   .rs-when li, .rs-steps li { flex-direction: row; gap: var(--r-s3); }
-  .rs-when li > span { width: 112px; }
-  .rs-steps li > span { width: 128px; }
-  .rs-domain > header, .rs-why { padding-left: 22px; padding-right: 22px; }
+  .rs-when li > span { width: 104px; }
+  .rs-steps li > span { width: 120px; }
+  .rs-steps li { padding: 8px 16px; }
+  .rs-domain > header, .rs-why, .rs-intro { padding-left: 18px; padding-right: 18px; }
+  .rs-domain > header { padding-top: 12px; padding-bottom: 12px; }
+
+  /* 단서는 각주 크기로 내려 둔다. 결과를 밀어내지 않는다 */
+  .rs-fine { margin-top: 24px; padding-top: 10px; font-size: 7.5pt; line-height: 1.5; }
+  .rs-fine a { color: inherit; text-decoration: none; }
 }

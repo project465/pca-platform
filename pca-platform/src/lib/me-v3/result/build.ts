@@ -19,8 +19,8 @@ import type {
   Axis, AxisResult, DomainResult, PackContext, Snapshot,
 } from "../scoring/types";
 import type {
-  Action, ActionCode, EvidenceGroup, Gap, HeadlineCode, PackView,
-  ResultDomain, ResultModel, TranslationView,
+  Action, ActionCode, BasicGroups, EvidenceGroup, FirstMove, Gap, HeadlineCode,
+  PackView, ResultDomain, ResultModel, TranslationView,
 } from "./model";
 import { RESULT_MODEL_VERSION } from "./version";
 
@@ -43,7 +43,14 @@ function picksOf(a: AxisResult, kind?: "checklist" | "artifact" | "verify"): str
 type DomainData = {
   code: string; name: string; required_axes: Axis[];
   artifacts: string[]; verify_targets: string[];
+  workflow?: { step: number; name: string; detail: string }[];
 };
+
+/** 영역 사전의 한 걸음. 가운뎃점으로 나열된 자리는 맨 앞 하나만 쓴다 */
+function step(d: DomainData | undefined, n: number): string {
+  const w = d?.workflow?.find((x) => x.step === n);
+  return (w?.detail ?? "").split(" · ")[0].trim();
+}
 
 function domainView(d: DomainResult): ResultDomain {
   const axes = AX.map((ax) => ({
@@ -123,21 +130,36 @@ function gapsOf(
         action_id: null,
       });
     };
+    /* 1단 — 그 영역이 꼭 보는 판단이 아직 확인되지 않았다 */
     for (const ax of d.required) {
       if (d.confirmed.includes(ax)) continue;
-      push(ax, "REQUIRED_AXIS", "REQUIRED_FOR_DOMAIN", "MISSING_REQUIRED_AXIS", 2);
+      push(ax, "REQUIRED_AXIS", "REQUIRED_FOR_DOMAIN", "MISSING_REQUIRED_AXIS", 1);
     }
-    if (!d.output_ok) push("J5", "OUTPUT", "BLOCKS_EVIDENCE", "MISSING_OUTPUT", 3);
-    else if (!d.output_evidence_ok) {
-      push("J5", "OUTPUT_EVIDENCE", "BLOCKS_EVIDENCE", "MISSING_OUTPUT_EVIDENCE", 4);
+    /* 2단 — 남긴 것과 비교한 것. 둘이 없으면 나머지가 설명으로 서지 못한다 */
+    if (!d.output_ok) push("J5", "OUTPUT", "BLOCKS_EVIDENCE", "MISSING_OUTPUT", 2);
+    if (!d.verification_ok) push("J6", "VERIFICATION", "BLOCKS_EVIDENCE", "MISSING_VERIFICATION", 2);
+    /* 3단 — 반쯤 선 자리. 산출물은 있는데 근거가 모자라거나, 해 본 것은
+       확인됐고 직접 정했다고 보기에는 모자란 축이다 */
+    if (d.output_ok && !d.output_evidence_ok) {
+      push("J5", "OUTPUT_EVIDENCE", "BLOCKS_EVIDENCE", "MISSING_OUTPUT_EVIDENCE", 3);
     }
-    if (!d.verification_ok) push("J6", "VERIFICATION", "BLOCKS_EVIDENCE", "MISSING_VERIFICATION", 4);
     for (const ax of AX) {
       if (!wanted.has(`${code}.${ax}`) || d.confirmed.includes(ax)) continue;
       if (out.some((g) => g.id === `${code}.${ax}`)) continue;
       push(ax, "AXIS",
         byIndustry.has(`${code}.${ax}`) ? "NEEDED_BY_INDUSTRY" : "NEEDED_BY_ROLE",
         "INSUFFICIENT_CONFIRMED_AXES", 3);
+    }
+    /* 먼저 볼 영역에서 **한 자리만** 적는다. 반쯤 선 축을 다 적으면 잘한
+       사람의 결과지가 가장 긴 지적 목록이 된다 */
+    if (s.focus.includes(code)) {
+      const partial = [...d.required, ...AX]
+        .filter((ax) => d.confirmed.includes(ax) && !d.owned.includes(ax))
+        .find((ax) => !out.some((g) => g.id === `${code}.${ax}`));
+      if (partial) {
+        push(partial, "PARTIAL_EVIDENCE", "BLOCKS_EVIDENCE",
+          "INSUFFICIENT_CONFIRMED_AXES", 3);
+      }
     }
     void dd;
   }
@@ -165,6 +187,11 @@ function actionsOf(
         artifacts: dd?.artifacts.slice(0, 3) ?? [],
         verify_targets: dd?.verify_targets.slice(0, 3) ?? [],
         checklist_hint: [],
+        /* 3 먼저 정하는 것 · 4 쓰는 방법 · 6 내놓는 산출물 · 8 틀렸을 때 */
+        workflow: {
+          decide: step(dd, 3), method: step(dd, 4),
+          output: step(dd, 6), on_fail: step(dd, 8),
+        },
       },
     });
   };
@@ -172,7 +199,9 @@ function actionsOf(
   for (const g of gaps) {
     const code: ActionCode = g.kind === "OUTPUT" || g.kind === "OUTPUT_EVIDENCE"
       ? "BUILD_OUTPUT"
-      : g.kind === "VERIFICATION" ? "ADD_VERIFICATION" : "FILL_AXIS";
+      : g.kind === "VERIFICATION" ? "ADD_VERIFICATION"
+        /* 확인된 축에 `아직 확인되지 않았습니다` 를 붙이지 않는다 */
+        : g.kind === "PARTIAL_EVIDENCE" ? "DEEPEN_OWNERSHIP" : "FILL_AXIS";
     const id = `A.${g.id}`;
     g.action_id = id;
     add(id, g.domain, g.axis, code, g.rank <= 2 ? "NOW" : "NEXT", g.id);
@@ -212,8 +241,8 @@ function actionsOf(
   const H = { NOW: 0, NEXT: 1, LATER: 2 };
   const C: Record<ActionCode, number> = {
     EXPLORE_BROADLY: 0, TRY_SHORT_EXPERIENCE: 1, BUILD_OUTPUT: 2,
-    ADD_VERIFICATION: 3, FILL_AXIS: 4, STUDY_NEXT: 5, WRITE_UP: 6,
-    RECHECK_DIRECTION: 7,
+    ADD_VERIFICATION: 3, FILL_AXIS: 4, DEEPEN_OWNERSHIP: 5, STUDY_NEXT: 6,
+    WRITE_UP: 7, RECHECK_DIRECTION: 8,
   };
   return out.sort((a, b) =>
     H[a.horizon] - H[b.horizon] || C[a.code] - C[b.code] || a.id.localeCompare(b.id));
@@ -276,6 +305,40 @@ export function buildResult(
     return out;
   };
 
+  /**
+   * 첫 화면 세 번째 칸.
+   *
+   * **깊게 묻지 않은 응시에서 빈자리를 세지 않는다.** 축을 물은 적이 없으니
+   * `비어 있는 자리가 없다` 는 참이 아니고, 그 옆 칸에 `관심은 높고 해 본
+   * 적이 없다` 가 같이 서면 두 문장이 서로를 부순다.
+   */
+  const firstMove: FirstMove = !s.tier_limits.deep_axes
+    ? "TRY"
+    : gaps.length
+      ? "FILL_GAP"
+      : actions.some((a) => a.code === "WRITE_UP")
+        ? "WRITE_UP"
+        : actions.length ? "TRY" : "NONE";
+
+  /**
+   * 관심과 배울 뜻에서만 묶는다. 근거를 재지 않은 응시다.
+   *
+   * **묶음(Z1~Z4)을 보지 않는다.** 열두 영역의 관심과 배울 뜻은 첫 표에서
+   * 전부 받아 두고, 깊게 묻는 자리만 몇 개를 연다. 묶음을 기준으로 삼으면
+   * 열 영역이 `아직 보지 않은 영역` 으로 쓸려 들어가서, 이미 답한 사람의
+   * 답이 결과지에서 사라진다. 묻지 않은 것은 **답이 없는 자리**뿐이다.
+   */
+  const basicGroups: BasicGroups | null = s.tier_limits.deep_axes ? null : (() => {
+    const g: BasicGroups = { do_now: [], scan: [], low: [], unseen: [] };
+    for (const d of domains) {
+      if (d.interest === null) g.unseen.push(d.code);
+      else if (d.interest === "HIGH" && d.learning === "HIGH") g.do_now.push(d.code);
+      else if (d.interest === "LOW" && d.learning !== "HIGH") g.low.push(d.code);
+      else g.scan.push(d.code);
+    }
+    return g;
+  })();
+
   const confirmedAxes = domains.reduce((n, d) => n + d.confirmed.length, 0);
   const ownedAxes = domains.reduce((n, d) => n + d.owned.length, 0);
   const evidenceItems = domains.reduce(
@@ -310,6 +373,8 @@ export function buildResult(
       top_gap: gaps[0]?.id ?? null,
       top_action: actions[0]?.id ?? null,
       no_basis: s.focus.length === 0 && confirmedAxes === 0,
+      first_move: firstMove,
+      basic_groups: basicGroups,
     },
     domains,
     evidence: {

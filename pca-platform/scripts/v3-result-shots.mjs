@@ -39,11 +39,20 @@ const PW = {
   admin: "pca-dev-admin-1234",
 };
 
-/** 응시자에게 보이면 안 되는 모양. 문항 번호와 영역 코드와 축 코드 */
+/**
+ * 응시자에게 보이면 안 되는 모양.
+ *
+ * **밑줄로 이어진 큰 글자 묶음은 무엇이든 내부 코드로 본다.** 전에 쓴
+ * `\b[A-Z]{2,3}_[A-Z0-9]{2,}\b` 는 `TR_TAG_1` 을 못 봤다: `TAG_1` 의
+ * 꼬리가 한 글자라 `{2,}` 에 걸리지 않았고, 그 사이에 문항 번호가 그대로
+ * 화면과 종이에 나갔다. 길이를 재는 대신 **모양**으로 본다.
+ */
 const INTERNAL = [
-  /\bTD\d{2}\b/, /\b[A-Z]{2,3}_[A-Z0-9]{2,}\b/, /\bJ[1-8]\b/,
-  /ME_V3|ME_CORE|ITEM_BANK|INDUSTRY_[A-Z]|ROLE_[A-Z]+_V/,
-  /\bZ[1-4]_[A-Z]/, /NOT_OBSERVED|PARTICIPATED|CONFIRMED|OWNED/,
+  /\bTD\d{2}\b/, /\bJ[1-8]\b/, /\bOC[1-7]\b/,
+  /\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+\b/,
+  /\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b/,
+  /\bZ[1-4]\b/, /NOT_OBSERVED|PARTICIPATED|CONFIRMED|OWNED|NOT_EXPLORED/,
+  /\b(?:undefined|null|NaN|TODO|TBD)\b/,
 ];
 
 const { chromium } = await import("playwright");
