@@ -26,7 +26,7 @@ for (const line of (() => {
 import { query, queryOne } from "../src/lib/db";
 import { controlOf } from "../src/lib/me-v3/runtime/menus";
 import {
-  attemptOf, checklistFor, choosePack, content, itemOf, menuContextOf,
+  attemptOf, checklistFor, content, itemOf, menuContextOf, savePicks3, setProfile,
   moveTo, planFor, saveAnswer, savePicks, submit, viewOf, type V3Attempt,
 } from "../src/lib/me-v3/runtime/session";
 import type { Answer, GradField, Stage, Tier } from "../src/lib/me-v3/scoring/types";
@@ -87,7 +87,7 @@ async function fillGrid(a: V3Attempt, want: Record<string, [number, number, numb
     const g = want[d.code] ?? [3, 0, 3];
     await saveAnswer(a.id, `G_${d.code}_INT`, { kind: "scale5", value: g[0] });
     await saveAnswer(a.id, `G_${d.code}_EXP`, { kind: "exposure", value: g[1] });
-    await saveAnswer(a.id, `G_${d.code}_LEA`, { kind: "scale5", value: g[2] });
+    /* 학습 의향은 선별된 영역에만 묻는다. 걸어 들어가며 받는다 */
   }
 }
 
@@ -107,8 +107,13 @@ async function walk(a0: V3Attempt, userId: string, lv: Level, picks = true) {
         await savePicks(a.id, v.screen.domain, g.slot, g.items.slice(0, 2));
       }
     }
-    if (v.screen.kind === "pick-industry") await choosePack(a.id, "industry", "INDUSTRY_SEMICON_V2");
-    if (v.screen.kind === "pick-role") await choosePack(a.id, "role", "ROLE_CAE_V2");
+    if (v.screen.kind === "pick-industry") {
+      await savePicks3(a.id, "industry", ["INDUSTRY_SEMICON_V2", "INDUSTRY_ROBOT_V2"]);
+    }
+    if (v.screen.kind === "pick-role") {
+      await savePicks3(a.id, "role", ["ROLE_CAE_V2", "ROLE_DESIGN_V2"]);
+    }
+    if (v.screen.kind === "pick-org") await savePicks3(a.id, "org", ["OC1", "OC2"]);
     if (!v.nextId) { await moveTo(a.id, v.screen.id); break; }
     await moveTo(a.id, v.nextId);
     want = v.nextId;
@@ -139,48 +144,61 @@ async function main() {
 
   const out: { name: string; path: string; note: string; full?: boolean; who: string }[] = [];
   out.push({
-    name: "01_start", path: "/v3/start", who: "starter", full: true,
+    name: "00_start", path: "/v3/start", who: "starter", full: true,
     note: "검사 시작",
   });
 
-  /* P01 경험 거의 없는 학부생 · BASIC */
+  /* 열두 자리를 찍는다. 승인받을 것은 보고서가 아니라 **화면**이고, 화면에
+     실제 문항 글이 읽혀야 한다. 그래서 사람 넷을 만들어 각자 끝까지 걸어
+     둔 뒤 그 응시의 자리를 가리킨다: 빈 화면을 찍으면 흐름은 보여도 묻는
+     것이 안 보인다 */
+
+  /* P01 경험 거의 없는 학부생 · BASIC. 앞쪽 다섯 자리 */
   const p01 = await freshAttempt(shots, "BASIC", "bachelor", null);
-  await fillGrid(p01, { TD01: [4, 0, 4], TD02: [3, 0, 3] });
-  const a01 = await walk(p01, shots, "none");
-  out.push({ name: "02_grid", who: "shots", note: "BASIC 영역 격자",
-    path: `/v3/${a01.id}?s=${await at(a01, (id) => id === "grid-TD01")}` });
-  out.push({ name: "03_judge", who: "shots", note: "BASIC 공통 판단",
-    path: `/v3/${a01.id}?s=${await at(a01, (id) => id.startsWith("judge-"))}` });
-  out.push({ name: "04_profile", who: "shots", note: "기본 정보",
+  await fillGrid(p01, { TD01: [5, 2, 5], TD05: [4, 1, 4], TD02: [3, 0, 3] });
+  const a01 = await walk(p01, shots, "mid");
+  out.push({ name: "01_profile", who: "shots", note: "기본 정보",
     path: `/v3/${a01.id}?s=0` });
+  out.push({ name: "02_industry_pick", who: "shots", note: "관심 산업 고르기",
+    path: `/v3/${a01.id}?s=${await at(a01, (_id, k) => k === "pick-industry")}` });
+  out.push({ name: "03_industry_scene", who: "shots", note: "산업 장면",
+    path: `/v3/${a01.id}?s=${await at(a01, (_id, k) => k === "scene")}` });
+  out.push({ name: "04_screening", who: "shots", note: "영역 훑기",
+    path: `/v3/${a01.id}?s=${await at(a01, (id) => id === "sweep-interest")}` });
+  out.push({ name: "04b_screening_exp", who: "shots", note: "영역 훑기 · 경험",
+    path: `/v3/${a01.id}?s=${await at(a01, (id) => id === "sweep-exposure")}` });
 
   /* P03 캡스톤 학생 · STANDARD */
   const p03 = await freshAttempt(shots, "STANDARD", "bachelor", null);
   await fillGrid(p03, { TD01: [5, 2, 5], TD08: [4, 1, 4], TD02: [4, 1, 3] });
   const a03 = await walk(p03, shots, "mid");
-  out.push({ name: "05_transition", who: "shots", note: "묶음 전환",
-    path: `/v3/${a03.id}?s=${await at(a03, (_id, k) => k === "transition")}` });
-  out.push({ name: "06_domain", who: "shots", note: "기술영역 선별 문항",
-    path: `/v3/${a03.id}?s=${await at(a03, (id) => id.startsWith("probe-"))}` });
+  out.push({ name: "05_core_probe", who: "shots", note: "실제 업무 판단",
+    path: `/v3/${a03.id}?s=${await at(a03, (id) => /^probe-.*_J3_1$/.test(id))}` });
+  out.push({ name: "05b_transition", who: "shots", note: "묶음 전환",
+    path: `/v3/${a03.id}?s=${await at(a03, (id) => id === "t-judge")}` });
 
-  /* P04 구조해석 석사 · PRO */
+  /* P04 구조해석 석사 · PRO. 뒤쪽 자리 전부 */
   const p04 = await freshAttempt(shots, "PRO", "master", "STEM");
   await fillGrid(p04, { TD02: [5, 2, 5], TD01: [5, 2, 4], TD11: [4, 1, 4] });
   const a04 = await walk(p04, shots, "strong");
-  out.push({ name: "07_ownership", who: "shots", note: "소유 보기 넷",
-    path: `/v3/${a04.id}?s=${await at(a04, (id) => /^probe-.*_J5$/.test(id))}` });
-  out.push({ name: "08_checklist", who: "shots", note: "근거 고르기",
+  out.push({ name: "06_deep_dive", who: "shots", note: "심화 네 축",
+    path: `/v3/${a04.id}?s=${await at(a04, (id) => /^deep-.*_J1_1$/.test(id))}` });
+  out.push({ name: "07_evidence", who: "shots", note: "근거 고르기",
     path: `/v3/${a04.id}?s=${await at(a04, (_id, k) => k === "checklist")}` });
-  out.push({ name: "09_industry", who: "shots", note: "산업 고르기",
-    path: `/v3/${a04.id}?s=${await at(a04, (_id, k) => k === "pick-industry")}` });
-  out.push({ name: "10_role", who: "shots", note: "역할 고르기",
+  out.push({ name: "08_role_pick", who: "shots", note: "관심 직무 고르기",
     path: `/v3/${a04.id}?s=${await at(a04, (_id, k) => k === "pick-role")}` });
-  out.push({ name: "11_pref", who: "shots", note: "역할 선호",
-    path: `/v3/${a04.id}?s=${await at(a04, (id) => id === "pref-rf")}` });
-  out.push({ name: "12_translate", who: "shots", note: "경험 번역",
+  out.push({ name: "08b_org_pick", who: "shots", note: "선호 조직 고르기",
+    path: `/v3/${a04.id}?s=${await at(a04, (_id, k) => k === "pick-org")}` });
+  out.push({ name: "09_role_item", who: "shots", note: "역할 판단 문항",
+    path: `/v3/${a04.id}?s=${await at(a04, (id) => id.startsWith("role-"))}` });
+  out.push({ name: "10_industry_item", who: "shots", note: "산업 판단 문항",
+    path: `/v3/${a04.id}?s=${await at(a04, (id) => id.startsWith("ind-"))}` });
+  out.push({ name: "11_translate", who: "shots", note: "경험 번역",
     path: `/v3/${a04.id}?s=${await at(a04, (id) => id.startsWith("trans-"))}` });
-  out.push({ name: "13_done", who: "shots", note: "완료 · 제출 전",
+  out.push({ name: "12_done", who: "shots", note: "완료 · 제출 전",
     path: `/v3/${a04.id}?s=${await at(a04, (_id, k) => k === "done")}` });
+  out.push({ name: "13_ownership", who: "shots", note: "소유 보기 넷",
+    path: `/v3/${a04.id}?s=${await at(a04, (id) => /^probe-.*_J5_1$/.test(id))}` });
 
   /* P09 재료 박사 · PRO. 끝까지 제출해 둔다 */
   const p09 = await freshAttempt(shots, "PRO", "phd", "STEM");
@@ -190,12 +208,14 @@ async function main() {
   out.push({ name: "14_submitted", who: "shots", note: "완료 · 제출 뒤",
     path: `/v3/${a09.id}?s=${await at(a09, (_id, k) => k === "done")}` });
 
-  /* P12 경험 강한 포닥 · PRO */
-  const p12 = await freshAttempt(shots, "PRO", "postdoc", "STEM");
-  await fillGrid(p12, { TD02: [5, 2, 5], TD04: [5, 2, 5], TD07: [5, 2, 4] });
-  const a12 = await walk(p12, shots, "strong");
-  out.push({ name: "15_deep", who: "shots", note: "심화 · 포닥 장면",
-    path: `/v3/${a12.id}?s=${await at(a12, (id) => /^deep-.*_J1$/.test(id))}` });
+  /* 학부 기계공학 + 타계열 대학원. **이 경로를 눈으로 본 적이 없다** */
+  const px = await freshAttempt(shots, "STANDARD", "master", "HUMANITIES_SOCIAL");
+  await setProfile(px.id, "master", "HUMANITIES_SOCIAL", "ME");
+  const pxa = (await attemptOf(px.id, shots)) as V3Attempt;
+  await fillGrid(pxa, { TD11: [5, 2, 5], TD12: [4, 1, 4], TD01: [3, 1, 3] });
+  const ax = await walk(pxa, shots, "mid");
+  out.push({ name: "15_xfield", who: "shots", note: "타계열 대학원 · 번역 맥락",
+    path: `/v3/${ax.id}?s=${await at(ax, (id) => id.startsWith("xfield-"))}` });
 
   console.log(JSON.stringify({
     users: { shots: SHOT_LOGIN, starter: START_LOGIN },

@@ -184,12 +184,6 @@ export default function Screen({
         {/* 전환 화면의 도움말은 **이제 볼 영역의 목록**이다. 한 줄로 이어
             붙이면 가운뎃점으로 묶인 긴 문장이 되고, 쉬는 자리가 빈 화면이
             된다. 줄로 세우면 무엇을 보러 가는지가 그대로 읽힌다 */}
-        {s.kind === "scene" && s.body ? (
-          <ul className="qs-scene">
-            {s.body.map((x) => <li key={x}>{x}</li>)}
-          </ul>
-        ) : null}
-
         {s.kind === "transition" && s.help ? (
           <ul className="qs-strip">
             {s.help.split(" · ").map((x, i) => (
@@ -197,6 +191,14 @@ export default function Screen({
             ))}
           </ul>
         ) : s.help ? <p className="qs-help">{s.help}</p> : null}
+
+        {/* 산업 장면. 한 절을 먼저 읽고 그 산업이 요구하는 것을 줄로 본다.
+            **점수를 만들지 않는다**: 묻기 전에 읽히는 자리다 */}
+        {s.kind === "scene" && s.body ? (
+          <ul className="qs-scene">
+            {s.body.map((x) => <li key={x}>{x}</li>)}
+          </ul>
+        ) : null}
 
         {/* ── 기본 정보를 고치는 자리 ── */}
         {s.profile ? (

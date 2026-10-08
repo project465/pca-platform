@@ -152,8 +152,16 @@ const EN = /lorem|TODO|TBD|FIXME|placeholder|undefined|null\b/i;
 for (const l of lines) {
   if (CODE.test(l.text)) flag(`내부 코드가 화면에 — [${l.id}.${l.slot}] ${l.text}`);
   if (EN.test(l.text)) flag(`영어 자리표시가 화면에 — [${l.id}.${l.slot}] ${l.text}`);
-  /* 전환 화면의 도움말은 영역 이름을 줄로 세운 것이라 길이를 재지 않는다 */
-  if (l.slot === "help" && l.kind !== "transition" && l.text.length > 60) {
+  /* 전환 화면의 도움말은 영역 이름을 줄로 세운 것이라 길이를 재지 않는다.
+     산업 장면은 **읽는 자리의 본문**이라 길이를 재지 않는다: 그 자리의
+     도움말은 묻기 전에 읽히는 한 절이고, 예순 자로 줄이면 그 산업에서
+     기계공학자가 무엇을 다루는지가 안 적힌다. 대신 두 문장을 넘기지 않는다 */
+  if (l.slot === "help" && l.kind === "scene") {
+    const dots = (l.text.match(/\. /g) ?? []).length;
+    if (dots > 1 || l.text.length > 160) {
+      flag(`산업 장면이 길다(${l.text.length}자 · ${dots + 1}문장) — [${l.id}] ${l.text}`);
+    }
+  } else if (l.slot === "help" && l.kind !== "transition" && l.text.length > 60) {
     flag(`도움말이 길다(${l.text.length}자) — [${l.id}] ${l.text}`);
   }
 }

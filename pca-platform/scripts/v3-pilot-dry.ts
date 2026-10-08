@@ -387,11 +387,17 @@ async function walk(
           **한 칸으로 밀지 않는다**: 열두 영역에 같은 값을 넣으면 영역
           사이에 차이가 없어 `차이 적음` 이 붙고, 그 응답으로는 결과지가
           사람을 가르는지 볼 수 없다. 화면 차례로 조금씩 흔든다 */
-    const boxes = p.locator("fieldset.qs-opts, .qs-cards, .qs-list");
+    const was = p.url();
+    /* **영역 훑기의 줄도 고르는 묶음이다.** 열두 줄이 한 화면에 서고 줄마다
+       보기가 셋이라, `fieldset.qs-opts` 만 찾으면 그 화면에서 아무것도
+       고르지 않고 넘어간다 */
+    const boxes = p.locator("fieldset.qs-opts, fieldset.qs-sw, .qs-cards, .qs-list");
     const bn = await boxes.count();
+    let advanced = false;
     for (let g = 0; g < bn; g += 1) {
       const box = boxes.nth(g);
-      if (await box.locator('input[type="radio"]:checked').count()) continue;
+      /* 복수 선택 자리는 네모라 `radio` 로만 세면 매번 다시 고른다 */
+      if (await box.locator("input:checked").count()) continue;
       const labels = box.locator("label");
       const n = await labels.count();
       if (!n) continue;
@@ -400,6 +406,15 @@ async function walk(
       const how = await pickOne(box, want);
       if (how === "covered") covered += 1;
       await p.waitForTimeout(40);
+      /* **한 선택으로 끝나는 화면은 눌리면 저절로 넘어간다.** 그 뒤에
+         `다음` 을 또 누르면 한 화면을 건너뛴다 */
+      if (p.url() !== was) { advanced = true; break; }
+    }
+    if (advanced) {
+      screens += 1;
+      await p.waitForLoadState("networkidle");
+      stuck = 0;
+      continue;
     }
 
     /* 2. 근거 칩은 묶음마다 둘. 소유는 근거 둘 이상일 때만 선다.

@@ -150,7 +150,10 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
       required: false, auto: false, pack: code,
       eyebrow: "산업 장면",
       subject: sc.name,
-      question: sc.scene,
+      /* **긴 설명을 머리글로 올리지 않는다.** 장면 한 절을 제목 크기로
+         세우면 다섯 줄짜리 덩이가 되고, 쉬는 자리가 읽는 자리가 된다 */
+      question: `${sc.name}에서 기계공학자가 다루는 일`,
+      help: sc.scene,
       body: sc.demands,
       items: [],
     });

@@ -68,9 +68,10 @@ for (const [key, login_] of Object.entries(plan.users)) {
   await login(ctx[key], login_);
 }
 
-/* 320px 은 세 자리에서 본다. 좁은 화면이 실제로 달라지는 곳은 머리띠가
-   접히는 자리(시작) · 눈금이 선 자리(소유) · 칩이 깔린 자리(근거)다 */
-const NARROW = new Set(["01_start", "07_ownership", "08_checklist"]);
+/* 320px 은 네 자리에서 본다. 좁은 화면이 실제로 달라지는 곳은 머리띠가
+   접히는 자리(시작) · 열두 줄이 깔리는 자리(훑기) · 눈금이 선 자리(소유) ·
+   칩이 깔린 자리(근거)다 */
+const NARROW = new Set(["00_start", "04_screening", "07_evidence", "13_ownership"]);
 
 const log = [];
 const problems = [];
@@ -231,7 +232,8 @@ const qa = plan.targets[plan.targets.length - 1];
   /* 누르는 자리 */
   const p = await ctx[qa.who].newPage();
   await p.setViewportSize(SIZES.mobile);
-  await p.goto(B + plan.targets.find((t) => t.name === "08_checklist").path,
+  const hit = plan.targets.find((t) => t.name === "07_evidence") ?? qa;
+  await p.goto(B + hit.path,
     { waitUntil: "networkidle" });
   const small = await p.evaluate(() => {
     const out = [];

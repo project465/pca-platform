@@ -571,7 +571,7 @@
 }
 .qs-summary li:first-child { border-top: 0; }
 .qs-summary li > span {
-  flex: none; width: 104px;
+  flex: none; width: 128px;
   font-size: var(--q-t-meta); font-weight: 600; color: var(--q-ink-3);
   letter-spacing: .04em; word-break: keep-all;
 }
