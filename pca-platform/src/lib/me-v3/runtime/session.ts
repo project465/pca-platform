@@ -12,18 +12,19 @@
  * **routing 과 scoring 을 갈라 둔다.** 여기서는 무엇을 물을지만 정하고,
  * 판정은 `scoring/engine.ts` 가 끝에서 한 번 한다.
  */
-import { readFileSync } from "node:fs";
 import { query, queryOne } from "@/lib/db";
-import { CONTENT_DIR, coreFile } from "../core-registry";
+import { coreFile, packs as readPacks } from "../core-registry";
 import { load, score } from "../scoring/engine";
 import type {
-  Answer, GradField, Snapshot, Stage, Submission, Tier,
+  Answer, GradField, Snapshot, Stage, Submission, Tier, UndergradCore,
 } from "../scoring/types";
 import type { Bank, BankItem } from "../scoring/normalize";
 import { ITEM_BANK_VERSION, SCORING_VERSION } from "../scoring/version";
-import { buildPlan, type Plan, type Screen } from "./blocks";
+import { buildPlan, type IndustryScene, type Plan, type Screen } from "./blocks";
 import { progressOf, type Progress } from "./progress";
-import { branchBlock, pickDomains, type GridAnswer } from "./routing";
+import {
+  branchBlock, crossField, pickDomains, type GridAnswer,
+} from "./routing";
 import { counts, minutes } from "../response-count";
 import { controlOf, type MenuContext } from "./menus";
 import { buildResult } from "../result/build";
@@ -31,17 +32,35 @@ import type { ResultModel } from "../result/model";
 import { RESULT_COPY_VERSION, RESULT_MODEL_VERSION } from "../result/version";
 
 export const CORE = "ME_CORE_V3";
-export const ASSESSMENT_VERSION = "ME_V3_DOMAIN_2026";
+
+/**
+ * 검사 판본. **이용권과 상품이 이 값으로 맞물린다.**
+ *
+ * `ME_V3_2` 로 올린 까닭은 검사 본체가 달라졌기 때문이다: 선별 네 축의
+ * 넷째가 바뀌고, 영역 훑기가 열두 화면에서 두 화면으로 접히고, 산업이
+ * 맨 뒤에서 맨 앞으로 왔다. 같은 판본 이름으로 두면 **두 사람이 전혀
+ * 다른 검사를 받고 같은 판본으로 적힌다.**
+ */
+export const ASSESSMENT_VERSION = "ME_V3_2";
 
 export type V3Attempt = {
   id: string; user_id: string; tier: Tier; core_code: string; market_code: string;
   education_stage: Stage; grad_field: GradField | null;
+  undergrad_core: UndergradCore | null;
   status: "in_progress" | "submitted" | "scored";
   current_screen: string | null;
   opened_probe: string[]; opened_deep: string[]; fourth_reason: string | null;
+  industry_interest: string[]; role_interest: string[]; org_interest: string[];
   industry_pack: string | null; role_pack: string | null;
   item_bank_version: string; scoring_version: string;
 };
+
+/** 응시 한 줄을 읽는 열쇠 목록. 두 자리에서 따로 적다 칸이 빠진 적이 있다 */
+const ATTEMPT_COLS = `id::text, user_id::text, tier, core_code, market_code,
+       education_stage, grad_field, undergrad_core, status, current_screen,
+       opened_probe, opened_deep, fourth_reason,
+       industry_interest, role_interest, org_interest,
+       industry_pack, role_pack, item_bank_version, scoring_version`;
 
 type Domains = {
   domains: { code: string; name: string; artifacts: string[]; verify_targets: string[];
@@ -65,12 +84,39 @@ export function content() {
 }
 
 /* 팩은 core 파일 계약 밖이라 따로 읽는다. 팩을 더하는 일이 core 계약을
-   고치는 일이 되면 안 된다 */
-function industryPacks(): { packs: { code: string; name_ko: string; demands: string[] }[] } {
-  return JSON.parse(readFileSync(`${CONTENT_DIR}/industry-packs.json`, "utf8"));
+   고치는 일이 되면 안 된다. **파일 이름은 등록부가 든다** */
+type IndustryPack = {
+  code: string; name_ko: string; demands: string[]; scene: string;
+  items: { id: string; gloss: string }[];
+};
+type RolePack = {
+  code: string; name_ko: string; owns: string; core_ref: { td: string[] };
+};
+function industryPacks(): { packs: IndustryPack[] } {
+  return readPacks<{ packs: IndustryPack[] }>(CORE, "industry");
 }
-function rolePacks(): { packs: { code: string; name_ko: string; core_ref: { td: string[] } }[] } {
-  return JSON.parse(readFileSync(`${CONTENT_DIR}/role-packs.json`, "utf8"));
+function rolePacks(): { packs: RolePack[] } {
+  return readPacks<{ packs: RolePack[] }>(CORE, "role");
+}
+
+/** 산업 장면. Core 선별 앞에 읽히고 **점수를 만들지 않는다** */
+export function industryScene(code: string): IndustryScene | null {
+  const p = industryPacks().packs.find((x) => x.code === code);
+  if (!p) return null;
+  return { code, name: p.name_ko, scene: p.scene, demands: p.demands };
+}
+
+/** 산업팩 문항의 쉬운 말 풀이. 용어를 모르는 사람이 떨어지지 않게 함께 띄운다 */
+export function industryGloss(itemId: string): string | null {
+  for (const p of industryPacks().packs) {
+    const hit = p.items.find((x) => x.id === itemId);
+    if (hit) return hit.gloss;
+  }
+  return null;
+}
+
+export function roleName(code: string): string {
+  return rolePacks().packs.find((x) => x.code === code)?.name_ko ?? code;
 }
 
 export function domainName(td: string): string {
@@ -90,6 +136,7 @@ export function wordingOf(id: string, stage: string): string {
 export function itemOf(id: string): (BankItem & {
   wording: string; options?: string[] | null; grid_row?: string | null;
   grid_stem?: string | null; response_scale?: string | null;
+  option_values?: number[] | null;
 }) | undefined {
   return content().bank.items.find((x) => x.item_id === id) as never;
 }
@@ -122,8 +169,22 @@ export function industryChoices() {
     .map((p) => ({ code: p.code, name: p.name_ko, first: p.demands[0] ?? "" }));
 }
 export function roleChoices() {
-  return rolePacks().packs
-    .map((p) => ({ code: p.code, name: p.name_ko, domains: p.core_ref.td.map(domainName) }));
+  return rolePacks().packs.map((p) => ({
+    code: p.code, name: p.name_ko, first: p.owns,
+    domains: p.core_ref.td.map(domainName),
+  }));
+}
+
+/**
+ * 선호 조직유형 일곱. **점수에 들어가지 않는다.**
+ *
+ * taxonomy 의 조직환경을 그대로 읽는다. 화면에 짧은 이름을 따로 적어
+ * 두면 taxonomy 를 고친 날 두 이름이 갈린다.
+ */
+export function orgChoices() {
+  const tax = coreFile<{ org_contexts: { code: string; name: string; differs: string }[] }>(
+    CORE, "taxonomy");
+  return tax.org_contexts.map((o) => ({ code: o.code, name: o.name, first: o.differs }));
 }
 
 /**
@@ -140,7 +201,7 @@ function packSize(kind: "industry" | "role"): number {
     ? industryPacks().packs.map((x) => x.code) : rolePacks().packs.map((x) => x.code);
   const per = codes.map((c) => items.filter((i) => kind === "industry"
     ? i.industry_pack === c
-    : i.module === "ROLE" && i.item_id.startsWith(c)).length);
+    : i.module === "ROLE" && i.item_id.startsWith(`${c}_`)).length);
   return Math.max(0, ...per);
 }
 
@@ -149,14 +210,19 @@ export function estimate(stage: Stage, field: GradField | null): {
 } {
   const bp = coreFile<{ slots: { block: string }[] }>(CORE, "items_blueprint");
   const n = (b: string) => bp.slots.filter((x) => x.block === b).length;
+  const branch = branchBlock(stage, field) === "ug-core"
+    ? n("UG-CORE") : n("GRAD-CORE");
   const blocks = {
-    grid: n("CORE-GRID"), judge: n("CORE-JUDGE"), force: n("CORE-FORCE"),
-    probePerDomain: n("PROBE-J4"), deepPerDomain: n("DEEP-J8"),
-    pref: n("PREF-RF-OC"), consist: n("CONSIST"),
+    /* 학습 의향 열둘은 선별된 영역에만 묻는다. 고정으로 받는 것은
+       관심과 경험 스물넷이다 */
+    grid: n("CORE-GRID") - 12, judge: n("CORE-JUDGE"), force: n("CORE-FORCE"),
+    probePerDomain: n("PROBE-S4"), deepPerDomain: n("DEEP-S8"),
+    learningPerDomain: 1,
+    consist: n("CONSIST"),
     trans: n("TRANS-10"), target: n("TARGET"),
-    branch: n(branchBlock(stage, field)),
+    branch: branch + (crossField(stage, field) ? n("GRAD-XFIELD") : 0),
     /* 팩은 blueprint 밖이라 은행에서 센다. 한 응시에 깊게 묻는 것은
-       산업 하나와 역할 하나뿐이다 */
+       산업 하나와 역할 둘까지다 */
     pack: packSize("industry") + packSize("role"),
   };
   const c = counts(blocks);
@@ -173,6 +239,7 @@ export function estimate(stage: Stage, field: GradField | null): {
 
 export async function openAttempt(args: {
   userId: string; tier: Tier; stage: Stage; gradField: GradField | null;
+  undergradCore?: UndergradCore | null;
   entitlementId?: string | null; market?: string;
 }): Promise<V3Attempt> {
   /* 이어보기가 먼저다. 중복 응시를 만들지 않는다 */
@@ -181,11 +248,13 @@ export async function openAttempt(args: {
   const row = await queryOne<{ id: string }>(
     `INSERT INTO v3_attempts
        (user_id, entitlement_id, tier, market_code, education_stage, grad_field,
+        undergrad_core, assessment_version,
         item_bank_version, scoring_version, current_screen)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,'profile')
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,'profile')
      RETURNING id::text`,
     [args.userId, args.entitlementId ?? null, args.tier, args.market ?? "KR",
-     args.stage, args.gradField, ITEM_BANK_VERSION, SCORING_VERSION],
+     args.stage, args.gradField, args.undergradCore ?? null, ASSESSMENT_VERSION,
+     ITEM_BANK_VERSION, SCORING_VERSION],
   );
   return (await attemptOf(row?.id as string, args.userId)) as V3Attempt;
 }
@@ -214,10 +283,7 @@ export async function v3Grants(userId: string): Promise<
 
 export async function currentAttempt(userId: string): Promise<V3Attempt | null> {
   return queryOne<V3Attempt>(
-    `SELECT id::text, user_id::text, tier, core_code, market_code, education_stage,
-            grad_field, status, current_screen, opened_probe, opened_deep,
-            fourth_reason, industry_pack, role_pack,
-            item_bank_version, scoring_version
+    `SELECT ${ATTEMPT_COLS}
        FROM v3_attempts
       WHERE user_id = $1 AND status = 'in_progress'
       ORDER BY started_at DESC LIMIT 1`, [userId]);
@@ -225,10 +291,7 @@ export async function currentAttempt(userId: string): Promise<V3Attempt | null> 
 
 export async function attemptOf(id: string, userId: string): Promise<V3Attempt | null> {
   return queryOne<V3Attempt>(
-    `SELECT id::text, user_id::text, tier, core_code, market_code, education_stage,
-            grad_field, status, current_screen, opened_probe, opened_deep,
-            fourth_reason, industry_pack, role_pack,
-            item_bank_version, scoring_version
+    `SELECT ${ATTEMPT_COLS}
        FROM v3_attempts WHERE id = $1 AND user_id = $2`, [id, userId]);
 }
 
@@ -285,11 +348,49 @@ export async function notesOf(attemptId: string): Promise<Record<string, string>
  */
 export async function setProfile(
   attemptId: string, stage: Stage, gradField: GradField | null,
+  undergradCore: UndergradCore | null = null,
 ): Promise<void> {
+  const field = stage === "bachelor" ? null : gradField;
   await query(
-    `UPDATE v3_attempts SET education_stage=$2, grad_field=$3, last_saved_at=now()
+    `UPDATE v3_attempts
+        SET education_stage=$2, grad_field=$3, undergrad_core=$4, last_saved_at=now()
       WHERE id=$1`,
-    [attemptId, stage, stage === "bachelor" ? null : gradField]);
+    [attemptId, stage, field,
+     crossField(stage, field) ? undergradCore : null]);
+}
+
+/**
+ * 고른 관심 산업과 역할과 조직. **점수에 들어가지 않는다.**
+ *
+ * 깊게 묻는 산업은 고른 것 가운데 첫째이고, 그 값도 여기서 함께 적는다.
+ * 두 자리에 따로 적으면 뒤로 가서 고친 날 둘이 갈린다.
+ */
+export async function savePicks3(
+  attemptId: string, kind: "industry" | "role" | "org", codes: string[],
+): Promise<void> {
+  const known = kind === "industry" ? industryChoices().map((x) => x.code)
+    : kind === "role" ? roleChoices().map((x) => x.code)
+      : orgChoices().map((x) => x.code);
+  const clean = [...new Set(codes.filter((c) => known.includes(c)))].slice(0, 2);
+  const col = kind === "industry" ? "industry_interest"
+    : kind === "role" ? "role_interest" : "org_interest";
+  if (kind === "industry") {
+    await query(
+      `UPDATE v3_attempts SET industry_interest=$2, industry_pack=$3,
+              last_saved_at=now() WHERE id=$1`,
+      [attemptId, clean, clean[0] ?? null]);
+    return;
+  }
+  if (kind === "role") {
+    await query(
+      `UPDATE v3_attempts SET role_interest=$2, role_pack=$3,
+              last_saved_at=now() WHERE id=$1`,
+      [attemptId, clean, clean[0] ?? null]);
+    return;
+  }
+  await query(
+    `UPDATE v3_attempts SET ${col}=$2, last_saved_at=now() WHERE id=$1`,
+    [attemptId, clean]);
 }
 
 export async function savePicks(
@@ -398,16 +499,27 @@ export function tiedPairIn(answers: Record<string, Answer>, tds: string[]): stri
   return tied.length > 1 ? tied.slice(0, 2) : [];
 }
 
+/** `buildPlan` 이 읽는 것. 한자리에서 묶어 두 자리가 갈리지 않게 한다 */
+function planDeps() {
+  return {
+    items: content().bank.items,
+    domainName, wording: wordingOf, gridRow: gridRowOf,
+    scene: industryScene, gloss: industryGloss, roleName,
+  };
+}
+
 export async function planFor(a: V3Attempt): Promise<Plan> {
   const answers = await answersOf(a.id);
   const tds = content().domains.domains.map((d) => d.code);
   return buildPlan({
     tier: a.tier, stage: a.education_stage,
     branchBlock: branchBlock(a.education_stage, a.grad_field),
+    crossField: crossField(a.education_stage, a.grad_field),
     probe: a.opened_probe, deep: a.opened_deep,
-    industryPack: a.industry_pack, rolePack: a.role_pack,
+    industryInterest: a.industry_interest ?? [],
+    roleInterest: a.role_interest ?? [],
     tiedPair: tiedPairIn(answers, tds),
-  }, content().bank.items, domainName, wordingOf, gridRowOf);
+  }, planDeps());
 }
 
 export type View = {
@@ -476,6 +588,7 @@ export async function menuContextOf(a: V3Attempt): Promise<MenuContext> {
     domains: tds.map((code) => ({ code, name: domainName(code) })),
     industries: industryChoices().map((i) => ({ code: i.code, name: i.name })),
     roles: roleChoices().map((r) => ({ code: r.code, name: r.name })),
+    orgs: orgChoices().map((o) => ({ code: o.code, name: o.name })),
   };
 }
 
@@ -494,14 +607,7 @@ export async function moveTo(attemptId: string, screenId: string): Promise<void>
 export async function choosePack(
   attemptId: string, kind: "industry" | "role", code: string | null,
 ): Promise<void> {
-  if (code !== null) {
-    const known = kind === "industry"
-      ? industryChoices().map((x) => x.code) : roleChoices().map((x) => x.code);
-    if (!known.includes(code)) throw new Error(`no such pack: ${code}`);
-  }
-  const col = kind === "industry" ? "industry_pack" : "role_pack";
-  await query(`UPDATE v3_attempts SET ${col}=$2, last_saved_at=now() WHERE id=$1`,
-    [attemptId, code]);
+  await savePicks3(attemptId, kind, code ? [code] : []);
 }
 
 /* ── 등급 올리기 ───────────────────────────────────────────────────── */
@@ -551,11 +657,12 @@ export async function newScreensAfterUpgrade(
   const before = buildPlan({
     tier: from, stage: a.education_stage,
     branchBlock: branchBlock(a.education_stage, a.grad_field),
+    crossField: crossField(a.education_stage, a.grad_field),
     probe: a.opened_probe, deep: from === "BASIC" ? [] : a.opened_deep,
-    industryPack: from === "PRO" ? a.industry_pack : null,
-    rolePack: from === "PRO" ? a.role_pack : null,
+    industryInterest: a.industry_interest ?? [],
+    roleInterest: a.role_interest ?? [],
     tiedPair: tiedPairIn(answers, tds),
-  }, content().bank.items, domainName, wordingOf, gridRowOf);
+  }, planDeps());
   const plan = await planFor(a);
   const had = new Set(before.screens.map((s) => s.id));
   const added = plan.screens.filter((s) => !had.has(s.id) && s.items.length > 0);
@@ -569,8 +676,12 @@ export async function submissionOf(a: V3Attempt): Promise<Submission> {
   const picks = await picksOf(a.id);
   return {
     attempt_id: a.id, tier: a.tier, stage: a.education_stage, grad_field: a.grad_field,
+    undergrad_core: a.undergrad_core,
     answers, ...picks,
     opened: { probe: a.opened_probe, deep: a.opened_deep },
+    industry_interest: a.industry_interest ?? [],
+    role_interest: a.role_interest ?? [],
+    org_interest: a.org_interest ?? [],
     industry_pack: a.industry_pack, role_pack: a.role_pack,
   };
 }
@@ -624,7 +735,7 @@ export async function latestSnapshot(attemptId: string): Promise<Snapshot | null
  * 그 사람의 말을 그대로 돌려주려면 여기서 맞춰 붙인다.
  */
 function translationChoices(sub: Submission): { item_id: string; choice: string | null }[] {
-  const ctx = { tiedPair: [], domains: [], industries: [], roles: [] };
+  const ctx = { tiedPair: [], domains: [], industries: [], roles: [], orgs: [] };
   const out: { item_id: string; choice: string | null }[] = [];
   for (const it of content().bank.items) {
     if (it.module !== "TRANS-10") continue;

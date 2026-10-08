@@ -35,6 +35,29 @@ CREATE TABLE IF NOT EXISTS v3_attempts (
     CHECK (education_stage = 'bachelor' OR grad_field IS NOT NULL)
 );
 
+-- ME_V3_2 에서 더해진 칸.
+--
+-- `undergrad_core` 는 학부 전공이 기계공학 계열인가다. 기계공학 Core 는
+-- 비이공계 대학원생을 받지 않는데, **학부가 기계공학이면 기계공학 경험이
+-- 실제로 있다.** 그 사람은 받고 대학원 경험은 번역 맥락으로만 다룬다.
+-- 학사와 이공계 대학원은 NULL 이다.
+--
+-- 관심 산업과 관심 역할과 선호 조직은 **점수에 들어가지 않는다.** 전에는
+-- 역할 일곱과 조직 일곱을 다섯 점 척도 열네 줄로 받아 결과지에 한 글자도
+-- 쓰지 않았다. 고르기로 바꾸고 둘까지만 받는다.
+ALTER TABLE v3_attempts ADD COLUMN IF NOT EXISTS undergrad_core TEXT
+  CHECK (undergrad_core IN ('ME','OTHER'));
+ALTER TABLE v3_attempts ADD COLUMN IF NOT EXISTS industry_interest TEXT[]
+  NOT NULL DEFAULT '{}';
+ALTER TABLE v3_attempts ADD COLUMN IF NOT EXISTS role_interest TEXT[]
+  NOT NULL DEFAULT '{}';
+ALTER TABLE v3_attempts ADD COLUMN IF NOT EXISTS org_interest TEXT[]
+  NOT NULL DEFAULT '{}';
+
+-- 판본을 올렸다. 새 응시는 ME_V3_2 만 쓴다. **이미 있는 줄은 건드리지
+-- 않는다**: 그 응시는 그때의 문항으로 받았고 그때의 판본으로 읽어야 한다
+ALTER TABLE v3_attempts ALTER COLUMN assessment_version SET DEFAULT 'ME_V3_2';
+
 -- 이용권 하나가 응시 하나다. 같은 사람의 응답이 두 벌 쌓이면 규준이 오염된다
 CREATE UNIQUE INDEX IF NOT EXISTS v3_attempts_entitlement
   ON v3_attempts(entitlement_id) WHERE entitlement_id IS NOT NULL;

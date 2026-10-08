@@ -24,10 +24,10 @@ for (const line of (() => {
 
 import { buildPlan, type Plan } from "../src/lib/me-v3/runtime/blocks";
 import { controlOf, type MenuContext } from "../src/lib/me-v3/runtime/menus";
-import { branchBlock } from "../src/lib/me-v3/runtime/routing";
+import { branchBlock, crossField } from "../src/lib/me-v3/runtime/routing";
 import {
-  content, domainName, gridRowOf, industryChoices, itemOf, levelOptions,
-  roleChoices, wordingOf,
+  content, domainName, gridRowOf, industryChoices, industryGloss, industryScene,
+  itemOf, levelOptions, orgChoices, roleChoices, roleName, wordingOf,
 } from "../src/lib/me-v3/runtime/session";
 import type { GradField, Stage, Tier } from "../src/lib/me-v3/scoring/types";
 
@@ -46,21 +46,29 @@ function ctx(tied: string[]): MenuContext {
     domains: TDS.map((code) => ({ code, name: domainName(code) })),
     industries: industryChoices().map((i) => ({ code: i.code, name: i.name })),
     roles: roleChoices().map((r) => ({ code: r.code, name: r.name })),
+    orgs: orgChoices().map((o) => ({ code: o.code, name: o.name })),
   };
 }
+
+const DEPS = {
+  items: ITEMS, domainName, wording: wordingOf, gridRow: gridRowOf,
+  scene: industryScene, gloss: industryGloss, roleName,
+};
 
 function plan(args: {
   tier: Tier; stage: Stage; field: GradField | null;
   probe: string[]; deep: string[];
-  industry?: string | null; role?: string | null; tied?: string[];
+  industry?: string[] | null; role?: string[] | null; tied?: string[];
 }): Plan {
   return buildPlan({
     tier: args.tier, stage: args.stage,
     branchBlock: branchBlock(args.stage, args.field),
+    crossField: crossField(args.stage, args.field),
     probe: args.probe, deep: args.deep,
-    industryPack: args.industry ?? null, rolePack: args.role ?? null,
+    industryInterest: args.industry ?? [],
+    roleInterest: args.role ?? [],
     tiedPair: args.tied ?? [],
-  }, ITEMS, domainName, wordingOf, gridRowOf);
+  }, DEPS);
 }
 
 /** 화면에 **보이는 글자** 전부. 내부 코드를 여기서 찾는다 */
@@ -76,6 +84,7 @@ function visible(p: Plan, tied: string[]): string[] {
       if (c.kind === "level") out.push(...c.options);
       else if (c.kind === "scale5") out.push(...c.labels);
       else if (c.kind === "exposure") out.push(...c.options);
+      else if (c.kind === "pick3") out.push(...c.options.map((o) => o.label));
       else out.push(...c.options.map((o) => o.label), c.note?.label ?? "");
     }
   }
@@ -97,8 +106,8 @@ function main(): void {
   ];
   for (const tier of tiers) {
     for (const [stage, field] of branches) {
-      for (const ind of [null, ...industryChoices().map((x) => x.code)]) {
-        for (const role of [null, ...roleChoices().map((x) => x.code)]) {
+      for (const ind of [[], ...industryChoices().map((x) => [x.code])]) {
+        for (const role of [[], ...roleChoices().map((x) => [x.code])]) {
           const p = plan({
             tier, stage, field, probe: TDS, deep: TDS,
             industry: ind, role, tied: [TDS[0], TDS[1]],
@@ -125,26 +134,30 @@ function main(): void {
 
   /* --- 3. 보기 넷은 은행의 것을 그대로 쓴다 --- */
   const lv = levelOptions();
-  const lvItem = itemOf("TD01_J1");
+  const lvItem = itemOf("TD01_J3_1");
   const c3 = lvItem ? controlOf(lvItem, ctx([])) : null;
   ok("보기 넷은 문항 은행의 것을 그대로 쓴다",
      !!c3 && c3.kind === "level" && c3.options.join("|") === lv.join("|"),
      lv.join(" · "));
 
-  /* --- 4. 척도 칸 수 --- */
-  const five = itemOf("G_TD01_INT");
-  const three = itemOf("G_TD01_EXP");
-  const cf = five ? controlOf(five, ctx([])) : null;
-  const ct = three ? controlOf(three, ctx([])) : null;
-  ok("다섯 칸은 다섯이고 세 칸은 셋이다",
-     !!cf && cf.kind === "scale5" && cf.labels.length === 5 &&
-     !!ct && ct.kind === "exposure" && ct.options.length === 3);
+  /* --- 4. 훑기는 보기 셋이고 저장되는 값이 전과 같다 --- */
+  const gi = itemOf("G_TD01_INT");
+  const ge = itemOf("G_TD01_EXP");
+  const ci = gi ? controlOf(gi, ctx([])) : null;
+  const ce = ge ? controlOf(ge, ctx([])) : null;
+  ok("훑기는 보기 셋이고 저장되는 값이 전과 같다",
+     !!ci && ci.kind === "pick3" && ci.options.length === 3 &&
+     ci.answer === "scale5" &&
+     ci.options.map((o) => o.value).join(",") === "5,3,1" &&
+     !!ce && ce.kind === "pick3" && ce.answer === "exposure" &&
+     ce.options.map((o) => o.value).join(",") === "2,1,0",
+     "관심은 5·3·1 · 경험은 2·1·0");
 
   /* --- 5. 화면에 내부 코드가 새지 않는다 --- */
   const pPro = plan({
     tier: "PRO", stage: "master", field: "STEM",
     probe: TDS.slice(0, 4), deep: TDS.slice(0, 4),
-    industry: industryChoices()[0].code, role: roleChoices()[0].code,
+    industry: [industryChoices()[0].code], role: [roleChoices()[0].code],
     tied: [TDS[0], TDS[1]],
   });
   const leaked = visible(pPro, [TDS[0], TDS[1]])
@@ -154,21 +167,22 @@ function main(): void {
      leaked.length ? leaked.slice(0, 5).join(",") : "머리말·주제·질문·도움말·보기");
 
   /* --- 6. 한 화면에 한 문항 --- */
-  const many = pPro.screens.filter((s) => s.items.length > 1 &&
-    s.kind !== "grid" && s.kind !== "multi");
+  const many = pPro.screens.filter((s) => s.items.length > 1 && s.kind !== "sweep");
   ok("한 화면에 한 문항이다", many.length === 0,
-     many.length ? many.map((s) => s.id).join(",") : "격자와 선호만 예외");
+     many.length ? many.map((s) => s.id).join(",") : "영역 훑기만 예외");
 
-  /* --- 7. BASIC 은 심화와 번역과 팩을 열지 않는다 --- */
+  /* --- 7. BASIC 은 심화와 번역과 팩 문항을 열지 않는다 --- */
   const pBasic = plan({
     tier: "BASIC", stage: "bachelor", field: null,
     probe: TDS.slice(0, 2), deep: [],
-    industry: industryChoices()[0].code, role: roleChoices()[0].code,
+    industry: [industryChoices()[0].code], role: [roleChoices()[0].code],
   });
   const basicStages = new Set(pBasic.screens.map((s) => s.stage));
-  ok("BASIC 에는 심화와 번역과 팩 화면이 없다",
+  const basicPackItems = pBasic.screens.filter((s) =>
+    s.id.startsWith("ind-") || s.id.startsWith("role-"));
+  ok("BASIC 에는 심화와 번역 화면과 팩 문항이 없다",
      !basicStages.has("DEEP") && !basicStages.has("TRANSLATE") &&
-     !basicStages.has("INDUSTRY") && !basicStages.has("ROLE"),
+     basicPackItems.length === 0,
      [...basicStages].join(","));
 
   /* --- 8. 강제 선택은 묶였을 때만 서고 보기가 그 두 영역이다 --- */
@@ -184,25 +198,22 @@ function main(): void {
      fc.options[0].label === domainName(TDS[2]),
      fc && fc.kind === "choice" ? fc.options.map((o) => o.label).join(" / ") : "");
 
-  /* --- 9. 선호 열넷이 유료 화면에 선다 (조직 일곱이 빠졌던 자리) --- */
-  const prefIds = pPro.screens.filter((s) => s.id.startsWith("pref-"))
-    .flatMap((s) => s.items);
-  const rf = ITEMS.filter((i) => i.measurement_axis === "role_preference").length;
-  const oc = ITEMS.filter((i) => i.measurement_axis === "org_preference").length;
-  ok("역할 선호와 조직 선호가 모두 화면에 선다",
-     prefIds.length === rf + oc && oc > 0,
-     `역할 ${rf} · 조직 ${oc} · 화면 ${prefIds.length}`);
+  /* --- 9. 선호를 다섯 점 척도로 받지 않는다 --- */
+  const five = ITEMS.filter((i) => i.response_scale === "5점");
+  ok("선호를 다섯 점 척도로 받는 문항이 없다", five.length === 0,
+     five.length ? five.map((i) => i.item_id).join(",")
+       : "관심 역할과 선호 조직은 고르기로 받는다");
 
-  /* --- 10. 산업 여덟과 역할 일곱 전부를 고를 수 있다 --- */
-  ok("산업 여덟과 역할 일곱 전부를 고를 수 있다",
-     industryChoices().length === 8 && roleChoices().length === 7 &&
+  /* --- 10. 산업 여덟과 역할 여덟 전부를 고를 수 있다 --- */
+  ok("산업 여덟과 역할 여덟 전부를 고를 수 있다",
+     industryChoices().length === 8 && roleChoices().length === 8 &&
      industryChoices().every((x) => x.name && x.first) &&
      roleChoices().every((x) => x.name && x.domains.length),
      `산업 ${industryChoices().length} · 역할 ${roleChoices().length}`);
 
   /* --- 11. 고르기 전에는 팩 문항이 계획에 없다 --- */
   const noPack = plan({ tier: "PRO", stage: "master", field: "STEM",
-    probe: TDS.slice(0, 3), deep: TDS.slice(0, 3) });
+    probe: TDS.slice(0, 3), deep: TDS.slice(0, 3), industry: [], role: [] });
   const packScreens = noPack.screens.filter((s) =>
     s.id.startsWith("ind-") || s.id.startsWith("role-"));
   ok("고르기 전에는 팩 문항이 화면에 없다", packScreens.length === 0,
@@ -213,12 +224,15 @@ function main(): void {
   ok("화면 이름이 겹치지 않는다", new Set(ids).size === ids.length,
      `${ids.length}개`);
 
-  /* --- 13. 격자는 셋이고 어미가 있다 --- */
-  const grids = pBasic.screens.filter((s) => s.kind === "grid");
-  const stems = grids.every((s) => s.items.length === 3 &&
-    s.items.every((id) => !!itemOf(id)?.grid_stem));
-  ok("격자 화면은 셋이고 줄마다 어미가 있다",
-     grids.length === TDS.length && stems, `${grids.length}개`);
+  /* --- 13. 영역 훑기는 두 화면이고 줄마다 영역 이름이 있다 --- */
+  const sweeps = pBasic.screens.filter((s) => s.kind === "sweep");
+  const fixed = sweeps.filter((s) => s.items.length === TDS.length);
+  ok("영역 훑기는 두 화면으로 접힌다",
+     fixed.length === 2 && sweeps.length <= 3,
+     `열두 줄 화면 ${fixed.length}개 · 학습 의향까지 ${sweeps.length}개`);
+  const rows = sweeps.flatMap((s) => s.items)
+    .every((id) => !!itemOf(id)?.grid_row);
+  ok("훑기 줄마다 영역을 말하는 줄이 있다", rows);
 
   /* --- 14. 심화 영역은 선별 네 축도 함께 선다 --- */
   const deepOnly = plan({ tier: "STANDARD", stage: "bachelor", field: null,
@@ -235,6 +249,64 @@ function main(): void {
     s.required && s.items.length === 0 && s.kind !== "profile");
   ok("답을 받지 않는 화면을 필수로 두지 않는다", badRequired.length === 0,
      badRequired.map((s) => s.id).join(","));
+
+  /* --- 16. 자동으로 넘어가는 화면은 한 선택으로 끝나는 자리뿐이다 --- */
+  const badAuto = pPro.screens.filter((s) => s.auto &&
+    (s.kind !== "single" || s.items.length !== 1));
+  ok("자동으로 넘어가는 화면은 보기 하나짜리뿐이다", badAuto.length === 0,
+     badAuto.length ? badAuto.map((s) => s.id).join(",")
+       : `${pPro.screens.filter((s) => s.auto).length}개`);
+  const shouldManual = pPro.screens.filter((s) =>
+    ["sweep", "checklist", "pick-industry", "pick-role", "pick-org",
+     "transition", "scene", "done", "profile"].includes(s.kind) && s.auto);
+  ok("훑기와 복수 선택과 적는 칸은 손으로 넘긴다", shouldManual.length === 0,
+     shouldManual.map((s) => s.id).join(","));
+  const trans = pPro.screens.filter((s) => s.id.startsWith("trans-"));
+  ok("경험 번역은 손으로 넘긴다", trans.length > 0 && trans.every((s) => !s.auto),
+     `${trans.length}개`);
+
+  /* --- 17. 산업이 검사 앞에 선다 --- */
+  const order = pPro.screens.map((s) => s.id);
+  const atPickIndustry = order.indexOf("pick-industry");
+  const atFirstSweep = order.indexOf("sweep-interest");
+  const atFirstProbe = order.findIndex((x) => x.startsWith("probe-"));
+  ok("관심 산업을 영역 훑기 앞에서 고른다",
+     atPickIndustry > 0 && atPickIndustry < atFirstSweep,
+     `프로필 → 산업(${atPickIndustry + 1}째) → 훑기(${atFirstSweep + 1}째)`);
+  const scene = pPro.screens.find((s) => s.kind === "scene");
+  ok("고른 산업의 장면을 문항 앞에서 읽는다",
+     !!scene && (scene.body ?? []).length >= 3 &&
+     order.indexOf(scene.id) < atFirstProbe,
+     scene ? `${scene.subject} · ${(scene.body ?? []).length}줄` : "없다");
+
+  /* --- 18. 선별 등급 응답의 절반 이상이 실제 판단이다 --- */
+  const judgeIds = pBasic.screens.filter((s) => s.kind === "single")
+    .flatMap((s) => s.items);
+  const sweepIds = pBasic.screens.filter((s) => s.kind === "sweep")
+    .flatMap((s) => s.items);
+  const ratio = judgeIds.length / (judgeIds.length + sweepIds.length);
+  ok("선별 등급 응답의 절반 이상이 실제 판단 문항이다", ratio >= 0.5,
+     `판단 ${judgeIds.length} · 훑기 ${sweepIds.length} · ${Math.round(ratio * 100)}%`);
+
+  /* --- 19. 관심 역할은 Core 심화 뒤에 고른다 --- */
+  const atRole = order.indexOf("pick-role");
+  const lastDeep = order.reduce((n, x, i) => (x.startsWith("deep-") ? i : n), -1);
+  ok("관심 역할은 Core 심화 뒤에 고른다", atRole > lastDeep && lastDeep > 0,
+     `심화 끝 ${lastDeep + 1}째 → 역할 ${atRole + 1}째`);
+
+  /* --- 20. 산업 문항에는 쉬운 말 풀이가 함께 뜬다 --- */
+  const indScreens = pPro.screens.filter((s) => s.id.startsWith("ind-"));
+  ok("산업 문항마다 쉬운 말 풀이가 함께 뜬다",
+     indScreens.length >= 8 && indScreens.every((s) => (s.help ?? "").length > 10),
+     `${indScreens.length}개`);
+
+  /* --- 21. 타계열 대학원은 학부 묶음과 번역 맥락을 받는다 --- */
+  const xf = plan({ tier: "BASIC", stage: "master", field: "HUMANITIES_SOCIAL",
+    probe: TDS.slice(0, 2), deep: [] });
+  const xfIds = xf.screens.filter((s) => s.id.startsWith("xfield-")).length;
+  const ugIds = xf.screens.filter((s) => s.id.startsWith("branch-")).length;
+  ok("타계열 대학원은 학부 묶음과 번역 맥락을 받는다", xfIds === 4 && ugIds === 6,
+     `학부 묶음 ${ugIds} · 번역 맥락 ${xfIds}`);
 
   console.log(`\n  통과 ${pass} · 걸림 ${fail}`);
   if (fail) process.exitCode = 1;

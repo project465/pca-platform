@@ -8,12 +8,13 @@
  */
 import { coreFile } from "../core-registry";
 import type { Answer, Axis, Submission } from "./types";
-import type { Bank } from "./normalize";
+import { DEEP_BLOCK, PROBE_BLOCK, type Bank } from "./normalize";
 
 export type Fixture = {
   id: string; name: string;
   tier: Submission["tier"]; stage: Submission["stage"];
   field: Submission["grad_field"];
+  undergrad?: Submission["undergrad_core"];
   probe: string[]; deep: string[];
   grid?: Record<string, [number, number, number]>;
   axes?: Record<string, Record<string, number | number[]>>;
@@ -23,6 +24,8 @@ export type Fixture = {
   answers?: Record<string, Answer>;
   industry?: string | null;
   role?: string | null;
+  roles?: string[];
+  orgs?: string[];
   expect?: Record<string, {
     zone?: string; reasons?: string[]; owned_has?: string[];
     confirmed_min?: number; next?: string[]; next_has?: string[]; quadrant?: string;
@@ -49,21 +52,26 @@ export function expand(f: Fixture, core: string, dir?: string): Submission {
     answers[`G_${td}_EXP`] = { kind: "exposure", value: g[1] };
     answers[`G_${td}_LEA`] = { kind: "scale5", value: g[2] };
   }
-  /* 격자는 열두 영역 전부가 받는다. 적지 않은 영역은 가운데 값이다 */
+  /* 관심과 경험은 열두 영역 전부가 받는다. 적지 않은 영역은 가운데 값이다.
+     **학습 의향은 선별된 영역에만 둔다**: 화면이 그 영역만 묻는다 */
   for (const d of dom.domains) {
-    if (answers[`G_${d.code}_INT`]) continue;
-    answers[`G_${d.code}_INT`] = { kind: "scale5", value: 3 };
-    answers[`G_${d.code}_EXP`] = { kind: "exposure", value: 0 };
-    answers[`G_${d.code}_LEA`] = { kind: "scale5", value: 3 };
+    if (!answers[`G_${d.code}_INT`]) {
+      answers[`G_${d.code}_INT`] = { kind: "scale5", value: 3 };
+      answers[`G_${d.code}_EXP`] = { kind: "exposure", value: 0 };
+    }
+    if (!probe.includes(d.code)) delete answers[`G_${d.code}_LEA`];
   }
 
   for (const [td, byAxis] of Object.entries(f.axes ?? {})) {
     for (const [ax, v] of Object.entries(byAxis)) {
       const ids = bank.items
         .filter((i) => i.technical_domain === td && i.evidence_axis === ax &&
-          (i.module === "PROBE-J4" || i.module === "DEEP-J8"))
+          (i.module === PROBE_BLOCK || i.module === DEEP_BLOCK))
         .map((i) => i.item_id).sort();
-      const vals = Array.isArray(v) ? v : [v];
+      /* **수 하나를 적으면 그 칸의 문항 전부가 같은 값을 받는다.** 선별
+         축은 영역마다 문항이 둘이고, 하나만 채우면 나머지가 `봤는데 답하지
+         않았다` 로 남아 fixture 가 제품과 다른 상태를 만든다 */
+      const vals = Array.isArray(v) ? v : ids.map(() => v);
       ids.forEach((id, n) => {
         if (vals[n] === undefined) return;
         answers[id] = { kind: "level", index: vals[n] };
@@ -94,8 +102,12 @@ export function expand(f: Fixture, core: string, dir?: string): Submission {
 
   return {
     attempt_id: f.id, tier: f.tier, stage: f.stage, grad_field: f.field,
+    undergrad_core: f.undergrad ?? null,
     answers, checklists, artifacts, verifications,
     opened: { probe, deep: [...f.deep].sort() },
+    industry_interest: f.industry ? [f.industry] : [],
+    role_interest: f.roles ?? (f.role ? [f.role] : []),
+    org_interest: f.orgs ?? [],
     industry_pack: f.industry ?? null, role_pack: f.role ?? null,
   };
 }

@@ -35,6 +35,23 @@ export const FIELD_LABEL: Record<string, string> = {
 };
 
 /**
+ * 학부 전공이 기계공학 계열인가.
+ *
+ * 대학원이 인문사회나 경상 계열인 사람에게만 묻는다. 이 검사는 기계공학
+ * 경험을 재므로 **기계공학 경험이 아예 없는 사람에게는 줄 것이 없다.**
+ * 학부가 기계공학이면 경험이 실제로 있고, 그때는 받는다.
+ */
+export const UNDERGRAD_LABEL: Record<string, string> = {
+  ME: "기계공학 계열이었습니다",
+  OTHER: "기계공학 계열이 아니었습니다",
+};
+
+export const UNDERGRAD_GLOSS: Record<string, string> = {
+  ME: "기계공학 · 기계시스템 · 자동차 · 항공우주 · 조선해양 · 메카트로닉스",
+  OTHER: "이 검사는 기계공학 경험을 읽습니다. 다른 전공 검사는 준비 중입니다.",
+};
+
+/**
  * 보기 넷을 한눈에 가르는 꼬리표.
  *
  * `남이 한 것을 받아 썼다` 와 `내가 했다` 와 `내가 정하고 그 결과가
@@ -52,23 +69,35 @@ export const OWNERSHIP_TAG = [
 
 /** 산업에서 기계공학자가 실제로 다루는 것. **추천이 아니라 탐색 안내다** */
 export const INDUSTRY_HINT: Record<string, string> = {
-  INDUSTRY_SEMICON_V1: "정밀 기구 · 열변형 · 진공 · 장비 신뢰성",
-  INDUSTRY_DEFENSE_V1: "구조 · 진동과 충격 · 시험 평가 · 체계 요구",
-  INDUSTRY_MOBILITY_V1: "양산 설계 · 원가와 공정 · 내구 · 소음과 진동",
-  INDUSTRY_ROBOT_V1: "구동과 기구 · 제어 연동 · 반복 정밀도 · 택트",
-  INDUSTRY_BATTERY_V1: "열 관리 · 전극과 조립 공정 · 안전 · 수율",
-  INDUSTRY_SHIP_V1: "대형 구조 · 선급 규칙 · 블록 공정 · 용접과 변형",
-  INDUSTRY_ENERGY_V1: "안전 등급 · 열유체 · 재료 열화 · 품질 기록",
-  INDUSTRY_SMARTFACTORY_V1: "설비와 라인 · 자동화 연동 · 가동률 · 계측",
+  INDUSTRY_SEMICON_V2: "정밀 구조 · 열변형 · 떨림 · 진공 · 장비 가동",
+  INDUSTRY_DEFENSE_V2: "요구조건 · 경량화 근거 · 충격과 진동 · 환경 시험",
+  INDUSTRY_MOBILITY_V2: "원가와 무게 · 양산성 · 내구 · 소음과 진동",
+  INDUSTRY_ROBOT_V2: "부하와 관성 · 구동 선정 · 전달계 · 반복 정밀도",
+  INDUSTRY_BATTERY_V2: "열 빼는 길 · 부풀림 구조 · 좁은 조건 폭 · 수율",
+  INDUSTRY_SHIP_V2: "큰 구조 · 선급 규정 · 용접 변형 · 부식과 수명",
+  INDUSTRY_ENERGY_V2: "계통 작동점 · 회전기계 상태 · 점검 주기 · 가동률",
+  INDUSTRY_SMARTFACTORY_V2: "자동화 범위 · 장치 제작 · 라인 흐름 · 측정과 기록",
 };
 
 /** 그 역할이 실제로 내리는 판단. **순위를 뜻하지 않는다** */
 export const ROLE_HINT: Record<string, string> = {
-  ROLE_DESIGN_V1: "형상·치수·공차를 결정합니다",
-  ROLE_CAE_V1: "해석 조건을 정하고 결과를 검증합니다",
-  ROLE_RND_V1: "방법을 설계하고 범위를 좁혀갑니다",
-  ROLE_TEST_V1: "측정 방법을 정하고 합격 여부를 판정합니다",
-  ROLE_MFG_V1: "같은 품질이 나오도록 공정 조건을 잡습니다",
-  ROLE_QUALITY_V1: "불량 원인을 기준에 따라 추적합니다",
-  ROLE_PM_V1: "요구·일정·위험을 함께 보고 결정합니다",
+  ROLE_DESIGN_V2: "형상과 치수와 공차를 확정합니다",
+  ROLE_CAE_V2: "만들기 전에 예측하고 그 예측을 책임집니다",
+  ROLE_RND_V2: "쓸 방법이 없을 때 방법을 세웁니다",
+  ROLE_TEST_V2: "재는 방법과 합격 기준을 정하고 판정합니다",
+  ROLE_MFG_V2: "같은 것이 반복해서 나오는 조건을 잡습니다",
+  ROLE_MAINT_V2: "장비가 제 성능을 내게 하고 멈추면 되살립니다",
+  ROLE_QUALITY_V2: "양산과 수명 내내 요구가 지켜지는지 보증합니다",
+  ROLE_PM_V2: "요구와 일정과 역할을 묶어 순서를 세웁니다",
+};
+
+/** 조직유형. **점수에 쓰이지 않고 결과를 읽는 순서만 정한다** */
+export const ORG_HINT: Record<string, string> = {
+  OC1: "요구를 받고 여러 부품을 하나로 묶습니다",
+  OC2: "한 영역을 깊게 하고 고객 검증을 받습니다",
+  OC3: "남의 문제를 받아 가정을 공개하고 답을 냅니다",
+  OC4: "과제 서식과 중간 평가가 일정을 정합니다",
+  OC5: "방법의 타당성을 스스로 세워야 합니다",
+  OC6: "판단의 추적 가능성이 산출물입니다",
+  OC7: "한 사람이 여러 역할을 겹쳐 맡습니다",
 };

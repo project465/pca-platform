@@ -7,6 +7,17 @@ export type Tier = "BASIC" | "STANDARD" | "PRO";
 export type Stage = "bachelor" | "master" | "phd" | "postdoc";
 export type GradField =
   | "STEM" | "HUMANITIES_SOCIAL" | "BUSINESS" | "OTHER_INTERDISCIPLINARY";
+
+/**
+ * 학부 전공이 기계공학 계열인가.
+ *
+ * 기계공학 Core 는 **비이공계 대학원생을 받지 않는다.** 받으면 기계공학의
+ * 축 수준이 다른 전공의 경험으로 서고, 그 결과지는 기계공학 진로를 말하는
+ * 척하면서 다른 것을 재고 있다. 다만 **학부가 기계공학이고 대학원만
+ * 타계열인 사람은 기계공학 경험이 실제로 있다.** 그 사람은 받고, 대학원
+ * 경험은 축 수준이 아니라 번역 맥락으로만 다룬다.
+ */
+export type UndergradCore = "ME" | "OTHER";
 export type Axis = "J1" | "J2" | "J3" | "J4" | "J5" | "J6" | "J7" | "J8";
 
 /**
@@ -34,6 +45,8 @@ export type Submission = {
   stage: Stage;
   /** 석사 이상만 받는다. 학사는 `null` */
   grad_field: GradField | null;
+  /** 석사 이상이고 대학원이 타계열일 때만 본다. 학사는 `null` */
+  undergrad_core?: UndergradCore | null;
   /** 열린 문항의 응답. 키에 없으면 **routing 밖**이다 */
   answers: Record<string, Answer>;
   /** 축마다 고른 판단 체크리스트 항목. 키는 `TD02.J3` */
@@ -44,6 +57,12 @@ export type Submission = {
   verifications?: Record<string, string[]>;
   /** 선별과 심화를 연 영역 */
   opened?: { probe: string[]; deep: string[] };
+  /** 관심 산업 최대 둘. 깊이 묻는 것은 그 가운데 하나다 */
+  industry_interest?: string[];
+  /** 관심 역할 최대 둘 */
+  role_interest?: string[];
+  /** 선호 조직유형 최대 둘. **점수에 들어가지 않는다** */
+  org_interest?: string[];
   industry_pack?: string | null;
   role_pack?: string | null;
 };
@@ -123,6 +142,7 @@ export type Snapshot = {
   tier: Tier;
   stage: Stage;
   grad_field: GradField | null;
+  undergrad_core: UndergradCore | null;
   module_versions: ModuleVersions;
   tier_limits: TierLimits;
   domains: DomainResult[];
@@ -136,8 +156,16 @@ export type Snapshot = {
   response_quality: ResponseQuality;
   /** 선호와 목표와 번역은 Core 판정에 들어가지 않는다 */
   context: {
-    role_preference: Record<string, number>;
-    org_preference: Record<string, number>;
+    /**
+     * 고른 관심 역할과 선호 조직유형. **점수에 들어가지 않는다.**
+     *
+     * 전에는 일곱 역할과 일곱 조직을 다섯 점 척도로 받았다. 열네 줄을
+     * 받아 결과지에 한 글자도 쓰지 않았다. 고르기로 바꾸고 둘까지만
+     * 받는다: routing 과 결과 맥락이 읽는다.
+     */
+    role_interest: string[];
+    org_interest: string[];
+    industry_interest: string[];
     target: Record<string, string>;
     translation_steps: string[];
     industry: PackContext | null;

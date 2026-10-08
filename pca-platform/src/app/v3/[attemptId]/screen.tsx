@@ -4,11 +4,21 @@ import { useCallback, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Answer } from "@/lib/me-v3/scoring/types";
 import {
-  answerAction, cursorAction, finishAction, noteAction, packAction, picksAction,
-  profileAction,
+  answerAction, cursorAction, finishAction, noteAction, picksAction,
+  picksAction3, profileAction,
 } from "./actions";
-import { FIELD_LABEL, STAGE_LABEL } from "../tier-text";
+import {
+  FIELD_LABEL, STAGE_LABEL, UNDERGRAD_GLOSS, UNDERGRAD_LABEL,
+} from "../tier-text";
 import type { Field, ProgressModel, ScreenModel } from "./model";
+
+/**
+ * 고른 자리가 켜졌다는 것을 눈으로 본 뒤에 넘어가는 시간.
+ *
+ * **0 으로 두지 않는다.** 누른 즉시 넘어가면 응시자는 자기가 무엇을
+ * 골랐는지 보지 못하고, 잘못 눌렀을 때 무엇이 눌렸는지도 모른다.
+ */
+const AUTO_MS = 250;
 
 /**
  * 응시 화면 하나.
@@ -18,12 +28,18 @@ import type { Field, ProgressModel, ScreenModel } from "./model";
  * 문항마다 보내도 느려지지 않는다(ME_V2 는 한 화면에 열 문항이라 묶어
  * 보냈다).
  *
- * **자동으로 다음 화면으로 넘기지 않는다.** 고르는 순간 넘어가면 잘못
- * 누른 것을 고칠 자리가 없고, 그 오선택이 그대로 판정에 들어간다.
+ * **한 선택으로 끝나는 화면은 눌리면 넘어간다.** 전에는 모든 화면에서
+ * `다음` 을 누르게 했고, 보기 하나를 고르고 단추를 또 누르는 동작이
+ * 백 번 되풀이됐다. 긴 설문처럼 느껴진 까닭의 절반이 그 두 번째 누름이다.
+ * 고른 자리가 켜진 것을 보고 0.25초 뒤에 넘어가고, `이전` 은 늘 열려
+ * 있어서 잘못 누른 것을 고칠 수 있다.
  *
- * **뒤로 가서 고칠 수 있다.** 격자를 고치면 뒤에 묻는 영역이 달라지므로
- * 서버가 다시 센다(`recomputeRouting`). 이미 답한 심화 응답은 지우지
- * 않는다: 영역이 빠지면 읽히지 않을 뿐이고 되돌아오면 그대로 쓰인다.
+ * **훑기와 복수 선택과 근거 고르기와 적는 칸은 손으로 넘긴다.** 거기서
+ * 자동으로 넘기면 나머지를 고를 수 없다.
+ *
+ * **뒤로 가서 고칠 수 있다.** 영역 훑기를 고치면 뒤에 묻는 영역이
+ * 달라지므로 서버가 다시 센다(`recomputeRouting`). 이미 답한 심화 응답은
+ * 지우지 않는다: 영역이 빠지면 읽히지 않을 뿐이고 되돌아오면 그대로 쓰인다.
  */
 export default function Screen({
   s, prog, tier, tierLabel,
@@ -37,9 +53,12 @@ export default function Screen({
     Object.fromEntries(s.fields.map((f) => [f.itemId, f.note ?? ""])));
   const [picks, setPicks] = useState<Record<string, string[]>>(
     Object.fromEntries((s.groups ?? []).map((g) => [g.slot, g.picked])));
-  const [pack, setPack] = useState<string | null>(s.picked ?? null);
+  const [many, setMany] = useState<string[]>(s.pickedMany ?? []);
+  /** 산업을 고르지 않겠다고 말한 자리. 빈 선택과 아직 안 고른 것을 가른다 */
+  const [noPick, setNoPick] = useState(false);
   const [stage, setStage] = useState(s.profile?.stage ?? "bachelor");
   const [field, setField] = useState(s.profile?.field ?? "STEM");
+  const [undergrad, setUndergrad] = useState(s.profile?.undergrad ?? "");
   const [saving, setSaving] = useState(0);
   /* 한 번도 보내지 않았는데 `저장됨` 이라고 적지 않는다 */
   const [sent, setSent] = useState(false);
@@ -59,6 +78,11 @@ export default function Screen({
     setVals((v) => ({ ...v, [f.itemId]: raw }));
     setWarn(false);
     push(() => answerAction(s.attemptId, f.itemId, a));
+    /* 한 선택으로 끝나는 화면은 켜진 것을 보여 준 뒤에 넘어간다 */
+    if (s.auto && s.fields.length === 1 && s.nextIndex !== null) {
+      setMoving(true);
+      window.setTimeout(() => { void go(s.nextIndex); }, AUTO_MS);
+    }
   };
 
   const setNote = (f: Field, text: string) => {
@@ -76,9 +100,25 @@ export default function Screen({
     if (s.domain) push(() => picksAction(s.attemptId, s.domain as string, slot, next));
   };
 
-  const choosePack = (kind: "industry" | "role", code: string) => {
-    setPack(code);
-    push(() => packAction(s.attemptId, kind, code));
+  /**
+   * 관심 산업과 역할과 조직. **둘까지 고르고 강제하지 않는다.**
+   *
+   * 셋째를 누르면 가장 먼저 고른 것이 빠진다. 꽉 찼다고 막으면 응시자는
+   * 무엇을 지워야 하는지 모른 채 눌리지 않는 화면을 본다.
+   */
+  const toggleMany = (code: string) => {
+    const max = s.max ?? 2;
+    const next = many.includes(code)
+      ? many.filter((x) => x !== code)
+      : [...many, code].slice(-max);
+    setMany(next);
+    setNoPick(false);
+    if (s.pickKind) push(() => picksAction3(s.attemptId, s.pickKind as string as "industry", next));
+  };
+  const clearMany = () => {
+    setMany([]);
+    setNoPick(true);
+    if (s.pickKind) push(() => picksAction3(s.attemptId, s.pickKind as string as "industry", []));
   };
 
   const filled = s.fields.every((f) => vals[f.itemId] !== null && vals[f.itemId] !== undefined);
@@ -106,11 +146,12 @@ export default function Screen({
     setMoving(false);
   };
 
-  const mid = s.kind === "transition" || s.kind === "done";
+  const mid = s.kind === "transition" || s.kind === "done" || s.kind === "scene";
   /* **폭을 화면 성격으로 가른다.** 질문은 좁게 모으고, 고르거나 훑거나
      쉬는 자리는 넓게 편다 */
-  const width = s.kind === "checklist" || s.kind === "pick-industry" || s.kind === "pick-role"
-    ? " is-explore" : mid ? " is-calm" : "";
+  const wide = s.kind === "checklist" || s.kind === "sweep" || !!s.pickKind;
+  const width = wide ? " is-explore"
+    : (s.kind === "transition" || s.kind === "done") ? " is-calm" : "";
 
   return (
     <div className={`qs${width}`}>
@@ -143,6 +184,12 @@ export default function Screen({
         {/* 전환 화면의 도움말은 **이제 볼 영역의 목록**이다. 한 줄로 이어
             붙이면 가운뎃점으로 묶인 긴 문장이 되고, 쉬는 자리가 빈 화면이
             된다. 줄로 세우면 무엇을 보러 가는지가 그대로 읽힌다 */}
+        {s.kind === "scene" && s.body ? (
+          <ul className="qs-scene">
+            {s.body.map((x) => <li key={x}>{x}</li>)}
+          </ul>
+        ) : null}
+
         {s.kind === "transition" && s.help ? (
           <ul className="qs-strip">
             {s.help.split(" · ").map((x, i) => (
@@ -182,7 +229,7 @@ export default function Screen({
                         <input type="radio" name="field" checked={field === v}
                           onChange={() => {
                             setField(v);
-                            push(() => profileAction(s.attemptId, stage, v));
+                            push(() => profileAction(s.attemptId, stage, v, undergrad || null));
                           }} />
                         <span className="qs-mark" aria-hidden />
                         <span className="qs-body"><span className="qs-label">{FIELD_LABEL[v]}</span></span>
@@ -191,26 +238,69 @@ export default function Screen({
                 </div>
               </fieldset>
             ) : null}
+            {/* 대학원이 인문사회나 경상 계열일 때만 묻는다. 이 검사는
+                기계공학 경험을 읽으므로, 학부도 기계공학이 아니면 읽을
+                것이 없다. 학부가 기계공학이면 경험이 실제로 있다 */}
+            {stage !== "bachelor"
+              && (field === "HUMANITIES_SOCIAL" || field === "BUSINESS") ? (
+                <fieldset className="qs-opts">
+                  <legend>학부 전공</legend>
+                  <p className="qs-eyebrow" aria-hidden>학부 전공</p>
+                  <div className="qs-list">
+                    {(["ME", "OTHER"] as const).map((v) => (
+                      <label key={v} className={`qs-opt${undergrad === v ? " is-on" : ""}`}>
+                        <input type="radio" name="undergrad" checked={undergrad === v}
+                          onChange={() => {
+                            setUndergrad(v);
+                            push(() => profileAction(s.attemptId, stage, field, v));
+                          }} />
+                        <span className="qs-mark" aria-hidden />
+                        <span className="qs-body">
+                          <span className="qs-label">{UNDERGRAD_LABEL[v]}</span>
+                          <span className="qs-gloss">{UNDERGRAD_GLOSS[v]}</span>
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
+              ) : null}
+            {stage !== "bachelor" && undergrad === "OTHER"
+              && (field === "HUMANITIES_SOCIAL" || field === "BUSINESS") ? (
+                <p className="qs-need" style={{ marginTop: 16, display: "block" }}>
+                  이 검사는 기계공학 경험을 읽습니다. 학부와 대학원 모두
+                  기계공학 계열이 아니면 드릴 수 있는 결과가 없습니다.
+                  전공별 검사가 준비되면 알려드리겠습니다.
+                </p>
+              ) : null}
           </>
         ) : null}
 
-        {/* ── 보기 하나를 고르는 화면 ── */}
-        {s.fields.length === 1 && s.fields[0].control.kind !== "scale5"
-          && s.fields[0].control.kind !== "exposure" ? (
-            <One f={s.fields[0]} value={vals[s.fields[0].itemId]}
-              onPick={setAnswer} notes={notes} onNote={setNote} onNoteDone={flushNote} />
-          ) : null}
+        {/* ── 열두 줄을 한 화면에서 훑는 자리 ──
+            **한 영역씩 열두 화면으로 세우지 않는다.** 줄을 나란히 두어야
+            서로 견주면서 빠르게 내려갈 수 있고, 같은 질문을 열두 번 보는
+            느낌이 사라진다 */}
+        {s.kind === "sweep" ? (
+          <div className="qs-sweep">
+            {s.fields.map((f) => (
+              <Sweep key={f.itemId} f={f} value={vals[f.itemId]} onPick={setAnswer} />
+            ))}
+          </div>
+        ) : null}
 
-        {/* ── 척도가 여럿 서는 화면(격자 · 선호 · 목표) ── */}
-        {s.fields.length > 1 || (s.fields.length === 1
-          && (s.fields[0].control.kind === "scale5" || s.fields[0].control.kind === "exposure")) ? (
-            <div className="qs-rows">
-              {s.fields.map((f) => (
-                <Row key={f.itemId} f={f} value={vals[f.itemId]} onPick={setAnswer}
-                  notes={notes} onNote={setNote} onNoteDone={flushNote} />
-              ))}
-            </div>
-          ) : null}
+        {/* ── 보기 하나를 고르는 화면 ── */}
+        {s.kind !== "sweep" && s.fields.length === 1 ? (
+          <One f={s.fields[0]} value={vals[s.fields[0].itemId]}
+            onPick={setAnswer} notes={notes} onNote={setNote} onNoteDone={flushNote} />
+        ) : null}
+
+        {s.kind !== "sweep" && s.fields.length > 1 ? (
+          <div className="qs-rows">
+            {s.fields.map((f) => (
+              <Row key={f.itemId} f={f} value={vals[f.itemId]} onPick={setAnswer}
+                notes={notes} onNote={setNote} onNoteDone={flushNote} />
+            ))}
+          </div>
+        ) : null}
 
         {s.guide ? <p className="qs-guide">{s.guide}</p> : null}
 
@@ -248,22 +338,33 @@ export default function Screen({
           </>
         ) : null}
 
-        {/* ── 산업과 역할 고르기 ── */}
+        {/* ── 산업과 역할과 조직 고르기 ── **둘까지 고르고 강제하지 않는다** */}
         {s.packs ? (
-          <fieldset className="qs-opts" style={{ margin: 0, border: 0, padding: 0 }}>
-            <legend>{s.question}</legend>
-            <div className="qs-cards">
-              {s.packs.map((p) => (
-                <label key={p.code} className={`qs-card${pack === p.code ? " is-on" : ""}`}>
-                  <input type="radio" name="pack" value={p.code} checked={pack === p.code}
-                    onChange={() => choosePack(
-                      s.kind === "pick-industry" ? "industry" : "role", p.code)} />
-                  <b>{p.name}</b>
-                  <span>{p.gloss}</span>
-                </label>
-              ))}
-            </div>
-          </fieldset>
+          <>
+            <p className="qs-picked">
+              <span>선택 <b>{many.length}</b> / {s.max ?? 2}</span>
+              <span className="qs-grow" />
+              <span>{many.length >= (s.max ?? 2)
+                ? "다른 것을 고르면 먼저 고른 것이 빠집니다"
+                : "고르지 않고 넘어가셔도 됩니다"}</span>
+            </p>
+            <fieldset className="qs-opts" style={{ margin: 0, border: 0, padding: 0 }}>
+              <legend>{s.question}</legend>
+              <div className="qs-cards">
+                {s.packs.map((p) => (
+                  <label key={p.code} className={`qs-card${many.includes(p.code) ? " is-on" : ""}`}>
+                    <input type="checkbox" value={p.code} checked={many.includes(p.code)}
+                      onChange={() => toggleMany(p.code)} />
+                    <b>{p.name}</b>
+                    <span>{p.gloss}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+            <button type="button"
+              className={`qs-none${noPick && !many.length ? " is-on" : ""}`}
+              onClick={clearMany}>아직 잘 모르겠습니다</button>
+          </>
         ) : null}
 
         {/* ── 완료 ── **판정을 적지 않는다.** 무엇을 물었고 무엇을 받았는가까지 */}
@@ -281,6 +382,10 @@ export default function Screen({
                     <b>{s.summary.deep.join(" · ")}</b>
                   </li>
                 ) : null}
+                <li>
+                  <span>실제 판단을 물은 문항</span>
+                  <b>{s.summary.judged}개</b>
+                </li>
                 <li>
                   <span>응답과 선택</span>
                   <b>답변 {s.answered}개
@@ -410,6 +515,39 @@ function One({
 
 /* ── 한 줄짜리 척도. 격자와 선호 화면이 쓴다 ───────────────────────── */
 
+/* ── 훑기 한 줄. 왼쪽에 영역, 오른쪽에 보기 셋 ──────────────────── */
+
+function Sweep({
+  f, value, onPick,
+}: {
+  f: Field; value: number | string | null;
+  onPick: (f: Field, raw: number | string, a: Answer) => void;
+}) {
+  const c = f.control;
+  if (c.kind !== "pick3") return null;
+  return (
+    <fieldset className="qs-sw">
+      <legend>{f.label ?? ""}</legend>
+      <span className="qs-sw-row" aria-hidden>{f.label}</span>
+      <div className="qs-p3">
+        {c.options.map((o) => {
+          const on = value === o.value;
+          return (
+            <label key={o.value} className={`qs-p3b${on ? " is-on" : ""}`}>
+              <input type="radio" name={f.itemId} checked={on}
+                aria-label={`${f.label ?? ""} · ${o.label}`}
+                onChange={() => onPick(f, o.value, c.answer === "exposure"
+                  ? { kind: "exposure", value: o.value }
+                  : { kind: "scale5", value: o.value })} />
+              {o.label}
+            </label>
+          );
+        })}
+      </div>
+    </fieldset>
+  );
+}
+
 function Row({
   f, value, onPick, notes, onNote, onNoteDone,
 }: {
@@ -420,6 +558,9 @@ function Row({
   onNoteDone: (f: Field) => void;
 }) {
   const c = f.control;
+  if (c.kind === "pick3") {
+    return <Sweep f={f} value={value} onPick={onPick} />;
+  }
   if (c.kind === "scale5" || c.kind === "exposure") {
     const labels = c.kind === "scale5" ? c.labels : c.options;
     /* 1 에서 5 · 없다에서 여러 번. **값의 뜻을 양 끝에만 적지 않는다**:

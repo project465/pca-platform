@@ -15,7 +15,13 @@ export type BankItem = {
   measurement_axis: string; education_routing: string;
   response_scale: string | null; reverse_flag: boolean;
   consistency_pair: string | null;
+  /** 어디서 온 문항인가. `me-v3-2-migration.json` 이 이 값을 센다 */
+  origin?: string; old_item_id?: string | null; change_reason?: string | null;
 };
+
+/** 선별 네 축을 묻는 묶음과 심화 네 축을 묻는 묶음 */
+export const PROBE_BLOCK = "PROBE-S4";
+export const DEEP_BLOCK = "DEEP-S8";
 
 export type Bank = {
   items: BankItem[];
@@ -53,25 +59,45 @@ export function read(sub: Submission, item: BankItem, routed: boolean): Reading 
   return { answer: a, missing: "NONE_MISSING" };
 }
 
+/**
+ * 대학원이 타계열인가. **학부 기계공학인 사람만 여기까지 온다**
+ * (`profileReady` 가 앞에서 거른다).
+ */
+function crossField(sub: Submission): boolean {
+  if (sub.stage === "bachelor") return false;
+  return sub.grad_field === "HUMANITIES_SOCIAL" || sub.grad_field === "BUSINESS";
+}
+
 /** 그 문항이 이 응시에서 열리는가 */
 export function routedFor(sub: Submission, item: BankItem): boolean {
   const rank = { BASIC: 0, STANDARD: 1, PRO: 2 };
   if (rank[item.tier as keyof typeof rank] > rank[sub.tier]) return false;
+  /* 학위 묶음. **계열 코드로 가중치를 걸지 않는다**: 어느 묶음을 받는지만
+     달라지고 같은 응답이면 축 수준이 같다 */
   const r = item.education_routing;
-  if (r.startsWith("bachelor") && sub.stage !== "bachelor") return false;
-  if (r.startsWith("master+")) {
-    if (sub.stage === "bachelor") return false;
-    const want = r.split("·")[1]?.trim();
-    if (want && want !== sub.grad_field) return false;
+  if (r === "ug-core" && !(sub.stage === "bachelor" || crossField(sub))) return false;
+  if (r === "grad-stem" && (sub.stage === "bachelor" || crossField(sub))) return false;
+  if (r === "xfield" && !crossField(sub)) return false;
+  /* 영역 훑기의 학습 의향은 **선별된 영역에만** 묻는다. 열두 영역에 다
+     물으면 같은 칸을 세 번 지난다. 묻지 않은 것을 `없다` 로 적지 않으려고
+     여기서 routing 밖으로 내린다 */
+  if (item.module === "CORE-GRID" && item.measurement_axis === "learning_intent") {
+    return (sub.opened?.probe ?? []).includes(String(item.technical_domain));
   }
-  if (item.technical_domain && item.module === "PROBE-J4") {
+  if (item.technical_domain && item.module === PROBE_BLOCK) {
     return (sub.opened?.probe ?? []).includes(item.technical_domain);
   }
-  if (item.technical_domain && item.module === "DEEP-J8") {
+  if (item.technical_domain && item.module === DEEP_BLOCK) {
     return (sub.opened?.deep ?? []).includes(item.technical_domain);
   }
-  if (item.module === "INDUSTRY") return item.item_id.startsWith(String(sub.industry_pack));
-  if (item.module === "ROLE") return item.item_id.startsWith(String(sub.role_pack));
+  if (item.module === "INDUSTRY") {
+    return !!sub.industry_pack && item.item_id.startsWith(`${sub.industry_pack}_`);
+  }
+  if (item.module === "ROLE") {
+    const picked = sub.role_interest?.length
+      ? sub.role_interest : [sub.role_pack ?? ""];
+    return picked.some((c) => c && item.item_id.startsWith(`${c}_`));
+  }
   return true;
 }
 

@@ -148,11 +148,17 @@ function main(): void {
     ok("조합별 문항세트를 복제하지 않는다", authored < duplicated / 4,
        `조합 ${I * R}벌 · 쓴 문항 ${authored} · 복제하면 ${duplicated}`);
 
-    /* 한 응시에서 깊게 보는 것은 산업 하나와 역할 하나 */
+    /* 한 응시에서 깊게 보는 것은 산업 하나와 역할 둘까지다.
+       역할이 둘인 까닭: 응시자가 고르는 것은 `어떤 일을 더 보고 싶은가`
+       이고, 설계와 해석처럼 **서로 붙어 있는 둘을 견주고 싶은 사람**이
+       많다. 하나로 막으면 그 비교가 결과지에서만 가능해진다. 셋을 열지
+       않는 까닭은 응답이 스물한 개 늘어나기 때문이다 */
+    const added = cap.industry_items_max * cap.deep_industry_max
+      + cap.role_items_max * cap.deep_role_max;
     ok("한 응시의 깊이 모듈 상한",
-       cap.deep_industry_max === 1 && cap.deep_role_max === 1,
+       cap.deep_industry_max === 1 && cap.deep_role_max <= 2 && added <= 30,
        `산업 ${cap.deep_industry_max} · 역할 ${cap.deep_role_max} · 더해지는 응답 최대 ` +
-       `${cap.industry_items_max + cap.role_items_max}`);
+       `${added}`);
 
     /* 판본 */
     const noVer = [...ind.packs, ...role.packs].filter((p: any) => !p.version);

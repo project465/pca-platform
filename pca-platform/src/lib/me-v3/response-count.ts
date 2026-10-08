@@ -13,11 +13,15 @@
  */
 
 export type Blocks = {
-  grid: number; judge: number; force: number;
+  /** 영역 훑기에서 **고정으로** 받는 수. 관심 열둘 + 경험 열둘 */
+  grid: number;
+  judge: number; force: number;
   probePerDomain: number; deepPerDomain: number;
-  pref: number; consist: number; trans: number; target: number;
+  /** 영역 하나당 학습 의향. 선별된 영역에만 묻는다 */
+  learningPerDomain: number;
+  consist: number; trans: number; target: number;
   branch: number;
-  /** 산업팩 하나 + 역할팩 하나 */
+  /** 산업팩 하나 + 역할팩 둘까지 */
   pack: number;
 };
 
@@ -36,11 +40,13 @@ export const DOMAINS_BY_TIER = { basic: 2, standard: 3, standard4: 4 } as const;
 
 export function counts(b: Blocks): Counts {
   const fixed = b.grid + b.judge + b.force;
-  const basic = fixed + b.branch + b.probePerDomain * DOMAINS_BY_TIER.basic;
-  /** 심화 영역 하나를 여는 값. 선별 넷이 아직 없으면 그것까지 */
-  const openDomain = b.probePerDomain + b.deepPerDomain;
+  /** 선별 영역 하나를 여는 값. 그 영역의 선별 축과 학습 의향 */
+  const openProbe = b.probePerDomain + b.learningPerDomain;
+  const basic = fixed + b.branch + openProbe * DOMAINS_BY_TIER.basic;
+  /** 심화 영역 하나를 여는 값. 선별 축이 아직 없으면 그것까지 */
+  const openDomain = openProbe + b.deepPerDomain;
   const deepOnly = b.deepPerDomain * DOMAINS_BY_TIER.basic;
-  const stdAdd = deepOnly + openDomain + b.pref + b.consist;
+  const stdAdd = deepOnly + openDomain + b.consist;
   const standard = basic + stdAdd;
   const standard4 = standard + openDomain;
   const proAdd = b.trans + b.target;
@@ -60,6 +66,8 @@ export function counts(b: Blocks): Counts {
 /** 추정 시간. **실측이 아니다.** 파일럿에서 재서 고친다 */
 export const SECONDS = {
   grid: 5, lv4: 18, five: 8, force: 15, pick: 20, trans: 40,
+  /** 산업 장면 한 절. 읽기만 한다 */
+  scene: 25,
   /** 영역마다 한 번 띄우는 판단·산출물·검증 체크리스트 */
   checklist: 60,
   /** 안내와 영역 고르기 */
@@ -69,9 +77,11 @@ export const SECONDS = {
 export function minutes(b: Blocks): Record<string, number> {
   const S = SECONDS;
   const basic = b.grid * S.grid + b.judge * S.lv4 + b.force * S.force +
-    (b.probePerDomain * DOMAINS_BY_TIER.basic + b.branch) * S.lv4 + S.intro;
+    (b.probePerDomain * DOMAINS_BY_TIER.basic + b.branch) * S.lv4 +
+    b.learningPerDomain * DOMAINS_BY_TIER.basic * S.grid +
+    DOMAINS_BY_TIER.basic * S.checklist + S.intro + S.pick + S.scene;
   const stdAdd = (b.probePerDomain + b.deepPerDomain * DOMAINS_BY_TIER.standard) * S.lv4 +
-    b.pref * S.five + b.consist * S.lv4 + DOMAINS_BY_TIER.standard * S.checklist;
+    b.consist * S.lv4 + S.checklist + S.pick * 2;
   const proAdd = b.trans * S.trans + b.target * S.pick;
   const packAdd = b.pack * S.lv4;
   const m = (x: number) => Math.round(x / 60);

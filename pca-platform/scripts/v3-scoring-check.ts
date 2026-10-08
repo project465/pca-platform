@@ -147,10 +147,10 @@ function main(): void {
      ["STEM", "HUMANITIES_SOCIAL", "BUSINESS", "OTHER_INTERDISCIPLINARY"].every((fd) =>
        variant({ field: fd as Fixture["field"] }) === baseCore), "계열 넷");
   ok("C 산업팩만 바꿔도 Core 판정이 같다",
-     ["INDUSTRY_SEMICON_V1", "INDUSTRY_DEFENSE_V1", "INDUSTRY_MOBILITY_V1", null]
+     ["INDUSTRY_SEMICON_V2", "INDUSTRY_DEFENSE_V2", "INDUSTRY_MOBILITY_V2", null]
        .every((ind) => variant({ industry: ind }) === baseCore), "반도체·방산·자동차·없음");
   ok("D 역할팩만 바꿔도 Core 판정이 같다",
-     ["ROLE_CAE_V1", "ROLE_PM_V1", "ROLE_DESIGN_V1", null]
+     ["ROLE_CAE_V2", "ROLE_PM_V2", "ROLE_DESIGN_V2", null]
        .every((r) => variant({ role: r }) === baseCore), "CAE·PM·설계·없음");
 
   /* E 관심만 올리면 축 상태는 그대로다 */
@@ -224,14 +224,27 @@ function main(): void {
         d.axes[a].from.some((x) => x.ownership === "DECIDED_USED")));
   });
   ok("소유는 응답과 근거 둘을 함께 본다", ownedNeedsEvidence);
-  /* 근거가 하나면 확인까지만 */
+  /* 근거가 하나면 확인까지만.
+     **선별 축은 문항이 둘이고 둘 다 수행 이상이면 그것이 근거 하나로
+     센다.** 그래서 이 자리에서는 둘째 문항을 비워 둔다: 그러지 않으면
+     체크리스트 하나만 골라도 근거가 둘이 되어 재려는 것을 못 잰다 */
   const one = score(expand({
-    ...base, checklist: { TD02: { J3: 1 } }, artifacts: {}, verify: {},
+    ...base, axes: { ...base.axes, TD02: { ...base.axes?.TD02, J3: [3, 0] } },
+    checklist: { TD02: { J3: 1 } }, artifacts: {}, verify: {},
   }, core), loaded);
   const td02 = one.domains.find((d) => d.code === "TD02");
   ok("근거가 하나면 소유로 올리지 않는다",
      td02?.axes.J3.state === "CONFIRMED" && td02.axes.J3.evidence === 1,
      `J3 ${td02?.axes.J3.state} · 근거 ${td02?.axes.J3.evidence}`);
+  /* 뒤집어도 같다: 선별 축의 두 문항을 다 채우면 근거 하나가 선다 */
+  const two = score(expand({
+    ...base, checklist: { TD02: { J3: 1 } }, artifacts: {}, verify: {},
+  }, core), loaded);
+  const td02b = two.domains.find((d) => d.code === "TD02");
+  ok("선별 축의 두 문항을 다 채우면 근거 하나로 센다",
+     td02b?.axes.J3.evidence === 2 && td02b.axes.J3.state === "OWNED" &&
+     (td02b.axes.J3.evidence_keys ?? []).includes("second_item"),
+     `근거 ${td02b?.axes.J3.evidence} (${(td02b?.axes.J3.evidence_keys ?? []).join(" · ")})`);
 
   /* 9. 받아 쓴 응답을 확인으로 세지 않는다 */
   const received = score(expand({
@@ -307,14 +320,14 @@ function main(): void {
 
   /* 15. 산업·역할은 Core 를 다시 계산하지 않고 읽는 순서만 만든다 */
   const withPack = score(expand({
-    ...base, industry: "INDUSTRY_MOBILITY_V1", role: "ROLE_CAE_V1",
+    ...base, industry: "INDUSTRY_MOBILITY_V2", role: "ROLE_CAE_V2",
   }, core), loaded);
   ok("팩을 골라도 Core 판정이 같다",
      stable(coreOnly(withPack)) === baseCore,
      `읽는 순서 ${withPack.context.industry?.explain_order.join("·")}`);
   ok("팩 판본이 스냅샷에 적힌다",
-     withPack.module_versions.industry_pack_version === "INDUSTRY_MOBILITY_V1.v1" &&
-     withPack.module_versions.role_pack_version === "ROLE_CAE_V1.v1");
+     withPack.module_versions.industry_pack_version === "INDUSTRY_MOBILITY_V2.v2" &&
+     withPack.module_versions.role_pack_version === "ROLE_CAE_V2.v2");
 
   /* 16. 스냅샷에 판본 여섯 칸 */
   const v = (snaps.get("P12") as Snapshot).module_versions;

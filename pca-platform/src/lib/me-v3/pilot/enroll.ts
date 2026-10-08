@@ -161,10 +161,10 @@ export async function redeem(t: string, userId: string): Promise<RedeemResult> {
   await query(
     `INSERT INTO entitlements
        (user_id, product_code, kind, tier, major_code, assessment_version, status)
-     SELECT $1, $2, 'report', $3, 'ME', 'ME_V3_DOMAIN_2026', 'active'
+     SELECT $1, $2, 'report', $3, 'ME', 'ME_V3_2', 'active'
       WHERE NOT EXISTS (
         SELECT 1 FROM entitlements x
-         WHERE x.user_id = $1 AND x.assessment_version = 'ME_V3_DOMAIN_2026'
+         WHERE x.user_id = $1 AND x.assessment_version = 'ME_V3_2'
            AND x.status = 'active')`,
     [userId, PRODUCT[e.tier], e.tier]);
 

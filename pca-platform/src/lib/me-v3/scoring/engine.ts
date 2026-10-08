@@ -15,7 +15,10 @@
 import { coreFile } from "../core-registry";
 import { axisResult, isConfirmed } from "./axes";
 import { ownershipIndex } from "./ownership";
-import { loadBank, band, routedFor, read, type Bank, type BankItem } from "./normalize";
+import {
+  loadBank, band, routedFor, read, DEEP_BLOCK, PROBE_BLOCK,
+  type Bank, type BankItem,
+} from "./normalize";
 import { industryContext, roleContext } from "./packs";
 import { quality } from "./quality";
 import type {
@@ -27,7 +30,15 @@ import {
 } from "./version";
 
 const AX: Axis[] = ["J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8"];
-const SCREEN: Axis[] = ["J3", "J5", "J6", "J8"];
+/**
+ * 선별 네 축. **조직 활용을 넷째에서 뺐다.**
+ *
+ * `내가 낸 것이 조직에 쓰였는가` 는 들어간 자리가 있어야 답할 수 있다.
+ * 수업과 캡스톤만 한 학부생은 판단을 했어도 그 칸이 비고, 그래서 선별
+ * 등급에서 **학위가 묶음 판정을 가르는** 길이 생겼다. 실패·수정은 학부
+ * 과제에서도 답할 수 있으면서 참여와 소유를 똑같이 잘 가른다.
+ */
+const SCREEN: Axis[] = ["J3", "J5", "J6", "J7"];
 const ZONES: Zone[] = [
   "Z1_EVIDENCE_ESTABLISHED", "Z2_EVIDENCE_INCOMPLETE",
   "Z3_EVIDENCE_LOW_INTEREST", "Z4_INSUFFICIENT_EVIDENCE", "NOT_EXPLORED",
@@ -66,7 +77,7 @@ export function score(sub: Submission, loaded: Loaded): Snapshot {
   const deepItems = new Map<string, BankItem[]>();
   for (const i of items) {
     if (!i.technical_domain || !i.evidence_axis) continue;
-    if (i.module !== "PROBE-J4" && i.module !== "DEEP-J8") continue;
+    if (i.module !== PROBE_BLOCK && i.module !== DEEP_BLOCK) continue;
     const key = `${i.technical_domain}.${i.evidence_axis}`;
     deepItems.set(key, [...(deepItems.get(key) ?? []), i]);
   }
@@ -186,23 +197,6 @@ export function score(sub: Submission, loaded: Loaded): Snapshot {
   };
   const rq = quality(sub, items, peek);
 
-  /**
-   * 선호 응답을 떠낸다. **문항 번호의 앞머리로 고르지 않는다.**
-   *
-   * 앞머리로 골랐을 때 `PR_OC` 로 찾고 있었고 은행의 문항은 `PO_OC1` 이라
-   * 조직 선호 일곱이 **한 번도 담기지 않았다.** 번호 짓는 버릇이 바뀌면
-   * 조용히 비는 자리가 생긴다. 측정축은 그 문항이 무엇을 재는지를
-   * 가리키므로 번호를 어떻게 짓든 같이 움직인다.
-   */
-  const pick = (axis: string) => {
-    const o: Record<string, number> = {};
-    for (const i of items) {
-      if (i.measurement_axis !== axis) continue;
-      const a = sub.answers[i.item_id];
-      if (a && a.kind === "scale5") o[i.item_id] = a.value;
-    }
-    return o;
-  };
   const target: Record<string, string> = {};
   for (const id of ["TG_ROLE", "TG_INDUSTRY", "TG_OC"]) {
     const a = sub.answers[id];
@@ -218,8 +212,8 @@ export function score(sub: Submission, loaded: Loaded): Snapshot {
     core_version: loaded.core,
     item_bank_version: ITEM_BANK_VERSION,
     scoring_version: SCORING_VERSION,
-    industry_pack_version: packVersion("industry-packs.json", sub.industry_pack ?? null, loaded.dir),
-    role_pack_version: packVersion("role-packs.json", sub.role_pack ?? null, loaded.dir),
+    industry_pack_version: packVersion(loaded.core, "industry", sub.industry_pack ?? null, loaded.dir),
+    role_pack_version: packVersion(loaded.core, "role", sub.role_pack ?? null, loaded.dir),
     region_layer_version: null,
   };
 
@@ -229,18 +223,21 @@ export function score(sub: Submission, loaded: Loaded): Snapshot {
   return {
     attempt_id: sub.attempt_id,
     tier: sub.tier, stage: sub.stage, grad_field: sub.grad_field,
+    undergrad_core: sub.undergrad_core ?? null,
     module_versions: versions,
     tier_limits: limitsFor(sub.tier),
     domains: out, zones, tied, focus,
     response_quality: rq,
     context: {
-      role_preference: pick("role_preference"),
-      org_preference: pick("org_preference"),
+      /* 고른 것을 그대로 들고 다닌다. **점수를 만들지 않는다** */
+      role_interest: sub.role_interest ?? [],
+      org_interest: sub.org_interest ?? [],
+      industry_interest: sub.industry_interest ?? [],
       target,
       translation_steps: translation,
       /* 산업과 역할은 Core 를 다시 계산하지 않는다. 읽는 순서만 만든다 */
-      industry: industryContext(sub.industry_pack ?? null, out, loaded.dir),
-      role: roleContext(sub.role_pack ?? null, out, loaded.dir),
+      industry: industryContext(sub.industry_pack ?? null, out, loaded.dir, loaded.core),
+      role: roleContext(sub.role_pack ?? null, out, loaded.dir, loaded.core),
     },
     trace,
   };

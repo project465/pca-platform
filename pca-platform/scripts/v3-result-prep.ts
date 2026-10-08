@@ -54,6 +54,14 @@ async function pick(a: V3Attempt, id: string, lv: Level): Promise<Answer | null>
   if (c.kind === "exposure") {
     return { kind: "exposure", value: lvl === "none" ? 0 : lvl === "mid" ? 1 : 2 };
   }
+  /* 보기 셋. 값은 은행이 들고 있고 여기서 만들지 않는다 */
+  if (c.kind === "pick3") {
+    const n = c.options.length;
+    const pick = c.options[lvl === "none" ? n - 1 : lvl === "mid" ? 1 : 0];
+    return c.answer === "exposure"
+      ? { kind: "exposure", value: pick.value }
+      : { kind: "scale5", value: pick.value };
+  }
   const o = c.options[0];
   return o ? { kind: "choice", value: o.value } : null;
 }
@@ -65,7 +73,7 @@ async function freshAttempt(
     `INSERT INTO v3_attempts
        (user_id, tier, market_code, education_stage, grad_field,
         item_bank_version, scoring_version, current_screen)
-     VALUES ($1,$2,'KR',$3,$4,'ME_V3_ITEM_BANK_V1','me-v3-scoring.1','profile')
+     VALUES ($1,$2,'KR',$3,$4,'ME_V3_ITEM_BANK_V2','me-v3-scoring.2','profile')
      RETURNING id::text`,
     [userId, tier, stage, field]);
   return (await attemptOf(row?.id as string, userId)) as V3Attempt;
@@ -148,7 +156,7 @@ async function main() {
   const p12 = await freshAttempt(uid, "PRO", "postdoc", "STEM");
   await fillGrid(p12, { TD02: [5, 2, 5], TD04: [5, 2, 5], TD07: [5, 2, 4] });
   const a12 = await walk(p12, uid, "strong", {
-    industry: "INDUSTRY_SEMICON_V1", role: "ROLE_CAE_V1",
+    industry: "INDUSTRY_SEMICON_V2", role: "ROLE_CAE_V2",
   });
   await submit(a12);
   out.push({ name: "r3_pro", who: "shots", full: true, note: "PRO · 근거가 강한 포닥",

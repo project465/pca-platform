@@ -8,7 +8,7 @@
  * **산업과 역할 선택이 심화 영역을 바꾸지 않는다.** 기술영역은 Core 응답으로
  * 먼저 확정하고, 그 뒤에 팩이 올라간다(`v3:runtime` 이 센다).
  */
-import type { GradField, Stage, Tier } from "../scoring/types";
+import type { GradField, Stage, Tier, UndergradCore } from "../scoring/types";
 
 export type DomainPick = {
   /**
@@ -19,7 +19,7 @@ export type DomainPick = {
    * 영역을 묶음 판정에 넣으면 그 영역은 구조적으로 근거가 설 수 없다.
    */
   probe: string[];
-  /** 심화 여덟 축을 여는 영역. 기본 셋, 조건이면 넷 */
+  /** 심화 네 축을 여는 영역. 기본 셋, 조건이면 넷 */
   deep: string[];
   /** 넷째가 열린 까닭. 열리지 않았으면 `null` */
   fourth_reason: FourthReason | null;
@@ -40,6 +40,11 @@ export type FourthReason = "TIE_AT_THIRD" | "ALL_TIED";
 export const PROBE_MAX = 2;
 export const DEEP_BASE = 3;
 export const DEEP_MAX = 4;
+
+/** 한 응시에서 깊게 보는 산업과 역할의 수 */
+export const INDUSTRY_PICK_MAX = 2;
+export const ROLE_PICK_MAX = 2;
+export const ORG_PICK_MAX = 2;
 
 export type GridAnswer = { interest: number | null; exposure: number | null; learning: number | null };
 
@@ -100,20 +105,53 @@ export function pickDomains(
   return { probe: [...new Set([...probe, ...deep])], deep, fourth_reason: reason, trace };
 }
 
+/**
+ * 대학원이 기계공학에서 먼 계열인가.
+ *
+ * 융합 계열을 여기 넣지 않는다. 기계공학과 로봇을 함께 하는 융합 대학원은
+ * 기계공학 경험이 실제로 있고, 그 사람을 타계열로 돌리면 **연구 경험을
+ * 번역 맥락으로만 다루게 된다.**
+ */
+export function crossField(stage: Stage, field: GradField | null): boolean {
+  if (stage === "bachelor") return false;
+  return field === "HUMANITIES_SOCIAL" || field === "BUSINESS";
+}
+
 /** 학위와 계열이 고르는 분기 묶음. **점수에 들어가지 않는다** */
-export function branchBlock(stage: Stage, field: GradField | null): string {
-  if (stage === "bachelor") return "UG-COURSE";
-  switch (field) {
-    case "HUMANITIES_SOCIAL": return "GRAD-HS";
-    case "BUSINESS": return "GRAD-BIZ";
-    case "OTHER_INTERDISCIPLINARY": return "GRAD-MIX";
-    default: return "GRAD-STEM";
-  }
+export function branchBlock(
+  stage: Stage, field: GradField | null,
+): "ug-core" | "grad-stem" {
+  /* 타계열 대학원이면 학부 기계공학 묶음을 받는다. 그 사람의 기계공학
+     경험은 학부에 있고, 대학원 경험은 번역 맥락으로만 다룬다 */
+  if (stage === "bachelor" || crossField(stage, field)) return "ug-core";
+  return "grad-stem";
+}
+
+/**
+ * 이 사람이 기계공학 Core 를 응시할 수 있는가.
+ *
+ * **비이공계 대학원생을 받지 않는다.** 받으면 기계공학의 축 수준이 다른
+ * 전공의 경험으로 서고, 그 결과지는 기계공학 진로를 말하는 척하면서 다른
+ * 것을 재고 있다. 다만 **학부가 기계공학이면 기계공학 경험이 실제로
+ * 있다**: 그 사람은 받고 대학원 경험은 번역 맥락으로만 다룬다.
+ */
+export function eligible(
+  stage: Stage | null, field: GradField | null, undergrad: UndergradCore | null,
+): { ok: boolean; reason: "NEED_PROFILE" | "NON_ME_GRADUATE" | null } {
+  if (!stage) return { ok: false, reason: "NEED_PROFILE" };
+  if (stage === "bachelor") return { ok: true, reason: null };
+  if (!field) return { ok: false, reason: "NEED_PROFILE" };
+  if (!crossField(stage, field)) return { ok: true, reason: null };
+  if (!undergrad) return { ok: false, reason: "NEED_PROFILE" };
+  return undergrad === "ME"
+    ? { ok: true, reason: null }
+    : { ok: false, reason: "NON_ME_GRADUATE" };
 }
 
 /** 석사 이상은 전공계열 없이 시작하지 않는다. DB 제약과 같은 규칙이다 */
-export function profileReady(stage: Stage | null, field: GradField | null): boolean {
-  if (!stage) return false;
-  if (stage === "bachelor") return true;
-  return !!field;
+export function profileReady(
+  stage: Stage | null, field: GradField | null,
+  undergrad: UndergradCore | null = null,
+): boolean {
+  return eligible(stage, field, undergrad).ok;
 }

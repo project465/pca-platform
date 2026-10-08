@@ -57,6 +57,14 @@ async function pick(a: V3Attempt, id: string, lv: Level): Promise<Answer | null>
   if (c.kind === "exposure") {
     return { kind: "exposure", value: lv === "none" ? 0 : lv === "mid" ? 1 : 2 };
   }
+  /* 보기 셋. 값은 은행이 들고 있고 여기서 만들지 않는다 */
+  if (c.kind === "pick3") {
+    const n = c.options.length;
+    const got = c.options[lv === "none" ? n - 1 : lv === "mid" ? 1 : 0];
+    return c.answer === "exposure"
+      ? { kind: "exposure", value: got.value }
+      : { kind: "scale5", value: got.value };
+  }
   const o = c.options[0];
   return o ? { kind: "choice", value: o.value } : null;
 }
@@ -68,7 +76,7 @@ async function freshAttempt(
     `INSERT INTO v3_attempts
        (user_id, tier, market_code, education_stage, grad_field,
         item_bank_version, scoring_version, current_screen)
-     VALUES ($1,$2,'KR',$3,$4,'ME_V3_ITEM_BANK_V1','me-v3-scoring.1','profile')
+     VALUES ($1,$2,'KR',$3,$4,'ME_V3_ITEM_BANK_V2','me-v3-scoring.2','profile')
      RETURNING id::text`,
     [userId, tier, stage, field]);
   return (await attemptOf(row?.id as string, userId)) as V3Attempt;
@@ -99,8 +107,8 @@ async function walk(a0: V3Attempt, userId: string, lv: Level, picks = true) {
         await savePicks(a.id, v.screen.domain, g.slot, g.items.slice(0, 2));
       }
     }
-    if (v.screen.kind === "pick-industry") await choosePack(a.id, "industry", "INDUSTRY_SEMICON_V1");
-    if (v.screen.kind === "pick-role") await choosePack(a.id, "role", "ROLE_CAE_V1");
+    if (v.screen.kind === "pick-industry") await choosePack(a.id, "industry", "INDUSTRY_SEMICON_V2");
+    if (v.screen.kind === "pick-role") await choosePack(a.id, "role", "ROLE_CAE_V2");
     if (!v.nextId) { await moveTo(a.id, v.screen.id); break; }
     await moveTo(a.id, v.nextId);
     want = v.nextId;

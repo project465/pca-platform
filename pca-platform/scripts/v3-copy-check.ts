@@ -24,12 +24,16 @@ for (const line of (() => {
   if (m && !process.env[m[1]]) process.env[m[1]] = m[2];
 }
 
+import { coreFile } from "../src/lib/me-v3/core-registry";
 import { buildPlan } from "../src/lib/me-v3/runtime/blocks";
 import { branchBlock } from "../src/lib/me-v3/runtime/routing";
 import {
-  content, domainName, gridRowOf, wordingOf,
+  content, domainName, gridRowOf, industryGloss, industryScene, roleName,
+  wordingOf,
 } from "../src/lib/me-v3/runtime/session";
-import { INDUSTRY_HINT, OWNERSHIP_TAG, ROLE_HINT, TIER_WHAT } from "../src/app/v3/tier-text";
+import {
+  INDUSTRY_HINT, ORG_HINT, OWNERSHIP_TAG, ROLE_HINT, TIER_WHAT,
+} from "../src/app/v3/tier-text";
 import type { GradField, Stage, Tier } from "../src/lib/me-v3/scoring/types";
 
 /* ── 1. 걸린 말 ─────────────────────────────────────────────────────
@@ -118,10 +122,16 @@ for (const tier of ["BASIC", "STANDARD", "PRO"] as Tier[]) {
     const field: GradField | null = stage === "bachelor" ? null : "STEM";
     const plan = buildPlan({
       tier, stage, branchBlock: branchBlock(stage, field),
+      crossField: false,
       probe: TD.slice(0, 2), deep: TD.slice(0, 3),
-      industryPack: "INDUSTRY_SEMICON_V1", rolePack: "ROLE_CAE_V1",
+      industryInterest: ["INDUSTRY_SEMICON_V2"],
+      roleInterest: ["ROLE_CAE_V2"],
       tiedPair: TD.slice(0, 2),
-    }, content().bank.items as never, domainName, wordingOf, gridRowOf);
+    }, {
+      items: content().bank.items as never,
+      domainName, wording: wordingOf, gridRow: gridRowOf,
+      scene: industryScene, gloss: industryGloss, roleName,
+    });
     for (const s of plan.screens) {
       for (const slot of ["eyebrow", "subject", "question", "help"] as const) {
         const text = (s as unknown as Record<string, string>)[slot];
@@ -161,7 +171,7 @@ for (const [text, kinds] of byHelp) {
 }
 
 /* 고르는 자리에 붙는 한 줄도 같은 자로 잰다 */
-for (const [k, v] of Object.entries({ ...INDUSTRY_HINT, ...ROLE_HINT })) {
+for (const [k, v] of Object.entries({ ...INDUSTRY_HINT, ...ROLE_HINT, ...ORG_HINT })) {
   if (CODE.test(v)) flag(`팩 설명에 내부 코드 — ${k}: ${v}`);
   if (v.length > 34) flag(`팩 설명이 길다(${v.length}자) — ${k}: ${v}`);
 }
@@ -173,10 +183,8 @@ for (const [k, v] of Object.entries(TIER_WHAT)) {
 }
 
 /* ── 3. 문항 은행은 그대로인가 ────────────────────────────────── */
-const bank = JSON.parse(readFileSync(
-  "sites/pca-platform/content/me-v3-items.json", "utf8")) as {
-    items: { item_id: string }[]; level_options: string[];
-  };
+const bank = coreFile<{ items: { item_id: string }[]; level_options: string[] }>(
+  "ME_CORE_V3", "items");
 const LEVEL = ["없다", "남이 한 것을 받아 썼다", "내가 했다", "내가 정하고 그 결과가 쓰였다"];
 if (JSON.stringify(bank.level_options) !== JSON.stringify(LEVEL)) {
   flag("보기 넷의 문면이 바뀌었다 — 네 단계의 뜻이 판정 규칙과 묶여 있다");

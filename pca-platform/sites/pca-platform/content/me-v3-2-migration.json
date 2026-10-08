@@ -21,10 +21,10 @@
    "MOVE": 35
   },
   "actual": {
-   "REWRITE": 191,
+   "REWRITE": 193,
    "MOVE": 36,
-   "KEEP": 17,
    "MERGE": 13,
+   "KEEP": 15,
    "DELETE": 37
   },
   "diverged": 204,
@@ -595,11 +595,11 @@
    "v1_domain": null,
    "v1_wording": "선택지를 둘 이상 놓고 같은 기준으로 견주어 하나를 고른 적이 있다",
    "planned": "MERGE",
-   "actual": "KEEP",
+   "actual": "REWRITE",
    "v2_items": [
     "CJ_COMPARE"
    ],
-   "reason": "문면과 자리를 그대로 두었다",
+   "reason": "묻는 것은 그대로다. 문말을 `고른 적이 있다` 에서 `골라 본 적이 있다` 로 고쳐 은행 전체의 문말을 한 꼴로 맞췄다",
    "agrees": false,
    "planned_reason": "`둘 이상 놓고 같은 기준으로 견주었다` 는 모든 영역의 J6 과 같은 말이다. 영역 J6 으로 흡수한다"
   },
@@ -2230,11 +2230,11 @@
    "v1_domain": null,
    "v1_wording": "다룰 연구 문제를 지도교수가 아니라 내가 좁혀 정한 적이 있다",
    "planned": "MERGE",
-   "actual": "KEEP",
+   "actual": "REWRITE",
    "v2_items": [
     "GS_PROBLEM"
    ],
-   "reason": "문면과 자리를 그대로 두었다",
+   "reason": "묻는 것은 그대로다. 문말을 `정한 적이 있다` 에서 `정해 본 적이 있다` 로 고쳐 은행 전체의 문말을 한 꼴로 맞췄다",
    "agrees": false,
    "planned_reason": "DEEP 과 중복이다. 영역에 묶어 흡수한다"
   },
@@ -4807,7 +4807,7 @@
    "module": "PROBE-S4",
    "axis": "J6",
    "domain": "TD11",
-   "wording": "계획한 일정과 실제로 걸린 시간을 견주어 본 적이 있다",
+   "wording": "요구조건마다 됐는지 대조해 못 지킨 것을 적어 본 적이 있다",
    "reason": "선별 축의 두 번째 문항이다. 같은 축의 다른 판단을 묻는다"
   },
   {

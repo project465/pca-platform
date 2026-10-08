@@ -27,12 +27,23 @@ export type Group = {
 
 export type PackChoice = { code: string; name: string; gloss: string };
 
+/** 산업과 역할과 조직을 고르는 화면의 종류 */
+export type PickKind = "industry" | "role" | "org";
+
 /** 보기 넷을 한눈에 가르는 꼬리표. 보기 넷 화면에서만 */
 export type OptionTag = string[];
 
 export type ScreenModel = {
   attemptId: string;
   kind: string;
+  /**
+   * 한 번 누르면 다음으로 넘어가는가.
+   *
+   * **한 선택으로 화면이 끝나는 자리만 참이다.** 훑기와 복수 선택과 근거
+   * 고르기와 직접 적는 칸은 손으로 넘긴다: 고르는 중에 화면이 넘어가면
+   * 나머지를 고를 수 없다.
+   */
+  auto: boolean;
   index: number;
   prevIndex: number | null;
   nextIndex: number | null;
@@ -45,12 +56,18 @@ export type ScreenModel = {
   guide?: string;
   fields: Field[];
   groups?: Group[];
+  /** 산업 장면처럼 읽기만 하는 자리의 본문 */
+  body?: string[];
   /** 근거 고르기 화면이 쓰는 영역. **사용자에게는 보이지 않는다** */
   domain?: string;
   packs?: PackChoice[];
+  /** 고르기 화면의 종류와 이미 고른 것과 최대 개수 */
+  pickKind?: PickKind;
+  pickedMany?: string[];
+  max?: number;
   picked?: string | null;
   /** 기본 정보를 고치는 화면 */
-  profile?: { stage: string; field: string | null };
+  profile?: { stage: string; field: string | null; undergrad: string | null };
   /** 완료 화면이 적는 것. **판정은 담지 않는다** */
   answered?: number;
   done?: boolean;
@@ -60,6 +77,7 @@ export type ScreenModel = {
     evidence: number;
     industry: string | null;
     role: string | null;
+    judged: number;
   };
 };
 

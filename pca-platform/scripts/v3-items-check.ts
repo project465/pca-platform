@@ -73,16 +73,35 @@ function main(): void {
   ok("영역 열둘 × 세 구성개념", thin.length === 0, `${grid.length}자리`);
 
   // 6. 선별 척도와 전체 척도가 축을 나눠 덮는다
-  const probe = new Set(slots.filter((s) => s.block === "PROBE-J4").map((s) => s.axis));
-  const deep = new Set(slots.filter((s) => s.block === "DEEP-J8").map((s) => s.axis));
+  const probe = new Set(slots.filter((s) => s.block === "PROBE-S4").map((s) => s.axis));
+  const deep = new Set(slots.filter((s) => s.block === "DEEP-S8").map((s) => s.axis));
   const union = new Set([...probe, ...deep]);
   ok("선별 넷 + 심화 넷 = 여덟 축", probe.size === 4 && deep.size === 4 && union.size === 8,
-     `선별 ${[...probe].join(",")} · 심화 ${[...deep].join(",")}`);
+     `선별 ${[...probe].sort().join(",")} · 심화 ${[...deep].sort().join(",")}`);
 
-  // 7. 계열 네 벌의 분기 블록이 다 있다
+  /* 6-1. 선별 넷에 조직 활용이 없다. 내가 낸 것이 조직에 쓰였는가는
+          들어간 자리가 있어야 답할 수 있어 학부생에게 구조적으로 불리하다 */
+  ok("선별 넷에 조직 활용이 없다", !probe.has("J8") && deep.has("J8"),
+     "선별은 직접 판단·산출물·비교·실패 넷이다");
+
+  /* 6-2. 선별 축은 자리가 영역마다 둘이다. 하나면 체크리스트를 고르지
+          않은 사람에게 소유가 구조적으로 설 수 없다 */
+  const perAxis: Record<string, number> = {};
+  for (const x of slots.filter((y) => y.block === "PROBE-S4")) {
+    perAxis[String(x.axis)] = (perAxis[String(x.axis)] ?? 0) + 1;
+  }
+  ok("선별 축마다 자리가 둘", Object.values(perAxis).every((n) => n === 2),
+     Object.entries(perAxis).map(([a, n]) => `${a}:${n}`).sort().join(" "));
+
+  // 7. 학위 분기 블록 셋이 다 있다
   const blocks = new Set(slots.map((s) => s.block));
-  const need = ["UG-COURSE", "GRAD-STEM", "GRAD-HS", "GRAD-BIZ", "GRAD-MIX"];
-  ok("학위·계열 분기 블록", need.every((b) => blocks.has(b)), need.join(" "));
+  const need = ["UG-CORE", "GRAD-CORE", "GRAD-XFIELD"];
+  ok("학위 분기 블록", need.every((b) => blocks.has(b)), need.join(" "));
+  ok("비이공계 대학원 분기 묶음을 받지 않는다",
+     !blocks.has("GRAD-HS") && !blocks.has("GRAD-BIZ") && !blocks.has("GRAD-MIX"),
+     "학부가 기계공학인 경우만 받고 대학원 경험은 번역 맥락으로만 다룬다");
+  ok("선호를 점수로 받는 묶음이 없다", !blocks.has("PREF-RF-OC"),
+     "관심 역할과 선호 조직은 고르기로 받는다");
 
   // 8. 계열 블록의 축이 공통 판단 축 안에 있다
   const badAx = slots.filter((s) => s.axis && !AX.includes(s.axis as typeof AX[number]));
@@ -96,7 +115,7 @@ function main(): void {
   /* 10. 학위 장면이 필요한 자리에 표시가 있다.
          고르기 입력(영역 태깅 · 목표)은 장면이 없으므로 뺀다 */
   const needStage = slots.filter((s) =>
-    ["PROBE-J4", "DEEP-J8", "CONSIST", "TRANS-10"].includes(s.block) &&
+    ["PROBE-S4", "DEEP-S8", "CONSIST", "TRANS-10"].includes(s.block) &&
     !["domain_tagging", "target_input"].includes(s.construct));
   const noStage = needStage.filter((s) => !s.stage_variants);
   ok("학위 장면 표시", noStage.length === 0,
@@ -116,17 +135,16 @@ function main(): void {
      자리로 세고 `v3:wording` 은 문항으로 센다. 같은 수가 나와야 한다 */
   const count = (b: string) => slots.filter((s) => s.block === b).length;
   const base = {
-    grid: count("CORE-GRID"), judge: count("CORE-JUDGE"), force: count("CORE-FORCE"),
-    probePerDomain: count("PROBE-J4"), deepPerDomain: count("DEEP-J8"),
-    pref: count("PREF-RF-OC"), consist: count("CONSIST"),
-    trans: count("TRANS-10"), target: count("TARGET"), branch: 0, pack: 12,
+    grid: count("CORE-GRID") - 12, judge: count("CORE-JUDGE"),
+    force: count("CORE-FORCE"),
+    probePerDomain: count("PROBE-S4"), deepPerDomain: count("DEEP-S8"),
+    learningPerDomain: 1, consist: count("CONSIST"),
+    trans: count("TRANS-10"), target: count("TARGET"), branch: 0, pack: 24,
   };
   const branch: [string, string, number][] = [
-    ["학사", "해당 없음", count("UG-COURSE")],
-    ["석사 이상", "STEM", count("GRAD-STEM")],
-    ["석사 이상", "HUMANITIES_SOCIAL", count("GRAD-HS")],
-    ["석사 이상", "BUSINESS", count("GRAD-BIZ")],
-    ["석사 이상", "OTHER_INTERDISCIPLINARY", count("GRAD-MIX")],
+    ["학사", "해당 없음", count("UG-CORE")],
+    ["석사 이상", "이공계·융합", count("GRAD-CORE")],
+    ["석사 이상", "타계열 (학부 기계)", count("UG-CORE") + count("GRAD-XFIELD")],
   ];
   console.log("\n등급 × 학위 × 계열 응답 수 (넷째 영역이 열리면 괄호)\n");
   console.log("  학위        계열                      BASIC  STANDARD       PRO");

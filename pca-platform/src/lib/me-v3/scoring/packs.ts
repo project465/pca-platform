@@ -6,8 +6,7 @@
  * 주는 문장과 견줄 직무뿐이다. 그래서 이 파일은 **입력을 읽고 context 를
  * 만들어 돌려주기만 한다.**
  */
-import { readFileSync } from "node:fs";
-import { CONTENT_DIR } from "../core-registry";
+import { CONTENT_DIR, packs as readPacks } from "../core-registry";
 import type { Axis, DomainResult, PackContext } from "./types";
 import { isConfirmed } from "./axes";
 
@@ -24,15 +23,12 @@ type RolePack = {
   application_material?: string[];
 };
 
-function load<T>(file: string, dir: string): { packs: T[] } {
-  return JSON.parse(readFileSync(`${dir}/${file}`, "utf8"));
-}
-
 export function industryContext(
   code: string | null, domains: DomainResult[], dir = CONTENT_DIR,
+  core = "ME_CORE_V3",
 ): PackContext | null {
   if (!code) return null;
-  const p = load<IndustryPack>("industry-packs.json", dir).packs
+  const p = readPacks<{ packs: IndustryPack[] }>(core, "industry", dir).packs
     .find((x) => x.code === code);
   if (!p) throw new Error(`없는 산업팩이다: ${code}`);
   const byCode = new Map(domains.map((d) => [d.code, d]));
@@ -58,9 +54,11 @@ export function industryContext(
 
 export function roleContext(
   code: string | null, domains: DomainResult[], dir = CONTENT_DIR,
+  core = "ME_CORE_V3",
 ): PackContext | null {
   if (!code) return null;
-  const p = load<RolePack>("role-packs.json", dir).packs.find((x) => x.code === code);
+  const p = readPacks<{ packs: RolePack[] }>(core, "role", dir).packs
+    .find((x) => x.code === code);
   if (!p) throw new Error(`없는 역할팩이다: ${code}`);
   const byCode = new Map(domains.map((d) => [d.code, d]));
   const requested: { domain: string; axis: Axis }[] = [];

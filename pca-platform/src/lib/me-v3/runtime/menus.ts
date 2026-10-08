@@ -21,6 +21,16 @@ export type Control =
   | { kind: "scale5"; labels: string[] }
   /** 격자의 경험 칸 셋 */
   | { kind: "exposure"; options: string[] }
+  /**
+   * 보기 셋. **값을 은행이 든다.**
+   *
+   * 영역 훑기가 이것을 쓴다. 관심과 학습 의향은 다섯 점 척도의 5·3·1 로
+   * 들어가고 경험은 2·1·0 으로 들어간다. 화면은 셋만 보여 주고 저장되는
+   * 값은 전과 같다: 그래서 결과지의 관심 구간과 경험 이름을 고치지 않고도
+   * 열두 줄을 한 화면에 올릴 수 있다.
+   */
+  | { kind: "pick3"; answer: "scale5" | "exposure";
+      options: { value: number; label: string }[] }
   /** 고르기. 값은 코드이고 보이는 것은 `label` */
   | { kind: "choice"; options: { value: string; label: string }[];
       note?: { label: string; placeholder: string } };
@@ -37,6 +47,7 @@ export type MenuContext = {
   domains: { code: string; name: string }[];
   industries: { code: string; name: string }[];
   roles: { code: string; name: string }[];
+  orgs: { code: string; name: string }[];
 };
 
 /**
@@ -156,6 +167,8 @@ const ORG_TYPES = [
 type Item = {
   item_id: string; module: string; response_scale: string | null;
   options?: string[] | null;
+  option_values?: number[] | null;
+  measurement_axis?: string | null;
 };
 
 /**
@@ -169,6 +182,15 @@ export function controlOf(item: Item, ctx: MenuContext): Control {
 
   if (sc === "L0~L3" || sc === "4보기") {
     return { kind: "level", options: levelOptions(), guide: "" };
+  }
+  if (sc === "3보기" && item.options?.length && item.option_values?.length) {
+    return {
+      kind: "pick3",
+      answer: item.measurement_axis === "exposure" ? "exposure" : "scale5",
+      options: item.options.map((label, i) => ({
+        value: (item.option_values as number[])[i], label,
+      })),
+    };
   }
   if (sc === "5점") return { kind: "scale5", labels: SCALE5 };
   if (sc.startsWith("없음")) return { kind: "exposure", options: EXPOSURE };
@@ -197,7 +219,9 @@ export function controlOf(item: Item, ctx: MenuContext): Control {
   if (item.item_id === "TG_OC") {
     return {
       kind: "choice",
-      options: ORG_TYPES.map((label, i) => ({ value: `OC${i + 1}`, label })),
+      options: ctx.orgs.length
+        ? ctx.orgs.map((o) => ({ value: o.code, label: o.name }))
+        : ORG_TYPES.map((label, i) => ({ value: `OC${i + 1}`, label })),
     };
   }
   const t = TRANS[item.item_id];

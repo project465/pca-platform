@@ -2,14 +2,17 @@
 
 import { requireUser } from "@/lib/session";
 import {
-  attemptOf, choosePack, moveTo, planFor, saveAnswer, saveNote, savePicks, submit,
+  attemptOf, moveTo, planFor, saveAnswer, saveNote, savePicks, savePicks3, submit,
 } from "@/lib/me-v3/runtime/session";
 import { setProfile } from "@/lib/me-v3/runtime/session";
-import type { Answer, GradField, Stage } from "@/lib/me-v3/scoring/types";
+import type {
+  Answer, GradField, Stage, UndergradCore,
+} from "@/lib/me-v3/scoring/types";
 
 const STAGES: Stage[] = ["bachelor", "master", "phd", "postdoc"];
 const FIELDS: GradField[] =
   ["STEM", "HUMANITIES_SOCIAL", "BUSINESS", "OTHER_INTERDISCIPLINARY"];
+const UG: UndergradCore[] = ["ME", "OTHER"];
 
 /**
  * 응시 화면이 서버에 쓰는 자리 전부.
@@ -58,13 +61,16 @@ export async function noteAction(
  */
 export async function profileAction(
   attemptId: string, stage: string, field: string | null,
+  undergrad: string | null = null,
 ): Promise<{ ok: boolean }> {
   const at = await mine(attemptId);
   if (!at) return { ok: false };
   if (!STAGES.includes(stage as Stage)) return { ok: false };
   const f = FIELDS.includes((field ?? "") as GradField) ? (field as GradField) : null;
   if (stage !== "bachelor" && !f) return { ok: false };
-  await setProfile(attemptId, stage as Stage, f);
+  const u = UG.includes((undergrad ?? "") as UndergradCore)
+    ? (undergrad as UndergradCore) : null;
+  await setProfile(attemptId, stage as Stage, f, u);
   return { ok: true };
 }
 
@@ -77,12 +83,19 @@ export async function picksAction(
   return { ok: true };
 }
 
-export async function packAction(
-  attemptId: string, kind: "industry" | "role", code: string,
+/**
+ * 고른 관심 산업과 역할과 조직. **점수에 들어가지 않는다.**
+ *
+ * 빈 배열을 보낼 수 있다: `아직 잘 모르겠음` 을 고른 사람이다. 강제하지
+ * 않는 까닭은 **모르는 사람이 아무거나 고르면 그 선택이 결과를 읽는
+ * 순서를 정하기** 때문이다.
+ */
+export async function picksAction3(
+  attemptId: string, kind: "industry" | "role" | "org", codes: string[],
 ): Promise<{ ok: boolean }> {
   const at = await mine(attemptId);
   if (!at) return { ok: false };
-  try { await choosePack(attemptId, kind, code); } catch { return { ok: false }; }
+  try { await savePicks3(attemptId, kind, codes); } catch { return { ok: false }; }
   return { ok: true };
 }
 

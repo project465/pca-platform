@@ -4,12 +4,12 @@ import { OWNERSHIP } from "@/lib/me-v3/scoring/ownership";
 import { controlOf } from "@/lib/me-v3/runtime/menus";
 import {
   answersOf, attemptOf, axisLabel, checklistFor, content, domainName,
-  industryChoices, itemOf, menuContextOf, moveTo, optionGuidance, roleChoices,
-  viewOf, wordingOf,
+  industryChoices, itemOf, menuContextOf, moveTo, optionGuidance, orgChoices,
+  roleChoices, viewOf, wordingOf,
 } from "@/lib/me-v3/runtime/session";
-import type { Field, Group, ProgressModel, ScreenModel } from "./model";
+import type { Field, Group, PickKind, ProgressModel, ScreenModel } from "./model";
 import {
-  INDUSTRY_HINT, OWNERSHIP_TAG, ROLE_HINT, TIER_WHAT,
+  INDUSTRY_HINT, ORG_HINT, OWNERSHIP_TAG, ROLE_HINT, TIER_WHAT,
 } from "../tier-text";
 import Screen from "./screen";
 
@@ -69,9 +69,9 @@ export default async function V3Screen({
   const fields: Field[] = [];
   for (const id of sc.items) {
     const it = itemOf(id);
-    /* 격자와 선호 화면은 줄 이름이 필요하다. 격자는 어미, 선호는 문면 */
-    const label = sc.kind === "grid" ? (it?.grid_stem ?? undefined)
-      : sc.kind === "multi" ? wordingOf(id, stage) : undefined;
+    /* 훑는 화면은 영역 이름이 줄이 된다. 문항 문면은 어미까지 붙어 길고,
+       열두 줄을 그대로 세우면 같은 어미가 열두 번 되풀이된다 */
+    const label = sc.kind === "sweep" ? (it?.grid_row ?? undefined) : undefined;
     const f = await fieldOf(id, label ?? undefined);
     if (f) fields.push(f);
   }
@@ -92,22 +92,32 @@ export default async function V3Screen({
 
   /* 고르기 전에 읽는 한 줄. 팩의 `demands` 는 문항이 서는 장면이라 길고,
      역할에 영역 이름을 늘어놓으면 **우리 분류를 읽으라는 화면**이 된다 */
-  const packs = sc.kind === "pick-industry"
+  const pickKind: PickKind | undefined = sc.kind === "pick-industry" ? "industry"
+    : sc.kind === "pick-role" ? "role" : sc.kind === "pick-org" ? "org" : undefined;
+  const packs = pickKind === "industry"
     ? industryChoices().map((p) => ({
         code: p.code, name: p.name, gloss: INDUSTRY_HINT[p.code] ?? p.first,
       }))
-    : sc.kind === "pick-role"
+    : pickKind === "role"
       ? roleChoices().map((p) => ({
           code: p.code, name: p.name,
           gloss: ROLE_HINT[p.code] ?? p.domains.slice(0, 3).join(" · "),
         }))
-      : undefined;
+      : pickKind === "org"
+        ? orgChoices().map((p) => ({
+            code: p.code, name: p.name, gloss: ORG_HINT[p.code] ?? p.first,
+          }))
+        : undefined;
+  const pickedMany = pickKind === "industry" ? (v.attempt.industry_interest ?? [])
+    : pickKind === "role" ? (v.attempt.role_interest ?? [])
+      : pickKind === "org" ? (v.attempt.org_interest ?? []) : undefined;
 
   const answered = Object.keys(await answersOf(v.attempt.id)).length;
 
   const model: ScreenModel = {
     attemptId: v.attempt.id,
     kind: sc.kind,
+    auto: sc.auto,
     index: v.index,
     prevIndex: v.prevIndex,
     nextIndex: v.nextIndex,
@@ -119,10 +129,13 @@ export default async function V3Screen({
     guide: fields.some((f) => f.control.kind === "level") ? optionGuidance() : undefined,
     fields,
     groups,
+    body: sc.body,
     domain: sc.domain,
     packs,
-    picked: sc.kind === "pick-industry" ? v.attempt.industry_pack
-      : sc.kind === "pick-role" ? v.attempt.role_pack : null,
+    pickKind,
+    pickedMany,
+    max: sc.max,
+    picked: null,
     answered,
     done: v.attempt.status !== "in_progress",
     /* 끝낸 자리가 적는 것. 전부 **무엇을 물었고 무엇을 받았는가**이고
@@ -134,14 +147,20 @@ export default async function V3Screen({
       evidence: Object.values(v.picks.checklists).flat().length
         + Object.values(v.picks.artifacts).flat().length
         + Object.values(v.picks.verifications).flat().length,
-      industry: v.attempt.industry_pack
-        ? (industryChoices().find((x) => x.code === v.attempt.industry_pack)?.name ?? null) : null,
-      role: v.attempt.role_pack
-        ? (roleChoices().find((x) => x.code === v.attempt.role_pack)?.name ?? null) : null,
+      industry: (v.attempt.industry_interest ?? [])
+        .map((c) => industryChoices().find((x) => x.code === c)?.name)
+        .filter(Boolean).join(" · ") || null,
+      role: (v.attempt.role_interest ?? [])
+        .map((c) => roleChoices().find((x) => x.code === c)?.name)
+        .filter(Boolean).join(" · ") || null,
+      /* **실제 판단을 몇 가지 받았는지.** 관심과 경험을 훑은 수와 섞지
+         않는다: 그 둘이 섞인 수는 응시자에게 `설문 쉰 문항` 으로 읽힌다 */
+      judged: judgedCount(v.plan.screens),
     } : undefined,
     /* 기본 정보는 시작 화면에서 받았다. 이 화면은 **고치는 자리**다 */
     profile: sc.kind === "profile"
-      ? { stage, field: v.attempt.grad_field } : undefined,
+      ? { stage, field: v.attempt.grad_field, undergrad: v.attempt.undergrad_core }
+      : undefined,
   };
 
   /* 지나온 단계 하나와 지금과 다음 하나만 적는다. 여덟을 늘어놓으면
@@ -165,4 +184,15 @@ export default async function V3Screen({
     <Screen key={`${model.attemptId}:${model.index}`} s={model} prog={prog}
       tier={v.attempt.tier} tierLabel={TIER_WHAT[v.attempt.tier].label} />
   );
+}
+
+/**
+ * 실제 판단을 묻는 문항이 몇 개인가.
+ *
+ * **관심과 경험을 훑은 수와 섞지 않는다.** 섞으면 쉰 몇 개짜리 설문으로
+ * 읽히고, 그것이 V1 에서 응시자가 읽기를 멈춘 자리였다.
+ */
+function judgedCount(screens: { kind: string; items: string[] }[]): number {
+  return screens.filter((x) => x.kind === "single")
+    .reduce((n, x) => n + x.items.length, 0);
 }

@@ -89,8 +89,8 @@ async function walk(a0: V3Attempt, userId: string, answer: (id: string) => Answe
         await savePicks(a.id, v.screen.domain, g.slot, g.items.slice(0, 2));
       }
     }
-    if (v.screen.kind === "pick-industry") await choosePack(a.id, "industry", "INDUSTRY_MOBILITY_V1");
-    if (v.screen.kind === "pick-role") await choosePack(a.id, "role", "ROLE_CAE_V1");
+    if (v.screen.kind === "pick-industry") await choosePack(a.id, "industry", "INDUSTRY_MOBILITY_V2");
+    if (v.screen.kind === "pick-role") await choosePack(a.id, "role", "ROLE_CAE_V2");
     if (!v.nextId) { await moveTo(a.id, v.screen.id); break; }
     await moveTo(a.id, v.nextId);
     want = v.nextId;
@@ -235,7 +235,8 @@ async function main(): Promise<void> {
      `${answersBefore}개`);
   ok("올린 뒤 새로 묻는 화면만 더해진다",
      added.added.length > 15 &&
-     added.added.every((s) => s.stage === "DOMAIN" || s.stage === "DEEP"),
+     added.added.every((s) => ["EXPLORE", "JUDGE", "DEEP", "EVIDENCE", "PACK"]
+       .includes(s.stage)),
      `새 화면 ${added.added.length}(${[...new Set(added.added.map((s) => s.stage))].join("·")})` +
      ` · 앞 화면 ${basicPlan}`);
   const sameAttempt = await query<{ n: string }>(
@@ -253,7 +254,7 @@ async function main(): Promise<void> {
   const toPro = await upgradeTier(up.id, userId, "PRO");
   const proAdded = await newScreensAfterUpgrade(toPro, "STANDARD");
   ok("STANDARD 에서 PRO 로 올릴 때 번역과 목표만 더해진다",
-     proAdded.added.every((s) => ["TRANSLATE", "INDUSTRY", "ROLE"].includes(s.stage)),
+     proAdded.added.every((s) => ["TRANSLATE", "PACK"].includes(s.stage)),
      `새 화면 ${proAdded.added.length}`);
   await walk(toPro, userId, strong);
   const proDone = (await attemptOf(up.id, userId)) as V3Attempt;
@@ -262,14 +263,14 @@ async function main(): Promise<void> {
      stable(stdSnap.zones) === stable(proSnap.zones),
      `근거 ${proSnap.zones.Z1_EVIDENCE_ESTABLISHED.join(",") || "없음"}`);
   ok("산업과 역할이 붙는다",
-     proDone.industry_pack === "INDUSTRY_MOBILITY_V1" && proDone.role_pack === "ROLE_CAE_V1" &&
-     proSnap.context.industry?.code === "INDUSTRY_MOBILITY_V1",
+     proDone.industry_pack === "INDUSTRY_MOBILITY_V2" && proDone.role_pack === "ROLE_CAE_V2" &&
+     proSnap.context.industry?.code === "INDUSTRY_MOBILITY_V2",
      `${proDone.industry_pack} · ${proDone.role_pack}`);
 
   /* 8. 팩을 바꿔도 Core 판정이 같다 */
   const coreBefore = stable(coreOnly(proSnap));
-  await choosePack(up.id, "industry", "INDUSTRY_DEFENSE_V1");
-  await choosePack(up.id, "role", "ROLE_PM_V1");
+  await choosePack(up.id, "industry", "INDUSTRY_DEFENSE_V2");
+  await choosePack(up.id, "role", "ROLE_PM_V2");
   const swapped = (await submit((await attemptOf(up.id, userId)) as V3Attempt)).snapshot;
   ok("산업과 역할을 바꿔도 Core 판정이 같다",
      stable(coreOnly(swapped)) === coreBefore, "읽는 순서만 갈린다");

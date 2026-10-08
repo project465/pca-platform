@@ -7,7 +7,9 @@
  *
  *   npm run v3:wording
  */
-import { coreFile, registry, CONTENT_DIR } from "../src/lib/me-v3/core-registry";
+import {
+  coreFile, packs as readPacks, registry, CONTENT_DIR,
+} from "../src/lib/me-v3/core-registry";
 import { readFileSync } from "node:fs";
 import { counts, minutes, DOMAINS_BY_TIER } from "../src/lib/me-v3/response-count";
 
@@ -21,6 +23,7 @@ type Item = {
   options: string[] | null; response_scale: string | null;
   reverse_flag: boolean; consistency_pair: string | null;
   requirement: string; rationale: string | null;
+  origin?: string; old_item_id?: string | null; change_reason?: string | null;
 };
 
 const AX = ["J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8"];
@@ -90,7 +93,7 @@ function main(): void {
   const mapCount: Record<string, number> = {};
   for (const s of bp.slots as { id: string; block: string; axis: string | null }[]) {
     if (byId.has(s.id)) { mapCount[s.id] = 1; continue; }
-    const m = s.block === "PROBE-J4" || s.block === "DEEP-J8"
+    const m = s.block === "PROBE-S4" || s.block === "DEEP-S8"
       ? items.filter((i) => i.module === s.block && i.evidence_axis === s.axis)
       : [];
     if (m.length === 0) uncovered.push(s.id);
@@ -123,24 +126,23 @@ function main(): void {
   ok("영역 × 축 칸마다 문항", holes.length === 0,
      holes.length ? holes.join(" ") : `${TD.length * AX.length} / ${TD.length * AX.length}`);
 
-  /* 7. 선별 네 축은 영역마다 문항 하나다.
-     BASIC 응답 수가 영역에 따라 달라지면 판정 경로가 갈린다 */
+  /* 7. 선별 네 축은 영역마다 문항 둘이다.
+     하나이면 체크리스트를 고르지 않은 사람에게 소유가 구조적으로 설 수
+     없다. 영역마다 같은 수여야 BASIC 응답 수가 갈리지 않는다 */
   const probePer: Record<string, number> = {};
   const deepPer: Record<string, number> = {};
   for (const t of TD) {
-    probePer[t] = core.filter((i) => i.module === "PROBE-J4" && i.technical_domain === t).length;
-    deepPer[t] = core.filter((i) => i.module === "DEEP-J8" && i.technical_domain === t).length;
+    probePer[t] = core.filter((i) => i.module === "PROBE-S4" && i.technical_domain === t).length;
+    deepPer[t] = core.filter((i) => i.module === "DEEP-S8" && i.technical_domain === t).length;
   }
-  const badProbe = TD.filter((t) => probePer[t] !== 4);
-  ok("선별 네 축은 영역마다 문항 하나", badProbe.length === 0,
+  const badProbe = TD.filter((t) => probePer[t] !== 8);
+  ok("선별 네 축은 영역마다 문항 둘", badProbe.length === 0,
      badProbe.length ? badProbe.map((t) => `${t}(${probePer[t]})`).join(" ")
-                     : "BASIC 응답 수가 영역마다 같다");
-  /* 심화 축은 한 칸에 문항이 둘일 수 있다. 서로 다른 판단이면 나눠 묻는다 */
-  const badDeep = TD.filter((t) => deepPer[t] < 4 || deepPer[t] > 5);
-  const extra = TD.filter((t) => deepPer[t] === 5);
-  ok("심화 축 문항은 영역마다 넷이나 다섯", badDeep.length === 0,
+                     : "네 축 × 둘 = 여덟. BASIC 응답 수가 영역마다 같다");
+  const badDeep = TD.filter((t) => deepPer[t] !== 4);
+  ok("심화 축 문항은 영역마다 넷", badDeep.length === 0,
      badDeep.length ? badDeep.map((t) => `${t}(${deepPer[t]})`).join(" ")
-                    : `한 칸에 둘인 영역 ${extra.join(" · ") || "없음"}`);
+                    : "선별에 없는 네 축을 하나씩");
 
   /* 7-1. 문면이 l2 쪽에 가까운가.
      문면에 l3 를 적으면 **도면을 그렸지만 제작에 나가지 않은 학부생이
@@ -150,6 +152,11 @@ function main(): void {
   const l3ish: string[] = [];
   for (const i of core) {
     if (i.measurement_axis !== "axis_level" || !i.technical_domain || !i.evidence_axis) continue;
+    /* **선별 축의 둘째 문항은 빼고 본다.** 선별 축은 영역마다 문항이 둘이고
+       축 수준은 둘 가운데 높은 쪽을 쓴다. 첫째가 수행 조건을 묻고 있으므로
+       둘째가 소유 쪽으로 기울어도 아무도 아래로 밀리지 않는다. 심화 축은
+       문항이 하나라 이 면제가 없다 */
+    if (i.module === "PROBE-S4" && i.item_id.endsWith("_2")) continue;
     const d = (dom.domains as any[]).find((x) => x.code === i.technical_domain);
     const c = d?.axes?.[i.evidence_axis];
     if (!c) continue;
@@ -172,8 +179,8 @@ function main(): void {
   // 9. 등급 값과 범위
   const badTier = items.filter((i) => !TIERS.includes(i.tier));
   ok("등급 값", badTier.length === 0);
-  const probeNotBasic = core.filter((i) => i.module === "PROBE-J4" && i.tier !== "BASIC");
-  const deepNotStd = core.filter((i) => i.module === "DEEP-J8" && i.tier !== "STANDARD");
+  const probeNotBasic = core.filter((i) => i.module === "PROBE-S4" && i.tier !== "BASIC");
+  const deepNotStd = core.filter((i) => i.module === "DEEP-S8" && i.tier !== "STANDARD");
   const transNotPro = core.filter((i) => i.module === "TRANS-10" && i.tier !== "PRO");
   ok("선별은 BASIC · 심화는 STANDARD · 번역은 PRO",
      probeNotBasic.length + deepNotStd.length + transNotPro.length === 0);
@@ -189,15 +196,55 @@ function main(): void {
   /* 10-1. 산업팩은 산업 상식 퀴즈가 아니다.
      용어를 모르는 사람이 `없다` 로 떨어지지 않게 문항마다 그 판단을 일반
      기계공학 말로 바꿔 적은 줄이 있어야 한다 */
-  const ip = JSON.parse(readFileSync(`${CONTENT_DIR}/industry-packs.json`, "utf8"));
+  const ip = readPacks<any>(code, "industry");
+  const rp = readPacks<any>(code, "role");
   const indItems = (ip.packs as any[]).flatMap((p) => p.items as any[]);
   const noGloss = indItems.filter((i) => !i.gloss || String(i.gloss).length < 10);
   ok("산업팩 문항에 쉬운 말 풀이가 있다", noGloss.length === 0,
      noGloss.length ? noGloss.map((i) => i.id).join(" ") : `${indItems.length} / ${indItems.length}`);
-  const gatedPacks = [ip, JSON.parse(readFileSync(`${CONTENT_DIR}/role-packs.json`, "utf8"))]
+  const gatedPacks = [ip, rp]
     .filter((x) => x.exploration?.browse !== "all" || x.exploration?.subscription_gate !== false);
   ok("팩이 구독으로 막혀 있지 않다", gatedPacks.length === 0,
-     "여덟 산업과 일곱 역할 전부를 탐색할 수 있고 한 응시에 깊게 묻는 것은 하나다");
+     "여덟 산업과 여덟 역할 전부를 탐색할 수 있고 한 응시에 깊게 묻는 것은 하나다");
+
+  /* 10-2. 산업팩 문항이 용어를 아는지 묻지 않는다.
+           `파티클 관리 경험이 있다` 는 그 말을 아는 사람만 답할 수 있다.
+           문면에 그 산업의 전문 낱말만 덜렁 놓인 자리를 찾는다 */
+  const jargonOnly = indItems.filter((i) => {
+    const ask = String(i.ask);
+    return !/경험이 있다$|적이 있다$/.test(ask) || ask.length < 18;
+  });
+  ok("산업팩 문항이 경험을 묻는 꼴이다", jargonOnly.length === 0,
+     jargonOnly.length ? jargonOnly.map((i) => i.id).join(" ") : `${indItems.length}개`);
+
+  /* 10-3. 역할팩이 역할마다 다른 판단을 묻는다.
+           같은 질문을 역할 이름만 바꿔 돌리면 비교가 서지 않는다 */
+  const roleAsks = (rp.packs as any[]).flatMap((p) =>
+    (p.items as any[]).map((i) => String(i.ask)));
+  const dupAsk = roleAsks.filter((x, n) => roleAsks.indexOf(x) !== n);
+  ok("역할팩 문항이 역할마다 다르다", dupAsk.length === 0,
+     dupAsk.length ? dupAsk.slice(0, 3).join(" / ") : `${roleAsks.length}개`);
+
+  /* 10-4. 역할기능과 역할팩이 하나씩 맞물린다.
+           V1 은 시험·검증 기능을 두 팩이 가리켰고 품질팩에 자기 기능이
+           없었다. 그러면 두 팩의 비교가 같은 축에서 서지 않는다 */
+  const rfs = (rp.packs as any[]).map((p) => p.core_ref.rf[0]);
+  ok("역할기능과 역할팩이 하나씩 맞물린다",
+     new Set(rfs).size === rfs.length && rfs.length === tax.role_functions.length,
+     `역할기능 ${tax.role_functions.length} · 역할팩 ${rfs.length}`);
+
+  /* 10-5. 문항마다 어디서 왔는지 적혀 있다.
+           옛 은행에서 온 문항인지 새로 쓴 자리인지 모르면, 감사에서
+           버리기로 한 문항이 조용히 살아 있어도 아무도 못 찾는다 */
+  const ORIGIN = ["v1_keep", "v1_rewrite", "v1_move", "v1_merge", "new"];
+  const noOrigin = items.filter((i) => !i.origin || !ORIGIN.includes(i.origin));
+  ok("문항마다 어디서 왔는지 적혀 있다", noOrigin.length === 0,
+     noOrigin.length ? noOrigin.slice(0, 4).map((i) => i.item_id).join(" ")
+       : ORIGIN.map((o) => `${o} ${items.filter((i) => i.origin === o).length}`).join(" · "));
+  const noReason = items.filter((i) =>
+    i.origin && i.origin !== "v1_keep" && !i.change_reason);
+  ok("그대로 쓰지 않은 문항마다 까닭이 적혀 있다", noReason.length === 0,
+     noReason.length ? noReason.slice(0, 4).map((i) => i.item_id).join(" ") : "");
 
   // 11. 학위·계열이 scoring 에 들어가지 않는다
   const stageWeighted = items.filter((i) => {
@@ -280,17 +327,15 @@ function main(): void {
     core.filter((i) => i.module === "DEEP-J8" && i.technical_domain === t).length;
   const deepMax = Math.max(...TD.map(deepOf));
   const base = {
-    grid: n("CORE-GRID"), judge: n("CORE-JUDGE"), force: n("CORE-FORCE"),
-    probePerDomain: 4, deepPerDomain: 4,
-    pref: n("PREF-RF-OC"), consist: n("CONSIST"),
-    trans: n("TRANS-10"), target: n("TARGET"), branch: 0, pack: 12,
+    grid: n("CORE-GRID") - 12, judge: n("CORE-JUDGE"), force: n("CORE-FORCE"),
+    probePerDomain: 8, deepPerDomain: 4, learningPerDomain: 1,
+    consist: n("CONSIST"),
+    trans: n("TRANS-10"), target: n("TARGET"), branch: 0, pack: 24,
   };
   const branch: [string, string, number][] = [
-    ["학사", "-", n("UG-COURSE")],
-    ["석사 이상", "STEM", n("GRAD-STEM")],
-    ["석사 이상", "HUMANITIES_SOCIAL", n("GRAD-HS")],
-    ["석사 이상", "BUSINESS", n("GRAD-BIZ")],
-    ["석사 이상", "OTHER_INTERDISCIPLINARY", n("GRAD-MIX")],
+    ["학사", "-", n("UG-CORE")],
+    ["석사 이상", "이공계·융합", n("GRAD-CORE")],
+    ["석사 이상", "타계열 (학부 기계)", n("UG-CORE") + n("GRAD-XFIELD")],
   ];
   console.log("\n한 사람이 받는 응답 수 (처음부터 그 등급으로 시작할 때)\n");
   console.log("  학위        계열                       BASIC  STANDARD       PRO");
@@ -300,21 +345,33 @@ function main(): void {
       `  ${String(c.standard).padStart(4)}(${c.standard4})` +
       `  ${String(c.pro).padStart(4)}(${c.proFull})`);
   }
-  console.log("  괄호는 넷째 영역이 열리고 산업·역할 팩을 하나씩 본 경우다.");
-  console.log(`  한 칸에 문항이 둘인 영역(${TD.filter((t) => deepOf(t) === deepMax).join(" · ")})을 ` +
-    `고르면 영역마다 ${deepMax - 4}개 더한다.`);
+  console.log("  괄호는 넷째 영역이 열리고 산업팩 하나와 역할팩 둘까지 본 경우다.");
+  void deepMax;
 
-  const c0 = counts({ ...base, branch: n("GRAD-STEM") });
+  const c0 = counts({ ...base, branch: n("GRAD-CORE") });
   console.log("\n등급을 올릴 때 새로 묻는 응답 (앞 응답은 그대로 쓴다)\n");
   console.log(`  BASIC → STANDARD   ${c0.upgradeBasicToStandard}개  ` +
-    `(심화 영역 ${DOMAINS_BY_TIER.standard}개의 남은 축 · 역할·조직 선호 ` +
-    `${base.pref} · 일관성 ${base.consist})`);
+    `(심화 영역 ${DOMAINS_BY_TIER.standard}개의 남은 축 · 일관성 ${base.consist} · ` +
+    `역할팩 ${n("ROLE") ? "고른 역할" : "없음"})`);
   console.log(`  STANDARD → PRO     ${c0.upgradeStandardToPro}개  ` +
     `(경험 번역 ${base.trans} · 목표 입력 ${base.target})`);
-  console.log(`  그 뒤 선택으로      산업팩 6 · 역할팩 6 · ` +
+  console.log(`  그 뒤 선택으로      산업팩 10 · 역할팩 7 · ` +
     `넷째 영역 ${c0.extraFourthDomain}`);
 
-  const mm = minutes({ ...base, branch: n("GRAD-STEM") });
+  /* --- 선별 등급에서 실제 판단을 묻는 비중 ---
+     V1 은 선별 응답 쉰넷 가운데 여덟만 판단이었고, 서른여섯이 관심과
+     경험과 학습 의향이었다. 그 비율이 응시자가 읽기를 멈춘 까닭이다 */
+  const basicItems = core.filter((i) => i.tier === "BASIC");
+  const judged = basicItems.filter((i) => i.measurement_axis === "axis_level"
+    || i.measurement_axis === "common_judgement"
+    || i.measurement_axis === "experience_translation");
+  const judgedPerPerson = n("CORE-JUDGE") + n("UG-CORE") + 8 * DOMAINS_BY_TIER.basic;
+  const sweepPerPerson = 24 + DOMAINS_BY_TIER.basic;
+  const pct = Math.round(judgedPerPerson / (judgedPerPerson + sweepPerPerson) * 100);
+  ok("선별 등급 응답의 절반 이상이 실제 판단", pct >= 50,
+     `판단 ${judgedPerPerson} · 훑기 ${sweepPerPerson} · ${pct}% (은행 기준 ${judged.length}/${basicItems.length})`);
+
+  const mm = minutes({ ...base, branch: n("GRAD-CORE") });
   console.log("\n추정 시간 (블록마다 한 응답에 드는 시간을 곱한 값. 실측이 아니다)\n");
   console.log(`  BASIC                        약 ${mm.basic}분`);
   console.log(`  처음부터 STANDARD            약 ${mm.standardFresh}분`);

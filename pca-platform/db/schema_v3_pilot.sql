@@ -454,17 +454,25 @@ INSERT INTO products
    market, major_code, tier, assessment_version, price_status)
 VALUES
   ('ME_V3_BASIC_KR',    'assessment',     0, 'KRW', 1, false, 'free',
-   'KR', 'ME', 'BASIC',    'ME_V3_DOMAIN_2026', 'approved'),
+   'KR', 'ME', 'BASIC',    'ME_V3_2', 'approved'),
   ('ME_V3_STANDARD_KR', 'assessment', 14900, 'KRW', 1, false, 'full',
-   'KR', 'ME', 'STANDARD', 'ME_V3_DOMAIN_2026', 'approved'),
+   'KR', 'ME', 'STANDARD', 'ME_V3_2', 'approved'),
   ('ME_V3_PRO_KR',      'assessment', 21900, 'KRW', 1, false, 'full',
-   'KR', 'ME', 'PRO',      'ME_V3_DOMAIN_2026', 'approved')
+   'KR', 'ME', 'PRO',      'ME_V3_2', 'approved')
 ON CONFLICT (code) DO UPDATE
   SET amount = EXCLUDED.amount, tier = EXCLUDED.tier,
       assessment_version = EXCLUDED.assessment_version, active = false;
 
 COMMENT ON COLUMN products.active IS
   '파는가. 파일럿용 ME_V3 상품 셋은 false 다 — 이용권이 가리킬 자리만 필요하다';
+
+-- 판본을 올리면서 **아직 쓰지 않은** 이용권의 판본도 같이 올린다. 그러지
+-- 않으면 이미 발급한 초대가 어느 응시도 열지 못한다(`v3Grants` 가 판본으로
+-- 거른다). 이미 응시가 붙은 이용권은 건드리지 않는다: 그 응시는 그때의
+-- 문항으로 받았고 그때의 판본으로 읽어야 한다
+UPDATE entitlements e SET assessment_version = 'ME_V3_2'
+ WHERE e.assessment_version = 'ME_V3_DOMAIN_2026'
+   AND NOT EXISTS (SELECT 1 FROM v3_attempts a WHERE a.entitlement_id = e.id);
 
 -- 초대 한 자리가 등급을 든다. **참가자가 고르지 않는다**: 고르게 두면
 -- 무엇을 시험하는 wave 인지가 참가자 손에 넘어간다
