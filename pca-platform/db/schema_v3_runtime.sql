@@ -46,9 +46,13 @@ CREATE TABLE IF NOT EXISTS v3_responses (
   kind         TEXT NOT NULL CHECK (kind IN ('level','scale5','exposure','choice','skipped')),
   value_int    SMALLINT,
   value_text   TEXT,
+  -- 번역 단계에서 덧붙인 한 줄. **응답이 아니다**: 고른 보기가 단계를 센
+  -- 근거이고 이 줄은 결과지가 그 사람의 말로 옮겨 적을 때만 읽는다
+  note_text    TEXT,
   answered_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
   PRIMARY KEY (attempt_id, item_id)
 );
+ALTER TABLE v3_responses ADD COLUMN IF NOT EXISTS note_text TEXT;
 
 -- 축마다 고른 판단 체크리스트. 소유(OWNED)는 이 줄이 둘 이상일 때만 선다
 CREATE TABLE IF NOT EXISTS v3_evidence_picks (

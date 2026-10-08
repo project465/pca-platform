@@ -186,12 +186,20 @@ export function score(sub: Submission, loaded: Loaded): Snapshot {
   };
   const rq = quality(sub, items, peek);
 
-  const pick = (prefix: string) => {
+  /**
+   * 선호 응답을 떠낸다. **문항 번호의 앞머리로 고르지 않는다.**
+   *
+   * 앞머리로 골랐을 때 `PR_OC` 로 찾고 있었고 은행의 문항은 `PO_OC1` 이라
+   * 조직 선호 일곱이 **한 번도 담기지 않았다.** 번호 짓는 버릇이 바뀌면
+   * 조용히 비는 자리가 생긴다. 측정축은 그 문항이 무엇을 재는지를
+   * 가리키므로 번호를 어떻게 짓든 같이 움직인다.
+   */
+  const pick = (axis: string) => {
     const o: Record<string, number> = {};
     for (const i of items) {
-      if (!i.item_id.startsWith(prefix)) continue;
+      if (i.measurement_axis !== axis) continue;
       const a = sub.answers[i.item_id];
-      if (a && a.kind === "scale5") o[i.item_id.replace(prefix, "")] = a.value;
+      if (a && a.kind === "scale5") o[i.item_id] = a.value;
     }
     return o;
   };
@@ -226,8 +234,8 @@ export function score(sub: Submission, loaded: Loaded): Snapshot {
     domains: out, zones, tied, focus,
     response_quality: rq,
     context: {
-      role_preference: pick("PR_RF"),
-      org_preference: pick("PR_OC"),
+      role_preference: pick("role_preference"),
+      org_preference: pick("org_preference"),
       target,
       translation_steps: translation,
       /* 산업과 역할은 Core 를 다시 계산하지 않는다. 읽는 순서만 만든다 */

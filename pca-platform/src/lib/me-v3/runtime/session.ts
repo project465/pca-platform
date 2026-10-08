@@ -24,8 +24,11 @@ import { ITEM_BANK_VERSION, SCORING_VERSION } from "../scoring/version";
 import { buildPlan, type Plan, type Screen } from "./blocks";
 import { progressOf, type Progress } from "./progress";
 import { branchBlock, pickDomains, type GridAnswer } from "./routing";
+import { counts, minutes } from "../response-count";
+import type { MenuContext } from "./menus";
 
 export const CORE = "ME_CORE_V3";
+export const ASSESSMENT_VERSION = "ME_V3_DOMAIN_2026";
 
 export type V3Attempt = {
   id: string; user_id: string; tier: Tier; core_code: string; market_code: string;
@@ -120,6 +123,49 @@ export function roleChoices() {
     .map((p) => ({ code: p.code, name: p.name_ko, domains: p.core_ref.td.map(domainName) }));
 }
 
+/**
+ * 이 등급에서 받게 되는 응답 수와 추정 시간.
+ *
+ * **세는 자리는 `response-count.ts` 하나다.** 시작 화면이 따로 세면
+ * 문항을 고친 날 거기만 옛 수를 적고, 응시자는 그 수를 보고 시간을
+ * 비워 둔다. 추정 시간은 **실측이 아니고** 파일럿에서 재서 고친다.
+ */
+/** 산업팩 하나 또는 역할팩 하나가 더하는 문항 수 */
+function packSize(kind: "industry" | "role"): number {
+  const items = content().bank.items;
+  const codes = kind === "industry"
+    ? industryPacks().packs.map((x) => x.code) : rolePacks().packs.map((x) => x.code);
+  const per = codes.map((c) => items.filter((i) => kind === "industry"
+    ? i.industry_pack === c
+    : i.module === "ROLE" && i.item_id.startsWith(c)).length);
+  return Math.max(0, ...per);
+}
+
+export function estimate(stage: Stage, field: GradField | null): {
+  responses: Record<string, number>; minutes: Record<string, number>;
+} {
+  const bp = coreFile<{ slots: { block: string }[] }>(CORE, "items_blueprint");
+  const n = (b: string) => bp.slots.filter((x) => x.block === b).length;
+  const blocks = {
+    grid: n("CORE-GRID"), judge: n("CORE-JUDGE"), force: n("CORE-FORCE"),
+    probePerDomain: n("PROBE-J4"), deepPerDomain: n("DEEP-J8"),
+    pref: n("PREF-RF-OC"), consist: n("CONSIST"),
+    trans: n("TRANS-10"), target: n("TARGET"),
+    branch: n(branchBlock(stage, field)),
+    /* 팩은 blueprint 밖이라 은행에서 센다. 한 응시에 깊게 묻는 것은
+       산업 하나와 역할 하나뿐이다 */
+    pack: packSize("industry") + packSize("role"),
+  };
+  const c = counts(blocks);
+  return {
+    responses: {
+      BASIC: c.basic, STANDARD: c.standard, STANDARD4: c.standard4,
+      PRO: c.pro, PRO4: c.pro4, PROFULL: c.proFull,
+    },
+    minutes: minutes(blocks),
+  };
+}
+
 /* ── 응시 열기와 이어보기 ─────────────────────────────────────────── */
 
 export async function openAttempt(args: {
@@ -139,6 +185,28 @@ export async function openAttempt(args: {
      args.stage, args.gradField, ITEM_BANK_VERSION, SCORING_VERSION],
   );
   return (await attemptOf(row?.id as string, args.userId)) as V3Attempt;
+}
+
+/**
+ * 아직 쓰지 않은 V3 이용권. **등급은 이 줄이 정한다.**
+ *
+ * 화면이 등급을 넘길 수 있으면 언젠가 주소로 등급을 올리는 길이 생긴다.
+ * 그래서 `openAttempt` 가 받는 등급도 여기서 읽은 값이고, 이용권이 없으면
+ * 무료 등급 하나뿐이다.
+ */
+export async function v3Grants(userId: string): Promise<
+  { entitlement_id: string; tier: Tier; product_code: string }[]
+> {
+  return query<{ entitlement_id: string; tier: Tier; product_code: string }>(
+    `SELECT e.id::text AS entitlement_id, e.tier, e.product_code
+       FROM entitlements e
+      WHERE e.user_id = $1 AND e.status = 'active'
+        AND e.assessment_version = $2
+        AND (e.ends_at IS NULL OR e.ends_at > now())
+        AND NOT EXISTS (SELECT 1 FROM v3_attempts a WHERE a.entitlement_id = e.id)
+      ORDER BY e.created_at`,
+    [userId, ASSESSMENT_VERSION],
+  ).catch(() => []);
 }
 
 export async function currentAttempt(userId: string): Promise<V3Attempt | null> {
@@ -177,6 +245,48 @@ export async function saveAnswer(
     [attemptId, itemId, a.kind, int, text],
   );
   await query(`UPDATE v3_attempts SET last_saved_at = now() WHERE id = $1`, [attemptId]);
+}
+
+/**
+ * 번역 단계의 한 줄. **응답이 아니라 덧붙이는 말이다.**
+ *
+ * 고른 보기가 단계를 센 근거이고 이 줄은 결과지가 그 사람의 말로 옮겨
+ * 적을 때 쓴다. 그래서 줄만 적고 보기를 고르지 않았으면 그 문항은 아직
+ * 답하지 않은 것으로 남는다(`skipped`): 줄 하나로 단계가 섰다고 세면
+ * 번역 열 단계가 **적은 사람에게만 유리해진다.**
+ */
+export async function saveNote(
+  attemptId: string, itemId: string, text: string,
+): Promise<void> {
+  await query(
+    `INSERT INTO v3_responses (attempt_id, item_id, kind, note_text)
+     VALUES ($1,$2,'skipped',$3)
+     ON CONFLICT (attempt_id, item_id) DO UPDATE SET note_text = $3`,
+    [attemptId, itemId, text.slice(0, 400)],
+  );
+  await query(`UPDATE v3_attempts SET last_saved_at = now() WHERE id = $1`, [attemptId]);
+}
+
+export async function notesOf(attemptId: string): Promise<Record<string, string>> {
+  const rows = await query<{ item_id: string; note_text: string | null }>(
+    `SELECT item_id, note_text FROM v3_responses
+      WHERE attempt_id = $1 AND note_text IS NOT NULL`, [attemptId]);
+  return Object.fromEntries(rows.map((r) => [r.item_id, r.note_text ?? ""]));
+}
+
+/**
+ * 학업 단계와 계열을 고친다. **routing 만 달라지고 판정 기준은 같다.**
+ *
+ * 앞에서 답한 것을 지우지 않는다: 계열을 바꾸면 전에 받던 분기 묶음의
+ * 응답이 읽히지 않을 뿐이고, 되돌리면 그대로 쓰인다.
+ */
+export async function setProfile(
+  attemptId: string, stage: Stage, gradField: GradField | null,
+): Promise<void> {
+  await query(
+    `UPDATE v3_attempts SET education_stage=$2, grad_field=$3, last_saved_at=now()
+      WHERE id=$1`,
+    [attemptId, stage, stage === "bachelor" ? null : gradField]);
 }
 
 export async function savePicks(
@@ -268,11 +378,21 @@ export async function recomputeRouting(a: V3Attempt): Promise<V3Attempt> {
            fourth_reason: pick.fourth_reason };
 }
 
-export function tiedInGrid(answers: Record<string, Answer>, tds: string[]): boolean {
+/**
+ * 격자에서 **같은 값으로 묶인 맨 위 두 영역**. 묶이지 않았으면 빈 배열.
+ *
+ * 강제 선택의 보기가 여기서 나온다. 은행의 그 문항은 보기가 비어 있고
+ * `(격자에서 묶인 영역 가운데 하나)` 라고만 적혀 있다: 보기가 응시 중에
+ * 정해지기 때문이다. 묶이지 않았으면 화면 자체를 띄우지 않는다. 묶이지
+ * 않은 사람에게 둘 중 하나를 고르라고 물으면 **이미 답한 것을 다시
+ * 묻는 것**이고, 그 답은 점수에도 들어가지 않는다.
+ */
+export function tiedPairIn(answers: Record<string, Answer>, tds: string[]): string[] {
   const grid = gridOf(answers, tds);
-  const keys = tds.map((td) => `${grid[td].exposure ?? 0}:${grid[td].interest ?? 0}`);
-  const top = keys.filter((k) => k === [...keys].sort().reverse()[0]).length;
-  return top > 1;
+  const key = (td: string) => `${grid[td].exposure ?? 0}:${grid[td].interest ?? 0}`;
+  const top = [...tds].map(key).sort().reverse()[0];
+  const tied = tds.filter((td) => key(td) === top);
+  return tied.length > 1 ? tied.slice(0, 2) : [];
 }
 
 export async function planFor(a: V3Attempt): Promise<Plan> {
@@ -283,7 +403,7 @@ export async function planFor(a: V3Attempt): Promise<Plan> {
     branchBlock: branchBlock(a.education_stage, a.grad_field),
     probe: a.opened_probe, deep: a.opened_deep,
     industryPack: a.industry_pack, rolePack: a.role_pack,
-    tied: tiedInGrid(answers, tds),
+    tiedPair: tiedPairIn(answers, tds),
   }, content().bank.items, domainName, wordingOf, gridRowOf);
 }
 
@@ -293,27 +413,66 @@ export type View = {
   screen: Screen;
   progress: Progress;
   answers: Record<string, Answer>;
+  notes: Record<string, string>;
   picks: Awaited<ReturnType<typeof picksOf>>;
   prevId: string | null;
   nextId: string | null;
+  /** 화면이 몇째인가. **주소에는 이 수를 쓴다**: 화면 이름에 내부 코드가
+      들어 있어서 주소에 적으면 응시자가 그것을 본다 */
+  index: number;
+  prevIndex: number | null;
+  nextIndex: number | null;
 };
 
-/** 지금 보여 줄 화면. 이어 들어오면 마지막 자리부터 */
-export async function viewOf(a0: V3Attempt, want?: string | null): Promise<View> {
+/**
+ * 지금 보여 줄 화면. 이어 들어오면 마지막 자리부터.
+ *
+ * `want` 는 화면 이름이고 `wantIndex` 는 몇째인가다. **주소는 몇째인가로
+ * 적는다**: 화면 이름에 `grid-TD03` 처럼 내부 코드가 들어 있고, 그것이
+ * 주소창에 서면 응시자가 보게 된다. 이어보기 자리는 DB 에 이름으로
+ * 남는다(몇째인가는 routing 이 바뀌면 다른 자리를 가리킨다).
+ */
+export async function viewOf(
+  a0: V3Attempt, want?: string | null, wantIndex?: number | null,
+): Promise<View> {
   const a = await recomputeRouting(a0);
   const plan = await planFor(a);
   const answers = await answersOf(a.id);
+  const notes = await notesOf(a.id);
   const picks = await picksOf(a.id);
   const ids = plan.screens.map((s) => s.id);
-  const target = want && ids.includes(want) ? want
+  const byIndex = typeof wantIndex === "number" && wantIndex >= 0 && wantIndex < ids.length
+    ? ids[wantIndex] : null;
+  const target = byIndex ?? (want && ids.includes(want) ? want
     : a.current_screen && ids.includes(a.current_screen) ? a.current_screen
-      : ids[0];
+      : ids[0]);
   const at = ids.indexOf(target);
   return {
     attempt: a, plan, screen: plan.screens[at], progress: progressOf(plan, target),
-    answers, picks,
+    answers, notes, picks,
     prevId: at > 0 ? ids[at - 1] : null,
     nextId: at < ids.length - 1 ? ids[at + 1] : null,
+    index: at,
+    prevIndex: at > 0 ? at - 1 : null,
+    nextIndex: at < ids.length - 1 ? at + 1 : null,
+  };
+}
+
+/**
+ * 보기를 응시 중에 정하는 문항이 읽는 것.
+ *
+ * **산업과 역할 전부를 넘긴다.** 고른 하나만 넘기면 목표를 고르는 자리에
+ * 보기가 하나만 서고, 그러면 "여덟 산업을 다 볼 수 있다" 는 말과 화면이
+ * 어긋난다.
+ */
+export async function menuContextOf(a: V3Attempt): Promise<MenuContext> {
+  const answers = await answersOf(a.id);
+  const tds = content().domains.domains.map((d) => d.code);
+  return {
+    tiedPair: tiedPairIn(answers, tds).map((code) => ({ code, name: domainName(code) })),
+    domains: tds.map((code) => ({ code, name: domainName(code) })),
+    industries: industryChoices().map((i) => ({ code: i.code, name: i.name })),
+    roles: roleChoices().map((r) => ({ code: r.code, name: r.name })),
   };
 }
 
@@ -322,9 +481,21 @@ export async function moveTo(attemptId: string, screenId: string): Promise<void>
     [attemptId, screenId]);
 }
 
+/**
+ * 깊게 볼 산업이나 역할 하나.
+ *
+ * **없는 팩 이름을 받아 두지 않는다.** 받아 두면 그 자리에서는 아무 일도
+ * 없고 제출할 때 터진다: 응시자는 다 풀고 나서 "판정 만들기" 가 안 되는
+ * 것을 보고, 어디서 틀렸는지 알 길이 없다.
+ */
 export async function choosePack(
   attemptId: string, kind: "industry" | "role", code: string | null,
 ): Promise<void> {
+  if (code !== null) {
+    const known = kind === "industry"
+      ? industryChoices().map((x) => x.code) : roleChoices().map((x) => x.code);
+    if (!known.includes(code)) throw new Error(`no such pack: ${code}`);
+  }
   const col = kind === "industry" ? "industry_pack" : "role_pack";
   await query(`UPDATE v3_attempts SET ${col}=$2, last_saved_at=now() WHERE id=$1`,
     [attemptId, code]);
@@ -380,7 +551,7 @@ export async function newScreensAfterUpgrade(
     probe: a.opened_probe, deep: from === "BASIC" ? [] : a.opened_deep,
     industryPack: from === "PRO" ? a.industry_pack : null,
     rolePack: from === "PRO" ? a.role_pack : null,
-    tied: tiedInGrid(answers, tds),
+    tiedPair: tiedPairIn(answers, tds),
   }, content().bank.items, domainName, wordingOf, gridRowOf);
   const plan = await planFor(a);
   const had = new Set(before.screens.map((s) => s.id));

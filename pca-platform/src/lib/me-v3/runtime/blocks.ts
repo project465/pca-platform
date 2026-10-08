@@ -63,8 +63,8 @@ export type PlanInput = {
   deep: string[];
   industryPack: string | null;
   rolePack: string | null;
-  /** 격자에서 묶인 영역이 있으면 강제 선택을 띄운다 */
-  tied: boolean;
+  /** 격자에서 묶인 영역 둘. 비어 있으면 강제 선택을 띄우지 않는다 */
+  tiedPair: string[];
 };
 
 const AX_LABEL: Record<string, string> = {
@@ -115,7 +115,7 @@ export function buildPlan(
   }
 
   /* 강제 선택: 묶인 영역이 있을 때만 */
-  if (input.tied) {
+  if (input.tiedPair.length >= 2) {
     for (const i of items.filter((x) => x.module === "CORE-FORCE")) {
       add({
         id: `force-${i.item_id}`, stage: "EXPLORE", kind: "single", required: true,
@@ -145,16 +145,21 @@ export function buildPlan(
     add({
       id: "t-probe", stage: "DOMAIN", kind: "transition", required: false,
       subject: "기본 탐색이 끝났습니다",
-      question: `${input.probe.map(domainName).join(" · ")} 를 조금 더 봅니다`,
-      help: "겪어 보신 적이 있다고 답하신 영역입니다.",
+      /* **영역 이름을 머리글에 이어 붙이지 않는다.** 이름 셋을 가운뎃점으로
+         묶어 조사를 붙이면 앞말에 따라 조사가 틀리고, 줄이 두 줄로 접힌다 */
+      question: "겪어 보신 영역을 조금 더 봅니다",
+      help: `${input.probe.map(domainName).join(" · ")}`,
       items: [],
     });
   }
   for (const td of input.probe) {
     for (const i of items.filter((x) => x.module === "PROBE-J4" && x.technical_domain === td)) {
       add({
+        /* 작게 영역 · 중간 축 · 크게 질문. 셋을 한 줄에 몰면 가장 작은
+           글씨가 가장 많은 것을 말하게 된다 */
         id: `probe-${i.item_id}`, stage: "DOMAIN", kind: "single", required: false,
-        eyebrow: `${domainName(td)} · ${AX_LABEL[i.evidence_axis ?? ""] ?? ""}`,
+        eyebrow: domainName(td),
+        subject: AX_LABEL[i.evidence_axis ?? ""] ?? "",
         question: wording(i.item_id, input.stage),
         items: [i.item_id], domain: td,
       });
@@ -164,23 +169,24 @@ export function buildPlan(
   if (input.tier !== "BASIC") {
     add({
       id: "t-deep", stage: "DEEP", kind: "transition", required: false,
-      subject: "이제 앞에서 나타난 영역을 깊게 봅니다",
-      question: `${input.deep.map(domainName).join(" · ")}`,
-      help: "같은 판단을 여덟 가지로 나눠 묻습니다.",
+      subject: "앞에서 나타난 영역을 깊게 봅니다",
+      question: "같은 판단을 여덟 가지로 나눠 묻습니다",
+      help: `${input.deep.map(domainName).join(" · ")}`,
       items: [],
     });
     for (const td of input.deep) {
       for (const i of items.filter((x) => x.module === "DEEP-J8" && x.technical_domain === td)) {
         add({
           id: `deep-${i.item_id}`, stage: "DEEP", kind: "single", required: false,
-          eyebrow: `${domainName(td)} · ${AX_LABEL[i.evidence_axis ?? ""] ?? ""}`,
+          eyebrow: domainName(td),
+          subject: AX_LABEL[i.evidence_axis ?? ""] ?? "",
           question: wording(i.item_id, input.stage),
           items: [i.item_id], domain: td,
         });
       }
       add({
         id: `check-${td}`, stage: "DEEP", kind: "checklist", required: false,
-        eyebrow: `${domainName(td)} · 내가 정한 것`,
+        eyebrow: "근거 고르기",
         subject: domainName(td),
         question: "그 영역에서 직접 정하거나 남긴 것을 모두 골라 주십시오",
         help: "고르신 항목이 근거가 됩니다. 없으면 비워 두셔도 됩니다.",
@@ -188,9 +194,14 @@ export function buildPlan(
       });
     }
 
-    /* 역할과 조직 선호: 서로 견주는 줄이라 한 자리에 */
-    const rf = items.filter((x) => x.item_id.startsWith("PR_RF")).map((i) => i.item_id);
-    const oc = items.filter((x) => x.item_id.startsWith("PR_OC")).map((i) => i.item_id);
+    /* 역할과 조직 선호: 서로 견주는 줄이라 한 자리에.
+       **문항 번호의 앞머리로 고르지 않는다**: `PR_OC` 로 찾고 있었고
+       은행의 문항은 `PO_OC1` 이라 조직 선호 일곱이 어느 화면에도 서지
+       않았다. 측정축으로 고르면 번호 짓는 버릇과 따로 움직인다 */
+    const rf = items.filter((x) => x.measurement_axis === "role_preference")
+      .map((i) => i.item_id);
+    const oc = items.filter((x) => x.measurement_axis === "org_preference")
+      .map((i) => i.item_id);
     if (rf.length) {
       add({
         id: "pref-rf", stage: "DEEP", kind: "multi", required: false,
