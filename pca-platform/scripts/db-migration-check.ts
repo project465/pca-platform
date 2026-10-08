@@ -174,9 +174,15 @@ function codeRefs(tables: Set<string>): Map<string, Set<string>> {
       /* **`IN` 과 `IS` 에 낱말 경계를 붙인다.** 안 붙이면 `i` 깃발 때문에
          `straightline_run` 한가운데의 `in` 이 연산자로 잡혀서, 칸 이름이
          `straightl` 로 잘린 채 `없는 칸` 으로 걸린다. 멀쩡한 칸 스물한
-         개가 그렇게 걸렸다 */
+         개가 그렇게 걸렸다.
+
+         **그런데 쉼표 앞에 낱말 경계를 두면 안 된다.** 앞엣것이 따옴표면
+         (`SET state='done', done_at=now()`) 따옴표와 쉼표가 둘 다 낱말이
+         아니라서 경계가 없고, 그 쉼표 뒤의 칸이 통째로 안 세어졌다.
+         `v3_actions` 에 없는 칸을 쓰는 줄이 그렇게 이 검사를 지나갔다.
+         낱말 경계는 **낱말인 쪽에만** 붙인다 */
       for (const m of sql.matchAll(
-        /\b(?:WHERE|AND|OR|SET|,)\s+([a-z][a-z0-9_]{2,})\b\s*(?:=|<>|>=|<=|>|<|\bIS\b|\bIN\b)/gi)) {
+        /(?:\bWHERE\b|\bAND\b|\bOR\b|\bSET\b|,)\s*([a-z][a-z0-9_]{2,})\s*(?:=|<>|>=|<=|>|<|\bIS\b|\bIN\b)/gi)) {
         const c = m[1].toLowerCase();
         if (["and", "or", "not", "null", "true", "false", "select", "where", "set"].includes(c)) continue;
         add(only, c);

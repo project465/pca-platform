@@ -29,8 +29,23 @@ const INTERNAL = [
   /\b(?:undefined|null|NaN|TODO|TBD)\b/,
 ];
 
-/** 등급마다 몇 쪽이 알맞은가. 쪽수가 목표가 아니라 **한 쪽의 완성도**다 */
-const PAGES = { r1_basic: [3, 4], r2_standard: [6, 8], r3_pro: [8, 10] };
+/**
+ * 등급마다 몇 쪽이 알맞은가. 쪽수가 목표가 아니라 **한 쪽의 완성도**다.
+ *
+ * 이 범위는 결과지가 일곱 절이던 때에 적어 둔 값이라 아홉 절이 된 뒤로
+ * 세 등급 모두 넘고 있었다. **본문을 깎아 옛 범위에 맞추지 않는다**:
+ * 늘어난 두 절은 일부러 더한 것이다. 지금 뽑히는 쪽수로 옮긴다.
+ */
+const PAGES = { r1_basic: [4, 5], r2_standard: [8, 9], r3_pro: [11, 12] };
+
+/**
+ * 빈 쪽을 세는 선.
+ *
+ * 가운데 쪽이 손바닥만 하면 그 쪽은 비어 보인다. **마지막 쪽은 다르다**:
+ * 어느 문서든 마지막 쪽은 남은 만큼만 차고, 여기에는 결과 기준 안내 두
+ * 줄이 선다. 그래서 마지막 쪽은 **머리글밖에 없을 때만** 빈 쪽으로 센다.
+ */
+const THIN = 120, THIN_LAST = 40;
 
 /** 쪽 하나의 글자. `pdftotext` 가 없으면 빈 글자를 돌려준다 */
 function pageText(file, n) {
@@ -121,7 +136,9 @@ for (const t of plan.targets.filter((x) => x.full)) {
      된다. 한글이 안 뽑히는 환경에서는 글자가 0 이라 재지 않는다 */
   const len = perPage.map((x) => x.replace(/\s+/g, "").length);
   const thin = all.replace(/\s+/g, "").length > 200
-    ? len.map((n, i) => [i + 1, n]).filter(([, n]) => n < 120).map(([i]) => i)
+    ? len.map((n, i) => [i + 1, n])
+        .filter(([i, n]) => n < (i === len.length ? THIN_LAST : THIN))
+        .map(([i]) => i)
     : [];
   if (thin.length) problems.push(`${t.name}: ${thin.join("·")}쪽이 거의 비어 있다`);
   const want = PAGES[t.name];

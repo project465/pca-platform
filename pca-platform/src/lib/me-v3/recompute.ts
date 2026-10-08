@@ -245,7 +245,7 @@ export async function applyRecompute(userId: string): Promise<RecomputePlan> {
      기록으로 남아야 다음에 되짚을 수 있다 */
   for (const g of plan.closed_gaps) {
     await query(
-      `UPDATE v3_actions SET state='done', updated_at=now()
+      `UPDATE v3_actions SET state='done', done_at=now()
         WHERE user_id=$1 AND core_code=$2 AND state<>'done'
           AND coalesce(td_code,'')=$3 AND coalesce(axis_code,'')=$4`,
       [userId, CORE, g.domain, g.axis ?? ""]);

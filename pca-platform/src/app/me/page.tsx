@@ -2,7 +2,7 @@ import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import {
   actionsOf, experiencesOf, latestResult, pendingRecompute, postingCount,
-  profileOf, recentOf, savedJobCount, trackInterest,
+  profileOf, recentOf, resultHistory, savedJobCount, trackInterest,
 } from "@/lib/me-v3/platform";
 import { currentAttempt, domainName, industryChoices, roleName } from "@/lib/me-v3/runtime/session";
 import { moveLabel, regionName } from "@/lib/me-v3/region";
@@ -49,12 +49,13 @@ function when(at: string | null): string {
  */
 export default async function MyCareerMatri() {
   const user = await requireUser();
-  const [profile, recent, result, exps, actions, saved, postings, track, pending, open] =
+  const [profile, recent, result, exps, actions, saved, postings, track, pending, open,
+         history] =
     await Promise.all([
       profileOf(user.id), recentOf(user.id), latestResult(user.id),
       experiencesOf(user.id), actionsOf(user.id), savedJobCount(user.id),
       postingCount(), trackInterest(user.id), pendingRecompute(user.id),
-      currentAttempt(user.id),
+      currentAttempt(user.id), resultHistory(user.id),
     ]);
 
   const indName = new Map(industryChoices().map((x) => [x.code, x.name]));
@@ -209,6 +210,40 @@ export default async function MyCareerMatri() {
           <div className="cm-grow" />
           <div className="cm-acts">
             <Link className="cm-btn" href="/me/gap">할 일 관리</Link>
+          </div>
+        </div>
+
+        {/* ── 결과 이력 ──
+            **굳은 값과 지금 값을 한 목록에서 가른다.** 날짜와 기준을 줄마다
+            적어야, 경험을 더한 뒤의 숫자를 검사 결과로 읽지 않는다. 그리고
+            응시를 두 번 한 사람의 앞 결과가 여기서만 닿는다 */}
+        <div className="cm-card">
+          <h2>결과 이력 <em>기준과 날짜</em></h2>
+          {history.length ? (
+            <div className="cm-rows">
+              {history.map((h) => (
+                <p className="cm-row" key={`${h.kind}-${h.attempt_id ?? "now"}-${h.at}`}>
+                  <b>{h.kind === "CURRENT" ? "경험 추가 후 현재 상태" : "검사 당시 결과"}</b>
+                  <span>
+                    {h.at ?? "—"}
+                    {h.kind === "SNAPSHOT" && h.tier ? ` · ${h.tier}` : ""}
+                    {h.kind === "SNAPSHOT" && h.attempt_id ? (
+                      <> · <Link href={`/v3/${h.attempt_id}/result`}>결과 보기</Link></>
+                    ) : null}
+                  </span>
+                </p>
+              ))}
+            </div>
+          ) : (
+            <p>검사를 한 번 끝내면 그날의 결과가 날짜와 함께 줄로 섭니다.</p>
+          )}
+          <p style={{ fontSize: 13, color: "var(--sf-ink-3)" }}>
+            검사 당시 결과는 응시하신 그날의 문항과 기준으로 굳어 있습니다.
+            경험을 더해도 그 줄은 달라지지 않고, 달라지는 것은 현재 상태입니다.
+          </p>
+          <div className="cm-grow" />
+          <div className="cm-acts">
+            <Link className="cm-btn" href="/me/recompute">무엇이 달라지는지 보기</Link>
           </div>
         </div>
 

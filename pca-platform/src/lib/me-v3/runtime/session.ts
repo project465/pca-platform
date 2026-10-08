@@ -25,6 +25,7 @@ import {
 } from "./blocks";
 import { enqueue, syncProfile } from "../platform";
 import { progressOf, type Progress } from "./progress";
+import { ASSESSMENT_COPY_VERSION, ASSESSMENT_UI_VERSION } from "./ui-version";
 import {
   branchBlock, crossField, pickDomains, ROLE_SECOND_MAX,
   strongCells, type GridAnswer,
@@ -33,7 +34,7 @@ import { counts, minutes } from "../response-count";
 import { controlOf, type MenuContext } from "./menus";
 import { buildResult } from "../result/build";
 import type { ResultModel } from "../result/model";
-import { RESULT_COPY_VERSION, RESULT_MODEL_VERSION } from "../result/version";
+import { RESULT_COPY_VERSION, RESULT_MODEL_VERSION, RESULT_UI_VERSION } from "../result/version";
 
 export const CORE = "ME_CORE_V3";
 
@@ -761,12 +762,28 @@ export async function submit(a: V3Attempt): Promise<{ snapshot: Snapshot; id: st
     },
     translation: translationChoices(sub),
   });
+  /**
+   * **응시마다 판본 열한 가지를 남긴다.**
+   *
+   * 채점 엔진은 화면 판본을 모른다(알면 문장 하나 고친 날 채점이 달라진
+   * 것처럼 보인다). 그래서 **적는 자리에서** 화면과 문장 판본을 얹는다.
+   * 파일럿 분석이 묻는 것은 `이 사람이 어느 화면으로 어느 문장을 읽고
+   * 답했는가` 이고, 끝난 뒤에는 되물을 수 없다.
+   */
+  const versions = {
+    ...snapshot.module_versions,
+    assessment_ui_version: ASSESSMENT_UI_VERSION,
+    assessment_copy_version: ASSESSMENT_COPY_VERSION,
+    result_model_version: RESULT_MODEL_VERSION,
+    result_copy_version: RESULT_COPY_VERSION,
+    result_ui_version: RESULT_UI_VERSION,
+  };
   const row = await queryOne<{ id: string }>(
     `INSERT INTO v3_snapshots
        (attempt_id, module_versions, response_quality, payload,
         result_model, result_model_version, result_copy_version)
      VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING id::text`,
-    [a.id, JSON.stringify(snapshot.module_versions),
+    [a.id, JSON.stringify(versions),
      snapshot.response_quality.flag, JSON.stringify(snapshot),
      JSON.stringify(result), RESULT_MODEL_VERSION, RESULT_COPY_VERSION],
   );

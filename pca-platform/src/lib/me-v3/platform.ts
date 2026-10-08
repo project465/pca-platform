@@ -420,6 +420,51 @@ export async function recentOf(userId: string): Promise<Recent> {
   };
 }
 
+/**
+ * 결과 이력.
+ *
+ * **굳은 값과 지금 값을 한 목록에서 가른다.** `v3_snapshots` 의 줄은
+ * 그때 낸 결과지이고 날짜가 그 응시를 제출한 날이다. 지금 값은
+ * `career_profiles` 한 줄이고 날짜가 마지막 재분석한 날이다.
+ *
+ * 둘을 한 줄로 적으면 읽는 사람이 **경험을 더한 뒤의 숫자를 검사 결과로
+ * 읽는다.** 그리고 응시를 두 번 한 사람의 앞 결과는 어느 화면에서도
+ * 닿지 않았다: 대시보드가 가장 최근 것만 걸고 있었다.
+ */
+export type ResultHistoryRow = {
+  kind: "SNAPSHOT" | "CURRENT";
+  attempt_id: string | null;
+  tier: string | null;
+  at: string | null;
+  confirmed: number | null;
+};
+
+export async function resultHistory(userId: string): Promise<ResultHistoryRow[]> {
+  const snaps = await query<{
+    attempt_id: string; tier: string; at: string; confirmed: number | null;
+  }>(
+    `SELECT s.attempt_id::text AS attempt_id, a.tier,
+            to_char(s.created_at, 'YYYY-MM-DD') AS at,
+            (s.result_model -> 'overview' -> 'counts' -> 'confirmed_axes')::int AS confirmed
+       FROM v3_snapshots s JOIN v3_attempts a ON a.id = s.attempt_id
+      WHERE a.user_id = $1 AND s.result_model IS NOT NULL
+      ORDER BY s.created_at DESC, s.id DESC LIMIT 10`, [userId]);
+  const now = await queryOne<{ at: string | null }>(
+    `SELECT to_char(recomputed_at, 'YYYY-MM-DD') AS at FROM career_profiles
+      WHERE user_id = $1 AND core_code = $2`, [userId, CORE]);
+  const rows: ResultHistoryRow[] = snaps.map((r) => ({
+    kind: "SNAPSHOT" as const, attempt_id: r.attempt_id, tier: r.tier,
+    at: r.at, confirmed: r.confirmed,
+  }));
+  /* 지금 값은 재분석을 한 번이라도 돌린 뒤에만 줄로 선다. 안 돌린 사람에게
+     `지금 상태` 를 세워 두면 검사 결과와 같은 값이 두 줄로 보인다 */
+  if (now?.at) {
+    rows.unshift({ kind: "CURRENT", attempt_id: null, tier: null,
+                   at: now.at, confirmed: null });
+  }
+  return rows;
+}
+
 /** 마지막으로 만든 결과. 대시보드의 Evidence 와 Gap 이 이것을 읽는다 */
 export async function latestResult(userId: string): Promise<ResultModel | null> {
   const r = await queryOne<{ result_model: ResultModel | null }>(
