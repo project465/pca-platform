@@ -29,3 +29,13 @@ export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V1.1";
  * 고친 것은 그 절의 문장 하나다. 판정도 모델도 그대로라
  * `RESULT_MODEL_VERSION` 과 채점 판본은 올리지 않는다.
  */
+
+/*
+ * 결과지 판본은 올리지 않는다. **문항 은행과 채점 판본만 바뀌었다.**
+ *
+ * `result-lock.json` 에 그 둘이 함께 적혀 있어서 동결 대조가 걸린다. 결과
+ * 모델의 칸과 절과 화면 구조와 문장은 한 줄도 바뀌지 않았으므로
+ * `RESULT_MODEL_VERSION` 과 `RESULT_COPY_VERSION` 과 `RESULT_UI_VERSION` 은
+ * 그대로 두고 지문만 다시 적는다. 두 판본을 함께 적어 두는 까닭은 **어떤
+ * 은행과 어떤 채점으로 만든 결과지인지**가 그 자리에서 보여야 하기 때문이다.
+ */

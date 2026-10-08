@@ -5,8 +5,8 @@
   "result_ui_version": "ME_V3_RESULT_UI_V1.1",
   "result_copy_version": "me-v3-result-copy.1",
   "result_model_version": "me-v3-result-model.1",
-  "item_bank_version": "ME_V3_ITEM_BANK_V1",
-  "scoring_version": "me-v3-scoring.1"
+  "item_bank_version": "ME_V3_ITEM_BANK_V2",
+  "scoring_version": "me-v3-scoring.2"
  },
  "guards": {
   "내부 코드·문항 번호가 화면과 종이에 0건": "v3:result · v3:result:shots · v3:result:pdf",
@@ -30,7 +30,7 @@
   "src/lib/me-v3/result/build.ts": "5ab656e811c6d4c82b0f239622820c3a5520d76244c7df6f9db3c1cecf547038",
   "src/lib/me-v3/result/text.ko.ts": "aaa17e57559e6e1168fb9b86ff5568f5a0b08a914ac1884769fe0bf0bbbdc720",
   "src/lib/me-v3/result/josa.ts": "152cd30c2af136172618c14fa6fb4175b97cf16350db631e3e2e6c72fd7dd4af",
-  "src/lib/me-v3/result/version.ts": "5043f5560d8ea7b3904f9b8a7e54c60dbcd33d791a87316f452e9e35a6de2163",
+  "src/lib/me-v3/result/version.ts": "b8e99e661ae12d2bbb8174e6b8805c63f01d4227bfeed1a5fc7529b42b1c5982",
   "src/lib/me-v3/runtime/domain-facts.ts": "f5aefadb0bd9e6ca0fae76b1076c2a7fdab7d34caaebdc618f39a2e92fbfd31f"
  }
 }

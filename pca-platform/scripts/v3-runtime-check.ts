@@ -179,9 +179,9 @@ async function main(): Promise<void> {
   const p03 = await freshAttempt(userId, "STANDARD", "bachelor", null);
   await fillGrid(p03, { TD01: [5, 2, 5], TD08: [4, 1, 4], TD02: [4, 1, 3] });
   const v0 = await viewOf(p03);
-  await moveTo(p03.id, "grid-TD03");
+  await moveTo(p03.id, "sweep-exposure");
   const resumed = await viewOf((await attemptOf(p03.id, userId)) as V3Attempt);
-  ok("이어 들어오면 마지막 화면이 열린다", resumed.screen.id === "grid-TD03",
+  ok("이어 들어오면 마지막 화면이 열린다", resumed.screen.id === "sweep-exposure",
      `${v0.screen.id} → ${resumed.screen.id}`);
   const w03 = await walk(p03, userId, strong);
   const a03 = (await attemptOf(p03.id, userId)) as V3Attempt;
@@ -195,13 +195,13 @@ async function main(): Promise<void> {
      `화면 ${w03.screens} · 응답 ${w03.answered} · 심화 ${a03.opened_deep.join(",")}`);
   const saved = await answersOf(a03.id);
   const picks03 = await picksOf(a03.id);
-  /* 격자 서른여섯은 걸어 들어가기 전에 넣었으므로 걸으며 센 수보다 많다 */
-  const landed = ["G_TD01_INT", "TD01_J3", "TD01_J1", "PR_RF1", "CN_1A"]
+  /* 관심과 경험 스물넷은 걸어 들어가기 전에 넣었으므로 걸으며 센 수보다 많다 */
+  const landed = ["G_TD01_INT", "TD01_J3_1", "TD01_J3_2", "TD01_J1_1", "CN_1A"]
     .filter((id) => !!saved[id]);
   ok("응답과 근거가 DB 에 남는다",
      landed.length === 5 && Object.keys(picks03.checklists).length > 0 &&
      Object.keys(picks03.artifacts).length > 0,
-     `응답 ${Object.keys(saved).length} · 격자·선별·심화·선호·일관성 ${landed.length}/5` +
+     `응답 ${Object.keys(saved).length} · 훑기·선별 둘·심화·일관성 ${landed.length}/5` +
      ` · 근거 칸 ${Object.keys(picks03.checklists).length}` +
      ` · 산출물 ${Object.keys(picks03.artifacts).length}`);
   const s03 = await submit(a03);
@@ -304,7 +304,7 @@ async function main(): Promise<void> {
   ok("ME_V2 표에 V3 응답이 들어가지 않는다", v2[0].n === "0", `${v2[0].n}줄`);
 
   /* 12. 진행률은 두 수준이고 거짓 정밀도를 쓰지 않는다 */
-  const vp = await viewOf((await attemptOf(four.id, userId)) as V3Attempt, "grid-TD05");
+  const vp = await viewOf((await attemptOf(four.id, userId)) as V3Attempt, "sweep-interest");
   ok("진행률이 큰 단계와 묶음 안으로 갈린다",
      vp.progress.stages.length >= 4 && vp.progress.inStage.total > 1 &&
      vp.progress.inStage.index <= vp.progress.inStage.total,

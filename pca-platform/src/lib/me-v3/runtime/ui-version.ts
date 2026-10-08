@@ -9,10 +9,10 @@
  */
 
 /** 화면 구조와 상호작용. 흐름이나 화면이 바뀌면 올린다 */
-export const ASSESSMENT_UI_VERSION = "ME_V3_ASSESSMENT_UI_V1.1";
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V1";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
-export const ASSESSMENT_COPY_VERSION = "me-v3-assessment-copy.2";
+export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.1";
 
 /*
  * `.2` 로 올린 까닭. 결과지가 생겨서 완료 화면의 마지막 단추가 할 일이
@@ -33,4 +33,23 @@ export const ASSESSMENT_COPY_VERSION = "me-v3-assessment-copy.2";
  *
  * 고친 것은 한 줄이다(`<Screen key=...>`). 문항도 판정도 문면도 그대로라
  * 문항 은행과 채점 판본은 올리지 않는다.
+ */
+
+/*
+ * `ME_V3_2_ASSESSMENT_UI_V1` 으로 판본 이름을 갈아 끼운 까닭.
+ *
+ * `.2` 로 올리지 않았다. 올린 것이 아니라 **다른 검사**가 되었기 때문이다.
+ * 응시 화면을 응시자의 눈으로 보니 `기술영역 → 관심도 / 해본 적 / 배우고
+ * 싶은 정도` 가 열두 번 반복되고 있었고, 실제 판단을 묻는 자리는 서른두
+ * 화면 가운데 여덟이었고, 산업은 맨 뒤에 붙은 부가 묶음이었다.
+ *
+ * 바뀐 것: 영역 훑기가 열두 화면에서 두 화면으로 접혔다 · 산업이 프로필
+ * 바로 뒤로 와서 장면을 Core 문항 앞에서 읽는다 · 한 선택으로 끝나는
+ * 화면은 눌리면 넘어간다 · 근거 고르기가 문항 뒤로 갔다 · 관심 직무와
+ * 선호 조직을 고르기로 받는다 · 선별 네 축의 넷째가 조직 활용에서
+ * 실패·수정으로 바뀌었다.
+ *
+ * `ME_V3_ASSESSMENT_UI_V1.1` 의 화면은 git 과 `docs/metri/` 의 캡처에
+ * 남아 있다. 그 판본으로 응시한 사람의 응답은 `v3_attempts.assessment_version`
+ * 이 `ME_V3_DOMAIN_2026` 으로 적혀 있어 섞이지 않는다.
  */

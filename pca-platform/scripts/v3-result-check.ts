@@ -264,8 +264,8 @@ ok("STANDARD 와 PRO 가 같은 응답에서 같은 먼저 볼 영역을 낸다"
 const packDrift: string[] = [];
 for (const f of fx.personas.filter((x) => x.tier === "PRO").slice(0, 3)) {
   const sub = expand(f, core);
-  const a = buildResult(score({ ...sub, industry_pack: "INDUSTRY_SEMICON_V1" }, loaded), loaded);
-  const b = buildResult(score({ ...sub, industry_pack: "INDUSTRY_DEFENSE_V1" }, loaded), loaded);
+  const a = buildResult(score({ ...sub, industry_pack: "INDUSTRY_SEMICON_V2" }, loaded), loaded);
+  const b = buildResult(score({ ...sub, industry_pack: "INDUSTRY_DEFENSE_V2" }, loaded), loaded);
   const core3 = (m: typeof a) => JSON.stringify(
     m.domains.map((d) => [d.code, d.zone, d.confirmed, d.owned]));
   if (core3(a) !== core3(b)) packDrift.push(f.id);
