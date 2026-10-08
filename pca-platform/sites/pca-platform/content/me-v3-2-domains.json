@@ -360,7 +360,7 @@
   },
   {
    "code": "TD04",
-   "name": "동역학·진동·NVH",
+   "name": "동역학·진동·소음",
    "required_axes": [
     "J4",
     "J6"

@@ -121,7 +121,12 @@
     "v3:result:shots": "node scripts/v3-result-shots.mjs",
     "v3:result:pdf": "node scripts/v3-result-pdf.mjs",
     "v3:migrate": "tsx scripts/v3-migrate-check.ts",
-    "v3:length": "tsx scripts/v3-length-check.ts"
+    "v3:length": "tsx scripts/v3-length-check.ts",
+    "db:v3": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 --single-transaction -f db/schema_v3_runtime.sql",
+    "db:v3:arch": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 --single-transaction -f db/schema_v3_arch.sql",
+    "db:v3:platform": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 --single-transaction -f db/schema_v3_platform.sql",
+    "db:v3:pilot": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 --single-transaction -f db/schema_v3_pilot.sql",
+    "db:v3:regions": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 --single-transaction -f db/seed/v3_regions.sql"
   },
   "dependencies": {
     "@types/nodemailer": "^8.0.1",

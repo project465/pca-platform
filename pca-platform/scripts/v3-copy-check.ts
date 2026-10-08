@@ -88,6 +88,20 @@ const FILES = [
   "src/lib/me-v3/runtime/blocks.ts",
   "src/lib/me-v3/runtime/menus.ts",
   "src/lib/me-v3/runtime/session.ts",
+  /* 내 CareerMatri. **검사 화면만 재면 플랫폼 쪽이 다른 말투로 선다.**
+     한 사람이 검사를 끝내고 이어서 누르는 쪽이라, 여기가 설명서 말투면
+     그 어긋남은 한 쪽씩 볼 때 안 보이고 이어서 누를 때만 보인다 */
+  "src/app/cores/page.tsx",
+  "src/app/me/page.tsx",
+  "src/app/me/nav.ts",
+  "src/app/me/shell.tsx",
+  "src/app/me/experience/page.tsx",
+  "src/app/me/experience/new/page.tsx",
+  "src/app/me/explore/page.tsx",
+  "src/app/me/region/page.tsx",
+  "src/app/me/jobs/page.tsx",
+  "src/app/me/track/page.tsx",
+  "src/app/me/gap/page.tsx",
 ];
 
 const out: string[] = [];

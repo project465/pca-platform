@@ -17,6 +17,14 @@ export type Field = {
   note?: string;
   /** 보기마다 붙는 짧은 뜻. 보기 넷에서만 쓴다 */
   optionHelp?: string[];
+  /**
+   * 접어 둘 뜻풀이.
+   *
+   * 보기 넷을 처음 만나는 화면에서는 `optionHelp` 로 펼치고, 그 뒤에는
+   * 여기로 와서 **접힌 자리**에 선다. 개념은 그대로 두고 매번 다시 읽지
+   * 않게 하는 자리다.
+   */
+  optionHelpFold?: string[];
   /** 보기마다 붙는 네 글자 꼬리표. 보기 넷에서만 쓴다 */
   optionTag?: string[];
 };

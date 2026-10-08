@@ -181,7 +181,13 @@ export default function Screen({
       <main className={`qs-main${mid ? " qs-mid" : ""}`}>
         {s.eyebrow ? <p className="qs-eyebrow">{s.eyebrow}</p> : null}
         {s.subject ? <p className="qs-subject">{s.subject}</p> : null}
-        {s.question ? <h1 className="qs-q">{s.question}</h1> : null}
+        {/* 완료 화면의 머리글은 제출 전과 뒤가 다르다. **다 푼 사람에게
+            `준비가 됐습니다` 를 그대로 두면** 아직 할 일이 남은 줄 안다 */}
+        {s.question ? (
+          <h1 className="qs-q">
+            {s.kind === "done" && s.done ? "내 CareerMatri가 만들어졌습니다" : s.question}
+          </h1>
+        ) : null}
         {/* 전환 화면의 도움말은 **이제 볼 영역의 목록**이다. 한 줄로 이어
             붙이면 가운뎃점으로 묶인 긴 문장이 되고, 쉬는 자리가 빈 화면이
             된다. 줄로 세우면 무엇을 보러 가는지가 그대로 읽힌다 */}
@@ -406,9 +412,30 @@ export default function Screen({
             ) : null}
             <p className="qs-help" style={{ marginTop: 24 }}>
               {s.done
-                ? "결과를 저장했습니다. 아래에서 바로 보실 수 있습니다."
+                ? "검사는 끝이 아니라 시작입니다. 경험이 늘면 근거와 Gap을 다시 계산합니다."
                 : "답변을 바탕으로 결과를 정리합니다. 만든 뒤에도 이전으로 돌아가 고칠 수 있습니다."}
             </p>
+            {/* **PDF 하나로 끝내지 않는다.** 결과를 받은 사람이 다음에 갈
+                자리가 여섯이다. 하나만 두면 그 하나를 누른 날 끝난다 */}
+            {s.done ? (
+              <ul className="qs-done-next">
+                {[
+                  [`/v3/${s.attemptId}/result`, "결과 보기", "기술영역과 산업과 직무를 이어 읽습니다"],
+                  ["/me", "내 CareerMatri", "지금 방향과 근거와 Gap을 한 쪽에 둡니다"],
+                  [`/v3/${s.attemptId}/result#evidence`, "내 Evidence", "확인된 판단과 고른 근거"],
+                  ["/me/gap", "내 Gap", "비어 있는 자리와 그것을 메우는 일"],
+                  ["/me/explore", "관심 산업과 직무", "여덟 산업과 여덟 직무를 다시 봅니다"],
+                  ["/me/experience/new", "새 경험 추가", "다음 재분석에 들어갑니다"],
+                ].map(([href, label, note]) => (
+                  <li key={href}>
+                    <a href={href}>
+                      <b>{label}</b>
+                      <small>{note}</small>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
           </>
         ) : null}
       </main>
@@ -483,6 +510,19 @@ function One({
             </label>
           ))}
         </div>
+        {/* **뜻풀이를 보기마다 깔지 않는다.** 처음 만나는 화면에서 한 번
+            펼치고 그 뒤에는 접어 둔다. 개념은 그대로이고 매번 다시 읽지
+            않게 하는 자리다 */}
+        {f.optionHelpFold ? (
+          <details className="qs-optfold">
+            <summary>보기가 어떻게 갈리나요</summary>
+            <ul>
+              {c.options.map((label, i) => (
+                <li key={i}><b>{label}</b>{f.optionHelpFold?.[i]}</li>
+              ))}
+            </ul>
+          </details>
+        ) : null}
       </fieldset>
     );
   }

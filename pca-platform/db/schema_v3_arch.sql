@@ -1,11 +1,13 @@
 -- ============================================================
---  ME_V3 장기 구조 스키마 제안 · **아직 적용하지 않는다**
+--  ME_V3 장기 구조 스키마
 --
 --  Country/Market → Major Core → Industry Pack → Role Pack
 --  → Region Layer → Evidence/Gap → Career Action
 --
---  이 파일은 **확정된 구조를 SQL 로 적어 둔 것**이고, 돌리는 것은 V3
---  구현을 시작할 때다. `db:upgrade` 목록에 아직 넣지 않았다.
+--  적용: `npm run db:v3:arch` (`db:init` 과 `db:upgrade` 가 부른다).
+--  넉 달 동안 **적어만 두고 올리지 않았다.** 그 사이에 `/v3` 가 쓰는 표가
+--  운영에 선 적이 없어서 그 주소는 500 이었다. 적어 둔 스키마와 올라간
+--  스키마는 다른 것이고, 그 차이는 아무 검사도 세지 않는다.
 --
 --  표를 새로 만들 때마다 까닭을 적는다. 표가 늘면 판단하는 자리가 늘고,
 --  늘어난 자리 가운데 하나는 반드시 뒤처진다(설계 원칙 10).
@@ -67,17 +69,27 @@ CREATE TABLE IF NOT EXISTS regions (
   source      TEXT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS industries (
-  code        TEXT PRIMARY KEY,          -- 표준산업분류 중분류에 맞춘다
-  name        TEXT NOT NULL,
-  ksic_code   TEXT,
-  parent_code TEXT REFERENCES industries(code),
-  source      TEXT NOT NULL
-);
+/* **`industries` 표를 만들지 않는다.**
+   그 이름이 이미 있었다(`db/schema_metri.sql`, 칸은 `id`·`code`·`sort_no`
+   이고 이름은 `translations` 에 있다). `CREATE TABLE IF NOT EXISTS` 는
+   조용히 아무것도 하지 않고, 아래 표들의 외래키가 **옛 표를 가리킨 채로**
+   섰다. 이름이 겹치는 것이 곧 버그다(이 저장소에서 `.btn` · `--sf-r` ·
+   `.lg` · `empty` 에 이어 다섯 번째다).
+
+   그래서 산업 코드를 **글자로** 들고 외래키를 걸지 않는다. V3 의 산업
+   정본은 그 core 의 산업팩 파일이고(`major-cores.json` 의 `packs.industry`),
+   거기 코드와 이름이 함께 있다. DB 에 같은 목록을 한 벌 더 두면 산업을
+   늘리는 날 한쪽만 늘어난다. */
+ALTER TABLE IF EXISTS region_industry
+  DROP CONSTRAINT IF EXISTS region_industry_industry_code_fkey;
+ALTER TABLE IF EXISTS industry_td_demand
+  DROP CONSTRAINT IF EXISTS industry_td_demand_industry_code_fkey;
+ALTER TABLE IF EXISTS org_registry
+  DROP CONSTRAINT IF EXISTS org_registry_industry_code_fkey;
 
 CREATE TABLE IF NOT EXISTS region_industry (
   region_code    TEXT NOT NULL REFERENCES regions(code),
-  industry_code  TEXT NOT NULL REFERENCES industries(code),
+  industry_code  TEXT NOT NULL,            -- 산업팩의 코드. 외래키를 걸지 않는다
   establishments INTEGER,
   employees      INTEGER,
   base_year      SMALLINT NOT NULL,
@@ -90,7 +102,7 @@ CREATE TABLE IF NOT EXISTS region_industry (
    스키마에 먼저 두는 까닭은, 나중에 채울 때 근거 없는 강도가 들어오는
    것을 막으려는 것이다 */
 CREATE TABLE IF NOT EXISTS industry_td_demand (
-  industry_code TEXT NOT NULL REFERENCES industries(code),
+  industry_code TEXT NOT NULL,             -- 산업팩의 코드
   core_code     TEXT NOT NULL,
   td_code       TEXT NOT NULL,
   rf_code       TEXT,
@@ -105,7 +117,7 @@ CREATE TABLE IF NOT EXISTS industry_td_demand (
 CREATE TABLE IF NOT EXISTS org_registry (
   region_code   TEXT NOT NULL REFERENCES regions(code),
   oc_code       TEXT NOT NULL,           -- OC1~OC7
-  industry_code TEXT REFERENCES industries(code),
+  industry_code TEXT,                      -- 산업팩의 코드
   org_count     INTEGER NOT NULL,
   base_year     SMALLINT NOT NULL,
   source        TEXT NOT NULL,
@@ -142,12 +154,20 @@ CREATE TABLE IF NOT EXISTS career_profiles (
   user_id        BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   core_code      TEXT NOT NULL,
   market_code    TEXT NOT NULL,
-  base_attempt_id BIGINT REFERENCES attempts(id) ON DELETE SET NULL,
+  /* **ME_V3 응시를 가리킨다.** 처음에는 `attempts(id)` 로 적어 두었는데
+     그 표는 ME_V1 과 ME_V2 의 응시고, 거기를 가리키면 V3 판정이 옛 판본의
+     응시에 붙는다. 기술영역 열둘과 직무군 열여섯 사이에 1 대 1 사상이
+     없어서 섞으면 어느 쪽도 아닌 값이 나온다 */
+  base_attempt_id BIGINT REFERENCES v3_attempts(id) ON DELETE SET NULL,
   axis_levels    JSONB NOT NULL DEFAULT '{}',  -- {TD02:{J3:"L2",...},...}
   zones          JSONB NOT NULL DEFAULT '{}',  -- {Z1:[...],Z2:[...],...}
   gaps           JSONB NOT NULL DEFAULT '{}',  -- 비어 있는 축과 채우는 조건
-  target_industry TEXT,
-  target_role     TEXT,
+  /* 관심 산업과 관심 역할을 **둘까지** 받는다. 응시에서 고른 것이 여기로
+     옮겨 오고, 내 CareerMatri 에서 더하거나 지울 수 있다 */
+  target_industry TEXT[] NOT NULL DEFAULT '{}',
+  target_role     TEXT[] NOT NULL DEFAULT '{}',
+  /* 선호 조직 유형. **Core 판정에 들어가지 않는다** */
+  target_org      TEXT[] NOT NULL DEFAULT '{}',
   home_region     TEXT REFERENCES regions(code),
   move_range      TEXT,
   recomputed_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
@@ -219,9 +239,16 @@ COMMENT ON COLUMN career_events.dedupe_key IS
 --  표는 이미 있는 `entitlements` 를 쓰고 종류만 늘린다.
 -- ============================================================
 
-ALTER TABLE entitlements DROP CONSTRAINT IF EXISTS entitlements_kind_chk;
-ALTER TABLE entitlements ADD CONSTRAINT entitlements_kind_chk
-  CHECK (kind IN ('seat', 'pass', 'grant', 'track'));
+/* **이미 선 제약의 이름을 그대로 쓴다.** 처음에는 `entitlements_kind_chk`
+   라는 새 이름으로 `seat` · `pass` · `grant` · `track` 을 적어 두었는데,
+   운영에 선 이름은 `entitlements_kind_check` 이고 받는 값은 `pass` 와
+   `report` 다. 새 이름으로 올리면 **같은 칸에 제약이 둘** 서고, 적어 둔
+   값 목록이 이미 있는 줄을 거절해서 그 자리에서 멈춘다. 실제로 멈췄다.
+   `seat` 과 `grant` 는 쓰는 코드가 없다: 좌석은 `seats` 표에 있고 결과지
+   권한은 `report_grants` 에 있다 */
+ALTER TABLE entitlements DROP CONSTRAINT IF EXISTS entitlements_kind_check;
+ALTER TABLE entitlements ADD CONSTRAINT entitlements_kind_check
+  CHECK (kind IN ('pass', 'report', 'track'));
 
-COMMENT ON CONSTRAINT entitlements_kind_chk ON entitlements IS
+COMMENT ON CONSTRAINT entitlements_kind_check ON entitlements IS
   'track 이 CareerMatri Track 구독이다. 산업팩을 잠그는 종류를 만들지 않는다';

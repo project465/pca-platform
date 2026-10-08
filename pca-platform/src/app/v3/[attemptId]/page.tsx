@@ -46,6 +46,10 @@ export default async function V3Screen({
 
   const stage = v.attempt.education_stage;
   const sc = v.screen;
+  /* 이 응시에서 **보기 넷을 처음 만나는 화면**인가. 뜻풀이를 거기서만 펼친다 */
+  const levelScreens = v.plan.screens.filter((x) =>
+    x.items.some((id) => itemOf(id)?.response_scale === "L0~L3"));
+  const firstLevel = levelScreens.length > 0 && levelScreens[0].id === sc.id;
 
   const fieldOf = async (id: string, label?: string): Promise<Field | null> => {
     const it = itemOf(id);
@@ -60,8 +64,16 @@ export default async function V3Screen({
       itemId: id, label, control, value,
       note: v.notes[id] ?? "",
       /* 보기 넷의 뜻은 `ownership.ts` 하나에서 온다. 화면이 따로 적으면
-         어느 날 채점과 다른 말을 한다 */
-      optionHelp: control.kind === "level" ? OWNERSHIP.map((o) => o.means) : undefined,
+         어느 날 채점과 다른 말을 한다.
+         **되풀이하지 않는다.** 네 줄을 보기마다 깔아 두면 선별 등급에서만
+         스물여덟 화면에 똑같은 네 줄이 서고, 그러면 아무도 읽지 않는다.
+         처음 만나는 보기 넷 화면에서만 펼치고 그 뒤에는 꼬리표만 두고
+         접어 둔다(접힌 자리는 언제든 열린다) */
+      optionHelp: control.kind === "level" && firstLevel ? OWNERSHIP.map((o) => o.means)
+        : undefined,
+      /* 접어 둘 자리에 넣을 같은 네 줄 */
+      optionHelpFold: control.kind === "level" && !firstLevel
+        ? OWNERSHIP.map((o) => o.means) : undefined,
       optionTag: control.kind === "level" ? OWNERSHIP_TAG : undefined,
     };
   };

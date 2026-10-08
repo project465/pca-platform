@@ -23,6 +23,7 @@ import { ITEM_BANK_VERSION, SCORING_VERSION } from "../scoring/version";
 import {
   buildPlan, type IndustryScene, type Plan, type PlanInput, type Screen,
 } from "./blocks";
+import { enqueue, syncProfile } from "../platform";
 import { progressOf, type Progress } from "./progress";
 import {
   branchBlock, crossField, pickDomains, ROLE_SECOND_MAX,
@@ -772,6 +773,17 @@ export async function submit(a: V3Attempt): Promise<{ snapshot: Snapshot; id: st
   await query(
     `UPDATE v3_attempts SET status='scored', submitted_at=now(), current_screen='done'
       WHERE id=$1`, [a.id]);
+  /* **검사가 끝나는 자리가 아니다.** 고른 산업과 직무와 조직을 지금 값으로
+     옮기고 다시 계산할 일을 한 줄 쌓는다. 그것이 없으면 내 CareerMatri 가
+     빈 쪽으로 서고, 다 푼 사람이 다시 들어올 이유가 사라진다.
+     **스냅샷을 덮지 않는다**: 위에서 굳힌 줄은 그대로 있다 */
+  await syncProfile(a.user_id, {
+    attemptId: a.id,
+    industry: a.industry_interest ?? [],
+    role: a.role_interest ?? [],
+    org: a.org_interest ?? [],
+  });
+  await enqueue(a.user_id, "attempt.scored", { attempt_id: a.id });
   return { snapshot, id: row?.id as string };
 }
 

@@ -1,0 +1,335 @@
+/**
+ * 내 CareerMatri. **검사가 끝난 뒤의 자리를 읽고 쓴다.**
+ *
+ * 검사 하나로 끝나는 서비스가 아니다. 경험이 늘면 Gap 이 다시 계산되고,
+ * 목표가 바뀌면 다시 견주고, 공고 자료가 들어오면 내 근거와 대조한다.
+ *
+ * **굳은 값과 지금 값을 가른다.** `v3_snapshots` 은 그때 낸 결과지라
+ * 바뀌지 않고 줄이 쌓이기만 한다. `career_profiles` 가 지금 값이다. 한
+ * 표에 담으면 갱신이 스냅샷을 덮어서 `만들어 둔 결과지를 고치지 않는다`
+ * 가 깨진다.
+ *
+ * **다시 계산하는 일을 여기서 하지 않는다.** 경험을 저장하면
+ * `career_events` 에 할 일 한 줄이 쌓이고, 그 줄을 처리하는 일은 다음
+ * 회차다. 저장만으로 Gap 이 바뀌지 않는 것이 지금 상태이고, 화면이 그
+ * 사실을 적는다.
+ */
+import { query, queryOne } from "@/lib/db";
+import type { ResultModel } from "./result/model";
+
+export const CORE = "ME_CORE_V3";
+
+/* ── 경험 ──────────────────────────────────────────────────────────── */
+
+/** 경험 여덟 갈래. **응시자가 자기 경험을 찾을 수 있는 말로 적는다** */
+export const EXPERIENCE_KINDS = [
+  { code: "course", label: "수업·과제", hint: "전공 수업에서 조건을 직접 정해 본 과제" },
+  { code: "capstone", label: "캡스톤·설계 과제", hint: "한 학기 이상 끌고 간 설계" },
+  { code: "research", label: "연구·실험", hint: "연구실에서 돌린 실험이나 해석" },
+  { code: "paper", label: "논문·학회", hint: "쓴 논문이나 발표" },
+  { code: "internship", label: "인턴·현장실습", hint: "회사나 기관에서 맡은 일" },
+  { code: "project", label: "개인·동아리 프로젝트", hint: "대회나 제작이나 혼자 만든 것" },
+  { code: "work", label: "직장 경험", hint: "맡아서 끌고 간 업무" },
+  { code: "credential", label: "자격·교육 이수", hint: "딴 자격이나 들은 교육" },
+] as const;
+
+export type ExperienceKind = typeof EXPERIENCE_KINDS[number]["code"];
+
+export type Experience = {
+  id: string;
+  kind: ExperienceKind;
+  title: string;
+  started_on: string | null;
+  ended_on: string | null;
+  td_codes: string[];
+  axis_codes: string[];
+  decisions: string[];
+  artifacts: string[];
+  verifications: string[];
+  note_text: string | null;
+  status: "draft" | "saved" | "reflected";
+  created_at: string;
+};
+
+export async function experiencesOf(userId: string): Promise<Experience[]> {
+  return query<Experience>(
+    `SELECT id::text, kind, title, started_on::text, ended_on::text,
+            td_codes, axis_codes, decisions, artifacts, verifications,
+            note_text, status, created_at::text
+       FROM v3_experiences
+      WHERE user_id = $1 AND core_code = $2
+      ORDER BY created_at DESC`,
+    [userId, CORE]);
+}
+
+/**
+ * 경험 하나를 저장한다.
+ *
+ * **보기에서 고른 값이 주 입력이다.** 한 줄 메모는 결과지가 그 사람의
+ * 말로 옮길 때만 읽고 판정에 들어가지 않는다. 그 줄에는 기한을 붙인다:
+ * 자유입력은 남겨 둘 이유가 끝나면 지운다.
+ */
+export async function addExperience(userId: string, e: {
+  kind: string; title: string; started_on?: string | null; ended_on?: string | null;
+  td_codes?: string[]; axis_codes?: string[];
+  decisions?: string[]; artifacts?: string[]; verifications?: string[];
+  note_text?: string | null;
+}): Promise<string> {
+  const row = await queryOne<{ id: string }>(
+    `INSERT INTO v3_experiences
+       (user_id, core_code, kind, title, started_on, ended_on,
+        td_codes, axis_codes, decisions, artifacts, verifications,
+        note_text, purge_after)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,
+             CASE WHEN $12 IS NULL THEN NULL ELSE current_date + 365 END)
+     RETURNING id::text`,
+    [userId, CORE, e.kind, e.title.slice(0, 120),
+     e.started_on || null, e.ended_on || null,
+     e.td_codes ?? [], e.axis_codes ?? [],
+     e.decisions ?? [], e.artifacts ?? [], e.verifications ?? [],
+     (e.note_text ?? "").trim() || null]);
+  /* **다시 계산할 일을 줄로 쌓는다.** 여기서 바로 계산하면 저장이 느려지고,
+     계산이 깨진 날 저장까지 막힌다 */
+  await enqueue(userId, "evidence.added", { experience_id: row?.id ?? null });
+  return row?.id ?? "";
+}
+
+export async function removeExperience(userId: string, id: string): Promise<void> {
+  await query(`DELETE FROM v3_experiences WHERE id=$1 AND user_id=$2`, [id, userId]);
+  await enqueue(userId, "evidence.edited", { experience_id: id });
+}
+
+/* ── 다시 계산할 일 ────────────────────────────────────────────────── */
+
+/**
+ * 다시 계산해야 할 일을 줄로 쌓는다.
+ *
+ * **퍼널(`analytics_events`)과 메일(`outbox`)과 섞지 않는다.** 셋이 묻는
+ * 질문이 다르다: 퍼널은 전환을, 메일은 나갔는지를, 여기는 무엇을 다시
+ * 계산해야 하는지를 묻는다. 같은 일로 두 번 돌지 않는 것은 DB 가 막는다.
+ */
+export async function enqueue(
+  userId: string, kind: string, payload: Record<string, unknown>,
+): Promise<void> {
+  const key = `${userId}:${kind}:${JSON.stringify(payload)}`;
+  await query(
+    /* **부분 유일 인덱스는 조건을 같이 적어야 추론된다.** `dedupe_key` 의
+       인덱스가 `WHERE dedupe_key IS NOT NULL` 이라서, 조건 없이 적으면
+       `맞는 제약이 없다` 로 그 자리에서 멈춘다 */
+    `INSERT INTO career_events (user_id, core_code, kind, payload, dedupe_key)
+     VALUES ($1,$2,$3,$4,$5)
+     ON CONFLICT (dedupe_key) WHERE dedupe_key IS NOT NULL DO NOTHING`,
+    [userId, CORE, kind, JSON.stringify(payload), key.slice(0, 300)]);
+}
+
+export async function pendingRecompute(userId: string): Promise<number> {
+  const r = await queryOne<{ n: string }>(
+    `SELECT count(*)::text AS n FROM career_events
+      WHERE user_id=$1 AND status IN ('queued','failed')`, [userId]);
+  return Number(r?.n ?? 0);
+}
+
+/* ── 지금 값 ───────────────────────────────────────────────────────── */
+
+export type Profile = {
+  target_industry: string[];
+  target_role: string[];
+  target_org: string[];
+  home_region: string | null;
+  move_range: string | null;
+  recomputed_at: string | null;
+};
+
+export async function profileOf(userId: string): Promise<Profile | null> {
+  return (await queryOne<Profile>(
+    `SELECT target_industry, target_role, target_org,
+            home_region, move_range, recomputed_at::text
+       FROM career_profiles WHERE user_id=$1 AND core_code=$2`,
+    [userId, CORE])) ?? null;
+}
+
+/**
+ * 응시에서 고른 것을 지금 값으로 옮긴다.
+ *
+ * **스냅샷을 덮지 않는다.** 여기 쓰는 것은 지금 값이고, 그때 낸 결과지는
+ * `v3_snapshots` 에 그대로 있다.
+ */
+export async function syncProfile(userId: string, from: {
+  attemptId: string;
+  industry: string[]; role: string[]; org: string[];
+}): Promise<void> {
+  await query(
+    `INSERT INTO career_profiles
+       (user_id, core_code, market_code, base_attempt_id,
+        target_industry, target_role, target_org)
+     VALUES ($1,$2,'KR',$3,$4,$5,$6)
+     ON CONFLICT (user_id, core_code) DO UPDATE
+       SET base_attempt_id = EXCLUDED.base_attempt_id,
+           target_industry = EXCLUDED.target_industry,
+           target_role     = EXCLUDED.target_role,
+           target_org      = EXCLUDED.target_org,
+           recomputed_at   = now()`,
+    [userId, CORE, from.attemptId, from.industry, from.role, from.org]);
+}
+
+/** 희망 지역과 이동 범위. **Core 판정에 들어가지 않는다** */
+export async function saveRegion(
+  userId: string, region: string | null, move: string | null,
+): Promise<void> {
+  await query(
+    `INSERT INTO career_profiles (user_id, core_code, market_code, home_region, move_range)
+     VALUES ($1,$2,'KR',$3,$4)
+     ON CONFLICT (user_id, core_code) DO UPDATE
+       SET home_region = EXCLUDED.home_region,
+           move_range  = EXCLUDED.move_range`,
+    [userId, CORE, region, move]);
+  await enqueue(userId, "region.changed", { region, move });
+}
+
+/** 관심 산업과 역할을 내 CareerMatri 에서 바꾼다 */
+export async function saveTargets(
+  userId: string, industry: string[], role: string[],
+): Promise<void> {
+  await query(
+    `INSERT INTO career_profiles (user_id, core_code, market_code, target_industry, target_role)
+     VALUES ($1,$2,'KR',$3,$4)
+     ON CONFLICT (user_id, core_code) DO UPDATE
+       SET target_industry = EXCLUDED.target_industry,
+           target_role     = EXCLUDED.target_role`,
+    [userId, CORE, industry.slice(0, 2), role.slice(0, 2)]);
+  await enqueue(userId, "target.changed", { industry, role });
+}
+
+/* ── 다음 행동 ─────────────────────────────────────────────────────── */
+
+export type ActionRow = {
+  id: string; source: string; td_code: string | null; axis_code: string | null;
+  body: string; horizon: number; state: string;
+};
+
+export async function actionsOf(userId: string): Promise<ActionRow[]> {
+  return query<ActionRow>(
+    `SELECT id::text, source, td_code, axis_code, body, horizon, state
+       FROM v3_actions
+      WHERE user_id=$1 AND core_code=$2 AND state <> 'dropped'
+      ORDER BY (state='done'), horizon, id`,
+    [userId, CORE]);
+}
+
+export async function setActionState(
+  userId: string, id: string, state: "open" | "doing" | "done" | "dropped",
+): Promise<void> {
+  await query(
+    `UPDATE v3_actions SET state=$3,
+            done_at = CASE WHEN $3='done' THEN now() ELSE NULL END
+      WHERE id=$1 AND user_id=$2`, [id, userId, state]);
+}
+
+/**
+ * 결과지가 낸 할 일을 내 CareerMatri 로 옮긴다.
+ *
+ * **같은 할 일을 두 번 쌓지 않는다.** 결과를 두 번 열어도 줄이 늘지 않게
+ * 영역과 축과 문장으로 본다.
+ */
+export async function importActions(
+  userId: string, rows: { td: string | null; axis: string | null;
+                          body: string; horizon: number }[],
+): Promise<number> {
+  let n = 0;
+  for (const r of rows) {
+    const got = await queryOne<{ id: string }>(
+      `INSERT INTO v3_actions (user_id, core_code, source, td_code, axis_code, body, horizon)
+       SELECT $1,$2,'result',$3,$4,$5,$6
+        WHERE NOT EXISTS (
+          SELECT 1 FROM v3_actions
+           WHERE user_id=$1 AND core_code=$2 AND body=$5
+             AND coalesce(td_code,'')=coalesce($3,''))
+       RETURNING id::text`,
+      [userId, CORE, r.td, r.axis, r.body.slice(0, 400), r.horizon]);
+    if (got) n += 1;
+  }
+  return n;
+}
+
+/* ── 공고 · Track ──────────────────────────────────────────────────── */
+
+export async function savedJobCount(userId: string): Promise<number> {
+  const r = await queryOne<{ n: string }>(
+    `SELECT count(*)::text AS n FROM v3_saved_jobs WHERE user_id=$1`, [userId]);
+  return Number(r?.n ?? 0);
+}
+
+/** 공고 자료가 들어와 있는가. **1차에서 0 이다** */
+export async function postingCount(): Promise<number> {
+  const r = await queryOne<{ n: string }>(
+    `SELECT count(*)::text AS n FROM v3_job_postings`, []);
+  return Number(r?.n ?? 0);
+}
+
+/** Track 이 켜질 때 알려 달라고 한 기능. **결제가 아니다** */
+export async function trackInterest(userId: string): Promise<string[]> {
+  const rows = await query<{ feature: string }>(
+    `SELECT feature FROM v3_track_interest WHERE user_id=$1`, [userId]);
+  return rows.map((r) => r.feature);
+}
+
+export async function markTrackInterest(
+  userId: string, feature: string, on: boolean,
+): Promise<void> {
+  if (on) {
+    await query(
+      `INSERT INTO v3_track_interest (user_id, feature) VALUES ($1,$2)
+       ON CONFLICT DO NOTHING`, [userId, feature]);
+  } else {
+    await query(
+      `DELETE FROM v3_track_interest WHERE user_id=$1 AND feature=$2`,
+      [userId, feature]);
+  }
+}
+
+/* ── 최근 움직임 ───────────────────────────────────────────────────── */
+
+export type Recent = {
+  last_attempt_at: string | null;
+  last_submitted_at: string | null;
+  last_experience_at: string | null;
+  last_recomputed_at: string | null;
+  attempt_id: string | null;
+  tier: string | null;
+  status: string | null;
+};
+
+export async function recentOf(userId: string): Promise<Recent> {
+  const a = await queryOne<{
+    id: string; tier: string; status: string;
+    started_at: string; submitted_at: string | null;
+  }>(
+    `SELECT id::text, tier, status, started_at::text, submitted_at::text
+       FROM v3_attempts WHERE user_id=$1 ORDER BY started_at DESC LIMIT 1`,
+    [userId]);
+  const e = await queryOne<{ at: string | null }>(
+    `SELECT max(created_at)::text AS at FROM v3_experiences WHERE user_id=$1`,
+    [userId]);
+  const p = await queryOne<{ at: string | null }>(
+    `SELECT recomputed_at::text AS at FROM career_profiles
+      WHERE user_id=$1 AND core_code=$2`, [userId, CORE]);
+  return {
+    last_attempt_at: a?.started_at ?? null,
+    last_submitted_at: a?.submitted_at ?? null,
+    last_experience_at: e?.at ?? null,
+    last_recomputed_at: p?.at ?? null,
+    attempt_id: a?.id ?? null,
+    tier: a?.tier ?? null,
+    status: a?.status ?? null,
+  };
+}
+
+/** 마지막으로 만든 결과. 대시보드의 Evidence 와 Gap 이 이것을 읽는다 */
+export async function latestResult(userId: string): Promise<ResultModel | null> {
+  const r = await queryOne<{ result_model: ResultModel | null }>(
+    `SELECT s.result_model
+       FROM v3_snapshots s JOIN v3_attempts a ON a.id = s.attempt_id
+      WHERE a.user_id = $1 AND s.result_model IS NOT NULL
+      ORDER BY s.created_at DESC LIMIT 1`, [userId]);
+  return r?.result_model ?? null;
+}

@@ -10,10 +10,12 @@ import type {
   Action, Gap, ResultDomain, ResultModel, TranslationView,
 } from "@/lib/me-v3/result/model";
 import {
-  actionKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO, BASIC_GROUP_KO, domainChainKo, draftKo,
-  FIRST_MOVE_KO, gapKo, gapShortKo, headlineKo, HORIZON_KO, QUALITY_KO, TIER_NOTE_KO,
-  TRANS_ORDER, TRANS_STEP_KO, ZONE_LEAD_KO, ZONE_TITLE_KO,
+  actionKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO, BASIC_GROUP_KO, bridgeKo,
+  domainChainKo, draftKo, FIRST_MOVE_KO, gapKo, gapShortKo, headlineKo, HORIZON_KO,
+  QUALITY_KO, TIER_NOTE_KO, TRANS_ORDER, TRANS_STEP_KO, ZONE_LEAD_KO, ZONE_TITLE_KO,
 } from "@/lib/me-v3/result/text.ko";
+import { regionLayer } from "@/lib/me-v3/region";
+import { profileOf } from "@/lib/me-v3/platform";
 import { participantOf, savedActions } from "@/lib/me-v3/pilot/store";
 import { TIER_WHAT } from "../../tier-text";
 import "../../result.css";
@@ -311,6 +313,12 @@ export default async function V3Result({
      파일럿이 아니라 추적이다 */
   const pilot = await participantOf(user.id);
   const saved = pilot ? await savedActions(attemptId) : null;
+  /* 희망 지역은 **굳은 결과가 아니라 지금 값**이다. 결과지가 바뀌는 것이
+     아니라 이 절이 그 권역 기준으로 읽힌다 */
+  const profile = await profileOf(user.id);
+  const regionPicked = profile?.home_region
+    ? regionLayer().regions.find((r) => r.code === profile.home_region)?.name ?? null
+    : null;
 
   const model: ResultModel = m;
   const h = headlineKo(model);
@@ -599,9 +607,20 @@ export default async function V3Result({
         {model.industry_context ? (
           <section className="rs-sect" id="industry">
             <h2>{industryName(model.industry_context.code)} 직무에 연결하면</h2>
+            {/* **네 카드를 한 이야기로 잇는다.** 확인된 것 → 이 산업을
+                보려면 모자란 것 → 다음에 할 일이 한 문단이다. 전에는 넷이
+                따로 서서, 네 번 읽고도 `그래서 무엇이 더 필요한가` 가 한
+                문장으로 서지 않았다 */}
+            <p className="rs-bridge">
+              {bridgeKo(model.industry_context,
+                industryName(model.industry_context.code), domainName,
+                model.actions.find((a) => model.industry_context?.requested
+                  .some((r) => r.domain === a.domain)) ?? model.actions[0] ?? null,
+                model.stage).join(" ")}
+            </p>
             <p className="rs-note">
-              지금까지의 경험을 {industryName(model.industry_context.code)}에서 쓰는
-              표현으로 정리했습니다. 맞는다거나 맞지 않는다고 판정하지 않습니다.
+              같은 경험을 {industryName(model.industry_context.code)}에서 쓰는
+              표현으로 놓았습니다. 맞는다거나 맞지 않는다고 판정하지 않습니다.
             </p>
             <div className="rs-pack">
               <h3>이 산업에서 자주 묻는 것</h3>
@@ -634,6 +653,13 @@ export default async function V3Result({
         {model.role_context ? (
           <section className="rs-sect" id="role">
             <h2>{roleName(model.role_context.code)} 직무에 연결하면</h2>
+            <p className="rs-bridge">
+              {bridgeKo(model.role_context, roleName(model.role_context.code),
+                domainName,
+                model.actions.find((a) => model.role_context?.requested
+                  .some((r) => r.domain === a.domain)) ?? model.actions[0] ?? null,
+                model.stage).join(" ")}
+            </p>
             <p className="rs-note">
               같은 경험을 {roleName(model.role_context.code)}에서 먼저 읽는 차례로
               놓았습니다. 기술영역 결과는 그대로입니다.
@@ -687,8 +713,96 @@ export default async function V3Result({
           )}
         </section>
 
-        {/* **단서를 결과의 마지막 인상으로 만들지 않는다.** 필요한 사람이
-            열어 보게 두고, 종이에서는 인쇄 규칙이 펴 놓는다 */}
+        {/* ── 8. 지역과 기관 탐색 ──
+            **기업 이름을 담지 않는다.** 직업정보제공사업으로 할 수 있는
+            것은 공고를 띄우는 데까지다. 그리고 기관 수를 짐작으로 채우지
+            않는다: 그 수가 근거처럼 읽힌다 */}
+        <section className="rs-sect" id="region">
+          <h2>어디에서 찾을지</h2>
+          <p className="rs-note">
+            {regionPicked
+              ? `지금 ${regionPicked} 기준으로 보고 계십니다. 이 선택은 기술영역 판정에 들어가지 않습니다.`
+              : "희망 지역을 고르면 산업과 직무를 읽는 순서가 그 권역 기준으로 바뀝니다. 기술영역 판정은 그대로입니다."}
+          </p>
+          <div className="rs-pack">
+            <h3>권역마다 자리의 성격이 다릅니다</h3>
+            <dl>
+              {regionLayer().regions.map((r) => (
+                <div key={r.code}>
+                  <dt>{r.name}</dt>
+                  <dd>{r.scene}</dd>
+                </div>
+              ))}
+            </dl>
+            <p className="rs-others">
+              기관 수와 기업 목록은 아직 담지 않았습니다. 공개 통계를 붙이기
+              전까지 짐작으로 채우지 않습니다.
+            </p>
+          </div>
+          <p className="rs-note">
+            <Link href="/me/region">희망 지역 고르기</Link>
+          </p>
+        </section>
+
+        {/* ── 9. 이 결과를 어떻게 읽을 것인가 ──
+            **단서를 접어 두기만 하지 않는다.** 무엇을 재고 무엇을 재지
+            않았는지는 결과의 일부다. 접어 두면 필요한 사람이 못 찾는다 */}
+        <section className="rs-sect" id="howto">
+          <h2>이 결과를 어떻게 읽을 것인가</h2>
+          <div className="rs-pack">
+            <dl>
+              <div>
+                <dt>재는 것</dt>
+                <dd>
+                  해 본 일에서 무엇을 직접 정했는지입니다. 적성이나 성격이
+                  아니고, 능력의 높낮이도 아닙니다.
+                </dd>
+              </div>
+              <div>
+                <dt>재지 않는 것</dt>
+                <dd>
+                  합격 가능성과 연봉과 순위입니다. 그 셋은 이 응답으로 알 수
+                  없고, 적어 두면 그걸 믿고 움직이는 사람이 생깁니다.
+                </dd>
+              </div>
+              <div>
+                <dt>‘아직’의 뜻</dt>
+                <dd>
+                  못 한다는 뜻이 아닙니다. 지금 응답에서 그 자리의 근거를
+                  찾지 못했다는 뜻이고, 경험을 하나 적으면 달라집니다.
+                </dd>
+              </div>
+              <div>
+                <dt>고정되어 있습니다</dt>
+                <dd>
+                  응시하신 시점의 문항과 판정 기준으로 굳어 있습니다. 나중에
+                  기준이 바뀌어도 이 결과는 달라지지 않습니다.
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </section>
+
+        {/* ── 결과 다음에 갈 자리 ──
+            **PDF 하나로 끝내지 않는다.** 받은 사람이 다음에 갈 자리가
+            다섯이고, 하나만 두면 그 하나를 누른 날 이 서비스가 끝난다 */}
+        <section className="rs-sect" id="next">
+          <h2>이 다음에</h2>
+          <ul className="rs-next">
+            {[
+              ["/me", "내 CareerMatri에 저장", "방향과 근거와 Gap을 한 쪽에 둡니다"],
+              ["/me/experience/new", "새로운 경험 추가", "다음 재분석에 들어갑니다"],
+              ["/me/gap", "Gap 관리", "비어 있는 자리와 그것을 메우는 일"],
+              ["/me/explore", "산업과 직무 다시 보기", "여덟 산업과 여덟 직무 전부"],
+              ["/me/track", "CareerMatri Track", "상황이 바뀔 때 다시 계산해 주는 자리"],
+            ].map(([href, label, note]) => (
+              <li key={href}>
+                <Link href={href}><b>{label}</b><small>{note}</small></Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+
         <div className="rs-fine">
           <Disclose label="결과 기준 보기">
             <p>{TIER_NOTE_KO[model.tier]}</p>
@@ -707,9 +821,9 @@ export default async function V3Result({
             <p>
               <Link href={`/v3/${attemptId}/feedback`}>파일럿 의견 적기</Link>
               {" · "}
-              <Link href="/my">내 검사 목록으로</Link>
+              <Link href="/me">내 CareerMatri로</Link>
             </p>
-          ) : <p><Link href="/my">내 검사 목록으로</Link></p>}
+          ) : <p><Link href="/me">내 CareerMatri로</Link></p>}
         </div>
       </main>
     </div>

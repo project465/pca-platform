@@ -723,3 +723,46 @@
 @media (prefers-reduced-motion: reduce) {
   .qs-bar span, .qs-opt, .qs-cell, .qs-chip { transition: none; }
 }
+
+/* ── 완료 화면에서 다음에 갈 자리 ─────────────────────────────────────
+   **PDF 하나로 끝내지 않는다.** 결과를 받은 사람이 다음에 갈 자리가
+   여섯이다. 하나만 두면 그 하나를 누른 날 이 서비스가 끝난다 */
+.qs-done-next {
+  list-style: none; margin: 20px 0 0; padding: 0;
+  display: grid; gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+.qs-done-next a {
+  display: flex; flex-direction: column; gap: 3px;
+  padding: 12px 14px; min-height: 56px;
+  border: 1px solid var(--q-line); border-radius: var(--q-r);
+  background: var(--q-paper); text-decoration: none;
+}
+.qs-done-next a:hover { background: var(--q-field); }
+.qs-done-next b { color: var(--q-ink); font-size: 15px; font-weight: 600; }
+.qs-done-next small { color: var(--q-ink-3); font-size: 12.5px; line-height: 1.5; }
+
+/* ── 접어 둔 보기 뜻풀이 ──────────────────────────────────────────────
+   네 줄을 보기마다 깔면 선별 등급에서만 스물여덟 화면에 똑같은 네 줄이
+   서고, 그러면 아무도 읽지 않는다. 처음 만나는 화면에서 한 번 펼치고
+   그 뒤에는 여기로 접는다. **지우지 않는다**: 두 번째와 세 번째가 갈리는
+   자리가 이 네 줄이고, 헷갈리는 사람은 열어야 한다 */
+.qs-optfold { margin: var(--q-s3) 0 0; }
+.qs-optfold > summary {
+  cursor: pointer; font-size: var(--q-t-gloss); color: var(--q-ink-3);
+  padding: 8px 0; min-height: 24px; list-style: none;
+}
+.qs-optfold > summary::marker, .qs-optfold > summary::-webkit-details-marker { display: none; }
+.qs-optfold > summary::before { content: "＋ "; }
+.qs-optfold[open] > summary::before { content: "－ "; }
+.qs-optfold ul {
+  margin: 0; padding: 12px 14px; list-style: none;
+  border: 1px solid var(--q-line-soft); border-radius: var(--q-r-sm);
+  background: var(--q-field);
+}
+.qs-optfold li {
+  font-size: var(--q-t-gloss); line-height: 1.7; color: var(--q-ink-2);
+  margin: 0 0 6px;
+}
+.qs-optfold li:last-child { margin-bottom: 0; }
+.qs-optfold li b { color: var(--q-ink); font-weight: 600; margin-right: 6px; }

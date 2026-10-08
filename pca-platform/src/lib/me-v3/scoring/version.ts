@@ -39,8 +39,16 @@ export const SCORING_VERSION = "me-v3-scoring.3";
  * 한 묶음 여섯이 석사·박사·포닥 세 묶음 열여덟로 갈렸고, 영역 훑기의
  * `잘 모르겠다` 가 값 자리에 `null` 을 들게 됐고, 선별 축 둘째 문항의
  * 등급이 STANDARD 로 올라갔다.
+ *
+ * `.2` 로 올린 까닭. **영역 이름의 영문 약어를 한국어로 바꿨다**
+ * (`동역학·진동·NVH` → `동역학·진동·소음`). NVH 는 자동차 쪽에서 쓰는
+ * 말이고 학부생과 다른 산업 쪽에서는 읽히지 않는데, 그 이름이 격자 줄과
+ * 머리말과 결과지에 그대로 나갔다. NVH 는 세부 영역에 남겼다: 그 자리에
+ * 서는 영역 이름이 아니라 그 안의 한 갈래로 읽혀서 아는 사람이 찾는다.
+ * **판정은 한 줄도 바뀌지 않는다**: 영역 코드가 그대로라 같은 응답이 같은
+ * 묶음으로 간다. 문항 은행 판본만 올린다.
  */
-export const ITEM_BANK_VERSION = "ME_V3_ITEM_BANK_V2.1";
+export const ITEM_BANK_VERSION = "ME_V3_ITEM_BANK_V2.2";
 
 export type ModuleVersions = {
   core_version: string;

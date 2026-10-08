@@ -15,7 +15,7 @@ import type { Axis, AxisState, Stage } from "../scoring/types";
 import { andList, josaOf, orList, withJosa } from "./josa";
 import { REASON_KO, ZONE_KO } from "../scoring/text.ko";
 import type {
-  Action, ActionCode, FirstMove, Gap, GapWhy, HeadlineCode, ResultModel,
+  Action, ActionCode, FirstMove, Gap, GapWhy, HeadlineCode, PackView, ResultModel,
 } from "./model";
 
 export const AXIS_KO: Record<Axis, string> = {
@@ -373,6 +373,49 @@ export function gapKo(g: Gap, domainName: string): {
     why: g.kind === "PARTIAL_EVIDENCE" ? PARTIAL_WHY_KO : WHY_KO[g.why],
     detail: REASON_KO[g.reason],
   };
+}
+
+/**
+ * 산업과 직무와 Evidence 와 Gap 을 **한 이야기로** 잇는다.
+ *
+ * 전에는 넷이 서로 다른 카드였다. 기술영역 묶음을 읽고, 산업 카드를 읽고,
+ * 확인된 근거를 읽고, 비어 있는 자리를 읽는다. 네 번 읽고도 **그래서 이
+ * 산업을 보려면 무엇이 더 필요한가**가 한 문장으로 서지 않았다.
+ *
+ * 이 함수가 세 토막을 한 문단으로 잇는다.
+ *
+ *   ① 어디에서 무엇이 확인됐다
+ *   ② 그 산업이나 직무를 보려면 무엇이 아직 모자라다
+ *   ③ 다음에 무엇을 하면 그 자리가 메워진다
+ *
+ * **셋 다 모델이 들고 있는 값에서만 온다.** 없는 토막은 적지 않는다: 지어낸
+ * 연결 문장은 그 자리에서 가장 그럴듯하게 읽히고 가장 먼저 거짓이 된다.
+ */
+export function bridgeKo(
+  pack: PackView, packName: string,
+  domainName: (td: string) => string,
+  action: Action | null, stage?: Stage,
+): string[] {
+  const out: string[] = [];
+
+  const est = pack.established[0];
+  if (est && est.axes.length) {
+    const axes = andList(est.axes.slice(0, 2).map((a) => AXIS_WHAT_KO[a]));
+    out.push(`${withJosa(domainName(est.domain), "은는")} ${axes} 쪽이 확인됐습니다.`);
+  }
+
+  const req = pack.requested[0];
+  if (req) {
+    const what = AXIS_WHAT_KO[req.axis];
+    const where = domainName(req.domain);
+    out.push(`${withJosa(packName, "을를")} 보려면 ${where}에서 ${what} 쪽 근거가 아직 모자랍니다.`);
+  }
+
+  if (action) {
+    const k = actionKo(action, action.domain ? domainName(action.domain) : packName, stage);
+    out.push(k.do);
+  }
+  return out;
 }
 
 export function headlineKo(m: ResultModel): { title: string; lead: string } {

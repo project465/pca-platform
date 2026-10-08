@@ -7,10 +7,10 @@
  */
 
 /** 결과 모델의 구조. 절이 늘거나 칸이 바뀌면 올린다 */
-export const RESULT_MODEL_VERSION = "me-v3-result-model.1";
+export const RESULT_MODEL_VERSION = "me-v3-result-model.2";
 
 /** 결과지에 나가는 한국어. 문장만 바뀌면 이것만 올린다 */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.1";
+export const RESULT_COPY_VERSION = "me-v3-result-copy.2";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -18,7 +18,31 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.1";
  * 문장 하나를 고친 날 화면 판본까지 올리면, 되짚을 때 무엇이 바뀐
  * 것인지 알 수 없다. 넷이 따로 간다: 화면 · 문장 · 모델 · 판단.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V1.1";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V2";
+
+/*
+ * `V2` 로 올린 까닭. **네 카드가 한 이야기로 이어졌다.**
+ *
+ * 전에는 기술영역 묶음과 산업과 직무와 Evidence 와 Gap 이 서로 다른
+ * 카드였다. 네 번 읽고도 **그래서 이 산업을 보려면 무엇이 더 필요한가**
+ * 가 한 문장으로 서지 않았다. 산업 절과 직무 절 머리에 세 토막을 한
+ * 문단으로 잇는 줄을 세웠다(`bridgeKo`): 어디에서 무엇이 확인됐다 · 그
+ * 산업을 보려면 무엇이 모자라다 · 다음에 무엇을 하면 메워진다. **세 토막
+ * 다 모델이 들고 있는 값에서만 온다**: 지어낸 연결 문장은 그 자리에서
+ * 가장 그럴듯하게 읽히고 가장 먼저 거짓이 된다.
+ *
+ * 절이 일곱에서 아홉이 됐다. `어디에서 찾을지`(지역과 기관)와 `이 결과를
+ * 어떻게 읽을 것인가`가 들어왔다. 뒤엣것은 전에 접힌 자리에만 있었다:
+ * 무엇을 재고 무엇을 재지 않았는지는 결과의 일부라 접어 두면 필요한
+ * 사람이 못 찾는다.
+ *
+ * 그리고 끝에 갈 자리가 생겼다. 전에는 `내 검사 목록으로` 한 줄이었고,
+ * **PDF 를 받은 날 이 서비스가 끝났다.** 지금은 내 CareerMatri 와 경험
+ * 추가와 Gap 관리와 탐색과 Track 다섯이다.
+ *
+ * `RESULT_MODEL_VERSION` 도 함께 올렸다: 절이 늘었고 모델이 들고 있는
+ * 값을 읽는 자리가 바뀌었다. **판단 규칙은 한 줄도 바뀌지 않았다.**
+ */
 
 /*
  * `V1.1` 로 올린 까닭. 할 일이 하나도 없는 응시에서 `다음에 할 일` 절이

@@ -304,13 +304,30 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
     });
   }
   if (input.crossField) {
-    for (const i of items.filter((x) => x.education_routing === "xfield")) {
+    const xf = items.filter((x) => x.education_routing === "xfield");
+    /* **넷을 왜 묻는지 먼저 적는다.** 앞 판본은 설명 없이 네 문항을
+       띄웠다. 기계공학 질문을 받다가 갑자기 대학원 분야를 묻는 화면이
+       나오면, 응시자는 그것이 자기를 걸러내는 질문인 줄 안다. 실제로는
+       반대다: 이 Core 를 받을 수 있게 하려고 묻는 자리다 */
+    if (xf.length) {
+      add({
+        id: "t-xfield", stage: "JUDGE", kind: "transition",
+        required: false, auto: false,
+        subject: "대학원 경험은 따로 받습니다",
+        question: "네 가지만 더 묻고 기술영역 판정에는 넣지 않습니다",
+        help: ["대학원에서 다룬 분야", "그 방법 가운데 옮겨 쓸 수 있는 것",
+               "기계공학 쪽 작업을 마지막으로 한 때", "학부에서 가장 깊게 간 작업"]
+          .join(" · "),
+        items: [],
+      });
+    }
+    for (const i of xf) {
       add({
         id: `xfield-${i.item_id}`, stage: "JUDGE", kind: "single",
         required: false, auto: true,
         eyebrow: "대학원 경험",
         question: wording(i.item_id, input.stage),
-        help: "이 답은 기술영역 결과에 반영되지 않습니다. 경험을 옮겨 적을 때만 씁니다.",
+        help: "기술영역 판정에 넣지 않습니다. 경험을 직무 말로 옮길 때만 읽습니다.",
         items: [i.item_id],
       });
     }

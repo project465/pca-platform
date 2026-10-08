@@ -49,6 +49,16 @@ v3=$(q "SELECT count(*) FROM information_schema.tables
            AND table_name IN ('v3_attempts','v3_responses','v3_snapshots',
                               'v3_pilot_participants','v3_pilot_feedback')")
 echo "ME_V3 표        ${v3} / 5"
+# **내 CareerMatri 표 다섯.** 검사가 끝난 뒤의 자리다. 빠지면 `/me` 가
+# 500 이고, 검사를 끝낸 사람이 다시 들어올 이유가 사라진다
+plat=$(q "SELECT count(*) FROM information_schema.tables
+          WHERE table_schema='public'
+            AND table_name IN ('career_profiles','v3_experiences','v3_actions',
+                               'v3_job_postings','v3_track_interest')")
+echo "내 CareerMatri  ${plat} / 5"
+if [ "${plat:-0}" -lt 5 ]; then
+  echo "  없는 표가 있습니다. 올리는 길: npm run db:v3:arch && npm run db:v3:platform" >&2
+fi
 if [ "${v3:-0}" -lt 5 ]; then
   echo "실패 ME_V3 표가 모자랍니다. npm run db:upgrade 로 올립니다." >&2
   bad=$((bad + 1))

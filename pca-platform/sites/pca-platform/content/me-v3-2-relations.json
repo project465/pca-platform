@@ -44,7 +44,7 @@
   },
   {
    "td": "TD04",
-   "td_name": "동역학·진동·NVH",
+   "td_name": "동역학·진동·소음",
    "industry": "INDUSTRY_SEMICON_V2",
    "industry_name": "반도체",
    "strength": "있음",
@@ -202,7 +202,7 @@
   },
   {
    "td": "TD04",
-   "td_name": "동역학·진동·NVH",
+   "td_name": "동역학·진동·소음",
    "industry": "INDUSTRY_DEFENSE_V2",
    "industry_name": "방산·항공",
    "strength": "있음",
@@ -365,7 +365,7 @@
   },
   {
    "td": "TD04",
-   "td_name": "동역학·진동·NVH",
+   "td_name": "동역학·진동·소음",
    "industry": "INDUSTRY_MOBILITY_V2",
    "industry_name": "자동차·모빌리티",
    "strength": "있음",
@@ -508,7 +508,7 @@
   },
   {
    "td": "TD04",
-   "td_name": "동역학·진동·NVH",
+   "td_name": "동역학·진동·소음",
    "industry": "INDUSTRY_ROBOT_V2",
    "industry_name": "로봇·자동화",
    "strength": "있음",
@@ -664,7 +664,7 @@
   },
   {
    "td": "TD04",
-   "td_name": "동역학·진동·NVH",
+   "td_name": "동역학·진동·소음",
    "industry": "INDUSTRY_BATTERY_V2",
    "industry_name": "이차전지",
    "strength": "드묾",
@@ -821,7 +821,7 @@
   },
   {
    "td": "TD04",
-   "td_name": "동역학·진동·NVH",
+   "td_name": "동역학·진동·소음",
    "industry": "INDUSTRY_SHIP_V2",
    "industry_name": "조선·해양",
    "strength": "있음",
@@ -977,7 +977,7 @@
   },
   {
    "td": "TD04",
-   "td_name": "동역학·진동·NVH",
+   "td_name": "동역학·진동·소음",
    "industry": "INDUSTRY_ENERGY_V2",
    "industry_name": "에너지·플랜트",
    "strength": "있음",
@@ -1124,7 +1124,7 @@
   },
   {
    "td": "TD04",
-   "td_name": "동역학·진동·NVH",
+   "td_name": "동역학·진동·소음",
    "industry": "INDUSTRY_SMARTFACTORY_V2",
    "industry_name": "스마트팩토리·장비",
    "strength": "드묾",
@@ -1281,7 +1281,7 @@
   },
   {
    "td": "TD04",
-   "td_name": "동역학·진동·NVH",
+   "td_name": "동역학·진동·소음",
    "role": "ROLE_DESIGN_V2",
    "role_name": "설계",
    "strength": "드묾",
@@ -1401,7 +1401,7 @@
   },
   {
    "td": "TD04",
-   "td_name": "동역학·진동·NVH",
+   "td_name": "동역학·진동·소음",
    "role": "ROLE_CAE_V2",
    "role_name": "해석·예측",
    "strength": "중심",
@@ -1514,7 +1514,7 @@
   },
   {
    "td": "TD04",
-   "td_name": "동역학·진동·NVH",
+   "td_name": "동역학·진동·소음",
    "role": "ROLE_RND_V2",
    "role_name": "탐색·선행개발",
    "strength": "드묾",
@@ -1629,7 +1629,7 @@
   },
   {
    "td": "TD04",
-   "td_name": "동역학·진동·NVH",
+   "td_name": "동역학·진동·소음",
    "role": "ROLE_TEST_V2",
    "role_name": "시험·검증",
    "strength": "중심",
@@ -1748,7 +1748,7 @@
   },
   {
    "td": "TD04",
-   "td_name": "동역학·진동·NVH",
+   "td_name": "동역학·진동·소음",
    "role": "ROLE_MFG_V2",
    "role_name": "생산기술",
    "strength": "드묾",
@@ -1863,7 +1863,7 @@
   },
   {
    "td": "TD04",
-   "td_name": "동역학·진동·NVH",
+   "td_name": "동역학·진동·소음",
    "role": "ROLE_MAINT_V2",
    "role_name": "설비·보전",
    "strength": "있음",
@@ -1978,7 +1978,7 @@
   },
   {
    "td": "TD04",
-   "td_name": "동역학·진동·NVH",
+   "td_name": "동역학·진동·소음",
    "role": "ROLE_QUALITY_V2",
    "role_name": "품질·신뢰성",
    "strength": "드묾",
@@ -2094,7 +2094,7 @@
   },
   {
    "td": "TD04",
-   "td_name": "동역학·진동·NVH",
+   "td_name": "동역학·진동·소음",
    "role": "ROLE_PM_V2",
    "role_name": "기술기획·과제관리",
    "strength": "드묾",

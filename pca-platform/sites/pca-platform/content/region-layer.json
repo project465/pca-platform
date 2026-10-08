@@ -1,0 +1,83 @@
+{
+ "schema_version": "region-layer.1",
+ "version": 1,
+ "market": "KR",
+ "note": "지역과 기관 유형의 **빈 계약**이다. 권역과 기관 유형과 그 둘이 만나는 자리의 열쇠만 적어 두었고, 실제 기업 자료는 한 줄도 없다. 채우는 자리는 DB 의 `org_registry` 와 `industry_td_demand` 이고, 그 표는 표본 수와 근거 등급 없이 줄이 서지 않는다.",
+ "rules": [
+  "Core 판정에 들어가지 않는다. 어느 값도 축 수준이나 영역 묶음을 바꾸지 않는다",
+  "기업 이름을 담지 않는다. 직업정보제공사업으로 할 수 있는 것은 공고를 띄우는 데까지다",
+  "기관 수를 짐작으로 채우지 않는다. 출처와 기준 연도 없이 줄이 서지 않는다",
+  "다섯 명 미만 칸의 집계를 내놓지 않는다",
+  "시장 단위로 켠다. 지역 자료가 그 나라 것이라서다"
+ ],
+ "regions": [
+  {
+   "code": "KR-CAPITAL",
+   "name": "수도권",
+   "includes": ["서울", "인천", "경기"],
+   "scene": "완성품 기업 본사와 연구소가 모여 있고 직무 이름이 가장 가늘게 쪼개져 있다"
+  },
+  {
+   "code": "KR-CHUNGCHEONG",
+   "name": "충청권",
+   "includes": ["대전", "세종", "충북", "충남"],
+   "scene": "출연연과 국책 과제가 많고 연구 산출물이 평가의 단위가 된다"
+  },
+  {
+   "code": "KR-YEONGNAM",
+   "name": "영남권",
+   "includes": ["부산", "대구", "울산", "경북", "경남"],
+   "scene": "완성차와 조선과 기계 소재의 생산 현장이 가깝고 공정과 품질 판단이 자리를 많이 쓴다"
+  },
+  {
+   "code": "KR-HONAM",
+   "name": "호남권",
+   "includes": ["광주", "전북", "전남"],
+   "scene": "에너지와 소재 쪽 대형 설비가 있고 보전과 신뢰성 판단이 선다"
+  },
+  {
+   "code": "KR-ETC",
+   "name": "그 밖",
+   "includes": ["강원", "제주", "해외"],
+   "scene": "자리가 흩어져 있어 한 권역의 장면으로 묶기 어렵다"
+  }
+ ],
+ "org_types": [
+  { "oc": "OC1", "label": "대기업", "scene": "요구를 받고 통합을 많이 한다" },
+  { "oc": "OC2", "label": "중견·중소", "scene": "한 영역을 깊게 하고 고객 검증을 받는다" },
+  { "oc": "OC3", "label": "엔지니어링·기술 서비스", "scene": "남의 문제를 받아 가정을 공개하고 답을 낸다" },
+  { "oc": "OC4", "label": "출연연", "scene": "과제 서식과 중간 평가가 일정을 정한다" },
+  { "oc": "OC5", "label": "대학", "scene": "방법의 타당성을 스스로 세워야 한다" },
+  { "oc": "OC6", "label": "공공기관", "scene": "판단의 추적 가능성이 산출물이다" },
+  { "oc": "OC7", "label": "스타트업", "scene": "한 사람이 여러 역할을 겹쳐 맡는다" }
+ ],
+ "move_ranges": [
+  { "code": "HOME_ONLY", "label": "지금 사는 권역만" },
+  { "code": "ADJACENT", "label": "가까운 권역까지" },
+  { "code": "ANYWHERE", "label": "어디든" },
+  { "code": "UNDECIDED", "label": "아직 모르겠다" }
+ ],
+ "data_contract": {
+  "org_registry": {
+   "table": "org_registry",
+   "keys": ["region_code", "oc_code", "industry_code", "base_year"],
+   "values": ["org_count", "source"],
+   "rows_now": 0,
+   "why_empty": "기관 수는 공개 통계에서 와야 하고 어느 통계를 쓸지 정하지 않았다. 짐작으로 채우면 그 수가 근거처럼 읽힌다"
+  },
+  "industry_td_demand": {
+   "table": "industry_td_demand",
+   "keys": ["industry_code", "core_code", "td_code", "base_year"],
+   "values": ["rf_code", "strength", "sample_size", "evidence_grade", "source"],
+   "rows_now": 0,
+   "why_empty": "공고를 모아 세는 일은 저작권과 이용약관을 따지고 시작해야 한다. 표본 수와 근거 등급 칸을 먼저 둔 까닭은 나중에 근거 없는 강도가 들어오는 것을 막으려는 것이다"
+  },
+  "region_industry": {
+   "table": "region_industry",
+   "keys": ["region_code", "industry_code", "base_year"],
+   "values": ["establishments", "employees", "source"],
+   "rows_now": 0,
+   "why_empty": "전국사업체조사 같은 공개 통계를 붙이면 채워진다. 기준 연도를 열쇠에 둔 까닭은 해가 섞이면 비교가 거짓이 되기 때문이다"
+  }
+ }
+}

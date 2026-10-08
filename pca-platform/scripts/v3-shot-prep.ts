@@ -151,6 +151,12 @@ async function main() {
     name: "00_start", path: "/v3/start", who: "starter", full: true,
     note: "검사 시작",
   });
+  /* 전공 Core 고르기. **검사 앞에 선다**: 사용자가 CareerMatri 를 기계공학
+     검사 한 벌로 읽지 않게 하려는 자리다 */
+  out.push({
+    name: "00b_cores", path: "/cores", who: "starter", full: true,
+    note: "전공 Core 고르기",
+  });
 
   /* 열두 자리를 찍는다. 승인받을 것은 보고서가 아니라 **화면**이고, 화면에
      실제 문항 글이 읽혀야 한다. 그래서 사람 넷을 만들어 각자 끝까지 걸어
@@ -220,6 +226,41 @@ async function main() {
   const ax = await walk(pxa, shots, "mid");
   out.push({ name: "15_xfield", who: "shots", note: "타계열 대학원 · 번역 맥락",
     path: `/v3/${ax.id}?s=${await at(ax, (id) => id.startsWith("xfield-"))}` });
+
+  /* ── 결과지 다섯 자리. **제출해 둔 응시의 실제 결과다** ──
+     굳혀 둔 결과를 읽으므로 빈 쪽이 찍히지 않는다 */
+  out.push({ name: "16_result_top", who: "shots", note: "결과 첫 화면", full: true,
+    path: `/v3/${a09.id}/result` });
+  out.push({ name: "17_result_domains", who: "shots", note: "기술영역 상세",
+    path: `/v3/${a09.id}/result#zones` });
+  out.push({ name: "18_result_industry", who: "shots", note: "산업 결과",
+    path: `/v3/${a09.id}/result#industry` });
+  out.push({ name: "19_result_role", who: "shots", note: "직무 결과",
+    path: `/v3/${a09.id}/result#role` });
+  out.push({ name: "20_result_evidence", who: "shots", note: "Evidence 와 Gap",
+    path: `/v3/${a09.id}/result#evidence` });
+  out.push({ name: "21_result_region", who: "shots", note: "결과의 지역·기관 절",
+    path: `/v3/${a09.id}/result#region` });
+
+  /* ── 내 CareerMatri 여섯 자리 ──
+     **검사를 끝낸 사람이 다시 들어오는 자리다.** 여기가 비면 결과 PDF 를
+     받은 날 이 서비스가 끝난다 */
+  out.push({ name: "22_dashboard", who: "shots", note: "내 CareerMatri", full: true,
+    path: "/me" });
+  out.push({ name: "23_experience_new", who: "shots", note: "경험 추가", full: true,
+    path: "/me/experience/new" });
+  out.push({ name: "24_experience_list", who: "shots", note: "적어 둔 경험",
+    path: "/me/experience" });
+  out.push({ name: "25_gap", who: "shots", note: "Gap 과 할 일", full: true,
+    path: "/me/gap" });
+  out.push({ name: "26_explore", who: "shots", note: "산업·직무·지역 탐색", full: true,
+    path: "/me/explore" });
+  out.push({ name: "27_region", who: "shots", note: "지역과 기관", full: true,
+    path: "/me/region" });
+  out.push({ name: "28_track", who: "shots", note: "CareerMatri Track", full: true,
+    path: "/me/track" });
+  out.push({ name: "29_jobs", who: "shots", note: "공고 비교 (자료 없음)", full: true,
+    path: "/me/jobs" });
 
   console.log(JSON.stringify({
     users: { shots: SHOT_LOGIN, starter: START_LOGIN },

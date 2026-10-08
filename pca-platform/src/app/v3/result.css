@@ -616,3 +616,38 @@
   .rs-fine { margin-top: 24px; padding-top: 10px; font-size: 7.5pt; line-height: 1.5; }
   .rs-fine a { color: inherit; text-decoration: none; }
 }
+
+/* ── 네 카드를 한 이야기로 잇는 문단 ─────────────────────────────────
+   확인된 것 → 이 산업을 보려면 모자란 것 → 다음에 할 일. 셋이 한 문단
+   이라 절의 머리글 바로 아래에 서고, 아래의 표보다 먼저 읽힌다 */
+.rs-bridge {
+  margin: 0 0 14px;
+  padding: 14px 16px;
+  border-left: 3px solid var(--r-accent-line, var(--sf-accent-line));
+  background: var(--r-accent-soft, var(--sf-accent-soft));
+  border-radius: 0 8px 8px 0;
+  font-size: 15.5px; line-height: 1.75; color: var(--r-ink, var(--sf-ink));
+}
+
+/* ── 결과 다음에 갈 자리 ──────────────────────────────────────────── */
+.rs-next {
+  list-style: none; margin: 10px 0 0; padding: 0;
+  display: grid; gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+.rs-next a {
+  display: flex; flex-direction: column; gap: 3px;
+  padding: 12px 14px; min-height: 56px;
+  border: 1px solid var(--r-line, var(--sf-line)); border-radius: 10px;
+  background: var(--r-paper, var(--sf-surface)); text-decoration: none;
+}
+.rs-next b { color: var(--r-ink, var(--sf-ink)); font-size: 15px; font-weight: 600; }
+.rs-next small {
+  color: var(--r-ink-3, var(--sf-ink-3)); font-size: 12.5px; line-height: 1.5;
+}
+
+/* 종이에서는 `이 다음에` 를 내보내지 않는다. 눌릴 수 없는 단추다 */
+@media print {
+  .rs-next { display: none; }
+  #next { display: none; }
+}
