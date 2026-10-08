@@ -14,10 +14,13 @@ import {
   FIRST_MOVE_KO, gapKo, gapShortKo, headlineKo, HORIZON_KO, QUALITY_KO, TIER_NOTE_KO,
   TRANS_ORDER, TRANS_STEP_KO, ZONE_LEAD_KO, ZONE_TITLE_KO,
 } from "@/lib/me-v3/result/text.ko";
+import { participantOf, savedActions } from "@/lib/me-v3/pilot/store";
 import { TIER_WHAT } from "../../tier-text";
 import "../../result.css";
 import Disclose from "./disclose";
 import Fold from "./fold";
+import SaveAction from "./save";
+import Track from "./track";
 
 export const metadata = { title: "결과 · CareerMatri" };
 
@@ -203,7 +206,11 @@ function EvidenceRow(
 }
 
 function Plan(
-  { actions, stage }: { actions: Action[]; stage: ResultModel["stage"] },
+  { actions, stage, attemptId, saved }: {
+    actions: Action[]; stage: ResultModel["stage"];
+    /** 파일럿 참가자일 때만 담아두기 단추가 선다 */
+    attemptId: string; saved: string[] | null;
+  },
 ) {
   const groups = (["NOW", "NEXT", "LATER"] as const)
     .map((h) => ({ h, list: actions.filter((a) => a.horizon === h) }))
@@ -224,12 +231,16 @@ function Plan(
                 const note = t.note && t.note !== last ? t.note : "";
                 if (t.note) last = t.note;
                 return (
-                  <li key={a.id}>
+                  <li key={a.id} data-action-id={a.id}>
                     <span>{a.domain ? domainName(a.domain) : "전체"}</span>
                     <div className="rs-doit">
                       <b>{t.do}</b>
                       {note ? <i>{note}</i> : null}
                     </div>
+                    {saved ? (
+                      <SaveAction attemptId={attemptId} actionId={a.id}
+                        saved={saved.includes(a.id)} />
+                    ) : null}
                   </li>
                 );
               });
@@ -296,6 +307,11 @@ export default async function V3Result({
      그 사람의 결과지가 조용히 달라진다 */
   if (!m) notFound();
 
+  /* **파일럿 참가자에게만 재는 자리가 선다.** 모두를 재면 그것은
+     파일럿이 아니라 추적이다 */
+  const pilot = await participantOf(user.id);
+  const saved = pilot ? await savedActions(attemptId) : null;
+
   const model: ResultModel = m;
   const h = headlineKo(model);
   const tier = TIER_WHAT[model.tier];
@@ -340,6 +356,7 @@ export default async function V3Result({
 
   return (
     <div className="rs">
+      {pilot ? <Track attemptId={attemptId} /> : null}
       <header className="rs-head">
         <div className="rs-head-in">
           <span className="rs-brand">CareerMatri</span>
@@ -655,7 +672,8 @@ export default async function V3Result({
           <p className="rs-note">
             그 영역에서 실제로 할 수 있는 한 걸음으로 적었습니다.
           </p>
-          <Plan actions={model.actions} stage={model.stage} />
+          <Plan actions={model.actions} stage={model.stage}
+            attemptId={attemptId} saved={saved} />
         </section>
 
         {/* **단서를 결과의 마지막 인상으로 만들지 않는다.** 필요한 사람이
@@ -672,7 +690,15 @@ export default async function V3Result({
               나중에 기준이 바뀌어도 이 결과는 달라지지 않습니다.
             </p>
           </Disclose>
-          <p><Link href="/my">내 검사 목록으로</Link></p>
+          {/* **의견을 받는 자리를 결과 앞에 두지 않는다.** 결과를 먼저
+              보여 주고 여기로 오는 길만 둔다. 답하지 않아도 잃는 것이 없다 */}
+          {pilot ? (
+            <p>
+              <Link href={`/v3/${attemptId}/feedback`}>파일럿 의견 적기</Link>
+              {" · "}
+              <Link href="/my">내 검사 목록으로</Link>
+            </p>
+          ) : <p><Link href="/my">내 검사 목록으로</Link></p>}
         </div>
       </main>
     </div>

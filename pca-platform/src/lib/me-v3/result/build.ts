@@ -145,12 +145,12 @@ function gapsOf(
     if (!d.verification_ok) {
       push("J6", "VERIFICATION", "BLOCKS_EVIDENCE", "MISSING_VERIFICATION", tier1("J6"));
     }
-    /* 1단 — 그 영역이 꼭 보는 판단이 아직 확인되지 않았다 */
+    /* 1단. 그 영역이 꼭 보는 판단이 아직 확인되지 않았다 */
     for (const ax of d.required) {
       if (d.confirmed.includes(ax)) continue;
       push(ax, "REQUIRED_AXIS", "REQUIRED_FOR_DOMAIN", "MISSING_REQUIRED_AXIS", 1);
     }
-    /* 3단 — 반쯤 선 자리. 산출물은 있는데 근거가 모자라거나, 해 본 것은
+    /* 3단. 반쯤 선 자리다. 산출물은 있는데 근거가 모자라거나, 해 본 것은
        확인됐고 직접 정했다고 보기에는 모자란 축이다 */
     if (d.output_ok && !d.output_evidence_ok) {
       push("J5", "OUTPUT_EVIDENCE", "BLOCKS_EVIDENCE", "MISSING_OUTPUT_EVIDENCE", 3);
@@ -198,7 +198,7 @@ function actionsOf(
   const out: Action[] = [];
   const lowInterest = new Set(s.zones.Z3_EVIDENCE_LOW_INTEREST);
   /**
-   * 언제 할 수 있는 일인가. **급한 차례가 아니라 할 수 있는 때로 묶는다.**
+   * 언제 할 수 있는 일인가. **급한 차례 대신 할 수 있는 때로 묶는다.**
    *
    * 급한 쪽을 `지금 할 일` 로 적었더니, 그 칸 안에 `다음 과제에서는
    * 결과물을 하나 남겨보세요` 가 들어갔다. 제목과 문장이 서로 다른 때를
@@ -318,7 +318,7 @@ function packView(
  *
  * **판정은 하나도 여기서 오지 않는다.** 고를 수 있었던 팩 목록(고르지 않은
  * 나머지를 적으려고)과 번역 열 단계에서 고른 보기(그 사람의 말을 그대로
- * 돌려주려고)뿐이다. 번역 보기는 응답이지 판정이 아니라서 스냅샷이 들고
+ * 돌려주려고)뿐이다. 번역 보기는 판정이 아닌 응답이라서 스냅샷이 들고
  * 있지 않고, 그것을 담으려고 채점을 고치지는 않는다.
  */
 export type ResultInput = {

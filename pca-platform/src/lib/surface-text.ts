@@ -335,6 +335,7 @@ export const TX = {
   navIncidents: p("사고", "Incidents"),
   navRefunds: p("환불 요청", "Refund requests"),
   navFunnel: p("퍼널", "Funnel"),
+  navV3Pilot: p("V3 파일럿", "V3 pilot"),
   navBusiness: p("사업자 표시", "Business details"),
   rpPdf: p("PDF 받기", "Download PDF"),
   /* PDF 만들기가 깨진 자리. **웹 결과지는 그대로 열려 있다**(규격 §16):

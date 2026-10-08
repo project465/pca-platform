@@ -1,0 +1,36 @@
+{
+ "schema_version": "me-v3-result-lock.1",
+ "note": "결과지 화면 1차 동결. 문장만 고치면 `RESULT_COPY_VERSION` 만 올리고, 칸이나 절이 바뀌면 `RESULT_MODEL_VERSION`, 화면 구조가 바뀌면 `RESULT_UI_VERSION` 을 올린다. 채점 판본은 이 가운데 무엇으로도 올리지 않는다",
+ "versions": {
+  "result_ui_version": "ME_V3_RESULT_UI_V1",
+  "result_copy_version": "me-v3-result-copy.1",
+  "result_model_version": "me-v3-result-model.1",
+  "item_bank_version": "ME_V3_ITEM_BANK_V1",
+  "scoring_version": "me-v3-scoring.1"
+ },
+ "guards": {
+  "내부 코드·문항 번호가 화면과 종이에 0건": "v3:result · v3:result:shots · v3:result:pdf",
+  "조사 오류 0건": "v3:result:copy",
+  "네 축만 물은 응시에 근거 판정이 없다": "v3:result",
+  "첫 화면과 아래 절이 같은 곳을 가리킨다": "v3:result (빈자리 차례) · 사람 눈",
+  "같은 할 일이 한 사람에게 두 번 서지 않는다": "v3:result:copy",
+  "웹과 종이가 같은 결과 모델을 읽는다": "v3:result (모델 되읽기) · v3:result:pdf",
+  "사람마다 결과의 뜻이 같다": "v3:result (스냅샷 대조 · 팩 변형)",
+  "320px 에서 가로로 밀리지 않는다": "v3:result:shots",
+  "종이에 빈 쪽과 범위 밖 쪽수가 없다": "v3:result:pdf"
+ },
+ "files": {
+  "src/app/v3/result.css": "890f17241ed9e21498ab70cac4699826fe38b1d86c1ee7be5c887380ee8500e4",
+  "src/app/v3/[attemptId]/result/page.tsx": "774f0c11c09260088b7c1e87b9fd1357e15460389a1989f324f11f8168bb3cc3",
+  "src/app/v3/[attemptId]/result/fold.tsx": "2cf4f4a676d584b5b8fe6ea9c3b1787f84c6b9b8498b74d7d240b53c14492d0d",
+  "src/app/v3/[attemptId]/result/disclose.tsx": "a82c70b1d0897647877cfff4a672e8ebffd8716f76e6cfcc3d25e066f074f455",
+  "src/app/v3/[attemptId]/result/save.tsx": "2830e503419eba94015798787ab2f7cd4abca39c8126fe1cf3dca087f6c6e7c1",
+  "src/app/v3/[attemptId]/result/track.tsx": "6136c271ee7df7323f029912182c7496a8633fdf7479b6080697a6f4a217787c",
+  "src/lib/me-v3/result/model.ts": "60d5e743a1114fff540130fe5c70854862b0eebc659197fbbd155b2607037e1b",
+  "src/lib/me-v3/result/build.ts": "5ab656e811c6d4c82b0f239622820c3a5520d76244c7df6f9db3c1cecf547038",
+  "src/lib/me-v3/result/text.ko.ts": "aaa17e57559e6e1168fb9b86ff5568f5a0b08a914ac1884769fe0bf0bbbdc720",
+  "src/lib/me-v3/result/josa.ts": "152cd30c2af136172618c14fa6fb4175b97cf16350db631e3e2e6c72fd7dd4af",
+  "src/lib/me-v3/result/version.ts": "fe2f9a00e7c6cb511a64ee55c6849050558ea74697144102d965e6aaa69ce3dc",
+  "src/lib/me-v3/runtime/domain-facts.ts": "f5aefadb0bd9e6ca0fae76b1076c2a7fdab7d34caaebdc618f39a2e92fbfd31f"
+ }
+}

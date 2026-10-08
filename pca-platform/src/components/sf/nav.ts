@@ -78,6 +78,9 @@ export const NAV_ADMIN: NavItem[] = [
   { href: "/admin/business", label: "navBusiness", icon: "building", group: "navGroupLaunch" },
 
   { href: "/admin/funnel", label: "navFunnel", icon: "spark", group: "navGroupCustomers" },
+  /* 본 파일럿을 보는 자리. **거대한 관리 시스템을 새로 짓지 않는다** —
+     참가자와 응시와 의견을 한 표로 본다 */
+  { href: "/admin/v3-pilot", label: "navV3Pilot", icon: "clipboard", group: "navGroupCustomers" },
   { href: "/admin/orders", label: "navOrders", icon: "cart", soon: true, group: "navGroupCustomers" },
   { href: "/admin/refunds", label: "navRefunds", icon: "cart", group: "navGroupCustomers" },
   { href: "/admin/organizations", label: "navOrganizations", icon: "building", group: "navGroupCustomers" },
