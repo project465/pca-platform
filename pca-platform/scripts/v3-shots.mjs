@@ -68,10 +68,14 @@ for (const [key, login_] of Object.entries(plan.users)) {
   await login(ctx[key], login_);
 }
 
-/* 320px 은 네 자리에서 본다. 좁은 화면이 실제로 달라지는 곳은 머리띠가
+/* 320px 은 일곱 자리에서 본다. 좁은 화면이 실제로 달라지는 곳은 머리띠가
    접히는 자리(시작) · 열두 줄이 깔리는 자리(훑기) · 눈금이 선 자리(소유) ·
-   칩이 깔린 자리(근거)다 */
-const NARROW = new Set(["00_start", "04_screening", "07_evidence", "13_ownership"]);
+   칩이 깔린 자리(근거)이고, 플랫폼 쪽에서는 카드 격자(대시보드)와 표가
+   선 자리(Gap · 공고)다 */
+const NARROW = new Set([
+  "00_start", "04_screening", "07_evidence", "13_ownership",
+  "22_dashboard", "25_gap", "29_jobs",
+]);
 
 const log = [];
 const problems = [];
@@ -115,6 +119,15 @@ for (const t of plan.targets) {
    **누르는 점검이라 응답이 바뀐다.** 그래서 다 찍은 뒤에 하고, 자리도
    맨 끝 것을 쓴다 */
 const qa = plan.targets[plan.targets.length - 1];
+/**
+ * **키보드 점검은 보기 넷이 있는 자리에서만 한다.**
+ *
+ * 전에는 목록의 맨 끝 자리를 썼는데, 플랫폼 쪽(내 CareerMatri · 공고)이
+ * 목록에 들어오면서 맨 끝이 라디오가 없는 쪽이 됐고 **멀쩡한 화면이
+ * `키보드로 보기에 닿지 않는다` 로 걸렸다.** 자리를 성격으로 고른다.
+ */
+const KB = [...plan.targets].reverse()
+  .find((t) => /^\/v3\/[^/]+\?s=/.test(t.path)) ?? qa;
 {
   const p = await ctx[qa.who].newPage();
   await p.setViewportSize(SIZES.narrow);
@@ -124,7 +137,8 @@ const qa = plan.targets[plan.targets.length - 1];
   if (overflow) problems.push("320px: 가로 스크롤이 생긴다");
   await p.screenshot({ path: `${OUT}/${qa.name}__narrow.png` });
 
-  /* 키보드만으로 보기를 고를 수 있는가 */
+  /* 키보드만으로 보기를 고를 수 있는가. **보기 넷이 있는 자리로 옮긴다** */
+  await p.goto(B + KB.path, { waitUntil: "networkidle" });
   await p.setViewportSize(SIZES.desktop);
   await p.keyboard.press("Tab");
   for (let i = 0; i < 12; i += 1) {
@@ -149,9 +163,9 @@ const qa = plan.targets[plan.targets.length - 1];
       return getComputedStyle(el).outlineStyle;
     });
     if (ring === "none") problems.push("초점 표시가 없다");
-    await p.screenshot({ path: `${OUT}/${qa.name}__focus.png` });
+    await p.screenshot({ path: `${OUT}/${KB.name}__focus.png` });
   }
-  log.push(`${qa.name} 320px·키보드`.padEnd(26) + " 확인");
+  log.push(`${qa.name} 320px · ${KB.name} 키보드`.padEnd(26) + " 확인");
   await p.close();
 }
 

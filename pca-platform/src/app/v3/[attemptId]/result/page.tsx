@@ -606,7 +606,9 @@ export default async function V3Result({
             제목이 이미 `연결하면` 이라고 말하고 있다 */}
         {model.industry_context ? (
           <section className="rs-sect" id="industry">
-            <h2>{industryName(model.industry_context.code)} 직무에 연결하면</h2>
+            {/* **산업을 직무라고 적지 않는다.** 반도체는 산업이고 설계는
+                직무다. 한 말로 적으면 둘의 층이 같아 보인다 */}
+            <h2>{industryName(model.industry_context.code)} 쪽에 연결하면</h2>
             {/* **네 카드를 한 이야기로 잇는다.** 확인된 것 → 이 산업을
                 보려면 모자란 것 → 다음에 할 일이 한 문단이다. 전에는 넷이
                 따로 서서, 네 번 읽고도 `그래서 무엇이 더 필요한가` 가 한

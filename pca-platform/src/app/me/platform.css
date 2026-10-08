@@ -176,8 +176,17 @@
 
 /* ── 고르는 칸 ────────────────────────────────────────────────────── */
 
-.cm-field { display: flex; flex-direction: column; gap: 8px; margin: 0 0 18px; }
-.cm-field > span { font-size: 13px; font-weight: 600; color: var(--sf-ink); }
+/* **`fieldset` 의 기본 테두리를 지운다.** 묶음마다 상자가 그려지면
+   고르는 칸 다섯이 상자 다섯으로 서고, 카드와 상자가 같은 무게로 읽힌다 */
+.cm-field {
+  display: flex; flex-direction: column; gap: 8px;
+  margin: 0 0 18px; padding: 0; border: 0; min-width: 0;
+}
+.cm-field > legend { padding: 0; float: left; width: 100%; }
+.cm-field > legend + * { clear: both; }
+.cm-field > span, .cm-field > legend > span {
+  display: block; font-size: 13px; font-weight: 600; color: var(--sf-ink);
+}
 .cm-field > em {
   font-style: normal; font-size: 13px; color: var(--sf-ink-3); line-height: 1.6;
 }
@@ -209,7 +218,12 @@
 
 @media (max-width: 900px) {
   .cm-rail { display: none; }
-  .cm-main { padding: 20px 16px calc(24px + var(--cm-tab) + env(safe-area-inset-bottom, 0px)); }
+  /* 아래 띠와 공개 전 띠 높이만큼 본문 아래를 비운다. 마지막 단추가
+     띠에 덮이면 다 읽은 사람이 거기서 멈춘다 */
+  .cm-main {
+    padding: 20px 16px
+      calc(24px + var(--cm-tab) + var(--stg-h, 0px) + env(safe-area-inset-bottom, 0px));
+  }
   .cm-h1 { font-size: 22px; }
   .cm-grid { grid-template-columns: 1fr; }
 
@@ -225,7 +239,10 @@
   /* **아래 띠는 다섯 자리까지만 둔다.** 여섯째부터는 글자가 두 줄로
      접히고, 접힌 띠는 누르는 자리가 어디인지 알 수 없다 */
   .cm-tabs {
-    display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+    /* **공개 전 띠보다 위에 둔다.** 저쪽이 `z-index: 90` 이라 그 아래면
+       메뉴가 통째로 가려진다. `bottom` 은 `surface.css` 가 띠 높이만큼
+       올린다 */
+    display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 95;
     background: var(--sf-surface); border-top: 1px solid var(--sf-line);
     padding: 0 0 env(safe-area-inset-bottom, 0px);
   }

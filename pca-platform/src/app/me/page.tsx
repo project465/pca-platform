@@ -53,6 +53,7 @@ export default async function MyCareerMatri() {
   const evidenceN = result?.overview.counts.evidence_items ?? 0;
   const domainsN = result?.overview.counts.domains ?? 0;
   const ready = result?.evidence.ready ?? [];
+  const readyDomains = [...new Set(ready.map((g) => g.domain))];
   const gaps = (result?.gaps ?? []).slice(0, 3);
   const openActions = actions.filter((a) => a.state !== "done").slice(0, 3);
 
@@ -112,16 +113,17 @@ export default async function MyCareerMatri() {
             <>
               <p className="cm-num">{confirmed}<small>개 판단축이 확인됐습니다</small></p>
               <div className="cm-rows">
-                <p className="cm-row"><b>살펴본 기술영역</b><span>{domainsN}개</span></p>
+                <p className="cm-row"><b>근거가 선 기술영역</b>
+                  <span>{readyDomains.length}개 / 살펴본 {domainsN}개</span></p>
                 <p className="cm-row"><b>직접 정한 것으로 선 축</b><span>{owned}개</span></p>
                 <p className="cm-row"><b>고른 근거</b><span>{evidenceN}개</span></p>
               </div>
-              {ready.length ? (
+              {/* **영역으로 묶는다.** 근거는 (영역 · 축)마다 한 줄이라
+                  그대로 깔면 같은 영역 이름이 넷 선다 */}
+              {readyDomains.length ? (
                 <div className="cm-chips">
-                  {ready.slice(0, 4).map((g) => (
-                    <span className="cm-chip is-on" key={`${g.domain}.${g.axis}`}>
-                      {domainName(g.domain)}
-                    </span>
+                  {readyDomains.slice(0, 4).map((d) => (
+                    <span className="cm-chip is-on" key={d}>{domainName(d)}</span>
                   ))}
                 </div>
               ) : null}

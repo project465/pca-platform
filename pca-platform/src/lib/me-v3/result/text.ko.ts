@@ -398,17 +398,20 @@ export function bridgeKo(
 ): string[] {
   const out: string[] = [];
 
+  /* **축 이름은 짧은 쪽을 쓴다.** `무엇을 풀 문제로 잡았는가` 같은 물음
+     꼴을 문장 안에 넣으면 `A와 B 쪽이 확인됐습니다` 가 물음 둘을 명사처럼
+     쓰는 문장이 되고, 읽는 사람이 한 번 멈춘다 */
   const est = pack.established[0];
   if (est && est.axes.length) {
-    const axes = andList(est.axes.slice(0, 2).map((a) => AXIS_WHAT_KO[a]));
+    const axes = andList(est.axes.slice(0, 2).map((a) => AXIS_KO[a]));
     out.push(`${withJosa(domainName(est.domain), "은는")} ${axes} 쪽이 확인됐습니다.`);
   }
 
   const req = pack.requested[0];
   if (req) {
-    const what = AXIS_WHAT_KO[req.axis];
+    const what = AXIS_KO[req.axis];
     const where = domainName(req.domain);
-    out.push(`${withJosa(packName, "을를")} 보려면 ${where}에서 ${what} 쪽 근거가 아직 모자랍니다.`);
+    out.push(`${withJosa(packName, "을를")} 보려면 ${where}에서 ${what} 근거가 아직 모자랍니다.`);
   }
 
   if (action) {

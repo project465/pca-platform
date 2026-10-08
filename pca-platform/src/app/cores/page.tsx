@@ -75,26 +75,23 @@ export default async function Cores() {
           </div>
         ))}
 
-        {planned.map((c) => (
-          <div className="cm-card" key={c.code}>
-            <h2>{c.name_ko} <em>준비 중</em></h2>
-            <p>
-              기술영역 사전과 문항과 산업 자료를 그 전공을 아는 분이 써야
-              열립니다. 전공을 늘리는 속도는 그 전공을 아는 사람이 쓸 수 있는
-              속도입니다.
-            </p>
-            <div className="cm-grow" />
-            <div className="cm-acts">
-              <span className="cm-btn is-off" aria-disabled>아직 열지 않았습니다</span>
-            </div>
-          </div>
-        ))}
       </div>
 
-      <p className="cm-lead" style={{ marginTop: 20 }}>
-        전공 Core 를 늘리는 일은 파일을 더하는 일입니다. 엔진은 전공 이름도
-        파일 이름도 모르고 등록부가 가리키는 것만 읽습니다.
+      {/* **같은 문장을 아홉 번 쓰지 않는다.** 준비 중인 Core 마다 카드를
+          세우고 같은 설명을 되풀이하면, 아홉 장이 한 문단을 아홉 번 읽게
+          한다. 까닭은 한 번만 적고 이름은 줄로 세운다 */}
+      <h2 className="cm-h1" style={{ fontSize: 18, margin: "28px 0 10px" }}>
+        준비 중인 전공
+      </h2>
+      <p className="cm-lead" style={{ marginBottom: 14 }}>
+        기술영역 사전과 문항과 산업 자료를 그 전공을 아는 분이 써야 열립니다.
+        전공을 늘리는 속도는 그 전공을 아는 사람이 쓸 수 있는 속도입니다.
       </p>
+      <div className="cm-chips">
+        {planned.map((c) => (
+          <span className="cm-chip" key={c.code}>{c.name_ko}</span>
+        ))}
+      </div>
     </CmShell>
   );
 }
