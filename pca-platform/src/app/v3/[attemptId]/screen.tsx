@@ -100,7 +100,8 @@ export default function Screen({
   const finish = async () => {
     setMoving(true);
     await queue.current;
-    await finishAction(s.attemptId);
+    const r = await finishAction(s.attemptId);
+    if (r.ok) { router.push(`/v3/${s.attemptId}/result`); return; }
     router.refresh();
     setMoving(false);
   };
@@ -296,7 +297,7 @@ export default function Screen({
             ) : null}
             <p className="qs-help" style={{ marginTop: 24 }}>
               {s.done
-                ? "결과를 저장했습니다. 결과 화면은 준비되는 대로 여기서 열립니다."
+                ? "결과를 저장했습니다. 아래에서 바로 보실 수 있습니다."
                 : "답변을 바탕으로 결과를 정리합니다. 만든 뒤에도 이전으로 돌아가 고칠 수 있습니다."}
             </p>
           </>
@@ -318,7 +319,9 @@ export default function Screen({
                 : sent ? <span className="qs-save">저장됨</span>
                   : <span className="qs-save">답변은 자동으로 저장됩니다</span>}
           {s.kind === "done" ? (
-            s.done ? null : (
+            s.done ? (
+              <a className="qs-btn qs-btn-main" href={`/v3/${s.attemptId}/result`}>결과 보기</a>
+            ) : (
               <button type="button" className="qs-btn qs-btn-main"
                 onClick={finish} disabled={moving}>결과 만들기</button>
             )

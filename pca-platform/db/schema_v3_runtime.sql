@@ -86,3 +86,10 @@ CREATE TABLE IF NOT EXISTS v3_snapshots (
 );
 CREATE INDEX IF NOT EXISTS v3_snapshots_attempt
   ON v3_snapshots(attempt_id, created_at DESC);
+
+-- 결과 모델을 같은 줄에 굳힌다. **만들어 둔 결과지를 고치지 않는다**:
+-- 엔진이 바뀌어도 그때 낸 결과지가 조용히 달라지면 안 되므로, 읽는 쪽은
+-- 다시 만들지 않고 여기 적힌 것을 그대로 꺼낸다.
+ALTER TABLE v3_snapshots ADD COLUMN IF NOT EXISTS result_model JSONB;
+ALTER TABLE v3_snapshots ADD COLUMN IF NOT EXISTS result_model_version TEXT;
+ALTER TABLE v3_snapshots ADD COLUMN IF NOT EXISTS result_copy_version TEXT;

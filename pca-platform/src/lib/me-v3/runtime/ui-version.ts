@@ -12,4 +12,11 @@
 export const ASSESSMENT_UI_VERSION = "ME_V3_ASSESSMENT_UI_V1";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
-export const ASSESSMENT_COPY_VERSION = "me-v3-assessment-copy.1";
+export const ASSESSMENT_COPY_VERSION = "me-v3-assessment-copy.2";
+
+/*
+ * `.2` 로 올린 까닭. 결과지가 생겨서 완료 화면의 마지막 단추가 할 일이
+ * 바뀌었다(`결과를 만들고 그 자리에 머문다` → `결과를 만들고 결과 화면으로
+ * 간다`). **편의상 고친 것이 아니라 배선이다**: 그대로 두면 다 푼 사람이
+ * 자기 결과로 가는 길이 없다. 채점 판본은 올리지 않는다.
+ */

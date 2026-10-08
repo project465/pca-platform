@@ -207,8 +207,16 @@ function actionsOf(
   if (!s.focus.length && !out.length) {
     add("A.EXPLORE", null, null, "EXPLORE_BROADLY", "NOW", null);
   }
+  /* **차례가 뜻을 가진다.** 관심은 높고 겪은 적이 없는 사람에게 공부를
+     먼저 적으면, 해 보기 전에 책부터 사라고 말하는 셈이다 */
   const H = { NOW: 0, NEXT: 1, LATER: 2 };
-  return out.sort((a, b) => H[a.horizon] - H[b.horizon] || a.id.localeCompare(b.id));
+  const C: Record<ActionCode, number> = {
+    EXPLORE_BROADLY: 0, TRY_SHORT_EXPERIENCE: 1, BUILD_OUTPUT: 2,
+    ADD_VERIFICATION: 3, FILL_AXIS: 4, STUDY_NEXT: 5, WRITE_UP: 6,
+    RECHECK_DIRECTION: 7,
+  };
+  return out.sort((a, b) =>
+    H[a.horizon] - H[b.horizon] || C[a.code] - C[b.code] || a.id.localeCompare(b.id));
 }
 
 function packView(

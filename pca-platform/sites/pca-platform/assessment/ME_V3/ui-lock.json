@@ -3,24 +3,24 @@
  "note": "검사 화면 1차 동결. 결과지 작업 중에는 명백한 버그와 접근성 오류만 고치고, 고쳤으면 `ui-version.ts` 의 판본을 올린 뒤 `FREEZE=update npm run v3:freeze` 로 지문을 다시 적는다",
  "versions": {
   "assessment_ui_version": "ME_V3_ASSESSMENT_UI_V1",
-  "assessment_copy_version": "me-v3-assessment-copy.1",
+  "assessment_copy_version": "me-v3-assessment-copy.2",
   "assessment_version": "ME_V3_DOMAIN_2026",
   "item_bank_version": "ME_V3_ITEM_BANK_V1",
   "scoring_version": "me-v3-scoring.1"
  },
  "files": {
   "src/app/v3/layout.tsx": "5169464a4bd3741726beea4d17ee6ddb9d070c090513a3ca029f526883e05864",
-  "src/app/v3/assessment.css": "e75ae14004c49d925f75b12526395d3a0dfa4c334e2edc524ec5a2f6c7c970d7",
+  "src/app/v3/assessment.css": "8932f39cf18c2d7e20727a6d79c2711053e4860c6568ac983ec1da9f4d59a2c8",
   "src/app/v3/tier-text.ts": "8aa60b33414cde34a0f3bb7fcf47c6ef4d263f0c60491c422c20fec380888bc2",
   "src/app/v3/start/page.tsx": "caefd5f3105492e2137180037638069217f7e8b62e5e2519165ca4eaf3205b16",
   "src/app/v3/start/start-form.tsx": "833dcc160d83adbdca52ccd992ba39d12a12103f60038ff08d56e07d878d4b53",
   "src/app/v3/start/actions.ts": "56bab8bbc48429958f5373fd8063d12f708fff5c26e35a2e3c0a92fb1c2482b1",
   "src/app/v3/[attemptId]/page.tsx": "6cbdd78e677c9af5e5cccc24b3058f235c021ae04fc4e94077d5e6b053051411",
-  "src/app/v3/[attemptId]/screen.tsx": "4edcda82ce13aeb77967fc2d9c12c3634d7236256c16ea5a337b0538f0db6bb5",
+  "src/app/v3/[attemptId]/screen.tsx": "35ddf9e620ae734eb093f0a57307af535579ecf925220217d3750e9a48634dd1",
   "src/app/v3/[attemptId]/model.ts": "f865ed5a75b59daed0f46ac452f93b19411f61167ff682e5e5aa9ca7001c8f67",
   "src/app/v3/[attemptId]/actions.ts": "761158bd98605c2acc47dcdffd5c2029099e5d3f9592703c5030fd4f51409ea4",
   "src/lib/me-v3/runtime/blocks.ts": "57d92f30cbb22a003e8caf6e41823f4df7d32565de3e66fa0f737f3fa4b89f8e",
   "src/lib/me-v3/runtime/menus.ts": "cdf84f28aa3adeb3db0f6e0fdb2345551c726c78895883348f1a7ea2e81d680e",
-  "src/lib/me-v3/runtime/session.ts": "ca3fb269b5570efde7a4ac38b4531608ad5adf4805dc0a28704f1b7d752bc362"
+  "src/lib/me-v3/runtime/session.ts": "a297a744cd5996c5fe99fbedfd2edf9e30e919ba14e7b4b81afa4a77cf098c46"
  }
 }

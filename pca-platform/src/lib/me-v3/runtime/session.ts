@@ -25,7 +25,10 @@ import { buildPlan, type Plan, type Screen } from "./blocks";
 import { progressOf, type Progress } from "./progress";
 import { branchBlock, pickDomains, type GridAnswer } from "./routing";
 import { counts, minutes } from "../response-count";
-import type { MenuContext } from "./menus";
+import { controlOf, type MenuContext } from "./menus";
+import { buildResult } from "../result/build";
+import type { ResultModel } from "../result/model";
+import { RESULT_COPY_VERSION, RESULT_MODEL_VERSION } from "../result/version";
 
 export const CORE = "ME_CORE_V3";
 export const ASSESSMENT_VERSION = "ME_V3_DOMAIN_2026";
@@ -580,12 +583,25 @@ export async function submissionOf(a: V3Attempt): Promise<Submission> {
  */
 export async function submit(a: V3Attempt): Promise<{ snapshot: Snapshot; id: string }> {
   const sub = await submissionOf(a);
-  const snapshot = score(sub, load(a.core_code));
+  const loaded = load(a.core_code);
+  const snapshot = score(sub, loaded);
+  /* 결과 모델을 같은 줄에 굳힌다. 읽는 쪽이 다시 만들면 엔진이 바뀐 날
+     그 사람의 결과지가 조용히 달라진다 */
+  const result = buildResult(snapshot, loaded, {
+    packs: {
+      industries: industryChoices().map((x) => x.code),
+      roles: roleChoices().map((x) => x.code),
+    },
+    translation: translationChoices(sub),
+  });
   const row = await queryOne<{ id: string }>(
-    `INSERT INTO v3_snapshots (attempt_id, module_versions, response_quality, payload)
-     VALUES ($1,$2,$3,$4) RETURNING id::text`,
+    `INSERT INTO v3_snapshots
+       (attempt_id, module_versions, response_quality, payload,
+        result_model, result_model_version, result_copy_version)
+     VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING id::text`,
     [a.id, JSON.stringify(snapshot.module_versions),
-     snapshot.response_quality.flag, JSON.stringify(snapshot)],
+     snapshot.response_quality.flag, JSON.stringify(snapshot),
+     JSON.stringify(result), RESULT_MODEL_VERSION, RESULT_COPY_VERSION],
   );
   await query(
     `UPDATE v3_attempts SET status='scored', submitted_at=now(), current_screen='done'
@@ -598,4 +614,36 @@ export async function latestSnapshot(attemptId: string): Promise<Snapshot | null
     `SELECT payload FROM v3_snapshots WHERE attempt_id=$1
       ORDER BY created_at DESC, id DESC LIMIT 1`, [attemptId]);
   return row?.payload ?? null;
+}
+
+/**
+ * 번역 열 단계에서 고른 보기의 말.
+ *
+ * 스냅샷은 **단계가 섰다는 것**만 들고 다닌다(그것이 판정이다). 고른 보기는
+ * 응답이라 거기 없고, 그것을 담으려고 채점을 고치지는 않는다. 결과 모델이
+ * 그 사람의 말을 그대로 돌려주려면 여기서 맞춰 붙인다.
+ */
+function translationChoices(sub: Submission): { item_id: string; choice: string | null }[] {
+  const ctx = { tiedPair: [], domains: [], industries: [], roles: [] };
+  const out: { item_id: string; choice: string | null }[] = [];
+  for (const it of content().bank.items) {
+    if (it.module !== "TRANS-10") continue;
+    const a = sub.answers[it.item_id];
+    if (!a || a.kind !== "choice") continue;
+    let label: string | null = null;
+    try {
+      const c = controlOf(it as never, ctx);
+      if (c.kind === "choice") label = c.options.find((o) => o.value === a.value)?.label ?? null;
+    } catch { label = null; }
+    out.push({ item_id: it.item_id, choice: label });
+  }
+  return out;
+}
+
+/** 굳혀 둔 결과 모델. **읽는 쪽은 다시 만들지 않는다** */
+export async function latestResult(attemptId: string): Promise<ResultModel | null> {
+  const row = await queryOne<{ result_model: ResultModel | null }>(
+    `SELECT result_model FROM v3_snapshots WHERE attempt_id=$1
+      ORDER BY created_at DESC, id DESC LIMIT 1`, [attemptId]);
+  return row?.result_model ?? null;
 }

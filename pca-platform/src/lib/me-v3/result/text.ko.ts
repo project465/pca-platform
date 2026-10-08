@@ -161,6 +161,32 @@ export const TIER_NOTE_KO = {
     + " 같은 경험이 어떻게 읽히는지까지 적었습니다.",
 } as const;
 
+/**
+ * 번역 열 단계의 이름.
+ *
+ * 문항 문면은 길다(`그 과제에서 가장 먼저 푼 문제는 무엇이었습니까`).
+ * 결과지의 표에서는 **왼쪽 칸이 짧아야** 오른쪽의 그 사람 답이 읽힌다.
+ */
+export const TRANS_STEP_KO: Record<string, string> = {
+  TR_T1: "어떤 문제였나",
+  TR_T2: "왜 문제였나",
+  TR_T3: "어떤 방법으로 봤나",
+  TR_T4: "무엇을 바꿨나",
+  TR_T5: "몇 번 돌렸나",
+  TR_T6: "무엇과 비교했나",
+  TR_T7: "흩어짐은 어떻게 다뤘나",
+  TR_T8: "무엇을 직접 정했나",
+  TR_T9: "무엇이 남았나",
+  TR_T10: "그 결과가 어디에 쓰이나",
+};
+
+/** 할 일을 언제 할 것인가 */
+export const HORIZON_KO = {
+  NOW: "지금 할 일",
+  NEXT: "다음 과제에서",
+  LATER: "한 번 더 볼 것",
+} as const;
+
 export const QUALITY_KO = {
   OK: "",
   REVIEW: "답변 가운데 서로 맞지 않는 곳이 있어, 이 결과는 좁게 읽어주세요.",
