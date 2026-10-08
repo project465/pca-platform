@@ -110,8 +110,14 @@ function or(list: string[], n = 2): string {
  */
 export function actionKo(a: Action, domainName: string): string {
   if (a.code === "WRITE_UP") {
-    return `${domainName}은 직접 정한 것과 남긴 결과물이 함께 확인됐습니다.`
-      + " 무엇을 정했고 그 결과가 어디에 쓰였는지 한 문단으로 정리해 두세요.";
+    /* **세 영역에 같은 문장을 세 번 적지 않는다.** 그 영역에서 남긴 것을
+       끌어오면 읽는 사람이 자기 과제를 알아본다 */
+    const what = or(a.material.artifacts);
+    return what
+      ? `${domainName}에서 ${what} 같은 결과물까지 확인됐습니다.`
+        + " 무엇을 정했고 그 결과가 어디에 쓰였는지 한 문단으로 정리해 두세요."
+      : `${domainName}은 직접 정한 것과 남긴 결과물이 함께 확인됐습니다.`
+        + " 무엇을 정했고 그 결과가 어디에 쓰였는지 한 문단으로 정리해 두세요.";
   }
   if (a.code === "EXPLORE_BROADLY") {
     return "지금 응답만으로는 어느 영역이 앞선다고 보기 어렵습니다."
