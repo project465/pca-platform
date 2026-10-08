@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import {
-  attemptOf, domainName, industryChoices, latestResult, roleChoices,
+  attemptOf, domainName, industryChoices, latestResult, orgChoices, roleChoices,
 } from "@/lib/me-v3/runtime/session";
 import { domainArtifacts } from "@/lib/me-v3/runtime/domain-facts";
 import type { Axis } from "@/lib/me-v3/scoring/types";
@@ -11,8 +11,9 @@ import type {
 } from "@/lib/me-v3/result/model";
 import {
   actionKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO, BASIC_GROUP_KO, bridgeKo,
-  domainChainKo, draftKo, FIRST_MOVE_KO, gapKo, gapShortKo, headlineKo, HORIZON_KO,
-  QUALITY_KO, TIER_NOTE_KO, TRANS_ORDER, TRANS_STEP_KO, ZONE_LEAD_KO, ZONE_TITLE_KO,
+  commonKo, domainChainKo, draftKo, FIRST_MOVE_KO, gapKo, gapShortKo, headlineKo,
+  HORIZON_KO, QUALITY_KO, TIER_NOTE_KO, TRANS_ORDER, TRANS_STEP_KO, XFIELD_KO,
+  XFIELD_ORDER, ZONE_LEAD_KO, ZONE_TITLE_KO,
 } from "@/lib/me-v3/result/text.ko";
 import { regionLayer } from "@/lib/me-v3/region";
 import { profileOf } from "@/lib/me-v3/platform";
@@ -33,6 +34,27 @@ const ZONE_CLASS: Record<string, string> = {
   NOT_EXPLORED: "z4",
 };
 const BASIC_GROUPS = ["do_now", "scan", "low", "unseen"] as const;
+
+/**
+ * 팩 문항에서 확인된 판단을 한 줄씩 적는다.
+ *
+ * **영역이 없는 줄도 버리지 않는다.** 역할팩의 경계 문항은 기술영역에 붙지
+ * 않고, 그 줄을 떨어뜨리면 답하신 것이 또 사라진다.
+ */
+function packRows(
+  rows: { domain: string | null; axis: Axis | null; owned: boolean }[],
+): string[] {
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const r of rows) {
+    const label = [r.domain ? domainName(r.domain) : null, r.axis ? AXIS_KO[r.axis] : null]
+      .filter(Boolean).join(" · ") || "이 직무에서 맡는 범위";
+    if (seen.has(label)) continue;
+    seen.add(label);
+    out.push(label);
+  }
+  return out.slice(0, 8);
+}
 
 /** 고른 항목. **스무 개를 한 줄에 깔면 그 가운데 무엇도 안 읽힌다** */
 function Picks(
@@ -266,7 +288,12 @@ function Translation({ view }: { view: TranslationView }) {
   const rows = TRANS_ORDER
     .map((id) => view.steps.find((s) => s.item_id === id))
     .filter((s): s is TranslationView["steps"][number] => !!s && !!TRANS_STEP_KO[s.item_id]);
-  if (!rows.length) return null;
+  /* 타계열 대학원 맥락. **열 단계가 없어도 이 절을 세운다**: 적어 주신 것이
+     어디로도 가지 않으면 받고 쓰지 않은 응답이 된다 */
+  const xf = XFIELD_ORDER
+    .map((id) => view.xfield.find((x) => x.item_id === id))
+    .filter((x): x is TranslationView["xfield"][number] => !!x && !!XFIELD_KO[x.item_id]);
+  if (!rows.length && !xf.length) return null;
   const draft = draftKo(view.steps);
   return (
     <section className="rs-sect" id="translation">
@@ -274,6 +301,27 @@ function Translation({ view }: { view: TranslationView }) {
       <p className="rs-note">
         적어주신 과제를 지원서와 면접에서 말하는 차례로 나눴습니다.
       </p>
+      {/* **대학원 전공이 다른 분의 경험을 기계공학 판단으로 세지 않는다.**
+          여기 적는 것은 그 경험을 직무 말로 옮길 때 읽는 맥락이고, 위의
+          영역별 판정에는 한 글자도 들어가지 않는다 */}
+      {xf.length ? (
+        <div className="rs-pack">
+          <h3>대학원 경험을 어디에 걸칠지</h3>
+          <p>
+            학부에서 기계공학을 하시고 대학원은 다른 분야를 하셨다고 답해주셨습니다.
+            대학원 경험은 기술영역 판정에 넣지 않고, 아래 번역에서만 읽었습니다.
+          </p>
+          <dl>
+            {xf.map((x) => (
+              <div key={x.item_id}>
+                <dt>{XFIELD_KO[x.item_id]}</dt>
+                <dd>{x.choice}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      ) : null}
+      {rows.length ? (
       <ol className="rs-steps">
         {rows.map((s) => (
           <li key={s.item_id}>
@@ -282,6 +330,7 @@ function Translation({ view }: { view: TranslationView }) {
           </li>
         ))}
       </ol>
+      ) : null}
       {draft.length >= 3 ? (
         <div className="rs-draft">
           <h3>지원서에서 이렇게 묶어볼 수 있습니다</h3>
@@ -361,6 +410,11 @@ export default async function V3Result({
     .filter((z) => !(z === "Z1_EVIDENCE_ESTABLISHED" && !model.limits.allows_evidence_established))
     .map((z) => ({ z, list: model.domains.filter((d) => d.zone === z).map((d) => d.code) }));
   const bg = model.overview.basic_groups;
+  /* 영역에 걸치지 않는 판단. **열두 영역에 넣지 않는다**: 기술영역을 묻지
+     않은 자리라 영역별 판정과 섞이면 안 된다 */
+  const cm = commonKo(model.common);
+  const orgName = (c: string) => orgChoices().find((x) => x.code === c)?.name ?? c;
+  const goal = model.targets.goal;
 
   return (
     <div className="rs">
@@ -525,6 +579,43 @@ export default async function V3Result({
               </section>
             ) : null}
           </div>
+          {/* **고르신 쪽을 돌려드린다.** 격자에 고르게 답하신 분께는
+              `차이가 없습니다` 만 남는데, 그 분이 묶인 둘 가운데 한쪽을
+              두 번 고르셨다. 차례로 적지 않고 고른 것으로 적는다 */}
+          {model.overview.tied_pick.length ? (
+            <p className="rs-zempty">
+              {`영역 훑기에서 같은 값으로 답하신 둘을 놓고 ${model.overview.tied_pick
+                .map((c) => domainName(c)).join(" · ")} 쪽을 고르셨습니다. `}
+              위의 묶음은 그 선택과 상관없이 응답에서 나온 것입니다.
+            </p>
+          ) : null}
+          {/* **영역에 걸치지 않는 판단을 버리지 않는다.** 공통 판단과 학위
+              묶음은 기술영역이 없어서 위의 열두 영역에 들어갈 자리가 없다.
+              그렇다고 떨어뜨리면 박사와 포닥이 가장 많이 답한 자리가 결과지에
+              한 글자도 나오지 않는다 */}
+          {cm.owned.length || cm.confirmed.length ? (
+            <div className="rs-pack">
+              <h3>영역을 가리지 않고 확인된 판단</h3>
+              <p>
+                어느 기술영역에서 한 일인지는 묻지 않은 자리입니다. 위의 영역별
+                판정에는 들어가지 않습니다.
+              </p>
+              <dl>
+                {cm.owned.length ? (
+                  <div>
+                    <dt>직접 정한 것으로 확인</dt>
+                    <dd>{cm.owned.join(" · ")}</dd>
+                  </div>
+                ) : null}
+                {cm.confirmed.length ? (
+                  <div>
+                    <dt>해 본 것으로 확인</dt>
+                    <dd>{cm.confirmed.join(" · ")}</dd>
+                  </div>
+                ) : null}
+              </dl>
+            </div>
+          ) : null}
         </section>
 
         {/* ── 근거 두 층 ── */}
@@ -641,6 +732,18 @@ export default async function V3Result({
                   <Picks items={model.industry_context.requested.slice(0, 8)
                     .map((r) => `${domainName(r.domain)} · ${AXIS_KO[r.axis]}`)} />
                 </dd>
+                {/* **이 산업 문항에 답하신 내용을 따로 적는다.** 위의 두 줄은
+                    기술영역 판정을 이 산업 기준으로 읽은 것이고, 이 줄은 이
+                    산업 문항에 직접 답하신 것이다. 한 칸에 담으면 어느 쪽에서
+                    온 값인지 알 수 없다 */}
+                {model.industry_context.answered.length ? (
+                  <>
+                    <dt>이 산업 문항에서 확인된 판단</dt>
+                    <dd>
+                      <Picks items={packRows(model.industry_context.answered)} own />
+                    </dd>
+                  </>
+                ) : null}
               </dl>
               {model.industry_context.others.length ? (
                 <p className="rs-others">
@@ -681,6 +784,14 @@ export default async function V3Result({
                   <Picks items={model.role_context.requested.slice(0, 8)
                     .map((r) => `${domainName(r.domain)} · ${AXIS_KO[r.axis]}`)} />
                 </dd>
+                {model.role_context.answered.length ? (
+                  <>
+                    <dt>이 직무 문항에서 확인된 판단</dt>
+                    <dd>
+                      <Picks items={packRows(model.role_context.answered)} own />
+                    </dd>
+                  </>
+                ) : null}
               </dl>
               {model.role_context.compare_with.length ? (
                 <p className="rs-others">
@@ -741,6 +852,44 @@ export default async function V3Result({
               전까지 짐작으로 채우지 않습니다.
             </p>
           </div>
+          {/* **고르신 것을 돌려드린다.** 관심 기관 유형과 목표는 응시 중에
+              받아 두고 결과지에 한 글자도 나오지 않았다. 판정에 들어가지
+              않는다는 것도 함께 적는다 */}
+          {model.targets.orgs.length || goal.role || goal.industry || goal.org ? (
+            <div className="rs-pack">
+              <h3>고르신 자리</h3>
+              <p>
+                응시하면서 고르신 것입니다. 기술영역 판정에는 들어가지 않고,
+                산업과 직무를 읽는 순서에만 쓰입니다.
+              </p>
+              <dl>
+                {model.targets.orgs.length ? (
+                  <div>
+                    <dt>관심 기관 유형</dt>
+                    <dd>{model.targets.orgs.map(orgName).join(" · ")}</dd>
+                  </div>
+                ) : null}
+                {goal.industry ? (
+                  <div>
+                    <dt>목표 산업</dt>
+                    <dd>{industryName(goal.industry)}</dd>
+                  </div>
+                ) : null}
+                {goal.role ? (
+                  <div>
+                    <dt>목표 직무</dt>
+                    <dd>{roleName(goal.role)}</dd>
+                  </div>
+                ) : null}
+                {goal.org ? (
+                  <div>
+                    <dt>가고 싶은 조직</dt>
+                    <dd>{orgName(goal.org)}</dd>
+                  </div>
+                ) : null}
+              </dl>
+            </div>
+          ) : null}
           <p className="rs-note">
             <Link href="/me/region">희망 지역 고르기</Link>
           </p>

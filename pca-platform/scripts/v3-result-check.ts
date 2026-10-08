@@ -9,9 +9,9 @@
  */
 import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
-import { registry } from "../src/lib/me-v3/core-registry";
+import { coreFile, packs, registry } from "../src/lib/me-v3/core-registry";
 import { load, score } from "../src/lib/me-v3/scoring/engine";
-import { expand, type Fixture } from "../src/lib/me-v3/scoring/fixtures";
+import { expand, stable, type Fixture } from "../src/lib/me-v3/scoring/fixtures";
 import { buildResult } from "../src/lib/me-v3/result/build";
 import {
   actionKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO, BASIC_GROUP_KO, draftKo,
@@ -19,7 +19,7 @@ import {
   TRANS_STEP_KO, ZONE_LEAD_KO, ZONE_TITLE_KO,
 } from "../src/lib/me-v3/result/text.ko";
 import { RESULT_MODEL_VERSION } from "../src/lib/me-v3/result/version";
-import type { Snapshot } from "../src/lib/me-v3/scoring/types";
+import type { Answer, Snapshot, Submission } from "../src/lib/me-v3/scoring/types";
 
 const FIX = "sites/pca-platform/assessment/ME_V3/personas.json";
 const RESULT_DIR = "src/lib/me-v3/result";
@@ -277,6 +277,128 @@ ok("산업팩을 바꿔도 Core 판정이 그대로다", packDrift.length === 0,
 const verDrift = [...models].filter(([id, m]) =>
   JSON.stringify(m.provenance.module_versions) !== JSON.stringify(snaps.get(id)!.module_versions));
 ok("판본을 스냅샷에서 그대로 옮긴다", verDrift.length === 0, verDrift.map(([id]) => id).join(" "));
+
+/* ── 받은 응답이 전부 결과에 닿는다 ────────────────────────────────
+   **적어 둔 것과 읽는 것은 다른 일이다.** `v3:migrate` 의 `받고 쓰지 않는
+   문항 0` 은 blueprint 가 `이 묶음은 결과 절 D 로 간다` 고 적어 둔 값을
+   센다. 그 값이 맞는지는 아무 검사도 보지 않았다. 그래서 공통 판단과 학위
+   묶음과 산업·역할 문항의 응답을 **받아 두고 어느 코드도 읽지 않는** 상태로
+   한동안 돌았다.
+
+   여기서 세는 것은 선언이 아니고 실제다. 묶음 하나의 응답만 빼고 다시 돌려
+   스냅샷과 결과 모델이 글자까지 같으면, 그 묶음은 답을 받고 아무것도
+   돌려주지 않는다. 그러면 묻지 않는 것이 맞다.
+
+   묶음 이름을 적어 두지 않는 까닭도 같다: 묶음이 늘 때 이 검사를 같이
+   고쳐야 하면 어느 날 안 고치고 넘어간다. 은행에 있는 모듈을 그대로 센다 */
+type Shape = Record<string, unknown>;
+const DOMS = (loaded.domains.domains as { code: string }[]).map((d) => d.code);
+const CHK = coreFile<{ domains: Record<string, Record<string, { text: string }[]>> }>(
+  core, "checklists", loaded.dir);
+const DOMFULL = coreFile<{
+  domains: { code: string; artifacts: string[]; verify_targets: string[] }[];
+}>(core, "domains", loaded.dir);
+const IND0 = packs<{ packs: { code: string }[] }>(core, "industry", loaded.dir)
+  .packs[0].code;
+const ROLE0 = packs<{ packs: { code: string }[] }>(core, "role", loaded.dir)
+  .packs[0].code;
+
+/** 은행의 문항 하나에 그 척도에 맞는 답을 하나 만든다 */
+function answerFor(i: Shape): Answer | null {
+  const sc = String(i.response_scale);
+  if (sc === "L0~L3") {
+    /* **바탕을 한 값으로 채우지 않는다.** 전부 3 으로 채우면 일관성 짝이
+       늘 맞아서, 그 묶음을 빼도 결과가 같다. 그러면 검사가 `받고 쓰지
+       않는다` 고 거짓으로 적는다. 짝의 뒤쪽만 낮춰 둔다 */
+    return { kind: "level", index: /_?1?B$/.test(String(i.item_id)) ? 0 : 3 };
+  }
+  if (sc === "3보기") {
+    return i.measurement_axis === "exposure"
+      ? { kind: "exposure", value: 2 } : { kind: "scale5", value: 5 };
+  }
+  if (sc === "둘 중 하나") {
+    /* 강제 선택 둘이 서로 다른 영역을 가리키게 둔다. 같은 값이면 빼 보아도
+       결과가 같아 보인다 */
+    return { kind: "choice", value: String(i.item_id).endsWith("2") ? DOMS[1] : DOMS[0] };
+  }
+  if (sc === "보기 선택 + 한 줄") return { kind: "choice", value: "S1" };
+  if (sc === "고르기") {
+    const id = String(i.item_id);
+    if (id === "TG_ROLE") return { kind: "choice", value: ROLE0 };
+    if (id === "TG_INDUSTRY") return { kind: "choice", value: IND0 };
+    if (id === "TG_OC") return { kind: "choice", value: "OC1" };
+    const o = (i.options as string[] | null) ?? [];
+    return o.length ? { kind: "choice", value: o[0] } : null;
+  }
+  return null;
+}
+
+/** 열리는 것 전부에 답한 응시 하나. 묶음을 빼 보려면 꽉 찬 바탕이 있어야 한다 */
+function full(v: {
+  stage: Submission["stage"]; field: Submission["grad_field"];
+  undergrad?: Submission["undergrad_core"]; drop?: string;
+}): Submission {
+  const answers: Record<string, Answer> = {};
+  for (const i of loaded.bank.items as unknown as Shape[]) {
+    if (v.drop && i.module === v.drop) continue;
+    const a = answerFor(i);
+    if (a) answers[String(i.item_id)] = a;
+  }
+  const checklists: Record<string, string[]> = {};
+  for (const [td, byAxis] of Object.entries(CHK.domains)) {
+    for (const [ax, pool] of Object.entries(byAxis)) {
+      if (pool.length) checklists[`${td}.${ax}`] = pool.slice(0, 2).map((x) => x.text);
+    }
+  }
+  const artifacts: Record<string, string[]> = {};
+  const verifications: Record<string, string[]> = {};
+  for (const d of DOMFULL.domains) {
+    artifacts[d.code] = d.artifacts.slice(0, 2);
+    verifications[d.code] = d.verify_targets.slice(0, 2);
+  }
+  return {
+    attempt_id: `FULL-${v.stage}`, tier: "PRO", stage: v.stage,
+    grad_field: v.field, undergrad_core: v.undergrad ?? null,
+    answers, checklists, artifacts, verifications,
+    opened: { probe: DOMS, deep: DOMS.slice(0, 4) },
+    industry_interest: [IND0], role_interest: [ROLE0], org_interest: ["OC1"],
+    industry_pack: IND0, role_pack: ROLE0,
+  };
+}
+
+const VARIANTS: Parameters<typeof full>[0][] = [
+  { stage: "bachelor", field: null },
+  { stage: "master", field: "STEM" },
+  { stage: "phd", field: "STEM" },
+  { stage: "postdoc", field: "STEM" },
+  /* 학부가 기계공학이고 대학원이 타계열인 사람. 번역 맥락 넷이 여기서만 열린다 */
+  { stage: "master", field: "HUMANITIES_SOCIAL", undergrad: "ME" },
+];
+const seen = (v: Parameters<typeof full>[0], drop?: string) => {
+  const sub = full({ ...v, drop });
+  const s2 = score(sub, loaded);
+  const m2 = buildResult(s2, loaded, { packs: { industries: [], roles: [] } });
+  return stable({ s: s2, m: m2 });
+};
+const MODULES = [...new Set((loaded.bank.items as unknown as Shape[])
+  .map((i) => String(i.module)))].sort();
+const deaf: string[] = [];
+for (const mod of MODULES) {
+  const heard = VARIANTS.some((v) => seen(v) !== seen(v, mod));
+  if (!heard) deaf.push(mod);
+}
+ok("답을 받고 아무것도 돌려주지 않는 묶음", deaf.length === 0,
+   deaf.length ? deaf.join(" ") : `0 / ${MODULES.length}개`);
+
+/* 그리고 그 응답이 **Core 판정을 흔들지 않는 자리**도 따로 센다.
+   팩 문항은 결과에 닿아야 하지만 영역 축 수준을 만들면 안 된다 */
+const coreOf = (v: Parameters<typeof full>[0], drop?: string) => {
+  const s2 = score(full({ ...v, drop }), loaded);
+  return stable(s2.domains);
+};
+const packLeak = ["INDUSTRY", "ROLE"]
+  .filter((mod) => VARIANTS.some((v) => coreOf(v) !== coreOf(v, mod)));
+ok("팩 문항이 영역 축 수준을 만들지 않는다", packLeak.length === 0, packLeak.join(" "));
 
 /* 16. 사람마다 한 줄 */
 console.log("");

@@ -7,10 +7,10 @@
  */
 
 /** 결과 모델의 구조. 절이 늘거나 칸이 바뀌면 올린다 */
-export const RESULT_MODEL_VERSION = "me-v3-result-model.2";
+export const RESULT_MODEL_VERSION = "me-v3-result-model.3";
 
 /** 결과지에 나가는 한국어. 문장만 바뀌면 이것만 올린다 */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.2";
+export const RESULT_COPY_VERSION = "me-v3-result-copy.3";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -18,7 +18,27 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.2";
  * 문장 하나를 고친 날 화면 판본까지 올리면, 되짚을 때 무엇이 바뀐
  * 것인지 알 수 없다. 넷이 따로 간다: 화면 · 문장 · 모델 · 판단.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V2";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V2.1";
+
+/*
+ * `V2.1` 로 올린 까닭. **받아 두고 읽지 않던 응답이 결과지에 섰다.**
+ *
+ * 공통 판단 여섯과 학위 묶음 여섯과 산업 문항 여든과 역할 문항 쉰여섯과
+ * 타계열 맥락 넷과 강제 선택 둘과 관심 기관 유형과 목표 셋이, 응답을 받아
+ * 두고 **어느 코드도 읽지 않는** 상태였다. blueprint 에는 그 자리가 결과
+ * 절로 간다고 적혀 있었고 `v3:migrate` 는 그 적힌 값을 세고 있었다. 적어
+ * 둔 것과 읽는 것은 다른 일이다.
+ *
+ * 선 자리는 넷이다. 열두 영역 절 끝에 `영역을 가리지 않고 확인된 판단` 과
+ * 고르신 쪽, 산업·직무 절에 `이 산업 문항에서 확인된 판단`, 번역 절 머리에
+ * `대학원 경험을 어디에 걸칠지`, 지역 절에 `고르신 자리`다.
+ *
+ * **Core 판정은 한 줄도 바뀌지 않았다.** 팩 문항은 영역 축 수준을 만들지
+ * 않고(`v3:result` 가 산업을 바꿔 가며 센다), 타계열 맥락과 강제 선택은
+ * 묶음 안에 차례를 만들지 않는다.
+ *
+ * `RESULT_MODEL_VERSION` 도 함께 올렸다: 모델에 칸이 넷 늘었다.
+ */
 
 /*
  * `V2` 로 올린 까닭. **네 카드가 한 이야기로 이어졌다.**

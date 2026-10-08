@@ -73,3 +73,13 @@ export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.2";
  * 남아 있다. 그 판본으로 응시한 사람의 응답은 `v3_attempts.assessment_version`
  * 이 `ME_V3_DOMAIN_2026` 으로 적혀 있어 섞이지 않는다.
  */
+
+/*
+ * 검사 화면 판본은 올리지 않는다. **채점 판본만 바뀌었다.**
+ *
+ * `ui-lock.json` 이 채점 판본을 함께 적어 두어서 동결 대조가 걸린다. 화면
+ * 파일은 한 줄도 바뀌지 않았으므로 `ASSESSMENT_UI_VERSION` 과
+ * `ASSESSMENT_COPY_VERSION` 은 그대로 두고 지문만 다시 적는다. 두 판본을
+ * 함께 적어 두는 까닭은 **어떤 채점으로 받은 응답인지**가 그 자리에서
+ * 보여야 하기 때문이다.
+ */

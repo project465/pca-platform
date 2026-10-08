@@ -201,9 +201,49 @@ export type Snapshot = {
     translation_steps: string[];
     industry: PackContext | null;
     role: PackContext | null;
+    /**
+     * 영역에 붙지 않는 판단. **받고 쓰지 않는 자리를 0 으로 두려고 둔다.**
+     *
+     * 공통 판단 여섯과 학위 묶음 여섯은 기술영역에 붙지 않는다. 그래서
+     * 영역 판정에는 들어가지 않고, 들어갈 자리도 없었다: 응답을 받아 두고
+     * **어느 코드도 읽지 않았다.** blueprint 는 그 자리가 결과 절로 간다고
+     * 적고 있었고 `v3:migrate` 의 `받고 쓰지 않는 문항 0` 은 그 적힌 값을
+     * 셌다. 적어 둔 것과 읽는 것은 다른 일이다.
+     *
+     * 여기 담는 것은 축마다의 소유 수준이고, 결과지가 `지원서에 연결할 수
+     * 있는 경험` 과 `직무로 번역` 에서 읽는다.
+     */
+    common: CommonJudgement[];
+    /**
+     * 같은 값으로 묶인 영역 둘 가운데 고르신 쪽.
+     *
+     * **차례를 만들지 않는다.** 묶음 안에 순위를 세우는 값이 아니고, 고른
+     * 것을 그대로 돌려주는 값이다. 전에는 이 응답을 받아 두고 어느 코드도
+     * 읽지 않아서, 두 번 고르고도 결과지에 한 글자도 나오지 않았다.
+     */
+    forced: { item_id: string; choice: string }[];
+    /**
+     * 타계열 대학원의 번역 맥락 넷.
+     *
+     * **축 수준에 들어가지 않는다.** 기계공학 Core 의 판정이 다른 전공의
+     * 경험으로 서면 안 된다. 결과지가 경험을 직무 말로 옮길 때만 읽는다.
+     */
+    xfield: { item_id: string; choice: string }[];
   };
   /** 개발자가 되짚는 자리. 사람이 읽는 말이 아니다 */
   trace: string[];
+};
+
+/** 영역에 붙지 않는 판단 하나. 공통 판단과 학위 묶음에서 온다 */
+export type CommonJudgement = {
+  item_id: string;
+  /** 어느 묶음인가. 학위 묶음은 학위마다 다르다 */
+  block: string;
+  axis: Axis;
+  ownership: Ownership;
+  /** 받아 쓴 것 위인가. 확인으로 세는 선과 같다 */
+  confirmed: boolean;
+  missing: MissingKind;
 };
 
 export type PackContext = {
@@ -216,4 +256,28 @@ export type PackContext = {
   requested_evidence: { domain: string; axis: Axis }[];
   compare_with: string[];
   vocabulary: string[];
+  /**
+   * 그 팩의 문항에 실제로 답한 내용.
+   *
+   * **Core 판정에 한 글자도 들어가지 않는다.** 팩 문항은 영역 축 수준을
+   * 만들지 않고(`engine.ts` 가 선별·심화 묶음만 센다), 여기 담긴 값은
+   * 결과지의 산업·역할 절만 읽는다. 그래서 산업을 바꿔도 Core 지문이
+   * 같다.
+   *
+   * 담아 두는 까닭은 하나다. 전에는 산업 문항 여든과 역할 문항 쉰여섯의
+   * 응답을 **받아 두고 어느 코드도 읽지 않았다.** 고르고 답했는데 결과지에
+   * 한 글자도 돌아오지 않으면 그 자리는 묻지 않는 것이 맞다.
+   */
+  answers: PackAnswer[];
+};
+
+/** 팩 문항 하나의 응답. 소유 수준까지만이고 축 수준을 만들지 않는다 */
+export type PackAnswer = {
+  item_id: string;
+  domain: string | null;
+  axis: Axis | null;
+  ownership: Ownership;
+  /** 받아 쓴 것 위인가 */
+  confirmed: boolean;
+  missing: MissingKind;
 };

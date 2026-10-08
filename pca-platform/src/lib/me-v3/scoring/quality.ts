@@ -6,7 +6,7 @@
  */
 import type { ReasonCode } from "./reason-codes";
 import type { Answer, ResponseQuality, Submission } from "./types";
-import type { BankItem } from "./normalize";
+import { DEEP_BLOCK, PROBE_BLOCK, type BankItem } from "./normalize";
 
 function levelOf(a: Answer | undefined): number | null {
   if (!a) return null;
@@ -88,7 +88,11 @@ export function quality(
   }
   const seenCell = new Set<string>();
   for (const i of items) {
-    if (i.module !== "DEEP-J8" && i.module !== "PROBE-J4") continue;
+    /* **묶음 이름을 글자로 적어 두지 않는다.** 전에 여기 적혀 있던
+       `DEEP-J8` 과 `PROBE-J4` 는 어느 판본에도 없는 이름이어서, 이 for 문의
+       몸통이 **한 번도 돌지 않았다.** 그래서 과대 보고 어긋남이 영원히 0
+       이었다. 지금 묶음 이름은 `normalize.ts` 가 들고 있다 */
+    if (i.module !== DEEP_BLOCK && i.module !== PROBE_BLOCK) continue;
     if (!i.technical_domain || !i.evidence_axis) continue;
     const key = `${i.technical_domain}.${i.evidence_axis}`;
     if (seenCell.has(key)) continue;

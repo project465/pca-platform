@@ -171,12 +171,67 @@ export type PackView = {
   vocabulary: string[];
   /** 고르지 않은 나머지. **부적합이라고 적지 않는다** */
   others: string[];
+  /**
+   * 그 산업·역할 문항에 답해 확인된 판단.
+   *
+   * 위의 `established` 는 **Core 판정을 그 산업 기준으로 읽은 것**이고,
+   * 이 칸은 **그 산업 문항에 직접 답한 것**이다. 둘을 한 칸에 담으면 어느
+   * 쪽에서 온 값인지 알 수 없다.
+   *
+   * **Core 판정에 들어가지 않는다.** 산업을 바꿔도 영역 축 수준은 그대로다.
+   */
+  answered: { domain: string | null; axis: Axis | null; owned: boolean }[];
 };
 
 export type TranslationView = {
   steps: { item_id: string; choice: string | null }[];
   /** 번역에서 드러난 영역 */
   domains: string[];
+  /**
+   * 타계열 대학원의 번역 맥락 넷.
+   *
+   * **축 수준에 한 글자도 들어가지 않는다.** 학부가 기계공학이고 대학원이
+   * 타계열인 사람의 대학원 경험은 기계공학 판단으로 세지 않는다. 이 칸이
+   * 하는 일은 그 경험을 직무 말로 옮길 때 읽히는 것뿐이다.
+   */
+  xfield: { item_id: string; choice: string }[];
+};
+
+/**
+ * 영역에 걸치지 않는 판단.
+ *
+ * 공통 판단과 학위 묶음은 기술영역이 없어서 영역 판정에 들어가지 않는다.
+ * 그렇다고 버리면 **받고 쓰지 않는 응답**이 되고, 박사와 포닥이 가장 많이
+ * 답하는 자리가 거기다. 여기 담아 결과지가 읽는다.
+ */
+export type CommonView = {
+  /** 축마다 어디까지 확인됐는가. 묶음 안에서 차례를 만들지 않는다 */
+  axes: {
+    axis: Axis;
+    /** 직접 정한 것으로 확인된 자리 */
+    owned: boolean;
+    /** 해 본 것 이상으로 확인된 자리 */
+    confirmed: boolean;
+    /** 되짚는 자리. 화면에 내보내지 않는다 */
+    from: string[];
+  }[];
+  /** 어느 묶음에서 왔는가. 되짚는 자리이고 화면에 내보내지 않는다 */
+  blocks: string[];
+};
+
+/**
+ * 응시자가 적어 둔 목표와 선호.
+ *
+ * **점수에 들어가지 않는다.** 관심 산업과 관심 직무는 routing 이 읽고,
+ * 여기 담는 것은 결과지의 지역·기관 절이 읽을 값이다. 고르지 않으면 빈
+ * 배열이고 그 절은 그 사실을 적는다.
+ */
+export type TargetView = {
+  industries: string[];
+  roles: string[];
+  orgs: string[];
+  /** 목표로 적어 둔 하나씩. PRO 에서만 묻는다 */
+  goal: { role: string | null; industry: string | null; org: string | null };
 };
 
 export type ResultModel = {
@@ -212,6 +267,14 @@ export type ResultModel = {
     not_explored: string[];
     /** 같은 상태로 묶여 차례를 만들 수 없는 영역 */
     tied: string[][];
+    /**
+     * 묶인 영역 둘 가운데 고르신 쪽.
+     *
+     * **차례가 아니다.** 묶음 안에 순위를 세우지 않고, 고르신 것을 그대로
+     * 돌려준다. 열두 영역에 고르게 답하신 분께 `차이가 없습니다` 만 적고
+     * 끝내면, 두 번 고르신 것이 어디로도 가지 않는다.
+     */
+    tied_pick: string[];
     counts: {
       domains: number;
       confirmed_axes: number;
@@ -254,5 +317,9 @@ export type ResultModel = {
   industry_context: PackView | null;
   role_context: PackView | null;
   translation: TranslationView | null;
+  /** 영역에 걸치지 않는 판단. 공통 판단과 학위 묶음에서 온다 */
+  common: CommonView;
+  /** 적어 둔 목표와 선호. 판정에 들어가지 않는다 */
+  targets: TargetView;
   response_quality: { flag: string; reasons: ReasonCode[] };
 };

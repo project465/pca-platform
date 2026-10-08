@@ -173,7 +173,13 @@ function main(): void {
     const sec = slotOf.get(i.item_id)?.result_sections ?? blockSec.get(i.module);
     if (!sec || sec.length === 0) unread.push(i.item_id);
   }
-  ok("받고 쓰지 않는 문항", unread.length === 0,
+  /* **이 줄이 세는 것은 선언이다.** blueprint 가 `이 묶음은 결과 절 D 로
+     간다` 고 적어 두었는지만 본다. 적어 둔 것과 읽는 것은 다른 일이어서,
+     공통 판단과 학위 묶음과 산업·역할 문항이 **적혀 있는 채로 아무 코드도
+     읽지 않는** 상태로 한동안 돌았다. 실제로 읽는지는 `v3:result` 의
+     `답을 받고 아무것도 돌려주지 않는 묶음` 이 센다: 묶음 하나를 빼고 다시
+     돌려 결과가 글자까지 같은지 본다. 둘 다 있어야 한다 */
+  ok("받고 쓰지 않는 문항 (선언)", unread.length === 0,
      unread.length ? `${unread.length}개: ${unread.slice(0, 6).join(" ")}`
        : `0 / ${bank.items.length}`);
 

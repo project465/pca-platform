@@ -7,7 +7,7 @@
  * 만들어 돌려주기만 한다.**
  */
 import { CONTENT_DIR, packs as readPacks } from "../core-registry";
-import type { Axis, DomainResult, PackContext } from "./types";
+import type { Axis, DomainResult, PackAnswer, PackContext } from "./types";
 import { isConfirmed } from "./axes";
 
 type IndustryPack = {
@@ -25,7 +25,7 @@ type RolePack = {
 
 export function industryContext(
   code: string | null, domains: DomainResult[], dir = CONTENT_DIR,
-  core = "ME_CORE_V3",
+  core = "ME_CORE_V3", answers: PackAnswer[] = [],
 ): PackContext | null {
   if (!code) return null;
   const p = readPacks<{ packs: IndustryPack[] }>(core, "industry", dir).packs
@@ -49,12 +49,13 @@ export function industryContext(
     requested_evidence: requested,
     compare_with: [],
     vocabulary: p.vocabulary ?? [],
+    answers,
   };
 }
 
 export function roleContext(
   code: string | null, domains: DomainResult[], dir = CONTENT_DIR,
-  core = "ME_CORE_V3",
+  core = "ME_CORE_V3", answers: PackAnswer[] = [],
 ): PackContext | null {
   if (!code) return null;
   const p = readPacks<{ packs: RolePack[] }>(core, "role", dir).packs
@@ -75,5 +76,6 @@ export function roleContext(
     requested_evidence: requested,
     compare_with: p.compare_with,
     vocabulary: p.application_material ?? [],
+    answers,
   };
 }

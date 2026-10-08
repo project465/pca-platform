@@ -15,7 +15,8 @@ import type { Axis, AxisState, Stage } from "../scoring/types";
 import { andList, josaOf, orList, withJosa } from "./josa";
 import { REASON_KO, ZONE_KO } from "../scoring/text.ko";
 import type {
-  Action, ActionCode, FirstMove, Gap, GapWhy, HeadlineCode, PackView, ResultModel,
+  Action, ActionCode, CommonView, FirstMove, Gap, GapWhy, HeadlineCode, PackView,
+  ResultModel,
 } from "./model";
 
 export const AXIS_KO: Record<Axis, string> = {
@@ -566,3 +567,34 @@ export const TRANS_ORDER = [
   "TR_T1", "TR_T2", "TR_T3", "TR_T4", "TR_T5",
   "TR_T6", "TR_T7", "TR_T8", "TR_T9", "TR_T10",
 ] as const;
+
+/**
+ * 타계열 대학원 맥락 넷의 이름표.
+ *
+ * **문항 번호를 화면에 적지 않는다.** 여기 없는 자리는 화면이 아예 세우지
+ * 않는다(`TRANS_STEP_KO` 와 같은 규칙이다).
+ */
+export const XFIELD_KO: Record<string, string> = {
+  XF_FIELD: "대학원에서 다룬 분야",
+  XF_BRIDGE: "기계공학 문제에도 쓸 수 있는 방법",
+  XF_ME_RECENT: "기계공학 쪽 작업을 마지막으로 한 때",
+  XF_ME_DEPTH: "학부에서 가장 깊게 간 작업",
+};
+
+export const XFIELD_ORDER = [
+  "XF_ME_DEPTH", "XF_ME_RECENT", "XF_FIELD", "XF_BRIDGE",
+] as const;
+
+/**
+ * 영역에 걸치지 않는 판단 한 줄.
+ *
+ * 공통 판단과 학위 묶음은 기술영역이 없다. 그래서 `구조해석에서 하중을
+ * 정했다` 처럼 적을 수 없고, 그 축을 어디에서든 해 봤다는 데까지만 적는다.
+ * **영역 판정과 섞어 읽히지 않게 그 사실을 함께 적는다.**
+ */
+export function commonKo(v: CommonView): { owned: string[]; confirmed: string[] } {
+  const owned = v.axes.filter((a) => a.owned).map((a) => AXIS_KO[a.axis]);
+  const confirmed = v.axes
+    .filter((a) => a.confirmed && !a.owned).map((a) => AXIS_KO[a.axis]);
+  return { owned, confirmed };
+}

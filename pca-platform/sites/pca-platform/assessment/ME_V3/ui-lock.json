@@ -6,7 +6,7 @@
   "assessment_copy_version": "me-v3-2-assessment-copy.2",
   "assessment_version": "ME_V3_2",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.2",
-  "scoring_version": "me-v3-scoring.3"
+  "scoring_version": "me-v3-scoring.4"
  },
  "files": {
   "src/app/v3/layout.tsx": "5169464a4bd3741726beea4d17ee6ddb9d070c090513a3ca029f526883e05864",

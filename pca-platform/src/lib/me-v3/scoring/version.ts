@@ -29,8 +29,21 @@ import { CONTENT_DIR, packFile, type PackKind } from "../core-registry";
  * ③ 선별 축의 **둘째 문항이 STANDARD 부터**다. 선별 등급에는 소유 판정이
  * 없어서 둘째 자리가 뜻을 가지지 않는다. 그 등급에서 묻지 않으므로 그
  * 문항은 `NOT_ROUTED` 다.
+ *
+ * `.4` 로 올린 까닭 둘.
+ *
+ * ① **과대 보고 어긋남이 한 번도 돌지 않았다.** `quality.ts` 가 묶음 이름을
+ * `DEEP-J8` 과 `PROBE-J4` 로 적어 두었는데 어느 판본에도 없는 이름이다.
+ * for 문의 몸통이 영원히 건너뛰어져서 `CHECKLIST_MISMATCH_HIGH` 가 0 이었다.
+ * 지금 묶음 이름으로 고쳤으므로 **같은 응답이 다른 품질 표시를 받을 수
+ * 있다**: 판단 규칙이다.
+ *
+ * ② 스냅샷이 들고 다니는 칸이 넷 늘었다(`context.common` · `.xfield` ·
+ * `.forced` · 팩의 `answers`). **축 수준과 묶음 판정은 한 줄도 바뀌지
+ * 않았다.** 그런데도 올리는 까닭은 스냅샷의 모양이 달라져서, 옛 판본으로
+ * 적힌 줄과 새 줄을 같은 것으로 읽으면 안 되기 때문이다.
  */
-export const SCORING_VERSION = "me-v3-scoring.3";
+export const SCORING_VERSION = "me-v3-scoring.4";
 
 /**
  * 2차 문항 은행. 1차는 `me-v3-items.json` 에 동결해 둔다.

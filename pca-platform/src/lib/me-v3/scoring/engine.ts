@@ -14,7 +14,7 @@
  */
 import { coreFile } from "../core-registry";
 import { axisResult, isConfirmed } from "./axes";
-import { ownershipIndex } from "./ownership";
+import { ownershipIndex, ownershipOf, type Ownership } from "./ownership";
 import {
   loadBank, band, routedFor, read, DEEP_BLOCK, PROBE_BLOCK,
   type Bank, type BankItem,
@@ -22,7 +22,7 @@ import {
 import { industryContext, roleContext } from "./packs";
 import { quality } from "./quality";
 import type {
-  Axis, DomainResult, Snapshot, Submission, TierLimits, Zone,
+  Axis, DomainResult, PackAnswer, Snapshot, Submission, TierLimits, Zone,
 } from "./types";
 import { decide, nextSteps, quadrant, Z1_CONFIRMED_MIN } from "./zones";
 import {
@@ -68,6 +68,9 @@ function limitsFor(tier: Submission["tier"]): TierLimits {
     deep_axes: tier !== "BASIC",
   };
 }
+
+/** 영역에 붙지 않는 **판단**을 재는 축. 번역과 목표와 맥락은 여기 없다 */
+const COMMON_MEASURE = new Set(["common_judgement", "experience_translation"]);
 
 export function score(sub: Submission, loaded: Loaded): Snapshot {
   const { bank, domains } = loaded;
@@ -202,6 +205,72 @@ export function score(sub: Submission, loaded: Loaded): Snapshot {
     const a = sub.answers[id];
     if (a && a.kind === "choice") target[id] = a.value;
   }
+  /* **영역에 붙지 않는 판단을 모은다.**
+     공통 판단 여섯과 학위 묶음 여섯은 기술영역이 없어서 영역 판정에
+     들어가지 않는다. 들어갈 자리도 없었다: 응답을 받아 두고 어느 코드도
+     읽지 않았다. 여기서 축마다의 소유 수준으로 떠내고 결과지가 읽는다.
+     **영역 판정에는 한 글자도 들어가지 않는다** */
+  const common = items
+    .filter((i) => !i.technical_domain && i.evidence_axis
+      /* **묶음 이름으로 고르지 않고 재는 축으로 고른다.** 영역 없이 축을
+         들고 있는 문항에는 번역 열 단계도 있는데, 그쪽의 척도는 보기 넷이
+         없는 고르기라서 소유가 늘 `없다` 로 떨어진다. 그대로 담으면 묻지도 않은
+         산출물 축이 `확인되지 않음` 으로 결과지에 선다. 번역은 번역 절이
+         따로 읽는다 */
+      && COMMON_MEASURE.has(i.measurement_axis))
+    .map((i) => {
+      const r = read(sub, i, routedFor(sub, i));
+      const own: Ownership = r.answer && r.answer.kind === "level"
+        ? ownershipOf(r.answer.index) : "NONE";
+      return {
+        item_id: i.item_id, block: i.module, axis: i.evidence_axis as Axis,
+        ownership: own, confirmed: own === "DID" || own === "DECIDED_USED",
+        missing: r.missing,
+      };
+    })
+    .filter((x) => x.missing !== "NOT_ROUTED");
+
+  /* **팩 문항의 응답을 버리지 않는다.**
+     산업 문항 여든과 역할 문항 쉰여섯은 영역 축 수준을 만들지 않는다(위에서
+     선별·심화 묶음만 센다). 그런데 그 응답을 담는 자리도 없어서 고르고
+     답한 것이 결과지에 한 글자도 돌아오지 않았다. 여기 떠서 산업·역할 절이
+     읽고, **Core 판정에는 들어가지 않는다** */
+  const packAnswers = (mod: "INDUSTRY" | "ROLE"): PackAnswer[] => items
+    .filter((i) => i.module === mod)
+    .map((i) => {
+      const r = read(sub, i, routedFor(sub, i));
+      const own: Ownership = r.answer && r.answer.kind === "level"
+        ? ownershipOf(r.answer.index) : "NONE";
+      return {
+        item_id: i.item_id,
+        domain: i.technical_domain ?? null,
+        axis: (i.evidence_axis as Axis) ?? null,
+        ownership: own, confirmed: own === "DID" || own === "DECIDED_USED",
+        missing: r.missing,
+      };
+    })
+    .filter((x) => x.missing !== "NOT_ROUTED");
+
+  /* 강제 선택 둘. 격자에서 묶인 영역 가운데 고르신 쪽이다.
+     **묶음 안에 차례를 만들지 않는다**: 고른 것을 돌려주는 자리고,
+     영역 축 수준과 묶음 판정에는 들어가지 않는다 */
+  const forced = items.filter((i) => i.module === "CORE-FORCE")
+    .map((i) => {
+      const a = routedFor(sub, i) ? sub.answers[i.item_id] : undefined;
+      return a && a.kind === "choice"
+        ? { item_id: i.item_id, choice: a.value } : null;
+    })
+    .filter((x): x is { item_id: string; choice: string } => !!x);
+
+  /* 타계열 대학원의 번역 맥락 넷. **축 수준에 들어가지 않는다** */
+  const xfield = items.filter((i) => i.module === "GRAD-XFIELD")
+    .map((i) => {
+      const a = routedFor(sub, i) ? sub.answers[i.item_id] : undefined;
+      return a && a.kind === "choice"
+        ? { item_id: i.item_id, choice: a.value } : null;
+    })
+    .filter((x): x is { item_id: string; choice: string } => !!x);
+
   const translation = items.filter((i) => i.module === "TRANS-10")
     .filter((i) => {
       const a = sub.answers[i.item_id];
@@ -236,8 +305,11 @@ export function score(sub: Submission, loaded: Loaded): Snapshot {
       target,
       translation_steps: translation,
       /* 산업과 역할은 Core 를 다시 계산하지 않는다. 읽는 순서만 만든다 */
-      industry: industryContext(sub.industry_pack ?? null, out, loaded.dir, loaded.core),
-      role: roleContext(sub.role_pack ?? null, out, loaded.dir, loaded.core),
+      industry: industryContext(sub.industry_pack ?? null, out, loaded.dir,
+        loaded.core, packAnswers("INDUSTRY")),
+      role: roleContext(sub.role_pack ?? null, out, loaded.dir,
+        loaded.core, packAnswers("ROLE")),
+      common, xfield, forced,
     },
     trace,
   };

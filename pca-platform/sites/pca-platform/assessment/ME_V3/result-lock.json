@@ -2,11 +2,11 @@
  "schema_version": "me-v3-result-lock.1",
  "note": "결과지 화면 1차 동결. 문장만 고치면 `RESULT_COPY_VERSION` 만 올리고, 칸이나 절이 바뀌면 `RESULT_MODEL_VERSION`, 화면 구조가 바뀌면 `RESULT_UI_VERSION` 을 올린다. 채점 판본은 이 가운데 무엇으로도 올리지 않는다",
  "versions": {
-  "result_ui_version": "ME_V3_RESULT_UI_V2",
-  "result_copy_version": "me-v3-result-copy.2",
-  "result_model_version": "me-v3-result-model.2",
+  "result_ui_version": "ME_V3_RESULT_UI_V2.1",
+  "result_copy_version": "me-v3-result-copy.3",
+  "result_model_version": "me-v3-result-model.3",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.2",
-  "scoring_version": "me-v3-scoring.3"
+  "scoring_version": "me-v3-scoring.4"
  },
  "guards": {
   "내부 코드·문항 번호가 화면과 종이에 0건": "v3:result · v3:result:shots · v3:result:pdf",
@@ -21,16 +21,16 @@
  },
  "files": {
   "src/app/v3/result.css": "c7efb65870a1693bf0dcafd56a10793ef31316672bd769474237f6658ff620b7",
-  "src/app/v3/[attemptId]/result/page.tsx": "8a29bf7426acd9680beadbbf78c53dc27ab987db8f8292e1704a7e132e30a88d",
+  "src/app/v3/[attemptId]/result/page.tsx": "ddae4d3733af394bdcae3c110f83d3f2808b9a4b5f653bc4d9bd2579abbf65c0",
   "src/app/v3/[attemptId]/result/fold.tsx": "2cf4f4a676d584b5b8fe6ea9c3b1787f84c6b9b8498b74d7d240b53c14492d0d",
   "src/app/v3/[attemptId]/result/disclose.tsx": "a82c70b1d0897647877cfff4a672e8ebffd8716f76e6cfcc3d25e066f074f455",
   "src/app/v3/[attemptId]/result/save.tsx": "2830e503419eba94015798787ab2f7cd4abca39c8126fe1cf3dca087f6c6e7c1",
   "src/app/v3/[attemptId]/result/track.tsx": "6136c271ee7df7323f029912182c7496a8633fdf7479b6080697a6f4a217787c",
-  "src/lib/me-v3/result/model.ts": "60d5e743a1114fff540130fe5c70854862b0eebc659197fbbd155b2607037e1b",
-  "src/lib/me-v3/result/build.ts": "5ab656e811c6d4c82b0f239622820c3a5520d76244c7df6f9db3c1cecf547038",
-  "src/lib/me-v3/result/text.ko.ts": "2f08dded12609ad2f938a4084ccfabbaaf5013f7df538f6e8be656c4c072f770",
+  "src/lib/me-v3/result/model.ts": "c801b92316354568c769cbfbd33f1a2816b77fe57b646ace46d5a2353081f5cc",
+  "src/lib/me-v3/result/build.ts": "efd9ed1d5f43a7cff289b6d5a6330ab308894bf4fd03862f3ef167d0ed04edbe",
+  "src/lib/me-v3/result/text.ko.ts": "0d7cabb84daf1d28de2cca8cc9cb16d507983710463e9a5c9dc7a5e51aaba1a6",
   "src/lib/me-v3/result/josa.ts": "152cd30c2af136172618c14fa6fb4175b97cf16350db631e3e2e6c72fd7dd4af",
-  "src/lib/me-v3/result/version.ts": "bb447a6cbdc0cbfd4a0fa761e05caf11e57d71c3d46d93fd08bfc69ad0322c10",
+  "src/lib/me-v3/result/version.ts": "dc76ec35f5180115dfaa1b35f89e3ce56f1e757953a09abc28c652ac92bf3e11",
   "src/lib/me-v3/runtime/domain-facts.ts": "f5aefadb0bd9e6ca0fae76b1076c2a7fdab7d34caaebdc618f39a2e92fbfd31f"
  }
 }

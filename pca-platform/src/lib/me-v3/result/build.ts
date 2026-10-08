@@ -19,12 +19,34 @@ import type {
   Axis, AxisResult, DomainResult, PackContext, Snapshot,
 } from "../scoring/types";
 import type {
-  Action, ActionCode, BasicGroups, EvidenceGroup, FirstMove, Gap, HeadlineCode,
-  PackView, ResultDomain, ResultModel, TranslationView,
+  Action, ActionCode, BasicGroups, CommonView, EvidenceGroup, FirstMove, Gap,
+  HeadlineCode, PackView, ResultDomain, ResultModel, TargetView, TranslationView,
 } from "./model";
 import { RESULT_MODEL_VERSION } from "./version";
 
 const AX: Axis[] = ["J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8"];
+
+/**
+ * 영역에 걸치지 않는 판단을 축으로 모은다.
+ *
+ * 한 축에 문항이 둘 이상인 자리가 있어서(공통 판단과 학위 묶음이 같은 축을
+ * 가리킨다) **높은 쪽을 쓴다.** 둘을 더하면 많이 물은 학위가 저절로 높아지고,
+ * 그러면 포닥이 박사보다 높게 나온다.
+ */
+function commonView(rows: Snapshot["context"]["common"]): CommonView {
+  const axes: CommonView["axes"] = [];
+  for (const ax of AX) {
+    const mine = rows.filter((r) => r.axis === ax);
+    if (!mine.length) continue;
+    axes.push({
+      axis: ax,
+      owned: mine.some((r) => r.ownership === "DECIDED_USED"),
+      confirmed: mine.some((r) => r.confirmed),
+      from: mine.map((r) => r.item_id),
+    });
+  }
+  return { axes, blocks: [...new Set(rows.map((r) => r.block))] };
+}
 
 /**
  * 고른 항목에서 접두사를 뗀다.
@@ -310,6 +332,10 @@ function packView(
     compare_with: p.compare_with,
     vocabulary: p.vocabulary,
     others: all.filter((c) => c !== p.code),
+    /* 팩 문항에서 확인된 판단. **Core 축 수준과 섞지 않는다** */
+    answered: p.answers.filter((a) => a.confirmed).map((a) => ({
+      domain: a.domain, axis: a.axis, owned: a.ownership === "DECIDED_USED",
+    })),
   };
 }
 
@@ -409,6 +435,10 @@ export function buildResult(
       low_interest: s.zones.Z3_EVIDENCE_LOW_INTEREST,
       not_explored: s.zones.NOT_EXPLORED,
       tied: s.tied,
+      /* 고르신 쪽. **없는 영역 코드를 적지 않는다**: 강제 선택의 보기는
+         응시 중에 정해지므로 지금 판정에 있는 영역만 남긴다 */
+      tied_pick: [...new Set(s.context.forced.map((f) => f.choice))]
+        .filter((c) => s.domains.some((d) => d.code === c)),
       counts: {
         domains: s.domains.length,
         confirmed_axes: confirmedAxes,
@@ -437,15 +467,30 @@ export function buildResult(
     role_context: packView(s.context.role, s, packs.roles),
     /* 번역 열 단계. 고른 보기는 그 사람이 고른 글자고, 단계가 섰다는 것은
        스냅샷이 말한다. 둘을 여기서 맞춰 붙인다 */
-    translation: s.context.translation_steps.length
+    /* 타계열 맥락만 있고 열 단계가 없는 응시도 있다(BASIC 에서는 번역을
+       묻지 않는다). 그때도 이 절을 세워야 적어 주신 것이 어디로 갔는지
+       보인다 */
+    translation: (s.context.translation_steps.length || s.context.xfield.length)
       ? ({
           steps: s.context.translation_steps.map((id) => ({
             item_id: id,
             choice: input.translation?.find((t) => t.item_id === id)?.choice ?? null,
           })),
           domains: s.focus,
+          xfield: s.context.xfield,
         } satisfies TranslationView)
       : null,
+    common: commonView(s.context.common),
+    targets: {
+      industries: s.context.industry_interest,
+      roles: s.context.role_interest,
+      orgs: s.context.org_interest,
+      goal: {
+        role: s.context.target.TG_ROLE ?? null,
+        industry: s.context.target.TG_INDUSTRY ?? null,
+        org: s.context.target.TG_OC ?? null,
+      },
+    } satisfies TargetView,
     response_quality: {
       flag: s.response_quality.flag,
       reasons: s.response_quality.reasons,
