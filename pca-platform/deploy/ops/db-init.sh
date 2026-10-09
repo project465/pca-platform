@@ -34,19 +34,17 @@ pour() {
   psql "$DATABASE_URL" -v ON_ERROR_STOP=1 --single-transaction "$@"
 }
 
-pour "표"            -f db/schema.sql
-pour "검사·스킬트리"  -f db/schema_metri.sql -f db/seed/metri/skill_tree.sql
-pour "플랫폼"        -f db/schema_platform.sql
-pour "PHASE2"        -f db/schema_phase2.sql
-pour "PHASE2.1"      -f db/schema_phase2_1.sql
-pour "PHASE2.2"      -f db/schema_phase2_2.sql
-pour "PHASE2.3"      -f db/schema_phase2_3.sql
-pour "PHASE2.4"      -f db/schema_phase2_4.sql
-# **ME_V3 를 빼먹으면 응시 화면이 통째로 500 이다.** V3 는 제 표를 따로
-# 쓰고(`v3_attempts` · `v3_responses` · `v3_snapshots`), 그 표가 없으면
-# `/v3/start` 가 첫 줄에서 멈춘다. 화면은 멀쩡해 보이고 검사만 안 된다
-pour "ME_V3"         -f db/schema_v3_runtime.sql
-pour "ME_V3 파일럿"   -f db/schema_v3_pilot.sql
+# **올릴 파일 목록을 이 파일에 적지 않는다.** 전에는 적어 두었고, 저장소
+# 쪽 목록이 늘었을 때 이쪽이 안 늘었다. 그 차이로 `career_profiles` 가
+# 운영에 선 적이 없다. 목록은 `deploy/db-chain.json` 하나다
+CHAIN=deploy/db-chain.json
+[ -f "$CHAIN" ] || { echo "목록이 없습니다: $CHAIN" >&2; exit 1; }
+
+while read -r f; do
+  [ -n "$f" ] || continue
+  pour "$f" -f "$f"
+done < <(node -e 'const c = require("./deploy/db-chain.json");
+  for (const f of [...c.base, ...c.upgrade]) console.log(f)')
 
 # 대학판 문항. 안에서 한 트랜잭션으로 올린다
 echo; echo "── 검사 문항"

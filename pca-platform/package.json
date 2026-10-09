@@ -131,6 +131,7 @@
     "db:v3:platform": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 --single-transaction -f db/schema_v3_platform.sql",
     "db:v3:pilot": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 --single-transaction -f db/schema_v3_pilot.sql",
     "db:v3:regions": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 --single-transaction -f db/seed/v3_regions.sql",
+    "db:chain": "tsx scripts/db-chain-check.ts",
     "db:migration": "tsx scripts/db-migration-check.ts",
     "v3:smoke": "node scripts/v3-smoke.mjs",
     "v3:recompute": "tsx scripts/v3-recompute-check.ts"

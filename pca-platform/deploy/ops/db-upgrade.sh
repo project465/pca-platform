@@ -5,6 +5,12 @@
 #
 # 여기 적힌 파일은 전부 `IF NOT EXISTS` 와 `ON CONFLICT` 로 짜여 있어
 # 여러 번 돌려도 같은 자리에 선다. 표를 다시 만들지 않는다.
+#
+# **올릴 파일 목록을 이 파일에 적지 않는다.** 전에는 적어 두었고, 저장소
+# 쪽 목록(`scripts/db-upgrade.sh`)이 늘었을 때 이쪽이 안 늘었다. ME_V3 네
+# 줄 가운데 둘만 여기 있어서 `career_profiles` 가 운영에 선 적이 없고
+# `/me` 가 `relation "career_profiles" does not exist` 로 죽었다. 목록은
+# `deploy/db-chain.json` 하나이고 `npm run db:chain` 이 그것을 지킨다.
 set -euo pipefail
 
 : "${DATABASE_URL:?DATABASE_URL 이 없습니다. Railway 서비스 변수를 확인하십시오}"
@@ -23,20 +29,16 @@ if [ "${have:-0}" -eq 0 ]; then
   exit 1
 fi
 
-pour() {
-  local label=$1; shift
-  echo; echo "── ${label}"
-  psql "$DATABASE_URL" -v ON_ERROR_STOP=1 --single-transaction "$@"
-}
+CHAIN=deploy/db-chain.json
+[ -f "$CHAIN" ] || { echo "목록이 없습니다: $CHAIN" >&2; exit 1; }
 
-pour "PHASE2"   -f db/schema_phase2.sql
-pour "PHASE2.1" -f db/schema_phase2_1.sql
-pour "PHASE2.2" -f db/schema_phase2_2.sql
-pour "PHASE2.3" -f db/schema_phase2_3.sql
-pour "PHASE2.4" -f db/schema_phase2_4.sql
-# ME_V3. 여기 적지 않아 **배포된 적이 없는 표**가 넉 달 있었다
-pour "ME_V3"    -f db/schema_v3_runtime.sql
-pour "ME_V3 파일럿" -f db/schema_v3_pilot.sql
+# **한 파일이 통째로 들어가거나 통째로 안 들어간다**(`--single-transaction`).
+# 차례가 곧 조건이라 목록 순서를 그대로 따른다
+while read -r f; do
+  [ -n "$f" ] || continue
+  echo; echo "── ${f}"
+  psql "$DATABASE_URL" -v ON_ERROR_STOP=1 --single-transaction -f "$f"
+done < <(node -e 'for (const f of require("./deploy/db-chain.json").upgrade) console.log(f)')
 
 echo; echo "── 검사 문항"
 node ops/seed-instrument.cjs

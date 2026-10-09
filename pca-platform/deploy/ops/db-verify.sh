@@ -56,12 +56,57 @@ plat=$(q "SELECT count(*) FROM information_schema.tables
             AND table_name IN ('career_profiles','v3_experiences','v3_actions',
                                'v3_job_postings','v3_track_interest')")
 echo "내 CareerMatri  ${plat} / 5"
+# **없는 스크립트를 안내하지 않는다.** 전에는 여기가
+# `npm run db:v3:arch && npm run db:v3:platform` 을 적었는데, 그 둘은
+# 저장소의 `package.json` 에만 있고 **운영 이미지의 것에는 없다**
+# (`deploy/ops/package.json` 에 적힌 것은 여덟뿐이다). 컨테이너에서
+# 그대로 치면 `npm error Missing script` 가 난다. 올리는 길은 한 줄이다
 if [ "${plat:-0}" -lt 5 ]; then
-  echo "  없는 표가 있습니다. 올리는 길: npm run db:v3:arch && npm run db:v3:platform" >&2
+  echo "실패 내 CareerMatri 표가 모자랍니다. npm run db:upgrade 로 올립니다." >&2
+  bad=$((bad + 1))
 fi
 if [ "${v3:-0}" -lt 5 ]; then
   echo "실패 ME_V3 표가 모자랍니다. npm run db:upgrade 로 올립니다." >&2
   bad=$((bad + 1))
+fi
+
+# **`career_profiles` 는 세는 것으로 끝내지 않는다.** `/me` 가 그 표의
+# 어느 칸을 읽는지까지 맞아야 열린다. 표가 선 날 칸이 빠져 있으면
+# `5 / 5` 가 찍히고 화면은 그대로 500 이다.
+#
+# 세는 칸은 `src/lib/me-v3/platform.ts` 의 질의가 실제로 부르는 것들이다:
+# `currentState()` 가 넷(axis_levels · zones · gaps · recomputed_at),
+# `profileOf()` 가 여섯, `syncProfile()` 과 `saveRegion()` 과
+# `saveTargets()` 의 INSERT 가 나머지다.
+if [ "${plat:-0}" -ge 5 ]; then
+  for C in user_id core_code market_code base_attempt_id axis_levels zones gaps \
+           recomputed_at target_industry target_role target_org target_org_context \
+           home_region move_range; do
+    n=$(q "SELECT count(*) FROM information_schema.columns
+            WHERE table_schema='public' AND table_name='career_profiles'
+              AND column_name='${C}'")
+    if [ "${n:-0}" -lt 1 ]; then
+      echo "실패 career_profiles.${C} 가 없습니다. npm run db:upgrade 로 올립니다." >&2
+      bad=$((bad + 1))
+    fi
+  done
+  # **아무 제약이나 있는 것으로는 모자란다.** 쓰는 자리 셋이 전부
+  # `ON CONFLICT (user_id, core_code)` 이고, 그 짝에 걸린 유일 제약이
+  # 없으면 PostgreSQL 이 42P10 으로 거절한다. 기본키만 있어도 `count>0`
+  # 은 통과하므로 **그 두 칸을 짝으로** 센다
+  uq=$(q "SELECT count(*) FROM pg_constraint c
+           WHERE c.conrelid='career_profiles'::regclass
+             AND c.contype IN ('p','u')
+             AND (SELECT array_agg(a.attname::text ORDER BY a.attname)
+                    FROM unnest(c.conkey) k
+                    JOIN pg_attribute a
+                      ON a.attrelid = c.conrelid AND a.attnum = k)
+                 = ARRAY['core_code','user_id']")
+  if [ "${uq:-0}" -lt 1 ]; then
+    echo "실패 career_profiles 에 (user_id, core_code) 유일 제약이 없습니다." >&2
+    echo "     경험 반영과 목표 저장이 ON CONFLICT 에서 멈춥니다." >&2
+    bad=$((bad + 1))
+  fi
 fi
 
 # **외래키가 살아 있는가.** 표만 돌아오고 외래키가 빠지면 지운 사람의

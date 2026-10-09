@@ -36,6 +36,9 @@ const BASE = URL.slice(0, URL.lastIndexOf("/"));
 /** 옛 운영의 처지를 흉내낼 판본. 기본값은 ME_V3_2 바로 앞이다 */
 const OLD_REF = process.argv[2] ?? process.env.OLD_REF ?? "8d2cd87";
 
+/** DB 를 세우고 올리는 **유일한 목록**. 네 스크립트가 같은 것을 읽는다 */
+const CHAIN = "deploy/db-chain.json";
+
 const TMP = mkdtempSync(join(tmpdir(), "cm-mig-"));
 const sh = (cmd: string, args: string[], env?: Record<string, string>): string =>
   execFileSync(cmd, args, {
@@ -58,12 +61,21 @@ function dropDb(name: string): void {
  * 그 판본의 `db:init` 이 올리는 SQL 파일을 차례대로 뽑는다.
  *
  * **파일 목록을 여기 적어 두지 않는다.** 적어 두면 스키마가 하나 늘 때 이
- * 검사를 같이 고쳐야 하고, 어느 날 안 고치고 넘어간다. `package.json` 의
- * `psql ... -f <파일>` 과 `db-init.sh` 의 차례를 그대로 읽는다.
+ * 검사를 같이 고쳐야 하고, 어느 날 안 고치고 넘어간다.
+ *
+ * 지금 나무는 `deploy/db-chain.json` 하나를 읽는다. **옛 판본은 그 파일이
+ * 없어서** 예전 방식으로 읽는다: `package.json` 의 `psql ... -f <파일>` 과
+ * `scripts/db-init.sh` 의 `npm run -s` 차례다. 옛 판본을 지금 방식으로
+ * 읽으면 이 검사가 세우려는 "운영이 서 있던 자리" 가 지금 자리와 같아지고,
+ * 그러면 올라가는지를 아무것도 묻지 않는 검사가 된다.
  */
 function initFiles(ref: string | null): string[] {
-  const at = (p: string) => ref
-    ? sh("git", ["show", `${ref}:./${p}`]) : readFileSync(p, "utf8");
+  if (ref === null) {
+    const c = JSON.parse(readFileSync(CHAIN, "utf8")) as
+      { base: string[]; upgrade: string[] };
+    return [...c.base, ...c.upgrade];
+  }
+  const at = (p: string) => sh("git", ["show", `${ref}:./${p}`]);
   const pkg = JSON.parse(at("package.json")) as { scripts: Record<string, string> };
   const fileOf = (name: string): string[] => {
     const s = pkg.scripts[name];

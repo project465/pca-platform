@@ -4346,3 +4346,104 @@ Core 아홉은 등록만 돼 있다. 영어판 작업공간은 한 줄도 쓰지
 **배포본을 밖에서 브라우저로 열어 보지 못했다**: 이 컨테이너의 네트워크
 정책이 바깥 HTTPS 를 막는다. Wave 0 는 사업주가
 `docs/metri/71_workspace_report.md` 의 열 걸음을 직접 눌러 본 다음이다.
+
+---
+
+**운영 500 복구. 마이그레이션 목록이 두 벌이었다.** (2026-10-09)
+
+`https://app.careermatri.com/me` 가 `relation "career_profiles" does not
+exist`(42P01)로 500 이었다. 그런데 `npm run db:upgrade` 는 끝까지 돌고
+`db:verify` 는 핵심 표 `7 / 7` · ME_V3 표 `5 / 5` · 내 CareerMatri `0 / 5`
+를 찍었다. **새 기능을 만들지 않았고** 채점 · 문항 은행 · ResultModel ·
+응시 routing · 격리 · 묶음 · Industry/Role 논리 · Workspace 정보구조와
+디자인 · 결과지 디자인 · Action 논리를 한 줄도 건드리지 않았다. 자세한
+것은 `docs/metri/72_migration_incident.md`.
+
+**DB 를 올리는 길이 두 벌이었고 운영은 뒤엣것을 읽는다.**
+
+```
+저장소 쪽   scripts/db-init.sh       scripts/db-upgrade.sh
+컨테이너 쪽 deploy/ops/db-init.sh    deploy/ops/db-upgrade.sh   ← 운영
+```
+
+운영 이미지에서 `npm run db:upgrade` 가 뜻하는 것은 뒤엣것이다.
+`Dockerfile` 이 `deploy/ops/package.json` 을 `/app/package.json` 으로
+덮기 때문이다. 그런데 **ME_V3 네 줄을 저장소 쪽에 더한 날 컨테이너 쪽은
+둘만 받았다**: 빠진 것이 `schema_pilot.sql` · `schema_v3_arch.sql` ·
+`schema_v3_platform.sql` · `seed/v3_regions.sql` 넷이고, 둘째가
+`career_profiles` 를 만드는 파일이다(`db/schema_v3_arch.sql:165`).
+그래서 그 표가 운영에 선 적이 없다.
+
+**`db:upgrade` 가 정상 종료한 것은 고장이 아니다.** 그 스크립트가 아는
+일곱을 다 부었다. 모르는 넷은 실패할 기회조차 없었다. 옛 코드가 배포된
+것도, 이미지에 파일이 빠진 것도, 조건 분기로 건너뛴 것도 아니다.
+
+**저장소의 회귀검사가 그 차이를 못 본 까닭도 같다.** `db:migration` 이
+`scripts/db-upgrade.sh` 를 돌렸고 그쪽에는 네 줄이 다 있었다. 검사는
+초록이고 운영은 깨져 있었다. 전에 이 저장소가 적어 둔 말(*적어 둔 스키마와
+올라간 스키마는 다른 것이고 그 차이는 아무 검사도 세지 않았다*)이 그대로
+한 층 위에서 일어났다.
+
+**차례를 `deploy/db-chain.json` 하나로 모았다**(base 4 · upgrade 11). 네
+runner 가 그 목록만 읽고 손으로 적은 `-f db/...` 와 `npm run -s db:*` 가
+0건이다. **목록을 한 자리로 모으는 것만으로는 돌아오므로**
+`npm run db:chain` 이 여덟 가지를 센다: 네 runner 가 그것만 읽는가 ·
+`db/*.sql` 이 전부 목록에 있거나 안 올리는 까닭이 적혀 있는가 · 목록의
+파일이 실제로 있는가 · `arch` 가 `platform` 과 지역 시드보다 먼저인가 ·
+`db:verify` 가 세는 다섯 표가 목록 안에서 만들어지는가 · **안내문이 그
+컨테이너에 있는 스크립트만 가리키는가** · `career_profiles` 에 `/me` 가
+읽는 칸이 전부 적혀 있는가 · **그 목록이 이미지에 담기는가**.
+
+**이미지에 담지 않으면 목록을 모은 것이 더 나쁘다.** 담지 않은 채로
+컨테이너에서 치면 `목록이 없습니다` 로 첫 줄에서 멈춘다. `Dockerfile` 에
+한 줄을 더하고 `deploy/runtime-needs.json` 에 적었다 — `image:check` 와
+`ops:check` 가 **같은 한 파일**을 읽으므로 둘 다 그 자리를 같이 본다.
+
+**verify 안내가 없는 명령을 가리키고 있었다.** 전에는
+`npm run db:v3:arch && npm run db:v3:platform` 을 적었는데, 그 둘은
+저장소의 `package.json` 에만 있고 운영 이미지의 것에는 없다(거기 적힌
+것은 여덟뿐이다). 컨테이너에서 그대로 치면 `Missing script` 다. 올리는
+길을 `npm run db:upgrade` 한 줄로 바꾸고, **내 CareerMatri 가 모자라면
+경고가 아니라 실패**로 떨어진다.
+
+**표를 세는 것으로 끝내지 않는다.** 표가 선 날 칸이 빠져 있으면 `5 / 5`
+가 찍히고 화면은 그대로 500 이다. `career_profiles` 의 칸 열넷(`/me` 의
+질의가 실제로 부르는 것들)과 **`(user_id, core_code)` 유일 제약**을 본다.
+뒤엣것이 중요한 까닭은 쓰는 자리 셋이 전부 `ON CONFLICT (user_id,
+core_code)` 라서, 기본키만 있으면 `count>0` 은 통과하고 저장은 42P10 으로
+거절되기 때문이다. 일부러 칸 하나를 빼고 · 제약만 떼고 돌려 **둘 다
+걸리는 것까지** 확인했다.
+
+**칸 목록을 두 곳에 적지 않는다.** `db:chain` 이 그 목록을 손으로 들고
+있었는데, 그러면 `db-verify.sh` 에 칸을 더한 날 이쪽이 안 늘고 그것이 바로
+이번 장애의 모양이다. `db-verify.sh` 의 `for C in ...` 한 줄을 읽게 했다.
+
+**기존 자료를 한 줄도 건드리지 않았다.** `DROP TABLE` · `TRUNCATE` ·
+reset · `db:init` 이 0건이고, 목록의 열한 파일이 전부
+`IF NOT EXISTS`·`ON CONFLICT` 이며 모든 psql 이 `--single-transaction`
+이다. 운영을 재현한 DB(표 120개 · `career_profiles` 없음)에 사람 둘과
+주문 둘과 이용권 둘을 넣고 **운영 이미지 배치를 그대로 만들어 컨테이너가
+실제로 돌리는 `npm run db:upgrade` 를 두 번** 돌렸다. 두 번 다 종료코드 0 ·
+두 번째 ERROR 0건이고, 줄 수와 주문·사람의 md5 가 글자까지 같다. 끝난 뒤가
+표 133개 · 외래키 215개 · **핵심 표 `7 / 7` · ME_V3 표 `5 / 5` · 내
+CareerMatri `5 / 5`** 다.
+
+**연기 검사가 상태코드만 보고 있었다.** 표가 통째로 없는 날에도 오류
+경계를 200 으로 내주는 배포본에서는 그 검사가 초록으로 선다. 이제
+로그인한 사용자로 `/me` 쪽을 열어 Workspace 띠가 섰는지 보고,
+`career_profiles` 를 읽는 **세 자리**(`/me` · `/me/state` ·
+`/me/results`)를 따로 센다. **표를 떼고 돌려 실제로 걸리는 것까지
+확인했다**: 28 / 28 이던 것이 통과 16 · 걸림 12 로 떨어지고 종료코드 1
+이다. 차이는 표 하나뿐이다.
+
+```bash
+npm run db:chain       # 차례가 한 벌인가 여덟 가지 (DB 없이)
+npm run db:upgrade     # 운영에서 칠 것은 이 한 줄이다
+npm run db:verify      # 7 / 7 · 5 / 5 · 5 / 5
+```
+
+**아직 아닌 것.** 이 세션에서 Railway Shell 을 돌리지 않았고(권한이
+없다) 운영 DB 에 한 줄도 쓰지 않았다. 배포본을 밖에서 브라우저로 열어
+보지 못했다. 위의 모든 결과는 이 기계에서 운영 배치를 재현해 돌린
+것이다. **고친 것이 전부 이미지 안으로 들어가는 파일이라 재배포가
+먼저다**: 지금 떠 있는 컨테이너에서 치면 옛 스크립트가 돈다.

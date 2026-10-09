@@ -38,6 +38,10 @@
       "팔 수 있는 상태인지 볼 수 없다"
     ],
     [
+      "deploy/db-chain.json",
+      "`db:upgrade` 가 무엇을 어느 차례로 부을지 모른다"
+    ],
+    [
       "data/metri/items_pca_me_v1.json",
       "옛 검사 문항 적재가 막힌다"
     ],

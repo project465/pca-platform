@@ -22,22 +22,17 @@ fi
 
 run() { echo; echo "── $*"; "$@"; }
 
-run npm run -s db:phase2
-run npm run -s db:phase2_1
-run npm run -s db:phase2_2
-run npm run -s db:phase2_3
-run npm run -s db:phase2_4
-run npm run -s db:pilot
-
-# ME_V3. **넉 달 동안 이 네 줄이 빠져 있었다.** 스키마 파일은 저장소에
-# 있었고 어느 목록에도 없어서 운영과 staging 에 V3 표가 한 번도 선 적이
-# 없다. 그 상태로 `/v3/start` 를 누르면 500 이다. 차례가 곧 조건이다:
-# arch 의 `regions` 와 `career_profiles` 가 platform 보다 먼저 서야 한다
-run npm run -s db:v3           # db/schema_v3_runtime.sql
-run npm run -s db:v3:arch      # 시장 · 지역 · 지금 값 · event
-run npm run -s db:v3:platform  # 경험 · 할 일 · 공고 계약 · Track
-run npm run -s db:v3:pilot     # 파일럿
-run npm run -s db:v3:regions   # 권역 다섯과 산업 여덟 (**기업 자료는 없다**)
+# **올릴 파일 목록을 이 파일에 적지 않는다.** 전에는 여기와
+# `deploy/ops/db-upgrade.sh` 두 곳에 적어 두었고, 이쪽에 ME_V3 네 줄을
+# 더한 날 저쪽은 둘만 받았다. 운영에서 `npm run db:upgrade` 는 저쪽을
+# 뜻하므로(운영 이미지의 `package.json` 은 `deploy/ops/package.json` 이다)
+# `career_profiles` 가 선 적이 없고 `/me` 가 42P01 로 죽었다. 목록은
+# `deploy/db-chain.json` 하나이고 `npm run db:chain` 이 그것을 지킨다.
+while read -r f; do
+  [ -n "$f" ] || continue
+  echo; echo "── ${f}"
+  psql "$DATABASE_URL" -v ON_ERROR_STOP=1 --single-transaction -f "$f"
+done < <(node -e 'for (const f of require("./deploy/db-chain.json").upgrade) console.log(f)')
 
 # 문항이 바뀌었으면 다시 적재한다. 같은 문항이면 아무것도 안 바뀐다
 run npm run -s v2:build

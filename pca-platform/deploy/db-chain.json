@@ -1,0 +1,28 @@
+{
+  "schema_version": "cm-db-chain.1",
+  "note": "DB 를 세우고 올리는 **유일한 목록**이다. 전에는 이 차례가 두 벌이었다: 저장소 쪽(`scripts/db-*.sh`)과 컨테이너 쪽(`deploy/ops/db-*.sh`). 운영에서 `npm run db:upgrade` 는 뒤엣것을 뜻하는데(운영 이미지의 `package.json` 은 `deploy/ops/package.json` 이다) ME_V3 네 줄 가운데 둘만 뒤쪽에 들어가 있었다. 그래서 `career_profiles` 가 운영에 선 적이 없고 `/me` 가 42P01 로 죽었다. 목록을 한 자리에 두고 네 스크립트가 그것만 읽는다. `npm run db:chain` 이 그 넷에 손으로 적은 SQL 이 없는지와 `db/schema*.sql` 이 전부 이 목록에 있는지 센다.",
+  "base": [
+    "db/schema.sql",
+    "db/schema_metri.sql",
+    "db/seed/metri/skill_tree.sql",
+    "db/schema_platform.sql"
+  ],
+  "upgrade": [
+    "db/schema_phase2.sql",
+    "db/schema_phase2_1.sql",
+    "db/schema_phase2_2.sql",
+    "db/schema_phase2_3.sql",
+    "db/schema_phase2_4.sql",
+    "db/schema_pilot.sql",
+    "db/schema_v3_runtime.sql",
+    "db/schema_v3_arch.sql",
+    "db/schema_v3_platform.sql",
+    "db/schema_v3_pilot.sql",
+    "db/seed/v3_regions.sql"
+  ],
+  "order": "차례가 곧 조건이다. `schema_v3_arch.sql` 의 `regions` 와 `career_profiles` 가 `schema_v3_platform.sql` 보다 먼저 서야 하고, `seed/v3_regions.sql` 은 `regions` 가 선 다음이다.",
+  "not_in_chain": {
+    "db/seed/platform_demo.sql": "눌러 볼 가상 자료. 운영 DB 에 넣지 않는다 (npm run db:demo)",
+    "db/seed/platform_demo_people.sql": "같음"
+  }
+}

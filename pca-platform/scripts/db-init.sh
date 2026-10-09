@@ -25,25 +25,15 @@ fi
 
 run() { echo; echo "── $*"; "$@"; }
 
-run npm run -s db:reset       # db/schema.sql
-run npm run -s metri:seed     # db/schema_metri.sql + 스킬트리
-run npm run -s db:platform    # db/schema_platform.sql
-run npm run -s db:phase2
-run npm run -s db:phase2_1
-run npm run -s db:phase2_2
-run npm run -s db:phase2_3
-run npm run -s db:phase2_4
-run npm run -s db:pilot
-
-# ME_V3. **넉 달 동안 이 네 줄이 빠져 있었다.** 스키마 파일은 저장소에
-# 있었고 어느 목록에도 없어서 운영과 staging 에 V3 표가 한 번도 선 적이
-# 없다. 그 상태로 `/v3/start` 를 누르면 500 이다. 차례가 곧 조건이다:
-# arch 의 `regions` 와 `career_profiles` 가 platform 보다 먼저 서야 한다
-run npm run -s db:v3           # db/schema_v3_runtime.sql
-run npm run -s db:v3:arch      # 시장 · 지역 · 지금 값 · event
-run npm run -s db:v3:platform  # 경험 · 할 일 · 공고 계약 · Track
-run npm run -s db:v3:pilot     # 파일럿
-run npm run -s db:v3:regions   # 권역 다섯과 산업 여덟 (**기업 자료는 없다**)
+# **올릴 파일 목록을 이 파일에 적지 않는다.** 전에는 여기와
+# `deploy/ops/db-init.sh` 두 곳에 적어 두었고, 한쪽만 늘어난 날이 있었다.
+# 목록은 `deploy/db-chain.json` 하나이고 `npm run db:chain` 이 지킨다.
+while read -r f; do
+  [ -n "$f" ] || continue
+  echo; echo "── ${f}"
+  psql "$DATABASE_URL" -v ON_ERROR_STOP=1 --single-transaction -f "$f"
+done < <(node -e 'const c = require("./deploy/db-chain.json");
+  for (const f of [...c.base, ...c.upgrade]) console.log(f)')
 
 # 검사 문항. 생성물을 먼저 만들고 적재한다
 run npm run -s v2:build

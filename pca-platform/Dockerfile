@@ -91,6 +91,11 @@ COPY --chown=metri:nodejs deploy/ops/db-init.sh deploy/ops/db-upgrade.sh deploy/
 # `ops:check` 가 "이 자리가 이미지 안에 실제로 있는가" 를 셀 때 읽는 목록.
 # `image:check` 가 배포 전에 읽는 것과 **같은 파일**이다
 COPY --chown=metri:nodejs deploy/runtime-needs.json ./deploy/runtime-needs.json
+# **DB 를 올리는 차례.** `ops/db-upgrade.sh` 와 `ops/db-init.sh` 가 이 파일만
+# 읽어서 붓는다. 빠지면 `npm run db:upgrade` 가 첫 줄에서 멈춘다 —
+# 전에는 차례가 스크립트 안에 두 벌로 적혀 있었고, 운영 쪽 한 벌에
+# `schema_v3_arch.sql` 이 없어서 `career_profiles` 가 선 적이 없었다
+COPY --chown=metri:nodejs deploy/db-chain.json ./deploy/db-chain.json
 COPY --chown=metri:nodejs deploy/ops/package.json ./package.json
 # **결과지 엔진을 같이 담는다.** 플랫폼이 `/pca/*` 로 이 파일들을 내주고
 # 결과지와 PDF 를 만들 때 불러 쓴다. 빠지면 결과지가 404 로 멈춘다
