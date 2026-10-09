@@ -68,8 +68,21 @@ export function orgTypes(dir = CONTENT_DIR): OrgTypeEntry[] {
   return regionLayer(dir).org_types;
 }
 
-export function orgLabel(code: string, dir = CONTENT_DIR): string {
-  return regionLayer(dir).org_types.find((o) => o.code === code)?.label ?? code;
+/**
+ * 기관 유형의 이름. **모르는 코드를 그대로 돌려주지 않는다.**
+ *
+ * 전에는 못 찾으면 코드를 돌려줬고, 그래서 지금 상태 화면에 `OC1` 이
+ * 그대로 섰다. 까닭은 이름이 겹친 자리의 뒤처리다: Core 의 조직환경
+ * (`OC1~OC7`, 그 일을 하는 자리의 성격)과 지역 층의 기관 유형(`ORG_*`,
+ * 그 자리를 가진 기관의 종류)이 한때 같은 코드를 썼고, 칸을 나누기 전에
+ * 적힌 줄에는 `target_org` 에 `OC*` 가 들어 있다.
+ *
+ * **고쳐 쓰지 않고 비운다.** 옛 줄의 `OC1` 을 기관 유형으로 바꿔 적으면
+ * 그 사람이 고르지 않은 것을 고른 것으로 만든다. 이름을 못 찾으면
+ * `null` 이고, 화면은 그 자리를 비운다.
+ */
+export function orgLabel(code: string, dir = CONTENT_DIR): string | null {
+  return regionLayer(dir).org_types.find((o) => o.code === code)?.label ?? null;
 }
 
 /**

@@ -175,9 +175,14 @@ async function main(): Promise<void> {
     const ctx2 = await browser.newContext(opts);
     const p2 = await login(ctx2, u.pw);
     /* `/me` 의 `검사 이어하기` 가 보내는 자리로 간다. 주소를 손으로 적지
-       않는다: 사람이 누르는 길이 이것이다 */
+       않는다: 사람이 누르는 길이 이것이다.
+
+       **href 로 찾지 않는다.** 이 단추는 `Link` 가 아니라 폼이다. 링크로
+       두면 Next 가 화면에 들어온 링크를 미리 불러오면서 누르지 않은
+       사람까지 `이어하기를 눌렀다` 로 세어진다. 그래서 글자로 찾아 실제로
+       누르고, 어느 응시로 갔는지를 주소에서 본다 */
     await p2.goto(`${B}/me`, { waitUntil: "networkidle" });
-    const cont = p2.locator(`a[href^="/v3/${attemptId}"]`).first();
+    const cont = p2.getByRole("button", { name: /이어하기/ }).first();
     const hasCont = await cont.count();
     ok("대시보드에 `검사 이어하기` 가 선다", hasCont > 0);
     if (hasCont) {
@@ -356,19 +361,33 @@ async function main(): Promise<void> {
     const WANT = ["core_version", "item_bank_version", "scoring_version",
                   "assessment_ui_version", "assessment_copy_version",
                   "result_model_version", "result_copy_version", "result_ui_version",
-                  "industry_pack_version", "role_pack_version", "region_layer_version"];
+                  "industry_pack_version", "role_pack_version", "region_layer_version",
+                  /* 작업공간 한 칸. **판정에 쓰이지 않는다**: 결과를 받은 뒤
+                     어느 작업공간으로 들어갔는지를 되짚는 자리다 */
+                  "workspace_ui_version"];
     const gone = WANT.filter((k) => !(k in mv));
-    ok("응시마다 판본 열한 가지가 적힌다", gone.length === 0,
+    ok("응시마다 판본 열두 가지가 적힌다", gone.length === 0,
        gone.length ? `빠진 칸 ${gone.join(" ")}`
          : `${WANT.length}가지 · 지역 층은 ${mv.region_layer_version ?? "없음"}`);
 
-    /* ── 8. 결과 이력이 기준과 날짜를 가른다 ──────────────────────── */
-    const me = await ctx3.request.get(`${B}/me`, { timeout: 60_000 });
+    /* ── 8. 결과 기록이 기준과 날짜를 가른다 ──────────────────────── */
+    /*
+     * **보는 자리를 `/me/results` 로 옮겼다.** 전에는 홈의 카드 한 줄에
+     * 굳은 값과 지금 값이 나란히 있어서 날짜만 다른 같은 값으로 읽혔다.
+     * 지금은 쪽을 따로 두고 **생김새로 가른다**: 굳은 쪽은 흰 카드에 날짜
+     * 띠와 자물쇠 표시, 지금 쪽은 꺼진 바탕에 점선과 `바뀝니다`.
+     *
+     * 그래서 글자 둘만 보지 않고 **생김새가 실제로 갈렸는지**도 센다.
+     */
+    const me = await ctx3.request.get(`${B}/me/results`, { timeout: 60_000 });
     const html = await me.text();
-    ok("대시보드가 `검사 당시 결과` 와 `현재 상태` 를 가른다",
-       html.includes("검사 당시 결과") && html.includes("경험 추가 후 현재 상태"),
-       `${html.includes("검사 당시 결과") ? "굳은 값 ○" : "굳은 값 ✗"} · `
-       + `${html.includes("경험 추가 후 현재 상태") ? "지금 값 ○" : "지금 값 ✗"}`);
+    const frozen = html.includes("검사 당시 결과") && html.includes("고정됨");
+    const live = html.includes("지금 상태") && html.includes("경험을 더하면 바뀝니다");
+    const split = html.includes("cm-snap") && html.includes("cm-live");
+    ok("결과 기록이 `검사 당시 결과` 와 `지금 상태` 를 가른다",
+       frozen && live && split,
+       `${frozen ? "굳은 값 ○" : "굳은 값 ✗"} · ${live ? "지금 값 ○" : "지금 값 ✗"}`
+       + ` · ${split ? "생김새 갈림 ○" : "생김새 갈림 ✗"}`);
     ok("결과 이력에 그 결과지로 가는 길이 있다",
        html.includes(`/v3/${attemptId}/result`), `응시 ${attemptId}`);
     await ctx3.close();

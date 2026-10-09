@@ -112,6 +112,7 @@
     "v3:freeze": "tsx scripts/v3-freeze-check.ts",
     "v3:result": "tsx scripts/v3-result-check.ts",
     "v3:result:copy": "tsx scripts/v3-result-copy-check.ts",
+    "v3:workspace:shots": "node scripts/workspace-shots.mjs",
     "v3:workspace": "tsx scripts/v3-workspace-freeze.ts",
     "v3:result:freeze": "tsx scripts/v3-result-freeze.ts",
     "v3:pilot": "tsx scripts/v3-pilot-check.ts",

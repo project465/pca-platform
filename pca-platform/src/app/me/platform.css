@@ -469,7 +469,9 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 }
 .cm-fold > summary {
   font-size: 13.5px; font-weight: 600; color: var(--sf-ink-3);
-  cursor: pointer; min-height: 24px; display: inline-flex; align-items: center;
+  cursor: pointer; display: inline-flex; align-items: center;
+  /* 접는 자리도 누르는 자리다. 24px 로 두었더니 손가락으로 집기 어려웠다 */
+  min-height: 40px; padding-right: 8px;
 }
 .cm-fold > summary:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2px; }
 .cm-fold[open] > summary { margin-bottom: 12px; color: var(--sf-ink-2); }
@@ -516,11 +518,14 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
   font-style: normal; font-size: 12px; color: var(--sf-ink-3);
 }
 .cm-lanes li > form { margin-top: 7px; }
-.cm-lanes li > form .cm-btn { min-height: 32px; padding: 0 12px; font-size: 13px; }
 
 /* 끝낸 일 줄. 되돌리는 단추를 오른쪽 끝에 붙인다 */
 .cm-row > form { margin-left: auto; }
-.cm-row > form .cm-btn { min-height: 32px; padding: 0 12px; font-size: 13px; }
+
+/* **단추를 목록 안에서 줄이지 않는다.** 한때 32px 로 낮춰 뒀는데, 손가락
+   으로 누르는 자리는 40px 이 선이다. 글자만 작게 둔다 */
+.cm-lanes li > form .cm-btn,
+.cm-row > form .cm-btn { padding: 0 12px; font-size: 13px; }
 
 @media (max-width: 719px) {
   /* 좁은 화면에서는 날짜 띠를 위로 눕힌다. 84px 를 떼면 제목이 두 줄로 접힌다 */

@@ -102,15 +102,21 @@ export default async function Next() {
         <details className="cm-fold" style={{ marginTop: 22 }}>
           <summary>끝낸 일 {done.length}가지</summary>
           <div className="cm-rows">
+            {/*
+              **`p` 안에 `form` 을 두지 않는다.** `p` 는 문장 조각만 받는데
+              `form` 은 덩이라, 브라우저가 그것을 `p` 밖으로 끌어낸다.
+              서버가 보낸 것과 브라우저가 세운 것이 달라지고 React 가
+              `#418` 로 멈춘다(화면은 멀쩡해 보이고 눌리는 것만 안 된다).
+            */}
             {done.map((a) => (
-              <p className="cm-row" key={a.id}>
+              <div className="cm-row" key={a.id}>
                 <b>{a.body}</b>
                 <form action={moveAction}>
                   <input type="hidden" name="id" value={a.id} />
                   <input type="hidden" name="state" value="open" />
                   <button className="cm-btn" type="submit">되돌리기</button>
                 </form>
-              </p>
+              </div>
             ))}
           </div>
         </details>

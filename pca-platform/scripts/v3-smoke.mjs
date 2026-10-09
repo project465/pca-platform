@@ -38,16 +38,26 @@ const PUBLIC = [
 ];
 const PRIVATE = [
   ["/me", "내 CareerMatri"],
-  ["/me/experience", "경험"],
+  ["/me/results", "결과 기록"],
+  ["/me/state", "지금 상태"],
+  ["/me/next", "다음 할 일"],
+  ["/me/experience", "내 경험"],
   ["/me/experience/new", "경험 추가"],
-  ["/me/recompute", "재분석"],
-  ["/me/gap", "Gap 과 할 일"],
-  ["/me/explore", "탐색"],
+  ["/me/recompute", "새 경험 반영하기"],
+  /* 넘기는 자리. **404 로 버리지 않는다**: 결과지와 전 회차 화면이 이
+     주소를 가리키고 있다 */
+  ["/me/gap", "옛 주소 넘기기"],
+  ["/me/explore", "산업과 직무"],
   ["/me/region", "지역과 기관"],
   ["/me/jobs", "공고"],
   ["/me/apply", "지원한 곳"],
   ["/me/track", "Track"],
-  ["/my/assessments", "내 검사 목록"],
+  /* 계정 영역 */
+  ["/my", "계정"],
+  ["/my/account", "비밀번호와 파기"],
+  ["/my/assessments", "옛 검사 기록"],
+  ["/my/results", "옛 검사 결과"],
+  ["/my/evidence", "옛 경험 기록"],
 ];
 
 const browser = await chromium.launch({

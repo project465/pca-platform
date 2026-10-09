@@ -198,6 +198,23 @@ export async function experiencesOf(userId: string): Promise<Experience[]> {
  * 말로 옮길 때만 읽고 판정에 들어가지 않는다. 그 줄에는 기한을 붙인다:
  * 자유입력은 남겨 둘 이유가 끝나면 지운다.
  */
+/**
+ * 달만 받은 값을 날짜로 만든다.
+ *
+ * **`input type="month"` 는 `2025-03` 을 보낸다.** 그 값을 `DATE` 칸에
+ * 그대로 넣으면 PostgreSQL 이 `invalid input syntax for type date` 로
+ * 거절하고, 경험을 적어 넣은 사람은 **저장 단추를 눌렀는데 오류 화면**
+ * 을 본다. 달만 받기로 한 것은 일부러다(언제였는지까지만 쓴다). 그래서
+ * 꼴을 맞추는 자리를 **쓰는 자리 하나**에 둔다: 화면에서 고치면 다음에
+ * 폼을 하나 더 만드는 사람이 같은 자리에서 또 걸린다.
+ */
+function asDate(v: string | null | undefined): string | null {
+  const x = (v ?? "").trim();
+  if (!x) return null;
+  if (/^\d{4}-\d{2}$/.test(x)) return `${x}-01`;
+  return /^\d{4}-\d{2}-\d{2}$/.test(x) ? x : null;
+}
+
 export async function addExperience(userId: string, e: {
   kind: string; title: string; started_on?: string | null; ended_on?: string | null;
   td_codes?: string[]; axis_codes?: string[];
@@ -216,7 +233,7 @@ export async function addExperience(userId: string, e: {
              CASE WHEN $14::text IS NULL THEN NULL ELSE current_date + 365 END)
      RETURNING id::text`,
     [userId, CORE, e.kind, e.title.slice(0, 120),
-     e.started_on || null, e.ended_on || null,
+     asDate(e.started_on), asDate(e.ended_on),
      e.td_codes ?? [], e.axis_codes ?? [],
      e.problems ?? [], e.decisions ?? [], e.artifacts ?? [], e.verifications ?? [],
      e.used_where ?? [],

@@ -22,6 +22,10 @@ export default async function Region() {
   const user = await requireUser();
   const profile = await profileOf(user.id);
   const L = regionLayer();
+  /* 이름을 못 찾은 코드는 버린다. 화면에 `OC1` 이 서던 자리다 */
+  const orgNames = (profile?.target_org ?? [])
+    .map((c) => L.org_types.find((o) => o.code === c)?.label)
+    .filter((x): x is string => !!x);
   const open = regionOpen("KR");
   const gaps = regionGaps();
 
@@ -119,9 +123,10 @@ export default async function Region() {
           </div>
           <div>
             <dt>기관 유형</dt>
-            <dd>{(profile?.target_org ?? []).length
-              ? (profile!.target_org).map((c) =>
-                  L.org_types.find((o) => o.code === c)?.label ?? c).join(" · ")
+            {/* **모르는 코드를 적지 않고 비운다.** 칸을 나누기 전에 적힌
+                줄은 `target_org` 에 Core 의 조직환경 코드를 들고 있다 */}
+            <dd>{orgNames.length
+              ? orgNames.join(" · ")
               : "아직 고르지 않으셨습니다"}</dd>
           </div>
         </dl>

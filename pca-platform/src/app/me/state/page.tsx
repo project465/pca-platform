@@ -51,6 +51,10 @@ export default async function State() {
 
   const m = st.model;
   const raisedSet = new Set(st.raised.map((r) => `${r.domain}.${r.axis}`));
+  /* **이름을 못 찾은 코드는 버린다.** 코드를 그대로 적으면 화면에 `OC1`
+     이 선다. 칸을 나누기 전에 적힌 줄이 그런 값을 들고 있다 */
+  const orgNames = (profile?.target_org ?? [])
+    .map((c) => orgLabel(c)).filter((x): x is string => !!x);
   const indName = (c: string) => industryChoices().find((x) => x.code === c)?.name ?? c;
   const say = (c: string) => c;
   void say;
@@ -193,7 +197,7 @@ export default async function State() {
       ) : null}
 
       {/* ── 6. 관심 지역과 기관 유형. 기관 수를 적지 않는다 ── */}
-      {profile?.home_region || (profile?.target_org?.length ?? 0) > 0 ? (
+      {profile?.home_region || orgNames.length ? (
         <>
           <h2 className="cm-sect">관심 지역과 기관 유형</h2>
           <div className="cm-rows">
@@ -204,9 +208,9 @@ export default async function State() {
                   {profile.move_range ? ` · ${moveLabel(profile.move_range)}` : ""}
                 </span></p>
             ) : null}
-            {profile?.target_org?.length ? (
+            {orgNames.length ? (
               <p className="cm-row"><b>기관 유형</b>
-                <span>{profile.target_org.map((c) => orgLabel(c)).join(" · ")}</span></p>
+                <span>{orgNames.join(" · ")}</span></p>
             ) : null}
           </div>
           <p className="cm-lead" style={{ marginTop: 10 }}>
