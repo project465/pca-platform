@@ -96,7 +96,9 @@ const PATHS: Shot[] = [
   { name: "w12_apply", path: "/me/apply", note: "지원한 곳", full: true,
     heading: "직접 지원하신 곳", must: ["어떤 직무로"] },
   { name: "w13_track", path: "/me/track", note: "Track", full: true,
-    heading: "상황이 바뀔 때 다시 계산해 주는 자리", must: ["새 채용공고 추적"] },
+    /* 아직 없는 기능 목록을 걷었다(규격 §22). 이 쪽이 적는 것은 한
+       문장과 지금 되는 자리 둘이다 */
+    heading: "상황이 바뀔 때 다시 계산해 주는 자리", must: ["지원 기록"] },
   { name: "w14_jobs", path: "/me/jobs", note: "Track · 공고", full: true,
     heading: "공고", must: [] },
 ];

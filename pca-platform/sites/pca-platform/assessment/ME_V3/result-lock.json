@@ -20,7 +20,7 @@
   "종이에 빈 쪽과 범위 밖 쪽수가 없다": "v3:result:pdf"
  },
  "files": {
-  "src/app/v3/result.css": "834ed1bb6b550da96c0ceddc3a12ee1f2dba4838daaea7f0bea1b1fa2aae6446",
+  "src/app/v3/result.css": "6d44844160affecb93d81939ddd912c7daf6df2e71fcdd2932273ab628e34474",
   "src/app/v3/[attemptId]/result/page.tsx": "dd390dc886b14eeff874ebd2b804677151a07d67f6bd3e6bdb64dfaef078ae54",
   "src/app/v3/[attemptId]/result/fold.tsx": "2cf4f4a676d584b5b8fe6ea9c3b1787f84c6b9b8498b74d7d240b53c14492d0d",
   "src/app/v3/[attemptId]/result/disclose.tsx": "a82c70b1d0897647877cfff4a672e8ebffd8716f76e6cfcc3d25e066f074f455",

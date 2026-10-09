@@ -141,7 +141,9 @@
   border-radius: var(--r-r); overflow: hidden;
   grid-template-columns: 1fr;
 }
-@media (min-width: 860px) { .rs-top { grid-template-columns: repeat(2, 1fr); } }
+/* **칸이 셋이면 칸이 셋이다**(규격 §1). 두 칸으로 두었더니 넷째 자리가
+   빈 회색 네모로 남았고, 그 빈 자리가 덜 그린 화면으로 읽혔다 */
+@media (min-width: 860px) { .rs-top { grid-template-columns: repeat(3, 1fr); } }
 .rs-top > div { background: var(--r-paper); padding: 20px 22px; }
 .rs-top h3 {
   margin: 0 0 var(--r-s2); font-size: var(--r-t-meta); font-weight: 650;
