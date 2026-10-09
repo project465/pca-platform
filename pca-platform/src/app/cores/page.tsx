@@ -37,6 +37,37 @@ export default async function Cores() {
           + "같은 엔진을 쓰지만 기술영역과 판단축과 산업이 전공마다 다릅니다."}
       />
 
+      {/*
+        **검사가 끝이 아니라는 것을 고르는 자리에서 적는다.** 전에는 이
+        쪽이 전공 카드만 세워서, 읽는 사람이 CareerMatri 를 검사 한 벌로
+        읽고 결과 PDF 를 받는 데까지로 생각했다. 그 뒤에 무엇이 쌓이는지를
+        네 줄로 적는다.
+      */}
+      <section className="cm-live" style={{ marginTop: 0, marginBottom: 20 }}>
+        <header>
+          <h2>검사는 시작점입니다</h2>
+          <span>결과를 받은 다음부터가 내 CareerMatri 입니다.</span>
+        </header>
+        <dl className="cm-dl">
+          <div>
+            <dt>검사에서 받는 것</dt>
+            <dd>근거가 선 기술영역과 아직 비어 있는 자리, 그리고 다음 할 일</dd>
+          </div>
+          <div>
+            <dt>그 뒤에 쌓는 것</dt>
+            <dd>새로 겪은 경험을 적고 지금 상태에 반영하면 비어 있던 자리가 채워집니다</dd>
+          </div>
+          <div>
+            <dt>등급 차이</dt>
+            <dd>문항 수가 아니라 판단의 종류가 다릅니다. 어디부터 볼지 · 영역끼리 견주기 · 경험을 직무 언어로 옮기기</dd>
+          </div>
+          <div>
+            <dt>중간에 멈춰도</dt>
+            <dd>답한 것은 문항마다 저장되어 있어 멈춘 자리에서 이어집니다</dd>
+          </div>
+        </dl>
+      </section>
+
       {open ? (
         <div className="cm-card is-wide" style={{ marginBottom: 18 }}>
           <h2>이어서 풀 응시가 있습니다 <em>{open.tier}</em></h2>

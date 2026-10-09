@@ -27,16 +27,20 @@ export default async function Jobs() {
 
   return (
     <CmShell active="/me/jobs" title="공고">
+      {/* **왼쪽 띠에 줄을 두지 않았다.** 이 쪽은 Track 이 켜지는 날의
+          자리이고, 지금 혼자 서면 메뉴에 빈 쪽이 하나 늘어난다. 들어오는
+          길은 Track 쪽이고 띠에서는 Track 줄이 켜진다 */}
       <CmHead
-        kicker="공고 비교"
+        kicker="Track · 공고 비교"
         title="내 근거와 공고를 맞춰 보는 자리"
         lead={"공고가 요구하는 판단을 기술영역과 판단축으로 바꿔 놓고, "
-          + "내가 이미 가진 근거와 아직 없는 근거를 가릅니다."}
+          + "내가 이미 가진 근거와 아직 없는 근거를 가릅니다. Track 이 켜지면 "
+          + "이 자리가 혼자 돕니다."}
       />
 
       <div className="cm-acts" style={{ marginBottom: 18 }}>
-        <Link className="cm-btn is-primary" href="/me/apply">직접 지원한 곳 적기</Link>
-        <Link className="cm-btn" href="/me/track">Track이 하는 일</Link>
+        <Link className="cm-btn is-primary" href="/me/track">Track으로 돌아가기</Link>
+        <Link className="cm-btn" href="/me/apply">직접 지원한 곳 적기</Link>
       </div>
 
       {postings === 0 ? (
@@ -67,7 +71,7 @@ export default async function Jobs() {
                   ["4. 요구 추출", "공고의 문장을 날것으로 남긴다", "계약 있음"],
                   ["5. 사상", "기술영역과 판단축으로 바꾼다. 등급 없이 담지 않는다", "계약 있음"],
                   ["6. 대조", "내 근거와 견준다", "내 근거는 이미 섰다"],
-                  ["7. Gap 변화", "무엇이 메워졌고 무엇이 남았는지", "재분석 대기"],
+                  ["7. Gap 변화", "무엇이 메워졌고 무엇이 남았는지", "자동 반영 전"],
                   ["8. 알림", "월간 리포트와 변화 알림", "Track"],
                 ].map(([a, b, c]) => (
                   <tr key={a}><td><b>{a}</b></td><td>{b}</td><td>{c}</td></tr>

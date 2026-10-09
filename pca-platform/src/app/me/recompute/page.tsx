@@ -5,7 +5,7 @@ import { axisLabel, domainName } from "@/lib/me-v3/runtime/session";
 import { CmShell, CmHead } from "../shell";
 import { runRecompute } from "./actions";
 
-export const metadata = { title: "재분석 · 내 CareerMatri" };
+export const metadata = { title: "새 경험 반영하기 · 내 CareerMatri" };
 
 const STATE_KO: Record<string, string> = {
   NOT_OBSERVED: "아직 없음",
@@ -22,7 +22,12 @@ const ZONE_KO: Record<string, string> = {
 };
 
 /**
- * 재분석.
+ * 새 경험 반영하기.
+ *
+ * **이름에 `재분석` 을 쓰지 않는다.** 그 말은 우리가 무엇을 다시 계산하는
+ * 가를 가리키는데, 누르는 사람이 하는 일은 적어 둔 경험을 지금 상태에
+ * 반영하는 것이다. 안쪽 이름이 단추에 그대로 나가면 읽는 사람이 무엇이
+ * 달라지는지 짐작해야 한다.
  *
  * **무엇이 달라지는지 먼저 보여 준다.** 저장한 경험이 숫자만 바꿔 놓으면
  * 읽는 사람이 자기 기록과 결과를 잇지 못한다. 어느 경험이 어느 축으로
@@ -37,9 +42,9 @@ export default async function Recompute() {
   const plan = await previewRecompute(user.id);
 
   return (
-    <CmShell active="/me/experience" title="재분석">
+    <CmShell active="/me/experience" title="새 경험 반영하기">
       <CmHead
-        kicker="재분석"
+        kicker="새 경험 반영하기"
         title="적어 두신 경험이 어디로 가는지"
         lead={"저장한 경험을 판단축으로 묶어 지금 값과 비교했습니다. "
           + "그때 낸 결과지는 그대로 남고, 여기서는 지금 값만 달라집니다."}

@@ -21,7 +21,7 @@ export default async function Experiences() {
         kicker="경험 기록"
         title="적어 둔 경험"
         lead={"수업과 캡스톤과 연구와 인턴에서 직접 정한 것을 적어 둡니다. "
-          + "다음 재분석에서 이 기록이 근거로 들어갑니다."}
+          + "반영하실 때 이 기록이 근거로 들어갑니다."}
         actions={<Link className="cm-btn is-primary" href="/me/experience/new">새 경험 추가</Link>}
       />
 
@@ -31,7 +31,7 @@ export default async function Experiences() {
           어느 판단축으로 가고 묶음이 어떻게 달라지는지 먼저 보시고 반영하실
           수 있습니다.
           <p style={{ marginTop: 10 }}>
-            <Link href="/me/recompute">재분석 보기</Link>
+            <Link href="/me/recompute">새 경험 반영하기</Link>
           </p>
         </div>
       ) : null}
@@ -39,8 +39,8 @@ export default async function Experiences() {
       {rows.length === 0 ? (
         <div className="cm-soon">
           <b>아직 적어 둔 경험이 없습니다.</b> 검사에서 고른 근거와 별개로,
-          새로 겪은 일을 여기에 쌓습니다. 하나만 적어도 다음 재분석에
-          들어갑니다.
+          새로 겪은 일을 여기에 쌓습니다. 하나만 적어도 지금 상태에
+          반영할 수 있습니다.
         </div>
       ) : (
         <div className="cm-tablewrap">
