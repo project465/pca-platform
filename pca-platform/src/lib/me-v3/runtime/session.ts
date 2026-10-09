@@ -159,8 +159,8 @@ export function checklistFor(td: string): { slot: string; label: string; items: 
     slot: axis, label: axisLabel(axis), items: list.map((x) => x.text),
   }));
   if (dom) {
-    out.push({ slot: "ARTIFACT", label: "남긴 산출물", items: dom.artifacts });
-    out.push({ slot: "VERIFY", label: "비교한 대상", items: dom.verify_targets });
+    out.push({ slot: "ARTIFACT", label: "그때 만든 자료", items: dom.artifacts });
+    out.push({ slot: "VERIFY", label: "맞춰 본 대상", items: dom.verify_targets });
   }
   return out;
 }
@@ -169,6 +169,26 @@ const AXIS_LABEL: Record<string, string> = {
   J5: "산출물", J6: "비교와 검증", J7: "실패와 수정", J8: "조직 활용",
 };
 export function axisLabel(a: string): string { return AXIS_LABEL[a] ?? a; }
+
+/**
+ * 같은 여덟 축을 **고르는 사람의 말로** 적은 이름.
+ *
+ * `문제 정의` 와 `조직 활용` 은 우리가 무엇을 재는지를 가리키는 이름이다.
+ * 근거를 고르는 자리에서 그 이름이 묶음 머리에 서면, 고르는 사람은
+ * 자기가 한 일이 아니라 **우리 분류**를 먼저 읽는다. 재는 이름은 결과를
+ * 되짚는 자리(축 이름 · 운영 표)에 남고, 고르는 자리에는 이쪽이 선다.
+ */
+const AXIS_ASK: Record<string, string> = {
+  J1: "무엇을 문제로 잡았는지",
+  J2: "요구를 조건으로 옮긴 일",
+  J3: "직접 정한 것",
+  J4: "쓴 방법과 도구",
+  J5: "남긴 결과물",
+  J6: "맞춰 보고 확인한 일",
+  J7: "틀어진 뒤 고친 일",
+  J8: "그 결과가 쓰인 자리",
+};
+export function axisAsk(a: string): string { return AXIS_ASK[a] ?? axisLabel(a); }
 
 export function industryChoices() {
   return industryPacks().packs

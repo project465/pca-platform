@@ -124,7 +124,7 @@ export default async function Results() {
 
 /** 판본 칸 이름을 사람 말로. **내부 열쇠를 그대로 적지 않는다** */
 const VER_KO: Record<string, string> = {
-  core_version: "전공 Core",
+  core_version: "전공",
   item_bank_version: "문항",
   scoring_version: "판단 규칙",
   assessment_ui_version: "검사 화면",

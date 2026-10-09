@@ -46,7 +46,7 @@ export default async function Recompute() {
       <CmHead
         kicker="새 경험 반영하기"
         title="적어 두신 경험이 어디로 가는지"
-        lead={"저장한 경험을 판단축으로 묶어 지금 값과 비교했습니다. "
+        lead={"저장한 경험이 어느 판단으로 가는지 묶어 지금 상태와 맞춰 봤습니다. "
           + "그때 낸 결과지는 그대로 남고, 여기서는 지금 값만 달라집니다."}
         actions={plan.base_attempt_id && !plan.empty ? (
           <form action={runRecompute}>
@@ -66,7 +66,7 @@ export default async function Recompute() {
       ) : plan.empty ? (
         <div className="cm-soon">
           <b>다시 계산할 거리가 아직 없습니다.</b> 경험을 적을 때 기술영역과
-          그 영역의 항목을 함께 고르면 그 자리가 판단축으로 들어갑니다.
+          그 영역의 항목을 함께 고르면 그 자리가 판단으로 들어갑니다.
           <p style={{ marginTop: 10 }}>
             <Link href="/me/experience/new">새 경험 추가</Link>
           </p>
@@ -75,7 +75,7 @@ export default async function Recompute() {
         <>
           <div className="cm-grid" style={{ marginBottom: 18 }}>
             <div className="cm-card">
-              <h2>올라가는 판단축 <em>{plan.moved.length}개</em></h2>
+              <h2>올라가는 판단 <em>{plan.moved.length}개</em></h2>
               <p className="cm-num">{plan.moved.length}<small>개 축이 올라갑니다</small></p>
               <p>
                 경험으로 올라갈 수 있는 가장 높은 자리는 <b>직접 수행</b>까지입니다.

@@ -66,6 +66,8 @@ export type ScreenModel = {
   groups?: Group[];
   /** 산업 장면처럼 읽기만 하는 자리의 본문 */
   body?: string[];
+  /** 산업 장면을 묶음으로 내놓는 자리. 산업 이름을 머리에 한 번 적는다 */
+  sections?: { name: string; lines: string[] }[];
   /** 근거 고르기 화면이 쓰는 영역. **사용자에게는 보이지 않는다** */
   domain?: string;
   packs?: PackChoice[];

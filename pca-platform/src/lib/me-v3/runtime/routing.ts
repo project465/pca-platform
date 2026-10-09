@@ -175,13 +175,18 @@ export function branchBlock(
 }
 
 /** 학위 묶음의 머리말과 도움말. 화면이 읽는다 */
-export const BRANCH_COPY: Record<BranchBlock, { eyebrow: string; help: string }> = {
+export const BRANCH_COPY: Record<
+  BranchBlock, { eyebrow: string; ask: string; help: string }
+> = {
   "ug-core": {
     eyebrow: "수업과 과제",
+    /* 문항이 둘인 화면의 큰 글씨. **학위마다 묻는 자리가 다르다** */
+    ask: "수업과 과제에서 무엇을 직접 하셨는지",
     help: "수업, 실험, 캡스톤, 동아리, 인턴을 모두 포함해 답해주세요.",
   },
   "ms-core": {
     eyebrow: "연구와 과제",
+    ask: "연구에서 무엇을 직접 정하셨는지",
     /* **채점이 무엇을 보는지 설명하지 않는다.** 전에는 `난이도를 묻는
        자리가 아니고 직접 정했는지만 봅니다` 였다. 읽는 사람이 받아야
        하는 것은 답하는 법이고, 무엇이 점수가 되는지는 아니다 */
@@ -189,10 +194,12 @@ export const BRANCH_COPY: Record<BranchBlock, { eyebrow: string; help: string }>
   },
   "phd-core": {
     eyebrow: "문제를 세우는 자리",
+    ask: "문제와 가정을 어떻게 세우셨는지",
     help: "가정과 변수와 한계를 누가 정했는지 답해주세요.",
   },
   "postdoc-core": {
     eyebrow: "맡아서 끌고 간 범위",
+    ask: "어디까지 맡아서 끌고 가셨는지",
     help: "혼자 한 범위와 나눠 맡긴 범위를 갈라 답해주세요.",
   },
 };

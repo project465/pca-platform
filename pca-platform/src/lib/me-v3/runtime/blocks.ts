@@ -57,6 +57,14 @@ export type Screen = {
   help?: string;
   /** 산업 장면처럼 읽기만 하는 자리의 본문 */
   body?: string[];
+  /**
+   * 본문을 묶어서 내놓는 자리.
+   *
+   * 산업이 둘이면 여덟 줄이 한 목록으로 섰고, 줄마다 `반도체 — ` 가
+   * 붙어서 같은 말이 넷씩 되풀이됐다. 묶음으로 내놓으면 산업 이름을
+   * 머리에 한 번 적고 줄은 그 아래로 깔린다.
+   */
+  sections?: { name: string; lines: string[] }[];
   /** 이 화면에서 받는 문항. `sweep` 은 열둘, `single` 은 하나 */
   items: string[];
   /** 체크리스트 화면이 쓰는 영역 */
@@ -177,10 +185,30 @@ export type Deps = {
  *
  * **`해 보신 적이 있는 쪽을 골라주세요` 로 두지 않는다.** `쪽` 은 둘 중
  * 하나를 고르라는 말로 읽히는데 실제로는 **둘에 각각 답하는 화면**이다.
- * 그리고 각 상자에는 이제 그 문항의 문면이 질문으로 선다(`page.tsx` 가
+ * 그리고 각 상자에는 그 문항의 문면이 질문으로 선다(`page.tsx` 가
  * 문항이 둘 이상인 화면에 줄을 준다). 머리글은 그 둘을 묶는 틀이다.
+ *
+ * **한 벌로 두지 않는다.** `아래 두 가지에 각각 답해주세요` 가 실제 판단
+ * 스무 화면에 그대로 섰고, 그러면 가장 큰 글씨가 쪽마다 같은 말을 한다.
+ * 묶는 틀을 **그 화면이 묻는 자리의 말**로 적고, 답하는 법은 작은 줄에
+ * 한 번만 둔다.
  */
-const TWO_ASK = "아래 두 가지에 각각 답해주세요";
+/**
+ * 여덟 축이 사람의 말로 묻는 것.
+ *
+ * 축 이름(`직접 판단`)은 무엇을 재는지를 말하고, 이 줄은 **무엇을
+ * 떠올려야 하는지**를 말한다. 큰 글씨 자리에는 뒤엣것이 선다.
+ */
+const AX_ASK: Record<string, string> = {
+  J1: "무엇을 풀 문제로 잡으셨는지",
+  J2: "요구를 어떻게 읽으셨는지",
+  J3: "무엇을 직접 정하셨는지",
+  J4: "어떤 방법과 도구로 하셨는지",
+  J5: "무엇이 남았는지",
+  J6: "무엇과 맞춰 보셨는지",
+  J7: "틀어졌을 때 어떻게 고치셨는지",
+  J8: "그 결과가 어디에 쓰였는지",
+};
 
 /** 등급이 겹쳐 쌓이는 차례. BASIC ⊂ STANDARD ⊂ PRO */
 const TIER_RANK: Record<string, number> = { BASIC: 0, STANDARD: 1, PRO: 2 };
@@ -244,10 +272,9 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
         ? "고른 두 산업에서 기계공학자가 다루는 일"
         : `${scenes[0].sc.name}에서 기계공학자가 다루는 일`,
       help: scenes.map((x) => x.sc.scene).join(" "),
-      /* 산업이 둘이면 어느 산업의 줄인지 앞에 적는다 */
-      body: scenes.length > 1
-        ? scenes.flatMap((x) => x.sc.demands.map((t) => `${x.sc.name} — ${t}`))
-        : scenes[0].sc.demands,
+      /* 산업이 둘이면 묶음 둘로 내놓는다. 줄마다 산업 이름을 다시 적지
+         않는다: 같은 말이 넷씩 되풀이되고 줄이 그만큼 길어진다 */
+      sections: scenes.map((x) => ({ name: x.sc.name, lines: x.sc.demands })),
       items: [],
     });
   }
@@ -330,7 +357,7 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
       required: true, auto: pair.length === 1,
       eyebrow: "일하는 방식",
       question: pair.length > 1
-        ? TWO_ASK
+        ? "일을 맡으면 어떻게 하시는 편인지"
         : wording(pair[0].item_id, input.stage),
       items: pair.map((i) => i.item_id),
     });
@@ -344,8 +371,9 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
       kind: pair.length > 1 ? "pair" : "single",
       required: false, auto: pair.length === 1,
       eyebrow: bc.eyebrow,
+      /* 학위마다 묻는 자리가 다르므로 묶는 틀도 다르다 */
       question: pair.length > 1
-        ? TWO_ASK
+        ? bc.ask
         : wording(pair[0].item_id, input.stage),
       help: n === 0 ? bc.help : undefined,
       items: pair.map((i) => i.item_id),
@@ -409,7 +437,10 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
         required: false, auto: cell.length === 1,
         eyebrow: domainName(td),
         subject: AX_LABEL[ax] ?? "",
-        question: cell.length > 1 ? TWO_ASK
+        /* 묶는 틀에 영역 이름을 넣는다. 열두 영역 × 네 축이 전부 같은
+           큰 글씨를 쓰면 지금 어느 영역을 묻는지가 작은 글씨에만 남는다 */
+        question: cell.length > 1
+          ? `${domainName(td)}에서 ${AX_ASK[ax] ?? "어떻게 하셨는지"}`
           : wording(cell[0].item_id, input.stage),
         items: cell.map((x) => x.item_id), domain: td,
       });
@@ -436,7 +467,7 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
           eyebrow: domainName(td),
           subject: pair.map((i) => AX_LABEL[i.evidence_axis ?? ""] ?? "").join(" · "),
           question: pair.length > 1
-            ? TWO_ASK
+            ? `${domainName(td)}에서 남은 자리를 더 여쭙니다`
             : wording(pair[0].item_id, input.stage),
           items: pair.map((i) => i.item_id), domain: td,
         });

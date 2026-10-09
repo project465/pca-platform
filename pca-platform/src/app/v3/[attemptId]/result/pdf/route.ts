@@ -39,7 +39,7 @@ function sorryPage(attemptId: string): Response {
  .acts { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px }
  a { display:inline-flex; align-items:center; min-height:44px; padding:0 16px;
      border-radius:10px; text-decoration:none; font-weight:600; font-size:14px }
- .main { background:#1d4ed8; color:#fff }
+ .main { background:#1c5fb0; color:#fff }
  .ghost { border:1px solid #e3e7ee; color:#1e2838 }
 </style></head><body><main>
  <h1>지금은 PDF 를 만들지 못했습니다</h1>

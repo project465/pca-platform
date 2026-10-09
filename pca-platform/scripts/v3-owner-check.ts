@@ -329,6 +329,28 @@ async function main(): Promise<void> {
     ok("결과지 PDF 가 뽑힌다", before1.code === 200 && before1.text.length > 1000,
        `${before1.code} · 글자 ${before1.text.length}`);
 
+    /*
+     * **여기는 http 라 `__Secure-` 쿠키를 만들 수 없다.**
+     *
+     * 운영은 https 라 Auth.js 가 로그인 쿠키를 `__Secure-authjs.
+     * session-token` 으로, CSRF 쿠키를 `__Host-authjs.csrf-token` 으로
+     * 짓는다. 그 이름은 **secure 가 켜져 있어야만** 브라우저가 받고,
+     * `domain`+`path` 로 넣으면 크로뮴이 묶음 전체를 거절한다
+     * (`Invalid cookie fields`). 그러면 그리는 브라우저가 로그인하지
+     * 않은 사람이 되어 결과 쪽 대신 로그인 쪽을 받고, 로그에는
+     * `step=render` 로만 남았다. 이 기계에서는 http 라 접두사가 붙지
+     * 않아서 **이 탈이 여기서는 나지 않는다.**
+     *
+     * 그래서 넣는 모양을 글자로 지킨다: `url` 로 넣어야 주소의 scheme
+     * 에서 secure 가 따라온다.
+     */
+    const pdfSrc = readFileSync("src/lib/me-v3/result/pdf.ts", "utf8");
+    const cookieFn = pdfSrc.slice(pdfSrc.indexOf("function cookiesFor"),
+      pdfSrc.indexOf("export async function drawResultPdf"));
+    ok("로그인 쿠키를 `url` 로 넘긴다 (운영의 `__Secure-` 이름)",
+       /url:\s*origin/.test(cookieFn) && !/domain:/.test(cookieFn),
+       "domain·path 로 넣으면 운영에서 묶음 전체가 거절된다");
+
     /* ── 6. 경험을 더해 다시 계산해도 그때 낸 결과지가 그대로다 ───── */
     const before = await queryOne<{ j: string }>(
       `SELECT s.result_model::text AS j FROM v3_snapshots s

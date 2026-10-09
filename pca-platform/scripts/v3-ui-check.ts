@@ -350,10 +350,12 @@ function main(): void {
      atPickIndustry > 0 && atPickIndustry < atFirstSweep,
      `프로필 → 산업(${atPickIndustry + 1}째) → 훑기(${atFirstSweep + 1}째)`);
   const scene = pPro.screens.find((s) => s.kind === "scene");
+  /* 줄은 묶음 안에 있다. 묶음으로 내놓기 전에는 `body` 였다 */
+  const sceneLines = (scene?.sections ?? []).reduce((n, g) => n + g.lines.length,
+    (scene?.body ?? []).length);
   ok("고른 산업의 장면을 문항 앞에서 읽는다",
-     !!scene && (scene.body ?? []).length >= 3 &&
-     order.indexOf(scene.id) < atFirstProbe,
-     scene ? `${scene.subject} · ${(scene.body ?? []).length}줄` : "없다");
+     !!scene && sceneLines >= 3 && order.indexOf(scene.id) < atFirstProbe,
+     scene ? `${scene.subject} · ${sceneLines}줄` : "없다");
 
   /* --- 18. 선별 등급 **화면**의 절반 이상이 실제 판단이다 ---
         V1 은 서른두 화면 가운데 여덟만 판단이었다. 지적이 화면 수로 들어

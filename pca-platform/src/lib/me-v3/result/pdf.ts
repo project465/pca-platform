@@ -32,8 +32,12 @@ export type DrawOpts = {
  * 전에는 부르는 쪽이 `catch {}` 로 받아 `pdf failed` 만 돌려줬다. 그래서
  * 브라우저가 안 뜬 것과 결과 쪽이 500 인 것과 종이를 접다 멈춘 것이
  * 운영 로그에서 **똑같이 생겼고**, 원인을 아무도 알 수 없었다.
+ *
+ * `cookie` 와 `auth` 가 뒤에 더 붙었다. 쿠키를 못 넣은 것과 로그인 쪽으로
+ * 떨어진 것이 전에는 둘 다 `render` 시간 초과로 적혔는데, 그 둘은 결과지
+ * 쪽을 아무리 뒤져도 안 나온다.
  */
-export type PdfStep = "browser" | "open" | "render";
+export type PdfStep = "browser" | "cookie" | "open" | "auth" | "render";
 export class PdfFailed extends Error {
   constructor(readonly step: PdfStep, message: string) {
     super(message);
@@ -73,17 +77,27 @@ export function resolveChromium(): { bin: string | null; tried: string[] } {
   return { bin: null, tried };
 }
 
-/** 쿠키 머리글을 플레이라이트가 받는 모양으로 */
+/**
+ * 쿠키 머리글을 플레이라이트가 받는 모양으로.
+ *
+ * **`domain` 과 `path` 로 적지 않고 `url` 로 적는다.** 운영에서만 나는
+ * 탈이 여기 있었다. 로그인 쿠키의 이름이 https 에서는
+ * `__Secure-authjs.session-token` 인데(Auth.js 가 붙인다), `__Secure-`
+ * 가 붙은 쿠키는 **secure 가 켜져 있어야만** 브라우저가 받는다.
+ * `domain`/`path` 로 적으면 secure 가 꺼진 채로 들어가서 크로뮴이
+ * 그 줄을 버리고, 그리는 브라우저는 로그인하지 않은 사람이 되어
+ * 결과 쪽 대신 로그인 쪽을 받는다. `url` 로 적으면 **주소의 scheme 에서
+ * secure 가 따라오고** `__Host-` 접두사의 조건(도메인 없음 · path `/`)도
+ * 함께 맞는다.
+ *
+ * 로컬은 http 라 이름에 접두사가 붙지 않는다. 그래서 이 탈은 **운영에서만**
+ * 나고, 로그에는 `step=render` 시간 초과로만 남았다.
+ */
 function cookiesFor(header: string, url: string) {
-  const { hostname } = new URL(url);
+  const origin = new URL(url).origin;
   return header.split(";").map((x) => x.trim()).filter(Boolean).map((pair) => {
     const i = pair.indexOf("=");
-    return {
-      name: pair.slice(0, i),
-      value: pair.slice(i + 1),
-      domain: hostname,
-      path: "/",
-    };
+    return { name: pair.slice(0, i), value: pair.slice(i + 1), url: origin };
   }).filter((c) => c.name);
 }
 
@@ -108,7 +122,16 @@ export async function drawResultPdf(opts: DrawOpts): Promise<Buffer> {
       ...(gate ? { httpCredentials: { username: gate.user, password: gate.pass } } : {}),
     });
     const base = opts.baseUrl.replace(/\/$/, "");
-    if (opts.cookie) await ctx.addCookies(cookiesFor(opts.cookie, base));
+    if (opts.cookie) {
+      try {
+        await ctx.addCookies(cookiesFor(opts.cookie, base));
+      } catch (e) {
+        /* 쿠키를 못 넣으면 그 다음은 전부 로그인 쪽이다. 여기서 끊어야
+           로그에 `왜` 가 남는다 */
+        throw new PdfFailed("cookie",
+          `로그인 쿠키를 넘기지 못했습니다: ${(e as Error).message.split("\n")[0]}`);
+      }
+    }
     const page = await ctx.newPage();
     const url = `${base}/v3/${encodeURIComponent(opts.attemptId)}/result`;
     /* **`networkidle` 로 기다리지 않는다.** 결과 쪽에는 Next 가 화면에
@@ -126,6 +149,15 @@ export async function drawResultPdf(opts: DrawOpts): Promise<Buffer> {
     if (!res || res.status() !== 200) {
       throw new PdfFailed("open",
         `결과 쪽이 ${res ? res.status() : 0} 입니다 (${url})`);
+    }
+    /* **로그인 쪽으로 떨어진 것을 본문 없음으로 적지 않는다.** 쿠키가
+       안 넘어가면 결과 쪽이 아니라 로그인 쪽이 200 으로 열리고, 그러면
+       아래의 기다림이 20초를 쓰고 `본문이 서지 않았습니다` 로 끝난다.
+       고치는 사람은 그 줄을 보고 결과지를 뒤진다 */
+    const landed = page.url();
+    if (!landed.includes(`/v3/${opts.attemptId}/result`)) {
+      throw new PdfFailed("auth",
+        `로그인 쪽으로 떨어졌습니다: ${landed.slice(0, 120)}`);
     }
     try {
       await page.waitForSelector(".rs-main .rs-sect", { timeout: 20000 });

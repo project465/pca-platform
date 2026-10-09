@@ -28,7 +28,7 @@ export default async function Experiences() {
       {pending > 0 ? (
         <div className="cm-soon" style={{ marginBottom: 18 }}>
           <b>다시 계산할 일이 {pending}건 쌓여 있습니다.</b> 적어 두신 경험이
-          어느 판단축으로 가고 묶음이 어떻게 달라지는지 먼저 보시고 반영하실
+          어느 판단으로 가고 묶음이 어떻게 달라지는지 먼저 보시고 반영하실
           수 있습니다.
           <p style={{ marginTop: 10 }}>
             <Link href="/me/recompute">새 경험 반영하기</Link>

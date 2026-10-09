@@ -185,6 +185,10 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 .cm-soon b { color: var(--sf-ink); }
 .cm-soon ul { margin: 10px 0 0; padding-left: 18px; }
 .cm-soon li { margin: 4px 0; }
+/* 줄 끝에 왜 아직인지 작게 적는다. **줄마다 단추를 달지 않는다** */
+.cm-soon li em {
+  font-style: normal; font-size: 12.5px; color: var(--sf-ink-3); margin-left: 6px;
+}
 
 /* ── 적는 카드 ────────────────────────────────────────────────────── */
 

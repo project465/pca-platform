@@ -198,7 +198,18 @@ export default function Screen({
               <span className="now">{prog.now}</span>
               {prog.next ? <><i>›</i><span className="next">{prog.next}</span></> : null}
             </span>
-            <span className="qs-count">{prog.inStage.index} / {prog.inStage.total}</span>
+            {/* **저장 상태는 머리띠에 둔다**(§27). 아래 단추 띠에 두면
+                `답변은 자동으로 저장됩니다` 가 다음 걸음 바로 옆에서
+                쪽마다 읽히고, 그 자리의 한 가지 행동이 흐려진다. 여기서는
+                움직일 때만 글자가 바뀌고 평소에는 `저장됨` 한 마디다 */}
+            <span className="qs-count">
+              {mid ? null : (
+                <small className="qs-save">
+                  {saving > 0 ? "저장 중" : sent ? "저장됨" : "자동 저장"}
+                </small>
+              )}
+              {prog.inStage.index} / {prog.inStage.total}
+            </span>
           </div>
           <div className="qs-bar" role="progressbar" aria-valuenow={prog.percent}
             aria-valuemin={0} aria-valuemax={100}
@@ -221,20 +232,29 @@ export default function Screen({
         {/* 전환 화면의 도움말은 **이제 볼 영역의 목록**이다. 한 줄로 이어
             붙이면 가운뎃점으로 묶인 긴 문장이 되고, 쉬는 자리가 빈 화면이
             된다. 줄로 세우면 무엇을 보러 가는지가 그대로 읽힌다 */}
+        {/* 전환 화면의 도움말은 **이제 볼 영역의 이름**이다.
+            **번호를 붙이지 않는다**: 1·2·3 을 큼직하게 세우면 안쪽에서
+            순서를 정해 둔 설계도가 그대로 화면이 되고, 응시자는 그것을
+            해야 할 일 목록으로 읽는다. 쉬어 가는 자리에 할 일 세 개를
+            세울 까닭이 없다 */}
         {s.kind === "transition" && s.help ? (
-          <ul className="qs-strip">
-            {s.help.split(" · ").map((x, i) => (
-              <li key={x}><small>{i + 1}</small>{x}</li>
-            ))}
-          </ul>
+          <p className="qs-next">
+            <span>이제 볼 영역</span>
+            {s.help.split(" · ").map((x) => <b key={x}>{x}</b>)}
+          </p>
         ) : s.help ? <p className="qs-help">{s.help}</p> : null}
 
         {/* 산업 장면. 한 절을 먼저 읽고 그 산업이 요구하는 것을 줄로 본다.
             **점수를 만들지 않는다**: 묻기 전에 읽히는 자리다 */}
-        {s.kind === "scene" && s.body ? (
-          <ul className="qs-scene">
-            {s.body.map((x) => <li key={x}>{x}</li>)}
-          </ul>
+        {s.kind === "scene" && (s.sections?.length || s.body?.length) ? (
+          <div className="qs-scene">
+            {(s.sections ?? [{ name: "", lines: s.body ?? [] }]).map((g) => (
+              <section key={g.name}>
+                {g.name ? <h2>{g.name}</h2> : null}
+                <ul>{g.lines.map((x) => <li key={x}>{x}</li>)}</ul>
+              </section>
+            ))}
+          </div>
         ) : null}
 
         {/* ── 기본 정보를 고치는 자리 ── */}
@@ -363,6 +383,7 @@ export default function Screen({
               <span className="qs-grow" />
               <span className="qs-hint">해당하는 것만 골라주세요. 없으면 넘어가도 됩니다</span>
             </p>
+            <div className="qs-groups">
             {s.groups.map((g) => {
               const on = picks[g.slot] ?? [];
               return (
@@ -386,6 +407,7 @@ export default function Screen({
                 </div>
               );
             })}
+            </div>
           </>
         ) : null}
 
@@ -497,10 +519,7 @@ export default function Screen({
               다음 걸음 옆에 선다 */}
           {warn && !offCore
             ? <span className="qs-need">답을 고른 뒤 다음으로 넘어가세요</span>
-            : mid ? null
-              : saving > 0 ? <span className="qs-save">저장 중</span>
-                : sent ? <span className="qs-save">저장됨</span>
-                  : <span className="qs-save">답변은 자동으로 저장됩니다</span>}
+            : null}
           {s.kind === "done" ? (
             s.done ? (
               <a className="qs-btn qs-btn-main" href={`/v3/${s.attemptId}/result`}>결과 보기</a>
@@ -638,13 +657,13 @@ function Sweep({
     <fieldset className="qs-sw">
       <legend>{f.label ?? ""}</legend>
       <span className="qs-sw-row" aria-hidden>{f.label}</span>
-      <div className="qs-steps" data-n={steps.length}>
+      <div className="qs-grade" data-n={steps.length}>
         {steps.map((o) => {
           const on = value === o.value;
           return (
             /* **숫자를 적지 않는다.** 1에서 5를 그리면 심리검사 표가 되고,
                뜻은 격자 머리에 한 번 적혀 있다 */
-            <label key={o.label} className={`qs-step${on ? " is-on" : ""}`}
+            <label key={o.label} className={`qs-grade-b${on ? " is-on" : ""}`}
               title={o.label}>
               <input type="radio" name={f.itemId} checked={on}
                 aria-label={`${f.label ?? ""} · ${o.label}`} onChange={pick(o)} />
@@ -654,7 +673,7 @@ function Sweep({
         })}
       </div>
       {esc ? (
-        <label className={`qs-esc${value === UNKNOWN ? " is-on" : ""}`} title={esc.label}>
+        <label className={`qs-grade-esc${value === UNKNOWN ? " is-on" : ""}`} title={esc.label}>
           <input type="radio" name={f.itemId} checked={value === UNKNOWN}
             aria-label={`${f.label ?? ""} · ${esc.label}`} onChange={pick(esc)} />
           {esc.short}

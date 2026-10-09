@@ -3,7 +3,7 @@ import { requireUser } from "@/lib/session";
 import { OWNERSHIP } from "@/lib/me-v3/scoring/ownership";
 import { controlOf } from "@/lib/me-v3/runtime/menus";
 import {
-  answersOf, attemptOf, axisLabel, checklistFor, content, domainName,
+  answersOf, attemptOf, axisAsk, checklistFor, content, domainName,
   industryChoices, itemOf, menuContextOf, moveTo, optionGuidance, orgChoices,
   roleChoices, viewOf, wordingOf,
 } from "@/lib/me-v3/runtime/session";
@@ -102,7 +102,7 @@ export default async function V3Screen({
         slot: g.slot,
         /* 묶음마다 `· 내가 정한 것` 을 되풀이하지 않는다. 그 말은 질문이
            이미 하고 있고, 열 번 되풀이되면 묶음 이름이 안 읽힌다 */
-        label: g.slot === "ARTIFACT" || g.slot === "VERIFY" ? g.label : axisLabel(g.slot),
+        label: g.slot === "ARTIFACT" || g.slot === "VERIFY" ? g.label : axisAsk(g.slot),
         items: g.items,
         picked: g.slot === "ARTIFACT" ? (v.picks.artifacts[dom] ?? [])
           : g.slot === "VERIFY" ? (v.picks.verifications[dom] ?? [])
@@ -150,6 +150,7 @@ export default async function V3Screen({
     fields,
     groups,
     body: sc.body,
+    sections: sc.sections,
     domain: sc.domain,
     packs,
     pickKind,
