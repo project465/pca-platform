@@ -9,10 +9,10 @@
  */
 
 /** 화면 구조와 상호작용. 흐름이나 화면이 바뀌면 올린다 */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V4";
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V5";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
-export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.6";
+export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.7";
 
 /*
  * `V2` 로 올린 까닭. **화면 수를 줄였다.** PRO 가 106화면이었고, 자동 진행
@@ -114,4 +114,24 @@ export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.6";
  * **채점 판본은 올리지 않는다**: `band()` 와 그것을 읽는 자리가 한 줄도
  * 바뀌지 않았고 옛 응답이 같은 묶음으로 간다. 가린 자리는
  * `docs/metri/80_scale_gate.md`.
+ */
+
+/**
+ * V5 에서 바꾼 것 (2026-10-09).
+ *
+ * **Visual Productization Pass.** 묻는 것과 받는 값과 판정은 한 줄도 바뀌지
+ * 않았다. 바뀐 것은 같은 것을 어떤 크기와 어떤 간격과 어떤 폭으로
+ * 내보내는가다.
+ *
+ *   · 토큰을 `surface.css` 의 `--ui-*` 한 벌로 모았다. 활자 여섯 단 ·
+ *     여백 여덟 · 둥글기 셋 · 선 셋 · 폭 셋. `--q-*` 는 별명표가 됐다
+ *   · 폭 토큰이 셋이다: 읽는 자리 760 · 견주는 자리 920 · 근거 1040
+ *   · 머리띠가 세 줄에서 한 줄과 2px 막대로 접혔다
+ *   · 보기 넷의 화면 문면을 줄이고(`OWNERSHIP_LABEL`) 긴 뜻풀이를
+ *     `보기가 어떻게 갈리나요` 안으로 내렸다. **은행은 그대로다**
+ *   · 고른 줄이 옅어졌다: 동그라미와 테만 파랑이고 글자는 본문 색
+ *   · 전환 화면이 머리말 · 제목 · 한 줄 · 칩 한 줄로 줄고 한 판 위에 섰다
+ *   · 근거 고르기가 묶음별로 접힌다(고른 것이 있는 묶음만 펼침)
+ *   · 축 이름(`산출물` · `직접 판단`)을 응시 화면에서 걷었다
+ *   · 저장 실패가 눌러서 다시 보내는 자리가 됐다
  */

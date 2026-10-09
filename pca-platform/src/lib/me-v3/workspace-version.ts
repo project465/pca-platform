@@ -61,7 +61,7 @@
  *   들어오는 길이 지금 무엇인지 적지 않으면 구글로 가입하신 분이
  *   비밀번호 찾기를 누르고 메일을 기다린다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V4";
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V5";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -70,4 +70,18 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V4";
  * `설명할 수 있는 경험`, Gap 은 `아직 비어 있는 자리`, Action 은 `다음
  * 할 일`, recompute 는 `새 경험 반영하기` 다.
  */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.3";
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.4";
+
+/**
+ * V5 에서 바꾼 것 (2026-10-09).
+ *
+ *   · 토큰을 `--ui-*` 한 벌로 모았다(활자 · 여백 · 둥글기 · 선 · 색)
+ *   · 홈의 2차 묶음 넷을 카드 넷에서 **판 하나와 선**으로 바꿨다
+ *   · 짙은 단추를 쪽마다 하나로 줄였다
+ *   · 띠 이름을 `현재 상태` · `산업·직무` · `지역·기관` · `지원 기록` 으로
+ *     맞추고 `준비 중` 꼬리표를 걷었다
+ *   · Track 에서 아직 없는 기능 여섯 줄을 걷고 한 문장과 링크 둘로 줄였다
+ *   · 점선 테두리를 걷었다. 빈 카드는 꺼진 면으로 선다
+ *   · 손님이 보는 오류 화면과 없는 쪽을 세웠다(`/app/error.tsx` ·
+ *     `not-found.tsx`). 개발용 화면이 손님에게 나가지 않는다
+ */

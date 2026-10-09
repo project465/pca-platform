@@ -29,6 +29,7 @@ for (const line of (() => {
 import { chromium, type Browser, type BrowserContext, type Page } from "playwright";
 import { query, queryOne } from "../src/lib/db";
 import { hashPassword } from "../src/lib/password";
+import { CM_NAV } from "../src/app/me/nav";
 
 const B = (process.env.UI_BASE || process.env.BASE
   || "http://127.0.0.1:3000").replace(/\/$/, "");
@@ -124,8 +125,10 @@ async function main(): Promise<void> {
     ok("학생이 로그인하면 작업공간으로 간다", at === "/me", at);
 
     const nav = await p.$eval("body", (e) => e.textContent ?? "").catch(() => "");
+    /* 띠의 이름은 `me/nav.ts` 가 들고 있다. 여기 글자로 적어 두면 이름을
+       고친 날 멀쩡한 화면이 걸린다 */
     ok("작업공간 띠가 선다",
-      /홈/.test(nav) && /검사/.test(nav) && /지금 상태/.test(nav));
+      CM_NAV.every((x) => nav.includes(x.label)), `줄 ${CM_NAV.length}`);
     ok("검사 전인 사람에게 옛 검사가 주된 길로 서지 않는다",
       !(await p.$('a[href="/test"], a[href^="/test?"]')));
 
