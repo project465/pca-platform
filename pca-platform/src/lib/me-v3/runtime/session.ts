@@ -184,9 +184,9 @@ const AXIS_ASK: Record<string, string> = {
   J3: "직접 정한 것",
   J4: "쓴 방법과 도구",
   J5: "남긴 결과물",
-  J6: "맞춰 보고 확인한 일",
-  J7: "틀어진 뒤 고친 일",
-  J8: "그 결과가 쓰인 자리",
+  J6: "비교하고 확인한 것",
+  J7: "문제가 생겼을 때",
+  J8: "결과가 실제로 쓰인 곳",
 };
 export function axisAsk(a: string): string { return AXIS_ASK[a] ?? axisLabel(a); }
 

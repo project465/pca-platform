@@ -58,6 +58,14 @@ export type Screen = {
   /** 산업 장면처럼 읽기만 하는 자리의 본문 */
   body?: string[];
   /**
+   * 전환 화면이 `이 다음에 무엇을 보는가` 를 적는 자리.
+   *
+   * 영역 이름 셋을 가운뎃점으로 이어 한 줄로 두었더니 그 줄이 설명문처럼
+   * 읽혔다. 칩으로 깔면 **목록이라는 것이 모양으로 읽히고** 줄 수가
+   * 늘지 않는다. 읽기만 하는 자리라 고를 수 없다.
+   */
+  chips?: string[];
+  /**
    * 본문을 묶어서 내놓는 자리.
    *
    * 산업이 둘이면 여덟 줄이 한 목록으로 섰고, 줄마다 `반도체 — ` 가
@@ -157,10 +165,8 @@ const TRANS_GROUPS = [
     question: "그 결과가 쓰인 자리를 골라주세요" },
 ] as const;
 
-const AX_LABEL: Record<string, string> = {
-  J1: "문제 정의", J2: "요구 해석", J3: "직접 판단", J4: "방법과 도구",
-  J5: "산출물", J6: "비교와 검증", J7: "실패와 수정", J8: "조직 활용",
-};
+/* 여덟 축의 **재는 이름**은 결과를 되짚는 자리(축 이름 · 운영 표)에만
+   남는다. 응시 화면에는 아래 `AX_ASK` 가 선다(규격 §12·§34) */
 
 export type IndustryScene = {
   code: string; name: string; scene: string; demands: string[];
@@ -266,15 +272,18 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
       id: "scene", stage: "FIELD", kind: "scene",
       required: false, auto: false,
       pack: scenes[0].code,
-      eyebrow: "산업 장면",
-      subject: scenes.map((x) => x.sc.name).join(" · "),
+      eyebrow: "관심 산업",
       question: scenes.length > 1
         ? "고른 두 산업에서 기계공학자가 다루는 일"
         : `${scenes[0].sc.name}에서 기계공학자가 다루는 일`,
-      help: scenes.map((x) => x.sc.scene).join(" "),
-      /* 산업이 둘이면 묶음 둘로 내놓는다. 줄마다 산업 이름을 다시 적지
-         않는다: 같은 말이 넷씩 되풀이되고 줄이 그만큼 길어진다 */
-      sections: scenes.map((x) => ({ name: x.sc.name, lines: x.sc.demands })),
+      help: "이 틀을 가지고 다음 질문을 읽으시면 됩니다.",
+      /* **산업마다 카드 하나이고 줄은 셋까지다**(규격 §6).
+         앞 판본은 산업 설명 한 문단(`scene`)을 큰 글씨 아래에 깔고 그
+         아래에 요구 네 줄을 세워서, 고르기만 하면 되는 자리가 읽을거리
+         두 덩이가 됐다. 설명 문단을 걷고 줄을 셋으로 끊으면 두 산업이
+         **나란히 견주어진다**: 이 자리가 있는 까닭이 그것이다.
+         줄마다 산업 이름을 다시 적지 않는다: 같은 말이 셋씩 되풀이된다 */
+      sections: scenes.map((x) => ({ name: x.sc.name, lines: x.sc.demands.slice(0, 3) })),
       items: [],
     });
   }
@@ -389,11 +398,11 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
       add({
         id: "t-xfield", stage: "JUDGE", kind: "transition",
         required: false, auto: false,
-        subject: "대학원 경험은 따로 받습니다",
-        question: "대학원에서의 경험을 조금 더 확인하겠습니다",
-        help: ["대학원에서 다룬 분야", "그 방법 가운데 옮겨 쓸 수 있는 것",
-               "기계공학 쪽 작업을 마지막으로 한 때", "학부에서 가장 깊게 간 작업"]
-          .join(" · "),
+        eyebrow: "대학원 경험",
+        question: "대학원 경험을 따로 확인합니다",
+        help: "이 전공을 받으실 수 있게 하려고 묻는 자리입니다.",
+        chips: ["다룬 분야", "옮겨 쓸 수 있는 방법", "기계공학 작업 시점",
+                "학부에서 깊게 간 작업"],
         items: [],
       });
     }
@@ -413,9 +422,10 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
   if (input.probe.length) {
     add({
       id: "t-judge", stage: "JUDGE", kind: "transition", required: false, auto: false,
-      subject: "영역 훑기가 끝났습니다",
-      question: "해 보신 영역을 실제 업무 장면으로 묻습니다",
-      help: `${input.probe.map(domainName).join(" · ")}`,
+      eyebrow: "영역 훑기 완료",
+      question: "이제 실제 경험을 확인합니다",
+      help: "아래 영역을 하나씩 묻습니다.",
+      chips: input.probe.map(domainName),
       items: [],
     });
   }
@@ -435,12 +445,14 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
         id: `probe-${td}-${ax}`, stage: "JUDGE",
         kind: cell.length > 1 ? "pair" : "single",
         required: false, auto: cell.length === 1,
+        /* **영역은 머리말에 한 번만 적는다.** 한동안 머리말에 영역을 적고
+           그 아래에 축 이름(`산출물`)을 적고 큰 글씨에 영역을 또 적었다.
+           같은 말이 한 화면에 두 번 서고, 그 사이에 **우리가 무엇을 재는지
+           가리키는 이름**이 끼었다. 응시자가 읽어야 하는 것은 자기 경험을
+           떠올릴 틀이지 우리 분류가 아니다(규격 §12·§34) */
         eyebrow: domainName(td),
-        subject: AX_LABEL[ax] ?? "",
-        /* 묶는 틀에 영역 이름을 넣는다. 열두 영역 × 네 축이 전부 같은
-           큰 글씨를 쓰면 지금 어느 영역을 묻는지가 작은 글씨에만 남는다 */
         question: cell.length > 1
-          ? `${domainName(td)}에서 ${AX_ASK[ax] ?? "어떻게 하셨는지"}`
+          ? (AX_ASK[ax] ?? "어떻게 하셨는지")
           : wording(cell[0].item_id, input.stage),
         items: cell.map((x) => x.item_id), domain: td,
       });
@@ -451,9 +463,10 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
   if (input.tier !== "BASIC" && input.deep.length) {
     add({
       id: "t-deep", stage: "DEEP", kind: "transition", required: false, auto: false,
-      subject: "실제 판단을 받았습니다",
-      question: "같은 영역을 남은 네 축으로 더 묻습니다",
-      help: `${input.deep.map(domainName).join(" · ")}`,
+      eyebrow: "실제 경험 완료",
+      question: "같은 영역을 조금 더 묻습니다",
+      help: "남은 자리를 채우는 질문입니다.",
+      chips: input.deep.map(domainName),
       items: [],
     });
     for (const td of input.deep) {
@@ -465,9 +478,8 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
           kind: pair.length > 1 ? "pair" : "single",
           required: false, auto: pair.length === 1,
           eyebrow: domainName(td),
-          subject: pair.map((i) => AX_LABEL[i.evidence_axis ?? ""] ?? "").join(" · "),
           question: pair.length > 1
-            ? `${domainName(td)}에서 남은 자리를 더 여쭙니다`
+            ? pair.map((i) => AX_ASK[i.evidence_axis ?? ""] ?? "").filter(Boolean).join(" · ")
             : wording(pair[0].item_id, input.stage),
           items: pair.map((i) => i.item_id), domain: td,
         });
@@ -535,7 +547,6 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
           id: `role-${i.item_id}`, stage: "PACK", kind: "single",
           required: false, auto: true, pack: code,
           eyebrow: d.roleName(code),
-          subject: AX_LABEL[i.evidence_axis ?? ""] ?? "",
           question: wording(i.item_id, input.stage),
           items: [i.item_id],
         });
@@ -562,9 +573,9 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
     if (list.length) {
       add({
         id: "t-industry", stage: "PACK", kind: "transition", required: false, auto: false,
-        subject: `${sc?.name ?? ""} 쪽을 더 봅니다`,
-        question: "그 산업에서 실제로 달라지는 판단을 묻습니다",
-        help: "산업 용어를 모르셔도 됩니다. 질문마다 쉬운 말로 다시 적어 둡니다.",
+        eyebrow: sc?.name ?? "산업",
+        question: "이 산업에서 달라지는 판단을 묻습니다",
+        help: "용어를 모르셔도 됩니다. 질문마다 쉬운 말을 같이 적어 둡니다.",
         items: [],
       });
     }
@@ -573,7 +584,6 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
         id: `ind-${i.item_id}`, stage: "PACK", kind: "single",
         required: false, auto: true, pack: deepIndustry,
         eyebrow: sc?.name ?? "산업 판단",
-        subject: AX_LABEL[i.evidence_axis ?? ""] ?? "",
         question: wording(i.item_id, input.stage),
         help: d.gloss(i.item_id) ?? undefined,
         items: [i.item_id],
@@ -585,9 +595,10 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
   if (input.tier === "PRO") {
     add({
       id: "t-trans", stage: "TRANSLATE", kind: "transition", required: false, auto: false,
-      subject: "경험 번역을 시작합니다",
+      eyebrow: "경험 번역",
       question: "연구나 프로젝트 하나를 떠올려주세요",
-      help: "열 단계로 나누어 묻습니다. 직접 적는 칸은 건너뛰어도 됩니다.",
+      help: "그 하나를 네 화면에 나누어 묻습니다.",
+      chips: ["문제와 조건", "쓴 방법", "남긴 것", "쓰인 자리"],
       items: [],
     });
     /* **열 단계를 열 화면으로 띄우지 않는다.** 한 경험을 열 번 끊어 물으면
@@ -621,7 +632,7 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
 
   add({
     id: "done", stage: "DONE", kind: "done", required: false, auto: false,
-    subject: "응답이 모두 끝났습니다", question: "결과를 만들 준비가 됐습니다",
+    eyebrow: "응답 완료", question: "결과를 만들 준비가 됐습니다",
     items: [],
   });
 

@@ -15,18 +15,26 @@ export type Field = {
   control: Control;
   value: number | string | null;
   note?: string;
-  /** 보기마다 붙는 짧은 뜻. 보기 넷에서만 쓴다 */
+  /**
+   * 화면에 적는 보기 문면.
+   *
+   * 보기 넷에서만 쓴다. 비어 있으면 은행 문면을 그대로 세운다.
+   * **은행을 고치지 않고 화면만 줄이는 자리다**: 네 단계의 뜻과 판정은
+   * `scoring/ownership.ts` 와 문항 은행이 들고 있다.
+   */
+  optionLabel?: string[];
+  /** 보기 아래 작은 회색 한 마디. 보기 넷에서만 쓴다 */
   optionHelp?: string[];
   /**
-   * 접어 둘 뜻풀이.
+   * `보기가 어떻게 갈리나요` 안에 들어가는 긴 뜻풀이.
    *
-   * 보기 넷을 처음 만나는 화면에서는 `optionHelp` 로 펼치고, 그 뒤에는
-   * 여기로 와서 **접힌 자리**에 선다. 개념은 그대로 두고 매번 다시 읽지
-   * 않게 하는 자리다.
+   * 보기 옆에 깔지 않는 까닭은 선별 등급에서만 스물여덟 화면에 똑같은
+   * 네 줄이 서고, 그러면 아무도 읽지 않기 때문이다. **hover 로만 보여
+   * 주지도 않는다**(규격 §44): 접힌 자리는 눌러서 열린다.
    */
   optionHelpFold?: string[];
-  /** 보기마다 붙는 네 글자 꼬리표. 보기 넷에서만 쓴다 */
-  optionTag?: string[];
+  /** 보기 넷을 처음 만나는 화면에서만 펼쳐 둔다 */
+  optionFoldOpen?: boolean;
 };
 
 export type Group = {
@@ -66,6 +74,8 @@ export type ScreenModel = {
   groups?: Group[];
   /** 산업 장면처럼 읽기만 하는 자리의 본문 */
   body?: string[];
+  /** 전환 화면이 `이 다음에 무엇을 보는가` 를 적는 칩. 고를 수 없다 */
+  chips?: string[];
   /** 산업 장면을 묶음으로 내놓는 자리. 산업 이름을 머리에 한 번 적는다 */
   sections?: { name: string; lines: string[] }[];
   /** 근거 고르기 화면이 쓰는 영역. **사용자에게는 보이지 않는다** */

@@ -32,7 +32,7 @@ import {
   wordingOf,
 } from "../src/lib/me-v3/runtime/session";
 import {
-  INDUSTRY_HINT, ORG_HINT, OWNERSHIP_TAG, ROLE_HINT, TIER_WHAT,
+  INDUSTRY_HINT, ORG_HINT, OWNERSHIP_HELP, OWNERSHIP_LABEL, ROLE_HINT, TIER_WHAT,
 } from "../src/app/v3/tier-text";
 import type { GradField, Stage, Tier } from "../src/lib/me-v3/scoring/types";
 
@@ -211,8 +211,13 @@ for (const [k, v] of Object.entries({ ...INDUSTRY_HINT, ...ROLE_HINT, ...ORG_HIN
   if (CODE.test(v)) flag(`팩 설명에 내부 코드 — ${k}: ${v}`);
   if (v.length > 34) flag(`팩 설명이 길다(${v.length}자) — ${k}: ${v}`);
 }
-for (const t of OWNERSHIP_TAG) {
-  if (t.length > 8) flag(`보기 꼬리표가 길다(${t.length}자) — ${t}`);
+/* 보기 넷을 화면에 적는 말. **한 줄에 들어와야 한다**: 두 줄로 접히면
+   둘째와 셋째를 눈으로 가르는 자리가 사라진다 */
+for (const t of OWNERSHIP_LABEL) {
+  if (t.length > 14) flag(`보기 문면이 길다(${t.length}자) — ${t}`);
+}
+for (const t of OWNERSHIP_HELP) {
+  if (t.length > 12) flag(`보기 아래 한 마디가 길다(${t.length}자) — ${t}`);
 }
 for (const [k, v] of Object.entries(TIER_WHAT)) {
   if (CODE.test(v.what)) flag(`등급 설명에 내부 코드 — ${k}`);

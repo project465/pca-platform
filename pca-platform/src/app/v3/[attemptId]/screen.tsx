@@ -65,6 +65,15 @@ export default function Screen({
   const [saving, setSaving] = useState(0);
   /* 한 번도 보내지 않았는데 `저장됨` 이라고 적지 않는다 */
   const [sent, setSent] = useState(false);
+  /**
+   * 저장이 실패한 자리. **조용히 지나가지 않는다**(규격 §39).
+   *
+   * 앞 판본은 `.finally` 로 `저장됨` 을 늘 켰다. 서버가 거절해도 머리띠는
+   * `저장됨` 이었고, 응시자는 끝까지 풀고 나서 답이 비어 있는 결과를
+   * 받는다. 지금은 실패한 호출을 들고 있다가 눌러서 다시 보낸다.
+   */
+  const [failed, setFailed] = useState(false);
+  const lastRun = useRef<(() => Promise<unknown>) | null>(null);
   const [moving, setMoving] = useState(false);
   const [warn, setWarn] = useState(false);
   const queue = useRef<Promise<unknown>>(Promise.resolve());
@@ -72,10 +81,20 @@ export default function Screen({
   /** 보내는 것을 줄 세운다. 둘이 겹치면 늦게 끝난 쪽이 먼저 끝난 쪽을 덮는다 */
   const push = useCallback((run: () => Promise<unknown>) => {
     setSaving((n) => n + 1);
-    queue.current = queue.current.then(run)
-      .finally(() => { setSaving((n) => n - 1); setSent(true); });
+    queue.current = queue.current
+      .then(run)
+      .then(() => { setFailed(false); setSent(true); },
+        () => { lastRun.current = run; setFailed(true); })
+      .finally(() => setSaving((n) => n - 1));
     return queue.current;
   }, []);
+
+  /** 실패한 저장을 다시 보낸다. 같은 호출을 그대로 쓴다 */
+  const retrySave = useCallback(() => {
+    const run = lastRun.current;
+    if (!run) { setFailed(false); return; }
+    push(run);
+  }, [push]);
 
   const setAnswer = (f: Field, raw: number | string, a: Answer) => {
     setVals((v) => ({ ...v, [f.itemId]: raw }));
@@ -178,38 +197,45 @@ export default function Screen({
   };
 
   const mid = s.kind === "transition" || s.kind === "done" || s.kind === "scene";
-  /* **폭을 화면 성격으로 가른다.** 질문은 좁게 모으고, 고르거나 훑거나
-     쉬는 자리는 넓게 편다 */
-  const wide = s.kind === "checklist" || s.kind === "sweep" || !!s.pickKind;
-  const width = wide ? " is-explore"
+  /* **폭 토큰은 셋뿐이다**(규격 §29): 읽는 자리 760 · 견주는 자리 920 ·
+     근거를 훑는 자리 1040. 질문과 전환은 760 에서 시작하므로 글이 시작하는
+     자리가 같고, 넓어지는 것은 한눈에 견주어야 하는 자리뿐이다 */
+  const width = s.kind === "checklist" ? " is-evidence"
+    : (s.kind === "sweep" || !!s.pickKind) ? " is-explore"
     : (s.kind === "transition" || s.kind === "done") ? " is-calm" : "";
 
   return (
     <div className={`qs${width}`}>
+      {/* **머리띠는 한 줄과 막대 하나다**(규격 §13).
+          브랜드 · 지나온 단계와 지금 · 등급과 몇째인가가 한 줄에 서고 그
+          아래에 2px 막대가 눕는다. 한동안 세 줄이었다: 브랜드와 등급 ·
+          단계와 번호 · 막대. 질문 위에 띠가 세 겹 눕고 질문이 화면의
+          절반 아래로 밀렸다. **탭 밑줄과 진행 막대를 같이 두지 않는다**:
+          가로선이 둘이면 어느 것이 진행인지 읽히지 않는다 */}
       <header className="qs-head">
         <div className="qs-head-in">
           <div className="qs-top">
             <span className="qs-brand">CareerMatri</span>
-            <span className="qs-tier">{tier} · <b>{tierLabel}</b></span>
-          </div>
-          <div className="qs-prog">
             <span className="qs-crumb">
               {prog.prev ? <><span className="prev">{prog.prev}</span><i>›</i></> : null}
               <span className="now">{prog.now}</span>
               {prog.next ? <><i>›</i><span className="next">{prog.next}</span></> : null}
             </span>
-            {/* **저장 상태는 머리띠에 둔다**(§27). 아래 단추 띠에 두면
+            {/* **저장 상태는 머리띠에 둔다**(§14). 아래 단추 띠에 두면
                 `답변은 자동으로 저장됩니다` 가 다음 걸음 바로 옆에서
                 쪽마다 읽히고, 그 자리의 한 가지 행동이 흐려진다. 여기서는
                 움직일 때만 글자가 바뀌고 평소에는 `저장됨` 한 마디다 */}
-            <span className="qs-count">
-              {mid ? null : (
-                <small className="qs-save">
-                  {saving > 0 ? "저장 중" : sent ? "저장됨" : "자동 저장"}
-                </small>
-              )}
-              {prog.inStage.index} / {prog.inStage.total}
-            </span>
+            {mid ? null : failed ? (
+              <button type="button" className="qs-save is-bad" onClick={retrySave}>
+                저장 실패 · 다시 시도
+              </button>
+            ) : (
+              <small className="qs-save">
+                {saving > 0 ? "저장 중" : sent ? "저장됨" : "자동 저장"}
+              </small>
+            )}
+            <span className="qs-tier">{tierLabel}</span>
+            <span className="qs-count">{prog.inStage.index} / {prog.inStage.total}</span>
           </div>
           <div className="qs-bar" role="progressbar" aria-valuenow={prog.percent}
             aria-valuemin={0} aria-valuemax={100}
@@ -220,6 +246,11 @@ export default function Screen({
       </header>
 
       <main className={`qs-main${mid ? " qs-mid" : ""}`}>
+        {/* **쉬는 자리는 한 판 위에 올린다.** 전환과 완료는 글이 네 줄이라
+            넓은 바탕 위에 떠 있으면 덜 그린 화면으로 읽힌다. 테와 안쪽
+            여백을 두르면 같은 글이 **의도한 한 걸음**으로 읽히고, 그 판의
+            높이가 질문 화면의 절반을 넘지 않는다(규격 §5·§25) */}
+        <div className={mid ? "qs-brief" : "qs-plain"}>
         {s.eyebrow ? <p className="qs-eyebrow">{s.eyebrow}</p> : null}
         {s.subject ? <p className="qs-subject">{s.subject}</p> : null}
         {/* 완료 화면의 머리글은 제출 전과 뒤가 다르다. **다 푼 사람에게
@@ -229,20 +260,19 @@ export default function Screen({
             {s.kind === "done" && s.done ? "내 CareerMatri가 만들어졌습니다" : s.question}
           </h1>
         ) : null}
-        {/* 전환 화면의 도움말은 **이제 볼 영역의 목록**이다. 한 줄로 이어
-            붙이면 가운뎃점으로 묶인 긴 문장이 되고, 쉬는 자리가 빈 화면이
-            된다. 줄로 세우면 무엇을 보러 가는지가 그대로 읽힌다 */}
-        {/* 전환 화면의 도움말은 **이제 볼 영역의 이름**이다.
-            **번호를 붙이지 않는다**: 1·2·3 을 큼직하게 세우면 안쪽에서
-            순서를 정해 둔 설계도가 그대로 화면이 되고, 응시자는 그것을
-            해야 할 일 목록으로 읽는다. 쉬어 가는 자리에 할 일 세 개를
-            세울 까닭이 없다 */}
-        {s.kind === "transition" && s.help ? (
-          <p className="qs-next">
-            <span>이제 볼 영역</span>
-            {s.help.split(" · ").map((x) => <b key={x}>{x}</b>)}
-          </p>
-        ) : s.help ? <p className="qs-help">{s.help}</p> : null}
+        {/* 전환 화면은 **한 줄 설명과 칩 한 줄**이다.
+            앞 판본은 영역 이름을 가운뎃점으로 이어 붙여 긴 설명문을
+            만들었고, 그 뒤에는 번호를 붙인 칸 셋을 세웠다. 번호를 큼직하게
+            세우면 안쪽에서 정해 둔 순서가 그대로 화면이 되고 응시자는
+            그것을 할 일 목록으로 읽는다. 지금은 설명 한 줄과 **읽기만 하는
+            칩**이고, 쉬는 자리가 질문 화면의 절반을 넘지 않는다 */}
+        {s.help ? <p className="qs-help">{s.help}</p> : null}
+        {s.chips?.length ? (
+          <ul className="qs-next">
+            {s.chips.map((x) => <li key={x}>{x}</li>)}
+          </ul>
+        ) : null}
+        </div>
 
         {/* 산업 장면. 한 절을 먼저 읽고 그 산업이 요구하는 것을 줄로 본다.
             **점수를 만들지 않는다**: 묻기 전에 읽히는 자리다 */}
@@ -375,23 +405,29 @@ export default function Screen({
 
         {s.guide ? <p className="qs-guide">{s.guide}</p> : null}
 
-        {/* ── 근거 고르기 ── **스무 줄짜리 목록으로 세우지 않는다** */}
+        {/* ── 근거 고르기 ──
+            **접었다가 펼친다**(규격 §16). 여덟 묶음을 전부 펼쳐 두면 쪽이
+            네 뼘이 되고, 그 상태가 운영자가 쓰는 입력 양식으로 읽혔다.
+            그런데 접어 버리면 고르는 수가 줄고, **고른 항목이 소유 판정의
+            근거라서 접는 쪽이 판정을 바꾼다.** 그래서 고른 것이 있는
+            묶음은 펼쳐 두고 **0개인 묶음만 접는다**: 한 번도 안 본 묶음은
+            제목이 눈에 들어오고, 손 댄 묶음은 그대로 남는다 */}
         {s.groups ? (
           <>
             <p className="qs-picked is-lead">
-              <span>고른 항목 <b>{Object.values(picks).reduce((n, v) => n + v.length, 0)}</b>개</span>
+              <span>지금까지 확인된 경험</span>
               <span className="qs-grow" />
-              <span className="qs-hint">해당하는 것만 골라주세요. 없으면 넘어가도 됩니다</span>
+              <span>선택한 근거 <b>{Object.values(picks).reduce((n, v) => n + v.length, 0)}</b>개</span>
             </p>
             <div className="qs-groups">
             {s.groups.map((g) => {
               const on = picks[g.slot] ?? [];
               return (
-                <div className="qs-group" key={g.slot}>
-                  <h3>
-                    {g.label}
-                    {on.length ? <em>{on.length}개</em> : null}
-                  </h3>
+                <details className="qs-group" key={g.slot} open={on.length > 0}>
+                  <summary>
+                    <span className="qs-group-name">{g.label}</span>
+                    <em>{on.length ? `${on.length}개` : "선택 없음"}</em>
+                  </summary>
                   <div className="qs-chips">
                     {g.items.map((it) => {
                       const checked = on.includes(it);
@@ -404,7 +440,7 @@ export default function Screen({
                       );
                     })}
                   </div>
-                </div>
+                </details>
               );
             })}
             </div>
@@ -556,25 +592,27 @@ function One({
 }) {
   const c = f.control;
   if (c.kind === "level") {
+    /* **화면에 세우는 말은 줄인 쪽이다.** 은행 문면은 둘째와 넷째가
+       끝까지 읽어야 갈리는데 응시자는 이 보기를 백 번 가까이 본다.
+       긴 뜻풀이는 아래 `보기가 어떻게 갈리나요` 안에 있고, 은행과
+       채점은 한 글자도 바뀌지 않는다 */
+    const labels = f.optionLabel ?? c.options;
     return (
       <fieldset className="qs-opts">
         <legend>{f.label ?? "보기"}</legend>
         <div className="qs-list">
-          {c.options.map((label, i) => (
+          {labels.map((label, i) => (
             <label key={i} className={`qs-opt${value === i ? " is-on" : ""}`}>
               <input type="radio" name={f.itemId} checked={value === i}
                 onChange={() => onPick(f, i, { kind: "level", index: i })} />
               <span className="qs-mark" aria-hidden />
               {/* **눈금을 두지 않는다.** 한 칸씩 올라가는 막대를 보기 옆에
                   두니 `1점 · 2점 · 3점 · 4점` 으로 읽혔다. 이 넷은 누가
-                  정했는가의 단계이고 점수가 아니다. 그 단계를 말하는 것은
-                  보기 문면과 오른쪽 네 글자 꼬리표다 */}
+                  정했는가의 단계이고 점수가 아니다 */}
               <span className="qs-body">
                 <span className="qs-label">{label}</span>
                 {f.optionHelp?.[i] ? <span className="qs-gloss">{f.optionHelp[i]}</span> : null}
               </span>
-              {/* 두 번째와 세 번째가 끝까지 읽어야 갈리므로 네 글자를 옆에 적는다 */}
-              {f.optionTag?.[i] ? <span className="qs-tag">{f.optionTag[i]}</span> : null}
             </label>
           ))}
         </div>
@@ -582,11 +620,11 @@ function One({
             펼치고 그 뒤에는 접어 둔다. 개념은 그대로이고 매번 다시 읽지
             않게 하는 자리다 */}
         {f.optionHelpFold ? (
-          <details className="qs-optfold">
+          <details className="qs-optfold" open={f.optionFoldOpen}>
             <summary>보기가 어떻게 갈리나요</summary>
             <ul>
               {c.options.map((label, i) => (
-                <li key={i}><b>{label}</b>{f.optionHelpFold?.[i]}</li>
+                <li key={i}><b>{labels[i] ?? label}</b>{f.optionHelpFold?.[i]}</li>
               ))}
             </ul>
           </details>

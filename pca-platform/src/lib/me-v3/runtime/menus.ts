@@ -61,7 +61,18 @@ export const EXPOSURE = ["없다", "한두 번", "여러 번"];
  * 적고 · 칸의 `aria-label` 에 긴 말이 들어가고 · `title` 로도 뜬다.
  */
 const SHORT_SCALE5: Record<number, string> = {
-  1: "전혀", 2: "별로", 3: "보통", 4: "그렇다", 5: "매우",
+  1: "전혀", 2: "별로", 3: "보통", 4: "관심", 5: "매우",
+};
+/**
+ * 배우고 싶은 정도는 **같은 자에 다른 말**이다.
+ *
+ * 다섯 칸의 모양과 값과 판정은 관심과 같고(`scale5` · 1~5 · `band()`),
+ * 갈리는 것은 넷째 칸의 말뿐이다. 관심 격자에서 `관심` 이던 자리가 여기서는
+ * `배우고 싶음` 이다. **컴포넌트를 따로 만들지 않는다**: 같은 기능이면 같은
+ * UI 다(규격 §8).
+ */
+const SHORT_LEARN: Record<number, string> = {
+  1: "전혀", 2: "별로", 3: "보통", 4: "배우고 싶음", 5: "매우",
 };
 const SHORT_UNKNOWN = "모르겠다";
 
@@ -69,6 +80,7 @@ export function shortOf(axis: string, value: number | null, label: string): stri
   if (value === null) return SHORT_UNKNOWN;
   /* 경험은 세 칸이고 말이 이미 짧다 */
   if (axis === "exposure") return label;
+  if (axis === "learning_intent") return SHORT_LEARN[value] ?? label;
   return SHORT_SCALE5[value] ?? label;
 }
 

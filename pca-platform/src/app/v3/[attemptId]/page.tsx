@@ -9,7 +9,7 @@ import {
 } from "@/lib/me-v3/runtime/session";
 import type { Field, Group, PickKind, ProgressModel, ScreenModel } from "./model";
 import {
-  INDUSTRY_HINT, ORG_HINT, OWNERSHIP_TAG, ROLE_HINT, TIER_WHAT,
+  INDUSTRY_HINT, ORG_HINT, OWNERSHIP_HELP, OWNERSHIP_LABEL, ROLE_HINT, TIER_WHAT,
 } from "../tier-text";
 import Screen from "./screen";
 
@@ -63,18 +63,22 @@ export default async function V3Screen({
     return {
       itemId: id, label, control, value,
       note: v.notes[id] ?? "",
+      /* **보기 넷은 화면에서 한 줄로 읽혀야 한다.**
+         은행 문면은 `남이 한 것을 받아 썼다` 와 `내가 정하고 그 결과가
+         쓰였다` 라서 둘째와 넷째가 끝까지 읽어야 갈린다. 화면에는 줄인
+         말(`OWNERSHIP_LABEL`)을 세우고 그 아래 네 글자 안짝의 회색 한
+         마디를 늘 붙인다. **은행과 채점은 한 글자도 안 바뀐다**: 판정에
+         쓰는 것은 자리 번호뿐이다.
+
+         긴 뜻풀이는 `보기가 어떻게 갈리나요` 로 내린다. 처음 만나는
+         화면에서는 펼쳐 두고 그 뒤에는 접어 둔다: 네 줄을 보기마다 깔아
+         두면 선별 등급에서만 스물여덟 화면에 똑같은 네 줄이 선다 */
+      optionLabel: control.kind === "level" ? OWNERSHIP_LABEL : undefined,
+      optionHelp: control.kind === "level" ? OWNERSHIP_HELP : undefined,
       /* 보기 넷의 뜻은 `ownership.ts` 하나에서 온다. 화면이 따로 적으면
-         어느 날 채점과 다른 말을 한다.
-         **되풀이하지 않는다.** 네 줄을 보기마다 깔아 두면 선별 등급에서만
-         스물여덟 화면에 똑같은 네 줄이 서고, 그러면 아무도 읽지 않는다.
-         처음 만나는 보기 넷 화면에서만 펼치고 그 뒤에는 꼬리표만 두고
-         접어 둔다(접힌 자리는 언제든 열린다) */
-      optionHelp: control.kind === "level" && firstLevel ? OWNERSHIP.map((o) => o.means)
-        : undefined,
-      /* 접어 둘 자리에 넣을 같은 네 줄 */
-      optionHelpFold: control.kind === "level" && !firstLevel
-        ? OWNERSHIP.map((o) => o.means) : undefined,
-      optionTag: control.kind === "level" ? OWNERSHIP_TAG : undefined,
+         어느 날 채점과 다른 말을 한다 */
+      optionHelpFold: control.kind === "level" ? OWNERSHIP.map((o) => o.means) : undefined,
+      optionFoldOpen: control.kind === "level" && firstLevel,
     };
   };
 
@@ -150,6 +154,7 @@ export default async function V3Screen({
     fields,
     groups,
     body: sc.body,
+    chips: sc.chips,
     sections: sc.sections,
     domain: sc.domain,
     packs,
