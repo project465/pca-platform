@@ -27,7 +27,8 @@ import { query, queryOne } from "../src/lib/db";
 import { controlOf } from "../src/lib/me-v3/runtime/menus";
 import {
   attemptOf, checklistFor, content, itemOf, menuContextOf, savePicks3, setProfile,
-  moveTo, planFor, saveAnswer, savePicks, submit, viewOf, type V3Attempt,
+  moveTo, planFor, saveAnswer, savePicks, submit, viewOf, wordingOf,
+  type V3Attempt,
 } from "../src/lib/me-v3/runtime/session";
 import type { Answer, GradField, Stage, Tier } from "../src/lib/me-v3/scoring/types";
 
@@ -155,15 +156,63 @@ async function at(
   return i;
 }
 
+/**
+ * 그 자리의 화면이 무엇을 세우는지 미리 꺼내 둔다.
+ *
+ * 문항 문면은 **은행에서 그대로** 읽는다. 화면에는 내부 코드가 한 글자도
+ * 나가지 않으므로(설계), 찍은 그림이 그 문항의 화면인지는 문면으로만
+ * 되짚을 수 있다.
+ */
+async function expectOf(
+  a: V3Attempt, idx: number, path: string,
+): Promise<{ route: string; heading?: string; itemText?: string }> {
+  const plan = await planFor(a);
+  const sc = plan.screens[idx];
+  if (!sc) return { route: path };
+  const first = sc.items[0];
+  const raw = first ? wordingOf(first, a.education_stage) : "";
+  /* 너무 긴 문면은 줄바꿈과 공백이 화면에서 달라질 수 있어 앞 토막만 쓴다 */
+  const itemText = raw ? raw.replace(/\s+/g, " ").trim().slice(0, 24) : undefined;
+  /* **완료 화면의 머리글은 제출 전과 뒤가 다르다.** 계획은 제출 전 문장을
+     들고 있으므로, 이미 낸 응시에서는 화면이 실제로 세우는 쪽을 적는다 */
+  const heading = sc.kind === "done" && a.status !== "in_progress"
+    ? "내 CareerMatri가 만들어졌습니다" : sc.question;
+  return { route: path, heading, itemText };
+}
+
+/**
+ * 자리 하나를 가리키는 `path` 와 그 자리의 기대값을 함께 만든다.
+ *
+ * 둘을 따로 적으면 한쪽만 고치는 날이 오고, 그날부터 기대값이 다른
+ * 화면을 가리킨 채 초록으로 선다.
+ */
+async function shot(
+  a: V3Attempt, match: (id: string, kind: string) => boolean, what: string,
+): Promise<{ path: string; expect: { route: string; heading?: string; itemText?: string } }> {
+  const i = await at(a, match, what);
+  const path = `/v3/${a.id}?s=${i}`;
+  return { path, expect: await expectOf(a, i, path) };
+}
+
 async function main() {
   const shots = await userId(SHOT_LOGIN);
   const starter = await userId(START_LOGIN);
   /* 같은 계정에 응시가 쌓이면 어느 것을 보는지 알 수 없다 */
   await query(`DELETE FROM v3_attempts WHERE user_id = ANY($1)`, [[shots, starter]]);
 
+  /**
+   * **찍은 그림이 그 화면이라는 증거를 함께 적는다.**
+   *
+   * 200 하나로는 모자란다. 자리를 못 찾아 `?s=-1` 이 된 날에도 응시
+   * 화면은 마지막 화면으로 끌어다 붙여 **완료 화면이 200 으로 멀쩡히
+   * 떴고**, 그래서 `실제 판단` 과 `심화` 와 `소유` 세 자리가 셋 다 같은
+   * 그림을 찍고 있었다. 이제 자리마다 셋을 적어 두고 찍는 쪽이 대조한다:
+   * 주소 · 화면의 큰 글씨 · 그 화면이 묻는 문항의 문면 한 토막.
+   */
   const out: {
     name: string; path: string; note: string;
     full?: boolean; who: string; pdf?: boolean;
+    expect?: { route: string; heading?: string; itemText?: string };
   }[] = [];
   out.push({
     name: "00_start", path: "/v3/start", who: "starter", full: true,
@@ -186,64 +235,67 @@ async function main() {
   await fillGrid(p01, { TD01: [5, 2, 5], TD05: [4, 1, 4], TD02: [3, 0, 3] });
   const a01 = await walk(p01, shots, "mid");
   out.push({ name: "01_profile", who: "shots", note: "기본 정보",
-    path: `/v3/${a01.id}?s=0` });
+    ...(await shot(a01, (_id, k) => k === "profile", "기본 정보")) });
   out.push({ name: "02_industry_pick", who: "shots", note: "관심 산업 고르기",
-    path: `/v3/${a01.id}?s=${await at(a01, (_id, k) => k === "pick-industry", "관심 산업")}` });
+    ...(await shot(a01, (_id, k) => k === "pick-industry", "관심 산업")) });
   out.push({ name: "03_industry_scene", who: "shots", note: "산업 장면",
-    path: `/v3/${a01.id}?s=${await at(a01, (_id, k) => k === "scene", "산업 장면")}` });
+    ...(await shot(a01, (_id, k) => k === "scene", "산업 장면")) });
   out.push({ name: "04_screening", who: "shots", note: "영역 훑기",
-    path: `/v3/${a01.id}?s=${await at(a01, (id) => id === "sweep-interest", "영역 훑기 · 관심")}` });
+    ...(await shot(a01, (id) => id === "sweep-interest", "영역 훑기 · 관심")) });
   out.push({ name: "04b_screening_exp", who: "shots", note: "영역 훑기 · 경험",
-    path: `/v3/${a01.id}?s=${await at(a01, (id) => id === "sweep-exposure", "영역 훑기 · 경험")}` });
+    ...(await shot(a01, (id) => id === "sweep-exposure", "영역 훑기 · 경험")) });
 
   /* P03 캡스톤 학생 · STANDARD */
   const p03 = await freshAttempt(shots, "STANDARD", "bachelor", null);
   await fillGrid(p03, { TD01: [5, 2, 5], TD08: [4, 1, 4], TD02: [4, 1, 3] });
   const a03 = await walk(p03, shots, "mid");
   out.push({ name: "05_core_probe", who: "shots", note: "실제 업무 판단",
-    path: `/v3/${a03.id}?s=${await at(a03, (id) => /^probe-.+-J3$/.test(id), "실제 업무 판단")}` });
+    ...(await shot(a03, (id) => /^probe-.+-J3$/.test(id), "실제 업무 판단")) });
   out.push({ name: "05b_transition", who: "shots", note: "묶음 전환",
-    path: `/v3/${a03.id}?s=${await at(a03, (id) => id === "t-judge", "묶음 전환")}` });
+    ...(await shot(a03, (id) => id === "t-judge", "묶음 전환")) });
 
   /* P04 구조해석 석사 · PRO. 뒤쪽 자리 전부 */
   const p04 = await freshAttempt(shots, "PRO", "master", "STEM");
   await fillGrid(p04, { TD02: [5, 2, 5], TD01: [5, 2, 4], TD11: [4, 1, 4] });
   const a04 = await walk(p04, shots, "strong");
   out.push({ name: "06_deep_dive", who: "shots", note: "심화 네 축",
-    path: `/v3/${a04.id}?s=${await at(a04, (id) => /^deep-.+-1$/.test(id), "심화 네 축")}` });
+    ...(await shot(a04, (id) => /^deep-.+-1$/.test(id), "심화 네 축")) });
   out.push({ name: "06b_grad_branch", who: "shots", note: "대학원 장면",
-    path: `/v3/${a04.id}?s=${await at(a04, (id) => id === "branch-1", "대학원 장면")}` });
+    ...(await shot(a04, (id) => id === "branch-1", "대학원 장면")) });
   /* **강제 선택 두 화면은 보기가 같다.** 그래서 나란히 찍어, 두 화면이
      서로 다른 것을 묻는다는 것이 글로 읽히는지 눈으로 본다. 이 둘은
      훑기에서 묶인 영역이 있을 때만 서므로 PRO 응시에서 찾는다 */
   out.push({ name: "06c_force_a", who: "shots", note: "강제 선택 · 먼저 해 볼 쪽",
-    path: `/v3/${a04.id}?s=${await at(a04, (id) => id === "force-CF_PAIR_1", "강제 선택 1")}` });
+    ...(await shot(a04, (id) => id === "force-CF_PAIR_1", "강제 선택 1")) });
   out.push({ name: "06d_force_b", who: "shots", note: "강제 선택 · 더 알아보고 싶은 쪽",
-    path: `/v3/${a04.id}?s=${await at(a04, (id) => id === "force-CF_PAIR_2", "강제 선택 2")}` });
+    ...(await shot(a04, (id) => id === "force-CF_PAIR_2", "강제 선택 2")) });
   out.push({ name: "07_evidence", who: "shots", note: "근거 고르기",
-    path: `/v3/${a04.id}?s=${await at(a04, (_id, k) => k === "checklist", "근거 고르기")}` });
+    ...(await shot(a04, (_id, k) => k === "checklist", "근거 고르기")) });
   out.push({ name: "08_role_pick", who: "shots", note: "관심 직무 고르기",
-    path: `/v3/${a04.id}?s=${await at(a04, (_id, k) => k === "pick-role", "직무 고르기")}` });
+    ...(await shot(a04, (_id, k) => k === "pick-role", "직무 고르기")) });
   out.push({ name: "08b_org_pick", who: "shots", note: "선호 조직 고르기",
-    path: `/v3/${a04.id}?s=${await at(a04, (_id, k) => k === "pick-org", "조직 고르기")}` });
+    ...(await shot(a04, (_id, k) => k === "pick-org", "조직 고르기")) });
   out.push({ name: "09_role_item", who: "shots", note: "역할 판단 문항",
-    path: `/v3/${a04.id}?s=${await at(a04, (id) => id.startsWith("role-"), "역할 문항")}` });
+    ...(await shot(a04, (id) => id.startsWith("role-"), "역할 문항")) });
   out.push({ name: "10_industry_item", who: "shots", note: "산업 판단 문항",
-    path: `/v3/${a04.id}?s=${await at(a04, (id) => id.startsWith("ind-"), "산업 문항")}` });
+    ...(await shot(a04, (id) => id.startsWith("ind-"), "산업 문항")) });
   out.push({ name: "11_translate", who: "shots", note: "경험 번역",
-    path: `/v3/${a04.id}?s=${await at(a04, (id) => id.startsWith("trans-"), "경험 번역")}` });
+    ...(await shot(a04, (id) => id.startsWith("trans-"), "경험 번역")) });
   out.push({ name: "12_done", who: "shots", note: "완료 · 제출 전",
-    path: `/v3/${a04.id}?s=${await at(a04, (_id, k) => k === "done", "완료")}` });
+    ...(await shot(a04, (_id, k) => k === "done", "완료")) });
   out.push({ name: "13_ownership", who: "shots", note: "소유 보기 넷",
-    path: `/v3/${a04.id}?s=${await at(a04, (id) => /^probe-.+-J5$/.test(id), "소유 보기 넷")}` });
+    ...(await shot(a04, (id) => /^probe-.+-J5$/.test(id), "소유 보기 넷")) });
 
   /* P09 재료 박사 · PRO. 끝까지 제출해 둔다 */
   const p09 = await freshAttempt(shots, "PRO", "phd", "STEM");
   await fillGrid(p09, { TD06: [5, 2, 5], TD07: [5, 2, 4], TD02: [4, 1, 3] });
   const a09 = await walk(p09, shots, "strong");
   await submit(a09);
+  /* **낸 뒤의 줄을 다시 읽는다.** 손에 든 객체는 아직 `in_progress` 라,
+     그대로 쓰면 완료 화면의 머리글을 제출 전 문장으로 적게 된다 */
+  const a09done = (await attemptOf(a09.id, shots)) as V3Attempt;
   out.push({ name: "14_submitted", who: "shots", note: "완료 · 제출 뒤",
-    path: `/v3/${a09.id}?s=${await at(a09, (_id, k) => k === "done", "제출 뒤 완료")}` });
+    ...(await shot(a09done, (_id, k) => k === "done", "제출 뒤 완료")) });
 
   /* 학부 기계공학 + 타계열 대학원. **이 경로를 눈으로 본 적이 없다** */
   const px = await freshAttempt(shots, "STANDARD", "master", "HUMANITIES_SOCIAL");
@@ -252,7 +304,7 @@ async function main() {
   await fillGrid(pxa, { TD11: [5, 2, 5], TD12: [4, 1, 4], TD01: [3, 1, 3] });
   const ax = await walk(pxa, shots, "mid");
   out.push({ name: "15_xfield", who: "shots", note: "타계열 대학원 · 번역 맥락",
-    path: `/v3/${ax.id}?s=${await at(ax, (id) => id.startsWith("xfield-"), "타계열 맥락")}` });
+    ...(await shot(ax, (id) => id.startsWith("xfield-"), "타계열 맥락")) });
 
   /* ── 결과지 다섯 자리. **제출해 둔 응시의 실제 결과다** ──
      굳혀 둔 결과를 읽으므로 빈 쪽이 찍히지 않는다 */

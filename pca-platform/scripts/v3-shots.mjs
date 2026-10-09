@@ -12,6 +12,7 @@
  *   node scripts/v3-shots.mjs /tmp/targets.json
  */
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 const B = process.env.UI_BASE ?? "http://127.0.0.1:3100";
@@ -79,6 +80,45 @@ const NARROW = new Set([
 
 const log = [];
 const problems = [];
+/**
+ * **200 하나로 찍었다고 하지 않는다.**
+ *
+ * 자리를 못 찾아 `?s=-1` 이 된 날에도 응시 화면은 마지막 화면으로 끌어다
+ * 붙여 **완료 화면이 200 으로 멀쩡히 떴다.** 그래서 `실제 판단` 과 `심화`
+ * 와 `소유` 세 자리가 셋 다 같은 그림을 찍고 있었고 찍는 검사는 초록이었다.
+ *
+ * 이제 자리마다 셋 가운데 **둘 이상**이 맞아야 저장한 것으로 친다:
+ * 주소 · 큰 글씨 · 그 화면이 묻는 문항의 문면 한 토막. 주소가 어긋난 것은
+ * 그 자체로 걸린다(넘겨졌다는 뜻이다).
+ */
+function matchShot(expect, at, text) {
+  const hit = [];
+  const miss = [];
+  const route = at === expect.route;
+  (route ? hit : miss).push(`주소 ${route ? "" : `${expect.route} → ${at}`}`.trim());
+  if (expect.heading) {
+    const ok = text.includes(expect.heading);
+    (ok ? hit : miss).push(`큰 글씨 ${ok ? "" : `"${expect.heading}"`}`.trim());
+  }
+  if (expect.itemText) {
+    const ok = text.includes(expect.itemText);
+    (ok ? hit : miss).push(`문항 ${ok ? "" : `"${expect.itemText}"`}`.trim());
+  }
+  /**
+   * **가르는 신호가 맞아야 한다.**
+   *
+   * 둘 이상 맞으면 통과로 두었더니 빗나간 자리를 못 잡았다: 두 문항이 한
+   * 화면에 선 자리는 큰 글씨가 `아래 두 가지에 각각 답해주세요` 로 전부
+   * 같아서, 옆 화면을 찍어도 `주소 + 큰 글씨` 로 둘이 찬다. 그 자리에서
+   * 화면을 가르는 것은 문항 문면 하나뿐이다. 일부러 한 칸 옆을 가리켜
+   * 보고 그대로 통과하는 것을 보고 고쳤다.
+   */
+  const itemOk = !expect.itemText || text.includes(expect.itemText);
+  return { ok: route && itemOk && hit.length >= 2, hit, miss };
+}
+
+/** 같은 그림이 두 이름으로 저장되면 자리 하나가 빗나간 것이다 */
+const seenHash = new Map();
 for (const t of plan.targets) {
   /* **종이는 화면으로 찍지 않는다.** PDF 길은 내려받기라 브라우저로 열면
      빈 쪽이 뜬다. 받아서 첫 쪽을 그림으로 떠 둔다: 빈 쪽과 잘린 카드는
@@ -135,10 +175,29 @@ for (const t of plan.targets) {
     /* 붙어 있는 띠를 그대로 두고 **보이는 만큼만** 찍는다. 쪽 전체를 찍으면
        fixed 띠가 굴러간 자리에 한 번 더 그려진다 */
     const file = `${OUT}/${t.name}__${size}.png`;
-    await p.screenshot({ path: file, fullPage: !!t.full });
+    const shot = await p.screenshot({ path: file, fullPage: !!t.full });
 
     const tag = `${t.name} ${size}`;
-    log.push(`${tag.padEnd(26)} ${code} ${overflow ? "가로스크롤 " : ""}` +
+    /* 찍은 자리가 그 화면인가. 주소와 큰 글씨와 문항 문면으로 되짚는다 */
+    let proof = "";
+    if (t.expect) {
+      const at = new URL(p.url()).pathname + new URL(p.url()).search;
+      const m = matchShot(t.expect, at, text);
+      proof = m.ok ? ` 확인 ${m.hit.length}` : "";
+      if (!m.ok) {
+        problems.push(`${tag}: 그 화면이 아니다 — 맞은 것 ${m.hit.length}`
+          + `${m.miss.length ? ` · 어긋난 것 ${m.miss.join(" / ")}` : ""}`);
+      }
+    }
+    /* **같은 그림이 두 이름으로 나오면 자리 하나가 빗나간 것이다.** 전에
+       세 자리가 바이트까지 같은 완료 화면을 찍고 있었다 */
+    const h = createHash("sha256").update(shot).digest("hex").slice(0, 16);
+    const was = seenHash.get(`${size}:${h}`);
+    if (was && was !== t.name) {
+      problems.push(`${tag}: ${was} 와 그림이 똑같다 (같은 화면을 두 번 찍었다)`);
+    }
+    seenHash.set(`${size}:${h}`, t.name);
+    log.push(`${tag.padEnd(26)} ${code}${proof} ${overflow ? "가로스크롤 " : ""}` +
       `${leaked.length ? `내부코드 ${leaked.join(",")} ` : ""}` +
       `${errs.length ? `오류 ${errs.length}` : ""}`.trim());
     if (code !== 200) problems.push(`${tag}: ${code}`);
