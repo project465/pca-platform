@@ -22,15 +22,25 @@ export type Control =
   /** 격자의 경험 칸 셋 */
   | { kind: "exposure"; options: string[] }
   /**
-   * 보기 셋. **값을 은행이 든다.**
+   * 한 줄짜리 단계 고르기. **값을 은행이 든다.**
    *
-   * 영역 훑기가 이것을 쓴다. 관심과 학습 의향은 다섯 점 척도의 5·3·1 로
-   * 들어가고 경험은 2·1·0 으로 들어간다. 화면은 셋만 보여 주고 저장되는
-   * 값은 전과 같다: 그래서 결과지의 관심 구간과 경험 이름을 고치지 않고도
-   * 열두 줄을 한 화면에 올릴 수 있다.
+   * 영역 훑기가 이것을 쓴다. 관심과 배울 뜻은 다섯 단계(1~5)에 `잘
+   * 모르겠다` 가 **척도 밖에** 하나 붙고, 경험은 셋(0·1·2)이다.
+   *
+   * **둘을 한 줄에 섞어 두었던 것이 탈이었다.** `관심이 적다` 는 관심
+   * 수준이고 `잘 모르겠다` 는 정보가 없다는 뜻이라 같은 축이 아니다. 그래서
+   * 수준은 다섯 칸으로 세우고 모른다는 답은 그 줄 뒤에 작게 둔다.
+   *
+   * 저장되는 값과 읽는 함수는 그대로다: `band()` 가 처음부터 `1~2 LOW` ·
+   * `3 MID` · `4~5 HIGH` 로 갈랐고, 화면이 그 가운데 셋만 보내고 있었다.
+   * 근거는 `docs/metri/80_scale_gate.md`.
+   *
+   * `short` 는 **화면에서만 쓰는 짧은 말**이다. 열두 줄 × 다섯 칸에 긴
+   * 문장을 적으면 격자가 설문조사 표가 된다. 뜻은 격자 머리에 한 번 적고
+   * 칸의 접근성 이름에는 긴 말이 그대로 들어간다.
    */
-  | { kind: "pick3"; answer: "scale5" | "exposure";
-      options: { value: number | null; label: string }[] }
+  | { kind: "steps"; answer: "scale5" | "exposure";
+      options: { value: number | null; label: string; short: string }[] }
   /** 고르기. 값은 코드이고 보이는 것은 `label` */
   | { kind: "choice"; options: { value: string; label: string }[];
       note?: { label: string; placeholder: string } };
@@ -39,6 +49,28 @@ export type Control =
 export const SCALE5 = ["전혀 아니다", "아니다", "보통이다", "그렇다", "매우 그렇다"];
 /** 격자의 경험 칸. **횟수를 묻고 수준을 묻지 않는다** */
 export const EXPOSURE = ["없다", "한두 번", "여러 번"];
+
+/**
+ * 격자 칸에 적는 짧은 말.
+ *
+ * **화면에서만 쓴다.** 문항 은행의 긴 문장(`전혀 관심 없다`)은 그대로
+ * 두고 칸에는 줄인 말을 적는다. 열두 줄 × 다섯 칸에 긴 문장을 적으면
+ * 글자가 접히고, 접힌 글자를 다섯 번 읽는 자리가 된다.
+ *
+ * 뜻이 사라지지 않게 셋을 같이 둔다: 격자 머리에 다섯 단계의 말을 한 번
+ * 적고 · 칸의 `aria-label` 에 긴 말이 들어가고 · `title` 로도 뜬다.
+ */
+const SHORT_SCALE5: Record<number, string> = {
+  1: "전혀", 2: "별로", 3: "보통", 4: "그렇다", 5: "매우",
+};
+const SHORT_UNKNOWN = "모르겠다";
+
+export function shortOf(axis: string, value: number | null, label: string): string {
+  if (value === null) return SHORT_UNKNOWN;
+  /* 경험은 세 칸이고 말이 이미 짧다 */
+  if (axis === "exposure") return label;
+  return SHORT_SCALE5[value] ?? label;
+}
 
 /** 보기를 응시 중에 정하는 문항이 읽는 것 */
 export type MenuContext = {
@@ -187,15 +219,18 @@ export function controlOf(item: Item, ctx: MenuContext): Control {
   if (sc === "L0~L3" || sc === "4보기") {
     return { kind: "level", options: levelOptions(), guide: "" };
   }
-  if (sc === "3보기" && item.options?.length && item.option_values?.length) {
+  if ((sc === "5보기" || sc === "3보기")
+      && item.options?.length && item.option_values?.length) {
+    const axis = item.measurement_axis ?? "";
     return {
-      kind: "pick3",
-      answer: item.measurement_axis === "exposure" ? "exposure" : "scale5",
+      kind: "steps",
+      answer: axis === "exposure" ? "exposure" : "scale5",
       /* 값이 `null` 인 자리는 `잘 모르겠다` 다. **수를 주지 않는다**:
          가운데 값으로 두면 아직 모르는 사람이 보통 관심으로 판정된다 */
-      options: item.options.map((label, i) => ({
-        value: (item.option_values as (number | null)[])[i] ?? null, label,
-      })),
+      options: item.options.map((label, i) => {
+        const value = (item.option_values as (number | null)[])[i] ?? null;
+        return { value, label, short: shortOf(axis, value, label) };
+      }),
     };
   }
   if (sc === "5점") return { kind: "scale5", labels: SCALE5 };

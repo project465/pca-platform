@@ -107,7 +107,8 @@ function visible(p: Plan, tied: string[]): string[] {
       if (c.kind === "level") out.push(...c.options);
       else if (c.kind === "scale5") out.push(...c.labels);
       else if (c.kind === "exposure") out.push(...c.options);
-      else if (c.kind === "pick3") out.push(...c.options.map((o) => o.label));
+      else if (c.kind === "steps") out.push(...c.options.map((o) => o.label),
+        ...c.options.map((o) => o.short));
       else out.push(...c.options.map((o) => o.label), c.note?.label ?? "");
     }
   }
@@ -198,16 +199,28 @@ function main(): void {
   /* `잘 모르겠다` 의 값이 **수가 아니다.** 가운데 값(3)으로 두면 아직
      모르는 사람이 보통 관심으로 판정된다. 화면이 그 자리에서 `UNKNOWN` 을
      보내고 판정이 `ANSWERED_UNKNOWN` 으로 받는다 */
-  ok("관심 보기의 `잘 모르겠다` 에 수가 없다",
-     !!ci && ci.kind === "pick3" && ci.options.length === 3 &&
+  /**
+   * 관심은 **다섯 단계에 `잘 모르겠다` 가 척도 밖으로** 붙는다.
+   *
+   * `band()` 가 처음부터 `1~2 LOW` · `3 MID` · `4~5 HIGH` 로 갈랐고 화면이
+   * 그 가운데 셋만 보내고 있었다. 근거와 회귀는
+   * `docs/metri/80_scale_gate.md` 와 `npm run v3:scale`.
+   */
+  ok("관심이 다섯 단계이고 `잘 모르겠다` 에 수가 없다",
+     !!ci && ci.kind === "steps" && ci.options.length === 6 &&
      ci.answer === "scale5" &&
-     ci.options.map((o) => (o.value === null ? "-" : o.value)).join(",") === "5,1,-",
-     ci && ci.kind === "pick3"
+     ci.options.map((o) => (o.value === null ? "-" : o.value)).join(",") === "1,2,3,4,5,-",
+     ci && ci.kind === "steps"
        ? ci.options.map((o) => `${o.label}=${o.value ?? "UNKNOWN"}`).join(" · ") : "");
-  ok("해 본 적 보기의 값은 전과 같다",
-     !!ce && ce.kind === "pick3" && ce.answer === "exposure" &&
-     ce.options.map((o) => o.value).join(",") === "2,1,0",
-     "경험은 2·1·0 — 결과지의 경험 이름을 고치지 않았다");
+  /* **칸에 숫자를 적지 않는다.** 짧은 말이 칸에 서고 긴 말은 접근성
+     이름과 격자 머리에 남는다 */
+  ok("격자 칸의 말에 숫자가 없다",
+     !!ci && ci.kind === "steps" && ci.options.every((o) => !/^[1-5]$/.test(o.short)),
+     ci && ci.kind === "steps" ? ci.options.map((o) => o.short).join(" ") : "");
+  ok("해 본 적 보기의 값은 전과 같다 — 늘리면 받고 쓰지 않는 값이 생긴다",
+     !!ce && ce.kind === "steps" && ce.answer === "exposure" &&
+     ce.options.map((o) => o.value).join(",") === "0,1,2",
+     "경험은 0·1·2 — 결과지의 경험 이름을 고치지 않았다");
 
   /* --- 5. 화면에 내부 코드가 새지 않는다 --- */
   const pPro = plan({

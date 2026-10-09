@@ -31,7 +31,7 @@
    "construct": "interest",
    "domain": "TD01",
    "axis": null,
-   "scale": "3보기",
+   "scale": "5보기",
    "tier": "BASIC",
    "result_sections": [
     "A",
@@ -41,7 +41,7 @@
    "reverse": false,
    "stage_variants": false,
    "field_routing": "all",
-   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 다섯 단계다 — 관심 수준과 `잘 모르겠다` 를 한 줄에 섞지 않으려고 뒤엣것을 척도 밖에 둔다"
   },
   {
    "id": "G_TD01_EXP",
@@ -66,7 +66,7 @@
    "construct": "learning_intent",
    "domain": "TD01",
    "axis": null,
-   "scale": "3보기",
+   "scale": "5보기",
    "tier": "BASIC",
    "result_sections": [
     "C",
@@ -75,7 +75,7 @@
    "reverse": false,
    "stage_variants": false,
    "field_routing": "all",
-   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 다섯 단계다 — 관심 수준과 `잘 모르겠다` 를 한 줄에 섞지 않으려고 뒤엣것을 척도 밖에 둔다"
   },
   {
    "id": "G_TD02_INT",
@@ -83,7 +83,7 @@
    "construct": "interest",
    "domain": "TD02",
    "axis": null,
-   "scale": "3보기",
+   "scale": "5보기",
    "tier": "BASIC",
    "result_sections": [
     "A",
@@ -93,7 +93,7 @@
    "reverse": false,
    "stage_variants": false,
    "field_routing": "all",
-   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 다섯 단계다 — 관심 수준과 `잘 모르겠다` 를 한 줄에 섞지 않으려고 뒤엣것을 척도 밖에 둔다"
   },
   {
    "id": "G_TD02_EXP",
@@ -118,7 +118,7 @@
    "construct": "learning_intent",
    "domain": "TD02",
    "axis": null,
-   "scale": "3보기",
+   "scale": "5보기",
    "tier": "BASIC",
    "result_sections": [
     "C",
@@ -127,7 +127,7 @@
    "reverse": false,
    "stage_variants": false,
    "field_routing": "all",
-   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 다섯 단계다 — 관심 수준과 `잘 모르겠다` 를 한 줄에 섞지 않으려고 뒤엣것을 척도 밖에 둔다"
   },
   {
    "id": "G_TD03_INT",
@@ -135,7 +135,7 @@
    "construct": "interest",
    "domain": "TD03",
    "axis": null,
-   "scale": "3보기",
+   "scale": "5보기",
    "tier": "BASIC",
    "result_sections": [
     "A",
@@ -145,7 +145,7 @@
    "reverse": false,
    "stage_variants": false,
    "field_routing": "all",
-   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 다섯 단계다 — 관심 수준과 `잘 모르겠다` 를 한 줄에 섞지 않으려고 뒤엣것을 척도 밖에 둔다"
   },
   {
    "id": "G_TD03_EXP",
@@ -170,7 +170,7 @@
    "construct": "learning_intent",
    "domain": "TD03",
    "axis": null,
-   "scale": "3보기",
+   "scale": "5보기",
    "tier": "BASIC",
    "result_sections": [
     "C",
@@ -179,7 +179,7 @@
    "reverse": false,
    "stage_variants": false,
    "field_routing": "all",
-   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 다섯 단계다 — 관심 수준과 `잘 모르겠다` 를 한 줄에 섞지 않으려고 뒤엣것을 척도 밖에 둔다"
   },
   {
    "id": "G_TD04_INT",
@@ -187,7 +187,7 @@
    "construct": "interest",
    "domain": "TD04",
    "axis": null,
-   "scale": "3보기",
+   "scale": "5보기",
    "tier": "BASIC",
    "result_sections": [
     "A",
@@ -197,7 +197,7 @@
    "reverse": false,
    "stage_variants": false,
    "field_routing": "all",
-   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 다섯 단계다 — 관심 수준과 `잘 모르겠다` 를 한 줄에 섞지 않으려고 뒤엣것을 척도 밖에 둔다"
   },
   {
    "id": "G_TD04_EXP",
@@ -222,7 +222,7 @@
    "construct": "learning_intent",
    "domain": "TD04",
    "axis": null,
-   "scale": "3보기",
+   "scale": "5보기",
    "tier": "BASIC",
    "result_sections": [
     "C",
@@ -231,7 +231,7 @@
    "reverse": false,
    "stage_variants": false,
    "field_routing": "all",
-   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 다섯 단계다 — 관심 수준과 `잘 모르겠다` 를 한 줄에 섞지 않으려고 뒤엣것을 척도 밖에 둔다"
   },
   {
    "id": "G_TD05_INT",
@@ -239,7 +239,7 @@
    "construct": "interest",
    "domain": "TD05",
    "axis": null,
-   "scale": "3보기",
+   "scale": "5보기",
    "tier": "BASIC",
    "result_sections": [
     "A",
@@ -249,7 +249,7 @@
    "reverse": false,
    "stage_variants": false,
    "field_routing": "all",
-   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 다섯 단계다 — 관심 수준과 `잘 모르겠다` 를 한 줄에 섞지 않으려고 뒤엣것을 척도 밖에 둔다"
   },
   {
    "id": "G_TD05_EXP",
@@ -274,7 +274,7 @@
    "construct": "learning_intent",
    "domain": "TD05",
    "axis": null,
-   "scale": "3보기",
+   "scale": "5보기",
    "tier": "BASIC",
    "result_sections": [
     "C",
@@ -283,7 +283,7 @@
    "reverse": false,
    "stage_variants": false,
    "field_routing": "all",
-   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 다섯 단계다 — 관심 수준과 `잘 모르겠다` 를 한 줄에 섞지 않으려고 뒤엣것을 척도 밖에 둔다"
   },
   {
    "id": "G_TD06_INT",
@@ -291,7 +291,7 @@
    "construct": "interest",
    "domain": "TD06",
    "axis": null,
-   "scale": "3보기",
+   "scale": "5보기",
    "tier": "BASIC",
    "result_sections": [
     "A",
@@ -301,7 +301,7 @@
    "reverse": false,
    "stage_variants": false,
    "field_routing": "all",
-   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 다섯 단계다 — 관심 수준과 `잘 모르겠다` 를 한 줄에 섞지 않으려고 뒤엣것을 척도 밖에 둔다"
   },
   {
    "id": "G_TD06_EXP",
@@ -326,7 +326,7 @@
    "construct": "learning_intent",
    "domain": "TD06",
    "axis": null,
-   "scale": "3보기",
+   "scale": "5보기",
    "tier": "BASIC",
    "result_sections": [
     "C",
@@ -335,7 +335,7 @@
    "reverse": false,
    "stage_variants": false,
    "field_routing": "all",
-   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 다섯 단계다 — 관심 수준과 `잘 모르겠다` 를 한 줄에 섞지 않으려고 뒤엣것을 척도 밖에 둔다"
   },
   {
    "id": "G_TD07_INT",
@@ -343,7 +343,7 @@
    "construct": "interest",
    "domain": "TD07",
    "axis": null,
-   "scale": "3보기",
+   "scale": "5보기",
    "tier": "BASIC",
    "result_sections": [
     "A",
@@ -353,7 +353,7 @@
    "reverse": false,
    "stage_variants": false,
    "field_routing": "all",
-   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 다섯 단계다 — 관심 수준과 `잘 모르겠다` 를 한 줄에 섞지 않으려고 뒤엣것을 척도 밖에 둔다"
   },
   {
    "id": "G_TD07_EXP",
@@ -378,7 +378,7 @@
    "construct": "learning_intent",
    "domain": "TD07",
    "axis": null,
-   "scale": "3보기",
+   "scale": "5보기",
    "tier": "BASIC",
    "result_sections": [
     "C",
@@ -387,7 +387,7 @@
    "reverse": false,
    "stage_variants": false,
    "field_routing": "all",
-   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 다섯 단계다 — 관심 수준과 `잘 모르겠다` 를 한 줄에 섞지 않으려고 뒤엣것을 척도 밖에 둔다"
   },
   {
    "id": "G_TD08_INT",
@@ -395,7 +395,7 @@
    "construct": "interest",
    "domain": "TD08",
    "axis": null,
-   "scale": "3보기",
+   "scale": "5보기",
    "tier": "BASIC",
    "result_sections": [
     "A",
@@ -405,7 +405,7 @@
    "reverse": false,
    "stage_variants": false,
    "field_routing": "all",
-   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 다섯 단계다 — 관심 수준과 `잘 모르겠다` 를 한 줄에 섞지 않으려고 뒤엣것을 척도 밖에 둔다"
   },
   {
    "id": "G_TD08_EXP",
@@ -430,7 +430,7 @@
    "construct": "learning_intent",
    "domain": "TD08",
    "axis": null,
-   "scale": "3보기",
+   "scale": "5보기",
    "tier": "BASIC",
    "result_sections": [
     "C",
@@ -439,7 +439,7 @@
    "reverse": false,
    "stage_variants": false,
    "field_routing": "all",
-   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 다섯 단계다 — 관심 수준과 `잘 모르겠다` 를 한 줄에 섞지 않으려고 뒤엣것을 척도 밖에 둔다"
   },
   {
    "id": "G_TD09_INT",
@@ -447,7 +447,7 @@
    "construct": "interest",
    "domain": "TD09",
    "axis": null,
-   "scale": "3보기",
+   "scale": "5보기",
    "tier": "BASIC",
    "result_sections": [
     "A",
@@ -457,7 +457,7 @@
    "reverse": false,
    "stage_variants": false,
    "field_routing": "all",
-   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 다섯 단계다 — 관심 수준과 `잘 모르겠다` 를 한 줄에 섞지 않으려고 뒤엣것을 척도 밖에 둔다"
   },
   {
    "id": "G_TD09_EXP",
@@ -482,7 +482,7 @@
    "construct": "learning_intent",
    "domain": "TD09",
    "axis": null,
-   "scale": "3보기",
+   "scale": "5보기",
    "tier": "BASIC",
    "result_sections": [
     "C",
@@ -491,7 +491,7 @@
    "reverse": false,
    "stage_variants": false,
    "field_routing": "all",
-   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 다섯 단계다 — 관심 수준과 `잘 모르겠다` 를 한 줄에 섞지 않으려고 뒤엣것을 척도 밖에 둔다"
   },
   {
    "id": "G_TD10_INT",
@@ -499,7 +499,7 @@
    "construct": "interest",
    "domain": "TD10",
    "axis": null,
-   "scale": "3보기",
+   "scale": "5보기",
    "tier": "BASIC",
    "result_sections": [
     "A",
@@ -509,7 +509,7 @@
    "reverse": false,
    "stage_variants": false,
    "field_routing": "all",
-   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 다섯 단계다 — 관심 수준과 `잘 모르겠다` 를 한 줄에 섞지 않으려고 뒤엣것을 척도 밖에 둔다"
   },
   {
    "id": "G_TD10_EXP",
@@ -534,7 +534,7 @@
    "construct": "learning_intent",
    "domain": "TD10",
    "axis": null,
-   "scale": "3보기",
+   "scale": "5보기",
    "tier": "BASIC",
    "result_sections": [
     "C",
@@ -543,7 +543,7 @@
    "reverse": false,
    "stage_variants": false,
    "field_routing": "all",
-   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 다섯 단계다 — 관심 수준과 `잘 모르겠다` 를 한 줄에 섞지 않으려고 뒤엣것을 척도 밖에 둔다"
   },
   {
    "id": "G_TD11_INT",
@@ -551,7 +551,7 @@
    "construct": "interest",
    "domain": "TD11",
    "axis": null,
-   "scale": "3보기",
+   "scale": "5보기",
    "tier": "BASIC",
    "result_sections": [
     "A",
@@ -561,7 +561,7 @@
    "reverse": false,
    "stage_variants": false,
    "field_routing": "all",
-   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 다섯 단계다 — 관심 수준과 `잘 모르겠다` 를 한 줄에 섞지 않으려고 뒤엣것을 척도 밖에 둔다"
   },
   {
    "id": "G_TD11_EXP",
@@ -586,7 +586,7 @@
    "construct": "learning_intent",
    "domain": "TD11",
    "axis": null,
-   "scale": "3보기",
+   "scale": "5보기",
    "tier": "BASIC",
    "result_sections": [
     "C",
@@ -595,7 +595,7 @@
    "reverse": false,
    "stage_variants": false,
    "field_routing": "all",
-   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 다섯 단계다 — 관심 수준과 `잘 모르겠다` 를 한 줄에 섞지 않으려고 뒤엣것을 척도 밖에 둔다"
   },
   {
    "id": "G_TD12_INT",
@@ -603,7 +603,7 @@
    "construct": "interest",
    "domain": "TD12",
    "axis": null,
-   "scale": "3보기",
+   "scale": "5보기",
    "tier": "BASIC",
    "result_sections": [
     "A",
@@ -613,7 +613,7 @@
    "reverse": false,
    "stage_variants": false,
    "field_routing": "all",
-   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 다섯 단계다 — 관심 수준과 `잘 모르겠다` 를 한 줄에 섞지 않으려고 뒤엣것을 척도 밖에 둔다"
   },
   {
    "id": "G_TD12_EXP",
@@ -638,7 +638,7 @@
    "construct": "learning_intent",
    "domain": "TD12",
    "axis": null,
-   "scale": "3보기",
+   "scale": "5보기",
    "tier": "BASIC",
    "result_sections": [
     "C",
@@ -647,7 +647,7 @@
    "reverse": false,
    "stage_variants": false,
    "field_routing": "all",
-   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 셋이라 빠르게 넘어간다"
+   "note": "영역 열둘을 한 화면에서 훑는 자리다. 줄에 적은 책임지는 판단이 전문성을 지고, 칸은 다섯 단계다 — 관심 수준과 `잘 모르겠다` 를 한 줄에 섞지 않으려고 뒤엣것을 척도 밖에 둔다"
   },
   {
    "id": "CJ_SCOPE",

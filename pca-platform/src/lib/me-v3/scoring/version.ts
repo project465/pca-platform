@@ -84,8 +84,20 @@ export const SCORING_VERSION = "me-v3-scoring.5";
  *
  * **판정 규칙은 한 줄도 바뀌지 않았다.** 다만 축이 옮겨진 문항이 있으므로
  * 같은 응답이 다른 칸으로 간다. 그래서 채점 판본도 함께 올린다.
+ *
+ * `.4` 로 올린 까닭. **관심과 학습 의향의 보기가 셋에서 다섯이 됐다.**
+ * 화면이 `높다 · 보통 · 낮다` 셋만 내놓고 있었는데 `band()` 는 처음부터
+ * 다섯 값을 받는 자로 적혀 있었다(1~2 낮음 · 3 가운데 · 4~5 높음). 그래서
+ * 가운데 값이 저장될 수 있는 길이 화면에만 없었다. 보기를 다섯으로 늘리고
+ * 경험 보기 셋은 그대로 두었다: `expLabel` 이 둘 이상을 한 이름으로 묶어서
+ * 다섯으로 늘리면 받고 쓰지 않는 값이 둘 생긴다.
+ *
+ * **채점 판본을 올리지 않는다.** `band()` 와 그것을 읽는 자리가 한 줄도
+ * 바뀌지 않았고, 옛 응답(`5` · `1` · `잘 모르겠다`)이 같은 값으로 남아
+ * 같은 묶음으로 간다. 옛 스냅샷이 글자까지 같은 것을 `npm run v3:scale` 이
+ * 센다. 가린 자리와 되돌아보는 표는 `docs/metri/80_scale_gate.md`.
  */
-export const ITEM_BANK_VERSION = "ME_V3_ITEM_BANK_V2.3";
+export const ITEM_BANK_VERSION = "ME_V3_ITEM_BANK_V2.4";
 
 export type ModuleVersions = {
   core_version: string;

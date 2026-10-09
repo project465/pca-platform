@@ -617,32 +617,49 @@ function Sweep({
   onPick: (f: Field, raw: number | string, a: Answer) => void;
 }) {
   const c = f.control;
-  if (c.kind !== "pick3") return null;
+  if (c.kind !== "steps") return null;
+  /**
+   * **척도와 척도 밖을 가른다.**
+   *
+   * 다섯 단계는 한 줄에 붙여 세우고 `잘 모르겠다` 는 그 뒤에 작게 둔다.
+   * 둘을 같은 줄에 나란히 두면 `별로 관심 없다` 와 `잘 모르겠다` 가 같은
+   * 축의 이웃처럼 읽히는데, 앞엣것은 관심 수준이고 뒷엣것은 정보가 없다는
+   * 뜻이다.
+   */
+  const steps = c.options.filter((o) => o.value !== null);
+  const esc = c.options.find((o) => o.value === null);
+  const pick = (o: { value: number | null }) => () => onPick(
+    f, o.value === null ? UNKNOWN : o.value,
+    o.value === null ? { kind: "choice", value: UNKNOWN }
+      : c.answer === "exposure"
+      ? { kind: "exposure", value: o.value }
+      : { kind: "scale5", value: o.value });
   return (
     <fieldset className="qs-sw">
       <legend>{f.label ?? ""}</legend>
       <span className="qs-sw-row" aria-hidden>{f.label}</span>
-      <div className="qs-p3">
-        {c.options.map((o) => {
-          /* **`잘 모르겠다` 는 수가 아니다.** 보기 목록의 그 자리에 값이
-             없어서(`null`) 가운데 값으로 저장될 길이 없다. 판정은 그것을
-             관심 수준이 아니라 `아직 고르지 않았다` 로 읽는다 */
-          const unknown = o.value === null;
-          const on = unknown ? value === UNKNOWN : value === o.value;
+      <div className="qs-steps" data-n={steps.length}>
+        {steps.map((o) => {
+          const on = value === o.value;
           return (
-            <label key={o.label} className={`qs-p3b${on ? " is-on" : ""}${unknown ? " is-unknown" : ""}`}>
+            /* **숫자를 적지 않는다.** 1에서 5를 그리면 심리검사 표가 되고,
+               뜻은 격자 머리에 한 번 적혀 있다 */
+            <label key={o.label} className={`qs-step${on ? " is-on" : ""}`}
+              title={o.label}>
               <input type="radio" name={f.itemId} checked={on}
-                aria-label={`${f.label ?? ""} · ${o.label}`}
-                onChange={() => onPick(f, unknown ? UNKNOWN : (o.value as number),
-                  unknown ? { kind: "choice", value: UNKNOWN }
-                  : c.answer === "exposure"
-                  ? { kind: "exposure", value: o.value as number }
-                  : { kind: "scale5", value: o.value as number })} />
-              {o.label}
+                aria-label={`${f.label ?? ""} · ${o.label}`} onChange={pick(o)} />
+              <span>{o.short}</span>
             </label>
           );
         })}
       </div>
+      {esc ? (
+        <label className={`qs-esc${value === UNKNOWN ? " is-on" : ""}`} title={esc.label}>
+          <input type="radio" name={f.itemId} checked={value === UNKNOWN}
+            aria-label={`${f.label ?? ""} · ${esc.label}`} onChange={pick(esc)} />
+          {esc.short}
+        </label>
+      ) : null}
     </fieldset>
   );
 }
@@ -657,7 +674,7 @@ function Row({
   onNoteDone: (f: Field) => void;
 }) {
   const c = f.control;
-  if (c.kind === "pick3") {
+  if (c.kind === "steps") {
     return <Sweep f={f} value={value} onPick={onPick} />;
   }
   if (c.kind === "scale5" || c.kind === "exposure") {

@@ -312,7 +312,7 @@ function answerFor(i: Shape): Answer | null {
        않는다` 고 거짓으로 적는다. 짝의 뒤쪽만 낮춰 둔다 */
     return { kind: "level", index: /_?1?B$/.test(String(i.item_id)) ? 0 : 3 };
   }
-  if (sc === "3보기") {
+  if (sc === "3보기" || sc === "5보기") {
     return i.measurement_axis === "exposure"
       ? { kind: "exposure", value: 2 } : { kind: "scale5", value: 5 };
   }

@@ -144,7 +144,8 @@
     "routes:check": "tsx scripts/routes-check.ts",
     "oauth:ready": "tsx scripts/oauth-ready.ts",
     "pilot:ready": "tsx scripts/pilot-ready.ts",
-    "runbook:check": "tsx scripts/runbook-check.ts"
+    "runbook:check": "tsx scripts/runbook-check.ts",
+    "v3:scale": "tsx scripts/v3-scale-check.ts"
   },
   "dependencies": {
     "@types/nodemailer": "^8.0.1",

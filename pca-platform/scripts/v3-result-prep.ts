@@ -66,16 +66,21 @@ async function pick(a: V3Attempt, id: string, lv: Level): Promise<Answer | null>
   if (c.kind === "exposure") {
     return { kind: "exposure", value: lvl === "none" ? 0 : lvl === "mid" ? 1 : 2 };
   }
-  /* 보기 셋. 값은 은행이 들고 있고 여기서 만들지 않는다 */
-  if (c.kind === "pick3") {
+  /* 한 줄짜리 단계. 값은 은행이 들고 있고 여기서 만들지 않는다 */
+  if (c.kind === "steps") {
     /* `잘 모르겠다` 자리를 빼고 고른다. 그 보기는 값이 `null` 이라 수로
-       저장되지 않는다 */
-    const opts = c.options.filter((o) => o.value !== null);
-    const n = opts.length;
-    const pick = opts[lvl === "none" ? n - 1 : lvl === "mid" ? 1 : 0];
+       저장되지 않고, 사람 벌을 만들 때 쓰면 그 사람이 관심을 안 고른 것이
+       된다 */
+    const vs = c.options.map((o) => o.value)
+      .filter((v): v is number => typeof v === "number")
+      .sort((a, b) => a - b);
+    /* **차례가 아니라 값으로 고른다.** 보기 차례를 쓰면 은행의 보기 순서가
+       낮은 쪽부터로 바뀐 날 `높음` 이 가장 낮은 값을 집는다 */
+    const got = lv === "none" ? vs[0] : lv === "mid" ? vs[Math.floor(vs.length / 2)]
+      : vs[vs.length - 1];
     return c.answer === "exposure"
-      ? { kind: "exposure", value: pick.value as number }
-      : { kind: "scale5", value: pick.value as number };
+      ? { kind: "exposure", value: got }
+      : { kind: "scale5", value: got };
   }
   const o = c.options[0];
   return o ? { kind: "choice", value: o.value } : null;

@@ -1,13 +1,13 @@
 {
  "schema_version": "me-v3-bank-lock.2",
- "item_bank_version": "ME_V3_ITEM_BANK_V2.3",
+ "item_bank_version": "ME_V3_ITEM_BANK_V2.4",
  "note": "2차 문항 은행의 지문이다. 아래 목록에는 1차 판본의 파일도 함께 있다: 그 판본으로 응시한 사람의 결과를 다시 만들 수 있어야 하므로 지우지 않고 지문을 계속 대조한다. 문면을 고치면 이 파일이 걸린다. 그때 판본을 올리고(`version.ts` 의 ITEM_BANK_VERSION) 여기를 다시 적는다. 잠그는 까닭은 산 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "frozen_version": "ME_V3_ITEM_BANK_V1",
  "files": {
-  "me-v3-2-items.json": "a82de739088561bc8b7f0aa5eb3618440d448279e82cc472c8787138fa4404a3",
+  "me-v3-2-items.json": "875d84b0187c7c95a683786e9cf32f914310951e35f86fde80ad67c921bc31e9",
   "me-v3-2-taxonomy.json": "c686a0b8aa8d209849ac6aa261e9c305b3a5f20429cc7c9b818943d615acb42f",
   "me-v3-2-domains.json": "405e4897d9a935706b92e4713ff79034e01da6feaecb5586e3474b986f07558d",
-  "me-v3-2-items-blueprint.json": "b34fff644e3be15d4a576874684d70d8cccaa1207f6bb75f5c5a5d3bac6e155e",
+  "me-v3-2-items-blueprint.json": "a45e547fba93ba979f647e0b115e3a9d9922fec041b5548efe1088dd0d3f465b",
   "me-v3-2-checklist-additions.json": "3d17b47fb967d0febe8496cf21ad44008e1d6cee1bbe0b763ac0ed514733795e",
   "me-v3-2-common-additions.json": "1bc7e7a13439c0d6bfcf7b1bf3a41195809cf5d4daa9ad05d53b7bc8f2298a33",
   "me-v3-2-relations.json": "7f120a5f0e8e9369419f3c5911d9a7f17118897c2e41346afcfda065f718a7f8",
