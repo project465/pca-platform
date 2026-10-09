@@ -19,7 +19,7 @@ export async function pullActions(): Promise<void> {
     body: actionKo(a, a.domain ? domainName(a.domain) : "", result.stage).do,
     horizon: H[a.horizon],
   })));
-  revalidatePath("/me/gap");
+  revalidatePath("/me/next");
   revalidatePath("/me");
 }
 
@@ -29,6 +29,6 @@ export async function moveAction(form: FormData): Promise<void> {
   const state = String(form.get("state") ?? "");
   if (!id || !["open", "doing", "done", "dropped"].includes(state)) return;
   await setActionState(user.id, id, state as "open" | "doing" | "done" | "dropped");
-  revalidatePath("/me/gap");
+  revalidatePath("/me/next");
   revalidatePath("/me");
 }
