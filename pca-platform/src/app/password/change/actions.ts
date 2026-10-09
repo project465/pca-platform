@@ -35,8 +35,10 @@ export async function changePasswordAction(
     return { error: "지금 쓰는 비밀번호와 다른 것으로 정해주세요." };
   }
 
+  /* `pw_login` 을 같이 올린다 — 재설정 쪽과 같은 까닭이다 */
   await query(
-    `UPDATE users SET password_hash = $2, must_reset_pw = false WHERE id = $1`,
+    `UPDATE users SET password_hash = $2, must_reset_pw = false, pw_login = true
+      WHERE id = $1`,
     [user.id, await hashPassword(next)],
   );
 

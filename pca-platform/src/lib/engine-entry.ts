@@ -83,17 +83,44 @@ export type RouteRow = {
  * `src/app` 의 쪽을 대조한다.
  */
 export const ROUTE_TABLE: RouteRow[] = [
+  /* ── 지금 검사 ─────────────────────────────────────────── */
   { route: "/cores", newUser: "여기로 들어온다", oldUser: "같음", cls: "CURRENT" },
   { route: "/v3/start", newUser: "`/cores` 가 보낸다", oldUser: "같음", cls: "CURRENT" },
   { route: "/v3/[attemptId]", newUser: "응시", oldUser: "이어하기", cls: "CURRENT" },
   { route: "/v3/[attemptId]/result", newUser: "결과지", oldUser: "같음", cls: "CURRENT" },
-  { route: "/me", newUser: "로그인 뒤 첫 화면", oldUser: "같음", cls: "CURRENT" },
-  { route: "/my", newUser: "계정", oldUser: "계정", cls: "CURRENT" },
+  { route: "/v3/[attemptId]/feedback", newUser: "파일럿 의견", oldUser: "같음",
+    cls: "CURRENT" },
+  { route: "/v3/pilot", newUser: "파일럿 등록", oldUser: "같음", cls: "CURRENT" },
 
+  /* ── 공개 진입 ─────────────────────────────────────────── */
+  { route: "/start", newUser: "개인·기관 갈림길", oldUser: "로그인 뒤 제 면으로",
+    cls: "CURRENT" },
   { route: "/pricing", newUser: "지금 판본만 선다", oldUser: "같음", cls: "CURRENT" },
+  { route: "/product", newUser: "상품 소개", oldUser: "같음", cls: "CURRENT" },
+  { route: "/checkout", newUser: "결제", oldUser: "같음", cls: "CURRENT" },
   { route: "/checkout/complete", newUser: "`/cores` 로 보낸다", oldUser: "같음",
     cls: "CURRENT" },
 
+  /* ── 작업공간 ──────────────────────────────────────────── */
+  { route: "/me", newUser: "로그인 뒤 첫 화면", oldUser: "같음", cls: "CURRENT" },
+  { route: "/me/results", newUser: "결과 이력", oldUser: "같음", cls: "CURRENT" },
+  { route: "/me/state", newUser: "지금 상태·비어 있는 자리", oldUser: "같음",
+    cls: "CURRENT" },
+  { route: "/me/next", newUser: "다음 할 일", oldUser: "같음", cls: "CURRENT" },
+  { route: "/me/experience", newUser: "경험 목록", oldUser: "같음", cls: "CURRENT" },
+  { route: "/me/experience/new", newUser: "경험 추가", oldUser: "같음", cls: "CURRENT" },
+  { route: "/me/recompute", newUser: "새 경험 반영", oldUser: "같음", cls: "CURRENT" },
+  { route: "/me/explore", newUser: "산업·직무 탐색", oldUser: "같음", cls: "CURRENT" },
+  { route: "/me/region", newUser: "지역과 기관", oldUser: "같음", cls: "CURRENT" },
+  { route: "/me/track", newUser: "Track", oldUser: "같음", cls: "CURRENT" },
+  { route: "/me/jobs", newUser: "Track 안의 공고 자리", oldUser: "같음", cls: "CURRENT" },
+  { route: "/me/apply", newUser: "지원 준비", oldUser: "같음", cls: "CURRENT" },
+
+  /* ── 계정 ──────────────────────────────────────────────── */
+  { route: "/my", newUser: "계정", oldUser: "계정", cls: "CURRENT" },
+  { route: "/my/account", newUser: "탈퇴·파기", oldUser: "같음", cls: "CURRENT" },
+
+  /* ── 옛 검사. 지우지 않고 읽기만 남긴다 ─────────────────── */
   { route: "/test", newUser: "들어갈 수 없다", oldUser: "ME_V1 이어하기",
     cls: "COMPATIBILITY" },
   { route: "/test/[attemptId]", newUser: "들어갈 수 없다", oldUser: "ME_V1 응시",
@@ -102,20 +129,48 @@ export const ROUTE_TABLE: RouteRow[] = [
     cls: "COMPATIBILITY" },
   { route: "/assessment/[attemptId]", newUser: "들어갈 수 없다", oldUser: "ME_V2 응시",
     cls: "COMPATIBILITY" },
+  { route: "/assessment/[attemptId]/done", newUser: "—", oldUser: "ME_V2 제출 직후",
+    cls: "COMPATIBILITY" },
+  { route: "/assessment/[attemptId]/evidence", newUser: "—", oldUser: "ME_V2 경험 입력",
+    cls: "COMPATIBILITY" },
   { route: "/assessment/[attemptId]/report", newUser: "—", oldUser: "ME_V2 결과지",
     cls: "COMPATIBILITY" },
   { route: "/report/[attemptId]", newUser: "—", oldUser: "ME_V1 결과지",
     cls: "COMPATIBILITY" },
   { route: "/evidence", newUser: "—", oldUser: "옛 경험 입력", cls: "COMPATIBILITY" },
+  { route: "/pilot/[attemptId]", newUser: "—", oldUser: "ME_V2 파일럿 의견",
+    cls: "COMPATIBILITY" },
   { route: "/my/assessments", newUser: "—", oldUser: "옛 응시 목록", cls: "COMPATIBILITY" },
   { route: "/my/results", newUser: "—", oldUser: "옛 결과 목록", cls: "COMPATIBILITY" },
   { route: "/my/evidence", newUser: "—", oldUser: "옛 경험", cls: "COMPATIBILITY" },
+  { route: "/my/applications", newUser: "—", oldUser: "옛 지원 기록",
+    cls: "COMPATIBILITY" },
 
+  /* ── 들어오면 지금 자리로 보낸다 ────────────────────────── */
   { route: "/free", newUser: "`/cores` 로 보낸다", oldUser: "같음", cls: "REDIRECT" },
   { route: "/free-start", newUser: "`/cores` 로 보낸다", oldUser: "같음", cls: "REDIRECT" },
   { route: "/redeem", newUser: "`/cores` 로 보낸다", oldUser: "옛 결과지로", cls: "REDIRECT" },
   { route: "/me/gap", newUser: "`/me/state#gaps`", oldUser: "같음", cls: "REDIRECT" },
 
+  /* ── 접었다 ────────────────────────────────────────────── */
   { route: "/sample", newUser: "권하지 않는다 (옛 판본 결과지)", oldUser: "옛 판본 견본",
     cls: "DEPRECATED" },
+];
+
+/**
+ * **분류가 있어야 하는 구역.**
+ *
+ * `src/app` 전체를 표에 적지 않는다: 운영 화면과 기관 화면은 어느 검사로
+ * 들어가는가와 상관이 없고, 그것까지 적으면 표가 쪽 목록이 되어 아무도
+ * 안 고친다. 세는 것은 **판본이 갈리는 구역과 두 영역이 갈리는 구역**이다.
+ *
+ * 첫 칸으로 고른다. `npm run routes:check` 가 이 목록으로 실제 쪽을
+ * 골라 표와 대조하므로, **쪽을 하나 더하면 표를 고치기 전까지 걸린다.**
+ */
+export const OWNED_SEGMENTS = [
+  /* 옛 검사 */ "test", "assessment", "report", "evidence", "pilot",
+  /* 지금 검사 */ "v3", "cores",
+  /* 공개 진입 */ "start", "pricing", "product", "checkout",
+  "free", "free-start", "redeem", "sample",
+  /* 작업공간과 계정 */ "me", "my",
 ];

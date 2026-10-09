@@ -8,6 +8,7 @@ import {
 } from "@/lib/catalog";
 import { money, resolveMarket } from "@/lib/market";
 import { openGrants } from "@/lib/me-v2/attempt";
+import { resumePathFor } from "@/lib/engine-entry";
 import { BRAND, toLang2, txer } from "@/lib/surface-text";
 import { valueOf } from "@/lib/tiers";
 import { minutesLabel, tierMinutes } from "@/lib/tier-minutes";
@@ -152,7 +153,7 @@ export default async function PricingPage({
               body={`${grants[0].tier} · ${T("asResume")}`}
               /* 옛 판본의 이어하기. **보존하는 자리라 지우지 않는다**
                  (`engine-entry.ts` 의 route 표에서 COMPATIBILITY) */
-              cta={{ href: "/assessment/start", label: T("pxGoAssessment") }}
+              cta={{ href: resumePathFor("ME_V2") ?? "/me", label: T("pxGoAssessment") }}
               tight
             />
           </div>

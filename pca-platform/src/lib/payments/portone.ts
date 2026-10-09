@@ -9,6 +9,7 @@ import type {
   PayRegion,
 } from "./types";
 import { matchesOrder } from "./verify";
+import { ref, swallow } from "../oplog";
 
 /**
  * PortOne V2.
@@ -158,11 +159,22 @@ export const portoneProvider: PaymentProvider = {
         cache: "no-store",
       },
     );
+    /* **본문을 못 읽은 것도 남긴다.** 돌려주는 말은 `{ok:false}` 로 이미
+       나가지만, 거기 담기는 것은 `(500)` 뿐이라 **밖에서 읽으면 PG 가
+       거절한 것과 본문이 깨진 것이 같은 상태로 보인다.** 셋째 줄도 같다:
+       본문을 못 읽으면 환불 번호가 `null` 로 적히고, 그러면 장부에
+       `환불했는데 번호가 없는 줄`이 남는다 */
     if (!res.ok) {
-      const body = await res.text().catch(() => "");
+      const body = (await res.text().catch(swallow({
+        operation: "portone.refund", ref: ref("payment", providerPaymentId),
+        step: "readBody", category: "upstream", detail: `status=${res.status}`,
+      }))) ?? "";
       return { ok: false, reason: `PortOne 환불 실패 (${res.status}) ${body.slice(0, 200)}` };
     }
-    const body = (await res.json().catch(() => null)) as
+    const body = ((await res.json().catch(swallow({
+      operation: "portone.refund", ref: ref("payment", providerPaymentId),
+      step: "parseBody", category: "upstream", detail: "환불은 됐고 응답을 못 읽었다",
+    }))) ?? null) as
       { cancellation?: { id?: string; totalAmount?: number } } | null;
     return {
       ok: true,

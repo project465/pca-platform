@@ -8,6 +8,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { tx } from "../src/lib/db";
 import { hashPassword } from "../src/lib/password";
+import { devPassword, whereToLook } from "./dev-credentials.mjs";
 
 // tsx 는 .env.local 을 자동으로 읽지 않는다. 필요한 값만 직접 채운다.
 function loadEnv(file: string) {
@@ -39,9 +40,13 @@ if ((process.env.APP_ENV ?? "").toLowerCase() === "production") {
   process.exit(2);
 }
 
-const PW_ADMIN = "pca-dev-admin-1234";
-const PW_ORG = "pca-dev-org-1234";
-const PW_STUDENT = "TempPass2026";
+/* **열쇠를 여기 적지 않는다.** 전에는 세 값이 평문이었고 같은 값이
+   README 와 QA 문서에도 있었다. 운영 secret 은 아니지만 그 값으로
+   실제로 로그인이 된다 — 개발 DB 가 잠깐 열린 날 저장소를 읽은 사람이
+   그대로 들어온다. 값은 `.dev-credentials.json`(gitignore)에서 온다 */
+const PW_ADMIN = devPassword("admin");
+const PW_ORG = devPassword("org");
+const PW_STUDENT = devPassword("student");
 
 async function main() {
 await tx(async (c) => {
@@ -116,12 +121,16 @@ await tx(async (c) => {
   await member(student, dept, "student");
 });
 
+  /* **값을 찍지 않는다.** 터미널 기록과 CI 로그에 남는 것이 평문으로
+     적어 두는 것과 같은 일이다. 어디서 볼 수 있는지만 알린다 */
   console.log(`
 시드 완료. 개발용 계정입니다.
 
-  운영사 관리자   admin        / ${PW_ADMIN}
-  학과 담당자     me-admin     / ${PW_ORG}
-  학생(첫 로그인) 2021001234   / ${PW_STUDENT}   ← 로그인하면 비밀번호 변경 화면으로 갑니다
+  운영사 관리자   admin
+  학과 담당자     me-admin
+  학생(첫 로그인) 2021001234   ← 로그인하면 비밀번호 변경 화면으로 갑니다
+
+${whereToLook()}
 `);
 }
 

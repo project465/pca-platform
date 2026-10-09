@@ -7,6 +7,7 @@ import {
 import { enqueue } from "@/lib/outbox";
 import { track } from "@/lib/funnel";
 
+import { ref, swallow } from "@/lib/oplog";
 export type Product = {
   code: string;
   kind: string;
@@ -114,8 +115,15 @@ export async function startCheckout(
   const here = origin.replace(/\/$/, "");
   const base = provider.name === "mock"
     ? here
+    /* **정규 주소를 못 읽으면 요청 호스트로 떨어진다.** 그 자체는
+       맞는 되돌림이지만, 결제를 마친 사람이 **다른 도메인으로 돌아오는**
+       일이라 조용히 넘기면 안 된다 */
     : ((await publicBase(product.market === "GLOBAL" ? "GLOBAL" : "KR")
-        .catch(() => null)) ?? here);
+        .catch(swallow({
+          operation: "checkout.base", ref: ref("order", orderNo),
+          step: "publicBase", category: "config",
+          detail: `market=${product.market} 요청 호스트로 되돌림`,
+        }))) ?? here);
 
   const ticket = await provider.createCheckout({
     orderNo,

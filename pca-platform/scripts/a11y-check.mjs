@@ -1,3 +1,4 @@
+import { devPassword } from "./dev-credentials.mjs";
 /**
  * 화면을 눈으로만 보고 넘기지 않는다.
  *
@@ -17,7 +18,7 @@ const B = process.env.UI_BASE ?? "http://127.0.0.1:3100";
 
 const WHO = {
   guest: null,
-  admin: { id: "admin", pw: "pca-dev-admin-1234" },
+  admin: { id: "admin", pw: devPassword("admin") },
 };
 
 /** [누구로, 주소, 이름, 화면 폭] */

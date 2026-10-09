@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
 import { randomBytes } from "node:crypto";
 import { query, queryOne } from "@/lib/db";
+import { ref, swallow } from "@/lib/oplog";
 import { hashPassword } from "@/lib/password";
 import { signIn } from "@/lib/auth";
 import { linkAccount, PROVIDER_LABEL, resolveIdentity } from "@/lib/auth-accounts";
@@ -72,13 +73,27 @@ export async function createSocialAccount(
     userId: created.id, locale: lang2, siteId: null, agreedIds: agreed,
   });
   if (!saved.ok) {
-    await query(`DELETE FROM users WHERE id = $1`, [created.id]).catch(() => undefined);
+      /* **되돌리기가 실패하면 그것이 더 큰 일이다.** 동의 없는 계정이
+         남는다. 조용히 넘기면 아무도 모르므로 반드시 남긴다 */
+    await query(`DELETE FROM users WHERE id = $1`, [created.id])
+      .catch(swallow({
+        operation: "signup.social.rollback", ref: ref("user", created.id),
+        step: "delete", category: "db",
+        detail: "동의 저장이 실패해 계정을 되돌리는 중",
+      }));
     return { message: saved.reason };
   }
 
   const linked = await linkAccount(created.id, id);
   if (!linked.ok) {
-    await query(`DELETE FROM users WHERE id = $1`, [created.id]).catch(() => undefined);
+      /* **되돌리기가 실패하면 그것이 더 큰 일이다.** 동의 없는 계정이
+         남는다. 조용히 넘기면 아무도 모르므로 반드시 남긴다 */
+    await query(`DELETE FROM users WHERE id = $1`, [created.id])
+      .catch(swallow({
+        operation: "signup.social.rollback", ref: ref("user", created.id),
+        step: "delete", category: "db",
+        detail: "공급자 연결이 실패해 계정을 되돌리는 중",
+      }));
     redirect(`/login/link?p=${id.provider}`);
   }
 

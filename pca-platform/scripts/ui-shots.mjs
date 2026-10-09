@@ -15,6 +15,7 @@
  */
 import { mkdirSync } from "node:fs";
 
+import { devPassword } from "./dev-credentials.mjs";
 const B = process.env.UI_BASE ?? "http://127.0.0.1:3100";
 const OUT = "docs/metri/shots/ui";
 mkdirSync(OUT, { recursive: true });
@@ -34,9 +35,12 @@ const WHO = {
   /* 참여자는 첫 로그인에 비밀번호를 바꿔야 한다. 그래서 **두 벌을 들고
      간다**: 시드 그대로면 앞엣것, 이 스크립트가 한 번 바꿨으면 뒤엣것.
      그래야 같은 DB 에서 두 번 돌릴 수 있다 */
-  individual: { id: "2021001234", pw: "TempPass2026", pw2: "ShotPass-2026!", first: true },
-  campus: { id: "me-admin", pw: "pca-dev-org-1234" },
-  admin: { id: "admin", pw: "pca-dev-admin-1234" },
+  individual: {
+    id: "2021001234", pw: devPassword("student"),
+    pw2: devPassword("student2"), first: true,
+  },
+  campus: { id: "me-admin", pw: devPassword("org") },
+  admin: { id: "admin", pw: devPassword("admin") },
 };
 
 /** [역할, 주소, 파일이름, 찍을 크기들] */
@@ -114,7 +118,7 @@ async function login(ctx, who) {
     await p.goto(`${B}/password/change`, { waitUntil: "networkidle" });
   }
   if (who.first && await p.$('input[name="current"]')) {
-    const next = "ShotPass-2026!";
+    const next = devPassword("student2");
     await p.fill('input[name="current"]', who.pw);
     /* 이미 바꿔 둔 뒤라면 이 칸이 틀리지만, 그때는 폼 자체가 안 뜬다 */
     await p.fill('input[name="next"]', next);

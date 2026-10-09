@@ -15,6 +15,7 @@ import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
+import { devPassword } from "./dev-credentials.mjs";
 const B = process.env.UI_BASE ?? "http://127.0.0.1:3100";
 const OUT = "docs/metri/shots/v3";
 const FILE = process.argv[2];
@@ -36,8 +37,8 @@ const SIZES = {
   narrow: { width: 320, height: 720 },
 };
 const PW = {
-  "me-admin": "pca-dev-org-1234",
-  admin: "pca-dev-admin-1234",
+  "me-admin": devPassword("org"),
+  admin: devPassword("admin"),
 };
 
 /** 응시자에게 보이면 안 되는 모양. 문항 번호와 영역 코드와 축 코드 */

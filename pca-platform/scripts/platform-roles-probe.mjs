@@ -17,6 +17,7 @@
  * 적혀 있으니 밖에 나가는 곳에는 이 시드를 쓰지 않는다.
  */
 import { mkdirSync } from "node:fs";
+import { devPassword } from "./dev-credentials.mjs";
 const OUT = "docs/metri/shots/platform";
 mkdirSync(OUT, { recursive: true });
 const B = "http://127.0.0.1:3100";
@@ -24,11 +25,11 @@ const { chromium } = await import("playwright");
 const browser = await chromium.launch({ args: ["--no-sandbox"] });
 
 const WHO = [
-  ["운영사관리자", "admin", "pca-dev-admin-1234",
+  ["운영사관리자", "admin", devPassword("admin"),
    ["/admin/organizations", "/admin/sites", "/admin/ops", "/org", "/my"]],
-  ["기관담당자", "me-admin", "pca-dev-org-1234",
+  ["기관담당자", "me-admin", devPassword("org"),
    ["/org", "/org/participants", "/org/insights", "/admin/organizations", "/admin/sites"]],
-  ["기관참여자", "2021001234", "TempPass2026", ["/my", "/org", "/admin/organizations"]],
+  ["기관참여자", "2021001234", devPassword("student"), ["/my", "/org", "/admin/organizations"]],
 ];
 const rows = [];
 for (const [tag, id, pw, paths] of WHO) {
@@ -59,7 +60,7 @@ for (const [tag, id, pw, paths] of WHO) {
   /* 첫 로그인인 참여자는 비밀번호를 바꾼 뒤에야 제 화면을 본다.
      거기까지 가 봐야 '읽기 전용이냐 작동하냐' 를 말할 수 있다 */
   if (new URL(p.url()).pathname === "/password/change") {
-    const pw2 = "ProbePass-2026!";
+    const pw2 = devPassword("probe");
     await p.fill('input[name="current"]', pw);
     await p.fill('input[name="next"]', pw2);
     await p.fill('input[name="confirm"]', pw2);

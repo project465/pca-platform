@@ -9,13 +9,14 @@
 import { execFileSync } from "node:child_process";
 import { mkdirSync, readFileSync } from "node:fs";
 
+import { devPassword } from "./dev-credentials.mjs";
 const B = process.env.UI_BASE ?? "http://127.0.0.1:3100";
 const OUT = "docs/metri/shots/v3p";
 mkdirSync(OUT, { recursive: true });
 
 const plan = JSON.parse(readFileSync(process.argv[2], "utf8"));
 const attempt = plan.targets.find((t) => t.name === "r3_pro").path.split("/")[2];
-const PW = { "me-admin": "pca-dev-org-1234", admin: "pca-dev-admin-1234" };
+const PW = { "me-admin": devPassword("org"), admin: devPassword("admin") };
 
 const INTERNAL = [
   /\bTD\d{2}\b/, /\bJ[1-8]\b/, /\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+\b/,

@@ -18,7 +18,8 @@ import { openAttempt, questionPage, saveResponse, submitAttempt, PAGE_SIZE } fro
 import { score } from "../../src/lib/scoring";
 import { addEvidence, competencies } from "../../src/lib/evidence";
 
-const PW = "erase-pass-1234";
+import { devPassword } from "../dev-credentials.mjs";
+const PW = devPassword("erase");
 const n = async (sql: string, p: unknown[] = []) =>
   (await queryOne<{ n: number }>(sql, p))!.n;
 

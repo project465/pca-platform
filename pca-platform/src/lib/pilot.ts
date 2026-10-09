@@ -14,6 +14,7 @@
  */
 import { query, queryOne } from "./db";
 
+import { opFail, ref } from "@/lib/oplog";
 export type PilotItem = {
   code: string;
   orderNo: number;
@@ -103,14 +104,33 @@ export async function save(opts: {
     const v = typeof a.value === "number" && a.value >= 1 && a.value <= 5 ? a.value : null;
     const t = (a.text ?? "").trim().slice(0, 600) || null;
     if (v === null && t === null) continue;
-    await query(
-      `INSERT INTO pilot_feedback (attempt_id, user_id, item_code, value, text)
-       VALUES ($1,$2,$3,$4,$5)
-       ON CONFLICT (attempt_id, item_code) DO UPDATE
-         SET value = EXCLUDED.value, text = EXCLUDED.text, answered_at = now()`,
-      [opts.attemptId, opts.userId, a.code, v, t],
-    ).catch(() => null);
-    n++;
+    /**
+     * **못 적은 줄을 적은 것으로 세지 않는다.**
+     *
+     * 전에는 `.catch(() => null)` 뒤에서 `n++` 가 무조건 돌았다. 그래서
+     * 저장이 거절돼도 `8개 받았습니다` 가 나가고, 파일럿 분석에서는 그
+     * 줄이 없는 채로 끝난다. 참가자를 다시 부를 수 없는 자료다.
+     *
+     * **한 줄이 실패해도 나머지를 멈추지 않는다**: 그 사람이 적은 다른
+     * 답까지 잃는 쪽이 더 나쁘다. 대신 반드시 남긴다.
+     */
+    try {
+      await query(
+        `INSERT INTO pilot_feedback (attempt_id, user_id, item_code, value, text)
+         VALUES ($1,$2,$3,$4,$5)
+         ON CONFLICT (attempt_id, item_code) DO UPDATE
+           SET value = EXCLUDED.value, text = EXCLUDED.text, answered_at = now()`,
+        [opts.attemptId, opts.userId, a.code, v, t],
+      );
+      n++;
+    } catch (e) {
+      /* **적어 주신 글을 로그에 넣지 않는다.** 문항 코드까지다 */
+      opFail({
+        operation: "pilot.feedback.save",
+        ref: ref("attempt", opts.attemptId),
+        step: "insert", category: "db", detail: `item=${a.code}`,
+      }, e);
+    }
   }
   return n;
 }

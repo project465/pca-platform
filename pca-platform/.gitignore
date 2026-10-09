@@ -1,5 +1,8 @@
 
 # 로컬 검증용 임시 산출물
+# **개발용 계정의 열쇠.** 전에는 여섯 값이 소스와 README 에 평문으로
+# 적혀 있었다. 운영 secret 은 아니지만 그 값으로 실제로 로그인이 된다
+.dev-credentials.json
 *.tsbuildinfo
 .DS_Store
 .env

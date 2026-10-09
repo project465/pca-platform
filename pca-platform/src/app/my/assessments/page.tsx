@@ -6,6 +6,7 @@ import { ROLE_LABEL } from "@/lib/roles";
 import { BRAND, toLang2, txer } from "@/lib/surface-text";
 import { itemsFor } from "@/lib/me-v2/bank";
 import { isTier } from "@/lib/me-v2/attempt";
+import { resumePathFor } from "@/lib/engine-entry";
 import { Shell, PageHead } from "@/components/sf/shell";
 import { NAV_INDIVIDUAL } from "@/components/sf/nav";
 import { Card, Empty, Pill } from "@/components/sf/parts";
@@ -122,7 +123,9 @@ export default async function MyAssessments({
                             {T("myOpenReport")}
                           </Link>
                         ) : (
-                          <Link href={v2 ? `/assessment/${r.id}` : "/test"}
+                          <Link href={v2
+                            ? `/assessment/${r.id}`
+                            : (resumePathFor("ME_V1") ?? "/my")}
                             className="sf-btn ghost sm">{T("myContinue")}</Link>
                         )}
                       </td>

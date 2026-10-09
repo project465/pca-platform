@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireRole } from "@/lib/session";
 import { resolveLang } from "@/lib/locale-server";
 import { v2State } from "@/lib/me-v2/lifecycle";
+import { resumePathFor } from "@/lib/engine-entry";
 import { currentState } from "@/lib/me-v3/platform";
 import { BRAND, toLang2, txer } from "@/lib/surface-text";
 import { ROLE_LABEL } from "@/lib/roles";
@@ -129,7 +130,9 @@ export default async function AccountHome({
           <Card title={T("myInProgress")}>
             <Defs rows={[{ k: T("okTier"), v: v2.tier }]} />
             <Link
-              href={v2.kind === "progress" ? `/assessment/${v2.attemptId}` : "/assessment/start"}
+              href={v2.kind === "progress"
+                ? `/assessment/${v2.attemptId}`
+                : (resumePathFor("ME_V2") ?? "/me")}
               className="sf-btn ghost sm" style={{ marginTop: 14 }}
             >
               {v2.kind === "progress" ? T("asResume") : T("asStart")}

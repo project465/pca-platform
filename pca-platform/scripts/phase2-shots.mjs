@@ -19,6 +19,7 @@
  */
 import { mkdirSync } from "node:fs";
 
+import { devPassword } from "./dev-credentials.mjs";
 const B = process.env.UI_BASE ?? "http://127.0.0.1:3100";
 const OUT = "docs/metri/shots/phase2";
 mkdirSync(OUT, { recursive: true });
@@ -32,7 +33,7 @@ const SIZES = {
 
 /* 이 검사가 만드는 계정. **운영에 쓰지 않는다**: 비밀번호가 코드에 적혀
    있고, 적혀 있는 비밀번호는 비밀번호가 아니다 */
-const PW = "Phase2-Shots-2026!";
+const PW = devPassword("probe");
 const RUN = Date.now().toString(36);
 
 const log = [];
@@ -354,7 +355,7 @@ for (const spec of (process.env.FLOWS ?? DEFAULT_FLOWS).split(",")) {
   await page.goto(`${B}/login`, { waitUntil: "networkidle" });
   await page.fill('input[name="loginId"], input[name="id"], input[type="text"]', "admin")
     .catch(() => {});
-  await page.fill('input[type="password"]', "pca-dev-admin-1234");
+  await page.fill('input[type="password"]', devPassword("admin"));
   await page.locator('button[type="submit"]').first().click({ timeout: 15000 })
     .catch(() => {});
   await page.waitForLoadState("networkidle").catch(() => {});

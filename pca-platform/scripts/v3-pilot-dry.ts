@@ -38,6 +38,7 @@ import { query, queryOne } from "../src/lib/db";
 import { hashPassword } from "../src/lib/password";
 import { createInvites, inviteLink, type PilotTier } from "../src/lib/me-v3/pilot/enroll";
 
+import { devPassword } from "./dev-credentials.mjs";
 if ((process.env.APP_ENV ?? "").toLowerCase() === "production") {
   console.error("운영에서는 돌리지 않습니다.");
   process.exit(2);
@@ -45,7 +46,7 @@ if ((process.env.APP_ENV ?? "").toLowerCase() === "production") {
 
 const B = process.env.UI_BASE ?? "http://127.0.0.1:3100";
 const OUT = "docs/metri/shots/v3dry";
-const ADMIN = { id: "admin", pw: "pca-dev-admin-1234" };
+const ADMIN = { id: "admin", pw: devPassword("admin") };
 
 type Run = {
   key: string; tier: PilotTier; stage: string; field: string | null;

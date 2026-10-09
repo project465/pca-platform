@@ -12,6 +12,7 @@
  * 동의했는가' 이고, 그 둘은 그 질문에 답하지 않으면서 파기 대상만 늘린다.
  */
 import { query, queryOne } from "@/lib/db";
+import { opFail, ref } from "@/lib/oplog";
 
 export type ConsentKind = "terms" | "privacy" | "marketing" | "third_party";
 
@@ -83,17 +84,42 @@ export async function record(opts: {
   let saved = 0;
   for (const d of docs) {
     const agreed = opts.agreedIds.includes(d.id);
-    const r = await query(
-      `INSERT INTO consent_records (user_id, document_id, site_id, agreed)
-       VALUES ($1, $2, $3, $4)
-       ON CONFLICT (user_id, document_id) DO UPDATE
-         SET agreed = EXCLUDED.agreed,
-             agreed_at = now(),
-             site_id = EXCLUDED.site_id,
-             withdrawn_at = NULL`,
-      [opts.userId, d.id, opts.siteId ?? null, agreed],
-    ).then(() => 1).catch(() => 0);
-    saved += r;
+    /**
+     * **못 적었으면 성공이라고 말하지 않는다.**
+     *
+     * 전에는 `.catch(() => 0)` 이었다. 그래서 INSERT 가 거절돼도
+     * `saved` 만 덜 세어지고 **`{ ok: true }` 가 그대로 나갔다.**
+     * 부르는 쪽(가입 두 길)은 `ok` 만 보므로, 동의가 한 줄도 안 적힌
+     * 계정이 만들어지고 아무도 모른다. 분쟁이 생기면 "그때 어느 판에
+     * 동의했는가" 를 댈 수 없는데, 그것이 이 표가 있는 유일한 까닭이다.
+     *
+     * **필수 동의가 못 적히면 거절한다.** 선택 동의는 남기고 넘어간다:
+     * 그쪽은 없다고 해서 계정이 잘못 만들어지지 않는다.
+     */
+    try {
+      await query(
+        `INSERT INTO consent_records (user_id, document_id, site_id, agreed)
+         VALUES ($1, $2, $3, $4)
+         ON CONFLICT (user_id, document_id) DO UPDATE
+           SET agreed = EXCLUDED.agreed,
+               agreed_at = now(),
+               site_id = EXCLUDED.site_id,
+               withdrawn_at = NULL`,
+        [opts.userId, d.id, opts.siteId ?? null, agreed],
+      );
+      saved += 1;
+    } catch (e) {
+      opFail({
+        operation: "consent.record",
+        ref: ref("user", opts.userId),
+        step: "insert",
+        category: "db",
+        detail: `doc=${d.kind}/${d.version} required=${d.required}`,
+      }, e);
+      if (d.required) {
+        return { ok: false, reason: "동의를 적지 못했습니다. 잠시 뒤 다시 시도해 주세요." };
+      }
+    }
   }
   return { ok: true, saved };
 }

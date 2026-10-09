@@ -109,7 +109,7 @@
     "v3:usability": "tsx scripts/v3-usability-check.ts",
     "v3:ui": "tsx scripts/v3-ui-check.ts",
     "v3:shots": "node scripts/v3-shots.mjs",
-    "v3:all": "npm run v2:frozen && npm run v3:build && npm run v3:domains && npm run v3:items && npm run v3:length && npm run v3:migrate && npm run v3:arch && npm run v3:extend && npm run v3:wording && npm run v3:persona && npm run v3:scoring && npm run v3:runtime && npm run v3:ui && npm run v3:copy && npm run v3:freeze && npm run v3:result && npm run v3:result:copy && npm run v3:recompute && npm run v3:isolation && npm run v3:owner && npm run v3:usability && npm run v3:gate && npm run v3:result:freeze && npm run v3:workspace && npm run auth:check && npm run v3:pilot",
+    "v3:all": "npm run v2:frozen && npm run v3:build && npm run v3:domains && npm run v3:items && npm run v3:length && npm run v3:migrate && npm run v3:arch && npm run v3:extend && npm run v3:wording && npm run v3:persona && npm run v3:scoring && npm run v3:runtime && npm run v3:ui && npm run v3:copy && npm run v3:freeze && npm run v3:result && npm run v3:result:copy && npm run v3:recompute && npm run v3:isolation && npm run v3:owner && npm run v3:usability && npm run v3:gate && npm run v3:result:freeze && npm run v3:workspace && npm run auth:check && npm run secrets:check && npm run errors:check && npm run routes:check && npm run oauth:ready && npm run v3:pilot",
     "v3:copy": "tsx scripts/v3-copy-check.ts",
     "v3:freeze": "tsx scripts/v3-freeze-check.ts",
     "v3:result": "tsx scripts/v3-result-check.ts",
@@ -138,7 +138,11 @@
     "v3:smoke": "node scripts/v3-smoke.mjs",
     "v3:recompute": "tsx scripts/v3-recompute-check.ts",
     "auth:check": "tsx scripts/auth-check.ts",
-    "public:shots": "node scripts/public-shots.mjs"
+    "public:shots": "node scripts/public-shots.mjs",
+    "secrets:check": "tsx scripts/secrets-check.ts",
+    "errors:check": "tsx scripts/errors-check.ts",
+    "routes:check": "tsx scripts/routes-check.ts",
+    "oauth:ready": "tsx scripts/oauth-ready.ts"
   },
   "dependencies": {
     "@types/nodemailer": "^8.0.1",

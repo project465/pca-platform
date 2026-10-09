@@ -56,11 +56,15 @@ AUTH_SECRET=$(openssl rand -base64 48) ALLOW_MOCK_PAYMENTS=yes \
 
 ## 3. 계정 (개발용)
 
-| | 아이디 | 비밀번호 |
-|---|---|---|
-| 운영사 관리자 | `admin` | `pca-dev-admin-1234` |
-| 학과 담당자 | `me-admin` | `pca-dev-org-1234` |
-| 학생 | `2021001234` | `TempPass2026` |
+| | 아이디 |
+|---|---|
+| 운영사 관리자 | `admin` |
+| 학과 담당자 | `me-admin` |
+| 학생 | `2021001234` |
+
+**비밀번호는 문서에 적지 않는다.** 시드가 그 기계에서 만들어
+`.dev-credentials.json`(gitignore)에 넣는다. 환경변수
+`DEV_SEED_PW_ADMIN` 등으로 정할 수도 있다.
 
 개인 흐름은 **새로 가입해서** 보시는 쪽이 맞다. 위 계정은 시드가 만든
 것이라 `is_demo` 가 붙어 운영 지표에서 빠진다.

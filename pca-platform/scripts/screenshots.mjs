@@ -9,6 +9,7 @@
 import { chromium } from "playwright";
 import { mkdirSync } from "node:fs";
 
+import { devPassword } from "./dev-credentials.mjs";
 const OUT = "/tmp/shots";
 mkdirSync(OUT, { recursive: true });
 const BASE = "http://localhost:3000";
@@ -67,7 +68,7 @@ const ctx = async () =>
   const c = await ctx(); const p = await c.newPage();
   await p.goto(`${BASE}/login`);
   await p.fill("#identifier", "2021001234");
-  await p.fill("#password", "TempPass2026");
+  await p.fill("#password", devPassword("student"));
   await p.getByRole("button", { name: /로그인|재설정 링크 받기/ }).click();
   await p.waitForURL("**/password/change");
   await shotPanel(p, "05-forced-change");
@@ -79,7 +80,7 @@ const ctx = async () =>
   const c = await ctx(); const p = await c.newPage();
   await p.goto(`${BASE}/login`);
   await p.fill("#identifier", "admin");
-  await p.fill("#password", "pca-dev-admin-1234");
+  await p.fill("#password", devPassword("admin"));
   await p.getByRole("button", { name: /로그인|재설정 링크 받기/ }).click();
   await p.waitForURL("**/admin/organizations");
   await shot(p, "06-org-list");
@@ -105,7 +106,7 @@ const ctx = async () =>
   const c = await ctx(); const p = await c.newPage();
   await p.goto(`${BASE}/login`);
   await p.fill("#identifier", "me-admin");
-  await p.fill("#password", "pca-dev-org-1234");
+  await p.fill("#password", devPassword("org"));
   await p.getByRole("button", { name: /로그인|재설정 링크 받기/ }).click();
   await p.waitForURL("**/org");
   await shot(p, "09-org-home");

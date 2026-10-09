@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { startPathFor } from "@/lib/engine-entry";
+import { resumePathFor, startPathFor } from "@/lib/engine-entry";
 import { requireUser } from "@/lib/session";
 import { settlePayment } from "@/lib/orders";
 import { paymentProvider } from "@/lib/payments";
@@ -117,10 +117,21 @@ export default async function CompletePage({
                 ? t("payDoneUpgradeBody", lang)
                 : t("payDoneBody", lang)}
             </p>
-            {/* 업그레이드면 시작할 것이 없다. 이미 낸 결과지로 보낸다. */}
+            {/*
+              업그레이드면 시작할 것이 없다. 이미 낸 결과지로 보낸다.
+
+              **아랫줄이 `/test` 였다.** 위 분기가 서지 않는 것은 산
+              상품이 옛 판본을 가리킬 때인데, 그때 이 줄이 판본을 보지
+              않고 **늘 ME_V1 로** 보냈다. ME_V2 를 산 사람이 ME_V1 의
+              120문항 앞에 앉는다. 산 판본이 들어가는 자리로 보내고,
+              그것도 없으면 지원으로 보낸다 — **아무 검사나 열어 주는
+              것보다 사람에게 닿는 쪽이 덜 틀린다**
+            */}
             <Link
               className="act solid"
-              href={result.upgradedAttemptId ? `/report/${result.upgradedAttemptId}` : "/test"}
+              href={result.upgradedAttemptId
+                ? `/report/${result.upgradedAttemptId}`
+                : (resumePathFor(result.ok ? result.assessmentVersion : null) ?? "/support")}
             >
               {result.upgradedAttemptId ? t("payGoReport", lang) : t("payGoTest", lang)}
             </Link>
