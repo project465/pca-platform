@@ -10,6 +10,7 @@ import { Shell, PageHead } from "@/components/sf/shell";
 import { NAV_INDIVIDUAL } from "@/components/sf/nav";
 import { Card, Empty, Pill } from "@/components/sf/parts";
 import LangSelect from "@/components/sf/lang-select";
+import OlderNote from "@/components/sf/older-note";
 
 export const metadata = { title: `검사 · ${BRAND.root}` };
 
@@ -67,11 +68,13 @@ export default async function MyAssessments({
       who={{ name: user.name, role: ROLE_LABEL[user.role] ?? "", href: "/my/account" }}
       topTitle={T("navAssessments")} topRight={<LangSelect current={L} />}
     >
+      {/* **여기서 검사를 시작하지 않는다.** `/test` 는 옛 검사를 여는
+          자리이고 지금 파는 검사는 `/cores` 에서 시작한다 */}
       <PageHead
-        title={T("navAssessments")}
-        sub="지금까지 보신 검사와 진행 상태입니다."
-        actions={<Link href="/test" className="sf-btn accent">{T("myStart")}</Link>}
+        title={T("acOld")}
+        sub="그보다 전에 보신 검사와 그때의 진행 상태입니다."
       />
+      <OlderNote lang={L} />
 
       {rows.length ? (
         <Card pad={false}>
@@ -133,9 +136,9 @@ export default async function MyAssessments({
       ) : (
         <Empty
           icon="clipboard"
-          title={T("myNoAssessTitle")}
-          body={T("myNoAssessBody")}
-          cta={{ href: "/free", label: T("myStart") }}
+          title={T("acOldNone")}
+          body={T("acOldNoneBody")}
+          cta={{ href: "/cores", label: T("navWorkspace") }}
         />
       )}
     </Shell>

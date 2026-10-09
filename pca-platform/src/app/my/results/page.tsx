@@ -9,6 +9,7 @@ import { Shell, PageHead } from "@/components/sf/shell";
 import { NAV_INDIVIDUAL } from "@/components/sf/nav";
 import { Card, Empty, Pill } from "@/components/sf/parts";
 import LangSelect from "@/components/sf/lang-select";
+import OlderNote from "@/components/sf/older-note";
 
 export const metadata = { title: `결과 · ${BRAND.root}` };
 
@@ -45,7 +46,9 @@ export default async function MyResults({
       who={{ name: user.name, role: ROLE_LABEL[user.role] ?? "", href: "/my/account" }}
       topTitle={T("navResults")} topRight={<LangSelect current={L} />}
     >
-      <PageHead title={T("navResults")} sub="받으신 결과지입니다. 등급과 판본이 함께 적힙니다." />
+      <PageHead title={T("acOld")}
+        sub="그보다 전에 보신 검사의 결과지입니다. 등급과 판본이 함께 적힙니다." />
+      <OlderNote lang={L} />
 
       {rows.length ? (
         <Card pad={false}>
@@ -77,9 +80,9 @@ export default async function MyResults({
       ) : (
         <Empty
           icon="report"
-          title={T("myNoAssessTitle")}
-          body={T("myNoAssessBody")}
-          cta={{ href: "/free", label: T("myStart") }}
+          title={T("acOldNone")}
+          body={T("acOldNoneBody")}
+          cta={{ href: "/cores", label: T("navWorkspace") }}
         />
       )}
     </Shell>

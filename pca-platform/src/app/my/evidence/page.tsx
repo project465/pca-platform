@@ -9,6 +9,7 @@ import { Shell, PageHead, Section } from "@/components/sf/shell";
 import { NAV_INDIVIDUAL } from "@/components/sf/nav";
 import { Card, Empty, Kpi } from "@/components/sf/parts";
 import LangSelect from "@/components/sf/lang-select";
+import OlderNote from "@/components/sf/older-note";
 
 export const metadata = { title: `경험과 증거 · ${BRAND.root}` };
 
@@ -109,8 +110,9 @@ export default async function MyEvidence({
       <PageHead
         title={T("myEvidenceIntro")}
         sub={T("myEvidenceIntroBody")}
-        actions={<Link href={editHref} className="sf-btn accent">{T("myAddEvidence")}</Link>}
+        actions={<Link href={editHref} className="sf-btn ghost">{T("myAddEvidence")}</Link>}
       />
+      <OlderNote lang={L} to="experience" />
 
       {/* **두 종류를 한 줄로 적는다.** 검사에서 확인된 신호가 있는데 상세
           경험이 비어 있는 것은 모순이 아니라 서로 다른 두 가지다 */}

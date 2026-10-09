@@ -59,6 +59,40 @@ export const TX = {
   navApplications: p("지원 준비", "Applications"),
   navAccount: p("계정", "Account"),
 
+  /* 계정 영역. **작업공간과 섞지 않는다**: 저쪽은 쌓이는 자리이고 여기는
+     로그인과 주문과 파기처럼 한 번씩 들르는 자리다 */
+  navWorkspace: p("내 CareerMatri", "My CareerMatri"),
+  acHome: p("계정", "Account"),
+  acTitle: p("로그인과 주문, 그리고 옛 검사 기록", "Sign-in, orders and earlier assessments"),
+  acLead: p(
+    "커리어 기록은 내 CareerMatri 에 쌓입니다. 이 쪽은 로그인 정보와 주문, 그리고 전에 보신 검사의 기록을 모아 둔 자리입니다.",
+    "Your career record lives in My CareerMatri. This page holds your sign-in details, your orders and the assessments you took earlier.",
+  ),
+  acBack: p("내 CareerMatri 로 돌아가기", "Back to My CareerMatri"),
+  acWho: p("로그인한 계정", "Signed in as"),
+  acSettings: p("비밀번호와 계정 파기", "Password and account deletion"),
+  acOrders: p("주문과 결제", "Orders and payments"),
+  acOrdersBody: p(
+    "주문 번호와 결제 상태, 환불 요청은 고객지원 화면에서 보실 수 있습니다.",
+    "Order numbers, payment status and refund requests are on the support page.",
+  ),
+  acOld: p("옛 검사 기록", "Earlier assessments"),
+  acOldBody: p(
+    "지금 검사(기계공학 V3)의 결과는 내 CareerMatri 의 결과 기록에 있습니다. 아래 셋은 그보다 전에 보신 검사의 기록입니다.",
+    "Results from the current assessment are under Result history in My CareerMatri. The three links below hold what you took before that.",
+  ),
+  acOldResults: p("결과 기록으로 가기", "Go to result history"),
+  acOldEvidence: p(
+    "지금 검사에서 더한 경험은 내 CareerMatri 의 내 경험에 쌓입니다. 아래는 그보다 전에 적어 두신 기록입니다.",
+    "Experience you add now is kept under My experience in My CareerMatri. What is below was written before that.",
+  ),
+  acOldExperience: p("내 경험으로 가기", "Go to my experience"),
+  acOldNone: p("전에 보신 검사가 없습니다", "No earlier assessments"),
+  acOldNoneBody: p(
+    "이 자리는 지금 검사보다 전에 보신 검사의 기록이 서는 곳입니다. 지금 검사는 내 CareerMatri 에서 시작합니다.",
+    "This page lists assessments taken before the current one. The current assessment starts in My CareerMatri.",
+  ),
+
   myHeroTitle: p(
     "전공과 경험을 실제 커리어 선택으로 연결하세요.",
     "Turn your major and experience into an actual career decision.",
