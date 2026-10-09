@@ -78,8 +78,13 @@ export default async function ProductPage({
         <div className="pubtop-r">
           <LangSelect current={L} />
           <Link href={`/pricing${q}`} className="sf-btn ghost sm">{P.nav.pricing[L]}</Link>
+          {/* 검사로 들어가는 공개 길 */}
+          <Link href={user ? "/cores" : "/login?next=%2Fcores"}
+            className="sf-btn ghost sm">
+            {L === "en" ? "Start" : "검사 시작"}
+          </Link>
           <Link href={user ? "/me" : "/login"} className="sf-btn ghost sm">
-            {user ? (L === "en" ? "My page" : "내 화면") : P.nav.signin[L]}
+            {user ? (L === "en" ? "My CareerMatri" : "내 CareerMatri") : P.nav.signin[L]}
           </Link>
         </div>
       </header>
@@ -94,7 +99,6 @@ export default async function ProductPage({
             <Link href={`/pricing${q}`} className="sf-btn accent big">
               {P.hero.cta[L]}{from ? ` · ${from}` : ""}
             </Link>
-            <Link href={`/sample${q}`} className="sf-btn ghost big">{P.sample.cta[L]}</Link>
           </div>
         </div>
 
@@ -150,14 +154,11 @@ export default async function ProductPage({
           </div>
         </section>
 
-        {/* 6. 견본 */}
-        <section className="pdsec">
-          <h2>{P.sample.title[L]}</h2>
-          <p>{P.sample.body[L]}</p>
-          <div className="pdcta">
-            <Link href={`/sample${q}`} className="sf-btn ghost big">{P.sample.cta[L]}</Link>
-          </div>
-        </section>
+        {/* 6. 견본 — **지금은 내놓지 않는다.**
+            `/sample` 에 서 있는 것이 앞 판본(ME_V2)의 결과지라, 사기 전에
+            그것을 보여 주면 받지 않을 결과지가 약속이 된다. 쪽은 그대로
+            열려 있고(옛 판본으로 응시하신 분이 주소를 들고 오신다) 여기서
+            권하지만 않는다. ME_V3 합성 견본이 서는 날 이 절이 돌아온다 */}
 
         {/* 7. 어떻게 진행되는가 */}
         <section className="pdsec">

@@ -34,10 +34,9 @@ const SIZES = {
   mobile: { width: 390, height: 844 },
   narrow: { width: 320, height: 720 },
 };
-const PW = {
-  "me-admin": "pca-dev-org-1234",
-  admin: "pca-dev-admin-1234",
-};
+/* **비밀번호를 여기 적지 않는다.** 준비 쪽이 계정을 만들고 열쇠를 함께
+   넘긴다(`plan.users`). 적어 두던 시절에 그 계정이 기관 담당자였고,
+   첫 로그인 비밀번호 변경이 걸린 계정을 모르고 찍은 적도 있다 */
 
 /**
  * 응시자에게 보이면 안 되는 모양.
@@ -55,26 +54,15 @@ const INTERNAL = [
   /\b(?:undefined|null|NaN|TODO|TBD)\b/,
 ];
 
+const { loginAs } = await import("./_shot-identity.mjs");
 const { chromium } = await import("playwright");
 const browser = await chromium.launch({ args: ["--no-sandbox"] });
 
-async function login(ctx, who) {
-  const p = await ctx.newPage();
-  await p.goto(`${B}/login`, { waitUntil: "networkidle" });
-  await p.fill('input[name="identifier"], input[name="loginId"], input[type="text"]', who);
-  await p.fill('input[type="password"]', PW[who]);
-  await p.click('button[type="submit"]');
-  await p.waitForURL((u) => !new URL(u).pathname.startsWith("/login"), { timeout: 20000 })
-    .catch(() => {});
-  const at = new URL(p.url()).pathname;
-  await p.close();
-  if (at.startsWith("/login")) throw new Error(`로그인이 안 됐습니다: ${who}`);
-}
-
 const ctx = {};
-for (const [key, login_] of Object.entries(plan.users)) {
+for (const [key, who] of Object.entries(plan.users)) {
   ctx[key] = await browser.newContext({ viewport: SIZES.desktop });
-  await login(ctx[key], login_);
+  /* 로그인 뒤 **어디에 떨어졌는지까지** 본다 */
+  await loginAs(ctx[key], who, B);
 }
 
 /* 320px 은 세 자리에서 본다. 좁은 화면이 실제로 달라지는 곳은 머리띠가

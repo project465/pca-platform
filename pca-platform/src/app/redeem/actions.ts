@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { redeemCode, type RedeemFail } from "@/lib/redeem";
 import { lastScoredAttempt } from "@/lib/attempts";
+import { productByCode } from "@/lib/catalog";
+import { startPathFor } from "@/lib/engine-entry";
 
 export type RedeemState = { error?: RedeemFail; reportId?: string };
 
@@ -27,5 +29,9 @@ export async function redeemAction(_prev: RedeemState, formData: FormData): Prom
     }
     return { error: r.reason };
   }
-  redirect("/test");
+  /* **코드를 바꾼 사람을 옛 검사로 보내지 않는다.** 전에는 `/test`
+     (ME_V1) 였다. 코드가 연 상품이 가리키는 검사로 가고, 모르면 전공
+     고르는 화면이다 */
+  const bought = await productByCode(r.productCode);
+  redirect(startPathFor(bought?.assessment_version) ?? "/cores");
 }

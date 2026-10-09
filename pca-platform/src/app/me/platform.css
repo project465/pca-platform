@@ -22,13 +22,18 @@
 
 /* ── 바깥 틀 ──────────────────────────────────────────────────────── */
 
-.cm-wrap { display: flex; align-items: stretch; min-height: 100vh; }
+/* **띠가 쪽 높이를 늘리지 않는다.** 공개 전 띠는 `position: fixed` 이고
+   높이를 `--stg-h` 로 알린다. 그것을 빼지 않으면 문서가 창보다 그만큼
+   높아지고, 왼쪽 띠의 맨 아래 줄(`계정`)이 그 띠에 가린다. 운영에는
+   띠가 없어 드러나지 않는 탈이라 캡처에서만 보인다 */
+.cm-wrap { display: flex; align-items: stretch; min-height: calc(100vh - var(--stg-h, 0px)); }
 
 .cm-rail {
   flex: 0 0 var(--cm-rail);
   border-right: 1px solid var(--sf-line);
   background: var(--sf-surface);
-  padding: 20px 14px calc(20px + env(safe-area-inset-bottom, 0px));
+  padding: 20px 14px
+    calc(20px + var(--stg-h, 0px) + env(safe-area-inset-bottom, 0px));
   display: flex; flex-direction: column; gap: 4px;
 }
 .cm-rail-brand {

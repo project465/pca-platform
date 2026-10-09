@@ -33,7 +33,7 @@ export default async function Apply() {
   }
 
   return (
-    <CmShell active="/me/jobs" title="지원한 곳">
+    <CmShell active="/me/apply" title="지원한 곳">
       <CmHead
         kicker="지원 관리"
         title="직접 지원하신 곳"

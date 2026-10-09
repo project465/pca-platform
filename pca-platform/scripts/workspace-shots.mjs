@@ -1,10 +1,16 @@
 /**
  * CareerMatri 작업공간을 실제 브라우저로 찍는다.
  *
- * **그림만 남기지 않는다.** 자리마다 다섯을 같이 센다: 열리는가 ·
- * **내부 코드가 화면에 보이는가** · 가로 스크롤이 생기는가 · 브라우저
- * 오류가 나는가 · 누르는 자리가 40px 이 되는가. 눈으로 보면 다섯 다
- * 지나간다.
+ * **그림만 남기지 않는다.** 자리마다 일곱을 같이 센다: **그 화면이
+ * 맞는가**(주소 · 머리글 · 가르는 글자) · 열리는가 · **내부 코드가
+ * 화면에 보이는가** · 가로 스크롤이 생기는가 · 브라우저 오류가 나는가 ·
+ * 누르는 자리가 40px 이 되는가 · **같은 그림이 두 이름으로 저장되는가.**
+ *
+ * 첫째가 이번에 들어왔다. 전에는 상태 코드만 보고 있어서, 첫 로그인
+ * 비밀번호 변경이 걸린 계정으로 찍는 동안 **일곱 자리 스물한 장이 전부
+ * `비밀번호를 정해주세요` 화면**이었는데 검사가 전부 초록이었다. 그
+ * 화면은 200 이고 내부 코드도 가로 스크롤도 없다. **상태 코드는 "서버가
+ * 뭔가를 돌려줬다" 까지만 말한다.**
  *
  * 폭 셋을 본다. 넓은 화면(1440) · 손전화(390) · 가장 좁은 자리(320).
  * **320 을 뺄 수 없다**: 왼쪽 띠가 접히고 아래 띠가 서는 자리라 여기서
@@ -17,7 +23,9 @@
  *   UI_BASE=http://127.0.0.1:3330 node scripts/workspace-shots.mjs
  */
 import { execFileSync } from "node:child_process";
-import { mkdirSync, readFileSync } from "node:fs";
+import { mkdirSync, readFileSync, statSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { loginAs, makeDupeWatch, verifyScreen } from "./_shot-identity.mjs";
 
 const B = (process.env.UI_BASE || "http://127.0.0.1:3100").replace(/\/$/, "");
 const OUT = "docs/metri/shots/workspace";
@@ -40,18 +48,14 @@ const SIZES = {
   narrow: { width: 320, height: 720 },
 };
 
-/** 비밀번호는 전부터 이 저장소가 들고 있던 자리에서 읽는다 */
-const PW = JSON.parse(execFileSync("node", ["-e", `
-  const s = require("fs").readFileSync("scripts/v3-shots.mjs", "utf8");
-  const a = require("fs").readFileSync("scripts/ui-shots.mjs", "utf8");
-  const m = {};
-  for (const x of s.matchAll(/"?([a-z-]+)"?:\\s*"([^"]+)"/g)) {
-    if (x[1] === "me-admin" || x[1] === "admin") m[x[1]] = x[2];
-  }
-  const st = /id:\\s*"(\\d+)",\\s*pw:\\s*"([^"]+)"/.exec(a);
-  if (st) m[st[1]] = st[2];
-  process.stdout.write(JSON.stringify(m));
-`], { encoding: "utf8" }));
+/**
+ * **비밀번호를 다른 스크립트의 소스에서 긁어 오지 않는다.**
+ *
+ * 전에는 `v3-shots.mjs` 와 `ui-shots.mjs` 를 정규식으로 훑어 비밀번호를
+ * 뽑았다. 그래서 그 계정이 첫 로그인에 비밀번호를 바꿔야 한다는 것을
+ * 이쪽이 몰랐고, 로그인은 "됐다" 로 세어지고 모든 그림이 비밀번호 변경
+ * 화면이 됐다. 이제 준비 쪽이 계정을 만들고 열쇠를 함께 넘긴다.
+ */
 
 /**
  * 응시자에게 보이면 안 되는 모양. 결과지 쪽 검사와 같은 그림을 쓴다.
@@ -70,27 +74,24 @@ const INTERNAL = [
 const { chromium } = await import("playwright");
 const browser = await chromium.launch({ args: ["--no-sandbox", "--disable-dev-shm-usage"] });
 
-async function login(ctx, who) {
-  const p = await ctx.newPage();
-  await p.goto(`${B}/login`, { waitUntil: "networkidle" });
-  await p.fill('input[name="identifier"], input[name="loginId"], input[type="text"]', who);
-  await p.fill('input[type="password"]', PW[who]);
-  await p.click('button[type="submit"]');
-  await p.waitForURL((u) => !new URL(u).pathname.startsWith("/login"), { timeout: 20000 })
-    .catch(() => {});
-  const at = new URL(p.url()).pathname;
-  await p.close();
-  if (at.startsWith("/login")) throw new Error(`로그인이 안 됐습니다: ${who}`);
-}
-
 const ctx = {};
+const landed = {};
 for (const [key, who] of Object.entries(plan.users)) {
   ctx[key] = await browser.newContext({ viewport: SIZES.desktop });
-  await login(ctx[key], who);
+  /* 로그인 뒤 **어디에 떨어졌는지까지** 본다. 떨어지는 자리면 여기서 멈춘다 */
+  landed[key] = await loginAs(ctx[key], who, B);
 }
 
 const log = [];
 const problems = [];
+/**
+ * 같은 그림이 두 이름으로 저장되면 둘 중 하나는 그 화면이 아니다.
+ *
+ * **일부러 같아야 하는 자리만 적는다.** 지금은 없다: `w05_state_gaps` 도
+ * 닻만 다를 뿐 같은 쪽이라 같은 그림이 나올 수 있어 자리 이름을 적어
+ * 두었다 — 그것은 의도된 같음이다.
+ */
+const dupe = makeDupeWatch(["w05_state_gaps"]);
 
 for (const t of plan.targets) {
   for (const size of ["desktop", "mobile", "narrow"]) {
@@ -129,16 +130,35 @@ for (const t of plan.targets) {
       return out.slice(0, 4);
     });
 
+    /*
+     * **그림을 남기기 전에 그 화면이 맞는지 본다.**
+     *
+     * 닻(`#gaps`)은 주소에서 떼고 본다. 브라우저가 돌려주는 `location`
+     * 에는 닻이 붙어 있어서 그대로 견주면 멀쩡한 자리가 걸린다.
+     */
+    const id = await verifyScreen(p, t.expect ?? {});
+
     const file = `${OUT}/${t.name}__${size}.png`;
     await p.screenshot({ path: file, fullPage: !!t.full && size === "desktop" });
 
+    /* 같은 그림이 두 이름으로 저장되는가 */
+    const bytes = statSync(file).size;
+    const hash = createHash("sha256").update(readFileSync(file)).digest("hex");
+    const sameAs = dupe.add(`${t.name}__${size}`, bytes, hash);
+
     const tag = `${t.name} ${size}`;
     log.push(`${tag.padEnd(28)} ${code}`
+      + `${id.ok ? "" : " 다른화면"}`
+      + `${sameAs ? " 같은그림" : ""}`
       + `${overflow ? " 가로스크롤" : ""}`
       + `${leaked.length ? ` 내부코드 ${leaked.join(",")}` : ""}`
       + `${small.length ? ` 작은단추 ${small.join(",")}` : ""}`
       + `${errs.length ? ` 오류 ${errs.length}` : ""}`);
     if (code !== 200) problems.push(`${tag}: ${code}`);
+    /* **상태 코드가 200 이어도 그 화면이 아니면 걸린다.** 이 줄이 없어서
+       비밀번호 변경 화면 스물한 장이 통과했다 */
+    if (!id.ok) problems.push(`${tag}: 그 화면이 아니다 — ${id.miss.join(" / ")}`);
+    if (sameAs) problems.push(`${tag}: ${sameAs}`);
     if (overflow) problems.push(`${tag}: 가로 스크롤이 생긴다`);
     if (leaked.length) problems.push(`${tag}: 내부 코드가 보인다 — ${leaked.join(", ")}`);
     if (small.length) problems.push(`${tag}: 누르는 자리가 40px 미만 — ${small.join(", ")}`);

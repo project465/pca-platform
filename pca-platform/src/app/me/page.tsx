@@ -41,7 +41,16 @@ export default async function Home() {
   const name = user.name?.trim() || "반갑습니다";
   const open = actions.filter((a) => a.state !== "done");
   const first = open[0] ?? null;
-  const gaps = st.gaps.slice(0, 3);
+  /**
+   * **홈은 요약이고 세부 쪽이 전체다.**
+   *
+   * 전에는 홈이 영역을 묶음마다 셋씩(최대 여섯 줄) 세우고 비어 있는
+   * 자리도 셋을 세웠다. 그러면 세부 쪽을 눌러 들어갈 이유가 없어지고,
+   * **`지금 상태` 와 `다음 할 일` 이 있어도 아무도 안 연다.** 홈이 드는
+   * 것은 상태 셋 · 비어 있는 자리 하나 · 할 일 하나다.
+   */
+  const gaps = st.gaps.slice(0, 1);
+  const moreGaps = Math.max(0, st.gaps.length - gaps.length);
   const indName = new Map(industryChoices().map((x) => [x.code, x.name]));
 
   /* 어느 자리에서든 **주된 단추가 하나다** */
@@ -122,9 +131,15 @@ export default async function Home() {
           {/* 1. 지금 확인된 것 */}
           <div className="cm-card">
             <h2>지금 확인된 것</h2>
-            {READY_ZONES.map((z) => {
+            {/* **묶음마다 셋이 아니라 통틀어 셋이다.** 묶음 둘이 각각
+                셋을 세우면 홈에 여섯 줄이 서고, 그러면 `지금 상태` 쪽이
+                할 일이 없어진다 */}
+            {READY_ZONES.map((z, zi) => {
+              const used = READY_ZONES.slice(0, zi).reduce((n, pz) =>
+                n + Object.values(st.zoneOf).filter((v) => v === pz).length, 0);
+              const room = Math.max(0, HOME_ROWS - used);
               const list = Object.entries(st.zoneOf)
-                .filter(([, v]) => v === z).map(([d]) => d).slice(0, 3);
+                .filter(([, v]) => v === z).map(([d]) => d).slice(0, room);
               if (!list.length) return null;
               return (
                 <div className="cm-rows" key={z}>
@@ -145,7 +160,10 @@ export default async function Home() {
             ) : null}
             <div className="cm-grow" />
             <div className="cm-acts">
-              <Link className="cm-btn" href="/me/state">지금 상태 보기</Link>
+              <Link className="cm-btn" href="/me/state">
+                {Object.keys(st.zoneOf).length > HOME_ROWS
+                  ? `열두 영역 모두 보기` : "지금 상태 보기"}
+              </Link>
             </div>
           </div>
 
@@ -180,7 +198,7 @@ export default async function Home() {
                 과 제목이 서로 다른 말을 하고 있었다. 자료가 없으면 카드를
                 조용히 눕힌다 */}
           <div className={`cm-card${gaps.length ? "" : " is-empty"}`}>
-            <h2>먼저 채워볼 부분{gaps.length ? <em>앞의 {gaps.length}가지</em> : null}</h2>
+            <h2>먼저 채워볼 부분{moreGaps ? <em>그 밖에 {moreGaps}가지</em> : null}</h2>
             {gaps.length ? (
               <div className="cm-rows">
                 {gaps.map((g) => (
@@ -198,7 +216,9 @@ export default async function Home() {
             <div className="cm-grow" />
             <div className="cm-acts">
               <Link className="cm-btn" href="/me/state#gaps">
-                {gaps.length ? "왜 필요한지 보기" : "지금 상태 보기"}
+                {gaps.length
+                  ? (moreGaps ? "비어 있는 자리 모두 보기" : "왜 필요한지 보기")
+                  : "지금 상태 보기"}
               </Link>
             </div>
           </div>
@@ -362,6 +382,9 @@ const LEAD: Record<string, string> = {
   RECOMPUTED: "새 경험까지 반영한 지금 상태이고, 검사 당시 결과는 그대로"
     + " 남아 있습니다.",
 };
+
+/** 홈이 드는 줄 수. **요약이 세부를 대신하면 세부 쪽이 죽는다** */
+const HOME_ROWS = 3;
 
 /** 첫 카드에 올리는 묶음. **아직 판단하기 어려운 영역은 올리지 않는다** */
 const READY_ZONES: string[] = ["Z1_EVIDENCE_ESTABLISHED", "Z2_EVIDENCE_INCOMPLETE"];

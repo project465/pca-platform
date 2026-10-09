@@ -1,20 +1,29 @@
 /**
  * 등급이 파는 것.
  *
- * **문항 수로 등급을 가르지 않는다**(규격 §4). 48 · 68 · 92 를 앞세우면
- * 사는 쪽에서 비싼 등급은 "문항이 더 많은 것" 으로 읽는다. 그러면 같은
- * 값을 더 내는 이유가 없다. 받는 것이 달라지는 자리를 적는다.
+ * **문항 수로 등급을 가르지 않는다.** 46 · 84 · 110 을 앞세우면 사는
+ * 쪽에서 비싼 등급은 "문항이 더 많은 것" 으로 읽는다. 그러면 같은 값을
+ * 더 내는 이유가 없다. 가르는 것은 **판단의 깊이**다.
  *
- *   BASIC      어느 쪽을 먼저 볼지와 다음 한 걸음
- *   STANDARD   직무를 견주는 깊이. 비어 있는 증거와 조직 맥락
- *   PRO        증거 구조와 조직 가치 번역, 다음에 만들 경험, 30·90·365일
+ *   BASIC      어디부터 볼지 고르기: 열두 기술영역을 세 묶음으로
+ *   STANDARD   내 경험이 어디까지 서는지: 여덟 판단축과 비어 있는 자리
+ *   PRO        직무 언어로 옮기기: 번역과 산업·직무 연결과 지원 재료
+ *
+ * **이 줄들은 코드가 실제로 내놓는 것이다.** 지어낸 줄이 하나도 없다는
+ * 것을 `scoring/engine.ts` 의 `limitsFor()` 와 대조해 두었다.
+ *
+ *   allows_evidence_established   BASIC 은 `근거가 섰다` 를 적지 않는다
+ *   allows_axis_names             BASIC 은 판단축 이름을 적지 않는다
+ *   deep_axes                     여덟 축 심화는 STANDARD 부터
+ *   allows_translation            경험 번역은 PRO 만
+ *
+ * 앞 판본(ME_V2)의 줄이 그대로 남아 있었다: `먼저 볼 직무 묶음` ·
+ * `직무 둘 이상을 나란히 견주는 표` · `조직 유형 성과 기준` ·
+ * `30·90·365일 계획`. 넷 다 지금 결과지에 없는 절이다. **없는 절을 적어
+ * 두면 산 사람이 결과지를 열고 그것을 찾는다.**
  *
  * **한 곳에서만 적는다.** 상품 쪽과 가격표가 각각 적으면 둘이 갈리고,
  * 갈린 날 사는 쪽은 둘 중 하나를 보고 결제한다(설계 원칙 10).
- *
- * **지어내지 않는다.** 여기 적힌 줄은 전부 결과지가 실제로 내보내는 절이고,
- * 등급마다 무엇이 붙는지는 `report_level` 이 정한다. 없는 절을 적어 두면
- * 산 사람이 결과지를 열고 그것을 찾는다.
  */
 export type Tier = "BASIC" | "STANDARD" | "PRO";
 
@@ -42,53 +51,64 @@ export type TierValue = {
 export const TIER_VALUE: Record<Tier, TierValue> = {
   BASIC: {
     tier: "BASIC",
-    headline: p("어디부터 볼지 정하기", "Find where to start"),
+    headline: p("어디부터 볼지 고르기", "Decide where to start"),
     gets: [
-      p("먼저 살펴볼 직무 묶음", "The role group to look at first"),
-      p("그 묶음이 나온 까닭과 근거가 된 문항", "Why it came out, and the items behind it"),
-      p("지금 할 수 있는 다음 한 걸음", "One next step you can take now"),
-      p("30일 안에 만들 경험 하나", "One experience to build within 30 days"),
+      p("열두 기술영역을 관심 · 해 본 적 · 배울 뜻 셋으로 나눠 봅니다",
+        "Twelve technical domains read through interest, exposure and willingness to learn"),
+      p("직접 해볼 영역 · 짧게 겪어 볼 영역 · 지금은 뒤로 둘 영역",
+        "Which to take on, which to sample briefly, which to set aside for now"),
+      p("그 묶음이 그렇게 나온 까닭",
+        "Why each domain landed in the group it did"),
+      p("지금 할 수 있는 다음 한 걸음",
+        "One next step you can take now"),
     ],
     who: p(
-      "전공은 정했고 어느 직무로 갈지 아직 못 정하신 분",
-      "You have your major and have not settled on a role yet",
+      "전공은 정했고 어느 쪽부터 파고들지 아직 못 정하신 분",
+      "You have your major and have not decided which direction to dig into",
     ),
     when: p("아직 후보가 없다면", "No candidates yet"),
   },
   STANDARD: {
     tier: "STANDARD",
-    headline: p("견주고 고르기", "Compare and decide"),
+    headline: p("내 경험이 어디까지 서는지", "See how far your experience stands up"),
     gets: [
       p("BASIC 에 있는 것 전부", "Everything in BASIC"),
-      p("직무 둘 이상을 나란히 견주는 표", "A table comparing two or more roles side by side"),
-      p("직무마다 비어 있는 증거", "The evidence each role still wants to see"),
-      p("조직 유형에 따라 달라지는 성과 기준", "How the performance bar shifts by organization type"),
-      p("30일 · 90일 계획", "A 30 and 90 day plan"),
+      p("경험이 있는 영역을 여덟 가지 판단으로 나눠 봅니다",
+        "Each domain you have worked in, split across eight kinds of judgement"),
+      p("직접 정한 것과 받아서 한 것을 가릅니다",
+        "What you decided yourself, separated from what was handed to you"),
+      p("남긴 결과물과 무엇과 견주어 확인했는지",
+        "What you left behind, and what you checked it against"),
+      p("아직 비어 있는 판단과 그것을 채우는 조건",
+        "Which judgements are still empty, and what would fill them"),
     ],
     who: p(
-      "후보가 둘셋 있고 그 가운데서 고르셔야 하는 분",
-      "You have two or three candidates and need to choose between them",
+      "해 본 일은 있는데 그것이 어디까지 설명되는지 모르시는 분",
+      "You have done the work but do not know how far it explains itself",
     ),
-    when: p("후보를 좁혀야 한다면", "You need to choose between roles"),
+    when: p("겪은 것을 정리해야 한다면", "You need your experience sorted out"),
   },
   PRO: {
     tier: "PRO",
-    headline: p("증거 전략과 실행 계획", "Build an evidence strategy and an action plan"),
+    headline: p("직무 언어로 옮기기", "Translate it into the language of the role"),
     gets: [
       p("STANDARD 에 있는 것 전부", "Everything in STANDARD"),
-      p("먼저 볼 직무 셋을 하나씩 끝까지 파고드는 쪽",
-        "Each of your top three roles worked through end to end"),
-      p("내 경험이 그 직무와 조직에서 어떻게 읽히는지", "How your experience reads in that role and organization"),
-      p("어디까지 설명할 수 있는 근거가 됐는지", "How far your experience already stands up as evidence"),
-      p("다음에 만들 경험 하나와 그 조건", "One experience to build next, and what it needs to show"),
-      p("30일 · 90일 · 365일 계획", "A 30, 90 and 365 day plan"),
-      p("지원 서류와 면접에서 쓸 재료 정리", "Material organized for applications and interviews"),
+      p("연구나 프로젝트 하나를 지원서에서 말하는 차례로 옮깁니다",
+        "One project or research task reordered the way an application tells it"),
+      p("고르신 산업 하나에 연결하면 무엇이 서고 무엇이 모자라는지",
+        "Connected to one industry you chose: what holds up and what is missing"),
+      p("고르신 직무 하나에 연결하면 같은 것",
+        "The same, connected to one role you chose"),
+      p("지원서와 면접에서 쓸 문장의 밑그림",
+        "A draft of the sentences for applications and interviews"),
+      p("다음에 만들 경험 하나와 그 경험이 보여야 하는 것",
+        "One experience to build next, and what it has to show"),
     ],
     who: p(
-      "방향은 정하셨고 증거를 쌓는 순서를 짜셔야 하는 분",
-      "You know the direction and need an order for building evidence",
+      "방향은 정하셨고 지원서에 쓸 근거를 짜셔야 하는 분",
+      "You know the direction and need the evidence shaped for an application",
     ),
-    when: p("방향은 이미 정해졌다면", "The direction is already set"),
+    when: p("지원을 준비한다면", "You are preparing to apply"),
   },
 };
 
@@ -109,9 +129,9 @@ export function valueOf(tier: Tier, lang: "ko" | "en") {
 /**
  * 등급이 서로 구별되는가.
  *
- * 규격 §24 가 요구하는 것을 검사로 옮긴 자리다. 세 등급의 머리말이 같은
- * 말이 되거나 받는 것이 겹치기만 하면, 사는 쪽에서 "문항이 더 많은 것" 이
- * 라고밖에 답할 수 없다. 겹치는 줄은 **'전부' 한 줄까지만** 둔다.
+ * 세 등급의 머리말이 같은 말이 되거나 받는 것이 겹치기만 하면, 사는
+ * 쪽에서 "문항이 더 많은 것" 이라고밖에 답할 수 없다. 겹치는 줄은
+ * **'전부' 한 줄까지만** 둔다.
  */
 export function tiersDistinct(lang: "ko" | "en"): { ok: boolean; why: string[] } {
   const why: string[] = [];

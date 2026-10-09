@@ -64,20 +64,14 @@ mkdirSync(OUT, { recursive: true });
 const plan = JSON.parse(process.argv[2]
   ? readFileSync(process.argv[2], "utf8")
   : execFileSync("npx", ["tsx", "scripts/v3-result-prep.ts"], { encoding: "utf8" }));
-const PW = { "me-admin": "pca-dev-org-1234", admin: "pca-dev-admin-1234" };
+/* 열쇠는 준비 쪽이 넘긴다. 여기 적지 않는다 */
 
 const { chromium } = await import("playwright");
 const browser = await chromium.launch({ args: ["--no-sandbox"] });
 const ctx = await browser.newContext({ viewport: { width: 1200, height: 900 } });
 {
-  const p = await ctx.newPage();
-  await p.goto(`${B}/login`, { waitUntil: "networkidle" });
-  await p.fill('input[name="identifier"], input[name="loginId"], input[type="text"]', "me-admin");
-  await p.fill('input[type="password"]', PW["me-admin"]);
-  await p.click('button[type="submit"]');
-  await p.waitForURL((u) => !new URL(u).pathname.startsWith("/login"), { timeout: 20000 })
-    .catch(() => {});
-  await p.close();
+  const { loginAs } = await import("./_shot-identity.mjs");
+  await loginAs(ctx, plan.users.shots, B);
 }
 
 const problems = [];

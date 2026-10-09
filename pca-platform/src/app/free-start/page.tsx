@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/session";
 import { productByCode, priceState } from "@/lib/catalog";
 import { openFreeOrder } from "@/lib/orders";
+import { startPathFor } from "@/lib/engine-entry";
 
 /**
  * 가입을 마치고 돌아오는 자리.
@@ -27,5 +28,7 @@ export default async function FreeStartPage({
   if (!p || !p.active || priceState(p) !== "FREE_APPROVED") redirect("/pricing");
 
   await openFreeOrder(user.id, p.code);
-  redirect("/assessment/start");
+  /* **승인된 무료가 옛 검사를 여는 문이 되면 안 된다.** 여기 `/assessment/
+     start`(ME_V2) 가 글자로 적혀 있었다. 산 상품이 가리키는 검사로 간다 */
+  redirect(startPathFor(p.assessment_version) ?? "/pricing");
 }

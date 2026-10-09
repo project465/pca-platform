@@ -9,6 +9,8 @@ import { Shell, PageHead, Section } from "@/components/sf/shell";
 import { NAV_INDIVIDUAL } from "@/components/sf/nav";
 import { Card, Defs } from "@/components/sf/parts";
 import LangSelect from "@/components/sf/lang-select";
+import LoginMethods from "./login-methods";
+import { isProvider, PROVIDER_LABEL } from "@/lib/auth-accounts";
 
 export const metadata = { title: `계정 · ${BRAND.root}` };
 
@@ -32,10 +34,10 @@ export const metadata = { title: `계정 · ${BRAND.root}` };
 export default async function AccountHome({
   searchParams,
 }: {
-  searchParams: Promise<{ lang?: string }>;
+  searchParams: Promise<{ lang?: string; linked?: string; link?: string }>;
 }) {
   const user = await requireRole(["student"]);
-  const { lang: q } = await searchParams;
+  const { lang: q, linked: justLinked, link: linkErr } = await searchParams;
   const lang = await resolveLang(q);
   const L = toLang2(lang);
   const T = txer(L);
@@ -80,6 +82,25 @@ export default async function AccountHome({
             {T("navSupport")}
           </Link>
         </Card>
+      </div>
+
+      {/* ── 로그인 방법 ──
+          **들어오는 길이 지금 무엇인지 적는다.** 적어 두지 않으면 구글로
+          가입하신 분이 비밀번호 찾기를 누르고, 메일이 오지 않는 까닭을
+          모른 채 기다린다 */}
+      <div className="sf-grid sf-g-2-1" style={{ marginTop: 18 }}>
+        <LoginMethods
+          userId={user.id}
+          notice={
+            isProvider(justLinked ?? "")
+              ? `${PROVIDER_LABEL[justLinked as "google" | "apple"]} 를 연결했습니다.`
+              : linkErr === "taken"
+                ? "그 계정은 이미 다른 CareerMatri 계정에 연결돼 있습니다."
+                : linkErr === "off"
+                  ? "그 로그인 방법은 지금 켜져 있지 않습니다."
+                  : undefined
+          }
+        />
       </div>
 
       {/* ── 옛 검사 기록 ── 지금 검사의 결과가 어디 있는지를 먼저 적는다 ── */}

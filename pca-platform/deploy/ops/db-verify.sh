@@ -109,6 +109,32 @@ if [ "${plat:-0}" -ge 5 ]; then
   fi
 fi
 
+# **로그인 방법.** 소셜 로그인이 붙은 뒤로는 이 표가 없으면 구글·애플로
+# 들어온 사람이 로그인 콜백에서 500 을 받는다. 표만 세지 않고 `sub` 에
+# 걸린 유일 제약까지 본다: 그것이 없으면 같은 사람이 로그인할 때마다
+# **계정이 하나씩 늘어난다.**
+auth=$(q "SELECT count(*) FROM information_schema.tables
+           WHERE table_schema='public' AND table_name='auth_accounts'")
+pwcol=$(q "SELECT count(*) FROM information_schema.columns
+            WHERE table_schema='public' AND table_name='users'
+              AND column_name='pw_login'")
+echo "로그인 방법     표 ${auth} / 1 · users.pw_login ${pwcol} / 1"
+if [ "${auth:-0}" -lt 1 ] || [ "${pwcol:-0}" -lt 1 ]; then
+  echo "실패 소셜 로그인 표가 모자랍니다. npm run db:upgrade 로 올립니다." >&2
+  bad=$((bad + 1))
+elif [ "$(q "SELECT count(*) FROM pg_constraint c
+              WHERE c.conrelid='auth_accounts'::regclass
+                AND c.contype IN ('p','u')
+                AND (SELECT array_agg(a.attname::text ORDER BY a.attname)
+                       FROM unnest(c.conkey) k
+                       JOIN pg_attribute a
+                         ON a.attrelid = c.conrelid AND a.attnum = k)
+                    = ARRAY['provider','provider_account_id']")" -lt 1 ]; then
+  echo "실패 auth_accounts 에 (provider, provider_account_id) 유일 제약이 없습니다." >&2
+  echo "     같은 사람이 로그인할 때마다 계정이 하나씩 늘어납니다." >&2
+  bad=$((bad + 1))
+fi
+
 # **외래키가 살아 있는가.** 표만 돌아오고 외래키가 빠지면 지운 사람의
 # 주문이 남고, 파기(익명화)가 반쪽이 된다. 복구본에서 실제로 일어난다.
 fks=$(q "SELECT count(*) FROM pg_constraint
@@ -133,7 +159,24 @@ for C in orders_order_no_key entitlements_order_uniq; do
 done
 
 echo
-echo "상품 (ME_V2)"
+# **지금 파는 판본이 켜져 있는가.**
+#
+# 공개 가격표는 `products.assessment_version` 이 지금 판본인 것만
+# 내놓는다(`src/lib/catalog.ts`). 그래서 지금 판본의 상품이 전부
+# `active = false` 면 가격표가 비고, 그것이 **맞는 상태일 수도 있다** —
+# 판매를 아직 열지 않은 것과 잘못된 옛 검사로 보내는 것은 다른 일이다.
+#
+# **여기서 켜지 않는다.** 파는 것을 여는 일은 사업 결정이고 스크립트가
+# 할 일이 아니다. 그 상태가 어느 쪽인지 적어만 둔다.
+cur=$(q "SELECT count(*) FROM products WHERE assessment_version = 'ME_V3_2' AND active")
+echo "지금 판본 상품  ME_V3_2 · 켜진 것 ${cur}개"
+if [ "${cur:-0}" -lt 1 ]; then
+  echo "     판매를 아직 열지 않았습니다. 가격표가 '아직 판매를 열지"
+  echo "     않았습니다' 로 섭니다 — 옛 검사로 보내지 않습니다."
+fi
+
+echo
+echo "상품 (ME_V2 · 옛 판본. 보존하고 공개 가격표에는 내놓지 않는다)"
 psql "$DATABASE_URL" -c \
   "SELECT code, market, tier, amount, currency, price_status, active
      FROM products

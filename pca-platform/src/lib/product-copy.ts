@@ -71,21 +71,31 @@ export const PRODUCT = {
   /* 3. 무엇을 하는가 */
   what: {
     title: p("커리어메트리가 하는 일", "What CareerMatri does"),
+    /* **앞 판본의 말을 쓰지 않는다.** `직무 열여섯 갈래` · `결정 표` ·
+       `증거 지도` · `조직 유형 성과 기준` · `30·90·365일 계획` 은 ME_V2
+       결과지의 절 이름이고 지금 결과지에 없다. 없는 절을 적어 두면 산
+       사람이 결과지를 열고 그것을 찾는다 */
     body: p(
-      "답하신 것과 적어 주신 경험을 직무 열여섯 갈래가 실제로 확인하는 영역에 " +
-        "대 봅니다. 나오는 것은 점수 하나가 아니고, 어느 쪽을 먼저 볼지와 그 " +
-        "직무가 아직 못 본 것이 무엇인지입니다.",
-      "What you answered and the experience you entered are laid against the areas " +
-        "that sixteen role groups actually look at. What comes out is not one score. " +
-        "It is which direction to look at first, and what those roles have not yet seen.",
+      "해 보신 일과 그때 직접 정하신 것을 기계공학 열두 기술영역에 대 봅니다. " +
+        "나오는 것은 점수 하나가 아니고, 어느 영역부터 볼지와 그 영역에서 " +
+        "아직 비어 있는 판단이 무엇인지입니다.",
+      "What you have done, and what you decided yourself while doing it, is laid " +
+        "against twelve technical domains of mechanical engineering. What comes out " +
+        "is not one score. It is which domain to look at first, and which judgements " +
+        "in it are still empty.",
     ),
     items: [
-      p("전공 지식을 실제 업무로 옮깁니다", "It translates academic knowledge into real work"),
-      p("직무가 바라는 증거를 얼마나 덮었는지 셉니다", "It counts how much of the evidence a role wants you have covered"),
-      p("비어 있는 증거를 이름으로 적습니다", "It names the evidence gaps"),
-      p("조직 유형에 따라 성과 기준이 어떻게 달라지는지 적습니다", "It says how the performance bar shifts by organization type"),
-      p("다음에 만들 경험 과제를 냅니다", "It gives you the next evidence project"),
-      p("30일 · 90일 · 365일로 끊어 적습니다", "It breaks the plan into 30, 90 and 365 days"),
+      p("열두 기술영역을 관심 · 해 본 적 · 배울 뜻으로 나눠 봅니다",
+        "It reads twelve domains through interest, exposure and willingness to learn"),
+      p("해 보신 일을 여덟 가지 판단으로 나눠 어디까지 섰는지 적습니다",
+        "It splits what you did across eight kinds of judgement and says how far each stands"),
+      p("직접 정한 것과 받아서 한 것을 가릅니다",
+        "It separates what you decided from what was handed to you"),
+      p("아직 비어 있는 판단을 이름으로 적습니다", "It names the judgements that are still empty"),
+      p("고르신 산업과 직무에 연결하면 무엇이 모자라는지 적습니다",
+        "It says what is missing once you connect it to the industry and role you chose"),
+      p("연구나 프로젝트 하나를 지원서에서 말하는 차례로 옮깁니다",
+        "It reorders one project the way an application tells it"),
     ],
   },
 
@@ -95,8 +105,9 @@ export const PRODUCT = {
     items: [
       p("웹 결과지. 로그인하시면 언제든 다시 열립니다", "A web report you can reopen any time you sign in"),
       p("같은 내용의 A4 PDF", "The same report as an A4 PDF"),
-      p("결정 표. 다섯 갈래 읽기가 한 화면에 섭니다", "A decision table with the five readings on one screen"),
-      p("증거 지도. 확인된 것과 아직인 것", "An evidence map of what is confirmed and what is not"),
+      p("열두 기술영역이 네 묶음으로 갈린 표", "Twelve domains sorted into four groups"),
+      p("설명할 수 있는 경험과 아직 비어 있는 판단",
+        "The experience you can explain, and the judgements still empty"),
       p("다음 한 걸음", "One next step"),
     ],
   },
@@ -124,11 +135,14 @@ export const PRODUCT = {
         "Enter courses, projects and tools. The report goes out even if you leave this empty"),
       p("결과지를 받고 PDF 로 내려받습니다", "Receive the report and download the PDF"),
     ],
+    /* **문항 수를 적지 않는다.** 48 · 68 · 92 는 앞 판본의 수였고, 수로
+       가르면 비싼 등급이 `문항이 더 많은 것` 으로 읽힌다. 시간만 남기고
+       그 값은 화면이 `estimate()` 에서 세어 넣는다 */
     note: p(
-      "문항은 등급에 따라 48 · 68 · 92개이고, 걸리는 시간은 20분에서 40분 " +
-        "사이입니다.",
-      "The item count is 48, 68 or 92 depending on the plan, and it takes between " +
-        "20 and 40 minutes.",
+      "걸리는 시간은 등급에 따라 다릅니다. 중간에 닫으셔도 답한 자리에서 " +
+        "이어집니다.",
+      "How long it takes depends on the plan. You can close it and pick up where " +
+        "you left off.",
     ),
   },
 
@@ -137,7 +151,8 @@ export const PRODUCT = {
     title: p("누구를 위한 것인가", "Who it is for"),
     yes: [
       p("기계공학 학부생 · 석사 · 박사 · 박사후연구원", "Mechanical engineering bachelor, master, PhD and postdoc"),
-      p("직무 후보가 둘셋 있고 그 가운데 고르셔야 하는 분", "People choosing between two or three candidate roles"),
+      p("어느 기술영역부터 파고들지 정해야 하는 분",
+        "People deciding which technical domain to dig into first"),
       p("경험은 있는데 그것을 설명할 말이 아직 없는 분", "People with experience and no words for it yet"),
     ],
     no: [

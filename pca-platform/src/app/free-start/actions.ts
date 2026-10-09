@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/session";
 import { productByCode, priceState } from "@/lib/catalog";
 import { openFreeOrder } from "@/lib/orders";
+import { startPathFor } from "@/lib/engine-entry";
 import { step } from "@/lib/funnel-server";
 
 /**
@@ -44,5 +45,10 @@ export async function startFreeAction(form: FormData): Promise<void> {
     userId: user.id,
     props: { product: code, tier: p.tier, market: p.market, reason: "free" },
   });
-  redirect("/assessment/start");
+  /* **신규 사용자를 옛 검사로 보내지 않는다.** 전에는 여기가
+     `/assessment/start`(ME_V2) 였다. 지금 판본이면 전공 고르는 화면으로
+     가고, 아니면 가격표로 돌려보낸다 — 승인된 무료가 옛 검사를 여는 문이
+     되면 안 된다 */
+  const at = startPathFor(p.assessment_version);
+  redirect(at ?? "/pricing");
 }

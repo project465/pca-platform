@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { openFreeOrder } from "@/lib/orders";
 import { lastScoredAttempt } from "@/lib/attempts";
+import { productByCode } from "@/lib/catalog";
+import { startPathFor } from "@/lib/engine-entry";
 import { TRACKS, resolveTrack } from "./tracks";
 
 export type FreeState = { error?: string };
@@ -25,11 +27,21 @@ export async function openFreeAction(_prev: FreeState, formData: FormData): Prom
     return { error: "fail" };
   }
   // 이미 다 풀어 채점까지 끝냈으면 그 결과지로 간다. 무료는 한 번이므로
-  // 여기서 /test 로 보내면 "좌석이 없습니다" 를 보게 된다.
+  // 그냥 응시 화면으로 보내면 "좌석이 없습니다" 를 보게 된다.
   const done = await lastScoredAttempt(user.id);
   if (done) redirect(`/report/${done}`);
 
-  // 좌석이 생겼으면 /test 가 응시로 바꾼다. 풀던 것이 있으면 이어 준다.
-  // openFreeOrder 가 주문을 하나로 묶어 두기 때문이다.
-  redirect("/test");
+  /**
+   * **신규 사용자를 옛 검사로 보내지 않는다.**
+   *
+   * 전에는 여기가 `/test`(ME_V1 253문항) 였다. 이 문으로 들어온 사람이
+   * 지금 제품이 아닌 검사를 풀었다. 산 상품이 가리키는 검사로 보내고,
+   * 그 상품이 옛 판본이면 전공 고르는 화면으로 돌린다 — **이 문이 옛
+   * 검사의 신규 진입 동선이 되지 않게 한다.**
+   *
+   * 옛 판본으로 **이미 응시하신 분**의 이어하기는 위의 결과지 줄과
+   * `/my/assessments` 가 들고 있다(`engine-entry.ts` 의 route 표).
+   */
+  const bought = await productByCode(TRACKS[track].product);
+  redirect(startPathFor(bought?.assessment_version) ?? "/cores");
 }

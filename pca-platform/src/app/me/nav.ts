@@ -53,12 +53,22 @@ export const CM_GROUPS: CmNavGroup[] = [
   {
     title: "내 기록",
     items: [
-      { href: "/me/results", label: "결과 기록",
-        hint: "검사 당시 결과지와 PDF", icon: "report" },
+      /**
+       * **결과 기록을 손전화 띠에 세운다.**
+       *
+       * 검사를 끝낸 사람이 가장 자주 돌아오는 자리인데 서랍 안에 있었다.
+       * 그렇다고 **띠를 여섯 칸으로 늘리지 않는다**: 320px 에서 다섯 칸도
+       * 빠듯하고, 여섯이면 글자가 두 줄로 접혀 어디를 누르는지가 안
+       * 읽힌다. 대신 `지금 상태` 를 서랍으로 내렸다 — 그쪽은 홈의 첫
+       * 카드가 요약을 들고 있어서 한 번 더 눌러 들어가는 자리이고,
+       * 결과 기록은 홈에 요약이 없다.
+       */
+      { href: "/me/results", label: "결과 기록", tabLabel: "결과",
+        hint: "검사 당시 결과지와 PDF", icon: "report", tab: true },
       { href: "/me/experience", label: "내 경험", tabLabel: "경험",
         hint: "새 경험 추가 · 반영", icon: "layers", tab: true },
-      { href: "/me/state", label: "지금 상태", tabLabel: "상태",
-        hint: "설명할 수 있는 경험과 보완할 부분", icon: "ladder", tab: true },
+      { href: "/me/state", label: "지금 상태",
+        hint: "설명할 수 있는 경험과 보완할 부분", icon: "ladder" },
       { href: "/me/next", label: "다음 할 일",
         hint: "할 수 있는 때로 묶어서", icon: "spark" },
     ],
@@ -97,6 +107,12 @@ export const CM_TABS: CmNavItem[] = CM_NAV.filter((x) => x.tab);
  * `/me` 는 아래 경로가 전부 다른 줄이라 정확히 같을 때만 켠다. 그리고
  * **경험 추가와 반영은 `내 경험` 줄로 묶인다**: 그 둘이 따로 켜지면
  * 사이드바가 지금 어디인지를 세 줄로 말하게 된다.
+ *
+ * **별칭은 메뉴에 없는 주소만 접는다.** 전에는 `/me/apply` 가 쪽에서
+ * `/me/jobs` 를 넘기고 있었고, 그 별칭이 `/me/track` 으로 다시 접혀서
+ * **`지원한 곳` 을 열면 `Track` 이 켜졌다.** 메뉴에 제 줄이 있는 주소를
+ * 별칭에 적으면 그 줄은 영원히 안 켜진다. 그래서 `ALIAS_OK` 가 그것을
+ * 막고 `npm run v3:workspace` 가 매번 센다.
  */
 const SAME: Record<string, string> = {
   "/me/experience/new": "/me/experience",
@@ -105,6 +121,20 @@ const SAME: Record<string, string> = {
   "/me/gap": "/me/state",
   "/v3/start": "/cores",
 };
+
+/** 별칭의 왼쪽은 **메뉴에 없는 주소**여야 한다 */
+export const ALIAS_OK: { from: string; to: string; ok: boolean }[] =
+  Object.entries(SAME).map(([from, to]) => ({
+    from, to,
+    ok: !CM_NAV.some((n) => n.href === from) && CM_NAV.some((n) => n.href === to),
+  }));
+
+/** 쪽이 넘기는 `active` 가 메뉴나 별칭에 있는 주소인가 */
+export function navKnown(active: string): boolean {
+  const a = SAME[active] ?? active;
+  return CM_NAV.some((n) => n.href === a || a.startsWith(`${n.href}/`))
+    || a === CM_ACCOUNT.href || a.startsWith(`${CM_ACCOUNT.href}/`);
+}
 
 export function navOn(href: string, active: string): boolean {
   const a = SAME[active] ?? active;

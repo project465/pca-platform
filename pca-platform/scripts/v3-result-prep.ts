@@ -19,7 +19,9 @@ for (const line of (() => {
   if (m && !process.env[m[1]]) process.env[m[1]] = m[2];
 }
 
+import { randomBytes } from "node:crypto";
 import { query, queryOne } from "../src/lib/db";
+import { hashPassword } from "../src/lib/password";
 import { controlOf } from "../src/lib/me-v3/runtime/menus";
 import {
   attemptOf, checklistFor, choosePack, content, itemOf, menuContextOf,
@@ -32,7 +34,17 @@ if ((process.env.APP_ENV ?? "").toLowerCase() === "production") {
   process.exit(2);
 }
 
-const LOGIN = "me-admin";
+/**
+ * 찍는 사람은 **학생 계정이다.**
+ *
+ * 전에는 `me-admin` 을 썼는데 그 계정은 기관 담당자(`org_admin`)라
+ * `homePathFor` 가 `/org` 로 보낸다. 작업공간을 찍으면서 작업공간이
+ * 기본 화면이 아닌 사람으로 찍고 있었던 셈이다. 그리고 **비밀번호를
+ * 다른 스크립트의 소스에서 긁어 오지 않는다**: 여기서 만들어 여기서
+ * 돌려준다. 긁어 오던 쪽이 첫 로그인 강제 변경을 모르고 비밀번호 변경
+ * 화면을 스물한 장 찍었다.
+ */
+const LOGIN = "cmshots-work@example.com";
 type Level = "none" | "mid" | "strong";
 
 async function pick(a: V3Attempt, id: string, lv: Level): Promise<Answer | null> {
@@ -127,15 +139,39 @@ async function walk(
   return (await attemptOf(a0.id, userId)) as V3Attempt;
 }
 
-async function userId(login: string): Promise<string> {
-  const r = await queryOne<{ id: string }>(
-    `SELECT id::text FROM users WHERE login_id = $1`, [login]);
-  if (!r) throw new Error(`계정이 없습니다: ${login}`);
-  return r.id;
+/**
+ * 찍을 학생 계정을 그 자리에서 만든다. **열쇠는 해시만 남는다.**
+ *
+ * 있으면 비밀번호만 새로 적는다(쌓인 응시는 부르는 쪽이 지운다).
+ * `must_reset_pw` 를 반드시 `FALSE` 로 둔다: `true` 면 어느 주소를
+ * 열어도 비밀번호 변경 화면으로 떨어지고, 그 화면은 200 이라 찍는
+ * 쪽에서 통과로 세어진다.
+ */
+async function ensureStudent(login: string): Promise<{ id: string; pw: string }> {
+  const pw = randomBytes(18).toString("base64url");
+  const hash = await hashPassword(pw);
+  const old = await queryOne<{ id: string }>(
+    `SELECT id::text FROM users WHERE login_id = $1 OR lower(email) = lower($1)`,
+    [login]);
+  if (old) {
+    await query(
+      `UPDATE users SET password_hash = $2, must_reset_pw = FALSE,
+              status = 'active', is_demo = TRUE WHERE id = $1`,
+      [old.id, hash]);
+    return { id: old.id, pw };
+  }
+  const row = await queryOne<{ id: string }>(
+    `INSERT INTO users (login_id, email, display_name, password_hash,
+                        status, locale, is_demo, must_reset_pw)
+     VALUES ($1,$1,'김담당',$2,'active','ko',TRUE,FALSE) RETURNING id::text`,
+    [login, hash]);
+  if (!row) throw new Error(`계정을 만들지 못했습니다: ${login}`);
+  return { id: row.id, pw };
 }
 
 async function main() {
-  const uid = await userId(LOGIN);
+  const me = await ensureStudent(LOGIN);
+  const uid = me.id;
   await query(`DELETE FROM v3_attempts WHERE user_id = $1`, [uid]);
   const out: { name: string; path: string; note: string; who: string; full?: boolean }[] = [];
 
@@ -191,7 +227,11 @@ async function main() {
   out.push({ name: "r16_basic_plan", who: "shots", note: "BASIC · 다음에 할 일",
     path: `/v3/${a02.id}/result#plan` });
 
-  console.log(JSON.stringify({ users: { shots: LOGIN }, targets: out }));
+  /* **비밀번호를 파일에 적지 않는다.** 이 줄은 찍는 쪽으로 바로
+     흘러가는 표준출력이고 저장소에 남지 않는다 */
+  console.log(JSON.stringify({
+    users: { shots: { id: LOGIN, pw: me.pw } }, targets: out,
+  }));
 }
 
 main().then(() => process.exit(0), (e) => { console.error(e); process.exit(1); });

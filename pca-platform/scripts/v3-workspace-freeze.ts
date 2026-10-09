@@ -23,6 +23,7 @@ import { createHash } from "node:crypto";
 import {
   WORKSPACE_COPY_VERSION, WORKSPACE_UI_VERSION,
 } from "../src/lib/me-v3/workspace-version";
+import { ALIAS_OK, CM_NAV, navKnown } from "../src/app/me/nav";
 
 const LOCK = "sites/pca-platform/assessment/ME_V3/workspace-lock.json";
 
@@ -162,6 +163,48 @@ for (const f of FILES) {
 }
 for (const name of [...used].sort()) {
   if (!new RegExp(`\\.${name}\\b`).test(css)) bad.push(`CSS 에 없는 이름: .${name}`);
+}
+
+/*
+ * **한 route 가 남의 메뉴를 켜지 않는다.**
+ *
+ * `/me/apply` 가 쪽에서 `/me/jobs` 를 넘기고 그 별칭이 `/me/track` 으로
+ * 다시 접혀서, **`지원한 곳` 을 열면 `Track` 이 켜졌다.** 별칭의 왼쪽은
+ * 메뉴에 제 줄이 없는 주소여야 하고, 쪽이 넘기는 `active` 는 메뉴나
+ * 별칭에 있는 주소여야 한다.
+ */
+for (const a of ALIAS_OK) {
+  if (!a.ok) bad.push(`별칭이 메뉴에 있는 줄을 가린다: ${a.from} → ${a.to}`);
+}
+for (const f of FILES) {
+  if (!f.endsWith(".tsx")) continue;
+  const src = readFileSync(f, "utf8");
+  for (const m of src.matchAll(/<CmShell\s+active="([^"]+)"/g)) {
+    if (!navKnown(m[1])) bad.push(`메뉴에 없는 active: ${f} → ${m[1]}`);
+    /* **메뉴에 제 줄이 있는데 남의 줄을 넘기지 않는다.** 쪽의 주소와
+       넘긴 `active` 가 둘 다 메뉴에 있는데 서로 다르면 그 쪽은 남의
+       줄을 켠다 */
+    const own = `/${f.replace(/^src\/app\//, "").replace(/\/page\.tsx$/, "")}`;
+    if (CM_NAV.some((n) => n.href === own) && m[1] !== own) {
+      bad.push(`쪽이 남의 줄을 켠다: ${own} 이 ${m[1]} 을 넘긴다`);
+    }
+  }
+}
+
+/*
+ * **면이 바뀌어도 같아야 하는 것에 이름이 있다.**
+ *
+ * 토큰이 네 벌(`--sf-*` · `--q-*` · `--r-*` · `--cm-*`)이라 새 자리를
+ * 만드는 사람이 색을 직접 적기 쉽다. 공용 이름 여덟이 `surface.css` 에
+ * 서 있는지만 센다 — **네 벌을 하나로 합치지 않는다**(합치면 세 쪽이
+ * 한꺼번에 틀어진다).
+ */
+{
+  const sf = readFileSync("src/app/surface.css", "utf8");
+  const want = ["--ui-surface", "--ui-bg", "--ui-text", "--ui-text-2",
+    "--ui-border", "--ui-accent", "--ui-radius", "--ui-read"];
+  const miss = want.filter((w) => !sf.includes(`${w}:`));
+  if (miss.length) bad.push(`공용 토큰이 없다: ${miss.join(" ")}`);
 }
 
 for (const x of bad) console.log(`  걸림  ${x}`);

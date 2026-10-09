@@ -12,6 +12,8 @@ import { query, queryOne } from "@/lib/db";
 /* 시장 이름은 **미들웨어도 보는 값**이라 import 없는 파일에 둔다 */
 import { isMarket, type Market } from "@/lib/market-def";
 
+import { CURRENT_ASSESSMENT } from "./engine-entry";
+
 export { isMarket };
 export type { Market };
 
@@ -64,15 +66,29 @@ export function priceState(p: {
 }
 
 /** 이 시장에서 지금 파는 것. 등급 순서로 돌려준다. */
+/**
+ * 공개 가격표에 서는 상품.
+ *
+ * **지금 파는 판본만 선다**(`CURRENT_ASSESSMENT`). 전에는 `active` 인
+ * 것을 전부 내놓았고, 그래서 가격표가 앞 판본(ME_V2)을 팔고 있었다 —
+ * 결제한 사람이 지금 제품이 아닌 검사를 풀었다.
+ *
+ * **옛 상품을 지우지 않는다.** 그 상품으로 산 분의 주문과 이용권과
+ * 결과지가 남아 있어야 한다. 파는 자리에서만 뺀다.
+ *
+ * **지금 판본이 아직 안 켜져 있으면 빈 목록이 맞다.** 그러면 가격표가
+ * `아직 판매를 열지 않았습니다` 로 선다. 잘못된 옛 검사로 보내는 것과
+ * 판매를 아직 열지 않는 것은 다른 일이고, 뒤엣것이 맞다.
+ */
 export async function catalogFor(market: Market, major = "ME"): Promise<CatalogItem[]> {
   const rows = await query<CatalogItem>(
     `SELECT code, market, tier, major_code, amount, currency, active,
             assessment_version, price_status
        FROM products
       WHERE market = $1 AND major_code = $2 AND active
-        AND assessment_version IS NOT NULL
+        AND assessment_version = $3
       ORDER BY CASE tier WHEN 'BASIC' THEN 1 WHEN 'STANDARD' THEN 2 ELSE 3 END`,
-    [market, major],
+    [market, major, CURRENT_ASSESSMENT],
   ).catch(() => [] as CatalogItem[]);
   return rows;
 }

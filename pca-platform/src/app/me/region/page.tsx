@@ -30,7 +30,7 @@ export default async function Region() {
   const gaps = regionGaps();
 
   return (
-    <CmShell active="/me/explore" title="지역과 기관">
+    <CmShell active="/me/region" title="지역과 기관">
       <CmHead
         kicker="지역 · 기관"
         title="어디에서 일하고 싶은지"

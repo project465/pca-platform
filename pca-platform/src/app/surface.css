@@ -91,6 +91,33 @@
 
   /* 눌린 자리를 보이게 하는 테. **색만으로 말하지 않는다**(규격 §44) */
   --ring: 0 0 0 3px rgba(28, 95, 176, .2);
+
+  /* ── 면이 바뀌어도 같아야 하는 것 ──────────────────────────────
+     토큰이 네 벌이다: 여기(`--sf-*`) · 응시 화면(`--q-*`) · 결과지
+     (`--r-*`) · 작업공간(`--cm-*`). **네 벌을 하나로 합치지 않는다**:
+     세 면은 하는 일이 달라서 활자 단과 여백이 같을 이유가 없고, 억지로
+     합치면 세 쪽이 한꺼번에 틀어진다.
+
+     합치는 대신 **같아야 하는 것에만 이름을 준다.** 아래 여덟 줄이
+     그것이고, 값은 전부 위의 `--sf-*` 를 가리키므로 **이 블록이 그리는
+     것은 한 픽셀도 없다.** 새 자리를 만드는 사람이 색을 직접 적지 않고
+     이 이름을 쓰면, 면이 바뀔 때 다른 사이트로 읽히는 일이 안 생긴다.
+
+     이름이 여덟인 것도 일부러다. 늘리면 그냥 `--sf-*` 를 두 번 적은
+     것이 되고, 그때부터 어느 쪽이 정본인지 모른다.
+
+     **접두어를 `--ui-` 로 둔다.** `--cm-` 은 이미 작업공간이 쓰고 있고
+     (`--cm-rail` · `--cm-tab`), 이 저장소에서 이름이 겹친 것이 여섯 번
+     전부 버그였다(`.btn` · `--sf-r` · `.lg` · `empty` · `industries` ·
+     `OC*`). 겹치는 이름을 새로 짓지 않는다. */
+  --ui-surface: var(--sf-surface);      /* 글이 올라앉는 면 */
+  --ui-bg: var(--sf-bg);                /* 그 뒤의 바탕 */
+  --ui-text: var(--sf-ink);             /* 본문에서 가장 짙은 글자 */
+  --ui-text-2: var(--sf-ink-3);         /* 거드는 글자 */
+  --ui-border: var(--sf-line);          /* 묶음을 가르는 선 */
+  --ui-accent: var(--sf-accent);        /* 누르기를 권하는 한 자리 */
+  --ui-radius: var(--sf-r-sm, 8px);     /* 둥글기의 바닥값 */
+  --ui-read: 760px;                     /* 읽는 자리의 글 폭 */
 }
 
 /* ── 껍데기 ───────────────────────────────────────────────────────── */
@@ -430,7 +457,10 @@
    그 이름을 이미 쓰고 있어서(`.lg { width: 10px }`) 단추가 10px 로
    줄어든다. 두 벌이 한 쪽에 같이 사는 동안은 이름이 겹치는 것이 곧
    버그다 */
-.sf-btn.sm { font-size: 13px; height: 34px; padding: 0 13px; }
+/* **작은 단추도 누르는 자리다.** 34px 였다. 글 가운데 있는 링크는 줄
+   높이를 따르는 것이 맞지만 이것은 혼자 서는 단추이고, 계정 쪽(`/my`)은
+   그 단추만으로 이루어진 화면이다. 40px 로 올린다 */
+.sf-btn.sm { font-size: 13px; height: 40px; padding: 0 14px; }
 .sf-btn.big { font-size: 15px; height: 48px; padding: 0 26px; border-radius: var(--r-md); }
 .sf-btn.wide { width: 100%; }
 .sf-btn:disabled, .sf-btn[aria-disabled="true"] {
@@ -893,7 +923,13 @@
   border-bottom: 1px solid var(--sf-line);
 }
 .pubtop .sf-brand { margin: 0; padding: 0; border: 0; text-decoration: none }
-.pubtop-r { margin-left: auto; display: flex; align-items: center; gap: 8px }
+/* **줄이 늘면 접힌다.** 공개 머리띠에 `검사 시작` 을 더하면서 320px
+   에서 네 칸이 안 들어가 쪽이 가로로 밀렸다. 칸을 빼는 대신 접는다:
+   그 단추가 검사로 들어가는 유일한 공개 길이다 */
+.pubtop-r {
+  margin-left: auto; display: flex; align-items: center; gap: 8px;
+  flex-wrap: wrap; justify-content: flex-end; min-width: 0;
+}
 .pubwrap { flex: 1; width: 100%; max-width: var(--w-wide); margin: 0 auto; padding: 0 28px 88px }
 
 /* ── 머리 ──
@@ -1103,7 +1139,7 @@
   .pxtier-h { align-items: flex-start; flex-direction: column; gap: 8px }
   .pxtier-h .sf-pill { margin-left: 0 }
   .pubtop { height: auto; min-height: 58px; padding: 10px 18px; flex-wrap: wrap; gap: 10px }
-  .pubtop-r { width: 100%; margin-left: 0; justify-content: flex-start }
+  .pubtop-r { width: 100%; margin-left: 0; justify-content: flex-start; flex-wrap: wrap }
   .pxhero { padding: 36px 0 26px; text-align: left }
   .pxhero .sf-eyebrow { justify-content: flex-start }
   .pxhero h1 { font-size: 28px; margin-left: 0; max-width: none }

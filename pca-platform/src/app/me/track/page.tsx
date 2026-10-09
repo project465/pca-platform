@@ -16,9 +16,17 @@ export const metadata = { title: "CareerMatri Track" };
  * **마케팅 랜딩처럼 쓰지 않는다.** 기능을 짧게 적고 지금 되는 것과 안
  * 되는 것을 가른다. 과장한 문장은 켜는 날 지켜야 하는 약속이 된다.
  */
-const FEATURES: {
-  code: string; label: string; body: string; blocked: string; href?: string;
-}[] = [
+/**
+ * Track 에는 **아직 없는 것만** 둔다.
+ *
+ * 전에는 이 목록에 이미 되는 것 셋(관심 산업·직무 바꾸기 · 지원한 곳
+ * 관리 · 지원 직무별로 모아 보기)이 섞여 있었고, 되는 쪽에는 `지금
+ * 열기` 단추가 붙어 있었다. **`준비 중` 묶음 안에서만 닿는 기능**은
+ * 사용자에게 없는 기능이고, 같은 목록에 되는 것과 안 되는 것이 같은
+ * 모양으로 서면 묶음 이름이 거짓말을 한다. 셋은 작업공간의 제 줄로
+ * 옮겼고(`산업과 직무` · `지원한 곳`) 여기서는 그 자리를 가리키기만 한다.
+ */
+const FEATURES: { code: string; label: string; body: string; blocked: string }[] = [
   { code: "posting.watch", label: "새 채용공고 추적",
     body: "관심 산업과 직무에 새 공고가 뜨면 모아 둡니다.", blocked: "공고 자료 검토 전" },
   { code: "industry.shift", label: "산업별 요구역량 변화",
@@ -31,17 +39,14 @@ const FEATURES: {
     body: "한 달에 한 번 바뀐 것만 모아 보냅니다.", blocked: "메일 연결 전" },
   { code: "target.change", label: "목표를 바꾸면 다시 분석",
     body: "관심 산업이나 직무를 바꾸면 비어 있는 자리를 다시 봅니다.", blocked: "자동 반영 전" },
-  /* **지금 되는 것을 `준비 중` 으로 적지 않는다.** 관심 산업과 직무를 바꾸는
-     일은 탐색 화면에서 이미 되고, Track 이 더할 것은 바꾼 뒤의 자동 재계산이다 */
-  { code: "target.edit", label: "관심 산업·직무 바꾸기",
-    body: "탐색 화면에서 언제든 바꾸실 수 있습니다.", blocked: "지금 됩니다",
-    href: "/me/explore" },
-  { code: "apply.track", label: "지원한 곳 관리",
-    body: "직접 지원한 곳과 그 결과를 적어 둡니다.", blocked: "직접 적는 데까지",
-    href: "/me/apply" },
-  { code: "apply.role", label: "지원 직무별로 모아 보기",
-    body: "같은 직무에 낸 곳을 묶어 어디서 막혔는지 봅니다.", blocked: "지원 기록이 쌓인 뒤",
-    href: "/me/apply" },
+];
+
+/** 지금 되는 것. **Track 안에 두지 않고 제자리를 가리킨다** */
+const ALREADY: { href: string; label: string; body: string }[] = [
+  { href: "/me/explore", label: "산업과 직무",
+    body: "관심 산업과 직무는 지금 바꾸실 수 있습니다. 자동으로 다시 계산해 주는 일이 Track 입니다." },
+  { href: "/me/apply", label: "지원한 곳",
+    body: "직접 지원하신 곳과 직무별로 묶어 보는 것은 지금 됩니다." },
 ];
 
 export default async function Track() {
@@ -69,11 +74,8 @@ export default async function Track() {
             <h2>{f.label} <em>{f.blocked}</em></h2>
             <p>{f.body}</p>
             <div className="cm-grow" />
-            {f.href ? (
-              <div className="cm-acts" style={{ marginBottom: 8 }}>
-                <Link className="cm-btn" href={f.href}>지금 열기</Link>
-              </div>
-            ) : null}
+            {/* **없는 기능에 `지금 열기` 를 달지 않는다.** 누르면 갈 데가
+                없는 단추는 준비 중이라는 말을 그 자리에서 뒤집는다 */}
             <form action={toggleInterest}>
               <input type="hidden" name="feature" value={f.code} />
               <input type="hidden" name="on" value={on.has(f.code) ? "0" : "1"} />
@@ -84,6 +86,25 @@ export default async function Track() {
           </div>
         ))}
       </div>
+
+      {/* 지금 되는 것은 **여기서 끝내지 않고 제자리로 보낸다.** 준비 중
+          묶음 안에서만 닿는 기능은 사용자에게 없는 기능이다 */}
+      <section className="cm-quiet" style={{ marginTop: 24 }}>
+        <h2>이것은 지금 됩니다</h2>
+        <p>아래 둘은 Track 을 켜지 않아도 작업공간에서 바로 쓰실 수 있습니다.</p>
+        <div className="cm-grid" style={{ marginTop: 14 }}>
+          {ALREADY.map((a) => (
+            <div className="cm-card" key={a.href}>
+              <h2>{a.label}</h2>
+              <p>{a.body}</p>
+              <div className="cm-grow" />
+              <div className="cm-acts">
+                <Link className="cm-btn" href={a.href}>열기</Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
 
       <p className="cm-lead" style={{ marginTop: 22 }}>
         값과 켜는 날은 정해지지 않았습니다. 정해지지 않은 것을 정해진 것처럼

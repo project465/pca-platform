@@ -251,6 +251,12 @@ export const TX = {
   pxQuestions: p("문항", "questions"),
   pxPaySuccess: p("결제가 완료되었습니다.", "Payment complete."),
   pxSignIn: p("로그인", "Sign in"),
+  /* 공개 머리띠에서 로그인한 사람에게 적는 말. **`홈` 이라고만 적지
+     않는다**: 어느 홈인지가 안 읽힌다 */
+  pxMyWorkspace: p("내 CareerMatri", "My CareerMatri"),
+  /* 공개 쪽에서 **검사로 들어가는 길**. 전에는 로그인 말고는 길이 없어서
+     `/cores` 로 가려면 주소를 직접 쳐야 했다 */
+  pxStartAssessment: p("검사 시작", "Start"),
   pxMarketKR: p("한국", "Korea"),
   pxMarketGlobal: p("글로벌", "Global"),
   pxWhatYouGet: p("무엇이 들어 있는가", "What you get"),
@@ -272,11 +278,15 @@ export const TX = {
     "이 시장에서 지금 파는 등급이 없습니다.",
     "No tier is on sale in this market right now.",
   ),
+  /* **판매를 아직 열지 않은 것과 잘못된 옛 검사로 보내는 것은 다른
+     일이다.** 앞 판본(ME_V2)의 상품은 가격표에서 뺐고, 지금 판본이 켜지면
+     여기 세 등급이 선다 */
   pxEmptyBody: p(
-    "가격이 정해지면 여기 세 등급이 열립니다. 값을 지어내 미리 띄우지 않습니다.",
-    "The three tiers appear here once prices are set. We do not post a made-up price in the meantime.",
+    "지금 판본의 판매를 아직 열지 않았습니다. 앞 판본으로 응시하신 분의 결과지와 이어하기는 그대로 열려 있습니다.",
+    "Sales for the current edition are not open yet. If you took the previous edition, your report and your unfinished attempt are still where they were.",
   ),
-  pxHaveGrant: p("이미 사신 검사가 있습니다", "You already have an assessment"),
+  /* 옛 판본의 남은 이용권. **지금 사는 것과 섞어 보이지 않게 적는다** */
+  pxHaveGrant: p("앞 판본으로 사신 검사가 남아 있습니다", "You have an unused assessment from the previous edition"),
   pxGoAssessment: p("검사로 가기", "Go to the assessment"),
 
   /* 가격표를 다시 짜면서 더한 것. **값보다 받는 것이 먼저 읽히게** 한다 */
@@ -287,8 +297,8 @@ export const TX = {
   /* 머리글 아래에 **같은 말을 다시 적지 않는다.** 머리글이 무엇을 하는지
      말했으면 여기서는 무엇을 받는지 적는다 */
   pxLeadSub: p(
-    "먼저 볼 직무 묶음과 그 근거, 지금 비어 있는 증거, 다음 30일 안에 만들 경험 하나를 한 장에 정리해 드립니다.",
-    "One document: the role group to look at first and why, the evidence you are missing, and the one experience to build in the next 30 days.",
+    "어느 기술영역부터 볼지, 해 보신 일이 어디까지 설명되는지, 아직 비어 있는 판단이 무엇인지를 한 장에 정리해 드립니다.",
+    "One document: which technical domain to start with, how far what you have done already explains itself, and which judgements are still empty.",
   ),
   pxTrust1: p("결제하면 바로 시작합니다", "Start the moment you pay"),
   pxTrust2: p("첫 문항 전에는 전액 환불", "Full refund before the first question"),
@@ -311,10 +321,12 @@ export const TX = {
     "결제가 끝나면 그 자리에서 응시가 열립니다.",
     "The assessment opens as soon as payment goes through.",
   ),
-  pxCommon4: p("20분에서 40분", "20 to 40 minutes"),
+  pxCommon4: p("중간에 닫아도 이어집니다", "Close it and pick up where you left off"),
+  /* **걸리는 시간을 여기 적지 않는다.** 등급마다 다르고, 가격 카드가
+     `estimate()` 로 센 값을 적는다. 두 곳에 적으면 갈린다 */
   pxCommon4b: p(
-    "중간에 닫으셔도 답한 곳에서 이어집니다.",
-    "Close it midway and you resume where you stopped.",
+    "답한 것은 문항마다 저장되어 다른 기기에서도 그 자리로 돌아옵니다.",
+    "Every answer is saved as you go, so another device picks up at the same place.",
   ),
   pxAsk: p("사기 전에 묻는 것", "Before you buy"),
   pxAsk1: p("언제부터 응시할 수 있나요", "When can I start?"),
@@ -331,8 +343,8 @@ export const TX = {
   flow1b: p("무엇을 배우셨는가", "What you studied"),
   flow2: p("경험", "Experience"),
   flow2b: p("무엇을 해보셨는가", "What you have done"),
-  flow3: p("직무 후보", "Career paths"),
-  flow3b: p("어디로 갈 수 있는가", "Where it can take you"),
+  flow3: p("기술영역 묶음", "Domain groups"),
+  flow3b: p("어디부터 볼 것인가", "Where to start"),
   flow4: p("아직 비어 있는 근거", "Evidence gap"),
   flow4b: p("무엇이 비어 있는가", "What is still missing"),
   flow5: p("다음 행동", "Next action"),

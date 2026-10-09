@@ -188,6 +188,36 @@ button.act.full { width: 100%; }
   font-weight: 600; color: var(--ink-2);
 }
 
+/* ---------- 소셜 로그인 단추 ----------
+   **광고처럼 보이지 않게 한다.** 두 공급자의 브랜드 규칙이 요구하는 것은
+   제 로고와 제 이름을 고치지 않고 쓰는 것이고, 색칠한 큰 띠를 요구하지는
+   않는다. 그래서 테만 두른 흰 단추로 두고 로고는 공식 모양 그대로 그린다.
+
+   **누르는 자리를 48px 로 둔다.** 로그인은 손전화에서 가장 많이 눌리는
+   자리이고, 여기서 빗나가면 그 다음이 없다. */
+.oauthbox { display: grid; gap: var(--sp-2); margin-bottom: var(--sp-3); }
+.oauthbox form { display: block; }
+.oauthbtn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; min-height: 48px; padding: 0 var(--sp-3);
+  border: 1px solid var(--rule); border-radius: var(--sf-r-sm, 8px);
+  background: #fff; color: var(--ink);
+  font-size: 15px; font-weight: 600; line-height: 1.2;
+  cursor: pointer;
+}
+.oauthbtn:hover { background: var(--field); }
+.oauthbtn:disabled { opacity: .6; cursor: default; }
+.oauthbtn svg { flex: 0 0 auto; }
+
+/* `또는` 한 줄. **선을 두 개 긋지 않는다**: 위아래가 이미 묶여 있다 */
+.orline {
+  display: flex; align-items: center; gap: var(--sp-2);
+  margin: var(--sp-3) 0; color: var(--muted); font-size: 12.5px;
+}
+.orline::before, .orline::after {
+  content: ""; flex: 1 1 auto; height: 1px; background: var(--rule-2);
+}
+
 /* ---------- 위쪽 띠를 쓰는 셸 ----------
    운영 화면은 왼쪽 띠(`surface.css` 의 `.sf`)로 옮겼다. 여기 남은 것은
    메뉴가 두세 개뿐인 쪽(회차 하나 · 내 계정)이고, 거기서는 왼쪽 띠가

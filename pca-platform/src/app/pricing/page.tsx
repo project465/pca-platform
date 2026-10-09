@@ -7,10 +7,10 @@ import {
   catalogFor, priceState, sellable, type CatalogItem,
 } from "@/lib/catalog";
 import { money, resolveMarket } from "@/lib/market";
-import { itemsFor } from "@/lib/me-v2/bank";
 import { openGrants } from "@/lib/me-v2/attempt";
 import { BRAND, toLang2, txer } from "@/lib/surface-text";
 import { valueOf } from "@/lib/tiers";
+import { minutesLabel, tierMinutes } from "@/lib/tier-minutes";
 import { PRODUCT } from "@/lib/product-copy";
 import { step } from "@/lib/funnel-server";
 import { startFreeAction } from "@/app/free-start/actions";
@@ -63,6 +63,9 @@ export default async function PricingPage({
   if (!gate.open) return <NotOpen lang={L} />;
   const mk = await resolveMarket(sp.market);
   const list = await catalogFor(mk.market);
+  /* 걸리는 시간은 **실제 계획을 세워 센 값**이다. 시작 화면과 같은
+     함수를 읽으므로 두 화면이 갈리지 않는다 */
+  const mins = tierMinutes();
 
   /* 이미 산 사람에게 또 팔지 않는다. 쓰지 않은 이용권이 있으면 그리로 보낸다 */
   const user = await currentUser();
@@ -99,11 +102,19 @@ export default async function PricingPage({
         <BrandHome />
         <div className="pubtop-r">
           <LangSelect current={L} />
-          <Link href={`/sample${q}`} className="sf-btn quiet sm">
-            {PRODUCT.nav.sample[L]}
+          {/* **견본 단추를 두지 않는다.** 지금 `/sample` 에 서 있는 것은
+              앞 판본(ME_V2)의 결과지이고, 사기 전에 그것을 보여 주면
+              받지 않을 결과지가 약속이 된다. ME_V3 합성 견본이 준비되면
+              이 줄이 돌아온다 */}
+          {/* **검사로 들어가는 공개 길을 둔다.** 전에는 로그인 단추
+              하나뿐이라 전공 고르는 화면으로 가려면 주소를 직접 쳐야
+              했다. 로그인하지 않았으면 로그인을 거쳐 그 자리로 간다 */}
+          <Link href={user ? "/cores" : "/login?next=%2Fcores"}
+            className="sf-btn ghost sm">
+            {T("pxStartAssessment")}
           </Link>
           <Link href={user ? "/me" : "/login"} className="sf-btn ghost sm">
-            {user ? T("navHome") : T("pxSignIn")}
+            {user ? T("pxMyWorkspace") : T("pxSignIn")}
           </Link>
         </div>
       </header>
@@ -139,6 +150,8 @@ export default async function PricingPage({
               icon="clipboard"
               title={T("pxHaveGrant")}
               body={`${grants[0].tier} · ${T("asResume")}`}
+              /* 옛 판본의 이어하기. **보존하는 자리라 지우지 않는다**
+                 (`engine-entry.ts` 의 route 표에서 COMPATIBILITY) */
               cta={{ href: "/assessment/start", label: T("pxGoAssessment") }}
               tight
             />
@@ -147,7 +160,10 @@ export default async function PricingPage({
 
         {list.length ? (
           <div className="pxtiers">
-            {list.map((p) => <TierCard key={p.code} p={p} lang={L} T={T} />)}
+            {list.map((p) => (
+              <TierCard key={p.code} p={p} lang={L} T={T}
+                mins={minutesLabel(mins[p.tier], L)} />
+            ))}
           </div>
         ) : (
           <div className="sf-section">
@@ -189,12 +205,14 @@ export default async function PricingPage({
 }
 
 function TierCard({
-  p, lang, T,
-}: { p: CatalogItem; lang: "ko" | "en"; T: ReturnType<typeof txer> }) {
+  p, lang, T, mins,
+}: {
+  p: CatalogItem; lang: "ko" | "en"; T: ReturnType<typeof txer>;
+  mins: string;
+}) {
   const state = priceState(p);
   const label = money(p.amount, p.currency, lang);
   const ok = sellable(p);
-  const n = itemsFor(p.tier).length;
   const v = valueOf(p.tier, lang);
   const mid = p.tier === "STANDARD";
 
@@ -260,16 +278,18 @@ function TierCard({
 
       <p className="pxwho"><span>{T("pxFor")}</span>{v.who}</p>
 
-      {/* **받는 것을 줄로 적고 문항 수는 맨 아래로 내린다**(규격 §4).
+      {/* **받는 것을 줄로 적고 문항 수는 아예 적지 않는다.**
           문항 수를 앞세우면 비싼 등급이 "문항이 더 많은 것" 으로 읽히고,
-          그러면 같은 값을 더 내는 이유가 없다 */}
+          그러면 같은 값을 더 내는 이유가 없다. 전에 여기 적히던 48 · 68 ·
+          92 는 **앞 판본(ME_V2)의 수**라 지금 받는 것과도 달랐다. 남긴
+          것은 시간 하나이고, 그것은 사는 쪽이 일정을 비워야 해서다 */}
       <div className="pxgets">
         <h3>{T("pxIncluded")}</h3>
         <ul>
           {v.gets.map((g) => <li key={g}>{g}</li>)}
         </ul>
       </div>
-      <p className="pxq">{n.toLocaleString()} {T("pxQuestions")}</p>
+      <p className="pxq">{mins}</p>
     </article>
   );
 }

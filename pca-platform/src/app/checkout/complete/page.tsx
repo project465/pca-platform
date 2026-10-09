@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { startPathFor } from "@/lib/engine-entry";
 import { requireUser } from "@/lib/session";
 import { settlePayment } from "@/lib/orders";
 import { paymentProvider } from "@/lib/payments";
@@ -61,13 +62,20 @@ export default async function CompletePage({
   const result = await settlePayment(key);
 
   /**
-   * ME_V2 를 사면 결제 다음 걸음이 '검사 시작' 이다.
+   * 결제 다음 걸음은 **산 상품이 가리키는 검사**다.
    *
-   * 옛 검사와 같은 화면으로 보내면 `/test` 로 가고, 거기는 좌석을 찾는다.
-   * ME_V2 는 좌석이 아니라 이용권이 문을 여므로 그 화면이 "응시권이
-   * 없습니다" 를 띄운다. **돈을 낸 사람에게 그 문장이 나가면 안 된다.**
+   * 전에는 이 자리에 `/assessment/start` 가 글자로 적혀 있었다. 그래서
+   * 판본이 ME_V3 로 올라간 뒤에도 결제를 마친 사람이 **앞 판본(ME_V2)의
+   * 검사로** 떨어졌다. 이제 `startPathFor()` 가 `products.
+   * assessment_version` 을 보고 정한다(설계 원칙 10).
+   *
+   * **옛 판본이면 주소를 돌려주지 않는다.** 그러면 이 분기가 서지 않고
+   * 아래 일반 화면으로 간다 — 새로 산 사람을 옛 검사로 보내는 것보다
+   * 지원으로 보내는 쪽이 덜 틀린다. 그리고 공개 가격표가 이미 지금
+   * 판본만 내놓으므로 이 자리에 옛 판본이 올 일은 없다.
    */
-  if (result.ok && result.assessmentVersion === "ME_V2" && !result.upgradedAttemptId) {
+  const startAt = startPathFor(result.ok ? result.assessmentVersion : null);
+  if (result.ok && startAt && !result.upgradedAttemptId) {
     const L = toLang2(lang);
     const T = txer(L);
     return (
@@ -87,7 +95,7 @@ export default async function CompletePage({
                 <dd>{result.tier ?? "—"}</dd>
               </div>
             </dl>
-            <Link href="/assessment/start" className="sf-btn accent" style={{ marginTop: 24 }}>
+            <Link href={startAt} className="sf-btn accent" style={{ marginTop: 24 }}>
               {T("okStart")}
             </Link>
           </div>
