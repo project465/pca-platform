@@ -15,10 +15,135 @@
  * 사실을 적는다.
  */
 import { query, queryOne } from "@/lib/db";
-import type { ResultModel } from "./result/model";
+import type { Gap, ResultModel } from "./result/model";
+import type { Axis, AxisState, Zone } from "./scoring/types";
 import { orgTypesFor } from "./region";
 
 export const CORE = "ME_CORE_V3";
+
+/* ── Workspace 가 읽는 한 자리 ─────────────────────────────────────── */
+
+/**
+ * 사용자가 지금 어느 처지인가.
+ *
+ * **상태마다 첫 화면의 주된 단추가 다르다.** 검사 전에게 `지금 상태 보기`
+ * 를 내놓으면 누를 것이 없고, 끝낸 사람에게 `검사 시작` 을 내놓으면 앞
+ * 응답이 두 벌 쌓인다.
+ */
+export type WorkspaceStage =
+  | "NO_ASSESSMENT"
+  | "IN_PROGRESS"
+  | "BASIC_DONE"
+  | "STANDARD_DONE"
+  | "PRO_DONE"
+  | "RECOMPUTED";
+
+/**
+ * Workspace 가 읽는 지금 상태.
+ *
+ * **판단을 여기서 하지 않는다.** 굳은 결과(`v3_snapshots.result_model`)를
+ * 먼저 꺼내고, 반영한 적이 있으면 `career_profiles` 의 세 칸을 그 위에
+ * 얹는다. 얹는 값은 **`applyRecompute` 가 만든 것**이라 이 함수에 새
+ * 산식이 한 줄도 없다. 영역 이름과 축 이름과 비어 있는 자리의 뜻은 늘
+ * 굳은 결과에서 온다.
+ *
+ * 같은 뜻을 두 번 계산하는 코드를 두지 않으려고 화면 다섯이 이 함수
+ * 하나를 읽는다(홈 · 지금 상태 · 다음 할 일 · 결과 기록 · 반영).
+ */
+export type CurrentState = {
+  stage: WorkspaceStage;
+  /** 풀던 응시. 있으면 이어하기가 첫 걸음이다 */
+  open: { id: string; tier: string } | null;
+  /** 굳은 결과. 없으면 아직 아무 결과도 없다 */
+  model: ResultModel | null;
+  /** 그 결과를 낸 날 */
+  result_at: string | null;
+  /** 마지막으로 새 경험을 반영한 날. 없으면 반영한 적이 없다 */
+  recomputed_at: string | null;
+  /** 지금 영역 묶음. 반영한 적이 없으면 굳은 결과의 것 */
+  zoneOf: Record<string, Zone>;
+  /** 새 경험으로 올라간 축 */
+  raised: { domain: string; axis: Axis; state: AxisState }[];
+  /** 지금 남아 있는 비어 있는 자리. 급한 차례대로 */
+  gaps: Gap[];
+  /** 묶음이 달라진 영역 */
+  zoneMoved: { domain: string; before: Zone; after: Zone }[];
+  /** 아직 반영하지 않은 거리 */
+  pending: number;
+};
+
+type ProfileRow = {
+  levels: string | null; zones: string | null; gaps: string | null;
+  at: string | null;
+};
+
+export async function currentState(userId: string): Promise<CurrentState> {
+  const [open, snap, prof, pending] = await Promise.all([
+    queryOne<{ id: string; tier: string }>(
+      `SELECT id::text, tier FROM v3_attempts
+        WHERE user_id = $1 AND status = 'in_progress'
+        ORDER BY started_at DESC LIMIT 1`, [userId]),
+    queryOne<{ model: ResultModel | null; at: string | null }>(
+      `SELECT s.result_model AS model, to_char(s.created_at, 'YYYY-MM-DD') AS at
+         FROM v3_snapshots s JOIN v3_attempts a ON a.id = s.attempt_id
+        WHERE a.user_id = $1 AND s.result_model IS NOT NULL
+        ORDER BY s.created_at DESC, s.id DESC LIMIT 1`, [userId]),
+    queryOne<ProfileRow>(
+      `SELECT axis_levels::text AS levels, zones::text AS zones, gaps::text AS gaps,
+              to_char(recomputed_at, 'YYYY-MM-DD') AS at
+         FROM career_profiles WHERE user_id = $1 AND core_code = $2`, [userId, CORE]),
+    pendingRecompute(userId),
+  ]);
+
+  const model = snap?.model ?? null;
+  const base: Record<string, Zone> = {};
+  for (const d of model?.domains ?? []) base[d.code] = d.zone;
+
+  /* 반영한 적이 없으면 굳은 결과가 곧 지금 상태다. 두 줄로 적으면
+     사용자가 같은 값을 두 번 읽는다 */
+  const applied = !!prof?.at;
+  const zoneOf = { ...base };
+  const raised: CurrentState["raised"] = [];
+  const zoneMoved: CurrentState["zoneMoved"] = [];
+  let gaps = [...(model?.gaps ?? [])];
+
+  if (applied) {
+    const z = JSON.parse(prof?.zones ?? "{}") as Record<string, string[]>;
+    for (const [zone, list] of Object.entries(z)) {
+      for (const d of list) zoneOf[d] = zone as Zone;
+    }
+    for (const [d, before] of Object.entries(base)) {
+      if (zoneOf[d] !== before) zoneMoved.push({ domain: d, before, after: zoneOf[d] });
+    }
+    const lv = JSON.parse(prof?.levels ?? "{}") as Record<string, Record<string, AxisState>>;
+    for (const [d, axes] of Object.entries(lv)) {
+      const was = model?.domains.find((x) => x.code === d);
+      for (const [axis, state] of Object.entries(axes)) {
+        const before = was?.axes.find((a) => a.axis === axis)?.state;
+        if (before && before !== state) {
+          raised.push({ domain: d, axis: axis as Axis, state });
+        }
+      }
+    }
+    /* **살아남은 자리만 남긴다.** `career_profiles.gaps` 는 영역과 축만
+       들고 있어서 뜻(왜 필요한가 · 무엇을 하면)은 굳은 결과에서 가져온다 */
+    const live = JSON.parse(prof?.gaps ?? "[]") as { domain: string; axis: string | null }[];
+    gaps = gaps.filter((g) =>
+      live.some((x) => x.domain === g.domain && (x.axis ?? null) === (g.axis ?? null)));
+  }
+  gaps.sort((a, b) => a.rank - b.rank);
+
+  const stage: WorkspaceStage = !model
+    ? (open ? "IN_PROGRESS" : "NO_ASSESSMENT")
+    : applied ? "RECOMPUTED"
+      : model.tier === "PRO" ? "PRO_DONE"
+        : model.tier === "STANDARD" ? "STANDARD_DONE" : "BASIC_DONE";
+
+  return {
+    stage, open: open ?? null, model, result_at: snap?.at ?? null,
+    recomputed_at: prof?.at ?? null, zoneOf, raised, gaps, zoneMoved, pending,
+  };
+}
 
 /* ── 경험 ──────────────────────────────────────────────────────────── */
 

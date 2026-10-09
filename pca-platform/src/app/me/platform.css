@@ -389,3 +389,147 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
     margin: 0; padding: 0 10px; font-size: 12.5px; color: var(--sf-ink-3);
   }
 }
+
+/* ── 지금 값과 굳은 기록 ──────────────────────────────────────────── */
+
+/*
+ * **두 쪽을 같은 카드로 그리지 않는다.**
+ *
+ * 결과 기록 화면에는 성격이 정반대인 두 덩이가 나란히 선다. 검사 당시
+ * 결과는 그날의 문항과 기준으로 굳어 더 바뀌지 않고, 지금 상태는 경험을
+ * 더하면 달라진다. 전에는 둘을 같은 흰 카드로 그려서 날짜만 다른 같은
+ * 값으로 읽혔다. 그래서 생김새로 갈라 둔다: 굳은 쪽은 흰 바탕에 왼쪽
+ * 날짜 띠와 자물쇠 표시, 지금 쪽은 꺼진 바탕에 점선 테두리다.
+ */
+
+/* 쪽 안의 묶음 머리. 카드 여럿을 한 덩이로 묶는다 */
+.cm-sect {
+  margin: 30px 0 12px; font-size: 17px; font-weight: 700; color: var(--sf-ink);
+  display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+}
+.cm-sect:first-of-type { margin-top: 24px; }
+.cm-sect em {
+  font-style: normal; font-size: 12.5px; font-weight: 500; color: var(--sf-ink-3);
+}
+
+/* 지금 값. **점선이 `바뀔 수 있다` 를 말한다** */
+.cm-live {
+  margin: 22px 0 0;
+  border: 1px dashed var(--sf-line); border-radius: 14px;
+  padding: 18px; background: var(--sf-surface-2);
+  display: flex; flex-direction: column; gap: 12px;
+}
+.cm-live > header { display: flex; flex-direction: column; gap: 3px; }
+.cm-live > header h2 {
+  margin: 0; font-size: 16px; font-weight: 700; color: var(--sf-ink);
+}
+.cm-live > header span { font-size: 12.5px; color: var(--sf-ink-3); line-height: 1.6; }
+.cm-live-note { margin: 0; font-size: 12.5px; color: var(--sf-ink-3); }
+
+/* 굳은 기록 */
+.cm-snaps { display: flex; flex-direction: column; gap: 12px; }
+.cm-snap {
+  display: flex; align-items: stretch;
+  background: var(--sf-surface); border: 1px solid var(--sf-line);
+  border-radius: 14px; overflow: hidden;
+}
+
+/* 날짜를 왼쪽 띠로 세운다. 줄 안에 적으면 어느 날 것인지 훑어서 안 보인다 */
+.cm-snap-date {
+  flex: 0 0 84px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2px; padding: 14px 8px;
+  background: var(--sf-surface-2); border-right: 1px solid var(--sf-line);
+  font-variant-numeric: tabular-nums;
+}
+.cm-snap-date b { font-size: 15px; font-weight: 700; color: var(--sf-ink); }
+.cm-snap-date small { font-size: 12px; color: var(--sf-ink-3); }
+
+.cm-snap-body {
+  flex: 1 1 auto; min-width: 0; padding: 16px 18px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.cm-snap-body h3 {
+  margin: 0; font-size: 15px; font-weight: 700; color: var(--sf-ink);
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.cm-snap-body p { margin: 0; font-size: 13.5px; line-height: 1.7; color: var(--sf-ink-2); }
+
+/* 자물쇠 표시. **판본 코드를 앞세우지 않고 고정됐다는 사실만 적는다** */
+.cm-lockmark {
+  display: inline-flex; align-items: center;
+  padding: 2px 8px; border-radius: 999px;
+  border: 1px solid var(--sf-line); background: var(--sf-surface-2);
+  font-size: 11.5px; font-weight: 600; color: var(--sf-ink-3);
+}
+
+/* 접는 자리. 판본과 끝낸 일처럼 **찾을 때만 보면 되는 것**을 넣는다 */
+.cm-fold {
+  margin: 16px 0 0; padding: 14px 0 0; border-top: 1px solid var(--sf-line-2);
+}
+.cm-fold > summary {
+  font-size: 13.5px; font-weight: 600; color: var(--sf-ink-3);
+  cursor: pointer; min-height: 24px; display: inline-flex; align-items: center;
+}
+.cm-fold > summary:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2px; }
+.cm-fold[open] > summary { margin-bottom: 12px; color: var(--sf-ink-2); }
+
+/* ── 묶음과 비어 있는 자리 ────────────────────────────────────────── */
+
+/* 같은 상태로 묶인 영역. **묶음 안에 차례를 만들지 않으므로** 칩으로 깐다 */
+.cm-zone { margin: 0 0 16px; }
+.cm-zone h3 {
+  margin: 0 0 8px; font-size: 14px; font-weight: 700; color: var(--sf-ink);
+  display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+}
+.cm-zone h3 em {
+  font-style: normal; font-size: 12.5px; font-weight: 500; color: var(--sf-ink-3);
+}
+.cm-chip small { font-size: 12px; color: inherit; opacity: 0.75; }
+
+/*
+ * 비어 있는 자리 하나에 늘 셋이 붙는다: 무엇이 비었는가 · 왜 그 자리가
+ * 필요한가 · 무엇을 하면 채울 수 있는가. **빨간 목록으로 그리지 않는다**:
+ * 못 한 것을 세는 화면이 되면 읽는 사람이 닫는다. 왼쪽 띠 하나로만
+ * 가른다.
+ */
+.cm-gaps { display: flex; flex-direction: column; gap: 12px; }
+.cm-gap {
+  border: 1px solid var(--sf-line); border-left: 3px solid var(--sf-part-line);
+  border-radius: 12px; padding: 16px 18px; background: var(--sf-surface);
+  display: flex; flex-direction: column; gap: 7px;
+}
+.cm-gap h3 { margin: 0; font-size: 15px; font-weight: 700; color: var(--sf-ink); }
+.cm-gap p { margin: 0; font-size: 13.5px; line-height: 1.75; color: var(--sf-ink-2); }
+.cm-gap p b {
+  display: inline-block; min-width: 86px;
+  font-size: 12.5px; font-weight: 600; color: var(--sf-ink-3);
+}
+
+/* ── 할 일 줄 안의 세 조각 ────────────────────────────────────────── */
+
+/* 한 줄에 할 일과 영역과 끝내는 단추가 함께 선다. 줄바꿈 없이 두면
+   단추가 글 가운데로 끼어들어 어디까지가 할 일인지 사라진다 */
+.cm-lanes li > span { display: block; }
+.cm-lanes li > em {
+  display: block; margin-top: 2px;
+  font-style: normal; font-size: 12px; color: var(--sf-ink-3);
+}
+.cm-lanes li > form { margin-top: 7px; }
+.cm-lanes li > form .cm-btn { min-height: 32px; padding: 0 12px; font-size: 13px; }
+
+/* 끝낸 일 줄. 되돌리는 단추를 오른쪽 끝에 붙인다 */
+.cm-row > form { margin-left: auto; }
+.cm-row > form .cm-btn { min-height: 32px; padding: 0 12px; font-size: 13px; }
+
+@media (max-width: 719px) {
+  /* 좁은 화면에서는 날짜 띠를 위로 눕힌다. 84px 를 떼면 제목이 두 줄로 접힌다 */
+  .cm-snap { flex-direction: column; }
+  .cm-snap-date {
+    flex: 0 0 auto; flex-direction: row; justify-content: flex-start;
+    gap: 6px; padding: 10px 16px;
+    border-right: 0; border-bottom: 1px solid var(--sf-line);
+  }
+  .cm-snap-body { padding: 14px 16px; }
+  .cm-gap p b { display: block; min-width: 0; }
+}
