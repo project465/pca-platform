@@ -6,7 +6,8 @@ import { query, queryOne } from "@/lib/db";
 import {
   blockTimes, feedbackItems, feedbackOf, type Choice,
 } from "@/lib/me-v3/pilot/store";
-import { ISSUE_KO, issues } from "@/lib/me-v3/pilot/analyze";
+import { ISSUE_KO, issues, VERSION_DECIDES, VERSION_KO }
+  from "@/lib/me-v3/pilot/analyze";
 import { WAVE_KO } from "@/lib/me-v3/pilot/enroll";
 
 export const metadata = { title: "V3 파일럿 한 사람 · CareerMatri" };
@@ -36,12 +37,13 @@ export default async function V3PilotOne({
     id: string; tier: string; status: string; grad_field: string | null;
     started_at: string; submitted_at: string | null;
     code: string; wave: number; education_stage: string; purge_after: string;
-    quality: string | null; opened_deep: number;
+    quality: string | null; versions: string | null; opened_deep: number;
   }>(
     `SELECT a.id::text, a.tier, a.status, a.grad_field,
             a.started_at::text, a.submitted_at::text,
             p.code, p.wave, p.education_stage, p.purge_after::text,
             s.response_quality AS quality,
+            s.module_versions::text AS versions,
             COALESCE(array_length(a.opened_deep, 1), 0) AS opened_deep
        FROM v3_attempts a
        JOIN v3_pilot_participants p ON p.user_id = a.user_id
@@ -83,6 +85,37 @@ export default async function V3PilotOne({
           <ul>{flags.map((k) => <li key={k} className="warn">{ISSUE_KO[k]}</li>)}</ul>
         </section>
       ) : null}
+
+      {/*
+        **적어 두기만 하면 아무도 안 본다.** 판본은 제출하는 자리에서
+        줄에 들어가는데, 운영 화면이 안 보여 주면 **파일럿 중에 판본이
+        올라간 것을 아무도 모른다.** 그러면 앞사람과 뒷사람의 결과를 한
+        묶음으로 분석한다.
+
+        결과에 닿는 셋을 앞에 세우고 그 사실을 적는다. 나머지는 **읽은
+        화면과 문장을 되짚는 자리**이고 판정에 쓰이지 않는다.
+      */}
+      <section className="panel">
+        <h2>이 응시가 읽은 판본</h2>
+        <p className="sub">
+          끝난 뒤에는 되물을 수 없어 제출하는 자리에서 적어 둡니다.
+          결과에 닿는 것은 세 줄이고, 나머지는 어느 화면으로 어떤 문장을
+          읽고 답했는지를 되짚는 자리입니다.
+        </p>
+        <div className="tablewrap">
+        <table>
+          <thead><tr><th>무엇</th><th>판본</th></tr></thead>
+          <tbody>
+            {versionRows(a.versions).map((r) => (
+              <tr key={r.key}>
+                <td>{r.label}</td>
+                <td className={r.decides ? "warn" : undefined}>{r.value}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        </div>
+      </section>
 
       <section className="panel">
         <h2>적어 주신 의견</h2>
@@ -162,4 +195,26 @@ export default async function V3PilotOne({
       </section>
     </AdminShell>
   );
+}
+
+/**
+ * 적어 둔 판본을 표 줄로 바꾼다.
+ *
+ * **비어 있는 칸을 숨기지 않는다.** 산업을 안 고른 응시의 산업팩 판본은
+ * 비는 것이 맞고, 숨기면 `적히지 않았다` 와 구별되지 않는다.
+ */
+function versionRows(raw: string | null):
+  { key: string; label: string; value: string; decides: boolean }[] {
+  let mv: Record<string, unknown> = {};
+  try { mv = JSON.parse(raw ?? "{}") as Record<string, unknown>; } catch { mv = {}; }
+  const order = [...VERSION_DECIDES as readonly string[],
+    ...Object.keys(VERSION_KO).filter((k) => !(VERSION_DECIDES as readonly string[]).includes(k))];
+  return order
+    .filter((k) => k in mv)
+    .map((k) => ({
+      key: k,
+      label: VERSION_KO[k] ?? k,
+      value: typeof mv[k] === "string" && mv[k] ? String(mv[k]) : "고르지 않음",
+      decides: (VERSION_DECIDES as readonly string[]).includes(k),
+    }));
 }

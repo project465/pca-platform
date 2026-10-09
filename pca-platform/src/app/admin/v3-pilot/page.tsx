@@ -7,8 +7,8 @@ import {
 import { WAVE_KO, WAVES } from "@/lib/me-v3/pilot/enroll";
 import { FUNNEL, funnelByWave } from "@/lib/me-v3/pilot/funnel";
 import {
-  blockTimes, ISSUE_KO, issues, metrics, ownershipSpread, slowItems,
-  type IssueKind,
+  blockTimes, ISSUE_KO, issues, metrics, mixedVersions, ownershipSpread,
+  slowItems, VERSION_DECIDES, type IssueKind,
 } from "@/lib/me-v3/pilot/analyze";
 import InviteForm from "./invite";
 import SyncButton from "./sync";
@@ -108,7 +108,7 @@ export default async function V3PilotPage({
   const onlyIssue = sp.issue === "1";
   const f: RowFilter = { wave: waveNum, tier, completion: done };
 
-  const [rows, flags, purge, funnel, blocks, own, slow, mets] = await Promise.all([
+  const [rows, flags, purge, funnel, blocks, own, slow, mets, mixed] = await Promise.all([
     pilotRows(f),
     issues(waveNum ?? undefined),
     purgeDue(),
@@ -117,7 +117,11 @@ export default async function V3PilotPage({
     ownershipSpread(waveNum ?? undefined),
     slowItems(waveNum ?? undefined, 10),
     metrics(waveNum ?? undefined),
+    mixedVersions(waveNum ?? undefined),
   ]);
+  /* 결과에 닿는 판본이 섞인 것과 화면·문장이 섞인 것은 급한 정도가 다르다 */
+  const mixedHard = mixed
+    .filter((m) => (VERSION_DECIDES as readonly string[]).includes(m.key));
 
   const flagBy = new Map(flags.map((x) => [x.code, x.kinds]));
   const shown = onlyIssue ? rows.filter((r) => flagBy.has(r.code)) : rows;
@@ -144,6 +148,42 @@ export default async function V3PilotPage({
         참가자 {rows.length}명 · 끝낸 응시 {finished} · 의견 {withFeedback} ·
         손볼 것 {flags.length} · 결과가 안 나온 응시 {broken}
       </p>
+
+      {/*
+        **판본이 섞인 것을 맨 위에 적는다.**
+        Wave 가 끝날 때까지 결과에 닿는 셋을 올리지 않기로 했는데, 적어 둔
+        규칙은 지켜지지 않는다. 섞이면 앞사람과 뒷사람의 결과를 같은 표에서
+        읽을 수 없고, **끝난 뒤에는 되돌릴 수 없다.**
+
+        화면과 문장이 섞인 것은 막을 일이 아니라 **읽을 때 알아야 하는
+        일**이라 같은 칸에 두되 나눠 적는다.
+      */}
+      {mixed.length ? (
+        <section className="panel">
+          <h2>이 묶음에 판본이 섞여 있습니다</h2>
+          {mixedHard.length ? (
+            <p className="warn">
+              결과에 닿는 판본이 갈렸습니다. 앞사람과 뒷사람의 결과를 한 표에서
+              읽을 수 없습니다. 분석을 판본별로 나누고, 남은 Wave 동안은
+              올리지 않습니다.
+            </p>
+          ) : (
+            <p className="sub">
+              결과에 닿는 판본은 한 벌입니다. 아래는 읽은 화면과 문장이
+              갈린 것이라 판정에는 들어가지 않습니다.
+            </p>
+          )}
+          <ul>
+            {mixed.map((m) => (
+              <li key={m.key}
+                className={(VERSION_DECIDES as readonly string[]).includes(m.key)
+                  ? "warn" : undefined}>
+                {m.label} — {m.values.join(" · ")}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       <section className="panel">
         <h2>초대</h2>

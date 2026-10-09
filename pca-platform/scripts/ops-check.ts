@@ -39,7 +39,7 @@ import { pdfVolume, inDeployment } from "../src/lib/pdf-volume";
 
 export const OPS_AREAS = [
   "DEPLOY", "DOCKER_RUNTIME", "DOMAIN", "APP_ENV", "DATABASE", "PDF_VOLUME",
-  "EMAIL", "LEGAL", "BUSINESS", "BACKUP", "PAYMENT",
+  "EMAIL", "OAUTH", "LEGAL", "BUSINESS", "BACKUP", "PAYMENT",
 ] as const;
 export type OpsArea = (typeof OPS_AREAS)[number];
 
@@ -375,6 +375,50 @@ function emailRow() {
   add("EMAIL", "READY", `${from} 로 나갑니다. SPF·DMARC 는 \`npm run launch:check\` 가 봅니다.`);
 }
 
+/* ── OAUTH ──────────────────────────────────────────────────────────
+   **여기서 보는 것은 값이 꽂혔는가까지다.** 구글·애플에 붙지 않는다:
+   붙으려면 사람이 브라우저에서 동의를 눌러야 한다. 코드 쪽은
+   `npm run oauth:ready` 가 보고, **그 명령은 저장소 파일을 읽어서
+   컨테이너 안에서는 못 돈다.** 그래서 이 줄이 컨테이너 쪽 답을 맡는다.
+
+   **없는 것을 BLOCKED 로 적지 않는다.** 소셜 로그인은 켜지 않아도 파는
+   데 지장이 없고(비밀번호 로그인이 그대로 돈다), 값이 반만 꽂힌 것은
+   화면에 단추를 세우지 않으므로 손님이 오류를 보지 않는다. 다만
+   **반만 꽂힌 것은 적어 준다**: 꽂은 사람은 켜졌다고 생각한다. */
+function oauthRow() {
+  const has = (k: string) => !!(process.env[k] ?? "").trim();
+  const NEED: Record<string, string[]> = {
+    Google: ["AUTH_GOOGLE_ID", "AUTH_GOOGLE_SECRET"],
+    Apple: ["AUTH_APPLE_ID", "AUTH_APPLE_SECRET"],
+  };
+  const on: string[] = [];
+  const half: string[] = [];
+  for (const [name, keys] of Object.entries(NEED)) {
+    const got = keys.filter(has);
+    if (got.length === keys.length) on.push(name);
+    else if (got.length > 0) half.push(`${name}(${keys.filter((k) => !has(k)).join(" ")} 없음)`);
+  }
+  if (!inDeployment()) {
+    return add("OAUTH", "UNKNOWN",
+      "이 기계가 공급자 값을 들고 있지 않습니다.",
+      "운영 컨테이너에서 돌립니다. 코드 쪽은 `npm run oauth:ready` 가 봅니다.");
+  }
+  if (half.length) {
+    return add("OAUTH", "WARNING",
+      `값이 반만 꽂혔습니다: ${half.join(" · ")}. 그 단추는 화면에 서지 않습니다.`,
+      "Railway → 서비스 → Variables. 애플 secret 은 180일 만료입니다"
+      + "(docs/metri/77_oauth_ops.md).");
+  }
+  if (!on.length) {
+    return add("OAUTH", "WARNING",
+      "소셜 로그인이 꺼져 있습니다. 비밀번호 로그인은 그대로 돕니다.",
+      "켤 때는 docs/metri/77_oauth_ops.md 의 네 값을 꽂습니다.");
+  }
+  add("OAUTH", "READY",
+    `${on.join(" · ")} 값이 꽂혀 있습니다. `
+    + "**공급자 콘솔 등록과 실제 로그인은 사람이 눌러 확인합니다.**");
+}
+
 /* ── LEGAL ──────────────────────────────────────────────────────────
    **runtime 에서 실제로 읽어 본다.** 저장소에 파일이 있는 것과 컨테이너가
    읽을 수 있는 것은 다른 말이고, 그 차이로 약관 셋이 한 번 통째로 비었다. */
@@ -490,6 +534,7 @@ async function main() {
   await databaseRow();
   pdfRow();
   emailRow();
+  oauthRow();
   await legalRow();
   await businessRow();
   await backupRow();

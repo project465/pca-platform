@@ -93,11 +93,14 @@ if [ "${PLAN:-0}" = "1" ]; then
   2  pg_restore --list $DUMP | grep -c 'TABLE DATA'
   3  psql <$WHERE/postgres> -c "CREATE DATABASE $TEST_DB"
   4  pg_restore --dbname=<$TEST_DB> --no-owner --no-privileges $DUMP
-  5  아홉 표의 줄 수를 운영과 맞춘다
-     users · orders · payments · entitlements · attempts
-     v2_responses · report_snapshots · evidence_profiles · products
-  6  제약 여덟 가지와 외래키 개수가 같은지 본다
-  7  report_snapshots.payload 의 result 객체가 살아 있는지 본다
+  5  표 열넷의 줄 수를 운영과 맞춘다
+     users · orders · payments · entitlements · products
+     attempts · v2_responses · report_snapshots · evidence_profiles
+     v3_attempts · v3_responses · v3_snapshots · v3_experiences
+     career_profiles
+  6  제약 열 가지와 외래키 개수가 같은지 본다
+  7  굳은 결과가 살아 있는지 본다
+     report_snapshots.payload 의 result · v3_snapshots 의 result_model 과 판본
   8  site_settings 두 칸에 날짜와 대상을 적는다
   9  psql <$WHERE/postgres> -c "DROP DATABASE $TEST_DB"
 
@@ -139,34 +142,40 @@ echo "4. 붓는다"
 pg_restore --dbname="$TEST_URL" --no-owner --no-privileges "$DUMP" 2>&1 \
   | grep -v 'warning:' || true
 
-echo "5. 돈과 사람이 든 표를 센다"
-psql "$TEST_URL" -q -t -A -F'	' -c "
-  SELECT 'users', count(*) FROM users
-  UNION ALL SELECT 'orders', count(*) FROM orders
-  UNION ALL SELECT 'payments', count(*) FROM payments
-  UNION ALL SELECT 'entitlements', count(*) FROM entitlements
-  UNION ALL SELECT 'attempts', count(*) FROM attempts
-  UNION ALL SELECT 'v2_responses', count(*) FROM v2_responses
-  UNION ALL SELECT 'report_snapshots', count(*) FROM report_snapshots
-  UNION ALL SELECT 'evidence_profiles', count(*) FROM evidence_profiles
-  UNION ALL SELECT 'products', count(*) FROM products" \
-  | while IFS=$'\t' read -r t n; do printf "   %-18s %s\n" "$t" "$n"; done
+# 세는 표를 **한 목록으로 둔다.** 두 곳에 적어 두면 표를 더하는 날 한쪽만
+# 늘고, 그것이 바로 마이그레이션 목록이 두 벌이었던 장애의 모양이다.
+#
+# **지금 파는 판본의 표가 빠져 있었다.** 아홉 표가 전부 ME_V1·V2 때의
+# 것이어서, V3 응시와 결과와 지금 상태가 통째로 안 돌아와도 이 검사가
+# `줄 수가 같다` 를 찍고 지나갔다. 돈을 낸 사람의 결과지는 지금
+# `v3_snapshots` 에 있다.
+COUNT_TABLES="users orders payments entitlements products
+  attempts v2_responses report_snapshots evidence_profiles
+  v3_attempts v3_responses v3_snapshots v3_experiences career_profiles"
 
-# 운영 DB 와 숫자가 같은가. **다르면 덤프가 반쪽이다**
-for T in users orders payments entitlements attempts v2_responses \
-         report_snapshots evidence_profiles products; do
+echo "5. 돈과 사람이 든 표를 센다"
+NT=0
+for T in $COUNT_TABLES; do
+  # 운영 DB 와 숫자가 같은가. **다르면 덤프가 반쪽이다**
   A="$(psql "$DATABASE_URL" -q -t -A -c "SELECT count(*) FROM $T")"
   B="$(psql "$TEST_URL" -q -t -A -c "SELECT count(*) FROM $T")"
+  printf "   %-18s %s\n" "$T" "$B"
   [ "$A" = "$B" ] || fail "$T 의 줄 수가 다르다 (운영 $A · 복구 $B)"
+  NT=$((NT + 1))
 done
-echo "   아홉 표의 줄 수가 같다"
+echo "   표 ${NT}개의 줄 수가 같다"
 
 echo "6. 제약이 살아 있는지 본다"
 # 표만 돌아오고 제약이 안 돌아오면, 복구한 DB 에서 같은 결제가 두 번
 # 적히고 미승인 가격에 금액이 붙는다. 그런 DB 는 되돌아온 것이 아니다.
+# **V3 의 둘을 같이 본다.** 앞의 여덟은 돈 쪽이고 뒤의 둘은 지금 판본이
+# 기대는 제약이다. `career_profiles` 의 유일 제약이 없으면 표가 서 있어도
+# 쓰는 자리 셋이 `ON CONFLICT (user_id, core_code)` 로 42P10 을 받는다.
+# 표를 세는 것만으로는 통과하고 화면은 그대로 500 이다.
 NEED="products_price_status_chk products_not_approved_zero_chk orders_status_chk
       outbox_kind_check job_failures_kind_chk refund_requests_one_open_idx
-      entitlements_order_uniq orders_order_no_key"
+      entitlements_order_uniq orders_order_no_key
+      career_profiles_user_id_core_code_key career_events_dedupe_uniq"
 for C in $NEED; do
   FOUND="$(psql "$TEST_URL" -q -t -A -c "
     SELECT count(*) FROM (
@@ -177,7 +186,7 @@ for C in $NEED; do
   # 함께 만들어서 두 표에 다 나온다. `= 1` 로 두면 그런 제약이 늘 걸린다.
   [ "$FOUND" -ge 1 ] || fail "제약 $C 가 복구본에 없다"
 done
-echo "   제약 여덟 가지가 살아 있다"
+echo "   제약 열 가지가 살아 있다"
 
 # **외래키는 이름이 아니라 개수로 센다.** 제약 여덟 가지는 이름을 적어
 # 두면 되지만 외래키는 백여 개라 적어 둘 수 없고, 적어 두면 표를 더하는
@@ -202,6 +211,23 @@ if [ "$SNAPS" -gt 0 ]; then
   echo "   결과지 $SNAPS 장이 열린다"
 else
   echo "   결과지가 아직 없다 (셀 것이 없다)"
+fi
+
+# **지금 판본의 결과지는 다른 표에 있다.** `report_snapshots` 만 보면
+# ME_V2 결과만 확인하고 끝난다. V3 는 굳은 결과 모델과 판본 열두 칸이
+# `v3_snapshots` 한 줄에 함께 들어 있다.
+V3S="$(psql "$TEST_URL" -q -t -A -c "SELECT count(*) FROM v3_snapshots")"
+if [ "$V3S" -gt 0 ]; then
+  V3GOOD="$(psql "$TEST_URL" -q -t -A -c "
+    SELECT count(*) FROM v3_snapshots
+     WHERE result_model IS NOT NULL
+       AND module_versions ? 'scoring_version'
+       AND module_versions ? 'item_bank_version'")"
+  [ "$V3GOOD" = "$V3S" ] \
+    || fail "굳은 결과나 판본이 빠진 V3 스냅샷이 있다 ($V3GOOD / $V3S)"
+  echo "   지금 판본 결과지 $V3S 장이 판본과 함께 돌아왔다"
+else
+  echo "   지금 판본 결과지가 아직 없다 (셀 것이 없다)"
 fi
 
 echo "8. 해 봤다는 것을 적는다"

@@ -361,3 +361,73 @@ export async function choiceSpread(
     [itemCode, wave ?? null]);
   return rows.map((r) => ({ value: r.choice, n: Number(r.n) }));
 }
+
+/**
+ * 응시마다 적어 둔 판본. **사람 말로 적는 이름표도 여기 둔다.**
+ *
+ * 열쇠를 그대로 늘어놓으면 운영자가 어느 줄이 결과에 닿는지 모른다.
+ * 결과에 닿는 것은 셋뿐이고(문항 은행 · 채점 · 결과 모델) 나머지는
+ * 읽은 화면과 문장을 되짚는 자리다.
+ */
+export const VERSION_KO: Record<string, string> = {
+  core_version: "전공 Core",
+  item_bank_version: "문항 은행 (결과에 닿는다)",
+  scoring_version: "판단 규칙 (결과에 닿는다)",
+  result_model_version: "결과 모델 (결과에 닿는다)",
+  assessment_ui_version: "검사 화면",
+  assessment_copy_version: "검사 문장",
+  result_copy_version: "결과지 문장",
+  result_ui_version: "결과지 화면",
+  workspace_ui_version: "작업공간 화면",
+  industry_pack_version: "산업팩",
+  role_pack_version: "역할팩",
+  region_layer_version: "지역 층",
+};
+
+/** 결과에 닿는 판본. **wave 안에서 이 셋이 섞이면 분석이 깨진다** */
+export const VERSION_DECIDES = [
+  "item_bank_version", "scoring_version", "result_model_version",
+] as const;
+
+export type MixedVersion = { key: string; label: string; values: string[] };
+
+/**
+ * 이 wave 안에서 **판본이 섞였는가.**
+ *
+ * 섞이면 앞사람과 뒷사람의 결과를 같은 표에서 읽을 수 없다. 그래서
+ * Wave 가 끝날 때까지 결과에 닿는 셋을 올리지 않기로 했는데, **적어 둔
+ * 규칙은 지켜지지 않는다.** 운영 표가 그 사실을 적는다.
+ *
+ * 결과에 닿지 않는 판본(화면 · 문장)이 섞인 것도 함께 내놓는다. 그쪽은
+ * 막을 일이 아니고 **읽을 때 알아야 하는 일**이다: 문장을 고친 뒤의
+ * 사람이 다른 글을 읽었다.
+ */
+export async function mixedVersions(wave?: number): Promise<MixedVersion[]> {
+  const rows = await query<{ j: string }>(
+    `SELECT s.module_versions::text AS j
+       FROM v3_snapshots s
+       JOIN v3_attempts a ON a.id = s.attempt_id
+       JOIN v3_pilot_participants p ON p.user_id = a.user_id
+      WHERE ($1::int IS NULL OR p.wave = $1)`,
+    [wave ?? null]).catch(() => []);
+  const by = new Map<string, Set<string>>();
+  for (const r of rows) {
+    let mv: Record<string, unknown> = {};
+    try { mv = JSON.parse(r.j) as Record<string, unknown>; } catch { continue; }
+    for (const [k, v] of Object.entries(mv)) {
+      /* **비어 있는 것을 값으로 세지 않는다.** 산업을 고른 사람과 안
+         고른 사람이 섞인 것은 섞인 판본이 아니다 */
+      if (typeof v !== "string" || !v) continue;
+      const set = by.get(k) ?? new Set<string>();
+      set.add(v);
+      by.set(k, set);
+    }
+  }
+  return [...by]
+    .filter(([, set]) => set.size > 1)
+    .map(([key, set]) => ({
+      key, label: VERSION_KO[key] ?? key, values: [...set].sort(),
+    }))
+    .sort((a, b) => Number(VERSION_DECIDES.includes(b.key as "scoring_version"))
+      - Number(VERSION_DECIDES.includes(a.key as "scoring_version")));
+}
