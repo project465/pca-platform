@@ -60,10 +60,21 @@ const PATHS: [string, string, string, boolean?][] = [
   ["w14_jobs", "/me/jobs", "Track · 공고", true],
 ];
 
-/** 계정 영역. **학생 계정으로만 열린다** */
+/**
+ * 계정 영역과 **검사 전 상태.**
+ *
+ * 두 사람으로 찍는 까닭. 한 사람에게는 검사 전과 검사 뒤가 같이 있을 수
+ * 없고, **빈 상태가 상태 가운데 하나**라 안 찍으면 그 다섯 쪽이 어떻게
+ * 서는지 아무도 모른다. 그리고 계정 영역은 학생 계정으로만 열린다.
+ */
 const ACCOUNT: [string, string, string, boolean?][] = [
   ["w15_account", "/my", "계정 · 작업공간으로 돌아가는 길", true],
   ["w16_account_old", "/my/results", "옛 검사 결과 · 맨 위에 안내", true],
+  ["w18_empty_home", "/me", "검사 전 · 받는 것 셋만", true],
+  ["w19_empty_state", "/me/state", "검사 전 · 지금 상태", true],
+  ["w20_empty_next", "/me/next", "검사 전 · 다음 할 일", true],
+  ["w21_empty_results", "/me/results", "검사 전 · 결과 기록", true],
+  ["w22_empty_experience", "/me/experience", "검사 전 · 내 경험", true],
 ];
 
 async function userId(login: string): Promise<string> {
