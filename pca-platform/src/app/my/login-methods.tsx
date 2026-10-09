@@ -1,4 +1,3 @@
-import { Card, Defs } from "@/components/sf/parts";
 import {
   accountsOf, hasPasswordLogin, PROVIDER_LABEL, type Provider,
 } from "@/lib/auth-accounts";
@@ -49,17 +48,25 @@ export default async function LoginMethods({
   ];
 
   return (
-    <Card title="로그인 방법">
-      {notice ? <p className="notice ok" style={{ marginTop: 0 }}>{notice}</p> : null}
-      <Defs rows={rows} />
+    <section className="cm-card is-wide">
+      <h2>로그인 방법</h2>
+      {notice ? <p className="cm-note">{notice}</p> : null}
+      <dl className="cm-dl">
+        {rows.map((r) => (
+          <div key={r.k}>
+            <dt>{r.k}</dt>
+            <dd>{r.v}</dd>
+          </div>
+        ))}
+      </dl>
 
       {/* 붙일 수 있는 것만 단추로 세운다. 켜지지 않은 공급자에 단추를
           달면 누른 사람이 공급자 쪽 오류 화면에서 끝난다 */}
-      <div className="sf-chips" style={{ marginTop: 14 }}>
+      <div className="cm-acts">
         {ALL.filter((p) => on.includes(p) && !have.has(p)).map((p) => (
           <form key={p} action={linkProvider}>
             <input type="hidden" name="provider" value={p} />
-            <button className="sf-btn ghost sm" type="submit">
+            <button className="cm-btn" type="submit">
               {PROVIDER_LABEL[p]} 연결하기
             </button>
           </form>
@@ -67,15 +74,15 @@ export default async function LoginMethods({
       </div>
 
       {!pw && linked.length === 1 ? (
-        <p className="sf-sub" style={{ fontSize: 13, marginTop: 12 }}>
+        <p className="cm-none">
           지금 들어오는 길이 하나입니다. 하나를 더 연결해 두시면 그 길이
           막히는 날에도 들어오실 수 있습니다.
         </p>
       ) : null}
-      <p className="sf-sub" style={{ fontSize: 13, marginTop: 10 }}>
+      <p className="cm-none">
         연결을 끊어야 하신다면 고객지원으로 알려 주십시오. 마지막 하나가
         끊기면 계정에 들어오실 수 없어서 화면에 두지 않았습니다.
       </p>
-    </Card>
+    </section>
   );
 }

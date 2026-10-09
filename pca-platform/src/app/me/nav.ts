@@ -35,23 +35,29 @@ export type CmNavItem = {
 export type CmNavGroup = { title: string; items: CmNavItem[] };
 
 /**
- * 묶음 넷.
+ * 묶음 넷: 지금 · 내 커리어 · 탐색 · 기타.
  *
- * **`준비 중` 을 묶음 이름으로 올렸다.** 줄마다 점을 붙이는 것보다
- * 들어가기 전에 알 수 있고, 뱃지를 남발하지 않는다(§21).
+ * **줄마다 적던 한 줄 설명을 걷었다.** 아홉 줄에 설명이 붙어 띠가
+ * 열여덟 줄로 읽혔고, 그 설명은 들어가면 쪽 머리에 다시 있다. 띠가
+ * 하는 일은 **지금 어디인지와 갈 수 있는 곳**까지다.
+ *
+ * `준비 중` 을 묶음 이름으로 쓰던 것도 걷었다. 그 묶음에 줄이 하나뿐인데
+ * 이름이 묶음 자리를 차지하면, 아직 없는 것이 메뉴에서 가장 크게 읽힌다.
+ * Track 한 줄만 `준비 중` 을 달고 `기타` 로 들어간다.
+ *
+ * **계정이 이 띠 안으로 들어왔다.** 전에는 `/my` 가 자기 껍데기를 따로
+ * 들고 있어서 계정에 들른 사람이 다른 제품으로 넘어간 것처럼 보였다.
  */
 export const CM_GROUPS: CmNavGroup[] = [
   {
     title: "지금",
     items: [
-      { href: "/me", label: "홈", tabLabel: "홈",
-        hint: "지금 상태와 다음 한 걸음", icon: "home", tab: true },
-      { href: "/cores", label: "검사", tabLabel: "검사",
-        hint: "전공 고르기 · 이어하기", icon: "clipboard", tab: true },
+      { href: "/me", label: "홈", tabLabel: "홈", icon: "home", tab: true },
+      { href: "/cores", label: "검사", tabLabel: "검사", icon: "clipboard", tab: true },
     ],
   },
   {
-    title: "내 기록",
+    title: "내 커리어",
     items: [
       /**
        * **결과 기록을 손전화 띠에 세운다.**
@@ -63,40 +69,28 @@ export const CM_GROUPS: CmNavGroup[] = [
        * 카드가 요약을 들고 있어서 한 번 더 눌러 들어가는 자리이고,
        * 결과 기록은 홈에 요약이 없다.
        */
-      { href: "/me/results", label: "결과 기록", tabLabel: "결과",
-        hint: "검사 당시 결과지와 PDF", icon: "report", tab: true },
-      { href: "/me/experience", label: "내 경험", tabLabel: "경험",
-        hint: "새 경험 추가 · 반영", icon: "layers", tab: true },
-      { href: "/me/state", label: "지금 상태",
-        hint: "설명할 수 있는 경험과 보완할 부분", icon: "ladder" },
-      { href: "/me/next", label: "다음 할 일",
-        hint: "할 수 있는 때로 묶어서", icon: "spark" },
+      { href: "/me/results", label: "결과", tabLabel: "결과", icon: "report", tab: true },
+      { href: "/me/experience", label: "경험", tabLabel: "경험", icon: "layers", tab: true },
+      { href: "/me/state", label: "지금 상태", icon: "ladder" },
+      { href: "/me/next", label: "다음 할 일", icon: "spark" },
     ],
   },
   {
-    title: "넓게 보기",
+    title: "탐색",
     items: [
-      { href: "/me/explore", label: "산업과 직무",
-        hint: "관심 산업과 직무 둘러보기", icon: "compass" },
-      { href: "/me/region", label: "지역과 기관",
-        hint: "일하고 싶은 권역과 기관 유형", icon: "globe" },
-      { href: "/me/apply", label: "지원한 곳",
-        hint: "직접 지원한 곳과 그 결과", icon: "send" },
+      { href: "/me/explore", label: "산업과 직무", icon: "compass" },
+      { href: "/me/region", label: "지역과 기관", icon: "globe" },
+      { href: "/me/apply", label: "지원한 곳", icon: "send" },
     ],
   },
   {
-    title: "준비 중",
+    title: "기타",
     items: [
-      { href: "/me/track", label: "Track",
-        hint: "준비 중입니다", icon: "globe" },
+      { href: "/my", label: "계정", icon: "user" },
+      { href: "/me/track", label: "Track", hint: "준비 중", icon: "globe" },
     ],
   },
 ];
-
-/** 계정은 묶음 밖이고 띠의 맨 아래다. Workspace 와 섞지 않는다 */
-export const CM_ACCOUNT: CmNavItem = {
-  href: "/my", label: "계정", hint: "로그인 · 주문 · 파기", icon: "user",
-};
 
 export const CM_NAV: CmNavItem[] = CM_GROUPS.flatMap((g) => g.items);
 export const CM_TABS: CmNavItem[] = CM_NAV.filter((x) => x.tab);
@@ -132,8 +126,7 @@ export const ALIAS_OK: { from: string; to: string; ok: boolean }[] =
 /** 쪽이 넘기는 `active` 가 메뉴나 별칭에 있는 주소인가 */
 export function navKnown(active: string): boolean {
   const a = SAME[active] ?? active;
-  return CM_NAV.some((n) => n.href === a || a.startsWith(`${n.href}/`))
-    || a === CM_ACCOUNT.href || a.startsWith(`${CM_ACCOUNT.href}/`);
+  return CM_NAV.some((n) => n.href === a || a.startsWith(`${n.href}/`));
 }
 
 export function navOn(href: string, active: string): boolean {

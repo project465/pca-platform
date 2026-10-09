@@ -6,9 +6,7 @@ import { resumePathFor } from "@/lib/engine-entry";
 import { currentState } from "@/lib/me-v3/platform";
 import { BRAND, toLang2, txer } from "@/lib/surface-text";
 import { ROLE_LABEL } from "@/lib/roles";
-import { Shell, PageHead, Section } from "@/components/sf/shell";
-import { NAV_INDIVIDUAL } from "@/components/sf/nav";
-import { Card, Defs } from "@/components/sf/parts";
+import { CmShell, CmHead } from "@/app/me/shell";
 import LangSelect from "@/components/sf/lang-select";
 import LoginMethods from "./login-methods";
 import { isProvider, PROVIDER_LABEL } from "@/lib/auth-accounts";
@@ -16,21 +14,20 @@ import { isProvider, PROVIDER_LABEL } from "@/lib/auth-accounts";
 export const metadata = { title: `계정 · ${BRAND.root}` };
 
 /**
- * 계정 영역의 홈.
+ * 계정.
  *
  * **전에는 여기가 개인의 첫 화면이었다.** 그런데 이 쪽이 읽는 표가
  * 옛 검사 쪽(`attempts` · `report_snapshots`)이라, 기계공학 V3 를 끝낸
  * 사람이 로그인하면 `아직 응시한 검사가 없습니다` 를 읽고 주된 단추가
- * 옛 검사로 보냈다. 커리어 기록이 쌓이는 자리는 내 CareerMatri 이고,
- * 로그인은 이제 그쪽으로 떨어진다(`roles.ts`).
+ * 옛 검사로 보냈다. 커리어 기록이 쌓이는 자리는 작업공간이고, 로그인은
+ * 이제 그쪽으로 떨어진다(`roles.ts`).
  *
- * **그래서 이 쪽에서 검사를 시작하지 않는다.** 계정 영역이 하는 일은
- * 셋이다: 로그인한 계정을 보여 주는 것 · 주문과 결제로 가는 길 ·
- * 그리고 옛 검사 기록을 찾을 수 있게 두는 것.
+ * **그래서 이 쪽에서 검사를 시작하지 않는다.** 계정이 하는 일은 넷이다:
+ * 로그인한 계정을 보여 주는 것 · 들어오는 길을 적는 것 · 주문과 결제로
+ * 가는 길 · 옛 검사 기록을 찾을 수 있게 두는 것.
  *
- * **옛 기록을 지우지 않는다.** 전에 응시한 사람의 결과가 그 표에 있고,
- * 주소가 적힌 메일도 나가 있다. 다만 지금 검사의 결과가 어디 있는지를
- * 맨 위에 적는다.
+ * **껍데기는 작업공간과 같은 한 벌이다**(`CmShell`). 계정이 자기 띠를
+ * 따로 들고 있으면 들른 사람이 다른 제품으로 넘어간 것처럼 보인다.
  */
 export default async function AccountHome({
   searchParams,
@@ -48,98 +45,100 @@ export default async function AccountHome({
   const [v3, v2] = await Promise.all([currentState(user.id), v2State(user.id)]);
 
   return (
-    <Shell
-      surface="individual"
-      lang={L}
-      nav={NAV_INDIVIDUAL}
-      active="/my"
-      who={{ name: user.name, role: ROLE_LABEL[user.role] ?? "", href: "/my/account" }}
-      topTitle={T("acHome")}
-      topRight={<LangSelect current={L} />}
-    >
-      <PageHead
-        eyebrow={T("acHome")}
-        title={T("acTitle")}
-        sub={T("acLead")}
-        actions={<Link href="/me" className="sf-btn accent">{T("acBack")}</Link>}
-      />
+    <CmShell active="/my" title="계정">
+      <CmHead title="계정" lead={T("acLead")} />
 
-      <div className="sf-grid sf-g-2-1">
-        <Card title={T("acWho")}>
-          <Defs
-            rows={[
-              { k: T("acWho"), v: user.name },
-              { k: T("navAccount"), v: ROLE_LABEL[user.role] ?? "" },
-            ]}
-          />
-          <Link href="/my/account" className="sf-btn ghost sm" style={{ marginTop: 14 }}>
-            {T("acSettings")}
-          </Link>
-        </Card>
-
-        <Card title={T("acOrders")}>
-          <p className="sf-sub" style={{ fontSize: 13.5, margin: 0 }}>{T("acOrdersBody")}</p>
-          <Link href="/support" className="sf-btn ghost sm" style={{ marginTop: 14 }}>
-            {T("navSupport")}
-          </Link>
-        </Card>
-      </div>
-
-      {/* ── 로그인 방법 ──
-          **들어오는 길이 지금 무엇인지 적는다.** 적어 두지 않으면 구글로
-          가입하신 분이 비밀번호 찾기를 누르고, 메일이 오지 않는 까닭을
-          모른 채 기다린다 */}
-      <div className="sf-grid sf-g-2-1" style={{ marginTop: 18 }}>
-        <LoginMethods
-          userId={user.id}
-          notice={
-            isProvider(justLinked ?? "")
-              ? `${PROVIDER_LABEL[justLinked as "google" | "apple"]} 를 연결했습니다.`
-              : linkErr === "taken"
-                ? "그 계정은 이미 다른 CareerMatri 계정에 연결돼 있습니다."
-                : linkErr === "off"
-                  ? "그 로그인 방법은 지금 켜져 있지 않습니다."
-                  : undefined
-          }
-        />
-      </div>
-
-      {/* ── 옛 검사 기록 ── 지금 검사의 결과가 어디 있는지를 먼저 적는다 ── */}
-      <Section title={T("acOld")}>
-        <Card>
-          <p className="sf-sub" style={{ fontSize: 13.5, margin: "0 0 14px" }}>
-            {T("acOldBody")}
-          </p>
-          <div className="sf-chips">
-            {v3.model ? (
-              <Link href="/me/results" className="sf-btn accent sm">{T("acOldResults")}</Link>
-            ) : null}
-            <Link href="/my/assessments" className="sf-btn ghost sm">{T("navAssessments")}</Link>
-            <Link href="/my/results" className="sf-btn ghost sm">{T("navResults")}</Link>
-            <Link href="/my/evidence" className="sf-btn ghost sm">{T("navEvidence")}</Link>
+      <div className="cm-grid">
+        <section className="cm-card">
+          <h2>로그인한 계정</h2>
+          <dl className="cm-dl">
+            <div>
+              <dt>이름</dt>
+              <dd>{user.name}</dd>
+            </div>
+            <div>
+              <dt>구분</dt>
+              <dd>{ROLE_LABEL[user.role] ?? ""}</dd>
+            </div>
+          </dl>
+          <div className="cm-acts">
+            <Link href="/my/account" className="cm-btn">계정 설정과 탈퇴</Link>
           </div>
-        </Card>
-      </Section>
+        </section>
 
-      {/*
-        전에 산 검사를 아직 끝내지 않은 분의 길. **줄을 지우지 않는다**:
-        결제를 하고 중간에 멈춘 사람이 여기 말고 들어갈 자리가 없다.
-      */}
-      {v2.kind === "purchased" || v2.kind === "progress" ? (
-        <Section>
-          <Card title={T("myInProgress")}>
-            <Defs rows={[{ k: T("okTier"), v: v2.tier }]} />
-            <Link
-              href={v2.kind === "progress"
-                ? `/assessment/${v2.attemptId}`
-                : (resumePathFor("ME_V2") ?? "/me")}
-              className="sf-btn ghost sm" style={{ marginTop: 14 }}
-            >
-              {v2.kind === "progress" ? T("asResume") : T("asStart")}
-            </Link>
-          </Card>
-        </Section>
-      ) : null}
-    </Shell>
+        <section className="cm-card">
+          <h2>주문과 결제</h2>
+          <p>{T("acOrdersBody")}</p>
+          <div className="cm-acts">
+            <Link href="/support" className="cm-btn">문의하기</Link>
+          </div>
+        </section>
+
+        {/* ── 들어오는 길 ──
+            **지금 무엇으로 들어오는지 적는다.** 적어 두지 않으면 구글로
+            가입하신 분이 비밀번호 찾기를 누르고, 메일이 오지 않는 까닭을
+            모른 채 기다린다 */}
+        <LoginMethods
+            userId={user.id}
+            notice={
+              isProvider(justLinked ?? "")
+                ? `${PROVIDER_LABEL[justLinked as "google" | "apple"]} 를 연결했습니다.`
+                : linkErr === "taken"
+                  ? "그 계정은 이미 다른 CareerMatri 계정에 연결돼 있습니다."
+                  : linkErr === "off"
+                    ? "그 로그인 방법은 지금 켜져 있지 않습니다."
+                    : undefined
+            }
+          />
+
+        <section className="cm-card">
+          <h2>표시 언어</h2>
+          <p>고르면 바로 바뀌고 다음에 들어올 때도 그대로입니다.</p>
+          <div className="cm-acts">
+            <LangSelect current={L} />
+          </div>
+        </section>
+
+        {/* ── 옛 검사 기록 ── 지금 검사의 결과가 어디 있는지를 먼저 적는다 ── */}
+        <section className="cm-card">
+          <h2>{T("acOld")}</h2>
+          <p>{T("acOldBody")}</p>
+          <div className="cm-acts">
+            {v3.model ? (
+              <Link href="/me/results" className="cm-btn is-primary">{T("acOldResults")}</Link>
+            ) : null}
+            <Link href="/my/assessments" className="cm-btn">{T("navAssessments")}</Link>
+            <Link href="/my/results" className="cm-btn">{T("navResults")}</Link>
+            <Link href="/my/evidence" className="cm-btn">{T("navEvidence")}</Link>
+          </div>
+        </section>
+
+        {/*
+          전에 산 검사를 아직 끝내지 않은 분의 길. **줄을 지우지 않는다**:
+          결제를 하고 중간에 멈춘 사람이 여기 말고 들어갈 자리가 없다.
+        */}
+        {v2.kind === "purchased" || v2.kind === "progress" ? (
+          <section className="cm-card">
+            <h2>{T("myInProgress")}</h2>
+            <dl className="cm-dl">
+              <div>
+                <dt>{T("okTier")}</dt>
+                <dd>{v2.tier}</dd>
+              </div>
+            </dl>
+            <div className="cm-acts">
+              <Link
+                href={v2.kind === "progress"
+                  ? `/assessment/${v2.attemptId}`
+                  : (resumePathFor("ME_V2") ?? "/me")}
+                className="cm-btn"
+              >
+                {v2.kind === "progress" ? T("asResume") : T("asStart")}
+              </Link>
+            </div>
+          </section>
+        ) : null}
+      </div>
+    </CmShell>
   );
 }

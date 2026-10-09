@@ -38,7 +38,6 @@ export default async function Home() {
   /* **센 것이 화면을 늦추거나 깨지 않는다.** `mark()` 는 던지지 않는다 */
   await mark("workspace_opened", user.id, { stage: st.stage });
 
-  const name = user.name?.trim() || "반갑습니다";
   const open = actions.filter((a) => a.state !== "done");
   const first = open[0] ?? null;
   /**
@@ -67,7 +66,10 @@ export default async function Home() {
     <CmShell active="/me" title="홈">
       <CmHead
         kicker={`기계공학${st.result_at ? ` · 마지막 분석 ${st.result_at}` : ""}`}
-        title={`${name}님의 CareerMatri`}
+        /* **이름을 제목으로 쓰지 않는다.** 로그인한 사람은 자기 이름을
+           이미 알고, 쪽 제목 자리는 `이 쪽이 무엇인가` 를 말하는 자리다.
+           이름이 제목이면 쪽마다 같은 글자가 가장 크게 선다 */
+        title={HEAD[st.stage]}
         lead={LEAD[st.stage]}
         actions={
           <>
@@ -125,249 +127,239 @@ export default async function Home() {
         </div>
       ) : null}
 
-      {/* ── C~F. 결과가 있는 사람 ── */}
+      {/* ── C~F. 결과가 있는 사람 ──
+          **앞의 셋이 지금 상태와 다음 한 가지와 최근 변화다.** 나머지는
+          그 아래 묶음으로 내린다. 그리고 **빈 카드를 세우지 않는다**:
+          전에는 자료가 없으면 점선 테두리에 `아직 없습니다` 를 적은 칸이
+          넷까지 섰고, 그러면 읽는 사람은 자기 결과가 덜 만들어진 줄 안다.
+          자료가 없는 묶음은 아예 그리지 않고, 할 수 있는 일은 쪽 머리의
+          단추와 왼쪽 띠가 이미 들고 있다. */}
       {st.model ? (
-        <div className="cm-grid">
-          {/* 1. 지금 확인된 것 */}
-          <div className="cm-card">
-            <h2>지금 확인된 것</h2>
-            {/* **묶음마다 셋이 아니라 통틀어 셋이다.** 묶음 둘이 각각
-                셋을 세우면 홈에 여섯 줄이 서고, 그러면 `지금 상태` 쪽이
-                할 일이 없어진다 */}
-            {READY_ZONES.map((z, zi) => {
-              const used = READY_ZONES.slice(0, zi).reduce((n, pz) =>
-                n + Object.values(st.zoneOf).filter((v) => v === pz).length, 0);
-              const room = Math.max(0, HOME_ROWS - used);
-              const list = Object.entries(st.zoneOf)
-                .filter(([, v]) => v === z).map(([d]) => d).slice(0, room);
-              if (!list.length) return null;
-              return (
-                <div className="cm-rows" key={z}>
-                  {list.map((d) => (
-                    <p className="cm-row" key={d}>
-                      <b>{domainName(d)}</b>
-                      <span>{ZONE_SAY[z]}</span>
-                    </p>
-                  ))}
-                </div>
-              );
-            })}
-            {Object.values(st.zoneOf).every((z) => !READY_ZONES.includes(z)) ? (
-              <p>
-                아직 근거가 선 영역이 잡히지 않았습니다. 관심이 높은 영역에서
-                짧게 한 번 해 보는 것이 다음 걸음입니다.
-              </p>
-            ) : null}
-            <div className="cm-grow" />
-            <div className="cm-acts">
-              <Link className="cm-btn" href="/me/state">
-                {Object.keys(st.zoneOf).length > HOME_ROWS
-                  ? `열두 영역 모두 보기` : "지금 상태 보기"}
-              </Link>
-            </div>
-          </div>
-
-          {/* 2. 지금 가장 먼저 할 것 — 하나만 */}
-          <div className="cm-card">
-            <h2>지금 가장 먼저 할 것</h2>
-            {first ? (
-              <>
-                <p>{first.body}</p>
-                <p style={{ fontSize: 13, color: "var(--sf-ink-3)" }}>
-                  {HORIZON_KO[lane(first.horizon)]}
-                  {open.length > 1 ? ` · 그 밖에 ${open.length - 1}가지` : ""}
-                </p>
-              </>
-            ) : (
-              <p>
-                결과에서 할 일을 가져오면 여기에 섭니다. 직접 적을 수도
-                있습니다.
-              </p>
-            )}
-            <div className="cm-grow" />
-            <div className="cm-acts">
-              <Link className="cm-btn" href="/me/next">
-                {first ? "이 행동 자세히 보기" : "할 일 가져오기"}
-              </Link>
-            </div>
-          </div>
-
-          {/* 3. 먼저 채워볼 부분 — 전부가 아니라 앞의 셋.
-                **`급한 셋` 이라고 적지 않는다**: 안쪽 기획에서 쓰던 말이고,
-                게다가 비었을 때의 문장(`비어 있는 자리가 잡히지 않았습니다`)
-                과 제목이 서로 다른 말을 하고 있었다. 자료가 없으면 카드를
-                조용히 눕힌다 */}
-          <div className={`cm-card${gaps.length ? "" : " is-empty"}`}>
-            <h2>먼저 채워볼 부분{moreGaps ? <em>그 밖에 {moreGaps}가지</em> : null}</h2>
-            {gaps.length ? (
-              <div className="cm-rows">
-                {gaps.map((g) => (
-                  <p className="cm-row" key={g.id}>
-                    <b>{gapKo(g, domainName(g.domain)).title}</b>
-                  </p>
-                ))}
-              </div>
-            ) : (
-              <p>
-                지금은 먼저 채울 부분이 없습니다. 가진 근거를 지원서에서
-                설명할 문장으로 만드는 것이 남은 일입니다.
-              </p>
-            )}
-            <div className="cm-grow" />
-            <div className="cm-acts">
-              <Link className="cm-btn" href="/me/state#gaps">
-                {gaps.length
-                  ? (moreGaps ? "비어 있는 자리 모두 보기" : "왜 필요한지 보기")
-                  : "지금 상태 보기"}
-              </Link>
-            </div>
-          </div>
-
-          {/* 4. 최근 경험 */}
-          <div className={`cm-card${exps.length ? "" : " is-empty"}`}>
-            <h2>최근 경험{exps.length ? <em>{exps.length}개</em> : null}</h2>
-            {exps.length ? (
-              <div className="cm-rows">
-                {exps.slice(0, 3).map((e) => (
-                  <p className="cm-row" key={e.id}>
-                    <b>{e.title}</b>
-                    <span className="cm-when">{e.created_at.slice(0, 10)}</span>
-                  </p>
-                ))}
-              </div>
-            ) : (
-              <p>
-                아직 추가한 경험이 없습니다. 새로 한 프로젝트나 연구나 인턴을
-                적으면 지금 상태를 다시 볼 수 있습니다.
-              </p>
-            )}
-            <div className="cm-grow" />
-            <div className="cm-acts">
-              {/* **홈의 primary 는 하나다.** 위쪽 상태 카드가 이미 그
-                  한 걸음을 들고 있어서, 여기까지 파랑으로 두면 어디를
-                  먼저 누를지가 화면에서 안 읽힌다 */}
-              <Link className="cm-btn" href="/me/experience/new">
-                {exps.length ? "경험 추가하기" : "첫 경험 추가"}
-              </Link>
-              {exps.length ? (
-                <Link className="cm-btn" href="/me/experience">모두 보기</Link>
-              ) : null}
-            </div>
-          </div>
-
-          {/* 5. 최근 결과 — 굳은 기록 */}
-          <div className="cm-card">
-            <h2>최근 결과 <em>검사 당시 기록</em></h2>
-            <div className="cm-rows">
-              <p className="cm-row">
-                <b>{st.result_at ?? ""}</b>
-                <span>{st.model.tier} · 기계공학</span>
-              </p>
-            </div>
-            <p style={{ fontSize: 13, color: "var(--sf-ink-3)" }}>
-              응시하신 그날의 문항과 기준으로 굳어 있습니다. 경험을 더해도
-              이 줄은 달라지지 않습니다.
-            </p>
-            <div className="cm-grow" />
-            <div className="cm-acts">
-              <Link className="cm-btn" href={`/v3/${st.model.attempt_id}/result`}>
-                검사 당시 결과 보기
-              </Link>
-              {history.length > 2 ? (
-                <Link className="cm-btn" href="/me/results">결과 기록</Link>
-              ) : null}
-            </div>
-          </div>
-
-          {/* 6. 변화 — 반영한 적이 있을 때만. 그래프를 그리지 않는다 */}
-          {st.stage === "RECOMPUTED" ? (
-            <div className={`cm-card${st.raised.length || st.zoneMoved.length
-              ? "" : " is-empty"}`}>
-              <h2>최근 변화 <em>{st.recomputed_at} 반영</em></h2>
-              {!st.raised.length && !st.zoneMoved.length ? (
-                <p>
-                  반영했지만 판단이 올라간 자리는 아직 없습니다. 같은 영역의
-                  근거가 둘이 되면 그때 올라갑니다.
-                </p>
-              ) : (
-              <div className="cm-rows">
-                <p className="cm-row">
-                  <b>올라간 판단</b>
-                  <span>
-                    {st.raised.length
-                      ? st.raised.slice(0, 2)
-                        .map((r) => `${domainName(r.domain)} · ${AXIS_KO[r.axis]}`)
-                        .join(" / ")
-                      : "아직 없습니다"}
-                    {st.raised.length > 2 ? ` 외 ${st.raised.length - 2}` : ""}
-                  </span>
-                </p>
-                <p className="cm-row">
-                  <b>묶음이 달라진 영역</b>
-                  <span>
-                    {st.zoneMoved.length
-                      ? st.zoneMoved.map((z) => domainName(z.domain)).join(" · ")
-                      : "그대로입니다"}
-                  </span>
-                </p>
-              </div>
-              )}
-              <div className="cm-grow" />
-              <div className="cm-acts">
-                <Link className="cm-btn" href="/me/recompute">반영한 내용 보기</Link>
-              </div>
-            </div>
-          ) : st.pending > 0 ? (
+        <>
+          <div className="cm-grid">
+            {/* 1. 지금 상태 */}
             <div className="cm-card">
-              <h2>반영할 거리가 쌓였습니다 <em>{st.pending}건</em></h2>
-              <p>
-                적어 두신 경험이 어느 판단으로 가는지 먼저 보고 반영합니다.
-                반영해도 검사 당시 결과는 그대로 남습니다.
-              </p>
+              <h2>지금 상태</h2>
+              {/* **묶음마다 셋이 아니라 통틀어 셋이다.** 묶음 둘이 각각
+                  셋을 세우면 홈에 여섯 줄이 서고, 그러면 `지금 상태` 쪽이
+                  할 일이 없어진다 */}
+              {READY_ZONES.map((z, zi) => {
+                const used = READY_ZONES.slice(0, zi).reduce((n, pz) =>
+                  n + Object.values(st.zoneOf).filter((v) => v === pz).length, 0);
+                const room = Math.max(0, HOME_ROWS - used);
+                const list = Object.entries(st.zoneOf)
+                  .filter(([, v]) => v === z).map(([d]) => d).slice(0, room);
+                if (!list.length) return null;
+                return (
+                  <div className="cm-rows" key={z}>
+                    {list.map((d) => (
+                      <p className="cm-row" key={d}>
+                        <b>{domainName(d)}</b>
+                        <span>{ZONE_SAY[z]}</span>
+                      </p>
+                    ))}
+                  </div>
+                );
+              })}
+              {Object.values(st.zoneOf).every((z) => !READY_ZONES.includes(z)) ? (
+                <p>
+                  아직 근거가 선 영역이 잡히지 않았습니다. 관심이 높은 영역에서
+                  짧게 한 번 해 보는 것이 다음 걸음입니다.
+                </p>
+              ) : null}
               <div className="cm-grow" />
               <div className="cm-acts">
-                <Link className="cm-btn is-primary" href="/me/recompute">
-                  새 경험 반영하기
+                <Link className="cm-btn" href="/me/state">
+                  {Object.keys(st.zoneOf).length > HOME_ROWS
+                    ? "열두 영역 모두 보기" : "지금 상태 보기"}
                 </Link>
               </div>
             </div>
-          ) : null}
 
-          {/* 보고 있는 자리. 고른 것만 적는다 */}
-          {(profile?.target_industry?.length ?? 0) > 0
-            || (profile?.target_role?.length ?? 0) > 0 || profile?.home_region ? (
+            {/* 2. 다음 한 가지 — 하나만 */}
             <div className="cm-card">
-              <h2>관심 산업과 직무</h2>
-              <div className="cm-rows">
-                {profile?.target_industry?.length ? (
-                  <p className="cm-row"><b>산업</b>
-                    <span>{profile.target_industry
-                      .map((c) => indName.get(c) ?? c).join(" · ")}</span></p>
-                ) : null}
-                {profile?.target_role?.length ? (
-                  <p className="cm-row"><b>직무</b>
-                    <span>{profile.target_role.map((c) => roleName(c)).join(" · ")}</span></p>
-                ) : null}
-                {profile?.home_region ? (
-                  <p className="cm-row"><b>지역</b>
-                    <span>
-                      {regionName(profile.home_region)}
-                      {profile.move_range ? ` · ${moveLabel(profile.move_range)}` : ""}
-                    </span></p>
-                ) : null}
-              </div>
+              <h2>다음 한 가지</h2>
+              {first ? (
+                <>
+                  <p>{first.body}</p>
+                  <p className="cm-none">
+                    {HORIZON_KO[lane(first.horizon)]}
+                    {open.length > 1 ? ` · 그 밖에 ${open.length - 1}가지` : ""}
+                  </p>
+                </>
+              ) : (
+                <p>
+                  결과에서 할 일을 가져오면 여기에 섭니다. 직접 적을 수도
+                  있습니다.
+                </p>
+              )}
               <div className="cm-grow" />
               <div className="cm-acts">
-                <Link className="cm-btn" href="/me/explore">산업과 직무</Link>
-                <Link className="cm-btn" href="/me/region">지역과 기관</Link>
+                <Link className="cm-btn" href="/me/next">
+                  {first ? "이 행동 자세히 보기" : "할 일 가져오기"}
+                </Link>
               </div>
             </div>
-          ) : null}
-        </div>
+
+            {/* 3. 최근 변화 — **반영한 적이 있을 때만 선다.** 그래프를
+                그리지 않는다. 반영했는데 올라간 자리가 없는 것도 자료라서
+                그때는 그 사실을 적는다 */}
+            {st.stage === "RECOMPUTED" ? (
+              <div className="cm-card">
+                <h2>최근 변화 <em>{st.recomputed_at} 반영</em></h2>
+                {!st.raised.length && !st.zoneMoved.length ? (
+                  <p>
+                    반영했지만 판단이 올라간 자리는 아직 없습니다. 같은 영역의
+                    근거가 둘이 되면 그때 올라갑니다.
+                  </p>
+                ) : (
+                  <div className="cm-rows">
+                    <p className="cm-row">
+                      <b>올라간 판단</b>
+                      <span>
+                        {st.raised.length
+                          ? st.raised.slice(0, 2)
+                            .map((r) => `${domainName(r.domain)} · ${AXIS_KO[r.axis]}`)
+                            .join(" / ")
+                          : "아직 없습니다"}
+                        {st.raised.length > 2 ? ` 외 ${st.raised.length - 2}` : ""}
+                      </span>
+                    </p>
+                    <p className="cm-row">
+                      <b>묶음이 달라진 영역</b>
+                      <span>
+                        {st.zoneMoved.length
+                          ? st.zoneMoved.map((z) => domainName(z.domain)).join(" · ")
+                          : "그대로입니다"}
+                      </span>
+                    </p>
+                  </div>
+                )}
+                <div className="cm-grow" />
+                <div className="cm-acts">
+                  <Link className="cm-btn" href="/me/recompute">반영한 내용 보기</Link>
+                </div>
+              </div>
+            ) : st.pending > 0 ? (
+              <div className="cm-card">
+                <h2>반영할 거리가 쌓였습니다 <em>{st.pending}건</em></h2>
+                <p>
+                  적어 두신 경험이 어느 판단으로 가는지 먼저 보고 반영합니다.
+                  반영해도 검사 당시 결과는 그대로 남습니다.
+                </p>
+                <div className="cm-grow" />
+                <div className="cm-acts">
+                  <Link className="cm-btn is-primary" href="/me/recompute">
+                    새 경험 반영하기
+                  </Link>
+                </div>
+              </div>
+            ) : null}
+          </div>
+
+          {/* ── 그 아래는 2차다. 자료가 있는 것만 선다 ── */}
+          <h2 className="cm-sect">기록</h2>
+          <div className="cm-grid">
+            {/* 먼저 채워볼 부분 — **단추를 달지 않는다.** 위의 `지금 상태`
+                단추가 같은 쪽으로 가고, 홈에 같은 곳으로 가는 단추를 둘
+                두면 어디를 누를지가 안 읽힌다 */}
+            {gaps.length ? (
+              <div className="cm-card">
+                <h2>먼저 채워볼 부분{moreGaps ? <em>그 밖에 {moreGaps}가지</em> : null}</h2>
+                <div className="cm-rows">
+                  {gaps.map((g) => (
+                    <p className="cm-row" key={g.id}>
+                      <b>{gapKo(g, domainName(g.domain)).title}</b>
+                    </p>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
+            {/* 최근 경험 — 추가하는 단추는 쪽 머리에 이미 있다 */}
+            {exps.length ? (
+              <div className="cm-card">
+                <h2>최근 경험<em>{exps.length}개</em></h2>
+                <div className="cm-rows">
+                  {exps.slice(0, 3).map((e) => (
+                    <p className="cm-row" key={e.id}>
+                      <b>{e.title}</b>
+                      <span className="cm-when">{e.created_at.slice(0, 10)}</span>
+                    </p>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
+            {/* 검사 당시 결과 — 굳은 기록 */}
+            <div className="cm-card">
+              <h2>검사 당시 결과 <em>고정됨</em></h2>
+              <div className="cm-rows">
+                <p className="cm-row">
+                  <b>{st.result_at ?? ""}</b>
+                  <span>{st.model.tier} · 기계공학</span>
+                </p>
+              </div>
+              <p className="cm-none">
+                응시하신 그날의 문항과 기준으로 굳어 있습니다. 경험을 더해도
+                이 줄은 달라지지 않습니다.
+              </p>
+              <div className="cm-grow" />
+              <div className="cm-acts">
+                <Link className="cm-btn" href={`/v3/${st.model.attempt_id}/result`}>
+                  결과 보기
+                </Link>
+              </div>
+            </div>
+
+            {/* 보고 있는 자리. **고른 것만 적고 단추를 달지 않는다**:
+                바꾸는 자리는 왼쪽 띠의 `산업과 직무` 와 `지역과 기관` 이다 */}
+            {(profile?.target_industry?.length ?? 0) > 0
+              || (profile?.target_role?.length ?? 0) > 0 || profile?.home_region ? (
+              <div className="cm-card">
+                <h2>관심 산업과 직무</h2>
+                <div className="cm-rows">
+                  {profile?.target_industry?.length ? (
+                    <p className="cm-row"><b>산업</b>
+                      <span>{profile.target_industry
+                        .map((c) => indName.get(c) ?? c).join(" · ")}</span></p>
+                  ) : null}
+                  {profile?.target_role?.length ? (
+                    <p className="cm-row"><b>직무</b>
+                      <span>{profile.target_role.map((c) => roleName(c)).join(" · ")}</span></p>
+                  ) : null}
+                  {profile?.home_region ? (
+                    <p className="cm-row"><b>지역</b>
+                      <span>
+                        {regionName(profile.home_region)}
+                        {profile.move_range ? ` · ${moveLabel(profile.move_range)}` : ""}
+                      </span></p>
+                  ) : null}
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </>
       ) : null}
     </CmShell>
   );
 }
+
+/**
+ * 쪽 제목. **이름을 넣지 않는다**(§5). 상태마다 이 쪽이 무엇인지가
+ * 달라서 제목도 갈린다: 검사 전에는 받을 것의 이름이고, 끝낸 뒤에는
+ * 지금 들고 있는 것의 이름이다.
+ */
+const HEAD: Record<string, string> = {
+  NO_ASSESSMENT: "기계공학 진로 검사",
+  IN_PROGRESS: "풀던 검사가 있습니다",
+  /* 홈의 제목을 `지금 상태` 로 두지 않는다. 그 이름은 띠에 제 줄이 있는
+     다른 쪽(`/me/state`)의 이름이고, 홈의 첫 카드가 그쪽의 요약이다 */
+  BASIC_DONE: "내 커리어",
+  STANDARD_DONE: "내 커리어",
+  PRO_DONE: "내 커리어",
+  RECOMPUTED: "내 커리어",
+};
 
 const LEAD: Record<string, string> = {
   NO_ASSESSMENT: "검사를 한 번 끝내면 이 자리에 확인된 근거와 비어 있는 자리와"

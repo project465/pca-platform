@@ -2,18 +2,14 @@ import Link from "next/link";
 import { requireRole } from "@/lib/session";
 import { resolveLang } from "@/lib/locale-server";
 import { query } from "@/lib/db";
-import { ROLE_LABEL } from "@/lib/roles";
 import { BRAND, toLang2, txer } from "@/lib/surface-text";
 import { reportVersionLabel } from "@/lib/labels";
-import { Shell, PageHead } from "@/components/sf/shell";
-import { NAV_INDIVIDUAL } from "@/components/sf/nav";
-import { Card, Empty, Pill } from "@/components/sf/parts";
-import LangSelect from "@/components/sf/lang-select";
+import { CmShell, CmHead } from "@/app/me/shell";
 import OlderNote from "@/components/sf/older-note";
 
-export const metadata = { title: `결과 · ${BRAND.root}` };
+export const metadata = { title: `옛 결과 · ${BRAND.root}` };
 
-/** 결과지 목록. **등급을 숨기지 않는다**: 어느 판본을 받았는지 줄마다 적는다. */
+/** 옛 검사의 결과지 목록. **등급을 숨기지 않는다**: 어느 판본을 받았는지 줄마다 적는다. */
 export default async function MyResults({
   searchParams,
 }: { searchParams: Promise<{ lang?: string }> }) {
@@ -41,50 +37,44 @@ export default async function MyResults({
   ).catch(() => []);
 
   return (
-    <Shell
-      surface="individual" lang={L} nav={NAV_INDIVIDUAL} active="/my/results"
-      who={{ name: user.name, role: ROLE_LABEL[user.role] ?? "", href: "/my/account" }}
-      topTitle={T("navResults")} topRight={<LangSelect current={L} />}
-    >
-      <PageHead title={T("acOld")}
-        sub="그보다 전에 보신 검사의 결과지입니다. 등급과 판본이 함께 적힙니다." />
+    <CmShell active="/my" title={T("acOld")}>
+      <CmHead kicker="계정" title={T("acOld")}
+        lead="그보다 전에 보신 검사의 결과지입니다. 등급과 판본이 함께 적힙니다." />
       <OlderNote lang={L} />
 
       {rows.length ? (
-        <Card pad={false}>
-          <div className="sf-tw">
-            <table className="sf-table">
-              <thead><tr><th>결과지</th><th>등급</th><th>채점</th><th>결과 생성</th><th>판본</th><th /></tr></thead>
-              <tbody>
-                {rows.map((r) => (
-                  <tr key={r.id}>
-                    <td><span className="sf-strong">{BRAND.root}</span>
-                      <div className="sf-meta">{r.scored ?? ""}</div></td>
-                    <td><Pill tone="accent">{r.tier ?? "BASIC"}</Pill></td>
-                    <td>{r.scored ?? "—"}</td>
-                    <td>{r.made ?? "—"}</td>
-                    <td>{reportVersionLabel(r.version)}</td>
-                    <td style={{ textAlign: "right" }}>
-                      <Link
-                        href={r.version === "ME_V2" ? `/assessment/${r.id}/report` : `/report/${r.id}`}
-                        className="sf-btn ghost sm">
-                        {T("myOpenReport")}
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Card>
+        <div className="cm-tablewrap">
+          <table className="cm-table">
+            <thead><tr><th>검사</th><th>등급</th><th>채점</th><th>결과 생성</th><th>판본</th><th /></tr></thead>
+            <tbody>
+              {rows.map((r) => (
+                <tr key={r.id}>
+                  <td><b>{BRAND.root}</b></td>
+                  <td>{r.tier ?? "BASIC"}</td>
+                  <td>{r.scored ?? "—"}</td>
+                  <td>{r.made ?? "—"}</td>
+                  <td>{reportVersionLabel(r.version)}</td>
+                  <td style={{ textAlign: "right" }}>
+                    <Link
+                      href={r.version === "ME_V2" ? `/assessment/${r.id}/report` : `/report/${r.id}`}
+                      className="cm-btn">
+                      {T("myOpenReport")}
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : (
-        <Empty
-          icon="report"
-          title={T("acOldNone")}
-          body={T("acOldNoneBody")}
-          cta={{ href: "/cores", label: T("navWorkspace") }}
-        />
+        <section className="cm-card is-empty is-wide">
+          <h2>{T("acOldNone")}</h2>
+          <p>{T("acOldNoneBody")}</p>
+          <div className="cm-acts">
+            <Link href="/me/results" className="cm-btn is-primary">{T("acOldResults")}</Link>
+          </div>
+        </section>
       )}
-    </Shell>
+    </CmShell>
   );
 }

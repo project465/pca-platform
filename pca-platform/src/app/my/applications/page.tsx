@@ -1,11 +1,7 @@
 import { requireRole } from "@/lib/session";
 import { resolveLang } from "@/lib/locale-server";
-import { ROLE_LABEL } from "@/lib/roles";
 import { BRAND, toLang2, txer } from "@/lib/surface-text";
-import { Shell, PageHead } from "@/components/sf/shell";
-import { NAV_INDIVIDUAL } from "@/components/sf/nav";
-import { Empty } from "@/components/sf/parts";
-import LangSelect from "@/components/sf/lang-select";
+import { CmShell, CmHead } from "@/app/me/shell";
 
 export const metadata = { title: `지원 준비 · ${BRAND.root}` };
 
@@ -20,18 +16,17 @@ export const metadata = { title: `지원 준비 · ${BRAND.root}` };
 export default async function MyApplications({
   searchParams,
 }: { searchParams: Promise<{ lang?: string }> }) {
-  const user = await requireRole(["student"]);
+  await requireRole(["student"]);
   const { lang: q } = await searchParams;
   const L = toLang2(await resolveLang(q));
   const T = txer(L);
   return (
-    <Shell
-      surface="individual" lang={L} nav={NAV_INDIVIDUAL} active="/my/applications"
-      who={{ name: user.name, role: ROLE_LABEL[user.role] ?? "", href: "/my/account" }}
-      topTitle={T("navApplications")} topRight={<LangSelect current={L} />}
-    >
-      <PageHead title={T("navApplications")} sub={T("myApplicationsSoon")} />
-      <Empty icon="send" title={T("notOpenTitle")} body={T("notOpenBody")} />
-    </Shell>
+    <CmShell active="/my" title={T("navApplications")}>
+      <CmHead kicker="계정" title={T("navApplications")} lead={T("myApplicationsSoon")} />
+      <section className="cm-card is-empty is-wide">
+        <h2>{T("notOpenTitle")}</h2>
+        <p>{T("notOpenBody")}</p>
+      </section>
+    </CmShell>
   );
 }

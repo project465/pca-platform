@@ -2,24 +2,20 @@ import Link from "next/link";
 import { requireRole } from "@/lib/session";
 import { resolveLang } from "@/lib/locale-server";
 import { query } from "@/lib/db";
-import { ROLE_LABEL } from "@/lib/roles";
 import { BRAND, toLang2, txer } from "@/lib/surface-text";
 import { itemsFor } from "@/lib/me-v2/bank";
 import { isTier } from "@/lib/me-v2/attempt";
 import { resumePathFor } from "@/lib/engine-entry";
-import { Shell, PageHead } from "@/components/sf/shell";
-import { NAV_INDIVIDUAL } from "@/components/sf/nav";
-import { Card, Empty, Pill } from "@/components/sf/parts";
-import LangSelect from "@/components/sf/lang-select";
+import { CmShell, CmHead } from "@/app/me/shell";
 import OlderNote from "@/components/sf/older-note";
 
-export const metadata = { title: `검사 · ${BRAND.root}` };
+export const metadata = { title: `옛 검사 · ${BRAND.root}` };
 
-const STATUS: Record<string, { ko: string; tone: "ok" | "part" | "not" }> = {
-  scored: { ko: "채점 완료", tone: "ok" },
-  submitted: { ko: "제출됨", tone: "part" },
-  in_progress: { ko: "응시 중", tone: "part" },
-  ready: { ko: "시작 전", tone: "not" },
+const STATUS: Record<string, { ko: string }> = {
+  scored: { ko: "채점 완료" },
+  submitted: { ko: "제출됨" },
+  in_progress: { ko: "응시 중" },
+  ready: { ko: "시작 전" },
 };
 
 /** 응시 목록. **한 줄에 상태 하나**이고 지금 누를 것이 오른쪽에 있다. */
@@ -64,86 +60,76 @@ export default async function MyAssessments({
   ).catch(() => []);
 
   return (
-    <Shell
-      surface="individual" lang={L} nav={NAV_INDIVIDUAL} active="/my/assessments"
-      who={{ name: user.name, role: ROLE_LABEL[user.role] ?? "", href: "/my/account" }}
-      topTitle={T("navAssessments")} topRight={<LangSelect current={L} />}
-    >
+    <CmShell active="/my" title={T("acOld")}>
       {/* **여기서 검사를 시작하지 않는다.** `/test` 는 옛 검사를 여는
           자리이고 지금 파는 검사는 `/cores` 에서 시작한다 */}
-      <PageHead
-        title={T("acOld")}
-        sub="그보다 전에 보신 검사와 그때의 진행 상태입니다."
-      />
+      <CmHead kicker="계정" title={T("acOld")}
+        lead="그보다 전에 보신 검사와 그때의 진행 상태입니다." />
       <OlderNote lang={L} />
 
       {rows.length ? (
-        <Card pad={false}>
-          <div className="sf-tw">
-            <table className="sf-table">
-              <thead>
-                <tr>
-                  <th>검사</th><th>상태</th><th>진행</th><th>시작</th><th>제출</th><th />
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((r) => {
-                  const s = STATUS[r.status] ?? { ko: r.status, tone: "not" as const };
-                  const v2 = r.version === "ME_V2";
-                  const tier = isTier(r.tier) ? r.tier : null;
-                  /* 몇 문항짜리인지는 산 등급이 정한다(설계 원칙 10의 사슬:
-                     products.tier → entitlements.tier → attempts.tier) */
-                  const total = v2 ? (tier ? itemsFor(tier).length : 0) : r.total;
-                  /* **끝낸 응시는 다 푼 것이다.** 채점까지 끝났는데 진행이
-                     모자라 보이면 둘 중 하나가 거짓이고, 읽는 사람은 자기
-                     결과를 의심한다 */
-                  const done = r.status === "scored" || r.status === "submitted";
-                  const answered = done && total > 0 ? total : r.answered;
-                  return (
-                    <tr key={r.id}>
-                      <td>
-                        <span className="sf-strong">
-                          {v2
-                            ? `${BRAND.root}${tier ? ` ${tier}` : ""}`
-                            : r.track === "HS" ? "고교 진로 진단" : "공학 진로 진단"}
-                        </span>
-                        <div className="sf-meta">{r.started ?? ""}</div>
-                      </td>
-                      <td><Pill tone={s.tone}>{s.ko}</Pill></td>
-                      <td className="num">
-                        {total > 0 ? `${answered} / ${total}` : "—"}
-                      </td>
-                      <td>{r.started ?? "—"}</td>
-                      <td>{r.submitted ?? "—"}</td>
-                      <td style={{ textAlign: "right" }}>
-                        {done ? (
-                          <Link
-                            href={v2 ? `/assessment/${r.id}/report` : `/report/${r.id}`}
-                            className="sf-btn ghost sm">
-                            {T("myOpenReport")}
-                          </Link>
-                        ) : (
-                          <Link href={v2
-                            ? `/assessment/${r.id}`
-                            : (resumePathFor("ME_V1") ?? "/my")}
-                            className="sf-btn ghost sm">{T("myContinue")}</Link>
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </Card>
+        <div className="cm-tablewrap">
+          <table className="cm-table">
+            <thead>
+              <tr>
+                <th>검사</th><th>상태</th><th>진행</th><th>시작</th><th>제출</th><th />
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((r) => {
+                const s = STATUS[r.status] ?? { ko: r.status };
+                const v2 = r.version === "ME_V2";
+                const tier = isTier(r.tier) ? r.tier : null;
+                /* 몇 문항짜리인지는 산 등급이 정한다(설계 원칙 10의 사슬:
+                   products.tier → entitlements.tier → attempts.tier) */
+                const total = v2 ? (tier ? itemsFor(tier).length : 0) : r.total;
+                /* **끝낸 응시는 다 푼 것이다.** 채점까지 끝났는데 진행이
+                   모자라 보이면 둘 중 하나가 거짓이고, 읽는 사람은 자기
+                   결과를 의심한다 */
+                const done = r.status === "scored" || r.status === "submitted";
+                const answered = done && total > 0 ? total : r.answered;
+                return (
+                  <tr key={r.id}>
+                    <td>
+                      <b>
+                        {v2
+                          ? `${BRAND.root}${tier ? ` ${tier}` : ""}`
+                          : r.track === "HS" ? "고교 진로 진단" : "공학 진로 진단"}
+                      </b>
+                    </td>
+                    <td>{s.ko}</td>
+                    <td>{total > 0 ? `${answered} / ${total}` : "—"}</td>
+                    <td>{r.started ?? "—"}</td>
+                    <td>{r.submitted ?? "—"}</td>
+                    <td style={{ textAlign: "right" }}>
+                      {done ? (
+                        <Link
+                          href={v2 ? `/assessment/${r.id}/report` : `/report/${r.id}`}
+                          className="cm-btn">
+                          {T("myOpenReport")}
+                        </Link>
+                      ) : (
+                        <Link href={v2
+                          ? `/assessment/${r.id}`
+                          : (resumePathFor("ME_V1") ?? "/my")}
+                          className="cm-btn">{T("myContinue")}</Link>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       ) : (
-        <Empty
-          icon="clipboard"
-          title={T("acOldNone")}
-          body={T("acOldNoneBody")}
-          cta={{ href: "/cores", label: T("navWorkspace") }}
-        />
+        <section className="cm-card is-empty is-wide">
+          <h2>{T("acOldNone")}</h2>
+          <p>{T("acOldNoneBody")}</p>
+          <div className="cm-acts">
+            <Link href="/cores" className="cm-btn is-primary">검사 시작하기</Link>
+          </div>
+        </section>
       )}
-    </Shell>
+    </CmShell>
   );
 }

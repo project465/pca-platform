@@ -17,38 +17,16 @@
  */
 import type { NavItem } from "./shell";
 
-/** Phase 3 Apply 가 켜졌는가. 비어 있으면 꺼져 있다 */
-export const applyOpen = (): boolean =>
-  (process.env.FEATURE_APPLY ?? "").trim().toLowerCase() === "yes";
-
 /*
- * 개인 메뉴는 이제 **계정 영역의 메뉴다.**
+ * **개인 메뉴가 없어졌다.** 사용자 화면의 껍데기는 작업공간 한 벌이고
+ * (`src/app/me/shell.tsx`) 계정 쪽도 그 띠를 쓴다. 전에는 `/my/*` 가
+ * 여기 적힌 아홉 줄을 들고 자기 껍데기를 세워서, 계정에 들른 사람이
+ * 머리띠와 왼쪽 띠가 전부 다른 화면을 받았다.
  *
- * 커리어 기록이 쌓이는 자리는 내 CareerMatri 이고 그쪽은 자기 띠를 따로
- * 들고 있다(`src/app/me/nav.ts`). 여기 남는 것은 로그인과 주문과 파기,
- * 그리고 옛 검사 기록처럼 **한 번씩 들르는 줄**이다. 두 벌을 한 띠에
- * 섞으면 쌓이는 자리와 들르는 자리가 같은 무게로 읽힌다.
- *
- * 첫 줄이 작업공간으로 돌아가는 길이다. 계정에 들어온 사람이 나가는
- * 길을 못 찾으면 로고를 누르는데, 로고는 면을 넘지 않는다.
+ * 띠는 `src/app/me/nav.ts` 하나다. `Shell` 과 이 파일은 Campus 와
+ * Admin 이 계속 쓴다: 저쪽은 파는 제품의 화면이 아니라 일하는 화면이고
+ * 메뉴가 열다섯 줄이라 같은 띠에 담기지 않는다.
  */
-const INDIVIDUAL_ALL: NavItem[] = [
-  { href: "/me", label: "navWorkspace", icon: "compass" },
-  { href: "/my", label: "acHome", icon: "user" },
-  { href: "/my/account", label: "acSettings", icon: "gear" },
-  /* 옛 검사 기록. 지금 검사의 결과는 `/me/results` 가 맡는다 */
-  { href: "/my/assessments", label: "navAssessments", icon: "clipboard" },
-  { href: "/my/results", label: "navResults", icon: "report" },
-  { href: "/my/evidence", label: "navEvidence", icon: "layers" },
-  { href: "/my/applications", label: "navApplications", icon: "send", soon: true },
-  /* **지원 경로가 메뉴에 있어야 한다**(규격 §15). 주소를 아는 사람만
-     쓰는 화면이면 결제가 막힌 사람은 그 화면을 못 찾는다 */
-  { href: "/support", label: "navSupport", icon: "log" },
-];
-
-export const NAV_INDIVIDUAL: NavItem[] = INDIVIDUAL_ALL.filter(
-  (it) => it.href !== "/my/applications" || applyOpen(),
-);
 
 export const NAV_CAMPUS: NavItem[] = [
   { href: "/org", label: "navOverview", icon: "grid" },

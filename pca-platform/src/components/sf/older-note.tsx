@@ -26,9 +26,10 @@ export default function OlderNote({
     ? { href: "/me/experience", body: "acOldEvidence" as const, label: "acOldExperience" as const }
     : { href: "/me/results", body: "acOldBody" as const, label: "acOldResults" as const };
   return (
-    <div className="sf-note" style={{ marginBottom: 18 }}>
+    /* 작업공간 껍데기 안에 서므로 그쪽 이름을 쓴다 */
+    <div className="cm-note">
       <p style={{ margin: 0 }}>{T(go.body)}</p>
-      <Link href={go.href} className="sf-btn ghost sm" style={{ marginTop: 12 }}>
+      <Link href={go.href} className="cm-btn" style={{ marginTop: 12 }}>
         {T(go.label)}
       </Link>
     </div>

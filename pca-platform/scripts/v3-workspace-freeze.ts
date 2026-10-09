@@ -38,7 +38,7 @@ const FILES = [
   /* 지금 */
   "src/app/me/page.tsx",
   "src/app/cores/page.tsx",
-  /* 내 기록 */
+  /* 내 커리어 */
   "src/app/me/results/page.tsx",
   "src/app/me/state/page.tsx",
   "src/app/me/next/page.tsx",
@@ -50,14 +50,24 @@ const FILES = [
   "src/app/me/recompute/page.tsx",
   "src/app/me/recompute/actions.ts",
   "src/app/me/gap/page.tsx",
-  /* 넓게 보기 */
+  /* 탐색 */
   "src/app/me/explore/page.tsx",
   "src/app/me/region/page.tsx",
   "src/app/me/region/actions.ts",
   "src/app/me/apply/page.tsx",
   "src/app/me/apply/actions.ts",
-  /* 준비 중 */
+  /* 기타 */
   "src/app/me/track/page.tsx",
+  /* 계정 — 같은 껍데기를 쓰므로 같은 목록에 든다 */
+  "src/app/my/layout.tsx",
+  "src/app/my/page.tsx",
+  "src/app/my/login-methods.tsx",
+  "src/app/my/account/page.tsx",
+  "src/app/my/results/page.tsx",
+  "src/app/my/assessments/page.tsx",
+  "src/app/my/evidence/page.tsx",
+  "src/app/my/applications/page.tsx",
+  "src/components/sf/older-note.tsx",
   "src/app/me/track/actions.ts",
   "src/app/me/jobs/page.tsx",
   /* 읽는 자리와 계측 */

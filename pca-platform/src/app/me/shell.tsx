@@ -1,12 +1,18 @@
 /**
- * CareerMatri Workspace 의 껍데기.
+ * CareerMatri Workspace 의 껍데기. **사용자 화면의 껍데기는 이 하나다.**
  *
  * **들어오면 하나의 앱 안이라는 느낌이 나야 한다.** 넓은 화면은 왼쪽에
  * 늘 보이는 띠, 손전화는 아래 띠와 서랍이다. 쪽을 옮겨도 띠가 그대로
  * 있어서 `지금 어디인지` 가 끊기지 않는다.
  *
- * 운영 화면의 `Shell` 을 쓰지 않은 까닭은 저쪽이 세 면(개인 · Campus ·
- * Admin)이 같이 쓰는 파일이라 여기를 고치면 저 셋이 같이 바뀌기 때문이다.
+ * 계정 쪽(`/my/*`)도 이 껍데기를 쓴다. 전에는 저쪽이 `components/sf/shell`
+ * 의 껍데기를 써서, 로그인 방법을 보러 들어간 사람이 **머리띠와 왼쪽 띠와
+ * 브랜드 글자가 전부 다른 화면**을 받았다. 한 제품 안에서 껍데기가 둘이면
+ * 쪽을 이어서 누를 때만 그 어긋남이 보인다.
+ *
+ * `components/sf/shell` 은 Campus 와 Admin 이 계속 쓴다. 저쪽은 파는
+ * 제품의 화면이 아니라 **일하는 화면**이고, 메뉴가 열다섯 줄이라 같은
+ * 띠에 담기지 않는다.
  *
  * **권한 판단이 한 줄도 없다.** 메뉴를 숨기는 것은 안내이고 막는 것은
  * 각 쪽의 `requireUser()` 다.
@@ -14,7 +20,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Icon } from "@/components/sf/icon";
-import { CM_ACCOUNT, CM_GROUPS, CM_TABS, CM_NAV, navOn } from "./nav";
+import { CM_GROUPS, CM_TABS, CM_NAV, navOn } from "./nav";
 
 /** 지금 어느 전공인가. 전공이 늘면 이 자리가 고르는 자리가 된다 (§57) */
 const MAJOR = "기계공학";
@@ -57,11 +63,6 @@ export function CmShell({
               </section>
             ))}
           </div>
-
-          {/* 계정은 Workspace 와 섞지 않는다. 띠의 맨 아래다 (§30) */}
-          <div className="cm-rail-foot">
-            <NavRow it={CM_ACCOUNT} active={active} />
-          </div>
         </nav>
 
         <main className="cm-main">
@@ -97,10 +98,6 @@ export function CmShell({
                 {g.items.map((it) => <NavRow key={it.href} it={it} active={active} />)}
               </section>
             ))}
-            <section className="cm-group">
-              <h2>계정</h2>
-              <NavRow it={CM_ACCOUNT} active={active} />
-            </section>
           </div>
         </details>
       </nav>

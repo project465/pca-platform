@@ -2,13 +2,9 @@ import Link from "next/link";
 import { requireRole } from "@/lib/session";
 import { resolveLang } from "@/lib/locale-server";
 import { query } from "@/lib/db";
-import { ROLE_LABEL } from "@/lib/roles";
 import { BRAND, toLang2, txer } from "@/lib/surface-text";
 import { countOf, profileOf } from "@/lib/me-v2/evidence";
-import { Shell, PageHead, Section } from "@/components/sf/shell";
-import { NAV_INDIVIDUAL } from "@/components/sf/nav";
-import { Card, Empty, Kpi } from "@/components/sf/parts";
-import LangSelect from "@/components/sf/lang-select";
+import { CmShell, CmHead } from "@/app/me/shell";
 import OlderNote from "@/components/sf/older-note";
 
 export const metadata = { title: `경험과 증거 · ${BRAND.root}` };
@@ -102,61 +98,56 @@ export default async function MyEvidence({
   const editHref = last[0]?.id ? `/assessment/${last[0].id}/evidence` : "/evidence";
 
   return (
-    <Shell
-      surface="individual" lang={L} nav={NAV_INDIVIDUAL} active="/my/evidence"
-      who={{ name: user.name, role: ROLE_LABEL[user.role] ?? "", href: "/my/account" }}
-      topTitle={T("navEvidence")} topRight={<LangSelect current={L} />}
-    >
-      <PageHead
-        title={T("myEvidenceIntro")}
-        sub={T("myEvidenceIntroBody")}
-        actions={<Link href={editHref} className="sf-btn ghost">{T("myAddEvidence")}</Link>}
-      />
+    <CmShell active="/my" title={T("myEvidenceIntro")}>
+      <CmHead kicker="계정" title={T("myEvidenceIntro")} lead={T("myEvidenceIntroBody")}
+        actions={<Link href={editHref} className="cm-btn">{T("myAddEvidence")}</Link>} />
       <OlderNote lang={L} to="experience" />
 
       {/* **두 종류를 한 줄로 적는다.** 검사에서 확인된 신호가 있는데 상세
           경험이 비어 있는 것은 모순이 아니라 서로 다른 두 가지다 */}
       {attempts > 0 ? (
-        <div className="sf-note">
+        <p className="cm-note">
           {L === "en"
             ? `The assessment picked up experience signals from your answers (${attempts} attempt${attempts > 1 ? "s" : ""}). Those stay inside the report. Detailed experience is what you write below, and ${rows.length === 0 ? "none is recorded yet" : `${rows.length} item${rows.length > 1 ? "s are" : " is"} recorded`}.`
             : `검사 응답에서 확인된 경험 신호가 있습니다(응시 ${attempts}건). 그 신호는 결과지 안에서만 쓰입니다. 아래의 상세 경험은 직접 적어 주셔야 쌓이고, 지금 ${rows.length === 0 ? "등록된 항목이 없습니다" : `${rows.length}건이 등록돼 있습니다`}.`}
-        </div>
+        </p>
       ) : null}
 
       {rows.length || n.research ? (
         <>
-          <div className="sf-grid sf-g3">
-            <Kpi label="상세 경험" value={rows.length} icon="layers" accent />
-            <Kpi label="연구 과제" value={n.research} icon="box" />
-            <Kpi label="검사에서 확인된 신호" value={attempts > 0 ? "있음" : "없음"} icon="clipboard" />
+          <div className="cm-grid">
+            <section className="cm-card">
+              <h2>상세 경험</h2>
+              <p className="cm-num">{rows.length}<small>건</small></p>
+            </section>
+            <section className="cm-card">
+              <h2>연구 과제</h2>
+              <p className="cm-num">{n.research}<small>건</small></p>
+            </section>
           </div>
-          <Section title="적어 주신 것">
-            <Card pad={false}>
-              <div className="sf-tw">
-                <table className="sf-table">
-                  <thead><tr><th>내용</th><th>갈래</th></tr></thead>
-                  <tbody>
-                    {rows.map((r, i) => (
-                      <tr key={i}>
-                        <td className="sf-strong">{r.title}</td>
-                        <td>{r.kind}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </Card>
-          </Section>
+          <div className="cm-tablewrap">
+            <table className="cm-table">
+              <thead><tr><th>내용</th><th>갈래</th></tr></thead>
+              <tbody>
+                {rows.map((r, i) => (
+                  <tr key={i}>
+                    <td><b>{r.title}</b></td>
+                    <td>{r.kind}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </>
       ) : (
-        <Empty
-          icon="layers"
-          title={T("myNoEvidenceTitle")}
-          body={T("myNoEvidenceBody")}
-          cta={{ href: editHref, label: T("myAddEvidence") }}
-        />
+        <section className="cm-card is-empty is-wide">
+          <h2>{T("myNoEvidenceTitle")}</h2>
+          <p>{T("myNoEvidenceBody")}</p>
+          <div className="cm-acts">
+            <Link href={editHref} className="cm-btn is-primary">{T("myAddEvidence")}</Link>
+          </div>
+        </section>
       )}
-    </Shell>
+    </CmShell>
   );
 }

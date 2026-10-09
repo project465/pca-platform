@@ -52,7 +52,7 @@
 }
 
 /* **묶음 이름이 곧 section context 다.** 평평한 아홉 줄은 어디가
-   `내 기록` 인지 읽히지 않는다 */
+   `내 커리어` 인지 읽히지 않는다 */
 .cm-group { display: flex; flex-direction: column; gap: 2px; }
 .cm-group > h2 {
   margin: 0 0 4px; padding: 0 10px;
@@ -61,14 +61,15 @@
 }
 
 a.cm-nav {
-  display: flex; align-items: flex-start; gap: 10px;
+  display: flex; align-items: center; gap: 10px;
   padding: 8px 10px; border-radius: 10px;
   color: var(--sf-ink-2); text-decoration: none; font-size: 14.5px;
   min-height: 40px;
 }
-a.cm-nav > svg { flex: 0 0 auto; margin-top: 2px; }
+a.cm-nav > svg { flex: 0 0 auto; }
 a.cm-nav > span { display: block; min-width: 0; }
-/* 한 줄 더 적는 자리. **손전화 띠에서는 쓰지 않는다** */
+/* 한 줄 더 적는 자리. **줄마다 쓰지 않는다**: 지금은 Track 한 줄만
+   `준비 중` 을 달고, 나머지 여덟 줄은 이름 하나로 선다 */
 a.cm-nav small {
   display: block; font-size: 11.5px; font-weight: 400; line-height: 1.45;
   color: var(--sf-ink-3); margin-top: 1px;
@@ -79,10 +80,6 @@ a.cm-nav.is-on {
 }
 a.cm-nav.is-on small { color: var(--sf-accent-ink); opacity: .8; }
 a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2px; }
-
-.cm-rail-foot {
-  margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--sf-line-2);
-}
 
 .cm-main {
   flex: 1 1 auto; min-width: 0;
