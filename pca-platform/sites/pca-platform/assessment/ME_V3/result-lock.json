@@ -5,7 +5,7 @@
   "result_ui_version": "ME_V3_RESULT_UI_V5",
   "result_copy_version": "me-v3-result-copy.6",
   "result_model_version": "me-v3-result-model.4",
-  "item_bank_version": "ME_V3_ITEM_BANK_V2.3",
+  "item_bank_version": "ME_V3_ITEM_BANK_V2.4",
   "scoring_version": "me-v3-scoring.5"
  },
  "guards": {
