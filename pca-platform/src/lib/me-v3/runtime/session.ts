@@ -35,6 +35,7 @@ import { controlOf, type MenuContext } from "./menus";
 import { buildResult } from "../result/build";
 import type { ResultModel } from "../result/model";
 import { RESULT_COPY_VERSION, RESULT_MODEL_VERSION, RESULT_UI_VERSION } from "../result/version";
+import { WORKSPACE_UI_VERSION } from "../workspace-version";
 
 export const CORE = "ME_CORE_V3";
 
@@ -763,12 +764,16 @@ export async function submit(a: V3Attempt): Promise<{ snapshot: Snapshot; id: st
     translation: translationChoices(sub),
   });
   /**
-   * **응시마다 판본 열한 가지를 남긴다.**
+   * **응시마다 판본 열두 가지를 남긴다.**
    *
    * 채점 엔진은 화면 판본을 모른다(알면 문장 하나 고친 날 채점이 달라진
    * 것처럼 보인다). 그래서 **적는 자리에서** 화면과 문장 판본을 얹는다.
    * 파일럿 분석이 묻는 것은 `이 사람이 어느 화면으로 어느 문장을 읽고
    * 답했는가` 이고, 끝난 뒤에는 되물을 수 없다.
+   *
+   * 작업공간 판본도 한 칸이다. **판정에 쓰이지 않는다**: 그 사람이 결과를
+   * 받은 뒤 어느 작업공간으로 들어갔는지를 되짚는 자리이고, 경험을 쌓는
+   * 화면이 달라지면 다음에 반영한 것의 뜻도 달라진다.
    */
   const versions = {
     ...snapshot.module_versions,
@@ -777,6 +782,7 @@ export async function submit(a: V3Attempt): Promise<{ snapshot: Snapshot; id: st
     result_model_version: RESULT_MODEL_VERSION,
     result_copy_version: RESULT_COPY_VERSION,
     result_ui_version: RESULT_UI_VERSION,
+    workspace_ui_version: WORKSPACE_UI_VERSION,
   };
   const row = await queryOne<{ id: string }>(
     `INSERT INTO v3_snapshots
