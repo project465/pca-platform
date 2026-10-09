@@ -86,7 +86,7 @@ const PATHS: Shot[] = [
   { name: "w07_experience", path: "/me/experience", note: "내 경험", full: true,
     heading: "적어 둔 경험", must: ["전동 스쿠터 프레임 경량화 캡스톤"] },
   { name: "w08_experience_new", path: "/me/experience/new", note: "경험 추가",
-    full: true, heading: "새로 겪은 일을 적습니다", must: ["어느 판단에 걸리나요"] },
+    full: true, heading: "새로 겪은 일을 적습니다", must: ["이 경험에서 무엇을 하셨나요"] },
   { name: "w09_recompute", path: "/me/recompute", note: "새 경험 반영하기",
     full: true, heading: "적어 두신 경험이 어디로 가는지", must: [] },
   { name: "w10_explore", path: "/me/explore", note: "산업과 직무", full: true,

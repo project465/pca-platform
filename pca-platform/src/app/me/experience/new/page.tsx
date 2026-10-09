@@ -1,6 +1,6 @@
 import { requireUser } from "@/lib/session";
 import { EXPERIENCE_KINDS } from "@/lib/me-v3/platform";
-import { axisLabel, content, domainName } from "@/lib/me-v3/runtime/session";
+import { axisAsk, content, domainName } from "@/lib/me-v3/runtime/session";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { CmShell, CmHead } from "../../shell";
 import { saveExperience } from "../actions";
@@ -133,13 +133,17 @@ export default async function NewExperience(
         </fieldset>
 
         <fieldset className="cm-field">
-          <legend><span>어느 판단에 걸리나요</span></legend>
+          {/* **재는 이름을 고르는 자리에 세우지 않는다**(규격 §17·§34).
+              `문제 정의` 와 `조직 활용` 은 우리가 무엇을 재는지를 가리키는
+              이름이고, 고르는 사람이 읽어야 하는 것은 자기가 한 일이다.
+              근거 고르기 화면과 같은 말을 쓴다 */}
+          <legend><span>이 경험에서 무엇을 하셨나요</span></legend>
           <em>해당하는 것이 없으면 비워 두셔도 됩니다.</em>
           <div className="cm-pickset">
             {axes.map((a) => (
               <label className="cm-pick" key={a}>
                 <input type="checkbox" name="axis" value={a} />
-                {axisLabel(a)}
+                {axisAsk(a)}
               </label>
             ))}
           </div>

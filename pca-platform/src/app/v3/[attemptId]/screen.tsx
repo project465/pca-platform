@@ -197,6 +197,9 @@ export default function Screen({
   };
 
   const mid = s.kind === "transition" || s.kind === "done" || s.kind === "scene";
+  /* **한 판에 올리는 것은 쉬는 자리뿐이다.** 산업 장면은 그 아래에 카드
+     둘이 서므로 머리글까지 판에 올리면 흰 상자가 셋이 된다 */
+  const brief = s.kind === "transition" || s.kind === "done";
   /* **폭 토큰은 셋뿐이다**(규격 §29): 읽는 자리 760 · 견주는 자리 920 ·
      근거를 훑는 자리 1040. 질문과 전환은 760 에서 시작하므로 글이 시작하는
      자리가 같고, 넓어지는 것은 한눈에 견주어야 하는 자리뿐이다 */
@@ -250,7 +253,7 @@ export default function Screen({
             넓은 바탕 위에 떠 있으면 덜 그린 화면으로 읽힌다. 테와 안쪽
             여백을 두르면 같은 글이 **의도한 한 걸음**으로 읽히고, 그 판의
             높이가 질문 화면의 절반을 넘지 않는다(규격 §5·§25) */}
-        <div className={mid ? "qs-brief" : "qs-plain"}>
+        <div className={brief ? "qs-brief" : "qs-plain"}>
         {s.eyebrow ? <p className="qs-eyebrow">{s.eyebrow}</p> : null}
         {s.subject ? <p className="qs-subject">{s.subject}</p> : null}
         {/* 완료 화면의 머리글은 제출 전과 뒤가 다르다. **다 푼 사람에게
