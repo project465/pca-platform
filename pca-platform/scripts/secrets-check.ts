@@ -78,6 +78,35 @@ const PLACEHOLDER = /^(\.{2,}|\$\(|#|<|\{|"\{|your[-_]|xxx|\*{3,}|여기|비밀|
 /** 이 파일 자신은 금지한 값을 예시로 적어 두므로 뺀다 */
 const SELF = ["scripts/secrets-check.ts"];
 
+/**
+ * 코드에서 **주석을 걷어 낸다.**
+ *
+ * 이 저장소는 `왜 지웠는가` 를 주석으로 남기는 쪽을 택했고, 그 기록에는
+ * 지운 값이 그대로 들어 있다. 그것까지 세면 **맞는 기록을 지우라고
+ * 요구하게 되고**, 그러면 다음 사람이 같은 실수를 되돌릴 때 막아 줄
+ * 설명이 남지 않는다. `launch:check` 가 옛 법인 표시를 셀 때 같은 판단을
+ * 했다.
+ *
+ * **주석 밖은 그대로 센다.** 주석에 적힌 값으로는 로그인이 되지 않지만
+ * 코드에 적힌 값으로는 된다. 가르는 선이 거기다.
+ *
+ * 문서(`.md`)는 걷어 내지 않는다: 거기는 전부가 사람이 읽는 글이라
+ * 주석과 본문의 구별이 없고, **값을 적어 두면 읽은 사람이 그대로 쓴다.**
+ *
+ * 지우지 않고 공백으로 덮는다. 줄 번호가 밀리면 걸린 자리를 적어 줘도
+ * 그 줄에 아무것도 없다.
+ */
+const CODE = /\.(ts|tsx|mjs|cjs|js|jsx)$/;
+function body(f: string): string {
+  let raw = "";
+  try { raw = readFileSync(f, "utf8"); } catch { return ""; }
+  if (!CODE.test(f)) return raw;
+  const blank = (m: string) => m.replace(/[^\n]/g, " ");
+  return raw
+    .replace(/\/\*[\s\S]*?\*\//g, blank)
+    .replace(/(^|[^:])\/\/[^\n]*/g, (m, p1) => p1 + blank(m.slice(p1.length)));
+}
+
 function main(): void {
   console.log("\n로그인 가능한 평문이 저장소에 없는가\n");
   const files = tracked();
@@ -86,9 +115,8 @@ function main(): void {
   const back: string[] = [];
   for (const f of files) {
     if (SELF.includes(f)) continue;
-    let body = "";
-    try { body = readFileSync(f, "utf8"); } catch { continue; }
-    for (const v of RETIRED) if (body.includes(v)) back.push(`${f} → ${v}`);
+    const text = body(f);
+    for (const v of RETIRED) if (text.includes(v)) back.push(`${f} → ${v}`);
   }
   ok(`지웠던 개발용 비밀번호가 돌아오지 않았다 — 값 ${RETIRED.length}개`,
     back.length === 0, back.slice(0, 4).join(" / "));
@@ -97,11 +125,10 @@ function main(): void {
   const inline: string[] = [];
   for (const f of files) {
     if (SELF.includes(f)) continue;
-    let body = "";
-    try { body = readFileSync(f, "utf8"); } catch { continue; }
-    for (const m of body.matchAll(INLINE)) {
-      const line = body.slice(0, m.index ?? 0).split("\n").length;
-      const whole = body.split("\n")[line - 1] ?? "";
+    const text = body(f);
+    for (const m of text.matchAll(INLINE)) {
+      const line = text.slice(0, m.index ?? 0).split("\n").length;
+      const whole = text.split("\n")[line - 1] ?? "";
       if (INLINE_OK.test(whole)) continue;
       inline.push(`${f}:${line}`);
     }
@@ -113,10 +140,9 @@ function main(): void {
   const prod: string[] = [];
   for (const f of files) {
     if (SELF.includes(f)) continue;
-    let body = "";
-    try { body = readFileSync(f, "utf8"); } catch { continue; }
+    const text = body(f);
     for (const re of PROD_KEYS) {
-      const m = re.exec(body);
+      const m = re.exec(text);
       if (!m) continue;
       /* **자리표시와 명령은 열쇠가 아니다.** 문서가 적어 두는 것은
          `AUTH_SECRET=$(openssl rand ...)` 이나 `=...` 이나 주석이고,
@@ -126,7 +152,7 @@ function main(): void {
       /* **그 줄 전체를 한 번 더 본다.** 값만 보면 `\$(openssl ...)` 처럼
          한 글자 앞에 이스케이프가 붙은 것과 주석과 `process.env` 에
          넣는 줄이 걸린다. 셋 다 적어 둔 열쇠가 아니다 */
-      const line = body.split("\n")[body.slice(0, m.index).split("\n").length - 1] ?? "";
+      const line = text.split("\n")[text.slice(0, m.index).split("\n").length - 1] ?? "";
       if (INLINE_OK.test(line) || /openssl|\$\(|^\s*[*#/]|`/.test(line)) continue;
       prod.push(`${f} → ${m[0].split("=")[0]}`);
     }

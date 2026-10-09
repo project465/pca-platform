@@ -137,6 +137,11 @@ async function main(): Promise<void> {
       ["/me/explore", /산업|직무/],
       ["/me/track", /Track|준비 중/],
       ["/my/account", /계정|비밀번호|파기/],
+      /* **계정 영역의 두 쪽도 본다.** 옛 응시를 이어하는 줄이 여기 있고,
+         그 줄의 주소를 `resumePathFor` 로 옮기면서 markup 이 바뀌었다.
+         바뀐 자리를 아무 검사도 열어 보지 않으면 다음에 또 바뀐다 */
+      ["/my", /계정|로그인|결제/],
+      ["/my/assessments", /응시|검사|아직/],
     ] as const) {
       const r = await p.goto(B + path, { waitUntil: "networkidle" });
       const txt = await p.evaluate(() => document.body.innerText);
