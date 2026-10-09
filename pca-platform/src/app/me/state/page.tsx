@@ -210,7 +210,7 @@ export default async function State() {
             ) : null}
           </div>
           <p className="cm-lead" style={{ marginTop: 10 }}>
-            고르신 것만 적었습니다. 이 선택은 기술영역 판정에 들어가지
+            고른 것만 적었습니다. 이 선택이 기술영역 결과를 바꾸지는
             않습니다.
           </p>
           <div className="cm-acts" style={{ marginTop: 12 }}>

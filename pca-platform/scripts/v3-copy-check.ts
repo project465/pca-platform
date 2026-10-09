@@ -112,6 +112,10 @@ const FILES = [
   "src/app/me/gap/page.tsx",
   "src/app/me/apply/page.tsx",
   "src/app/me/recompute/page.tsx",
+  /* 작업공간에서 새로 선 셋. 띠의 줄을 늘릴 때 여기도 늘린다 */
+  "src/app/me/results/page.tsx",
+  "src/app/me/state/page.tsx",
+  "src/app/me/next/page.tsx",
 ];
 
 const out: string[] = [];

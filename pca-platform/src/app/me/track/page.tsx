@@ -25,12 +25,12 @@ const FEATURES: {
     body: "그 산업이 더 보는 판단이 달라지면 적습니다.", blocked: "표본과 근거 등급 필요" },
   { code: "evidence.match", label: "내 근거와 공고 자동 비교",
     body: "공고가 요구하는 축과 내가 가진 축을 가립니다.", blocked: "공고 자료 검토 전" },
-  { code: "gap.timeline", label: "Gap 변화 추적",
+  { code: "gap.timeline", label: "비어 있는 자리 추적",
     body: "무엇이 메워졌고 무엇이 남았는지 달마다 적습니다.", blocked: "자동 반영 전" },
   { code: "monthly.report", label: "월간 Career Report",
     body: "한 달에 한 번 바뀐 것만 모아 보냅니다.", blocked: "메일 연결 전" },
   { code: "target.change", label: "목표를 바꾸면 다시 분석",
-    body: "관심 산업이나 직무를 바꾸면 Gap을 다시 계산합니다.", blocked: "자동 반영 전" },
+    body: "관심 산업이나 직무를 바꾸면 비어 있는 자리를 다시 봅니다.", blocked: "자동 반영 전" },
   /* **지금 되는 것을 `준비 중` 으로 적지 않는다.** 관심 산업과 직무를 바꾸는
      일은 탐색 화면에서 이미 되고, Track 이 더할 것은 바꾼 뒤의 자동 재계산이다 */
   { code: "target.edit", label: "관심 산업·직무 바꾸기",
