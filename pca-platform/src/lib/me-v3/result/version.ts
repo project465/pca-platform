@@ -10,7 +10,7 @@
 export const RESULT_MODEL_VERSION = "me-v3-result-model.4";
 
 /** 결과지에 나가는 한국어. 문장만 바뀌면 이것만 올린다 */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.5";
+export const RESULT_COPY_VERSION = "me-v3-result-copy.6";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -18,7 +18,7 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.5";
  * 문장 하나를 고친 날 화면 판본까지 올리면, 되짚을 때 무엇이 바뀐
  * 것인지 알 수 없다. 넷이 따로 간다: 화면 · 문장 · 모델 · 판단.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V4";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V5";
 
 /*
  * `V3` 으로 올린 까닭. **아홉 절이 한 이야기로 이어졌고 첫 화면이 셋으로

@@ -82,8 +82,16 @@ export default async function V3Screen({
   for (const id of sc.items) {
     const it = itemOf(id);
     /* 훑는 화면은 영역 이름이 줄이 된다. 문항 문면은 어미까지 붙어 길고,
-       열두 줄을 그대로 세우면 같은 어미가 열두 번 되풀이된다 */
-    const label = sc.kind === "sweep" ? (it?.grid_row ?? undefined) : undefined;
+       열두 줄을 그대로 세우면 같은 어미가 열두 번 되풀이된다.
+       **한 화면에 문항이 둘 이상이면 문면이 줄이 된다.** 전에는 훑는
+       화면에만 줄을 주어서, 보기 넷을 쓰는 문항 둘이 한 화면에 설 때
+       **무엇에 답하는지가 화면에 한 글자도 없었다**: 큰 글씨는 둘이
+       같이 쓰는 안내문(`해 보신 적이 있는 쪽을 골라주세요`)이고 각
+       상자에는 보기 넷만 되풀이됐다. `pair` 화면이 검사의 절반이라
+       응시자가 가장 오래 보는 자리가 그 상태였다 */
+    const label = sc.kind === "sweep" ? (it?.grid_row ?? undefined)
+      : sc.items.length > 1 ? wordingOf(id, stage)
+        : undefined;
     const f = await fieldOf(id, label ?? undefined);
     if (f) fields.push(f);
   }

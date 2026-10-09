@@ -693,3 +693,27 @@
   .rs-next { display: none; }
   #next { display: none; }
 }
+
+/* ── 결과지 안에서 옮겨 다니는 띠 ──────────────────────────────────────
+   결과지가 한 쪽으로 길게 이어지므로, 전부 읽지 않고도 필요한 절로 갈
+   수 있어야 한다. **내용을 줄이지 않는다**: 가는 길만 만든다.
+   종이에는 나가지 않는다 — 종이는 쪽 번호로 찾는다 */
+/* 머리띠에서 지금 보고 있는 절을 켠다. `result-nav.tsx` 가 붙인다 */
+.rs-head nav a[aria-current="true"] {
+  color: var(--r-accent-ink); border-bottom-color: var(--r-accent);
+}
+
+.rs-cta {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
+  margin: var(--r-s5) 0 0; padding: 18px 20px;
+  background: var(--r-accent-soft); border: 1px solid var(--r-accent-line);
+  border-radius: 14px;
+}
+.rs-cta > p { flex: 1 1 260px; margin: 0; font-size: 14px; color: var(--r-ink-2); }
+.rs-cta > a {
+  display: inline-flex; align-items: center; min-height: 46px; padding: 0 18px;
+  border-radius: 10px; background: var(--r-accent); color: #fff;
+  font-size: 14.5px; font-weight: 650; text-decoration: none;
+}
+.rs-cta > a:focus-visible { outline: 2px solid var(--r-accent); outline-offset: 3px; }
+@media print { .rs-cta { display: none; } }

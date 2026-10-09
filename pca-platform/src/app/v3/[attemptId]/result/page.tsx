@@ -19,6 +19,7 @@ import {
 import { orgTypesFor, regionLayer } from "@/lib/me-v3/region";
 import { profileOf } from "@/lib/me-v3/platform";
 import { participantOf, savedActions } from "@/lib/me-v3/pilot/store";
+import ResultNav from "./result-nav";
 import { TIER_WHAT } from "../../tier-text";
 import "../../result.css";
 import Disclose from "./disclose";
@@ -370,7 +371,7 @@ function Translation({ view }: { view: TranslationView }) {
           <h3>대학원 경험을 어디에 걸칠지</h3>
           <p>
             학부에서 기계공학을 하시고 대학원은 다른 분야를 하셨다고 답해주셨습니다.
-            대학원 경험은 기술영역 판정에 넣지 않고, 아래 번역에서만 읽었습니다.
+            대학원 경험은 기계공학 영역 확인과 따로 보고, 아래 번역에서 읽었습니다.
           </p>
           <dl>
             {xf.map((x) => (
@@ -599,6 +600,8 @@ export default async function V3Result({
             {QUALITY_KO[model.response_quality.flag as keyof typeof QUALITY_KO]}
           </p>
         ) : null}
+
+        <ResultNav />
 
         {/* ── 먼저 볼 영역 ── 그 영역을 한 자리에서 끝낸다 */}
         <section className="rs-sect" id="focus">
@@ -1019,14 +1022,24 @@ export default async function V3Result({
             다섯이고, 하나만 두면 그 하나를 누른 날 이 서비스가 끝난다 */}
         <section className="rs-sect" id="next">
           <h2>이 다음에</h2>
+          {/* **가장 먼저 할 일 하나를 정한다.** 여섯 줄을 같은 무게로 두면
+              다 읽은 사람이 어디를 먼저 누를지 모른 채 종이만 받고 끝낸다.
+              결과는 시작점이고, 이어지는 자리는 내 CareerMatri 다 */}
+          <div className="rs-cta">
+            <p>
+              이 결과는 그날의 기록으로 굳어 있습니다. 여기서부터는 경험을
+              더하면서 지금 상태를 이어서 보실 수 있습니다.
+            </p>
+            <Link href="/me">내 CareerMatri에서 계속하기</Link>
+          </div>
           <ul className="rs-next">
             {[
-              ["/me", "내 CareerMatri에 저장", "방향과 근거와 Gap을 한 쪽에 둡니다"],
-              ["/me/experience/new", "새로운 경험 추가", "다음 재분석에 들어갑니다"],
-              ["/me/gap", "Gap 관리", "비어 있는 자리와 그것을 메우는 일"],
-              ["/me/explore", "산업과 직무 다시 보기", "여덟 산업과 여덟 직무 전부"],
-              ["/me/track", "CareerMatri Track", "상황이 바뀔 때 다시 계산해 주는 자리"],
-              [`/v3/${attemptId}/result/pdf`, "결과 PDF 저장", "웹과 같은 아홉 절을 종이로"],
+              ["/me/state", "지금 상태 보기", "설명할 수 있는 경험과 보완할 부분"],
+              ["/me/experience/new", "새로운 경험 추가", "반영하면 지금 상태가 달라집니다"],
+              ["/me/next", "다음 할 일", "할 수 있는 때로 묶어서 봅니다"],
+              ["/me/explore", "산업과 직무 다시 보기", "관심 산업과 직무를 둘러봅니다"],
+              ["/me/track", "CareerMatri Track", "준비 중입니다"],
+              [`/v3/${attemptId}/result/pdf`, "결과 PDF 저장", "웹과 같은 내용을 종이로"],
             ].map(([href, label, note]) => (
               <li key={href}>
                 {/* **종이 길은 `Link` 로 걸지 않는다.** Next 가 화면에 들어온
@@ -1055,13 +1068,12 @@ export default async function V3Result({
           </Disclose>
           {/* **의견을 받는 자리를 결과 앞에 두지 않는다.** 결과를 먼저
               보여 주고 여기로 오는 길만 둔다. 답하지 않아도 잃는 것이 없다 */}
+          {/* **나가는 길을 두 번 적지 않는다.** 바로 위 `이 다음에` 에
+              주된 길이 서 있고, 머리띠에도 돌아가는 길이 있다. 여기 또
+              두면 같은 자리로 가는 링크가 한 쪽에 셋이다 */}
           {pilot ? (
-            <p>
-              <Link href={`/v3/${attemptId}/feedback`}>파일럿 의견 적기</Link>
-              {" · "}
-              <Link href="/me">내 CareerMatri로</Link>
-            </p>
-          ) : <p><Link href="/me">내 CareerMatri로</Link></p>}
+            <p><Link href={`/v3/${attemptId}/feedback`}>파일럿 의견 적기</Link></p>
+          ) : null}
         </div>
       </main>
     </div>

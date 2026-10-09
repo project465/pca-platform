@@ -30,7 +30,7 @@ import {
   branchBlock, crossField, pickDomains, ROLE_SECOND_MAX,
   strongCells, type GridAnswer,
 } from "./routing";
-import { counts, minutes } from "../response-count";
+import { DOMAINS_BY_TIER, planCost } from "../response-count";
 import { controlOf, type MenuContext } from "./menus";
 import { buildResult } from "../result/build";
 import type { ResultModel } from "../result/model";
@@ -211,39 +211,59 @@ function packSize(kind: "industry" | "role"): number {
   return Math.max(0, ...per);
 }
 
+/**
+ * 시작 화면에 적는 응답 수와 추정 시간.
+ *
+ * **blueprint 를 다시 세지 않고 실제 계획을 세운다.** 전에는
+ * `response-count.ts` 의 `counts()` 로 블록 크기를 더해 적었고, 그 값이
+ * routing 이 실제로 세우는 계획과 갈려 있었다: BASIC 이 `48문항 · 약
+ * 10분` 으로 찍히는데 실제로 받는 것은 46문항이고 12분이다. 받은 수와
+ * 본 수가 다르면, 시간을 비워 두고 앉은 사람이 먼저 안다.
+ *
+ * **영역을 전부 해 봤다고 답한 사람**(가장 긴 경우)으로 센다.
+ * `npm run v3:length` 가 같은 함수로 같은 값을 세고 그 선을 지킨다.
+ */
 export function estimate(stage: Stage, field: GradField | null): {
   responses: Record<string, number>; minutes: Record<string, number>;
 } {
-  const bp = coreFile<{ slots: { block: string }[] }>(CORE, "items_blueprint");
-  const n = (b: string) => bp.slots.filter((x) => x.block === b).length;
-  const BRANCH_BLOCK: Record<string, string> = {
-    "ug-core": "UG-CORE", "ms-core": "MS-CORE",
-    "phd-core": "PHD-CORE", "postdoc-core": "POSTDOC-CORE",
+  const tds = content().domains.domains.map((d) => d.code);
+  const roles = roleChoices().map((r) => r.code);
+  const industry = industryChoices()[0]?.code ?? "";
+  const shape = (tier: Tier, deepN: number) => {
+    const deep = tds.slice(0, deepN);
+    return planCost(buildPlan({
+      tier, stage,
+      branchBlock: branchBlock(stage, field),
+      crossField: crossField(stage, field),
+      /* 선별 영역은 BASIC 이 둘, 그 위는 심화 영역과 같다 */
+      probe: deepN ? deep : tds.slice(0, DOMAINS_BY_TIER.basic),
+      deep,
+      industryInterest: industry ? [industry] : [],
+      /* 역할은 둘까지 고른다. `ROLE_SECOND_MAX` 는 둘째 역할에서 더
+         묻는 문항 수이고 고를 수 있는 역할의 수가 아니다 */
+      roleInterest: tier === "BASIC" ? [] : roles.slice(0, 2),
+      tiedPair: [],
+      strongCells: [],
+      consistAxis: null,
+      touched: tds,
+    }, planDeps()).screens);
   };
-  const branch = n(BRANCH_BLOCK[branchBlock(stage, field)]);
-  const blocks = {
-    /* 학습 의향 열둘은 선별된 영역에만 묻는다. 고정으로 받는 것은
-       관심과 경험 스물넷이다 */
-    grid: n("CORE-GRID") - 12, judge: n("CORE-JUDGE"), force: n("CORE-FORCE"),
-    probePerDomain: n("PROBE-S4") / 2, probeSecondPerDomain: n("PROBE-S4") / 2,
-    deepPerDomain: n("DEEP-S8"),
-    learningPerDomain: 1,
-    /* 일관성은 **한 짝만** 묻는다. 은행에는 두 짝이 있고 그 가운데 덜
-       확인된 축의 짝 하나가 선다 */
-    consist: 2,
-    trans: n("TRANS-10"), target: n("TARGET"),
-    branch: branch + (crossField(stage, field) ? n("GRAD-XFIELD") : 0),
-    /* 팩은 blueprint 밖이라 은행에서 센다. 한 응시에 깊게 묻는 것은
-       산업 하나와 역할 둘까지다 */
-    pack: packSize("industry") + packSize("role") + ROLE_SECOND_MAX,
-  };
-  const c = counts(blocks);
+  const basic = shape("BASIC", 0);
+  const standard = shape("STANDARD", DOMAINS_BY_TIER.standard);
+  const standard4 = shape("STANDARD", DOMAINS_BY_TIER.standard4);
+  const pro = shape("PRO", DOMAINS_BY_TIER.standard);
+  const pro4 = shape("PRO", DOMAINS_BY_TIER.standard4);
   return {
     responses: {
-      BASIC: c.basic, STANDARD: c.standard, STANDARD4: c.standard4,
-      PRO: c.pro, PRO4: c.pro4, PROFULL: c.proFull,
+      BASIC: basic.responses, STANDARD: standard.responses,
+      STANDARD4: standard4.responses, PRO: pro.responses,
+      PRO4: pro4.responses, PROFULL: pro4.responses,
     },
-    minutes: minutes(blocks),
+    minutes: {
+      basic: basic.minutes,
+      standardFresh: standard.minutes, standardFourth: standard4.minutes,
+      proFresh: pro.minutes, proFourth: pro4.minutes,
+    },
   };
 }
 

@@ -31,13 +31,13 @@ for (const line of (() => {
   if (m && !process.env[m[1]]) process.env[m[1]] = m[2];
 }
 
-import { buildPlan, type Plan, type Screen } from "../src/lib/me-v3/runtime/blocks";
+import { buildPlan, type Plan } from "../src/lib/me-v3/runtime/blocks";
 import { branchBlock, crossField } from "../src/lib/me-v3/runtime/routing";
 import {
-  content, domainName, gridRowOf, industryChoices, industryGloss, industryScene,
-  roleChoices, roleName,
+  content, domainName, estimate, gridRowOf, industryChoices, industryGloss,
+  industryScene, roleChoices, roleName,
 } from "../src/lib/me-v3/runtime/session";
-import { SECONDS } from "../src/lib/me-v3/response-count";
+import { planCost } from "../src/lib/me-v3/response-count";
 import type { GradField, Stage, Tier } from "../src/lib/me-v3/scoring/types";
 
 let fail = 0, pass = 0;
@@ -54,30 +54,17 @@ const DEPS = {
 /* 문면은 길이 계산에 쓰지 않는다. 자리만 선다 */
 function wordingHack(id: string, _st: string): string { return id; }
 
-/** 화면 하나에 드는 초. **화면 종류가 값을 정한다** */
-function seconds(s: Screen): number {
-  const S = SECONDS;
-  const n = s.items.length;
-  switch (s.kind) {
-    case "profile": return 40;
-    case "scene": return S.scene;
-    case "transition": return 8;
-    case "done": return 0;
-    case "checklist": return S.checklist;
-    case "pick-industry": case "pick-role": case "pick-org": return S.pick;
-    case "sweep": return n * S.grid + 10;
-    /* 같은 축의 두 문항이 한 화면에 선다. 머리말과 영역 이름을 다시 읽지
-       않으므로 둘째가 싸다 */
-    case "pair": return S.lv4 + (n - 1) * 9;
-    case "group": return n > 2 ? S.trans + (n - 1) * 30 : n * S.pick;
-    default: return n * S.lv4;
-  }
-}
-
+/**
+ * 화면 하나에 드는 초와 계획 하나의 값.
+ *
+ * **여기서 다시 세지 않는다.** 전에는 이 파일이 초 표를 따로 들고 있었고,
+ * 시작 화면은 blueprint 를 다시 세는 `counts()` 를 읽었다. 그래서 같은
+ * BASIC 이 여기서는 46문항 12분이고 시작 화면에서는 48문항 10분이었다.
+ * 세는 자리를 `response-count.ts` 하나로 모았다.
+ */
 function cost(p: Plan): { screens: number; fields: number; minutes: number } {
-  const fields = p.screens.reduce((a, s) => a + s.items.length, 0);
-  const sec = p.screens.reduce((a, s) => a + seconds(s) + SECONDS.turn, 0);
-  return { screens: p.screens.length, fields, minutes: Math.round(sec / 60) };
+  const c = planCost(p.screens);
+  return { screens: c.screens, fields: c.responses, minutes: c.minutes };
 }
 
 const TD = content().domains.domains.map((d) => d.code);
@@ -194,6 +181,27 @@ function main(): void {
      sets.map((x, i) => `${["학부", "석사", "박사", "포닥"][i]} ${x.split(",").length}문항`).join(" · "));
   ok("학위 묶음이 비어 있지 않다", sets.every((x) => x.split(",").length >= 5),
      sets.join(" / ").slice(0, 80));
+
+  /**
+   * **시작 화면이 적는 수가 이 표와 같은가.**
+   *
+   * 전에는 갈려 있었다: 이 표는 실제 계획을 세우고 시작 화면은 blueprint
+   * 를 다시 세는 `counts()` 를 읽어서, BASIC 이 여기서는 46문항 12분이고
+   * 시작 화면에서는 48문항 10분이었다. 응시자가 받은 수와 본 수가 다르면
+   * 시간을 비워 두고 앉은 사람이 먼저 안다.
+   */
+  for (const who of WHO) {
+    const e = estimate(who.stage, who.field);
+    const b = cost(plan("BASIC", who.stage, who.field, 0));
+    const st = cost(plan("STANDARD", who.stage, who.field, 3));
+    const pr = cost(plan("PRO", who.stage, who.field, 3));
+    const same = e.responses.BASIC === b.fields && e.minutes.basic === b.minutes
+      && e.responses.STANDARD === st.fields && e.minutes.standardFresh === st.minutes
+      && e.responses.PRO === pr.fields && e.minutes.proFresh === pr.minutes;
+    ok(`시작 화면이 적는 수가 이 표와 같다 — ${who.label}`, same,
+       `${e.responses.BASIC}/${b.fields} · ${e.responses.STANDARD}/${st.fields}`
+       + ` · ${e.responses.PRO}/${pr.fields}`);
+  }
 
   console.log(`\n확인 ${pass + fail}가지 — 통과 ${pass} · 걸림 ${fail}\n`);
   if (fail) process.exit(1);

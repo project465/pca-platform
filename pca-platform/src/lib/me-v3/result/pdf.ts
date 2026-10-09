@@ -10,6 +10,7 @@
  * 토큰을 만들면 그 토큰이 결과지를 여는 두 번째 길이 되고, 두 번째 길은
  * 첫 번째 길보다 늘 허술하다.
  */
+import { existsSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { stagingGate } from "@/lib/env";
@@ -24,6 +25,53 @@ export type DrawOpts = {
   /** 부른 사람이 들고 온 쿠키 머리글 그대로 */
   cookie: string;
 };
+
+/**
+ * 못 뽑은 자리를 **단계로 적는다.**
+ *
+ * 전에는 부르는 쪽이 `catch {}` 로 받아 `pdf failed` 만 돌려줬다. 그래서
+ * 브라우저가 안 뜬 것과 결과 쪽이 500 인 것과 종이를 접다 멈춘 것이
+ * 운영 로그에서 **똑같이 생겼고**, 원인을 아무도 알 수 없었다.
+ */
+export type PdfStep = "browser" | "open" | "render";
+export class PdfFailed extends Error {
+  constructor(readonly step: PdfStep, message: string) {
+    super(message);
+    this.name = "PdfFailed";
+  }
+}
+
+/**
+ * 결과지를 그릴 브라우저를 찾는다.
+ *
+ * **한 자리를 못 박지 않는다.** 전에는 `CHROMIUM_PATH` 하나를 그대로
+ * `executablePath` 로 넘겼고, 그 값이 `/usr/bin/chromium-browser` 였다.
+ * 알파인은 판올림을 하면서 chromium 실행 파일 이름을 바꿔 왔고, 그 자리가
+ * 없으면 플레이라이트는 `executable doesn't exist at ...` 로 던진다.
+ * 그 한 줄이 `pdf failed` 로 뭉개지면 아무도 못 찾는다.
+ *
+ * 그래서 **있는 것을 골라 쓴다**: 꽂아 준 값이 실제로 있으면 그것, 없으면
+ * 알려진 자리를 차례로 보고, 그래도 없으면 `null` 을 돌려 **플레이라이트가
+ * 제 것을 찾게** 둔다. 찾아본 자리는 실패 문면에 그대로 적는다.
+ */
+const CHROMIUM_CANDIDATES = [
+  "/usr/bin/chromium",
+  "/usr/bin/chromium-browser",
+  "/usr/lib/chromium/chromium",
+  "/usr/bin/google-chrome",
+  "/usr/bin/google-chrome-stable",
+];
+
+export function resolveChromium(): { bin: string | null; tried: string[] } {
+  const want = (process.env.CHROMIUM_PATH ?? "").trim();
+  const tried: string[] = [];
+  for (const c of want ? [want, ...CHROMIUM_CANDIDATES] : CHROMIUM_CANDIDATES) {
+    if (tried.includes(c)) continue;
+    tried.push(c);
+    try { if (existsSync(c)) return { bin: c, tried }; } catch { /* 못 보면 다음 */ }
+  }
+  return { bin: null, tried };
+}
 
 /** 쿠키 머리글을 플레이라이트가 받는 모양으로 */
 function cookiesFor(header: string, url: string) {
@@ -41,12 +89,18 @@ function cookiesFor(header: string, url: string) {
 
 export async function drawResultPdf(opts: DrawOpts): Promise<Buffer> {
   const { chromium } = await import("playwright");
-  /* 운영 이미지에 브라우저를 두 벌 넣지 않는다. 알파인에 깔린 것을 쓴다 */
-  const bin = process.env.CHROMIUM_PATH || undefined;
-  const browser = await chromium.launch({
-    args: ["--no-sandbox", "--disable-dev-shm-usage"],
-    ...(bin ? { executablePath: bin } : {}),
-  });
+  /* 운영 이미지에 브라우저를 두 벌 넣지 않는다. 깔려 있는 것을 쓴다 */
+  const { bin, tried } = resolveChromium();
+  let browser;
+  try {
+    browser = await chromium.launch({
+      args: ["--no-sandbox", "--disable-dev-shm-usage"],
+      ...(bin ? { executablePath: bin } : {}),
+    });
+  } catch (e) {
+    throw new PdfFailed("browser",
+      `${(e as Error).message.split("\n")[0]} / 찾아본 자리: ${tried.join(" ")}`);
+  }
   try {
     const gate = stagingGate();
     const ctx = await browser.newContext({
@@ -57,9 +111,28 @@ export async function drawResultPdf(opts: DrawOpts): Promise<Buffer> {
     if (opts.cookie) await ctx.addCookies(cookiesFor(opts.cookie, base));
     const page = await ctx.newPage();
     const url = `${base}/v3/${encodeURIComponent(opts.attemptId)}/result`;
-    const res = await page.goto(url, { waitUntil: "networkidle", timeout: 60000 });
+    /* **`networkidle` 로 기다리지 않는다.** 결과 쪽에는 Next 가 화면에
+       들어온 링크를 미리 불러오는 요청이 있어, 네트워크가 0.5초 조용해질
+       때를 기다리면 멈추지 않는 날이 있다. 그러면 60초를 다 쓰고 시간
+       초과로 떨어지는데, 그 실패는 브라우저가 안 뜬 것과 구별되지 않았다.
+       **쪽이 섰는지는 쪽이 그린 자리로 본다** */
+    let res;
+    try {
+      res = await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45000 });
+    } catch (e) {
+      throw new PdfFailed("open",
+        `${url} 로 못 갔습니다: ${(e as Error).message.split("\n")[0]}`);
+    }
     if (!res || res.status() !== 200) {
-      throw new Error(`결과 쪽을 열지 못했습니다 (${res ? res.status() : 0})`);
+      throw new PdfFailed("open",
+        `결과 쪽이 ${res ? res.status() : 0} 입니다 (${url})`);
+    }
+    try {
+      await page.waitForSelector(".rs-main .rs-sect", { timeout: 20000 });
+      await page.waitForLoadState("load", { timeout: 20000 }).catch(() => undefined);
+    } catch (e) {
+      throw new PdfFailed("render",
+        `결과 쪽이 열렸는데 본문이 서지 않았습니다: ${(e as Error).message.split("\n")[0]}`);
     }
     /* **인쇄 매체로 바꿔 놓고 뽑는다.** 화면 규칙으로 뽑으면 종이에서
        손전화 화면이 된다(A4 의 글 폭이 690px 안팎이라 좁은 화면 규칙에
@@ -76,6 +149,9 @@ export async function drawResultPdf(opts: DrawOpts): Promise<Buffer> {
         + '<span class="pageNumber"></span> / <span class="totalPages"></span></div>',
     });
     return pdf;
+  } catch (e) {
+    if (e instanceof PdfFailed) throw e;
+    throw new PdfFailed("render", (e as Error).message.split("\n")[0]);
   } finally {
     await browser.close();
   }

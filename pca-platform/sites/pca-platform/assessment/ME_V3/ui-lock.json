@@ -2,27 +2,27 @@
  "schema_version": "me-v3-ui-lock.1",
  "note": "검사 화면 1차 동결. 결과지 작업 중에는 명백한 버그와 접근성 오류만 고치고, 고쳤으면 `ui-version.ts` 의 판본을 올린 뒤 `FREEZE=update npm run v3:freeze` 로 지문을 다시 적는다",
  "versions": {
-  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V2",
-  "assessment_copy_version": "me-v3-2-assessment-copy.4",
+  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V3",
+  "assessment_copy_version": "me-v3-2-assessment-copy.5",
   "assessment_version": "ME_V3_2",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.3",
   "scoring_version": "me-v3-scoring.5"
  },
  "files": {
   "src/app/v3/layout.tsx": "5169464a4bd3741726beea4d17ee6ddb9d070c090513a3ca029f526883e05864",
-  "src/app/v3/assessment.css": "dfe4396f884f75608dc7edf5851ffe9d183638efe42ef3e60906bc0598642abb",
+  "src/app/v3/assessment.css": "3666d1db266ed1bc02a0c9c33d8444118bcaf6ed2cdaa90ba2ad8564b19402e7",
   "src/app/v3/tier-text.ts": "f28e88a1bd3a469505dbd8df8ccb36c3b309bc2cac96d61f3e86160c4cfc5406",
-  "src/app/v3/start/page.tsx": "caefd5f3105492e2137180037638069217f7e8b62e5e2519165ca4eaf3205b16",
-  "src/app/v3/start/start-form.tsx": "833dcc160d83adbdca52ccd992ba39d12a12103f60038ff08d56e07d878d4b53",
-  "src/app/v3/start/actions.ts": "56bab8bbc48429958f5373fd8063d12f708fff5c26e35a2e3c0a92fb1c2482b1",
-  "src/app/v3/[attemptId]/page.tsx": "0b3fcae01c0b7d00d0285617fc917042fb0f7b5d82970e806e9d78ea4da19465",
-  "src/app/v3/[attemptId]/screen.tsx": "a3c4e9218437d1e82201d858d644b85207b777f478586f3aa9afe77b9a076fb1",
+  "src/app/v3/start/page.tsx": "f58a2ff1175c44d3412c3e5bd1507f1f7ca7531cde1d90d7943b19fc8ec825e1",
+  "src/app/v3/start/start-form.tsx": "7d036552acb6beca01bace9adc746b9ac42991692de6204444592c1acea968bc",
+  "src/app/v3/start/actions.ts": "2ceadb6e32383a4b283fce33db1f92598cb7c5212d4f1166d49b53898c2720b8",
+  "src/app/v3/[attemptId]/page.tsx": "34fbbf4eac9316452fa2d288a4a428e1b41467edaad19d6a688d99c31dfe2cd3",
+  "src/app/v3/[attemptId]/screen.tsx": "0ad9c36f9e8affc64136db49bafe1d65cc3889ea950e1b86c3b63b3c6d24788c",
   "src/app/v3/[attemptId]/model.ts": "2ba568c6a8a953458b6e44023b4d87b09ba494f2343e0e9b66f69f628f6f0a8a",
   "src/app/v3/[attemptId]/actions.ts": "3541c53d5ae48c28544ef09cb282d84dc0466d20196ce2de7ea69c2d4c7faee7",
-  "src/lib/me-v3/runtime/blocks.ts": "e91a4120ea99b2105a4a40c089221c061c071d59fa242bcbf1d31dd8fe9951d4",
+  "src/lib/me-v3/runtime/blocks.ts": "f1462539c03552e671ffe4256172dbc7fa1c56524691fa0d8a062a7eac28cde7",
   "src/lib/me-v3/runtime/menus.ts": "3d0c85f82fb7fe9dde5b0ee6f9caccfa6109f1451a5f74f8fab8cf8ae4b21aeb",
-  "src/lib/me-v3/runtime/session.ts": "1565c6faf25a7d4cbb67b83bc30539ebdc6cd83de013511db74dd10c4aa85915",
-  "src/lib/me-v3/runtime/routing.ts": "e429d57db3966a3837739fb0cbaaf74f536fb9c7d92bf40622a32ca0224d67ed",
+  "src/lib/me-v3/runtime/session.ts": "b5682099b0bd6d562fe87dac5b4efa6b937753056848bab48637e1975e738d6c",
+  "src/lib/me-v3/runtime/routing.ts": "3fe3729fd010918f2a8e7ce043e994b3c7ac4699bb72497a290a17d97cf18b96",
   "src/lib/me-v3/runtime/progress.ts": "c1cf550f3215d15e5ba8de6bda8939a9ef0ee19564b90989008875a4eff92fd1"
  }
 }

@@ -51,7 +51,7 @@ export default async function Home() {
     BASIC_DONE: { href: "/me/state", label: "먼저 볼 영역 보기" },
     STANDARD_DONE: { href: "/me/state", label: "지금 상태 보기" },
     PRO_DONE: { href: "/me/state", label: "산업과 직무 언어로 보기" },
-    RECOMPUTED: { href: "/me/results", label: "무엇이 달라졌는지 보기" },
+    RECOMPUTED: { href: "/me/results", label: "최근 변화 보기" },
   }[st.stage];
 
   return (
@@ -174,9 +174,13 @@ export default async function Home() {
             </div>
           </div>
 
-          {/* 3. 현재 채울 부분 — 전부가 아니라 급한 셋 */}
-          <div className="cm-card">
-            <h2>현재 채울 부분 <em>급한 셋</em></h2>
+          {/* 3. 먼저 채워볼 부분 — 전부가 아니라 앞의 셋.
+                **`급한 셋` 이라고 적지 않는다**: 안쪽 기획에서 쓰던 말이고,
+                게다가 비었을 때의 문장(`비어 있는 자리가 잡히지 않았습니다`)
+                과 제목이 서로 다른 말을 하고 있었다. 자료가 없으면 카드를
+                조용히 눕힌다 */}
+          <div className={`cm-card${gaps.length ? "" : " is-empty"}`}>
+            <h2>먼저 채워볼 부분{gaps.length ? <em>앞의 {gaps.length}가지</em> : null}</h2>
             {gaps.length ? (
               <div className="cm-rows">
                 {gaps.map((g) => (
@@ -187,19 +191,21 @@ export default async function Home() {
               </div>
             ) : (
               <p>
-                지금 비어 있는 자리가 잡히지 않았습니다. 남은 일은 가진 근거를
-                지원서에서 설명할 문장으로 만드는 것입니다.
+                지금은 먼저 채울 부분이 없습니다. 가진 근거를 지원서에서
+                설명할 문장으로 만드는 것이 남은 일입니다.
               </p>
             )}
             <div className="cm-grow" />
             <div className="cm-acts">
-              <Link className="cm-btn" href="/me/state#gaps">왜 필요한지 보기</Link>
+              <Link className="cm-btn" href="/me/state#gaps">
+                {gaps.length ? "왜 필요한지 보기" : "지금 상태 보기"}
+              </Link>
             </div>
           </div>
 
           {/* 4. 최근 경험 */}
-          <div className="cm-card">
-            <h2>최근 경험 <em>{exps.length}개</em></h2>
+          <div className={`cm-card${exps.length ? "" : " is-empty"}`}>
+            <h2>최근 경험{exps.length ? <em>{exps.length}개</em> : null}</h2>
             {exps.length ? (
               <div className="cm-rows">
                 {exps.slice(0, 3).map((e) => (
@@ -217,7 +223,10 @@ export default async function Home() {
             )}
             <div className="cm-grow" />
             <div className="cm-acts">
-              <Link className="cm-btn is-primary" href="/me/experience/new">
+              {/* **홈의 primary 는 하나다.** 위쪽 상태 카드가 이미 그
+                  한 걸음을 들고 있어서, 여기까지 파랑으로 두면 어디를
+                  먼저 누를지가 화면에서 안 읽힌다 */}
+              <Link className="cm-btn" href="/me/experience/new">
                 {exps.length ? "경험 추가하기" : "첫 경험 추가"}
               </Link>
               {exps.length ? (
@@ -252,8 +261,15 @@ export default async function Home() {
 
           {/* 6. 변화 — 반영한 적이 있을 때만. 그래프를 그리지 않는다 */}
           {st.stage === "RECOMPUTED" ? (
-            <div className="cm-card">
-              <h2>무엇이 달라졌는지 <em>{st.recomputed_at} 기준</em></h2>
+            <div className={`cm-card${st.raised.length || st.zoneMoved.length
+              ? "" : " is-empty"}`}>
+              <h2>최근 변화 <em>{st.recomputed_at} 반영</em></h2>
+              {!st.raised.length && !st.zoneMoved.length ? (
+                <p>
+                  반영했지만 판단이 올라간 자리는 아직 없습니다. 같은 영역의
+                  근거가 둘이 되면 그때 올라갑니다.
+                </p>
+              ) : (
               <div className="cm-rows">
                 <p className="cm-row">
                   <b>올라간 판단</b>
@@ -275,6 +291,7 @@ export default async function Home() {
                   </span>
                 </p>
               </div>
+              )}
               <div className="cm-grow" />
               <div className="cm-acts">
                 <Link className="cm-btn" href="/me/recompute">반영한 내용 보기</Link>
@@ -300,7 +317,7 @@ export default async function Home() {
           {(profile?.target_industry?.length ?? 0) > 0
             || (profile?.target_role?.length ?? 0) > 0 || profile?.home_region ? (
             <div className="cm-card">
-              <h2>보고 있는 자리</h2>
+              <h2>관심 산업과 직무</h2>
               <div className="cm-rows">
                 {profile?.target_industry?.length ? (
                   <p className="cm-row"><b>산업</b>

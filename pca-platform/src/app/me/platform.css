@@ -538,3 +538,33 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
   .cm-snap-body { padding: 14px 16px; }
   .cm-gap p b { display: block; min-width: 0; }
 }
+
+/* ── 준비 중인 전공 ────────────────────────────────────────────────────
+   **활성 메뉴처럼 보이지 않게 한다.** 지금 열린 전공은 카드 하나뿐인데
+   준비 중인 아홉이 같은 칩으로 서 있어 눌리는 줄로 읽혔다. 한 단 작게
+   눕히고 바탕에 올린다 */
+.cm-quiet {
+  margin-top: 30px; padding: 18px 20px 20px;
+  background: var(--sf-bg);
+  border: 1px solid var(--sf-line-2); border-radius: 12px;
+}
+.cm-quiet > h2 {
+  margin: 0 0 6px; font-size: 15px; font-weight: 650;
+  color: var(--sf-ink-2); letter-spacing: -.01em;
+}
+.cm-quiet > p { margin: 0 0 12px; font-size: 13px; color: var(--sf-ink-3); }
+.cm-chips.is-quiet .cm-chip {
+  background: transparent; border-color: var(--sf-line-2);
+  color: var(--sf-ink-3); font-weight: 400;
+}
+
+/* ── 자료가 없는 카드 ──────────────────────────────────────────────────
+   빈 카드 셋이 대시보드의 절반을 먹지 않게 한다. 숨기지 않는 까닭은
+   그 자리가 있다는 것을 알아야 다음에 채우기 때문이고, 대신 자리를
+   덜 쓰고 조용히 선다 */
+.cm-card.is-empty {
+  background: var(--sf-bg);
+  border-style: dashed;
+}
+.cm-card.is-empty > h2 { font-size: 15px; color: var(--sf-ink-2); }
+.cm-card.is-empty > p { font-size: 13px; color: var(--sf-ink-3); }

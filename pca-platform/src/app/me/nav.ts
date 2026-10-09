@@ -54,20 +54,20 @@ export const CM_GROUPS: CmNavGroup[] = [
     title: "내 기록",
     items: [
       { href: "/me/results", label: "결과 기록",
-        hint: "검사 당시 결과와 종이", icon: "report" },
+        hint: "검사 당시 결과지와 PDF", icon: "report" },
       { href: "/me/experience", label: "내 경험", tabLabel: "경험",
         hint: "새 경험 추가 · 반영", icon: "layers", tab: true },
       { href: "/me/state", label: "지금 상태", tabLabel: "상태",
-        hint: "설명할 수 있는 경험과 비어 있는 자리", icon: "ladder", tab: true },
+        hint: "설명할 수 있는 경험과 보완할 부분", icon: "ladder", tab: true },
       { href: "/me/next", label: "다음 할 일",
-        hint: "지금 · 다음 과제에서 · 나중에", icon: "spark" },
+        hint: "할 수 있는 때로 묶어서", icon: "spark" },
     ],
   },
   {
     title: "넓게 보기",
     items: [
       { href: "/me/explore", label: "산업과 직무",
-        hint: "여덟 산업과 여덟 직무 전부", icon: "compass" },
+        hint: "관심 산업과 직무 둘러보기", icon: "compass" },
       { href: "/me/region", label: "지역과 기관",
         hint: "일하고 싶은 권역과 기관 유형", icon: "globe" },
       { href: "/me/apply", label: "지원한 곳",
@@ -78,7 +78,7 @@ export const CM_GROUPS: CmNavGroup[] = [
     title: "준비 중",
     items: [
       { href: "/me/track", label: "Track",
-        hint: "바뀔 때 다시 계산해 주는 자리", icon: "globe" },
+        hint: "준비 중입니다", icon: "globe" },
     ],
   },
 ];

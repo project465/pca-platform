@@ -3,6 +3,8 @@
 import { useCallback, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { UNKNOWN, type Answer } from "@/lib/me-v3/scoring/types";
+import type { GradField, Stage, UndergradCore } from "@/lib/me-v3/scoring/types";
+import { eligible } from "@/lib/me-v3/runtime/routing";
 import {
   answerAction, cursorAction, finishAction, noteAction, picksAction,
   picksAction3, profileAction,
@@ -107,11 +109,18 @@ export default function Screen({
    * 셋째를 누르면 가장 먼저 고른 것이 빠진다. 꽉 찼다고 막으면 응시자는
    * 무엇을 지워야 하는지 모른 채 눌리지 않는 화면을 본다.
    */
+  /**
+   * 관심 산업과 역할과 조직. **둘까지다.**
+   *
+   * 전에는 셋째를 누르면 가장 먼저 고른 것이 **조용히 빠졌다.** 자동으로
+   * 빠지는 것은 예상할 수 없고, 빠진 뒤에 무엇이 빠졌는지도 알 수 없다.
+   * 꽉 차면 나머지를 못 누르게 하고 **무엇을 지우면 되는지** 적는다.
+   */
   const toggleMany = (code: string) => {
     const max = s.max ?? 2;
-    const next = many.includes(code)
-      ? many.filter((x) => x !== code)
-      : [...many, code].slice(-max);
+    const on = many.includes(code);
+    if (!on && many.length >= max) return;
+    const next = on ? many.filter((x) => x !== code) : [...many, code];
     setMany(next);
     setNoPick(false);
     if (s.pickKind) push(() => picksAction3(s.attemptId, s.pickKind as string as "industry", next));
@@ -123,7 +132,28 @@ export default function Screen({
   };
 
   const filled = s.fields.every((f) => vals[f.itemId] !== null && vals[f.itemId] !== undefined);
-  const blocked = s.required && !filled;
+
+  /**
+   * 기본 정보 화면에서 **이 Core 를 받을 수 있는가.**
+   *
+   * `eligible()` 은 전부터 이 규칙을 들고 있었는데 **부르는 자리가 한
+   * 곳도 없었다.** 그래서 학부와 대학원이 모두 비기계인 분에게 경고만
+   * 띄우고 마흔 문항을 끝까지 받았고, 그 끝에 드릴 수 있는 결과가 없다.
+   * 묻기 전에 막는 자리가 여기다.
+   *
+   * **임의로 좁히지 않는다.** 막는 경우는 `eligible()` 이 적어 둔 하나뿐
+   * 이다(대학원이 인문·사회나 경상이고 학부도 기계공학이 아닌 경우).
+   * 학부생과 이공계·융합 대학원생은 그대로 지나간다.
+   */
+  const gate = s.profile
+    ? eligible(
+        (stage || null) as Stage | null,
+        stage === "bachelor" ? null : ((field || null) as GradField | null),
+        (undergrad || null) as UndergradCore | null)
+    : { ok: true, reason: null };
+  const needMore = s.profile ? gate.reason === "NEED_PROFILE" : false;
+  const offCore = s.profile ? gate.reason === "NON_ME_GRADUATE" : false;
+  const blocked = (s.required && !filled) || needMore || offCore;
 
   const go = async (to: number | null) => {
     if (to === null) return;
@@ -274,14 +304,25 @@ export default function Screen({
                   </div>
                 </fieldset>
               ) : null}
-            {stage !== "bachelor" && undergrad === "OTHER"
-              && (field === "HUMANITIES_SOCIAL" || field === "BUSINESS") ? (
-                <p className="qs-need" style={{ marginTop: 16, display: "block" }}>
-                  이 검사는 기계공학 경험을 읽습니다. 학부와 대학원 모두
-                  기계공학 계열이 아니면 드릴 수 있는 결과가 없습니다.
-                  전공별 검사가 준비되면 알려드리겠습니다.
+            {/* **경고만 띄우고 통과시키지 않는다.** 전에는 같은 문장을
+                적어 두고 `다음` 이 그대로 눌렸다. 끝까지 풀고 나서
+                드릴 결과가 없다고 말하는 것이 가장 나쁜 순서다. 여기서
+                멈추고 전공 고르는 자리로 돌려보낸다 */}
+            {offCore ? (
+              <div className="qs-stop" role="alert">
+                <b>이 검사는 기계공학 경험을 읽습니다.</b>
+                <p>
+                  학부와 대학원이 모두 기계공학 계열이 아니면 지금 드릴 수
+                  있는 결과가 없습니다. 끝까지 답하셔도 결과가 비어 있어
+                  여기서 멈춥니다.
                 </p>
-              ) : null}
+                <p>
+                  학부가 기계공학 계열이면 위에서 다시 골라주세요. 전공별
+                  검사는 준비되는 대로 전공 목록에 열립니다.
+                </p>
+                <a className="qs-btn qs-btn-main" href="/cores">전공 목록으로</a>
+              </div>
+            ) : null}
           </>
         ) : null}
 
@@ -317,10 +358,10 @@ export default function Screen({
         {/* ── 근거 고르기 ── **스무 줄짜리 목록으로 세우지 않는다** */}
         {s.groups ? (
           <>
-            <p className="qs-picked">
-              <span>선택한 항목 <b>{Object.values(picks).reduce((n, v) => n + v.length, 0)}</b>개</span>
+            <p className="qs-picked is-lead">
+              <span>고른 항목 <b>{Object.values(picks).reduce((n, v) => n + v.length, 0)}</b>개</span>
               <span className="qs-grow" />
-              <span>여러 개 선택할 수 있습니다</span>
+              <span className="qs-hint">해당하는 것만 골라주세요. 없으면 넘어가도 됩니다</span>
             </p>
             {s.groups.map((g) => {
               const on = picks[g.slot] ?? [];
@@ -351,24 +392,29 @@ export default function Screen({
         {/* ── 산업과 역할과 조직 고르기 ── **둘까지 고르고 강제하지 않는다** */}
         {s.packs ? (
           <>
-            <p className="qs-picked">
-              <span>선택 <b>{many.length}</b> / {s.max ?? 2}</span>
+            <p className="qs-picked is-lead">
+              <span><b>{many.length}</b> / {s.max ?? 2} 선택</span>
               <span className="qs-grow" />
-              <span>{many.length >= (s.max ?? 2)
-                ? "다른 것을 고르면 먼저 고른 것이 빠집니다"
+              <span className="qs-hint">{many.length >= (s.max ?? 2)
+                ? "둘까지 고를 수 있습니다. 바꾸려면 고른 것을 한 번 더 누르세요"
                 : "고르지 않고 넘어가셔도 됩니다"}</span>
             </p>
             <fieldset className="qs-opts" style={{ margin: 0, border: 0, padding: 0 }}>
               <legend>{s.question}</legend>
               <div className="qs-cards">
-                {s.packs.map((p) => (
-                  <label key={p.code} className={`qs-card${many.includes(p.code) ? " is-on" : ""}`}>
-                    <input type="checkbox" value={p.code} checked={many.includes(p.code)}
+                {s.packs.map((p) => {
+                  const on = many.includes(p.code);
+                  const off = !on && many.length >= (s.max ?? 2);
+                  return (
+                  <label key={p.code}
+                    className={`qs-card${on ? " is-on" : ""}${off ? " is-off" : ""}`}>
+                    <input type="checkbox" value={p.code} checked={on} disabled={off}
                       onChange={() => toggleMany(p.code)} />
                     <b>{p.name}</b>
                     <span>{p.gloss}</span>
                   </label>
-                ))}
+                  );
+                })}
               </div>
             </fieldset>
             <button type="button"
@@ -449,7 +495,8 @@ export default function Screen({
           <span className="qs-grow" />
           {/* 전환과 완료에는 저장할 것이 없다. 거기 띄우면 뜻 없는 글자가
               다음 걸음 옆에 선다 */}
-          {warn ? <span className="qs-need">답을 고른 뒤 다음으로 넘어가세요</span>
+          {warn && !offCore
+            ? <span className="qs-need">답을 고른 뒤 다음으로 넘어가세요</span>
             : mid ? null
               : saving > 0 ? <span className="qs-save">저장 중</span>
                 : sent ? <span className="qs-save">저장됨</span>
@@ -462,8 +509,12 @@ export default function Screen({
                 onClick={finish} disabled={moving}>결과 만들기</button>
             )
           ) : (
+            /* **멈추는 자리에서는 단추도 멈춘다.** `next()` 가 거절하는
+               것만으로는 눌러 본 사람이 고장으로 읽는다. 답을 아직 안
+               고른 경우는 끄지 않는다: 그때는 끄는 것보다 왜 못 넘어가는지
+               한 줄 적는 쪽이 낫다 */
             <button type="button" className="qs-btn qs-btn-main"
-              onClick={next} disabled={moving || s.nextIndex === null}>
+              onClick={next} disabled={moving || s.nextIndex === null || offCore}>
               {s.kind === "transition" ? "계속" : "다음"}
             </button>
           )}
@@ -495,12 +546,10 @@ function One({
               <input type="radio" name={f.itemId} checked={value === i}
                 onChange={() => onPick(f, i, { kind: "level", index: i })} />
               <span className="qs-mark" aria-hidden />
-              {/* 네 칸 눈금. **점수가 아니라 누가 정했는가의 단계다** */}
-              {f.optionTag ? (
-                <span className="qs-step" aria-hidden>
-                  {[0, 1, 2, 3].map((k) => <i key={k} className={k <= i ? "on" : ""} />)}
-                </span>
-              ) : null}
+              {/* **눈금을 두지 않는다.** 한 칸씩 올라가는 막대를 보기 옆에
+                  두니 `1점 · 2점 · 3점 · 4점` 으로 읽혔다. 이 넷은 누가
+                  정했는가의 단계이고 점수가 아니다. 그 단계를 말하는 것은
+                  보기 문면과 오른쪽 네 글자 꼬리표다 */}
               <span className="qs-body">
                 <span className="qs-label">{label}</span>
                 {f.optionHelp?.[i] ? <span className="qs-gloss">{f.optionHelp[i]}</span> : null}
@@ -639,9 +688,13 @@ function Row({
     );
   }
   if (c.kind === "level" || c.kind === "choice") {
+    /* **각 상자의 질문을 눈에 보이게 세운다.** `One` 의 `legend` 는 보조
+       기기용으로 숨겨져 있어서, 이 줄이 없으면 보기 넷만 둘 나란히 서고
+       무엇에 답하는지가 화면에 없다. 보조 기기는 `legend` 로 같은 말을
+       한 번 받으므로 여기서는 `aria-hidden` 으로 되풀이를 막는다 */
     return (
       <div className="qs-row">
-        {f.label ? <span>{f.label}</span> : null}
+        {f.label ? <span aria-hidden>{f.label}</span> : null}
         <One f={f} value={value} onPick={onPick}
           notes={notes} onNote={onNote} onNoteDone={onNoteDone} />
       </div>

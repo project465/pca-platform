@@ -172,6 +172,16 @@ export type Deps = {
   roleName: (code: string) => string;
 };
 
+/**
+ * 한 화면에 문항이 둘일 때의 머리글.
+ *
+ * **`해 보신 적이 있는 쪽을 골라주세요` 로 두지 않는다.** `쪽` 은 둘 중
+ * 하나를 고르라는 말로 읽히는데 실제로는 **둘에 각각 답하는 화면**이다.
+ * 그리고 각 상자에는 이제 그 문항의 문면이 질문으로 선다(`page.tsx` 가
+ * 문항이 둘 이상인 화면에 줄을 준다). 머리글은 그 둘을 묶는 틀이다.
+ */
+const TWO_ASK = "아래 두 가지에 각각 답해주세요";
+
 /** 등급이 겹쳐 쌓이는 차례. BASIC ⊂ STANDARD ⊂ PRO */
 const TIER_RANK: Record<string, number> = { BASIC: 0, STANDARD: 1, PRO: 2 };
 
@@ -209,19 +219,35 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
     help: "최대 두 개까지 고를 수 있습니다. 아직 모르겠으면 넘어가도 됩니다.",
     items: [],
   });
-  for (const code of input.industryInterest) {
-    const sc = d.scene(code);
-    if (!sc) continue;
+  /**
+   * 고른 산업의 장면. **한 화면에 모은다.**
+   *
+   * 전에는 산업마다 화면을 하나씩 세웠다. 읽는 것은 각각 네 줄인데
+   * 화면이 둘이 되어, 넘기는 사람에게는 같은 모양이 두 번 나온다. 둘을
+   * 나란히 두면 **견주면서** 읽히고 그것이 이 자리가 있는 까닭이다
+   * (고른 산업을 Core 문항 앞에서 이해시키는 전환 자리).
+   *
+   * **점수를 만들지 않는다**: `items` 가 비어 있고 읽기만 한다. 그래서
+   * 화면을 합쳐도 받는 응답이 한 줄도 줄지 않는다.
+   */
+  const scenes = input.industryInterest
+    .map((code) => ({ code, sc: d.scene(code) }))
+    .filter((x): x is { code: string; sc: NonNullable<ReturnType<Deps["scene"]>> } => !!x.sc);
+  if (scenes.length) {
     add({
-      id: `scene-${code}`, stage: "FIELD", kind: "scene",
-      required: false, auto: false, pack: code,
+      id: "scene", stage: "FIELD", kind: "scene",
+      required: false, auto: false,
+      pack: scenes[0].code,
       eyebrow: "산업 장면",
-      subject: sc.name,
-      /* **긴 설명을 머리글로 올리지 않는다.** 장면 한 절을 제목 크기로
-         세우면 다섯 줄짜리 덩이가 되고, 쉬는 자리가 읽는 자리가 된다 */
-      question: `${sc.name}에서 기계공학자가 다루는 일`,
-      help: sc.scene,
-      body: sc.demands,
+      subject: scenes.map((x) => x.sc.name).join(" · "),
+      question: scenes.length > 1
+        ? "고른 두 산업에서 기계공학자가 다루는 일"
+        : `${scenes[0].sc.name}에서 기계공학자가 다루는 일`,
+      help: scenes.map((x) => x.sc.scene).join(" "),
+      /* 산업이 둘이면 어느 산업의 줄인지 앞에 적는다 */
+      body: scenes.length > 1
+        ? scenes.flatMap((x) => x.sc.demands.map((t) => `${x.sc.name} — ${t}`))
+        : scenes[0].sc.demands,
       items: [],
     });
   }
@@ -246,13 +272,35 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
 
   /* 묶인 영역 가르기. 묶이지 않았으면 띄우지 않는다 */
   if (input.tiedPair.length >= 2) {
+    /**
+     * **두 화면이 같은 보기를 다시 내므로 무엇이 다른지 적는다.**
+     *
+     * 앞 화면은 `먼저 해 본다면`, 뒤 화면은 `더 알아보고 싶은`이다. 둘은
+     * 서로 다른 것을 묻지만 보기가 같아서, 같은 머리말과 같은 도움말을
+     * 달아 두면 응시자는 `방금 골랐는데 왜 또 묻지` 로 읽는다.
+     *
+     * **`점수에는 반영되지 않습니다` 를 쓰지 않는다.** CareerMatri 는
+     * 총점을 내는 서비스가 아닌데 점수를 입에 올리면 점수가 있다고
+     * 느끼게 된다. 그 자리에 **무엇에 쓰는 답인지**를 적는다.
+     */
+    const FORCE_COPY: Record<string, { eyebrow: string; help: string }> = {
+      CF_PAIR_1: {
+        eyebrow: "먼저 해 볼 쪽",
+        help: "비슷하게 답하신 두 영역입니다. 먼저 직접 해 본다면 어느 쪽인지 골라주세요.",
+      },
+      CF_PAIR_2: {
+        eyebrow: "더 알아보고 싶은 쪽",
+        help: "앞 질문과 별개입니다. 해 보는 것과 상관없이 지금 더 알아보고 싶은 쪽을 골라주세요.",
+      },
+    };
     for (const i of byModule("CORE-FORCE")) {
+      const c = FORCE_COPY[i.item_id];
       add({
         id: `force-${i.item_id}`, stage: "EXPLORE", kind: "single",
         required: true, auto: true,
-        eyebrow: "한 가지만 더",
+        eyebrow: c?.eyebrow ?? "한 가지만 더",
         question: wording(i.item_id, input.stage),
-        help: "비슷하게 답하신 영역이 있어 한 가지만 더 묻습니다. 점수에는 반영되지 않습니다.",
+        help: c?.help ?? "비슷하게 답하신 두 영역을 한 번만 더 가릅니다.",
         items: [i.item_id],
       });
     }
@@ -282,7 +330,7 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
       required: true, auto: pair.length === 1,
       eyebrow: "일하는 방식",
       question: pair.length > 1
-        ? "해 보신 적이 있는 쪽을 골라주세요"
+        ? TWO_ASK
         : wording(pair[0].item_id, input.stage),
       items: pair.map((i) => i.item_id),
     });
@@ -297,7 +345,7 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
       required: false, auto: pair.length === 1,
       eyebrow: bc.eyebrow,
       question: pair.length > 1
-        ? "해 보신 적이 있는 쪽을 골라주세요"
+        ? TWO_ASK
         : wording(pair[0].item_id, input.stage),
       help: n === 0 ? bc.help : undefined,
       items: pair.map((i) => i.item_id),
@@ -314,7 +362,7 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
         id: "t-xfield", stage: "JUDGE", kind: "transition",
         required: false, auto: false,
         subject: "대학원 경험은 따로 받습니다",
-        question: "네 가지만 더 묻고 기술영역 판정에는 넣지 않습니다",
+        question: "대학원에서의 경험을 조금 더 확인하겠습니다",
         help: ["대학원에서 다룬 분야", "그 방법 가운데 옮겨 쓸 수 있는 것",
                "기계공학 쪽 작업을 마지막으로 한 때", "학부에서 가장 깊게 간 작업"]
           .join(" · "),
@@ -327,7 +375,7 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
         required: false, auto: true,
         eyebrow: "대학원 경험",
         question: wording(i.item_id, input.stage),
-        help: "기술영역 판정에 넣지 않습니다. 경험을 직무 말로 옮길 때만 읽습니다.",
+        help: "적어 주신 내용은 경험을 직무 언어로 옮길 때 씁니다.",
         items: [i.item_id],
       });
     }
@@ -361,8 +409,7 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
         required: false, auto: cell.length === 1,
         eyebrow: domainName(td),
         subject: AX_LABEL[ax] ?? "",
-        question: cell.length > 1
-          ? `${domainName(td)}에서 ${AX_LABEL[ax]}에 해당하는 일`
+        question: cell.length > 1 ? TWO_ASK
           : wording(cell[0].item_id, input.stage),
         items: cell.map((x) => x.item_id), domain: td,
       });
@@ -389,7 +436,7 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
           eyebrow: domainName(td),
           subject: pair.map((i) => AX_LABEL[i.evidence_axis ?? ""] ?? "").join(" · "),
           question: pair.length > 1
-            ? "해 보신 적이 있는 쪽을 골라주세요"
+            ? TWO_ASK
             : wording(pair[0].item_id, input.stage),
           items: pair.map((i) => i.item_id), domain: td,
         });

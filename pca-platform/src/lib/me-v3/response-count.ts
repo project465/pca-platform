@@ -121,3 +121,46 @@ export function minutes(b: Blocks): Record<string, number> {
     upgradeToProWithPack: m(proAdd + packAdd),
   };
 }
+
+/**
+ * **실제 계획을 세어 본다.** blueprint 를 다시 세는 것과 다른 답이 나온다.
+ *
+ * 위의 `counts()` 와 `minutes()` 는 blueprint 의 블록 크기에서 계산한다.
+ * 그 값은 문항 은행이 그렇게 적혀 있다는 뜻이고, **한 사람이 실제로 받는
+ * 수는 routing 이 정한다.** 둘이 갈려 있었다: blueprint 로는 BASIC 48문항 ·
+ * 11분인데 실제 계획은 46문항 · 12분이다. 시작 화면이 앞엣것을 적고 있어서
+ * 응시자가 받은 수와 본 수가 달랐다.
+ *
+ * 그래서 사람에게 보여 주는 수는 전부 이 함수를 지난다. 받는 것은 계획의
+ * 화면 모양뿐이라 이 파일이 `blocks.ts` 를 들여오지 않는다(서로 들여오면
+ * 고리가 생긴다).
+ *
+ * **추정 시간은 실측이 아니다.** 파일럿에서 `v3_responses.answered_at` 으로
+ * 재서 고친다.
+ */
+export function screenSeconds(kind: string, items: number): number {
+  const S = SECONDS;
+  switch (kind) {
+    case "profile": return 40;
+    case "scene": return S.scene;
+    case "transition": return 8;
+    case "done": return 0;
+    case "checklist": return S.checklist;
+    case "pick-industry": case "pick-role": case "pick-org": return S.pick;
+    case "sweep": return items * S.grid + 10;
+    /* 같은 축의 두 문항이 한 화면에 선다. 머리말과 영역 이름을 다시 읽지
+       않으므로 둘째가 싸다 */
+    case "pair": return S.lv4 + (items - 1) * 9;
+    case "group": return items > 2 ? S.trans + (items - 1) * 30 : items * S.pick;
+    default: return items * S.lv4;
+  }
+}
+
+export function planCost(
+  screens: { kind: string; items: unknown[] }[],
+): { screens: number; responses: number; minutes: number } {
+  const responses = screens.reduce((a, s) => a + s.items.length, 0);
+  const sec = screens.reduce(
+    (a, s) => a + screenSeconds(s.kind, s.items.length) + SECONDS.turn, 0);
+  return { screens: screens.length, responses, minutes: Math.round(sec / 60) };
+}

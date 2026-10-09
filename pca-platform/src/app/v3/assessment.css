@@ -32,11 +32,13 @@
      고르거나 훑는 자리는 넓어야 한눈에 들어온다. 숫자 하나만 키우면
      질문이 두 줄에서 한 줄이 되어 읽는 속도가 떨어진다 */
   --q-col: 672px;              /* 질문 · 보기 넷 · 격자 */
+  --q-col-intro: 1040px;       /* 읽고 시작하는 자리. 질문보다 한 단 넓다 */
   --q-gutter: 20px;
 
   --q-t-q: clamp(23px, 2.6vw, 30px);   /* 질문 */
   --q-t-opt: 16px;                      /* 보기 */
   --q-t-subject: 17px;                  /* 무엇을 묻는 자리인가 */
+  --q-t-pair: 18px;                     /* 두 문항이 한 화면일 때 각 질문 */
   --q-t-body: 14.5px;
   --q-t-gloss: 13.5px;                  /* 보기 아래 뜻 */
   --q-t-meta: 12px;                     /* 머리말 · 진행 · 상태 */
@@ -129,11 +131,23 @@
 }
 
 /* ── 본문 ── 한 줄 읽기 폭. 질문이 가장 크다 */
+/**
+ * **아래로 남는 자리를 줄인다.**
+ *
+ * 전에는 바닥 여백이 148px 이었다. 단추 띠가 실제로 먹는 높이보다 한참
+ * 크고, 1080p 에서는 질문 아래에 빈 띠가 한 뼘 남아 질문이 화면 가운데
+ * 떠 있는 것처럼 보였다. 띠 높이(`--q-nav-h`)에 숨 쉴 자리만 더한다.
+ *
+ * **세로로 가운데 세우지 않는다.** 가운데로 모으면 화면마다 질문이
+ * 올라갔다 내려가서 눈이 그 자리를 다시 찾는다. 위 여백은 늘 같다.
+ */
+.qs { --q-nav-h: 84px; }
 .qs-main {
   flex: 1 1 auto;
   width: 100%; max-width: var(--q-col);
   margin: 0 auto;
-  padding: clamp(36px, 6vh, 64px) var(--q-gutter) 148px;
+  padding: clamp(28px, 4.2vh, 44px) var(--q-gutter)
+           calc(var(--q-nav-h) + var(--q-s5));
 }
 .qs-eyebrow {
   margin: 0 0 var(--q-s1); font-size: var(--q-t-meta); font-weight: 600;
@@ -227,21 +241,19 @@
  * **점수를 뜻하지 않는다**: 네 칸은 소유의 단계이고 높을수록 좋다는 말이
  * 아니라 누가 정했는가가 다르다는 말이다.
  */
-.qs-step {
-  flex: none; display: flex; align-items: flex-end; gap: 2px;
-  width: 26px; height: 16px; margin-top: 5px;
-}
-.qs-step i {
-  flex: 1 1 0; border-radius: 1px;
-  background: var(--q-line); transition: background .12s ease;
-}
-.qs-step i:nth-child(1) { height: 25%; }
-.qs-step i:nth-child(2) { height: 50%; }
-.qs-step i:nth-child(3) { height: 75%; }
-.qs-step i:nth-child(4) { height: 100%; }
-.qs-step i.on { background: var(--sf-ink-3); }
-.qs-opt.is-on .qs-step i.on { background: var(--q-accent); }
-.qs-opt.is-on .qs-step i { background: var(--q-accent-line); }
+/**
+ * 소유 넷의 눈금을 **걷었다.**
+ *
+ * 한 칸씩 올라가는 막대를 보기 옆에 두니 `1점 · 2점 · 3점 · 4점` 으로
+ * 읽혔다. CareerMatri 는 총점을 내지 않으므로 서열 점수처럼 보이는 그림을
+ * 보기 옆에 둘 수 없다. 사다리를 말하는 것은 보기 문면과 네 글자
+ * 꼬리표(`해 본 적 없음 · 조건은 주어짐 · 내가 수행 · 내가 결정`)이고,
+ * 그 둘로 충분하다는 것이 실사용 지적이었다.
+ *
+ * 규칙만 남겨 두지 않고 그리는 자리(`screen.tsx`)에서도 지웠다: 규칙만
+ * 지우면 없는 이름을 읽는 markup 이 남고, 이 저장소에서 그 탈이 여섯 번
+ * 났다.
+ */
 
 /* 보기 읽는 법. 보기 넷 아래 한 줄 */
 .qs-guide {
@@ -329,10 +341,39 @@
 .qs-cell:has(input:focus-visible) { outline: 2px solid var(--q-accent); outline-offset: 2px; }
 
 /* ── 격자 ── 한 영역의 셋을 함께 읽어야 뜻이 선다 */
-.qs-rows { display: flex; flex-direction: column; gap: var(--q-s4); margin-top: var(--q-s5); }
+.qs-rows { display: flex; flex-direction: column; gap: var(--q-s5); margin-top: var(--q-s5); }
+
+/**
+ * 한 화면에 문항이 둘일 때 **각 상자의 질문**.
+ *
+ * 전에는 이 자리가 보기 아래 뜻과 같은 크기(13.5px)에 흐린 색이었고, 게다가
+ * `pair` 화면에서는 줄 자체가 비어 있었다. 그래서 보기 넷짜리 상자가 둘
+ * 나란히 서고 **무엇에 답하는지가 화면에 없었다.** 큰 글씨는 둘이 같이 쓰는
+ * 안내문이라 둘을 가르지 못한다.
+ *
+ * 질문 크기(`--q-t-q`)로 올리지 않는 까닭은 그러면 한 화면에 큰 글씨가
+ * 셋이 되기 때문이다. 묻는 대상 크기(17px)에 짙은 색이면 안내문 아래에서
+ * 각 상자의 주인으로 읽힌다.
+ */
 .qs-row > span {
-  display: block; font-size: var(--q-t-gloss); font-weight: 600;
-  color: var(--q-ink-2); letter-spacing: -.01em;
+  display: block; font-size: var(--q-t-pair); font-weight: 650;
+  color: var(--q-ink); letter-spacing: -.012em; line-height: 1.45;
+  word-break: keep-all; margin-bottom: var(--q-s2);
+}
+/**
+ * **두 문항이 한 화면에 서면 큰 글씨를 한 단 내린다.**
+ *
+ * 그 자리의 큰 글씨(`아래 두 가지에 각각 답해주세요`)는 둘을 같이 가리키는
+ * 안내문이라 아무것도 묻지 않는다. 그대로 두면 화면에서 가장 큰 글씨가
+ * 질문이 아닌 줄이 되고, 실제 질문 둘이 그 아래 작은 글씨로 눕는다.
+ * 안내문을 지우지는 않는다: 보기 여덟 개가 왜 한 화면에 있는지를 그 줄이
+ * 말해 준다.
+ */
+.qs-main:has(.qs-rows) .qs-q { font-size: clamp(19px, 1.9vw, 22px); }
+
+/* 둘 사이에 선을 하나 둔다. 상자가 어디서 갈리는지 눈으로 보인다 */
+.qs-rows > .qs-row + .qs-row {
+  border-top: 1px solid var(--q-line); padding-top: var(--q-s5);
 }
 
 /**
@@ -627,9 +668,17 @@
 .qs-need { font-size: var(--q-t-meta); color: var(--sf-part); font-weight: 600; }
 
 /* ── 시작과 완료 ── */
+/**
+ * 시작 화면.
+ *
+ * 질문 화면보다 조금 넓다(880 → 1040). 1920 에서 880px 짜리 덩이가
+ * 가운데 위에 떠 있어 **작은 랜딩**처럼 보였다는 지적이 있었다. 거대한
+ * 히어로로 만들지 않는다: 폭을 한 단 넓히고 위 여백을 줄여 시작 단추가
+ * 한 화면 안에 들어오게 하는 데까지다.
+ */
 .qs-intro {
-  width: 100%; max-width: var(--q-col); margin: 0 auto;
-  padding: clamp(40px, 7vh, 80px) var(--q-gutter) 72px;
+  width: 100%; max-width: var(--q-col-intro); margin: 0 auto;
+  padding: clamp(28px, 4.5vh, 52px) var(--q-gutter) 72px;
 }
 .qs-kicker {
   font-size: var(--q-t-meta); font-weight: 600; letter-spacing: .08em;
@@ -654,9 +703,10 @@
 }
 @media (min-width: 720px) { .qs-three { grid-template-columns: repeat(3, 1fr); gap: var(--q-s3); } }
 .qs-three li {
-  padding: 18px 20px;
+  padding: 22px 22px 24px;
   background: var(--q-paper);
   border: 1px solid var(--q-line); border-radius: var(--q-r);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
 }
 .qs-three b {
   display: block; margin-bottom: 6px;
@@ -766,3 +816,44 @@
 }
 .qs-optfold li:last-child { margin-bottom: 0; }
 .qs-optfold li b { color: var(--q-ink); font-weight: 600; margin-right: 6px; }
+
+/* ── 여기서 멈추는 자리 ────────────────────────────────────────────────
+   이 Core 로는 드릴 결과가 없는 분을 **묻기 전에** 세운다. 경고 한 줄로
+   두고 `다음` 을 열어 두면 마흔 문항을 끝까지 받고 나서 빈 결과를 준다 */
+.qs-stop {
+  margin-top: var(--q-s5); padding: 20px 22px 22px;
+  background: var(--q-paper);
+  border: 1px solid var(--sf-warn-line, var(--q-line));
+  border-left: 3px solid var(--sf-warn, var(--q-accent));
+  border-radius: var(--q-r);
+}
+.qs-stop b {
+  display: block; margin-bottom: var(--q-s2);
+  font-size: var(--q-t-subject); font-weight: 650; color: var(--q-ink);
+  letter-spacing: -.015em;
+}
+.qs-stop p { margin: 0 0 var(--q-s2); font-size: var(--q-t-body); color: var(--q-ink-2); }
+.qs-stop > a { margin-top: var(--q-s2); }
+
+/* ── 근거 고르기의 선택 상태 ────────────────────────────────────────────
+   **고른 수가 이 화면의 값이다.** 전에는 13.5px 흐린 한 줄이라 스무 개가
+   넘는 칩 위에서 안 읽혔다. 머리 위에 붙여 두고 글자를 올린다. 접지는
+   않는다: 고른 항목이 소유 판정의 근거라 접는 쪽이 판정을 바꾼다 */
+.qs-picked.is-lead {
+  position: sticky; top: calc(var(--q-head-h, 58px) + 4px); z-index: 2;
+  align-items: center; gap: var(--q-s3);
+  margin: var(--q-s4) 0 0; padding: 11px 14px;
+  background: var(--q-paper);
+  border: 1px solid var(--q-line); border-radius: var(--q-r-sm);
+  font-size: var(--q-t-body); color: var(--q-ink-2);
+}
+.qs-picked.is-lead b { font-size: var(--q-t-subject); }
+.qs-picked.is-lead .qs-hint { font-size: var(--q-t-gloss); color: var(--q-ink-3); }
+
+/* 꽉 찼을 때 못 고르는 카드. **자동으로 빼지 않는다**: 먼저 고른 것이
+   조용히 사라지면 응시자는 무엇이 빠졌는지 모른다 */
+.qs-card.is-off {
+  opacity: .5; cursor: not-allowed;
+  border-color: var(--q-line-soft); background: var(--q-field);
+}
+.qs-card.is-off:hover { border-color: var(--q-line-soft); }

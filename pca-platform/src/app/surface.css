@@ -1430,21 +1430,36 @@
  * 스크롤과 함께 사라지는데, 가짜 결제를 누르는 자리는 쪽 한가운데다.
  * 아래에 띠로 깔고 쪽 바닥 여백을 그만큼 띄운다.
  */
+/**
+ * **조용한 시스템 띠로 둔다.**
+ *
+ * 금색 바탕에 금색 글씨로 모든 쪽 바닥에 떠 있어서, 본문과 자리를 다퉜다.
+ * 특히 검사의 단추 띠와 결과지 끝에서 가장 눈에 들어오는 덩이가 이것이
+ * 됐다. 공개 전에는 **있어야 하는 줄이 맞다**(눌러 본 사람이 가짜 결제를
+ * 진짜로 읽는 것이 더 비싸다). 그래서 지우지 않고 무게만 내린다:
+ * 중성 바탕 · 작은 글자 · 한 줄.
+ *
+ * 운영으로 넘어가는 날 이 띠는 **코드가 아니라 설정으로** 사라진다
+ * (`appEnv() !== "staging"`). 켜고 끄는 조건이 `APP_ENV` 하나라서
+ * `staging:check` 가 그것을 센다.
+ */
 .stgmark {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 90;
   display: flex; align-items: center; justify-content: center;
-  gap: 10px; flex-wrap: wrap;
-  padding: 9px 16px;
-  background: var(--sf-gold-soft); border-top: 1px solid var(--sf-gold-line);
-  color: var(--sf-gold); font-size: 12.5px; line-height: 1.5; text-align: center;
+  gap: 8px; flex-wrap: wrap;
+  padding: 7px 16px;
+  background: color-mix(in srgb, var(--sf-ink) 90%, transparent);
+  border-top: 0;
+  color: #e6eaf2; font-size: 11.5px; line-height: 1.45; text-align: center;
+  letter-spacing: .01em;
 }
-.stgmark b { font-weight: 700 }
-.stgmark span { color: var(--sf-ink-2) }
+.stgmark b { font-weight: 650; color: #fff }
+.stgmark span { color: #b9c3d4 }
 /* **띠는 쪽 높이를 늘리지 않는다.** 바닥 여백만 띄우고, 그만큼을
    `--stg-h` 로 알려 100vh 뼈대가 빼고 선다. 여기서 끝내면 문서가
    창보다 44px 높아져서 **짧은 쪽에도 세로 스크롤바가 생기고**, 그때
    쪽 폭이 스크롤바만큼 줄어든다. 공개 전에만 폭이 다른 제품이 된다 */
-body:has(.stgmark) { --stg-h: 44px; padding-bottom: var(--stg-h) }
+body:has(.stgmark) { --stg-h: 36px; padding-bottom: var(--stg-h) }
 /* **공개 전 띠가 응시의 단추를 덮지 않는다.** 둘 다 바닥에 붙는 고정
    요소이고 띠가 `z-index: 90`, 응시의 단추 띠가 `5` 라서 띠가 위에
    깔렸다. 눈으로는 단추가 보이는데 누르면 띠가 받아 갔고, 그래서

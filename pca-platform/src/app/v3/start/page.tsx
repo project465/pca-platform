@@ -29,9 +29,12 @@ export default async function V3Start({
   const tier: Tier = grants[0]?.tier ?? "BASIC";
   const t = TIER_WHAT[tier];
   void t.what;
-  /* 학부 기준으로 적는다. 계열 분기가 둘 더 붙는 자리는 범위에 들어 있다 */
+  /* **가장 짧은 경우와 가장 긴 경우를 범위로 적는다.** 긴 쪽은 타계열
+     대학원으로, 번역 맥락 묶음이 더 붙는 자리다. 두 값은 `estimate()` 가
+     실제 계획을 세워 센 것이고 `npm run v3:length` 가 같은 함수로 같은
+     값을 센다 */
   const low = estimate("bachelor", null);
-  const high = estimate("master", "OTHER_INTERDISCIPLINARY");
+  const high = estimate("master", "BUSINESS");
   const n = (k: string) => low.responses[k] === high.responses[k]
     ? `${low.responses[k]}` : `${low.responses[k]}~${high.responses[k]}`;
 
@@ -40,8 +43,10 @@ export default async function V3Start({
   const raw = tier === "BASIC" ? low.minutes.basic
     : tier === "STANDARD" ? low.minutes.standardFresh : low.minutes.proFresh;
   /* **추정 시간을 분 단위로 못 박지 않는다.** 9분이라고 적으면 재어 본
-     값처럼 읽힌다. 다섯 단위로 올려 적고 "안팎" 을 붙인다 */
-  const mins = Math.max(5, Math.round(raw / 5) * 5);
+     값처럼 읽힌다. 다섯 단위로 적는다.
+     **반올림하지 않고 올린다**: 12분을 10분으로 적으면 적게 말한 쪽으로
+     틀리고, 시간을 그만큼만 비워 둔 사람이 중간에 끊는다 */
+  const mins = Math.max(5, Math.ceil(raw / 5) * 5);
 
   return (
     <div className="qs is-explore">

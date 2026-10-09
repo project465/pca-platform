@@ -33,7 +33,7 @@
  * `/my` 는 계정 영역으로 남는다. 로그인과 주문과 파기, 그리고 옛 검사
  * 기록처럼 한 번씩 들르는 줄이다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V1";
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V2";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -42,4 +42,4 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V1";
  * `설명할 수 있는 경험`, Gap 은 `아직 비어 있는 자리`, Action 은 `다음
  * 할 일`, recompute 는 `새 경험 반영하기` 다.
  */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.1";
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.2";

@@ -127,6 +127,15 @@ async function main(): Promise<void> {
     const ctx1 = await browser.newContext(opts);
     const p1 = await login(ctx1, u.pw);
     await p1.goto(`${B}/v3/start`, { waitUntil: "networkidle" });
+    /* **학업 단계를 고른다.** 시작 화면은 더 이상 `학부` 를 미리 켜 두지
+       않는다: 아직 아무 데도 적히지 않은 값을 켜 두면, 바로 다음 화면이
+       응시에 적힌 값을 읽어 두 화면이 다른 단계를 보여 준다. 사람이
+       고르는 것이 맞고, 그래서 이 검사도 고른다 */
+    /* **이름표를 누른다.** 보기의 `input` 은 눈에 보이지 않게 숨겨 두고
+       (`opacity: 0`) 이름표가 눌리는 자리다. `input` 을 직접 누르면 1px
+       상자를 눌러 옆의 표식에 가로막힌다. 사람이 누르는 자리를 누른다 */
+    await p1.locator('label:has(input[name="stage"][value="bachelor"])').first()
+      .click().catch(() => undefined);
     const begin = p1.locator('button[type="submit"]').last();
     await Promise.all([
       p1.waitForURL(/\/v3\/\d+/, { timeout: 30000 }).catch(() => undefined),

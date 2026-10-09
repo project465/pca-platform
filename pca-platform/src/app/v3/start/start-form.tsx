@@ -12,9 +12,18 @@ import { FIELD_LABEL, STAGE_LABEL } from "../tier-text";
  * 묻는 장면만 달라지고 판정 기준은 같다는 것을 한 줄로 적어 둔다.
  */
 export default function StartForm({ error }: { error?: string }) {
-  const [stage, setStage] = useState("bachelor");
-  const [field, setField] = useState("STEM");
-  const grad = stage !== "bachelor";
+  /**
+   * **미리 골라 두지 않는다.**
+   *
+   * 전에는 `학부` 가 켜진 채로 섰다. 그런데 이 값은 아직 아무 데도 적혀
+   * 있지 않은 **화면 기본값**이고, 바로 다음 화면(기본 정보)은 응시에
+   * 적힌 값을 읽는다. 그래서 같은 흐름 안에서 두 화면이 다른 학업 단계를
+   * 보여 주는 일이 생겼다. 고르지 않으면 서버가 돌려보내므로(`?e=stage`)
+   * 비워 두는 쪽이 맞다: **화면에 켜진 값은 늘 사람이 고른 값이다.**
+   */
+  const [stage, setStage] = useState("");
+  const [field, setField] = useState("");
+  const grad = stage !== "" && stage !== "bachelor";
 
   return (
     <form action={startV3}>

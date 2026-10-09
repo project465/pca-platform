@@ -2,7 +2,9 @@
 
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
-import { openAttempt, v3Grants } from "@/lib/me-v3/runtime/session";
+import {
+  currentAttempt, openAttempt, setProfile, v3Grants,
+} from "@/lib/me-v3/runtime/session";
 import type { GradField, Stage, Tier } from "@/lib/me-v3/scoring/types";
 
 const STAGES: Stage[] = ["bachelor", "master", "phd", "postdoc"];
@@ -28,6 +30,22 @@ export async function startV3(form: FormData): Promise<void> {
   const gradField = stage === "bachelor" ? null
     : FIELDS.includes(field as GradField) ? (field as GradField) : null;
   if (stage !== "bachelor" && !gradField) redirect("/v3/start?e=field");
+
+  /**
+   * **이미 열린 응시가 있으면 폼의 답을 버리지 않고 그 응시에 적는다.**
+   *
+   * `openAttempt()` 는 열린 응시가 있으면 받은 학업 단계를 **조용히
+   * 버리고** 그 응시를 돌려준다. 그래서 `학부` 를 고르고 `검사 시작` 을
+   * 누른 사람이 `박사` 가 적힌 기본 정보 화면을 받는 일이 생겼다
+   * (`/v3/start` 가 보통은 먼저 넘겨 주지만, 탭을 열어 둔 채 다른 탭에서
+   * 이어 풀면 그 폼이 남는다). 한 응시 안에서 학업 단계의 출처는 응시
+   * 줄 하나이므로, 사람이 방금 고른 값을 그 줄에 적고 들여보낸다.
+   */
+  const open = await currentAttempt(user.id);
+  if (open) {
+    await setProfile(open.id, stage as Stage, gradField, open.undergrad_core ?? null);
+    redirect(`/v3/${open.id}`);
+  }
 
   const grants = await v3Grants(user.id);
   const tier: Tier = grants[0]?.tier ?? "BASIC";
