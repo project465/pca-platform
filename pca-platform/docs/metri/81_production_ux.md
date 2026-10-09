@@ -215,6 +215,11 @@ CSRF    __Host-authjs.csrf-token
 
 이 기계에서 돌린 것이다. **운영 배포본에서 돌린 것이 아니다.**
 
+브라우저를 쓰는 검사는 `UI_BASE` 로 이 기계의 배포본을 가리켜 돌린다
+(`npm run stage:serve` 로 띄운 자리). 그 값을 주지 않으면 3000번을
+두드리다 연결 오류로 끝나는데, **그것은 제품이 깨진 것이 아니라 검사가
+볼 자리를 못 받은 것이다.**
+
 | 검사 | 결과 |
 |---|---|
 | `v3:scale` | 확인 12가지 · 걸림 0 |
@@ -232,6 +237,13 @@ CSRF    __Host-authjs.csrf-token
 | `v3:copy` | 파일 24벌 · 규칙 24가지 · 문항 369개 그대로 |
 | `v3:runtime` | 확인 28가지 · 걸림 0 |
 | `v3:owner` | 확인 19가지 · 걸림 0 (PDF 200 · 글자 8824) |
+| `v3:isolation` | 확인 11가지 · 걸림 0 |
+| `v3:usability` | 확인 12가지 · 걸림 0 |
+| `v3:gate` | 확인 18가지 · 걸림 0 |
+| `v3:pilot` | 확인 29가지 · 걸림 0 |
+| `v3:arch` 20 · `v3:extend` 14 · `v2:frozen` 15 | 걸림 0 |
+| `v3:freeze` · `v3:result:freeze` · `v3:workspace` | 동결 OK |
+| 캡처 | 검사 98자리 · 작업공간 21곳 × 폭 3 · 걸림 0 |
 | `secrets:check` | 7 · `errors:check` 8 · `routes:check` 10 |
 | `auth:check` | 37 · `oauth:ready` 11 · `pilot:ready` 15 · `runbook:check` 7 |
 | `copy:audit` | 원고 OK |
