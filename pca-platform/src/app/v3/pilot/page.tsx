@@ -99,7 +99,7 @@ export default async function PilotJoin({
               엽니다.
             </p>
             <div className="rs-fine">
-              <p><Link href="/my">내 검사 목록으로</Link></p>
+              <p><Link href="/me">내 CareerMatri 로</Link></p>
             </div>
           </section>
         ) : (<>

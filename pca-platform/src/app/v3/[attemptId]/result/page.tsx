@@ -510,7 +510,10 @@ export default async function V3Result({
       {pilot ? <Track attemptId={attemptId} /> : null}
       <header className="rs-head">
         <div className="rs-head-in">
-          <span className="rs-brand">CareerMatri</span>
+          {/* **돌아가는 길을 머리에 둔다.** 전에는 맨 아래에만 있어서,
+              작업공간에서 결과지로 들어온 사람이 끝까지 내려가야 돌아갈
+              수 있었다. 종이에서는 이 줄이 찍히지 않는다(`.rs-back`) */}
+          <Link className="rs-back" href="/me">내 CareerMatri</Link>
           <span className="rs-tier">{tier.label}</span>
           <nav>
             <a href="#focus">먼저 볼 영역</a>

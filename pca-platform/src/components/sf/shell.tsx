@@ -35,7 +35,7 @@ const SUB: Record<Surface, string | null> = {
 
 /** 면마다의 첫 화면. 로고를 누르면 가는 곳이고 **면을 넘지 않는다** */
 const HOME: Record<Surface, string> = {
-  individual: "/my",
+  individual: "/me",
   campus: "/org",
   admin: "/admin",
 };

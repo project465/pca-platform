@@ -58,7 +58,7 @@ export default async function ReportPage({
         <BrandHome />
         <div className="pubtop-r">
           <LangSelect current={L} />
-          <Link href="/my" className="sf-btn ghost sm">{T("navHome")}</Link>
+          <Link href="/me" className="sf-btn ghost sm">{T("navHome")}</Link>
         </div>
       </header>
 

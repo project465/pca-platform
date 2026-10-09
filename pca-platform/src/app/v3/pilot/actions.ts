@@ -53,7 +53,7 @@ export async function saveProfile(form: FormData): Promise<void> {
 export async function leavePilot(): Promise<void> {
   const user = await requireUser();
   const p = await participantOf(user.id);
-  if (!p) redirect("/my");
+  if (!p) redirect("/me");
   await query(
     `UPDATE v3_pilot_feedback f SET text = NULL
        FROM v3_attempts a

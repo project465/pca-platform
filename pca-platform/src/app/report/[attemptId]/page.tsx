@@ -54,7 +54,7 @@ export default async function ReportPage({
         <div className="panel narrow">
           <h1>{t("repPendingTitle", lang)}</h1>
           <p className="sub">{t("repPendingBody", lang)}</p>
-          <Link className="act" href="/my">
+          <Link className="act" href="/me">
             {t("repBack", lang)}
           </Link>
         </div>
@@ -479,7 +479,7 @@ export default async function ReportPage({
         )}
 
         <footer className="rp-foot">
-          <Link className="act" href="/my">
+          <Link className="act" href="/me">
             {t("repBack", lang)}
           </Link>
           <span className="rp-foot-note">{t("repFootNote", lang, { id: r.attemptId })}</span>

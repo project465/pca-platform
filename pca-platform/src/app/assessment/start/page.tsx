@@ -76,7 +76,7 @@ export default async function AssessmentStart({
 
           <div style={{ marginTop: 32, display: "flex", gap: 10 }}>
             <button type="submit" className="sf-btn accent">{T("asStart")}</button>
-            <Link href="/my" className="sf-btn ghost">{T("navHome")}</Link>
+            <Link href="/me" className="sf-btn ghost">{T("navHome")}</Link>
           </div>
         </form>
       </main>

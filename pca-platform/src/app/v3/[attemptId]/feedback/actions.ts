@@ -23,7 +23,7 @@ export async function submitFeedback(form: FormData): Promise<void> {
   const user = await requireUser();
   const attemptId = String(form.get("attemptId") ?? "");
   const a = await attemptOf(attemptId, user.id);
-  if (!a) redirect("/my");
+  if (!a) redirect("/me");
   const p = await participantOf(user.id);
   if (!p) redirect(`/v3/${attemptId}/result`);
 

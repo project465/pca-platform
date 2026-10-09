@@ -75,6 +75,15 @@
   display: flex; align-items: center; gap: var(--r-s3);
 }
 .rs-brand { font-size: var(--r-t-h3); font-weight: 750; color: var(--r-ink); letter-spacing: -.02em; }
+/* 작업공간으로 돌아가는 길. 브랜드 글자가 그 일을 겸한다 */
+.rs-back {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: var(--r-t-h3); font-weight: 750; color: var(--r-ink);
+  letter-spacing: -.02em; text-decoration: none;
+}
+.rs-back::before { content: "\2190"; font-weight: 500; color: var(--r-ink-3); }
+.rs-back:hover { color: var(--r-accent-ink); }
+.rs-back:focus-visible { outline: 2px solid var(--r-accent); outline-offset: 3px; }
 .rs-head nav { margin-left: auto; display: flex; gap: var(--r-s3); }
 .rs-head nav a {
   display: inline-flex; align-items: center; min-height: 40px;
@@ -549,7 +558,7 @@
   .rs { background: #fff; font-size: 10.5pt; line-height: 1.55; min-height: 0; }
   /* 쪽머리에 이미 `CareerMatri` 가 찍힌다. 한 쪽에 두 번 적지 않는다 */
   .rs-head { position: static; backdrop-filter: none; background: #fff; border: 0; }
-  .rs-brand { display: none; }
+  .rs-brand, .rs-back { display: none; }
   .rs-head nav { display: none; }
   .rs-head-in { padding: 0 0 6px; }
   .rs-main { max-width: none; padding: 0; }

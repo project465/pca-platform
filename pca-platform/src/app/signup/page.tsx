@@ -22,7 +22,7 @@ export default async function SignupPage({
   const user = await currentUser();
   const { next, product: code, lang: q } = await searchParams;
   const lang = await resolveLang(q);
-  const safeNext = next && next.startsWith("/") && !next.startsWith("//") ? next : "/my";
+  const safeNext = next && next.startsWith("/") && !next.startsWith("//") ? next : "/me";
   if (user) redirect(safeNext);
 
   // 결제하러 왔다면 값을 먼저 보여 준다. 가입부터 시키고 나중에 값을

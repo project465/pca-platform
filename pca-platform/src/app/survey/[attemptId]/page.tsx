@@ -46,7 +46,7 @@ export default async function SurveyPage({
   const phase: SurveyPhase = raw === "after" ? "after" : "before";
 
   const attempt = await findAttempt(attemptId, user.id);
-  if (!attempt) redirect("/my");
+  if (!attempt) redirect("/me");
   // 의뢰 기관이 없는 응시(개인 결제)에는 물을 것이 없다
   if (!(await surveyApplies(attemptId))) {
     redirect(phase === "before" ? `/test/${attemptId}` : `/report/${attemptId}`);

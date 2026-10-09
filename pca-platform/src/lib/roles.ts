@@ -37,6 +37,10 @@ export function homePathFor(role: Role): string {
     case "instructor":
       return "/org";
     case "student":
-      return "/my";
+      /* **개인의 첫 화면은 Workspace 다.** 전에는 `/my` 였는데 그 쪽은
+         옛 표(`attempts` · `report_snapshots`)를 읽어서, V3 를 끝낸 사람이
+         로그인하면 `아직 응시한 검사가 없습니다` 를 읽고 옛 검사로
+         보내졌다. `/my` 는 계정 영역으로 남는다 */
+      return "/me";
   }
 }

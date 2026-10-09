@@ -98,5 +98,5 @@ export async function signupAction(_prev: SignupState, form: FormData): Promise<
   }
 
   const next = String(form.get("next") ?? "");
-  redirect(next.startsWith("/") && !next.startsWith("//") ? next : "/my");
+  redirect(next.startsWith("/") && !next.startsWith("//") ? next : "/me");
 }

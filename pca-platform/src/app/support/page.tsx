@@ -112,7 +112,7 @@ export default async function SupportPage({
         <BrandHome />
         <div className="pubtop-r">
           <LangSelect current={L} />
-          <Link href="/my" className="sf-btn ghost sm">
+          <Link href="/me" className="sf-btn ghost sm">
             {L === "en" ? "My page" : "내 화면"}
           </Link>
         </div>

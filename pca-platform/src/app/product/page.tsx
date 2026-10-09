@@ -78,7 +78,7 @@ export default async function ProductPage({
         <div className="pubtop-r">
           <LangSelect current={L} />
           <Link href={`/pricing${q}`} className="sf-btn ghost sm">{P.nav.pricing[L]}</Link>
-          <Link href={user ? "/my" : "/login"} className="sf-btn ghost sm">
+          <Link href={user ? "/me" : "/login"} className="sf-btn ghost sm">
             {user ? (L === "en" ? "My page" : "내 화면") : P.nav.signin[L]}
           </Link>
         </div>

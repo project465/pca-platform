@@ -102,7 +102,7 @@ export default async function PricingPage({
           <Link href={`/sample${q}`} className="sf-btn quiet sm">
             {PRODUCT.nav.sample[L]}
           </Link>
-          <Link href={user ? "/my" : "/login"} className="sf-btn ghost sm">
+          <Link href={user ? "/me" : "/login"} className="sf-btn ghost sm">
             {user ? T("navHome") : T("pxSignIn")}
           </Link>
         </div>

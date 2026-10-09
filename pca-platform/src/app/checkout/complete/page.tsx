@@ -121,7 +121,7 @@ export default async function CompletePage({
           <>
             <h1>{t("payFailTitle", lang)}</h1>
             <p className="err">{result.reason}</p>
-            <Link className="act" href="/my">
+            <Link className="act" href="/me">
               {t("repBack", lang)}
             </Link>
           </>

@@ -62,7 +62,7 @@ export default function EvidenceBoard({
     <div className="ev">
       <header className="ev-bar">
         <div className="ev-bar-in">
-          <Link className="brand" href="/my">
+          <Link className="brand" href="/me">
             {t("brand", lang)}
           </Link>
           <LangSwitch current={lang} />
@@ -82,7 +82,7 @@ export default function EvidenceBoard({
         {group(others, t("evOthers", lang))}
 
         <p className="ev-foot">
-          <Link className="act" href="/my">
+          <Link className="act" href="/me">
             {t("evBackToReport", lang)}
           </Link>
         </p>

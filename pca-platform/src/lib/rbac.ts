@@ -195,6 +195,7 @@ export function homePathForPlatformRole(role: PlatformRole): string {
     case "org_staff":
       return "/org";
     default:
-      return "/my";
+      /* 개인의 첫 화면은 Workspace 다. `roles.ts` 와 같은 값을 쓴다 */
+      return "/me";
   }
 }
