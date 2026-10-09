@@ -20,7 +20,9 @@ export async function saveExperience(form: FormData): Promise<void> {
   const user = await requireUser();
   const title = String(form.get("title") ?? "").trim();
   const kind = String(form.get("kind") ?? "");
-  if (!title || !kind) return;
+  /* **조용히 돌아서지 않는다**(규격 §39). 전에는 비어 있으면 그대로
+     `return` 이었고, 누른 사람은 아무 일도 일어나지 않는 단추를 봤다 */
+  if (!title || !kind) redirect("/me/experience/new?e=form");
   await addExperience(user.id, {
     kind, title,
     started_on: String(form.get("started_on") ?? "") || null,

@@ -36,8 +36,11 @@ const USED_WHERE = [
  * **이 회차에서 여기까지다.** 저장 계약과 화면은 섰고 자동 재채점은 다음
  * 회차다. 저장만으로 Gap 이 바뀌지 않는다는 것을 화면이 적는다.
  */
-export default async function NewExperience() {
+export default async function NewExperience(
+  { searchParams }: { searchParams: Promise<{ e?: string }> },
+) {
   const user = await requireUser();
+  const fail = (await searchParams).e === "form";
   /* **적기 시작한 사람과 저장한 사람을 가른다.** 둘이 크게 벌어지면
      고칠 자리는 결과가 아니라 이 화면이다 */
   await mark("experience_add_started", user.id);
@@ -72,6 +75,14 @@ export default async function NewExperience() {
           <li>검사 당시 결과는 그대로 남고, 지금 상태만 다시 섭니다.</li>
         </ul>
       </div>
+
+      {/* 저장이 거절된 자리. **통보로 끝내지 않고 무엇을 채우면 되는지
+          적는다**(규격 §39) */}
+      {fail ? (
+        <p className="cm-fail" role="alert">
+          저장하지 못했습니다. 어떤 경험인지와 한 줄 설명을 채워주세요.
+        </p>
+      ) : null}
 
       <form action={saveExperience}>
         <label className="cm-field">

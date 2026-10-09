@@ -112,7 +112,8 @@ export default async function Jobs() {
         </>
       ) : (
         <div className="cm-acts" style={{ marginTop: 20 }}>
-          <Link className="cm-btn is-primary" href="/cores">검사 먼저 하기</Link>
+          {/* 쪽 머리에 이미 짙은 단추가 있다(규격 §26) */}
+          <Link className="cm-btn" href="/cores">검사 먼저 하기</Link>
         </div>
       )}
     </CmShell>

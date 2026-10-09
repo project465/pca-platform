@@ -71,23 +71,26 @@ export const CM_GROUPS: CmNavGroup[] = [
        */
       { href: "/me/results", label: "결과", tabLabel: "결과", icon: "report", tab: true },
       { href: "/me/experience", label: "경험", tabLabel: "경험", icon: "layers", tab: true },
-      { href: "/me/state", label: "지금 상태", icon: "ladder" },
+      { href: "/me/state", label: "현재 상태", icon: "ladder" },
       { href: "/me/next", label: "다음 할 일", icon: "spark" },
     ],
   },
   {
     title: "탐색",
     items: [
-      { href: "/me/explore", label: "산업과 직무", icon: "compass" },
-      { href: "/me/region", label: "지역과 기관", icon: "globe" },
-      { href: "/me/apply", label: "지원한 곳", icon: "send" },
+      { href: "/me/explore", label: "산업·직무", icon: "compass" },
+      { href: "/me/region", label: "지역·기관", icon: "globe" },
+      { href: "/me/apply", label: "지원 기록", icon: "send" },
     ],
   },
   {
     title: "기타",
     items: [
+      /* **띠에는 아이콘과 이름만 둔다**(규격 §20). `준비 중` 을 여기
+         적어 두면 아직 없는 것이 메뉴에서 한 줄을 더 먹고, 그 사실은
+         들어가면 쪽이 첫 줄에 적는다 */
+      { href: "/me/track", label: "Track", icon: "globe" },
       { href: "/my", label: "계정", icon: "user" },
-      { href: "/me/track", label: "Track", hint: "준비 중", icon: "globe" },
     ],
   },
 ];

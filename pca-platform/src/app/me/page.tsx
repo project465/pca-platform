@@ -57,8 +57,8 @@ export default async function Home() {
     NO_ASSESSMENT: { href: "/cores", label: "기계공학 검사 시작" },
     IN_PROGRESS: { href: st.open ? `/v3/${st.open.id}` : "/cores", label: "검사 이어하기" },
     BASIC_DONE: { href: "/me/state", label: "먼저 볼 영역 보기" },
-    STANDARD_DONE: { href: "/me/state", label: "지금 상태 보기" },
-    PRO_DONE: { href: "/me/state", label: "산업과 직무 언어로 보기" },
+    STANDARD_DONE: { href: "/me/state", label: "현재 상태 보기" },
+    PRO_DONE: { href: "/me/state", label: "산업·직무 언어로 보기" },
     RECOMPUTED: { href: "/me/results", label: "최근 변화 보기" },
   }[st.stage];
 
@@ -120,8 +120,10 @@ export default async function Home() {
             있어 다른 기기에서도 그 자리로 돌아옵니다.
           </p>
           <div className="cm-acts">
+            {/* **짙은 단추는 쪽에 하나다**(규격 §26). 쪽 머리의 단추가
+                같은 `이어하기` 이므로 여기는 거드는 자리다 */}
             <form action={continueAssessment}>
-              <button className="cm-btn is-primary" type="submit">이어하기</button>
+              <button className="cm-btn" type="submit">이어하기</button>
             </form>
           </div>
         </div>
@@ -139,7 +141,7 @@ export default async function Home() {
           <div className="cm-grid">
             {/* 1. 지금 상태 */}
             <div className="cm-card">
-              <h2>지금 상태</h2>
+              <h2>현재 상태</h2>
               {/* **묶음마다 셋이 아니라 통틀어 셋이다.** 묶음 둘이 각각
                   셋을 세우면 홈에 여섯 줄이 서고, 그러면 `지금 상태` 쪽이
                   할 일이 없어진다 */}
@@ -171,7 +173,7 @@ export default async function Home() {
               <div className="cm-acts">
                 <Link className="cm-btn" href="/me/state">
                   {Object.keys(st.zoneOf).length > HOME_ROWS
-                    ? "열두 영역 모두 보기" : "지금 상태 보기"}
+                    ? "열두 영역 모두 보기" : "현재 상태 보기"}
                 </Link>
               </div>
             </div>
@@ -249,7 +251,9 @@ export default async function Home() {
                 </p>
                 <div className="cm-grow" />
                 <div className="cm-acts">
-                  <Link className="cm-btn is-primary" href="/me/recompute">
+                  {/* **짙은 단추는 쪽에 하나다**(규격 §26). 쪽 머리의
+                      단추가 이미 짙으므로 여기는 거드는 자리다 */}
+                  <Link className="cm-btn" href="/me/recompute">
                     새 경험 반영하기
                   </Link>
                 </div>
@@ -257,15 +261,14 @@ export default async function Home() {
             ) : null}
           </div>
 
-          {/* ── 그 아래는 2차다. 자료가 있는 것만 선다 ── */}
+          {/* ── 그 아래는 2차다(규격 §19). **카드를 넷 더 쌓지 않는다**:
+              같은 무게의 흰 상자가 일곱이면 홈에서 무엇이 먼저인지가
+              사라진다. 한 판 안에 줄로 세우고 선으로 가른다(규격 §31) */}
           <h2 className="cm-sect">기록</h2>
-          <div className="cm-grid">
-            {/* 먼저 채워볼 부분 — **단추를 달지 않는다.** 위의 `지금 상태`
-                단추가 같은 쪽으로 가고, 홈에 같은 곳으로 가는 단추를 둘
-                두면 어디를 누를지가 안 읽힌다 */}
+          <div className="cm-panel">
             {gaps.length ? (
-              <div className="cm-card">
-                <h2>먼저 채워볼 부분{moreGaps ? <em>그 밖에 {moreGaps}가지</em> : null}</h2>
+              <div className="cm-pane">
+                <h3>먼저 채워볼 부분{moreGaps ? <em>그 밖에 {moreGaps}가지</em> : null}</h3>
                 <div className="cm-rows">
                   {gaps.map((g) => (
                     <p className="cm-row" key={g.id}>
@@ -276,10 +279,9 @@ export default async function Home() {
               </div>
             ) : null}
 
-            {/* 최근 경험 — 추가하는 단추는 쪽 머리에 이미 있다 */}
             {exps.length ? (
-              <div className="cm-card">
-                <h2>최근 경험<em>{exps.length}개</em></h2>
+              <div className="cm-pane">
+                <h3>최근 경험<em>{exps.length}개</em></h3>
                 <div className="cm-rows">
                   {exps.slice(0, 3).map((e) => (
                     <p className="cm-row" key={e.id}>
@@ -292,8 +294,8 @@ export default async function Home() {
             ) : null}
 
             {/* 검사 당시 결과 — 굳은 기록 */}
-            <div className="cm-card">
-              <h2>검사 당시 결과 <em>고정됨</em></h2>
+            <div className="cm-pane">
+              <h3>검사 당시 결과 <em>고정됨</em></h3>
               <div className="cm-rows">
                 <p className="cm-row">
                   <b>{st.result_at ?? ""}</b>
@@ -304,7 +306,6 @@ export default async function Home() {
                 응시하신 그날의 문항과 기준으로 굳어 있습니다. 경험을 더해도
                 이 줄은 달라지지 않습니다.
               </p>
-              <div className="cm-grow" />
               <div className="cm-acts">
                 <Link className="cm-btn" href={`/v3/${st.model.attempt_id}/result`}>
                   결과 보기
@@ -313,11 +314,11 @@ export default async function Home() {
             </div>
 
             {/* 보고 있는 자리. **고른 것만 적고 단추를 달지 않는다**:
-                바꾸는 자리는 왼쪽 띠의 `산업과 직무` 와 `지역과 기관` 이다 */}
+                바꾸는 자리는 왼쪽 띠의 `산업·직무` 와 `지역·기관` 이다 */}
             {(profile?.target_industry?.length ?? 0) > 0
               || (profile?.target_role?.length ?? 0) > 0 || profile?.home_region ? (
-              <div className="cm-card">
-                <h2>관심 산업과 직무</h2>
+              <div className="cm-pane">
+                <h3>관심 산업과 직무</h3>
                 <div className="cm-rows">
                   {profile?.target_industry?.length ? (
                     <p className="cm-row"><b>산업</b>
