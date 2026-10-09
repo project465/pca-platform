@@ -19,37 +19,45 @@
  * `assessment.css` 에 이미 세 벌이 살고 있다.
  */
 
-/* ── 토큰 ─────────────────────────────────────────────────────────── */
+/* ── 토큰 ───────────────────────────────────────────────────────────
+   **여기에도 값이 없다.** 활자와 여백과 둥글기와 색은 `surface.css` 의
+   `--ui-*` 한 자리에서 오고, 아래는 이 화면에서 부를 이름이다. 결과지만
+   본문을 15px 로 두었던 것이 응시 화면의 14.5px 와 어긋나서, 검사를 끝낸
+   사람이 결과지로 넘어갈 때 글자 크기가 조용히 바뀌었다. */
 .rs {
-  --r-read: 760px;        /* 읽는 자리 */
-  --r-wide: 1080px;       /* 견주는 자리 */
-  --r-gutter: 24px;
+  --r-read: var(--ui-read);    /* 읽는 자리 */
+  --r-wide: var(--ui-evidence);/* 견주는 자리 */
+  --r-gutter: var(--ui-5);
 
-  --r-t-h1: clamp(26px, 3vw, 36px);
-  --r-t-h2: clamp(19px, 1.9vw, 23px);
-  --r-t-h3: 16px;
-  --r-t-lead: clamp(15.5px, 1.4vw, 17px);
-  --r-t-body: 15px;
-  --r-t-gloss: 13.5px;
-  --r-t-meta: 12px;
+  --r-t-h1: var(--ui-t-page);
+  --r-t-h2: var(--ui-t-section);
+  --r-t-h3: var(--ui-t-q);
+  --r-t-lead: var(--ui-t-q);
+  --r-t-body: var(--ui-t-body);
+  --r-t-gloss: var(--ui-t-sub);
+  --r-t-meta: var(--ui-t-cap);
 
-  --r-s1: 6px;  --r-s2: 10px; --r-s3: 16px;
-  --r-s4: 24px; --r-s5: 36px; --r-s6: 56px; --r-s7: 80px;
+  --r-s1: var(--ui-1); --r-s2: var(--ui-2); --r-s3: var(--ui-3);
+  --r-s4: var(--ui-4); --r-s5: var(--ui-5); --r-s6: var(--ui-6);
+  --r-s7: var(--ui-7); --r-s8: var(--ui-8);
 
-  --r-r: 12px;
-  --r-r-sm: 8px;
+  --r-r: var(--ui-r);
+  --r-r-sm: var(--ui-r-sm);
+  --r-r-lg: var(--ui-r-lg);
 
-  --r-line: var(--sf-line);
-  --r-line-soft: var(--sf-line-2);
-  --r-paper: var(--sf-surface);
-  --r-field: var(--sf-bg);
-  --r-ink: var(--sf-ink);
-  --r-ink-2: var(--sf-ink-2);
-  --r-ink-3: var(--sf-ink-3);
-  --r-accent: var(--sf-accent);
-  --r-accent-ink: var(--sf-accent-ink);
-  --r-accent-soft: var(--sf-accent-soft);
-  --r-accent-line: var(--sf-accent-line);
+  --r-line: var(--ui-border);
+  --r-line-sel: var(--ui-border-sel);
+  --r-line-soft: var(--ui-divider);
+  --r-paper: var(--ui-surface);
+  --r-field: var(--ui-bg);
+  --r-sunk: var(--ui-surface-2);
+  --r-ink: var(--ui-text);
+  --r-ink-2: var(--ui-text-2);
+  --r-ink-3: var(--ui-text-3);
+  --r-accent: var(--ui-accent);
+  --r-accent-ink: var(--ui-accent-ink);
+  --r-accent-soft: var(--ui-accent-soft);
+  --r-accent-line: var(--ui-accent-line);
   --r-gold: var(--sf-gold);
   --r-gold-soft: var(--sf-gold-soft);
   --r-gold-line: var(--sf-gold-line);
@@ -58,7 +66,7 @@
   color: var(--r-ink-2);
   min-height: 100vh;
   font-size: var(--r-t-body);
-  line-height: 1.62;
+  line-height: var(--ui-lh);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -650,7 +658,7 @@
   padding: 14px 16px;
   border-left: 3px solid var(--r-accent-line, var(--sf-accent-line));
   background: var(--r-accent-soft, var(--sf-accent-soft));
-  border-radius: 0 8px 8px 0;
+  border-radius: 0 var(--r-r-sm) var(--r-r-sm) 0;
   font-size: 15.5px; line-height: 1.75; color: var(--r-ink, var(--sf-ink));
 }
 
@@ -662,7 +670,7 @@
 }
 .rs-pdf a {
   display: inline-flex; align-items: center; min-height: 40px;
-  padding: 0 16px; border-radius: 10px;
+  padding: 0 16px; border-radius: var(--r-r-sm);
   border: 1px solid var(--r-line, var(--sf-line));
   background: var(--r-paper, var(--sf-surface));
   color: var(--r-ink, var(--sf-ink));
@@ -680,7 +688,7 @@
 .rs-next a {
   display: flex; flex-direction: column; gap: 3px;
   padding: 12px 14px; min-height: 56px;
-  border: 1px solid var(--r-line, var(--sf-line)); border-radius: 10px;
+  border: 1px solid var(--r-line, var(--sf-line)); border-radius: var(--r-r-sm);
   background: var(--r-paper, var(--sf-surface)); text-decoration: none;
 }
 .rs-next b { color: var(--r-ink, var(--sf-ink)); font-size: 15px; font-weight: 600; }
@@ -707,12 +715,12 @@
   display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
   margin: var(--r-s5) 0 0; padding: 18px 20px;
   background: var(--r-accent-soft); border: 1px solid var(--r-accent-line);
-  border-radius: 14px;
+  border-radius: var(--r-r);
 }
 .rs-cta > p { flex: 1 1 260px; margin: 0; font-size: 14px; color: var(--r-ink-2); }
 .rs-cta > a {
   display: inline-flex; align-items: center; min-height: 46px; padding: 0 18px;
-  border-radius: 10px; background: var(--r-accent); color: #fff;
+  border-radius: var(--r-r-sm); background: var(--r-accent); color: #fff;
   font-size: 14.5px; font-weight: 650; text-decoration: none;
 }
 .rs-cta > a:focus-visible { outline: 2px solid var(--r-accent); outline-offset: 3px; }

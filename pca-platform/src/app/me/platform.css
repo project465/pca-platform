@@ -37,13 +37,13 @@
   display: flex; flex-direction: column; gap: 4px;
 }
 .cm-rail-brand {
-  display: block; font-weight: 700; font-size: 17px; color: var(--sf-ink);
+  display: block; font-weight: 700; font-size: var(--ui-t-body); color: var(--sf-ink);
   text-decoration: none; padding: 6px 10px 14px;
 }
 /* **지금 어느 전공인지를 띠에 둔다.** 전공이 늘면 이 자리가 고르는
    자리가 된다. 없으면 사용자가 CareerMatri 를 검사 한 벌로 읽는다 */
 .cm-rail-brand small {
-  display: block; font-weight: 600; font-size: 12.5px; color: var(--sf-accent-ink);
+  display: block; font-weight: 600; font-size: var(--ui-t-cap); color: var(--sf-accent-ink);
   margin-top: 4px;
 }
 .cm-rail-scroll {
@@ -56,14 +56,14 @@
 .cm-group { display: flex; flex-direction: column; gap: 2px; }
 .cm-group > h2 {
   margin: 0 0 4px; padding: 0 10px;
-  font-size: 11.5px; font-weight: 700; letter-spacing: .06em;
+  font-size: var(--ui-t-cap); font-weight: 700; letter-spacing: .06em;
   color: var(--sf-ink-3); text-transform: none;
 }
 
 a.cm-nav {
   display: flex; align-items: center; gap: 10px;
-  padding: 8px 10px; border-radius: 10px;
-  color: var(--sf-ink-2); text-decoration: none; font-size: 14.5px;
+  padding: 8px 10px; border-radius: var(--ui-r-sm);
+  color: var(--sf-ink-2); text-decoration: none; font-size: var(--ui-t-sub);
   min-height: 40px;
 }
 a.cm-nav > svg { flex: 0 0 auto; }
@@ -71,7 +71,7 @@ a.cm-nav > span { display: block; min-width: 0; }
 /* 한 줄 더 적는 자리. **줄마다 쓰지 않는다**: 지금은 Track 한 줄만
    `준비 중` 을 달고, 나머지 여덟 줄은 이름 하나로 선다 */
 a.cm-nav small {
-  display: block; font-size: 11.5px; font-weight: 400; line-height: 1.45;
+  display: block; font-size: var(--ui-t-cap); font-weight: 400; line-height: 1.45;
   color: var(--sf-ink-3); margin-top: 1px;
 }
 a.cm-nav:hover { background: var(--sf-surface-2); }
@@ -91,15 +91,15 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 
 .cm-head { margin-bottom: 22px; }
 .cm-kicker {
-  font-size: 12.5px; letter-spacing: .06em; color: var(--sf-ink-3);
+  font-size: var(--ui-t-cap); letter-spacing: .06em; color: var(--sf-ink-3);
   margin: 0 0 6px;
 }
 .cm-h1 {
-  font-size: 26px; line-height: 1.3; font-weight: 700; color: var(--sf-ink);
+  font-size: var(--ui-t-section); line-height: 1.3; font-weight: 700; color: var(--sf-ink);
   margin: 0; text-wrap: balance;
 }
 .cm-lead {
-  margin: 10px 0 0; font-size: 15px; line-height: 1.7; color: var(--sf-ink-2);
+  margin: 10px 0 0; font-size: var(--ui-t-body); line-height: 1.7; color: var(--sf-ink-2);
   max-width: 62ch;
 }
 
@@ -111,41 +111,71 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 }
 .cm-card {
   background: var(--sf-surface); border: 1px solid var(--sf-line);
-  border-radius: 14px; padding: 18px 18px 16px;
+  border-radius: var(--ui-r); padding: 18px 18px 16px;
   display: flex; flex-direction: column; gap: 10px;
 }
 .cm-card.is-wide { grid-column: 1 / -1; }
 .cm-card h2 {
-  margin: 0; font-size: 15px; font-weight: 700; color: var(--sf-ink);
+  margin: 0; font-size: var(--ui-t-body); font-weight: 700; color: var(--sf-ink);
   display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
 }
 .cm-card h2 em {
-  font-style: normal; font-size: 12.5px; font-weight: 500; color: var(--sf-ink-3);
+  font-style: normal; font-size: var(--ui-t-cap); font-weight: 500; color: var(--sf-ink-3);
 }
-.cm-card p { margin: 0; font-size: 14px; line-height: 1.7; }
+.cm-card p { margin: 0; font-size: var(--ui-t-sub); line-height: 1.7; }
 .cm-card .cm-grow { flex: 1 1 auto; }
+
+/* ── 한 판에 여러 묶음 ──────────────────────────────────────────────
+   **모든 묶음을 카드로 두르지 않는다**(규격 §30·§31). 같은 무게의 흰
+   상자가 일곱이면 홈에서 무엇이 먼저인지가 사라진다. 2차 정보는 판
+   하나에 담고 묶음 사이를 선으로만 가른다. 카드는 **먼저 읽어야 하는
+   묶음**(현재 상태 · 다음 한 가지)에만 남는다 */
+.cm-panel {
+  background: var(--sf-surface); border: 1px solid var(--sf-line);
+  border-radius: var(--ui-r); overflow: hidden;
+}
+.cm-pane {
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 16px 18px;
+  border-top: 1px solid var(--sf-line-2);
+}
+.cm-pane:first-child { border-top: 0; }
+.cm-pane h3 {
+  margin: 0; font-size: var(--ui-t-sub); font-weight: 700; color: var(--sf-ink);
+  display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+}
+.cm-pane h3 em {
+  font-style: normal; font-size: var(--ui-t-cap); font-weight: 500; color: var(--sf-ink-3);
+}
+.cm-pane p { margin: 0; font-size: var(--ui-t-sub); line-height: 1.7; }
+@media (min-width: 900px) {
+  /* 넓은 화면에서는 두 칸으로 접어 판 하나의 길이를 반으로 줄인다 */
+  .cm-panel { display: grid; grid-template-columns: 1fr 1fr; }
+  .cm-pane:nth-child(2) { border-top: 0; }
+  .cm-pane:nth-child(even) { border-left: 1px solid var(--sf-line-2); }
+}
 
 /* 숫자를 크게 두는 자리. **그 수가 쪽의 요지일 때만 쓴다** */
 .cm-num {
-  font-size: 30px; font-weight: 700; color: var(--sf-ink);
+  font-size: var(--ui-t-page); font-weight: 700; color: var(--sf-ink);
   font-variant-numeric: tabular-nums; line-height: 1.1;
 }
-.cm-num small { font-size: 14px; font-weight: 500; color: var(--sf-ink-3); margin-left: 4px; }
+.cm-num small { font-size: var(--ui-t-sub); font-weight: 500; color: var(--sf-ink-3); margin-left: 4px; }
 
 .cm-rows { display: flex; flex-direction: column; gap: 8px; }
 .cm-row {
   display: flex; gap: 10px; align-items: baseline;
-  font-size: 14px; line-height: 1.6;
+  font-size: var(--ui-t-sub); line-height: 1.6;
 }
 .cm-row b { color: var(--sf-ink); font-weight: 600; }
-.cm-row span.cm-when { margin-left: auto; color: var(--sf-ink-3); font-size: 12.5px; }
+.cm-row span.cm-when { margin-left: auto; color: var(--sf-ink-3); font-size: var(--ui-t-cap); }
 
 .cm-chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .cm-chip {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 5px 10px; border-radius: 999px;
   border: 1px solid var(--sf-line); background: var(--sf-surface-2);
-  font-size: 13px; color: var(--sf-ink-2);
+  font-size: var(--ui-t-cap); color: var(--sf-ink-2);
 }
 .cm-chip.is-on {
   border-color: var(--sf-accent-line); background: var(--sf-accent-soft);
@@ -161,9 +191,9 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 .cm-acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px; }
 .cm-btn {
   display: inline-flex; align-items: center; justify-content: center;
-  min-height: 40px; padding: 0 16px; border-radius: 10px;
+  min-height: 40px; padding: 0 16px; border-radius: var(--ui-r-sm);
   border: 1px solid var(--sf-line); background: var(--sf-surface);
-  color: var(--sf-ink-2); font-size: 14px; font-weight: 600;
+  color: var(--sf-ink-2); font-size: var(--ui-t-sub); font-weight: 600;
   text-decoration: none; cursor: pointer;
 }
 .cm-btn:hover { background: var(--sf-surface-2); }
@@ -178,16 +208,16 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 /* ── 아직 열지 않은 자리 ──────────────────────────────────────────── */
 
 .cm-soon {
-  border: 1px dashed var(--sf-line); border-radius: 12px;
+  border: 1px solid var(--sf-line); border-radius: var(--ui-r);
   padding: 16px; background: var(--sf-surface-2);
-  font-size: 14px; line-height: 1.75; color: var(--sf-ink-2);
+  font-size: var(--ui-t-sub); line-height: 1.75; color: var(--sf-ink-2);
 }
 .cm-soon b { color: var(--sf-ink); }
 .cm-soon ul { margin: 10px 0 0; padding-left: 18px; }
 .cm-soon li { margin: 4px 0; }
 /* 줄 끝에 왜 아직인지 작게 적는다. **줄마다 단추를 달지 않는다** */
 .cm-soon li em {
-  font-style: normal; font-size: 12.5px; color: var(--sf-ink-3); margin-left: 6px;
+  font-style: normal; font-size: var(--ui-t-cap); color: var(--sf-ink-3); margin-left: 6px;
 }
 
 /* ── 적는 카드 ────────────────────────────────────────────────────── */
@@ -195,7 +225,7 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 /* 폼을 카드 안에 넣어 목록과 가른다. 테두리 없이 두면 적는 자리와 쌓인
    자리가 한 덩이로 읽힌다 */
 .cm-formcard {
-  border: 1px solid var(--sf-line); border-radius: 14px;
+  border: 1px solid var(--sf-line); border-radius: var(--ui-r);
   padding: 18px; background: var(--sf-surface);
 }
 
@@ -207,11 +237,11 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
   margin: 14px 0 0; padding: 14px 0 0; border-top: 1px solid var(--sf-line-2);
 }
 .cm-subs h4 {
-  margin: 0 0 10px; font-size: 14px; font-weight: 700; color: var(--sf-ink);
+  margin: 0 0 10px; font-size: var(--ui-t-sub); font-weight: 700; color: var(--sf-ink);
 }
 .cm-sub + .cm-sub { margin-top: 12px; }
 .cm-sub > p {
-  margin: 0 0 7px; font-size: 12.5px; font-weight: 600; color: var(--sf-ink-3);
+  margin: 0 0 7px; font-size: var(--ui-t-cap); font-weight: 600; color: var(--sf-ink-3);
 }
 
 /* ── 할 일 세 층 ──────────────────────────────────────────────────── */
@@ -225,17 +255,17 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 .cm-lanes > section { padding: 0 16px; border-left: 1px solid var(--sf-line-2); }
 .cm-lanes > section:first-child { padding-left: 0; border-left: 0; }
 .cm-lanes h3 {
-  margin: 0 0 8px; font-size: 13.5px; font-weight: 700; color: var(--sf-ink);
+  margin: 0 0 8px; font-size: var(--ui-t-sub); font-weight: 700; color: var(--sf-ink);
 }
 .cm-lanes h3 small {
-  display: block; font-weight: 400; font-size: 12px; color: var(--sf-ink-3);
+  display: block; font-weight: 400; font-size: var(--ui-t-cap); color: var(--sf-ink-3);
   margin-top: 2px; line-height: 1.5;
 }
 .cm-lanes ul { margin: 0; padding-left: 16px; }
 .cm-lanes li {
-  margin: 0 0 6px; font-size: 13.5px; line-height: 1.65; color: var(--sf-ink-2);
+  margin: 0 0 6px; font-size: var(--ui-t-sub); line-height: 1.65; color: var(--sf-ink-2);
 }
-.cm-none { margin: 0; font-size: 13px; color: var(--sf-ink-3); }
+.cm-none { margin: 0; font-size: var(--ui-t-cap); color: var(--sf-ink-3); }
 
 @media (max-width: 719px) {
   .cm-lanes { grid-template-columns: 1fr; gap: 14px; }
@@ -252,34 +282,34 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 .cm-dl { margin: 0; display: flex; flex-direction: column; gap: 10px; }
 .cm-dl > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .cm-dl dt {
-  font-size: 12.5px; font-weight: 600; color: var(--sf-ink-3);
+  font-size: var(--ui-t-cap); font-weight: 600; color: var(--sf-ink-3);
   letter-spacing: 0.01em;
 }
 .cm-dl dd {
-  margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--sf-ink);
+  margin: 0; font-size: var(--ui-t-sub); line-height: 1.6; color: var(--sf-ink);
   overflow-wrap: anywhere;
 }
 .cm-note {
-  margin: 12px 0 0; font-size: 13px; line-height: 1.7; color: var(--sf-ink-3);
+  margin: 12px 0 0; font-size: var(--ui-t-cap); line-height: 1.7; color: var(--sf-ink-3);
 }
 .cm-legend small {
-  display: block; font-weight: 400; font-size: 12.5px; color: var(--sf-ink-3);
+  display: block; font-weight: 400; font-size: var(--ui-t-cap); color: var(--sf-ink-3);
   margin-top: 2px;
 }
 .cm-field > legend small {
-  display: block; font-weight: 400; font-size: 12.5px; color: var(--sf-ink-3);
+  display: block; font-weight: 400; font-size: var(--ui-t-cap); color: var(--sf-ink-3);
   margin-top: 2px;
 }
 
 /* ── 표 ───────────────────────────────────────────────────────────── */
 
 .cm-tablewrap { overflow-x: auto; }
-.cm-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.cm-table { width: 100%; border-collapse: collapse; font-size: var(--ui-t-sub); }
 .cm-table th, .cm-table td {
   text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--sf-line-2);
   vertical-align: top;
 }
-.cm-table th { color: var(--sf-ink-3); font-weight: 600; font-size: 12.5px; }
+.cm-table th { color: var(--sf-ink-3); font-weight: 600; font-size: var(--ui-t-cap); }
 .cm-table td b { color: var(--sf-ink); }
 
 /* ── 고르는 칸 ────────────────────────────────────────────────────── */
@@ -293,15 +323,15 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 .cm-field > legend { padding: 0; float: left; width: 100%; }
 .cm-field > legend + * { clear: both; }
 .cm-field > span, .cm-field > legend > span {
-  display: block; font-size: 13px; font-weight: 600; color: var(--sf-ink);
+  display: block; font-size: var(--ui-t-cap); font-weight: 600; color: var(--sf-ink);
 }
 .cm-field > em {
-  font-style: normal; font-size: 13px; color: var(--sf-ink-3); line-height: 1.6;
+  font-style: normal; font-size: var(--ui-t-cap); color: var(--sf-ink-3); line-height: 1.6;
 }
 .cm-input, .cm-select, .cm-textarea {
   width: 100%; padding: 10px 12px; min-height: 42px;
-  border: 1px solid var(--sf-line); border-radius: 10px;
-  background: var(--sf-surface); color: var(--sf-ink); font: inherit; font-size: 15px;
+  border: 1px solid var(--sf-line); border-radius: var(--ui-r-sm);
+  background: var(--sf-surface); color: var(--sf-ink); font: inherit; font-size: var(--ui-t-body);
 }
 .cm-textarea { min-height: 88px; resize: vertical; line-height: 1.7; }
 .cm-pickset { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -310,7 +340,7 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
   display: inline-flex; align-items: center; gap: 8px;
   min-height: 40px; padding: 0 14px; border-radius: 999px;
   border: 1px solid var(--sf-line); background: var(--sf-surface);
-  font-size: 14px; color: var(--sf-ink-2); cursor: pointer;
+  font-size: var(--ui-t-sub); color: var(--sf-ink-2); cursor: pointer;
 }
 .cm-pick input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .cm-pick:has(input:checked) {
@@ -332,7 +362,7 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
     padding: 20px 16px
       calc(24px + var(--cm-tab) + var(--stg-h, 0px) + env(safe-area-inset-bottom, 0px));
   }
-  .cm-h1 { font-size: 22px; }
+  .cm-h1 { font-size: var(--ui-t-section); }
   .cm-grid { grid-template-columns: 1fr; }
 
   .cm-topbar {
@@ -342,7 +372,7 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
     position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
   }
   .cm-topbar a { color: var(--sf-ink); font-weight: 700; text-decoration: none; }
-  .cm-topbar span { font-size: 13px; color: var(--sf-ink-3); margin-left: auto; }
+  .cm-topbar span { font-size: var(--ui-t-cap); color: var(--sf-ink-3); margin-left: auto; }
 
   /* **아래 띠는 다섯 자리까지만 둔다.** 여섯째부터는 글자가 두 줄로
      접히고, 접힌 띠는 누르는 자리가 어디인지 알 수 없다 */
@@ -358,7 +388,7 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
     flex: 1 1 0; min-width: 0;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     gap: 3px; height: var(--cm-tab);
-    color: var(--sf-ink-3); text-decoration: none; font-size: 11.5px;
+    color: var(--sf-ink-3); text-decoration: none; font-size: var(--ui-t-cap);
   }
   .cm-tabs a.is-on { color: var(--sf-accent-ink); font-weight: 700; }
   .cm-tabs a svg { width: 20px; height: 20px; }
@@ -374,7 +404,7 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
   .cm-more > summary {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     gap: 3px; height: var(--cm-tab);
-    color: var(--sf-ink-3); font-size: 11.5px; cursor: pointer;
+    color: var(--sf-ink-3); font-size: var(--ui-t-cap); cursor: pointer;
     list-style: none;
   }
   .cm-more > summary::-webkit-details-marker { display: none; }
@@ -392,7 +422,7 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
     display: flex; flex-direction: column; gap: 14px;
   }
   .cm-sheet-head {
-    margin: 0; padding: 0 10px; font-size: 12.5px; color: var(--sf-ink-3);
+    margin: 0; padding: 0 10px; font-size: var(--ui-t-cap); color: var(--sf-ink-3);
   }
 }
 
@@ -410,34 +440,34 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 
 /* 쪽 안의 묶음 머리. 카드 여럿을 한 덩이로 묶는다 */
 .cm-sect {
-  margin: 30px 0 12px; font-size: 17px; font-weight: 700; color: var(--sf-ink);
+  margin: 30px 0 12px; font-size: var(--ui-t-body); font-weight: 700; color: var(--sf-ink);
   display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
 }
 .cm-sect:first-of-type { margin-top: 24px; }
 .cm-sect em {
-  font-style: normal; font-size: 12.5px; font-weight: 500; color: var(--sf-ink-3);
+  font-style: normal; font-size: var(--ui-t-cap); font-weight: 500; color: var(--sf-ink-3);
 }
 
 /* 지금 값. **점선이 `바뀔 수 있다` 를 말한다** */
 .cm-live {
   margin: 22px 0 0;
-  border: 1px dashed var(--sf-line); border-radius: 14px;
+  border: 1px solid var(--sf-line); border-radius: var(--ui-r);
   padding: 18px; background: var(--sf-surface-2);
   display: flex; flex-direction: column; gap: 12px;
 }
 .cm-live > header { display: flex; flex-direction: column; gap: 3px; }
 .cm-live > header h2 {
-  margin: 0; font-size: 16px; font-weight: 700; color: var(--sf-ink);
+  margin: 0; font-size: var(--ui-t-body); font-weight: 700; color: var(--sf-ink);
 }
-.cm-live > header span { font-size: 12.5px; color: var(--sf-ink-3); line-height: 1.6; }
-.cm-live-note { margin: 0; font-size: 12.5px; color: var(--sf-ink-3); }
+.cm-live > header span { font-size: var(--ui-t-cap); color: var(--sf-ink-3); line-height: 1.6; }
+.cm-live-note { margin: 0; font-size: var(--ui-t-cap); color: var(--sf-ink-3); }
 
 /* 굳은 기록 */
 .cm-snaps { display: flex; flex-direction: column; gap: 12px; }
 .cm-snap {
   display: flex; align-items: stretch;
   background: var(--sf-surface); border: 1px solid var(--sf-line);
-  border-radius: 14px; overflow: hidden;
+  border-radius: var(--ui-r); overflow: hidden;
 }
 
 /* 날짜를 왼쪽 띠로 세운다. 줄 안에 적으면 어느 날 것인지 훑어서 안 보인다 */
@@ -448,25 +478,25 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
   background: var(--sf-surface-2); border-right: 1px solid var(--sf-line);
   font-variant-numeric: tabular-nums;
 }
-.cm-snap-date b { font-size: 15px; font-weight: 700; color: var(--sf-ink); }
-.cm-snap-date small { font-size: 12px; color: var(--sf-ink-3); }
+.cm-snap-date b { font-size: var(--ui-t-body); font-weight: 700; color: var(--sf-ink); }
+.cm-snap-date small { font-size: var(--ui-t-cap); color: var(--sf-ink-3); }
 
 .cm-snap-body {
   flex: 1 1 auto; min-width: 0; padding: 16px 18px;
   display: flex; flex-direction: column; gap: 8px;
 }
 .cm-snap-body h3 {
-  margin: 0; font-size: 15px; font-weight: 700; color: var(--sf-ink);
+  margin: 0; font-size: var(--ui-t-body); font-weight: 700; color: var(--sf-ink);
   display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
 }
-.cm-snap-body p { margin: 0; font-size: 13.5px; line-height: 1.7; color: var(--sf-ink-2); }
+.cm-snap-body p { margin: 0; font-size: var(--ui-t-sub); line-height: 1.7; color: var(--sf-ink-2); }
 
 /* 자물쇠 표시. **판본 코드를 앞세우지 않고 고정됐다는 사실만 적는다** */
 .cm-lockmark {
   display: inline-flex; align-items: center;
   padding: 2px 8px; border-radius: 999px;
   border: 1px solid var(--sf-line); background: var(--sf-surface-2);
-  font-size: 11.5px; font-weight: 600; color: var(--sf-ink-3);
+  font-size: var(--ui-t-cap); font-weight: 600; color: var(--sf-ink-3);
 }
 
 /* 접는 자리. 판본과 끝낸 일처럼 **찾을 때만 보면 되는 것**을 넣는다 */
@@ -474,7 +504,7 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
   margin: 16px 0 0; padding: 14px 0 0; border-top: 1px solid var(--sf-line-2);
 }
 .cm-fold > summary {
-  font-size: 13.5px; font-weight: 600; color: var(--sf-ink-3);
+  font-size: var(--ui-t-sub); font-weight: 600; color: var(--sf-ink-3);
   cursor: pointer; display: inline-flex; align-items: center;
   /* 접는 자리도 누르는 자리다. 24px 로 두었더니 손가락으로 집기 어려웠다 */
   min-height: 40px; padding-right: 8px;
@@ -487,13 +517,13 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 /* 같은 상태로 묶인 영역. **묶음 안에 차례를 만들지 않으므로** 칩으로 깐다 */
 .cm-zone { margin: 0 0 16px; }
 .cm-zone h3 {
-  margin: 0 0 8px; font-size: 14px; font-weight: 700; color: var(--sf-ink);
+  margin: 0 0 8px; font-size: var(--ui-t-sub); font-weight: 700; color: var(--sf-ink);
   display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
 }
 .cm-zone h3 em {
-  font-style: normal; font-size: 12.5px; font-weight: 500; color: var(--sf-ink-3);
+  font-style: normal; font-size: var(--ui-t-cap); font-weight: 500; color: var(--sf-ink-3);
 }
-.cm-chip small { font-size: 12px; color: inherit; opacity: 0.75; }
+.cm-chip small { font-size: var(--ui-t-cap); color: inherit; opacity: 0.75; }
 
 /*
  * 비어 있는 자리 하나에 늘 셋이 붙는다: 무엇이 비었는가 · 왜 그 자리가
@@ -504,14 +534,14 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 .cm-gaps { display: flex; flex-direction: column; gap: 12px; }
 .cm-gap {
   border: 1px solid var(--sf-line); border-left: 3px solid var(--sf-part-line);
-  border-radius: 12px; padding: 16px 18px; background: var(--sf-surface);
+  border-radius: var(--ui-r); padding: 16px 18px; background: var(--sf-surface);
   display: flex; flex-direction: column; gap: 7px;
 }
-.cm-gap h3 { margin: 0; font-size: 15px; font-weight: 700; color: var(--sf-ink); }
-.cm-gap p { margin: 0; font-size: 13.5px; line-height: 1.75; color: var(--sf-ink-2); }
+.cm-gap h3 { margin: 0; font-size: var(--ui-t-body); font-weight: 700; color: var(--sf-ink); }
+.cm-gap p { margin: 0; font-size: var(--ui-t-sub); line-height: 1.75; color: var(--sf-ink-2); }
 .cm-gap p b {
   display: inline-block; min-width: 86px;
-  font-size: 12.5px; font-weight: 600; color: var(--sf-ink-3);
+  font-size: var(--ui-t-cap); font-weight: 600; color: var(--sf-ink-3);
 }
 
 /* ── 할 일 줄 안의 세 조각 ────────────────────────────────────────── */
@@ -521,7 +551,7 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 .cm-lanes li > span { display: block; }
 .cm-lanes li > em {
   display: block; margin-top: 2px;
-  font-style: normal; font-size: 12px; color: var(--sf-ink-3);
+  font-style: normal; font-size: var(--ui-t-cap); color: var(--sf-ink-3);
 }
 .cm-lanes li > form { margin-top: 7px; }
 
@@ -531,7 +561,7 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 /* **단추를 목록 안에서 줄이지 않는다.** 한때 32px 로 낮춰 뒀는데, 손가락
    으로 누르는 자리는 40px 이 선이다. 글자만 작게 둔다 */
 .cm-lanes li > form .cm-btn,
-.cm-row > form .cm-btn { padding: 0 12px; font-size: 13px; }
+.cm-row > form .cm-btn { padding: 0 12px; font-size: var(--ui-t-cap); }
 
 @media (max-width: 719px) {
   /* 좁은 화면에서는 날짜 띠를 위로 눕힌다. 84px 를 떼면 제목이 두 줄로 접힌다 */
@@ -552,13 +582,13 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 .cm-quiet {
   margin-top: 30px; padding: 18px 20px 20px;
   background: var(--sf-bg);
-  border: 1px solid var(--sf-line-2); border-radius: 12px;
+  border: 1px solid var(--sf-line-2); border-radius: var(--ui-r);
 }
 .cm-quiet > h2 {
-  margin: 0 0 6px; font-size: 15px; font-weight: 650;
+  margin: 0 0 6px; font-size: var(--ui-t-body); font-weight: 650;
   color: var(--sf-ink-2); letter-spacing: -.01em;
 }
-.cm-quiet > p { margin: 0 0 12px; font-size: 13px; color: var(--sf-ink-3); }
+.cm-quiet > p { margin: 0 0 12px; font-size: var(--ui-t-cap); color: var(--sf-ink-3); }
 .cm-chips.is-quiet .cm-chip {
   background: transparent; border-color: var(--sf-line-2);
   color: var(--sf-ink-3); font-weight: 400;
@@ -569,8 +599,18 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
    그 자리가 있다는 것을 알아야 다음에 채우기 때문이고, 대신 자리를
    덜 쓰고 조용히 선다 */
 .cm-card.is-empty {
-  background: var(--sf-bg);
-  border-style: dashed;
+  background: var(--sf-surface-2);
 }
-.cm-card.is-empty > h2 { font-size: 15px; color: var(--sf-ink-2); }
-.cm-card.is-empty > p { font-size: 13px; color: var(--sf-ink-3); }
+.cm-card.is-empty > h2 { font-size: var(--ui-t-body); color: var(--sf-ink-2); }
+.cm-card.is-empty > p { font-size: var(--ui-t-cap); color: var(--sf-ink-3); }
+
+/* ── 거절된 저장 ──────────────────────────────────────────────────────
+   **통보로 끝내지 않는다**(규격 §39). 무엇이 모자랐는지와 어디를 채우면
+   되는지가 같은 줄에 있어야 한다. 색만으로 말하지 않으므로 글자가 그
+   사실을 적는다(규격 §40) */
+.cm-fail {
+  margin: 0 0 18px; padding: 12px 14px;
+  border: 1px solid var(--sf-warn-line); border-radius: var(--ui-r-sm);
+  background: var(--sf-warn-soft); color: var(--sf-warn);
+  font-size: var(--ui-t-sub); font-weight: 600; line-height: 1.6;
+}

@@ -18,72 +18,139 @@
  *      `--sf-ink-3` 는 메타 전용이다.
  */
 
+/* ── 공통 디자인 토큰 한 벌 ─────────────────────────────────────────
+   **네 면이 같은 토큰을 쓴다.** 한동안 토큰이 네 벌이었다: 여기
+   (`--sf-*`) · 응시 화면(`--q-*`) · 결과지(`--r-*`) · 작업공간
+   (`--cm-*`). 네 벌을 두면 한 쪽씩 볼 때는 전부 멀쩡하고 **이어서
+   누를 때만** 다른 서비스로 넘어간 것처럼 보인다. 실제로 쪽마다 글자
+   크기가 14.5 · 15 · 15.5 로 갈렸고 둥글기가 10 · 12 · 16 으로 갈렸다.
+
+   그래서 **값을 적는 자리를 `--ui-*` 하나로 모았다.** 아래 `--sf-*` ·
+   `--q-*`(assessment.css) · `--r-*`(result.css) · `--cm-*`
+   (platform.css) 는 전부 이 이름을 가리키는 별명이다. 값을 고칠 곳은
+   여기뿐이고, 쪽이 갈리는 것은 **정보 구조와 폭**이지 활자 단이나
+   여백이 아니다.
+
+   접두어가 `--ui-` 인 것은 `--cm-` 이 이미 작업공간이 쓰고 있어서다.
+   이 저장소에서 이름이 겹친 것이 일곱 번 전부 버그였다(`.btn` ·
+   `--sf-r` · `.lg` · `empty` · `industries` · `OC*` · `.qs-steps`). */
 :root {
+  /* ── 활자 여섯 단 ──
+     한 쪽에서 쓰는 크기가 여섯을 넘으면 무엇이 중요한지가 크기로 안
+     읽힌다. 16 · 17 · 18 이 한 뼘에 몰려 있던 것을 걷었다. 쪽 제목은
+     손전화에서 28, 큰 화면에서 34 다 */
+  --ui-t-page: clamp(28px, 2.6vw, 34px);    /* 쪽 제목 */
+  --ui-t-section: clamp(22px, 1.8vw, 25px); /* 절 제목 */
+  --ui-t-q: clamp(18px, 1.6vw, 21px);       /* 질문 · 카드 머리 */
+  --ui-t-body: 16px;                        /* 본문 · 보기 */
+  --ui-t-sub: 14px;                         /* 거드는 글 · 뜻풀이 */
+  --ui-t-cap: 12px;                         /* 머리말 · 진행 · 상태 */
+
+  --ui-lh-tight: 1.34;   /* 제목 */
+  --ui-lh: 1.62;         /* 본문 */
+
+  /* ── 여백 여덟 ──
+     **4 의 배수만 쓴다.** 6 · 10 · 18 · 36 이 섞여 있어서 같은 자리의
+     위아래 간격이 쪽마다 달랐다 */
+  --ui-1: 4px;  --ui-2: 8px;  --ui-3: 12px; --ui-4: 16px;
+  --ui-5: 24px; --ui-6: 32px; --ui-7: 48px; --ui-8: 64px;
+
+  /* ── 둥글기 셋 ── 작은 것(칩·칸) · 카드 · 큰 묶음 */
+  --ui-r-sm: 8px;
+  --ui-r: 12px;
+  --ui-r-lg: 16px;
+
   /* ── 바탕과 글 ──
      중성 회색 대신 **남색 쪽으로 아주 조금 기운 회색**을 쓴다. 순회색은
      고른 티가 안 나고, 강조색이 파랑일 때 바탕과 따로 논다 */
-  --sf-bg: #f7f8fb;
-  --sf-surface: #ffffff;
-  --sf-surface-2: #f4f6fa;   /* 표 머리 · 안으로 꺼진 자리 */
-  --sf-ink: #0a1a30;         /* 머리글과 숫자. 검정을 쓰지 않는다 */
-  --sf-ink-2: #3d4d66;       /* 본문 */
-  --sf-ink-3: #5f6e86;       /* 메타. 흰 5.2:1 · 꺼진 바탕 4.8:1 (규격 §44) */
-  --sf-line: #e4e8ef;
-  --sf-line-2: #eef1f6;
+  --ui-bg: #f7f8fb;          /* 쪽 바탕 */
+  --ui-surface: #ffffff;     /* 글이 올라앉는 면 */
+  --ui-surface-2: #f4f6fa;   /* 한 단 꺼진 면. 표 머리 · 묶음 바탕 */
+  --ui-text: #0a1a30;        /* 머리글과 숫자. 검정을 쓰지 않는다 */
+  --ui-text-2: #3d4d66;      /* 본문 */
+  --ui-text-3: #5f6e86;      /* 메타 전용. 흰 5.2:1 (규격 §44) */
+
+  /* ── 선 셋 ── 기본 · 고른 자리 · 가르는 선.
+     **점선을 쓰지 않는다**: 점선은 '아직 안 만든 자리' 로 읽힌다 */
+  --ui-border: #e4e8ef;
+  --ui-border-sel: #1c5fb0;
+  --ui-divider: #eef1f6;
 
   /* ── 강조 ──
-     파랑은 **고르는 자리와 지금 자리**에만 쓴다. 금색은 브랜드 색이고
-     이 화면에서는 '고르기를 권하는 한 자리' 에만 나온다 */
-  --sf-accent: #1c5fb0;
-  --sf-accent-ink: #164c8e;
-  --sf-accent-soft: #eaf1fb;
-  --sf-accent-line: #c9dbf2;
+     파랑은 **고르는 자리와 지금 자리**에만 쓴다. 고른 상태는 전부 이 두
+     이름이고, 쪽마다 다른 파랑을 적지 않는다 */
+  --ui-accent: #1c5fb0;
+  --ui-accent-ink: #164c8e;
+  --ui-accent-soft: #eaf1fb;   /* 고른 자리의 바탕 */
+  --ui-accent-line: #c9dbf2;
+
+  /* ── 뜻이 있는 색. **좋고 나쁨을 칠하지 않는다**(규격 §39) ── */
+  --ui-ok: #10664f;
+  --ui-warn: #9b3b2f;
+
+  /* ── 글 폭 셋 ──
+     읽는 자리 · 견주는 자리 · 근거를 훑는 자리. **네 번째를 만들지
+     않는다**: 폭이 넷이면 쪽마다 글이 시작하는 자리가 달라진다 */
+  --ui-read: 760px;
+  --ui-wide: 920px;
+  --ui-evidence: 1040px;
+
+  /* ── 바탕과 글 (별명) ── */
+  --sf-bg: var(--ui-bg);
+  --sf-surface: var(--ui-surface);
+  --sf-surface-2: var(--ui-surface-2);
+  --sf-ink: var(--ui-text);
+  --sf-ink-2: var(--ui-text-2);
+  --sf-ink-3: var(--ui-text-3);
+  --sf-line: var(--ui-border);
+  --sf-line-2: var(--ui-divider);
+
+  /* ── 강조 (별명). 금색은 브랜드 색이고 '고르기를 권하는 한 자리' 에만 ── */
+  --sf-accent: var(--ui-accent);
+  --sf-accent-ink: var(--ui-accent-ink);
+  --sf-accent-soft: var(--ui-accent-soft);
+  --sf-accent-line: var(--ui-accent-line);
   --sf-gold: #7d5c15;
   --sf-gold-soft: #faf4e6;
   --sf-gold-line: #e7d8b2;
 
-  /* ── 뜻이 있는 색. **좋고 나쁨을 칠하지 않는다**(규격 §39) ── */
-  --sf-ok: #10664f;      --sf-ok-soft: #e7f3ef;   --sf-ok-line: #bcdfd3;
+  /* ── 뜻이 있는 색 (별명) ── */
+  --sf-ok: var(--ui-ok); --sf-ok-soft: #e7f3ef;   --sf-ok-line: #bcdfd3;
   --sf-part: #7d6316;    --sf-part-soft: #fbf3df; --sf-part-line: #e6d49c;
-  --sf-not: #5f6e86;     --sf-not-soft: #f1f3f7;
-  --sf-warn: #9b3b2f;    --sf-warn-soft: #fbeeec; --sf-warn-line: #eccbc5;
+  --sf-not: var(--ui-text-3); --sf-not-soft: #f1f3f7;
+  --sf-warn: var(--ui-warn);  --sf-warn-soft: #fbeeec; --sf-warn-line: #eccbc5;
 
   /* ── 자리 ── */
   --sf-max: 1280px;      /* 운영 화면 */
-  --sf-pad: 32px;
-  --sf-gap: 18px;
+  --sf-pad: var(--ui-6);
+  --sf-gap: var(--ui-4);
   --sf-sidebar: 248px;
 
-  /* 둥글기 셋만 쓴다 (규격 §55). 작은 것 · 보통 · 카드 */
-  --r-sm: 8px;
-  --r-md: 12px;
-  --r-lg: 16px;
-  --sf-radius: var(--r-lg);
-  --sf-radius-sm: var(--r-sm);
+  --r-sm: var(--ui-r-sm);
+  --r-md: var(--ui-r);
+  --r-lg: var(--ui-r-lg);
+  --sf-radius: var(--ui-r-lg);
+  --sf-radius-sm: var(--ui-r-sm);
 
-  /* 여백. 네 값의 배수만. **13px 과 15px 이 섞이면 줄이 안 맞는다** */
-  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 16px;
-  --sp-4: 24px; --sp-5: 32px; --sp-6: 48px; --sp-7: 72px;
+  --sp-1: var(--ui-1); --sp-2: var(--ui-2); --sp-3: var(--ui-4);
+  --sp-4: var(--ui-5); --sp-5: var(--ui-6); --sp-6: var(--ui-7);
+  --sp-7: var(--ui-8);
 
-  /* 글 폭. 읽는 자리와 견주는 자리가 다르다 */
-  --w-read: 760px;
-  --w-wide: 1180px;
+  --w-read: var(--ui-read);
+  --w-wide: 1180px;      /* 운영 표. 손님 화면은 --ui-* 셋만 쓴다 */
 
-  /* ── 활자 ──
-     한국어는 라틴보다 글자 속이 꽉 차서 같은 크기로도 커 보인다. 그래서
-     본문을 15px 에 두고 **줄간을 넉넉히**(1.65) 잡는다. 굵기로 가르는
-     자리는 머리글과 숫자뿐이다 (규격 §2) */
-  --t-display: 40px;
-  --t-h1: 30px;
-  --t-h2: 20px;
-  --t-h3: 16px;
-  --t-body: 15px;
-  --t-sm: 13.5px;
-  --t-meta: 12.5px;
+  /* ── 활자 (별명) ── */
+  --t-display: var(--ui-t-page);
+  --t-h1: var(--ui-t-page);
+  --t-h2: var(--ui-t-section);
+  --t-h3: var(--ui-t-q);
+  --t-body: var(--ui-t-body);
+  --t-sm: var(--ui-t-sub);
+  --t-meta: var(--ui-t-cap);
 
   /* ── 높이 ──
-     **모든 카드에 같은 그림자를 찍지 않는다.** 대부분은 테두리만으로
-     서고, 떠 있어야 하는 것만 그림자를 받는다 */
+     **모든 카드에 같은 그림자를 찍지 않는다.** 신뢰는 테두리와 여백과
+     활자가 만들고, 그림자는 떠 있어야 하는 것에만 준다 (규격 §32) */
   --sh-1: 0 1px 2px rgba(10, 26, 48, .04);
   --sh-2: 0 1px 2px rgba(10, 26, 48, .04), 0 6px 16px rgba(10, 26, 48, .05);
   --sh-3: 0 2px 6px rgba(10, 26, 48, .05), 0 16px 40px rgba(10, 26, 48, .09);
@@ -91,33 +158,8 @@
 
   /* 눌린 자리를 보이게 하는 테. **색만으로 말하지 않는다**(규격 §44) */
   --ring: 0 0 0 3px rgba(28, 95, 176, .2);
-
-  /* ── 면이 바뀌어도 같아야 하는 것 ──────────────────────────────
-     토큰이 네 벌이다: 여기(`--sf-*`) · 응시 화면(`--q-*`) · 결과지
-     (`--r-*`) · 작업공간(`--cm-*`). **네 벌을 하나로 합치지 않는다**:
-     세 면은 하는 일이 달라서 활자 단과 여백이 같을 이유가 없고, 억지로
-     합치면 세 쪽이 한꺼번에 틀어진다.
-
-     합치는 대신 **같아야 하는 것에만 이름을 준다.** 아래 여덟 줄이
-     그것이고, 값은 전부 위의 `--sf-*` 를 가리키므로 **이 블록이 그리는
-     것은 한 픽셀도 없다.** 새 자리를 만드는 사람이 색을 직접 적지 않고
-     이 이름을 쓰면, 면이 바뀔 때 다른 사이트로 읽히는 일이 안 생긴다.
-
-     이름이 여덟인 것도 일부러다. 늘리면 그냥 `--sf-*` 를 두 번 적은
-     것이 되고, 그때부터 어느 쪽이 정본인지 모른다.
-
-     **접두어를 `--ui-` 로 둔다.** `--cm-` 은 이미 작업공간이 쓰고 있고
-     (`--cm-rail` · `--cm-tab`), 이 저장소에서 이름이 겹친 것이 여섯 번
-     전부 버그였다(`.btn` · `--sf-r` · `.lg` · `empty` · `industries` ·
-     `OC*`). 겹치는 이름을 새로 짓지 않는다. */
-  --ui-surface: var(--sf-surface);      /* 글이 올라앉는 면 */
-  --ui-bg: var(--sf-bg);                /* 그 뒤의 바탕 */
-  --ui-text: var(--sf-ink);             /* 본문에서 가장 짙은 글자 */
-  --ui-text-2: var(--sf-ink-3);         /* 거드는 글자 */
-  --ui-border: var(--sf-line);          /* 묶음을 가르는 선 */
-  --ui-accent: var(--sf-accent);        /* 누르기를 권하는 한 자리 */
-  --ui-radius: var(--sf-r-sm, 8px);     /* 둥글기의 바닥값 */
-  --ui-read: 760px;                     /* 읽는 자리의 글 폭 */
+  --ui-ring: var(--ring);
+  --ui-radius: var(--ui-r-sm);
 }
 
 /* ── 껍데기 ───────────────────────────────────────────────────────── */
@@ -474,7 +516,7 @@
    **흰 사각형에 설명만 적어 두지 않는다.** 그림 하나 · 제목 · 설명 ·
    할 일 하나가 전부 있어야 빈 화면도 의도한 것으로 읽힌다. */
 .sf-empty {
-  background: var(--sf-surface); border: 1px dashed var(--sf-line);
+  background: var(--sf-surface); border: 1px solid var(--sf-line);
   border-radius: var(--r-lg);
   padding: 34px 28px; text-align: center;
   display: flex; flex-direction: column; align-items: center; gap: 10px;
@@ -1622,4 +1664,46 @@ body:has(.stgmark) .cm-tabs { bottom: var(--stg-h) }
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px;
   color: var(--sf-ink); background: var(--sf-surface-2);
   border: 1px solid var(--sf-line); border-radius: var(--sf-radius-sm);
+}
+
+/* ── 오류와 없는 쪽 ───────────────────────────────────────────────────
+   **개발용 오류 화면을 손님에게 내보내지 않는다**(규격 §39). 세 면이
+   같은 토큰을 쓰므로 여기도 `--ui-*` 만 읽는다. 쪽 가운데에 띄우지
+   않고 위에서 시작한다(규격 §25) */
+.sf-fail {
+  max-width: var(--ui-read);
+  margin: 0 auto;
+  padding: var(--ui-8) var(--ui-5) var(--ui-7);
+  color: var(--ui-text-2);
+}
+.sf-fail h1 {
+  margin: 0 0 var(--ui-4);
+  font-size: var(--ui-t-page); line-height: var(--ui-lh-tight);
+  font-weight: 700; color: var(--ui-text); letter-spacing: -.02em;
+}
+.sf-fail p { margin: 0 0 var(--ui-3); font-size: var(--ui-t-body); line-height: var(--ui-lh); }
+.sf-fail-ref {
+  font-size: var(--ui-t-sub); color: var(--ui-text-3);
+  font-variant-numeric: tabular-nums;
+}
+.sf-fail-acts {
+  display: flex; flex-wrap: wrap; gap: var(--ui-2);
+  margin-top: var(--ui-5);
+}
+.sf-fail-acts > a, .sf-fail-acts > button {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 48px; padding: 0 var(--ui-5);
+  font: inherit; font-size: var(--ui-t-body); font-weight: 600;
+  border-radius: var(--ui-r-sm); border: 1px solid var(--ui-border);
+  background: var(--ui-surface); color: var(--ui-text-2);
+  text-decoration: none; cursor: pointer;
+}
+/* 쪽에 짙은 단추는 하나다 (규격 §26) */
+.sf-fail-acts > button {
+  background: var(--ui-accent); border-color: var(--ui-accent); color: #fff;
+}
+.sf-fail-acts > a:hover { border-color: var(--ui-text-3); color: var(--ui-text); }
+.sf-fail-acts > button:hover { background: var(--ui-accent-ink); }
+.sf-fail-acts > a:focus-visible, .sf-fail-acts > button:focus-visible {
+  outline: 2px solid var(--ui-accent); outline-offset: 2px;
 }
