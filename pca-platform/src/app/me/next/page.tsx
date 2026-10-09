@@ -3,6 +3,7 @@ import { requireUser } from "@/lib/session";
 import { actionsOf, currentState } from "@/lib/me-v3/platform";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import { HORIZON_KO } from "@/lib/me-v3/result/text.ko";
+import { mark } from "@/lib/me-v3/workspace-events";
 import { CmShell, CmHead } from "../shell";
 import { moveAction, pullActions } from "./actions";
 
@@ -32,6 +33,8 @@ const lane = (days: number): "NOW" | "NEXT" | "LATER" =>
 export default async function Next() {
   const user = await requireUser();
   const [st, actions] = await Promise.all([currentState(user.id), actionsOf(user.id)]);
+  await mark("action_opened", user.id, { n: actions.length });
+
   const open = actions.filter((a) => a.state !== "done");
   const done = actions.filter((a) => a.state === "done");
 

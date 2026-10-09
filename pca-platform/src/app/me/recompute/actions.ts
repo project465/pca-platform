@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/session";
 import { applyRecompute } from "@/lib/me-v3/recompute";
+import { mark } from "@/lib/me-v3/workspace-events";
 
 /**
  * 다시 계산한 것을 지금 값에 적는다.
@@ -14,6 +15,7 @@ import { applyRecompute } from "@/lib/me-v3/recompute";
 export async function runRecompute(): Promise<void> {
   const user = await requireUser();
   await applyRecompute(user.id);
+  await mark("current_state_updated", user.id);
   revalidatePath("/me");
   revalidatePath("/me/recompute");
   revalidatePath("/me/gap");

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
+import { mark } from "@/lib/me-v3/workspace-events";
 import {
   attemptOf, domainName, industryChoices, latestResult, orgChoices, roleChoices,
 } from "@/lib/me-v3/runtime/session";
@@ -428,6 +429,11 @@ export default async function V3Result({
   const regionPicked = profile?.home_region
     ? regionLayer().regions.find((r) => r.code === profile.home_region)?.name ?? null
     : null;
+
+  /* **결과를 열었다는 것만 센다.** 어느 절을 얼마나 읽었는지는 재지
+     않는다. 그것을 재려면 화면에 코드를 심어야 하고, 그러면 파일럿
+     참가자와 일반 응시자가 다른 화면을 받는다 */
+  await mark("result_opened", user.id, { tier: m.tier });
 
   const model: ResultModel = m;
   const h = headlineKo(model);

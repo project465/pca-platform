@@ -21,7 +21,7 @@
  },
  "files": {
   "src/app/v3/result.css": "99463a16739fb388f3170a13b7ed4bbe50db25050e499d55f507232e79b0f728",
-  "src/app/v3/[attemptId]/result/page.tsx": "1f4e80107c4b57b0456f8ccad3f3f8aa5256a9c16b5d5e88e4cf2e08dafc035c",
+  "src/app/v3/[attemptId]/result/page.tsx": "c5be89fd7e088ca116e35f26fa92021fc6fb8c7107e0411661782c6b89782491",
   "src/app/v3/[attemptId]/result/fold.tsx": "2cf4f4a676d584b5b8fe6ea9c3b1787f84c6b9b8498b74d7d240b53c14492d0d",
   "src/app/v3/[attemptId]/result/disclose.tsx": "a82c70b1d0897647877cfff4a672e8ebffd8716f76e6cfcc3d25e066f074f455",
   "src/app/v3/[attemptId]/result/save.tsx": "2830e503419eba94015798787ab2f7cd4abca39c8126fe1cf3dca087f6c6e7c1",

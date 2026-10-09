@@ -1,6 +1,7 @@
 import { requireUser } from "@/lib/session";
 import { EXPERIENCE_KINDS } from "@/lib/me-v3/platform";
 import { axisLabel, content, domainName } from "@/lib/me-v3/runtime/session";
+import { mark } from "@/lib/me-v3/workspace-events";
 import { CmShell, CmHead } from "../../shell";
 import { saveExperience } from "../actions";
 import Picker from "./picker";
@@ -36,7 +37,10 @@ const USED_WHERE = [
  * 회차다. 저장만으로 Gap 이 바뀌지 않는다는 것을 화면이 적는다.
  */
 export default async function NewExperience() {
-  await requireUser();
+  const user = await requireUser();
+  /* **적기 시작한 사람과 저장한 사람을 가른다.** 둘이 크게 벌어지면
+     고칠 자리는 결과가 아니라 이 화면이다 */
+  await mark("experience_add_started", user.id);
   const c = content();
   const domains = c.domains.domains;
   const lists = c.checklists.domains as Record<string, Record<string, { text: string }[]>>;

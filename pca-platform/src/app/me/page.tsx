@@ -6,7 +6,9 @@ import {
 import { domainName, industryChoices, roleName } from "@/lib/me-v3/runtime/session";
 import { moveLabel, regionName } from "@/lib/me-v3/region";
 import { AXIS_KO, HORIZON_KO, ZONE_TITLE_KO, gapKo } from "@/lib/me-v3/result/text.ko";
+import { mark } from "@/lib/me-v3/workspace-events";
 import { CmShell, CmHead } from "./shell";
+import { continueAssessment } from "./actions";
 
 export const metadata = { title: "홈 · CareerMatri" };
 
@@ -33,6 +35,9 @@ export default async function Home() {
     profileOf(user.id), resultHistory(user.id),
   ]);
 
+  /* **센 것이 화면을 늦추거나 깨지 않는다.** `mark()` 는 던지지 않는다 */
+  await mark("workspace_opened", user.id, { stage: st.stage });
+
   const name = user.name?.trim() || "반갑습니다";
   const open = actions.filter((a) => a.state !== "done");
   const first = open[0] ?? null;
@@ -57,7 +62,14 @@ export default async function Home() {
         lead={LEAD[st.stage]}
         actions={
           <>
-            <Link className="cm-btn is-primary" href={cta.href}>{cta.label}</Link>
+            {st.stage === "IN_PROGRESS" ? (
+              /* 이어하기만 폼이다. 누른 것을 세려면 누르는 자리에서 센다 */
+              <form action={continueAssessment}>
+                <button className="cm-btn is-primary" type="submit">{cta.label}</button>
+              </form>
+            ) : (
+              <Link className="cm-btn is-primary" href={cta.href}>{cta.label}</Link>
+            )}
             {st.model ? (
               <Link className="cm-btn" href="/me/experience/new">새 경험 추가</Link>
             ) : null}
@@ -97,7 +109,9 @@ export default async function Home() {
             있어 다른 기기에서도 그 자리로 돌아옵니다.
           </p>
           <div className="cm-acts">
-            <Link className="cm-btn is-primary" href={`/v3/${st.open?.id}`}>이어하기</Link>
+            <form action={continueAssessment}>
+              <button className="cm-btn is-primary" type="submit">이어하기</button>
+            </form>
           </div>
         </div>
       ) : null}

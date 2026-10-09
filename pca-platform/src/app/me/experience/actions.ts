@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { addExperience, removeExperience } from "@/lib/me-v3/platform";
+import { mark } from "@/lib/me-v3/workspace-events";
 
 /**
  * 경험 하나를 저장한다.
@@ -33,6 +34,7 @@ export async function saveExperience(form: FormData): Promise<void> {
     used_where: form.getAll("used_where").map(String),
     note_text: String(form.get("note") ?? ""),
   });
+  await mark("experience_added", user.id, { n: form.getAll("td").length });
   revalidatePath("/me");
   revalidatePath("/me/experience");
   redirect("/me/experience");

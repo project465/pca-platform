@@ -3,6 +3,9 @@ import AdminShell from "@/components/admin-shell";
 import { funnelReport, STEP_LABEL } from "@/lib/funnel";
 import { summary as pilotSummary, MIN_CELL } from "@/lib/pilot";
 import { Funnel } from "@/components/sf/parts";
+import {
+  WORKSPACE_EVENT_KO, workspaceCounts,
+} from "@/lib/me-v3/workspace-events";
 
 export const metadata = { title: "퍼널 · CareerMatri" };
 export const dynamic = "force-dynamic";
@@ -30,6 +33,7 @@ export default async function FunnelPage({
   const days = Math.max(1, Math.min(365, Number(sp.days ?? 30) || 30));
   const r = await funnelReport(days);
   const pil = await pilotSummary();
+  const ws = { days, rows: await workspaceCounts(days) };
 
   return (
     <AdminShell user={user} current="/admin/funnel">
@@ -74,6 +78,36 @@ export default async function FunnelPage({
           </section>
         </>
       )}
+
+      {/*
+        작업공간. **퍼널과 한 표에 담지 않는다.** 저쪽이 묻는 것은 방문이
+        결제가 되는가이고 여기가 묻는 것은 결과를 받은 사람이 다시
+        들어오는가다. 사람 수와 사건 수를 함께 적는 까닭은 **둘의 비가 곧
+        다시 들어온 횟수**이기 때문이다.
+      */}
+      <section className="panel" style={{ marginTop: 20 }}>
+        <h2>작업공간 {ws.days}일</h2>
+        <p className="sub">
+          검사를 끝낸 다음에 무엇을 하는지입니다. 사람 수가 0 이면 아직 아무도
+          그 자리를 쓰지 않았다는 뜻이고, 기능이 깨졌다는 뜻은 아닙니다.
+        </p>
+        <div className="sf-tw">
+          <table className="sf-table">
+            <thead>
+              <tr><th>한 일</th><th className="num">사람</th><th className="num">횟수</th></tr>
+            </thead>
+            <tbody>
+              {ws.rows.map((x) => (
+                <tr key={x.name}>
+                  <td>{WORKSPACE_EVENT_KO[x.name]}</td>
+                  <td className="num">{x.people}</td>
+                  <td className="num">{x.events}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
 
       {/* 파일럿. **만족도 하나만 재지 않는다**(규격 §20) */}
       <section className="panel" style={{ marginTop: 20 }}>
