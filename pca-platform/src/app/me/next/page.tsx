@@ -33,6 +33,37 @@ const LANES = [
 const lane = (days: number): "NOW" | "NEXT" | "LATER" =>
   (days <= 30 ? "NOW" : days <= 90 ? "NEXT" : "LATER");
 
+/**
+ * 비어 있는 자리가 없는 할 일의 **왜 필요한가**(규격 §9).
+ *
+ * 빈자리에서 나온 할 일은 그 자리가 까닭을 들고 있다. 그런데 **근거가
+ * 다 선 사람에게는 빈자리가 없고**, 그때 할 일은 `정리` 다. 까닭을
+ * 빈자리에서만 찾으면 그 사람의 화면에서 `왜 필요한가` 가 영원히 서지
+ * 않고, 할 일 하나만 덩그러니 남는다.
+ *
+ * **지어내지 않는다.** 여기 적는 것은 그 할 일을 고른 규칙이 이미 말한
+ * 것이고, 코드에 없는 종류는 비워 둔다.
+ */
+const WHY_BY_CODE: Record<string, string> = {
+  WRITE_UP: "근거는 모였고, 남은 일은 그것을 지원서에서 설명할 문장으로"
+    + " 만드는 것입니다.",
+  DEEPEN_OWNERSHIP: "해 본 것은 확인됐습니다. 남은 일은 그중 어디까지"
+    + " 직접 정했는지를 적는 것입니다.",
+  BUILD_OUTPUT: "남긴 것이 없으면 해 봤다는 말을 지원서에서 설명할 수"
+    + " 없습니다.",
+  ADD_VERIFICATION: "무엇과 견주어 확인했는지가 없으면 그 값이 맞다는"
+    + " 말을 할 수 없습니다.",
+  FILL_AXIS: "그 영역에서 비어 있는 판단 자리라, 채우면 설명할 수 있는"
+    + " 범위가 넓어집니다.",
+  TRY_SHORT_EXPERIENCE: "관심은 있고 해 본 적이 없는 영역입니다. 짧게 한 번"
+    + " 해 보면 판단할 재료가 생깁니다.",
+  STUDY_NEXT: "관심과 배울 뜻이 함께 높은 영역입니다.",
+  RECHECK_DIRECTION: "지금 응답만으로는 어느 영역이 앞선다고 보기"
+    + " 어렵습니다.",
+  EXPLORE_BROADLY: "지금 응답만으로는 어느 영역이 앞선다고 보기"
+    + " 어렵습니다.",
+};
+
 export default async function Next(
   { searchParams }: { searchParams: Promise<{ taken?: string }> },
 ) {
@@ -58,17 +89,46 @@ export default async function Next(
   /**
    * 그 할 일이 어느 빈자리에서 왔는가.
    *
-   * **짐작하지 않는다.** 담을 때 영역과 축을 함께 적어 두었으므로 그
-   * 둘로 굳은 결과의 빈자리를 찾는다. 못 찾으면 그 줄을 적지 않는다:
-   * 지어낸 까닭은 그 자리에서 가장 그럴듯하게 읽히고 가장 먼저 거짓이
-   * 된다.
+   * **짐작하지 않는다.** 찾는 차례가 곧 근거의 세기다: 영역과 축이 둘 다
+   * 맞는 자리 → 굳은 결과가 그 할 일에 적어 둔 빈자리 번호 → 같은 영역의
+   * 첫 빈자리. 못 찾으면 그 줄을 적지 않는다: 지어낸 까닭은 그 자리에서
+   * 가장 그럴듯하게 읽히고 가장 먼저 거짓이 된다.
+   *
+   * **축으로만 찾으면 늘 빈다.** 정리하는 할 일(`지원서에서 설명할 문장
+   * 만들기`)은 축이 없어서 `axis_code` 가 비는데, 빈자리는 축을 들고
+   * 있다. 그 둘을 글자로 견주면 **한 번도 맞지 않고**, 그러면 `왜
+   * 필요한가` 가 영원히 서지 않는다.
    */
-  const gapOf = (a: ActionRow) => (st.gaps.find((g) =>
-    g.domain === a.td_code && (g.axis ?? "") === (a.axis_code ?? "")) ?? null);
+  const gapOf = (a: ActionRow) => {
+    const exact = st.gaps.find((g) =>
+      g.domain === a.td_code && (g.axis ?? "") === (a.axis_code ?? ""));
+    if (exact) return exact;
+    const m = (model?.actions ?? []).find((x) =>
+      (x.domain ?? "") === (a.td_code ?? "") && (x.axis ?? "") === (a.axis_code ?? ""));
+    const byId = m?.from_gap ? st.gaps.find((g) => g.id === m.from_gap) : null;
+    if (byId) return byId;
+    return st.gaps.find((g) => g.domain === a.td_code) ?? null;
+  };
 
-  /** 어떤 경험으로 메우는가. 그 영역의 산출물 목록에서 두 개까지 */
-  const howOf = (a: ActionRow) =>
-    (a.td_code ? domainArtifacts(a.td_code) : []).slice(0, 2);
+  /**
+   * 어떤 경험으로 메우는가.
+   *
+   * **두 자리에서 찾는다.** 먼저 굳은 결과가 그 할 일에 들고 있는 재료
+   * (그 영역의 산출물과 견줄 대상)를 보고, 없으면 영역 사전의 산출물
+   * 목록을 본다. 앞쪽만 보면 결과 밖에서 담긴 줄에서 그 칸이 비고,
+   * 뒤쪽만 보면 영역이 없는 할 일에서 빈다. **지어내지 않는다**: 둘 다
+   * 비면 그 줄을 적지 않는다.
+   */
+  const howOf = (a: ActionRow): string[] => {
+    const m = (model?.actions ?? []).find((x) =>
+      (x.domain ?? "") === (a.td_code ?? "") && (x.axis ?? "") === (a.axis_code ?? ""));
+    const from = [
+      ...(m?.material.artifacts ?? []),
+      ...(m?.material.verify_targets ?? []),
+      ...(a.td_code ? domainArtifacts(a.td_code) : []),
+    ];
+    return [...new Set(from)].slice(0, 2);
+  };
 
   return (
     <CmShell active="/me/next" title="다음 할 일">
@@ -136,10 +196,24 @@ export default async function Next(
               const g = gapOf(first);
               const k = g ? gapKo(g, domainName(g.domain)) : null;
               const how = howOf(first);
+              /* 빈자리가 없으면 **그 할 일을 고른 규칙**이 까닭을 든다 */
+              const code = (model?.actions ?? []).find((x) =>
+                (x.domain ?? "") === (first.td_code ?? "")
+                && (x.axis ?? "") === (first.axis_code ?? ""))?.code ?? "";
+              const why = k?.why ?? WHY_BY_CODE[code] ?? "";
               return (
                 <>
-                  {k ? <p><b>왜 필요한가</b> {k.why}</p> : null}
-                  {k ? <p><b>어느 자리</b> {k.title}</p> : null}
+                  {why ? <p><b>왜 필요한가</b> {why}</p> : null}
+                  {k ? (
+                    <p><b>어느 자리</b> {k.title}</p>
+                  ) : (
+                    <p>
+                      <b>어느 자리</b>{" "}
+                      {first.td_code
+                        ? `${domainName(first.td_code)} · 지금 비어 있는 자리는 없습니다`
+                        : "영역을 가리지 않는 할 일입니다"}
+                    </p>
+                  )}
                   {how.length ? (
                     <p>
                       <b>어떤 경험으로</b> {how.join(" 또는 ")} 가운데 하나를

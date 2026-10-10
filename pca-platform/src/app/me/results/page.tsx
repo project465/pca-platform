@@ -3,6 +3,7 @@ import { requireUser } from "@/lib/session";
 import { currentState, resultHistory } from "@/lib/me-v3/platform";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import { AXIS_KO } from "@/lib/me-v3/result/text.ko";
+import { registry } from "@/lib/me-v3/core-registry";
 import { CmShell, CmHead } from "../shell";
 
 export const metadata = { title: "결과 기록 · CareerMatri" };
@@ -112,7 +113,7 @@ export default async function Results() {
             <div className="cm-rows">
               {Object.entries(st.model?.provenance.module_versions ?? {}).map(([k, v]) => (
                 <p className="cm-row" key={k}><b>{VER_KO[k] ?? k}</b>
-                  <span>{v === null ? "없음" : String(v)}</span></p>
+                  <span>{v === null ? "없음" : verSay(k, String(v))}</span></p>
               ))}
             </div>
           </details>
@@ -120,6 +121,23 @@ export default async function Results() {
       ) : null}
     </CmShell>
   );
+}
+
+/**
+ * 판본 값 가운데 **사람 말로 바꿀 수 있는 것**만 바꾼다.
+ *
+ * `core_version` 의 값은 `ME_CORE_V3` 인데 그 글자는 읽는 사람에게 아무
+ * 뜻이 없다. 어느 전공의 검사였는지가 그 칸이 답해야 하는 것이라 전공
+ * 이름을 적는다. 등록부에 없는 코드는 **지어내지 않고 그대로 적는다**:
+ * 모르는 것을 그럴듯한 이름으로 바꾸면 되짚을 때 틀린 줄을 읽는다.
+ *
+ * 나머지 판본 글자는 그대로 둔다. 이 묶음이 접혀 있는 까닭이 그것이다:
+ * **되짚어 보실 자리라** 고객지원에 적어 보낼 수 있는 값이어야 한다.
+ */
+function verSay(key: string, value: string): string {
+  if (key !== "core_version") return value;
+  const hit = registry().cores.find((c) => c.code === value);
+  return hit ? hit.name_ko : value;
 }
 
 /** 판본 칸 이름을 사람 말로. **내부 열쇠를 그대로 적지 않는다** */

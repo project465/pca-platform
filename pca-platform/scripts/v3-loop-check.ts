@@ -25,21 +25,11 @@ import { randomBytes } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-for (const line of (() => {
-  try { return readFileSync(resolve(process.cwd(), ".env.local"), "utf8").split("\n"); }
-  catch { return [] as string[]; }
-})()) {
-  const m = /^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/.exec(line);
-  if (m && !process.env[m[1]]) process.env[m[1]] = m[2];
-}
+import {
+  BASE as B, cloneFinished, fillExperience, gateCreds, login, makeStudent,
+} from "./_loop-fixture";
+import { chromium, type Browser } from "playwright";
 
-import { chromium, type Browser, type BrowserContext, type Page } from "playwright";
-import { query, queryOne } from "../src/lib/db";
-import { hashPassword } from "../src/lib/password";
-
-const B = (process.env.UI_BASE || process.env.BASE
-  || "http://127.0.0.1:3000").replace(/\/$/, "");
-const GATE = process.env.STAGING_BASIC_AUTH || "";
 const LOGIN = "v3loop@example.com";
 
 /**
@@ -63,112 +53,17 @@ function ok(n: string, good: boolean, d = ""): void {
   else { fail += 1; console.log(`  걸림  ${n}${d ? ` — ${d}` : ""}`); }
 }
 
-/**
- * 끝낸 응시 하나를 이 사람 앞으로 떠 둔다.
- *
- * **검사를 다시 풀지 않는다.** 여기가 재는 것은 `검사가 도는가` 가 아니라
- * **결과를 받은 사람이 그 다음으로 갈 수 있는가** 이고, 그쪽은
- * `v3:runtime` 과 `v3:owner` 가 이미 센다. 가장 최근에 굳은 결과를
- * 응답째로 복사해 와서 거기서부터 누른다.
- *
- * **응답까지 함께 옮긴다**: 반영 계획(`previewRecompute`)이 그 응답을
- * 읽어 어느 축이 올라가는지 정한다. 응시만 옮기면 계획이 늘 비고, 그러면
- * 이 검사가 **끊긴 루프를 통과시킨다.**
- */
-async function cloneFinished(userId: string): Promise<string | null> {
-  const src = await queryOne<{ id: string }>(
-    `SELECT a.id::text FROM v3_attempts a
-       JOIN v3_snapshots s ON s.attempt_id = a.id
-      WHERE a.user_id <> $1 AND a.status = 'scored'
-        AND s.result_model IS NOT NULL
-      ORDER BY s.created_at DESC LIMIT 1`, [userId]);
-  if (!src) return null;
-  const row = await queryOne<{ id: string }>(
-    `INSERT INTO v3_attempts
-       (user_id, tier, core_code, market_code, education_stage, grad_field,
-        assessment_version, item_bank_version, scoring_version, status,
-        current_screen, opened_probe, opened_deep, fourth_reason,
-        industry_pack, role_pack, started_at, last_saved_at, submitted_at,
-        undergrad_core, industry_interest, role_interest, org_interest)
-     SELECT $1, tier, core_code, market_code, education_stage, grad_field,
-            assessment_version, item_bank_version, scoring_version, status,
-            current_screen, opened_probe, opened_deep, fourth_reason,
-            industry_pack, role_pack, started_at, last_saved_at, submitted_at,
-            undergrad_core, industry_interest, role_interest, org_interest
-       FROM v3_attempts WHERE id = $2::bigint
-     RETURNING id::text`, [userId, src.id]);
-  const id = row?.id;
-  if (!id) return null;
-  await query(
-    `INSERT INTO v3_responses (attempt_id, item_id, kind, value_int, value_text,
-                               answered_at, note_text)
-     SELECT $1::bigint, item_id, kind, value_int, value_text, answered_at, note_text
-       FROM v3_responses WHERE attempt_id = $2::bigint`, [id, src.id]);
-  await query(
-    `INSERT INTO v3_evidence_picks (attempt_id, domain_code, slot, item_text)
-     SELECT $1::bigint, domain_code, slot, item_text
-       FROM v3_evidence_picks WHERE attempt_id = $2::bigint`, [id, src.id]);
-  await query(
-    `INSERT INTO v3_snapshots (attempt_id, module_versions, response_quality,
-                               payload, result_model, result_model_version,
-                               result_copy_version)
-     SELECT $1::bigint, module_versions, response_quality, payload,
-            result_model, result_model_version, result_copy_version
-       FROM v3_snapshots WHERE attempt_id = $2::bigint`, [id, src.id]);
-  /* **결과 안에 적힌 응시 번호도 함께 옮긴다.** 굳은 결과는 자기 응시
-     번호를 품고 있고, 작업공간이 `결과 보기` 를 그 번호로 건다. 안 옮기면
-     베껴 온 사람의 홈이 **남의 응시로 가는 링크**를 세우고 404 가 난다 */
-  await query(
-    `UPDATE v3_snapshots
-        SET result_model = jsonb_set(result_model, '{attempt_id}', to_jsonb($1::text))
-      WHERE attempt_id = $2::bigint AND result_model IS NOT NULL`, [id, id]);
-  return id;
-}
 
-async function makeStudent(): Promise<{ id: string; pw: string }> {
-  const old = await queryOne<{ id: string }>(
-    `SELECT id::text FROM users WHERE login_id = $1`, [LOGIN]);
-  if (old) {
-    for (const t of ["v3_experiences", "v3_actions", "career_events",
-                     "career_profiles", "memberships", "entitlements",
-                     "analytics_events", "v3_attempts"]) {
-      await query(`DELETE FROM ${t} WHERE user_id = $1`, [old.id]).catch(() => undefined);
-    }
-    await query(`DELETE FROM users WHERE id = $1`, [old.id]).catch(() => undefined);
-  }
-  const pw = randomBytes(18).toString("base64url");
-  const row = await queryOne<{ id: string }>(
-    `INSERT INTO users (login_id, email, display_name, password_hash,
-                        status, locale, is_demo, must_reset_pw)
-     VALUES ($1,$1,'제품 루프 점검',$2,'active','ko',TRUE,FALSE) RETURNING id::text`,
-    [LOGIN, await hashPassword(pw)]);
-  await query(
-    `INSERT INTO memberships (user_id, org_id, role) VALUES ($1, NULL, 'student')
-       ON CONFLICT DO NOTHING`, [row?.id]).catch(() => undefined);
-  return { id: row?.id as string, pw };
-}
 
-async function login(ctx: BrowserContext, who: string, pw: string): Promise<Page> {
-  const p = await ctx.newPage();
-  await p.goto(`${B}/login`, { waitUntil: "domcontentloaded" });
-  await p.fill('input[name="identifier"], input[name="loginId"], input[type="text"]', who);
-  await p.fill('input[type="password"]', pw);
-  await p.click('button[type="submit"]');
-  await p.waitForURL((u) => !new URL(u).pathname.startsWith("/login"), { timeout: 30000 })
-    .catch(() => undefined);
-  await p.waitForLoadState("networkidle").catch(() => undefined);
-  return p;
-}
 
 async function main(): Promise<void> {
-  const stu = await makeStudent();
+  const stu = await makeStudent(LOGIN);
   const attemptId = await cloneFinished(stu.id);
   const browser: Browser = await chromium.launch({
     args: ["--no-sandbox", "--disable-dev-shm-usage"],
     ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}),
   });
-  const gate = GATE.includes(":")
-    ? { username: GATE.split(":")[0], password: GATE.slice(GATE.indexOf(":") + 1) } : null;
+  const gate = gateCreds();
   const opts = gate ? { httpCredentials: gate } : {};
 
   try {
@@ -240,37 +135,13 @@ async function main(): Promise<void> {
 
     /* ── 4. 행동 루프: 경험 → 저장 → 달라진 것 → 현재 상태 ──────── */
     console.log("\n── 4. 행동 루프");
-    await p.goto(`${B}/me/experience/new`, { waitUntil: "networkidle" });
     const title = `루프 점검 ${randomBytes(3).toString("hex")}`;
-    await p.fill('input[name="title"]', title).catch(() => undefined);
-    const month = await p.$('input[type="month"]');
-    if (month) await month.fill("2025-03");
-    /* **고르는 칸을 이름으로 고른다.** `.cm-pick` 을 앞에서부터 여섯 개
-       누르면 전부 `어떤 경험인가요` 라디오라 기술영역이 하나도 안 골리고,
-       그러면 반영 계획이 늘 비어 **끊긴 루프를 이 검사가 통과시킨다** */
-    await p.locator('.cm-pick:has(input[name="kind"])').first()
-      .click({ timeout: 2000 }).catch(() => undefined);
-    const tds = p.locator('.cm-pick:has(input[name="td"])');
-    const nTd = await tds.count();
-    for (let i = 0; i < Math.min(nTd, 2); i += 1) {
-      await tds.nth(i).click({ timeout: 2000 }).catch(() => undefined);
-    }
-    await p.waitForTimeout(400);
-    const axes = p.locator('.cm-pick:has(input[name="axis"])');
-    for (let i = 0; i < Math.min(await axes.count(), 4); i += 1) {
-      await axes.nth(i).click({ timeout: 2000 }).catch(() => undefined);
-    }
-    for (const nm of ["problem", "decision", "artifact", "verification"]) {
-      const g = p.locator(`.cm-pick:has(input[name="${nm}"])`);
-      for (let i = 0; i < Math.min(await g.count(), 2); i += 1) {
-        await g.nth(i).click({ timeout: 2000 }).catch(() => undefined);
-      }
-    }
-    ok("기술영역을 고를 수 있다", nTd > 0, `${nTd}개`);
-    await p.locator('button[type="submit"]').last().click({ force: true })
-      .catch(() => undefined);
-    await p.waitForLoadState("networkidle").catch(() => undefined);
-    await p.waitForTimeout(1200);
+    /* **폼을 여기서 적지 않는다.** 세 걸음짜리 폼을 누르는 줄을 검사마다
+       따로 들고 있으면 걸음이 넷이 되는 날 한 곳만 고쳐지고, 가린 판의
+       칸은 눌리지 않아 **아무것도 골리지 않은 채로 저장된다** */
+    const checked = await fillExperience(p, title);
+    ok("기술영역이 실제로 골라졌다", checked > 0, `${checked}개`);
+
     const afterSave = new URL(p.url()).pathname;
     ok("저장하면 달라진 것을 먼저 보여 준다", afterSave === "/me/recompute", afterSave);
 

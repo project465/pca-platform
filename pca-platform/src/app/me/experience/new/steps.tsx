@@ -55,7 +55,12 @@ export default function Steps(
     return false;
   }
 
-  function go(next: number) {
+  function go(next: number, e?: { preventDefault(): void }) {
+    /* **이 단추가 폼을 보내지 않게 막는다.** 아래 주석에 적은 까닭으로
+       누르는 순간 이 단추의 `type` 이 `submit` 으로 바뀔 수 있고, 그러면
+       브라우저가 기본 동작으로 폼을 보낸다. `key` 로 갈라 두었어도
+       한 겹 더 막는다: 이 자리가 조용히 반쪽 기록을 저장하던 자리다 */
+    e?.preventDefault();
     if (next > 1 && !ok1()) return;
     setStep(next);
     /* 걸음을 넘기면 **머리로 올린다**: 긴 판에서 넘기면 다음 판의 가운데가
@@ -153,23 +158,37 @@ export default function Steps(
       {/* ── 걸음 단추 ──
           **짙은 단추는 하나다.** 마지막 걸음에서만 `저장` 이 서고 그
           전까지는 `다음` 이 그 자리를 든다 */}
+      {/*
+        **`다음` 과 `저장` 에 서로 다른 `key` 를 준다.**
+
+        이것이 없을 때 2단의 `다음` 이 **폼을 보냈다.** 같은 자리에
+        `<button>` 둘을 삼항으로 두면 React 가 그것을 같은 element 로 보고
+        DOM 노드를 재사용하면서 `type` 만 `button` → `submit` 으로 고친다.
+        그러면 클릭 처리기(`go`)가 돌아 3단으로 넘어간 뒤, 브라우저가
+        **그 순간의 `type` 으로** 기본 동작을 정해 폼을 보낸다.
+        누르는 사람에게는 `다음` 을 눌렀더니 3단을 건너뛰고 저장된 것으로
+        보이고, **3단의 결과물과 쓰인 자리가 통째로 빈 기록이 쌓인다.**
+        `key` 가 다르면 React 가 노드를 새로 만들어 `type` 이 섞이지 않는다.
+      */}
       <div className="cm-wiz-nav">
         {step > 1 ? (
-          <button className="cm-btn" type="button" onClick={() => go(step - 1)}>
+          <button key="back" className="cm-btn" type="button"
+            onClick={(e) => go(step - 1, e)}>
             이전
           </button>
         ) : null}
         {step < 3 ? (
-          <button className="cm-btn is-primary" type="button" onClick={() => go(step + 1)}>
+          <button key="next" className="cm-btn is-primary" type="button"
+            onClick={(e) => go(step + 1, e)}>
             다음
           </button>
         ) : (
-          <button className="cm-btn is-primary" type="submit">저장</button>
+          <button key="save" className="cm-btn is-primary" type="submit">저장</button>
         )}
         {/* 2단에서도 저장할 수 있게 둔다. **3단은 전부 선택 칸이라**
             거기까지 가야 저장되는 구조면 비워 둘 사람이 한 걸음을 헛돈다 */}
         {step === 2 ? (
-          <button className="cm-btn" type="submit">여기까지 저장</button>
+          <button key="save2" className="cm-btn" type="submit">여기까지 저장</button>
         ) : null}
       </div>
     </>
