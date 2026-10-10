@@ -629,7 +629,32 @@ Focus Domain 마다 `왜 이 영역이 나왔나요` 를 되짚을 수 있다. �
 
 ## Y. commit SHA
 
-이 보고와 같은 commit 에 들어간다. `git log --oneline -3` 으로 확인한다.
+| commit | 내용 |
+|---|---|
+| `0659fc4` | 측정체계 감사 전부. 고침 넷 · 검사 둘 · 판본 다섯 · 보고 84~87 |
+| (이 줄을 적은 commit) | 아래 회귀 결과와 Y 절 |
+
+가지는 `claude/amazing-thompson-w3f2o2` 이고 `origin` 에 올라가 있다.
+
+### 회귀 (`npm run v3:all`, 서른여섯 묶음)
+
+이 기계의 배포본을 띄워 끝까지 돌렸다. **종료코드 0 · 걸림 0.**
+
+```
+v2:frozen  v3:build  v3:domains 15  v3:items 16  v3:length 19  v3:migrate 14
+v3:arch 20  v3:extend 14  v3:wording 35  v3:persona 15  v3:scoring 31
+v3:measure 23(보고 1)  v3:gaming 26  v3:runtime 28  v3:ui 28  v3:copy
+v3:freeze  v3:result 25  v3:result:copy 9  v3:recompute 7  v3:isolation 11
+v3:owner 19  v3:usability 12  v3:visual  v3:gate 18  v3:loop 15
+v3:result:freeze  v3:workspace  auth:check  secrets:check 7  errors:check 8
+routes:check 10  runbook:check 7  oauth:ready 11  pilot:ready 15  v3:pilot 29
+```
+
+확장성 검사도 같이 돌았다: 전기전자와 경영학 core 를 **코드를 한 글자도
+고치지 않고** 데이터로만 올려 `v3:domains` 와 `v3:items` 가 통과한다.
+
+캡처는 U 절의 다섯 묶음을 다시 뽑았다. 결과지 PDF 는 BASIC 5쪽 ·
+STANDARD 8쪽 · PRO 12쪽이고 빈 쪽이 없다.
 
 ---
 
