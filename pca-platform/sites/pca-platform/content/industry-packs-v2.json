@@ -185,7 +185,10 @@
      "axis": "J3",
      "domain": "TD08",
      "ask": "조건을 바꿔 가며 되는 범위를 찾아 본 경험이 있다",
-     "gloss": "온도나 압력이나 속도를 바꿔 가며 되는 구간을 찾은 경험이면 됩니다"
+     "gloss": "온도나 압력이나 속도를 바꿔 가며 되는 구간을 찾은 경험이면 됩니다",
+     "review": "HUMAN_DOMAIN_REVIEW_REQUIRED",
+     "review_reason": "조건 폭을 찾는 판단이 BATTERY_I3 과 닮음 0.59 다. 반도체에서 달라지는 조건(수율과 공정 창)이 문면에 없다",
+     "review_added": "2026-10-10"
     },
     {
      "id": "INDUSTRY_SEMICON_V2_I8",
@@ -419,7 +422,10 @@
      "axis": "J6",
      "domain": "TD04",
      "ask": "충격이나 진동 시험을 예상해 설계를 미리 고쳐 본 경험이 있다",
-     "gloss": "떨어뜨리거나 흔드는 시험을 생각해 보강한 경험이면 됩니다"
+     "gloss": "떨어뜨리거나 흔드는 시험을 생각해 보강한 경험이면 됩니다",
+     "review": "HUMAN_DOMAIN_REVIEW_REQUIRED",
+     "review_reason": "시험을 예상해 설계를 고치는 판단이 BATTERY_I6 과 닮음 0.65 다. 방산에서 달라지는 조건(규격 시험 항목·환경 시험 등급)이 문면에 없다",
+     "review_added": "2026-10-10"
     },
     {
      "id": "INDUSTRY_DEFENSE_V2_I7",
@@ -661,7 +667,10 @@
      "axis": "J3",
      "domain": "TD03",
      "ask": "열을 어디로 뺄지 경로를 정해 본 경험이 있다",
-     "gloss": "뜨거워지는 부분의 열을 빼는 길을 정한 경험이면 됩니다"
+     "gloss": "뜨거워지는 부분의 열을 빼는 길을 정한 경험이면 됩니다",
+     "review": "HUMAN_DOMAIN_REVIEW_REQUIRED",
+     "review_reason": "열 경로를 정하는 판단이 일반 기계공학 문장과 구별되지 않는다. 자동차에서 달라지는 조건(패키징 공간·주행 풍속·법규 온도 한계)이 문면에 없다",
+     "review_added": "2026-10-10"
     },
     {
      "id": "INDUSTRY_MOBILITY_V2_I7",
@@ -1105,7 +1114,10 @@
      "axis": "J3",
      "domain": "TD03",
      "ask": "뜨거워지는 부분의 열을 어디로 뺄지 경로를 정해 본 경험이 있다",
-     "gloss": "열이 쌓이는 곳의 열을 빼는 길을 정한 경험이면 같은 판단입니다"
+     "gloss": "열이 쌓이는 곳의 열을 빼는 길을 정한 경험이면 같은 판단입니다",
+     "review": "HUMAN_DOMAIN_REVIEW_REQUIRED",
+     "review_reason": "열 경로를 정하는 판단이 MOBILITY_I6 과 닮음 0.67 이다. 배터리에서 달라지는 조건(셀 간 온도 편차·열폭주 전파)이 문면에 없다",
+     "review_added": "2026-10-10"
     },
     {
      "id": "INDUSTRY_BATTERY_V2_I2",
@@ -1119,7 +1131,10 @@
      "axis": "J3",
      "domain": "TD08",
      "ask": "조건을 바꿔 가며 되는 폭을 찾아 본 경험이 있다",
-     "gloss": "온도나 압력이나 속도를 바꿔 되는 구간을 찾은 경험이면 됩니다"
+     "gloss": "온도나 압력이나 속도를 바꿔 되는 구간을 찾은 경험이면 됩니다",
+     "review": "HUMAN_DOMAIN_REVIEW_REQUIRED",
+     "review_reason": "SEMICON_I7 과 짝이다. 배터리에서 달라지는 조건(공정 창과 용량·수명 산포)이 문면에 없다",
+     "review_added": "2026-10-10"
     },
     {
      "id": "INDUSTRY_BATTERY_V2_I4",
@@ -1140,7 +1155,10 @@
      "axis": "J6",
      "domain": "TD10",
      "ask": "안전 쪽 시험을 예상해 설계를 미리 고쳐 본 경험이 있다",
-     "gloss": "위험한 상황을 생각해 보강하거나 조건을 바꾼 경험이면 됩니다"
+     "gloss": "위험한 상황을 생각해 보강하거나 조건을 바꾼 경험이면 됩니다",
+     "review": "HUMAN_DOMAIN_REVIEW_REQUIRED",
+     "review_reason": "DEFENSE_I6 과 짝이다. 배터리 안전 시험에서 달라지는 조건(열폭주·압괴·과충전 항목)이 문면에 없다",
+     "review_added": "2026-10-10"
     },
     {
      "id": "INDUSTRY_BATTERY_V2_I7",

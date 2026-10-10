@@ -108,6 +108,18 @@ function fakeCore(dir: string, prefix: string, domains: [string, string][],
         result_sections: ["A", "B", "C", "D", "I"], reverse: false,
         stage_variants: false, field_routing: "all", note: "영역 훑기",
       }))),
+      /**
+       * 역방향 자리와 **그 짝**.
+       *
+       * 전에는 역방향 자리만 두었다. `v3:items` 가 `역방향이 하나 이상` 을
+       * 세던 때는 그것으로 지나갔는데, 지금 세는 것은 **같은 묶음·축에
+       * 정방향 짝이 있는가**다. 짝이 없는 역방향 자리는 품질 규칙에서
+       * 아무것도 재지 않으므로, 가짜 core 도 그 계약을 지켜야 한다.
+       */
+      { id: "CJ_FWD", block: "CORE-JUDGE", construct: "common_judgement",
+        domain: null, axis: "J1", scale: "L0~L3", tier: "BASIC",
+        result_sections: ["B", "E"], reverse: false, stage_variants: true,
+        field_routing: "all", note: "정방향. 아래 역방향 자리의 짝이다" },
       { id: "CJ_REV", block: "CORE-JUDGE", construct: "common_judgement",
         domain: null, axis: "J1", scale: "L0~L3", tier: "BASIC",
         result_sections: ["B", "E"], reverse: true, stage_variants: true,

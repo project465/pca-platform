@@ -17,12 +17,13 @@ import { execSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { CONTENT_DIR, coreFile, registry } from "../src/lib/me-v3/core-registry";
-import { load, score } from "../src/lib/me-v3/scoring/engine";
+import { coreOnly, load, score } from "../src/lib/me-v3/scoring/engine";
 import { stable } from "../src/lib/me-v3/scoring/fixtures";
 import { routedFor, type BankItem as CoreItem } from "../src/lib/me-v3/scoring/normalize";
 import { pickDomains } from "../src/lib/me-v3/runtime/routing";
 import { buildResult } from "../src/lib/me-v3/result/build";
 import { COMMON_ITEM_KO } from "../src/lib/me-v3/result/text.ko";
+import { compatible, constructRegistry } from "../src/lib/me-v3/measurement/registry";
 import { UNKNOWN } from "../src/lib/me-v3/scoring/types";
 import type {
   Answer, Axis, GradField, Stage, Submission, Tier,
@@ -506,15 +507,14 @@ for (const c of COVER) {
 
 const dead = uses.filter((u) => !u.floor && !u.ceil);
 /**
- * 짝에 가려 결과가 따로 읽지 못하는 문항.
+ * 짝에 가려 결과가 따로 읽지 못하는 문항. **지금은 비어 있다.**
  *
- * `CJ_GIVEN_REV` 하나만 남겨 두었다. 그 문항의 문면은 선호를 묻는데 보기는
- * 소유 사다리 넷이라, 고른 보기를 문장으로 적으면 응시자가 하지 않은 주장을
- * 우리가 하게 된다. 그래서 결과지가 문장으로 적지 않고
- * (`result/build.ts` 의 `NO_SENTENCE`) 축 불린에는 그대로 둔다: 빼면 판정이
- * 달라지고 그것은 척도를 고치는 일이라 사업주 결정이 먼저다.
+ * `CJ_GIVEN_REV` 가 한동안 여기 있었다. 문면과 보기가 어긋나 결과지가 그
+ * 문항을 문장으로 적지 않았고, 그래서 천장에서 내려도 결과가 그대로였다.
+ * 문면을 겪은 장면으로 다시 쓴 뒤로는 다른 판단 문항과 같이 문장으로
+ * 서므로 예외가 필요하지 않다.
  */
-const MASK_OK = new Set(["CJ_GIVEN_REV"]);
+const MASK_OK = new Set<string>();
 const masked = uses.filter((u) => u.floor && !u.ceil);
 const maskedBad = masked.filter((u) => !MASK_OK.has(u.id));
 ok("E 응답이 결과로 들어가지 않는 문항이 없다", dead.length === 0,
@@ -636,8 +636,9 @@ ok("F 같은 영역·축을 같은 말로 두 번 묻는 자리가 없다", hard
       .includes(i.module))
     .map((i) => i.item_id);
   const unnamed = commonIds.filter((id) => !COMMON_ITEM_KO[id] && !MASK_OK.has(id));
+  const named = commonIds.filter((id) => !!COMMON_ITEM_KO[id]).length;
   ok("영역에 걸치지 않는 판단마다 읽는 이름이 있다", unnamed.length === 0,
-     unnamed.join(" ") || `${commonIds.length}문항 중 ${commonIds.length - 1}개에 이름이 있고 하나는 적어 둔 예외다`);
+     unnamed.join(" ") || `${named} / ${commonIds.length}문항`);
   const stray = Object.keys(COMMON_ITEM_KO).filter((id) => !commonIds.includes(id));
   ok("읽는 이름이 은행에 없는 문항을 가리키지 않는다", stray.length === 0, stray.join(" "));
 }
@@ -646,16 +647,108 @@ ok("F 같은 영역·축을 같은 말로 두 번 묻는 자리가 없다", hard
  * 8d. 사람이 정할 일
  * ──────────────────────────────────────────────────────────────── */
 {
+  /**
+   * **등록부의 짝 표를 여기서도 읽는다.**
+   *
+   * `v3:registry` 가 같은 것을 세지만, 측정 지도를 만드는 이 자리에서 한 번
+   * 더 보는 까닭은 지도의 `신호 갈래` 칸이 그 짝에서 나오기 때문이다.
+   * 어긋난 문항을 지도에 적으면 그 지도가 틀린 것을 맞다고 적는다.
+   */
+  const reg = constructRegistry(core);
+  const byId = new Map(reg.items.map((r) => [r.item_id, r]));
+  const bad = live.filter((i) => {
+    const r = byId.get(i.item_id);
+    if (!r) return true;
+    return !compatible(r.primary, r.response_type);
+  });
+  ok("지도의 문항마다 construct 와 response type 이 맞는 짝이다", bad.length === 0,
+     bad.slice(0, 4).map((i) => i.item_id).join(" ") || `${live.length}문항`);
+
+  /* 역방향 문항과 일관성 짝의 수를 적어 둔다. **가짜 교차검증을 세지 않기
+     위해 수를 드러낸다**: 역방향이 0개면 전부 최고로 답한 사람을 막는 것은
+     근거 요구 하나다 */
   const rev = bank.items.filter((i) => i.reverse_flag);
-  for (const r of rev) {
-    const fits = SCALE_OK[familyOf(r)].includes(r.response_scale ?? "");
-    const pair = bank.items.find((i) => !i.reverse_flag && i.module === r.module
-      && i.evidence_axis === r.evidence_axis);
-    note(`역방향 문항 \`${r.item_id}\` 의 척도와 짝`,
-      `문면은 선호를 묻고 보기는 소유 사다리 넷이다(갈래 ${familyOf(r)} · 입력 ${r.response_scale} · 맞음 ${fits}). 같은 묶음·축의 정방향 짝 ${pair ? pair.item_id : "없음"}. 85 문서 STOP GATE`);
+  const pairs = bank.items.filter((i) => i.consistency_pair).length / 2;
+  ok("역방향 문항에 짝이 없는 자리가 없다",
+     rev.every((r) => bank.items.some((i) => !i.reverse_flag && i.module === r.module
+       && i.evidence_axis === r.evidence_axis)),
+     `역방향 ${rev.length}개 · 일관성 짝 ${pairs}쌍`);
+  if (rev.length === 0) {
+    note("역방향 문항이 0개다",
+      "`REVERSE_PAIR_AGREED` 는 설 자리가 없다. 전부 최고로 답한 사람을 막는 것은"
+      + " 소유가 응답과 고른 근거 둘을 함께 보는 규칙이고 `v3:gaming` 이 그것을 센다");
   }
-  ok("역방향 문항은 하나뿐이다 (가짜 교차검증을 세지 않기 위해 수를 적어 둔다)",
-     rev.length === 1, `역방향 ${rev.length}개 · 일관성 짝 ${bank.items.filter((i) => i.consistency_pair).length / 2}쌍`);
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * 8e. 산업·역할 팩이 Core 판정을 바꾸지 않는가
+ *
+ * 팩 문항은 같은 자리를 그 산업·직무의 말로 **다시 읽는** 자리다. 읽는
+ * 자리가 판정을 바꾸면 산업을 고르는 일이 점수를 고르는 일이 된다.
+ * **팩 응답을 바닥에서 천장까지 올려 보고 Core 지문을 글자로 견준다.**
+ * ──────────────────────────────────────────────────────────────── */
+{
+  const c: Cover = { name: "팩불변", tier: "PRO", stage: "bachelor", field: null,
+    industry: IND[0], role: ROLE[0] };
+  const base = withEvidence(subOf(c, "top"));
+  const packIds = bank.items
+    .filter((i) => (i.module === "INDUSTRY" || i.module === "ROLE")
+      && routedFor(base, i)).map((i) => i.item_id);
+  const low: Submission = { ...base, answers: { ...base.answers } };
+  for (const id of packIds) low.answers[id] = { kind: "level", index: 0 };
+  const a = stable(coreOnly(score(base, loaded)));
+  const b = stable(coreOnly(score(low, loaded)));
+  ok("산업·역할 팩 응답이 Core 판정을 바꾸지 않는다", a === b,
+     a === b ? `팩 문항 ${packIds.length}개를 바닥에서 천장까지 바꿔도 Core 지문이 같다`
+       : "Core 지문이 달라졌다");
+
+  /* 산업을 바꿔도 Core 가 같은가. 고른 팩만 갈아 끼운다 */
+  const other = IND[1];
+  const swapped: Submission = { ...base, industry_pack: other,
+    industry_interest: [other],
+    asked: bank.items.filter((i) =>
+      (i.module === "INDUSTRY" && i.industry_pack === other)
+      || (i.module === "ROLE" && i.item_id.startsWith(`${ROLE[0]}_`)))
+      .map((i) => i.item_id) };
+  ok("산업을 바꿔도 Core 판정이 같다",
+     stable(coreOnly(score(swapped, loaded))) === a,
+     `${IND[0]} vs ${other}`);
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * 8f. 사람이 읽어 주셔야 하는 팩 문항
+ * ──────────────────────────────────────────────────────────────── */
+type PackFile = {
+  packs: { code: string; items?: { id: string; review?: string;
+    review_reason?: string; gloss?: string }[] }[];
+};
+const REVIEW_FLAG = "HUMAN_DOMAIN_REVIEW_REQUIRED";
+let flagged: { id: string; why: string }[] = [];
+{
+  const ip = coreFile<PackFile>(core, "items");
+  void ip;
+  const packs = JSON.parse(readFileSync(
+    join(CONTENT_DIR, "industry-packs-v2.json"), "utf8")) as PackFile;
+  for (const p of packs.packs) {
+    for (const it of p.items ?? []) {
+      if (it.review === REVIEW_FLAG) {
+        flagged.push({ id: it.id, why: it.review_reason ?? "" });
+      }
+    }
+  }
+  /* 표시한 문항마다 까닭이 적혀 있는가. **표시만 두면 다음 사람이 무엇을
+     봐야 하는지 모른다** */
+  const noWhy = flagged.filter((f) => f.why.length < 20);
+  ok(`${REVIEW_FLAG} 표시마다 까닭이 적혀 있다`, noWhy.length === 0,
+     noWhy.map((f) => f.id).join(" ") || `표시 ${flagged.length}개`);
+  /* 표시한 문항도 쉬운 말 풀이는 있어야 한다 */
+  const noGloss: string[] = [];
+  for (const p of packs.packs) {
+    for (const it of p.items ?? []) {
+      if (it.review === REVIEW_FLAG && (it.gloss ?? "").length < 10) noGloss.push(it.id);
+    }
+  }
+  ok("표시한 문항에도 쉬운 말 풀이가 있다", noGloss.length === 0, noGloss.join(" "));
 }
 
 /* ────────────────────────────────────────────────────────────────────
@@ -815,6 +908,18 @@ if (dup.length) {
   for (const d of dup.sort((x, y) => y.sim - x.sim).slice(0, 60)) {
     L.push(`| \`${d.a}\` | \`${d.b}\` | ${d.sim} | ${d.kind} |`);
   }
+}
+L.push("");
+L.push("## 사람이 읽어 주셔야 하는 팩 문항");
+L.push("");
+if (flagged.length) {
+  L.push("| item_id | 까닭 |");
+  L.push("|---|---|");
+  for (const f of flagged) L.push(`| \`${f.id}\` | ${f.why} |`);
+  L.push("");
+  L.push("`HUMAN_DOMAIN_REVIEW_REQUIRED` 로 표시했다. **Core 판정과는 떨어져 있다**: 팩 응답을 바닥에서 천장까지 바꿔도 Core 지문이 같고, 산업을 갈아 끼워도 같다.");
+} else {
+  L.push("표시한 문항 없음.");
 }
 L.push("");
 mkdirSync("docs/metri", { recursive: true });

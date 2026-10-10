@@ -1,236 +1,238 @@
 {
- "schema_version": "major-cores.1",
- "note": "Major Core 등록부다. `family` 가 Market Policy 의 허용 목록과 맞춰진다. **엔진은 하나이고 core 는 데이터 모듈이다**: core 를 더하는 일이 파일을 더하는 일이어야 한다",
- "contract": {
-  "required_files": [
-   "taxonomy",
-   "domains",
-   "checklists",
-   "items_blueprint"
-  ],
-  "required_keys": {
-   "taxonomy": [
-    "technical_domains",
-    "role_functions",
-    "org_contexts",
-    "job_aliases",
-    "boundaries",
-    "axes",
-    "scales",
-    "levels"
-   ],
-   "domains": [
-    "domains"
-   ],
-   "items_blueprint": [
-    "slots",
-    "result_sections",
-    "rules"
-   ]
+  "schema_version": "major-cores.1",
+  "note": "Major Core 등록부다. `family` 가 Market Policy 의 허용 목록과 맞춰진다. **엔진은 하나이고 core 는 데이터 모듈이다**: core 를 더하는 일이 파일을 더하는 일이어야 한다",
+  "contract": {
+    "required_files": [
+      "taxonomy",
+      "domains",
+      "checklists",
+      "items_blueprint"
+    ],
+    "required_keys": {
+      "taxonomy": [
+        "technical_domains",
+        "role_functions",
+        "org_contexts",
+        "job_aliases",
+        "boundaries",
+        "axes",
+        "scales",
+        "levels"
+      ],
+      "domains": [
+        "domains"
+      ],
+      "items_blueprint": [
+        "slots",
+        "result_sections",
+        "rules"
+      ]
+    },
+    "note": "core 마다 required 넷을 같은 열쇠로 내놓는다. 엔진은 core 이름도 파일 이름도 모르고 등록부가 가리키는 것만 읽는다. optional 은 그 core 가 옛 자산을 재배치했거나 판본을 올렸을 때만 있다. `relations` 는 기술영역과 산업·역할의 관계표이고 `migration` 은 옛 문항 은행에서 지금 은행으로 온 길이다",
+    "optional_files": [
+      "checklist_additions",
+      "common_additions",
+      "evidence_remap",
+      "legacy_evidence_map",
+      "items",
+      "relations",
+      "migration",
+      "constructs"
+    ]
   },
-  "note": "core 마다 required 넷을 같은 열쇠로 내놓는다. 엔진은 core 이름도 파일 이름도 모르고 등록부가 가리키는 것만 읽는다. optional 은 그 core 가 옛 자산을 재배치했거나 판본을 올렸을 때만 있다. `relations` 는 기술영역과 산업·역할의 관계표이고 `migration` 은 옛 문항 은행에서 지금 은행으로 온 길이다",
-  "optional_files": [
-   "checklist_additions",
-   "common_additions",
-   "evidence_remap",
-   "legacy_evidence_map",
-   "items",
-   "relations",
-   "migration"
-  ]
- },
- "cores": [
-  {
-   "code": "ME_CORE_V3",
-   "family": "STEM",
-   "major": "ME",
-   "name_ko": "기계공학",
-   "name_en": "Mechanical Engineering",
-   "assessment_version": "ME_V3_2",
-   "status": "building",
-   "markets": [
-    "KR",
-    "GLOBAL"
-   ],
-   "files": {
-    "taxonomy": "me-v3-2-taxonomy.json",
-    "domains": "me-v3-2-domains.json",
-    "checklists": "me-v3-2-checklists.json",
-    "items_blueprint": "me-v3-2-items-blueprint.json",
-    "checklist_additions": "me-v3-2-checklist-additions.json",
-    "common_additions": "me-v3-2-common-additions.json",
-    "items": "me-v3-2-items.json",
-    "relations": "me-v3-2-relations.json",
-    "migration": "me-v3-2-migration.json"
-   },
-   "domain_count": 12,
-   "axis_count": 8,
-   "packs": {
-    "industry": "industry-packs-v2.json",
-    "role": "role-packs-v2.json"
-   },
-   "role_function_count": 8,
-   "frozen": [
+  "cores": [
     {
-     "assessment_version": "ME_V3_DOMAIN_2026",
-     "item_bank_version": "ME_V3_ITEM_BANK_V1",
-     "note": "1차 판본이다. 새 응시는 이 판본을 쓰지 않는다. 파일을 지우지 않는 까닭은 이 판본으로 응시한 사람의 결과를 다시 만들 수 있어야 하기 때문이다. `sites/pca-platform/assessment/ME_V3/bank-lock.json` 이 지문을 들고 있다",
-     "files": {
-      "taxonomy": "me-v3-taxonomy.json",
-      "domains": "me-v3-domains.json",
-      "checklists": "me-v3-checklists.json",
-      "items_blueprint": "me-v3-items-blueprint.json",
-      "checklist_additions": "me-v3-checklist-additions.json",
-      "common_additions": "me-v3-common-additions.json",
-      "evidence_remap": "me-v3-evidence-remap.json",
-      "legacy_evidence_map": "me-evidence-map.json",
-      "items": "me-v3-items.json",
-      "industry_packs": "industry-packs.json",
-      "role_packs": "role-packs.json"
-     }
+      "code": "ME_CORE_V3",
+      "family": "STEM",
+      "major": "ME",
+      "name_ko": "기계공학",
+      "name_en": "Mechanical Engineering",
+      "assessment_version": "ME_V3_2",
+      "status": "building",
+      "markets": [
+        "KR",
+        "GLOBAL"
+      ],
+      "files": {
+        "taxonomy": "me-v3-2-taxonomy.json",
+        "domains": "me-v3-2-domains.json",
+        "checklists": "me-v3-2-checklists.json",
+        "items_blueprint": "me-v3-2-items-blueprint.json",
+        "checklist_additions": "me-v3-2-checklist-additions.json",
+        "common_additions": "me-v3-2-common-additions.json",
+        "items": "me-v3-2-items.json",
+        "relations": "me-v3-2-relations.json",
+        "migration": "me-v3-2-migration.json",
+        "constructs": "me-v3-2-constructs.json"
+      },
+      "domain_count": 12,
+      "axis_count": 8,
+      "packs": {
+        "industry": "industry-packs-v2.json",
+        "role": "role-packs-v2.json"
+      },
+      "role_function_count": 8,
+      "frozen": [
+        {
+          "assessment_version": "ME_V3_DOMAIN_2026",
+          "item_bank_version": "ME_V3_ITEM_BANK_V1",
+          "note": "1차 판본이다. 새 응시는 이 판본을 쓰지 않는다. 파일을 지우지 않는 까닭은 이 판본으로 응시한 사람의 결과를 다시 만들 수 있어야 하기 때문이다. `sites/pca-platform/assessment/ME_V3/bank-lock.json` 이 지문을 들고 있다",
+          "files": {
+            "taxonomy": "me-v3-taxonomy.json",
+            "domains": "me-v3-domains.json",
+            "checklists": "me-v3-checklists.json",
+            "items_blueprint": "me-v3-items-blueprint.json",
+            "checklist_additions": "me-v3-checklist-additions.json",
+            "common_additions": "me-v3-common-additions.json",
+            "evidence_remap": "me-v3-evidence-remap.json",
+            "legacy_evidence_map": "me-evidence-map.json",
+            "items": "me-v3-items.json",
+            "industry_packs": "industry-packs.json",
+            "role_packs": "role-packs.json"
+          }
+        }
+      ]
+    },
+    {
+      "code": "EE_CORE_V1",
+      "family": "STEM",
+      "major": "EE",
+      "name_ko": "전기전자",
+      "name_en": "Electrical & Electronic Engineering",
+      "assessment_version": null,
+      "status": "planned",
+      "markets": [
+        "KR",
+        "GLOBAL"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "CHE_CORE_V1",
+      "family": "STEM",
+      "major": "CHE",
+      "name_ko": "화학공학",
+      "name_en": "Chemical Engineering",
+      "assessment_version": null,
+      "status": "planned",
+      "markets": [
+        "KR",
+        "GLOBAL"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "MSE_CORE_V1",
+      "family": "STEM",
+      "major": "MSE",
+      "name_ko": "재료",
+      "name_en": "Materials Science & Engineering",
+      "assessment_version": null,
+      "status": "planned",
+      "markets": [
+        "KR",
+        "GLOBAL"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "IE_CORE_V1",
+      "family": "STEM",
+      "major": "IE",
+      "name_ko": "산업공학",
+      "name_en": "Industrial Engineering",
+      "assessment_version": null,
+      "status": "planned",
+      "markets": [
+        "KR",
+        "GLOBAL"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "CS_CORE_V1",
+      "family": "STEM",
+      "major": "CS",
+      "name_ko": "컴퓨터",
+      "name_en": "Computer Science & Engineering",
+      "assessment_version": null,
+      "status": "planned",
+      "markets": [
+        "KR",
+        "GLOBAL"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "NS_CORE_V1",
+      "family": "STEM",
+      "major": "NS",
+      "name_ko": "자연과학",
+      "name_en": "Natural Sciences",
+      "assessment_version": null,
+      "status": "planned",
+      "markets": [
+        "KR",
+        "GLOBAL"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "BIZ_CORE_V1",
+      "family": "BUSINESS",
+      "major": "BIZ",
+      "name_ko": "경영학",
+      "name_en": "Business Administration",
+      "assessment_version": null,
+      "status": "planned",
+      "markets": [
+        "KR"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "ECON_CORE_V1",
+      "family": "BUSINESS",
+      "major": "ECON",
+      "name_ko": "경제학",
+      "name_en": "Economics",
+      "assessment_version": null,
+      "status": "planned",
+      "markets": [
+        "KR"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "HS_CORE_V1",
+      "family": "HUMANITIES_SOCIAL",
+      "major": "HS",
+      "name_ko": "인문·사회",
+      "name_en": "Humanities & Social Sciences",
+      "assessment_version": null,
+      "status": "planned",
+      "markets": [
+        "KR"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
     }
-   ]
-  },
-  {
-   "code": "EE_CORE_V1",
-   "family": "STEM",
-   "major": "EE",
-   "name_ko": "전기전자",
-   "name_en": "Electrical & Electronic Engineering",
-   "assessment_version": null,
-   "status": "planned",
-   "markets": [
-    "KR",
-    "GLOBAL"
-   ],
-   "files": {},
-   "domain_count": null,
-   "axis_count": 8
-  },
-  {
-   "code": "CHE_CORE_V1",
-   "family": "STEM",
-   "major": "CHE",
-   "name_ko": "화학공학",
-   "name_en": "Chemical Engineering",
-   "assessment_version": null,
-   "status": "planned",
-   "markets": [
-    "KR",
-    "GLOBAL"
-   ],
-   "files": {},
-   "domain_count": null,
-   "axis_count": 8
-  },
-  {
-   "code": "MSE_CORE_V1",
-   "family": "STEM",
-   "major": "MSE",
-   "name_ko": "재료",
-   "name_en": "Materials Science & Engineering",
-   "assessment_version": null,
-   "status": "planned",
-   "markets": [
-    "KR",
-    "GLOBAL"
-   ],
-   "files": {},
-   "domain_count": null,
-   "axis_count": 8
-  },
-  {
-   "code": "IE_CORE_V1",
-   "family": "STEM",
-   "major": "IE",
-   "name_ko": "산업공학",
-   "name_en": "Industrial Engineering",
-   "assessment_version": null,
-   "status": "planned",
-   "markets": [
-    "KR",
-    "GLOBAL"
-   ],
-   "files": {},
-   "domain_count": null,
-   "axis_count": 8
-  },
-  {
-   "code": "CS_CORE_V1",
-   "family": "STEM",
-   "major": "CS",
-   "name_ko": "컴퓨터",
-   "name_en": "Computer Science & Engineering",
-   "assessment_version": null,
-   "status": "planned",
-   "markets": [
-    "KR",
-    "GLOBAL"
-   ],
-   "files": {},
-   "domain_count": null,
-   "axis_count": 8
-  },
-  {
-   "code": "NS_CORE_V1",
-   "family": "STEM",
-   "major": "NS",
-   "name_ko": "자연과학",
-   "name_en": "Natural Sciences",
-   "assessment_version": null,
-   "status": "planned",
-   "markets": [
-    "KR",
-    "GLOBAL"
-   ],
-   "files": {},
-   "domain_count": null,
-   "axis_count": 8
-  },
-  {
-   "code": "BIZ_CORE_V1",
-   "family": "BUSINESS",
-   "major": "BIZ",
-   "name_ko": "경영학",
-   "name_en": "Business Administration",
-   "assessment_version": null,
-   "status": "planned",
-   "markets": [
-    "KR"
-   ],
-   "files": {},
-   "domain_count": null,
-   "axis_count": 8
-  },
-  {
-   "code": "ECON_CORE_V1",
-   "family": "BUSINESS",
-   "major": "ECON",
-   "name_ko": "경제학",
-   "name_en": "Economics",
-   "assessment_version": null,
-   "status": "planned",
-   "markets": [
-    "KR"
-   ],
-   "files": {},
-   "domain_count": null,
-   "axis_count": 8
-  },
-  {
-   "code": "HS_CORE_V1",
-   "family": "HUMANITIES_SOCIAL",
-   "major": "HS",
-   "name_ko": "인문·사회",
-   "name_en": "Humanities & Social Sciences",
-   "assessment_version": null,
-   "status": "planned",
-   "markets": [
-    "KR"
-   ],
-   "files": {},
-   "domain_count": null,
-   "axis_count": 8
-  }
- ]
+  ]
 }

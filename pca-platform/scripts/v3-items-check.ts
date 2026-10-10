@@ -56,10 +56,24 @@ function main(): void {
   ok("입력이 없는 결과 절", unread.length === 0,
      unread.length ? unread.join(" ") : "0 / " + SEC.size);
 
-  // 4. 역방향 셋 이상
+  /**
+   * 4. 역방향 자리마다 정방향 짝이 있는가.
+   *
+   * **수를 세던 것을 짝을 세는 것으로 바꿨다.** 전에는 `역방향이 하나 이상`
+   * 을 셌는데, 그 수는 설계 선택이고 **짝이 없는 역방향 문항은 아무것도
+   * 재지 않는다**. 실제로 그랬다: 하나뿐이던 역방향 문항에 같은 묶음·축의
+   * 정방향 짝이 없어서 `REVERSE_PAIR_AGREED` 가 한 번도 서지 않았고,
+   * 그 문항은 2026-10-10 에 겪은 장면으로 다시 쓰여 역방향에서 내려왔다
+   * (`ME_V3_ITEM_BANK_V2.5`). 지금 은행의 역방향 자리는 0개다.
+   *
+   * 역방향을 다시 넣는 날 **짝까지 넣어야** 이 줄이 지나간다.
+   */
   const rev = slots.filter((s) => s.reverse);
-  ok("역방향 문항", rev.length >= 1 && rev.length + 2 >= 3,
-     `blueprint ${rev.length}자리 + 격자 밖 선별 역방향 2 = 3`);
+  const orphan = rev.filter((r) => !slots.some((x) =>
+    !x.reverse && x.block === r.block && x.axis === r.axis));
+  ok("역방향 자리마다 같은 묶음·축의 정방향 짝이 있다", orphan.length === 0,
+     orphan.length ? orphan.map((r) => r.id).join(" ")
+       : `역방향 ${rev.length}자리 (0 이면 가짜 교차검증을 세지 않는다)`);
 
   // 5. 영역 열둘 전부가 관심·경험·학습 의향을 받는다
   const grid = slots.filter((s) => s.block === "CORE-GRID");

@@ -3,9 +3,9 @@
  "note": "결과지 화면 1차 동결. 문장만 고치면 `RESULT_COPY_VERSION` 만 올리고, 칸이나 절이 바뀌면 `RESULT_MODEL_VERSION`, 화면 구조가 바뀌면 `RESULT_UI_VERSION` 을 올린다. 채점 판본은 이 가운데 무엇으로도 올리지 않는다",
  "versions": {
   "result_ui_version": "ME_V3_RESULT_UI_V8",
-  "result_copy_version": "me-v3-result-copy.8",
+  "result_copy_version": "me-v3-result-copy.9",
   "result_model_version": "me-v3-result-model.5",
-  "item_bank_version": "ME_V3_ITEM_BANK_V2.4",
+  "item_bank_version": "ME_V3_ITEM_BANK_V2.5",
   "scoring_version": "me-v3-scoring.5"
  },
  "guards": {
@@ -27,10 +27,10 @@
   "src/app/v3/[attemptId]/result/save.tsx": "2830e503419eba94015798787ab2f7cd4abca39c8126fe1cf3dca087f6c6e7c1",
   "src/app/v3/[attemptId]/result/track.tsx": "6136c271ee7df7323f029912182c7496a8633fdf7479b6080697a6f4a217787c",
   "src/lib/me-v3/result/model.ts": "28ea58dde231bb44c6ea4eb4ed7558ca84b22b9325c09ef118616160abe739b6",
-  "src/lib/me-v3/result/build.ts": "1c7eed42f2415fa6d70d1375aba76ce65df5ba74494436be6fcd08fac40bfbfb",
-  "src/lib/me-v3/result/text.ko.ts": "24e90f1fa5c3768ae8553aa92e79a868b658e5f610538b9b513af0277ac462f8",
+  "src/lib/me-v3/result/build.ts": "d7f0b64996fc3758947c2e1167048486a16ebd8084f69ca3dc5f0d1933496da6",
+  "src/lib/me-v3/result/text.ko.ts": "4315be8106411d37a9d8093ce615fe93233e62104ec4f41d7f3a3daf7dc5a710",
   "src/lib/me-v3/result/josa.ts": "152cd30c2af136172618c14fa6fb4175b97cf16350db631e3e2e6c72fd7dd4af",
-  "src/lib/me-v3/result/version.ts": "9ca4e7b14f759f61b1d15dbda3b59fac63e1043a8914cf38ad83210c3440720f",
+  "src/lib/me-v3/result/version.ts": "be805e72923f5d1f6d32bf2b41ab5764709469fac3e44dde74050c86f78314a8",
   "src/lib/me-v3/runtime/domain-facts.ts": "f5aefadb0bd9e6ca0fae76b1076c2a7fdab7d34caaebdc618f39a2e92fbfd31f"
  }
 }

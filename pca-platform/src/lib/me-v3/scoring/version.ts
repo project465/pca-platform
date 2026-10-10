@@ -97,7 +97,7 @@ export const SCORING_VERSION = "me-v3-scoring.5";
  * 같은 묶음으로 간다. 옛 스냅샷이 글자까지 같은 것을 `npm run v3:scale` 이
  * 센다. 가린 자리와 되돌아보는 표는 `docs/metri/80_scale_gate.md`.
  */
-export const ITEM_BANK_VERSION = "ME_V3_ITEM_BANK_V2.4";
+export const ITEM_BANK_VERSION = "ME_V3_ITEM_BANK_V2.5";
 
 export type ModuleVersions = {
   core_version: string;
@@ -128,3 +128,46 @@ export function packVersion(
   const p = (body.packs as { code: string; version: number }[]).find((x) => x.code === code);
   return p ? `${code}.v${p.version}` : null;
 }
+
+/*
+ * `V2.5` 로 올린 까닭. **문항 하나의 문면이 보기와 어긋나 있었다.**
+ *
+ * `CJ_GIVEN_REV` 의 문면은 `조건은 위에서 내려오고 나는 그대로 계산만 하는
+ * 편이 편하다` 로 **선호**를 묻는 꼴이고 보기는 소유 사다리 넷이었다. 그래서
+ * `내가 정하고 그 결과가 쓰였다` 를 고른 응답이 무엇을 뜻하는지 정할 수
+ * 없었고, 그 응답이 **영역에 걸치지 않는 J3 를 `직접 정한 것으로 확인` 까지
+ * 올렸다.** 아무 경험이 없고 선호만 높은 사람이 그 자리를 받는다는 것을
+ * `v3:j3` 가 사람 넷으로 찍어 보여 줬다.
+ *
+ * 문면을 `이미 정해져 내려온 조건을 근거를 들어 바꿔 본 적이 있다` 로 다시
+ * 쓰고 학위 장면 넷을 붙이고 역방향 표시를 내렸다.
+ *
+ * **보기와 자리 번호와 축과 척도는 한 글자도 바뀌지 않았다.** 저장된 응답은
+ * `{kind:"level", index:0~3}` 이고 그 번호의 뜻이 그대로다. 그래서 되만들기도
+ * migration 도 필요하지 않고, 굳혀 둔 결과는 애초에 다시 계산하지 않는다.
+ *
+ * **고침보다 마무리에 가깝다.** 2026-10-08 전수 감사의 migration map 이
+ * 그 자리에 `편이 편하다 를 겪은 장면으로 바꾼다` 고 이미 적어 두었다.
+ * 계획은 맞았고 실행이 반만 끝났다(가정→조건만 적용). 그것을 `agrees: true`
+ * 로 적은 까닭은 그 검사가 견주는 것이 planned_reason 이 아니고 reason 이기
+ * 때문이다. 같은 자리에서 blueprint 의 `stage_variants: true` 와 은행의
+ * `stage_wording: null` 도 어긋나 있었고, 은행 101자리 가운데 **그 한 자리가
+ * 유일한 어긋남**이었다.
+ *
+ * 채점 판본은 올리지 않았다. 역방향 짝 규칙은 짝이 없어 애초에 돌지
+ * 않았으므로 역방향 표시를 내려도 판정이 한 글자도 바뀌지 않는다
+ * (`v3:scoring` 의 사람 열두 벌 지문이 그대로다).
+ */
+
+/*
+ * `V2.5` 가 덮는 두 번째 변화. **산업팩 문항 여섯에 사람 검토 표시를 달았다.**
+ *
+ * `HUMAN_DOMAIN_REVIEW_REQUIRED` 와 무엇을 봐야 하는지를
+ * `industry-packs-v2.json` 에 적었다. 그 파일도 은행 잠금이 덮으므로 지문을
+ * 다시 적었다.
+ *
+ * **문면과 보기와 축은 한 글자도 바뀌지 않았다.** 더한 것은 사람이 읽는
+ * 표시뿐이고, 팩 응답이 Core 판정을 바꾸지 않는 것을 `v3:measure` 가 같은
+ * 자리에서 다시 센다(팩 문항을 바닥에서 천장까지 바꿔도 Core 지문이 같다).
+ * 그래서 판본을 또 올리지 않고 `V2.5` 가 둘을 함께 덮는다.
+ */

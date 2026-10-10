@@ -1,0 +1,1855 @@
+{
+  "schema_version": "me-v3-2-constructs.1",
+  "core": "ME_CORE_V3",
+  "item_bank_version": "ME_V3_2",
+  "note": "문항마다 무엇을 재는가와 어떻게 받는가. 추론하지 않고 적어 둔다. 짝 표는 src/lib/me-v3/measurement/registry.ts 에 있고 여기는 줄만 있다. 새 문항을 더하면 여기 한 줄을 적어야 v3:measure 가 지나간다.",
+  "items": [
+    {
+      "item_id": "CF_PAIR_1",
+      "primary": "ROUTING_ONLY",
+      "response_type": "FORCED_CHOICE"
+    },
+    {
+      "item_id": "CF_PAIR_2",
+      "primary": "ROUTING_ONLY",
+      "response_type": "FORCED_CHOICE"
+    },
+    {
+      "item_id": "CJ_COMPARE",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "CJ_GIVEN_REV",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4",
+      "pinned": true,
+      "note": "처음에는 문면이 `~편이 편하다` 로 선호를 묻는데 보기가 소유 사다리 넷이어서 PREFERENCE×OWNERSHIP_4 로 걸렸다. 2026-10-10 에 문면을 겪은 장면으로 다시 쓰고 역방향 표시를 내렸다. 보기와 자리 번호와 축은 그대로다"
+    },
+    {
+      "item_id": "CJ_HANDOFF",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "CJ_METHOD",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "CJ_REQUIRE",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "CJ_SCOPE",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "CN_1A",
+      "primary": "CONSISTENCY",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "CN_1B",
+      "primary": "CONSISTENCY",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "CN_2A",
+      "primary": "CONSISTENCY",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "CN_2B",
+      "primary": "CONSISTENCY",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "G_TD01_EXP",
+      "primary": "EXPERIENCE",
+      "response_type": "EXPOSURE_3"
+    },
+    {
+      "item_id": "G_TD01_INT",
+      "primary": "INTEREST",
+      "response_type": "LIKERT_5"
+    },
+    {
+      "item_id": "G_TD01_LEA",
+      "primary": "LEARNING_INTENT",
+      "response_type": "LIKERT_5"
+    },
+    {
+      "item_id": "G_TD02_EXP",
+      "primary": "EXPERIENCE",
+      "response_type": "EXPOSURE_3"
+    },
+    {
+      "item_id": "G_TD02_INT",
+      "primary": "INTEREST",
+      "response_type": "LIKERT_5"
+    },
+    {
+      "item_id": "G_TD02_LEA",
+      "primary": "LEARNING_INTENT",
+      "response_type": "LIKERT_5"
+    },
+    {
+      "item_id": "G_TD03_EXP",
+      "primary": "EXPERIENCE",
+      "response_type": "EXPOSURE_3"
+    },
+    {
+      "item_id": "G_TD03_INT",
+      "primary": "INTEREST",
+      "response_type": "LIKERT_5"
+    },
+    {
+      "item_id": "G_TD03_LEA",
+      "primary": "LEARNING_INTENT",
+      "response_type": "LIKERT_5"
+    },
+    {
+      "item_id": "G_TD04_EXP",
+      "primary": "EXPERIENCE",
+      "response_type": "EXPOSURE_3"
+    },
+    {
+      "item_id": "G_TD04_INT",
+      "primary": "INTEREST",
+      "response_type": "LIKERT_5"
+    },
+    {
+      "item_id": "G_TD04_LEA",
+      "primary": "LEARNING_INTENT",
+      "response_type": "LIKERT_5"
+    },
+    {
+      "item_id": "G_TD05_EXP",
+      "primary": "EXPERIENCE",
+      "response_type": "EXPOSURE_3"
+    },
+    {
+      "item_id": "G_TD05_INT",
+      "primary": "INTEREST",
+      "response_type": "LIKERT_5"
+    },
+    {
+      "item_id": "G_TD05_LEA",
+      "primary": "LEARNING_INTENT",
+      "response_type": "LIKERT_5"
+    },
+    {
+      "item_id": "G_TD06_EXP",
+      "primary": "EXPERIENCE",
+      "response_type": "EXPOSURE_3"
+    },
+    {
+      "item_id": "G_TD06_INT",
+      "primary": "INTEREST",
+      "response_type": "LIKERT_5"
+    },
+    {
+      "item_id": "G_TD06_LEA",
+      "primary": "LEARNING_INTENT",
+      "response_type": "LIKERT_5"
+    },
+    {
+      "item_id": "G_TD07_EXP",
+      "primary": "EXPERIENCE",
+      "response_type": "EXPOSURE_3"
+    },
+    {
+      "item_id": "G_TD07_INT",
+      "primary": "INTEREST",
+      "response_type": "LIKERT_5"
+    },
+    {
+      "item_id": "G_TD07_LEA",
+      "primary": "LEARNING_INTENT",
+      "response_type": "LIKERT_5"
+    },
+    {
+      "item_id": "G_TD08_EXP",
+      "primary": "EXPERIENCE",
+      "response_type": "EXPOSURE_3"
+    },
+    {
+      "item_id": "G_TD08_INT",
+      "primary": "INTEREST",
+      "response_type": "LIKERT_5"
+    },
+    {
+      "item_id": "G_TD08_LEA",
+      "primary": "LEARNING_INTENT",
+      "response_type": "LIKERT_5"
+    },
+    {
+      "item_id": "G_TD09_EXP",
+      "primary": "EXPERIENCE",
+      "response_type": "EXPOSURE_3"
+    },
+    {
+      "item_id": "G_TD09_INT",
+      "primary": "INTEREST",
+      "response_type": "LIKERT_5"
+    },
+    {
+      "item_id": "G_TD09_LEA",
+      "primary": "LEARNING_INTENT",
+      "response_type": "LIKERT_5"
+    },
+    {
+      "item_id": "G_TD10_EXP",
+      "primary": "EXPERIENCE",
+      "response_type": "EXPOSURE_3"
+    },
+    {
+      "item_id": "G_TD10_INT",
+      "primary": "INTEREST",
+      "response_type": "LIKERT_5"
+    },
+    {
+      "item_id": "G_TD10_LEA",
+      "primary": "LEARNING_INTENT",
+      "response_type": "LIKERT_5"
+    },
+    {
+      "item_id": "G_TD11_EXP",
+      "primary": "EXPERIENCE",
+      "response_type": "EXPOSURE_3"
+    },
+    {
+      "item_id": "G_TD11_INT",
+      "primary": "INTEREST",
+      "response_type": "LIKERT_5"
+    },
+    {
+      "item_id": "G_TD11_LEA",
+      "primary": "LEARNING_INTENT",
+      "response_type": "LIKERT_5"
+    },
+    {
+      "item_id": "G_TD12_EXP",
+      "primary": "EXPERIENCE",
+      "response_type": "EXPOSURE_3"
+    },
+    {
+      "item_id": "G_TD12_INT",
+      "primary": "INTEREST",
+      "response_type": "LIKERT_5"
+    },
+    {
+      "item_id": "G_TD12_LEA",
+      "primary": "LEARNING_INTENT",
+      "response_type": "LIKERT_5"
+    },
+    {
+      "item_id": "INDUSTRY_BATTERY_V2_I1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_BATTERY_V2_I10",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_BATTERY_V2_I2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_BATTERY_V2_I3",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_BATTERY_V2_I4",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_BATTERY_V2_I5",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_BATTERY_V2_I6",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_BATTERY_V2_I7",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_BATTERY_V2_I8",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_BATTERY_V2_I9",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_DEFENSE_V2_I1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_DEFENSE_V2_I10",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_DEFENSE_V2_I2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_DEFENSE_V2_I3",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_DEFENSE_V2_I4",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_DEFENSE_V2_I5",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_DEFENSE_V2_I6",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_DEFENSE_V2_I7",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_DEFENSE_V2_I8",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_DEFENSE_V2_I9",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_ENERGY_V2_I1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_ENERGY_V2_I10",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_ENERGY_V2_I2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_ENERGY_V2_I3",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_ENERGY_V2_I4",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_ENERGY_V2_I5",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_ENERGY_V2_I6",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_ENERGY_V2_I7",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_ENERGY_V2_I8",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_ENERGY_V2_I9",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_MOBILITY_V2_I1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_MOBILITY_V2_I10",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_MOBILITY_V2_I2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_MOBILITY_V2_I3",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_MOBILITY_V2_I4",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_MOBILITY_V2_I5",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_MOBILITY_V2_I6",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_MOBILITY_V2_I7",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_MOBILITY_V2_I8",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_MOBILITY_V2_I9",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_ROBOT_V2_I1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_ROBOT_V2_I10",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_ROBOT_V2_I2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_ROBOT_V2_I3",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_ROBOT_V2_I4",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_ROBOT_V2_I5",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_ROBOT_V2_I6",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_ROBOT_V2_I7",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_ROBOT_V2_I8",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_ROBOT_V2_I9",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SEMICON_V2_I1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SEMICON_V2_I10",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SEMICON_V2_I2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SEMICON_V2_I3",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SEMICON_V2_I4",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SEMICON_V2_I5",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SEMICON_V2_I6",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SEMICON_V2_I7",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SEMICON_V2_I8",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SEMICON_V2_I9",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SHIP_V2_I1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SHIP_V2_I10",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SHIP_V2_I2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SHIP_V2_I3",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SHIP_V2_I4",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SHIP_V2_I5",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SHIP_V2_I6",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SHIP_V2_I7",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SHIP_V2_I8",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SHIP_V2_I9",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SMARTFACTORY_V2_I1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SMARTFACTORY_V2_I10",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SMARTFACTORY_V2_I2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SMARTFACTORY_V2_I3",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SMARTFACTORY_V2_I4",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SMARTFACTORY_V2_I5",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SMARTFACTORY_V2_I6",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SMARTFACTORY_V2_I7",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SMARTFACTORY_V2_I8",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "INDUSTRY_SMARTFACTORY_V2_I9",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "MS_CONDITION",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "MS_METHOD",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "MS_OUTPUT",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "MS_PROBLEM",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "MS_TRANSLATE",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "MS_VERIFY",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "PD_ALONE",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "PD_LINK",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "PD_OUT",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "PD_RUN",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "PD_SCOPE",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "PD_TEAM",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "PHD_ASSUME",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "PHD_FRAME",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "PHD_LIMIT",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "PHD_PICK",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "PHD_UNCERT",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "PHD_VAR",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_CAE_V2_R1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_CAE_V2_R2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_CAE_V2_R3",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_CAE_V2_R4",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_CAE_V2_R5",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_CAE_V2_R6",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_CAE_V2_R7",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_DESIGN_V2_R1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_DESIGN_V2_R2",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_DESIGN_V2_R3",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_DESIGN_V2_R4",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_DESIGN_V2_R5",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_DESIGN_V2_R6",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_DESIGN_V2_R7",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_MAINT_V2_R1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_MAINT_V2_R2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_MAINT_V2_R3",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_MAINT_V2_R4",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_MAINT_V2_R5",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_MAINT_V2_R6",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_MAINT_V2_R7",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_MFG_V2_R1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_MFG_V2_R2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_MFG_V2_R3",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_MFG_V2_R4",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_MFG_V2_R5",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_MFG_V2_R6",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_MFG_V2_R7",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_PM_V2_R1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_PM_V2_R2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_PM_V2_R3",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_PM_V2_R4",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_PM_V2_R5",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_PM_V2_R6",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_PM_V2_R7",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_QUALITY_V2_R1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_QUALITY_V2_R2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_QUALITY_V2_R3",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_QUALITY_V2_R4",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_QUALITY_V2_R5",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_QUALITY_V2_R6",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_QUALITY_V2_R7",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_RND_V2_R1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_RND_V2_R2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_RND_V2_R3",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_RND_V2_R4",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_RND_V2_R5",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_RND_V2_R6",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_RND_V2_R7",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_TEST_V2_R1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_TEST_V2_R2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_TEST_V2_R3",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_TEST_V2_R4",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_TEST_V2_R5",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_TEST_V2_R6",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "ROLE_TEST_V2_R7",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD01_J1_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD01_J2_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD01_J3_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD01_J3_2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD01_J4_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD01_J5_1",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD01_J5_2",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD01_J6_1",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD01_J6_2",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD01_J7_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD01_J7_2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD01_J8_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD02_J1_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD02_J2_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD02_J3_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD02_J3_2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD02_J4_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD02_J5_1",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD02_J5_2",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD02_J6_1",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD02_J6_2",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD02_J7_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD02_J7_2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD02_J8_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD03_J1_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD03_J2_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD03_J3_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD03_J3_2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD03_J4_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD03_J5_1",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD03_J5_2",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD03_J6_1",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD03_J6_2",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD03_J7_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD03_J7_2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD03_J8_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD04_J1_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD04_J2_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD04_J3_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD04_J3_2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD04_J4_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD04_J5_1",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD04_J5_2",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD04_J6_1",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD04_J6_2",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD04_J7_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD04_J7_2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD04_J8_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD05_J1_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD05_J2_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD05_J3_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD05_J3_2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD05_J4_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD05_J5_1",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD05_J5_2",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD05_J6_1",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD05_J6_2",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD05_J7_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD05_J7_2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD05_J8_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD06_J1_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD06_J2_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD06_J3_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD06_J3_2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD06_J4_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD06_J5_1",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD06_J5_2",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD06_J6_1",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD06_J6_2",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD06_J7_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD06_J7_2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD06_J8_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD07_J1_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD07_J2_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD07_J3_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD07_J3_2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD07_J4_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD07_J5_1",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD07_J5_2",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD07_J6_1",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD07_J6_2",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD07_J7_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD07_J7_2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD07_J8_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD08_J1_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD08_J2_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD08_J3_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD08_J3_2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD08_J4_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD08_J5_1",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD08_J5_2",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD08_J6_1",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD08_J6_2",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD08_J7_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD08_J7_2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD08_J8_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD09_J1_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD09_J2_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD09_J3_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD09_J3_2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD09_J4_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD09_J5_1",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD09_J5_2",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD09_J6_1",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD09_J6_2",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD09_J7_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD09_J7_2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD09_J8_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD10_J1_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD10_J2_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD10_J3_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD10_J3_2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD10_J4_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD10_J5_1",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD10_J5_2",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD10_J6_1",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD10_J6_2",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD10_J7_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD10_J7_2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD10_J8_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD11_J1_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD11_J2_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD11_J3_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD11_J3_2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD11_J4_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD11_J5_1",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD11_J5_2",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD11_J6_1",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD11_J6_2",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD11_J7_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD11_J7_2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD11_J8_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD12_J1_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD12_J2_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD12_J3_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD12_J3_2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD12_J4_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD12_J5_1",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD12_J5_2",
+      "primary": "OUTPUT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD12_J6_1",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD12_J6_2",
+      "primary": "VERIFICATION",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD12_J7_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD12_J7_2",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TD12_J8_1",
+      "primary": "OWNERSHIP",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "TG_INDUSTRY",
+      "primary": "GOAL",
+      "response_type": "SINGLE_CHOICE"
+    },
+    {
+      "item_id": "TG_OC",
+      "primary": "GOAL",
+      "response_type": "SINGLE_CHOICE"
+    },
+    {
+      "item_id": "TG_ROLE",
+      "primary": "GOAL",
+      "response_type": "SINGLE_CHOICE"
+    },
+    {
+      "item_id": "TR_T1",
+      "primary": "TRANSLATION",
+      "response_type": "CHOICE_WITH_NOTE"
+    },
+    {
+      "item_id": "TR_T10",
+      "primary": "TRANSLATION",
+      "response_type": "CHOICE_WITH_NOTE"
+    },
+    {
+      "item_id": "TR_T2",
+      "primary": "TRANSLATION",
+      "response_type": "CHOICE_WITH_NOTE"
+    },
+    {
+      "item_id": "TR_T3",
+      "primary": "TRANSLATION",
+      "response_type": "CHOICE_WITH_NOTE"
+    },
+    {
+      "item_id": "TR_T4",
+      "primary": "TRANSLATION",
+      "response_type": "CHOICE_WITH_NOTE"
+    },
+    {
+      "item_id": "TR_T5",
+      "primary": "TRANSLATION",
+      "response_type": "CHOICE_WITH_NOTE"
+    },
+    {
+      "item_id": "TR_T6",
+      "primary": "TRANSLATION",
+      "response_type": "CHOICE_WITH_NOTE"
+    },
+    {
+      "item_id": "TR_T7",
+      "primary": "TRANSLATION",
+      "response_type": "CHOICE_WITH_NOTE"
+    },
+    {
+      "item_id": "TR_T8",
+      "primary": "TRANSLATION",
+      "response_type": "CHOICE_WITH_NOTE"
+    },
+    {
+      "item_id": "TR_T9",
+      "primary": "TRANSLATION",
+      "response_type": "CHOICE_WITH_NOTE"
+    },
+    {
+      "item_id": "UG_CHECK",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "UG_DECIDE",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "UG_FIX",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "UG_OUTPUT",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "UG_SCOPE",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "UG_USED",
+      "primary": "JUDGMENT",
+      "response_type": "OWNERSHIP_4"
+    },
+    {
+      "item_id": "XF_BRIDGE",
+      "primary": "TRANSLATION",
+      "response_type": "SINGLE_CHOICE"
+    },
+    {
+      "item_id": "XF_FIELD",
+      "primary": "TRANSLATION",
+      "response_type": "SINGLE_CHOICE"
+    },
+    {
+      "item_id": "XF_ME_DEPTH",
+      "primary": "TRANSLATION",
+      "response_type": "SINGLE_CHOICE"
+    },
+    {
+      "item_id": "XF_ME_RECENT",
+      "primary": "TRANSLATION",
+      "response_type": "SINGLE_CHOICE"
+    }
+  ]
+}

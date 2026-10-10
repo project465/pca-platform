@@ -23,7 +23,9 @@ export const CONTENT_DIR = process.env.CONTENT_DIR ?? "sites/pca-platform/conten
 export type CoreFile =
   | "taxonomy" | "domains" | "checklists" | "items_blueprint"
   | "checklist_additions" | "common_additions" | "evidence_remap"
-  | "legacy_evidence_map" | "items" | "relations" | "migration";
+  | "legacy_evidence_map" | "items" | "relations" | "migration"
+  /** 문항마다 무엇을 재는가. **추론하지 않고 적어 둔다** */
+  | "constructs";
 
 export type PackKind = "industry" | "role";
 

@@ -631,6 +631,7 @@ export const COMMON_ITEM_KO: Record<string, string> = {
   CJ_METHOD: "쓸 방법을 고르고 까닭을 적기",
   CJ_COMPARE: "선택지를 같은 기준으로 견주어 고르기",
   CJ_HANDOFF: "내가 낸 것을 다른 사람이 받아 쓰기",
+  CJ_GIVEN_REV: "내려온 조건을 근거를 들어 바꾸기",
   /* 학부 장면 */
   UG_SCOPE: "캡스톤에서 다룰 범위를 직접 좁히기",
   UG_DECIDE: "수업 과제에서 조건이나 치수를 직접 정하기",

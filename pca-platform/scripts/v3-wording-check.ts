@@ -263,9 +263,22 @@ function main(): void {
     /STEM|HUMANITIES|BUSINESS/.test(String(i.response_scale ?? "")));
   ok("계열이 척도에 들어가지 않는다", fieldInScale.length === 0);
 
-  // 12. 역방향과 일관성 짝
+  /**
+   * 12. 역방향과 일관성 짝.
+   *
+   * **`역방향이 하나 이상` 을 세지 않는다.** 그 수는 설계 선택이고, 짝이
+   * 없는 역방향 문항은 품질 규칙에서 아무것도 재지 않는다. 그리고 역방향
+   * 문항의 문면은 대개 선호를 묻는 꼴(`~편이 편하다`)이라 **보기를 소유
+   * 사다리로 두면 construct 와 척도가 어긋난다**: 하나뿐이던 역방향 문항이
+   * 그 상태였고 2026-10-10 에 겪은 장면으로 다시 썼다. 지금 세는 것은
+   * 짝의 유무다.
+   */
   const rev = items.filter((i) => i.reverse_flag);
-  ok("역방향 문항", rev.length >= 1, rev.map((i) => i.item_id).join(" "));
+  const revOrphan = rev.filter((r) => !items.some((i) => !i.reverse_flag
+    && i.module === r.module && i.evidence_axis === r.evidence_axis));
+  ok("역방향 문항마다 같은 묶음·축의 정방향 짝이 있다", revOrphan.length === 0,
+     revOrphan.length ? revOrphan.map((i) => i.item_id).join(" ")
+       : `역방향 ${rev.length}개`);
   const pairs = items.filter((i) => i.consistency_pair);
   const badPair = pairs.filter((i) => {
     const o = byId.get(i.consistency_pair as string);
