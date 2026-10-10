@@ -173,6 +173,9 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
    **색을 더 쓰지 않는다**(규격 §33): 내려가는 단은 바탕과 선과 여백으로
    만들고 강조색은 누르는 자리에만 쓴다 */
 .cm-panel.is-soft { background: var(--sf-surface-2); }
+/* 1순위 판. **색을 칠하지 않고 왼쪽에 선 하나를 세운다**(규격 §33):
+   강조색은 누르는 자리에만 쓰고 읽는 자리의 위계는 선과 여백으로 만든다 */
+.cm-panel.is-lead { border-left: 3px solid var(--sf-accent); }
 .cm-panel.is-quiet {
   background: none; border: 0; border-radius: 0;
   border-top: 1px solid var(--sf-line-2);

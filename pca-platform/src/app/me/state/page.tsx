@@ -190,8 +190,12 @@ export default async function State(
           **상태 → 지난 일 → 할 일** 차례로 읽히고, 가운데에서 한 번
           끊긴다. 지난 일은 할 일을 정하고 나서 봐도 되는 것이라 뒤로
           보냈다 */}
+      {/* **이 쪽에서 가장 센 자리는 하나다**(규격 §18 · 시각 규격 §2).
+          묶음 여섯이 전부 같은 흰 판으로 서면 차례를 세워 둔 뜻이 화면에
+          남지 않는다. 읽는 자리와 누르는 자리를 무게로 가른다: 이 묶음만
+          왼쪽에 선을 세우고 짙은 단추를 든다 */}
       <h2 className="cm-sect">지금 할 일</h2>
-      <div className="cm-panel is-one">
+      <div className="cm-panel is-one is-lead">
         <div className="cm-pane">
           {nextOne ? (
             /* **담을 때의 문장이 아니라 지금 판본의 짧은 지시를 적는다**
@@ -313,10 +317,17 @@ export default async function State(
           ) : null}
         </>
       ) : (
-        <p className="cm-lead">
-          지금 바로 보완할 부분은 없습니다. 남은 일은 가진 근거를 지원서에서
-          설명할 문장으로 만드는 것입니다.
-        </p>
+        /* **비었다고 면까지 없애지 않는다**(규격 §42). 위아래 묶음이 전부
+           판 위에 서 있는데 이 묶음만 쪽 바탕에 글자 두 줄로 서면, 읽는
+           사람에게는 그 자리가 **아직 안 그려진 칸**으로 보인다 */
+        <div className="cm-panel is-one is-soft">
+          <div className="cm-pane">
+            <p>
+              지금 바로 보완할 부분은 없습니다. 남은 일은 가진 근거를
+              지원서에서 설명할 문장으로 만드는 것입니다.
+            </p>
+          </div>
+        </div>
       )}
 
       {/* 달라진 것 모두 ── 첫 화면의 한 줄이 가리키는 자리 */}
