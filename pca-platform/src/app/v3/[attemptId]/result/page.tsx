@@ -319,10 +319,17 @@ function DomainPanel(
  */
 function Strongest({ d }: { d: ResultDomain }) {
   const seen = new Set<string>();
+  /**
+   * **합쳐서 셋까지다**(규격 §26).
+   *
+   * 묶음마다 셋이면 둘을 합쳐 여섯 줄이고, 거기에 상태 한 줄과 빈자리와
+   * 할 일이 붙어 **영역 하나가 열 줄**이 된다. 기본 보기는 다섯 줄이고,
+   * 나머지는 `상세 근거 보기` 안에 그대로 있다.
+   */
   const take = (list: string[]) => {
     const out: string[] = [];
     for (const t of list) {
-      if (out.length >= 3 || seen.has(t)) continue;
+      if (out.length >= 2 || seen.size >= 3 || seen.has(t)) continue;
       seen.add(t); out.push(t);
     }
     return out;
@@ -711,15 +718,21 @@ export default async function V3Result({
               )}
             </>) : <p className="none">응답만으로는 영역 사이에 차이가 생기지 않았습니다</p>}
           </div>
+          {/* **둘째 칸이 `지금 할 일` 이다**(규격 §22).
+              차례가 곧 중요도다: 확인된 것 → 지금 할 일 → 먼저 채울 것 →
+              산업·직무 연결. 전에는 `먼저 채울 것` 이 둘째라, 결과를 연
+              사람이 **행동 앞에서 비어 있는 자리를 먼저 읽었다.** 비어
+              있는 자리는 그 행동이 왜 나왔는지의 배경이고, 배경을 먼저
+              읽게 하면 읽는 사람이 한 번 더 고르는 일을 한다 */}
+          <div className="is-do">
+            <h3>{FIRST_MOVE_KO[move]}</h3>
+            <p>{moveText}</p>
+          </div>
           <div>
             <h3>{lackTitle}</h3>
             {lackText
               ? <p>{lackText}</p>
               : <p className="none">지금 응답에서 비어 있다고 적을 자리가 없습니다</p>}
-          </div>
-          <div>
-            <h3>{FIRST_MOVE_KO[move]}</h3>
-            <p>{moveText}</p>
           </div>
           {/* ④ 산업·직무 연결 맥락(규격 §13). **고르지 않으셨으면 그
               사실을 적는다**: 비워 두면 첫 화면이 `그래서 어디에 쓰는가`
@@ -753,7 +766,7 @@ export default async function V3Result({
           {/* **들어온 자리로 돌아가는 길을 둔다**(규격 §12). 머리의
               `← 내 CareerMatri` 는 위로 올라가야 보이고, 결과를 다 읽은
               사람이 다음에 가는 자리가 거기다 */}
-          <Link className="rs-do-sub" href="/me">내 CareerMatri</Link>
+          <Link className="rs-do-back" href="/me">내 CareerMatri로 돌아가기</Link>
           {/* **종이 길은 `Link` 로 걸지 않는다.** Next 가 화면에 들어온
               `Link` 를 미리 불러오는데, 그 길은 머리 없는 브라우저를 띄워
               종이를 만드는 자리다. 읽기만 해도 종이가 한 벌씩 만들어졌다 */}
@@ -915,20 +928,29 @@ export default async function V3Result({
                   문항이 둘인 자리에서 짝이 가려 답 하나가 아예 안 보인다.
                   고르신 판단을 그대로 되돌려 준다(규격 §18) */}
               {cm.didOwn.length || cm.didConfirm.length ? (
-                <div className="rs-cmitems">
-                  {cm.didOwn.length ? (
-                    <section>
-                      <h4>직접 정하고 그 결과가 쓰였다고 답하신 것</h4>
-                      <ul>{cm.didOwn.map((t) => <li key={t}>{t}</li>)}</ul>
-                    </section>
-                  ) : null}
-                  {cm.didConfirm.length ? (
-                    <section>
-                      <h4>직접 해 보셨다고 답하신 것</h4>
-                      <ul>{cm.didConfirm.map((t) => <li key={t}>{t}</li>)}</ul>
-                    </section>
-                  ) : null}
-                </div>
+                /* **열두 줄짜리 목록을 펼쳐 두지 않는다**(규격 §26).
+                   이 자리는 축 이름만 적으면 자기 답을 못 알아보는 자리라
+                   고르신 판단을 그대로 돌려주는데, 그 목록이 스물넷까지
+                   간다. 바로 위의 두 줄(`직접 정한 것으로 확인` ·
+                   `해 본 것으로 확인`)이 이미 무엇이 확인됐는지를 말하므로
+                   목록은 **되짚어 보실 자리**다. 접어도 담긴 것은 그대로고
+                   종이에서는 펴진다 */
+                <Fold label="고르신 판단 모두 보기">
+                  <div className="rs-cmitems">
+                    {cm.didOwn.length ? (
+                      <section>
+                        <h4>직접 정하고 그 결과가 쓰였다고 답하신 것</h4>
+                        <ul>{cm.didOwn.map((t) => <li key={t}>{t}</li>)}</ul>
+                      </section>
+                    ) : null}
+                    {cm.didConfirm.length ? (
+                      <section>
+                        <h4>직접 해 보셨다고 답하신 것</h4>
+                        <ul>{cm.didConfirm.map((t) => <li key={t}>{t}</li>)}</ul>
+                      </section>
+                    ) : null}
+                  </div>
+                </Fold>
               ) : null}
             </div>
           ) : null}

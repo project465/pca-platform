@@ -89,7 +89,11 @@ export default async function NewExperience(
           사라지는 자리다 */}
       <UnsavedGuard />
 
-      <form action={saveExperience}>
+      {/* **적는 자리를 한 판 위에 올린다**(규격 §13 · 시각 규격 §9).
+          전에는 칸과 칩이 쪽 바탕 위에 그대로 떠 있어서, 같은 쪽에 적는
+          자리의 경계가 없고 **덜 그린 화면**으로 읽혔다. 기록을 쓰는
+          자리는 하나의 면이어야 적는 동안 눈이 그 안에 머문다 */}
+      <form className="cm-compose" action={saveExperience}>
         <Steps
           domains={domains.map((d) => ({
             code: d.code, name: domainName(d.code),

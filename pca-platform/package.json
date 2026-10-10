@@ -157,6 +157,7 @@
     "v3:product-loop": "tsx scripts/v3-product-loop.ts",
     "v3:result:height": "tsx scripts/v3-result-height.ts",
     "v3:legacy:shots": "tsx scripts/v3-legacy-shots.ts",
+    "v3:final:shots": "tsx scripts/v3-final-shots.ts",
     "v3:loop:shots": "tsx scripts/v3-loop-shots.ts"
   },
   "dependencies": {

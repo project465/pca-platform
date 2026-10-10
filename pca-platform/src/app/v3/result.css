@@ -170,6 +170,12 @@
 .rs-top p { margin: 0; font-size: var(--r-t-body); color: var(--r-ink); font-weight: 600; }
 .rs-top p + p { margin-top: 4px; font-weight: 400; color: var(--r-ink-2); font-size: var(--r-t-gloss); }
 .rs-top .none { color: var(--r-ink-3); font-weight: 400; }
+/* 거드는 셋 가운데 **지금 할 일**만 한 단 짙다(규격 §22).
+   셋이 글자까지 같은 무게로 서면 차례를 세워 둔 뜻이 화면에 남지 않는다.
+   **색을 칠하지 않고 위에 선 하나를 긋는다**: 강조색은 누르는 자리에만
+   쓰고, 읽는 자리의 위계는 선과 굵기로 만든다(규격 §33) */
+.rs-top > div.is-do { box-shadow: inset 0 2px 0 var(--r-accent); }
+.rs-top > div.is-do > p:first-of-type { color: var(--r-ink); font-weight: 700; }
 
 /* ── 절 ── */
 .rs-sect { margin-top: var(--r-s7); scroll-margin-top: 72px; }
@@ -650,6 +656,15 @@
   color: var(--r-ink-3); font-weight: 500; margin-left: auto;
 }
 .rs-do-sub.is-pdf:hover { color: var(--r-ink-2); border-color: transparent; }
+/* 넷째 층. **돌아가는 길은 단추가 아니다** — 결과를 다 읽은 사람이
+   가는 자리이지 결과를 읽고 하는 일이 아니다. 테를 두르면 한 줄에
+   테 두른 칸이 둘이 되고, 그 둘 가운데 무엇이 다음 걸음인지 흐려진다 */
+.rs-do-back {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px;
+  color: var(--r-ink-3); font-size: var(--r-t-sub); font-weight: 500;
+  text-decoration: none;
+}
+.rs-do-back:hover { color: var(--r-ink-2); text-decoration: underline; }
 
 /* ── 자세한 내용 ──────────────────────────────────────────────────────
    본문 아홉 절을 한 자리에서 연다. **접힌 상태가 기본이다**: 웹에서 이
@@ -674,16 +689,20 @@
 .rs-openbtn i { margin-left: auto; font-style: normal; color: var(--r-ink-3); }
 .rs-open.is-on > .rs-openbtn { margin-bottom: var(--r-s4); }
 
-/* ── 접는 자리 ── 좁은 화면에서만 접는다 */
+/* ── 접는 자리 ──────────────────────────────────────────────────────
+   **넓은 화면에서도 접는다.** 이 규칙은 `Fold` 가 좁은 화면에서만 접던
+   때의 것인데, 그 뒤 접는 일을 폭과 무관하게 바꾸면서 **단추만 숨은 채로
+   남았다.** 그래서 1440 에서 상세가 접혀 있고 그것을 펴는 단추가
+   `display: none` 이라, 고르신 항목 전부와 여덟 축이 **닿을 수 없는
+   자리**가 됐다. 가리는 것과 접는 것을 가르는 선이 이 단추다 */
 .rs-foldbtn {
-  display: none; width: 100%; cursor: pointer;
+  display: flex; width: 100%; cursor: pointer;
   align-items: center; gap: 6px; min-height: 44px; padding: 0 16px;
   font-size: var(--r-t-gloss); font-weight: 650; color: var(--r-accent-ink);
   background: none; border: 0; border-top: 1px solid var(--r-line-soft);
   text-align: left; font-family: inherit;
 }
-.rs-foldbtn i { font-style: normal; }
-@media (max-width: 719px) { .rs-foldbtn { display: flex; } }
+.rs-foldbtn i { font-style: normal; margin-left: auto; }
 
 @media (max-width: 719px) {
   .rs { --r-gutter: 16px; }

@@ -163,6 +163,26 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
   font-style: normal; font-size: var(--ui-t-cap); font-weight: 500; color: var(--sf-ink-3);
 }
 .cm-pane p { margin: 0; font-size: var(--ui-t-sub); line-height: 1.7; }
+/* ── 판의 무게 세 단 ──────────────────────────────────────────────
+   홈의 차례(1 지금 할 일 → 2 현재 상태 → 3 최근 변화 → 4 기록)가 화면에서
+   지켜지려면 **무게가 단마다 내려가야 한다**(규격 §6). 1 은 짙은 판
+   (`.cm-now`), 2 는 흰 카드(기본), 3 은 옅은 판, 4 는 테 없는 줄이다.
+   전에는 2·3·4 가 글자까지 같은 흰 카드라, 세로로 쌓아 두어도 무엇을
+   먼저 읽는지가 화면에 남지 않았다.
+
+   **색을 더 쓰지 않는다**(규격 §33): 내려가는 단은 바탕과 선과 여백으로
+   만들고 강조색은 누르는 자리에만 쓴다 */
+.cm-panel.is-soft { background: var(--sf-surface-2); }
+.cm-panel.is-quiet {
+  background: none; border: 0; border-radius: 0;
+  border-top: 1px solid var(--sf-line-2);
+}
+.cm-panel.is-quiet > .cm-pane { padding: 14px 0; }
+@media (min-width: 900px) {
+  .cm-panel.is-quiet > .cm-pane:nth-child(even) {
+    border-left: 0; padding-left: var(--ui-5);
+  }
+}
 @media (min-width: 900px) {
   /* 넓은 화면에서는 두 칸으로 접어 판 하나의 길이를 반으로 줄인다 */
   .cm-panel { display: grid; grid-template-columns: 1fr 1fr; }
@@ -291,6 +311,23 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 
 /* 폼을 카드 안에 넣어 목록과 가른다. 테두리 없이 두면 적는 자리와 쌓인
    자리가 한 덩이로 읽힌다 */
+/* ── 기록을 적는 판(규격 §13) ──────────────────────────────────────
+   경험 추가는 **설문지가 아니라 기록을 쓰는 자리**다. 칸과 칩이 쪽 바탕
+   위에 그대로 떠 있으면 어디까지가 적는 자리인지가 화면에 없고, 넓은
+   화면에서는 그 바탕이 아래 절반을 통째로 차지해 덜 그린 화면으로
+   읽힌다(규격 §25). 걸음 표와 칸과 단추를 한 면에 담는다.
+
+   **테 안에 또 테를 두르지 않는다**: 안쪽 묶음은 선으로만 가른다 */
+.cm-compose {
+  background: var(--sf-surface); border: 1px solid var(--sf-line);
+  border-radius: var(--ui-r-lg); padding: var(--ui-5) var(--ui-5) var(--ui-4);
+  display: flex; flex-direction: column; gap: var(--ui-4);
+}
+@media (max-width: 719px) {
+  .cm-compose { padding: var(--ui-4) var(--ui-3) var(--ui-3); border-radius: var(--ui-r); }
+}
+.cm-compose > .cm-wiz { margin: 0; }
+
 .cm-formcard {
   border: 1px solid var(--sf-line); border-radius: var(--ui-r);
   padding: 18px; background: var(--sf-surface);
@@ -623,6 +660,16 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 }
 .cm-fold > summary:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2px; }
 .cm-fold[open] > summary { margin-bottom: 12px; color: var(--sf-ink-2); }
+/* **접힌 줄이 접힌 줄로 보여야 한다**(규격 §4 · §40).
+   기본 삼각형을 지우고 아무것도 두지 않아서, 접어 둔 세 묶음이 **선 아래
+   놓인 회색 글자 한 줄**로 섰다. 누를 수 있는 자리인지가 화면에 없으면
+   그 안의 내용은 없는 것과 같다. 꺾쇠를 글자 오른쪽에 둔다 */
+.cm-fold > summary { list-style: none; }
+.cm-fold > summary::-webkit-details-marker { display: none; }
+.cm-fold > summary::after {
+  content: "▾"; margin-left: 6px; font-size: var(--ui-t-cap); color: var(--sf-ink-3);
+}
+.cm-fold[open] > summary::after { content: "▴"; }
 
 /* ── 묶음과 비어 있는 자리 ────────────────────────────────────────── */
 

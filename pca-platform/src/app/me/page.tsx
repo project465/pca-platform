@@ -323,7 +323,7 @@ export default async function Home() {
                 {st.stage === "RECOMPUTED" ? <em>{st.recomputed_at}</em> : null}
                 <Link href="/me/state#changes">달라진 점 모두 보기</Link>
               </h2>
-              <div className="cm-panel">
+              <div className="cm-panel is-soft">
                 {st.stage === "RECOMPUTED" ? (
                   <div className="cm-pane">
                     {/* **`경험이 추가되었습니다` 로 적지 않는다**(규격 §12).
@@ -368,7 +368,13 @@ export default async function Home() {
             기록
             <Link href="/me/results">결과 기록 모두 보기</Link>
           </h2>
-          <div className="cm-panel">
+          {/* **4순위는 테를 두르지 않는다**(규격 §6).
+              1→4 의 차례가 화면에서 지켜지려면 무게가 네 단이어야 한다:
+              짙은 판(지금 할 일) → 흰 카드(현재 상태) → 옅은 판(최근
+              변화) → 테 없는 줄(기록). 전에는 2·3·4 가 **글자까지 같은
+              흰 카드**라, 세로로 쌓아 두어도 무엇을 먼저 읽는지가 화면에
+              남지 않았다 */}
+          <div className="cm-panel is-quiet">
             {/* 검사 당시 결과 — 굳은 기록 */}
             <div className="cm-pane">
               <h3>검사 당시 결과 <em>고정됨</em></h3>
