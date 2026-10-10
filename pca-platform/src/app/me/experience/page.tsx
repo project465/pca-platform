@@ -39,7 +39,7 @@ export default async function Experiences() {
       {rows.length === 0 ? (
         <div className="cm-soon">
           <b>아직 적어 둔 경험이 없습니다.</b> 검사에서 고른 근거와 별개로,
-          새로 겪은 일을 여기에 쌓습니다. 하나만 적어도 지금 상태에
+          새로 겪은 일을 여기에 쌓습니다. 하나만 적어도 현재 상태에
           반영할 수 있습니다.
         </div>
       ) : (

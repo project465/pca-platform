@@ -2,8 +2,8 @@
  "schema_version": "me-v3-result-lock.1",
  "note": "결과지 화면 1차 동결. 문장만 고치면 `RESULT_COPY_VERSION` 만 올리고, 칸이나 절이 바뀌면 `RESULT_MODEL_VERSION`, 화면 구조가 바뀌면 `RESULT_UI_VERSION` 을 올린다. 채점 판본은 이 가운데 무엇으로도 올리지 않는다",
  "versions": {
-  "result_ui_version": "ME_V3_RESULT_UI_V6",
-  "result_copy_version": "me-v3-result-copy.6",
+  "result_ui_version": "ME_V3_RESULT_UI_V7",
+  "result_copy_version": "me-v3-result-copy.7",
   "result_model_version": "me-v3-result-model.4",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.4",
   "scoring_version": "me-v3-scoring.5"
@@ -20,8 +20,8 @@
   "종이에 빈 쪽과 범위 밖 쪽수가 없다": "v3:result:pdf"
  },
  "files": {
-  "src/app/v3/result.css": "6d44844160affecb93d81939ddd912c7daf6df2e71fcdd2932273ab628e34474",
-  "src/app/v3/[attemptId]/result/page.tsx": "dd390dc886b14eeff874ebd2b804677151a07d67f6bd3e6bdb64dfaef078ae54",
+  "src/app/v3/result.css": "5da9ce48d444c44a3d1a88ff7d313dffb7fa33814d4440aeb6608ea6799f9976",
+  "src/app/v3/[attemptId]/result/page.tsx": "4d724bcd92aaf83f1179a3ae63bbf03fd85784adbb97992a36276c176db46576",
   "src/app/v3/[attemptId]/result/fold.tsx": "2cf4f4a676d584b5b8fe6ea9c3b1787f84c6b9b8498b74d7d240b53c14492d0d",
   "src/app/v3/[attemptId]/result/disclose.tsx": "a82c70b1d0897647877cfff4a672e8ebffd8716f76e6cfcc3d25e066f074f455",
   "src/app/v3/[attemptId]/result/save.tsx": "2830e503419eba94015798787ab2f7cd4abca39c8126fe1cf3dca087f6c6e7c1",
@@ -30,7 +30,7 @@
   "src/lib/me-v3/result/build.ts": "b571ea3e3d439aa8b8f6936c194317f5f3c368a3b4a2d8c1fd96ec5fd926ca80",
   "src/lib/me-v3/result/text.ko.ts": "05a21bc1b5fafea65420e323c832b5ece29eb543f2ab056d5ee412dfc9f26f21",
   "src/lib/me-v3/result/josa.ts": "152cd30c2af136172618c14fa6fb4175b97cf16350db631e3e2e6c72fd7dd4af",
-  "src/lib/me-v3/result/version.ts": "6a8b7d3d13a0dc3ecb405326375bad8fd8f6ef04c99cf431c3695ffe2ed3cdec",
+  "src/lib/me-v3/result/version.ts": "30b6d823f69434a8ac1d62963ab60ca42d4d941efa791de833263e8a35fe7c55",
   "src/lib/me-v3/runtime/domain-facts.ts": "f5aefadb0bd9e6ca0fae76b1076c2a7fdab7d34caaebdc618f39a2e92fbfd31f"
  }
 }

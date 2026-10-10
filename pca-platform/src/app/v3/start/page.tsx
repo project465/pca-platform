@@ -63,7 +63,7 @@ export default async function V3Start({
         <p className="qs-kicker">기계공학 진로 진단</p>
         <h1 className="qs-h1">해 본 일에서 직접 판단한 경험을 찾습니다</h1>
         <p className="qs-lead">
-          적성이나 성격은 묻지 않습니다. 열두 개 기술영역에서 무엇을 해 봤고
+          적성이나 성격은 묻지 않습니다. 기계공학의 기술영역마다 무엇을 해 봤고
           무엇을 직접 정했는지, 아직 부족한 곳은 어디인지 알려드립니다.
         </p>
 
@@ -71,7 +71,7 @@ export default async function V3Start({
         <ul className="qs-three">
           <li>
             <b>무엇을 해 봤는지</b>
-            <span>열두 개 기술영역에서 해 본 일을 하나씩 묻습니다</span>
+            <span>기술영역마다 해 본 일을 하나씩 묻습니다</span>
           </li>
           <li>
             <b>무엇을 직접 판단했는지</b>
@@ -96,7 +96,7 @@ export default async function V3Start({
         <section className="qs-sect">
           <h2>묻는 순서</h2>
           <ul className="qs-steps">
-            <li>열두 개 기술영역을 하나씩 보며 관심도와 경험, 학습 의향을 묻습니다</li>
+            <li>기술영역을 하나씩 보며 관심과 해 본 적과 배울 뜻을 묻습니다</li>
             <li>경험이 있는 영역은 조금 더 자세히 질문합니다</li>
             {tier !== "BASIC" ? (
               <li>경험이 있는 영역은 여덟 가지 관점으로 나누어 묻습니다</li>

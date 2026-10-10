@@ -148,7 +148,7 @@ export default async function PilotJoin({
                 </select>
               </label>
               <label>
-                <span>지금 상태</span>
+                <span>현재 상태</span>
                 <select name="current_status" defaultValue={p.current_status ?? ""}>
                   <option value="">고르지 않음</option>
                   {STATUS.map(([v, k]) => <option key={v} value={v}>{k}</option>)}

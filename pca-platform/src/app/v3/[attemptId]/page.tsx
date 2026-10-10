@@ -51,6 +51,11 @@ export default async function V3Screen({
     x.items.some((id) => itemOf(id)?.response_scale === "L0~L3"));
   const firstLevel = levelScreens.length > 0 && levelScreens[0].id === sc.id;
 
+  /* 한 화면에 보기 넷짜리 문항이 둘이면 **뜻풀이는 한 번만 붙인다.**
+     접힌 줄이라도 같은 요약(`보기가 어떻게 갈리나요`)이 한 화면에 두 번
+     서면 그것이 문항 사이의 구분선처럼 읽힌다 */
+  const firstLevelItem = sc.items.find((id) => itemOf(id)?.response_scale === "L0~L3");
+
   const fieldOf = async (id: string, label?: string): Promise<Field | null> => {
     const it = itemOf(id);
     if (!it) return null;
@@ -77,8 +82,9 @@ export default async function V3Screen({
       optionHelp: control.kind === "level" ? OWNERSHIP_HELP : undefined,
       /* 보기 넷의 뜻은 `ownership.ts` 하나에서 온다. 화면이 따로 적으면
          어느 날 채점과 다른 말을 한다 */
-      optionHelpFold: control.kind === "level" ? OWNERSHIP.map((o) => o.means) : undefined,
-      optionFoldOpen: control.kind === "level" && firstLevel,
+      optionHelpFold: control.kind === "level" && id === firstLevelItem
+        ? OWNERSHIP.map((o) => o.means) : undefined,
+      optionFoldOpen: control.kind === "level" && firstLevel && id === firstLevelItem,
     };
   };
 
@@ -208,7 +214,7 @@ export default async function V3Screen({
      캡처에서는 쪽마다 새로 뜨므로 드러나지 않았고, 사람이 눌러야 보였다 */
   return (
     <Screen key={`${model.attemptId}:${model.index}`} s={model} prog={prog}
-      tier={v.attempt.tier} tierLabel={TIER_WHAT[v.attempt.tier].label} />
+      tier={v.attempt.tier} tierLabel={v.attempt.tier} />
   );
 }
 

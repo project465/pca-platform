@@ -134,7 +134,7 @@ async function main(): Promise<void> {
 
     for (const [path, want] of [
       ["/me/results", /결과 기록|검사 당시|아직/],
-      ["/me/state", /지금 상태|설명할 수 있는 경험|아직/],
+      ["/me/state", /현재 상태|설명할 수 있는 경험|아직/],
       ["/me/next", /다음 할 일|할 수 있는 때|아직/],
       ["/me/experience", /경험/],
       ["/me/explore", /산업|직무/],
@@ -185,7 +185,7 @@ async function main(): Promise<void> {
       list.includes(title) ? title : "목록에 없다");
 
     const st = await p.goto(`${B}/me/state`, { waitUntil: "networkidle" });
-    ok("지금 상태가 열린다", st?.status() === 200, `${st?.status()}`);
+    ok("현재 상태가 열린다", st?.status() === 200, `${st?.status()}`);
 
     /* ── 14. hydration 과 DOM 중첩 ───────────────────────────────── */
     console.log("\n── 14. hydration · DOM 중첩");

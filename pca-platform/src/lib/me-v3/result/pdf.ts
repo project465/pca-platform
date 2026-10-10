@@ -160,12 +160,22 @@ export async function drawResultPdf(opts: DrawOpts): Promise<Buffer> {
         `로그인 쪽으로 떨어졌습니다: ${landed.slice(0, 120)}`);
     }
     try {
-      await page.waitForSelector(".rs-main .rs-sect", { timeout: 20000 });
+      /* **`attached` 로 기다린다.** 웹에서 본문 아홉 절은 `자세한 내용
+         보기` 안에 접혀 있어(규격 §9) 화면에 보이지 않는다. 기본값인
+         `visible` 로 기다리면 멀쩡한 결과지에서 20초를 쓰고 `본문이 서지
+         않았습니다` 로 끝난다. 종이에서는 인쇄 규칙이 그 자리를 편다 */
+      await page.waitForSelector(".rs-main .rs-sect", {
+        state: "attached", timeout: 20000,
+      });
       await page.waitForLoadState("load", { timeout: 20000 }).catch(() => undefined);
     } catch (e) {
       throw new PdfFailed("render",
         `결과 쪽이 열렸는데 본문이 서지 않았습니다: ${(e as Error).message.split("\n")[0]}`);
     }
+    /* 접힌 자리를 눌러서도 펴 둔다. 인쇄 규칙 하나에만 기대면, 그 규칙이
+       빠진 날 **빈 종이가 조용히 뽑힌다** */
+    await page.locator(".rs-openbtn").first().click({ timeout: 3000 })
+      .catch(() => undefined);
     /* **인쇄 매체로 바꿔 놓고 뽑는다.** 화면 규칙으로 뽑으면 종이에서
        손전화 화면이 된다(A4 의 글 폭이 690px 안팎이라 좁은 화면 규칙에
        걸린다) */

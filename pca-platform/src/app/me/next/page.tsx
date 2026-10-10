@@ -45,12 +45,12 @@ export default async function Next() {
         title={open.length ? `지금 남은 일 ${open.length}가지` : "무엇부터 할지"}
         lead={st.model
           ? "급한 차례가 아니라 할 수 있는 때로 묶었습니다. 지금 앉아서 할 수 있는 것부터 섭니다."
-          : "검사를 한 번 끝내면 결과가 낸 할 일을 여기로 가져올 수 있습니다."}
+          : "검사를 한 번 끝내면 결과가 낸 할 일을 여기에 담을 수 있습니다."}
         actions={st.model ? (
           <>
             <form action={pullActions}>
               <button className="cm-btn is-primary" type="submit">
-                결과에서 할 일 가져오기
+                결과의 할 일 담기
               </button>
             </form>
             <Link className="cm-btn" href="/me/state#gaps">왜 필요한지 보기</Link>
@@ -67,8 +67,8 @@ export default async function Next() {
         </div>
       ) : actions.length === 0 ? (
         <div className="cm-soon">
-          <b>아직 옮겨 둔 할 일이 없습니다.</b> 위에서 결과의 할 일을
-          가져오면 세 층으로 나뉘어 섭니다.
+          <b>아직 담아 둔 할 일이 없습니다.</b> 위에서 결과의 할 일을
+          담으면 세 층으로 나뉘어 섭니다.
         </div>
       ) : (
         <div className="cm-lanes">

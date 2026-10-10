@@ -71,7 +71,7 @@ export function CmShell({
       </div>
 
       {/*
-        손전화 아래 띠. 넷을 세우고 다섯째가 서랍이다.
+        손전화 아래 띠. **셋을 세우고 넷째가 서랍이다**(규격 §13).
         **`details` 하나로 연다**: 자바스크립트가 꺼져 있어도 열리고,
         닫는 상태를 브라우저가 들고 있어 쪽을 옮기면 저절로 닫힌다.
       */}
@@ -88,7 +88,7 @@ export function CmShell({
         <details className="cm-more">
           <summary aria-label="메뉴 전체 보기">
             <Icon name="grid" />
-            <span>메뉴</span>
+            <span>더보기</span>
           </summary>
           <div className="cm-sheet">
             <p className="cm-sheet-head">CareerMatri · {MAJOR}</p>

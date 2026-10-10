@@ -512,6 +512,51 @@
 }
 .rs-scale label:has(input:checked) > span { color: var(--r-accent-ink); }
 
+/* ── 첫 화면에서 할 수 있는 일 ────────────────────────────────────────
+   **결과는 끝이 아니라 시작점이다**(규격 §9·§17). 첫 화면에서 답한 셋
+   바로 아래에 다음 걸음이 서야, 읽은 사람이 종이만 받고 끝내지 않는다.
+   **짙은 단추는 하나다**: 나머지 둘은 글자 링크로 거든다 */
+.rs-do {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: var(--r-s3); margin: var(--r-s5) 0 0;
+}
+.rs-do-main {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px;
+  background: var(--r-accent); color: #fff; border-radius: var(--r-r-sm);
+  font-size: var(--r-t-body); font-weight: 650; text-decoration: none;
+}
+.rs-do-main:hover { filter: brightness(1.06); }
+.rs-do-sub {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px;
+  color: var(--r-ink-2); font-size: var(--r-t-sub); font-weight: 600;
+  text-decoration: underline; text-decoration-color: var(--r-line);
+  text-underline-offset: 3px;
+}
+.rs-do-sub:hover { color: var(--r-accent-ink); }
+
+/* ── 자세한 내용 ──────────────────────────────────────────────────────
+   본문 아홉 절을 한 자리에서 연다. **접힌 상태가 기본이다**: 웹에서 이
+   쪽이 하는 일은 `지금 무엇을 하면 되는가` 까지이고, 근거는 그것을 다시
+   따질 때 연다. 종이에서는 단추가 사라지고 속이 펴진다 */
+.rs-open { margin-top: var(--r-s6); }
+.rs-openbtn {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  min-height: 52px; padding: 0 var(--r-s4);
+  background: var(--r-sunk); border: 1px solid var(--r-line);
+  border-radius: var(--r-r-sm);
+  font-family: inherit; font-size: var(--r-t-body); color: var(--r-ink);
+  text-align: left; cursor: pointer;
+}
+.rs-openbtn:hover { border-color: var(--r-accent-line); }
+.rs-openbtn:focus-visible { outline: 2px solid var(--r-accent); outline-offset: 2px; }
+.rs-openbtn b { font-weight: 650; }
+.rs-openbtn small {
+  color: var(--r-ink-3); font-size: var(--r-t-gloss); font-weight: 400;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.rs-openbtn i { margin-left: auto; font-style: normal; color: var(--r-ink-3); }
+.rs-open.is-on > .rs-openbtn { margin-bottom: var(--r-s4); }
+
 /* ── 접는 자리 ── 좁은 화면에서만 접는다 */
 .rs-foldbtn {
   display: none; width: 100%; cursor: pointer;
@@ -617,11 +662,13 @@
      그 상태로 뽑히면 여덟 축이 통째로 사라진다. 한 번 그렇게 뽑혔다 */
   /* 종이에서 눌릴 수 없는 것은 내보내지 않는다. `결과 PDF 저장` 이 그
      PDF 안에 찍혀 있으면 읽는 사람이 한 번 더 누르려고 한다 */
-  .rs-foldbtn, .rs-discbtn, .rs-save, .rs-pdf { display: none !important; }
+  .rs-foldbtn, .rs-discbtn, .rs-openbtn, .rs-save, .rs-pdf,
+  .rs-do { display: none !important; }
   /* 닫는 자리의 길도 종이에서는 눌릴 수 없다. 남겨 두면 마지막 쪽이
      링크 한 줄만 들고 따로 서고, 그 쪽이 통째로 빈 종이로 읽힌다 */
   .rs-fine > p { display: none; }
-  .rs-fold > [hidden], .rs-disc > [hidden] { display: block !important; }
+  .rs-fold > [hidden], .rs-disc > [hidden],
+  .rs-open > [hidden] { display: block !important; }
 
   /* **A4 의 글 폭은 690px 안팎이다.** 좁은 화면 규칙(719px)이 종이에서도
      걸리므로 여기서 되돌린다. 안 되돌리면 인쇄본이 손전화 화면이 된다 */
@@ -727,3 +774,10 @@
 }
 .rs-cta > a:focus-visible { outline: 2px solid var(--r-accent); outline-offset: 3px; }
 @media print { .rs-cta { display: none; } }
+
+/* 종이 길은 거드는 자리다. 한 줄 안에서 작은 설명을 달고 선다 */
+.rs-do-sub.is-pdf { gap: 6px; }
+.rs-do-sub.is-pdf small {
+  font-weight: 400; color: var(--r-ink-3); text-decoration: none;
+  font-size: var(--r-t-gloss);
+}

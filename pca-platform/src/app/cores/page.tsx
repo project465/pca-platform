@@ -57,7 +57,7 @@ export default async function Cores() {
           </div>
           <div>
             <dt>그 뒤에 쌓는 것</dt>
-            <dd>새로 겪은 경험을 적고 지금 상태에 반영하면 비어 있던 자리가 채워집니다</dd>
+            <dd>새로 겪은 경험을 적고 현재 상태에 반영하면 비어 있던 자리가 채워집니다</dd>
           </div>
           <div>
             <dt>등급 차이</dt>

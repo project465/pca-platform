@@ -39,7 +39,12 @@ export async function saveExperience(form: FormData): Promise<void> {
   await mark("experience_added", user.id, { n: form.getAll("td").length });
   revalidatePath("/me");
   revalidatePath("/me/experience");
-  redirect("/me/experience");
+  revalidatePath("/me/recompute");
+  /* **저장한 다음 자리는 목록이 아니다**(규격 §16). 적은 사람이 바로
+     알고 싶은 것은 `그래서 무엇이 달라지나` 이고, 목록으로 보내면 그
+     물음에 답하는 화면을 스스로 찾아가야 한다. 달라지는 것이 없으면
+     그 화면이 그 사실을 적는다 */
+  redirect("/me/recompute");
 }
 
 export async function dropExperience(form: FormData): Promise<void> {

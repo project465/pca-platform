@@ -25,7 +25,7 @@ const ZONE_KO: Record<string, string> = {
  * 새 경험 반영하기.
  *
  * **이름에 `재분석` 을 쓰지 않는다.** 그 말은 우리가 무엇을 다시 계산하는
- * 가를 가리키는데, 누르는 사람이 하는 일은 적어 둔 경험을 지금 상태에
+ * 가를 가리키는데, 누르는 사람이 하는 일은 적어 둔 경험을 현재 상태에
  * 반영하는 것이다. 안쪽 이름이 단추에 그대로 나가면 읽는 사람이 무엇이
  * 달라지는지 짐작해야 한다.
  *
@@ -46,7 +46,7 @@ export default async function Recompute() {
       <CmHead
         kicker="새 경험 반영하기"
         title="적어 두신 경험이 어디로 가는지"
-        lead={"저장한 경험이 어느 판단으로 가는지 묶어 지금 상태와 맞춰 봤습니다. "
+        lead={"저장한 경험이 어느 판단으로 가는지 묶어 현재 상태와 맞춰 봤습니다. "
           + "그때 낸 결과지는 그대로 남고, 여기서는 지금 값만 달라집니다."}
         actions={plan.base_attempt_id && !plan.empty ? (
           <form action={runRecompute}>

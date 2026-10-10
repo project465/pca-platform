@@ -53,7 +53,7 @@ export const TIER_VALUE: Record<Tier, TierValue> = {
     tier: "BASIC",
     headline: p("어디부터 볼지 고르기", "Decide where to start"),
     gets: [
-      p("열두 기술영역을 관심 · 해 본 적 · 배울 뜻 셋으로 나눠 봅니다",
+      p("전체 기술영역을 관심 · 해 본 적 · 배울 뜻 셋으로 나눠 봅니다",
         "Twelve technical domains read through interest, exposure and willingness to learn"),
       p("직접 해볼 영역 · 짧게 겪어 볼 영역 · 지금은 뒤로 둘 영역",
         "Which to take on, which to sample briefly, which to set aside for now"),

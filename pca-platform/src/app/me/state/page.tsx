@@ -8,7 +8,7 @@ import {
 } from "@/lib/me-v3/result/text.ko";
 import { CmShell, CmHead } from "../shell";
 
-export const metadata = { title: "지금 상태 · CareerMatri" };
+export const metadata = { title: "현재 상태 · CareerMatri" };
 
 /** 읽는 차례. **아직 판단하기 어려운 영역을 맨 위에 두지 않는다** */
 const ORDER = [
@@ -28,14 +28,19 @@ const ORDER = [
  *
  * **축 코드와 소유 코드를 내보내지 않는다.** `J3` 도 `OWNED` 도 없다.
  */
-export default async function State() {
+export default async function State(
+  { searchParams }: { searchParams: Promise<{ r?: string }> },
+) {
   const user = await requireUser();
+  /* 방금 반영하고 온 사람인가. **반영 화면에 세워 두지 않고 여기로
+     보내되**(규격 §17), 무엇 때문에 이 화면이 열렸는지는 적어 준다 */
+  const justApplied = (await searchParams).r === "1";
   const [st, profile] = await Promise.all([currentState(user.id), profileOf(user.id)]);
 
   if (!st.model) {
     return (
-      <CmShell active="/me/state" title="지금 상태">
-        <CmHead kicker="지금 상태" title="아직 볼 것이 없습니다"
+      <CmShell active="/me/state" title="현재 상태">
+        <CmHead kicker="현재 상태" title="아직 볼 것이 없습니다"
           lead="검사를 한 번 끝내면 확인된 근거와 비어 있는 자리가 여기에 섭니다." />
         <div className="cm-soon">
           <b>완료한 검사가 없습니다.</b>
@@ -60,7 +65,7 @@ export default async function State() {
   void say;
 
   return (
-    <CmShell active="/me/state" title="지금 상태">
+    <CmShell active="/me/state" title="현재 상태">
       <CmHead
         kicker={st.recomputed_at ? `${st.recomputed_at} 기준` : `${st.result_at} 기준`}
         title="지금 설명할 수 있는 것과 비어 있는 자리"
@@ -69,13 +74,25 @@ export default async function State() {
           : "아직 새 경험을 반영한 적이 없어 검사 당시 결과와 같습니다."}
         actions={
           <>
-            <Link className="cm-btn is-primary" href="/me/experience/new">새 경험 추가</Link>
-            <Link className="cm-btn" href={`/v3/${m.attempt_id}/result`}>
-              검사 당시 결과 보기
-            </Link>
+            {/* 반영하고 막 들어온 사람에게 주된 단추는 **다음 할 일**이다.
+                그 자리에서 행동 루프가 이어진다(규격 §17) */}
+            <Link className="cm-btn is-primary" href="/me/next">지금 할 일</Link>
+            <Link className="cm-btn" href="/me/experience/new">경험 추가</Link>
           </>
         }
       />
+
+      {/* 방금 반영하고 온 자리. **달라진 것을 그 자리에서 적는다**(규격 §16).
+          반영했는데 올라간 자리가 없는 것도 자료라서 그때는 그 사실을 적는다 */}
+      {justApplied ? (
+        <p className="cm-done" role="status">
+          {st.raised.length || st.zoneMoved.length
+            ? <>새 경험을 반영했습니다. 판단 {st.raised.length}개가 올라갔고
+              영역 {st.zoneMoved.length}곳이 달라졌습니다.</>
+            : <>새 경험을 반영했습니다. 바뀐 판정은 없습니다 ·
+              같은 영역의 근거가 둘이 되면 그때 올라갑니다.</>}
+        </p>
+      ) : null}
 
       {/* ── 1. 기술영역 ── */}
       <h2 className="cm-sect" id="domains">기술영역</h2>

@@ -197,7 +197,10 @@ for (const t of plan.targets) {
   const sheet = await p.locator(".cm-sheet a.cm-nav").count();
   await p.screenshot({ path: `${OUT}/w17_sheet__narrow.png` });
   log.push(`손전화 서랍`.padEnd(28) + ` 아래 띠 ${tabs}칸 · 서랍 ${sheet}줄`);
-  if (tabs !== 4) problems.push(`아래 띠가 ${tabs}칸이다`);
+  /* **아래 띠는 넷이다**(규격 §13): 홈 · 검사 · 경험 · 더보기. 앞의 셋이
+     링크이고 넷째가 서랍을 여는 자리라, 세는 것은 링크 셋이다. 다섯째를
+     세우면 320px 에서 글자가 두 줄로 접히고 누르는 자리가 안 읽힌다 */
+  if (tabs !== 3) problems.push(`아래 띠의 링크가 ${tabs}칸이다 (셋 + 더보기)`);
   if (sheet < 10) problems.push(`서랍이 ${sheet}줄이다`);
   await p.close();
 }

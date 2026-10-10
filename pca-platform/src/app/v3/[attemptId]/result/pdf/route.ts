@@ -42,14 +42,13 @@ function sorryPage(attemptId: string): Response {
  .main { background:#1c5fb0; color:#fff }
  .ghost { border:1px solid #e3e7ee; color:#1e2838 }
 </style></head><body><main>
- <h1>지금은 PDF 를 만들지 못했습니다</h1>
- <p>결과 자체는 그대로 있습니다. 웹 결과지는 지금 바로 열리고, 내용은
-    종이와 같습니다.</p>
+ <h1>PDF를 만들지 못했습니다</h1>
+ <p>웹 결과는 그대로 볼 수 있습니다. 담긴 내용은 종이와 같습니다.</p>
  <p>잠시 뒤에 다시 눌러 보셔도 됩니다. 계속 안 되면 고객지원으로 알려
     주세요. 저희 쪽 기록에 남아 있어 바로 확인할 수 있습니다.</p>
  <div class="acts">
-  <a class="main" href="/v3/${encodeURIComponent(attemptId)}/result">웹 결과지 보기</a>
-  <a class="ghost" href="/me">내 CareerMatri</a>
+  <a class="main" href="/v3/${encodeURIComponent(attemptId)}/result/pdf">다시 시도</a>
+  <a class="ghost" href="/v3/${encodeURIComponent(attemptId)}/result">웹 결과 보기</a>
   <a class="ghost" href="/support">고객지원</a>
  </div>
 </main></body></html>`;

@@ -20,8 +20,8 @@ import { orgTypesFor, regionLayer } from "@/lib/me-v3/region";
 import { profileOf } from "@/lib/me-v3/platform";
 import { participantOf, savedActions } from "@/lib/me-v3/pilot/store";
 import ResultNav from "./result-nav";
-import { TIER_WHAT } from "../../tier-text";
 import "../../result.css";
+import Detail from "./detail";
 import Disclose from "./disclose";
 import Fold from "./fold";
 import SaveAction from "./save";
@@ -438,7 +438,6 @@ export default async function V3Result({
 
   const model: ResultModel = m;
   const h = headlineKo(model);
-  const tier = TIER_WHAT[model.tier];
   const focus = model.domains.filter((d) => model.overview.focus.includes(d.code));
   const compare = model.domains.filter((d) => model.overview.compare.includes(d.code));
   const deep = model.limits.deep_axes;
@@ -521,14 +520,14 @@ export default async function V3Result({
               작업공간에서 결과지로 들어온 사람이 끝까지 내려가야 돌아갈
               수 있었다. 종이에서는 이 줄이 찍히지 않는다(`.rs-back`) */}
           <Link className="rs-back" href="/me">내 CareerMatri</Link>
-          <span className="rs-tier">{tier.label}</span>
-          <nav>
-            <a href="#focus">먼저 볼 영역</a>
-            <a href="#zones">열두 영역</a>
-            {deep ? <a href="#evidence">근거</a> : null}
-            {deep ? <a href="#gaps">채울 것</a> : null}
-            <a href="#plan">다음에 할 일</a>
-          </nav>
+          {/* **산 것의 이름을 적는다.** 별명(`경험 번역`)은 가격표에도
+              결제에도 없는 말이라, 받은 사람이 자기가 무엇을 샀는지
+              되짚을 수 없다(규격 §24) */}
+          <span className="rs-tier">{model.tier}</span>
+          {/* **절 목록을 여기 두지 않는다.** 본문 아홉 절은 아래
+              `자세한 내용 보기` 안에 접혀 있어(규격 §9), 접힌 동안 이
+              링크들은 눌러도 아무 일이 없다. 절 목록은 펼친 자리 안에
+              `ResultNav` 가 들고 있다 */}
         </div>
       </header>
 
@@ -542,17 +541,6 @@ export default async function V3Result({
           {/* **종이로 가는 길을 결과 안에 둔다.** 전에는 스크립트로만
               뽑혔고, 사업주가 직접 눌러 볼 자리가 없었다. 웹과 종이가 같은
               결과 모델을 읽으므로 둘의 판단이 갈리지 않는다 */}
-          <p className="rs-pdf">
-            <a href={`/v3/${attemptId}/result/pdf`}>결과 PDF 저장</a>
-            <small>만드는 데 몇 초 걸립니다</small>
-          </p>
-          {deep ? (
-            <ul className="rs-count">
-              <li><b>{counts.confirmed_axes}</b>직접 해 본 것으로 확인된 판단</li>
-              <li><b>{counts.owned_axes}</b>직접 정한 것으로 확인된 판단</li>
-              <li><b>{counts.evidence_items}</b>근거로 고르신 항목</li>
-            </ul>
-          ) : null}
         </section>
 
         {/* 열 초 안에 셋을 답한다: 어디부터 · 왜 · 지금 무엇을 */}
@@ -595,11 +583,39 @@ export default async function V3Result({
           </div>
         </div>
 
+        {/* **첫 화면에서 할 수 있는 일을 적는다**(규격 §9).
+            결과를 읽고 나서 하는 일은 둘이다: 이 할 일을 내 자리로 옮기고,
+            새 경험을 적어 현재 상태를 다시 세우는 것. 종이로 받는 길은
+            위 머리에 이미 있다 */}
+        <div className="rs-do">
+          <Link className="rs-do-main" href="/me/next">지금 할 일로 담기</Link>
+          <Link className="rs-do-sub" href="/me/experience/new">경험 추가</Link>
+          <Link className="rs-do-sub" href="/me">내 CareerMatri</Link>
+          {/* **종이 길은 `Link` 로 걸지 않는다.** Next 가 화면에 들어온
+              `Link` 를 미리 불러오는데, 그 길은 머리 없는 브라우저를 띄워
+              종이를 만드는 자리다. 읽기만 해도 종이가 한 벌씩 만들어졌다 */}
+          <a className="rs-do-sub is-pdf" href={`/v3/${attemptId}/result/pdf`}>
+            결과 PDF 저장<small>몇 초 걸립니다</small>
+          </a>
+        </div>
+
         {model.response_quality.flag !== "OK" ? (
           <p className="rs-flag">
             {QUALITY_KO[model.response_quality.flag as keyof typeof QUALITY_KO]}
           </p>
         ) : null}
+
+        {/* ── 여기부터가 근거다 ──
+            **웹 결과지는 행동 화면이고 그 아래가 문서다**(규격 §9).
+            전에는 이 자리부터 아홉 절이 늘 펼쳐져 있어 쪽이 1만 px 을
+            넘었고, 첫 화면에서 답한 셋을 다시 확인하려면 그 열 뼘을 지나야
+            했다. 종이에서는 이 자리가 저절로 펴진다 */}
+        <Detail
+          label="자세한 내용 보기"
+          note={deep
+            ? `확인된 판단 ${counts.confirmed_axes} · 직접 정한 것 ${counts.owned_axes}`
+              + ` · 고르신 근거 ${counts.evidence_items}`
+            : "전체 기술영역과 다음에 할 일"}>
 
         <ResultNav />
 
@@ -609,7 +625,7 @@ export default async function V3Result({
           <p className="rs-note">
             {focus.length
               ? "응답에서 확인된 내용만 정리했습니다."
-              : "지금 응답만으로는 어느 영역이 앞선다고 보기 어렵습니다. 아래 열두 영역을 보시고 한 가지부터 해보세요."}
+              : "지금 응답만으로는 어느 영역이 앞선다고 보기 어렵습니다. 아래 전체 영역을 보시고 한 가지부터 해보세요."}
           </p>
           {focus.map((d) => <DomainPanel key={d.code} d={d} showAxes={deep} />)}
           {compare.length ? (
@@ -628,7 +644,7 @@ export default async function V3Result({
             `근거를 더 만들어야 하는 영역` 이 들어 있어서, 근거를 묻지 않은
             응시에 그대로 세우면 재지 않은 것을 판정으로 적는 셈이다 */}
         <section className="rs-sect" id="zones">
-          <h2>열두 기술영역이 지금 어디에 있는가</h2>
+          <h2>전체 기술영역이 지금 어디에 있는가</h2>
           <p className="rs-note">
             {deep
               ? "순위가 아니라 현재 상태를 보여드립니다."
@@ -1028,16 +1044,16 @@ export default async function V3Result({
           <div className="rs-cta">
             <p>
               이 결과는 그날의 기록으로 굳어 있습니다. 여기서부터는 경험을
-              더하면서 지금 상태를 이어서 보실 수 있습니다.
+              더하면서 현재 상태를 이어서 보실 수 있습니다.
             </p>
             <Link href="/me">내 CareerMatri에서 계속하기</Link>
           </div>
           <ul className="rs-next">
             {[
-              ["/me/state", "지금 상태 보기", "설명할 수 있는 경험과 보완할 부분"],
-              ["/me/experience/new", "새로운 경험 추가", "반영하면 지금 상태가 달라집니다"],
+              ["/me/state", "현재 상태 보기", "설명할 수 있는 경험과 보완할 부분"],
+              ["/me/experience/new", "경험 추가", "반영하면 현재 상태가 달라집니다"],
               ["/me/next", "다음 할 일", "할 수 있는 때로 묶어서 봅니다"],
-              ["/me/explore", "산업과 직무 다시 보기", "관심 산업과 직무를 둘러봅니다"],
+              ["/me/explore", "산업·직무 탐색", "관심 산업과 직무를 둘러봅니다"],
               ["/me/track", "CareerMatri Track", "준비 중입니다"],
               [`/v3/${attemptId}/result/pdf`, "결과 PDF 저장", "웹과 같은 내용을 종이로"],
             ].map(([href, label, note]) => (
@@ -1053,6 +1069,8 @@ export default async function V3Result({
             ))}
           </ul>
         </section>
+
+        </Detail>
 
         <div className="rs-fine">
           <Disclose label="결과 기준 보기">

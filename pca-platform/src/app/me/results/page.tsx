@@ -13,7 +13,7 @@ export const metadata = { title: "결과 기록 · CareerMatri" };
  * **굳은 기록과 변하는 상태를 같은 카드 모양으로 그리지 않는다.** 전에는
  * `/me` 카드 한 줄에 둘이 나란히 있어서, 날짜만 다른 같은 값으로 읽혔다.
  * 여기서는 생김새를 갈라 둔다: 검사 당시 결과는 흰 카드에 자물쇠 표시,
- * 지금 상태는 점선 테두리에 `바뀔 수 있습니다`.
+ * 현재 상태는 점선 테두리에 `바뀔 수 있습니다`.
  *
  * **판본 코드를 앞세우지 않는다.** 접어 두고, 펼치면 보인다. 응시자에게
  * 필요한 것은 결과가 고정돼 있다는 사실이다.
@@ -27,9 +27,9 @@ export default async function Results() {
     <CmShell active="/me/results" title="결과 기록">
       <CmHead
         kicker="결과 기록"
-        title="검사 당시 결과와 지금 상태"
+        title="검사 당시 결과와 현재 상태"
         lead={"검사 당시 결과는 응시하신 그날의 문항과 기준으로 굳어 있습니다. "
-          + "지금 상태는 그 뒤에 더한 경험까지 반영한 값이라 달라질 수 있습니다."}
+          + "현재 상태는 그 뒤에 더한 경험까지 반영한 값이라 달라질 수 있습니다."}
       />
 
       {!snaps.length ? (
@@ -40,11 +40,11 @@ export default async function Results() {
         </div>
       ) : null}
 
-      {/* ── 지금 상태. 점선 테두리로 `변한다` 를 생김새로 말한다 ── */}
+      {/* ── 현재 상태. 점선 테두리로 `변한다` 를 생김새로 말한다 ── */}
       {st.model ? (
         <section className="cm-live">
           <header>
-            <h2>지금 상태</h2>
+            <h2>현재 상태</h2>
             <span>
               {st.recomputed_at
                 ? `${st.recomputed_at} 에 새 경험을 반영했습니다`
@@ -65,7 +65,7 @@ export default async function Results() {
           </div>
           <p className="cm-live-note">이 줄은 경험을 더하면 바뀝니다.</p>
           <div className="cm-acts">
-            <Link className="cm-btn is-primary" href="/me/state">지금 상태 보기</Link>
+            <Link className="cm-btn is-primary" href="/me/state">현재 상태 보기</Link>
             {st.pending > 0 ? (
               <Link className="cm-btn" href="/me/recompute">새 경험 반영하기</Link>
             ) : null}

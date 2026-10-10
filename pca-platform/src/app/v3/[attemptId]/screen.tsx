@@ -237,8 +237,12 @@ export default function Screen({
                 {saving > 0 ? "저장 중" : sent ? "저장됨" : "자동 저장"}
               </small>
             )}
-            <span className="qs-tier">{tierLabel}</span>
-            <span className="qs-count">{prog.inStage.index} / {prog.inStage.total}</span>
+            {/* **오른쪽은 산 등급과 몇째인가 한 묶음이다**(규격 §5).
+                전에는 등급 자리에 별명(`경험 번역`)을 적었는데, 바로 왼쪽
+                breadcrumb 의 단계 이름(`경험 심화`)과 생김새가 같아서 둘
+                가운데 무엇이 진행인지 읽히지 않았다. 산 것의 이름은
+                가격표와 결제와 같은 말(BASIC · STANDARD · PRO)이다 */}
+            <span className="qs-tier">{tierLabel} · {prog.inStage.index} / {prog.inStage.total}</span>
           </div>
           <div className="qs-bar" role="progressbar" aria-valuenow={prog.percent}
             aria-valuemin={0} aria-valuemax={100}
@@ -248,7 +252,7 @@ export default function Screen({
         </div>
       </header>
 
-      <main className={`qs-main${mid ? " qs-mid" : ""}`}>
+      <main className={`qs-main${mid ? " qs-mid" : ""}${brief ? " is-rest" : ""}`}>
         {/* **쉬는 자리는 한 판 위에 올린다.** 전환과 완료는 글이 네 줄이라
             넓은 바탕 위에 떠 있으면 덜 그린 화면으로 읽힌다. 테와 안쪽
             여백을 두르면 같은 글이 **의도한 한 걸음**으로 읽히고, 그 판의
@@ -385,6 +389,14 @@ export default function Screen({
             느낌이 사라진다 */}
         {s.kind === "sweep" ? (
           <div className="qs-sweep">
+            {/* **다섯 칸이 무엇인지 격자 머리에 한 번 적는다**(규격 §3).
+                칸 안의 말은 열두 줄 × 다섯 칸에 들어가야 해서 줄인 말
+                (`전혀` · `별로` · `보통` · `관심` · `매우`)인데, 그것만
+                세우면 네 번째 칸이 정도가 아닌 낱말로 혼자 서고 다섯
+                칸이 한 자 위에 있는 것으로 읽히지 않는다. 여기에 **묻는
+                말에 맞춘 온전한 다섯 단계**를 한 번 적는다. 문항 은행의
+                문면 그대로이고 채점에는 쓰이지 않는다 */}
+            <SweepHead f={s.fields[0]} />
             {s.fields.map((f) => (
               <Sweep key={f.itemId} f={f} value={vals[f.itemId]} onPick={setAnswer} />
             ))}
@@ -603,7 +615,12 @@ function One({
     return (
       <fieldset className="qs-opts">
         <legend>{f.label ?? "보기"}</legend>
-        <div className="qs-list">
+        {/* **넓은 화면에서는 보기 넷이 한 행에 선다**(규격 §4).
+            세로로 쌓으면 상자 하나가 85px 이라 한 문항이 340px 을 먹고,
+            한 화면에 문항이 둘인 자리에서는 같은 네 줄이 여덟 번 읽힌다.
+            넷은 서로 견주어 고르는 보기라 **나란히 놓는 쪽이 고르기 쉽다.**
+            좁은 화면에서는 한 줄짜리 네 칸으로 다시 쌓인다 */}
+        <div className="qs-list qs-own">
           {labels.map((label, i) => (
             <label key={i} className={`qs-opt${value === i ? " is-on" : ""}`}>
               <input type="radio" name={f.itemId} checked={value === i}
@@ -669,6 +686,23 @@ function One({
 /* ── 한 줄짜리 척도. 격자와 선호 화면이 쓴다 ───────────────────────── */
 
 /* ── 훑기 한 줄. 왼쪽에 영역, 오른쪽에 보기 셋 ──────────────────── */
+
+/** 격자 머리. 다섯 칸의 뜻을 **화면에 한 번** 적는다(규격 §3) */
+function SweepHead({ f }: { f: Field }) {
+  const c = f.control;
+  if (c.kind !== "steps") return null;
+  const steps = c.options.filter((o) => o.value !== null);
+  const esc = c.options.find((o) => o.value === null);
+  return (
+    <div className="qs-swhead" aria-hidden>
+      <span className="qs-sw-row" />
+      <div className="qs-grade" data-n={steps.length}>
+        {steps.map((o) => <span key={o.label}>{o.label}</span>)}
+      </div>
+      {esc ? <span className="qs-grade-esc is-head">{esc.short}</span> : null}
+    </div>
+  );
+}
 
 function Sweep({
   f, value, onPick,

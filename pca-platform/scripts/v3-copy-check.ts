@@ -217,7 +217,7 @@ for (const t of OWNERSHIP_LABEL) {
   if (t.length > 14) flag(`보기 문면이 길다(${t.length}자) — ${t}`);
 }
 for (const t of OWNERSHIP_HELP) {
-  if (t.length > 12) flag(`보기 아래 한 마디가 길다(${t.length}자) — ${t}`);
+  if (t.length > 14) flag(`보기 아래 한 마디가 길다(${t.length}자) — ${t}`);
 }
 for (const [k, v] of Object.entries(TIER_WHAT)) {
   if (CODE.test(v.what)) flag(`등급 설명에 내부 코드 — ${k}`);

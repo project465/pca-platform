@@ -413,9 +413,9 @@ async function main(): Promise<void> {
     const me = await ctx3.request.get(`${B}/me/results`, { timeout: 60_000 });
     const html = await me.text();
     const frozen = html.includes("검사 당시 결과") && html.includes("고정됨");
-    const live = html.includes("지금 상태") && html.includes("경험을 더하면 바뀝니다");
+    const live = html.includes("현재 상태") && html.includes("경험을 더하면 바뀝니다");
     const split = html.includes("cm-snap") && html.includes("cm-live");
-    ok("결과 기록이 `검사 당시 결과` 와 `지금 상태` 를 가른다",
+    ok("결과 기록이 `검사 당시 결과` 와 `현재 상태` 를 가른다",
        frozen && live && split,
        `${frozen ? "굳은 값 ○" : "굳은 값 ✗"} · ${live ? "지금 값 ○" : "지금 값 ✗"}`
        + ` · ${split ? "생김새 갈림 ○" : "생김새 갈림 ✗"}`);

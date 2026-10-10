@@ -168,6 +168,25 @@ for (const t of plan.targets) {
     await p.waitForTimeout(250);
     const code = r ? r.status() : 0;
 
+    /* **결과지의 본문은 접혀 있다**(규격 §9). 웹에서 그 쪽이 하는 일은
+       `무엇이 확인됐고 · 무엇이 비었고 · 지금 무엇을 하면 되는가` 까지이고
+       근거 아홉 절은 `자세한 내용 보기` 안에 있다. 절을 가리키는 자리를
+       찍을 때는 먼저 펴고, 펴고 나서 그 절로 다시 간다 — 접힌 동안에는
+       닻이 없어 브라우저가 맨 위에 서 있고, 그러면 아홉 그림이 전부
+       첫 화면으로 찍힌다(실제로 그렇게 찍혔다) */
+    const hash = (t.path.split("#")[1] ?? "").trim();
+    if (hash) {
+      const btn = p.locator(".rs-openbtn");
+      if (await btn.count()) {
+        await btn.first().click();
+        await p.waitForTimeout(150);
+        await p.evaluate((h) => {
+          document.getElementById(h)?.scrollIntoView({ block: "start" });
+        }, hash);
+        await p.waitForTimeout(250);
+      }
+    }
+
     const text = await p.evaluate(() => document.body.innerText);
     const leaked = INTERNAL.map((re) => (text.match(re) ?? [])[0]).filter(Boolean);
     const overflow = await p.evaluate(() =>
@@ -269,7 +288,7 @@ const KB = [...plan.targets].filter((t) => !t.pdf).reverse()
    가지가 걸린 자리가 그것이라, 검사 화면도 세어 둔다 */
 {
   const ROLES = [".qs-q", ".qs-subject", ".qs-eyebrow", ".qs-label", ".qs-gloss",
-    ".qs-tag", ".qs-save", ".qs-count", ".qs-crumb .now", ".qs-chip", ".qs-help",
+    ".qs-tag", ".qs-save", ".qs-tier", ".qs-crumb .now", ".qs-chip", ".qs-help",
     ".qs-guide", ".qs-btn-main", ".qs-btn-ghost", ".qs-next li"];
   const seen = new Map();
   for (const t of plan.targets.slice(1).filter((x) => !x.pdf)) {

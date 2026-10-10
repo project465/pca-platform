@@ -54,25 +54,31 @@ export const CM_GROUPS: CmNavGroup[] = [
     items: [
       { href: "/me", label: "홈", tabLabel: "홈", icon: "home", tab: true },
       { href: "/cores", label: "검사", tabLabel: "검사", icon: "clipboard", tab: true },
+      /**
+       * **`다음 할 일` 이 `지금` 묶음으로 올라왔다**(규격 §13).
+       *
+       * 이 줄은 쌓인 기록이 아니라 **오늘 누를 자리**다. `내 커리어`
+       * 안에 두었더니 결과와 경험 사이에 끼어, 홈에서 권한 그 한 가지를
+       * 메뉴에서 다시 찾을 때 지나가는 줄이 되었다.
+       */
+      { href: "/me/next", label: "다음 할 일", icon: "spark" },
     ],
   },
   {
     title: "내 커리어",
     items: [
       /**
-       * **결과 기록을 손전화 띠에 세운다.**
+       * **차례가 곧 읽는 차례다**: 지금 상태 → 그 상태를 바꾸는 경험 →
+       * 굳어 있는 기록. 전에는 `결과` 가 맨 위라, 들어온 사람이 가장
+       * 먼저 보는 줄이 **더 이상 바뀌지 않는 과거**였다.
        *
-       * 검사를 끝낸 사람이 가장 자주 돌아오는 자리인데 서랍 안에 있었다.
-       * 그렇다고 **띠를 여섯 칸으로 늘리지 않는다**: 320px 에서 다섯 칸도
-       * 빠듯하고, 여섯이면 글자가 두 줄로 접혀 어디를 누르는지가 안
-       * 읽힌다. 대신 `지금 상태` 를 서랍으로 내렸다 — 그쪽은 홈의 첫
-       * 카드가 요약을 들고 있어서 한 번 더 눌러 들어가는 자리이고,
-       * 결과 기록은 홈에 요약이 없다.
+       * 손전화 띠는 넷이다(홈 · 검사 · 경험 · 더보기). 320px 에서 다섯
+       * 칸은 글자가 두 줄로 접히고, 접힌 띠는 누르는 자리가 어디인지
+       * 알 수 없다. `결과 기록` 은 홈의 `기록` 묶음이 들고 있다.
        */
-      { href: "/me/results", label: "결과", tabLabel: "결과", icon: "report", tab: true },
-      { href: "/me/experience", label: "경험", tabLabel: "경험", icon: "layers", tab: true },
       { href: "/me/state", label: "현재 상태", icon: "ladder" },
-      { href: "/me/next", label: "다음 할 일", icon: "spark" },
+      { href: "/me/experience", label: "경험", tabLabel: "경험", icon: "layers", tab: true },
+      { href: "/me/results", label: "결과 기록", icon: "report" },
     ],
   },
   {
