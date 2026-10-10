@@ -26,6 +26,16 @@ export PORT HOSTNAME=127.0.0.1
 export PLATFORM_URL="${PLATFORM_URL:-http://127.0.0.1:$PORT}"
 export PDF_BASE="${PDF_BASE:-http://127.0.0.1:$PORT}"
 
+# **PDF 두는 자리를 cwd 에 매달지 않는다.**
+#
+# `PDF_DIR` 의 기본값이 `process.cwd()/var/reports` 인데, standalone 서버는
+# `.next/standalone` 에서 돈다. 그래서 만들어 둔 PDF 는 저장소의
+# `var/reports` 에 있고 내려 주는 쪽은 `.next/standalone/var/reports` 를
+# 보면서, DB 에 적힌 절대 경로가 **두는 자리 밖**이라 404 로 거절된다.
+# 쪽은 200 이고 단추만 안 되는 모양이라 눈으로는 운영 장애와 구별되지
+# 않는다. 운영 컨테이너는 `/app` 한 자리에서 도므로 이 어긋남이 없다.
+export REPORT_PDF_DIR="${REPORT_PDF_DIR:-$PWD/var/reports}"
+
 # **어느 빌드를 내주고 있는지 적어 둔다.**
 #
 # `npm run build` 는 `.next/standalone` 을 통째로 지우고 다시 만든다. 그때

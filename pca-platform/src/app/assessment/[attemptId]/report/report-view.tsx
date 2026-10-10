@@ -12,15 +12,27 @@ import { generateAction } from "./actions";
  * 알려 주고 이쪽이 맞춘다.
  */
 export function ReportFrame({ attemptId, lang }: { attemptId: string; lang: string }) {
-  const [h, setH] = useState(1400);
+  const [h, setH] = useState(640);
   const ref = useRef<HTMLIFrameElement | null>(null);
 
+  /**
+   * **안쪽이 보내는 값에 더하지 않는다.**
+   *
+   * 전에는 받은 높이에 40 을 더해 두었다. 안쪽이 보내던 값이 창 높이를
+   * 품은 값이라(`documentElement.scrollHeight`) 그 40 이 한 바퀴마다
+   * 쌓였고, 담긴 것이 2,834px 인 결과지가 **6,333px 로 서 있었다.** 지금
+   * 안쪽은 담긴 것의 높이를 보내므로 그대로 쓴다.
+   *
+   * **2px 안쪽의 흔들림은 무시한다.** 소수점 반올림으로 값이 번갈아 오면
+   * 다시 그리기가 멈추지 않는다.
+   */
   useEffect(() => {
     const onMsg = (e: MessageEvent) => {
       if (e.origin !== window.location.origin) return;
       const d = e.data as { type?: string; height?: number } | null;
       if (d?.type !== "cm.report.height" || typeof d.height !== "number") return;
-      setH(Math.max(600, Math.min(d.height + 40, 400000)));
+      const next = Math.max(240, Math.min(Math.ceil(d.height), 400000));
+      setH((cur) => (Math.abs(cur - next) <= 2 ? cur : next));
     };
     window.addEventListener("message", onMsg);
     return () => window.removeEventListener("message", onMsg);

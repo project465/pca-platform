@@ -6,6 +6,7 @@ import { resolveLang } from "@/lib/locale-server";
 import { attemptOf } from "@/lib/me-v2/attempt";
 import { countOf, profileOf } from "@/lib/me-v2/evidence";
 import { latestSnapshot } from "@/lib/me-v2/render";
+import { legacyBrief } from "@/lib/me-v2/legacy-summary";
 import { step } from "@/lib/funnel-server";
 import { BRAND, toLang2, txer } from "@/lib/surface-text";
 import { Empty } from "@/components/sf/parts";
@@ -46,6 +47,8 @@ export default async function ReportPage({
   /* **결과지가 실제로 있을 때만 센다.** 만드는 단추가 선 화면까지 세면
      '결과지를 본 사람' 이 본 적 없는 사람으로 불어난다 */
   if (snap) await step("result_viewed", { userId: user.id, props: { tier: a.tier } });
+  /* **굳은 기록에서 꺼내 온다.** 여기서 판단하지 않는다 */
+  const brief = legacyBrief(snap?.payload);
   const prof = await profileOf(user.id);
   const n = countOf(prof);
   const bare = n.items === 0 && n.research === 0;
@@ -65,15 +68,22 @@ export default async function ReportPage({
       <div className="pubwrap" style={{ maxWidth: 1040 }}>
         <div className="sf-head">
           <div className="sf-head-t">
-            <div className="sf-eyebrow">
-              {a.tier} · {T(`asStage${a.education_stage[0].toUpperCase()}${a.education_stage.slice(1)}` as never)}
-            </div>
+            {/* **어느 판본의 결과인지 사용자 말로 적는다**(규격 §7 · §3-1).
+                전에는 등급과 학위 단계만 적혀 있어서, 지금 검사의 결과와
+                그때 받은 결과가 화면에서 구별되지 않았다 */}
+            <div className="sf-eyebrow">{T("rpOlder")}</div>
             <h1 className="sf-h1">{T("rpTitle")}</h1>
-            <p className="sf-sub">
-              {snap
-                ? `${T("rpMadeAt")} ${String(snap.generated_at).slice(0, 16)}`
-                : T("rpNoneBody")}
+            <p className="rpmeta">
+              <span><b>{T("rpTakenOn")}</b>{" "}
+                {String(a.submitted_at ?? "").slice(0, 10) || "—"}</span>
+              <span><b>{T("rpMajor")}</b> {T("rpMajorMe")}</span>
+              <span><b>{T("rpTier")}</b> {a.tier}</span>
+              {snap ? (
+                <span><b>{T("rpMadeAt")}</b>{" "}
+                  {String(snap.generated_at).slice(0, 10)}</span>
+              ) : null}
             </p>
+            <p className="sf-sub">{snap ? T("rpOlderNote") : T("rpNoneBody")}</p>
           </div>
           <div className="sf-head-a">
             {snap ? (
@@ -103,29 +113,80 @@ export default async function ReportPage({
           </div>
         </div>
 
-        {/* 경험을 안 적으셨으면 무엇이 빠지는지 맨 위에 적는다 */}
-        {bare ? (
-          <div className="sf-section">
-            {/* **여기서는 거드는 단추다.** 이 쪽의 주된 일은 결과지를
-                내는 것이고, 경험은 그다음이다. 둘을 같은 굵기로 두면
-                결과지를 받으러 온 사람이 경험 화면으로 끌려간다 */}
-            <Empty
-              icon="layers"
-              title={T("rpBareTitle")}
-              body={T("rpBareBody")}
-              cta={
-                <Link href={`/assessment/${attemptId}/evidence`}
-                  className="sf-btn ghost">
-                  {T("asAddEvidence")}
-                </Link>
-              }
-              tight
-            />
-          </div>
-        ) : null}
-
         {snap ? (
           <>
+            {/* ── 핵심 요약 ────────────────────────────────────────────
+             *
+             * **굳은 기록에서 꺼내 적는다.** 여기 서는 세 줄은 결과를
+             * 만들 때 이미 적어 둔 값이고(`payload.summary`), 다시 계산한
+             * 것이 아니다. 그래서 그때 나간 결과지와 이 화면이 다른 말을
+             * 할 수 없다.
+             *
+             * **왜 첫 화면에 따로 두는가.** 아래 전체 보고서는 A4 열 장을
+             * 넘고, 그것을 다 펼쳐 놓으면 읽는 화면이 아니라 내려받기 전의
+             * 미리보기가 된다. 첫 화면은 `무엇이 가장 비어 있고 지금
+             * 무엇을 하면 되는가` 까지만 든다 */}
+            {brief ? (
+              <section className="rpbrief">
+                <h2 className="sf-h2">{T("rpBriefTitle")}</h2>
+                {brief.roles.length ? (
+                  <div className="rpbrief-row">
+                    <b>{T("rpBriefRoles")}</b>
+                    <p>{brief.roles.map((r) => r.name).join(" · ")}
+                      {brief.roles[0]?.slot
+                        ? <small>{brief.roles[0].slot}</small> : null}</p>
+                  </div>
+                ) : null}
+                {brief.gap ? (
+                  <div className="rpbrief-row">
+                    <b>{T("rpBriefGap")}</b>
+                    <p>{brief.gap.family
+                      ? `${brief.gap.family} · ${brief.gap.label}`
+                      : brief.gap.label}
+                      {brief.gap.why ? <small>{brief.gap.why}</small> : null}</p>
+                  </div>
+                ) : null}
+                {brief.next ? (
+                  <div className="rpbrief-row is-do">
+                    <b>{T("rpBriefNext")}</b>
+                    <p>{brief.next}</p>
+                  </div>
+                ) : null}
+                {brief.note ? <p className="sf-meta">{brief.note}</p> : null}
+              </section>
+            ) : null}
+
+            {/* 경험을 안 적으셨으면 무엇이 빠지는지 적는다.
+                **첫 화면 위가 아니라 요약 다음이다**: 손전화에서 이 칸이
+                맨 위에 서면 첫 창을 거의 다 먹어서, 결과를 보러 온
+                사람이 요약을 한 줄도 못 읽고 스크롤을 시작한다 */}
+            {bare ? (
+              <div className="sf-section">
+                {/* **여기서는 거드는 단추다.** 이 쪽의 주된 일은 결과지를
+                    내는 것이고, 경험은 그다음이다. 둘을 같은 굵기로 두면
+                    결과지를 받으러 온 사람이 경험 화면으로 끌려간다 */}
+                <Empty
+                  icon="layers"
+                  title={T("rpBareTitle")}
+                  body={T("rpBareBody")}
+                  cta={
+                    <Link href={`/assessment/${attemptId}/evidence`}
+                      className="sf-btn ghost">
+                      {T("asAddEvidence")}
+                    </Link>
+                  }
+                  tight
+                />
+              </div>
+            ) : null}
+
+            {/* ── 상세 결과 ────────────────────────────────────────────
+             *
+             * 전체 보고서는 그대로 들고 있고 절마다 접혀 있다. **가린
+             * 것이 아니라 접은 것이다**: 눌러서 펼치면 문서가 그만큼
+             * 길어지고, PDF 에는 처음부터 전부 들어 있다 */}
+            <h2 className="sf-h2 rpdetail">{T("rpDetail")}</h2>
+            <p className="sf-meta" style={{ marginTop: 0 }}>{T("rpDetailBody")}</p>
             {/* 결과지 본문은 **만들 때의 언어**로 읽는다. 화면 언어를
                 바꿔도 이미 나간 결과지의 글은 그대로다 */}
             <ReportFrame attemptId={attemptId}

@@ -20,6 +20,46 @@
   body { background: #fff; margin: 0 }
   .rphost { max-width: 980px; margin: 0 auto; padding: 8px 18px 56px }
   .rpwait { padding: 48px 18px; color: #5a6b80; font-size: 14px; text-align: center }
+
+  /* ── 절 접기 ──────────────────────────────────
+   *
+   * **웹은 요약에서 시작하고 종이는 전부 들고 있다.** 옛 판본의 결과지는
+   * A4 열 장을 넘는 문서라, 그것을 한 쪽에 펼쳐 놓으면 오른쪽 스크롤이
+   * 끝없이 내려간다(실측 13,395px · 창 14.9배). 그래서 화면에서는 절마다
+   * 접고, 종이에서는 그대로 편다.
+   *
+   * **가리는 것이 아니라 접는 것이다.** `max-height` 와 `overflow` 로
+   * 덮으면 담긴 내용이 그대로 있으면서 닿지 못하는 자리가 된다. 여기서는
+   * 눌러서 펼치고, 펼치면 문서가 그만큼 길어진다. */
+  .rpfoldbtn {
+    display: flex; align-items: center; gap: 8px; width: 100%;
+    margin: 10px 0 0; padding: 11px 14px; min-height: 44px;
+    border: 1px solid #d8dee8; border-radius: 10px; background: #f7f9fc;
+    font: inherit; font-size: 14px; color: #2b3a4f; text-align: left;
+    cursor: pointer;
+  }
+  .rpfoldbtn:hover { background: #eef3fa }
+  .rpfoldbtn:focus-visible { outline: 2px solid #1f5fbf; outline-offset: 2px }
+  .rpfoldbtn i { margin-left: auto; font-style: normal; color: #76859b }
+  .rpfold.is-folded { display: none }
+
+  /* **접힌 줄은 줄이어야 줄이다.** 쪽 하나가 종이를 받을 때의 여백(44px)과
+     제목 크기(28px)를 그대로 두면 접힌 머리 하나가 200px 이고 열 줄이면
+     2,000px 이다. 접힌 동안만 줄여서 머리 열 줄이 한 화면에 들어온다 */
+  .rpage.rp-tight { padding: 16px 0 14px }
+  .rpage.rp-tight .rptitle { font-size: 19px; margin: 6px 0 0 }
+  .rpage.rp-tight .rpnum { top: 18px }
+
+  @media print {
+    /* 종이에서는 접힌 자리가 사라진 자리와 같다. 전부 편다 */
+    .rpfold.is-folded { display: block !important }
+    .rpfoldbtn { display: none !important }
+    /* 줄여 둔 머리를 종이에서는 되돌린다. **화면 사정으로 종이의 위계를
+       바꾸지 않는다**: 접힘은 화면의 상태이고 종이에는 그 상태가 없다 */
+    .rpage.rp-tight { padding: 0 0 3mm }
+    .rpage.rp-tight .rptitle { font-size: 28px; margin: 10px 0 0 }
+    .rpage.rp-tight .rpnum { top: 46px }
+  }
 </style>
 </head>
 <body>
@@ -81,7 +121,96 @@
       var folded = ab.classList.toggle('is-folded');
       af.setAttribute('aria-expanded', String(!folded));
       af.textContent = T(folded ? '상세 분석 펼치기' : '상세 분석 접기');
+      tell();
     });
+  }
+
+  /**
+   * 본문 절을 접는다. **화면에서만, 실제 응시의 결과지에서만.**
+   *
+   * `render()` 가 내놓는 것은 A4 열 장이 넘는 문서 한 벌이다. 웹이 그것을
+   * 전부 펼쳐 놓으면 **읽는 화면이 아니고 내려받기 전의 PDF 미리보기**가
+   * 된다. 절마다 머리만 남기고 접으면 첫 화면에서 어디를 볼지 고를 수 있다.
+   *
+   * **그리는 코드를 고치지 않았다.** `v2-report.js` 가 내놓는 HTML 은 한
+   * 글자도 그대로이고, 여기서 하는 일은 그 DOM 을 절 단위로 묶는 것뿐이다.
+   * 종이를 그리는 자리는 이 파일이 아니라 `/pca/v2.html` 이라
+   * (`src/lib/me-v2/render.ts`) 접기가 PDF 에 닿지 않는다.
+   *
+   * **견본에서는 접지 않는다.** `/sample` 은 사기 전에 전체를 훑어보는
+   * 자리이고, 조사 검사(`josa:check`)와 캡처가 그 쪽의 그려진 글자를
+   * 읽는다. 접으면 안 보이는 글자가 생겨 그 검사들이 조용히 덜 센다.
+   */
+  function foldSections() {
+    /* **띠를 누르면 그 절이 열린다.** 안 열면 누른 사람이 접힌 머리
+       앞에 떨어지고, 거기서 한 번 더 눌러야 한다. 띠가 가리키는 자리가
+       닫혀 있으면 그 띠는 길 안내가 아니라 자리 표시가 된다 */
+    host.addEventListener('click', function (ev) {
+      var a = ev.target && ev.target.closest ? ev.target.closest('.rpnav a') : null;
+      if (!a) return;
+      var id = (a.getAttribute('href') || '').slice(1);
+      var sec = id ? document.getElementById(id) : null;
+      if (!sec) return;
+      var btn = sec.querySelector('.rpfoldbtn');
+      var box = sec.querySelector('.rpfold');
+      if (btn && box && box.classList.contains('is-folded')) btn.click();
+      if (id === 'rpapx') {
+        var ab = document.getElementById('apBody');
+        var af = document.getElementById('apFold');
+        if (ab && af && ab.classList.contains('is-folded')) af.click();
+      }
+    });
+    var pages = host.querySelectorAll('.rpage');
+    for (var i = 0; i < pages.length; i += 1) {
+      var sec = pages[i];
+      var title = sec.querySelector('.rptitle');
+      if (!title) continue;
+      var box = document.createElement('div');
+      box.className = 'rpfold is-folded';
+      /* 제목 다음의 것을 전부 옮긴다. 번호와 눈썹과 제목은 머리로 남는다 */
+      while (title.nextSibling) box.appendChild(title.nextSibling);
+      sec.classList.add('rp-tight');
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'rpfoldbtn';
+      btn.setAttribute('aria-expanded', 'false');
+      btn.innerHTML = '<span>' + T('이 절 펼치기') + '</span><i aria-hidden="true">▾</i>';
+      sec.appendChild(btn);
+      sec.appendChild(box);
+      btn.addEventListener('click', (function (b, x, sc) {
+        return function () {
+          var folded = x.classList.toggle('is-folded');
+          sc.classList.toggle('rp-tight', folded);
+          b.setAttribute('aria-expanded', String(!folded));
+          b.innerHTML = '<span>' + T(folded ? '이 절 펼치기' : '이 절 접기')
+            + '</span><i aria-hidden="true">' + (folded ? '▾' : '▴') + '</i>';
+          tell();
+        };
+      })(btn, box, sec));
+    }
+  }
+
+  /**
+   * 바깥 화면이 창 높이를 맞출 수 있게 알려 준다.
+   *
+   * 고정 높이로 두면 등급마다 빈자리나 두 겹 스크롤이 생긴다. **접고
+   * 펼칠 때마다 다시 알린다**: 안 알리면 접어도 바깥 창이 옛 높이로 서
+   * 있어서 빈 자리가 그대로 남는다.
+   *
+   * **문서 높이가 아니라 담긴 것의 높이를 보낸다.** `documentElement.
+   * scrollHeight` 는 창보다 짧은 내용에서는 **창 높이**를 돌려준다. 바깥이
+   * 그 값으로 iframe 을 키우면 안쪽 창도 같이 커지고, 그 커진 값이 다시
+   * 바깥으로 올라간다. 한 바퀴마다 조금씩 늘어나는 고리가 되어, 담긴 것이
+   * 2,834px 인데 2,874 → 2,914 → … 로 올라가 **6,333px 에 서 있었다.**
+   * 접기를 넣고도 첫 화면이 창 여섯 배였던 까닭이 이것이다.
+   */
+  function tell() {
+    try {
+      parent.postMessage({
+        type: 'cm.report.height',
+        height: Math.ceil(host.scrollHeight)
+      }, location.origin);
+    } catch (e) {}
   }
 
   fetch(url, { credentials: 'same-origin' }).then(function (r) {
@@ -100,16 +229,10 @@
     }
     host.innerHTML = window.PCAV2Report.render(d.result);
     wireFold();
-    /* 바깥 화면이 창 높이를 맞출 수 있게 알려 준다. 고정 높이로 두면
-       등급마다 빈자리나 두 겹 스크롤이 생긴다 */
-    function tell() {
-      try {
-        parent.postMessage({
-          type: 'cm.report.height',
-          height: document.documentElement.scrollHeight
-        }, location.origin);
-      } catch (e) {}
-    }
+    if (!sample) foldSections();
+    /* 바깥 화면과 검사가 **접힌 상태인지** 알 수 있게 적어 둔다. 견본은
+       접지 않으므로 여기서 갈린다 */
+    window.CM_REPORT_FOLDED = !sample;
     tell();
     setTimeout(tell, 300);
     window.addEventListener('resize', tell);

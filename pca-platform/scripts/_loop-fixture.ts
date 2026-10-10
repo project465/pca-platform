@@ -108,13 +108,19 @@ export async function makeStudent(login: string): Promise<{ id: string; pw: stri
  * 올라가는지 정한다. 응시만 옮기면 계획이 늘 비어 **끊긴 루프를 검사가
  * 통과시킨다.**
  */
-export async function cloneFinished(userId: string): Promise<string | null> {
+export async function cloneFinished(
+  userId: string, tier?: "BASIC" | "STANDARD" | "PRO",
+): Promise<string | null> {
+  /* **등급을 고를 수 있어야 한다.** 결과지의 쪽 길이는 등급이 정하므로
+     (BASIC 4쪽 · PRO 10쪽) 길이를 재는 검사는 세 등급을 다 봐야 한다.
+     인자가 없으면 전처럼 가장 최근 것 하나다 */
   const src = await queryOne<{ id: string }>(
     `SELECT a.id::text FROM v3_attempts a
        JOIN v3_snapshots s ON s.attempt_id = a.id
       WHERE a.user_id <> $1 AND a.status = 'scored'
         AND s.result_model IS NOT NULL
-      ORDER BY s.created_at DESC LIMIT 1`, [userId]);
+        AND ($2::text IS NULL OR a.tier = $2)
+      ORDER BY s.created_at DESC LIMIT 1`, [userId, tier ?? null]);
   if (!src) return null;
   const row = await queryOne<{ id: string }>(
     `INSERT INTO v3_attempts

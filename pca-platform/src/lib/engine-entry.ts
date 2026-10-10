@@ -63,6 +63,39 @@ export function resumePathFor(assessmentVersion: string | null | undefined): str
   return LEGACY_START[assessmentVersion ?? ""] ?? null;
 }
 
+/**
+ * **옛 판본인가.** 화면이 글자를 직접 견주지 않게 모아 둔다.
+ *
+ * `attempts.assessment_version` 에는 `ME_V2` 가 들어가고
+ * `report_snapshots.assessment_version` 에는 `ME_V2_DECISION_2026` 이
+ * 들어간다. 앞엣것은 상품이 적는 판본이고 뒤엣것은 그릴 때 그려 놓은
+ * 엔진 판본이라 값이 다르다. 화면마다 `=== "ME_V2"` 로 적어 두면 어느 날
+ * 뒤엣값이 들어오는 자리에서 **조용히 다른 renderer 로 간다.**
+ */
+export function isLegacyV2(assessmentVersion: string | null | undefined): boolean {
+  return /^ME_V2(_|$)/.test(assessmentVersion ?? "");
+}
+
+/**
+ * 옛 판본 결과지가 어느 쪽에 있는가.
+ *
+ * **판본마다 renderer 가 다르다.** ME_V2 는 그 판본의 엔진이 그린 문서를
+ * 창에 띄우고(`/assessment/[id]/report`), ME_V1 은 서버가 그린 쪽이다
+ * (`/report/[id]`). 지금 판본은 둘 가운데 어느 쪽도 아니고
+ * `/v3/[id]/result` 다: 그쪽은 굳은 결과 모델을 React 가 직접 그린다.
+ *
+ * **섞이면 조용히 틀린다.** ME_V2 결과를 ME_V1 쪽으로 보내면 쪽은 뜨고
+ * 내용만 없고, 반대로 보내면 창에 아무것도 안 들어온다. 그래서 그 분기를
+ * 화면에 흩어 두지 않고 여기 한 줄로 둔다(설계 원칙 10).
+ */
+export function legacyReportPathFor(
+  attemptId: string | number, assessmentVersion: string | null | undefined,
+): string {
+  return isLegacyV2(assessmentVersion)
+    ? `/assessment/${attemptId}/report`
+    : `/report/${attemptId}`;
+}
+
 /** route 분류. 보고서와 `npm run v3:routes` 가 같은 값을 읽는다 */
 export type RouteClass = "CURRENT" | "COMPATIBILITY" | "REDIRECT" | "DEPRECATED";
 

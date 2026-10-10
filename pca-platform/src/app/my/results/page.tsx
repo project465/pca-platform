@@ -4,6 +4,7 @@ import { resolveLang } from "@/lib/locale-server";
 import { query } from "@/lib/db";
 import { BRAND, toLang2, txer } from "@/lib/surface-text";
 import { reportVersionLabel } from "@/lib/labels";
+import { legacyReportPathFor } from "@/lib/engine-entry";
 import { CmShell, CmHead } from "@/app/me/shell";
 import OlderNote from "@/components/sf/older-note";
 
@@ -55,8 +56,12 @@ export default async function MyResults({
                   <td>{r.made ?? "—"}</td>
                   <td>{reportVersionLabel(r.version)}</td>
                   <td style={{ textAlign: "right" }}>
+                    {/* **판본이 renderer 를 정한다.** 글자를 여기서
+                        견주지 않는다: 판본 값이 두 가지 꼴로 들어오는
+                        자리가 있어서, 화면마다 적어 두면 어느 날 옛
+                        결과가 다른 renderer 로 간다 */}
                     <Link
-                      href={r.version === "ME_V2" ? `/assessment/${r.id}/report` : `/report/${r.id}`}
+                      href={legacyReportPathFor(r.id, r.version)}
                       className="cm-btn">
                       {T("myOpenReport")}
                     </Link>

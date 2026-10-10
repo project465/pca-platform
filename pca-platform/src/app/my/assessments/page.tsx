@@ -5,7 +5,7 @@ import { query } from "@/lib/db";
 import { BRAND, toLang2, txer } from "@/lib/surface-text";
 import { itemsFor } from "@/lib/me-v2/bank";
 import { isTier } from "@/lib/me-v2/attempt";
-import { resumePathFor } from "@/lib/engine-entry";
+import { isLegacyV2, resumePathFor } from "@/lib/engine-entry";
 import { CmShell, CmHead } from "@/app/me/shell";
 import OlderNote from "@/components/sf/older-note";
 
@@ -78,7 +78,8 @@ export default async function MyAssessments({
             <tbody>
               {rows.map((r) => {
                 const s = STATUS[r.status] ?? { ko: r.status };
-                const v2 = r.version === "ME_V2";
+                /* 판본 판단은 한 자리에서만 한다(`engine-entry.ts`) */
+                const v2 = isLegacyV2(r.version);
                 const tier = isTier(r.tier) ? r.tier : null;
                 /* 몇 문항짜리인지는 산 등급이 정한다(설계 원칙 10의 사슬:
                    products.tier → entitlements.tier → attempts.tier) */

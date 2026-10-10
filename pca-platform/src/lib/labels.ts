@@ -11,6 +11,7 @@
  */
 import { BRAND, type Lang2 } from "@/lib/surface-text";
 import { formatMoney } from "@/lib/money";
+import { isLegacyV2 } from "@/lib/engine-entry";
 
 /** 상품 코드에서 등급만 꺼낸다. 모르는 코드는 그대로 두지 않고 비운다 */
 export function tierOfCode(code: string | null | undefined): string | null {
@@ -79,5 +80,9 @@ export function amountLabel(
  * 수 없는 글자다. 손님에게는 검사 판본만 적는다.
  */
 export function reportVersionLabel(version: string | null | undefined): string {
-  return version === "ME_V2" ? "v2.0" : version === "ME_V1" ? "v1.0" : "—";
+  /* **판본 판단은 한 자리에서만 한다**(`engine-entry.ts` 의 `isLegacyV2`).
+     여기서 `=== "ME_V2"` 로 적어 두면 `ME_V2_DECISION_2026` 이 들어오는
+     자리에서 `—` 가 찍힌다: 받은 사람에게는 판본이 없는 결과로 읽힌다 */
+  if (isLegacyV2(version)) return "v2.0";
+  return version === "ME_V1" ? "v1.0" : "—";
 }

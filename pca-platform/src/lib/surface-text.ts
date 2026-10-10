@@ -376,6 +376,35 @@ export const TX = {
   /* ── 결과지 ───────────────────────────────────────────────────── */
   rpTitle: p("진로 결정 자료", "Career decision brief"),
   rpMadeAt: p("만든 때", "Generated"),
+
+  /* 옛 판본 결과지의 첫 화면.
+     **판본 코드를 사용자에게 적지 않는다**(규격 §7): `ME_V2_DECISION_2026`
+     은 되짚을 때 쓰는 값이고, 읽는 사람에게 필요한 말은 `이전 검사 결과`
+     까지다. 그 값은 `/me/results` 의 `당시 판본 보기` 가 들고 있다 */
+  rpOlder: p("이전 검사 결과", "Earlier assessment"),
+  rpOlderNote: p(
+    "그때 응답으로 굳어 있는 결과입니다. 지금 검사의 결과와 기준이 다릅니다.",
+    "This result is fixed to the answers given that day. It uses a different " +
+      "basis from the current assessment.",
+  ),
+  rpTakenOn: p("검사일", "Taken"),
+  rpMajor: p("전공", "Field"),
+  /* 옛 판본은 기계공학 한 벌이었다. **전공을 등록부에서 읽지 않는다**:
+     그 등록부는 지금 판본의 것이고, 옛 응시에는 전공 칸이 없다 */
+  rpMajorMe: p("기계공학", "Mechanical engineering"),
+  rpTier: p("등급", "Tier"),
+  rpBriefTitle: p("핵심 요약", "At a glance"),
+  rpBriefRoles: p("그때 먼저 보라고 적힌 직무", "Roles to look at first"),
+  rpBriefGap: p("가장 크게 비어 있던 것", "The largest gap"),
+  rpBriefNext: p("그때 적힌 다음 한 걸음", "The next step as written then"),
+  /* **상세를 접어 두는 까닭을 적는다.** 적지 않으면 읽는 사람은 결과가
+     줄어든 줄 안다. 줄어든 것은 없고 펼치는 자리가 생겼을 뿐이다 */
+  rpDetail: p("상세 결과", "Full detail"),
+  rpDetailBody: p(
+    "아래는 그때 받으신 전체 보고서입니다. 절마다 접어 두었으니 보실 곳만 펼치십시오. PDF 에는 전체가 그대로 들어 있습니다.",
+    "Below is the full report as you received it. Each section starts folded, " +
+      "so open only what you need. The PDF still carries all of it.",
+  ),
   navSupport: p("문의", "Support"),
   navLaunch: p("런칭 준비", "Launch readiness"),
   navIncidents: p("사고", "Incidents"),
