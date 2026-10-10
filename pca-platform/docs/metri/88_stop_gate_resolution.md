@@ -406,21 +406,30 @@ D  판단 + 산출물 + 검증 전부         영역 J3 OWNED          공통J3 
 |---|---|
 | `0659fc4` | 측정체계 감사 (앞 회차) |
 | `a7bb5c6` | 보고 87 의 Y 절 |
-| (이 줄을 적은 commit) | STOP GATE 둘 · 등록부 둘 · 검사 둘 |
+| `9e1342d` | STOP GATE 둘 · 등록부 둘 · 검사 둘 |
+| (이 줄을 적은 commit) | 회귀 집계와 판정 |
 
-가지는 `claude/amazing-thompson-w3f2o2`.
+가지는 `claude/amazing-thompson-w3f2o2` 이고 `origin` 에 올라가 있다.
 
-### 회귀
+### 회귀 (`npm run v3:all`, 서른여덟 묶음)
+
+이 기계의 배포본을 띄워 끝까지 돌렸다. **종료코드 0 · 통과 551 · 걸림 0 ·
+보고 1.** 보고 한 줄은 `역방향 문항이 0개다` 이고 아래 L 절이 그 뜻을 적어
+두었다.
 
 ```
-v3:build  v3:domains 15  v3:items 16  v3:length 19  v3:migrate 14
-v3:wording 35  v3:persona 15  v3:scoring 31  v3:registry 9  v3:j3 11
-v3:measure 28(보고 1)  v3:gaming 26  v3:runtime 28  v3:ui 28  v3:copy
-v3:freeze  v3:result 25  v3:result:copy 9  v3:recompute 7  v3:isolation 11
-v3:owner 19  v3:usability 12  v3:visual  v3:gate 18  v3:loop 15
-v3:result:freeze  v3:workspace  secrets 7  errors 8  routes 10
-runbook 7  oauth 11  pilot:ready 15  v3:pilot 29
+v2:frozen  v3:build  v3:domains 15  v3:items 16  v3:length 19  v3:migrate 14
+v3:arch 20  v3:extend 14  v3:wording 35  v3:persona 15  v3:scoring 31
+v3:registry 9  v3:j3 11  v3:measure 28(보고 1)  v3:gaming 26  v3:runtime 28
+v3:ui 28  v3:copy  v3:freeze  v3:result 25  v3:result:copy 9  v3:recompute 7
+v3:isolation 11  v3:owner 19  v3:usability 12  v3:visual  v3:gate 18
+v3:loop 15  v3:result:freeze  v3:workspace  auth:check  secrets:check 7
+errors:check 8  routes:check 10  runbook:check 7  oauth:ready 11
+pilot:ready 15  v3:pilot 29
 ```
+
+확장성 검사도 같이 돌았다: 전기전자와 경영학 core 를 데이터로만 올려
+통과한다(가짜 core 둘에 정방향 짝을 넣은 뒤).
 
 ---
 
