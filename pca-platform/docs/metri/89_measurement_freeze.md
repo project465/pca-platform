@@ -466,6 +466,18 @@ npm run v3:result:shots      자리를 가리킨 그림이 그 자리인가 · �
 
 ---
 
+## L-2. commit
+
+```
+4005b50  측정체계를 얼리고(ME_V3_MEASUREMENT_FREEZE_1) 제품 Phase 1 넷
+```
+
+가지는 `claude/amazing-thompson-w3f2o2` 다. **측정 자료 파일이 한 벌도
+바뀌지 않았다**: `content/me-v3-2-*.json` 과 `scoring/*` 과
+`result/model.ts` 와 `result/build.ts` 가 이 commit 의 diff 에 없다.
+
+---
+
 ## M. 남은 문제
 
 - **운영 응답 수가 `UNKNOWN` 이다.** 초대를 보내기 전에 운영 컨테이너에서
