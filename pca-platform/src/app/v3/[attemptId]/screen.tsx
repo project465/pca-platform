@@ -234,7 +234,7 @@ export default function Screen({
               </button>
             ) : (
               <small className="qs-save">
-                {saving > 0 ? "저장 중" : sent ? "저장됨" : "자동 저장"}
+                {saving > 0 ? "저장 중…" : sent ? "저장됨" : "자동 저장"}
               </small>
             )}
             {/* **오른쪽은 산 등급과 몇째인가 한 묶음이다**(규격 §5).
@@ -537,7 +537,7 @@ export default function Screen({
             ) : null}
             <p className="qs-help" style={{ marginTop: 24 }}>
               {s.done
-                ? "검사는 끝이 아니라 시작입니다. 경험이 늘면 근거와 Gap을 다시 계산합니다."
+                ? "검사는 끝이 아니라 시작입니다. 경험이 늘면 근거와 부족한 부분을 다시 계산합니다."
                 : "지금까지 답하신 것으로 결과를 정리합니다. 만든 뒤에도 이전으로 돌아가 고칠 수 있습니다."}
             </p>
             {/* **PDF 하나로 끝내지 않는다.** 결과를 받은 사람이 다음에 갈
@@ -546,9 +546,9 @@ export default function Screen({
               <ul className="qs-done-next">
                 {[
                   [`/v3/${s.attemptId}/result`, "결과 보기", "기술영역과 산업과 직무를 이어 읽습니다"],
-                  ["/me", "내 CareerMatri", "지금 방향과 근거와 Gap을 한 쪽에 둡니다"],
-                  [`/v3/${s.attemptId}/result#evidence`, "내 Evidence", "확인된 판단과 고른 근거"],
-                  ["/me/gap", "내 Gap", "비어 있는 자리와 그것을 메우는 일"],
+                  ["/me", "내 CareerMatri", "지금 방향과 근거와 부족한 부분을 한 쪽에 둡니다"],
+                  [`/v3/${s.attemptId}/result#evidence`, "내가 가진 근거", "확인된 판단과 고른 근거"],
+                  ["/me/state#gaps", "아직 부족한 것", "무엇이 모자라고 무엇을 하면 메워지는지"],
                   ["/me/explore", "관심 산업과 직무", "여덟 산업과 여덟 직무를 다시 봅니다"],
                   ["/me/experience/new", "새 경험 추가", "다음 재분석에 들어갑니다"],
                 ].map(([href, label, note]) => (
@@ -697,15 +697,28 @@ function One({
 function SweepHead({ f }: { f: Field }) {
   const c = f.control;
   if (c.kind !== "steps") return null;
+  /**
+   * **경험 칸 셋에는 머리를 세우지 않는다.**
+   *
+   * 저쪽의 보기는 `없다 · 한두 번 · 여러 번` 이라 **낱말 자체가 값이다.**
+   * 머리에 같은 셋을 또 적으면 같은 말이 화면에 서른아홉 번 선다. 다섯 칸
+   * 척도만 머리를 세우는 까닭은 칸 안에 번호만 들어가기 때문이다.
+   */
+  if (c.answer === "exposure") return null;
   const steps = c.options.filter((o) => o.value !== null);
   const esc = c.options.find((o) => o.value === null);
   return (
     <div className="qs-swhead" aria-hidden>
       <span className="qs-sw-row" />
-      {/* **번호와 밝혀 적는 말을 여기 한 번 적는다**(규격 §10).
-          `1 전혀 관심 없음` 에서 `5 매우 관심 있음` 까지다. 칸 안에는
-          번호와 줄인 말만 들어가고, 그 번호가 이 머리의 어느 칸인지를
-          가리킨다. 긴 말을 칸마다 적으면 글자가 세 줄로 접힌다 */}
+      {/* **다섯 칸의 뜻은 여기에만 적는다**(규격 §14).
+          `1 전혀 관심 없음` 에서 `5 매우 관심 있음` 까지, 재는 축의 말
+          그대로다. 칸 안에는 번호만 들어가고 그 번호가 이 머리의 몇째
+          칸인지를 가리킨다. 전에는 칸마다 줄인 말을 또 적어 **열두 줄 ×
+          다섯 칸에 같은 낱말이 예순 번** 섰고, 그래서 전문 검사가 아니라
+          표 계산기로 읽혔다.
+          좁은 화면에서는 이 머리가 칸에 맞춘 다섯 칸이 아니라 **줄글로
+          풀려** 다섯 단계를 끝까지 적는다. 자리가 좁다고 축의 뜻을
+          줄이지 않는다 */}
       <div className="qs-grade" data-n={steps.length}>
         {steps.map((o) => <span key={o.label}>{o.full}</span>)}
       </div>
@@ -732,6 +745,15 @@ function Sweep({
    */
   const steps = c.options.filter((o) => o.value !== null);
   const esc = c.options.find((o) => o.value === null);
+  /**
+   * **칸이 무엇을 적는가가 축마다 갈린다**(규격 §14 · §15).
+   *
+   * 다섯 칸 척도는 번호만 적는다: 뜻은 격자 머리가 한 번 들고, 칸마다
+   * 또 적으면 같은 낱말이 예순 번 선다. 경험 칸 셋은 반대로 낱말만
+   * 적는다: `0 · 1 · 2` 는 횟수의 자리표가 아니라 **점수로 읽히고**,
+   * 저 축은 수준이 아닌 횟수를 묻는다.
+   */
+  const num = c.answer !== "exposure";
   const pick = (o: { value: number | null }) => () => onPick(
     f, o.value === null ? UNKNOWN : o.value,
     o.value === null ? { kind: "choice", value: UNKNOWN }
@@ -758,12 +780,14 @@ function Sweep({
              * 소유 보기 넷에는 번호를 붙이지 않는다. 저쪽은 누가 정했는가의
              * 단계라 번호를 붙이면 `1점 · 2점` 으로 읽힌다.
              */
-            <label key={o.label} className={`qs-grade-b${on ? " is-on" : ""}`}
+            <label key={o.label}
+              className={`qs-grade-b${on ? " is-on" : ""}${num ? "" : " is-word"}`}
               title={o.full}>
               <input type="radio" name={f.itemId} checked={on}
                 aria-label={`${f.label ?? ""} · ${o.full}`} onChange={pick(o)} />
-              <b className="qs-grade-n" aria-hidden>{o.value}</b>
-              <span>{o.short}</span>
+              {num
+                ? <b className="qs-grade-n" aria-hidden>{o.value}</b>
+                : <span>{o.short}</span>}
             </label>
           );
         })}

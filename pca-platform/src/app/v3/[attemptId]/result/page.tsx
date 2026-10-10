@@ -307,27 +307,31 @@ function DomainPanel(
 }
 
 /**
- * 가장 강한 근거 둘셋(규격 §14).
+ * 기본 보기의 근거 두 묶음(규격 §12).
  *
- * 차례는 **직접 정한 것 → 남긴 것 → 비교한 것 → 해 본 일**이다. 지원서와
- * 면접에서 읽히는 쪽이 앞이고, 그 사람이 고른 글자를 그대로 쓴다.
- * **전체 목록은 `상세 근거 보기` 안에 그대로 있다**: 여기서 줄이는 것은
+ * **묶음으로 세우고 이름표를 줄마다 되풀이하지 않는다.** 전에는 넷을 한
+ * 줄기로 훑어 셋을 뽑았는데, 직접 정한 것이 셋 이상이면 **`직접 정한 것`
+ * 이라는 이름표가 세 줄에 그대로 세 번 섰고** 남긴 결과물은 한 줄도
+ * 서지 않았다. 지원서에서 읽히는 둘은 그 둘이라, 각각 셋까지 따로 세운다.
+ *
+ * **비교한 것과 해 본 일은 `상세 근거 보기` 안이다.** 여기서 줄이는 것은
  * 보이는 수이고 담긴 자료가 아니다.
  */
 function Strongest({ d }: { d: ResultDomain }) {
   const seen = new Set<string>();
-  const rows: { label: string; text: string }[] = [];
-  const push = (label: string, list: string[]) => {
+  const take = (list: string[]) => {
+    const out: string[] = [];
     for (const t of list) {
-      if (rows.length >= 3 || seen.has(t)) continue;
-      seen.add(t); rows.push({ label, text: t });
+      if (out.length >= 3 || seen.has(t)) continue;
+      seen.add(t); out.push(t);
     }
+    return out;
   };
-  push("직접 정한 것", d.decided);
-  push("남긴 것", d.artifacts);
-  push("비교한 것", d.verifications);
-  push("해 본 일", d.did);
-  if (!rows.length) {
+  const groups = [
+    { label: "직접 정한 것", items: take(d.decided) },
+    { label: "남긴 결과물", items: take(d.artifacts) },
+  ].filter((g) => g.items.length);
+  if (!groups.length) {
     return (
       <p className="rs-dnone">
         고르신 근거 항목이 없어, 지금은 이 영역에서 설명할 재료가 없습니다.
@@ -335,11 +339,16 @@ function Strongest({ d }: { d: ResultDomain }) {
     );
   }
   return (
-    <ul className="rs-dstrong">
-      {rows.map((r) => (
-        <li key={r.text}><span>{r.label}</span>{r.text}</li>
+    <>
+      {groups.map((g) => (
+        <div className="rs-dgroup" key={g.label}>
+          <h4>{g.label}</h4>
+          <ul className="rs-dstrong">
+            {g.items.map((t) => <li key={t}>{t}</li>)}
+          </ul>
+        </div>
       ))}
-    </ul>
+    </>
   );
 }
 
@@ -741,7 +750,6 @@ export default async function V3Result({
             <button className="rs-do-main" type="submit">지금 할 일로 담기</button>
           </form>
           <Link className="rs-do-sub" href="/me/experience/new">경험 추가</Link>
-          <Link className="rs-do-sub" href="/me">내 CareerMatri</Link>
           {/* **종이 길은 `Link` 로 걸지 않는다.** Next 가 화면에 들어온
               `Link` 를 미리 불러오는데, 그 길은 머리 없는 브라우저를 띄워
               종이를 만드는 자리다. 읽기만 해도 종이가 한 벌씩 만들어졌다 */}
@@ -761,12 +769,21 @@ export default async function V3Result({
             전에는 이 자리부터 아홉 절이 늘 펼쳐져 있어 쪽이 1만 px 을
             넘었고, 첫 화면에서 답한 셋을 다시 확인하려면 그 열 뼘을 지나야
             했다. 종이에서는 이 자리가 저절로 펴진다 */}
+        {/* **첫 화면에서 수를 세워 두지 않는다**(규격 §11).
+            `확인된 판단 24 · 직접 정한 것 24 · 고르신 근거 60` 은 다음에
+            무엇을 할지 정하는 데 쓰이지 않는 수인데, 접힌 줄의 오른쪽에
+            적어 두면 첫 화면에서 가장 큰 숫자가 된다. 수는 펼친 안쪽
+            첫 줄이 든다 */}
         <Detail
           label="자세한 내용 보기"
-          note={deep
-            ? `확인된 판단 ${counts.confirmed_axes} · 직접 정한 것 ${counts.owned_axes}`
-              + ` · 고르신 근거 ${counts.evidence_items}`
-            : "전체 기술영역과 다음에 할 일"}>
+          note="전체 기술영역과 근거와 다음에 할 일">
+
+        {deep ? (
+          <p className="rs-note" style={{ marginTop: 0 }}>
+            확인된 판단 {counts.confirmed_axes} · 직접 정한 것 {counts.owned_axes}
+            {" · "}고르신 근거 {counts.evidence_items}
+          </p>
+        ) : null}
 
         <ResultNav />
 
@@ -1087,8 +1104,8 @@ export default async function V3Result({
           <h2>어디에서 찾을지</h2>
           <p className="rs-note">
             {regionPicked
-              ? `지금 ${regionPicked} 기준으로 보고 계십니다. 이 선택은 기술영역 판정에 들어가지 않습니다.`
-              : "희망 지역을 고르면 산업과 직무를 읽는 순서가 그 권역 기준으로 바뀝니다. 기술영역 판정은 그대로입니다."}
+              ? `지금 ${regionPicked} 기준으로 보고 계십니다. 이 선택은 기술영역 결과를 바꾸지 않습니다.`
+              : "희망 지역을 고르면 산업과 직무를 읽는 순서가 그 권역 기준으로 바뀝니다. 기술영역 결과는 그대로입니다."}
           </p>
           <div className="rs-pack">
             <h3>권역마다 자리의 성격이 다릅니다</h3>
@@ -1125,7 +1142,7 @@ export default async function V3Result({
             <div className="rs-pack">
               <h3>고르신 자리</h3>
               <p>
-                응시하면서 고르신 것입니다. 기술영역 판정에는 들어가지 않고,
+                응시하면서 고르신 것입니다. 기술영역 결과에는 들어가지 않고,
                 산업과 직무를 읽는 순서에만 쓰입니다.
               </p>
               <dl>

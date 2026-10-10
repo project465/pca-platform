@@ -64,8 +64,21 @@ const RULES: { re: RegExp; limit: number; why: string; use: string }[] = [
   { re: /묻는 장면/g, limit: 0, why: "내부 용어", use: "질문 속 상황" },
   /* `판정` 자체는 기계공학의 말이다(`합격 여부를 판정합니다`). 잡는 것은
      이 검사가 제 결과를 가리킬 때뿐이다 */
-  { re: /판정 기준|판정이 낮|판정에 들어|판정 한 줄/g, limit: 0,
+  { re: /판정 기준|판정이 낮|판정에 들어|판정 한 줄|영역 판정|판정은 그대로|판정이 올라|바뀐 판정/g, limit: 0,
     why: "이 검사의 결과를 가리키는 내부 용어", use: "평가 기준 · 결과" },
+  /* ── 규격 §20 이 이름을 댄 말들 ──
+     **낱말을 통째로 막지 않는다.** `자리` 와 `판정` 은 기계공학의 말이기도
+     해서(`공정과 품질 판단이 자리를 많이 쓴다` · `기준을 만족하는지 재서
+     판정한다`) 통째로 세면 영역 사전의 맞는 문장을 고치라고 요구하게 된다.
+     세는 것은 **이 제품이 제 안쪽 일을 가리킬 때 쓰는 꼴**뿐이다 */
+  { re: /반영하|반영되|반영됨|반영한|반영했|최근 반영|경험 반영/g, limit: 0,
+    why: "안쪽 일을 가리키는 말(규격 §20)", use: "더하다 · 담다 · 바꾸다" },
+  { re: /비어 있는 자리|비어 있던 자리|빈자리|자리별로|쓰인 자리|판단 자리/g, limit: 0,
+    why: "안쪽 비유를 손님 화면에 적는다(규격 §20)", use: "부족한 부분 · 쓰인 곳 · 영역별" },
+  { re: /스냅샷|Evidence|\bGap\b|가져오기/g, limit: 0,
+    why: "안쪽 이름과 영어 코드(규격 §20)", use: "검사 당시 결과 · 근거 · 부족한 부분 · 담기" },
+  { re: /묶음으로 묶|묶음 판정|묶음이 달라/g, limit: 0,
+    why: "안쪽 용어(규격 §20)", use: "영역이 달라졌습니다" },
 ];
 
 /** 한 화면에서 같은 어미가 되풀이되면 설명서처럼 읽힌다 */
@@ -113,10 +126,14 @@ const FILES = [
   "src/app/me/gap/page.tsx",
   "src/app/me/apply/page.tsx",
   "src/app/me/recompute/page.tsx",
+  "src/app/me/recompute/apply.tsx",
+  "src/app/me/unsaved.tsx",
   /* 작업공간에서 새로 선 셋. 띠의 줄을 늘릴 때 여기도 늘린다 */
   "src/app/me/results/page.tsx",
   "src/app/me/state/page.tsx",
   "src/app/me/next/page.tsx",
+  /* 세 화면이 같이 쓰는 문장. 여기가 안쪽 말을 들면 세 쪽이 같이 든다 */
+  "src/lib/me-v3/change-text.ko.ts",
 ];
 
 const out: string[] = [];

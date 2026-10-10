@@ -86,6 +86,21 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
   padding: 28px 24px calc(28px + var(--cm-tab));
 }
 .cm-in { max-width: var(--cm-max); margin: 0 auto; }
+/* 적는 자리(규격 §17). 작업공간 1100 은 견주는 폭이고 폼은 그 폭에서
+   이름표와 입력칸이 화면 양 끝으로 벌어진다 */
+.cm-in.is-form { max-width: 840px; }
+/**
+ * 아직 켜지지 않은 자리(규격 §18).
+ *
+ * **빈 카드를 만들어 채우지 않는다.** 담긴 글이 몇 줄뿐인 쪽을 꼭대기부터
+ * 그리면 아래 절반이 통째로 비고, 그 빈 면이 덜 만들어진 화면으로 읽힌다.
+ * 있는 글을 읽는 폭으로 모아 가운데에 세운다.
+ */
+.cm-in.is-hold {
+  max-width: 640px; min-height: 56vh;
+  display: flex; flex-direction: column; justify-content: center;
+}
+@media (max-width: 719px) { .cm-in.is-hold { min-height: 0; } }
 
 /* ── 쪽 머리 ──────────────────────────────────────────────────────── */
 
@@ -153,6 +168,10 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
   .cm-panel { display: grid; grid-template-columns: 1fr 1fr; }
   .cm-pane:nth-child(2) { border-top: 0; }
   .cm-pane:nth-child(even) { border-left: 1px solid var(--sf-line-2); }
+  /* **홀수 개를 두 칸에 담지 않는다**(규격 §18). 셋을 담으면 넷째 칸이
+     비어 오른쪽에 큰 빈 면이 남고, 그 빈 면이 덜 만들어진 화면으로
+     읽힌다. 한 묶음짜리 판은 이 별명을 달아 한 칸으로 선다 */
+  .cm-panel.is-one { display: block; }
 }
 
 /* 숫자를 크게 두는 자리. **그 수가 쪽의 요지일 때만 쓴다** */
@@ -168,6 +187,9 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
   font-size: var(--ui-t-sub); line-height: 1.6;
 }
 .cm-row b { color: var(--sf-ink); font-weight: 600; }
+/* 줄의 뒷말. **앞말보다 가볍다**: 영역 이름이 먼저 읽혀야 한다.
+   이름표가 달린 span(`cm-when` · `cm-lockmark`)은 제 색을 지킨다 */
+.cm-row > span:not([class]) { color: var(--sf-ink-2); }
 .cm-row span.cm-when { margin-left: auto; color: var(--sf-ink-3); font-size: var(--ui-t-cap); }
 
 .cm-chips { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -184,6 +206,12 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 .cm-chip.is-gap {
   border-color: var(--sf-part-line); background: var(--sf-part-soft);
   color: var(--sf-part);
+}
+/* 다 세우지 않은 나머지(규격 §13). **칩처럼 보이지 않게 둔다**: 그 자리는
+   고를 수 있는 것이 아니라 세어 둔 수다 */
+.cm-chip.is-more {
+  border-color: transparent; background: transparent; color: var(--sf-ink-3);
+  padding-left: 2px;
 }
 
 /* ── 단추 ─────────────────────────────────────────────────────────── */
@@ -447,6 +475,19 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 .cm-sect em {
   font-style: normal; font-size: var(--ui-t-cap); font-weight: 500; color: var(--sf-ink-3);
 }
+/**
+ * 묶음 머리 오른쪽의 `모두 보기`(규격 §10).
+ *
+ * **묶음마다 단추를 세우지 않는다.** 판 안에 단추 줄을 두면 묶음 하나가
+ * 50px 씩 길어지고, 넷이면 첫 화면에서 마지막 묶음이 통째로 밀려난다.
+ * 더 보는 길은 거드는 자리라 머리의 오른쪽 끝에 글자로 선다.
+ */
+.cm-sect > a {
+  margin-left: auto; font-size: var(--ui-t-cap); font-weight: 600;
+  color: var(--sf-accent-ink); text-decoration: none; white-space: nowrap;
+}
+.cm-sect > a:hover { text-decoration: underline; }
+.cm-sect > a:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2px; }
 
 /* 지금 값. **점선이 `바뀔 수 있다` 를 말한다** */
 .cm-live {
@@ -655,33 +696,38 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 .cm-field.is-half { max-width: 260px; }
 
 /* ── 경험을 적는 세 걸음 ──────────────────────────────────────────────
-   **걸음을 세 줄로 적고 숫자를 앞세우지 않는다**(규격 §4). `1 / 3` 만
-   적으면 남은 것이 무엇인지 모르고, 모르면 둘째에서 닫는다. 이름이
-   서면 무엇을 더 물을지 알고 들어온다.
+   **한 줄이다**(규격 §2). 셋을 다 적는 까닭은 남은 걸음이 몇인지 모르면
+   둘째에서 닫기 때문이고, 한 줄로 적는 까닭은 **이 표가 첫 입력 칸보다
+   커지면 안 되기** 때문이다. 전에는 이름마다 설명을 한 줄씩 달아 둔
+   카드 셋이었고, 390px 에서 두 줄로 접혀 260px 을 먹어 첫 칸이 화면
+   밖으로 밀렸다.
 
    이름을 `cm-wiz` 로 둔 까닭. 검사 화면이 쓰는 `qs-steps` 와 겹치지
    않아야 한다. 이 저장소에서 쓰는 이름이 CSS 에 이미 사는 이름과 겹친
    탈이 일곱 번 났고, 그중 하나가 바로 그 `qs-steps` 였다 */
 .cm-wiz {
-  display: flex; flex-wrap: wrap; gap: 0;
-  margin: 0 0 20px; padding: 0; list-style: none;
-  border: 1px solid var(--sf-line); border-radius: var(--ui-r-sm);
-  overflow: hidden;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px;
+  margin: 0 0 18px; padding: 0; list-style: none;
+  font-size: var(--ui-t-cap);
 }
 .cm-wiz > li {
-  flex: 1 1 140px; min-width: 0; padding: 10px 14px;
-  display: flex; flex-direction: column; gap: 2px;
+  display: flex; align-items: center; gap: 6px;
+  min-width: 0; color: var(--sf-ink-3);
+}
+/* 걸음 사이의 표시. **글자가 아니라 부호다** */
+.cm-wiz > li + li::before {
+  content: "›"; margin-right: 4px; color: var(--sf-line);
+}
+.cm-wiz > li b {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px; border-radius: 50%;
   background: var(--sf-surface-2); color: var(--sf-ink-3);
+  font-size: var(--ui-t-cap); font-weight: 700; font-variant-numeric: tabular-nums;
 }
-.cm-wiz > li + li { border-left: 1px solid var(--sf-line); }
-.cm-wiz > li b { font-size: var(--ui-t-sub); font-weight: 600; }
-.cm-wiz > li small { font-size: var(--ui-t-cap); }
-/* 지금 걸음만 바탕을 올린다. **지나온 걸음에 표를 찍지 않는다**: 체크가
+/* 지금 걸음만 들어 올린다. **지나온 걸음에 표를 찍지 않는다**: 체크가
    서면 안 찍힌 칸이 못 한 일로 읽히는데, 셋째는 전부 선택 칸이다 */
-.cm-wiz > li.is-on {
-  background: var(--sf-surface); color: var(--sf-ink);
-  box-shadow: inset 0 2px 0 var(--sf-accent);
-}
+.cm-wiz > li.is-on { color: var(--sf-ink); font-weight: 700; }
+.cm-wiz > li.is-on b { background: var(--sf-accent); color: #fff; }
 .cm-wiz > li.is-done { color: var(--sf-ink-2); }
 
 /* 걸음 단추. **바닥에 붙이지 않는다**: 적는 칸이 길어 띠가 본문을 덮는

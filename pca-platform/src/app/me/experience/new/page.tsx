@@ -5,6 +5,7 @@ import { mark } from "@/lib/me-v3/workspace-events";
 import { CmShell, CmHead } from "../../shell";
 import { saveExperience } from "../actions";
 import Steps from "./steps";
+import UnsavedGuard from "../../unsaved";
 
 export const metadata = { title: "경험 추가 · 내 CareerMatri" };
 
@@ -22,7 +23,7 @@ const USED_WHERE = [
   "논문이나 학회 발표가 됐다",
   "보고서나 과제 결과물로 제출됐다",
   "팀이나 다음 사람이 이어받았다",
-  "아직 쓰인 자리가 없다",
+  "아직 쓰인 곳이 없다",
 ];
 
 /**
@@ -54,30 +55,14 @@ export default async function NewExperience(
     (lists[td]?.[ax] ?? []).map((x) => x.text).slice(0, n);
 
   return (
-    <CmShell active="/me/experience" title="경험 추가">
+    <CmShell active="/me/experience" title="경험 추가" form>
       {/* **부담 없는 한 건이다**(규격 §3). 1~2분 안에 하나를 적는 자리라
           적기 전에 읽을 것을 한 줄로 줄이고 까닭은 접는다 */}
       <CmHead
         kicker="경험"
         title="새 경험 하나 추가"
-        lead="세 걸음입니다. 대부분 고르는 칸이고 적는 칸은 제목 한 줄입니다."
+        lead="대부분 고르는 칸입니다."
       />
-
-      {/*
-        **왜 추가하는지는 접어 둔다.** 적기 전에 읽어야 하는 글이 아니고,
-        궁금한 사람만 펼치면 된다. 그리고 **점수가 오른다고 쓰지 않는다**:
-        경험으로 올라갈 수 있는 가장 높은 자리는 `직접 수행` 까지이고
-        (`직접 결정` 은 검사에서만 받는다), 굳은 결과는 한 글자도 바뀌지
-        않는다.
-      */}
-      <details className="cm-why">
-        <summary>이걸 적으면 무엇이 달라지나요</summary>
-        <ul>
-          <li>지원서와 면접에서 설명할 근거가 한 줄 늘어납니다.</li>
-          <li>비어 있던 자리가 채워지면 다음 할 일이 그만큼 달라집니다.</li>
-          <li>검사 당시 결과는 그대로 남고, 현재 상태만 다시 섭니다.</li>
-        </ul>
-      </details>
 
       {/* 저장이 거절된 자리. **통보로 끝내지 않고 무엇을 채우면 되는지
           적는다**(규격 §39).
@@ -98,6 +83,11 @@ export default async function NewExperience(
         </p>
       ) : null}
 
+      {/* 적다 만 것을 들고 나가지 않게 막는다(규격 §4). 손전화에서 저장
+          단추 바로 아래가 아래 띠라, 한 칸 아래를 누르면 적던 것이 통째로
+          사라지는 자리다 */}
+      <UnsavedGuard />
+
       <form action={saveExperience}>
         <Steps
           domains={domains.map((d) => ({
@@ -110,23 +100,29 @@ export default async function NewExperience(
           }))}
           one={
             <>
+              {/* **보조 설명을 달지 않는다**(규격 §3). 보기 아홉이 그대로
+                  보이는 자리라 `가장 가까운 하나를 고르세요` 는 보고 있는
+                  것을 글로 한 번 더 읽게 하는 줄이다. 설명문을 읽어야
+                  적을 수 있는 칸이면 그 칸이 잘못 서 있는 것이다 */}
               <label className="cm-field">
                 <span>어떤 경험인가요</span>
-                <em>가장 가까운 하나를 고르세요.</em>
                 <div className="cm-pickset">
-                  {EXPERIENCE_KINDS.map((k, i) => (
+                  {/* **미리 고르지 않는다.** `수업` 을 켜 둔 채로 두면
+                      그냥 넘긴 사람의 기록이 전부 수업이 되고, 그 값은
+                      그 사람이 고른 값이 아니다 */}
+                  {EXPERIENCE_KINDS.map((k) => (
                     <label className="cm-pick" key={k.code}>
-                      <input type="radio" name="kind" value={k.code}
-                        defaultChecked={i === 0} required />
+                      <input type="radio" name="kind" value={k.code} required />
                       {k.label}
                     </label>
                   ))}
                 </div>
               </label>
 
+              {/* 빈 칸의 길잡이는 **예시 하나**가 맡는다. 같은 말을 설명으로
+                  한 번 더 적으면 칸 하나에 읽을 줄이 셋이 된다 */}
               <label className="cm-field">
                 <span>무엇을 했는지 한 줄로</span>
-                <em>나중에 이 줄로 찾습니다. 과제 이름이나 주제면 됩니다.</em>
                 <input className="cm-input" name="title" maxLength={120} required
                   placeholder="예: 전동 스쿠터 프레임 경량화 캡스톤" />
               </label>
@@ -136,8 +132,7 @@ export default async function NewExperience(
                   날짜는 나중에 찾을 때 쓰는 값이지 판정에 들어가는 값이
                   아니다. 끝난 달은 3단에서 적고 싶은 사람만 적는다 */}
               <label className="cm-field is-half">
-                <span>언제</span>
-                <em>시작한 달이면 됩니다.</em>
+                <span>시작한 달</span>
                 <input className="cm-input" type="month" name="started_on" />
               </label>
             </>
@@ -149,7 +144,7 @@ export default async function NewExperience(
                   체크리스트에 두면 같은 보기가 열두 번 선다 */}
               <fieldset className="cm-field">
                 <legend><span>그 결과가 어디에 쓰였나요</span></legend>
-                <em>쓰인 자리가 없으면 비워 두세요. 비웠다고 불리해지지 않습니다.</em>
+                <em>쓰인 곳이 없으면 비워 두세요. 비웠다고 불리해지지 않습니다.</em>
                 <div className="cm-pickset">
                   {USED_WHERE.map((u) => (
                     <label className="cm-pick" key={u}>
@@ -172,7 +167,7 @@ export default async function NewExperience(
 
                 <label className="cm-field">
                   <span>보완 설명 한 줄</span>
-                  <em>결과에 반영되지 않습니다. 결과를 쓸 때 당신의 말로 옮길 때만 읽고,
+                  <em>결과를 바꾸지 않습니다. 결과를 쓸 때 당신의 말로 옮길 때만 읽고,
                     1년이 지나면 지웁니다.</em>
                   <textarea className="cm-textarea" name="note" maxLength={400}
                     placeholder="예: 하중 조건을 직접 정하고 시험값과 10% 안에서 맞췄습니다" />
@@ -190,6 +185,23 @@ export default async function NewExperience(
           }
         />
       </form>
+
+      {/*
+        **왜 적는지는 폼 아래에 접어 둔다**(규격 §3). 적기 전에 읽어야 하는
+        글이 아니라 궁금한 사람만 펼치는 글인데, 맨 위에 두었더니 손전화
+        첫 화면이 설명 넷으로 차고 첫 입력 칸이 밖으로 밀렸다. 그리고
+        **점수가 오른다고 쓰지 않는다**: 경험으로 올라갈 수 있는 가장 높은
+        자리는 `직접 수행` 까지이고(`직접 결정` 은 검사에서만 받는다), 굳은
+        결과는 한 글자도 바뀌지 않는다.
+      */}
+      <details className="cm-why">
+        <summary>이걸 적으면 무엇이 달라지나요</summary>
+        <ul>
+          <li>지원서와 면접에서 설명할 근거가 한 줄 늘어납니다.</li>
+          <li>부족했던 부분이 채워지면 다음 할 일이 그만큼 달라집니다.</li>
+          <li>검사 당시 결과는 그대로 남고, 현재 상태만 다시 섭니다.</li>
+        </ul>
+      </details>
     </CmShell>
   );
 }

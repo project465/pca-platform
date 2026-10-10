@@ -8,6 +8,7 @@ import {
   NO_CHANGE_KO, noChangeWhy, raisedKo, zoneMovedKo,
 } from "@/lib/me-v3/change-text.ko";
 import { CmShell, CmHead } from "../shell";
+import ApplyButton from "./apply";
 import { runRecompute } from "./actions";
 
 export const metadata = { title: "저장한 경험 · 내 CareerMatri" };
@@ -23,7 +24,7 @@ const STATE_KO: Record<string, string> = {
 const AXIS_SLOT_KO: Record<string, string> = {
   J1: "문제로 잡은 것", J2: "받은 요구를 읽은 것", J3: "직접 정한 것",
   J4: "쓴 방법", J5: "남긴 것", J6: "비교해 확인한 것",
-  J7: "어긋났을 때 고친 것", J8: "쓰인 자리",
+  J7: "어긋났을 때 고친 것", J8: "쓰인 곳",
 };
 
 /**
@@ -91,9 +92,10 @@ export default async function Recompute(
     <CmShell active="/me/experience" title="저장한 경험">
       <CmHead
         kicker="경험 저장"
-        title={fresh ? "새 경험을 기록했습니다" : "적어 두신 경험이 어디로 가는지"}
+        /* 상태 말은 제품 전체가 같은 마디를 쓴다(규격 §21) */
+        title={fresh ? "경험을 저장했습니다" : "적어 두신 경험이 어디로 가는지"}
         lead={fresh
-          ? `${fresh.title} · 아래를 보시고 반영하시면 현재 상태에 들어갑니다.`
+          ? `${fresh.title} · 아래를 보시고 더하시면 현재 상태에 들어갑니다.`
           : "저장한 경험이 어느 판단으로 가는지 묶어 현재 상태와 맞춰 봤습니다."}
       />
 
@@ -102,9 +104,9 @@ export default async function Recompute(
           그 사람이 처음부터 다시 적고, 그러면 같은 기록이 두 벌 쌓인다 */}
       {failed ? (
         <p className="cm-fail" role="alert">
-          경험은 저장했지만 현재 상태를 다시 계산하지 못했습니다. 적어 주신
-          기록은 그대로 있으니 다시 적지 않으셔도 됩니다. 아래에서 한 번 더
-          눌러 주세요.
+          경험은 저장했지만 현재 상태를 갱신하지 못했습니다. 적어 주신
+          기록은 그대로 있으니 다시 적지 않으셔도 됩니다. 아래에서
+          `다시 시도` 를 눌러 주세요.
         </p>
       ) : null}
 
@@ -170,7 +172,7 @@ export default async function Recompute(
               )}
               {plan.closed_gaps.length ? (
                 <p className="cm-none">
-                  비어 있던 자리 {plan.closed_gaps.length}곳이 메워집니다 ·{" "}
+                  부족했던 부분 {plan.closed_gaps.length}곳이 메워집니다 ·{" "}
                   {plan.closed_gaps
                     .map((g) => domainName(g.domain)).join(" · ")}
                 </p>
@@ -205,7 +207,7 @@ export default async function Recompute(
                 </>
               ) : (
                 <p>
-                  지금 비어 있는 자리 가운데 다음으로 할 일이 잡히지 않았습니다.
+                  지금 부족한 부분 가운데 다음으로 할 일이 잡히지 않았습니다.
                   남은 일은 가진 근거를 지원서에서 설명할 문장으로 만드는
                   것입니다.
                 </p>
@@ -222,9 +224,7 @@ export default async function Recompute(
               <Link className="cm-btn is-primary" href="/me/state">현재 상태 보기</Link>
             ) : (
               <form action={runRecompute}>
-                <button className="cm-btn is-primary" type="submit">
-                  {failed ? "다시 계산하기" : "현재 상태에 반영하기"}
-                </button>
+                <ApplyButton retry={failed} />
               </form>
             )}
             <Link className="cm-btn" href="/me/experience">경험 기록으로 돌아가기</Link>
@@ -240,7 +240,7 @@ export default async function Recompute(
                 <table className="cm-table">
                   <thead>
                     <tr>
-                      <th>기술영역</th><th>판단</th><th>지금</th><th>반영하면</th>
+                      <th>기술영역</th><th>판단</th><th>지금</th><th>더하면</th>
                       <th>고르신 항목</th><th>어느 경험에서</th>
                     </tr>
                   </thead>

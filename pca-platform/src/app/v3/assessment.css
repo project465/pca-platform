@@ -37,9 +37,13 @@
 .qs {
   /* **폭은 셋이다.** 읽는 자리 760 · 견주는 자리 920 · 근거를
      훑는 자리 1040. 넷째를 만들지 않는다 */
-  --q-col: var(--ui-read);           /* 질문 · 보기 넷 · 전환 */
-  --q-col-wide: var(--ui-wide);      /* 견주고 훑는 자리 */
-  --q-col-intro: var(--ui-evidence); /* 근거 고르기 */
+  /* **검사 화면의 폭은 760~840 안에 둔다**(규격 §17). 전에는 견주는
+     자리가 920, 근거 고르는 자리가 1040 이어서 한 검사 안에서 글이
+     시작하는 자리가 화면마다 140px 씩 움직였다. 읽는 폭이 흔들리면
+     쪽마다 레이아웃이 흔들리는 것으로 읽힌다 */
+  --q-col: var(--ui-read);           /* 질문 · 보기 넷 · 전환 760 */
+  --q-col-wide: 840px;               /* 견주고 훑는 자리 */
+  --q-col-intro: 840px;              /* 근거 고르기 */
   --q-gutter: 24px;                  /* 양옆 여백. 좁은 화면은 20px (규격 §4) */
 
   /* **활자는 여섯 단이고 이 화면이 쓰는 것은 다섯이다.**
@@ -79,6 +83,10 @@
 
   --q-hit: 56px;               /* 보기 줄 최소 높이 */
   --q-hit-sm: 44px;            /* 칩 */
+  /* 머리띠의 높이. 줄 52 + 막대 2 + 아래선 1. **격자 머리가 이 값만큼
+     내려와 붙어 선다**: 열두 줄은 한 화면에 다 들어오지 않아서, 머리가
+     같이 흘러가 버리면 칸의 번호가 무엇을 가리키는지 알 수 없게 된다 */
+  --q-head-h: 55px;
 
   min-height: 100vh;
   display: flex;
@@ -489,20 +497,29 @@
   margin-top: var(--q-s6);
   background: var(--q-paper);
   border: 1px solid var(--q-line); border-radius: var(--q-r);
-  overflow: hidden;
+  /* **`hidden` 이 아니고 `clip` 이다.** `overflow: hidden` 은 이 상자를
+     스크롤 상자로 만들고, 그러면 안쪽의 `position: sticky` 가 창이 아니라
+     이 상자를 기준으로 삼아 **영원히 붙지 않는다.** `clip` 은 모서리만
+     깎고 스크롤 상자를 만들지 않는다 */
+  overflow: clip;
 }
 /**
- * 격자 머리. 다섯 칸이 무엇인지 **화면에 한 번** 적는다(규격 §3).
+ * 격자 머리. 다섯 칸이 무엇인지 **여기에만** 적는다(규격 §14 · §15).
  *
- * 칸 안의 말은 열두 줄에 들어가야 해서 줄인 말이다. 전에는 그 줄인 말이
- * `전혀 · 별로 · 보통 · 관심 · 매우` 여서 **네 번째 칸만 재는 것의 이름**을
- * 들고 정도를 뜻하는 나머지 넷과 다른 품사로 혼자 섰다. 지금은 다섯 칸이
- * 동의 정도 한 차원으로 적혀 있고(`menus.ts` 의 `SHORT_SCALE5`), 여기
- * 머리에는 문항 은행의 온전한 다섯 단계가 선다. **좁은 화면에서는 머리의
- * 가운데 셋을 감추므로**(아래 `visibility: hidden`) 칸의 말만으로도 한
- * 차원으로 읽혀야 한다.
+ * 재는 축의 말 그대로다: 관심이면 `1 전혀 관심 없음` 에서 `5 매우 관심
+ * 있음` 까지, 배울 뜻이면 `1 전혀 배우고 싶지 않음` 에서 `5 매우 배우고
+ * 싶음` 까지. **칸에는 번호만 들어간다**: 칸마다 줄인 말을 또 적으면 열두
+ * 줄 × 다섯 칸에 같은 낱말이 예순 번 서고, 그때 화면은 전문 검사가 아니라
+ * 표 계산기가 된다.
+ *
+ * 머리가 **붙어 선다**(`position: sticky`). 열두 줄은 한 화면에 다 들어오지
+ * 않아서, 머리가 같이 흘러가면 칸의 번호가 무엇을 가리키는지 알 수 없다.
+ *
+ * 좁은 화면에서는 칸 너비를 버리고 다섯 단계를 **줄글로** 끝까지 적는다.
+ * 자리가 좁다고 축의 뜻을 줄이지 않는다.
  */
 .qs-swhead {
+  position: sticky; top: var(--q-head-h); z-index: 2;
   display: flex; align-items: flex-end; gap: var(--q-s4);
   padding: var(--q-s3) var(--q-s5) var(--q-s2);
   background: var(--q-sunk);
@@ -517,7 +534,7 @@
 .qs-swhead .qs-grade[data-n="3"] { grid-template-columns: repeat(3, 80px); }
 .qs-swhead .qs-grade > span {
   display: block; padding: 0 2px; min-width: 0;
-  font-size: 11px; color: var(--q-ink-3);
+  font-size: var(--q-t-meta); color: var(--q-ink-3);
   text-align: center; word-break: keep-all; line-height: 1.3;
 }
 .qs-grade-esc.is-head {
@@ -542,8 +559,8 @@
 /**
  * 다섯 칸 눈금. **격자 한 줄의 오른쪽에 붙는 자리다.**
  *
- * 숫자를 그리지 않는다. 1에서 5를 찍으면 심리검사 표로 읽히고, 고르는
- * 사람이 뜻이 아닌 수를 견준다. 칸마다 두세 글자로 뜻을 적고, 긴 문장은
+ * 칸에 적히는 것은 번호 하나이고 그 번호가 격자 머리의 몇째 단계인지를
+ * 가리킨다. **점수가 아니다**: 이 제품은 총점을 내지 않는다. 긴 문장은
  * `title` 과 `aria-label` 이 들고 간다.
  *
  * **이름을 `qs-steps` 로 지었다가 되돌렸다.** 그 이름은 시작 화면의
@@ -564,17 +581,27 @@
   display: block; font-size: var(--q-t-sub); font-weight: 650;
   font-variant-numeric: tabular-nums; line-height: 1.1;
 }
+/**
+ * 칸. **테두리를 돌리지 않는다**(규격 §15).
+ *
+ * 열두 줄 × 다섯 칸에 테두리를 돌리면 선이 예순 개 그어지고, 그 위에
+ * 같은 낱말이 예순 번 서면 화면이 전문 검사가 아니라 표 계산기로 읽힌다.
+ * 지금 칸이 들고 있는 것은 **옅은 바탕 하나와 번호 하나**이고, 선은 고른
+ * 자리에만 돌아간다.
+ */
 .qs-grade-b {
   position: relative;
   display: inline-flex; flex-direction: column;
   align-items: center; justify-content: center; gap: 2px;
   min-height: 52px; padding: var(--q-s1) var(--q-s1);
   background: var(--q-sunk);
-  border: 1px solid var(--q-line-soft); border-radius: var(--q-r-sm);
+  border: 1px solid transparent; border-radius: var(--q-r-sm);
   font-size: var(--q-t-gloss); color: var(--q-ink-3);
   cursor: pointer; text-align: center; word-break: keep-all; line-height: 1.2;
   transition: border-color .12s ease, background .12s ease, color .12s ease;
 }
+/* 경험 칸 셋은 낱말이 값이라 글자가 칸을 채운다 */
+.qs-grade-b.is-word { font-size: var(--q-t-body); color: var(--q-ink-2); }
 .qs-grade-b:hover { border-color: var(--q-accent-line); color: var(--q-ink-2); }
 .qs-grade-b input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .qs-grade-b.is-on {
@@ -638,28 +665,42 @@
     flex-direction: column; align-items: stretch;
     gap: var(--q-s2); padding: var(--q-s3);
   }
-  /* 좁은 화면에서는 격자 머리를 **양 끝만** 적는다. 다섯 칸의 온전한
-     말을 47px 안에 넣으면 넉 줄로 접히고, 그 머리가 줄 열둘보다 높아진다 */
-  .qs-swhead { padding: var(--q-s3) var(--q-s3) var(--q-s2); }
-  .qs-swhead .qs-grade > span { font-size: 11px; }
-  .qs-swhead .qs-grade > span:nth-child(2),
-  .qs-swhead .qs-grade > span:nth-child(3),
-  .qs-swhead .qs-grade > span:nth-child(4) { visibility: hidden; }
-  .qs-swhead .qs-grade[data-n="3"] > span { visibility: visible; }
+  /**
+   * 좁은 화면에서는 격자 머리를 **줄글로 푼다**(규격 §14).
+   *
+   * 한동안 칸에 맞춘 다섯 칸을 그대로 두고 가운데 셋을 감췄다. 그러면
+   * 손전화에서 읽히는 말이 `1 전혀 관심 없음` 과 `5 매우 관심 있음`
+   * 둘뿐이라 **가운데 셋이 무엇인지가 화면 어디에도 없었다.** 자리가
+   * 좁다고 축의 뜻을 줄이지 않는다: 칸 너비를 버리고 다섯 단계를
+   * 끝까지 적어 두 줄로 흘린다.
+   */
+  .qs-swhead {
+    display: block; padding: var(--q-s3) var(--q-s3) var(--q-s2);
+  }
   .qs-swhead .qs-sw-row { display: none; }
-  .qs-swhead .qs-grade { flex: 1 1 auto; grid-template-columns: repeat(5, 1fr); }
+  .qs-swhead .qs-grade {
+    display: flex; flex-wrap: wrap; gap: 2px var(--q-s2);
+    grid-template-columns: none;
+  }
+  .qs-swhead .qs-grade > span {
+    visibility: visible; padding: 0;
+    font-size: var(--q-t-meta); text-align: left;
+  }
+  .qs-swhead .qs-grade > span + span::before {
+    content: "·"; margin-right: var(--q-s2); color: var(--q-line);
+  }
+  .qs-grade-esc.is-head { display: none; }
   .qs-grade { min-width: 0; }
-  .qs-swhead .qs-grade[data-n="3"] { grid-template-columns: repeat(3, 1fr); }
   .qs-p3 { display: grid; grid-template-columns: repeat(3, 1fr); }
   .qs-p3b { min-width: 0; }
   .qs-grade { grid-template-columns: repeat(5, 1fr); }
   .qs-grade[data-n="3"] { grid-template-columns: repeat(3, 1fr); }
   .qs-grade-b {
     min-height: 56px; min-width: 0; padding: var(--q-s1) 2px;
-    font-size: 11px;
+    font-size: var(--q-t-meta);
   }
-  /* 좁은 화면에서 머리의 가운데 셋이 접히므로 **번호가 유일한 자리표다**.
-     그래서 번호를 줄이지 않는다 */
+  /* 칸에는 번호만 선다. 그 번호가 머리의 몇째 단계인지를 가리키므로
+     **줄이지 않는다** */
   .qs-grade-n { font-size: var(--q-t-sub); }
   /* 척도 밖은 **거드는 한 줄**이다. 한 줄을 통째로 먹는 큰 단추로 두면
      열두 줄이 두 배로 길어지고, 그 크기가 다섯 칸과 겨룬다 */
@@ -1114,8 +1155,8 @@
   background: var(--q-paper); text-decoration: none;
 }
 .qs-done-next a:hover { background: var(--q-field); }
-.qs-done-next b { color: var(--q-ink); font-size: 15px; font-weight: 600; }
-.qs-done-next small { color: var(--q-ink-3); font-size: 12.5px; line-height: 1.5; }
+.qs-done-next b { color: var(--q-ink); font-size: var(--q-t-body); font-weight: 600; }
+.qs-done-next small { color: var(--q-ink-3); font-size: var(--q-t-meta); line-height: 1.5; }
 
 /* ── 접어 둔 보기 뜻풀이 ──────────────────────────────────────────────
    네 줄을 보기마다 깔면 선별 등급에서만 스물여덟 화면에 똑같은 네 줄이

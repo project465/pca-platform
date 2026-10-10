@@ -34,12 +34,12 @@ export type ZoneMove = { domain: string; before: Zone; after: Zone };
  */
 const RAISED_KO: Record<Axis, string> = {
   J1: "무엇을 풀 문제로 잡았는지가 더 또렷해졌습니다",
-  J2: "받은 요구를 어떻게 읽었는지가 확인됐습니다",
+  J2: "받은 요구를 어떻게 읽었는지가 드러났습니다",
   J3: "직접 정한 조건과 기준이 확인됐습니다",
-  J4: "어떤 방법으로 했는지가 확인됐습니다",
+  J4: "어떤 방법으로 했는지가 적혔습니다",
   J5: "남긴 결과물이 확인됐습니다",
-  J6: "무엇과 견주어 확인했는지가 더해졌습니다",
-  J7: "어긋났을 때 무엇을 고쳤는지가 확인됐습니다",
+  J6: "무엇과 비교해 확인했는지가 더해졌습니다",
+  J7: "어긋났을 때 무엇을 고쳤는지가 남았습니다",
   J8: "그 결과가 어디에 쓰였는지가 확인됐습니다",
 };
 
@@ -76,12 +76,12 @@ export type NoChangeWhy =
 
 export const NO_CHANGE_KO: Record<NoChangeWhy, { title: string; why: string }> = {
   NEED_SECOND_PICK: {
-    title: "경험은 저장됐고 현재 상태 판정은 그대로입니다",
+    title: "경험은 저장됐고 현재 상태는 그대로입니다",
     why: "같은 영역의 같은 자리에서 고른 항목이 둘이 되면 그때 확인으로"
       + " 올라갑니다. 지금은 하나씩이라 아직 서지 않았습니다.",
   },
   ALREADY_CONFIRMED: {
-    title: "경험은 저장됐고 현재 상태 판정은 그대로입니다",
+    title: "경험은 저장됐고 현재 상태는 그대로입니다",
     why: "검사에서 이미 확인된 범위의 경험이라 더 올라갈 자리가 없었습니다."
       + " 지원서에서 설명할 재료는 그만큼 늘었습니다.",
   },
@@ -127,7 +127,7 @@ export function recentChangeKo(
   ];
   if (!all.length) {
     return {
-      lines: ["새 경험을 반영했고 현재 상태 판정은 그대로입니다."],
+      lines: ["새 경험을 더했고 현재 상태는 그대로입니다."],
       more: 0,
     };
   }

@@ -7,6 +7,6 @@ import { redirect } from "next/navigation";
  * 비어 있는 자리는 `지금 상태` 로 간다. **404 로 버리지 않는다**: 이
  * 주소가 적힌 자리가 밖에 남아 있을 수 있다.
  */
-export default function Gap(): never {
+export default function GapRedirect(): never {
   redirect("/me/state#gaps");
 }

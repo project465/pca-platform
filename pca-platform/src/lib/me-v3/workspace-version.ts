@@ -61,16 +61,21 @@
  *   들어오는 길이 지금 무엇인지 적지 않으면 구글로 가입하신 분이
  *   비밀번호 찾기를 누르고 메일을 기다린다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V8";
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V9";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
  *
  * 안쪽 이름을 손님 화면에 적지 않는다는 규칙이 여기 걸린다: Evidence 는
- * `설명할 수 있는 경험`, Gap 은 `아직 비어 있는 자리`, Action 은 `다음
- * 할 일`, recompute 는 `새 경험 반영하기` 다.
+ * `설명할 수 있는 경험`, Gap 은 `아직 부족한 것`, Action 은 `다음 할 일`,
+ * recompute 는 `새 경험 더하기` 다.
+ *
+ * `.8` 에서 **안쪽 비유를 한 벌 더 걷었다**(규격 §20): `반영` 은 `더하다`,
+ * `비어 있는 자리` 는 `부족한 부분`, `쓰인 자리` 는 `쓰인 곳` 이다. 앞의
+ * 셋은 우리가 안에서 그 일을 부르던 말이고, 손님 화면에서는 그 말이
+ * 무엇을 가리키는지 알 수 없다.
  */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.7";
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.8";
 
 /**
  * V5 에서 바꾼 것 (2026-10-09).

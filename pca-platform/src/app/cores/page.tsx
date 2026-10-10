@@ -53,11 +53,11 @@ export default async function Cores() {
         <dl className="cm-dl">
           <div>
             <dt>검사에서 받는 것</dt>
-            <dd>근거가 선 기술영역과 아직 비어 있는 자리, 그리고 다음 할 일</dd>
+            <dd>근거가 확인된 기술영역과 아직 부족한 부분, 그리고 다음 할 일</dd>
           </div>
           <div>
             <dt>그 뒤에 쌓는 것</dt>
-            <dd>새로 겪은 경험을 적고 현재 상태에 반영하면 비어 있던 자리가 채워집니다</dd>
+            <dd>새로 겪은 경험을 적고 현재 상태에 더하면 부족했던 부분이 채워집니다</dd>
           </div>
           <div>
             <dt>등급 차이</dt>
@@ -124,7 +124,7 @@ export default async function Cores() {
         <h2>준비 중인 전공</h2>
         <p>
           문항과 산업 자료를 그 전공을 아는 분이 써야 열립니다. 열리는 대로
-          이 자리에 더합니다.
+          여기에 더합니다.
         </p>
         <div className="cm-chips is-quiet">
           {planned.map((c) => (

@@ -13,7 +13,7 @@
  */
 import type { Axis, AxisState, Stage } from "../scoring/types";
 import { andList, josaOf, orList, withJosa } from "./josa";
-import { REASON_KO, ZONE_KO } from "../scoring/text.ko";
+import { REASON_KO } from "../scoring/text.ko";
 import type {
   Action, ActionCode, CommonView, FirstMove, Gap, GapWhy, HeadlineCode, PackView,
   ResultModel,
@@ -119,7 +119,21 @@ export const ZONE_TITLE_KO = {
   NOT_EXPLORED: "이번에 보지 않은 영역",
 } as const;
 
-export const ZONE_LEAD_KO = ZONE_KO;
+/**
+ * 영역 하나의 **한 줄 상태 설명**(규격 §12).
+ *
+ * **묶음 이름을 다시 적지 않는다.** 전에는 이 자리가 채점 쪽의 묶음 이름을 그대로
+ * 써서, 영역 머리의 딱지가 `근거가 확인된 영역` 이라고 적은 바로 아래에
+ * `근거가 선 영역` 이 또 섰다. 같은 말이 두 줄로 서면 읽는 사람은 둘째
+ * 줄을 읽지 않고, 그 자리가 들어야 할 **무엇이 확인됐는가**가 사라진다.
+ */
+export const ZONE_LEAD_KO = {
+  Z1_EVIDENCE_ESTABLISHED: "직접 정한 것과 남긴 결과물이 함께 확인됐습니다.",
+  Z2_EVIDENCE_INCOMPLETE: "해 본 것은 확인됐고, 남긴 결과물이 아직 모자랍니다.",
+  Z3_EVIDENCE_LOW_INTEREST: "근거는 확인됐고, 지금 관심 우선순위가 낮습니다.",
+  Z4_INSUFFICIENT_EVIDENCE: "아직 판단할 재료가 모이지 않았습니다.",
+  NOT_EXPLORED: "이번 응시에서 깊게 묻지 않았습니다.",
+} as const;
 
 const HEADLINE_KO: Record<HeadlineCode, { title: string; lead: string }> = {
   /* **품질까지 보증하는 말을 쓰지 않는다.** 우리가 본 것은 응답에서 확인된
@@ -308,7 +322,7 @@ const FILL_KO: Record<Axis, (d: string) => string> = {
  */
 export function actionKo(
   a: Action, domainName: string, stage?: Stage,
-): { do: string; note?: string } {
+): { do: string; note?: string; guide?: string } {
   const w = a.material.workflow;
   const art = orList(a.material.artifacts.length ? a.material.artifacts
     : (w?.output ? [w.output] : []));
@@ -316,21 +330,32 @@ export function actionKo(
   const depth = stage ? DEPTH_KO[stage] : undefined;
 
   if (a.code === "WRITE_UP") {
+    /**
+     * **지시와 차례를 가른다**(규격 §9).
+     *
+     * 전에는 한 문장이 `사례 하나를 골라 하중과 구속조건 → 이상화와 모델
+     * → 해석값 → 검증 대조 → 설계 변경 차례로 한 쪽에 정리해보세요` 였다.
+     * 읽는 사람이 **그래서 지금 무엇을 하면 되는가**에 닿기까지 화살표
+     * 넷을 지나야 하고, 그러면 그 줄은 할 일로 읽히지 않고 설명서가 된다.
+     * 지시는 한 마디로 적고 차례는 `guide` 가 들어 펼침 안으로 간다.
+     */
     const chain = chainOf(a.domain).join(" → ");
     return {
       do: chain
-        ? `${domainName} 사례 하나를 골라 ${chain} 차례로 한 쪽에 정리해보세요.`
+        ? `${domainName} 사례 하나를 골라 한 쪽으로 정리해보세요.`
         : `${domainName}에서 무엇을 정했고 그 결과가 어디에 쓰였는지 한 문단으로 정리해보세요.`,
       note: depth,
+      guide: chain ? `적는 차례는 ${chain} 입니다.` : undefined,
     };
   }
   if (a.code === "DEEPEN_OWNERSHIP" && a.axis) {
     return { do: OWN_KO[a.axis](domainName, a.material), note: depth };
   }
   if (a.code === "EXPLORE_BROADLY") {
+    /* **판정을 할 일 자리에 적지 않는다**(규격 §9). `어느 영역이 앞선다고
+       보기 어렵습니다` 는 까닭이고, 그 자리는 화면의 `왜 필요한가` 다 */
     return {
-      do: "지금 응답만으로는 어느 영역이 앞선다고 보기 어렵습니다."
-        + " 수업이나 교내 과제 가운데 하나를 골라 짧게 해 본 뒤에 다시 보세요.",
+      do: "수업이나 교내 과제 가운데 하나를 골라 짧게 해 본 뒤에 다시 보세요.",
     };
   }
   if (a.code === "BUILD_OUTPUT") {
@@ -339,7 +364,8 @@ export function actionKo(
       do: art
         ? `다음 ${domainName} 과제에서는 ${art} 같은 결과물을 하나 남겨보세요.`
         : `다음 ${domainName} 과제에서는 판단한 내용을 문서 하나로 남겨보세요.`,
-      note: chain ? `${chain} 까지 적혀 있으면 설명 재료가 됩니다.` : depth,
+      note: chain ? undefined : depth,
+      guide: chain ? `${chain} 까지 적혀 있으면 설명 재료가 됩니다.` : undefined,
     };
   }
   if (a.code === "ADD_VERIFICATION") {

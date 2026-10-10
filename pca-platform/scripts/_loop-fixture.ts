@@ -35,6 +35,33 @@ import { hashPassword } from "../src/lib/password";
 export const BASE = (process.env.UI_BASE || process.env.BASE
   || "http://127.0.0.1:3000").replace(/\/$/, "");
 
+/**
+ * **지금 떠 있는 서버가 지금 빌드를 내주고 있는가.**
+ *
+ * `npm run build` 는 `.next/standalone` 을 통째로 지우고 다시 만든다.
+ * 그때 떠 있던 서버는 **지워진 디렉터리를 cwd 로 들고** 계속 돌고,
+ * 쪽은 멀쩡히 뜨는데 `sites/...` 를 상대 경로로 읽는 자리가 전부
+ * ENOENT 로 500 이 된다. 그 500 이 격리 검사에서는
+ * `남의 화면이 열리지 않는다` 처럼 보였다 — **고친 것이 아니라 서버가
+ * 낡은 것이었다.**
+ *
+ * 띄우는 쪽이 `var/.serving-build` 에 적어 두고(그 자리는 `.next` 밖이라
+ * 지워지지 않는다) 여기서 지금 빌드와 견준다. 다르면 그 자리에서 멈춘다:
+ * 낡은 서버에서 돌린 결과는 초록이든 빨강이든 아무것도 말하지 않는다.
+ */
+export function assertFreshServer(): void {
+  const read = (f: string) => {
+    try { return readFileSync(resolve(process.cwd(), f), "utf8").trim(); }
+    catch { return ""; }
+  };
+  const built = read(".next/BUILD_ID");
+  const serving = read("var/.serving-build");
+  if (!built || !serving || built === serving) return;
+  throw new Error(
+    `떠 있는 서버가 지난 빌드입니다(${serving} ≠ ${built}).`
+    + " `npm run stage:serve <포트>` 로 다시 띄우십시오.");
+}
+
 /** 공개 전 배포본의 자물쇠. **우리도 그 문을 지난다** */
 export function gateCreds(): { username: string; password: string } | null {
   const g = process.env.STAGING_BASIC_AUTH || "";
@@ -134,6 +161,8 @@ export async function cloneFinished(userId: string): Promise<string | null> {
 export async function login(
   ctx: BrowserContext, who: string, pw: string,
 ): Promise<Page> {
+  /* 낡은 서버에서 돌린 결과는 초록이든 빨강이든 아무것도 말하지 않는다 */
+  assertFreshServer();
   const p = await ctx.newPage();
   await p.goto(`${BASE}/login`, { waitUntil: "domcontentloaded" });
   await p.fill('input[name="identifier"], input[name="loginId"], input[type="text"]', who);

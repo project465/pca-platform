@@ -8,11 +8,17 @@ export type Dom = {
   artifacts: string[]; verify: string[];
 };
 
-/** 세 걸음의 이름. **무엇을 묻는 자리인지**로 적는다. 축 이름이 아니다 */
+/**
+ * 세 걸음의 이름. **무엇을 묻는 자리인지**로 적는다. 축 이름이 아니다.
+ *
+ * **설명을 달지 않는다**(규격 §2). 한동안 이름마다 한 줄씩 덧붙였더니
+ * 손전화에서 걸음 표가 두 줄로 접혀 260px 을 먹었고, **첫 입력 칸이 화면
+ * 밖으로 밀렸다.** 무엇을 묻는지는 그 걸음의 칸이 적는다.
+ */
 const STEPS = [
-  { n: 1, title: "무슨 경험이었나", hint: "제목과 종류와 때" },
-  { n: 2, title: "어떤 기술 판단이었나", hint: "기술영역과 직접 정한 것" },
-  { n: 3, title: "무엇이 남았나", hint: "결과물과 확인과 쓰인 자리" },
+  { n: 1, title: "무슨 경험" },
+  { n: 2, title: "기술 판단" },
+  { n: 3, title: "남은 것" },
 ] as const;
 
 /**
@@ -85,13 +91,13 @@ export default function Steps(
 
   return (
     <>
-      {/* 어디까지 왔는지. **셋을 다 적는다**: 남은 걸음이 몇인지 모르면
-          둘째에서 닫는다 */}
-      <ol className="cm-wiz">
+      {/* 어디까지 왔는지. **한 줄이다**(규격 §2). 셋을 다 적는 까닭은
+          남은 걸음이 몇인지 모르면 둘째에서 닫기 때문이고, 한 줄로 적는
+          까닭은 이 표가 첫 입력 칸보다 커지면 안 되기 때문이다 */}
+      <ol className="cm-wiz" aria-label="세 걸음 가운데 지금">
         {STEPS.map((s) => (
           <li key={s.n} className={s.n === step ? "is-on" : s.n < step ? "is-done" : ""}>
-            <b>{s.title}</b>
-            <small>{s.hint}</small>
+            <b>{s.n}</b>{s.title}
           </li>
         ))}
       </ol>
@@ -125,7 +131,7 @@ export default function Steps(
           {!picked.length ? (
             <p className="cm-none">
               기술영역을 고르면 그 영역에서 직접 정한 것을 고르는 칸이 뜹니다.
-              고르지 않으시면 이 기록은 현재 상태에 반영되지 않고 목록에만
+              고르지 않으시면 이 기록은 현재 상태에 더해지지 않고 목록에만
               남습니다.
             </p>
           ) : null}

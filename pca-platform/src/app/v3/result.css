@@ -130,7 +130,7 @@
   display: flex; align-items: baseline; gap: 6px; word-break: keep-all;
 }
 .rs-count b {
-  font-size: 21px; font-weight: 750; color: var(--r-ink);
+  font-size: var(--r-t-h3); font-weight: 750; color: var(--r-ink);
   font-variant-numeric: tabular-nums; letter-spacing: -.02em;
 }
 
@@ -204,18 +204,31 @@
   font-size: var(--r-t-body); color: var(--r-ink); line-height: 1.6;
   word-break: keep-all;
 }
+/**
+ * 근거 두 묶음(규격 §12). **이름표를 줄마다 되풀이하지 않는다.**
+ *
+ * 전에는 줄마다 왼쪽에 `직접 정한 것` 을 달았고, 그 묶음에 셋이 있으면
+ * 같은 이름표가 세 번 섰다. 이름은 묶음 머리가 한 번 들고 줄은 그 사람이
+ * 고른 글자만 든다.
+ */
+.rs-dgroup { margin: 12px 0 0; padding: 0 22px; }
+.rs-dgroup + .rs-dgroup { margin-top: 10px; }
+.rs-dgroup > h4 {
+  margin: 0 0 4px; font-size: var(--r-t-meta); font-weight: 650;
+  color: var(--r-ink-3); letter-spacing: .01em;
+}
 .rs-dstrong {
-  margin: 12px 0 0; padding: 0 22px; list-style: none;
-  display: grid; gap: 6px;
+  margin: 0; padding: 0; list-style: none;
+  display: grid; gap: 4px;
 }
 .rs-dstrong > li {
-  display: flex; gap: 10px; align-items: baseline;
+  position: relative; padding-left: 12px;
   font-size: var(--r-t-body); color: var(--r-ink-2); line-height: 1.55;
   word-break: keep-all;
 }
-.rs-dstrong > li > span {
-  flex: none; min-width: 72px;
-  font-size: var(--r-t-meta); font-weight: 650; color: var(--r-ink-3);
+.rs-dstrong > li::before {
+  content: ""; position: absolute; left: 0; top: .62em;
+  width: 4px; height: 4px; border-radius: 50%; background: var(--r-line);
 }
 .rs-dnone {
   margin: 14px 0 0; padding: 0 22px;
@@ -572,7 +585,7 @@
 }
 .rs-scale label > span { font-size: var(--r-t-body); font-weight: 650; color: var(--r-ink-2); }
 .rs-scale label > i {
-  font-style: normal; font-size: 11px; color: var(--r-ink-3);
+  font-style: normal; font-size: var(--r-t-meta); color: var(--r-ink-3);
   text-align: center; word-break: keep-all;
 }
 .rs-scale label:has(input:checked) {
@@ -654,7 +667,7 @@
   .rs-head nav a { white-space: nowrap; min-height: 40px; }
   .rs-hero { padding-top: var(--r-s5); }
   .rs-count { gap: var(--r-s2) var(--r-s3); }
-  .rs-count b { font-size: 18px; }
+  .rs-count b { font-size: var(--r-t-h3); }
   .rs-axis { padding: 10px 16px 10px 13px; }
   .rs-domain > header, .rs-why, .rs-intro { padding-left: 16px; padding-right: 16px; }
   .rs-when li { flex-direction: column; gap: 4px; padding: 13px 16px; }
@@ -755,7 +768,7 @@
    * 번 찍히는 자리뿐이고, 그래서 쪽수가 규격 안으로 돌아온다. 현재
    * 상태 한 줄은 남긴다 — 그 문장은 다른 어디에도 없다.
    */
-  .rs-dstrong, .rs-dgap, .rs-dnext { display: none !important; }
+  .rs-dgroup, .rs-dstrong, .rs-dgap, .rs-dnext { display: none !important; }
 
   /* **A4 의 글 폭은 690px 안팎이다.** 좁은 화면 규칙(719px)이 종이에서도
      걸리므로 여기서 되돌린다. 안 되돌리면 인쇄본이 손전화 화면이 된다 */
@@ -795,7 +808,7 @@
   border-left: 3px solid var(--r-accent-line, var(--sf-accent-line));
   background: var(--r-accent-soft, var(--sf-accent-soft));
   border-radius: 0 var(--r-r-sm) var(--r-r-sm) 0;
-  font-size: 15.5px; line-height: 1.75; color: var(--r-ink, var(--sf-ink));
+  font-size: var(--r-t-body); line-height: 1.75; color: var(--r-ink, var(--sf-ink));
 }
 
 /* ── 종이로 가는 길 ───────────────────────────────────────────────── */
@@ -810,10 +823,10 @@
   border: 1px solid var(--r-line, var(--sf-line));
   background: var(--r-paper, var(--sf-surface));
   color: var(--r-ink, var(--sf-ink));
-  font-size: 14.5px; font-weight: 600; text-decoration: none;
+  font-size: var(--r-t-body); font-weight: 600; text-decoration: none;
 }
 .rs-pdf a:hover { background: var(--r-soft, var(--sf-surface-2)); }
-.rs-pdf small { color: var(--r-ink-3, var(--sf-ink-3)); font-size: 12.5px; }
+.rs-pdf small { color: var(--r-ink-3, var(--sf-ink-3)); font-size: var(--r-t-meta); }
 
 /* ── 결과 다음에 갈 자리 ──────────────────────────────────────────── */
 .rs-next {
@@ -827,9 +840,9 @@
   border: 1px solid var(--r-line, var(--sf-line)); border-radius: var(--r-r-sm);
   background: var(--r-paper, var(--sf-surface)); text-decoration: none;
 }
-.rs-next b { color: var(--r-ink, var(--sf-ink)); font-size: 15px; font-weight: 600; }
+.rs-next b { color: var(--r-ink, var(--sf-ink)); font-size: var(--r-t-body); font-weight: 600; }
 .rs-next small {
-  color: var(--r-ink-3, var(--sf-ink-3)); font-size: 12.5px; line-height: 1.5;
+  color: var(--r-ink-3, var(--sf-ink-3)); font-size: var(--r-t-meta); line-height: 1.5;
 }
 
 /* 종이에서는 `이 다음에` 를 내보내지 않는다. 눌릴 수 없는 단추다 */
@@ -853,11 +866,11 @@
   background: var(--r-accent-soft); border: 1px solid var(--r-accent-line);
   border-radius: var(--r-r);
 }
-.rs-cta > p { flex: 1 1 260px; margin: 0; font-size: 14px; color: var(--r-ink-2); }
+.rs-cta > p { flex: 1 1 260px; margin: 0; font-size: var(--r-t-gloss); color: var(--r-ink-2); }
 .rs-cta > a {
   display: inline-flex; align-items: center; min-height: 46px; padding: 0 18px;
   border-radius: var(--r-r-sm); background: var(--r-accent); color: #fff;
-  font-size: 14.5px; font-weight: 650; text-decoration: none;
+  font-size: var(--r-t-body); font-weight: 650; text-decoration: none;
 }
 .rs-cta > a:focus-visible { outline: 2px solid var(--r-accent); outline-offset: 3px; }
 @media print { .rs-cta { display: none; } }

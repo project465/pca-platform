@@ -32,6 +32,8 @@ const FILES = [
   /* 껍데기와 띠 */
   "src/app/me/platform.css",
   "src/app/me/shell.tsx",
+  /* 적다 만 것을 들고 나가지 않게 막는 자리(규격 §4) */
+  "src/app/me/unsaved.tsx",
   "src/app/me/nav.ts",
   "src/app/me/layout.tsx",
   "src/app/me/actions.ts",
@@ -48,6 +50,7 @@ const FILES = [
   "src/app/me/experience/new/steps.tsx",
   "src/app/me/experience/actions.ts",
   "src/app/me/recompute/page.tsx",
+  "src/app/me/recompute/apply.tsx",
   "src/app/me/recompute/actions.ts",
   "src/app/me/gap/page.tsx",
   /* 탐색 */

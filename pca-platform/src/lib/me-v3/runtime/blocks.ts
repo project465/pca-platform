@@ -182,7 +182,7 @@ const TRANS_GROUPS = [
     question: "남긴 것과 확인한 방법을 골라주세요" },
   { key: "handoff", ids: ["TR_T9", "TR_T10"] as string[],
     subject: "어디에 쓰였나",
-    question: "그 결과가 쓰인 자리를 골라주세요" },
+    question: "그 결과가 쓰인 곳을 골라주세요" },
 ] as const;
 
 /* 여덟 축의 **재는 이름**은 결과를 되짚는 자리(축 이름 · 운영 표)에만
@@ -616,7 +616,7 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
       eyebrow: "경험 번역",
       question: "연구나 프로젝트 하나를 떠올려주세요",
       help: "그 하나를 네 화면에 나누어 묻습니다.",
-      chips: ["문제와 조건", "쓴 방법", "남긴 것", "쓰인 자리"],
+      chips: ["문제와 조건", "쓴 방법", "남긴 것", "쓰인 곳"],
       items: [],
     });
     /* **열 단계를 열 화면으로 띄우지 않는다.** 한 경험을 열 번 끊어 물으면

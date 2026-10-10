@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import {
-  actionsOf, applicationsOf, currentState, experiencesOf, profileOf, resultHistory,
+  actionsOf, applicationsOf, currentState, experiencesOf,
 } from "@/lib/me-v3/platform";
-import { domainName, industryChoices, roleName } from "@/lib/me-v3/runtime/session";
-import { moveLabel, regionName } from "@/lib/me-v3/region";
-import { HORIZON_KO, ZONE_TITLE_KO, gapKo } from "@/lib/me-v3/result/text.ko";
+import { domainName } from "@/lib/me-v3/runtime/session";
+import { ZONE_TITLE_KO, actionKo, gapKo } from "@/lib/me-v3/result/text.ko";
 import { recentChangeKo } from "@/lib/me-v3/change-text.ko";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { CmShell, CmHead } from "./shell";
@@ -31,9 +30,12 @@ export const metadata = { title: "홈 · CareerMatri" };
  */
 export default async function Home() {
   const user = await requireUser();
-  const [st, exps, actions, profile, history, apps] = await Promise.all([
+  /* **홈이 묻지 않는 것은 읽지도 않는다**(규격 §10). 고르신 산업과
+     직무와 지역은 왼쪽 띠의 제 쪽이 들고, 결과 기록은 머리의 링크가
+     보낸다. 쓰지 않는 값을 네 번 더 물으면 홈이 그만큼 늦어진다 */
+  const [st, exps, actions, apps] = await Promise.all([
     currentState(user.id), experiencesOf(user.id), actionsOf(user.id),
-    profileOf(user.id), resultHistory(user.id), applicationsOf(user.id),
+    applicationsOf(user.id),
   ]);
 
   /* **센 것이 화면을 늦추거나 깨지 않는다.** `mark()` 는 던지지 않는다 */
@@ -54,8 +56,8 @@ export default async function Home() {
   /* **홈이 요약을 따로 짓지 않는다**(규격 §11). 네 묶음이 전부
      `currentState()` 한 자리에서 오고, `최근 변화` 의 문장은 저장 직후
      화면과 현재 상태가 쓰는 함수를 그대로 부른다 */
-  const change = recentChangeKo(st, domainName);
-  const indName = new Map(industryChoices().map((x) => [x.code, x.name]));
+  /* **첫 화면에는 한 줄이다**(규격 §10). 나머지는 `현재 상태` 가 든다 */
+  const change = recentChangeKo(st, domainName, 1);
 
   /**
    * **주된 단추는 늘 `지금 할 일` 이다**(규격 §12).
@@ -106,7 +108,7 @@ export default async function Home() {
             {[
               ["무엇을 해 봤는지", "전체 기술영역에서 해 본 일을 하나씩 묻습니다"],
               ["무엇을 직접 정했는지", "받아서 한 일과 직접 정한 일을 가릅니다"],
-              ["다음에 무엇을 할지", "비어 있는 자리와 그것을 메우는 일을 적습니다"],
+              ["다음에 무엇을 할지", "아직 부족한 부분과 그것을 메우는 일을 적습니다"],
             ].map(([t, b]) => (
               <div className="cm-card" key={t}>
                 <h2>{t}</h2>
@@ -181,7 +183,10 @@ export default async function Home() {
       {st.model ? (
         <>
           {/* 1. 현재 상태 — **한 판에 세 줄** */}
-          <h2 className="cm-sect">현재 상태</h2>
+          <h2 className="cm-sect">
+            현재 상태
+            <Link href="/me/state">전체 기술영역 보기</Link>
+          </h2>
           <div className="cm-panel">
             <div className="cm-pane">
               {READY_ZONES.map((z, zi) => {
@@ -208,9 +213,6 @@ export default async function Home() {
                   짧게 한 번 해 보는 것이 다음 걸음입니다.
                 </p>
               ) : null}
-              <div className="cm-acts">
-                <Link className="cm-btn" href="/me/state">전체 기술영역 보기</Link>
-              </div>
             </div>
 
             {/* 먼저 채워볼 부분은 **현재 상태의 일부다**: 지금 어떤 상태인가에
@@ -232,16 +234,27 @@ export default async function Home() {
           {/* 2. 지금 할 일 — **문장 하나다**(규격 §12).
               `할 일 가져오기` 같은 시스템 문구를 쓰지 않는다: 읽는 사람이
               할 일은 그 문장을 하는 것이지 무엇을 가져오는 것이 아니다 */}
-          <h2 className="cm-sect">지금 할 일</h2>
-          <div className="cm-panel">
+          <h2 className="cm-sect">
+            지금 할 일
+            {open.length > 1 ? <em>그 밖에 {open.length - 1}가지</em> : null}
+            <Link href="/me/next">지금 할 일 보기</Link>
+          </h2>
+          <div className="cm-panel is-one">
             <div className="cm-pane">
               {first ? (
                 <>
-                  <p>{first.body}</p>
-                  <p className="cm-none">
-                    {HORIZON_KO[lane(first.horizon)]}
-                    {open.length > 1 ? ` · 그 밖에 ${open.length - 1}가지` : ""}
-                  </p>
+                  {/* **담을 때의 문장이 아니라 지금 판본의 짧은 지시다**
+                      (규격 §9). 옛 판본의 `body` 에는 화살표 넷짜리 체인이
+                      들어 있고, 그 줄은 홈에서 두 줄을 먹으면서도 **그래서
+                      무엇을 하면 되는가**에 바로 닿지 않는다 */}
+                  <p>{(() => {
+                    const x = st.model?.actions.find((a) =>
+                      (a.domain ?? "") === (first.td_code ?? "")
+                      && (a.axis ?? "") === (first.axis_code ?? ""));
+                    return x && st.model
+                      ? actionKo(x, x.domain ? domainName(x.domain) : "", st.model.stage).do
+                      : first.body;
+                  })()}</p>
                 </>
               ) : (
                 <p>
@@ -249,9 +262,6 @@ export default async function Home() {
                   섭니다.
                 </p>
               )}
-              <div className="cm-acts">
-                <Link className="cm-btn" href="/me/next">지금 할 일 보기</Link>
-              </div>
             </div>
           </div>
 
@@ -260,11 +270,14 @@ export default async function Home() {
               그때는 그 사실을 적는다 */}
           {st.stage === "RECOMPUTED" || st.pending > 0 ? (
             <>
-              <h2 className="cm-sect">최근 변화</h2>
+              <h2 className="cm-sect">
+                최근 변화
+                {st.stage === "RECOMPUTED" ? <em>{st.recomputed_at}</em> : null}
+                <Link href="/me/state#changes">달라진 점 모두 보기</Link>
+              </h2>
               <div className="cm-panel">
                 {st.stage === "RECOMPUTED" ? (
                   <div className="cm-pane">
-                    <h3>달라진 점 <em>{st.recomputed_at} 반영</em></h3>
                     {/* **`경험이 추가되었습니다` 로 적지 않는다**(규격 §12).
                         그 사실은 적은 사람이 이미 안다. 알고 싶은 것은 그
                         경험이 현재 상태의 무엇을 움직였는가이고, 움직인 것이
@@ -279,20 +292,17 @@ export default async function Home() {
                     {change.more ? (
                       <p className="cm-none">그 밖에 {change.more}가지가 더 달라졌습니다.</p>
                     ) : null}
-                    <div className="cm-acts">
-                      <Link className="cm-btn" href="/me/state">달라진 점 보기</Link>
-                    </div>
                   </div>
                 ) : null}
                 {st.pending > 0 ? (
                   <div className="cm-pane">
-                    <h3>아직 반영하지 않은 경험 <em>{st.pending}건</em></h3>
+                    <h3>아직 더하지 않은 경험 <em>{st.pending}건</em></h3>
                     <p>
-                      적어 두신 경험이 어느 판단으로 가는지 먼저 보고 반영합니다.
-                      반영해도 검사 당시 결과는 그대로 남습니다.
+                      적어 두신 경험이 어느 판단으로 가는지 먼저 보고 더합니다.
+                      더해도 검사 당시 결과는 그대로 남습니다.
                     </p>
                     <div className="cm-acts">
-                      <Link className="cm-btn" href="/me/recompute">새 경험 반영하기</Link>
+                      <Link className="cm-btn" href="/me/recompute">새 경험 더하기</Link>
                     </div>
                   </div>
                 ) : null}
@@ -303,7 +313,10 @@ export default async function Home() {
           {/* ── 4. 기록 ── **카드를 넷 더 쌓지 않는다**: 같은 무게의 흰
               상자가 일곱이면 홈에서 무엇이 먼저인지가 사라진다. 한 판 안에
               줄로 세우고 선으로 가른다(규격 §31) */}
-          <h2 className="cm-sect">기록</h2>
+          <h2 className="cm-sect">
+            기록
+            <Link href="/me/results">결과 기록 모두 보기</Link>
+          </h2>
           <div className="cm-panel">
             {/* 검사 당시 결과 — 굳은 기록 */}
             <div className="cm-pane">
@@ -314,17 +327,13 @@ export default async function Home() {
                   <span>{st.model.tier} · 기계공학</span>
                 </p>
               </div>
-              <p className="cm-none">
-                응시하신 그날의 문항과 기준으로 굳어 있습니다. 경험을 더해도
-                이 줄은 달라지지 않습니다.
-              </p>
+              {/* **긴 설명을 홈에 두지 않는다**(규격 §10). 굳어 있다는
+                  것은 `고정됨` 표시가 말하고, 자세한 것은 `현재 상태` 의
+                  `검사 당시 결과와 지금` 이 한 번 적는다 */}
               <div className="cm-acts">
                 <Link className="cm-btn" href={`/v3/${st.model.attempt_id}/result`}>
                   결과 보기
                 </Link>
-                {history.length > 1 ? (
-                  <Link className="cm-btn" href="/me/results">결과 기록 전체</Link>
-                ) : null}
               </div>
             </div>
 
@@ -345,9 +354,7 @@ export default async function Home() {
                   ))}
                 </div>
                 <div className="cm-acts">
-                  <Link className="cm-btn" href="/me/experience">
-                    {exps.length > HOME_RECENT ? "경험 모두 보기" : "경험 전체 보기"}
-                  </Link>
+                  <Link className="cm-btn" href="/me/experience">경험 모두 보기</Link>
                 </div>
               </div>
             ) : null}
@@ -403,16 +410,16 @@ const HEAD: Record<string, string> = {
 };
 
 const LEAD: Record<string, string> = {
-  NO_ASSESSMENT: "검사를 한 번 끝내면 이 자리에 확인된 근거와 비어 있는 자리와"
+  NO_ASSESSMENT: "검사를 한 번 끝내면 여기에 확인된 근거와 아직 부족한 부분과"
     + " 다음 할 일이 섭니다.",
   IN_PROGRESS: "답한 것은 문항마다 저장되어 있어, 마지막으로 멈춘 자리에서"
     + " 그대로 이어집니다.",
   BASIC_DONE: "어느 영역부터 살펴볼지 정하는 데까지 확인했습니다."
     + " 경험을 자세히 묻는 질문은 아직 받지 않았습니다.",
-  STANDARD_DONE: "지금 확인된 근거와 비어 있는 자리입니다. 경험을 하나 더 적으면"
+  STANDARD_DONE: "지금 확인된 근거와 아직 부족한 부분입니다. 경험을 하나 더 적으면"
     + " 이 값이 다시 달라집니다.",
   PRO_DONE: "확인된 근거를 산업과 직무의 말로 옮긴 결과까지 있습니다.",
-  RECOMPUTED: "새 경험까지 반영한 현재 상태이고, 검사 당시 결과는 그대로"
+  RECOMPUTED: "새 경험까지 더한 현재 상태이고, 검사 당시 결과는 그대로"
     + " 남아 있습니다.",
 };
 
@@ -442,6 +449,4 @@ const ZONE_SAY: Record<string, string> = {
 };
 void ZONE_TITLE_KO;
 
-/** 날수를 마감으로 읽지 않게 **할 수 있는 때**로 묶는다 */
-const lane = (days: number): "NOW" | "NEXT" | "LATER" =>
-  (days <= 30 ? "NOW" : days <= 90 ? "NEXT" : "LATER");
+

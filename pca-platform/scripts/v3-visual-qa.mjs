@@ -33,7 +33,9 @@ const PW = { "me-admin": devPassword("org"), admin: devPassword("admin") };
    보급형 안드로이드이고 430 은 큰 iPhone 이라, 둘 다 가장 많이 쓰이는
    자리인데 빠져 있었다 */
 const WIDTHS = [320, 360, 375, 390, 430, 768, 1024, 1280, 1366, 1440, 1920];
-const ZOOMS = [1, 1.25, 1.5];
+/* 규격 §27 의 넷. 200% 는 **글자 크기를 키운 사람의 화면**이고, 고정
+   띠가 있는 쪽은 거기서 본문을 덮기 시작한다 */
+const ZOOMS = [1, 1.25, 1.5, 2];
 
 /** 재는 자리. 열다섯 화면 가운데 **모양이 실제로 갈리는 것**만 */
 const WANT = [
@@ -46,6 +48,19 @@ const WANT = [
 /** 확대를 보는 자리. 고정 띠가 있거나 글이 긴 쪽 */
 const ZOOM_AT = new Set([
   "04_screening", "13_ownership", "07_evidence", "22_dashboard", "16_result_top",
+]);
+/**
+ * 큰 빈 면을 세는 자리(규격 §18).
+ *
+ * **검사 화면은 빼 둔다.** 거기는 담긴 글이 몇 줄뿐인 것이 정상이고,
+ * 짧다고 가운데로 올리면 **질문이 화면마다 올라갔다 내려간다.** 이
+ * 저장소는 그 반대를 규칙으로 두었다: 머리띠 다음 같은 자리에서 글이
+ * 시작한다. 규격이 이름을 댄 자리만 센다 — 쉬어 가는 화면 · 결과지 ·
+ * 작업공간 · Track.
+ */
+const VOID_AT = new Set([
+  "05b_transition", "12_done", "16_result_top", "17_result_domains",
+  "22_dashboard", "25_gap", "28_track",
 ]);
 
 const { chromium } = await import("playwright");
@@ -129,6 +144,52 @@ const measure = () => ({
   })(),
 });
 
+/**
+ * 첫 화면 둘(규격 §18 · §19).
+ *
+ *   1. **짙은 단추는 첫 화면에 하나다.** 둘이면 읽는 사람이 어느 쪽이
+ *      다음 걸음인지 고르는 일부터 해야 하고, 고르는 일은 할 일이 아니다.
+ *      긴 쪽의 맨 아래 단추는 다른 화면이라 세지 않는다.
+ *   2. **큰 빈 면.** 담긴 글이 꼭대기에 붙어 있고 아래 절반이 통째로
+ *      비면, 그 빈 면이 자료를 못 받아 온 화면으로 읽힌다. 스크롤이
+ *      생기는 쪽은 빈 자리가 아니므로 세지 않는다.
+ */
+const firstView = () => {
+  const vh = window.innerHeight;
+  const seen = (el) => {
+    if (el.closest("details:not([open])")) return false;
+    const st = getComputedStyle(el);
+    if (st.visibility === "hidden" || st.display === "none") return false;
+    const r = el.getBoundingClientRect();
+    return r.height > 3 && r.width > 3;
+  };
+  const primary = [...document.querySelectorAll(
+    ".cm-btn.is-primary, .qs-btn-main, .rs-do-main, .rs-cta > a")]
+    .filter((el) => {
+      if (!seen(el)) return false;
+      const r = el.getBoundingClientRect();
+      return r.top < vh && r.bottom > 0;
+    })
+    .map((el) => (el.textContent || "").trim().slice(0, 16));
+  /* **띠를 빼고 본문만 잰다.** 왼쪽 띠의 메뉴가 쪽 아래까지 내려오므로
+     쪽 전체에서 재면 본문이 비어 있어도 빈 자리가 0 으로 나온다 */
+  const root = document.querySelector(".cm-in, .qs-main, .rs-main, main");
+  let top = Infinity; let bottom = 0;
+  if (root && document.scrollingElement.scrollHeight <= vh * 1.1) {
+    for (const el of root.querySelectorAll(
+      "h1,h2,h3,h4,p,li,button,a,input,select,textarea,label,table,img,svg")) {
+      if (!seen(el)) continue;
+      const r = el.getBoundingClientRect();
+      top = Math.min(top, r.top); bottom = Math.max(bottom, r.bottom);
+    }
+  }
+  const below = Number.isFinite(top) ? vh - bottom : 0;
+  return {
+    primary,
+    void: below > vh * 0.4 && top < vh * 0.15 ? Math.round(below) : 0,
+  };
+};
+
 for (const t of plan.targets) {
   if (!WANT.includes(t.name) || t.pdf) continue;
   const page = await ctx[t.who].newPage();
@@ -143,6 +204,18 @@ for (const t of plan.targets) {
     if (m.wide.length) bad.push(`${t.name} ${w}px: 창을 넘는 덩이 — ${m.wide.join(" · ")}`);
     if (m.clipped.length) bad.push(`${t.name} ${w}px: 말줄임으로 잘린 글 — ${m.clipped.join(" / ")}`);
     if (m.covered) bad.push(`${t.name} ${w}px: 바닥 띠가 본문 ${m.covered}곳을 덮는다`);
+    /* 첫 화면은 넓은 폭에서 한 번만 센다(규격 §18 · §19) */
+    if (w === 1440) {
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await page.waitForTimeout(60);
+      const f = await page.evaluate(firstView);
+      if (f.primary.length > 1) {
+        bad.push(`${t.name}: 첫 화면에 짙은 단추가 ${f.primary.length}개 — ${f.primary.join(" / ")}`);
+      }
+      if (f.void && VOID_AT.has(t.name)) {
+        bad.push(`${t.name}: 첫 화면 아래가 ${f.void}px 비어 있다`);
+      }
+    }
   }
   /* 확대. **고정 띠가 본문을 덮는 자리가 여기서 드러난다** */
   if (ZOOM_AT.has(t.name)) {
@@ -159,7 +232,7 @@ for (const t of plan.targets) {
       if (m.covered) bad.push(`${at}: 바닥 띠가 본문 ${m.covered}곳을 덮는다`);
     }
   }
-  log.push(`${t.name.padEnd(22)} 폭 ${WIDTHS.length}${ZOOM_AT.has(t.name) ? " · 확대 3" : ""}`);
+  log.push(`${t.name.padEnd(22)} 폭 ${WIDTHS.length}${ZOOM_AT.has(t.name) ? ` · 확대 ${ZOOMS.length}` : ""} · 첫 화면`);
   await page.close();
 }
 
@@ -234,4 +307,4 @@ if (bad.length) {
   console.log(`\n${bad.length}곳이 걸렸다:\n  ` + bad.join("\n  "));
   process.exit(1);
 }
-console.log(`\n폭 열하나 · 확대 셋 · 긴 글 · 키보드 OK — 자리 ${log.length}`);
+console.log(`\n폭 열하나 · 확대 넷 · 긴 글 · 키보드 OK — 자리 ${log.length}`);

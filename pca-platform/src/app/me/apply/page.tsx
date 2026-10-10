@@ -92,7 +92,7 @@ export default async function Apply() {
         </div>
         <label className="cm-field">
           <span>덧붙일 한 줄</span>
-          <em>결과에 반영되지 않습니다. 1년이 지나면 지웁니다.</em>
+          <em>결과를 바꾸지 않습니다. 1년이 지나면 지웁니다.</em>
           <input className="cm-input" name="note" maxLength={300}
             placeholder="예: 해석 경험을 어디까지 물었는지" />
         </label>
@@ -156,7 +156,7 @@ export default async function Apply() {
       <div className="cm-soon" style={{ marginTop: 18 }}>
         <b>우리가 넣어 드리지 않습니다.</b> 이력서 발송 대행과 취업추천서 발부는
         직업정보제공사업으로 할 수 없는 일입니다. 여기는 본인이 적어 두는
-        자리이고 본인에게만 보입니다.
+        곳이고 본인에게만 보입니다.
       </div>
     </CmShell>
   );

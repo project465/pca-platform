@@ -38,8 +38,27 @@ function NavRow({ it, active }: { it: typeof CM_NAV[number]; active: string }) {
 }
 
 export function CmShell({
-  active, title, children,
-}: { active: string; title?: string; children: ReactNode }) {
+  active, title, form, hold, children,
+}: {
+  active: string; title?: string;
+  /**
+   * 적는 자리인가(규격 §17).
+   *
+   * 작업공간의 기본 폭은 1100 이고 그것은 **견주고 훑는 자리**의 폭이다.
+   * 칸에 적는 자리는 840 으로 좁힌다: 1100 에서 폼을 그리면 이름표와
+   * 입력칸이 한 화면 너비로 벌어져 눈이 왼쪽 끝과 오른쪽 끝을 오간다.
+   */
+  form?: boolean;
+  /**
+   * 아직 켜지지 않은 자리인가(규격 §18).
+   *
+   * 담긴 글이 몇 줄뿐인데 넓은 화면을 꼭대기부터 쓰면 **아래 절반이
+   * 통째로 비어** 자료를 못 받아 온 화면처럼 읽힌다. 빈 카드를 만들어
+   * 채우지 않고, 있는 글을 읽는 폭으로 모아 가운데에 세운다.
+   */
+  hold?: boolean;
+  children: ReactNode;
+}) {
   return (
     <div className="cm">
       {/* 손전화 위 띠. 넓은 화면에서는 왼쪽 띠가 그 일을 한다 */}
@@ -66,7 +85,9 @@ export function CmShell({
         </nav>
 
         <main className="cm-main">
-          <div className="cm-in">{children}</div>
+          <div className={`cm-in${form ? " is-form" : ""}${hold ? " is-hold" : ""}`}>
+            {children}
+          </div>
         </main>
       </div>
 

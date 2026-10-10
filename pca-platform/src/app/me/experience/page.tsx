@@ -37,17 +37,17 @@ export default async function Experiences() {
         kicker="경험 기록"
         title="적어 둔 경험"
         lead={"수업과 캡스톤과 연구와 인턴에서 직접 정한 것을 적어 둡니다. "
-          + "반영하실 때 이 기록이 근거로 들어갑니다."}
+          + "현재 상태에 더할 때 이 기록이 근거로 들어갑니다."}
         actions={<Link className="cm-btn is-primary" href="/me/experience/new">새 경험 추가</Link>}
       />
 
       {pending > 0 ? (
         <div className="cm-soon" style={{ marginBottom: 18 }}>
-          <b>아직 반영하지 않은 경험이 {pending}건 있습니다.</b> 적어 두신
-          경험이 어느 판단으로 가고 무엇이 달라지는지 먼저 보시고 반영하실
+          <b>아직 더하지 않은 경험이 {pending}건 있습니다.</b> 적어 두신
+          경험이 어느 판단으로 가고 무엇이 달라지는지 먼저 보시고 더하실
           수 있습니다.
           <p style={{ marginTop: 10 }}>
-            <Link href="/me/recompute">새 경험 반영하기</Link>
+            <Link href="/me/recompute">새 경험 더하기</Link>
           </p>
         </div>
       ) : null}
@@ -56,7 +56,7 @@ export default async function Experiences() {
         <div className="cm-soon">
           <b>아직 적어 둔 경험이 없습니다.</b> 검사에서 고른 근거와 별개로,
           새로 겪은 일을 여기에 쌓습니다. 하나만 적어도 현재 상태에
-          반영할 수 있습니다.
+          더할 수 있습니다.
         </div>
       ) : (
         <div className="cm-snaps">
@@ -70,7 +70,7 @@ export default async function Experiences() {
               ["직접 정한 것", e.decisions],
               ["남긴 것", e.artifacts],
               ["비교해 확인한 것", e.verifications],
-              ["쓰인 자리", e.used_where ?? []],
+              ["쓰인 곳", e.used_where ?? []],
             ];
             const any = picks.some(([, v]) => v.length);
             return (
@@ -100,8 +100,8 @@ export default async function Experiences() {
                       아니다**: 함께 세어졌다는 것까지다 */}
                   <p className="cm-none">
                     {done.has(e.id)
-                      ? "현재 상태에 반영됨"
-                      : "아직 반영하지 않음 · 반영하면 현재 상태에 들어갑니다"}
+                      ? "현재 상태에 더함"
+                      : "아직 더하지 않음 · 더하면 현재 상태에 들어갑니다"}
                     {e.started_on ? "" : " · 날짜는 적어 둔 날입니다"}
                   </p>
 

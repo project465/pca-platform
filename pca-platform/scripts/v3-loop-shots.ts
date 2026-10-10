@@ -42,11 +42,23 @@ function ok(n: string, good: boolean, d = ""): void {
 /** 이름 → 지문. **같은 그림이 두 이름으로 저장되면 걸린다** */
 const seen = new Map<string, string>();
 
+/**
+ * 어느 걸음에서 찍은 그림인가.
+ *
+ * **지문은 한 걸음 안에서만 견준다.** 이 검사가 막는 것은 **자리를 잘못
+ * 찾아 같은 쪽을 열두 번 찍어 두는 일**이고, 그것은 한 사람이 한 길을
+ * 밟는 동안에 일어난다. 걸음을 가로질러 견주면 **다른 사람의 같은 모양
+ * 화면**이 걸린다: 바탕으로 쓰는 굳은 결과가 한 벌이라 새로 온 사람의
+ * 결과지와 돌아온 사람의 결과지는 글자까지 같은 것이 맞다.
+ */
+const step = (name: string) => (/^(j1|j3|m)/.exec(name)?.[1] ?? "a");
+
 async function shot(p: Page, name: string, full = true): Promise<void> {
   const buf = await p.screenshot({ fullPage: full });
   writeFileSync(resolve(OUT, `${name}.png`), buf);
   const h = createHash("sha256").update(buf).digest("hex");
-  const twin = [...seen.entries()].find(([, v]) => v === h);
+  const twin = [...seen.entries()]
+    .find(([k, v]) => v === h && step(k) === step(name));
   if (twin) ok(`그림 ${name} 이 제 화면이다`, false, `${twin[0]} 과 같다`);
   seen.set(name, h);
 }
@@ -153,12 +165,12 @@ async function main(): Promise<void> {
     await shot(p, "04_change_preview__desktop");
     await noBlank(p, "저장 직후");
     const plan = await p.evaluate(() => document.body.innerText);
+    /* 상태 말은 제품 전체가 같은 마디를 쓴다(규격 §21) */
+    const SAVED = ["경험을 저장했습니다", "이번 경험에서 새로 연결된 것",
+      "현재 상태에서 달라지는 것", "그다음에 할 일"];
     ok("저장 직후가 다섯을 차례로 적는다",
-      ["새 경험을 기록했습니다", "이번 경험에서 새로 연결된 것",
-       "현재 상태에서 달라지는 것", "그다음에 할 일"].every((h) => plan.includes(h)),
-      ["새 경험을 기록했습니다", "이번 경험에서 새로 연결된 것",
-       "현재 상태에서 달라지는 것", "그다음에 할 일"]
-        .filter((h) => !plan.includes(h)).join(" / ") || "넷 다 있다");
+      SAVED.every((h) => plan.includes(h)),
+      SAVED.filter((h) => !plan.includes(h)).join(" / ") || "넷 다 있다");
     ok("저장 직후에 돌아갈 길이 있다",
       (await p.locator('a[href="/me/experience"]').count()) > 0);
 
@@ -173,8 +185,9 @@ async function main(): Promise<void> {
     await shot(p, "05_current_state__desktop");
     await noBlank(p, "현재 상태");
     const st1 = await p.evaluate(() => document.body.innerText);
-    ok("현재 상태가 §7 차례로 선다",
-      ["지금 설명할 수 있는 영역", "최근 달라진 것", "아직 부족한 것", "다음 행동"]
+    /* 첫 화면 셋과 그 아래 세부(규격 §5·§6) */
+    ok("현재 상태가 §5 차례로 선다",
+      ["지금 설명할 수 있는 영역", "최근 달라진 것", "지금 할 일", "아직 부족한 것"]
         .every((h) => st1.includes(h)));
     ok("굳은 결과와 지금 값이 서로를 덮지 않는다고 적는다",
       /서로를 덮지 않습니다/.test(st1));
@@ -232,15 +245,15 @@ async function main(): Promise<void> {
       !/경험이 추가되었습니다/.test(plan2));
     await apply(p);
     const st2 = await p.evaluate(() => document.body.innerText);
-    ok("반영 뒤 화면이 바뀐 것이 없다는 사실도 적는다",
-      /반영했습니다/.test(st2), /반영했습니다/.test(st2) ? "적는다" : "안 적는다");
+    ok("더한 뒤 화면이 바뀐 것이 없다는 사실도 적는다",
+      /더했습니다/.test(st2), /더했습니다/.test(st2) ? "적는다" : "안 적는다");
 
     /* 경험 다수 (규격 §18 ③) */
     await p.goto(`${B}/me/experience`, { waitUntil: "networkidle" });
     const list = await p.evaluate(() => document.body.innerText);
     ok("경험이 둘이면 둘 다 목록에 있다",
       list.includes(t1) && list.includes(t2));
-    ok("목록이 반영 여부를 적는다", /반영/.test(list));
+    ok("목록이 현재 상태에 더했는지를 적는다", /더함|더하지 않음/.test(list));
     await noBlank(p, "경험 목록(다수)");
 
     /* ── Journey C. Gap 을 메우는 경험 ───────────────────────────── */
@@ -257,11 +270,81 @@ async function main(): Promise<void> {
     ok("경험을 더하면 지금 값의 영역이 늘거나 그대로다", lv1 >= lv0,
       `${lv0} → ${lv1}`);
     const st3 = await p.evaluate(() => document.body.innerText);
-    ok("현재 상태가 최근 반영 날짜를 새로 적는다", /최근 반영/.test(st3));
+    ok("현재 상태가 기준 날짜를 새로 적는다", /\d{4}-\d{2}-\d{2} 기준/.test(st3));
     const after3 = await frozenPrint(a.id);
     ok("경험을 셋 더해도 굳은 결과는 그대로다", before === after3);
 
+    /* ── Journey 3. 결과 → 할 일 → 경험 → 현재 상태 ────────────────
+        **주소로 열지 않고 단추를 누른다.** 쪽이 전부 200 이면서 그 사이를
+        이을 길이 하나도 없을 수 있다(규격 §28) */
+    console.log("\n── Journey 3. 결과 → 할 일 → 경험 → 현재 상태");
+    await p.goto(`${B}/v3/${att}/result`, { waitUntil: "networkidle" });
+    await shot(p, "j3_01_result__desktop", false);
+    await p.locator(".rs-do-main").first().click({ force: true });
+    await p.waitForLoadState("networkidle").catch(() => undefined);
+    await p.waitForTimeout(600);
+    ok("결과지의 짙은 단추가 할 일 쪽으로 보낸다",
+      new URL(p.url()).pathname === "/me/next", new URL(p.url()).pathname);
+    await shot(p, "j3_02_next__desktop");
+    const addBtn = p.locator('a[href="/me/experience/new"]').first();
+    ok("할 일 쪽에서 경험으로 가는 길이 있다", (await addBtn.count()) > 0);
+    await Promise.all([
+      p.waitForURL((u) => new URL(u).pathname === "/me/experience/new", { timeout: 15000 })
+        .catch(() => undefined),
+      addBtn.click(),
+    ]);
+    await p.waitForLoadState("networkidle").catch(() => undefined);
+    ok("할 일에서 누르면 경험 적는 쪽으로 간다",
+      new URL(p.url()).pathname === "/me/experience/new", new URL(p.url()).pathname);
+    await shot(p, "j3_03_experience_add__desktop");
+    const t4 = `결과에서 온 기록 ${randomBytes(2).toString("hex")}`;
+    await fillExperience(p, t4);
+    await apply(p);
+    ok("경험을 더하면 현재 상태로 이어진다",
+      new URL(p.url()).pathname === "/me/state", new URL(p.url()).pathname);
+    await shot(p, "j3_04_current_state__desktop");
+
     await ctx.close();
+
+    /* ── Journey 1. 새로 온 사람: 전공 → 검사 → 결과 → 홈 ──────────
+        **검사 가운데는 `v3:shots` 가 화면마다 찍는다.** 여기서 찍는 것은
+        이음매다: 전공 고르기 · 시작 화면 · 첫 문항 · 결과 · 홈. 응답을
+        끝까지 채우는 일은 그쪽 검사가 맡고, 여기는 끝낸 뒤의 두 쪽이
+        실제로 이어지는지를 본다 */
+    console.log("\n── Journey 1. 새로 온 사람 (데스크톱)");
+    const NEW = `v3shots-new+${randomBytes(3).toString("hex")}@example.com`;
+    const nu = await makeStudent(NEW);
+    const nctx = await browser.newContext({ ...opts, viewport: { width: 1440, height: 900 } });
+    const np = await login(nctx, NEW, nu.pw);
+    await np.goto(`${B}/me`, { waitUntil: "networkidle" });
+    const nHome = await np.evaluate(() => document.body.innerText);
+    ok("검사 전 홈이 빈 카드를 쌓지 않는다", !/아직 없습니다[\s\S]{0,40}아직 없습니다/.test(nHome));
+    await shot(np, "j1_01_home_new__desktop");
+    await np.goto(`${B}/cores`, { waitUntil: "networkidle" });
+    await shot(np, "j1_02_cores__desktop");
+    const cores = await np.evaluate(() => document.body.innerText);
+    ok("전공 목록이 지금 열린 것과 아직인 것을 가른다", /기계공학/.test(cores));
+    await np.goto(`${B}/v3/start`, { waitUntil: "networkidle" });
+    await shot(np, "j1_03_start__desktop");
+    const start = await np.evaluate(() => document.body.innerText);
+    /* `46~50` 과 `문항` 이 줄로 갈려 있어 공백을 걷고 센다 */
+    const flat = start.replace(/\s+/g, "");
+    ok("시작 화면이 문항 수와 걸리는 시간을 적는다",
+      /\d문항/.test(flat) && /\d분/.test(flat),
+      (/\d+[~\d]*문항/.exec(flat)?.[0] ?? "없음") + " / " + (/약\d+분/.exec(flat)?.[0] ?? "없음"));
+    /* 끝낸 뒤의 두 쪽. 응답을 채우는 일은 `v3:runtime` 과 `v3:shots` 가 맡는다 */
+    const natt = await cloneFinished(nu.id);
+    ok("검사를 끝내면 굳은 결과가 생긴다", !!natt, natt ?? "없음");
+    await np.goto(`${B}/v3/${natt}/result`, { waitUntil: "networkidle" });
+    await shot(np, "j1_04_result__desktop", false);
+    const rtxt = await np.evaluate(() => document.body.innerText);
+    ok("결과 첫 화면이 넷을 적는다(규격 §11)",
+      ["지금 확인된 것", "지금 할 일"].every((h) => rtxt.includes(h)));
+    await np.goto(`${B}/me`, { waitUntil: "networkidle" });
+    await shot(np, "j1_05_home__desktop");
+    const nh2 = await np.evaluate(() => document.body.innerText);
+    ok("결과를 받은 뒤 홈이 그 결과를 가리킨다", /결과 보기/.test(nh2));
+    await nctx.close();
 
     /* ── 손전화 390px (규격 §20·§27) ─────────────────────────────── */
     console.log("\n── 손전화 390px");

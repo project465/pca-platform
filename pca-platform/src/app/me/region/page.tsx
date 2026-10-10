@@ -34,7 +34,7 @@ export default async function Region() {
       <CmHead
         kicker="지역 · 기관"
         title="어디에서 일하고 싶은지"
-        lead={"이 선택은 기술영역 결과에 반영되지 않습니다. "
+        lead={"이 선택은 기술영역 결과를 바꾸지 않습니다. "
           + "산업과 직무를 읽는 순서와 탐색 화면만 달라집니다."}
       />
 

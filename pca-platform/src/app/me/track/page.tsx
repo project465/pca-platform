@@ -43,10 +43,10 @@ export default async function Track() {
   const on = (await trackInterest(user.id)).length > 0;
 
   return (
-    <CmShell active="/me/track" title="Track">
+    <CmShell active="/me/track" title="Track" hold>
       <CmHead
         kicker="준비 중"
-        title="상황이 바뀔 때 다시 계산해 주는 자리"
+        title="상황이 바뀌면 다시 계산해 드립니다"
         lead={"검사 결과는 찍은 날의 상태입니다. 경험이 늘고 목표가 바뀌면 "
           + "그때마다 다시 계산하는 일을 Track 이 맡습니다. 아직 켜지지 "
           + "않았고, 값과 켜는 날은 정해지지 않았습니다."}

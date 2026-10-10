@@ -147,7 +147,7 @@ async function main(): Promise<void> {
 
     const planTxt = await p.evaluate(() => document.body.innerText);
     ok("달라진 것 화면이 무엇을 할지 말한다",
-      /반영|달라|바뀌|아직/.test(planTxt), planTxt.replace(/\s+/g, " ").slice(0, 50));
+      /더하|달라|바뀌|아직/.test(planTxt), planTxt.replace(/\s+/g, " ").slice(0, 50));
 
     const applyBtn = p.locator('form button[type="submit"]');
     if (await applyBtn.count()) {
@@ -157,7 +157,7 @@ async function main(): Promise<void> {
       const at = new URL(p.url()).pathname;
       ok("반영하면 현재 상태로 이어진다", at === "/me/state", at);
       const t = await p.evaluate(() => document.body.innerText);
-      ok("달라진 수를 그 자리에서 적는다", /반영했습니다/.test(t),
+      ok("달라진 수를 그 자리에서 적는다", /더했습니다/.test(t),
         /반영했습니다/.test(t) ? "적는다" : "안 적는다");
     } else {
       /* 반영할 거리가 없으면 그 사실을 적는 것이 맞다 */

@@ -3,7 +3,7 @@ import { requireUser } from "@/lib/session";
 import { actionsOf, currentState, latestResult, type ActionRow } from "@/lib/me-v3/platform";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import { domainArtifacts } from "@/lib/me-v3/runtime/domain-facts";
-import { gapKo } from "@/lib/me-v3/result/text.ko";
+import { actionKo, gapKo } from "@/lib/me-v3/result/text.ko";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { CmShell, CmHead } from "../shell";
 import { moveAction, pullActions } from "./actions";
@@ -53,7 +53,7 @@ const WHY_BY_CODE: Record<string, string> = {
     + " 없습니다.",
   ADD_VERIFICATION: "무엇과 비교해 확인했는지가 없으면 그 값이 맞다는"
     + " 말을 할 수 없습니다.",
-  FILL_AXIS: "그 영역에서 비어 있는 판단 자리라, 채우면 설명할 수 있는"
+  FILL_AXIS: "그 영역에서 아직 확인되지 않은 판단이라, 채우면 설명할 수 있는"
     + " 범위가 넓어집니다.",
   TRY_SHORT_EXPERIENCE: "관심은 있고 해 본 적이 없는 영역입니다. 짧게 한 번"
     + " 해 보면 판단할 재료가 생깁니다.",
@@ -99,6 +99,28 @@ export default async function Next(
    * 있다. 그 둘을 글자로 견주면 **한 번도 맞지 않고**, 그러면 `왜
    * 필요한가` 가 영원히 서지 않는다.
    */
+  /** 그 줄이 굳은 결과의 어느 할 일에서 왔는가 */
+  const modelOf = (a: ActionRow) => (model?.actions ?? []).find((x) =>
+    (x.domain ?? "") === (a.td_code ?? "") && (x.axis ?? "") === (a.axis_code ?? "")) ?? null;
+
+  /**
+   * 화면에 서는 말(규격 §9).
+   *
+   * **짧은 지시가 머리글이고 차례는 펼침 안이다.** 담아 둔 줄의 `body` 는
+   * 담을 때의 문장이라 옛 판본에서는 화살표 넷짜리 체인이 들어 있다.
+   * 굳은 결과에서 같은 할 일을 찾으면 지금 판본의 짧은 지시로 적고,
+   * 못 찾으면 담아 둔 문장을 그대로 쓴다. **지어내지 않는다.**
+   */
+  const sayOf = (a: ActionRow): { head: string; guide: string[] } => {
+    const x = modelOf(a);
+    const t = x && model
+      ? actionKo(x, x.domain ? domainName(x.domain) : "", model.stage) : null;
+    return {
+      head: t?.do ?? a.body,
+      guide: [t?.guide, t?.note].filter((v): v is string => !!v),
+    };
+  };
+
   const gapOf = (a: ActionRow) => {
     const exact = st.gaps.find((g) =>
       g.domain === a.td_code && (g.axis ?? "") === (a.axis_code ?? ""));
@@ -191,26 +213,33 @@ export default async function Next(
               두른다: 아래 접힌 목록과 같은 생김새면 `하나만 강조한다` 가
               화면에서 지켜지지 않는다 */}
           <article className="cm-gap" style={{ marginBottom: 20 }}>
-            <h3>{first.body}</h3>
+            <h3>{sayOf(first).head}</h3>
             {(() => {
               const g = gapOf(first);
               const k = g ? gapKo(g, domainName(g.domain)) : null;
               const how = howOf(first);
               /* 빈자리가 없으면 **그 할 일을 고른 규칙**이 까닭을 든다 */
-              const code = (model?.actions ?? []).find((x) =>
-                (x.domain ?? "") === (first.td_code ?? "")
-                && (x.axis ?? "") === (first.axis_code ?? ""))?.code ?? "";
+              const code = modelOf(first)?.code ?? "";
               const why = k?.why ?? WHY_BY_CODE[code] ?? "";
+              const guide = sayOf(first).guide;
               return (
                 <>
                   {why ? <p><b>왜 필요한가</b> {why}</p> : null}
+                  {/* **상세 가이드는 펼침 안이다**(규격 §9). 적는 차례와
+                      깊이는 할 때 읽는 글이지 고를 때 읽는 글이 아니다 */}
+                  {guide.length ? (
+                    <details className="cm-why is-fields">
+                      <summary>어떻게 적으면 되나요</summary>
+                      {guide.map((x) => <p key={x}>{x}</p>)}
+                    </details>
+                  ) : null}
                   {k ? (
                     <p><b>어느 자리</b> {k.title}</p>
                   ) : (
                     <p>
                       <b>어느 자리</b>{" "}
                       {first.td_code
-                        ? `${domainName(first.td_code)} · 지금 비어 있는 자리는 없습니다`
+                        ? `${domainName(first.td_code)} · 지금 부족한 부분은 없습니다`
                         : "영역을 가리지 않는 할 일입니다"}
                     </p>
                   )}
@@ -256,7 +285,7 @@ export default async function Next(
                     <div className="cm-rows">
                       {list.map((a) => (
                         <p className="cm-row" key={a.id}>
-                          <b>{a.body}</b>
+                          <b>{sayOf(a).head}</b>
                           <span className="cm-when">
                             {a.td_code ? domainName(a.td_code) : ""}
                           </span>

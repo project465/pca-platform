@@ -2,7 +2,7 @@ import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import { currentState, resultHistory } from "@/lib/me-v3/platform";
 import { domainName } from "@/lib/me-v3/runtime/session";
-import { AXIS_KO } from "@/lib/me-v3/result/text.ko";
+import { recentChangeKo } from "@/lib/me-v3/change-text.ko";
 import { registry } from "@/lib/me-v3/core-registry";
 import { CmShell, CmHead } from "../shell";
 
@@ -23,6 +23,9 @@ export default async function Results() {
   const user = await requireUser();
   const [st, rows] = await Promise.all([currentState(user.id), resultHistory(user.id)]);
   const snaps = rows.filter((r) => r.kind === "SNAPSHOT");
+  /* 세 화면이 같이 쓰는 문장(규격 §8). 여기서 따로 적으면 같은 변화가
+     홈과 현재 상태와 이 쪽에서 서로 다른 말로 읽힌다 */
+  const change = recentChangeKo(st, domainName, 2);
 
   return (
     <CmShell active="/me/results" title="결과 기록">
@@ -30,7 +33,7 @@ export default async function Results() {
         kicker="결과 기록"
         title="검사 당시 결과와 현재 상태"
         lead={"검사 당시 결과는 응시하신 그날의 문항과 기준으로 굳어 있습니다. "
-          + "현재 상태는 그 뒤에 더한 경험까지 반영한 값이라 달라질 수 있습니다."}
+          + "현재 상태는 그 뒤에 더한 경험까지 담은 값이라 달라질 수 있습니다."}
       />
 
       {!snaps.length ? (
@@ -48,27 +51,33 @@ export default async function Results() {
             <h2>현재 상태</h2>
             <span>
               {st.recomputed_at
-                ? `${st.recomputed_at} 에 새 경험을 반영했습니다`
-                : "아직 새 경험을 반영한 적이 없어 검사 당시 결과와 같습니다"}
+                ? `${st.recomputed_at} 에 새 경험을 더했습니다`
+                : "아직 새 경험을 더한 적이 없어 검사 당시 결과와 같습니다"}
             </span>
           </header>
+          {/* **축 이름을 늘어놓지 않는다**(규격 §8). 전에는 이 자리가
+              `기구·제품 설계 · 문제 정의 / 기구·제품 설계 · 직접 판단 외 2`
+              였다. 우리가 재는 칸의 이름을 빗금으로 이어 붙인 줄이고,
+              읽는 사람에게는 **무엇이 달라졌는지**가 한 글자도 없다.
+              문장은 세 화면이 같이 쓰는 함수가 든다(홈 · 저장 직후 ·
+              현재 상태와 같은 말이어야 한다) */}
           <div className="cm-rows">
-            <p className="cm-row"><b>올라간 판단</b>
-              <span>
-                {st.raised.length
-                  ? st.raised.slice(0, 3)
-                    .map((r) => `${domainName(r.domain)} · ${AXIS_KO[r.axis]}`).join(" / ")
-                  : "없습니다"}
-                {st.raised.length > 3 ? ` 외 ${st.raised.length - 3}` : ""}
-              </span></p>
-            <p className="cm-row"><b>남아 있는 빈자리</b>
+            {change.lines.length ? change.lines.map((line) => (
+              <p className="cm-row" key={line}><b>{line}</b></p>
+            )) : (
+              <p className="cm-row"><b>아직 달라진 것이 없습니다.</b></p>
+            )}
+            {change.more ? (
+              <p className="cm-none">그 밖에 {change.more}가지가 더 달라졌습니다.</p>
+            ) : null}
+            <p className="cm-row"><b>아직 부족한 것</b>
               <span>{st.gaps.length ? `${st.gaps.length}곳` : "지금 잡힌 것이 없습니다"}</span></p>
           </div>
           <p className="cm-live-note">이 줄은 경험을 더하면 바뀝니다.</p>
           <div className="cm-acts">
             <Link className="cm-btn is-primary" href="/me/state">현재 상태 보기</Link>
             {st.pending > 0 ? (
-              <Link className="cm-btn" href="/me/recompute">새 경험 반영하기</Link>
+              <Link className="cm-btn" href="/me/recompute">새 경험 더하기</Link>
             ) : null}
           </div>
         </section>

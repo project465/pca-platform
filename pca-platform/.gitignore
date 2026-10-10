@@ -15,3 +15,6 @@ node_modules/
 npm-debug.log*
 out/
 var/reports/
+
+# 지금 떠 있는 서버가 어느 빌드인지. 기계마다 다르다
+var/.serving-build

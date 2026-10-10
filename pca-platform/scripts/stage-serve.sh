@@ -26,6 +26,16 @@ export PORT HOSTNAME=127.0.0.1
 export PLATFORM_URL="${PLATFORM_URL:-http://127.0.0.1:$PORT}"
 export PDF_BASE="${PDF_BASE:-http://127.0.0.1:$PORT}"
 
+# **어느 빌드를 내주고 있는지 적어 둔다.**
+#
+# `npm run build` 는 `.next/standalone` 을 통째로 지우고 다시 만든다. 그때
+# 떠 있던 서버는 **지워진 디렉터리를 cwd 로 들고** 계속 돈다: 쪽은 뜨는데
+# `sites/...` 를 상대 경로로 읽는 자리가 전부 ENOENT 로 500 이 된다.
+# 한 번 그렇게 속았고, 그 500 이 격리 검사의 `남의 화면이 열리지 않는다`
+# 로 보였다. `.next` 밖에 적어 두어야 지워지지 않는다.
+mkdir -p var
+cat .next/BUILD_ID > var/.serving-build 2>/dev/null || true
+
 cd .next/standalone
-echo "띄웁니다 http://127.0.0.1:$PORT  (APP_ENV=$APP_ENV)"
+echo "띄웁니다 http://127.0.0.1:$PORT  (APP_ENV=$APP_ENV · 빌드 $(cat ../../var/.serving-build 2>/dev/null))"
 exec node server.js

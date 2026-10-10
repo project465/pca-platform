@@ -31,6 +31,7 @@ for (const line of (() => {
 }
 
 import { chromium, type BrowserContext } from "playwright";
+import { assertFreshServer } from "./_loop-fixture";
 import { query, queryOne } from "../src/lib/db";
 import { hashPassword } from "../src/lib/password";
 import { addExperience, experiencesOf } from "../src/lib/me-v3/platform";
@@ -234,6 +235,7 @@ async function main(): Promise<void> {
   });
   await applyRecompute(A.id).catch(() => undefined);
 
+  assertFreshServer();
   const browser = await chromium.launch({
     args: ["--no-sandbox", "--disable-dev-shm-usage"],
     ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}),

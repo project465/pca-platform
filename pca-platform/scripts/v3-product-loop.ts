@@ -127,11 +127,11 @@ async function main(): Promise<void> {
     const listTxt = await p2.evaluate(() => document.body.innerText);
     ok("다시 들어오면 그 경험이 목록에 있다", listTxt.includes(title));
     /* 규격 §14 의 다섯. **개수가 아니라 이 다섯이 보여야 한다** */
-    ok("목록이 날짜와 기술영역과 반영 여부를 적는다",
-      /2025-03|2025/.test(listTxt) && /반영/.test(listTxt));
+    ok("목록이 날짜와 기술영역과 더했는지를 적는다",
+      /2025-03|2025/.test(listTxt) && /더함|더하지 않음/.test(listTxt));
 
     /* ── 3. recompute triggered ──────────────────────────────────── */
-    console.log("\n── 3. 반영이 돈다");
+    console.log("\n── 3. 더하기가 돈다");
     const q = await queryOne<{ n: string }>(
       `SELECT count(*)::text AS n FROM career_events
         WHERE user_id = $1 AND status IN ('queued','failed')`, [a.id]);
@@ -146,7 +146,8 @@ async function main(): Promise<void> {
     /* **`보기` 라고 적힌 단추가 값을 바꾸지 않는다**(규격 §6) */
     const applyLabel = await p2.locator('.cm-acts form button[type="submit"]')
       .first().innerText().catch(() => "");
-    ok("반영 단추가 하는 일을 말로 적는다", /반영|계산/.test(applyLabel), applyLabel);
+    ok("더하는 단추가 하는 일을 말로 적는다",
+      /더하기|계산/.test(applyLabel), applyLabel);
     await p2.locator('.cm-acts form button[type="submit"]').first()
       .click({ force: true });
     await p2.waitForLoadState("networkidle").catch(() => undefined);
@@ -169,12 +170,30 @@ async function main(): Promise<void> {
     ok("`career_profiles` 가 갱신된다", !!prof?.at, prof?.at ?? "없음");
     ok("지금 값에 영역이 적힌다", Number(prof?.n ?? 0) > 0, `영역 ${prof?.n ?? 0}곳`);
     const stateTxt = await p2.evaluate(() => document.body.innerText);
-    ok("현재 상태가 최근 반영 날짜를 적는다", /최근 반영/.test(stateTxt));
-    ok("현재 상태 첫 화면의 차례가 규격 §7 이다",
-      ["지금 설명할 수 있는 영역", "최근 달라진 것", "아직 부족한 것", "다음 행동"]
-        .every((h) => stateTxt.includes(h)),
-      ["지금 설명할 수 있는 영역", "최근 달라진 것", "아직 부족한 것", "다음 행동"]
-        .filter((h) => !stateTxt.includes(h)).join(" / ") || "넷 다 있다");
+    ok("현재 상태가 기준 날짜를 적는다", /\d{4}-\d{2}-\d{2} 기준/.test(stateTxt));
+    /**
+     * 첫 화면의 차례(규격 §5)와 세부의 자리(규격 §6).
+     *
+     * **있는지만 세지 않고 차례까지 센다.** 넷이 다 있으면 통과하던
+     * 검사는 `다음 행동` 이 Gap 목록 아래로 밀려 첫 화면 밖에 있어도
+     * 통과했다. 실제로 그렇게 서 있었다.
+     */
+    /* **글자를 찾지 않고 묶음 머리를 읽는다.** 쪽 글 전체에서 찾으면
+       머리의 단추(`지금 할 일 보기`)와 알림 문장이 먼저 걸려서, 차례가
+       뒤집혀 있어도 통과하거나 멀쩡한데 걸린다 */
+    const sects = await p2.$$eval("h2.cm-sect",
+      (xs) => xs.map((x) => (x.firstChild?.textContent ?? x.textContent ?? "").trim()));
+    const ORDER_TOP = ["지금 설명할 수 있는 영역", "최근 달라진 것", "지금 할 일"];
+    const at5 = ORDER_TOP.map((h) => sects.findIndex((t) => t === h));
+    ok("현재 상태 첫 화면의 차례가 규격 §5 다",
+      at5.every((i) => i >= 0) && at5.every((v, i) => i === 0 || v > at5[i - 1]),
+      sects.join(" / "));
+    /* 규격 §6. 비어 있는 자리 전부와 전체 기술영역은 그 셋 **아래**다 */
+    const below = ["아직 부족한 것", "전체 기술영역"]
+      .map((h) => sects.findIndex((t) => t === h));
+    ok("세부는 첫 화면 아래에 있다",
+      below.every((i) => i > Math.max(...at5)),
+      below.join(" / "));
     /* 규격 §8. **점수 비교처럼 보이지 않는다** */
     ok("점수처럼 견주지 않는다",
       !/\+\s?\d+\s?점/.test(stateTxt) && !/\d\s*→\s*\d/.test(stateTxt));
@@ -263,6 +282,35 @@ async function main(): Promise<void> {
     }
     ok("루프 안에 막다른 길이 없다", dead.length === 0,
       dead.slice(0, 3).join(" / ") || `쪽 ${LOOP.length}자리`);
+
+    /* ── 8b. 적다 만 것을 들고 나가지 않는다 (규격 §4) ──────────── */
+    console.log("\n── 8b. 적다 만 것을 들고 나가지 않는다");
+    {
+      const q = await ctx.newPage();
+      await q.goto(`${B}/me/experience/new`, { waitUntil: "networkidle" });
+      let asked = false;
+      /* **띠를 누르면 묻는다.** 묻지 않으면 적던 것이 통째로 사라진다 */
+      q.on("dialog", (d) => { asked = true; void d.dismiss(); });
+      await q.fill('input[name="title"]', "떠나기 전 확인용");
+      const bar = q.locator('nav.cm-rail a[href="/me"]').first();
+      await bar.click({ timeout: 5000 }).catch(() => undefined);
+      await q.waitForTimeout(800);
+      ok("적다 말고 띠를 누르면 묻는다", asked, asked ? "묻는다" : "그냥 떠난다");
+      ok("묻는 창에서 머무르면 적던 화면에 남는다",
+        new URL(q.url()).pathname === "/me/experience/new", new URL(q.url()).pathname);
+      /* **적은 것이 없으면 묻지 않는다.** 아무 때나 물으면 묻는 창이
+         거드는 것이 아니라 거치적거리는 것이 된다 */
+      const r = await ctx.newPage();
+      let asked2 = false;
+      r.on("dialog", (d) => { asked2 = true; void d.dismiss(); });
+      await r.goto(`${B}/me/experience/new`, { waitUntil: "networkidle" });
+      await r.locator('nav.cm-rail a[href="/me"]').first()
+        .click({ timeout: 5000 }).catch(() => undefined);
+      await r.waitForTimeout(800);
+      ok("적은 것이 없으면 묻지 않는다", !asked2 && new URL(r.url()).pathname === "/me",
+        `${asked2 ? "묻는다" : "안 묻는다"} · ${new URL(r.url()).pathname}`);
+      await q.close(); await r.close();
+    }
 
     /* ── 9. no internal code leak ───────────────────────────────── */
     console.log("\n── 9. 안쪽 이름 0");
