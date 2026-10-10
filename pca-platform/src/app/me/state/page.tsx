@@ -141,7 +141,7 @@ export default async function State(
         </div>
       ) : (
         <div className="cm-soon">
-          <b>지원서에서 바로 쓸 수 있는 근거가 아직 잡히지 않았습니다.</b>
+          <b>지원서에서 설명할 수 있는 근거가 아직 잡히지 않았습니다.</b>
           관심이 높은 영역에서 짧게 한 번 해 보고 그것을 적으면 이 자리가 섭니다.
         </div>
       )}

@@ -248,15 +248,21 @@ async function main() {
     ...(await shot(a01, (id) => id === "sweep-interest", "영역 훑기 · 관심")) });
   out.push({ name: "04b_screening_exp", who: "shots", note: "영역 훑기 · 경험",
     ...(await shot(a01, (id) => id === "sweep-exposure", "영역 훑기 · 경험")) });
+  /* **배우고 싶은 정도를 따로 찍는다**(규격 §19). 관심과 같은 격자를
+     쓰지만 다섯 칸의 밝혀 적는 말이 다르다(`1 전혀 배우고 싶지 않음` ~
+     `5 매우 배우고 싶음`). 한 장만 찍으면 그 차이를 아무도 안 본다 */
+  out.push({ name: "04c_screening_learn", who: "shots", note: "영역 훑기 · 배울 뜻",
+    ...(await shot(a01, (id) => id === "sweep-learning", "영역 훑기 · 배울 뜻")) });
 
   /* P03 캡스톤 학생 · STANDARD */
   const p03 = await freshAttempt(shots, "STANDARD", "bachelor", null);
   await fillGrid(p03, { TD01: [5, 2, 5], TD08: [4, 1, 4], TD02: [4, 1, 3] });
   const a03 = await walk(p03, shots, "mid");
-  out.push({ name: "05_core_probe", who: "shots", note: "실제 업무 판단",
+  /* **묶음 전환이 이 화면 안으로 들어왔다**(규격 §12). `t-judge` 전환
+     화면을 걷고 첫 질문 위의 맥락 한 줄로 얹었으므로, 찍는 자리도 그
+     첫 질문이다. 전에는 두 장이었고 뒤엣것에 읽을 것이 없었다 */
+  out.push({ name: "05_core_probe", who: "shots", note: "실제 업무 판단 · 묶음 맥락 한 줄",
     ...(await shot(a03, (id) => /^probe-.+-J3$/.test(id), "실제 업무 판단")) });
-  out.push({ name: "05b_transition", who: "shots", note: "묶음 전환",
-    ...(await shot(a03, (id) => id === "t-judge", "묶음 전환")) });
 
   /* P04 구조해석 석사 · PRO. 뒤쪽 자리 전부 */
   const p04 = await freshAttempt(shots, "PRO", "master", "STEM");
@@ -266,6 +272,11 @@ async function main() {
     ...(await shot(a04, (id) => /^deep-.+-1$/.test(id), "심화 네 축")) });
   out.push({ name: "06b_grad_branch", who: "shots", note: "대학원 장면",
     ...(await shot(a04, (id) => id === "branch-1", "대학원 장면")) });
+  /* **남겨 둔 전환 화면.** 한 경험을 네 화면에 나누어 묻는다는 것은 한
+     줄로 줄이면 뜻이 사라진다: 없으면 네 화면에서 서로 다른 경험을
+     떠올려 적는다(규격 §12) */
+  out.push({ name: "06c_transition", who: "shots", note: "남겨 둔 전환 화면",
+    ...(await shot(a04, (id) => id === "t-trans", "경험 번역 안내")) });
   /* **강제 선택 두 화면은 보기가 같다.** 그래서 나란히 찍어, 두 화면이
      서로 다른 것을 묻는다는 것이 글로 읽히는지 눈으로 본다. 이 둘은
      훑기에서 묶인 영역이 있을 때만 서므로 PRO 응시에서 찾는다 */

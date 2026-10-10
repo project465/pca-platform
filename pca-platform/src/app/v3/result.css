@@ -141,9 +141,13 @@
   border-radius: var(--r-r); overflow: hidden;
   grid-template-columns: 1fr;
 }
-/* **칸이 셋이면 칸이 셋이다**(규격 §1). 두 칸으로 두었더니 넷째 자리가
-   빈 회색 네모로 남았고, 그 빈 자리가 덜 그린 화면으로 읽혔다 */
-@media (min-width: 860px) { .rs-top { grid-template-columns: repeat(3, 1fr); } }
+/* **칸 수에 맞게 칸을 센다**(규격 §1·§13). 세 칸이던 것이 네 칸이 됐다:
+   지금 확인된 것 · 비어 있는 것 · 지금 할 행동 · 산업·직무 연결.
+   두 칸으로 두었더니 넷째 자리가 빈 회색 네모로 남았고, 그 빈 자리가
+   덜 그린 화면으로 읽혔다. 네 칸을 한 줄에 세우면 중간 폭에서 한 칸이
+   글자 두 자가 되므로 860~1179px 은 두 줄 두 칸이다 */
+@media (min-width: 860px) { .rs-top { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1180px) { .rs-top { grid-template-columns: repeat(4, 1fr); } }
 .rs-top > div { background: var(--r-paper); padding: 20px 22px; }
 .rs-top h3 {
   margin: 0 0 var(--r-s2); font-size: var(--r-t-meta); font-weight: 650;
@@ -189,6 +193,52 @@
 .rs-zone.z3 { color: var(--r-accent-ink); background: var(--r-accent-soft); }
 .rs-zone.z4 { color: var(--sf-not); background: var(--sf-not-soft); }
 .rs-domain > header .rs-meta { margin-left: auto; font-size: var(--r-t-meta); color: var(--r-ink-3); }
+
+/* ── 영역 기본 보기 다섯 줄(규격 §14) ──
+   영역명 · 현재 상태 한 줄 · 가장 강한 근거 둘셋 · 부족한 것 하나 ·
+   다음 행동 하나. 셋을 같은 모양으로 쌓지 않는다: 상태는 문장이고
+   근거는 그 사람이 고른 글자이고 뒤의 둘은 우리가 적는 안내다.
+   이름을 새로 짓기 전에 CSS 에 그 이름이 있는지 봤다 */
+.rs-dstate {
+  margin: 0; padding: 16px 22px 0;
+  font-size: var(--r-t-body); color: var(--r-ink); line-height: 1.6;
+  word-break: keep-all;
+}
+.rs-dstrong {
+  margin: 12px 0 0; padding: 0 22px; list-style: none;
+  display: grid; gap: 6px;
+}
+.rs-dstrong > li {
+  display: flex; gap: 10px; align-items: baseline;
+  font-size: var(--r-t-body); color: var(--r-ink-2); line-height: 1.55;
+  word-break: keep-all;
+}
+.rs-dstrong > li > span {
+  flex: none; min-width: 72px;
+  font-size: var(--r-t-meta); font-weight: 650; color: var(--r-ink-3);
+}
+.rs-dnone {
+  margin: 14px 0 0; padding: 0 22px;
+  font-size: var(--r-t-body); color: var(--r-ink-3); line-height: 1.55;
+}
+.rs-dgap, .rs-dnext {
+  margin: 14px 22px 0; padding: 12px 14px;
+  border-radius: var(--r-r-sm); background: var(--r-sunk);
+}
+.rs-dnext { margin-bottom: 18px; }
+.rs-dgap h4, .rs-dnext h4 {
+  margin: 0 0 4px; font-size: var(--r-t-meta); font-weight: 650;
+  color: var(--r-ink-3); letter-spacing: .01em;
+}
+.rs-dgap p, .rs-dnext p {
+  margin: 0; font-size: var(--r-t-body); color: var(--r-ink);
+  line-height: 1.55; word-break: keep-all;
+}
+/* 상세 안으로 내려간 수. **영역 이름 옆에서 걷었다**(규격 §15) */
+.rs-fold .rs-meta {
+  display: block; margin: 12px 0 0;
+  font-size: var(--r-t-meta); color: var(--r-ink-3);
+}
 
 /* 왜 그런가. **우리 해석보다 그 사람이 고른 항목이 크다** */
 .rs-why { padding: 4px 22px 18px; }
@@ -687,6 +737,20 @@
   .rs-fine > p { display: none; }
   .rs-fold > [hidden], .rs-disc > [hidden],
   .rs-open > [hidden] { display: block !important; }
+  /**
+   * **종이에서는 요약 줄을 걷는다**(규격 §14).
+   *
+   * 화면에서는 영역 기본 보기가 다섯 줄이고 전체 목록은 `상세 근거
+   * 보기` 안에 있다. 종이에서는 그 상세가 저절로 펴지므로, 가장 강한
+   * 근거 둘셋이 **바로 아래 전체 목록의 부분집합으로 두 번 찍힌다.**
+   * 빈자리와 다음 행동도 아래 `앞으로 채울 것` 과 `다음에 할 일` 절이
+   * 영역을 가리지 않고 모아 싣는다.
+   *
+   * **담긴 자료가 줄지 않는다**: 걷는 것은 같은 글자가 한 쪽 안에 두
+   * 번 찍히는 자리뿐이고, 그래서 쪽수가 규격 안으로 돌아온다. 현재
+   * 상태 한 줄은 남긴다 — 그 문장은 다른 어디에도 없다.
+   */
+  .rs-dstrong, .rs-dgap, .rs-dnext { display: none !important; }
 
   /* **A4 의 글 폭은 690px 안팎이다.** 좁은 화면 규칙(719px)이 종이에서도
      걸리므로 여기서 되돌린다. 안 되돌리면 인쇄본이 손전화 화면이 된다 */

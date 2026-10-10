@@ -218,6 +218,46 @@ for (const l of lines) {
 ok("광고 말투와 재지 않은 단정이 없다", banned.length === 0,
    banned.slice(0, 4).join(" | "));
 
+/* ── 7-1. 결과 문장이 쓰지 않기로 한 말(규격 §16) ──────────────────
+   앞의 `BAN` 은 광고 말투를 세고, 이쪽은 **재지 않은 결론**을 센다.
+   `검증됐다` 와 `적합하다` 와 `강점이다` 는 규준도 인지 면접도 없는
+   지금 이 검사가 할 수 없는 말이고, `지원서에 바로 쓸 수 있다` 는
+   **쓰는 사람이 할 일을 우리가 끝낸 것으로 적는 말**이다.
+
+   **부정문은 지나간다.** 이 저장소의 `writing:check` 과 같은 규칙이다:
+   막는 것은 결론이고 그 결론을 막는 문장이 아니다. 실제로 결과지는
+   `합격 가능성이나 순위를 내지 않습니다` 를 적고 있고, 그 줄을 세면
+   지켜 주려던 문장을 지우라고 요구하게 된다. */
+const CLAIM: [string, string][] = [
+  ["검증됐", "현재 응답에서 확인된"],
+  ["검증되었", "현재 응답에서 확인된"],
+  ["적합하다", "설명할 수 있는"],
+  ["적합합니다", "설명할 수 있는"],
+  ["강점이다", "확인된 경험"],
+  ["강점입니다", "확인된 경험"],
+  ["높은 가능성", "확인된 경험"],
+  ["바로 쓸 수 있", "설명할 수 있"],
+  ["확정됐", "확인된"],
+  ["확정되었", "확인된"],
+];
+const NEG = /(않|없|못|아닙|아니)/;
+const claimed: string[] = [];
+for (const l of lines) {
+  for (const [bad, better] of CLAIM) {
+    const at = l.text.indexOf(bad);
+    if (at < 0) continue;
+    /* 그 말이 들어간 문장만 본다. 문장 안에 부정이 있으면 결론이 아니다 */
+    const from = Math.max(0, l.text.lastIndexOf(".", at) + 1);
+    const to = l.text.indexOf(".", at);
+    const sent = l.text.slice(from, to < 0 ? undefined : to);
+    if (NEG.test(sent)) continue;
+    claimed.push(`${l.who} ${l.where}: ${bad} → ${better}`);
+  }
+}
+ok("결과 문장이 재지 않은 것을 단정하지 않는다", claimed.length === 0,
+   claimed.length ? claimed.slice(0, 4).join(" | ")
+     : `막는 말 ${CLAIM.length}가지 · 문장 ${lines.length}줄`);
+
 /* ── 8. 조사 고르기 되돌이 검사 ────────────────────────────────────── */
 /* **고친 자리가 다시 돌아오지 않게** 지난번에 나갔던 말을 박아 둔다 */
 const CASES: [string, string][] = [

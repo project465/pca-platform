@@ -55,6 +55,26 @@ export type Screen = {
   question?: string;
   /** 필요할 때만 한 줄 */
   help?: string;
+  /**
+   * 다음 묶음으로 넘어왔다는 것을 **질문 위 한 줄**로 적는 자리(규격 §12).
+   *
+   * 전에는 묶음이 바뀔 때마다 전환 화면을 한 장 세웠다. 그 가운데 셋은
+   * 담은 것이 `이제 ~를 묻습니다` 한 줄과 영역 이름 목록뿐이었고, 영역
+   * 이름은 **바로 다음 화면의 머리말에 다시 적혀 있었다.** 읽을 것이 없는
+   * 화면에 `계속` 을 누르게 하면 그 누름이 세 번 늘고, 응시자는 그것을
+   * 검사가 길어진 것으로 센다.
+   *
+   * 그래서 그 셋을 걷고 **첫 질문 위에 맥락 한 줄**로 얹는다. 묶음 안의
+   * 둘째 화면부터는 이 줄이 없다: 매 화면에 세우면 그것이 질문 다음으로
+   * 큰 덩이가 된다.
+   *
+   * **걷지 않은 전환 화면이 둘 있다.** 대학원 경험을 왜 묻는지(`t-xfield`)와
+   * 하나의 경험을 네 화면에 나누어 묻는다는 것(`t-trans`)은 한 줄로
+   * 줄이면 뜻이 사라진다. 앞엣것이 없으면 응시자가 그 질문을 자기를
+   * 걸러내는 것으로 읽고, 뒷엣것이 없으면 네 화면에서 서로 다른 경험을
+   * 떠올려 적는다.
+   */
+  strip?: string;
   /** 산업 장면처럼 읽기만 하는 자리의 본문 */
   body?: string[];
   /**
@@ -418,17 +438,14 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
     }
   }
 
-  /* ── 실제 업무 판단. 선별된 영역마다 네 축을 둘씩 ── */
-  if (input.probe.length) {
-    add({
-      id: "t-judge", stage: "JUDGE", kind: "transition", required: false, auto: false,
-      eyebrow: "영역 훑기 완료",
-      question: "이제 실제 경험을 확인합니다",
-      help: "아래 영역을 하나씩 묻습니다.",
-      chips: input.probe.map(domainName),
-      items: [],
-    });
-  }
+  /* ── 실제 업무 판단. 선별된 영역마다 네 축을 둘씩 ──
+     **전환 화면을 세우지 않는다**(규격 §12). `이제 실제 경험을
+     확인합니다` 와 영역 이름 목록뿐이었고, 그 이름은 바로 다음 화면의
+     머리말에 다시 적혀 있었다. 첫 질문 위에 한 줄로 얹는다 */
+  let judgeStrip: string | null = input.probe.length
+    ? `영역 훑기를 마쳤습니다. 여기서부터 ${input.probe.map(domainName).join(" · ")}`
+      + `에서 실제로 해 보신 일을 묻습니다`
+    : null;
   for (const td of input.probe) {
     const list = items.filter((x) => x.module === PROBE_BLOCK && x.technical_domain === td);
     /* **한 축의 두 문항을 한 화면에 세운다.** 같은 축의 서로 다른 판단
@@ -454,21 +471,19 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
         question: cell.length > 1
           ? (AX_ASK[ax] ?? "어떻게 하셨는지")
           : wording(cell[0].item_id, input.stage),
+        /* 묶음의 첫 질문에만 얹는다. 매 화면에 세우면 그 줄이 질문
+           다음으로 큰 덩이가 된다 */
+        ...(judgeStrip ? { strip: judgeStrip } : {}),
         items: cell.map((x) => x.item_id), domain: td,
       });
+      judgeStrip = null;
     }
   }
 
-  /* ── 심화 네 축 ── */
+  /* ── 심화 네 축 ── 같은 까닭으로 전환 화면을 걷었다 */
   if (input.tier !== "BASIC" && input.deep.length) {
-    add({
-      id: "t-deep", stage: "DEEP", kind: "transition", required: false, auto: false,
-      eyebrow: "실제 경험 완료",
-      question: "같은 영역을 조금 더 묻습니다",
-      help: "남은 자리를 채우는 질문입니다.",
-      chips: input.deep.map(domainName),
-      items: [],
-    });
+    let deepStrip: string | null =
+      `같은 영역을 조금 더 묻습니다. 남은 자리를 채우는 질문입니다`;
     for (const td of input.deep) {
       const list = items.filter((x) => x.module === DEEP_BLOCK && x.technical_domain === td);
       /* 심화 네 축을 둘씩 세운다. 영역 이름을 네 번 다시 읽지 않는다 */
@@ -481,8 +496,10 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
           question: pair.length > 1
             ? pair.map((i) => AX_ASK[i.evidence_axis ?? ""] ?? "").filter(Boolean).join(" · ")
             : wording(pair[0].item_id, input.stage),
+          ...(deepStrip ? { strip: deepStrip } : {}),
           items: pair.map((i) => i.item_id), domain: td,
         });
+        deepStrip = null;
       }
     }
   }
@@ -570,15 +587,14 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
       })
       .slice(0, INDUSTRY_DEEP_MAX);
     const sc = d.scene(deepIndustry);
-    if (list.length) {
-      add({
-        id: "t-industry", stage: "PACK", kind: "transition", required: false, auto: false,
-        eyebrow: sc?.name ?? "산업",
-        question: "이 산업에서 달라지는 판단을 묻습니다",
-        help: "용어를 모르셔도 됩니다. 질문마다 쉬운 말을 같이 적어 둡니다.",
-        items: [],
-      });
-    }
+    /* **전환 화면을 걷었다**(규격 §12). 담은 것이 `이 산업에서 달라지는
+       판단을 묻습니다` 한 줄과 `용어를 모르셔도 됩니다` 한 줄이었고,
+       뒷엣것은 **질문마다 쉬운 말이 이미 붙어 있어서** 거기서 바로
+       확인된다. 첫 질문 위에 한 줄로 얹는다 */
+    let indStrip: string | null = list.length
+      ? `${sc?.name ?? "고르신 산업"} 쪽에서 달라지는 판단을 묻습니다.`
+        + ` 용어를 모르셔도 질문마다 쉬운 말을 같이 적어 둡니다`
+      : null;
     for (const i of list) {
       add({
         id: `ind-${i.item_id}`, stage: "PACK", kind: "single",
@@ -586,8 +602,10 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
         eyebrow: sc?.name ?? "산업 판단",
         question: wording(i.item_id, input.stage),
         help: d.gloss(i.item_id) ?? undefined,
+        ...(indStrip ? { strip: indStrip } : {}),
         items: [i.item_id],
       });
+      indStrip = null;
     }
   }
 

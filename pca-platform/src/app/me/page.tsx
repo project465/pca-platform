@@ -128,7 +128,7 @@ export default async function Home() {
             <div className="cm-pane">
               <h3>최근 경험<em>{exps.length}개</em></h3>
               <div className="cm-rows">
-                {exps.slice(0, 3).map((e) => (
+                {exps.slice(0, HOME_RECENT).map((e) => (
                   <p className="cm-row" key={e.id}>
                     <b>{e.title}</b>
                     <span className="cm-when">{e.created_at.slice(0, 10)}</span>
@@ -334,11 +334,16 @@ export default async function Home() {
               </div>
             </div>
 
+            {/* **줄을 둘까지 세운다**(규격 §8). 홈의 `기록` 은 최근 것이
+                있다는 것과 어디서 다 볼 수 있는지까지다. 셋씩 세우면 이
+                묶음이 아래에서 가장 긴 덩이가 되고, 홈의 세로 차례(현재
+                상태 → 지금 할 일 → 최근 변화 → 기록)에서 꼬리가 몸통보다
+                커진다 */}
             {exps.length ? (
               <div className="cm-pane">
                 <h3>최근 경험<em>{exps.length}개</em></h3>
                 <div className="cm-rows">
-                  {exps.slice(0, 3).map((e) => (
+                  {exps.slice(0, HOME_RECENT).map((e) => (
                     <p className="cm-row" key={e.id}>
                       <b>{e.title}</b>
                       <span className="cm-when">{e.created_at.slice(0, 10)}</span>
@@ -346,7 +351,9 @@ export default async function Home() {
                   ))}
                 </div>
                 <div className="cm-acts">
-                  <Link className="cm-btn" href="/me/experience">경험 전체 보기</Link>
+                  <Link className="cm-btn" href="/me/experience">
+                    {exps.length > HOME_RECENT ? "경험 모두 보기" : "경험 전체 보기"}
+                  </Link>
                 </div>
               </div>
             ) : null}
@@ -357,7 +364,7 @@ export default async function Home() {
               <div className="cm-pane">
                 <h3>지원 기록<em>{apps.length}곳</em></h3>
                 <div className="cm-rows">
-                  {apps.slice(0, 3).map((a) => (
+                  {apps.slice(0, HOME_RECENT).map((a) => (
                     <p className="cm-row" key={a.id}>
                       <b>{a.org_name ?? a.role_label ?? "이름 없음"}</b>
                       <span>{APPLY_SAY[a.state]}</span>
@@ -365,37 +372,19 @@ export default async function Home() {
                   ))}
                 </div>
                 <div className="cm-acts">
-                  <Link className="cm-btn" href="/me/apply">지원 기록 보기</Link>
+                  <Link className="cm-btn" href="/me/apply">
+                    {apps.length > HOME_RECENT ? "지원 기록 모두 보기" : "지원 기록 보기"}
+                  </Link>
                 </div>
               </div>
             ) : null}
 
-            {/* 보고 있는 자리. **고른 것만 적고 단추를 달지 않는다**:
-                바꾸는 자리는 왼쪽 띠의 `산업·직무` 와 `지역·기관` 이다 */}
-            {(profile?.target_industry?.length ?? 0) > 0
-              || (profile?.target_role?.length ?? 0) > 0 || profile?.home_region ? (
-              <div className="cm-pane">
-                <h3>관심 산업과 직무</h3>
-                <div className="cm-rows">
-                  {profile?.target_industry?.length ? (
-                    <p className="cm-row"><b>산업</b>
-                      <span>{profile.target_industry
-                        .map((c) => indName.get(c) ?? c).join(" · ")}</span></p>
-                  ) : null}
-                  {profile?.target_role?.length ? (
-                    <p className="cm-row"><b>직무</b>
-                      <span>{profile.target_role.map((c) => roleName(c)).join(" · ")}</span></p>
-                  ) : null}
-                  {profile?.home_region ? (
-                    <p className="cm-row"><b>지역</b>
-                      <span>
-                        {regionName(profile.home_region)}
-                        {profile.move_range ? ` · ${moveLabel(profile.move_range)}` : ""}
-                      </span></p>
-                  ) : null}
-                </div>
-              </div>
-            ) : null}
+            {/* **`관심 산업과 직무` 칸을 홈에서 걷었다**(규격 §8).
+                홈의 첫 화면에 서는 것은 넷이다: 현재 상태 · 지금 할 한
+                가지 · 최근 변화 · 최근 기록. 고르신 산업과 직무는 그 넷의
+                어느 것도 아니고 **바꾸는 자리가 왼쪽 띠의 `산업·직무` 와
+                `지역·기관`** 이라, 홈에 두면 바꿀 수 없는 칸이 하나 늘고
+                넷의 차례가 다섯으로 읽힌다. 값은 그 두 쪽에 그대로 있다 */}
           </div>
         </>
       ) : null}
@@ -441,6 +430,15 @@ const APPLY_SAY: Record<string, string> = {
 
 /** 홈이 드는 줄 수. **요약이 세부를 대신하면 세부 쪽이 죽는다** */
 const HOME_ROWS = 3;
+
+/**
+ * `기록` 묶음이 드는 줄 수(규격 §8).
+ *
+ * 하나나 둘까지이고 나머지는 `모두 보기` 뒤에 둔다. 셋씩 세우면 홈의
+ * 꼬리가 몸통보다 길어지고, 세로 차례가 곧 중요도라는 규칙이 아래에서
+ * 뒤집힌다.
+ */
+const HOME_RECENT = 2;
 
 /** 첫 카드에 올리는 묶음. **아직 판단하기 어려운 영역은 올리지 않는다** */
 const READY_ZONES: string[] = ["Z1_EVIDENCE_ESTABLISHED", "Z2_EVIDENCE_INCOMPLETE"];

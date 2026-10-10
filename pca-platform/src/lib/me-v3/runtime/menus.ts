@@ -40,7 +40,11 @@ export type Control =
    * 칸의 접근성 이름에는 긴 말이 그대로 들어간다.
    */
   | { kind: "steps"; answer: "scale5" | "exposure";
-      options: { value: number | null; label: string; short: string }[] }
+      options: {
+        value: number | null; label: string; short: string;
+        /** 번호가 붙은 밝혀 적는 말. 격자 머리와 읽는 이름에 들어간다 */
+        full: string;
+      }[] }
   /** 고르기. 값은 코드이고 보이는 것은 `label` */
   | { kind: "choice"; options: { value: string; label: string }[];
       note?: { label: string; placeholder: string } };
@@ -61,23 +65,57 @@ export const EXPOSURE = ["없다", "한두 번", "여러 번"];
  * 적고 · 칸의 `aria-label` 에 긴 말이 들어가고 · `title` 로도 뜬다.
  */
 const SHORT_SCALE5: Record<number, string> = {
-  1: "전혀 아니다", 2: "별로 아니다", 3: "보통이다", 4: "그렇다", 5: "매우 그렇다",
+  1: "전혀 없음", 2: "적음", 3: "보통", 4: "있음", 5: "매우 있음",
 };
-/**
- * 배우고 싶은 정도도 **같은 자에 같은 말**이다.
- *
- * 전에는 넷째 칸만 갈라 두었다(관심 격자는 `관심`, 배울 뜻 격자는
- * `배우고 싶음`). 그런데 그러면 한 행 안에서 `전혀 · 별로 · 보통 · 관심 ·
- * 매우` 가 되어 **양끝과 가운데는 정도를 말하고 넷째 칸만 재는 것의 이름을
- * 말한다.** 품사가 섞인 척도는 응시자가 칸마다 다른 자를 읽게 만든다.
- *
- * 그래서 다섯 칸을 **동의 정도 한 차원**으로 적는다. 묻는 것이 무엇인지는
- * 줄(`grid_row`)과 어미(`grid_stem`)가 들고 있고, 긴 말은 격자 머리와
- * `aria-label` 과 `title` 에 그대로 있다. **문항 은행의 문면과 값과 판정은
- * 한 글자도 바뀌지 않는다**: 화면이 줄여 적는 말만 갈렸다.
- */
 const SHORT_LEARN: Record<number, string> = SHORT_SCALE5;
 const SHORT_UNKNOWN = "모르겠다";
+
+/**
+ * 척도 다섯 칸의 **밝혀 적는 말**. 재는 것마다 갈린다(규격 §10).
+ *
+ * 이것이 격자 머리와 `aria-label` 과 `title` 에 들어가는 말이고, 칸 안에
+ * 적히는 것은 위의 줄인 말이다. 둘로 가른 까닭은 자리의 폭이 다르기
+ * 때문이다: 격자 머리는 다섯 칸이 한 줄이라 긴 말이 들어가고, 칸은 열두
+ * 줄 × 다섯이라 `전혀 관심 없음` 을 적으면 글자가 세 줄로 접힌다.
+ *
+ * **한 척도 안에서 품사가 섞이지 않는다.** 한동안 칸의 줄인 말을
+ * `전혀 · 별로 · 보통 · 관심 · 매우` 로 두었는데, 양끝과 가운데는 정도를
+ * 말하고 넷째 칸만 재는 것의 이름을 말해서 응시자가 칸마다 다른 자를
+ * 읽었다. 지금은 다섯이 전부 `정도` 한 차원이고, 그 정도가 **무엇의**
+ * 정도인지는 이 표의 긴 말과 줄(`grid_row`)이 들고 있다.
+ *
+ * **문항 은행과 저장되는 값과 `band()` 는 한 글자도 바뀌지 않는다.**
+ * 은행의 `options`(`전혀 관심 없다` …)와 `option_values`(1~5·null)가
+ * 그대로이고, 이 표는 화면이 그것을 어떻게 적는가일 뿐이다.
+ */
+const FULL_SCALE5: Record<string, Record<number, string>> = {
+  interest: {
+    1: "전혀 관심 없음", 2: "관심 적음", 3: "보통",
+    4: "관심 있음", 5: "매우 관심 있음",
+  },
+  learning_intent: {
+    1: "전혀 배우고 싶지 않음", 2: "별로 배우고 싶지 않음", 3: "보통",
+    4: "배우고 싶음", 5: "매우 배우고 싶음",
+  },
+};
+
+/**
+ * 밝혀 적는 말. **번호를 앞에 붙인다**(규격 §10).
+ *
+ * 다섯 칸 척도에서 번호를 떼면 `관심 적음` 과 `보통` 사이가 몇 칸인지
+ * 눈으로만 세게 된다. 번호가 있으면 어느 칸을 고르는지가 한 번에 읽히고,
+ * 되묻는 자리에서 `2 를 고르셨습니다` 로 적을 수 있다.
+ *
+ * **소유 보기 넷에는 번호를 붙이지 않는다.** 저쪽은 누가 정했는가의
+ * 단계이고, 번호를 붙이면 `1점 · 2점 · 3점 · 4점` 으로 읽힌다. 여기는
+ * 정도를 묻는 척도라 번호가 그 뜻과 어긋나지 않는다.
+ */
+export function fullOf(axis: string, value: number | null, label: string): string {
+  if (value === null) return label;
+  if (axis === "exposure") return label;
+  const t = FULL_SCALE5[axis];
+  return t?.[value] ? `${value} ${t[value]}` : `${value} ${label}`;
+}
 
 export function shortOf(axis: string, value: number | null, label: string): string {
   if (value === null) return SHORT_UNKNOWN;
@@ -244,7 +282,11 @@ export function controlOf(item: Item, ctx: MenuContext): Control {
          가운데 값으로 두면 아직 모르는 사람이 보통 관심으로 판정된다 */
       options: item.options.map((label, i) => {
         const value = (item.option_values as (number | null)[])[i] ?? null;
-        return { value, label, short: shortOf(axis, value, label) };
+        return {
+          value, label,
+          short: shortOf(axis, value, label),
+          full: fullOf(axis, value, label),
+        };
       }),
     };
   }

@@ -178,14 +178,20 @@ async function main() {
   const me = await ensureStudent(LOGIN);
   const uid = me.id;
   await query(`DELETE FROM v3_attempts WHERE user_id = $1`, [uid]);
-  const out: { name: string; path: string; note: string; who: string; full?: boolean }[] = [];
+  const out: {
+  name: string; path: string; note: string; who: string;
+  /** 쪽 전체를 찍는가 */
+  full?: boolean;
+  /** 찍기 전에 `자세한 내용 보기` 를 펴는가. 쪽 전체 그림이 쓴다 */
+  open?: boolean;
+}[] = [];
 
   /* P02 관심만 높은 학부생 · BASIC. **무료도 완성형 화면이어야 한다** */
   const p02 = await freshAttempt(uid, "BASIC", "bachelor", null);
   await fillGrid(p02, { TD01: [5, 0, 5], TD02: [5, 0, 5], TD03: [4, 0, 4] });
   const a02 = await walk(p02, uid, "none", { picks: false });
   await submit(a02);
-  out.push({ name: "r1_basic", who: "shots", full: true, note: "BASIC · 관심만 높은 학부생",
+  out.push({ name: "r1_basic", who: "shots", full: true, open: true, note: "BASIC · 관심만 높은 학부생",
     path: `/v3/${a02.id}/result` });
 
   /* P04 구조해석 석사 · STANDARD */
@@ -193,7 +199,7 @@ async function main() {
   await fillGrid(p04, { TD02: [5, 2, 5], TD01: [4, 1, 4], TD11: [4, 1, 4] });
   const a04 = await walk(p04, uid, "strong");
   await submit(a04);
-  out.push({ name: "r2_standard", who: "shots", full: true, note: "STANDARD · 구조해석 석사",
+  out.push({ name: "r2_standard", who: "shots", full: true, open: true, note: "STANDARD · 구조해석 석사",
     path: `/v3/${a04.id}/result` });
 
   /* P12 근거가 강한 포닥 · PRO. 산업과 역할을 고른다 */
@@ -203,9 +209,13 @@ async function main() {
     industry: "INDUSTRY_SEMICON_V2", role: "ROLE_CAE_V2",
   });
   await submit(a12);
-  out.push({ name: "r3_pro", who: "shots", full: true, note: "PRO · 근거가 강한 포닥",
+  out.push({ name: "r3_pro", who: "shots", full: true, open: true, note: "PRO · 근거가 강한 포닥",
     path: `/v3/${a12.id}/result` });
-  out.push({ name: "r4_pro_top", who: "shots", note: "PRO · 첫 화면",
+  /* **`r3_pro` 와 다른 그림이어야 한다.** 저쪽은 `자세한 내용 보기` 를
+     펴고 쪽 전체를 찍은 문서이고, 이쪽은 **펴기 전 첫 화면**이다. 본문
+     아홉 절이 접힌 뒤로 둘이 같은 그림이 되어 있었고, 그것을 아무 검사도
+     세지 않았다(지금은 sha256 으로 센다) */
+  out.push({ name: "r4_pro_top", who: "shots", note: "PRO · 첫 화면 (펴기 전)",
     path: `/v3/${a12.id}/result` });
   out.push({ name: "r5_pro_focus", who: "shots", note: "PRO · 먼저 볼 영역",
     path: `/v3/${a12.id}/result#focus` });

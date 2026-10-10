@@ -258,6 +258,12 @@ export default function Screen({
             여백을 두르면 같은 글이 **의도한 한 걸음**으로 읽히고, 그 판의
             높이가 질문 화면의 절반을 넘지 않는다(규격 §5·§25) */}
         <div className={brief ? "qs-brief" : "qs-plain"}>
+        {/* **묶음이 바뀐 것을 질문 위 한 줄로 적는다**(규격 §12).
+            전에는 묶음마다 전환 화면을 한 장 세웠고, 그 가운데 셋은 담은
+            것이 `이제 ~를 묻습니다` 와 영역 이름 목록뿐이었다. 영역 이름은
+            **바로 다음 화면의 머리말에 다시 적혀 있어서**, 읽을 것이 없는
+            화면에 `계속` 을 세 번 더 누르게 했다. 묶음의 첫 질문에만 선다 */}
+        {s.strip ? <p className="qs-ctx">{s.strip}</p> : null}
         {s.eyebrow ? <p className="qs-eyebrow">{s.eyebrow}</p> : null}
         {s.subject ? <p className="qs-subject">{s.subject}</p> : null}
         {/* 완료 화면의 머리글은 제출 전과 뒤가 다르다. **다 푼 사람에게
@@ -696,8 +702,12 @@ function SweepHead({ f }: { f: Field }) {
   return (
     <div className="qs-swhead" aria-hidden>
       <span className="qs-sw-row" />
+      {/* **번호와 밝혀 적는 말을 여기 한 번 적는다**(규격 §10).
+          `1 전혀 관심 없음` 에서 `5 매우 관심 있음` 까지다. 칸 안에는
+          번호와 줄인 말만 들어가고, 그 번호가 이 머리의 어느 칸인지를
+          가리킨다. 긴 말을 칸마다 적으면 글자가 세 줄로 접힌다 */}
       <div className="qs-grade" data-n={steps.length}>
-        {steps.map((o) => <span key={o.label}>{o.label}</span>)}
+        {steps.map((o) => <span key={o.label}>{o.full}</span>)}
       </div>
       {esc ? <span className="qs-grade-esc is-head">{esc.short}</span> : null}
     </div>
@@ -736,12 +746,23 @@ function Sweep({
         {steps.map((o) => {
           const on = value === o.value;
           return (
-            /* **숫자를 적지 않는다.** 1에서 5를 그리면 심리검사 표가 되고,
-               뜻은 격자 머리에 한 번 적혀 있다 */
+            /**
+             * **번호를 적는다**(규격 §10).
+             *
+             * 한동안 번호를 떼고 줄인 말만 두었다. 그러면 `적음` 과
+             * `보통` 사이가 몇 칸인지 눈으로만 세게 되고, 좁은 화면에서
+             * 격자 머리를 접으면 고르는 칸의 자리를 알 수 없다. 번호는
+             * 머리에 적힌 다섯 단계의 몇째인지를 가리키는 자리표이고
+             * **점수가 아니다**: 이 제품은 총점을 내지 않는다.
+             *
+             * 소유 보기 넷에는 번호를 붙이지 않는다. 저쪽은 누가 정했는가의
+             * 단계라 번호를 붙이면 `1점 · 2점` 으로 읽힌다.
+             */
             <label key={o.label} className={`qs-grade-b${on ? " is-on" : ""}`}
-              title={o.label}>
+              title={o.full}>
               <input type="radio" name={f.itemId} checked={on}
-                aria-label={`${f.label ?? ""} · ${o.label}`} onChange={pick(o)} />
+                aria-label={`${f.label ?? ""} · ${o.full}`} onChange={pick(o)} />
+              <b className="qs-grade-n" aria-hidden>{o.value}</b>
               <span>{o.short}</span>
             </label>
           );

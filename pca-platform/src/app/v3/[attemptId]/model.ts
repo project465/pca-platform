@@ -68,6 +68,13 @@ export type ScreenModel = {
   subject?: string;
   question?: string;
   help?: string;
+  /**
+   * 묶음이 바뀐 것을 적는 질문 위 한 줄(규격 §12).
+   *
+   * `runtime/blocks.ts` 의 `Screen.strip` 을 그대로 옮긴 것이고, 묶음의
+   * **첫 질문에만** 담긴다.
+   */
+  strip?: string;
   /** 보기 읽는 법 한 줄. 보기 넷 화면에서만 */
   guide?: string;
   fields: Field[];

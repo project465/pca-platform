@@ -21,7 +21,17 @@ import {
 
 const LOCK = "sites/pca-platform/assessment/ME_V3/result-lock.json";
 
-/** 결과지를 이루는 파일. 여기 없는 파일을 고치면 이 검사가 모른다 */
+/**
+ * 결과지를 이루는 파일. 여기 없는 파일을 고치면 이 검사가 모른다.
+ *
+ * **결과 모델 둘(`result/model.ts` · `result/build.ts`)이 이 목록에서
+ * 빠졌다.** 그 둘은 `ME_V3_MEASUREMENT_FREEZE_1` 이 들고
+ * (`v3:freeze:measure`), 한 파일이 두 동결에 걸려 있으면 화면을 고친 날
+ * 측정 동결이 같이 흔들린다. 그러면 사람이 `UI 때문이니 다시 적자` 로
+ * 넘기고, 한 번 넘기면 그 동결은 아무것도 막지 않는다. **판본은 여전히
+ * 함께 적는다**: 아래 `versions` 에 `result_model_version` 이 그대로 있어서
+ * 모델이 올라간 것을 이 기록도 같이 안다.
+ */
 const FILES = [
   "src/app/v3/result.css",
   "src/app/v3/[attemptId]/result/page.tsx",
@@ -29,8 +39,6 @@ const FILES = [
   "src/app/v3/[attemptId]/result/disclose.tsx",
   "src/app/v3/[attemptId]/result/save.tsx",
   "src/app/v3/[attemptId]/result/track.tsx",
-  "src/lib/me-v3/result/model.ts",
-  "src/lib/me-v3/result/build.ts",
   "src/lib/me-v3/result/text.ko.ts",
   "src/lib/me-v3/result/josa.ts",
   "src/lib/me-v3/result/version.ts",

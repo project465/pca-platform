@@ -1,0 +1,32 @@
+{
+  "note": "ME_V3_MEASUREMENT_FREEZE_1. 응답을 받는 방식과 판단으로 바꾸는 방식과 판단을 담는 모양의 지문이다. **화면 파일이 한 줄도 없다**: UI 를 고쳤다고 이 기록이 흔들리면 사람이 `UI 때문이니 다시 적자` 로 넘기고, 한 번 넘기면 그 동결은 아무것도 막지 않는다. 측정을 일부러 고치는 회차에만 MEASURE_FREEZE=write 로 다시 적고 판본을 함께 올린다.",
+  "label": "ME_V3_MEASUREMENT_FREEZE_1",
+  "at": "2026-10-10",
+  "versions": {
+    "core": "ME_CORE_V3",
+    "item_bank": "ME_V3_ITEM_BANK_V2.5",
+    "scoring": "me-v3-scoring.5",
+    "result_model": "me-v3-result-model.5"
+  },
+  "files": {
+    "sites/pca-platform/content/me-v3-2-items.json": "729edda519bd1ecb",
+    "sites/pca-platform/content/me-v3-2-items-blueprint.json": "07f1905a50d4293a",
+    "sites/pca-platform/content/me-v3-2-constructs.json": "a4c8c5e0fc6333fd",
+    "sites/pca-platform/content/me-v3-2-domains.json": "405e4897d9a93570",
+    "sites/pca-platform/content/me-v3-2-checklists.json": "b5513b61ff606fd7",
+    "sites/pca-platform/content/me-v3-2-taxonomy.json": "c686a0b8aa8d2098",
+    "sites/pca-platform/content/me-v3-2-relations.json": "7f120a5f0e8e9369",
+    "sites/pca-platform/content/industry-packs-v2.json": "99c11369856e2abf",
+    "sites/pca-platform/content/role-packs-v2.json": "69246bce9e8dd0e6",
+    "src/lib/me-v3/scoring/engine.ts": "f9636037ee3d4cd4",
+    "src/lib/me-v3/scoring/axes.ts": "50deee77b67615de",
+    "src/lib/me-v3/scoring/ownership.ts": "231764c0c732ff1a",
+    "src/lib/me-v3/scoring/normalize.ts": "ec5125ff053322ff",
+    "src/lib/me-v3/scoring/quality.ts": "36b87f17746cf8b0",
+    "src/lib/me-v3/scoring/zones.ts": "8ad1f3eb8256c025",
+    "src/lib/me-v3/scoring/version.ts": "4a102008b62ef07f",
+    "src/lib/me-v3/measurement/registry.ts": "c4d5974056b6d7d9",
+    "src/lib/me-v3/result/model.ts": "28ea58dde231bb44",
+    "src/lib/me-v3/result/build.ts": "d7f0b64996fc3758"
+  }
+}

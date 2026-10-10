@@ -13,6 +13,7 @@
  */
 import { execFileSync } from "node:child_process";
 import { mkdirSync, readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
 
 const B = process.env.UI_BASE ?? "http://127.0.0.1:3100";
 const OUT = "docs/metri/shots/v3r";
@@ -71,6 +72,15 @@ const NARROW = new Set(["r1_basic", "r3_pro"]);
 
 const log = [];
 const problems = [];
+/**
+ * 같은 그림이 두 이름으로 저장되는 것을 센다.
+ *
+ * 자리를 가리킨 그림이 전부 쪽 맨 위였던 것을 **아무 검사도 세지
+ * 않았다.** 상태코드는 200 이고 가로 스크롤도 없고 내부 코드도 없어서,
+ * 열두 장이 같은 그림인 것을 사람이 눈으로 보기 전에는 알 수 없었다.
+ * `v3:shots` 는 이미 이 줄을 들고 있었고 여기만 빠져 있었다.
+ */
+const seen = new Map();
 for (const t of plan.targets) {
   const sizes = NARROW.has(t.name)
     ? ["desktop", "mobile", "narrow"] : ["desktop", "mobile"];
@@ -85,6 +95,36 @@ for (const t of plan.targets) {
     const r = await p.goto(B + t.path, { waitUntil: "networkidle" });
     await p.waitForTimeout(250);
     const code = r ? r.status() : 0;
+
+    /**
+     * **자리를 가리키는 주소는 그 자리를 펴고 찍는다.**
+     *
+     * 본문 아홉 절이 `자세한 내용 보기` 안으로 들어간 뒤로, `#focus` 나
+     * `#evidence` 를 열어도 그 절이 접혀 있어 브라우저가 옮겨 갈 자리가
+     * 없었다. 그래서 **자리를 가리킨 그림 열두 장이 전부 쪽 맨 위**였고,
+     * 파일 이름만 달랐다. 찍어 놓고 보지 않으면 캡처는 파일만 늘린다.
+     *
+     * 펴고 나서 해시 자리로 한 번 더 옮긴다: `goto` 때의 옮김은 접혀
+     * 있던 동안에 이미 끝났으므로 저절로 따라오지 않는다.
+     */
+    const hash = t.path.includes("#") ? t.path.split("#")[1] : null;
+    if (hash || t.open) {
+      await p.evaluate(() => {
+        const b = document.querySelector(".rs-openbtn");
+        if (b && b.getAttribute("aria-expanded") === "false") b.click();
+      });
+      await p.waitForTimeout(250);
+      if (hash) {
+        const moved = await p.evaluate((id) => {
+          const el = document.getElementById(id);
+          if (!el) return false;
+          el.scrollIntoView({ block: "start" });
+          return true;
+        }, hash);
+        if (!moved) problems.push(`${t.name} ${size}: #${hash} 자리가 없다`);
+      }
+      await p.waitForTimeout(150);
+    }
 
     const text = await p.evaluate(() => document.body.innerText);
     const leaked = INTERNAL.map((re) => (text.match(re) ?? [])[0]).filter(Boolean);
@@ -104,6 +144,10 @@ for (const t of plan.targets) {
     if (overflow) problems.push(`${tag}: 가로 스크롤이 생긴다`);
     if (leaked.length) problems.push(`${tag}: 내부 코드가 보인다 — ${leaked.join(", ")}`);
     if (errs.length) problems.push(`${tag}: ${errs[0]}`);
+    const sum = createHash("sha256").update(readFileSync(file)).digest("hex");
+    const twin = seen.get(`${size}:${sum}`);
+    if (twin) problems.push(`${tag}: ${twin} 와 글자까지 같은 그림이다`);
+    else seen.set(`${size}:${sum}`, tag);
     await p.close();
   }
 }

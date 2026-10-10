@@ -191,6 +191,19 @@
  * 36px 과 24px 로 갈렸다. 한 쪽씩 보면 안 보이고 서른 번 이어서 누를 때만
  * 보인다.
  */
+/* 묶음이 바뀐 것을 적는 한 줄(규격 §12). **머리말보다 앞서고 머리말보다
+   작다**: 이 줄은 지금 어디로 넘어왔는지를 말하고, 무엇을 묻는지는 아래
+   머리말과 질문이 말한다. 왼쪽 띠 하나로 `지나온 자리` 임을 그린다.
+   이름을 새로 짓기 전에 CSS 에 그 이름이 있는지 봤다: 이 저장소에서 같은
+   탈이 일곱 번 났다(`.btn` · `--sf-r` · `.lg` · `empty` · `industries` ·
+   `OC*` · `.qs-steps`) */
+.qs-ctx {
+  margin: 0 0 var(--q-s3); padding: var(--q-s2) var(--q-s3);
+  border-left: 2px solid var(--q-accent-line);
+  background: var(--q-sunk); border-radius: 0 var(--q-r-sm) var(--q-r-sm) 0;
+  font-size: var(--q-t-gloss); color: var(--q-ink-2); line-height: 1.5;
+  word-break: keep-all;
+}
 .qs-eyebrow {
   margin: 0 0 var(--q-s1); font-size: var(--q-t-cap); font-weight: 600;
   letter-spacing: .07em; color: var(--q-ink-3);
@@ -499,7 +512,7 @@
    길이대로 늘어나(`max-content`) 머리와 줄의 칸이 어긋나고, 다섯 낱말이
    서로 겹쳐 읽힌다 */
 .qs-swhead .qs-grade {
-  gap: var(--q-s1); grid-template-columns: repeat(5, 58px);
+  gap: var(--q-s1); grid-template-columns: repeat(5, 72px);
 }
 .qs-swhead .qs-grade[data-n="3"] { grid-template-columns: repeat(3, 80px); }
 .qs-swhead .qs-grade > span {
@@ -541,17 +554,25 @@
  */
 .qs-grade {
   flex: none; display: grid; gap: var(--q-s1);
-  grid-template-columns: repeat(5, minmax(58px, 1fr));
+  grid-template-columns: repeat(5, minmax(72px, 1fr));
 }
 .qs-grade[data-n="3"] { grid-template-columns: repeat(3, minmax(80px, 1fr)); }
+/* **번호가 위, 줄인 말이 아래다**(규격 §10). 번호는 격자 머리에 적힌
+   다섯 단계의 몇째인지를 가리키는 자리표이고, 좁은 화면에서 머리의
+   가운데 셋이 접혀도 고르는 칸의 자리를 알 수 있게 한다 */
+.qs-grade-n {
+  display: block; font-size: var(--q-t-sub); font-weight: 650;
+  font-variant-numeric: tabular-nums; line-height: 1.1;
+}
 .qs-grade-b {
   position: relative;
-  display: inline-flex; align-items: center; justify-content: center;
-  min-height: 48px; padding: 0 var(--q-s2);
+  display: inline-flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 2px;
+  min-height: 52px; padding: var(--q-s1) var(--q-s1);
   background: var(--q-sunk);
   border: 1px solid var(--q-line-soft); border-radius: var(--q-r-sm);
-  font-size: var(--q-t-sub); color: var(--q-ink-3);
-  cursor: pointer; text-align: center; word-break: keep-all; line-height: 1.25;
+  font-size: var(--q-t-gloss); color: var(--q-ink-3);
+  cursor: pointer; text-align: center; word-break: keep-all; line-height: 1.2;
   transition: border-color .12s ease, background .12s ease, color .12s ease;
 }
 .qs-grade-b:hover { border-color: var(--q-accent-line); color: var(--q-ink-2); }
@@ -627,15 +648,19 @@
   .qs-swhead .qs-grade[data-n="3"] > span { visibility: visible; }
   .qs-swhead .qs-sw-row { display: none; }
   .qs-swhead .qs-grade { flex: 1 1 auto; grid-template-columns: repeat(5, 1fr); }
+  .qs-grade { min-width: 0; }
   .qs-swhead .qs-grade[data-n="3"] { grid-template-columns: repeat(3, 1fr); }
   .qs-p3 { display: grid; grid-template-columns: repeat(3, 1fr); }
   .qs-p3b { min-width: 0; }
   .qs-grade { grid-template-columns: repeat(5, 1fr); }
   .qs-grade[data-n="3"] { grid-template-columns: repeat(3, 1fr); }
   .qs-grade-b {
-    min-height: 56px; min-width: 0; padding: 0 2px;
-    font-size: var(--q-t-cap);
+    min-height: 56px; min-width: 0; padding: var(--q-s1) 2px;
+    font-size: 11px;
   }
+  /* 좁은 화면에서 머리의 가운데 셋이 접히므로 **번호가 유일한 자리표다**.
+     그래서 번호를 줄이지 않는다 */
+  .qs-grade-n { font-size: var(--q-t-sub); }
   /* 척도 밖은 **거드는 한 줄**이다. 한 줄을 통째로 먹는 큰 단추로 두면
      열두 줄이 두 배로 길어지고, 그 크기가 다섯 칸과 겨룬다 */
   .qs-grade-esc {

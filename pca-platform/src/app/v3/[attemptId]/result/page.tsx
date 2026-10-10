@@ -234,28 +234,111 @@ function Why({ d }: { d: ResultDomain }) {
   );
 }
 
+/**
+ * 영역 한 자리. **기본 보기가 다섯 줄이다**(규격 §14).
+ *
+ *   영역명 · 현재 상태 한 줄 · 가장 강한 근거 둘셋 · 부족한 것 하나 ·
+ *   다음 행동 하나
+ *
+ * 전에는 기본 보기가 `직접 정한 것 / 해 본 일 / 남긴 것 / 비교한 것`
+ * 네 칸이었고 칸마다 여섯 항목까지 깔렸다. 읽는 사람이 자기 답을 다시
+ * 알아보는 자리로는 맞지만, **그 영역에서 무엇이 모자라고 다음에 무엇을
+ * 하면 되는지가 그 아래 다른 절로 흩어져 있었다.** 그래서 영역 하나를
+ * 한 자리에서 끝내도록 빈자리 하나와 할 일 하나를 여기로 올리고, 목록
+ * 전체와 여덟 축은 `상세 근거 보기` 안으로 내렸다.
+ *
+ * **확인된 판단 수와 직접 정한 것의 수를 머리에서 걷었다**(규격 §15).
+ * `확인된 판단 5 · 직접 정한 것 2` 는 다음에 무엇을 할지 정하는 데 쓰이지
+ * 않는 수인데 영역 이름 옆에서 가장 먼저 읽혔다. 상세 안으로 내렸다.
+ */
 function DomainPanel(
-  { d, showAxes }: { d: ResultDomain; showAxes: boolean },
+  { d, showAxes, gap, action, stage }: {
+    d: ResultDomain; showAxes: boolean;
+    /** 이 영역에서 가장 급한 빈자리 하나 */
+    gap?: Gap; action?: Action; stage?: ResultModel["stage"];
+  },
 ) {
+  const name = domainName(d.code);
+  const g = gap ? gapKo(gap, name) : null;
+  const a = action ? actionKo(action, name, stage) : null;
   return (
     <article className="rs-domain">
       <header>
-        <h3>{domainName(d.code)}</h3>
+        <h3>{name}</h3>
         {/* **네 축만 물은 응시에 묶음 딱지를 붙이지 않는다.** 딱지에
             `근거를 더 만들어야 하는 영역` 이 적혀 있어서, 근거를 묻지 않은
             응시에 그대로 붙이면 재지 않은 것을 판정으로 적는 셈이다 */}
-        {showAxes ? (<>
+        {showAxes ? (
           <span className={`rs-zone ${ZONE_CLASS[d.zone]}`}>{ZONE_TITLE_KO[d.zone]}</span>
-          <span className="rs-meta">
-            확인된 판단 {d.confirmed.length} · 직접 정한 것 {d.owned.length}
-          </span>
-        </>) : null}
+        ) : null}
       </header>
-      {showAxes ? <Why d={d} /> : <Basic d={d} />}
+      {showAxes ? (<>
+        {/* 현재 상태 한 줄. 묶음 딱지가 말하는 것을 문장으로 한 번 */}
+        <p className="rs-dstate">{ZONE_LEAD_KO[d.zone]}</p>
+        <Strongest d={d} />
+        {g ? (
+          <div className="rs-dgap">
+            <h4>아직 확인이 부족한 부분</h4>
+            <p>{g.title}</p>
+          </div>
+        ) : null}
+        {a ? (
+          <div className="rs-dnext">
+            <h4>다음에 보완하면 좋은 부분</h4>
+            <p>{a.do}</p>
+          </div>
+        ) : null}
+      </>) : <Basic d={d} />}
       {showAxes ? (
-        <Fold label="여덟 가지 관점 보기"><Axes d={d} /></Fold>
+        /* **여덟 축을 기본으로 펼치지 않는다**(규격 §14). 여덟 줄이
+           기본으로 서면 그 목록이 영역 한 자리에서 가장 큰 덩이가 되고,
+           읽는 사람이 자기 상태를 여덟 개의 판정으로 읽는다 */
+        <Fold label="상세 근거 보기">
+          <Why d={d} />
+          <p className="rs-meta">
+            확인된 판단 {d.confirmed.length} · 직접 정한 것 {d.owned.length}
+          </p>
+          <Axes d={d} />
+        </Fold>
       ) : null}
     </article>
+  );
+}
+
+/**
+ * 가장 강한 근거 둘셋(규격 §14).
+ *
+ * 차례는 **직접 정한 것 → 남긴 것 → 비교한 것 → 해 본 일**이다. 지원서와
+ * 면접에서 읽히는 쪽이 앞이고, 그 사람이 고른 글자를 그대로 쓴다.
+ * **전체 목록은 `상세 근거 보기` 안에 그대로 있다**: 여기서 줄이는 것은
+ * 보이는 수이고 담긴 자료가 아니다.
+ */
+function Strongest({ d }: { d: ResultDomain }) {
+  const seen = new Set<string>();
+  const rows: { label: string; text: string }[] = [];
+  const push = (label: string, list: string[]) => {
+    for (const t of list) {
+      if (rows.length >= 3 || seen.has(t)) continue;
+      seen.add(t); rows.push({ label, text: t });
+    }
+  };
+  push("직접 정한 것", d.decided);
+  push("남긴 것", d.artifacts);
+  push("비교한 것", d.verifications);
+  push("해 본 일", d.did);
+  if (!rows.length) {
+    return (
+      <p className="rs-dnone">
+        고르신 근거 항목이 없어, 지금은 이 영역에서 설명할 재료가 없습니다.
+      </p>
+    );
+  }
+  return (
+    <ul className="rs-dstrong">
+      {rows.map((r) => (
+        <li key={r.text}><span>{r.label}</span>{r.text}</li>
+      ))}
+    </ul>
   );
 }
 
@@ -441,6 +524,26 @@ export default async function V3Result({
   const focus = model.domains.filter((d) => model.overview.focus.includes(d.code));
   const compare = model.domains.filter((d) => model.overview.compare.includes(d.code));
   const deep = model.limits.deep_axes;
+
+  /**
+   * 영역 한 자리에서 끝내기 위해 그 영역의 **빈자리 하나와 할 일 하나**를
+   * 고른다(규격 §14).
+   *
+   * **차례를 여기서 만들지 않는다.** `model.gaps` 는 이미 `rank` 로 서 있고
+   * `model.actions` 도 모델이 정한 차례라, 그 가운데 그 영역의 첫 줄을
+   * 집는다. 영역이 정해지지 않은 할 일(`domain === null`)은 이 자리에
+   * 올리지 않는다: 어느 영역의 일인지 모르는 문장이 영역 칸 안에 서면
+   * 읽는 사람이 그것을 그 영역의 일로 읽는다.
+   *
+   * **아래 `앞으로 채울 것` 과 `다음에 할 일` 절을 걷지 않았다.** 저쪽은
+   * 영역을 가리지 않고 전부를 급한 차례로 보여 주는 자리이고, 여기는 한
+   * 영역 안에서 무엇이 모자란지를 보여 주는 자리다. 같은 줄이 두 곳에
+   * 서는 것은 되풀이가 아니라 **차례가 다른 두 읽기**다.
+   */
+  const gapFor = (code: string): Gap | undefined =>
+    model.gaps.find((g) => g.domain === code);
+  const actionFor = (code: string): Action | undefined =>
+    model.actions.find((a) => a.domain === code);
   const stage = model.stage;
   const counts = model.overview.counts;
   const industryName = (c: string) =>
@@ -485,6 +588,33 @@ export default async function V3Result({
     ? packLack.requested.slice(0, 2)
       .map((r) => `${domainName(r.domain)} · ${AXIS_KO[r.axis]}`).join(" · ")
     : topGap ? gapTile(topGap) : "";
+
+  /**
+   * 첫 화면 넷째 칸. **산업·직무 연결 맥락**(규격 §13).
+   *
+   * 앞의 셋은 Core 안에서 끝나는 말이다: 무엇이 확인됐고 무엇이 비었고
+   * 지금 무엇을 하면 되는가. 넷째 칸이 하는 일은 **그것이 어디로 가는
+   * 이야기인지**를 적는 것이다. 보고 있는 산업과 직무가 없으면 이 칸이
+   * 첫 화면에서 가장 많이 묻는 것(`그래서 어디에 쓰는가`)에 답하지 못한다.
+   *
+   * **없는 것을 지어내지 않는다.** 고르지 않으셨으면 그 사실과 어디서
+   * 고를 수 있는지를 적고, 고르셨으면 그쪽에서 **이미 이어지는 영역**을
+   * 적는다. 비어 있는 자리는 둘째 칸이 이미 들고 있으므로 되풀이하지
+   * 않는다.
+   */
+  const linkNames = [
+    model.industry_context ? industryName(model.industry_context.code) : null,
+    model.role_context ? roleName(model.role_context.code) : null,
+  ].filter((x): x is string => Boolean(x));
+  const linkReady = [
+    ...(model.industry_context?.established ?? []),
+    ...(model.role_context?.established ?? []),
+  ].map((e) => domainName(e.domain));
+  const linkText = linkNames.length
+    ? (linkReady.length
+      ? `${[...new Set(linkReady)].slice(0, 2).join(" · ")}에서 이어집니다`
+      : "지금 확인된 것으로는 아직 이어지는 영역이 없습니다")
+    : "";
 
   const zoneRows = ([
     "Z1_EVIDENCE_ESTABLISHED", "Z2_EVIDENCE_INCOMPLETE",
@@ -581,6 +711,20 @@ export default async function V3Result({
             <h3>{FIRST_MOVE_KO[move]}</h3>
             <p>{moveText}</p>
           </div>
+          {/* ④ 산업·직무 연결 맥락(규격 §13). **고르지 않으셨으면 그
+              사실을 적는다**: 비워 두면 첫 화면이 `그래서 어디에 쓰는가`
+              에 답하지 않고 끝난다 */}
+          <div>
+            <h3>산업·직무 연결</h3>
+            {linkNames.length ? (<>
+              <p>{linkNames.join(" · ")}</p>
+              <p style={{ fontWeight: 400 }}>{linkText}</p>
+            </>) : (
+              <p className="none">
+                보실 산업과 직무를 아직 고르지 않으셨습니다
+              </p>
+            )}
+          </div>
         </div>
 
         {/* **첫 화면에서 할 수 있는 일을 적는다**(규격 §9).
@@ -627,14 +771,20 @@ export default async function V3Result({
               ? "응답에서 확인된 내용만 정리했습니다."
               : "지금 응답만으로는 어느 영역이 앞선다고 보기 어렵습니다. 아래 전체 영역을 보시고 한 가지부터 해보세요."}
           </p>
-          {focus.map((d) => <DomainPanel key={d.code} d={d} showAxes={deep} />)}
+          {focus.map((d) => (
+            <DomainPanel key={d.code} d={d} showAxes={deep}
+              gap={gapFor(d.code)} action={actionFor(d.code)} stage={model.stage} />
+          ))}
           {compare.length ? (
             <>
               <h2 className="rs-h2b">같이 놓고 볼 영역</h2>
               <p className="rs-note">
                 먼저 볼 영역과 같은 상태이거나 바로 다음입니다. 차례를 매기지 않았습니다.
               </p>
-              {compare.map((d) => <DomainPanel key={d.code} d={d} showAxes={deep} />)}
+              {compare.map((d) => (
+                <DomainPanel key={d.code} d={d} showAxes={deep}
+                  gap={gapFor(d.code)} action={actionFor(d.code)} stage={model.stage} />
+              ))}
             </>
           ) : null}
         </section>
@@ -766,7 +916,7 @@ export default async function V3Result({
             </p>
             <div className="rs-ev">
               <section>
-                <h3>정리해두면 바로 쓸 수 있는 경험</h3>
+                <h3>지원서에서 설명할 수 있는 경험</h3>
                 <p>직접 정한 것으로 확인됐고, 고르신 근거가 함께 있는 자리입니다.</p>
                 {model.evidence.ready.length ? (<>
                   {model.evidence.ready.slice(0, 6).map((e) => (

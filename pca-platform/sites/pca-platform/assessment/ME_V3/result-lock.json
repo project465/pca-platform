@@ -2,8 +2,8 @@
  "schema_version": "me-v3-result-lock.1",
  "note": "결과지 화면 1차 동결. 문장만 고치면 `RESULT_COPY_VERSION` 만 올리고, 칸이나 절이 바뀌면 `RESULT_MODEL_VERSION`, 화면 구조가 바뀌면 `RESULT_UI_VERSION` 을 올린다. 채점 판본은 이 가운데 무엇으로도 올리지 않는다",
  "versions": {
-  "result_ui_version": "ME_V3_RESULT_UI_V8",
-  "result_copy_version": "me-v3-result-copy.9",
+  "result_ui_version": "ME_V3_RESULT_UI_V9",
+  "result_copy_version": "me-v3-result-copy.10",
   "result_model_version": "me-v3-result-model.5",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.5",
   "scoring_version": "me-v3-scoring.5"
@@ -20,17 +20,15 @@
   "종이에 빈 쪽과 범위 밖 쪽수가 없다": "v3:result:pdf"
  },
  "files": {
-  "src/app/v3/result.css": "d981478f21266864f42e6c10c72dbd59aeceacc4b7b5d30d842758e6e54221ab",
-  "src/app/v3/[attemptId]/result/page.tsx": "398cc9d0aaf43af2df4954d339f9dea31dd9390918761dc23c92d3e6a51eced9",
-  "src/app/v3/[attemptId]/result/fold.tsx": "2cf4f4a676d584b5b8fe6ea9c3b1787f84c6b9b8498b74d7d240b53c14492d0d",
+  "src/app/v3/result.css": "5229408133f75c1ea934b2ecee1e66a30be5e076ca77d025f85d3af4051fc9cf",
+  "src/app/v3/[attemptId]/result/page.tsx": "fd9ba5f86bb9863b4b98b4dcfeb717f8bd63553eb0b7fdf481328ae687cf4b6a",
+  "src/app/v3/[attemptId]/result/fold.tsx": "da6c8b16f124941d283dc9ae4ad0f41b2271fd8d8233028bfdc3d4c500d4fbb4",
   "src/app/v3/[attemptId]/result/disclose.tsx": "a82c70b1d0897647877cfff4a672e8ebffd8716f76e6cfcc3d25e066f074f455",
   "src/app/v3/[attemptId]/result/save.tsx": "2830e503419eba94015798787ab2f7cd4abca39c8126fe1cf3dca087f6c6e7c1",
   "src/app/v3/[attemptId]/result/track.tsx": "6136c271ee7df7323f029912182c7496a8633fdf7479b6080697a6f4a217787c",
-  "src/lib/me-v3/result/model.ts": "28ea58dde231bb44c6ea4eb4ed7558ca84b22b9325c09ef118616160abe739b6",
-  "src/lib/me-v3/result/build.ts": "d7f0b64996fc3758947c2e1167048486a16ebd8084f69ca3dc5f0d1933496da6",
   "src/lib/me-v3/result/text.ko.ts": "4315be8106411d37a9d8093ce615fe93233e62104ec4f41d7f3a3daf7dc5a710",
   "src/lib/me-v3/result/josa.ts": "152cd30c2af136172618c14fa6fb4175b97cf16350db631e3e2e6c72fd7dd4af",
-  "src/lib/me-v3/result/version.ts": "be805e72923f5d1f6d32bf2b41ab5764709469fac3e44dde74050c86f78314a8",
+  "src/lib/me-v3/result/version.ts": "e095d56d85f5f9653f4e9db116490eb083006541ad82c1c42a93de27602db569",
   "src/lib/me-v3/runtime/domain-facts.ts": "f5aefadb0bd9e6ca0fae76b1076c2a7fdab7d34caaebdc618f39a2e92fbfd31f"
  }
 }

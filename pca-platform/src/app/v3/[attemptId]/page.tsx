@@ -156,6 +156,7 @@ export default async function V3Screen({
     subject: sc.subject,
     question: sc.question,
     help: sc.help,
+    strip: sc.strip,
     guide: fields.some((f) => f.control.kind === "level") ? optionGuidance() : undefined,
     fields,
     groups,
