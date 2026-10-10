@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
-import { actionsOf, currentState, profileOf } from "@/lib/me-v3/platform";
+import { currentState, profileOf } from "@/lib/me-v3/platform";
+import { openActions } from "@/lib/me-v3/open-actions";
 import { domainName, industryChoices, roleName } from "@/lib/me-v3/runtime/session";
 import { moveLabel, orgLabel, regionName } from "@/lib/me-v3/region";
 import {
@@ -64,7 +65,7 @@ export default async function State(
      보내되**, 무엇 때문에 이 화면이 열렸는지는 적어 준다 */
   const justApplied = (await searchParams).r === "1";
   const [st, profile, actions] = await Promise.all([
-    currentState(user.id), profileOf(user.id), actionsOf(user.id),
+    currentState(user.id), profileOf(user.id), openActions(user.id),
   ]);
 
   if (!st.model) {
@@ -104,7 +105,7 @@ export default async function State(
   const realChange = st.recomputed_at && (st.raised.length || st.zoneMoved.length);
   /* ⑤ 아직 부족한 것 · ⑥ 다음 행동 하나 */
   const gaps = st.gaps.slice(0, TOP_GAPS);
-  const open = actions.filter((a) => a.state !== "done");
+  const open = actions.rows.filter((a) => a.state !== "done");
   const nextOne = open[0] ?? null;
   const fallback = m.actions[0] ?? null;
 
@@ -116,8 +117,8 @@ export default async function State(
           서로를 덮지 않는다는 말은 아래 `검사 당시 결과와 지금` 묶음이
           한 번 든다. 여기 머리에 또 적으면 같은 말이 한 쪽에 세 번 선다.
 
-          **짙은 단추는 `지금 할 일 보기` 다**(규격 §19). 이 쪽을 읽은
-          사람이 다음에 하는 일은 상태를 더 보는 것이 아니라 실행이다 */}
+          **머리에 단추를 세우지 않는다**(규격 §19). 이 쪽을 읽은 사람이
+          다음에 하는 일은 실행이고, 그 단추는 `지금 할 일` 칸이 든다 */}
       <CmHead
         kicker={st.recomputed_at
           ? `${st.recomputed_at} 기준`
@@ -126,12 +127,10 @@ export default async function State(
         lead={st.recomputed_at
           ? `검사 ${st.result_at} 결과에 그 뒤의 경험을 얹은 값입니다.`
           : "아직 새 경험을 더한 적이 없어 검사 당시 결과와 같습니다."}
-        actions={
-          <>
-            <Link className="cm-btn is-primary" href="/me/next">지금 할 일 보기</Link>
-            <Link className="cm-btn" href="/me/experience/new">경험 추가</Link>
-          </>
-        }
+        /* **짙은 단추는 쪽에 하나다**(규격 §19). 아래 `지금 할 일` 칸이
+           `경험에 추가` 를 들고 있으므로 머리에는 아무것도 세우지 않는다.
+           전에는 둘이 서서 같은 화면의 짙은 단추가 둘이었고, 둘이 **서로
+           다른 쪽으로** 갔다 */
       />
 
       {justApplied ? (
@@ -175,7 +174,7 @@ export default async function State(
             </>
           ) : (
             <>
-              <h3>아직 근거가 선 영역이 잡히지 않았습니다</h3>
+              <h3>지원서에서 설명할 만한 경험이 아직 없습니다</h3>
               <p>
                 관심이 높은 영역에서 짧게 한 번 해 보고 그것을 경험으로 적으면
                 이 자리가 섭니다.
@@ -185,33 +184,12 @@ export default async function State(
         </div>
       </div>
 
-      {/* ④ 최근 달라진 것 ── **첫 화면에는 한 줄이다**(규격 §5).
+      {/* ④ 지금 할 일 하나 ── **첫 화면 안에, 변화보다 먼저 선다**(규격 §5).
 
-          전에는 세 줄에 `그 밖에 2가지` 까지 붙어서, 첫 화면에서 가장 긴
-          묶음이 **지난 일을 돌아보는 자리**가 됐다. 나머지는 아래 `달라진
-          것 모두` 가 든다. 반영한 적이 없으면 이 묶음을 세우지 않는다:
-          빈 카드를 세우면 읽는 사람은 자기 결과가 덜 만들어진 줄 안다 */}
-      {st.recomputed_at ? (
-        <>
-          <h2 className="cm-sect">최근 달라진 것</h2>
-          <div className="cm-panel is-one">
-            <div className="cm-pane">
-              <p><b>{one.lines[0]}</b></p>
-              {one.more ? (
-                <div className="cm-acts">
-                  <Link className="cm-btn" href="#changes">
-                    달라진 것 {one.more + 1}가지 모두 보기
-                  </Link>
-                </div>
-              ) : null}
-            </div>
-          </div>
-        </>
-      ) : null}
-
-      {/* ⑤ 지금 할 일 하나 ── **첫 화면 안에 선다**(규격 §5).
-          전에는 이 묶음이 Gap 셋 아래에 있어 첫 화면 밖으로 밀렸고,
-          그러면 상태를 읽고 나서 무엇을 할지가 화면에 없다 */}
+          전에는 이 묶음이 `최근 달라진 것` 아래였다. 그러면 첫 화면이
+          **상태 → 지난 일 → 할 일** 차례로 읽히고, 가운데에서 한 번
+          끊긴다. 지난 일은 할 일을 정하고 나서 봐도 되는 것이라 뒤로
+          보냈다 */}
       <h2 className="cm-sect">지금 할 일</h2>
       <div className="cm-panel is-one">
         <div className="cm-pane">
@@ -237,17 +215,49 @@ export default async function State(
             </p>
           ) : (
             <p>
-              지금 다음으로 할 일이 잡히지 않았습니다. 새 경험을 적어 현재
-              상태를 다시 세우면 그다음 할 일이 나옵니다.
+              지금 꼭 해야 하는 일은 없습니다. 새 경험을 적어 현재 상태를 다시
+              세우면 그다음 할 일이 나옵니다.
             </p>
           )}
+          {/* **읽는 쪽으로 보내지 않는다**(규격 §7). 할 일이 적는 일이면
+              적는 자리로 바로 보낸다. `할 일 모두 보기` 는 곁딸린 자리라
+              테를 두르지 않는다(규격 §12) */}
           <div className="cm-acts">
-            <Link className="cm-btn" href="/me/next">
-              {open.length > 1 ? `할 일 ${open.length}가지 보기` : "지금 할 일 보기"}
+            <Link className="cm-btn is-primary" href="/me/experience/new">
+              경험에 추가
             </Link>
+            {open.length > 1 ? (
+              <Link className="cm-btn is-ghost" href="/me/next">
+                할 일 {open.length}가지 모두 보기
+              </Link>
+            ) : null}
           </div>
         </div>
       </div>
+
+      {/* ⑤ 최근 달라진 것 ── **첫 화면에는 한 줄이다**(규격 §5).
+
+          전에는 세 줄에 `그 밖에 2가지` 까지 붙어서, 첫 화면에서 가장 긴
+          묶음이 **지난 일을 돌아보는 자리**가 됐다. 나머지는 아래 `달라진
+          것 모두` 가 든다. 반영한 적이 없으면 이 묶음을 세우지 않는다:
+          빈 카드를 세우면 읽는 사람은 자기 결과가 덜 만들어진 줄 안다 */}
+      {st.recomputed_at ? (
+        <>
+          <h2 className="cm-sect">최근 달라진 것</h2>
+          <div className="cm-panel is-one">
+            <div className="cm-pane">
+              <p><b>{one.lines[0]}</b></p>
+              {one.more ? (
+                <div className="cm-acts">
+                  <Link className="cm-btn" href="#changes">
+                    달라진 것 {one.more + 1}가지 모두 보기
+                  </Link>
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </>
+      ) : null}
 
       {/* ── 여기부터가 세부다(규격 §6) ──
           비어 있는 자리 전부 · 달라진 것 전부 · 전체 기술영역 · 검사 당시
@@ -257,18 +267,44 @@ export default async function State(
       <h2 className="cm-sect" id="gaps">아직 부족한 것</h2>
       {gaps.length ? (
         <>
-          <div className="cm-gaps">
-            {gaps.map((g) => {
-              const k = gapKo(g, domainName(g.domain));
-              return (
-                <article className="cm-gap" key={g.id}>
-                  <h3>{k.title}</h3>
-                  <p><b>왜 필요한가</b> {k.why}</p>
-                  <p><b>무엇을 하면</b> {k.detail}</p>
-                </article>
-              );
-            })}
-          </div>
+          {/* **같은 말을 세 번 적지 않는다**(규격 §14).
+              빈자리 셋이 같은 종류면 `왜 필요한가` 와 그렇게 본 까닭이
+              **글자까지 같다.** 같은 상태니까 같은 것이 맞는데, 카드마다
+              되풀이하면 세 칸이 기계가 찍어 낸 표로 읽히고 정작 다른
+              부분(어느 영역의 어느 판단인가)이 묻힌다. 셋이 같으면 한 번만
+              위에 적고 카드는 다른 것만 든다.
+
+              **`무엇을 하면` 이라고 적지 않는다.** 이 자리에 오는 값은
+              `REASON_KO` 즉 **그렇게 본 까닭**이지 할 일이 아니다.
+              `확인된 판단이 아직 넷에 못 미칩니다` 앞에 `무엇을 하면` 이
+              붙으면 앞뒤가 맞지 않는다. 할 일은 위의 `지금 할 일` 이 든다 */}
+          {(() => {
+            const ks = gaps.map((g) => gapKo(g, domainName(g.domain)));
+            const same = ks.length > 1
+              && ks.every((k) => k.why === ks[0].why && k.detail === ks[0].detail);
+            return (
+              <>
+                {same ? (
+                  <p className="cm-lead" style={{ marginTop: 0 }}>
+                    {ks[0].why} {ks[0].detail}
+                  </p>
+                ) : null}
+                <div className="cm-gaps">
+                  {gaps.map((g, i) => (
+                    <article className="cm-gap" key={g.id}>
+                      <h3>{ks[i].title}</h3>
+                      {same ? null : (
+                        <>
+                          <p><b>왜 필요한가</b> {ks[i].why}</p>
+                          <p><b>그렇게 본 까닭</b> {ks[i].detail}</p>
+                        </>
+                      )}
+                    </article>
+                  ))}
+                </div>
+              </>
+            );
+          })()}
           {st.gaps.length > gaps.length ? (
             <p className="cm-none" style={{ marginTop: 10 }}>
               그 밖에 {st.gaps.length - gaps.length}곳이 더 있습니다. 급한
@@ -278,8 +314,8 @@ export default async function State(
         </>
       ) : (
         <p className="cm-lead">
-          지금 부족한 부분이 잡히지 않았습니다. 남은 일은 가진 근거를
-          지원서에서 설명할 문장으로 만드는 것입니다.
+          지금 바로 보완할 부분은 없습니다. 남은 일은 가진 근거를 지원서에서
+          설명할 문장으로 만드는 것입니다.
         </p>
       )}
 
@@ -406,7 +442,7 @@ export default async function State(
           </div>
         ) : (
           <div className="cm-soon">
-            <b>지원서에서 설명할 수 있는 근거가 아직 잡히지 않았습니다.</b>
+            <b>지원서에서 설명할 수 있는 근거가 아직 없습니다.</b>
             관심이 높은 영역에서 짧게 한 번 해 보고 그것을 적으면 이 자리가 섭니다.
           </div>
         )}

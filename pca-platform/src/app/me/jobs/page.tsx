@@ -32,10 +32,10 @@ export default async function Jobs() {
           길은 Track 쪽이고 띠에서는 Track 줄이 켜진다 */}
       <CmHead
         kicker="Track · 공고 비교"
-        title="내 근거와 공고를 맞춰 보는 자리"
+        title="내 근거와 공고를 맞춰 봅니다"
         lead={"공고가 요구하는 일을 기술영역과 판단으로 바꿔 놓고, "
           + "내가 이미 가진 근거와 아직 없는 근거를 가릅니다. Track 이 켜지면 "
-          + "이 자리가 혼자 돕니다."}
+          + "이 쪽이 혼자 돕니다."}
       />
 
       <div className="cm-acts" style={{ marginBottom: 18 }}>

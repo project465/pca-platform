@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import {
-  actionsOf, applicationsOf, currentState, experiencesOf,
+  applicationsOf, currentState, experiencesOf,
 } from "@/lib/me-v3/platform";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import { ZONE_TITLE_KO, actionKo, gapKo } from "@/lib/me-v3/result/text.ko";
+import { openActions } from "@/lib/me-v3/open-actions";
 import { recentChangeKo } from "@/lib/me-v3/change-text.ko";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { CmShell, CmHead } from "./shell";
@@ -33,16 +34,44 @@ export default async function Home() {
   /* **홈이 묻지 않는 것은 읽지도 않는다**(규격 §10). 고르신 산업과
      직무와 지역은 왼쪽 띠의 제 쪽이 들고, 결과 기록은 머리의 링크가
      보낸다. 쓰지 않는 값을 네 번 더 물으면 홈이 그만큼 늦어진다 */
-  const [st, exps, actions, apps] = await Promise.all([
-    currentState(user.id), experiencesOf(user.id), actionsOf(user.id),
+  const [st, exps, act, apps] = await Promise.all([
+    currentState(user.id), experiencesOf(user.id), openActions(user.id),
     applicationsOf(user.id),
   ]);
+  const actions = act.rows;
 
   /* **센 것이 화면을 늦추거나 깨지 않는다.** `mark()` 는 던지지 않는다 */
   await mark("workspace_opened", user.id, { stage: st.stage });
 
   const open = actions.filter((a) => a.state !== "done");
   const first = open[0] ?? null;
+
+  /**
+   * 1순위 칸이 드는 말(규격 §3).
+   *
+   * **여기서 문장을 짓지 않는다.** 결과지와 `다음 할 일` 이 쓰는 같은
+   * 함수를 부른다: 세 곳에서 따로 적으면 같은 할 일이 화면마다 다른 말로
+   * 읽히고, 어느 날 한 곳만 고쳐진다.
+   *
+   * **까닭은 빈자리에서 가져온다.** 못 찾으면 그 줄을 적지 않는다:
+   * 지어낸 까닭은 그 자리에서 가장 그럴듯하게 읽히고 가장 먼저 거짓이
+   * 된다.
+   */
+  const nowModel = first && st.model
+    ? st.model.actions.find((a) =>
+        (a.domain ?? "") === (first.td_code ?? "")
+        && (a.axis ?? "") === (first.axis_code ?? "")) ?? null
+    : null;
+  const nowSay = nowModel && st.model
+    ? actionKo(nowModel, nowModel.domain ? domainName(nowModel.domain) : "",
+               st.model.stage)
+    : { do: first?.body ?? "" };
+  const nowGap = first
+    ? st.gaps.find((g) => g.domain === first.td_code
+        && (g.axis ?? "") === (first.axis_code ?? ""))
+      ?? st.gaps.find((g) => g.domain === first.td_code) ?? null
+    : null;
+  const nowWhy = nowGap ? gapKo(nowGap, domainName(nowGap.domain)).why : "";
   /**
    * **홈은 요약이고 세부 쪽이 전체다.**
    *
@@ -82,7 +111,11 @@ export default async function Home() {
            이름이 제목이면 쪽마다 같은 글자가 가장 크게 선다 */
         title={HEAD[st.stage]}
         lead={LEAD[st.stage]}
-        actions={
+        /* **짙은 단추는 쪽에 하나다**(규격 §19).
+           결과가 있는 사람에게는 바로 아래 `지금 할 일` 칸이 그 단추를
+           들고 있으므로 머리에 또 세우지 않는다. 둘을 세워 두었더니 같은
+           화면에 짙은 단추가 둘이고, 그 둘이 **서로 다른 쪽으로** 갔다. */
+        actions={st.model ? null : (
           <>
             {st.stage === "IN_PROGRESS" ? (
               /* 이어하기만 폼이다. 누른 것을 세려면 누르는 자리에서 센다 */
@@ -92,13 +125,8 @@ export default async function Home() {
             ) : (
               <Link className="cm-btn is-primary" href={cta.href}>{cta.label}</Link>
             )}
-            {/* **단추는 둘까지다**(규격 §12). 거드는 자리는 경험 추가
-                하나이고, 최근 변화는 아래 제 묶음이 링크를 들고 있다 */}
-            {st.model ? (
-              <Link className="cm-btn" href="/me/experience/new">경험 추가</Link>
-            ) : null}
           </>
-        }
+        )}
       />
 
       {/* ── A. 검사 전 ── 받는 것 셋만 세운다. 빈 카드를 쌓지 않는다 ── */}
@@ -172,17 +200,68 @@ export default async function Home() {
       ) : null}
 
       {/* ── C~F. 결과가 있는 사람 ──
-          **세로 차례가 곧 중요도다**(규격 §12): 현재 상태 → 지금 할 일 →
-          최근 변화 → 기록. 전에는 앞의 셋이 같은 크기의 카드로 가로에
-          나란히 서서 **무엇을 먼저 읽는지가 화면에 없었다.** 셋이 같은
-          무게면 읽는 사람이 매번 셋을 다 읽고 고른다.
+          **네 묶음의 무게가 서로 달라야 한다**(규격 §3): 지금 할 일 →
+          현재 상태 → 최근 변화 → 기록. 전에는 차례만 다르고 넷이 **같은
+          크기의 흰 판**으로 서서, 세로로 쌓아 두어도 무엇을 먼저 읽는지가
+          화면에 없었다. 이제 첫 묶음만 짙은 판에 행동 단추를 들고, 나머지
+          셋은 읽는 줄이다.
+
+          **1순위가 `지금 할 일` 인 까닭**은 홈을 여는 이유가 그것이어서다.
+          현재 상태는 그 할 일이 왜 나왔는지의 배경이고, 배경을 먼저 읽게
+          하면 읽는 사람이 **행동 앞에서 한 번 더 고르는 일**을 한다.
 
           **빈 카드를 세우지 않는다**: 자료가 없는 묶음은 아예 그리지
           않는다. 점선 테두리에 `아직 없습니다` 를 적은 칸이 넷까지 서면
           읽는 사람은 자기 결과가 덜 만들어진 줄 안다. */}
       {st.model ? (
         <>
-          {/* 1. 현재 상태 — **한 판에 세 줄** */}
+          {/* ── 1순위. 지금 할 일 ──
+              **홈에서 가장 센 자리다**(규격 §3). 짙은 판 하나에 세 줄을
+              담는다: 무엇을 할지 · 왜 해야 하는지 · 바로 누를 단추.
+
+              **읽는 쪽으로 보내지 않는다.** 전에는 이 칸의 단추가
+              `지금 할 일 보기` 였는데, 그러면 홈에서 할 수 있는 일이
+              `다른 쪽으로 가기` 하나다. 할 일이 적는 일이면 적는 자리로
+              바로 보낸다. */}
+          <section className="cm-now">
+            <h2>지금 할 일{open.length > 1
+              ? <em>그 밖에 {open.length - 1}가지</em> : null}</h2>
+            {first ? (
+              <>
+                {/* **담을 때의 문장이 아니라 지금 판본의 짧은 지시다**
+                    (규격 §9). 옛 판본의 `body` 에는 화살표 넷짜리 체인이
+                    들어 있고, 그 줄은 홈에서 두 줄을 먹으면서도 **그래서
+                    무엇을 하면 되는가**에 바로 닿지 않는다 */}
+                <p className="cm-now-do">{nowSay.do}</p>
+                {/* **왜 해야 하는지는 작게 한 줄이다**(규격 §3). 까닭이
+                    할 일보다 길면 읽는 사람이 까닭을 읽다 만다 */}
+                {nowWhy ? <p className="cm-now-why">{nowWhy}</p> : null}
+                <div className="cm-acts">
+                  <Link className="cm-btn is-primary" href="/me/experience/new">
+                    지금 정리하기
+                  </Link>
+                  <Link className="cm-btn is-ghost" href="/me/next">할 일 모두 보기</Link>
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="cm-now-do">
+                  지금 꼭 해야 하는 일은 없습니다.
+                </p>
+                <p className="cm-now-why">
+                  새 경험을 적으면 현재 상태가 다시 서고 그다음 할 일이
+                  나옵니다.
+                </p>
+                <div className="cm-acts">
+                  <Link className="cm-btn is-primary" href="/me/experience/new">
+                    경험 추가
+                  </Link>
+                </div>
+              </>
+            )}
+          </section>
+
+          {/* 2순위. 현재 상태 — **읽는 줄이지 행동 자리가 아니다** */}
           <h2 className="cm-sect">
             현재 상태
             <Link href="/me/state">전체 기술영역 보기</Link>
@@ -209,7 +288,7 @@ export default async function Home() {
               })}
               {Object.values(st.zoneOf).every((z) => !READY_ZONES.includes(z)) ? (
                 <p>
-                  아직 근거가 선 영역이 잡히지 않았습니다. 관심이 높은 영역에서
+                  지원서에서 설명할 만한 경험이 아직 없습니다. 관심이 높은 영역에서
                   짧게 한 번 해 보는 것이 다음 걸음입니다.
                 </p>
               ) : null}
@@ -231,43 +310,12 @@ export default async function Home() {
             ) : null}
           </div>
 
-          {/* 2. 지금 할 일 — **문장 하나다**(규격 §12).
-              `할 일 가져오기` 같은 시스템 문구를 쓰지 않는다: 읽는 사람이
-              할 일은 그 문장을 하는 것이지 무엇을 가져오는 것이 아니다 */}
-          <h2 className="cm-sect">
-            지금 할 일
-            {open.length > 1 ? <em>그 밖에 {open.length - 1}가지</em> : null}
-            <Link href="/me/next">지금 할 일 보기</Link>
-          </h2>
-          <div className="cm-panel is-one">
-            <div className="cm-pane">
-              {first ? (
-                <>
-                  {/* **담을 때의 문장이 아니라 지금 판본의 짧은 지시다**
-                      (규격 §9). 옛 판본의 `body` 에는 화살표 넷짜리 체인이
-                      들어 있고, 그 줄은 홈에서 두 줄을 먹으면서도 **그래서
-                      무엇을 하면 되는가**에 바로 닿지 않는다 */}
-                  <p>{(() => {
-                    const x = st.model?.actions.find((a) =>
-                      (a.domain ?? "") === (first.td_code ?? "")
-                      && (a.axis ?? "") === (first.axis_code ?? ""));
-                    return x && st.model
-                      ? actionKo(x, x.domain ? domainName(x.domain) : "", st.model.stage).do
-                      : first.body;
-                  })()}</p>
-                </>
-              ) : (
-                <p>
-                  아직 정해 둔 할 일이 없습니다. 결과에서 하나를 고르면 여기에
-                  섭니다.
-                </p>
-              )}
-            </div>
-          </div>
-
-          {/* 3. 최근 변화 — **반영한 적이 있을 때만 선다.** 그래프를
+          {/* 3순위. 최근 변화 — **반영한 적이 있을 때만 선다.** 그래프를
               그리지 않는다. 반영했는데 올라간 자리가 없는 것도 자료라서
-              그때는 그 사실을 적는다 */}
+              그때는 그 사실을 적는다.
+
+              **한 줄이다**(규격 §3). `recentChangeKo(st, domainName, 1)` 이
+              첫 줄만 돌려주고 나머지 수는 `그 밖에 N가지` 로 적는다 */}
           {st.stage === "RECOMPUTED" || st.pending > 0 ? (
             <>
               <h2 className="cm-sect">
@@ -310,9 +358,12 @@ export default async function Home() {
             </>
           ) : null}
 
-          {/* ── 4. 기록 ── **카드를 넷 더 쌓지 않는다**: 같은 무게의 흰
-              상자가 일곱이면 홈에서 무엇이 먼저인지가 사라진다. 한 판 안에
-              줄로 세우고 선으로 가른다(규격 §31) */}
+          {/* ── 4순위. 기록 ── **카드를 넷 더 쌓지 않는다**: 같은 무게의
+              흰 상자가 일곱이면 홈에서 무엇이 먼저인지가 사라진다. 한 판
+              안에 줄로 세우고 선으로 가른다(규격 §31).
+
+              **검사 결과 하나와 최근 경험 하나까지다**(규격 §3). 꼬리가
+              몸통보다 길면 홈의 차례가 뒤집힌다 */}
           <h2 className="cm-sect">
             기록
             <Link href="/me/results">결과 기록 모두 보기</Link>
@@ -435,11 +486,12 @@ const HOME_ROWS = 3;
 /**
  * `기록` 묶음이 드는 줄 수(규격 §8).
  *
- * 하나나 둘까지이고 나머지는 `모두 보기` 뒤에 둔다. 셋씩 세우면 홈의
- * 꼬리가 몸통보다 길어지고, 세로 차례가 곧 중요도라는 규칙이 아래에서
- * 뒤집힌다.
+ * **검사 결과 하나와 최근 경험 하나까지다**(규격 §3). 나머지는
+ * `모두 보기` 뒤에 둔다. 둘씩 세우면 홈의 꼬리가 몸통보다 길어지고,
+ * 세로 차례가 곧 중요도라는 규칙이 아래에서 뒤집힌다. 4순위 묶음이
+ * 1순위 묶음보다 길면 그 차례는 화면에서 지켜지지 않는다.
  */
-const HOME_RECENT = 2;
+const HOME_RECENT = 1;
 
 /** 첫 카드에 올리는 묶음. **아직 판단하기 어려운 영역은 올리지 않는다** */
 const READY_ZONES: string[] = ["Z1_EVIDENCE_ESTABLISHED", "Z2_EVIDENCE_INCOMPLETE"];

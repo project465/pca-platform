@@ -141,13 +141,27 @@
   border-radius: var(--r-r); overflow: hidden;
   grid-template-columns: 1fr;
 }
-/* **칸 수에 맞게 칸을 센다**(규격 §1·§13). 세 칸이던 것이 네 칸이 됐다:
-   지금 확인된 것 · 비어 있는 것 · 지금 할 행동 · 산업·직무 연결.
-   두 칸으로 두었더니 넷째 자리가 빈 회색 네모로 남았고, 그 빈 자리가
-   덜 그린 화면으로 읽혔다. 네 칸을 한 줄에 세우면 중간 폭에서 한 칸이
-   글자 두 자가 되므로 860~1179px 은 두 줄 두 칸이다 */
-@media (min-width: 860px) { .rs-top { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1180px) { .rs-top { grid-template-columns: repeat(4, 1fr); } }
+/* **넷을 같은 폭으로 세우지 않는다**(규격 §11).
+   네 칸이 같은 폭 · 같은 활자 · 같은 바탕이면 그 줄은 **네 열짜리 보고서
+   표**로 읽히고, 읽는 사람이 넷을 다 읽고 나서 무엇이 중요한지 스스로
+   정해야 한다. 첫 칸(`지금 확인된 것`)이 이 결과지가 파는 자리이므로
+   **한 줄을 통째로 쓰고** 글자가 한 단 크다. 나머지 셋은 거드는 자리라
+   그 아래에 삼등분으로 선다.
+
+   **칸 수가 나누어떨어지게 둔다.** 처음에는 네 칸 격자에 첫 칸만 둘을
+   쓰게 했는데, 그러면 넷째 칸이 다음 줄로 혼자 내려가고 그 오른쪽에
+   **격자 바탕이 그대로 드러난 큰 회색 네모**가 남았다. 담긴 것이 없는
+   그 면이 덜 그린 화면으로 읽힌다(규격 §17). 셋으로 두면 1 + 3 이라
+   남는 칸이 없다 */
+@media (min-width: 860px) {
+  .rs-top { grid-template-columns: repeat(3, 1fr); }
+  .rs-top > div:first-child { grid-column: 1 / -1; }
+}
+/* 첫 칸만 한 단 크게. **색을 더 쓰지 않는다**: 센 것은 색이 아니라 크기와
+   자리다(규격 §20) */
+.rs-top > div:first-child > p:first-of-type {
+  font-size: var(--r-t-h3); line-height: 1.4; letter-spacing: -.01em;
+}
 .rs-top > div { background: var(--r-paper); padding: 20px 22px; }
 .rs-top h3 {
   margin: 0 0 var(--r-s2); font-size: var(--r-t-meta); font-weight: 650;
@@ -199,9 +213,15 @@
    다음 행동 하나. 셋을 같은 모양으로 쌓지 않는다: 상태는 문장이고
    근거는 그 사람이 고른 글자이고 뒤의 둘은 우리가 적는 안내다.
    이름을 새로 짓기 전에 CSS 에 그 이름이 있는지 봤다 */
+/* 현재 상태 한 줄.
+   **문장이 아니라 상태 줄이다**(규격 §14). 묶음이 같은 영역끼리는 이
+   줄이 글자까지 같다 — 같은 상태니까 같은 것이 맞는데, 본문 크기로
+   세워 두면 영역 셋에 **똑같은 문단이 세 번** 서서 기계가 찍어 낸 표로
+   읽힌다. 딱지 바로 아래에 작게 붙이면 되풀이가 자연스럽게 읽히고,
+   영역 한 자리에서 가장 큰 덩이는 그 사람이 고른 근거가 된다. */
 .rs-dstate {
-  margin: 0; padding: 16px 22px 0;
-  font-size: var(--r-t-body); color: var(--r-ink); line-height: 1.6;
+  margin: 0; padding: 12px 22px 0;
+  font-size: var(--r-t-gloss); color: var(--r-ink-2); line-height: 1.55;
   word-break: keep-all;
 }
 /**
@@ -612,13 +632,24 @@
   border: 0; cursor: pointer; font-family: inherit; line-height: 1;
 }
 .rs-do-main:hover { filter: brightness(1.06); }
+/* 둘째 층. **테를 두른 단추**(규격 §12) — 전에는 둘째와 셋째가 둘 다
+   밑줄 친 글자라, 셋이 한 줄에 서면 `담기` 하나만 단추로 보이고 나머지
+   둘이 같은 무게로 붙어 다녔다. 다음 걸음이 되는 둘(경험 추가 · 내
+   CareerMatri)은 테를 두르고, 받아 두는 자리(PDF)만 글자로 남긴다 */
 .rs-do-sub {
-  display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px;
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px;
   color: var(--r-ink-2); font-size: var(--r-t-sub); font-weight: 600;
-  text-decoration: underline; text-decoration-color: var(--r-line);
-  text-underline-offset: 3px;
+  border: 1px solid var(--r-line); border-radius: var(--r-r-sm);
+  background: var(--r-paper); text-decoration: none;
 }
-.rs-do-sub:hover { color: var(--r-accent-ink); }
+.rs-do-sub:hover { color: var(--r-accent-ink); border-color: var(--r-accent-line); }
+/* 셋째 층. **받아 두는 자리는 단추가 아니다** — 결과를 읽고 나서 하는
+   일이 아니라 들고 가는 일이라, 앞의 둘과 같은 무게로 서면 안 된다 */
+.rs-do-sub.is-pdf {
+  border-color: transparent; background: none; padding: 0 4px;
+  color: var(--r-ink-3); font-weight: 500; margin-left: auto;
+}
+.rs-do-sub.is-pdf:hover { color: var(--r-ink-2); border-color: transparent; }
 
 /* ── 자세한 내용 ──────────────────────────────────────────────────────
    본문 아홉 절을 한 자리에서 연다. **접힌 상태가 기본이다**: 웹에서 이
@@ -711,8 +742,12 @@
   .rs-count { margin-top: 12px; gap: 6px 20px; }
   .rs-count b { font-size: 14pt; }
 
-  /* 첫 화면 세 칸 → 종이에서도 세 쪽으로 나란히 선 요약 띠 */
+  /* 첫 화면 넷 → 종이에서도 첫 칸이 한 줄, 나머지 셋이 그 아래.
+     **종이 글 폭이 690px 안팎이라** 화면 쪽 `min-width: 860px` 규칙이
+     여기서는 걸리지 않는다. 그대로 두면 넷이 세 칸 격자에 들어가 남는
+     칸 둘이 빈 회색 네모로 뽑힌다 */
   .rs-top { grid-template-columns: repeat(3, 1fr); margin-top: 14px; }
+  .rs-top > div:first-child { grid-column: 1 / -1; }
   .rs-top > div { padding: 10px 12px; }
   .rs-top h3 { font-size: 7.5pt; }
   .rs-top p { font-size: 9.5pt; }

@@ -232,6 +232,45 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 .cm-btn[disabled], .cm-btn.is-off {
   color: var(--sf-ink-3); background: var(--sf-surface-2); cursor: default;
 }
+/* 셋째 층. **테 없는 글자 단추**(규격 §12) — 한 줄에 선 단추 셋이 전부
+   같은 테를 두르면 어느 것이 주된 것인지가 사라진다. 짙은 것 하나 ·
+   테 두른 것 하나 · 글자 하나로 센다 */
+.cm-btn.is-ghost {
+  border-color: transparent; background: none; color: var(--sf-ink-2);
+  padding: 0 8px;
+}
+.cm-btn.is-ghost:hover { background: var(--sf-surface-2); }
+
+/* ── 1순위. 지금 할 일 ────────────────────────────────────────────
+   **홈에서 가장 센 자리다**(규격 §3). 아래 세 묶음이 흰 판에 회색 테를
+   두르므로, 여기만 **면을 채우고 왼쪽에 기둥을 세운다.** 그라데이션도
+   그림자도 쓰지 않는다: 센 것은 색이 아니라 대비다 */
+.cm-now {
+  margin: 0 0 var(--ui-6);
+  padding: var(--ui-5) var(--ui-5) var(--ui-5) calc(var(--ui-5) - 3px);
+  border: 1px solid var(--sf-accent-line, var(--sf-line));
+  border-left: 4px solid var(--sf-accent);
+  border-radius: var(--ui-r); background: var(--sf-surface);
+}
+.cm-now > h2 {
+  margin: 0 0 var(--ui-2); font-size: var(--ui-t-cap);
+  letter-spacing: .06em; font-weight: 700; color: var(--sf-accent-ink);
+  display: flex; align-items: baseline; gap: 8px;
+}
+.cm-now > h2 > em {
+  font-style: normal; font-weight: 400; color: var(--sf-ink-3);
+  letter-spacing: 0;
+}
+/* 할 일 문장. **홈에서 가장 큰 글이다** */
+.cm-now-do {
+  margin: 0; font-size: var(--ui-t-section); line-height: 1.45;
+  font-weight: 700; color: var(--sf-ink); text-wrap: pretty;
+}
+.cm-now-why {
+  margin: var(--ui-2) 0 0; font-size: var(--ui-t-sub);
+  line-height: 1.6; color: var(--sf-ink-2);
+}
+.cm-now .cm-acts { margin-top: var(--ui-4); }
 
 /* ── 아직 열지 않은 자리 ──────────────────────────────────────────── */
 
@@ -376,6 +415,38 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
   color: var(--sf-accent-ink); font-weight: 600;
 }
 .cm-pick:has(input:focus-visible) { outline: 2px solid var(--sf-accent); outline-offset: 2px; }
+
+/* ── 기술영역 고르기 ──────────────────────────────────────────────
+   **영역은 표이고 판단은 말이다**(규격 §9). 열두 영역을 알약으로 깔면
+   아래 판단 알약과 이어 붙어 한 덩이로 읽힌다. 모난 칸을 격자에 세우고
+   앞에 네모 표시를 둔다: 고르는 자리라는 것이 모양으로 읽힌다.
+
+   **접지 않는다.** 고른 영역의 판단만 아래에 뜨는 것이 이미 접는 일을
+   하고 있고, 영역 목록까지 접으면 **고르는 수가 줄어 소유 판정이
+   달라진다.** 접는 쪽이 판정을 바꾸면 그것은 시각 작업이 아니다 */
+.cm-pickset.is-td {
+  display: grid; gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+.cm-pickset.is-td > .cm-pick {
+  justify-content: flex-start; border-radius: var(--ui-r-sm);
+  padding: 0 12px; min-height: 44px; font-size: var(--ui-t-body);
+}
+/* 앞에 선 네모. **표시가 있어야 고르는 자리로 읽힌다** */
+.cm-pickset.is-td > .cm-pick::before {
+  content: ""; flex: none; width: 16px; height: 16px;
+  border: 1.5px solid var(--sf-line-2, var(--sf-line));
+  border-radius: 4px; background: var(--sf-surface);
+}
+.cm-pickset.is-td > .cm-pick:has(input:checked)::before {
+  border-color: var(--sf-accent); background: var(--sf-accent);
+  /* 체크 표시. **그림 파일을 끌어오지 않고** 벡터를 그 자리에 적는다.
+     처음에는 기울인 띠 둘을 겹쳐 그렸는데, 둘이 서로 가로지르는 바람에
+     체크가 아니라 **가위표**로 보였다. 가위표는 고른 것이 아니라 지운
+     것으로 읽힌다 */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-6.5' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: 100% 100%; background-repeat: no-repeat;
+}
 
 /* ── 손전화 아래 띠 ───────────────────────────────────────────────── */
 

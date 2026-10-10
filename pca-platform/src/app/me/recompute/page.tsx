@@ -136,7 +136,7 @@ export default async function Recompute(
                   ))}
                 </div>
                 <p className="cm-none">
-                  고르신 항목이 그 영역의 그 자리로 들어갑니다. 같은 자리에서
+                  고르신 항목이 그 영역의 그 판단으로 들어갑니다. 같은 판단에서
                   고른 항목이 둘이 되면 그때 직접 수행으로 올라갑니다.
                 </p>
               </div>
@@ -201,13 +201,13 @@ export default async function Recompute(
                   </p>
                   {nextGap ? (
                     <p className="cm-none">
-                      {gapKo(nextGap, domainName(nextGap.domain)).title} 자리를 메우는 일입니다.
+                      {gapKo(nextGap, domainName(nextGap.domain)).title} 부분을 채우는 일입니다.
                     </p>
                   ) : null}
                 </>
               ) : (
                 <p>
-                  지금 부족한 부분 가운데 다음으로 할 일이 잡히지 않았습니다.
+                  지금 바로 보완할 부분은 없습니다.
                   남은 일은 가진 근거를 지원서에서 설명할 문장으로 만드는
                   것입니다.
                 </p>
@@ -264,7 +264,7 @@ export default async function Recompute(
                 </table>
               </div>
               <p className="cm-none" style={{ marginTop: 10 }}>
-                경험으로 올라갈 수 있는 가장 높은 자리는 직접 수행까지입니다.
+                경험으로 올라갈 수 있는 가장 높은 단계는 직접 수행까지입니다.
                 직접 결정은 검사에서만 섭니다.
               </p>
             </details>

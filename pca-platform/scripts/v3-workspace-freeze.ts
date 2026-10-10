@@ -75,6 +75,9 @@ const FILES = [
   "src/app/me/jobs/page.tsx",
   /* 읽는 자리와 계측 */
   "src/lib/me-v3/platform.ts",
+  /* **`지금 할 일` 을 읽는 한 자리**(규격 §3 — P0). 홈과 현재 상태와
+     다음 할 일이 저마다 읽어 서로 다른 답을 내던 것을 여기로 모았다 */
+  "src/lib/me-v3/open-actions.ts",
   "src/lib/me-v3/workspace-events.ts",
   "src/lib/me-v3/workspace-version.ts",
 ];

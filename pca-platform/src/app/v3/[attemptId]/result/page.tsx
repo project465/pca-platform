@@ -750,6 +750,10 @@ export default async function V3Result({
             <button className="rs-do-main" type="submit">지금 할 일로 담기</button>
           </form>
           <Link className="rs-do-sub" href="/me/experience/new">경험 추가</Link>
+          {/* **들어온 자리로 돌아가는 길을 둔다**(규격 §12). 머리의
+              `← 내 CareerMatri` 는 위로 올라가야 보이고, 결과를 다 읽은
+              사람이 다음에 가는 자리가 거기다 */}
+          <Link className="rs-do-sub" href="/me">내 CareerMatri</Link>
           {/* **종이 길은 `Link` 로 걸지 않는다.** Next 가 화면에 들어온
               `Link` 를 미리 불러오는데, 그 길은 머리 없는 브라우저를 띄워
               종이를 만드는 자리다. 읽기만 해도 종이가 한 벌씩 만들어졌다 */}
@@ -982,7 +986,7 @@ export default async function V3Result({
             <h2>앞으로 채울 것</h2>
             <p className="rs-note">
               {model.gaps.length
-                ? "무엇이 비었는지와 그 자리가 왜 필요한지, 다음에 무엇을 하면 되는지를 한 묶음으로 적었습니다."
+                ? "무엇이 비었는지와 그것이 왜 필요한지, 다음에 무엇을 하면 되는지를 함께 적었습니다."
                 : "완전히 비어 있는 축은 없습니다. 남은 일은 확인된 경험을 설명 문장으로 만드는 쪽입니다."}
             </p>
             {model.gaps.slice(0, 8).map((g) => {
@@ -1245,7 +1249,7 @@ export default async function V3Result({
           <ul className="rs-next">
             {[
               ["/me/state", "현재 상태 보기", "설명할 수 있는 경험과 보완할 부분"],
-              ["/me/experience/new", "경험 추가", "반영하면 현재 상태가 달라집니다"],
+              ["/me/experience/new", "경험 추가", "더하면 현재 상태가 달라집니다"],
               ["/me/next", "다음 할 일", "할 수 있는 때로 묶어서 봅니다"],
               ["/me/explore", "산업·직무 탐색", "관심 산업과 직무를 둘러봅니다"],
               ["/me/track", "CareerMatri Track", "준비 중입니다"],

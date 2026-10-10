@@ -30,6 +30,7 @@
  *   UI_BASE=http://127.0.0.1:3100 npx tsx scripts/v3-product-loop.ts
  */
 import { randomBytes, createHash } from "node:crypto";
+import { readFileSync, readdirSync } from "node:fs";
 
 import {
   BASE as B, cloneFinished, fillExperience, gateCreds, login, makeStudent,
@@ -59,6 +60,72 @@ const INTERNAL: RegExp[] = [
   /\b(MISSING_REQUIRED_AXIS|MISSING_OUTPUT|INSUFFICIENT_CONFIRMED_AXES)\b/,
   /\b(BUILD_OUTPUT|ADD_VERIFICATION|FILL_AXIS|TRY_SHORT_EXPERIENCE|WRITE_UP)\b/,
   /\b(evidence\.added|career_profiles|v3_experiences|v3_actions)\b/,
+];
+
+/**
+ * 손님 화면에 남은 **우리 쪽 비유**(규격 §19).
+ *
+ * 위의 `INTERNAL` 이 막는 것은 코드이고 여기가 막는 것은 **말**이다.
+ * `자리` · `묶음` · `반영` 은 우리가 설계를 이야기할 때 쓰는 비유인데,
+ * 그대로 화면에 나가면 읽는 사람이 **우리 모형을 먼저 배워야** 자기
+ * 결과를 읽을 수 있다.
+ *
+ * **소스에서 세지 않는다.** 식별자(`function Gap`)와 `왜 지웠는가` 를
+ * 적어 둔 주석이 그대로 걸려, 맞는 기록을 지우라고 요구하게 된다. 띄운
+ * 쪽의 글자에서만 센다.
+ *
+ * **기계공학 말을 지우라고 요구하지 않는다.** `판정 기준` 과 `사이클 타임
+ * 판정` 과 `판정이나 인증의 근거` 는 그 분야에서 **시험 결과가 합격인지
+ * 가리는 일**을 뜻하고, 우리 쪽 결과를 가리키는 말이 아니다. 바꾸면
+ * 전공자가 읽는 글이 얕아진다. 그래서 세기 전에 그 묶음을 먼저 걷어
+ * 낸다. **목록은 사람이 읽고 넣는다**: 자동으로 늘리면 어느 날 우리 쪽
+ * 비유가 그 목록에 섞여 들어간다.
+ */
+const DOMAIN_OK: RegExp[] = [
+  /판정\s*기준/g, /사이클 타임\s*판정/g, /판정이나 인증/g,
+  /판정선/g, /재서\s*판정한다/g, /기준과\s*판정으로/g,
+];
+
+/**
+ * **얼린 문항 은행의 말은 우리가 고칠 것이 아니다**(규격 §0).
+ *
+ * 체크리스트와 문항의 글은 기계공학자가 쓴 현장 말이고 측정 동결 안에
+ * 있다. 거기에는 `부딪히는 자리` · `고장이 날 자리` · `내 판정으로
+ * 출하가 결정됐다` · `설계에 반영` 이 그 분야의 뜻으로 들어 있다. 띄운
+ * 쪽에서 세면 그 말들이 전부 걸리고, 그러면 이 검사가 **얼린 자료를
+ * 고치라고 요구한다.**
+ *
+ * 그래서 허용 목록을 손으로 적지 않고 **동결된 자료에서 그대로 읽어
+ * 온다.** 손으로 적으면 문항이 하나 늘 때마다 이 목록이 뒤처지고,
+ * 뒤처진 날 멀쩡한 화면이 걸린다.
+ */
+const BANK_KEYS = new Set([
+  "text", "stem", "grid_row", "grid_stem", "label", "gloss", "name", "scene",
+]);
+
+function bankStrings(): string[] {
+  const out = new Set<string>();
+  const walk = (o: unknown): void => {
+    if (Array.isArray(o)) { o.forEach(walk); return; }
+    if (!o || typeof o !== "object") return;
+    for (const [k, v] of Object.entries(o as Record<string, unknown>)) {
+      if (BANK_KEYS.has(k) && typeof v === "string" && v.length > 1) out.add(v);
+      else walk(v);
+    }
+  };
+  for (const f of readdirSync("sites/pca-platform/content")) {
+    if (!f.endsWith(".json")) continue;
+    try { walk(JSON.parse(readFileSync(`sites/pca-platform/content/${f}`, "utf8"))); }
+    catch { /* 자료가 아닌 파일은 지나간다 */ }
+  }
+  /* 긴 것부터 걷어 내야 짧은 것이 긴 것을 조각내지 않는다 */
+  return [...out].sort((a, b) => b.length - a.length);
+}
+
+const JARGON: RegExp[] = [
+  /판정/, /(?<![가-힣])자리(?![수])/, /묶음/, /반영/,
+  /굳은 결과/, /열두 영역/, /가져오기/,
+  /\b(Evidence|Gap|snapshot|recompute|confirmed|owned|axis)\b/,
 ];
 
 let pass = 0, fail = 0;
@@ -183,7 +250,9 @@ async function main(): Promise<void> {
        뒤집혀 있어도 통과하거나 멀쩡한데 걸린다 */
     const sects = await p2.$$eval("h2.cm-sect",
       (xs) => xs.map((x) => (x.firstChild?.textContent ?? x.textContent ?? "").trim()));
-    const ORDER_TOP = ["지금 설명할 수 있는 영역", "최근 달라진 것", "지금 할 일"];
+    /* **차례가 §5 로 바뀌었다**: 지난 일보다 할 일이 먼저다. 전에는
+       상태 → 지난 일 → 할 일 이라 첫 화면이 가운데에서 한 번 끊겼다 */
+    const ORDER_TOP = ["지금 설명할 수 있는 영역", "지금 할 일", "최근 달라진 것"];
     const at5 = ORDER_TOP.map((h) => sects.findIndex((t) => t === h));
     ok("현재 상태 첫 화면의 차례가 규격 §5 다",
       at5.every((i) => i >= 0) && at5.every((v, i) => i === 0 || v > at5[i - 1]),
@@ -203,21 +272,36 @@ async function main(): Promise<void> {
     /* ── 5. next action updated ──────────────────────────────────── */
     console.log("\n── 5. 다음 행동이 갱신된다");
     await p2.goto(`${B}/me/next`, { waitUntil: "networkidle" });
-    let nextTxt = await p2.evaluate(() => document.body.innerText);
-    if (/결과의 할 일 담기/.test(nextTxt)) {
-      await p2.locator('form button:has-text("결과의 할 일 담기")').first()
-        .click({ force: true }).catch(() => undefined);
-      await p2.waitForLoadState("networkidle").catch(() => undefined);
-      await p2.waitForTimeout(1000);
-      nextTxt = await p2.evaluate(() => document.body.innerText);
-    }
+    const nextTxt = await p2.evaluate(() => document.body.innerText);
+    /**
+     * **담지 않아도 할 일이 서 있다**(규격 §3 — P0).
+     *
+     * 전에는 이 검사가 `결과의 할 일 담기` 를 눌러 표에 줄을 만든 뒤
+     * 그 줄을 셌다. 그러면 **담기 전에는 쪽이 비어 있어도 통과한다**:
+     * 실제로 PRO 를 끝내고 들어온 사람이 홈에서 `지금 할 일` 을 누르면
+     * `아직 담아 둔 할 일이 없습니다` 를 받고 있었다. 이제 세는 것은
+     * 표의 줄이 아니라 **그 사람이 화면에서 보는 것**이다.
+     */
+    const empty = /아직 담아 둔 할 일이 없습니다|할 일을 모두 치우셨습니다/.test(nextTxt);
+    ok("담지 않아도 할 일이 서 있다", !empty,
+      empty ? "빈 쪽이다" : nextTxt.slice(0, 40).replace(/\n/g, " "));
+    /* **누르면 그때 표에 남는다.** 읽기만 해도 줄이 생기면 미리 불러오기가
+       줄을 만들고, 그러면 치운 할 일이 되살아난 것처럼 보인다 */
+    const rowsBefore = await queryOne<{ n: string }>(
+      `SELECT count(*)::text AS n FROM v3_actions WHERE user_id = $1`, [a.id]);
+    await p2.locator('form button:has-text("끝냈습니다")').first()
+      .click({ force: true }).catch(() => undefined);
+    await p2.waitForLoadState("networkidle").catch(() => undefined);
+    await p2.waitForTimeout(1000);
     const acts = await queryOne<{ n: string }>(
       `SELECT count(*)::text AS n FROM v3_actions WHERE user_id = $1`, [a.id]);
-    ok("할 일이 줄로 남는다", Number(acts?.n ?? 0) > 0, `${acts?.n ?? 0}줄`);
-    /* 규격 §9. **넷이 붙는다** — 무엇을 · 왜 · 어느 자리 · 어떤 경험으로 */
-    const four = ["왜 필요한가", "어느 자리", "어떤 경험으로"]
+    ok("누를 때만 할 일이 줄로 남는다",
+      Number(rowsBefore?.n ?? 0) === 0 && Number(acts?.n ?? 0) > 0,
+      `읽기만 ${rowsBefore?.n ?? 0}줄 → 누른 뒤 ${acts?.n ?? 0}줄`);
+    /* 규격 §9. **넷이 붙는다** — 무엇을 · 왜 · 어느 부분 · 어떤 경험으로 */
+    const four = ["왜 필요한가", "어느 부분", "어떤 경험으로"]
       .filter((h) => nextTxt.includes(h));
-    ok("할 일에 왜와 어느 자리와 어떤 경험으로가 붙는다", four.length >= 2,
+    ok("할 일에 왜와 어느 부분과 어떤 경험으로가 붙는다", four.length >= 2,
       four.join(" / ") || "하나도 없다");
     ok("할 일에서 경험으로 돌아가는 길이 있다",
       (await p2.locator('a[href="/me/experience/new"]').count()) > 0);
@@ -267,8 +351,12 @@ async function main(): Promise<void> {
       `${n0} → ${n1}`);
     ok("두 번 눌러도 할 일이 늘지 않는다", n1 === n0 || n0 === 0, `${n0} → ${n1}`);
 
+    /* **루프 쪽만 세면 옆쪽이 지나간다**(규격 §19). 탐색과 지역과 지원
+       기록과 Track 과 계정도 손님이 눌러 들어가는 자리다. 한 번 전수로
+       지워도 목록이 좁으면 다음 사람이 그 밖에서 되돌린다 */
     const LOOP = ["/me", "/me/state", "/me/next", "/me/experience",
-      "/me/experience/new", "/me/recompute", "/me/results"];
+      "/me/experience/new", "/me/recompute", "/me/results",
+      "/me/explore", "/me/region", "/me/apply", "/me/jobs", "/me/track", "/my"];
     const dead: string[] = [];
     for (const path of LOOP) {
       await p2.goto(B + path, { waitUntil: "networkidle" });
@@ -329,7 +417,35 @@ async function main(): Promise<void> {
       }
     }
     ok("손님 화면에 안쪽 이름이 없다", leaks.length === 0,
-      leaks.slice(0, 3).join(" / ") || `쪽 ${LOOP.length}자리 · 규칙 ${INTERNAL.length}가지`);
+      leaks.slice(0, 3).join(" / ") || `쪽 ${LOOP.length}곳 · 규칙 ${INTERNAL.length}가지`);
+
+    /* **코드만 세면 말이 지나간다**(규격 §19). 같은 쪽을 한 번 더 훑어
+       우리 쪽 비유를 센다 */
+    const jargon: string[] = [];
+    const BANK = bankStrings();
+    for (const path of LOOP) {
+      await p2.goto(B + path, { waitUntil: "networkidle" });
+      await p2.locator(".rs-openbtn").first().click({ timeout: 2000 }).catch(() => undefined);
+      await p2.$$eval("details", (ds) =>
+        ds.forEach((d) => { (d as HTMLDetailsElement).open = true; }));
+      await p2.waitForTimeout(150);
+      /* **줄바꿈을 먼저 한 칸으로 모은다.** 화면에서 `사이클 타임 판정`
+         이 칸에 안 들어가 `사이클 타임\n판정` 으로 접히면, 글자 그대로
+         적어 둔 허용 목록이 그것을 못 알아보고 **멀쩡한 기계공학 말이
+         걸린다.** 한 번 그렇게 걸렸다 */
+      let t = (await p2.evaluate(() => document.body.innerText))
+        .replace(/\s+/g, " ");
+      /* 기계공학 말을 먼저 걷어 내고 센다. 얼린 자료가 먼저다 */
+      for (const b of BANK) t = t.split(b).join(" ");
+      for (const ok of DOMAIN_OK) t = t.replace(ok, "");
+      for (const re of JARGON) {
+        const m = re.exec(t);
+        if (m) jargon.push(`${path}: ${m[0]}`);
+      }
+    }
+    ok("손님 화면에 우리 쪽 비유가 없다", jargon.length === 0,
+      jargon.slice(0, 4).join(" / ")
+      || `쪽 ${LOOP.length}곳 · 규칙 ${JARGON.length}가지 · 얼린 말 ${BANK.length}줄 제외`);
 
     /* ── 10. user isolation ─────────────────────────────────────── */
     console.log("\n── 10. 남의 것이 보이지 않는다");

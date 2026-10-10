@@ -402,6 +402,20 @@ export async function actionsOf(userId: string): Promise<ActionRow[]> {
     [userId, CORE]);
 }
 
+/**
+ * 치워 둔 할 일이 몇 줄인가.
+ *
+ * **`지금 할 일` 을 읽는 자리가 이 수를 본다**(`open-actions.ts`). 담아
+ * 둔 줄을 전부 치운 사람은 열린 줄이 0 인데, 그 상태에서 결과 쪽을 다시
+ * 끌어오면 **치운 일이 되살아난다.**
+ */
+export async function droppedActionCount(userId: string): Promise<number> {
+  const r = await queryOne<{ n: string }>(
+    `SELECT count(*)::text AS n FROM v3_actions
+      WHERE user_id=$1 AND core_code=$2 AND state = 'dropped'`, [userId, CORE]);
+  return Number(r?.n ?? 0);
+}
+
 export async function setActionState(
   userId: string, id: string, state: "open" | "doing" | "done" | "dropped",
 ): Promise<void> {
@@ -600,15 +614,25 @@ export type ResultHistoryRow = {
   tier: string | null;
   at: string | null;
   confirmed: number | null;
+  /** 근거가 확인된 기술영역의 수. **축 수보다 이 수가 고르는 데 쓰인다** */
+  domains: number | null;
 };
 
 export async function resultHistory(userId: string): Promise<ResultHistoryRow[]> {
   const snaps = await query<{
-    attempt_id: string; tier: string; at: string; confirmed: number | null;
+    attempt_id: string; tier: string; at: string;
+    confirmed: number | null; domains: number | null;
   }>(
+    /* **영역 수를 굳은 결과에서 바로 센다.** `확인된 판단 24개` 는 읽는
+       사람이 다음에 무엇을 할지 정하는 데 쓰이지 않는 수다(규격 §15).
+       묶음이 `근거가 확인된 영역` 인 줄을 세면 **그 기록으로 지원서에서
+       설명할 수 있는 자리가 몇 곳인지**가 나온다 */
     `SELECT s.attempt_id::text AS attempt_id, a.tier,
             to_char(s.created_at, 'YYYY-MM-DD') AS at,
-            (s.result_model -> 'overview' -> 'counts' -> 'confirmed_axes')::int AS confirmed
+            (s.result_model -> 'overview' -> 'counts' -> 'confirmed_axes')::int AS confirmed,
+            (SELECT count(*) FROM jsonb_array_elements(
+                      coalesce(s.result_model -> 'domains', '[]'::jsonb)) d
+              WHERE d ->> 'zone' = 'Z1_EVIDENCE_ESTABLISHED')::int AS domains
        FROM v3_snapshots s JOIN v3_attempts a ON a.id = s.attempt_id
       WHERE a.user_id = $1 AND s.result_model IS NOT NULL
       ORDER BY s.created_at DESC, s.id DESC LIMIT 10`, [userId]);
@@ -617,13 +641,13 @@ export async function resultHistory(userId: string): Promise<ResultHistoryRow[]>
       WHERE user_id = $1 AND core_code = $2`, [userId, CORE]);
   const rows: ResultHistoryRow[] = snaps.map((r) => ({
     kind: "SNAPSHOT" as const, attempt_id: r.attempt_id, tier: r.tier,
-    at: r.at, confirmed: r.confirmed,
+    at: r.at, confirmed: r.confirmed, domains: r.domains,
   }));
   /* 지금 값은 재분석을 한 번이라도 돌린 뒤에만 줄로 선다. 안 돌린 사람에게
      `지금 상태` 를 세워 두면 검사 결과와 같은 값이 두 줄로 보인다 */
   if (now?.at) {
     rows.unshift({ kind: "CURRENT", attempt_id: null, tier: null,
-                   at: now.at, confirmed: null });
+                   at: now.at, confirmed: null, domains: null });
   }
   return rows;
 }

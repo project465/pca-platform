@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
-import { importActions, latestResult, setActionState } from "@/lib/me-v3/platform";
+import { actionsOf, importActions, latestResult, setActionState } from "@/lib/me-v3/platform";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import { actionKo } from "@/lib/me-v3/result/text.ko";
 import { mark } from "@/lib/me-v3/workspace-events";
@@ -51,11 +51,28 @@ export async function takeActionsFromResult(): Promise<void> {
   redirect(`/me/next?taken=${n}`);
 }
 
+/**
+ * 할 일 한 줄의 상태를 바꾼다.
+ *
+ * **아직 표에 없는 줄일 수 있다.** 담아 둔 줄이 하나도 없는 사람에게는
+ * 굳은 결과가 낸 할 일을 그대로 세우는데(`open-actions.ts`), 그 줄에는
+ * 번호가 없다. 그때는 **먼저 담고 나서** 상태를 바꾼다: 누른 사람에게
+ * 담기는 보이지 않는 일이어야 한다.
+ */
 export async function moveAction(form: FormData): Promise<void> {
   const user = await requireUser();
-  const id = String(form.get("id") ?? "");
+  let id = String(form.get("id") ?? "");
   const state = String(form.get("state") ?? "");
   if (!id || !["open", "doing", "done", "dropped"].includes(state)) return;
+  if (id.startsWith("r")) {
+    await importActionRows(user.id);
+    const body = String(form.get("body") ?? "");
+    const td = String(form.get("td") ?? "");
+    const row = (await actionsOf(user.id)).find((a) =>
+      a.body === body && (a.td_code ?? "") === td);
+    if (!row) return;
+    id = row.id;
+  }
   await setActionState(user.id, id, state as "open" | "doing" | "done" | "dropped");
   await mark("action_saved", user.id, { from: state });
   revalidatePath("/me/next");

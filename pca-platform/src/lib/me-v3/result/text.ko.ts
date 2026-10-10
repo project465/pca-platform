@@ -58,7 +58,7 @@ const AXIS_SENT_KO: Record<Axis, Record<Said, string>> = {
   J1: {
     OWNED: "무엇을 풀 문제로 잡을지 직접 정했습니다",
     CONFIRMED: "주어진 범위 안에서 문제를 직접 잡았습니다",
-    PARTICIPATED: "문제를 잡는 자리에 함께했습니다",
+    PARTICIPATED: "문제를 잡을 때 함께했습니다",
   },
   J2: {
     OWNED: "받은 요구를 어떤 조건으로 옮길지 직접 정했습니다",
@@ -87,13 +87,13 @@ const AXIS_SENT_KO: Record<Axis, Record<Said, string>> = {
   },
   J7: {
     OWNED: "안 됐을 때 무엇을 고칠지 직접 정했습니다",
-    CONFIRMED: "안 된 자리를 직접 고쳤습니다",
+    CONFIRMED: "안 되던 부분을 직접 고쳤습니다",
     PARTICIPATED: "고치는 일에 함께했습니다",
   },
   J8: {
     OWNED: "그 결과를 어디에 쓸지 직접 정했습니다",
     CONFIRMED: "그 결과가 쓰이는 데까지 직접 따라갔습니다",
-    PARTICIPATED: "그 결과가 쓰인 자리를 전해 들었습니다",
+    PARTICIPATED: "그 결과가 쓰인 곳을 전해 들었습니다",
   },
 };
 
@@ -166,10 +166,10 @@ const HEADLINE_KO: Record<HeadlineCode, { title: string; lead: string }> = {
 };
 
 const WHY_KO: Record<GapWhy, string> = {
-  REQUIRED_FOR_DOMAIN: "이 영역에서 빠지면 경험을 설명하기 어려운 자리입니다",
+  REQUIRED_FOR_DOMAIN: "이 영역에서 빠지면 경험을 설명하기 어려운 부분입니다",
   BLOCKS_EVIDENCE: "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
-  NEEDED_BY_INDUSTRY: "고르신 산업에서 특히 자주 묻는 자리입니다",
-  NEEDED_BY_ROLE: "고르신 역할에서 특히 자주 묻는 자리입니다",
+  NEEDED_BY_INDUSTRY: "고르신 산업에서 특히 자주 묻는 부분입니다",
+  NEEDED_BY_ROLE: "고르신 역할에서 특히 자주 묻는 부분입니다",
 };
 
 const GAP_TITLE_KO: Record<Gap["kind"], (ax: string) => string> = {
@@ -464,7 +464,7 @@ export function headlineKo(m: ResultModel): { title: string; lead: string } {
 export const TIER_NOTE_KO = {
   BASIC: "이 결과는 어느 쪽부터 살펴볼지를 정하는 데까지입니다."
     + " 경험을 자세히 확인하는 질문은 아직 받지 않았습니다.",
-  STANDARD: "경험이 확인된 영역과 아직 부족한 자리까지 적었습니다.",
+  STANDARD: "경험이 확인된 영역과 아직 부족한 부분까지 적었습니다.",
   PRO: "연구나 프로젝트 하나를 직무 언어로 바꾸고, 고르신 산업과 역할에서"
     + " 같은 경험이 어떻게 읽히는지까지 적었습니다.",
 } as const;
@@ -543,10 +543,10 @@ export const HORIZON_KO = {
    말인지 알 수 없고, 읽는 사람은 자기 결과를 의심하게 된다 */
 export const QUALITY_KO = {
   OK: "",
-  REVIEW: "일부 답변이 서로 달라, 겹쳐 확인된 내용만 결과에 반영했습니다.",
+  REVIEW: "일부 답변이 서로 달라, 겹쳐 확인된 내용만 결과에 담았습니다.",
   LOW_VARIANCE: "영역 사이에 차이가 거의 생기지 않아, 먼저 볼 영역을 좁히지"
     + " 못했습니다. 더 끌리는 쪽과 덜 끌리는 쪽을 갈라 답하시면 또렷해집니다.",
-  INCONSISTENT: "같은 경험을 묻는 두 문항의 답이 달라, 낮은 쪽으로 반영했습니다.",
+  INCONSISTENT: "같은 경험을 묻는 두 문항의 답이 달라, 낮은 쪽으로 읽었습니다.",
 } as const;
 
 

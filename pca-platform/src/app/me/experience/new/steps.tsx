@@ -109,8 +109,13 @@ export default function Steps(
       <div hidden={step !== 2}>
         <fieldset className="cm-field">
           <legend><span>어느 기술영역의 일인가요</span></legend>
-          <em>여러 개 고를 수 있습니다. 고른 영역의 항목이 아래에 뜹니다.</em>
-          <div className="cm-pickset">
+          <em>여러 개 고를 수 있습니다.</em>
+          {/* **영역 고르기와 판단 고르기를 같은 생김새로 두지 않는다**
+              (규격 §9). 전에는 둘 다 알약이라, 열두 영역 알약 아래에
+              판단 알약이 이어 붙어 **어디까지가 영역이고 어디부터가
+              판단인지가 화면에서 안 갈렸다.** 영역은 고르는 **표**이고
+              판단은 고르는 **말**이다 */}
+          <div className="cm-pickset is-td">
             {domains.map((d) => (
               <label className="cm-pick" key={d.code}>
                 <input type="checkbox" name="td" value={d.code}

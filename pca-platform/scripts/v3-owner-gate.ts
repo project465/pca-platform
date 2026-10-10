@@ -103,14 +103,19 @@ async function main(): Promise<void> {
 
   /** hydration 과 DOM 중첩만 모은다. 네트워크 404 는 다른 질문이다 */
   const errs: string[] = [];
+  /* **어느 쪽인지를 함께 적는다.** 전에는 오류 글만 모아서, 걸렸을 때
+     쪽 열두 곳 가운데 어디인지 사람이 다시 찾아다녀야 했다. React 는
+     운영 빌드에서 메시지를 줄여 내보내므로 더 그렇다 */
+  const where = (pg: { url: () => string }) => new URL(pg.url()).pathname;
   const watch = (ctx: BrowserContext) => {
     ctx.on("page", (pg) => {
-      pg.on("pageerror", (e) => errs.push(`pageerror ${String(e.message).slice(0, 120)}`));
+      pg.on("pageerror", (e) =>
+        errs.push(`${where(pg)} pageerror ${String(e.message).slice(0, 110)}`));
       pg.on("console", (m) => {
         if (m.type() !== "error") return;
         const t = m.text();
         if (/hydrat|#418|#419|#423|#425|validateDOMNesting|did not match/i.test(t)) {
-          errs.push(`console ${t.slice(0, 140)}`);
+          errs.push(`${where(pg)} console ${t.slice(0, 130)}`);
         }
       });
     });

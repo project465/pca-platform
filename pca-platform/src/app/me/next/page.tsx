@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
-import { actionsOf, currentState, latestResult, type ActionRow } from "@/lib/me-v3/platform";
+import { currentState, latestResult, type ActionRow } from "@/lib/me-v3/platform";
+import { openActions } from "@/lib/me-v3/open-actions";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import { domainArtifacts } from "@/lib/me-v3/runtime/domain-facts";
 import { actionKo, gapKo } from "@/lib/me-v3/result/text.ko";
@@ -74,9 +75,15 @@ export default async function Next(
      누른 사람이 담기지 않은 줄 안다 */
   const taken = Number((await searchParams).taken);
   const came = Number.isFinite(taken) && taken >= 0;
-  const [st, actions, model] = await Promise.all([
-    currentState(user.id), actionsOf(user.id), latestResult(user.id),
+  const [st, act, model] = await Promise.all([
+    currentState(user.id), openActions(user.id), latestResult(user.id),
   ]);
+  /* **담아 둔 줄이 없으면 굳은 결과가 낸 할 일을 그대로 세운다**
+     (`open-actions.ts`). 전에는 이 쪽만 표를 읽어서, PRO 를 끝내고
+     들어온 사람이 홈에서 `지금 할 일` 을 누르면 **아직 담아 둔 할 일이
+     없습니다** 를 받았다. 단추가 약속한 자리가 비어 있으면 그것은
+     막다른 길보다 나쁘다 */
+  const actions = act.rows;
   await mark("action_opened", user.id, { n: actions.length });
 
   const open = actions.filter((a) => a.state !== "done");
@@ -163,7 +170,7 @@ export default async function Next(
         actions={st.model ? (
           /* **짙은 단추는 쪽에 하나다**(규격 §10). 담을 것이 이미 담겨
              있으면 그 단추를 세우지 않는다: 눌러도 아무 일이 없다 */
-          actions.length === 0 ? (
+          act.fromResult && actions.length === 0 ? (
             <form action={pullActions}>
               <button className="cm-btn is-primary" type="submit">
                 결과의 할 일 담기
@@ -188,15 +195,18 @@ export default async function Next(
       {!st.model ? (
         <div className="cm-soon">
           <b>아직 완료한 검사가 없습니다.</b> 할 일은 검사 결과의 비어 있는
-          자리에서 나옵니다.
+          부분에서 나옵니다.
           <p style={{ marginTop: 10 }}>
             <Link href="/cores">기계공학 검사 시작</Link>
           </p>
         </div>
       ) : actions.length === 0 ? (
         <div className="cm-soon">
-          <b>아직 담아 둔 할 일이 없습니다.</b> 위에서 결과의 할 일을
-          담으면 할 수 있는 때로 나뉘어 섭니다.
+          <b>할 일을 모두 치우셨습니다.</b> 새 경험을 적어 현재 상태를 다시
+          세우면 그다음 할 일이 나옵니다.
+          <p style={{ marginTop: 10 }}>
+            <Link href="/me/experience/new">경험 추가</Link>
+          </p>
         </div>
       ) : !first ? (
         <div className="cm-soon">
@@ -234,10 +244,10 @@ export default async function Next(
                     </details>
                   ) : null}
                   {k ? (
-                    <p><b>어느 자리</b> {k.title}</p>
+                    <p><b>어느 부분</b> {k.title}</p>
                   ) : (
                     <p>
-                      <b>어느 자리</b>{" "}
+                      <b>어느 부분</b>{" "}
                       {first.td_code
                         ? `${domainName(first.td_code)} · 지금 부족한 부분은 없습니다`
                         : "영역을 가리지 않는 할 일입니다"}
@@ -246,7 +256,7 @@ export default async function Next(
                   {how.length ? (
                     <p>
                       <b>어떤 경험으로</b> {how.join(" 또는 ")} 가운데 하나를
-                      남기면 그 자리가 메워집니다.
+                      남기면 그 부분이 채워집니다.
                     </p>
                   ) : null}
                 </>
@@ -258,9 +268,13 @@ export default async function Next(
               <Link className="cm-btn is-primary" href="/me/experience/new">
                 경험에 추가
               </Link>
+              {/* **표에 없는 줄이면 담고 나서 바꾼다.** 번호가 없으므로
+                  무엇을 바꾸는지를 영역과 문장으로 알려 준다 */}
               <form action={moveAction}>
                 <input type="hidden" name="id" value={first.id} />
                 <input type="hidden" name="state" value="done" />
+                <input type="hidden" name="body" value={first.body} />
+                <input type="hidden" name="td" value={first.td_code ?? ""} />
                 <button className="cm-btn" type="submit">끝냈습니다</button>
               </form>
             </div>
@@ -328,7 +342,7 @@ export default async function Next(
 
           {/* 굳은 결과가 낸 할 일을 더 담을 수 있는가. **머리에 두지
               않는다**: 지금 할 한 가지보다 큰 자리를 먹으면 안 된다 */}
-          {model && model.actions.length > actions.length ? (
+          {model && !act.fromResult && model.actions.length > actions.length ? (
             <div className="cm-acts" style={{ marginTop: 20 }}>
               <form action={pullActions}>
                 <button className="cm-btn" type="submit">결과의 할 일 더 담기</button>

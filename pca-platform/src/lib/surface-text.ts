@@ -65,7 +65,7 @@ export const TX = {
   acHome: p("계정", "Account"),
   acTitle: p("로그인과 주문, 그리고 옛 검사 기록", "Sign-in, orders and earlier assessments"),
   acLead: p(
-    "커리어 기록은 내 CareerMatri 에 쌓입니다. 이 쪽은 로그인 정보와 주문, 그리고 전에 보신 검사의 기록을 모아 둔 자리입니다.",
+    "커리어 기록은 내 CareerMatri 에 쌓입니다. 이 쪽은 로그인 정보와 주문, 그리고 전에 보신 검사의 기록을 모아 둔 곳입니다.",
     "Your career record lives in My CareerMatri. This page holds your sign-in details, your orders and the assessments you took earlier.",
   ),
   acBack: p("내 CareerMatri 로 돌아가기", "Back to My CareerMatri"),

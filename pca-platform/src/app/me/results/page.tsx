@@ -100,8 +100,10 @@ export default async function Results() {
                     <span className="cm-lockmark">고정됨</span>
                   </h3>
                   <p>
-                    {r.confirmed !== null
-                      ? `확인된 판단 ${r.confirmed}개`
+                    {/* **고르는 데 쓰이는 수 하나다**(규격 §15). 축의
+                        개수는 이 줄에서 할 일을 정해 주지 않는다 */}
+                    {r.domains !== null
+                      ? `근거가 확인된 영역 ${r.domains}곳`
                       : "그날의 응답으로 굳어 있습니다"}
                   </p>
                   <div className="cm-acts">
