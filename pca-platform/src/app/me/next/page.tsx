@@ -51,7 +51,7 @@ const WHY_BY_CODE: Record<string, string> = {
     + " 직접 정했는지를 적는 것입니다.",
   BUILD_OUTPUT: "남긴 것이 없으면 해 봤다는 말을 지원서에서 설명할 수"
     + " 없습니다.",
-  ADD_VERIFICATION: "무엇과 견주어 확인했는지가 없으면 그 값이 맞다는"
+  ADD_VERIFICATION: "무엇과 비교해 확인했는지가 없으면 그 값이 맞다는"
     + " 말을 할 수 없습니다.",
   FILL_AXIS: "그 영역에서 비어 있는 판단 자리라, 채우면 설명할 수 있는"
     + " 범위가 넓어집니다.",

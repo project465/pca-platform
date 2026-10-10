@@ -27,6 +27,7 @@ for (const line of (() => {
 }
 
 import { chromium, type Browser, type BrowserContext, type Page } from "playwright";
+import { fillExperience } from "./_loop-fixture";
 import { query, queryOne } from "../src/lib/db";
 import { hashPassword } from "../src/lib/password";
 import { CM_NAV } from "../src/app/me/nav";
@@ -156,24 +157,15 @@ async function main(): Promise<void> {
     console.log("\n── 13. 경험 저장");
     await p.goto(`${B}/me/experience/new`, { waitUntil: "networkidle" });
     const title = `점검 경험 ${randomBytes(3).toString("hex")}`;
-    await p.fill('input[name="title"]', title).catch(() => undefined);
-    const month = await p.$('input[type="month"]');
+    const month = await p.$('input[name="started_on"]');
     ok("달만 받는 칸이 있다", !!month);
-    /* `2025-03` 이 `DATE` 칸에서 거절되던 자리다 */
-    if (month) await month.fill("2025-03");
-    const sel = await p.$("select");
-    if (sel) await p.selectOption("select", { index: 1 }).catch(() => undefined);
-    for (const s of [".cm-chip", "fieldset label", "label"]) {
-      const n = await p.locator(s).count();
-      if (!n) continue;
-      for (let i = 0; i < Math.min(n, 4); i += 1) {
-        await p.locator(s).nth(i).click({ timeout: 1500 }).catch(() => undefined);
-      }
-      break;
-    }
-    await p.locator('button[type="submit"]').last().click({ force: true })
-      .catch(() => undefined);
-    await p.waitForTimeout(2500);
+    /* **폼을 여기서 적지 않는다.** 세 걸음짜리 폼을 누르는 줄을 검사마다
+       따로 들고 있으면, 걸음이 넷이 되는 날 한 곳만 고쳐진다. 그리고
+       가린 판의 칸은 눌리지 않으므로 `다음` 을 거치지 않고 고르면
+       **아무것도 골리지 않은 채로 저장된다**(`2025-03` 이 `DATE` 칸에서
+       거절되던 자리도 그 함수가 같이 든다) */
+    const picked = await fillExperience(p, title);
+    ok("기술영역이 실제로 골라졌다", picked > 0, `${picked}개`);
     const after = await p.evaluate(() => document.body.innerText);
     const bad = /오류가|문제가 생겼|Application error|Internal Server/.test(after);
     ok("저장에서 오류 화면이 뜨지 않는다", !bad,

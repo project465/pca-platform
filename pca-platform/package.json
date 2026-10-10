@@ -153,7 +153,8 @@
     "runbook:check": "tsx scripts/runbook-check.ts",
     "v3:scale": "tsx scripts/v3-scale-check.ts",
     "v3:freeze:measure": "tsx scripts/v3-measurement-freeze.ts",
-    "v3:product-loop": "tsx scripts/v3-product-loop.ts"
+    "v3:product-loop": "tsx scripts/v3-product-loop.ts",
+    "v3:loop:shots": "tsx scripts/v3-loop-shots.ts"
   },
   "dependencies": {
     "@types/nodemailer": "^8.0.1",
