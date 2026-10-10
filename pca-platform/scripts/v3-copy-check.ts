@@ -105,6 +105,7 @@ const FILES = [
   "src/app/me/shell.tsx",
   "src/app/me/experience/page.tsx",
   "src/app/me/experience/new/page.tsx",
+  "src/app/me/experience/new/steps.tsx",
   "src/app/me/explore/page.tsx",
   "src/app/me/region/page.tsx",
   "src/app/me/jobs/page.tsx",

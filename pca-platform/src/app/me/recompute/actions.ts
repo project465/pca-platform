@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { applyRecompute } from "@/lib/me-v3/recompute";
 import { mark } from "@/lib/me-v3/workspace-events";
+import { opFail, ref } from "@/lib/oplog";
 
 /**
  * 다시 계산한 것을 지금 값에 적는다.
@@ -15,7 +16,20 @@ import { mark } from "@/lib/me-v3/workspace-events";
  */
 export async function runRecompute(): Promise<void> {
   const user = await requireUser();
-  await applyRecompute(user.id);
+  /* **저장 실패와 가른다**(규격 §19). 여기까지 온 사람의 경험은 이미
+     저장돼 있으므로 다시 적을 일이 없다. `경험을 저장하지 못했습니다` 로
+     적으면 그 사람이 처음부터 다시 적는다 */
+  let ok = true;
+  try {
+    await applyRecompute(user.id);
+  } catch (e) {
+    opFail({
+      operation: "experience.recompute", ref: ref("user", user.id),
+      step: "apply", category: "db",
+    }, e);
+    ok = false;
+  }
+  if (!ok) redirect("/me/recompute?e=recompute");
   await mark("current_state_updated", user.id);
   revalidatePath("/me");
   revalidatePath("/me/recompute");

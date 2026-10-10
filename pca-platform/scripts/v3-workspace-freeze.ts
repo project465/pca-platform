@@ -45,7 +45,7 @@ const FILES = [
   "src/app/me/next/actions.ts",
   "src/app/me/experience/page.tsx",
   "src/app/me/experience/new/page.tsx",
-  "src/app/me/experience/new/picker.tsx",
+  "src/app/me/experience/new/steps.tsx",
   "src/app/me/experience/actions.ts",
   "src/app/me/recompute/page.tsx",
   "src/app/me/recompute/actions.ts",

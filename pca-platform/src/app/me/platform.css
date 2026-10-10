@@ -653,3 +653,40 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 
 /* 날짜처럼 짧은 값은 칸이 글 폭을 다 먹지 않는다 */
 .cm-field.is-half { max-width: 260px; }
+
+/* ── 경험을 적는 세 걸음 ──────────────────────────────────────────────
+   **걸음을 세 줄로 적고 숫자를 앞세우지 않는다**(규격 §4). `1 / 3` 만
+   적으면 남은 것이 무엇인지 모르고, 모르면 둘째에서 닫는다. 이름이
+   서면 무엇을 더 물을지 알고 들어온다.
+
+   이름을 `cm-wiz` 로 둔 까닭. 검사 화면이 쓰는 `qs-steps` 와 겹치지
+   않아야 한다. 이 저장소에서 쓰는 이름이 CSS 에 이미 사는 이름과 겹친
+   탈이 일곱 번 났고, 그중 하나가 바로 그 `qs-steps` 였다 */
+.cm-wiz {
+  display: flex; flex-wrap: wrap; gap: 0;
+  margin: 0 0 20px; padding: 0; list-style: none;
+  border: 1px solid var(--sf-line); border-radius: var(--ui-r-sm);
+  overflow: hidden;
+}
+.cm-wiz > li {
+  flex: 1 1 140px; min-width: 0; padding: 10px 14px;
+  display: flex; flex-direction: column; gap: 2px;
+  background: var(--sf-surface-2); color: var(--sf-ink-3);
+}
+.cm-wiz > li + li { border-left: 1px solid var(--sf-line); }
+.cm-wiz > li b { font-size: var(--ui-t-sub); font-weight: 600; }
+.cm-wiz > li small { font-size: var(--ui-t-cap); }
+/* 지금 걸음만 바탕을 올린다. **지나온 걸음에 표를 찍지 않는다**: 체크가
+   서면 안 찍힌 칸이 못 한 일로 읽히는데, 셋째는 전부 선택 칸이다 */
+.cm-wiz > li.is-on {
+  background: var(--sf-surface); color: var(--sf-ink);
+  box-shadow: inset 0 2px 0 var(--sf-accent);
+}
+.cm-wiz > li.is-done { color: var(--sf-ink-2); }
+
+/* 걸음 단추. **바닥에 붙이지 않는다**: 적는 칸이 길어 띠가 본문을 덮는
+   자리가 생기고, 그것이 전에 검사 화면에서 났던 탈이다 */
+.cm-wiz-nav {
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+  margin: 22px 0 0; padding: 16px 0 0; border-top: 1px solid var(--sf-line-2);
+}

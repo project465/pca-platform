@@ -5,7 +5,8 @@ import {
 } from "@/lib/me-v3/platform";
 import { domainName, industryChoices, roleName } from "@/lib/me-v3/runtime/session";
 import { moveLabel, regionName } from "@/lib/me-v3/region";
-import { AXIS_KO, HORIZON_KO, ZONE_TITLE_KO, gapKo } from "@/lib/me-v3/result/text.ko";
+import { HORIZON_KO, ZONE_TITLE_KO, gapKo } from "@/lib/me-v3/result/text.ko";
+import { recentChangeKo } from "@/lib/me-v3/change-text.ko";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { CmShell, CmHead } from "./shell";
 import { continueAssessment } from "./actions";
@@ -50,6 +51,10 @@ export default async function Home() {
    */
   const gaps = st.gaps.slice(0, 1);
   const moreGaps = Math.max(0, st.gaps.length - gaps.length);
+  /* **홈이 요약을 따로 짓지 않는다**(규격 §11). 네 묶음이 전부
+     `currentState()` 한 자리에서 오고, `최근 변화` 의 문장은 저장 직후
+     화면과 현재 상태가 쓰는 함수를 그대로 부른다 */
+  const change = recentChangeKo(st, domainName);
   const indName = new Map(industryChoices().map((x) => [x.code, x.name]));
 
   /**
@@ -260,33 +265,22 @@ export default async function Home() {
                 {st.stage === "RECOMPUTED" ? (
                   <div className="cm-pane">
                     <h3>달라진 점 <em>{st.recomputed_at} 반영</em></h3>
-                    {!st.raised.length && !st.zoneMoved.length ? (
-                      <p>최근 추가한 경험으로 바뀐 판정은 없습니다.</p>
-                    ) : (
-                      <div className="cm-rows">
-                        <p className="cm-row">
-                          <b>올라간 판단</b>
-                          <span>
-                            {st.raised.length
-                              ? st.raised.slice(0, 2)
-                                .map((r) => `${domainName(r.domain)} · ${AXIS_KO[r.axis]}`)
-                                .join(" / ")
-                              : "아직 없습니다"}
-                            {st.raised.length > 2 ? ` 외 ${st.raised.length - 2}` : ""}
-                          </span>
-                        </p>
-                        <p className="cm-row">
-                          <b>달라진 영역</b>
-                          <span>
-                            {st.zoneMoved.length
-                              ? st.zoneMoved.map((z) => domainName(z.domain)).join(" · ")
-                              : "그대로입니다"}
-                          </span>
-                        </p>
-                      </div>
-                    )}
+                    {/* **`경험이 추가되었습니다` 로 적지 않는다**(규격 §12).
+                        그 사실은 적은 사람이 이미 안다. 알고 싶은 것은 그
+                        경험이 현재 상태의 무엇을 움직였는가이고, 움직인 것이
+                        없으면 그 사실이다. 문장을 여기서 짓지 않고 세 화면이
+                        같이 쓰는 `change-text.ko.ts` 가 든다: 홈과 저장 직후와
+                        현재 상태가 따로 적으면 같은 변화가 다른 말로 읽힌다 */}
+                    <div className="cm-rows">
+                      {change.lines.map((line) => (
+                        <p className="cm-row" key={line}><b>{line}</b></p>
+                      ))}
+                    </div>
+                    {change.more ? (
+                      <p className="cm-none">그 밖에 {change.more}가지가 더 달라졌습니다.</p>
+                    ) : null}
                     <div className="cm-acts">
-                      <Link className="cm-btn" href="/me/recompute">달라진 점 보기</Link>
+                      <Link className="cm-btn" href="/me/state">달라진 점 보기</Link>
                     </div>
                   </div>
                 ) : null}

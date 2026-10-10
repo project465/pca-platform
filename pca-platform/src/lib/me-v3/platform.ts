@@ -272,6 +272,27 @@ export async function enqueue(
     [userId, CORE, kind, JSON.stringify(payload), key.slice(0, 300)]);
 }
 
+/**
+ * 어느 경험이 이미 현재 상태 계산에 들어갔는가(규격 §14).
+ *
+ * **경험 줄에 `반영됨` 칸을 따로 두지 않는다.** 그 칸을 두면 반영하는
+ * 자리와 적는 자리 둘이 같은 사실을 따로 들게 되고, 어느 날 한 쪽만
+ * 고쳐진다. 사실은 이미 `career_events` 에 있다: 저장할 때 할 일 한 줄이
+ * 쌓이고 반영할 때 그 줄이 `done` 이 된다.
+ *
+ * **`반영됨` 은 `판정이 올라갔다` 가 아니다.** 뜻은 그 경험이 지금 값을
+ * 셀 때 함께 세어졌다는 것까지다. 올라간 자리가 없는 것도 자료라서 그
+ * 사실은 `현재 상태` 가 적는다(규격 §13).
+ */
+export async function reflectedExperiences(userId: string): Promise<Set<string>> {
+  const rows = await query<{ id: string | null }>(
+    `SELECT DISTINCT payload ->> 'experience_id' AS id
+       FROM career_events
+      WHERE user_id = $1 AND core_code = $2 AND status = 'done'`,
+    [userId, CORE]);
+  return new Set(rows.map((r) => r.id).filter((x): x is string => !!x));
+}
+
 export async function pendingRecompute(userId: string): Promise<number> {
   const r = await queryOne<{ n: string }>(
     `SELECT count(*)::text AS n FROM career_events

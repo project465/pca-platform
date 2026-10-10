@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
-import { currentState, profileOf } from "@/lib/me-v3/platform";
+import { actionsOf, currentState, profileOf } from "@/lib/me-v3/platform";
 import { domainName, industryChoices, roleName } from "@/lib/me-v3/runtime/session";
 import { moveLabel, orgLabel, regionName } from "@/lib/me-v3/region";
 import {
-  AXIS_KO, ZONE_TITLE_KO, bridgeKo, gapKo,
+  AXIS_KO, ZONE_TITLE_KO, actionKo, bridgeKo, gapKo,
 } from "@/lib/me-v3/result/text.ko";
+import { recentChangeKo } from "@/lib/me-v3/change-text.ko";
 import { CmShell, CmHead } from "../shell";
 
 export const metadata = { title: "현재 상태 · CareerMatri" };
@@ -16,15 +17,34 @@ const ORDER = [
   "Z3_EVIDENCE_LOW_INTEREST", "Z4_INSUFFICIENT_EVIDENCE", "NOT_EXPLORED",
 ] as const;
 
+/** 첫 화면에 올리는 묶음과 그 묶음을 읽는 말 */
+const SAY_READY: Record<string, string> = {
+  Z1_EVIDENCE_ESTABLISHED: "지원서에서 설명할 경험이 확인됐습니다",
+  Z2_EVIDENCE_INCOMPLETE: "해 본 것은 확인됐고 남긴 것을 더 붙일 자리가 있습니다",
+};
+const READY = ["Z1_EVIDENCE_ESTABLISHED", "Z2_EVIDENCE_INCOMPLETE"];
+/** 첫 화면이 드는 줄 수. **요약이 세부를 대신하면 세부가 죽는다** */
+const TOP = 3;
+const TOP_GAPS = 3;
+
 /**
- * 지금 상태.
+ * 현재 상태.
  *
  * **검사 당시 결과가 아니다.** 여기 선 값은 그 결과 위에 새 경험을 얹은
  * 지금 값이고, 경험을 더하면 달라진다. 그 사실을 머리에 적는다.
  *
+ * **첫 화면의 차례를 규격 §7 이 정한다**: 현재 상태 → 최근 반영 →
+ * 지금 설명할 수 있는 영역 → 최근 달라진 것 → 아직 부족한 것 → 다음
+ * 행동. 전에는 열두 영역이 묶음마다 칩으로 깔리고 그 아래 카드 여섯이
+ * 섰다. 그러면 **읽는 사람이 자기 상태를 묶음 목록으로 읽고**, 그래서
+ * 무엇을 하면 되는가는 쪽 끝까지 내려가야 나왔다.
+ *
+ * **굳은 결과와 지금 값을 점수처럼 견주지 않는다**(규격 §8). `+1점` 도
+ * `2 → 3` 도 쓰지 않는다. 두 값이 **서로를 덮지 않는다**는 것과 무엇이
+ * 달라졌는지를 문장으로 적는다.
+ *
  * **Gap 하나에 늘 셋이 붙는다**: 무엇이 비었는가 · 왜 그 자리가 필요한가 ·
- * 무엇을 하면 채울 수 있는가. 목록만 나열하면 읽은 사람이 무엇부터 할지
- * 모른다.
+ * 무엇을 하면 채울 수 있는가.
  *
  * **축 코드와 소유 코드를 내보내지 않는다.** `J3` 도 `OWNED` 도 없다.
  */
@@ -33,9 +53,11 @@ export default async function State(
 ) {
   const user = await requireUser();
   /* 방금 반영하고 온 사람인가. **반영 화면에 세워 두지 않고 여기로
-     보내되**(규격 §17), 무엇 때문에 이 화면이 열렸는지는 적어 준다 */
+     보내되**, 무엇 때문에 이 화면이 열렸는지는 적어 준다 */
   const justApplied = (await searchParams).r === "1";
-  const [st, profile] = await Promise.all([currentState(user.id), profileOf(user.id)]);
+  const [st, profile, actions] = await Promise.all([
+    currentState(user.id), profileOf(user.id), actionsOf(user.id),
+  ]);
 
   if (!st.model) {
     return (
@@ -57,45 +79,214 @@ export default async function State(
   const m = st.model;
   const raisedSet = new Set(st.raised.map((r) => `${r.domain}.${r.axis}`));
   /* **이름을 못 찾은 코드는 버린다.** 코드를 그대로 적으면 화면에 `OC1`
-     이 선다. 칸을 나누기 전에 적힌 줄이 그런 값을 들고 있다 */
+     이 선다 */
   const orgNames = (profile?.target_org ?? [])
     .map((c) => orgLabel(c)).filter((x): x is string => !!x);
   const indName = (c: string) => industryChoices().find((x) => x.code === c)?.name ?? c;
-  const say = (c: string) => c;
-  void say;
+
+  /* ③ 지금 설명할 수 있는 영역. 근거가 선 쪽이 먼저고 셋까지다 */
+  const ready = READY.flatMap((z) =>
+    Object.entries(st.zoneOf).filter(([, v]) => v === z).map(([d]) => ({ domain: d, zone: z })))
+    .slice(0, TOP);
+  /* ④ 최근 달라진 것. **실제 변화만**(규격 §7). 문장은 세 화면이 같이
+     쓰는 자리가 든다(규격 §12) */
+  const change = recentChangeKo(st, domainName, 3);
+  const realChange = st.recomputed_at && (st.raised.length || st.zoneMoved.length);
+  /* ⑤ 아직 부족한 것 · ⑥ 다음 행동 하나 */
+  const gaps = st.gaps.slice(0, TOP_GAPS);
+  const open = actions.filter((a) => a.state !== "done");
+  const nextOne = open[0] ?? null;
+  const fallback = m.actions[0] ?? null;
 
   return (
     <CmShell active="/me/state" title="현재 상태">
+      {/* ①② 제목과 최근 반영 날짜 */}
       <CmHead
-        kicker={st.recomputed_at ? `${st.recomputed_at} 기준` : `${st.result_at} 기준`}
-        title="지금 설명할 수 있는 것과 비어 있는 자리"
+        kicker={st.recomputed_at
+          ? `최근 반영 ${st.recomputed_at}`
+          : `검사 ${st.result_at} 기준 · 아직 반영한 경험 없음`}
+        title="현재 상태"
         lead={st.recomputed_at
           ? "검사 결과에 그 뒤에 더한 경험까지 얹은 값입니다. 경험을 더하면 다시 달라집니다."
           : "아직 새 경험을 반영한 적이 없어 검사 당시 결과와 같습니다."}
         actions={
           <>
-            {/* 반영하고 막 들어온 사람에게 주된 단추는 **다음 할 일**이다.
-                그 자리에서 행동 루프가 이어진다(규격 §17) */}
-            <Link className="cm-btn is-primary" href="/me/next">지금 할 일</Link>
-            <Link className="cm-btn" href="/me/experience/new">경험 추가</Link>
+            {/* **짙은 단추는 쪽에 하나다**(규격 §10) */}
+            <Link className="cm-btn is-primary" href="/me/experience/new">경험 추가</Link>
+            <Link className="cm-btn" href="/me/next">지금 할 일</Link>
           </>
         }
       />
 
-      {/* 방금 반영하고 온 자리. **달라진 것을 그 자리에서 적는다**(규격 §16).
-          반영했는데 올라간 자리가 없는 것도 자료라서 그때는 그 사실을 적는다 */}
       {justApplied ? (
         <p className="cm-done" role="status">
-          {st.raised.length || st.zoneMoved.length
-            ? <>새 경험을 반영했습니다. 판단 {st.raised.length}개가 올라갔고
-              영역 {st.zoneMoved.length}곳이 달라졌습니다.</>
-            : <>새 경험을 반영했습니다. 바뀐 판정은 없습니다 ·
-              같은 영역의 근거가 둘이 되면 그때 올라갑니다.</>}
+          {realChange
+            ? "새 경험을 반영했습니다. 아래 `최근 달라진 것` 에 무엇이 달라졌는지 적혀 있습니다."
+            : "새 경험을 반영했습니다. 바뀐 판정은 없습니다 · 같은 영역의 근거가 둘이 되면 그때 올라갑니다."}
         </p>
       ) : null}
 
-      {/* ── 1. 기술영역 ── */}
-      <h2 className="cm-sect" id="domains">기술영역</h2>
+      {/* ③ 지금 설명할 수 있는 영역 ── 최대 셋 */}
+      <h2 className="cm-sect" id="ready">지금 설명할 수 있는 영역</h2>
+      <div className="cm-panel">
+        {ready.length ? (
+          ready.map((r) => (
+            <div className="cm-pane" key={r.domain}>
+              <h3>
+                {domainName(r.domain)}
+                {st.raised.some((x) => x.domain === r.domain)
+                  ? <span className="cm-lockmark">경험 반영</span> : null}
+              </h3>
+              <p>{SAY_READY[r.zone]}</p>
+            </div>
+          ))
+        ) : (
+          <div className="cm-pane">
+            <h3>아직 근거가 선 영역이 잡히지 않았습니다</h3>
+            <p>
+              관심이 높은 영역에서 짧게 한 번 해 보고 그것을 경험으로 적으면
+              이 자리가 섭니다.
+            </p>
+          </div>
+        )}
+      </div>
+      {Object.keys(st.zoneOf).length > ready.length ? (
+        <div className="cm-acts" style={{ marginTop: 12 }}>
+          <Link className="cm-btn" href="#domains">전체 기술영역 보기</Link>
+        </div>
+      ) : null}
+
+      {/* ④ 최근 달라진 것 ── **실제 변화만 적는다**(규격 §7·§13).
+          반영한 적이 없으면 이 묶음을 세우지 않는다: 빈 카드를 세우면
+          읽는 사람은 자기 결과가 덜 만들어진 줄 안다 */}
+      {st.recomputed_at ? (
+        <>
+          <h2 className="cm-sect">최근 달라진 것</h2>
+          <div className="cm-panel">
+            <div className="cm-pane">
+              <h3>{st.recomputed_at} 반영</h3>
+              <div className="cm-rows">
+                {change.lines.map((line) => (
+                  <p className="cm-row" key={line}><b>{line}</b></p>
+                ))}
+              </div>
+              {change.more ? (
+                <p className="cm-none">그 밖에 {change.more}가지가 더 달라졌습니다.</p>
+              ) : null}
+              {!realChange ? (
+                <p className="cm-none">
+                  이미 확인된 범위의 경험이 더해졌습니다. 지원서에서 설명할
+                  재료는 그만큼 늘었습니다.
+                </p>
+              ) : null}
+            </div>
+          </div>
+        </>
+      ) : null}
+
+      {/* ⑤ 아직 부족한 것 ── 셋까지. 하나에 늘 셋이 붙는다 */}
+      <h2 className="cm-sect" id="gaps">아직 부족한 것</h2>
+      {gaps.length ? (
+        <>
+          <div className="cm-gaps">
+            {gaps.map((g) => {
+              const k = gapKo(g, domainName(g.domain));
+              return (
+                <article className="cm-gap" key={g.id}>
+                  <h3>{k.title}</h3>
+                  <p><b>왜 필요한가</b> {k.why}</p>
+                  <p><b>무엇을 하면</b> {k.detail}</p>
+                </article>
+              );
+            })}
+          </div>
+          {st.gaps.length > gaps.length ? (
+            <p className="cm-none" style={{ marginTop: 10 }}>
+              그 밖에 {st.gaps.length - gaps.length}곳이 더 있습니다. 급한
+              차례대로 위에 셋을 적었습니다.
+            </p>
+          ) : null}
+        </>
+      ) : (
+        <p className="cm-lead">
+          지금 비어 있는 자리가 잡히지 않았습니다. 남은 일은 가진 근거를
+          지원서에서 설명할 문장으로 만드는 것입니다.
+        </p>
+      )}
+
+      {/* ⑥ 다음 행동 하나 ── **여러 개를 세우지 않는다**(규격 §10) */}
+      <h2 className="cm-sect">다음 행동</h2>
+      <div className="cm-panel">
+        <div className="cm-pane">
+          {nextOne ? (
+            <p>{nextOne.body}</p>
+          ) : fallback ? (
+            <p>
+              {actionKo(
+                fallback,
+                fallback.domain ? domainName(fallback.domain) : "",
+                m.stage,
+              ).do}
+            </p>
+          ) : (
+            <p>
+              지금 다음으로 할 일이 잡히지 않았습니다. 새 경험을 적어 현재
+              상태를 다시 세우면 그다음 할 일이 나옵니다.
+            </p>
+          )}
+          <div className="cm-acts">
+            <Link className="cm-btn" href="/me/next">
+              {open.length > 1 ? `할 일 ${open.length}가지 보기` : "지금 할 일 보기"}
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* ── 검사 당시 결과와 지금 ──(규격 §8)
+          **점수 비교처럼 보이지 않게 한다.** 두 칸을 나란히 두고 각
+          칸이 무엇인지와 서로를 덮지 않는다는 것을 적는다. 숫자를 빼고
+          적는 까닭은, 수를 둘 세우면 그 사이의 차이가 곧 성장으로
+          읽히는데 **경험으로 올라갈 수 있는 자리는 `직접 수행` 까지**라
+          그 차이가 재는 것이 다르기 때문이다 */}
+      <h2 className="cm-sect">검사 당시 결과와 지금</h2>
+      <div className="cm-panel">
+        <div className="cm-pane">
+          <h3>검사 당시 결과 <span className="cm-lockmark">고정됨</span></h3>
+          <p>
+            {st.result_at} · {m.tier} · 그날의 문항과 기준으로 굳어 있습니다.
+            경험을 더해도 이 줄은 한 글자도 달라지지 않습니다.
+          </p>
+          <div className="cm-acts">
+            <Link className="cm-btn" href={`/v3/${m.attempt_id}/result`}>결과 보기</Link>
+          </div>
+        </div>
+        <div className="cm-pane">
+          <h3>현재 상태</h3>
+          <p>
+            {st.recomputed_at
+              ? `${st.recomputed_at} 기준 · 그 결과 위에 새 경험을 얹은 값입니다.`
+              : "아직 새 경험을 반영한 적이 없어 왼쪽과 같습니다."}
+          </p>
+          {st.zoneMoved.length ? (
+            <div className="cm-chips">
+              {st.zoneMoved.map((z) => (
+                <span className="cm-chip is-on" key={z.domain}>
+                  {domainName(z.domain)} 달라짐
+                </span>
+              ))}
+            </div>
+          ) : null}
+        </div>
+      </div>
+      <p className="cm-lead" style={{ marginTop: 10 }}>
+        두 값은 서로를 덮지 않습니다. 지원서에 적을 때는 검사 당시 결과를
+        근거로 쓰고, 다음에 무엇을 할지는 현재 상태를 보시면 됩니다.
+      </p>
+
+      {/* ── 여기부터가 세부다 ──
+          첫 화면이 답한 여섯 아래에 둔다. **접지 않는 까닭**은 이 쪽이
+          `현재 상태` 를 다 보여 주는 자리이기도 해서다 */}
+      <h2 className="cm-sect" id="domains">전체 기술영역</h2>
       {ORDER.map((z) => {
         const list = Object.entries(st.zoneOf).filter(([, v]) => v === z).map(([d]) => d);
         if (!list.length) return null;
@@ -117,40 +308,36 @@ export default async function State(
         );
       })}
 
-      {/* ── 2. 설명할 수 있는 경험 ── */}
-      <h2 className="cm-sect" id="evidence">설명할 수 있는 경험</h2>
-      {m.evidence.ready.length ? (
-        <div className="cm-grid">
-          {m.evidence.ready.slice(0, 6).map((g) => (
-            <div className="cm-card" key={`${g.domain}.${g.axis}`}>
-              <h2>
-                {domainName(g.domain)}
-                <em>{AXIS_KO[g.axis]}</em>
-                {raisedSet.has(`${g.domain}.${g.axis}`)
-                  ? <span className="cm-lockmark">경험 반영</span> : null}
-              </h2>
-              {g.picks.length ? (
-                <div className="cm-chips">
-                  {g.picks.slice(0, 4).map((x) => (
-                    <span className="cm-chip" key={x}>{x}</span>
-                  ))}
-                </div>
-              ) : <p>그 영역에서 직접 정한 것이 확인됐습니다.</p>}
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="cm-soon">
-          <b>지원서에서 설명할 수 있는 근거가 아직 잡히지 않았습니다.</b>
-          관심이 높은 영역에서 짧게 한 번 해 보고 그것을 적으면 이 자리가 섭니다.
-        </div>
-      )}
-
-      {/* ── 3. 더 붙이면 좋은 근거 ── */}
-      {m.evidence.partial.length ? (
-        <>
-          <h2 className="cm-sect">더 붙이면 좋은 근거</h2>
+      <details className="cm-fold">
+        <summary>설명할 수 있는 경험을 자리별로 보기</summary>
+        {m.evidence.ready.length ? (
           <div className="cm-grid">
+            {m.evidence.ready.slice(0, 6).map((g) => (
+              <div className="cm-card" key={`${g.domain}.${g.axis}`}>
+                <h2>
+                  {domainName(g.domain)}
+                  <em>{AXIS_KO[g.axis]}</em>
+                  {raisedSet.has(`${g.domain}.${g.axis}`)
+                    ? <span className="cm-lockmark">경험 반영</span> : null}
+                </h2>
+                {g.picks.length ? (
+                  <div className="cm-chips">
+                    {g.picks.slice(0, 4).map((x) => (
+                      <span className="cm-chip" key={x}>{x}</span>
+                    ))}
+                  </div>
+                ) : <p>그 영역에서 직접 정한 것이 확인됐습니다.</p>}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="cm-soon">
+            <b>지원서에서 설명할 수 있는 근거가 아직 잡히지 않았습니다.</b>
+            관심이 높은 영역에서 짧게 한 번 해 보고 그것을 적으면 이 자리가 섭니다.
+          </div>
+        )}
+        {m.evidence.partial.length ? (
+          <div className="cm-grid" style={{ marginTop: 14 }}>
             {m.evidence.partial.slice(0, 4).map((g) => (
               <div className="cm-card" key={`p-${g.domain}.${g.axis}`}>
                 <h2>{domainName(g.domain)} <em>{AXIS_KO[g.axis]}</em></h2>
@@ -159,40 +346,13 @@ export default async function State(
               </div>
             ))}
           </div>
-        </>
-      ) : null}
+        ) : null}
+      </details>
 
-      {/* ── 4. 아직 비어 있는 자리. 셋이 한 묶음이다 ── */}
-      <h2 className="cm-sect" id="gaps">아직 비어 있는 자리</h2>
-      {st.gaps.length ? (
-        <div className="cm-gaps">
-          {st.gaps.slice(0, 6).map((g) => {
-            const k = gapKo(g, domainName(g.domain));
-            return (
-              <article className="cm-gap" key={g.id}>
-                <h3>{k.title}</h3>
-                <p><b>왜 필요한가</b> {k.why}</p>
-                <p><b>무엇을 하면</b> {k.detail}</p>
-              </article>
-            );
-          })}
-        </div>
-      ) : (
-        <p className="cm-lead">
-          지금 비어 있는 자리가 잡히지 않았습니다. 남은 일은 가진 근거를
-          지원서에서 설명할 문장으로 만드는 것입니다.
-        </p>
-      )}
-      {st.gaps.length ? (
-        <div className="cm-acts" style={{ marginTop: 14 }}>
-          <Link className="cm-btn" href="/me/next">무엇부터 할지 보기</Link>
-        </div>
-      ) : null}
-
-      {/* ── 5. 보고 있는 산업과 직무 ── */}
+      {/* 보고 있는 산업과 직무. **고른 것만 적는다** */}
       {m.industry_context || m.role_context ? (
-        <>
-          <h2 className="cm-sect">보고 있는 산업과 직무</h2>
+        <details className="cm-fold">
+          <summary>보고 있는 산업과 직무</summary>
           <div className="cm-grid">
             {([
               [m.industry_context, indName(m.industry_context?.code ?? ""), "산업"],
@@ -210,13 +370,13 @@ export default async function State(
             산업과 직무는 같은 근거를 그쪽 말로 다시 읽어 주는 자리입니다.
             고른 산업이나 직무가 기술영역 판정을 바꾸지는 않습니다.
           </p>
-        </>
+        </details>
       ) : null}
 
-      {/* ── 6. 관심 지역과 기관 유형. 기관 수를 적지 않는다 ── */}
+      {/* 관심 지역과 기관 유형. 기관 수를 적지 않는다 */}
       {profile?.home_region || orgNames.length ? (
-        <>
-          <h2 className="cm-sect">관심 지역과 기관 유형</h2>
+        <details className="cm-fold">
+          <summary>관심 지역과 기관 유형</summary>
           <div className="cm-rows">
             {profile?.home_region ? (
               <p className="cm-row"><b>권역</b>
@@ -237,7 +397,7 @@ export default async function State(
           <div className="cm-acts" style={{ marginTop: 12 }}>
             <Link className="cm-btn" href="/me/region">지역과 기관 다시 고르기</Link>
           </div>
-        </>
+        </details>
       ) : null}
     </CmShell>
   );

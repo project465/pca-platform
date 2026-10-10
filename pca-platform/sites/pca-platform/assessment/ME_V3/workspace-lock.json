@@ -2,8 +2,8 @@
  "schema_version": "careermatri-workspace-lock.1",
  "note": "작업공간 1차 동결. 문장만 고치면 `WORKSPACE_COPY_VERSION` 만 올리고, 쪽이나 띠의 묶음이 바뀌면 `WORKSPACE_UI_VERSION` 을 올린다. 검사 판본과 결과지 판본은 이 가운데 무엇으로도 올리지 않는다: 작업공간은 기존 검사 엔진 위에 올라가는 사용자 경험 층이다",
  "versions": {
-  "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V7",
-  "workspace_copy_version": "careermatri-workspace-copy.6"
+  "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V8",
+  "workspace_copy_version": "careermatri-workspace-copy.7"
  },
  "guards": {
   "작업공간이 검사 판정을 다시 하지 않는다": "v3:workspace (채점 모듈 들여오기 0건) · v3:recompute",
@@ -16,23 +16,23 @@
   "열어서 500 이 나는 쪽이 없다": "v3:smoke"
  },
  "files": {
-  "src/app/me/platform.css": "2e787fa105c3e319a782d2659812d17324083f313d2f87b58e97ba6e22e45b7e",
+  "src/app/me/platform.css": "0beed44e3ff2c2b14aacad54fbfc555846238e40cb3a6fad7f3cdfae55253ac3",
   "src/app/me/shell.tsx": "d7b514b12467549a77e943e624e04bc4800803e3b801dfc43de104958d37c08e",
   "src/app/me/nav.ts": "37a5d89aec20e6daf47cce75954d1a389e3a7fd40bfa3204b03594e61c49504a",
   "src/app/me/layout.tsx": "febf9d34ffe7b54ab112107bd310960ef78500d428ab9130a795616e797fe3de",
   "src/app/me/actions.ts": "6a3be0ac393a919e08477526955a87bca3ad276c4f6ef7e21c2249d2dc98e684",
-  "src/app/me/page.tsx": "f1ef5a5c6bcc4279a419e566e5e58a684ea8f2f09fc74acb3a81ecb725e4fcb0",
+  "src/app/me/page.tsx": "80333a50b8dcf830dc80cf198abd990270df61adc0c6c87cc3b21645c616501c",
   "src/app/cores/page.tsx": "71114485540c083133062fdc8664d106c20e31e9ee730653862dbc954236f998",
   "src/app/me/results/page.tsx": "fe770a28af702970ad94a3796ae6364079bb9eba9e8af8e26987a1e002b10ff5",
-  "src/app/me/state/page.tsx": "fdc66860ddec779420aa7443a89868aae037f15fbf13a3b2913e794abb825fc1",
-  "src/app/me/next/page.tsx": "4cabaf33693c2a7af603b112faf45b90e2d0801f6284fde35729521d88d8d5ab",
-  "src/app/me/next/actions.ts": "2bba9518afacd1048c0ca671f5a2f16f079f7ca258883946e0e0152192973c3c",
-  "src/app/me/experience/page.tsx": "fd0815b62804df88fc397a7bba4d76cba8020a12280c454d43a9b7b92e9942c3",
-  "src/app/me/experience/new/page.tsx": "b454d427869c0b115ca8b5854a0f706a3a2ff8ff01e28e3be4d8d4eb245d965c",
-  "src/app/me/experience/new/picker.tsx": "fbcac47dcb6f1bfff860631acacff5afefb039a5b2c8018106ec72ca1f552512",
-  "src/app/me/experience/actions.ts": "e588b7541fb818d0a31c8955531f5095b9114156406a45b1f8d6d84772111626",
-  "src/app/me/recompute/page.tsx": "9fcdcfdd0c188594fe8b2b73dd4a61bcfbc27f2396ea138673d2c9e4d80f8072",
-  "src/app/me/recompute/actions.ts": "653ef19188c9aaea894eb8a0a9b26fb7c9165d2dcef260a6037a32219ca77c17",
+  "src/app/me/state/page.tsx": "2902f2aef763289c72a344fd1851fed0b9bed3e317b48398c80e6a7f34f96986",
+  "src/app/me/next/page.tsx": "3c80b1c790ebab79848a15ea643265069bb711ed486d21c4bf472f327aed7bdd",
+  "src/app/me/next/actions.ts": "1003c074f94897a4663efe24a2d9638710e6b319367dd98c0a9a32264c3ff189",
+  "src/app/me/experience/page.tsx": "fb7ed87677d3af03a500a23d3358de51e68f48be24bb35e0ecad6bd7f3fea55c",
+  "src/app/me/experience/new/page.tsx": "d61b521eced4077e18d744ee2cb12ebd21617639530c3c70690eba8312642061",
+  "src/app/me/experience/new/steps.tsx": "0f577ae57bf410a17d5f86da97feee09cc3c9ec202c8c7f7246d9b6a4ef33d47",
+  "src/app/me/experience/actions.ts": "c42b90132165d7323464fddc0e11e14fc827fd6f6c0768c3072d84dc50aa6229",
+  "src/app/me/recompute/page.tsx": "1369232640210c61653f97736efccb9867eff5e451a220f14532c2754efc134a",
+  "src/app/me/recompute/actions.ts": "9313332ff9d4751777504cf02524e477c34df4c5c1d6b12222e31f112cee211b",
   "src/app/me/gap/page.tsx": "4482e0e9942f33a41f816a41d212c1eaf0c113c3fd6acd7540465b3cd0fcb91c",
   "src/app/me/explore/page.tsx": "bf6a1f0e4a575233ed017e6d5daae6fb3ece5038ee4ca7391799b8e730906fa3",
   "src/app/me/region/page.tsx": "e6a4b55a202ae45457c701b2db9eded466aa41d3ca00fa1685597a84d2b9cae7",
@@ -51,8 +51,8 @@
   "src/components/sf/older-note.tsx": "ce9bfaad64605b90a88ce3c58bcf0f5acd831ed1b34f3f03b2e3b39608ccb8ea",
   "src/app/me/track/actions.ts": "cc80a0ea32392b1c90dde2174f99e4c810941c08c91143ccce531dcd1987bbef",
   "src/app/me/jobs/page.tsx": "0aef6919369c9c40ef7d3999fa199a0b3287dca13abafeaa66c8ad96872b31c2",
-  "src/lib/me-v3/platform.ts": "4a8a28e1818c1865a779aa3642d8b3daa375b82cef5dd503295b076763664908",
+  "src/lib/me-v3/platform.ts": "24022d9830bf3c8e26f24566fa6e26a5f6bdf43b249614ecaa31c0067dda4535",
   "src/lib/me-v3/workspace-events.ts": "f235ed162e6f7b000e7f1858cc34dfa25474304f54c0d2ece46a08cce772461f",
-  "src/lib/me-v3/workspace-version.ts": "d5d82fa17608eedf1ce5635860f27a612e4c0824a603f358e6a0dfaaf61af4ad"
+  "src/lib/me-v3/workspace-version.ts": "309f7d1c741e03a5d2c175efc508914c38bb773dc72a0521a3f05b42f00f0689"
  }
 }

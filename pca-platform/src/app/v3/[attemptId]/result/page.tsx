@@ -19,6 +19,7 @@ import {
 import { orgTypesFor, regionLayer } from "@/lib/me-v3/region";
 import { profileOf } from "@/lib/me-v3/platform";
 import { participantOf, savedActions } from "@/lib/me-v3/pilot/store";
+import { takeActionsFromResult } from "@/app/me/next/actions";
 import ResultNav from "./result-nav";
 import "../../result.css";
 import Detail from "./detail";
@@ -732,7 +733,13 @@ export default async function V3Result({
             새 경험을 적어 현재 상태를 다시 세우는 것. 종이로 받는 길은
             위 머리에 이미 있다 */}
         <div className="rs-do">
-          <Link className="rs-do-main" href="/me/next">지금 할 일로 담기</Link>
+          {/* **단추의 말이 약속한 일을 그 자리에서 한다**(규격 §16).
+              전에는 `/me/next` 로 옮기기만 하는 링크여서, 누른 사람이 그
+              쪽에서 `결과의 할 일 담기` 를 한 번 더 찾아 눌러야 했다.
+              담기지 않았는데 담긴 줄 알고 떠나는 것이 막다른 길보다 나쁘다 */}
+          <form action={takeActionsFromResult}>
+            <button className="rs-do-main" type="submit">지금 할 일로 담기</button>
+          </form>
           <Link className="rs-do-sub" href="/me/experience/new">경험 추가</Link>
           <Link className="rs-do-sub" href="/me">내 CareerMatri</Link>
           {/* **종이 길은 `Link` 로 걸지 않는다.** Next 가 화면에 들어온

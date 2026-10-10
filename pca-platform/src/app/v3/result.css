@@ -588,10 +588,15 @@
   display: flex; flex-wrap: wrap; align-items: center;
   gap: var(--r-s3); margin: var(--r-s5) 0 0;
 }
+/* **짙은 단추가 `button` 이다.** 담는 일이 서버에서 일어나므로 폼이
+   한 겹 끼는데, 폼을 그냥 두면 그 자리가 블록이 되어 띠의 `gap` 밖으로
+   선다. 폼은 자리만 차지하지 않게 두고 모양은 단추가 든다 */
+.rs-do form { display: flex; }
 .rs-do-main {
   display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px;
   background: var(--r-accent); color: #fff; border-radius: var(--r-r-sm);
   font-size: var(--r-t-body); font-weight: 650; text-decoration: none;
+  border: 0; cursor: pointer; font-family: inherit; line-height: 1;
 }
 .rs-do-main:hover { filter: brightness(1.06); }
 .rs-do-sub {
