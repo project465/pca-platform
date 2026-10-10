@@ -30,7 +30,7 @@
   "src/lib/me-v3/result/build.ts": "b571ea3e3d439aa8b8f6936c194317f5f3c368a3b4a2d8c1fd96ec5fd926ca80",
   "src/lib/me-v3/result/text.ko.ts": "05a21bc1b5fafea65420e323c832b5ece29eb543f2ab056d5ee412dfc9f26f21",
   "src/lib/me-v3/result/josa.ts": "152cd30c2af136172618c14fa6fb4175b97cf16350db631e3e2e6c72fd7dd4af",
-  "src/lib/me-v3/result/version.ts": "30b6d823f69434a8ac1d62963ab60ca42d4d941efa791de833263e8a35fe7c55",
+  "src/lib/me-v3/result/version.ts": "6b679cff77fd131085bb44de90df4c869b856d1f5dc07c43230983a60163841c",
   "src/lib/me-v3/runtime/domain-facts.ts": "f5aefadb0bd9e6ca0fae76b1076c2a7fdab7d34caaebdc618f39a2e92fbfd31f"
  }
 }

@@ -123,7 +123,7 @@ export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V7";
  */
 
 /**
- * UI V7 · copy.7 (2026-10-10) — 웹 결과지를 행동 화면으로.
+ * UI V7 · copy.7 (2026-10-10). 웹 결과지를 행동 화면으로.
  *
  * **결과 모델과 채점은 한 줄도 바뀌지 않았다**(`RESULT_MODEL_VERSION`
  * 그대로). 바뀐 것은 같은 값을 어떤 차례로 내보내는가다.

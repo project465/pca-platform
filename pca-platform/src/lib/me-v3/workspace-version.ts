@@ -87,7 +87,7 @@ export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.5";
  */
 
 /**
- * V6 · copy.5 (2026-10-10) — 하나의 제품으로 읽히는 행동 루프.
+ * V6 · copy.5 (2026-10-10). 하나의 제품으로 읽히는 행동 루프.
  *
  * **판정 코드는 한 줄도 바뀌지 않았다.** `currentState()` 와
  * `applyRecompute()` 가 그대로고 굳은 스냅샷도 그대로다.
