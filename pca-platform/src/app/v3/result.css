@@ -387,6 +387,24 @@
   color: var(--r-ink-3); padding-top: 14px;
 }
 .rs-pack dd { margin: 6px 0 0; display: flex; flex-wrap: wrap; gap: 6px; }
+/**
+ * 고르신 판단을 그대로 되돌려 주는 자리.
+ *
+ * 위의 `dl` 은 축 이름이라 한눈에 읽히고, 여기는 **그것이 어느 판단이었는지**
+ * 다. 칩으로 깔지 않고 줄로 세운 까닭은 문장이 길어서다: 칩은 낱말이고 이
+ * 줄들은 `무엇을 어떻게 했는가` 라서 줄로 읽어야 뜻이 선다.
+ */
+.rs-cmitems {
+  margin-top: var(--r-s4); padding-top: var(--r-s3);
+  border-top: 1px solid var(--r-line-soft);
+  display: grid; gap: var(--r-s3);
+}
+.rs-cmitems h4 {
+  margin: 0 0 6px; font-size: var(--r-t-meta); font-weight: 650;
+  letter-spacing: .05em; color: var(--r-ink-3);
+}
+.rs-cmitems ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.rs-cmitems li { font-size: var(--r-t-gloss); color: var(--r-ink-2); line-height: 1.55; }
 .rs-others {
   margin-top: var(--r-s4); padding-top: var(--r-s3); border-top: 1px solid var(--r-line-soft);
   font-size: var(--r-t-gloss); color: var(--r-ink-3);

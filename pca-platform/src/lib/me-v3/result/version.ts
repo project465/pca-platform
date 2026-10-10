@@ -7,10 +7,10 @@
  */
 
 /** 결과 모델의 구조. 절이 늘거나 칸이 바뀌면 올린다 */
-export const RESULT_MODEL_VERSION = "me-v3-result-model.4";
+export const RESULT_MODEL_VERSION = "me-v3-result-model.5";
 
 /** 결과지에 나가는 한국어. 문장만 바뀌면 이것만 올린다 */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.7";
+export const RESULT_COPY_VERSION = "me-v3-result-copy.8";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -18,7 +18,7 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.7";
  * 문장 하나를 고친 날 화면 판본까지 올리면, 되짚을 때 무엇이 바뀐
  * 것인지 알 수 없다. 넷이 따로 간다: 화면 · 문장 · 모델 · 판단.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V7";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V8";
 
 /*
  * `V3` 으로 올린 까닭. **아홉 절이 한 이야기로 이어졌고 첫 화면이 셋으로
@@ -144,4 +144,32 @@ export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V7";
  * **종이는 접히지 않는다.** 인쇄 규칙이 단추를 지우고 속을 드러내고,
  * 뽑는 쪽도 접힌 자리를 눌러서 한 번 더 편다. 한 가지에만 기대면 그
  * 규칙이 빠진 날 빈 종이가 조용히 뽑힌다.
+ */
+
+/*
+ * `.5` 와 `.8` 과 `V8` 로 올린 까닭. **결과지가 받은 답을 덜 읽고 한 자리에서
+ * 틀린 말을 하고 있었다.**
+ *
+ * 판단 규칙은 한 줄도 바뀌지 않았다(`me-v3-scoring.5` 그대로). 축 수준과
+ * 영역 묶음과 Z1~Z4 조건과 소유의 근거 둘이 그대로여서, 같은 응답이면 같은
+ * 판정이 나온다. `v3:scoring` 의 사람 열두 벌 지문이 글자까지 같다.
+ *
+ * 1. **근거는 있고 관심이 낮은 사람에게 `재료가 모이지 않았다` 고 적고
+ *    있었다.** 머리글이 Z1 과 Z2 와 관심만 보고 Z3 을 건너뛰어서, 직접
+ *    판단과 산출물과 검증이 전부 확인되고 관심만 낮은 사람이 가장 틀린
+ *    문장을 받았다. 관심과 근거를 한 점수로 합치지 않는다는 원칙이 머리글
+ *    한 자리에서 깨져 있었다. 머리글에 `EVIDENCE_LOW_INTEREST` 를, 첫
+ *    걸음에 `DECIDE_DIRECTION` 을 더했다. **이미 해 본 사람에게 더 해 보라고
+ *    적지 않는다.** `v3:gaming` 의 C 벌이 찾았다.
+ * 2. **영역에 걸치지 않는 판단 열둘이 축 여덟으로 접혀 있었다.** 공통 판단
+ *    여섯과 학위 묶음 여섯이 `owned`·`confirmed` 두 불린으로 들어가서, 한
+ *    축에 문항이 둘인 자리에서는 **짝이 가려** 응답 하나가 결과지에 한 글자도
+ *    돌아오지 않았다. 박사와 포닥이 가장 많이 답하는 자리가 거기다.
+ *    `CommonView.items` 와 `COMMON_ITEM_KO` 스물아홉을 더해 고르신 판단을
+ *    그대로 되돌려 준다(규격 §18). `v3:measure` 가 MASKED 로 세어 찾았다.
+ *
+ * **`CJ_GIVEN_REV` 은 문장으로 적지 않는다.** 문면은 선호를 묻는데 보기는
+ * 소유 사다리 넷이라, 고른 보기를 문장으로 옮기면 응시자가 하지 않은 주장을
+ * 우리가 하게 된다. 축 불린에서는 빼지 않았다: 빼면 판정이 달라지고 그것은
+ * 척도를 고치는 일이라 사업주 결정이 먼저다(`86_measurement_stop_gate.md`).
  */

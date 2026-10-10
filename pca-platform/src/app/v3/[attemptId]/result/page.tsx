@@ -732,6 +732,26 @@ export default async function V3Result({
                   </div>
                 ) : null}
               </dl>
+              {/* **축 이름만 적으면 응시자가 자기 답을 못 알아본다.** 공통
+                  판단 여섯과 학위 묶음 여섯이 축 여덟으로 접히면, 한 축에
+                  문항이 둘인 자리에서 짝이 가려 답 하나가 아예 안 보인다.
+                  고르신 판단을 그대로 되돌려 준다(규격 §18) */}
+              {cm.didOwn.length || cm.didConfirm.length ? (
+                <div className="rs-cmitems">
+                  {cm.didOwn.length ? (
+                    <section>
+                      <h4>직접 정하고 그 결과가 쓰였다고 답하신 것</h4>
+                      <ul>{cm.didOwn.map((t) => <li key={t}>{t}</li>)}</ul>
+                    </section>
+                  ) : null}
+                  {cm.didConfirm.length ? (
+                    <section>
+                      <h4>직접 해 보셨다고 답하신 것</h4>
+                      <ul>{cm.didConfirm.map((t) => <li key={t}>{t}</li>)}</ul>
+                    </section>
+                  ) : null}
+                </div>
+              ) : null}
             </div>
           ) : null}
         </section>

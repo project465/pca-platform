@@ -132,6 +132,14 @@ const HEADLINE_KO: Record<HeadlineCode, { title: string; lead: string }> = {
     title: "해 본 일은 있고, 설명할 재료가 아직 모자랍니다",
     lead: "경험은 확인됐습니다. 남은 것은 그 경험을 설명할 결과물과 비교 기록입니다.",
   },
+  /* **관심과 근거를 한 점수로 합치지 않는다.** 관심이 낮다고 근거가 없는
+     것이 아니다. 그 사람에게 할 말은 `이 영역을 진로로 둘지 정하세요` 이고
+     `더 해 보세요` 는 이미 해 본 사람에게 할 말이 못 된다 */
+  EVIDENCE_LOW_INTEREST: {
+    title: "경험 근거는 있고, 지금 관심 우선순위가 낮습니다",
+    lead: "직접 정한 것과 남긴 결과물이 확인된 영역입니다."
+      + " 먼저 정할 것은 이 영역을 진로로 둘지입니다.",
+  },
   EXPLORING: {
     title: "관심 있는 쪽은 또렷하고, 해 본 일이 아직 적습니다",
     lead: "지금 필요한 것은 공부보다 짧게 한 번 해 보는 쪽입니다.",
@@ -468,6 +476,7 @@ export const TRANS_STEP_KO: Record<string, string> = {
 export const FIRST_MOVE_KO: Record<FirstMove, string> = {
   FILL_GAP: "가장 먼저 채울 것",
   WRITE_UP: "지원서와 면접용으로 정리할 것",
+  DECIDE_DIRECTION: "먼저 정할 것",
   TRY: "지금 해볼 것",
   NONE: "지금 해볼 것",
 };
@@ -603,9 +612,86 @@ export const XFIELD_ORDER = [
  * 정했다` 처럼 적을 수 없고, 그 축을 어디에서든 해 봤다는 데까지만 적는다.
  * **영역 판정과 섞어 읽히지 않게 그 사실을 함께 적는다.**
  */
-export function commonKo(v: CommonView): { owned: string[]; confirmed: string[] } {
+/**
+ * 영역에 걸치지 않는 판단 하나하나의 이름.
+ *
+ * **축 이름으로 대신하지 않는다.** 전에는 `문제 정의` 처럼 축 이름만 나가서,
+ * 공통 판단 여섯과 학위 묶음 여섯이 축 여덟으로 접히고 **어느 판단을 하신
+ * 것인지 결과지가 되돌려 주지 못했다.** 한 축에 문항이 둘인 자리에서는 짝이
+ * 가려 응답 하나가 아예 보이지 않았다.
+ *
+ * 문면을 그대로 쓰지 않고 줄인 말로 적는 까닭은, 결과지에서 이 자리가 목록이고
+ * `~한 적이 있다` 가 열두 번 되풀이되면 읽히지 않기 때문이다. **학위마다 다른
+ * 장면을 그대로 들고 간다**: 같은 축이라도 학부는 캡스톤이고 포닥은 과제 운영이다.
+ */
+export const COMMON_ITEM_KO: Record<string, string> = {
+  /* 공통 판단. 어느 학위나 받는다 */
+  CJ_SCOPE: "다룰 범위를 좁혀 정하고 까닭을 적기",
+  CJ_REQUIRE: "말로 받은 요구를 숫자로 바꾸기",
+  CJ_METHOD: "쓸 방법을 고르고 까닭을 적기",
+  CJ_COMPARE: "선택지를 같은 기준으로 견주어 고르기",
+  CJ_HANDOFF: "내가 낸 것을 다른 사람이 받아 쓰기",
+  /* 학부 장면 */
+  UG_SCOPE: "캡스톤에서 다룰 범위를 직접 좁히기",
+  UG_DECIDE: "수업 과제에서 조건이나 치수를 직접 정하기",
+  UG_OUTPUT: "산출물을 남이 읽고 쓸 수 있게 정리하기",
+  UG_CHECK: "실험값과 계산값을 대조해 차이를 설명하기",
+  UG_FIX: "예상과 다른 결과의 원인을 좁혀 다시 하기",
+  UG_USED: "내가 만든 것이 팀의 다음 작업에 쓰이기",
+  /* 석사 장면 */
+  MS_PROBLEM: "다룰 연구 문제를 직접 좁히기",
+  MS_CONDITION: "과제 목표를 측정할 수 있는 조건으로 옮기기",
+  MS_METHOD: "실험이나 해석의 조건을 직접 정하기",
+  MS_OUTPUT: "남이 다시 할 수 있게 방법과 조건을 남기기",
+  MS_VERIFY: "내 결과를 다른 방법으로 얻은 값과 대조하기",
+  MS_TRANSLATE: "연구에서 한 일을 산업에서 쓰는 말로 옮기기",
+  /* 박사 장면 */
+  PHD_FRAME: "풀 수 있는 크기로 문제를 다시 자르기",
+  PHD_ASSUME: "세운 가정이 깨지는 조건을 미리 적기",
+  PHD_PICK: "방법이 여럿일 때 하나를 골라 까닭을 남기기",
+  PHD_VAR: "무엇을 고정하고 무엇을 바꿀지 직접 정하기",
+  PHD_UNCERT: "결과에 남은 불확실성의 크기를 적기",
+  PHD_LIMIT: "내 방법이 안 되는 범위를 찾아 적기",
+  /* 박사후연구원 장면 */
+  PD_SCOPE: "내가 책임지는 범위와 맡긴 범위를 가르기",
+  PD_RUN: "과제 일정과 자원을 직접 나누기",
+  PD_ALONE: "지도 없이 직접 정하고 그대로 가기",
+  PD_TEAM: "다른 사람의 결과를 받아 내 작업에 이어 붙이기",
+  PD_OUT: "연구 결과를 과제 보고나 특허나 시작품으로 바꾸기",
+  PD_LINK: "내 결과가 기업이나 다른 기관의 작업에 쓰이기",
+};
+
+/**
+ * 영역에 걸치지 않는 판단을 읽는 말로.
+ *
+ * 축 이름 두 줄(`owned` · `confirmed`)은 그대로 두고 **문항 줄을 더한다.**
+ * 축 이름은 어디까지 확인됐는지를 한눈에 보여 주고, 문항 줄은 그것이 어느
+ * 판단이었는지를 되돌려 준다. 둘 가운데 하나만 두면 읽는 사람이 자기 답을
+ * 알아보지 못하거나(축만) 전체가 안 보인다(문항만).
+ */
+export function commonKo(v: CommonView): {
+  owned: string[]; confirmed: string[];
+  didOwn: string[]; didConfirm: string[];
+} {
   const owned = v.axes.filter((a) => a.owned).map((a) => AXIS_KO[a.axis]);
   const confirmed = v.axes
     .filter((a) => a.confirmed && !a.owned).map((a) => AXIS_KO[a.axis]);
-  return { owned, confirmed };
+  const name = (id: string) => COMMON_ITEM_KO[id];
+  /**
+   * **굳은 결과에 이 칸이 없을 수 있다.**
+   *
+   * 결과지는 그때 적어 둔 결과 모델을 그대로 꺼내 그린다. `items` 는
+   * `me-v3-result-model.5` 에서 생긴 칸이라, 그 전에 응시한 사람의 줄에는
+   * 없다. 없는 것을 읽으면 그 사람의 결과지가 500 으로 떨어진다. 실제로
+   * 그렇게 떨어졌고 `v3:loop` 의 막다른 길 검사가 잡았다. **없으면 이 줄을
+   * 세우지 않고 위의 축 두 줄만 선다**: 그 판본이 적어 둔 것이 거기까지다.
+   */
+  const items = v.items ?? [];
+  /* **이름이 없는 문항은 세우지 않는다.** 문항 번호를 화면에 내보내는 것보다
+     그 줄을 비우는 쪽이 낫고, 비면 `v3:measure` 가 먼저 걸린다 */
+  const didOwn = items.filter((i) => i.owned).map((i) => name(i.item_id))
+    .filter((x): x is string => !!x);
+  const didConfirm = items.filter((i) => i.confirmed && !i.owned)
+    .map((i) => name(i.item_id)).filter((x): x is string => !!x);
+  return { owned, confirmed, didOwn, didConfirm };
 }

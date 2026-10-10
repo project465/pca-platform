@@ -205,9 +205,25 @@ for (const t of plan.targets) {
   await p.setViewportSize(SIZES.mobile);
   await p.goto(B + plan.targets.find((t) => t.name === "r3_pro").path,
     { waitUntil: "networkidle" });
+  /**
+   * **접힌 자리를 펴고 나서 잰다.**
+   *
+   * 본문 아홉 절은 `자세한 내용 보기` 안에 `hidden` 으로 접혀 있다. 접힌
+   * 채로 재면 그 안의 단추가 전부 `0px` 로 나와서 **멀쩡한 자리 셋이
+   * 미달로 걸린다.** `v3:shots` 가 결과 자리를 찍을 때 같은 자리를 먼저
+   * 누르는 것과 같은 까닭이다. 거짓 경보를 내는 검사는 그 다음부터 아무도
+   * 안 본다.
+   */
+  await p.evaluate(() => {
+    const b = document.querySelector(".rs-openbtn");
+    if (b instanceof HTMLElement) b.click();
+  });
+  await p.waitForTimeout(250);
   const small = await p.evaluate(() => {
     const out = [];
     for (const el of document.querySelectorAll(".rs-head nav a, .rs-foldbtn")) {
+      /* 아직 접혀 있거나 이 폭에서 세우지 않는 자리는 재지 않는다 */
+      if (!(el instanceof HTMLElement) || el.offsetParent === null) continue;
       const h = el.getBoundingClientRect().height;
       if (h < 40) out.push(`${el.className.split(" ")[0]} ${Math.round(h)}px`);
     }

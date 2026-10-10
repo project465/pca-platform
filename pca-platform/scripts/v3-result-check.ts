@@ -14,7 +14,7 @@ import { load, score } from "../src/lib/me-v3/scoring/engine";
 import { expand, stable, type Fixture } from "../src/lib/me-v3/scoring/fixtures";
 import { buildResult } from "../src/lib/me-v3/result/build";
 import {
-  actionKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO, BASIC_GROUP_KO, draftKo,
+  actionKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO, BASIC_GROUP_KO, commonKo, draftKo,
   FIRST_MOVE_KO, gapKo, headlineKo, HORIZON_KO, QUALITY_KO, TIER_NOTE_KO,
   TRANS_STEP_KO, ZONE_LEAD_KO, ZONE_TITLE_KO,
 } from "../src/lib/me-v3/result/text.ko";
@@ -139,6 +139,9 @@ function rendered(m: ReturnType<typeof buildResult>): string[] {
     out.push(TRANS_STEP_KO[st.item_id] ?? st.item_id, st.choice ?? "");
   }
   out.push(...draftKo(m.translation?.steps ?? []));
+  /* 영역에 걸치지 않는 판단. **축 두 줄과 문항 줄을 함께 센다** */
+  const cm = commonKo(m.common);
+  out.push(...cm.owned, ...cm.confirmed, ...cm.didOwn, ...cm.didConfirm);
   return out.filter(Boolean);
 }
 
@@ -480,6 +483,37 @@ const packGhost = [...models].filter(([id, m]) => {
 });
 ok("산업·직무 절은 고르신 분께만 선다", packGhost.length === 0,
    packGhost.map(([id]) => id).join(" "));
+
+/* ── 굳은 결과에 새 칸이 없어도 결과지가 선다 ────────────────────
+ *
+ * 결과지는 그때 적어 둔 결과 모델을 그대로 꺼내 그린다. 모델에 칸을 더하면
+ * **그 전에 응시한 사람의 줄에는 그 칸이 없고**, 읽는 쪽이 없는 것을
+ * 견디지 못하면 그 사람의 결과지가 500 으로 떨어진다. 실제로 그렇게
+ * 떨어졌다(`common.items` 를 더한 날 `v3:loop` 의 막다른 길 검사가 잡았다).
+ *
+ * 그래서 **새 칸을 하나씩 지우고** 사람이 읽는 말을 만들어 본다. 모델에
+ * 칸을 더하는 사람이 이 목록에 한 줄을 더하면 검사가 따라온다.
+ */
+{
+  const NEWER_FIELDS: { path: string; drop: (m: Record<string, unknown>) => void }[] = [
+    { path: "common.items",
+      drop: (m) => { delete (m.common as Record<string, unknown>).items; } },
+  ];
+  const broke: string[] = [];
+  for (const [id, m] of models) {
+    for (const f of NEWER_FIELDS) {
+      const old = JSON.parse(JSON.stringify(m)) as Record<string, unknown>;
+      f.drop(old);
+      try {
+        rendered(old as unknown as ReturnType<typeof buildResult>);
+      } catch (e) {
+        broke.push(`${id} ${f.path}: ${(e as Error).message}`);
+      }
+    }
+  }
+  ok("굳은 결과에 새 칸이 없어도 결과지가 선다", broke.length === 0,
+     broke.slice(0, 2).join(" | ") || `칸 ${NEWER_FIELDS.length}개 × 사람 ${models.size}벌`);
+}
 
 /* 16. 사람마다 한 줄 */
 console.log("");

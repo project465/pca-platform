@@ -27,11 +27,29 @@ import { RESULT_MODEL_VERSION } from "./version";
 const AX: Axis[] = ["J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8"];
 
 /**
- * 영역에 걸치지 않는 판단을 축으로 모은다.
+ * 문면이 묻는 것과 보기가 받는 것이 어긋나 **결과지가 문장으로 적지 않는** 문항.
  *
- * 한 축에 문항이 둘 이상인 자리가 있어서(공통 판단과 학위 묶음이 같은 축을
- * 가리킨다) **높은 쪽을 쓴다.** 둘을 더하면 많이 물은 학위가 저절로 높아지고,
- * 그러면 포닥이 박사보다 높게 나온다.
+ * `CJ_GIVEN_REV` 의 문면은 `조건은 위에서 내려오고 나는 그대로 계산만 하는
+ * 편이 편하다` 로 **선호**를 묻는데 보기는 소유 사다리 넷이다. 그래서
+ * `내가 정하고 그 결과가 쓰였다` 를 고르면 그 응답이 무엇을 뜻하는지 정할
+ * 수 없고, 문장으로 적으면 응시자가 하지 않은 주장을 우리가 하게 된다.
+ *
+ * **축 불린(`axes`)에서 빼지 않았다.** 빼면 판정이 달라지고, 그것은
+ * 척도를 고치는 일이라 사업주 결정이 먼저다(`86_measurement_stop_gate.md`).
+ * 여기서 하는 일은 **문장으로 단정하지 않는 것**뿐이다.
+ */
+const NO_SENTENCE = new Set(["CJ_GIVEN_REV"]);
+
+/**
+ * 영역에 걸치지 않는 판단을 모은다. **문항 줄과 축 줄을 함께 들고 간다.**
+ *
+ * 축 줄은 한 축에 문항이 둘 이상인 자리가 있어서(공통 판단과 학위 묶음이
+ * 같은 축을 가리킨다) **높은 쪽을 쓴다.** 둘을 더하면 많이 물은 학위가
+ * 저절로 높아지고, 그러면 포닥이 박사보다 높게 나온다.
+ *
+ * 그런데 축 줄만 두면 **짝이 가려** 어느 판단을 하신 것인지 결과지가
+ * 되돌려 주지 못한다. 그래서 문항 줄을 같이 담는다. 판정은 그대로다:
+ * 담는 값이 스냅샷이 이미 들고 있던 것이다.
  */
 function commonView(rows: Snapshot["context"]["common"]): CommonView {
   const axes: CommonView["axes"] = [];
@@ -45,7 +63,15 @@ function commonView(rows: Snapshot["context"]["common"]): CommonView {
       from: mine.map((r) => r.item_id),
     });
   }
-  return { axes, blocks: [...new Set(rows.map((r) => r.block))] };
+  const items = rows
+    .filter((r) => !NO_SENTENCE.has(r.item_id))
+    .map((r) => ({
+      item_id: r.item_id, axis: r.axis, block: r.block,
+      ownership: r.ownership,
+      owned: r.ownership === "DECIDED_USED",
+      confirmed: r.confirmed,
+    }));
+  return { items, axes, blocks: [...new Set(rows.map((r) => r.block))] };
 }
 
 /**
@@ -107,10 +133,19 @@ function domainView(d: DomainResult): ResultDomain {
   };
 }
 
-/** 첫 화면 한 줄. **스냅샷의 묶음에서 그대로 읽는다** */
+/**
+ * 첫 화면 한 줄. **스냅샷의 묶음에서 그대로 읽는다.**
+ *
+ * **묶음 다섯 가운데 넷을 본다.** 전에는 Z1 과 Z2 와 관심만 보고 Z3(근거는
+ * 있고 관심이 낮은 영역)을 건너뛰어서, 직접 판단과 산출물과 검증이 전부
+ * 확인되고 관심만 낮은 사람이 `아직 판단할 재료가 모이지 않았습니다` 를
+ * 받았다. **그 사람에게 가장 틀린 문장이다.** 관심과 근거를 한 점수로
+ * 합치지 않는다는 원칙이 머리글에서 깨져 있었다.
+ */
 function headlineOf(s: Snapshot): HeadlineCode {
   if (s.zones.Z1_EVIDENCE_ESTABLISHED.length) return "EVIDENCE_READY";
   if (s.zones.Z2_EVIDENCE_INCOMPLETE.length) return "EVIDENCE_PARTIAL";
+  if (s.zones.Z3_EVIDENCE_LOW_INTEREST.length) return "EVIDENCE_LOW_INTEREST";
   if (s.domains.some((d) => d.interest.band === "HIGH")) return "EXPLORING";
   return "NO_EVIDENCE";
 }
@@ -398,6 +433,10 @@ export function buildResult(
       ? "FILL_GAP"
       : actions.some((a) => a.code === "WRITE_UP")
         ? "WRITE_UP"
+        /* 빈자리가 없고 근거는 있는데 관심이 낮다. **더 해 보라고 적지
+           않는다**: 이미 해 본 사람에게 할 말이 아니다 */
+        : s.zones.Z3_EVIDENCE_LOW_INTEREST.length
+          ? "DECIDE_DIRECTION"
         : actions.length ? "TRY" : "NONE";
 
   /**

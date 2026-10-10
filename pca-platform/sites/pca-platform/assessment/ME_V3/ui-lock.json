@@ -2,15 +2,15 @@
  "schema_version": "me-v3-ui-lock.1",
  "note": "검사 화면 1차 동결. 결과지 작업 중에는 명백한 버그와 접근성 오류만 고치고, 고쳤으면 `ui-version.ts` 의 판본을 올린 뒤 `FREEZE=update npm run v3:freeze` 로 지문을 다시 적는다",
  "versions": {
-  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V6",
-  "assessment_copy_version": "me-v3-2-assessment-copy.8",
+  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V7",
+  "assessment_copy_version": "me-v3-2-assessment-copy.9",
   "assessment_version": "ME_V3_2",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.4",
   "scoring_version": "me-v3-scoring.5"
  },
  "files": {
   "src/app/v3/layout.tsx": "5169464a4bd3741726beea4d17ee6ddb9d070c090513a3ca029f526883e05864",
-  "src/app/v3/assessment.css": "9dd110d1843034485dfc1e4f9531485df4f6fe1dc2843d011c647b4c1a4f433d",
+  "src/app/v3/assessment.css": "ba2507de3c3a9ec2abd9c9a6e6689da1c12458a81b88dfd7db27e0387e66342e",
   "src/app/v3/tier-text.ts": "2ff70daeb2de3f6e547356884b50091f819eb98ae5630d21dcc7978e372a33b8",
   "src/app/v3/start/page.tsx": "ce4ed92d01864a58100fa8c411c0c319e3e87f38a4cda3225cb283a68e8fa2a3",
   "src/app/v3/start/start-form.tsx": "7d036552acb6beca01bace9adc746b9ac42991692de6204444592c1acea968bc",
@@ -20,7 +20,7 @@
   "src/app/v3/[attemptId]/model.ts": "924a70f6694661232185fc184ab8565fe431a71073ded4549fd898fb5b94536e",
   "src/app/v3/[attemptId]/actions.ts": "3541c53d5ae48c28544ef09cb282d84dc0466d20196ce2de7ea69c2d4c7faee7",
   "src/lib/me-v3/runtime/blocks.ts": "0846af36e786d2309c3920999fa4f9dcf4b1c6e74a72a4eab044030c38bbb1f2",
-  "src/lib/me-v3/runtime/menus.ts": "df2dc7d4ea2247915a82a50ca37098b68aa11ee662337599dc6b754276e4a485",
+  "src/lib/me-v3/runtime/menus.ts": "435a2f946263ef142423b08d45f1ffca9795f3342014186475a157fb4fb6af82",
   "src/lib/me-v3/runtime/session.ts": "a383e44af2969b5c061c1da847da26f216e9b6af9b879d063167056c8fb0c59c",
   "src/lib/me-v3/runtime/routing.ts": "37de46a97c7bc3f68ba69fd04079c696ee13c333b478041d1b888732b2325f53",
   "src/lib/me-v3/runtime/progress.ts": "c1cf550f3215d15e5ba8de6bda8939a9ef0ee19564b90989008875a4eff92fd1"

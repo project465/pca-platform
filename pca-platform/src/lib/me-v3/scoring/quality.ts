@@ -40,14 +40,34 @@ export function quality(
   const detail: string[] = [];
   const byId = new Map(items.map((i) => [i.item_id, i]));
 
-  /* 1. 반대 방향 두 문항에 비슷하게 답했는가 */
+  /**
+   * 1. 반대 방향 두 문항에 비슷하게 답했는가.
+   *
+   * **짝을 글자로 적어 두지 않는다.** 전에 여기 적혀 있던 `CJ_PROBLEM` 은
+   * 어느 판본의 은행에도 없는 번호여서 `forward` 가 늘 `null` 이었고, 그래서
+   * 이 규칙이 **한 번도 돌지 않았다.** 이 저장소에서 같은 탈이 두 번째다:
+   * 앞서 `DEEP-J8` 과 `PROBE-J4` 가 같은 자리에서 for 문의 몸통을 영원히
+   * 건너뛰게 만들었다. 지금은 은행에서 같은 묶음 · 같은 축의 정방향 문항을
+   * 찾고, `v3:measure` 가 **코드가 글자로 적어 둔 문항 번호가 은행에
+   * 있는지**를 센다.
+   *
+   * **지금 이 규칙은 여전히 돌지 않는다.** ME_V3_2 의 역방향 문항은
+   * `CJ_GIVEN_REV` 하나이고 같은 묶음 · 같은 축(J3)에 정방향 문항이 없다.
+   * 짝을 만들려면 그 문항의 척도부터 정해야 해서(문면은 선호를 묻는데 보기는
+   * 소유 사다리 넷이다) 사업주 결정이 먼저다:
+   * `docs/metri/86_measurement_stop_gate.md`. **전부 최고로 답한 사람을
+   * 막는 것은 이 규칙이 아니라 근거를 요구하는 소유 판정이다**(`v3:gaming`).
+   */
   const rev = items.filter((i) => i.reverse_flag);
   for (const r of rev) {
+    const pair = items.find((i) => !i.reverse_flag && i.module === r.module
+      && i.evidence_axis === r.evidence_axis);
+    if (!pair) continue;
     const mine = unit(sub.answers[r.item_id]);
-    const forward = unit(sub.answers["CJ_PROBLEM"]);
+    const forward = unit(sub.answers[pair.item_id]);
     if (mine !== null && forward !== null && mine >= 0.75 && forward >= 0.75) {
       reasons.push("REVERSE_PAIR_AGREED");
-      detail.push(`${r.item_id}~CJ_PROBLEM`);
+      detail.push(`${r.item_id}~${pair.item_id}`);
     }
   }
 

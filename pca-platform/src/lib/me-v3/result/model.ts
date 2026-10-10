@@ -11,6 +11,7 @@
  * 문장은 `text.ko.ts` 가 만든다. 영어판을 여는 날 번역만 늘리고 모델을
  * 고치지 않는다.
  */
+import type { Ownership } from "../scoring/ownership";
 import type { ReasonCode } from "../scoring/reason-codes";
 import type {
   Axis, AxisState, Band, GradField, MissingKind, Stage, Tier, Zone,
@@ -23,6 +24,15 @@ export type HeadlineCode =
   | "EVIDENCE_READY"
   /** 경험은 있고 아직 근거가 덜 섰다 */
   | "EVIDENCE_PARTIAL"
+  /**
+   * 근거는 확인됐고 지금 관심 우선순위가 낮다.
+   *
+   * **이 칸이 없어서 결과지가 거짓을 적고 있었다.** 관심 2 에 직접 판단과
+   * 산출물과 검증이 다 확인된 사람이 `아직 판단할 재료가 모이지 않았습니다`
+   * 를 받았다. 머리글이 Z1 과 Z2 와 관심만 보고 **근거는 있고 관심이 낮은
+   * 묶음(Z3)을 건너뛰었기** 때문이다. `v3:gaming` 의 C 벌이 찾았다.
+   */
+  | "EVIDENCE_LOW_INTEREST"
   /** 관심은 또렷하고 겪어 본 것이 적다 */
   | "EXPLORING"
   /** 아직 판단할 근거가 거의 없다 */
@@ -65,6 +75,13 @@ export type FirstMove =
   | "FILL_GAP"
   /** 빈자리는 없고 근거가 섰다. 남은 일은 정리다 */
   | "WRITE_UP"
+  /**
+   * 근거는 있고 관심이 낮다. 먼저 정할 것은 이 영역을 진로로 둘지다.
+   *
+   * 빈자리가 없다고 `지금 해볼 것` 을 적으면, 이미 많이 해 본 사람에게
+   * 더 해 보라고 말하게 된다.
+   */
+  | "DECIDE_DIRECTION"
   /** 여덟 축을 묻지 않았다. 지금 해볼 것을 적는다 */
   | "TRY"
   /** 정말 아무것도 없다 */
@@ -222,6 +239,34 @@ export type TranslationView = {
  * 답하는 자리가 거기다. 여기 담아 결과지가 읽는다.
  */
 export type CommonView = {
+  /**
+   * 응시자가 답한 판단 하나하나.
+   *
+   * **축 불린만 들고 있으면 안 되는 자리다.** 전에는 아래 `axes` 뿐이어서
+   * 공통 판단 여섯과 학위 묶음 여섯(열둘)이 축 여덟의 `owned`·`confirmed`
+   * 로 접혔다. 한 축에 문항이 둘인 자리에서는 **짝이 가려** 결과지가 어느
+   * 판단을 하신 것인지 되돌려 주지 못했고, 그 열두 문항이 박사와 포닥이
+   * 가장 많이 답하는 자리다. `v3:measure` 가 그것을 MASKED 로 세어 찾았다.
+   *
+   * 이 칸은 **읽는 자리일 뿐이다.** 축 수준도 영역 묶음도 Z1~Z4 조건도
+   * 한 글자 바뀌지 않는다: 스냅샷이 이미 들고 있던 문항별 소유 수준을
+   * 그대로 옮긴다.
+   *
+   * **`?` 가 붙은 까닭.** 결과지는 굳혀 둔 결과 모델을 그대로 꺼내 그리고,
+   * 이 칸은 `me-v3-result-model.5` 에서 생겼다. 그 전 판본으로 응시한
+   * 사람의 줄에는 이 칸이 없으므로 읽는 쪽이 없는 것을 견뎌야 한다.
+   */
+  items?: {
+    item_id: string;
+    axis: Axis;
+    /** 어느 묶음에서 왔는가. 되짚는 자리이고 화면에 내보내지 않는다 */
+    block: string;
+    ownership: Ownership;
+    /** 직접 정하고 그 결과가 쓰였다 */
+    owned: boolean;
+    /** 해 본 것 이상 */
+    confirmed: boolean;
+  }[];
   /** 축마다 어디까지 확인됐는가. 묶음 안에서 차례를 만들지 않는다 */
   axes: {
     axis: Axis;
