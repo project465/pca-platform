@@ -233,8 +233,11 @@ Track 은 앞으로 제공할 기능 넷과 지금 되는 것 둘을 나란히 �
 
 초점 테와 화살표 이동은 `v3:visual` 이 같이 센다. 접는 자리는 전부
 `button` 과 `details` 이고 `aria-expanded` 를 들고 있으며, 띠의 현재 줄은
-`aria-current="page"` 다. 누르는 자리의 높이와 글자 대비는 `v3:shots` 와
-`a11y:check` 가 쪽마다 센다.
+`aria-current="page"` 다.
+
+`npm run a11y:check` 를 열 쪽에서 돌렸고 대비 미달 0 · 작은 단추 0 ·
+이름표 없음 0 · alt 없음 0이다. 이번에 더한 꺾쇠는 `summary` 의 `::after`
+라 읽는 기계가 글자로 읽지 않고, 접힌 상태는 `details` 자신이 들고 간다.
 
 ## S. 시각 회귀와 내용 스트레스 (§48·§49)
 
@@ -264,7 +267,21 @@ Track 은 앞으로 제공할 기능 넷과 지금 되는 것 둘을 나란히 �
 화면에서 끊기지 않는다. A 로 읽힐 자리였던 둘(결과 상세의 덤프와 작업공간
 묶음의 평평함)이 이번 회차에서 갈렸다.
 
-## U. 측정 불변 (§56)
+## U. 측정 불변 (§56) 과 전체 회귀
+
+`npm run v3:all` 의 마흔한 묶음을 **여섯 토막으로 나눠** 전부 돌렸다. 한
+프로세스로 돌리면 이 컨테이너에서 메모리가 모자라 중간에 죽는다. 걸린 자리
+0이다.
+
+| 묶음 | 결과 |
+|---|---|
+| v2:frozen · v3:build · v3:domains · v3:items · v3:length · v3:migrate · v3:arch · v3:extend | 통과 · 걸림 0 |
+| v3:wording 35 · v3:persona 15 · v3:scoring 31 · v3:registry 9 · v3:j3 11 · v3:measure 28 · v3:gaming 26 | 걸림 0 |
+| v3:runtime 28 · v3:ui 28 · v3:freeze · v3:result:height 28 · v3:recompute 7 | 걸림 0 |
+| v3:isolation 11 · v3:owner 19 · v3:usability 12 · v3:gate | 걸림 0 |
+| v3:loop 15 · v3:workspace · auth:check 37 · secrets:check 7 · errors:check 8 · routes:check 10 · runbook:check 7 · oauth:ready 11 · pilot:ready 15 · v3:pilot 29 | 걸림 0 |
+| v3:result 25 · v3:result:copy 10 · v3:product-loop 47 · v3:visual · v3:freeze:measure 14 · v3:copy · copy:audit | 걸림 0 |
+
 
 | 항목 | 결과 |
 |---|---|
@@ -283,9 +300,32 @@ Core 일곱과 거드는 여덟을 **밟는 차례 그대로** 찍는다. 자리
 검사 화면은 앞 화면에 답하지 않으면 애초에 서지 않는다.
 
 ```
-docs/metri/shots/final/before/   고치기 전
-docs/metri/shots/final/after/    고친 뒤
+docs/metri/shots/final/before/   고치기 전 (1440 · 390 두 폭 · 그림 60장)
+docs/metri/shots/final/after/    고친 뒤 (일곱 폭 · 그림 210장)
 ```
+
+After 는 규격 §57 의 일곱 폭을 전부 돈다(1440 · 1280 · 1024 · 430 · 390 ·
+360 · 320). 자리마다 첫 창만 자른 그림과 쪽 전체 그림을 함께 남기고, 같은
+그림이 두 이름으로 저장되면 걸린다. 그림 210장 · 겹침 0 · 가로 넘침 0이다.
+
+문서 높이(1440 × 900 기준)는 이렇다.
+
+| 자리 | Before | After |
+|---|---|---|
+| 홈 | 900px · 창 1배 | 900px · 창 1배 |
+| 현재 상태 | 1,425px · 창 1.6배 | 1,428px · 창 1.6배 |
+| 다음 할 일 | 900px · 창 1배 | 900px · 창 1배 |
+| 경험 1단 | 900px · 창 1배 | 900px · 창 1배 |
+| 경험 2단 | 900px · 창 1배 | 900px · 창 1배 |
+| 결과 첫 화면 | 900px · 창 1배 | 900px · 창 1배 |
+| 결과 상세(펼침) | 10,118px · 창 11.2배 | 9,762px · 창 10.8배 |
+| 검사 격자 | 1,293px · 창 1.4배 | 1,293px · 창 1.4배 |
+| 검사 판단 | 923px · 창 1배 | 923px · 창 1배 |
+
+**결과 상세의 줄어든 폭이 작아 보이는 것은 일부러다.** 펼친 상태는 전체
+보고서이고 줄일 자리가 아니다. 이번에 고친 것은 **기본 보기**이고, 그 값은
+영역 한 자리가 열 줄에서 다섯 줄로 줄어든 것으로 나타난다. 접는 단추가
+살아나면서 줄이 늘어난 몫이 그 줄어든 몫의 일부를 되가져갔다.
 
 BEFORE 를 처음 돌렸을 때 검사 화면 둘이 `시작 단추를 찾지 못했다` 로 빠졌다.
 단추는 있었고 **학업 단계를 고르지 않아** 서버가 시작 화면으로 돌려보낸
