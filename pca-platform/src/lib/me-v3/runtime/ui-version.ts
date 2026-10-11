@@ -9,10 +9,10 @@
  */
 
 /** 화면 구조와 상호작용. 흐름이나 화면이 바뀌면 올린다 */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V9";
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V10";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
-export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.11";
+export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.12";
 
 /*
  * `V2` 로 올린 까닭. **화면 수를 줄였다.** PRO 가 106화면이었고, 자동 진행
@@ -191,4 +191,24 @@ export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.11";
  *
  * 화면 판본을 여기서 같이 올리면, 되짚을 때 **화면이 바뀐 회차와 문항이
  * 바뀐 회차를 가를 수 없다.**
+ */
+
+/*
+ * `V10` 과 `.12` 로 올린 까닭. **격자가 표 계산기로 읽혔다.**
+ *
+ * 열두 줄 × 다섯 칸에 칸마다 테두리가 서서, 선이 예순 개 그어진 판이
+ * 화면에서 가장 큰 덩이였다. 그러면 응시자가 읽는 것이 질문이 아니라
+ * 표다. 세 가지를 바꿨다.
+ *
+ * - **칸 테두리를 줄이고 줄 사이 선만 남겼다.** 묶는 것은 줄이고, 칸은
+ *   그 줄 안에서 고르는 자리다
+ * - **1~5 를 하나의 segmented control 로 세웠다.** 칸마다 따로 선 다섯
+ *   개가 아니라 한 덩이 안의 다섯 칸이라, 서로 견주어 고르는 보기라는
+ *   것이 모양으로 읽힌다
+ * - **척도의 뜻은 격자 머리에서 한 번만 적는다.** 칸에는 번호만 서고,
+ *   `1 전혀 관심 없음 … 5 매우 관심 있음` 이 머리에 한 줄로 선다.
+ *   `모르겠다` 는 척도 밖의 다른 단추다
+ *
+ * **문항 은행과 저장되는 값과 `band()` 는 한 글자도 바뀌지 않았다.**
+ * 바뀐 것은 `assessment.css` 뿐이고, 보기 넷의 문면도 그대로다.
  */

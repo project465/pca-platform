@@ -194,6 +194,39 @@ export function industryChoices() {
   return industryPacks().packs
     .map((p) => ({ code: p.code, name: p.name_ko, first: p.demands[0] ?? "" }));
 }
+/**
+ * 그 산업·직무가 걸쳐 있는 기술영역(규격 §16).
+ *
+ * **새 점수를 만들지 않는다.** 읽는 것은 `relations` 표에 이미 적혀 있는
+ * 관계뿐이고, 여기서 강도를 더하거나 순위를 매기지 않는다. 탐색 쪽이
+ * `내 경험과 연결되는 영역` 한 줄을 적을 때 이 목록과 굳은 결과의 확인된
+ * 영역을 겹쳐 본다.
+ */
+type Relations = {
+  td_industry: { td: string; industry: string; strength: string }[];
+  td_role: { td: string; role: string; strength: string }[];
+};
+let REL: Relations | null = null;
+function relations(): Relations {
+  if (!REL) REL = coreFile<Relations>(CORE, "relations");
+  return REL;
+}
+
+/**
+ * **강도를 그대로 돌려준다.** 여기서 점수로 접지 않는다: `중심` 과 `있음`
+ * 과 `드묾` 은 그 산업이 그 영역을 어떻게 다루는가이고, 셋을 한 수로
+ * 합치면 **없던 적합도가 생긴다.** 쓰는 쪽이 필요한 만큼만 고른다.
+ */
+export function industryDomains(code: string): { td: string; strength: string }[] {
+  return relations().td_industry.filter((r) => r.industry === code)
+    .map((r) => ({ td: r.td, strength: r.strength }));
+}
+
+export function roleDomains(code: string): { td: string; strength: string }[] {
+  return relations().td_role.filter((r) => r.role === code)
+    .map((r) => ({ td: r.td, strength: r.strength }));
+}
+
 export function roleChoices() {
   return rolePacks().packs.map((p) => ({
     code: p.code, name: p.name_ko, first: p.owns,

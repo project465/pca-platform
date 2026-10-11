@@ -38,7 +38,7 @@ function NavRow({ it, active }: { it: typeof CM_NAV[number]; active: string }) {
 }
 
 export function CmShell({
-  active, title, form, hold, children,
+  active, title, form, read, hold, children,
 }: {
   active: string; title?: string;
   /**
@@ -49,6 +49,13 @@ export function CmShell({
    * 입력칸이 한 화면 너비로 벌어져 눈이 왼쪽 끝과 오른쪽 끝을 오간다.
    */
   form?: boolean;
+  /**
+   * 읽고 한 가지를 누르는 자리인가(규격 §30).
+   *
+   * 1100 은 견주는 폭이다. 담긴 글이 몇 줄뿐인 쪽을 그 폭에 세우면 오른쪽
+   * 절반이 비고, 그 빈 면이 덜 만들어진 화면으로 읽힌다.
+   */
+  read?: boolean;
   /**
    * 아직 켜지지 않은 자리인가(규격 §18).
    *
@@ -85,7 +92,7 @@ export function CmShell({
         </nav>
 
         <main className="cm-main">
-          <div className={`cm-in${form ? " is-form" : ""}${hold ? " is-hold" : ""}`}>
+          <div className={`cm-in${form ? " is-form" : ""}${read ? " is-read" : ""}${hold ? " is-hold" : ""}`}>
             {children}
           </div>
         </main>

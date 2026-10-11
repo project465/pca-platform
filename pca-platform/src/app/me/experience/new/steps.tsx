@@ -149,13 +149,30 @@ export default function Steps(
           <fieldset className="cm-field">
             <legend><span>무엇이 남았나요</span></legend>
             <em>해당하는 것이 없으면 비워 두셔도 됩니다.</em>
-            {picked.map((d) => (
-              <section className="cm-subs" key={`o-${d.code}`}>
-                <h4>{d.name}</h4>
-                {group("무엇이 남았나", "artifact", d.artifacts, `${d.code}-a`)}
-                {group("무엇과 비교해 확인했나", "verification", d.verify, `${d.code}-v`)}
-              </section>
-            ))}
+            {/* **고른 영역 가운데 첫째만 펴 둔다**(규격 §21).
+                영역 하나가 결과물 여섯에 비교 대상 여섯이라, 셋을 고른
+                사람에게는 칩이 서른여섯 개 깔린다. 그 벽을 보면 적는
+                사람이 거기서 닫는다. 나머지 영역은 이름을 달고 접어 두고,
+                **고를 수 있는 것은 한 칸도 줄지 않는다** */}
+            {picked.map((d, i) => {
+              const body = (
+                <>
+                  {group("무엇이 남았나", "artifact", d.artifacts, `${d.code}-a`)}
+                  {group("무엇과 비교해 확인했나", "verification", d.verify, `${d.code}-v`)}
+                </>
+              );
+              return i === 0 ? (
+                <section className="cm-subs" key={`o-${d.code}`}>
+                  <h4>{d.name}</h4>
+                  {body}
+                </section>
+              ) : (
+                <details className="cm-fold" key={`o-${d.code}`}>
+                  <summary>{d.name} · 다른 결과물 보기</summary>
+                  <div className="cm-subs">{body}</div>
+                </details>
+              );
+            })}
           </fieldset>
         ) : (
           <p className="cm-none">

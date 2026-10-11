@@ -63,7 +63,7 @@ export default async function Track() {
   return (
     /* **세로 가운데로 띄우지 않는다**(규격 §17). 담긴 것이 둘 뿐일 때
        가운데 맞춤은 빈 면을 위아래로 갈라 놓아 더 비어 보인다 */
-    <CmShell active="/me/track" title="Track">
+    <CmShell active="/me/track" title="Track" read>
       <CmHead
         kicker="준비 중"
         title="상황이 바뀌면 다시 계산해 드립니다"

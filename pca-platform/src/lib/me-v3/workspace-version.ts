@@ -61,7 +61,7 @@
  *   들어오는 길이 지금 무엇인지 적지 않으면 구글로 가입하신 분이
  *   비밀번호 찾기를 누르고 메일을 기다린다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V11";
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V12";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -75,7 +75,7 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V11";
  * 셋은 우리가 안에서 그 일을 부르던 말이고, 손님 화면에서는 그 말이
  * 무엇을 가리키는지 알 수 없다.
  */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.9";
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.10";
 
 /**
  * V5 에서 바꾼 것 (2026-10-09).
@@ -185,4 +185,23 @@ export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.9";
  *    할 일은 `정리` 이고 그 까닭은 그 할 일을 고른 규칙이 들고 있다. 찾는
  *    차례를 셋으로 두고(축까지 맞는 자리 → 굳은 결과가 적어 둔 번호 → 같은
  *    영역의 첫 자리), 그래도 없으면 규칙이 말한 까닭을 적는다.
+ */
+
+/*
+ * `V12` 와 `.10` 으로 올린 까닭. **탐색이 문장 마흔 줄이었고, 읽고 한
+ * 가지를 하는 쪽이 꼭대기에 붙어 있었다**(규격 §15~§18 · §30 · §31).
+ *
+ * - **탐색 카드가 넷을 든다**: 이름 · 한 줄 · 내 경험과 겹치는 영역 ·
+ *   [자세히 보기]. 긴 장면 설명은 펼침 안으로 내렸다
+ * - **묶음을 `중심` 으로만 가른다.** 관계표는 영역 열둘과 산업 여덟을
+ *   모두 이어 두고 있어서, 강도를 보지 않으면 여덟 카드가 전부 같은 줄을
+ *   들고 선다
+ * - **`auto-fit` 을 `auto-fill` 로 바꿨다.** 앞엣것은 비어 있는 칸을
+ *   걷어 내므로 카드가 하나뿐인 묶음에서 그 하나가 쪽 폭을 통째로 먹는다
+ * - **`다음 할 일` 과 `Track` 을 읽는 폭으로 모아 세로로 세웠다.** 1440
+ *   에서 첫 창이 54% 만 찼는데, 할 일을 둘 더 펼치면 이 쪽이 약속한
+ *   `한 가지` 가 사라진다. 폭과 세로 자리로 푼다(§30)
+ * - 현재 상태의 보조 묶음 넷을 `cm-sub-h` 로 내리고 그 앞에 경계를 두었다
+ *
+ * **판정과 표와 저장은 한 줄도 바뀌지 않았다.**
  */

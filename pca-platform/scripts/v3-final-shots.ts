@@ -59,13 +59,36 @@ async function shot(p: Page, name: string): Promise<void> {
     if (twin) { dup += 1; console.log(`  겹침  ${name}.${kind} == ${twin}`); }
     else seen.set(h, `${name}.${kind}`);
   }
-  const m = await p.evaluate(() => ({
-    doc: document.documentElement.scrollHeight,
-    over: document.documentElement.scrollWidth > window.innerWidth + 1,
-  }));
+  const m = await p.evaluate(() => {
+    /* **첫 창에서 뜻이 있는 것이 어디까지 내려오는가**(규격 §31).
+       빈 칸이 넓어 보이는 까닭은 content 가 모자라서가 아니라 그 아래가
+       통째로 비어서다. 그래서 **창 안에서 실제로 그려진 것의 맨 아래**를
+       잰다. 띠와 바탕 판은 담긴 것이 없어도 창을 채우므로 뺀다 */
+    const vh = window.innerHeight;
+    const SKIP_TAG = ["HTML", "BODY", "MAIN", "SECTION", "FORM", "DIV"];
+    let low = 0;
+    for (const el of document.querySelectorAll("main *")) {
+      if (SKIP_TAG.includes(el.tagName)) continue;
+      if (el.closest(".cm-rail, .sf-nav, .cm-bot")) continue;
+      if (el.closest("details:not([open])")) continue;
+      const st = getComputedStyle(el);
+      if (st.visibility === "hidden" || st.display === "none") continue;
+      const r = el.getBoundingClientRect();
+      if (r.height < 2 || r.width < 2) continue;
+      if (r.top > vh) continue;
+      low = Math.max(low, Math.min(r.bottom, vh));
+    }
+    return {
+      doc: document.documentElement.scrollHeight,
+      over: document.documentElement.scrollWidth > window.innerWidth + 1,
+      fill: Math.round((low / vh) * 100),
+    };
+  });
   if (m.over) { overflow += 1; console.log(`  넘침  ${name} 가로로 밀린다`); }
   const vh = p.viewportSize()?.height ?? 900;
-  console.log(`  찍음  ${name}  ${m.doc}px · 창 ${Math.round((m.doc / vh) * 10) / 10}배`);
+  console.log(
+    `  찍음  ${name}  ${m.doc}px · 창 ${Math.round((m.doc / vh) * 10) / 10}배`
+    + ` · 첫 창 ${m.fill}%`);
 }
 
 /**

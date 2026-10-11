@@ -160,7 +160,7 @@ export default async function Next(
   };
 
   return (
-    <CmShell active="/me/next" title="다음 할 일">
+    <CmShell active="/me/next" title="다음 할 일" read>
       <CmHead
         kicker="다음 할 일"
         title={first ? "지금 할 한 가지" : "무엇부터 할지"}

@@ -263,12 +263,15 @@ export default async function State(
         </>
       ) : null}
 
-      {/* ── 여기부터가 세부다(규격 §6) ──
+      {/* ── 여기부터가 세부다(규격 §23) ──
           비어 있는 자리 전부 · 달라진 것 전부 · 전체 기술영역 · 검사 당시
-          결과와 지금 · 산업과 직무 · 지역을 첫 화면 아래로 내린다 */}
+          결과와 지금 · 산업과 직무 · 지역은 **첫 화면과 겨루지 않는다.**
+          차례만 뒤로 미루면 머리글이 같은 크기라 화면에서는 여섯 묶음이
+          나란히 선다. 선 하나로 경계를 긋고 아래 머리글을 한 단 내린다 */}
+      <p className="cm-more-mark"><span>여기부터 자세한 내용</span></p>
 
       {/* 아직 부족한 것 ── 하나에 늘 셋이 붙는다 */}
-      <h2 className="cm-sect" id="gaps">아직 부족한 것</h2>
+      <h2 className="cm-sub-h" id="gaps">아직 부족한 것</h2>
       {gaps.length ? (
         <>
           {/* **같은 말을 세 번 적지 않는다**(규격 §14).
@@ -333,7 +336,7 @@ export default async function State(
       {/* 달라진 것 모두 ── 첫 화면의 한 줄이 가리키는 자리 */}
       {st.recomputed_at ? (
         <>
-          <h2 className="cm-sect" id="changes">달라진 것 모두</h2>
+          <h2 className="cm-sub-h" id="changes">달라진 것 모두</h2>
           <div className="cm-panel is-one">
             <div className="cm-pane">
               <h3>{st.recomputed_at} 에 더한 경험</h3>
@@ -362,7 +365,7 @@ export default async function State(
           적는 까닭은, 수를 둘 세우면 그 사이의 차이가 곧 성장으로
           읽히는데 **경험으로 올라갈 수 있는 자리는 `직접 수행` 까지**라
           그 차이가 재는 것이 다르기 때문이다 */}
-      <h2 className="cm-sect">검사 당시 결과와 지금</h2>
+      <h2 className="cm-sub-h">검사 당시 결과와 지금</h2>
       <div className="cm-panel">
         <div className="cm-pane">
           <h3>검사 당시 결과 <span className="cm-lockmark">고정됨</span></h3>
@@ -400,7 +403,7 @@ export default async function State(
       {/* ── 여기부터가 세부다 ──
           첫 화면이 답한 여섯 아래에 둔다. **접지 않는 까닭**은 이 쪽이
           `현재 상태` 를 다 보여 주는 자리이기도 해서다 */}
-      <h2 className="cm-sect" id="domains">전체 기술영역</h2>
+      <h2 className="cm-sub-h" id="domains">전체 기술영역</h2>
       {ORDER.map((z) => {
         const list = Object.entries(st.zoneOf).filter(([, v]) => v === z).map(([d]) => d);
         if (!list.length) return null;

@@ -483,6 +483,17 @@
  * 다. 칩으로 깔지 않고 줄로 세운 까닭은 문장이 길어서다: 칩은 낱말이고 이
  * 줄들은 `무엇을 어떻게 했는가` 라서 줄로 읽어야 뜻이 선다.
  */
+/* 먼저 쓸 경험 셋(규격 §13). **카드로 두르지 않는다**: 이 자리가 하는 일은
+   어느 영역부터 꺼내 쓰면 되는지를 세 줄로 적는 것까지다 */
+.rs-first { margin: var(--r-s3) 0 var(--r-s4); padding: 0; list-style: none; }
+.rs-first > li {
+  display: flex; gap: var(--r-s3); align-items: baseline;
+  padding: var(--r-s3) 0; border-top: 1px solid var(--r-line-soft);
+  font-size: var(--r-t-sub); color: var(--r-ink-2); line-height: 1.6;
+}
+.rs-first > li:first-child { border-top: 0; }
+.rs-first > li > b { flex: none; color: var(--r-ink); font-weight: 650; }
+
 .rs-cmitems {
   margin-top: var(--r-s4); padding-top: var(--r-s3);
   border-top: 1px solid var(--r-line-soft);

@@ -90,6 +90,35 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
    이름표와 입력칸이 화면 양 끝으로 벌어진다 */
 .cm-in.is-form { max-width: 840px; }
 /**
+ * 읽고 **한 가지를 누르는** 자리(규격 §30).
+ *
+ * 작업공간의 기본 폭 1100 은 열두 영역을 견주고 훑는 폭이다. 할 일 한
+ * 장이나 준비 중 안내처럼 담긴 글이 몇 줄뿐인 쪽을 그 폭에 세우면, 쪽의
+ * 오른쪽 절반이 통째로 비어 **덜 그린 화면**으로 읽힌다. 고치는 방법은
+ * 없는 내용을 채워 넣는 것이 아니라 글이 서는 폭을 줄이는 것이다.
+ */
+/**
+ * 읽고 **한 가지를 하는 쪽**(규격 §30·§31).
+ *
+ * 880px 으로 꼭대기부터 그렸더니 1440 에서 `다음 할 일` 의 첫 창이 54% 만
+ * 찼다. **해결은 정보를 더 넣는 것이 아니다**: 할 일을 둘 더 펼치면 이
+ * 쪽이 약속한 `한 가지` 가 사라진다. 읽는 폭으로 모으고 세로로 가운데에
+ * 세워 위아래 빈 면을 고르게 나눈다.
+ *
+ * **담긴 글이 길면 저절로 꺼진다**: `min-height` 보다 커지면 상자가 늘고
+ * 가운데 맞춤은 할 일이 없어진다. 짧은 쪽만 올라오고 긴 쪽은 그대로다.
+ */
+.cm-in.is-read {
+  max-width: 760px;
+  /* `.cm-main` 의 위아래 여백을 전부 뺀 창 높이. 그래야 가운데 맞춤이
+     실제로 가운데가 되고, **쪽이 창보다 길어지지 않는다**: 아래 여백에
+     손전화 띠 자리(`--cm-tab`)가 늘 들어 있어 그것을 빼지 않으면 짧은
+     쪽에 세로 스크롤이 생긴다 */
+  min-height: calc(100vh - 56px - var(--cm-tab));
+  display: flex; flex-direction: column; justify-content: center;
+}
+@media (max-width: 719px) { .cm-in.is-read { min-height: 0; display: block; } }
+/**
  * 아직 켜지지 않은 자리(규격 §18).
  *
  * **빈 카드를 만들어 채우지 않는다.** 담긴 글이 몇 줄뿐인 쪽을 꼭대기부터
@@ -120,9 +149,13 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 
 /* ── 카드 ─────────────────────────────────────────────────────────── */
 
+/* **빈 칸을 접지 않는다**(규격 §31). `auto-fit` 은 비어 있는 칸을 걷어
+   내므로 카드가 하나뿐인 묶음에서 그 하나가 **쪽 폭을 통째로 먹는다.**
+   그 카드는 담긴 글이 세 줄인데 폭이 1100 이라 덜 그린 화면으로 읽힌다.
+   `auto-fill` 은 칸을 그대로 두어 카드 하나가 제 칸 너비로 선다 */
 .cm-grid {
   display: grid; gap: 16px;
-  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
 }
 .cm-card {
   background: var(--sf-surface); border: 1px solid var(--sf-line);
@@ -373,6 +406,27 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
   margin: 0 0 6px; font-size: var(--ui-t-sub); line-height: 1.65; color: var(--sf-ink-2);
 }
 .cm-none { margin: 0; font-size: var(--ui-t-cap); color: var(--sf-ink-3); }
+
+/* 묶음 안의 작은 머리. **`cm-sect` 를 두 번 쓰지 않는다**: 그것은 쪽의
+   묶음 머리라, 같은 크기로 두 층을 적으면 어느 쪽이 상위인지 사라진다 */
+.cm-sub-h {
+  margin: var(--ui-5) 0 var(--ui-3);
+  font-size: var(--ui-t-sub); font-weight: 650; color: var(--sf-ink-2);
+}
+/* 접은 자리 안의 목록. 카드 앞면에는 서지 않는다(규격 §17) */
+.cm-bul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.cm-bul li { font-size: var(--ui-t-sub); color: var(--sf-ink-2); line-height: 1.6; }
+
+/* 첫 화면과 세부를 가르는 선(규격 §23). **글자를 선 가운데 앉힌다**:
+   선만 그으면 묶음 사이의 여백과 구별되지 않는다 */
+.cm-more-mark {
+  display: flex; align-items: center; gap: var(--ui-3);
+  margin: var(--ui-7) 0 var(--ui-4);
+  font-size: var(--ui-t-cap); color: var(--sf-ink-3);
+}
+.cm-more-mark::before, .cm-more-mark::after {
+  content: ""; flex: 1 1 auto; height: 1px; background: var(--sf-line-2);
+}
 
 @media (max-width: 719px) {
   .cm-lanes { grid-template-columns: 1fr; gap: 14px; }

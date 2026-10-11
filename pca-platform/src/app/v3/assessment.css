@@ -83,6 +83,17 @@
 
   --q-hit: 56px;               /* 보기 줄 최소 높이 */
   --q-hit-sm: 44px;            /* 칩 */
+  /**
+   * 척도 한 칸의 너비(규격 §5).
+   *
+   * **질문이 70, 고르는 자리가 30 이다.** 72px 짜리 다섯 칸에 `모르겠다`
+   * 까지 붙으면 440px 이고, 840 폭에서 그것은 절반이다. 그러면 질문과
+   * 선택지가 거의 같은 무게로 서서, 읽는 사람이 **무슨 일을 묻는지** 보다
+   * **어느 칸을 누를지** 를 먼저 본다. 56px 이면 다섯 칸이 280px 이고
+   * 누르는 자리도 44px 보다 넓다.
+   */
+  --q-grade-w: 56px;
+  --q-grade-w3: 72px;          /* 낱말이 값인 칸 셋 */
   /* 머리띠의 높이. 줄 52 + 막대 2 + 아래선 1. **격자 머리가 이 값만큼
      내려와 붙어 선다**: 열두 줄은 한 화면에 다 들어오지 않아서, 머리가
      같이 흘러가 버리면 칸의 번호가 무엇을 가리키는지 알 수 없게 된다 */
@@ -518,29 +529,48 @@
  * 좁은 화면에서는 칸 너비를 버리고 다섯 단계를 **줄글로** 끝까지 적는다.
  * 자리가 좁다고 축의 뜻을 줄이지 않는다.
  */
+/**
+ * 격자 머리를 **칸에 맞춘 다섯 칸에서 한 줄짜리 범례로** 바꿨다(규격 §4).
+ *
+ * 칸을 56px 로 좁히면 `1 전혀 관심 없음` 이 세 줄로 접히고, 그 접힌 글자가
+ * 머리에서 가장 큰 덩이가 된다. 그리고 칸마다 뜻을 맞춰 세우면 그 줄이
+ * **표의 머리글**로 읽혀 화면이 다시 표 계산기가 된다. 지금은 다섯 단계를
+ * 가운뎃점으로 이은 한 줄이고 칸에는 번호만 선다. 번호가 범례의 몇째인지를
+ * 가리킨다. **축의 뜻은 한 글자도 줄이지 않았다**(규격 §37).
+ */
 .qs-swhead {
   position: sticky; top: var(--q-head-h); z-index: 2;
-  display: flex; align-items: flex-end; gap: var(--q-s4);
+  display: block;
   padding: var(--q-s3) var(--q-s5) var(--q-s2);
   background: var(--q-sunk);
   border-bottom: 1px solid var(--q-line);
 }
-/* **머리의 칸 너비를 줄의 칸에 못 박는다.** 안 박으면 격자가 글자
-   길이대로 늘어나(`max-content`) 머리와 줄의 칸이 어긋나고, 다섯 낱말이
-   서로 겹쳐 읽힌다 */
+.qs-swhead .qs-sw-row { display: none; }
 .qs-swhead .qs-grade {
-  gap: var(--q-s1); grid-template-columns: repeat(5, 72px);
+  display: flex; flex-wrap: wrap; gap: 2px var(--q-s3);
+  grid-template-columns: none;
+  border: 0; background: none; border-radius: 0;
 }
-.qs-swhead .qs-grade[data-n="3"] { grid-template-columns: repeat(3, 80px); }
+.qs-swhead .qs-grade[data-n="3"] { grid-template-columns: none; }
 .qs-swhead .qs-grade > span {
-  display: block; padding: 0 2px; min-width: 0;
+  display: inline; padding: 0; min-width: 0;
   font-size: var(--q-t-meta); color: var(--q-ink-3);
-  text-align: center; word-break: keep-all; line-height: 1.3;
+  text-align: left; word-break: keep-all; line-height: 1.5;
 }
+.qs-swhead .qs-grade > span + span::before {
+  content: "·"; margin-right: var(--q-s3); color: var(--q-line);
+}
+/* 범례 끝에 붙는 `모르겠다`. **척도 밖이라는 것을 말로 적는다**(규격 §4):
+   다섯 단계 옆에 그냥 세우면 여섯째 칸으로 읽힌다 */
 .qs-grade-esc.is-head {
-  min-height: 0; padding: 0 10px; margin-left: 10px;
+  display: inline; min-height: 0; padding: 0; margin-left: var(--q-s3);
   text-decoration: none; cursor: default; color: var(--q-ink-3);
-  font-size: var(--q-t-cap);
+  font-size: var(--q-t-meta);
+}
+.qs-grade-esc.is-head::before {
+  /* **여섯째 칸으로 읽히지 않게 한다.** 다섯 단계 옆에 그냥 세우면 그
+     낱말이 척도의 끝으로 읽히는데, 저것은 값이 비어 있다는 뜻이다 */
+  content: "척도 밖:"; margin-right: 4px; color: var(--q-ink-3); opacity: .75;
 }
 .qs-sweep > .qs-sw:first-of-type { border-top: 0; }
 
@@ -569,11 +599,21 @@
  * 가져간다. 이 저장소에서 같은 탈이 일곱 번째다(`.btn` · `--sf-r` ·
  * `.lg` · `empty` · `industries` · `OC*`).
  */
+/**
+ * 다섯 칸을 **한 덩이로** 세운다(규격 §4).
+ *
+ * 전에는 칸마다 옅은 바탕을 깔았다. 열두 줄 × 다섯 칸이면 **회색 상자가
+ * 예순 개**이고, 그 격자가 화면에서 가장 큰 덩이가 되어 전문 진단이 아니라
+ * 표 계산기로 읽힌다. 지금은 테를 한 겹만 두르고 안쪽은 실선으로 나눈다:
+ * 고른 자리에만 색이 들어가므로 **읽는 사람의 눈이 질문에 머문다.**
+ */
 .qs-grade {
-  flex: none; display: grid; gap: var(--q-s1);
-  grid-template-columns: repeat(5, minmax(72px, 1fr));
+  flex: none; display: grid; gap: 0;
+  grid-template-columns: repeat(5, var(--q-grade-w));
+  border: 1px solid var(--q-line); border-radius: var(--q-r-sm);
+  background: var(--q-paper); overflow: clip;
 }
-.qs-grade[data-n="3"] { grid-template-columns: repeat(3, minmax(80px, 1fr)); }
+.qs-grade[data-n="3"] { grid-template-columns: repeat(3, var(--q-grade-w3)); }
 /* **번호가 위, 줄인 말이 아래다**(규격 §10). 번호는 격자 머리에 적힌
    다섯 단계의 몇째인지를 가리키는 자리표이고, 좁은 화면에서 머리의
    가운데 셋이 접혀도 고르는 칸의 자리를 알 수 있게 한다 */
@@ -593,20 +633,22 @@
   position: relative;
   display: inline-flex; flex-direction: column;
   align-items: center; justify-content: center; gap: 2px;
-  min-height: 52px; padding: var(--q-s1) var(--q-s1);
-  background: var(--q-sunk);
-  border: 1px solid transparent; border-radius: var(--q-r-sm);
+  min-height: 46px; padding: var(--q-s1);
+  background: none;
+  border: 0; border-left: 1px solid var(--q-line-soft); border-radius: 0;
   font-size: var(--q-t-gloss); color: var(--q-ink-3);
   cursor: pointer; text-align: center; word-break: keep-all; line-height: 1.2;
-  transition: border-color .12s ease, background .12s ease, color .12s ease;
+  transition: background .12s ease, color .12s ease;
 }
+.qs-grade-b:first-of-type { border-left: 0; }
 /* 경험 칸 셋은 낱말이 값이라 글자가 칸을 채운다 */
 .qs-grade-b.is-word { font-size: var(--q-t-body); color: var(--q-ink-2); }
-.qs-grade-b:hover { border-color: var(--q-accent-line); color: var(--q-ink-2); }
+.qs-grade-b:hover { background: var(--q-sunk); color: var(--q-ink-2); }
 .qs-grade-b input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+/* 고른 칸만 색이 들어간다. **테를 또 두르지 않는다**: 덩이의 테가 이미
+   있어서 안쪽에 테를 더하면 그 한 칸이 두 겹으로 둘린다 */
 .qs-grade-b.is-on {
-  border-color: var(--q-line-sel); background: var(--q-accent-soft);
-  color: var(--q-ink); font-weight: 650;
+  background: var(--q-accent-soft); color: var(--q-accent-ink); font-weight: 700;
 }
 .qs-grade-b:has(input:focus-visible) { outline: 2px solid var(--q-accent); outline-offset: 2px; }
 
@@ -674,22 +716,8 @@
    * 좁다고 축의 뜻을 줄이지 않는다: 칸 너비를 버리고 다섯 단계를
    * 끝까지 적어 두 줄로 흘린다.
    */
-  .qs-swhead {
-    display: block; padding: var(--q-s3) var(--q-s3) var(--q-s2);
-  }
-  .qs-swhead .qs-sw-row { display: none; }
-  .qs-swhead .qs-grade {
-    display: flex; flex-wrap: wrap; gap: 2px var(--q-s2);
-    grid-template-columns: none;
-  }
-  .qs-swhead .qs-grade > span {
-    visibility: visible; padding: 0;
-    font-size: var(--q-t-meta); text-align: left;
-  }
-  .qs-swhead .qs-grade > span + span::before {
-    content: "·"; margin-right: var(--q-s2); color: var(--q-line);
-  }
-  .qs-grade-esc.is-head { display: none; }
+  /* 범례는 넓은 화면과 같은 모양이다. 여기서는 양옆 여백만 줄인다 */
+  .qs-swhead { padding: var(--q-s3) var(--q-s3) var(--q-s2); }
   .qs-grade { min-width: 0; }
   .qs-p3 { display: grid; grid-template-columns: repeat(3, 1fr); }
   .qs-p3b { min-width: 0; }
@@ -994,9 +1022,12 @@
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 4;
   padding: var(--q-s3) var(--q-gutter);
   padding-bottom: calc(var(--q-s3) + env(safe-area-inset-bottom, 0px));
-  background: color-mix(in srgb, var(--q-paper) 92%, transparent);
-  backdrop-filter: blur(10px);
+  /* **비치지 않는다**(규격 §6). 반투명한 띠로 두었더니 열두 줄 격자가
+     띠 아래에서 흐릿하게 비쳐, 띠와 질문 영역 사이의 경계가 흐려지고
+     덜 그린 화면으로 읽혔다. 경계는 선 하나와 **막힌 면**이 만든다 */
+  background: var(--q-paper);
   border-top: 1px solid var(--q-line);
+  box-shadow: 0 -1px 0 color-mix(in srgb, var(--q-ink) 4%, transparent);
 }
 .qs-nav-in {
   width: 100%; max-width: var(--q-col); margin: 0 auto;

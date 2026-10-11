@@ -10,7 +10,7 @@
 export const RESULT_MODEL_VERSION = "me-v3-result-model.5";
 
 /** 결과지에 나가는 한국어. 문장만 바뀌면 이것만 올린다 */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.13";
+export const RESULT_COPY_VERSION = "me-v3-result-copy.14";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -18,7 +18,7 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.13";
  * 문장 하나를 고친 날 화면 판본까지 올리면, 되짚을 때 무엇이 바뀐
  * 것인지 알 수 없다. 넷이 따로 간다: 화면 · 문장 · 모델 · 판단.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V13";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V14";
 
 /*
  * `V3` 으로 올린 까닭. **아홉 절이 한 이야기로 이어졌고 첫 화면이 셋으로
@@ -205,4 +205,25 @@ export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V13";
  * **결과 모델과 문장과 판단은 그대로다**(`me-v3-result-model.5` ·
  * `me-v3-result-copy.10` · `me-v3-scoring.5`). 바뀐 것은 단추 하나와 그
  * 단추를 받는 자리의 CSS 다.
+ */
+
+/*
+ * `V14` 와 `.14` 로 올린 까닭. **영역 한 자리가 보고서였다**(규격 §8~§14).
+ *
+ * 기본 보기에 판단 전부와 Evidence 와 Verification 과 여덟 축과 고르신
+ * 항목이 한꺼번에 서서, 영역 열둘을 지나는 동안 같은 이름표가 되풀이됐다.
+ * 기본 보기를 여섯 줄로 못 박았다: 영역명 · 상태 한 줄 · 직접 판단한 것
+ * 최대 셋 · 남긴 결과 최대 셋 · 다음에 정리할 것 하나 · [상세 근거 보기].
+ *
+ * - **두 묶음을 각각 센다.** 합쳐서 셋만 뽑으면 직접 판단한 것이 셋인
+ *   사람에게 남긴 결과가 한 줄도 서지 않는다
+ * - `영역을 가리지 않고 확인된 판단` 은 스물넷까지 가므로 접었다
+ * - 지원서에 연결할 수 있는 경험은 **영역과 한 줄 이유**까지만 서고
+ *   전체는 [전체 보기] 안이다
+ * - 확인된 판단 24 · 직접 정한 것 24 · 고르신 근거 60 같은 수는 다음에
+ *   무엇을 할지 정하는 데 쓰이지 않는다. 상세 안의 `결과 기준 보기` 로
+ *   내렸다
+ *
+ * **판단 규칙과 결과 모델은 그대로다**: 바뀐 것은 같은 값을 몇 줄로
+ * 내보내는가뿐이다.
  */

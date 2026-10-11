@@ -61,6 +61,12 @@ function PackBody(
     <div className="rs-pack">
       <h3>이 자리에서 자주 묻는 것</h3>
       <p>{v.vocabulary.slice(0, 6).join(" · ")}</p>
+      {/* **칩 벽을 기본으로 세우지 않는다**(규격 §42). 다섯 묶음에 담긴
+          칩이 서른을 넘고, 산업 절과 직무 절에 한 번씩 서면 결과지의
+          가장 큰 덩이가 **고른 항목 목록**이 된다. 읽는 사람이 여기서
+          정해야 하는 것은 다음 한 걸음이지 목록이 아니다. 묶음은
+          [상세 보기] 안에 둔다(규격 §10) */}
+      <Disclose label="확인된 경험 전부 보기">
       <dl>
         {/* **둘 다 확인된 자리를 맨 위에 둔다.** 기술영역에서도 확인됐고
             이 자리가 묻는 말로도 확인된 경험이라, 지원서에서 가장 먼저 쓸
@@ -107,6 +113,7 @@ function PackBody(
           </div>
         ) : null}
       </dl>
+      </Disclose>
       {/* **절마다 다음 한 걸음으로 닫는다.** 확인된 것과 비어 있는 것만
           적고 끝내면 읽는 사람이 그래서 무엇을 하라는 것인지 모른다 */}
       {action ? (
@@ -285,7 +292,7 @@ function DomainPanel(
         ) : null}
         {a ? (
           <div className="rs-dnext">
-            <h4>다음에 보완하면 좋은 부분</h4>
+            <h4>다음에 정리할 것</h4>
             <p>{a.do}</p>
           </div>
         ) : null}
@@ -320,23 +327,26 @@ function DomainPanel(
 function Strongest({ d }: { d: ResultDomain }) {
   const seen = new Set<string>();
   /**
-   * **합쳐서 셋까지다**(규격 §26).
+   * **묶음마다 셋까지다**(규격 §9).
    *
-   * 묶음마다 셋이면 둘을 합쳐 여섯 줄이고, 거기에 상태 한 줄과 빈자리와
-   * 할 일이 붙어 **영역 하나가 열 줄**이 된다. 기본 보기는 다섯 줄이고,
-   * 나머지는 `상세 근거 보기` 안에 그대로 있다.
+   * 한동안 둘을 합쳐 셋으로 묶어 두었는데, 그러면 직접 판단한 것이 셋인
+   * 사람에게 **남긴 결과가 한 줄도 서지 않는다.** 지원서에서 읽히는 둘이
+   * 그 둘이라 각각 셋까지 따로 세운다. 나머지는 `상세 근거 보기` 안에
+   * 그대로 있다.
    */
   const take = (list: string[]) => {
     const out: string[] = [];
     for (const t of list) {
-      if (out.length >= 2 || seen.size >= 3 || seen.has(t)) continue;
+      if (out.length >= 3 || seen.has(t)) continue;
       seen.add(t); out.push(t);
     }
     return out;
   };
+  /* **이름표를 줄마다 되풀이하지 않는다**(규격 §11). 묶음 머리에 한 번
+     적고 아래에는 행동만 선다 */
   const groups = [
-    { label: "직접 정한 것", items: take(d.decided) },
-    { label: "남긴 결과물", items: take(d.artifacts) },
+    { label: "직접 판단한 것", items: take(d.decided) },
+    { label: "남긴 결과", items: take(d.artifacts) },
   ].filter((g) => g.items.length);
   if (!groups.length) {
     return (
@@ -795,13 +805,6 @@ export default async function V3Result({
           label="자세한 내용 보기"
           note="전체 기술영역과 근거와 다음에 할 일">
 
-        {deep ? (
-          <p className="rs-note" style={{ marginTop: 0 }}>
-            확인된 판단 {counts.confirmed_axes} · 직접 정한 것 {counts.owned_axes}
-            {" · "}고르신 근거 {counts.evidence_items}
-          </p>
-        ) : null}
-
         <ResultNav />
 
         {/* ── 먼저 볼 영역 ── 그 영역을 한 자리에서 끝낸다 */}
@@ -903,8 +906,11 @@ export default async function V3Result({
               그렇다고 떨어뜨리면 박사와 포닥이 가장 많이 답한 자리가 결과지에
               한 글자도 나오지 않는다 */}
           {cm.owned.length || cm.confirmed.length ? (
+            /* **기본 본문에서 내린다**(규격 §12). 이 묶음은 핵심 결과가
+               아니라 영역을 가로지르는 단서이고, 긴 목록이 펼쳐져 있으면
+               결과를 읽어 내려가는 흐름이 거기서 끊긴다 */
+            <Disclose label="여러 영역에서 공통으로 확인된 판단">
             <div className="rs-pack">
-              <h3>영역을 가리지 않고 확인된 판단</h3>
               <p>
                 어느 기술영역에서 한 일인지는 묻지 않은 자리입니다. 위의 영역별
                 판정에는 들어가지 않습니다.
@@ -953,6 +959,7 @@ export default async function V3Result({
                 </Fold>
               ) : null}
             </div>
+            </Disclose>
           ) : null}
         </section>
 
@@ -960,10 +967,29 @@ export default async function V3Result({
         {deep ? (
           <section className="rs-sect" id="evidence">
             <h2>지원서에 연결할 수 있는 경험</h2>
-            <p className="rs-note">
-              정리해두면 바로 꺼내 쓸 수 있는 쪽과, 설명 근거를 한 줄 더 붙여야
-              하는 쪽을 갈라 적었습니다.
-            </p>
+            {/* **기본은 먼저 쓸 것 셋까지다**(규격 §13). 전에는 큰 카드 둘에
+                긴 설명과 고르신 항목이 여섯씩 깔려 이 절 하나가 종이 반 장을
+                먹었다. 바로 꺼내 쓸 수 있는 쪽만 한 줄씩 적고, 갈라 보는
+                자리는 아래로 접는다 */}
+            {model.evidence.ready.length ? (
+              <>
+                <p className="rs-note">지원서에서 먼저 쓸 경험입니다.</p>
+                <ul className="rs-first">
+                  {model.evidence.ready.slice(0, 3).map((e) => (
+                    <li key={`${e.domain}.${e.axis}`}>
+                      <b>{domainName(e.domain)}</b>
+                      {axisStateKo(e.axis, e.state)}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <p className="rs-note">
+                지금 바로 꺼내 쓸 경험은 아직 없습니다. 아래 &lsquo;다음에 할
+                일&rsquo;부터 보세요.
+              </p>
+            )}
+            <Disclose label="전체 보기">
             <div className="rs-ev">
               <section>
                 <h3>지원서에서 설명할 수 있는 경험</h3>
@@ -997,6 +1023,7 @@ export default async function V3Result({
                 </>) : <p>해당하는 자리가 없습니다.</p>}
               </section>
             </div>
+            </Disclose>
           </section>
         ) : null}
 
@@ -1303,6 +1330,16 @@ export default async function V3Result({
               응답하신 내용에서 확인된 것만 담았습니다. 합격 가능성이나 순위를
               뜻하지 않습니다.
             </p>
+            {/* **수는 여기까지 내린다**(규격 §14). `확인된 판단 24 · 직접
+                정한 것 24` 는 다음에 무엇을 할지 정하는 데 쓰이지 않는데,
+                본문 첫 줄에 두면 **점수처럼 읽힌다.** 되짚어 보실 자리에
+                한 줄로 둔다 */}
+            {deep ? (
+              <p className="rs-note">
+                확인된 판단 {counts.confirmed_axes} · 직접 정한 것 {counts.owned_axes}
+                {" · "}고르신 근거 {counts.evidence_items}
+              </p>
+            ) : null}
           </Disclose>
           {/* **의견을 받는 자리를 결과 앞에 두지 않는다.** 결과를 먼저
               보여 주고 여기로 오는 길만 둔다. 답하지 않아도 잃는 것이 없다 */}
