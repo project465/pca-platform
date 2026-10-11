@@ -61,7 +61,7 @@
  *   들어오는 길이 지금 무엇인지 적지 않으면 구글로 가입하신 분이
  *   비밀번호 찾기를 누르고 메일을 기다린다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V13";
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V14";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -75,7 +75,7 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V13";
  * 셋은 우리가 안에서 그 일을 부르던 말이고, 손님 화면에서는 그 말이
  * 무엇을 가리키는지 알 수 없다.
  */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.11";
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.12";
 
 /**
  * V5 에서 바꾼 것 (2026-10-09).
@@ -233,4 +233,35 @@ export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.11";
  *
  * **새 값을 만들지 않았다**(규격 §20). 화면이 드는 것은 전부
  * `currentState()` 와 `experiencesOf()` 와 굳은 결과에서 온다.
+ */
+
+/*
+ * `V14` 와 `copy.12` 로 올린 까닭. **`/me` 홈을 확정 Reference Home 으로
+ * 구현했다.** 사업주가 준 목표 화면 한 장이 이번 작업의 기준이다.
+ *
+ * 검사와 결과지와 DB 는 한 줄도 바꾸지 않았다. 바뀐 것은 작업공간의 틀과
+ * 홈 한 쪽이다.
+ *
+ * 1. **왼쪽 띠가 어두운 navy 다**(`--cm-rail-bg`). 흰 면일 때는 캡처 한
+ *    장만 보면 본문 쪽이 배경처럼 읽혔고, 왼쪽 줄이 제품의 틀이 아니라
+ *    흰 메뉴 목록으로 보였다. `surface.css` 에 어두운 면 위의 글자색이
+ *    없어서 이 네 값만 `.cm` 에서 새로 짓는다.
+ * 2. **띠 strip 을 걷고 오른쪽 위 실용 줄을 두었다**(`.cm-utilrow`).
+ *    목표 화면처럼 제목 `내 커리어` 와 같은 줄의 오른쪽 끝에 선다.
+ *    **검색과 알림은 두지 않았다**: CareerMatri 에 없는 기능이라 눌러도
+ *    아무 일이 없는 칸이 된다. 실제로 있는 것은 계정 한 자리다.
+ * 3. **지금 할 일 Hero**(`.cm-hero`). 옅은 파란 면 하나에 꼬리표와 할
+ *    일과 까닭과 주된 단추와 나머지 수를 담는다. 오른쪽의 표시는 인라인
+ *    SVG 이고 **새 그림 파일을 만들지 않았다**.
+ * 4. **현재 상태는 가로 칸 셋**(`.cm-tiles`), **최근 변화와 최근 기록은
+ *    줄 묶음**(`.cm-feed`)이다. 큰 dashboard tile 과 줄마다의 카드를
+ *    쓰지 않는다.
+ * 5. 쪽 제목 아래 한 줄(`.cm-meta`)이 `기계공학 · 최근 업데이트 …` 를
+ *    든다. 결과가 있는 사람에게는 그 아래 설명 문단을 두지 않는다:
+ *    바로 아래 Hero 가 할 일을 들고 있어서 그 위의 문단은 행동 앞에
+ *    놓인 읽을거리가 된다.
+ *
+ * **새 값을 만들지 않았다.** 화면이 드는 것은 전부 `currentState()` 와
+ * `openActions()` 와 `experiencesOf()` 와 굳은 결과에서 온다. 영역 칸의
+ * 둘째 줄은 `domainChainKo()` 의 영역 설명이고 응답에서 온 수가 아니다.
  */

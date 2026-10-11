@@ -38,42 +38,37 @@ function NavRow({ it, active }: { it: typeof CM_NAV[number]; active: string }) {
 }
 
 /**
- * 작업공간의 **띠**(규격 §1·§15).
+ * 작업공간 오른쪽 위의 **실용 줄**.
  *
- * 쪽 안쪽 꼭대기에 붙어 있는 줄이다. 들고 있는 것은 셋이다: 지금 어느
- * 줄에 있는가 · 어느 전공인가 · 이 쪽에서 할 수 있는 한 가지.
+ * 목표 화면에서 제목 `내 커리어` 와 같은 줄의 오른쪽 끝에 선다. 쪽
+ * 제목보다 먼저 흐름에 넣고 오른쪽으로 띄우면, 제목이 그 왼쪽으로
+ * 흘러들어 한 줄이 된다.
  *
- * **이 띠가 작업공간과 문서를 가른다.** 전에는 쪽마다 큰 제목이 꼭대기에
- * 혼자 섰고, 담긴 글이 짧은 쪽은 **빈 바탕 위에 뜬 안내창**으로 읽혔다.
- * 띠가 있으면 짧은 쪽도 *같은 제품의 한 화면*으로 선다.
- *
- * **제목을 두 번 적지 않는다.** 띠가 드는 것은 왼쪽 띠에 적힌 그 줄의
- * 이름이고, 본문의 큰 제목은 그 쪽이 지금 무슨 상태인지를 말한다.
+ * **없는 기능을 그려 넣지 않는다.** 목표 화면에는 검색과 알림이 있는데
+ * CareerMatri 에는 둘 다 없다. 눌러도 아무 일이 없는 칸을 두면 그것이
+ * 가짜 기능이 된다. 지금 실제로 있는 것은 계정 한 자리다.
  */
-function CmBar(
-  { active, actions }: { active: string; actions?: ReactNode },
-) {
-  const here = CM_NAV.find((n) => navOn(n.href, active));
+function CmUtil({ name }: { name: string }) {
+  const initial = name.trim().slice(0, 1) || "나";
   return (
-    <div className="cm-bar">
-      <div className="cm-bar-in">
-        <p className="cm-bar-where">
-          {here ? <Icon name={here.icon} /> : null}
-          <b>{here?.label ?? "CareerMatri"}</b>
-          <span>{MAJOR}</span>
-        </p>
-        {actions ? <div className="cm-bar-acts">{actions}</div> : null}
-      </div>
+    <div className="cm-util">
+      <Link className="cm-util-me" href="/my">
+        <span className="cm-util-av" aria-hidden>{initial}</span>
+        <span>{name}</span>
+        <Icon name="chev" size={14} />
+      </Link>
     </div>
   );
 }
 
 export function CmShell({
-  active, title, form, read, hold, bar, children,
+  active, title, form, read, hold, bar, who, children,
 }: {
   active: string; title?: string;
-  /** 띠 오른쪽에 서는 **한 가지**. 둘을 세우면 띠가 도구막대가 된다 */
+  /** 쪽 머리 오른쪽에 서는 **한 가지**. 둘을 세우면 도구막대가 된다 */
   bar?: ReactNode;
+  /** 로그인한 사람의 이름. 주면 오른쪽 위에 계정 한 자리가 선다 */
+  who?: string;
   /**
    * 적는 자리인가(규격 §17).
    *
@@ -128,9 +123,14 @@ export function CmShell({
         </nav>
 
         <main className="cm-main">
-          <CmBar active={active} actions={bar} />
           <div className="cm-canvas">
             <div className={`cm-in${form ? " is-form" : ""}${read ? " is-read" : ""}${hold ? " is-hold" : ""}`}>
+              {who || bar ? (
+                <div className="cm-utilrow">
+                  {bar}
+                  {who ? <CmUtil name={who} /> : null}
+                </div>
+              ) : null}
               {children}
             </div>
           </div>
@@ -174,9 +174,15 @@ export function CmShell({
 
 /** 쪽 머리. 모든 쪽이 같은 모양으로 선다 */
 export function CmHead({
-  kicker, title, lead, actions, narrowActions,
+  kicker, title, meta, lead, actions, narrowActions,
 }: {
   kicker?: string; title: string; lead?: string; actions?: ReactNode;
+  /**
+   * 제목 **아래**에 서는 한 줄(규격 §4). 목표 화면의
+   * `기계공학 · 최근 업데이트 2024.10.07` 자리다. `kicker` 는 제목 위라
+   * 같은 값을 두 자리에 둘 수 없다.
+   */
+  meta?: string;
   /** 띠가 같은 단추를 들고 있을 때. 손전화에서만 선다 */
   narrowActions?: boolean;
 }) {
@@ -184,6 +190,7 @@ export function CmHead({
     <header className="cm-head">
       {kicker ? <p className="cm-kicker">{kicker}</p> : null}
       <h1 className="cm-h1">{title}</h1>
+      {meta ? <p className="cm-meta">{meta}</p> : null}
       {lead ? <p className="cm-lead">{lead}</p> : null}
       {actions ? (
         <div className={`cm-acts${narrowActions ? " is-narrow" : ""}`}

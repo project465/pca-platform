@@ -13,7 +13,9 @@ export type IconName =
   | "home" | "clipboard" | "report" | "layers" | "send" | "user"
   | "grid" | "users" | "group" | "seat" | "compass" | "ladder"
   | "doc" | "contract" | "gear" | "building" | "box" | "cart"
-  | "globe" | "window" | "log" | "spark" | "lock" | "alert";
+  | "globe" | "window" | "log" | "spark" | "lock" | "alert"
+  /* 작업공간 홈의 절 머리와 줄 끝에 쓰는 다섯 */
+  | "target" | "chart" | "bolt" | "clock" | "chev";
 
 const P: Record<IconName, string> = {
   home: "M3 9.5 10 4l7 5.5V16a1 1 0 0 1-1 1h-4v-5H8v5H4a1 1 0 0 1-1-1V9.5Z",
@@ -40,6 +42,11 @@ const P: Record<IconName, string> = {
   spark: "M10 3l1.6 4.4L16 9l-4.4 1.6L10 15l-1.6-4.4L4 9l4.4-1.6L10 3Z",
   lock: "M6 9V7a4 4 0 0 1 8 0v2m-9 0h10a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1Z",
   alert: "M10 4l7 12H3l7-12Zm0 4v4m0 2.5h.01",
+  target: "M10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14Zm0-3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z",
+  chart: "M4 16V9m4 7V4m4 12v-5m4 5V7",
+  bolt: "M11 3 4.5 11.5H9L8.5 17 15 8.5h-4.5L11 3Z",
+  clock: "M10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14Zm0-10.5V10l2.5 1.8",
+  chev: "m8 5 5 5-5 5",
 };
 
 export function Icon({
