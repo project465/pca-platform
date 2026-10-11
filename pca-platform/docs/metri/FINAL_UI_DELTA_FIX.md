@@ -357,7 +357,7 @@ Next Action · Result Summary · Result Detail · Explore)을 한 묶음으로
 
 ## H. Commit SHA
 
-`4981b6b` — `Final UI Delta Fix: 격자에 affordance 를, 결과 상세에 깊이를, 닫는 자리에 길 하나를`
+`4981b6b` · `Final UI Delta Fix: 격자에 affordance 를, 결과 상세에 깊이를, 닫는 자리에 길 하나를`
 
 이 보고서의 SHA 를 적는 줄은 그 commit 다음에 한 번 더 적습니다. 보고서
 자신이 그 commit 안에 들어 있어서, 적는 순간 지문이 달라집니다.
