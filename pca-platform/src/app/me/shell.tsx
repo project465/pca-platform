@@ -101,8 +101,17 @@ export function CmShell({
           그 줄의 이름을 그대로 쓴다. 따로 적어 두면 `탐색` 과
           `산업·직무` 처럼 같은 자리가 화면마다 다른 이름으로 불린다 */}
       <div className="cm-topbar">
-        <Link href="/me">CareerMatri</Link>
+        <Link className="cm-topbar-brand" href="/me">CareerMatri</Link>
         <span>{CM_NAV.find((n) => navOn(n.href, active))?.label ?? title ?? ""}</span>
+        {/* **없는 기능을 그려 넣지 않는다**(규격 §9). 목표 화면의 알림
+            자리에 서는 것은 실제로 열리는 계정 한 자리다 */}
+        {who ? (
+          <Link className="cm-topbar-me" href="/my" aria-label="계정">
+            <span className="cm-util-av" aria-hidden>
+              {who.trim().slice(0, 1) || "나"}
+            </span>
+          </Link>
+        ) : null}
       </div>
 
       <div className="cm-wrap">

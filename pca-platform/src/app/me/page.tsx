@@ -242,6 +242,29 @@ export default async function Home() {
               까닭과 주된 단추와 나머지 수를 담는다. **문장을 여기서 짓지
               않는다**: 결과지와 `다음 할 일` 이 쓰는 같은 함수를 부른다 */}
           <section className="cm-hero">
+            {/* 오른쪽의 가벼운 표시. **새 그림 파일을 만들지 않는다**
+                (규격 §5): 네모와 선과 동그라미뿐이고 값도 상태도 적지 않는다 */}
+            <div className="cm-hero-art" aria-hidden>
+              <svg width="168" height="132" viewBox="0 0 168 132" fill="none">
+                <rect x="26" y="10" width="112" height="112" rx="14"
+                  fill="#fff" stroke="var(--sf-accent-line)" />
+                <rect x="60" y="2" width="44" height="16" rx="6"
+                  fill="var(--sf-accent-soft)" stroke="var(--sf-accent-line)" />
+                {[38, 62, 86].map((y, i) => (
+                  <g key={y}>
+                    <rect x="44" y={y} width="15" height="15" rx="4"
+                      fill="var(--sf-accent-soft)" stroke="var(--sf-accent-line)" />
+                    <path d={`M47.5 ${y + 7.5}l2.5 2.5 5-5`} stroke="var(--sf-accent)"
+                      strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                    <rect x="67" y={y + 4} width={i === 2 ? 30 : 50} height="7" rx="3.5"
+                      fill="var(--sf-accent-line)" />
+                  </g>
+                ))}
+                <circle cx="128" cy="100" r="22" fill="var(--sf-accent)" />
+                <path d="M118 100l7 7 13-14" stroke="#fff" strokeWidth="3"
+                  strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
             <div className="cm-hero-txt">
               <p className="cm-hero-tag"><Icon name="target" size={17} />지금 할 일</p>
               {first ? (
@@ -274,29 +297,6 @@ export default async function Home() {
                   </div>
                 </>
               )}
-            </div>
-            {/* 오른쪽의 가벼운 표시. **새 그림 파일을 만들지 않는다**
-                (규격 §5): 네모와 선과 동그라미뿐이고 값도 상태도 적지 않는다 */}
-            <div className="cm-hero-art" aria-hidden>
-              <svg width="168" height="132" viewBox="0 0 168 132" fill="none">
-                <rect x="26" y="10" width="112" height="112" rx="14"
-                  fill="#fff" stroke="var(--sf-accent-line)" />
-                <rect x="60" y="2" width="44" height="16" rx="6"
-                  fill="var(--sf-accent-soft)" stroke="var(--sf-accent-line)" />
-                {[38, 62, 86].map((y, i) => (
-                  <g key={y}>
-                    <rect x="44" y={y} width="15" height="15" rx="4"
-                      fill="var(--sf-accent-soft)" stroke="var(--sf-accent-line)" />
-                    <path d={`M47.5 ${y + 7.5}l2.5 2.5 5-5`} stroke="var(--sf-accent)"
-                      strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                    <rect x="67" y={y + 4} width={i === 2 ? 30 : 50} height="7" rx="3.5"
-                      fill="var(--sf-accent-line)" />
-                  </g>
-                ))}
-                <circle cx="128" cy="100" r="22" fill="var(--sf-accent)" />
-                <path d="M118 100l7 7 13-14" stroke="#fff" strokeWidth="3"
-                  strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
             </div>
           </section>
 
@@ -358,7 +358,7 @@ export default async function Home() {
                       </li>
                     ))}
                     {change.more ? (
-                      <li>
+                      <li className="is-rest">
                         <span className="cm-feed-ico"><Icon name="log" size={15} /></span>
                         <p className="cm-feed-txt">
                           그 밖에 {change.more}가지가 더 달라졌습니다.

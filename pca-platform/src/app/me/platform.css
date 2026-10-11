@@ -12,7 +12,7 @@
  */
 
 .cm {
-  --cm-rail: 236px;
+  --cm-rail: 248px;
   --cm-max: 1120px;
   --cm-tab: 56px;          /* 손전화 아래 띠의 높이 */
   /**
@@ -23,10 +23,13 @@
    * 바탕은 `--ui-text`(#0a1a30)와 같은 계열의 한 단 밝은 navy 이고,
    * 글자는 그 위에서 읽히는 값이다. 강조는 그대로 `--sf-accent` 다.
    */
-  --cm-rail-bg: #0e2038;
-  --cm-rail-ink: #a9b8cc;
+  --cm-rail-bg: #0a1b31;
+  --cm-rail-ink: #9fb0c6;
   --cm-rail-ink-on: #ffffff;
-  --cm-rail-line: rgba(255, 255, 255, .09);
+  --cm-rail-line: rgba(255, 255, 255, .08);
+  /* 고른 줄의 면. 띠의 어두운 바탕 위에서 **한 단 밝은 파랑**이라야
+     그 줄이 눌려 있다는 것이 멀리서도 읽힌다 */
+  --cm-rail-on: #2563b5;
   min-height: 100%;
   background: var(--sf-bg);
   color: var(--sf-ink-2);
@@ -59,25 +62,30 @@
   flex: 0 0 var(--cm-rail);
   background: var(--cm-rail-bg);
   color: var(--cm-rail-ink);
-  padding: 0 12px
-    calc(16px + var(--stg-h, 0px) + env(safe-area-inset-bottom, 0px));
+  padding: 0 14px
+    calc(18px + var(--stg-h, 0px) + env(safe-area-inset-bottom, 0px));
   display: flex; flex-direction: column; gap: 4px;
   position: sticky; top: 0; align-self: flex-start;
   height: calc(100vh - var(--stg-h, 0px));
 }
+/* 띠의 머리. **이름이 제품의 이름으로 읽혀야 한다**: 한 단 키우고
+   자간을 조여 아래 메뉴 글자와 같은 무게로 서지 않게 한다 */
 .cm-rail-brand {
   display: flex; flex-direction: column; justify-content: center;
-  min-height: 64px; margin: 0 -12px 12px; padding: 0 22px;
+  min-height: 68px; margin: 0 -14px 14px; padding: 0 24px;
   border-bottom: 1px solid var(--cm-rail-line);
-  font-weight: 700; font-size: var(--ui-t-body);
+  font-weight: 700; font-size: var(--ui-t-q); letter-spacing: -.015em;
   color: var(--cm-rail-ink-on);
   text-decoration: none;
 }
 /* **지금 어느 전공인지를 띠에 둔다.** 전공이 늘면 이 자리가 고르는
-   자리가 된다. 없으면 사용자가 CareerMatri 를 검사 한 벌로 읽는다 */
+   자리가 된다. 없으면 사용자가 CareerMatri 를 검사 한 벌로 읽는다.
+   **이름보다 한 단 아래다**: 둘이 같은 무게면 무엇이 제품 이름인지
+   읽히지 않는다 */
 .cm-rail-brand small {
-  display: block; font-weight: 600; font-size: var(--ui-t-cap);
-  color: var(--cm-rail-ink); margin-top: 2px;
+  display: block; font-weight: 500; font-size: var(--ui-t-cap);
+  color: var(--cm-rail-ink); opacity: .85; margin-top: 3px;
+  letter-spacing: 0;
 }
 .cm-rail-scroll {
   flex: 1 1 auto; min-height: 0; overflow-y: auto;
@@ -88,20 +96,21 @@
    `내 커리어` 인지 읽히지 않는다 */
 .cm-group { display: flex; flex-direction: column; gap: 2px; }
 .cm-group > h2 {
-  margin: 0 0 4px; padding: 0 10px;
-  font-size: var(--ui-t-cap); font-weight: 600; letter-spacing: .04em;
-  color: var(--cm-rail-ink); opacity: .65; text-transform: none;
+  margin: 0 0 6px; padding: 0 12px;
+  font-size: 11px; font-weight: 600; letter-spacing: .06em;
+  color: var(--cm-rail-ink); opacity: .52; text-transform: none;
 }
 
 /* **빽빽하게 둔다**(규격 §21). 아홉 줄이 한 뼘 안에 들어와야 눈이
    목록 전체를 한 번에 잡고, 그래야 띠가 메뉴가 아니라 제품의 틀로
    읽힌다. 누르는 자리는 36px 로 유지한다 */
 a.cm-nav {
-  display: flex; align-items: center; gap: 10px;
-  padding: 6px 10px; border-radius: var(--ui-r-sm);
+  display: flex; align-items: center; gap: 12px;
+  padding: 7px 12px; border-radius: var(--ui-r-sm);
   color: var(--cm-rail-ink); text-decoration: none; font-size: var(--ui-t-sub);
-  min-height: 36px;
+  min-height: 38px;
 }
+a.cm-nav > svg { opacity: .8; }
 a.cm-nav > svg { flex: 0 0 auto; }
 a.cm-nav > span { display: block; min-width: 0; }
 /* 한 줄 더 적는 자리. **줄마다 쓰지 않는다**: 지금은 Track 한 줄만
@@ -113,8 +122,9 @@ a.cm-nav small {
 a.cm-nav:hover { background: rgba(255, 255, 255, .07); color: var(--cm-rail-ink-on); }
 /* 고른 줄. **강조색은 여기와 누르는 자리에만 쓴다**(규격 §9) */
 a.cm-nav.is-on {
-  background: var(--sf-accent); color: #fff; font-weight: 600;
+  background: var(--cm-rail-on); color: #fff; font-weight: 600;
 }
+a.cm-nav.is-on > svg { opacity: 1; }
 a.cm-nav.is-on small { color: #fff; opacity: .85; }
 a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 
@@ -129,28 +139,29 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
  */
 .cm-utilrow {
   float: right; display: flex; align-items: center; gap: 8px;
-  margin: 2px 0 0 16px;
+  margin: 4px 0 0 16px;
 }
-.cm-utilrow .cm-btn { min-height: 36px; padding: 0 14px; font-size: var(--ui-t-cap); }
+.cm-utilrow .cm-btn { min-height: 38px; padding: 0 15px; font-size: var(--ui-t-sub); }
 .cm-util-me {
-  display: inline-flex; align-items: center; gap: 8px;
-  min-height: 36px; padding: 0 10px 0 6px; border-radius: 999px;
+  display: inline-flex; align-items: center; gap: 9px;
+  min-height: 38px; padding: 0 12px 0 5px; border-radius: 999px;
   border: 1px solid var(--sf-line); background: var(--sf-surface);
-  color: var(--sf-ink); font-size: var(--ui-t-cap); font-weight: 600;
+  color: var(--sf-ink); font-size: var(--ui-t-sub); font-weight: 600;
   text-decoration: none; white-space: nowrap;
 }
-.cm-util-me:hover { background: var(--sf-surface-2); }
+.cm-util-me:hover { background: var(--sf-surface-2); border-color: var(--sf-accent-line); }
 .cm-util-av {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 24px; height: 24px; border-radius: 999px;
-  background: var(--sf-accent); color: #fff; font-size: var(--ui-t-cap);
+  width: 28px; height: 28px; border-radius: 999px;
+  background: var(--sf-accent); color: #fff;
+  font-size: var(--ui-t-cap); font-weight: 700;
 }
 .cm-util-me > svg { color: var(--sf-ink-3); }
 @media (max-width: 900px) { .cm-utilrow { display: none; } }
 
 .cm-canvas {
   flex: 1 1 auto;
-  padding: 26px 24px calc(28px + var(--cm-tab));
+  padding: 22px 24px calc(28px + var(--cm-tab));
 }
 .cm-in { max-width: var(--cm-max); margin: 0 auto; }
 /* 적는 자리(규격 §17). 작업공간 1100 은 견주는 폭이고 폼은 그 폭에서
@@ -183,13 +194,14 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
   margin: 0 0 6px;
 }
 .cm-h1 {
-  font-size: var(--ui-t-section); line-height: 1.3; font-weight: 700; color: var(--sf-ink);
-  margin: 0; text-wrap: balance;
+  font-size: var(--ui-t-page); line-height: 1.24; font-weight: 700; color: var(--sf-ink);
+  margin: 0; text-wrap: balance; letter-spacing: -.02em;
 }
 /* 제목 아래 한 줄(규격 §4). `기계공학 · 최근 업데이트 YYYY.MM.DD` */
 .cm-meta {
   margin: 6px 0 0; font-size: var(--ui-t-sub); color: var(--sf-ink-3);
 }
+.cm-head { position: relative; }
 .cm-lead {
   margin: 10px 0 0; font-size: var(--ui-t-body); line-height: 1.7; color: var(--sf-ink-2);
   max-width: 62ch;
@@ -203,7 +215,8 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
  */
 .cm-sh {
   display: flex; align-items: center; gap: 9px;
-  margin: 30px 0 0; font-size: var(--ui-t-q); font-weight: 700; color: var(--sf-ink);
+  margin: 20px 0 0; font-size: var(--ui-t-q); font-weight: 700; color: var(--sf-ink);
+  letter-spacing: -.015em;
 }
 .cm-sh > svg { flex: 0 0 auto; color: var(--sf-accent); }
 .cm-sh > a {
@@ -211,7 +224,7 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
   color: var(--sf-accent-ink); text-decoration: none; white-space: nowrap;
 }
 .cm-sh > a:hover { text-decoration: underline; }
-.cm-shsub { margin: 6px 0 12px; font-size: var(--ui-t-sub); color: var(--sf-ink-3); }
+.cm-shsub { margin: 5px 0 10px; font-size: var(--ui-t-sub); color: var(--sf-ink-3); }
 
 /* ── 지금 할 일 Hero ──────────────────────────────────────────────
  *
@@ -221,46 +234,68 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
  */
 .cm-hero {
   display: flex; align-items: center; gap: 28px;
-  margin-top: 18px; padding: 26px 30px;
-  background: var(--sf-accent-soft);
+  margin-top: 16px; padding: 26px 32px;
+  /* **면을 한 겹으로 두지 않는다**(규격 §3·§7). 왼쪽 위가 한 단 짙고
+     오른쪽 아래로 갈수록 밝아지면, 글이 올라앉은 자리와 그림이 선 자리가
+     같은 면 안에서 갈린다. 그림자는 쓰지 않는다 */
+  background:
+    linear-gradient(135deg, var(--sf-accent-soft) 0%, #f4f8fe 58%, #ffffff 100%);
   border: 1px solid var(--sf-accent-line); border-radius: var(--ui-r-lg);
 }
-.cm-hero-txt { flex: 1 1 auto; min-width: 0; }
+.cm-hero-txt { flex: 1 1 auto; min-width: 0; order: 1; }
 .cm-hero-tag {
-  display: flex; align-items: center; gap: 7px; margin: 0;
-  font-size: var(--ui-t-sub); font-weight: 700; color: var(--sf-accent-ink);
+  display: inline-flex; align-items: center; gap: 7px; margin: 0;
+  padding: 5px 11px 5px 9px; border-radius: 999px;
+  background: rgba(255, 255, 255, .72); border: 1px solid var(--sf-accent-line);
+  font-size: var(--ui-t-cap); font-weight: 700; color: var(--sf-accent-ink);
+  letter-spacing: .01em;
 }
 .cm-hero-h {
-  margin: 12px 0 0; font-size: var(--ui-t-section); line-height: 1.42;
-  font-weight: 700; color: var(--sf-ink); letter-spacing: -.01em;
-  max-width: 24ch; text-wrap: balance;
+  margin: 12px 0 0; font-size: clamp(23px, 2vw, 28px); line-height: 1.4;
+  font-weight: 700; color: var(--sf-ink); letter-spacing: -.02em;
+  max-width: 22ch; text-wrap: balance;
 }
 .cm-hero-why {
-  margin: 10px 0 0; font-size: var(--ui-t-sub); line-height: 1.65;
-  color: var(--sf-ink-2); max-width: 52ch;
+  margin: 11px 0 0; font-size: var(--ui-t-sub); line-height: 1.7;
+  color: var(--sf-ink-2); max-width: 50ch;
 }
-.cm-hero-acts { display: flex; align-items: center; gap: 16px; margin-top: 18px; flex-wrap: wrap; }
-.cm-hero-acts .cm-btn.is-primary { min-height: 44px; padding: 0 20px; font-size: var(--ui-t-body); }
+.cm-hero-acts { display: flex; align-items: center; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+.cm-hero-acts .cm-btn.is-primary {
+  min-height: 46px; padding: 0 24px; font-size: var(--ui-t-body);
+  border-radius: 10px; box-shadow: 0 1px 2px rgba(10, 27, 49, .14);
+}
+/* 거드는 자리는 **테도 면도 없다**: 주된 단추와 같은 무게로 서면 둘 가운데
+   무엇을 눌러야 하는지를 읽는 사람이 한 번 더 고른다 */
 .cm-hero-more {
-  font-size: var(--ui-t-sub); font-weight: 600; color: var(--sf-accent-ink);
-  text-decoration: none; display: inline-flex; align-items: center; gap: 4px;
-  min-height: 44px;
+  font-size: var(--ui-t-sub); font-weight: 600; color: var(--sf-ink-3);
+  text-decoration: none; display: inline-flex; align-items: center; gap: 3px;
+  min-height: 46px; padding: 0 12px; border-radius: var(--ui-r-sm);
 }
-.cm-hero-more:hover { text-decoration: underline; }
+.cm-hero-more:hover { color: var(--sf-accent-ink); background: rgba(255, 255, 255, .6); }
 /* 오른쪽의 가벼운 표시. **없는 값을 그리지 않는다**: 담긴 것은 모양뿐이고
    숫자도 상태도 적지 않는다 */
-.cm-hero-art { flex: 0 0 auto; }
-@media (max-width: 1100px) { .cm-hero-art { display: none; } }
+/* 그림은 **글보다 먼저 흐름에 들어간다.** 넓은 화면에서는 `order` 가
+   오른쪽으로 보내고, 손전화에서는 오른쪽으로 띄워 글이 그 왼쪽으로
+   흘러든다(규격 §10). 뒤에 두면 손전화에서 글 아래로만 설 수 있다 */
+.cm-hero-art { flex: 0 0 auto; order: 2; }
 /* 손전화(규격 §12). **주된 단추가 줄을 통째로 쓴다**: 좁은 화면에서는
    엄지가 닿는 자리가 줄의 가운데라, 단추가 왼쪽에만 있으면 눌러야 하는
    것을 한 번 더 찾는다 */
 @media (max-width: 719px) {
-  .cm-hero { padding: 20px 18px; }
-  .cm-hero-h { font-size: var(--ui-t-q); max-width: none; }
-  .cm-hero-acts { display: block; }
-  .cm-hero-acts .cm-btn.is-primary { display: flex; width: 100%; }
-  .cm-hero-more { justify-content: center; width: 100%; margin-top: 4px; }
+  .cm-hero { padding: 24px 20px; gap: 18px; margin-top: 18px; }
+  .cm-hero-h { font-size: 22px; line-height: 1.44; max-width: none; margin-top: 13px; }
+  .cm-hero-why { margin-top: 10px; }
+  .cm-hero-acts { display: block; margin-top: 18px; }
+  .cm-hero-acts .cm-btn.is-primary { display: flex; width: 100%; min-height: 50px; }
+  .cm-hero-more { justify-content: center; width: 100%; margin-top: 2px; }
+  /* 손전화에서도 **그림을 끄지 않는다**(규격 §10). 작게 줄여 글 아래에
+     둔다: 끄면 Hero 가 글만 담긴 상자가 되어 첫 화면의 중심이 흐려진다 */
+  .cm-hero { display: block; }
+  .cm-hero-art { float: right; margin: 0 0 10px 14px; }
+  .cm-hero-art svg { width: 96px; height: auto; }
+  .cm-hero-acts { clear: both; }
 }
+@media (max-width: 1100px) and (min-width: 720px) { .cm-hero-art { display: none; } }
 
 /* ── 현재 상태의 영역 셋 ──────────────────────────────────────────
  *
@@ -270,28 +305,41 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .cm-tiles {
   display: grid; gap: 12px;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  align-items: stretch;
 }
 a.cm-tile {
-  display: flex; align-items: center; gap: 12px;
-  padding: 14px 14px; min-height: 68px;
+  display: flex; align-items: center; gap: 13px;
+  padding: 12px 14px; min-height: 62px;
   background: var(--sf-surface); border: 1px solid var(--sf-line);
   border-radius: var(--ui-r); text-decoration: none;
+  transition: border-color .12s ease, background .12s ease;
 }
-a.cm-tile:hover { border-color: var(--sf-accent-line); background: var(--sf-surface-2); }
+a.cm-tile:hover { border-color: var(--sf-accent-line); background: #fbfcff; }
+/* 아이콘 면. **칸마다 색이 조금씩 다르다**(규격 §4): 셋이 한 줄에 서므로
+   같은 색이면 눈이 셋을 한 덩이로 읽는다. 색은 뜻을 갖지 않는다 */
 .cm-tile-ico {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 38px; height: 38px; flex: 0 0 auto; border-radius: 10px;
+  width: 40px; height: 40px; flex: 0 0 auto; border-radius: 11px;
   background: var(--sf-accent-soft); color: var(--sf-accent-ink);
+  border: 1px solid var(--sf-accent-line);
+}
+a.cm-tile:nth-child(3n+2) .cm-tile-ico {
+  background: #eef0fb; color: #4a4fa8; border-color: #d8dcf3;
+}
+a.cm-tile:nth-child(3n+3) .cm-tile-ico {
+  background: #e9f4f6; color: #216a7a; border-color: #cbe4ea;
 }
 .cm-tile-txt { display: block; min-width: 0; flex: 1 1 auto; }
 .cm-tile-txt b {
-  display: block; font-size: var(--ui-t-sub); font-weight: 700; color: var(--sf-ink);
+  display: block; font-size: var(--ui-t-body); font-weight: 700; color: var(--sf-ink);
+  letter-spacing: -.01em;
 }
 .cm-tile-txt small {
-  display: block; margin-top: 2px; font-size: var(--ui-t-cap); color: var(--sf-ink-3);
+  display: block; margin-top: 3px; font-size: var(--ui-t-cap); color: var(--sf-ink-3);
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
-a.cm-tile > svg:last-child { flex: 0 0 auto; color: var(--sf-ink-3); }
+a.cm-tile > svg:last-child { flex: 0 0 auto; color: var(--sf-not); }
+a.cm-tile:hover > svg:last-child { color: var(--sf-accent); }
 
 /* ── 줄 묶음 ──────────────────────────────────────────────────────
  *
@@ -305,21 +353,30 @@ a.cm-tile > svg:last-child { flex: 0 0 auto; color: var(--sf-ink-3); }
 }
 .cm-feed > li {
   display: flex; align-items: center; gap: 12px;
-  padding: 13px 16px; min-height: 52px;
+  padding: 9px 16px; min-height: 44px;
 }
 .cm-feed > li + li { border-top: 1px solid var(--sf-line-2); }
 .cm-feed-ico {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 28px; height: 28px; flex: 0 0 auto; border-radius: 8px;
-  background: var(--sf-surface-2); color: var(--sf-accent-ink);
+  width: 30px; height: 30px; flex: 0 0 auto; border-radius: 9px;
+  background: var(--sf-accent-soft); color: var(--sf-accent-ink);
+  border: 1px solid var(--sf-accent-line);
 }
 .cm-feed-txt { flex: 1 1 auto; min-width: 0; margin: 0; font-size: var(--ui-t-sub); color: var(--sf-ink-2); }
 .cm-feed-txt b { display: block; color: var(--sf-ink); font-weight: 650; }
 .cm-feed-txt small { display: block; margin-top: 2px; font-size: var(--ui-t-cap); color: var(--sf-ink-3); }
+/* 날짜는 **거드는 값이다**(규격 §5): 글보다 한 단 약하고 줄 끝에 선다 */
 .cm-feed time {
-  flex: 0 0 auto; font-size: var(--ui-t-cap); color: var(--sf-ink-3);
+  flex: 0 0 auto; font-size: var(--ui-t-cap); color: var(--sf-not);
   font-variant-numeric: tabular-nums; white-space: nowrap;
 }
+/* 다 세우지 않은 나머지. **한 단 더 약하고 줄도 낮다**: 변화 하나가
+   아니라 세어 둔 수라, 같은 무게로 서면 넷째 변화로 읽힌다 */
+.cm-feed > li.is-rest { min-height: 40px; padding: 7px 16px; background: var(--sf-surface-2); }
+.cm-feed > li.is-rest .cm-feed-ico {
+  background: transparent; border-color: transparent; color: var(--sf-not);
+}
+.cm-feed > li.is-rest .cm-feed-txt { color: var(--sf-ink-3); font-size: var(--ui-t-cap); }
 .cm-feed-acts { flex: 0 0 auto; display: flex; gap: 6px; }
 .cm-feed-acts .cm-btn { min-height: 34px; padding: 0 12px; font-size: var(--ui-t-cap); }
 @media (max-width: 719px) {
@@ -743,17 +800,35 @@ a.cm-tile > svg:last-child { flex: 0 0 auto; color: var(--sf-ink-3); }
     padding: 18px 16px
       calc(24px + var(--cm-tab) + var(--stg-h, 0px) + env(safe-area-inset-bottom, 0px));
   }
-  .cm-h1 { font-size: var(--ui-t-section); }
+  .cm-h1 { font-size: 27px; }
   .cm-grid { grid-template-columns: 1fr; }
+  /* 손전화의 영역 줄(규격 §11). 칸 사이를 벌리고 모서리를 키운다 */
+  .cm-tiles { gap: 10px; }
+  a.cm-tile { min-height: 66px; border-radius: var(--ui-r); padding: 13px 14px; }
+  .cm-feed > li { padding: 11px 14px; min-height: 48px; }
 
+  /* 손전화 머리띠(규격 §9). **브랜드 · 지금 자리 · 계정** 셋이 선다.
+     쪽 제목은 아래 본문의 `내 커리어` 가 들고, 여기는 틀이다 */
   .cm-topbar {
     display: flex; align-items: center; gap: 10px;
-    padding: 12px 16px; border-bottom: 1px solid var(--sf-line);
+    padding: 10px 14px; border-bottom: 1px solid var(--sf-line);
     background: var(--sf-surface);
     position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
   }
-  .cm-topbar a { color: var(--sf-ink); font-weight: 700; text-decoration: none; }
-  .cm-topbar span { font-size: var(--ui-t-cap); color: var(--sf-ink-3); margin-left: auto; }
+  .cm-topbar a { text-decoration: none; }
+  .cm-topbar-brand {
+    color: var(--sf-ink); font-weight: 700; font-size: var(--ui-t-body);
+    letter-spacing: -.015em;
+  }
+  .cm-topbar span {
+    font-size: var(--ui-t-cap); color: var(--sf-ink-3); margin-left: auto;
+    padding-left: 10px; border-left: 1px solid var(--sf-line);
+  }
+  .cm-topbar-me {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 34px; height: 34px; margin: -4px -4px -4px 2px;
+  }
+  .cm-topbar-me .cm-util-av { width: 28px; height: 28px; }
 
   /* **아래 띠는 다섯 자리까지만 둔다.** 여섯째부터는 글자가 두 줄로
      접히고, 접힌 띠는 누르는 자리가 어디인지 알 수 없다 */
@@ -763,16 +838,25 @@ a.cm-tile > svg:last-child { flex: 0 0 auto; color: var(--sf-ink-3); }
        올린다 */
     display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 95;
     background: var(--sf-surface); border-top: 1px solid var(--sf-line);
+    /* **앱의 띠로 읽히게 한다**(규격 §12). 선 하나만 두면 본문이 그
+       뒤로 흘러 들어가 웹 쪽의 꼬리말처럼 보인다. 아주 옅은 그림자
+       하나가 띠를 본문 위에 올려 놓는다 */
+    box-shadow: 0 -1px 0 rgba(10, 27, 49, .04), 0 -6px 18px rgba(10, 27, 49, .05);
     padding: 0 0 env(safe-area-inset-bottom, 0px);
   }
   .cm-tabs a {
-    flex: 1 1 0; min-width: 0;
+    flex: 1 1 0; min-width: 0; position: relative;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 3px; height: var(--cm-tab);
-    color: var(--sf-ink-3); text-decoration: none; font-size: var(--ui-t-cap);
+    gap: 4px; height: var(--cm-tab);
+    color: var(--sf-not); text-decoration: none; font-size: 11px;
   }
-  .cm-tabs a.is-on { color: var(--sf-accent-ink); font-weight: 700; }
-  .cm-tabs a svg { width: 20px; height: 20px; }
+  .cm-tabs a.is-on { color: var(--sf-accent); font-weight: 700; }
+  /* 고른 칸 위의 짧은 금. **색만으로 말하지 않는다** */
+  .cm-tabs a.is-on::before {
+    content: ""; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 26px; height: 2px; border-radius: 0 0 2px 2px; background: var(--sf-accent);
+  }
+  .cm-tabs a svg { width: 21px; height: 21px; }
 
   /*
    * 다섯째 칸은 서랍이다.
@@ -784,13 +868,13 @@ a.cm-tile > svg:last-child { flex: 0 0 auto; color: var(--sf-ink-3); }
   .cm-more { flex: 1 1 0; min-width: 0; }
   .cm-more > summary {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 3px; height: var(--cm-tab);
-    color: var(--sf-ink-3); font-size: var(--ui-t-cap); cursor: pointer;
+    gap: 4px; height: var(--cm-tab);
+    color: var(--sf-not); font-size: 11px; cursor: pointer;
     list-style: none;
   }
   .cm-more > summary::-webkit-details-marker { display: none; }
-  .cm-more > summary svg { width: 20px; height: 20px; }
-  .cm-more[open] > summary { color: var(--sf-accent-ink); font-weight: 700; }
+  .cm-more > summary svg { width: 21px; height: 21px; }
+  .cm-more[open] > summary { color: var(--sf-accent); font-weight: 700; }
   .cm-more > summary:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: -2px; }
 
   .cm-sheet {
