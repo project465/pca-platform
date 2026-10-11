@@ -620,12 +620,26 @@
 .qs-grade {
   flex: none; display: grid; gap: 0;
   grid-template-columns: repeat(5, var(--q-grade-w));
-  /* **칸 사이 선이 없다**(규격 §4). 열두 줄이면 세로선이 일흔둘이고, 그
-     선이 질문보다 먼저 읽힌다. 다섯을 가르는 선 대신 **다섯을 담는 면
-     하나**를 둔다: 누를 수 있는 자리라는 것이 손전화에서도 보이고
-     (hover 가 없다), 세는 선은 줄마다 0 이다 */
-  border: 0; background: var(--q-paper); border-radius: var(--q-r-sm);
+  /**
+   * **하나의 segmented control 이다**(규격 §1).
+   *
+   * 면만 깔았더니 1~5 가 **흰 자리에 놓인 숫자**로 읽혀 누를 수 있다는
+   * 것이 보이지 않았다. 칸마다 상자를 돌리면 다시 표가 되므로, 테는
+   * **덩이에 한 겹**만 두르고 칸 사이는 위아래가 뜬 짧은 눈금으로
+   * 가른다. 눈금은 칸을 담는 상자가 아니라 **척도의 금**이다.
+   */
+  border: 1px solid var(--q-line); background: var(--q-paper);
+  border-radius: var(--q-r-sm);
 }
+/* 칸 사이의 짧은 눈금. 위아래가 떠 있어 상자로 닫히지 않는다 */
+.qs-grade > .qs-grade-b + .qs-grade-b::before {
+  content: ""; position: absolute; left: 0; top: 9px; bottom: 9px;
+  width: 1px; background: var(--q-line-soft);
+}
+/* 고른 칸과 그 다음 칸 사이에서는 눈금을 숨긴다. 고른 면의 모서리와
+   눈금이 겹쳐 서면 그 한 칸만 두 겹으로 둘린 것처럼 보인다 */
+.qs-grade-b.is-on::before,
+.qs-grade-b.is-on + .qs-grade-b::before { opacity: 0; }
 .qs-grade[data-n="3"] { grid-template-columns: repeat(3, var(--q-grade-w3)); }
 /* **번호가 위, 줄인 말이 아래다**(규격 §10). 번호는 격자 머리에 적힌
    다섯 단계의 몇째인지를 가리키는 자리표이고, 좁은 화면에서 머리의
@@ -655,13 +669,20 @@
 }
 /* 경험 칸 셋은 낱말이 값이라 글자가 칸을 채운다 */
 .qs-grade-b.is-word { font-size: var(--q-t-body); color: var(--q-ink-2); }
-.qs-grade-b:hover { background: var(--q-sunk); color: var(--q-ink-2); }
+.qs-grade-b:hover {
+  background: var(--q-sunk); color: var(--q-ink);
+  box-shadow: inset 0 0 0 1px var(--q-accent-line);
+}
 .qs-grade-b input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 /* 고른 칸만 색이 들어간다. **테를 또 두르지 않는다**: 덩이의 테가 이미
    있어서 안쪽에 테를 더하면 그 한 칸이 두 겹으로 둘린다 */
+/* **고른 칸만 또렷하다**(규격 §1). 면과 테와 굵기 셋이 함께 들어간다:
+   면만 두면 옅은 바탕에서 hover 와 구별되지 않는다 */
 .qs-grade-b.is-on {
   background: var(--q-accent-soft); color: var(--q-accent-ink); font-weight: 700;
+  box-shadow: inset 0 0 0 1px var(--q-accent);
 }
+.qs-grade-b.is-on .qs-grade-n { font-weight: 700; }
 .qs-grade-b:has(input:focus-visible) { outline: 2px solid var(--q-accent); outline-offset: 2px; }
 
 /* 척도 밖. **눈금 위의 자리가 아니라서 따로 세운다**: 값이 비어 있다는

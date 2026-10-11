@@ -1,0 +1,28 @@
+{
+ "schema_version": "careermatri-core-ui-lock.1",
+ "note": "Core 화면 여덟의 묶음 동결. 측정 동결과 별개다. layout 대변경은 별도 STOP GATE 이고, 고쳤으면 그 화면의 판본을 올리고 세 동결을 다시 적은 다음 `CORE_UI_FREEZE=write npm run v3:freeze:core`",
+ "label": "CAREERMATRI_CORE_UI_FREEZE_1",
+ "locks": {
+  "assessment": "2c01d759dca8e460",
+  "result": "b4dc8b73d4eade99",
+  "workspace": "b17f7ded703dfb7e"
+ },
+ "versions": {
+  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V12",
+  "assessment_copy_version": "me-v3-2-assessment-copy.12",
+  "result_ui_version": "ME_V3_RESULT_UI_V16",
+  "result_copy_version": "me-v3-result-copy.16",
+  "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V12",
+  "workspace_copy_version": "careermatri-workspace-copy.10"
+ },
+ "screens": {
+  "Home": "workspace:4db172f19e15e766",
+  "Assessment": "assessment:69186a6c743176d1",
+  "Experience": "workspace:51726b67233de879",
+  "Current State": "workspace:b7cc16b5c48f7101",
+  "Next Action": "workspace:fa819d5df585026c",
+  "Result Summary": "result:c24ad6e3b87f64bf",
+  "Result Detail": "result:c24ad6e3b87f64bf",
+  "Explore": "workspace:f4a139ddcbd7894a"
+ }
+}
