@@ -82,7 +82,13 @@
   padding: 14px var(--r-gutter);
   display: flex; align-items: center; gap: var(--r-s3);
 }
-.rs-brand { font-size: var(--r-t-h3); font-weight: 750; color: var(--r-ink); letter-spacing: -.02em; }
+.rs-brand {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: var(--r-t-h3); font-weight: 750; color: var(--r-ink); letter-spacing: -.02em;
+}
+/* 머리의 상표. **돌아가는 길 왼쪽에 선다**: 종이에서는 쪽머리가 이미
+   이름을 찍으므로 `.rs-back` 과 함께 숨는다 */
+.rs-mark { flex: none; }
 /* 작업공간으로 돌아가는 길. 브랜드 글자가 그 일을 겸한다 */
 .rs-back {
   display: inline-flex; align-items: center; gap: 6px;
@@ -769,7 +775,7 @@
   .rs { background: #fff; font-size: 10.5pt; line-height: 1.55; min-height: 0; }
   /* 쪽머리에 이미 `CareerMatri` 가 찍힌다. 한 쪽에 두 번 적지 않는다 */
   .rs-head { position: static; backdrop-filter: none; background: #fff; border: 0; }
-  .rs-brand, .rs-back { display: none; }
+  .rs-brand, .rs-back, .rs-mark { display: none; }
   .rs-head nav { display: none; }
   .rs-head-in { padding: 0 0 6px; }
   .rs-main { max-width: none; padding: 0; }

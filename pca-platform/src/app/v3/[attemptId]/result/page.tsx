@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BrandMark } from "@/components/sf/brand-mark";
 import { notFound, redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { mark } from "@/lib/me-v3/workspace-events";
@@ -689,6 +690,7 @@ export default async function V3Result({
           {/* **돌아가는 길을 머리에 둔다.** 전에는 맨 아래에만 있어서,
               작업공간에서 결과지로 들어온 사람이 끝까지 내려가야 돌아갈
               수 있었다. 종이에서는 이 줄이 찍히지 않는다(`.rs-back`) */}
+          <BrandMark size={20} className="rs-mark" />
           <Link className="rs-back" href="/me">내 CareerMatri</Link>
           {/* **산 것의 이름을 적는다.** 별명(`경험 번역`)은 가격표에도
               결제에도 없는 말이라, 받은 사람이 자기가 무엇을 샀는지

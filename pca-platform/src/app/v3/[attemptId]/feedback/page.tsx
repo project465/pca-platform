@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BrandMark } from "@/components/sf/brand-mark";
 import { notFound, redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { queryOne } from "@/lib/db";
@@ -89,7 +90,7 @@ export default async function Feedback({
     <div className="rs">
       <header className="rs-head">
         <div className="rs-head-in">
-          <span className="rs-brand">CareerMatri</span>
+          <span className="rs-brand"><BrandMark size={20} />CareerMatri</span>
           <span className="rs-tier">파일럿 · {p.code}</span>
           <nav><Link href={`/v3/${attemptId}/result`}>결과로 돌아가기</Link></nav>
         </div>

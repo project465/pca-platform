@@ -709,7 +709,8 @@ td .sub { display: block; font-size: 12.5px; color: var(--muted); }
 /* 공개 홈의 머리띠는 어두운 바탕이다. 로고 조각이 `--sf-ink` 를 그대로
    쓰면 바탕과 같은 색이 되어 **로고가 안 보이는 홈 링크**가 된다 */
 .door-bar .sf-brand { padding: 0; text-decoration: none; }
-.door-bar .sf-brand-mark { background: #fff; color: var(--ink); }
+/* 상표는 이제 제 색을 들고 선다. 어두운 띠 위에서 면을 갈아 끼우던
+   줄은 할 일이 없어졌다(`/brand/careermatri/mark.svg`) */
 .door-bar .sf-brand-name { color: #fff; font-size: 16px; }
 
 .door-main { max-width: 760px; margin: 0 auto; padding: 48px 20px 72px; width: 100%; }

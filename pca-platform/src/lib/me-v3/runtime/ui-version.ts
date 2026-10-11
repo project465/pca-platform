@@ -8,8 +8,18 @@
  * 접근성 오류는 고치고, 그때 여기 판본을 올리고 지문을 다시 적는다.
  */
 
+/*
+ * `V13` 으로 올린 까닭. **머리글의 상표를 공식 하나로 바꿨다**(규격 §4).
+ *
+ * 검사 머리글의 브랜드 글자 옆에 `public/brand/careermatri/mark.svg` 가
+ * 20px 으로 선다. 문항도 보기도 흐름도 routing 도 한 줄도 바뀌지 않았고,
+ * 바뀐 것은 머리글 한 자리의 그림이다. **상표가 화면마다 다르면 쪽을
+ * 이어서 누를 때 다른 회사로 읽힌다**: 검사만 상표가 없는 채로 서 있었다.
+ * 인쇄에서는 머리글이 그대로 숨는다.
+ */
+
 /** 화면 구조와 상호작용. 흐름이나 화면이 바뀌면 올린다 */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V12";
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V13";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
 export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.12";

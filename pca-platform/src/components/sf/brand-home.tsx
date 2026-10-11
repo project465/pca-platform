@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BrandMark } from "@/components/sf/brand-mark";
 import type { ReactNode } from "react";
 import { currentUser } from "@/lib/session";
 import { homePathFor } from "@/lib/roles";
@@ -53,7 +54,7 @@ export default async function BrandHome({
   const cls = className ? `sf-brand ${className}` : "sf-brand";
   const inside = (
     <>
-      <span className="sf-brand-mark" aria-hidden="true">CM</span>
+      <BrandMark size={28} className="sf-brand-mark" />
       <span className="sf-brand-name">
         {BRAND.root}
         {sub ? <span className="sf-brand-sub">{sub}</span> : null}

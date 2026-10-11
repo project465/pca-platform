@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BrandMark } from "@/components/sf/brand-mark";
 
 /**
  * 로그인 · 가입 · 비밀번호 쪽 머리의 상표.
@@ -10,7 +11,7 @@ import Link from "next/link";
 export default function AuthBrand({ name }: { name: string }) {
   return (
     <Link href="/" className="authbrand">
-      <span className="sf-brand-mark" aria-hidden="true">CM</span>
+      <BrandMark size={28} className="sf-brand-mark" />
       <span>{name}</span>
     </Link>
   );

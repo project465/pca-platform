@@ -20,6 +20,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Icon } from "@/components/sf/icon";
+import { BrandMark } from "@/components/sf/brand-mark";
 import { CM_GROUPS, CM_TABS, CM_NAV, navOn } from "./nav";
 
 /** 지금 어느 전공인가. 전공이 늘면 이 자리가 고르는 자리가 된다 (§57) */
@@ -104,7 +105,13 @@ export function CmShell({
           그 줄의 이름을 그대로 쓴다. 따로 적어 두면 `탐색` 과
           `산업·직무` 처럼 같은 자리가 화면마다 다른 이름으로 불린다 */}
       <div className="cm-topbar">
-        <Link className="cm-topbar-brand" href="/me">CareerMatri</Link>
+        <Link className="cm-topbar-brand" href="/me">
+          {/* **28px 그대로다**(규격 §5). 전에 이 자리를 차지하던 네모가
+              28px 이라, 상표만 갈아 끼우고 크기를 줄이면 머리띠가 2px
+              낮아지고 **아래 모든 줄이 함께 올라간다.** 상표를 바꾸는
+              일이 쪽 전체를 움직이는 일이 되면 안 된다 */}
+          <BrandMark size={28} />CareerMatri
+        </Link>
         {/* **지금 자리를 머리띠에 또 적지 않는다**(목표 화면 기준).
             아래 띠가 그 줄을 켜서 이미 말하고 있고, 머리띠에 한 번 더
             적으면 띠가 이름표 두 개를 든 웹사이트 머리글로 읽힌다 */}
@@ -122,9 +129,10 @@ export function CmShell({
       <div className="cm-wrap">
         <nav className="cm-rail" aria-label="CareerMatri 메뉴">
           <Link className="cm-rail-brand" href="/me">
-            {/* 표시는 **글자 없는 모양 하나다**(규격 §1). 새 로고 파일을
-                만들지 않고, 띠에 이미 쓰는 아이콘 하나를 면에 얹는다 */}
-            <span className="cm-rail-mark" aria-hidden><Icon name="ladder" size={17} /></span>
+            {/* **공식 상표 하나만 쓴다**(규격 §4). 임시 아이콘과 네모를
+                쓰던 자리가 셋이었고 셋이 서로 달랐다. 출처는
+                `public/brand/careermatri/mark.svg` 파일 하나다 */}
+            <BrandMark size={34} className="cm-rail-mark" />
             <span className="cm-rail-name">
               <b>CareerMatri</b>
               <small>{MAJOR}</small>

@@ -149,7 +149,7 @@
   font-size: var(--q-t-meta); color: var(--q-ink-3);
 }
 .qs-brand {
-  flex: none;
+  flex: none; display: inline-flex; align-items: center; gap: 7px;
   font-size: var(--q-t-sub); font-weight: 700; color: var(--q-ink);
   letter-spacing: -.015em;
 }

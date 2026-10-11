@@ -30,6 +30,13 @@ const LOCK = "sites/pca-platform/assessment/ME_V3/workspace-lock.json";
 /** 작업공간을 이루는 파일. 여기 없는 파일을 고치면 이 검사가 모른다 */
 const FILES = [
   /* 껍데기와 띠 */
+  /* **값과 조각과 상표도 작업공간이다**(규격 §2~§4). 띠 폭과 면과 활자는
+     `workspace.tokens.css` 한 곳이고, 되풀이하는 조각은 `ui.tsx` 한 곳이고,
+     상표는 파일 하나를 읽는 `brand-mark.tsx` 다. 여기 적지 않으면 이 셋을
+     고친 날 동결이 **그 파일을 모르는 채로 통과한다** */
+  "src/app/workspace.tokens.css",
+  "src/app/me/ui.tsx",
+  "src/components/sf/brand-mark.tsx",
   "src/app/me/platform.css",
   "src/app/me/shell.tsx",
   /* 적다 만 것을 들고 나가지 않게 막는 자리(규격 §4) */

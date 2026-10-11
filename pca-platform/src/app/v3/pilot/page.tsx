@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BrandMark } from "@/components/sf/brand-mark";
 import { requireUser } from "@/lib/session";
 import { queryOne } from "@/lib/db";
 import { participantOf } from "@/lib/me-v3/pilot/store";
@@ -73,7 +74,7 @@ export default async function PilotJoin({
     <div className="rs">
       <header className="rs-head">
         <div className="rs-head-in">
-          <span className="rs-brand">CareerMatri</span>
+          <span className="rs-brand"><BrandMark size={20} />CareerMatri</span>
           <span className="rs-tier">기계공학 진로진단 베타</span>
         </div>
       </header>

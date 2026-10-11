@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { BrandMark } from "@/components/sf/brand-mark";
 import { requireUser } from "@/lib/session";
 import { currentAttempt, estimate, v3Grants } from "@/lib/me-v3/runtime/session";
 import type { Tier } from "@/lib/me-v3/scoring/types";
@@ -53,7 +54,7 @@ export default async function V3Start({
       <header className="qs-head">
         <div className="qs-head-in">
           <div className="qs-top" style={{ paddingBottom: 14 }}>
-            <span className="qs-brand">CareerMatri</span>
+            <span className="qs-brand"><BrandMark size={20} />CareerMatri</span>
             <span className="qs-tier">{tier} · <b>{t.label}</b></span>
           </div>
         </div>

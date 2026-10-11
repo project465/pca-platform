@@ -18,7 +18,16 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.16";
  * 문장 하나를 고친 날 화면 판본까지 올리면, 되짚을 때 무엇이 바뀐
  * 것인지 알 수 없다. 넷이 따로 간다: 화면 · 문장 · 모델 · 판단.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V16";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V17";
+
+/*
+ * `V17` 로 올린 까닭. **머리글의 상표를 공식 하나로 바꿨다**(규격 §4).
+ *
+ * 결과지 머리글과 `내 CareerMatri` 로 돌아가는 줄 앞에
+ * `public/brand/careermatri/mark.svg` 가 20px 으로 선다. 절도 문장도
+ * 모델도 판단도 한 줄도 바뀌지 않았다. **종이에는 서지 않는다**: 머리글
+ * 전체가 인쇄에서 숨으므로 쪽수가 그대로다.
+ */
 
 /*
  * `V3` 으로 올린 까닭. **아홉 절이 한 이야기로 이어졌고 첫 화면이 셋으로

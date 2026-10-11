@@ -12,6 +12,10 @@ import { openActions } from "@/lib/me-v3/open-actions";
 import { recentChangeKo } from "@/lib/me-v3/change-text.ko";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { CmShell, CmHead } from "./shell";
+import {
+  ActivityRow, DomainTile, EmptyState, PrimaryActionHero, RecordRow,
+  SectionHeader, SectionNote,
+} from "./ui";
 import { continueAssessment } from "./actions";
 
 export const metadata = { title: "홈 · CareerMatri" };
@@ -166,11 +170,11 @@ export default async function Home() {
               </div>
             ))}
           </div>
-          <div className="cm-soon" style={{ marginTop: 18 }}>
+          <EmptyState style={{ marginTop: 18 }}>
             <b>적성이나 성격은 묻지 않습니다.</b> 해 본 일에서 직접 판단한
             경험을 찾고, 그것을 지원서와 면접에서 설명할 수 있는 근거로
             정리합니다. 12분 안팎입니다.
-          </div>
+          </EmptyState>
         </>
       ) : null}
 
@@ -241,173 +245,82 @@ export default async function Home() {
               쪽에서 가장 강한 자리다. 옅은 파란 면 하나에 꼬리표와 할 일과
               까닭과 주된 단추와 나머지 수를 담는다. **문장을 여기서 짓지
               않는다**: 결과지와 `다음 할 일` 이 쓰는 같은 함수를 부른다 */}
-          <section className="cm-hero">
-            {/* 오른쪽의 가벼운 표시. **새 그림 파일을 만들지 않는다**
-                (규격 §5): 네모와 선과 동그라미뿐이고 값도 상태도 적지 않는다 */}
-            <div className="cm-hero-art" aria-hidden>
-              <svg width="200" height="162" viewBox="0 0 200 162" fill="none">
-                {/* 흰 판 하나가 그림을 담는다. Hero 의 파란 면 위에서 한
-                    단 떠 보이게 하는 자리라 **값도 상태도 적지 않는다** */}
-                <rect x="26" y="10" width="168" height="134" rx="18"
-                  fill="#fff" stroke="#d8e5f7" />
-                <rect x="48" y="30" width="124" height="98" rx="13"
-                  fill="#f4f9ff" stroke="#dde8f8" />
-                <rect x="88" y="21" width="44" height="17" rx="7"
-                  fill="#dce9fa" stroke="#c6dbf3" />
-                {[48, 72, 96].map((y, i) => (
-                  <g key={y}>
-                    <rect x="61" y={y} width="17" height="17" rx="5"
-                      fill="#dceafb" stroke="#bcd6f2" />
-                    <path d={`M65 ${y + 8.5}l3.1 3.1 5.6 -6`} stroke="#1c5fb0"
-                      strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" />
-                    <rect x="86" y={y + 5} width={i === 2 ? 44 : 70} height="7" rx="3.5"
-                      fill={i === 2 ? "#dce7f6" : "#cfe0f5"} />
-                  </g>
-                ))}
-                {/* 판의 왼쪽 아래 모서리에 **걸친** 동그라미 하나.
-                    떨어져 서면 떠 있는 표시가 되고, 걸쳐야 두 면이 앞뒤로 선다 */}
-                <circle cx="44" cy="122" r="31" fill="#fff" />
-                <circle cx="44" cy="122" r="25" fill="url(#cmHeroG)" />
-                <path d="M33 122l7.5 7.5 14.5 -15.5" stroke="#fff" strokeWidth="3.6"
-                  strokeLinecap="round" strokeLinejoin="round" />
-                {/* 거드는 모양 둘. 담긴 뜻이 없고 면의 깊이를 만든다 */}
-                <circle cx="186" cy="34" r="8" stroke="#c6dbf3" strokeWidth="2" />
-                <circle cx="16" cy="56" r="4.5" fill="#c6dbf3" />
-                <defs>
-                  <linearGradient id="cmHeroG" x1="19" y1="97" x2="69" y2="147"
-                    gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#2f7ad6" />
-                    <stop offset="1" stopColor="#1b5aa8" />
-                  </linearGradient>
-                </defs>
-              </svg>
-            </div>
-            <div className="cm-hero-txt">
-              <p className="cm-hero-tag"><Icon name="target" size={17} />지금 할 일</p>
-              {first ? (
-                <>
-                  <h2 className="cm-hero-h">{nowSay.do}</h2>
-                  {nowWhy ? <p className="cm-hero-why">{nowWhy}</p> : null}
-                  <div className="cm-hero-acts">
-                    <Link className="cm-btn is-primary" href="/me/experience/new">
-                      지금 정리하기 →
-                    </Link>
-                    {open.length > 1 ? (
-                      <Link className="cm-hero-more" href="/me/next">
-                        그 밖에 할 일 {open.length - 1}개
-                        <Icon name="chev" size={14} />
-                      </Link>
-                    ) : null}
-                  </div>
-                </>
-              ) : (
-                <>
-                  <h2 className="cm-hero-h">지금 꼭 해야 하는 일은 없습니다.</h2>
-                  <p className="cm-hero-why">
-                    새 경험을 적으면 현재 상태가 다시 서고 그다음 할 일이
-                    나옵니다.
-                  </p>
-                  <div className="cm-hero-acts">
-                    <Link className="cm-btn is-primary" href="/me/experience/new">
-                      경험 추가 →
-                    </Link>
-                  </div>
-                </>
-              )}
-            </div>
-          </section>
+          <PrimaryActionHero
+            tag="지금 할 일"
+            title={first ? nowSay.do : "지금 꼭 해야 하는 일은 없습니다."}
+            /* **까닭을 지어내지 않는다**: 빈자리를 못 찾으면 그 줄이 없다 */
+            why={first ? (nowWhy || undefined) : NO_ACTION_WHY}
+            action={
+              <Link className="cm-btn is-primary" href="/me/experience/new">
+                {first ? "지금 정리하기 →" : "경험 추가 →"}
+              </Link>
+            }
+            more={first && open.length > 1 ? (
+              <Link className="cm-hero-more" href="/me/next">
+                그 밖에 할 일 {open.length - 1}개
+                <Icon name="chev" size={14} />
+              </Link>
+            ) : null}
+          />
 
           {/* ── 현재 상태 (규격 §6) ── 작은 가로 칸 셋. 큰 dashboard tile
               로 만들지 않는다 */}
-          <h2 className="cm-sh">
-            <Icon name="chart" size={18} />
-            현재 상태
-            <Link href="/me/state">전체 보기 →</Link>
-          </h2>
+          <SectionHeader icon="chart" title="현재 상태"
+            moreHref="/me/state" moreLabel="전체 보기 →"
+            sub={ready.length
+              ? `지금 설명할 수 있는 주요 영역 ${ready.length}가지입니다.`
+              : READY_NONE} />
           {ready.length ? (
-            <>
-              <p className="cm-shsub">
-                지금 설명할 수 있는 주요 영역 {ready.length}가지입니다.
-              </p>
-              <div className="cm-tiles">
-                {ready.map((d) => (
-                  <Link className="cm-tile" href="/me/state" key={d}>
-                    <span className="cm-tile-ico">
-                      <Icon name={TILE_ICON[d] ?? "box"} size={18} />
-                    </span>
-                    <span className="cm-tile-txt">
-                      <b>{domainName(d)}</b>
-                      {/* 그 영역이 일하는 차례. **응답에서 온 값이 아니라
-                          영역 설명이다**: 여기서 새 수를 만들지 않는다 */}
-                      <small>{domainChainKo(d).slice(0, 2).join(" · ")}</small>
-                    </span>
-                    <Icon name="chev" size={16} />
-                  </Link>
-                ))}
-              </div>
-            </>
-          ) : (
-            <p className="cm-shsub">
-              지원서에서 설명할 만한 경험이 아직 없습니다. 관심이 높은
-              영역에서 짧게 한 번 해 보는 것이 다음 걸음입니다.
-            </p>
-          )}
+            <div className="cm-tiles">
+              {ready.map((d) => (
+                <DomainTile key={d} href="/me/state"
+                  icon={TILE_ICON[d] ?? "box"} title={domainName(d)}
+                  /* 그 영역이 일하는 차례. **응답에서 온 값이 아니라
+                     영역 설명이다**: 여기서 새 수를 만들지 않는다 */
+                  sub={domainChainKo(d).slice(0, 2).join(" · ")} />
+              ))}
+            </div>
+          ) : null}
 
           {/* ── 최근 변화 (규격 §7) ── 줄 중심. 줄마다 카드를 만들지 않는다 */}
           {st.stage === "RECOMPUTED" || st.pending > 0 ? (
             <>
-              <h2 className="cm-sh is-b">
-                <Icon name="bolt" size={18} />
-                최근 변화
-                <Link href="/me/state#changes">모두 보기 →</Link>
-              </h2>
+              <SectionHeader icon="bolt" tone="b" title="최근 변화"
+                moreHref="/me/state#changes" moreLabel="모두 보기 →" />
               {st.stage === "RECOMPUTED" ? (
                 <>
-                  <p className="cm-shsub">
+                  <SectionNote>
                     최근 추가한 경험으로 다음과 같은 변화가 생겼습니다.
-                  </p>
+                  </SectionNote>
                   <ul className="cm-feed">
                     {change.lines.map((line, i) => (
-                      <li key={line}>
-                        {/* **앞쪽은 묶음이 옮겨 간 것이고 뒤는 축이 올라간
-                            것이다**(`recentChangeKo` 가 그 차례로 잇는다).
-                            표시를 갈라 두면 같은 줄 넷이 한 덩이로 읽히지
-                            않는다. 색은 뜻을 갖지 않는다 */}
-                        <span className={`cm-feed-ico${CHANGE_TINT[i % 3]}`}>
-                          <Icon name={i < st.zoneMoved.length ? "ladder" : CHANGE_ICON[i % 3]}
-                            size={15} />
-                        </span>
-                        <p className="cm-feed-txt">{line}</p>
-                        <time>{st.recomputed_at}</time>
-                      </li>
+                      /* **앞쪽은 묶음이 옮겨 간 것이고 뒤는 축이 올라간
+                         것이다**(`recentChangeKo` 가 그 차례로 잇는다).
+                         표시를 갈라 두면 같은 줄 넷이 한 덩이로 읽히지
+                         않는다. 색은 뜻을 갖지 않는다 */
+                      <ActivityRow key={line} text={line} time={st.recomputed_at}
+                        tint={CHANGE_TINT[i % 3] || undefined}
+                        icon={i < st.zoneMoved.length ? "ladder" : CHANGE_ICON[i % 3]} />
                     ))}
                     {change.more ? (
-                      <li className="is-rest">
-                        <span className="cm-feed-ico"><Icon name="log" size={15} /></span>
-                        <p className="cm-feed-txt">
-                          그 밖에 {change.more}가지가 더 달라졌습니다.
-                        </p>
-                      </li>
+                      <ActivityRow rest icon="log"
+                        text={`그 밖에 ${change.more}가지가 더 달라졌습니다.`} />
                     ) : null}
                   </ul>
                 </>
               ) : null}
               {st.pending > 0 ? (
                 <>
-                  <p className="cm-shsub">
+                  <SectionNote>
                     적어 두신 경험이 어느 판단으로 가는지 먼저 보고 더합니다.
                     더해도 검사 당시 결과는 그대로 남습니다.
-                  </p>
+                  </SectionNote>
                   <ul className="cm-feed">
-                    <li>
-                      <span className="cm-feed-ico"><Icon name="layers" size={15} /></span>
-                      <p className="cm-feed-txt">
-                        <b>아직 더하지 않은 경험 {st.pending}건</b>
-                      </p>
-                      <span className="cm-feed-acts">
+                    <ActivityRow icon="layers"
+                      text={<b>아직 더하지 않은 경험 {st.pending}건</b>}
+                      actions={
                         <Link className="cm-btn" href="/me/recompute">새 경험 더하기</Link>
-                      </span>
-                    </li>
+                      } />
                   </ul>
                 </>
               ) : null}
@@ -415,55 +328,41 @@ export default async function Home() {
           ) : null}
 
           {/* ── 최근 기록 (규격 §8) ── 굳은 결과 하나와 최근 경험 둘까지 */}
-          <h2 className="cm-sh is-c">
-            <Icon name="clock" size={18} />
-            최근 기록
-            <Link href="/me/results">모두 보기 →</Link>
-          </h2>
-          <p className="cm-shsub">최근 검사 결과와 경험을 확인할 수 있습니다.</p>
+          <SectionHeader icon="clock" tone="c" title="최근 기록"
+            moreHref="/me/results" moreLabel="모두 보기 →"
+            sub="최근 검사 결과와 경험을 확인할 수 있습니다." />
           <ul className="cm-feed is-rec">
-            <li>
-              <span className="cm-feed-ico"><Icon name="report" size={15} /></span>
-              <p className="cm-feed-txt">
-                <b>기계공학 진로진단 결과 ({st.model.tier})</b>
-                <small>고정됨 · 그날의 문항과 기준으로 굳어 있습니다</small>
-              </p>
-              <time>{st.result_at ?? ""}</time>
-              <span className="cm-feed-acts">
-                <Link className="cm-btn" href={`/v3/${st.model.attempt_id}/result`}>
-                  결과 보기
-                </Link>
-                {/* **`Link` 로 걸지 않는다.** Next 가 화면에 들어온 `Link` 를
-                    미리 불러오면서 종이를 한 벌씩 만들어 버린다 */}
-                <a className="cm-btn is-quiet" href={`/v3/${st.model.attempt_id}/result/pdf`}>
-                  PDF
-                </a>
-              </span>
-            </li>
+            <RecordRow icon="report"
+              title={`기계공학 진로진단 결과 (${st.model.tier})`}
+              note="고정됨 · 그날의 문항과 기준으로 굳어 있습니다"
+              time={st.result_at ?? ""}
+              actions={
+                <>
+                  <Link className="cm-btn" href={`/v3/${st.model.attempt_id}/result`}>
+                    결과 보기
+                  </Link>
+                  {/* **`Link` 로 걸지 않는다.** Next 가 화면에 들어온 `Link` 를
+                      미리 불러오면서 종이를 한 벌씩 만들어 버린다 */}
+                  <a className="cm-btn is-quiet" href={`/v3/${st.model.attempt_id}/result/pdf`}>
+                    PDF
+                  </a>
+                </>
+              } />
             {exps.slice(0, HOME_RECENT).map((e) => (
-              <li key={e.id}>
-                <span className="cm-feed-ico t-4"><Icon name="layers" size={15} /></span>
-                <p className="cm-feed-txt">
-                  <b>{e.title}</b>
-                  <small>{KIND_KO.get(e.kind) ?? "경험"}</small>
-                </p>
-                <time>{e.started_on ?? e.created_at.slice(0, 10)}</time>
-                <span className="cm-feed-acts">
+              <RecordRow key={e.id} icon="layers" tint="t-4" title={e.title}
+                note={KIND_KO.get(e.kind) ?? "경험"}
+                time={e.started_on ?? e.created_at.slice(0, 10)}
+                actions={
                   <Link className="cm-btn" href="/me/experience">자세히 보기</Link>
-                </span>
-              </li>
+                } />
             ))}
             {apps.slice(0, HOME_RECENT).map((a) => (
-              <li key={a.id}>
-                <span className="cm-feed-ico t-2"><Icon name="send" size={15} /></span>
-                <p className="cm-feed-txt">
-                  <b>{a.org_name ?? a.role_label ?? "이름 없음"}</b>
-                  <small>{APPLY_SAY[a.state]}</small>
-                </p>
-                <span className="cm-feed-acts">
+              <RecordRow key={a.id} icon="send" tint="t-2"
+                title={a.org_name ?? a.role_label ?? "이름 없음"}
+                note={APPLY_SAY[a.state]}
+                actions={
                   <Link className="cm-btn" href="/me/apply">지원 기록</Link>
-                </span>
-              </li>
+                } />
             ))}
           </ul>
         </>
@@ -511,7 +410,15 @@ const APPLY_SAY: Record<string, string> = {
 /** 변화 줄의 표시. **값을 뜻하지 않는다**: 줄 넷이 한 덩이로 읽히지
  *  않게 하는 자리이고, 차례는 `recentChangeKo` 가 정한 것을 따른다 */
 const CHANGE_ICON: IconName[] = ["chart", "spark", "report"];
-const CHANGE_TINT = ["", " t-2", " t-3"];
+const CHANGE_TINT = ["", "t-2", "t-3"];
+
+/** 할 일이 없는 사람에게 적는 까닭 한 줄 */
+const NO_ACTION_WHY = "새 경험을 적으면 현재 상태가 다시 서고 그다음 할 일이"
+  + " 나옵니다.";
+
+/** 설명할 수 있는 영역이 아직 없을 때 묶음 머리 아래에 서는 줄 */
+const READY_NONE = "지원서에서 설명할 만한 경험이 아직 없습니다. 관심이 높은"
+  + " 영역에서 짧게 한 번 해 보는 것이 다음 걸음입니다.";
 
 /** 홈이 드는 줄 수. **요약이 세부를 대신하면 세부 쪽이 죽는다** */
 const HOME_ROWS = 3;

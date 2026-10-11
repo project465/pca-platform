@@ -61,7 +61,7 @@
  *   들어오는 길이 지금 무엇인지 적지 않으면 구글로 가입하신 분이
  *   비밀번호 찾기를 누르고 메일을 기다린다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V18";
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V19";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -361,6 +361,37 @@ export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.12";
  *    서고 날짜가 줄을 새로 연다. 홈이 1,846px 에서 1,617px 이다.
  * 8. 세로 밀도: 1440×900 에서 최근 기록의 첫 줄이 단추까지 선다.
  *    **정보를 줄이지 않았다.**
+ */
+
+/*
+ * `V19` 로 올린 까닭. **Visual System 을 한 자리로 모았다.**
+ *
+ * 화면을 하나씩 다시 디자인하는 일을 멈추고, 목표 화면과 승인된 홈이
+ * 쓰는 값과 조각을 **공통 체계**로 고정했다. 홈의 구조와 자료와 route 는
+ * 한 줄도 바뀌지 않았고, 그 사실을 쪽의 HTML 을 고치기 전과 후로 떠
+ * 글자로 견주어 확인했다.
+ *
+ * 1. **값을 쪽마다 적지 않는다**(규격 §2). 띠 폭과 글 폭과 머리 높이와
+ *    세로 리듬과 면과 글자와 선과 강조와 둥글기와 그림자와 활자가 전부
+ *    `src/app/workspace.tokens.css` 한 곳이다. `platform.css` 는 그
+ *    파일을 들여오고 class 이름만 든다.
+ * 2. **조각을 쪽마다 다시 적지 않는다**(규격 §3). 홈이 쓰던 markup 을
+ *    `src/app/me/ui.tsx` 로 옮겼다: `PrimaryActionHero` · `SectionHeader` ·
+ *    `SectionNote` · `DomainTile` · `ActivityRow` · `RecordRow` ·
+ *    `EmptyState`. 껍데기 여섯(`WorkspaceShell` · `WorkspaceSidebar` ·
+ *    `WorkspaceHeader` · `WorkspacePageTitle` · `MobileHeader` ·
+ *    `MobileBottomNav`)은 `./shell` 의 `CmShell` 과 `CmHead` 안에 이미
+ *    있어 **새로 만들지 않았다.** 같은 일을 하는 조각이 둘이면 띠가 두
+ *    벌이 된다.
+ * 3. **상표는 하나다**(규격 §4). 임시 아이콘과 generic square 와 글자
+ *    `CM` 을 쓰던 자리가 셋이었고 셋이 서로 달랐다. 출처를
+ *    `public/brand/careermatri/mark.svg` 파일 하나로 두고 띠 · 손전화
+ *    머리띠 · 로그인 · 검사 · 결과지가 전부 그 하나를 읽는다.
+ *
+ * **홈의 생김새는 상표 자리 말고 한 점도 바뀌지 않았다**(규격 §5).
+ * 승인된 캡처(`docs/metri/shots/home/`)와 견주면 Desktop 1440×900 은
+ * 띠의 상표와 그 옆 글자 자리만, Mobile 390 은 머리띠의 상표 30×30 만
+ * 다르고 쪽 높이가 글자까지 같다.
  */
 
 /*

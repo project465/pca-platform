@@ -193,12 +193,11 @@
   display: flex; align-items: center; gap: 10px;
   padding: 22px 20px 18px;
 }
-.sf-brand-mark {
-  width: 28px; height: 28px; border-radius: 8px; flex: 0 0 28px;
-  background: var(--sf-ink); color: #fff;
-  display: grid; place-items: center;
-  font-size: 13px; font-weight: 800; letter-spacing: -.02em;
-}
+/* **글자 두 자를 네모에 넣던 자리다.** 지금 서는 것은 공식 상표
+   파일 하나이고(`/brand/careermatri/mark.svg`), 그 뒤에 면을 깔지
+   않는다: 상표가 제 색을 들고 있어서 면을 한 겹 더 두면 상표가
+   아이콘처럼 그 안에 들어앉는다 */
+.sf-brand-mark { width: 28px; height: 28px; flex: 0 0 28px; display: block; }
 .sf-brand-name {
   font-size: 15px; font-weight: 700; color: var(--sf-ink);
   letter-spacing: -.015em; line-height: 1.25;

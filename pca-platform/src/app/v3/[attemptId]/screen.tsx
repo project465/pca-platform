@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
+import { BrandMark } from "@/components/sf/brand-mark";
 import { useRouter } from "next/navigation";
 import { UNKNOWN, type Answer } from "@/lib/me-v3/scoring/types";
 import type { GradField, Stage, UndergradCore } from "@/lib/me-v3/scoring/types";
@@ -218,7 +219,7 @@ export default function Screen({
       <header className="qs-head">
         <div className="qs-head-in">
           <div className="qs-top">
-            <span className="qs-brand">CareerMatri</span>
+            <span className="qs-brand"><BrandMark size={20} />CareerMatri</span>
             <span className="qs-crumb">
               {prog.prev ? <><span className="prev">{prog.prev}</span><i>›</i></> : null}
               <span className="now">{prog.now}</span>
