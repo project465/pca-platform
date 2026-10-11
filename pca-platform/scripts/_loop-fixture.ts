@@ -90,7 +90,10 @@ export async function makeStudent(login: string): Promise<{ id: string; pw: stri
   const row = await queryOne<{ id: string }>(
     `INSERT INTO users (login_id, email, display_name, password_hash,
                         status, locale, is_demo, must_reset_pw)
-     VALUES ($1,$1,'제품 루프 점검',$2,'active','ko',TRUE,FALSE) RETURNING id::text`,
+     /* **사람 이름 자리에 검사 이름을 적지 않는다.** 이 값은 쪽 머리의
+        계정 한 자리에 그대로 서고, 거기 검사 이름이 서면 찍은 그림에서
+        손님 화면이 내부 도구로 읽힌다. 지어낸 시험용 이름 하나다*/
+     VALUES ($1,$1,'홍길동',$2,'active','ko',TRUE,FALSE) RETURNING id::text`,
     [login, await hashPassword(pw)]);
   await query(
     `INSERT INTO memberships (user_id, org_id, role) VALUES ($1, NULL, 'student')

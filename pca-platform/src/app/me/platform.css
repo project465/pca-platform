@@ -12,7 +12,7 @@
  */
 
 .cm {
-  --cm-rail: 248px;
+  --cm-rail: 280px;
   --cm-max: 1120px;
   --cm-tab: 56px;          /* 손전화 아래 띠의 높이 */
   /**
@@ -38,7 +38,7 @@
    * 바탕을 `--sf-bg` 보다 한 단 더 파랗게 내리면 그 위의 흰 카드가
    * 떠 보이고, 그림자를 거의 쓰지 않고도 깊이가 생긴다.
    */
-  --cm-canvas-bg: #f2f5fa;
+  --cm-canvas-bg: #f5f7fb;
   --cm-card-sh: 0 1px 2px rgba(10, 27, 49, .04);
   min-height: 100%;
   background: var(--cm-canvas-bg);
@@ -90,7 +90,7 @@
    납작한 사각형이 아니라 눌러 만든 조각처럼 선다 */
 .cm-rail-mark {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 36px; height: 36px; flex: 0 0 auto; border-radius: 11px;
+  width: 38px; height: 38px; flex: 0 0 auto; border-radius: 50%;
   background: linear-gradient(145deg, #3b87e0 0%, #1b5aa8 100%);
   color: #fff;
   box-shadow:
@@ -100,19 +100,20 @@
 .cm-rail-mark > svg { width: 19px; height: 19px; }
 .cm-rail-name {
   display: block; min-width: 0;
-  font-weight: 700; font-size: 16.5px; letter-spacing: -.02em;
   color: var(--cm-rail-ink-on); line-height: 1.2;
 }
+.cm-rail-name > b { font-weight: 700; font-size: 17px; letter-spacing: -.02em; }
 /* **지금 어느 전공인지를 띠에 둔다.** 전공이 늘면 이 자리가 고르는
    자리가 된다. 없으면 사용자가 CareerMatri 를 검사 한 벌로 읽는다.
    **이름보다 한 단 아래다**: 둘이 같은 무게면 무엇이 제품 이름인지
    읽히지 않는다 */
+/* **알약으로 두지 않는다**(목표 화면). 알약은 상태나 등급을 적는
+   모양이라 전공 이름이 거기 들어가면 고를 수 있는 값으로 읽힌다.
+   이름 아래에 한 단 작고 옅은 글자로 선다 */
 .cm-rail-name small {
-  display: inline-flex; align-items: center;
-  margin-top: 5px; padding: 2px 7px; border-radius: 5px;
-  background: rgba(255, 255, 255, .09);
-  font-weight: 600; font-size: 11px; letter-spacing: 0;
-  color: #bed2ea;
+  display: block; margin-top: 3px;
+  font-weight: 500; font-size: 12px; letter-spacing: 0;
+  color: var(--cm-rail-ink);
 }
 .cm-rail-scroll {
   flex: 1 1 auto; min-height: 0; overflow-y: auto;
@@ -122,18 +123,20 @@
 /* 마지막 묶음(`기타`)은 **아래로 내린다**(규격 §1). Track 과 계정은
    날마다 누르는 줄이 아니라, 위의 세 묶음과 떨어져 서야 띠가 쌓인
    목록이 아니라 자리가 정해진 틀로 읽힌다 */
-.cm-rail-scroll > .cm-group:last-child {
-  margin-top: auto; padding-top: 16px;
-  border-top: 1px solid var(--cm-rail-line);
-}
+/* **맨 아래 묶음을 바닥에 붙이지 않는다**(목표 화면). 네 묶음이 위에서
+   아래로 이어 서고 남는 자리는 비운다. 바닥에 붙이고 금을 그으면 그
+   둘이 메뉴가 아니라 바닥 도구막대로 읽힌다 */
 
 /* **묶음 이름이 곧 section context 다.** 평평한 아홉 줄은 어디가
    `내 커리어` 인지 읽히지 않는다 */
 .cm-group { display: flex; flex-direction: column; gap: 2px; }
+/* 묶음 머리. **한글을 영문 머리글처럼 늘리지 않는다**(목표 화면):
+   대문자 변환은 한글에서 아무 일도 하지 않고 넓은 자간만 남아, 묶음
+   이름이 읽히는 말이 아니라 장식 띠가 된다 */
 .cm-group > h2 {
   margin: 0 0 7px; padding: 0 10px;
-  font-size: 10.5px; font-weight: 700; letter-spacing: .09em;
-  color: var(--cm-rail-ink); opacity: .45; text-transform: uppercase;
+  font-size: 12px; font-weight: 600; letter-spacing: 0;
+  color: var(--cm-rail-ink); opacity: .55;
 }
 
 /* **빽빽하게 둔다**(규격 §21). 아홉 줄이 한 뼘 안에 들어와야 눈이
@@ -159,18 +162,15 @@ a.cm-nav small {
 a.cm-nav:hover { background: rgba(255, 255, 255, .07); color: var(--cm-rail-ink-on); }
 /* 고른 줄(규격 §1). **면과 글자와 왼쪽 금 셋이 함께 들어간다**: 면만
    두었더니 어두운 바탕에서 그 줄이 눌려 있다는 것이 멀리서 안 읽혔다 */
+/* 고른 줄. **띠 안에서 한 단 밝은 면 하나다**(목표 화면): 강조색으로
+   칠하면 그 줄이 쪽에서 가장 센 자리가 되어 본문의 주된 단추와 겨룬다.
+   강조색은 누르는 자리에만 둔다 */
 a.cm-nav.is-on {
   position: relative;
-  background: linear-gradient(180deg, #2d6fc4 0%, #225fae 100%);
-  color: #fff; font-weight: 600;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, .17),
-    0 2px 6px rgba(0, 0, 0, .26);
+  background: #17375f; color: #fff; font-weight: 600;
 }
-a.cm-nav.is-on::before {
-  content: ""; position: absolute; left: -10px; top: 8px; bottom: 8px;
-  width: 3px; border-radius: 0 3px 3px 0; background: #6ea8ef;
-}
+/* **왼쪽 금을 두지 않는다**(목표 화면). 면 하나로 충분하고, 금까지
+   더하면 고른 줄이 둘로 말한다 */
 a.cm-nav.is-on > svg { opacity: 1; stroke-width: 1.9; }
 a.cm-nav.is-on small { color: #fff; opacity: .85; }
 a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
@@ -203,12 +203,19 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
   background: var(--sf-accent); color: #fff;
   font-size: var(--ui-t-cap); font-weight: 700;
 }
+/* 이름. **좁은 화면에서는 첫 글자만 남는다**: 1100 아래에서 이름이
+   서면 쪽 머리의 단추를 밀어낸다 */
+.cm-util-me > b {
+  font-size: 13.5px; font-weight: 600; color: var(--sf-ink-2);
+  max-width: 10ch; overflow: hidden; text-overflow: ellipsis;
+}
+@media (max-width: 1100px) { .cm-util-me > b { display: none; } }
 .cm-util-me > svg { color: var(--sf-ink-3); }
 @media (max-width: 900px) { .cm-utilrow { display: none; } }
 
 .cm-canvas {
   flex: 1 1 auto;
-  padding: 20px 24px calc(28px + var(--cm-tab));
+  padding: 16px 24px calc(28px + var(--cm-tab));
 }
 .cm-in { max-width: var(--cm-max); margin: 0 auto; }
 /* 적는 자리(규격 §17). 작업공간 1100 은 견주는 폭이고 폼은 그 폭에서
@@ -265,7 +272,12 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
   margin: 16px 0 0; font-size: 18px; font-weight: 700; color: var(--sf-ink);
   letter-spacing: -.015em;
 }
+/* 절 머리의 표시. **셋이 같은 파랑이면 절이 한 묶음으로 읽힌다**
+   (목표 화면은 절마다 다른 색을 쓴다). 색은 뜻을 갖지 않고 어디가 새
+   묶음의 시작인지만 가리킨다 */
 .cm-sh > svg { flex: 0 0 auto; color: var(--sf-accent); }
+.cm-sh.is-b > svg { color: #d4572e; }
+.cm-sh.is-c > svg { color: #4f4bb0; }
 .cm-sh > a {
   margin-left: auto; font-size: var(--ui-t-sub); font-weight: 600;
   color: var(--sf-accent-ink); text-decoration: none; white-space: nowrap;
@@ -364,7 +376,7 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
      둔다: 끄면 Hero 가 글만 담긴 상자가 되어 첫 화면의 중심이 흐려진다 */
   .cm-hero { display: block; }
   .cm-hero-art { float: right; margin: 2px -4px 10px 12px; }
-  .cm-hero-art svg { width: 124px; height: auto; }
+  .cm-hero-art svg { width: 106px; height: auto; }
   .cm-hero-acts { clear: both; }
 }
 @media (max-width: 1100px) and (min-width: 720px) { .cm-hero-art { display: none; } }
@@ -517,10 +529,10 @@ a.cm-feed-row:hover, .cm-feed > li:hover { background: #fafcfe; }
 /* 한 줄에 단추가 둘이면 **뒤엣것을 한 단 내린다**(규격 §5): 둘이 같은
    면이면 어느 쪽이 그 줄의 주된 길인지 고르는 일이 한 번 더 생긴다 */
 .cm-feed-acts .cm-btn.is-quiet {
-  background: transparent; border-color: #e2e8f1; color: var(--sf-ink-3);
-  font-weight: 500;
+  background: var(--sf-surface); border-color: #cfe0f6; color: var(--sf-accent-ink);
+  font-weight: 600;
 }
-.cm-feed-acts .cm-btn.is-quiet:hover { background: #f4f7fb; border-color: #d3dce8; color: var(--sf-ink-2); }
+.cm-feed-acts .cm-btn.is-quiet:hover { background: #f3f8fe; border-color: #b9d3f0; }
 /* 손전화(규격 §8). **표시와 글이 한 줄에 선다**: 표시를 제 줄에 두면
    줄 하나가 세 줄짜리 카드가 되고, 넷만 쌓여도 훑을 수 없다. 날짜와
    단추만 아래로 내려 글 왼쪽 끝에 맞춘다 */

@@ -48,15 +48,17 @@ function NavRow({ it, active }: { it: typeof CM_NAV[number]; active: string }) {
  * CareerMatri 에는 둘 다 없다. 눌러도 아무 일이 없는 칸을 두면 그것이
  * 가짜 기능이 된다. 지금 실제로 있는 것은 계정 한 자리다.
  *
- * **이름을 적지 않는다.** 로그인한 사람은 자기 이름을 이미 알고, 그
- * 글자가 쪽에서 가장 오른쪽 위에 서면 화면이 **누가 보고 있는지를 적는
- * 관리 도구**로 읽힌다. 서는 것은 첫 글자 한 자와 펼침 표시다.
+ * **목표 화면이 이름을 적는다.** 첫 글자 한 자만 서면 그 자리가 무엇을
+ * 여는 자리인지 눌러 보고서야 알고, 넓은 화면의 오른쪽 위는 계정으로
+ * 들어가는 길이 서는 자리다. 적는 것은 **로그인한 본인의 이름**이고
+ * 지어낸 값이 아니다. 좁은 화면에서는 첫 글자만 남는다.
  */
 function CmUtil({ name }: { name: string }) {
   const initial = name.trim().slice(0, 1) || "나";
   return (
     <Link className="cm-util-me" href="/my" aria-label="계정">
       <span className="cm-util-av" aria-hidden>{initial}</span>
+      <b>{name.trim() || "계정"}</b>
       <Icon name="chev" size={13} />
     </Link>
   );
@@ -103,7 +105,9 @@ export function CmShell({
           `산업·직무` 처럼 같은 자리가 화면마다 다른 이름으로 불린다 */}
       <div className="cm-topbar">
         <Link className="cm-topbar-brand" href="/me">CareerMatri</Link>
-        <span>{CM_NAV.find((n) => navOn(n.href, active))?.label ?? title ?? ""}</span>
+        {/* **지금 자리를 머리띠에 또 적지 않는다**(목표 화면 기준).
+            아래 띠가 그 줄을 켜서 이미 말하고 있고, 머리띠에 한 번 더
+            적으면 띠가 이름표 두 개를 든 웹사이트 머리글로 읽힌다 */}
         {/* **없는 기능을 그려 넣지 않는다**(규격 §9). 목표 화면의 알림
             자리에 서는 것은 실제로 열리는 계정 한 자리다 */}
         {who ? (
@@ -122,7 +126,7 @@ export function CmShell({
                 만들지 않고, 띠에 이미 쓰는 아이콘 하나를 면에 얹는다 */}
             <span className="cm-rail-mark" aria-hidden><Icon name="ladder" size={17} /></span>
             <span className="cm-rail-name">
-              CareerMatri
+              <b>CareerMatri</b>
               <small>{MAJOR}</small>
             </span>
           </Link>

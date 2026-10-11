@@ -356,7 +356,7 @@ export default async function Home() {
           {/* ── 최근 변화 (규격 §7) ── 줄 중심. 줄마다 카드를 만들지 않는다 */}
           {st.stage === "RECOMPUTED" || st.pending > 0 ? (
             <>
-              <h2 className="cm-sh">
+              <h2 className="cm-sh is-b">
                 <Icon name="bolt" size={18} />
                 최근 변화
                 <Link href="/me/state#changes">모두 보기 →</Link>
@@ -415,7 +415,7 @@ export default async function Home() {
           ) : null}
 
           {/* ── 최근 기록 (규격 §8) ── 굳은 결과 하나와 최근 경험 둘까지 */}
-          <h2 className="cm-sh">
+          <h2 className="cm-sh is-c">
             <Icon name="clock" size={18} />
             최근 기록
             <Link href="/me/results">모두 보기 →</Link>
