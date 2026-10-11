@@ -245,31 +245,41 @@ export default async function Home() {
             {/* 오른쪽의 가벼운 표시. **새 그림 파일을 만들지 않는다**
                 (규격 §5): 네모와 선과 동그라미뿐이고 값도 상태도 적지 않는다 */}
             <div className="cm-hero-art" aria-hidden>
-              <svg width="168" height="136" viewBox="0 0 168 136" fill="none">
+              <svg width="200" height="162" viewBox="0 0 200 162" fill="none">
                 {/* 흰 판 하나가 그림을 담는다. Hero 의 파란 면 위에서 한
                     단 떠 보이게 하는 자리라 **값도 상태도 적지 않는다** */}
-                <rect x="22" y="6" width="142" height="112" rx="16"
-                  fill="#fff" stroke="#dbe7f7" />
-                <rect x="40" y="22" width="106" height="82" rx="11"
-                  fill="#f3f8ff" stroke="#dde8f8" />
-                <rect x="74" y="14" width="38" height="15" rx="6"
+                <rect x="26" y="10" width="168" height="134" rx="18"
+                  fill="#fff" stroke="#d8e5f7" />
+                <rect x="48" y="30" width="124" height="98" rx="13"
+                  fill="#f4f9ff" stroke="#dde8f8" />
+                <rect x="88" y="21" width="44" height="17" rx="7"
                   fill="#dce9fa" stroke="#c6dbf3" />
-                {[38, 58, 78].map((y, i) => (
+                {[48, 72, 96].map((y, i) => (
                   <g key={y}>
-                    <rect x="51" y={y} width="14" height="14" rx="4"
+                    <rect x="61" y={y} width="17" height="17" rx="5"
                       fill="#dceafb" stroke="#bcd6f2" />
-                    <path d={`M54.5 ${y + 7}l2.6 2.6 4.6 -5`} stroke="#1c5fb0"
-                      strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
-                    <rect x="72" y={y + 4} width={i === 2 ? 36 : 58} height="6" rx="3"
-                      fill="#cfe0f5" />
+                    <path d={`M65 ${y + 8.5}l3.1 3.1 5.6 -6`} stroke="#1c5fb0"
+                      strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" />
+                    <rect x="86" y={y + 5} width={i === 2 ? 44 : 70} height="7" rx="3.5"
+                      fill={i === 2 ? "#dce7f6" : "#cfe0f5"} />
                   </g>
                 ))}
                 {/* 판의 왼쪽 아래 모서리에 **걸친** 동그라미 하나.
                     떨어져 서면 떠 있는 표시가 되고, 걸쳐야 두 면이 앞뒤로 선다 */}
-                <circle cx="38" cy="100" r="26" fill="#fff" />
-                <circle cx="38" cy="100" r="21" fill="#1c5fb0" />
-                <path d="M28.5 100l6.5 6.5 12.5 -13" stroke="#fff" strokeWidth="3.2"
+                <circle cx="44" cy="122" r="31" fill="#fff" />
+                <circle cx="44" cy="122" r="25" fill="url(#cmHeroG)" />
+                <path d="M33 122l7.5 7.5 14.5 -15.5" stroke="#fff" strokeWidth="3.6"
                   strokeLinecap="round" strokeLinejoin="round" />
+                {/* 거드는 모양 둘. 담긴 뜻이 없고 면의 깊이를 만든다 */}
+                <circle cx="186" cy="34" r="8" stroke="#c6dbf3" strokeWidth="2" />
+                <circle cx="16" cy="56" r="4.5" fill="#c6dbf3" />
+                <defs>
+                  <linearGradient id="cmHeroG" x1="19" y1="97" x2="69" y2="147"
+                    gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#2f7ad6" />
+                    <stop offset="1" stopColor="#1b5aa8" />
+                  </linearGradient>
+                </defs>
               </svg>
             </div>
             <div className="cm-hero-txt">
@@ -411,7 +421,7 @@ export default async function Home() {
             <Link href="/me/results">모두 보기 →</Link>
           </h2>
           <p className="cm-shsub">최근 검사 결과와 경험을 확인할 수 있습니다.</p>
-          <ul className="cm-feed">
+          <ul className="cm-feed is-rec">
             <li>
               <span className="cm-feed-ico"><Icon name="report" size={15} /></span>
               <p className="cm-feed-txt">
@@ -425,7 +435,9 @@ export default async function Home() {
                 </Link>
                 {/* **`Link` 로 걸지 않는다.** Next 가 화면에 들어온 `Link` 를
                     미리 불러오면서 종이를 한 벌씩 만들어 버린다 */}
-                <a className="cm-btn" href={`/v3/${st.model.attempt_id}/result/pdf`}>PDF</a>
+                <a className="cm-btn is-quiet" href={`/v3/${st.model.attempt_id}/result/pdf`}>
+                  PDF
+                </a>
               </span>
             </li>
             {exps.slice(0, HOME_RECENT).map((e) => (
