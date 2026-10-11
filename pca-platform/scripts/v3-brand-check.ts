@@ -65,8 +65,15 @@ async function main(): Promise<void> {
   const body = await res.text();
   say("공식 상표 파일이 내려온다", res.status() === 200 && body.includes("<path"),
     `${res.status()} · ${body.length}바이트`);
-  say("공식 상표가 잎 넷이다", (body.match(/<path/g) || []).length === 4,
-    `path ${(body.match(/<path/g) || []).length}개`);
+  /* **`<path>` 수를 세지 않는다.** 앞 판본은 그 수를 넷으로 못 박고
+     있었는데, 그러면 겹친 자리를 그리는 줄을 더하는 날 멀쩡한 상표가
+     걸린다. 세는 것은 **잎이 넷인가**와 **테를 두르지 않았는가**다 */
+  const leaves = (body.match(/data-leaf=/g) || []).length;
+  const laps = (body.match(/data-lap=/g) || []).length;
+  say("공식 상표가 잎 넷이다", leaves === 4, `잎 ${leaves}장`);
+  say("잎이 서로 겹친 자리가 넷이다", laps === 4, `겹친 자리 ${laps}곳`);
+  say("테도 stroke 도 두지 않는다", !/\bstroke=/.test(body),
+    /\bstroke=/.test(body) ? "stroke 있음" : "없음");
   await probe.close();
 
   const where: [string, string, boolean][] = [

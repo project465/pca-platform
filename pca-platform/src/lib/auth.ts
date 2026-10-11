@@ -8,6 +8,12 @@ import { identityFrom, oauthProviders } from "@/lib/auth-oauth";
 import { seal } from "@/lib/oauth-pending";
 import { LINK_COOKIE, openIntent } from "@/lib/oauth-link-intent";
 import { linkAccount } from "@/lib/auth-accounts";
+import {
+  clientIpFrom,
+  loginFailed,
+  loginGate,
+  loginSucceeded,
+} from "@/lib/login-throttle";
 
 type UserRow = {
   id: string;
@@ -45,6 +51,24 @@ async function loadMemberships(userId: string): Promise<Membership[]> {
     .map((r) => ({ orgId: r.org_id, role: r.role as Role }));
 }
 
+/**
+ * 이 요청이 온 자리.
+ *
+ * `next/headers` 를 위에서 들여오지 않고 그 자리에서 부른다: 이 파일은
+ * 요청 밖(스크립트·빌드)에서도 읽히고, 그때 `headers()` 는 던진다.
+ * 못 읽으면 `unknown` 한 칸으로 모이는데 **그래도 아이디별 셈은 그대로
+ * 돈다**(열쇠가 IP 와 아이디를 함께 쓰므로).
+ */
+async function requestIp(): Promise<string> {
+  try {
+    const h = await (await import("next/headers")).headers();
+    return clientIpFrom(h);
+  } catch {
+    /* 요청 밖에서 불린 것이다. 삼키는 것이 맞고, 그래도 막는 일은 돈다 */
+    return "unknown";
+  }
+}
+
 export const authConfig: NextAuthConfig = {
   session: { strategy: "jwt", maxAge: 60 * 60 * 8 },
   pages: { signIn: "/login" },
@@ -63,6 +87,21 @@ export const authConfig: NextAuthConfig = {
         const password = String(raw?.password ?? "");
         if (!identifier || !password) return null;
 
+        /**
+         * **시도 제한은 여기서 막는다.**
+         *
+         * 여기에 두는 까닭은 `/api/auth/callback/credentials` 를 직접
+         * 두드리는 쪽이 화면을 거치지 않기 때문이다. 그리고
+         * **비밀번호를 비교하기 전에** 묻는다: 잠긴 동안에도 해시를
+         * 계산하면 찍는 쪽이 우리 CPU 를 그만큼 쓴다.
+         *
+         * 막혔으면 `null` 이다. 틀린 비밀번호와 **응답이 같아서**
+         * 안쪽 셈도 남은 시간도 여기서 새지 않고, 사람에게 하는 말은
+         * 로그인 화면이 같은 모듈에 물어서 정한다.
+         */
+        const ip = await requestIp();
+        if (!loginGate(ip, identifier).ok) return null;
+
         const user = await findUserByIdentifier(identifier);
         // 존재하지 않는 계정도 같은 시간이 걸리도록 비교는 항상 수행한다.
         const hash =
@@ -70,9 +109,16 @@ export const authConfig: NextAuthConfig = {
           "$2a$12$0000000000000000000000000000000000000000000000000000";
         const ok = await verifyPassword(password, hash);
 
-        if (!user || !ok) return null;
+        /* **없는 아이디도 똑같이 센다.** 있는 계정에서만 잠기면 "잠겼다"
+           는 응답이 그 아이디가 있다는 답이 된다 */
+        if (!user || !ok) {
+          loginFailed(ip, identifier);
+          return null;
+        }
+        /* 정지·파기된 계정은 찍어서 맞힌 것이 아니므로 셈에 넣지 않는다 */
         if (user.status !== "active") return null;
 
+        loginSucceeded(ip, identifier);
         await query(`UPDATE users SET last_login_at = now() WHERE id = $1`, [user.id]);
         return { id: user.id, name: user.display_name };
       },

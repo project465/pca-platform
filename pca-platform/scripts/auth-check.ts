@@ -38,6 +38,9 @@ import {
   type ProviderIdentity,
 } from "../src/lib/auth-accounts";
 import { identityFrom, isPrivateRelay } from "../src/lib/auth-oauth";
+import {
+  clientIpFrom, loginFailed, loginGate, loginSucceeded, resetLoginThrottle,
+} from "../src/lib/login-throttle";
 import { open as openPending, seal } from "../src/lib/oauth-pending";
 import { openIntent, sealIntent } from "../src/lib/oauth-link-intent";
 import { safeNext } from "../src/lib/safe-next";
@@ -309,6 +312,71 @@ async function main(): Promise<void> {
     gone.kind === "linked" && gone.status === "erased"
     && /status !== "active"/.test(L_FILES.auth) && /account_inactive/.test(L_FILES.auth),
     gone.kind === "linked" ? gone.status : gone.kind);
+
+
+  /**
+   * ── 16. **로그인 시도 제한 — 일곱 가지** ──────────────────────
+   *
+   * 15절이 "잠기지 않는가" 를 셌고 여기는 그 반대쪽이다: **찍는 쪽을
+   * 막는가.** 둘을 같이 세는 까닭은 한쪽으로만 조이면 반드시 다른 쪽이
+   * 틀리기 때문이다 — 전부 막으면 산 사람도 못 들어오고, 안 막으면
+   * 학과가 나눠 준 계정이 규칙이 비슷해 그만큼 위험하다.
+   *
+   * DB 를 쓰지 않는다. 셈이 과정의 메모리에 있어서 시각만 넘겨 주면
+   * 15분 뒤를 그 자리에서 볼 수 있다.
+   */
+  resetLoginThrottle();
+  const T0 = Date.UTC(2026, 9, 11, 9, 0, 0);
+  const ipA = "203.0.113.7", ipB = "203.0.113.8";
+
+  ok("⑯-1 틀리기 전에는 막지 않는다", loginGate(ipA, "s2026001", T0).ok, "열림");
+
+  for (let i = 0; i < 4; i++) loginFailed(ipA, "s2026001", T0 + i * 1000);
+  ok("⑯-2 네 번 틀려도 아직 열려 있다",
+    loginGate(ipA, "s2026001", T0 + 5000).ok, "4회 → 열림");
+
+  loginFailed(ipA, "s2026001", T0 + 5000);
+  const locked = loginGate(ipA, "s2026001", T0 + 6000);
+  ok("⑯-3 다섯 번째에 잠긴다",
+    !locked.ok && locked.retryAfterSec > 0 && locked.retryAfterSec <= 60,
+    locked.ok ? "열림" : `${locked.retryAfterSec}초`);
+
+  /* **다른 사람까지 잠그지 않는다.** 학교 실습실은 한 IP 를 여럿이
+     나눠 쓴다. 옆자리가 틀렸다고 내가 못 들어가면 그 수업이 멈춘다 */
+  ok("⑯-4 같은 자리의 다른 아이디는 그대로 열려 있다",
+    loginGate(ipA, "s2026002", T0 + 6000).ok, "열림");
+
+  ok("⑯-5 잠금이 풀리면 다시 들어올 수 있다",
+    loginGate(ipA, "s2026001", T0 + 61_000 + 6000).ok, "61초 뒤 열림");
+
+  /* **없는 아이디도 똑같이 센다.** 있는 계정에서만 잠기면 "잠겼다" 는
+     응답이 그 아이디가 있다는 답이 된다 */
+  resetLoginThrottle();
+  for (let i = 0; i < 5; i++) loginFailed(ipB, "없는아이디9999", T0 + i * 1000);
+  const ghost = loginGate(ipB, "없는아이디9999", T0 + 6000);
+  ok("⑯-6 없는 아이디도 같은 자리에서 잠긴다 (존재 여부가 새지 않는다)",
+    !ghost.ok, ghost.ok ? "열림" : `${ghost.retryAfterSec}초`);
+
+  /* 맞힌 사람의 셈은 지운다. 다음 날 네 번만 틀려도 잠기면 안 된다 */
+  resetLoginThrottle();
+  for (let i = 0; i < 4; i++) loginFailed(ipA, "s2026003", T0 + i * 1000);
+  loginSucceeded(ipA, "s2026003", T0 + 5000);
+  for (let i = 0; i < 4; i++) loginFailed(ipA, "s2026003", T0 + 6000 + i * 1000);
+  ok("⑯-7 성공하면 실패 셈이 0 으로 돌아간다",
+    loginGate(ipA, "s2026003", T0 + 11_000).ok, "4+4회 → 열림");
+
+  /* 앞단이 붙인 자리를 읽는다. 맨 앞 칸이 손님이고 뒤는 거쳐 온 앞단이다 */
+  ok("⑯-8 요청이 온 자리를 x-forwarded-for 에서 읽는다",
+    clientIpFrom(new Headers({ "x-forwarded-for": "1.2.3.4, 10.0.0.1" })) === "1.2.3.4"
+    && clientIpFrom(new Headers({})) === "unknown",
+    clientIpFrom(new Headers({ "x-forwarded-for": "1.2.3.4, 10.0.0.1" })));
+
+  /* 막는 자리가 서버인가. 화면에서 단추를 꺼 두는 것은 안내다 */
+  ok("⑯-9 막는 자리가 `authorize()` 안이다",
+    /loginGate\(ip, identifier\)/.test(L_FILES.auth)
+    && /loginFailed\(ip, identifier\)/.test(L_FILES.auth),
+    "src/lib/auth.ts");
+  resetLoginThrottle();
 
   /* ── 14. 정지된 계정 ───────────────────────────────────────── */
   await query(`UPDATE users SET status = 'suspended' WHERE id = $1`, [u1]);
