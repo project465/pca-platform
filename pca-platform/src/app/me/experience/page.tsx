@@ -32,13 +32,13 @@ export default async function Experiences() {
   ]);
 
   return (
-    <CmShell active="/me/experience" title="경험">
+    <CmShell active="/me/experience" title="경험"
+      bar={<Link className="cm-btn is-primary" href="/me/experience/new">새 경험 추가</Link>}>
       <CmHead
-        kicker="경험 기록"
-        title="적어 둔 경험"
-        lead={"수업과 캡스톤과 연구와 인턴에서 직접 정한 것을 적어 둡니다. "
-          + "현재 상태에 더할 때 이 기록이 근거로 들어갑니다."}
-        actions={<Link className="cm-btn is-primary" href="/me/experience/new">새 경험 추가</Link>}
+        title="경험"
+        lead="적어 둔 것이 현재 상태에 더할 때 근거로 들어갑니다."
+        actions={<Link className="cm-btn is-primary" href="/me/experience/new">+ 새 경험 추가</Link>}
+        narrowActions
       />
 
       {pending > 0 ? (
@@ -59,93 +59,95 @@ export default async function Experiences() {
           더할 수 있습니다.
         </div>
       ) : (
-        <div className="cm-snaps">
-          {rows.map((e) => {
-            /* 날짜는 **겪은 때**가 먼저다. 안 적으셨으면 적어 둔 날로
-               적고, 둘을 섞어 한 칸에 두므로 어느 쪽인지 밑에 적는다 */
-            const at = e.started_on ?? e.created_at.slice(0, 10);
-            const tds = e.td_codes.map((c) => domainName(c));
-            const picks: [string, string[]][] = [
-              ["문제로 잡은 것", e.problems ?? []],
-              ["직접 정한 것", e.decisions],
-              ["남긴 것", e.artifacts],
-              ["비교해 확인한 것", e.verifications],
-              ["쓰인 곳", e.used_where ?? []],
-            ];
-            const any = picks.some(([, v]) => v.length);
-            return (
-              <article className="cm-snap" key={e.id}>
-                <div className="cm-snap-date">
-                  <b>{at.slice(5)}</b>
-                  <small>{at.slice(0, 4)}</small>
-                </div>
-                <div className="cm-snap-body">
-                  <h3>
-                    {e.title}
-                    <span className="cm-lockmark">{KIND.get(e.kind) ?? "경험"}</span>
-                  </h3>
-                  {/* 연결된 기술영역. **고르지 않으셨으면 그 사실을
-                      적는다**: 그 경우 이 경험은 판단으로 가지 않는다 */}
-                  {tds.length ? (
-                    <div className="cm-chips">
-                      {tds.map((n) => <span className="cm-chip" key={n}>{n}</span>)}
-                    </div>
-                  ) : (
-                    <p className="cm-none">
-                      기술영역을 고르지 않으셔서 아직 어느 판단으로도 가지
-                      않았습니다.
-                    </p>
-                  )}
-                  {/* 반영 여부. **`반영됨` 이 `판정이 올라갔다` 는 뜻은
-                      아니다**: 함께 세어졌다는 것까지다 */}
-                  <p className="cm-none">
-                    {done.has(e.id)
-                      ? "현재 상태에 더함"
-                      : "아직 더하지 않음 · 더하면 현재 상태에 들어갑니다"}
-                    {e.started_on ? "" : " · 날짜는 적어 둔 날입니다"}
-                  </p>
-
-                  {/* **상세는 눌러서 본다**(규격 §14). 고른 항목을 늘
-                      펼쳐 두면 경험 하나가 쪽 한 뼘을 먹고, 경험이 다섯만
-                      되어도 목록을 훑을 수 없다 */}
-                  <details className="cm-fold">
-                    <summary>자세히 보기</summary>
-                    <div className="cm-rows">
-                      {any ? picks.filter(([, v]) => v.length).map(([label, v]) => (
-                        <p className="cm-row" key={label}>
-                          <b>{label}</b>
-                          <span>{v.join(" · ")}</span>
-                        </p>
-                      )) : (
-                        <p className="cm-row">
-                          <span>고른 항목 없이 제목만 적어 두셨습니다.</span>
-                        </p>
-                      )}
-                      {e.ended_on ? (
-                        <p className="cm-row">
-                          <b>끝난 달</b><span>{e.ended_on.slice(0, 7)}</span>
-                        </p>
-                      ) : null}
-                      {e.note_text ? (
-                        <p className="cm-row">
-                          <b>기억해 둘 한 줄</b><span>{e.note_text}</span>
-                        </p>
-                      ) : null}
-                    </div>
-                    <div className="cm-acts" style={{ marginTop: 12 }}>
-                      {/* **지우기를 줄 머리에 두지 않는다**: 훑는 자리에서
-                          가장 되돌리기 어려운 단추가 가장 먼저 눌린다 */}
-                      <form action={dropExperience}>
-                        <input type="hidden" name="id" value={e.id} />
-                        <button className="cm-btn" type="submit">이 기록 지우기</button>
-                      </form>
+        <>
+          <p className="cm-listhead">
+            적어 둔 경험<em>{rows.length}건</em>
+          </p>
+          {/**
+            * **줄로 쌓는다**(규격 §5·§10).
+            *
+            * 전에는 경험 하나가 큰 카드였고 왼쪽에 날짜 칸이 따로 섰다.
+            * 그러면 다섯 건만 되어도 목록을 훑을 수 없고, 쌓이는 자리가
+            * 아니라 **기록 카드를 모아 둔 쪽**으로 읽힌다. 한 줄에 다섯을
+            * 적고 자세한 것은 눌러서 편다.
+            */}
+          <ul className="cm-list">
+            {rows.map((e) => {
+              /* 날짜는 **겪은 때**가 먼저다. 안 적으셨으면 적어 둔 날이다 */
+              const at = e.started_on ?? e.created_at.slice(0, 10);
+              const tds = e.td_codes.map((c) => domainName(c));
+              const picks: [string, string[]][] = [
+                ["문제로 잡은 것", e.problems ?? []],
+                ["직접 정한 것", e.decisions],
+                ["남긴 것", e.artifacts],
+                ["비교해 확인한 것", e.verifications],
+                ["쓰인 곳", e.used_where ?? []],
+              ];
+              const any = picks.some(([, v]) => v.length);
+              const on = done.has(e.id);
+              return (
+                <li className="cm-item" key={e.id}>
+                  <details>
+                    <summary>
+                      <span className="cm-item-t">
+                        <b>{e.title}</b>
+                        <em>{KIND.get(e.kind) ?? "경험"}</em>
+                      </span>
+                      <span className="cm-item-meta">
+                        {/* **반영 여부가 이 줄에서 가장 쓸모 있는 값이다**:
+                            더하지 않은 경험은 현재 상태에 아직 없다 */}
+                        <span className={`cm-dot${on ? " is-on" : ""}`}>
+                          {on ? "현재 상태에 더함" : "아직 더하지 않음"}
+                        </span>
+                        <time dateTime={at}>{at.slice(0, 7)}</time>
+                      </span>
+                      {/* 연결된 기술영역. **고르지 않으셨으면 그 사실을
+                          적는다**: 그 경우 이 경험은 판단으로 가지 않는다 */}
+                      <span className="cm-item-sub">
+                        {tds.length
+                          ? tds.join(" · ")
+                          : "기술영역을 고르지 않으셔서 아직 어느 판단으로도 가지 않았습니다"}
+                        {e.started_on ? "" : " · 날짜는 적어 둔 날입니다"}
+                      </span>
+                    </summary>
+                    <div className="cm-item-more">
+                      <div className="cm-rows">
+                        {any ? picks.filter(([, v]) => v.length).map(([label, v]) => (
+                          <p className="cm-row" key={label}>
+                            <b>{label}</b>
+                            <span>{v.join(" · ")}</span>
+                          </p>
+                        )) : (
+                          <p className="cm-row">
+                            <span>고른 항목 없이 제목만 적어 두셨습니다.</span>
+                          </p>
+                        )}
+                        {e.ended_on ? (
+                          <p className="cm-row">
+                            <b>끝난 달</b><span>{e.ended_on.slice(0, 7)}</span>
+                          </p>
+                        ) : null}
+                        {e.note_text ? (
+                          <p className="cm-row">
+                            <b>기억해 둘 한 줄</b><span>{e.note_text}</span>
+                          </p>
+                        ) : null}
+                      </div>
+                      <div className="cm-acts">
+                        {/* **지우기를 줄 머리에 두지 않는다**: 훑는 자리에서
+                            가장 되돌리기 어려운 단추가 가장 먼저 눌린다 */}
+                        <form action={dropExperience}>
+                          <input type="hidden" name="id" value={e.id} />
+                          <button className="cm-btn" type="submit">이 기록 지우기</button>
+                        </form>
+                      </div>
                     </div>
                   </details>
-                </div>
-              </article>
-            );
-          })}
-        </div>
+                </li>
+              );
+            })}
+          </ul>
+        </>
       )}
     </CmShell>
   );

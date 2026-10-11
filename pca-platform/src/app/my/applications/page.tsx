@@ -22,7 +22,7 @@ export default async function MyApplications({
   const T = txer(L);
   return (
     <CmShell active="/my" title={T("navApplications")}>
-      <CmHead kicker="계정" title={T("navApplications")} lead={T("myApplicationsSoon")} />
+      <CmHead title={T("navApplications")} lead={T("myApplicationsSoon")} />
       <section className="cm-card is-empty is-wide">
         <h2>{T("notOpenTitle")}</h2>
         <p>{T("notOpenBody")}</p>

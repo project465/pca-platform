@@ -73,7 +73,10 @@ async function main(): Promise<void> {
     /* ── 1. 홈의 주된 단추가 다음 쪽을 연다 ─────────────────────── */
     console.log("\n── 1. 홈의 주된 단추");
     await p.goto(`${B}/me`, { waitUntil: "networkidle" });
-    const mains = await p.locator(".cm-btn.is-primary").count();
+    /* **화면에 서 있는 것만 센다.** 쪽 머리의 단추 가운데는 띠가 같은
+       단추를 들고 있어 넓은 화면에서 꺼지는 것이 있다(`.cm-acts.is-narrow`).
+       DOM 으로 세면 꺼져 있는 단추가 걸려 **멀쩡한 화면이 걸린다** */
+    const mains = await p.locator(".cm-btn.is-primary:visible").count();
     ok("홈에 짙은 단추가 하나다", mains === 1, `${mains}개`);
     const href = await p.locator(".cm-btn.is-primary").first()
       .getAttribute("href").catch(() => null);
@@ -116,7 +119,7 @@ async function main(): Promise<void> {
     const empties: string[] = [];
     for (const path of PAGES) {
       await p.goto(B + path, { waitUntil: "networkidle" });
-      const n = await p.locator(".cm-btn.is-primary").count();
+      const n = await p.locator(".cm-btn.is-primary:visible").count();
       if (n > 1) many.push(`${path}:${n}`);
       /* 머리글만 있고 속이 빈 칸. **점선 테두리에 `아직 없습니다` 만
          적힌 칸이 넷까지 서면** 읽는 사람은 결과가 덜 만들어진 줄 안다 */

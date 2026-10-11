@@ -35,7 +35,6 @@ export default async function Apply() {
   return (
     <CmShell active="/me/apply" title="지원한 곳">
       <CmHead
-        kicker="지원 관리"
         title="직접 지원하신 곳"
         lead={"지원은 본인이 직접 하시고 여기에는 그 사실만 적습니다. "
           + "적어 두신 기업 이름은 본인에게만 보이고 1년이 지나면 지웁니다."}

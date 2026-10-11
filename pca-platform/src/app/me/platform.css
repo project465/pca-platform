@@ -12,9 +12,10 @@
  */
 
 .cm {
-  --cm-rail: 236px;
+  --cm-rail: 228px;
   --cm-max: 1100px;
   --cm-tab: 56px;          /* 손전화 아래 띠의 높이 */
+  --cm-bar: 52px;          /* 작업공간 띠의 높이 */
   min-height: 100%;
   background: var(--sf-bg);
   color: var(--sf-ink-2);
@@ -28,27 +29,41 @@
    띠가 없어 드러나지 않는 탈이라 캡처에서만 보인다 */
 .cm-wrap { display: flex; align-items: stretch; min-height: calc(100vh - var(--stg-h, 0px)); }
 
+/**
+ * 왼쪽 띠는 **chrome 이고 본문은 canvas 다**(규격 §1·§21).
+ *
+ * 전에는 띠가 흰 면이고 본문이 회색 면이라, 넓은 화면에서 **본문 쪽이
+ * 배경처럼** 읽혔다. 띠를 한 단 가라앉히고 오른쪽 선을 세우면 그
+ * 관계가 뒤집힌다: 띠는 늘 거기 있는 틀이고 작업은 오른쪽에서 한다.
+ */
 .cm-rail {
   flex: 0 0 var(--cm-rail);
   border-right: 1px solid var(--sf-line);
-  background: var(--sf-surface);
-  padding: 20px 14px
-    calc(20px + var(--stg-h, 0px) + env(safe-area-inset-bottom, 0px));
+  background: var(--sf-surface-2);
+  padding: 0 12px
+    calc(16px + var(--stg-h, 0px) + env(safe-area-inset-bottom, 0px));
   display: flex; flex-direction: column; gap: 4px;
+  position: sticky; top: 0; align-self: flex-start;
+  height: calc(100vh - var(--stg-h, 0px));
 }
+/* 띠의 머리. **본문 띠와 같은 높이로 맞춘다**: 둘이 어긋나면 브랜드와
+   쪽 이름이 반 줄씩 비껴 서서 틀이 두 겹으로 읽힌다 */
 .cm-rail-brand {
-  display: block; font-weight: 700; font-size: var(--ui-t-body); color: var(--sf-ink);
-  text-decoration: none; padding: 6px 10px 14px;
+  display: flex; flex-direction: column; justify-content: center;
+  min-height: var(--cm-bar); margin: 0 -12px 10px; padding: 0 22px;
+  border-bottom: 1px solid var(--sf-line);
+  font-weight: 700; font-size: var(--ui-t-body); color: var(--sf-ink);
+  text-decoration: none;
 }
 /* **지금 어느 전공인지를 띠에 둔다.** 전공이 늘면 이 자리가 고르는
    자리가 된다. 없으면 사용자가 CareerMatri 를 검사 한 벌로 읽는다 */
 .cm-rail-brand small {
   display: block; font-weight: 600; font-size: var(--ui-t-cap); color: var(--sf-accent-ink);
-  margin-top: 4px;
+  margin-top: 1px;
 }
 .cm-rail-scroll {
   flex: 1 1 auto; min-height: 0; overflow-y: auto;
-  display: flex; flex-direction: column; gap: 14px;
+  display: flex; flex-direction: column; gap: 16px;
 }
 
 /* **묶음 이름이 곧 section context 다.** 평평한 아홉 줄은 어디가
@@ -60,11 +75,14 @@
   color: var(--sf-ink-3); text-transform: none;
 }
 
+/* **빽빽하게 둔다**(규격 §21). 아홉 줄이 한 뼘 안에 들어와야 눈이
+   목록 전체를 한 번에 잡고, 그래야 띠가 메뉴가 아니라 제품의 틀로
+   읽힌다. 누르는 자리는 36px 로 유지한다 */
 a.cm-nav {
   display: flex; align-items: center; gap: 10px;
-  padding: 8px 10px; border-radius: var(--ui-r-sm);
+  padding: 6px 10px; border-radius: var(--ui-r-sm);
   color: var(--sf-ink-2); text-decoration: none; font-size: var(--ui-t-sub);
-  min-height: 40px;
+  min-height: 36px;
 }
 a.cm-nav > svg { flex: 0 0 auto; }
 a.cm-nav > span { display: block; min-width: 0; }
@@ -81,55 +99,68 @@ a.cm-nav.is-on {
 a.cm-nav.is-on small { color: var(--sf-accent-ink); opacity: .8; }
 a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2px; }
 
-.cm-main {
-  flex: 1 1 auto; min-width: 0;
-  padding: 28px 24px calc(28px + var(--cm-tab));
+.cm-main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+
+/**
+ * 작업공간 띠(규격 §1·§15).
+ *
+ * **쪽을 옮겨도 같은 자리에 같은 줄이 선다.** 들고 있는 것은 지금 어느
+ * 줄에 있는가와 어느 전공인가와 이 쪽의 한 가지다. 넓은 화면에서는
+ * 붙어 있어(`sticky`) 아래로 내려가도 지금 자리가 사라지지 않는다.
+ */
+.cm-bar {
+  position: sticky; top: 0; z-index: 20;
+  background: var(--sf-surface); border-bottom: 1px solid var(--sf-line);
+}
+.cm-bar-in {
+  display: flex; align-items: center; gap: 14px;
+  min-height: var(--cm-bar); padding: 0 24px;
+}
+.cm-bar-where {
+  display: flex; align-items: center; gap: 8px; margin: 0; min-width: 0;
+  font-size: var(--ui-t-sub); color: var(--sf-ink-3);
+}
+.cm-bar-where > svg { flex: 0 0 auto; color: var(--sf-ink-3); }
+.cm-bar-where b {
+  color: var(--sf-ink); font-weight: 700;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+/* 전공은 **거드는 한 마디**다. 쪽마다 큰 글씨로 다시 적으면 그 글자가
+   화면에서 가장 자주 읽히는 말이 된다 */
+.cm-bar-where span {
+  padding-left: 9px; border-left: 1px solid var(--sf-line);
+  font-size: var(--ui-t-cap); white-space: nowrap;
+}
+.cm-bar-acts { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.cm-bar-acts .cm-btn { min-height: 34px; padding: 0 12px; font-size: var(--ui-t-cap); }
+@media (max-width: 719px) { .cm-bar { display: none; } }
+
+.cm-canvas {
+  flex: 1 1 auto;
+  padding: 26px 24px calc(28px + var(--cm-tab));
 }
 .cm-in { max-width: var(--cm-max); margin: 0 auto; }
 /* 적는 자리(규격 §17). 작업공간 1100 은 견주는 폭이고 폼은 그 폭에서
    이름표와 입력칸이 화면 양 끝으로 벌어진다 */
 .cm-in.is-form { max-width: 840px; }
 /**
- * 읽고 **한 가지를 누르는** 자리(규격 §30).
+ * 읽고 **한 가지를 하는 쪽**(규격 §16·§17).
  *
- * 작업공간의 기본 폭 1100 은 열두 영역을 견주고 훑는 폭이다. 할 일 한
- * 장이나 준비 중 안내처럼 담긴 글이 몇 줄뿐인 쪽을 그 폭에 세우면, 쪽의
- * 오른쪽 절반이 통째로 비어 **덜 그린 화면**으로 읽힌다. 고치는 방법은
- * 없는 내용을 채워 넣는 것이 아니라 글이 서는 폭을 줄이는 것이다.
+ * 한동안 이 쪽들을 세로로 가운데에 세웠다. 1440 에서 첫 창이 반쯤 비는
+ * 것을 막으려던 것인데, 그러면 담긴 글이 **빈 바탕 위에 뜬 안내창**으로
+ * 읽힌다. 작업공간의 쪽은 위에서 시작한다: 지금은 꼭대기에 띠가 있어서
+ * 짧은 쪽도 같은 제품의 한 화면으로 선다.
+ *
+ * **고치는 방법은 정보를 더 넣는 것이 아니다**(규격 §16): 글이 서는
+ * 폭과 세로 리듬으로 푼다.
  */
+.cm-in.is-read { max-width: 820px; }
 /**
- * 읽고 **한 가지를 하는 쪽**(규격 §30·§31).
+ * 아직 켜지지 않은 자리(규격 §24).
  *
- * 880px 으로 꼭대기부터 그렸더니 1440 에서 `다음 할 일` 의 첫 창이 54% 만
- * 찼다. **해결은 정보를 더 넣는 것이 아니다**: 할 일을 둘 더 펼치면 이
- * 쪽이 약속한 `한 가지` 가 사라진다. 읽는 폭으로 모으고 세로로 가운데에
- * 세워 위아래 빈 면을 고르게 나눈다.
- *
- * **담긴 글이 길면 저절로 꺼진다**: `min-height` 보다 커지면 상자가 늘고
- * 가운데 맞춤은 할 일이 없어진다. 짧은 쪽만 올라오고 긴 쪽은 그대로다.
+ * **빈 카드를 만들어 채우지 않는다.** 있는 글을 읽는 폭으로 모은다.
  */
-.cm-in.is-read {
-  max-width: 760px;
-  /* `.cm-main` 의 위아래 여백을 전부 뺀 창 높이. 그래야 가운데 맞춤이
-     실제로 가운데가 되고, **쪽이 창보다 길어지지 않는다**: 아래 여백에
-     손전화 띠 자리(`--cm-tab`)가 늘 들어 있어 그것을 빼지 않으면 짧은
-     쪽에 세로 스크롤이 생긴다 */
-  min-height: calc(100vh - 56px - var(--cm-tab));
-  display: flex; flex-direction: column; justify-content: center;
-}
-@media (max-width: 719px) { .cm-in.is-read { min-height: 0; display: block; } }
-/**
- * 아직 켜지지 않은 자리(규격 §18).
- *
- * **빈 카드를 만들어 채우지 않는다.** 담긴 글이 몇 줄뿐인 쪽을 꼭대기부터
- * 그리면 아래 절반이 통째로 비고, 그 빈 면이 덜 만들어진 화면으로 읽힌다.
- * 있는 글을 읽는 폭으로 모아 가운데에 세운다.
- */
-.cm-in.is-hold {
-  max-width: 640px; min-height: 56vh;
-  display: flex; flex-direction: column; justify-content: center;
-}
-@media (max-width: 719px) { .cm-in.is-hold { min-height: 0; } }
+.cm-in.is-hold { max-width: 680px; }
 
 /* ── 쪽 머리 ──────────────────────────────────────────────────────── */
 
@@ -273,6 +304,10 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 /* ── 단추 ─────────────────────────────────────────────────────────── */
 
 .cm-acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px; }
+/* 띠가 들고 있는 단추를 쪽 머리에서 한 번 더 세우지 않는다(규격 §15).
+   손전화에는 띠가 없으므로 그때만 선다 */
+.cm-acts.is-narrow { display: none; }
+@media (max-width: 719px) { .cm-acts.is-narrow { display: flex; } }
 .cm-btn {
   display: inline-flex; align-items: center; justify-content: center;
   min-height: 40px; padding: 0 16px; border-radius: var(--ui-r-sm);
@@ -551,8 +586,9 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
   .cm-rail { display: none; }
   /* 아래 띠와 공개 전 띠 높이만큼 본문 아래를 비운다. 마지막 단추가
      띠에 덮이면 다 읽은 사람이 거기서 멈춘다 */
-  .cm-main {
-    padding: 20px 16px
+  .cm-main { padding: 0; }
+  .cm-canvas {
+    padding: 18px 16px
       calc(24px + var(--cm-tab) + var(--stg-h, 0px) + env(safe-area-inset-bottom, 0px));
   }
   .cm-h1 { font-size: var(--ui-t-section); }
@@ -669,6 +705,104 @@ a.cm-nav:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2p
 .cm-live-note { margin: 0; font-size: var(--ui-t-cap); color: var(--sf-ink-3); }
 
 /* 굳은 기록 */
+/* ── 작업공간 목록 ────────────────────────────────────────────────
+ *
+ * 경험 · 결과 기록 · 산업과 직무가 **같은 모양의 줄**로 선다(규격 §21).
+ *
+ * 전에는 셋 다 카드였다. 카드 하나가 200px 쯤이라 경험이 다섯만 되어도
+ * 목록을 훑을 수 없고, 무엇보다 **쌓이는 자리로 읽히지 않는다.** 쌓이는
+ * 것은 줄로 선다: 한 줄에 한 건, 줄 사이는 선 하나, 자세한 것은 눌러서
+ * 편다.
+ *
+ * **표를 만들지 않는다.** 머리글 줄을 세우고 칸을 맞추면 그 순간 관리
+ * 화면이 된다. 칸은 맞추되 머리글은 두지 않고, 각 칸이 무엇인지는 그
+ * 값의 모양이 말한다(이름은 굵게 · 유형은 알약 · 날짜는 오른쪽).
+ */
+.cm-list {
+  list-style: none; margin: 0; padding: 0;
+  background: var(--sf-surface); border: 1px solid var(--sf-line);
+  border-radius: var(--ui-r); overflow: hidden;
+}
+.cm-item + .cm-item { border-top: 1px solid var(--sf-line-2); }
+.cm-item > details > summary,
+.cm-item > .cm-item-row {
+  display: grid; align-items: center; gap: 4px 14px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding: 11px 16px; min-height: 48px;
+  list-style: none; cursor: pointer;
+}
+.cm-item > details > summary::-webkit-details-marker { display: none; }
+.cm-item > .cm-item-row { cursor: default; }
+.cm-item > details > summary:hover { background: var(--sf-surface-2); }
+.cm-item > details > summary:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: -2px; }
+/* 이름과 그 옆의 작은 것들. **한 줄에 머문다** */
+.cm-item-t {
+  display: flex; align-items: baseline; gap: 8px; min-width: 0;
+  font-size: var(--ui-t-sub); font-weight: 600; color: var(--sf-ink);
+}
+.cm-item-t > b { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cm-item-t > em {
+  font-style: normal; font-weight: 500; font-size: var(--ui-t-cap);
+  color: var(--sf-ink-3); white-space: nowrap;
+}
+/* 오른쪽 끝에 서는 작은 값들 */
+.cm-item-meta {
+  display: flex; align-items: center; gap: 12px; justify-self: end;
+  font-size: var(--ui-t-cap); color: var(--sf-ink-3); white-space: nowrap;
+}
+.cm-item-meta time { font-variant-numeric: tabular-nums; }
+/* 둘째 줄. 연결된 영역처럼 **이름 아래에 붙는 말** */
+.cm-item-sub {
+  grid-column: 1 / -1; margin: 0;
+  font-size: var(--ui-t-cap); line-height: 1.6; color: var(--sf-ink-2);
+}
+/* 상태 점. **색만으로 말하지 않는다**: 글자가 먼저고 점은 거든다 */
+.cm-dot {
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.cm-dot::before {
+  content: ""; width: 7px; height: 7px; border-radius: 999px;
+  background: var(--sf-line); flex: 0 0 auto;
+}
+.cm-dot.is-on { color: var(--sf-accent-ink); }
+.cm-dot.is-on::before { background: var(--sf-accent); }
+.cm-item-more {
+  padding: 2px 16px 16px; border-top: 1px solid var(--sf-line-2);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.cm-item-more > .cm-rows { padding-top: 12px; }
+.cm-item > details[open] > summary { background: var(--sf-surface-2); }
+
+/* 목록 위의 줄. **목록과 한 덩이로 붙여 세운다** */
+.cm-listhead {
+  display: flex; align-items: baseline; gap: 10px;
+  margin: 0 0 10px;
+  font-size: var(--ui-t-sub); font-weight: 700; color: var(--sf-ink);
+}
+.cm-listhead em {
+  font-style: normal; font-weight: 500; font-size: var(--ui-t-cap); color: var(--sf-ink-3);
+}
+.cm-listhead a { margin-left: auto; font-size: var(--ui-t-cap); font-weight: 600; }
+
+@media (max-width: 719px) {
+  /* **좁은 화면에서는 이름이 한 줄을 통째로 쓴다.** 이름과 한 줄 설명을
+     같은 줄에 두었더니 설명이 이름을 밀어내 `자동차·모...` 로 잘렸고,
+     어떤 줄은 이름이 통째로 사라졌다. 줄의 첫 글자는 늘 그 줄의
+     이름이어야 한다 */
+  .cm-item > details > summary,
+  .cm-item > .cm-item-row {
+    display: flex; flex-direction: column; align-items: stretch;
+    gap: 4px; padding: 12px 14px;
+  }
+  .cm-item-t { flex-direction: column; align-items: flex-start; gap: 2px; }
+  .cm-item-t > b { white-space: normal; overflow: visible; }
+  .cm-item-t > em { white-space: normal; line-height: 1.55; }
+  /* 작은 값들은 **맨 아래로** 간다. 이름과 설명 사이에 끼면 읽는 차례가
+     이름 → 상태 → 설명으로 뒤집힌다 */
+  .cm-item-meta { order: 3; justify-self: start; gap: 10px; flex-wrap: wrap; }
+  .cm-item-sub { order: 2; }
+}
+
 .cm-snaps { display: flex; flex-direction: column; gap: 12px; }
 .cm-snap {
   display: flex; align-items: stretch;

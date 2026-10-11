@@ -71,7 +71,16 @@ export default async function Explore() {
   const roleOn = roles.filter((x) => x.core.length);
   const roleOff = roles.filter((x) => !x.core.length);
 
-  const Card = (
+  /**
+   * 한 줄(규격 §8·§14).
+   *
+   * **카드 벽을 세우지 않는다.** 전에는 산업 여덟과 직무 여덟이 세 칸
+   * 격자의 카드로 섰고, 카드 하나가 250px 이라 쪽이 2,500px 을 넘었다.
+   * 훑어서 하나를 고르는 자리인데 **읽어 내려가는 자리**가 됐다. 지금은
+   * 한 줄에 넷을 적는다: 이름 · 한 줄 설명 · 이어지는 기술영역 ·
+   * 자세히 보기.
+   */
+  const Row = (
     { name, kind, line, core, link, chosen, more }: {
       /* **조사를 끼워 넣지 않는다.** `이 ${kind}가` 로 적었더니 받침이
          있는 `산업` 에서 `이 산업가` 가 나갔다. 묶음마다 온전한 말을
@@ -82,105 +91,119 @@ export default async function Explore() {
       more?: { scene?: string; head: string; lines: string[] } | null;
     },
   ) => (
-    <div className="cm-card">
-      <h2>{name}{chosen ? <em>고르셨습니다</em> : null}</h2>
-      <p>{line}</p>
-      {/* **겹치는 것이 없으면 그 사실을 적는다.** 칸을 비우면 읽는 사람이
-          자기 결과가 덜 만들어진 줄 안다(규격 §42). 그리고 묶음마다 적는
-          말이 달라야 왜 이쪽에 섰는지가 읽힌다 */}
-      <p className="cm-none">
-        {core.length
-          ? `${kind} 가장 많이 보는 영역 가운데 확인된 것 · ${names(core).join(" · ")}`
-          : link.length
-            ? `내 경험과 겹치는 영역 · ${names(link).join(" · ")}`
-            : "아직 이 쪽과 겹치는 확인된 영역이 없습니다"}
-      </p>
-      {more?.lines.length ? (
-        <details className="cm-fold">
-          <summary>자세히 보기</summary>
-          {/* **긴 설명은 여기 안에서만 선다**(규격 §16). 카드 기본은 한 줄이다 */}
-          {more.scene ? <p style={{ marginTop: 0 }}>{more.scene}</p> : null}
-          <p className="cm-none" style={{ marginBottom: 8 }}>{more.head}</p>
-          <ul className="cm-bul">
-            {more.lines.map((d) => <li key={d}>{d}</li>)}
-          </ul>
-        </details>
-      ) : null}
-    </div>
+    <li className="cm-item">
+      <details>
+        <summary>
+          <span className="cm-item-t">
+            <b>{name}</b>
+            <em>{line}</em>
+          </span>
+          <span className="cm-item-meta">
+            {chosen ? <span className="cm-dot is-on">고르셨습니다</span> : null}
+            <span>자세히 보기</span>
+          </span>
+          {/* **겹치는 것이 없으면 그 사실을 적는다.** 칸을 비우면 읽는
+              사람이 자기 결과가 덜 만들어진 줄 안다. 묶음마다 적는 말이
+              달라야 왜 이쪽에 섰는지가 읽힌다 */}
+          <span className="cm-item-sub">
+            {core.length
+              ? `${kind} 가장 많이 보는 영역 가운데 확인된 것 · ${names(core).join(" · ")}`
+              : link.length
+                ? `내 경험과 겹치는 영역 · ${names(link).join(" · ")}`
+                : "아직 이 쪽과 겹치는 확인된 영역이 없습니다"}
+          </span>
+        </summary>
+        {more?.lines.length ? (
+          <div className="cm-item-more">
+            {/* **긴 설명은 여기 안에서만 선다**(규격 §14). 줄의 기본은 한 줄이다 */}
+            {more.scene ? <p className="cm-row">{more.scene}</p> : null}
+            <p className="cm-none">{more.head}</p>
+            <ul className="cm-bul">
+              {more.lines.map((d) => <li key={d}>{d}</li>)}
+            </ul>
+          </div>
+        ) : null}
+      </details>
+    </li>
   );
 
   return (
     <CmShell active="/me/explore" title="탐색">
       <CmHead
-        kicker="탐색"
-        title="산업과 직무와 지역"
-        lead="여덟 산업과 여덟 직무를 모두 볼 수 있습니다."
+        title="산업과 직무"
+        lead="지금 확인된 영역과 이어지는 쪽이 먼저 섭니다."
       />
 
-      <h2 className="cm-sect">산업</h2>
+      <p className="cm-listhead">
+        산업<em>여덟</em>
+      </p>
       {indOn.length ? (
         <>
-          <p className="cm-lead" style={{ marginTop: 0 }}>
+          <p className="cm-none" style={{ margin: "0 0 8px" }}>
             지금 확인된 영역이 이 산업들이 보는 판단과 겹칩니다.
           </p>
-          <div className="cm-grid">
+          <ul className="cm-list">
             {indOn.map((x) => (
-              <Card key={x.code} name={x.name} kind="이 산업이" line={x.first}
+              <Row key={x.code} name={x.name} kind="이 산업이" line={x.first}
                 core={x.core} link={x.link} chosen={mine.has(x.code)}
                 more={x.scene
                   ? { scene: x.scene.scene, head: "이 산업이 보는 판단", lines: x.scene.demands }
                   : null} />
             ))}
-          </div>
+          </ul>
         </>
       ) : null}
       {indOff.length ? (
         <>
-          <h3 className="cm-sub-h">
+          <p className="cm-listhead" style={{ marginTop: 18 }}>
             {indOn.length ? "다른 산업 둘러보기" : "여덟 산업"}
-          </h3>
-          <div className="cm-grid">
+          </p>
+          <ul className="cm-list">
             {indOff.map((x) => (
-              <Card key={x.code} name={x.name} kind="이 산업이" line={x.first}
+              <Row key={x.code} name={x.name} kind="이 산업이" line={x.first}
                 core={x.core} link={x.link} chosen={mine.has(x.code)}
                 more={x.scene
                   ? { scene: x.scene.scene, head: "이 산업이 보는 판단", lines: x.scene.demands }
                   : null} />
             ))}
-          </div>
+          </ul>
         </>
       ) : null}
 
-      <h2 className="cm-sect">직무</h2>
+      <p className="cm-listhead" style={{ marginTop: 26 }}>
+        직무<em>여덟</em>
+      </p>
       {roleOn.length ? (
-        <div className="cm-grid">
+        <ul className="cm-list">
           {roleOn.map((r) => (
-            <Card key={r.code} name={r.name} kind="이 직무가" line={r.first}
+            <Row key={r.code} name={r.name} kind="이 직무가" line={r.first}
               core={r.core} link={r.link} chosen={myRoles.has(r.code)}
               more={r.domains.length
                 ? { head: "이 직무가 다루는 기술영역", lines: r.domains } : null} />
           ))}
-        </div>
+        </ul>
       ) : null}
       {roleOff.length ? (
         <>
-          {roleOn.length ? <h3 className="cm-sub-h">다른 직무 둘러보기</h3> : null}
-          <div className="cm-grid">
+          {roleOn.length ? (
+            <p className="cm-listhead" style={{ marginTop: 18 }}>다른 직무 둘러보기</p>
+          ) : null}
+          <ul className="cm-list">
             {roleOff.map((r) => (
-              <Card key={r.code} name={r.name} kind="이 직무가" line={r.first}
+              <Row key={r.code} name={r.name} kind="이 직무가" line={r.first}
                 core={r.core} link={r.link} chosen={myRoles.has(r.code)}
                 more={r.domains.length
                   ? { head: "이 직무가 다루는 기술영역", lines: r.domains } : null} />
             ))}
-          </div>
+          </ul>
         </>
       ) : null}
 
       {/* 지역은 **고르는 자리가 따로 있다**. 여기서는 권역 이름과 한 줄까지다 */}
-      <h2 className="cm-sect">
+      <p className="cm-listhead" style={{ marginTop: 26 }}>
         지역과 기관
         <Link href="/me/region">희망 지역 고르기</Link>
-      </h2>
+      </p>
       <div className="cm-panel is-quiet">
         <div className="cm-pane">
           <div className="cm-rows">

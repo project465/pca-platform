@@ -70,8 +70,9 @@ export default async function State(
 
   if (!st.model) {
     return (
-      <CmShell active="/me/state" title="현재 상태">
-        <CmHead kicker="현재 상태" title="아직 볼 것이 없습니다"
+      <CmShell active="/me/state" title="현재 상태"
+      bar={<Link className="cm-btn" href="/me/experience/new">+ 경험 추가</Link>}>
+        <CmHead title="아직 볼 것이 없습니다"
           lead="검사를 한 번 끝내면 확인된 근거와 아직 부족한 부분이 여기에 섭니다." />
         <div className="cm-soon">
           <b>완료한 검사가 없습니다.</b>
@@ -110,7 +111,8 @@ export default async function State(
   const fallback = m.actions[0] ?? null;
 
   return (
-    <CmShell active="/me/state" title="현재 상태">
+    <CmShell active="/me/state" title="현재 상태"
+      bar={<Link className="cm-btn" href="/me/experience/new">+ 경험 추가</Link>}>
       {/* ①② 제목과 최근 반영 날짜.
 
           **설명은 한 번만 적는다**(규격 §7). 검사 당시 결과와 지금 값이

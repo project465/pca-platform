@@ -39,7 +39,7 @@ export default async function MyResults({
 
   return (
     <CmShell active="/my" title={T("acOld")}>
-      <CmHead kicker="계정" title={T("acOld")}
+      <CmHead title={T("acOld")}
         lead="그보다 전에 보신 검사의 결과지입니다. 등급과 판본이 함께 적힙니다." />
       <OlderNote lang={L} />
 

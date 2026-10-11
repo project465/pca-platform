@@ -99,7 +99,7 @@ export default async function MyEvidence({
 
   return (
     <CmShell active="/my" title={T("myEvidenceIntro")}>
-      <CmHead kicker="계정" title={T("myEvidenceIntro")} lead={T("myEvidenceIntroBody")}
+      <CmHead title={T("myEvidenceIntro")} lead={T("myEvidenceIntroBody")}
         actions={<Link href={editHref} className="cm-btn">{T("myAddEvidence")}</Link>} />
       <OlderNote lang={L} to="experience" />
 

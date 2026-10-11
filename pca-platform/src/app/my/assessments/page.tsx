@@ -63,7 +63,7 @@ export default async function MyAssessments({
     <CmShell active="/my" title={T("acOld")}>
       {/* **여기서 검사를 시작하지 않는다.** `/test` 는 옛 검사를 여는
           자리이고 지금 파는 검사는 `/cores` 에서 시작한다 */}
-      <CmHead kicker="계정" title={T("acOld")}
+      <CmHead title={T("acOld")}
         lead="그보다 전에 보신 검사와 그때의 진행 상태입니다." />
       <OlderNote lang={L} />
 

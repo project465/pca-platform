@@ -28,9 +28,9 @@ export default async function Results() {
   const change = recentChangeKo(st, domainName, 2);
 
   return (
-    <CmShell active="/me/results" title="결과 기록">
+    <CmShell active="/me/results" title="결과 기록"
+      bar={<Link className="cm-btn" href="/me/state">현재 상태</Link>}>
       <CmHead
-        kicker="결과 기록"
         title="검사 당시 결과와 현재 상태"
         lead={"검사 당시 결과는 응시하신 그날의 문항과 기준으로 굳어 있습니다. "
           + "현재 상태는 그 뒤에 더한 경험까지 담은 값이라 달라질 수 있습니다."}
@@ -86,38 +86,43 @@ export default async function Results() {
       {/* ── 검사 당시 결과. 왼쪽 날짜 띠와 자물쇠 ── */}
       {snaps.length ? (
         <>
-          <h2 className="cm-sect">검사 당시 결과 <em>{snaps.length}건</em></h2>
-          <div className="cm-snaps">
+          {/**
+            * **기록은 줄로 쌓인다**(규격 §7·§13).
+            *
+            * 전에는 결과 하나가 왼쪽 날짜 칸이 달린 큰 카드였다. 응시가
+            * 두 번만 되어도 그 모양은 **카드를 모아 둔 쪽**이 되고, 기록을
+            * 훑어 하나를 고르는 일이 안 된다. 한 줄에 날짜와 전공과 등급과
+            * 상태를 적고 오른쪽에 두 단추를 둔다.
+            */}
+          <p className="cm-listhead">검사 당시 결과<em>{snaps.length}건</em></p>
+          <ul className="cm-list">
             {snaps.map((r) => (
-              <article className="cm-snap" key={`${r.attempt_id}-${r.at}`}>
-                <div className="cm-snap-date">
-                  <b>{r.at?.slice(5) ?? ""}</b>
-                  <small>{r.at?.slice(0, 4) ?? ""}</small>
-                </div>
-                <div className="cm-snap-body">
-                  <h3>
-                    기계공학 · {r.tier ?? ""}
+              <li className="cm-item" key={`${r.attempt_id}-${r.at}`}>
+                <div className="cm-item-row">
+                  <span className="cm-item-t">
+                    <b>{r.at ?? ""}</b>
+                    <em>기계공학 · {r.tier ?? ""}</em>
                     <span className="cm-lockmark">고정됨</span>
-                  </h3>
-                  <p>
+                  </span>
+                  <span className="cm-item-meta">
                     {/* **고르는 데 쓰이는 수 하나다**(규격 §15). 축의
                         개수는 이 줄에서 할 일을 정해 주지 않는다 */}
-                    {r.domains !== null
-                      ? `근거가 확인된 영역 ${r.domains}곳`
-                      : "그날의 응답으로 굳어 있습니다"}
-                  </p>
-                  <div className="cm-acts">
+                    <span>
+                      {r.domains !== null
+                        ? `근거가 확인된 영역 ${r.domains}곳`
+                        : "그날의 응답으로 굳어 있습니다"}
+                    </span>
                     <Link className="cm-btn" href={`/v3/${r.attempt_id}/result`}>
                       결과 보기
                     </Link>
                     {/* **`Link` 로 걸지 않는다.** Next 가 화면에 들어온 `Link` 를
                         미리 불러오면서 종이를 한 벌씩 만들어 버린다 */}
                     <a className="cm-btn" href={`/v3/${r.attempt_id}/result/pdf`}>PDF</a>
-                  </div>
+                  </span>
                 </div>
-              </article>
+              </li>
             ))}
-          </div>
+          </ul>
 
           <details className="cm-fold">
             <summary>당시 판본 보기</summary>

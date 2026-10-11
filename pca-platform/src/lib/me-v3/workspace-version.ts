@@ -61,7 +61,7 @@
  *   들어오는 길이 지금 무엇인지 적지 않으면 구글로 가입하신 분이
  *   비밀번호 찾기를 누르고 메일을 기다린다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V12";
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V13";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -75,7 +75,7 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V12";
  * 셋은 우리가 안에서 그 일을 부르던 말이고, 손님 화면에서는 그 말이
  * 무엇을 가리키는지 알 수 없다.
  */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.10";
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.11";
 
 /**
  * V5 에서 바꾼 것 (2026-10-09).
@@ -204,4 +204,33 @@ export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.10";
  * - 현재 상태의 보조 묶음 넷을 `cm-sub-h` 로 내리고 그 앞에 경계를 두었다
  *
  * **판정과 표와 저장은 한 줄도 바뀌지 않았다.**
+ */
+
+/*
+ * `V13` 과 `copy.11` 로 올린 까닭. **작업공간을 제품 본체로 세웠다.**
+ *
+ * 검사와 결과지는 한 줄도 바꾸지 않았다(문항 은행 · 채점 · ResultModel ·
+ * Result Summary · Result Detail · PDF 그대로). 바뀐 것은 로그인한 뒤에
+ * 쓰는 쪽의 **틀과 목록**이다.
+ *
+ * 1. **작업공간 띠**(`.cm-bar`). 쪽 안쪽 꼭대기에 붙어 지금 어느 줄에
+ *    있는지와 어느 전공인지와 이 쪽의 한 가지를 든다. 전에는 쪽마다 큰
+ *    제목이 빈 바탕 위에 혼자 섰고, 담긴 글이 짧은 쪽은 **뜬 안내창**으로
+ *    읽혔다. 띠가 있으면 짧은 쪽도 같은 제품의 한 화면으로 선다.
+ * 2. **띠가 chrome 이고 본문이 canvas 다.** 왼쪽 띠를 한 단 가라앉히고
+ *    (`--sf-surface-2`) 붙여 두었다. 전에는 띠가 흰 면이고 본문이 회색
+ *    면이라 **본문 쪽이 배경처럼** 읽혔다.
+ * 3. **쌓이는 것은 줄로 선다**(`.cm-list`). 경험과 결과 기록과 산업·직무가
+ *    같은 모양의 줄을 쓴다. 전에는 셋 다 카드였고, 카드 하나가 200px 이라
+ *    경험이 다섯만 되어도 목록을 훑을 수 없었다. 탐색이 2,485px 에서
+ *    1,813px 이다(손전화 4,820 → 2,773).
+ * 4. **세로 가운데 맞춤을 걷었다.** 짧은 쪽을 창 가운데에 띄우던 규칙이
+ *    오히려 그 쪽을 안내창으로 만들었다. 작업공간의 쪽은 위에서 시작한다.
+ * 5. **같은 이름을 두 번 적지 않는다.** 띠가 든 줄 이름을 쪽 머리의
+ *    kicker 에서 걷었고, 띠가 든 단추는 쪽 머리에서 좁은 화면에만 선다.
+ *    손전화 위 띠도 쪽마다 적던 이름 대신 메뉴의 그 줄 이름을 쓴다:
+ *    전에는 같은 자리가 `탐색` 과 `산업·직무` 로 달리 불렸다.
+ *
+ * **새 값을 만들지 않았다**(규격 §20). 화면이 드는 것은 전부
+ * `currentState()` 와 `experiencesOf()` 와 굳은 결과에서 온다.
  */

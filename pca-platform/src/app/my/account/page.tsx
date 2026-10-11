@@ -19,7 +19,7 @@ export default async function AccountPage({
 
   return (
     <CmShell active="/my" title={t("erTitle", lang)}>
-      <CmHead kicker="계정" title={t("erTitle", lang)} lead={t("erLead", lang)} />
+      <CmHead title={t("erTitle", lang)} lead={t("erLead", lang)} />
       <p className="cm-note">{t("erWhyKeep", lang)}</p>
 
       {/* **표 이름을 손님에게 보여 주지 않는다.** 되돌릴 수 없는 단추

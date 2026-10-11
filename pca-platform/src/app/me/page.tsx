@@ -103,9 +103,17 @@ export default async function Home() {
       : { href: "/me/next", label: "지금 할 일" };
 
   return (
-    <CmShell active="/me" title="홈">
+    <CmShell active="/me" title="홈"
+      /* **띠는 한 가지만 든다**(규격 §15). 전공은 띠의 왼쪽이 이미 적고,
+         오른쪽은 이 쪽에서 할 수 있는 한 가지다 */
+      bar={st.model
+        ? <Link className="cm-btn" href="/me/experience/new">+ 경험 추가</Link>
+        : null}>
       <CmHead
-        kicker={`기계공학${st.result_at ? ` · 마지막 분석 ${st.result_at}` : ""}`}
+        /* **전공을 두 번 적지 않는다**(규격 §15). 띠의 왼쪽이 `홈 · 기계공학`
+           을 늘 들고 있어서, 쪽 머리에 또 적으면 같은 글자가 두 줄 간격으로
+           두 번 선다 */
+        kicker={st.result_at ? `마지막 분석 ${st.result_at}` : undefined}
         /* **이름을 제목으로 쓰지 않는다.** 로그인한 사람은 자기 이름을
            이미 알고, 쪽 제목 자리는 `이 쪽이 무엇인가` 를 말하는 자리다.
            이름이 제목이면 쪽마다 같은 글자가 가장 크게 선다 */

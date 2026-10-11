@@ -160,9 +160,11 @@ export default async function Next(
   };
 
   return (
-    <CmShell active="/me/next" title="다음 할 일" read>
+    <CmShell active="/me/next" title="다음 할 일" read
+      bar={st.model
+        ? <Link className="cm-btn" href="/me/experience/new">+ 경험 추가</Link>
+        : null}>
       <CmHead
-        kicker="다음 할 일"
         title={first ? "지금 할 한 가지" : "무엇부터 할지"}
         lead={st.model
           ? "급한 차례가 아니라 할 수 있는 때로 묶었습니다. 하나를 끝내면 그다음이 섭니다."
