@@ -72,8 +72,12 @@ export default async function Explore() {
   const roleOff = roles.filter((x) => !x.core.length);
 
   const Card = (
-    { name, line, core, link, chosen, more }: {
-      name: string; line: string; core: string[]; link: string[];
+    { name, kind, line, core, link, chosen, more }: {
+      /* **조사를 끼워 넣지 않는다.** `이 ${kind}가` 로 적었더니 받침이
+         있는 `산업` 에서 `이 산업가` 가 나갔다. 묶음마다 온전한 말을
+         들고 온다 */
+      name: string; kind: "이 산업이" | "이 직무가"; line: string;
+      core: string[]; link: string[];
       chosen?: boolean;
       more?: { scene?: string; head: string; lines: string[] } | null;
     },
@@ -86,7 +90,7 @@ export default async function Explore() {
           말이 달라야 왜 이쪽에 섰는지가 읽힌다 */}
       <p className="cm-none">
         {core.length
-          ? `이 자리가 가장 많이 보는 영역 가운데 확인된 것 · ${names(core).join(" · ")}`
+          ? `${kind} 가장 많이 보는 영역 가운데 확인된 것 · ${names(core).join(" · ")}`
           : link.length
             ? `내 경험과 겹치는 영역 · ${names(link).join(" · ")}`
             : "아직 이 쪽과 겹치는 확인된 영역이 없습니다"}
@@ -121,7 +125,7 @@ export default async function Explore() {
           </p>
           <div className="cm-grid">
             {indOn.map((x) => (
-              <Card key={x.code} name={x.name} line={x.first}
+              <Card key={x.code} name={x.name} kind="이 산업이" line={x.first}
                 core={x.core} link={x.link} chosen={mine.has(x.code)}
                 more={x.scene
                   ? { scene: x.scene.scene, head: "이 산업이 보는 판단", lines: x.scene.demands }
@@ -137,7 +141,7 @@ export default async function Explore() {
           </h3>
           <div className="cm-grid">
             {indOff.map((x) => (
-              <Card key={x.code} name={x.name} line={x.first}
+              <Card key={x.code} name={x.name} kind="이 산업이" line={x.first}
                 core={x.core} link={x.link} chosen={mine.has(x.code)}
                 more={x.scene
                   ? { scene: x.scene.scene, head: "이 산업이 보는 판단", lines: x.scene.demands }
@@ -151,10 +155,10 @@ export default async function Explore() {
       {roleOn.length ? (
         <div className="cm-grid">
           {roleOn.map((r) => (
-            <Card key={r.code} name={r.name} line={r.first}
+            <Card key={r.code} name={r.name} kind="이 직무가" line={r.first}
               core={r.core} link={r.link} chosen={myRoles.has(r.code)}
               more={r.domains.length
-                ? { head: "이 자리가 다루는 기술영역", lines: r.domains } : null} />
+                ? { head: "이 직무가 다루는 기술영역", lines: r.domains } : null} />
           ))}
         </div>
       ) : null}
@@ -163,10 +167,10 @@ export default async function Explore() {
           {roleOn.length ? <h3 className="cm-sub-h">다른 직무 둘러보기</h3> : null}
           <div className="cm-grid">
             {roleOff.map((r) => (
-              <Card key={r.code} name={r.name} line={r.first}
+              <Card key={r.code} name={r.name} kind="이 직무가" line={r.first}
                 core={r.core} link={r.link} chosen={myRoles.has(r.code)}
                 more={r.domains.length
-                  ? { head: "이 자리가 다루는 기술영역", lines: r.domains } : null} />
+                  ? { head: "이 직무가 다루는 기술영역", lines: r.domains } : null} />
             ))}
           </div>
         </>

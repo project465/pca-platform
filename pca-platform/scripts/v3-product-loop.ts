@@ -248,7 +248,11 @@ async function main(): Promise<void> {
     /* **글자를 찾지 않고 묶음 머리를 읽는다.** 쪽 글 전체에서 찾으면
        머리의 단추(`지금 할 일 보기`)와 알림 문장이 먼저 걸려서, 차례가
        뒤집혀 있어도 통과하거나 멀쩡한데 걸린다 */
-    const sects = await p2.$$eval("h2.cm-sect",
+    /* **머리 두 단을 문서 차례 그대로 읽는다.** 세부 묶음이 `cm-sect` 에서
+       `cm-sub-h` 로 한 단 내려가면서(규격 §22~§24) `h2.cm-sect` 만 읽던
+       이 줄이 그 묶음을 못 찾아 -1 을 돌려줬다. **멀쩡한데 걸린 것이다**:
+       한 단 내려간 것은 더 아래로 간 것이므로 규격이 요구한 쪽이다 */
+    const sects = await p2.$$eval(".cm-sect, .cm-sub-h",
       (xs) => xs.map((x) => (x.firstChild?.textContent ?? x.textContent ?? "").trim()));
     /* **차례가 §5 로 바뀌었다**: 지난 일보다 할 일이 먼저다. 전에는
        상태 → 지난 일 → 할 일 이라 첫 화면이 가운데에서 한 번 끊겼다 */

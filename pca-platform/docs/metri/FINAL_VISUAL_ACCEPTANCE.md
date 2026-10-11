@@ -2,12 +2,24 @@
 
 2026-10-11 · 기계공학 ME_V3
 
-**판정: (본문 끝 Q 절 다음에 적는다)**
+**판정: FINAL VISUAL ACCEPTANCE PASS / PRODUCTION UNVERIFIED**
+
+운영 배포본을 밖에서 열지 못했으므로 `COMMERCIAL READY` 라고 적지 않는다.
+까닭과 남은 것은 Q 절에 있다.
 
 이번 회차는 전면 재설계가 아니다. 물은 것은 하나다. **지금 실제로 렌더되는
 화면 스물셋 가운데, 아직 `검사 사이트` 나 `보고서` 나 `관리페이지` 처럼
 보이는 자리가 남아 있는가.** 잘 된 화면은 다시 설계하지 않았고, 규격이
 가리킨 자리만 고쳤다.
+
+**받은 지시문이 최종 시각 레퍼런스로 삼으라고 적은 목표 UI 이미지는 이번
+메시지에도 첨부되지 않았다.** 앞 회차(`FINAL_UI_BUILD.md` B 절)와 같은
+상태다. 그래서 §39 가 요구한 이미지 대 화면의 대조(Sidebar density · Main
+content hierarchy · dominant action · whitespace · card count · chip count ·
+text density · mobile rhythm · result hierarchy · experience flow)는 하지
+못했고, 기준으로 삼은 것은 글로 적힌 규격 §0~§46 뿐이다. **이 문서의 어느
+줄도 이미지를 봤다는 뜻으로 읽히지 않게 적었다.** 이미지를 주시면 그
+기준으로 다시 한 바퀴 돌 수 있다.
 
 ---
 
@@ -37,9 +49,9 @@ responsive 뿐이다.
 | 화면 | 이번에 바꾼 것 | 구조를 건드렸는가 |
 |---|---|---|
 | Home Desktop · Mobile | 없음 | 아니오 |
-| Next Action Desktop · Mobile | 폭과 세로 자리(§30) | 아니오 — 한 가지 행동 구조 그대로 |
+| Next Action Desktop · Mobile | 폭과 세로 자리(§30) | 아니오. 한 가지 행동 구조 그대로 |
 | Experience Step 1 Desktop · Mobile | 없음 | 아니오 |
-| Result Summary | 없음 | 아니오 — 확인된 것 → 지금 할 일 → 먼저 채울 것 → 산업·직무 |
+| Result Summary | 없음 | 아니오. 확인된 것 → 지금 할 일 → 먼저 채울 것 → 산업·직무 |
 | Mobile Ownership 4단 | 없음 | 아니오 |
 | Sidebar 그룹 · Mobile bottom nav | 없음 | 아니오 |
 | Current State / Frozen Result 분리 | 없음 | 아니오 |
@@ -108,7 +120,7 @@ responsive 뿐이다.
 같다. 묶음을 가르는 것은 `중심` 이고 줄에 적는 것은 `중심`+`있음` 이다.
 
 **`auto-fit` 을 `auto-fill` 로 바꿨다.** 앞엣것은 비어 있는 칸을 걷어 내므로
-카드가 하나뿐인 묶음에서 그 하나가 쪽 폭 1,100px 을 통째로 먹었다 — §42 의
+카드가 하나뿐인 묶음에서 그 하나가 쪽 폭 1,100px 을 통째로 먹었다. §42 의
 giant empty canvas 다. 쪽 길이 2,651 → **2,485px**.
 
 ## F. Experience 수정 (§19~§21)
@@ -134,7 +146,7 @@ giant empty canvas 다. 쪽 길이 2,651 → **2,485px**.
 새 경험이 없어 그 줄이 서지 않았고, 그 자리를 비워 두는 대신 현재 상태 한
 줄이 그 사실을 적는다.
 
-## H. Home — 유지 · 미세수정 (§26~§28)
+## H. Home: 유지 · 미세수정 (§26~§28)
 
 **거의 동결이다.** dashboard card 를 늘리지 않았고 Recent Change 가 없을 때
 빈 card 를 만들지 않는다. Mobile Hero 는 두 줄이고 CTA 와 bottom nav 가
@@ -142,7 +154,7 @@ giant empty canvas 다. 쪽 길이 2,651 → **2,485px**.
 
 1440×900 첫 창에서 의도 있는 content 가 **77%** 다.
 
-## I. Next Action — 유지 · 미세수정 (§25)
+## I. Next Action: 유지 · 미세수정 (§25)
 
 구조를 바꾸지 않았다. 한 가지 행동이 짙은 판 안에 서고, `왜 필요한가` 와
 `어느 부분` 과 `어떤 경험으로` 가 그 아래 줄이며, 전체 흐름은
@@ -211,10 +223,59 @@ giant empty canvas 다. 쪽 길이 2,651 → **2,485px**.
 |---|---|
 | `v2:frozen` · `v3:build` · `v3:domains` · `v3:items` · `v3:length` · `v3:migrate` · `v3:arch` · `v3:extend` | 통과 |
 | `v3:wording` · `v3:persona` · `v3:scoring` · `v3:registry` · `v3:j3` · `v3:measure` · `v3:gaming` | 통과 |
-| **`v3:freeze:measure`** (`ME_V3_MEASUREMENT_FREEZE_1`) | **고치지 않고 통과** — 측정 동결에 손대지 않았다 |
+| **`v3:freeze:measure`** (`ME_V3_MEASUREMENT_FREEZE_1`) | **고치지 않고 통과**(측정 동결에 손대지 않았다) |
 | `v3:runtime` · `v3:ui` · `v3:copy` | 통과 |
-| `v3:result` · `v3:result:copy` · `v3:result:height` · `v3:recompute` | 통과 |
-| (아래는 실행 결과를 이 표에 채운다) | |
+| `v3:result` 17 · `v3:result:copy` · `v3:result:height` 28 · `v3:recompute` 7 | 통과 |
+| `v3:isolation` 11 · `v3:owner` 19 · `v3:usability` 12 | 통과 |
+| `v3:visual` (폭 열하나 × 확대 넷 · 자리 20) | 통과 |
+| `v3:gate` · `v3:loop` · **`v3:product-loop` 47** | 통과 |
+| `v3:freeze` · `v3:result:freeze` · `v3:workspace` | 판본을 올리고 지문을 다시 적었다 |
+| `auth:check` · `secrets:check` · `errors:check` · `routes:check` · `runbook:check` · `oauth:ready` · `pilot:ready` · `v3:pilot` | 통과 |
+| `a11y:check` (10쪽) | 대비미달 0 · 작은단추 0 · 이름표없음 0 |
+| `copy:audit` | 통과 |
+
+**이번 회차에 검사 자신이 두 번 틀린 답을 냈고 둘 다 고쳤다.**
+
+- `v3:product-loop` 의 `세부는 첫 화면 아래에 있다` 가 `h2.cm-sect` 만
+  읽고 있었다. §22~§24 에 따라 세부 묶음을 `cm-sub-h` 로 **한 단 내리자**
+  그 줄이 묶음을 못 찾아 `-1` 을 돌려줬다. 한 단 내려간 것은 규격이 요구한
+  쪽인데 멀쩡한 화면이 걸린 것이다. 머리 두 단을 문서 차례 그대로 읽게 했다
+- 같은 검사의 `손님 화면에 우리 쪽 비유가 없다` 는 **진짜를 잡았다**:
+  새로 쓴 탐색 카드의 연결 줄이 `이 자리가 가장 많이 보는 영역` 이었다.
+  `자리` 는 우리 쪽 비유라 `이 산업이` · `이 직무가` 로 갈랐다
+
+**측정은 한 줄도 움직이지 않았다.** `v3:freeze:measure` 가 **고치지 않은
+채로** 통과하므로 `ME_CORE_V3` · `ME_V3_ITEM_BANK_V2.5` ·
+`me-v3-scoring.5` · `me-v3-result-model.5` 가 그대로다. persona 열두 벌의
+지문과 gaming 여덟 벌과 neutral 넷과 frozen snapshot 과 Industry/Role 의
+Core 격리와 PDF 도 그대로다.
+
+## N-2. §42 FAIL 조건 열두 가지
+
+Core 화면 열하나(Home D·M · Assessment D·M · Experience D·M · Current
+State · Next Action · Result Summary · Result Detail · Industry Explore)를
+일곱 폭으로 찍어 하나씩 봤다.
+
+| # | 조건 | 결과 |
+|---|---|---|
+| 1 | giant chip wall | **고쳤다.** 결과 상세의 산업·직무 절이 칩 서른 개를 기본으로 세우고 있었다. 지금 서는 칩은 영역 이름표 아홉~열둘짜리 줄뿐이다 |
+| 2 | spreadsheet impression | **고쳤다.** 격자 border 를 걷고 줄 divider 와 segmented control 로 |
+| 3 | report dump | **고쳤다.** 영역 기본 보기 여섯 줄 · 긴 목록은 전부 펼침 안 |
+| 4 | equal-weight card dashboard | 없음. Home 은 짙은 판 하나와 조용한 묶음 둘이다 |
+| 5 | primary CTA 2개 이상 | 없음. Home · Next · Result · State · Experience 전부 짙은 단추 하나 |
+| 6 | first viewport 에 핵심 action 부재 | 없음. 넷 다 첫 창 안에 선다 |
+| 7 | giant empty canvas | **고쳤다.** `다음 할 일` 54 → 67% · Track 68 → 80% · 탐색의 한 장짜리 묶음 |
+| 8 | mobile 이 desktop 축소판 | 없음. 격자는 질문당 세로 스택, 결과는 한 판 안의 네 절 |
+| 9 | internal language | 없음. `v3:product-loop` 가 손님 화면 열세 곳의 띄운 글자에서 센다 |
+| 10 | opener 없는 hidden detail | 없음. 접힌 자리마다 눌리는 단추가 있다(앞 회차에 하나 있던 자리는 고쳐져 있다) |
+| 11 | footer overlap | **고쳤다.** 반투명 띠를 막힌 면으로. `v3:visual` 이 확대 100·125·150·200% 에서 센다 |
+| 12 | horizontal overflow | 없음. 일곱 폭 210장에서 0 |
+
+## N-3. §43 금지 추가
+
+그래프 · 점수 · 퍼센트 · AI 추천 · rank · 새 metric · fake comparison 을
+한 줄도 더하지 않았다. 탐색의 묶음 가르기도 **수를 만들지 않는다**: 읽는
+것은 `relations` 표에 이미 적혀 있는 `중심` · `있음` 관계뿐이다.
 
 ## O. Version
 
@@ -241,13 +302,13 @@ giant empty canvas 다. 쪽 길이 2,651 → **2,485px**.
 
 재배포 뒤에 사람이 눌러야 하는 자리는 여섯이다.
 
-1. `/v3/{id}` 영역 훑기 — 격자가 표가 아닌 segmented control 로 보이는가,
+1. `/v3/{id}` 영역 훑기. 격자가 표가 아닌 segmented control 로 보이는가,
    띠 아래로 질문이 비치지 않는가. 확대 125% 와 150% 에서도 같은가
-2. `/v3/{id}/result` — 첫 창에서 `지금 할 일` 이 둘째 칸에 서는가
-3. `/v3/{id}/result` 상세 — 영역 한 자리가 여섯 줄인가, 산업 절의
+2. `/v3/{id}/result`. 첫 창에서 `지금 할 일` 이 둘째 칸에 서는가
+3. `/v3/{id}/result` 상세. 영역 한 자리가 여섯 줄인가, 산업 절의
    `확인된 경험 전부 보기` 가 **눌리는가**(앞 회차에 단추가 없던 자리다)
-4. `/me/explore` — 카드가 네 줄인가, 묶음이 하나뿐일 때 그 카드가 쪽 폭을
+4. `/me/explore`. 카드가 네 줄인가, 묶음이 하나뿐일 때 그 카드가 쪽 폭을
    통째로 먹지 않는가
-5. `/me/next` — 첫 창이 비어 보이지 않는가
-6. iPhone Safari 실기기 — 이 컨테이너에서 WebKit 을 내려받지 못해 크로뮴에
+5. `/me/next`. 첫 창이 비어 보이지 않는가
+6. iPhone Safari 실기기. 이 컨테이너에서 WebKit 을 내려받지 못해 크로뮴에
    iOS 화면을 씌워 찍었다. Safari 전용 탈은 실기기에서만 나온다
