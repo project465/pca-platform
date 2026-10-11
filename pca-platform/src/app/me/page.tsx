@@ -245,23 +245,30 @@ export default async function Home() {
             {/* 오른쪽의 가벼운 표시. **새 그림 파일을 만들지 않는다**
                 (규격 §5): 네모와 선과 동그라미뿐이고 값도 상태도 적지 않는다 */}
             <div className="cm-hero-art" aria-hidden>
-              <svg width="168" height="132" viewBox="0 0 168 132" fill="none">
-                <rect x="26" y="10" width="112" height="112" rx="14"
-                  fill="#fff" stroke="var(--sf-accent-line)" />
-                <rect x="60" y="2" width="44" height="16" rx="6"
-                  fill="var(--sf-accent-soft)" stroke="var(--sf-accent-line)" />
-                {[38, 62, 86].map((y, i) => (
+              <svg width="168" height="136" viewBox="0 0 168 136" fill="none">
+                {/* 흰 판 하나가 그림을 담는다. Hero 의 파란 면 위에서 한
+                    단 떠 보이게 하는 자리라 **값도 상태도 적지 않는다** */}
+                <rect x="22" y="6" width="142" height="112" rx="16"
+                  fill="#fff" stroke="#dbe7f7" />
+                <rect x="40" y="22" width="106" height="82" rx="11"
+                  fill="#f3f8ff" stroke="#dde8f8" />
+                <rect x="74" y="14" width="38" height="15" rx="6"
+                  fill="#dce9fa" stroke="#c6dbf3" />
+                {[38, 58, 78].map((y, i) => (
                   <g key={y}>
-                    <rect x="44" y={y} width="15" height="15" rx="4"
-                      fill="var(--sf-accent-soft)" stroke="var(--sf-accent-line)" />
-                    <path d={`M47.5 ${y + 7.5}l2.5 2.5 5-5`} stroke="var(--sf-accent)"
-                      strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                    <rect x="67" y={y + 4} width={i === 2 ? 30 : 50} height="7" rx="3.5"
-                      fill="var(--sf-accent-line)" />
+                    <rect x="51" y={y} width="14" height="14" rx="4"
+                      fill="#dceafb" stroke="#bcd6f2" />
+                    <path d={`M54.5 ${y + 7}l2.6 2.6 4.6 -5`} stroke="#1c5fb0"
+                      strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
+                    <rect x="72" y={y + 4} width={i === 2 ? 36 : 58} height="6" rx="3"
+                      fill="#cfe0f5" />
                   </g>
                 ))}
-                <circle cx="128" cy="100" r="22" fill="var(--sf-accent)" />
-                <path d="M118 100l7 7 13-14" stroke="#fff" strokeWidth="3"
+                {/* 판의 왼쪽 아래 모서리에 **걸친** 동그라미 하나.
+                    떨어져 서면 떠 있는 표시가 되고, 걸쳐야 두 면이 앞뒤로 선다 */}
+                <circle cx="38" cy="100" r="26" fill="#fff" />
+                <circle cx="38" cy="100" r="21" fill="#1c5fb0" />
+                <path d="M28.5 100l6.5 6.5 12.5 -13" stroke="#fff" strokeWidth="3.2"
                   strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
@@ -322,7 +329,7 @@ export default async function Home() {
                       <b>{domainName(d)}</b>
                       {/* 그 영역이 일하는 차례. **응답에서 온 값이 아니라
                           영역 설명이다**: 여기서 새 수를 만들지 않는다 */}
-                      <small>{domainChainKo(d).slice(0, 3).join(" · ")}</small>
+                      <small>{domainChainKo(d).slice(0, 2).join(" · ")}</small>
                     </span>
                     <Icon name="chev" size={16} />
                   </Link>
@@ -350,9 +357,16 @@ export default async function Home() {
                     최근 추가한 경험으로 다음과 같은 변화가 생겼습니다.
                   </p>
                   <ul className="cm-feed">
-                    {change.lines.map((line) => (
+                    {change.lines.map((line, i) => (
                       <li key={line}>
-                        <span className="cm-feed-ico"><Icon name="bolt" size={15} /></span>
+                        {/* **앞쪽은 묶음이 옮겨 간 것이고 뒤는 축이 올라간
+                            것이다**(`recentChangeKo` 가 그 차례로 잇는다).
+                            표시를 갈라 두면 같은 줄 넷이 한 덩이로 읽히지
+                            않는다. 색은 뜻을 갖지 않는다 */}
+                        <span className={`cm-feed-ico${CHANGE_TINT[i % 3]}`}>
+                          <Icon name={i < st.zoneMoved.length ? "ladder" : CHANGE_ICON[i % 3]}
+                            size={15} />
+                        </span>
                         <p className="cm-feed-txt">{line}</p>
                         <time>{st.recomputed_at}</time>
                       </li>
@@ -416,7 +430,7 @@ export default async function Home() {
             </li>
             {exps.slice(0, HOME_RECENT).map((e) => (
               <li key={e.id}>
-                <span className="cm-feed-ico"><Icon name="layers" size={15} /></span>
+                <span className="cm-feed-ico t-4"><Icon name="layers" size={15} /></span>
                 <p className="cm-feed-txt">
                   <b>{e.title}</b>
                   <small>{KIND_KO.get(e.kind) ?? "경험"}</small>
@@ -429,7 +443,7 @@ export default async function Home() {
             ))}
             {apps.slice(0, HOME_RECENT).map((a) => (
               <li key={a.id}>
-                <span className="cm-feed-ico"><Icon name="send" size={15} /></span>
+                <span className="cm-feed-ico t-2"><Icon name="send" size={15} /></span>
                 <p className="cm-feed-txt">
                   <b>{a.org_name ?? a.role_label ?? "이름 없음"}</b>
                   <small>{APPLY_SAY[a.state]}</small>
@@ -481,6 +495,11 @@ const APPLY_SAY: Record<string, string> = {
   watching: "보는 중", applied: "지원함", interview: "면접",
   offer: "합격 통보", closed: "마감",
 };
+
+/** 변화 줄의 표시. **값을 뜻하지 않는다**: 줄 넷이 한 덩이로 읽히지
+ *  않게 하는 자리이고, 차례는 `recentChangeKo` 가 정한 것을 따른다 */
+const CHANGE_ICON: IconName[] = ["chart", "spark", "report"];
+const CHANGE_TINT = ["", " t-2", " t-3"];
 
 /** 홈이 드는 줄 수. **요약이 세부를 대신하면 세부 쪽이 죽는다** */
 const HOME_ROWS = 3;

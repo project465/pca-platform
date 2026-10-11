@@ -47,17 +47,18 @@ function NavRow({ it, active }: { it: typeof CM_NAV[number]; active: string }) {
  * **없는 기능을 그려 넣지 않는다.** 목표 화면에는 검색과 알림이 있는데
  * CareerMatri 에는 둘 다 없다. 눌러도 아무 일이 없는 칸을 두면 그것이
  * 가짜 기능이 된다. 지금 실제로 있는 것은 계정 한 자리다.
+ *
+ * **이름을 적지 않는다.** 로그인한 사람은 자기 이름을 이미 알고, 그
+ * 글자가 쪽에서 가장 오른쪽 위에 서면 화면이 **누가 보고 있는지를 적는
+ * 관리 도구**로 읽힌다. 서는 것은 첫 글자 한 자와 펼침 표시다.
  */
 function CmUtil({ name }: { name: string }) {
   const initial = name.trim().slice(0, 1) || "나";
   return (
-    <div className="cm-util">
-      <Link className="cm-util-me" href="/my">
-        <span className="cm-util-av" aria-hidden>{initial}</span>
-        <span>{name}</span>
-        <Icon name="chev" size={14} />
-      </Link>
-    </div>
+    <Link className="cm-util-me" href="/my" aria-label="계정">
+      <span className="cm-util-av" aria-hidden>{initial}</span>
+      <Icon name="chev" size={13} />
+    </Link>
   );
 }
 
@@ -117,8 +118,13 @@ export function CmShell({
       <div className="cm-wrap">
         <nav className="cm-rail" aria-label="CareerMatri 메뉴">
           <Link className="cm-rail-brand" href="/me">
-            CareerMatri
-            <small>{MAJOR}</small>
+            {/* 표시는 **글자 없는 모양 하나다**(규격 §1). 새 로고 파일을
+                만들지 않고, 띠에 이미 쓰는 아이콘 하나를 면에 얹는다 */}
+            <span className="cm-rail-mark" aria-hidden><Icon name="ladder" size={17} /></span>
+            <span className="cm-rail-name">
+              CareerMatri
+              <small>{MAJOR}</small>
+            </span>
           </Link>
 
           <div className="cm-rail-scroll">
