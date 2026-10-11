@@ -290,7 +290,12 @@ State · Next Action · Result Summary · Result Detail · Industry Explore)를
 
 ## P. Commit SHA
 
-(커밋 뒤에 채운다)
+| SHA | 담긴 것 |
+|---|---|
+| `ba7bb88` | 검사 격자 · 결과 상세 · 탐색 · Density · 판본 셋 |
+| `0e648ca` | 칩 벽 · 바닥 띠 · 조사 · 검사 둘 · 동결 셋 · 보고 A~Q |
+
+브랜치는 `claude/amazing-thompson-w3f2o2` 다.
 
 ## Q. Production 에서 확인할 것
 
