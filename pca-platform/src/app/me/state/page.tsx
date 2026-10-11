@@ -459,7 +459,7 @@ export default async function State(
         ) : (
           <div className="cm-soon">
             <b>지원서에서 설명할 수 있는 근거가 아직 없습니다.</b>
-            관심이 높은 영역에서 짧게 한 번 해 보고 그것을 적으면 여기에 그 근거가 섭니다.
+            관심이 높은 영역에서 짧게 한 번 해 보고 그것을 적으면 여기에 그 경험이 쌓입니다.
           </div>
         )}
         {m.evidence.partial.length ? (

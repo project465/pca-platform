@@ -75,7 +75,7 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V20";
  * 셋은 우리가 안에서 그 일을 부르던 말이고, 손님 화면에서는 그 말이
  * 무엇을 가리키는지 알 수 없다.
  */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.13";
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.14";
 
 /**
  * V5 에서 바꾼 것 (2026-10-09).
@@ -449,4 +449,13 @@ export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.13";
  * 알림 종은 CareerMatri 에 없는 기능이라 두지 않았고, 브랜드 옆의
  * 펼침 표시는 누르면 아무 일도 없는 자리가 되므로 두지 않았고,
  * 손전화 아래 띠의 고른 칸 위 금은 색으로만 말하지 않으려고 남겼다.
+ */
+
+/*
+ * `.14` 로 올린 까닭. 현재 상태의 빈 상태에 **우리 쪽 비유**가 한 줄 남아
+ * 있었다: `여기에 그 근거가 섭니다`. 설계 문서에서 쓰는 말이라 읽는 사람이
+ * 무엇이 선다는 것인지 알 수 없다. `그 경험이 쌓입니다` 로 적는다.
+ *
+ * 자료에 따라서만 서는 줄이라 앞 회차의 전수 검사가 지나갔다.
+ * 화면 구조는 한 줄도 바뀌지 않았으므로 `WORKSPACE_UI_VERSION` 은 그대로다.
  */

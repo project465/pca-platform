@@ -73,8 +73,8 @@
 /* ── 머리띠 ── 브랜드와 등급과 날짜를 한 띠에 */
 .rs-head {
   position: sticky; top: 0; z-index: 5;
-  background: color-mix(in srgb, var(--r-paper) 94%, transparent);
-  backdrop-filter: blur(10px);
+  /* 검사 화면과 같은 까닭으로 막힌 면이다. 비치는 띠는 겹쳐 보인다 */
+  background: var(--r-paper);
   border-bottom: 1px solid var(--r-line);
 }
 .rs-head-in {

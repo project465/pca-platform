@@ -29,7 +29,7 @@
  */
 
 /** 화면 구조와 상호작용. 흐름이나 화면이 바뀌면 올린다 */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V15";
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V16";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
 export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.13";
@@ -275,4 +275,20 @@ export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.13";
  * **문항 은행과 저장되는 값과 `band()` 는 한 글자도 바뀌지 않았다.**
  * `ASSESSMENT_COPY_VERSION` 도 그대로다: 갈린 것은 생김새뿐이다.
  * `v3:delta` 의 A 다섯 줄이 이 모양을 센다.
+ */
+
+/*
+ * `V16` 으로 올린 까닭. **비치는 머리띠가 스크롤한 글과 겹쳐 읽혔다.**
+ *
+ * `.qs-head` 를 `94% 면 + blur(10px)` 로 두었더니, 손전화에서 쪽을 내리는
+ * 동안 띠 아래를 지나는 글이 띠를 통해 비쳐 보이고 **띠 바로 아래 줄이
+ * 반쯤 잘린 채 겹쳐** 읽혔다. 바닥 띠에서 이미 겪은 자리라 같은 규칙을
+ * 쓴다: 경계는 선 하나와 막힌 면이 만든다.
+ *
+ * 쉬고 있을 때는 어느 검사도 세지 못한다. 띠가 제자리에 서 있고 가리는
+ * 글도 없어서, 찍어 놓은 그림을 사람이 읽어서야 보인다.
+ *
+ * 바뀐 것은 `src/app/v3/assessment.css` 의 그 한 줄이고 문항 은행과 판단
+ * 규칙과 화면에 서는 글자는 그대로다. `ASSESSMENT_COPY_VERSION` 도 올리지
+ * 않는다.
  */

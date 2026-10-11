@@ -18,7 +18,7 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.16";
  * 문장 하나를 고친 날 화면 판본까지 올리면, 되짚을 때 무엇이 바뀐
  * 것인지 알 수 없다. 넷이 따로 간다: 화면 · 문장 · 모델 · 판단.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V18";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V19";
 
 /*
  * `V18` 로 올린 까닭. **굵기를 네 단으로 모았다**(활자 규격 §3).
@@ -292,4 +292,12 @@ export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V18";
  * 펼친 상세가 6,681px 에서 5,315px 이다. **px 자체가 목표가 아니다**:
  * `v3:delta` 가 세는 것은 참고자료가 기본으로 접혀 있는가와 장문 절이
  * 둘 연속으로 서지 않는가다.
+ */
+
+/*
+ * `V19` 로 올린 까닭. 검사 화면과 같은 자리다. `.rs-head` 도 비치는 띠라
+ * 쪽을 내리는 동안 띠 아래 글이 겹쳐 읽혔다. 막힌 면으로 바꿨다.
+ *
+ * 바뀐 것은 `src/app/v3/result.css` 의 그 한 줄이고, 결과 모델과 판정과
+ * 화면에 서는 글자는 그대로다. `RESULT_COPY_VERSION` 도 올리지 않는다.
  */
