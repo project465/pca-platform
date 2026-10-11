@@ -112,6 +112,8 @@
     "v3:loop": "tsx scripts/v3-loop-check.ts",
     "v3:gate": "tsx scripts/v3-owner-gate.ts",
     "v3:usability": "tsx scripts/v3-usability-check.ts",
+    "v3:launch": "tsx scripts/v3-launch-qa.ts",
+    "v3:brand": "tsx scripts/v3-brand-check.ts",
     "v3:ui": "tsx scripts/v3-ui-check.ts",
     "v3:shots": "node scripts/v3-shots.mjs",
     "v3:delta": "tsx scripts/v3-ui-delta.ts",

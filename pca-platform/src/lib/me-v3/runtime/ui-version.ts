@@ -18,8 +18,18 @@
  * 인쇄에서는 머리글이 그대로 숨는다.
  */
 
+/*
+ * `V14` 로 올린 까닭. **굵기를 네 단으로 모았다**(활자 규격 §3).
+ *
+ * `font-weight` 가 400 · 500 · 600 · 650 · 680 · 700 · 720 · 750 **여덟
+ * 값**으로 흩어져 있었고, 그 사이 값들은 뜻이 달라서 적은 것이 아니라
+ * 그 자리에서 조금 더 굵었으면 해서 적은 숫자였다. `--ui-w-rg` ·
+ * `--ui-w-md` · `--ui-w-sb` · `--ui-w-bd` 넷으로 돌렸다. 문항도 보기도
+ * 흐름도 한 줄도 바뀌지 않았다.
+ */
+
 /** 화면 구조와 상호작용. 흐름이나 화면이 바뀌면 올린다 */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V13";
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V14";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
 export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.12";

@@ -18,7 +18,15 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.16";
  * 문장 하나를 고친 날 화면 판본까지 올리면, 되짚을 때 무엇이 바뀐
  * 것인지 알 수 없다. 넷이 따로 간다: 화면 · 문장 · 모델 · 판단.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V17";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V18";
+
+/*
+ * `V18` 로 올린 까닭. **굵기를 네 단으로 모았다**(활자 규격 §3).
+ *
+ * 결과지에서 가장 흔한 탈이 **전체가 굵은 글씨 덩이로 읽히는 것**이라,
+ * 핵심 결과와 할 일은 `--ui-w-bd` 와 `--ui-w-sb` 로 가고 긴 설명문은
+ * `--ui-w-rg` 로 간다. 절도 문장도 모델도 판단도 한 줄도 바뀌지 않았다.
+ */
 
 /*
  * `V17` 로 올린 까닭. **머리글의 상표를 공식 하나로 바꿨다**(규격 §4).

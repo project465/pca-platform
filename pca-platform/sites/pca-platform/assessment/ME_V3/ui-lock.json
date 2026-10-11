@@ -2,7 +2,7 @@
  "schema_version": "me-v3-ui-lock.1",
  "note": "검사 화면 1차 동결. 결과지 작업 중에는 명백한 버그와 접근성 오류만 고치고, 고쳤으면 `ui-version.ts` 의 판본을 올린 뒤 `FREEZE=update npm run v3:freeze` 로 지문을 다시 적는다",
  "versions": {
-  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V13",
+  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V14",
   "assessment_copy_version": "me-v3-2-assessment-copy.12",
   "assessment_version": "ME_V3_2",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.5",
@@ -10,7 +10,7 @@
  },
  "files": {
   "src/app/v3/layout.tsx": "5169464a4bd3741726beea4d17ee6ddb9d070c090513a3ca029f526883e05864",
-  "src/app/v3/assessment.css": "2b8ea19b69c0a7e5709b3a9529c676a0c1c33099d718d72a317b3855af3f59fb",
+  "src/app/v3/assessment.css": "5f1a703b951a7896c4435b1b545bc70e57b67b9158a27ce3bee0cdd9eb7fbbde",
   "src/app/v3/tier-text.ts": "2ff70daeb2de3f6e547356884b50091f819eb98ae5630d21dcc7978e372a33b8",
   "src/app/v3/start/page.tsx": "c0ac6e3e5e98bdadc894d8a2df42545cc807c9a0b778e9841a635fe3df49dd5e",
   "src/app/v3/start/start-form.tsx": "7d036552acb6beca01bace9adc746b9ac42991692de6204444592c1acea968bc",

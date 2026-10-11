@@ -27,7 +27,7 @@ const ORDER = [
  */
 const SAY_READY: Record<string, string> = {
   Z1_EVIDENCE_ESTABLISHED: "",
-  Z2_EVIDENCE_INCOMPLETE: "남긴 것을 더 붙일 자리가 있습니다",
+  Z2_EVIDENCE_INCOMPLETE: "남긴 것을 더 붙이면 설명이 또렷해집니다",
 };
 const READY = ["Z1_EVIDENCE_ESTABLISHED", "Z2_EVIDENCE_INCOMPLETE"];
 /** 첫 화면이 드는 줄 수. **요약이 세부를 대신하면 세부가 죽는다** */
@@ -179,7 +179,7 @@ export default async function State(
               <h3>지원서에서 설명할 만한 경험이 아직 없습니다</h3>
               <p>
                 관심이 높은 영역에서 짧게 한 번 해 보고 그것을 경험으로 적으면
-                이 자리가 섭니다.
+                여기에 그 영역이 섭니다.
               </p>
             </>
           )}
@@ -459,7 +459,7 @@ export default async function State(
         ) : (
           <div className="cm-soon">
             <b>지원서에서 설명할 수 있는 근거가 아직 없습니다.</b>
-            관심이 높은 영역에서 짧게 한 번 해 보고 그것을 적으면 이 자리가 섭니다.
+            관심이 높은 영역에서 짧게 한 번 해 보고 그것을 적으면 여기에 그 근거가 섭니다.
           </div>
         )}
         {m.evidence.partial.length ? (

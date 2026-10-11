@@ -8,6 +8,7 @@ import { BRAND, toLang2, txer } from "@/lib/surface-text";
 import { ROLE_LABEL } from "@/lib/roles";
 import { CmShell, CmHead } from "@/app/me/shell";
 import LangSelect from "@/components/sf/lang-select";
+import LogoutButton from "@/components/logout-button";
 import LoginMethods from "./login-methods";
 import { isProvider, PROVIDER_LABEL } from "@/lib/auth-accounts";
 
@@ -46,7 +47,14 @@ export default async function AccountHome({
 
   return (
     <CmShell active="/my" title="계정">
-      <CmHead title="계정" lead={T("acLead")} />
+      <CmHead title="계정" lead={T("acLead")}
+        /* **나가는 길이 한 자리에는 있어야 한다.** 계정 쪽이 작업공간
+           껍데기로 옮겨 오면서 로그아웃이 **어느 손님 화면에도 없는
+           상태**가 됐다(`components/sf/shell` 에만 남아 있었고 그쪽은
+           Campus 와 Admin 이 쓴다). 학교 실습실처럼 한 PC 를 여럿이
+           쓰는 자리에서는 앞사람의 계정이 그대로 열려 있게 된다.
+           머리띠의 계정 한 자리가 이 쪽으로 보내므로 길은 두 번이다 */
+        actions={<LogoutButton className="cm-btn" label={T("signOut")} />} />
 
       <div className="cm-grid">
         <section className="cm-card">

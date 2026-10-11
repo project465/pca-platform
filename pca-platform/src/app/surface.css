@@ -49,6 +49,24 @@
   --ui-lh-tight: 1.34;   /* 제목 */
   --ui-lh: 1.62;         /* 본문 */
 
+  /* ── 굵기 넷 ──
+     **굵기는 정보 위계를 만드는 도구이고 장식이 아니다.** 핵심만 굵게
+     가고 설명과 날짜와 거드는 글은 가늘게 간다.
+
+     전에는 400 · 500 · 600 · 650 · 680 · 700 · 720 · 750 **여덟 값**이
+     쪽마다 흩어져 있었다. 650 과 680 과 720 은 서로 다른 뜻을 가진 값이
+     아니라 **그 자리에서 조금 더 굵었으면 해서 적은 숫자**다. 지금 쓰는
+     활자는 내려받는 것이 아니라 기기에 깔린 것이라, 그 사이 값은 결국
+     가장 가까운 한 칸으로 떨어진다. 고른 티만 사라지고 얻는 것이 없다.
+
+     읽는 차례: Hero 의 핵심 행동 → 쪽 제목 → 절 제목 → 칸·줄 이름 →
+     본문 → 거드는 글. 앞의 넷이 `sb` 와 `bd` 를 쓰고 뒤의 둘이 `rg` 와
+     `md` 를 쓴다. */
+  --ui-w-rg: 400;   /* 본문 · 설명 · 날짜 · 도움말 */
+  --ui-w-md: 500;   /* 거드는 이름표 · 꺼진 메뉴 줄 */
+  --ui-w-sb: 600;   /* 칸·줄 이름 · 단추 · 켜진 메뉴 줄 */
+  --ui-w-bd: 700;   /* 쪽 제목 · 절 제목 · Hero 의 핵심 행동 */
+
   /* ── 여백 여덟 ──
      **4 의 배수만 쓴다.** 6 · 10 · 18 · 36 이 섞여 있어서 같은 자리의
      위아래 간격이 쪽마다 달랐다 */
@@ -199,30 +217,30 @@
    아이콘처럼 그 안에 들어앉는다 */
 .sf-brand-mark { width: 28px; height: 28px; flex: 0 0 28px; display: block; }
 .sf-brand-name {
-  font-size: 15px; font-weight: 700; color: var(--sf-ink);
+  font-size: 15px; font-weight: var(--ui-w-bd); color: var(--sf-ink);
   letter-spacing: -.015em; line-height: 1.25;
 }
 .sf-brand-sub {
-  display: block; font-size: 11.5px; font-weight: 600;
+  display: block; font-size: 11.5px; font-weight: var(--ui-w-sb);
   color: var(--sf-accent); letter-spacing: .04em; text-transform: uppercase;
 }
 
 .sf-nav { padding: 6px 12px; display: flex; flex-direction: column; gap: 2px; overflow-y: auto; }
 .sf-nav-group {
-  margin: 14px 8px 6px; font-size: 11px; font-weight: 700;
+  margin: 14px 8px 6px; font-size: 11px; font-weight: var(--ui-w-bd);
   color: var(--sf-ink-3); letter-spacing: .08em; text-transform: uppercase;
 }
 .sf-nav a {
   display: flex; align-items: center; gap: 10px;
   padding: 9px 12px; border-radius: var(--sf-radius-sm);
-  font-size: 14px; font-weight: 600; color: var(--sf-ink-2);
+  font-size: 14px; font-weight: var(--ui-w-sb); color: var(--sf-ink-2);
   text-decoration: none;
 }
 .sf-nav a:hover { background: var(--sf-surface-2); color: var(--sf-ink); }
 .sf-nav a[aria-current="page"] { background: var(--sf-accent-soft); color: var(--sf-accent-ink); }
 .sf-nav a .sf-ic { flex: 0 0 16px; opacity: .85; }
 .sf-nav a[aria-current="page"] .sf-ic { opacity: 1; }
-.sf-nav a.is-soon { color: var(--sf-ink-3); font-weight: 500; }
+.sf-nav a.is-soon { color: var(--sf-ink-3); font-weight: var(--ui-w-md); }
 .sf-nav a.is-soon::after {
   content: ''; margin-left: auto; width: 5px; height: 5px; border-radius: 50%;
   background: var(--sf-line); flex: 0 0 5px;
@@ -237,12 +255,12 @@
 .sf-who-av {
   width: 30px; height: 30px; flex: 0 0 30px; border-radius: 9px;
   background: var(--sf-accent-soft); color: var(--sf-accent-ink);
-  display: grid; place-items: center; font-size: 12.5px; font-weight: 800;
+  display: grid; place-items: center; font-size: 12.5px; font-weight: var(--ui-w-bd);
 }
 .sf-who-t { min-width: 0; }
 .sf-who-n {
   display: block;
-  font-size: 13.5px; font-weight: 700; color: var(--sf-ink);
+  font-size: 13.5px; font-weight: var(--ui-w-bd); color: var(--sf-ink);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .sf-who-r {
@@ -261,7 +279,7 @@
   border-bottom: 1px solid var(--sf-line);
   position: sticky; top: 0; z-index: 10;
 }
-.sf-top-t { font-size: var(--t-sm); font-weight: 650; color: var(--sf-ink-2); }
+.sf-top-t { font-size: var(--t-sm); font-weight: var(--ui-w-sb); color: var(--sf-ink-2); }
 .sf-top-r { margin-left: auto; display: flex; align-items: center; gap: 10px; }
 
 .sf-wrap {
@@ -279,11 +297,11 @@
 .sf-head-t { min-width: 0; flex: 1 1 420px; }
 .sf-eyebrow {
   display: flex; align-items: center; gap: 7px;
-  font-size: 11.5px; font-weight: 700; color: var(--sf-accent);
+  font-size: 11.5px; font-weight: var(--ui-w-bd); color: var(--sf-accent);
   letter-spacing: .09em; text-transform: uppercase; margin-bottom: 8px;
 }
 .sf-h1 {
-  margin: 0; font-size: var(--t-h1); line-height: 1.22; font-weight: 700;
+  margin: 0; font-size: var(--t-h1); line-height: 1.22; font-weight: var(--ui-w-bd);
   letter-spacing: -.028em; color: var(--sf-ink); text-wrap: balance;
 }
 .sf-sub {
@@ -293,11 +311,11 @@
 .sf-head-a { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
 .sf-h2 {
-  margin: 0; font-size: var(--t-h2); font-weight: 700; letter-spacing: -.022em;
+  margin: 0; font-size: var(--t-h2); font-weight: var(--ui-w-bd); letter-spacing: -.022em;
   line-height: 1.35; color: var(--sf-ink);
 }
 .sf-h3 {
-  margin: 0; font-size: var(--t-h3); font-weight: 700; letter-spacing: -.015em;
+  margin: 0; font-size: var(--t-h3); font-weight: var(--ui-w-bd); letter-spacing: -.015em;
   color: var(--sf-ink);
 }
 .sf-meta { font-size: var(--t-meta); color: var(--sf-ink-3); line-height: 1.6; }
@@ -357,17 +375,17 @@
   min-width: 0;
 }
 .sf-kpi-l {
-  font-size: var(--t-meta); font-weight: 600; color: var(--sf-ink-3);
+  font-size: var(--t-meta); font-weight: var(--ui-w-sb); color: var(--sf-ink-3);
   display: flex; align-items: center; gap: 6px;
 }
 /* **숫자가 칸을 넘기면 줄여서 한 줄에 둔다.** `107,499 KRW` 가 두 줄로
    갈리면 그 칸만 키가 커지고 여섯 칸의 줄이 어긋난다 */
 .sf-kpi-v {
-  font-size: clamp(21px, 2vw, 30px); line-height: 1.1; font-weight: 700;
+  font-size: clamp(21px, 2vw, 30px); line-height: 1.1; font-weight: var(--ui-w-bd);
   color: var(--sf-ink); letter-spacing: -.035em; font-variant-numeric: tabular-nums;
   overflow-wrap: normal;
 }
-.sf-kpi-v small { font-size: 15px; font-weight: 600; color: var(--sf-ink-3); margin-left: 3px; }
+.sf-kpi-v small { font-size: 15px; font-weight: var(--ui-w-sb); color: var(--sf-ink-3); margin-left: 3px; }
 .sf-kpi-n { font-size: var(--t-meta); color: var(--sf-ink-3); }
 .sf-kpi-bar { height: 4px; border-radius: 99px; background: var(--sf-line-2); overflow: hidden; }
 .sf-kpi-bar i { display: block; height: 100%; background: var(--sf-accent); border-radius: 99px; }
@@ -378,11 +396,11 @@
 .sf-bars { display: flex; flex-direction: column; gap: 12px; }
 .sf-bar { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; align-items: center; }
 .sf-bar-l {
-  font-size: 13.5px; font-weight: 600; color: var(--sf-ink);
+  font-size: 13.5px; font-weight: var(--ui-w-sb); color: var(--sf-ink);
   min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 .sf-bar-v {
-  font-size: 13px; font-weight: 700; color: var(--sf-ink-2);
+  font-size: 13px; font-weight: var(--ui-w-bd); color: var(--sf-ink-2);
   font-variant-numeric: tabular-nums;
 }
 .sf-bar-t { grid-column: 1 / -1; height: 7px; border-radius: 99px; background: var(--sf-line-2); overflow: hidden; }
@@ -391,7 +409,7 @@
 .sf-bar.is-part .sf-bar-t i { background: #c9a84a; }
 .sf-bar.is-not .sf-bar-t i { background: var(--sf-not); }
 /* 감춘 칸은 빈 막대로 두지 않고 빗금으로 그린다. **빈 막대는 0 으로 읽힌다** */
-.sf-bar.is-hidden .sf-bar-l { color: var(--sf-ink-3); font-weight: 500; }
+.sf-bar.is-hidden .sf-bar-l { color: var(--sf-ink-3); font-weight: var(--ui-w-md); }
 .sf-bar.is-hidden .sf-bar-t {
   background: repeating-linear-gradient(135deg,
     var(--sf-line) 0 3px, transparent 3px 7px);
@@ -400,17 +418,17 @@
 /* ── 흐름. 초대 → 등록 → 시작 → 완료 ───────────────────────────── */
 .sf-funnel { display: grid; gap: 10px; }
 .sf-fn { display: grid; grid-template-columns: 92px minmax(0, 1fr) 64px; gap: 12px; align-items: center; }
-.sf-fn-l { font-size: 13px; font-weight: 650; color: var(--sf-ink-2); }
+.sf-fn-l { font-size: 13px; font-weight: var(--ui-w-sb); color: var(--sf-ink-2); }
 .sf-fn-t { height: 26px; border-radius: 8px; background: var(--sf-line-2); overflow: hidden; }
 .sf-fn-t i {
   display: block; height: 100%; border-radius: 8px;
   background: linear-gradient(90deg, var(--sf-accent), #3f82d2);
 }
 .sf-fn-v {
-  text-align: right; font-size: 14px; font-weight: 720; color: var(--sf-ink);
+  text-align: right; font-size: 14px; font-weight: var(--ui-w-bd); color: var(--sf-ink);
   font-variant-numeric: tabular-nums;
 }
-.sf-fn-d { font-size: 11.5px; color: var(--sf-ink-3); font-weight: 600; }
+.sf-fn-d { font-size: 11.5px; color: var(--sf-ink-3); font-weight: var(--ui-w-sb); }
 
 /* ── 표 ──────────────────────────────────────────────────────────
  *
@@ -422,7 +440,7 @@
 .sf-table { width: 100%; border-collapse: collapse; font-size: var(--t-sm); }
 .sf-table th, .sf-table td { text-align: left; padding: 13px 18px; vertical-align: middle; }
 .sf-table thead th {
-  font-size: 11.5px; font-weight: 650; color: var(--sf-ink-3);
+  font-size: 11.5px; font-weight: var(--ui-w-sb); color: var(--sf-ink-3);
   letter-spacing: .06em; text-transform: uppercase;
   background: var(--sf-surface-2); border-bottom: 1px solid var(--sf-line);
   white-space: nowrap;
@@ -431,7 +449,7 @@
 .sf-table tbody tr:hover td { background: #fafbfd; }
 .sf-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
 .sf-table th.num { text-align: right; }
-.sf-table .sf-strong { font-weight: 650; color: var(--sf-ink); }
+.sf-table .sf-strong { font-weight: var(--ui-w-sb); color: var(--sf-ink); }
 .sf-table td .sf-meta { margin-top: 3px; }
 /* 내부 코드는 메타로 내린다. **첫 칸을 코드로 쓰지 않는다** */
 .sf-code {
@@ -445,7 +463,7 @@
    앞에 두어 색을 못 가리는 눈에도 모양이 남게 한다 */
 .sf-pill {
   display: inline-flex; align-items: center; gap: 6px;
-  font-size: 11.5px; font-weight: 650; padding: 4px 10px; border-radius: 99px;
+  font-size: 11.5px; font-weight: var(--ui-w-sb); padding: 4px 10px; border-radius: 99px;
   border: 1px solid var(--sf-line); color: var(--sf-ink-2); background: var(--sf-surface);
   white-space: nowrap; letter-spacing: -.01em;
 }
@@ -473,7 +491,7 @@
  */
 .sf-btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 7px;
-  font: inherit; font-size: var(--t-sm); font-weight: 650; cursor: pointer;
+  font: inherit; font-size: var(--t-sm); font-weight: var(--ui-w-sb); cursor: pointer;
   padding: 0 18px; height: 40px; border-radius: var(--r-sm);
   text-decoration: none; white-space: nowrap;
   border: 1px solid var(--sf-ink); background: var(--sf-ink); color: #fff;
@@ -491,7 +509,7 @@
 .sf-btn.accent:hover { background: var(--sf-accent-ink); border-color: var(--sf-accent-ink); }
 .sf-btn.quiet {
   background: transparent; border-color: transparent; color: var(--sf-ink-2);
-  box-shadow: none; font-weight: 600;
+  box-shadow: none; font-weight: var(--ui-w-sb);
 }
 .sf-btn.quiet:hover { background: var(--sf-surface-2); color: var(--sf-ink); }
 /* **크기 이름을 `lg` 로 두지 않는다.** `globals.css` 의 결과지 범례 점이
@@ -525,7 +543,7 @@
   background: var(--sf-accent-soft); color: var(--sf-accent);
   display: grid; place-items: center; margin-bottom: 2px;
 }
-.sf-empty h3 { margin: 0; font-size: var(--t-h3); font-weight: 700; color: var(--sf-ink); letter-spacing: -.015em; }
+.sf-empty h3 { margin: 0; font-size: var(--t-h3); font-weight: var(--ui-w-bd); color: var(--sf-ink); letter-spacing: -.015em; }
 .sf-empty p { margin: 0; font-size: var(--t-sm); line-height: 1.7; color: var(--sf-ink-3); max-width: 60ch; }
 .sf-empty .sf-btn { margin-top: 6px; }
 .sf-empty.tight { padding: 26px 22px; }
@@ -537,7 +555,7 @@
   color: #fff; position: relative; overflow: hidden;
 }
 .sf-hero h1 {
-  margin: 0; font-size: 30px; line-height: 1.22; font-weight: 740;
+  margin: 0; font-size: 30px; line-height: 1.22; font-weight: var(--ui-w-bd);
   letter-spacing: -.025em; max-width: 24ch; text-wrap: balance;
 }
 .sf-hero p { margin: 12px 0 0; font-size: 15px; color: #c6d6ea; max-width: 56ch; }
@@ -562,10 +580,10 @@
 }
 .sf-rank li + li { border-top: 1px solid var(--sf-line-2); }
 .sf-rank b {
-  font-size: 12px; font-weight: 800; color: var(--sf-accent);
+  font-size: 12px; font-weight: var(--ui-w-bd); color: var(--sf-accent);
   font-variant-numeric: tabular-nums;
 }
-.sf-rank span { font-size: 14px; color: var(--sf-ink); font-weight: 600; min-width: 0; }
+.sf-rank span { font-size: 14px; color: var(--sf-ink); font-weight: var(--ui-w-sb); min-width: 0; }
 
 /* 묶음 목록. 이름표와 값을 두 칸으로 */
 .sf-defs { display: grid; gap: 1px; }
@@ -574,20 +592,20 @@
   padding: 10px 0; font-size: 13.5px;
 }
 .sf-def + .sf-def { border-top: 1px solid var(--sf-line-2); }
-.sf-def dt { color: var(--sf-ink-3); font-size: 12.5px; font-weight: 600; }
+.sf-def dt { color: var(--sf-ink-3); font-size: 12.5px; font-weight: var(--ui-w-sb); }
 .sf-def dd { margin: 0; color: var(--sf-ink); }
 
 /* 고르는 띠 (기간 · 필터) */
 .sf-seg { display: inline-flex; padding: 3px; gap: 2px; background: var(--sf-line-2); border-radius: 10px; }
 .sf-seg a {
-  font-size: 12.5px; font-weight: 650; color: var(--sf-ink-2); text-decoration: none;
+  font-size: 12.5px; font-weight: var(--ui-w-sb); color: var(--sf-ink-2); text-decoration: none;
   padding: 6px 12px; border-radius: 8px;
 }
 .sf-seg a[aria-current="true"] { background: var(--sf-surface); color: var(--sf-ink); box-shadow: var(--sf-shadow); }
 
 /* 고르는 상자. **작은 글자 링크를 쓰지 않는다** */
 .sf-select {
-  font: inherit; font-size: var(--t-sm); font-weight: 600; color: var(--sf-ink);
+  font: inherit; font-size: var(--t-sm); font-weight: var(--ui-w-sb); color: var(--sf-ink);
   background: var(--sf-surface) no-repeat right 11px center;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' stroke='%235f6e86' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   border: 1px solid var(--sf-line); border-radius: var(--r-sm);
@@ -620,7 +638,7 @@
 }
 .sfm-sec-h { padding: 20px 24px 16px; border-bottom: 1px solid var(--sf-line-2); }
 .sfm-sec-h h2 {
-  margin: 0; font-size: var(--t-h3); font-weight: 700; letter-spacing: -.015em;
+  margin: 0; font-size: var(--t-h3); font-weight: var(--ui-w-bd); letter-spacing: -.015em;
   color: var(--sf-ink);
 }
 .sfm-sec-h p { margin: 7px 0 0; font-size: var(--t-meta); line-height: 1.7; color: var(--sf-ink-3); max-width: 72ch; }
@@ -631,17 +649,17 @@
 .sfm-f.wide { grid-column: 1 / -1; }
 .sfm-l {
   display: flex; align-items: center; gap: 8px;
-  font-size: var(--t-sm); font-weight: 650; color: var(--sf-ink);
+  font-size: var(--t-sm); font-weight: var(--ui-w-sb); color: var(--sf-ink);
 }
 /* **필수 표시를 별표 하나로 하지 않는다.** 글자로 적어야 읽는 사람이
    무엇이 필수인지 짐작하지 않는다 */
 .sfm-req {
-  font-size: 10.5px; font-weight: 700; letter-spacing: .06em;
+  font-size: 10.5px; font-weight: var(--ui-w-bd); letter-spacing: .06em;
   color: var(--sf-warn); background: var(--sf-warn-soft);
   border: 1px solid var(--sf-warn-line); border-radius: 4px; padding: 1px 5px;
 }
 .sfm-opt {
-  font-size: 10.5px; font-weight: 650; letter-spacing: .06em;
+  font-size: 10.5px; font-weight: var(--ui-w-sb); letter-spacing: .06em;
   color: var(--sf-ink-3); background: var(--sf-surface-2);
   border: 1px solid var(--sf-line); border-radius: 4px; padding: 1px 5px;
 }
@@ -670,10 +688,10 @@
    읽히지 않고, 숫자만으로는 얼마나 남았는지가 안 보인다 */
 .sfm-ready { display: grid; gap: 16px 28px; grid-template-columns: auto minmax(0, 1fr); align-items: center; }
 .sfm-ready-n {
-  font-size: 34px; font-weight: 700; letter-spacing: -.035em; color: var(--sf-ink);
+  font-size: 34px; font-weight: var(--ui-w-bd); letter-spacing: -.035em; color: var(--sf-ink);
   font-variant-numeric: tabular-nums; line-height: 1; margin-top: 4px;
 }
-.sfm-ready-n small { font-size: 16px; font-weight: 600; color: var(--sf-ink-3); }
+.sfm-ready-n small { font-size: 16px; font-weight: var(--ui-w-sb); color: var(--sf-ink-3); }
 .sfm-ready-b { min-width: 0; }
 .sfm-ready-b > span {
   display: block; height: 8px; border-radius: 99px;
@@ -711,8 +729,8 @@
 }
 .sf-todo-i i { width: 8px; height: 8px; border-radius: 50%; background: var(--sf-accent); }
 .sf-todo-i.warn i { background: #c2693c; }
-.sf-todo-t { font-size: 13.5px; color: var(--sf-ink); font-weight: 600; min-width: 0; }
-.sf-todo-t em { display: block; font-style: normal; font-size: 12.5px; color: var(--sf-ink-3); font-weight: 500; }
+.sf-todo-t { font-size: 13.5px; color: var(--sf-ink); font-weight: var(--ui-w-sb); min-width: 0; }
+.sf-todo-t em { display: block; font-style: normal; font-size: 12.5px; color: var(--sf-ink-3); font-weight: var(--ui-w-md); }
 
 /* 기관·국가 카드 */
 .sf-site {
@@ -720,11 +738,11 @@
   background: var(--sf-surface); box-shadow: var(--sf-shadow); overflow: hidden;
 }
 .sf-site-h { padding: 18px 20px 14px; display: flex; align-items: center; gap: 10px; }
-.sf-site-h h3 { margin: 0; font-size: 16px; font-weight: 720; color: var(--sf-ink); }
+.sf-site-h h3 { margin: 0; font-size: 16px; font-weight: var(--ui-w-bd); color: var(--sf-ink); }
 .sf-site-h .sf-pill { margin-left: auto; }
 .sf-site-d { padding: 0 20px 18px; font-size: 13px; color: var(--sf-ink-2); }
 .sf-site-dom {
-  font-size: 14px; font-weight: 700; color: var(--sf-accent-ink);
+  font-size: 14px; font-weight: var(--ui-w-bd); color: var(--sf-accent-ink);
   font-feature-settings: "tnum"; margin-bottom: 10px;
 }
 .sf-chips { display: flex; gap: 6px; flex-wrap: wrap; }
@@ -819,8 +837,8 @@
   display: flex; align-items: center; gap: 12px;
   padding: 14px 20px; background: #fff; border-bottom: 1px solid var(--sf-line);
 }
-.asbrand { font-size: 14px; font-weight: 750; color: var(--sf-ink); letter-spacing: -.015em }
-.asmeta { margin-left: auto; font-size: 12.5px; font-weight: 650; color: var(--sf-ink-3) }
+.asbrand { font-size: 14px; font-weight: var(--ui-w-bd); color: var(--sf-ink); letter-spacing: -.015em }
+.asmeta { margin-left: auto; font-size: 12.5px; font-weight: var(--ui-w-sb); color: var(--sf-ink-3) }
 
 .assteps {
   display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
@@ -832,7 +850,7 @@
   padding: 6px 12px; border-radius: 999px; border: 1px solid var(--sf-line);
   white-space: nowrap;
 }
-.asstep b { font-size: 12.5px; font-weight: 700; color: var(--sf-ink-3) }
+.asstep b { font-size: 12.5px; font-weight: var(--ui-w-bd); color: var(--sf-ink-3) }
 .asstep i { font-style: normal; font-size: 11px; color: var(--sf-ink-3); font-variant-numeric: tabular-nums }
 .asstep.is-now { border-color: var(--sf-accent); background: var(--sf-accent-soft) }
 .asstep.is-now b { color: var(--sf-accent-ink) }
@@ -854,12 +872,12 @@
   border: 1px solid var(--sf-gold-line); border-radius: var(--r-md);
   background: var(--sf-gold-soft);
 }
-.asmiss p { margin: 0; font-size: 13.5px; font-weight: 650; color: var(--sf-gold) }
+.asmiss p { margin: 0; font-size: 13.5px; font-weight: var(--ui-w-sb); color: var(--sf-gold) }
 .asmiss ul { margin: 8px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px }
 .asmiss a {
   display: inline-flex; align-items: center; min-height: 26px;
   padding: 3px 10px; border-radius: 999px; border: 1px solid var(--sf-gold-line);
-  background: #fff; font-size: 12.5px; font-weight: 650; color: var(--sf-ink-2);
+  background: #fff; font-size: 12.5px; font-weight: var(--ui-w-sb); color: var(--sf-ink-2);
   text-decoration: none;
 }
 
@@ -868,7 +886,7 @@
 
 .asmain { max-width: 760px; margin: 0 auto; padding: 28px 20px 120px }
 .asH1 {
-  margin: 0 0 20px; font-size: 24px; font-weight: 750; letter-spacing: -.02em;
+  margin: 0 0 20px; font-size: 24px; font-weight: var(--ui-w-bd); letter-spacing: -.02em;
   color: var(--sf-ink);
 }
 
@@ -881,7 +899,7 @@
 .asq-no {
   flex: 0 0 26px; height: 26px; border-radius: 8px; background: var(--sf-surface-2);
   color: var(--sf-ink-3); display: grid; place-items: center;
-  font-size: 12px; font-weight: 800; font-variant-numeric: tabular-nums;
+  font-size: 12px; font-weight: var(--ui-w-bd); font-variant-numeric: tabular-nums;
 }
 .asq-t { margin: 2px 0 0; font-size: 15.5px; line-height: 1.6; color: var(--sf-ink) }
 
@@ -898,7 +916,7 @@
 .asq-opts label:hover { border-color: #c6daf4; background: var(--sf-surface-2) }
 .asq-opts label.on {
   border-color: var(--sf-accent); background: var(--sf-accent-soft);
-  color: var(--sf-accent-ink); font-weight: 700;
+  color: var(--sf-accent-ink); font-weight: var(--ui-w-bd);
 }
 .asq-opts input { position: absolute; opacity: 0; width: 1px; height: 1px }
 .asq-opts label:focus-within { outline: 2px solid var(--sf-accent); outline-offset: 2px }
@@ -913,7 +931,7 @@
 }
 .asnav .sf-btn { margin-left: 0 }
 .asnav .sf-btn:last-child { margin-left: auto }
-.assave { font-size: 12.5px; font-weight: 650; color: var(--sf-ink-3); min-width: 72px }
+.assave { font-size: 12.5px; font-weight: var(--ui-w-sb); color: var(--sf-ink-3); min-width: 72px }
 .assave.is-saved { color: var(--sf-ok) }
 .assave.is-retry { color: var(--sf-warn) }
 
@@ -959,7 +977,7 @@
   display: flex; flex-wrap: wrap; gap: 6px 20px;
   margin: 10px 0 6px; font-size: var(--ui-t-sub); color: var(--sf-ink-2);
 }
-.rpmeta b { color: var(--sf-ink-3); font-weight: 500; margin-right: 6px }
+.rpmeta b { color: var(--sf-ink-3); font-weight: var(--ui-w-md); margin-right: 6px }
 .rpbrief {
   margin: var(--ui-5) 0 0; padding: var(--ui-5);
   border: 1px solid var(--sf-line); border-radius: var(--ui-r-lg);
@@ -972,7 +990,7 @@
 }
 .rpbrief-row:first-of-type { border-top: 0; padding-top: 0 }
 .rpbrief-row > b {
-  font-size: var(--ui-t-sub); font-weight: 500; color: var(--sf-ink-3);
+  font-size: var(--ui-t-sub); font-weight: var(--ui-w-md); color: var(--sf-ink-3);
 }
 .rpbrief-row > p {
   margin: 0; font-size: var(--ui-t-body); line-height: 1.6; color: var(--sf-ink);
@@ -984,7 +1002,7 @@
 }
 /* **지금 할 일 한 줄만 면을 받는다.** 셋이 같은 무게면 무엇을 먼저
    읽는지가 화면에 없다 */
-.rpbrief-row.is-do > p { font-weight: 600 }
+.rpbrief-row.is-do > p { font-weight: var(--ui-w-sb) }
 .rpbrief > .sf-meta { margin: var(--ui-3) 0 0; display: block }
 .rpdetail { margin-top: var(--ui-6) }
 
@@ -1039,7 +1057,7 @@
 .pxhero h1 {
   margin: 0 auto; max-width: 22ch;
   font-size: var(--t-display); line-height: 1.16; letter-spacing: -.035em;
-  font-weight: 700; color: var(--sf-ink); text-wrap: balance;
+  font-weight: var(--ui-w-bd); color: var(--sf-ink); text-wrap: balance;
 }
 .pxhero p {
   margin: 18px auto 0; max-width: 60ch; font-size: 17px; line-height: 1.75;
@@ -1053,7 +1071,7 @@
   background: var(--sf-surface); box-shadow: var(--sh-1);
 }
 .pxmkt a {
-  padding: 7px 18px; border-radius: 99px; font-size: var(--t-sm); font-weight: 650;
+  padding: 7px 18px; border-radius: 99px; font-size: var(--t-sm); font-weight: var(--ui-w-sb);
   color: var(--sf-ink-2); text-decoration: none;
 }
 .pxmkt a:hover { color: var(--sf-ink) }
@@ -1096,7 +1114,7 @@
 .pxtier-h { display: flex; align-items: center; gap: 10px; min-height: 26px; flex-wrap: wrap }
 .pxtier-h .sf-pill { white-space: normal; text-align: left; line-height: 1.45 }
 .pxtier-h h2 {
-  margin: 0; font-size: 12.5px; font-weight: 700; letter-spacing: .12em;
+  margin: 0; font-size: 12.5px; font-weight: var(--ui-w-bd); letter-spacing: .12em;
   text-transform: uppercase; color: var(--sf-ink-3);
 }
 .pxtier-h .sf-pill { margin-left: auto }
@@ -1106,23 +1124,23 @@
    어긋남이 견주는 일을 방해한다 */
 .pxwhat {
   margin: 14px 0 0; min-height: 53px;
-  font-size: 19px; font-weight: 700; line-height: 1.4;
+  font-size: 19px; font-weight: var(--ui-w-bd); line-height: 1.4;
   letter-spacing: -.022em; color: var(--sf-ink);
 }
 .pxprice {
-  margin: 18px 0 0; min-height: 76px; font-size: 34px; font-weight: 700; color: var(--sf-ink);
+  margin: 18px 0 0; min-height: 76px; font-size: 34px; font-weight: var(--ui-w-bd); color: var(--sf-ink);
   font-variant-numeric: tabular-nums; letter-spacing: -.035em; line-height: 1.1;
 }
 .pxprice small {
-  display: block; margin-top: 8px; font-size: var(--t-meta); font-weight: 500;
+  display: block; margin-top: 8px; font-size: var(--t-meta); font-weight: var(--ui-w-md);
   letter-spacing: 0; color: var(--sf-ink-3); line-height: 1.5;
 }
 .pxtbd {
-  margin: 18px 0 0; min-height: 76px; font-size: var(--t-body); font-weight: 650;
+  margin: 18px 0 0; min-height: 76px; font-size: var(--t-body); font-weight: var(--ui-w-sb);
   color: var(--sf-warn); line-height: 1.5;
 }
 .pxtbd small {
-  display: block; margin-top: 6px; font-size: var(--t-meta); font-weight: 500;
+  display: block; margin-top: 6px; font-size: var(--t-meta); font-weight: var(--ui-w-md);
   color: var(--sf-ink-3);
 }
 .pxcta { margin-top: 22px }
@@ -1135,12 +1153,12 @@
 }
 .pxwho span {
   display: block; margin-bottom: 5px;
-  font-size: 11px; font-weight: 700; letter-spacing: .08em;
+  font-size: 11px; font-weight: var(--ui-w-bd); letter-spacing: .08em;
   text-transform: uppercase; color: var(--sf-ink-3);
 }
 .pxgets { margin-top: 20px }
 .pxgets h3 {
-  margin: 0 0 12px; font-size: 11px; font-weight: 700; letter-spacing: .08em;
+  margin: 0 0 12px; font-size: 11px; font-weight: var(--ui-w-bd); letter-spacing: .08em;
   text-transform: uppercase; color: var(--sf-ink-3);
 }
 .pxgets ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 11px; align-content: start }
@@ -1171,18 +1189,18 @@
   border-radius: var(--r-lg);
 }
 .pxband > h2 {
-  margin: 0 0 20px; font-size: var(--t-h3); font-weight: 700;
+  margin: 0 0 20px; font-size: var(--t-h3); font-weight: var(--ui-w-bd);
   letter-spacing: -.015em; color: var(--sf-ink);
 }
 .pxband-g { display: grid; gap: 22px 28px; grid-template-columns: repeat(4, minmax(0, 1fr)) }
 .pxband-i { display: flex; flex-direction: column; gap: 5px; min-width: 0 }
-.pxband-i b { font-size: var(--t-sm); font-weight: 650; color: var(--sf-ink) }
+.pxband-i b { font-size: var(--t-sm); font-weight: var(--ui-w-sb); color: var(--sf-ink) }
 .pxband-i span { font-size: var(--t-meta); line-height: 1.65; color: var(--sf-ink-3) }
 
 /* ── 사기 전에 묻는 것 ── */
 .pxask { margin-top: 44px }
 .pxask > h2 {
-  margin: 0 0 18px; font-size: var(--t-h3); font-weight: 700;
+  margin: 0 0 18px; font-size: var(--t-h3); font-weight: var(--ui-w-bd);
   letter-spacing: -.015em; color: var(--sf-ink);
 }
 .pxask-g { display: grid; gap: 18px; grid-template-columns: repeat(3, minmax(0, 1fr)) }
@@ -1190,14 +1208,14 @@
   background: var(--sf-surface); border: 1px solid var(--sf-line);
   border-radius: var(--r-md); padding: 20px 22px;
 }
-.pxask-i b { display: block; font-size: var(--t-sm); font-weight: 650; color: var(--sf-ink) }
+.pxask-i b { display: block; font-size: var(--t-sm); font-weight: var(--ui-w-sb); color: var(--sf-ink) }
 .pxask-i p { margin: 8px 0 0; font-size: var(--t-meta); line-height: 1.75; color: var(--sf-ink-3) }
 /* 혼자 선 링크는 **누를 자리를 24px 로 둔다**(WCAG 2.2 의 2.5.8).
    글 한가운데 있는 링크는 거기서 빠지지만 이것은 한 줄에 혼자 있다 */
 .pxask-more { margin: 20px 0 0; font-size: var(--t-sm) }
 .pxask-more a {
   display: inline-flex; align-items: center; min-height: 26px;
-  color: var(--sf-accent-ink); font-weight: 650;
+  color: var(--sf-accent-ink); font-weight: var(--ui-w-sb);
 }
 
 .pxnote { margin-top: 28px; display: grid; gap: 10px }
@@ -1248,18 +1266,18 @@
   border: 1px solid var(--sf-line, #dfe5ee); border-radius: 10px;
   background: var(--sf-surface-2);
 }
-.cnbox legend { padding: 0 6px; font-size: 13px; font-weight: 700 }
+.cnbox legend { padding: 0 6px; font-size: 13px; font-weight: var(--ui-w-bd) }
 .cnrow {
   display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 9px;
   align-items: start; padding: 6px 0; font-size: 13px; line-height: 1.55;
 }
 .cnrow input { margin-top: 3px }
 .cnrow.cnall {
-  padding-bottom: 9px; margin-bottom: 4px; font-weight: 700;
+  padding-bottom: 9px; margin-bottom: 4px; font-weight: var(--ui-w-bd);
   border-bottom: 1px solid var(--sf-line, #dfe5ee);
 }
 .cntag {
-  display: inline-block; font-size: 11px; font-weight: 700;
+  display: inline-block; font-size: 11px; font-weight: var(--ui-w-bd);
   padding: 1px 6px; border-radius: 999px; letter-spacing: .02em;
   background: #eef2f8; color: #5a6b80;
 }
@@ -1290,7 +1308,7 @@
   width: 3px; border-radius: 2px; background: var(--sf-accent);
 }
 .pdsec > h2 {
-  margin: 0 0 18px; font-size: var(--t-h2); font-weight: 700; line-height: 1.35;
+  margin: 0 0 18px; font-size: var(--t-h2); font-weight: var(--ui-w-bd); line-height: 1.35;
   letter-spacing: -.022em; color: var(--sf-ink); text-wrap: balance;
 }
 .pdsec > p { margin: 0 0 18px; max-width: 66ch; font-size: 16px; line-height: 1.8;
@@ -1310,7 +1328,7 @@
   background: var(--sf-surface); border: 1px solid var(--sf-line);
   border-radius: var(--r-lg); padding: 24px 24px 26px;
 }
-.pdcard h3 { margin: 0 0 14px; font-size: 13px; font-weight: 700; letter-spacing: .06em;
+.pdcard h3 { margin: 0 0 14px; font-size: 13px; font-weight: var(--ui-w-bd); letter-spacing: .06em;
   text-transform: uppercase; color: var(--sf-ink-3) }
 /* 걸음 네 개. 번호가 뜻이 있는 자리라 번호를 그린다 */
 .pdsteps { margin: 0; padding: 0; list-style: none; counter-reset: pd;
@@ -1323,7 +1341,7 @@
   content: counter(pd); position: absolute; left: 0; top: 0;
   width: 26px; height: 26px; border-radius: 50%;
   display: grid; place-items: center;
-  background: var(--sf-ink); color: #fff; font-size: 12.5px; font-weight: 700;
+  background: var(--sf-ink); color: #fff; font-size: 12.5px; font-weight: var(--ui-w-bd);
 }
 /* 묻고 답하기. **한 줄씩 열리는 상자**로 둔다: 전부 펼쳐 두면 쪽이
    두 배로 길어지고, 전부 접어 두면 무엇이 들었는지 안 보인다 */
@@ -1336,11 +1354,11 @@
 .pdfaq details:hover { border-color: #cfd6e2 }
 .pdfaq details[open] { border-color: var(--sf-accent-line); background: #fcfdff }
 .pdfaq summary {
-  cursor: pointer; font-size: var(--t-body); font-weight: 650; color: var(--sf-ink);
+  cursor: pointer; font-size: var(--t-body); font-weight: var(--ui-w-sb); color: var(--sf-ink);
   list-style: none; display: flex; align-items: center; gap: 10px;
 }
 .pdfaq summary::-webkit-details-marker { display: none }
-.pdfaq summary::after { content: "+"; margin-left: auto; color: var(--sf-ink-3); font-weight: 400; font-size: 17px }
+.pdfaq summary::after { content: "+"; margin-left: auto; color: var(--sf-ink-3); font-weight: var(--ui-w-rg); font-size: 17px }
 .pdfaq details[open] summary::after { content: "\2212" }
 .pdfaq p { margin: 12px 0 0; font-size: 14px; line-height: 1.8; color: var(--sf-ink-2) }
 /* 견본 띠. **지우기 어렵게 크게 둔다**: 작게 두면 견본이 진짜로 읽힌다 */
@@ -1350,7 +1368,7 @@
   background: var(--sf-gold-soft); border: 1px solid var(--sf-gold-line);
   color: var(--sf-gold); font-size: var(--t-sm); line-height: 1.7;
 }
-.pdsample b { font-weight: 700 }
+.pdsample b { font-weight: var(--ui-w-bd) }
 /* 사업자 표시. 비어 있으면 금색으로 뜬다 */
 .pdbiz {
   margin-top: 72px; padding: 24px 26px; border-radius: var(--r-lg);
@@ -1359,9 +1377,9 @@
 }
 .pdbiz dl { margin: 0; display: flex; gap: 8px; flex-wrap: wrap;
   font-size: 12.5px; line-height: 1.7; color: var(--sf-ink-3) }
-.pdbiz dt { font-weight: 600 }
+.pdbiz dt { font-weight: var(--ui-w-sb) }
 .pdbiz dd { margin: 0 }
-.pdbiz .is-missing { color: var(--sf-warn); font-weight: 600 }
+.pdbiz .is-missing { color: var(--sf-warn); font-weight: var(--ui-w-sb) }
 .pdcta { margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap }
 
 @media (max-width: 760px) {
@@ -1394,7 +1412,7 @@
  */
 .sf-wrap > h1,
 .sf-wrap > form > h1 {
-  font-size: var(--t-h2); font-weight: 700; letter-spacing: -.028em;
+  font-size: var(--t-h2); font-weight: var(--ui-w-bd); letter-spacing: -.028em;
   line-height: 1.3; color: var(--sf-ink); margin: 0 0 var(--sp-2);
 }
 .sf-wrap > h1 + .sub, .sf-wrap > .sub {
@@ -1402,14 +1420,14 @@
   font-size: 14px; line-height: 1.75; color: var(--sf-ink-3);
 }
 .sf-wrap > h2, .sf-wrap .page-h2 {
-  font-size: var(--t-h3); font-weight: 700; letter-spacing: -.02em;
+  font-size: var(--t-h3); font-weight: var(--ui-w-bd); letter-spacing: -.02em;
   color: var(--sf-ink); margin: var(--sp-5) 0 var(--sp-3);
 }
 /* 카드 안의 머리글. **한 칸에 결론 하나**(규격 §36)라서 카드 제목은
    본문보다 한 단계만 크고, 그 아래 설명이 한 줄 붙는다 */
 .sf-wrap .panel > h2:first-child { margin-top: 0 }
 .sf-wrap .panel > h2 {
-  font-size: 15px; font-weight: 700; letter-spacing: -.015em;
+  font-size: 15px; font-weight: var(--ui-w-bd); letter-spacing: -.015em;
   color: var(--sf-ink); margin: var(--sp-4) 0 var(--sp-2);
 }
 .sf-wrap .panel .sub {
@@ -1452,7 +1470,7 @@
   border-radius: var(--r-lg); box-shadow: var(--sh-1);
 }
 .spwrap .pdsec > h2 {
-  margin: 0 0 10px; font-size: 16px; font-weight: 700;
+  margin: 0 0 10px; font-size: 16px; font-weight: var(--ui-w-bd);
   letter-spacing: -.015em; color: var(--sf-ink);
 }
 .spwrap .pdsec > p { margin-bottom: 0; font-size: 14px; line-height: 1.75 }
@@ -1465,7 +1483,7 @@
 .authwrap { width: 100%; max-width: 428px; display: grid; gap: 18px; justify-items: stretch }
 .authbrand {
   display: inline-flex; align-items: center; gap: 10px; justify-self: center;
-  font-size: var(--t-h3); font-weight: 700; letter-spacing: -.02em;
+  font-size: var(--t-h3); font-weight: var(--ui-w-bd); letter-spacing: -.02em;
   color: var(--sf-ink); text-decoration: none;
 }
 .authwrap .panel { max-width: none }
@@ -1478,7 +1496,7 @@
  */
 .cmflow { margin-top: 40px }
 .cmflow-t {
-  margin: 0 0 16px; font-size: 11.5px; font-weight: 700; letter-spacing: .09em;
+  margin: 0 0 16px; font-size: 11.5px; font-weight: var(--ui-w-bd); letter-spacing: .09em;
   text-transform: uppercase; color: var(--sf-ink-3); text-align: center;
 }
 .cmflow-l {
@@ -1500,12 +1518,12 @@
   flex: 0 0 24px; width: 24px; height: 24px; border-radius: 50%;
   display: grid; place-items: center;
   background: var(--sf-surface-2); border: 1px solid var(--sf-line);
-  color: var(--sf-ink-3); font-size: 11.5px; font-weight: 700;
+  color: var(--sf-ink-3); font-size: 11.5px; font-weight: var(--ui-w-bd);
   font-variant-numeric: tabular-nums;
 }
 .cmflow-b { min-width: 0; display: flex; flex-direction: column; gap: 3px }
 .cmflow-b b {
-  font-size: var(--t-sm); font-weight: 650; color: var(--sf-ink);
+  font-size: var(--t-sm); font-weight: var(--ui-w-sb); color: var(--sf-ink);
   letter-spacing: -.01em; line-height: 1.4;
 }
 .cmflow-b span { font-size: var(--t-meta); line-height: 1.5; color: var(--sf-ink-3) }
@@ -1541,7 +1559,7 @@
 }
 .actlist li + li { border-top: 1px solid var(--sf-line-2) }
 .actlist li > span { flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 3px }
-.actlist b { font-size: var(--t-sm); font-weight: 650; color: var(--sf-ink) }
+.actlist b { font-size: var(--t-sm); font-weight: var(--ui-w-sb); color: var(--sf-ink) }
 .actlist em {
   font-style: normal; font-size: var(--t-meta); line-height: 1.6; color: var(--sf-ink-3);
 }
@@ -1576,7 +1594,7 @@
   color: #e6eaf2; font-size: 11.5px; line-height: 1.45; text-align: center;
   letter-spacing: .01em;
 }
-.stgmark b { font-weight: 650; color: #fff }
+.stgmark b { font-weight: var(--ui-w-sb); color: #fff }
 .stgmark span { color: #b9c3d4 }
 /* **띠는 쪽 높이를 늘리지 않는다.** 바닥 여백만 띄우고, 그만큼을
    `--stg-h` 로 알려 100vh 뼈대가 빼고 선다. 여기서 끝내면 문서가
@@ -1628,7 +1646,7 @@ body:has(.stgmark) .cm-tabs { bottom: var(--stg-h) }
   display: flex; flex-direction: column; gap: var(--sp-3);
 }
 .pfoot-name {
-  font-size: 13.5px; font-weight: 700; color: var(--sf-ink);
+  font-size: 13.5px; font-weight: var(--ui-w-bd); color: var(--sf-ink);
   letter-spacing: -.015em;
 }
 .pfoot-biz {
@@ -1639,7 +1657,7 @@ body:has(.stgmark) .cm-tabs { bottom: var(--stg-h) }
 /* 한 칸이 이름과 값 한 쌍이다. 좁아지면 쌍째로 줄이 바뀌어서
    `대표자` 와 그 값이 갈라지지 않는다 */
 .pfoot-biz > div { display: flex; gap: 6px; max-width: 100%; }
-.pfoot-biz dt { font-weight: 600; flex: 0 0 auto }
+.pfoot-biz dt { font-weight: var(--ui-w-sb); flex: 0 0 auto }
 .pfoot-biz dd { margin: 0; min-width: 0; overflow-wrap: break-word }
 /* **누르는 자리를 24px 로 둔다**(규격 §44 · WCAG 2.2 2.5.8). 글 한가운데
    있는 링크는 그 예외지만 여기는 칸 하나가 링크 하나라 예외가 아니다.
@@ -1650,14 +1668,14 @@ body:has(.stgmark) .cm-tabs { bottom: var(--stg-h) }
 .pfoot-biz a:hover { color: var(--sf-ink); text-decoration-color: currentColor }
 /* **빈칸은 숨기지 않고 눈에 띄게 둔다.** 지우면 화면만 멀쩡해지고
    가게는 여전히 상호가 없다 */
-.pfoot .is-missing { color: var(--sf-warn); font-weight: 700 }
+.pfoot .is-missing { color: var(--sf-warn); font-weight: var(--ui-w-bd) }
 .pfoot-sup { margin: 0; font-size: 12.5px; color: var(--sf-ink-3) }
 .pfoot-links {
   display: flex; flex-wrap: wrap; gap: 6px 16px;
   font-size: 12.5px; padding-top: var(--sp-2);
   border-top: 1px solid var(--sf-line-2);
 }
-.pfoot-links a { color: var(--sf-ink-2); text-decoration: none; font-weight: 600;
+.pfoot-links a { color: var(--sf-ink-2); text-decoration: none; font-weight: var(--ui-w-sb);
   display: inline-flex; align-items: center; min-height: 24px }
 .pfoot-links a:hover { color: var(--sf-accent); text-decoration: underline }
 .pfoot-c { margin: 0; font-size: 12px; color: var(--sf-ink-3) }
@@ -1679,12 +1697,12 @@ body:has(.stgmark) .cm-tabs { bottom: var(--stg-h) }
 .v3filt { display: grid; gap: 10px; }
 .v3filt p { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 0; }
 .v3filt p > b {
-  flex: none; width: 64px; font-size: 12.5px; font-weight: 700; color: var(--sf-ink-3);
+  flex: none; width: 64px; font-size: 12.5px; font-weight: var(--ui-w-bd); color: var(--sf-ink-3);
 }
 .v3filt a {
   min-height: 32px; display: inline-flex; align-items: center; padding: 0 12px;
   border: 1px solid var(--sf-line); border-radius: 999px;
-  font-size: 13px; font-weight: 600; color: var(--sf-ink-2);
+  font-size: 13px; font-weight: var(--ui-w-sb); color: var(--sf-ink-2);
   background: var(--sf-surface-2); text-decoration: none;
 }
 .v3filt a:hover { border-color: var(--sf-line-2); color: var(--sf-ink); }
@@ -1694,7 +1712,7 @@ body:has(.stgmark) .cm-tabs { bottom: var(--stg-h) }
 
 .v3inv { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
 .v3inv label { display: grid; gap: 4px; }
-.v3inv label > span { font-size: 12.5px; font-weight: 600; color: var(--sf-ink-3); }
+.v3inv label > span { font-size: 12.5px; font-weight: var(--ui-w-sb); color: var(--sf-ink-3); }
 .v3inv input, .v3inv select {
   min-height: 38px; padding: 0 10px; font: inherit; font-size: 14px;
   color: var(--sf-ink); background: #fff;
@@ -1724,7 +1742,7 @@ body:has(.stgmark) .cm-tabs { bottom: var(--stg-h) }
 .sf-fail h1 {
   margin: 0 0 var(--ui-4);
   font-size: var(--ui-t-page); line-height: var(--ui-lh-tight);
-  font-weight: 700; color: var(--ui-text); letter-spacing: -.02em;
+  font-weight: var(--ui-w-bd); color: var(--ui-text); letter-spacing: -.02em;
 }
 .sf-fail p { margin: 0 0 var(--ui-3); font-size: var(--ui-t-body); line-height: var(--ui-lh); }
 .sf-fail-ref {
@@ -1738,7 +1756,7 @@ body:has(.stgmark) .cm-tabs { bottom: var(--stg-h) }
 .sf-fail-acts > a, .sf-fail-acts > button {
   display: inline-flex; align-items: center; justify-content: center;
   min-height: 48px; padding: 0 var(--ui-5);
-  font: inherit; font-size: var(--ui-t-body); font-weight: 600;
+  font: inherit; font-size: var(--ui-t-body); font-weight: var(--ui-w-sb);
   border-radius: var(--ui-r-sm); border: 1px solid var(--ui-border);
   background: var(--ui-surface); color: var(--ui-text-2);
   text-decoration: none; cursor: pointer;

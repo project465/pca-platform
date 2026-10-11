@@ -8,6 +8,11 @@ import "./surface.css";
 export const metadata: Metadata = {
   title: "CareerMatri",
   description: "전공과 경험을 실제 커리어 선택으로 잇는 공학 진로 엔진",
+  /* **탭의 표시도 같은 파일 하나를 읽는다**(규격 §4 · §5). 여기에 따로
+     그린 그림을 두면 상표가 두 벌이 되고, 둘은 어느 날 갈린다. `app/`
+     안에 `icon.svg` 를 두는 길도 있지만 그쪽은 **파일을 한 벌 더
+     만드는 일**이라 쓰지 않았다 */
+  icons: { icon: "/brand/careermatri/mark.svg" },
 };
 
 export default function RootLayout({

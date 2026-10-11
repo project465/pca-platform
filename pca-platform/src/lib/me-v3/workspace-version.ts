@@ -61,7 +61,7 @@
  *   들어오는 길이 지금 무엇인지 적지 않으면 구글로 가입하신 분이
  *   비밀번호 찾기를 누르고 메일을 기다린다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V19";
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V20";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -75,7 +75,7 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V19";
  * 셋은 우리가 안에서 그 일을 부르던 말이고, 손님 화면에서는 그 말이
  * 무엇을 가리키는지 알 수 없다.
  */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.12";
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.13";
 
 /**
  * V5 에서 바꾼 것 (2026-10-09).
@@ -361,6 +361,26 @@ export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.12";
  *    서고 날짜가 줄을 새로 연다. 홈이 1,846px 에서 1,617px 이다.
  * 8. 세로 밀도: 1440×900 에서 최근 기록의 첫 줄이 단추까지 선다.
  *    **정보를 줄이지 않았다.**
+ */
+
+/*
+ * `V20` 으로 올린 까닭. **실제 학교 담당자가 쓸 수 있는 상태로 닫았다.**
+ *
+ * 1. **나가는 길이 어느 손님 화면에도 없었다.** 계정 쪽이 작업공간
+ *    껍데기로 옮겨 오면서 로그아웃이 `components/sf/shell` 에만 남았고,
+ *    그쪽은 Campus 와 Admin 이 쓴다. 학교 실습실처럼 한 PC 를 여럿이
+ *    쓰는 자리에서는 **앞사람의 계정이 그대로 열려 있다.** `/my` 의 쪽
+ *    머리에 세웠고, 머리띠의 계정 한 자리가 그 쪽으로 보낸다.
+ * 2. **굵기를 네 단으로 모았다**(활자 규격 §3). 여덟 값이 흩어져 있던
+ *    것을 `--ui-w-rg` · `--ui-w-md` · `--ui-w-sb` · `--ui-w-bd` 로
+ *    돌렸다. 굵기는 정보 위계를 만드는 도구이고 장식이 아니다.
+ * 3. **상표를 목표 그림에서 다시 읽어 그렸다**(규격 A-1~A-3). 앞 회차의
+ *    것은 조각 **다섯**짜리 고리라 `알파벳 C` 로 읽혔다. 목표 그림을
+ *    12배로 키워 화소마다 읽으니 **잎 넷이 겹친 모양**이었고, 각도와 네
+ *    가지 파랑을 거기서 재서 옮겼다. 탭의 표시도 같은 파일을 읽는다.
+ * 4. **우리 쪽 비유가 `현재 상태` 에 남아 있었다**: `이 자리가 섭니다` 와
+ *    `붙일 자리가 있습니다`. 자료에 따라서만 서는 줄이라 앞 회차의
+ *    검사가 지나갔다.
  */
 
 /*
