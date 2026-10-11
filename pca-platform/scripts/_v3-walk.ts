@@ -8,6 +8,25 @@
  */
 import type { Locator, Page } from "playwright";
 
+/**
+ * 시작 안내 한 쪽을 지난다.
+ *
+ * 검사 시작 폼을 보내면 첫 문항 앞에 안내가 한 쪽 선다. **눌러 보는 검사가
+ * 그 쪽을 모르면** 질문이 없는 화면에서 `다음` 을 찾다 멈추고, 까닭을
+ * `검사가 열리지 않는다` 로 거꾸로 적는다. 지나는 자리를 여기 한 곳에 둔다.
+ *
+ * 이어보기로 들어온 사람은 애초에 이 쪽을 보지 않으므로 그대로 돌아간다.
+ */
+export async function enterAssessment(p: Page): Promise<void> {
+  if (!/\/v3\/\d+\/intro/.test(p.url())) return;
+  await Promise.all([
+    p.waitForURL((u) => !/\/intro$/.test(new URL(u).pathname), { timeout: 20000 })
+      .catch(() => undefined),
+    p.locator("a.qs-btn-go").first().click({ timeout: 10000 }).catch(() => undefined),
+  ]);
+  await p.waitForLoadState("networkidle").catch(() => undefined);
+}
+
 export async function pickOne(
   box: Locator, want: number,
 ): Promise<"ok" | "covered" | "none"> {
@@ -35,6 +54,9 @@ export async function pickOne(
 export async function walk(
   p: Page, max: number,
 ): Promise<{ screens: number; done: boolean; covered: number }> {
+  /* **시작 안내를 먼저 지난다.** 그 쪽에도 짙은 단추가 하나 있어서, 모르고
+     들어오면 `끝 화면` 으로 보고 한 문항도 안 푼 응시를 통과시킨다 */
+  await enterAssessment(p);
   let screens = 0, covered = 0, stuck = 0;
   for (let i = 0; i < max; i += 1) {
     await p.waitForLoadState("networkidle");

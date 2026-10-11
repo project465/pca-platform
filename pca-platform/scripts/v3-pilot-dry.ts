@@ -37,7 +37,7 @@ for (const line of (() => {
 import { query, queryOne } from "../src/lib/db";
 import { hashPassword } from "../src/lib/password";
 import { createInvites, inviteLink, type PilotTier } from "../src/lib/me-v3/pilot/enroll";
-import { pickByValue, walk } from "./_v3-walk";
+import { enterAssessment, pickByValue, walk } from "./_v3-walk";
 
 import { devPassword } from "./dev-credentials.mjs";
 if ((process.env.APP_ENV ?? "").toLowerCase() === "production") {
@@ -201,6 +201,7 @@ async function main(): Promise<void> {
       p.locator('button[type="submit"]').last().click({ force: true }),
     ]);
     await p.waitForLoadState("networkidle");
+    await enterAssessment(p);
     const attempt = (/\/v3\/(\d+)/.exec(p.url()) ?? [])[1] ?? "";
     ok(`${r.key} 응시가 열린다`, /^\d+$/.test(attempt), p.url().replace(B, ""));
 

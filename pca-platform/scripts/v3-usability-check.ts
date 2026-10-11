@@ -34,6 +34,7 @@ import { query, queryOne } from "../src/lib/db";
 import { hashPassword } from "../src/lib/password";
 import { attemptOf, planFor, saveAnswer, setProfile, openAttempt, type V3Attempt }
   from "../src/lib/me-v3/runtime/session";
+import { enterAssessment } from "./_v3-walk";
 
 const B = (process.env.UI_BASE || process.env.BASE
   || "http://127.0.0.1:3000").replace(/\/$/, "");
@@ -140,6 +141,7 @@ async function main(): Promise<void> {
       p.locator('button[type="submit"]').last().click({ force: true }).catch(() => undefined),
     ]);
     await p.waitForLoadState("networkidle");
+    await enterAssessment(p);
     const at1 = new URL(p.url()).pathname;
     const on1 = await stageOn(p);
     ok("시작 화면에서 고른 단계가 기본 정보에 그대로 선다", on1 === "박사",

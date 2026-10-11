@@ -21,6 +21,7 @@ import {
   BASE as B, cloneFinished, gateCreds, login, makeStudent,
 } from "./_loop-fixture";
 import { chromium, type Browser, type Page } from "playwright";
+import { enterAssessment } from "./_v3-walk";
 
 const WHO = "v3delta@example.com";
 
@@ -40,6 +41,7 @@ async function walkToGrid(p: Page): Promise<boolean> {
       .click({ timeout: 10000 }).catch(() => undefined);
     await p.waitForURL(/\/v3\/\d+/, { timeout: 20000 }).catch(() => undefined);
   }
+  await enterAssessment(p);
   for (let i = 0; i < 14; i += 1) {
     if (await p.locator("fieldset.qs-sw").count()) return true;
     const sets = p.locator("fieldset.qs-opts");

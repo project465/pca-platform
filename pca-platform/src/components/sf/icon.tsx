@@ -15,7 +15,9 @@ export type IconName =
   | "doc" | "contract" | "gear" | "building" | "box" | "cart"
   | "globe" | "window" | "log" | "spark" | "lock" | "alert"
   /* 작업공간 홈의 절 머리와 줄 끝에 쓰는 다섯 */
-  | "target" | "chart" | "bolt" | "clock" | "chev";
+  | "target" | "chart" | "bolt" | "clock" | "chev"
+  /* 검사 진입 안내와 완료 브리지에 쓰는 둘 */
+  | "check" | "skip";
 
 const P: Record<IconName, string> = {
   home: "M3 9.5 10 4l7 5.5V16a1 1 0 0 1-1 1h-4v-5H8v5H4a1 1 0 0 1-1-1V9.5Z",
@@ -47,6 +49,10 @@ const P: Record<IconName, string> = {
   bolt: "M11 3 4.5 11.5H9L8.5 17 15 8.5h-4.5L11 3Z",
   clock: "M10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14Zm0-10.5V10l2.5 1.8",
   chev: "m8 5 5 5-5 5",
+  /* **기울인 띠 둘로 그리지 않는다.** 그렇게 그리면 가위표가 되고,
+     가위표는 고른 것을 지웠다는 뜻으로 읽힌다 */
+  check: "m4.5 10.5 4 4 7-8.5",
+  skip: "m5 5 5 5-5 5m6-10 5 5-5 5",
 };
 
 export function Icon({

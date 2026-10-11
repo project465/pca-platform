@@ -1,5 +1,5 @@
 /**
- * Core 화면 열둘을 **한 묶음으로 얼었다고 선언하고 그 선언을 지킨다**
+ * Core 화면 열넷을 **한 묶음으로 얼었다고 선언하고 그 선언을 지킨다**
  * (`CAREERMATRI_CORE_UI_FREEZE_1`).
  *
  * 측정 동결(`ME_V3_MEASUREMENT_FREEZE_1`)과 **별개다.** 저쪽이 얼린 것은
@@ -14,7 +14,7 @@
  * 것은 그 셋을 **묶는 자리**가 그대로인가다.
  *
  *   1. 세 동결 기록의 지문과 판본 여섯이 묶음 기록과 글자로 같다
- *   2. Core 화면 열둘이 **빠짐없이 어느 한 동결 안에** 들어 있다
+ *   2. Core 화면 열넷이 **빠짐없이 어느 한 동결 안에** 들어 있다
  *   3. 세 동결 명령이 아직 사슬(`v3:all`)에 남아 있다
  *
  * 둘째가 이 파일을 두는 가장 큰 까닭이다. 쪽을 새 자리로 옮기면 파일
@@ -42,7 +42,7 @@ const MEMBERS = [
 ] as const;
 
 /**
- * 얼린 Core 화면 열둘과 그 쪽을 그리는 파일.
+ * 얼린 Core 화면 열넷과 그 쪽을 그리는 파일.
  *
  * **쪽 하나에 파일 하나만 적는다.** 그 쪽이 끌어다 쓰는 조각까지 적으면
  * 이 목록이 세 동결의 파일 목록을 베끼게 되고, 베낀 목록은 뒤처진다.
@@ -50,7 +50,9 @@ const MEMBERS = [
  */
 const SCREENS: [string, string][] = [
   ["Home", "src/app/me/page.tsx"],
+  ["Assessment Intro", "src/app/v3/[attemptId]/intro/page.tsx"],
   ["Assessment", "src/app/v3/[attemptId]/page.tsx"],
+  ["Completion Bridge", "src/app/v3/[attemptId]/done/page.tsx"],
   ["Experience", "src/app/me/experience/new/page.tsx"],
   ["Current State", "src/app/me/state/page.tsx"],
   ["Next Action", "src/app/me/next/page.tsx"],
@@ -94,7 +96,7 @@ for (const m of MEMBERS) {
   }
 }
 
-/* ── 2. Core 화면 열둘이 동결 안에 있는가 ──────────────────────────── */
+/* ── 2. Core 화면 열넷이 동결 안에 있는가 ──────────────────────────── */
 const covered = new Map<string, string>();
 for (const m of MEMBERS) {
   if (!existsSync(m.lock)) continue;
@@ -120,7 +122,7 @@ const dropped = MEMBERS.filter((m) => !chain.includes(`npm run ${m.cmd}`))
 if (process.env.CORE_UI_FREEZE === "write") {
   writeFileSync(LOCK, `${JSON.stringify({
     schema_version: "careermatri-core-ui-lock.1",
-    note: "Core 화면 열둘의 묶음 동결. 측정 동결과 별개다. layout 대변경은 별도 STOP GATE 이고, 고쳤으면 그 화면의 판본을 올리고 세 동결을 다시 적은 다음 `CORE_UI_FREEZE=write npm run v3:freeze:core`",
+    note: "Core 화면 열넷의 묶음 동결. 측정 동결과 별개다. layout 대변경은 별도 STOP GATE 이고, 고쳤으면 그 화면의 판본을 올리고 세 동결을 다시 적은 다음 `CORE_UI_FREEZE=write npm run v3:freeze:core`",
     ...now,
   }, null, 1)}\n`);
   console.log(`  적었다  ${LOCK} — 화면 ${Object.keys(now.screens).length}벌 · 동결 ${Object.keys(now.locks).length}벌`);
@@ -129,7 +131,7 @@ if (process.env.CORE_UI_FREEZE === "write") {
 }
 
 ok("세 동결 기록이 전부 있다", missing.length === 0, missing.join(" · ") || "3벌");
-ok("Core 화면 열둘이 동결 안에 있다", outside.length === 0,
+ok("Core 화면 열넷이 동결 안에 있다", outside.length === 0,
   outside.join(" · ") || `${SCREENS.length}자리`);
 ok("세 동결 명령이 사슬에 남아 있다", dropped.length === 0,
   dropped.join(" · ") || MEMBERS.map((m) => m.cmd).join(" · "));
@@ -151,7 +153,7 @@ ok("세 동결 기록이 묶음 기록과 같다", diffLock.length === 0,
   diffLock.join(" · ") || `${Object.keys(now.locks).length}벌`);
 ok("판본 여섯이 묶음 기록과 같다", diffVer.length === 0,
   diffVer.join(" · ") || Object.values(now.versions).join(" · "));
-ok("Core 화면 열둘의 지문이 묶음 기록과 같다", diffScr.length === 0,
+ok("Core 화면 열넷의 지문이 묶음 기록과 같다", diffScr.length === 0,
   diffScr.join(" · ") || `${Object.keys(now.screens).length}자리`);
 
 console.log(`\n  확인 ${pass + fail}가지 — 통과 ${pass} · 걸림 ${fail}`);
@@ -160,5 +162,5 @@ if (fail) {
     + ` \`CORE_UI_FREEZE=write npm run v3:freeze:core\`.`);
   process.exit(1);
 }
-console.log(`\n  ${LABEL} — Core 화면 열둘이 묶음 기록과 같다.`);
+console.log(`\n  ${LABEL} — Core 화면 열넷이 묶음 기록과 같다.`);
 console.log("  측정 동결과 별개다. 파일이 바뀌었는지는 세 동결이 센다.");

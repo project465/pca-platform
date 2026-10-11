@@ -105,6 +105,9 @@ const FILES = [
   "src/app/v3/start/start-form.tsx",
   "src/app/v3/[attemptId]/screen.tsx",
   "src/app/v3/[attemptId]/page.tsx",
+  /* 검사 진입과 종료의 두 쪽. 여기가 설명서 말투면 **처음과 끝이 그렇다** */
+  "src/app/v3/[attemptId]/intro/page.tsx",
+  "src/app/v3/[attemptId]/done/page.tsx",
   "src/app/v3/tier-text.ts",
   "src/lib/me-v3/runtime/blocks.ts",
   "src/lib/me-v3/runtime/menus.ts",

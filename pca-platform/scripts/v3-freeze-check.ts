@@ -24,6 +24,10 @@ const FILES = [
   "src/app/v3/start/start-form.tsx",
   "src/app/v3/start/actions.ts",
   "src/app/v3/[attemptId]/page.tsx",
+  /* 검사 진입과 종료의 두 쪽. **여기 없으면 동결 밖이다**: 묻는 화면만
+     얼려 두면 들어가는 자리와 끝나는 자리를 아무 때나 고칠 수 있다 */
+  "src/app/v3/[attemptId]/intro/page.tsx",
+  "src/app/v3/[attemptId]/done/page.tsx",
   "src/app/v3/[attemptId]/screen.tsx",
   "src/app/v3/[attemptId]/model.ts",
   "src/app/v3/[attemptId]/actions.ts",

@@ -30,7 +30,7 @@ import { query, queryOne } from "../src/lib/db";
 import {
   assertFreshServer, BASE, cloneFinished, gateCreds, login, makeStudent,
 } from "./_loop-fixture";
-import { pickByValue, walk } from "./_v3-walk";
+import { enterAssessment, pickByValue, walk } from "./_v3-walk";
 
 let bad = 0;
 function ok(t: string, n: string): void { console.log(`  통과  ${t} — ${n}`); }
@@ -97,6 +97,8 @@ async function run(
      적는다. 기다릴 것은 조용해지는 때가 아니라 주소가 바뀌는 때다 */
   await p.waitForURL(/\/v3\/\d+/, { timeout: 20000 }).catch(() => undefined);
   await p.waitForLoadState("networkidle").catch(() => undefined);
+  /* 첫 문항 앞의 시작 안내를 지난다 */
+  await enterAssessment(p);
   const m = /\/v3\/(\d+)/.exec(p.url());
   say(`${tag} 검사가 열린다`, !!m,
     m ? new URL(p.url()).pathname

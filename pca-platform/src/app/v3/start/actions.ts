@@ -54,5 +54,10 @@ export async function startV3(form: FormData): Promise<void> {
     userId: user.id, tier, stage: stage as Stage, gradField,
     entitlementId: grants[0]?.entitlement_id ?? null,
   });
-  redirect(`/v3/${a.id}`);
+  /**
+   * **첫 문항 앞에 안내 한 쪽을 둔다.** 이어보기로 들어오는 사람은 위에서
+   * 이미 `/v3/{id}` 로 갔으므로, 이 쪽을 보는 것은 지금 막 응시를 연
+   * 사람뿐이다. 나가도 응답은 그대로 남는다.
+   */
+  redirect(`/v3/${a.id}/intro`);
 }

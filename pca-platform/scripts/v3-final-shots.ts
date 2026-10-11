@@ -27,6 +27,7 @@ import { BASE, cloneFinished, gateCreds, login, makeStudent } from "./_loop-fixt
 import { chromium, type Browser, type Page } from "playwright";
 import { query, queryOne } from "../src/lib/db";
 import { hashPassword } from "../src/lib/password";
+import { enterAssessment } from "./_v3-walk";
 
 const OUT = resolve(process.cwd(), process.env.OUT || "docs/metri/shots/final/after");
 
@@ -110,6 +111,7 @@ async function openAssessment(p: Page): Promise<boolean> {
   await p.locator('button[type="submit"]').first()
     .click({ timeout: 10000 }).catch(() => undefined);
   await p.waitForURL(/\/v3\/\d+/, { timeout: 20000 }).catch(() => undefined);
+  await enterAssessment(p);
   if (/\/v3\/\d+/.test(p.url())) return true;
 
   const head = await p.locator("h1").first().textContent().catch(() => null);

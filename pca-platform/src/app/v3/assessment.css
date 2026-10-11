@@ -1148,6 +1148,47 @@
 .qs-three span {
   display: block; font-size: var(--q-t-gloss); color: var(--q-ink-3); line-height: 1.55;
 }
+/**
+ * 안내 셋에 붙는 아이콘 한 자리.
+ *
+ * **이모지를 두지 않는다.** 글꼴에 따라 색과 크기가 멋대로 바뀌고 장식으로
+ * 읽힌다. 저장소의 선 아이콘 한 벌을 그대로 쓴다.
+ */
+.qs-three-ic {
+  display: flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; margin-bottom: 14px;
+  border-radius: var(--q-r-sm);
+  background: var(--q-accent-soft); color: var(--q-accent);
+}
+/**
+ * 완료 브리지의 끝맺음 표시.
+ *
+ * **크게 그리지 않는다.** 이 쪽의 주인은 다음에 누를 자리이고, 표시가 커지면
+ * 축하가 주인이 된다.
+ */
+.qs-done-ic {
+  display: flex; align-items: center; justify-content: center;
+  width: 46px; height: 46px; margin: 0 0 var(--q-s3);
+  border-radius: 999px;
+  /* **`--q-accent-ink` 은 더 짙은 파랑이지 글자색이 아니다.** 거기 두면
+     파란 동그라미 위에 짙은 파란 표시가 서서 멀리서 안 읽힌다 */
+  background: var(--q-accent); color: #fff;
+}
+/**
+ * 좁은 화면에서는 셋을 **줄로 눕힌다.**
+ *
+ * 카드로 쌓으면 셋이 800px 을 먹고 시작 단추가 첫 화면 밖으로 밀린다.
+ * 읽을 글은 같고 아이콘이 왼쪽으로 가는 것뿐이다.
+ */
+@media (max-width: 719px) {
+  .qs-three li { display: flex; align-items: flex-start; gap: 14px; padding: 16px 18px; }
+  .qs-three-ic { flex: none; width: 30px; height: 30px; margin: 1px 0 0; }
+}
+/* 결과에 무엇이 들어 있는지 적는 줄. 값이 아니라 설명이라 한 단 약하다 */
+.qs-summary li > b.is-note {
+  font-weight: var(--ui-w-md); color: var(--q-ink-2);
+  font-size: var(--q-t-body); letter-spacing: 0;
+}
 /* 문항 수와 시간. **보조 정보라 한 줄로 눕힌다** */
 .qs-facts {
   display: flex; flex-wrap: wrap; gap: var(--q-s1) var(--q-s4);

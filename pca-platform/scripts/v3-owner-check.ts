@@ -36,6 +36,7 @@ import { applyRecompute } from "../src/lib/me-v3/recompute";
 import {
   attemptOf, content, newScreensAfterUpgrade, upgradeTier, type V3Attempt,
 } from "../src/lib/me-v3/runtime/session";
+import { enterAssessment } from "./_v3-walk";
 
 const B = (process.env.UI_BASE || process.env.BASE
   || "http://127.0.0.1:3000").replace(/\/$/, "");
@@ -142,6 +143,7 @@ async function main(): Promise<void> {
       begin.click({ force: true }).catch(() => undefined),
     ]);
     await p1.waitForLoadState("networkidle");
+    await enterAssessment(p1);
     const started = /\/v3\/\d+/.test(p1.url());
     ok("검사가 시작되고 응시 주소로 간다", started, new URL(p1.url()).pathname);
     const attemptId = (p1.url().match(/\/v3\/(\d+)/) ?? [])[1] ?? "";

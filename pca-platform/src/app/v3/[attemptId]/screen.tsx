@@ -192,7 +192,10 @@ export default function Screen({
     setMoving(true);
     await queue.current;
     const r = await finishAction(s.attemptId);
-    if (r.ok) { router.push(`/v3/${s.attemptId}/result`); return; }
+    /* **결과지로 바로 보내지 않는다.** 백여 문항을 푼 사람이 `다음` 을
+       누른 자리에서 곧바로 긴 결과지를 만나면 끝났다는 말을 어디에서도
+       듣지 못한다. 완료 브리지가 그 한 쪽이다 */
+    if (r.ok) { router.push(`/v3/${s.attemptId}/done`); return; }
     router.refresh();
     setMoving(false);
   };
@@ -582,8 +585,13 @@ export default function Screen({
             s.done ? (
               <a className="qs-btn qs-btn-main" href={`/v3/${s.attemptId}/result`}>결과 보기</a>
             ) : (
+              /* **가짜 퍼센트를 적지 않는다**(규격 §9). 몇 초가 걸릴지
+                 모르는 일에 73% 를 적으면 그 수가 근거처럼 읽힌다. 지금
+                 무슨 일이 도는지 한 마디만 적는다 */
               <button type="button" className="qs-btn qs-btn-main"
-                onClick={finish} disabled={moving}>결과 만들기</button>
+                onClick={finish} disabled={moving}>
+                {moving ? "결과를 정리하고 있습니다" : "결과 만들기"}
+              </button>
             )
           ) : (
             /* **멈추는 자리에서는 단추도 멈춘다.** `next()` 가 거절하는
