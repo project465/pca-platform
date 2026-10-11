@@ -1160,6 +1160,13 @@ export default async function V3Result({
               ? `지금 ${regionPicked} 기준으로 보고 계십니다. 이 선택은 기술영역 결과를 바꾸지 않습니다.`
               : "희망 지역을 고르면 산업과 직무를 읽는 순서가 그 권역 기준으로 바뀝니다. 기술영역 결과는 그대로입니다."}
           </p>
+          {/* **참고 자료를 기본으로 펼치지 않는다**(규격 §3 B · §4).
+              권역 다섯과 조합 넷과 고르신 자리를 한꺼번에 펼치면 이 절
+              하나가 1,441px 이고, 결과지에서 둘째로 큰 덩이가 **다음에
+              무엇을 할지와 상관없는 참고 목록**이 된다. 기본으로 서는
+              것은 지역 선택이 무엇을 바꾸고 무엇을 바꾸지 않는가 한 줄과
+              고르러 가는 길이다 */}
+          <Disclose label="권역과 고르신 것 보기">
           <div className="rs-pack">
             <h3>권역마다 자리의 성격이 다릅니다</h3>
             <dl>
@@ -1236,6 +1243,7 @@ export default async function V3Result({
               </dl>
             </div>
           ) : null}
+          </Disclose>
           <p className="rs-note">
             <Link href="/me/region">희망 지역 고르기</Link>
           </p>

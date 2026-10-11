@@ -10,7 +10,7 @@
 export const RESULT_MODEL_VERSION = "me-v3-result-model.5";
 
 /** 결과지에 나가는 한국어. 문장만 바뀌면 이것만 올린다 */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.14";
+export const RESULT_COPY_VERSION = "me-v3-result-copy.15";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -18,7 +18,7 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.14";
  * 문장 하나를 고친 날 화면 판본까지 올리면, 되짚을 때 무엇이 바뀐
  * 것인지 알 수 없다. 넷이 따로 간다: 화면 · 문장 · 모델 · 판단.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V14";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V15";
 
 /*
  * `V3` 으로 올린 까닭. **아홉 절이 한 이야기로 이어졌고 첫 화면이 셋으로
@@ -226,4 +226,18 @@ export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V14";
  *
  * **판단 규칙과 결과 모델은 그대로다**: 바뀐 것은 같은 값을 몇 줄로
  * 내보내는가뿐이다.
+ */
+
+/*
+ * `V15` 와 `.15` 로 올린 까닭. **참고 자료가 결과지의 둘째로 큰 덩이였다**
+ * (규격 §3 B · §4).
+ *
+ * `어디에서 찾을지` 절이 권역 다섯과 조합 넷과 고르신 자리를 한꺼번에
+ * 펼쳐 **1,441px** 이었다. 그 셋 가운데 어느 것도 `무엇이 확인됐는지 ·
+ * 무엇을 남겼는지 · 다음에 무엇을 할지` 에 답하지 않는다. 기본으로 서는
+ * 것은 지역 선택이 무엇을 바꾸고 무엇을 바꾸지 않는가 한 줄과 고르러
+ * 가는 길이고, 셋은 `권역과 고르신 것 보기` 안으로 들어갔다(173px).
+ *
+ * 펼친 결과지가 7,950 → **6,681px** 이다. **줄을 지우지 않았다**: 접은
+ * 자리는 눌러서 펴지고 인쇄에서는 전부 펴진다.
  */
