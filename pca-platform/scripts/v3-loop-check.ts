@@ -152,21 +152,23 @@ async function main(): Promise<void> {
     ok("달라진 것 화면이 무엇을 할지 말한다",
       /더하|달라|바뀌|아직/.test(planTxt), planTxt.replace(/\s+/g, " ").slice(0, 50));
 
-    const applyBtn = p.locator('form button[type="submit"]');
-    if (await applyBtn.count()) {
-      await applyBtn.first().click({ force: true }).catch(() => undefined);
-      await p.waitForLoadState("networkidle").catch(() => undefined);
-      await p.waitForTimeout(1200);
-      const at = new URL(p.url()).pathname;
-      ok("반영하면 현재 상태로 이어진다", at === "/me/state", at);
-      const t = await p.evaluate(() => document.body.innerText);
-      ok("달라진 수를 그 자리에서 적는다", /더했습니다/.test(t),
-        /반영했습니다/.test(t) ? "적는다" : "안 적는다");
-    } else {
-      /* 반영할 거리가 없으면 그 사실을 적는 것이 맞다 */
-      ok("반영할 거리가 없으면 그 사실을 적는다", /아직|없습니다/.test(planTxt));
-      ok("반영할 거리가 없어도 나갈 길이 있다",
+    /* **누르는 단추가 없는 것이 맞다**(규격 §1). 저장이 끝난 자리에서
+       이미 돌았으므로, 여기 단추가 서 있으면 그것이 걸림이다. 틀어졌을
+       때만 `다시 시도` 가 서는데, 그때는 그 사실도 함께 적혀 있어야 한다 */
+    const applyBtn = await p.locator('.cm-acts form button[type="submit"]').count();
+    if (applyBtn === 0) {
+      ok("저장하면 누르지 않아도 더해진다",
+        /더했습니다|아직|없습니다/.test(planTxt),
+        planTxt.split("\n").find((l) => /더했|아직|없습니다/.test(l))
+          ?.slice(0, 36) ?? "안 적는다");
+      ok("더해진 뒤에도 나갈 길이 있다",
         (await p.locator('a[href^="/me"]').count()) > 0);
+    } else {
+      /* 틀어진 사람에게만 서는 길이다. 그 사실을 적고 다시 할 수 있어야 한다 */
+      ok("틀어졌을 때만 다시 시도가 선다",
+        /갱신하지 못했습니다/.test(planTxt), `단추 ${applyBtn}개`);
+      ok("틀어져도 적어 둔 기록은 그대로라고 적는다",
+        /다시 적지 않으셔도/.test(planTxt));
     }
 
     await p.goto(`${B}/me`, { waitUntil: "networkidle" });

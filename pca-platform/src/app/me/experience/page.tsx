@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import {
-  EXPERIENCE_KINDS, experiencesOf, pendingRecompute, reflectedExperiences,
+  EXPERIENCE_KINDS, experiencesOf, reflectedExperiences,
 } from "@/lib/me-v3/platform";
+import { recomputeStatus } from "@/lib/me-v3/recompute";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import { CmShell, CmHead } from "../shell";
 import { dropExperience } from "./actions";
@@ -27,8 +28,8 @@ const KIND = new Map(EXPERIENCE_KINDS.map((k) => [k.code as string, k.label]));
  */
 export default async function Experiences() {
   const user = await requireUser();
-  const [rows, pending, done] = await Promise.all([
-    experiencesOf(user.id), pendingRecompute(user.id), reflectedExperiences(user.id),
+  const [rows, st, done] = await Promise.all([
+    experiencesOf(user.id), recomputeStatus(user.id), reflectedExperiences(user.id),
   ]);
 
   return (
@@ -41,13 +42,19 @@ export default async function Experiences() {
         narrowActions
       />
 
-      {pending > 0 ? (
-        <div className="cm-soon" style={{ marginBottom: 18 }}>
-          <b>아직 더하지 않은 경험이 {pending}건 있습니다.</b> 적어 두신
-          경험이 어느 판단으로 가고 무엇이 달라지는지 먼저 보시고 더하실
-          수 있습니다.
+      {/* **저장하면 저절로 들어간다**(규격 §1). 그래서 이 띠는 평소에
+          서지 않고, 돌고 있거나 틀어졌을 때만 선다. 평소에도 세워 두면
+          할 일이 아닌 것이 할 일처럼 보인다 */}
+      {st.running ? (
+        <div className="cm-state is-run" role="status" style={{ marginBottom: 18 }}>
+          현재 상태를 다시 확인하고 있습니다. 끝나면 저절로 더해집니다.
+        </div>
+      ) : st.pending > 0 ? (
+        <div className="cm-fail" role="alert" style={{ marginBottom: 18 }}>
+          경험 {st.pending}건이 아직 현재 상태에 들어가지 못했습니다. 적어
+          주신 기록은 그대로 있으니 다시 적지 않으셔도 됩니다.
           <p style={{ marginTop: 10 }}>
-            <Link href="/me/recompute">새 경험 더하기</Link>
+            <Link href="/me/recompute?e=recompute">다시 시도</Link>
           </p>
         </div>
       ) : null}

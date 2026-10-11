@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
-import { previewRecompute, type Candidate } from "@/lib/me-v3/recompute";
+import {
+  previewRecompute, recomputeStatus, type Candidate,
+} from "@/lib/me-v3/recompute";
 import { axisLabel, domainName } from "@/lib/me-v3/runtime/session";
 import { experiencesOf, latestResult } from "@/lib/me-v3/platform";
 import { actionKo, gapKo } from "@/lib/me-v3/result/text.ko";
@@ -30,11 +32,14 @@ const AXIS_SLOT_KO: Record<string, string> = {
 /**
  * 저장한 경험이 어디로 가는지.
  *
- * **저장과 반영은 다른 일이다**(규격 §6). 저장하는 순간 자동으로 돌리지
- * 않는 까닭이 둘이다: 계산이 깨진 날 저장까지 막히지 않게 하려는 것이
- * 하나이고, 무엇이 달라지는지 먼저 보고 누르게 하려는 것이 둘이다.
- * 그래서 이 화면이 사이에 선다. **그 구조를 이번 회차에서 바꾸지
- * 않았다.**
+ * **이제 저절로 반영된다**(규격 §1). 저장이 끝나면 그 자리에서 다시 세고,
+ * 이 화면은 **사이에 서서 묻는 자리가 아니라 무엇이 달라졌는지 적는
+ * 자리**다. 누르는 단추를 하나 더 두지 않는다.
+ *
+ * **앞서 이 구조를 손으로 둔 까닭 둘은 그대로 지킨다.** 계산이 깨진 날
+ * 저장까지 막히지 않아야 한다는 것은 `autoRecompute()` 를 저장 뒤에 두고
+ * 실패를 삼켜서 지키고, 무엇이 달라졌는지 보여야 한다는 것은 이 화면이
+ * **지난 일로** 적어서 지킨다.
  *
  * **다섯을 차례로 적는다**(규격 §5): 저장됐다 · 이번 경험에서 새로
  * 연결된 것 · 현재 상태에서 달라지는 것 · 다음 행동 · 그래서 어디로.
@@ -48,18 +53,24 @@ const AXIS_SLOT_KO: Record<string, string> = {
  * 바뀌는 것은 지금 값과 할 일뿐이다.
  */
 export default async function Recompute(
-  { searchParams }: { searchParams: Promise<{ new?: string; e?: string }> },
+  { searchParams }: { searchParams: Promise<{ new?: string; e?: string; r?: string }> },
 ) {
   const user = await requireUser();
   const sp = await searchParams;
   /* 방금 저장하고 온 사람인가. 번호가 있으면 **이번 경험**으로 좁혀 적고,
      없으면(띠에서 바로 들어온 사람) 쌓인 것 전부를 적는다 */
   const newId = sp.new ?? "";
-  /* 반영을 눌렀는데 계산이 안 된 사람인가(규격 §19) */
-  const failed = sp.e === "recompute";
-  const [plan, exps, model] = await Promise.all([
+  const [plan, exps, model, st] = await Promise.all([
     previewRecompute(user.id), experiencesOf(user.id), latestResult(user.id),
+    recomputeStatus(user.id),
   ]);
+  /* **상태는 DB 가 들고 주소가 거든다**(규격 §2). 주소의 `r` 은 방금
+     어떻게 끝났는지이고, 새로 고치면 사라진다. 그래서 새로 고쳐도 남아야
+     하는 `돌고 있다 · 실패했다` 는 `career_events` 에서 읽는다 */
+  const failed = sp.e === "recompute" || sp.r === "failed" || st.failed > 0;
+  const running = st.running || sp.r === "busy";
+  /* 집을 줄이 없다는 것은 **이미 다 세어졌다**는 뜻이다 */
+  const applied = !failed && !running && st.pending === 0 && !!st.recomputed_at;
   const fresh = newId ? exps.find((e) => e.id === newId) ?? null : null;
 
   /* 이번 경험이 만든 자리만. **쌓인 것과 섞지 않는다**: 섞으면 어제 적은
@@ -93,20 +104,42 @@ export default async function Recompute(
       <CmHead
         kicker="경험 저장"
         /* 상태 말은 제품 전체가 같은 마디를 쓴다(규격 §21) */
-        title={fresh ? "경험을 저장했습니다" : "적어 두신 경험이 어디로 가는지"}
-        lead={fresh
-          ? `${fresh.title} · 아래를 보시고 더하시면 현재 상태에 들어갑니다.`
-          : "저장한 경험이 어느 판단으로 가는지 묶어 현재 상태와 맞춰 봤습니다."}
+        title={
+          failed ? "경험을 저장했습니다"
+            : running ? "현재 상태를 다시 확인하고 있습니다"
+              : fresh ? "경험을 저장하고 현재 상태에 더했습니다"
+                : "적어 두신 경험이 어디로 갔는지"}
+        lead={
+          failed
+            ? "현재 상태 갱신만 끝내지 못했습니다. 적어 주신 기록은 그대로 있습니다."
+            : running
+              ? "곧 끝납니다. 끝나면 현재 상태와 다음 할 일에 들어갑니다."
+              : fresh
+                ? `${fresh.title} · 아래가 이번 기록으로 달라진 내용입니다.`
+                : "저장한 경험이 어느 판단으로 갔는지 묶어 현재 상태와 맞춰 봤습니다."}
       />
 
       {/* **저장 실패와 반영 실패를 가른다**(규격 §19). 여기 선 사람의
           경험은 이미 저장돼 있다. `경험을 저장하지 못했습니다` 로 적으면
           그 사람이 처음부터 다시 적고, 그러면 같은 기록이 두 벌 쌓인다 */}
+      {/* **세 상태를 글자로 적는다**(규격 §2). 색으로만 말하지 않는다.
+          그리고 **저장 실패와 반영 실패를 가른다**(규격 §19): 여기 선
+          사람의 경험은 이미 저장돼 있다. `경험을 저장하지 못했습니다` 로
+          적으면 그 사람이 처음부터 다시 적고, 같은 기록이 두 벌 쌓인다 */}
       {failed ? (
         <p className="cm-fail" role="alert">
           경험은 저장했지만 현재 상태를 갱신하지 못했습니다. 적어 주신
           기록은 그대로 있으니 다시 적지 않으셔도 됩니다. 아래에서
           `다시 시도` 를 눌러 주세요.
+        </p>
+      ) : running ? (
+        <p className="cm-state is-run" role="status">
+          현재 상태를 다시 확인하고 있습니다. 잠시 뒤 이 쪽을 새로 열면
+          더해진 내용이 보입니다.
+        </p>
+      ) : applied ? (
+        <p className="cm-state is-done" role="status">
+          현재 상태에 더했습니다. 검사 당시 결과는 그대로 남습니다.
         </p>
       ) : null}
 
@@ -136,7 +169,8 @@ export default async function Recompute(
                   ))}
                 </div>
                 <p className="cm-none">
-                  고르신 항목이 그 영역의 그 판단으로 들어갑니다. 같은 판단에서
+                  고르신 항목이 그 영역의 그 판단으로{" "}
+                  {applied ? "들어갔습니다" : "들어갑니다"}. 같은 판단에서
                   고른 항목이 둘이 되면 그때 직접 수행으로 올라갑니다.
                 </p>
               </div>
@@ -155,7 +189,9 @@ export default async function Recompute(
               **점수처럼 적지 않는다**(규격 §8). `+1점` 도 `2 → 3` 도
               쓰지 않고, 올라간 자리를 **그 축이 무엇을 묻는 자리인지**로
               적는다. 상세한 전후는 아래 접힌 표가 든다 */}
-          <h2 className="cm-sect">현재 상태에서 달라지는 것</h2>
+          <h2 className="cm-sect">
+            {applied ? "현재 상태에서 달라진 것" : "현재 상태에서 달라지는 것"}
+          </h2>
           <div className="cm-panel">
             <div className="cm-pane">
               {changes.length ? (
@@ -172,7 +208,8 @@ export default async function Recompute(
               )}
               {plan.closed_gaps.length ? (
                 <p className="cm-none">
-                  부족했던 부분 {plan.closed_gaps.length}곳이 메워집니다 ·{" "}
+                  부족했던 부분 {plan.closed_gaps.length}곳이{" "}
+                  {applied ? "메워졌습니다" : "메워집니다"} ·{" "}
                   {plan.closed_gaps
                     .map((g) => domainName(g.domain)).join(" · ")}
                 </p>
@@ -216,16 +253,19 @@ export default async function Recompute(
           </div>
 
           {/* ── 4. 어디로 가는가 ──
-              **짙은 단추는 하나다**(규격 §10). 그리고 **`보기` 라고 적지
-              않는다**: 이 단추가 하는 일은 지금 값에 적는 것이고, 말이
-              약속하지 않은 일을 하는 단추는 막다른 길보다 나쁘다 */}
+              **반영 단추가 사라졌다**(규격 §1). 저장이 끝나면 저절로 들어가
+              있으므로, 여기서 누를 것은 달라진 현재 상태를 보러 가는 일뿐이다.
+              단추를 남겨 두면 이미 끝난 일을 한 번 더 누르게 된다.
+
+              **다만 틀어진 사람에게는 길이 있어야 한다**(규격 §2). 그때만
+              `다시 시도` 가 서고, 누르면 같은 자리를 다시 집는다 */}
           <div className="cm-acts" style={{ marginTop: 20 }}>
-            {plan.empty ? (
-              <Link className="cm-btn is-primary" href="/me/state">현재 상태 보기</Link>
-            ) : (
+            {failed ? (
               <form action={runRecompute}>
-                <ApplyButton retry={failed} />
+                <ApplyButton retry />
               </form>
+            ) : (
+              <Link className="cm-btn is-primary" href="/me/state">현재 상태 보기</Link>
             )}
             <Link className="cm-btn" href="/me/experience">경험 기록으로 돌아가기</Link>
           </div>
@@ -240,7 +280,7 @@ export default async function Recompute(
                 <table className="cm-table">
                   <thead>
                     <tr>
-                      <th>기술영역</th><th>판단</th><th>지금</th><th>더하면</th>
+                      <th>기술영역</th><th>판단</th><th>검사 당시</th><th>지금</th>
                       <th>고르신 항목</th><th>어느 경험에서</th>
                     </tr>
                   </thead>

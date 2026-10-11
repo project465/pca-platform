@@ -206,15 +206,17 @@ async function pendingCount(userId: string): Promise<number> {
 }
 
 /**
- * 계산한 것을 지금 값에 적는다.
+ * 계산한 것을 지금 값에 적는다. **줄의 상태는 건드리지 않는다.**
  *
  * **굳은 결과는 건드리지 않는다.** 쓰는 자리는 `career_profiles` 의 세 칸과
- * `v3_actions` 의 상태와 `career_events.processed_at` 뿐이다.
+ * `v3_actions` 의 상태뿐이다.
+ *
+ * 줄을 닫는 일을 여기서 떼어 낸 까닭은, 자동으로 도는 쪽이 **제가 집은
+ * 줄만** 닫아야 하기 때문이다. 집지 않은 줄까지 싸잡아 `done` 으로 적으면,
+ * 계산이 도는 동안 들어온 새 경험이 **한 번도 세어지지 않은 채로** 처리된
+ * 것으로 적힌다.
  */
-export async function applyRecompute(userId: string): Promise<RecomputePlan> {
-  const plan = await previewRecompute(userId);
-  if (!plan.base_attempt_id) return plan;
-
+async function writePlan(userId: string, plan: RecomputePlan): Promise<void> {
   const levels: Record<string, Record<string, AxisState>> = {};
   for (const c of plan.candidates) {
     levels[c.domain] = levels[c.domain] ?? {};
@@ -251,9 +253,140 @@ export async function applyRecompute(userId: string): Promise<RecomputePlan> {
       [userId, CORE, g.domain, g.axis ?? ""]);
   }
 
+}
+
+/* ── 줄을 집고 닫는다 ──────────────────────────────────────────────── */
+
+/**
+ * 다시 계산할 줄을 **한 번에 하나의 흐름만** 집는다(규격 §2).
+ *
+ * 같은 사람의 줄을 겨냥한 두 요청이 같은 순간에 들어와도 한쪽만 집는다.
+ * `status IN ('queued','failed')` 로 거르는 UPDATE 가 같은 줄을 겨냥하므로,
+ * 뒤에 온 쪽은 앞쪽이 끝날 때까지 그 줄에서 기다렸다가 **다시 읽는다.**
+ * 그때 그 줄은 이미 `running` 이라 조건에서 빠지고 0줄이 집힌다.
+ *
+ * **멈춘 흐름이 영원히 막지 않는다.** 서버가 중간에 죽으면 `running` 줄이
+ * 그대로 남는데, 그 상태로 두면 그 사람은 다시는 자동 반영을 못 받는다.
+ * 5분이 지난 `running` 은 멈춘 것으로 보고 다시 집는다.
+ */
+async function claim(userId: string): Promise<string[]> {
+  const rows = await query<{ id: string }>(
+    `UPDATE career_events
+        SET status='running', started_at=now(), attempts_n=attempts_n+1
+      WHERE user_id=$1 AND core_code=$2
+        AND (status IN ('queued','failed')
+             OR (status='running' AND started_at < now() - interval '5 minutes'))
+        AND NOT EXISTS (
+          SELECT 1 FROM career_events r
+           WHERE r.user_id=$1 AND r.core_code=$2 AND r.status='running'
+             AND r.started_at >= now() - interval '5 minutes')
+      RETURNING id::text`,
+    [userId, CORE]);
+  return rows.map((r) => r.id);
+}
+
+/** 집은 줄만 닫는다. **까닭을 버리지 않는다**: 실패한 줄은 한 줄을 들고 선다 */
+async function finish(ids: string[], ok: boolean, err?: unknown): Promise<void> {
+  if (!ids.length) return;
   await query(
     `UPDATE career_events
-        SET status='done', finished_at=now()
-      WHERE user_id=$1 AND status IN ('queued','failed')`, [userId]);
-  return { ...plan, pending: 0 };
+        SET status=$2, finished_at=now(), last_error=$3
+      WHERE id = ANY($1::bigint[])`,
+    [ids, ok ? "done" : "failed",
+     ok ? null : String((err as Error)?.message ?? err ?? "").slice(0, 500)]);
+}
+
+/** 지금 어떤 상태인가. **화면이 짐작하지 않는다**(규격 §2) */
+export type RecomputeStatus = {
+  /** 돌고 있는 줄이 있는가 */
+  running: boolean;
+  /** 실패해서 다시 해야 하는 줄의 수 */
+  failed: number;
+  /** 아직 세어지지 않은 줄의 수(돌고 있는 것 포함) */
+  pending: number;
+  /** 마지막으로 지금 값에 적은 때 */
+  recomputed_at: string | null;
+};
+
+export async function recomputeStatus(userId: string): Promise<RecomputeStatus> {
+  const [ev, prof] = await Promise.all([
+    query<{ status: string; n: string }>(
+      `SELECT status, count(*)::text AS n FROM career_events
+        WHERE user_id=$1 AND core_code=$2 AND status IN ('queued','running','failed')
+        GROUP BY status`, [userId, CORE]),
+    queryOne<{ at: string | null }>(
+      `SELECT recomputed_at::text AS at FROM career_profiles
+        WHERE user_id=$1 AND core_code=$2`, [userId, CORE]),
+  ]);
+  const n = (k: string) => Number(ev.find((r) => r.status === k)?.n ?? 0);
+  return {
+    running: n("running") > 0,
+    failed: n("failed"),
+    pending: n("queued") + n("running") + n("failed"),
+    recomputed_at: prof?.at ?? null,
+  };
+}
+
+/** 자동 반영이 어떻게 끝났는가. 화면은 이 값만 보고 적는다 */
+export type AutoOutcome =
+  /** 집어서 끝까지 돌았다 */
+  | { state: "done"; plan: RecomputePlan }
+  /** 집을 줄이 없었다. 이미 다 세어져 있다 */
+  | { state: "nothing" }
+  /** 다른 흐름이 돌고 있다. 그쪽이 같은 줄을 센다 */
+  | { state: "busy" }
+  /** 집었는데 계산이 틀어졌다. **경험은 그대로 있고 다시 할 수 있다** */
+  | { state: "failed" };
+
+/**
+ * 경험이 저장된 **뒤에** 저절로 돈다(규격 §1).
+ *
+ * **저장을 막지 않는다.** 부르는 쪽이 이 함수를 `try` 로 감싸고, 여기서
+ * 무엇이 틀어져도 적어 둔 경험은 그대로 남는다. 틀어진 줄은 `failed` 로
+ * 서고 다음 저장이나 `다시 시도` 가 그 줄을 다시 집는다.
+ *
+ * **새 엔진을 만들지 않았다.** 집고 닫는 일만 여기 있고, 판단은 전부
+ * `previewRecompute()` 와 `writePlan()` 이 하던 그대로다.
+ */
+export async function autoRecompute(userId: string): Promise<AutoOutcome> {
+  const ids = await claim(userId);
+  if (!ids.length) {
+    const st = await recomputeStatus(userId);
+    return st.running ? { state: "busy" } : { state: "nothing" };
+  }
+  try {
+    const plan = await previewRecompute(userId);
+    if (!plan.base_attempt_id) {
+      /* 바탕이 될 검사 결과가 없다. **줄을 실패로 남기지 않는다**: 고칠
+         것이 없는 빨간 줄이 쌓이면 다음부터 아무도 안 본다. 검사를 끝내는
+         날 그 결과 위에서 다시 세어야 하므로 집은 줄을 되돌려 둔다 */
+      await query(
+        `UPDATE career_events SET status='queued', started_at=NULL
+          WHERE id = ANY($1::bigint[])`, [ids]);
+      return { state: "nothing" };
+    }
+    await writePlan(userId, plan);
+    await finish(ids, true);
+    return { state: "done", plan: { ...plan, pending: 0 } };
+  } catch (e) {
+    await finish(ids, false, e).catch(() => undefined);
+    return { state: "failed" };
+  }
+}
+
+/**
+ * 사람이 `다시 시도` 를 누를 때 도는 길. 자동과 **같은 자리를 부른다**.
+ *
+ * 판정을 두 곳에서 하면 어느 날 갈리고, 갈린 날 둘 다 못 믿는다.
+ */
+export async function applyRecompute(userId: string): Promise<RecomputePlan> {
+  const out = await autoRecompute(userId);
+  if (out.state === "done") return out.plan;
+  if (out.state === "failed") throw new Error("recompute failed");
+  /* 집을 줄이 없거나 다른 흐름이 돌고 있다. 그래도 **지금 값은 적는다**:
+     부른 사람이 기다리는 것은 줄 처리가 아니라 지금 값이고, 이 계산은 몇
+     번을 돌려도 같은 값이 나온다 */
+  const plan = await previewRecompute(userId);
+  if (plan.base_attempt_id) await writePlan(userId, plan);
+  return plan;
 }

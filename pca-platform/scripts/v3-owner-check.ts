@@ -416,7 +416,11 @@ async function main(): Promise<void> {
     const html = await me.text();
     const frozen = html.includes("검사 당시 결과") && html.includes("고정됨");
     const live = html.includes("현재 상태") && html.includes("경험을 더하면 바뀝니다");
-    const split = html.includes("cm-snap") && html.includes("cm-live");
+    /* **생김새 이름을 옛것으로 세지 않는다.** 굳은 결과는 한동안
+       `.cm-snap` 카드였는데 줄(`.cm-item` + `.cm-lockmark`)로 바뀌었고,
+       이 줄만 옛 이름에 남아 **멀쩡한 쪽을 걸림으로 적고 있었다.**
+       거짓 경보를 내는 검사는 그 다음부터 아무도 안 본다 */
+    const split = html.includes("cm-lockmark") && html.includes("cm-live");
     ok("결과 기록이 `검사 당시 결과` 와 `현재 상태` 를 가른다",
        frozen && live && split,
        `${frozen ? "굳은 값 ○" : "굳은 값 ✗"} · ${live ? "지금 값 ○" : "지금 값 ✗"}`

@@ -34,7 +34,9 @@ import { query, queryOne } from "../src/lib/db";
 import {
   addExperience, experiencesOf, latestResult, removeExperience,
 } from "../src/lib/me-v3/platform";
-import { applyRecompute, previewRecompute } from "../src/lib/me-v3/recompute";
+import {
+  applyRecompute, autoRecompute, previewRecompute, recomputeStatus,
+} from "../src/lib/me-v3/recompute";
 import { stable } from "../src/lib/me-v3/scoring/fixtures";
 
 let fail = 0, pass = 0;
@@ -136,6 +138,60 @@ async function main(): Promise<void> {
     ok("두 번 돌려도 같은 자리에 선다",
        stable(again.candidates) === stable(twice.candidates),
        `후보 ${twice.candidates.length}칸`);
+
+    /* ── 저절로 도는 쪽 ─────────────────────────────────────────────
+       화면을 거치지 않고 엔진만 본다. 사람이 누르는 길은 `v3:product-loop`
+       가 실제 브라우저로 센다 */
+
+    const idle = await recomputeStatus(uid);
+    ok("다 세어진 뒤에는 밀린 줄이 없다", idle.pending === 0 && !idle.running,
+       `밀림 ${idle.pending} · 돌고 있음 ${idle.running}`);
+
+    const fresh = await add(td, 2);
+    const q = await recomputeStatus(uid);
+    ok("경험을 저장하면 다시 셀 줄이 쌓인다", q.pending > 0, `밀림 ${q.pending}`);
+
+    const one = await autoRecompute(uid);
+    ok("저장 뒤 저절로 돌아 지금 값에 들어간다", one.state === "done", one.state);
+
+    const settled = await recomputeStatus(uid);
+    ok("돌고 나면 밀린 줄이 0 이 된다",
+       settled.pending === 0 && !!settled.recomputed_at,
+       `밀림 ${settled.pending} · ${settled.recomputed_at?.slice(0, 16) ?? "없음"}`);
+
+    /* **같은 순간에 둘이 들어와도 한 번만 센다**(규격 §2). 집는 자리가
+       같은 줄을 겨냥하므로 뒤에 온 쪽은 집을 줄이 없다 */
+    await add(td, 2);
+    const [a, b] = await Promise.all([autoRecompute(uid), autoRecompute(uid)]);
+    const ran = [a, b].filter((x) => x.state === "done").length;
+    ok("같은 순간에 둘이 들어와도 한 번만 센다", ran === 1,
+       `${a.state} · ${b.state}`);
+
+    const dup = await recomputeStatus(uid);
+    ok("두 번 들어와도 밀린 줄이 남지 않는다", dup.pending === 0,
+       `밀림 ${dup.pending}`);
+
+    /* **틀어져도 경험은 그대로이고 다시 할 수 있다**(규격 §2). 줄을
+       손으로 `failed` 로 되돌려 다시 집히는지 본다 */
+    await query(
+      `UPDATE career_events SET status='failed', last_error='점검'
+        WHERE user_id=$1 AND status='done'
+          AND id = (SELECT max(id) FROM career_events WHERE user_id=$1)`, [uid]);
+    const bad = await recomputeStatus(uid);
+    const kept = await experiencesOf(uid);
+    ok("반영이 틀어져도 적어 둔 경험은 그대로다",
+       bad.failed > 0 && kept.some((e) => e.id === fresh),
+       `실패 ${bad.failed}줄 · 경험 ${kept.length}개 그대로`);
+
+    const retry = await autoRecompute(uid);
+    ok("틀어진 줄을 다시 집어 돌린다", retry.state === "done", retry.state);
+    const healed = await recomputeStatus(uid);
+    ok("다시 돌면 실패 줄이 남지 않는다", healed.failed === 0,
+       `실패 ${healed.failed}줄`);
+
+    const last = await latestResult(uid);
+    ok("저절로 돌아도 굳은 결과는 그대로다", stable(last) === beforePrint,
+       `확인된 축 ${last?.overview.counts.confirmed_axes}`);
   } finally {
     for (const id of made) await removeExperience(uid, id).catch(() => undefined);
     const left = await experiencesOf(uid);

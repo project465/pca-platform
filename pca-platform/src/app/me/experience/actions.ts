@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { addExperience, removeExperience } from "@/lib/me-v3/platform";
+import { autoRecompute } from "@/lib/me-v3/recompute";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { opFail, ref } from "@/lib/oplog";
 
@@ -14,8 +15,10 @@ import { opFail, ref } from "@/lib/oplog";
  * 입력은 제목과 한 줄 메모뿐이다. 메모는 판정에 들어가지 않고 기한이 지나면
  * 지워진다.
  *
- * **저장만으로 Gap 이 바뀌지 않는다.** 다시 계산할 일을 `career_events` 에
- * 한 줄 쌓고, 그 줄을 처리하는 일은 다음 회차다. 화면이 그 사실을 적는다.
+ * **저장이 끝나면 저절로 반영한다.** 누르는 단추를 하나 더 두지 않는다.
+ * 다만 **차례는 그대로다**: 저장이 먼저 끝나고, 그 뒤에 다시 계산한다.
+ * 계산이 틀어져도 적어 주신 기록은 그대로 남고 `career_events` 의 그 줄이
+ * `failed` 로 서서 다음에 다시 집힌다. 그래서 다시 적으실 일이 없다.
  */
 export async function saveExperience(form: FormData): Promise<void> {
   const user = await requireUser();
@@ -56,6 +59,16 @@ export async function saveExperience(form: FormData): Promise<void> {
   }
   if (!id) redirect("/me/experience/new?e=save");
   await mark("experience_added", user.id, { n: form.getAll("td").length });
+  /* **저장이 성공한 뒤에만 돈다**(규격 §2). 그리고 **저장을 되돌리지
+     않는다**: 여기서 무엇이 틀어져도 위에서 적은 기록은 그대로 있다.
+     그래서 던지지 않고 상태만 들고 나간다 */
+  const auto = await autoRecompute(user.id).catch((e) => {
+    opFail({
+      operation: "experience.autoRecompute", ref: ref("user", user.id),
+      step: "apply", category: "db",
+    }, e);
+    return { state: "failed" as const };
+  });
   revalidatePath("/me");
   revalidatePath("/me/experience");
   revalidatePath("/me/recompute");
@@ -68,7 +81,9 @@ export async function saveExperience(form: FormData): Promise<void> {
      새로 연결된 것` 을 적어야 하는데, 번호가 없으면 쌓인 경험 전부가
      한 묶음으로 보이고 적은 사람이 **자기가 방금 적은 것이 무엇을
      움직였는지**를 가려낼 수 없다 */
-  redirect(`/me/recompute?new=${id}`);
+  revalidatePath("/me/state");
+  revalidatePath("/me/next");
+  redirect(`/me/recompute?new=${id}&r=${auto.state}`);
 }
 
 export async function dropExperience(form: FormData): Promise<void> {
@@ -76,6 +91,16 @@ export async function dropExperience(form: FormData): Promise<void> {
   const id = String(form.get("id") ?? "");
   if (!id) return;
   await removeExperience(user.id, id);
+  /* 지운 자리도 저절로 다시 센다. **내려가지는 않는다**: 검사에서 확인된
+     축의 근거는 검사 응답이지 이 기록이 아니다(`recompute.ts` 머리말) */
+  await autoRecompute(user.id).catch((e) => {
+    opFail({
+      operation: "experience.autoRecompute", ref: ref("user", user.id),
+      step: "apply", category: "db",
+    }, e);
+  });
   revalidatePath("/me");
   revalidatePath("/me/experience");
+  revalidatePath("/me/state");
+  revalidatePath("/me/next");
 }

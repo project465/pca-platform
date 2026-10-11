@@ -61,7 +61,7 @@
  *   들어오는 길이 지금 무엇인지 적지 않으면 구글로 가입하신 분이
  *   비밀번호 찾기를 누르고 메일을 기다린다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V20";
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V21";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -75,7 +75,7 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V20";
  * 셋은 우리가 안에서 그 일을 부르던 말이고, 손님 화면에서는 그 말이
  * 무엇을 가리키는지 알 수 없다.
  */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.14";
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.15";
 
 /**
  * V5 에서 바꾼 것 (2026-10-09).
@@ -458,4 +458,24 @@ export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.14";
  *
  * 자료에 따라서만 서는 줄이라 앞 회차의 전수 검사가 지나갔다.
  * 화면 구조는 한 줄도 바뀌지 않았으므로 `WORKSPACE_UI_VERSION` 은 그대로다.
+ */
+
+/*
+ * `V21` 로 올린 까닭. **경험을 저장하면 저절로 반영된다.**
+ *
+ * 전에는 저장과 반영이 두 걸음이었고 사이에 `현재 상태에 더하기` 단추가
+ * 섰다. 그 구조를 둔 까닭 둘(계산이 깨진 날 저장까지 막히지 않게 · 무엇이
+ * 달라지는지 먼저 보게)은 그대로 지킨다. 앞엣것은 `autoRecompute()` 를
+ * **저장이 끝난 뒤에** 두고 거기서 난 것을 삼켜서 지키고, 뒤엣것은 저장
+ * 직후에 서는 쪽이 같은 내용을 **지난 일로** 적어서 지킨다.
+ *
+ * 화면에서 갈린 것 셋이다. 반영 단추가 사라지고 그 자리에 `현재 상태
+ * 보기` 가 선다. 돌고 있는지 · 반영됐는지 · 틀어졌는지를 글자로 적는 띠
+ * (`.cm-state`)가 섰다. 경험 목록의 `아직 더하지 않은 경험` 띠는 평소에
+ * 서지 않고 **틀어졌을 때만** 선다.
+ *
+ * **틀어진 사람에게는 길이 있다.** 그때만 `다시 시도` 가 서고, 누르면
+ * 같은 줄을 다시 집는다. 적어 둔 경험은 그대로 있어 다시 적을 일이 없다.
+ *
+ * 문항 은행과 판단 규칙과 결과 모델과 굳은 스냅샷은 그대로다.
  */

@@ -198,33 +198,38 @@ async function main(): Promise<void> {
       /2025-03|2025/.test(listTxt) && /더함|더하지 않음/.test(listTxt));
 
     /* ── 3. recompute triggered ──────────────────────────────────── */
-    console.log("\n── 3. 더하기가 돈다");
-    const q = await queryOne<{ n: string }>(
-      `SELECT count(*)::text AS n FROM career_events
-        WHERE user_id = $1 AND status IN ('queued','failed')`, [a.id]);
-    ok("저장이 반영할 일을 쌓는다", Number(q?.n ?? 0) >= 1, `${q?.n ?? 0}건`);
-    await p2.goto(`${B}/me/recompute`, { waitUntil: "networkidle" });
-    const planTxt = await p2.evaluate(() => document.body.innerText);
-    ok("이번 경험에서 새로 연결된 것을 적는다",
-      /새로 연결된 것/.test(planTxt));
-    ok("현재 상태에서 달라지는 것을 적는다",
-      /현재 상태에서 달라지는 것/.test(planTxt));
-    ok("그다음에 할 일을 적는다", /그다음에 할 일/.test(planTxt));
-    /* **`보기` 라고 적힌 단추가 값을 바꾸지 않는다**(규격 §6) */
-    const applyLabel = await p2.locator('.cm-acts form button[type="submit"]')
-      .first().innerText().catch(() => "");
-    ok("더하는 단추가 하는 일을 말로 적는다",
-      /더하기|계산/.test(applyLabel), applyLabel);
-    await p2.locator('.cm-acts form button[type="submit"]').first()
-      .click({ force: true });
-    await p2.waitForLoadState("networkidle").catch(() => undefined);
-    await p2.waitForTimeout(1200);
-    const at = new URL(p2.url()).pathname;
-    ok("반영하면 현재 상태로 이어진다", at === "/me/state", at);
+    console.log("\n── 3. 저절로 반영된다");
+    /* **누르는 단추가 없다**(규격 §1). 저장이 끝난 그 자리에서 이미
+       돌았어야 하므로, 쌓인 줄이 남아 있으면 그것이 걸림이다 */
     const left = await queryOne<{ n: string }>(
       `SELECT count(*)::text AS n FROM career_events
-        WHERE user_id = $1 AND status IN ('queued','failed')`, [a.id]);
-    ok("반영하면 쌓인 일이 처리된다", Number(left?.n ?? 0) === 0, `${left?.n ?? 0}건 남음`);
+        WHERE user_id = $1 AND status IN ('queued','running','failed')`, [a.id]);
+    ok("저장하면 누르지 않아도 반영된다", Number(left?.n ?? 0) === 0,
+      `${left?.n ?? 0}건 남음`);
+    const doneN = await queryOne<{ n: string }>(
+      `SELECT count(*)::text AS n FROM career_events
+        WHERE user_id = $1 AND status = 'done'`, [a.id]);
+    ok("처리한 줄이 기록으로 남는다", Number(doneN?.n ?? 0) >= 1, `${doneN?.n ?? 0}건`);
+
+    /* 저장 직후 선 쪽을 그대로 읽는다. **새 주소로 다시 열지 않는다**:
+       다시 열면 `?new=` 이 빠져 이번 경험으로 좁힌 글이 사라진다 */
+    await p.bringToFront().catch(() => undefined);
+    const planTxt = await p.evaluate(() => document.body.innerText);
+    ok("이번 경험에서 새로 연결된 것을 적는다",
+      /새로 연결된 것/.test(planTxt));
+    ok("현재 상태에서 달라진 것을 적는다",
+      /현재 상태에서 달라진 것|현재 상태에서 달라지는 것/.test(planTxt));
+    ok("그다음에 할 일을 적는다", /그다음에 할 일/.test(planTxt));
+    /* **세 상태를 글자로 적는다**(규격 §2) */
+    ok("반영이 끝났다는 것을 글자로 적는다",
+      /현재 상태에 더했습니다/.test(planTxt),
+      planTxt.split("\n").find((l) => /반영/.test(l))?.slice(0, 40) ?? "없음");
+    const applyBtn = await p.locator('.cm-acts form button[type="submit"]').count();
+    ok("반영하라는 단추가 서지 않는다", applyBtn === 0, `단추 ${applyBtn}개`);
+
+    await p2.goto(`${B}/me/state`, { waitUntil: "networkidle" });
+    const at = new URL(p2.url()).pathname;
+    ok("현재 상태로 이어진다", at === "/me/state", at);
 
     /* ── 4. current state updated ────────────────────────────────── */
     console.log("\n── 4. 지금 값이 갱신된다");
@@ -312,6 +317,27 @@ async function main(): Promise<void> {
     /* 규격 §10. **한 화면에 짙은 단추 하나** */
     const prim = await p2.locator(".cm-btn.is-primary").count();
     ok("할 일 쪽에 짙은 단추가 하나다", prim <= 1, `${prim}개`);
+
+    /* ── 5b. 새로 고쳐도 남아 있다 ────────────────────────────────
+       **자동으로 돈 것이 그 요청에서만 보이면 안 된다**(규격 §3). 쿠키를
+       비우고 다시 들어와 같은 값이 서는지 본다. 지금 값은 `career_profiles`
+       에 적혀 있으므로 화면이 그 줄을 읽기만 하면 남아 있어야 한다 */
+    await ctx.clearCookies();
+    const p3 = await login(ctx, WHO[0], a.pw);
+    await p3.goto(`${B}/me/state`, { waitUntil: "networkidle" });
+    const againTxt = await p3.evaluate(() => document.body.innerText);
+    ok("새로 들어와도 현재 상태가 기준 날짜를 적는다",
+      /\d{4}-\d{2}-\d{2} 기준/.test(againTxt));
+    const stillPending = await queryOne<{ n: string }>(
+      `SELECT count(*)::text AS n FROM career_events
+        WHERE user_id = $1 AND status IN ('queued','running','failed')`, [a.id]);
+    ok("새로 들어와도 밀린 반영이 없다", Number(stillPending?.n ?? 0) === 0,
+      `${stillPending?.n ?? 0}건`);
+    await p3.goto(`${B}/me/experience`, { waitUntil: "networkidle" });
+    const listAgain = await p3.evaluate(() => document.body.innerText);
+    ok("새로 들어와도 그 경험이 더해진 것으로 적힌다",
+      listAgain.includes(title) && /더함/.test(listAgain));
+    await p3.close().catch(() => undefined);
 
     /* ── 6. home recent change updated ───────────────────────────── */
     console.log("\n── 6. 홈의 최근 변화");

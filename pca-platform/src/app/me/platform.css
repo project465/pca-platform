@@ -1341,6 +1341,25 @@ a.cm-feed-row:hover, .cm-feed > li:hover { background: #fafcfe; }
   font-size: var(--ui-t-sub); font-weight: var(--ui-w-sb); line-height: 1.6;
 }
 
+/* 자동 반영이 어떻게 끝났는지 적는 띠. **`.cm-fail` 과 같은 자리에 같은
+   무게로 선다**: 셋이 서로 다른 크기로 서면 읽는 사람이 상태가 아니라
+   화면이 바뀐 줄로 읽는다. **색으로만 말하지 않는다**(규격 §2): 글자가
+   먼저 읽히고 색은 거드는 자리다 */
+.cm-state {
+  margin: 0 0 18px; padding: 12px 14px;
+  border: 1px solid var(--sf-line); border-radius: var(--ui-r-sm);
+  background: var(--sf-surface-2); color: var(--sf-ink-2);
+  font-size: var(--ui-t-sub); font-weight: var(--ui-w-sb); line-height: 1.6;
+}
+.cm-state.is-run {
+  border-color: var(--sf-accent-line); background: var(--sf-accent-soft);
+  color: var(--sf-accent-ink);
+}
+.cm-state.is-done {
+  border-color: var(--sf-ok-line); background: var(--sf-ok-soft);
+  color: var(--sf-ok);
+}
+
 /* ── 방금 반영하고 온 자리 ────────────────────────────────────────────
    **무엇이 달라졌는지 그 자리에서 적는다**(규격 §16). 누른 사람을 반영
    화면에 세워 두면 다음에 `반영할 거리가 없습니다` 만 읽게 되고, 그렇다고
