@@ -10,15 +10,16 @@
  */
 import { coreFile } from "../core-registry";
 
-const CORE = "ME_CORE_V3";
+/* 영역 사전은 core 마다 다르다. 읽는 쪽이 어느 core 인지 넘긴다 */
 
 type Domain = { code: string; artifacts?: string[]; verify_targets?: string[] };
 type Domains = { domains: Domain[] };
 
-let cache: Domains | null = null;
-function domains(): Domain[] {
-  if (!cache) cache = coreFile<Domains>(CORE, "domains");
-  return cache.domains;
+const cache = new Map<string, Domains>();
+function domains(core: string): Domain[] {
+  let d = cache.get(core);
+  if (!d) { d = coreFile<Domains>(core, "domains"); cache.set(core, d); }
+  return d.domains;
 }
 
 /**
@@ -28,6 +29,6 @@ function domains(): Domain[] {
  * 쪽부터 보라는 말만으로는 무엇을 향해 가는지 알 수 없고, 남길 것이
  * 보이면 짧은 과제 하나도 겨냥할 자리가 생긴다.
  */
-export function domainArtifacts(td: string): string[] {
-  return (domains().find((d) => d.code === td)?.artifacts ?? []).slice(0, 4);
+export function domainArtifacts(core: string, td: string): string[] {
+  return (domains(core).find((d) => d.code === td)?.artifacts ?? []).slice(0, 4);
 }

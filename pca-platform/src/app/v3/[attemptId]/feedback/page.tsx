@@ -24,10 +24,10 @@ const SCALE = [
 ] as const;
 
 /** 고른 할 일의 보기. 결과지에 실제로 적혀 있던 문장을 그대로 쓴다 */
-function actionChoices(actions: Action[], stage: string): Choice[] {
+function actionChoices(core: string, actions: Action[], stage: string): Choice[] {
   return actions.slice(0, 8).map((a) => ({
     value: a.id,
-    label: actionKo(a, a.domain ? domainName(a.domain) : "", stage as never).do,
+    label: actionKo(a, a.domain ? domainName(core, a.domain) : "", stage as never).do,
   }));
 }
 
@@ -74,7 +74,7 @@ export default async function Feedback({
   });
 
   /* 고를 것이 없는 문항은 세우지 않는다. 결과지에 할 일이 없는 응시가 있다 */
-  const acts = m ? actionChoices(m.actions, m.stage) : [];
+  const acts = m ? actionChoices(a.core_code, m.actions, m.stage) : [];
   const live = items.filter((it) => it.kind !== "action" || acts.length > 0);
 
   const groups = TOPIC_ORDER

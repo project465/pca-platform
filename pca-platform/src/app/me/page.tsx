@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import {
-  EXPERIENCE_KINDS, applicationsOf, currentState, experiencesOf,
-} from "@/lib/me-v3/platform";
+  EXPERIENCE_KINDS, applicationsOf, currentState, experiencesOf, activeCore } from "@/lib/me-v3/platform";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import {
   ZONE_TITLE_KO, actionKo, domainChainKo, gapKo,
@@ -38,6 +37,8 @@ export const metadata = { title: "홈 · CareerMatri" };
  */
 export default async function Home() {
   const user = await requireUser();
+  /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
+  const core = await activeCore(user.id);
   /* **홈이 묻지 않는 것은 읽지도 않는다**(규격 §10). 고르신 산업과
      직무와 지역은 왼쪽 띠의 제 쪽이 들고, 결과 기록은 머리의 링크가
      보낸다. 쓰지 않는 값을 네 번 더 물으면 홈이 그만큼 늦어진다 */
@@ -70,7 +71,7 @@ export default async function Home() {
         && (a.axis ?? "") === (first.axis_code ?? "")) ?? null
     : null;
   const nowSay = nowModel && st.model
-    ? actionKo(nowModel, nowModel.domain ? domainName(nowModel.domain) : "",
+    ? actionKo(nowModel, nowModel.domain ? domainName(core, nowModel.domain) : "",
                st.model.stage)
     : { do: first?.body ?? "" };
   const nowGap = first
@@ -78,7 +79,7 @@ export default async function Home() {
         && (g.axis ?? "") === (first.axis_code ?? ""))
       ?? st.gaps.find((g) => g.domain === first.td_code) ?? null
     : null;
-  const nowWhy = nowGap ? gapKo(nowGap, domainName(nowGap.domain)).why : "";
+  const nowWhy = nowGap ? gapKo(nowGap, domainName(core, nowGap.domain)).why : "";
   /**
    * **홈은 요약이고 세부 쪽이 전체다.**
    *
@@ -102,7 +103,7 @@ export default async function Home() {
      화면과 현재 상태가 쓰는 함수를 그대로 부른다 */
   /* **줄 셋까지다**(규격 §7). 목표 화면의 `최근 변화` 가 세 줄짜리
      목록이고, 나머지 수는 마지막 줄이 든다. 전체는 `현재 상태` 가 든다 */
-  const change = recentChangeKo(st, domainName, 3);
+  const change = recentChangeKo(st, (td) => domainName(core, td), 3);
 
   /**
    * **주된 단추는 늘 `지금 할 일` 이다**(규격 §12).
@@ -274,7 +275,7 @@ export default async function Home() {
             <div className="cm-tiles">
               {ready.map((d) => (
                 <DomainTile key={d} href="/me/state"
-                  icon={TILE_ICON[d] ?? "box"} title={domainName(d)}
+                  icon={TILE_ICON[d] ?? "box"} title={domainName(core, d)}
                   /* 그 영역이 일하는 차례. **응답에서 온 값이 아니라
                      영역 설명이다**: 여기서 새 수를 만들지 않는다 */
                   sub={domainChainKo(d).slice(0, 2).join(" · ")} />

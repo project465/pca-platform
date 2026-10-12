@@ -296,6 +296,17 @@ export type TargetView = {
   goal: { role: string | null; industry: string | null; org: string | null };
 };
 
+/**
+ * 이 결과가 어느 Major Core 로 나온 것인가.
+ *
+ * **화면이 core 를 짐작하지 않는다.** 결과지와 작업공간이 영역 이름을
+ * 적으려면 어느 전공의 사전을 읽을지 알아야 하는데, 그 값은 굳은 결과가
+ * 이미 들고 있다. 여기서 꺼내 쓰면 전공이 늘어도 읽는 코드가 그대로다.
+ */
+export function coreOf(m: ResultModel): string {
+  return m.provenance.module_versions.core_version;
+}
+
 export type ResultModel = {
   schema: "me-v3-result.1";
   attempt_id: string;

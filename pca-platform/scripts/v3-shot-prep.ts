@@ -32,6 +32,12 @@ import {
 } from "../src/lib/me-v3/runtime/session";
 import type { Answer, GradField, Stage, Tier } from "../src/lib/me-v3/scoring/types";
 
+import { sellableCores } from "../src/lib/me-v3/core-registry";
+
+/** 검사도 core 를 글자로 박지 않는다. 등록부가 지금 열어 둔 것을 쓴다 */
+const CORE = sellableCores("KR")[0].code;
+
+
 if ((process.env.APP_ENV ?? "").toLowerCase() === "production") {
   console.error("운영에서는 돌리지 않습니다.");
   process.exit(2);
@@ -46,7 +52,7 @@ type Level = "none" | "mid" | "strong";
 
 /** 응답 하나. 화면이 내놓는 보기 가운데 고른다 */
 async function pick(a: V3Attempt, id: string, lv: Level): Promise<Answer | null> {
-  const it = itemOf(id);
+  const it = itemOf(CORE, id);
   if (!it) return null;
   const c = controlOf(it, await menuContextOf(a));
   if (c.kind === "level") {
@@ -92,7 +98,7 @@ async function freshAttempt(
 }
 
 async function fillGrid(a: V3Attempt, want: Record<string, [number, number, number]>) {
-  for (const d of content().domains.domains) {
+  for (const d of content(CORE).domains.domains) {
     const g = want[d.code] ?? [3, 0, 3];
     await saveAnswer(a.id, `G_${d.code}_INT`, { kind: "scale5", value: g[0] });
     await saveAnswer(a.id, `G_${d.code}_EXP`, { kind: "exposure", value: g[1] });
@@ -112,17 +118,17 @@ async function walk(a0: V3Attempt, userId: string, lv: Level, picks = true) {
       if (ans) await saveAnswer(a.id, id, ans);
     }
     if (v.screen.kind === "checklist" && v.screen.domain && picks) {
-      for (const g of checklistFor(v.screen.domain)) {
+      for (const g of checklistFor(CORE, v.screen.domain)) {
         await savePicks(a.id, v.screen.domain, g.slot, g.items.slice(0, 2));
       }
     }
     if (v.screen.kind === "pick-industry") {
-      await savePicks3(a.id, "industry", ["INDUSTRY_SEMICON_V2", "INDUSTRY_ROBOT_V2"]);
+      await savePicks3(CORE, a.id, "industry", ["INDUSTRY_SEMICON_V2", "INDUSTRY_ROBOT_V2"]);
     }
     if (v.screen.kind === "pick-role") {
-      await savePicks3(a.id, "role", ["ROLE_CAE_V2", "ROLE_DESIGN_V2"]);
+      await savePicks3(CORE, a.id, "role", ["ROLE_CAE_V2", "ROLE_DESIGN_V2"]);
     }
-    if (v.screen.kind === "pick-org") await savePicks3(a.id, "org", ["OC1", "OC2"]);
+    if (v.screen.kind === "pick-org") await savePicks3(CORE, a.id, "org", ["OC1", "OC2"]);
     if (!v.nextId) { await moveTo(a.id, v.screen.id); break; }
     await moveTo(a.id, v.nextId);
     want = v.nextId;
@@ -174,7 +180,7 @@ async function expectOf(
   const sc = plan.screens[idx];
   if (!sc) return { route: path };
   const first = sc.items[0];
-  const raw = first ? wordingOf(first, a.education_stage) : "";
+  const raw = first ? wordingOf(CORE, first, a.education_stage) : "";
   /* 너무 긴 문면은 줄바꿈과 공백이 화면에서 달라질 수 있어 앞 토막만 쓴다 */
   const itemText = raw ? raw.replace(/\s+/g, " ").trim().slice(0, 24) : undefined;
   /* **완료 화면의 머리글은 제출 전과 뒤가 다르다.** 계획은 제출 전 문장을

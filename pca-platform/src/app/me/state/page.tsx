@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
-import { currentState, profileOf } from "@/lib/me-v3/platform";
+import { currentState, profileOf, activeCore } from "@/lib/me-v3/platform";
 import { openActions } from "@/lib/me-v3/open-actions";
 import { domainName, industryChoices, roleName } from "@/lib/me-v3/runtime/session";
 import { moveLabel, orgLabel, regionName } from "@/lib/me-v3/region";
@@ -61,6 +61,8 @@ export default async function State(
   { searchParams }: { searchParams: Promise<{ r?: string }> },
 ) {
   const user = await requireUser();
+  /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
+  const core = await activeCore(user.id);
   /* 방금 반영하고 온 사람인가. **반영 화면에 세워 두지 않고 여기로
      보내되**, 무엇 때문에 이 화면이 열렸는지는 적어 준다 */
   const justApplied = (await searchParams).r === "1";
@@ -92,7 +94,7 @@ export default async function State(
      이 선다 */
   const orgNames = (profile?.target_org ?? [])
     .map((c) => orgLabel(c)).filter((x): x is string => !!x);
-  const indName = (c: string) => industryChoices().find((x) => x.code === c)?.name ?? c;
+  const indName = (c: string) => industryChoices(core).find((x) => x.code === c)?.name ?? c;
 
   /* ③ 지금 설명할 수 있는 영역. 근거가 선 쪽이 먼저고 셋까지다 */
   const ready = READY.flatMap((z) =>
@@ -100,9 +102,9 @@ export default async function State(
     .slice(0, TOP);
   /* ④ 최근 달라진 것. **실제 변화만**(규격 §7). 문장은 세 화면이 같이
      쓰는 자리가 든다(규격 §12) */
-  const change = recentChangeKo(st, domainName, 3);
+  const change = recentChangeKo(st, (td) => domainName(core, td), 3);
   /* 첫 화면에 서는 **한 줄**(규격 §5). 나머지는 `달라진 것 모두` 가 든다 */
-  const one = recentChangeKo(st, domainName, 1);
+  const one = recentChangeKo(st, (td) => domainName(core, td), 1);
   const realChange = st.recomputed_at && (st.raised.length || st.zoneMoved.length);
   /* ⑤ 아직 부족한 것 · ⑥ 다음 행동 하나 */
   const gaps = st.gaps.slice(0, TOP_GAPS);
@@ -161,7 +163,7 @@ export default async function State(
               <div className="cm-rows">
                 {ready.map((r) => (
                   <p className="cm-row" key={r.domain}>
-                    <b>{domainName(r.domain)}</b>
+                    <b>{domainName(core, r.domain)}</b>
                     {SAY_READY[r.zone] ? <span>{SAY_READY[r.zone]}</span> : null}
                     {st.raised.some((x) => x.domain === r.domain)
                       ? <span className="cm-lockmark">경험 더함</span> : null}
@@ -208,14 +210,14 @@ export default async function State(
                 (a.domain ?? "") === (nextOne.td_code ?? "")
                 && (a.axis ?? "") === (nextOne.axis_code ?? ""));
               return x
-                ? actionKo(x, x.domain ? domainName(x.domain) : "", m.stage).do
+                ? actionKo(x, x.domain ? domainName(core, x.domain) : "", m.stage).do
                 : nextOne.body;
             })()}</p>
           ) : fallback ? (
             <p>
               {actionKo(
                 fallback,
-                fallback.domain ? domainName(fallback.domain) : "",
+                fallback.domain ? domainName(core, fallback.domain) : "",
                 m.stage,
               ).do}
             </p>
@@ -288,7 +290,7 @@ export default async function State(
               `확인된 판단이 아직 넷에 못 미칩니다` 앞에 `무엇을 하면` 이
               붙으면 앞뒤가 맞지 않는다. 할 일은 위의 `지금 할 일` 이 든다 */}
           {(() => {
-            const ks = gaps.map((g) => gapKo(g, domainName(g.domain)));
+            const ks = gaps.map((g) => gapKo(g, domainName(core, g.domain)));
             const same = ks.length > 1
               && ks.every((k) => k.why === ks[0].why && k.detail === ks[0].detail);
             return (
@@ -390,7 +392,7 @@ export default async function State(
             <div className="cm-chips">
               {st.zoneMoved.map((z) => (
                 <span className="cm-chip is-on" key={z.domain}>
-                  {domainName(z.domain)} 달라짐
+                  {domainName(core, z.domain)} 달라짐
                 </span>
               ))}
             </div>
@@ -421,7 +423,7 @@ export default async function State(
                 const up = st.raised.some((r) => r.domain === d);
                 return (
                   <span className={`cm-chip${z === ORDER[0] ? " is-on" : ""}`} key={d}>
-                    {domainName(d)}
+                    {domainName(core, d)}
                     {up ? <small> · 경험 더함</small> : null}
                   </span>
                 );
@@ -441,7 +443,7 @@ export default async function State(
             {m.evidence.ready.slice(0, 6).map((g) => (
               <div className="cm-card" key={`${g.domain}.${g.axis}`}>
                 <h2>
-                  {domainName(g.domain)}
+                  {domainName(core, g.domain)}
                   <em>{AXIS_KO[g.axis]}</em>
                   {raisedSet.has(`${g.domain}.${g.axis}`)
                     ? <span className="cm-lockmark">경험 더함</span> : null}
@@ -466,7 +468,7 @@ export default async function State(
           <div className="cm-grid" style={{ marginTop: 14 }}>
             {m.evidence.partial.slice(0, 4).map((g) => (
               <div className="cm-card" key={`p-${g.domain}.${g.axis}`}>
-                <h2>{domainName(g.domain)} <em>{AXIS_KO[g.axis]}</em></h2>
+                <h2>{domainName(core, g.domain)} <em>{AXIS_KO[g.axis]}</em></h2>
                 <p>해 본 것은 확인됐습니다. 여기서 무엇을 직접 정했는지까지
                   적으면 지원서에서 쓸 수 있습니다.</p>
               </div>
@@ -482,11 +484,11 @@ export default async function State(
           <div className="cm-grid">
             {([
               [m.industry_context, indName(m.industry_context?.code ?? ""), "산업"],
-              [m.role_context, roleName(m.role_context?.code ?? ""), "직무"],
+              [m.role_context, roleName(core, m.role_context?.code ?? ""), "직무"],
             ] as const).map(([pack, nm, kind]) => pack ? (
               <div className="cm-card" key={kind}>
                 <h2>{nm} <em>{kind}</em></h2>
-                {bridgeKo(pack, nm, domainName,
+                {bridgeKo(pack, nm, (td: string) => domainName(core, td),
                   m.actions.find((a) => a.domain === pack.requested[0]?.domain) ?? null,
                   m.stage).map((line) => <p key={line}>{line}</p>)}
               </div>

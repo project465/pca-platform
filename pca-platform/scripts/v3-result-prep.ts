@@ -29,6 +29,12 @@ import {
 } from "../src/lib/me-v3/runtime/session";
 import type { Answer, GradField, Stage, Tier } from "../src/lib/me-v3/scoring/types";
 
+import { sellableCores } from "../src/lib/me-v3/core-registry";
+
+/** 검사도 core 를 글자로 박지 않는다. 등록부가 지금 열어 둔 것을 쓴다 */
+const CORE = sellableCores("KR")[0].code;
+
+
 if ((process.env.APP_ENV ?? "").toLowerCase() === "production") {
   console.error("운영에서는 돌리지 않습니다.");
   process.exit(2);
@@ -48,7 +54,7 @@ const LOGIN = "cmshots-work@example.com";
 type Level = "none" | "mid" | "strong";
 
 async function pick(a: V3Attempt, id: string, lv: Level): Promise<Answer | null> {
-  const it = itemOf(id);
+  const it = itemOf(CORE, id);
   if (!it) return null;
   /* **뒤집어 묻는 문항은 뒤집어 답한다.** `강하게` 로 전부 밀면 반대
      방향 문항까지 높게 답한 꼴이 되고, 응답 품질 검사가 `다시 볼 것` 을
@@ -100,7 +106,7 @@ async function freshAttempt(
 }
 
 async function fillGrid(a: V3Attempt, want: Record<string, [number, number, number]>) {
-  for (const d of content().domains.domains) {
+  for (const d of content(CORE).domains.domains) {
     const g = want[d.code] ?? [3, 0, 3];
     await saveAnswer(a.id, `G_${d.code}_INT`, { kind: "scale5", value: g[0] });
     await saveAnswer(a.id, `G_${d.code}_EXP`, { kind: "exposure", value: g[1] });
@@ -126,15 +132,15 @@ async function walk(
       if (ans) await saveAnswer(a.id, id, ans);
     }
     if (v.screen.kind === "checklist" && v.screen.domain && opt.picks !== false) {
-      for (const g of checklistFor(v.screen.domain)) {
+      for (const g of checklistFor(CORE, v.screen.domain)) {
         await savePicks(a.id, v.screen.domain, g.slot, g.items.slice(0, 2));
       }
     }
     if (v.screen.kind === "pick-industry" && opt.industry) {
-      await choosePack(a.id, "industry", opt.industry);
+      await choosePack(CORE, a.id, "industry", opt.industry);
     }
     if (v.screen.kind === "pick-role" && opt.role) {
-      await choosePack(a.id, "role", opt.role);
+      await choosePack(CORE, a.id, "role", opt.role);
     }
     if (!v.nextId) { await moveTo(a.id, v.screen.id); break; }
     await moveTo(a.id, v.nextId);

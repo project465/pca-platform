@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
-import { currentState, latestResult, type ActionRow } from "@/lib/me-v3/platform";
+import { currentState, latestResult, type ActionRow, activeCore } from "@/lib/me-v3/platform";
 import { openActions } from "@/lib/me-v3/open-actions";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import { domainArtifacts } from "@/lib/me-v3/runtime/domain-facts";
@@ -69,6 +69,8 @@ export default async function Next(
   { searchParams }: { searchParams: Promise<{ taken?: string }> },
 ) {
   const user = await requireUser();
+  /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
+  const core = await activeCore(user.id);
   /* 결과지에서 담고 온 사람인가(규격 §16). **`0` 은 고장이 아니다**:
      담는 함수가 영역과 문장으로 보아 두 번 눌러도 늘지 않으므로, 이미
      담아 둔 사람이 다시 누르면 0 이 맞는 답이다. 그 사실을 적지 않으면
@@ -121,7 +123,7 @@ export default async function Next(
   const sayOf = (a: ActionRow): { head: string; guide: string[] } => {
     const x = modelOf(a);
     const t = x && model
-      ? actionKo(x, x.domain ? domainName(x.domain) : "", model.stage) : null;
+      ? actionKo(x, x.domain ? domainName(core, x.domain) : "", model.stage) : null;
     return {
       head: t?.do ?? a.body,
       guide: [t?.guide, t?.note].filter((v): v is string => !!v),
@@ -154,7 +156,7 @@ export default async function Next(
     const from = [
       ...(m?.material.artifacts ?? []),
       ...(m?.material.verify_targets ?? []),
-      ...(a.td_code ? domainArtifacts(a.td_code) : []),
+      ...(a.td_code ? domainArtifacts(core, a.td_code) : []),
     ];
     return [...new Set(from)].slice(0, 2);
   };
@@ -228,7 +230,7 @@ export default async function Next(
             <h3>{sayOf(first).head}</h3>
             {(() => {
               const g = gapOf(first);
-              const k = g ? gapKo(g, domainName(g.domain)) : null;
+              const k = g ? gapKo(g, domainName(core, g.domain)) : null;
               const how = howOf(first);
               /* 빈자리가 없으면 **그 할 일을 고른 규칙**이 까닭을 든다 */
               const code = modelOf(first)?.code ?? "";
@@ -251,7 +253,7 @@ export default async function Next(
                     <p>
                       <b>어느 부분</b>{" "}
                       {first.td_code
-                        ? `${domainName(first.td_code)} · 지금 부족한 부분은 없습니다`
+                        ? `${domainName(core, first.td_code)} · 지금 부족한 부분은 없습니다`
                         : "영역을 가리지 않는 할 일입니다"}
                     </p>
                   )}
@@ -303,7 +305,7 @@ export default async function Next(
                         <p className="cm-row" key={a.id}>
                           <b>{sayOf(a).head}</b>
                           <span className="cm-when">
-                            {a.td_code ? domainName(a.td_code) : ""}
+                            {a.td_code ? domainName(core, a.td_code) : ""}
                           </span>
                         </p>
                       ))}

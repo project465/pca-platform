@@ -23,9 +23,15 @@ type RolePack = {
   application_material?: string[];
 };
 
+/**
+ * **기본값을 두지 않는다.** 전에는 `core = "ME_CORE_V3"` 였고, core 를
+ * 넘기지 않은 자리가 조용히 기계공학 팩을 읽었다. 다른 전공 응시자가
+ * 그 자리를 지나면 **남의 전공 산업팩으로 결과가 그려진다.** 넘기지
+ * 않으면 타입이 그 자리에서 막는다.
+ */
 export function industryContext(
-  code: string | null, domains: DomainResult[], dir = CONTENT_DIR,
-  core = "ME_CORE_V3", answers: PackAnswer[] = [],
+  core: string, code: string | null, domains: DomainResult[],
+  dir = CONTENT_DIR, answers: PackAnswer[] = [],
 ): PackContext | null {
   if (!code) return null;
   const p = readPacks<{ packs: IndustryPack[] }>(core, "industry", dir).packs
@@ -54,8 +60,8 @@ export function industryContext(
 }
 
 export function roleContext(
-  code: string | null, domains: DomainResult[], dir = CONTENT_DIR,
-  core = "ME_CORE_V3", answers: PackAnswer[] = [],
+  core: string, code: string | null, domains: DomainResult[],
+  dir = CONTENT_DIR, answers: PackAnswer[] = [],
 ): PackContext | null {
   if (!code) return null;
   const p = readPacks<{ packs: RolePack[] }>(core, "role", dir).packs

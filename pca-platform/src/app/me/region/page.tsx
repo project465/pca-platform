@@ -1,5 +1,5 @@
 import { requireUser } from "@/lib/session";
-import { profileOf } from "@/lib/me-v3/platform";
+import { profileOf, activeCore } from "@/lib/me-v3/platform";
 import { regionGaps, regionLayer, regionOpen } from "@/lib/me-v3/region";
 import { industryChoices, roleChoices } from "@/lib/me-v3/runtime/session";
 import { CmShell, CmHead } from "../shell";
@@ -20,6 +20,8 @@ export const metadata = { title: "지역과 기관 · 내 CareerMatri" };
  */
 export default async function Region() {
   const user = await requireUser();
+  /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
+  const core = await activeCore(user.id);
   const profile = await profileOf(user.id);
   const L = regionLayer();
   /* 이름을 못 찾은 코드는 버린다. 화면에 `OC1` 이 서던 자리다 */
@@ -105,14 +107,14 @@ export default async function Region() {
             <dt>산업</dt>
             <dd>{(profile?.target_industry ?? []).length
               ? (profile!.target_industry).map((c) =>
-                  industryChoices().find((x) => x.code === c)?.name ?? c).join(" · ")
+                  industryChoices(core).find((x) => x.code === c)?.name ?? c).join(" · ")
               : "아직 고르지 않으셨습니다"}</dd>
           </div>
           <div>
             <dt>직무</dt>
             <dd>{(profile?.target_role ?? []).length
               ? (profile!.target_role).map((c) =>
-                  roleChoices().find((x) => x.code === c)?.name ?? c).join(" · ")
+                  roleChoices(core).find((x) => x.code === c)?.name ?? c).join(" · ")
               : "아직 고르지 않으셨습니다"}</dd>
           </div>
           <div>

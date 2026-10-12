@@ -22,11 +22,13 @@
 import { query, queryOne } from "@/lib/db";
 import type { Axis, AxisState, Zone } from "./scoring/types";
 import { decide } from "./scoring/zones";
-import type { ResultModel } from "./result/model";
-import { experiencesOf, latestResult, type Experience } from "./platform";
+import { coreOf, type ResultModel } from "./result/model";
+import { activeCore, experiencesOf, latestResult, type Experience } from "./platform";
 import { content } from "./runtime/session";
 
-const CORE = "ME_CORE_V3";
+/* **core 를 글자로 박지 않는다.** 지금 값과 줄과 할 일은 전부 그 사람의
+   core 아래에 쌓인다. 어느 core 인지는 `activeCore()` 가 그 사람의 자료에서
+   고르고, 고를 수 없으면 짐작하지 않고 던진다 */
 
 /**
  * 고른 항목이 어느 축의 근거인가.
@@ -76,6 +78,8 @@ export type RecomputePlan = {
 };
 
 type Snap = {
+  /** 어느 Major Core 의 결과인가. 영역 사전을 읽을 때 쓴다 */
+  core: string;
   tier: "BASIC" | "STANDARD" | "PRO";
   domains: ResultModel["domains"];
   attempt_id: string;
@@ -85,7 +89,7 @@ type Snap = {
 async function base(userId: string): Promise<Snap | null> {
   const m = await latestResult(userId);
   if (!m) return null;
-  return { tier: m.tier, domains: m.domains, attempt_id: m.attempt_id };
+  return { core: coreOf(m), tier: m.tier, domains: m.domains, attempt_id: m.attempt_id };
 }
 
 const RANK: Record<AxisState, number> = {
@@ -140,7 +144,7 @@ function zoneOf(
     .filter((ax) => RANK[state(ax)] >= RANK["CONFIRMED"]);
   const required = d.required;
   const missing = required.filter((ax) => !conf.includes(ax));
-  const dd = content().domains.domains.find((x) => x.code === d.code);
+  const dd = content(snap.core).domains.domains.find((x) => x.code === d.code);
   return decide({
     tier: snap.tier,
     openedDeep: d.opened.deep,
@@ -241,7 +245,7 @@ async function writePlan(userId: string, plan: RecomputePlan): Promise<void> {
            zones       = EXCLUDED.zones,
            gaps        = EXCLUDED.gaps,
            recomputed_at = now()`,
-    [userId, CORE, JSON.stringify(levels), JSON.stringify(zones), JSON.stringify(gaps)]);
+    [userId, await activeCore(userId), JSON.stringify(levels), JSON.stringify(zones), JSON.stringify(gaps)]);
 
   /* 메워진 자리의 할 일을 닫는다. **지우지 않는다**: 무엇을 왜 닫았는지가
      기록으로 남아야 다음에 되짚을 수 있다 */
@@ -250,7 +254,7 @@ async function writePlan(userId: string, plan: RecomputePlan): Promise<void> {
       `UPDATE v3_actions SET state='done', done_at=now()
         WHERE user_id=$1 AND core_code=$2 AND state<>'done'
           AND coalesce(td_code,'')=$3 AND coalesce(axis_code,'')=$4`,
-      [userId, CORE, g.domain, g.axis ?? ""]);
+      [userId, await activeCore(userId), g.domain, g.axis ?? ""]);
   }
 
 }
@@ -281,7 +285,7 @@ async function claim(userId: string): Promise<string[]> {
            WHERE r.user_id=$1 AND r.core_code=$2 AND r.status='running'
              AND r.started_at >= now() - interval '5 minutes')
       RETURNING id::text`,
-    [userId, CORE]);
+    [userId, await activeCore(userId)]);
   return rows.map((r) => r.id);
 }
 
@@ -309,14 +313,15 @@ export type RecomputeStatus = {
 };
 
 export async function recomputeStatus(userId: string): Promise<RecomputeStatus> {
+  const core = await activeCore(userId);
   const [ev, prof] = await Promise.all([
     query<{ status: string; n: string }>(
       `SELECT status, count(*)::text AS n FROM career_events
         WHERE user_id=$1 AND core_code=$2 AND status IN ('queued','running','failed')
-        GROUP BY status`, [userId, CORE]),
+        GROUP BY status`, [userId, core]),
     queryOne<{ at: string | null }>(
       `SELECT recomputed_at::text AS at FROM career_profiles
-        WHERE user_id=$1 AND core_code=$2`, [userId, CORE]),
+        WHERE user_id=$1 AND core_code=$2`, [userId, core]),
   ]);
   const n = (k: string) => Number(ev.find((r) => r.status === k)?.n ?? 0);
   return {

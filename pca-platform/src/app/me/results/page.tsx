@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
-import { currentState, resultHistory } from "@/lib/me-v3/platform";
+import { currentState, resultHistory, activeCore } from "@/lib/me-v3/platform";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import { recentChangeKo } from "@/lib/me-v3/change-text.ko";
 import { registry } from "@/lib/me-v3/core-registry";
@@ -21,11 +21,13 @@ export const metadata = { title: "결과 기록 · CareerMatri" };
  */
 export default async function Results() {
   const user = await requireUser();
+  /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
+  const core = await activeCore(user.id);
   const [st, rows] = await Promise.all([currentState(user.id), resultHistory(user.id)]);
   const snaps = rows.filter((r) => r.kind === "SNAPSHOT");
   /* 세 화면이 같이 쓰는 문장(규격 §8). 여기서 따로 적으면 같은 변화가
      홈과 현재 상태와 이 쪽에서 서로 다른 말로 읽힌다 */
-  const change = recentChangeKo(st, domainName, 2);
+  const change = recentChangeKo(st, (td) => domainName(core, td), 2);
 
   return (
     <CmShell active="/me/results" title="결과 기록"

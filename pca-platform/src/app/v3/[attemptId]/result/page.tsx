@@ -8,8 +8,10 @@ import {
 } from "@/lib/me-v3/runtime/session";
 import { domainArtifacts } from "@/lib/me-v3/runtime/domain-facts";
 import type { Axis } from "@/lib/me-v3/scoring/types";
-import type {
-  Action, Gap, PackView, ResultDomain, ResultModel, TranslationView,
+import {
+  coreOf,
+  type Action, type Gap, type PackView, type ResultDomain,
+  type ResultModel, type TranslationView,
 } from "@/lib/me-v3/result/model";
 import {
   actionKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO, BASIC_GROUP_KO, bridgeKo,
@@ -178,9 +180,9 @@ const EXP_KO = {
  * 화면이 없었는데 빈 칸 셋을 띄우면, 읽는 사람은 자기가 빠뜨린 줄 안다.
  * 받은 것만 적는다: 관심과 경험과 배울 뜻.
  */
-function Basic({ d }: { d: ResultDomain }) {
+function Basic({ core, d }: { core: string; d: ResultDomain }) {
   const chain = domainChainKo(d.code);
-  const made = domainArtifacts(d.code);
+  const made = domainArtifacts(core, d.code);
   return (
     <>
       <div className="rs-why rs-why3">
@@ -261,13 +263,13 @@ function Why({ d }: { d: ResultDomain }) {
  * 않는 수인데 영역 이름 옆에서 가장 먼저 읽혔다. 상세 안으로 내렸다.
  */
 function DomainPanel(
-  { d, showAxes, gap, action, stage }: {
-    d: ResultDomain; showAxes: boolean;
+  { core, d, showAxes, gap, action, stage }: {
+    core: string; d: ResultDomain; showAxes: boolean;
     /** 이 영역에서 가장 급한 빈자리 하나 */
     gap?: Gap; action?: Action; stage?: ResultModel["stage"];
   },
 ) {
-  const name = domainName(d.code);
+  const name = domainName(core, d.code);
   const g = gap ? gapKo(gap, name) : null;
   const a = action ? actionKo(action, name, stage) : null;
   return (
@@ -297,7 +299,7 @@ function DomainPanel(
             <p>{a.do}</p>
           </div>
         ) : null}
-      </>) : <Basic d={d} />}
+      </>) : <Basic core={core} d={d} />}
       {showAxes ? (
         /* **여덟 축을 기본으로 펼치지 않는다**(규격 §14). 여덟 줄이
            기본으로 서면 그 목록이 영역 한 자리에서 가장 큰 덩이가 되고,
@@ -378,8 +380,8 @@ function Strongest({ d }: { d: ResultDomain }) {
  * 자기 답인지 구별되지 않는다. 위에 문장, 아래에 그 사람의 글자다.
  */
 function EvidenceRow(
-  { domain, axis, state, picks, own }: {
-    domain: string; axis: Axis;
+  { core, domain, axis, state, picks, own }: {
+    core: string; domain: string; axis: Axis;
     state: Parameters<typeof axisStateKo>[1];
     picks: string[]; own?: boolean;
   },
@@ -387,7 +389,7 @@ function EvidenceRow(
   return (
     <div className="row">
       <p className="judge">
-        <b>{domainName(domain)}</b>
+        <b>{domainName(core, domain)}</b>
         {" — "}{axisStateKo(axis, state)}
       </p>
       <div className="keys">
@@ -403,8 +405,8 @@ function EvidenceRow(
 }
 
 function Plan(
-  { actions, stage, attemptId, saved }: {
-    actions: Action[]; stage: ResultModel["stage"];
+  { core, actions, stage, attemptId, saved }: {
+    core: string; actions: Action[]; stage: ResultModel["stage"];
     /** 파일럿 참가자일 때만 담아두기 단추가 선다 */
     attemptId: string; saved: string[] | null;
   },
@@ -424,12 +426,12 @@ function Plan(
                  처음 나올 때 한 번만 적고 그다음부터는 줄인다 */
               let last = "";
               return list.map((a) => {
-                const t = actionKo(a, a.domain ? domainName(a.domain) : "", stage);
+                const t = actionKo(a, a.domain ? domainName(core, a.domain) : "", stage);
                 const note = t.note && t.note !== last ? t.note : "";
                 if (t.note) last = t.note;
                 return (
                   <li key={a.id} data-action-id={a.id}>
-                    <span>{a.domain ? domainName(a.domain) : "전체"}</span>
+                    <span>{a.domain ? domainName(core, a.domain) : "전체"}</span>
                     <div className="rs-doit">
                       <b>{t.do}</b>
                       {note ? <i>{note}</i> : null}
@@ -561,6 +563,11 @@ export default async function V3Result({
   await mark("result_opened", user.id, { tier: m.tier });
 
   const model: ResultModel = m;
+  /* **어느 전공의 사전을 읽을지는 굳은 결과가 들고 있다.** 결과지는 그때
+     낸 값을 그리는 자리라 지금 그 사람의 core 가 아니라 **그 결과의
+     core** 를 읽어야 한다. 전공을 바꿔 다시 응시한 사람의 옛 결과지가
+     새 전공 이름으로 그려지면 그 종이는 거짓이 된다 */
+  const core = coreOf(model);
   const h = headlineKo(model);
   const focus = model.domains.filter((d) => model.overview.focus.includes(d.code));
   const compare = model.domains.filter((d) => model.overview.compare.includes(d.code));
@@ -588,10 +595,10 @@ export default async function V3Result({
   const stage = model.stage;
   const counts = model.overview.counts;
   const industryName = (c: string) =>
-    industryChoices().find((x) => x.code === c)?.name ?? c;
-  const roleName = (c: string) => roleChoices().find((x) => x.code === c)?.name ?? c;
-  const say = (x: Action) => actionKo(x, x.domain ? domainName(x.domain) : "", stage).do;
-  const gapTile = (g: Gap) => gapShortKo(g, domainName(g.domain));
+    industryChoices(core).find((x) => x.code === c)?.name ?? c;
+  const roleName = (c: string) => roleChoices(core).find((x) => x.code === c)?.name ?? c;
+  const say = (x: Action) => actionKo(x, x.domain ? domainName(core, x.domain) : "", stage).do;
+  const gapTile = (g: Gap) => gapShortKo(g, domainName(core, g.domain));
 
   /**
    * 첫 화면 세 번째 칸.
@@ -627,7 +634,7 @@ export default async function V3Result({
     ? `${packLackName} 쪽에서 비어 있는 것` : "아직 비어 있는 것";
   const lackText = packLack && packLack.requested.length
     ? packLack.requested.slice(0, 2)
-      .map((r) => `${domainName(r.domain)} · ${AXIS_KO[r.axis]}`).join(" · ")
+      .map((r) => `${domainName(core, r.domain)} · ${AXIS_KO[r.axis]}`).join(" · ")
     : topGap ? gapTile(topGap) : "";
 
   /**
@@ -650,7 +657,7 @@ export default async function V3Result({
   const linkReady = [
     ...(model.industry_context?.established ?? []),
     ...(model.role_context?.established ?? []),
-  ].map((e) => domainName(e.domain));
+  ].map((e) => domainName(core, e.domain));
   const linkText = linkNames.length
     ? (linkReady.length
       ? `${[...new Set(linkReady)].slice(0, 2).join(" · ")}에서 이어집니다`
@@ -667,7 +674,7 @@ export default async function V3Result({
   /* 영역에 걸치지 않는 판단. **열두 영역에 넣지 않는다**: 기술영역을 묻지
      않은 자리라 영역별 판정과 섞이면 안 된다 */
   const cm = commonKo(model.common);
-  const orgName = (c: string) => orgChoices().find((x) => x.code === c)?.name ?? c;
+  const orgName = (c: string) => orgChoices(core).find((x) => x.code === c)?.name ?? c;
   const orgKinds = [...new Set(model.targets.orgs
     .flatMap((oc) => orgTypesFor(oc).map((o) => o.label)))];
   const goal = model.targets.goal;
@@ -726,7 +733,7 @@ export default async function V3Result({
           <div>
             <h3>지금 확인된 것</h3>
             {focus.length ? (<>
-              <p>{focus.map((d) => domainName(d.code)).join(" · ")}</p>
+              <p>{focus.map((d) => domainName(core, d.code)).join(" · ")}</p>
               {deep ? (
                 <p style={{ fontWeight: 400 }}>
                   {(focus[0].decided.length ? focus[0].decided : focus[0].did)
@@ -831,7 +838,7 @@ export default async function V3Result({
               : "지금 응답만으로는 어느 영역이 앞선다고 보기 어렵습니다. 아래 전체 영역을 보시고 한 가지부터 해보세요."}
           </p>
           {focus.map((d) => (
-            <DomainPanel key={d.code} d={d} showAxes={deep}
+            <DomainPanel key={d.code} core={core} d={d} showAxes={deep}
               gap={gapFor(d.code)} action={actionFor(d.code)} stage={model.stage} />
           ))}
           {compare.length ? (
@@ -841,7 +848,7 @@ export default async function V3Result({
                 먼저 볼 영역과 같은 상태이거나 바로 다음입니다. 차례를 매기지 않았습니다.
               </p>
               {compare.map((d) => (
-                <DomainPanel key={d.code} d={d} showAxes={deep}
+                <DomainPanel key={d.code} core={core} d={d} showAxes={deep}
                   gap={gapFor(d.code)} action={actionFor(d.code)} stage={model.stage} />
               ))}
             </>
@@ -871,7 +878,7 @@ export default async function V3Result({
               <section key={z}>
                 <h3>{ZONE_TITLE_KO[z]}</h3>
                 <p>{ZONE_LEAD_KO[z]}</p>
-                <ul>{list.map((c) => <li key={c}>{domainName(c)}</li>)}</ul>
+                <ul>{list.map((c) => <li key={c}>{domainName(core, c)}</li>)}</ul>
               </section>
             )) : BASIC_GROUPS.filter((k) => (bg?.[k].length ?? 0) > 0).map((k) => (
               <section key={k}>
@@ -885,13 +892,13 @@ export default async function V3Result({
                   <ul className="rs-rows">
                     {bg![k].map((c) => (
                       <li key={c}>
-                        <b>{domainName(c)}</b>
+                        <b>{domainName(core, c)}</b>
                         <span>{domainChainKo(c).join(" → ")}</span>
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <ul>{bg![k].map((c) => <li key={c}>{domainName(c)}</li>)}</ul>
+                  <ul>{bg![k].map((c) => <li key={c}>{domainName(core, c)}</li>)}</ul>
                 )}
               </section>
             ))}
@@ -909,7 +916,7 @@ export default async function V3Result({
               <section>
                 <h3>{ZONE_TITLE_KO.NOT_EXPLORED}</h3>
                 <p>이번 응시에서 묻지 않은 영역입니다. 경험이 없다는 뜻이 아닙니다.</p>
-                <ul>{model.overview.not_explored.map((c) => <li key={c}>{domainName(c)}</li>)}</ul>
+                <ul>{model.overview.not_explored.map((c) => <li key={c}>{domainName(core, c)}</li>)}</ul>
               </section>
             ) : null}
           </div>
@@ -920,7 +927,7 @@ export default async function V3Result({
           {model.overview.tied_pick.length ? (
             <p className="rs-zempty">
               {`영역 훑기에서 같은 값으로 답하신 둘을 놓고 ${model.overview.tied_pick
-                .map((c) => domainName(c)).join(" · ")} 쪽을 고르셨습니다. `}
+                .map((c) => domainName(core, c)).join(" · ")} 쪽을 고르셨습니다. `}
               위의 묶음은 그 선택과 상관없이 응답에서 나온 것입니다.
             </p>
           ) : null}
@@ -1000,7 +1007,7 @@ export default async function V3Result({
                 <ul className="rs-first">
                   {model.evidence.ready.slice(0, 3).map((e) => (
                     <li key={`${e.domain}.${e.axis}`}>
-                      <b>{domainName(e.domain)}</b>
+                      <b>{domainName(core, e.domain)}</b>
                       {axisStateKo(e.axis, e.state)}
                     </li>
                   ))}
@@ -1019,7 +1026,7 @@ export default async function V3Result({
                 <p>직접 정한 것으로 확인됐고, 고르신 근거가 함께 있는 자리입니다.</p>
                 {model.evidence.ready.length ? (<>
                   {model.evidence.ready.slice(0, 6).map((e) => (
-                    <EvidenceRow key={`${e.domain}.${e.axis}`} domain={e.domain}
+                    <EvidenceRow key={`${e.domain}.${e.axis}`} core={core} domain={e.domain}
                       axis={e.axis} state={e.state} picks={e.picks} own />
                   ))}
                   {model.evidence.ready.length > 6 ? (
@@ -1035,7 +1042,7 @@ export default async function V3Result({
                 <p>해 본 것은 확인됐고, 어디까지 직접 정했는지가 덜 적힌 자리입니다.</p>
                 {model.evidence.partial.length ? (<>
                   {model.evidence.partial.slice(0, 6).map((e) => (
-                    <EvidenceRow key={`${e.domain}.${e.axis}`} domain={e.domain}
+                    <EvidenceRow key={`${e.domain}.${e.axis}`} core={core} domain={e.domain}
                       axis={e.axis} state={e.state} picks={e.picks} />
                   ))}
                   {model.evidence.partial.length > 6 ? (
@@ -1062,7 +1069,7 @@ export default async function V3Result({
                 : "완전히 비어 있는 축은 없습니다. 남은 일은 확인된 경험을 설명 문장으로 만드는 쪽입니다."}
             </p>
             {model.gaps.slice(0, 8).map((g) => {
-              const k = gapKo(g, domainName(g.domain));
+              const k = gapKo(g, domainName(core, g.domain));
               const act = model.actions.find((x) => x.id === g.action_id);
               return (
                 <article className="rs-gap" key={g.id}>
@@ -1094,7 +1101,7 @@ export default async function V3Result({
                 문장으로 서지 않았다 */}
             <p className="rs-bridge">
               {bridgeKo(model.industry_context,
-                industryName(model.industry_context.code), domainName,
+                industryName(model.industry_context.code), (td: string) => domainName(core, td),
                 model.actions.find((a) => model.industry_context?.requested
                   .some((r) => r.domain === a.domain)) ?? model.actions[0] ?? null,
                 model.stage).join(" ")}
@@ -1105,7 +1112,7 @@ export default async function V3Result({
             </p>
             <PackBody v={model.industry_context}
               name={industryName(model.industry_context.code)}
-              domainName={domainName} say={say}
+              domainName={(td: string) => domainName(core, td)} say={say}
               action={model.actions.find((a) => model.industry_context?.requested
                 .some((r) => r.domain === a.domain)) ?? model.actions[0] ?? null} />
             {model.industry_context.others.length ? (
@@ -1122,7 +1129,7 @@ export default async function V3Result({
             <h2>{roleName(model.role_context.code)} 직무에 연결하면</h2>
             <p className="rs-bridge">
               {bridgeKo(model.role_context, roleName(model.role_context.code),
-                domainName,
+                (td: string) => domainName(core, td),
                 model.actions.find((a) => model.role_context?.requested
                   .some((r) => r.domain === a.domain)) ?? model.actions[0] ?? null,
                 model.stage).join(" ")}
@@ -1137,7 +1144,7 @@ export default async function V3Result({
             </p>
             <PackBody v={model.role_context}
               name={roleName(model.role_context.code)}
-              domainName={domainName} say={say}
+              domainName={(td: string) => domainName(core, td)} say={say}
               action={model.actions.find((a) => model.role_context?.requested
                 .some((r) => r.domain === a.domain)) ?? model.actions[0] ?? null} />
             {model.role_context.compare_with.length ? (
@@ -1158,7 +1165,7 @@ export default async function V3Result({
             <p className="rs-note">
               그 영역에서 실제로 할 수 있는 한 걸음으로 적었습니다.
             </p>
-            <Plan actions={model.actions} stage={model.stage}
+            <Plan core={core} actions={model.actions} stage={model.stage}
               attemptId={attemptId} saved={saved} />
           </>) : (
             /* **머리글만 세워 두지 않는다.** 할 일이 없는 응시에서 약속하는

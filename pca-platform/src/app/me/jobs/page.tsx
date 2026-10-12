@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
-import { latestResult, postingCount, savedJobCount } from "@/lib/me-v3/platform";
+import { latestResult, postingCount, savedJobCount, activeCore } from "@/lib/me-v3/platform";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import { CmShell, CmHead } from "../shell";
 
@@ -19,6 +19,8 @@ export const metadata = { title: "공고 · 내 CareerMatri" };
  */
 export default async function Jobs() {
   const user = await requireUser();
+  /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
+  const core = await activeCore(user.id);
   const [postings, saved, result] = await Promise.all([
     postingCount(), savedJobCount(user.id), latestResult(user.id),
   ]);
@@ -96,7 +98,7 @@ export default async function Jobs() {
               <h2>이미 설명할 수 있는 근거</h2>
               <div className="cm-chips">
                 {[...new Set(ready.map((g) => g.domain))].slice(0, 6).map((d) => (
-                  <span className="cm-chip is-on" key={d}>{domainName(d)}</span>
+                  <span className="cm-chip is-on" key={d}>{domainName(core, d)}</span>
                 ))}
               </div>
             </div>
@@ -104,7 +106,7 @@ export default async function Jobs() {
               <h2>아직 없는 근거</h2>
               <div className="cm-chips">
                 {gaps.map((g) => (
-                  <span className="cm-chip is-gap" key={g.id}>{domainName(g.domain)}</span>
+                  <span className="cm-chip is-gap" key={g.id}>{domainName(core, g.domain)}</span>
                 ))}
               </div>
             </div>

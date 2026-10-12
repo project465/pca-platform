@@ -95,7 +95,7 @@ export async function picksAction3(
 ): Promise<{ ok: boolean }> {
   const at = await mine(attemptId);
   if (!at) return { ok: false };
-  try { await savePicks3(attemptId, kind, codes); } catch { return { ok: false }; }
+  try { await savePicks3(at.core_code, attemptId, kind, codes); } catch { return { ok: false }; }
   return { ok: true };
 }
 

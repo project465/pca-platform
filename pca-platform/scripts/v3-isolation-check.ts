@@ -42,9 +42,15 @@ import {
 } from "../src/lib/me-v3/runtime/session";
 import type { Answer, Tier } from "../src/lib/me-v3/scoring/types";
 
+import { sellableCores } from "../src/lib/me-v3/core-registry";
+
+/** 검사도 core 를 글자로 박지 않는다. 등록부가 지금 열어 둔 것을 쓴다 */
+const CORE = sellableCores("KR")[0].code;
+
 const B = (process.env.UI_BASE || process.env.BASE
   || "http://127.0.0.1:3000").replace(/\/$/, "");
 const GATE = process.env.STAGING_BASIC_AUTH || "";
+
 
 let fail = 0, pass = 0;
 const rows: { what: string; a: string; b: string; verdict: string }[] = [];
@@ -94,7 +100,7 @@ async function makeUser(tag: string): Promise<Who> {
 /* ── 응시 한 벌 ──────────────────────────────────────────────────── */
 
 const strong = (id: string): Answer | null => {
-  const it = content().bank.items.find((x) => x.item_id === id);
+  const it = content(CORE).bank.items.find((x) => x.item_id === id);
   if (!it) return null;
   if (it.response_scale === "L0~L3") return { kind: "level", index: 3 };
   if (it.response_scale === "5점") return { kind: "scale5", value: 5 };
@@ -108,7 +114,7 @@ async function playThrough(userId: string, tier: Tier): Promise<V3Attempt> {
   await query(`DELETE FROM v3_attempts WHERE user_id = $1`, [userId]);
   const a0 = await openAttempt({
     userId, tier, stage: "bachelor", gradField: null });
-  for (const d of content().domains.domains) {
+  for (const d of content(CORE).domains.domains) {
     await saveAnswer(a0.id, `G_${d.code}_INT`, { kind: "scale5", value: 5 });
     await saveAnswer(a0.id, `G_${d.code}_EXP`, { kind: "exposure", value: 2 });
     await saveAnswer(a0.id, `G_${d.code}_LEA`, { kind: "scale5", value: 5 });
@@ -124,12 +130,12 @@ async function playThrough(userId: string, tier: Tier): Promise<V3Attempt> {
       if (ans) await saveAnswer(a.id, id, ans);
     }
     if (v.screen.kind === "checklist" && v.screen.domain) {
-      for (const g of checklistFor(v.screen.domain)) {
+      for (const g of checklistFor(CORE, v.screen.domain)) {
         await savePicks(a.id, v.screen.domain, g.slot, g.items.slice(0, 2));
       }
     }
-    if (v.screen.kind === "pick-industry") await choosePack(a.id, "industry", "INDUSTRY_MOBILITY_V2");
-    if (v.screen.kind === "pick-role") await choosePack(a.id, "role", "ROLE_CAE_V2");
+    if (v.screen.kind === "pick-industry") await choosePack(CORE, a.id, "industry", "INDUSTRY_MOBILITY_V2");
+    if (v.screen.kind === "pick-role") await choosePack(CORE, a.id, "role", "ROLE_CAE_V2");
     if (!v.nextId) { await moveTo(a.id, v.screen.id); break; }
     await moveTo(a.id, v.nextId);
     want = v.nextId;
@@ -225,7 +231,7 @@ async function main(): Promise<void> {
 
   /* A 쪽에만 경험을 적고 다시 계산한다. B 의 화면에 그 제목이 보이면 실패다 */
   const title = `격리 점검 경험 ${randomBytes(4).toString("hex")}`;
-  const doms = content().domains.domains;
+  const doms = content(CORE).domains.domains;
   const td = doms[0].code;
   const aExp = await addExperience(A.id, {
     kind: "capstone", title, td_codes: [td],

@@ -7,6 +7,7 @@ import {
   catalogFor, priceState, sellable, type CatalogItem,
 } from "@/lib/catalog";
 import { money, resolveMarket } from "@/lib/market";
+import { sellableCores } from "@/lib/me-v3/core-registry";
 import { openGrants } from "@/lib/me-v2/attempt";
 import { resumePathFor } from "@/lib/engine-entry";
 import { BRAND, toLang2, txer } from "@/lib/surface-text";
@@ -65,8 +66,12 @@ export default async function PricingPage({
   const mk = await resolveMarket(sp.market);
   const list = await catalogFor(mk.market);
   /* 걸리는 시간은 **실제 계획을 세워 센 값**이다. 시작 화면과 같은
-     함수를 읽으므로 두 화면이 갈리지 않는다 */
-  const mins = tierMinutes();
+     함수를 읽으므로 두 화면이 갈리지 않는다.
+     **어느 전공으로 세는지를 글자로 박지 않는다**: 이 시장에서 지금
+     응시할 수 있는 core 를 등록부에 묻는다. 전공이 둘 이상 열리는 날
+     등급마다 시간이 갈리므로 그때는 전공을 고른 뒤에 적어야 한다 */
+  const open = sellableCores(mk.market);
+  const mins = open.length === 1 ? tierMinutes(open[0].code) : null;
 
   /* 이미 산 사람에게 또 팔지 않는다. 쓰지 않은 이용권이 있으면 그리로 보낸다 */
   const user = await currentUser();
@@ -163,7 +168,10 @@ export default async function PricingPage({
           <div className="pxtiers">
             {list.map((p) => (
               <TierCard key={p.code} p={p} lang={L} T={T}
-                mins={minutesLabel(mins[p.tier], L)} />
+                /* 전공이 둘 이상 열리면 등급마다 시간이 갈린다.
+                   그때는 **적지 않는다**: 한 전공의 시간을 모두의 시간으로
+                   적으면 다른 전공 학생이 그 수를 보고 시간을 비워 둔다 */
+                mins={mins ? minutesLabel(mins[p.tier], L) : ""} />
             ))}
           </div>
         ) : (

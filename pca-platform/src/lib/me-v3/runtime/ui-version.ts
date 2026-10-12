@@ -29,7 +29,7 @@
  */
 
 /** 화면 구조와 상호작용. 흐름이나 화면이 바뀌면 올린다 */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V16";
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V17";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
 export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.13";
@@ -291,4 +291,18 @@ export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.13";
  * 바뀐 것은 `src/app/v3/assessment.css` 의 그 한 줄이고 문항 은행과 판단
  * 규칙과 화면에 서는 글자는 그대로다. `ASSESSMENT_COPY_VERSION` 도 올리지
  * 않는다.
+ */
+
+/*
+ * `V17` 로 올린 까닭. **전공을 글자로 박던 자리를 걷었다.**
+ *
+ * 이 화면들이 영역 이름과 보기와 산업·직무 목록을 읽을 때, 전에는
+ * `ME_CORE_V3` 한 줄을 읽는 함수를 불렀다. 그래서 **전공을 더하는 일이
+ * 코드를 고치는 일**이었고, 다른 전공으로 응시한 사람이 기계공학 사전을
+ * 읽을 길이 열려 있었다. 이제 어느 전공인지는 응시(`core_code`)와 굳은
+ * 결과(`coreOf()`)와 그 사람의 자료(`activeCore()`)가 정한다.
+ *
+ * **화면에 서는 글자는 한 줄도 바뀌지 않았다.** 기계공학으로 응시하면
+ * 전과 같은 이름과 같은 보기가 같은 자리에 선다. 문장 판본을 올리지 않는
+ * 것이 그 까닭이고, 사람 열두 벌의 Core 판정이 기준선과 글자까지 같다.
  */

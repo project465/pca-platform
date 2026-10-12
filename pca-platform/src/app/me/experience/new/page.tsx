@@ -1,5 +1,5 @@
 import { requireUser } from "@/lib/session";
-import { EXPERIENCE_KINDS } from "@/lib/me-v3/platform";
+import { EXPERIENCE_KINDS, activeCore } from "@/lib/me-v3/platform";
 import { content, domainName } from "@/lib/me-v3/runtime/session";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { CmShell, CmHead } from "../../shell";
@@ -44,11 +44,13 @@ export default async function NewExperience(
   { searchParams }: { searchParams: Promise<{ e?: string }> },
 ) {
   const user = await requireUser();
+  /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
+  const core = await activeCore(user.id);
   const e = (await searchParams).e ?? "";
   /* **적기 시작한 사람과 저장한 사람을 가른다.** 둘이 크게 벌어지면
      고칠 자리는 결과가 아니라 이 화면이다 */
   await mark("experience_add_started", user.id);
-  const c = content();
+  const c = content(core);
   const domains = c.domains.domains;
   const lists = c.checklists.domains as Record<string, Record<string, { text: string }[]>>;
   const pick = (td: string, ax: string, n: number) =>
@@ -96,7 +98,7 @@ export default async function NewExperience(
       <form className="cm-compose" action={saveExperience}>
         <Steps
           domains={domains.map((d) => ({
-            code: d.code, name: domainName(d.code),
+            code: d.code, name: domainName(core, d.code),
             /* 문제와 판단은 **그 영역의 체크리스트에서** 온다. 지어낸
                보기를 두면 고르는 사람이 자기 일과 다른 말을 고른다 */
             problems: pick(d.code, "J1", 6),

@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import {
-  EXPERIENCE_KINDS, experiencesOf, reflectedExperiences,
-} from "@/lib/me-v3/platform";
+  EXPERIENCE_KINDS, experiencesOf, reflectedExperiences, activeCore } from "@/lib/me-v3/platform";
 import { recomputeStatus } from "@/lib/me-v3/recompute";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import { CmShell, CmHead } from "../shell";
@@ -28,6 +27,8 @@ const KIND = new Map(EXPERIENCE_KINDS.map((k) => [k.code as string, k.label]));
  */
 export default async function Experiences() {
   const user = await requireUser();
+  /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
+  const core = await activeCore(user.id);
   const [rows, st, done] = await Promise.all([
     experiencesOf(user.id), recomputeStatus(user.id), reflectedExperiences(user.id),
   ]);
@@ -82,7 +83,7 @@ export default async function Experiences() {
             {rows.map((e) => {
               /* 날짜는 **겪은 때**가 먼저다. 안 적으셨으면 적어 둔 날이다 */
               const at = e.started_on ?? e.created_at.slice(0, 10);
-              const tds = e.td_codes.map((c) => domainName(c));
+              const tds = e.td_codes.map((c) => domainName(core, c));
               const picks: [string, string[]][] = [
                 ["문제로 잡은 것", e.problems ?? []],
                 ["직접 정한 것", e.decisions],

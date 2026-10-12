@@ -3,31 +3,31 @@
  "note": "Core 화면 열넷의 묶음 동결. 측정 동결과 별개다. layout 대변경은 별도 STOP GATE 이고, 고쳤으면 그 화면의 판본을 올리고 세 동결을 다시 적은 다음 `CORE_UI_FREEZE=write npm run v3:freeze:core`",
  "label": "CAREERMATRI_CORE_UI_FREEZE_1",
  "locks": {
-  "assessment": "53424d18f5c8d456",
-  "result": "296b34f91d29aa99",
-  "workspace": "ba8c72958b4d51cf"
+  "assessment": "d144d48f5c74e4ed",
+  "result": "22295fa346f222ec",
+  "workspace": "22ab6ee9daa2683f"
  },
  "versions": {
-  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V16",
+  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V17",
   "assessment_copy_version": "me-v3-2-assessment-copy.13",
-  "result_ui_version": "ME_V3_RESULT_UI_V19",
+  "result_ui_version": "ME_V3_RESULT_UI_V20",
   "result_copy_version": "me-v3-result-copy.16",
-  "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V21",
+  "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V22",
   "workspace_copy_version": "careermatri-workspace-copy.15"
  },
  "screens": {
-  "Home": "workspace:51d628abdfe17765",
-  "Assessment Intro": "assessment:bf4f56fb17c3871b",
-  "Assessment": "assessment:69186a6c743176d1",
+  "Home": "workspace:76d4676eb23891b2",
+  "Assessment Intro": "assessment:f1dd10ef842ca356",
+  "Assessment": "assessment:a464aea0e72c8472",
   "Completion Bridge": "assessment:6c39b5aae12b8c1e",
-  "Experience": "workspace:48927b89b68398ff",
-  "Current State": "workspace:dacc094d994a7f4a",
-  "Next Action": "workspace:5366727bc89e11d1",
-  "Result Summary": "result:4c01522ba66fe347",
-  "Result Detail": "result:4c01522ba66fe347",
-  "Explore": "workspace:0f2c51d0dda99322",
-  "Result History": "workspace:c462e87d48ee7bc1",
-  "New Experience": "workspace:48927b89b68398ff",
+  "Experience": "workspace:9c5e23fb2f290073",
+  "Current State": "workspace:826b372a220885c9",
+  "Next Action": "workspace:b7eaf278da2b0b6e",
+  "Result Summary": "result:4f30cf6a812e5a69",
+  "Result Detail": "result:4f30cf6a812e5a69",
+  "Explore": "workspace:f6656938a6fa5073",
+  "Result History": "workspace:ce7eb3f15c97eb33",
+  "New Experience": "workspace:9c5e23fb2f290073",
   "Track": "workspace:d80d48f41a0266fc",
   "App Shell": "workspace:e9dfecab7afc4454"
  }

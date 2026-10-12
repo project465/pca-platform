@@ -18,8 +18,40 @@ import { query, queryOne } from "@/lib/db";
 import type { Gap, ResultModel } from "./result/model";
 import type { Axis, AxisState, Zone } from "./scoring/types";
 import { orgTypesFor } from "./region";
+import { sellableCores } from "./core-registry";
 
-export const CORE = "ME_CORE_V3";
+/** 아직 아무것도 고르지 않은 사람을 가릴 시장. 시장을 늘리면 여기가 아니라 호출부가 정한다 */
+const DEFAULT_MARKET = "KR";
+
+/**
+ * 이 사람이 지금 쓰고 있는 Major Core.
+ *
+ * **글자로 박지 않는다.** 전에는 이 자리에 `ME_CORE_V3` 한 줄이 있었고,
+ * 작업공간의 모든 질의가 그 한 줄을 읽었다. 그래서 전공을 더하는 일이
+ * 코드를 고치는 일이었고, 다른 전공으로 응시한 사람의 경험과 할 일이
+ * **기계공학 줄로 저장될 수 있었다.**
+ *
+ * 고르는 차례가 셋이고 **전부 그 사람의 자료에서 온다.** 마지막으로 연
+ * 응시 · 지금 값에 적힌 core · 그 시장에서 지금 열려 있는 core 하나.
+ * 셋 다 답하지 못하면 **짐작하지 않고 던진다**: 짐작하면 그 사람의 기록이
+ * 남의 전공 줄에 쌓이고, 그것은 조용히 몇 달 간다.
+ *
+ * 열려 있는 core 가 둘 이상인데 이 사람이 아직 아무것도 고르지 않았으면
+ * 그것도 답할 수 없는 상태라 던진다. 그 자리에서 **고르게 해야 한다.**
+ */
+export async function activeCore(userId: string): Promise<string> {
+  const row = await queryOne<{ core: string }>(
+    `SELECT core_code AS core FROM v3_attempts
+      WHERE user_id = $1 ORDER BY id DESC LIMIT 1`, [userId]);
+  if (row?.core) return row.core;
+  const prof = await queryOne<{ core: string }>(
+    `SELECT core_code AS core FROM career_profiles
+      WHERE user_id = $1 ORDER BY recomputed_at DESC NULLS LAST LIMIT 1`, [userId]);
+  if (prof?.core) return prof.core;
+  const open = sellableCores(DEFAULT_MARKET);
+  if (open.length === 1) return open[0].code;
+  throw new Error("core 를 정할 수 없다: 응시도 지금 값도 없고 열린 core 가 하나가 아니다");
+}
 
 /* ── Workspace 가 읽는 한 자리 ─────────────────────────────────────── */
 
@@ -51,6 +83,14 @@ export type WorkspaceStage =
  * 하나를 읽는다(홈 · 지금 상태 · 다음 할 일 · 결과 기록 · 반영).
  */
 export type CurrentState = {
+  /**
+   * 이 사람이 지금 쓰고 있는 Major Core.
+   *
+   * **화면이 따로 묻지 않게 여기 담는다.** 작업공간의 쪽마다 `activeCore()`
+   * 를 다시 부르면 질의가 쪽 수만큼 늘고, 더 나쁘게는 한 쪽이 그것을
+   * 빠뜨리고 남의 전공 사전을 읽는다.
+   */
+  core: string;
   stage: WorkspaceStage;
   /** 풀던 응시. 있으면 이어하기가 첫 걸음이다 */
   open: { id: string; tier: string } | null;
@@ -78,6 +118,7 @@ type ProfileRow = {
 };
 
 export async function currentState(userId: string): Promise<CurrentState> {
+  const core = await activeCore(userId);
   const [open, snap, prof, pending] = await Promise.all([
     queryOne<{ id: string; tier: string }>(
       `SELECT id::text, tier FROM v3_attempts
@@ -91,7 +132,7 @@ export async function currentState(userId: string): Promise<CurrentState> {
     queryOne<ProfileRow>(
       `SELECT axis_levels::text AS levels, zones::text AS zones, gaps::text AS gaps,
               to_char(recomputed_at, 'YYYY-MM-DD') AS at
-         FROM career_profiles WHERE user_id = $1 AND core_code = $2`, [userId, CORE]),
+         FROM career_profiles WHERE user_id = $1 AND core_code = $2`, [userId, core]),
     pendingRecompute(userId),
   ]);
 
@@ -140,7 +181,7 @@ export async function currentState(userId: string): Promise<CurrentState> {
         : model.tier === "STANDARD" ? "STANDARD_DONE" : "BASIC_DONE";
 
   return {
-    stage, open: open ?? null, model, result_at: snap?.at ?? null,
+    core, stage, open: open ?? null, model, result_at: snap?.at ?? null,
     recomputed_at: prof?.at ?? null, zoneOf, raised, gaps, zoneMoved, pending,
   };
 }
@@ -188,7 +229,7 @@ export async function experiencesOf(userId: string): Promise<Experience[]> {
        FROM v3_experiences
       WHERE user_id = $1 AND core_code = $2
       ORDER BY created_at DESC`,
-    [userId, CORE]);
+    [userId, await activeCore(userId)]);
 }
 
 /**
@@ -232,7 +273,7 @@ export async function addExperience(userId: string, e: {
      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14::text,
              CASE WHEN $14::text IS NULL THEN NULL ELSE current_date + 365 END)
      RETURNING id::text`,
-    [userId, CORE, e.kind, e.title.slice(0, 120),
+    [userId, await activeCore(userId), e.kind, e.title.slice(0, 120),
      asDate(e.started_on), asDate(e.ended_on),
      e.td_codes ?? [], e.axis_codes ?? [],
      e.problems ?? [], e.decisions ?? [], e.artifacts ?? [], e.verifications ?? [],
@@ -269,7 +310,7 @@ export async function enqueue(
     `INSERT INTO career_events (user_id, core_code, kind, payload, dedupe_key)
      VALUES ($1,$2,$3,$4,$5)
      ON CONFLICT (dedupe_key) WHERE dedupe_key IS NOT NULL DO NOTHING`,
-    [userId, CORE, kind, JSON.stringify(payload), key.slice(0, 300)]);
+    [userId, await activeCore(userId), kind, JSON.stringify(payload), key.slice(0, 300)]);
 }
 
 /**
@@ -289,7 +330,7 @@ export async function reflectedExperiences(userId: string): Promise<Set<string>>
     `SELECT DISTINCT payload ->> 'experience_id' AS id
        FROM career_events
       WHERE user_id = $1 AND core_code = $2 AND status = 'done'`,
-    [userId, CORE]);
+    [userId, await activeCore(userId)]);
   return new Set(rows.map((r) => r.id).filter((x): x is string => !!x));
 }
 
@@ -319,7 +360,7 @@ export async function profileOf(userId: string): Promise<Profile | null> {
     `SELECT target_industry, target_role, target_org, target_org_context,
             home_region, move_range, recomputed_at::text
        FROM career_profiles WHERE user_id=$1 AND core_code=$2`,
-    [userId, CORE])) ?? null;
+    [userId, await activeCore(userId)])) ?? null;
 }
 
 /**
@@ -352,7 +393,7 @@ export async function syncProfile(userId: string, from: {
              WHEN career_profiles.target_org = '{}' THEN EXCLUDED.target_org
              ELSE career_profiles.target_org END,
            recomputed_at      = now()`,
-    [userId, CORE, from.attemptId, from.industry, from.role, from.org, seed]);
+    [userId, await activeCore(userId), from.attemptId, from.industry, from.role, from.org, seed]);
 }
 
 /** 희망 지역과 이동 범위. **Core 판정에 들어가지 않는다** */
@@ -368,7 +409,7 @@ export async function saveRegion(
        SET home_region = EXCLUDED.home_region,
            move_range  = EXCLUDED.move_range,
            target_org  = EXCLUDED.target_org`,
-    [userId, CORE, region, move, orgs.slice(0, 3)]);
+    [userId, await activeCore(userId), region, move, orgs.slice(0, 3)]);
   await enqueue(userId, "region.changed", { region, move, orgs });
 }
 
@@ -382,7 +423,7 @@ export async function saveTargets(
      ON CONFLICT (user_id, core_code) DO UPDATE
        SET target_industry = EXCLUDED.target_industry,
            target_role     = EXCLUDED.target_role`,
-    [userId, CORE, industry.slice(0, 2), role.slice(0, 2)]);
+    [userId, await activeCore(userId), industry.slice(0, 2), role.slice(0, 2)]);
   await enqueue(userId, "target.changed", { industry, role });
 }
 
@@ -399,7 +440,7 @@ export async function actionsOf(userId: string): Promise<ActionRow[]> {
        FROM v3_actions
       WHERE user_id=$1 AND core_code=$2 AND state <> 'dropped'
       ORDER BY (state='done'), horizon, id`,
-    [userId, CORE]);
+    [userId, await activeCore(userId)]);
 }
 
 /**
@@ -412,7 +453,7 @@ export async function actionsOf(userId: string): Promise<ActionRow[]> {
 export async function droppedActionCount(userId: string): Promise<number> {
   const r = await queryOne<{ n: string }>(
     `SELECT count(*)::text AS n FROM v3_actions
-      WHERE user_id=$1 AND core_code=$2 AND state = 'dropped'`, [userId, CORE]);
+      WHERE user_id=$1 AND core_code=$2 AND state = 'dropped'`, [userId, await activeCore(userId)]);
   return Number(r?.n ?? 0);
 }
 
@@ -445,7 +486,7 @@ export async function importActions(
            WHERE user_id=$1 AND core_code=$2 AND body=$5
              AND coalesce(td_code,'')=coalesce($3,''))
        RETURNING id::text`,
-      [userId, CORE, r.td, r.axis, r.body.slice(0, 400), r.horizon]);
+      [userId, await activeCore(userId), r.td, r.axis, r.body.slice(0, 400), r.horizon]);
     if (got) n += 1;
   }
   return n;
@@ -489,7 +530,7 @@ export async function applicationsOf(userId: string): Promise<Application[]> {
        FROM v3_applications
       WHERE user_id=$1 AND core_code=$2
       ORDER BY coalesce(applied_on, created_at::date) DESC, id DESC`,
-    [userId, CORE]);
+    [userId, await activeCore(userId)]);
 }
 
 export async function addApplication(userId: string, a: {
@@ -504,7 +545,7 @@ export async function addApplication(userId: string, a: {
      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,
              CASE WHEN $3 IS NULL AND $10 IS NULL THEN NULL
                   ELSE current_date + 365 END)`,
-    [userId, CORE, (a.org_name ?? "").trim().slice(0, 120) || null,
+    [userId, await activeCore(userId), (a.org_name ?? "").trim().slice(0, 120) || null,
      a.role_code || null, a.industry_code || null,
      a.region_code || null, a.org_type_code || null,
      a.applied_on || null, a.state ?? "applied",
@@ -585,7 +626,7 @@ export async function recentOf(userId: string): Promise<Recent> {
     [userId]);
   const p = await queryOne<{ at: string | null }>(
     `SELECT recomputed_at::text AS at FROM career_profiles
-      WHERE user_id=$1 AND core_code=$2`, [userId, CORE]);
+      WHERE user_id=$1 AND core_code=$2`, [userId, await activeCore(userId)]);
   return {
     last_attempt_at: a?.started_at ?? null,
     last_submitted_at: a?.submitted_at ?? null,
@@ -638,7 +679,7 @@ export async function resultHistory(userId: string): Promise<ResultHistoryRow[]>
       ORDER BY s.created_at DESC, s.id DESC LIMIT 10`, [userId]);
   const now = await queryOne<{ at: string | null }>(
     `SELECT to_char(recomputed_at, 'YYYY-MM-DD') AS at FROM career_profiles
-      WHERE user_id = $1 AND core_code = $2`, [userId, CORE]);
+      WHERE user_id = $1 AND core_code = $2`, [userId, await activeCore(userId)]);
   const rows: ResultHistoryRow[] = snaps.map((r) => ({
     kind: "SNAPSHOT" as const, attempt_id: r.attempt_id, tier: r.tier,
     at: r.at, confirmed: r.confirmed, domains: r.domains,

@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { BrandMark } from "@/components/sf/brand-mark";
 import { requireUser } from "@/lib/session";
 import { currentAttempt, estimate, v3Grants } from "@/lib/me-v3/runtime/session";
+import { sellableCores } from "@/lib/me-v3/core-registry";
 import type { Tier } from "@/lib/me-v3/scoring/types";
 import { TIER_WHAT } from "../tier-text";
 import StartForm from "./start-form";
@@ -28,14 +29,20 @@ export default async function V3Start({
 
   const grants = await v3Grants(user.id);
   const tier: Tier = grants[0]?.tier ?? "BASIC";
+  /* **어느 전공을 시작하는가.** 이용권이 가리키는 core 를 읽고, 아직
+     아무것도 고르지 않았으면 그 시장에서 열려 있는 core 를 묻는다.
+     기본값으로 한 전공을 박아 두면 다른 전공 학생이 **남의 전공 시간**
+     을 보고 앉는다 */
+  const core = sellableCores("KR")[0]?.code ?? null;
+  if (!core) redirect("/cores");
   const t = TIER_WHAT[tier];
   void t.what;
   /* **가장 짧은 경우와 가장 긴 경우를 범위로 적는다.** 긴 쪽은 타계열
      대학원으로, 번역 맥락 묶음이 더 붙는 자리다. 두 값은 `estimate()` 가
      실제 계획을 세워 센 것이고 `npm run v3:length` 가 같은 함수로 같은
      값을 센다 */
-  const low = estimate("bachelor", null);
-  const high = estimate("master", "BUSINESS");
+  const low = estimate(core, "bachelor", null);
+  const high = estimate(core, "master", "BUSINESS");
   const n = (k: string) => low.responses[k] === high.responses[k]
     ? `${low.responses[k]}` : `${low.responses[k]}~${high.responses[k]}`;
 

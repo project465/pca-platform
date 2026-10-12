@@ -38,9 +38,15 @@ import {
 } from "../src/lib/me-v3/runtime/session";
 import { enterAssessment } from "./_v3-walk";
 
+import { sellableCores } from "../src/lib/me-v3/core-registry";
+
+/** 검사도 core 를 글자로 박지 않는다. 등록부가 지금 열어 둔 것을 쓴다 */
+const CORE = sellableCores("KR")[0].code;
+
 const B = (process.env.UI_BASE || process.env.BASE
   || "http://127.0.0.1:3000").replace(/\/$/, "");
 const GATE = process.env.STAGING_BASIC_AUTH || "";
+
 
 let fail = 0, pass = 0;
 function ok(n: string, good: boolean, d = ""): void {
@@ -358,7 +364,7 @@ async function main(): Promise<void> {
       `SELECT s.result_model::text AS j FROM v3_snapshots s
          JOIN v3_attempts a ON a.id = s.attempt_id
         WHERE a.user_id = $1 ORDER BY s.created_at DESC, s.id DESC LIMIT 1`, [u.id]);
-    const d0 = content().domains.domains[0];
+    const d0 = content(CORE).domains.domains[0];
     await addExperience(u.id, {
       kind: "capstone", title: "사업주 점검 경험", td_codes: [d0.code],
       problems: [], decisions: [],

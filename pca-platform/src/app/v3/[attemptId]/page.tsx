@@ -48,16 +48,16 @@ export default async function V3Screen({
   const sc = v.screen;
   /* 이 응시에서 **보기 넷을 처음 만나는 화면**인가. 뜻풀이를 거기서만 펼친다 */
   const levelScreens = v.plan.screens.filter((x) =>
-    x.items.some((id) => itemOf(id)?.response_scale === "L0~L3"));
+    x.items.some((id) => itemOf(a0.core_code, id)?.response_scale === "L0~L3"));
   const firstLevel = levelScreens.length > 0 && levelScreens[0].id === sc.id;
 
   /* 한 화면에 보기 넷짜리 문항이 둘이면 **뜻풀이는 한 번만 붙인다.**
      접힌 줄이라도 같은 요약(`보기가 어떻게 갈리나요`)이 한 화면에 두 번
      서면 그것이 문항 사이의 구분선처럼 읽힌다 */
-  const firstLevelItem = sc.items.find((id) => itemOf(id)?.response_scale === "L0~L3");
+  const firstLevelItem = sc.items.find((id) => itemOf(a0.core_code, id)?.response_scale === "L0~L3");
 
   const fieldOf = async (id: string, label?: string): Promise<Field | null> => {
-    const it = itemOf(id);
+    const it = itemOf(a0.core_code, id);
     if (!it) return null;
     const ctx = await menuContextOf(v.attempt);
     const control = controlOf(it, ctx);
@@ -90,7 +90,7 @@ export default async function V3Screen({
 
   const fields: Field[] = [];
   for (const id of sc.items) {
-    const it = itemOf(id);
+    const it = itemOf(a0.core_code, id);
     /* 훑는 화면은 영역 이름이 줄이 된다. 문항 문면은 어미까지 붙어 길고,
        열두 줄을 그대로 세우면 같은 어미가 열두 번 되풀이된다.
        **한 화면에 문항이 둘 이상이면 문면이 줄이 된다.** 전에는 훑는
@@ -100,7 +100,7 @@ export default async function V3Screen({
        상자에는 보기 넷만 되풀이됐다. `pair` 화면이 검사의 절반이라
        응시자가 가장 오래 보는 자리가 그 상태였다 */
     const label = sc.kind === "sweep" ? (it?.grid_row ?? undefined)
-      : sc.items.length > 1 ? wordingOf(id, stage)
+      : sc.items.length > 1 ? wordingOf(a0.core_code, id, stage)
         : undefined;
     const f = await fieldOf(id, label ?? undefined);
     if (f) fields.push(f);
@@ -108,7 +108,7 @@ export default async function V3Screen({
 
   const dom = sc.domain;
   const groups: Group[] | undefined = sc.kind === "checklist" && dom
-    ? checklistFor(dom).map((g) => ({
+    ? checklistFor(a0.core_code, dom).map((g) => ({
         slot: g.slot,
         /* 묶음마다 `· 내가 정한 것` 을 되풀이하지 않는다. 그 말은 질문이
            이미 하고 있고, 열 번 되풀이되면 묶음 이름이 안 읽힌다 */
@@ -125,16 +125,16 @@ export default async function V3Screen({
   const pickKind: PickKind | undefined = sc.kind === "pick-industry" ? "industry"
     : sc.kind === "pick-role" ? "role" : sc.kind === "pick-org" ? "org" : undefined;
   const packs = pickKind === "industry"
-    ? industryChoices().map((p) => ({
+    ? industryChoices(a0.core_code).map((p) => ({
         code: p.code, name: p.name, gloss: INDUSTRY_HINT[p.code] ?? p.first,
       }))
     : pickKind === "role"
-      ? roleChoices().map((p) => ({
+      ? roleChoices(a0.core_code).map((p) => ({
           code: p.code, name: p.name,
           gloss: ROLE_HINT[p.code] ?? p.domains.slice(0, 3).join(" · "),
         }))
       : pickKind === "org"
-        ? orgChoices().map((p) => ({
+        ? orgChoices(a0.core_code).map((p) => ({
             code: p.code, name: p.name, gloss: ORG_HINT[p.code] ?? p.first,
           }))
         : undefined;
@@ -157,7 +157,7 @@ export default async function V3Screen({
     question: sc.question,
     help: sc.help,
     strip: sc.strip,
-    guide: fields.some((f) => f.control.kind === "level") ? optionGuidance() : undefined,
+    guide: fields.some((f) => f.control.kind === "level") ? optionGuidance(a0.core_code) : undefined,
     fields,
     groups,
     body: sc.body,
@@ -174,17 +174,17 @@ export default async function V3Screen({
     /* 끝낸 자리가 적는 것. 전부 **무엇을 물었고 무엇을 받았는가**이고
        판정은 한 줄도 들어가지 않는다 */
     summary: sc.kind === "done" ? {
-      explored: content().domains.domains.length,
+      explored: content(a0.core_code).domains.domains.length,
       deep: (v.attempt.opened_deep.length ? v.attempt.opened_deep : v.attempt.opened_probe)
-        .map(domainName),
+        .map((td) => domainName(a0.core_code, td)),
       evidence: Object.values(v.picks.checklists).flat().length
         + Object.values(v.picks.artifacts).flat().length
         + Object.values(v.picks.verifications).flat().length,
       industry: (v.attempt.industry_interest ?? [])
-        .map((c) => industryChoices().find((x) => x.code === c)?.name)
+        .map((c) => industryChoices(a0.core_code).find((x) => x.code === c)?.name)
         .filter(Boolean).join(" · ") || null,
       role: (v.attempt.role_interest ?? [])
-        .map((c) => roleChoices().find((x) => x.code === c)?.name)
+        .map((c) => roleChoices(a0.core_code).find((x) => x.code === c)?.name)
         .filter(Boolean).join(" · ") || null,
       /* **실제 판단을 몇 가지 받았는지.** 관심과 경험을 훑은 수와 섞지
          않는다: 그 둘이 섞인 수는 응시자에게 `설문 쉰 문항` 으로 읽힌다 */

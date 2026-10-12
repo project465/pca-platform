@@ -30,7 +30,7 @@ import { actionsOf, droppedActionCount, latestResult, type ActionRow }
   from "./platform";
 import { domainName } from "./runtime/session";
 import { actionKo } from "./result/text.ko";
-import type { ResultModel } from "./result/model";
+import { coreOf, type ResultModel } from "./result/model";
 
 /** 결과가 낸 할 일 한 줄을 화면이 읽는 모양으로 */
 const H = { NOW: 30, NEXT: 90, LATER: 365 } as const;
@@ -57,7 +57,7 @@ export async function openActions(userId: string): Promise<OpenActions> {
     source: "result",
     td_code: a.domain ?? null,
     axis_code: a.axis ?? null,
-    body: actionKo(a, a.domain ? domainName(a.domain) : "", model.stage).do,
+    body: actionKo(a, a.domain ? domainName(coreOf(model), a.domain) : "", model.stage).do,
     horizon: H[a.horizon],
     state: "open",
   }));

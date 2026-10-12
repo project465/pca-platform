@@ -31,6 +31,12 @@ import {
 } from "../src/lib/me-v3/runtime/session";
 import { pickDomains } from "../src/lib/me-v3/runtime/routing";
 
+import { sellableCores } from "../src/lib/me-v3/core-registry";
+
+/** 검사도 core 를 글자로 박지 않는다. 등록부가 지금 열어 둔 것을 쓴다 */
+const CORE = sellableCores("KR")[0].code;
+
+
 let fail = 0, pass = 0;
 function ok(n: string, good: boolean, d = ""): void {
   if (good) { pass += 1; console.log(`  통과  ${n}${d ? " — " + d : ""}`); }
@@ -57,7 +63,7 @@ async function freshAttempt(userId: string, tier: Tier, stage: V3Attempt["educat
 
 /** 격자를 채운다. 적지 않은 영역은 가운데 값 */
 async function fillGrid(a: V3Attempt, want: Record<string, [number, number, number]>) {
-  for (const d of content().domains.domains) {
+  for (const d of content(CORE).domains.domains) {
     const g = want[d.code] ?? [3, 0, 3];
     await saveAnswer(a.id, `G_${d.code}_INT`, { kind: "scale5", value: g[0] });
     await saveAnswer(a.id, `G_${d.code}_EXP`, { kind: "exposure", value: g[1] });
@@ -85,12 +91,12 @@ async function walk(a0: V3Attempt, userId: string, answer: (id: string) => Answe
     }
     if (v.screen.kind === "checklist" && v.screen.domain && picks) {
       /* 축마다 둘을 고른다. 소유는 근거 둘 이상일 때만 선다 */
-      for (const g of checklistFor(v.screen.domain)) {
+      for (const g of checklistFor(CORE, v.screen.domain)) {
         await savePicks(a.id, v.screen.domain, g.slot, g.items.slice(0, 2));
       }
     }
-    if (v.screen.kind === "pick-industry") await choosePack(a.id, "industry", "INDUSTRY_MOBILITY_V2");
-    if (v.screen.kind === "pick-role") await choosePack(a.id, "role", "ROLE_CAE_V2");
+    if (v.screen.kind === "pick-industry") await choosePack(CORE, a.id, "industry", "INDUSTRY_MOBILITY_V2");
+    if (v.screen.kind === "pick-role") await choosePack(CORE, a.id, "role", "ROLE_CAE_V2");
     if (!v.nextId) { await moveTo(a.id, v.screen.id); break; }
     await moveTo(a.id, v.nextId);
     want = v.nextId;
@@ -100,7 +106,7 @@ async function walk(a0: V3Attempt, userId: string, answer: (id: string) => Answe
 }
 
 const strong = (id: string): Answer | null => {
-  const it = content().bank.items.find((x) => x.item_id === id);
+  const it = content(CORE).bank.items.find((x) => x.item_id === id);
   if (!it) return null;
   if (it.response_scale === "L0~L3") return { kind: "level", index: 3 };
   if (it.response_scale === "5점") return { kind: "scale5", value: 5 };
@@ -110,7 +116,7 @@ const strong = (id: string): Answer | null => {
   return null;
 };
 const none = (id: string): Answer | null => {
-  const it = content().bank.items.find((x) => x.item_id === id);
+  const it = content(CORE).bank.items.find((x) => x.item_id === id);
   if (!it) return null;
   if (it.response_scale === "L0~L3") return { kind: "level", index: 0 };
   if (it.response_scale === "5점") return { kind: "scale5", value: 2 };
@@ -120,7 +126,7 @@ const none = (id: string): Answer | null => {
 
 async function main(): Promise<void> {
   const userId = await testUser();
-  const tds = content().domains.domains.map((d) => d.code);
+  const tds = content(CORE).domains.domains.map((d) => d.code);
   console.log(`  사용자 ${userId} · 영역 ${tds.length}\n`);
 
   /* 1. 선별 영역은 경험이 있는 쪽을 먼저 본다 */
@@ -271,8 +277,8 @@ async function main(): Promise<void> {
 
   /* 8. 팩을 바꿔도 Core 판정이 같다 */
   const coreBefore = stable(coreOnly(proSnap));
-  await choosePack(up.id, "industry", "INDUSTRY_DEFENSE_V2");
-  await choosePack(up.id, "role", "ROLE_PM_V2");
+  await choosePack(CORE, up.id, "industry", "INDUSTRY_DEFENSE_V2");
+  await choosePack(CORE, up.id, "role", "ROLE_PM_V2");
   const swapped = (await submit((await attemptOf(up.id, userId)) as V3Attempt)).snapshot;
   ok("산업과 역할을 바꿔도 Core 판정이 같다",
      stable(coreOnly(swapped)) === coreBefore, "읽는 순서만 갈린다");
@@ -288,7 +294,7 @@ async function main(): Promise<void> {
   const v4 = await viewOf(four);
   ok("넷째 영역이 열린 까닭이 적힌다",
      v4.attempt.opened_deep.length === 4 && v4.attempt.fourth_reason === "ALL_TIED",
-     `${v4.attempt.fourth_reason} · ${v4.attempt.opened_deep.map(domainName).join(" · ")}`);
+     `${v4.attempt.fourth_reason} · ${v4.attempt.opened_deep.map((td: string) => domainName(CORE, td)).join(" · ")}`);
 
   /* 10. 석사 이상은 전공계열 없이 시작하지 않는다 (DB 제약) */
   let blocked = false;
@@ -330,7 +336,7 @@ async function main(): Promise<void> {
     const submitted = (await attemptOf(a.id, userId)) as V3Attempt;
     const snap = (await submit(submitted)).snapshot;
     const done = (await attemptOf(a.id, userId)) as V3Attempt;
-    const z1 = snap.zones.Z1_EVIDENCE_ESTABLISHED.map(domainName).join(" · ") || "없음";
+    const z1 = snap.zones.Z1_EVIDENCE_ESTABLISHED.map((td: string) => domainName(CORE, td)).join(" · ") || "없음";
     const z2 = snap.zones.Z2_EVIDENCE_INCOMPLETE.length;
     console.log(`  ${name.padEnd(22)} ${tier.padEnd(9)} 화면 ${String(w.screens).padStart(3)}` +
       ` · 응답 ${String(w.answered).padStart(3)} · 근거 ${z1.padEnd(26)} 덜 섬 ${z2}개` +

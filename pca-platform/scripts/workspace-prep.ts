@@ -46,6 +46,12 @@ import { applyRecompute } from "../src/lib/me-v3/recompute";
 import { domainName } from "../src/lib/me-v3/runtime/session";
 import { actionKo } from "../src/lib/me-v3/result/text.ko";
 
+import { sellableCores } from "../src/lib/me-v3/core-registry";
+
+/** 검사도 core 를 글자로 박지 않는다. 등록부가 지금 열어 둔 것을 쓴다 */
+const CORE = sellableCores("KR")[0].code;
+
+
 if ((process.env.APP_ENV ?? "").toLowerCase() === "production") {
   console.error("운영에서는 돌리지 않습니다.");
   process.exit(2);
@@ -203,7 +209,7 @@ async function main(): Promise<void> {
     const H = { NOW: 30, NEXT: 90, LATER: 365 } as const;
     await importActions(uid, result.actions.map((a) => ({
       td: a.domain, axis: a.axis,
-      body: actionKo(a, a.domain ? domainName(a.domain) : "", result.stage).do,
+      body: actionKo(a, a.domain ? domainName(CORE, a.domain) : "", result.stage).do,
       horizon: H[a.horizon],
     })));
     /* 한 줄은 끝낸 것으로 둔다. **끝낸 일 접는 자리**가 그림에 서야 한다 */

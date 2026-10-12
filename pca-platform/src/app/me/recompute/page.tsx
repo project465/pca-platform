@@ -4,7 +4,7 @@ import {
   previewRecompute, recomputeStatus, type Candidate,
 } from "@/lib/me-v3/recompute";
 import { axisLabel, domainName } from "@/lib/me-v3/runtime/session";
-import { experiencesOf, latestResult } from "@/lib/me-v3/platform";
+import { experiencesOf, latestResult, activeCore } from "@/lib/me-v3/platform";
 import { actionKo, gapKo } from "@/lib/me-v3/result/text.ko";
 import {
   NO_CHANGE_KO, noChangeWhy, raisedKo, zoneMovedKo,
@@ -56,6 +56,8 @@ export default async function Recompute(
   { searchParams }: { searchParams: Promise<{ new?: string; e?: string; r?: string }> },
 ) {
   const user = await requireUser();
+  /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
+  const core = await activeCore(user.id);
   const sp = await searchParams;
   /* 방금 저장하고 온 사람인가. 번호가 있으면 **이번 경험**으로 좁혀 적고,
      없으면(띠에서 바로 들어온 사람) 쌓인 것 전부를 적는다 */
@@ -82,9 +84,9 @@ export default async function Recompute(
 
   /* 달라지는 것. 문장은 **세 화면이 같이 쓰는 자리**가 든다(규격 §12) */
   const changes = [
-    ...plan.zone_moves.map((z) => zoneMovedKo(z, domainName(z.domain))),
+    ...plan.zone_moves.map((z) => zoneMovedKo(z, domainName(core, z.domain))),
     ...mineMoved.map((c) =>
-      raisedKo({ domain: c.domain, axis: c.axis, state: c.after }, domainName(c.domain))),
+      raisedKo({ domain: c.domain, axis: c.axis, state: c.after }, domainName(core, c.domain))),
   ];
   const why = noChangeWhy({
     candidates: mine.length,
@@ -163,7 +165,7 @@ export default async function Recompute(
                 <div className="cm-rows">
                   {mine.map((c) => (
                     <p className="cm-row" key={`${c.domain}.${c.axis}`}>
-                      <b>{domainName(c.domain)} · {AXIS_SLOT_KO[c.axis] ?? axisLabel(c.axis)}</b>
+                      <b>{domainName(core, c.domain)} · {AXIS_SLOT_KO[c.axis] ?? axisLabel(c.axis)}</b>
                       <span>경험 근거 {c.picks.length}개</span>
                     </p>
                   ))}
@@ -211,7 +213,7 @@ export default async function Recompute(
                   부족했던 부분 {plan.closed_gaps.length}곳이{" "}
                   {applied ? "메워졌습니다" : "메워집니다"} ·{" "}
                   {plan.closed_gaps
-                    .map((g) => domainName(g.domain)).join(" · ")}
+                    .map((g) => domainName(core, g.domain)).join(" · ")}
                 </p>
               ) : null}
               <p className="cm-none">
@@ -232,13 +234,13 @@ export default async function Recompute(
                   <p>
                     {actionKo(
                       nextAction,
-                      nextAction.domain ? domainName(nextAction.domain) : "",
+                      nextAction.domain ? domainName(core, nextAction.domain) : "",
                       model?.stage,
                     ).do}
                   </p>
                   {nextGap ? (
                     <p className="cm-none">
-                      {gapKo(nextGap, domainName(nextGap.domain)).title} 부분을 채우는 일입니다.
+                      {gapKo(nextGap, domainName(core, nextGap.domain)).title} 부분을 채우는 일입니다.
                     </p>
                   ) : null}
                 </>
@@ -287,7 +289,7 @@ export default async function Recompute(
                   <tbody>
                     {plan.candidates.map((c) => (
                       <tr key={`${c.domain}.${c.axis}`}>
-                        <td><b>{domainName(c.domain)}</b></td>
+                        <td><b>{domainName(core, c.domain)}</b></td>
                         <td>{axisLabel(c.axis)}</td>
                         <td>{STATE_KO[c.before] ?? c.before}</td>
                         <td>

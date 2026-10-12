@@ -57,7 +57,7 @@ export default async function V3Intro({
    * 심화 영역이 넷까지 열릴 수 있어 수가 늘 수 있으므로 **올려 적는다**:
    * 적게 말하면 시간을 그만큼만 비워 둔 사람이 중간에 끊는다.
    */
-  const est = estimate(a.education_stage, a.grad_field);
+  const est = estimate(a.core_code, a.education_stage, a.grad_field);
   const low = est.responses[a.tier] ?? 0;
   const high = a.tier === "BASIC" ? low
     : (est.responses[`${a.tier}4`] ?? low);

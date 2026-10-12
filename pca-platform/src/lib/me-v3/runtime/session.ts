@@ -37,7 +37,16 @@ import type { ResultModel } from "../result/model";
 import { RESULT_COPY_VERSION, RESULT_MODEL_VERSION, RESULT_UI_VERSION } from "../result/version";
 import { WORKSPACE_UI_VERSION } from "../workspace-version";
 
-export const CORE = "ME_CORE_V3";
+/**
+ * **core 를 글자로 박지 않는다.** 어느 Major Core 를 읽을지는 응시와
+ * 프로필이 들고 다니는 `core_code` 가 정한다. 전에는 이 자리에
+ * `ME_CORE_V3` 한 줄이 있었고, 그 한 줄 때문에 **전공을 더하는 일이
+ * 코드를 고치는 일**이었다.
+ *
+ * 기본값을 두지 않는 것이 일부러다. 기본값이 있으면 core 를 넘기지 않은
+ * 자리가 조용히 기계공학을 읽고, 다른 전공 학생이 **남의 전공 이름이
+ * 적힌 화면**을 받는다. 넘기지 않으면 타입이 그 자리에서 막는다.
+ */
 
 /**
  * 검사 판본. **이용권과 상품이 이 값으로 맞물린다.**
@@ -74,19 +83,21 @@ type Domains = {
 };
 type Checklists = { domains: Record<string, Record<string, { text: string }[]>> };
 
-let cache: {
-  bank: Bank; domains: Domains; checklists: Checklists;
-} | null = null;
+type CoreContent = { bank: Bank; domains: Domains; checklists: Checklists };
+/** core 마다 한 벌씩 들고 있는다. 전공이 늘어도 읽는 코드는 그대로다 */
+const cache = new Map<string, CoreContent>();
 
-export function content() {
-  if (!cache) {
-    cache = {
-      bank: coreFile<Bank>(CORE, "items"),
-      domains: coreFile<Domains>(CORE, "domains"),
-      checklists: coreFile<Checklists>(CORE, "checklists"),
+export function content(core: string): CoreContent {
+  let c = cache.get(core);
+  if (!c) {
+    c = {
+      bank: coreFile<Bank>(core, "items"),
+      domains: coreFile<Domains>(core, "domains"),
+      checklists: coreFile<Checklists>(core, "checklists"),
     };
+    cache.set(core, c);
   }
-  return cache;
+  return c;
 }
 
 /* 팩은 core 파일 계약 밖이라 따로 읽는다. 팩을 더하는 일이 core 계약을
@@ -98,63 +109,63 @@ type IndustryPack = {
 type RolePack = {
   code: string; name_ko: string; owns: string; core_ref: { td: string[] };
 };
-function industryPacks(): { packs: IndustryPack[] } {
-  return readPacks<{ packs: IndustryPack[] }>(CORE, "industry");
+function industryPacks(core: string): { packs: IndustryPack[] } {
+  return readPacks<{ packs: IndustryPack[] }>(core, "industry");
 }
-function rolePacks(): { packs: RolePack[] } {
-  return readPacks<{ packs: RolePack[] }>(CORE, "role");
+function rolePacks(core: string): { packs: RolePack[] } {
+  return readPacks<{ packs: RolePack[] }>(core, "role");
 }
 
 /** 산업 장면. Core 선별 앞에 읽히고 **점수를 만들지 않는다** */
-export function industryScene(code: string): IndustryScene | null {
-  const p = industryPacks().packs.find((x) => x.code === code);
+export function industryScene(core: string, code: string): IndustryScene | null {
+  const p = industryPacks(core).packs.find((x) => x.code === code);
   if (!p) return null;
   return { code, name: p.name_ko, scene: p.scene, demands: p.demands };
 }
 
 /** 산업팩 문항의 쉬운 말 풀이. 용어를 모르는 사람이 떨어지지 않게 함께 띄운다 */
-export function industryGloss(itemId: string): string | null {
-  for (const p of industryPacks().packs) {
+export function industryGloss(core: string, itemId: string): string | null {
+  for (const p of industryPacks(core).packs) {
     const hit = p.items.find((x) => x.id === itemId);
     if (hit) return hit.gloss;
   }
   return null;
 }
 
-export function roleName(code: string): string {
-  return rolePacks().packs.find((x) => x.code === code)?.name_ko ?? code;
+export function roleName(core: string, code: string): string {
+  return rolePacks(core).packs.find((x) => x.code === code)?.name_ko ?? code;
 }
 
-export function domainName(td: string): string {
-  return content().domains.domains.find((d) => d.code === td)?.name ?? td;
+export function domainName(core: string, td: string): string {
+  return content(core).domains.domains.find((d) => d.code === td)?.name ?? td;
 }
-export function gridRowOf(td: string): string {
-  const i = content().bank.items.find((x) => x.item_id === `G_${td}_INT`) as
+export function gridRowOf(core: string, td: string): string {
+  const i = content(core).bank.items.find((x) => x.item_id === `G_${td}_INT`) as
     (BankItem & { grid_row?: string }) | undefined;
-  return i?.grid_row ?? domainName(td);
+  return i?.grid_row ?? domainName(core, td);
 }
-export function wordingOf(id: string, stage: string): string {
-  const i = content().bank.items.find((x) => x.item_id === id) as
+export function wordingOf(core: string, id: string, stage: string): string {
+  const i = content(core).bank.items.find((x) => x.item_id === id) as
     (BankItem & { wording: string; stage_wording?: Record<string, string> }) | undefined;
   if (!i) return id;
   return i.stage_wording?.[stage] ?? i.wording;
 }
-export function itemOf(id: string): (BankItem & {
+export function itemOf(core: string, id: string): (BankItem & {
   wording: string; options?: string[] | null; grid_row?: string | null;
   grid_stem?: string | null; response_scale?: string | null;
   option_values?: number[] | null;
 }) | undefined {
-  return content().bank.items.find((x) => x.item_id === id) as never;
+  return content(core).bank.items.find((x) => x.item_id === id) as never;
 }
-export function levelOptions(): string[] {
-  return (content().bank as unknown as { level_options: string[] }).level_options;
+export function levelOptions(core: string): string[] {
+  return (content(core).bank as unknown as { level_options: string[] }).level_options;
 }
-export function optionGuidance(): string {
-  return (content().bank as unknown as { option_guidance: string }).option_guidance;
+export function optionGuidance(core: string): string {
+  return (content(core).bank as unknown as { option_guidance: string }).option_guidance;
 }
-export function checklistFor(td: string): { slot: string; label: string; items: string[] }[] {
-  const c = content().checklists.domains[td] ?? {};
-  const dom = content().domains.domains.find((d) => d.code === td);
+export function checklistFor(core: string, td: string): { slot: string; label: string; items: string[] }[] {
+  const c = content(core).checklists.domains[td] ?? {};
+  const dom = content(core).domains.domains.find((d) => d.code === td);
   const out = Object.entries(c).map(([axis, list]) => ({
     slot: axis, label: axisLabel(axis), items: list.map((x) => x.text),
   }));
@@ -190,8 +201,8 @@ const AXIS_ASK: Record<string, string> = {
 };
 export function axisAsk(a: string): string { return AXIS_ASK[a] ?? axisLabel(a); }
 
-export function industryChoices() {
-  return industryPacks().packs
+export function industryChoices(core: string) {
+  return industryPacks(core).packs
     .map((p) => ({ code: p.code, name: p.name_ko, first: p.demands[0] ?? "" }));
 }
 /**
@@ -206,10 +217,11 @@ type Relations = {
   td_industry: { td: string; industry: string; strength: string }[];
   td_role: { td: string; role: string; strength: string }[];
 };
-let REL: Relations | null = null;
-function relations(): Relations {
-  if (!REL) REL = coreFile<Relations>(CORE, "relations");
-  return REL;
+const REL = new Map<string, Relations>();
+function relations(core: string): Relations {
+  let r = REL.get(core);
+  if (!r) { r = coreFile<Relations>(core, "relations"); REL.set(core, r); }
+  return r;
 }
 
 /**
@@ -217,20 +229,20 @@ function relations(): Relations {
  * 과 `드묾` 은 그 산업이 그 영역을 어떻게 다루는가이고, 셋을 한 수로
  * 합치면 **없던 적합도가 생긴다.** 쓰는 쪽이 필요한 만큼만 고른다.
  */
-export function industryDomains(code: string): { td: string; strength: string }[] {
-  return relations().td_industry.filter((r) => r.industry === code)
+export function industryDomains(core: string, code: string): { td: string; strength: string }[] {
+  return relations(core).td_industry.filter((r) => r.industry === code)
     .map((r) => ({ td: r.td, strength: r.strength }));
 }
 
-export function roleDomains(code: string): { td: string; strength: string }[] {
-  return relations().td_role.filter((r) => r.role === code)
+export function roleDomains(core: string, code: string): { td: string; strength: string }[] {
+  return relations(core).td_role.filter((r) => r.role === code)
     .map((r) => ({ td: r.td, strength: r.strength }));
 }
 
-export function roleChoices() {
-  return rolePacks().packs.map((p) => ({
+export function roleChoices(core: string) {
+  return rolePacks(core).packs.map((p) => ({
     code: p.code, name: p.name_ko, first: p.owns,
-    domains: p.core_ref.td.map(domainName),
+    domains: p.core_ref.td.map((td) => domainName(core, td)),
   }));
 }
 
@@ -240,9 +252,9 @@ export function roleChoices() {
  * taxonomy 의 조직환경을 그대로 읽는다. 화면에 짧은 이름을 따로 적어
  * 두면 taxonomy 를 고친 날 두 이름이 갈린다.
  */
-export function orgChoices() {
+export function orgChoices(core: string) {
   const tax = coreFile<{ org_contexts: { code: string; name: string; differs: string }[] }>(
-    CORE, "taxonomy");
+    core, "taxonomy");
   return tax.org_contexts.map((o) => ({ code: o.code, name: o.name, first: o.differs }));
 }
 
@@ -254,10 +266,11 @@ export function orgChoices() {
  * 비워 둔다. 추정 시간은 **실측이 아니고** 파일럿에서 재서 고친다.
  */
 /** 산업팩 하나 또는 역할팩 하나가 더하는 문항 수 */
-function packSize(kind: "industry" | "role"): number {
-  const items = content().bank.items;
+function packSize(core: string, kind: "industry" | "role"): number {
+  const items = content(core).bank.items;
   const codes = kind === "industry"
-    ? industryPacks().packs.map((x) => x.code) : rolePacks().packs.map((x) => x.code);
+    ? industryPacks(core).packs.map((x) => x.code)
+    : rolePacks(core).packs.map((x) => x.code);
   const per = codes.map((c) => items.filter((i) => kind === "industry"
     ? i.industry_pack === c
     : i.module === "ROLE" && i.item_id.startsWith(`${c}_`)).length);
@@ -276,12 +289,12 @@ function packSize(kind: "industry" | "role"): number {
  * **영역을 전부 해 봤다고 답한 사람**(가장 긴 경우)으로 센다.
  * `npm run v3:length` 가 같은 함수로 같은 값을 세고 그 선을 지킨다.
  */
-export function estimate(stage: Stage, field: GradField | null): {
+export function estimate(core: string, stage: Stage, field: GradField | null): {
   responses: Record<string, number>; minutes: Record<string, number>;
 } {
-  const tds = content().domains.domains.map((d) => d.code);
-  const roles = roleChoices().map((r) => r.code);
-  const industry = industryChoices()[0]?.code ?? "";
+  const tds = content(core).domains.domains.map((d) => d.code);
+  const roles = roleChoices(core).map((r) => r.code);
+  const industry = industryChoices(core)[0]?.code ?? "";
   const shape = (tier: Tier, deepN: number) => {
     const deep = tds.slice(0, deepN);
     return planCost(buildPlan({
@@ -299,7 +312,7 @@ export function estimate(stage: Stage, field: GradField | null): {
       strongCells: [],
       consistAxis: null,
       touched: tds,
-    }, planDeps()).screens);
+    }, planDeps(core)).screens);
   };
   const basic = shape("BASIC", 0);
   const standard = shape("STANDARD", DOMAINS_BY_TIER.standard);
@@ -451,11 +464,12 @@ export async function setProfile(
  * 두 자리에 따로 적으면 뒤로 가서 고친 날 둘이 갈린다.
  */
 export async function savePicks3(
-  attemptId: string, kind: "industry" | "role" | "org", codes: string[],
+  core: string, attemptId: string,
+  kind: "industry" | "role" | "org", codes: string[],
 ): Promise<void> {
-  const known = kind === "industry" ? industryChoices().map((x) => x.code)
-    : kind === "role" ? roleChoices().map((x) => x.code)
-      : orgChoices().map((x) => x.code);
+  const known = kind === "industry" ? industryChoices(core).map((x) => x.code)
+    : kind === "role" ? roleChoices(core).map((x) => x.code)
+      : orgChoices(core).map((x) => x.code);
   const clean = [...new Set(codes.filter((c) => known.includes(c)))].slice(0, 2);
   const col = kind === "industry" ? "industry_interest"
     : kind === "role" ? "role_interest" : "org_interest";
@@ -554,7 +568,7 @@ function gridOf(answers: Record<string, Answer>, tds: string[]): Record<string, 
  * 채점에서 읽히지 않을 뿐이고, 되돌아오면 그대로 쓰인다.
  */
 export async function recomputeRouting(a: V3Attempt): Promise<V3Attempt> {
-  const tds = content().domains.domains.map((d) => d.code);
+  const tds = content(a.core_code).domains.domains.map((d) => d.code);
   const answers = await answersOf(a.id);
   const grid = gridOf(answers, tds);
   const filled = tds.filter((td) => grid[td].interest !== null).length;
@@ -585,11 +599,15 @@ export function tiedPairIn(answers: Record<string, Answer>, tds: string[]): stri
 }
 
 /** `buildPlan` 이 읽는 것. 한자리에서 묶어 두 자리가 갈리지 않게 한다 */
-function planDeps() {
+function planDeps(core: string) {
   return {
-    items: content().bank.items,
-    domainName, wording: wordingOf, gridRow: gridRowOf,
-    scene: industryScene, gloss: industryGloss, roleName,
+    items: content(core).bank.items,
+    domainName: (td: string) => domainName(core, td),
+    wording: (id: string, stage: string) => wordingOf(core, id, stage),
+    gridRow: (td: string) => gridRowOf(core, td),
+    scene: (code: string) => industryScene(core, code),
+    gloss: (itemId: string) => industryGloss(core, itemId),
+    roleName: (code: string) => roleName(core, code),
   };
 }
 
@@ -604,8 +622,8 @@ function planInput(
   a: V3Attempt, answers: Record<string, Answer>,
   over: { tier?: Tier; deep?: string[] } = {},
 ): PlanInput {
-  const tds = content().domains.domains.map((d) => d.code);
-  const items = content().bank.items;
+  const tds = content(a.core_code).domains.domains.map((d) => d.code);
+  const items = content(a.core_code).bank.items;
   /* 보기 넷의 자리만 본다. 이 값은 판정이 아니고 **다음에 무엇을 물을지**다 */
   const levels: Record<string, number> = {};
   for (const [id, v] of Object.entries(answers)) {
@@ -640,7 +658,7 @@ function planInput(
 
 export async function planFor(a: V3Attempt): Promise<Plan> {
   const answers = await answersOf(a.id);
-  return buildPlan(planInput(a, answers), planDeps());
+  return buildPlan(planInput(a, answers), planDeps(a.core_code));
 }
 
 /**
@@ -718,13 +736,15 @@ export async function viewOf(
  */
 export async function menuContextOf(a: V3Attempt): Promise<MenuContext> {
   const answers = await answersOf(a.id);
-  const tds = content().domains.domains.map((d) => d.code);
+  const tds = content(a.core_code).domains.domains.map((d) => d.code);
   return {
-    tiedPair: tiedPairIn(answers, tds).map((code) => ({ code, name: domainName(code) })),
-    domains: tds.map((code) => ({ code, name: domainName(code) })),
-    industries: industryChoices().map((i) => ({ code: i.code, name: i.name })),
-    roles: roleChoices().map((r) => ({ code: r.code, name: r.name })),
-    orgs: orgChoices().map((o) => ({ code: o.code, name: o.name })),
+    core: a.core_code,
+    tiedPair: tiedPairIn(answers, tds)
+      .map((code) => ({ code, name: domainName(a.core_code, code) })),
+    domains: tds.map((code) => ({ code, name: domainName(a.core_code, code) })),
+    industries: industryChoices(a.core_code).map((i) => ({ code: i.code, name: i.name })),
+    roles: roleChoices(a.core_code).map((r) => ({ code: r.code, name: r.name })),
+    orgs: orgChoices(a.core_code).map((o) => ({ code: o.code, name: o.name })),
   };
 }
 
@@ -741,9 +761,10 @@ export async function moveTo(attemptId: string, screenId: string): Promise<void>
  * 것을 보고, 어디서 틀렸는지 알 길이 없다.
  */
 export async function choosePack(
-  attemptId: string, kind: "industry" | "role", code: string | null,
+  core: string, attemptId: string,
+  kind: "industry" | "role", code: string | null,
 ): Promise<void> {
-  await savePicks3(attemptId, kind, code ? [code] : []);
+  await savePicks3(core, attemptId, kind, code ? [code] : []);
 }
 
 /* ── 등급 올리기 ───────────────────────────────────────────────────── */
@@ -791,7 +812,7 @@ export async function newScreensAfterUpgrade(
   const answers = await answersOf(a.id);
   const before = buildPlan(
     planInput(a, answers, { tier: from, deep: from === "BASIC" ? [] : a.opened_deep }),
-    planDeps());
+    planDeps(a.core_code));
   const plan = await planFor(a);
   const had = new Set(before.screens.map((s) => s.id));
   const added = plan.screens.filter((s) => !had.has(s.id) && s.items.length > 0);
@@ -803,7 +824,7 @@ export async function newScreensAfterUpgrade(
 export async function submissionOf(a: V3Attempt): Promise<Submission> {
   const answers = await answersOf(a.id);
   const picks = await picksOf(a.id);
-  const plan = buildPlan(planInput(a, answers), planDeps());
+  const plan = buildPlan(planInput(a, answers), planDeps(a.core_code));
   return {
     attempt_id: a.id, tier: a.tier, stage: a.education_stage, grad_field: a.grad_field,
     undergrad_core: a.undergrad_core,
@@ -831,10 +852,10 @@ export async function submit(a: V3Attempt): Promise<{ snapshot: Snapshot; id: st
      그 사람의 결과지가 조용히 달라진다 */
   const result = buildResult(snapshot, loaded, {
     packs: {
-      industries: industryChoices().map((x) => x.code),
-      roles: roleChoices().map((x) => x.code),
+      industries: industryChoices(a.core_code).map((x) => x.code),
+      roles: roleChoices(a.core_code).map((x) => x.code),
     },
-    translation: translationChoices(sub),
+    translation: translationChoices(a.core_code, sub),
   });
   /**
    * **응시마다 판본 열두 가지를 남긴다.**
@@ -897,10 +918,12 @@ export async function latestSnapshot(attemptId: string): Promise<Snapshot | null
  * 응답이라 거기 없고, 그것을 담으려고 채점을 고치지는 않는다. 결과 모델이
  * 그 사람의 말을 그대로 돌려주려면 여기서 맞춰 붙인다.
  */
-function translationChoices(sub: Submission): { item_id: string; choice: string | null }[] {
-  const ctx = { tiedPair: [], domains: [], industries: [], roles: [], orgs: [] };
+function translationChoices(
+  core: string, sub: Submission,
+): { item_id: string; choice: string | null }[] {
+  const ctx = { core, tiedPair: [], domains: [], industries: [], roles: [], orgs: [] };
   const out: { item_id: string; choice: string | null }[] = [];
-  for (const it of content().bank.items) {
+  for (const it of content(core).bank.items) {
     if (it.module !== "TRANS-10") continue;
     const a = sub.answers[it.item_id];
     if (!a || a.kind !== "choice") continue;

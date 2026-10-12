@@ -35,10 +35,15 @@ import { buildPlan, type Plan } from "../src/lib/me-v3/runtime/blocks";
 import { branchBlock, crossField } from "../src/lib/me-v3/runtime/routing";
 import {
   content, domainName, estimate, gridRowOf, industryChoices, industryGloss,
-  industryScene, roleChoices, roleName,
-} from "../src/lib/me-v3/runtime/session";
+  industryScene, roleChoices, roleName, wordingOf } from "../src/lib/me-v3/runtime/session";
 import { planCost } from "../src/lib/me-v3/response-count";
 import type { GradField, Stage, Tier } from "../src/lib/me-v3/scoring/types";
+
+import { sellableCores } from "../src/lib/me-v3/core-registry";
+
+/** 검사도 core 를 글자로 박지 않는다. 등록부가 지금 열어 둔 것을 쓴다 */
+const CORE = sellableCores("KR")[0].code;
+
 
 let fail = 0, pass = 0;
 function ok(n: string, good: boolean, d = ""): void {
@@ -47,9 +52,13 @@ function ok(n: string, good: boolean, d = ""): void {
 }
 
 const DEPS = {
-  items: content().bank.items, domainName, wording: (id: string, st: string) =>
-    content().bank.items.find((i) => i.item_id === id) ? wordingHack(id, st) : id,
-  gridRow: gridRowOf, scene: industryScene, gloss: industryGloss, roleName,
+  items: content(CORE).bank.items as never,
+  domainName: (td: string) => domainName(CORE, td),
+  wording: (id: string, st: string) => wordingOf(CORE, id, st),
+  gridRow: (td: string) => gridRowOf(CORE, td),
+  scene: (c: string) => industryScene(CORE, c),
+  gloss: (i: string) => industryGloss(CORE, i),
+  roleName: (c: string) => roleName(CORE, c),
 };
 /* 문면은 길이 계산에 쓰지 않는다. 자리만 선다 */
 function wordingHack(id: string, _st: string): string { return id; }
@@ -67,9 +76,9 @@ function cost(p: Plan): { screens: number; fields: number; minutes: number } {
   return { screens: c.screens, fields: c.responses, minutes: c.minutes };
 }
 
-const TD = content().domains.domains.map((d) => d.code);
-const IND = industryChoices()[0]?.code ?? "";
-const ROLE = roleChoices().map((r) => r.code);
+const TD = content(CORE).domains.domains.map((d) => d.code);
+const IND = industryChoices(CORE)[0]?.code ?? "";
+const ROLE = roleChoices(CORE).map((r) => r.code);
 
 /**
  * 가장 긴 경우를 만든다.
@@ -191,7 +200,7 @@ function main(): void {
    * 시간을 비워 두고 앉은 사람이 먼저 안다.
    */
   for (const who of WHO) {
-    const e = estimate(who.stage, who.field);
+    const e = estimate(CORE, who.stage, who.field);
     const b = cost(plan("BASIC", who.stage, who.field, 0));
     const st = cost(plan("STANDARD", who.stage, who.field, 3));
     const pr = cost(plan("PRO", who.stage, who.field, 3));

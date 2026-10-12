@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
-import { latestResult, profileOf } from "@/lib/me-v3/platform";
+import { latestResult, profileOf, activeCore } from "@/lib/me-v3/platform";
 import {
   domainName, industryChoices, industryDomains, industryScene,
   roleChoices, roleDomains,
@@ -30,6 +30,8 @@ export const metadata = { title: "탐색 · 내 CareerMatri" };
  */
 export default async function Explore() {
   const user = await requireUser();
+  /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
+  const core = await activeCore(user.id);
   const [profile, result] = await Promise.all([
     profileOf(user.id), latestResult(user.id),
   ]);
@@ -47,20 +49,20 @@ export default async function Explore() {
    * 묶음을 가르는 것은 `중심` 이고, 줄에 적는 것은 그 산업이 실제로 다루는
    * 영역(`중심` 과 `있음`)이다. **여기서 수를 만들지 않는다**(규격 §18).
    */
-  const names = (cs: string[]) => cs.map((c) => domainName(c));
+  const names = (cs: string[]) => cs.map((c) => domainName(core, c));
   const pick = (rows: { td: string; strength: string }[], ...ok: string[]) =>
     [...new Set(rows.filter((r) => ok.includes(r.strength) && confirmed.has(r.td))
       .map((r) => r.td))];
 
-  const industries = industryChoices().map((x) => {
-    const rows = industryDomains(x.code);
+  const industries = industryChoices(core).map((x) => {
+    const rows = industryDomains(core, x.code);
     return {
-      ...x, scene: industryScene(x.code),
+      ...x, scene: industryScene(core, x.code),
       core: pick(rows, "중심"), link: pick(rows, "중심", "있음"),
     };
   });
-  const roles = roleChoices().map((r) => {
-    const rows = roleDomains(r.code);
+  const roles = roleChoices(core).map((r) => {
+    const rows = roleDomains(core, r.code);
     return { ...r, core: pick(rows, "중심"), link: pick(rows, "중심", "있음") };
   });
   /* **나와 이어지는 쪽을 먼저 세운다**(규격 §18). 전부를 같은 중요도로

@@ -121,6 +121,8 @@ export function shortOf(axis: string, value: number | null, label: string): stri
 
 /** 보기를 응시 중에 정하는 문항이 읽는 것 */
 export type MenuContext = {
+  /** 어느 Major Core 의 보기인가. 보기 넷의 문면이 core 의 은행에 있다 */
+  core: string;
   /** 격자에서 묶인 영역 둘. 강제 선택의 보기가 된다 */
   tiedPair: { code: string; name: string }[];
   domains: { code: string; name: string }[];
@@ -264,7 +266,7 @@ export function controlOf(item: Item, ctx: MenuContext): Control {
   const sc = item.response_scale ?? "";
 
   if (sc === "L0~L3" || sc === "4보기") {
-    return { kind: "level", options: levelOptions(), guide: "" };
+    return { kind: "level", options: levelOptions(ctx.core), guide: "" };
   }
   if ((sc === "5보기" || sc === "3보기")
       && item.options?.length && item.option_values?.length) {

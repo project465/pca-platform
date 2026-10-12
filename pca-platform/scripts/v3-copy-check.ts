@@ -36,6 +36,12 @@ import {
 } from "../src/app/v3/tier-text";
 import type { GradField, Stage, Tier } from "../src/lib/me-v3/scoring/types";
 
+import { sellableCores } from "../src/lib/me-v3/core-registry";
+
+/** 검사도 core 를 글자로 박지 않는다. 등록부가 지금 열어 둔 것을 쓴다 */
+const CORE = sellableCores("KR")[0].code;
+
+
 /* ── 1. 걸린 말 ─────────────────────────────────────────────────────
    한도는 **그 말이 자연스러운 자리**를 남긴다. 0 으로 두면 고치는 쪽이
    뜻을 비틀게 되고, 그렇게 비튼 문장이 더 기계처럼 읽힌다 */
@@ -163,7 +169,7 @@ for (const f of FILES) {
    계획을 만들어 머리말·주제·질문·도움말을 그대로 꺼내 센다 */
 type Line = { kind: string; id: string; slot: string; text: string };
 const lines: Line[] = [];
-const TD = content().domains.domains.map((d) => d.code);
+const TD = content(CORE).domains.domains.map((d) => d.code);
 const SEEN = new Set<string>();
 
 for (const tier of ["BASIC", "STANDARD", "PRO"] as Tier[]) {
@@ -177,9 +183,13 @@ for (const tier of ["BASIC", "STANDARD", "PRO"] as Tier[]) {
       roleInterest: ["ROLE_CAE_V2"],
       tiedPair: TD.slice(0, 2),
     }, {
-      items: content().bank.items as never,
-      domainName, wording: wordingOf, gridRow: gridRowOf,
-      scene: industryScene, gloss: industryGloss, roleName,
+      items: content(CORE).bank.items as never,
+      domainName: (td: string) => domainName(CORE, td),
+      wording: (id: string, st: string) => wordingOf(CORE, id, st),
+      gridRow: (td: string) => gridRowOf(CORE, td),
+      scene: (c: string) => industryScene(CORE, c),
+      gloss: (i: string) => industryGloss(CORE, i),
+      roleName: (c: string) => roleName(CORE, c),
     });
     for (const s of plan.screens) {
       for (const slot of ["eyebrow", "subject", "question", "help"] as const) {

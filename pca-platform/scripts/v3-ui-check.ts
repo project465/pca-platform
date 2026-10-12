@@ -31,14 +31,20 @@ import {
 } from "../src/lib/me-v3/runtime/session";
 import type { GradField, Stage, Tier } from "../src/lib/me-v3/scoring/types";
 
+import { sellableCores } from "../src/lib/me-v3/core-registry";
+
+/** 검사도 core 를 글자로 박지 않는다. 등록부가 지금 열어 둔 것을 쓴다 */
+const CORE = sellableCores("KR")[0].code;
+
+
 let fail = 0, pass = 0;
 function ok(n: string, good: boolean, d = ""): void {
   if (good) { pass += 1; console.log(`  통과  ${n}${d ? " — " + d : ""}`); }
   else { fail += 1; console.log(`  걸림  ${n}${d ? " — " + d : ""}`); }
 }
 
-const TDS = content().domains.domains.map((d) => d.code);
-const ITEMS = content().bank.items;
+const TDS = content(CORE).domains.domains.map((d) => d.code);
+const ITEMS = content(CORE).bank.items;
 /** 일관성 짝이 걸릴 수 있는 축 전부 */
 const CONSIST_AXES = [...new Set(ITEMS
   .filter((i) => i.module === "CONSIST").map((i) => String(i.evidence_axis)))];
@@ -58,17 +64,23 @@ function allButOne(pack: string, keep: string): string[] {
 
 function ctx(tied: string[]): MenuContext {
   return {
-    tiedPair: tied.map((code) => ({ code, name: domainName(code) })),
-    domains: TDS.map((code) => ({ code, name: domainName(code) })),
-    industries: industryChoices().map((i) => ({ code: i.code, name: i.name })),
-    roles: roleChoices().map((r) => ({ code: r.code, name: r.name })),
-    orgs: orgChoices().map((o) => ({ code: o.code, name: o.name })),
+    core: CORE,
+    tiedPair: tied.map((code) => ({ code, name: domainName(CORE, code) })),
+    domains: TDS.map((code) => ({ code, name: domainName(CORE, code) })),
+    industries: industryChoices(CORE).map((i) => ({ code: i.code, name: i.name })),
+    roles: roleChoices(CORE).map((r) => ({ code: r.code, name: r.name })),
+    orgs: orgChoices(CORE).map((o) => ({ code: o.code, name: o.name })),
   };
 }
 
 const DEPS = {
-  items: ITEMS, domainName, wording: wordingOf, gridRow: gridRowOf,
-  scene: industryScene, gloss: industryGloss, roleName,
+  items: content(CORE).bank.items as never,
+  domainName: (td: string) => domainName(CORE, td),
+  wording: (id: string, st: string) => wordingOf(CORE, id, st),
+  gridRow: (td: string) => gridRowOf(CORE, td),
+  scene: (c: string) => industryScene(CORE, c),
+  gloss: (i: string) => industryGloss(CORE, i),
+  roleName: (c: string) => roleName(CORE, c),
 };
 
 function plan(args: {
@@ -100,8 +112,8 @@ function visible(p: Plan, tied: string[]): string[] {
   for (const s of p.screens) {
     out.push(s.eyebrow ?? "", s.subject ?? "", s.question ?? "", s.help ?? "");
     for (const id of s.items) {
-      out.push(wordingOf(id, "bachelor"));
-      const it = itemOf(id);
+      out.push(wordingOf(CORE, id, "bachelor"));
+      const it = itemOf(CORE, id);
       if (!it) continue;
       const c = controlOf(it, ctx(tied));
       if (c.kind === "level") out.push(...c.options);
@@ -146,7 +158,7 @@ function main(): void {
   }
   /* 팩은 따로 돈다. 산업과 역할과 등급과 학위를 한 겹으로 돌리면 벌이
      수천이 되고, 팩 문항이 서는 자리는 학위와 무관하다 */
-  for (const x of industryChoices()) {
+  for (const x of industryChoices(CORE)) {
     const mine = ITEMS.filter((i) => i.module === "INDUSTRY"
       && i.item_id.startsWith(`${x.code}_`));
     /* 산업 판단은 비어 있는 축을 먼저 세우고 여섯에서 끊는다. 문항마다
@@ -159,11 +171,11 @@ function main(): void {
       for (const s of p.screens) for (const id of s.items) seen.add(id);
     }
   }
-  for (const x of roleChoices()) {
+  for (const x of roleChoices(CORE)) {
     /* 둘째로 고른 역할은 앞머리 셋만 묻는다. 첫째 자리로도 한 번 돈다 */
     const p = plan({
       tier: "PRO", stage: "bachelor", field: null, probe: TDS, deep: TDS,
-      role: [x.code, roleChoices()[0].code],
+      role: [x.code, roleChoices(CORE)[0].code],
     });
     for (const s of p.screens) for (const id of s.items) seen.add(id);
   }
@@ -176,7 +188,7 @@ function main(): void {
   /* --- 2. 선 문항은 전부 보기를 받는다 --- */
   const noMenu: string[] = [];
   for (const id of seen) {
-    const it = itemOf(id);
+    const it = itemOf(CORE, id);
     if (!it) { noMenu.push(id); continue; }
     try { controlOf(it, ctx([TDS[0], TDS[1]])); } catch { noMenu.push(id); }
   }
@@ -184,16 +196,16 @@ function main(): void {
      noMenu.length ? noMenu.slice(0, 5).join(",") : `${seen.size}개`);
 
   /* --- 3. 보기 넷은 은행의 것을 그대로 쓴다 --- */
-  const lv = levelOptions();
-  const lvItem = itemOf("TD01_J3_1");
+  const lv = levelOptions(CORE);
+  const lvItem = itemOf(CORE, "TD01_J3_1");
   const c3 = lvItem ? controlOf(lvItem, ctx([])) : null;
   ok("보기 넷은 문항 은행의 것을 그대로 쓴다",
      !!c3 && c3.kind === "level" && c3.options.join("|") === lv.join("|"),
      lv.join(" · "));
 
   /* --- 4. 훑기는 보기 셋이고 저장되는 값이 전과 같다 --- */
-  const gi = itemOf("G_TD01_INT");
-  const ge = itemOf("G_TD01_EXP");
+  const gi = itemOf(CORE, "G_TD01_INT");
+  const ge = itemOf(CORE, "G_TD01_EXP");
   const ci = gi ? controlOf(gi, ctx([])) : null;
   const ce = ge ? controlOf(ge, ctx([])) : null;
   /* `잘 모르겠다` 의 값이 **수가 아니다.** 가운데 값(3)으로 두면 아직
@@ -226,7 +238,7 @@ function main(): void {
   const pPro = plan({
     tier: "PRO", stage: "master", field: "STEM",
     probe: TDS.slice(0, 4), deep: TDS.slice(0, 4),
-    industry: [industryChoices()[0].code], role: [roleChoices()[0].code],
+    industry: [industryChoices(CORE)[0].code], role: [roleChoices(CORE)[0].code],
     tied: [TDS[0], TDS[1]],
   });
   const leaked = visible(pPro, [TDS[0], TDS[1]])
@@ -251,7 +263,7 @@ function main(): void {
   const pBasic = plan({
     tier: "BASIC", stage: "bachelor", field: null,
     probe: TDS.slice(0, 2), deep: [],
-    industry: [industryChoices()[0].code], role: [roleChoices()[0].code],
+    industry: [industryChoices(CORE)[0].code], role: [roleChoices(CORE)[0].code],
   });
   const basicStages = new Set(pBasic.screens.map((s) => s.stage));
   const basicPackItems = pBasic.screens.filter((s) =>
@@ -267,11 +279,11 @@ function main(): void {
   const withTie = plan({ tier: "BASIC", stage: "bachelor", field: null,
     probe: TDS.slice(0, 2), deep: [], tied: [TDS[2], TDS[5]] });
   const force = withTie.screens.find((s) => s.id.startsWith("force-"));
-  const fc = force ? controlOf(itemOf(force.items[0])!, ctx([TDS[2], TDS[5]])) : null;
+  const fc = force ? controlOf(itemOf(CORE, force.items[0])!, ctx([TDS[2], TDS[5]])) : null;
   ok("강제 선택은 묶였을 때만 서고 보기가 그 두 영역이다",
      !noTie.screens.some((s) => s.id.startsWith("force-")) && !!force &&
      !!fc && fc.kind === "choice" && fc.options.length === 2 &&
-     fc.options[0].label === domainName(TDS[2]),
+     fc.options[0].label === domainName(CORE, TDS[2]),
      fc && fc.kind === "choice" ? fc.options.map((o) => o.label).join(" / ") : "");
 
   /* --- 9. 선호를 다섯 점 척도로 받지 않는다 --- */
@@ -282,10 +294,10 @@ function main(): void {
 
   /* --- 10. 산업 여덟과 역할 여덟 전부를 고를 수 있다 --- */
   ok("산업 여덟과 역할 여덟 전부를 고를 수 있다",
-     industryChoices().length === 8 && roleChoices().length === 8 &&
-     industryChoices().every((x) => x.name && x.first) &&
-     roleChoices().every((x) => x.name && x.domains.length),
-     `산업 ${industryChoices().length} · 역할 ${roleChoices().length}`);
+     industryChoices(CORE).length === 8 && roleChoices(CORE).length === 8 &&
+     industryChoices(CORE).every((x) => x.name && x.first) &&
+     roleChoices(CORE).every((x) => x.name && x.domains.length),
+     `산업 ${industryChoices(CORE).length} · 역할 ${roleChoices(CORE).length}`);
 
   /* --- 11. 고르기 전에는 팩 문항이 계획에 없다 --- */
   const noPack = plan({ tier: "PRO", stage: "master", field: "STEM",
@@ -307,7 +319,7 @@ function main(): void {
      fixed.length === 2 && sweeps.length <= 3,
      `열두 줄 화면 ${fixed.length}개 · 학습 의향까지 ${sweeps.length}개`);
   const rows = sweeps.flatMap((s) => s.items)
-    .every((id) => !!itemOf(id)?.grid_row);
+    .every((id) => !!itemOf(CORE, id)?.grid_row);
   ok("훑기 줄마다 영역을 말하는 줄이 있다", rows);
 
   /* --- 14. 심화 영역은 선별 네 축도 함께 선다 --- */
@@ -315,10 +327,10 @@ function main(): void {
     probe: TDS.slice(0, 3), deep: TDS.slice(0, 3) });
   const axesOf = (td: string) => new Set(deepOnly.screens
     .filter((s) => s.domain === td)
-    .flatMap((s) => s.items).map((id) => itemOf(id)?.evidence_axis).filter(Boolean));
+    .flatMap((s) => s.items).map((id) => itemOf(CORE, id)?.evidence_axis).filter(Boolean));
   ok("심화 영역은 여덟 축을 모두 받는다",
      TDS.slice(0, 3).every((td) => axesOf(td).size === 8),
-     TDS.slice(0, 3).map((td) => `${domainName(td)}:${axesOf(td).size}`).join(" · "));
+     TDS.slice(0, 3).map((td) => `${domainName(CORE, td)}:${axesOf(td).size}`).join(" · "));
 
   /* --- 15. 필수 화면은 답을 받을 자리가 있다 --- */
   const badRequired = pPro.screens.filter((s) =>

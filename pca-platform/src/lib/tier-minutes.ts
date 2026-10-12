@@ -25,9 +25,9 @@ const round5 = (raw: number): number => Math.max(5, Math.ceil(raw / 5) * 5);
  * 긴 쪽은 타계열 대학원이고 번역 맥락 묶음이 더 붙는 자리다. 두 값이
  * 같으면 하나만 적는다.
  */
-export function tierMinutes(): Record<Tier, { low: number; high: number }> {
-  const low = estimate("bachelor", null);
-  const high = estimate("master", "BUSINESS");
+export function tierMinutes(core: string): Record<Tier, { low: number; high: number }> {
+  const low = estimate(core, "bachelor", null);
+  const high = estimate(core, "master", "BUSINESS");
   const pick = (e: ReturnType<typeof estimate>, tier: Tier) =>
     tier === "BASIC" ? e.minutes.basic
       : tier === "STANDARD" ? e.minutes.standardFresh : e.minutes.proFresh;

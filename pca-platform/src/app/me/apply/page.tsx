@@ -1,5 +1,5 @@
 import { requireUser } from "@/lib/session";
-import { APPLY_STATES, applicationsOf } from "@/lib/me-v3/platform";
+import { APPLY_STATES, applicationsOf, activeCore } from "@/lib/me-v3/platform";
 import { industryChoices, roleChoices } from "@/lib/me-v3/runtime/session";
 import { orgTypes, regionLayer } from "@/lib/me-v3/region";
 import { CmShell, CmHead } from "../shell";
@@ -19,9 +19,11 @@ export const metadata = { title: "지원한 곳 · 내 CareerMatri" };
  */
 export default async function Apply() {
   const user = await requireUser();
+  /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
+  const core = await activeCore(user.id);
   const rows = await applicationsOf(user.id);
   const L = regionLayer();
-  const roles = roleChoices();
+  const roles = roleChoices(core);
   const roleName = (c: string | null) =>
     roles.find((r) => r.code === c)?.name ?? null;
 
@@ -59,7 +61,7 @@ export default async function Apply() {
             <span>산업</span>
             <select className="cm-select" name="industry_code" defaultValue="">
               <option value="">고르지 않음</option>
-              {industryChoices().map((i) =>
+              {industryChoices(core).map((i) =>
                 <option key={i.code} value={i.code}>{i.name}</option>)}
             </select>
           </label>

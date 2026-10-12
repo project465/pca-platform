@@ -48,6 +48,12 @@ import { FUNNEL, mark as pilotMark } from "../src/lib/me-v3/pilot/funnel";
 import { WORKSPACE_EVENTS } from "../src/lib/me-v3/workspace-events";
 import { FUNNEL_STEPS } from "../src/lib/funnel";
 
+import { sellableCores } from "../src/lib/me-v3/core-registry";
+
+/** 검사도 core 를 글자로 박지 않는다. 등록부가 지금 열어 둔 것을 쓴다 */
+const CORE = sellableCores("KR")[0].code;
+
+
 if ((process.env.APP_ENV ?? "").toLowerCase() === "production") {
   console.error("운영에서는 돌리지 않습니다.");
   process.exit(2);
@@ -91,7 +97,7 @@ async function oneSubmission(userId: string): Promise<string> {
   const a = await openAttempt({
     userId, tier: "BASIC", stage: "bachelor", gradField: null,
   });
-  for (const d of content().domains.domains) {
+  for (const d of content(CORE).domains.domains) {
     await saveAnswer(a.id, `G_${d.code}_INT`, { kind: "scale5", value: 3 });
     await saveAnswer(a.id, `G_${d.code}_EXP`, { kind: "exposure", value: 1 });
     await saveAnswer(a.id, `G_${d.code}_LEA`, { kind: "scale5", value: 3 });
