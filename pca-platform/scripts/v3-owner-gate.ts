@@ -162,8 +162,20 @@ async function main(): Promise<void> {
     console.log("\n── 13. 경험 저장");
     await p.goto(`${B}/me/experience/new`, { waitUntil: "networkidle" });
     const title = `점검 경험 ${randomBytes(3).toString("hex")}`;
-    const month = await p.$('input[name="started_on"]');
-    ok("달만 받는 칸이 있다", !!month);
+    /* **달까지만 받는다**(ME 기준 UX §2). 브라우저 기본 달 고르기를
+       걷고 `[연도] [월]` 고르기 둘로 받으므로, 세는 것은 그 둘이 서는가와
+       **날을 받는 칸이 없는가**다. 날을 받기 시작하면 적는 사람이 기억에
+       없는 자리를 채워야 한다 */
+    const ySel = await p.$('select[name="started_on_y"]');
+    const mSel = await p.$('select[name="started_on_m"]');
+    const dayBox = await p.$('input[type="date"], input[type="month"]');
+    ok("달까지만 받는 고르기 둘이 선다", !!ySel && !!mSel && !dayBox,
+      `연도 ${!!ySel} · 월 ${!!mSel} · 날 칸 ${!!dayBox}`);
+    /* **`아직 진행 중` 이 끝난 달 자리에 있다.** 비어 있는 것이 전부터
+       `아직 안 끝났다` 를 뜻하므로(`ended_on IS NULL`), 그 뜻을 화면이
+       글자로 들고 있어야 비워 둔 사람이 자기가 빠뜨린 줄로 읽지 않는다 */
+    const onBox = await p.$('input[name="ongoing"]');
+    ok("`아직 진행 중` 을 고를 자리가 있다", !!onBox);
     /* **폼을 여기서 적지 않는다.** 세 걸음짜리 폼을 누르는 줄을 검사마다
        따로 들고 있으면, 걸음이 넷이 되는 날 한 곳만 고쳐진다. 그리고
        가린 판의 칸은 눌리지 않으므로 `다음` 을 거치지 않고 고르면

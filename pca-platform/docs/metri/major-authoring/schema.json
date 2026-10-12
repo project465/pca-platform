@@ -1,0 +1,406 @@
+{
+  "note": "손으로 적지 않는다. `KIT=write npm run major:kit` 이 기준 core 에서 떠서 적는다",
+  "base_core": "ME_CORE_V3",
+  "contract": {
+    "required_files": [
+      "taxonomy",
+      "domains",
+      "checklists",
+      "items_blueprint"
+    ],
+    "required_keys": {
+      "taxonomy": [
+        "technical_domains",
+        "role_functions",
+        "org_contexts",
+        "job_aliases",
+        "boundaries",
+        "axes",
+        "scales",
+        "levels"
+      ],
+      "domains": [
+        "domains"
+      ],
+      "items_blueprint": [
+        "slots",
+        "result_sections",
+        "rules"
+      ]
+    },
+    "note": "core 마다 required 넷을 같은 열쇠로 내놓는다. 엔진은 core 이름도 파일 이름도 모르고 등록부가 가리키는 것만 읽는다. optional 은 그 core 가 옛 자산을 재배치했거나 판본을 올렸을 때만 있다. `relations` 는 기술영역과 산업·역할의 관계표이고 `migration` 은 옛 문항 은행에서 지금 은행으로 온 길이다",
+    "optional_files": [
+      "checklist_additions",
+      "common_additions",
+      "evidence_remap",
+      "legacy_evidence_map",
+      "items",
+      "relations",
+      "migration",
+      "constructs"
+    ]
+  },
+  "files": {
+    "taxonomy": {
+      "file": "me-v3-2-taxonomy.json",
+      "top_keys": [
+        "assessment_version",
+        "axes",
+        "boundaries",
+        "job_aliases",
+        "levels",
+        "major_id",
+        "note",
+        "org_contexts",
+        "role_functions",
+        "role_functions_note",
+        "scales",
+        "schema_version",
+        "technical_domains"
+      ]
+    },
+    "domains": {
+      "file": "me-v3-2-domains.json",
+      "top_keys": [
+        "assessment_version",
+        "domains",
+        "note",
+        "review_note",
+        "schema_version",
+        "workflow_steps"
+      ]
+    },
+    "checklists": {
+      "file": "me-v3-2-checklists.json",
+      "top_keys": [
+        "common",
+        "core",
+        "domains",
+        "generated_note",
+        "schema_version"
+      ]
+    },
+    "items_blueprint": {
+      "file": "me-v3-2-items-blueprint.json",
+      "top_keys": [
+        "assessment_version",
+        "note",
+        "result_sections",
+        "rules",
+        "schema_version",
+        "slots"
+      ]
+    },
+    "checklist_additions": {
+      "file": "me-v3-2-checklist-additions.json",
+      "top_keys": [
+        "items",
+        "note",
+        "schema_version"
+      ]
+    },
+    "common_additions": {
+      "file": "me-v3-2-common-additions.json",
+      "top_keys": [
+        "items",
+        "note",
+        "schema_version"
+      ]
+    },
+    "items": {
+      "file": "me-v3-2-items.json",
+      "top_keys": [
+        "assessment_version",
+        "core",
+        "item_bank_version",
+        "items",
+        "level_options",
+        "multi_item_cell",
+        "note",
+        "option_guidance",
+        "origins",
+        "scene_by_axis",
+        "schema_version",
+        "wording_rule"
+      ]
+    },
+    "relations": {
+      "file": "me-v3-2-relations.json",
+      "top_keys": [
+        "combine_rule",
+        "core",
+        "note",
+        "schema_version",
+        "td_industry",
+        "td_role"
+      ]
+    },
+    "migration": {
+      "file": "me-v3-2-migration.json",
+      "top_keys": [
+        "divergences",
+        "from",
+        "new_in_v2",
+        "note",
+        "rows",
+        "schema_version",
+        "summary",
+        "to",
+        "verdicts"
+      ]
+    },
+    "constructs": {
+      "file": "me-v3-2-constructs.json",
+      "top_keys": [
+        "core",
+        "item_bank_version",
+        "items",
+        "note",
+        "schema_version"
+      ]
+    }
+  },
+  "packs": {
+    "industry": {
+      "file": "industry-packs-v2.json",
+      "top_keys": [
+        "caps",
+        "core",
+        "exploration",
+        "note",
+        "packs",
+        "reading_rule",
+        "schema_version"
+      ]
+    },
+    "role": {
+      "file": "role-packs-v2.json",
+      "top_keys": [
+        "caps",
+        "core",
+        "exploration",
+        "note",
+        "packs",
+        "schema_version"
+      ]
+    }
+  },
+  "authoring_units": {
+    "registry_entry": [
+      "aliases",
+      "assessment_version",
+      "axis_count",
+      "code",
+      "domain_count",
+      "family",
+      "files",
+      "frozen",
+      "major",
+      "markets",
+      "maturity",
+      "name_en",
+      "name_ko",
+      "packs",
+      "role_function_count",
+      "status"
+    ],
+    "technical_domain": [
+      "code",
+      "name",
+      "owns",
+      "required_axes",
+      "subareas"
+    ],
+    "role_function": [
+      "code",
+      "name",
+      "one_line",
+      "output_kind",
+      "success"
+    ],
+    "org_context": [
+      "code",
+      "differs",
+      "name",
+      "performance"
+    ],
+    "job_alias": [
+      "distinguisher",
+      "oc",
+      "posting_name",
+      "rf",
+      "td"
+    ],
+    "boundary": [
+      "a",
+      "a_difference",
+      "a_question",
+      "b",
+      "b_difference",
+      "b_question",
+      "pair",
+      "shared"
+    ],
+    "domain": [
+      "artifacts",
+      "axes",
+      "code",
+      "name",
+      "org_outcomes",
+      "required_axes",
+      "tools",
+      "verify_targets",
+      "workflow"
+    ],
+    "domain_workflow_step": [
+      "detail",
+      "name",
+      "step"
+    ],
+    "checklist_item": [
+      "from",
+      "text"
+    ],
+    "blueprint_slot": [
+      "axis",
+      "block",
+      "construct",
+      "domain",
+      "field_routing",
+      "id",
+      "note",
+      "result_sections",
+      "reverse",
+      "scale",
+      "stage_variants",
+      "tier"
+    ],
+    "item": [
+      "change_reason",
+      "consistency_pair",
+      "education_routing",
+      "evidence_axis",
+      "gloss",
+      "grid_row",
+      "grid_stem",
+      "industry_pack",
+      "item_id",
+      "measurement_axis",
+      "module",
+      "old_item_id",
+      "option_values",
+      "options",
+      "origin",
+      "rationale",
+      "requirement",
+      "response_scale",
+      "reverse_flag",
+      "role_function",
+      "stage_wording",
+      "technical_domain",
+      "tier",
+      "wording"
+    ],
+    "relation_td_industry": [
+      "appears_as",
+      "axes_watched",
+      "dimensions",
+      "industry",
+      "industry_name",
+      "strength",
+      "td",
+      "td_name"
+    ],
+    "relation_td_role": [
+      "appears_as",
+      "axes_watched",
+      "role",
+      "role_name",
+      "strength",
+      "td",
+      "td_name"
+    ],
+    "industry_pack": [
+      "axis_emphasis",
+      "code",
+      "core",
+      "demands",
+      "evidence_reading",
+      "gap_language",
+      "items",
+      "job_aliases",
+      "judgement_dimensions",
+      "markets",
+      "name_en",
+      "name_ko",
+      "org_mix",
+      "result_line",
+      "scene",
+      "status",
+      "version",
+      "vocabulary"
+    ],
+    "role_pack": [
+      "application_material",
+      "code",
+      "compare_with",
+      "core",
+      "core_ref",
+      "decides",
+      "differs_from",
+      "items",
+      "markets",
+      "name_en",
+      "name_ko",
+      "owns",
+      "required_axes",
+      "status",
+      "version"
+    ]
+  },
+  "shared": {
+    "axes": [
+      "J1",
+      "J2",
+      "J3",
+      "J4",
+      "J5",
+      "J6",
+      "J7",
+      "J8"
+    ],
+    "levels": {
+      "L0": "없다",
+      "L1": "접했다. 남이 한 것을 보거나 받아 썼다",
+      "L2": "수행했다. 내가 그 일을 했다",
+      "L3": "소유했다. 내가 정하고 그 결과가 쓰였다"
+    },
+    "scales": [
+      "S4",
+      "S8"
+    ],
+    "exposure_labels": [
+      "없음",
+      "1~2회",
+      "3회 이상"
+    ],
+    "level_options": [
+      "없다",
+      "남이 한 것을 받아 썼다",
+      "내가 했다",
+      "내가 정하고 그 결과가 쓰였다"
+    ],
+    "result_sections": {
+      "A": "강하게 드러난 기술영역",
+      "B": "비교가 필요한 영역",
+      "C": "아직 판단하기 어려운 영역",
+      "D": "실제 해본 업무",
+      "E": "직접 해본 기술 판단",
+      "F": "이미 있는 근거",
+      "G": "부족한 근거",
+      "H": "직무로 번역 가능한 경험",
+      "I": "다음 행동",
+      "J": "비교할 직무"
+    }
+  }
+}

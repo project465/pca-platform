@@ -10,7 +10,7 @@
 export const RESULT_MODEL_VERSION = "me-v3-result-model.5";
 
 /** 결과지에 나가는 한국어. 문장만 바뀌면 이것만 올린다 */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.16";
+export const RESULT_COPY_VERSION = "me-v3-result-copy.17";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -18,7 +18,24 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.16";
  * 문장 하나를 고친 날 화면 판본까지 올리면, 되짚을 때 무엇이 바뀐
  * 것인지 알 수 없다. 넷이 따로 간다: 화면 · 문장 · 모델 · 판단.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V21";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V22";
+
+/*
+ * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX
+ * §6 · §7).
+ *
+ * 문장 쪽은 `NO_EVIDENCE` 머리글 하나다. `아직 판단할 재료가 모이지
+ * 않았습니다` 로 열면, 결과지를 연 사람이 처음 읽는 줄이 자기가 모자란다는
+ * 말이고 그 아래 할 일까지 그 틀에서 읽힌다. **좋게 꾸미지 않는다**:
+ * 적합도도 강점도 말하지 않고 지금 이 응답으로 할 수 있는 말만 적는다.
+ *
+ * 화면 쪽은 **인쇄 규칙뿐**이다. 첫 쪽의 머리글이 한 단 크고, 네 칸 가운데
+ * `지금 확인된 것` 과 `먼저 해볼 것` 만 면이 한 단 짙고, 칸 머리에 색
+ * 표시가 하나 서고, 절 머리 위에 금이 하나 그어진다. **담긴 것을 한 줄도
+ * 덜어내지 않았고** 화면은 그대로다: 색조는 `@media print` 안에만 있다.
+ *
+ * **묶음 판정도 결과 모델도 한 줄도 바뀌지 않았다.**
+ */
 
 /*
  * `V18` 로 올린 까닭. **굵기를 네 단으로 모았다**(활자 규격 §3).

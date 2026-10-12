@@ -7,6 +7,7 @@ import {
 } from "@/lib/me-v3/runtime/session";
 import { regionLayer } from "@/lib/me-v3/region";
 import { CmShell, CmHead } from "../shell";
+import { Icon } from "@/components/sf/icon";
 import { PickCard, PickGrid, SectionHeader } from "../ui";
 
 export const metadata = { title: "탐색 · 내 CareerMatri" };
@@ -70,9 +71,36 @@ export default async function Explore() {
      깔면 어디부터 볼지 읽는 사람이 정해야 한다. 확인된 영역이 없으면
      묶음이 하나뿐이라 그대로 전부가 선다 */
   const indOn = industries.filter((x) => x.core.length);
-  const indOff = industries.filter((x) => !x.core.length);
   const roleOn = roles.filter((x) => x.core.length);
-  const roleOff = roles.filter((x) => !x.core.length);
+
+  /**
+   * 위에 세울 둘셋을 고른다(규격 §4).
+   *
+   * **고른 것이 먼저다.** 그 사람이 응시에서 직접 고른 산업과 직무는 다시
+   * 찾아보려고 들어오는 자리이므로 맨 위에 선다. 그다음이 `relations` 의
+   * `중심` 으로 걸린 확인된 영역이 있는 쪽이다.
+   *
+   * **차례를 점수로 만들지 않는다**(규격 §4·§18). 묶는 기준이 둘(고름 ·
+   * 중심 겹침)이고 묶음 안에서는 사전의 차례 그대로다. 적합도도 순위도
+   * 만들지 않는다.
+   */
+  const topOf = <T extends { code: string }>(all: T[], on: T[], chosen: Set<string>) => {
+    const top: T[] = [];
+    for (const x of [...all.filter((y) => chosen.has(y.code)), ...on]) {
+      if (top.length >= 3) break;
+      if (!top.some((t) => t.code === x.code)) top.push(x);
+    }
+    const up = new Set(top.map((t) => t.code));
+    const onCodes = new Set(on.map((x) => x.code));
+    /* 아래 줄은 **겹치는 쪽이 먼저**다. 위에 선 것은 빼고 차례는 그대로다 */
+    const rest = [
+      ...on.filter((x) => !up.has(x.code)),
+      ...all.filter((x) => !up.has(x.code) && !onCodes.has(x.code)),
+    ];
+    return { top, rest };
+  };
+  const ind = topOf(industries, indOn, mine);
+  const role = topOf(roles, roleOn, myRoles);
 
   /**
    * 한 줄(규격 §8·§14).
@@ -90,7 +118,8 @@ export default async function Explore() {
          들고 온다 */
       name: string; kind: "이 산업이" | "이 직무가"; line: string;
       core: string[]; link: string[];
-      chosen?: boolean;
+      /** 고른 칸이면 읽어 줄 말(`고른 산업`). 화면에는 표시 하나만 선다 */
+      chosen?: string;
       more?: { scene?: string; head: string; lines: string[] } | null;
     },
   ) => (
@@ -102,7 +131,14 @@ export default async function Explore() {
             <em>{line}</em>
           </span>
           <span className="cm-item-meta">
-            {chosen ? <span className="cm-dot is-on">고르셨습니다</span> : null}
+            {/* **`고르셨습니다` 를 적지 않는다**(규격 §4). 고른 줄이 둘이면
+                그 말이 둘 서고, 읽는 사람은 자기가 고른 것을 이미 안다.
+                표시 하나로 두고 읽어 주는 자리에만 글자를 남긴다 */}
+            {chosen ? (
+              <span className="cm-item-sel" role="img" aria-label={chosen}>
+                <Icon name="check" size={12} />
+              </span>
+            ) : null}
             <span>자세히 보기</span>
           </span>
           {/* **겹치는 것이 없으면 그 사실을 적는다.** 칸을 비우면 읽는
@@ -141,56 +177,73 @@ export default async function Explore() {
           줄로 깔면 훑어 고르는 자리가 읽어 내려가는 표가 된다.
           **새 점수를 만들지 않는다**: 앞에 세우는 기준은 `relations` 의
           `중심`으로 걸린 확인된 영역이 있는가뿐이다 */}
-      {indOn.length ? (
+      {ind.top.length ? (
         <>
           <SectionHeader icon="compass" title="먼저 볼 산업"
-            sub="지금 확인된 영역이 이 산업들이 보는 판단과 겹칩니다." />
-          <PickGrid>
-            {indOn.slice(0, 3).map((x) => (
+            sub={mine.size
+              ? "응시에서 고른 산업이 먼저 서고, 그다음이 지금 확인된 영역과 겹치는 쪽입니다."
+              : "지금 확인된 영역이 이 산업들이 보는 판단과 겹칩니다."} />
+          {/* **남는 칸을 두지 않는다**(규격 §17). 위에 서는 것이 하나나
+              둘이면 세 칸 격자에 빈 면이 남는다. 칸 수를 담긴 수에
+              맞춘다 */}
+          <PickGrid cols={Math.min(ind.top.length, 3) as 1 | 2 | 3}>
+            {ind.top.map((x) => (
               <PickCard key={x.code} href="#ind-all" icon="building" tone="b"
-                title={x.name} tag={mine.has(x.code) ? "고르셨습니다" : undefined}
+                title={x.name}
+                selected={mine.has(x.code) ? { label: "고른 산업" } : undefined}
                 lead={x.first}
-                meta={`이어지는 영역 · ${names(x.core).slice(0, 3).join(" · ")}`}
+                meta={x.core.length
+                  ? `이어지는 영역 · ${names(x.core).slice(0, 3).join(" · ")}`
+                  : "지금 확인된 영역과 겹치는 것은 아직 없습니다"}
                 cta="자세히 보기" />
             ))}
           </PickGrid>
         </>
       ) : null}
+      {/* **적는 수가 실제 줄 수다.** 위에 선 것을 빼고 적지 않으면 일곱
+          줄짜리 목록 머리에 `여덟` 이 선다 */}
       <p className="cm-listhead" id="ind-all">
-        {indOn.length ? "다른 산업" : "산업"}<em>여덟</em>
+        {ind.top.length ? "다른 산업" : "산업"}<em>{ind.rest.length}개</em>
       </p>
       <ul className="cm-list">
-        {[...indOn.slice(3), ...indOff].map((x) => (
+        {ind.rest.map((x) => (
           <Row key={x.code} name={x.name} kind="이 산업이" line={x.first}
-            core={x.core} link={x.link} chosen={mine.has(x.code)}
+            core={x.core} link={x.link}
+            chosen={mine.has(x.code) ? "고른 산업" : undefined}
             more={x.scene
               ? { scene: x.scene.scene, head: "이 산업이 보는 판단", lines: x.scene.demands }
               : null} />
         ))}
       </ul>
 
-      {roleOn.length ? (
+      {role.top.length ? (
         <>
           <SectionHeader icon="send" tone="c" title="먼저 볼 직무"
-            sub="확인된 영역을 가장 많이 쓰는 직무입니다." />
-          <PickGrid>
-            {roleOn.slice(0, 3).map((r) => (
+            sub={myRoles.size
+              ? "응시에서 고른 직무가 먼저 서고, 그다음이 확인된 영역을 많이 쓰는 쪽입니다."
+              : "확인된 영역을 가장 많이 쓰는 직무입니다."} />
+          <PickGrid cols={Math.min(role.top.length, 3) as 1 | 2 | 3}>
+            {role.top.map((r) => (
               <PickCard key={r.code} href="#role-all" icon="target" tone="c"
-                title={r.name} tag={myRoles.has(r.code) ? "고르셨습니다" : undefined}
+                title={r.name}
+                selected={myRoles.has(r.code) ? { label: "고른 직무" } : undefined}
                 lead={r.first}
-                meta={`이어지는 영역 · ${names(r.core).slice(0, 3).join(" · ")}`}
+                meta={r.core.length
+                  ? `이어지는 영역 · ${names(r.core).slice(0, 3).join(" · ")}`
+                  : "지금 확인된 영역과 겹치는 것은 아직 없습니다"}
                 cta="자세히 보기" />
             ))}
           </PickGrid>
         </>
       ) : null}
       <p className="cm-listhead" id="role-all">
-        {roleOn.length ? "다른 직무" : "직무"}<em>여덟</em>
+        {role.top.length ? "다른 직무" : "직무"}<em>{role.rest.length}개</em>
       </p>
       <ul className="cm-list">
-        {[...roleOn.slice(3), ...roleOff].map((r) => (
+        {role.rest.map((r) => (
           <Row key={r.code} name={r.name} kind="이 직무가" line={r.first}
-            core={r.core} link={r.link} chosen={myRoles.has(r.code)}
+            core={r.core} link={r.link}
+            chosen={myRoles.has(r.code) ? "고른 직무" : undefined}
             more={r.domains.length
               ? { head: "이 직무가 다루는 기술영역", lines: r.domains } : null} />
         ))}

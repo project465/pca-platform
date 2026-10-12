@@ -163,9 +163,17 @@ export default async function State(
         label="현재 설명할 수 있는 영역"
         value={ready.length}
         unit="개"
+        /* **0개와 변화 있음을 나란히 두지 않는다**(규격 §3). 아래 `최근
+           달라진 것` 에 올라간 축이 적혀 있는데 이 값이 0 이면, 두 칸이
+           서로 어긋난 말을 하는 것으로 읽힌다. 축이 올라간 것과 영역이
+           설명할 수 있는 상태로 선 것은 다른 일이라, 그 사이를 한 줄로
+           잇는다. **판정 기준은 그대로다**: 세는 값도 묶음 조건도 한 줄도
+           바뀌지 않았고, 바뀐 것은 그 0 을 어떻게 적는가뿐이다 */
         note={ready.length
           ? `가장 근거가 잘 잡힌 곳은 ${domainName(core, ready[0].domain)}입니다.`
-          : "관심이 높은 영역에서 짧게 한 번 해 보고 그것을 경험으로 적으면 여기에 섭니다."}
+          : realChange
+            ? "변화는 생겼지만 아직 설명할 수 있는 기준까지는 올라오지 않았습니다. 무엇이 올라갔는지는 아래 `최근 달라진 것` 에 적혀 있습니다."
+            : "관심이 높은 영역에서 짧게 한 번 해 보고 그것을 경험으로 적으면 여기에 섭니다."}
         action={Object.keys(st.zoneOf).length > ready.length ? (
           <Link className="cm-btn" href="#domains">전체 기술영역 보기</Link>
         ) : undefined}

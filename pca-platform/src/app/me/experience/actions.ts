@@ -20,6 +20,31 @@ import { opFail, ref } from "@/lib/oplog";
  * 계산이 틀어져도 적어 주신 기록은 그대로 남고 `career_events` 의 그 줄이
  * `failed` 로 서서 다음에 다시 집힌다. 그래서 다시 적으실 일이 없다.
  */
+/**
+ * 고른 연도와 월을 한 값으로 합친다.
+ *
+ * **합치는 자리를 하나로 둔다.** `MonthPick` 이 `<name>_y` 와 `<name>_m`
+ * 둘로 보내고, 저장되는 꼴은 `addExperience` 의 `asDate()` 가 정한다
+ * (`2025-03` → `2025-03-01`). 쪽마다 합치면 폼을 하나 더 만드는 사람이
+ * 같은 자리에서 또 걸린다.
+ *
+ * **한쪽만 고른 것은 받지 않는다.** 연도만 고르고 월을 비운 값을 `2025-01`
+ * 로 메우면 그 사람이 고르지 않은 달이 기록에 남는다.
+ *
+ * **전에 보낸 꼴도 그대로 받는다.** `started_on=2025-03` 한 칸으로 보내는
+ * 자리가 남아 있어도 값의 뜻이 바뀌지 않는다.
+ */
+function monthOf(form: FormData, name: string): string | null {
+  const raw = String(form.get(name) ?? "").trim();
+  if (raw) return raw;
+  const y = String(form.get(`${name}_y`) ?? "").trim();
+  const m = String(form.get(`${name}_m`) ?? "").trim();
+  if (!/^\d{4}$/.test(y) || !/^\d{1,2}$/.test(m)) return null;
+  const mm = Number(m);
+  if (mm < 1 || mm > 12) return null;
+  return `${y}-${String(mm).padStart(2, "0")}`;
+}
+
 export async function saveExperience(form: FormData): Promise<void> {
   const user = await requireUser();
   const title = String(form.get("title") ?? "").trim();
@@ -38,8 +63,11 @@ export async function saveExperience(form: FormData): Promise<void> {
   try {
     id = await addExperience(user.id, {
       kind, title,
-      started_on: String(form.get("started_on") ?? "") || null,
-      ended_on: String(form.get("ended_on") ?? "") || null,
+      started_on: monthOf(form, "started_on"),
+      /* **`아직 진행 중` 은 끝난 달을 비운다.** 비어 있는 것이 전부터
+         `아직 안 끝났다`를 뜻하므로(`ended_on IS NULL`), 칸을 하나 더
+         만들지 않고 같은 값으로 들어간다. DB 스키마가 그대로다 */
+      ended_on: form.get("ongoing") ? null : monthOf(form, "ended_on"),
       td_codes: form.getAll("td").map(String),
       axis_codes: form.getAll("axis").map(String),
       problems: form.getAll("problem").map(String),

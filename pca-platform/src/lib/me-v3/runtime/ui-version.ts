@@ -29,10 +29,26 @@
  */
 
 /** 화면 구조와 상호작용. 흐름이나 화면이 바뀌면 올린다 */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V18";
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V19";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
-export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.13";
+export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.14";
+
+/*
+ * `V19` · `copy.14` 로 올린 까닭. **경험 빈도의 화면 말을 공통으로
+ * 잠갔다**(ME 기준 UX §1).
+ *
+ * 격자의 경험 칸이 `없다 · 한두 번 · 여러 번` 에서 `없음 · 1~2회 ·
+ * 3회 이상` 이 됐다. 전공이 늘어도 이 세 낱말은 그대로다: 전공마다 빈도
+ * 척도를 따로 만들면 같은 `1` 이 전공에 따라 다른 뜻이 되고, 그러면 두
+ * 전공을 같은 자 위에 놓을 수 없다.
+ *
+ * **문항 은행을 고치지 않았다.** 은행의 `options` 와 `option_values` 가
+ * 한 글자도 바뀌지 않았고, 바뀐 것은 `menus.ts` 의 표(`EXPOSURE`)뿐이다.
+ * `FULL_SCALE5` 가 다섯 칸 척도에 하는 일을 그대로 세 칸에 한다. 그래서
+ * `ME_V3_ITEM_BANK_V2.5` 와 `bank-lock.json` 과 저장된 응답의 뜻과
+ * `me-v3-scoring.5` 가 모두 그대로다(`v3:scale` 12가지 · 측정 동결 14가지).
+ */
 
 /*
  * `V2` 로 올린 까닭. **화면 수를 줄였다.** PRO 가 106화면이었고, 자동 진행
@@ -128,7 +144,7 @@ export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.13";
  * 값이 `null` 이라 눈금 위의 자리가 아니다.
  *
  * 경험 보기 셋은 그대로 두었고 차례만 적은 쪽부터로 돌렸다
- * (`없다 · 한두 번 · 여러 번`). 관심과 학습 의향이 왼쪽이 낮은 쪽인데
+ * (`없음 · 1~2회 · 3회 이상`). 관심과 학습 의향이 왼쪽이 낮은 쪽인데
  * 경험만 반대였다.
  *
  * **채점 판본은 올리지 않는다**: `band()` 와 그것을 읽는 자리가 한 줄도

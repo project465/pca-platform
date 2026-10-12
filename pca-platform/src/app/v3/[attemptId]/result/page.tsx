@@ -174,7 +174,7 @@ function Axes({ d }: { d: ResultDomain }) {
 
 const BAND_KO = { HIGH: "높음", MID: "보통", LOW: "낮음" } as const;
 const EXP_KO = {
-  NONE: "해 본 적 없음", ONCE_OR_TWICE: "한두 번", SEVERAL: "여러 번",
+  NONE: "해 본 적 없음", ONCE_OR_TWICE: "1~2회", SEVERAL: "3회 이상",
 } as const;
 
 /**

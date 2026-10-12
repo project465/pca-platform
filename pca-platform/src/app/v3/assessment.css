@@ -449,7 +449,7 @@
 }
 .qs-cell b { font-size: var(--q-t-gloss); font-weight: var(--ui-w-sb); color: var(--q-ink-2); }
 /* **숫자가 없는 칸은 낱말이 값이다.** 1~5 는 숫자가 크기를 지고 낱말은 뜻만
-   보태지만, 없다·한두 번·여러 번은 낱말 말고 읽을 것이 없다. 같은 12px
+   보태지만, 없음·1~2회·3회 이상은 낱말 말고 읽을 것이 없다. 같은 12px
    흐린 글씨로 두면 고르는 자리가 설명처럼 보인다 */
 .qs-cell:not(:has(b)) { min-height: 60px; }
 .qs-cell:not(:has(b)) i {

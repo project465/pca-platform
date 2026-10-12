@@ -120,6 +120,13 @@ export const ROUTE_TABLE: RouteRow[] = [
   { route: "/cores", newUser: "여기로 들어온다", oldUser: "같음", cls: "CURRENT" },
   { route: "/v3/start", newUser: "`/cores` 가 보낸다", oldUser: "같음", cls: "CURRENT" },
   { route: "/v3/[attemptId]", newUser: "응시", oldUser: "이어하기", cls: "CURRENT" },
+  /* 들어가는 자리와 끝나는 자리. **응답도 routing 도 받지 않는다**: 앞은
+     응시를 연 직후 한 번 서고 뒤는 제출과 결과지 사이에 선다. 표에 적지
+     않으면 이 둘이 소유 구역의 미분류 쪽으로 걸린다 */
+  { route: "/v3/[attemptId]/intro", newUser: "시작 안내", oldUser: "이어하기는 지나간다",
+    cls: "CURRENT" },
+  { route: "/v3/[attemptId]/done", newUser: "제출 뒤 브리지", oldUser: "같음",
+    cls: "CURRENT" },
   { route: "/v3/[attemptId]/result", newUser: "결과지", oldUser: "같음", cls: "CURRENT" },
   { route: "/v3/[attemptId]/feedback", newUser: "파일럿 의견", oldUser: "같음",
     cls: "CURRENT" },

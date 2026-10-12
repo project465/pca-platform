@@ -201,8 +201,16 @@ export async function fillExperience(
 ): Promise<number> {
   await p.goto(`${BASE}/me/experience/new`, { waitUntil: "networkidle" });
   await p.fill('input[name="title"]', title);
-  const month = await p.$('input[name="started_on"]');
-  if (month) await month.fill("2025-03");
+  /* **달은 고르기 둘이다**(ME 기준 UX §2). 브라우저 기본 달 고르기를
+     걷었으므로 `input[name="started_on"]` 은 더 없고, 보내는 것은
+     `started_on_y` 와 `started_on_m` 이다. 한쪽만 고르면 서버가 받지
+     않으므로 **둘을 같이 고른다** */
+  const y = p.locator('select[name="started_on_y"]');
+  if (await y.count()) {
+    await y.selectOption("2025").catch(() => undefined);
+    await p.locator('select[name="started_on_m"]').selectOption("3")
+      .catch(() => undefined);
+  }
   await p.locator('.cm-pick:has(input[name="kind"])').first()
     .click({ timeout: 3000 }).catch(() => undefined);
   if (hooks?.onStep) await hooks.onStep(1);

@@ -241,6 +241,72 @@ export function EmptyState({
 }
 
 /**
+ * 언제였는지를 받는 칸(규격 §2).
+ *
+ * **브라우저 기본 달 고르기를 쓰지 않는다.** `input type="month"` 는 기기와
+ * 브라우저마다 다른 창을 띄우고(크로뮴은 달력, 사파리는 바퀴, 안드로이드는
+ * 전체 화면), 그 창은 CareerMatri 의 활자도 색도 쓰지 않는다. 한 화면 안에서
+ * 그 칸만 다른 제품으로 보이고, 그 어긋남은 **누를 때만** 드러난다.
+ *
+ * **날을 받지 않는다.** 경험이 몇 월이었는지까지만 쓰고(나중에 찾을 때 쓰는
+ * 값이다), 날을 받으면 적는 사람이 기억에 없는 자리를 채워야 한다.
+ *
+ * **고른 값은 `연도-월` 로 합쳐 보낸다.** 합치는 자리는 서버 쪽 한 곳이고
+ * (`monthOf()`), 저장되는 꼴은 `asDate()` 가 정한다. 그래서 **전에 적어 둔
+ * 기록의 값이 한 줄도 바뀌지 않는다.**
+ */
+export function MonthPick({
+  name, label, hint, ongoing, years = 20,
+}: {
+  /** 보내는 이름. 실제로는 `<name>_y` 와 `<name>_m` 둘이 간다 */
+  name: string;
+  label: string;
+  hint?: string;
+  /** `아직 진행 중` 을 함께 받을 자리인가. 끝난 달에만 둔다 */
+  ongoing?: { name: string; label: string };
+  years?: number;
+}) {
+  /* **범위를 못 박지 않는다.** 올해부터 거꾸로 세어, 해가 바뀌어도 그 해가
+     목록에 들어온다. 손으로 적어 두면 내년 1월에 적을 수 없는 칸이 된다 */
+  const now = new Date().getFullYear();
+  const ys = Array.from({ length: years + 1 }, (_, i) => now - i);
+  return (
+    <fieldset className="cm-field is-month">
+      <legend><span>{label}</span></legend>
+      {hint ? <em>{hint}</em> : null}
+      <div className="cm-month">
+        <label className="cm-month-c">
+          <span>연도</span>
+          <select className="cm-select" name={`${name}_y`} defaultValue="">
+            <option value="">선택</option>
+            {ys.map((y) => <option key={y} value={y}>{y}년</option>)}
+          </select>
+        </label>
+        <label className="cm-month-c">
+          <span>월</span>
+          <select className="cm-select" name={`${name}_m`} defaultValue="">
+            <option value="">선택</option>
+            {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
+              <option key={m} value={m}>{m}월</option>
+            ))}
+          </select>
+        </label>
+      </div>
+      {ongoing ? (
+        /* **고르면 끝난 달 칸을 치운다.** 둘을 같이 두면 `진행 중` 을 고른
+           사람이 아래 칸을 비워 둔 것이 맞는지 한 번 더 생각한다. 치우는
+           것은 CSS 가 하므로 자바스크립트가 없는 자리에서도 값은 그대로
+           비어 간다(`비어 있음` 이 곧 진행 중이다) */
+        <label className="cm-pick cm-month-on">
+          <input type="checkbox" name={ongoing.name} value="yes" />
+          {ongoing.label}
+        </label>
+      ) : null}
+    </fieldset>
+  );
+}
+
+/**
  * 요약 Hero(규격 §2 B).
  *
  * `PrimaryActionHero` 와 따로 둔 까닭은 드는 것이 달라서다. 저쪽은 **다음
@@ -290,7 +356,7 @@ export function StatHero({
  * `준비 중`)이고 점수나 등수가 아니다.
  */
 export function PickCard({
-  href, icon, tone, title, tag, lead, meta, cta, disabled, strong,
+  href, icon, tone, title, tag, lead, meta, cta, disabled, strong, selected,
 }: {
   href?: string;
   icon: IconName;
@@ -313,6 +379,16 @@ export function PickCard({
    * 보이는 글줄 하나이고 누르는 자리는 칸 하나 그대로다.
    */
   strong?: boolean;
+  /**
+   * 그 사람이 이미 고른 칸(규격 §4).
+   *
+   * **`고르셨습니다` 를 적지 않는다.** 고른 것이 셋이면 그 말이 셋 서고,
+   * 그 줄은 읽는 사람에게 아무 말도 하지 않는다(자기가 고른 것을 안다).
+   * 고른 상태는 **칸 자체**가 든다: 테와 면이 갈리고 이름 옆에 표시가
+   * 하나 선다. **색으로만 말하지 않는다**: 표시가 모양으로 먼저 읽히고
+   * 읽어 주는 자리에는 무엇을 고른 것인지가 글자로 간다.
+   */
+  selected?: { label: string };
 }) {
   const body = (
     <>
@@ -321,6 +397,11 @@ export function PickCard({
       </span>
       <span className="cm-pc-h">
         <b>{title}</b>
+        {selected ? (
+          <span className="cm-pc-sel" role="img" aria-label={selected.label}>
+            <Icon name="check" size={13} />
+          </span>
+        ) : null}
         {tag ? <em>{tag}</em> : null}
       </span>
       {lead ? <span className="cm-pc-lead">{lead}</span> : null}
@@ -335,7 +416,9 @@ export function PickCard({
   if (disabled || !href) {
     return <div className="cm-pc is-off">{body}</div>;
   }
-  return <Link className="cm-pc" href={href}>{body}</Link>;
+  return (
+    <Link className={`cm-pc${selected ? " is-sel" : ""}`} href={href}>{body}</Link>
+  );
 }
 
 /** 칸을 거는 격자. 좁은 화면에서 한 줄이 된다 */

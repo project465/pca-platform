@@ -51,8 +51,21 @@ export type Control =
 
 /** 다섯 칸의 말. 문면이 "…하고 싶다" 꼴이라 동의 정도로 받는다 */
 export const SCALE5 = ["전혀 아니다", "아니다", "보통이다", "그렇다", "매우 그렇다"];
-/** 격자의 경험 칸. **횟수를 묻고 수준을 묻지 않는다** */
-export const EXPOSURE = ["없다", "한두 번", "여러 번"];
+/**
+ * 격자의 경험 칸. **횟수를 묻고 수준을 묻지 않는다.**
+ *
+ * **전공이 늘어도 이 세 낱말은 그대로다**(Authoring Contract §6). 전공마다
+ * 빈도 척도를 따로 만들면 같은 `1` 이 전공에 따라 다른 뜻이 되고, 그러면
+ * 두 전공을 같은 자 위에 놓을 수 없다.
+ *
+ * **문항 은행을 고치지 않는다.** 은행의 `options`(`없다 · 한두 번 ·
+ * 여러 번`)와 `option_values`(`0 · 1 · 2`)가 한 글자도 바뀌지 않았고,
+ * 이 표는 `FULL_SCALE5` 와 같은 자리다: 화면이 그 값을 어떻게 적는가일
+ * 뿐이다. 그래서 `ME_V3_ITEM_BANK_V2.5` 와 `bank-lock.json` 과 저장된
+ * 응답의 뜻이 그대로다. 자리는 `option_values` 가 정한다: 낱말을 차례로
+ * 늘어놓으면 은행의 보기 차례가 바뀌는 날 뜻이 어긋난다.
+ */
+export const EXPOSURE = ["없음", "1~2회", "3회 이상"];
 
 /** 척도 밖. **값이 비어 있다는 뜻이지 관심이 낮다는 뜻이 아니다** */
 const SHORT_UNKNOWN = "모르겠다";
@@ -99,7 +112,7 @@ const FULL_SCALE5: Record<string, Record<number, string>> = {
  */
 export function fullOf(axis: string, value: number | null, label: string): string {
   if (value === null) return label;
-  if (axis === "exposure") return label;
+  if (axis === "exposure") return EXPOSURE[value] ?? label;
   const t = FULL_SCALE5[axis];
   return t?.[value] ? `${value} ${t[value]}` : `${value} ${label}`;
 }
@@ -107,15 +120,15 @@ export function fullOf(axis: string, value: number | null, label: string): strin
 /**
  * 번호를 뗀 말. **다섯 칸 척도에서는 화면에 서지 않는다.**
  *
- * 그리는 자리는 둘뿐이다: 척도 밖(`모르겠다`)과 경험 칸 셋(`없다 ·
- * 한두 번 · 여러 번`, 저쪽은 낱말 자체가 값이다). 다섯 칸 척도의 값도
+ * 그리는 자리는 둘뿐이다: 척도 밖(`모르겠다`)과 경험 칸 셋(`없음 ·
+ * 1~2회 · 3회 이상`, 저쪽은 낱말 자체가 값이다). 다섯 칸 척도의 값도
  * **재는 축의 말 그대로** 돌려준다: 줄여 적은 말을 따로 들고 있으면
  * 머리와 칸이 다른 말을 하게 되고, 그 어긋남이 좁은 화면에서만 드러난다.
  */
 export function shortOf(axis: string, value: number | null, label: string): string {
   if (value === null) return SHORT_UNKNOWN;
   /* 경험은 세 칸이고 말이 이미 짧다 */
-  if (axis === "exposure") return label;
+  if (axis === "exposure") return EXPOSURE[value] ?? label;
   return FULL_SCALE5[axis]?.[value] ?? label;
 }
 

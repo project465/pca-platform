@@ -2,8 +2,8 @@
  "schema_version": "me-v3-result-lock.1",
  "note": "결과지 화면 1차 동결. 문장만 고치면 `RESULT_COPY_VERSION` 만 올리고, 칸이나 절이 바뀌면 `RESULT_MODEL_VERSION`, 화면 구조가 바뀌면 `RESULT_UI_VERSION` 을 올린다. 채점 판본은 이 가운데 무엇으로도 올리지 않는다",
  "versions": {
-  "result_ui_version": "ME_V3_RESULT_UI_V21",
-  "result_copy_version": "me-v3-result-copy.16",
+  "result_ui_version": "ME_V3_RESULT_UI_V22",
+  "result_copy_version": "me-v3-result-copy.17",
   "result_model_version": "me-v3-result-model.5",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.5",
   "scoring_version": "me-v3-scoring.5"
@@ -20,15 +20,15 @@
   "종이에 빈 쪽과 범위 밖 쪽수가 없다": "v3:result:pdf"
  },
  "files": {
-  "src/app/v3/result.css": "f588719fac349bd077b9125ce5268aa60fe53c78143c4d842078801eaeea555c",
-  "src/app/v3/[attemptId]/result/page.tsx": "12a22677c093a59a0a69cae49e2278459377d4159aa37ed7359dd77edb6e6b11",
+  "src/app/v3/result.css": "4b2a83e9faf13678920f0f352a7de7a9b96e3c3652cc6b4f12c60c4d39996ff0",
+  "src/app/v3/[attemptId]/result/page.tsx": "742945b2be9bc049d8e716f160dee658e8702a6581914bf902269c47d9ab4ade",
   "src/app/v3/[attemptId]/result/fold.tsx": "da6c8b16f124941d283dc9ae4ad0f41b2271fd8d8233028bfdc3d4c500d4fbb4",
   "src/app/v3/[attemptId]/result/disclose.tsx": "a82c70b1d0897647877cfff4a672e8ebffd8716f76e6cfcc3d25e066f074f455",
   "src/app/v3/[attemptId]/result/save.tsx": "2830e503419eba94015798787ab2f7cd4abca39c8126fe1cf3dca087f6c6e7c1",
   "src/app/v3/[attemptId]/result/track.tsx": "6136c271ee7df7323f029912182c7496a8633fdf7479b6080697a6f4a217787c",
-  "src/lib/me-v3/result/text.ko.ts": "cdd601507e089e27b9c1526e7af31fd1b5804a7380cea7cd08b4e74c7183d2a8",
+  "src/lib/me-v3/result/text.ko.ts": "16ed800a7dc173dccb75ec0b4ebec16338ec9478d5f5f2003fe87cb68c33799e",
   "src/lib/me-v3/result/josa.ts": "152cd30c2af136172618c14fa6fb4175b97cf16350db631e3e2e6c72fd7dd4af",
-  "src/lib/me-v3/result/version.ts": "ba089c3be17c5f2cfe4a890be8da8fbbb359254253138e4fa9700c89f2424389",
+  "src/lib/me-v3/result/version.ts": "fc3dc68fd4915942fe1ebd186eda2c6aa0feb17da14493d72d9e6adb50abdd3f",
   "src/lib/me-v3/runtime/domain-facts.ts": "49f73a7eb5de3b5ae72885f5d8399bd147c20a2b82bab62167338c4ae48b2695"
  }
 }

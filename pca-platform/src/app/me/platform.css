@@ -1405,6 +1405,23 @@ a.cm-feed-row:hover, .cm-feed > li:hover { background: #fafcfe; }
 /* 날짜처럼 짧은 값은 칸이 글 폭을 다 먹지 않는다 */
 .cm-field.is-half { max-width: 260px; }
 
+/* ── 언제였는지 고르는 칸 ──────────────────────────────────────────────
+   **브라우저 기본 달 고르기를 쓰지 않는다**: 기기마다 다른 창이 뜨고 그
+   창은 이 제품의 활자도 색도 쓰지 않는다. 연도와 월을 같은 줄에 세우고
+   위에 무엇을 고르는 칸인지 적는다. 날은 받지 않는다 */
+.cm-field.is-month { max-width: 340px; }
+.cm-month { display: flex; gap: 8px; }
+.cm-month-c { display: flex; flex-direction: column; gap: 4px; flex: 1 1 0; min-width: 0; }
+.cm-month-c > span {
+  font-size: var(--ui-t-cap); color: var(--sf-ink-3);
+}
+/* 연도가 월보다 넓다. 같은 폭으로 두면 `2026년` 이 잘린다 */
+.cm-month-c:first-child { flex: 1.4 1 0; }
+.cm-month-on { align-self: flex-start; margin-top: 2px; }
+/* **고르면 칸을 치운다.** 비어 있는 것이 곧 진행 중이라, 칸을 남겨 두면
+   비워 둔 것이 맞는지 한 번 더 생각하게 된다 */
+.cm-field.is-month:has(.cm-month-on input:checked) .cm-month { display: none; }
+
 /* ── 경험을 적는 세 걸음 ──────────────────────────────────────────────
    **한 줄이다**(규격 §2). 셋을 다 적는 까닭은 남은 걸음이 몇인지 모르면
    둘째에서 닫기 때문이고, 한 줄로 적는 까닭은 **이 표가 첫 입력 칸보다
@@ -1537,6 +1554,20 @@ a.cm-pc:hover { border-color: var(--cm-blue-line); box-shadow: var(--cm-lift-sh)
   font-style: normal; font-size: var(--cm-t-micro); font-weight: var(--ui-w-md);
   color: var(--cm-ink-3); padding: 2px 7px; border-radius: var(--cm-r-pill);
   background: var(--cm-surface-2); border: 1px solid var(--cm-line);
+}
+/* ── 이미 고른 칸 ──────────────────────────────────────────────────────
+   **`고르셨습니다` 를 적지 않는다**(규격 §4). 고른 상태는 칸 자체가 들고,
+   표시가 모양으로 먼저 읽히고 색은 거드는 자리다 */
+.cm-pc.is-sel { border-color: var(--cm-blue-line); background: var(--cm-blue-soft); }
+.cm-pc-sel {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px; border-radius: 999px;
+  background: var(--cm-primary); color: #fff;
+}
+.cm-item-sel {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 17px; height: 17px; border-radius: 999px;
+  background: var(--cm-primary); color: #fff; flex: 0 0 auto;
 }
 .cm-pc-lead {
   margin: 6px 0 0; font-size: var(--cm-t-body); line-height: 1.6;

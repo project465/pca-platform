@@ -3,6 +3,7 @@ import { EXPERIENCE_KINDS, activeCore } from "@/lib/me-v3/platform";
 import { content, domainName } from "@/lib/me-v3/runtime/session";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { CmShell, CmHead } from "../../shell";
+import { MonthPick } from "../../ui";
 import { saveExperience } from "../actions";
 import Steps from "./steps";
 import UnsavedGuard from "../../unsaved";
@@ -138,10 +139,7 @@ export default async function NewExperience(
                   칸 둘로 세우면 날짜가 이 걸음에서 가장 큰 자리를 먹는데,
                   날짜는 나중에 찾을 때 쓰는 값이지 판정에 들어가는 값이
                   아니다. 끝난 달은 3단에서 적고 싶은 사람만 적는다 */}
-              <label className="cm-field is-half">
-                <span>시작한 달</span>
-                <input className="cm-input" type="month" name="started_on" />
-              </label>
+              <MonthPick name="started_on" label="시작한 달" />
             </>
           }
           three={
@@ -166,11 +164,9 @@ export default async function NewExperience(
               <details className="cm-why is-fields">
                 <summary>더 적을 것이 있으면 (선택)</summary>
 
-                <label className="cm-field is-half">
-                  <span>끝난 달</span>
-                  <em>아직 하는 중이면 비워 두세요.</em>
-                  <input className="cm-input" type="month" name="ended_on" />
-                </label>
+                <MonthPick
+                  name="ended_on" label="끝난 달"
+                  ongoing={{ name: "ongoing", label: "아직 진행 중" }} />
 
                 <label className="cm-field">
                   <span>보완 설명 한 줄</span>

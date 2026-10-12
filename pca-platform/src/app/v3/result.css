@@ -798,8 +798,48 @@
   .rs-top p { font-size: 9.5pt; }
   .rs-top p + p { font-size: 8.5pt; }
 
-  .rs-sect { margin-top: 22px; }
-  .rs-sect > h2 { font-size: 13pt; break-after: avoid; }
+  /* ── 첫 두 쪽의 위계(규격 §7) ──────────────────────────────────────
+     **담긴 것을 한 줄도 덜어내지 않는다.** 바꾼 것은 같은 네 칸을 어떤
+     크기와 어떤 면으로 세우는가다. 상담 자리에서 처음 펴는 쪽이 이쪽이라,
+     `지금 확인된 것 · 먼저 해볼 것 · 먼저 채울 것 · 산업·직무 연결` 넷이
+     한눈에 갈려야 한다. 전에는 넷이 같은 흰 면에 같은 활자로 서서, 종이에
+     서는 **네 열짜리 표**로 읽혔다.
+
+     **화면은 건드리지 않는다**(규격 §20). 화면에서 색을 더 쓰지 않기로
+     한 것은 강조색이 누르는 자리와 겨루기 때문이고, 종이에는 누를 자리가
+     없다. 그래서 색조는 이 블록 안에만 있다 */
+  .rs-h1 { font-size: 20.5pt; line-height: 1.26; }
+  .rs-kicker { margin-bottom: 5px; }
+  /* **묶음 전체를 붙여 두지 않는다.** 네 칸에 `avoid` 를 걸었더니 그
+     묶음이 첫 쪽에 다 안 들어가는 날 통째로 다음 쪽으로 밀리고 첫 쪽이
+     절반 비었다(STANDARD 가 열 쪽이 된 까닭이다). 쪼개지면 뜻이 사라지는
+     것은 칸 하나지 네 칸 전체가 아니다 */
+  .rs-top > div { break-inside: avoid; }
+  /* 첫 칸과 `먼저 해볼 것` 만 면이 한 단 짙다. 나머지 둘은 흰 면에 남아
+     **무엇을 먼저 읽는지가 면의 짙기로** 읽힌다 */
+  .rs-top > div:first-child { background: var(--r-sunk); }
+  .rs-top > div.is-do { background: var(--r-accent-soft); }
+  .rs-top > div:first-child > p:first-of-type { font-size: 12.5pt; line-height: 1.35; }
+  /* 칸 머리에 색 표시 하나. **뜻을 갖지 않는다**: 넷을 한 덩이로 읽지
+     않게 갈라 주는 자리이고, 무엇의 칸인지는 그 옆 글자가 든다 */
+  .rs-top h3 { display: flex; align-items: center; gap: 5px; }
+  .rs-top h3::before {
+    content: ""; flex: 0 0 auto; width: 7pt; height: 7pt; border-radius: 2pt;
+    background: var(--r-accent-line);
+  }
+  .rs-top > div:first-child h3::before { background: var(--r-accent); }
+  .rs-top > div.is-do h3::before { background: var(--r-gold); }
+
+  /* 절 머리 위에 금 하나. 종이에서는 머리글이 같은 크기로 이어 서면
+     어디서 절이 갈리는지가 안 읽힌다. **여백을 금 위아래로 나눠 가진다**:
+     금을 그으면서 위 여백까지 그대로 두면 절마다 한 뼘이 늘어 STANDARD 가
+     아홉 쪽에서 열 쪽이 됐다. 쪽수는 본문을 깎지 않고 여백에서 돌려받는다 */
+  .rs-sect { margin-top: 14px; }
+  .rs-sect > h2 {
+    font-size: 13pt; break-after: avoid;
+    padding-top: 7px; border-top: 1px solid var(--r-line);
+  }
+  .rs-sect > .rs-h2b { border-top: 0; padding-top: 0; }
   .rs-sect > .rs-h2b { margin-top: 24px; }
   /* **머리글만 붙여 둔다.** 안내 줄까지 `avoid` 를 걸면 크롬이 다음
      덩이 전체를 끌고 가고, 그 앞 쪽이 머리글 두 줄만 남긴 채 비었다 */

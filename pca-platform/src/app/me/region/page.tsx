@@ -144,14 +144,32 @@ export default async function Region() {
         </EmptyState>
       )}
 
-      <SectionHeader icon="grid" tone="c" title="기관마다 일이 서는 모양이 다릅니다" />
-      <PickGrid cols={3}>
-        {L.org_types.map((o, i) => (
-          <PickCard key={o.code} icon="building"
-            tone={(["b", "c", "v", "w"] as const)[i % 4]}
-            title={o.label} lead={o.scene} />
-        ))}
-      </PickGrid>
+      {/* ── 기관 유형별 일의 방식 ── **보조 섹션이다**(규격 §5).
+          이 일곱 줄은 그 지역의 기관 자료가 아니고 **어느 지역에서나 같은
+          일반론**이다. 그런데 큰 카드 일곱을 세 칸 격자로 세워 두니, 위의
+          `이 지역에서 함께 볼 곳` 이 비어 있는 날 이쪽이 이 쪽의 본문처럼
+          읽혔다. 머리글을 한 단 내리고 줄로 눕힌다.
+
+          **지우지 않는다.** 실제 기관 자료가 들어오는 날 위 묶음이 메인으로
+          올라서고 이쪽은 그대로 보조로 남는다: 그때 고칠 것이 없다 */}
+      <p className="cm-more-mark"><span>참고</span></p>
+      <h2 className="cm-sub-h">기관 유형별 일의 방식</h2>
+      <p className="cm-lead" style={{ marginTop: 0 }}>
+        지역과 관계없이 기관 유형마다 일이 서는 모양이 다릅니다. 어디를
+        보실지 정할 때 참고하시라고 적어 두었습니다.
+      </p>
+      <div className="cm-panel is-quiet">
+        <div className="cm-pane">
+          <div className="cm-rows">
+            {L.org_types.map((o) => (
+              <p className="cm-row" key={o.code}>
+                <b>{o.label}</b>
+                <span>{o.scene}</span>
+              </p>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {/* **긴 방어문을 첫 화면에 크게 세우지 않는다**(규격 §9). 자료가
           왜 비어 있는지는 눌러서 읽는 자리로 내린다 */}
