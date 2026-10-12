@@ -22,7 +22,9 @@ import { query, queryOne } from "../src/lib/db";
 import { campusV3 } from "../src/lib/me-v3/campus";
 import { hashPassword } from "../src/lib/password";
 import { MIN_CELL } from "../src/lib/org";
-import { allLeaves, university, wave1Of } from "../src/lib/campus/registry";
+import {
+  allLeaves, findLeaf, retiredCodeOf, university, wave1Of,
+} from "../src/lib/campus/registry";
 
 let pass = 0; const bad: string[] = [];
 const ok = (w: string, c: boolean, saw = "") => {
@@ -101,6 +103,38 @@ async function main(): Promise<void> {
   const names = new Map(allLeaves(u).map((r) => [r.leaf.code, r.leaf.name]));
   const unread = v.by_department.map((c) => c.key).filter((k) => !names.has(k));
   ok("집계에 적힌 코드를 전부 이름으로 읽는다", !unread.length, unread.join(" "));
+
+  /**
+   * **지난 코드로 적힌 줄이 남의 학과가 되지 않는가**(규격 작업 2).
+   *
+   * 등록부에서 내려놓은 코드로 응시 줄을 하나 적어 보고, 그 줄이 집계에
+   * 제 줄로 서는지와 **살아 있는 자리로 읽히지 않는지**를 본다. 코드를
+   * 돌려 쓰면 이 자리에서 지난 줄이 조용히 다른 학과 줄이 된다.
+   */
+  const gone = (u.retired_codes ?? [])[0];
+  if (gone) {
+    const r = await queryOne<{ id: string }>(
+      `INSERT INTO users (login_id, email, display_name, password_hash,
+                          status, locale, is_demo, must_reset_pw)
+       VALUES ($1,$1,'홍길동',$2,'active','ko',TRUE,FALSE) RETURNING id::text`,
+      [`agg-gone@test.invalid`, pw]);
+    ids.push(r?.id as string);
+    await query(
+      `INSERT INTO v3_attempts
+         (user_id, tier, core_code, education_stage, item_bank_version,
+          scoring_version, university_code, college_code, department_code)
+       VALUES ($1,'BASIC','ME_CORE_V3','bachelor','x','y','PCU',$2,$3)`,
+      [r?.id, COL, gone.code]);
+    const v2 = await campusV3({ orgIds: [], universityCode: "PCU" });
+    const row = v2.by_department.find((c) => c.key === gone.code);
+    ok(`지난 코드가 제 줄로 선다 — ${gone.code}`, Boolean(row),
+      JSON.stringify(v2.by_department.map((c) => c.key)));
+    ok("지난 코드가 살아 있는 자리로 읽히지 않는다",
+      findLeaf(u, gone.code) === null);
+    const was = retiredCodeOf(u, gone.code);
+    ok(`지난 코드가 무엇이었는지 읽힌다 — ${was?.was ?? ""}`, Boolean(was?.was));
+    await query(`DELETE FROM v3_attempts WHERE department_code = $1`, [gone.code]);
+  }
 
   /* 학교를 안 넘기면 한 명도 잡히지 않는다 */
   const none = await campusV3({ orgIds: [], universityCode: null });

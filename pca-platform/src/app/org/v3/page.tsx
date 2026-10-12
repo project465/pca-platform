@@ -5,7 +5,7 @@ import { resolveLang } from "@/lib/locale-server";
 import { orgsOf, MIN_CELL } from "@/lib/org";
 import { campusV3, type Cell } from "@/lib/me-v3/campus";
 import { core as coreEntry } from "@/lib/me-v3/core-registry";
-import { allLeaves, facultyOf, university } from "@/lib/campus/registry";
+import { allLeaves, facultyOf, retiredCodeOf, university } from "@/lib/campus/registry";
 import { BRAND, toLang2 } from "@/lib/surface-text";
 import { Shell, PageHead, Section } from "@/components/sf/shell";
 import { NAV_CAMPUS } from "@/components/sf/nav";
@@ -40,9 +40,17 @@ function campusNames(universityCode: string | null): {
     const f = facultyOf(u, r.leaf.code);
     return [r.leaf.code, f ? `${f.name} · ${r.leaf.name}` : r.leaf.name];
   }));
+  /* **내려놓은 코드를 학과 이름으로 읽지 않는다.** 등록부에서 내려온
+     코드가 담당자 화면에 날것으로 찍히면 읽는 사람이 등록부가 깨진 줄로
+     본다. 그 코드가 무엇이었는지를 적는다 */
   return {
     college: (k: string) => col.get(k) ?? k,
-    dept: (k: string) => dep.get(k) ?? k,
+    dept: (k: string) => {
+      const live = dep.get(k);
+      if (live) return live;
+      const gone = retiredCodeOf(u, k);
+      return gone ? `${gone.was} (지난 등록부 자리)` : k;
+    },
   };
 }
 

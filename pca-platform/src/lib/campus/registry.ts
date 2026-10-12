@@ -70,6 +70,13 @@ export type CampusUnit = {
   student_visible?: boolean;
   /** 그 Catalog 의 공식 자료에서 따로 확인하지 못하고 앞 Catalog 에서 옮겼다 */
   carried_over?: boolean;
+  /**
+   * 그 자리를 누가 다니는가. 적지 않으면 학부 재학생이다.
+   *
+   * **빼지 않고 표시만 한다.** 빼면 그 학부 학생이 자기 전공을 찾지
+   * 못한다. 계약 범위가 정해지면 `student_visible` 한 칸으로 닫는다.
+   */
+  audience?: "ADULT_LEARNER" | "INTERNATIONAL";
   /** 앞 Catalog 의 어느 자리를 이어받았는가. 코드로 적는다 */
   replaces?: string[];
   note?: string;
@@ -103,8 +110,24 @@ export type CampusCatalog = {
   source_name: string;
   /** 언제 그 쪽과 맞춰 봤는가. **확인하지 못했으면 비운다** */
   verified_at: string | null;
-  verification: "VERIFIED" | "OFFICIAL_PAGE_UNREACHABLE" | "OWNER_DICTATED";
+  /**
+   * 어디까지 확인했는가.
+   *
+   * `VERIFIED`                   원본 쪽을 직접 열어 맞춰 봤다
+   * `OFFICIAL_PAGE_UNREACHABLE`  열지 못했다
+   * `OWNER_DICTATED`             사업주가 적어 준 것을 옮겼다
+   * `SECONDARY_EVIDENCE`         공식 쪽을 사람이 대조해 전달한 근거 파일을 옮겼다
+   *
+   * **`VERIFIED` 말고는 `verified_at` 을 적지 않는다.** 직접 열어 보지
+   * 않은 것에 시각을 적으면 그 줄이 언제 틀려졌는지 아무도 모른다.
+   */
+  verification: "VERIFIED" | "OFFICIAL_PAGE_UNREACHABLE" | "OWNER_DICTATED"
+    | "SECONDARY_EVIDENCE";
   verification_note?: string;
+  /** 2차 근거로 쓴 파일. 저장소 안에 두고 길을 적는다 */
+  evidence_file?: string;
+  /** 그 Catalog 를 적을 때 본 자료들 */
+  sources?: { name: string; url: string; note?: string }[];
   /**
    * 어느 Catalog 인지 모르는 사람에게 보여 줄 자리인가(규격 작업 2).
    *
@@ -131,6 +154,19 @@ export type CampusUniversity = {
   /** 먼저 만들 **Core**. 차례가 곧 만드는 차례다 */
   wave1?: string[];
   wave1_note?: string;
+  /** 공식 편제에는 있으나 학생이 고르는 자리가 아닌 조직 */
+  excluded_units?: { name: string; where?: string; why: string }[];
+  /**
+   * 뜻이 바뀌어 **내려놓은 코드.**
+   *
+   * 한 번 쓴 코드가 다른 학과를 가리키게 두면, 그 코드로 적힌 지난 응시
+   * 줄이 조용히 남의 학과 줄이 된다. 그래서 뜻이 바뀌면 새 코드를 만들고
+   * 옛 코드는 여기로 내린다. 내린 코드는 어떤 Catalog 에서도 다시 서지
+   * 않고, 그 코드로 적힌 줄은 학과 이름 대신 `지난 등록부 자리` 로 읽힌다.
+   */
+  retired_codes?: { code: string; was: string; was_year: number; why: string }[];
+  /** 개편 계보로 짐작되는 짝. **확정한 적 없는 후보다** */
+  lineage_candidates?: string[];
   catalogs: CampusCatalog[];
 };
 
@@ -459,6 +495,20 @@ export function facultyOf(u: CampusUniversity, leafCode: string): CampusUnit | n
   const found = findLeaf(u, leafCode);
   if (!found) return null;
   return found.unit.code === found.leaf.code ? null : found.unit;
+}
+
+/**
+ * 내려놓은 코드인가. 맞으면 그것이 무엇이었는지 돌려준다.
+ *
+ * **지난 코드가 남의 학과 이름으로 읽히지 않게 하는 자리다.** 응시 줄에
+ * 적힌 코드가 지금 등록부에 없으면 담당자 화면이 그 코드를 그대로
+ * 찍었는데, 그러면 읽는 사람이 등록부가 깨진 줄로 본다.
+ */
+export function retiredCodeOf(
+  u: CampusUniversity, code: string,
+): { code: string; was: string; was_year: number; why: string } | null {
+  const want = code.trim().toUpperCase();
+  return (u.retired_codes ?? []).find((r) => r.code === want) ?? null;
 }
 
 /**

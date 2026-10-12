@@ -26,7 +26,7 @@ import { registry as coreRegistry } from "../src/lib/me-v3/core-registry";
 import {
   allLeaves, campusRegistry, catalogStatusAt, catalogsOf, defaultCatalog,
   leavesOf, mappingStatusOf, provenanceOf, readinessOf, replacesOf,
-  resolveCatalog, statusOf, visible, wave1Of,
+  resolveCatalog, retiredCodeOf, statusOf, visible, wave1Of,
   type CampusUnit, type CampusUniversity,
 } from "../src/lib/campus/registry";
 import { academicYear, admissionFrom } from "../src/lib/campus/year";
@@ -62,6 +62,10 @@ console.log("학교 전용 진입 — 학년도별 Catalog 와 경계\n");
 const reg = campusRegistry();
 const cores = coreRegistry().cores;
 const unis = reg.universities;
+
+/** 그 코드로 지금 서 있는 자리가 있는가 */
+const findLeafSafe = (u: CampusUniversity, code: string) =>
+  allLeaves(u).some((r) => r.leaf.code === code);
 
 /** 그 학교의 모든 고르는 자리와 학부 코드 */
 const codesOf = (u: CampusUniversity): string[] =>
@@ -156,8 +160,8 @@ ok("학교 코드가 겹치지 않는다",
         ? c.source_url.startsWith("http")
         : Boolean(c.source_name?.trim()) && c.verification !== "VERIFIED";
       if (!srcOk || !c.source_name?.trim()
-        || !["VERIFIED", "OFFICIAL_PAGE_UNREACHABLE", "OWNER_DICTATED"]
-          .includes(c.verification)) badSrc.push(where);
+        || !["VERIFIED", "OFFICIAL_PAGE_UNREACHABLE", "OWNER_DICTATED",
+          "SECONDARY_EVIDENCE"].includes(c.verification)) badSrc.push(where);
       /* **확인하지 못한 것을 확인했다고 적지 않는다** */
       if (c.verification === "VERIFIED" ? !c.verified_at : Boolean(c.verified_at)) {
         lying.push(where);
@@ -378,6 +382,67 @@ ok("학교 코드가 겹치지 않는다",
   ok("이어받는 쪽이 더 늦은 학년도다", !wrongWay.length, wrongWay.join(" "));
   ok("Core 가 갈리는 이어받음에 까닭이 적혀 있다", !noteless.length,
     noteless.join(" "));
+}
+
+
+/* ── ③-2 코드가 뜻을 바꾸지 않는가 ───────────────────────────── */
+
+{
+  /**
+   * **한 번 쓴 코드가 다른 학과를 가리키면 안 된다**(규격 작업 2).
+   *
+   * 그렇게 두면 그 코드로 적힌 지난 응시 줄이 조용히 남의 학과 줄이
+   * 되고, 담당자 화면과 집계가 **틀린 이름으로 맞게 생긴 숫자**를 낸다.
+   * 그래서 뜻이 바뀌면 새 코드를 만들고 옛 코드는 내린다.
+   */
+  const reused: string[] = [];
+  const thin: string[] = [];
+  for (const u of unis) {
+    const live = new Set(codesOf(u));
+    for (const r of u.retired_codes ?? []) {
+      if (live.has(r.code)) reused.push(`${u.university_code}:${r.code}`);
+      if (!r.was?.trim() || !r.why?.trim() || !r.was_year) thin.push(r.code);
+      /* 내린 코드를 다시 찾으면 자리가 아니라 **내린 기록**이 나와야 한다 */
+      if (findLeafSafe(u, r.code)) reused.push(`${u.university_code}:${r.code}`);
+      if (!retiredCodeOf(u, r.code)) thin.push(r.code);
+    }
+  }
+  const n = unis.reduce((a, u) => a + (u.retired_codes?.length ?? 0), 0);
+  ok(`내린 코드가 다시 서지 않는다 — 내린 코드 ${n}개`, !reused.length,
+    [...new Set(reused)].join(" "));
+  ok("내린 코드마다 무엇이었고 왜 내렸는지 적혀 있다", !thin.length,
+    [...new Set(thin)].join(" "));
+}
+
+{
+  /**
+   * **공식 편제에 적혔다고 전부 고르는 자리가 되지 않는다**(규격 작업 1).
+   *
+   * 교육 지원 조직과 교양 조직을 응시 목록에 넣으면, 학생이 전공이 아닌
+   * 것을 자기 전공으로 고른다. 뺀 자리는 **까닭과 함께** 적어 둔다.
+   */
+  for (const u of unis) {
+    const out = u.excluded_units ?? [];
+    ok(`뺀 조직에 까닭이 적혀 있다 — ${u.university_code} ${out.length}개`,
+      out.length > 0 && out.every((x) => x.name?.trim() && x.why?.trim()),
+      out.filter((x) => !x.why?.trim()).map((x) => x.name).join(" "));
+    const names = new Set(allLeaves(u).map((r) => r.leaf.name));
+    const slipped = out.filter((x) => names.has(x.name)).map((x) => x.name);
+    ok("뺀 조직이 고르는 자리에 서지 않는다", !slipped.length, slipped.join(" "));
+  }
+
+  /* 대상이 다른 자리는 **표시해 두고 빼지 않는다**: 빼면 그 학부 학생이
+     자기 전공을 찾지 못한다 */
+  const tagged: Record<string, number> = {};
+  for (const u of unis) {
+    for (const r of allLeaves(u)) {
+      const a = r.leaf.audience ?? r.unit.audience;
+      if (a) tagged[a] = (tagged[a] ?? 0) + 1;
+    }
+  }
+  ok(`대상이 다른 자리에 표시가 붙어 있다 — ${
+    Object.entries(tagged).map(([k, v]) => `${k} ${v}`).join(" · ") || "0"}`,
+    Object.keys(tagged).length > 0);
 }
 
 /* ── ④ 매핑이 실제로 닿는가 ────────────────────────────────────── */

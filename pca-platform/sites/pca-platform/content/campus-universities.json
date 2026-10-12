@@ -1,6 +1,6 @@
 {
-  "schema_version": "cm-campus-universities.4",
-  "note": "학교마다 다른 것만 담는다: 학교 이름 · 학년도별 Catalog · 단과대학 · 학부와 학과 · 전공과 트랙 · 그 자리에서 CareerMatri Major Core 로 가는 길 · 그 학교가 먼저 보는 지역. **검사와 채점과 결과는 담지 않는다** — 그쪽은 Major Core 등록부(`major-cores.json`)와 공통 엔진이 들고 있고, 학교가 늘어도 한 줄도 달라지지 않는다. 학교 학과 수만큼 Core 를 만들지 않는다: 학교 이름은 여기 있고 전공의 자는 저쪽에 있다",
+  "schema_version": "cm-campus-universities.5",
+  "note": "학교마다 다른 것만 담는다: 학교 이름 · 학년도별 Catalog · 단과대학 · 학부와 학과 · 전공과 트랙 · 그 자리에서 CareerMatri Major Core 로 가는 길 · 그 학교가 먼저 보는 지역. **검사와 채점과 결과는 담지 않는다**: 그쪽은 Major Core 등록부(`major-cores.json`)와 공통 엔진이 들고 있고, 학교가 늘어도 한 줄도 달라지지 않는다",
   "contract": {
     "levels": [
       "catalog",
@@ -9,13 +9,14 @@
       "major"
     ],
     "levels_note": "`catalog` 은 학년도별 학과 구조 한 벌이다. 그 아래가 단과대학이고, `unit` 은 학과이거나 학부이며, 학부면 `majors` 아래에 전공이나 트랙이 선다. **고르는 자리는 가장 아래 칸**이다: 학부만 있는 자리는 고를 수 없고, 전공이 있으면 전공을 고른다",
-    "catalog_note": "학과 구조는 개편 시점마다 갈린다. 공식 자료 두 벌이 서로 다른 구조를 적고 있으면 그것은 **오류가 아니라 시점이 다른 Catalog** 다. 한 시점의 목록으로 다른 시점을 덮어쓰면, 덮어쓴 그날부터 한쪽 학생이 자기 학과를 찾지 못한다. 그래서 Catalog 를 나란히 두고 **섞지 않는다**: 한 화면에는 한 Catalog 의 구조만 선다",
+    "catalog_note": "학과 구조는 개편 시점마다 갈린다. 공식 쪽이 **연도 탭**으로 2027년과 2026년을 따로 적고 있으면 그것은 중복이 아니라 서로 다른 해의 편제다. 한 시점의 목록으로 다른 시점을 덮어쓰면, 덮어쓴 그날부터 한쪽 학생이 자기 학과를 찾지 못한다. 그래서 Catalog 를 나란히 두고 **섞지 않는다**: 한 화면에는 한 Catalog 의 구조만 선다",
     "catalog_status": [
       "ACTIVE",
       "FUTURE",
       "RETIRED"
     ],
-    "catalog_status_note": "`ACTIVE` 는 지금 재학생이 쓰는 구조이고 `FUTURE` 는 아직 시작하지 않은 구조이며 `RETIRED` 는 끝난 구조다. **이 값은 설명이고 기본값을 정하지 않는다**: 기본값은 `default_for_unknown` 이 든다. 적어 둔 값과 `effective_from`·`effective_to` 로 끌어낸 값이 어긋나면 `campus:check` 가 걸린다. 적어 두는 까닭은 사람이 읽고 고칠 자리가 있어야 해서이고, 세는 까닭은 적어 둔 값이 해가 바뀌면 조용히 틀려지기 때문이다",
+    "catalog_status_note": "`ACTIVE` 는 지금 재학생이 쓰는 구조이고 `FUTURE` 는 아직 시작하지 않은 구조이며 `RETIRED` 는 끝난 구조다. **이 값은 설명이고 기본값을 정하지 않는다**: 기본값은 `default_for_unknown` 이 든다. 적어 둔 값과 유효기간으로 끌어낸 값이 어긋나면 `campus:check` 가 걸린다",
+    "default_note": "모르는 사람에게 어느 Catalog 를 보여 줄지는 `default_for_unknown` 한 칸이 정한다. **날짜로 정하지 않는다**: 학년도가 바뀌는 날 기본값이 저절로 넘어가면 그날 재학생이 자기 학과가 없는 목록을 본다. 재학생과 신입생은 같은 날 둘 다 재학 중이라 `ACTIVE` 하나로 가를 수 없다",
     "provenance_fields": [
       "catalog_year",
       "effective_from",
@@ -24,26 +25,32 @@
       "verified_at",
       "status"
     ],
-    "provenance_note": "여섯 칸은 **고르는 자리마다 값이 선다.** Catalog 가 기본값을 들고 그 자리가 다르면 자리에 적는다(`provenanceOf`). 자리마다 여섯 줄을 베껴 두지 않는 까닭은 베껴 두면 Catalog 를 고친 날 마흔 줄 가운데 몇이 옛 값으로 남고, 남은 그 줄이 틀렸다는 것을 아무도 모르기 때문이다. 베끼지 않아도 자리마다 여섯 값이 전부 나오는지는 검사가 센다",
+    "provenance_note": "여섯 칸은 **고르는 자리마다 값이 선다.** Catalog 가 기본값을 들고 그 자리가 다르면 자리에 적는다(`provenanceOf`). 자리마다 여섯 줄을 베껴 두지 않는 까닭은 베껴 두면 Catalog 를 고친 날 몇 줄이 옛 값으로 남고, 남은 그 줄이 틀렸다는 것을 아무도 모르기 때문이다",
+    "code_policy": "**코드는 뜻이 고정된 이름이다.** 한 번 쓴 코드가 다른 학과를 가리키게 하지 않는다: 그렇게 하면 그 코드로 적힌 지난 응시 줄이 조용히 남의 학과 줄이 된다. 뜻이 바뀌면 **새 코드를 만들고 옛 코드는 `retired_codes` 로 내린다.** 내린 코드는 어떤 Catalog 에서도 다시 서지 않고, 그 코드로 적힌 줄은 학과 이름 대신 `지난 등록부 자리` 로 읽힌다",
+    "selection_policy": {
+      "note": "**공식 편제에 적힌 모든 것이 응시 선택지가 되지는 않는다.** 고르는 자리는 학생이 자기 전공으로 고를 수 있는 가장 아래 칸이고, 교육 지원 조직과 교양 조직은 들어가지 않는다",
+      "included": "학부 전공과 트랙, 전공이 없는 학과",
+      "excluded": "교직과·교직부(교원양성 교육과정 조직) · 주시경교양대학의 기초교육부와 중점교육부(교양 교육조직) · 전공을 고르는 자리인 자율전공학부(`routing_only`)",
+      "audience_note": "평생교육융합학부는 성인학습자, 글로벌융합학부는 외국인 유학생을 받는 조직으로 보인다. **등록부에는 공식 편제대로 전부 싣고 학생 화면에도 세운다**: 빼면 그 학부 학생이 자기 전공을 찾지 못한다. 다만 계약 범위와 학생 계정 대상이 확인되기 전까지 그 자리는 `audience` 로 표시해 두고, 노출 정책이 정해지면 `student_visible` 한 칸으로 닫는다"
+    },
     "status_shown": [
       "READY",
       "PREPARING"
     ],
-    "status_note": "학생에게 보이는 상태는 둘뿐이다: `검사 가능` 과 `준비 중`. 안쪽 상태(매핑 단계 · Core 성숙도 · Catalog 상태)는 학생 화면에 한 글자도 나가지 않는다. 그리고 이 파일에 적어 두지 않는다: 적어 두면 Core 가 열린 날 이 파일이 옛 상태를 들고 있고, 둘이 갈리면 `검사 가능` 이라고 적힌 학과에서 빈 검사가 열린다",
+    "status_note": "학생에게 보이는 상태는 둘뿐이다: `검사 가능` 과 `준비 중`. 안쪽 상태는 학생 화면에 한 글자도 나가지 않는다",
     "mapping_status": [
       "EXACT",
       "SPECIALIZATION_REQUIRED",
       "CORE_REQUIRED"
     ],
-    "mapping_status_note": "`EXACT` 는 그 자리를 맡는 Canonical Major Core 가 등록부에 있고 갈래가 더 필요하지 않다. `SPECIALIZATION_REQUIRED` 는 Core 는 있는데 그 학과가 읽을 갈래가 아직 적히지 않았다. `CORE_REQUIRED` 는 그 자리를 맡는 Core 가 아직 없다. **이 값도 적어 두지 않고 끌어온다**: `core_code` 와 `specialization` 과 `specialization_required` 셋에서 나온다",
-    "ready_note": "`EXACT` 라고 바로 응시가 열리지 않는다. 학생에게 `검사 가능` 이 되려면 그 Core 가 이 시장에서 **지금 팔 수 있는 상태**여야 한다. 매핑이 섰다는 것과 문항이 써졌다는 것은 다른 일이다",
-    "reuse_note": "학과 이름이 개편돼도 **같은 Canonical Core 를 다시 쓴다.** 전기공학과와 전기전자공학과와 AI융합전자전공은 이름이 셋이고 Core 는 하나다(`EE_CORE_V1`). 이름이 바뀔 때마다 채점을 새로 만들면 같은 학교 안에서 자가 갈리고, 그 순간 앞 학번과 뒤 학번의 결과를 견줄 수 없다. 어느 자리가 어느 자리를 이어받았는지는 `replaces` 가 적는다",
-    "carried_over_note": "`carried_over` 는 그 Catalog 의 공식 자료에서 따로 확인하지 못하고 앞 Catalog 에서 그대로 옮긴 자리다. **확인된 것과 옮긴 것을 같은 값으로 적지 않는다**",
+    "mapping_status_note": "`EXACT` 는 그 자리를 맡는 Canonical Major Core 가 등록부에 있고 갈래가 더 필요하지 않다. `SPECIALIZATION_REQUIRED` 는 Core 는 있는데 그 학과가 읽을 갈래가 아직 적히지 않았다. `CORE_REQUIRED` 는 그 자리를 맡는 Core 가 아직 없다. **적어 두지 않고 끌어온다**",
+    "ready_note": "`EXACT` 라고 바로 응시가 열리지 않는다. 학생에게 `검사 가능` 이 되려면 그 Core 가 이 시장에서 **지금 팔 수 있는 상태**여야 한다",
+    "reuse_note": "학과 이름이 개편돼도 **같은 Canonical Core 를 다시 쓴다.** 전기전자공학과와 전기공학과와 AI융합전자전공은 이름이 셋이고 Core 는 하나다(`EE_CORE_V1`). 이름이 바뀔 때마다 채점을 새로 만들면 같은 학교 안에서 자가 갈린다",
+    "replaces_note": "**이름이 비슷하다는 까닭만으로 이어받음을 적지 않는다.** 2026 과 2027 사이의 개편 계보는 공식 자료가 계보를 적어 줄 때만 적는다. 지금은 한 줄도 적지 않았고, 짐작되는 짝은 `lineage_candidates` 에 후보로만 둔다",
+    "review_note": "`확인 전` 이 적힌 자리는 Core 를 들지 않는다. 이름이 비슷하다는 까닭만으로 다른 전공의 자를 붙이면 그 학생이 남의 영역 사전을 읽고, 그 결과는 되돌릴 수 없다",
     "routing_only_note": "자율전공학부처럼 **전공을 고르는 자리**는 Core 를 만들지 않는다. 고르면 전공 목록으로 돌려보낸다",
-    "student_visible_note": "일반 학부생이 고를 자리가 아닌 것은 학생 화면에서 뺀다. 등록부에는 남겨 둔다: 지우면 다음 사람이 빠뜨린 줄로 보고 다시 넣는다",
-    "code_note": "고르는 자리의 코드는 **한 학교 안에서 하나의 이름 공간**이고 앞머리에 학년도를 든다(`PCU26_` · `PCU27_`). 그래서 응시 줄에 적힌 `department_code` 하나로 어느 Catalog 의 자리인지가 그대로 나오고, **DB 에 Catalog 칸을 더하지 않는다**",
-    "default_note": "모르는 사람에게 어느 Catalog 를 보여 줄지는 `default_for_unknown` 한 칸이 정한다. **날짜로 정하지 않는다**: 학년도가 바뀌는 날 기본값이 저절로 넘어가면 그날 재학생이 자기 학과가 없는 목록을 본다. 재학생과 신입생은 같은 날 둘 다 재학 중이라 `ACTIVE` 하나로 가를 수 없다. 학교마다 이 칸이 정확히 하나인지는 `campus:check` 가 센다",
-    "review_note": "`확인 전` 이 적힌 자리는 Core 를 들지 않는다. 이름이 비슷하다는 까닭만으로 다른 전공의 자를 붙이면 그 학생이 남의 영역 사전을 읽고, 그 결과는 되돌릴 수 없다. 이 규칙도 `campus:check` 가 센다"
+    "student_visible_note": "일반 학부생이 고를 자리가 아닌 것은 학생 화면에서 뺀다. 등록부에는 남겨 둔다",
+    "code_note": "고르는 자리의 코드는 **한 학교 안에서 하나의 이름 공간**이고 앞머리에 학년도를 든다(`PCU26_` · `PCU27_`). 그래서 응시 줄에 적힌 `department_code` 하나로 어느 Catalog 의 자리인지가 그대로 나오고, **DB 에 Catalog 칸을 더하지 않는다**"
   },
   "universities": [
     {
@@ -52,7 +59,7 @@
       "market_code": "KR",
       "entry_note": "CareerMatri + 배재대학교 전용 진입",
       "brand_asset": null,
-      "brand_asset_note": "학교 로고 asset 이 저장소에 없다. **그려 넣지 않는다**: 학교 상표를 우리가 다시 그리면 그 학교가 승인한 적 없는 상표가 학생 화면에 선다. 정식 파일과 사용 권한을 받으면 이 칸에 경로를 적는다",
+      "brand_asset_note": "학교 로고 asset 이 저장소에 없다. **그려 넣지 않는다**: 학교 상표를 우리가 다시 그리면 그 학교가 승인한 적 없는 상표가 학생 화면에 선다",
       "region_hint": "KR-CHUNGCHEONG",
       "region_cities": [
         "대전",
@@ -66,17 +73,174 @@
         "PUBADM_CORE_V1",
         "BT_CORE_V1"
       ],
-      "wave1_note": "먼저 만들 **Core** 다. 학과 이름으로 적지 않는 까닭은 현행과 2027 의 이름이 달라도 같은 Core 를 다시 쓰기 때문이다: `EE_CORE_V1` 하나를 쓰면 전기공학과와 전기전자공학과와 AI융합전자전공이 함께 열린다",
+      "wave1_note": "먼저 만들 **Core** 다. 학과 이름으로 적지 않는 까닭은 두 해의 이름이 달라도 같은 Core 를 다시 쓰기 때문이다",
+      "excluded_units": [
+        {
+          "name": "교직과",
+          "where": "인문사회대학 옆에 따로 표시",
+          "why": "교원양성 교육과정 조직으로 보인다. 학생이 자기 전공으로 고르는 자리인지 확인 전이라 응시 목록에 넣지 않았다"
+        },
+        {
+          "name": "주시경교양대학(기초교육부·중점교육부)",
+          "where": "교양 교육조직",
+          "why": "교양 교육조직이고 전공이 아니다"
+        }
+      ],
+      "retired_codes": [
+        {
+          "code": "PCU26_EE_POWER",
+          "was": "전기공학과",
+          "was_year": 2026,
+          "why": "전기공학과는 2027 편제다. 2026 자리는 전기전자공학과이고 코드가 `PCU26_EE` 로 새로 섰다"
+        },
+        {
+          "code": "PCU26_AISW",
+          "was": "AI소프트웨어공학부",
+          "was_year": 2026,
+          "why": "AI소프트웨어공학부는 2027 편제다. 2026 자리는 소프트웨어공학부(`PCU26_SWF`)다"
+        },
+        {
+          "code": "PCU26_CS_COMPUTER",
+          "was": "컴퓨터공학전공(AI소프트웨어공학부)",
+          "was_year": 2026,
+          "why": "같은 까닭. 2026 자리는 `PCU26_SWF_COMPUTER` 다"
+        },
+        {
+          "code": "PCU26_CS_SOFTWARE",
+          "was": "소프트웨어학전공(AI소프트웨어공학부)",
+          "was_year": 2026,
+          "why": "같은 까닭. 2026 자리는 `PCU26_SWF_SOFTWARE` 다"
+        },
+        {
+          "code": "PCU26_CS_SECURITY",
+          "was": "정보보안학전공(AI소프트웨어공학부)",
+          "was_year": 2026,
+          "why": "같은 까닭. 2026 자리는 `PCU26_SWF_SECURITY` 다"
+        },
+        {
+          "code": "PCU26_CS_GAME",
+          "was": "게임공학전공(AI소프트웨어공학부)",
+          "was_year": 2026,
+          "why": "같은 까닭. 2026 자리는 `PCU26_SWF_GAME` 다"
+        },
+        {
+          "code": "PCU26_CS_AI",
+          "was": "인공지능전공",
+          "was_year": 2026,
+          "why": "인공지능전공은 2027 편제에만 있다(`PCU27_AISW_AI`)"
+        },
+        {
+          "code": "PCU26_PHYSAI",
+          "was": "피지컬AI공학부",
+          "was_year": 2026,
+          "why": "피지컬AI공학부는 2027 편제다(`PCU27_PHYSAI`)"
+        },
+        {
+          "code": "PCU26_DRONE_ROBOT",
+          "was": "드론로봇공학전공(피지컬AI공학부)",
+          "was_year": 2026,
+          "why": "2026 자리는 학과인 드론로봇공학과(`PCU26_DRONE`)다"
+        },
+        {
+          "code": "PCU26_AICONV_ELEC",
+          "was": "AI융합전자전공",
+          "was_year": 2026,
+          "why": "AI융합전자전공은 2027 편제에만 있다(`PCU27_PHYSAI_ELEC`)"
+        },
+        {
+          "code": "PCU27_EE",
+          "was": "전기전자공학과",
+          "was_year": 2027,
+          "why": "전기전자공학과는 2026 편제다(`PCU26_EE`)"
+        },
+        {
+          "code": "PCU27_SW",
+          "was": "소프트웨어공학부",
+          "was_year": 2027,
+          "why": "소프트웨어공학부는 2026 편제다(`PCU26_SWF`)"
+        },
+        {
+          "code": "PCU27_CS_COMPUTER",
+          "was": "컴퓨터공학(소프트웨어공학부)",
+          "was_year": 2027,
+          "why": "같은 까닭. 2026 자리는 `PCU26_SWF_COMPUTER` 다"
+        },
+        {
+          "code": "PCU27_CS_SOFTWARE",
+          "was": "소프트웨어학(소프트웨어공학부)",
+          "was_year": 2027,
+          "why": "같은 까닭. 2026 자리는 `PCU26_SWF_SOFTWARE` 다"
+        },
+        {
+          "code": "PCU27_CS_SECURITY",
+          "was": "정보보안학(소프트웨어공학부)",
+          "was_year": 2027,
+          "why": "같은 까닭. 2026 자리는 `PCU26_SWF_SECURITY` 다"
+        },
+        {
+          "code": "PCU27_CS_GAME",
+          "was": "게임공학(소프트웨어공학부)",
+          "was_year": 2027,
+          "why": "같은 까닭. 2026 자리는 `PCU26_SWF_GAME` 다"
+        },
+        {
+          "code": "PCU27_DRONE_ROBOT",
+          "was": "드론로봇공학과",
+          "was_year": 2027,
+          "why": "드론로봇공학과는 2026 편제다(`PCU26_DRONE`). 2027 은 학부 아래 전공이다"
+        },
+        {
+          "code": "PCU26_LIFELONG",
+          "was": "평생교육융합학부(전공 목록 확인 전)",
+          "was_year": 2026,
+          "why": "전공 여섯이 확인돼 학부가 고르는 자리에서 내려왔다. 고르는 자리는 그 아래 전공이다"
+        },
+        {
+          "code": "PCU27_LIFELONG",
+          "was": "평생교육융합학부(전공 목록 확인 전)",
+          "was_year": 2027,
+          "why": "같은 까닭"
+        },
+        {
+          "code": "PCU26_GLOBALCONV",
+          "was": "글로벌자율융합학부",
+          "was_year": 2026,
+          "why": "공식 이름이 글로벌융합학부이고, 전공 여섯이 확인돼 학부가 고르는 자리에서 내려왔다"
+        },
+        {
+          "code": "PCU27_GLOBALCONV",
+          "was": "글로벌자율융합학부",
+          "was_year": 2027,
+          "why": "같은 까닭. 2027 은 전공이 일곱이다"
+        },
+        {
+          "code": "PCU27_PERFORM_MUSIC",
+          "was": "음악트랙(공연예술학과)",
+          "was_year": 2027,
+          "why": "2027 은 공연예술학부의 실용음악전공이다. 같은 자리인지 확정하지 못해 코드를 새로 뒀다"
+        },
+        {
+          "code": "PCU27_PERFORM_FILM",
+          "was": "영화영상트랙(공연예술학과)",
+          "was_year": 2027,
+          "why": "2027 은 영화영상학전공이다. 같은 까닭"
+        }
+      ],
+      "lineage_candidates": [
+        "전기전자공학과(2026) → 전기공학과(2027). 명칭 유사성만으로 계보를 확정할 수 없다",
+        "소프트웨어공학부 4전공(2026) → AI소프트웨어공학부 4전공(2027) + 인공지능전공 신설",
+        "드론로봇공학과(2026) → 피지컬AI공학부 드론로봇공학전공(2027). 같은 Core 를 쓸 수 있는지는 따로 판단한다",
+        "공연예술학과 음악·영화영상 트랙(2026) → 공연예술학부 실용음악·영화영상학 전공(2027). 학과와 전공의 레벨이 같은지 확인이 필요하다",
+        "평생교육융합학부 라이프케어(2026) → 사회복지상담(2027) · 지역소상공비즈니스(2026) → 농산업비즈니스(2027) · 시니어운동처방(2026) → 시니어운동처방·파크골프(2027)",
+        "글로벌융합학부 아트컬처비즈니스(2026) → K컬처비즈니스(2027) · 글로벌IT(2026) → 글로벌IT·AI(2027) · K푸드테크(2027) 신설"
+      ],
       "open_questions": [
-        "두 Catalog 의 공식 쪽을 이 작업 환경에서 직접 읽지 못했다(네트워크 정책이 `pcu.ac.kr` 의 HTTPS 를 CONNECT 403 으로 막는다). 2026-10-12 재검증에서도 같았다. 구조는 사업주가 적어 준 것을 그대로 옮겼고, 글자까지 맞추는 일은 그 쪽이 열린 뒤에 한다",
-        "**가장 무거운 어긋남.** 검색으로 드러난 2027 입학안내 쪽은 `AI소프트웨어공학부` 와 `피지컬AI공학부` 와 `전기공학과` 와 `철도건설학과` 와 `스마트배터리학과` 를 한자리에 적고 있다. 지금 등록부는 앞의 둘을 현행에, `전기전자공학과` 와 `소프트웨어공학부` 를 2027 에 두었다. 두 Catalog 의 AI·SW 블록이 통째로 바뀔 수 있다",
-        "`철도건설공학과` 와 `철도건설학과` 의 표기가 자료마다 다르다. 등록부는 앞엣것으로 적어 두었다",
-        "검색 결과에 `실용음악과` 가 2027 수시 모집단위로 보이는데 등록부에는 없다. 지금 문화예술대학에 선 것은 공연예술학과의 음악트랙이다",
-        "현행 AI·SW창의융합대학에 전기공학과·AI소프트웨어공학부·피지컬AI공학부 말고 다른 학과가 있는지 확인하지 못했다",
-        "2027 소프트웨어공학부에 인공지능 전공이 적혀 있지 않다. 현행 AI소프트웨어공학부의 인공지능전공이 어디로 가는지 확인이 필요하다",
-        "AI·SW 말고 다섯 단과대학은 2027 모집요강에서 따로 확인하지 못해 현행에서 그대로 옮겼다(`carried_over`)",
-        "`교직과` 가 학생이 고르는 전공인지 지원 조직인지 확인하지 못해 두 Catalog 모두에서 뺐다",
-        "`평생교육융합학부` 와 `글로벌자율융합학부` 의 전공 목록을 확인하지 못했다"
+        "두 Catalog 의 공식 쪽을 이 작업 환경에서 직접 열지 못했다(네트워크 정책이 `pcu.ac.kr` 의 HTTPS 를 CONNECT 403 으로 막는다). 구조는 전달받은 근거 파일을 옮긴 것이고 `verified_at` 은 비어 있다",
+        "`교직과` 가 학생이 고르는 전공인지 교원양성 조직인지 확인 전이라 응시 목록에서 뺐다",
+        "평생교육융합학부(성인학습자)와 글로벌융합학부(외국인 유학생)의 계약 범위와 학생 계정 대상이 정해지지 않았다. 지금은 공식 편제대로 전부 싣고 학생 화면에도 세운다",
+        "2026 과 2027 사이의 개편 계보를 공식 자료가 적어 주지 않아 `replaces` 를 한 줄도 적지 않았다. 후보는 `lineage_candidates` 에 있다",
+        "2027 입학안내 랜딩은 `철도건설학과` 로도 적는다. 연도별 탭과 정시 모집요강의 `철도건설공학과` 를 따랐다",
+        "스마트배터리학과의 Core 는 에너지공학·화학공학·신소재 셋이 후보라 고르지 않았다"
       ],
       "catalogs": [
         {
@@ -84,14 +248,23 @@
           "catalog_year": 2026,
           "label": "현재 재학생",
           "status": "ACTIVE",
+          "default_for_unknown": true,
           "effective_from": "2026-03-01",
           "effective_to": null,
           "effective_note": "학년도 시작일(3월 1일)로 적는다. 공식 쪽이 적어 준 날짜가 아니고 학사 일정의 관례다",
           "source_url": "https://www.pcu.ac.kr/kor/contents/105",
-          "source_name": "배재대학교 대학·학과 안내",
+          "source_name": "배재대학교 대학·학과 안내 2026년 탭",
+          "sources": [
+            {
+              "name": "대학·학과 안내 2026년 탭",
+              "url": "https://www.pcu.ac.kr/kor/contents/105",
+              "note": "한 쪽에서 연도를 골라 본다. 반복되는 AI·SW 블록은 중복이 아니라 서로 다른 해다"
+            }
+          ],
           "verified_at": null,
-          "verification": "OFFICIAL_PAGE_UNREACHABLE",
-          "verification_note": "이 작업 환경의 네트워크 정책이 `www.pcu.ac.kr:443` 을 막아(CONNECT 403) 공식 쪽을 직접 읽지 못했다. 아래 구조는 사업주가 적어 준 현행 구조이고 **학과를 기억으로 지어내지 않았다**",
+          "verification": "SECONDARY_EVIDENCE",
+          "verification_note": "이 작업 환경은 `pcu.ac.kr` 의 HTTPS 를 막는다(CONNECT 403). 아래 구조는 **사업주가 공식 연도별 쪽을 사람이 대조해 전달한 근거 파일**을 옮긴 것이고, 원본을 직접 열어 본 것이 아니다. 그래서 `verified_at` 은 비어 있다",
+          "evidence_file": "docs/metri/evidence/PCU_OFFICIAL_EVIDENCE_2026_2027.md",
           "colleges": [
             {
               "code": "HUMSOC",
@@ -283,77 +456,73 @@
             {
               "code": "AI_SW",
               "name": "AI·SW창의융합대학",
-              "note": "현행 구조에서 이 단과대학의 자리가 2027 모집요강과 가장 크게 갈린다",
+              "note": "2026년 탭의 편제다. 2027년과 가장 크게 갈리는 자리라 코드를 따로 뒀다",
               "units": [
                 {
-                  "code": "PCU26_EE_POWER",
-                  "name": "전기공학과",
+                  "code": "PCU26_EE",
+                  "name": "전기전자공학과",
                   "kind": "department",
                   "core_code": "EE_CORE_V1",
-                  "specialization": "SPEC_EE_POWER"
+                  "specialization": null
                 },
                 {
-                  "code": "PCU26_AISW",
-                  "name": "AI소프트웨어공학부",
+                  "code": "PCU26_BATTERY",
+                  "name": "스마트배터리학과",
+                  "kind": "department",
+                  "core_code": null,
+                  "specialization": null,
+                  "note": "이차전지를 어느 Core 로 볼지 확인 전이다. 에너지공학·화학공학·신소재 셋이 후보고, 전공을 아는 분이 고른다"
+                },
+                {
+                  "code": "PCU26_DRONE",
+                  "name": "드론로봇공학과",
+                  "kind": "department",
+                  "core_code": "ROBOT_CORE_V1",
+                  "specialization": null,
+                  "specialization_required": true,
+                  "note": "로봇 Core 는 있는데 드론 갈래가 아직 없다"
+                },
+                {
+                  "code": "PCU26_RAIL",
+                  "name": "철도건설공학과",
+                  "kind": "department",
+                  "core_code": "CIV_CORE_V1",
+                  "specialization": null,
+                  "specialization_required": true,
+                  "note": "토목·건설 Core 는 있는데 철도 갈래가 아직 없다"
+                },
+                {
+                  "code": "PCU26_SWF",
+                  "name": "소프트웨어공학부",
                   "kind": "faculty",
                   "majors": [
                     {
-                      "code": "PCU26_CS_COMPUTER",
+                      "code": "PCU26_SWF_COMPUTER",
                       "name": "컴퓨터공학전공",
                       "kind": "major",
                       "core_code": "CS_CORE_V1",
                       "specialization": "SPEC_CS_COMPUTER"
                     },
                     {
-                      "code": "PCU26_CS_SOFTWARE",
+                      "code": "PCU26_SWF_SOFTWARE",
                       "name": "소프트웨어학전공",
                       "kind": "major",
                       "core_code": "CS_CORE_V1",
                       "specialization": "SPEC_CS_SOFTWARE"
                     },
                     {
-                      "code": "PCU26_CS_SECURITY",
+                      "code": "PCU26_SWF_SECURITY",
                       "name": "정보보안학전공",
                       "kind": "major",
                       "core_code": "CS_CORE_V1",
                       "specialization": "SPEC_CS_SECURITY"
                     },
                     {
-                      "code": "PCU26_CS_GAME",
+                      "code": "PCU26_SWF_GAME",
                       "name": "게임공학전공",
                       "kind": "major",
                       "core_code": "CS_CORE_V1",
                       "specialization": "SPEC_CS_GAME"
-                    },
-                    {
-                      "code": "PCU26_CS_AI",
-                      "name": "인공지능전공",
-                      "kind": "major",
-                      "core_code": "CS_CORE_V1",
-                      "specialization": "SPEC_CS_AI"
-                    }
-                  ]
-                },
-                {
-                  "code": "PCU26_PHYSAI",
-                  "name": "피지컬AI공학부",
-                  "kind": "faculty",
-                  "majors": [
-                    {
-                      "code": "PCU26_DRONE_ROBOT",
-                      "name": "드론로봇공학전공",
-                      "kind": "major",
-                      "core_code": "ROBOT_CORE_V1",
-                      "specialization": null,
-                      "specialization_required": true,
-                      "note": "로봇 Core 는 있는데 드론 갈래가 아직 없다"
-                    },
-                    {
-                      "code": "PCU26_AICONV_ELEC",
-                      "name": "AI융합전자전공",
-                      "kind": "major",
-                      "core_code": "EE_CORE_V1",
-                      "specialization": "SPEC_EE_ELEC"
                     }
                   ]
                 }
@@ -514,42 +683,163 @@
                   "note": "전공을 고르는 자리다. **Core 를 만들지 않는다**: 고르면 전공 목록으로 돌려보낸다"
                 },
                 {
-                  "code": "PCU26_LIFELONG",
+                  "code": "PCU26_LIFE",
                   "name": "평생교육융합학부",
                   "kind": "faculty",
-                  "core_code": null,
-                  "specialization": null,
-                  "unverified_majors": true,
-                  "note": "전공 목록을 확인하지 못했다"
+                  "majors": [
+                    {
+                      "code": "PCU26_LIFE_STYLING",
+                      "name": "라이프스타일링전공",
+                      "kind": "major",
+                      "core_code": null,
+                      "specialization": null,
+                      "audience": "ADULT_LEARNER"
+                    },
+                    {
+                      "code": "PCU26_LIFE_CARE",
+                      "name": "라이프케어전공",
+                      "kind": "major",
+                      "core_code": null,
+                      "specialization": null,
+                      "audience": "ADULT_LEARNER"
+                    },
+                    {
+                      "code": "PCU26_LIFE_LOCALBIZ",
+                      "name": "지역소상공비즈니스전공",
+                      "kind": "major",
+                      "core_code": null,
+                      "specialization": null,
+                      "audience": "ADULT_LEARNER"
+                    },
+                    {
+                      "code": "PCU26_LIFE_REALESTATE",
+                      "name": "부동산재테크전공",
+                      "kind": "major",
+                      "core_code": null,
+                      "specialization": null,
+                      "audience": "ADULT_LEARNER"
+                    },
+                    {
+                      "code": "PCU26_LIFE_SENIOR",
+                      "name": "시니어운동처방전공",
+                      "kind": "major",
+                      "core_code": null,
+                      "specialization": null,
+                      "audience": "ADULT_LEARNER"
+                    },
+                    {
+                      "code": "PCU26_LIFE_HUMANARTS",
+                      "name": "인문예술창작전공",
+                      "kind": "major",
+                      "core_code": null,
+                      "specialization": null,
+                      "audience": "ADULT_LEARNER"
+                    }
+                  ],
+                  "audience": "ADULT_LEARNER"
                 },
                 {
-                  "code": "PCU26_GLOBALCONV",
-                  "name": "글로벌자율융합학부",
+                  "code": "PCU26_GLOBAL",
+                  "name": "글로벌융합학부",
                   "kind": "faculty",
-                  "core_code": null,
-                  "specialization": null,
-                  "unverified_majors": true,
-                  "student_visible": false,
-                  "note": "일반 학부생용 검사 대상인지 확인 전이라 학생 화면에서 뺐다"
+                  "majors": [
+                    {
+                      "code": "PCU26_GLOBAL_KORTRANS",
+                      "name": "직무한국어번역전공",
+                      "kind": "major",
+                      "core_code": null,
+                      "specialization": null,
+                      "audience": "INTERNATIONAL"
+                    },
+                    {
+                      "code": "PCU26_GLOBAL_ARTCULTURE",
+                      "name": "아트컬처비즈니스전공",
+                      "kind": "major",
+                      "core_code": null,
+                      "specialization": null,
+                      "audience": "INTERNATIONAL"
+                    },
+                    {
+                      "code": "PCU26_GLOBAL_MGMT",
+                      "name": "글로벌경영전공",
+                      "kind": "major",
+                      "core_code": null,
+                      "specialization": null,
+                      "audience": "INTERNATIONAL"
+                    },
+                    {
+                      "code": "PCU26_GLOBAL_IT",
+                      "name": "글로벌IT전공",
+                      "kind": "major",
+                      "core_code": null,
+                      "specialization": null,
+                      "audience": "INTERNATIONAL"
+                    },
+                    {
+                      "code": "PCU26_GLOBAL_BEAUTY",
+                      "name": "뷰티패션산업전공",
+                      "kind": "major",
+                      "core_code": null,
+                      "specialization": null,
+                      "audience": "INTERNATIONAL"
+                    },
+                    {
+                      "code": "PCU26_GLOBAL_MEDTOUR",
+                      "name": "국제의료관광전공",
+                      "kind": "major",
+                      "core_code": null,
+                      "specialization": null,
+                      "audience": "INTERNATIONAL"
+                    }
+                  ],
+                  "audience": "INTERNATIONAL"
                 }
               ]
             }
-          ],
-          "default_for_unknown": true
+          ]
         },
         {
           "catalog_code": "PCU_2027",
           "catalog_year": 2027,
           "label": "2027학년도 신입생",
           "status": "FUTURE",
+          "default_for_unknown": false,
           "effective_from": "2027-03-01",
           "effective_to": null,
           "effective_note": "학년도 시작일(3월 1일)로 적는다. 공식 쪽이 적어 준 날짜가 아니고 학사 일정의 관례다",
-          "source_url": "https://enter.pcu.ac.kr/attach/75ebe31e6384401236b6c26ae8896002/13055e35ba7465cb478c5b4be490c5a8",
-          "source_name": "2027학년도 대학입학전형 시행계획",
+          "source_url": "https://www.pcu.ac.kr/kor/contents/105",
+          "source_name": "배재대학교 대학·학과 안내 2027년 탭",
+          "sources": [
+            {
+              "name": "대학·학과 안내 2027년 탭",
+              "url": "https://www.pcu.ac.kr/kor/contents/105",
+              "note": "연도 탭 가운데 맨 위"
+            },
+            {
+              "name": "2027학년도 정시 모집요강 안내",
+              "url": "https://www.pcu.ac.kr/enter/article/ATCL92e9c09d0/1747844207",
+              "note": "AI·SW 모집단위가 연도 탭과 같다. 2026-08-31 게시"
+            },
+            {
+              "name": "2027학년도 수시 모집요강 안내",
+              "url": "https://www.pcu.ac.kr/enter/article/ATCL13b663a5b/1379739041",
+              "note": "2026-06-19 게시"
+            },
+            {
+              "name": "2027학년도 대학입학전형 시행계획",
+              "url": "https://www.pcu.ac.kr/download/viewer/20261009/1791481984187/index.html",
+              "note": "**옛 편제가 적혀 있다.** 시행계획 공지가 뒤에 올라온 모집요강을 보라고 적으므로 이것으로 덮지 않는다"
+            },
+            {
+              "name": "2027 입학안내 전공 목록",
+              "url": "https://enter.pcu.ac.kr/enter",
+              "note": "철도 명칭이 `철도건설학과` 로 줄어 적힌다"
+            }
+          ],
           "verified_at": null,
-          "verification": "OFFICIAL_PAGE_UNREACHABLE",
-          "verification_note": "주소는 검색으로 드러난 입학처(`enter.pcu.ac.kr`) 의 시행계획 첨부이고 **이 환경에서 열어 보지 못했다.** 구조는 사업주가 적어 준 2027 모집단위를 그대로 옮긴 것이다",
+          "verification": "SECONDARY_EVIDENCE",
+          "verification_note": "이 작업 환경은 `pcu.ac.kr` 의 HTTPS 를 막는다(CONNECT 403). 아래 구조는 **사업주가 공식 연도별 쪽을 사람이 대조해 전달한 근거 파일**을 옮긴 것이고, 원본을 직접 열어 본 것이 아니다. 그래서 `verified_at` 은 비어 있다",
+          "evidence_file": "docs/metri/evidence/PCU_OFFICIAL_EVIDENCE_2026_2027.md",
           "colleges": [
             {
               "code": "HUMSOC",
@@ -560,11 +850,7 @@
                   "name": "국어국문한국어교육학과",
                   "kind": "department",
                   "core_code": "LANG_CORE_V1",
-                  "specialization": null,
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_KOREAN"
-                  ]
+                  "specialization": null
                 },
                 {
                   "code": "PCU27_JAPAN",
@@ -573,11 +859,7 @@
                   "core_code": "LANG_CORE_V1",
                   "specialization": null,
                   "specialization_required": true,
-                  "note": "어문 Core 는 있는데 지역학 갈래가 아직 없다",
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_JAPAN"
-                  ]
+                  "note": "어문 Core 는 있는데 지역학 갈래가 아직 없다"
                 },
                 {
                   "code": "PCU27_POLICE_LAW",
@@ -589,27 +871,15 @@
                       "name": "경찰학전공",
                       "kind": "major",
                       "core_code": null,
-                      "specialization": null,
-                      "carried_over": true,
-                      "replaces": [
-                        "PCU26_POLICE"
-                      ]
+                      "specialization": null
                     },
                     {
                       "code": "PCU27_LAW",
                       "name": "법학전공",
                       "kind": "major",
                       "core_code": null,
-                      "specialization": null,
-                      "carried_over": true,
-                      "replaces": [
-                        "PCU26_LAW"
-                      ]
+                      "specialization": null
                     }
-                  ],
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_POLICE_LAW"
                   ]
                 },
                 {
@@ -622,11 +892,7 @@
                       "name": "일반행정트랙",
                       "kind": "track",
                       "core_code": "PUBADM_CORE_V1",
-                      "specialization": null,
-                      "carried_over": true,
-                      "replaces": [
-                        "PCU26_PUBADM_GENERAL"
-                      ]
+                      "specialization": null
                     },
                     {
                       "code": "PCU27_PUBADM_FIRE",
@@ -635,16 +901,8 @@
                       "core_code": "PUBADM_CORE_V1",
                       "specialization": null,
                       "specialization_required": true,
-                      "note": "소방 쪽 갈래가 아직 없다",
-                      "carried_over": true,
-                      "replaces": [
-                        "PCU26_PUBADM_FIRE"
-                      ]
+                      "note": "소방 쪽 갈래가 아직 없다"
                     }
-                  ],
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_PUBADM"
                   ]
                 },
                 {
@@ -652,11 +910,7 @@
                   "name": "심리상담학과",
                   "kind": "department",
                   "core_code": "PSY_CORE_V1",
-                  "specialization": null,
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_PSY"
-                  ]
+                  "specialization": null
                 },
                 {
                   "code": "PCU27_EARLYCHILD",
@@ -665,11 +919,7 @@
                   "core_code": "EDU_CORE_V1",
                   "specialization": null,
                   "specialization_required": true,
-                  "note": "교육 Core 는 있는데 유아교육 갈래가 아직 없다",
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_EARLYCHILD"
-                  ]
+                  "note": "교육 Core 는 있는데 유아교육 갈래가 아직 없다"
                 }
               ]
             },
@@ -682,66 +932,42 @@
                   "name": "경영학과",
                   "kind": "department",
                   "core_code": "BIZ_CORE_V1",
-                  "specialization": null,
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_BIZ"
-                  ]
+                  "specialization": null
                 },
                 {
                   "code": "PCU27_MIS",
                   "name": "IT경영정보학과",
                   "kind": "department",
                   "core_code": "BIZ_CORE_V1",
-                  "specialization": null,
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_MIS"
-                  ]
+                  "specialization": null
                 },
                 {
                   "code": "PCU27_GLOBALBIZ",
                   "name": "글로벌비즈니스학과",
                   "kind": "department",
                   "core_code": "BIZ_CORE_V1",
-                  "specialization": null,
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_GLOBALBIZ"
-                  ]
+                  "specialization": null
                 },
                 {
                   "code": "PCU27_TOURISM",
                   "name": "관광경영학과",
                   "kind": "department",
                   "core_code": null,
-                  "specialization": null,
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_TOURISM"
-                  ]
+                  "specialization": null
                 },
                 {
                   "code": "PCU27_HOTELAIR",
                   "name": "호텔항공경영학과",
                   "kind": "department",
                   "core_code": null,
-                  "specialization": null,
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_HOTELAIR"
-                  ]
+                  "specialization": null
                 },
                 {
                   "code": "PCU27_AIRSERVICE",
                   "name": "항공서비스학과",
                   "kind": "department",
                   "core_code": null,
-                  "specialization": null,
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_AIRSERVICE"
-                  ]
+                  "specialization": null
                 }
               ]
             },
@@ -754,22 +980,14 @@
                   "name": "생명공학과",
                   "kind": "department",
                   "core_code": "BT_CORE_V1",
-                  "specialization": null,
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_BT"
-                  ]
+                  "specialization": null
                 },
                 {
                   "code": "PCU27_FOOD",
                   "name": "식품영양학과",
                   "kind": "department",
                   "core_code": "FOOD_CORE_V1",
-                  "specialization": null,
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_FOOD"
-                  ]
+                  "specialization": null
                 },
                 {
                   "code": "PCU27_CULINARY",
@@ -778,74 +996,49 @@
                   "core_code": "FOOD_CORE_V1",
                   "specialization": null,
                   "specialization_required": true,
-                  "note": "식품 Core 는 있는데 조리·외식 갈래가 아직 없다",
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_CULINARY"
-                  ]
+                  "note": "식품 Core 는 있는데 조리·외식 갈래가 아직 없다"
                 },
                 {
                   "code": "PCU27_HORTI",
                   "name": "원예산림학과",
                   "kind": "department",
                   "core_code": null,
-                  "specialization": null,
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_HORTI"
-                  ]
+                  "specialization": null
                 },
                 {
                   "code": "PCU27_HEALTHWELFARE",
                   "name": "보건의료복지학과",
                   "kind": "department",
                   "core_code": null,
-                  "specialization": null,
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_HEALTHWELFARE"
-                  ]
+                  "specialization": null
                 },
                 {
                   "code": "PCU27_NURSING",
                   "name": "간호학과",
                   "kind": "department",
                   "core_code": null,
-                  "specialization": null,
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_NURSING"
-                  ]
+                  "specialization": null
                 },
                 {
                   "code": "PCU27_SPORTSREHAB",
                   "name": "운동재활복지학과",
                   "kind": "department",
                   "core_code": null,
-                  "specialization": null,
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_SPORTSREHAB"
-                  ]
+                  "specialization": null
                 }
               ]
             },
             {
               "code": "AI_SW",
               "name": "AI·SW창의융합대학",
-              "note": "2027 모집요강이 바꾸는 자리다. 현행 구조와 섞지 않는다",
+              "note": "2027년 탭과 정시 모집요강이 함께 적는 편제다",
               "units": [
                 {
-                  "code": "PCU27_EE",
-                  "name": "전기전자공학과",
+                  "code": "PCU27_EE_POWER",
+                  "name": "전기공학과",
                   "kind": "department",
                   "core_code": "EE_CORE_V1",
-                  "specialization": null,
-                  "note": "현행 전기공학과와 AI융합전자전공을 함께 받는 자리로 보인다. 같은 EE Core 를 쓰고 갈래를 두지 않는다",
-                  "replaces": [
-                    "PCU26_EE_POWER",
-                    "PCU26_AICONV_ELEC"
-                  ]
+                  "specialization": "SPEC_EE_POWER"
                 },
                 {
                   "code": "PCU27_BATTERY",
@@ -856,70 +1049,76 @@
                   "note": "이차전지를 어느 Core 로 볼지 확인 전이다. 에너지공학·화학공학·신소재 셋이 후보고, 전공을 아는 분이 고른다"
                 },
                 {
-                  "code": "PCU27_DRONE_ROBOT",
-                  "name": "드론로봇공학과",
-                  "kind": "department",
-                  "core_code": "ROBOT_CORE_V1",
-                  "specialization": null,
-                  "specialization_required": true,
-                  "note": "현행 드론로봇공학전공과 같은 로봇 Core 를 쓴다. 드론 갈래가 아직 없다",
-                  "replaces": [
-                    "PCU26_DRONE_ROBOT"
-                  ]
-                },
-                {
                   "code": "PCU27_RAIL_CIVIL",
                   "name": "철도건설공학과",
                   "kind": "department",
                   "core_code": "CIV_CORE_V1",
                   "specialization": null,
                   "specialization_required": true,
-                  "note": "토목·건설 Core 는 있는데 철도 갈래가 아직 없다"
+                  "note": "토목·건설 Core 는 있는데 철도 갈래가 아직 없다. 입학안내 랜딩에는 `철도건설학과` 로도 적힌다"
                 },
                 {
-                  "code": "PCU27_SW",
-                  "name": "소프트웨어공학부",
+                  "code": "PCU27_AISW",
+                  "name": "AI소프트웨어공학부",
                   "kind": "faculty",
                   "majors": [
                     {
-                      "code": "PCU27_CS_COMPUTER",
-                      "name": "컴퓨터공학",
+                      "code": "PCU27_AISW_COMPUTER",
+                      "name": "컴퓨터공학전공",
                       "kind": "major",
                       "core_code": "CS_CORE_V1",
-                      "specialization": "SPEC_CS_COMPUTER",
-                      "replaces": [
-                        "PCU26_CS_COMPUTER"
-                      ]
+                      "specialization": "SPEC_CS_COMPUTER"
                     },
                     {
-                      "code": "PCU27_CS_SOFTWARE",
-                      "name": "소프트웨어학",
+                      "code": "PCU27_AISW_SOFTWARE",
+                      "name": "소프트웨어학전공",
                       "kind": "major",
                       "core_code": "CS_CORE_V1",
-                      "specialization": "SPEC_CS_SOFTWARE",
-                      "replaces": [
-                        "PCU26_CS_SOFTWARE"
-                      ]
+                      "specialization": "SPEC_CS_SOFTWARE"
                     },
                     {
-                      "code": "PCU27_CS_SECURITY",
-                      "name": "정보보안학",
+                      "code": "PCU27_AISW_SECURITY",
+                      "name": "정보보안학전공",
                       "kind": "major",
                       "core_code": "CS_CORE_V1",
-                      "specialization": "SPEC_CS_SECURITY",
-                      "replaces": [
-                        "PCU26_CS_SECURITY"
-                      ]
+                      "specialization": "SPEC_CS_SECURITY"
                     },
                     {
-                      "code": "PCU27_CS_GAME",
-                      "name": "게임공학",
+                      "code": "PCU27_AISW_GAME",
+                      "name": "게임공학전공",
                       "kind": "major",
                       "core_code": "CS_CORE_V1",
-                      "specialization": "SPEC_CS_GAME",
-                      "replaces": [
-                        "PCU26_CS_GAME"
-                      ]
+                      "specialization": "SPEC_CS_GAME"
+                    },
+                    {
+                      "code": "PCU27_AISW_AI",
+                      "name": "인공지능전공",
+                      "kind": "major",
+                      "core_code": "CS_CORE_V1",
+                      "specialization": "SPEC_CS_AI"
+                    }
+                  ]
+                },
+                {
+                  "code": "PCU27_PHYSAI",
+                  "name": "피지컬AI공학부",
+                  "kind": "faculty",
+                  "majors": [
+                    {
+                      "code": "PCU27_PHYSAI_DRONE",
+                      "name": "드론로봇공학전공",
+                      "kind": "major",
+                      "core_code": "ROBOT_CORE_V1",
+                      "specialization": null,
+                      "specialization_required": true,
+                      "note": "로봇 Core 는 있는데 드론 갈래가 아직 없다"
+                    },
+                    {
+                      "code": "PCU27_PHYSAI_ELEC",
+                      "name": "AI융합전자전공",
+                      "kind": "major",
+                      "core_code": "EE_CORE_V1",
+                      "specialization": "SPEC_EE_ELEC"
                     }
                   ]
                 }
@@ -934,11 +1133,7 @@
                   "name": "건축학과",
                   "kind": "department",
                   "core_code": "ARCH_CORE_V1",
-                  "specialization": null,
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_ARCH"
-                  ]
+                  "specialization": null
                 },
                 {
                   "code": "PCU27_INTERIOR",
@@ -947,22 +1142,14 @@
                   "core_code": "ARCH_CORE_V1",
                   "specialization": null,
                   "specialization_required": true,
-                  "note": "건축 Core 는 있는데 실내건축 갈래가 아직 없다",
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_INTERIOR"
-                  ]
+                  "note": "건축 Core 는 있는데 실내건축 갈래가 아직 없다"
                 },
                 {
                   "code": "PCU27_LANDSCAPE",
                   "name": "조경학과",
                   "kind": "department",
                   "core_code": null,
-                  "specialization": null,
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_LANDSCAPE"
-                  ]
+                  "specialization": null
                 },
                 {
                   "code": "PCU27_ARTWEBTOON",
@@ -974,27 +1161,15 @@
                       "name": "아트앤웹툰전공",
                       "kind": "major",
                       "core_code": null,
-                      "specialization": null,
-                      "carried_over": true,
-                      "replaces": [
-                        "PCU26_ARTWEBTOON_MAIN"
-                      ]
+                      "specialization": null
                     },
                     {
                       "code": "PCU27_GAMEANIM",
                       "name": "게임애니메이션전공",
                       "kind": "major",
                       "core_code": null,
-                      "specialization": null,
-                      "carried_over": true,
-                      "replaces": [
-                        "PCU26_GAMEANIM"
-                      ]
+                      "specialization": null
                     }
-                  ],
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_ARTWEBTOON"
                   ]
                 },
                 {
@@ -1007,27 +1182,15 @@
                       "name": "커뮤니케이션디자인전공",
                       "kind": "major",
                       "core_code": null,
-                      "specialization": null,
-                      "carried_over": true,
-                      "replaces": [
-                        "PCU26_DESIGN_COMM"
-                      ]
+                      "specialization": null
                     },
                     {
                       "code": "PCU27_DESIGN_IND",
                       "name": "산업디자인전공",
                       "kind": "major",
                       "core_code": null,
-                      "specialization": null,
-                      "carried_over": true,
-                      "replaces": [
-                        "PCU26_DESIGN_IND"
-                      ]
+                      "specialization": null
                     }
-                  ],
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_DESIGN"
                   ]
                 },
                 {
@@ -1035,76 +1198,48 @@
                   "name": "광고사진영상학과",
                   "kind": "department",
                   "core_code": "MEDIA_CORE_V1",
-                  "specialization": null,
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_ADPHOTO"
-                  ]
+                  "specialization": null
                 },
                 {
                   "code": "PCU27_MEDIACONTENT",
                   "name": "미디어콘텐츠학과",
                   "kind": "department",
                   "core_code": "MEDIA_CORE_V1",
-                  "specialization": null,
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_MEDIACONTENT"
-                  ]
+                  "specialization": null
                 },
                 {
                   "code": "PCU27_FASHION",
                   "name": "의류패션학과",
                   "kind": "department",
                   "core_code": null,
-                  "specialization": null,
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_FASHION"
-                  ]
+                  "specialization": null
                 },
                 {
                   "code": "PCU27_BEAUTY",
                   "name": "뷰티케어학과",
                   "kind": "department",
                   "core_code": null,
-                  "specialization": null,
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_BEAUTY"
-                  ]
+                  "specialization": null
                 },
                 {
                   "code": "PCU27_PERFORM",
-                  "name": "공연예술학과",
+                  "name": "공연예술학부",
                   "kind": "faculty",
                   "majors": [
                     {
-                      "code": "PCU27_PERFORM_MUSIC",
-                      "name": "음악트랙",
-                      "kind": "track",
+                      "code": "PCU27_PERFORM_APPLIED",
+                      "name": "실용음악전공",
+                      "kind": "major",
                       "core_code": null,
-                      "specialization": null,
-                      "carried_over": true,
-                      "replaces": [
-                        "PCU26_PERFORM_MUSIC"
-                      ]
+                      "specialization": null
                     },
                     {
-                      "code": "PCU27_PERFORM_FILM",
-                      "name": "영화영상트랙",
-                      "kind": "track",
+                      "code": "PCU27_PERFORM_FILMST",
+                      "name": "영화영상학전공",
+                      "kind": "major",
                       "core_code": null,
-                      "specialization": null,
-                      "carried_over": true,
-                      "replaces": [
-                        "PCU26_PERFORM_FILM"
-                      ]
+                      "specialization": null
                     }
-                  ],
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_PERFORM"
                   ]
                 },
                 {
@@ -1117,27 +1252,15 @@
                       "name": "스포츠지도·건강재활전공",
                       "kind": "major",
                       "core_code": null,
-                      "specialization": null,
-                      "carried_over": true,
-                      "replaces": [
-                        "PCU26_LEISURE_COACH"
-                      ]
+                      "specialization": null
                     },
                     {
                       "code": "PCU27_LEISURE_MKT",
                       "name": "스포츠마케팅전공",
                       "kind": "major",
                       "core_code": null,
-                      "specialization": null,
-                      "carried_over": true,
-                      "replaces": [
-                        "PCU26_LEISURE_MKT"
-                      ]
+                      "specialization": null
                     }
-                  ],
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_LEISURE"
                   ]
                 }
               ]
@@ -1153,43 +1276,131 @@
                   "core_code": null,
                   "specialization": null,
                   "routing_only": true,
-                  "note": "전공을 고르는 자리다. **Core 를 만들지 않는다**: 고르면 전공 목록으로 돌려보낸다",
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_SELFDESIGN"
-                  ]
+                  "note": "전공을 고르는 자리다. **Core 를 만들지 않는다**: 고르면 전공 목록으로 돌려보낸다"
                 },
                 {
-                  "code": "PCU27_LIFELONG",
+                  "code": "PCU27_LIFE",
                   "name": "평생교육융합학부",
                   "kind": "faculty",
-                  "core_code": null,
-                  "specialization": null,
-                  "unverified_majors": true,
-                  "note": "전공 목록을 확인하지 못했다",
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_LIFELONG"
-                  ]
+                  "majors": [
+                    {
+                      "code": "PCU27_LIFE_STYLING",
+                      "name": "라이프스타일링전공",
+                      "kind": "major",
+                      "core_code": null,
+                      "specialization": null,
+                      "audience": "ADULT_LEARNER"
+                    },
+                    {
+                      "code": "PCU27_LIFE_WELFARE",
+                      "name": "사회복지상담전공",
+                      "kind": "major",
+                      "core_code": null,
+                      "specialization": null,
+                      "audience": "ADULT_LEARNER"
+                    },
+                    {
+                      "code": "PCU27_LIFE_AGRIBIZ",
+                      "name": "농산업비즈니스전공",
+                      "kind": "major",
+                      "core_code": null,
+                      "specialization": null,
+                      "audience": "ADULT_LEARNER"
+                    },
+                    {
+                      "code": "PCU27_LIFE_REALESTATE",
+                      "name": "부동산재테크전공",
+                      "kind": "major",
+                      "core_code": null,
+                      "specialization": null,
+                      "audience": "ADULT_LEARNER"
+                    },
+                    {
+                      "code": "PCU27_LIFE_SENIORGOLF",
+                      "name": "시니어운동처방·파크골프전공",
+                      "kind": "major",
+                      "core_code": null,
+                      "specialization": null,
+                      "audience": "ADULT_LEARNER"
+                    },
+                    {
+                      "code": "PCU27_LIFE_HUMANARTS",
+                      "name": "인문예술창작전공",
+                      "kind": "major",
+                      "core_code": null,
+                      "specialization": null,
+                      "audience": "ADULT_LEARNER"
+                    }
+                  ],
+                  "audience": "ADULT_LEARNER"
                 },
                 {
-                  "code": "PCU27_GLOBALCONV",
-                  "name": "글로벌자율융합학부",
+                  "code": "PCU27_GLOBAL",
+                  "name": "글로벌융합학부",
                   "kind": "faculty",
-                  "core_code": null,
-                  "specialization": null,
-                  "unverified_majors": true,
-                  "student_visible": false,
-                  "note": "일반 학부생용 검사 대상인지 확인 전이라 학생 화면에서 뺐다",
-                  "carried_over": true,
-                  "replaces": [
-                    "PCU26_GLOBALCONV"
-                  ]
+                  "majors": [
+                    {
+                      "code": "PCU27_GLOBAL_KORTRANS",
+                      "name": "직무한국어번역전공",
+                      "kind": "major",
+                      "core_code": null,
+                      "specialization": null,
+                      "audience": "INTERNATIONAL"
+                    },
+                    {
+                      "code": "PCU27_GLOBAL_KCULTURE",
+                      "name": "K컬처비즈니스전공",
+                      "kind": "major",
+                      "core_code": null,
+                      "specialization": null,
+                      "audience": "INTERNATIONAL"
+                    },
+                    {
+                      "code": "PCU27_GLOBAL_MGMT",
+                      "name": "글로벌경영전공",
+                      "kind": "major",
+                      "core_code": null,
+                      "specialization": null,
+                      "audience": "INTERNATIONAL"
+                    },
+                    {
+                      "code": "PCU27_GLOBAL_ITAI",
+                      "name": "글로벌IT·AI전공",
+                      "kind": "major",
+                      "core_code": null,
+                      "specialization": null,
+                      "audience": "INTERNATIONAL"
+                    },
+                    {
+                      "code": "PCU27_GLOBAL_BEAUTY",
+                      "name": "뷰티패션산업전공",
+                      "kind": "major",
+                      "core_code": null,
+                      "specialization": null,
+                      "audience": "INTERNATIONAL"
+                    },
+                    {
+                      "code": "PCU27_GLOBAL_MEDTOUR",
+                      "name": "국제의료관광전공",
+                      "kind": "major",
+                      "core_code": null,
+                      "specialization": null,
+                      "audience": "INTERNATIONAL"
+                    },
+                    {
+                      "code": "PCU27_GLOBAL_KFOODTECH",
+                      "name": "K푸드테크전공",
+                      "kind": "major",
+                      "core_code": null,
+                      "specialization": null,
+                      "audience": "INTERNATIONAL"
+                    }
+                  ],
+                  "audience": "INTERNATIONAL"
                 }
               ]
             }
-          ],
-          "default_for_unknown": false
+          ]
         }
       ]
     }
