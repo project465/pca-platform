@@ -1,8 +1,9 @@
 import { requireUser } from "@/lib/session";
 import { profileOf, activeCore } from "@/lib/me-v3/platform";
-import { regionGaps, regionLayer, regionOpen } from "@/lib/me-v3/region";
+import { regionGaps, regionLayer, regionOpen, regionOrganizations } from "@/lib/me-v3/region";
 import { industryChoices, roleChoices } from "@/lib/me-v3/runtime/session";
 import { CmShell, CmHead } from "../shell";
+import { EmptyState, PickCard, PickGrid, SectionHeader } from "../ui";
 import { pickRegion } from "./actions";
 
 export const metadata = { title: "지역과 기관 · 내 CareerMatri" };
@@ -30,6 +31,8 @@ export default async function Region() {
     .filter((x): x is string => !!x);
   const open = regionOpen("KR");
   const gaps = regionGaps();
+  /* 확인된 줄만 선다. 출처 없는 줄은 DB 가 거절하므로 걸러낼 일이 없다 */
+  const orgs = await regionOrganizations(profile?.home_region ?? null, [], 6);
 
   return (
     <CmShell active="/me/region" title="지역과 기관">
@@ -98,72 +101,70 @@ export default async function Region() {
       {/* ── 네 가지가 모이면 무엇을 물어볼 수 있는가 ──
           **자료가 0줄이어도 열쇠는 보여 준다.** 무엇이 모이면 답이 나오는지
           알아야, 비어 있는 것이 고장이 아니라 아직인 줄로 읽힌다 */}
-      <h2 className="cm-h1" style={{ fontSize: 18, margin: "8px 0 12px" }}>
-        지금 고르신 네 가지
-      </h2>
-      <div className="cm-card" style={{ marginBottom: 24 }}>
-        <dl className="cm-dl">
-          <div>
-            <dt>산업</dt>
-            <dd>{(profile?.target_industry ?? []).length
-              ? (profile!.target_industry).map((c) =>
-                  industryChoices(core).find((x) => x.code === c)?.name ?? c).join(" · ")
-              : "아직 고르지 않으셨습니다"}</dd>
-          </div>
-          <div>
-            <dt>직무</dt>
-            <dd>{(profile?.target_role ?? []).length
-              ? (profile!.target_role).map((c) =>
-                  roleChoices(core).find((x) => x.code === c)?.name ?? c).join(" · ")
-              : "아직 고르지 않으셨습니다"}</dd>
-          </div>
-          <div>
-            <dt>권역</dt>
-            <dd>{L.regions.find((r) => r.code === profile?.home_region)?.name
-              ?? "아직 고르지 않으셨습니다"}</dd>
-          </div>
-          <div>
-            <dt>기관 유형</dt>
-            {/* **모르는 코드를 적지 않고 비운다.** 칸을 나누기 전에 적힌
-                줄은 `target_org` 에 Core 의 조직환경 코드를 들고 있다 */}
-            <dd>{orgNames.length
-              ? orgNames.join(" · ")
-              : "아직 고르지 않으셨습니다"}</dd>
-          </div>
-        </dl>
-        <p className="cm-note">
-          이 넷이 모이면 그 조합의 기관 수와 공고를 물어볼 수 있습니다. 지금은
-          물어볼 자료가 없어서 답을 내지 않습니다.
-        </p>
-      </div>
-
-      <h2 className="cm-h1" style={{ fontSize: 18, margin: "8px 0 12px" }}>
-        기관마다 일이 서는 모양이 다릅니다
-      </h2>
-      <div className="cm-grid">
-        {L.org_types.map((o) => (
-          <div className="cm-card" key={o.code}>
-            <h2>{o.label}</h2>
-            <p>{o.scene}</p>
-          </div>
+      {/* **고르신 것을 chip 으로 요약한다**(규격 §9). 전에는 정의 목록
+          넷이 큰 카드 하나를 채웠고, 고른 값이 네 줄의 글로 읽혔다 */}
+      <SectionHeader icon="target" title="지금 고른 것" />
+      <div className="cm-chips cm-mb">
+        {[
+          ["권역", L.regions.find((r) => r.code === profile?.home_region)?.name],
+          ["기관 유형", orgNames.join(" · ")],
+          ["산업", (profile?.target_industry ?? []).map((c) =>
+            industryChoices(core).find((x) => x.code === c)?.name ?? c).join(" · ")],
+          ["직무", (profile?.target_role ?? []).map((c) =>
+            roleChoices(core).find((x) => x.code === c)?.name ?? c).join(" · ")],
+        ].map(([k, v]) => (
+          <span className="cm-chip" key={k as string}>
+            {k}<b style={{ marginLeft: 6 }}>{v || "아직"}</b>
+          </span>
         ))}
       </div>
 
-      <h2 className="cm-h1" style={{ fontSize: 18, margin: "28px 0 12px" }}>
-        아직 비어 있는 자료
-      </h2>
-      <div className="cm-soon">
-        <b>권역과 기관 유형의 열쇠만 섰고 기업 자료는 한 줄도 없습니다.</b>
-        <ul>
-          {gaps.map((g) => (
-            <li key={g.table}>{g.why}</li>
+      {/* ── 이 지역에서 함께 볼 곳 ──
+          **지어내지 않는다**(규격 §9). 자료가 없으면 EmptyState 하나이고,
+          법적·자료 설명은 아래 작은 자리로 내린다 */}
+      <SectionHeader icon="building" tone="c" title="이 지역에서 함께 볼 곳"
+        sub="채용 여부나 합격 가능성과는 관계가 없습니다." />
+      {orgs.length ? (
+        <PickGrid>
+          {orgs.map((o) => (
+            <PickCard key={o.organization_id} href={o.homepage_url}
+              icon="building" tone="b" title={o.name}
+              tag={L.org_types.find((t) => t.code === o.org_type_code)?.label}
+              lead={[o.city, o.industry_code].filter(Boolean).join(" · ") || undefined}
+              meta={o.related_majors.length
+                ? `${o.related_majors.join(" · ")} 전공에서 이어 볼 수 있습니다`
+                : undefined}
+              cta="기관 보기" />
           ))}
+        </PickGrid>
+      ) : (
+        <EmptyState style={{ marginBottom: 16 }}>
+          <b>확인된 기업·기관 자료를 준비하고 있습니다.</b>{" "}
+          공식 홈페이지와 공공데이터에서 확인한 곳만 적습니다.
+        </EmptyState>
+      )}
+
+      <SectionHeader icon="grid" tone="c" title="기관마다 일이 서는 모양이 다릅니다" />
+      <PickGrid cols={3}>
+        {L.org_types.map((o, i) => (
+          <PickCard key={o.code} icon="building"
+            tone={(["b", "c", "v", "w"] as const)[i % 4]}
+            title={o.label} lead={o.scene} />
+        ))}
+      </PickGrid>
+
+      {/* **긴 방어문을 첫 화면에 크게 세우지 않는다**(규격 §9). 자료가
+          왜 비어 있는지는 눌러서 읽는 자리로 내린다 */}
+      <details className="cm-fold">
+        <summary>기업·기관 자료가 아직 비어 있는 까닭</summary>
+        <ul className="cm-bul">
+          {gaps.map((g) => <li key={g.table}>{g.why}</li>)}
         </ul>
-        <p style={{ marginTop: 10 }}>
+        <p className="cm-note">
           기관 수를 짐작으로 채우지 않습니다. 그 수가 근거처럼 읽히고, 그걸
           믿고 움직이는 사람이 생깁니다.
         </p>
-      </div>
+      </details>
     </CmShell>
   );
 }

@@ -3,6 +3,7 @@ import { APPLY_STATES, applicationsOf, activeCore } from "@/lib/me-v3/platform";
 import { industryChoices, roleChoices } from "@/lib/me-v3/runtime/session";
 import { orgTypes, regionLayer } from "@/lib/me-v3/region";
 import { CmShell, CmHead } from "../shell";
+import { EmptyState, SectionHeader } from "../ui";
 import { dropApplication, moveApplication, saveApplication } from "./actions";
 
 export const metadata = { title: "지원한 곳 · 내 CareerMatri" };
@@ -42,6 +43,11 @@ export default async function Apply() {
           + "적어 두신 기업 이름은 본인에게만 보이고 1년이 지나면 지웁니다."}
       />
 
+      {/* **폼이 첫 화면을 차지하지 않는다**(규격 §10). 쌓인 기록이 먼저
+          서고, 적는 자리는 눌러서 연다. `details` 로 두는 까닭은 자바
+          스크립트 없이도 열리고 **기존 폼과 저장 경로가 그대로**여서다 */}
+      <details className="cm-fold is-cta">
+        <summary>+ 지원 기록 추가</summary>
       <form action={saveApplication} className="cm-formcard">
         <div className="cm-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))" }}>
           <label className="cm-field">
@@ -101,20 +107,19 @@ export default async function Apply() {
           <button className="cm-btn is-primary" type="submit">적어 두기</button>
         </div>
       </form>
+      </details>
 
       {rows.length === 0 ? (
-        <div className="cm-soon" style={{ marginTop: 20 }}>
+        <EmptyState style={{ marginTop: 20 }}>
           <b>아직 적어 두신 곳이 없습니다.</b> 지원한 곳이 쌓이면 직무로 묶어
           어디서 막혔는지 보여드립니다.
-        </div>
+        </EmptyState>
       ) : (
         <div style={{ marginTop: 22 }}>
           {[...byRole.entries()].map(([code, list]) => (
             <section key={code || "none"} style={{ marginBottom: 22 }}>
-              <h2 className="cm-h1" style={{ fontSize: 17, margin: "0 0 10px" }}>
-                {roleName(code) ?? "직무를 고르지 않은 곳"}
-                <span style={{ color: "var(--sf-ink-3)", fontWeight: 400 }}> · {list.length}곳</span>
-              </h2>
+              <SectionHeader icon="send" title={roleName(code) ?? "직무를 고르지 않은 곳"}
+                sub={`${list.length}곳`} />
               <div className="cm-tablewrap">
                 <table className="cm-table">
                   <thead>

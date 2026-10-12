@@ -5,6 +5,7 @@ import { domainName } from "@/lib/me-v3/runtime/session";
 import { recentChangeKo } from "@/lib/me-v3/change-text.ko";
 import { registry } from "@/lib/me-v3/core-registry";
 import { CmShell, CmHead } from "../shell";
+import { EmptyState } from "../ui";
 
 export const metadata = { title: "결과 기록 · CareerMatri" };
 
@@ -34,16 +35,15 @@ export default async function Results() {
       bar={<Link className="cm-btn" href="/me/state">현재 상태</Link>}>
       <CmHead
         title="검사 당시 결과와 현재 상태"
-        lead={"검사 당시 결과는 응시하신 그날의 문항과 기준으로 굳어 있습니다. "
-          + "현재 상태는 그 뒤에 더한 경험까지 담은 값이라 달라질 수 있습니다."}
+        lead="검사 당시 결과와 현재 상태를 따로 볼 수 있습니다."
       />
 
       {!snaps.length ? (
-        <div className="cm-soon">
+        <EmptyState>
           <b>아직 완료한 검사가 없습니다.</b> 검사를 한 번 끝내면 그날의
           결과가 날짜와 함께 줄로 섭니다.
-          <p style={{ marginTop: 10 }}><Link href="/cores">기계공학 검사 시작</Link></p>
-        </div>
+          <p style={{ marginTop: 10 }}><Link href="/cores">검사 시작하기</Link></p>
+        </EmptyState>
       ) : null}
 
       {/* ── 현재 상태. 점선 테두리로 `변한다` 를 생김새로 말한다 ── */}

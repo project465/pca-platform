@@ -5,6 +5,8 @@ import { currentAttempt, v3Grants } from "@/lib/me-v3/runtime/session";
 import "../surface.css";
 import "../me/platform.css";
 import { CmShell, CmHead } from "../me/shell";
+import { PickCard, PickGrid, SectionHeader } from "../me/ui";
+import type { IconName } from "@/components/sf/icon";
 
 export const metadata = { title: "전공 Core · CareerMatri" };
 
@@ -21,10 +23,10 @@ export const metadata = { title: "전공 Core · CareerMatri" };
  * 그 까닭이 적힌다.
  */
 /** 담당자가 읽는 계열 이름. 등록부의 `family` 는 안쪽 코드다 */
-const FAMILY_ORDER: [string, string][] = [
-  ["STEM", "공학 · 자연과학"],
-  ["BUSINESS", "경상"],
-  ["HUMANITIES_SOCIAL", "인문 · 사회 · 교육"],
+const FAMILY_ORDER: [string, string, IconName, "b" | "c" | "v" | "w"][] = [
+  ["STEM", "공학 · 자연과학", "spark", "b"],
+  ["BUSINESS", "경상", "chart", "w"],
+  ["HUMANITIES_SOCIAL", "인문 · 사회 · 교육", "users", "v"],
 ];
 
 export default async function Cores() {
@@ -52,31 +54,6 @@ export default async function Cores() {
         읽고 결과 PDF 를 받는 데까지로 생각했다. 그 뒤에 무엇이 쌓이는지를
         네 줄로 적는다.
       */}
-      <section className="cm-live" style={{ marginTop: 0, marginBottom: 20 }}>
-        <header>
-          <h2>검사는 시작점입니다</h2>
-          <span>결과를 받은 다음부터가 내 CareerMatri 입니다.</span>
-        </header>
-        <dl className="cm-dl">
-          <div>
-            <dt>검사에서 받는 것</dt>
-            <dd>근거가 확인된 기술영역과 아직 부족한 부분, 그리고 다음 할 일</dd>
-          </div>
-          <div>
-            <dt>그 뒤에 쌓는 것</dt>
-            <dd>새로 겪은 경험을 적고 현재 상태에 더하면 부족했던 부분이 채워집니다</dd>
-          </div>
-          <div>
-            <dt>등급 차이</dt>
-            <dd>문항 수가 아니라 판단의 종류가 다릅니다. 어디부터 볼지 · 영역끼리 비교하기 · 경험을 직무 언어로 옮기기</dd>
-          </div>
-          <div>
-            <dt>중간에 멈춰도</dt>
-            <dd>답한 것은 문항마다 저장되어 있어 멈춘 자리에서 이어집니다</dd>
-          </div>
-        </dl>
-      </section>
-
       {open ? (
         <div className="cm-card is-wide" style={{ marginBottom: 18 }}>
           <h2>이어서 풀 응시가 있습니다 <em>{open.tier}</em></h2>
@@ -90,36 +67,24 @@ export default async function Cores() {
         </div>
       ) : null}
 
-      <div className="cm-grid">
+      <SectionHeader icon="clipboard" title="사용 가능한 전공" />
+      <PickGrid cols={live.length === 1 ? 1 : 2}>
         {live.map((c) => (
-          <div className="cm-card" key={c.code}>
-            <h2>{c.name_ko} <em>지금 응시할 수 있습니다</em></h2>
-            {/* **구조가 아니라 받는 것을 적는다.** `기술영역 12개와
-                판단축 8개` 는 우리 설계의 수이고, 고르는 사람이 묻는 것은
-                무엇을 알게 되는가다 */}
-            <p>
-              기계공학에서 해 본 일과 직접 판단한 경험을 읽어, 관심 분야와
-              아직 준비할 것을 정리합니다. 관심 산업과 직무, 일하고 싶은
-              지역까지 이어서 볼 수 있습니다.
-            </p>
-            <div className="cm-grow" />
-            <div className="cm-acts">
-              {open ? (
-                <Link className="cm-btn" href={`/v3/${open.id}`}>이어하기</Link>
-              ) : (
-                <Link className="cm-btn is-primary" href="/v3/start">시작하기</Link>
-              )}
-              <Link className="cm-btn" href="/me">내 CareerMatri</Link>
-            </div>
-            {grants.length === 0 ? (
-              <p style={{ fontSize: 13, color: "var(--sf-ink-3)" }}>
-                이용권이 없으면 선별 등급으로 시작합니다.
-              </p>
-            ) : null}
-          </div>
+          <PickCard
+            key={c.code}
+            href={open ? `/v3/${open.id}` : "/v3/start"}
+            icon="compass"
+            title={c.name_ko}
+            tag="지금 검사 가능"
+            lead={"해 본 일과 직접 판단한 경험을 읽어 관심 분야와 "
+              + "아직 준비할 것을 정리합니다."}
+            meta={`관심 산업과 직무, 일하고 싶은 지역까지 이어서 볼 수 있습니다${
+              grants.length === 0 ? " · 이용권이 없으면 선별 등급으로 시작합니다" : ""}`}
+            cta={open ? "이어하기" : "검사 시작하기"}
+            strong
+          />
         ))}
-
-      </div>
+      </PickGrid>
 
       {/* **같은 문장을 아홉 번 쓰지 않는다.** 준비 중인 Core 마다 카드를
           세우고 같은 설명을 되풀이하면, 아홉 장이 한 문단을 아홉 번 읽게
@@ -130,28 +95,54 @@ export default async function Cores() {
       {/* **계열로 묶어 적는다.** 서른 줄을 한 덩이로 깔면 담당자가
           `우리 단과대가 들어 있는가` 를 눈으로 세야 한다. 묶음 이름이
           있으면 그 물음에 한눈에 답한다 */}
-      <section className="cm-quiet">
-        <h2>준비 중인 전공</h2>
-        <p>
-          문항과 산업 자료를 그 전공을 아는 분이 써야 열립니다. 열리는 대로
-          여기에 더합니다. 아래 이름은 **준비 중**이고 지금은 응시할 수
-          없습니다.
-        </p>
-        {FAMILY_ORDER.map(([fam, label]) => {
+      {/* **서른한 개를 pill 로 늘어놓지 않는다**(규격 §6). 계열마다 칸
+          하나를 세우고 대표 전공 서넛만 적는다. 전부 펼치면 `준비 중` 이
+          메뉴처럼 보이고, 그 순간 검사 가능한 것으로 읽힌다 */}
+      <SectionHeader icon="layers" tone="c" title="준비 중인 전공"
+        sub="문항과 산업 자료를 그 전공을 아는 분이 써야 열립니다. 지금은 응시할 수 없습니다." />
+      <PickGrid cols={3}>
+        {FAMILY_ORDER.map(([fam, label, icon, tone]) => {
           const rows = planned.filter((c) => c.family === fam);
           if (!rows.length) return null;
           return (
-            <div key={fam} style={{ marginTop: 14 }}>
-              <h3 className="cm-sub-h">{label}</h3>
-              <div className="cm-chips is-quiet">
-                {rows.map((c) => (
-                  <span className="cm-chip" key={c.code}>{c.name_ko}</span>
-                ))}
-              </div>
-            </div>
+            <PickCard
+              key={fam}
+              disabled
+              icon={icon}
+              tone={tone}
+              title={label}
+              tag="준비 중"
+              lead={rows.slice(0, 4).map((c) => c.name_ko).join(" · ")}
+              meta={rows.length > 4 ? `외 ${rows.length - 4}개 전공` : undefined}
+            />
           );
         })}
-      </section>
+      </PickGrid>
+
+      {/* **긴 설명은 첫 화면에서 내린다**(규격 §9 · §15). 고르는 자리에
+          필요한 것은 무엇이 달라지는가 한 줄이고, 그 뒤에 쌓이는 것은
+          눌러서 읽는다 */}
+      <details className="cm-fold">
+        <summary>검사 뒤에 무엇이 쌓이는지 보기</summary>
+        <dl className="cm-dl">
+          <div>
+            <dt>검사에서 받는 것</dt>
+            <dd>근거가 확인된 기술영역과 아직 부족한 부분, 그리고 다음 할 일</dd>
+          </div>
+          <div>
+            <dt>그 뒤에 쌓는 것</dt>
+            <dd>새로 겪은 경험을 적고 현재 상태에 더하면 부족했던 부분이 채워집니다</dd>
+          </div>
+          <div>
+            <dt>등급 차이</dt>
+            <dd>문항 수가 아니라 판단의 종류가 다릅니다</dd>
+          </div>
+          <div>
+            <dt>중간에 멈춰도</dt>
+            <dd>답한 것은 문항마다 저장되어 멈춘 자리에서 이어집니다</dd>
+          </div>
+        </dl>
+      </details>
     </CmShell>
   );
 }

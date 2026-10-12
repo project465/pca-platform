@@ -257,11 +257,26 @@ async function main(): Promise<void> {
        `cm-sub-h` 로 한 단 내려가면서(규격 §22~§24) `h2.cm-sect` 만 읽던
        이 줄이 그 묶음을 못 찾아 -1 을 돌려줬다. **멀쩡한데 걸린 것이다**:
        한 단 내려간 것은 더 아래로 간 것이므로 규격이 요구한 쪽이다 */
-    const sects = await p2.$$eval(".cm-sect, .cm-sub-h",
-      (xs) => xs.map((x) => (x.firstChild?.textContent ?? x.textContent ?? "").trim()));
+    /* **묶음 머리의 종류를 전부 읽는다.** 이 줄이 `.cm-sect` 와
+       `.cm-sub-h` 만 읽고 있어서, 머리가 공통 조각(`.cm-sh`)과 Summary
+       Hero 의 이름표(`.cm-stat-l`)로 옮겨 간 뒤로 **첫 화면 셋을 하나도
+       못 찾았다**. 그러면 차례가 실제로 뒤집혀도 이 줄은 걸리지 않는다:
+       못 찾은 것과 뒤집힌 것이 같은 답(-1)으로 보인다.
+       **글자는 바로 밑의 글자 노드만 센다**: `.cm-sh` 의 첫 자식은
+       표시(`svg`)라 `firstChild.textContent` 가 빈 글자이고, `더 보기`
+       링크까지 세면 머리 이름에 그 글자가 붙는다 */
+    const sects = await p2.$$eval(".cm-sect, .cm-sub-h, .cm-sh, .cm-stat-l",
+      (xs) => xs.map((x) => {
+        const own = [...x.childNodes]
+          .filter((n) => n.nodeType === 3)
+          .map((n) => n.textContent ?? "").join("").trim();
+        return own || (x.textContent ?? "").trim();
+      }));
     /* **차례가 §5 로 바뀌었다**: 지난 일보다 할 일이 먼저다. 전에는
        상태 → 지난 일 → 할 일 이라 첫 화면이 가운데에서 한 번 끊겼다 */
-    const ORDER_TOP = ["지금 설명할 수 있는 영역", "지금 할 일", "최근 달라진 것"];
+    /* 이름은 화면이 쓰는 그대로 적는다. 한 번 `지금 상태` 를 `현재
+       상태` 로 고친 날 이 모양의 줄이 멀쩡한 화면을 걸었다 */
+    const ORDER_TOP = ["현재 설명할 수 있는 영역", "지금 할 일", "최근 달라진 것"];
     const at5 = ORDER_TOP.map((h) => sects.findIndex((t) => t === h));
     ok("현재 상태 첫 화면의 차례가 규격 §5 다",
       at5.every((i) => i >= 0) && at5.every((v, i) => i === 0 || v > at5[i - 1]),

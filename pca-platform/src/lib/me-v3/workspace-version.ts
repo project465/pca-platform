@@ -61,7 +61,7 @@
  *   들어오는 길이 지금 무엇인지 적지 않으면 구글로 가입하신 분이
  *   비밀번호 찾기를 누르고 메일을 기다린다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V23";
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V24";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -75,7 +75,7 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V23";
  * 셋은 우리가 안에서 그 일을 부르던 말이고, 손님 화면에서는 그 말이
  * 무엇을 가리키는지 알 수 없다.
  */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.15";
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.16";
 
 /**
  * V5 에서 바꾼 것 (2026-10-09).
@@ -511,4 +511,28 @@ export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.15";
  * 적합도·합격 가능성·취업 확률을 뜻하지 않고 `함께 탐색해 볼 수 있는
  * 조직` 까지다. 출처 없는 줄은 DB 가 거절하고, 비어 있으면 **비었다고
  * 적는다**: 기관 이름을 짐작으로 채우면 그것을 믿고 움직이는 사람이 생긴다.
+ */
+
+/*
+ * `V24` 로 올린 까닭. **홈의 Visual System 을 남은 화면에 전파했다.**
+ *
+ * 승인된 것은 홈 하나였고 나머지 아홉은 전에 쓰던 모양 그대로였다. 그래서
+ * 홈에서 다른 쪽으로 넘어가면 **같은 제품의 다음 화면**이 아니라 다른
+ * 화면을 붙여 놓은 것으로 읽혔다. 새 visual theme 을 만들지 않았다: 쓰는
+ * 것은 `workspace.tokens.css` 의 값과 `me/ui.tsx` 의 조각이고, 이 회차에
+ * 더한 조각은 셋이다(`StatHero` · `PickCard` · `PickGrid`).
+ *
+ * **기능을 더하지도 빼지도 않았다.** 채점 · Item Bank · ResultModel ·
+ * 현재 상태 계산 · Evidence · Industry/Role 관계 자료 · Region 계산 ·
+ * 경험 로직 · autoRecompute · DB 스키마 · 가격 · 이용권 · Campus V3 ·
+ * Track · route 의 뜻이 그대로다. 늘어난 CTA 는 전부 **이미 있는
+ * route** 를 가리킨다: 기능 없는 단추와 가짜 필터를 두지 않는다.
+ *
+ * **긴 설명은 접었고 지우지 않았다.** `/cores` 의 등급 설명과 `/me/region`
+ * 의 자료 공백 설명은 `<details>` 안으로 들어갔고, 인쇄와 펼침에서 그대로
+ * 읽힌다.
+ *
+ * 한 묶음에 이름을 둘 두지 않는다: `/me/state` 의 `현재 확인된 영역`
+ * 머리를 걷었다. 그 묶음의 이름은 바로 위 Summary Hero 의 이름표가 이미
+ * 들고 있다.
  */

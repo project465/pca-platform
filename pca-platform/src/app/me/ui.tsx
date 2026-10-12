@@ -239,3 +239,106 @@ export function EmptyState({
 }: { children: ReactNode; style?: CSSProperties }) {
   return <div className="cm-soon" style={style}>{children}</div>;
 }
+
+/**
+ * 요약 Hero(규격 §2 B).
+ *
+ * `PrimaryActionHero` 와 따로 둔 까닭은 드는 것이 달라서다. 저쪽은 **다음
+ * 행동 하나**를 크게 들고, 이쪽은 **지금 상태 한 값**을 들고 그 뒤에
+ * 행동을 둔다. 하나로 묶으면 부르는 쪽이 상태와 행동을 같은 칸에 넣는다.
+ *
+ * **새 지표를 만들지 않는다.** `value` 는 부르는 쪽이 이미 세어 둔 값이고
+ * 여기서 더하거나 비율로 바꾸지 않는다.
+ */
+export function StatHero({
+  icon = "target", label, value, unit, note, action, more,
+}: {
+  icon?: IconName;
+  label: string;
+  value: string | number;
+  unit?: string;
+  /** 그 값이 무엇을 뜻하는지 한 줄. **못 찾으면 적지 않는다** */
+  note?: ReactNode;
+  action?: ReactNode;
+  more?: ReactNode;
+}) {
+  return (
+    <section className="cm-stat">
+      <span className="cm-stat-ico"><Icon name={icon} size={20} /></span>
+      <div className="cm-stat-txt">
+        <p className="cm-stat-l">{label}</p>
+        <p className="cm-stat-v">
+          {value}{unit ? <em>{unit}</em> : null}
+        </p>
+        {note ? <p className="cm-stat-n">{note}</p> : null}
+      </div>
+      {action || more ? (
+        <div className="cm-stat-acts">{action}{more}</div>
+      ) : null}
+    </section>
+  );
+}
+
+/**
+ * 고르거나 들여다보는 칸 하나(규격 §2 C · §6 · §8 · §9).
+ *
+ * 산업과 직무와 전공과 기관이 **같은 모양으로 선다.** 쪽마다 다른 카드를
+ * 만들면 같은 제품의 화면이 넷으로 갈리고, 그 어긋남은 쪽을 이어서 누를
+ * 때만 보인다.
+ *
+ * **순위를 담지 않는다.** `tag` 는 상태(`지금 응시할 수 있습니다` ·
+ * `준비 중`)이고 점수나 등수가 아니다.
+ */
+export function PickCard({
+  href, icon, tone, title, tag, lead, meta, cta, disabled, strong,
+}: {
+  href?: string;
+  icon: IconName;
+  /** 표시의 색조. **뜻을 갖지 않는다**: 칸 넷이 한 덩이로 읽히지 않게 한다 */
+  tone?: "b" | "c" | "v" | "w";
+  title: string;
+  tag?: string;
+  /** 한두 줄. **문단을 넣지 않는다** */
+  lead?: string;
+  /** 그 아래 작은 줄. 이어지는 영역 같은 것 */
+  meta?: ReactNode;
+  cta?: string;
+  /** 아직 열리지 않은 칸. 누를 수 없고 그 사실이 보인다 */
+  disabled?: boolean;
+  /**
+   * 이 칸이 그 화면의 주된 행동일 때(규격 §2 E).
+   *
+   * **단추를 칸 안에 넣지 않는다**: 칸 전체가 이미 링크라 그 안에 링크나
+   * 단추를 또 두면 안에 든 것이 바깥을 삼킨다. 그려지는 것은 단추처럼
+   * 보이는 글줄 하나이고 누르는 자리는 칸 하나 그대로다.
+   */
+  strong?: boolean;
+}) {
+  const body = (
+    <>
+      <span className={`cm-pc-ico${tone ? ` is-${tone}` : ""}`}>
+        <Icon name={icon} size={19} />
+      </span>
+      <span className="cm-pc-h">
+        <b>{title}</b>
+        {tag ? <em>{tag}</em> : null}
+      </span>
+      {lead ? <span className="cm-pc-lead">{lead}</span> : null}
+      {meta ? <span className="cm-pc-meta">{meta}</span> : null}
+      {cta && !disabled ? (
+        <span className={`cm-pc-cta${strong ? " is-strong" : ""}`}>
+          {cta}<Icon name="chev" size={15} />
+        </span>
+      ) : null}
+    </>
+  );
+  if (disabled || !href) {
+    return <div className="cm-pc is-off">{body}</div>;
+  }
+  return <Link className="cm-pc" href={href}>{body}</Link>;
+}
+
+/** 칸을 거는 격자. 좁은 화면에서 한 줄이 된다 */
+export function PickGrid({ children, cols }: { children: ReactNode; cols?: 1 | 2 | 3 }) {
+  return <div className={`cm-pcs${cols ? ` is-${cols}` : ""}`}>{children}</div>;
+}

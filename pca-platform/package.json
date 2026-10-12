@@ -163,7 +163,8 @@
     "v3:legacy:shots": "tsx scripts/v3-legacy-shots.ts",
     "v3:final:shots": "tsx scripts/v3-final-shots.ts",
     "v3:loop:shots": "tsx scripts/v3-loop-shots.ts",
-    "v3:majors": "tsx scripts/v3-majors-check.ts"
+    "v3:majors": "tsx scripts/v3-majors-check.ts",
+    "v3:prop:shots": "tsx scripts/v3-prop-shots.ts"
   },
   "dependencies": {
     "@types/nodemailer": "^8.0.1",

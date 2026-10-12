@@ -7,6 +7,7 @@ import { currentState } from "@/lib/me-v3/platform";
 import { BRAND, toLang2, txer } from "@/lib/surface-text";
 import { ROLE_LABEL } from "@/lib/roles";
 import { CmShell, CmHead } from "@/app/me/shell";
+import { Icon } from "@/components/sf/icon";
 import LangSelect from "@/components/sf/lang-select";
 import LogoutButton from "@/components/logout-button";
 import LoginMethods from "./login-methods";
@@ -58,7 +59,7 @@ export default async function AccountHome({
 
       <div className="cm-grid">
         <section className="cm-card">
-          <h2>로그인한 계정</h2>
+          <h2><Icon name="user" size={17} />계정 정보</h2>
           <dl className="cm-dl">
             <div>
               <dt>이름</dt>
@@ -75,7 +76,7 @@ export default async function AccountHome({
         </section>
 
         <section className="cm-card">
-          <h2>주문과 결제</h2>
+          <h2><Icon name="cart" size={17} />주문과 결제</h2>
           <p>{T("acOrdersBody")}</p>
           <div className="cm-acts">
             <Link href="/support" className="cm-btn">문의하기</Link>
@@ -100,7 +101,7 @@ export default async function AccountHome({
           />
 
         <section className="cm-card">
-          <h2>표시 언어</h2>
+          <h2><Icon name="globe" size={17} />언어</h2>
           <p>고르면 바로 바뀌고 다음에 들어올 때도 그대로입니다.</p>
           <div className="cm-acts">
             <LangSelect current={L} />

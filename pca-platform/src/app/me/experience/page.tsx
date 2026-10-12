@@ -5,6 +5,7 @@ import {
 import { recomputeStatus } from "@/lib/me-v3/recompute";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import { CmShell, CmHead } from "../shell";
+import { EmptyState } from "../ui";
 import { dropExperience } from "./actions";
 
 export const metadata = { title: "경험 · 내 CareerMatri" };
@@ -51,21 +52,22 @@ export default async function Experiences() {
           현재 상태를 다시 확인하고 있습니다. 끝나면 저절로 더해집니다.
         </div>
       ) : st.pending > 0 ? (
-        <div className="cm-fail" role="alert" style={{ marginBottom: 18 }}>
-          경험 {st.pending}건이 아직 현재 상태에 들어가지 못했습니다. 적어
-          주신 기록은 그대로 있으니 다시 적지 않으셔도 됩니다.
-          <p style={{ marginTop: 10 }}>
-            <Link href="/me/recompute?e=recompute">다시 시도</Link>
-          </p>
+        /* **화면을 덮는 큰 빨간 상자를 두지 않는다**(규격 §14). 저장은
+           끝났고 더하기만 남은 상태라, 한 줄과 다시 할 길이면 된다 */
+        <div className="cm-state is-warn" role="alert" style={{ marginBottom: 18 }}>
+          경험 {st.pending}건이 아직 현재 상태에 들어가지 못했습니다.
+          {" "}<Link href="/me/recompute?e=recompute">다시 시도</Link>
         </div>
       ) : null}
 
       {rows.length === 0 ? (
-        <div className="cm-soon">
-          <b>아직 적어 둔 경험이 없습니다.</b> 검사에서 고른 근거와 별개로,
-          새로 겪은 일을 여기에 쌓습니다. 하나만 적어도 현재 상태에
-          더할 수 있습니다.
-        </div>
+        <EmptyState>
+          <b>아직 적어 둔 경험이 없습니다.</b> 새로 겪은 일을 쌓으면 현재
+          상태에 더할 수 있습니다.
+          <p style={{ marginTop: 10 }}>
+            <Link href="/me/experience/new">첫 경험 추가</Link>
+          </p>
+        </EmptyState>
       ) : (
         <>
           <p className="cm-listhead">

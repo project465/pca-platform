@@ -9,6 +9,7 @@ import {
 } from "@/lib/me-v3/result/text.ko";
 import { recentChangeKo } from "@/lib/me-v3/change-text.ko";
 import { CmShell, CmHead } from "../shell";
+import { DomainTile, SectionHeader, StatHero } from "../ui";
 
 export const metadata = { title: "현재 상태 · CareerMatri" };
 
@@ -154,51 +155,43 @@ export default async function State(
 
           **카드 격자로 세우지 않는다**(규격 §18). 두 칸 격자에 셋을
           담으면 넷째 칸이 비어 오른쪽에 큰 빈 면이 남는다 */}
-      <h2 className="cm-sect" id="ready">지금 설명할 수 있는 영역</h2>
-      <div className="cm-panel is-one">
-        <div className="cm-pane">
-          {ready.length ? (
-            <>
-              <p className="cm-none">지원서에서 설명할 경험이 확인된 영역입니다.</p>
-              <div className="cm-rows">
-                {ready.map((r) => (
-                  <p className="cm-row" key={r.domain}>
-                    <b>{domainName(core, r.domain)}</b>
-                    {SAY_READY[r.zone] ? <span>{SAY_READY[r.zone]}</span> : null}
-                    {st.raised.some((x) => x.domain === r.domain)
-                      ? <span className="cm-lockmark">경험 더함</span> : null}
-                  </p>
-                ))}
-              </div>
-              {Object.keys(st.zoneOf).length > ready.length ? (
-                <div className="cm-acts">
-                  <Link className="cm-btn" href="#domains">전체 기술영역 보기</Link>
-                </div>
-              ) : null}
-            </>
-          ) : (
-            <>
-              <h3>지원서에서 설명할 만한 경험이 아직 없습니다</h3>
-              <p>
-                관심이 높은 영역에서 짧게 한 번 해 보고 그것을 경험으로 적으면
-                여기에 그 영역이 섭니다.
-              </p>
-            </>
-          )}
-        </div>
-      </div>
+      {/* ③ Summary Hero(규격 §7). **한 값과 그 뒤의 행동**이다. 전에는
+          이 자리가 흰 상자에 영역 이름 셋을 굵게 적은 글이라, 쪽의 목적이
+          3초 안에 읽히지 않았다 */}
+      <StatHero
+        icon="layers"
+        label="현재 설명할 수 있는 영역"
+        value={ready.length}
+        unit="개"
+        note={ready.length
+          ? `가장 근거가 잘 잡힌 곳은 ${domainName(core, ready[0].domain)}입니다.`
+          : "관심이 높은 영역에서 짧게 한 번 해 보고 그것을 경험으로 적으면 여기에 섭니다."}
+        action={Object.keys(st.zoneOf).length > ready.length ? (
+          <Link className="cm-btn" href="#domains">전체 기술영역 보기</Link>
+        ) : undefined}
+      />
 
-      {/* ④ 지금 할 일 하나 ── **첫 화면 안에, 변화보다 먼저 선다**(규격 §5).
+      {/* **영역을 굵은 글줄로 쌓지 않는다**(규격 §7). 칸마다 표시와 이름과
+          짧은 줄이 서고, 그 모양은 Home 의 영역 칸과 같다 */}
+      {ready.length ? (
+        <>
+          <div className="cm-tiles cm-mb">
+            {ready.map((r) => (
+              <DomainTile
+                key={r.domain}
+                href="#domains"
+                icon="check"
+                title={domainName(core, r.domain)}
+                sub={[SAY_READY[r.zone],
+                  st.raised.some((x) => x.domain === r.domain) ? "경험 더함" : null]
+                  .filter(Boolean).join(" · ") || undefined}
+              />
+            ))}
+          </div>
+        </>
+      ) : null}
 
-          전에는 이 묶음이 `최근 달라진 것` 아래였다. 그러면 첫 화면이
-          **상태 → 지난 일 → 할 일** 차례로 읽히고, 가운데에서 한 번
-          끊긴다. 지난 일은 할 일을 정하고 나서 봐도 되는 것이라 뒤로
-          보냈다 */}
-      {/* **이 쪽에서 가장 센 자리는 하나다**(규격 §18 · 시각 규격 §2).
-          묶음 여섯이 전부 같은 흰 판으로 서면 차례를 세워 둔 뜻이 화면에
-          남지 않는다. 읽는 자리와 누르는 자리를 무게로 가른다: 이 묶음만
-          왼쪽에 선을 세우고 짙은 단추를 든다 */}
-      <h2 className="cm-sect">지금 할 일</h2>
+      <SectionHeader icon="bolt" tone="c" title="지금 할 일" />
       <div className="cm-panel is-one is-lead">
         <div className="cm-pane">
           {nextOne ? (
@@ -251,7 +244,7 @@ export default async function State(
           빈 카드를 세우면 읽는 사람은 자기 결과가 덜 만들어진 줄 안다 */}
       {st.recomputed_at ? (
         <>
-          <h2 className="cm-sect">최근 달라진 것</h2>
+          <SectionHeader icon="spark" title="최근 달라진 것" />
           <div className="cm-panel is-one">
             <div className="cm-pane">
               <p><b>{one.lines[0]}</b></p>
@@ -460,7 +453,7 @@ export default async function State(
           </div>
         ) : (
           <div className="cm-soon">
-            <b>지원서에서 설명할 수 있는 근거가 아직 없습니다.</b>
+            <b>지원서에서 설명할 수 있는 근거가 아직 없습니다.</b>{" "}
             관심이 높은 영역에서 짧게 한 번 해 보고 그것을 적으면 여기에 그 경험이 쌓입니다.
           </div>
         )}

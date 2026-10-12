@@ -7,6 +7,9 @@ import { domainArtifacts } from "@/lib/me-v3/runtime/domain-facts";
 import { actionKo, gapKo } from "@/lib/me-v3/result/text.ko";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { CmShell, CmHead } from "../shell";
+import {
+  EmptyState, PickCard, PickGrid, SectionHeader, StatHero,
+} from "../ui";
 import { moveAction, pullActions } from "./actions";
 
 export const metadata = { title: "다음 할 일 · CareerMatri" };
@@ -197,29 +200,53 @@ export default async function Next(
       ) : null}
 
       {!st.model ? (
-        <div className="cm-soon">
+        <EmptyState>
           <b>아직 완료한 검사가 없습니다.</b> 할 일은 검사 결과의 비어 있는
           부분에서 나옵니다.
           <p style={{ marginTop: 10 }}>
-            <Link href="/cores">기계공학 검사 시작</Link>
+            <Link href="/cores">검사 시작하기</Link>
           </p>
-        </div>
+        </EmptyState>
       ) : actions.length === 0 ? (
-        <div className="cm-soon">
-          <b>할 일을 모두 치우셨습니다.</b> 새 경험을 적어 현재 상태를 다시
-          세우면 그다음 할 일이 나옵니다.
-          <p style={{ marginTop: 10 }}>
-            <Link href="/me/experience/new">경험 추가</Link>
-          </p>
-        </div>
+      <>
+      {/* **빈 상태에서도 제품 구조가 느껴져야 한다**(규격 §13). 꺼진 칸
+          하나에 한 줄만 적으면 쪽이 덜 만들어진 것으로 읽힌다. Hero 하나와
+          **실제 route 가 있는** 칸 넷을 세운다 */}
+      <StatHero icon="check" label="지금 할 일" value="없음"
+        note={"할 일을 모두 치우셨습니다. 새 경험을 더하면 다음 할 일이 생길 수 있습니다."}
+        action={<Link className="cm-btn is-primary" href="/me/experience/new">경험 추가</Link>} />
+      <SectionHeader icon="compass" tone="c" title="다음에 할 수 있는 것" />
+      <PickGrid cols={3}>
+        <PickCard href="/me/experience/new" icon="layers" tone="b"
+          title="경험 추가" lead="새로 겪은 일을 적으면 현재 상태가 다시 섭니다." cta="적으러 가기" />
+        <PickCard href="/me/state" icon="chart" tone="c"
+          title="현재 상태 보기" lead="지금 설명할 수 있는 영역을 확인합니다." cta="보러 가기" />
+        <PickCard href="/me/explore" icon="compass" tone="v"
+          title="산업·직무 탐색" lead="확인된 영역과 이어지는 쪽을 봅니다." cta="보러 가기" />
+        <PickCard href="/me/region" icon="globe" tone="w"
+          title="지역·기관 보기" lead="일하고 싶은 권역과 기관 유형을 고릅니다." cta="보러 가기" />
+      </PickGrid>
+      </>
       ) : !first ? (
-        <div className="cm-soon">
-          <b>담아 둔 일을 다 끝내셨습니다.</b> 새 경험을 적어 현재 상태를
-          다시 세우면 그다음 할 일이 나옵니다.
-          <p style={{ marginTop: 10 }}>
-            <Link href="/me/experience/new">경험 추가</Link>
-          </p>
-        </div>
+      <>
+      {/* **빈 상태에서도 제품 구조가 느껴져야 한다**(규격 §13). 꺼진 칸
+          하나에 한 줄만 적으면 쪽이 덜 만들어진 것으로 읽힌다. Hero 하나와
+          **실제 route 가 있는** 칸 넷을 세운다 */}
+      <StatHero icon="check" label="지금 할 일" value="없음"
+        note={"담아 둔 일을 다 끝내셨습니다. 새 경험을 더하면 다음 할 일이 생길 수 있습니다."}
+        action={<Link className="cm-btn is-primary" href="/me/experience/new">경험 추가</Link>} />
+      <SectionHeader icon="compass" tone="c" title="다음에 할 수 있는 것" />
+      <PickGrid cols={3}>
+        <PickCard href="/me/experience/new" icon="layers" tone="b"
+          title="경험 추가" lead="새로 겪은 일을 적으면 현재 상태가 다시 섭니다." cta="적으러 가기" />
+        <PickCard href="/me/state" icon="chart" tone="c"
+          title="현재 상태 보기" lead="지금 설명할 수 있는 영역을 확인합니다." cta="보러 가기" />
+        <PickCard href="/me/explore" icon="compass" tone="v"
+          title="산업·직무 탐색" lead="확인된 영역과 이어지는 쪽을 봅니다." cta="보러 가기" />
+        <PickCard href="/me/region" icon="globe" tone="w"
+          title="지역·기관 보기" lead="일하고 싶은 권역과 기관 유형을 고릅니다." cta="보러 가기" />
+      </PickGrid>
+      </>
       ) : (
         <>
           {/* ── 지금 할 한 가지 ──

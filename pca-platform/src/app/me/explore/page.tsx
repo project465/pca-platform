@@ -7,6 +7,7 @@ import {
 } from "@/lib/me-v3/runtime/session";
 import { regionLayer } from "@/lib/me-v3/region";
 import { CmShell, CmHead } from "../shell";
+import { PickCard, PickGrid, SectionHeader } from "../ui";
 
 export const metadata = { title: "탐색 · 내 CareerMatri" };
 
@@ -136,72 +137,65 @@ export default async function Explore() {
         lead="지금 확인된 영역과 이어지는 쪽이 먼저 섭니다."
       />
 
-      <p className="cm-listhead">
-        산업<em>여덟</em>
-      </p>
+      {/* **먼저 볼 산업은 카드로, 나머지는 줄로**(규격 §8). 여덟을 같은
+          줄로 깔면 훑어 고르는 자리가 읽어 내려가는 표가 된다.
+          **새 점수를 만들지 않는다**: 앞에 세우는 기준은 `relations` 의
+          `중심`으로 걸린 확인된 영역이 있는가뿐이다 */}
       {indOn.length ? (
         <>
-          <p className="cm-none" style={{ margin: "0 0 8px" }}>
-            지금 확인된 영역이 이 산업들이 보는 판단과 겹칩니다.
-          </p>
-          <ul className="cm-list">
-            {indOn.map((x) => (
-              <Row key={x.code} name={x.name} kind="이 산업이" line={x.first}
-                core={x.core} link={x.link} chosen={mine.has(x.code)}
-                more={x.scene
-                  ? { scene: x.scene.scene, head: "이 산업이 보는 판단", lines: x.scene.demands }
-                  : null} />
+          <SectionHeader icon="compass" title="먼저 볼 산업"
+            sub="지금 확인된 영역이 이 산업들이 보는 판단과 겹칩니다." />
+          <PickGrid>
+            {indOn.slice(0, 3).map((x) => (
+              <PickCard key={x.code} href="#ind-all" icon="building" tone="b"
+                title={x.name} tag={mine.has(x.code) ? "고르셨습니다" : undefined}
+                lead={x.first}
+                meta={`이어지는 영역 · ${names(x.core).slice(0, 3).join(" · ")}`}
+                cta="자세히 보기" />
             ))}
-          </ul>
+          </PickGrid>
         </>
       ) : null}
-      {indOff.length ? (
-        <>
-          <p className="cm-listhead" style={{ marginTop: 18 }}>
-            {indOn.length ? "다른 산업 둘러보기" : "여덟 산업"}
-          </p>
-          <ul className="cm-list">
-            {indOff.map((x) => (
-              <Row key={x.code} name={x.name} kind="이 산업이" line={x.first}
-                core={x.core} link={x.link} chosen={mine.has(x.code)}
-                more={x.scene
-                  ? { scene: x.scene.scene, head: "이 산업이 보는 판단", lines: x.scene.demands }
-                  : null} />
-            ))}
-          </ul>
-        </>
-      ) : null}
-
-      <p className="cm-listhead" style={{ marginTop: 26 }}>
-        직무<em>여덟</em>
+      <p className="cm-listhead" id="ind-all">
+        {indOn.length ? "다른 산업" : "산업"}<em>여덟</em>
       </p>
+      <ul className="cm-list">
+        {[...indOn.slice(3), ...indOff].map((x) => (
+          <Row key={x.code} name={x.name} kind="이 산업이" line={x.first}
+            core={x.core} link={x.link} chosen={mine.has(x.code)}
+            more={x.scene
+              ? { scene: x.scene.scene, head: "이 산업이 보는 판단", lines: x.scene.demands }
+              : null} />
+        ))}
+      </ul>
+
       {roleOn.length ? (
-        <ul className="cm-list">
-          {roleOn.map((r) => (
-            <Row key={r.code} name={r.name} kind="이 직무가" line={r.first}
-              core={r.core} link={r.link} chosen={myRoles.has(r.code)}
-              more={r.domains.length
-                ? { head: "이 직무가 다루는 기술영역", lines: r.domains } : null} />
-          ))}
-        </ul>
-      ) : null}
-      {roleOff.length ? (
         <>
-          {roleOn.length ? (
-            <p className="cm-listhead" style={{ marginTop: 18 }}>다른 직무 둘러보기</p>
-          ) : null}
-          <ul className="cm-list">
-            {roleOff.map((r) => (
-              <Row key={r.code} name={r.name} kind="이 직무가" line={r.first}
-                core={r.core} link={r.link} chosen={myRoles.has(r.code)}
-                more={r.domains.length
-                  ? { head: "이 직무가 다루는 기술영역", lines: r.domains } : null} />
+          <SectionHeader icon="send" tone="c" title="먼저 볼 직무"
+            sub="확인된 영역을 가장 많이 쓰는 직무입니다." />
+          <PickGrid>
+            {roleOn.slice(0, 3).map((r) => (
+              <PickCard key={r.code} href="#role-all" icon="target" tone="c"
+                title={r.name} tag={myRoles.has(r.code) ? "고르셨습니다" : undefined}
+                lead={r.first}
+                meta={`이어지는 영역 · ${names(r.core).slice(0, 3).join(" · ")}`}
+                cta="자세히 보기" />
             ))}
-          </ul>
+          </PickGrid>
         </>
       ) : null}
+      <p className="cm-listhead" id="role-all">
+        {roleOn.length ? "다른 직무" : "직무"}<em>여덟</em>
+      </p>
+      <ul className="cm-list">
+        {[...roleOn.slice(3), ...roleOff].map((r) => (
+          <Row key={r.code} name={r.name} kind="이 직무가" line={r.first}
+            core={r.core} link={r.link} chosen={myRoles.has(r.code)}
+            more={r.domains.length
+              ? { head: "이 직무가 다루는 기술영역", lines: r.domains } : null} />
+        ))}
+      </ul>
 
-      {/* 지역은 **고르는 자리가 따로 있다**. 여기서는 권역 이름과 한 줄까지다 */}
       <p className="cm-listhead" style={{ marginTop: 26 }}>
         지역과 기관
         <Link href="/me/region">희망 지역 고르기</Link>
