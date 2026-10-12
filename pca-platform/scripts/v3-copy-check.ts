@@ -157,6 +157,12 @@ const FILES = [
      한 사람이 검사를 끝내고 이어서 누르는 쪽이라, 여기가 설명서 말투면
      그 어긋남은 한 쪽씩 볼 때 안 보이고 이어서 누를 때만 보인다 */
   "src/app/cores/page.tsx",
+  /* 학교 전용 진입. **여기도 손님 화면이다**: 학교를 붙이는 회차마다
+     원고가 늘어나는 자리라 상시 규칙 안에 둔다 */
+  "src/app/campus/shell.tsx",
+  "src/app/campus/[universityCode]/page.tsx",
+  "src/app/campus/[universityCode]/majors/page.tsx",
+  "src/app/campus/[universityCode]/d/[department]/page.tsx",
   "src/app/me/page.tsx",
   "src/app/me/nav.ts",
   "src/app/me/shell.tsx",

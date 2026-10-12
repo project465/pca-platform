@@ -32,6 +32,15 @@ export type CampusV3 = {
   recomputed: number;
   /** 전공(Major Core)별 */
   by_core: Cell[];
+  /**
+   * 단과대학별 · 학과별(규격 §13).
+   *
+   * **학교 전용 진입으로 들어온 응시만 여기 선다.** 일반 B2C 응시는 그
+   * 칸이 비어 있고, 비어 있는 것을 `(고르지 않음)` 으로 세면 담당자가
+   * 자기 학교 학생이 그만큼 있는 줄로 읽는다.
+   */
+  by_college: Cell[];
+  by_department: Cell[];
   /** 학위 단계별 */
   by_stage: Cell[];
   /** 고른 산업별 */
@@ -64,21 +73,51 @@ function cell(key: string, label: string, n: number): Cell {
   return { key, label, n: n < MIN_CELL ? null : n };
 }
 
-export async function campusV3(orgIds: number[]): Promise<CampusV3> {
+/**
+ * 집계에 넣을 사람을 고르는 두 길.
+ *
+ * **소속과 학교 진입은 다른 길이다.** 학과가 명단을 올려 계정을 발급한
+ * 학생은 `memberships` 로 묶이고, `/campus/{학교}` 로 혼자 들어온 학생은
+ * 소속이 없다. 둘 가운데 하나만 보면 담당자 화면에 학생이 반만 잡히고,
+ * **그 반이 비어 있는 것을 담당자는 `아직 아무도 안 쳤다` 로 읽는다.**
+ */
+export type CampusScope = {
+  /** 담당자가 맡은 기관 */
+  orgIds: number[];
+  /** 그 기관이 학교 등록부의 어느 학교인가(`organizations.code`). 없으면 null */
+  universityCode?: string | null;
+};
+
+export async function campusV3(scope: CampusScope): Promise<CampusV3> {
   const empty: CampusV3 = {
     started: 0, scored: 0, in_progress: 0, recomputed: 0,
     by_core: [], by_stage: [], by_industry: [], by_role: [],
+    by_college: [], by_department: [],
     zone_cells: [], too_few: true,
   };
-  if (!orgIds.length) return empty;
+  const orgIds = scope.orgIds;
+  const uni = scope.universityCode ?? null;
+  if (!orgIds.length && !uni) return empty;
+
+  /**
+   * 두 길을 한 조건으로 묶는다.
+   *
+   * `LEFT JOIN` 이 사람을 여러 줄로 늘리지만 세는 것이 전부
+   * `count(DISTINCT a.user_id)` 라 수가 부풀지 않는다. **`JOIN` 으로 두면
+   * 소속이 없는 학생이 통째로 빠진다.**
+   */
+  const FROM = `FROM v3_attempts a
+       LEFT JOIN memberships m
+         ON m.user_id = a.user_id AND m.org_id = ANY($1::bigint[])
+      WHERE (m.org_id IS NOT NULL
+             OR ($2::text IS NOT NULL AND a.university_code = $2))`;
+  const args = [orgIds, uni];
 
   const head = await queryOne<{ started: string; scored: string; open: string }>(
     `SELECT count(DISTINCT a.user_id)::text AS started,
             count(DISTINCT a.user_id) FILTER (WHERE a.status = 'scored')::text AS scored,
             count(DISTINCT a.user_id) FILTER (WHERE a.status = 'in_progress')::text AS open
-       FROM v3_attempts a
-       JOIN memberships m ON m.user_id = a.user_id
-      WHERE m.org_id = ANY($1::bigint[])`, [orgIds]);
+       ${FROM}`, args);
   const started = Number(head?.started ?? 0);
   const scored = Number(head?.scored ?? 0);
 
@@ -91,20 +130,30 @@ export async function campusV3(orgIds: number[]): Promise<CampusV3> {
   const rec = await queryOne<{ n: string }>(
     `SELECT count(DISTINCT p.user_id)::text AS n
        FROM career_profiles p
-       JOIN memberships m ON m.user_id = p.user_id
-      WHERE m.org_id = ANY($1::bigint[]) AND p.recomputed_at IS NOT NULL`, [orgIds]);
+      WHERE p.recomputed_at IS NOT NULL
+        AND (EXISTS (SELECT 1 FROM memberships m
+                      WHERE m.user_id = p.user_id AND m.org_id = ANY($1::bigint[]))
+             OR ($2::text IS NOT NULL
+                 AND EXISTS (SELECT 1 FROM v3_attempts a
+                              WHERE a.user_id = p.user_id
+                                AND a.university_code = $2)))`, args);
 
-  const group = async (col: string, scoredOnly = false) => query<{ k: string; n: string }>(
-    `SELECT coalesce(a.${col}, '(고르지 않음)') AS k, count(DISTINCT a.user_id)::text AS n
-       FROM v3_attempts a
-       JOIN memberships m ON m.user_id = a.user_id
-      WHERE m.org_id = ANY($1::bigint[])
-        ${scoredOnly ? "AND a.status = 'scored'" : ""}
-      GROUP BY 1 ORDER BY 2 DESC`, [orgIds]);
+  const group = async (col: string, scoredOnly = false, campusOnly = false) =>
+    query<{ k: string; n: string }>(
+      `SELECT coalesce(a.${col}, '(고르지 않음)') AS k,
+              count(DISTINCT a.user_id)::text AS n
+         ${FROM}
+          ${scoredOnly ? "AND a.status = 'scored'" : ""}
+          ${campusOnly ? "AND a.university_code IS NOT NULL" : ""}
+        GROUP BY 1 ORDER BY 2 DESC`, args);
 
-  const [cores, stages, inds, roles] = await Promise.all([
+  const [cores, stages, inds, roles, colleges, depts] = await Promise.all([
     group("core_code"), group("education_stage"),
     group("industry_pack", true), group("role_pack", true),
+    /* **학교 진입으로 들어온 응시만 센다**(규격 §13). 소속으로만 묶인
+       학생은 이 칸이 비어 있고, 그 빈 칸을 `(고르지 않음)` 한 줄로
+       세우면 담당자가 그만큼의 학생이 어느 학과인지 모르는 줄로 읽는다 */
+    group("college_code", false, true), group("department_code", false, true),
   ]);
 
   /* 묶음 분포는 굳은 결과에서 읽는다. **다시 계산하지 않는다** */
@@ -112,17 +161,22 @@ export async function campusV3(orgIds: number[]): Promise<CampusV3> {
     `SELECT d ->> 'zone' AS k, count(*)::text AS n
        FROM v3_snapshots s
        JOIN v3_attempts a ON a.id = s.attempt_id
-       JOIN memberships m ON m.user_id = a.user_id
+       LEFT JOIN memberships m
+         ON m.user_id = a.user_id AND m.org_id = ANY($1::bigint[])
        CROSS JOIN LATERAL jsonb_array_elements(
          coalesce(s.result_model -> 'domains', '[]'::jsonb)) AS d
-      WHERE m.org_id = ANY($1::bigint[]) AND s.result_model IS NOT NULL
+      WHERE (m.org_id IS NOT NULL
+             OR ($2::text IS NOT NULL AND a.university_code = $2))
+        AND s.result_model IS NOT NULL
         AND d ->> 'zone' IS NOT NULL
-      GROUP BY 1 ORDER BY 2 DESC`, [orgIds]);
+      GROUP BY 1 ORDER BY 2 DESC`, args);
 
   return {
     started, scored, in_progress: Number(head?.open ?? 0),
     recomputed: Number(rec?.n ?? 0),
     by_core: cores.map((r) => cell(r.k, r.k, Number(r.n))),
+    by_college: colleges.map((r) => cell(r.k, r.k, Number(r.n))),
+    by_department: depts.map((r) => cell(r.k, r.k, Number(r.n))),
     by_stage: stages.map((r) => cell(r.k, STAGE_KO[r.k] ?? r.k, Number(r.n))),
     by_industry: inds.map((r) => cell(r.k, r.k, Number(r.n))),
     by_role: roles.map((r) => cell(r.k, r.k, Number(r.n))),

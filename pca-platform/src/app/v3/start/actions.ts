@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
+import { clearCampusEntry, readCampusEntry } from "@/lib/campus/entry";
 import {
   currentAttempt, openAttempt, setProfile, v3Grants,
 } from "@/lib/me-v3/runtime/session";
@@ -44,16 +45,39 @@ export async function startV3(form: FormData): Promise<void> {
   const open = await currentAttempt(user.id);
   if (open) {
     await setProfile(open.id, stage as Stage, gradField, open.undergrad_core ?? null);
+    /* **열린 응시의 전공을 바꾸지 않는다.** 푸는 중에 Core 가 갈리면 앞에
+       답한 문항이 다른 전공의 영역 사전 위에 선다. 들고 있던 학과 선택은
+       여기서 버린다: 다음 응시에 조용히 묻어 들어가면 그 사람이 고르지
+       않은 학과로 검사가 시작된다 */
+    await clearCampusEntry();
     redirect(`/v3/${open.id}`);
   }
 
   const grants = await v3Grants(user.id);
   const tier: Tier = grants[0]?.tier ?? "BASIC";
 
+  /**
+   * **학교 진입으로 고른 학과가 있으면 그 전공으로 연다**(규격 §11 · §12).
+   *
+   * 폼이 보낸 값이 아니라 쿠키에 적힌 학교·학과 코드를 **등록부로 다시
+   * 맞춰 본 값**이다(`readCampusEntry`). 그래서 주소나 폼을 고쳐 아직
+   * 열리지 않은 전공으로 들어가는 길이 없다.
+   */
+  const campus = await readCampusEntry();
+
   const a = await openAttempt({
     userId: user.id, tier, stage: stage as Stage, gradField,
     entitlementId: grants[0]?.entitlement_id ?? null,
+    campus: campus ? {
+      university_code: campus.university_code,
+      college_code: campus.college_code,
+      department_code: campus.department_code,
+      core_code: campus.core_code,
+      specialization: campus.specialization,
+    } : null,
   });
+  /* 응시 줄에 적혔으므로 쿠키는 더 들고 있지 않는다 */
+  await clearCampusEntry();
   /**
    * **첫 문항 앞에 안내 한 쪽을 둔다.** 이어보기로 들어오는 사람은 위에서
    * 이미 `/v3/{id}` 로 갔으므로, 이 쪽을 보는 것은 지금 막 응시를 연

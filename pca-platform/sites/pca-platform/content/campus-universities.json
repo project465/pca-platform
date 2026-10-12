@@ -1,0 +1,126 @@
+{
+  "schema_version": "cm-campus-universities.1",
+  "note": "학교마다 다른 것만 담는다: 학교 이름 · 단과대학 · 학과 이름 · 학과에서 CareerMatri Major Core 로 가는 길 · 그 학교가 먼저 보는 지역. **검사와 채점과 결과는 담지 않는다** — 그쪽은 Major Core 등록부(`major-cores.json`)와 공통 엔진이 들고 있고, 학교가 늘어도 한 줄도 달라지지 않는다. 이 파일이 늘어나는 모양이 곧 다음 학교를 붙이는 모양이다.",
+  "contract": {
+    "status_shown": ["READY", "PREPARING"],
+    "status_note": "사용자에게 보이는 상태는 둘뿐이다: `검사 가능` 과 `준비 중`. 안쪽 성숙도(FOUNDATION · READY_FOR_REVIEW · VALIDATED)는 Major Core 등록부가 들고 있고 **학생 화면에 그 글자가 나가지 않는다.** 그리고 이 파일에 상태를 적어 두지 않는다: 적어 두면 Core 가 열린 날 이 파일이 옛 상태를 들고 있고, 둘이 갈리면 `검사 가능` 이라고 적힌 학과에서 빈 검사가 열린다. 상태는 `core_code` 가 가리키는 Core 의 판매 상태에서 끌어온다",
+    "mapping_source": ["owner", "proposed"],
+    "mapping_note": "`owner` 는 학교·사업주가 적어 준 매핑이고 `proposed` 는 학과 이름을 보고 우리가 제안한 자리다. **`proposed` 인 학과는 Core 가 열려도 검사가 열리지 않는다**: 매핑이 틀리면 그 학생이 남의 전공 사전을 읽고, 그 결과는 되돌릴 수 없다. 확인을 받으면 `owner` 로 바꾼다",
+    "source_note": "`departments[].source` 는 그 학과 이름을 어디서 받았는가다. 공식 학과 구조를 확인하지 못한 자리는 비워 두지 않고 그 사실을 적는다. **학과를 기억으로 지어내지 않는다**"
+  },
+  "universities": [
+    {
+      "university_code": "PCU",
+      "university_name": "배재대학교",
+      "market_code": "KR",
+      "entry_note": "CareerMatri + 배재대학교 전용 진입",
+      "brand_asset": null,
+      "brand_asset_note": "학교 로고 asset 이 저장소에 없다. **그려 넣지 않는다**: 학교 상표를 우리가 다시 그리면 그 학교가 승인한 적 없는 상표가 학생 화면에 선다. 정식 파일과 사용 권한을 받으면 이 칸에 경로를 적는다",
+      "region_hint": "KR-CHUNGCHEONG",
+      "region_cities": ["대전", "세종"],
+      "region_note": "먼저 보여 주는 자리일 뿐이다. **사용자가 고른 지역을 바꾸지 않는다**",
+      "source": "사업주 지시문(2026-10-12)에 적힌 학과 목록",
+      "source_verified": false,
+      "source_gap": "배재대학교 공식 학과 구조를 이 환경에서 확인하지 못했다(www.pcu.ac.kr 연결 불가). 그래서 지시문에 적힌 학과만 싣고 나머지는 비워 둔다",
+      "colleges": [
+        {
+          "code": "AI_SW",
+          "name": "AI·SW창의융합대학",
+          "departments": [
+            {
+              "code": "PCU_EE",
+              "name": "전기전자공학과",
+              "core_code": "EE_CORE_V1",
+              "specialization": null,
+              "mapping_source": "owner",
+              "source": "지시문 §5 · §7"
+            },
+            {
+              "code": "PCU_BATTERY",
+              "name": "스마트배터리학과",
+              "core_code": null,
+              "specialization": null,
+              "mapping_source": "proposed",
+              "source": "지시문 §5",
+              "note": "어느 Core 가 맡을지 확인 전이다. 전기·전자와 화학공학과 신소재가 모두 닿는 자리라 이름만 보고 고르지 않는다"
+            },
+            {
+              "code": "PCU_DRONE_ROBOT",
+              "name": "드론로봇공학과",
+              "core_code": "ROBOT_CORE_V1",
+              "specialization": null,
+              "mapping_source": "proposed",
+              "source": "지시문 §5"
+            },
+            {
+              "code": "PCU_RAIL_CIVIL",
+              "name": "철도건설공학과",
+              "core_code": "CIV_CORE_V1",
+              "specialization": null,
+              "mapping_source": "proposed",
+              "source": "지시문 §5"
+            },
+            {
+              "code": "PCU_CS",
+              "name": "컴퓨터공학",
+              "core_code": "CS_CORE_V1",
+              "specialization": null,
+              "mapping_source": "owner",
+              "source": "지시문 §5 · §7",
+              "note": "지시문의 `COMPUTER_ENGINEERING` 에 해당하는 갈래가 Core 등록부에 아직 없다. Core 전체로 보내고 갈래는 비운다"
+            },
+            {
+              "code": "PCU_SW",
+              "name": "소프트웨어학",
+              "core_code": "CS_CORE_V1",
+              "specialization": "SPEC_CS_SW",
+              "mapping_source": "owner",
+              "source": "지시문 §5 · §7"
+            },
+            {
+              "code": "PCU_SEC",
+              "name": "정보보안학",
+              "core_code": "CS_CORE_V1",
+              "specialization": "SPEC_CS_SYS",
+              "mapping_source": "owner",
+              "source": "지시문 §5 · §7",
+              "note": "지시문의 `SECURITY` 가 등록부에서는 `시스템·보안`(SPEC_CS_SYS) 이다"
+            },
+            {
+              "code": "PCU_GAME",
+              "name": "게임공학",
+              "core_code": "CS_CORE_V1",
+              "specialization": null,
+              "mapping_source": "owner",
+              "source": "지시문 §5 · §7",
+              "note": "지시문의 `GAME_ENGINEERING` 에 해당하는 갈래가 Core 등록부에 아직 없다. Core 전체로 보내고 갈래는 비운다"
+            }
+          ]
+        },
+        {
+          "code": "PENDING",
+          "name": "단과대학 확인 전",
+          "note": "이 학과들이 어느 단과대학에 속하는지 확인하지 못했다. **짐작으로 단과대학을 적지 않는다**: 학교 화면에 그 학교가 쓰지 않는 단과대학 이름이 서면 학생이 먼저 안다",
+          "departments": [
+            {
+              "code": "PCU_BIZ",
+              "name": "경영학과",
+              "core_code": "BIZ_CORE_V1",
+              "specialization": null,
+              "mapping_source": "owner",
+              "source": "지시문 §7"
+            },
+            {
+              "code": "PCU_PUBADM",
+              "name": "행정학과",
+              "core_code": "PUBADM_CORE_V1",
+              "specialization": null,
+              "mapping_source": "owner",
+              "source": "지시문 §7"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

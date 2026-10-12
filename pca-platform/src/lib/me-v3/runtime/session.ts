@@ -13,7 +13,7 @@
  * 판정은 `scoring/engine.ts` 가 끝에서 한 번 한다.
  */
 import { query, queryOne } from "@/lib/db";
-import { coreFile, packs as readPacks } from "../core-registry";
+import { coreFile, packs as readPacks, sellableCores } from "../core-registry";
 import { load, score } from "../scoring/engine";
 import type {
   Answer, GradField, Snapshot, Stage, Submission, Tier, UndergradCore,
@@ -68,6 +68,14 @@ export type V3Attempt = {
   industry_interest: string[]; role_interest: string[]; org_interest: string[];
   industry_pack: string | null; role_pack: string | null;
   item_bank_version: string; scoring_version: string;
+  /**
+   * 학교 전용 진입으로 들어온 응시의 맥락(규격 §12).
+   *
+   * **채점에 들어가지 않는다.** 쓰이는 자리는 routing 과 Campus 집계와
+   * 학과 보고와 지역 표시뿐이고, 일반 B2C 응시는 넷 다 `null` 이다.
+   */
+  university_code: string | null; college_code: string | null;
+  department_code: string | null; specialization_code: string | null;
 };
 
 /** 응시 한 줄을 읽는 열쇠 목록. 두 자리에서 따로 적다 칸이 빠진 적이 있다 */
@@ -75,7 +83,8 @@ const ATTEMPT_COLS = `id::text, user_id::text, tier, core_code, market_code,
        education_stage, grad_field, undergrad_core, status, current_screen,
        opened_probe, opened_deep, fourth_reason,
        industry_interest, role_interest, org_interest,
-       industry_pack, role_pack, item_bank_version, scoring_version`;
+       industry_pack, role_pack, item_bank_version, scoring_version,
+       university_code, college_code, department_code, specialization_code`;
 
 type Domains = {
   domains: { code: string; name: string; artifacts: string[]; verify_targets: string[];
@@ -390,24 +399,52 @@ export function estimate(core: string, stage: Stage, field: GradField | null): {
 
 /* ── 응시 열기와 이어보기 ─────────────────────────────────────────── */
 
+/**
+ * 학교 전용 진입으로 들어온 응시에 적는 다섯 칸(규격 §12).
+ *
+ * **학과 이름을 담지 않는다.** 코드만 적고 사람이 읽는 이름은 등록부가
+ * 들고 있다: 학교가 학과 이름을 바꾸면 고칠 자리가 한 곳이어야 한다.
+ */
+export type CampusEntry = {
+  university_code: string; college_code: string; department_code: string;
+  core_code: string; specialization: string | null;
+};
+
 export async function openAttempt(args: {
   userId: string; tier: Tier; stage: Stage; gradField: GradField | null;
   undergradCore?: UndergradCore | null;
   entitlementId?: string | null; market?: string;
+  /**
+   * 학교 진입으로 고른 학과. **없으면 일반 B2C 응시다.**
+   *
+   * 여기 온 Core 를 그대로 믿지 않는다: 그 시장에서 지금 응시할 수 있는
+   * Core 가 아니면 **맥락을 통째로 버린다**(등급을 화면에서 받지 않는 것과
+   * 같은 까닭이다). 그러면 응시는 열리고 Core 는 기본값으로 남는다.
+   */
+  campus?: CampusEntry | null;
 }): Promise<V3Attempt> {
   /* 이어보기가 먼저다. 중복 응시를 만들지 않는다 */
   const open = await currentAttempt(args.userId);
   if (open) return open;
+  const market = args.market ?? "KR";
+  const campus = args.campus && sellableCores(market)
+    .some((c) => c.code === args.campus?.core_code) ? args.campus : null;
   const row = await queryOne<{ id: string }>(
     `INSERT INTO v3_attempts
        (user_id, entitlement_id, tier, market_code, education_stage, grad_field,
         undergrad_core, assessment_version,
-        item_bank_version, scoring_version, current_screen)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,'profile')
+        item_bank_version, scoring_version, current_screen,
+        core_code, university_code, college_code, department_code,
+        specialization_code)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,'profile',
+             coalesce($11, 'ME_CORE_V3'),$12,$13,$14,$15)
      RETURNING id::text`,
-    [args.userId, args.entitlementId ?? null, args.tier, args.market ?? "KR",
+    [args.userId, args.entitlementId ?? null, args.tier, market,
      args.stage, args.gradField, args.undergradCore ?? null, ASSESSMENT_VERSION,
-     ITEM_BANK_VERSION, SCORING_VERSION],
+     ITEM_BANK_VERSION, SCORING_VERSION,
+     campus?.core_code ?? null, campus?.university_code ?? null,
+     campus?.college_code ?? null, campus?.department_code ?? null,
+     campus?.specialization ?? null],
   );
   return (await attemptOf(row?.id as string, args.userId)) as V3Attempt;
 }

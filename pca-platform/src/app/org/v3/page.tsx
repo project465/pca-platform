@@ -5,6 +5,7 @@ import { resolveLang } from "@/lib/locale-server";
 import { orgsOf, MIN_CELL } from "@/lib/org";
 import { campusV3, type Cell } from "@/lib/me-v3/campus";
 import { core as coreEntry } from "@/lib/me-v3/core-registry";
+import { departmentsOf, university } from "@/lib/campus/registry";
 import { BRAND, toLang2 } from "@/lib/surface-text";
 import { Shell, PageHead, Section } from "@/components/sf/shell";
 import { NAV_CAMPUS } from "@/components/sf/nav";
@@ -17,6 +18,26 @@ export const metadata = { title: `전공 진단 집계 · ${BRAND.campus}` };
 function niceCore(code: string): string {
   try { return coreEntry(code).name_ko; } catch { return code; }
 }
+/**
+ * 단과대학과 학과 코드를 담당자가 읽는 이름으로.
+ *
+ * **등록부 하나에서 읽는다**(`campus-universities.json`). 화면에 학과
+ * 이름을 적어 두면 학교가 이름을 바꾸는 날 고칠 자리가 둘이 된다.
+ */
+function campusNames(universityCode: string | null): {
+  college: (k: string) => string; dept: (k: string) => string;
+} {
+  const u = universityCode ? university(universityCode) : null;
+  if (!u) return { college: (k) => k, dept: (k) => k };
+  const rows = departmentsOf(u);
+  const col = new Map(u.colleges.map((c) => [c.code, c.name]));
+  const dep = new Map(rows.map((r) => [r.dept.code, r.dept.name]));
+  return {
+    college: (k) => col.get(k) ?? k,
+    dept: (k) => dep.get(k) ?? k,
+  };
+}
+
 const PACK_KO = (code: string): string => code
   .replace(/^INDUSTRY_/, "").replace(/^ROLE_/, "").replace(/_V\d+$/, "");
 
@@ -49,7 +70,19 @@ export default async function CampusV3({
 
   const orgs = await orgsOf(user.id);
   const org = orgs[0];
-  const v3 = await campusV3(orgs.map((o) => Number(o.id)));
+  /**
+   * **이 기관이 학교 등록부의 어느 학교인가.**
+   *
+   * `organizations.code` 가 `PCU` 면 그 학교로 들어온 응시가 이 집계에
+   * 함께 선다. 소속으로만 묶으면 `/campus/{학교}` 로 혼자 들어온 학생이
+   * 담당자 화면에 한 명도 잡히지 않고, 담당자는 그것을 `아직 아무도 안
+   * 쳤다` 로 읽는다.
+   */
+  const uni = orgs.map((o) => o.code).find((c) => Boolean(university(c))) ?? null;
+  const name = campusNames(uni);
+  const v3 = await campusV3({
+    orgIds: orgs.map((o) => Number(o.id)), universityCode: uni,
+  });
 
   const shell = (children: React.ReactNode) => (
     <Shell
@@ -112,6 +145,24 @@ export default async function CampusV3({
             <BarList rows={bars(v3.by_core, niceCore)}
               hiddenLabel={`${MIN_CELL}명 미만`} emptyLabel="아직 없습니다" />
           </Section>
+
+          {/* **학교 전용 진입으로 들어온 응시만 선다**(규격 §13). 소속으로만
+              묶인 학생은 학과 칸이 비어 있어 이 두 묶음에 서지 않는다 */}
+          {v3.by_college.length ? (
+            <Section title="단과대학"
+              note="학교 전용 진입으로 들어온 응시입니다">
+              <BarList rows={bars(v3.by_college, name.college)}
+                hiddenLabel={`${MIN_CELL}명 미만`} emptyLabel="아직 없습니다" />
+            </Section>
+          ) : null}
+
+          {v3.by_department.length ? (
+            <Section title="학과"
+              note="학과별 응시와 완료입니다. 학생끼리 줄을 세우지 않습니다">
+              <BarList rows={bars(v3.by_department, name.dept)}
+                hiddenLabel={`${MIN_CELL}명 미만`} emptyLabel="아직 없습니다" />
+            </Section>
+          ) : null}
 
           <Section title="학위 단계"
             note="묻는 장면이 단계마다 갈립니다">

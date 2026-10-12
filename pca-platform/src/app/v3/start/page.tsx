@@ -2,7 +2,8 @@ import { redirect } from "next/navigation";
 import { BrandMark } from "@/components/sf/brand-mark";
 import { requireUser } from "@/lib/session";
 import { currentAttempt, estimate, v3Grants } from "@/lib/me-v3/runtime/session";
-import { sellableCores } from "@/lib/me-v3/core-registry";
+import { core as coreEntry, sellableCores } from "@/lib/me-v3/core-registry";
+import { readCampusEntry } from "@/lib/campus/entry";
 import type { Tier } from "@/lib/me-v3/scoring/types";
 import { TIER_WHAT } from "../tier-text";
 import StartForm from "./start-form";
@@ -33,8 +34,19 @@ export default async function V3Start({
      아무것도 고르지 않았으면 그 시장에서 열려 있는 core 를 묻는다.
      기본값으로 한 전공을 박아 두면 다른 전공 학생이 **남의 전공 시간**
      을 보고 앉는다 */
-  const core = sellableCores("KR")[0]?.code ?? null;
+  /**
+   * **학교 진입으로 고른 학과가 있으면 그 전공이다**(규격 §11 · §12).
+   *
+   * 쿠키에 적힌 학교·학과를 등록부로 다시 맞춰 본 값이라, 아직 열리지
+   * 않은 전공은 여기 오지 않는다. 없으면 전과 같다.
+   */
+  const campus = await readCampusEntry();
+  const core = campus?.core_code ?? sellableCores("KR")[0]?.code ?? null;
   if (!core) redirect("/cores");
+  /* 쪽 머리에 전공 이름을 적는다. **안쪽 코드를 적지 않는다** */
+  const coreName = (() => {
+    try { return coreEntry(core).name_ko; } catch { return "전공"; }
+  })();
   const t = TIER_WHAT[tier];
   void t.what;
   /* **가장 짧은 경우와 가장 긴 경우를 범위로 적는다.** 긴 쪽은 타계열
@@ -68,10 +80,14 @@ export default async function V3Start({
       </header>
 
       <main className="qs-intro">
-        <p className="qs-kicker">기계공학 진로 진단</p>
+        <p className="qs-kicker">
+          {campus
+            ? `${campus.university_name} ${campus.department_name} · ${coreName} 진로 진단`
+            : `${coreName} 진로 진단`}
+        </p>
         <h1 className="qs-h1">해 본 일에서 직접 판단한 경험을 찾습니다</h1>
         <p className="qs-lead">
-          적성이나 성격은 묻지 않습니다. 기계공학의 기술영역마다 무엇을 해 봤고
+          적성이나 성격은 묻지 않습니다. {coreName}의 기술영역마다 무엇을 해 봤고
           무엇을 직접 정했는지, 아직 부족한 곳은 어디인지 알려드립니다.
         </p>
 

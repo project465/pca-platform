@@ -135,6 +135,14 @@ export const ROUTE_TABLE: RouteRow[] = [
   /* ── 공개 진입 ─────────────────────────────────────────── */
   { route: "/start", newUser: "개인·기관 갈림길", oldUser: "로그인 뒤 제 면으로",
     cls: "CURRENT" },
+  /* 학교 전용 진입. **전용 검사가 아니다**: 학과에서 Major Core 로 가는
+     길이고 그 뒤는 전부 공통 화면이다(`/v3/start` 로 넘긴다) */
+  { route: "/campus/[universityCode]", newUser: "학교 전용 진입",
+    oldUser: "같음", cls: "CURRENT" },
+  { route: "/campus/[universityCode]/majors", newUser: "학과 선택",
+    oldUser: "같음", cls: "CURRENT" },
+  { route: "/campus/[universityCode]/d/[department]", newUser: "학과 상세와 시작",
+    oldUser: "같음", cls: "CURRENT" },
   { route: "/pricing", newUser: "지금 판본만 선다", oldUser: "같음", cls: "CURRENT" },
   { route: "/product", newUser: "상품 소개", oldUser: "같음", cls: "CURRENT" },
   { route: "/checkout", newUser: "결제", oldUser: "같음", cls: "CURRENT" },
@@ -210,7 +218,7 @@ export const ROUTE_TABLE: RouteRow[] = [
 export const OWNED_SEGMENTS = [
   /* 옛 검사 */ "test", "assessment", "report", "evidence", "pilot",
   /* 지금 검사 */ "v3", "cores",
-  /* 공개 진입 */ "start", "pricing", "product", "checkout",
+  /* 공개 진입 */ "start", "pricing", "product", "checkout", "campus",
   "free", "free-start", "redeem", "sample",
   /* 작업공간과 계정 */ "me", "my",
 ];
