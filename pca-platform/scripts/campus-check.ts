@@ -27,7 +27,7 @@ import {
   allLeaves, campusRegistry, catalogStatusAt, catalogsOf, defaultCatalog,
   leavesOf, mappingStatusOf, provenanceOf, readinessOf, replacesOf,
   resolveCatalog, retiredCodeOf, statusOf, visible, wave1Of,
-  type CampusUnit, type CampusUniversity,
+  type CampusUnit, type CampusUniversity, coreOf,
 } from "../src/lib/campus/registry";
 import { academicYear, admissionFrom } from "../src/lib/campus/year";
 
@@ -543,6 +543,11 @@ ok("학교 코드가 겹치지 않는다",
    * **등록과 응시 가능을 한 칸에 담지 않는다**(규격 작업 3). 담으면
    * `등록했다` 가 `검사가 된다` 로 읽히고, 그 읽기를 믿은 학생이 빈
    * 검사를 만난다.
+   *
+   * 세는 것은 **열린 자리와 결과지까지 서는 자리가 같은 자리인가**다.
+   * 한 방향씩 보면 둘 다 놓친다: 열렸는데 Core 파일이 모자란 자리는
+   * **응시는 되고 결과가 안 나오고**, 파일은 다 섰는데 열린 자리는
+   * **아직 쓰지 말라고 적어 둔 Core 를 학생이 받는다.**
    */
   const wrong: string[] = [];
   const tally: Record<string, number> = {};
@@ -551,9 +556,7 @@ ok("학교 코드가 겹치지 않는다",
       const st = readinessOf(u, r);
       tally[st] = (tally[st] ?? 0) + 1;
       const ready = statusOf(u, r) === "READY";
-      if (ready !== (st === "ASSESSMENT_READY" || st === "RESULT_READY")) {
-        wrong.push(`${r.leaf.code}:${st}`);
-      }
+      if (ready !== (st === "RESULT_READY")) wrong.push(`${r.leaf.code}:${st}`);
       /* Core 가 없는 자리가 응시 가능으로 서면 그 학생이 빈 검사를 만난다 */
       if (st === "CATALOG_ONLY" && ready) wrong.push(`${r.leaf.code}:CORE 없음`);
     }
@@ -561,6 +564,27 @@ ok("학교 코드가 겹치지 않는다",
   ok(`준비 상태와 학생 표시가 어긋나지 않는다 — ${
     Object.entries(tally).map(([k, v]) => `${k} ${v}`).join(" · ")}`,
     !wrong.length, wrong.slice(0, 5).join(" "));
+
+  /**
+   * **아직 열지 않은 Core 를 가리키는 자리가 학생에게 서지 않는다.**
+   *
+   * 짓고 있는 Core 는 `status: "building"` 인 동안에도 `open_to_students`
+   * 가 `false` 다. 그 둘을 한 칸으로 두면 문항을 쓰는 중에 그 학과 학생이
+   * 빈 검사를 만난다. 막는 자리는 `sellableCores` 하나이고, 여기서는
+   * **그 함수를 지나지 않는 길이 없는지**를 자리마다 센다.
+   */
+  const leaked: string[] = [];
+  const closed: string[] = [];
+  for (const u of unis) {
+    for (const r of allLeaves(u)) {
+      const c = coreOf(r.leaf);
+      if (!c || c.open_to_students !== false) continue;
+      closed.push(r.leaf.code);
+      if (statusOf(u, r) === "READY") leaked.push(`${r.leaf.code}:${c.code}`);
+    }
+  }
+  ok(`열지 않은 Core 의 자리가 검사 가능으로 서지 않는다 — 닫아 둔 자리 ${closed.length}`,
+    !leaked.length, leaked.join(" "));
 
   /**
    * **이름이 비슷하다는 까닭만으로 다른 전공의 자를 붙이지 않는다**

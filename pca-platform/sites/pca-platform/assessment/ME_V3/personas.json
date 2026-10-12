@@ -10,6 +10,53 @@
   "verify": "영역마다 고른 검증 대상 수",
   "note": "심화를 연 영역은 선별 네 축도 함께 열린다(expander 가 더해 준다)"
  },
+ "cases": {
+  "note": "변형 검사 A~G 와 15·17·18 절이 가리키는 자리. 검사 스크립트에 Core 이름을 적지 않으려고 자료로 옮겼다. 값은 2026-10-12 이전에 스크립트에 박혀 있던 것과 같다",
+  "base": "P12",
+  "interest_only": "P11",
+  "verify_only": "P10",
+  "industries": [
+   "INDUSTRY_SEMICON_V2",
+   "INDUSTRY_DEFENSE_V2",
+   "INDUSTRY_MOBILITY_V2",
+   null
+  ],
+  "roles": [
+   "ROLE_CAE_V2",
+   "ROLE_PM_V2",
+   "ROLE_DESIGN_V2",
+   null
+  ],
+  "industry_labels": "반도체·방산·자동차·없음",
+  "role_labels": "CAE·PM·설계·없음",
+  "interest_domain": "TD04",
+  "output_domain": "TD02",
+  "verify_domain": "TD06",
+  "pack": {
+   "industry": "INDUSTRY_MOBILITY_V2",
+   "role": "ROLE_CAE_V2",
+   "industry_version": "INDUSTRY_MOBILITY_V2.v2",
+   "role_version": "ROLE_CAE_V2.v2"
+  },
+  "sloppy": {
+   "CN_1A": {
+    "kind": "level",
+    "index": 3
+   },
+   "CN_1B": {
+    "kind": "level",
+    "index": 0
+   },
+   "CJ_PROBLEM": {
+    "kind": "level",
+    "index": 3
+   },
+   "CJ_ASSUME_REV": {
+    "kind": "scale5",
+    "value": 5
+   }
+  }
+ },
  "personas": [
   {
    "id": "P01",

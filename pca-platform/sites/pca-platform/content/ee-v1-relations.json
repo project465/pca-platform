@@ -1,0 +1,2456 @@
+{
+ "schema_version": "ee-v1-relations.1",
+ "core": "EE_CORE_V1",
+ "note": "기술영역과 산업, 기술영역과 역할의 관계를 두 표로 둔다. 세 축을 미리 곱해 두지 않는다: 열두 영역과 여덟 산업과 여덟 역할을 곱하면 칠백예순여덟 줄이 되고 그만큼의 줄을 사람이 손으로 유지할 수 없다. 어느 줄도 점수를 만들지 않는다: `strength` 는 설명하는 차례를 정하고 `appears_as` 는 결과지가 그 말로 옮겨 적을 때 읽는다",
+ "combine_rule": "산업 하나와 역할 하나를 함께 고른 사람에게는 두 표에서 같은 영역의 줄을 뽑아 나란히 놓는다. 둘 다 `중심` 인 영역이 먼저 서고, 한쪽만 중심인 영역이 다음이고, 양쪽이 드문 영역은 적지 않는다",
+ "td_industry": [
+  {
+   "td": "TD01",
+   "td_name": "아날로그 회로 설계",
+   "industry": "INDUSTRY_SEMI_V1",
+   "industry_name": "반도체·디스플레이",
+   "strength": "있음",
+   "appears_as": "반도체·디스플레이 에서는 작은 신호를 잡음에서 갈라내는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "작은 신호를 잡음에서 갈라내는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "아날로그 회로 설계",
+   "industry": "INDUSTRY_AUTOEV_V1",
+   "industry_name": "자동차 전장·전동화",
+   "strength": "있음",
+   "appears_as": "자동차 전장·전동화 에서는 전원 변동과 돌입 전류를 견디게 하는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "전원 변동과 돌입 전류를 견디게 하는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "아날로그 회로 설계",
+   "industry": "INDUSTRY_NETWORK_V1",
+   "industry_name": "통신·네트워크 장비",
+   "strength": "드묾",
+   "appears_as": "통신·네트워크 장비 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "아날로그 회로 설계",
+   "industry": "INDUSTRY_POWER_V1",
+   "industry_name": "전력·에너지·신재생",
+   "strength": "드묾",
+   "appears_as": "전력·에너지·신재생 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "아날로그 회로 설계",
+   "industry": "INDUSTRY_CONSUMER_V1",
+   "industry_name": "가전·소비자 전자",
+   "strength": "있음",
+   "appears_as": "가전·소비자 전자 에서는 원가 목표 안에서 성능을 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "원가 목표 안에서 성능을 맞추는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "아날로그 회로 설계",
+   "industry": "INDUSTRY_FACTORY_V1",
+   "industry_name": "산업자동화·로봇",
+   "strength": "드묾",
+   "appears_as": "산업자동화·로봇 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "아날로그 회로 설계",
+   "industry": "INDUSTRY_MEDICAL_V1",
+   "industry_name": "의료기기·계측장비",
+   "strength": "있음",
+   "appears_as": "의료기기·계측장비 에서는 미약 신호를 잡음에서 끌어올리는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "미약 신호를 잡음에서 끌어올리는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "아날로그 회로 설계",
+   "industry": "INDUSTRY_DEFENSE_V1",
+   "industry_name": "방산·항공우주",
+   "strength": "있음",
+   "appears_as": "방산·항공우주 에서는 환경 조건을 설계 조건으로 받는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "환경 조건을 설계 조건으로 받는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "디지털·논리 설계",
+   "industry": "INDUSTRY_SEMI_V1",
+   "industry_name": "반도체·디스플레이",
+   "strength": "있음",
+   "appears_as": "반도체·디스플레이 에서는 디지털 타이밍을 장비 주기에 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "디지털 타이밍을 장비 주기에 맞추는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "디지털·논리 설계",
+   "industry": "INDUSTRY_AUTOEV_V1",
+   "industry_name": "자동차 전장·전동화",
+   "strength": "있음",
+   "appears_as": "자동차 전장·전동화 에서는 제어기 안의 실행 주기를 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "제어기 안의 실행 주기를 맞추는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "디지털·논리 설계",
+   "industry": "INDUSTRY_NETWORK_V1",
+   "industry_name": "통신·네트워크 장비",
+   "strength": "있음",
+   "appears_as": "통신·네트워크 장비 에서는 디지털 처리 회로의 타이밍을 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "디지털 처리 회로의 타이밍을 맞추는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "디지털·논리 설계",
+   "industry": "INDUSTRY_POWER_V1",
+   "industry_name": "전력·에너지·신재생",
+   "strength": "드묾",
+   "appears_as": "전력·에너지·신재생 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "디지털·논리 설계",
+   "industry": "INDUSTRY_CONSUMER_V1",
+   "industry_name": "가전·소비자 전자",
+   "strength": "있음",
+   "appears_as": "가전·소비자 전자 에서는 조립 공정에서 틀리지 않게 만드는가 로 나타납니다",
+   "axes_watched": [
+    "J8"
+   ],
+   "dimensions": [
+    "조립 공정에서 틀리지 않게 만드는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "디지털·논리 설계",
+   "industry": "INDUSTRY_FACTORY_V1",
+   "industry_name": "산업자동화·로봇",
+   "strength": "드묾",
+   "appears_as": "산업자동화·로봇 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "디지털·논리 설계",
+   "industry": "INDUSTRY_MEDICAL_V1",
+   "industry_name": "의료기기·계측장비",
+   "strength": "드묾",
+   "appears_as": "의료기기·계측장비 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "디지털·논리 설계",
+   "industry": "INDUSTRY_DEFENSE_V1",
+   "industry_name": "방산·항공우주",
+   "strength": "드묾",
+   "appears_as": "방산·항공우주 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "임베디드·펌웨어",
+   "industry": "INDUSTRY_SEMI_V1",
+   "industry_name": "반도체·디스플레이",
+   "strength": "있음",
+   "appears_as": "반도체·디스플레이 에서는 같은 고장이 또 나지 않게 원인을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "같은 고장이 또 나지 않게 원인을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "임베디드·펌웨어",
+   "industry": "INDUSTRY_AUTOEV_V1",
+   "industry_name": "자동차 전장·전동화",
+   "strength": "있음",
+   "appears_as": "자동차 전장·전동화 에서는 고장 났을 때의 동작을 미리 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "고장 났을 때의 동작을 미리 정하는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "임베디드·펌웨어",
+   "industry": "INDUSTRY_NETWORK_V1",
+   "industry_name": "통신·네트워크 장비",
+   "strength": "있음",
+   "appears_as": "통신·네트워크 장비 에서는 프로토콜 처리를 실시간 안에 끝내는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "프로토콜 처리를 실시간 안에 끝내는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "임베디드·펌웨어",
+   "industry": "INDUSTRY_POWER_V1",
+   "industry_name": "전력·에너지·신재생",
+   "strength": "드묾",
+   "appears_as": "전력·에너지·신재생 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "임베디드·펌웨어",
+   "industry": "INDUSTRY_CONSUMER_V1",
+   "industry_name": "가전·소비자 전자",
+   "strength": "있음",
+   "appears_as": "가전·소비자 전자 에서는 펌웨어 갱신 길을 남겨 두는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "펌웨어 갱신 길을 남겨 두는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "임베디드·펌웨어",
+   "industry": "INDUSTRY_FACTORY_V1",
+   "industry_name": "산업자동화·로봇",
+   "strength": "있음",
+   "appears_as": "산업자동화·로봇 에서는 제어 코드를 다음 사람이 읽게 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "제어 코드를 다음 사람이 읽게 남기는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "임베디드·펌웨어",
+   "industry": "INDUSTRY_MEDICAL_V1",
+   "industry_name": "의료기기·계측장비",
+   "strength": "드묾",
+   "appears_as": "의료기기·계측장비 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "임베디드·펌웨어",
+   "industry": "INDUSTRY_DEFENSE_V1",
+   "industry_name": "방산·항공우주",
+   "strength": "드묾",
+   "appears_as": "방산·항공우주 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "신호처리",
+   "industry": "INDUSTRY_SEMI_V1",
+   "industry_name": "반도체·디스플레이",
+   "strength": "있음",
+   "appears_as": "반도체·디스플레이 에서는 신호 처리로 분해능을 끌어올리는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "신호 처리로 분해능을 끌어올리는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "신호처리",
+   "industry": "INDUSTRY_AUTOEV_V1",
+   "industry_name": "자동차 전장·전동화",
+   "strength": "있음",
+   "appears_as": "자동차 전장·전동화 에서는 센서 신호를 흔들림 속에서 읽는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "센서 신호를 흔들림 속에서 읽는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "신호처리",
+   "industry": "INDUSTRY_NETWORK_V1",
+   "industry_name": "통신·네트워크 장비",
+   "strength": "있음",
+   "appears_as": "통신·네트워크 장비 에서는 신호 처리로 수신 성능을 끌어올리는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "신호 처리로 수신 성능을 끌어올리는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "신호처리",
+   "industry": "INDUSTRY_POWER_V1",
+   "industry_name": "전력·에너지·신재생",
+   "strength": "있음",
+   "appears_as": "전력·에너지·신재생 에서는 계측 자료의 신뢰도를 따지는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "계측 자료의 신뢰도를 따지는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "신호처리",
+   "industry": "INDUSTRY_CONSUMER_V1",
+   "industry_name": "가전·소비자 전자",
+   "strength": "있음",
+   "appears_as": "가전·소비자 전자 에서는 사용자 조작을 신호 처리로 받는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "사용자 조작을 신호 처리로 받는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "신호처리",
+   "industry": "INDUSTRY_FACTORY_V1",
+   "industry_name": "산업자동화·로봇",
+   "strength": "있음",
+   "appears_as": "산업자동화·로봇 에서는 센서 신호를 현장 잡음에서 읽는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "센서 신호를 현장 잡음에서 읽는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "신호처리",
+   "industry": "INDUSTRY_MEDICAL_V1",
+   "industry_name": "의료기기·계측장비",
+   "strength": "중심",
+   "appears_as": "의료기기·계측장비 에서는 신호 처리로 잡음을 줄이는가 · 임상 쪽 요구를 수치로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J4"
+   ],
+   "dimensions": [
+    "신호 처리로 잡음을 줄이는가",
+    "임상 쪽 요구를 수치로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "신호처리",
+   "industry": "INDUSTRY_DEFENSE_V1",
+   "industry_name": "방산·항공우주",
+   "strength": "있음",
+   "appears_as": "방산·항공우주 에서는 신호 처리로 표적과 잡음을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "신호 처리로 표적과 잡음을 가르는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "통신·네트워크",
+   "industry": "INDUSTRY_SEMI_V1",
+   "industry_name": "반도체·디스플레이",
+   "strength": "드묾",
+   "appears_as": "반도체·디스플레이 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "통신·네트워크",
+   "industry": "INDUSTRY_AUTOEV_V1",
+   "industry_name": "자동차 전장·전동화",
+   "strength": "있음",
+   "appears_as": "자동차 전장·전동화 에서는 차량 통신의 지연과 손실을 조건으로 두는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "차량 통신의 지연과 손실을 조건으로 두는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "통신·네트워크",
+   "industry": "INDUSTRY_NETWORK_V1",
+   "industry_name": "통신·네트워크 장비",
+   "strength": "중심",
+   "appears_as": "통신·네트워크 장비 에서는 링크 예산을 구간마다 나눠 정하는가 · 오류율을 이론값과 견주는가 · 끊긴 구간의 원인을 전파와 장비로 갈라 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J6",
+    "J7"
+   ],
+   "dimensions": [
+    "링크 예산을 구간마다 나눠 정하는가",
+    "오류율을 이론값과 견주는가",
+    "끊긴 구간의 원인을 전파와 장비로 갈라 좁히는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "통신·네트워크",
+   "industry": "INDUSTRY_POWER_V1",
+   "industry_name": "전력·에너지·신재생",
+   "strength": "드묾",
+   "appears_as": "전력·에너지·신재생 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "통신·네트워크",
+   "industry": "INDUSTRY_CONSUMER_V1",
+   "industry_name": "가전·소비자 전자",
+   "strength": "있음",
+   "appears_as": "가전·소비자 전자 에서는 무선 연결의 끊김을 줄이는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "무선 연결의 끊김을 줄이는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "통신·네트워크",
+   "industry": "INDUSTRY_FACTORY_V1",
+   "industry_name": "산업자동화·로봇",
+   "strength": "중심",
+   "appears_as": "산업자동화·로봇 에서는 설비 통신의 주기를 맞추는가 · 여러 제조사 장비를 붙여 돌리는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ],
+   "dimensions": [
+    "설비 통신의 주기를 맞추는가",
+    "여러 제조사 장비를 붙여 돌리는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "통신·네트워크",
+   "industry": "INDUSTRY_MEDICAL_V1",
+   "industry_name": "의료기기·계측장비",
+   "strength": "있음",
+   "appears_as": "의료기기·계측장비 에서는 무선 연결의 끊김을 다루는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "무선 연결의 끊김을 다루는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "통신·네트워크",
+   "industry": "INDUSTRY_DEFENSE_V1",
+   "industry_name": "방산·항공우주",
+   "strength": "있음",
+   "appears_as": "방산·항공우주 에서는 통신 링크를 끊기지 않게 잡는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "통신 링크를 끊기지 않게 잡는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "전자기·고주파",
+   "industry": "INDUSTRY_SEMI_V1",
+   "industry_name": "반도체·디스플레이",
+   "strength": "드묾",
+   "appears_as": "반도체·디스플레이 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "전자기·고주파",
+   "industry": "INDUSTRY_AUTOEV_V1",
+   "industry_name": "자동차 전장·전동화",
+   "strength": "드묾",
+   "appears_as": "자동차 전장·전동화 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "전자기·고주파",
+   "industry": "INDUSTRY_NETWORK_V1",
+   "industry_name": "통신·네트워크 장비",
+   "strength": "중심",
+   "appears_as": "통신·네트워크 장비 에서는 고주파 정합과 손실을 설계로 잡는가 · 안테나 패턴을 측정으로 확인하는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ],
+   "dimensions": [
+    "고주파 정합과 손실을 설계로 잡는가",
+    "안테나 패턴을 측정으로 확인하는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "전자기·고주파",
+   "industry": "INDUSTRY_POWER_V1",
+   "industry_name": "전력·에너지·신재생",
+   "strength": "드묾",
+   "appears_as": "전력·에너지·신재생 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "전자기·고주파",
+   "industry": "INDUSTRY_CONSUMER_V1",
+   "industry_name": "가전·소비자 전자",
+   "strength": "있음",
+   "appears_as": "가전·소비자 전자 에서는 전자파 방사를 기준 안으로 넣는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "전자파 방사를 기준 안으로 넣는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "전자기·고주파",
+   "industry": "INDUSTRY_FACTORY_V1",
+   "industry_name": "산업자동화·로봇",
+   "strength": "드묾",
+   "appears_as": "산업자동화·로봇 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "전자기·고주파",
+   "industry": "INDUSTRY_MEDICAL_V1",
+   "industry_name": "의료기기·계측장비",
+   "strength": "드묾",
+   "appears_as": "의료기기·계측장비 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "전자기·고주파",
+   "industry": "INDUSTRY_DEFENSE_V1",
+   "industry_name": "방산·항공우주",
+   "strength": "중심",
+   "appears_as": "방산·항공우주 에서는 고주파 손실과 정합을 설계로 잡는가 · 전자파 양립성을 체계 단위로 보는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ],
+   "dimensions": [
+    "고주파 손실과 정합을 설계로 잡는가",
+    "전자파 양립성을 체계 단위로 보는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "반도체 소자·공정",
+   "industry": "INDUSTRY_SEMI_V1",
+   "industry_name": "반도체·디스플레이",
+   "strength": "중심",
+   "appears_as": "반도체·디스플레이 에서는 소자 특성의 흩어짐을 공정 조건으로 되짚는가 · 공정 조건값을 바꿔 되는 범위를 찾는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ],
+   "dimensions": [
+    "소자 특성의 흩어짐을 공정 조건으로 되짚는가",
+    "공정 조건값을 바꿔 되는 범위를 찾는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "반도체 소자·공정",
+   "industry": "INDUSTRY_AUTOEV_V1",
+   "industry_name": "자동차 전장·전동화",
+   "strength": "있음",
+   "appears_as": "자동차 전장·전동화 에서는 양산 산포를 설계 여유로 받는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "양산 산포를 설계 여유로 받는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "반도체 소자·공정",
+   "industry": "INDUSTRY_NETWORK_V1",
+   "industry_name": "통신·네트워크 장비",
+   "strength": "드묾",
+   "appears_as": "통신·네트워크 장비 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "반도체 소자·공정",
+   "industry": "INDUSTRY_POWER_V1",
+   "industry_name": "전력·에너지·신재생",
+   "strength": "드묾",
+   "appears_as": "전력·에너지·신재생 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "반도체 소자·공정",
+   "industry": "INDUSTRY_CONSUMER_V1",
+   "industry_name": "가전·소비자 전자",
+   "strength": "있음",
+   "appears_as": "가전·소비자 전자 에서는 부품 단종에 대비해 대체를 두는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "부품 단종에 대비해 대체를 두는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "반도체 소자·공정",
+   "industry": "INDUSTRY_FACTORY_V1",
+   "industry_name": "산업자동화·로봇",
+   "strength": "드묾",
+   "appears_as": "산업자동화·로봇 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "반도체 소자·공정",
+   "industry": "INDUSTRY_MEDICAL_V1",
+   "industry_name": "의료기기·계측장비",
+   "strength": "있음",
+   "appears_as": "의료기기·계측장비 에서는 센서 특성의 흩어짐을 보정하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "센서 특성의 흩어짐을 보정하는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "반도체 소자·공정",
+   "industry": "INDUSTRY_DEFENSE_V1",
+   "industry_name": "방산·항공우주",
+   "strength": "있음",
+   "appears_as": "방산·항공우주 에서는 부품 수급과 단종을 설계로 받는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "부품 수급과 단종을 설계로 받는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "전력전자",
+   "industry": "INDUSTRY_SEMI_V1",
+   "industry_name": "반도체·디스플레이",
+   "strength": "있음",
+   "appears_as": "반도체·디스플레이 에서는 높은 전압의 절연과 방열을 설계 조건으로 두는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "높은 전압의 절연과 방열을 설계 조건으로 두는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "전력전자",
+   "industry": "INDUSTRY_AUTOEV_V1",
+   "industry_name": "자동차 전장·전동화",
+   "strength": "있음",
+   "appears_as": "자동차 전장·전동화 에서는 구동 전력 변환의 효율과 발열을 함께 보는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "구동 전력 변환의 효율과 발열을 함께 보는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "전력전자",
+   "industry": "INDUSTRY_NETWORK_V1",
+   "industry_name": "통신·네트워크 장비",
+   "strength": "있음",
+   "appears_as": "통신·네트워크 장비 에서는 장비 전원의 효율과 발열을 보는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "장비 전원의 효율과 발열을 보는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "전력전자",
+   "industry": "INDUSTRY_POWER_V1",
+   "industry_name": "전력·에너지·신재생",
+   "strength": "있음",
+   "appears_as": "전력·에너지·신재생 에서는 변환 설비의 손실과 발열을 보는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "변환 설비의 손실과 발열을 보는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "전력전자",
+   "industry": "INDUSTRY_CONSUMER_V1",
+   "industry_name": "가전·소비자 전자",
+   "strength": "있음",
+   "appears_as": "가전·소비자 전자 에서는 전원 회로의 대기 전력을 줄이는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "전원 회로의 대기 전력을 줄이는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "전력전자",
+   "industry": "INDUSTRY_FACTORY_V1",
+   "industry_name": "산업자동화·로봇",
+   "strength": "있음",
+   "appears_as": "산업자동화·로봇 에서는 구동 전원의 전압 강하를 보는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "구동 전원의 전압 강하를 보는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "전력전자",
+   "industry": "INDUSTRY_MEDICAL_V1",
+   "industry_name": "의료기기·계측장비",
+   "strength": "있음",
+   "appears_as": "의료기기·계측장비 에서는 전원과 접지를 잡음 기준으로 설계하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "전원과 접지를 잡음 기준으로 설계하는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "전력전자",
+   "industry": "INDUSTRY_DEFENSE_V1",
+   "industry_name": "방산·항공우주",
+   "strength": "있음",
+   "appears_as": "방산·항공우주 에서는 전원 계통의 돌발 부하를 견디게 하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "전원 계통의 돌발 부하를 견디게 하는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "전기기기·전력시스템",
+   "industry": "INDUSTRY_SEMI_V1",
+   "industry_name": "반도체·디스플레이",
+   "strength": "중심",
+   "appears_as": "반도체·디스플레이 에서는 설비가 멈춘 시간을 숫자로 관리하는가 · 설비 전원 용량과 보호를 장비 기준으로 보는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ],
+   "dimensions": [
+    "설비가 멈춘 시간을 숫자로 관리하는가",
+    "설비 전원 용량과 보호를 장비 기준으로 보는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "전기기기·전력시스템",
+   "industry": "INDUSTRY_AUTOEV_V1",
+   "industry_name": "자동차 전장·전동화",
+   "strength": "있음",
+   "appears_as": "자동차 전장·전동화 에서는 고전압 계통의 절연과 보호를 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "고전압 계통의 절연과 보호를 정하는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "전기기기·전력시스템",
+   "industry": "INDUSTRY_NETWORK_V1",
+   "industry_name": "통신·네트워크 장비",
+   "strength": "있음",
+   "appears_as": "통신·네트워크 장비 에서는 가입자에게 가는 영향을 숫자로 적는가 로 나타납니다",
+   "axes_watched": [
+    "J8"
+   ],
+   "dimensions": [
+    "가입자에게 가는 영향을 숫자로 적는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "전기기기·전력시스템",
+   "industry": "INDUSTRY_POWER_V1",
+   "industry_name": "전력·에너지·신재생",
+   "strength": "중심",
+   "appears_as": "전력·에너지·신재생 에서는 부하 계산으로 설비 용량을 정하는가 · 보호 협조를 구간마다 맞추는가 · 점검 주기와 교체 기준을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J6",
+    "J7"
+   ],
+   "dimensions": [
+    "부하 계산으로 설비 용량을 정하는가",
+    "보호 협조를 구간마다 맞추는가",
+    "점검 주기와 교체 기준을 정하는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "전기기기·전력시스템",
+   "industry": "INDUSTRY_CONSUMER_V1",
+   "industry_name": "가전·소비자 전자",
+   "strength": "드묾",
+   "appears_as": "가전·소비자 전자 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "전기기기·전력시스템",
+   "industry": "INDUSTRY_FACTORY_V1",
+   "industry_name": "산업자동화·로봇",
+   "strength": "중심",
+   "appears_as": "산업자동화·로봇 에서는 구동기 용량을 부하로 정하는가 · 고장 이력을 설비 개선에 쓰는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J8"
+   ],
+   "dimensions": [
+    "구동기 용량을 부하로 정하는가",
+    "고장 이력을 설비 개선에 쓰는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "전기기기·전력시스템",
+   "industry": "INDUSTRY_MEDICAL_V1",
+   "industry_name": "의료기기·계측장비",
+   "strength": "있음",
+   "appears_as": "의료기기·계측장비 에서는 환자 절연과 누설 전류를 설계로 받는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "환자 절연과 누설 전류를 설계로 받는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "전기기기·전력시스템",
+   "industry": "INDUSTRY_DEFENSE_V1",
+   "industry_name": "방산·항공우주",
+   "strength": "있음",
+   "appears_as": "방산·항공우주 에서는 고장 났을 때 대체 경로를 두는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "고장 났을 때 대체 경로를 두는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "에너지·신재생 시스템",
+   "industry": "INDUSTRY_SEMI_V1",
+   "industry_name": "반도체·디스플레이",
+   "strength": "드묾",
+   "appears_as": "반도체·디스플레이 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "에너지·신재생 시스템",
+   "industry": "INDUSTRY_AUTOEV_V1",
+   "industry_name": "자동차 전장·전동화",
+   "strength": "있음",
+   "appears_as": "자동차 전장·전동화 에서는 배터리 전압 범위 전체에서 동작하게 하는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "배터리 전압 범위 전체에서 동작하게 하는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "에너지·신재생 시스템",
+   "industry": "INDUSTRY_NETWORK_V1",
+   "industry_name": "통신·네트워크 장비",
+   "strength": "드묾",
+   "appears_as": "통신·네트워크 장비 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "에너지·신재생 시스템",
+   "industry": "INDUSTRY_POWER_V1",
+   "industry_name": "전력·에너지·신재생",
+   "strength": "중심",
+   "appears_as": "전력·에너지·신재생 에서는 발전 자원 자료로 발전량을 추정하는가 · 연계 기준을 설계 조건으로 받는가 · 저장 설비의 운전 기준을 적어 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5"
+   ],
+   "dimensions": [
+    "발전 자원 자료로 발전량을 추정하는가",
+    "연계 기준을 설계 조건으로 받는가",
+    "저장 설비의 운전 기준을 적어 남기는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "에너지·신재생 시스템",
+   "industry": "INDUSTRY_CONSUMER_V1",
+   "industry_name": "가전·소비자 전자",
+   "strength": "드묾",
+   "appears_as": "가전·소비자 전자 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "에너지·신재생 시스템",
+   "industry": "INDUSTRY_FACTORY_V1",
+   "industry_name": "산업자동화·로봇",
+   "strength": "드묾",
+   "appears_as": "산업자동화·로봇 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "에너지·신재생 시스템",
+   "industry": "INDUSTRY_MEDICAL_V1",
+   "industry_name": "의료기기·계측장비",
+   "strength": "드묾",
+   "appears_as": "의료기기·계측장비 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "에너지·신재생 시스템",
+   "industry": "INDUSTRY_DEFENSE_V1",
+   "industry_name": "방산·항공우주",
+   "strength": "드묾",
+   "appears_as": "방산·항공우주 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "제어·자동화",
+   "industry": "INDUSTRY_SEMI_V1",
+   "industry_name": "반도체·디스플레이",
+   "strength": "있음",
+   "appears_as": "반도체·디스플레이 에서는 장비가 멈출 조건을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "장비가 멈출 조건을 정하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "제어·자동화",
+   "industry": "INDUSTRY_AUTOEV_V1",
+   "industry_name": "자동차 전장·전동화",
+   "strength": "중심",
+   "appears_as": "자동차 전장·전동화 에서는 모터 제어의 응답을 주행 느낌으로 옮기는가 · 필드에서 돌아온 고장을 설계로 되짚는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ],
+   "dimensions": [
+    "모터 제어의 응답을 주행 느낌으로 옮기는가",
+    "필드에서 돌아온 고장을 설계로 되짚는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "제어·자동화",
+   "industry": "INDUSTRY_NETWORK_V1",
+   "industry_name": "통신·네트워크 장비",
+   "strength": "드묾",
+   "appears_as": "통신·네트워크 장비 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "제어·자동화",
+   "industry": "INDUSTRY_POWER_V1",
+   "industry_name": "전력·에너지·신재생",
+   "strength": "중심",
+   "appears_as": "전력·에너지·신재생 에서는 원격 감시 자료를 운전 판단에 쓰는가 · 정전 원인을 설비와 설정으로 갈라 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7",
+    "J8"
+   ],
+   "dimensions": [
+    "원격 감시 자료를 운전 판단에 쓰는가",
+    "정전 원인을 설비와 설정으로 갈라 좁히는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "제어·자동화",
+   "industry": "INDUSTRY_CONSUMER_V1",
+   "industry_name": "가전·소비자 전자",
+   "strength": "있음",
+   "appears_as": "가전·소비자 전자 에서는 모터 소음을 제어로 줄이는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "모터 소음을 제어로 줄이는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "제어·자동화",
+   "industry": "INDUSTRY_FACTORY_V1",
+   "industry_name": "산업자동화·로봇",
+   "strength": "중심",
+   "appears_as": "산업자동화·로봇 에서는 안전 정지 조건을 먼저 정하는가 · 현장에서 이득을 다시 맞추는가 · 설비 상태를 숫자로 모으는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J7",
+    "J8"
+   ],
+   "dimensions": [
+    "안전 정지 조건을 먼저 정하는가",
+    "현장에서 이득을 다시 맞추는가",
+    "설비 상태를 숫자로 모으는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "제어·자동화",
+   "industry": "INDUSTRY_MEDICAL_V1",
+   "industry_name": "의료기기·계측장비",
+   "strength": "있음",
+   "appears_as": "의료기기·계측장비 에서는 오동작 때 안전하게 멈추는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "오동작 때 안전하게 멈추는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "제어·자동화",
+   "industry": "INDUSTRY_DEFENSE_V1",
+   "industry_name": "방산·항공우주",
+   "strength": "드묾",
+   "appears_as": "방산·항공우주 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "계측·시험·전자파 적합성",
+   "industry": "INDUSTRY_SEMI_V1",
+   "industry_name": "반도체·디스플레이",
+   "strength": "중심",
+   "appears_as": "반도체·디스플레이 에서는 측정 반복성을 수율 기준으로 보는가 · 전원 잡음이 계측에 올라오는 길을 끊는가 로 나타납니다",
+   "axes_watched": [
+    "J6",
+    "J7"
+   ],
+   "dimensions": [
+    "측정 반복성을 수율 기준으로 보는가",
+    "전원 잡음이 계측에 올라오는 길을 끊는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "계측·시험·전자파 적합성",
+   "industry": "INDUSTRY_AUTOEV_V1",
+   "industry_name": "자동차 전장·전동화",
+   "strength": "있음",
+   "appears_as": "자동차 전장·전동화 에서는 전자파 적합성을 설계 단계에서 보는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "전자파 적합성을 설계 단계에서 보는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "계측·시험·전자파 적합성",
+   "industry": "INDUSTRY_NETWORK_V1",
+   "industry_name": "통신·네트워크 장비",
+   "strength": "중심",
+   "appears_as": "통신·네트워크 장비 에서는 표준 규격을 설계 조건으로 옮기는가 · 다른 제조사 장비와 붙여 확인하는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ],
+   "dimensions": [
+    "표준 규격을 설계 조건으로 옮기는가",
+    "다른 제조사 장비와 붙여 확인하는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "계측·시험·전자파 적합성",
+   "industry": "INDUSTRY_POWER_V1",
+   "industry_name": "전력·에너지·신재생",
+   "strength": "중심",
+   "appears_as": "전력·에너지·신재생 에서는 전력 품질을 측정해 판정하는가 · 안전 규정을 작업 절차로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ],
+   "dimensions": [
+    "전력 품질을 측정해 판정하는가",
+    "안전 규정을 작업 절차로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "계측·시험·전자파 적합성",
+   "industry": "INDUSTRY_CONSUMER_V1",
+   "industry_name": "가전·소비자 전자",
+   "strength": "중심",
+   "appears_as": "가전·소비자 전자 에서는 안전 인증 기준을 설계로 받는가 · 양산 시험 항목을 정하는가 · 필드 불량을 설계로 되짚는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "안전 인증 기준을 설계로 받는가",
+    "양산 시험 항목을 정하는가",
+    "필드 불량을 설계로 되짚는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "계측·시험·전자파 적합성",
+   "industry": "INDUSTRY_FACTORY_V1",
+   "industry_name": "산업자동화·로봇",
+   "strength": "중심",
+   "appears_as": "산업자동화·로봇 에서는 정지 정확도를 되풀이해 재는가 · 전자파 방해를 배선으로 끊는가 로 나타납니다",
+   "axes_watched": [
+    "J6",
+    "J7"
+   ],
+   "dimensions": [
+    "정지 정확도를 되풀이해 재는가",
+    "전자파 방해를 배선으로 끊는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "계측·시험·전자파 적합성",
+   "industry": "INDUSTRY_MEDICAL_V1",
+   "industry_name": "의료기기·계측장비",
+   "strength": "중심",
+   "appears_as": "의료기기·계측장비 에서는 측정 불확도를 적는가 · 설계 기록을 허가 심사 형식으로 남기는가 · 기준기와 대조해 교정하는가 · 고장 기록을 설계로 되짚는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J6",
+    "J7"
+   ],
+   "dimensions": [
+    "측정 불확도를 적는가",
+    "설계 기록을 허가 심사 형식으로 남기는가",
+    "기준기와 대조해 교정하는가",
+    "고장 기록을 설계로 되짚는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "계측·시험·전자파 적합성",
+   "industry": "INDUSTRY_DEFENSE_V1",
+   "industry_name": "방산·항공우주",
+   "strength": "중심",
+   "appears_as": "방산·항공우주 에서는 규격 시험 항목을 먼저 읽는가 · 신뢰성 시험으로 수명을 받치는가 · 추적할 수 있게 기록을 남기는가 · 실패 원인을 설계 단계로 되짚는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J5",
+    "J6",
+    "J7"
+   ],
+   "dimensions": [
+    "규격 시험 항목을 먼저 읽는가",
+    "신뢰성 시험으로 수명을 받치는가",
+    "추적할 수 있게 기록을 남기는가",
+    "실패 원인을 설계 단계로 되짚는가"
+   ]
+  }
+ ],
+ "td_role": [
+  {
+   "td": "TD01",
+   "td_name": "아날로그 회로 설계",
+   "role": "ROLE_DESIGN_V1",
+   "role_name": "회로·시스템 설계",
+   "strength": "중심",
+   "appears_as": "회로·시스템 설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "아날로그 회로 설계",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "해석·시뮬레이션",
+   "strength": "드묾",
+   "appears_as": "해석·시뮬레이션 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "아날로그 회로 설계",
+   "role": "ROLE_TEST_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "아날로그 회로 설계",
+   "role": "ROLE_PROCESS_V1",
+   "role_name": "공정·양산기술",
+   "strength": "드묾",
+   "appears_as": "공정·양산기술 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "아날로그 회로 설계",
+   "role": "ROLE_MAINT_V1",
+   "role_name": "설비 운전·보전",
+   "strength": "드묾",
+   "appears_as": "설비 운전·보전 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "아날로그 회로 설계",
+   "role": "ROLE_PM_V1",
+   "role_name": "기술 기획·통합",
+   "strength": "드묾",
+   "appears_as": "기술 기획·통합 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "아날로그 회로 설계",
+   "role": "ROLE_RND_V1",
+   "role_name": "선행 연구개발",
+   "strength": "드묾",
+   "appears_as": "선행 연구개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J4"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "아날로그 회로 설계",
+   "role": "ROLE_QUALITY_V1",
+   "role_name": "품질·신뢰성",
+   "strength": "드묾",
+   "appears_as": "품질·신뢰성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "디지털·논리 설계",
+   "role": "ROLE_DESIGN_V1",
+   "role_name": "회로·시스템 설계",
+   "strength": "중심",
+   "appears_as": "회로·시스템 설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "디지털·논리 설계",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "해석·시뮬레이션",
+   "strength": "드묾",
+   "appears_as": "해석·시뮬레이션 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "디지털·논리 설계",
+   "role": "ROLE_TEST_V1",
+   "role_name": "시험·검증",
+   "strength": "중심",
+   "appears_as": "시험·검증 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "디지털·논리 설계",
+   "role": "ROLE_PROCESS_V1",
+   "role_name": "공정·양산기술",
+   "strength": "중심",
+   "appears_as": "공정·양산기술 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J5"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "디지털·논리 설계",
+   "role": "ROLE_MAINT_V1",
+   "role_name": "설비 운전·보전",
+   "strength": "드묾",
+   "appears_as": "설비 운전·보전 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "디지털·논리 설계",
+   "role": "ROLE_PM_V1",
+   "role_name": "기술 기획·통합",
+   "strength": "드묾",
+   "appears_as": "기술 기획·통합 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "디지털·논리 설계",
+   "role": "ROLE_RND_V1",
+   "role_name": "선행 연구개발",
+   "strength": "드묾",
+   "appears_as": "선행 연구개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J4"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "디지털·논리 설계",
+   "role": "ROLE_QUALITY_V1",
+   "role_name": "품질·신뢰성",
+   "strength": "드묾",
+   "appears_as": "품질·신뢰성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "임베디드·펌웨어",
+   "role": "ROLE_DESIGN_V1",
+   "role_name": "회로·시스템 설계",
+   "strength": "드묾",
+   "appears_as": "회로·시스템 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "임베디드·펌웨어",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "해석·시뮬레이션",
+   "strength": "드묾",
+   "appears_as": "해석·시뮬레이션 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "임베디드·펌웨어",
+   "role": "ROLE_TEST_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "임베디드·펌웨어",
+   "role": "ROLE_PROCESS_V1",
+   "role_name": "공정·양산기술",
+   "strength": "드묾",
+   "appears_as": "공정·양산기술 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "임베디드·펌웨어",
+   "role": "ROLE_MAINT_V1",
+   "role_name": "설비 운전·보전",
+   "strength": "드묾",
+   "appears_as": "설비 운전·보전 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "임베디드·펌웨어",
+   "role": "ROLE_PM_V1",
+   "role_name": "기술 기획·통합",
+   "strength": "드묾",
+   "appears_as": "기술 기획·통합 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "임베디드·펌웨어",
+   "role": "ROLE_RND_V1",
+   "role_name": "선행 연구개발",
+   "strength": "드묾",
+   "appears_as": "선행 연구개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J4"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "임베디드·펌웨어",
+   "role": "ROLE_QUALITY_V1",
+   "role_name": "품질·신뢰성",
+   "strength": "드묾",
+   "appears_as": "품질·신뢰성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "신호처리",
+   "role": "ROLE_DESIGN_V1",
+   "role_name": "회로·시스템 설계",
+   "strength": "드묾",
+   "appears_as": "회로·시스템 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "신호처리",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "해석·시뮬레이션",
+   "strength": "중심",
+   "appears_as": "해석·시뮬레이션 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "신호처리",
+   "role": "ROLE_TEST_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "신호처리",
+   "role": "ROLE_PROCESS_V1",
+   "role_name": "공정·양산기술",
+   "strength": "드묾",
+   "appears_as": "공정·양산기술 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "신호처리",
+   "role": "ROLE_MAINT_V1",
+   "role_name": "설비 운전·보전",
+   "strength": "드묾",
+   "appears_as": "설비 운전·보전 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "신호처리",
+   "role": "ROLE_PM_V1",
+   "role_name": "기술 기획·통합",
+   "strength": "드묾",
+   "appears_as": "기술 기획·통합 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "신호처리",
+   "role": "ROLE_RND_V1",
+   "role_name": "선행 연구개발",
+   "strength": "중심",
+   "appears_as": "선행 연구개발 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "신호처리",
+   "role": "ROLE_QUALITY_V1",
+   "role_name": "품질·신뢰성",
+   "strength": "드묾",
+   "appears_as": "품질·신뢰성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "통신·네트워크",
+   "role": "ROLE_DESIGN_V1",
+   "role_name": "회로·시스템 설계",
+   "strength": "드묾",
+   "appears_as": "회로·시스템 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "통신·네트워크",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "해석·시뮬레이션",
+   "strength": "드묾",
+   "appears_as": "해석·시뮬레이션 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "통신·네트워크",
+   "role": "ROLE_TEST_V1",
+   "role_name": "시험·검증",
+   "strength": "중심",
+   "appears_as": "시험·검증 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "통신·네트워크",
+   "role": "ROLE_PROCESS_V1",
+   "role_name": "공정·양산기술",
+   "strength": "드묾",
+   "appears_as": "공정·양산기술 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "통신·네트워크",
+   "role": "ROLE_MAINT_V1",
+   "role_name": "설비 운전·보전",
+   "strength": "드묾",
+   "appears_as": "설비 운전·보전 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "통신·네트워크",
+   "role": "ROLE_PM_V1",
+   "role_name": "기술 기획·통합",
+   "strength": "중심",
+   "appears_as": "기술 기획·통합 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "통신·네트워크",
+   "role": "ROLE_RND_V1",
+   "role_name": "선행 연구개발",
+   "strength": "드묾",
+   "appears_as": "선행 연구개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J4"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "통신·네트워크",
+   "role": "ROLE_QUALITY_V1",
+   "role_name": "품질·신뢰성",
+   "strength": "드묾",
+   "appears_as": "품질·신뢰성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "전자기·고주파",
+   "role": "ROLE_DESIGN_V1",
+   "role_name": "회로·시스템 설계",
+   "strength": "드묾",
+   "appears_as": "회로·시스템 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "전자기·고주파",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "해석·시뮬레이션",
+   "strength": "중심",
+   "appears_as": "해석·시뮬레이션 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "전자기·고주파",
+   "role": "ROLE_TEST_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "전자기·고주파",
+   "role": "ROLE_PROCESS_V1",
+   "role_name": "공정·양산기술",
+   "strength": "드묾",
+   "appears_as": "공정·양산기술 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "전자기·고주파",
+   "role": "ROLE_MAINT_V1",
+   "role_name": "설비 운전·보전",
+   "strength": "드묾",
+   "appears_as": "설비 운전·보전 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "전자기·고주파",
+   "role": "ROLE_PM_V1",
+   "role_name": "기술 기획·통합",
+   "strength": "드묾",
+   "appears_as": "기술 기획·통합 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "전자기·고주파",
+   "role": "ROLE_RND_V1",
+   "role_name": "선행 연구개발",
+   "strength": "중심",
+   "appears_as": "선행 연구개발 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "전자기·고주파",
+   "role": "ROLE_QUALITY_V1",
+   "role_name": "품질·신뢰성",
+   "strength": "드묾",
+   "appears_as": "품질·신뢰성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "반도체 소자·공정",
+   "role": "ROLE_DESIGN_V1",
+   "role_name": "회로·시스템 설계",
+   "strength": "드묾",
+   "appears_as": "회로·시스템 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "반도체 소자·공정",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "해석·시뮬레이션",
+   "strength": "드묾",
+   "appears_as": "해석·시뮬레이션 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "반도체 소자·공정",
+   "role": "ROLE_TEST_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "반도체 소자·공정",
+   "role": "ROLE_PROCESS_V1",
+   "role_name": "공정·양산기술",
+   "strength": "중심",
+   "appears_as": "공정·양산기술 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J6",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "반도체 소자·공정",
+   "role": "ROLE_MAINT_V1",
+   "role_name": "설비 운전·보전",
+   "strength": "드묾",
+   "appears_as": "설비 운전·보전 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "반도체 소자·공정",
+   "role": "ROLE_PM_V1",
+   "role_name": "기술 기획·통합",
+   "strength": "드묾",
+   "appears_as": "기술 기획·통합 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "반도체 소자·공정",
+   "role": "ROLE_RND_V1",
+   "role_name": "선행 연구개발",
+   "strength": "중심",
+   "appears_as": "선행 연구개발 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "반도체 소자·공정",
+   "role": "ROLE_QUALITY_V1",
+   "role_name": "품질·신뢰성",
+   "strength": "중심",
+   "appears_as": "품질·신뢰성 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "전력전자",
+   "role": "ROLE_DESIGN_V1",
+   "role_name": "회로·시스템 설계",
+   "strength": "중심",
+   "appears_as": "회로·시스템 설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "전력전자",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "해석·시뮬레이션",
+   "strength": "중심",
+   "appears_as": "해석·시뮬레이션 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "전력전자",
+   "role": "ROLE_TEST_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "전력전자",
+   "role": "ROLE_PROCESS_V1",
+   "role_name": "공정·양산기술",
+   "strength": "드묾",
+   "appears_as": "공정·양산기술 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "전력전자",
+   "role": "ROLE_MAINT_V1",
+   "role_name": "설비 운전·보전",
+   "strength": "드묾",
+   "appears_as": "설비 운전·보전 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "전력전자",
+   "role": "ROLE_PM_V1",
+   "role_name": "기술 기획·통합",
+   "strength": "드묾",
+   "appears_as": "기술 기획·통합 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "전력전자",
+   "role": "ROLE_RND_V1",
+   "role_name": "선행 연구개발",
+   "strength": "드묾",
+   "appears_as": "선행 연구개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J4"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "전력전자",
+   "role": "ROLE_QUALITY_V1",
+   "role_name": "품질·신뢰성",
+   "strength": "드묾",
+   "appears_as": "품질·신뢰성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "전기기기·전력시스템",
+   "role": "ROLE_DESIGN_V1",
+   "role_name": "회로·시스템 설계",
+   "strength": "드묾",
+   "appears_as": "회로·시스템 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "전기기기·전력시스템",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "해석·시뮬레이션",
+   "strength": "드묾",
+   "appears_as": "해석·시뮬레이션 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "전기기기·전력시스템",
+   "role": "ROLE_TEST_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "전기기기·전력시스템",
+   "role": "ROLE_PROCESS_V1",
+   "role_name": "공정·양산기술",
+   "strength": "드묾",
+   "appears_as": "공정·양산기술 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "전기기기·전력시스템",
+   "role": "ROLE_MAINT_V1",
+   "role_name": "설비 운전·보전",
+   "strength": "중심",
+   "appears_as": "설비 운전·보전 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "전기기기·전력시스템",
+   "role": "ROLE_PM_V1",
+   "role_name": "기술 기획·통합",
+   "strength": "드묾",
+   "appears_as": "기술 기획·통합 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "전기기기·전력시스템",
+   "role": "ROLE_RND_V1",
+   "role_name": "선행 연구개발",
+   "strength": "드묾",
+   "appears_as": "선행 연구개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J4"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "전기기기·전력시스템",
+   "role": "ROLE_QUALITY_V1",
+   "role_name": "품질·신뢰성",
+   "strength": "중심",
+   "appears_as": "품질·신뢰성 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "에너지·신재생 시스템",
+   "role": "ROLE_DESIGN_V1",
+   "role_name": "회로·시스템 설계",
+   "strength": "드묾",
+   "appears_as": "회로·시스템 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "에너지·신재생 시스템",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "해석·시뮬레이션",
+   "strength": "드묾",
+   "appears_as": "해석·시뮬레이션 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "에너지·신재생 시스템",
+   "role": "ROLE_TEST_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "에너지·신재생 시스템",
+   "role": "ROLE_PROCESS_V1",
+   "role_name": "공정·양산기술",
+   "strength": "드묾",
+   "appears_as": "공정·양산기술 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "에너지·신재생 시스템",
+   "role": "ROLE_MAINT_V1",
+   "role_name": "설비 운전·보전",
+   "strength": "중심",
+   "appears_as": "설비 운전·보전 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "에너지·신재생 시스템",
+   "role": "ROLE_PM_V1",
+   "role_name": "기술 기획·통합",
+   "strength": "중심",
+   "appears_as": "기술 기획·통합 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "에너지·신재생 시스템",
+   "role": "ROLE_RND_V1",
+   "role_name": "선행 연구개발",
+   "strength": "드묾",
+   "appears_as": "선행 연구개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J4"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "에너지·신재생 시스템",
+   "role": "ROLE_QUALITY_V1",
+   "role_name": "품질·신뢰성",
+   "strength": "드묾",
+   "appears_as": "품질·신뢰성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "제어·자동화",
+   "role": "ROLE_DESIGN_V1",
+   "role_name": "회로·시스템 설계",
+   "strength": "드묾",
+   "appears_as": "회로·시스템 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "제어·자동화",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "해석·시뮬레이션",
+   "strength": "드묾",
+   "appears_as": "해석·시뮬레이션 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "제어·자동화",
+   "role": "ROLE_TEST_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "제어·자동화",
+   "role": "ROLE_PROCESS_V1",
+   "role_name": "공정·양산기술",
+   "strength": "드묾",
+   "appears_as": "공정·양산기술 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "제어·자동화",
+   "role": "ROLE_MAINT_V1",
+   "role_name": "설비 운전·보전",
+   "strength": "중심",
+   "appears_as": "설비 운전·보전 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "제어·자동화",
+   "role": "ROLE_PM_V1",
+   "role_name": "기술 기획·통합",
+   "strength": "중심",
+   "appears_as": "기술 기획·통합 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J2",
+    "J5",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "제어·자동화",
+   "role": "ROLE_RND_V1",
+   "role_name": "선행 연구개발",
+   "strength": "드묾",
+   "appears_as": "선행 연구개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J4"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "제어·자동화",
+   "role": "ROLE_QUALITY_V1",
+   "role_name": "품질·신뢰성",
+   "strength": "드묾",
+   "appears_as": "품질·신뢰성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "계측·시험·전자파 적합성",
+   "role": "ROLE_DESIGN_V1",
+   "role_name": "회로·시스템 설계",
+   "strength": "드묾",
+   "appears_as": "회로·시스템 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "계측·시험·전자파 적합성",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "해석·시뮬레이션",
+   "strength": "드묾",
+   "appears_as": "해석·시뮬레이션 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "계측·시험·전자파 적합성",
+   "role": "ROLE_TEST_V1",
+   "role_name": "시험·검증",
+   "strength": "중심",
+   "appears_as": "시험·검증 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J6",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "계측·시험·전자파 적합성",
+   "role": "ROLE_PROCESS_V1",
+   "role_name": "공정·양산기술",
+   "strength": "중심",
+   "appears_as": "공정·양산기술 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J4"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "계측·시험·전자파 적합성",
+   "role": "ROLE_MAINT_V1",
+   "role_name": "설비 운전·보전",
+   "strength": "드묾",
+   "appears_as": "설비 운전·보전 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "계측·시험·전자파 적합성",
+   "role": "ROLE_PM_V1",
+   "role_name": "기술 기획·통합",
+   "strength": "드묾",
+   "appears_as": "기술 기획·통합 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "계측·시험·전자파 적합성",
+   "role": "ROLE_RND_V1",
+   "role_name": "선행 연구개발",
+   "strength": "드묾",
+   "appears_as": "선행 연구개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J4"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "계측·시험·전자파 적합성",
+   "role": "ROLE_QUALITY_V1",
+   "role_name": "품질·신뢰성",
+   "strength": "중심",
+   "appears_as": "품질·신뢰성 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J5",
+    "J6",
+    "J8"
+   ]
+  }
+ ]
+}

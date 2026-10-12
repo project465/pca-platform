@@ -9,7 +9,8 @@
  */
 import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
-import { coreFile, packs, registry } from "../src/lib/me-v3/core-registry";
+import {
+  coreFile, core as coreEntry, packs, registry, defaultCore,} from "../src/lib/me-v3/core-registry";
 import { load, score } from "../src/lib/me-v3/scoring/engine";
 import { expand, stable, type Fixture } from "../src/lib/me-v3/scoring/fixtures";
 import { buildResult } from "../src/lib/me-v3/result/build";
@@ -21,7 +22,6 @@ import {
 import { RESULT_MODEL_VERSION } from "../src/lib/me-v3/result/version";
 import type { Answer, Snapshot, Submission } from "../src/lib/me-v3/scoring/types";
 
-const FIX = "sites/pca-platform/assessment/ME_V3/personas.json";
 const RESULT_DIR = "src/lib/me-v3/result";
 
 let fail = 0, pass = 0;
@@ -31,10 +31,19 @@ function ok(n: string, good: boolean, d = ""): void {
 }
 const sha = (s: string) => createHash("sha256").update(s).digest("hex").slice(0, 16);
 
-const core = process.env.CORE
-  ?? registry().cores.filter((c) => c.status === "building")[0].code;
+const core = process.env.CORE ?? defaultCore();
 const loaded = load(core);
-const fx = JSON.parse(readFileSync(FIX, "utf8")) as { personas: Fixture[] };
+/**
+ * 사람 열두 벌은 **그 Core 의 fixture** 다. 경로를 이 파일에 적지 않는다:
+ * 적어 두면 다른 Core 로 돌릴 때 **남의 자료로 이 Core 의 결과지를 만든다.**
+ */
+const FIX = coreEntry(core).fixtures?.personas;
+if (!FIX) throw new Error(`${core} 의 fixtures.personas 가 등록부에 없습니다`);
+const fx = JSON.parse(readFileSync(FIX, "utf8")) as {
+  personas: Fixture[]; cases?: { industries?: (string | null)[] };
+};
+/* 팩을 바꿔도 Core 가 그대로인지 보는 자리. 산업 코드도 Core 마다 다르다 */
+const TWO_PACKS = (fx.cases?.industries ?? []).filter((x): x is string => !!x);
 const NAME = new Map<string, string>(
   (loaded.domains.domains as { code: string; name: string }[]).map((d) => [d.code, d.name]));
 
@@ -267,8 +276,8 @@ ok("STANDARD 와 PRO 가 같은 응답에서 같은 먼저 볼 영역을 낸다"
 const packDrift: string[] = [];
 for (const f of fx.personas.filter((x) => x.tier === "PRO").slice(0, 3)) {
   const sub = expand(f, core);
-  const a = buildResult(score({ ...sub, industry_pack: "INDUSTRY_SEMICON_V2" }, loaded), loaded);
-  const b = buildResult(score({ ...sub, industry_pack: "INDUSTRY_DEFENSE_V2" }, loaded), loaded);
+  const a = buildResult(score({ ...sub, industry_pack: TWO_PACKS[0] }, loaded), loaded);
+  const b = buildResult(score({ ...sub, industry_pack: TWO_PACKS[1] }, loaded), loaded);
   const core3 = (m: typeof a) => JSON.stringify(
     m.domains.map((d) => [d.code, d.zone, d.confirmed, d.owned]));
   if (core3(a) !== core3(b)) packDrift.push(f.id);

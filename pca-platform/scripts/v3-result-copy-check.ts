@@ -22,7 +22,7 @@
  *   npm run v3:result:copy
  */
 import { readFileSync } from "node:fs";
-import { registry } from "../src/lib/me-v3/core-registry";
+import { registry, defaultCore,} from "../src/lib/me-v3/core-registry";
 import { load, score } from "../src/lib/me-v3/scoring/engine";
 import { expand, type Fixture } from "../src/lib/me-v3/scoring/fixtures";
 import { buildResult } from "../src/lib/me-v3/result/build";
@@ -46,8 +46,7 @@ function ok(n: string, good: boolean, d = ""): void {
 }
 
 /* ── 글자 모으기 ───────────────────────────────────────────────────── */
-const core = process.env.CORE
-  ?? registry().cores.filter((c) => c.status === "building")[0].code;
+const core = process.env.CORE ?? defaultCore();
 const loaded = load(core);
 const fx = JSON.parse(readFileSync(FIX, "utf8")) as { personas: Fixture[] };
 const NAME = new Map<string, string>(

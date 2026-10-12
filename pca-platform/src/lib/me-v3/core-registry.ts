@@ -65,6 +65,18 @@ export type CoreEntry = {
    */
   status: "building" | "planned" | "live" | "archived";
   /**
+   * **학생에게 열어도 되는가.** `status` 와 따로 둔다.
+   *
+   * 짓고 있는 Core 는 `status: "building"` 인데, 그 값 하나로 판매와 노출을
+   * 정하면 **문항을 쓰는 동안 그 학과 학생이 빈 검사를 만난다.** 전에는
+   * 문항이 다 써지기 전에 상태를 올리지 않는 것으로 막았지만, 그러면
+   * 짓는 쪽이 `v3:*` 검사를 돌릴 수 없다(그 검사들이 `building` 인 Core 를
+   * 집는다). 그래서 **짓는 것과 여는 것을 두 칸으로 가른다.**
+   *
+   * 적지 않으면 열려 있다: 지금 팔고 있는 Core 의 동작을 바꾸지 않는다.
+   */
+  open_to_students?: boolean;
+  /**
    * **콘텐츠가 얼마나 검토됐는가.** 안쪽 QA 값이고 **손님 화면에 이
    * 글자가 그대로 나가지 않는다.**
    *
@@ -97,6 +109,24 @@ export type CoreEntry = {
   packs?: Partial<Record<PackKind, string>>;
   domain_count: number | null;
   axis_count: number;
+  /**
+   * 그 Core 의 검사 고정자료. **경로를 검사 스크립트에 적지 않는다.**
+   *
+   * `v3:scoring` 이 사람 열두 벌과 은행 지문을 여기서 찾는다. 적어 두지
+   * 않으면 그 명령이 **다른 Core 의 자료로 이 Core 를 채점한다**: 처음에
+   * 전기전자 Core 를 기계공학 fixture 로 돌려 없는 산업팩을 찾다 멈췄다.
+   */
+  fixtures?: {
+    personas?: string; bank_lock?: string;
+    /**
+     * 생성물 문서의 자리. **검사 스크립트에 적지 않는다.**
+     *
+     * 처음에는 `docs/metri/84_measurement_map.md` 를 스크립트가 글자로 들고
+     * 있었고, 그래서 `CORE=` 를 넘겨 돌린 날 **그 문서가 다른 Core 의 표로
+     * 덮였다.** 생성물은 Core 마다 따로 선다.
+     */
+    measurement_map?: string; gaming_doc?: string;
+  };
   /** 지난 판본의 파일. 새 응시는 쓰지 않고 되만들기에만 쓴다 */
   frozen?: { assessment_version: string; item_bank_version: string;
              note: string; files: Record<string, string> }[];
@@ -112,6 +142,14 @@ export type Registry = {
     required_files: CoreFile[];
     optional_files?: CoreFile[];
     required_keys: Record<string, string[]>;
+    /**
+     * `CORE` 를 적지 않았을 때 검사가 보는 Core.
+     *
+     * 전에는 `status === "building"` 인 Core 가 하나라는 것에 기대어 골랐고,
+     * 그래서 **둘째 Core 를 짓기 시작하는 날 `v3:*` 전부가 던졌다.** 어느
+     * Core 를 기본으로 볼지는 사람이 정할 일이므로 등록부에 적는다.
+     */
+    default_core?: string;
   };
   cores: CoreEntry[];
 };
@@ -134,6 +172,30 @@ export function registry(dir = CONTENT_DIR): Registry {
 
 export function markets(dir = CONTENT_DIR): { markets: MarketEntry[] } {
   return readJson<{ markets: MarketEntry[] }>(dir, "markets.json");
+}
+
+/**
+ * `CORE` 를 적지 않았을 때 검사가 집는 Core.
+ *
+ * 등록부의 `contract.default_core` 가 정본이고, 적혀 있지 않으면 짓고 있는
+ * Core 가 하나일 때만 그것을 쓴다. **둘이면 던진다**: 어느 Core 를 재는지
+ * 모르는 채로 돌아가는 검사는 녹색이어도 아무것도 말하지 않는다.
+ */
+export function defaultCore(dir = CONTENT_DIR): string {
+  const reg = registry(dir);
+  const want = reg.contract.default_core;
+  if (want) {
+    if (!reg.cores.some((c) => c.code === want)) {
+      throw new Error(`등록부의 default_core 가 없는 core 를 가리킵니다: ${want}`);
+    }
+    return want;
+  }
+  const building = reg.cores.filter((c) => c.status === "building");
+  if (building.length !== 1) {
+    throw new Error(
+      `CORE 를 적어 주십시오. 짓고 있는 core 가 ${building.length}개입니다`);
+  }
+  return building[0].code;
 }
 
 /** 등록부에서 core 하나를 집는다. 없으면 던진다 */
@@ -185,10 +247,18 @@ export function coresForMarket(market: string, dir = CONTENT_DIR): CoreEntry[] {
   );
 }
 
-/** 지금 응시할 수 있는 core (등록만 된 것은 뺀다) */
+/**
+ * 지금 응시할 수 있는 core (등록만 된 것과 **아직 열지 않은 것**은 뺀다).
+ *
+ * `open_to_students: false` 를 함께 보는 까닭은, 짓고 있는 Core 가
+ * `building` 인 동안에도 학생 화면에는 서지 않아야 하기 때문이다. 이 함수를
+ * 지나지 않는 길로 응시가 열리지 않는다: 가격표와 `/cores` 와 학교 진입과
+ * `openAttempt` 가 전부 여기를 읽는다.
+ */
 export function sellableCores(market: string, dir = CONTENT_DIR): CoreEntry[] {
   return coresForMarket(market, dir).filter(
-    (c) => c.status === "building" || c.status === "live",
+    (c) => (c.status === "building" || c.status === "live") &&
+      c.open_to_students !== false,
   );
 }
 

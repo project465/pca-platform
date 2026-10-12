@@ -26,7 +26,7 @@
  */
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { core as coreEntry, registry } from "../src/lib/me-v3/core-registry";
+import { core as coreEntry, registry, defaultCore,} from "../src/lib/me-v3/core-registry";
 import { coreOnly, load, score } from "../src/lib/me-v3/scoring/engine";
 import { expand, stable, type Fixture } from "../src/lib/me-v3/scoring/fixtures";
 import { ITEM_BANK_VERSION, SCORING_VERSION } from "../src/lib/me-v3/scoring/version";
@@ -87,8 +87,7 @@ function ok(n: string, good: boolean, d = ""): void {
 const sha = (p: string): string =>
   createHash("sha256").update(readFileSync(p)).digest("hex").slice(0, 16);
 
-const coreCode = process.env.CORE
-  ?? registry().cores.filter((c) => c.status === "building")[0].code;
+const coreCode = process.env.CORE ?? defaultCore();
 const loaded = load(coreCode);
 
 type Item = {

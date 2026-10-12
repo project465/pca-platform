@@ -10,7 +10,7 @@
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { createHash } from "node:crypto";
-import { registry, CONTENT_DIR } from "../src/lib/me-v3/core-registry";
+import { registry, core as coreEntry, coreFile, CONTENT_DIR, defaultCore,} from "../src/lib/me-v3/core-registry";
 import { load, score, coreOnly } from "../src/lib/me-v3/scoring/engine";
 import { expand, stable, type Fixture } from "../src/lib/me-v3/scoring/fixtures";
 import { REASON_CODES } from "../src/lib/me-v3/scoring/reason-codes";
@@ -18,9 +18,25 @@ import { OWNERSHIP } from "../src/lib/me-v3/scoring/ownership";
 import { ITEM_BANK_VERSION, SCORING_VERSION } from "../src/lib/me-v3/scoring/version";
 import type { Snapshot, Submission } from "../src/lib/me-v3/scoring/types";
 
-const FIX = "sites/pca-platform/assessment/ME_V3/personas.json";
-const LOCK = "sites/pca-platform/assessment/ME_V3/bank-lock.json";
 const SCORING_DIR = "src/lib/me-v3/scoring";
+
+/**
+ * 변형 검사가 쓰는 자리. **Core 이름을 이 파일에 적지 않는다.**
+ *
+ * 전에는 산업팩과 역할팩 코드와 영역 코드가 여기 글자로 박혀 있었고,
+ * 그래서 다른 Core 로 돌리면 **없는 산업팩을 찾다 멈췄다.** 묻는 것은
+ * Core 마다 같고 가리키는 자리만 다르므로, 자리를 그 Core 의 fixture 가
+ * 적는다.
+ */
+type Cases = {
+  base: string; interest_only: string; verify_only: string;
+  industries: (string | null)[]; roles: (string | null)[];
+  industry_labels: string; role_labels: string;
+  interest_domain: string; output_domain: string; verify_domain: string;
+  pack: { industry: string; role: string;
+          industry_version: string; role_version: string };
+  sloppy: Record<string, { kind: string; index?: number; value?: number }>;
+};
 
 let fail = 0, pass = 0;
 function ok(n: string, good: boolean, d = ""): void {
@@ -30,17 +46,29 @@ function ok(n: string, good: boolean, d = ""): void {
 const sha = (s: string) => createHash("sha256").update(s).digest("hex").slice(0, 16);
 const set = (a: string[]) => [...a].sort().join(",");
 
+/** `CORE` 를 적지 않으면 등록부의 `default_core` 를 본다 */
 function pickCore(): string {
-  if (process.env.CORE) return process.env.CORE;
-  return registry().cores.filter((c) => c.status === "building")[0].code;
+  return process.env.CORE ?? defaultCore();
 }
 
 function main(): void {
   const core = pickCore();
-  console.log(`  core  ${core} · ${SCORING_VERSION} · ${ITEM_BANK_VERSION}\n`);
   const loaded = load(core);
+  /* **은행 판본은 그 Core 의 은행이 적는다.** `version.ts` 의 전역 상수는
+     기계공학 하나를 가리킨다 */
+  const bankVersion = coreFile<{ item_bank_version?: string }>(core, "items")
+    .item_bank_version ?? ITEM_BANK_VERSION;
+  console.log(`  core  ${core} · ${SCORING_VERSION} · ${bankVersion}\n`);
+  const fixtures = coreEntry(core).fixtures ?? {};
+  const FIX = fixtures.personas;
+  const LOCK = fixtures.bank_lock;
+  if (!FIX || !LOCK) {
+    throw new Error(
+      `${core} 의 fixtures(personas · bank_lock)가 등록부에 적혀 있지 않습니다`);
+  }
   const fx = JSON.parse(readFileSync(FIX, "utf8")) as
-    { personas: Fixture[] };
+    { personas: Fixture[]; cases: Cases };
+  const C = fx.cases;
   const update = process.env.GOLDEN === "update";
 
   /* 1. 문항 은행 1차 동결 */
@@ -58,13 +86,13 @@ function main(): void {
      고치면 판본을 올리는 것을 빠뜨린다. 일부러 고쳤을 때만 쓴다 */
   if (process.env.BANK === "update") {
     lock.files = fresh;
-    lock.item_bank_version = ITEM_BANK_VERSION;
+    lock.item_bank_version = bankVersion;
     (lock as unknown as Record<string, unknown>).scoring_version = SCORING_VERSION;
     writeFileSync(LOCK, `${JSON.stringify(lock, null, 1)}\n`);
-    console.log(`  적었다  ${LOCK} — ${Object.keys(fresh).length}벌 · ${ITEM_BANK_VERSION}`);
+    console.log(`  적었다  ${LOCK} — ${Object.keys(fresh).length}벌 · ${lock.item_bank_version}`);
     drift.length = 0;
   }
-  ok("문항 은행이 잠긴 판본과 같다", drift.length === 0 && lock.item_bank_version === ITEM_BANK_VERSION,
+  ok("문항 은행이 잠긴 판본과 같다", drift.length === 0 && lock.item_bank_version === bankVersion,
      drift.length ? `${drift.join(" ")} — 바꿨다면 판본을 올리고 ${LOCK} 을 다시 적는다`
                   : `${Object.keys(lock.files).length}벌 · ${lock.item_bank_version}`);
 
@@ -147,7 +175,7 @@ function main(): void {
        : `${goldens.length}벌`);
 
   /* 5. 변형 검사 A~G */
-  const base = fx.personas.find((f) => f.id === "P12") as Fixture;
+  const base = fx.personas.find((f) => f.id === C.base) as Fixture;
   const baseCore = stable(coreOnly(score(expand(base, core), loaded)));
   const variant = (over: Partial<Fixture>) =>
     stable(coreOnly(score(expand({ ...base, ...over }, core), loaded)));
@@ -159,57 +187,58 @@ function main(): void {
      ["STEM", "HUMANITIES_SOCIAL", "BUSINESS", "OTHER_INTERDISCIPLINARY"].every((fd) =>
        variant({ field: fd as Fixture["field"] }) === baseCore), "계열 넷");
   ok("C 산업팩만 바꿔도 Core 판정이 같다",
-     ["INDUSTRY_SEMICON_V2", "INDUSTRY_DEFENSE_V2", "INDUSTRY_MOBILITY_V2", null]
-       .every((ind) => variant({ industry: ind }) === baseCore), "반도체·방산·자동차·없음");
+     C.industries.every((ind) => variant({ industry: ind }) === baseCore),
+     C.industry_labels);
   ok("D 역할팩만 바꿔도 Core 판정이 같다",
-     ["ROLE_CAE_V2", "ROLE_PM_V2", "ROLE_DESIGN_V2", null]
-       .every((r) => variant({ role: r }) === baseCore), "CAE·PM·설계·없음");
+     C.roles.every((r) => variant({ role: r }) === baseCore), C.role_labels);
 
   /* E 관심만 올리면 축 상태는 그대로다 */
-  const low = fx.personas.find((f) => f.id === "P11") as Fixture;
+  const low = fx.personas.find((f) => f.id === C.interest_only) as Fixture;
   const lowSnap = score(expand(low, core), loaded);
   const upSnap = score(expand({
-    ...low, grid: { ...(low.grid ?? {}), TD04: [5, 1, 5] },
+    ...low, grid: { ...(low.grid ?? {}), [C.interest_domain]: [5, 1, 5] },
   }, core), loaded);
   const axesSame = lowSnap.domains.every((d) => {
     const o = upSnap.domains.find((x) => x.code === d.code);
     return !!o && stable(d.axes) === stable(o.axes) &&
       set(d.confirmed) === set(o.confirmed) && set(d.owned) === set(o.owned);
   });
-  const td04 = { before: lowSnap.domains.find((d) => d.code === "TD04")?.zone,
-                 after: upSnap.domains.find((d) => d.code === "TD04")?.zone };
+  const tdE = { before: lowSnap.domains.find((d) => d.code === C.interest_domain)?.zone,
+                after: upSnap.domains.find((d) => d.code === C.interest_domain)?.zone };
   ok("E 관심만 올려도 근거 상태가 그대로다", axesSame,
-     `TD04 묶음은 ${td04.before}에서 ${td04.after}로 옮겨도 된다`);
+     `${C.interest_domain} 묶음은 ${tdE.before}에서 ${tdE.after}로 옮겨도 된다`);
 
   /* F 산출물 근거만 더하면 Z2 가 Z1 이 될 수 있다 */
-  const f11 = fx.personas.find((f) => f.id === "P11") as Fixture;
+  const f11 = fx.personas.find((f) => f.id === C.interest_only) as Fixture;
+  const OUT = C.output_domain;
   const withOutput = score(expand({
     ...f11,
-    axes: { ...(f11.axes ?? {}), TD02: { ...(f11.axes?.TD02 ?? {}), J5: 2 } },
-    checklist: { ...(f11.checklist ?? {}), TD02: { ...(f11.checklist?.TD02 ?? {}), J5: 2 } },
-    artifacts: { ...(f11.artifacts ?? {}), TD02: 2 },
+    axes: { ...(f11.axes ?? {}), [OUT]: { ...(f11.axes?.[OUT] ?? {}), J5: 2 } },
+    checklist: { ...(f11.checklist ?? {}), [OUT]: { ...(f11.checklist?.[OUT] ?? {}), J5: 2 } },
+    artifacts: { ...(f11.artifacts ?? {}), [OUT]: 2 },
   }, core), loaded);
-  const beforeZone = lowSnap.domains.find((d) => d.code === "TD02")?.zone;
-  const afterZone = withOutput.domains.find((d) => d.code === "TD02")?.zone;
+  const beforeZone = lowSnap.domains.find((d) => d.code === OUT)?.zone;
+  const afterZone = withOutput.domains.find((d) => d.code === OUT)?.zone;
   ok("F 산출물을 더하면 근거가 선다",
      beforeZone === "Z2_EVIDENCE_INCOMPLETE" && afterZone === "Z1_EVIDENCE_ESTABLISHED",
-     `TD02 ${beforeZone} → ${afterZone}`);
+     `${OUT} ${beforeZone} → ${afterZone}`);
 
   /* G 검증만 더하면 그 축만 바뀐다 */
-  const f10 = fx.personas.find((f) => f.id === "P10") as Fixture;
+  const f10 = fx.personas.find((f) => f.id === C.verify_only) as Fixture;
+  const VER = C.verify_domain;
   const g0 = score(expand(f10, core), loaded);
   const g1 = score(expand({
     ...f10,
-    axes: { ...(f10.axes ?? {}), TD06: { ...(f10.axes?.TD06 ?? {}), J6: 2 } },
+    axes: { ...(f10.axes ?? {}), [VER]: { ...(f10.axes?.[VER] ?? {}), J6: 2 } },
   }, core), loaded);
-  const d0 = g0.domains.find((d) => d.code === "TD06");
-  const d1 = g1.domains.find((d) => d.code === "TD06");
+  const d0 = g0.domains.find((d) => d.code === VER);
+  const d1 = g1.domains.find((d) => d.code === VER);
   const onlyJ6 = !!d0 && !!d1 &&
     ["J1", "J2", "J3", "J4", "J5", "J7", "J8"].every((a) =>
       stable(d0.axes[a as never]) === stable(d1.axes[a as never])) &&
     d0.axes.J6.state !== d1.axes.J6.state && !d0.verification_ok && d1.verification_ok;
   ok("G 검증을 더하면 그 축만 바뀐다", onlyJ6,
-     `TD06 J6 ${d0?.axes.J6.state} → ${d1?.axes.J6.state}`);
+     `${VER} J6 ${d0?.axes.J6.state} → ${d1?.axes.J6.state}`);
 
   /* 6. 다섯 신호를 합치지 않는다 */
   const noTotal = !fx.personas.some((f) => {
@@ -241,18 +270,18 @@ function main(): void {
      센다.** 그래서 이 자리에서는 둘째 문항을 비워 둔다: 그러지 않으면
      체크리스트 하나만 골라도 근거가 둘이 되어 재려는 것을 못 잰다 */
   const one = score(expand({
-    ...base, axes: { ...base.axes, TD02: { ...base.axes?.TD02, J3: [3, 0] } },
-    checklist: { TD02: { J3: 1 } }, artifacts: {}, verify: {},
+    ...base, axes: { ...base.axes, [OUT]: { ...base.axes?.[OUT], J3: [3, 0] } },
+    checklist: { [OUT]: { J3: 1 } }, artifacts: {}, verify: {},
   }, core), loaded);
-  const td02 = one.domains.find((d) => d.code === "TD02");
+  const td02 = one.domains.find((d) => d.code === OUT);
   ok("근거가 하나면 소유로 올리지 않는다",
      td02?.axes.J3.state === "CONFIRMED" && td02.axes.J3.evidence === 1,
      `J3 ${td02?.axes.J3.state} · 근거 ${td02?.axes.J3.evidence}`);
   /* 뒤집어도 같다: 선별 축의 두 문항을 다 채우면 근거 하나가 선다 */
   const two = score(expand({
-    ...base, checklist: { TD02: { J3: 1 } }, artifacts: {}, verify: {},
+    ...base, checklist: { [OUT]: { J3: 1 } }, artifacts: {}, verify: {},
   }, core), loaded);
-  const td02b = two.domains.find((d) => d.code === "TD02");
+  const td02b = two.domains.find((d) => d.code === OUT);
   ok("선별 축의 두 문항을 다 채우면 근거 하나로 센다",
      td02b?.axes.J3.evidence === 2 && td02b.axes.J3.state === "OWNED" &&
      (td02b.axes.J3.evidence_keys ?? []).includes("second_item"),
@@ -261,10 +290,10 @@ function main(): void {
   /* 9. 받아 쓴 응답을 확인으로 세지 않는다 */
   const received = score(expand({
     ...base,
-    axes: { TD02: Object.fromEntries(
+    axes: { [OUT]: Object.fromEntries(
       ["J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8"].map((a) => [a, 1])) },
   }, core), loaded);
-  const r02 = received.domains.find((d) => d.code === "TD02");
+  const r02 = received.domains.find((d) => d.code === OUT);
   ok("남이 정한 것을 받아 쓴 응답은 확인이 아니다",
      r02?.confirmed.length === 0 && r02.participated.length === 8 &&
      r02.zone === "Z4_INSUFFICIENT_EVIDENCE",
@@ -332,23 +361,23 @@ function main(): void {
 
   /* 15. 산업·역할은 Core 를 다시 계산하지 않고 읽는 순서만 만든다 */
   const withPack = score(expand({
-    ...base, industry: "INDUSTRY_MOBILITY_V2", role: "ROLE_CAE_V2",
+    ...base, industry: C.pack.industry, role: C.pack.role,
   }, core), loaded);
   ok("팩을 골라도 Core 판정이 같다",
      stable(coreOnly(withPack)) === baseCore,
      `읽는 순서 ${withPack.context.industry?.explain_order.join("·")}`);
   ok("팩 판본이 스냅샷에 적힌다",
-     withPack.module_versions.industry_pack_version === "INDUSTRY_MOBILITY_V2.v2" &&
-     withPack.module_versions.role_pack_version === "ROLE_CAE_V2.v2");
+     withPack.module_versions.industry_pack_version === C.pack.industry_version &&
+     withPack.module_versions.role_pack_version === C.pack.role_version);
 
   /* 16. 스냅샷에 판본 여섯 칸 */
-  const v = (snaps.get("P12") as Snapshot).module_versions;
+  const v = (snaps.get(C.base) as Snapshot).module_versions;
   ok("스냅샷에 판본 여섯 칸", Object.keys(v).length === 6 &&
      v.core_version === core && v.scoring_version === SCORING_VERSION,
      Object.keys(v).join(" · "));
 
   /* 17. 보기 넷의 뜻이 한 곳에 있다 */
-  const bank = JSON.parse(readFileSync(`${CONTENT_DIR}/me-v3-items.json`, "utf8"));
+  const bank = coreFile<{ level_options: string[] }>(core, "items");
   ok("보기 넷의 뜻이 한 곳에 있다",
      OWNERSHIP.length === bank.level_options.length,
      OWNERSHIP.map((o) => o.code).join(" · "));
@@ -356,9 +385,7 @@ function main(): void {
   /* 18. 응답 품질이 Core 를 깎지 않는다 */
   const sloppy = score(expand({
     ...base,
-    answers: { CN_1A: { kind: "level", index: 3 }, CN_1B: { kind: "level", index: 0 },
-               CJ_PROBLEM: { kind: "level", index: 3 },
-               CJ_ASSUME_REV: { kind: "scale5", value: 5 } },
+    answers: C.sloppy as unknown as Fixture["answers"],
   }, core), loaded);
   ok("응답 품질이 낮아도 Core 판정을 깎지 않는다",
      stable(coreOnly(sloppy)) === baseCore &&
@@ -371,10 +398,10 @@ function main(): void {
      `${tiedPeople.length}벌에서 묶음이 생긴다`);
 
   /* 20. trace 가 문항까지 되짚는다 */
-  const p12 = snaps.get("P12") as Snapshot;
-  const t02 = p12.domains.find((d) => d.code === "TD02");
+  const p12 = snaps.get(C.base) as Snapshot;
+  const t02 = p12.domains.find((d) => d.code === OUT);
   const traceable = !!t02 && t02.trace.some((l) => l.startsWith("confirmed=")) &&
-    t02.axes.J3.from.length > 0 && t02.axes.J3.from[0].item_id.startsWith("TD02_");
+    t02.axes.J3.from.length > 0 && t02.axes.J3.from[0].item_id.startsWith(`${OUT}_`);
   ok("trace 가 문항 번호까지 되짚는다", traceable,
      t02?.axes.J3.from.map((x) => `${x.item_id}=${x.ownership}`).join(" "));
 

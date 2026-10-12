@@ -16,7 +16,8 @@ import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { execSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import { CONTENT_DIR, coreFile, registry } from "../src/lib/me-v3/core-registry";
+import { CONTENT_DIR, coreFile, registry, defaultCore, core as coreEntry,
+} from "../src/lib/me-v3/core-registry";
 import { coreOnly, load, score } from "../src/lib/me-v3/scoring/engine";
 import { stable } from "../src/lib/me-v3/scoring/fixtures";
 import { routedFor, type BankItem as CoreItem } from "../src/lib/me-v3/scoring/normalize";
@@ -29,7 +30,6 @@ import type {
   Answer, Axis, GradField, Stage, Submission, Tier,
 } from "../src/lib/me-v3/scoring/types";
 
-const OUT = "docs/metri/84_measurement_map.md";
 
 /**
  * 문항 하나.
@@ -63,8 +63,11 @@ function note(n: string, d = ""): void {
   notes += 1; console.log(`  보고  ${n}${d ? " — " + d : ""}`);
 }
 
-const core = process.env.CORE
-  ?? registry().cores.filter((c) => c.status === "building")[0].code;
+const core = process.env.CORE ?? defaultCore();
+/* 생성물 자리를 등록부에서 읽는다. 글자로 적어 두면 `CORE=` 로
+   돌린 날 **남의 Core 의 문서를 덮는다.** 실제로 한 번 덮었다 */
+const OUT = coreEntry(core).fixtures?.measurement_map;
+if (!OUT) throw new Error(`${core} 의 fixtures.measurement_map 가 등록부에 없습니다`);
 const loaded = load(core);
 const bank = loaded.bank as unknown as { items: BankItem[]; level_options: string[]; assessment_version: string };
 type DomainData = {

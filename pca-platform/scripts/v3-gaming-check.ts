@@ -11,7 +11,8 @@
  *   npm run v3:gaming
  */
 import { writeFileSync, mkdirSync } from "node:fs";
-import { coreFile, registry } from "../src/lib/me-v3/core-registry";
+import { coreFile, registry, defaultCore, core as coreEntry,
+} from "../src/lib/me-v3/core-registry";
 import { load, score } from "../src/lib/me-v3/scoring/engine";
 import { routedFor, type BankItem as CoreItem } from "../src/lib/me-v3/scoring/normalize";
 import { buildResult } from "../src/lib/me-v3/result/build";
@@ -25,7 +26,6 @@ import type {
 } from "../src/lib/me-v3/scoring/types";
 import { UNKNOWN } from "../src/lib/me-v3/scoring/types";
 
-const OUT = "docs/metri/85_persona_gaming.md";
 type BankItem = CoreItem & { options?: string[] | null; wording?: string | null };
 
 let fail = 0, pass = 0;
@@ -34,8 +34,11 @@ function ok(n: string, good: boolean, d = ""): void {
   else { fail += 1; console.log(`  걸림  ${n}${d ? " — " + d : ""}`); }
 }
 
-const core = process.env.CORE
-  ?? registry().cores.filter((c) => c.status === "building")[0].code;
+const core = process.env.CORE ?? defaultCore();
+/* 생성물 자리를 등록부에서 읽는다. 글자로 적어 두면 `CORE=` 로
+   돌린 날 **남의 Core 의 문서를 덮는다.** 실제로 한 번 덮었다 */
+const OUT = coreEntry(core).fixtures?.gaming_doc;
+if (!OUT) throw new Error(`${core} 의 fixtures.gaming_doc 가 등록부에 없습니다`);
 const loaded = load(core);
 const bank = loaded.bank as unknown as { items: BankItem[] };
 type DomainData = {

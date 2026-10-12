@@ -11,7 +11,7 @@
  *   npm run v3:persona
  */
 import { readFileSync } from "node:fs";
-import { registry } from "../src/lib/me-v3/core-registry";
+import { registry, defaultCore,} from "../src/lib/me-v3/core-registry";
 import { load, score } from "../src/lib/me-v3/scoring/engine";
 import { expand, type Fixture } from "../src/lib/me-v3/scoring/fixtures";
 import type { Snapshot } from "../src/lib/me-v3/scoring/types";
@@ -24,9 +24,9 @@ function ok(n: string, good: boolean, d = ""): void {
   else { fail += 1; console.log(`  걸림  ${n}${d ? " — " + d : ""}`); }
 }
 
+/** `CORE` 를 적지 않으면 등록부의 `default_core` 를 본다 */
 function pickCore(): string {
-  if (process.env.CORE) return process.env.CORE;
-  return registry().cores.filter((c) => c.status === "building")[0].code;
+  return process.env.CORE ?? defaultCore();
 }
 
 function main(): void {

@@ -15,7 +15,7 @@
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { CONTENT_DIR, core as coreEntry, registry } from "../src/lib/me-v3/core-registry";
+import { CONTENT_DIR, core as coreEntry, registry, defaultCore,} from "../src/lib/me-v3/core-registry";
 import { load } from "../src/lib/me-v3/scoring/engine";
 import {
   COMPATIBLE, SCALE_TO_TYPE, compatible,
@@ -28,8 +28,7 @@ function ok(n: string, good: boolean, d = ""): void {
   else { fail += 1; console.log(`  걸림  ${n}${d ? " — " + d : ""}`); }
 }
 
-const coreCode = process.env.CORE
-  ?? registry().cores.filter((c) => c.status === "building")[0].code;
+const coreCode = process.env.CORE ?? defaultCore();
 const loaded = load(coreCode);
 type Item = {
   item_id: string; module: string; measurement_axis: string;

@@ -12,8 +12,7 @@
  */
 import { readFileSync } from "node:fs";
 import {
-  CONTENT_DIR, core, coreFile, registry,
-} from "../src/lib/me-v3/core-registry";
+  CONTENT_DIR, core, coreFile, registry, defaultCore,} from "../src/lib/me-v3/core-registry";
 
 type V2Item = {
   item_id: string; module: string; tier: string;
@@ -45,9 +44,9 @@ function ok(n: string, good: boolean, d = ""): void {
   else { fail += 1; console.log(`  걸림  ${n}${d ? " — " + d : ""}`); }
 }
 
+/** `CORE` 를 적지 않으면 등록부의 `default_core` 를 본다 */
 function pickCore(): string {
-  if (process.env.CORE) return process.env.CORE;
-  return registry().cores.filter((c) => c.status === "building")[0].code;
+  return process.env.CORE ?? defaultCore();
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */

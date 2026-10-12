@@ -15,8 +15,7 @@
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 import {
-  CONTENT_DIR, core, coreFile, hasCoreFile, registry,
-} from "../src/lib/me-v3/core-registry";
+  CONTENT_DIR, core, coreFile, hasCoreFile, registry, defaultCore,} from "../src/lib/me-v3/core-registry";
 
 const AX = ["J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8"] as const;
 
@@ -28,15 +27,9 @@ type Add = { items: { td: string; axis: string; text: string }[] };
 type CommonAdd = { items: { axis: string; text: string }[] };
 type Domains = { domains: { code: string; name: string; required_axes: string[] }[] };
 
+/** `CORE` 를 적지 않으면 등록부의 `default_core` 를 본다 */
 function pickCore(): string {
-  const want = process.env.CORE;
-  if (want) return want;
-  const building = registry().cores.filter((c) => c.status === "building");
-  if (building.length !== 1) {
-    throw new Error(
-      `CORE 를 적어 주십시오. 짓고 있는 core 가 ${building.length}개입니다`);
-  }
-  return building[0].code;
+  return process.env.CORE ?? defaultCore();
 }
 
 function main(): void {

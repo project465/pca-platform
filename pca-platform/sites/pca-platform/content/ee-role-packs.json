@@ -1,0 +1,797 @@
+{
+ "schema_version": "ee-role-packs.1",
+ "core": "EE_CORE_V1",
+ "note": "공고 직무명 단위의 깊이 모듈이다. 새 축을 만들지 않는다: `core_ref` 로 Core 의 기술영역과 역할기능을 가리킨다. 역할기능과 역할팩이 하나씩 맞물린다. `differs_from` 은 이웃 역할과 무엇이 다른지를 한 줄로 적고 결과지가 그 줄을 읽는다. 문항은 역할마다 다른 판단을 묻는다",
+ "caps": {
+  "industry_items_max": 10,
+  "role_items_max": 7,
+  "deep_industry_max": 1,
+  "deep_role_max": 2,
+  "interest_pick_max": 2
+ },
+ "exploration": {
+  "browse": "all",
+  "deep_per_attempt": 1,
+  "add_later": true,
+  "subscription_gate": false,
+  "note": "여덟 역할 전부를 견줄 수 있다. 한 번에 쉰여섯을 묻지 않고 Core 심화가 끝난 뒤에 관심 있는 역할을 둘까지 고르고, 고른 역할을 STANDARD 부터 깊게 확인한다. 고르지 않은 역할은 Core 의 확인된 축으로 견준다. 역할 선택이 Core 판정을 바꾸지 않는다"
+ },
+ "packs": [
+  {
+   "code": "ROLE_DESIGN_V1",
+   "version": 1,
+   "name_ko": "회로·시스템 설계",
+   "name_en": "Circuit and System Design",
+   "core": "EE_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD01",
+     "TD02",
+     "TD08"
+    ],
+    "rf": [
+     "RF1"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J5"
+   ],
+   "owns": "회로 구조와 소자값과 동작 조건을 확정한다",
+   "decides": [
+    "회로 구조",
+    "소자값과 정격",
+    "동작점과 여유",
+    "쓸 부품과 등급"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_ANALYSIS_V1",
+     "line": "해석은 예측의 타당성을 책임지고 설계는 소자값을 바꿀 권한을 가진다"
+    },
+    {
+     "vs": "ROLE_PROCESS_V1",
+     "line": "공정은 그것을 반복해서 만들 조건을 정하고 설계는 만들 것 자체를 정한다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_DESIGN_V1_R1",
+     "axis": "J3",
+     "domain": "TD01",
+     "ask": "소자값을 바꿀 권한을 가지고 직접 정해 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_DESIGN_V1_R2",
+     "axis": "J5",
+     "domain": "TD01",
+     "ask": "제작에 나간 회로도와 소자 선정표를 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_DESIGN_V1_R3",
+     "axis": "J2",
+     "domain": "TD01",
+     "ask": "부딪히는 요구 가운데 무엇을 먼저 지킬지 정해 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_DESIGN_V1_R4",
+     "axis": "J3",
+     "domain": "TD08",
+     "ask": "효율과 부피 가운데 어느 쪽을 버릴지 정해 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_DESIGN_V1_R5",
+     "axis": "J6",
+     "domain": "TD02",
+     "ask": "설계안 둘을 같은 기준에 올려 하나를 고른 경험이 있다"
+    },
+    {
+     "id": "ROLE_DESIGN_V1_R6",
+     "axis": "J7",
+     "domain": "TD01",
+     "ask": "회로가 뜻대로 돌지 않아 소자값을 바꿔 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_DESIGN_V1_R7",
+     "axis": "J8",
+     "domain": "TD01",
+     "ask": "내가 낸 회로도로 보드가 실제로 만들어진 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_ANALYSIS_V1",
+    "ROLE_PROCESS_V1",
+    "ROLE_RND_V1"
+   ],
+   "application_material": [
+    "회로도와 소자 선정표 한 벌",
+    "설계 계산서",
+    "여유를 어디에 몰아 주었는지 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_ANALYSIS_V1",
+   "version": 1,
+   "name_ko": "해석·시뮬레이션",
+   "name_en": "Analysis and Simulation",
+   "core": "EE_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD06",
+     "TD04",
+     "TD08"
+    ],
+    "rf": [
+     "RF2"
+    ]
+   },
+   "required_axes": [
+    "J4",
+    "J6"
+   ],
+   "owns": "만들기 전에 예측하고 그 예측의 타당성을 책임진다",
+   "decides": [
+    "해석 범위와 격자",
+    "경계 조건",
+    "쓸 모형과 단순화",
+    "결과를 믿는 범위"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_DESIGN_V1",
+     "line": "설계는 소자값을 바꿀 권한을 가지고 해석은 예측이 맞는지를 책임진다"
+    },
+    {
+     "vs": "ROLE_TEST_V1",
+     "line": "시험은 만든 것을 판정하고 해석은 만들기 전에 예측한다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_ANALYSIS_V1_R1",
+     "axis": "J4",
+     "domain": "TD06",
+     "ask": "해석 격자와 경계 조건을 직접 세워 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_ANALYSIS_V1_R2",
+     "axis": "J6",
+     "domain": "TD06",
+     "ask": "해석 결과를 측정값과 맞춰 차이의 까닭을 적은 경험이 있다"
+    },
+    {
+     "id": "ROLE_ANALYSIS_V1_R3",
+     "axis": "J3",
+     "domain": "TD04",
+     "ask": "모형을 어디까지 단순화할지 직접 정해 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_ANALYSIS_V1_R4",
+     "axis": "J5",
+     "domain": "TD08",
+     "ask": "해석 보고를 다음 사람이 다시 돌릴 수 있게 남긴 경험이 있다"
+    },
+    {
+     "id": "ROLE_ANALYSIS_V1_R5",
+     "axis": "J2",
+     "domain": "TD06",
+     "ask": "해석으로 답할 물음을 수치 조건으로 옮겨 적은 경험이 있다"
+    },
+    {
+     "id": "ROLE_ANALYSIS_V1_R6",
+     "axis": "J7",
+     "domain": "TD04",
+     "ask": "해석이 실제와 크게 달라 조건을 다시 세운 경험이 있다"
+    },
+    {
+     "id": "ROLE_ANALYSIS_V1_R7",
+     "axis": "J8",
+     "domain": "TD08",
+     "ask": "내 해석 결과가 설계 변경 근거로 쓰인 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_DESIGN_V1",
+    "ROLE_TEST_V1",
+    "ROLE_RND_V1"
+   ],
+   "application_material": [
+    "해석 모델과 조건을 적은 보고",
+    "측정값과 대조한 표",
+    "믿는 범위와 한계를 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_TEST_V1",
+   "version": 1,
+   "name_ko": "시험·검증",
+   "name_en": "Test and Verification",
+   "core": "EE_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD12",
+     "TD02",
+     "TD05"
+    ],
+    "rf": [
+     "RF3"
+    ]
+   },
+   "required_axes": [
+    "J6",
+    "J5"
+   ],
+   "owns": "한 건의 판정이 재현되는지를 책임진다",
+   "decides": [
+    "시험 항목",
+    "측정 조건",
+    "합격 기준",
+    "재시험 조건"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_QUALITY_V1",
+     "line": "품질은 양산과 수명 내내 그 판정이 지켜지는지를 보증하고 시험은 한 건을 판정한다"
+    },
+    {
+     "vs": "ROLE_ANALYSIS_V1",
+     "line": "해석은 만들기 전에 예측하고 시험은 만든 것으로 판정한다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_TEST_V1_R1",
+     "axis": "J6",
+     "domain": "TD12",
+     "ask": "반복 측정의 흩어짐을 보고 판정해 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_TEST_V1_R2",
+     "axis": "J5",
+     "domain": "TD12",
+     "ask": "다른 사람이 그대로 따라 할 수 있는 시험 절차를 남긴 경험이 있다"
+    },
+    {
+     "id": "ROLE_TEST_V1_R3",
+     "axis": "J3",
+     "domain": "TD12",
+     "ask": "합격과 불합격을 가르는 기준값을 직접 정해 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_TEST_V1_R4",
+     "axis": "J4",
+     "domain": "TD05",
+     "ask": "교정 성적을 보고 쓸 측정 설비를 직접 고른 경험이 있다"
+    },
+    {
+     "id": "ROLE_TEST_V1_R5",
+     "axis": "J7",
+     "domain": "TD12",
+     "ask": "재시험을 어느 조건에서 할지 내가 정해 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_TEST_V1_R6",
+     "axis": "J2",
+     "domain": "TD02",
+     "ask": "규격의 시험 항목을 측정 조건으로 옮겨 적은 경험이 있다"
+    },
+    {
+     "id": "ROLE_TEST_V1_R7",
+     "axis": "J8",
+     "domain": "TD12",
+     "ask": "내가 낸 시험 성적이 출하 판정에 쓰인 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_QUALITY_V1",
+    "ROLE_ANALYSIS_V1",
+    "ROLE_PROCESS_V1"
+   ],
+   "application_material": [
+    "시험 계획서와 성적서 한 벌",
+    "불확도 산정서",
+    "재시험을 어느 조건에서 했는지 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_PROCESS_V1",
+   "version": 1,
+   "name_ko": "공정·양산기술",
+   "name_en": "Process and Manufacturing Engineering",
+   "core": "EE_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD07",
+     "TD02",
+     "TD12"
+    ],
+    "rf": [
+     "RF4"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "owns": "같은 것이 반복해서 나오게 공정 조건을 확정한다",
+   "decides": [
+    "공정 조건값",
+    "관리 한계",
+    "검사 항목과 표본 수",
+    "불량 처리 기준"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_DESIGN_V1",
+     "line": "설계는 만들 것을 정하고 공정은 그것이 수량만큼 같게 나오게 한다"
+    },
+    {
+     "vs": "ROLE_MAINT_V1",
+     "line": "보전은 설비가 멈추지 않게 하고 공정은 나오는 것의 품질을 책임진다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_PROCESS_V1_R1",
+     "axis": "J3",
+     "domain": "TD07",
+     "ask": "수율을 보고 공정 조건값을 직접 바꿔 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_PROCESS_V1_R2",
+     "axis": "J6",
+     "domain": "TD07",
+     "ask": "조건을 바꾼 전후의 불량률을 계산해 견준 경험이 있다"
+    },
+    {
+     "id": "ROLE_PROCESS_V1_R3",
+     "axis": "J5",
+     "domain": "TD02",
+     "ask": "작업자가 그대로 따라 할 수 있는 조건표를 남긴 경험이 있다"
+    },
+    {
+     "id": "ROLE_PROCESS_V1_R4",
+     "axis": "J2",
+     "domain": "TD12",
+     "ask": "양산에서 지킬 관리 한계를 수치로 정해 적은 경험이 있다"
+    },
+    {
+     "id": "ROLE_PROCESS_V1_R5",
+     "axis": "J7",
+     "domain": "TD07",
+     "ask": "같은 불량이 또 나지 않게 공정을 바꿔 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_PROCESS_V1_R6",
+     "axis": "J4",
+     "domain": "TD12",
+     "ask": "검사 자료를 모아 흐름을 보고 조건을 손본 경험이 있다"
+    },
+    {
+     "id": "ROLE_PROCESS_V1_R7",
+     "axis": "J8",
+     "domain": "TD07",
+     "ask": "내가 정한 조건이 양산 라인에 그대로 적용된 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_DESIGN_V1",
+    "ROLE_QUALITY_V1",
+    "ROLE_MAINT_V1"
+   ],
+   "application_material": [
+    "공정 조건표",
+    "조건 전후 불량률을 견준 표",
+    "같은 불량을 막은 조치를 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_MAINT_V1",
+   "version": 1,
+   "name_ko": "설비 운전·보전",
+   "name_en": "Operation and Maintenance",
+   "core": "EE_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD09",
+     "TD11",
+     "TD10"
+    ],
+    "rf": [
+     "RF5"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J7"
+   ],
+   "owns": "설비가 멈추지 않게 운전 기준과 점검 기준을 확정한다",
+   "decides": [
+    "점검 주기",
+    "교체 기준",
+    "운전 한계값",
+    "정지와 복구 절차"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_PROCESS_V1",
+     "line": "공정은 나오는 것의 품질을 책임지고 보전은 설비가 서 있는 시간을 책임진다"
+    },
+    {
+     "vs": "ROLE_TEST_V1",
+     "line": "시험은 한 건을 판정하고 보전은 같은 설비를 오래 돌린다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_MAINT_V1_R1",
+     "axis": "J3",
+     "domain": "TD09",
+     "ask": "점검 주기와 교체 기준을 직접 정해 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_MAINT_V1_R2",
+     "axis": "J7",
+     "domain": "TD09",
+     "ask": "고장 원인을 설비와 설정으로 갈라 좁혀 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_MAINT_V1_R3",
+     "axis": "J6",
+     "domain": "TD11",
+     "ask": "운전 자료를 보고 설비 상태를 판정해 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_MAINT_V1_R4",
+     "axis": "J5",
+     "domain": "TD09",
+     "ask": "다음 당번이 읽을 수 있는 점검 기록을 남긴 경험이 있다"
+    },
+    {
+     "id": "ROLE_MAINT_V1_R5",
+     "axis": "J2",
+     "domain": "TD10",
+     "ask": "운전 한계값을 어디로 둘지 수치로 정해 적은 경험이 있다"
+    },
+    {
+     "id": "ROLE_MAINT_V1_R6",
+     "axis": "J4",
+     "domain": "TD11",
+     "ask": "원격 감시 자료를 모아 멈추기 전의 신호를 찾아본 경험이 있다"
+    },
+    {
+     "id": "ROLE_MAINT_V1_R7",
+     "axis": "J8",
+     "domain": "TD09",
+     "ask": "내가 올린 보전 판단이 설비 교체 결정에 쓰인 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_PROCESS_V1",
+    "ROLE_PM_V1",
+    "ROLE_TEST_V1"
+   ],
+   "application_material": [
+    "점검 기준과 주기를 적은 표",
+    "고장 이력과 조치 기록",
+    "운전 한계값과 그 근거를 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_PM_V1",
+   "version": 1,
+   "name_ko": "기술 기획·통합",
+   "name_en": "Technical Planning and Integration",
+   "core": "EE_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD11",
+     "TD05",
+     "TD10"
+    ],
+    "rf": [
+     "RF6"
+    ]
+   },
+   "required_axes": [
+    "J2",
+    "J8"
+   ],
+   "owns": "여러 사람의 결정을 하나로 묶고 요구와 일정을 확정한다",
+   "decides": [
+    "요구 우선순위",
+    "일정과 자원 배분",
+    "변경 수용 범위",
+    "누가 무엇을 맡는가"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_DESIGN_V1",
+     "line": "설계는 한 묶음을 깊게 정하고 기획은 묶음 사이의 어긋남을 맞춘다"
+    },
+    {
+     "vs": "ROLE_MAINT_V1",
+     "line": "보전은 지금 도는 설비를 보고 기획은 아직 없는 것의 범위를 정한다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_PM_V1_R1",
+     "axis": "J2",
+     "domain": "TD11",
+     "ask": "서로 부딪히는 요구의 우선순위를 정해 합의를 받은 경험이 있다"
+    },
+    {
+     "id": "ROLE_PM_V1_R2",
+     "axis": "J8",
+     "domain": "TD11",
+     "ask": "내가 묶은 요구 정의가 여러 팀의 작업 기준이 된 경험이 있다"
+    },
+    {
+     "id": "ROLE_PM_V1_R3",
+     "axis": "J3",
+     "domain": "TD05",
+     "ask": "일정 안에 무엇을 빼고 무엇을 남길지 직접 정해 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_PM_V1_R4",
+     "axis": "J5",
+     "domain": "TD11",
+     "ask": "변경 이력을 남겨 뒤에 누가 왜 바꿨는지 보이게 한 경험이 있다"
+    },
+    {
+     "id": "ROLE_PM_V1_R5",
+     "axis": "J6",
+     "domain": "TD10",
+     "ask": "묶음 사이의 조건이 어긋나는지 대조해 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_PM_V1_R6",
+     "axis": "J7",
+     "domain": "TD11",
+     "ask": "일정이 밀린 원인을 좁혀 범위를 다시 잡아 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_PM_V1_R7",
+     "axis": "J1",
+     "domain": "TD11",
+     "ask": "아직 범위가 없는 상태에서 다룰 것과 뺄 것을 갈라 본 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_DESIGN_V1",
+    "ROLE_RND_V1",
+    "ROLE_MAINT_V1"
+   ],
+   "application_material": [
+    "요구 정의와 우선순위를 적은 한 장",
+    "변경 이력",
+    "묶음 사이의 조건을 맞춘 표"
+   ]
+  },
+  {
+   "code": "ROLE_RND_V1",
+   "version": 1,
+   "name_ko": "선행 연구개발",
+   "name_en": "Research and Advanced Development",
+   "core": "EE_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD07",
+     "TD04",
+     "TD06"
+    ],
+    "rf": [
+     "RF7"
+    ]
+   },
+   "required_axes": [
+    "J1",
+    "J4"
+   ],
+   "owns": "아직 답이 없는 것을 좁히고 쓸 방법을 세운다",
+   "decides": [
+    "다룰 물음",
+    "쓸 방법과 가정",
+    "무엇을 고정하고 바꿀지",
+    "어디까지가 한계인지"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_ANALYSIS_V1",
+     "line": "해석은 사양이 있는 문제를 예측하고 선행은 사양이 없는 상태에서 방법을 세운다"
+    },
+    {
+     "vs": "ROLE_DESIGN_V1",
+     "line": "설계는 만들 수 있는 안 하나를 내고 선행은 되는지를 먼저 가른다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_RND_V1_R1",
+     "axis": "J1",
+     "domain": "TD07",
+     "ask": "답이 없는 상태에서 다룰 물음을 좁혀 세워 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_RND_V1_R2",
+     "axis": "J4",
+     "domain": "TD04",
+     "ask": "쓸 방법이 없어 직접 만들어 써 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_RND_V1_R3",
+     "axis": "J3",
+     "domain": "TD06",
+     "ask": "가정을 세우고 그것이 깨지는 조건을 적어 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_RND_V1_R4",
+     "axis": "J5",
+     "domain": "TD07",
+     "ask": "방법과 조건을 남겨 다른 사람이 다시 돌릴 수 있게 한 경험이 있다"
+    },
+    {
+     "id": "ROLE_RND_V1_R5",
+     "axis": "J6",
+     "domain": "TD04",
+     "ask": "내 결과를 다른 방법으로 얻은 값과 대조해 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_RND_V1_R6",
+     "axis": "J7",
+     "domain": "TD06",
+     "ask": "방법이 통하지 않는 범위를 찾아 적어 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_RND_V1_R7",
+     "axis": "J8",
+     "domain": "TD07",
+     "ask": "내 결과가 과제 보고나 특허나 시작품으로 넘어간 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_ANALYSIS_V1",
+    "ROLE_DESIGN_V1",
+    "ROLE_PM_V1"
+   ],
+   "application_material": [
+    "물음과 가정과 한계를 적은 보고",
+    "방법과 조건을 적은 자료",
+    "다른 방법으로 얻은 값과 대조한 표"
+   ]
+  },
+  {
+   "code": "ROLE_QUALITY_V1",
+   "version": 1,
+   "name_ko": "품질·신뢰성",
+   "name_en": "Quality and Reliability",
+   "core": "EE_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD12",
+     "TD07",
+     "TD09"
+    ],
+    "rf": [
+     "RF8"
+    ]
+   },
+   "required_axes": [
+    "J6",
+    "J8"
+   ],
+   "owns": "요구가 양산과 수명 내내 지켜지는지를 보증한다",
+   "decides": [
+    "품질 기준",
+    "가속 조건과 수명 판정",
+    "시정 조치",
+    "출하 판정 권한"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_TEST_V1",
+     "line": "시험은 한 건을 판정하고 품질은 양산과 수명 전체를 보증한다"
+    },
+    {
+     "vs": "ROLE_PROCESS_V1",
+     "line": "공정은 조건을 정하고 품질은 그 조건이 지켜지는지를 본다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_QUALITY_V1_R1",
+     "axis": "J6",
+     "domain": "TD12",
+     "ask": "양산 자료의 흐름을 보고 기준을 넘는지 판정해 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_QUALITY_V1_R2",
+     "axis": "J8",
+     "domain": "TD12",
+     "ask": "내가 낸 판정으로 출하가 멈추거나 풀린 경험이 있다"
+    },
+    {
+     "id": "ROLE_QUALITY_V1_R3",
+     "axis": "J3",
+     "domain": "TD09",
+     "ask": "가속 조건과 수명 판정 기준을 직접 정해 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_QUALITY_V1_R4",
+     "axis": "J7",
+     "domain": "TD07",
+     "ask": "같은 불량이 다시 나지 않게 조치를 정해 확인한 경험이 있다"
+    },
+    {
+     "id": "ROLE_QUALITY_V1_R5",
+     "axis": "J5",
+     "domain": "TD12",
+     "ask": "시정 조치를 추적할 수 있게 기록으로 남긴 경험이 있다"
+    },
+    {
+     "id": "ROLE_QUALITY_V1_R6",
+     "axis": "J2",
+     "domain": "TD12",
+     "ask": "고객 요구를 사내 품질 기준으로 옮겨 적은 경험이 있다"
+    },
+    {
+     "id": "ROLE_QUALITY_V1_R7",
+     "axis": "J4",
+     "domain": "TD07",
+     "ask": "불량 자료를 모아 원인 후보를 갈라 본 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_TEST_V1",
+    "ROLE_PROCESS_V1",
+    "ROLE_MAINT_V1"
+   ],
+   "application_material": [
+    "품질 기준과 판정 근거를 적은 표",
+    "시정 조치 기록",
+    "수명 판정에 쓴 가속 조건을 적은 한 장"
+   ]
+  }
+ ]
+}

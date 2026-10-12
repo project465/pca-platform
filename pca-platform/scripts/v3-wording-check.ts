@@ -8,7 +8,7 @@
  *   npm run v3:wording
  */
 import {
-  coreFile, packs as readPacks, registry, CONTENT_DIR,
+  coreFile, packs as readPacks, registry, CONTENT_DIR, defaultCore,
 } from "../src/lib/me-v3/core-registry";
 import { readFileSync } from "node:fs";
 import { counts, minutes, DOMAINS_BY_TIER } from "../src/lib/me-v3/response-count";
@@ -57,10 +57,9 @@ function sim(a: string, b: string): number {
   return inter / (x.size + y.size - inter);
 }
 
+/** `CORE` 를 적지 않으면 등록부의 `default_core` 를 본다 */
 function pickCore(): string {
-  if (process.env.CORE) return process.env.CORE;
-  const b = registry().cores.filter((c) => c.status === "building");
-  return b[0].code;
+  return process.env.CORE ?? defaultCore();
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */

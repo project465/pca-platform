@@ -214,6 +214,11 @@ function main(): void {
       const patch = {
         code, family, major, name_ko: ko, name_en: code,
         assessment_version: `${major}_V1_DOMAIN_2026`, status: "building",
+        /* **이 검사가 묻는 것은 시장 정책이다.** 짓고 있는 Core 가 아직
+           학생에게 닫혀 있는 것은 따로 세는 자리이고(`campus:check`), 여기서
+           닫아 두면 `KR 에 세 core 가 다 선다` 가 시장 정책과 무관한 까닭으로
+           걸린다 */
+        open_to_students: true,
         markets, domain_count: n, axis_count: 8,
         files: {
           taxonomy: `${prefix}-taxonomy.json`,

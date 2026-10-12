@@ -7,14 +7,12 @@
  *
  *   npm run v3:items
  */
-import { core, coreFile, registry } from "../src/lib/me-v3/core-registry";
+import { core, coreFile, registry, defaultCore,} from "../src/lib/me-v3/core-registry";
 import { counts } from "../src/lib/me-v3/response-count";
 
+/** `CORE` 를 적지 않으면 등록부의 `default_core` 를 본다 */
 function pickCore(): string {
-  if (process.env.CORE) return process.env.CORE;
-  const b = registry().cores.filter((c) => c.status === "building");
-  if (b.length !== 1) throw new Error(`CORE 를 적어 주십시오. 짓고 있는 core ${b.length}개`);
-  return b[0].code;
+  return process.env.CORE ?? defaultCore();
 }
 
 const AX = ["J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8"] as const;

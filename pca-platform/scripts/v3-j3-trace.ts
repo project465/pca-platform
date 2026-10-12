@@ -13,7 +13,7 @@
  *   J3_SNAP=write npm run v3:j3    사람 열두 벌 지문을 적어 둔다 (전후 대조용)
  */
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
-import { CONTENT_DIR, core as coreEntry, registry } from "../src/lib/me-v3/core-registry";
+import { CONTENT_DIR, core as coreEntry, registry, defaultCore,} from "../src/lib/me-v3/core-registry";
 import { load, score, coreOnly } from "../src/lib/me-v3/scoring/engine";
 import { expand, stable, type Fixture } from "../src/lib/me-v3/scoring/fixtures";
 import { routedFor, type BankItem } from "../src/lib/me-v3/scoring/normalize";
@@ -33,8 +33,7 @@ function ok(n: string, good: boolean, d = ""): void {
   else { fail += 1; console.log(`  걸림  ${n}${d ? " — " + d : ""}`); }
 }
 
-const coreCode = process.env.CORE
-  ?? registry().cores.filter((c) => c.status === "building")[0].code;
+const coreCode = process.env.CORE ?? defaultCore();
 const loaded = load(coreCode);
 type Item = {
   item_id: string; module: string; measurement_axis: string; tier: string;

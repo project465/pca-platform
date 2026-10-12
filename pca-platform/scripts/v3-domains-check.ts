@@ -10,16 +10,13 @@
  */
 import { readFileSync, existsSync } from "node:fs";
 import {
-  CONTENT_DIR as DIR, core, coreFile, hasCoreFile, contractGaps, registry,
-} from "../src/lib/me-v3/core-registry";
+  CONTENT_DIR as DIR, core, coreFile, hasCoreFile, contractGaps, registry, defaultCore,} from "../src/lib/me-v3/core-registry";
 
 const AX = ["J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8"] as const;
 
+/** `CORE` 를 적지 않으면 등록부의 `default_core` 를 본다 */
 function pickCore(): string {
-  if (process.env.CORE) return process.env.CORE;
-  const b = registry().cores.filter((c) => c.status === "building");
-  if (b.length !== 1) throw new Error(`CORE 를 적어 주십시오. 짓고 있는 core ${b.length}개`);
-  return b[0].code;
+  return process.env.CORE ?? defaultCore();
 }
 
 let fail = 0;

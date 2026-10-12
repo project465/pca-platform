@@ -26,7 +26,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
-  CONTENT_DIR, coresForMarket, registry as coreRegistry, hasCoreFile,
+  CONTENT_DIR, sellableCores, registry as coreRegistry, hasCoreFile,
   specializationAuthored, specializationOf,
   type CoreEntry, type CoreFile,
 } from "@/lib/me-v3/core-registry";
@@ -411,8 +411,10 @@ export function statusOf(
   if (row.leaf.student_visible === false) return "PREPARING";
   if (row.leaf.routing_only) return "PREPARING";
   if (mappingStatusOf(row.leaf, dir) !== "EXACT") return "PREPARING";
-  const open = coresForMarket(u.market_code, dir)
-    .filter((c) => c.status === "building" || c.status === "live")
+  /* **같은 판단을 두 곳에서 하지 않는다.** 전에는 이 자리가 상태 글자를
+     직접 보고 있었고, 그래서 `open_to_students` 가 생긴 날 가격표는 닫히고
+     학교 화면만 열려 있을 수 있었다 */
+  const open = sellableCores(u.market_code, dir)
     .some((c) => c.code === row.leaf.core_code);
   return open ? "READY" : "PREPARING";
 }
@@ -528,12 +530,18 @@ export function replacesOf(u: CampusUniversity, leaf: CampusUnit): CampusLeaf[] 
  * 그 자리가 어디까지 왔는가. **넷으로 가른다**(규격 작업 3).
  *
  * `CATALOG_ONLY`      등록만 돼 있다. Core 가 붙지 않았거나 고를 자리가 아니다
- * `CORE_LINKED`       Core 는 붙었는데 갈래가 모자라거나 아직 열리지 않았다
- * `ASSESSMENT_READY`  지금 응시할 수 있다
- * `RESULT_READY`      응시한 뒤 결과지까지 나온다
+ * `CORE_LINKED`       Core 는 붙었는데 갈래가 모자라거나 자료가 덜 됐다
+ * `ASSESSMENT_READY`  자료가 다 섰고 아직 학생에게 열지 않았다
+ * `RESULT_READY`      학생이 응시하면 결과지까지 나온다
  *
  * **등록과 응시 가능을 한 칸에 담지 않는다.** 담으면 `등록했다` 가
  * `검사가 된다` 로 읽히고, 그 읽기를 믿은 학생이 빈 검사를 만난다.
+ *
+ * **자료가 섰다는 것과 학생에게 열렸다는 것도 한 칸에 담지 않는다.**
+ * 담으면 Core 를 짓는 동안 그 학과가 영원히 `Core 연결` 로 보이고, 어디까지
+ * 왔는지 짓는 쪽도 모른다. 여는 것은 `statusOf` 가 말하고, 여기서는
+ * **파일이 다 섰는가**까지만 센다. 이 값은 담당자 화면의 개발 상태이고
+ * **학생 화면에 한 글자도 나가지 않는다**(`campus:check` 가 센다).
  */
 export type CampusReadiness =
   | "CATALOG_ONLY" | "CORE_LINKED" | "ASSESSMENT_READY" | "RESULT_READY";
@@ -543,13 +551,16 @@ export function readinessOf(
 ): CampusReadiness {
   const core = coreOf(row.leaf, dir);
   if (!core || row.leaf.routing_only) return "CATALOG_ONLY";
-  if (statusOf(u, row, dir) !== "READY") return "CORE_LINKED";
+  if (mappingStatusOf(row.leaf, dir) !== "EXACT") return "CORE_LINKED";
+  if (core.status === "planned" || core.status === "archived") return "CORE_LINKED";
   /* 결과지는 Core 의 네 파일 위에 선다. 하나라도 없으면 응시는 되고
      결과가 안 나오는 자리가 되는데, **그 자리를 `되는 것` 으로 적지
      않는다** */
   const files = coreRegistry(dir).contract.required_files ?? [];
   const whole = files.every((k) => hasCoreFile(core.code, k as CoreFile, dir));
-  return whole ? "RESULT_READY" : "ASSESSMENT_READY";
+  if (!whole) return "CORE_LINKED";
+  /* 자료는 다 섰다. 학생에게 열렸는지는 `statusOf` 가 말한다 */
+  return statusOf(u, row, dir) === "READY" ? "RESULT_READY" : "ASSESSMENT_READY";
 }
 
 /**
