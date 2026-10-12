@@ -538,12 +538,18 @@ export async function addApplication(userId: string, a: {
   region_code?: string | null; org_type_code?: string | null;
   applied_on?: string | null; state?: string; note_text?: string | null;
 }): Promise<void> {
+  /**
+   * **자리를 두 번 쓰면 형을 적어 준다.** 뒤쪽 조건절의 `$3 IS NULL` 에는
+   * 형을 끌어올 칸이 없어 PostgreSQL 이 질의를 세우는 자리에서 거절한다
+   * (42P08). 값과 무관하게 늘 거절하므로 **지원 기록이 한 줄도 저장되지
+   * 않았다**: 폼을 적어 보낸 사람은 아무 일도 일어나지 않은 단추를 봤다.
+   */
   await query(
     `INSERT INTO v3_applications
        (user_id, core_code, org_name, role_code, industry_code, region_code,
         org_type_code, applied_on, state, note_text, purge_after)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,
-             CASE WHEN $3 IS NULL AND $10 IS NULL THEN NULL
+     VALUES ($1,$2,$3::text,$4,$5,$6,$7,$8::date,$9,$10::text,
+             CASE WHEN $3::text IS NULL AND $10::text IS NULL THEN NULL
                   ELSE current_date + 365 END)`,
     [userId, await activeCore(userId), (a.org_name ?? "").trim().slice(0, 120) || null,
      a.role_code || null, a.industry_code || null,

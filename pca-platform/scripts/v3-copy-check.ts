@@ -81,10 +81,45 @@ const RULES: { re: RegExp; limit: number; why: string; use: string }[] = [
     why: "안쪽 일을 가리키는 말(규격 §20)", use: "더하다 · 담다 · 바꾸다" },
   { re: /비어 있는 자리|비어 있던 자리|빈자리|자리별로|쓰인 자리|판단 자리/g, limit: 0,
     why: "안쪽 비유를 손님 화면에 적는다(규격 §20)", use: "부족한 부분 · 쓰인 곳 · 영역별" },
-  { re: /스냅샷|Evidence|\bGap\b|가져오기/g, limit: 0,
+  /* **낱말 경계를 붙인다.** 안 붙이면 `T("navEvidence")` 같은 **열쇠
+     이름**이 걸린다. 그 자리의 한국어는 `경험과 증거` 이고 영어는 en
+     판의 값이라, 걸리는 것은 화면에 서는 글이 아니라 식별자다 */
+  { re: /스냅샷|\bEvidence\b|\bGap\b|가져오기/g, limit: 0,
     why: "안쪽 이름과 영어 코드(규격 §20)", use: "검사 당시 결과 · 근거 · 부족한 부분 · 담기" },
   { re: /묶음으로 묶|묶음 판정|묶음이 달라/g, limit: 0,
     why: "안쪽 용어(규격 §20)", use: "영역이 달라졌습니다" },
+
+  /* ── AI 가 쓴 글의 냄새 ──
+     **상시 규칙이다.** 한 번 걷어도 다음 회차에 같은 말이 돌아오는 자리라
+     세어서 막는다. 한도를 0 으로 둔 것은 이 말들이 **자연스러운 자리가
+     없기 때문**이다: 어느 문장에 넣어도 그 문장이 무엇을 말하는지 줄어든다 */
+  { re: /종합적으로 (분석|판단|고려|검토)|종합적인 분석/g, limit: 0,
+    why: "AI 문체", use: "무엇을 보고 무엇을 알았는지 그대로" },
+  { re: /다양한 가능성|새로운 가능성|무한한 가능성|가능성을 열어/g, limit: 0,
+    why: "AI 문체", use: "지금 할 수 있는 것 하나" },
+  { re: /잠재력/g, limit: 0, why: "재지 않은 것을 가리키는 말", use: "확인된 경험" },
+  { re: /성장을 (지원|돕|응원)|커리어 여정|여정을/g, limit: 0,
+    why: "AI 문체", use: "그 자리에서 할 일" },
+  { re: /귀하/g, limit: 0, why: "설문지의 말", use: "빼거나 '~하시면'" },
+  { re: /탐색해 ?보세요|발견해 ?보세요|경험해 ?보세요/g, limit: 0,
+    why: "권유만 있고 무엇을 할지가 없다", use: "무엇을 누르면 되는지" },
+
+  /* ⑤ **판정보다 관찰.** 이 검사는 적성도 유형도 재지 않는다. 그렇게
+     적으면 재지 않은 것을 단정하는 말이 되고, 규준이 없는 지금은 거짓이다 */
+  { re: /당신은[^.。]{0,14}(인재|유형|타입|형입니다)/g, limit: 0,
+    why: "재지 않은 유형을 단정한다", use: "확인된 경험을 그대로" },
+  { re: /에 적합합니다|적합한 직무|가장 잘 맞|적성에 맞|어울립니다/g, limit: 0,
+    why: "합격 가능성으로 읽히는 판정", use: "근거가 확인된 영역" },
+
+  /* ⑨ **제목은 서비스 언어로.** 영어 제목은 그 화면이 무엇을 하는 자리인지
+     한 글자도 말하지 않는다. `Track` 은 파는 것의 이름이라 뺀다 */
+  { re: /Career Insight|AI Recommendation|Personalized Analysis|Smart \w|\bInsight\b|\bRecommendation\b/g,
+    limit: 0, why: "영어 제목(규격 §9)", use: "그 화면이 답하는 물음을 한국어로" },
+
+  /* ⑭ **오류 문구에 기술 용어를 노출하지 않는다.** 상세한 원인은 로그에만
+     적는다. 읽는 사람이 할 수 있는 것은 다시 해 보는 것뿐이다 */
+  { re: /recompute failed|snapshot error|database|connection failed|stack trace|500 오류|internal server/gi,
+    limit: 0, why: "손님 화면에 기술 용어(규격 §14)", use: "무엇이 안 됐고 다음에 무엇을 하면 되는지" },
 ];
 
 /** 한 화면에서 같은 어미가 되풀이되면 설명서처럼 읽힌다 */
@@ -143,7 +178,18 @@ const FILES = [
   "src/app/me/next/page.tsx",
   /* 세 화면이 같이 쓰는 문장. 여기가 안쪽 말을 들면 세 쪽이 같이 든다 */
   "src/lib/me-v3/change-text.ko.ts",
+  /* 계정과 공통 조각. **조각이 말을 들면 그것을 쓰는 쪽이 전부 든다** */
+  "src/app/my/page.tsx",
+  "src/app/me/ui.tsx",
 ];
+
+/**
+ * ⑫ **아이콘은 구분용이고 emoji 는 쓰지 않는다.**
+ *
+ * emoji 는 기기마다 다른 그림이 서고 글자 크기를 따르지 않아, 한 줄 안에서
+ * 그것만 다른 활자로 읽힌다. 표시는 `Icon` 하나로 간다.
+ */
+const EMOJI = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}]/gu;
 
 const out: string[] = [];
 let bad = 0;
@@ -151,6 +197,8 @@ const flag = (s: string) => { bad += 1; out.push(`  걸림  ${s}`); };
 
 for (const f of FILES) {
   const src = body(readFileSync(f, "utf8"));
+  const emo = [...src.matchAll(EMOJI)];
+  if (emo.length) flag(`${f} — emoji ${emo.length}개 (한도 0) · 표시는 Icon 하나로 간다`);
   for (const r of [...RULES, ...TICS.map((t) =>
     ({ re: t.re, limit: t.limit, why: `한 벌에서 ${t.what} 되풀이`, use: "어미를 바꾼다" }))]) {
     const hits = [...src.matchAll(r.re)];

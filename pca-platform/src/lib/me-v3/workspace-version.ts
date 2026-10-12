@@ -61,7 +61,7 @@
  *   들어오는 길이 지금 무엇인지 적지 않으면 구글로 가입하신 분이
  *   비밀번호 찾기를 누르고 메일을 기다린다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V24";
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V25";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -535,4 +535,18 @@ export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.16";
  * 한 묶음에 이름을 둘 두지 않는다: `/me/state` 의 `현재 확인된 영역`
  * 머리를 걷었다. 그 묶음의 이름은 바로 위 Summary Hero 의 이름표가 이미
  * 들고 있다.
+ */
+
+/*
+ * `V25` 로 올린 까닭. **지원 기록이 한 줄도 저장되지 않고 있었다.**
+ *
+ * `addApplication` 의 `INSERT` 가 `$3` 과 `$10` 을 뒤쪽 조건절에서 한 번
+ * 더 쓰는데, 그 자리에는 형을 끌어올 칸이 없어 PostgreSQL 이 **질의를
+ * 세우는 자리에서** 거절했다(42P08). 값과 무관하게 늘 거절하므로 폼을
+ * 적어 보낸 사람은 **아무 일도 일어나지 않은 단추**를 봤고, 표에는 줄이
+ * 하나도 없었다. 형을 적어 주는 것 말고 아무것도 바꾸지 않았다: 담는 값과
+ * 지우는 기한의 뜻이 그대로다.
+ *
+ * **화면에 서는 글자는 한 줄도 바뀌지 않았다.** 문장 판본을 올리지 않는
+ * 것이 그 까닭이다.
  */
