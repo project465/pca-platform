@@ -129,8 +129,25 @@ try {
     /* ── 다른 학년도로 가는 되돌림(규격 §4) ───────────────── */
     if (otherCats.length) {
       const y = otherCats[0].catalog_year;
-      const link = page.locator(`a[href*="y=${y}"]`);
-      ok(`${tag} 다른 학년도로 가는 줄이 있다`, await link.count() > 0);
+      /* **줄이 있는가와 눌러서 바뀌는가는 다른 질문이다.** 되돌림을
+         기억해 두려고 폼으로 두었으므로 링크가 아니라 단추를 찾고,
+         찾은 뒤에는 실제로 눌러서 그 편제로 가는지 본다 */
+      const swap = page.locator(
+        `form:has(input[name="y"][value="${y}"]) button[type="submit"]`);
+      ok(`${tag} 다른 학년도로 가는 줄이 있다`, await swap.count() > 0);
+      await swap.first().click();
+      await page.waitForURL(new RegExp(`y=${y}`), { timeout: 30000 });
+      await page.waitForLoadState("networkidle");
+      ok(`${tag} 눌러서 다른 학년도 목록으로 간다`,
+        new RegExp(`y=${y}`).test(page.url()), page.url());
+      /* **정정이 기억되는가.** 주소에서 해를 떼고 다시 열어도 그 편제가
+         서야 쪽을 옮길 때마다 다시 고치지 않는다 */
+      await page.goto(`${BASE}/campus/${UNI}/majors`, { waitUntil: "networkidle" });
+      const kept = await tileNames(page);
+      ok(`${tag} 고쳐 고른 학년도가 기억된다`,
+        otherOnly.some((n) => kept.includes(n))
+        && !baseOnly.some((n) => kept.includes(n)),
+        kept.slice(0, 3).join(" "));
       const r = await page.goto(`${BASE}/campus/${UNI}/majors?y=${y}`,
         { waitUntil: "networkidle" });
       ok(`${tag} 다른 학년도 목록이 열린다`, r?.status() === 200, String(r?.status()));
@@ -147,6 +164,9 @@ try {
     }
 
     /* ── 준비 중 학과 칸이 링크가 아니다 ───────────────────── */
+    /* 기억해 둔 정정을 지우고 기본 편제로 돌아간다. 지우지 않으면 아래
+       걸음이 **앞 걸음이 남긴 상태**를 재게 된다 */
+    await ctx.clearCookies();
     await page.goto(`${BASE}/campus/${UNI}/majors`, { waitUntil: "networkidle" });
     const offs = await page.evaluate(() => {
       const out = [];

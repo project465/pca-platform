@@ -103,6 +103,7 @@ async function main(): Promise<void> {
         {
           catalog_code: "ZZ_CUR", catalog_year: 2026, label: "확인용 재학생",
           status: "ACTIVE", effective_from: "2026-03-01", effective_to: null,
+          default_for_unknown: true,
           ...zzSrc,
           colleges: zzCollege([{
             code: "ZZ26_FAC", name: "확인용 학부", kind: "faculty",
@@ -147,8 +148,11 @@ async function main(): Promise<void> {
     const curText = await page.evaluate(() => document.body.innerText);
     ok("기본 목록에 다음 학년도 학과가 섞이지 않는다",
       !curText.includes(NEXT_NAME));
-    ok("다른 학년도로 가는 줄이 있다",
-      await page.locator('a[href*="y=2027"]').count() > 0);
+    /* 되돌림은 링크가 아니라 폼이다. **고친 학년도를 기억해 두려는
+       자리**라, 링크로 두면 주소를 벗어나는 순간 정정이 사라진다 */
+    ok("다른 학년도로 가는 줄이 있다", await page.locator(
+      'form:has(input[name="y"][value="2027"]) button[type="submit"]')
+      .count() > 0);
 
     /* ── 다음 학년도 구조로 되돌아간다(규격 §4) ─────────────── */
     await page.goto(`${BASE}/campus/zztest/majors?y=2027`,

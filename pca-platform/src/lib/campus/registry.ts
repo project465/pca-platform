@@ -26,8 +26,9 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
-  CONTENT_DIR, coresForMarket, registry as coreRegistry,
-  specializationAuthored, specializationOf, type CoreEntry,
+  CONTENT_DIR, coresForMarket, registry as coreRegistry, hasCoreFile,
+  specializationAuthored, specializationOf,
+  type CoreEntry, type CoreFile,
 } from "@/lib/me-v3/core-registry";
 
 /** 학생 화면에 서는 상태. **둘뿐이다** */
@@ -104,6 +105,15 @@ export type CampusCatalog = {
   verified_at: string | null;
   verification: "VERIFIED" | "OFFICIAL_PAGE_UNREACHABLE" | "OWNER_DICTATED";
   verification_note?: string;
+  /**
+   * 어느 Catalog 인지 모르는 사람에게 보여 줄 자리인가(규격 작업 2).
+   *
+   * **학교마다 정확히 하나다.** 날짜로 정하지 않는 까닭은, 학년도가
+   * 바뀌는 날 기본값이 저절로 넘어가면 그날 재학생이 자기 학과가 없는
+   * 목록을 보기 때문이다. 재학생과 신입생은 같은 날 둘 다 재학 중이라
+   * `ACTIVE` 하나로 가를 수 없다.
+   */
+  default_for_unknown?: boolean;
   colleges: CampusCollege[];
 };
 
@@ -192,15 +202,21 @@ export function catalogStatusAt(
  *
  * 쓰는 사람이 압도적으로 재학생이라, 모르면 그쪽이다. 아직 시작하지 않은
  * 구조를 기본으로 두면 지금 다니는 학생이 자기 학과를 못 찾는다.
+ *
+ * **날짜를 읽지 않는다**(규격 작업 2). 2027년 3월 1일이 되는 날 기본값이
+ * 저절로 넘어가면, 그날 재학생이 자기 학과가 없는 목록을 보고 이 학교가
+ * 들어 있지 않은 줄로 읽는다. 재학생과 신입생은 **같은 날 둘 다 재학
+ * 중**이라 하나의 `ACTIVE` 로 가를 수 없다. 그래서 기본값은 등록부가
+ * 적어 둔 `default_for_unknown` 한 칸이 들고, 학년도가 바뀌는 일은
+ * `catalogStatusAt` 의 어긋남으로 **검사에서** 드러난다.
  */
 export function defaultCatalog(u: CampusUniversity): CampusCatalog {
   const cats = catalogsOf(u);
-  const active = cats.filter((c) => c.status === "ACTIVE")
-    .sort((a, b) => b.catalog_year - a.catalog_year);
-  if (active.length) return active[0];
-  const future = cats.filter((c) => c.status === "FUTURE")
-    .sort((a, b) => a.catalog_year - b.catalog_year);
-  return future[0] ?? cats[0];
+  return cats.find((c) => c.default_for_unknown)
+    /* 적어 두지 않았으면 가장 이른 해로 간다. **날짜를 읽지 않는 것이
+       여기서도 요지다**: 적어 두지 않은 등록부에서도 기본값이 해마다
+       움직이지 않아야 한다 */
+    ?? [...cats].sort((a, b) => a.catalog_year - b.catalog_year)[0];
 }
 
 /**
@@ -456,6 +472,34 @@ export function replacesOf(u: CampusUniversity, leaf: CampusUnit): CampusLeaf[] 
   return (leaf.replaces ?? [])
     .map((c) => findLeaf(u, c))
     .filter((r): r is CampusLeaf => r !== null);
+}
+
+/**
+ * 그 자리가 어디까지 왔는가. **넷으로 가른다**(규격 작업 3).
+ *
+ * `CATALOG_ONLY`      등록만 돼 있다. Core 가 붙지 않았거나 고를 자리가 아니다
+ * `CORE_LINKED`       Core 는 붙었는데 갈래가 모자라거나 아직 열리지 않았다
+ * `ASSESSMENT_READY`  지금 응시할 수 있다
+ * `RESULT_READY`      응시한 뒤 결과지까지 나온다
+ *
+ * **등록과 응시 가능을 한 칸에 담지 않는다.** 담으면 `등록했다` 가
+ * `검사가 된다` 로 읽히고, 그 읽기를 믿은 학생이 빈 검사를 만난다.
+ */
+export type CampusReadiness =
+  | "CATALOG_ONLY" | "CORE_LINKED" | "ASSESSMENT_READY" | "RESULT_READY";
+
+export function readinessOf(
+  u: CampusUniversity, row: CampusLeaf, dir = CONTENT_DIR,
+): CampusReadiness {
+  const core = coreOf(row.leaf, dir);
+  if (!core || row.leaf.routing_only) return "CATALOG_ONLY";
+  if (statusOf(u, row, dir) !== "READY") return "CORE_LINKED";
+  /* 결과지는 Core 의 네 파일 위에 선다. 하나라도 없으면 응시는 되고
+     결과가 안 나오는 자리가 되는데, **그 자리를 `되는 것` 으로 적지
+     않는다** */
+  const files = coreRegistry(dir).contract.required_files ?? [];
+  const whole = files.every((k) => hasCoreFile(core.code, k as CoreFile, dir));
+  return whole ? "RESULT_READY" : "ASSESSMENT_READY";
 }
 
 /**

@@ -58,3 +58,19 @@
   margin: 0 0 18px; font-size: var(--ui-t-body); line-height: 1.75;
   color: var(--sf-ink-2); max-width: 60ch;
 }
+
+/*
+ * 다른 학년도 구조로 되돌아가는 줄.
+ *
+ * **단추이지만 줄로 읽힌다.** 고르는 걸음을 하나 더 두지 않으려는 자리라
+ * 단추처럼 서면 그 자리에서 또 고르게 된다. 단추로 만든 까닭은 고른
+ * 학년도를 **기억해 두기 위해서**다: 링크로 두면 주소를 벗어나는 순간
+ * 정정이 사라지고, 같은 사람이 쪽을 옮길 때마다 다시 고쳐야 한다.
+ */
+.cm-cmp-swap {
+  background: none; border: 0; padding: 0; margin: 0;
+  font: inherit; color: var(--sf-accent-ink);
+  text-decoration: underline; text-underline-offset: 2px; cursor: pointer;
+}
+.cm-cmp-swap:hover { text-decoration: none; }
+.cm-cmp-swap:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2px; }

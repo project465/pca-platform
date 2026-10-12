@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import "../../../surface.css";
 import "../../campus.css";
@@ -8,6 +7,7 @@ import {
   type CampusLeaf, type CampusUnit, type CampusUniversity,
 } from "@/lib/campus/registry";
 import { pickCatalog } from "@/lib/campus/pick";
+import { rememberCatalog } from "../../actions";
 import { CmHead } from "../../../me/shell";
 import { PickCard, PickGrid, SectionHeader } from "../../../me/ui";
 import { CampusShell } from "../../shell";
@@ -195,19 +195,32 @@ export default async function CampusMajors({ params, searchParams }: Params) {
         );
       })}
 
+      {/**
+        * 지금 어느 편제를 보고 있는지 한 줄로 적고, **그 자리에서 고칠 수
+        * 있게 둔다**(규격 작업 2). 고르는 걸음을 하나 더 만들지 않는다:
+        * 목록은 이미 서 있고 이 줄은 자기 학과를 못 찾은 사람만 쓴다.
+        *
+        * **`p` 안에 `form` 을 두지 않는다.** 브라우저가 그것을 밖으로
+        * 끌어내고, 서버가 보낸 것과 브라우저가 세운 것이 달라진다. 이
+        * 저장소에서 같은 탈이 한 번 났다.
+        */}
       {others.length ? (
-        <p className="cm-note" style={{ marginTop: 22 }}>
-          {cat.label} 기준으로 보여드리고 있습니다. 찾는 학과가 없으면{" "}
+        <div className="cm-note" style={{ marginTop: 22 }}>
+          {cat.label} 기준 학과 구조를 보여드리고 있습니다. 찾는 학과가 없으면{" "}
           {others.map((c, i) => (
             <span key={c.catalog_year}>
               {i ? ", " : ""}
-              <Link href={`/campus/${code}/majors?y=${c.catalog_year}`}>
-                {c.label} 학과 구조
-              </Link>
+              <form action={rememberCatalog} style={{ display: "inline" }}>
+                <input type="hidden" name="u" value={u.university_code} />
+                <input type="hidden" name="y" value={c.catalog_year} />
+                <button type="submit" className="cm-cmp-swap">
+                  {c.label} 학과 구조
+                </button>
+              </form>
             </span>
           ))}
-          에서 찾아보실 수 있습니다.
-        </p>
+          로 바꿔 보실 수 있습니다.
+        </div>
       ) : null}
     </CampusShell>
   );

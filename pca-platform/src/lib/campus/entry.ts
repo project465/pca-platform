@@ -65,3 +65,37 @@ export async function readCampusEntry(): Promise<
     department_name: found.leaf.name,
   };
 }
+
+/**
+ * 고쳐 고른 학년도를 기억하는 자리(규격 작업 2).
+ *
+ * **고르는 걸음을 만들지 않는다.** 목록은 이미 서 있고, 이 값은 자기
+ * 학과를 못 찾아 다른 학년도 구조로 되돌아간 사람이 남긴 정정이다.
+ * 기억해 두지 않으면 쪽을 옮길 때마다 같은 정정을 다시 해야 한다.
+ *
+ * **담는 것은 학교와 해 둘뿐이다.** 어느 Catalog 인지는 서버가 등록부에서
+ * 읽고, 없는 해가 들어오면 그 값은 버려진다. 학과도 Core 도 담지 않는다.
+ */
+const YEAR_NAME = "cm_campus_year";
+const YEAR_TTL = 60 * 60 * 24 * 180;
+
+export async function setCatalogChoice(
+  universityCode: string, year: number,
+): Promise<void> {
+  const jar = await cookies();
+  jar.set(YEAR_NAME, `${universityCode}:${year}`, {
+    httpOnly: true, sameSite: "lax", path: "/", maxAge: YEAR_TTL,
+    secure: process.env.NODE_ENV === "production",
+  });
+}
+
+/** 그 학교에 대해 남긴 정정. 다른 학교의 값이면 없는 것으로 본다 */
+export async function readCatalogChoice(
+  universityCode: string,
+): Promise<number | null> {
+  const raw = (await cookies()).get(YEAR_NAME)?.value ?? "";
+  const [uc, y] = raw.split(":");
+  if (!uc || uc !== universityCode) return null;
+  const n = Number(y);
+  return Number.isInteger(n) ? n : null;
+}

@@ -2,8 +2,8 @@
 
 import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/session";
-import { setCampusEntry } from "@/lib/campus/entry";
-import { findLeaf, statusOf, university } from "@/lib/campus/registry";
+import { setCampusEntry, setCatalogChoice } from "@/lib/campus/entry";
+import { catalogByYear, findLeaf, statusOf, university } from "@/lib/campus/registry";
 
 /**
  * 고른 학과를 들고 **공통 검사 시작 화면**으로 보낸다.
@@ -39,4 +39,26 @@ export async function startFromCampus(form: FormData): Promise<void> {
   const who = await currentUser();
   if (!who) redirect(`/login?next=${encodeURIComponent("/v3/start")}`);
   redirect("/v3/start");
+}
+
+/**
+ * 다른 학년도 구조로 되돌아가고 **그 정정을 기억한다**(규격 작업 2).
+ *
+ * 링크 하나로 두면 주소를 벗어나는 순간 정정이 사라지고, 같은 사람이
+ * 쪽을 옮길 때마다 다시 고쳐야 한다. 고르는 걸음을 더하지 않으려고 둔
+ * 되돌림이 그 자리에서 걸음 하나가 되는 셈이다.
+ *
+ * **보내는 칸이 둘뿐이다.** 학교와 해이고, 어느 Catalog 인지는 서버가
+ * 등록부에서 읽는다. 등록부에 없는 해는 버리고 기본 구조로 보낸다.
+ */
+export async function rememberCatalog(form: FormData): Promise<void> {
+  const uc = String(form.get("u") ?? "");
+  const year = Number(form.get("y") ?? "");
+  const u = university(uc);
+  if (!u) redirect("/cores");
+  const code = u.university_code.toLowerCase();
+  const cat = Number.isInteger(year) ? catalogByYear(u, year) : null;
+  if (!cat) redirect(`/campus/${code}/majors`);
+  await setCatalogChoice(u.university_code, cat.catalog_year);
+  redirect(`/campus/${code}/majors?y=${cat.catalog_year}`);
 }

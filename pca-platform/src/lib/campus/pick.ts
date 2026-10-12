@@ -5,6 +5,7 @@
  * 그날 학생은 첫 화면에서 본 단과대학을 목록에서 찾지 못한다.
  */
 import { currentUser } from "@/lib/session";
+import { readCatalogChoice } from "./entry";
 import { admissionYearOf } from "./student";
 import {
   resolveCatalog, type CampusCatalog, type CampusUniversity,
@@ -24,7 +25,11 @@ export function askedYear(v: string | string[] | undefined): number | null {
 export async function pickCatalog(
   u: CampusUniversity, year: string | string[] | undefined,
 ): Promise<CampusCatalog> {
+  const asked = askedYear(year);
+  /* **사람이 고쳐 고른 것이 끌어낸 값을 이긴다.** 끌어낸 값은 짐작에
+     가깝고, 정정은 그 사람이 자기 학과를 보고 고른 것이다 */
+  const fixed = asked ?? await readCatalogChoice(u.university_code);
   const who = await currentUser();
   const admissionYear = who ? await admissionYearOf(who.id) : null;
-  return resolveCatalog(u, { year: askedYear(year), admissionYear });
+  return resolveCatalog(u, { year: fixed, admissionYear });
 }

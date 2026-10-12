@@ -24,10 +24,12 @@
 import { readFileSync } from "node:fs";
 import { registry as coreRegistry } from "../src/lib/me-v3/core-registry";
 import {
-  allLeaves, campusRegistry, catalogStatusAt, catalogsOf, leavesOf,
-  mappingStatusOf, provenanceOf, replacesOf, statusOf, visible, wave1Of,
+  allLeaves, campusRegistry, catalogStatusAt, catalogsOf, defaultCatalog,
+  leavesOf, mappingStatusOf, provenanceOf, readinessOf, replacesOf,
+  resolveCatalog, statusOf, visible, wave1Of,
   type CampusUnit, type CampusUniversity,
 } from "../src/lib/campus/registry";
+import { academicYear, admissionFrom } from "../src/lib/campus/year";
 
 let pass = 0;
 const bad: string[] = [];
@@ -217,6 +219,100 @@ ok("학교 코드가 겹치지 않는다",
     !missing.length, missing.slice(0, 6).join(" · "));
 }
 
+
+/* ── ②-2 기본 Catalog 가 날짜로 넘어가지 않는가 ───────────────── */
+
+{
+  /**
+   * **기본값을 날짜가 정하면 학년도가 바뀌는 날 저절로 넘어간다**
+   * (규격 작업 2). 그날 재학생이 자기 학과가 없는 목록을 보고, 이 학교가
+   * 들어 있지 않은 줄로 읽는다. 재학생과 신입생은 **같은 날 둘 다 재학
+   * 중**이라 하나의 `ACTIVE` 로 가를 수 없다.
+   */
+  const many: string[] = [];
+  const none: string[] = [];
+  for (const u of unis) {
+    const n = catalogsOf(u).filter((c) => c.default_for_unknown).length;
+    if (n > 1) many.push(u.university_code);
+    if (n === 0) none.push(u.university_code);
+  }
+  ok("학교마다 기본 Catalog 가 하나다", !many.length && !none.length,
+    [...many, ...none].join(" "));
+
+  /* 고르는 코드가 시계를 읽지 않는다. 읽기 시작하면 위의 한 칸이 있으나
+     마나가 된다 */
+  const lib = body(read("src/lib/campus/registry.ts"));
+  const at = lib.indexOf("export function defaultCatalog");
+  const fn = at < 0 ? "" : lib.slice(at, lib.indexOf("\n}", at));
+  ok("기본 Catalog 를 고르는 자리가 시계를 읽지 않는다",
+    Boolean(fn) && !/new Date|Date\.now|catalogStatusAt/.test(fn), fn.slice(0, 80));
+
+  /* 유효기간이 지나도 기본값이 그대로인가. **적어 둔 상태와 따로 간다** */
+  for (const u of unis) {
+    const before = defaultCatalog(u).catalog_code;
+    const later = catalogsOf(u)
+      .map((c) => catalogStatusAt(c, new Date("2030-06-01")));
+    ok(`해가 바뀌어도 기본 Catalog 가 그대로다 — ${u.university_code}`,
+      defaultCatalog(u).catalog_code === before
+      && later.every((x) => x === "ACTIVE" || x === "RETIRED"),
+      later.join(" "));
+  }
+}
+
+/* ── ②-3 학생 유형마다 맞는 Catalog 를 고르는가 ───────────────── */
+
+{
+  /**
+   * 다섯 벌을 세운다(규격 작업 2). **날짜를 넘기지 않는다**: 고르는 식이
+   * 시계를 읽지 않으므로 같은 사람은 어느 날 열어도 같은 목록을 본다.
+   */
+  const u = unis.find((x) => catalogsOf(x).length >= 2);
+  if (u) {
+    const cur = defaultCatalog(u).catalog_code;
+    const next = catalogsOf(u)
+      .filter((c) => c.catalog_code !== cur)
+      .sort((a, b) => a.catalog_year - b.catalog_year)[0];
+    const people: { who: string; hint: Parameters<typeof resolveCatalog>[1];
+      want: string }[] = [
+      { who: "현재 재학생", hint: { admissionYear: defaultCatalog(u).catalog_year },
+        want: cur },
+      { who: "다음 학년도 입학 예정자",
+        hint: { admissionYear: next.catalog_year }, want: next.catalog_code },
+      { who: "다음 학년도 신입생",
+        hint: { admissionYear: next.catalog_year }, want: next.catalog_code },
+      { who: "편입생(앞 학년도 편제로 들어옴)",
+        hint: { admissionYear: defaultCatalog(u).catalog_year - 1 }, want: cur },
+      { who: "소속 정보가 불완전한 학생", hint: {}, want: cur },
+      { who: "스스로 고쳐 고른 학생",
+        hint: { year: next.catalog_year }, want: next.catalog_code },
+    ];
+    for (const p of people) {
+      const got = resolveCatalog(u, p.hint).catalog_code;
+      ok(`맞는 편제를 받는다 — ${p.who} → ${got}`, got === p.want,
+        `${got} ≠ ${p.want}`);
+    }
+    /* 고쳐 고른 것이 끌어낸 값을 이긴다 */
+    const both = resolveCatalog(u,
+      { year: next.catalog_year, admissionYear: defaultCatalog(u).catalog_year });
+    ok("스스로 고친 것이 끌어낸 값을 이긴다",
+      both.catalog_code === next.catalog_code, both.catalog_code);
+    /* 등록부에 없는 해는 **버린다**. 주소를 고쳐도 없는 편제가 서지 않는다 */
+    ok("등록부에 없는 해는 기본 편제로 간다",
+      resolveCatalog(u, { year: 1999 }).catalog_code === cur);
+  }
+
+  /* 학년도가 3월에 바뀐다 */
+  ok("2월에 적힌 줄은 앞 학년도다",
+    academicYear(new Date("2027-02-28")) === 2026
+    && academicYear(new Date("2027-03-01")) === 2027);
+  /* **`grade_year` 는 학년이고 입학년도가 아니다.** 끌어내는 식을 그대로 센다 */
+  ok("올해 적힌 1학년은 올해 입학으로 읽는다", admissionFrom(1, 2027, 2027) === 2027);
+  ok("올해 적힌 3학년은 두 해 전 입학으로 읽는다", admissionFrom(3, 2027, 2027) === 2025);
+  ok("지난 학년도에 적힌 학년은 쓰지 않는다", admissionFrom(1, 2026, 2029) === null);
+  ok("학년이 비어 있으면 쓰지 않는다",
+    admissionFrom(null, 2027, 2027) === null && admissionFrom(0, 2027, 2027) === null);
+}
+
 /* ── ③ Catalog 가 섞이지 않는가 ───────────────────────────────── */
 
 {
@@ -374,6 +470,49 @@ ok("학교 코드가 겹치지 않는다",
     !hard.length, hard.join(" · "));
 }
 
+
+/* ── ⑤-2 어디까지 왔는가를 넷으로 가른다 ──────────────────────── */
+
+{
+  /**
+   * **등록과 응시 가능을 한 칸에 담지 않는다**(규격 작업 3). 담으면
+   * `등록했다` 가 `검사가 된다` 로 읽히고, 그 읽기를 믿은 학생이 빈
+   * 검사를 만난다.
+   */
+  const wrong: string[] = [];
+  const tally: Record<string, number> = {};
+  for (const u of unis) {
+    for (const r of allLeaves(u)) {
+      const st = readinessOf(u, r);
+      tally[st] = (tally[st] ?? 0) + 1;
+      const ready = statusOf(u, r) === "READY";
+      if (ready !== (st === "ASSESSMENT_READY" || st === "RESULT_READY")) {
+        wrong.push(`${r.leaf.code}:${st}`);
+      }
+      /* Core 가 없는 자리가 응시 가능으로 서면 그 학생이 빈 검사를 만난다 */
+      if (st === "CATALOG_ONLY" && ready) wrong.push(`${r.leaf.code}:CORE 없음`);
+    }
+  }
+  ok(`준비 상태와 학생 표시가 어긋나지 않는다 — ${
+    Object.entries(tally).map(([k, v]) => `${k} ${v}`).join(" · ")}`,
+    !wrong.length, wrong.slice(0, 5).join(" "));
+
+  /**
+   * **이름이 비슷하다는 까닭만으로 다른 전공의 자를 붙이지 않는다**
+   * (규격 작업 3). `확인 전` 이 적힌 자리는 Core 를 들지 않는다.
+   */
+  const guessed: string[] = [];
+  for (const u of unis) {
+    for (const { leaf } of allLeaves(u)) {
+      if (leaf.core_code && /확인 전|확인하지 못|후보/.test(leaf.note ?? "")) {
+        guessed.push(leaf.code);
+      }
+    }
+  }
+  ok("확인 전이라고 적은 자리가 Core 를 들지 않는다", !guessed.length,
+    guessed.join(" "));
+}
+
 /* ── ⑥ 학과 이름이 코드에 없는가 ───────────────────────────────── */
 
 {
@@ -506,10 +645,29 @@ ok("학교 코드가 겹치지 않는다",
    */
   const act = body(read("src/app/campus/actions.ts"));
   const ent = body(read("src/lib/campus/entry.ts"));
-  const formKeys = [...act.matchAll(/form\.get\("([^"]+)"\)/g)].map((m) => m[1]);
-  ok(`폼이 보내는 칸이 둘뿐이다 — ${formKeys.join(" ")}`,
-    formKeys.length === 2 && formKeys.includes("u") && formKeys.includes("d"),
-    formKeys.join(" "));
+  /* **함수마다 따로 센다.** 파일 전체에서 세면 자리를 하나 더 두는 날
+     멀쩡한 코드가 걸리고, 거짓 경보를 내는 검사는 그 다음부터 아무도 안
+     본다. 재는 것은 `그 폼이 보내는 칸이 몇인가` 다 */
+  const bodyOf = (name: string): string => {
+    const at = act.indexOf(`function ${name}(`);
+    if (at < 0) return "";
+    const next = act.slice(at + 1).search(/\nexport async function /);
+    return next < 0 ? act.slice(at) : act.slice(at, at + 1 + next);
+  };
+  const keysOf = (name: string) =>
+    [...bodyOf(name).matchAll(/form\.get\("([^"]+)"\)/g)].map((m) => m[1]);
+  const startKeys = keysOf("startFromCampus");
+  ok(`검사 시작 폼이 보내는 칸이 둘뿐이다 — ${startKeys.join(" ")}`,
+    startKeys.length === 2 && startKeys.includes("u") && startKeys.includes("d"),
+    startKeys.join(" "));
+  /* 학년도를 고쳐 고르는 폼도 둘뿐이다. **Catalog 코드를 보내지 않는다**:
+     보내게 두면 등록부에 없는 자리를 가리키는 길이 생긴다 */
+  const swapKeys = keysOf("rememberCatalog");
+  ok(`학년도 정정 폼이 보내는 칸이 둘뿐이다 — ${swapKeys.join(" ")}`,
+    swapKeys.length === 2 && swapKeys.includes("u") && swapKeys.includes("y"),
+    swapKeys.join(" "));
+  ok("학년도 정정이 등록부로 해를 맞춰 본다",
+    bodyOf("rememberCatalog").includes("catalogByYear"));
   ok("시작 처리가 등록부로 자리를 맞춰 본다",
     act.includes("findLeaf") && act.includes("statusOf"));
   ok("쿠키를 읽을 때 등록부로 다시 맞춰 본다",
@@ -603,6 +761,12 @@ for (const u of unis) {
       + ` — 단과대학 ${cat.colleges.length} · 학부와 학과 ${units}`
       + ` · 전공과 트랙 ${majors} · 고르는 자리 ${rows.length}`
       + ` · 옮겨 적은 자리 ${carried}`);
+    const r = (k: string) =>
+      rows.filter((x) => readinessOf(u, x) === k).length;
+    console.log(`      등록만 ${r("CATALOG_ONLY")}`
+      + ` · Core 연결 ${r("CORE_LINKED")}`
+      + ` · 응시 가능 ${r("ASSESSMENT_READY")}`
+      + ` · 결과지까지 ${r("RESULT_READY")}`);
     console.log(`      EXACT ${n("EXACT")}`
       + ` · 갈래 작성 필요 ${n("SPECIALIZATION_REQUIRED")}`
       + ` · Core 제작 필요 ${n("CORE_REQUIRED")}`
