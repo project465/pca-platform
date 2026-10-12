@@ -48,7 +48,7 @@ export default async function CampusDepartment({ params }: Params) {
   if (!found) notFound();
   const { leaf } = found;
   const code = u.university_code.toLowerCase();
-  const ready = statusOf(u, leaf) === "READY";
+  const ready = statusOf(u, found) === "READY";
   const core = coreOf(leaf);
   const spec = specializationName(leaf);
   const domains = ready && leaf.core_code ? domainNames(leaf.core_code) : [];
@@ -56,6 +56,10 @@ export default async function CampusDepartment({ params }: Params) {
      설 수 있고, 그때 어느 쪽인지는 학부가 가른다 */
   const where = found.unit.code === leaf.code
     ? found.college.name : `${found.college.name} · ${found.unit.name}`;
+  /* **돌아가는 자리를 그 자리의 학년도 구조로 둔다**(규격 §3·§4). 기본
+     구조로 돌려보내면 2027 자리에서 들어온 사람이 자기 목록을 다시 찾아야
+     한다 */
+  const back = `/campus/${code}/majors?y=${found.catalog.catalog_year}`;
 
   return (
     <CampusShell u={u}>
@@ -89,7 +93,7 @@ export default async function CampusDepartment({ params }: Params) {
             <button type="submit" className="cm-btn is-primary">
               이 전공으로 검사 시작
             </button>
-            <Link className="cm-btn" href={`/campus/${code}/majors`}>다른 전공 선택</Link>
+            <Link className="cm-btn" href={back}>다른 전공 선택</Link>
           </form>
 
           <p className="cm-note" style={{ marginTop: 16 }}>
@@ -106,7 +110,7 @@ export default async function CampusDepartment({ params }: Params) {
                 : "어느 전공 검사로 이을지 학교와 확인하고 있습니다."}
           </p>
           <div className="cm-acts" style={{ marginTop: 18 }}>
-            <Link className="cm-btn is-primary" href={`/campus/${code}/majors`}>
+            <Link className="cm-btn is-primary" href={back}>
               다른 전공 선택
             </Link>
           </div>

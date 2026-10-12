@@ -56,7 +56,7 @@ export async function readCampusEntry(): Promise<
   if (!found) return null;
   /* **상태를 여기서 다시 본다.** 고른 뒤에 Core 를 닫는 일이 있고, 그때
      들고 있던 쿠키로 빈 검사가 열리면 안 된다 */
-  if (statusOf(u, found.leaf) !== "READY") return null;
+  if (statusOf(u, found) !== "READY") return null;
   const ctx = contextOf(u, found);
   if (!ctx) return null;
   return {

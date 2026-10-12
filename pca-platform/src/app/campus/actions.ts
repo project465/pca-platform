@@ -25,8 +25,11 @@ export async function startFromCampus(form: FormData): Promise<void> {
   const code = u.university_code.toLowerCase();
   const found = findLeaf(u, dc);
   /* 준비 중인 학과는 주소를 손으로 쳐도 들어가지 않는다(규격 §5 · §9) */
-  if (!found || statusOf(u, found.leaf) !== "READY") {
-    redirect(`/campus/${code}/majors`);
+  if (!found || statusOf(u, found) !== "READY") {
+    /* 되돌려 보낼 자리를 그 자리의 학년도 구조로 둔다. 찾지 못한 코드면
+       기본 구조로 간다 */
+    redirect(`/campus/${code}/majors${found
+      ? `?y=${found.catalog.catalog_year}` : ""}`);
   }
 
   await setCampusEntry(u.university_code, found.leaf.code);

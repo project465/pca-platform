@@ -6,7 +6,7 @@
  * 일이 저장되는가**는 다른 질문이라, 준비 중인 학과를 막는 자리를 화면과
  * 서버 양쪽에서 본다.
  *
- * 세는 것 일곱.
+ * 세는 것 아홉.
  *
  *   ① 세 쪽이 200 으로 열린다
  *   ② 1440 과 390 에서 가로로 밀리지 않는다
@@ -15,6 +15,11 @@
  *   ⑤ 준비 중 학과로 보낸 폼이 학과 목록으로 돌아온다
  *   ⑥ 안쪽 코드가 화면에 0건
  *   ⑦ 짙은 단추가 한 화면에 하나다
+ *   ⑧ **한 화면에 한 Catalog 만 선다** — 다른 해에만 있는 학과가 섞이지 않는다
+ *   ⑨ **다른 학년도로 가는 되돌림이 있다** — 개편으로 이름이 달라진 학생의 길
+ *
+ * **학과 이름을 이 파일에 적지 않는다.** 등록부에서 읽어 센다: 적어 두면
+ * 학교가 이름을 바꾸는 날 이 검사가 멀쩡한 화면을 걸고 거짓 경보를 낸다.
  *
  *   UI_BASE=http://127.0.0.1:3100 npm run campus:shots
  */
@@ -46,7 +51,43 @@ const ok = (what, cond, saw = "") => {
   else { bad.push(what); console.log(`  걸림  ${what} ${saw}`); }
 };
 
-/** 손님 화면에 서면 안 되는 안쪽 코드 */
+/* ── 등록부에서 셀 거리를 읽는다 ──────────────────────────────── */
+
+const REG = JSON.parse(readFileSync(
+  "sites/pca-platform/content/campus-universities.json", "utf8"));
+const uni = REG.universities.find((u) => u.university_code.toLowerCase() === UNI);
+if (!uni) { console.error(`등록부에 ${UNI} 가 없습니다.`); process.exit(1); }
+
+const leaves = (cat) => cat.colleges.flatMap((c) => c.units.flatMap(
+  (x) => (x.majors?.length ? x.majors : [x])));
+const baseCat = uni.catalogs.find((c) => c.status === "ACTIVE") ?? uni.catalogs[0];
+const otherCats = uni.catalogs.filter((c) => c !== baseCat && c.status !== "RETIRED");
+
+/**
+ * 그 Catalog 에만 있는 자리의 이름. **Catalog 가 섞이는지 재는 자.**
+ *
+ * **쪽의 글자를 통째로 훑어 찾지 않는다.** 2027 의 `컴퓨터공학` 은 현행
+ * `컴퓨터공학전공` 의 앞토막이라, 글자로 찾으면 멀쩡한 목록이 섞인 것으로
+ * 걸린다. 그래서 세는 자리는 **칸의 이름 그대로**다.
+ */
+const onlyIn = (cat, others) => {
+  const elsewhere = new Set(others.flatMap((c) => leaves(c).map((l) => l.name)));
+  return leaves(cat).filter((l) => l.student_visible !== false
+    && !elsewhere.has(l.name)).map((l) => l.name);
+};
+const baseOnly = onlyIn(baseCat, otherCats);
+const otherOnly = otherCats.length ? onlyIn(otherCats[0], [baseCat]) : [];
+
+/** Core 를 아직 들지 않은 자리. **반드시 `준비 중` 이다** */
+const prepCode = process.env.PREP_CODE
+  || leaves(baseCat).find((l) => !l.core_code && !l.majors)?.code;
+
+/** 손님 화면에 서면 안 되는 안쪽 코드. 등록부의 코드까지 함께 센다 */
+const CODES = [
+  uni.university_code,
+  ...uni.catalogs.map((c) => c.catalog_code),
+  ...uni.catalogs.flatMap((c) => leaves(c).map((l) => l.code)),
+];
 const INNER = /\b(ME_CORE_V3|[A-Z]{2,6}_CORE_V\d|SPEC_[A-Z_]+|TD\d\d|FOUNDATION|READY_FOR_REVIEW)\b/;
 
 const WIDTHS = [[1440, 900, "desktop"], [390, 844, "mobile"]];
@@ -67,13 +108,46 @@ try {
 
     /* 첫 화면의 한 가지를 눌러 학과 목록으로 간다 */
     await page.getByRole("link", { name: "학과 선택하기" }).click();
-    await page.waitForURL(/\/majors$/);
+    await page.waitForURL(/\/majors/);
     await page.waitForLoadState("networkidle");
-    ok(`${tag} 학과 목록으로 간다`, /\/majors$/.test(page.url()), page.url());
+    ok(`${tag} 학과 목록으로 간다`, /\/majors/.test(page.url()), page.url());
     await page.screenshot({ path: join(dir, "02-majors.png"), fullPage: true });
     await shape(page, `${tag} 학과 목록`);
 
+    /* ── 한 화면에 한 Catalog 만 선다(규격 §3) ────────────── */
+    {
+      const tiles = await tileNames(page);
+      const mixed = otherOnly.filter((n) => tiles.includes(n));
+      ok(`${tag} 기본 목록에 다른 학년도 학과가 섞이지 않는다`
+        + ` — 그쪽에만 있는 이름 ${otherOnly.length}개`,
+        !mixed.length, mixed.slice(0, 4).join(" "));
+      const mine = baseOnly.filter((n) => tiles.includes(n));
+      ok(`${tag} 기본 목록에 이 학년도 학과가 선다`, mine.length > 0,
+        `${mine.length}/${baseOnly.length}`);
+    }
+
+    /* ── 다른 학년도로 가는 되돌림(규격 §4) ───────────────── */
+    if (otherCats.length) {
+      const y = otherCats[0].catalog_year;
+      const link = page.locator(`a[href*="y=${y}"]`);
+      ok(`${tag} 다른 학년도로 가는 줄이 있다`, await link.count() > 0);
+      const r = await page.goto(`${BASE}/campus/${UNI}/majors?y=${y}`,
+        { waitUntil: "networkidle" });
+      ok(`${tag} 다른 학년도 목록이 열린다`, r?.status() === 200, String(r?.status()));
+      await page.screenshot({
+        path: join(dir, "04-other-catalog.png"), fullPage: true });
+      const tiles = await tileNames(page);
+      const mixed = baseOnly.filter((n) => tiles.includes(n));
+      ok(`${tag} 다른 학년도 목록에 기본 학년도 학과가 섞이지 않는다`,
+        !mixed.length, mixed.slice(0, 4).join(" "));
+      const mine = otherOnly.filter((n) => tiles.includes(n));
+      ok(`${tag} 다른 학년도 목록에 그쪽 학과가 선다`, mine.length > 0,
+        `${mine.length}/${otherOnly.length}`);
+      await shape(page, `${tag} 다른 학년도 목록`);
+    }
+
     /* ── 준비 중 학과 칸이 링크가 아니다 ───────────────────── */
+    await page.goto(`${BASE}/campus/${UNI}/majors`, { waitUntil: "networkidle" });
     const offs = await page.evaluate(() => {
       const out = [];
       for (const el of document.querySelectorAll(".cm-pc")) {
@@ -94,8 +168,7 @@ try {
       [...states].join(" "));
 
     /* ── 준비 중 학과 주소를 손으로 친다 ───────────────────── */
-    const code = process.env.PREP_CODE || "PCU_BATTERY";
-    const r3 = await page.goto(`${BASE}/campus/${UNI}/d/${code}`,
+    const r3 = await page.goto(`${BASE}/campus/${UNI}/d/${prepCode}`,
       { waitUntil: "networkidle" });
     ok(`${tag} 준비 중 학과 상세가 열린다(404 가 아니다)`, r3?.status() === 200,
       String(r3?.status()));
@@ -115,8 +188,8 @@ try {
     /* 폼을 그 자리에서 세워 보낸다. **화면에 단추가 없는 것과 서버가
        거절하는 것은 다른 일이다** */
     await page.goto(`${BASE}/campus/${UNI}/majors`, { waitUntil: "networkidle" });
-    const res = await page.request.post(`${BASE}/campus/${UNI}/d/PCU_BATTERY`, {
-      form: { u: "PCU", d: "PCU_BATTERY" },
+    const res = await page.request.post(`${BASE}/campus/${UNI}/d/${prepCode}`, {
+      form: { u: uni.university_code, d: prepCode },
       headers: { "next-action": "x" },
       maxRedirects: 0,
     }).catch(() => null);
@@ -130,6 +203,13 @@ try {
   }
 } finally {
   await browser.close();
+}
+
+/** 목록에 선 칸의 이름 그대로 */
+async function tileNames(page) {
+  return page.evaluate(() =>
+    [...document.querySelectorAll(".cm-pc .cm-pc-h > b")]
+      .map((e) => e.textContent?.trim() ?? ""));
 }
 
 /** 가로 넘침 · 안쪽 코드 · 짙은 단추 */
@@ -151,7 +231,9 @@ async function shape(page, what) {
   });
   ok(`${what} 가로로 밀리지 않는다`, v.over <= 1, `${v.over}px`);
   const m = v.text.match(INNER);
-  ok(`${what} 안쪽 코드가 0건`, !m, m ? m[0] : "");
+  const codes = CODES.filter((c) => new RegExp(`\\b${c}\\b`).test(v.text));
+  ok(`${what} 안쪽 코드가 0건`, !m && !codes.length,
+    [m ? m[0] : "", ...codes].filter(Boolean).join(" "));
   ok(`${what} 짙은 단추가 하나다`, v.prim <= 1, String(v.prim));
 }
 

@@ -5,7 +5,7 @@ import { resolveLang } from "@/lib/locale-server";
 import { orgsOf, MIN_CELL } from "@/lib/org";
 import { campusV3, type Cell } from "@/lib/me-v3/campus";
 import { core as coreEntry } from "@/lib/me-v3/core-registry";
-import { facultyOf, leavesOf, university } from "@/lib/campus/registry";
+import { allLeaves, facultyOf, university } from "@/lib/campus/registry";
 import { BRAND, toLang2 } from "@/lib/surface-text";
 import { Shell, PageHead, Section } from "@/components/sf/shell";
 import { NAV_CAMPUS } from "@/components/sf/nav";
@@ -29,11 +29,14 @@ function campusNames(universityCode: string | null): {
 } {
   const u = universityCode ? university(universityCode) : null;
   if (!u) return { college: (k) => k, dept: (k) => k };
-  const col = new Map(u.colleges.map((c) => [c.code, c.name]));
+  /* **Catalog 를 가로질러 읽는다.** 응시 줄에 적힌 코드가 어느 해 구조의
+     자리인지는 코드 앞머리가 들고 있고, 담당자가 보는 것은 이름이다 */
+  const col = new Map(u.catalogs.flatMap((c) =>
+    c.colleges.map((x) => [x.code, x.name] as [string, string])));
   /* **학부가 있으면 함께 적는다**(규격 §12). 같은 이름의 전공이 다른
      학부에 설 수 있고, 집계에서 그 둘이 한 줄로 보이면 안 된다. 굴림은
      등록부가 하고 DB 에 칸을 더하지 않는다 */
-  const dep = new Map(leavesOf(u).map((r) => {
+  const dep = new Map(allLeaves(u).map((r) => {
     const f = facultyOf(u, r.leaf.code);
     return [r.leaf.code, f ? `${f.name} · ${r.leaf.name}` : r.leaf.name];
   }));

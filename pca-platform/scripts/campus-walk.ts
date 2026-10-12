@@ -1,25 +1,29 @@
 /**
  * **검사 가능한 학과의 길을 끝까지 밟는다.**
  *
- * 지금 배재대 학과 열 개가 전부 `준비 중` 이다(열린 Core 가 기계공학
- * 하나뿐이고 지시문이 준 학과에 기계공학 계열이 없다). 그래서 등록부에
- * **시험용 학교 하나**를 넣고 그 길을 밟는다. 끝나면 되돌린다.
+ * 지금 배재대의 고르는 자리가 두 Catalog 모두 `준비 중` 이다(열린 Core 가
+ * 기계공학 하나뿐이고 사업주가 적어 준 학과에 기계공학 계열이 없다).
+ * 그래서 등록부에 **시험용 학교 하나**를 넣고 그 길을 밟는다. 끝나면
+ * 되돌린다.
  *
- * 학교가 하나라도 열리면 이 검사가 그 학교를 그대로 밟게 바꾼다. 그때까지
- * 시험용 학교가 서 있는 까닭은, **열리는 날 처음 밟아 보면 그날 고칠
- * 것이 생기기 때문**이다.
+ * 시험용 학교에 Catalog 를 **두 벌** 둔다. 이 회차가 세우는 구조가
+ * `학년도별 Catalog` 라, 한 벌만 두면 **섞이지 않는가**를 재는 자가 없다.
  *
- * 세는 것 열.
+ * 세는 것 열넷.
  *
+ *   기본 목록이 재학생 구조만 세운다 · 다른 학년도 구조로 되돌아갈 수
+ *   있다 · 그쪽 목록에 이쪽 학과가 섞이지 않는다 · 다음 학년도 자리로도
+ *   응시가 열리고 **응시 줄의 코드가 어느 해 구조인지 그대로 든다** ·
  *   검사 가능 학과가 누를 수 있는 칸으로 선다 · 학과 상세가 영역을 적는다
  *   · 공통 시작 화면으로 간다 · 그 화면이 학교와 학과를 적는다 · 응시가
- *   열린다 · 응시 줄에 맥락이 적힌다 · 쿠키가 남지 않는다 · 일반 진입에는
- *   학교가 서지 않는다 · 일반 응시는 학교 칸이 비어 있다
+ *   열린다 · 응시 줄에 맥락이 적힌다 · 쿠키가 남지 않는다 · 고친 쿠키가
+ *   맥락을 적지 못한다 · 일반 진입에는 학교가 서지 않는다 · 일반 응시는
+ *   학교 칸이 비어 있다
  *
  *   UI_BASE=http://127.0.0.1:3100 npm run campus:walk
  */
 import { copyFileSync, readFileSync, writeFileSync, unlinkSync } from "node:fs";
-import { chromium } from "playwright";
+import { chromium, type BrowserContext, type Page } from "playwright";
 import { BASE, loadEnv, login, makeStudent } from "./_loop-fixture";
 import { query, queryOne } from "../src/lib/db";
 
@@ -34,47 +38,102 @@ const REGS = [
 ];
 const REG = REGS[0];
 
+/** 시험용 학교의 두 Catalog. 이름과 코드가 실제 학교와 겹치지 않는다 */
+const CUR_NAME = "확인용 기계공학전공";
+const NEXT_NAME = "확인용 기계융합공학과";
+
 let pass = 0; const bad: string[] = [];
 const ok = (w: string, c: boolean, saw = "") => {
   if (c) { pass++; console.log(`  통과  ${w}`); }
   else { bad.push(w); console.log(`  걸림  ${w} ${saw}`); }
 };
 
+/** 그 자리에서 응시를 열고 적힌 줄을 돌려준다 */
+async function startAttempt(page: Page, path: string, userId: string): Promise<{
+  core_code: string; university_code: string | null; college_code: string | null;
+  department_code: string | null; specialization_code: string | null;
+} | null> {
+  await page.goto(`${BASE}${path}`, { waitUntil: "networkidle" });
+  await page.getByRole("button", { name: "이 전공으로 검사 시작" }).click();
+  await page.waitForURL(/\/v3\/start/, { timeout: 30000 });
+  await page.waitForLoadState("networkidle");
+  await page.getByText("학부", { exact: true }).click();
+  await page.getByRole("button", { name: "검사 시작" }).click();
+  await page.waitForURL(/\/v3\/\d+/, { timeout: 30000 });
+  return queryOne(`SELECT core_code, university_code, college_code,
+                          department_code, specialization_code
+                     FROM v3_attempts WHERE user_id = $1
+                    ORDER BY started_at DESC LIMIT 1`, [userId]);
+}
+
 async function main(): Promise<void> {
   for (const f of REGS) copyFileSync(f, `${f}.walkbak`);
   try {
     const reg = JSON.parse(readFileSync(REG, "utf8"));
+    /** 준비 중인 자리 두 곳을 **등록부에서 읽는다.** 코드를 적어 두면 등록부를
+        고친 날 이 검사가 멀쩡한 화면을 걸고 거짓 경보를 낸다 */
+    const prep: string[] = [];
+    for (const u of reg.universities) {
+      for (const cat of u.catalogs ?? []) {
+        for (const col of cat.colleges) {
+          for (const x of col.units) {
+            for (const l of x.majors?.length ? x.majors : [x]) {
+              if (!l.core_code && !l.majors) prep.push(l.code);
+            }
+          }
+        }
+      }
+    }
+    const zzCollege = (units: unknown[]) =>
+      [{ code: "ZZ_ENG", name: "확인용 단과대학", units }];
+    const zzSrc = {
+      source_url: "https://example.invalid/", source_name: "확인용",
+      verified_at: null, verification: "OFFICIAL_PAGE_UNREACHABLE",
+      verification_note: "확인용",
+    };
     reg.universities.push({
       university_code: "ZZTEST",
       university_name: "확인용 대학",
       market_code: "KR",
       entry_note: "검사 가능한 자리의 길을 밟는 용도. 커밋하지 않는다",
       brand_asset: null,
-      source_url: "https://example.invalid/",
-      source_year: 2027,
-      verified_at: null,
-      verification: "OFFICIAL_PAGE_UNREACHABLE",
-      verification_note: "확인용",
       region_hint: "KR-CHUNGCHEONG",
       region_cities: ["대전"],
-      colleges: [{
-        code: "ZZ_ENG", name: "확인용 단과대학",
-        units: [{
-          code: "ZZ_FACULTY", name: "확인용 학부", kind: "faculty",
-          majors: [{
-            code: "ZZ_ME", name: "확인용 기계공학전공", kind: "major",
+      catalogs: [
+        {
+          catalog_code: "ZZ_CUR", catalog_year: 2026, label: "확인용 재학생",
+          status: "ACTIVE", effective_from: "2026-03-01", effective_to: null,
+          ...zzSrc,
+          colleges: zzCollege([{
+            code: "ZZ26_FAC", name: "확인용 학부", kind: "faculty",
+            majors: [{
+              code: "ZZ26_ME", name: CUR_NAME, kind: "major",
+              core_code: "ME_CORE_V3", specialization: null,
+            }],
+          }]),
+        },
+        {
+          catalog_code: "ZZ_NEXT", catalog_year: 2027,
+          label: "확인용 다음 학년도 신입생",
+          status: "FUTURE", effective_from: "2027-03-01", effective_to: null,
+          ...zzSrc,
+          colleges: zzCollege([{
+            code: "ZZ27_ME", name: NEXT_NAME, kind: "department",
             core_code: "ME_CORE_V3", specialization: null,
-          }],
-        }],
-      }],
+            replaces: ["ZZ26_ME"],
+          }]),
+        },
+      ],
     });
     for (const f of REGS) writeFileSync(f, JSON.stringify(reg, null, 2));
 
-    const me = await makeStudent("campus-walk@test.invalid");
+    const who = await makeStudent("campus-walk@test.invalid");
     const browser = await chromium.launch();
-    const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
-    const page = await login(ctx, "campus-walk@test.invalid", me.pw);
+    const ctx: BrowserContext = await browser.newContext({
+      viewport: { width: 1440, height: 900 } });
+    const page = await login(ctx, "campus-walk@test.invalid", who.pw);
 
+    /* ── 기본 목록은 재학생 구조만 세운다(규격 §2 · §3) ──────── */
     await page.goto(`${BASE}/campus/zztest/majors`, { waitUntil: "networkidle" });
     const open = await page.evaluate(() => [...document.querySelectorAll("a.cm-pc")]
       .map((e) => ({
@@ -83,10 +142,46 @@ async function main(): Promise<void> {
         href: e.getAttribute("href"),
       })));
     ok("검사 가능 학과가 누를 수 있는 칸으로 선다",
-      open.length === 1 && open[0].state === "검사 가능", JSON.stringify(open));
+      open.length === 1 && open[0].state === "검사 가능"
+      && open[0].name === CUR_NAME, JSON.stringify(open));
+    const curText = await page.evaluate(() => document.body.innerText);
+    ok("기본 목록에 다음 학년도 학과가 섞이지 않는다",
+      !curText.includes(NEXT_NAME));
+    ok("다른 학년도로 가는 줄이 있다",
+      await page.locator('a[href*="y=2027"]').count() > 0);
 
-    await page.getByRole("link", { name: "확인용 기계공학전공" }).click();
-    await page.waitForURL(/\/d\/ZZ_ME$/, { timeout: 30000 });
+    /* ── 다음 학년도 구조로 되돌아간다(규격 §4) ─────────────── */
+    await page.goto(`${BASE}/campus/zztest/majors?y=2027`,
+      { waitUntil: "networkidle" });
+    const nextList = await page.evaluate(() => [...document.querySelectorAll("a.cm-pc")]
+      .map((e) => e.querySelector(".cm-pc-h > b")?.textContent?.trim()));
+    ok("다음 학년도 목록에 그쪽 학과가 선다",
+      nextList.length === 1 && nextList[0] === NEXT_NAME,
+      JSON.stringify(nextList));
+    const nextText = await page.evaluate(() => document.body.innerText);
+    ok("다음 학년도 목록에 재학생 구조 학과가 섞이지 않는다",
+      !nextText.includes(CUR_NAME));
+
+    /**
+     * **다음 학년도 자리로도 응시가 열리고, 응시 줄의 코드가 어느 해
+     * 구조인지 그대로 든다**(규격 §1).
+     *
+     * 이것이 DB 에 Catalog 칸을 더하지 않아도 되는 까닭이다. 코드가
+     * Catalog 를 들지 않으면 집계와 담당자 화면이 두 해 구조를 한 줄로
+     * 뭉갠다.
+     */
+    await query(`DELETE FROM v3_attempts WHERE user_id = $1`, [who.id]);
+    const future = await startAttempt(page, "/campus/zztest/d/ZZ27_ME", who.id);
+    ok("다음 학년도 자리로 연 응시 줄이 그 해 구조를 든다",
+      future?.department_code === "ZZ27_ME" && future?.college_code === "ZZ_ENG"
+      && future?.university_code === "ZZTEST"
+      && future?.core_code === "ME_CORE_V3", JSON.stringify(future));
+
+    /* ── 재학생 구조 자리의 길을 끝까지 밟는다 ───────────────── */
+    await query(`DELETE FROM v3_attempts WHERE user_id = $1`, [who.id]);
+    await page.goto(`${BASE}/campus/zztest/majors`, { waitUntil: "networkidle" });
+    await page.getByRole("link", { name: CUR_NAME }).click();
+    await page.waitForURL(/\/d\/ZZ26_ME$/, { timeout: 30000 });
     await page.waitForLoadState("networkidle");
     const body = await page.evaluate(() => document.body.innerText);
     ok("학과 상세에 살펴보는 영역이 선다", body.includes("살펴보는 영역"));
@@ -100,7 +195,7 @@ async function main(): Promise<void> {
     const start = await page.evaluate(() => document.body.innerText);
     ok("공통 검사 시작 화면으로 간다", /\/v3\/start/.test(page.url()), page.url());
     ok("시작 화면이 학교와 학과를 적는다",
-      start.includes("확인용 대학") && start.includes("확인용 기계공학전공"),
+      start.includes("확인용 대학") && start.includes(CUR_NAME),
       start.slice(0, 160));
     await page.screenshot({
       path: "docs/metri/shots/campus/desktop/05-ready-start.png", fullPage: true });
@@ -117,10 +212,10 @@ async function main(): Promise<void> {
     }>(`SELECT core_code, university_code, college_code, department_code,
                specialization_code
           FROM v3_attempts WHERE user_id = $1 ORDER BY started_at DESC LIMIT 1`,
-      [me.id]);
+      [who.id]);
     ok("응시 줄에 학교 맥락이 적힌다",
       row?.university_code === "ZZTEST" && row?.college_code === "ZZ_ENG"
-      && row?.department_code === "ZZ_ME" && row?.core_code === "ME_CORE_V3",
+      && row?.department_code === "ZZ26_ME" && row?.core_code === "ME_CORE_V3",
       JSON.stringify(row));
 
     /* **쿠키를 더 들고 있지 않는다.** 다음 응시에 묻어 들어가면 그 사람이
@@ -131,34 +226,38 @@ async function main(): Promise<void> {
       jar.filter((c) => c.name === "cm_campus").map((c) => c.value).join(" "));
 
     /**
-     * **고친 쿠키로 남의 학과 맥락을 적을 수 없다**(규격 §11).
+     * **고친 쿠키로 남의 학과 맥락을 적을 수 없다**(규격 §11 전 회차).
      *
      * 쿠키가 담는 것은 학교와 자리 코드 둘뿐이고 나머지는 서버가
      * 등록부에서 읽는다. 그래도 그 둘을 고쳐 **준비 중인 학과**나
-     * **다른 학교의 자리**를 적을 수 있으면 안 된다. 셋을 그 자리에서
+     * **다른 학교의 자리**를 적을 수 있으면 안 된다. 넷을 그 자리에서
      * 넣어 보고, 적힌 줄이 비어 있는지 본다.
      */
-    for (const forged of ["PCU:PCU_BATTERY", "PCU:ZZ_ME", "ZZTEST:PCU_EE"]) {
-      await query(`DELETE FROM v3_attempts WHERE user_id = $1`, [me.id]);
+    const forged = [
+      `PCU:${prep[0]}`, `PCU:${prep[prep.length - 1]}`,
+      "PCU:ZZ26_ME", "ZZTEST:ZZ26_FAC",
+    ];
+    for (const f of forged) {
+      await query(`DELETE FROM v3_attempts WHERE user_id = $1`, [who.id]);
       await ctx.addCookies([{
-        name: "cm_campus", value: forged, url: BASE,
+        name: "cm_campus", value: f, url: BASE,
         httpOnly: true, sameSite: "Lax",
       }]);
       await page.goto(`${BASE}/v3/start`, { waitUntil: "networkidle" });
       await page.getByText("학부", { exact: true }).click();
       await page.getByRole("button", { name: "검사 시작" }).click();
       await page.waitForURL(/\/v3\/\d+/, { timeout: 30000 });
-      const f = await queryOne<{ core_code: string; university_code: string | null;
+      const got = await queryOne<{ core_code: string; university_code: string | null;
         department_code: string | null }>(
         `SELECT core_code, university_code, department_code FROM v3_attempts
-          WHERE user_id = $1 ORDER BY started_at DESC LIMIT 1`, [me.id]);
-      ok(`고친 쿠키가 맥락을 적지 못한다 — ${forged}`,
-        f?.university_code === null && f?.department_code === null
-        && f?.core_code === "ME_CORE_V3", JSON.stringify(f));
+          WHERE user_id = $1 ORDER BY started_at DESC LIMIT 1`, [who.id]);
+      ok(`고친 쿠키가 맥락을 적지 못한다 — ${f}`,
+        got?.university_code === null && got?.department_code === null
+        && got?.core_code === "ME_CORE_V3", JSON.stringify(got));
     }
 
     /* 일반 B2C 로 들어오면 학교 맥락이 비어 있다 */
-    await query(`DELETE FROM v3_attempts WHERE user_id = $1`, [me.id]);
+    await query(`DELETE FROM v3_attempts WHERE user_id = $1`, [who.id]);
     await page.goto(`${BASE}/v3/start`, { waitUntil: "networkidle" });
     const plain = await page.evaluate(() => document.body.innerText);
     ok("일반 진입에는 학교 이름이 서지 않는다", !plain.includes("확인용 대학"));
@@ -167,7 +266,7 @@ async function main(): Promise<void> {
     await page.waitForURL(/\/v3\/\d+/, { timeout: 30000 });
     const row2 = await queryOne<{ core_code: string; university_code: string | null }>(
       `SELECT core_code, university_code FROM v3_attempts
-        WHERE user_id = $1 ORDER BY started_at DESC LIMIT 1`, [me.id]);
+        WHERE user_id = $1 ORDER BY started_at DESC LIMIT 1`, [who.id]);
     ok("일반 응시는 학교 칸이 비어 있다",
       row2?.university_code === null && row2?.core_code === "ME_CORE_V3",
       JSON.stringify(row2));
@@ -178,7 +277,6 @@ async function main(): Promise<void> {
   }
   console.log(`\n확인 ${pass + bad.length}가지 — 통과 ${pass} · 걸림 ${bad.length}`);
   if (bad.length) process.exit(1);
-
 }
 
 void main();
