@@ -33,6 +33,9 @@ export const NAV_CAMPUS: NavItem[] = [
   { href: "/org/participants", label: "navParticipants", icon: "users" },
   { href: "/org/cohorts", label: "navCohorts", icon: "group" },
   { href: "/org/licenses", label: "navLicenses", icon: "seat" },
+  /* 지금 파는 검사의 집계. 옛 검사 집계(`/org/insights`)와 따로 둔다:
+     둘을 한 쪽에 담으면 어느 검사의 수인지 담당자가 가릴 수 없다 */
+  { href: "/org/v3", label: "navV3Insights", icon: "compass" },
   { href: "/org/insights", label: "navCareerInsights", icon: "compass" },
   { href: "/org/evidence-insights", label: "navEvidenceInsights", icon: "ladder" },
   { href: "/org/reports", label: "navReports", icon: "doc", soon: true },

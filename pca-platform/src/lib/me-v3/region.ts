@@ -109,3 +109,59 @@ export function regionGaps(dir = CONTENT_DIR): {
     .filter((c) => c.rows_now === 0)
     .map((c) => ({ table: c.table, why: c.why_empty, keys: c.keys }));
 }
+
+/* ── 지역 기관 ─────────────────────────────────────────────────────── */
+
+/**
+ * 그 권역에서 **함께 탐색해 볼 수 있는 기관.**
+ *
+ * **추천이 아니다.** 적합도도 합격 가능성도 취업 확률도 뜻하지 않는다.
+ * 직업정보제공사업으로 할 수 있는 것은 정보를 띄우는 데까지이고 알선은
+ * 안 된다(CLAUDE.md 법적 범위).
+ *
+ * **출처 없는 줄은 DB 가 거절한다**(`region_organizations_source_chk`).
+ * 그래서 여기서 걸러낼 일이 없고, 비어 있으면 **비어 있다고 적는다**:
+ * 기관 이름을 짐작으로 채우면 그것을 믿고 움직이는 사람이 생긴다.
+ */
+export type RegionOrg = {
+  organization_id: string;
+  name: string;
+  org_type_code: string;
+  city: string | null;
+  industry_code: string | null;
+  roles: string[];
+  related_majors: string[];
+  homepage_url: string;
+  career_url: string | null;
+  source: string;
+  source_verified_at: string;
+};
+
+export async function regionOrganizations(
+  regionCode: string | null, majors: string[] = [], limit = 5,
+): Promise<RegionOrg[]> {
+  if (!regionCode) return [];
+  const { query } = await import("@/lib/db");
+  /* **전공으로 좁히되 비면 좁히지 않는다.** 전공 꼬리표가 아직 안 붙은
+     줄을 전부 숨기면, 자료를 막 넣기 시작한 권역이 통째로 비어 보인다 */
+  return query<RegionOrg>(
+    `SELECT organization_id, name, org_type_code, city, industry_code,
+            roles, related_majors, homepage_url, career_url, source,
+            source_verified_at::text AS source_verified_at
+       FROM region_organizations
+      WHERE active AND region_code = $1
+        AND ($2::text[] = '{}' OR related_majors && $2::text[]
+             OR related_majors = '{}')
+      ORDER BY display_priority, name
+      LIMIT $3`, [regionCode, majors, limit]);
+}
+
+/** 그 권역에 확인된 줄이 몇인가. `더 보기` 를 세울지 정한다 */
+export async function regionOrgCount(regionCode: string | null): Promise<number> {
+  if (!regionCode) return 0;
+  const { queryOne } = await import("@/lib/db");
+  const r = await queryOne<{ n: string }>(
+    `SELECT count(*)::text AS n FROM region_organizations
+      WHERE active AND region_code = $1`, [regionCode]);
+  return Number(r?.n ?? 0);
+}

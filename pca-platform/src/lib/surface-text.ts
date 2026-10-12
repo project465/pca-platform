@@ -489,6 +489,7 @@ export const TX = {
   navParticipants: p("참여자", "Participants"),
   navCohorts: p("회차", "Cohorts"),
   navLicenses: p("좌석", "Licenses"),
+  navV3Insights: p("전공 진단 집계", "Major Insights"),
   navCareerInsights: p("직무 집계", "Career Insights"),
   navEvidenceInsights: p("증거 집계", "Evidence Insights"),
   navReports: p("보고", "Reports"),

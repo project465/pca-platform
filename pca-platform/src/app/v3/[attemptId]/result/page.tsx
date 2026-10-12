@@ -5,6 +5,7 @@ import { requireUser } from "@/lib/session";
 import { mark } from "@/lib/me-v3/workspace-events";
 import {
   attemptOf, domainName, industryChoices, latestResult, orgChoices, roleChoices,
+  industriesFromDomains, rolesFromDomains,
 } from "@/lib/me-v3/runtime/session";
 import { domainArtifacts } from "@/lib/me-v3/runtime/domain-facts";
 import type { Axis } from "@/lib/me-v3/scoring/types";
@@ -19,7 +20,10 @@ import {
   HORIZON_KO, QUALITY_KO, TIER_NOTE_KO, TRANS_ORDER, TRANS_STEP_KO, XFIELD_KO,
   XFIELD_ORDER, ZONE_LEAD_KO, ZONE_TITLE_KO,
 } from "@/lib/me-v3/result/text.ko";
-import { orgTypesFor, regionLayer } from "@/lib/me-v3/region";
+import {
+  orgTypesFor, regionLayer, regionOrganizations, regionOrgCount,
+} from "@/lib/me-v3/region";
+import { core as coreEntry } from "@/lib/me-v3/core-registry";
 import { profileOf } from "@/lib/me-v3/platform";
 import { participantOf, savedActions } from "@/lib/me-v3/pilot/store";
 import { takeActionsFromResult } from "@/app/me/next/actions";
@@ -553,6 +557,7 @@ export default async function V3Result({
   /* 희망 지역은 **굳은 결과가 아니라 지금 값**이다. 결과지가 바뀌는 것이
      아니라 이 절이 그 권역 기준으로 읽힌다 */
   const profile = await profileOf(user.id);
+  const regionCode = profile?.home_region ?? null;
   const regionPicked = profile?.home_region
     ? regionLayer().regions.find((r) => r.code === profile.home_region)?.name ?? null
     : null;
@@ -569,6 +574,20 @@ export default async function V3Result({
      새 전공 이름으로 그려지면 그 종이는 거짓이 된다 */
   const core = coreOf(model);
   const h = headlineKo(model);
+  /* **확인된 영역에서 거꾸로 읽는다**(규격 Reverse Mapping). 고른 산업
+     하나와 직무 하나만 적으면, 아직 아무것도 고르지 않은 사람에게
+     `어떤 산업과 연결되는가` 가 결과지에서 답해지지 않는다.
+     **새 점수를 만들지 않는다**: `relations` 표의 강도를 그대로 읽는다 */
+  const confirmedDomains = model.domains
+    .filter((d) => d.confirmed.length > 0).map((d) => d.code);
+  const revIndustry = industriesFromDomains(core, confirmedDomains).slice(0, 4);
+  const revRole = rolesFromDomains(core, confirmedDomains).slice(0, 4);
+  /* **기관은 확인된 줄만 선다.** 출처 없는 줄은 DB 가 거절하므로 여기서
+     걸러낼 일이 없고, 비면 비었다고 적는다 */
+  const [regionOrgs, regionOrgN] = await Promise.all([
+    regionOrganizations(regionCode, [coreEntry(core).major], 5),
+    regionOrgCount(regionCode),
+  ]);
   const focus = model.domains.filter((d) => model.overview.focus.includes(d.code));
   const compare = model.domains.filter((d) => model.overview.compare.includes(d.code));
   const deep = model.limits.deep_axes;
@@ -675,6 +694,10 @@ export default async function V3Result({
      않은 자리라 영역별 판정과 섞이면 안 된다 */
   const cm = commonKo(model.common);
   const orgName = (c: string) => orgChoices(core).find((x) => x.code === c)?.name ?? c;
+  /* **조직환경(OC)과 기관 유형(ORG)은 다른 층이다.** 앞엣것은 그 일을
+     하는 자리의 성격이고 뒤엣것은 그 자리를 가진 기관의 종류다 */
+  const orgTypeName = (c: string) =>
+    regionLayer().org_types.find((x) => x.code === c)?.label ?? c;
   const orgKinds = [...new Set(model.targets.orgs
     .flatMap((oc) => orgTypesFor(oc).map((o) => o.label)))];
   const goal = model.targets.goal;
@@ -1185,6 +1208,103 @@ export default async function V3Result({
             않는다: 그 수가 근거처럼 읽힌다 */}
         <section className="rs-sect" id="region">
           <h2>어디에서 찾을지</h2>
+
+          {/* ── 확인된 영역에서 이어 볼 산업과 직무 ──
+              **고르신 하나만 적지 않는다**(규격 Reverse Mapping). 세는
+              것은 `relations` 표에서 그 영역이 `중심`이나 `있음`으로
+              걸리는가뿐이고, **새 점수를 만들지 않는다.** 그래서 순위도
+              적합도도 없고 걸린 영역 이름만 적는다 */}
+          {revIndustry.length || revRole.length ? (
+            <div className="rs-pack">
+              <h3>지금 확인된 영역에서 이어 볼 곳</h3>
+              <p className="rs-note">
+                확인된 기술영역이 어느 산업과 직무에서 자주 쓰이는지를 적은
+                것입니다. 적합도나 합격 가능성이 아니고, 함께 살펴볼 자리를
+                가리킵니다.
+              </p>
+              {revIndustry.length ? (
+                <dl>
+                  {revIndustry.map((r) => (
+                    <div key={r.code}>
+                      <dt>{industryName(r.code)}</dt>
+                      <dd>
+                        {[...r.core_domains, ...r.seen_domains]
+                          .slice(0, 3).map((td) => domainName(core, td)).join(" · ")}
+                        {r.core_domains.length
+                          ? ` · 이 산업이 중심으로 보는 영역 ${r.core_domains.length}곳`
+                          : ""}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              ) : null}
+              {revRole.length ? (
+                <dl>
+                  {revRole.map((r) => (
+                    <div key={r.code}>
+                      <dt>{roleName(r.code)}</dt>
+                      <dd>
+                        {[...r.core_domains, ...r.seen_domains]
+                          .slice(0, 3).map((td) => domainName(core, td)).join(" · ")}
+                        {r.core_domains.length
+                          ? ` · 이 직무가 중심으로 쓰는 영역 ${r.core_domains.length}곳`
+                          : ""}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              ) : null}
+              <p className="rs-others">
+                순위가 아닙니다. 같은 수로 걸린 자리는 차례를 만들지 않습니다.
+              </p>
+            </div>
+          ) : null}
+
+          {/* ── 이 지역에서 함께 볼 곳 ──
+              **추천이 아니다.** 적합도·합격 가능성·취업 확률을 뜻하지
+              않는다. 그리고 **짐작으로 채우지 않는다**: 출처 없는 줄은
+              DB 가 거절하고, 비어 있으면 비었다고 적는다 */}
+          {regionOrgs.length ? (
+            <div className="rs-pack">
+              <h3>이 지역에서 함께 볼 곳</h3>
+              <p className="rs-note">
+                {regionPicked} 기준으로 함께 탐색해 볼 수 있는 기관입니다.
+                채용 여부나 합격 가능성과는 관계가 없습니다.
+              </p>
+              <dl>
+                {regionOrgs.map((o) => (
+                  <div key={o.organization_id}>
+                    <dt>
+                      <a href={o.homepage_url} rel="noreferrer">{o.name}</a>
+                    </dt>
+                    <dd>
+                      {[orgTypeName(o.org_type_code), o.city,
+                        o.roles.map(roleName).filter(Boolean).slice(0, 2).join(" · ")]
+                        .filter(Boolean).join(" · ")}
+                      <br />
+                      {o.related_majors.length
+                        ? `${o.related_majors.join(" · ")} 전공에서 이어 볼 수 있습니다`
+                        : "전공 연결은 아직 적히지 않았습니다"}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+              {regionOrgN > regionOrgs.length ? (
+                <p className="rs-others">
+                  <Link href="/me/region">지역 기업·기관 더 보기 →</Link>
+                </p>
+              ) : null}
+            </div>
+          ) : regionPicked ? (
+            <div className="rs-pack">
+              <h3>이 지역의 기관 목록은 아직 비어 있습니다</h3>
+              <p className="rs-others">
+                기관은 공식 홈페이지와 공공데이터에서 확인한 것만 적습니다.
+                확인되기 전까지 짐작으로 채우지 않습니다.
+              </p>
+            </div>
+          ) : null}
+
           <p className="rs-note">
             {regionPicked
               ? `지금 ${regionPicked} 기준으로 보고 계십니다. 이 선택은 기술영역 결과를 바꾸지 않습니다.`

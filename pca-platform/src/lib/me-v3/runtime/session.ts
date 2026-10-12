@@ -239,6 +239,61 @@ export function roleDomains(core: string, code: string): { td: string; strength:
     .map((r) => ({ td: r.td, strength: r.strength }));
 }
 
+/**
+ * **확인된 영역에서 거꾸로 읽는다**(규격 Industry / Role Reverse Mapping).
+ *
+ * 결과지가 지금까지 적은 것은 **고르신 산업 하나와 직무 하나**뿐이었다.
+ * 그런데 `relations` 표에는 영역 × 산업 96줄과 영역 × 직무 96줄이 이미
+ * 있고, 거기에는 그 영역이 그 산업에서 **어떻게 나타나는가**까지 적혀
+ * 있다. 고른 쪽만 적고 나머지를 묻어 두면, 아직 아무것도 고르지 않은
+ * 사람에게 `어떤 산업과 연결되는가` 가 결과지에서 답해지지 않는다.
+ *
+ * **새 점수를 만들지 않는다.** 세는 것은 `중심`과 `있음`으로 걸린 영역의
+ * **개수**뿐이고, 셋을 한 수로 접지 않는다. 적합도도 순위 점수도 아니다.
+ * 묶음 안에서 같은 개수면 **차례를 만들지 않고 그대로 둔다.**
+ *
+ * **드묾은 세지 않는다.** 그 영역이 그 산업에서 드물게 나타난다는 것은
+ * 연결의 근거가 되지 못한다.
+ */
+export type ReverseLink = {
+  code: string;
+  /** 확인된 영역 가운데 `중심`으로 걸린 것 */
+  core_domains: string[];
+  /** `있음`으로 걸린 것 */
+  seen_domains: string[];
+};
+
+function reverse(
+  rows: { td: string; strength: string }[], key: (r: never) => string,
+  confirmed: string[],
+): ReverseLink[] {
+  const bag = new Map<string, ReverseLink>();
+  for (const r of rows) {
+    if (!confirmed.includes(r.td)) continue;
+    if (r.strength !== "중심" && r.strength !== "있음") continue;
+    const k = key(r as never);
+    const e = bag.get(k) ?? { code: k, core_domains: [], seen_domains: [] };
+    (r.strength === "중심" ? e.core_domains : e.seen_domains).push(r.td);
+    bag.set(k, e);
+  }
+  return [...bag.values()].sort((a, b) =>
+    (b.core_domains.length - a.core_domains.length)
+    || (b.seen_domains.length - a.seen_domains.length)
+    || a.code.localeCompare(b.code));
+}
+
+/** 확인된 영역에서 이어 볼 산업. **고른 산업이 없어도 선다** */
+export function industriesFromDomains(core: string, confirmed: string[]): ReverseLink[] {
+  return reverse(relations(core).td_industry,
+    (r: never) => (r as { industry: string }).industry, confirmed);
+}
+
+/** 확인된 영역에서 이어 볼 직무 */
+export function rolesFromDomains(core: string, confirmed: string[]): ReverseLink[] {
+  return reverse(relations(core).td_role,
+    (r: never) => (r as { role: string }).role, confirmed);
+}
+
 export function roleChoices(core: string) {
   return rolePacks(core).packs.map((p) => ({
     code: p.code, name: p.name_ko, first: p.owns,
