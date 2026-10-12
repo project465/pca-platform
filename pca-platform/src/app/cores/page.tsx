@@ -20,6 +20,13 @@ export const metadata = { title: "전공 Core · CareerMatri" };
  * 적어 둔 것은 자리를 잡아 둔 상태가 맞고, 그 자리에는 지금 없는 것과
  * 그 까닭이 적힌다.
  */
+/** 담당자가 읽는 계열 이름. 등록부의 `family` 는 안쪽 코드다 */
+const FAMILY_ORDER: [string, string][] = [
+  ["STEM", "공학 · 자연과학"],
+  ["BUSINESS", "경상"],
+  ["HUMANITIES_SOCIAL", "인문 · 사회 · 교육"],
+];
+
 export default async function Cores() {
   const user = await requireUser();
   const open = await currentAttempt(user.id);
@@ -120,17 +127,30 @@ export default async function Cores() {
       {/* **준비 중인 전공을 활성 메뉴처럼 보이지 않게 한다.** 지금 열린
           전공은 카드 하나뿐이고, 나머지는 눌러도 들어갈 데가 없다. 묶음
           이름을 한 단 작게 두고 이름은 조용한 줄로 눕힌다 */}
+      {/* **계열로 묶어 적는다.** 서른 줄을 한 덩이로 깔면 담당자가
+          `우리 단과대가 들어 있는가` 를 눈으로 세야 한다. 묶음 이름이
+          있으면 그 물음에 한눈에 답한다 */}
       <section className="cm-quiet">
         <h2>준비 중인 전공</h2>
         <p>
           문항과 산업 자료를 그 전공을 아는 분이 써야 열립니다. 열리는 대로
-          여기에 더합니다.
+          여기에 더합니다. 아래 이름은 **준비 중**이고 지금은 응시할 수
+          없습니다.
         </p>
-        <div className="cm-chips is-quiet">
-          {planned.map((c) => (
-            <span className="cm-chip" key={c.code}>{c.name_ko}</span>
-          ))}
-        </div>
+        {FAMILY_ORDER.map(([fam, label]) => {
+          const rows = planned.filter((c) => c.family === fam);
+          if (!rows.length) return null;
+          return (
+            <div key={fam} style={{ marginTop: 14 }}>
+              <h3 className="cm-sub-h">{label}</h3>
+              <div className="cm-chips is-quiet">
+                {rows.map((c) => (
+                  <span className="cm-chip" key={c.code}>{c.name_ko}</span>
+                ))}
+              </div>
+            </div>
+          );
+        })}
       </section>
     </CmShell>
   );

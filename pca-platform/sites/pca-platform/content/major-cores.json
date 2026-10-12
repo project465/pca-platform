@@ -1,6 +1,6 @@
 {
-  "schema_version": "major-cores.1",
-  "note": "Major Core 등록부다. `family` 가 Market Policy 의 허용 목록과 맞춰진다. **엔진은 하나이고 core 는 데이터 모듈이다**: core 를 더하는 일이 파일을 더하는 일이어야 한다",
+  "schema_version": "major-cores.2",
+  "note": "Major Core 등록부다. `family` 가 Market Policy 의 허용 목록과 맞춰진다. **엔진은 하나이고 core 는 데이터 모듈이다**: core 를 더하는 일이 파일을 더하는 일이어야 한다. `status` 는 지금 고를 수 있는가이고 `maturity` 는 콘텐츠 검토 수준이다. **둘을 합치지 않는다**: 합치면 검토 전인데 켜 둔 상태와 검토가 끝났는데 안 켠 상태를 적을 수 없다. `aliases` 는 같은 Core 로 가는 학과 이름이고 `specializations` 는 한 Core 안에서 갈리는 갈래다",
   "contract": {
     "required_files": [
       "taxonomy",
@@ -49,6 +49,16 @@
       "name_en": "Mechanical Engineering",
       "assessment_version": "ME_V3_2",
       "status": "building",
+      "maturity": "READY_FOR_REVIEW",
+      "aliases": [
+        "기계공학과",
+        "기계설계공학과",
+        "메카트로닉스공학과",
+        "기계시스템공학과",
+        "기계로봇공학과",
+        "기계설계학과",
+        "정밀기계공학과"
+      ],
       "markets": [
         "KR",
         "GLOBAL"
@@ -65,12 +75,12 @@
         "migration": "me-v3-2-migration.json",
         "constructs": "me-v3-2-constructs.json"
       },
-      "domain_count": 12,
-      "axis_count": 8,
       "packs": {
         "industry": "industry-packs-v2.json",
         "role": "role-packs-v2.json"
       },
+      "domain_count": 12,
+      "axis_count": 8,
       "role_function_count": 8,
       "frozen": [
         {
@@ -97,10 +107,84 @@
       "code": "EE_CORE_V1",
       "family": "STEM",
       "major": "EE",
-      "name_ko": "전기전자",
-      "name_en": "Electrical & Electronic Engineering",
+      "name_ko": "전기전자공학",
+      "name_en": "Electrical and Electronic Engineering",
       "assessment_version": null,
       "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "전기공학과",
+        "전자공학과",
+        "정보통신공학과",
+        "전기전자공학부",
+        "전자정보공학과",
+        "전기시스템공학과",
+        "제어계측공학과"
+      ],
+      "specializations": [
+        {
+          "code": "SPEC_EE_POWER",
+          "name_ko": "전기·전력",
+          "note": "전력계통과 전기기기 쪽"
+        },
+        {
+          "code": "SPEC_EE_ELEC",
+          "name_ko": "전자·회로",
+          "note": "회로와 반도체 소자 쪽"
+        },
+        {
+          "code": "SPEC_EE_COMM",
+          "name_ko": "정보통신",
+          "note": "통신과 신호처리 쪽"
+        }
+      ],
+      "markets": [
+        "KR",
+        "GLOBAL"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "SEMI_CORE_V1",
+      "family": "STEM",
+      "major": "SEMI",
+      "name_ko": "반도체공학",
+      "name_en": "Semiconductor Engineering",
+      "assessment_version": null,
+      "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "반도체공학과",
+        "반도체시스템공학과",
+        "시스템반도체공학과",
+        "반도체디스플레이학과"
+      ],
+      "markets": [
+        "KR",
+        "GLOBAL"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "MSE_CORE_V1",
+      "family": "STEM",
+      "major": "MSE",
+      "name_ko": "신소재·재료공학",
+      "name_en": "Materials Science and Engineering",
+      "assessment_version": null,
+      "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "신소재공학과",
+        "재료공학과",
+        "고분자공학과",
+        "금속공학과",
+        "나노소재공학과"
+      ],
       "markets": [
         "KR",
         "GLOBAL"
@@ -117,22 +201,12 @@
       "name_en": "Chemical Engineering",
       "assessment_version": null,
       "status": "planned",
-      "markets": [
-        "KR",
-        "GLOBAL"
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "화학공학과",
+        "화공생명공학과",
+        "응용화학공학과"
       ],
-      "files": {},
-      "domain_count": null,
-      "axis_count": 8
-    },
-    {
-      "code": "MSE_CORE_V1",
-      "family": "STEM",
-      "major": "MSE",
-      "name_ko": "재료",
-      "name_en": "Materials Science & Engineering",
-      "assessment_version": null,
-      "status": "planned",
       "markets": [
         "KR",
         "GLOBAL"
@@ -149,6 +223,13 @@
       "name_en": "Industrial Engineering",
       "assessment_version": null,
       "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "산업공학과",
+        "산업경영공학과",
+        "산업시스템공학과",
+        "정보산업공학과"
+      ],
       "markets": [
         "KR",
         "GLOBAL"
@@ -161,10 +242,36 @@
       "code": "CS_CORE_V1",
       "family": "STEM",
       "major": "CS",
-      "name_ko": "컴퓨터",
-      "name_en": "Computer Science & Engineering",
+      "name_ko": "컴퓨터·소프트웨어",
+      "name_en": "Computer Science and Software Engineering",
       "assessment_version": null,
       "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "인공지능학과",
+        "컴퓨터공학과",
+        "소프트웨어학과",
+        "데이터사이언스학과",
+        "컴퓨터과학과",
+        "게임공학과"
+      ],
+      "specializations": [
+        {
+          "code": "SPEC_CS_SW",
+          "name_ko": "소프트웨어 공학",
+          "note": "설계와 구현과 운영 쪽"
+        },
+        {
+          "code": "SPEC_CS_AI",
+          "name_ko": "인공지능·데이터",
+          "note": "모형과 자료 쪽"
+        },
+        {
+          "code": "SPEC_CS_SYS",
+          "name_ko": "시스템·보안",
+          "note": "운영체제와 네트워크와 보안 쪽"
+        }
+      ],
       "markets": [
         "KR",
         "GLOBAL"
@@ -174,13 +281,266 @@
       "axis_count": 8
     },
     {
-      "code": "NS_CORE_V1",
+      "code": "ROBOT_CORE_V1",
       "family": "STEM",
-      "major": "NS",
-      "name_ko": "자연과학",
-      "name_en": "Natural Sciences",
+      "major": "ROBOT",
+      "name_ko": "로봇공학",
+      "name_en": "Robotics Engineering",
       "assessment_version": null,
       "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "로봇공학과",
+        "지능로봇공학과",
+        "로봇시스템공학과"
+      ],
+      "markets": [
+        "KR",
+        "GLOBAL"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "AUTO_CORE_V1",
+      "family": "STEM",
+      "major": "AUTO",
+      "name_ko": "자동차·모빌리티",
+      "name_en": "Automotive and Mobility Engineering",
+      "assessment_version": null,
+      "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "자동차공학과",
+        "미래모빌리티학과",
+        "스마트모빌리티공학과"
+      ],
+      "markets": [
+        "KR",
+        "GLOBAL"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "ENER_CORE_V1",
+      "family": "STEM",
+      "major": "ENER",
+      "name_ko": "에너지공학",
+      "name_en": "Energy Engineering",
+      "assessment_version": null,
+      "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "에너지공학과",
+        "에너지시스템공학과",
+        "원자력공학과",
+        "신재생에너지학과"
+      ],
+      "markets": [
+        "KR",
+        "GLOBAL"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "ENV_CORE_V1",
+      "family": "STEM",
+      "major": "ENV",
+      "name_ko": "환경공학",
+      "name_en": "Environmental Engineering",
+      "assessment_version": null,
+      "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "환경공학과",
+        "환경시스템공학과",
+        "토목환경공학과"
+      ],
+      "markets": [
+        "KR",
+        "GLOBAL"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "ARCH_CORE_V1",
+      "family": "STEM",
+      "major": "ARCH",
+      "name_ko": "건축공학",
+      "name_en": "Architectural Engineering",
+      "assessment_version": null,
+      "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "건축공학과",
+        "건축학과",
+        "건축설비공학과"
+      ],
+      "markets": [
+        "KR",
+        "GLOBAL"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "CIV_CORE_V1",
+      "family": "STEM",
+      "major": "CIV",
+      "name_ko": "토목공학",
+      "name_en": "Civil Engineering",
+      "assessment_version": null,
+      "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "토목공학과",
+        "건설환경공학과",
+        "도시공학과",
+        "사회기반시스템공학과"
+      ],
+      "markets": [
+        "KR",
+        "GLOBAL"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "MATH_CORE_V1",
+      "family": "STEM",
+      "major": "MATH",
+      "name_ko": "수학·통계",
+      "name_en": "Mathematics and Statistics",
+      "assessment_version": null,
+      "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "수학과",
+        "통계학과",
+        "응용수학과",
+        "데이터과학과"
+      ],
+      "markets": [
+        "KR",
+        "GLOBAL"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "PHYS_CORE_V1",
+      "family": "STEM",
+      "major": "PHYS",
+      "name_ko": "물리학",
+      "name_en": "Physics",
+      "assessment_version": null,
+      "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "물리학과",
+        "응용물리학과",
+        "나노물리학과"
+      ],
+      "markets": [
+        "KR",
+        "GLOBAL"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "CHEM_CORE_V1",
+      "family": "STEM",
+      "major": "CHEM",
+      "name_ko": "화학",
+      "name_en": "Chemistry",
+      "assessment_version": null,
+      "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "화학과",
+        "응용화학과",
+        "화학신소재학과"
+      ],
+      "markets": [
+        "KR",
+        "GLOBAL"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "BIO_CORE_V1",
+      "family": "STEM",
+      "major": "BIO",
+      "name_ko": "생명과학",
+      "name_en": "Life Sciences",
+      "assessment_version": null,
+      "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "생명과학과",
+        "미생물학과",
+        "생물학과",
+        "분자생물학과"
+      ],
+      "markets": [
+        "KR",
+        "GLOBAL"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "BT_CORE_V1",
+      "family": "STEM",
+      "major": "BT",
+      "name_ko": "바이오·생명공학",
+      "name_en": "Biotechnology and Bioengineering",
+      "assessment_version": null,
+      "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "생명공학과",
+        "바이오공학과",
+        "의생명공학과",
+        "바이오메디컬공학과"
+      ],
+      "markets": [
+        "KR",
+        "GLOBAL"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "FOOD_CORE_V1",
+      "family": "STEM",
+      "major": "FOOD",
+      "name_ko": "식품공학",
+      "name_en": "Food Science and Engineering",
+      "assessment_version": null,
+      "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "식품영양학과",
+        "식품공학과",
+        "식품생명공학과"
+      ],
       "markets": [
         "KR",
         "GLOBAL"
@@ -197,6 +557,31 @@
       "name_en": "Business Administration",
       "assessment_version": null,
       "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "경영학과",
+        "경영정보학과",
+        "경영학부",
+        "글로벌경영학과",
+        "벤처경영학과"
+      ],
+      "specializations": [
+        {
+          "code": "SPEC_BIZ_MKT",
+          "name_ko": "마케팅",
+          "note": "시장과 고객 쪽"
+        },
+        {
+          "code": "SPEC_BIZ_OM",
+          "name_ko": "생산·운영",
+          "note": "공급과 운영 쪽"
+        },
+        {
+          "code": "SPEC_BIZ_HR",
+          "name_ko": "조직·인사",
+          "note": "사람과 조직 쪽"
+        }
+      ],
       "markets": [
         "KR"
       ],
@@ -212,6 +597,12 @@
       "name_en": "Economics",
       "assessment_version": null,
       "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "경제학과",
+        "경제금융학과",
+        "응용경제학과"
+      ],
       "markets": [
         "KR"
       ],
@@ -220,13 +611,235 @@
       "axis_count": 8
     },
     {
-      "code": "HS_CORE_V1",
-      "family": "HUMANITIES_SOCIAL",
-      "major": "HS",
-      "name_ko": "인문·사회",
-      "name_en": "Humanities & Social Sciences",
+      "code": "ACCT_CORE_V1",
+      "family": "BUSINESS",
+      "major": "ACCT",
+      "name_ko": "회계·세무",
+      "name_en": "Accounting and Taxation",
       "assessment_version": null,
       "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "회계학과",
+        "세무학과",
+        "회계세무학과"
+      ],
+      "markets": [
+        "KR"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "FIN_CORE_V1",
+      "family": "BUSINESS",
+      "major": "FIN",
+      "name_ko": "금융",
+      "name_en": "Finance",
+      "assessment_version": null,
+      "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "금융학과",
+        "금융보험학과",
+        "재무금융학과"
+      ],
+      "markets": [
+        "KR"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "TRADE_CORE_V1",
+      "family": "BUSINESS",
+      "major": "TRADE",
+      "name_ko": "무역·국제통상",
+      "name_en": "International Trade and Commerce",
+      "assessment_version": null,
+      "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "무역학과",
+        "국제통상학과",
+        "국제물류학과"
+      ],
+      "markets": [
+        "KR"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "PUBADM_CORE_V1",
+      "family": "HUMANITIES_SOCIAL",
+      "major": "PUBADM",
+      "name_ko": "행정학",
+      "name_en": "Public Administration",
+      "assessment_version": null,
+      "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "행정학과",
+        "정책학과",
+        "공공행정학과",
+        "도시행정학과"
+      ],
+      "markets": [
+        "KR"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "POL_CORE_V1",
+      "family": "HUMANITIES_SOCIAL",
+      "major": "POL",
+      "name_ko": "정치외교·정책",
+      "name_en": "Political Science and Policy",
+      "assessment_version": null,
+      "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "정치외교학과",
+        "정치행정학과",
+        "공공정책학과"
+      ],
+      "markets": [
+        "KR"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "SOC_CORE_V1",
+      "family": "HUMANITIES_SOCIAL",
+      "major": "SOC",
+      "name_ko": "사회학",
+      "name_en": "Sociology",
+      "assessment_version": null,
+      "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "사회학과",
+        "사회복지학과",
+        "문화인류학과"
+      ],
+      "markets": [
+        "KR"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "PSY_CORE_V1",
+      "family": "HUMANITIES_SOCIAL",
+      "major": "PSY",
+      "name_ko": "심리학",
+      "name_en": "Psychology",
+      "assessment_version": null,
+      "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "심리학과",
+        "상담심리학과",
+        "인지과학과"
+      ],
+      "markets": [
+        "KR"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "MEDIA_CORE_V1",
+      "family": "HUMANITIES_SOCIAL",
+      "major": "MEDIA",
+      "name_ko": "미디어·광고홍보",
+      "name_en": "Media and Communications",
+      "assessment_version": null,
+      "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "미디어영상학과",
+        "신문방송학과",
+        "광고홍보학과",
+        "미디어커뮤니케이션학과"
+      ],
+      "markets": [
+        "KR"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "LANG_CORE_V1",
+      "family": "HUMANITIES_SOCIAL",
+      "major": "LANG",
+      "name_ko": "국어·언어·문학",
+      "name_en": "Language and Literature",
+      "assessment_version": null,
+      "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "국어국문학과",
+        "영어영문학과",
+        "중어중문학과",
+        "언어학과",
+        "문예창작학과"
+      ],
+      "markets": [
+        "KR"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "EDU_CORE_V1",
+      "family": "HUMANITIES_SOCIAL",
+      "major": "EDU",
+      "name_ko": "교육학",
+      "name_en": "Education",
+      "assessment_version": null,
+      "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "교육학과",
+        "교육공학과",
+        "평생교육학과",
+        "특수교육학과"
+      ],
+      "markets": [
+        "KR"
+      ],
+      "files": {},
+      "domain_count": null,
+      "axis_count": 8
+    },
+    {
+      "code": "COUN_CORE_V1",
+      "family": "HUMANITIES_SOCIAL",
+      "major": "COUN",
+      "name_ko": "상담·아동청소년",
+      "name_en": "Counseling and Youth Studies",
+      "assessment_version": null,
+      "status": "planned",
+      "maturity": "FOUNDATION",
+      "aliases": [
+        "아동청소년학과",
+        "상담학과",
+        "청소년지도학과",
+        "아동가족학과"
+      ],
       "markets": [
         "KR"
       ],
@@ -234,5 +847,11 @@
       "domain_count": null,
       "axis_count": 8
     }
-  ]
+  ],
+  "maturity_levels": {
+    "VALIDATED": "파일럿이나 전문가 검토가 끝났다. **지금 이 자리에 있는 core 는 없다**",
+    "READY_FOR_REVIEW": "구조와 내용은 섰고 전문가 검토 전이다",
+    "FOUNDATION": "Major Core 의 뼈대(이름·별칭·갈래)만 있다. 응시로 열지 않는다"
+  },
+  "alias_rule": "한 학과 이름은 한 Core 만 맡는다. 겹치면 **더 좁은 전공**이 가져간다: 반도체공학과는 전기전자가 아니라 반도체 Core 로, 자동차공학과는 기계가 아니라 자동차·모빌리티 Core 로 간다. 같은 이름을 둘이 맡으면 같은 전공 학생 둘이 서로 다른 영역 사전을 읽고, 그 둘의 결과를 견줄 수 없다"
 }

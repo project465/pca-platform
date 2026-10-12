@@ -36,7 +36,42 @@ export type CoreEntry = {
   name_ko: string;
   name_en: string;
   assessment_version: string | null;
+  /**
+   * **이 시장에서 지금 고를 수 있는가.** 판매와 노출의 문제다.
+   *
+   * `maturity` 와 **절대 합치지 않는다.** 둘을 한 칸에 담으면
+   * `전문가 검토 전이지만 켜 두고 싶다` 와 `검토는 끝났지만 아직 안
+   * 켠다` 를 적을 수 없고, 그 둘은 실제로 자주 생기는 상태다.
+   */
   status: "building" | "planned" | "live" | "archived";
+  /**
+   * **콘텐츠가 얼마나 검토됐는가.** 안쪽 QA 값이고 **손님 화면에 이
+   * 글자가 그대로 나가지 않는다.**
+   *
+   * `VALIDATED`          파일럿이나 전문가 검토가 끝났다
+   * `READY_FOR_REVIEW`   구조와 내용은 섰고 검토 전이다
+   * `FOUNDATION`         Major Core 의 뼈대만 있다
+   *
+   * 지금 `VALIDATED` 인 core 는 **하나도 없다.** 규준도 인지 면접도 없어
+   * 어느 전공도 `검증된 검사` 로 팔지 않는다.
+   */
+  maturity: "VALIDATED" | "READY_FOR_REVIEW" | "FOUNDATION";
+  /**
+   * 같은 Core 로 가는 학과 이름들.
+   *
+   * 기계공학과 · 기계시스템공학과 · 기계설계공학과가 **서로 다른 엔진이
+   * 되면 안 된다.** 국내 대학 학과명은 같은 전공을 여러 이름으로 부르고,
+   * 그 이름마다 core 를 만들면 35가 아니라 수백이 된다.
+   */
+  aliases: string[];
+  /**
+   * 한 Core 안에서 갈리는 갈래.
+   *
+   * 소프트웨어와 인공지능은 컴퓨터 Core 의 갈래이고 별도 Core 가 아니다.
+   * **다만 전공지식 구조가 실제로 다르면 무리하게 합치지 않는다**: 갈래로
+   * 묶는 기준은 이름이 비슷한가가 아니라 **같은 영역 사전을 읽는가**다.
+   */
+  specializations?: { code: string; name_ko: string; note?: string }[];
   markets: string[];
   files: Partial<Record<CoreFile, string>>;
   packs?: Partial<Record<PackKind, string>>;
