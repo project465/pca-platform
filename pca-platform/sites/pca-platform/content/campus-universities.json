@@ -1,12 +1,34 @@
 {
-  "schema_version": "cm-campus-universities.1",
-  "note": "학교마다 다른 것만 담는다: 학교 이름 · 단과대학 · 학과 이름 · 학과에서 CareerMatri Major Core 로 가는 길 · 그 학교가 먼저 보는 지역. **검사와 채점과 결과는 담지 않는다** — 그쪽은 Major Core 등록부(`major-cores.json`)와 공통 엔진이 들고 있고, 학교가 늘어도 한 줄도 달라지지 않는다. 이 파일이 늘어나는 모양이 곧 다음 학교를 붙이는 모양이다.",
+  "schema_version": "cm-campus-universities.2",
+  "note": "학교마다 다른 것만 담는다: 학교 이름 · 단과대학 · 학부와 학과 · 전공과 트랙 · 그 자리에서 CareerMatri Major Core 로 가는 길 · 그 학교가 먼저 보는 지역. **검사와 채점과 결과는 담지 않는다** — 그쪽은 Major Core 등록부(`major-cores.json`)와 공통 엔진이 들고 있고, 학교가 늘어도 한 줄도 달라지지 않는다. 학교 학과 수만큼 Core 를 만들지 않는다: 학교 이름은 여기 있고 전공의 자는 저쪽에 있다",
   "contract": {
-    "status_shown": ["READY", "PREPARING"],
-    "status_note": "사용자에게 보이는 상태는 둘뿐이다: `검사 가능` 과 `준비 중`. 안쪽 성숙도(FOUNDATION · READY_FOR_REVIEW · VALIDATED)는 Major Core 등록부가 들고 있고 **학생 화면에 그 글자가 나가지 않는다.** 그리고 이 파일에 상태를 적어 두지 않는다: 적어 두면 Core 가 열린 날 이 파일이 옛 상태를 들고 있고, 둘이 갈리면 `검사 가능` 이라고 적힌 학과에서 빈 검사가 열린다. 상태는 `core_code` 가 가리키는 Core 의 판매 상태에서 끌어온다",
-    "mapping_source": ["owner", "proposed"],
-    "mapping_note": "`owner` 는 학교·사업주가 적어 준 매핑이고 `proposed` 는 학과 이름을 보고 우리가 제안한 자리다. **`proposed` 인 학과는 Core 가 열려도 검사가 열리지 않는다**: 매핑이 틀리면 그 학생이 남의 전공 사전을 읽고, 그 결과는 되돌릴 수 없다. 확인을 받으면 `owner` 로 바꾼다",
-    "source_note": "`departments[].source` 는 그 학과 이름을 어디서 받았는가다. 공식 학과 구조를 확인하지 못한 자리는 비워 두지 않고 그 사실을 적는다. **학과를 기억으로 지어내지 않는다**"
+    "levels": [
+      "college",
+      "unit",
+      "major"
+    ],
+    "levels_note": "`unit` 은 학과이거나 학부다. 학부면 `majors` 아래에 전공이나 트랙이 선다. **고르는 자리는 가장 아래 칸**이다: 학부만 있는 자리는 고를 수 없고, 전공이 있으면 전공을 고른다",
+    "status_shown": [
+      "READY",
+      "PREPARING"
+    ],
+    "status_note": "학생에게 보이는 상태는 둘뿐이다: `검사 가능` 과 `준비 중`. 안쪽 상태(매핑 단계 · Core 성숙도)는 학생 화면에 한 글자도 나가지 않는다. 그리고 이 파일에 상태를 적어 두지 않는다: 적어 두면 Core 가 열린 날 이 파일이 옛 상태를 들고 있고, 둘이 갈리면 `검사 가능` 이라고 적힌 학과에서 빈 검사가 열린다",
+    "mapping_status": [
+      "EXACT",
+      "SPECIALIZATION_REQUIRED",
+      "CORE_REQUIRED"
+    ],
+    "mapping_status_note": "`EXACT` 는 그 자리를 맡는 Canonical Major Core 가 등록부에 있고 갈래가 더 필요하지 않다. `SPECIALIZATION_REQUIRED` 는 Core 는 있는데 그 학과가 읽을 갈래가 아직 적히지 않았다. `CORE_REQUIRED` 는 그 자리를 맡는 Core 가 아직 없다. **이 값도 적어 두지 않고 끌어온다**: `core_code` 와 `specialization` 과 `specialization_required` 셋에서 나온다",
+    "ready_note": "`EXACT` 라고 바로 응시가 열리지 않는다. 학생에게 `검사 가능` 이 되려면 그 Core 가 이 시장에서 **지금 팔 수 있는 상태**여야 한다. 매핑이 섰다는 것과 문항이 써졌다는 것은 다른 일이다",
+    "source_fields": [
+      "source_url",
+      "source_year",
+      "verified_at",
+      "verification"
+    ],
+    "source_note": "학과 구조는 해마다 바뀐다. 어느 해의 어느 쪽에서 읽었고 언제 확인했는지가 없으면, 그 줄이 언제 틀려졌는지 아무도 모른다. **확인하지 못했으면 `verified_at` 을 비우고 그 까닭을 적는다**",
+    "routing_only_note": "자율전공학부처럼 **전공을 고르는 자리**는 Core 를 만들지 않는다. 고르면 전공 목록으로 돌려보낸다",
+    "student_visible_note": "일반 학부생이 고를 자리가 아닌 것은 학생 화면에서 뺀다. 등록부에는 남겨 둔다: 지우면 다음 사람이 빠뜨린 줄로 보고 다시 넣는다"
   },
   "universities": [
     {
@@ -16,107 +38,467 @@
       "entry_note": "CareerMatri + 배재대학교 전용 진입",
       "brand_asset": null,
       "brand_asset_note": "학교 로고 asset 이 저장소에 없다. **그려 넣지 않는다**: 학교 상표를 우리가 다시 그리면 그 학교가 승인한 적 없는 상표가 학생 화면에 선다. 정식 파일과 사용 권한을 받으면 이 칸에 경로를 적는다",
+      "source_url": "https://www.pcu.ac.kr/kor/contents/105",
+      "source_year": 2027,
+      "verified_at": null,
+      "verification": "OFFICIAL_PAGE_UNREACHABLE",
+      "verification_note": "이 작업 환경의 네트워크 정책이 `www.pcu.ac.kr:443` 을 막아(CONNECT 403) 공식 쪽을 직접 읽지 못했다. 그래서 아래 구조는 **사업주가 2026-10-12 지시문에 적어 준 2027 구조**를 그대로 옮긴 것이고, 공식 쪽과 글자까지 맞추는 일은 그 쪽이 열린 뒤에 한다. **학과를 기억으로 지어내지 않았다**",
+      "open_questions": [
+        "공식 2027 쪽을 읽지 못해 지시문에 적힌 자리만 실었다. 문화예술대학의 `전체 구조` 와 아펜젤러공유대학의 전공 목록 가운데 지시문에 적히지 않은 자리는 비어 있다",
+        "검색으로 확인되는 2027 입학안내 모집단위는 `AI소프트웨어공학부`(컴퓨터공학·소프트웨어학·정보보안학·게임공학·인공지능)와 `피지컬AI공학부`(드론로봇공학·AI융합전자)로 보이고, 지시문의 `소프트웨어공학부` 와 `전기전자공학과·스마트배터리학과·철도건설공학과` 와 어긋난다. 어느 쪽이 2027 확정인지 확인이 필요하다",
+        "`교직과` 가 학생이 고르는 전공인지 지원 조직인지 확인하지 못해 학생이 고르는 자리에서 뺐다. 전공이면 인문사회대학에 더한다",
+        "`평생교육융합학부` 와 `글로벌자율융합학부` 의 전공 목록을 확인하지 못했다",
+        "`글로벌자율융합학부` 가 일반 학부생용 검사 대상인지 확인 전이라 학생 화면에서 뺐다"
+      ],
       "region_hint": "KR-CHUNGCHEONG",
-      "region_cities": ["대전", "세종"],
+      "region_cities": [
+        "대전",
+        "세종"
+      ],
       "region_note": "먼저 보여 주는 자리일 뿐이다. **사용자가 고른 지역을 바꾸지 않는다**",
-      "source": "사업주 지시문(2026-10-12)에 적힌 학과 목록",
-      "source_verified": false,
-      "source_gap": "배재대학교 공식 학과 구조를 이 환경에서 확인하지 못했다(www.pcu.ac.kr 연결 불가). 그래서 지시문에 적힌 학과만 싣고 나머지는 비워 둔다",
+      "wave1": [
+        "PCU_EE",
+        "PCU_CS_COMPUTER",
+        "PCU_CS_SOFTWARE",
+        "PCU_BIZ",
+        "PCU_PUBADM_GENERAL",
+        "PCU_BT"
+      ],
       "colleges": [
         {
-          "code": "AI_SW",
-          "name": "AI·SW창의융합대학",
-          "departments": [
+          "code": "HUMSOC",
+          "name": "인문사회대학",
+          "units": [
             {
-              "code": "PCU_EE",
-              "name": "전기전자공학과",
-              "core_code": "EE_CORE_V1",
-              "specialization": null,
-              "mapping_source": "owner",
-              "source": "지시문 §5 · §7"
+              "code": "PCU_KOREAN",
+              "name": "국어국문한국어교육학과",
+              "kind": "department",
+              "core_code": "LANG_CORE_V1",
+              "specialization": null
             },
             {
-              "code": "PCU_BATTERY",
-              "name": "스마트배터리학과",
-              "core_code": null,
+              "code": "PCU_JAPAN",
+              "name": "일본학과",
+              "kind": "department",
+              "core_code": "LANG_CORE_V1",
               "specialization": null,
-              "mapping_source": "proposed",
-              "source": "지시문 §5",
-              "note": "어느 Core 가 맡을지 확인 전이다. 전기·전자와 화학공학과 신소재가 모두 닿는 자리라 이름만 보고 고르지 않는다"
+              "specialization_required": true,
+              "note": "어문 Core 는 있는데 지역학 갈래가 아직 없다"
             },
             {
-              "code": "PCU_DRONE_ROBOT",
-              "name": "드론로봇공학과",
-              "core_code": "ROBOT_CORE_V1",
-              "specialization": null,
-              "mapping_source": "proposed",
-              "source": "지시문 §5"
-            },
-            {
-              "code": "PCU_RAIL_CIVIL",
-              "name": "철도건설공학과",
-              "core_code": "CIV_CORE_V1",
-              "specialization": null,
-              "mapping_source": "proposed",
-              "source": "지시문 §5"
-            },
-            {
-              "code": "PCU_CS",
-              "name": "컴퓨터공학",
-              "core_code": "CS_CORE_V1",
-              "specialization": null,
-              "mapping_source": "owner",
-              "source": "지시문 §5 · §7",
-              "note": "지시문의 `COMPUTER_ENGINEERING` 에 해당하는 갈래가 Core 등록부에 아직 없다. Core 전체로 보내고 갈래는 비운다"
-            },
-            {
-              "code": "PCU_SW",
-              "name": "소프트웨어학",
-              "core_code": "CS_CORE_V1",
-              "specialization": "SPEC_CS_SW",
-              "mapping_source": "owner",
-              "source": "지시문 §5 · §7"
-            },
-            {
-              "code": "PCU_SEC",
-              "name": "정보보안학",
-              "core_code": "CS_CORE_V1",
-              "specialization": "SPEC_CS_SYS",
-              "mapping_source": "owner",
-              "source": "지시문 §5 · §7",
-              "note": "지시문의 `SECURITY` 가 등록부에서는 `시스템·보안`(SPEC_CS_SYS) 이다"
-            },
-            {
-              "code": "PCU_GAME",
-              "name": "게임공학",
-              "core_code": "CS_CORE_V1",
-              "specialization": null,
-              "mapping_source": "owner",
-              "source": "지시문 §5 · §7",
-              "note": "지시문의 `GAME_ENGINEERING` 에 해당하는 갈래가 Core 등록부에 아직 없다. Core 전체로 보내고 갈래는 비운다"
-            }
-          ]
-        },
-        {
-          "code": "PENDING",
-          "name": "단과대학 확인 전",
-          "note": "이 학과들이 어느 단과대학에 속하는지 확인하지 못했다. **짐작으로 단과대학을 적지 않는다**: 학교 화면에 그 학교가 쓰지 않는 단과대학 이름이 서면 학생이 먼저 안다",
-          "departments": [
-            {
-              "code": "PCU_BIZ",
-              "name": "경영학과",
-              "core_code": "BIZ_CORE_V1",
-              "specialization": null,
-              "mapping_source": "owner",
-              "source": "지시문 §7"
+              "code": "PCU_POLICE_LAW",
+              "name": "경찰법학부",
+              "kind": "faculty",
+              "majors": [
+                {
+                  "code": "PCU_POLICE",
+                  "name": "경찰학전공",
+                  "kind": "major",
+                  "core_code": null,
+                  "specialization": null
+                },
+                {
+                  "code": "PCU_LAW",
+                  "name": "법학전공",
+                  "kind": "major",
+                  "core_code": null,
+                  "specialization": null
+                }
+              ]
             },
             {
               "code": "PCU_PUBADM",
               "name": "행정학과",
-              "core_code": "PUBADM_CORE_V1",
+              "kind": "faculty",
+              "majors": [
+                {
+                  "code": "PCU_PUBADM_GENERAL",
+                  "name": "일반행정트랙",
+                  "kind": "track",
+                  "core_code": "PUBADM_CORE_V1",
+                  "specialization": null
+                },
+                {
+                  "code": "PCU_PUBADM_FIRE",
+                  "name": "소방행정트랙",
+                  "kind": "track",
+                  "core_code": "PUBADM_CORE_V1",
+                  "specialization": null,
+                  "specialization_required": true,
+                  "note": "소방 쪽 갈래가 아직 없다"
+                }
+              ]
+            },
+            {
+              "code": "PCU_PSY",
+              "name": "심리상담학과",
+              "kind": "department",
+              "core_code": "PSY_CORE_V1",
+              "specialization": null
+            },
+            {
+              "code": "PCU_EARLYCHILD",
+              "name": "유아교육과",
+              "kind": "department",
+              "core_code": "EDU_CORE_V1",
               "specialization": null,
-              "mapping_source": "owner",
-              "source": "지시문 §7"
+              "specialization_required": true,
+              "note": "교육 Core 는 있는데 유아교육 갈래가 아직 없다"
+            }
+          ]
+        },
+        {
+          "code": "BUSINESS",
+          "name": "경영대학",
+          "units": [
+            {
+              "code": "PCU_BIZ",
+              "name": "경영학과",
+              "kind": "department",
+              "core_code": "BIZ_CORE_V1",
+              "specialization": null
+            },
+            {
+              "code": "PCU_MIS",
+              "name": "IT경영정보학과",
+              "kind": "department",
+              "core_code": "BIZ_CORE_V1",
+              "specialization": null
+            },
+            {
+              "code": "PCU_GLOBALBIZ",
+              "name": "글로벌비즈니스학과",
+              "kind": "department",
+              "core_code": "BIZ_CORE_V1",
+              "specialization": null
+            },
+            {
+              "code": "PCU_TOURISM",
+              "name": "관광경영학과",
+              "kind": "department",
+              "core_code": null,
+              "specialization": null
+            },
+            {
+              "code": "PCU_HOTELAIR",
+              "name": "호텔항공경영학과",
+              "kind": "department",
+              "core_code": null,
+              "specialization": null
+            },
+            {
+              "code": "PCU_AIRSERVICE",
+              "name": "항공서비스학과",
+              "kind": "department",
+              "core_code": null,
+              "specialization": null
+            }
+          ]
+        },
+        {
+          "code": "LIFEHEALTH",
+          "name": "생명보건대학",
+          "units": [
+            {
+              "code": "PCU_BT",
+              "name": "생명공학과",
+              "kind": "department",
+              "core_code": "BT_CORE_V1",
+              "specialization": null
+            },
+            {
+              "code": "PCU_FOOD",
+              "name": "식품영양학과",
+              "kind": "department",
+              "core_code": "FOOD_CORE_V1",
+              "specialization": null
+            },
+            {
+              "code": "PCU_CULINARY",
+              "name": "외식조리학과",
+              "kind": "department",
+              "core_code": "FOOD_CORE_V1",
+              "specialization": null,
+              "specialization_required": true,
+              "note": "식품 Core 는 있는데 조리·외식 갈래가 아직 없다"
+            },
+            {
+              "code": "PCU_HORTI",
+              "name": "원예산림학과",
+              "kind": "department",
+              "core_code": null,
+              "specialization": null
+            },
+            {
+              "code": "PCU_HEALTHWELFARE",
+              "name": "보건의료복지학과",
+              "kind": "department",
+              "core_code": null,
+              "specialization": null
+            },
+            {
+              "code": "PCU_NURSING",
+              "name": "간호학과",
+              "kind": "department",
+              "core_code": null,
+              "specialization": null
+            },
+            {
+              "code": "PCU_SPORTSREHAB",
+              "name": "운동재활복지학과",
+              "kind": "department",
+              "core_code": null,
+              "specialization": null
+            }
+          ]
+        },
+        {
+          "code": "AI_SW",
+          "name": "AI·SW창의융합대학",
+          "units": [
+            {
+              "code": "PCU_EE",
+              "name": "전기전자공학과",
+              "kind": "department",
+              "core_code": "EE_CORE_V1",
+              "specialization": null
+            },
+            {
+              "code": "PCU_BATTERY",
+              "name": "스마트배터리학과",
+              "kind": "department",
+              "core_code": null,
+              "specialization": null
+            },
+            {
+              "code": "PCU_DRONE_ROBOT",
+              "name": "드론로봇공학과",
+              "kind": "department",
+              "core_code": "ROBOT_CORE_V1",
+              "specialization": null,
+              "specialization_required": true,
+              "note": "로봇 Core 는 있는데 드론 갈래가 아직 없다"
+            },
+            {
+              "code": "PCU_RAIL_CIVIL",
+              "name": "철도건설공학과",
+              "kind": "department",
+              "core_code": "CIV_CORE_V1",
+              "specialization": null,
+              "specialization_required": true,
+              "note": "토목·건설 Core 는 있는데 철도 갈래가 아직 없다"
+            },
+            {
+              "code": "PCU_SW_FACULTY",
+              "name": "소프트웨어공학부",
+              "kind": "faculty",
+              "majors": [
+                {
+                  "code": "PCU_CS_COMPUTER",
+                  "name": "컴퓨터공학전공",
+                  "kind": "major",
+                  "core_code": "CS_CORE_V1",
+                  "specialization": "SPEC_CS_COMPUTER"
+                },
+                {
+                  "code": "PCU_CS_SOFTWARE",
+                  "name": "소프트웨어학전공",
+                  "kind": "major",
+                  "core_code": "CS_CORE_V1",
+                  "specialization": "SPEC_CS_SOFTWARE"
+                },
+                {
+                  "code": "PCU_CS_SECURITY",
+                  "name": "정보보안학전공",
+                  "kind": "major",
+                  "core_code": "CS_CORE_V1",
+                  "specialization": "SPEC_CS_SECURITY"
+                },
+                {
+                  "code": "PCU_CS_GAME",
+                  "name": "게임공학전공",
+                  "kind": "major",
+                  "core_code": "CS_CORE_V1",
+                  "specialization": "SPEC_CS_GAME"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "CULTUREART",
+          "name": "문화예술대학",
+          "note": "공식 2027 쪽을 읽지 못해 지시문에 적힌 자리만 섰다",
+          "units": [
+            {
+              "code": "PCU_ARCH",
+              "name": "건축학과",
+              "kind": "department",
+              "core_code": "ARCH_CORE_V1",
+              "specialization": null
+            },
+            {
+              "code": "PCU_INTERIOR",
+              "name": "실내건축학과",
+              "kind": "department",
+              "core_code": "ARCH_CORE_V1",
+              "specialization": null,
+              "specialization_required": true,
+              "note": "건축 Core 는 있는데 실내건축 갈래가 아직 없다"
+            },
+            {
+              "code": "PCU_LANDSCAPE",
+              "name": "조경학과",
+              "kind": "department",
+              "core_code": null,
+              "specialization": null
+            },
+            {
+              "code": "PCU_ARTWEBTOON",
+              "name": "아트앤웹툰학부",
+              "kind": "faculty",
+              "majors": [
+                {
+                  "code": "PCU_ARTWEBTOON_MAIN",
+                  "name": "아트앤웹툰전공",
+                  "kind": "major",
+                  "core_code": null,
+                  "specialization": null
+                },
+                {
+                  "code": "PCU_GAMEANIM",
+                  "name": "게임애니메이션전공",
+                  "kind": "major",
+                  "core_code": null,
+                  "specialization": null
+                }
+              ]
+            },
+            {
+              "code": "PCU_DESIGN",
+              "name": "디자인학부",
+              "kind": "faculty",
+              "majors": [
+                {
+                  "code": "PCU_DESIGN_COMM",
+                  "name": "커뮤니케이션디자인전공",
+                  "kind": "major",
+                  "core_code": null,
+                  "specialization": null
+                },
+                {
+                  "code": "PCU_DESIGN_IND",
+                  "name": "산업디자인전공",
+                  "kind": "major",
+                  "core_code": null,
+                  "specialization": null
+                }
+              ]
+            },
+            {
+              "code": "PCU_ADPHOTO",
+              "name": "광고사진영상학과",
+              "kind": "department",
+              "core_code": "MEDIA_CORE_V1",
+              "specialization": null
+            },
+            {
+              "code": "PCU_MEDIACONTENT",
+              "name": "미디어콘텐츠학과",
+              "kind": "department",
+              "core_code": "MEDIA_CORE_V1",
+              "specialization": null
+            },
+            {
+              "code": "PCU_FASHION",
+              "name": "의류패션학과",
+              "kind": "department",
+              "core_code": null,
+              "specialization": null
+            },
+            {
+              "code": "PCU_BEAUTY",
+              "name": "뷰티케어학과",
+              "kind": "department",
+              "core_code": null,
+              "specialization": null
+            },
+            {
+              "code": "PCU_PERFORM",
+              "name": "공연예술학과",
+              "kind": "faculty",
+              "majors": [
+                {
+                  "code": "PCU_PERFORM_MUSIC",
+                  "name": "음악트랙",
+                  "kind": "track",
+                  "core_code": null,
+                  "specialization": null
+                },
+                {
+                  "code": "PCU_PERFORM_FILM",
+                  "name": "영화영상트랙",
+                  "kind": "track",
+                  "core_code": null,
+                  "specialization": null
+                }
+              ]
+            },
+            {
+              "code": "PCU_LEISURE",
+              "name": "레저스포츠학부",
+              "kind": "faculty",
+              "majors": [
+                {
+                  "code": "PCU_LEISURE_COACH",
+                  "name": "스포츠지도·건강재활전공",
+                  "kind": "major",
+                  "core_code": null,
+                  "specialization": null
+                },
+                {
+                  "code": "PCU_LEISURE_MKT",
+                  "name": "스포츠마케팅전공",
+                  "kind": "major",
+                  "core_code": null,
+                  "specialization": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "APPENZELLER",
+          "name": "아펜젤러공유대학",
+          "note": "공식 2027 쪽을 읽지 못해 학부 셋만 섰고 전공 목록은 비어 있다",
+          "units": [
+            {
+              "code": "PCU_SELFDESIGN",
+              "name": "자율전공학부",
+              "kind": "faculty",
+              "core_code": null,
+              "specialization": null,
+              "routing_only": true,
+              "note": "전공을 고르는 자리다. **Core 를 만들지 않는다**: 고르면 전공 목록으로 돌려보낸다"
+            },
+            {
+              "code": "PCU_LIFELONG",
+              "name": "평생교육융합학부",
+              "kind": "faculty",
+              "core_code": null,
+              "specialization": null,
+              "unverified_majors": true,
+              "note": "전공 목록을 확인하지 못했다"
+            },
+            {
+              "code": "PCU_GLOBALCONV",
+              "name": "글로벌자율융합학부",
+              "kind": "faculty",
+              "core_code": null,
+              "specialization": null,
+              "unverified_majors": true,
+              "student_visible": false,
+              "note": "일반 학부생용 검사 대상인지 확인 전이라 학생 화면에서 뺐다"
             }
           ]
         }

@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/session";
 import { setCampusEntry } from "@/lib/campus/entry";
-import { findDepartment, statusOf, university } from "@/lib/campus/registry";
+import { findLeaf, statusOf, university } from "@/lib/campus/registry";
 
 /**
  * 고른 학과를 들고 **공통 검사 시작 화면**으로 보낸다.
@@ -23,13 +23,13 @@ export async function startFromCampus(form: FormData): Promise<void> {
   const u = university(uc);
   if (!u) redirect("/cores");
   const code = u.university_code.toLowerCase();
-  const found = findDepartment(u, dc);
-  /* 준비 중인 학과는 주소를 손으로 쳐도 들어가지 않는다(규격 §6) */
-  if (!found || statusOf(u, found.dept) !== "READY") {
+  const found = findLeaf(u, dc);
+  /* 준비 중인 학과는 주소를 손으로 쳐도 들어가지 않는다(규격 §5 · §9) */
+  if (!found || statusOf(u, found.leaf) !== "READY") {
     redirect(`/campus/${code}/majors`);
   }
 
-  await setCampusEntry(u.university_code, found.dept.code);
+  await setCampusEntry(u.university_code, found.leaf.code);
 
   /* **로그인 뒤에 제자리로 돌아온다.** 쿠키는 이미 적혀 있으므로 돌아온
      사람은 고른 학과를 그대로 들고 있다 */

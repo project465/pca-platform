@@ -48,18 +48,23 @@ async function main(): Promise<void> {
       university_code: "ZZTEST",
       university_name: "확인용 대학",
       market_code: "KR",
-      entry_note: "READY 경로 확인용. 커밋하지 않는다",
+      entry_note: "검사 가능한 자리의 길을 밟는 용도. 커밋하지 않는다",
       brand_asset: null,
+      source_url: "https://example.invalid/",
+      source_year: 2027,
+      verified_at: null,
+      verification: "OFFICIAL_PAGE_UNREACHABLE",
+      verification_note: "확인용",
       region_hint: "KR-CHUNGCHEONG",
       region_cities: ["대전"],
-      source: "확인용",
-      source_verified: true,
       colleges: [{
         code: "ZZ_ENG", name: "확인용 단과대학",
-        departments: [{
-          code: "ZZ_ME", name: "확인용 기계공학과",
-          core_code: "ME_CORE_V3", specialization: null,
-          mapping_source: "owner", source: "확인용",
+        units: [{
+          code: "ZZ_FACULTY", name: "확인용 학부", kind: "faculty",
+          majors: [{
+            code: "ZZ_ME", name: "확인용 기계공학전공", kind: "major",
+            core_code: "ME_CORE_V3", specialization: null,
+          }],
         }],
       }],
     });
@@ -80,7 +85,7 @@ async function main(): Promise<void> {
     ok("검사 가능 학과가 누를 수 있는 칸으로 선다",
       open.length === 1 && open[0].state === "검사 가능", JSON.stringify(open));
 
-    await page.getByRole("link", { name: "확인용 기계공학과" }).click();
+    await page.getByRole("link", { name: "확인용 기계공학전공" }).click();
     await page.waitForURL(/\/d\/ZZ_ME$/, { timeout: 30000 });
     await page.waitForLoadState("networkidle");
     const body = await page.evaluate(() => document.body.innerText);
@@ -95,7 +100,7 @@ async function main(): Promise<void> {
     const start = await page.evaluate(() => document.body.innerText);
     ok("공통 검사 시작 화면으로 간다", /\/v3\/start/.test(page.url()), page.url());
     ok("시작 화면이 학교와 학과를 적는다",
-      start.includes("확인용 대학") && start.includes("확인용 기계공학과"),
+      start.includes("확인용 대학") && start.includes("확인용 기계공학전공"),
       start.slice(0, 160));
     await page.screenshot({
       path: "docs/metri/shots/campus/desktop/05-ready-start.png", fullPage: true });
@@ -124,6 +129,33 @@ async function main(): Promise<void> {
     ok("학과 쿠키가 응시 뒤에 남지 않는다",
       !jar.some((c) => c.name === "cm_campus" && c.value),
       jar.filter((c) => c.name === "cm_campus").map((c) => c.value).join(" "));
+
+    /**
+     * **고친 쿠키로 남의 학과 맥락을 적을 수 없다**(규격 §11).
+     *
+     * 쿠키가 담는 것은 학교와 자리 코드 둘뿐이고 나머지는 서버가
+     * 등록부에서 읽는다. 그래도 그 둘을 고쳐 **준비 중인 학과**나
+     * **다른 학교의 자리**를 적을 수 있으면 안 된다. 셋을 그 자리에서
+     * 넣어 보고, 적힌 줄이 비어 있는지 본다.
+     */
+    for (const forged of ["PCU:PCU_BATTERY", "PCU:ZZ_ME", "ZZTEST:PCU_EE"]) {
+      await query(`DELETE FROM v3_attempts WHERE user_id = $1`, [me.id]);
+      await ctx.addCookies([{
+        name: "cm_campus", value: forged, url: BASE,
+        httpOnly: true, sameSite: "Lax",
+      }]);
+      await page.goto(`${BASE}/v3/start`, { waitUntil: "networkidle" });
+      await page.getByText("학부", { exact: true }).click();
+      await page.getByRole("button", { name: "검사 시작" }).click();
+      await page.waitForURL(/\/v3\/\d+/, { timeout: 30000 });
+      const f = await queryOne<{ core_code: string; university_code: string | null;
+        department_code: string | null }>(
+        `SELECT core_code, university_code, department_code FROM v3_attempts
+          WHERE user_id = $1 ORDER BY started_at DESC LIMIT 1`, [me.id]);
+      ok(`고친 쿠키가 맥락을 적지 못한다 — ${forged}`,
+        f?.university_code === null && f?.department_code === null
+        && f?.core_code === "ME_CORE_V3", JSON.stringify(f));
+    }
 
     /* 일반 B2C 로 들어오면 학교 맥락이 비어 있다 */
     await query(`DELETE FROM v3_attempts WHERE user_id = $1`, [me.id]);

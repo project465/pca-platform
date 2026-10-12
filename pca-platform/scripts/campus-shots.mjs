@@ -66,7 +66,7 @@ try {
     await shape(page, `${tag} 진입`);
 
     /* 첫 화면의 한 가지를 눌러 학과 목록으로 간다 */
-    await page.getByRole("link", { name: "전공 선택하기" }).click();
+    await page.getByRole("link", { name: "학과 선택하기" }).click();
     await page.waitForURL(/\/majors$/);
     await page.waitForLoadState("networkidle");
     ok(`${tag} 학과 목록으로 간다`, /\/majors$/.test(page.url()), page.url());

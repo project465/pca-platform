@@ -45,7 +45,7 @@ async function main(): Promise<void> {
          (user_id, tier, core_code, education_stage, item_bank_version,
           scoring_version, university_code, college_code, department_code)
        VALUES ($1,'BASIC','ME_CORE_V3','bachelor','x','y','PCU','AI_SW',$2)`,
-      [r?.id, i < 5 ? "PCU_EE" : "PCU_CS"]);
+      [r?.id, i < 5 ? "PCU_EE" : "PCU_CS_COMPUTER"]);
   }
 
   /* **소속이 한 줄도 없다.** 학교 진입만으로 잡혀야 한다 */
@@ -56,7 +56,7 @@ async function main(): Promise<void> {
   ok("학과 칸이 둘로 갈린다", v.by_department.length === 2,
     JSON.stringify(v.by_department));
   /* 다섯이 안 되는 칸은 **값이 만들어지지 않는다** */
-  const small = v.by_department.find((c) => c.key === "PCU_CS");
+  const small = v.by_department.find((c) => c.key === "PCU_CS_COMPUTER");
   ok(`${MIN_CELL}명 미만 학과는 숫자를 내지 않는다`, small?.n === null,
     JSON.stringify(small));
   const big = v.by_department.find((c) => c.key === "PCU_EE");

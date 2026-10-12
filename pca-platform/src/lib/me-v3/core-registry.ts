@@ -29,6 +29,26 @@ export type CoreFile =
 
 export type PackKind = "industry" | "role";
 
+/**
+ * 한 Core 안의 갈래.
+ *
+ * **채점을 복제하지 않는다.** 갈래가 조정하는 것은 다섯 층뿐이고(영역
+ * 무게 · 산업 · 역할 · 보기 · 근거와 할 일) 축 수준과 묶음 규칙과 문항
+ * 은행과 결과 모델은 Core 하나가 들고 있다. 갈래마다 엔진을 베끼면 같은
+ * 전공 학생 둘이 서로 다른 자로 재어지고, 그 둘의 결과를 견줄 수 없다.
+ *
+ * `authored` 는 **이름만 적어 둔 갈래와 실제로 쓸 수 있는 갈래**를 가른다.
+ * 학교 등록부가 아직 적지 않은 갈래를 가리키면 그 학과는 `갈래 작성 필요`
+ * 로 선다.
+ */
+export type Specialization = {
+  code: string; name_ko: string; note?: string;
+  /** 다섯 층 가운데 하나라도 채워졌는가 */
+  authored?: boolean;
+  domain_emphasis?: unknown; industry_mapping?: unknown;
+  role_mapping?: unknown; examples?: unknown; evidence_action?: unknown;
+};
+
 export type CoreEntry = {
   code: string;
   family: string;
@@ -71,7 +91,7 @@ export type CoreEntry = {
    * **다만 전공지식 구조가 실제로 다르면 무리하게 합치지 않는다**: 갈래로
    * 묶는 기준은 이름이 비슷한가가 아니라 **같은 영역 사전을 읽는가**다.
    */
-  specializations?: { code: string; name_ko: string; note?: string }[];
+  specializations?: Specialization[];
   markets: string[];
   files: Partial<Record<CoreFile, string>>;
   packs?: Partial<Record<PackKind, string>>;
@@ -83,6 +103,11 @@ export type CoreEntry = {
 };
 
 export type Registry = {
+  /** 갈래가 무엇을 조정하고 무엇을 건드리지 않는가 */
+  specialization_contract?: {
+    note: string; adjusts: string[]; never: string[];
+    authored: string; how: string;
+  };
   contract: {
     required_files: CoreFile[];
     optional_files?: CoreFile[];
@@ -190,4 +215,28 @@ export function contractGaps(code: string, dir = CONTENT_DIR): string[] {
     }
   }
   return gaps;
+}
+
+/** 그 Core 의 갈래 하나. 없으면 `null` */
+export function specializationOf(
+  coreCode: string, spec: string, dir = CONTENT_DIR,
+): Specialization | null {
+  const c = registry(dir).cores.find((x) => x.code === coreCode);
+  return c?.specializations?.find((s) => s.code === spec) ?? null;
+}
+
+/**
+ * 그 갈래가 **실제로 쓸 수 있는가.**
+ *
+ * 이름만 적어 둔 갈래는 아직 아무것도 조정하지 않는다. 그것을 `쓸 수 있다`
+ * 로 세면 학교 화면이 **작성되지 않은 갈래를 가리키며 검사를 연다.**
+ */
+export function specializationAuthored(
+  coreCode: string, spec: string, dir = CONTENT_DIR,
+): boolean {
+  const s = specializationOf(coreCode, spec, dir);
+  if (!s) return false;
+  if (s.authored === true) return true;
+  return [s.domain_emphasis, s.industry_mapping, s.role_mapping,
+    s.examples, s.evidence_action].some((v) => v != null);
 }

@@ -15,7 +15,7 @@
  */
 import { cookies } from "next/headers";
 import {
-  findDepartment, statusOf, university, type CampusContext,
+  contextOf, findLeaf, statusOf, university, type CampusContext,
 } from "./registry";
 
 const NAME = "cm_campus";
@@ -52,16 +52,16 @@ export async function readCampusEntry(): Promise<
   if (!uc || !dc) return null;
   const u = university(uc);
   if (!u) return null;
-  const found = findDepartment(u, dc);
-  if (!found || !found.dept.core_code) return null;
-  if (statusOf(u, found.dept) !== "READY") return null;
+  const found = findLeaf(u, dc);
+  if (!found) return null;
+  /* **상태를 여기서 다시 본다.** 고른 뒤에 Core 를 닫는 일이 있고, 그때
+     들고 있던 쿠키로 빈 검사가 열리면 안 된다 */
+  if (statusOf(u, found.leaf) !== "READY") return null;
+  const ctx = contextOf(u, found);
+  if (!ctx) return null;
   return {
-    university_code: u.university_code,
-    college_code: found.college.code,
-    department_code: found.dept.code,
-    core_code: found.dept.core_code,
-    specialization: found.dept.specialization,
+    ...ctx,
     university_name: u.university_name,
-    department_name: found.dept.name,
+    department_name: found.leaf.name,
   };
 }

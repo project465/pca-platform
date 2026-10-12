@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import "../../../../surface.css";
 import "../../../campus.css";
 import {
-  coreOf, findDepartment, specializationName, statusOf, university,
+  coreOf, findLeaf, specializationName, statusOf, university,
 } from "@/lib/campus/registry";
 import { coreFile, hasCoreFile } from "@/lib/me-v3/core-registry";
 import { CmHead } from "../../../../me/shell";
@@ -15,9 +15,9 @@ type Params = { params: Promise<{ universityCode: string; department: string }> 
 export async function generateMetadata({ params }: Params) {
   const { universityCode, department } = await params;
   const u = university(universityCode);
-  const found = u ? findDepartment(u, department) : null;
+  const found = u ? findLeaf(u, department) : null;
   return {
-    title: found ? `${found.dept.name} · ${u?.university_name}` : "CareerMatri",
+    title: found ? `${found.leaf.name} · ${u?.university_name}` : "CareerMatri",
   };
 }
 
@@ -44,20 +44,24 @@ export default async function CampusDepartment({ params }: Params) {
   const { universityCode, department } = await params;
   const u = university(universityCode);
   if (!u) notFound();
-  const found = findDepartment(u, department);
+  const found = findLeaf(u, department);
   if (!found) notFound();
-  const { dept } = found;
+  const { leaf } = found;
   const code = u.university_code.toLowerCase();
-  const ready = statusOf(u, dept) === "READY";
-  const core = coreOf(dept);
-  const spec = specializationName(dept);
-  const domains = ready && dept.core_code ? domainNames(dept.core_code) : [];
+  const ready = statusOf(u, leaf) === "READY";
+  const core = coreOf(leaf);
+  const spec = specializationName(leaf);
+  const domains = ready && leaf.core_code ? domainNames(leaf.core_code) : [];
+  /* 학부가 있으면 쪽 머리에 함께 적는다. 같은 이름의 전공이 다른 학부에
+     설 수 있고, 그때 어느 쪽인지는 학부가 가른다 */
+  const where = found.unit.code === leaf.code
+    ? found.college.name : `${found.college.name} · ${found.unit.name}`;
 
   return (
     <CampusShell u={u}>
       <CmHead
-        kicker={`${u.university_name} · ${found.college.name}`}
-        title={dept.name}
+        kicker={`${u.university_name} · ${where}`}
+        title={leaf.name}
         meta={core
           ? `CareerMatri ${core.name_ko}${spec ? ` · ${spec}` : ""} 검사로 이어집니다`
           : undefined}
@@ -81,7 +85,7 @@ export default async function CampusDepartment({ params }: Params) {
               코드 둘뿐이고, 어느 Core 로 가는가는 서버가 등록부에서 읽는다 */}
           <form action={startFromCampus} className="cm-acts" style={{ marginTop: 20 }}>
             <input type="hidden" name="u" value={u.university_code} />
-            <input type="hidden" name="d" value={dept.code} />
+            <input type="hidden" name="d" value={leaf.code} />
             <button type="submit" className="cm-btn is-primary">
               이 전공으로 검사 시작
             </button>
@@ -95,9 +99,11 @@ export default async function CampusDepartment({ params }: Params) {
       ) : (
         <>
           <p className="cm-note">
-            {dept.core_code
-              ? "이 학과의 문항과 산업 자료를 그 전공을 아는 분이 써야 열립니다."
-              : "어느 전공 검사로 이을지 학교와 확인하고 있습니다."}
+            {leaf.routing_only
+              ? "전공을 정한 뒤에 그 전공으로 시작합니다."
+              : leaf.core_code
+                ? "이 학과의 문항과 산업 자료를 그 전공을 아는 분이 써야 열립니다."
+                : "어느 전공 검사로 이을지 학교와 확인하고 있습니다."}
           </p>
           <div className="cm-acts" style={{ marginTop: 18 }}>
             <Link className="cm-btn is-primary" href={`/campus/${code}/majors`}>
