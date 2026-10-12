@@ -102,7 +102,7 @@ export default async function CampusV3({
             icon="lock"
             title={`검사를 친 학생이 ${MIN_CELL}명이 안 됩니다`}
             body={"전공과 학위와 산업을 겹치면 네 명 안에서 사람이 "
-              + "좁혀집니다. 그래서 가리는 것이 아니라 숫자를 만들지 않습니다."}
+              + "좁혀집니다. 그래서 숫자를 아예 만들지 않습니다."}
           />
         </Section>
       ) : (
