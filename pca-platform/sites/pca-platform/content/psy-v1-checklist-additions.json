@@ -1,0 +1,1374 @@
+{
+ "schema_version": "psy-v1-checklist-additions.1",
+ "note": "판단 근거 목록이다. 응시자가 `직접 정했거나 결과물로 남긴 것` 을 고르는 자리에 그대로 뜬다. 전부 고를 수 있는 문장으로 적는다: 두 낱말짜리 이름표를 올리면 그 자리에서 응시자가 무엇을 고르는지 알 수 없다. 칸마다 둘 이상인 까닭은 소유가 근거 둘 이상일 때만 올라가기 때문이다",
+ "items": [
+  {
+   "td": "TD01",
+   "axis": "J1",
+   "text": "이번에 다룰 물음을 좁혀 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J1",
+   "text": "다루지 않을 물음과 그 까닭을 적어 두었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J2",
+   "text": "알고 싶은 것을 확인할 조건으로 옮겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J2",
+   "text": "무엇이 보이면 답이 되는지 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J2",
+   "text": "볼 기간을 정해 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J3",
+   "text": "설계를 직접 골랐다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J3",
+   "text": "비교 조건을 직접 정했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J3",
+   "text": "표본 수를 직접 정했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J4",
+   "text": "쓸 설계나 표본 수 계산을 골라 적용했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J4",
+   "text": "설계를 바꿔 가며 잴 수 있는 폭을 찾았다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J5",
+   "text": "연구 계획서를 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J5",
+   "text": "절차서를 적어 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J5",
+   "text": "말할 수 없는 것을 적어 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J6",
+   "text": "세운 설계를 선행 연구와 대조했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J6",
+   "text": "같은 물음을 다룬 다른 방법과 견주었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J7",
+   "text": "답이 안 나오는 까닭을 좁혔다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J7",
+   "text": "설계를 바꿔 다시 돌렸다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J8",
+   "text": "내 계획서가 과제 신청이나 심의에 쓰였다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J8",
+   "text": "내가 세운 설계로 다른 사람이 연구를 시작했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J1",
+   "text": "이번에 잴 것을 좁혀 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J1",
+   "text": "재지 않을 것과 그 까닭을 적어 두었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J2",
+   "text": "재려는 것의 정의를 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J2",
+   "text": "응답자가 답할 수 있는 문항으로 옮겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J2",
+   "text": "보기의 수와 뜻을 정해 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J3",
+   "text": "쓸 척도를 직접 골랐다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J3",
+   "text": "거를 문항을 직접 가렸다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J3",
+   "text": "몇 문항으로 둘지 직접 판단했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J4",
+   "text": "쓸 신뢰도나 구조 확인 방법을 골라 적용했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J4",
+   "text": "문항을 바꿔 가며 값이 안정되는 쪽을 찾았다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J5",
+   "text": "문항을 적어 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J5",
+   "text": "채점 규칙을 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J5",
+   "text": "사용 안내를 만들어 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J6",
+   "text": "낸 값을 이미 나와 있는 척도와 대조했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J6",
+   "text": "다른 집단의 응답이나 재검사 결과와 견주었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J7",
+   "text": "값이 흔들리는 까닭을 좁혔다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J7",
+   "text": "문항을 고쳐 다시 재 보았다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J8",
+   "text": "내가 만든 도구를 다른 사람이 가져다 썼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J8",
+   "text": "내 척도가 그 기관의 기본 도구가 됐다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J1",
+   "text": "이번에 모을 자료를 좁혀 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J1",
+   "text": "모으지 않을 자료와 그 까닭을 적어 두었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J2",
+   "text": "계획을 진행 절차로 옮겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J2",
+   "text": "같게 할 것과 맡길 것을 갈라 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J2",
+   "text": "몇 명까지 모을지 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J3",
+   "text": "뺄 자료를 직접 가렸다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J3",
+   "text": "다시 받을지 그대로 쓸지 직접 판단했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J3",
+   "text": "중간에 멈출지 직접 정했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J4",
+   "text": "쓸 장비나 진행 방식을 골라 적용했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J4",
+   "text": "진행 방식을 바꿔 가며 손이 덜 가는 쪽을 찾았다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J5",
+   "text": "절차서를 적어 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J5",
+   "text": "수집 일지를 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J5",
+   "text": "제외한 자료 목록을 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J6",
+   "text": "모인 자료를 절차서의 지시와 대조했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J6",
+   "text": "진행자 사이의 차이를 확인했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J7",
+   "text": "자료가 흔들리는 까닭을 좁혔다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J7",
+   "text": "절차를 고쳐 다시 모았다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J8",
+   "text": "내가 모은 자료가 다른 분석에 쓰였다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J8",
+   "text": "내 절차서가 기본 절차가 됐다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J1",
+   "text": "이번에 돌릴 분석을 좁혀 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J1",
+   "text": "돌리지 않을 분석과 그 까닭을 적어 두었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J2",
+   "text": "물음을 검정할 모형으로 옮겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J2",
+   "text": "무엇을 비교할지 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J2",
+   "text": "유의 수준과 효과 크기 기준을 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J3",
+   "text": "결측 처리 방식을 직접 정했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J3",
+   "text": "이상치를 뺄지 직접 판단했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J3",
+   "text": "어느 결과로 보고할지 직접 골랐다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J4",
+   "text": "쓸 분석 방법이나 코드를 골라 적용했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J4",
+   "text": "방법을 바꿔 가며 자료에 맞는 쪽을 찾았다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J5",
+   "text": "분석 코드를 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J5",
+   "text": "결과 표와 그림을 만들어 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J5",
+   "text": "가정 점검 기록을 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J6",
+   "text": "낸 결과를 다른 방법으로 돌린 값과 대조했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J6",
+   "text": "가정 점검 결과나 선행 연구의 효과 크기와 견주었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J7",
+   "text": "결과가 이상한 까닭을 좁혔다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J7",
+   "text": "모형을 바꿔 다시 돌렸다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J8",
+   "text": "내 분석이 보고나 논문의 결론이 됐다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J8",
+   "text": "내 분석으로 다른 사람이 결정을 바꿨다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J1",
+   "text": "이번 평가에서 볼 것을 좁혀 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J1",
+   "text": "보지 않을 것과 그 까닭을 적어 두었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J2",
+   "text": "의뢰 사유를 확인할 항목으로 옮겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J2",
+   "text": "어떤 값이 나오면 무엇을 뜻하는지 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J2",
+   "text": "회기 수와 기한을 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J3",
+   "text": "쓸 검사 묶음을 직접 골랐다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J3",
+   "text": "거를 검사를 직접 가렸다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J3",
+   "text": "더 볼지 멈출지 직접 판단했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J4",
+   "text": "쓸 실시나 채점 방식을 골라 적용했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J4",
+   "text": "묶음을 바꿔 가며 덜 지치게 하는 쪽을 찾았다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J5",
+   "text": "평가 보고서를 썼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J5",
+   "text": "채점 기록을 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J5",
+   "text": "소견의 한계를 적어 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J6",
+   "text": "검사 값을 규준표와 대조했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J6",
+   "text": "면담에서 들은 내용이나 다른 검사와 견주었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J7",
+   "text": "값이 어긋나는 까닭을 좁혔다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J7",
+   "text": "조건을 바꿔 다시 실시했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J8",
+   "text": "내 소견이 개입이나 배치 결정에 쓰였다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J8",
+   "text": "내 보고서가 협진의 근거가 됐다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J1",
+   "text": "이번에 다룰 문제를 좁혀 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J1",
+   "text": "지금 다루지 않을 문제와 그 까닭을 적어 두었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J2",
+   "text": "호소를 확인할 수 있는 목표로 옮겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J2",
+   "text": "무엇이 달라지면 되는지 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J2",
+   "text": "몇 회기 안에 볼지 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J3",
+   "text": "유지시키는 것을 직접 짚었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J3",
+   "text": "쓸 설명 틀을 직접 골랐다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J3",
+   "text": "먼저 다룰 것을 직접 정했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J4",
+   "text": "쓸 설명 틀이나 정리 방식을 골라 적용했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J4",
+   "text": "틀을 바꿔 가며 설명되는 폭을 찾았다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J5",
+   "text": "사례 개념화를 적어 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J5",
+   "text": "개입 계획을 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J5",
+   "text": "수퍼비전 기록을 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J6",
+   "text": "세운 설명을 다음 회기에서 들은 내용과 대조했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J6",
+   "text": "평가 결과나 주변의 관찰과 견주었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J7",
+   "text": "설명이 안 맞는 까닭을 좁혔다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J7",
+   "text": "틀을 바꿔 다시 세웠다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J8",
+   "text": "내 개념화가 사례 회의의 방향이 됐다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J8",
+   "text": "내가 세운 목표로 다른 사람이 개입을 시작했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J1",
+   "text": "이번 회기에서 다룰 것을 정해 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J1",
+   "text": "미룰 것과 그 까닭을 적어 두었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J2",
+   "text": "바라는 것을 회기 과제로 옮겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J2",
+   "text": "무엇이 달라지면 되는지 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J2",
+   "text": "남은 회기 수를 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J3",
+   "text": "이번 회기에서 할 것을 직접 골랐다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J3",
+   "text": "꺼내지 않을 것을 직접 가렸다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J3",
+   "text": "계속할지 종결할지 직접 판단했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J4",
+   "text": "쓸 개입 방법이나 과제를 골라 적용했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J4",
+   "text": "방식을 바꿔 가며 반응이 오는 쪽을 찾았다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J5",
+   "text": "회기 기록을 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J5",
+   "text": "과제와 그 결과를 적어 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J5",
+   "text": "종결 요약을 만들어 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J6",
+   "text": "달라졌는지를 측정 값과 대조했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J6",
+   "text": "그 사람의 말이나 주변의 관찰과 견주었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J7",
+   "text": "나아지지 않는 까닭을 좁혔다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J7",
+   "text": "방식을 바꿔 다시 해 보았다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J8",
+   "text": "내 판단이 종결이나 의뢰 결정이 됐다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J8",
+   "text": "내가 만든 과제가 기관의 자료로 쓰였다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J1",
+   "text": "이번에 먼저 처리할 것을 정해 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J1",
+   "text": "뒤로 미룰 것과 그 까닭을 적어 두었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J2",
+   "text": "들은 말을 확인할 위험 항목으로 옮겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J2",
+   "text": "어디까지 알릴지 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J2",
+   "text": "언제까지 할지 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J3",
+   "text": "먼저 끊을 위험을 직접 가렸다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J3",
+   "text": "알릴 범위를 직접 정했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J3",
+   "text": "어디로 의뢰할지 직접 골랐다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J4",
+   "text": "쓸 확인 방식이나 서식을 골라 적용했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J4",
+   "text": "방식을 바꿔 가며 통하는 쪽을 찾았다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J5",
+   "text": "위험 확인 기록을 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J5",
+   "text": "안전 계획을 적어 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J5",
+   "text": "의뢰와 연락 기록을 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J6",
+   "text": "내 조치를 기관의 대응 지침과 대조했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J6",
+   "text": "지난 같은 유형의 대응과 견주었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J7",
+   "text": "대응이 늦은 까닭을 좁혔다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J7",
+   "text": "연락 경로를 고쳐 다시 대응했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J8",
+   "text": "내 판단이 입원이나 의뢰 결정이 됐다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J8",
+   "text": "내 기록이 대응 지침을 고치는 근거가 됐다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J1",
+   "text": "이번 프로그램에서 다룰 것을 좁혀 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J1",
+   "text": "담지 않을 것과 그 까닭을 적어 두었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J2",
+   "text": "사업 목표를 할 수 있게 될 것으로 옮겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J2",
+   "text": "무엇으로 효과를 볼지 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J2",
+   "text": "대상과 인원을 정해 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J3",
+   "text": "회차 수를 직접 정했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J3",
+   "text": "중단할 조건을 직접 정했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J3",
+   "text": "누구를 받을지 직접 가렸다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J4",
+   "text": "쓸 회차 방식이나 측정 도구를 골라 적용했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J4",
+   "text": "구성을 바꿔 가며 끝까지 오는 쪽을 찾았다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J5",
+   "text": "프로그램 안을 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J5",
+   "text": "회차 교안을 만들어 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J5",
+   "text": "운영 일지를 적어 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J6",
+   "text": "전후 측정 값을 참여자의 소감과 대조했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J6",
+   "text": "이미 나와 있는 프로그램의 결과와 견주었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J7",
+   "text": "중도 포기가 생긴 까닭을 좁혔다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J7",
+   "text": "구성을 고쳐 다시 운영했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J8",
+   "text": "내 프로그램 안이 정기 사업이 됐다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J8",
+   "text": "내 교안이 다른 기관에서 쓰였다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J1",
+   "text": "이번 선발에서 볼 것을 좁혀 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J1",
+   "text": "보지 않을 것과 그 까닭을 적어 두었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J2",
+   "text": "직무 요구를 평가 항목으로 옮겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J2",
+   "text": "항목마다 무엇을 보면 되는지 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J2",
+   "text": "법에 걸리는 항목을 빼 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J3",
+   "text": "쓸 도구를 직접 골랐다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J3",
+   "text": "자르는 선을 직접 정했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J3",
+   "text": "누구를 다음 단계로 보낼지 직접 판단했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J4",
+   "text": "쓸 선발 도구나 집계 방식을 골라 적용했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J4",
+   "text": "항목을 바꿔 가며 갈리는 폭을 찾았다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J5",
+   "text": "볼 항목을 적어 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J5",
+   "text": "면접 평가표를 만들어 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J5",
+   "text": "선 정한 근거를 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J6",
+   "text": "선발 결과를 입사 뒤의 성과와 대조했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J6",
+   "text": "다른 평가자의 점수나 지난 채용과 견주었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J7",
+   "text": "평가자마다 갈리는 까닭을 좁혔다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J7",
+   "text": "항목을 고쳐 다시 평가했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J8",
+   "text": "내 평가표가 채용 절차가 됐다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J8",
+   "text": "내 분석으로 배치 기준이 바뀌었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J1",
+   "text": "이번 조사에서 볼 자리를 좁혀 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J1",
+   "text": "보지 않을 자리와 그 까닭을 적어 두었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J2",
+   "text": "알아 달라는 것을 과제와 질문으로 옮겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J2",
+   "text": "무엇이 보이면 답이 되는지 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J2",
+   "text": "몇 명을 볼지 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J3",
+   "text": "물을 사람을 직접 골랐다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J3",
+   "text": "뺄 사람을 직접 가렸다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J3",
+   "text": "더 볼지 멈출지 직접 판단했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J4",
+   "text": "쓸 관찰이나 면담 방식을 골라 적용했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J4",
+   "text": "방식을 바꿔 가며 말이 나오는 쪽을 찾았다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J5",
+   "text": "조사 계획을 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J5",
+   "text": "관찰과 면담 기록을 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J5",
+   "text": "막히는 자리 목록을 만들어 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J6",
+   "text": "본 것을 사용 기록의 수치와 대조했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J6",
+   "text": "다른 참가자의 같은 자리와 견주었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J7",
+   "text": "왜 거기서 막히는지 좁혔다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J7",
+   "text": "고친 뒤의 기록을 다시 보았다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J8",
+   "text": "내 조사가 다음 판에 반영됐다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J8",
+   "text": "내 제안으로 개발 순서가 바뀌었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J1",
+   "text": "이번에 남길 기록을 좁혀 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J1",
+   "text": "남기지 않을 것과 그 까닭을 적어 두었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J2",
+   "text": "규정을 점검 항목으로 옮겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J2",
+   "text": "항목마다 무엇을 보면 되는지 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J2",
+   "text": "보관 기간을 적었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J3",
+   "text": "알릴 것을 직접 골랐다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J3",
+   "text": "알리지 않을 것을 직접 가렸다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J3",
+   "text": "거절할지 직접 판단했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J4",
+   "text": "쓸 기록 방식이나 동의 서식을 골라 적용했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J4",
+   "text": "서식을 바꿔 가며 빠지는 칸이 적은 쪽을 찾았다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J5",
+   "text": "동의 기록을 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J5",
+   "text": "상담 기록을 양식대로 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J5",
+   "text": "정보 제공 기록을 남겼다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J6",
+   "text": "내 판단을 규정과 대조했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J6",
+   "text": "수퍼바이저의 의견이나 지난 처리와 견주었다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J7",
+   "text": "지적을 받은 자리를 좁혔다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J7",
+   "text": "절차를 고쳐 다시 했다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J8",
+   "text": "내가 고친 절차가 기관의 기준이 됐다",
+   "source": "psy_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J8",
+   "text": "내 수퍼비전 기록이 교육 자료로 쓰였다",
+   "source": "psy_v1"
+  }
+ ]
+}

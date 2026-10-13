@@ -1,0 +1,2380 @@
+{
+ "schema_version": "food-v1-relations.1",
+ "core": "FOOD_CORE_V1",
+ "note": "기술영역과 산업, 기술영역과 역할의 관계를 두 표로 둔다. 세 축을 미리 곱해 두지 않는다: 열두 영역과 여덟 산업과 여덟 역할을 곱하면 칠백예순여덟 줄이 되고 그만큼의 줄을 사람이 손으로 유지할 수 없다. 어느 줄도 점수를 만들지 않는다: `strength` 는 설명하는 차례를 정하고 `appears_as` 는 결과지가 그 말로 옮겨 적을 때 읽는다",
+ "combine_rule": "산업 하나와 역할 하나를 함께 고른 사람에게는 두 표에서 같은 영역의 줄을 뽑아 나란히 놓는다. 둘 다 `중심` 인 영역이 먼저 서고, 한쪽만 중심인 영역이 다음이고, 양쪽이 드문 영역은 적지 않는다",
+ "td_industry": [
+  {
+   "td": "TD01",
+   "td_name": "식품 개발·배합 설계",
+   "industry": "INDUSTRY_FOODMFG_V1",
+   "industry_name": "식품 제조·가공",
+   "strength": "있음",
+   "appears_as": "식품 제조·가공 에서는 고객사 요구를 배합 목표로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "고객사 요구를 배합 목표로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "식품 개발·배합 설계",
+   "industry": "INDUSTRY_FOODSERVICE_V1",
+   "industry_name": "외식·프랜차이즈",
+   "strength": "있음",
+   "appears_as": "외식·프랜차이즈 에서는 원가 안에서 식재료를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "원가 안에서 식재료를 가르는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "식품 개발·배합 설계",
+   "industry": "INDUSTRY_INSTFOOD_V1",
+   "industry_name": "급식·위탁",
+   "strength": "드묾",
+   "appears_as": "급식·위탁 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "식품 개발·배합 설계",
+   "industry": "INDUSTRY_CLINNUT_V1",
+   "industry_name": "병원·임상영양",
+   "strength": "드묾",
+   "appears_as": "병원·임상영양 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "식품 개발·배합 설계",
+   "industry": "INDUSTRY_HEALTHFOOD_V1",
+   "industry_name": "건강기능식품",
+   "strength": "중심",
+   "appears_as": "건강기능식품 에서는 기능성 원료를 목표 함량으로 옮기는가 · 손실을 감안해 배합을 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J4"
+   ],
+   "dimensions": [
+    "기능성 원료를 목표 함량으로 옮기는가",
+    "손실을 감안해 배합을 맞추는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "식품 개발·배합 설계",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "유통·신선식품",
+   "strength": "드묾",
+   "appears_as": "유통·신선식품 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "식품 개발·배합 설계",
+   "industry": "INDUSTRY_FOODSAFETY_V1",
+   "industry_name": "식품안전·시험인증",
+   "strength": "드묾",
+   "appears_as": "식품안전·시험인증 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "식품 개발·배합 설계",
+   "industry": "INDUSTRY_FOODTECH_V1",
+   "industry_name": "푸드테크·대체식품",
+   "strength": "중심",
+   "appears_as": "푸드테크·대체식품 에서는 다룰 물음을 좁히는가 · 조건을 바꿔 가며 찾는가 · 비슷한 것과 나란히 대는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J4",
+    "J6"
+   ],
+   "dimensions": [
+    "다룰 물음을 좁히는가",
+    "조건을 바꿔 가며 찾는가",
+    "비슷한 것과 나란히 대는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "가공·공정 설계",
+   "industry": "INDUSTRY_FOODMFG_V1",
+   "industry_name": "식품 제조·가공",
+   "strength": "중심",
+   "appears_as": "식품 제조·가공 에서는 라인 조건을 숫자로 적는가 · 작업 표준서를 남기는가 · 흔들림의 까닭을 단계로 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "라인 조건을 숫자로 적는가",
+    "작업 표준서를 남기는가",
+    "흔들림의 까닭을 단계로 좁히는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "가공·공정 설계",
+   "industry": "INDUSTRY_FOODSERVICE_V1",
+   "industry_name": "외식·프랜차이즈",
+   "strength": "드묾",
+   "appears_as": "외식·프랜차이즈 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "가공·공정 설계",
+   "industry": "INDUSTRY_INSTFOOD_V1",
+   "industry_name": "급식·위탁",
+   "strength": "드묾",
+   "appears_as": "급식·위탁 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "가공·공정 설계",
+   "industry": "INDUSTRY_CLINNUT_V1",
+   "industry_name": "병원·임상영양",
+   "strength": "드묾",
+   "appears_as": "병원·임상영양 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "가공·공정 설계",
+   "industry": "INDUSTRY_HEALTHFOOD_V1",
+   "industry_name": "건강기능식품",
+   "strength": "드묾",
+   "appears_as": "건강기능식품 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "가공·공정 설계",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "유통·신선식품",
+   "strength": "드묾",
+   "appears_as": "유통·신선식품 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "가공·공정 설계",
+   "industry": "INDUSTRY_FOODSAFETY_V1",
+   "industry_name": "식품안전·시험인증",
+   "strength": "드묾",
+   "appears_as": "식품안전·시험인증 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "가공·공정 설계",
+   "industry": "INDUSTRY_FOODTECH_V1",
+   "industry_name": "푸드테크·대체식품",
+   "strength": "중심",
+   "appears_as": "푸드테크·대체식품 에서는 규모를 올릴 때 다시 잡는가 · 공정 조건을 적어 남기는가 · 목표를 물성 숫자로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "규모를 올릴 때 다시 잡는가",
+    "공정 조건을 적어 남기는가",
+    "목표를 물성 숫자로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "품질관리·규격 판정",
+   "industry": "INDUSTRY_FOODMFG_V1",
+   "industry_name": "식품 제조·가공",
+   "strength": "중심",
+   "appears_as": "식품 제조·가공 에서는 벗어난 배치를 가리는가 · 관리도를 보고 흐름을 읽는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ],
+   "dimensions": [
+    "벗어난 배치를 가리는가",
+    "관리도를 보고 흐름을 읽는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "품질관리·규격 판정",
+   "industry": "INDUSTRY_FOODSERVICE_V1",
+   "industry_name": "외식·프랜차이즈",
+   "strength": "있음",
+   "appears_as": "외식·프랜차이즈 에서는 입고 식재료를 받아 보는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "입고 식재료를 받아 보는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "품질관리·규격 판정",
+   "industry": "INDUSTRY_INSTFOOD_V1",
+   "industry_name": "급식·위탁",
+   "strength": "있음",
+   "appears_as": "급식·위탁 에서는 납품 식재료를 받아 보는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "납품 식재료를 받아 보는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "품질관리·규격 판정",
+   "industry": "INDUSTRY_CLINNUT_V1",
+   "industry_name": "병원·임상영양",
+   "strength": "드묾",
+   "appears_as": "병원·임상영양 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "품질관리·규격 판정",
+   "industry": "INDUSTRY_HEALTHFOOD_V1",
+   "industry_name": "건강기능식품",
+   "strength": "중심",
+   "appears_as": "건강기능식품 에서는 함량이 빠진 까닭을 좁히는가 · 규격 판정을 적어 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "함량이 빠진 까닭을 좁히는가",
+    "규격 판정을 적어 남기는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "품질관리·규격 판정",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "유통·신선식품",
+   "strength": "중심",
+   "appears_as": "유통·신선식품 에서는 입고 규격을 확인 항목으로 적는가 · 받을지 되돌릴지 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ],
+   "dimensions": [
+    "입고 규격을 확인 항목으로 적는가",
+    "받을지 되돌릴지 가르는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "품질관리·규격 판정",
+   "industry": "INDUSTRY_FOODSAFETY_V1",
+   "industry_name": "식품안전·시험인증",
+   "strength": "중심",
+   "appears_as": "식품안전·시험인증 에서는 경계값을 내 이름으로 가르는가 · 의뢰를 잴 항목으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ],
+   "dimensions": [
+    "경계값을 내 이름으로 가르는가",
+    "의뢰를 잴 항목으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "품질관리·규격 판정",
+   "industry": "INDUSTRY_FOODTECH_V1",
+   "industry_name": "푸드테크·대체식품",
+   "strength": "드묾",
+   "appears_as": "푸드테크·대체식품 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "위생·안전관리",
+   "industry": "INDUSTRY_FOODMFG_V1",
+   "industry_name": "식품 제조·가공",
+   "strength": "있음",
+   "appears_as": "식품 제조·가공 에서는 위생 점검을 기록으로 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "위생 점검을 기록으로 남기는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "위생·안전관리",
+   "industry": "INDUSTRY_FOODSERVICE_V1",
+   "industry_name": "외식·프랜차이즈",
+   "strength": "있음",
+   "appears_as": "외식·프랜차이즈 에서는 점포 위생 점검을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "점포 위생 점검을 남기는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "위생·안전관리",
+   "industry": "INDUSTRY_INSTFOOD_V1",
+   "industry_name": "급식·위탁",
+   "strength": "중심",
+   "appears_as": "급식·위탁 에서는 위생 점검을 기록으로 남기는가 · 멈출지 그대로 갈지 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ],
+   "dimensions": [
+    "위생 점검을 기록으로 남기는가",
+    "멈출지 그대로 갈지 가르는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "위생·안전관리",
+   "industry": "INDUSTRY_CLINNUT_V1",
+   "industry_name": "병원·임상영양",
+   "strength": "있음",
+   "appears_as": "병원·임상영양 에서는 낸 식단이 맞는지 판정하는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "낸 식단이 맞는지 판정하는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "위생·안전관리",
+   "industry": "INDUSTRY_HEALTHFOOD_V1",
+   "industry_name": "건강기능식품",
+   "strength": "드묾",
+   "appears_as": "건강기능식품 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "위생·안전관리",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "유통·신선식품",
+   "strength": "있음",
+   "appears_as": "유통·신선식품 에서는 매장 위생 점검을 기준에 대는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "매장 위생 점검을 기준에 대는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "위생·안전관리",
+   "industry": "INDUSTRY_FOODSAFETY_V1",
+   "industry_name": "식품안전·시험인증",
+   "strength": "중심",
+   "appears_as": "식품안전·시험인증 에서는 점검 기록을 남기는가 · 현장을 기준에 대어 보는가 · 볼 구간을 항목으로 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J5",
+    "J6"
+   ],
+   "dimensions": [
+    "점검 기록을 남기는가",
+    "현장을 기준에 대어 보는가",
+    "볼 구간을 항목으로 적는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "위생·안전관리",
+   "industry": "INDUSTRY_FOODTECH_V1",
+   "industry_name": "푸드테크·대체식품",
+   "strength": "드묾",
+   "appears_as": "푸드테크·대체식품 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "이화학·미생물 분석",
+   "industry": "INDUSTRY_FOODMFG_V1",
+   "industry_name": "식품 제조·가공",
+   "strength": "있음",
+   "appears_as": "식품 제조·가공 에서는 성적서 값을 규격과 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "성적서 값을 규격과 대조하는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "이화학·미생물 분석",
+   "industry": "INDUSTRY_FOODSERVICE_V1",
+   "industry_name": "외식·프랜차이즈",
+   "strength": "드묾",
+   "appears_as": "외식·프랜차이즈 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "이화학·미생물 분석",
+   "industry": "INDUSTRY_INSTFOOD_V1",
+   "industry_name": "급식·위탁",
+   "strength": "드묾",
+   "appears_as": "급식·위탁 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "이화학·미생물 분석",
+   "industry": "INDUSTRY_CLINNUT_V1",
+   "industry_name": "병원·임상영양",
+   "strength": "있음",
+   "appears_as": "병원·임상영양 에서는 검사값과 식단을 함께 보는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "검사값과 식단을 함께 보는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "이화학·미생물 분석",
+   "industry": "INDUSTRY_HEALTHFOOD_V1",
+   "industry_name": "건강기능식품",
+   "strength": "중심",
+   "appears_as": "건강기능식품 에서는 함량 근거를 성적서로 남기는가 · 표시값과 실측값을 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ],
+   "dimensions": [
+    "함량 근거를 성적서로 남기는가",
+    "표시값과 실측값을 대조하는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "이화학·미생물 분석",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "유통·신선식품",
+   "strength": "드묾",
+   "appears_as": "유통·신선식품 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "이화학·미생물 분석",
+   "industry": "INDUSTRY_FOODSAFETY_V1",
+   "industry_name": "식품안전·시험인증",
+   "strength": "중심",
+   "appears_as": "식품안전·시험인증 에서는 공인 방법을 골라 맞추는가 · 표준물질로 확인하는가 · 원시값까지 남기는가 · 값이 흔들린 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J5",
+    "J6",
+    "J7"
+   ],
+   "dimensions": [
+    "공인 방법을 골라 맞추는가",
+    "표준물질로 확인하는가",
+    "원시값까지 남기는가",
+    "값이 흔들린 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "이화학·미생물 분석",
+   "industry": "INDUSTRY_FOODTECH_V1",
+   "industry_name": "푸드테크·대체식품",
+   "strength": "있음",
+   "appears_as": "푸드테크·대체식품 에서는 새 측정 방법을 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "새 측정 방법을 맞추는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "저장·유통·포장",
+   "industry": "INDUSTRY_FOODMFG_V1",
+   "industry_name": "식품 제조·가공",
+   "strength": "드묾",
+   "appears_as": "식품 제조·가공 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "저장·유통·포장",
+   "industry": "INDUSTRY_FOODSERVICE_V1",
+   "industry_name": "외식·프랜차이즈",
+   "strength": "드묾",
+   "appears_as": "외식·프랜차이즈 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "저장·유통·포장",
+   "industry": "INDUSTRY_INSTFOOD_V1",
+   "industry_name": "급식·위탁",
+   "strength": "드묾",
+   "appears_as": "급식·위탁 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "저장·유통·포장",
+   "industry": "INDUSTRY_CLINNUT_V1",
+   "industry_name": "병원·임상영양",
+   "strength": "드묾",
+   "appears_as": "병원·임상영양 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "저장·유통·포장",
+   "industry": "INDUSTRY_HEALTHFOOD_V1",
+   "industry_name": "건강기능식품",
+   "strength": "드묾",
+   "appears_as": "건강기능식품 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "저장·유통·포장",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "유통·신선식품",
+   "strength": "중심",
+   "appears_as": "유통·신선식품 에서는 보관 조건을 품목마다 정하는가 · 깨진 날의 조치를 남기는가 · 온도 기록과 상태를 맞추는가 · 폐기가 늘어난 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J6",
+    "J7"
+   ],
+   "dimensions": [
+    "보관 조건을 품목마다 정하는가",
+    "깨진 날의 조치를 남기는가",
+    "온도 기록과 상태를 맞추는가",
+    "폐기가 늘어난 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "저장·유통·포장",
+   "industry": "INDUSTRY_FOODSAFETY_V1",
+   "industry_name": "식품안전·시험인증",
+   "strength": "드묾",
+   "appears_as": "식품안전·시험인증 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "저장·유통·포장",
+   "industry": "INDUSTRY_FOODTECH_V1",
+   "industry_name": "푸드테크·대체식품",
+   "strength": "드묾",
+   "appears_as": "푸드테크·대체식품 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "영양 평가·식단 설계",
+   "industry": "INDUSTRY_FOODMFG_V1",
+   "industry_name": "식품 제조·가공",
+   "strength": "드묾",
+   "appears_as": "식품 제조·가공 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "영양 평가·식단 설계",
+   "industry": "INDUSTRY_FOODSERVICE_V1",
+   "industry_name": "외식·프랜차이즈",
+   "strength": "드묾",
+   "appears_as": "외식·프랜차이즈 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "영양 평가·식단 설계",
+   "industry": "INDUSTRY_INSTFOOD_V1",
+   "industry_name": "급식·위탁",
+   "strength": "중심",
+   "appears_as": "급식·위탁 에서는 단가를 식단 조건으로 옮기는가 · 잔반을 식단에 되먹이는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ],
+   "dimensions": [
+    "단가를 식단 조건으로 옮기는가",
+    "잔반을 식단에 되먹이는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "영양 평가·식단 설계",
+   "industry": "INDUSTRY_CLINNUT_V1",
+   "industry_name": "병원·임상영양",
+   "strength": "중심",
+   "appears_as": "병원·임상영양 에서는 질환을 제한 항목으로 옮기는가 · 섭취량과 계획을 맞추는가 · 제한을 어디까지 할지 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J6"
+   ],
+   "dimensions": [
+    "질환을 제한 항목으로 옮기는가",
+    "섭취량과 계획을 맞추는가",
+    "제한을 어디까지 할지 가르는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "영양 평가·식단 설계",
+   "industry": "INDUSTRY_HEALTHFOOD_V1",
+   "industry_name": "건강기능식품",
+   "strength": "드묾",
+   "appears_as": "건강기능식품 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "영양 평가·식단 설계",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "유통·신선식품",
+   "strength": "드묾",
+   "appears_as": "유통·신선식품 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "영양 평가·식단 설계",
+   "industry": "INDUSTRY_FOODSAFETY_V1",
+   "industry_name": "식품안전·시험인증",
+   "strength": "드묾",
+   "appears_as": "식품안전·시험인증 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "영양 평가·식단 설계",
+   "industry": "INDUSTRY_FOODTECH_V1",
+   "industry_name": "푸드테크·대체식품",
+   "strength": "드묾",
+   "appears_as": "푸드테크·대체식품 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "영양 상담·교육",
+   "industry": "INDUSTRY_FOODMFG_V1",
+   "industry_name": "식품 제조·가공",
+   "strength": "드묾",
+   "appears_as": "식품 제조·가공 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "영양 상담·교육",
+   "industry": "INDUSTRY_FOODSERVICE_V1",
+   "industry_name": "외식·프랜차이즈",
+   "strength": "드묾",
+   "appears_as": "외식·프랜차이즈 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "영양 상담·교육",
+   "industry": "INDUSTRY_INSTFOOD_V1",
+   "industry_name": "급식·위탁",
+   "strength": "드묾",
+   "appears_as": "급식·위탁 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "영양 상담·교육",
+   "industry": "INDUSTRY_CLINNUT_V1",
+   "industry_name": "병원·임상영양",
+   "strength": "중심",
+   "appears_as": "병원·임상영양 에서는 먼저 바꿀 것 하나를 고르는가 · 상담을 기록으로 남기는가 · 못 먹은 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "먼저 바꿀 것 하나를 고르는가",
+    "상담을 기록으로 남기는가",
+    "못 먹은 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "영양 상담·교육",
+   "industry": "INDUSTRY_HEALTHFOOD_V1",
+   "industry_name": "건강기능식품",
+   "strength": "드묾",
+   "appears_as": "건강기능식품 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "영양 상담·교육",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "유통·신선식품",
+   "strength": "드묾",
+   "appears_as": "유통·신선식품 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "영양 상담·교육",
+   "industry": "INDUSTRY_FOODSAFETY_V1",
+   "industry_name": "식품안전·시험인증",
+   "strength": "드묾",
+   "appears_as": "식품안전·시험인증 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "영양 상담·교육",
+   "industry": "INDUSTRY_FOODTECH_V1",
+   "industry_name": "푸드테크·대체식품",
+   "strength": "드묾",
+   "appears_as": "푸드테크·대체식품 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "급식·점포 운영",
+   "industry": "INDUSTRY_FOODMFG_V1",
+   "industry_name": "식품 제조·가공",
+   "strength": "있음",
+   "appears_as": "식품 제조·가공 에서는 생산 계획과 자재를 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "생산 계획과 자재를 맞추는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "급식·점포 운영",
+   "industry": "INDUSTRY_FOODSERVICE_V1",
+   "industry_name": "외식·프랜차이즈",
+   "strength": "중심",
+   "appears_as": "외식·프랜차이즈 에서는 피크에 무엇을 줄일지 가르는가 · 남거나 모자란 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ],
+   "dimensions": [
+    "피크에 무엇을 줄일지 가르는가",
+    "남거나 모자란 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "급식·점포 운영",
+   "industry": "INDUSTRY_INSTFOOD_V1",
+   "industry_name": "급식·위탁",
+   "strength": "중심",
+   "appears_as": "급식·위탁 에서는 식수 변동에 발주를 맞추는가 · 발주와 검수를 적어 남기는가 · 부족했던 날의 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "식수 변동에 발주를 맞추는가",
+    "발주와 검수를 적어 남기는가",
+    "부족했던 날의 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "급식·점포 운영",
+   "industry": "INDUSTRY_CLINNUT_V1",
+   "industry_name": "병원·임상영양",
+   "strength": "드묾",
+   "appears_as": "병원·임상영양 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "급식·점포 운영",
+   "industry": "INDUSTRY_HEALTHFOOD_V1",
+   "industry_name": "건강기능식품",
+   "strength": "드묾",
+   "appears_as": "건강기능식품 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "급식·점포 운영",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "유통·신선식품",
+   "strength": "중심",
+   "appears_as": "유통·신선식품 에서는 발주와 폐기를 집계로 남기는가 · 예측 방식을 바꿔 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ],
+   "dimensions": [
+    "발주와 폐기를 집계로 남기는가",
+    "예측 방식을 바꿔 맞추는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "급식·점포 운영",
+   "industry": "INDUSTRY_FOODSAFETY_V1",
+   "industry_name": "식품안전·시험인증",
+   "strength": "드묾",
+   "appears_as": "식품안전·시험인증 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "급식·점포 운영",
+   "industry": "INDUSTRY_FOODTECH_V1",
+   "industry_name": "푸드테크·대체식품",
+   "strength": "드묾",
+   "appears_as": "푸드테크·대체식품 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "조리 공정 표준화",
+   "industry": "INDUSTRY_FOODMFG_V1",
+   "industry_name": "식품 제조·가공",
+   "strength": "있음",
+   "appears_as": "식품 제조·가공 에서는 작업 지시를 지킬 수 있게 쪼개는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "작업 지시를 지킬 수 있게 쪼개는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "조리 공정 표준화",
+   "industry": "INDUSTRY_FOODSERVICE_V1",
+   "industry_name": "외식·프랜차이즈",
+   "strength": "중심",
+   "appears_as": "외식·프랜차이즈 에서는 지점이 지킬 분량을 맞추는가 · 레시피를 사진까지 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ],
+   "dimensions": [
+    "지점이 지킬 분량을 맞추는가",
+    "레시피를 사진까지 남기는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "조리 공정 표준화",
+   "industry": "INDUSTRY_INSTFOOD_V1",
+   "industry_name": "급식·위탁",
+   "strength": "있음",
+   "appears_as": "급식·위탁 에서는 대량 조리 기준을 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "대량 조리 기준을 맞추는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "조리 공정 표준화",
+   "industry": "INDUSTRY_CLINNUT_V1",
+   "industry_name": "병원·임상영양",
+   "strength": "있음",
+   "appears_as": "병원·임상영양 에서는 삼킴 상태에 맞춰 조리를 바꾸는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "삼킴 상태에 맞춰 조리를 바꾸는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "조리 공정 표준화",
+   "industry": "INDUSTRY_HEALTHFOOD_V1",
+   "industry_name": "건강기능식품",
+   "strength": "드묾",
+   "appears_as": "건강기능식품 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "조리 공정 표준화",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "유통·신선식품",
+   "strength": "드묾",
+   "appears_as": "유통·신선식품 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "조리 공정 표준화",
+   "industry": "INDUSTRY_FOODSAFETY_V1",
+   "industry_name": "식품안전·시험인증",
+   "strength": "드묾",
+   "appears_as": "식품안전·시험인증 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "조리 공정 표준화",
+   "industry": "INDUSTRY_FOODTECH_V1",
+   "industry_name": "푸드테크·대체식품",
+   "strength": "드묾",
+   "appears_as": "푸드테크·대체식품 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "관능 평가·출시 판정",
+   "industry": "INDUSTRY_FOODMFG_V1",
+   "industry_name": "식품 제조·가공",
+   "strength": "드묾",
+   "appears_as": "식품 제조·가공 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "관능 평가·출시 판정",
+   "industry": "INDUSTRY_FOODSERVICE_V1",
+   "industry_name": "외식·프랜차이즈",
+   "strength": "중심",
+   "appears_as": "외식·프랜차이즈 에서는 손님층 기대를 평가 항목으로 적는가 · 경쟁 메뉴와 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ],
+   "dimensions": [
+    "손님층 기대를 평가 항목으로 적는가",
+    "경쟁 메뉴와 견주는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "관능 평가·출시 판정",
+   "industry": "INDUSTRY_INSTFOOD_V1",
+   "industry_name": "급식·위탁",
+   "strength": "드묾",
+   "appears_as": "급식·위탁 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "관능 평가·출시 판정",
+   "industry": "INDUSTRY_CLINNUT_V1",
+   "industry_name": "병원·임상영양",
+   "strength": "드묾",
+   "appears_as": "병원·임상영양 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "관능 평가·출시 판정",
+   "industry": "INDUSTRY_HEALTHFOOD_V1",
+   "industry_name": "건강기능식품",
+   "strength": "있음",
+   "appears_as": "건강기능식품 에서는 내놓을지 고칠지 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "내놓을지 고칠지 가르는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "관능 평가·출시 판정",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "유통·신선식품",
+   "strength": "드묾",
+   "appears_as": "유통·신선식품 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "관능 평가·출시 판정",
+   "industry": "INDUSTRY_FOODSAFETY_V1",
+   "industry_name": "식품안전·시험인증",
+   "strength": "드묾",
+   "appears_as": "식품안전·시험인증 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "관능 평가·출시 판정",
+   "industry": "INDUSTRY_FOODTECH_V1",
+   "industry_name": "푸드테크·대체식품",
+   "strength": "중심",
+   "appears_as": "푸드테크·대체식품 에서는 수용도를 견주어 읽는가 · 내놓을지 더 할지 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ],
+   "dimensions": [
+    "수용도를 견주어 읽는가",
+    "내놓을지 더 할지 가르는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "표시·인증·법규",
+   "industry": "INDUSTRY_FOODMFG_V1",
+   "industry_name": "식품 제조·가공",
+   "strength": "드묾",
+   "appears_as": "식품 제조·가공 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "표시·인증·법규",
+   "industry": "INDUSTRY_FOODSERVICE_V1",
+   "industry_name": "외식·프랜차이즈",
+   "strength": "있음",
+   "appears_as": "외식·프랜차이즈 에서는 알레르기 고지를 법에 맞춰 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "알레르기 고지를 법에 맞춰 적는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "표시·인증·법규",
+   "industry": "INDUSTRY_INSTFOOD_V1",
+   "industry_name": "급식·위탁",
+   "strength": "있음",
+   "appears_as": "급식·위탁 에서는 식단 공개와 고지를 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "식단 공개와 고지를 맞추는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "표시·인증·법규",
+   "industry": "INDUSTRY_CLINNUT_V1",
+   "industry_name": "병원·임상영양",
+   "strength": "있음",
+   "appears_as": "병원·임상영양 에서는 기록을 진료가 읽을 꼴로 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "기록을 진료가 읽을 꼴로 남기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "표시·인증·법규",
+   "industry": "INDUSTRY_HEALTHFOOD_V1",
+   "industry_name": "건강기능식품",
+   "strength": "중심",
+   "appears_as": "건강기능식품 에서는 적을 값을 법정 꼴로 옮기는가 · 문구를 심의 사례와 견주는가 · 쓸 수 없는 말을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J6"
+   ],
+   "dimensions": [
+    "적을 값을 법정 꼴로 옮기는가",
+    "문구를 심의 사례와 견주는가",
+    "쓸 수 없는 말을 가르는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "표시·인증·법규",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "유통·신선식품",
+   "strength": "있음",
+   "appears_as": "유통·신선식품 에서는 표시 점검을 법정 꼴로 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "표시 점검을 법정 꼴로 적는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "표시·인증·법규",
+   "industry": "INDUSTRY_FOODSAFETY_V1",
+   "industry_name": "식품안전·시험인증",
+   "strength": "있음",
+   "appears_as": "식품안전·시험인증 에서는 인증 요건을 가려 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "인증 요건을 가려 정하는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "표시·인증·법규",
+   "industry": "INDUSTRY_FOODTECH_V1",
+   "industry_name": "푸드테크·대체식품",
+   "strength": "있음",
+   "appears_as": "푸드테크·대체식품 에서는 적을 수 있는 범위를 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "적을 수 있는 범위를 남기는가"
+   ]
+  }
+ ],
+ "td_role": [
+  {
+   "td": "TD01",
+   "td_name": "식품 개발·배합 설계",
+   "role": "ROLE_PRODPLAN_V1",
+   "role_name": "제품·메뉴 기획",
+   "strength": "중심",
+   "appears_as": "제품·메뉴 기획 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J3",
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "식품 개발·배합 설계",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "분석·시험",
+   "strength": "드묾",
+   "appears_as": "분석·시험 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "식품 개발·배합 설계",
+   "role": "ROLE_QC_V1",
+   "role_name": "품질·규격 판정",
+   "strength": "드묾",
+   "appears_as": "품질·규격 판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "식품 개발·배합 설계",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "공정·레시피 표준화",
+   "strength": "중심",
+   "appears_as": "공정·레시피 표준화 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "식품 개발·배합 설계",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "생산·조리 현장 운영",
+   "strength": "드묾",
+   "appears_as": "생산·조리 현장 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "식품 개발·배합 설계",
+   "role": "ROLE_OPSMGMT_V1",
+   "role_name": "급식·점포 관리",
+   "strength": "드묾",
+   "appears_as": "급식·점포 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "식품 개발·배합 설계",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구·조사",
+   "strength": "중심",
+   "appears_as": "연구·조사 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "식품 개발·배합 설계",
+   "role": "ROLE_COMPLIANCE_V1",
+   "role_name": "위생·표시 규정 관리",
+   "strength": "드묾",
+   "appears_as": "위생·표시 규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "가공·공정 설계",
+   "role": "ROLE_PRODPLAN_V1",
+   "role_name": "제품·메뉴 기획",
+   "strength": "중심",
+   "appears_as": "제품·메뉴 기획 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "가공·공정 설계",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "분석·시험",
+   "strength": "드묾",
+   "appears_as": "분석·시험 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "가공·공정 설계",
+   "role": "ROLE_QC_V1",
+   "role_name": "품질·규격 판정",
+   "strength": "드묾",
+   "appears_as": "품질·규격 판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "가공·공정 설계",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "공정·레시피 표준화",
+   "strength": "중심",
+   "appears_as": "공정·레시피 표준화 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "가공·공정 설계",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "생산·조리 현장 운영",
+   "strength": "드묾",
+   "appears_as": "생산·조리 현장 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "가공·공정 설계",
+   "role": "ROLE_OPSMGMT_V1",
+   "role_name": "급식·점포 관리",
+   "strength": "드묾",
+   "appears_as": "급식·점포 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "가공·공정 설계",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구·조사",
+   "strength": "드묾",
+   "appears_as": "연구·조사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "가공·공정 설계",
+   "role": "ROLE_COMPLIANCE_V1",
+   "role_name": "위생·표시 규정 관리",
+   "strength": "드묾",
+   "appears_as": "위생·표시 규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "품질관리·규격 판정",
+   "role": "ROLE_PRODPLAN_V1",
+   "role_name": "제품·메뉴 기획",
+   "strength": "드묾",
+   "appears_as": "제품·메뉴 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "품질관리·규격 판정",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "분석·시험",
+   "strength": "중심",
+   "appears_as": "분석·시험 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "품질관리·규격 판정",
+   "role": "ROLE_QC_V1",
+   "role_name": "품질·규격 판정",
+   "strength": "중심",
+   "appears_as": "품질·규격 판정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J6",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "품질관리·규격 판정",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "공정·레시피 표준화",
+   "strength": "드묾",
+   "appears_as": "공정·레시피 표준화 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "품질관리·규격 판정",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "생산·조리 현장 운영",
+   "strength": "드묾",
+   "appears_as": "생산·조리 현장 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "품질관리·규격 판정",
+   "role": "ROLE_OPSMGMT_V1",
+   "role_name": "급식·점포 관리",
+   "strength": "드묾",
+   "appears_as": "급식·점포 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "품질관리·규격 판정",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구·조사",
+   "strength": "드묾",
+   "appears_as": "연구·조사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "품질관리·규격 판정",
+   "role": "ROLE_COMPLIANCE_V1",
+   "role_name": "위생·표시 규정 관리",
+   "strength": "중심",
+   "appears_as": "위생·표시 규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "위생·안전관리",
+   "role": "ROLE_PRODPLAN_V1",
+   "role_name": "제품·메뉴 기획",
+   "strength": "드묾",
+   "appears_as": "제품·메뉴 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "위생·안전관리",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "분석·시험",
+   "strength": "드묾",
+   "appears_as": "분석·시험 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "위생·안전관리",
+   "role": "ROLE_QC_V1",
+   "role_name": "품질·규격 판정",
+   "strength": "드묾",
+   "appears_as": "품질·규격 판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "위생·안전관리",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "공정·레시피 표준화",
+   "strength": "드묾",
+   "appears_as": "공정·레시피 표준화 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "위생·안전관리",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "생산·조리 현장 운영",
+   "strength": "중심",
+   "appears_as": "생산·조리 현장 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "위생·안전관리",
+   "role": "ROLE_OPSMGMT_V1",
+   "role_name": "급식·점포 관리",
+   "strength": "드묾",
+   "appears_as": "급식·점포 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "위생·안전관리",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구·조사",
+   "strength": "드묾",
+   "appears_as": "연구·조사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "위생·안전관리",
+   "role": "ROLE_COMPLIANCE_V1",
+   "role_name": "위생·표시 규정 관리",
+   "strength": "중심",
+   "appears_as": "위생·표시 규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J4"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "이화학·미생물 분석",
+   "role": "ROLE_PRODPLAN_V1",
+   "role_name": "제품·메뉴 기획",
+   "strength": "드묾",
+   "appears_as": "제품·메뉴 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "이화학·미생물 분석",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "분석·시험",
+   "strength": "중심",
+   "appears_as": "분석·시험 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J4",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "이화학·미생물 분석",
+   "role": "ROLE_QC_V1",
+   "role_name": "품질·규격 판정",
+   "strength": "중심",
+   "appears_as": "품질·규격 판정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "이화학·미생물 분석",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "공정·레시피 표준화",
+   "strength": "드묾",
+   "appears_as": "공정·레시피 표준화 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "이화학·미생물 분석",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "생산·조리 현장 운영",
+   "strength": "드묾",
+   "appears_as": "생산·조리 현장 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "이화학·미생물 분석",
+   "role": "ROLE_OPSMGMT_V1",
+   "role_name": "급식·점포 관리",
+   "strength": "드묾",
+   "appears_as": "급식·점포 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "이화학·미생물 분석",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구·조사",
+   "strength": "중심",
+   "appears_as": "연구·조사 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "이화학·미생물 분석",
+   "role": "ROLE_COMPLIANCE_V1",
+   "role_name": "위생·표시 규정 관리",
+   "strength": "드묾",
+   "appears_as": "위생·표시 규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "저장·유통·포장",
+   "role": "ROLE_PRODPLAN_V1",
+   "role_name": "제품·메뉴 기획",
+   "strength": "드묾",
+   "appears_as": "제품·메뉴 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "저장·유통·포장",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "분석·시험",
+   "strength": "중심",
+   "appears_as": "분석·시험 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "저장·유통·포장",
+   "role": "ROLE_QC_V1",
+   "role_name": "품질·규격 판정",
+   "strength": "드묾",
+   "appears_as": "품질·규격 판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "저장·유통·포장",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "공정·레시피 표준화",
+   "strength": "드묾",
+   "appears_as": "공정·레시피 표준화 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "저장·유통·포장",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "생산·조리 현장 운영",
+   "strength": "드묾",
+   "appears_as": "생산·조리 현장 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "저장·유통·포장",
+   "role": "ROLE_OPSMGMT_V1",
+   "role_name": "급식·점포 관리",
+   "strength": "중심",
+   "appears_as": "급식·점포 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "저장·유통·포장",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구·조사",
+   "strength": "드묾",
+   "appears_as": "연구·조사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "저장·유통·포장",
+   "role": "ROLE_COMPLIANCE_V1",
+   "role_name": "위생·표시 규정 관리",
+   "strength": "드묾",
+   "appears_as": "위생·표시 규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "영양 평가·식단 설계",
+   "role": "ROLE_PRODPLAN_V1",
+   "role_name": "제품·메뉴 기획",
+   "strength": "드묾",
+   "appears_as": "제품·메뉴 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "영양 평가·식단 설계",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "분석·시험",
+   "strength": "드묾",
+   "appears_as": "분석·시험 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "영양 평가·식단 설계",
+   "role": "ROLE_QC_V1",
+   "role_name": "품질·규격 판정",
+   "strength": "드묾",
+   "appears_as": "품질·규격 판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "영양 평가·식단 설계",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "공정·레시피 표준화",
+   "strength": "드묾",
+   "appears_as": "공정·레시피 표준화 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "영양 평가·식단 설계",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "생산·조리 현장 운영",
+   "strength": "드묾",
+   "appears_as": "생산·조리 현장 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "영양 평가·식단 설계",
+   "role": "ROLE_OPSMGMT_V1",
+   "role_name": "급식·점포 관리",
+   "strength": "중심",
+   "appears_as": "급식·점포 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "영양 평가·식단 설계",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구·조사",
+   "strength": "드묾",
+   "appears_as": "연구·조사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "영양 평가·식단 설계",
+   "role": "ROLE_COMPLIANCE_V1",
+   "role_name": "위생·표시 규정 관리",
+   "strength": "드묾",
+   "appears_as": "위생·표시 규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "영양 상담·교육",
+   "role": "ROLE_PRODPLAN_V1",
+   "role_name": "제품·메뉴 기획",
+   "strength": "드묾",
+   "appears_as": "제품·메뉴 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "영양 상담·교육",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "분석·시험",
+   "strength": "드묾",
+   "appears_as": "분석·시험 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "영양 상담·교육",
+   "role": "ROLE_QC_V1",
+   "role_name": "품질·규격 판정",
+   "strength": "드묾",
+   "appears_as": "품질·규격 판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "영양 상담·교육",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "공정·레시피 표준화",
+   "strength": "드묾",
+   "appears_as": "공정·레시피 표준화 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "영양 상담·교육",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "생산·조리 현장 운영",
+   "strength": "드묾",
+   "appears_as": "생산·조리 현장 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "영양 상담·교육",
+   "role": "ROLE_OPSMGMT_V1",
+   "role_name": "급식·점포 관리",
+   "strength": "드묾",
+   "appears_as": "급식·점포 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "영양 상담·교육",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구·조사",
+   "strength": "드묾",
+   "appears_as": "연구·조사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "영양 상담·교육",
+   "role": "ROLE_COMPLIANCE_V1",
+   "role_name": "위생·표시 규정 관리",
+   "strength": "드묾",
+   "appears_as": "위생·표시 규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "급식·점포 운영",
+   "role": "ROLE_PRODPLAN_V1",
+   "role_name": "제품·메뉴 기획",
+   "strength": "드묾",
+   "appears_as": "제품·메뉴 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "급식·점포 운영",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "분석·시험",
+   "strength": "드묾",
+   "appears_as": "분석·시험 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "급식·점포 운영",
+   "role": "ROLE_QC_V1",
+   "role_name": "품질·규격 판정",
+   "strength": "드묾",
+   "appears_as": "품질·규격 판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "급식·점포 운영",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "공정·레시피 표준화",
+   "strength": "드묾",
+   "appears_as": "공정·레시피 표준화 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "급식·점포 운영",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "생산·조리 현장 운영",
+   "strength": "중심",
+   "appears_as": "생산·조리 현장 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "급식·점포 운영",
+   "role": "ROLE_OPSMGMT_V1",
+   "role_name": "급식·점포 관리",
+   "strength": "중심",
+   "appears_as": "급식·점포 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J6",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "급식·점포 운영",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구·조사",
+   "strength": "드묾",
+   "appears_as": "연구·조사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "급식·점포 운영",
+   "role": "ROLE_COMPLIANCE_V1",
+   "role_name": "위생·표시 규정 관리",
+   "strength": "드묾",
+   "appears_as": "위생·표시 규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "조리 공정 표준화",
+   "role": "ROLE_PRODPLAN_V1",
+   "role_name": "제품·메뉴 기획",
+   "strength": "드묾",
+   "appears_as": "제품·메뉴 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "조리 공정 표준화",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "분석·시험",
+   "strength": "드묾",
+   "appears_as": "분석·시험 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "조리 공정 표준화",
+   "role": "ROLE_QC_V1",
+   "role_name": "품질·규격 판정",
+   "strength": "드묾",
+   "appears_as": "품질·규격 판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "조리 공정 표준화",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "공정·레시피 표준화",
+   "strength": "중심",
+   "appears_as": "공정·레시피 표준화 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "조리 공정 표준화",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "생산·조리 현장 운영",
+   "strength": "중심",
+   "appears_as": "생산·조리 현장 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "조리 공정 표준화",
+   "role": "ROLE_OPSMGMT_V1",
+   "role_name": "급식·점포 관리",
+   "strength": "드묾",
+   "appears_as": "급식·점포 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "조리 공정 표준화",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구·조사",
+   "strength": "드묾",
+   "appears_as": "연구·조사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "조리 공정 표준화",
+   "role": "ROLE_COMPLIANCE_V1",
+   "role_name": "위생·표시 규정 관리",
+   "strength": "드묾",
+   "appears_as": "위생·표시 규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "관능 평가·출시 판정",
+   "role": "ROLE_PRODPLAN_V1",
+   "role_name": "제품·메뉴 기획",
+   "strength": "중심",
+   "appears_as": "제품·메뉴 기획 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "관능 평가·출시 판정",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "분석·시험",
+   "strength": "드묾",
+   "appears_as": "분석·시험 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "관능 평가·출시 판정",
+   "role": "ROLE_QC_V1",
+   "role_name": "품질·규격 판정",
+   "strength": "드묾",
+   "appears_as": "품질·규격 판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "관능 평가·출시 판정",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "공정·레시피 표준화",
+   "strength": "드묾",
+   "appears_as": "공정·레시피 표준화 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "관능 평가·출시 판정",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "생산·조리 현장 운영",
+   "strength": "드묾",
+   "appears_as": "생산·조리 현장 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "관능 평가·출시 판정",
+   "role": "ROLE_OPSMGMT_V1",
+   "role_name": "급식·점포 관리",
+   "strength": "드묾",
+   "appears_as": "급식·점포 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "관능 평가·출시 판정",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구·조사",
+   "strength": "중심",
+   "appears_as": "연구·조사 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J2",
+    "J3",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "관능 평가·출시 판정",
+   "role": "ROLE_COMPLIANCE_V1",
+   "role_name": "위생·표시 규정 관리",
+   "strength": "드묾",
+   "appears_as": "위생·표시 규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "표시·인증·법규",
+   "role": "ROLE_PRODPLAN_V1",
+   "role_name": "제품·메뉴 기획",
+   "strength": "드묾",
+   "appears_as": "제품·메뉴 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "표시·인증·법규",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "분석·시험",
+   "strength": "드묾",
+   "appears_as": "분석·시험 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "표시·인증·법규",
+   "role": "ROLE_QC_V1",
+   "role_name": "품질·규격 판정",
+   "strength": "중심",
+   "appears_as": "품질·규격 판정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "표시·인증·법규",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "공정·레시피 표준화",
+   "strength": "드묾",
+   "appears_as": "공정·레시피 표준화 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "표시·인증·법규",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "생산·조리 현장 운영",
+   "strength": "드묾",
+   "appears_as": "생산·조리 현장 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "표시·인증·법규",
+   "role": "ROLE_OPSMGMT_V1",
+   "role_name": "급식·점포 관리",
+   "strength": "드묾",
+   "appears_as": "급식·점포 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "표시·인증·법규",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구·조사",
+   "strength": "드묾",
+   "appears_as": "연구·조사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "표시·인증·법규",
+   "role": "ROLE_COMPLIANCE_V1",
+   "role_name": "위생·표시 규정 관리",
+   "strength": "중심",
+   "appears_as": "위생·표시 규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J6"
+   ]
+  }
+ ]
+}

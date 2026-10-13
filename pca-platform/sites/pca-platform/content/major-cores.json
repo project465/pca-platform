@@ -1290,23 +1290,185 @@
    "code": "FOOD_CORE_V1",
    "family": "STEM",
    "major": "FOOD",
-   "name_ko": "식품공학",
-   "name_en": "Food Science and Engineering",
-   "assessment_version": null,
-   "status": "planned",
+   "name_ko": "식품",
+   "name_en": "Food Science, Nutrition and Culinary",
+   "assessment_version": "FOOD_V1",
+   "status": "building",
    "maturity": "FOUNDATION",
    "aliases": [
-    "식품영양학과",
     "식품공학과",
-    "식품생명공학과"
+    "식품영양학과",
+    "식품생명공학과",
+    "외식조리학과",
+    "조리학과",
+    "제과제빵학과",
+    "식품산업학과",
+    "푸드테크학과"
    ],
    "markets": [
-    "KR",
-    "GLOBAL"
+    "KR"
    ],
-   "files": {},
-   "domain_count": null,
-   "axis_count": 8
+   "files": {
+    "taxonomy": "food-v1-taxonomy.json",
+    "domains": "food-v1-domains.json",
+    "checklists": "food-v1-checklists.json",
+    "items_blueprint": "food-v1-items-blueprint.json",
+    "checklist_additions": "food-v1-checklist-additions.json",
+    "common_additions": "food-v1-common-additions.json",
+    "items": "food-v1-items.json",
+    "relations": "food-v1-relations.json",
+    "constructs": "food-v1-constructs.json"
+   },
+   "domain_count": 12,
+   "axis_count": 8,
+   "aliases_note": "`농업생명과학과` 와 `축산학과` 는 넣지 않았다. **한 학과 이름이 두 Core 로 갈리지 않는다**: 그 두 이름이 묻는 판단은 기르는 쪽이고 이 Core 가 묻는 것은 기른 것을 먹을 수 있게 만들고 가리는 쪽이라, 원예·산림 Core 가 서는 날 그 전공을 아는 분이 가른다",
+   "role_function_count": 8,
+   "packs": {
+    "industry": "food-industry-packs.json",
+    "role": "food-role-packs.json"
+   },
+   "domains_note": "열둘은 앞 Core 들의 열둘을 맞춘 수가 아니다. 식품계열이 실제로 내리는 판단을 세어 개발과 공정과 품질과 위생과 분석과 유통과 영양 평가와 영양 상담과 급식 운영과 조리 표준화와 관능 평가와 표시·법규까지 열둘이고, `맛을 잘 본다` 는 관능 평가의 한 조건이라 영역으로 두지 않았다. 품질 판정과 분석을 나눈 까닭은 뒤엣것이 값을 내는 일이고 앞엣것이 그 값으로 합격인지 가르는 일이어서다",
+   "packs_note": "산업팩은 여덟이고 식품계열이 실제로 서는 자리로 갈랐다. **`식품` 을 산업으로 두지 않는다**: 그것은 다루는 것의 이름이지 서는 자리가 아니고, 같은 원료를 놓고 공장과 점포와 급식소와 병원이 서로 다른 판단을 묻는다. 제조와 외식을 따로 둔 까닭은 앞엣것은 배치마다 같은 품질이, 뒤엣것은 그 자리에서 손님이 기다리는 동안 가려야 하는 것이 기준을 정하기 때문이다",
+   "measurement_note": "**맛의 취향을 재지 않는다.** 묻는 것은 `단맛을 좋아한다` 가 아니라 무엇을 직접 정했고 그것이 어디까지 갔는가다. 짝 표가 선호 문항에 소유 사다리 넷을 붙이는 길을 막고 있고, 문항마다 primary construct 를 적어 두어 추론으로 지나갈 수 없다",
+   "open_to_students": false,
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다",
+   "fixtures": {
+    "personas": "sites/pca-platform/assessment/FOOD_V1/personas.json",
+    "bank_lock": "sites/pca-platform/assessment/FOOD_V1/bank-lock.json",
+    "measurement_map": "docs/metri/FOOD_CORE_V1_MEASURE.md",
+    "gaming_doc": "docs/metri/FOOD_CORE_V1_GAMING.md"
+   },
+   "specializations": [
+    {
+     "code": "SPEC_FOOD_CULINARY",
+     "name_ko": "외식조리",
+     "note": "그 자리에서 손님이 기다리는 동안 내야 하는 쪽",
+     "authored": true,
+     "domain_emphasis": {
+      "lead": [
+       "TD10",
+       "TD09",
+       "TD11"
+      ],
+      "support": [
+       "TD04",
+       "TD01",
+       "TD07"
+      ],
+      "rare": [
+       "TD05",
+       "TD12",
+       "TD06"
+      ],
+      "note": "설명하는 차례만 정한다. 축 수준과 묶음 조건과 확인된 축 개수에 들어가지 않는다"
+     },
+     "industry_mapping": {
+      "lead": [
+       "INDUSTRY_FOODSERVICE_V1",
+       "INDUSTRY_INSTFOOD_V1",
+       "INDUSTRY_RETAIL_V1"
+      ],
+      "support": [
+       "INDUSTRY_FOODMFG_V1",
+       "INDUSTRY_FOODTECH_V1"
+      ]
+     },
+     "role_mapping": {
+      "lead": [
+       "ROLE_FIELD_V1",
+       "ROLE_STANDARD_V1",
+       "ROLE_PRODPLAN_V1"
+      ],
+      "support": [
+       "ROLE_OPSMGMT_V1",
+       "ROLE_COMPLIANCE_V1"
+      ]
+     },
+     "examples": {
+      "scene": [
+       "손님이 몰리는 시간에 낼 차례를 그 자리에서 고친다",
+       "손 크기로 하던 것을 계량 단위로 바꿔 지점에 맞춘다",
+       "낼 메뉴와 접을 메뉴를 관능 결과로 가른다"
+      ],
+      "artifacts": [
+       "표준 레시피 한 벌",
+       "작업 차례와 기준 시간",
+       "원가와 폐기 집계",
+       "그날의 위생 점검 기록"
+      ]
+     },
+     "evidence_action": {
+      "first": "맡았던 메뉴 하나를 계량 단위와 기준 시간으로 적어 한 장으로 남긴다",
+      "next": "그 기준으로 다른 사람이 만든 결과를 내 것과 견주어 벌어진 만큼의 까닭을 적어 둔다",
+      "note": "할 일의 재료는 그 영역의 `verify_targets` 와 `artifacts` 에서 가져온다. 여기서 새 재료를 지어내지 않는다"
+     }
+    },
+    {
+     "code": "SPEC_FOOD_FOODTECH",
+     "name_ko": "푸드테크",
+     "note": "쓰던 원료가 없어 물성부터 찾아야 하는 쪽",
+     "authored": true,
+     "domain_emphasis": {
+      "lead": [
+       "TD01",
+       "TD02",
+       "TD05"
+      ],
+      "support": [
+       "TD11",
+       "TD03",
+       "TD12"
+      ],
+      "rare": [
+       "TD07",
+       "TD08",
+       "TD09"
+      ],
+      "note": "설명하는 차례만 정한다. 축 수준과 묶음 조건과 확인된 축 개수에 들어가지 않는다"
+     },
+     "industry_mapping": {
+      "lead": [
+       "INDUSTRY_FOODTECH_V1",
+       "INDUSTRY_FOODMFG_V1",
+       "INDUSTRY_HEALTHFOOD_V1"
+      ],
+      "support": [
+       "INDUSTRY_FOODSAFETY_V1",
+       "INDUSTRY_RETAIL_V1"
+      ]
+     },
+     "role_mapping": {
+      "lead": [
+       "ROLE_PRODPLAN_V1",
+       "ROLE_RESEARCH_V1",
+       "ROLE_STANDARD_V1"
+      ],
+      "support": [
+       "ROLE_ANALYSIS_V1",
+       "ROLE_QC_V1"
+      ]
+     },
+     "examples": {
+      "scene": [
+       "모르는 것이 많은 새 원료에서 이번에 답할 물음을 좁힌다",
+       "참고할 배합이 없어 조건을 바꿔 가며 되는 자리를 찾는다",
+       "작게 되던 것이 크게 안 되는 단계를 좁힌다"
+      ],
+      "artifacts": [
+       "배합표와 시작품 기록",
+       "공정 흐름도와 조건 기록",
+       "물성 측정 자료",
+       "적을 수 있는 범위를 적은 한 장"
+      ]
+     },
+     "evidence_action": {
+      "first": "맡았던 시작품 하나에서 바꿔 본 조건과 그 결과를 한 장으로 남긴다",
+      "next": "그 결과를 익숙한 시판품이나 목표 물성에 대어 보고 벌어진 만큼의 까닭을 적어 둔다",
+      "note": "할 일의 재료는 그 영역의 `verify_targets` 와 `artifacts` 에서 가져온다. 여기서 새 재료를 지어내지 않는다"
+     }
+    }
+   ],
+   "specializations_note": "둘이다. 외식조리학과가 `specialization_required` 로 서 있어 갈래 없이는 자리가 열리지 않고, K푸드테크전공은 묻는 판단이 새 원료의 물성과 규모 확대 쪽이라 따로 둔다. **쓰이지 않는 갈래를 미리 적어 두지 않는다**: 영양·급식 갈래와 품질·안전 갈래는 그 자리를 가리키는 학과나 트랙이 생기는 날 그 전공을 아는 분이 쓴다"
   },
   {
    "code": "BIZ_CORE_V1",
@@ -2380,21 +2542,54 @@
    "family": "HUMANITIES_SOCIAL",
    "major": "PSY",
    "name_ko": "심리학",
-   "name_en": "Psychology",
-   "assessment_version": null,
-   "status": "planned",
+   "name_en": "Psychology and Counseling",
+   "assessment_version": "PSY_V1",
+   "status": "building",
    "maturity": "FOUNDATION",
    "aliases": [
     "심리학과",
+    "심리상담학과",
     "상담심리학과",
-    "인지과학과"
+    "아동심리학과",
+    "산업심리학과",
+    "인지과학과",
+    "심리치료학과"
    ],
    "markets": [
     "KR"
    ],
-   "files": {},
-   "domain_count": null,
-   "axis_count": 8
+   "files": {
+    "taxonomy": "psy-v1-taxonomy.json",
+    "domains": "psy-v1-domains.json",
+    "checklists": "psy-v1-checklists.json",
+    "items_blueprint": "psy-v1-items-blueprint.json",
+    "checklist_additions": "psy-v1-checklist-additions.json",
+    "common_additions": "psy-v1-common-additions.json",
+    "items": "psy-v1-items.json",
+    "relations": "psy-v1-relations.json",
+    "constructs": "psy-v1-constructs.json"
+   },
+   "domain_count": 12,
+   "axis_count": 8,
+   "aliases_note": "`사회복지학과` 와 `아동가족학과` 는 넣지 않았다. **한 학과 이름이 두 Core 로 갈리지 않는다**: 그 두 이름이 묻는 판단은 제도와 자원을 잇는 쪽이고 이 Core 가 묻는 것은 재고 판정하고 개입하는 쪽이라, 그 전공을 아는 분이 확인해 주실 때까지 비워 둔다",
+   "role_function_count": 8,
+   "packs": {
+    "industry": "psy-industry-packs.json",
+    "role": "psy-role-packs.json"
+   },
+   "domains_note": "열둘은 앞 Core 들의 열둘을 맞춘 수가 아니다. 심리·상담계열이 실제로 내리는 판단을 세어 연구 설계와 측정과 자료 수집과 통계와 평가와 개념화와 상담 운영과 위기 대응과 프로그램과 조직·인사와 사용자 조사와 윤리·기록까지 열둘이고, `공감하며 듣기` 같은 **일하는 방식**은 영역으로 두지 않았다. 측정·척도와 심리 평가를 나눈 까닭은 앞엣것이 재는 도구가 믿을 만한지를 보는 일이고 뒤엣것이 그 값을 한 사람의 소견으로 옮기는 일이어서다",
+   "packs_note": "산업팩은 여덟이고 심리·상담계열이 실제로 서는 자리로 갈랐다. **`심리상담` 을 산업으로 두지 않는다**: 그것은 하는 일의 이름이지 서는 자리가 아니고, 같은 일을 놓고 사설 센터와 병원과 학교와 공공기관이 서로 다른 판단을 묻는다. 상담·심리치료와 병원·임상을 따로 둔 까닭은 앞엣것은 그 사람이 다음 주에도 오는지가, 뒤엣것은 다른 전문직과 판단을 맞추는 일이 기준을 정하기 때문이다",
+   "measurement_note": "**성격 유형을 재지 않는다.** 이 Core 가 묻는 것은 `사람을 좋아한다` 나 `공감을 잘한다` 가 아니라 무엇을 직접 정했고 그것이 어디까지 갔는가다. 짝 표가 선호 문항에 소유 사다리 넷을 붙이는 길을 막고 있고, 문항마다 primary construct 를 적어 두어 추론으로 지나갈 수 없다",
+   "open_to_students": false,
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다",
+   "fixtures": {
+    "personas": "sites/pca-platform/assessment/PSY_V1/personas.json",
+    "bank_lock": "sites/pca-platform/assessment/PSY_V1/bank-lock.json",
+    "measurement_map": "docs/metri/PSY_CORE_V1_MEASURE.md",
+    "gaming_doc": "docs/metri/PSY_CORE_V1_GAMING.md"
+   },
+   "specializations": [],
+   "specializations_note": "없다. 배재대 심리상담학과는 트랙을 두지 않아 갈래 없이 Core 로 바로 간다. **쓰이지 않는 갈래를 미리 적어 두지 않는다**: 상담·임상 갈래와 산업·조직 갈래는 그 자리를 가리키는 학과나 트랙이 생기는 날 그 전공을 아는 분이 쓴다"
   },
   {
    "code": "MEDIA_CORE_V1",
@@ -2724,23 +2919,120 @@
    "code": "EDU_CORE_V1",
    "family": "HUMANITIES_SOCIAL",
    "major": "EDU",
-   "name_ko": "교육학",
+   "name_ko": "교육",
    "name_en": "Education",
-   "assessment_version": null,
-   "status": "planned",
+   "assessment_version": "EDU_V1",
+   "status": "building",
    "maturity": "FOUNDATION",
    "aliases": [
     "교육학과",
+    "유아교육과",
+    "초등교육과",
+    "특수교육학과",
     "교육공학과",
     "평생교육학과",
-    "특수교육학과"
+    "아동보육학과"
    ],
    "markets": [
     "KR"
    ],
-   "files": {},
-   "domain_count": null,
-   "axis_count": 8
+   "files": {
+    "taxonomy": "edu-v1-taxonomy.json",
+    "domains": "edu-v1-domains.json",
+    "checklists": "edu-v1-checklists.json",
+    "items_blueprint": "edu-v1-items-blueprint.json",
+    "checklist_additions": "edu-v1-checklist-additions.json",
+    "common_additions": "edu-v1-common-additions.json",
+    "items": "edu-v1-items.json",
+    "relations": "edu-v1-relations.json",
+    "constructs": "edu-v1-constructs.json"
+   },
+   "domain_count": 12,
+   "axis_count": 8,
+   "aliases_note": "`아동청소년학과` 와 `상담학과` 는 넣지 않았다. **한 학과 이름이 두 Core 로 갈리지 않는다**: 두 이름은 `COUN_CORE_V1` 이 들고 있고, 그 학과가 어느 자로 재어졌는지 아무도 모르게 되는 것이 그 규칙을 둔 까닭이다",
+   "role_function_count": 8,
+   "packs": {
+    "industry": "edu-industry-packs.json",
+    "role": "edu-role-packs.json"
+   },
+   "domains_note": "열둘은 앞 Core 들의 열둘을 맞춘 수가 아니다. 교육계열이 실제로 내리는 판단을 세어 교육과정과 수업 설계와 수업 운영과 평가와 진단과 생활지도와 보호자 소통과 특수교육과 자료 제작과 사업 운영과 자료 분석과 안전·기록까지 열둘이다. 수업 설계와 수업 운영을 나눈 까닭은 앞엣것이 미리 활동과 차례를 정하는 일이고 뒤엣것이 그 자리에서 반응을 보고 바꾸는 일이어서다. `잘 설명하기` 는 열두 영역 전부에 걸쳐 있는 일하는 방식이라 영역으로 두지 않았고, `아이를 사랑하기` 는 이 검사가 재는 것이 아니다",
+   "packs_note": "산업팩은 여덟이고 교육계열이 실제로 서는 자리로 갈랐다. **`교육` 을 산업으로 두지 않는다**: 그것은 하는 일의 이름이지 서는 자리가 아니고, 같은 일을 놓고 유아기관과 학교와 학원과 기업 교육팀이 서로 다른 판단을 묻는다. 학교와 학원을 따로 둔 까닭은 앞엣것은 정해진 교육과정과 생활지도가, 뒤엣것은 다음 달에도 오는지가 기준을 정하기 때문이다",
+   "measurement_note": "**성향을 재지 않는다.** 묻는 것은 `아이를 좋아한다` 가 아니라 무엇을 직접 정했고 그것이 어디까지 갔는가다. 짝 표가 선호 문항에 소유 사다리 넷을 붙이는 길을 막고 있고, 문항마다 primary construct 를 적어 두어 추론으로 지나갈 수 없다",
+   "open_to_students": false,
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다",
+   "fixtures": {
+    "personas": "sites/pca-platform/assessment/EDU_V1/personas.json",
+    "bank_lock": "sites/pca-platform/assessment/EDU_V1/bank-lock.json",
+    "measurement_map": "docs/metri/EDU_CORE_V1_MEASURE.md",
+    "gaming_doc": "docs/metri/EDU_CORE_V1_GAMING.md"
+   },
+   "specializations": [
+    {
+     "code": "SPEC_EDU_EARLYCHILD",
+     "name_ko": "유아교육",
+     "note": "말로 설명하지 못하는 사람과 하루를 보내는 쪽",
+     "authored": true,
+     "domain_emphasis": {
+      "lead": [
+       "TD03",
+       "TD06",
+       "TD12"
+      ],
+      "support": [
+       "TD05",
+       "TD07",
+       "TD09"
+      ],
+      "rare": [
+       "TD04",
+       "TD10",
+       "TD11"
+      ],
+      "note": "설명하는 차례만 정한다. 축 수준과 묶음 조건과 확인된 축 개수에 들어가지 않는다"
+     },
+     "industry_mapping": {
+      "lead": [
+       "INDUSTRY_ECE_V1",
+       "INDUSTRY_LIFELONG_V1",
+       "INDUSTRY_PUBEDU_V1"
+      ],
+      "support": [
+       "INDUSTRY_SCHOOL_V1",
+       "INDUSTRY_PUBLISH_V1"
+      ]
+     },
+     "role_mapping": {
+      "lead": [
+       "ROLE_TEACH_V1",
+       "ROLE_SAFETY_V1",
+       "ROLE_MATERIAL_V1"
+      ],
+      "support": [
+       "ROLE_CURRICULUM_V1",
+       "ROLE_ADMIN_V1"
+      ]
+     },
+     "examples": {
+      "scene": [
+       "따라오지 않는 자리에서 준비한 활동을 그 자리에서 바꾼다",
+       "기다려 줄 것과 바로 끊을 것을 그 자리에서 가른다",
+       "보호자에게 알릴 범위를 그날의 기록에서 가른다"
+      ],
+      "artifacts": [
+       "하루 기록과 알림장",
+       "관찰 기록과 지원 계획",
+       "활동 자료 한 벌",
+       "안전 점검과 조치 기록"
+      ]
+     },
+     "evidence_action": {
+      "first": "맡았던 하루 가운데 하나에서 바꾼 활동과 그 까닭을 한 장으로 남긴다",
+      "next": "그 관찰을 다른 때의 모습이나 보호자가 말한 모습에 대어 보고 벌어진 만큼의 까닭을 적어 둔다",
+      "note": "할 일의 재료는 그 영역의 `verify_targets` 와 `artifacts` 에서 가져온다. 여기서 새 재료를 지어내지 않는다"
+     }
+    }
+   ],
+   "specializations_note": "하나다. 배재대 유아교육과가 가리키는 자리이고, **쓰이지 않는 갈래를 미리 적어 두지 않는다**: 초등·중등 교과 갈래와 평생교육 갈래는 그 자리를 가리키는 학과가 생기는 날 그 전공을 아는 분이 쓴다"
   },
   {
    "code": "COUN_CORE_V1",

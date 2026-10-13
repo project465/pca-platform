@@ -1,0 +1,2378 @@
+{
+ "schema_version": "edu-v1-relations.1",
+ "core": "EDU_CORE_V1",
+ "note": "기술영역과 산업, 기술영역과 역할의 관계를 두 표로 둔다. 세 축을 미리 곱해 두지 않는다: 열두 영역과 여덟 산업과 여덟 역할을 곱하면 칠백예순여덟 줄이 되고 그만큼의 줄을 사람이 손으로 유지할 수 없다. 어느 줄도 점수를 만들지 않는다: `strength` 는 설명하는 차례를 정하고 `appears_as` 는 결과지가 그 말로 옮겨 적을 때 읽는다",
+ "combine_rule": "산업 하나와 역할 하나를 함께 고른 사람에게는 두 표에서 같은 영역의 줄을 뽑아 나란히 놓는다. 둘 다 `중심` 인 영역이 먼저 서고, 한쪽만 중심인 영역이 다음이고, 양쪽이 드문 영역은 적지 않는다",
+ "td_industry": [
+  {
+   "td": "TD01",
+   "td_name": "교육과정 설계",
+   "industry": "INDUSTRY_ECE_V1",
+   "industry_name": "유아교육·보육",
+   "strength": "있음",
+   "appears_as": "유아교육·보육 에서는 한 해 계획을 할 것으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "한 해 계획을 할 것으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "교육과정 설계",
+   "industry": "INDUSTRY_SCHOOL_V1",
+   "industry_name": "초·중·고 학교",
+   "strength": "중심",
+   "appears_as": "초·중·고 학교 에서는 성취기준을 가르칠 내용으로 옮기는가 · 내 편성이 다음 해에 쓰이는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ],
+   "dimensions": [
+    "성취기준을 가르칠 내용으로 옮기는가",
+    "내 편성이 다음 해에 쓰이는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "교육과정 설계",
+   "industry": "INDUSTRY_PRIVATE_V1",
+   "industry_name": "학원·사교육",
+   "strength": "드묾",
+   "appears_as": "학원·사교육 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "교육과정 설계",
+   "industry": "INDUSTRY_CORPEDU_V1",
+   "industry_name": "기업교육·HRD",
+   "strength": "드묾",
+   "appears_as": "기업교육·HRD 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "교육과정 설계",
+   "industry": "INDUSTRY_EDTECH_V1",
+   "industry_name": "에듀테크·콘텐츠",
+   "strength": "드묾",
+   "appears_as": "에듀테크·콘텐츠 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "교육과정 설계",
+   "industry": "INDUSTRY_PUBEDU_V1",
+   "industry_name": "교육청·공공 교육사업",
+   "strength": "드묾",
+   "appears_as": "교육청·공공 교육사업 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "교육과정 설계",
+   "industry": "INDUSTRY_LIFELONG_V1",
+   "industry_name": "평생교육·지역",
+   "strength": "드묾",
+   "appears_as": "평생교육·지역 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "교육과정 설계",
+   "industry": "INDUSTRY_PUBLISH_V1",
+   "industry_name": "평가·교재 출판",
+   "strength": "중심",
+   "appears_as": "평가·교재 출판 에서는 담을 범위를 가르는가 · 기준을 집필 내용으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ],
+   "dimensions": [
+    "담을 범위를 가르는가",
+    "기준을 집필 내용으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수업 설계",
+   "industry": "INDUSTRY_ECE_V1",
+   "industry_name": "유아교육·보육",
+   "strength": "드묾",
+   "appears_as": "유아교육·보육 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "수업 설계",
+   "industry": "INDUSTRY_SCHOOL_V1",
+   "industry_name": "초·중·고 학교",
+   "strength": "중심",
+   "appears_as": "초·중·고 학교 에서는 교안을 남겨 이어 쓰게 하는가 · 쓸 교구와 활동을 골라 쓰는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ],
+   "dimensions": [
+    "교안을 남겨 이어 쓰게 하는가",
+    "쓸 교구와 활동을 골라 쓰는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수업 설계",
+   "industry": "INDUSTRY_PRIVATE_V1",
+   "industry_name": "학원·사교육",
+   "strength": "있음",
+   "appears_as": "학원·사교육 에서는 한 차시에 담을 양을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "한 차시에 담을 양을 정하는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수업 설계",
+   "industry": "INDUSTRY_CORPEDU_V1",
+   "industry_name": "기업교육·HRD",
+   "strength": "있음",
+   "appears_as": "기업교육·HRD 에서는 한 모듈에 담을 양을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "한 모듈에 담을 양을 정하는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수업 설계",
+   "industry": "INDUSTRY_EDTECH_V1",
+   "industry_name": "에듀테크·콘텐츠",
+   "strength": "중심",
+   "appears_as": "에듀테크·콘텐츠 에서는 학습 흐름을 차례로 적는가 · 흐름을 다른 사람이 이어 만들게 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J5"
+   ],
+   "dimensions": [
+    "학습 흐름을 차례로 적는가",
+    "흐름을 다른 사람이 이어 만들게 남기는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수업 설계",
+   "industry": "INDUSTRY_PUBEDU_V1",
+   "industry_name": "교육청·공공 교육사업",
+   "strength": "드묾",
+   "appears_as": "교육청·공공 교육사업 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "수업 설계",
+   "industry": "INDUSTRY_LIFELONG_V1",
+   "industry_name": "평생교육·지역",
+   "strength": "드묾",
+   "appears_as": "평생교육·지역 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "수업 설계",
+   "industry": "INDUSTRY_PUBLISH_V1",
+   "industry_name": "평가·교재 출판",
+   "strength": "드묾",
+   "appears_as": "평가·교재 출판 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "수업 운영",
+   "industry": "INDUSTRY_ECE_V1",
+   "industry_name": "유아교육·보육",
+   "strength": "있음",
+   "appears_as": "유아교육·보육 에서는 그 자리에서 활동을 바꾸는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "그 자리에서 활동을 바꾸는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "수업 운영",
+   "industry": "INDUSTRY_SCHOOL_V1",
+   "industry_name": "초·중·고 학교",
+   "strength": "있음",
+   "appears_as": "초·중·고 학교 에서는 그 시간 안에서 할 것을 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "그 시간 안에서 할 것을 고르는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "수업 운영",
+   "industry": "INDUSTRY_PRIVATE_V1",
+   "industry_name": "학원·사교육",
+   "strength": "있음",
+   "appears_as": "학원·사교육 에서는 안 따라오면 그 자리에서 바꾸는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "안 따라오면 그 자리에서 바꾸는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "수업 운영",
+   "industry": "INDUSTRY_CORPEDU_V1",
+   "industry_name": "기업교육·HRD",
+   "strength": "드묾",
+   "appears_as": "기업교육·HRD 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "수업 운영",
+   "industry": "INDUSTRY_EDTECH_V1",
+   "industry_name": "에듀테크·콘텐츠",
+   "strength": "있음",
+   "appears_as": "에듀테크·콘텐츠 에서는 안 돌아가는 자리에서 방식을 바꾸는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "안 돌아가는 자리에서 방식을 바꾸는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "수업 운영",
+   "industry": "INDUSTRY_PUBEDU_V1",
+   "industry_name": "교육청·공공 교육사업",
+   "strength": "드묾",
+   "appears_as": "교육청·공공 교육사업 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "수업 운영",
+   "industry": "INDUSTRY_LIFELONG_V1",
+   "industry_name": "평생교육·지역",
+   "strength": "드묾",
+   "appears_as": "평생교육·지역 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "수업 운영",
+   "industry": "INDUSTRY_PUBLISH_V1",
+   "industry_name": "평가·교재 출판",
+   "strength": "드묾",
+   "appears_as": "평가·교재 출판 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "평가 설계·채점",
+   "industry": "INDUSTRY_ECE_V1",
+   "industry_name": "유아교육·보육",
+   "strength": "드묾",
+   "appears_as": "유아교육·보육 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "평가 설계·채점",
+   "industry": "INDUSTRY_SCHOOL_V1",
+   "industry_name": "초·중·고 학교",
+   "strength": "중심",
+   "appears_as": "초·중·고 학교 에서는 되었다고 볼 기준을 적는가 · 채점을 다른 채점자와 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ],
+   "dimensions": [
+    "되었다고 볼 기준을 적는가",
+    "채점을 다른 채점자와 맞추는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "평가 설계·채점",
+   "industry": "INDUSTRY_PRIVATE_V1",
+   "industry_name": "학원·사교육",
+   "strength": "있음",
+   "appears_as": "학원·사교육 에서는 오답 자료를 쌓아 쓰는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "오답 자료를 쌓아 쓰는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "평가 설계·채점",
+   "industry": "INDUSTRY_CORPEDU_V1",
+   "industry_name": "기업교육·HRD",
+   "strength": "있음",
+   "appears_as": "기업교육·HRD 에서는 수료 기준을 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "수료 기준을 적는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "평가 설계·채점",
+   "industry": "INDUSTRY_EDTECH_V1",
+   "industry_name": "에듀테크·콘텐츠",
+   "strength": "드묾",
+   "appears_as": "에듀테크·콘텐츠 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "평가 설계·채점",
+   "industry": "INDUSTRY_PUBEDU_V1",
+   "industry_name": "교육청·공공 교육사업",
+   "strength": "드묾",
+   "appears_as": "교육청·공공 교육사업 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "평가 설계·채점",
+   "industry": "INDUSTRY_LIFELONG_V1",
+   "industry_name": "평생교육·지역",
+   "strength": "드묾",
+   "appears_as": "평생교육·지역 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "평가 설계·채점",
+   "industry": "INDUSTRY_PUBLISH_V1",
+   "industry_name": "평가·교재 출판",
+   "strength": "중심",
+   "appears_as": "평가·교재 출판 에서는 측정할 것을 문항으로 옮기는가 · 정답 근거를 기준에 대어 보는가 · 틀린 자리를 찾아 고치는가 · 채점 규칙을 적어 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J5",
+    "J6",
+    "J7"
+   ],
+   "dimensions": [
+    "측정할 것을 문항으로 옮기는가",
+    "정답 근거를 기준에 대어 보는가",
+    "틀린 자리를 찾아 고치는가",
+    "채점 규칙을 적어 남기는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "학습자 진단·개별화",
+   "industry": "INDUSTRY_ECE_V1",
+   "industry_name": "유아교육·보육",
+   "strength": "중심",
+   "appears_as": "유아교육·보육 에서는 관찰할 것을 항목으로 적는가 · 관찰을 다른 때의 모습과 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ],
+   "dimensions": [
+    "관찰할 것을 항목으로 적는가",
+    "관찰을 다른 때의 모습과 맞추는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "학습자 진단·개별화",
+   "industry": "INDUSTRY_SCHOOL_V1",
+   "industry_name": "초·중·고 학교",
+   "strength": "있음",
+   "appears_as": "초·중·고 학교 에서는 따라오지 못하는 자리를 짚는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "따라오지 못하는 자리를 짚는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "학습자 진단·개별화",
+   "industry": "INDUSTRY_PRIVATE_V1",
+   "industry_name": "학원·사교육",
+   "strength": "있음",
+   "appears_as": "학원·사교육 에서는 들어올 때 수준을 재는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "들어올 때 수준을 재는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "학습자 진단·개별화",
+   "industry": "INDUSTRY_CORPEDU_V1",
+   "industry_name": "기업교육·HRD",
+   "strength": "드묾",
+   "appears_as": "기업교육·HRD 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "학습자 진단·개별화",
+   "industry": "INDUSTRY_EDTECH_V1",
+   "industry_name": "에듀테크·콘텐츠",
+   "strength": "드묾",
+   "appears_as": "에듀테크·콘텐츠 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "학습자 진단·개별화",
+   "industry": "INDUSTRY_PUBEDU_V1",
+   "industry_name": "교육청·공공 교육사업",
+   "strength": "드묾",
+   "appears_as": "교육청·공공 교육사업 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "학습자 진단·개별화",
+   "industry": "INDUSTRY_LIFELONG_V1",
+   "industry_name": "평생교육·지역",
+   "strength": "있음",
+   "appears_as": "평생교육·지역 에서는 따라오지 못하는 자리를 짚는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "따라오지 못하는 자리를 짚는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "학습자 진단·개별화",
+   "industry": "INDUSTRY_PUBLISH_V1",
+   "industry_name": "평가·교재 출판",
+   "strength": "드묾",
+   "appears_as": "평가·교재 출판 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "생활지도·행동지원",
+   "industry": "INDUSTRY_ECE_V1",
+   "industry_name": "유아교육·보육",
+   "strength": "중심",
+   "appears_as": "유아교육·보육 에서는 되풀이되는 행동의 까닭을 좁히는가 · 지원 범위를 그 자리에서 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ],
+   "dimensions": [
+    "되풀이되는 행동의 까닭을 좁히는가",
+    "지원 범위를 그 자리에서 가르는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "생활지도·행동지원",
+   "industry": "INDUSTRY_SCHOOL_V1",
+   "industry_name": "초·중·고 학교",
+   "strength": "있음",
+   "appears_as": "초·중·고 학교 에서는 되풀이되는 행동의 조건을 바꾸는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "되풀이되는 행동의 조건을 바꾸는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "생활지도·행동지원",
+   "industry": "INDUSTRY_PRIVATE_V1",
+   "industry_name": "학원·사교육",
+   "strength": "드묾",
+   "appears_as": "학원·사교육 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "생활지도·행동지원",
+   "industry": "INDUSTRY_CORPEDU_V1",
+   "industry_name": "기업교육·HRD",
+   "strength": "드묾",
+   "appears_as": "기업교육·HRD 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "생활지도·행동지원",
+   "industry": "INDUSTRY_EDTECH_V1",
+   "industry_name": "에듀테크·콘텐츠",
+   "strength": "드묾",
+   "appears_as": "에듀테크·콘텐츠 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "생활지도·행동지원",
+   "industry": "INDUSTRY_PUBEDU_V1",
+   "industry_name": "교육청·공공 교육사업",
+   "strength": "드묾",
+   "appears_as": "교육청·공공 교육사업 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "생활지도·행동지원",
+   "industry": "INDUSTRY_LIFELONG_V1",
+   "industry_name": "평생교육·지역",
+   "strength": "드묾",
+   "appears_as": "평생교육·지역 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "생활지도·행동지원",
+   "industry": "INDUSTRY_PUBLISH_V1",
+   "industry_name": "평가·교재 출판",
+   "strength": "드묾",
+   "appears_as": "평가·교재 출판 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "상담·보호자 소통",
+   "industry": "INDUSTRY_ECE_V1",
+   "industry_name": "유아교육·보육",
+   "strength": "있음",
+   "appears_as": "유아교육·보육 에서는 보호자에게 알린 것을 적는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "보호자에게 알린 것을 적는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "상담·보호자 소통",
+   "industry": "INDUSTRY_SCHOOL_V1",
+   "industry_name": "초·중·고 학교",
+   "strength": "드묾",
+   "appears_as": "초·중·고 학교 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "상담·보호자 소통",
+   "industry": "INDUSTRY_PRIVATE_V1",
+   "industry_name": "학원·사교육",
+   "strength": "드묾",
+   "appears_as": "학원·사교육 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "상담·보호자 소통",
+   "industry": "INDUSTRY_CORPEDU_V1",
+   "industry_name": "기업교육·HRD",
+   "strength": "드묾",
+   "appears_as": "기업교육·HRD 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "상담·보호자 소통",
+   "industry": "INDUSTRY_EDTECH_V1",
+   "industry_name": "에듀테크·콘텐츠",
+   "strength": "드묾",
+   "appears_as": "에듀테크·콘텐츠 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "상담·보호자 소통",
+   "industry": "INDUSTRY_PUBEDU_V1",
+   "industry_name": "교육청·공공 교육사업",
+   "strength": "드묾",
+   "appears_as": "교육청·공공 교육사업 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "상담·보호자 소통",
+   "industry": "INDUSTRY_LIFELONG_V1",
+   "industry_name": "평생교육·지역",
+   "strength": "있음",
+   "appears_as": "평생교육·지역 에서는 참여자의 사정을 요구로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "참여자의 사정을 요구로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "상담·보호자 소통",
+   "industry": "INDUSTRY_PUBLISH_V1",
+   "industry_name": "평가·교재 출판",
+   "strength": "드묾",
+   "appears_as": "평가·교재 출판 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "특수교육·통합지원",
+   "industry": "INDUSTRY_ECE_V1",
+   "industry_name": "유아교육·보육",
+   "strength": "드묾",
+   "appears_as": "유아교육·보육 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "특수교육·통합지원",
+   "industry": "INDUSTRY_SCHOOL_V1",
+   "industry_name": "초·중·고 학교",
+   "strength": "드묾",
+   "appears_as": "초·중·고 학교 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "특수교육·통합지원",
+   "industry": "INDUSTRY_PRIVATE_V1",
+   "industry_name": "학원·사교육",
+   "strength": "드묾",
+   "appears_as": "학원·사교육 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "특수교육·통합지원",
+   "industry": "INDUSTRY_CORPEDU_V1",
+   "industry_name": "기업교육·HRD",
+   "strength": "드묾",
+   "appears_as": "기업교육·HRD 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "특수교육·통합지원",
+   "industry": "INDUSTRY_EDTECH_V1",
+   "industry_name": "에듀테크·콘텐츠",
+   "strength": "드묾",
+   "appears_as": "에듀테크·콘텐츠 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "특수교육·통합지원",
+   "industry": "INDUSTRY_PUBEDU_V1",
+   "industry_name": "교육청·공공 교육사업",
+   "strength": "있음",
+   "appears_as": "교육청·공공 교육사업 에서는 지원 범위를 학교와 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "지원 범위를 학교와 맞추는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "특수교육·통합지원",
+   "industry": "INDUSTRY_LIFELONG_V1",
+   "industry_name": "평생교육·지역",
+   "strength": "드묾",
+   "appears_as": "평생교육·지역 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "특수교육·통합지원",
+   "industry": "INDUSTRY_PUBLISH_V1",
+   "industry_name": "평가·교재 출판",
+   "strength": "드묾",
+   "appears_as": "평가·교재 출판 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "교육자료·매체 제작",
+   "industry": "INDUSTRY_ECE_V1",
+   "industry_name": "유아교육·보육",
+   "strength": "있음",
+   "appears_as": "유아교육·보육 에서는 활동 자료를 직접 만들어 쓰는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "활동 자료를 직접 만들어 쓰는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "교육자료·매체 제작",
+   "industry": "INDUSTRY_SCHOOL_V1",
+   "industry_name": "초·중·고 학교",
+   "strength": "드묾",
+   "appears_as": "초·중·고 학교 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "교육자료·매체 제작",
+   "industry": "INDUSTRY_PRIVATE_V1",
+   "industry_name": "학원·사교육",
+   "strength": "중심",
+   "appears_as": "학원·사교육 에서는 쓰는 교재를 만들어 쓰는가 · 내 교재가 다른 반에도 쓰이는가 로 나타납니다",
+   "axes_watched": [
+    "J5",
+    "J8"
+   ],
+   "dimensions": [
+    "쓰는 교재를 만들어 쓰는가",
+    "내 교재가 다른 반에도 쓰이는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "교육자료·매체 제작",
+   "industry": "INDUSTRY_CORPEDU_V1",
+   "industry_name": "기업교육·HRD",
+   "strength": "중심",
+   "appears_as": "기업교육·HRD 에서는 쓸 매체와 형식을 고르는가 · 자료를 다른 강사가 쓰게 남기는가 · 실습 비중을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J4",
+    "J5"
+   ],
+   "dimensions": [
+    "쓸 매체와 형식을 고르는가",
+    "자료를 다른 강사가 쓰게 남기는가",
+    "실습 비중을 정하는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "교육자료·매체 제작",
+   "industry": "INDUSTRY_EDTECH_V1",
+   "industry_name": "에듀테크·콘텐츠",
+   "strength": "중심",
+   "appears_as": "에듀테크·콘텐츠 에서는 쓸 도구와 형식을 골라 만드는가 · 판본을 적어 내보내는가 · 담을 분량을 정하는가 · 안 보는 자리를 고쳐 보는가 · 내 콘텐츠가 다른 과정에도 쓰이는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J4",
+    "J5",
+    "J7",
+    "J8"
+   ],
+   "dimensions": [
+    "쓸 도구와 형식을 골라 만드는가",
+    "판본을 적어 내보내는가",
+    "담을 분량을 정하는가",
+    "안 보는 자리를 고쳐 보는가",
+    "내 콘텐츠가 다른 과정에도 쓰이는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "교육자료·매체 제작",
+   "industry": "INDUSTRY_PUBEDU_V1",
+   "industry_name": "교육청·공공 교육사업",
+   "strength": "드묾",
+   "appears_as": "교육청·공공 교육사업 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "교육자료·매체 제작",
+   "industry": "INDUSTRY_LIFELONG_V1",
+   "industry_name": "평생교육·지역",
+   "strength": "중심",
+   "appears_as": "평생교육·지역 에서는 쓸 자료를 만들어 돌리는가 · 쓸 매체와 형식을 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ],
+   "dimensions": [
+    "쓸 자료를 만들어 돌리는가",
+    "쓸 매체와 형식을 고르는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "교육자료·매체 제작",
+   "industry": "INDUSTRY_PUBLISH_V1",
+   "industry_name": "평가·교재 출판",
+   "strength": "중심",
+   "appears_as": "평가·교재 출판 에서는 쓸 집필 도구와 서식을 맞춰 쓰는가 · 판본과 고친 내역을 남기는가 · 내 문항이 실제로 나가는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J5",
+    "J8"
+   ],
+   "dimensions": [
+    "쓸 집필 도구와 서식을 맞춰 쓰는가",
+    "판본과 고친 내역을 남기는가",
+    "내 문항이 실제로 나가는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "교육 프로그램·사업 운영",
+   "industry": "INDUSTRY_ECE_V1",
+   "industry_name": "유아교육·보육",
+   "strength": "드묾",
+   "appears_as": "유아교육·보육 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "교육 프로그램·사업 운영",
+   "industry": "INDUSTRY_SCHOOL_V1",
+   "industry_name": "초·중·고 학교",
+   "strength": "드묾",
+   "appears_as": "초·중·고 학교 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "교육 프로그램·사업 운영",
+   "industry": "INDUSTRY_PRIVATE_V1",
+   "industry_name": "학원·사교육",
+   "strength": "중심",
+   "appears_as": "학원·사교육 에서는 기수 계획을 인원과 회차로 옮기는가 · 누구를 어느 반에 넣을지 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ],
+   "dimensions": [
+    "기수 계획을 인원과 회차로 옮기는가",
+    "누구를 어느 반에 넣을지 가르는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "교육 프로그램·사업 운영",
+   "industry": "INDUSTRY_CORPEDU_V1",
+   "industry_name": "기업교육·HRD",
+   "strength": "중심",
+   "appears_as": "기업교육·HRD 에서는 과정 목표를 업무 행동으로 옮기는가 · 과정 한 벌을 다시 열 수 있게 남기는가 · 안 쓰이는 까닭을 좁히는가 · 내 과정이 정기 과정이 되는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J5",
+    "J7",
+    "J8"
+   ],
+   "dimensions": [
+    "과정 목표를 업무 행동으로 옮기는가",
+    "과정 한 벌을 다시 열 수 있게 남기는가",
+    "안 쓰이는 까닭을 좁히는가",
+    "내 과정이 정기 과정이 되는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "교육 프로그램·사업 운영",
+   "industry": "INDUSTRY_EDTECH_V1",
+   "industry_name": "에듀테크·콘텐츠",
+   "strength": "드묾",
+   "appears_as": "에듀테크·콘텐츠 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "교육 프로그램·사업 운영",
+   "industry": "INDUSTRY_PUBEDU_V1",
+   "industry_name": "교육청·공공 교육사업",
+   "strength": "중심",
+   "appears_as": "교육청·공공 교육사업 에서는 사업 계획을 운영으로 옮기는가 · 운영 한 벌을 남겨 이어지게 하는가 · 어느 학교를 먼저 지원할지 가르는가 · 쓸 집행 방식을 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J4",
+    "J5"
+   ],
+   "dimensions": [
+    "사업 계획을 운영으로 옮기는가",
+    "운영 한 벌을 남겨 이어지게 하는가",
+    "어느 학교를 먼저 지원할지 가르는가",
+    "쓸 집행 방식을 고르는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "교육 프로그램·사업 운영",
+   "industry": "INDUSTRY_LIFELONG_V1",
+   "industry_name": "평생교육·지역",
+   "strength": "중심",
+   "appears_as": "평생교육·지역 에서는 대상과 회차를 수로 옮기는가 · 누구를 받을지 가르는가 · 모집이 안 되면 방식을 바꾸는가 · 내 기획이 정기 강좌가 되는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J7",
+    "J8"
+   ],
+   "dimensions": [
+    "대상과 회차를 수로 옮기는가",
+    "누구를 받을지 가르는가",
+    "모집이 안 되면 방식을 바꾸는가",
+    "내 기획이 정기 강좌가 되는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "교육 프로그램·사업 운영",
+   "industry": "INDUSTRY_PUBLISH_V1",
+   "industry_name": "평가·교재 출판",
+   "strength": "드묾",
+   "appears_as": "평가·교재 출판 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "교육 자료 분석",
+   "industry": "INDUSTRY_ECE_V1",
+   "industry_name": "유아교육·보육",
+   "strength": "드묾",
+   "appears_as": "유아교육·보육 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "교육 자료 분석",
+   "industry": "INDUSTRY_SCHOOL_V1",
+   "industry_name": "초·중·고 학교",
+   "strength": "드묾",
+   "appears_as": "초·중·고 학교 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "교육 자료 분석",
+   "industry": "INDUSTRY_PRIVATE_V1",
+   "industry_name": "학원·사교육",
+   "strength": "중심",
+   "appears_as": "학원·사교육 에서는 성적 변화를 지난 기수와 견주는가 · 점수 자료를 집계해 보는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ],
+   "dimensions": [
+    "성적 변화를 지난 기수와 견주는가",
+    "점수 자료를 집계해 보는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "교육 자료 분석",
+   "industry": "INDUSTRY_CORPEDU_V1",
+   "industry_name": "기업교육·HRD",
+   "strength": "있음",
+   "appears_as": "기업교육·HRD 에서는 효과를 교육받지 않은 쪽과 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "효과를 교육받지 않은 쪽과 견주는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "교육 자료 분석",
+   "industry": "INDUSTRY_EDTECH_V1",
+   "industry_name": "에듀테크·콘텐츠",
+   "strength": "중심",
+   "appears_as": "에듀테크·콘텐츠 에서는 이탈 지점을 기록으로 보는가 · 무엇을 셀지 정의하는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ],
+   "dimensions": [
+    "이탈 지점을 기록으로 보는가",
+    "무엇을 셀지 정의하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "교육 자료 분석",
+   "industry": "INDUSTRY_PUBEDU_V1",
+   "industry_name": "교육청·공공 교육사업",
+   "strength": "중심",
+   "appears_as": "교육청·공공 교육사업 에서는 성과를 참여하지 않은 쪽과 견주는가 · 무엇을 셀지 정의하는가 · 내 분석이 다음 해 사업을 바꾸는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J6",
+    "J8"
+   ],
+   "dimensions": [
+    "성과를 참여하지 않은 쪽과 견주는가",
+    "무엇을 셀지 정의하는가",
+    "내 분석이 다음 해 사업을 바꾸는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "교육 자료 분석",
+   "industry": "INDUSTRY_LIFELONG_V1",
+   "industry_name": "평생교육·지역",
+   "strength": "있음",
+   "appears_as": "평생교육·지역 에서는 성과를 지난 기수와 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "성과를 지난 기수와 견주는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "교육 자료 분석",
+   "industry": "INDUSTRY_PUBLISH_V1",
+   "industry_name": "평가·교재 출판",
+   "strength": "있음",
+   "appears_as": "평가·교재 출판 에서는 난이도와 변별을 숫자로 보는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "난이도와 변별을 숫자로 보는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·기록·규정",
+   "industry": "INDUSTRY_ECE_V1",
+   "industry_name": "유아교육·보육",
+   "strength": "중심",
+   "appears_as": "유아교육·보육 에서는 하루 기록을 빠짐없이 남기는가 · 점검표를 규정에 대어 보는가 로 나타납니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ],
+   "dimensions": [
+    "하루 기록을 빠짐없이 남기는가",
+    "점검표를 규정에 대어 보는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·기록·규정",
+   "industry": "INDUSTRY_SCHOOL_V1",
+   "industry_name": "초·중·고 학교",
+   "strength": "있음",
+   "appears_as": "초·중·고 학교 에서는 학적과 안전 기록을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "학적과 안전 기록을 남기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·기록·규정",
+   "industry": "INDUSTRY_PRIVATE_V1",
+   "industry_name": "학원·사교육",
+   "strength": "드묾",
+   "appears_as": "학원·사교육 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·기록·규정",
+   "industry": "INDUSTRY_CORPEDU_V1",
+   "industry_name": "기업교육·HRD",
+   "strength": "드묾",
+   "appears_as": "기업교육·HRD 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·기록·규정",
+   "industry": "INDUSTRY_EDTECH_V1",
+   "industry_name": "에듀테크·콘텐츠",
+   "strength": "드묾",
+   "appears_as": "에듀테크·콘텐츠 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·기록·규정",
+   "industry": "INDUSTRY_PUBEDU_V1",
+   "industry_name": "교육청·공공 교육사업",
+   "strength": "중심",
+   "appears_as": "교육청·공공 교육사업 에서는 지적을 절차에서 고치는가 · 점검 기록을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "지적을 절차에서 고치는가",
+    "점검 기록을 남기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·기록·규정",
+   "industry": "INDUSTRY_LIFELONG_V1",
+   "industry_name": "평생교육·지역",
+   "strength": "있음",
+   "appears_as": "평생교육·지역 에서는 정산과 기록을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "정산과 기록을 남기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·기록·규정",
+   "industry": "INDUSTRY_PUBLISH_V1",
+   "industry_name": "평가·교재 출판",
+   "strength": "드묾",
+   "appears_as": "평가·교재 출판 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  }
+ ],
+ "td_role": [
+  {
+   "td": "TD01",
+   "td_name": "교육과정 설계",
+   "role": "ROLE_CURRICULUM_V1",
+   "role_name": "교육과정·제도 설계",
+   "strength": "중심",
+   "appears_as": "교육과정·제도 설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J3",
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "교육과정 설계",
+   "role": "ROLE_DIAGNOSE_V1",
+   "role_name": "분석·진단",
+   "strength": "드묾",
+   "appears_as": "분석·진단 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "교육과정 설계",
+   "role": "ROLE_ASSESS_V1",
+   "role_name": "평가·인정",
+   "strength": "중심",
+   "appears_as": "평가·인정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J8"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "교육과정 설계",
+   "role": "ROLE_MATERIAL_V1",
+   "role_name": "자료·콘텐츠 제작",
+   "strength": "드묾",
+   "appears_as": "자료·콘텐츠 제작 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "교육과정 설계",
+   "role": "ROLE_TEACH_V1",
+   "role_name": "수업·생활 운영",
+   "strength": "드묾",
+   "appears_as": "수업·생활 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "교육과정 설계",
+   "role": "ROLE_ADMIN_V1",
+   "role_name": "사업·학사 관리",
+   "strength": "드묾",
+   "appears_as": "사업·학사 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "교육과정 설계",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구",
+   "strength": "중심",
+   "appears_as": "연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J8"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "교육과정 설계",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수업 설계",
+   "role": "ROLE_CURRICULUM_V1",
+   "role_name": "교육과정·제도 설계",
+   "strength": "중심",
+   "appears_as": "교육과정·제도 설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수업 설계",
+   "role": "ROLE_DIAGNOSE_V1",
+   "role_name": "분석·진단",
+   "strength": "드묾",
+   "appears_as": "분석·진단 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수업 설계",
+   "role": "ROLE_ASSESS_V1",
+   "role_name": "평가·인정",
+   "strength": "드묾",
+   "appears_as": "평가·인정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수업 설계",
+   "role": "ROLE_MATERIAL_V1",
+   "role_name": "자료·콘텐츠 제작",
+   "strength": "중심",
+   "appears_as": "자료·콘텐츠 제작 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수업 설계",
+   "role": "ROLE_TEACH_V1",
+   "role_name": "수업·생활 운영",
+   "strength": "드묾",
+   "appears_as": "수업·생활 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수업 설계",
+   "role": "ROLE_ADMIN_V1",
+   "role_name": "사업·학사 관리",
+   "strength": "드묾",
+   "appears_as": "사업·학사 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수업 설계",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구",
+   "strength": "드묾",
+   "appears_as": "연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수업 설계",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "수업 운영",
+   "role": "ROLE_CURRICULUM_V1",
+   "role_name": "교육과정·제도 설계",
+   "strength": "드묾",
+   "appears_as": "교육과정·제도 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "수업 운영",
+   "role": "ROLE_DIAGNOSE_V1",
+   "role_name": "분석·진단",
+   "strength": "드묾",
+   "appears_as": "분석·진단 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "수업 운영",
+   "role": "ROLE_ASSESS_V1",
+   "role_name": "평가·인정",
+   "strength": "드묾",
+   "appears_as": "평가·인정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "수업 운영",
+   "role": "ROLE_MATERIAL_V1",
+   "role_name": "자료·콘텐츠 제작",
+   "strength": "드묾",
+   "appears_as": "자료·콘텐츠 제작 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "수업 운영",
+   "role": "ROLE_TEACH_V1",
+   "role_name": "수업·생활 운영",
+   "strength": "중심",
+   "appears_as": "수업·생활 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "수업 운영",
+   "role": "ROLE_ADMIN_V1",
+   "role_name": "사업·학사 관리",
+   "strength": "드묾",
+   "appears_as": "사업·학사 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "수업 운영",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구",
+   "strength": "드묾",
+   "appears_as": "연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "수업 운영",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "중심",
+   "appears_as": "안전·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J8"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "평가 설계·채점",
+   "role": "ROLE_CURRICULUM_V1",
+   "role_name": "교육과정·제도 설계",
+   "strength": "드묾",
+   "appears_as": "교육과정·제도 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "평가 설계·채점",
+   "role": "ROLE_DIAGNOSE_V1",
+   "role_name": "분석·진단",
+   "strength": "중심",
+   "appears_as": "분석·진단 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J7"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "평가 설계·채점",
+   "role": "ROLE_ASSESS_V1",
+   "role_name": "평가·인정",
+   "strength": "중심",
+   "appears_as": "평가·인정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "평가 설계·채점",
+   "role": "ROLE_MATERIAL_V1",
+   "role_name": "자료·콘텐츠 제작",
+   "strength": "드묾",
+   "appears_as": "자료·콘텐츠 제작 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "평가 설계·채점",
+   "role": "ROLE_TEACH_V1",
+   "role_name": "수업·생활 운영",
+   "strength": "드묾",
+   "appears_as": "수업·생활 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "평가 설계·채점",
+   "role": "ROLE_ADMIN_V1",
+   "role_name": "사업·학사 관리",
+   "strength": "드묾",
+   "appears_as": "사업·학사 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "평가 설계·채점",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구",
+   "strength": "드묾",
+   "appears_as": "연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "평가 설계·채점",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "학습자 진단·개별화",
+   "role": "ROLE_CURRICULUM_V1",
+   "role_name": "교육과정·제도 설계",
+   "strength": "드묾",
+   "appears_as": "교육과정·제도 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "학습자 진단·개별화",
+   "role": "ROLE_DIAGNOSE_V1",
+   "role_name": "분석·진단",
+   "strength": "중심",
+   "appears_as": "분석·진단 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "학습자 진단·개별화",
+   "role": "ROLE_ASSESS_V1",
+   "role_name": "평가·인정",
+   "strength": "드묾",
+   "appears_as": "평가·인정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "학습자 진단·개별화",
+   "role": "ROLE_MATERIAL_V1",
+   "role_name": "자료·콘텐츠 제작",
+   "strength": "드묾",
+   "appears_as": "자료·콘텐츠 제작 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "학습자 진단·개별화",
+   "role": "ROLE_TEACH_V1",
+   "role_name": "수업·생활 운영",
+   "strength": "드묾",
+   "appears_as": "수업·생활 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "학습자 진단·개별화",
+   "role": "ROLE_ADMIN_V1",
+   "role_name": "사업·학사 관리",
+   "strength": "드묾",
+   "appears_as": "사업·학사 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "학습자 진단·개별화",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구",
+   "strength": "중심",
+   "appears_as": "연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "학습자 진단·개별화",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "생활지도·행동지원",
+   "role": "ROLE_CURRICULUM_V1",
+   "role_name": "교육과정·제도 설계",
+   "strength": "드묾",
+   "appears_as": "교육과정·제도 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "생활지도·행동지원",
+   "role": "ROLE_DIAGNOSE_V1",
+   "role_name": "분석·진단",
+   "strength": "드묾",
+   "appears_as": "분석·진단 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "생활지도·행동지원",
+   "role": "ROLE_ASSESS_V1",
+   "role_name": "평가·인정",
+   "strength": "드묾",
+   "appears_as": "평가·인정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "생활지도·행동지원",
+   "role": "ROLE_MATERIAL_V1",
+   "role_name": "자료·콘텐츠 제작",
+   "strength": "드묾",
+   "appears_as": "자료·콘텐츠 제작 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "생활지도·행동지원",
+   "role": "ROLE_TEACH_V1",
+   "role_name": "수업·생활 운영",
+   "strength": "중심",
+   "appears_as": "수업·생활 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "생활지도·행동지원",
+   "role": "ROLE_ADMIN_V1",
+   "role_name": "사업·학사 관리",
+   "strength": "드묾",
+   "appears_as": "사업·학사 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "생활지도·행동지원",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구",
+   "strength": "드묾",
+   "appears_as": "연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "생활지도·행동지원",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "중심",
+   "appears_as": "안전·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "상담·보호자 소통",
+   "role": "ROLE_CURRICULUM_V1",
+   "role_name": "교육과정·제도 설계",
+   "strength": "드묾",
+   "appears_as": "교육과정·제도 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "상담·보호자 소통",
+   "role": "ROLE_DIAGNOSE_V1",
+   "role_name": "분석·진단",
+   "strength": "드묾",
+   "appears_as": "분석·진단 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "상담·보호자 소통",
+   "role": "ROLE_ASSESS_V1",
+   "role_name": "평가·인정",
+   "strength": "드묾",
+   "appears_as": "평가·인정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "상담·보호자 소통",
+   "role": "ROLE_MATERIAL_V1",
+   "role_name": "자료·콘텐츠 제작",
+   "strength": "드묾",
+   "appears_as": "자료·콘텐츠 제작 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "상담·보호자 소통",
+   "role": "ROLE_TEACH_V1",
+   "role_name": "수업·생활 운영",
+   "strength": "중심",
+   "appears_as": "수업·생활 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "상담·보호자 소통",
+   "role": "ROLE_ADMIN_V1",
+   "role_name": "사업·학사 관리",
+   "strength": "중심",
+   "appears_as": "사업·학사 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "상담·보호자 소통",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구",
+   "strength": "드묾",
+   "appears_as": "연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "상담·보호자 소통",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "특수교육·통합지원",
+   "role": "ROLE_CURRICULUM_V1",
+   "role_name": "교육과정·제도 설계",
+   "strength": "드묾",
+   "appears_as": "교육과정·제도 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "특수교육·통합지원",
+   "role": "ROLE_DIAGNOSE_V1",
+   "role_name": "분석·진단",
+   "strength": "드묾",
+   "appears_as": "분석·진단 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "특수교육·통합지원",
+   "role": "ROLE_ASSESS_V1",
+   "role_name": "평가·인정",
+   "strength": "드묾",
+   "appears_as": "평가·인정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "특수교육·통합지원",
+   "role": "ROLE_MATERIAL_V1",
+   "role_name": "자료·콘텐츠 제작",
+   "strength": "드묾",
+   "appears_as": "자료·콘텐츠 제작 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "특수교육·통합지원",
+   "role": "ROLE_TEACH_V1",
+   "role_name": "수업·생활 운영",
+   "strength": "드묾",
+   "appears_as": "수업·생활 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "특수교육·통합지원",
+   "role": "ROLE_ADMIN_V1",
+   "role_name": "사업·학사 관리",
+   "strength": "드묾",
+   "appears_as": "사업·학사 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "특수교육·통합지원",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구",
+   "strength": "드묾",
+   "appears_as": "연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "특수교육·통합지원",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "교육자료·매체 제작",
+   "role": "ROLE_CURRICULUM_V1",
+   "role_name": "교육과정·제도 설계",
+   "strength": "드묾",
+   "appears_as": "교육과정·제도 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "교육자료·매체 제작",
+   "role": "ROLE_DIAGNOSE_V1",
+   "role_name": "분석·진단",
+   "strength": "드묾",
+   "appears_as": "분석·진단 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "교육자료·매체 제작",
+   "role": "ROLE_ASSESS_V1",
+   "role_name": "평가·인정",
+   "strength": "드묾",
+   "appears_as": "평가·인정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "교육자료·매체 제작",
+   "role": "ROLE_MATERIAL_V1",
+   "role_name": "자료·콘텐츠 제작",
+   "strength": "중심",
+   "appears_as": "자료·콘텐츠 제작 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J4",
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "교육자료·매체 제작",
+   "role": "ROLE_TEACH_V1",
+   "role_name": "수업·생활 운영",
+   "strength": "드묾",
+   "appears_as": "수업·생활 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "교육자료·매체 제작",
+   "role": "ROLE_ADMIN_V1",
+   "role_name": "사업·학사 관리",
+   "strength": "드묾",
+   "appears_as": "사업·학사 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "교육자료·매체 제작",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구",
+   "strength": "드묾",
+   "appears_as": "연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "교육자료·매체 제작",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "교육 프로그램·사업 운영",
+   "role": "ROLE_CURRICULUM_V1",
+   "role_name": "교육과정·제도 설계",
+   "strength": "중심",
+   "appears_as": "교육과정·제도 설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "교육 프로그램·사업 운영",
+   "role": "ROLE_DIAGNOSE_V1",
+   "role_name": "분석·진단",
+   "strength": "드묾",
+   "appears_as": "분석·진단 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "교육 프로그램·사업 운영",
+   "role": "ROLE_ASSESS_V1",
+   "role_name": "평가·인정",
+   "strength": "드묾",
+   "appears_as": "평가·인정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "교육 프로그램·사업 운영",
+   "role": "ROLE_MATERIAL_V1",
+   "role_name": "자료·콘텐츠 제작",
+   "strength": "드묾",
+   "appears_as": "자료·콘텐츠 제작 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "교육 프로그램·사업 운영",
+   "role": "ROLE_TEACH_V1",
+   "role_name": "수업·생활 운영",
+   "strength": "드묾",
+   "appears_as": "수업·생활 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "교육 프로그램·사업 운영",
+   "role": "ROLE_ADMIN_V1",
+   "role_name": "사업·학사 관리",
+   "strength": "중심",
+   "appears_as": "사업·학사 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J4",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "교육 프로그램·사업 운영",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구",
+   "strength": "드묾",
+   "appears_as": "연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "교육 프로그램·사업 운영",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "교육 자료 분석",
+   "role": "ROLE_CURRICULUM_V1",
+   "role_name": "교육과정·제도 설계",
+   "strength": "드묾",
+   "appears_as": "교육과정·제도 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "교육 자료 분석",
+   "role": "ROLE_DIAGNOSE_V1",
+   "role_name": "분석·진단",
+   "strength": "중심",
+   "appears_as": "분석·진단 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "교육 자료 분석",
+   "role": "ROLE_ASSESS_V1",
+   "role_name": "평가·인정",
+   "strength": "중심",
+   "appears_as": "평가·인정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "교육 자료 분석",
+   "role": "ROLE_MATERIAL_V1",
+   "role_name": "자료·콘텐츠 제작",
+   "strength": "드묾",
+   "appears_as": "자료·콘텐츠 제작 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "교육 자료 분석",
+   "role": "ROLE_TEACH_V1",
+   "role_name": "수업·생활 운영",
+   "strength": "드묾",
+   "appears_as": "수업·생활 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "교육 자료 분석",
+   "role": "ROLE_ADMIN_V1",
+   "role_name": "사업·학사 관리",
+   "strength": "드묾",
+   "appears_as": "사업·학사 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "교육 자료 분석",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구",
+   "strength": "중심",
+   "appears_as": "연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J2",
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "교육 자료 분석",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·기록·규정",
+   "role": "ROLE_CURRICULUM_V1",
+   "role_name": "교육과정·제도 설계",
+   "strength": "드묾",
+   "appears_as": "교육과정·제도 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·기록·규정",
+   "role": "ROLE_DIAGNOSE_V1",
+   "role_name": "분석·진단",
+   "strength": "드묾",
+   "appears_as": "분석·진단 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·기록·규정",
+   "role": "ROLE_ASSESS_V1",
+   "role_name": "평가·인정",
+   "strength": "드묾",
+   "appears_as": "평가·인정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·기록·규정",
+   "role": "ROLE_MATERIAL_V1",
+   "role_name": "자료·콘텐츠 제작",
+   "strength": "중심",
+   "appears_as": "자료·콘텐츠 제작 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J8"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·기록·규정",
+   "role": "ROLE_TEACH_V1",
+   "role_name": "수업·생활 운영",
+   "strength": "드묾",
+   "appears_as": "수업·생활 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·기록·규정",
+   "role": "ROLE_ADMIN_V1",
+   "role_name": "사업·학사 관리",
+   "strength": "중심",
+   "appears_as": "사업·학사 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·기록·규정",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구",
+   "strength": "드묾",
+   "appears_as": "연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·기록·규정",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "중심",
+   "appears_as": "안전·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5",
+    "J6",
+    "J7"
+   ]
+  }
+ ]
+}

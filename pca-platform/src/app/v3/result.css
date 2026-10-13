@@ -857,7 +857,15 @@
      어디서 절이 갈리는지가 안 읽힌다. **여백을 금 위아래로 나눠 가진다**:
      금을 그으면서 위 여백까지 그대로 두면 절마다 한 뼘이 늘어 STANDARD 가
      아홉 쪽에서 열 쪽이 됐다. 쪽수는 본문을 깎지 않고 여백에서 돌려받는다 */
-  .rs-sect { margin-top: 7px; }
+  /* **절과 묶음 사이 여백을 한 단 더 돌려받는다**(상용화 P1, 2026-10-13).
+     심리학 PRO 가 아홉 쪽이고 그 마지막 쪽이 6%만 찼다. 고지문 두 칸이
+     앞 쪽 바닥에서 밀려 혼자 쪽을 열었다. 재어 본 것과 버린 것은 이렇다:
+     고지문을 세 칸으로 접기(8%) · 고지문 칸을 쪼개지게 두기(3%) ·
+     `.rs-fine` 여백 줄이기(13%) 셋 다 그 쪽을 없애지 못했다. 본문 줄 사이를
+     1.42 로 줄이면 여덟 쪽이 되지만 **줄 사이는 읽는 속도라** 건드리지
+     않았다. 절과 묶음의 위 여백을 7px 에서 5px 로 돌려받으니 여덟 쪽이고
+     마지막 쪽이 91% 다. **담긴 글을 한 줄도 덜어내지 않았다** */
+  .rs-sect { margin-top: 5px; }
   .rs-sect > h2 {
     font-size: 12.5pt; break-after: avoid;
     padding-top: 6px; border-top: 1px solid var(--r-line);
@@ -871,7 +879,7 @@
   /* **쪽수는 본문이 아니라 여백에서 돌려받는다**(상용화 PHASE 0).
      묶음 상자의 안쪽 여백과 줄 사이를 한 단 줄인다. 담긴 글은 한 줄도
      줄이지 않는다 */
-  .rs-pack { padding: 8px 12px; margin-top: 7px; }
+  .rs-pack { padding: 8px 12px; margin-top: 5px; }
   .rs-pack dl > div { padding: 4px 0; }
   .rs-gap { padding: 10px 14px; margin-top: 8px; }
   .rs-ev > section { margin-top: 10px; }
@@ -970,10 +978,15 @@
   .rs-intro dd + dt { margin-top: 7px; }
 
   /* 단서는 각주 크기로 내려 둔다. 결과를 밀어내지 않는다 */
-  /* **닫는 안내를 한 줄 때문에 다음 쪽으로 보내지 않는다.** 여백을
-     24px 로 두었더니 두 줄 가운데 뒤의 한 줄이 넘어가, 마지막 쪽이 그
-     한 줄만 들고 따로 섰다. 두 줄을 묶어 두고 여백을 줄인다 */
-  .rs-fine { margin-top: 8px; padding-top: 6px; font-size: 7.5pt; line-height: 1.5; }
+  /* **각주 앞 여백은 마지막 쪽을 채우는 쪽으로 돌려준다**(상용화 P1,
+     2026-10-13). 한동안 8px 였다: 24px 로 두었더니 닫는 안내 두 줄 가운데
+     뒤의 한 줄이 넘어가 마지막 쪽이 그 한 줄만 들고 섰기 때문이다. 절과
+     묶음의 여백을 5px 로 돌려받은 뒤에 다시 재어 보니 균형이 반대로
+     움직였다: 20px 로 올리면 **마지막 쪽에 각주가 한 덩이로 들어가** 여섯
+     벌의 마지막 쪽 채움이 44~91% 에서 **46~93%** 가 되고, 심리학 PRO 는
+     여덟 쪽을 그대로 지킨다. 재어 본 여섯 벌은 ME 셋과 EE·CS·BIZ·LAW·PSY
+     PRO 다. **담긴 글을 한 줄도 덜어내지 않았다** */
+  .rs-fine { margin-top: 20px; padding-top: 10px; font-size: 7.5pt; line-height: 1.5; }
   /* 묶음 상자의 머리 아래와 꼬리 위 여백도 한 단 줄인다 */
   .rs-pack > p { margin-bottom: 6px; }
   .rs-pack > .rs-others { margin-top: 6px; }

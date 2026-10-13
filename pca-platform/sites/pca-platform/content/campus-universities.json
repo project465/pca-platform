@@ -341,9 +341,8 @@
                   "name": "유아교육과",
                   "kind": "department",
                   "core_code": "EDU_CORE_V1",
-                  "specialization": null,
-                  "specialization_required": true,
-                  "note": "교육 Core 는 있는데 유아교육 갈래가 아직 없다"
+                  "specialization": "SPEC_EDU_EARLYCHILD",
+                  "note": "유아교육 갈래로 간다"
                 }
               ]
             },
@@ -916,9 +915,8 @@
                   "name": "유아교육과",
                   "kind": "department",
                   "core_code": "EDU_CORE_V1",
-                  "specialization": null,
-                  "specialization_required": true,
-                  "note": "교육 Core 는 있는데 유아교육 갈래가 아직 없다"
+                  "specialization": "SPEC_EDU_EARLYCHILD",
+                  "note": "유아교육 갈래로 간다"
                 }
               ]
             },
@@ -1393,9 +1391,10 @@
                       "code": "PCU27_GLOBAL_KFOODTECH",
                       "name": "K푸드테크전공",
                       "kind": "major",
-                      "core_code": null,
-                      "specialization": null,
-                      "audience": "INTERNATIONAL"
+                      "core_code": "FOOD_CORE_V1",
+                      "specialization": "SPEC_FOOD_FOODTECH",
+                      "audience": "INTERNATIONAL",
+                      "note": "푸드테크 갈래로 간다. 묻는 것이 새 원료의 물성과 공정 규모와 적을 수 있는 범위다"
                     }
                   ],
                   "audience": "INTERNATIONAL"
