@@ -278,7 +278,7 @@ export default async function Home() {
                   icon={TILE_ICON[d] ?? "box"} title={domainName(core, d)}
                   /* 그 영역이 일하는 차례. **응답에서 온 값이 아니라
                      영역 설명이다**: 여기서 새 수를 만들지 않는다 */
-                  sub={domainChainKo(d).slice(0, 2).join(" · ")} />
+                  sub={domainChainKo(core, d).slice(0, 2).join(" · ")} />
               ))}
             </div>
           ) : null}

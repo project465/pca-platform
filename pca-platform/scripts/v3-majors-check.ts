@@ -7,6 +7,7 @@
  *
  *   npm run v3:majors
  */
+import { readdirSync, readFileSync } from "node:fs";
 import { coresForMarket, sellableCores } from "../src/lib/me-v3/core-registry";
 
 let fail = 0, pass = 0;
@@ -87,6 +88,43 @@ function main(): void {
     !(c.files?.taxonomy && c.files?.domains && c.files?.checklists && c.files?.items_blueprint));
   ok("열린 Core 는 required 파일 넷을 들고 있다", noFiles.length === 0,
      noFiles.length ? noFiles.map((c) => c.code).join(" ") : `${open.length}개 확인`);
+
+  /**
+   * **안쪽 성숙도 값이 손님 화면에 서지 않는다.**
+   *
+   * `READY_FOR_DOMAIN_REVIEW` 는 우리가 어디까지 했는지를 적는 안쪽 QA
+   * 값이다. 그 글자가 학생 화면에 서면 읽는 사람이 자기가 받은 결과를
+   * `검토 전인 것` 으로 읽고, 그것은 우리가 할 말이 아니다. 학생에게 할
+   * 말은 `지금 열려 있는가` 하나이고 그것은 `status` 와
+   * `open_to_students` 가 정한다.
+   *
+   * 운영 화면(`src/app/admin`)은 보지 않는다: 저기는 그 값을 읽어야 하는
+   * 자리다.
+   */
+  const MATURITY = ["VALIDATED", "READY_FOR_REVIEW",
+    "READY_FOR_DOMAIN_REVIEW", "FOUNDATION"];
+  const SEEN = ["src/app", "src/components"];
+  const leak: string[] = [];
+  for (const root of SEEN) {
+    const walk = (dir: string): void => {
+      for (const e of readdirSync(dir, { withFileTypes: true })) {
+        const full = `${dir}/${e.name}`;
+        if (e.isDirectory()) { if (e.name !== "admin") walk(full); continue; }
+        if (!/\.(ts|tsx)$/.test(e.name)) continue;
+        const src = readFileSync(full, "utf8");
+        for (const m of MATURITY) if (src.includes(m)) leak.push(`${full}:${m}`);
+      }
+    };
+    walk(root);
+  }
+  ok("안쪽 성숙도 값이 손님 화면에 서지 않는다", leak.length === 0,
+     leak.length ? leak.slice(0, 3).join(" · ") : `${SEEN.join(" · ")} — 0건`);
+
+  /* 적어 둔 값이 정해진 넷 안에 있다. 새 값을 쓰면 위 검사가 못 본다 */
+  const odd = cores.filter((c) => !MATURITY.includes(c.maturity));
+  ok("성숙도 값이 정해진 넷 안에 있다", odd.length === 0,
+     odd.length ? odd.map((c) => `${c.code}:${c.maturity}`).join(" ")
+       : MATURITY.join(" · "));
 
   /* **규준도 인지 면접도 없다.** 어느 전공도 검증된 검사로 적지 않는다 */
   const claimed = cores.filter((c) => c.maturity === "VALIDATED");

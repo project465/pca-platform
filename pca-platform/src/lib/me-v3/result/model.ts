@@ -171,6 +171,14 @@ export type Action = {
     checklist_hint: string[];
     /** 그 영역이 실제로 일하는 차례. 할 일을 영역마다 다르게 적는 재료 */
     workflow: { decide: string; method: string; output: string; on_fail: string };
+    /**
+     * 사례를 적는 차례. **Core 마다 다르므로 담아서 보낸다.**
+     *
+     * 영역 코드는 Core 안에서만 뜻이 있다. 문장을 만드는 쪽이 코드만 보고
+     * 고르면 전기전자 응시자에게 기계공학 차례가 나간다. 옛 줄에는 이
+     * 칸이 없으므로 **없을 수 있다**(그때는 차례 없는 문장을 쓴다).
+     */
+    chain?: string[];
   };
 };
 

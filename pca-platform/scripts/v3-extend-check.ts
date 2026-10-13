@@ -277,6 +277,11 @@ function main(): void {
       "src/lib/me-v3/core-registry.ts", "scripts/v3-build.ts",
       "scripts/v3-domains-check.ts", "scripts/v3-items-check.ts",
       "scripts/v3-arch-check.ts",
+      /* 결과지 문장 층. **여기 영역 코드가 박혀 있어서 전기전자 응시자에게
+         기계공학 작성 차례가 나갔다**: `TD01` 은 기계공학에서 기계설계이고
+         전기전자에서 아날로그 회로 설계다. Core 마다 다른 표는
+         `result/chains.ts` 가 들고 이 파일은 담겨 온 것을 읽는다 */
+      "src/lib/me-v3/result/text.ko.ts",
     ];
     const banned = [/me-v3-/, /me-evidence-map/, /ME_CORE/, /\bTD0\d\b/, /ME_V3_DOMAIN/];
     const stuck: string[] = [];

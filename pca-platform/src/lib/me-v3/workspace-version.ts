@@ -75,7 +75,7 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V26";
  * 셋은 우리가 안에서 그 일을 부르던 말이고, 손님 화면에서는 그 말이
  * 무엇을 가리키는지 알 수 없다.
  */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.17";
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.18";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**
@@ -572,4 +572,17 @@ export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.17";
  *
  * **화면에 서는 글자는 한 줄도 바뀌지 않았다.** 문장 판본을 올리지 않는
  * 것이 그 까닭이다.
+ */
+
+/*
+ * `careermatri-workspace-copy.18` 로 올린 까닭. **영역 칸의 둘째 줄이
+ * Core 를 보고 적힌다.**
+ *
+ * 홈의 영역 칸이 `domainChainKo()` 로 그 영역이 일하는 차례를 적는데, 그
+ * 표가 영역 코드만으로 적혀 있어서 **전기전자 응시자에게 기계공학 차례가
+ * 나갔다.** 표를 `result/chains.ts` 로 옮기고 Core 를 함께 넘긴다.
+ *
+ * **기계공학이 읽는 글은 한 글자도 바뀌지 않았다**: 옛 값을 글자까지 그대로
+ * 옮겼다. 화면 판본을 올리지 않는 까닭은 markup 과 자리가 그대로이고 바뀐
+ * 것이 넘기는 값 하나이기 때문이다.
  */

@@ -12,6 +12,7 @@
  *      자료에서 가져온 재료로 문장을 만든다.
  */
 import type { Axis, AxisState, Stage } from "../scoring/types";
+import { chainFor } from "./chains";
 import { andList, josaOf, orList, withJosa } from "./josa";
 import { REASON_KO } from "../scoring/text.ko";
 import type {
@@ -243,36 +244,23 @@ const TRY_KO: Record<Stage, string> = {
 };
 
 /**
- * 영역마다 **그 일을 설명하는 차례가 다르다.**
+ * 영역마다 **그 일을 설명하는 차례가 다르다.** 그 표는 Core 마다 달라서
+ * `chains.ts` 가 들고, 여기서는 할 일에 담겨 온 것을 읽기만 한다.
  *
- * 영역 사전의 `쓰는 방법` 과 `내놓는 산출물` 을 기계로 이어 붙이면 열두
- * 영역이 거의 같은 문장을 받는다(해석과 진동과 시험이 모두 `사례 하나를
- * 골라 정리해보세요` 가 됐다). 그래서 차례만은 손으로 적는다. 여기 적는
- * 것은 문장이 아닌 **순서**고, 판정에는 들어가지 않는다.
+ * **영역이 정해지지 않은 할 일에는 차례가 없다.**
  */
-const CHAIN_KO: Record<string, string[]> = {
-  TD01: ["요구 조건", "개념안 비교", "공차와 체결 결정", "도면", "시작품 확인"],
-  TD02: ["하중과 구속조건", "이상화와 모델", "해석값", "검증 대조", "설계 변경"],
-  TD03: ["발열과 유량 조건", "지배 전달 경로", "작동점 선정", "해석값", "실측 대조"],
-  TD04: ["주파수 대역", "가진원", "전달경로", "측정값", "개선 전후 결과"],
-  TD05: ["요구 동작", "구동과 제어 구조", "시퀀스", "시운전 결과", "사이클 타임 판정"],
-  TD06: ["파단면 관찰", "손상 기구 후보", "분석 방법", "증거", "배제한 후보"],
-  TD07: ["시험 목적", "지그와 센서", "판정 기준", "결과", "산포와 오차 대응"],
-  TD08: ["도면 공차", "공법 선정", "조건 실험", "공정능력", "표준화"],
-  TD09: ["고장 이력", "고장 모드", "점검 주기와 교체 기준", "조치", "전후 가동률"],
-  TD10: ["고객 요구", "관리할 특성", "관리 한계", "시정조치", "전후 불량률"],
-  TD11: ["상위 요구", "요구 분해", "할당과 인터페이스", "검증 배정", "충족률"],
-  TD12: ["반복 작업", "입출력 규격", "자동화 범위", "검증 규칙", "손으로 한 결과 대조"],
-};
-
-/** 영역이 정해지지 않은 할 일에는 차례가 없다 */
-function chainOf(domain: string | null): string[] {
-  return (domain ? CHAIN_KO[domain] : undefined) ?? [];
+function chainOf(a: Action): string[] {
+  return a.material.chain ?? [];
 }
 
-/** 그 영역이 일하는 차례. 결과지에서 영역을 소개하는 자리에도 쓴다 */
-export function domainChainKo(domain: string): string[] {
-  return CHAIN_KO[domain] ?? [];
+/**
+ * 그 영역이 일하는 차례. 결과지에서 영역을 소개하는 자리에도 쓴다.
+ *
+ * **Core 를 함께 받는다.** 영역 코드는 Core 안에서만 뜻이 있어서, 코드만
+ * 보고 고르면 전기전자 응시자에게 기계공학 차례가 나간다.
+ */
+export function domainChainKo(core: string, domain: string): string[] {
+  return chainFor(core, domain);
 }
 
 /**
@@ -348,7 +336,7 @@ export function actionKo(
      * 넷을 지나야 하고, 그러면 그 줄은 할 일로 읽히지 않고 설명서가 된다.
      * 지시는 한 마디로 적고 차례는 `guide` 가 들어 펼침 안으로 간다.
      */
-    const chain = chainOf(a.domain).join(" → ");
+    const chain = chainOf(a).join(" → ");
     return {
       do: chain
         ? `${domainName} 사례 하나를 골라 한 쪽으로 정리해보세요.`
@@ -368,7 +356,7 @@ export function actionKo(
     };
   }
   if (a.code === "BUILD_OUTPUT") {
-    const chain = chainOf(a.domain).slice(0, 3).join(" → ");
+    const chain = chainOf(a).slice(0, 3).join(" → ");
     return {
       do: art
         ? `다음 ${domainName} 과제에서는 ${art} 같은 결과물을 하나 남겨보세요.`

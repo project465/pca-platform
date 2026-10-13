@@ -15,7 +15,7 @@ import { load, score, coreOnly } from "../src/lib/me-v3/scoring/engine";
 import { expand, stable, type Fixture } from "../src/lib/me-v3/scoring/fixtures";
 import { REASON_CODES } from "../src/lib/me-v3/scoring/reason-codes";
 import { OWNERSHIP } from "../src/lib/me-v3/scoring/ownership";
-import { ITEM_BANK_VERSION, SCORING_VERSION } from "../src/lib/me-v3/scoring/version";
+import { bankVersionOf, SCORING_VERSION } from "../src/lib/me-v3/scoring/version";
 import type { Snapshot, Submission } from "../src/lib/me-v3/scoring/types";
 
 const SCORING_DIR = "src/lib/me-v3/scoring";
@@ -56,8 +56,7 @@ function main(): void {
   const loaded = load(core);
   /* **은행 판본은 그 Core 의 은행이 적는다.** `version.ts` 의 전역 상수는
      기계공학 하나를 가리킨다 */
-  const bankVersion = coreFile<{ item_bank_version?: string }>(core, "items")
-    .item_bank_version ?? ITEM_BANK_VERSION;
+  const bankVersion = bankVersionOf(core);
   console.log(`  core  ${core} · ${SCORING_VERSION} · ${bankVersion}\n`);
   const fixtures = coreEntry(core).fixtures ?? {};
   const FIX = fixtures.personas;

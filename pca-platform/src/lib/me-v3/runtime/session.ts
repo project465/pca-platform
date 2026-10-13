@@ -13,13 +13,15 @@
  * 판정은 `scoring/engine.ts` 가 끝에서 한 번 한다.
  */
 import { query, queryOne } from "@/lib/db";
-import { coreFile, packs as readPacks, sellableCores } from "../core-registry";
+import {
+  core as coreOf, coreFile, defaultCore, packs as readPacks, sellableCores,
+} from "../core-registry";
 import { load, score } from "../scoring/engine";
 import type {
   Answer, GradField, Snapshot, Stage, Submission, Tier, UndergradCore,
 } from "../scoring/types";
 import type { Bank, BankItem } from "../scoring/normalize";
-import { ITEM_BANK_VERSION, SCORING_VERSION } from "../scoring/version";
+import { bankVersionOf, SCORING_VERSION } from "../scoring/version";
 import {
   buildPlan, type IndustryScene, type Plan, type PlanInput, type Screen,
 } from "./blocks";
@@ -429,6 +431,17 @@ export async function openAttempt(args: {
   const market = args.market ?? "KR";
   const campus = args.campus && sellableCores(market)
     .some((c) => c.code === args.campus?.core_code) ? args.campus : null;
+  /**
+   * 이 응시가 읽을 Core 와 그 Core 의 판본.
+   *
+   * **Core 를 정하는 자리와 판본을 적는 자리를 가르지 않는다**(설계 원칙
+   * 10). 전에는 `core_code` 를 SQL 안에서 `coalesce($11, 'ME_CORE_V3')` 로
+   * 정하고 판본은 전역 상수로 적어서, 전기전자 응시 줄이 `core_code =
+   * EE_CORE_V1` 과 `item_bank_version = ME_V3_ITEM_BANK_V2.5` 를 나란히
+   * 들었다. 한 줄 안에서 두 칸이 서로 다른 Core 를 가리킨 것이다.
+   */
+  const coreCode = campus?.core_code ?? defaultCore();
+  const coreEntry = coreOf(coreCode);
   const row = await queryOne<{ id: string }>(
     `INSERT INTO v3_attempts
        (user_id, entitlement_id, tier, market_code, education_stage, grad_field,
@@ -437,12 +450,13 @@ export async function openAttempt(args: {
         core_code, university_code, college_code, department_code,
         specialization_code)
      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,'profile',
-             coalesce($11, 'ME_CORE_V3'),$12,$13,$14,$15)
+             $11,$12,$13,$14,$15)
      RETURNING id::text`,
     [args.userId, args.entitlementId ?? null, args.tier, market,
-     args.stage, args.gradField, args.undergradCore ?? null, ASSESSMENT_VERSION,
-     ITEM_BANK_VERSION, SCORING_VERSION,
-     campus?.core_code ?? null, campus?.university_code ?? null,
+     args.stage, args.gradField, args.undergradCore ?? null,
+     coreEntry.assessment_version,
+     bankVersionOf(coreCode), SCORING_VERSION,
+     coreCode, campus?.university_code ?? null,
      campus?.college_code ?? null, campus?.department_code ?? null,
      campus?.specialization ?? null],
   );
@@ -963,6 +977,19 @@ export async function submit(a: V3Attempt): Promise<{ snapshot: Snapshot; id: st
    */
   const versions = {
     ...snapshot.module_versions,
+    /**
+     * 어느 Core 의 어느 갈래로 응시했는가.
+     *
+     * `core_version` 과 같은 값이지만 이름을 따로 둔다: 저쪽은 채점이
+     * 읽은 Core 이고 이쪽은 **그 사람이 고른 자리**다. 둘이 어긋나면
+     * 어느 한쪽이 거짓이므로 `v3:provenance` 가 같은지 센다.
+     *
+     * **갈래는 없으면 `null` 이다.** 비워 두지 않고 적는 까닭은, 칸이
+     * 아예 없는 것과 갈래 없이 응시한 것이 되짚을 때 구별되지 않기
+     * 때문이다.
+     */
+    core_code: a.core_code,
+    specialization: a.specialization_code ?? null,
     assessment_ui_version: ASSESSMENT_UI_VERSION,
     assessment_copy_version: ASSESSMENT_COPY_VERSION,
     result_model_version: RESULT_MODEL_VERSION,

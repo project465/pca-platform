@@ -26,7 +26,7 @@ import type {
 } from "./types";
 import { decide, nextSteps, quadrant, Z1_CONFIRMED_MIN } from "./zones";
 import {
-  ITEM_BANK_VERSION, SCORING_VERSION, packVersion, type ModuleVersions,
+  SCORING_VERSION, packVersion, type ModuleVersions,
 } from "./version";
 
 const AX: Axis[] = ["J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8"];
@@ -75,7 +75,10 @@ const COMMON_MEASURE = new Set(["common_judgement", "experience_translation"]);
 export function score(sub: Submission, loaded: Loaded): Snapshot {
   const { bank, domains } = loaded;
   const items = bank.items;
-  const trace: string[] = [`scoring=${SCORING_VERSION}`, `bank=${ITEM_BANK_VERSION}`];
+  /* 적는 판본은 **이 응시가 읽은 은행의 것**이다. 전역 상수를 쓰면
+     전기전자 응시의 되짚는 글에 기계공학 판본이 적힌다 */
+  const bankVer = bank.item_bank_version;
+  const trace: string[] = [`scoring=${SCORING_VERSION}`, `bank=${bankVer}`];
 
   const deepItems = new Map<string, BankItem[]>();
   for (const i of items) {
@@ -279,7 +282,7 @@ export function score(sub: Submission, loaded: Loaded): Snapshot {
 
   const versions: ModuleVersions = {
     core_version: loaded.core,
-    item_bank_version: ITEM_BANK_VERSION,
+    item_bank_version: bankVer,
     scoring_version: SCORING_VERSION,
     industry_pack_version: packVersion(loaded.core, "industry", sub.industry_pack ?? null, loaded.dir),
     role_pack_version: packVersion(loaded.core, "role", sub.role_pack ?? null, loaded.dir),

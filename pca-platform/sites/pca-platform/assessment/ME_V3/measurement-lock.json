@@ -1,12 +1,12 @@
 {
   "note": "ME_V3_MEASUREMENT_FREEZE_1. 응답을 받는 방식과 판단으로 바꾸는 방식과 판단을 담는 모양의 지문이다. **화면 파일이 한 줄도 없다**: UI 를 고쳤다고 이 기록이 흔들리면 사람이 `UI 때문이니 다시 적자` 로 넘기고, 한 번 넘기면 그 동결은 아무것도 막지 않는다. 측정을 일부러 고치는 회차에만 MEASURE_FREEZE=write 로 다시 적고 판본을 함께 올린다.",
   "label": "ME_V3_MEASUREMENT_FREEZE_1",
-  "at": "2026-10-11",
+  "at": "2026-10-13",
   "versions": {
     "core": "ME_CORE_V3",
     "item_bank": "ME_V3_ITEM_BANK_V2.5",
     "scoring": "me-v3-scoring.5",
-    "result_model": "me-v3-result-model.5"
+    "result_model": "me-v3-result-model.6"
   },
   "files": {
     "sites/pca-platform/content/me-v3-2-items.json": "729edda519bd1ecb",
@@ -18,15 +18,15 @@
     "sites/pca-platform/content/me-v3-2-relations.json": "7f120a5f0e8e9369",
     "sites/pca-platform/content/industry-packs-v2.json": "99c11369856e2abf",
     "sites/pca-platform/content/role-packs-v2.json": "69246bce9e8dd0e6",
-    "src/lib/me-v3/scoring/engine.ts": "e510f233d2758287",
+    "src/lib/me-v3/scoring/engine.ts": "678c57cd6ab60fb0",
     "src/lib/me-v3/scoring/axes.ts": "50deee77b67615de",
     "src/lib/me-v3/scoring/ownership.ts": "231764c0c732ff1a",
-    "src/lib/me-v3/scoring/normalize.ts": "ec5125ff053322ff",
+    "src/lib/me-v3/scoring/normalize.ts": "57013f9d4dd52bb8",
     "src/lib/me-v3/scoring/quality.ts": "36b87f17746cf8b0",
     "src/lib/me-v3/scoring/zones.ts": "8ad1f3eb8256c025",
-    "src/lib/me-v3/scoring/version.ts": "4a102008b62ef07f",
+    "src/lib/me-v3/scoring/version.ts": "f08e1f5463ffc9cb",
     "src/lib/me-v3/measurement/registry.ts": "c4d5974056b6d7d9",
-    "src/lib/me-v3/result/model.ts": "f5b328883b367ac3",
-    "src/lib/me-v3/result/build.ts": "d7f0b64996fc3758"
+    "src/lib/me-v3/result/model.ts": "a56659443d97579b",
+    "src/lib/me-v3/result/build.ts": "e486679c85274c40"
   }
 }

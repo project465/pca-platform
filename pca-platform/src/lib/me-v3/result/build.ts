@@ -22,6 +22,7 @@ import type {
   Action, ActionCode, BasicGroups, CommonView, EvidenceGroup, FirstMove, Gap,
   HeadlineCode, PackView, ResultDomain, ResultModel, TargetView, TranslationView,
 } from "./model";
+import { chainFor } from "./chains";
 import { RESULT_MODEL_VERSION } from "./version";
 
 const AX: Axis[] = ["J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8"];
@@ -251,7 +252,7 @@ function gapsOf(
 
 /** 비어 있는 자리마다 할 일 하나. **막연한 말을 쓰지 않으려고 재료를 붙인다** */
 function actionsOf(
-  s: Snapshot, gaps: Gap[], data: Map<string, DomainData>,
+  s: Snapshot, gaps: Gap[], data: Map<string, DomainData>, core: string,
 ): Action[] {
   const out: Action[] = [];
   const lowInterest = new Set(s.zones.Z3_EVIDENCE_LOW_INTEREST);
@@ -288,6 +289,9 @@ function actionsOf(
           decide: step(dd, 3), method: step(dd, 4),
           output: step(dd, 6), on_fail: step(dd, 8),
         },
+        /* 적는 차례는 **그 Core 의 것**이다. 한 자리에서 담아 보내므로
+           문장을 만드는 쪽이 Core 를 몰라도 된다 */
+        chain: chainFor(core, domain),
       },
     });
   };
@@ -331,11 +335,37 @@ function actionsOf(
     }
   }
 
-  /* 응답만으로 어느 영역도 앞서지 않은 사람. **없는 차례를 지어내지 않고
-     그 사실과 함께 할 수 있는 한 걸음을 적는다.** 아무것도 안 적으면
-     읽는 사람은 이 검사가 원래 그 정도인 줄 안다 */
-  if (!s.focus.length && !out.length) {
-    add("A.EXPLORE", null, null, "EXPLORE_BROADLY", "NOW", null);
+  /**
+   * **할 일이 하나도 없는 결과를 만들지 않는다.**
+   *
+   * 전에는 이 그물이 `!s.focus.length && !out.length` 였다. 그래서 먼저 볼
+   * 영역이 **있는데** 할 일이 하나도 없는 사람이 그대로 지나갔다: 선별 네
+   * 축을 다 확인한 BASIC 응시자가 그 처지다. 빈자리는 `opened.deep` 인
+   * 영역에서만 세는데 BASIC 은 깊게 묻지 않아 0이고, 스냅샷의 `next` 도
+   * 비고, Z1 정리 묶음은 `allows_evidence_established` 가 BASIC 에서
+   * 거짓이라 돌지 않는다. 그 사람은 백 문항 가까이 풀고 **다음에 할 일을
+   * 한 줄도 받지 못한다.**
+   *
+   * 무엇을 적을지는 **이미 관찰된 것**이 정한다. 네 가지를 하지 않는다:
+   * 점수를 새로 만들지 않고 · 강점이나 적합도를 말하지 않고 · 없는 빈자리를
+   * 지어내지 않고 · 이미 확인된 영역을 억지로 부족하다고 적지 않는다.
+   * 그래서 확인된 판단이 있으면 그 근거를 설명할 문장으로 만드는 일
+   * (`WRITE_UP`)이고, 하나도 없으면 전과 같이 짧게 해 보는 일이다. 문장은
+   * `text.ko.ts` 가 들고 여기서 자유문장을 만들지 않는다.
+   *
+   * **먼저 볼 영역이 없는 사람의 결과는 전과 글자까지 같다**: `focus` 가
+   * 비면 아래 `find` 가 비어 옛 가지로 내려간다.
+   */
+  if (!out.length) {
+    /* 스냅샷이 이미 센 `confirmed` 만 읽는다. 차례도 `focus` 그대로다 */
+    const established = s.focus.find((c) =>
+      (s.domains.find((d) => d.code === c)?.confirmed.length ?? 0) > 0);
+    if (established) {
+      add(`A.${established}.WRITE_UP`, established, null, "WRITE_UP",
+        lowInterest.has(established) ? "LATER" : "NOW", null);
+    } else {
+      add("A.EXPLORE", null, null, "EXPLORE_BROADLY", "NOW", null);
+    }
   }
   /* **차례가 뜻을 가진다.** 관심은 높고 겪은 적이 없는 사람에게 공부를
      먼저 적으면, 해 보기 전에 책부터 사라고 말하는 셈이다 */
@@ -406,7 +436,7 @@ export function buildResult(
 
   const domains = s.domains.map(domainView);
   const gaps = gapsOf(s, data);
-  const actions = actionsOf(s, gaps, data);
+  const actions = actionsOf(s, gaps, data, loaded.core);
 
   const group = (want: (d: ResultDomain, ax: Axis) => boolean): EvidenceGroup[] => {
     const out: EvidenceGroup[] = [];

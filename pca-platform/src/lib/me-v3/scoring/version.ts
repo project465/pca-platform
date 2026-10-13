@@ -6,7 +6,7 @@
  */
 import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
-import { CONTENT_DIR, packFile, type PackKind } from "../core-registry";
+import { CONTENT_DIR, coreFile, packFile, type PackKind } from "../core-registry";
 
 /**
  * 판단 규칙이 바뀌면 올린다. 문면이 바뀌는 것은 문항 은행 판본이다.
@@ -120,6 +120,26 @@ export function sha256(path: string): string {
  * 적힌 자리를 전부 찾아야 했다. 하나를 놓치면 옛 팩과 새 팩이 한 응시에
  * 섞인다.
  */
+/**
+ * 그 Core 의 문항 은행이 **스스로 적은** 판본.
+ *
+ * **전역 `ITEM_BANK_VERSION` 을 응시 기록에 쓰지 않는 까닭이다.** 그 상수는
+ * 기계공학 하나를 가리켜서, 전기전자 응시의 스냅샷과 `v3_attempts` 줄에
+ * `ME_V3_ITEM_BANK_V2.5` 가 적혔다. 판정에는 들어가지 않지만(축 수준과
+ * 묶음은 그 Core 의 은행과 영역 사전만 읽는다) **되짚을 때 읽는 이름표가
+ * 거짓이 된다.** 어느 판본으로 응시했는지는 나중에 되물을 수 없다.
+ *
+ * 적지 않은 은행은 **조용히 넘기지 않고 그 자리에서 멈춘다**: 기본값을
+ * 두면 그 기본값이 다시 남의 판본이 된다.
+ */
+export function bankVersionOf(core: string, dir = CONTENT_DIR): string {
+  const b = coreFile<{ item_bank_version?: string }>(core, "items", dir);
+  if (!b.item_bank_version) {
+    throw new Error(`${core} 의 문항 은행이 item_bank_version 을 적지 않았습니다`);
+  }
+  return b.item_bank_version;
+}
+
 export function packVersion(
   core: string, kind: PackKind, code: string | null, dir = CONTENT_DIR,
 ): string | null {

@@ -29,6 +29,12 @@ export type Bank = {
   items: BankItem[];
   level_options: string[];
   assessment_version: string;
+  /**
+   * 이 은행이 스스로 적은 판본. **전역 상수를 쓰지 않는 까닭이다**:
+   * `scoring/version.ts` 의 `ITEM_BANK_VERSION` 은 기계공학 하나를
+   * 가리켜서, 전기전자 응시의 스냅샷에 남의 판본이 적혔다.
+   */
+  item_bank_version: string;
 };
 
 export function loadBank(core: string, dir?: string): Bank {

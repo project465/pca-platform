@@ -80,14 +80,23 @@ export type CoreEntry = {
    * **콘텐츠가 얼마나 검토됐는가.** 안쪽 QA 값이고 **손님 화면에 이
    * 글자가 그대로 나가지 않는다.**
    *
-   * `VALIDATED`          파일럿이나 전문가 검토가 끝났다
-   * `READY_FOR_REVIEW`   구조와 내용은 섰고 검토 전이다
-   * `FOUNDATION`         Major Core 의 뼈대만 있다
+   * `VALIDATED`                 파일럿이나 전문가 검토가 끝났다
+   * `READY_FOR_REVIEW`          구조와 내용은 섰고 검토 전이다
+   * `READY_FOR_DOMAIN_REVIEW`   자료가 다 서고 자동 검사가 통과했다.
+   *                             남은 것은 **그 전공 전문가가 읽는 일**이다
+   * `FOUNDATION`                Major Core 의 뼈대만 있다
+   *
+   * `READY_FOR_REVIEW` 와 따로 둔 까닭. 앞엣것은 `누군가 봐야 한다` 까지고
+   * 뒤엣것은 **누가 무엇을 봐야 하는지가 정해져 있다**: 그 전공 전문가와
+   * 현직자가 읽을 묶음이 만들어져 있고 판정 칸이 비어 있는 상태다. 한
+   * 칸으로 묶으면 `검토를 부탁할 자료가 아직 없다` 와 `자료는 있고 답을
+   * 기다린다` 가 구별되지 않고, 그러면 아무도 검토를 시작하지 않는다.
    *
    * 지금 `VALIDATED` 인 core 는 **하나도 없다.** 규준도 인지 면접도 없어
    * 어느 전공도 `검증된 검사` 로 팔지 않는다.
    */
-  maturity: "VALIDATED" | "READY_FOR_REVIEW" | "FOUNDATION";
+  maturity: "VALIDATED" | "READY_FOR_REVIEW" | "READY_FOR_DOMAIN_REVIEW"
+    | "FOUNDATION";
   /**
    * 같은 Core 로 가는 학과 이름들.
    *

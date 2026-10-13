@@ -185,7 +185,7 @@ const EXP_KO = {
  * 받은 것만 적는다: 관심과 경험과 배울 뜻.
  */
 function Basic({ core, d }: { core: string; d: ResultDomain }) {
-  const chain = domainChainKo(d.code);
+  const chain = domainChainKo(core, d.code);
   const made = domainArtifacts(core, d.code);
   return (
     <>
@@ -916,7 +916,7 @@ export default async function V3Result({
                     {bg![k].map((c) => (
                       <li key={c}>
                         <b>{domainName(core, c)}</b>
-                        <span>{domainChainKo(c).join(" → ")}</span>
+                        <span>{domainChainKo(core, c).join(" → ")}</span>
                       </li>
                     ))}
                   </ul>
