@@ -537,16 +537,16 @@
          "name": "건축학과",
          "kind": "department",
          "core_code": "ARCH_CORE_V1",
-         "specialization": null
+         "specialization": "SPEC_ARCH_BUILDING",
+         "mapping_note": "건축학과가 묻는 판단은 건물 한 채가 서고 허가를 받게 하는 쪽이라 건축 갈래로 간다"
         },
         {
          "code": "PCU26_INTERIOR",
          "name": "실내건축학과",
          "kind": "department",
          "core_code": "ARCH_CORE_V1",
-         "specialization": null,
-         "specialization_required": true,
-         "note": "건축 Core 는 있는데 실내건축 갈래가 아직 없다"
+         "specialization": "SPEC_ARCH_INTERIOR",
+         "mapping_note": "실내건축학과가 묻는 판단은 들어가 쓰는 사람의 움직임과 치수를 맞추는 쪽이라 실내건축 갈래로 간다"
         },
         {
          "code": "PCU26_LANDSCAPE",
@@ -1139,16 +1139,16 @@
          "name": "건축학과",
          "kind": "department",
          "core_code": "ARCH_CORE_V1",
-         "specialization": null
+         "specialization": "SPEC_ARCH_BUILDING",
+         "mapping_note": "건축학과가 묻는 판단은 건물 한 채가 서고 허가를 받게 하는 쪽이라 건축 갈래로 간다"
         },
         {
          "code": "PCU27_INTERIOR",
          "name": "실내건축학과",
          "kind": "department",
          "core_code": "ARCH_CORE_V1",
-         "specialization": null,
-         "specialization_required": true,
-         "note": "건축 Core 는 있는데 실내건축 갈래가 아직 없다"
+         "specialization": "SPEC_ARCH_INTERIOR",
+         "mapping_note": "실내건축학과가 묻는 판단은 들어가 쓰는 사람의 움직임과 치수를 맞추는 쪽이라 실내건축 갈래로 간다"
         },
         {
          "code": "PCU27_LANDSCAPE",

@@ -1,0 +1,18 @@
+{
+ "schema_version": "cm-bank-lock.1",
+ "core": "ARCH_CORE_V1",
+ "item_bank_version": "ARCH_V1_ITEM_BANK_V1",
+ "note": "문면을 고치면 이 지문이 어긋난다. 그때 판본을 올리고 BANK=update 로 다시 적는다",
+ "files": {
+  "arch-v1-taxonomy.json": "61de4d215720a221e2a58a002976b247fbb73b7cb4003e9cc23768713636fd49",
+  "arch-v1-domains.json": "2b0ea01f39849d1c4f85c6743bfe404c054b09b3c11b97abcd26c0c897196eb5",
+  "arch-v1-checklists.json": "404a1cebf7f52fc5ccee9b303c8994ef826b89fac729f591be6fceebddf8b8b2",
+  "arch-v1-items-blueprint.json": "189581f021844fc33dca69c8178c26a92b139972eb5fdfd37527e612ceccb3f5",
+  "arch-v1-items.json": "b882d8659621e6d12d259888848f24a2bd24d69a9da7319fafaf2ad14b439105",
+  "arch-v1-relations.json": "99f9c2820e3c08347f6a4b354bc700d711fe4023f1f4e7f84c0f8a8c850e27aa",
+  "arch-v1-constructs.json": "4d36f944e8bc5f6d4f1a94c6f86612c76a92d01085d06def6594da6fbc8e67c6",
+  "arch-v1-checklist-additions.json": "ece30d79abdb43529c4f66e31a426cb75e1d89b785f9b02677766325c8ade135",
+  "arch-v1-common-additions.json": "20117f707af6f175cc1b0ad75d6fd6e448cf0195cf2075ff1ed4fca11e278d5f"
+ },
+ "scoring_version": "me-v3-scoring.5"
+}

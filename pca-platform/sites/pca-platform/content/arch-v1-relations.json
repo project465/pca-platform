@@ -1,0 +1,2416 @@
+{
+ "schema_version": "arch-v1-relations.1",
+ "core": "ARCH_CORE_V1",
+ "note": "기술영역과 산업, 기술영역과 역할의 관계를 두 표로 둔다. 세 축을 미리 곱해 두지 않는다: 열두 영역과 여덟 산업과 여덟 역할을 곱하면 칠백예순여덟 줄이 되고 그만큼의 줄을 사람이 손으로 유지할 수 없다. 어느 줄도 점수를 만들지 않는다: `strength` 는 설명하는 차례를 정하고 `appears_as` 는 결과지가 그 말로 옮겨 적을 때 읽는다",
+ "combine_rule": "산업 하나와 역할 하나를 함께 고른 사람에게는 두 표에서 같은 영역의 줄을 뽑아 나란히 놓는다. 둘 다 `중심` 인 영역이 먼저 서고, 한쪽만 중심인 영역이 다음이고, 양쪽이 드문 영역은 적지 않는다",
+ "td_industry": [
+  {
+   "td": "TD01",
+   "td_name": "대지·법규 검토",
+   "industry": "INDUSTRY_HOUSING_V1",
+   "industry_name": "주거 건축",
+   "strength": "있음",
+   "appears_as": "주거 건축 에서는 지을 수 있는 규모를 조건으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "지을 수 있는 규모를 조건으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "대지·법규 검토",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·문화 시설",
+   "strength": "있음",
+   "appears_as": "공공·문화 시설 에서는 지침을 조건으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "지침을 조건으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "대지·법규 검토",
+   "industry": "INDUSTRY_COMMERCIAL_V1",
+   "industry_name": "상업·업무 건축",
+   "strength": "있음",
+   "appears_as": "상업·업무 건축 에서는 규모를 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "규모를 좁히는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "대지·법규 검토",
+   "industry": "INDUSTRY_INTERIOR_V1",
+   "industry_name": "실내건축·인테리어",
+   "strength": "있음",
+   "appears_as": "실내건축·인테리어 에서는 손볼 범위를 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "손볼 범위를 좁히는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "대지·법규 검토",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "리테일·전시 공간",
+   "strength": "드묾",
+   "appears_as": "리테일·전시 공간 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "대지·법규 검토",
+   "industry": "INDUSTRY_CONSTRUCT_V1",
+   "industry_name": "시공·현장",
+   "strength": "드묾",
+   "appears_as": "시공·현장 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "대지·법규 검토",
+   "industry": "INDUSTRY_REMODEL_V1",
+   "industry_name": "리모델링·대수선",
+   "strength": "중심",
+   "appears_as": "리모델링·대수선 에서는 남길 것과 뜯을 것을 가르는가 · 용도와 조문을 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ],
+   "dimensions": [
+    "남길 것과 뜯을 것을 가르는가",
+    "용도와 조문을 대조하는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "대지·법규 검토",
+   "industry": "INDUSTRY_BIM_V1",
+   "industry_name": "BIM·건축 자료",
+   "strength": "드묾",
+   "appears_as": "BIM·건축 자료 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "공간 계획·평면 설계",
+   "industry": "INDUSTRY_HOUSING_V1",
+   "industry_name": "주거 건축",
+   "strength": "중심",
+   "appears_as": "주거 건축 에서는 되풀이되는 한 벌의 실 구성을 좁히는가 · 그 한 벌을 도면으로 남기는가 · 면적 기준과 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J5",
+    "J6"
+   ],
+   "dimensions": [
+    "되풀이되는 한 벌의 실 구성을 좁히는가",
+    "그 한 벌을 도면으로 남기는가",
+    "면적 기준과 대조하는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "공간 계획·평면 설계",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·문화 시설",
+   "strength": "있음",
+   "appears_as": "공공·문화 시설 에서는 실 구성을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "실 구성을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "공간 계획·평면 설계",
+   "industry": "INDUSTRY_COMMERCIAL_V1",
+   "industry_name": "상업·업무 건축",
+   "strength": "중심",
+   "appears_as": "상업·업무 건축 에서는 빌릴 면적의 요구를 조건으로 옮기는가 · 전용률을 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ],
+   "dimensions": [
+    "빌릴 면적의 요구를 조건으로 옮기는가",
+    "전용률을 대조하는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "공간 계획·평면 설계",
+   "industry": "INDUSTRY_INTERIOR_V1",
+   "industry_name": "실내건축·인테리어",
+   "strength": "드묾",
+   "appears_as": "실내건축·인테리어 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "공간 계획·평면 설계",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "리테일·전시 공간",
+   "strength": "드묾",
+   "appears_as": "리테일·전시 공간 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "공간 계획·평면 설계",
+   "industry": "INDUSTRY_CONSTRUCT_V1",
+   "industry_name": "시공·현장",
+   "strength": "드묾",
+   "appears_as": "시공·현장 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "공간 계획·평면 설계",
+   "industry": "INDUSTRY_REMODEL_V1",
+   "industry_name": "리모델링·대수선",
+   "strength": "드묾",
+   "appears_as": "리모델링·대수선 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "공간 계획·평면 설계",
+   "industry": "INDUSTRY_BIM_V1",
+   "industry_name": "BIM·건축 자료",
+   "strength": "있음",
+   "appears_as": "BIM·건축 자료 에서는 모델 범위를 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "모델 범위를 좁히는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "형태·입면 설계",
+   "industry": "INDUSTRY_HOUSING_V1",
+   "industry_name": "주거 건축",
+   "strength": "있음",
+   "appears_as": "주거 건축 에서는 외관의 비례를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "외관의 비례를 가르는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "형태·입면 설계",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·문화 시설",
+   "strength": "있음",
+   "appears_as": "공공·문화 시설 에서는 심의에서 지킬 비례를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "심의에서 지킬 비례를 가르는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "형태·입면 설계",
+   "industry": "INDUSTRY_COMMERCIAL_V1",
+   "industry_name": "상업·업무 건축",
+   "strength": "드묾",
+   "appears_as": "상업·업무 건축 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "형태·입면 설계",
+   "industry": "INDUSTRY_INTERIOR_V1",
+   "industry_name": "실내건축·인테리어",
+   "strength": "드묾",
+   "appears_as": "실내건축·인테리어 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "형태·입면 설계",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "리테일·전시 공간",
+   "strength": "있음",
+   "appears_as": "리테일·전시 공간 에서는 보이는 면을 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "보이는 면을 대조하는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "형태·입면 설계",
+   "industry": "INDUSTRY_CONSTRUCT_V1",
+   "industry_name": "시공·현장",
+   "strength": "드묾",
+   "appears_as": "시공·현장 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "형태·입면 설계",
+   "industry": "INDUSTRY_REMODEL_V1",
+   "industry_name": "리모델링·대수선",
+   "strength": "드묾",
+   "appears_as": "리모델링·대수선 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "형태·입면 설계",
+   "industry": "INDUSTRY_BIM_V1",
+   "industry_name": "BIM·건축 자료",
+   "strength": "드묾",
+   "appears_as": "BIM·건축 자료 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "구조 개념·안전 검토",
+   "industry": "INDUSTRY_HOUSING_V1",
+   "industry_name": "주거 건축",
+   "strength": "드묾",
+   "appears_as": "주거 건축 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "구조 개념·안전 검토",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·문화 시설",
+   "strength": "드묾",
+   "appears_as": "공공·문화 시설 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "구조 개념·안전 검토",
+   "industry": "INDUSTRY_COMMERCIAL_V1",
+   "industry_name": "상업·업무 건축",
+   "strength": "있음",
+   "appears_as": "상업·업무 건축 에서는 기둥 간격을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "기둥 간격을 가르는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "구조 개념·안전 검토",
+   "industry": "INDUSTRY_INTERIOR_V1",
+   "industry_name": "실내건축·인테리어",
+   "strength": "드묾",
+   "appears_as": "실내건축·인테리어 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "구조 개념·안전 검토",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "리테일·전시 공간",
+   "strength": "드묾",
+   "appears_as": "리테일·전시 공간 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "구조 개념·안전 검토",
+   "industry": "INDUSTRY_CONSTRUCT_V1",
+   "industry_name": "시공·현장",
+   "strength": "있음",
+   "appears_as": "시공·현장 에서는 가설과 구조를 검토하는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "가설과 구조를 검토하는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "구조 개념·안전 검토",
+   "industry": "INDUSTRY_REMODEL_V1",
+   "industry_name": "리모델링·대수선",
+   "strength": "있음",
+   "appears_as": "리모델링·대수선 에서는 철거해도 서는지 검토하는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "철거해도 서는지 검토하는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "구조 개념·안전 검토",
+   "industry": "INDUSTRY_BIM_V1",
+   "industry_name": "BIM·건축 자료",
+   "strength": "드묾",
+   "appears_as": "BIM·건축 자료 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "설비·환경 성능",
+   "industry": "INDUSTRY_HOUSING_V1",
+   "industry_name": "주거 건축",
+   "strength": "있음",
+   "appears_as": "주거 건축 에서는 채광 기준과 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "채광 기준과 대조하는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "설비·환경 성능",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·문화 시설",
+   "strength": "있음",
+   "appears_as": "공공·문화 시설 에서는 성능 검토서를 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "성능 검토서를 남기는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "설비·환경 성능",
+   "industry": "INDUSTRY_COMMERCIAL_V1",
+   "industry_name": "상업·업무 건축",
+   "strength": "있음",
+   "appears_as": "상업·업무 건축 에서는 공조 용량을 조건으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "공조 용량을 조건으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "설비·환경 성능",
+   "industry": "INDUSTRY_INTERIOR_V1",
+   "industry_name": "실내건축·인테리어",
+   "strength": "있음",
+   "appears_as": "실내건축·인테리어 에서는 밝기를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "밝기를 가르는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "설비·환경 성능",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "리테일·전시 공간",
+   "strength": "중심",
+   "appears_as": "리테일·전시 공간 에서는 연출 방법을 고르는가 · 조도와 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ],
+   "dimensions": [
+    "연출 방법을 고르는가",
+    "조도와 대조하는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "설비·환경 성능",
+   "industry": "INDUSTRY_CONSTRUCT_V1",
+   "industry_name": "시공·현장",
+   "strength": "드묾",
+   "appears_as": "시공·현장 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "설비·환경 성능",
+   "industry": "INDUSTRY_REMODEL_V1",
+   "industry_name": "리모델링·대수선",
+   "strength": "있음",
+   "appears_as": "리모델링·대수선 에서는 설비 용량을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "설비 용량을 가르는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "설비·환경 성능",
+   "industry": "INDUSTRY_BIM_V1",
+   "industry_name": "BIM·건축 자료",
+   "strength": "중심",
+   "appears_as": "BIM·건축 자료 에서는 성능 모의 조건을 고르는가 · 실측과 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ],
+   "dimensions": [
+    "성능 모의 조건을 고르는가",
+    "실측과 대조하는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·마감 선정",
+   "industry": "INDUSTRY_HOUSING_V1",
+   "industry_name": "주거 건축",
+   "strength": "있음",
+   "appears_as": "주거 건축 에서는 쓰는 세기를 마감 등급으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "쓰는 세기를 마감 등급으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·마감 선정",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·문화 시설",
+   "strength": "드묾",
+   "appears_as": "공공·문화 시설 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·마감 선정",
+   "industry": "INDUSTRY_COMMERCIAL_V1",
+   "industry_name": "상업·업무 건축",
+   "strength": "있음",
+   "appears_as": "상업·업무 건축 에서는 마감 등급을 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "마감 등급을 대조하는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·마감 선정",
+   "industry": "INDUSTRY_INTERIOR_V1",
+   "industry_name": "실내건축·인테리어",
+   "strength": "중심",
+   "appears_as": "실내건축·인테리어 에서는 쓰는 세기를 등급으로 옮기는가 · 재료를 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J4"
+   ],
+   "dimensions": [
+    "쓰는 세기를 등급으로 옮기는가",
+    "재료를 견주는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·마감 선정",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "리테일·전시 공간",
+   "strength": "있음",
+   "appears_as": "리테일·전시 공간 에서는 쓰임의 빈도를 등급으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "쓰임의 빈도를 등급으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·마감 선정",
+   "industry": "INDUSTRY_CONSTRUCT_V1",
+   "industry_name": "시공·현장",
+   "strength": "있음",
+   "appears_as": "시공·현장 에서는 자재를 바꿀지 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "자재를 바꿀지 가르는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·마감 선정",
+   "industry": "INDUSTRY_REMODEL_V1",
+   "industry_name": "리모델링·대수선",
+   "strength": "있음",
+   "appears_as": "리모델링·대수선 에서는 옛 마감과 새 마감을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "옛 마감과 새 마감을 가르는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·마감 선정",
+   "industry": "INDUSTRY_BIM_V1",
+   "industry_name": "BIM·건축 자료",
+   "strength": "드묾",
+   "appears_as": "BIM·건축 자료 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "실내 공간·동선 설계",
+   "industry": "INDUSTRY_HOUSING_V1",
+   "industry_name": "주거 건축",
+   "strength": "드묾",
+   "appears_as": "주거 건축 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "실내 공간·동선 설계",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·문화 시설",
+   "strength": "있음",
+   "appears_as": "공공·문화 시설 에서는 공용 공간의 배치를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "공용 공간의 배치를 가르는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "실내 공간·동선 설계",
+   "industry": "INDUSTRY_COMMERCIAL_V1",
+   "industry_name": "상업·업무 건축",
+   "strength": "드묾",
+   "appears_as": "상업·업무 건축 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "실내 공간·동선 설계",
+   "industry": "INDUSTRY_INTERIOR_V1",
+   "industry_name": "실내건축·인테리어",
+   "strength": "중심",
+   "appears_as": "실내건축·인테리어 에서는 한 실의 배치를 가르는가 · 전개도를 남기는가 · 인체 치수와 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J6"
+   ],
+   "dimensions": [
+    "한 실의 배치를 가르는가",
+    "전개도를 남기는가",
+    "인체 치수와 대조하는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "실내 공간·동선 설계",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "리테일·전시 공간",
+   "strength": "중심",
+   "appears_as": "리테일·전시 공간 에서는 보여 줄 범위를 좁히는가 · 보는 차례를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J3"
+   ],
+   "dimensions": [
+    "보여 줄 범위를 좁히는가",
+    "보는 차례를 가르는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "실내 공간·동선 설계",
+   "industry": "INDUSTRY_CONSTRUCT_V1",
+   "industry_name": "시공·현장",
+   "strength": "드묾",
+   "appears_as": "시공·현장 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "실내 공간·동선 설계",
+   "industry": "INDUSTRY_REMODEL_V1",
+   "industry_name": "리모델링·대수선",
+   "strength": "있음",
+   "appears_as": "리모델링·대수선 에서는 현황 치수를 조건으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "현황 치수를 조건으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "실내 공간·동선 설계",
+   "industry": "INDUSTRY_BIM_V1",
+   "industry_name": "BIM·건축 자료",
+   "strength": "드묾",
+   "appears_as": "BIM·건축 자료 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "도면·시공 상세",
+   "industry": "INDUSTRY_HOUSING_V1",
+   "industry_name": "주거 건축",
+   "strength": "드묾",
+   "appears_as": "주거 건축 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "도면·시공 상세",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·문화 시설",
+   "strength": "드묾",
+   "appears_as": "공공·문화 시설 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "도면·시공 상세",
+   "industry": "INDUSTRY_COMMERCIAL_V1",
+   "industry_name": "상업·업무 건축",
+   "strength": "있음",
+   "appears_as": "상업·업무 건축 에서는 상세도를 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "상세도를 남기는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "도면·시공 상세",
+   "industry": "INDUSTRY_INTERIOR_V1",
+   "industry_name": "실내건축·인테리어",
+   "strength": "있음",
+   "appears_as": "실내건축·인테리어 에서는 제작 도면을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "제작 도면을 남기는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "도면·시공 상세",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "리테일·전시 공간",
+   "strength": "있음",
+   "appears_as": "리테일·전시 공간 에서는 제작 상세를 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "제작 상세를 남기는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "도면·시공 상세",
+   "industry": "INDUSTRY_CONSTRUCT_V1",
+   "industry_name": "시공·현장",
+   "strength": "있음",
+   "appears_as": "시공·현장 에서는 도면 간섭을 찾는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "도면 간섭을 찾는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "도면·시공 상세",
+   "industry": "INDUSTRY_REMODEL_V1",
+   "industry_name": "리모델링·대수선",
+   "strength": "있음",
+   "appears_as": "리모델링·대수선 에서는 철거 상세를 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "철거 상세를 남기는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "도면·시공 상세",
+   "industry": "INDUSTRY_BIM_V1",
+   "industry_name": "BIM·건축 자료",
+   "strength": "중심",
+   "appears_as": "BIM·건축 자료 에서는 모델링 규칙을 정하는가 · 간섭을 찾아내는가 · 판본을 남기는가 · 틀린 모델을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J5",
+    "J6",
+    "J7"
+   ],
+   "dimensions": [
+    "모델링 규칙을 정하는가",
+    "간섭을 찾아내는가",
+    "판본을 남기는가",
+    "틀린 모델을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "공사비·수량 산출",
+   "industry": "INDUSTRY_HOUSING_V1",
+   "industry_name": "주거 건축",
+   "strength": "있음",
+   "appears_as": "주거 건축 에서는 공사비를 산출하는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "공사비를 산출하는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "공사비·수량 산출",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·문화 시설",
+   "strength": "있음",
+   "appears_as": "공공·문화 시설 에서는 예산을 산정하는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "예산을 산정하는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "공사비·수량 산출",
+   "industry": "INDUSTRY_COMMERCIAL_V1",
+   "industry_name": "상업·업무 건축",
+   "strength": "있음",
+   "appears_as": "상업·업무 건축 에서는 예산을 넘길 때 줄일 것을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "예산을 넘길 때 줄일 것을 정하는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "공사비·수량 산출",
+   "industry": "INDUSTRY_INTERIOR_V1",
+   "industry_name": "실내건축·인테리어",
+   "strength": "있음",
+   "appears_as": "실내건축·인테리어 에서는 견적을 항목으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "견적을 항목으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "공사비·수량 산출",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "리테일·전시 공간",
+   "strength": "있음",
+   "appears_as": "리테일·전시 공간 에서는 예산 안에서 줄일 것을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "예산 안에서 줄일 것을 정하는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "공사비·수량 산출",
+   "industry": "INDUSTRY_CONSTRUCT_V1",
+   "industry_name": "시공·현장",
+   "strength": "있음",
+   "appears_as": "시공·현장 에서는 수량을 항목으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "수량을 항목으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "공사비·수량 산출",
+   "industry": "INDUSTRY_REMODEL_V1",
+   "industry_name": "리모델링·대수선",
+   "strength": "있음",
+   "appears_as": "리모델링·대수선 에서는 변경 견적을 항목으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "변경 견적을 항목으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "공사비·수량 산출",
+   "industry": "INDUSTRY_BIM_V1",
+   "industry_name": "BIM·건축 자료",
+   "strength": "있음",
+   "appears_as": "BIM·건축 자료 에서는 수량을 셀 항목으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "수량을 셀 항목으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "시공 관리·감리",
+   "industry": "INDUSTRY_HOUSING_V1",
+   "industry_name": "주거 건축",
+   "strength": "있음",
+   "appears_as": "주거 건축 에서는 하자 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "하자 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "시공 관리·감리",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·문화 시설",
+   "strength": "있음",
+   "appears_as": "공공·문화 시설 에서는 같은 지적을 끊는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "같은 지적을 끊는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "시공 관리·감리",
+   "industry": "INDUSTRY_COMMERCIAL_V1",
+   "industry_name": "상업·업무 건축",
+   "strength": "있음",
+   "appears_as": "상업·업무 건축 에서는 그날 공정을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "그날 공정을 가르는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "시공 관리·감리",
+   "industry": "INDUSTRY_INTERIOR_V1",
+   "industry_name": "실내건축·인테리어",
+   "strength": "있음",
+   "appears_as": "실내건축·인테리어 에서는 현장 치수 차이를 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "현장 치수 차이를 좁히는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "시공 관리·감리",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "리테일·전시 공간",
+   "strength": "있음",
+   "appears_as": "리테일·전시 공간 에서는 뜯고 다시 세울 때 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "뜯고 다시 세울 때 좁히는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "시공 관리·감리",
+   "industry": "INDUSTRY_CONSTRUCT_V1",
+   "industry_name": "시공·현장",
+   "strength": "중심",
+   "appears_as": "시공·현장 에서는 그날 볼 범위를 좁히는가 · 그날 공정을 가르는가 · 검사 기록을 남기는가 · 같은 지적을 끊는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J3",
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "그날 볼 범위를 좁히는가",
+    "그날 공정을 가르는가",
+    "검사 기록을 남기는가",
+    "같은 지적을 끊는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "시공 관리·감리",
+   "industry": "INDUSTRY_REMODEL_V1",
+   "industry_name": "리모델링·대수선",
+   "strength": "있음",
+   "appears_as": "리모델링·대수선 에서는 뜯고 나온 것에 맞춰 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "뜯고 나온 것에 맞춰 좁히는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "시공 관리·감리",
+   "industry": "INDUSTRY_BIM_V1",
+   "industry_name": "BIM·건축 자료",
+   "strength": "있음",
+   "appears_as": "BIM·건축 자료 에서는 현장과 모델의 차이를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "현장과 모델의 차이를 가르는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "인허가·협의",
+   "industry": "INDUSTRY_HOUSING_V1",
+   "industry_name": "주거 건축",
+   "strength": "있음",
+   "appears_as": "주거 건축 에서는 인허가 서류를 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "인허가 서류를 남기는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "인허가·협의",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·문화 시설",
+   "strength": "중심",
+   "appears_as": "공공·문화 시설 에서는 법령과 대조하는가 · 신청 묶음을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ],
+   "dimensions": [
+    "법령과 대조하는가",
+    "신청 묶음을 남기는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "인허가·협의",
+   "industry": "INDUSTRY_COMMERCIAL_V1",
+   "industry_name": "상업·업무 건축",
+   "strength": "드묾",
+   "appears_as": "상업·업무 건축 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "인허가·협의",
+   "industry": "INDUSTRY_INTERIOR_V1",
+   "industry_name": "실내건축·인테리어",
+   "strength": "드묾",
+   "appears_as": "실내건축·인테리어 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "인허가·협의",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "리테일·전시 공간",
+   "strength": "드묾",
+   "appears_as": "리테일·전시 공간 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "인허가·협의",
+   "industry": "INDUSTRY_CONSTRUCT_V1",
+   "industry_name": "시공·현장",
+   "strength": "있음",
+   "appears_as": "시공·현장 에서는 사용 승인 서류를 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "사용 승인 서류를 대조하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "인허가·협의",
+   "industry": "INDUSTRY_REMODEL_V1",
+   "industry_name": "리모델링·대수선",
+   "strength": "있음",
+   "appears_as": "리모델링·대수선 에서는 신고 서류를 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "신고 서류를 남기는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "인허가·협의",
+   "industry": "INDUSTRY_BIM_V1",
+   "industry_name": "BIM·건축 자료",
+   "strength": "드묾",
+   "appears_as": "BIM·건축 자료 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·유지 관리",
+   "industry": "INDUSTRY_HOUSING_V1",
+   "industry_name": "주거 건축",
+   "strength": "드묾",
+   "appears_as": "주거 건축 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·유지 관리",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·문화 시설",
+   "strength": "있음",
+   "appears_as": "공공·문화 시설 에서는 피난을 적어 두는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "피난을 적어 두는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·유지 관리",
+   "industry": "INDUSTRY_COMMERCIAL_V1",
+   "industry_name": "상업·업무 건축",
+   "strength": "있음",
+   "appears_as": "상업·업무 건축 에서는 피난을 적어 두는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "피난을 적어 두는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·유지 관리",
+   "industry": "INDUSTRY_INTERIOR_V1",
+   "industry_name": "실내건축·인테리어",
+   "strength": "드묾",
+   "appears_as": "실내건축·인테리어 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·유지 관리",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "리테일·전시 공간",
+   "strength": "있음",
+   "appears_as": "리테일·전시 공간 에서는 통로를 적어 두는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "통로를 적어 두는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·유지 관리",
+   "industry": "INDUSTRY_CONSTRUCT_V1",
+   "industry_name": "시공·현장",
+   "strength": "있음",
+   "appears_as": "시공·현장 에서는 안전 점검을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "안전 점검을 남기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·유지 관리",
+   "industry": "INDUSTRY_REMODEL_V1",
+   "industry_name": "리모델링·대수선",
+   "strength": "드묾",
+   "appears_as": "리모델링·대수선 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·유지 관리",
+   "industry": "INDUSTRY_BIM_V1",
+   "industry_name": "BIM·건축 자료",
+   "strength": "있음",
+   "appears_as": "BIM·건축 자료 에서는 인계 자료를 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "인계 자료를 남기는가"
+   ]
+  }
+ ],
+ "td_role": [
+  {
+   "td": "TD01",
+   "td_name": "대지·법규 검토",
+   "role": "ROLE_DESIGN_V1",
+   "role_name": "기획·설계",
+   "strength": "드묾",
+   "appears_as": "기획·설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "대지·법규 검토",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "조사·검토",
+   "strength": "중심",
+   "appears_as": "조사·검토 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "대지·법규 검토",
+   "role": "ROLE_INSPECT_V1",
+   "role_name": "판정·검사",
+   "strength": "드묾",
+   "appears_as": "판정·검사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "대지·법규 검토",
+   "role": "ROLE_DRAWING_V1",
+   "role_name": "도면·표준 관리",
+   "strength": "드묾",
+   "appears_as": "도면·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "대지·법규 검토",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 관리",
+   "strength": "드묾",
+   "appears_as": "현장 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "대지·법규 검토",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "대지·법규 검토",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "중심",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "대지·법규 검토",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "공간 계획·평면 설계",
+   "role": "ROLE_DESIGN_V1",
+   "role_name": "기획·설계",
+   "strength": "중심",
+   "appears_as": "기획·설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J3",
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "공간 계획·평면 설계",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "조사·검토",
+   "strength": "드묾",
+   "appears_as": "조사·검토 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "공간 계획·평면 설계",
+   "role": "ROLE_INSPECT_V1",
+   "role_name": "판정·검사",
+   "strength": "드묾",
+   "appears_as": "판정·검사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "공간 계획·평면 설계",
+   "role": "ROLE_DRAWING_V1",
+   "role_name": "도면·표준 관리",
+   "strength": "중심",
+   "appears_as": "도면·표준 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "공간 계획·평면 설계",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 관리",
+   "strength": "드묾",
+   "appears_as": "현장 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "공간 계획·평면 설계",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "공간 계획·평면 설계",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "공간 계획·평면 설계",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "형태·입면 설계",
+   "role": "ROLE_DESIGN_V1",
+   "role_name": "기획·설계",
+   "strength": "중심",
+   "appears_as": "기획·설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "형태·입면 설계",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "조사·검토",
+   "strength": "드묾",
+   "appears_as": "조사·검토 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "형태·입면 설계",
+   "role": "ROLE_INSPECT_V1",
+   "role_name": "판정·검사",
+   "strength": "드묾",
+   "appears_as": "판정·검사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "형태·입면 설계",
+   "role": "ROLE_DRAWING_V1",
+   "role_name": "도면·표준 관리",
+   "strength": "드묾",
+   "appears_as": "도면·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "형태·입면 설계",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 관리",
+   "strength": "드묾",
+   "appears_as": "현장 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "형태·입면 설계",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "형태·입면 설계",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "형태·입면 설계",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "구조 개념·안전 검토",
+   "role": "ROLE_DESIGN_V1",
+   "role_name": "기획·설계",
+   "strength": "드묾",
+   "appears_as": "기획·설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "구조 개념·안전 검토",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "조사·검토",
+   "strength": "드묾",
+   "appears_as": "조사·검토 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "구조 개념·안전 검토",
+   "role": "ROLE_INSPECT_V1",
+   "role_name": "판정·검사",
+   "strength": "드묾",
+   "appears_as": "판정·검사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "구조 개념·안전 검토",
+   "role": "ROLE_DRAWING_V1",
+   "role_name": "도면·표준 관리",
+   "strength": "드묾",
+   "appears_as": "도면·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "구조 개념·안전 검토",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 관리",
+   "strength": "드묾",
+   "appears_as": "현장 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "구조 개념·안전 검토",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "구조 개념·안전 검토",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "중심",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "구조 개념·안전 검토",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "중심",
+   "appears_as": "안전·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "설비·환경 성능",
+   "role": "ROLE_DESIGN_V1",
+   "role_name": "기획·설계",
+   "strength": "드묾",
+   "appears_as": "기획·설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "설비·환경 성능",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "조사·검토",
+   "strength": "중심",
+   "appears_as": "조사·검토 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "설비·환경 성능",
+   "role": "ROLE_INSPECT_V1",
+   "role_name": "판정·검사",
+   "strength": "드묾",
+   "appears_as": "판정·검사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "설비·환경 성능",
+   "role": "ROLE_DRAWING_V1",
+   "role_name": "도면·표준 관리",
+   "strength": "드묾",
+   "appears_as": "도면·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "설비·환경 성능",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 관리",
+   "strength": "드묾",
+   "appears_as": "현장 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "설비·환경 성능",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "설비·환경 성능",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "중심",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "설비·환경 성능",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·마감 선정",
+   "role": "ROLE_DESIGN_V1",
+   "role_name": "기획·설계",
+   "strength": "드묾",
+   "appears_as": "기획·설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·마감 선정",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "조사·검토",
+   "strength": "드묾",
+   "appears_as": "조사·검토 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·마감 선정",
+   "role": "ROLE_INSPECT_V1",
+   "role_name": "판정·검사",
+   "strength": "드묾",
+   "appears_as": "판정·검사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·마감 선정",
+   "role": "ROLE_DRAWING_V1",
+   "role_name": "도면·표준 관리",
+   "strength": "중심",
+   "appears_as": "도면·표준 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·마감 선정",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 관리",
+   "strength": "중심",
+   "appears_as": "현장 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·마감 선정",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·마감 선정",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "재료·마감 선정",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "실내 공간·동선 설계",
+   "role": "ROLE_DESIGN_V1",
+   "role_name": "기획·설계",
+   "strength": "중심",
+   "appears_as": "기획·설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "실내 공간·동선 설계",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "조사·검토",
+   "strength": "드묾",
+   "appears_as": "조사·검토 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "실내 공간·동선 설계",
+   "role": "ROLE_INSPECT_V1",
+   "role_name": "판정·검사",
+   "strength": "드묾",
+   "appears_as": "판정·검사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "실내 공간·동선 설계",
+   "role": "ROLE_DRAWING_V1",
+   "role_name": "도면·표준 관리",
+   "strength": "드묾",
+   "appears_as": "도면·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "실내 공간·동선 설계",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 관리",
+   "strength": "중심",
+   "appears_as": "현장 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "실내 공간·동선 설계",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "실내 공간·동선 설계",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "실내 공간·동선 설계",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "도면·시공 상세",
+   "role": "ROLE_DESIGN_V1",
+   "role_name": "기획·설계",
+   "strength": "드묾",
+   "appears_as": "기획·설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "도면·시공 상세",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "조사·검토",
+   "strength": "드묾",
+   "appears_as": "조사·검토 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "도면·시공 상세",
+   "role": "ROLE_INSPECT_V1",
+   "role_name": "판정·검사",
+   "strength": "중심",
+   "appears_as": "판정·검사 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "도면·시공 상세",
+   "role": "ROLE_DRAWING_V1",
+   "role_name": "도면·표준 관리",
+   "strength": "중심",
+   "appears_as": "도면·표준 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J5",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "도면·시공 상세",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 관리",
+   "strength": "드묾",
+   "appears_as": "현장 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "도면·시공 상세",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "도면·시공 상세",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "도면·시공 상세",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "공사비·수량 산출",
+   "role": "ROLE_DESIGN_V1",
+   "role_name": "기획·설계",
+   "strength": "드묾",
+   "appears_as": "기획·설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "공사비·수량 산출",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "조사·검토",
+   "strength": "중심",
+   "appears_as": "조사·검토 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J7"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "공사비·수량 산출",
+   "role": "ROLE_INSPECT_V1",
+   "role_name": "판정·검사",
+   "strength": "드묾",
+   "appears_as": "판정·검사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "공사비·수량 산출",
+   "role": "ROLE_DRAWING_V1",
+   "role_name": "도면·표준 관리",
+   "strength": "드묾",
+   "appears_as": "도면·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "공사비·수량 산출",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 관리",
+   "strength": "드묾",
+   "appears_as": "현장 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "공사비·수량 산출",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "중심",
+   "appears_as": "운영·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "공사비·수량 산출",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "공사비·수량 산출",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "시공 관리·감리",
+   "role": "ROLE_DESIGN_V1",
+   "role_name": "기획·설계",
+   "strength": "드묾",
+   "appears_as": "기획·설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "시공 관리·감리",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "조사·검토",
+   "strength": "드묾",
+   "appears_as": "조사·검토 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "시공 관리·감리",
+   "role": "ROLE_INSPECT_V1",
+   "role_name": "판정·검사",
+   "strength": "중심",
+   "appears_as": "판정·검사 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J3",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "시공 관리·감리",
+   "role": "ROLE_DRAWING_V1",
+   "role_name": "도면·표준 관리",
+   "strength": "드묾",
+   "appears_as": "도면·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "시공 관리·감리",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 관리",
+   "strength": "중심",
+   "appears_as": "현장 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "시공 관리·감리",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "중심",
+   "appears_as": "운영·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J7"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "시공 관리·감리",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "시공 관리·감리",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "인허가·협의",
+   "role": "ROLE_DESIGN_V1",
+   "role_name": "기획·설계",
+   "strength": "드묾",
+   "appears_as": "기획·설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "인허가·협의",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "조사·검토",
+   "strength": "드묾",
+   "appears_as": "조사·검토 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "인허가·협의",
+   "role": "ROLE_INSPECT_V1",
+   "role_name": "판정·검사",
+   "strength": "중심",
+   "appears_as": "판정·검사 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "인허가·협의",
+   "role": "ROLE_DRAWING_V1",
+   "role_name": "도면·표준 관리",
+   "strength": "드묾",
+   "appears_as": "도면·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "인허가·협의",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 관리",
+   "strength": "드묾",
+   "appears_as": "현장 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "인허가·협의",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "중심",
+   "appears_as": "운영·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "인허가·협의",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "인허가·협의",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "중심",
+   "appears_as": "안전·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·유지 관리",
+   "role": "ROLE_DESIGN_V1",
+   "role_name": "기획·설계",
+   "strength": "드묾",
+   "appears_as": "기획·설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·유지 관리",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "조사·검토",
+   "strength": "드묾",
+   "appears_as": "조사·검토 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·유지 관리",
+   "role": "ROLE_INSPECT_V1",
+   "role_name": "판정·검사",
+   "strength": "드묾",
+   "appears_as": "판정·검사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·유지 관리",
+   "role": "ROLE_DRAWING_V1",
+   "role_name": "도면·표준 관리",
+   "strength": "드묾",
+   "appears_as": "도면·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·유지 관리",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 관리",
+   "strength": "드묾",
+   "appears_as": "현장 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·유지 관리",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·유지 관리",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "안전·유지 관리",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "중심",
+   "appears_as": "안전·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J7",
+    "J8"
+   ]
+  }
+ ]
+}
