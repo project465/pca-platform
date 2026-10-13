@@ -1,0 +1,2368 @@
+{
+ "schema_version": "law-v1-relations.1",
+ "core": "LAW_CORE_V1",
+ "note": "기술영역과 산업, 기술영역과 역할의 관계를 두 표로 둔다. 세 축을 미리 곱해 두지 않는다: 열두 영역과 여덟 산업과 여덟 역할을 곱하면 칠백예순여덟 줄이 되고 그만큼의 줄을 사람이 손으로 유지할 수 없다. 어느 줄도 점수를 만들지 않는다: `strength` 는 설명하는 차례를 정하고 `appears_as` 는 결과지가 그 말로 옮겨 적을 때 읽는다",
+ "combine_rule": "산업 하나와 역할 하나를 함께 고른 사람에게는 두 표에서 같은 영역의 줄을 뽑아 나란히 놓는다. 둘 다 `중심` 인 영역이 먼저 서고, 한쪽만 중심인 영역이 다음이고, 양쪽이 드문 영역은 적지 않는다",
+ "td_industry": [
+  {
+   "td": "TD01",
+   "td_name": "법령·판례 조사",
+   "industry": "INDUSTRY_COURTLAW_V1",
+   "industry_name": "법무·송무",
+   "strength": "중심",
+   "appears_as": "법무·송무 에서는 드는 판시를 상급심까지 짚는가 · 검색 방식을 사건에 맞게 바꾸는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ],
+   "dimensions": [
+    "드는 판시를 상급심까지 짚는가",
+    "검색 방식을 사건에 맞게 바꾸는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "법령·판례 조사",
+   "industry": "INDUSTRY_CORPLEGAL_V1",
+   "industry_name": "기업 법무·준법",
+   "strength": "드묾",
+   "appears_as": "기업 법무·준법 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "법령·판례 조사",
+   "industry": "INDUSTRY_POLICE_V1",
+   "industry_name": "경찰·수사",
+   "strength": "드묾",
+   "appears_as": "경찰·수사 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "법령·판례 조사",
+   "industry": "INDUSTRY_CORRECT_V1",
+   "industry_name": "교정·보호·출입국",
+   "strength": "드묾",
+   "appears_as": "교정·보호·출입국 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "법령·판례 조사",
+   "industry": "INDUSTRY_REGULATOR_V1",
+   "industry_name": "규제·감독",
+   "strength": "드묾",
+   "appears_as": "규제·감독 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "법령·판례 조사",
+   "industry": "INDUSTRY_PUBSAFETY_V1",
+   "industry_name": "공공안전·재난",
+   "strength": "드묾",
+   "appears_as": "공공안전·재난 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "법령·판례 조사",
+   "industry": "INDUSTRY_IPLAW_V1",
+   "industry_name": "지식재산·기술법무",
+   "strength": "중심",
+   "appears_as": "지식재산·기술법무 에서는 찾을 선행 자료의 범위를 정하는가 · 찾은 자료와 우리 것을 대어 보는가 · 검색 도구와 분류를 맞춰 쓰는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J4",
+    "J6"
+   ],
+   "dimensions": [
+    "찾을 선행 자료의 범위를 정하는가",
+    "찾은 자료와 우리 것을 대어 보는가",
+    "검색 도구와 분류를 맞춰 쓰는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "법령·판례 조사",
+   "industry": "INDUSTRY_LEGALTECH_V1",
+   "industry_name": "법률정보·법률서비스",
+   "strength": "중심",
+   "appears_as": "법률정보·법률서비스 에서는 목록을 남이 쓰게 표준으로 남기는가 · 자료를 원문과 대어 보는가 · 내가 만든 자료가 쓰이는가 로 나타납니다",
+   "axes_watched": [
+    "J5",
+    "J6",
+    "J8"
+   ],
+   "dimensions": [
+    "목록을 남이 쓰게 표준으로 남기는가",
+    "자료를 원문과 대어 보는가",
+    "내가 만든 자료가 쓰이는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "사실관계 정리",
+   "industry": "INDUSTRY_COURTLAW_V1",
+   "industry_name": "법무·송무",
+   "strength": "중심",
+   "appears_as": "법무·송무 에서는 다투는 사실과 인정할 사실을 가르는가 · 정리한 사실을 상대 주장과 맞춰 보는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ],
+   "dimensions": [
+    "다투는 사실과 인정할 사실을 가르는가",
+    "정리한 사실을 상대 주장과 맞춰 보는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "사실관계 정리",
+   "industry": "INDUSTRY_CORPLEGAL_V1",
+   "industry_name": "기업 법무·준법",
+   "strength": "드묾",
+   "appears_as": "기업 법무·준법 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "사실관계 정리",
+   "industry": "INDUSTRY_POLICE_V1",
+   "industry_name": "경찰·수사",
+   "strength": "있음",
+   "appears_as": "경찰·수사 에서는 진술 사이의 어긋남을 찾는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "진술 사이의 어긋남을 찾는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "사실관계 정리",
+   "industry": "INDUSTRY_CORRECT_V1",
+   "industry_name": "교정·보호·출입국",
+   "strength": "있음",
+   "appears_as": "교정·보호·출입국 에서는 어긋나는 진술에서 믿을 쪽을 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "어긋나는 진술에서 믿을 쪽을 고르는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "사실관계 정리",
+   "industry": "INDUSTRY_REGULATOR_V1",
+   "industry_name": "규제·감독",
+   "strength": "드묾",
+   "appears_as": "규제·감독 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "사실관계 정리",
+   "industry": "INDUSTRY_PUBSAFETY_V1",
+   "industry_name": "공공안전·재난",
+   "strength": "드묾",
+   "appears_as": "공공안전·재난 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "사실관계 정리",
+   "industry": "INDUSTRY_IPLAW_V1",
+   "industry_name": "지식재산·기술법무",
+   "strength": "드묾",
+   "appears_as": "지식재산·기술법무 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "사실관계 정리",
+   "industry": "INDUSTRY_LEGALTECH_V1",
+   "industry_name": "법률정보·법률서비스",
+   "strength": "드묾",
+   "appears_as": "법률정보·법률서비스 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "요건 해석·적용",
+   "industry": "INDUSTRY_COURTLAW_V1",
+   "industry_name": "법무·송무",
+   "strength": "중심",
+   "appears_as": "법무·송무 에서는 해석이 갈리는 자리에서 들 쪽을 고르는가 · 조문을 하나씩 확인할 요건으로 쪼개는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ],
+   "dimensions": [
+    "해석이 갈리는 자리에서 들 쪽을 고르는가",
+    "조문을 하나씩 확인할 요건으로 쪼개는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "요건 해석·적용",
+   "industry": "INDUSTRY_CORPLEGAL_V1",
+   "industry_name": "기업 법무·준법",
+   "strength": "있음",
+   "appears_as": "기업 법무·준법 에서는 검토가 사업 결정을 바꾸는가 로 나타납니다",
+   "axes_watched": [
+    "J8"
+   ],
+   "dimensions": [
+    "검토가 사업 결정을 바꾸는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "요건 해석·적용",
+   "industry": "INDUSTRY_POLICE_V1",
+   "industry_name": "경찰·수사",
+   "strength": "드묾",
+   "appears_as": "경찰·수사 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "요건 해석·적용",
+   "industry": "INDUSTRY_CORRECT_V1",
+   "industry_name": "교정·보호·출입국",
+   "strength": "중심",
+   "appears_as": "교정·보호·출입국 에서는 판정 요건을 확인할 조건으로 옮기는가 · 전례와 지금 판정을 대어 보는가 · 내 판정이 처분으로 나가는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J6",
+    "J8"
+   ],
+   "dimensions": [
+    "판정 요건을 확인할 조건으로 옮기는가",
+    "전례와 지금 판정을 대어 보는가",
+    "내 판정이 처분으로 나가는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "요건 해석·적용",
+   "industry": "INDUSTRY_REGULATOR_V1",
+   "industry_name": "규제·감독",
+   "strength": "있음",
+   "appears_as": "규제·감독 에서는 요건 충족을 한쪽으로 판정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "요건 충족을 한쪽으로 판정하는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "요건 해석·적용",
+   "industry": "INDUSTRY_PUBSAFETY_V1",
+   "industry_name": "공공안전·재난",
+   "strength": "드묾",
+   "appears_as": "공공안전·재난 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "요건 해석·적용",
+   "industry": "INDUSTRY_IPLAW_V1",
+   "industry_name": "지식재산·기술법무",
+   "strength": "중심",
+   "appears_as": "지식재산·기술법무 에서는 권리로 쓸 범위를 가르는가 · 요건을 하나씩 확인할 조건으로 쪼개는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ],
+   "dimensions": [
+    "권리로 쓸 범위를 가르는가",
+    "요건을 하나씩 확인할 조건으로 쪼개는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "요건 해석·적용",
+   "industry": "INDUSTRY_LEGALTECH_V1",
+   "industry_name": "법률정보·법률서비스",
+   "strength": "드묾",
+   "appears_as": "법률정보·법률서비스 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "서면 작성",
+   "industry": "INDUSTRY_COURTLAW_V1",
+   "industry_name": "법무·송무",
+   "strength": "중심",
+   "appears_as": "법무·송무 에서는 서면을 남이 이어 쓸 수 있게 남기는가 · 낸 서면이 결정으로 돌아오는가 로 나타납니다",
+   "axes_watched": [
+    "J5",
+    "J8"
+   ],
+   "dimensions": [
+    "서면을 남이 이어 쓸 수 있게 남기는가",
+    "낸 서면이 결정으로 돌아오는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "서면 작성",
+   "industry": "INDUSTRY_CORPLEGAL_V1",
+   "industry_name": "기업 법무·준법",
+   "strength": "드묾",
+   "appears_as": "기업 법무·준법 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "서면 작성",
+   "industry": "INDUSTRY_POLICE_V1",
+   "industry_name": "경찰·수사",
+   "strength": "드묾",
+   "appears_as": "경찰·수사 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "서면 작성",
+   "industry": "INDUSTRY_CORRECT_V1",
+   "industry_name": "교정·보호·출입국",
+   "strength": "드묾",
+   "appears_as": "교정·보호·출입국 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "서면 작성",
+   "industry": "INDUSTRY_REGULATOR_V1",
+   "industry_name": "규제·감독",
+   "strength": "있음",
+   "appears_as": "규제·감독 에서는 통지서를 받는 쪽이 알게 쓰는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "통지서를 받는 쪽이 알게 쓰는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "서면 작성",
+   "industry": "INDUSTRY_PUBSAFETY_V1",
+   "industry_name": "공공안전·재난",
+   "strength": "드묾",
+   "appears_as": "공공안전·재난 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "서면 작성",
+   "industry": "INDUSTRY_IPLAW_V1",
+   "industry_name": "지식재산·기술법무",
+   "strength": "중심",
+   "appears_as": "지식재산·기술법무 에서는 의견서를 심사관이 읽게 쓰는가 · 거절을 받고 다시 세우는가 로 나타납니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "의견서를 심사관이 읽게 쓰는가",
+    "거절을 받고 다시 세우는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "서면 작성",
+   "industry": "INDUSTRY_LEGALTECH_V1",
+   "industry_name": "법률정보·법률서비스",
+   "strength": "있음",
+   "appears_as": "법률정보·법률서비스 에서는 양식을 되풀이해 쓰게 만드는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "양식을 되풀이해 쓰게 만드는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "계약·문서 검토",
+   "industry": "INDUSTRY_COURTLAW_V1",
+   "industry_name": "법무·송무",
+   "strength": "있음",
+   "appears_as": "법무·송무 에서는 고칠 조항의 대안 문구까지 쓰는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "고칠 조항의 대안 문구까지 쓰는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "계약·문서 검토",
+   "industry": "INDUSTRY_CORPLEGAL_V1",
+   "industry_name": "기업 법무·준법",
+   "strength": "중심",
+   "appears_as": "기업 법무·준법 에서는 고칠 조항과 받아들일 위험을 가르는가 · 조항을 표준 서식과 대어 보는가 · 구두 합의를 담을 조항을 짝짓는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J6"
+   ],
+   "dimensions": [
+    "고칠 조항과 받아들일 위험을 가르는가",
+    "조항을 표준 서식과 대어 보는가",
+    "구두 합의를 담을 조항을 짝짓는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "계약·문서 검토",
+   "industry": "INDUSTRY_POLICE_V1",
+   "industry_name": "경찰·수사",
+   "strength": "드묾",
+   "appears_as": "경찰·수사 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "계약·문서 검토",
+   "industry": "INDUSTRY_CORRECT_V1",
+   "industry_name": "교정·보호·출입국",
+   "strength": "드묾",
+   "appears_as": "교정·보호·출입국 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "계약·문서 검토",
+   "industry": "INDUSTRY_REGULATOR_V1",
+   "industry_name": "규제·감독",
+   "strength": "드묾",
+   "appears_as": "규제·감독 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "계약·문서 검토",
+   "industry": "INDUSTRY_PUBSAFETY_V1",
+   "industry_name": "공공안전·재난",
+   "strength": "드묾",
+   "appears_as": "공공안전·재난 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "계약·문서 검토",
+   "industry": "INDUSTRY_IPLAW_V1",
+   "industry_name": "지식재산·기술법무",
+   "strength": "중심",
+   "appears_as": "지식재산·기술법무 에서는 기술 계약의 조항을 가르는가 · 검토가 계약 조건을 바꾸는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J8"
+   ],
+   "dimensions": [
+    "기술 계약의 조항을 가르는가",
+    "검토가 계약 조건을 바꾸는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "계약·문서 검토",
+   "industry": "INDUSTRY_LEGALTECH_V1",
+   "industry_name": "법률정보·법률서비스",
+   "strength": "있음",
+   "appears_as": "법률정보·법률서비스 에서는 약관과 이용 조건을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "약관과 이용 조건을 가르는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분쟁 대응·협상",
+   "industry": "INDUSTRY_COURTLAW_V1",
+   "industry_name": "법무·송무",
+   "strength": "있음",
+   "appears_as": "법무·송무 에서는 합의가 깨진 자리를 되짚는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "합의가 깨진 자리를 되짚는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분쟁 대응·협상",
+   "industry": "INDUSTRY_CORPLEGAL_V1",
+   "industry_name": "기업 법무·준법",
+   "strength": "있음",
+   "appears_as": "기업 법무·준법 에서는 분쟁에서 양보할 선을 먼저 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "분쟁에서 양보할 선을 먼저 정하는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분쟁 대응·협상",
+   "industry": "INDUSTRY_POLICE_V1",
+   "industry_name": "경찰·수사",
+   "strength": "드묾",
+   "appears_as": "경찰·수사 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "분쟁 대응·협상",
+   "industry": "INDUSTRY_CORRECT_V1",
+   "industry_name": "교정·보호·출입국",
+   "strength": "드묾",
+   "appears_as": "교정·보호·출입국 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "분쟁 대응·협상",
+   "industry": "INDUSTRY_REGULATOR_V1",
+   "industry_name": "규제·감독",
+   "strength": "드묾",
+   "appears_as": "규제·감독 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "분쟁 대응·협상",
+   "industry": "INDUSTRY_PUBSAFETY_V1",
+   "industry_name": "공공안전·재난",
+   "strength": "드묾",
+   "appears_as": "공공안전·재난 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "분쟁 대응·협상",
+   "industry": "INDUSTRY_IPLAW_V1",
+   "industry_name": "지식재산·기술법무",
+   "strength": "드묾",
+   "appears_as": "지식재산·기술법무 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "분쟁 대응·협상",
+   "industry": "INDUSTRY_LEGALTECH_V1",
+   "industry_name": "법률정보·법률서비스",
+   "strength": "드묾",
+   "appears_as": "법률정보·법률서비스 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "규제·준법 점검",
+   "industry": "INDUSTRY_COURTLAW_V1",
+   "industry_name": "법무·송무",
+   "strength": "드묾",
+   "appears_as": "법무·송무 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "규제·준법 점검",
+   "industry": "INDUSTRY_CORPLEGAL_V1",
+   "industry_name": "기업 법무·준법",
+   "strength": "중심",
+   "appears_as": "기업 법무·준법 에서는 규정을 점검할 수 있는 항목으로 옮기는가 · 점검표를 다른 사람이 쓰게 남기는가 · 같은 지적이 왜 또 나오는지 보는가 · 증빙을 어디서 받을지 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J4",
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "규정을 점검할 수 있는 항목으로 옮기는가",
+    "점검표를 다른 사람이 쓰게 남기는가",
+    "같은 지적이 왜 또 나오는지 보는가",
+    "증빙을 어디서 받을지 정하는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "규제·준법 점검",
+   "industry": "INDUSTRY_POLICE_V1",
+   "industry_name": "경찰·수사",
+   "strength": "드묾",
+   "appears_as": "경찰·수사 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "규제·준법 점검",
+   "industry": "INDUSTRY_CORRECT_V1",
+   "industry_name": "교정·보호·출입국",
+   "strength": "드묾",
+   "appears_as": "교정·보호·출입국 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "규제·준법 점검",
+   "industry": "INDUSTRY_REGULATOR_V1",
+   "industry_name": "규제·감독",
+   "strength": "중심",
+   "appears_as": "규제·감독 에서는 고시와 기준을 점검 항목으로 옮기는가 · 판정을 상급 지침과 대어 보는가 · 지적과 조치를 기록으로 남기는가 · 고쳐졌는지까지 뒤따라 보는가 · 지적할 것과 넘어갈 것을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5",
+    "J6",
+    "J7"
+   ],
+   "dimensions": [
+    "고시와 기준을 점검 항목으로 옮기는가",
+    "판정을 상급 지침과 대어 보는가",
+    "지적과 조치를 기록으로 남기는가",
+    "고쳐졌는지까지 뒤따라 보는가",
+    "지적할 것과 넘어갈 것을 가르는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "규제·준법 점검",
+   "industry": "INDUSTRY_PUBSAFETY_V1",
+   "industry_name": "공공안전·재난",
+   "strength": "드묾",
+   "appears_as": "공공안전·재난 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "규제·준법 점검",
+   "industry": "INDUSTRY_IPLAW_V1",
+   "industry_name": "지식재산·기술법무",
+   "strength": "드묾",
+   "appears_as": "지식재산·기술법무 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "규제·준법 점검",
+   "industry": "INDUSTRY_LEGALTECH_V1",
+   "industry_name": "법률정보·법률서비스",
+   "strength": "있음",
+   "appears_as": "법률정보·법률서비스 에서는 지킬 일을 점검 항목으로 두는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "지킬 일을 점검 항목으로 두는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "수사·증거 수집",
+   "industry": "INDUSTRY_COURTLAW_V1",
+   "industry_name": "법무·송무",
+   "strength": "드묾",
+   "appears_as": "법무·송무 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "수사·증거 수집",
+   "industry": "INDUSTRY_CORPLEGAL_V1",
+   "industry_name": "기업 법무·준법",
+   "strength": "드묾",
+   "appears_as": "기업 법무·준법 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "수사·증거 수집",
+   "industry": "INDUSTRY_POLICE_V1",
+   "industry_name": "경찰·수사",
+   "strength": "중심",
+   "appears_as": "경찰·수사 에서는 확보 절차를 자료마다 맞추는가 · 조사 기록을 다음 사람이 쓰게 남기는가 · 안 좁혀지면 가설을 바꾸는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "확보 절차를 자료마다 맞추는가",
+    "조사 기록을 다음 사람이 쓰게 남기는가",
+    "안 좁혀지면 가설을 바꾸는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "수사·증거 수집",
+   "industry": "INDUSTRY_CORRECT_V1",
+   "industry_name": "교정·보호·출입국",
+   "strength": "드묾",
+   "appears_as": "교정·보호·출입국 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "수사·증거 수집",
+   "industry": "INDUSTRY_REGULATOR_V1",
+   "industry_name": "규제·감독",
+   "strength": "드묾",
+   "appears_as": "규제·감독 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "수사·증거 수집",
+   "industry": "INDUSTRY_PUBSAFETY_V1",
+   "industry_name": "공공안전·재난",
+   "strength": "드묾",
+   "appears_as": "공공안전·재난 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "수사·증거 수집",
+   "industry": "INDUSTRY_IPLAW_V1",
+   "industry_name": "지식재산·기술법무",
+   "strength": "드묾",
+   "appears_as": "지식재산·기술법무 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "수사·증거 수집",
+   "industry": "INDUSTRY_LEGALTECH_V1",
+   "industry_name": "법률정보·법률서비스",
+   "strength": "드묾",
+   "appears_as": "법률정보·법률서비스 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "현장 대응·안전",
+   "industry": "INDUSTRY_COURTLAW_V1",
+   "industry_name": "법무·송무",
+   "strength": "드묾",
+   "appears_as": "법무·송무 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "현장 대응·안전",
+   "industry": "INDUSTRY_CORPLEGAL_V1",
+   "industry_name": "기업 법무·준법",
+   "strength": "드묾",
+   "appears_as": "기업 법무·준법 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "현장 대응·안전",
+   "industry": "INDUSTRY_POLICE_V1",
+   "industry_name": "경찰·수사",
+   "strength": "중심",
+   "appears_as": "경찰·수사 에서는 현장에서 먼저 끊을 위험을 가르는가 · 인계 서류를 빠짐없이 적는가 · 현장 판단이 처리 방향을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J8"
+   ],
+   "dimensions": [
+    "현장에서 먼저 끊을 위험을 가르는가",
+    "인계 서류를 빠짐없이 적는가",
+    "현장 판단이 처리 방향을 정하는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "현장 대응·안전",
+   "industry": "INDUSTRY_CORRECT_V1",
+   "industry_name": "교정·보호·출입국",
+   "strength": "중심",
+   "appears_as": "교정·보호·출입국 에서는 규정 안에서 할 조치의 폭을 가르는가 · 처우 기록을 설명할 수 있게 남기는가 · 조치 방식을 그 사람에 맞게 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J4",
+    "J5"
+   ],
+   "dimensions": [
+    "규정 안에서 할 조치의 폭을 가르는가",
+    "처우 기록을 설명할 수 있게 남기는가",
+    "조치 방식을 그 사람에 맞게 고르는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "현장 대응·안전",
+   "industry": "INDUSTRY_REGULATOR_V1",
+   "industry_name": "규제·감독",
+   "strength": "드묾",
+   "appears_as": "규제·감독 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "현장 대응·안전",
+   "industry": "INDUSTRY_PUBSAFETY_V1",
+   "industry_name": "공공안전·재난",
+   "strength": "중심",
+   "appears_as": "공공안전·재난 에서는 피해를 키우는 것부터 끊는가 · 상황을 필요한 인원과 장비로 옮기는가 · 조치한 것을 시각까지 적는가 · 매뉴얼과 실제 조치를 대어 보는가 · 늦은 자리를 찾아 배치를 고치는가 · 가진 장비 가운데 쓸 것을 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J4",
+    "J5",
+    "J6",
+    "J7"
+   ],
+   "dimensions": [
+    "피해를 키우는 것부터 끊는가",
+    "상황을 필요한 인원과 장비로 옮기는가",
+    "조치한 것을 시각까지 적는가",
+    "매뉴얼과 실제 조치를 대어 보는가",
+    "늦은 자리를 찾아 배치를 고치는가",
+    "가진 장비 가운데 쓸 것을 고르는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "현장 대응·안전",
+   "industry": "INDUSTRY_IPLAW_V1",
+   "industry_name": "지식재산·기술법무",
+   "strength": "드묾",
+   "appears_as": "지식재산·기술법무 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "현장 대응·안전",
+   "industry": "INDUSTRY_LEGALTECH_V1",
+   "industry_name": "법률정보·법률서비스",
+   "strength": "드묾",
+   "appears_as": "법률정보·법률서비스 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "피해자·민원 상담",
+   "industry": "INDUSTRY_COURTLAW_V1",
+   "industry_name": "법무·송무",
+   "strength": "드묾",
+   "appears_as": "법무·송무 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "피해자·민원 상담",
+   "industry": "INDUSTRY_CORPLEGAL_V1",
+   "industry_name": "기업 법무·준법",
+   "strength": "드묾",
+   "appears_as": "기업 법무·준법 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "피해자·민원 상담",
+   "industry": "INDUSTRY_POLICE_V1",
+   "industry_name": "경찰·수사",
+   "strength": "있음",
+   "appears_as": "경찰·수사 에서는 피해자를 어디로 연계할지 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "피해자를 어디로 연계할지 가르는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "피해자·민원 상담",
+   "industry": "INDUSTRY_CORRECT_V1",
+   "industry_name": "교정·보호·출입국",
+   "strength": "중심",
+   "appears_as": "교정·보호·출입국 에서는 같은 문의가 왜 또 오는지 보는가 · 들은 사정을 처리 요구로 옮기는가 · 면담 기록을 이어 볼 수 있게 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "같은 문의가 왜 또 오는지 보는가",
+    "들은 사정을 처리 요구로 옮기는가",
+    "면담 기록을 이어 볼 수 있게 남기는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "피해자·민원 상담",
+   "industry": "INDUSTRY_REGULATOR_V1",
+   "industry_name": "규제·감독",
+   "strength": "드묾",
+   "appears_as": "규제·감독 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "피해자·민원 상담",
+   "industry": "INDUSTRY_PUBSAFETY_V1",
+   "industry_name": "공공안전·재난",
+   "strength": "있음",
+   "appears_as": "공공안전·재난 에서는 한꺼번에 들어온 일의 순서를 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "한꺼번에 들어온 일의 순서를 정하는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "피해자·민원 상담",
+   "industry": "INDUSTRY_IPLAW_V1",
+   "industry_name": "지식재산·기술법무",
+   "strength": "드묾",
+   "appears_as": "지식재산·기술법무 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "피해자·민원 상담",
+   "industry": "INDUSTRY_LEGALTECH_V1",
+   "industry_name": "법률정보·법률서비스",
+   "strength": "드묾",
+   "appears_as": "법률정보·법률서비스 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "범죄·안전 자료 분석",
+   "industry": "INDUSTRY_COURTLAW_V1",
+   "industry_name": "법무·송무",
+   "strength": "드묾",
+   "appears_as": "법무·송무 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "범죄·안전 자료 분석",
+   "industry": "INDUSTRY_CORPLEGAL_V1",
+   "industry_name": "기업 법무·준법",
+   "strength": "드묾",
+   "appears_as": "기업 법무·준법 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "범죄·안전 자료 분석",
+   "industry": "INDUSTRY_POLICE_V1",
+   "industry_name": "경찰·수사",
+   "strength": "중심",
+   "appears_as": "경찰·수사 에서는 발생 상황을 셀 수 있는 지표로 옮기는가 · 낸 숫자를 다른 기간과 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ],
+   "dimensions": [
+    "발생 상황을 셀 수 있는 지표로 옮기는가",
+    "낸 숫자를 다른 기간과 견주는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "범죄·안전 자료 분석",
+   "industry": "INDUSTRY_CORRECT_V1",
+   "industry_name": "교정·보호·출입국",
+   "strength": "드묾",
+   "appears_as": "교정·보호·출입국 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "범죄·안전 자료 분석",
+   "industry": "INDUSTRY_REGULATOR_V1",
+   "industry_name": "규제·감독",
+   "strength": "중심",
+   "appears_as": "규제·감독 에서는 점검 대상을 자료로 추리는가 · 집계 방식을 기간에 맞게 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J4"
+   ],
+   "dimensions": [
+    "점검 대상을 자료로 추리는가",
+    "집계 방식을 기간에 맞게 고르는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "범죄·안전 자료 분석",
+   "industry": "INDUSTRY_PUBSAFETY_V1",
+   "industry_name": "공공안전·재난",
+   "strength": "중심",
+   "appears_as": "공공안전·재난 에서는 위험한 자리를 자료로 미리 짚는가 · 분석이 평소 배치를 바꾸는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ],
+   "dimensions": [
+    "위험한 자리를 자료로 미리 짚는가",
+    "분석이 평소 배치를 바꾸는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "범죄·안전 자료 분석",
+   "industry": "INDUSTRY_IPLAW_V1",
+   "industry_name": "지식재산·기술법무",
+   "strength": "드묾",
+   "appears_as": "지식재산·기술법무 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "범죄·안전 자료 분석",
+   "industry": "INDUSTRY_LEGALTECH_V1",
+   "industry_name": "법률정보·법률서비스",
+   "strength": "중심",
+   "appears_as": "법률정보·법률서비스 에서는 자료 처리 방식을 골라 쓰는가 · 무엇을 어떻게 셀지 정의하는가 · 쓸 자료와 뺄 자료를 가르는가 · 숫자가 튀는 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J4",
+    "J7"
+   ],
+   "dimensions": [
+    "자료 처리 방식을 골라 쓰는가",
+    "무엇을 어떻게 셀지 정의하는가",
+    "쓸 자료와 뺄 자료를 가르는가",
+    "숫자가 튀는 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "입법·내부규정 설계",
+   "industry": "INDUSTRY_COURTLAW_V1",
+   "industry_name": "법무·송무",
+   "strength": "드묾",
+   "appears_as": "법무·송무 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "입법·내부규정 설계",
+   "industry": "INDUSTRY_CORPLEGAL_V1",
+   "industry_name": "기업 법무·준법",
+   "strength": "있음",
+   "appears_as": "기업 법무·준법 에서는 사내 기준을 조문으로 적어 두는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "사내 기준을 조문으로 적어 두는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "입법·내부규정 설계",
+   "industry": "INDUSTRY_POLICE_V1",
+   "industry_name": "경찰·수사",
+   "strength": "드묾",
+   "appears_as": "경찰·수사 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "입법·내부규정 설계",
+   "industry": "INDUSTRY_CORRECT_V1",
+   "industry_name": "교정·보호·출입국",
+   "strength": "드묾",
+   "appears_as": "교정·보호·출입국 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "입법·내부규정 설계",
+   "industry": "INDUSTRY_REGULATOR_V1",
+   "industry_name": "규제·감독",
+   "strength": "있음",
+   "appears_as": "규제·감독 에서는 내가 쓴 기준이 고시가 되는가 로 나타납니다",
+   "axes_watched": [
+    "J8"
+   ],
+   "dimensions": [
+    "내가 쓴 기준이 고시가 되는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "입법·내부규정 설계",
+   "industry": "INDUSTRY_PUBSAFETY_V1",
+   "industry_name": "공공안전·재난",
+   "strength": "있음",
+   "appears_as": "공공안전·재난 에서는 매뉴얼을 따라 할 수 있게 쓰는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "매뉴얼을 따라 할 수 있게 쓰는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "입법·내부규정 설계",
+   "industry": "INDUSTRY_IPLAW_V1",
+   "industry_name": "지식재산·기술법무",
+   "strength": "있음",
+   "appears_as": "지식재산·기술법무 에서는 사내에 쓸 지침을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "사내에 쓸 지침을 남기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "입법·내부규정 설계",
+   "industry": "INDUSTRY_LEGALTECH_V1",
+   "industry_name": "법률정보·법률서비스",
+   "strength": "드묾",
+   "appears_as": "법률정보·법률서비스 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  }
+ ],
+ "td_role": [
+  {
+   "td": "TD01",
+   "td_name": "법령·판례 조사",
+   "role": "ROLE_POLICYDRAFT_V1",
+   "role_name": "입법·법제",
+   "strength": "드묾",
+   "appears_as": "입법·법제 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "법령·판례 조사",
+   "role": "ROLE_LEGALANALYSIS_V1",
+   "role_name": "법리 검토",
+   "strength": "중심",
+   "appears_as": "법리 검토 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "법령·판례 조사",
+   "role": "ROLE_ADJUDICATE_V1",
+   "role_name": "심사·판정",
+   "strength": "드묾",
+   "appears_as": "심사·판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "법령·판례 조사",
+   "role": "ROLE_LITIGATION_V1",
+   "role_name": "송무·서면",
+   "strength": "드묾",
+   "appears_as": "송무·서면 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "법령·판례 조사",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 운영",
+   "strength": "드묾",
+   "appears_as": "현장 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "법령·판례 조사",
+   "role": "ROLE_CASEMGMT_V1",
+   "role_name": "사건·과제 관리",
+   "strength": "드묾",
+   "appears_as": "사건·과제 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "법령·판례 조사",
+   "role": "ROLE_INVESTIGATE_V1",
+   "role_name": "수사·조사",
+   "strength": "드묾",
+   "appears_as": "수사·조사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "법령·판례 조사",
+   "role": "ROLE_COMPLIANCE_V1",
+   "role_name": "준법·감찰",
+   "strength": "드묾",
+   "appears_as": "준법·감찰 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "사실관계 정리",
+   "role": "ROLE_POLICYDRAFT_V1",
+   "role_name": "입법·법제",
+   "strength": "드묾",
+   "appears_as": "입법·법제 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "사실관계 정리",
+   "role": "ROLE_LEGALANALYSIS_V1",
+   "role_name": "법리 검토",
+   "strength": "드묾",
+   "appears_as": "법리 검토 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "사실관계 정리",
+   "role": "ROLE_ADJUDICATE_V1",
+   "role_name": "심사·판정",
+   "strength": "드묾",
+   "appears_as": "심사·판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "사실관계 정리",
+   "role": "ROLE_LITIGATION_V1",
+   "role_name": "송무·서면",
+   "strength": "중심",
+   "appears_as": "송무·서면 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "사실관계 정리",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 운영",
+   "strength": "드묾",
+   "appears_as": "현장 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "사실관계 정리",
+   "role": "ROLE_CASEMGMT_V1",
+   "role_name": "사건·과제 관리",
+   "strength": "중심",
+   "appears_as": "사건·과제 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J5"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "사실관계 정리",
+   "role": "ROLE_INVESTIGATE_V1",
+   "role_name": "수사·조사",
+   "strength": "중심",
+   "appears_as": "수사·조사 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "사실관계 정리",
+   "role": "ROLE_COMPLIANCE_V1",
+   "role_name": "준법·감찰",
+   "strength": "드묾",
+   "appears_as": "준법·감찰 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "요건 해석·적용",
+   "role": "ROLE_POLICYDRAFT_V1",
+   "role_name": "입법·법제",
+   "strength": "중심",
+   "appears_as": "입법·법제 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "요건 해석·적용",
+   "role": "ROLE_LEGALANALYSIS_V1",
+   "role_name": "법리 검토",
+   "strength": "중심",
+   "appears_as": "법리 검토 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "요건 해석·적용",
+   "role": "ROLE_ADJUDICATE_V1",
+   "role_name": "심사·판정",
+   "strength": "중심",
+   "appears_as": "심사·판정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "요건 해석·적용",
+   "role": "ROLE_LITIGATION_V1",
+   "role_name": "송무·서면",
+   "strength": "드묾",
+   "appears_as": "송무·서면 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "요건 해석·적용",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 운영",
+   "strength": "드묾",
+   "appears_as": "현장 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "요건 해석·적용",
+   "role": "ROLE_CASEMGMT_V1",
+   "role_name": "사건·과제 관리",
+   "strength": "드묾",
+   "appears_as": "사건·과제 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "요건 해석·적용",
+   "role": "ROLE_INVESTIGATE_V1",
+   "role_name": "수사·조사",
+   "strength": "드묾",
+   "appears_as": "수사·조사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "요건 해석·적용",
+   "role": "ROLE_COMPLIANCE_V1",
+   "role_name": "준법·감찰",
+   "strength": "드묾",
+   "appears_as": "준법·감찰 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "서면 작성",
+   "role": "ROLE_POLICYDRAFT_V1",
+   "role_name": "입법·법제",
+   "strength": "드묾",
+   "appears_as": "입법·법제 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "서면 작성",
+   "role": "ROLE_LEGALANALYSIS_V1",
+   "role_name": "법리 검토",
+   "strength": "드묾",
+   "appears_as": "법리 검토 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "서면 작성",
+   "role": "ROLE_ADJUDICATE_V1",
+   "role_name": "심사·판정",
+   "strength": "드묾",
+   "appears_as": "심사·판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "서면 작성",
+   "role": "ROLE_LITIGATION_V1",
+   "role_name": "송무·서면",
+   "strength": "중심",
+   "appears_as": "송무·서면 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "서면 작성",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 운영",
+   "strength": "드묾",
+   "appears_as": "현장 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "서면 작성",
+   "role": "ROLE_CASEMGMT_V1",
+   "role_name": "사건·과제 관리",
+   "strength": "중심",
+   "appears_as": "사건·과제 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J6",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "서면 작성",
+   "role": "ROLE_INVESTIGATE_V1",
+   "role_name": "수사·조사",
+   "strength": "드묾",
+   "appears_as": "수사·조사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "서면 작성",
+   "role": "ROLE_COMPLIANCE_V1",
+   "role_name": "준법·감찰",
+   "strength": "드묾",
+   "appears_as": "준법·감찰 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "계약·문서 검토",
+   "role": "ROLE_POLICYDRAFT_V1",
+   "role_name": "입법·법제",
+   "strength": "드묾",
+   "appears_as": "입법·법제 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "계약·문서 검토",
+   "role": "ROLE_LEGALANALYSIS_V1",
+   "role_name": "법리 검토",
+   "strength": "중심",
+   "appears_as": "법리 검토 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "계약·문서 검토",
+   "role": "ROLE_ADJUDICATE_V1",
+   "role_name": "심사·판정",
+   "strength": "드묾",
+   "appears_as": "심사·판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "계약·문서 검토",
+   "role": "ROLE_LITIGATION_V1",
+   "role_name": "송무·서면",
+   "strength": "드묾",
+   "appears_as": "송무·서면 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "계약·문서 검토",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 운영",
+   "strength": "드묾",
+   "appears_as": "현장 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "계약·문서 검토",
+   "role": "ROLE_CASEMGMT_V1",
+   "role_name": "사건·과제 관리",
+   "strength": "드묾",
+   "appears_as": "사건·과제 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "계약·문서 검토",
+   "role": "ROLE_INVESTIGATE_V1",
+   "role_name": "수사·조사",
+   "strength": "드묾",
+   "appears_as": "수사·조사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "계약·문서 검토",
+   "role": "ROLE_COMPLIANCE_V1",
+   "role_name": "준법·감찰",
+   "strength": "드묾",
+   "appears_as": "준법·감찰 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분쟁 대응·협상",
+   "role": "ROLE_POLICYDRAFT_V1",
+   "role_name": "입법·법제",
+   "strength": "드묾",
+   "appears_as": "입법·법제 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분쟁 대응·협상",
+   "role": "ROLE_LEGALANALYSIS_V1",
+   "role_name": "법리 검토",
+   "strength": "드묾",
+   "appears_as": "법리 검토 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분쟁 대응·협상",
+   "role": "ROLE_ADJUDICATE_V1",
+   "role_name": "심사·판정",
+   "strength": "드묾",
+   "appears_as": "심사·판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분쟁 대응·협상",
+   "role": "ROLE_LITIGATION_V1",
+   "role_name": "송무·서면",
+   "strength": "중심",
+   "appears_as": "송무·서면 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분쟁 대응·협상",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 운영",
+   "strength": "드묾",
+   "appears_as": "현장 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분쟁 대응·협상",
+   "role": "ROLE_CASEMGMT_V1",
+   "role_name": "사건·과제 관리",
+   "strength": "중심",
+   "appears_as": "사건·과제 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분쟁 대응·협상",
+   "role": "ROLE_INVESTIGATE_V1",
+   "role_name": "수사·조사",
+   "strength": "드묾",
+   "appears_as": "수사·조사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분쟁 대응·협상",
+   "role": "ROLE_COMPLIANCE_V1",
+   "role_name": "준법·감찰",
+   "strength": "드묾",
+   "appears_as": "준법·감찰 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "규제·준법 점검",
+   "role": "ROLE_POLICYDRAFT_V1",
+   "role_name": "입법·법제",
+   "strength": "중심",
+   "appears_as": "입법·법제 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "규제·준법 점검",
+   "role": "ROLE_LEGALANALYSIS_V1",
+   "role_name": "법리 검토",
+   "strength": "드묾",
+   "appears_as": "법리 검토 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "규제·준법 점검",
+   "role": "ROLE_ADJUDICATE_V1",
+   "role_name": "심사·판정",
+   "strength": "중심",
+   "appears_as": "심사·판정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "규제·준법 점검",
+   "role": "ROLE_LITIGATION_V1",
+   "role_name": "송무·서면",
+   "strength": "드묾",
+   "appears_as": "송무·서면 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "규제·준법 점검",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 운영",
+   "strength": "드묾",
+   "appears_as": "현장 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "규제·준법 점검",
+   "role": "ROLE_CASEMGMT_V1",
+   "role_name": "사건·과제 관리",
+   "strength": "드묾",
+   "appears_as": "사건·과제 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "규제·준법 점검",
+   "role": "ROLE_INVESTIGATE_V1",
+   "role_name": "수사·조사",
+   "strength": "드묾",
+   "appears_as": "수사·조사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "규제·준법 점검",
+   "role": "ROLE_COMPLIANCE_V1",
+   "role_name": "준법·감찰",
+   "strength": "중심",
+   "appears_as": "준법·감찰 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J5",
+    "J6",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "수사·증거 수집",
+   "role": "ROLE_POLICYDRAFT_V1",
+   "role_name": "입법·법제",
+   "strength": "드묾",
+   "appears_as": "입법·법제 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "수사·증거 수집",
+   "role": "ROLE_LEGALANALYSIS_V1",
+   "role_name": "법리 검토",
+   "strength": "드묾",
+   "appears_as": "법리 검토 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "수사·증거 수집",
+   "role": "ROLE_ADJUDICATE_V1",
+   "role_name": "심사·판정",
+   "strength": "드묾",
+   "appears_as": "심사·판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "수사·증거 수집",
+   "role": "ROLE_LITIGATION_V1",
+   "role_name": "송무·서면",
+   "strength": "드묾",
+   "appears_as": "송무·서면 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "수사·증거 수집",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 운영",
+   "strength": "중심",
+   "appears_as": "현장 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "수사·증거 수집",
+   "role": "ROLE_CASEMGMT_V1",
+   "role_name": "사건·과제 관리",
+   "strength": "드묾",
+   "appears_as": "사건·과제 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "수사·증거 수집",
+   "role": "ROLE_INVESTIGATE_V1",
+   "role_name": "수사·조사",
+   "strength": "중심",
+   "appears_as": "수사·조사 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J4",
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "수사·증거 수집",
+   "role": "ROLE_COMPLIANCE_V1",
+   "role_name": "준법·감찰",
+   "strength": "드묾",
+   "appears_as": "준법·감찰 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "현장 대응·안전",
+   "role": "ROLE_POLICYDRAFT_V1",
+   "role_name": "입법·법제",
+   "strength": "드묾",
+   "appears_as": "입법·법제 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "현장 대응·안전",
+   "role": "ROLE_LEGALANALYSIS_V1",
+   "role_name": "법리 검토",
+   "strength": "드묾",
+   "appears_as": "법리 검토 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "현장 대응·안전",
+   "role": "ROLE_ADJUDICATE_V1",
+   "role_name": "심사·판정",
+   "strength": "드묾",
+   "appears_as": "심사·판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "현장 대응·안전",
+   "role": "ROLE_LITIGATION_V1",
+   "role_name": "송무·서면",
+   "strength": "드묾",
+   "appears_as": "송무·서면 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "현장 대응·안전",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 운영",
+   "strength": "중심",
+   "appears_as": "현장 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "현장 대응·안전",
+   "role": "ROLE_CASEMGMT_V1",
+   "role_name": "사건·과제 관리",
+   "strength": "드묾",
+   "appears_as": "사건·과제 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "현장 대응·안전",
+   "role": "ROLE_INVESTIGATE_V1",
+   "role_name": "수사·조사",
+   "strength": "드묾",
+   "appears_as": "수사·조사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "현장 대응·안전",
+   "role": "ROLE_COMPLIANCE_V1",
+   "role_name": "준법·감찰",
+   "strength": "드묾",
+   "appears_as": "준법·감찰 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "피해자·민원 상담",
+   "role": "ROLE_POLICYDRAFT_V1",
+   "role_name": "입법·법제",
+   "strength": "드묾",
+   "appears_as": "입법·법제 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "피해자·민원 상담",
+   "role": "ROLE_LEGALANALYSIS_V1",
+   "role_name": "법리 검토",
+   "strength": "드묾",
+   "appears_as": "법리 검토 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "피해자·민원 상담",
+   "role": "ROLE_ADJUDICATE_V1",
+   "role_name": "심사·판정",
+   "strength": "중심",
+   "appears_as": "심사·판정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "피해자·민원 상담",
+   "role": "ROLE_LITIGATION_V1",
+   "role_name": "송무·서면",
+   "strength": "드묾",
+   "appears_as": "송무·서면 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "피해자·민원 상담",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 운영",
+   "strength": "중심",
+   "appears_as": "현장 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J7"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "피해자·민원 상담",
+   "role": "ROLE_CASEMGMT_V1",
+   "role_name": "사건·과제 관리",
+   "strength": "드묾",
+   "appears_as": "사건·과제 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "피해자·민원 상담",
+   "role": "ROLE_INVESTIGATE_V1",
+   "role_name": "수사·조사",
+   "strength": "드묾",
+   "appears_as": "수사·조사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "피해자·민원 상담",
+   "role": "ROLE_COMPLIANCE_V1",
+   "role_name": "준법·감찰",
+   "strength": "드묾",
+   "appears_as": "준법·감찰 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "범죄·안전 자료 분석",
+   "role": "ROLE_POLICYDRAFT_V1",
+   "role_name": "입법·법제",
+   "strength": "드묾",
+   "appears_as": "입법·법제 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "범죄·안전 자료 분석",
+   "role": "ROLE_LEGALANALYSIS_V1",
+   "role_name": "법리 검토",
+   "strength": "드묾",
+   "appears_as": "법리 검토 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "범죄·안전 자료 분석",
+   "role": "ROLE_ADJUDICATE_V1",
+   "role_name": "심사·판정",
+   "strength": "드묾",
+   "appears_as": "심사·판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "범죄·안전 자료 분석",
+   "role": "ROLE_LITIGATION_V1",
+   "role_name": "송무·서면",
+   "strength": "드묾",
+   "appears_as": "송무·서면 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "범죄·안전 자료 분석",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 운영",
+   "strength": "드묾",
+   "appears_as": "현장 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "범죄·안전 자료 분석",
+   "role": "ROLE_CASEMGMT_V1",
+   "role_name": "사건·과제 관리",
+   "strength": "드묾",
+   "appears_as": "사건·과제 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "범죄·안전 자료 분석",
+   "role": "ROLE_INVESTIGATE_V1",
+   "role_name": "수사·조사",
+   "strength": "중심",
+   "appears_as": "수사·조사 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "범죄·안전 자료 분석",
+   "role": "ROLE_COMPLIANCE_V1",
+   "role_name": "준법·감찰",
+   "strength": "중심",
+   "appears_as": "준법·감찰 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J4"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "입법·내부규정 설계",
+   "role": "ROLE_POLICYDRAFT_V1",
+   "role_name": "입법·법제",
+   "strength": "중심",
+   "appears_as": "입법·법제 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J3",
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "입법·내부규정 설계",
+   "role": "ROLE_LEGALANALYSIS_V1",
+   "role_name": "법리 검토",
+   "strength": "드묾",
+   "appears_as": "법리 검토 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "입법·내부규정 설계",
+   "role": "ROLE_ADJUDICATE_V1",
+   "role_name": "심사·판정",
+   "strength": "드묾",
+   "appears_as": "심사·판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "입법·내부규정 설계",
+   "role": "ROLE_LITIGATION_V1",
+   "role_name": "송무·서면",
+   "strength": "드묾",
+   "appears_as": "송무·서면 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "입법·내부규정 설계",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 운영",
+   "strength": "드묾",
+   "appears_as": "현장 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "입법·내부규정 설계",
+   "role": "ROLE_CASEMGMT_V1",
+   "role_name": "사건·과제 관리",
+   "strength": "드묾",
+   "appears_as": "사건·과제 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "입법·내부규정 설계",
+   "role": "ROLE_INVESTIGATE_V1",
+   "role_name": "수사·조사",
+   "strength": "드묾",
+   "appears_as": "수사·조사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "입법·내부규정 설계",
+   "role": "ROLE_COMPLIANCE_V1",
+   "role_name": "준법·감찰",
+   "strength": "중심",
+   "appears_as": "준법·감찰 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J8"
+   ]
+  }
+ ]
+}

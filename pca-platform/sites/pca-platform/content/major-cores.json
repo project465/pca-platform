@@ -2538,6 +2538,189 @@
    "specializations_note": "하나다. 배재대 일본학과가 가리키는 자리이고 국어국문한국어교육학과는 갈래 없이 Core 로 바로 간다. **쓰이지 않는 갈래를 미리 적어 두지 않는다**: 중국·영미 지역학 갈래는 그 자리를 가리키는 학과가 생기는 날 그 전공을 아는 분이 쓴다"
   },
   {
+   "code": "LAW_CORE_V1",
+   "family": "HUMANITIES_SOCIAL",
+   "major": "LAW",
+   "name_ko": "법·경찰",
+   "name_en": "Law and Police Studies",
+   "assessment_version": "LAW_V1",
+   "status": "building",
+   "maturity": "FOUNDATION",
+   "aliases": [
+    "법학과",
+    "법학부",
+    "공법학과",
+    "사법학과",
+    "경찰학과",
+    "법경찰학과",
+    "경찰소방학과",
+    "국제법무학과"
+   ],
+   "aliases_note": "`경찰행정학과` 와 `소방행정학과` 는 넣지 않았다. **한 학과 이름이 두 Core 로 갈리지 않는다**: 두 이름은 `PUBADM_CORE_V1` 이 이미 들고 있고, 그 학과가 어느 자로 재어졌는지 아무도 모르게 되는 것이 그 규칙을 둔 까닭이다. 옮기는 것은 두 Core 를 다 아는 분이 판단할 일이라 여기서 바꾸지 않았다",
+   "markets": [
+    "KR"
+   ],
+   "files": {
+    "taxonomy": "law-v1-taxonomy.json",
+    "domains": "law-v1-domains.json",
+    "checklists": "law-v1-checklists.json",
+    "items_blueprint": "law-v1-items-blueprint.json",
+    "checklist_additions": "law-v1-checklist-additions.json",
+    "common_additions": "law-v1-common-additions.json",
+    "items": "law-v1-items.json",
+    "relations": "law-v1-relations.json",
+    "constructs": "law-v1-constructs.json"
+   },
+   "domain_count": 12,
+   "axis_count": 8,
+   "role_function_count": 8,
+   "packs": {
+    "industry": "law-industry-packs.json",
+    "role": "law-role-packs.json"
+   },
+   "domains_note": "열둘은 앞 Core 들의 열둘을 맞춘 수가 아니다. 법·경찰계열이 실제로 내리는 판단을 세어 조사와 사실 정리와 요건 해석과 서면과 계약 검토와 분쟁 대응과 준법 점검과 증거 수집과 현장 대응과 상담과 자료 분석과 규정 설계까지 열둘이고, `논리적으로 쓰기` 같은 **일하는 방식**은 영역으로 두지 않았다. 법령 조사와 요건 해석을 나눈 까닭은 앞엣것이 쓸 조문과 판례를 찾아 고르는 일이고 뒤엣것이 그 요건에 사실을 대어 한쪽으로 결론을 내는 일이어서다. 사실관계 정리와 수사·증거 수집도 나눴다: 앞엣것은 이미 들어온 자료에서 쟁점을 가르고 뒤엣것은 없는 자료를 절차에 맞게 새로 확보한다",
+   "packs_note": "산업팩은 여덟이고 법·경찰계열이 실제로 서는 자리로 갈랐다. **`공무원` 과 `법조인` 을 산업으로 두지 않는다**: 그것은 신분이지 하는 일이 아니고, 같은 신분 안에서 송무와 수사와 규제와 교정이 서로 다른 판단을 묻는다. 규제·감독과 기업 법무·준법을 따로 둔 까닭은 한쪽이 판정을 내리는 자리에 서고 다른 쪽이 그 판정을 받는 자리에 서기 때문이다",
+   "open_to_students": false,
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다",
+   "fixtures": {
+    "personas": "sites/pca-platform/assessment/LAW_V1/personas.json",
+    "bank_lock": "sites/pca-platform/assessment/LAW_V1/bank-lock.json",
+    "measurement_map": "docs/metri/LAW_CORE_V1_MEASURE.md",
+    "gaming_doc": "docs/metri/LAW_CORE_V1_GAMING.md"
+   },
+   "specializations": [
+    {
+     "code": "SPEC_LAW_LAW",
+     "name_ko": "법학",
+     "note": "조문과 판례로 다투고 문서로 결론을 세우는 쪽",
+     "authored": true,
+     "domain_emphasis": {
+      "lead": [
+       "TD03",
+       "TD04",
+       "TD05"
+      ],
+      "support": [
+       "TD01",
+       "TD02",
+       "TD06"
+      ],
+      "rare": [
+       "TD09",
+       "TD11",
+       "TD08"
+      ],
+      "note": "설명하는 차례만 정한다. 축 수준과 묶음 조건과 확인된 축 개수에 들어가지 않는다"
+     },
+     "industry_mapping": {
+      "lead": [
+       "INDUSTRY_COURTLAW_V1",
+       "INDUSTRY_CORPLEGAL_V1",
+       "INDUSTRY_IPLAW_V1"
+      ],
+      "support": [
+       "INDUSTRY_REGULATOR_V1",
+       "INDUSTRY_LEGALTECH_V1"
+      ]
+     },
+     "role_mapping": {
+      "lead": [
+       "ROLE_LEGALANALYSIS_V1",
+       "ROLE_LITIGATION_V1",
+       "ROLE_ADJUDICATE_V1"
+      ],
+      "support": [
+       "ROLE_CASEMGMT_V1",
+       "ROLE_POLICYDRAFT_V1"
+      ]
+     },
+     "examples": {
+      "scene": [
+       "요건마다 사실을 대어 한쪽으로 결론을 낸다",
+       "주장의 차례를 정하고 뺄 주장을 가른다",
+       "받아들일 위험의 선을 그어 조항을 고친다"
+      ],
+      "artifacts": [
+       "검토 의견서 한 벌",
+       "요건 대비표",
+       "준비서면과 증거 설명서",
+       "조항별 위험표와 대안 문구"
+      ]
+     },
+     "evidence_action": {
+      "first": "검토한 사안 하나에서 요건마다 결론과 그 근거를 한 장으로 적어 남긴다",
+      "next": "같은 요건의 반대 취지 해석이나 유사 사안의 결론에 대어 보고 벌어진 만큼의 까닭을 적어 둔다",
+      "note": "할 일의 재료는 그 영역의 `verify_targets` 와 `artifacts` 에서 가져온다. 여기서 새 재료를 지어내지 않는다"
+     }
+    },
+    {
+     "code": "SPEC_LAW_POLICE",
+     "name_ko": "경찰학",
+     "note": "그 자리에서 조치하고 자료로 좁혀 가는 쪽",
+     "authored": true,
+     "domain_emphasis": {
+      "lead": [
+       "TD09",
+       "TD08",
+       "TD11"
+      ],
+      "support": [
+       "TD10",
+       "TD02",
+       "TD07"
+      ],
+      "rare": [
+       "TD04",
+       "TD05",
+       "TD12"
+      ],
+      "note": "설명하는 차례만 정한다. 축 수준과 묶음 조건과 확인된 축 개수에 들어가지 않는다"
+     },
+     "industry_mapping": {
+      "lead": [
+       "INDUSTRY_POLICE_V1",
+       "INDUSTRY_PUBSAFETY_V1",
+       "INDUSTRY_CORRECT_V1"
+      ],
+      "support": [
+       "INDUSTRY_REGULATOR_V1",
+       "INDUSTRY_LEGALTECH_V1"
+      ]
+     },
+     "role_mapping": {
+      "lead": [
+       "ROLE_FIELD_V1",
+       "ROLE_INVESTIGATE_V1",
+       "ROLE_CASEMGMT_V1"
+      ],
+      "support": [
+       "ROLE_ADJUDICATE_V1",
+       "ROLE_COMPLIANCE_V1"
+      ]
+     },
+     "examples": {
+      "scene": [
+       "먼저 끊을 위험을 가르고 그 자리에서 조치 범위를 정한다",
+       "무엇을 어떤 절차로 확보할지 정해 좁혀 간다",
+       "건수와 시간대의 자료로 먼저 볼 자리를 추린다"
+      ],
+      "artifacts": [
+       "조치 기록과 인계 서류",
+       "조사 기록과 증거 목록",
+       "분석 보고와 지표 정의서",
+       "현장 배치 제안"
+      ]
+     },
+     "evidence_action": {
+      "first": "맡았던 일 하나에서 먼저 끊은 것과 미룬 것을 그 까닭과 함께 한 장으로 남긴다",
+      "next": "지침이나 지난 같은 유형의 조치에 대어 보고 벌어진 만큼의 까닭을 적어 둔다",
+      "note": "할 일의 재료는 그 영역의 `verify_targets` 와 `artifacts` 에서 가져온다. 여기서 새 재료를 지어내지 않는다"
+     }
+    }
+   ],
+   "specializations_note": "둘이고 배재대 경찰법학부의 두 전공이 하나씩 가리킨다. **갈래가 채점을 바꾸지 않는다**: 조정하는 것은 영역을 설명하는 차례와 산업·역할 연결과 예시와 할 일의 문면까지이고, 축 수준과 묶음 조건과 확인된 축 개수와 문항 은행은 건드리지 않는다. 같은 응답에 갈래만 바꿔 돌리면 Core 판정의 지문이 글자까지 같다"
+  },
+  {
    "code": "EDU_CORE_V1",
    "family": "HUMANITIES_SOCIAL",
    "major": "EDU",

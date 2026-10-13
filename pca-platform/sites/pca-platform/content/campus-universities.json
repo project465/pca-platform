@@ -294,15 +294,17 @@
                       "code": "PCU26_POLICE",
                       "name": "경찰학전공",
                       "kind": "major",
-                      "core_code": null,
-                      "specialization": null
+                      "core_code": "LAW_CORE_V1",
+                      "specialization": "SPEC_LAW_POLICE",
+                      "note": "경찰학 갈래로 간다"
                     },
                     {
                       "code": "PCU26_LAW",
                       "name": "법학전공",
                       "kind": "major",
-                      "core_code": null,
-                      "specialization": null
+                      "core_code": "LAW_CORE_V1",
+                      "specialization": "SPEC_LAW_LAW",
+                      "note": "법학 갈래로 간다"
                     }
                   ]
                 },
@@ -867,15 +869,17 @@
                       "code": "PCU27_POLICE",
                       "name": "경찰학전공",
                       "kind": "major",
-                      "core_code": null,
-                      "specialization": null
+                      "core_code": "LAW_CORE_V1",
+                      "specialization": "SPEC_LAW_POLICE",
+                      "note": "경찰학 갈래로 간다"
                     },
                     {
                       "code": "PCU27_LAW",
                       "name": "법학전공",
                       "kind": "major",
-                      "core_code": null,
-                      "specialization": null
+                      "core_code": "LAW_CORE_V1",
+                      "specialization": "SPEC_LAW_LAW",
+                      "note": "법학 갈래로 간다"
                     }
                   ]
                 },

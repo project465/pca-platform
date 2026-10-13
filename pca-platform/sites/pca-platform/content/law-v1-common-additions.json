@@ -1,0 +1,91 @@
+{
+ "schema_version": "law-v1-common-additions.1",
+ "note": "영역에 붙지 않는 공통 판단의 근거 목록. 번역 단계와 공통 판단 문항이 읽는다",
+ "items": [
+  {
+   "axis": "J1",
+   "text": "무엇을 다룰지 내가 좁혀 정했다",
+   "source": "law_v1"
+  },
+  {
+   "axis": "J1",
+   "text": "주어진 주제에서 이번에 다루지 않을 것을 갈라 적었다",
+   "source": "law_v1"
+  },
+  {
+   "axis": "J2",
+   "text": "주어진 목표를 확인할 수 있는 항목으로 옮겼다",
+   "source": "law_v1"
+  },
+  {
+   "axis": "J2",
+   "text": "서로 부딪히는 요구 가운데 먼저 지킬 것을 정했다",
+   "source": "law_v1"
+  },
+  {
+   "axis": "J3",
+   "text": "여러 안 가운데 하나를 근거를 들어 골랐다",
+   "source": "law_v1"
+  },
+  {
+   "axis": "J3",
+   "text": "불확실한 값의 가정을 내가 정해 적어 두었다",
+   "source": "law_v1"
+  },
+  {
+   "axis": "J4",
+   "text": "쓸 방법을 스스로 찾아 익혀 적용했다",
+   "source": "law_v1"
+  },
+  {
+   "axis": "J4",
+   "text": "쓰던 방법이 맞지 않아 다른 방법으로 바꿨다",
+   "source": "law_v1"
+  },
+  {
+   "axis": "J5",
+   "text": "다른 사람이 읽고 쓸 수 있는 문서를 남겼다",
+   "source": "law_v1"
+  },
+  {
+   "axis": "J5",
+   "text": "내가 남긴 자료를 다른 사람이 가져다 썼다",
+   "source": "law_v1"
+  },
+  {
+   "axis": "J6",
+   "text": "결과를 다른 방법으로 한 번 더 확인했다",
+   "source": "law_v1"
+  },
+  {
+   "axis": "J6",
+   "text": "기준이나 규격과 내 결과를 대조했다",
+   "source": "law_v1"
+  },
+  {
+   "axis": "J7",
+   "text": "틀린 원인을 후보를 나눠 좁혀 들어갔다",
+   "source": "law_v1"
+  },
+  {
+   "axis": "J7",
+   "text": "같은 문제가 다시 나지 않게 조건을 바꿨다",
+   "source": "law_v1"
+  },
+  {
+   "axis": "J7",
+   "text": "내 판단이 틀렸던 것을 찾아 적어 두었다",
+   "source": "law_v1"
+  },
+  {
+   "axis": "J8",
+   "text": "내 판단을 회의에서 설명하고 합의를 받았다",
+   "source": "law_v1"
+  },
+  {
+   "axis": "J8",
+   "text": "내가 낸 결과가 다른 사람의 결정에 쓰였다",
+   "source": "law_v1"
+  }
+ ]
+}
