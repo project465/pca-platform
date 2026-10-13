@@ -1,0 +1,2404 @@
+{
+ "schema_version": "visual-v1-relations.1",
+ "core": "VISUAL_CORE_V1",
+ "note": "기술영역과 산업, 기술영역과 역할의 관계를 두 표로 둔다. 세 축을 미리 곱해 두지 않는다: 열두 영역과 여덟 산업과 여덟 역할을 곱하면 칠백예순여덟 줄이 되고 그만큼의 줄을 사람이 손으로 유지할 수 없다. 어느 줄도 점수를 만들지 않는다: `strength` 는 설명하는 차례를 정하고 `appears_as` 는 결과지가 그 말로 옮겨 적을 때 읽는다",
+ "combine_rule": "산업 하나와 역할 하나를 함께 고른 사람에게는 두 표에서 같은 영역의 줄을 뽑아 나란히 놓는다. 둘 다 `중심` 인 영역이 먼저 서고, 한쪽만 중심인 영역이 다음이고, 양쪽이 드문 영역은 적지 않는다",
+ "td_industry": [
+  {
+   "td": "TD01",
+   "td_name": "과제 정의·리서치",
+   "industry": "INDUSTRY_WEBTOON_V1",
+   "industry_name": "웹툰·만화",
+   "strength": "드묾",
+   "appears_as": "웹툰·만화 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "과제 정의·리서치",
+   "industry": "INDUSTRY_GAMEART_V1",
+   "industry_name": "게임 아트",
+   "strength": "드묾",
+   "appears_as": "게임 아트 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "과제 정의·리서치",
+   "industry": "INDUSTRY_ANIM_V1",
+   "industry_name": "애니메이션·영상",
+   "strength": "드묾",
+   "appears_as": "애니메이션·영상 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "과제 정의·리서치",
+   "industry": "INDUSTRY_BRANDING_V1",
+   "industry_name": "브랜드·아이덴티티",
+   "strength": "있음",
+   "appears_as": "브랜드·아이덴티티 에서는 받는 사람을 옮겨 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "받는 사람을 옮겨 적는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "과제 정의·리서치",
+   "industry": "INDUSTRY_EDITORIAL_V1",
+   "industry_name": "편집·출판·인쇄",
+   "strength": "있음",
+   "appears_as": "편집·출판·인쇄 에서는 다룰 범위를 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "다룰 범위를 좁히는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "과제 정의·리서치",
+   "industry": "INDUSTRY_PRODUCT_V1",
+   "industry_name": "제품·패키지",
+   "strength": "드묾",
+   "appears_as": "제품·패키지 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "과제 정의·리서치",
+   "industry": "INDUSTRY_UIUX_V1",
+   "industry_name": "디지털 제품 화면",
+   "strength": "있음",
+   "appears_as": "디지털 제품 화면 에서는 과제 범위를 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "과제 범위를 좁히는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "과제 정의·리서치",
+   "industry": "INDUSTRY_EXHIBIT_V1",
+   "industry_name": "전시·공간 그래픽",
+   "strength": "드묾",
+   "appears_as": "전시·공간 그래픽 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "콘셉트·방향 설정",
+   "industry": "INDUSTRY_WEBTOON_V1",
+   "industry_name": "웹툰·만화",
+   "strength": "있음",
+   "appears_as": "웹툰·만화 에서는 작품의 톤을 옮겨 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "작품의 톤을 옮겨 적는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "콘셉트·방향 설정",
+   "industry": "INDUSTRY_GAMEART_V1",
+   "industry_name": "게임 아트",
+   "strength": "있음",
+   "appears_as": "게임 아트 에서는 아트 방향을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "아트 방향을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "콘셉트·방향 설정",
+   "industry": "INDUSTRY_ANIM_V1",
+   "industry_name": "애니메이션·영상",
+   "strength": "드묾",
+   "appears_as": "애니메이션·영상 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "콘셉트·방향 설정",
+   "industry": "INDUSTRY_BRANDING_V1",
+   "industry_name": "브랜드·아이덴티티",
+   "strength": "중심",
+   "appears_as": "브랜드·아이덴티티 에서는 갈 결을 좁히는가 · 내 결이 방향으로 굳는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J8"
+   ],
+   "dimensions": [
+    "갈 결을 좁히는가",
+    "내 결이 방향으로 굳는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "콘셉트·방향 설정",
+   "industry": "INDUSTRY_EDITORIAL_V1",
+   "industry_name": "편집·출판·인쇄",
+   "strength": "드묾",
+   "appears_as": "편집·출판·인쇄 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "콘셉트·방향 설정",
+   "industry": "INDUSTRY_PRODUCT_V1",
+   "industry_name": "제품·패키지",
+   "strength": "있음",
+   "appears_as": "제품·패키지 에서는 방향을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "방향을 가르는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "콘셉트·방향 설정",
+   "industry": "INDUSTRY_UIUX_V1",
+   "industry_name": "디지털 제품 화면",
+   "strength": "드묾",
+   "appears_as": "디지털 제품 화면 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "콘셉트·방향 설정",
+   "industry": "INDUSTRY_EXHIBIT_V1",
+   "industry_name": "전시·공간 그래픽",
+   "strength": "드묾",
+   "appears_as": "전시·공간 그래픽 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "조형·레이아웃",
+   "industry": "INDUSTRY_WEBTOON_V1",
+   "industry_name": "웹툰·만화",
+   "strength": "있음",
+   "appears_as": "웹툰·만화 에서는 세로로 읽히게 짜는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "세로로 읽히게 짜는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "조형·레이아웃",
+   "industry": "INDUSTRY_GAMEART_V1",
+   "industry_name": "게임 아트",
+   "strength": "있음",
+   "appears_as": "게임 아트 에서는 화면 배치를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "화면 배치를 가르는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "조형·레이아웃",
+   "industry": "INDUSTRY_ANIM_V1",
+   "industry_name": "애니메이션·영상",
+   "strength": "있음",
+   "appears_as": "애니메이션·영상 에서는 화면비를 확인하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "화면비를 확인하는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "조형·레이아웃",
+   "industry": "INDUSTRY_BRANDING_V1",
+   "industry_name": "브랜드·아이덴티티",
+   "strength": "있음",
+   "appears_as": "브랜드·아이덴티티 에서는 적용 배치를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "적용 배치를 가르는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "조형·레이아웃",
+   "industry": "INDUSTRY_EDITORIAL_V1",
+   "industry_name": "편집·출판·인쇄",
+   "strength": "중심",
+   "appears_as": "편집·출판·인쇄 에서는 판면을 남기는가 · 판형과 격자를 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ],
+   "dimensions": [
+    "판면을 남기는가",
+    "판형과 격자를 고르는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "조형·레이아웃",
+   "industry": "INDUSTRY_PRODUCT_V1",
+   "industry_name": "제품·패키지",
+   "strength": "드묾",
+   "appears_as": "제품·패키지 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "조형·레이아웃",
+   "industry": "INDUSTRY_UIUX_V1",
+   "industry_name": "디지털 제품 화면",
+   "strength": "있음",
+   "appears_as": "디지털 제품 화면 에서는 화면 배치를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "화면 배치를 가르는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "조형·레이아웃",
+   "industry": "INDUSTRY_EXHIBIT_V1",
+   "industry_name": "전시·공간 그래픽",
+   "strength": "중심",
+   "appears_as": "전시·공간 그래픽 에서는 벽면 배치를 가르는가 · 도면과 시안을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ],
+   "dimensions": [
+    "벽면 배치를 가르는가",
+    "도면과 시안을 남기는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "타이포그래피",
+   "industry": "INDUSTRY_WEBTOON_V1",
+   "industry_name": "웹툰·만화",
+   "strength": "있음",
+   "appears_as": "웹툰·만화 에서는 대사 글자를 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "대사 글자를 남기는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "타이포그래피",
+   "industry": "INDUSTRY_GAMEART_V1",
+   "industry_name": "게임 아트",
+   "strength": "드묾",
+   "appears_as": "게임 아트 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "타이포그래피",
+   "industry": "INDUSTRY_ANIM_V1",
+   "industry_name": "애니메이션·영상",
+   "strength": "드묾",
+   "appears_as": "애니메이션·영상 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "타이포그래피",
+   "industry": "INDUSTRY_BRANDING_V1",
+   "industry_name": "브랜드·아이덴티티",
+   "strength": "중심",
+   "appears_as": "브랜드·아이덴티티 에서는 조판 규칙을 남기는가 · 안 지켜질 때 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "조판 규칙을 남기는가",
+    "안 지켜질 때 좁히는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "타이포그래피",
+   "industry": "INDUSTRY_EDITORIAL_V1",
+   "industry_name": "편집·출판·인쇄",
+   "strength": "중심",
+   "appears_as": "편집·출판·인쇄 에서는 글자 크기를 가르는가 · 교정과 대조하는가 · 보는 거리를 옮겨 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J6"
+   ],
+   "dimensions": [
+    "글자 크기를 가르는가",
+    "교정과 대조하는가",
+    "보는 거리를 옮겨 적는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "타이포그래피",
+   "industry": "INDUSTRY_PRODUCT_V1",
+   "industry_name": "제품·패키지",
+   "strength": "드묾",
+   "appears_as": "제품·패키지 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "타이포그래피",
+   "industry": "INDUSTRY_UIUX_V1",
+   "industry_name": "디지털 제품 화면",
+   "strength": "있음",
+   "appears_as": "디지털 제품 화면 에서는 글자 규칙을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "글자 규칙을 남기는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "타이포그래피",
+   "industry": "INDUSTRY_EXHIBIT_V1",
+   "industry_name": "전시·공간 그래픽",
+   "strength": "중심",
+   "appears_as": "전시·공간 그래픽 에서는 보는 거리를 크기로 옮기는가 · 실제 거리에서 확인하는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ],
+   "dimensions": [
+    "보는 거리를 크기로 옮기는가",
+    "실제 거리에서 확인하는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "색과 재질",
+   "industry": "INDUSTRY_WEBTOON_V1",
+   "industry_name": "웹툰·만화",
+   "strength": "있음",
+   "appears_as": "웹툰·만화 에서는 채색 톤을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "채색 톤을 가르는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "색과 재질",
+   "industry": "INDUSTRY_GAMEART_V1",
+   "industry_name": "게임 아트",
+   "strength": "있음",
+   "appears_as": "게임 아트 에서는 색 묶음을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "색 묶음을 남기는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "색과 재질",
+   "industry": "INDUSTRY_ANIM_V1",
+   "industry_name": "애니메이션·영상",
+   "strength": "있음",
+   "appears_as": "애니메이션·영상 에서는 색 지정을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "색 지정을 가르는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "색과 재질",
+   "industry": "INDUSTRY_BRANDING_V1",
+   "industry_name": "브랜드·아이덴티티",
+   "strength": "있음",
+   "appears_as": "브랜드·아이덴티티 에서는 대비를 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "대비를 대조하는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "색과 재질",
+   "industry": "INDUSTRY_EDITORIAL_V1",
+   "industry_name": "편집·출판·인쇄",
+   "strength": "있음",
+   "appears_as": "편집·출판·인쇄 에서는 색 교정과 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "색 교정과 대조하는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "색과 재질",
+   "industry": "INDUSTRY_PRODUCT_V1",
+   "industry_name": "제품·패키지",
+   "strength": "있음",
+   "appears_as": "제품·패키지 에서는 재질을 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "재질을 고르는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "색과 재질",
+   "industry": "INDUSTRY_UIUX_V1",
+   "industry_name": "디지털 제품 화면",
+   "strength": "있음",
+   "appears_as": "디지털 제품 화면 에서는 대비 기준과 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "대비 기준과 대조하는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "색과 재질",
+   "industry": "INDUSTRY_EXHIBIT_V1",
+   "industry_name": "전시·공간 그래픽",
+   "strength": "있음",
+   "appears_as": "전시·공간 그래픽 에서는 조명 아래 색을 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "조명 아래 색을 대조하는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "캐릭터·세계관 설정",
+   "industry": "INDUSTRY_WEBTOON_V1",
+   "industry_name": "웹툰·만화",
+   "strength": "있음",
+   "appears_as": "웹툰·만화 에서는 설정을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "설정을 남기는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "캐릭터·세계관 설정",
+   "industry": "INDUSTRY_GAMEART_V1",
+   "industry_name": "게임 아트",
+   "strength": "있음",
+   "appears_as": "게임 아트 에서는 캐릭터 설정을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "캐릭터 설정을 남기는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "캐릭터·세계관 설정",
+   "industry": "INDUSTRY_ANIM_V1",
+   "industry_name": "애니메이션·영상",
+   "strength": "있음",
+   "appears_as": "애니메이션·영상 에서는 설정과 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "설정과 대조하는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "캐릭터·세계관 설정",
+   "industry": "INDUSTRY_BRANDING_V1",
+   "industry_name": "브랜드·아이덴티티",
+   "strength": "드묾",
+   "appears_as": "브랜드·아이덴티티 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "캐릭터·세계관 설정",
+   "industry": "INDUSTRY_EDITORIAL_V1",
+   "industry_name": "편집·출판·인쇄",
+   "strength": "드묾",
+   "appears_as": "편집·출판·인쇄 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "캐릭터·세계관 설정",
+   "industry": "INDUSTRY_PRODUCT_V1",
+   "industry_name": "제품·패키지",
+   "strength": "드묾",
+   "appears_as": "제품·패키지 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "캐릭터·세계관 설정",
+   "industry": "INDUSTRY_UIUX_V1",
+   "industry_name": "디지털 제품 화면",
+   "strength": "드묾",
+   "appears_as": "디지털 제품 화면 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "캐릭터·세계관 설정",
+   "industry": "INDUSTRY_EXHIBIT_V1",
+   "industry_name": "전시·공간 그래픽",
+   "strength": "드묾",
+   "appears_as": "전시·공간 그래픽 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "서사·연출·콘티",
+   "industry": "INDUSTRY_WEBTOON_V1",
+   "industry_name": "웹툰·만화",
+   "strength": "중심",
+   "appears_as": "웹툰·만화 에서는 회차에 담을 장면을 좁히는가 · 컷을 끊는 자리를 가르는가 · 늘어진 회차를 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J3",
+    "J7"
+   ],
+   "dimensions": [
+    "회차에 담을 장면을 좁히는가",
+    "컷을 끊는 자리를 가르는가",
+    "늘어진 회차를 좁히는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "서사·연출·콘티",
+   "industry": "INDUSTRY_GAMEART_V1",
+   "industry_name": "게임 아트",
+   "strength": "드묾",
+   "appears_as": "게임 아트 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "서사·연출·콘티",
+   "industry": "INDUSTRY_ANIM_V1",
+   "industry_name": "애니메이션·영상",
+   "strength": "중심",
+   "appears_as": "애니메이션·영상 에서는 콘티를 남기는가 · 담을 장면을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ],
+   "dimensions": [
+    "콘티를 남기는가",
+    "담을 장면을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "서사·연출·콘티",
+   "industry": "INDUSTRY_BRANDING_V1",
+   "industry_name": "브랜드·아이덴티티",
+   "strength": "드묾",
+   "appears_as": "브랜드·아이덴티티 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "서사·연출·콘티",
+   "industry": "INDUSTRY_EDITORIAL_V1",
+   "industry_name": "편집·출판·인쇄",
+   "strength": "드묾",
+   "appears_as": "편집·출판·인쇄 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "서사·연출·콘티",
+   "industry": "INDUSTRY_PRODUCT_V1",
+   "industry_name": "제품·패키지",
+   "strength": "드묾",
+   "appears_as": "제품·패키지 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "서사·연출·콘티",
+   "industry": "INDUSTRY_UIUX_V1",
+   "industry_name": "디지털 제품 화면",
+   "strength": "드묾",
+   "appears_as": "디지털 제품 화면 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "서사·연출·콘티",
+   "industry": "INDUSTRY_EXHIBIT_V1",
+   "industry_name": "전시·공간 그래픽",
+   "strength": "있음",
+   "appears_as": "전시·공간 그래픽 에서는 보는 차례를 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "보는 차례를 좁히는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "동작·애니메이션",
+   "industry": "INDUSTRY_WEBTOON_V1",
+   "industry_name": "웹툰·만화",
+   "strength": "드묾",
+   "appears_as": "웹툰·만화 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "동작·애니메이션",
+   "industry": "INDUSTRY_GAMEART_V1",
+   "industry_name": "게임 아트",
+   "strength": "중심",
+   "appears_as": "게임 아트 에서는 용량과 프레임을 조건으로 옮기는가 · 제작 방식을 고르는가 · 성능과 대조하는가 · 안 돌아갈 때 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J4",
+    "J6",
+    "J7"
+   ],
+   "dimensions": [
+    "용량과 프레임을 조건으로 옮기는가",
+    "제작 방식을 고르는가",
+    "성능과 대조하는가",
+    "안 돌아갈 때 좁히는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "동작·애니메이션",
+   "industry": "INDUSTRY_ANIM_V1",
+   "industry_name": "애니메이션·영상",
+   "strength": "중심",
+   "appears_as": "애니메이션·영상 에서는 쓸 장수와 방식을 고르는가 · 타이밍을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J4"
+   ],
+   "dimensions": [
+    "쓸 장수와 방식을 고르는가",
+    "타이밍을 가르는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "동작·애니메이션",
+   "industry": "INDUSTRY_BRANDING_V1",
+   "industry_name": "브랜드·아이덴티티",
+   "strength": "드묾",
+   "appears_as": "브랜드·아이덴티티 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "동작·애니메이션",
+   "industry": "INDUSTRY_EDITORIAL_V1",
+   "industry_name": "편집·출판·인쇄",
+   "strength": "드묾",
+   "appears_as": "편집·출판·인쇄 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "동작·애니메이션",
+   "industry": "INDUSTRY_PRODUCT_V1",
+   "industry_name": "제품·패키지",
+   "strength": "드묾",
+   "appears_as": "제품·패키지 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "동작·애니메이션",
+   "industry": "INDUSTRY_UIUX_V1",
+   "industry_name": "디지털 제품 화면",
+   "strength": "있음",
+   "appears_as": "디지털 제품 화면 에서는 전환 동작을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "전환 동작을 가르는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "동작·애니메이션",
+   "industry": "INDUSTRY_EXHIBIT_V1",
+   "industry_name": "전시·공간 그래픽",
+   "strength": "드묾",
+   "appears_as": "전시·공간 그래픽 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "제품 형태·사용 설계",
+   "industry": "INDUSTRY_WEBTOON_V1",
+   "industry_name": "웹툰·만화",
+   "strength": "드묾",
+   "appears_as": "웹툰·만화 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "제품 형태·사용 설계",
+   "industry": "INDUSTRY_GAMEART_V1",
+   "industry_name": "게임 아트",
+   "strength": "드묾",
+   "appears_as": "게임 아트 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "제품 형태·사용 설계",
+   "industry": "INDUSTRY_ANIM_V1",
+   "industry_name": "애니메이션·영상",
+   "strength": "드묾",
+   "appears_as": "애니메이션·영상 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "제품 형태·사용 설계",
+   "industry": "INDUSTRY_BRANDING_V1",
+   "industry_name": "브랜드·아이덴티티",
+   "strength": "드묾",
+   "appears_as": "브랜드·아이덴티티 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "제품 형태·사용 설계",
+   "industry": "INDUSTRY_EDITORIAL_V1",
+   "industry_name": "편집·출판·인쇄",
+   "strength": "드묾",
+   "appears_as": "편집·출판·인쇄 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "제품 형태·사용 설계",
+   "industry": "INDUSTRY_PRODUCT_V1",
+   "industry_name": "제품·패키지",
+   "strength": "중심",
+   "appears_as": "제품·패키지 에서는 쓰는 사람을 치수로 옮기는가 · 모델과 치수를 남기는가 · 목업과 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J5",
+    "J6"
+   ],
+   "dimensions": [
+    "쓰는 사람을 치수로 옮기는가",
+    "모델과 치수를 남기는가",
+    "목업과 대조하는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "제품 형태·사용 설계",
+   "industry": "INDUSTRY_UIUX_V1",
+   "industry_name": "디지털 제품 화면",
+   "strength": "드묾",
+   "appears_as": "디지털 제품 화면 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "제품 형태·사용 설계",
+   "industry": "INDUSTRY_EXHIBIT_V1",
+   "industry_name": "전시·공간 그래픽",
+   "strength": "드묾",
+   "appears_as": "전시·공간 그래픽 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "제작 사양·양산 검토",
+   "industry": "INDUSTRY_WEBTOON_V1",
+   "industry_name": "웹툰·만화",
+   "strength": "드묾",
+   "appears_as": "웹툰·만화 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "제작 사양·양산 검토",
+   "industry": "INDUSTRY_GAMEART_V1",
+   "industry_name": "게임 아트",
+   "strength": "있음",
+   "appears_as": "게임 아트 에서는 리소스 사양을 옮겨 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "리소스 사양을 옮겨 적는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "제작 사양·양산 검토",
+   "industry": "INDUSTRY_ANIM_V1",
+   "industry_name": "애니메이션·영상",
+   "strength": "있음",
+   "appears_as": "애니메이션·영상 에서는 납품 사양을 옮겨 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "납품 사양을 옮겨 적는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "제작 사양·양산 검토",
+   "industry": "INDUSTRY_BRANDING_V1",
+   "industry_name": "브랜드·아이덴티티",
+   "strength": "있음",
+   "appears_as": "브랜드·아이덴티티 에서는 인쇄 사양을 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "인쇄 사양을 고르는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "제작 사양·양산 검토",
+   "industry": "INDUSTRY_EDITORIAL_V1",
+   "industry_name": "편집·출판·인쇄",
+   "strength": "중심",
+   "appears_as": "편집·출판·인쇄 에서는 인쇄 사양을 옮겨 적는가 · 인쇄 사고를 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ],
+   "dimensions": [
+    "인쇄 사양을 옮겨 적는가",
+    "인쇄 사고를 좁히는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "제작 사양·양산 검토",
+   "industry": "INDUSTRY_PRODUCT_V1",
+   "industry_name": "제품·패키지",
+   "strength": "중심",
+   "appears_as": "제품·패키지 에서는 양산 사양을 옮겨 적는가 · 공장과 대조하는가 · 안 나올 때 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J6",
+    "J7"
+   ],
+   "dimensions": [
+    "양산 사양을 옮겨 적는가",
+    "공장과 대조하는가",
+    "안 나올 때 좁히는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "제작 사양·양산 검토",
+   "industry": "INDUSTRY_UIUX_V1",
+   "industry_name": "디지털 제품 화면",
+   "strength": "드묾",
+   "appears_as": "디지털 제품 화면 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "제작 사양·양산 검토",
+   "industry": "INDUSTRY_EXHIBIT_V1",
+   "industry_name": "전시·공간 그래픽",
+   "strength": "중심",
+   "appears_as": "전시·공간 그래픽 에서는 제작 사양을 옮겨 적는가 · 현장에서 안 맞을 때 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ],
+   "dimensions": [
+    "제작 사양을 옮겨 적는가",
+    "현장에서 안 맞을 때 좁히는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "사용자 반응·검증",
+   "industry": "INDUSTRY_WEBTOON_V1",
+   "industry_name": "웹툰·만화",
+   "strength": "있음",
+   "appears_as": "웹툰·만화 에서는 독자 반응과 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "독자 반응과 대조하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "사용자 반응·검증",
+   "industry": "INDUSTRY_GAMEART_V1",
+   "industry_name": "게임 아트",
+   "strength": "있음",
+   "appears_as": "게임 아트 에서는 플레이 시험과 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "플레이 시험과 대조하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "사용자 반응·검증",
+   "industry": "INDUSTRY_ANIM_V1",
+   "industry_name": "애니메이션·영상",
+   "strength": "있음",
+   "appears_as": "애니메이션·영상 에서는 반응의 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "반응의 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "사용자 반응·검증",
+   "industry": "INDUSTRY_BRANDING_V1",
+   "industry_name": "브랜드·아이덴티티",
+   "strength": "있음",
+   "appears_as": "브랜드·아이덴티티 에서는 인지를 확인하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "인지를 확인하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "사용자 반응·검증",
+   "industry": "INDUSTRY_EDITORIAL_V1",
+   "industry_name": "편집·출판·인쇄",
+   "strength": "드묾",
+   "appears_as": "편집·출판·인쇄 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "사용자 반응·검증",
+   "industry": "INDUSTRY_PRODUCT_V1",
+   "industry_name": "제품·패키지",
+   "strength": "있음",
+   "appears_as": "제품·패키지 에서는 사용성을 확인하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "사용성을 확인하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "사용자 반응·검증",
+   "industry": "INDUSTRY_UIUX_V1",
+   "industry_name": "디지털 제품 화면",
+   "strength": "중심",
+   "appears_as": "디지털 제품 화면 에서는 볼 지표를 옮겨 적는가 · 두 안을 대조하는가 · 결과가 흔들릴 때 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J6",
+    "J7"
+   ],
+   "dimensions": [
+    "볼 지표를 옮겨 적는가",
+    "두 안을 대조하는가",
+    "결과가 흔들릴 때 좁히는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "사용자 반응·검증",
+   "industry": "INDUSTRY_EXHIBIT_V1",
+   "industry_name": "전시·공간 그래픽",
+   "strength": "있음",
+   "appears_as": "전시·공간 그래픽 에서는 관람 반응을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "관람 반응을 가르는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "저작권·납품·기록",
+   "industry": "INDUSTRY_WEBTOON_V1",
+   "industry_name": "웹툰·만화",
+   "strength": "있음",
+   "appears_as": "웹툰·만화 에서는 소재의 권리를 옮겨 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "소재의 권리를 옮겨 적는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "저작권·납품·기록",
+   "industry": "INDUSTRY_GAMEART_V1",
+   "industry_name": "게임 아트",
+   "strength": "드묾",
+   "appears_as": "게임 아트 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "저작권·납품·기록",
+   "industry": "INDUSTRY_ANIM_V1",
+   "industry_name": "애니메이션·영상",
+   "strength": "있음",
+   "appears_as": "애니메이션·영상 에서는 판본을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "판본을 남기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "저작권·납품·기록",
+   "industry": "INDUSTRY_BRANDING_V1",
+   "industry_name": "브랜드·아이덴티티",
+   "strength": "있음",
+   "appears_as": "브랜드·아이덴티티 에서는 가이드를 묶어 넘기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "가이드를 묶어 넘기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "저작권·납품·기록",
+   "industry": "INDUSTRY_EDITORIAL_V1",
+   "industry_name": "편집·출판·인쇄",
+   "strength": "있음",
+   "appears_as": "편집·출판·인쇄 에서는 권리를 확인하는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "권리를 확인하는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "저작권·납품·기록",
+   "industry": "INDUSTRY_PRODUCT_V1",
+   "industry_name": "제품·패키지",
+   "strength": "있음",
+   "appears_as": "제품·패키지 에서는 도안의 권리를 확인하는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "도안의 권리를 확인하는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "저작권·납품·기록",
+   "industry": "INDUSTRY_UIUX_V1",
+   "industry_name": "디지털 제품 화면",
+   "strength": "중심",
+   "appears_as": "디지털 제품 화면 에서는 부품 규칙을 고르는가 · 판본을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ],
+   "dimensions": [
+    "부품 규칙을 고르는가",
+    "판본을 남기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "저작권·납품·기록",
+   "industry": "INDUSTRY_EXHIBIT_V1",
+   "industry_name": "전시·공간 그래픽",
+   "strength": "있음",
+   "appears_as": "전시·공간 그래픽 에서는 철거와 권리를 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "철거와 권리를 남기는가"
+   ]
+  }
+ ],
+ "td_role": [
+  {
+   "td": "TD01",
+   "td_name": "과제 정의·리서치",
+   "role": "ROLE_CONCEPT_V1",
+   "role_name": "기획·콘셉트",
+   "strength": "중심",
+   "appears_as": "기획·콘셉트 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "과제 정의·리서치",
+   "role": "ROLE_REF_V1",
+   "role_name": "조사·레퍼런스",
+   "strength": "중심",
+   "appears_as": "조사·레퍼런스 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "과제 정의·리서치",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "판정·검수",
+   "strength": "드묾",
+   "appears_as": "판정·검수 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "과제 정의·리서치",
+   "role": "ROLE_GUIDE_V1",
+   "role_name": "가이드·에셋 관리",
+   "strength": "드묾",
+   "appears_as": "가이드·에셋 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "과제 정의·리서치",
+   "role": "ROLE_MAKE_V1",
+   "role_name": "제작 실무",
+   "strength": "드묾",
+   "appears_as": "제작 실무 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "과제 정의·리서치",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "과제 정의·리서치",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "중심",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "과제 정의·리서치",
+   "role": "ROLE_RIGHTS_V1",
+   "role_name": "권리·규정 관리",
+   "strength": "드묾",
+   "appears_as": "권리·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "콘셉트·방향 설정",
+   "role": "ROLE_CONCEPT_V1",
+   "role_name": "기획·콘셉트",
+   "strength": "중심",
+   "appears_as": "기획·콘셉트 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J3",
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "콘셉트·방향 설정",
+   "role": "ROLE_REF_V1",
+   "role_name": "조사·레퍼런스",
+   "strength": "드묾",
+   "appears_as": "조사·레퍼런스 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "콘셉트·방향 설정",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "판정·검수",
+   "strength": "드묾",
+   "appears_as": "판정·검수 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "콘셉트·방향 설정",
+   "role": "ROLE_GUIDE_V1",
+   "role_name": "가이드·에셋 관리",
+   "strength": "드묾",
+   "appears_as": "가이드·에셋 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "콘셉트·방향 설정",
+   "role": "ROLE_MAKE_V1",
+   "role_name": "제작 실무",
+   "strength": "드묾",
+   "appears_as": "제작 실무 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "콘셉트·방향 설정",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "콘셉트·방향 설정",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "콘셉트·방향 설정",
+   "role": "ROLE_RIGHTS_V1",
+   "role_name": "권리·규정 관리",
+   "strength": "드묾",
+   "appears_as": "권리·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "조형·레이아웃",
+   "role": "ROLE_CONCEPT_V1",
+   "role_name": "기획·콘셉트",
+   "strength": "드묾",
+   "appears_as": "기획·콘셉트 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "조형·레이아웃",
+   "role": "ROLE_REF_V1",
+   "role_name": "조사·레퍼런스",
+   "strength": "드묾",
+   "appears_as": "조사·레퍼런스 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "조형·레이아웃",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "판정·검수",
+   "strength": "드묾",
+   "appears_as": "판정·검수 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "조형·레이아웃",
+   "role": "ROLE_GUIDE_V1",
+   "role_name": "가이드·에셋 관리",
+   "strength": "드묾",
+   "appears_as": "가이드·에셋 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "조형·레이아웃",
+   "role": "ROLE_MAKE_V1",
+   "role_name": "제작 실무",
+   "strength": "중심",
+   "appears_as": "제작 실무 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "조형·레이아웃",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "조형·레이아웃",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "조형·레이아웃",
+   "role": "ROLE_RIGHTS_V1",
+   "role_name": "권리·규정 관리",
+   "strength": "드묾",
+   "appears_as": "권리·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "타이포그래피",
+   "role": "ROLE_CONCEPT_V1",
+   "role_name": "기획·콘셉트",
+   "strength": "드묾",
+   "appears_as": "기획·콘셉트 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "타이포그래피",
+   "role": "ROLE_REF_V1",
+   "role_name": "조사·레퍼런스",
+   "strength": "드묾",
+   "appears_as": "조사·레퍼런스 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "타이포그래피",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "판정·검수",
+   "strength": "중심",
+   "appears_as": "판정·검수 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J7"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "타이포그래피",
+   "role": "ROLE_GUIDE_V1",
+   "role_name": "가이드·에셋 관리",
+   "strength": "중심",
+   "appears_as": "가이드·에셋 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "타이포그래피",
+   "role": "ROLE_MAKE_V1",
+   "role_name": "제작 실무",
+   "strength": "드묾",
+   "appears_as": "제작 실무 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "타이포그래피",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "타이포그래피",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "타이포그래피",
+   "role": "ROLE_RIGHTS_V1",
+   "role_name": "권리·규정 관리",
+   "strength": "드묾",
+   "appears_as": "권리·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "색과 재질",
+   "role": "ROLE_CONCEPT_V1",
+   "role_name": "기획·콘셉트",
+   "strength": "드묾",
+   "appears_as": "기획·콘셉트 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "색과 재질",
+   "role": "ROLE_REF_V1",
+   "role_name": "조사·레퍼런스",
+   "strength": "중심",
+   "appears_as": "조사·레퍼런스 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "색과 재질",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "판정·검수",
+   "strength": "드묾",
+   "appears_as": "판정·검수 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "색과 재질",
+   "role": "ROLE_GUIDE_V1",
+   "role_name": "가이드·에셋 관리",
+   "strength": "중심",
+   "appears_as": "가이드·에셋 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "색과 재질",
+   "role": "ROLE_MAKE_V1",
+   "role_name": "제작 실무",
+   "strength": "드묾",
+   "appears_as": "제작 실무 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "색과 재질",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "색과 재질",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "색과 재질",
+   "role": "ROLE_RIGHTS_V1",
+   "role_name": "권리·규정 관리",
+   "strength": "드묾",
+   "appears_as": "권리·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "캐릭터·세계관 설정",
+   "role": "ROLE_CONCEPT_V1",
+   "role_name": "기획·콘셉트",
+   "strength": "드묾",
+   "appears_as": "기획·콘셉트 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "캐릭터·세계관 설정",
+   "role": "ROLE_REF_V1",
+   "role_name": "조사·레퍼런스",
+   "strength": "드묾",
+   "appears_as": "조사·레퍼런스 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "캐릭터·세계관 설정",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "판정·검수",
+   "strength": "드묾",
+   "appears_as": "판정·검수 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "캐릭터·세계관 설정",
+   "role": "ROLE_GUIDE_V1",
+   "role_name": "가이드·에셋 관리",
+   "strength": "드묾",
+   "appears_as": "가이드·에셋 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "캐릭터·세계관 설정",
+   "role": "ROLE_MAKE_V1",
+   "role_name": "제작 실무",
+   "strength": "중심",
+   "appears_as": "제작 실무 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "캐릭터·세계관 설정",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "캐릭터·세계관 설정",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "캐릭터·세계관 설정",
+   "role": "ROLE_RIGHTS_V1",
+   "role_name": "권리·규정 관리",
+   "strength": "중심",
+   "appears_as": "권리·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "서사·연출·콘티",
+   "role": "ROLE_CONCEPT_V1",
+   "role_name": "기획·콘셉트",
+   "strength": "중심",
+   "appears_as": "기획·콘셉트 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "서사·연출·콘티",
+   "role": "ROLE_REF_V1",
+   "role_name": "조사·레퍼런스",
+   "strength": "드묾",
+   "appears_as": "조사·레퍼런스 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "서사·연출·콘티",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "판정·검수",
+   "strength": "드묾",
+   "appears_as": "판정·검수 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "서사·연출·콘티",
+   "role": "ROLE_GUIDE_V1",
+   "role_name": "가이드·에셋 관리",
+   "strength": "드묾",
+   "appears_as": "가이드·에셋 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "서사·연출·콘티",
+   "role": "ROLE_MAKE_V1",
+   "role_name": "제작 실무",
+   "strength": "드묾",
+   "appears_as": "제작 실무 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "서사·연출·콘티",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "중심",
+   "appears_as": "운영·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "서사·연출·콘티",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "서사·연출·콘티",
+   "role": "ROLE_RIGHTS_V1",
+   "role_name": "권리·규정 관리",
+   "strength": "드묾",
+   "appears_as": "권리·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "동작·애니메이션",
+   "role": "ROLE_CONCEPT_V1",
+   "role_name": "기획·콘셉트",
+   "strength": "드묾",
+   "appears_as": "기획·콘셉트 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "동작·애니메이션",
+   "role": "ROLE_REF_V1",
+   "role_name": "조사·레퍼런스",
+   "strength": "드묾",
+   "appears_as": "조사·레퍼런스 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "동작·애니메이션",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "판정·검수",
+   "strength": "드묾",
+   "appears_as": "판정·검수 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "동작·애니메이션",
+   "role": "ROLE_GUIDE_V1",
+   "role_name": "가이드·에셋 관리",
+   "strength": "드묾",
+   "appears_as": "가이드·에셋 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "동작·애니메이션",
+   "role": "ROLE_MAKE_V1",
+   "role_name": "제작 실무",
+   "strength": "중심",
+   "appears_as": "제작 실무 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "동작·애니메이션",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "동작·애니메이션",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "동작·애니메이션",
+   "role": "ROLE_RIGHTS_V1",
+   "role_name": "권리·규정 관리",
+   "strength": "드묾",
+   "appears_as": "권리·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "제품 형태·사용 설계",
+   "role": "ROLE_CONCEPT_V1",
+   "role_name": "기획·콘셉트",
+   "strength": "드묾",
+   "appears_as": "기획·콘셉트 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "제품 형태·사용 설계",
+   "role": "ROLE_REF_V1",
+   "role_name": "조사·레퍼런스",
+   "strength": "드묾",
+   "appears_as": "조사·레퍼런스 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "제품 형태·사용 설계",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "판정·검수",
+   "strength": "드묾",
+   "appears_as": "판정·검수 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "제품 형태·사용 설계",
+   "role": "ROLE_GUIDE_V1",
+   "role_name": "가이드·에셋 관리",
+   "strength": "드묾",
+   "appears_as": "가이드·에셋 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "제품 형태·사용 설계",
+   "role": "ROLE_MAKE_V1",
+   "role_name": "제작 실무",
+   "strength": "드묾",
+   "appears_as": "제작 실무 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "제품 형태·사용 설계",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "제품 형태·사용 설계",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "중심",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "제품 형태·사용 설계",
+   "role": "ROLE_RIGHTS_V1",
+   "role_name": "권리·규정 관리",
+   "strength": "드묾",
+   "appears_as": "권리·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "제작 사양·양산 검토",
+   "role": "ROLE_CONCEPT_V1",
+   "role_name": "기획·콘셉트",
+   "strength": "드묾",
+   "appears_as": "기획·콘셉트 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "제작 사양·양산 검토",
+   "role": "ROLE_REF_V1",
+   "role_name": "조사·레퍼런스",
+   "strength": "드묾",
+   "appears_as": "조사·레퍼런스 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "제작 사양·양산 검토",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "판정·검수",
+   "strength": "중심",
+   "appears_as": "판정·검수 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J3",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "제작 사양·양산 검토",
+   "role": "ROLE_GUIDE_V1",
+   "role_name": "가이드·에셋 관리",
+   "strength": "드묾",
+   "appears_as": "가이드·에셋 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "제작 사양·양산 검토",
+   "role": "ROLE_MAKE_V1",
+   "role_name": "제작 실무",
+   "strength": "드묾",
+   "appears_as": "제작 실무 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "제작 사양·양산 검토",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "중심",
+   "appears_as": "운영·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "제작 사양·양산 검토",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "제작 사양·양산 검토",
+   "role": "ROLE_RIGHTS_V1",
+   "role_name": "권리·규정 관리",
+   "strength": "중심",
+   "appears_as": "권리·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "사용자 반응·검증",
+   "role": "ROLE_CONCEPT_V1",
+   "role_name": "기획·콘셉트",
+   "strength": "드묾",
+   "appears_as": "기획·콘셉트 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "사용자 반응·검증",
+   "role": "ROLE_REF_V1",
+   "role_name": "조사·레퍼런스",
+   "strength": "중심",
+   "appears_as": "조사·레퍼런스 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "사용자 반응·검증",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "판정·검수",
+   "strength": "드묾",
+   "appears_as": "판정·검수 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "사용자 반응·검증",
+   "role": "ROLE_GUIDE_V1",
+   "role_name": "가이드·에셋 관리",
+   "strength": "드묾",
+   "appears_as": "가이드·에셋 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "사용자 반응·검증",
+   "role": "ROLE_MAKE_V1",
+   "role_name": "제작 실무",
+   "strength": "드묾",
+   "appears_as": "제작 실무 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "사용자 반응·검증",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "사용자 반응·검증",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "중심",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "사용자 반응·검증",
+   "role": "ROLE_RIGHTS_V1",
+   "role_name": "권리·규정 관리",
+   "strength": "드묾",
+   "appears_as": "권리·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "저작권·납품·기록",
+   "role": "ROLE_CONCEPT_V1",
+   "role_name": "기획·콘셉트",
+   "strength": "드묾",
+   "appears_as": "기획·콘셉트 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "저작권·납품·기록",
+   "role": "ROLE_REF_V1",
+   "role_name": "조사·레퍼런스",
+   "strength": "드묾",
+   "appears_as": "조사·레퍼런스 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "저작권·납품·기록",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "판정·검수",
+   "strength": "중심",
+   "appears_as": "판정·검수 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "저작권·납품·기록",
+   "role": "ROLE_GUIDE_V1",
+   "role_name": "가이드·에셋 관리",
+   "strength": "중심",
+   "appears_as": "가이드·에셋 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "저작권·납품·기록",
+   "role": "ROLE_MAKE_V1",
+   "role_name": "제작 실무",
+   "strength": "드묾",
+   "appears_as": "제작 실무 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "저작권·납품·기록",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "중심",
+   "appears_as": "운영·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "저작권·납품·기록",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "저작권·납품·기록",
+   "role": "ROLE_RIGHTS_V1",
+   "role_name": "권리·규정 관리",
+   "strength": "중심",
+   "appears_as": "권리·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J7",
+    "J8"
+   ]
+  }
+ ]
+}

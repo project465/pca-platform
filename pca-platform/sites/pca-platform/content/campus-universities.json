@@ -565,15 +565,17 @@
            "code": "PCU26_ARTWEBTOON_MAIN",
            "name": "아트앤웹툰전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null
+           "core_code": "VISUAL_CORE_V1",
+           "specialization": "SPEC_VISUAL_WEBTOON",
+           "mapping_note": "아트앤웹툰전공이 묻는 판단은 회차 마감 안에서 읽히는 호흡을 만드는 쪽이라 웹툰·만화 갈래로 간다"
           },
           {
            "code": "PCU26_GAMEANIM",
            "name": "게임애니메이션전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null
+           "core_code": "VISUAL_CORE_V1",
+           "specialization": "SPEC_VISUAL_GAMEANIM",
+           "mapping_note": "게임애니메이션전공이 묻는 판단은 돌아가는 범위 안에서 움직이게 하는 쪽이라 게임·애니메이션 갈래로 간다"
           }
          ]
         },
@@ -586,15 +588,17 @@
            "code": "PCU26_DESIGN_COMM",
            "name": "커뮤니케이션디자인전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null
+           "core_code": "VISUAL_CORE_V1",
+           "specialization": "SPEC_VISUAL_COMM",
+           "mapping_note": "커뮤니케이션디자인전공이 묻는 판단은 여러 사람이 같은 규칙으로 만들게 하는 쪽이라 커뮤니케이션디자인 갈래로 간다"
           },
           {
            "code": "PCU26_DESIGN_IND",
            "name": "산업디자인전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null
+           "core_code": "VISUAL_CORE_V1",
+           "specialization": "SPEC_VISUAL_INDUSTRIAL",
+           "mapping_note": "산업디자인전공이 묻는 판단은 만들 수 있는 모양으로 옮기는 쪽이라 산업디자인 갈래로 간다"
           }
          ]
         },
@@ -1167,15 +1171,17 @@
            "code": "PCU27_ARTWEBTOON_MAIN",
            "name": "아트앤웹툰전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null
+           "core_code": "VISUAL_CORE_V1",
+           "specialization": "SPEC_VISUAL_WEBTOON",
+           "mapping_note": "아트앤웹툰전공이 묻는 판단은 회차 마감 안에서 읽히는 호흡을 만드는 쪽이라 웹툰·만화 갈래로 간다"
           },
           {
            "code": "PCU27_GAMEANIM",
            "name": "게임애니메이션전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null
+           "core_code": "VISUAL_CORE_V1",
+           "specialization": "SPEC_VISUAL_GAMEANIM",
+           "mapping_note": "게임애니메이션전공이 묻는 판단은 돌아가는 범위 안에서 움직이게 하는 쪽이라 게임·애니메이션 갈래로 간다"
           }
          ]
         },
@@ -1188,15 +1194,17 @@
            "code": "PCU27_DESIGN_COMM",
            "name": "커뮤니케이션디자인전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null
+           "core_code": "VISUAL_CORE_V1",
+           "specialization": "SPEC_VISUAL_COMM",
+           "mapping_note": "커뮤니케이션디자인전공이 묻는 판단은 여러 사람이 같은 규칙으로 만들게 하는 쪽이라 커뮤니케이션디자인 갈래로 간다"
           },
           {
            "code": "PCU27_DESIGN_IND",
            "name": "산업디자인전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null
+           "core_code": "VISUAL_CORE_V1",
+           "specialization": "SPEC_VISUAL_INDUSTRIAL",
+           "mapping_note": "산업디자인전공이 묻는 판단은 만들 수 있는 모양으로 옮기는 쪽이라 산업디자인 갈래로 간다"
           }
          ]
         },

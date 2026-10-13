@@ -1,0 +1,797 @@
+{
+ "schema_version": "visual-role-packs.1",
+ "core": "VISUAL_CORE_V1",
+ "note": "공고 직무명 단위의 깊이 모듈이다. 새 축을 만들지 않는다: `core_ref` 로 Core 의 기술영역과 역할기능을 가리킨다. 역할기능과 역할팩이 하나씩 맞물린다. `differs_from` 은 이웃 역할과 무엇이 다른지를 한 줄로 적고 결과지가 그 줄을 읽는다. 문항은 역할마다 다른 판단을 묻는다",
+ "caps": {
+  "industry_items_max": 10,
+  "role_items_max": 7,
+  "deep_industry_max": 1,
+  "deep_role_max": 2,
+  "interest_pick_max": 2
+ },
+ "exploration": {
+  "browse": "all",
+  "deep_per_attempt": 1,
+  "add_later": true,
+  "subscription_gate": false,
+  "note": "여덟 역할 전부를 견줄 수 있다. 한 번에 쉰여섯을 묻지 않고 Core 심화가 끝난 뒤에 관심 있는 역할을 둘까지 고르고, 고른 역할을 STANDARD 부터 깊게 확인한다. 고르지 않은 역할은 Core 의 확인된 축으로 견준다. 역할 선택이 Core 판정을 바꾸지 않는다"
+ },
+ "packs": [
+  {
+   "code": "ROLE_CONCEPT_V1",
+   "version": 1,
+   "name_ko": "기획·콘셉트",
+   "name_en": "Concept Direction",
+   "core": "VISUAL_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD02",
+     "TD01",
+     "TD07"
+    ],
+    "rf": [
+     "RF1"
+    ]
+   },
+   "required_axes": [
+    "J1",
+    "J5"
+   ],
+   "owns": "어느 결로 갈지 확정한다",
+   "decides": [
+    "갈 방향",
+    "지킬 것",
+    "버릴 것",
+    "접은 안"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_MAKE_V1",
+     "line": "제작 쪽은 정해진 결로 끝까지 만들고 기획 쪽은 어느 결로 갈지 가른다"
+    },
+    {
+     "vs": "ROLE_REF_V1",
+     "line": "조사 쪽은 무엇이 있는지 모아 답하고 기획 쪽은 그 가운데 갈 쪽을 정한다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_CONCEPT_V1_R1",
+     "axis": "J1",
+     "domain": "TD02",
+     "ask": "갈 방향과 접을 방향을 가를 권한을 가지고 그것을 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_CONCEPT_V1_R2",
+     "axis": "J5",
+     "domain": "TD02",
+     "ask": "다른 사람이 그 방향으로 만들 수 있는 보드 한 벌을 내 이름으로 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_CONCEPT_V1_R3",
+     "axis": "J3",
+     "domain": "TD02",
+     "ask": "고객과 팀의 말이 갈릴 때 어느 쪽으로 갈지 내 판단으로 정해 그대로 굳은 경험이 있다"
+    },
+    {
+     "id": "ROLE_CONCEPT_V1_R4",
+     "axis": "J2",
+     "domain": "TD01",
+     "ask": "고객이 말한 것을 팀이 지킬 조건으로 옮겨 올린 경험이 있다"
+    },
+    {
+     "id": "ROLE_CONCEPT_V1_R5",
+     "axis": "J6",
+     "domain": "TD01",
+     "ask": "세운 방향을 조사 결과와 맞춰 보고 방향을 바꾼 경험이 있다"
+    },
+    {
+     "id": "ROLE_CONCEPT_V1_R6",
+     "axis": "J4",
+     "domain": "TD07",
+     "ask": "보여 줄 흐름과 제안 방식을 고를 권한을 가지고 그것을 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_CONCEPT_V1_R7",
+     "axis": "J8",
+     "domain": "TD02",
+     "ask": "내가 잡은 결이 그 조직의 방향으로 쓰인 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_MAKE_V1",
+    "ROLE_REF_V1",
+    "ROLE_OPS_V1"
+   ],
+   "application_material": [
+    "콘셉트 보드 한 벌",
+    "접은 방향을 가른 근거",
+    "지킬 것과 버릴 것을 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_REF_V1",
+   "version": 1,
+   "name_ko": "조사·레퍼런스",
+   "name_en": "Research and References",
+   "core": "VISUAL_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD01",
+     "TD11",
+     "TD05"
+    ],
+    "rf": [
+     "RF2"
+    ]
+   },
+   "required_axes": [
+    "J2",
+    "J6"
+   ],
+   "owns": "지금 무엇이 있고 무엇이 통하는지 확정한다",
+   "decides": [
+    "볼 범위",
+    "고를 기준",
+    "쓸 방법",
+    "말할 수 없는 것"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_CONCEPT_V1",
+     "line": "기획 쪽은 그 가운데 갈 쪽을 정하고 조사 쪽은 무엇이 있는지 답한다"
+    },
+    {
+     "vs": "ROLE_STUDY_V1",
+     "line": "연구 쪽은 아직 답이 없는 것을 좁히고 조사 쪽은 이미 있는 것을 모아 고른다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_REF_V1_R1",
+     "axis": "J2",
+     "domain": "TD01",
+     "ask": "알고 싶은 것을 물어 확인할 수 있는 항목으로 옮겨 올린 경험이 있다"
+    },
+    {
+     "id": "ROLE_REF_V1_R2",
+     "axis": "J6",
+     "domain": "TD01",
+     "ask": "모은 것을 고를 기준에 맞춰 보고 묶음을 다시 짠 경험이 있다"
+    },
+    {
+     "id": "ROLE_REF_V1_R3",
+     "axis": "J3",
+     "domain": "TD01",
+     "ask": "더 모을지 그만 모을지가 내 판단으로 정해진 경험이 있다"
+    },
+    {
+     "id": "ROLE_REF_V1_R4",
+     "axis": "J5",
+     "domain": "TD11",
+     "ask": "다른 사람이 그대로 읽고 쓸 수 있는 조사 정리 한 벌을 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_REF_V1_R5",
+     "axis": "J4",
+     "domain": "TD11",
+     "ask": "쓸 조사 방법과 물어볼 사람 수를 고를 권한을 가지고 그것을 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_REF_V1_R6",
+     "axis": "J7",
+     "domain": "TD05",
+     "ask": "모은 것이 쓸 만하지 않았을 때 고르는 기준을 바꿔 다시 모은 경험이 있다"
+    },
+    {
+     "id": "ROLE_REF_V1_R7",
+     "axis": "J8",
+     "domain": "TD01",
+     "ask": "내 조사 결과가 과제를 시작할지 말지의 결정에 쓰인 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_CONCEPT_V1",
+    "ROLE_STUDY_V1",
+    "ROLE_REVIEW_V1"
+   ],
+   "application_material": [
+    "조사 정리 한 벌",
+    "고를 기준을 적은 근거",
+    "말할 수 없는 것을 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_REVIEW_V1",
+   "version": 1,
+   "name_ko": "판정·검수",
+   "name_en": "Review and Approval",
+   "core": "VISUAL_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD10",
+     "TD12",
+     "TD04"
+    ],
+    "rf": [
+     "RF3"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "owns": "내보낼 수 있는지를 확정한다",
+   "decides": [
+    "볼 범위",
+    "가를 선",
+    "돌려보낼 조건",
+    "넘길 범위"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_MAKE_V1",
+     "line": "제작 쪽은 끝까지 만들고 검수 쪽은 그 한 벌이 나갈 수 있는지 내 이름으로 가른다"
+    },
+    {
+     "vs": "ROLE_GUIDE_V1",
+     "line": "가이드 쪽은 같게 나오도록 규칙을 세우고 검수 쪽은 이번 한 벌을 가른다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_REVIEW_V1_R1",
+     "axis": "J3",
+     "domain": "TD10",
+     "ask": "내보낼지 돌려보낼지를 내 이름으로 가를 자리에 있어 그것을 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_REVIEW_V1_R2",
+     "axis": "J6",
+     "domain": "TD10",
+     "ask": "나온 것을 사양과 가이드에 맞춰 보고 판정을 바꾼 경험이 있다"
+    },
+    {
+     "id": "ROLE_REVIEW_V1_R3",
+     "axis": "J1",
+     "domain": "TD10",
+     "ask": "어디까지 볼지 가를 권한을 가지고 그 범위를 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_REVIEW_V1_R4",
+     "axis": "J5",
+     "domain": "TD12",
+     "ask": "본 범위와 판정 근거가 적힌 검수 의견 한 벌을 내 이름으로 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_REVIEW_V1_R5",
+     "axis": "J2",
+     "domain": "TD12",
+     "ask": "요구된 기준을 검수에서 확인할 항목으로 옮겨 올린 경험이 있다"
+    },
+    {
+     "id": "ROLE_REVIEW_V1_R6",
+     "axis": "J7",
+     "domain": "TD04",
+     "ask": "나간 뒤에 문제가 된 건을 두고 어느 선이 느슨했는지 좁혀 기준을 고친 경험이 있다"
+    },
+    {
+     "id": "ROLE_REVIEW_V1_R7",
+     "axis": "J8",
+     "domain": "TD10",
+     "ask": "내가 세운 검수 항목이 그 조직의 기본 절차가 된 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_MAKE_V1",
+    "ROLE_GUIDE_V1",
+    "ROLE_RIGHTS_V1"
+   ],
+   "application_material": [
+    "검수 의견 한 벌",
+    "가를 선을 세운 근거",
+    "돌려보낸 건을 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_GUIDE_V1",
+   "version": 1,
+   "name_ko": "가이드·에셋 관리",
+   "name_en": "Guidelines and Assets",
+   "core": "VISUAL_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD12",
+     "TD04",
+     "TD05"
+    ],
+    "rf": [
+     "RF4"
+    ]
+   },
+   "required_axes": [
+    "J4",
+    "J5"
+   ],
+   "owns": "되풀이해 같은 것이 나오게 하는 것을 확정한다",
+   "decides": [
+    "쓸 규칙",
+    "파일 이름과 판본",
+    "고칠 수 있는 범위",
+    "되돌릴 길"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_CONCEPT_V1",
+     "line": "기획 쪽은 어느 결로 갈지 가르고 가이드 쪽은 그 결이 같게 나오게 한다"
+    },
+    {
+     "vs": "ROLE_REVIEW_V1",
+     "line": "검수 쪽은 한 벌을 가르고 가이드 쪽은 그 가름이 다음에도 같게 되도록 규칙을 세운다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_GUIDE_V1_R1",
+     "axis": "J4",
+     "domain": "TD12",
+     "ask": "쓸 파일 규칙과 판본 올리는 방식을 고를 권한을 가지고 그것을 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_GUIDE_V1_R2",
+     "axis": "J5",
+     "domain": "TD12",
+     "ask": "그 조직이 쓸 가이드 한 벌을 내 이름으로 확정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_GUIDE_V1_R3",
+     "axis": "J6",
+     "domain": "TD04",
+     "ask": "쌓인 작업물을 가이드에 맞춰 보고 어긋난 자리를 가른 경험이 있다"
+    },
+    {
+     "id": "ROLE_GUIDE_V1_R4",
+     "axis": "J2",
+     "domain": "TD04",
+     "ask": "지킬 글자와 자리의 규칙을 가이드의 조항으로 옮겨 올린 경험이 있다"
+    },
+    {
+     "id": "ROLE_GUIDE_V1_R5",
+     "axis": "J7",
+     "domain": "TD05",
+     "ask": "규칙이 지켜지지 않은 뒤 어느 조항이 어려웠는지 좁혀 가이드를 고친 경험이 있다"
+    },
+    {
+     "id": "ROLE_GUIDE_V1_R6",
+     "axis": "J3",
+     "domain": "TD05",
+     "ask": "현장에서 규칙을 풀어 달라고 할 때 어디까지 풀지 내 판단으로 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_GUIDE_V1_R7",
+     "axis": "J8",
+     "domain": "TD12",
+     "ask": "내가 정한 규칙이 그 조직의 기본 양식이 된 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_CONCEPT_V1",
+    "ROLE_REVIEW_V1",
+    "ROLE_MAKE_V1"
+   ],
+   "application_material": [
+    "가이드 한 벌",
+    "파일 규칙과 판본 기록",
+    "어긋난 자리를 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_MAKE_V1",
+   "version": 1,
+   "name_ko": "제작 실무",
+   "name_en": "Hands-on Production",
+   "core": "VISUAL_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD03",
+     "TD08",
+     "TD06"
+    ],
+    "rf": [
+     "RF5"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J7"
+   ],
+   "owns": "이번 한 벌을 끝까지 만드는 것을 확정한다",
+   "decides": [
+    "그날 할 작업",
+    "미룰 작업",
+    "줄일 범위",
+    "멈출 때"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_OPS_V1",
+     "line": "조정 쪽은 들어오는 순서를 바꾸고 제작 쪽은 그 자리에서 손을 움직이게 한다"
+    },
+    {
+     "vs": "ROLE_REVIEW_V1",
+     "line": "검수 쪽은 나갈 수 있는지 가르고 제작 쪽은 마감까지 끝낸다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_MAKE_V1_R1",
+     "axis": "J3",
+     "domain": "TD03",
+     "ask": "마감이 모자란 날 어느 범위를 줄일지 내 이름으로 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_MAKE_V1_R2",
+     "axis": "J7",
+     "domain": "TD03",
+     "ask": "안 나온다는 말이 나온 뒤 내가 바꾼 방식이 그대로 쓰인 경험이 있다"
+    },
+    {
+     "id": "ROLE_MAKE_V1_R3",
+     "axis": "J5",
+     "domain": "TD03",
+     "ask": "다른 사람이 이어 받을 수 있게 작업 파일과 수정 이력을 남긴 경험이 있다"
+    },
+    {
+     "id": "ROLE_MAKE_V1_R4",
+     "axis": "J4",
+     "domain": "TD08",
+     "ask": "쓸 도구와 제작 방식을 고를 권한을 가지고 그것을 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_MAKE_V1_R5",
+     "axis": "J6",
+     "domain": "TD08",
+     "ask": "만든 것을 가이드나 사양과 맞춰 보고 다시 만든 경험이 있다"
+    },
+    {
+     "id": "ROLE_MAKE_V1_R6",
+     "axis": "J1",
+     "domain": "TD06",
+     "ask": "이번에 만들 범위를 가를 권한을 가지고 그것을 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_MAKE_V1_R7",
+     "axis": "J8",
+     "domain": "TD03",
+     "ask": "내가 만든 한 벌이 그 조직의 기준 결과물이 된 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_OPS_V1",
+    "ROLE_REVIEW_V1",
+    "ROLE_GUIDE_V1"
+   ],
+   "application_material": [
+    "작업 파일과 수정 이력",
+    "줄인 범위를 가른 근거",
+    "바꾼 방식을 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_OPS_V1",
+   "version": 1,
+   "name_ko": "운영·조정",
+   "name_en": "Coordination and Scheduling",
+   "core": "VISUAL_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD07",
+     "TD10",
+     "TD12"
+    ],
+    "rf": [
+     "RF6"
+    ]
+   },
+   "required_axes": [
+    "J2",
+    "J6"
+   ],
+   "owns": "여러 사람의 결정을 하나로 묶는 것을 확정한다",
+   "decides": [
+    "작업 차례",
+    "피드백 처리",
+    "끊을 자리",
+    "맡길 범위"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_MAKE_V1",
+     "line": "제작 쪽은 그 자리에서 손을 움직이게 하고 조정 쪽은 들어오는 순서를 바꾼다"
+    },
+    {
+     "vs": "ROLE_CONCEPT_V1",
+     "line": "기획 쪽은 어느 결로 갈지 가르고 조정 쪽은 그것이 기한 안에 들어오게 한다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_OPS_V1_R1",
+     "axis": "J2",
+     "domain": "TD07",
+     "ask": "남은 기한과 손을 확인할 수 있는 항목으로 옮겨 올린 경험이 있다"
+    },
+    {
+     "id": "ROLE_OPS_V1_R2",
+     "axis": "J6",
+     "domain": "TD07",
+     "ask": "짠 일정을 실제로 들어온 날짜와 맞춰 보고 다음 묶음을 고친 경험이 있다"
+    },
+    {
+     "id": "ROLE_OPS_V1_R3",
+     "axis": "J3",
+     "domain": "TD10",
+     "ask": "피드백이 서로 어긋날 때 어느 쪽을 반영할지 내 이름으로 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_OPS_V1_R4",
+     "axis": "J5",
+     "domain": "TD10",
+     "ask": "누가 언제 무엇을 하는지 적힌 일정표 한 벌을 내 이름으로 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_OPS_V1_R5",
+     "axis": "J1",
+     "domain": "TD12",
+     "ask": "내가 끝까지 맡을 범위와 외주에 맡길 범위를 가를 권한을 가지고 그것을 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_OPS_V1_R6",
+     "axis": "J7",
+     "domain": "TD12",
+     "ask": "기한을 넘긴 뒤 어느 자리에서 끊겼는지 좁혀 다음 차례를 바꾼 경험이 있다"
+    },
+    {
+     "id": "ROLE_OPS_V1_R7",
+     "axis": "J8",
+     "domain": "TD07",
+     "ask": "내가 짠 일정 방식이 그 조직의 기본 진행이 된 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_MAKE_V1",
+    "ROLE_CONCEPT_V1",
+    "ROLE_RIGHTS_V1"
+   ],
+   "application_material": [
+    "일정표 한 벌",
+    "맡길 범위를 가른 근거",
+    "끊긴 자리를 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_STUDY_V1",
+   "version": 1,
+   "name_ko": "조사·연구",
+   "name_en": "Applied Research",
+   "core": "VISUAL_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD11",
+     "TD09",
+     "TD01"
+    ],
+    "rf": [
+     "RF7"
+    ]
+   },
+   "required_axes": [
+    "J1",
+    "J6"
+   ],
+   "owns": "아직 답이 없는 것을 좁히는 것을 확정한다",
+   "decides": [
+    "좁힐 물음",
+    "쓸 설계",
+    "볼 지표",
+    "말할 수 없는 것"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_REF_V1",
+     "line": "조사 쪽은 이미 있는 것을 모아 고르고 연구 쪽은 아직 답이 없는 것을 좁힌다"
+    },
+    {
+     "vs": "ROLE_CONCEPT_V1",
+     "line": "기획 쪽은 이번 안을 정하고 연구 쪽은 다음 안에 쓸 근거를 만든다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_STUDY_V1_R1",
+     "axis": "J1",
+     "domain": "TD11",
+     "ask": "다룰 물음의 범위를 가를 권한을 가지고 그것을 좁혀 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_STUDY_V1_R2",
+     "axis": "J6",
+     "domain": "TD11",
+     "ask": "낸 결과를 다른 방법으로 얻은 값과 맞춰 보고 보고 내용을 바꾼 경험이 있다"
+    },
+    {
+     "id": "ROLE_STUDY_V1_R3",
+     "axis": "J4",
+     "domain": "TD09",
+     "ask": "쓸 시험 설계와 되풀이 횟수를 고를 권한을 가지고 그것을 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_STUDY_V1_R4",
+     "axis": "J5",
+     "domain": "TD09",
+     "ask": "남이 그대로 다시 해 볼 수 있는 시험 기록 한 벌을 내 이름으로 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_STUDY_V1_R5",
+     "axis": "J2",
+     "domain": "TD01",
+     "ask": "현장의 물음을 잴 수 있는 지표로 옮겨 올린 경험이 있다"
+    },
+    {
+     "id": "ROLE_STUDY_V1_R6",
+     "axis": "J7",
+     "domain": "TD01",
+     "ask": "결과가 가정과 어긋난 뒤 내 방법의 어디까지가 통하는지 적어 둔 경험이 있다"
+    },
+    {
+     "id": "ROLE_STUDY_V1_R7",
+     "axis": "J8",
+     "domain": "TD11",
+     "ask": "내 결과가 그 조직의 가이드나 기준으로 간 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_REF_V1",
+    "ROLE_CONCEPT_V1",
+    "ROLE_GUIDE_V1"
+   ],
+   "application_material": [
+    "시험 기록 한 벌",
+    "설계를 고른 근거",
+    "통하지 않는 범위를 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_RIGHTS_V1",
+   "version": 1,
+   "name_ko": "권리·규정 관리",
+   "name_en": "Rights and Compliance",
+   "core": "VISUAL_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD12",
+     "TD10",
+     "TD06"
+    ],
+    "rf": [
+     "RF8"
+    ]
+   },
+   "required_axes": [
+    "J5",
+    "J7"
+   ],
+   "owns": "쓸 수 있는 범위가 내내 지켜지게 하는 것을 확정한다",
+   "decides": [
+    "먼저 확인할 자리",
+    "지킬 절차",
+    "쓸 수 없는 것",
+    "알릴 범위"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_OPS_V1",
+     "line": "조정 쪽은 기한 안에 들어오게 하고 권리 쪽은 그래도 지킬 선을 세운다"
+    },
+    {
+     "vs": "ROLE_REVIEW_V1",
+     "line": "검수 쪽은 한 벌이 기준에 맞는지 보고 권리 쪽은 그 소재를 쓸 수 있는지 본다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_RIGHTS_V1_R1",
+     "axis": "J5",
+     "domain": "TD12",
+     "ask": "이 조직에서 지킬 권리 확인 절차와 주기를 내 이름으로 확정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_RIGHTS_V1_R2",
+     "axis": "J7",
+     "domain": "TD12",
+     "ask": "분쟁이 생긴 뒤 겹친 조건을 되짚어 그 조직의 절차가 바뀐 경험이 있다"
+    },
+    {
+     "id": "ROLE_RIGHTS_V1_R3",
+     "axis": "J3",
+     "domain": "TD12",
+     "ask": "쓰면 빨라지는데 권리가 걸리는 자리에서 어느 쪽을 택할지 내 판단으로 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_RIGHTS_V1_R4",
+     "axis": "J6",
+     "domain": "TD10",
+     "ask": "우리 확인 결과를 라이선스의 문면에 맞춰 보고 먼저 바꿀 것을 가른 경험이 있다"
+    },
+    {
+     "id": "ROLE_RIGHTS_V1_R5",
+     "axis": "J1",
+     "domain": "TD10",
+     "ask": "어디를 먼저 확인할지 가를 권한을 가지고 그것을 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_RIGHTS_V1_R6",
+     "axis": "J2",
+     "domain": "TD06",
+     "ask": "작업자에게 알릴 권리 내용을 작업에서 확인할 항목으로 옮긴 경험이 있다"
+    },
+    {
+     "id": "ROLE_RIGHTS_V1_R7",
+     "axis": "J8",
+     "domain": "TD12",
+     "ask": "내가 세운 확인 절차가 그 조직의 다른 과제에도 같이 쓰이게 된 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_OPS_V1",
+    "ROLE_REVIEW_V1",
+    "ROLE_GUIDE_V1"
+   ],
+   "application_material": [
+    "확인 절차 한 벌",
+    "지킬 선을 세운 근거",
+    "바꾼 소재를 적은 한 장"
+   ]
+  }
+ ]
+}

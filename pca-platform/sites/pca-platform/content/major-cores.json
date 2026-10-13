@@ -3895,6 +3895,321 @@
     }
    ],
    "specializations_note": "둘이다. 원예산림학과는 기르고 거두고 숲을 재는 쪽이고 조경학과는 사람이 쓰는 공간을 심어 만들고 지키는 쪽이라 따로 둔다. **쓰이지 않는 갈래를 미리 적어 두지 않는다**: 종묘 갈래와 스마트팜 갈래는 그 자리를 가리키는 학과나 트랙이 생기는 날 그 전공을 아는 분이 쓴다"
+  },
+  {
+   "code": "VISUAL_CORE_V1",
+   "family": "STEM",
+   "major": "VISUAL",
+   "name_ko": "시각·디자인",
+   "name_en": "Visual Communication and Design",
+   "assessment_version": "VISUAL_V1",
+   "status": "building",
+   "maturity": "FOUNDATION",
+   "aliases": [
+    "시각디자인학과",
+    "커뮤니케이션디자인학과",
+    "산업디자인학과",
+    "웹툰학과",
+    "만화애니메이션학과",
+    "게임애니메이션학과",
+    "디자인학부",
+    "제품디자인학과",
+    "영상애니메이션학과",
+    "일러스트레이션학과"
+   ],
+   "markets": [
+    "KR"
+   ],
+   "files": {
+    "taxonomy": "visual-v1-taxonomy.json",
+    "domains": "visual-v1-domains.json",
+    "checklists": "visual-v1-checklists.json",
+    "items_blueprint": "visual-v1-items-blueprint.json",
+    "checklist_additions": "visual-v1-checklist-additions.json",
+    "common_additions": "visual-v1-common-additions.json",
+    "items": "visual-v1-items.json",
+    "relations": "visual-v1-relations.json",
+    "constructs": "visual-v1-constructs.json"
+   },
+   "domain_count": 12,
+   "axis_count": 8,
+   "family_note": "`STEM` 으로 둔 까닭. 짓고 보니 열두 영역의 절반이 **만들어질 수 있게 하는 판단**이다: 제작 사양과 양산 검토와 제품 치수와 동작의 용량과 색의 보정이 그렇다. 그래서 `ARCH_CORE_V1` 과 같은 자리에 둔다. **처음에는 `OTHER_INTERDISCIPLINARY` 로 적었는데 그 계열은 어느 시장에도 서지 않는다**(`markets.json` 이 KR 에 STEM 과 인문·사회와 경상만 연다). 시장 정책을 Core 하나의 사정으로 넓히지 않았다: 넓히면 다음 Core 가 그 넓어진 줄을 물려받는다. **광고 기획과 콘텐츠 운영은 이 Core 에 두지 않았다**: 매체와 집행과 반응을 묻는 판단은 `MEDIA_CORE_V1` 이 들고, 입는 것과 꾸미는 것은 `STYLE_CORE_V1` 이 든다",
+   "aliases_note": "`실내건축학과` 와 `건축학과` 는 넣지 않았다: 그 이름들이 묻는 판단은 치수와 조문으로 지을 수 있게 하는 쪽이라 `ARCH_CORE_V1` 이 들고 있다. `게임공학전공` 도 넣지 않았다 — 그쪽은 구현과 자료구조를 묻고 `CS_CORE_V1` 이 든다. **한 학과 이름이 두 Core 로 갈리면 그 학과 학생이 어느 자로 재어졌는지 아무도 모른다**",
+   "role_function_count": 8,
+   "packs": {
+    "industry": "visual-industry-packs.json",
+    "role": "visual-role-packs.json"
+   },
+   "domains_note": "열둘은 앞 Core 들의 열둘을 맞춘 수가 아니다. 시각·디자인계열이 실제로 내리는 판단을 세어 과제 정의와 콘셉트와 조형과 타이포그래피와 색과 캐릭터·세계관과 서사·연출과 동작과 제품 형태와 제작 사양과 사용자 반응과 권리·납품까지 열둘이다. **과제 정의와 콘셉트를 나눈 까닭**은 앞엣것이 무엇이 문제이고 누구를 위한 것인지 가르는 일이고 뒤엣것이 그 문제를 어느 결로 풀지 가르는 일이어서다. 조형과 타이포그래피도 나눴다: 앞엣것은 덩어리와 자리와 여백을, 뒤엣것은 글자가 읽히는 크기와 흐름을 가른다. **`그림을 잘 그린다` 는 영역으로 두지 않았다**: 그것은 응시자 자신의 손이고 이 Core 가 재는 것은 무엇을 어떤 근거로 정했는가다",
+   "packs_note": "산업팩은 여덟이고 시각·디자인계열이 실제로 서는 자리로 갈랐다. **`디자인` 을 산업으로 두지 않는다**: 그것은 하는 일의 이름이지 서는 자리가 아니고, 같은 그림을 놓고 웹툰과 게임과 브랜드와 제품이 서로 다른 판단을 묻는다. 웹툰과 게임 아트를 따로 둔 까닭은 앞엣것은 한 주를 밀면 그 주의 독자가 빠진다가, 뒤엣것은 돌아가지 않으면 예쁜 것이 뜻이 없다가 기준을 정하기 때문이다",
+   "measurement_note": "**그림 솜씨와 감각을 재지 않는다.** 묻는 것은 `그림 그리는 것이 좋다` 나 `감각이 좋다` 가 아니라 **무엇을 어떤 근거로 정했고 그것이 어디까지 갔는가**다. 짝 표가 선호 문항에 소유 사다리 넷을 붙이는 길을 막고 있고, 문항마다 primary construct 를 적어 두어 추론으로 지나갈 수 없다. **포트폴리오의 잘 그린 정도를 묻지도 않는다**: 그것은 사람이 보는 일이고 이 검사가 내놓는 것은 확인된 판단이다",
+   "open_to_students": false,
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다",
+   "fixtures": {
+    "personas": "sites/pca-platform/assessment/VISUAL_V1/personas.json",
+    "bank_lock": "sites/pca-platform/assessment/VISUAL_V1/bank-lock.json",
+    "measurement_map": "docs/metri/VISUAL_CORE_V1_MEASURE.md",
+    "gaming_doc": "docs/metri/VISUAL_CORE_V1_GAMING.md"
+   },
+   "specializations": [
+    {
+     "code": "SPEC_VISUAL_WEBTOON",
+     "name_ko": "웹툰·만화",
+     "note": "회차 마감 안에서 읽히는 호흡을 만드는 쪽",
+     "authored": true,
+     "domain_emphasis": {
+      "lead": [
+       "TD07",
+       "TD06",
+       "TD05"
+      ],
+      "support": [
+       "TD03",
+       "TD04",
+       "TD12"
+      ],
+      "rare": [
+       "TD09",
+       "TD10",
+       "TD11"
+      ],
+      "note": "설명하는 차례만 정한다. 축 수준과 묶음 조건과 확인된 축 개수에 들어가지 않는다"
+     },
+     "industry_mapping": {
+      "lead": [
+       "INDUSTRY_WEBTOON_V1",
+       "INDUSTRY_ANIM_V1",
+       "INDUSTRY_GAMEART_V1"
+      ],
+      "support": [
+       "INDUSTRY_EDITORIAL_V1",
+       "INDUSTRY_BRANDING_V1"
+      ]
+     },
+     "role_mapping": {
+      "lead": [
+       "ROLE_MAKE_V1",
+       "ROLE_CONCEPT_V1",
+       "ROLE_OPS_V1"
+      ],
+      "support": [
+       "ROLE_RIGHTS_V1",
+       "ROLE_REVIEW_V1"
+      ]
+     },
+     "examples": {
+      "scene": [
+       "다음 회차를 기다리게 하려고 어디서 끊을지 정한다",
+       "인물이 수백 컷에서 같아 보이게 설정을 적어 둔다",
+       "늘어진다는 말이 나온 회차에서 장면 수와 컷 크기를 갈라 본다"
+      ],
+      "artifacts": [
+       "콘티",
+       "설정집과 삼면도",
+       "회차 구성표",
+       "대사 글자 규칙"
+      ]
+     },
+     "evidence_action": {
+      "first": "맡았던 한 회차의 콘티와 컷을 끊은 근거를 한 장으로 남긴다",
+      "next": "그 한 장을 원고의 흐름이나 지난 회차의 반응에 대어 보고 벌어진 만큼의 까닭을 적어 둔다",
+      "note": "할 일의 재료는 그 영역의 `verify_targets` 와 `artifacts` 에서 가져온다. 여기서 새 재료를 지어내지 않는다"
+     }
+    },
+    {
+     "code": "SPEC_VISUAL_GAMEANIM",
+     "name_ko": "게임·애니메이션",
+     "note": "돌아가는 범위 안에서 움직이게 하는 쪽",
+     "authored": true,
+     "domain_emphasis": {
+      "lead": [
+       "TD08",
+       "TD06",
+       "TD07"
+      ],
+      "support": [
+       "TD05",
+       "TD03",
+       "TD10"
+      ],
+      "rare": [
+       "TD01",
+       "TD09",
+       "TD12"
+      ],
+      "note": "설명하는 차례만 정한다. 축 수준과 묶음 조건과 확인된 축 개수에 들어가지 않는다"
+     },
+     "industry_mapping": {
+      "lead": [
+       "INDUSTRY_GAMEART_V1",
+       "INDUSTRY_ANIM_V1",
+       "INDUSTRY_WEBTOON_V1"
+      ],
+      "support": [
+       "INDUSTRY_UIUX_V1",
+       "INDUSTRY_EXHIBIT_V1"
+      ]
+     },
+     "role_mapping": {
+      "lead": [
+       "ROLE_MAKE_V1",
+       "ROLE_GUIDE_V1",
+       "ROLE_CONCEPT_V1"
+      ],
+      "support": [
+       "ROLE_OPS_V1",
+       "ROLE_REVIEW_V1"
+      ]
+     },
+     "examples": {
+      "scene": [
+       "돌아갈 기기의 용량을 만들 장수와 해상도로 옮긴다",
+       "느려진 자리에서 장수와 해상도와 효과를 갈라 본다",
+       "여러 사람이 같은 인물을 그릴 수 있게 설정을 묶는다"
+      ],
+      "artifacts": [
+       "동작 파일",
+       "타이밍을 적은 한 장",
+       "설정 자료 묶음",
+       "성능 확인 기록"
+      ]
+     },
+     "evidence_action": {
+      "first": "맡았던 한 동작의 타이밍과 쓴 장수의 근거를 한 장으로 남긴다",
+      "next": "그 한 장을 참고 영상의 속도나 실제 기기의 성능에 대어 보고 벌어진 만큼의 까닭을 적어 둔다",
+      "note": "할 일의 재료는 그 영역의 `verify_targets` 와 `artifacts` 에서 가져온다. 여기서 새 재료를 지어내지 않는다"
+     }
+    },
+    {
+     "code": "SPEC_VISUAL_COMM",
+     "name_ko": "커뮤니케이션디자인",
+     "note": "여러 사람이 같은 규칙으로 만들게 하는 쪽",
+     "authored": true,
+     "domain_emphasis": {
+      "lead": [
+       "TD03",
+       "TD04",
+       "TD02"
+      ],
+      "support": [
+       "TD05",
+       "TD01",
+       "TD12"
+      ],
+      "rare": [
+       "TD08",
+       "TD09",
+       "TD10"
+      ],
+      "note": "설명하는 차례만 정한다. 축 수준과 묶음 조건과 확인된 축 개수에 들어가지 않는다"
+     },
+     "industry_mapping": {
+      "lead": [
+       "INDUSTRY_BRANDING_V1",
+       "INDUSTRY_EDITORIAL_V1",
+       "INDUSTRY_UIUX_V1"
+      ],
+      "support": [
+       "INDUSTRY_EXHIBIT_V1",
+       "INDUSTRY_WEBTOON_V1"
+      ]
+     },
+     "role_mapping": {
+      "lead": [
+       "ROLE_CONCEPT_V1",
+       "ROLE_GUIDE_V1",
+       "ROLE_REVIEW_V1"
+      ],
+      "support": [
+       "ROLE_REF_V1",
+       "ROLE_MAKE_V1"
+      ]
+     },
+     "examples": {
+      "scene": [
+       "무엇을 가장 먼저 읽히게 할지 정한다",
+       "여러 사람이 같게 쓸 수 있게 글자와 색의 규칙을 묶는다",
+       "작은 자리에서의 대비 기준에 대어 보고 명도를 고친다"
+      ],
+      "artifacts": [
+       "레이아웃 시안",
+       "글꼴과 크기를 적은 한 장",
+       "가이드 한 벌",
+       "색 묶음"
+      ]
+     },
+     "evidence_action": {
+      "first": "맡았던 한 벌의 레이아웃과 읽히는 차례를 정한 근거를 한 장으로 남긴다",
+      "next": "그 한 장을 지킬 가이드나 읽기 기준에 대어 보고 벌어진 만큼의 까닭을 적어 둔다",
+      "note": "할 일의 재료는 그 영역의 `verify_targets` 와 `artifacts` 에서 가져온다. 여기서 새 재료를 지어내지 않는다"
+     }
+    },
+    {
+     "code": "SPEC_VISUAL_INDUSTRIAL",
+     "name_ko": "산업디자인",
+     "note": "만들 수 있는 모양으로 옮기는 쪽",
+     "authored": true,
+     "domain_emphasis": {
+      "lead": [
+       "TD09",
+       "TD10",
+       "TD05"
+      ],
+      "support": [
+       "TD02",
+       "TD11",
+       "TD03"
+      ],
+      "rare": [
+       "TD06",
+       "TD07",
+       "TD08"
+      ],
+      "note": "설명하는 차례만 정한다. 축 수준과 묶음 조건과 확인된 축 개수에 들어가지 않는다"
+     },
+     "industry_mapping": {
+      "lead": [
+       "INDUSTRY_PRODUCT_V1",
+       "INDUSTRY_BRANDING_V1",
+       "INDUSTRY_EXHIBIT_V1"
+      ],
+      "support": [
+       "INDUSTRY_UIUX_V1",
+       "INDUSTRY_EDITORIAL_V1"
+      ]
+     },
+     "role_mapping": {
+      "lead": [
+       "ROLE_CONCEPT_V1",
+       "ROLE_REVIEW_V1",
+       "ROLE_STUDY_V1"
+      ],
+      "support": [
+       "ROLE_MAKE_V1",
+       "ROLE_OPS_V1"
+      ]
+     },
+     "examples": {
+      "scene": [
+       "쓸 사람의 손과 쓰는 자리를 쥐는 치수로 옮긴다",
+       "만든 목업을 쥐어 보고 잡은 치수와 나란히 놓는다",
+       "적은 사양을 공장이 할 수 있는 범위와 맞춰 본다"
+      ],
+      "artifacts": [
+       "형태 모델",
+       "치수를 적은 한 장",
+       "제작 사양서",
+       "목업과 수정 기록"
+      ]
+     },
+     "evidence_action": {
+      "first": "맡았던 한 제품의 주요 치수와 그것을 정한 근거를 한 장으로 남긴다",
+      "next": "그 한 장을 인체 치수 자료나 공장이 할 수 있는 범위에 대어 보고 벌어진 만큼의 까닭을 적어 둔다",
+      "note": "할 일의 재료는 그 영역의 `verify_targets` 와 `artifacts` 에서 가져온다. 여기서 새 재료를 지어내지 않는다"
+     }
+    }
+   ],
+   "specializations_note": "넷이다. 웹툰·만화는 회차 마감 안에서 읽히는 호흡을 만드는 쪽이고 게임·애니메이션은 돌아가는 범위 안에서 움직이게 하는 쪽이며 커뮤니케이션디자인은 여러 사람이 같은 규칙으로 만들게 하는 쪽이고 산업디자인은 만들 수 있는 모양으로 옮기는 쪽이라 넷으로 둔다. **쓰이지 않는 갈래를 미리 적어 두지 않는다**: 전시·공간 갈래와 디지털 제품 갈래는 그 자리를 가리키는 학과나 트랙이 생기는 날 그 전공을 아는 분이 쓴다"
   }
  ],
  "maturity_levels": {
