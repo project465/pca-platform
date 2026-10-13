@@ -91,6 +91,42 @@ export function assertPreviewServer(core: string): void {
     + "  로 다시 띄우십시오. **등록부는 건드리지 않습니다.**");
 }
 
+/**
+ * **떠 있는 서버가 확인용 학교 fixture 를 읽고 있는가.**
+ *
+ * 밟아 보는 검사에는 `검사 가능` 인 자리가 하나 있어야 한다. 전에는
+ * `campus-universities.json` 자체를 쓰고 끝에서 `.walkbak` 으로 되돌렸는데,
+ * 가운데서 터지면 확인용 학교가 등록부에 남아 **다음 커밋에 손님 자료로
+ * 섞인다.**
+ *
+ * 지금은 그 학교가 `scripts/fixtures/` 에 있고 `V3_CAMPUS_FIXTURE` 를 들고
+ * 띄운 서버만 읽는다. 그 값은 **서버의** 환경이라 여기서 직접 읽을 수
+ * 없으므로 띄우는 쪽이 `var/.serving-campus-fixture` 에 적어 둔 것을 읽고,
+ * 그 파일이 가리키는 JSON 에 그 학교가 있는지까지 본다.
+ */
+export function assertCampusFixtureServer(code: string): void {
+  const read = (f: string) => {
+    try { return readFileSync(resolve(process.cwd(), f), "utf8").trim(); }
+    catch { return ""; }
+  };
+  const path = read("var/.serving-campus-fixture");
+  const has = (() => {
+    if (!path) return false;
+    try {
+      const j = JSON.parse(read(path) || "{}") as
+        { universities?: { university_code?: string }[] };
+      return (j.universities ?? []).some((u) => u.university_code === code);
+    } catch { return false; }
+  })();
+  if (has) return;
+  throw new Error(
+    `떠 있는 서버가 확인용 학교 ${code} 를 읽지 않았습니다`
+    + `${path ? ` (지금: ${path})` : " (지금: 없음)"}.\n`
+    + "  V3_CAMPUS_FIXTURE=scripts/fixtures/campus-zztest.json"
+    + " bash scripts/stage-serve.sh <포트>\n"
+    + "  로 다시 띄우십시오. **등록부는 건드리지 않습니다.**");
+}
+
 /** 공개 전 배포본의 자물쇠. **우리도 그 문을 지난다** */
 export function gateCreds(): { username: string; password: string } | null {
   const g = process.env.STAGING_BASIC_AUTH || "";

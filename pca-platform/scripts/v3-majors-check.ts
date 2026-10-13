@@ -11,6 +11,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import {
   coresForMarket, previewOpenCores, sellableCores,
 } from "../src/lib/me-v3/core-registry";
+import { campusFixturePath } from "../src/lib/campus/registry";
 
 let fail = 0, pass = 0;
 function ok(n: string, good: boolean, d = ""): void {
@@ -171,6 +172,8 @@ function main(): void {
    * 지우라고 요구하게 된다.
    */
   console.log("\n── 검사가 등록부를 쓰지 않는가\n");
+  /* 학교 등록부도 같은 자리다: 확인용 학교를 거기 쓰고 되돌리던 자리가
+     있었고, 가운데서 터지면 그 학교가 다음 커밋에 손님 자료로 섞인다 */
   {
     const strip = (t: string) => t
       .replace(/\/\*[\s\S]*?\*\//g, "")
@@ -193,7 +196,7 @@ function main(): void {
       const sandboxed = /mkdtempSync/.test(src);
       for (const line of src.split("\n")) {
         /* 등록부 파일 이름과 쓰는 낱말이 같은 줄에 있으면 쓰는 줄이다 */
-        if (!/major-cores\.json/.test(line)) continue;
+        if (!/major-cores\.json|campus-universities\.json/.test(line)) continue;
         if (!/writeFileSync|appendFileSync|createWriteStream|>\s*["'`]?\S*major-cores/
           .test(line)) continue;
         const toReal = /sites\/pca-platform\/content|CONTENT_DIR/.test(line);
@@ -207,7 +210,7 @@ function main(): void {
         }
       }
     }
-    ok("검사가 등록부의 학생 공개 상태를 고치지 않는다", writes.length === 0,
+    ok("검사가 두 등록부를 쓰지 않는다 (Core · 학교)", writes.length === 0,
       writes.length ? writes.join(" · ") : "쓰는 줄 0");
   }
 
@@ -227,6 +230,23 @@ function main(): void {
     ok("운영에서는 미리보기로도 열리지 않는다", prod.length === 0,
       prod.join(" ") || "빈 목록");
     ok("staging 에서는 미리보기가 선다", stage.length === 1, stage.join(" "));
+  }
+
+  /* 확인용 학교 fixture 도 운영에서는 붙지 않는다 */
+  {
+    const keptFx = process.env.V3_CAMPUS_FIXTURE;
+    const keptApp = process.env.APP_ENV;
+    process.env.V3_CAMPUS_FIXTURE = "scripts/fixtures/campus-zztest.json";
+    process.env.APP_ENV = "production";
+    const prod = campusFixturePath();
+    process.env.APP_ENV = "staging";
+    const stage = campusFixturePath();
+    if (keptFx === undefined) delete process.env.V3_CAMPUS_FIXTURE;
+    else process.env.V3_CAMPUS_FIXTURE = keptFx;
+    if (keptApp === undefined) delete process.env.APP_ENV;
+    else process.env.APP_ENV = keptApp;
+    ok("운영에서는 확인용 학교가 붙지 않는다", prod === null, prod ?? "붙지 않는다");
+    ok("staging 에서는 확인용 학교가 붙는다", stage !== null, stage ?? "없다");
   }
 
   console.log("\n── 성숙도 분포\n");

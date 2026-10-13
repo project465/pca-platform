@@ -346,6 +346,23 @@ async function main(): Promise<void> {
           if (!said.length) problems.push("이 전공의 영역 이름이 한 줄도 없다");
           /* 5. 갈래가 있으면 종이에 그 학과가 적히는가 */
           if (leaf && !all.includes("배재")) problems.push("학교 맥락이 종이에 없다");
+          /**
+           * **학교 종이에 등급 선택 구조가 드러나면 안 된다.**
+           *
+           * 학교 진입은 등급을 고르지 않는다(늘 PRO 다). 그런데 종이에
+           * `PRO` 나 `등급을 고르` 가 적히면, 받은 학생이 **고를 수 있는
+           * 값**이 있는 줄로 읽고 `나는 어느 등급을 받은 것인가` 를 묻는다.
+           * 학과가 사는 것은 등급이 아니라 한 벌이다.
+           *
+           * **`등급` 한 낱말은 세지 않는다**: 공차 등급 · 안전등급처럼 그
+           * 전공의 말이고, 세면 멀쩡한 문항을 고치라고 요구하게 된다.
+           * 개인 B2C 종이는 제 등급을 적는 것이 맞으므로 재지 않는다.
+           */
+          if (leaf) {
+            const tierHit = all.match(
+              /\bBASIC\b|\bSTANDARD\b|\bPRO\b|등급을 고르|등급 선택|상위 등급|등급별|등급이 올라/);
+            if (tierHit) problems.push(`학교 종이에 등급 구조가 드러난다 — ${tierHit[0]}`);
+          }
           /* 6. 웹과 종이가 같은 말을 하는가 (첫 화면 네 칸) */
           for (const key of ["지금 확인된 것", "지금 할 일"]) {
             if (web.includes(key) && !all.includes(key)) {

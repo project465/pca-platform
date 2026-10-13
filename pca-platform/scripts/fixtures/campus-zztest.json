@@ -1,0 +1,85 @@
+{
+ "note": "길을 밟아 보는 검사가 쓰는 확인용 학교. **운영 등록부가 아니다**: `V3_CAMPUS_FIXTURE` 를 들고 띄운 서버만 읽고, `campus-universities.json` 은 한 바이트도 바뀌지 않는다. 운영에서는 어떤 값으로도 붙지 않는다.",
+ "universities": [
+  {
+   "university_code": "ZZTEST",
+   "university_name": "확인용 대학",
+   "market_code": "KR",
+   "entry_note": "검사 가능한 자리의 길을 밟는 용도. 운영 등록부에 들어가지 않는다",
+   "brand_asset": null,
+   "region_hint": "KR-CHUNGCHEONG",
+   "region_cities": [
+    "대전"
+   ],
+   "catalogs": [
+    {
+     "catalog_code": "ZZ_CUR",
+     "catalog_year": 2026,
+     "label": "확인용 재학생",
+     "status": "ACTIVE",
+     "effective_from": "2026-03-01",
+     "effective_to": null,
+     "default_for_unknown": true,
+     "source_url": "https://example.invalid/",
+     "source_name": "확인용",
+     "verified_at": null,
+     "verification": "OFFICIAL_PAGE_UNREACHABLE",
+     "verification_note": "확인용",
+     "colleges": [
+      {
+       "code": "ZZ_ENG",
+       "name": "확인용 단과대학",
+       "units": [
+        {
+         "code": "ZZ26_FAC",
+         "name": "확인용 학부",
+         "kind": "faculty",
+         "majors": [
+          {
+           "code": "ZZ26_ME",
+           "name": "확인용 기계공학전공",
+           "kind": "major",
+           "core_code": "ME_CORE_V3",
+           "specialization": null
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "catalog_code": "ZZ_NEXT",
+     "catalog_year": 2027,
+     "label": "확인용 다음 학년도 신입생",
+     "status": "FUTURE",
+     "effective_from": "2027-03-01",
+     "effective_to": null,
+     "source_url": "https://example.invalid/",
+     "source_name": "확인용",
+     "verified_at": null,
+     "verification": "OFFICIAL_PAGE_UNREACHABLE",
+     "verification_note": "확인용",
+     "colleges": [
+      {
+       "code": "ZZ_ENG",
+       "name": "확인용 단과대학",
+       "units": [
+        {
+         "code": "ZZ27_ME",
+         "name": "확인용 기계융합공학과",
+         "kind": "department",
+         "core_code": "ME_CORE_V3",
+         "specialization": null,
+         "replaces": [
+          "ZZ26_ME"
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

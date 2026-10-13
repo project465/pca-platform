@@ -59,6 +59,28 @@ cat .next/BUILD_ID > var/.serving-build 2>/dev/null || true
 # **운영에서는 이 값으로도 열리지 않는다**(`previewOpenCores()` 가 거절한다).
 printf '%s' "${V3_PREVIEW_OPEN:-}" > var/.serving-preview
 
+# **확인용 학교 fixture 도 같은 까닭으로 적어 둔다.**
+#
+# 밟아 보는 검사에는 `검사 가능` 인 자리가 하나 있어야 한다. 전에는
+# `campus-universities.json` 자체를 쓰고 `.walkbak` 으로 되돌렸는데, 가운데서
+# 터지면 확인용 학교가 등록부에 남아 다음 커밋에 손님 자료로 섞인다.
+# 지금은 fixture 파일 하나이고 이 값을 들고 띄운 서버만 읽는다.
+#
+# **상대 경로를 그대로 넘기지 않는다.** 이 서버는 `.next/standalone` 에서
+# 돌아서(`cd` 아래), `scripts/fixtures/...` 는 그 자리에 없다. 그러면 fixture 가
+# 조용히 안 붙고 확인용 학교가 404 로 서며, 까닭을 `학교 진입이 깨졌다` 로
+# 거꾸로 적게 된다. `REPORT_PDF_DIR` 과 같은 까닭이다.
+if [ -n "${V3_CAMPUS_FIXTURE:-}" ]; then
+  case "$V3_CAMPUS_FIXTURE" in
+    /*) : ;;
+    *) V3_CAMPUS_FIXTURE="$PWD/$V3_CAMPUS_FIXTURE" ;;
+  esac
+  export V3_CAMPUS_FIXTURE
+  [ -f "$V3_CAMPUS_FIXTURE" ] || {
+    echo "확인용 학교 fixture 가 없습니다: $V3_CAMPUS_FIXTURE"; exit 1; }
+fi
+printf '%s' "${V3_CAMPUS_FIXTURE:-}" > var/.serving-campus-fixture
+
 cd .next/standalone
 echo "띄웁니다 http://127.0.0.1:$PORT  (APP_ENV=$APP_ENV · 빌드 $(cat ../../var/.serving-build 2>/dev/null)$([ -n "${V3_PREVIEW_OPEN:-}" ] && echo " · 미리보기 $V3_PREVIEW_OPEN"))"
 exec node server.js

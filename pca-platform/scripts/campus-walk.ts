@@ -3,8 +3,13 @@
  *
  * 지금 배재대의 고르는 자리가 두 Catalog 모두 `준비 중` 이다(열린 Core 가
  * 기계공학 하나뿐이고 사업주가 적어 준 학과에 기계공학 계열이 없다).
- * 그래서 등록부에 **시험용 학교 하나**를 넣고 그 길을 밟는다. 끝나면
- * 되돌린다.
+ * 그래서 **확인용 학교 하나**를 두고 그 길을 밟는다.
+ *
+ * **등록부 파일을 쓰지 않는다.** 전에는 `campus-universities.json` 자체를
+ * 쓰고 끝에서 `.walkbak` 으로 되돌렸는데, 가운데서 터지면 확인용 학교가
+ * 등록부에 남아 **다음 커밋에 손님 자료로 섞인다.** 지금은 그 학교가
+ * `scripts/fixtures/campus-zztest.json` 에 있고 `V3_CAMPUS_FIXTURE` 를
+ * 들고 띄운 서버만 읽는다(운영에서는 어떤 값으로도 붙지 않는다).
  *
  * 시험용 학교에 Catalog 를 **두 벌** 둔다. 이 회차가 세우는 구조가
  * `학년도별 Catalog` 라, 한 벌만 두면 **섞이지 않는가**를 재는 자가 없다.
@@ -20,28 +25,48 @@
  *   맥락을 적지 못한다 · 일반 진입에는 학교가 서지 않는다 · 일반 응시는
  *   학교 칸이 비어 있다
  *
- *   UI_BASE=http://127.0.0.1:3100 npm run campus:walk
+ *   V3_CAMPUS_FIXTURE=scripts/fixtures/campus-zztest.json \
+ *     bash scripts/stage-serve.sh 3100
+ *   UI_BASE=http://127.0.0.1:3100 \
+ *     V3_CAMPUS_FIXTURE=scripts/fixtures/campus-zztest.json \
+ *     npm run campus:walk
  */
-import { copyFileSync, readFileSync, writeFileSync, unlinkSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 import { chromium, type BrowserContext, type Page } from "playwright";
-import { BASE, loadEnv, login, makeStudent } from "./_loop-fixture";
+import {
+  BASE, assertCampusFixtureServer, loadEnv, login, makeStudent,
+} from "./_loop-fixture";
 import { query, queryOne } from "../src/lib/db";
 import { openAttempt } from "../src/lib/me-v3/runtime/session";
 
 loadEnv();
 /**
- * **두 자리를 같이 고친다.** standalone 서버는 빌드가 떠 둔 복사본을
- * 읽는다(`.next/standalone/sites/...`). 저장소 쪽만 고치면 화면은 그대로다.
+ * 끝에서 **쓰지 않았다는 것**을 세는 자리. 전에는 쓰는 자리였다.
+ *
+ * standalone 서버는 빌드가 떠 둔 복사본을 읽으므로 두 벌이 있다.
  */
 const REGS = [
   "sites/pca-platform/content/campus-universities.json",
   ".next/standalone/sites/pca-platform/content/campus-universities.json",
 ];
 const REG = REGS[0];
+const FIXTURE = "scripts/fixtures/campus-zztest.json";
+const sha = (f: string) =>
+  createHash("sha256").update(readFileSync(f)).digest("hex").slice(0, 16);
 
-/** 시험용 학교의 두 Catalog. 이름과 코드가 실제 학교와 겹치지 않는다 */
-const CUR_NAME = "확인용 기계공학전공";
-const NEXT_NAME = "확인용 기계융합공학과";
+/** 확인용 학교의 두 Catalog. **이름을 여기 적지 않고 fixture 에서 읽는다** */
+const FX = JSON.parse(readFileSync(FIXTURE, "utf8")) as {
+  universities: {
+    catalogs: { colleges: { units: { name: string; majors?: { name: string }[] }[] }[] }[];
+  }[];
+};
+const unitName = (n: number): string => {
+  const u = FX.universities[0].catalogs[n].colleges[0].units[0];
+  return u.majors?.[0]?.name ?? u.name;
+};
+const CUR_NAME = unitName(0);
+const NEXT_NAME = unitName(1);
 
 let pass = 0; const bad: string[] = [];
 const ok = (w: string, c: boolean, saw = "") => {
@@ -68,7 +93,13 @@ async function startAttempt(page: Page, path: string, userId: string): Promise<{
 }
 
 async function main(): Promise<void> {
-  for (const f of REGS) copyFileSync(f, `${f}.walkbak`);
+  /* **등록부를 쓰지 않는다.** 확인용 학교는 fixture 에 있고, 띄운 서버가
+     그것을 읽고 있는지만 확인한다. 안 읽고 있으면 그 자리에서 멈춘다:
+     확인용 학교가 없는 서버에서 밟으면 `/campus/zztest` 가 404 로 서고
+     까닭을 **`학교 진입이 깨졌다` 로 거꾸로 적게 된다** */
+  assertCampusFixtureServer("ZZTEST");
+  process.env.V3_CAMPUS_FIXTURE = process.env.V3_CAMPUS_FIXTURE || FIXTURE;
+  const before = REGS.map(sha);
   try {
     const reg = JSON.parse(readFileSync(REG, "utf8"));
     /** 준비 중인 자리 두 곳을 **등록부에서 읽는다.** 코드를 적어 두면 등록부를
@@ -85,49 +116,6 @@ async function main(): Promise<void> {
         }
       }
     }
-    const zzCollege = (units: unknown[]) =>
-      [{ code: "ZZ_ENG", name: "확인용 단과대학", units }];
-    const zzSrc = {
-      source_url: "https://example.invalid/", source_name: "확인용",
-      verified_at: null, verification: "OFFICIAL_PAGE_UNREACHABLE",
-      verification_note: "확인용",
-    };
-    reg.universities.push({
-      university_code: "ZZTEST",
-      university_name: "확인용 대학",
-      market_code: "KR",
-      entry_note: "검사 가능한 자리의 길을 밟는 용도. 커밋하지 않는다",
-      brand_asset: null,
-      region_hint: "KR-CHUNGCHEONG",
-      region_cities: ["대전"],
-      catalogs: [
-        {
-          catalog_code: "ZZ_CUR", catalog_year: 2026, label: "확인용 재학생",
-          status: "ACTIVE", effective_from: "2026-03-01", effective_to: null,
-          default_for_unknown: true,
-          ...zzSrc,
-          colleges: zzCollege([{
-            code: "ZZ26_FAC", name: "확인용 학부", kind: "faculty",
-            majors: [{
-              code: "ZZ26_ME", name: CUR_NAME, kind: "major",
-              core_code: "ME_CORE_V3", specialization: null,
-            }],
-          }]),
-        },
-        {
-          catalog_code: "ZZ_NEXT", catalog_year: 2027,
-          label: "확인용 다음 학년도 신입생",
-          status: "FUTURE", effective_from: "2027-03-01", effective_to: null,
-          ...zzSrc,
-          colleges: zzCollege([{
-            code: "ZZ27_ME", name: NEXT_NAME, kind: "department",
-            core_code: "ME_CORE_V3", specialization: null,
-            replaces: ["ZZ26_ME"],
-          }]),
-        },
-      ],
-    });
-    for (const f of REGS) writeFileSync(f, JSON.stringify(reg, null, 2));
 
     const who = await makeStudent("campus-walk@test.invalid");
     const browser = await chromium.launch();
@@ -296,6 +284,57 @@ async function main(): Promise<void> {
       ok(`개인 응시는 ${t} 가 그대로다`, a.tier === t, a.tier);
     }
 
+    /**
+     * **주소와 폼으로 넣어도 PRO 다** (운영 오픈 §2).
+     *
+     * 위의 줄은 서버 함수를 직접 부른다. 그것만으로는 **화면에서 서버까지
+     * 가는 길에 등급이 끼어들 틈이 없는지**를 답하지 못한다: 폼에 칸을
+     * 하나 더 꽂거나 주소에 `?tier=` 를 붙이는 것은 학생이 실제로 할 수
+     * 있는 일이고, 거기서 한 번 새면 그 학생의 결과는 같은 학과의 나머지와
+     * 한 표에서 읽히지 않는다.
+     *
+     * 그래서 **브라우저에서** 넣어 본다: 주소에 붙이고, 폼에 숨은 칸을
+     * 그 자리에서 만들어 꽂고, 보내고, 적힌 줄의 등급을 본다.
+     */
+    for (const t of ["BASIC", "STANDARD"] as const) {
+      await query(`DELETE FROM v3_attempts WHERE user_id = $1`, [who.id]);
+      /* 학과를 다시 고른다. 응시가 열리면 쿠키를 버리므로 */
+      await page.goto(`${BASE}/campus/zztest/d/${encodeURIComponent("ZZ26_ME")}`,
+        { waitUntil: "networkidle" });
+      await page.getByRole("button", { name: "이 전공으로 검사 시작" }).click();
+      await page.waitForURL(/\/v3\/start/, { timeout: 30000 });
+      /* 주소에 등급을 붙인다 */
+      await page.goto(`${BASE}/v3/start?tier=${t}&upgrade=${t}`,
+        { waitUntil: "networkidle" });
+      const txt = await page.evaluate(() => document.body.innerText);
+      ok(`주소에 ${t} 를 붙여도 시작 화면이 등급을 적지 않는다`,
+        !/\bBASIC\b|\bSTANDARD\b|\bPRO\b/.test(txt),
+        (txt.match(/\bBASIC\b|\bSTANDARD\b|\bPRO\b/) ?? ["없다"])[0]);
+      /* 폼에 숨은 칸 셋을 그 자리에서 꽂는다 */
+      const put = await page.evaluate((want) => {
+        const f = document.querySelector("form");
+        if (!f) return 0;
+        let n = 0;
+        for (const name of ["tier", "upgrade", "product_code"]) {
+          const i = document.createElement("input");
+          i.type = "hidden"; i.name = name;
+          i.value = name === "product_code" ? `ME_V3_${want}_KR` : want;
+          f.appendChild(i); n += 1;
+        }
+        return n;
+      }, t);
+      ok(`폼에 숨은 등급 칸을 꽂았다 — ${t}`, put === 3, `${put}개`);
+      await page.getByText("학부", { exact: true }).click();
+      await page.getByRole("button", { name: "검사 시작" }).click();
+      await page.waitForURL(/\/v3\/\d+/, { timeout: 30000 });
+      const inj = await queryOne<{ tier: string; university_code: string | null }>(
+        `SELECT tier, university_code FROM v3_attempts
+          WHERE user_id = $1 ORDER BY started_at DESC LIMIT 1`, [who.id]);
+      ok(`주소와 폼으로 ${t} 를 넣어도 PRO 응시가 만들어진다`,
+        inj?.tier === "PRO" && inj?.university_code === "ZZTEST",
+        JSON.stringify(inj));
+    }
+
     /* 일반 B2C 로 들어오면 학교 맥락이 비어 있다 */
     await query(`DELETE FROM v3_attempts WHERE user_id = $1`, [who.id]);
     await page.goto(`${BASE}/v3/start`, { waitUntil: "networkidle" });
@@ -313,7 +352,8 @@ async function main(): Promise<void> {
 
     await browser.close();
   } finally {
-    for (const f of REGS) { copyFileSync(`${f}.walkbak`, f); unlinkSync(`${f}.walkbak`); }
+    ok("등록부를 한 바이트도 쓰지 않았다",
+      before.every((h, i) => h === REGS.map(sha)[i]), before[0]);
   }
   console.log(`\n확인 ${pass + bad.length}가지 — 통과 ${pass} · 걸림 ${bad.length}`);
   if (bad.length) process.exit(1);

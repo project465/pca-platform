@@ -25,6 +25,7 @@
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { appEnv } from "@/lib/env";
 import {
   CONTENT_DIR, sellableCores, registry as coreRegistry, hasCoreFile,
   specializationAuthored, specializationOf,
@@ -177,10 +178,45 @@ export type CampusRegistry = {
   universities: CampusUniversity[];
 };
 
+/**
+ * 길을 밟아 보는 검사가 쓰는 **확인용 학교**를 어디서 읽는가.
+ *
+ * 밟아 보는 검사에는 `검사 가능` 인 자리가 하나 있어야 한다. 전에는 그
+ * 자리를 만들려고 `campus-universities.json` **자체를 쓰고** 끝에서
+ * 되돌렸다(`.walkbak`). 두 가지가 나쁘다. 가운데서 터지면 확인용 학교가
+ * 등록부에 남아 **다음 커밋에 손님 자료로 섞이고**, 그 창이 열려 있는
+ * 동안 `/campus/zztest` 가 실제로 선다.
+ *
+ * 그래서 **파일을 쓰지 않는다.** `V3_CAMPUS_FIXTURE` 에 적힌 JSON 의
+ * `universities` 를 읽을 때만 덧붙인다. 내용은 `src/` 밖의 fixture 파일에
+ * 있고(`scripts/fixtures/`) 등록부 파일은 한 바이트도 바뀌지 않는다.
+ *
+ * **운영에서는 어떤 값으로도 붙지 않는다**(`V3_PREVIEW_OPEN` 과 같은 까닭).
+ * 확인용 학교가 운영에 서면 그 학교 이름이 학생 화면에 뜬다.
+ *
+ * **같은 코드가 있으면 덧붙이지 않는다**: fixture 가 실제 학교를 덮어쓰면
+ * 그 학교 학생의 자리가 조용히 바뀐다.
+ */
+export function campusFixturePath(): string | null {
+  if (appEnv() === "production") return null;
+  const raw = (process.env.V3_CAMPUS_FIXTURE ?? "").trim();
+  return raw || null;
+}
+
 export function campusRegistry(dir = CONTENT_DIR): CampusRegistry {
-  return JSON.parse(
+  const reg = JSON.parse(
     readFileSync(join(dir, "campus-universities.json"), "utf8"),
   ) as CampusRegistry;
+  const fx = campusFixturePath();
+  if (!fx) return reg;
+  const extra = (JSON.parse(readFileSync(fx, "utf8")) as
+    { universities?: CampusUniversity[] }).universities ?? [];
+  const have = new Set(reg.universities.map((u) => u.university_code));
+  return {
+    ...reg,
+    universities: [...reg.universities,
+      ...extra.filter((u) => !have.has(u.university_code))],
+  };
 }
 
 export function universities(dir = CONTENT_DIR): CampusUniversity[] {

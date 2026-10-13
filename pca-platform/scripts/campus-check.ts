@@ -31,6 +31,16 @@ import {
 } from "../src/lib/campus/registry";
 import { academicYear, admissionFrom } from "../src/lib/campus/year";
 
+/**
+ * **이 검사가 보는 것은 운영 등록부다.**
+ *
+ * 길을 밟아 보는 검사는 확인용 학교 fixture 를 들고 돈다
+ * (`V3_CAMPUS_FIXTURE`). 그 값이 환경에 남아 있으면 여기가 확인용 학교까지
+ * 세고, **지어낸 학교의 출처가 비어 있다**는 까닭으로 멀쩡한 등록부가
+ * 걸린다. 재는 것이 다르므로 그 문을 닫고 본다.
+ */
+delete process.env.V3_CAMPUS_FIXTURE;
+
 let pass = 0;
 const bad: string[] = [];
 function ok(what: string, cond: boolean, saw = ""): void {
