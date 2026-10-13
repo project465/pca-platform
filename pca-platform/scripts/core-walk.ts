@@ -150,6 +150,19 @@ async function main(): Promise<void> {
     const p: Page = await login(ctx, MAIL, student.pw);
     p.on("pageerror", (e) => errs.push(String(e.message).slice(0, 120)));
     p.on("response", (r) => { if (r.status() >= 500) errs.push(`${r.status()} ${r.url()}`); });
+    if (process.env.WALK_DEBUG) {
+      p.on("console", (m) => {
+        if (m.type() === "error" || m.type() === "warning") {
+          console.error(`[walk] 콘솔 ${m.type()} ${m.text().slice(0, 160)}`);
+        }
+      });
+      p.on("requestfailed", (r) => {
+        console.error(`[walk] 요청 실패 ${r.failure()?.errorText ?? ""} ${r.url().slice(0, 120)}`);
+      });
+      p.on("response", (r) => {
+        if (r.status() >= 400) console.error(`[walk] 응답 ${r.status()} ${r.url().slice(0, 120)}`);
+      });
+    }
 
     /* 4~6. 학과 상세에서 공통 시작 화면으로 */
     await p.goto(`${BASE}${leaf.path}`, { waitUntil: "networkidle" });

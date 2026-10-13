@@ -23,6 +23,14 @@ import type { Field, ProgressModel, ScreenModel } from "./model";
  * 골랐는지 보지 못하고, 잘못 눌렀을 때 무엇이 눌렸는지도 모른다.
  */
 const AUTO_MS = 250;
+/**
+ * 화면을 옮기지 못했을 때 단추를 다시 켜는 때.
+ *
+ * 옮겨 갔으면 이 컴포넌트가 사라져 이 시간 재기는 울리지 않는다. 울리는
+ * 것은 **옮겨 가지 못한 경우**뿐이고, 그때 꺼진 단추를 그대로 두면 응시가
+ * 그 자리에서 끝난다.
+ */
+const MOVE_TIMEOUT_MS = 8000;
 
 /**
  * 응시 화면 하나.
@@ -180,12 +188,34 @@ export default function Screen({
   const offCore = s.profile ? gate.reason === "NON_ME_GRADUATE" : false;
   const blocked = (s.required && !filled) || needMore || offCore;
 
+  /**
+   * 다음 화면으로 옮긴다.
+   *
+   * **거절당한 호출이 화면을 영원히 잠그지 않게 한다.** `moving` 은 다음
+   * 화면이 뜰 때 `key` 로 다시 마운트되며 풀리는데, 커서를 적는 호출이
+   * 거절되면 그 자리에서 던지고 `moving` 이 `true` 로 남는다. 그러면
+   * `다음` 과 `이전` 이 둘 다 꺼진 화면이 서고, 백여 문항을 푼 사람이
+   * 새로 고치는 것 말고는 할 수 있는 일이 없다. 실패한 호출은 들고
+   * 있다가 다시 보내는 자리가 이미 있으므로(`retrySave`) 거기로 넘긴다.
+   *
+   * 끝의 시간 재기는 **옮겨 가지 못한 경우의 그물**이다. 옮겨 갔으면 이
+   * 컴포넌트가 이미 사라졌으니 아무 일도 하지 않는다.
+   */
   const go = async (to: number | null) => {
     if (to === null) return;
     setMoving(true);
-    await queue.current;
-    await cursorAction(s.attemptId, to);
+    try {
+      await queue.current;
+      const r = await cursorAction(s.attemptId, to);
+      if (!r.ok) { setMoving(false); setWarn(true); return; }
+    } catch {
+      lastRun.current = () => cursorAction(s.attemptId, to);
+      setFailed(true);
+      setMoving(false);
+      return;
+    }
     router.push(`/v3/${s.attemptId}?s=${to}`);
+    window.setTimeout(() => setMoving(false), MOVE_TIMEOUT_MS);
   };
 
   const next = async () => {
@@ -195,8 +225,17 @@ export default function Screen({
 
   const finish = async () => {
     setMoving(true);
-    await queue.current;
-    const r = await finishAction(s.attemptId);
+    let r: { ok: boolean };
+    try {
+      await queue.current;
+      r = await finishAction(s.attemptId);
+    } catch {
+      /* 제출이 거절되면 다시 누를 수 있어야 한다 */
+      lastRun.current = () => finishAction(s.attemptId);
+      setFailed(true);
+      setMoving(false);
+      return;
+    }
     /* **결과지로 바로 보내지 않는다.** 백여 문항을 푼 사람이 `다음` 을
        누른 자리에서 곧바로 긴 결과지를 만나면 끝났다는 말을 어디에서도
        듣지 못한다. 완료 브리지가 그 한 쪽이다 */

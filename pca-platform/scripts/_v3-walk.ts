@@ -146,6 +146,26 @@ export async function walk(
          못했다` 만 적으면 어디서 막혔는지 모른다. 세 번 더 보고 멈춘다 */
       stuck += 1;
       if (stuck < 3) continue;
+      /* **어디서 막혔는지 적지 않으면 다음 사람이 처음부터 다시 찾는다** */
+      if (process.env.WALK_DEBUG) {
+        const h = await p.locator(".qs-q, h1, h2").first().innerText().catch(() => "");
+        console.error(`[walk] 막힌 자리 ${p.url()} — ${h.replace(/\s+/g, " ").slice(0, 120)}`);
+        const bx = p.locator("fieldset.qs-opts, fieldset.qs-sw, .qs-cards, .qs-list");
+        const bc = await bx.count();
+        for (let k = 0; k < bc; k += 1) {
+          const on = await bx.nth(k).locator("input:checked").count();
+          const ln = await bx.nth(k).locator("label").count();
+          const t = await bx.nth(k).innerText().catch(() => "");
+          console.error(`[walk]   묶음 ${k} 고름 ${on} 보기 ${ln} — ${t.replace(/\s+/g, " ").slice(0, 70)}`);
+        }
+        const dis = await p.locator("button.qs-btn-main[disabled]").count();
+        console.error(`[walk]   단추 꺼짐 ${dis}`);
+        if (process.env.WALK_DUMP) {
+          const { writeFileSync } = await import("node:fs");
+          writeFileSync(process.env.WALK_DUMP, await p.content());
+          console.error(`[walk]   쪽을 ${process.env.WALK_DUMP} 에 떠 두었다`);
+        }
+      }
       return { screens, done: false, covered };
     }
     stuck = 0;

@@ -1,0 +1,18 @@
+{
+ "schema_version": "cm-bank-lock.1",
+ "core": "CIV_CORE_V1",
+ "item_bank_version": "CIV_V1_ITEM_BANK_V1",
+ "note": "문면을 고치면 이 지문이 어긋난다. 그때 판본을 올리고 BANK=update 로 다시 적는다",
+ "files": {
+  "civ-v1-taxonomy.json": "cd0c16850ecad800e0208b36fcb8ff0f00a05d0b9d359e6761e3f5337bf564fd",
+  "civ-v1-domains.json": "82686e220b0ad0f9b220865fe7dafaaeb1de2261cae80e84d8407066436d821d",
+  "civ-v1-checklists.json": "d27ffd313f33ae3598d33106f705b363c02289119b08a0c873d44157adfa6d05",
+  "civ-v1-items-blueprint.json": "2f865fc0e05ffb0f21ccc2b4c97af0911de082dfe95d7753a740bbc3ab80ad7c",
+  "civ-v1-items.json": "d65f0bf8d5904195747ebb03af01d0f9bcc9c80f56ba8b6826f4ec985e3ac9ae",
+  "civ-v1-relations.json": "8ed5d5014f1762e8d38a8609d1a4dde4eb47b798378bf576d3c829b00806fe23",
+  "civ-v1-constructs.json": "0101968a394890bb6bbe9bde025b278e8a9343755b0f2d64553f0149647a4890",
+  "civ-industry-packs.json": "6eaab897877bc16fa334c6fa2db27b0483dbc5740a438c0a052149fa1632b750",
+  "civ-role-packs.json": "99dd031b6e4b6f1ba3d142a9301f63a28546539d95c78c025b63e5d120468022"
+ },
+ "scoring_version": "me-v3-scoring.5"
+}

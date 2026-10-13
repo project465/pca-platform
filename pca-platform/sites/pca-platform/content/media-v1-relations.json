@@ -1,0 +1,2402 @@
+{
+ "schema_version": "media-v1-relations.1",
+ "core": "MEDIA_CORE_V1",
+ "note": "기술영역과 산업, 기술영역과 역할의 관계를 두 표로 둔다. 세 축을 미리 곱해 두지 않는다: 열두 영역과 여덟 산업과 여덟 역할을 곱하면 칠백예순여덟 줄이 되고 그만큼의 줄을 사람이 손으로 유지할 수 없다. 어느 줄도 점수를 만들지 않는다: `strength` 는 설명하는 차례를 정하고 `appears_as` 는 결과지가 그 말로 옮겨 적을 때 읽는다",
+ "combine_rule": "산업 하나와 역할 하나를 함께 고른 사람에게는 두 표에서 같은 영역의 줄을 뽑아 나란히 놓는다. 둘 다 `중심` 인 영역이 먼저 서고, 한쪽만 중심인 영역이 다음이고, 양쪽이 드문 영역은 적지 않는다",
+ "td_industry": [
+  {
+   "td": "TD01",
+   "td_name": "기획·과제 정의",
+   "industry": "INDUSTRY_ADAGENCY_V1",
+   "industry_name": "광고 대행·캠페인",
+   "strength": "있음",
+   "appears_as": "광고 대행·캠페인 에서는 제안에 담을 과제를 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "제안에 담을 과제를 좁히는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·과제 정의",
+   "industry": "INDUSTRY_BROADCAST_V1",
+   "industry_name": "방송 프로그램",
+   "strength": "드묾",
+   "appears_as": "방송 프로그램 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·과제 정의",
+   "industry": "INDUSTRY_FILM_V1",
+   "industry_name": "영화·영상 제작",
+   "strength": "드묾",
+   "appears_as": "영화·영상 제작 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·과제 정의",
+   "industry": "INDUSTRY_PERFORM_V1",
+   "industry_name": "공연·무대",
+   "strength": "드묾",
+   "appears_as": "공연·무대 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·과제 정의",
+   "industry": "INDUSTRY_MUSIC_V1",
+   "industry_name": "음악·음반",
+   "strength": "드묾",
+   "appears_as": "음악·음반 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·과제 정의",
+   "industry": "INDUSTRY_PR_V1",
+   "industry_name": "기업 홍보·커뮤니케이션",
+   "strength": "있음",
+   "appears_as": "기업 홍보·커뮤니케이션 에서는 홍보 과제의 범위를 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "홍보 과제의 범위를 남기는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·과제 정의",
+   "industry": "INDUSTRY_PLATFORM_V1",
+   "industry_name": "플랫폼 콘텐츠·채널 운영",
+   "strength": "드묾",
+   "appears_as": "플랫폼 콘텐츠·채널 운영 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·과제 정의",
+   "industry": "INDUSTRY_EVENT_V1",
+   "industry_name": "행사·전시 운영",
+   "strength": "있음",
+   "appears_as": "행사·전시 운영 에서는 넣을 꼭지를 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "넣을 꼭지를 좁히는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "메시지·콘셉트",
+   "industry": "INDUSTRY_ADAGENCY_V1",
+   "industry_name": "광고 대행·캠페인",
+   "strength": "있음",
+   "appears_as": "광고 대행·캠페인 에서는 내보낼 한 줄을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "내보낼 한 줄을 가르는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "메시지·콘셉트",
+   "industry": "INDUSTRY_BROADCAST_V1",
+   "industry_name": "방송 프로그램",
+   "strength": "드묾",
+   "appears_as": "방송 프로그램 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "메시지·콘셉트",
+   "industry": "INDUSTRY_FILM_V1",
+   "industry_name": "영화·영상 제작",
+   "strength": "드묾",
+   "appears_as": "영화·영상 제작 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "메시지·콘셉트",
+   "industry": "INDUSTRY_PERFORM_V1",
+   "industry_name": "공연·무대",
+   "strength": "드묾",
+   "appears_as": "공연·무대 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "메시지·콘셉트",
+   "industry": "INDUSTRY_MUSIC_V1",
+   "industry_name": "음악·음반",
+   "strength": "드묾",
+   "appears_as": "음악·음반 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "메시지·콘셉트",
+   "industry": "INDUSTRY_PR_V1",
+   "industry_name": "기업 홍보·커뮤니케이션",
+   "strength": "있음",
+   "appears_as": "기업 홍보·커뮤니케이션 에서는 핵심 메시지를 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "핵심 메시지를 좁히는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "메시지·콘셉트",
+   "industry": "INDUSTRY_PLATFORM_V1",
+   "industry_name": "플랫폼 콘텐츠·채널 운영",
+   "strength": "있음",
+   "appears_as": "플랫폼 콘텐츠·채널 운영 에서는 섬네일과 제목을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "섬네일과 제목을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "메시지·콘셉트",
+   "industry": "INDUSTRY_EVENT_V1",
+   "industry_name": "행사·전시 운영",
+   "strength": "있음",
+   "appears_as": "행사·전시 운영 에서는 주제를 전시물 조건으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "주제를 전시물 조건으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "매체·채널 설계",
+   "industry": "INDUSTRY_ADAGENCY_V1",
+   "industry_name": "광고 대행·캠페인",
+   "strength": "있음",
+   "appears_as": "광고 대행·캠페인 에서는 집행 기한과 매체 규격을 옮겨 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "집행 기한과 매체 규격을 옮겨 적는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "매체·채널 설계",
+   "industry": "INDUSTRY_BROADCAST_V1",
+   "industry_name": "방송 프로그램",
+   "strength": "있음",
+   "appears_as": "방송 프로그램 에서는 어느 시간대에 둘지 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "어느 시간대에 둘지 좁히는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "매체·채널 설계",
+   "industry": "INDUSTRY_FILM_V1",
+   "industry_name": "영화·영상 제작",
+   "strength": "드묾",
+   "appears_as": "영화·영상 제작 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "매체·채널 설계",
+   "industry": "INDUSTRY_PERFORM_V1",
+   "industry_name": "공연·무대",
+   "strength": "드묾",
+   "appears_as": "공연·무대 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "매체·채널 설계",
+   "industry": "INDUSTRY_MUSIC_V1",
+   "industry_name": "음악·음반",
+   "strength": "있음",
+   "appears_as": "음악·음반 에서는 플랫폼 규격을 조건으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "플랫폼 규격을 조건으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "매체·채널 설계",
+   "industry": "INDUSTRY_PR_V1",
+   "industry_name": "기업 홍보·커뮤니케이션",
+   "strength": "있음",
+   "appears_as": "기업 홍보·커뮤니케이션 에서는 배포할 매체를 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "배포할 매체를 고르는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "매체·채널 설계",
+   "industry": "INDUSTRY_PLATFORM_V1",
+   "industry_name": "플랫폼 콘텐츠·채널 운영",
+   "strength": "있음",
+   "appears_as": "플랫폼 콘텐츠·채널 운영 에서는 올릴 채널을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "올릴 채널을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "매체·채널 설계",
+   "industry": "INDUSTRY_EVENT_V1",
+   "industry_name": "행사·전시 운영",
+   "strength": "있음",
+   "appears_as": "행사·전시 운영 에서는 알릴 매체를 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "알릴 매체를 고르는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "촬영·조명 설계",
+   "industry": "INDUSTRY_ADAGENCY_V1",
+   "industry_name": "광고 대행·캠페인",
+   "strength": "있음",
+   "appears_as": "광고 대행·캠페인 에서는 촬영 방식을 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "촬영 방식을 고르는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "촬영·조명 설계",
+   "industry": "INDUSTRY_BROADCAST_V1",
+   "industry_name": "방송 프로그램",
+   "strength": "드묾",
+   "appears_as": "방송 프로그램 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "촬영·조명 설계",
+   "industry": "INDUSTRY_FILM_V1",
+   "industry_name": "영화·영상 제작",
+   "strength": "중심",
+   "appears_as": "영화·영상 제작 에서는 찍을 것과 찍지 않을 것을 좁히는가 · 버릴 장면을 가르는가 · 노출과 색온도를 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J3",
+    "J5"
+   ],
+   "dimensions": [
+    "찍을 것과 찍지 않을 것을 좁히는가",
+    "버릴 장면을 가르는가",
+    "노출과 색온도를 남기는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "촬영·조명 설계",
+   "industry": "INDUSTRY_PERFORM_V1",
+   "industry_name": "공연·무대",
+   "strength": "드묾",
+   "appears_as": "공연·무대 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "촬영·조명 설계",
+   "industry": "INDUSTRY_MUSIC_V1",
+   "industry_name": "음악·음반",
+   "strength": "드묾",
+   "appears_as": "음악·음반 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "촬영·조명 설계",
+   "industry": "INDUSTRY_PR_V1",
+   "industry_name": "기업 홍보·커뮤니케이션",
+   "strength": "드묾",
+   "appears_as": "기업 홍보·커뮤니케이션 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "촬영·조명 설계",
+   "industry": "INDUSTRY_PLATFORM_V1",
+   "industry_name": "플랫폼 콘텐츠·채널 운영",
+   "strength": "드묾",
+   "appears_as": "플랫폼 콘텐츠·채널 운영 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "촬영·조명 설계",
+   "industry": "INDUSTRY_EVENT_V1",
+   "industry_name": "행사·전시 운영",
+   "strength": "드묾",
+   "appears_as": "행사·전시 운영 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "사운드·음향",
+   "industry": "INDUSTRY_ADAGENCY_V1",
+   "industry_name": "광고 대행·캠페인",
+   "strength": "드묾",
+   "appears_as": "광고 대행·캠페인 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "사운드·음향",
+   "industry": "INDUSTRY_BROADCAST_V1",
+   "industry_name": "방송 프로그램",
+   "strength": "있음",
+   "appears_as": "방송 프로그램 에서는 음향 방식을 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "음향 방식을 고르는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "사운드·음향",
+   "industry": "INDUSTRY_FILM_V1",
+   "industry_name": "영화·영상 제작",
+   "strength": "있음",
+   "appears_as": "영화·영상 제작 에서는 소리 기준에 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "소리 기준에 대조하는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "사운드·음향",
+   "industry": "INDUSTRY_PERFORM_V1",
+   "industry_name": "공연·무대",
+   "strength": "중심",
+   "appears_as": "공연·무대 에서는 안 들린 까닭을 좁히는가 · 음향 방식을 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J7"
+   ],
+   "dimensions": [
+    "안 들린 까닭을 좁히는가",
+    "음향 방식을 고르는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "사운드·음향",
+   "industry": "INDUSTRY_MUSIC_V1",
+   "industry_name": "음악·음반",
+   "strength": "중심",
+   "appears_as": "음악·음반 에서는 담을 소리와 지울 소리를 좁히는가 · 쓸 트랙을 가르는가 · 기준 크기에 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J3",
+    "J6"
+   ],
+   "dimensions": [
+    "담을 소리와 지울 소리를 좁히는가",
+    "쓸 트랙을 가르는가",
+    "기준 크기에 대조하는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "사운드·음향",
+   "industry": "INDUSTRY_PR_V1",
+   "industry_name": "기업 홍보·커뮤니케이션",
+   "strength": "드묾",
+   "appears_as": "기업 홍보·커뮤니케이션 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "사운드·음향",
+   "industry": "INDUSTRY_PLATFORM_V1",
+   "industry_name": "플랫폼 콘텐츠·채널 운영",
+   "strength": "드묾",
+   "appears_as": "플랫폼 콘텐츠·채널 운영 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "사운드·음향",
+   "industry": "INDUSTRY_EVENT_V1",
+   "industry_name": "행사·전시 운영",
+   "strength": "드묾",
+   "appears_as": "행사·전시 운영 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "연출·구성·대본",
+   "industry": "INDUSTRY_ADAGENCY_V1",
+   "industry_name": "광고 대행·캠페인",
+   "strength": "드묾",
+   "appears_as": "광고 대행·캠페인 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "연출·구성·대본",
+   "industry": "INDUSTRY_BROADCAST_V1",
+   "industry_name": "방송 프로그램",
+   "strength": "있음",
+   "appears_as": "방송 프로그램 에서는 구성에 넣을 꼭지를 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "구성에 넣을 꼭지를 좁히는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "연출·구성·대본",
+   "industry": "INDUSTRY_FILM_V1",
+   "industry_name": "영화·영상 제작",
+   "strength": "있음",
+   "appears_as": "영화·영상 제작 에서는 대본의 결을 장면 조건으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "대본의 결을 장면 조건으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "연출·구성·대본",
+   "industry": "INDUSTRY_PERFORM_V1",
+   "industry_name": "공연·무대",
+   "strength": "있음",
+   "appears_as": "공연·무대 에서는 공연 흐름에 넣을 장면을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "공연 흐름에 넣을 장면을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "연출·구성·대본",
+   "industry": "INDUSTRY_MUSIC_V1",
+   "industry_name": "음악·음반",
+   "strength": "드묾",
+   "appears_as": "음악·음반 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "연출·구성·대본",
+   "industry": "INDUSTRY_PR_V1",
+   "industry_name": "기업 홍보·커뮤니케이션",
+   "strength": "드묾",
+   "appears_as": "기업 홍보·커뮤니케이션 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "연출·구성·대본",
+   "industry": "INDUSTRY_PLATFORM_V1",
+   "industry_name": "플랫폼 콘텐츠·채널 운영",
+   "strength": "있음",
+   "appears_as": "플랫폼 콘텐츠·채널 운영 에서는 회차 구성 차례를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "회차 구성 차례를 가르는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "연출·구성·대본",
+   "industry": "INDUSTRY_EVENT_V1",
+   "industry_name": "행사·전시 운영",
+   "strength": "드묾",
+   "appears_as": "행사·전시 운영 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "편집·후반",
+   "industry": "INDUSTRY_ADAGENCY_V1",
+   "industry_name": "광고 대행·캠페인",
+   "strength": "중심",
+   "appears_as": "광고 대행·캠페인 에서는 규격별 판본을 남기는가 · 편집 차례를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ],
+   "dimensions": [
+    "규격별 판본을 남기는가",
+    "편집 차례를 가르는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "편집·후반",
+   "industry": "INDUSTRY_BROADCAST_V1",
+   "industry_name": "방송 프로그램",
+   "strength": "있음",
+   "appears_as": "방송 프로그램 에서는 편성 길이를 편집 조건으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "편성 길이를 편집 조건으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "편집·후반",
+   "industry": "INDUSTRY_FILM_V1",
+   "industry_name": "영화·영상 제작",
+   "strength": "중심",
+   "appears_as": "영화·영상 제작 에서는 색 보정 방식을 고르는가 · 안 붙는 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J7"
+   ],
+   "dimensions": [
+    "색 보정 방식을 고르는가",
+    "안 붙는 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "편집·후반",
+   "industry": "INDUSTRY_PERFORM_V1",
+   "industry_name": "공연·무대",
+   "strength": "드묾",
+   "appears_as": "공연·무대 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "편집·후반",
+   "industry": "INDUSTRY_MUSIC_V1",
+   "industry_name": "음악·음반",
+   "strength": "있음",
+   "appears_as": "음악·음반 에서는 다시 섞어 고치는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "다시 섞어 고치는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "편집·후반",
+   "industry": "INDUSTRY_PR_V1",
+   "industry_name": "기업 홍보·커뮤니케이션",
+   "strength": "드묾",
+   "appears_as": "기업 홍보·커뮤니케이션 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "편집·후반",
+   "industry": "INDUSTRY_PLATFORM_V1",
+   "industry_name": "플랫폼 콘텐츠·채널 운영",
+   "strength": "중심",
+   "appears_as": "플랫폼 콘텐츠·채널 운영 에서는 플랫폼 규격을 편집 조건으로 옮기는가 · 편집 방식을 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J4"
+   ],
+   "dimensions": [
+    "플랫폼 규격을 편집 조건으로 옮기는가",
+    "편집 방식을 고르는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "편집·후반",
+   "industry": "INDUSTRY_EVENT_V1",
+   "industry_name": "행사·전시 운영",
+   "strength": "드묾",
+   "appears_as": "행사·전시 운영 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "공연·현장 운영",
+   "industry": "INDUSTRY_ADAGENCY_V1",
+   "industry_name": "광고 대행·캠페인",
+   "strength": "드묾",
+   "appears_as": "광고 대행·캠페인 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "공연·현장 운영",
+   "industry": "INDUSTRY_BROADCAST_V1",
+   "industry_name": "방송 프로그램",
+   "strength": "중심",
+   "appears_as": "방송 프로그램 에서는 생방송에서 줄일 꼭지를 가르는가 · 큐시트를 남기는가 · 끊긴 자리의 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "생방송에서 줄일 꼭지를 가르는가",
+    "큐시트를 남기는가",
+    "끊긴 자리의 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "공연·현장 운영",
+   "industry": "INDUSTRY_FILM_V1",
+   "industry_name": "영화·영상 제작",
+   "strength": "있음",
+   "appears_as": "영화·영상 제작 에서는 촬영 자리의 설비를 조건으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "촬영 자리의 설비를 조건으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "공연·현장 운영",
+   "industry": "INDUSTRY_PERFORM_V1",
+   "industry_name": "공연·무대",
+   "strength": "중심",
+   "appears_as": "공연·무대 에서는 그날 할 것과 뺄 것을 좁히는가 · 밀렸을 때 줄일 것을 가르는가 · 극장의 설비를 조건으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J2",
+    "J3"
+   ],
+   "dimensions": [
+    "그날 할 것과 뺄 것을 좁히는가",
+    "밀렸을 때 줄일 것을 가르는가",
+    "극장의 설비를 조건으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "공연·현장 운영",
+   "industry": "INDUSTRY_MUSIC_V1",
+   "industry_name": "음악·음반",
+   "strength": "있음",
+   "appears_as": "음악·음반 에서는 무대 음향 방식을 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "무대 음향 방식을 고르는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "공연·현장 운영",
+   "industry": "INDUSTRY_PR_V1",
+   "industry_name": "기업 홍보·커뮤니케이션",
+   "strength": "드묾",
+   "appears_as": "기업 홍보·커뮤니케이션 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "공연·현장 운영",
+   "industry": "INDUSTRY_PLATFORM_V1",
+   "industry_name": "플랫폼 콘텐츠·채널 운영",
+   "strength": "드묾",
+   "appears_as": "플랫폼 콘텐츠·채널 운영 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "공연·현장 운영",
+   "industry": "INDUSTRY_EVENT_V1",
+   "industry_name": "행사·전시 운영",
+   "strength": "중심",
+   "appears_as": "행사·전시 운영 에서는 행사장 설비를 조건으로 옮기는가 · 몰렸을 때 동선을 가르는가 · 안전 점검을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5"
+   ],
+   "dimensions": [
+    "행사장 설비를 조건으로 옮기는가",
+    "몰렸을 때 동선을 가르는가",
+    "안전 점검을 남기는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "출연·연기·연주 지도",
+   "industry": "INDUSTRY_ADAGENCY_V1",
+   "industry_name": "광고 대행·캠페인",
+   "strength": "드묾",
+   "appears_as": "광고 대행·캠페인 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "출연·연기·연주 지도",
+   "industry": "INDUSTRY_BROADCAST_V1",
+   "industry_name": "방송 프로그램",
+   "strength": "있음",
+   "appears_as": "방송 프로그램 에서는 출연자 지시 사항을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "출연자 지시 사항을 남기는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "출연·연기·연주 지도",
+   "industry": "INDUSTRY_FILM_V1",
+   "industry_name": "영화·영상 제작",
+   "strength": "있음",
+   "appears_as": "영화·영상 제작 에서는 그날 쓸 테이크를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "그날 쓸 테이크를 가르는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "출연·연기·연주 지도",
+   "industry": "INDUSTRY_PERFORM_V1",
+   "industry_name": "공연·무대",
+   "strength": "중심",
+   "appears_as": "공연·무대 에서는 연습 기록을 남기는가 · 그날 쓸 판을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ],
+   "dimensions": [
+    "연습 기록을 남기는가",
+    "그날 쓸 판을 가르는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "출연·연기·연주 지도",
+   "industry": "INDUSTRY_MUSIC_V1",
+   "industry_name": "음악·음반",
+   "strength": "중심",
+   "appears_as": "음악·음반 에서는 연주 지도를 남기는가 · 쓸 테이크를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ],
+   "dimensions": [
+    "연주 지도를 남기는가",
+    "쓸 테이크를 가르는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "출연·연기·연주 지도",
+   "industry": "INDUSTRY_PR_V1",
+   "industry_name": "기업 홍보·커뮤니케이션",
+   "strength": "드묾",
+   "appears_as": "기업 홍보·커뮤니케이션 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "출연·연기·연주 지도",
+   "industry": "INDUSTRY_PLATFORM_V1",
+   "industry_name": "플랫폼 콘텐츠·채널 운영",
+   "strength": "드묾",
+   "appears_as": "플랫폼 콘텐츠·채널 운영 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "출연·연기·연주 지도",
+   "industry": "INDUSTRY_EVENT_V1",
+   "industry_name": "행사·전시 운영",
+   "strength": "있음",
+   "appears_as": "행사·전시 운영 에서는 안내가 안 먹힌 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "안내가 안 먹힌 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "성과·반응 측정",
+   "industry": "INDUSTRY_ADAGENCY_V1",
+   "industry_name": "광고 대행·캠페인",
+   "strength": "중심",
+   "appears_as": "광고 대행·캠페인 에서는 집행 뒤의 수를 목표와 견주는가 · 수가 떨어진 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J6",
+    "J7"
+   ],
+   "dimensions": [
+    "집행 뒤의 수를 목표와 견주는가",
+    "수가 떨어진 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "성과·반응 측정",
+   "industry": "INDUSTRY_BROADCAST_V1",
+   "industry_name": "방송 프로그램",
+   "strength": "있음",
+   "appears_as": "방송 프로그램 에서는 시청과 조회 수를 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "시청과 조회 수를 견주는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "성과·반응 측정",
+   "industry": "INDUSTRY_FILM_V1",
+   "industry_name": "영화·영상 제작",
+   "strength": "드묾",
+   "appears_as": "영화·영상 제작 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "성과·반응 측정",
+   "industry": "INDUSTRY_PERFORM_V1",
+   "industry_name": "공연·무대",
+   "strength": "있음",
+   "appears_as": "공연·무대 에서는 객석과 반응을 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "객석과 반응을 견주는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "성과·반응 측정",
+   "industry": "INDUSTRY_MUSIC_V1",
+   "industry_name": "음악·음반",
+   "strength": "있음",
+   "appears_as": "음악·음반 에서는 발매 뒤 반응을 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "발매 뒤 반응을 견주는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "성과·반응 측정",
+   "industry": "INDUSTRY_PR_V1",
+   "industry_name": "기업 홍보·커뮤니케이션",
+   "strength": "있음",
+   "appears_as": "기업 홍보·커뮤니케이션 에서는 보도 반응을 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "보도 반응을 견주는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "성과·반응 측정",
+   "industry": "INDUSTRY_PLATFORM_V1",
+   "industry_name": "플랫폼 콘텐츠·채널 운영",
+   "strength": "중심",
+   "appears_as": "플랫폼 콘텐츠·채널 운영 에서는 쓸 지표를 가르는가 · 지표 정의를 남기는가 · 지난 회차와 견주는가 · 수가 떨어진 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J6",
+    "J7"
+   ],
+   "dimensions": [
+    "쓸 지표를 가르는가",
+    "지표 정의를 남기는가",
+    "지난 회차와 견주는가",
+    "수가 떨어진 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "성과·반응 측정",
+   "industry": "INDUSTRY_EVENT_V1",
+   "industry_name": "행사·전시 운영",
+   "strength": "있음",
+   "appears_as": "행사·전시 운영 에서는 들어온 사람 수를 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "들어온 사람 수를 견주는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "홍보·보도·위기 대응",
+   "industry": "INDUSTRY_ADAGENCY_V1",
+   "industry_name": "광고 대행·캠페인",
+   "strength": "있음",
+   "appears_as": "광고 대행·캠페인 에서는 광고주에게 낼 자료를 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "광고주에게 낼 자료를 남기는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "홍보·보도·위기 대응",
+   "industry": "INDUSTRY_BROADCAST_V1",
+   "industry_name": "방송 프로그램",
+   "strength": "드묾",
+   "appears_as": "방송 프로그램 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "홍보·보도·위기 대응",
+   "industry": "INDUSTRY_FILM_V1",
+   "industry_name": "영화·영상 제작",
+   "strength": "드묾",
+   "appears_as": "영화·영상 제작 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "홍보·보도·위기 대응",
+   "industry": "INDUSTRY_PERFORM_V1",
+   "industry_name": "공연·무대",
+   "strength": "드묾",
+   "appears_as": "공연·무대 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "홍보·보도·위기 대응",
+   "industry": "INDUSTRY_MUSIC_V1",
+   "industry_name": "음악·음반",
+   "strength": "드묾",
+   "appears_as": "음악·음반 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "홍보·보도·위기 대응",
+   "industry": "INDUSTRY_PR_V1",
+   "industry_name": "기업 홍보·커뮤니케이션",
+   "strength": "중심",
+   "appears_as": "기업 홍보·커뮤니케이션 에서는 말할 것과 말하지 않을 것을 좁히는가 · 확인된 사실을 문장 조건으로 옮기는가 · 어디까지 말할지 가르는가 · 질문과 답 묶음을 남기는가 · 다르게 읽힌 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J2",
+    "J3",
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "말할 것과 말하지 않을 것을 좁히는가",
+    "확인된 사실을 문장 조건으로 옮기는가",
+    "어디까지 말할지 가르는가",
+    "질문과 답 묶음을 남기는가",
+    "다르게 읽힌 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "홍보·보도·위기 대응",
+   "industry": "INDUSTRY_PLATFORM_V1",
+   "industry_name": "플랫폼 콘텐츠·채널 운영",
+   "strength": "드묾",
+   "appears_as": "플랫폼 콘텐츠·채널 운영 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "홍보·보도·위기 대응",
+   "industry": "INDUSTRY_EVENT_V1",
+   "industry_name": "행사·전시 운영",
+   "strength": "있음",
+   "appears_as": "행사·전시 운영 에서는 현장 문의에 답할 선을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "현장 문의에 답할 선을 가르는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "권리·심의·기록",
+   "industry": "INDUSTRY_ADAGENCY_V1",
+   "industry_name": "광고 대행·캠페인",
+   "strength": "있음",
+   "appears_as": "광고 대행·캠페인 에서는 심의 기준을 확인 항목으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "심의 기준을 확인 항목으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "권리·심의·기록",
+   "industry": "INDUSTRY_BROADCAST_V1",
+   "industry_name": "방송 프로그램",
+   "strength": "있음",
+   "appears_as": "방송 프로그램 에서는 송출 규격과 심의에 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "송출 규격과 심의에 대조하는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "권리·심의·기록",
+   "industry": "INDUSTRY_FILM_V1",
+   "industry_name": "영화·영상 제작",
+   "strength": "있음",
+   "appears_as": "영화·영상 제작 에서는 권리 확인을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "권리 확인을 남기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "권리·심의·기록",
+   "industry": "INDUSTRY_PERFORM_V1",
+   "industry_name": "공연·무대",
+   "strength": "있음",
+   "appears_as": "공연·무대 에서는 권리 확인을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "권리 확인을 남기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "권리·심의·기록",
+   "industry": "INDUSTRY_MUSIC_V1",
+   "industry_name": "음악·음반",
+   "strength": "있음",
+   "appears_as": "음악·음반 에서는 권리와 정산 확인을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "권리와 정산 확인을 남기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "권리·심의·기록",
+   "industry": "INDUSTRY_PR_V1",
+   "industry_name": "기업 홍보·커뮤니케이션",
+   "strength": "있음",
+   "appears_as": "기업 홍보·커뮤니케이션 에서는 법과 규정에 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "법과 규정에 대조하는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "권리·심의·기록",
+   "industry": "INDUSTRY_PLATFORM_V1",
+   "industry_name": "플랫폼 콘텐츠·채널 운영",
+   "strength": "있음",
+   "appears_as": "플랫폼 콘텐츠·채널 운영 에서는 업로드 전 확인을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "업로드 전 확인을 남기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "권리·심의·기록",
+   "industry": "INDUSTRY_EVENT_V1",
+   "industry_name": "행사·전시 운영",
+   "strength": "있음",
+   "appears_as": "행사·전시 운영 에서는 사용 허가와 보험을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "사용 허가와 보험을 남기는가"
+   ]
+  }
+ ],
+ "td_role": [
+  {
+   "td": "TD01",
+   "td_name": "기획·과제 정의",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "기획·구성",
+   "strength": "중심",
+   "appears_as": "기획·구성 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J2",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·과제 정의",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·분석",
+   "strength": "중심",
+   "appears_as": "조사·분석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·과제 정의",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "판정·심의 대응",
+   "strength": "드묾",
+   "appears_as": "판정·심의 대응 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·과제 정의",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·과제 정의",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "제작 현장",
+   "strength": "드묾",
+   "appears_as": "제작 현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·과제 정의",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "중심",
+   "appears_as": "운영·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·과제 정의",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·과제 정의",
+   "role": "ROLE_RIGHTS_V1",
+   "role_name": "권리·규정 관리",
+   "strength": "드묾",
+   "appears_as": "권리·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "메시지·콘셉트",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "기획·구성",
+   "strength": "중심",
+   "appears_as": "기획·구성 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "메시지·콘셉트",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "메시지·콘셉트",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "판정·심의 대응",
+   "strength": "드묾",
+   "appears_as": "판정·심의 대응 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "메시지·콘셉트",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "메시지·콘셉트",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "제작 현장",
+   "strength": "드묾",
+   "appears_as": "제작 현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "메시지·콘셉트",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "메시지·콘셉트",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "중심",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "메시지·콘셉트",
+   "role": "ROLE_RIGHTS_V1",
+   "role_name": "권리·규정 관리",
+   "strength": "드묾",
+   "appears_as": "권리·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "매체·채널 설계",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "기획·구성",
+   "strength": "드묾",
+   "appears_as": "기획·구성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "매체·채널 설계",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·분석",
+   "strength": "중심",
+   "appears_as": "조사·분석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J4"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "매체·채널 설계",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "판정·심의 대응",
+   "strength": "드묾",
+   "appears_as": "판정·심의 대응 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "매체·채널 설계",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "중심",
+   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "매체·채널 설계",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "제작 현장",
+   "strength": "드묾",
+   "appears_as": "제작 현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "매체·채널 설계",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "매체·채널 설계",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "중심",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "매체·채널 설계",
+   "role": "ROLE_RIGHTS_V1",
+   "role_name": "권리·규정 관리",
+   "strength": "드묾",
+   "appears_as": "권리·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "촬영·조명 설계",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "기획·구성",
+   "strength": "드묾",
+   "appears_as": "기획·구성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "촬영·조명 설계",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "촬영·조명 설계",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "판정·심의 대응",
+   "strength": "드묾",
+   "appears_as": "판정·심의 대응 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "촬영·조명 설계",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "촬영·조명 설계",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "제작 현장",
+   "strength": "중심",
+   "appears_as": "제작 현장 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "촬영·조명 설계",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "촬영·조명 설계",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "촬영·조명 설계",
+   "role": "ROLE_RIGHTS_V1",
+   "role_name": "권리·규정 관리",
+   "strength": "드묾",
+   "appears_as": "권리·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "사운드·음향",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "기획·구성",
+   "strength": "드묾",
+   "appears_as": "기획·구성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "사운드·음향",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "사운드·음향",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "판정·심의 대응",
+   "strength": "드묾",
+   "appears_as": "판정·심의 대응 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "사운드·음향",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "사운드·음향",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "제작 현장",
+   "strength": "중심",
+   "appears_as": "제작 현장 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "사운드·음향",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "사운드·음향",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "사운드·음향",
+   "role": "ROLE_RIGHTS_V1",
+   "role_name": "권리·규정 관리",
+   "strength": "드묾",
+   "appears_as": "권리·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "연출·구성·대본",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "기획·구성",
+   "strength": "중심",
+   "appears_as": "기획·구성 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "연출·구성·대본",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "연출·구성·대본",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "판정·심의 대응",
+   "strength": "드묾",
+   "appears_as": "판정·심의 대응 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "연출·구성·대본",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "연출·구성·대본",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "제작 현장",
+   "strength": "드묾",
+   "appears_as": "제작 현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "연출·구성·대본",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "연출·구성·대본",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "연출·구성·대본",
+   "role": "ROLE_RIGHTS_V1",
+   "role_name": "권리·규정 관리",
+   "strength": "드묾",
+   "appears_as": "권리·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "편집·후반",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "기획·구성",
+   "strength": "드묾",
+   "appears_as": "기획·구성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "편집·후반",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "편집·후반",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "판정·심의 대응",
+   "strength": "중심",
+   "appears_as": "판정·심의 대응 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "편집·후반",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "중심",
+   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J5",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "편집·후반",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "제작 현장",
+   "strength": "드묾",
+   "appears_as": "제작 현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "편집·후반",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "편집·후반",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "편집·후반",
+   "role": "ROLE_RIGHTS_V1",
+   "role_name": "권리·규정 관리",
+   "strength": "드묾",
+   "appears_as": "권리·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "공연·현장 운영",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "기획·구성",
+   "strength": "드묾",
+   "appears_as": "기획·구성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "공연·현장 운영",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "공연·현장 운영",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "판정·심의 대응",
+   "strength": "드묾",
+   "appears_as": "판정·심의 대응 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "공연·현장 운영",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "공연·현장 운영",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "제작 현장",
+   "strength": "중심",
+   "appears_as": "제작 현장 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "공연·현장 운영",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "중심",
+   "appears_as": "운영·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "공연·현장 운영",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "공연·현장 운영",
+   "role": "ROLE_RIGHTS_V1",
+   "role_name": "권리·규정 관리",
+   "strength": "중심",
+   "appears_as": "권리·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "출연·연기·연주 지도",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "기획·구성",
+   "strength": "드묾",
+   "appears_as": "기획·구성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "출연·연기·연주 지도",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "출연·연기·연주 지도",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "판정·심의 대응",
+   "strength": "드묾",
+   "appears_as": "판정·심의 대응 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "출연·연기·연주 지도",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "출연·연기·연주 지도",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "제작 현장",
+   "strength": "드묾",
+   "appears_as": "제작 현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "출연·연기·연주 지도",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "중심",
+   "appears_as": "운영·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J4",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "출연·연기·연주 지도",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "출연·연기·연주 지도",
+   "role": "ROLE_RIGHTS_V1",
+   "role_name": "권리·규정 관리",
+   "strength": "드묾",
+   "appears_as": "권리·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "성과·반응 측정",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "기획·구성",
+   "strength": "드묾",
+   "appears_as": "기획·구성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "성과·반응 측정",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·분석",
+   "strength": "중심",
+   "appears_as": "조사·분석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J6",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "성과·반응 측정",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "판정·심의 대응",
+   "strength": "드묾",
+   "appears_as": "판정·심의 대응 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "성과·반응 측정",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "성과·반응 측정",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "제작 현장",
+   "strength": "드묾",
+   "appears_as": "제작 현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "성과·반응 측정",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "성과·반응 측정",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "중심",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J3",
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "성과·반응 측정",
+   "role": "ROLE_RIGHTS_V1",
+   "role_name": "권리·규정 관리",
+   "strength": "드묾",
+   "appears_as": "권리·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "홍보·보도·위기 대응",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "기획·구성",
+   "strength": "드묾",
+   "appears_as": "기획·구성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "홍보·보도·위기 대응",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "홍보·보도·위기 대응",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "판정·심의 대응",
+   "strength": "중심",
+   "appears_as": "판정·심의 대응 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "홍보·보도·위기 대응",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "홍보·보도·위기 대응",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "제작 현장",
+   "strength": "드묾",
+   "appears_as": "제작 현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "홍보·보도·위기 대응",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "홍보·보도·위기 대응",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "홍보·보도·위기 대응",
+   "role": "ROLE_RIGHTS_V1",
+   "role_name": "권리·규정 관리",
+   "strength": "중심",
+   "appears_as": "권리·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "권리·심의·기록",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "기획·구성",
+   "strength": "드묾",
+   "appears_as": "기획·구성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "권리·심의·기록",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "권리·심의·기록",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "판정·심의 대응",
+   "strength": "중심",
+   "appears_as": "판정·심의 대응 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "권리·심의·기록",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "중심",
+   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "권리·심의·기록",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "제작 현장",
+   "strength": "드묾",
+   "appears_as": "제작 현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "권리·심의·기록",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "권리·심의·기록",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "권리·심의·기록",
+   "role": "ROLE_RIGHTS_V1",
+   "role_name": "권리·규정 관리",
+   "strength": "중심",
+   "appears_as": "권리·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J5",
+    "J7",
+    "J8"
+   ]
+  }
+ ]
+}

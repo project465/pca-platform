@@ -487,9 +487,9 @@
          "name": "철도건설공학과",
          "kind": "department",
          "core_code": "CIV_CORE_V1",
-         "specialization": null,
-         "specialization_required": true,
-         "note": "토목·건설 Core 는 있는데 철도 갈래가 아직 없다"
+         "specialization": "SPEC_CIV_RAIL",
+         "note": "토목·철도건설 Core 의 철도건설 갈래로 간다. 밤 차단 시간 안에 선로를 되돌려 놓는 쪽이다",
+         "mapping_source": "assigned"
         },
         {
          "code": "PCU26_SWF",
@@ -607,28 +607,32 @@
          "name": "광고사진영상학과",
          "kind": "department",
          "core_code": "MEDIA_CORE_V1",
-         "specialization": null
+         "specialization": "SPEC_MEDIA_ADPHOTO",
+         "mapping_source": "assigned"
         },
         {
          "code": "PCU26_MEDIACONTENT",
          "name": "미디어콘텐츠학과",
          "kind": "department",
          "core_code": "MEDIA_CORE_V1",
-         "specialization": null
+         "specialization": "SPEC_MEDIA_CONTENT",
+         "mapping_source": "assigned"
         },
         {
          "code": "PCU26_FASHION",
          "name": "의류패션학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null
+         "core_code": "STYLE_CORE_V1",
+         "specialization": "SPEC_STYLE_FASHION",
+         "mapping_source": "assigned"
         },
         {
          "code": "PCU26_BEAUTY",
          "name": "뷰티케어학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null
+         "core_code": "STYLE_CORE_V1",
+         "specialization": "SPEC_STYLE_BEAUTY",
+         "mapping_source": "assigned"
         },
         {
          "code": "PCU26_PERFORM",
@@ -639,15 +643,17 @@
            "code": "PCU26_PERFORM_MUSIC",
            "name": "음악트랙",
            "kind": "track",
-           "core_code": null,
-           "specialization": null
+           "core_code": "MEDIA_CORE_V1",
+           "specialization": "SPEC_MEDIA_MUSIC",
+           "mapping_source": "assigned"
           },
           {
            "code": "PCU26_PERFORM_FILM",
            "name": "영화영상트랙",
            "kind": "track",
-           "core_code": null,
-           "specialization": null
+           "core_code": "MEDIA_CORE_V1",
+           "specialization": "SPEC_MEDIA_FILM",
+           "mapping_source": "assigned"
           }
          ]
         },
@@ -698,9 +704,10 @@
            "code": "PCU26_LIFE_STYLING",
            "name": "라이프스타일링전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null,
-           "audience": "ADULT_LEARNER"
+           "core_code": "STYLE_CORE_V1",
+           "specialization": "SPEC_STYLE_LIFE",
+           "audience": "ADULT_LEARNER",
+           "mapping_source": "assigned"
           },
           {
            "code": "PCU26_LIFE_CARE",
@@ -740,9 +747,10 @@
            "code": "PCU26_LIFE_HUMANARTS",
            "name": "인문예술창작전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null,
-           "audience": "ADULT_LEARNER"
+           "core_code": "LANG_CORE_V1",
+           "specialization": "SPEC_LANG_CREATIVE",
+           "audience": "ADULT_LEARNER",
+           "mapping_source": "assigned"
           }
          ],
          "audience": "ADULT_LEARNER"
@@ -756,9 +764,10 @@
            "code": "PCU26_GLOBAL_KORTRANS",
            "name": "직무한국어번역전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null,
-           "audience": "INTERNATIONAL"
+           "core_code": "LANG_CORE_V1",
+           "specialization": "SPEC_LANG_KORTRANS",
+           "audience": "INTERNATIONAL",
+           "mapping_source": "assigned"
           },
           {
            "code": "PCU26_GLOBAL_ARTCULTURE",
@@ -788,9 +797,10 @@
            "code": "PCU26_GLOBAL_BEAUTY",
            "name": "뷰티패션산업전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null,
-           "audience": "INTERNATIONAL"
+           "core_code": "STYLE_CORE_V1",
+           "specialization": "SPEC_STYLE_BEAUTYBIZ",
+           "audience": "INTERNATIONAL",
+           "mapping_source": "assigned"
           },
           {
            "code": "PCU26_GLOBAL_MEDTOUR",
@@ -1064,9 +1074,9 @@
          "name": "철도건설공학과",
          "kind": "department",
          "core_code": "CIV_CORE_V1",
-         "specialization": null,
-         "specialization_required": true,
-         "note": "토목·건설 Core 는 있는데 철도 갈래가 아직 없다. 입학안내 랜딩에는 `철도건설학과` 로도 적힌다"
+         "specialization": "SPEC_CIV_RAIL",
+         "note": "토목·철도건설 Core 의 철도건설 갈래로 간다. 밤 차단 시간 안에 선로를 되돌려 놓는 쪽이다",
+         "mapping_source": "assigned"
         },
         {
          "code": "PCU27_AISW",
@@ -1213,28 +1223,32 @@
          "name": "광고사진영상학과",
          "kind": "department",
          "core_code": "MEDIA_CORE_V1",
-         "specialization": null
+         "specialization": "SPEC_MEDIA_ADPHOTO",
+         "mapping_source": "assigned"
         },
         {
          "code": "PCU27_MEDIACONTENT",
          "name": "미디어콘텐츠학과",
          "kind": "department",
          "core_code": "MEDIA_CORE_V1",
-         "specialization": null
+         "specialization": "SPEC_MEDIA_CONTENT",
+         "mapping_source": "assigned"
         },
         {
          "code": "PCU27_FASHION",
          "name": "의류패션학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null
+         "core_code": "STYLE_CORE_V1",
+         "specialization": "SPEC_STYLE_FASHION",
+         "mapping_source": "assigned"
         },
         {
          "code": "PCU27_BEAUTY",
          "name": "뷰티케어학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null
+         "core_code": "STYLE_CORE_V1",
+         "specialization": "SPEC_STYLE_BEAUTY",
+         "mapping_source": "assigned"
         },
         {
          "code": "PCU27_PERFORM",
@@ -1245,15 +1259,17 @@
            "code": "PCU27_PERFORM_APPLIED",
            "name": "실용음악전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null
+           "core_code": "MEDIA_CORE_V1",
+           "specialization": "SPEC_MEDIA_MUSIC",
+           "mapping_source": "assigned"
           },
           {
            "code": "PCU27_PERFORM_FILMST",
            "name": "영화영상학전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null
+           "core_code": "MEDIA_CORE_V1",
+           "specialization": "SPEC_MEDIA_FILM",
+           "mapping_source": "assigned"
           }
          ]
         },
@@ -1304,9 +1320,10 @@
            "code": "PCU27_LIFE_STYLING",
            "name": "라이프스타일링전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null,
-           "audience": "ADULT_LEARNER"
+           "core_code": "STYLE_CORE_V1",
+           "specialization": "SPEC_STYLE_LIFE",
+           "audience": "ADULT_LEARNER",
+           "mapping_source": "assigned"
           },
           {
            "code": "PCU27_LIFE_WELFARE",
@@ -1347,9 +1364,10 @@
            "code": "PCU27_LIFE_HUMANARTS",
            "name": "인문예술창작전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null,
-           "audience": "ADULT_LEARNER"
+           "core_code": "LANG_CORE_V1",
+           "specialization": "SPEC_LANG_CREATIVE",
+           "audience": "ADULT_LEARNER",
+           "mapping_source": "assigned"
           }
          ],
          "audience": "ADULT_LEARNER"
@@ -1363,9 +1381,10 @@
            "code": "PCU27_GLOBAL_KORTRANS",
            "name": "직무한국어번역전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null,
-           "audience": "INTERNATIONAL"
+           "core_code": "LANG_CORE_V1",
+           "specialization": "SPEC_LANG_KORTRANS",
+           "audience": "INTERNATIONAL",
+           "mapping_source": "assigned"
           },
           {
            "code": "PCU27_GLOBAL_KCULTURE",
@@ -1396,9 +1415,10 @@
            "code": "PCU27_GLOBAL_BEAUTY",
            "name": "뷰티패션산업전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null,
-           "audience": "INTERNATIONAL"
+           "core_code": "STYLE_CORE_V1",
+           "specialization": "SPEC_STYLE_BEAUTYBIZ",
+           "audience": "INTERNATIONAL",
+           "mapping_source": "assigned"
           },
           {
            "code": "PCU27_GLOBAL_MEDTOUR",

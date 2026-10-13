@@ -1,0 +1,1374 @@
+{
+ "schema_version": "media-v1-checklist-additions.1",
+ "note": "판단 근거 목록이다. 응시자가 `직접 정했거나 결과물로 남긴 것` 을 고르는 자리에 그대로 뜬다. 전부 고를 수 있는 문장으로 적는다: 두 낱말짜리 이름표를 올리면 그 자리에서 응시자가 무엇을 고르는지 알 수 없다. 칸마다 둘 이상인 까닭은 소유가 근거 둘 이상일 때만 올라가기 때문이다",
+ "items": [
+  {
+   "td": "TD01",
+   "axis": "J1",
+   "text": "알릴 것을 좁혀 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J1",
+   "text": "알리지 않을 것과 그 까닭을 적어 두었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J2",
+   "text": "광고주의 말을 확인 항목으로 옮겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J2",
+   "text": "지킬 조건을 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J2",
+   "text": "끝에 확인할 항목을 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J3",
+   "text": "받는 사람이 여럿일 때 직접 정했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J3",
+   "text": "먼저 볼 쪽을 직접 가렸다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J3",
+   "text": "뺄 주제를 직접 정했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J4",
+   "text": "조사 방법과 모을 범위를 골라 적용했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J4",
+   "text": "방법이 맞지 않아 다른 방법으로 바꿨다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J5",
+   "text": "기획서를 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J5",
+   "text": "사례 정리를 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J5",
+   "text": "조사 기록을 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J6",
+   "text": "세운 기획을 수용자의 말과 대조했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J6",
+   "text": "비슷한 사례와 견주었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J7",
+   "text": "엉뚱하다는 말의 까닭을 좁혔다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J7",
+   "text": "기획을 바꿔 다시 해 보았다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J8",
+   "text": "내 기획 방식이 팀의 서식이 됐다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J8",
+   "text": "내 조사가 광고주 결정에 쓰였다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J1",
+   "text": "말할 것을 좁혀 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J1",
+   "text": "말하지 않을 것과 그 까닭을 적어 두었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J2",
+   "text": "광고주의 인상을 지킬 것과 버릴 것으로 옮겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J2",
+   "text": "지킬 조건을 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J2",
+   "text": "끝에 확인할 항목을 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J3",
+   "text": "여러 메시지 가운데 하나를 직접 정했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J3",
+   "text": "말하는 결을 직접 가렸다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J3",
+   "text": "버릴 표현을 직접 정했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J4",
+   "text": "보여 줄 방법과 묶음을 골라 적용했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J4",
+   "text": "방식이 맞지 않아 다른 방식으로 바꿨다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J5",
+   "text": "메시지 한 줄을 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J5",
+   "text": "말하는 결을 적어 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J5",
+   "text": "지킬 것과 버릴 것을 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J6",
+   "text": "세운 메시지를 기획서와 대조했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J6",
+   "text": "브랜드가 쓰는 말과 견주었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J7",
+   "text": "흔하다는 말의 까닭을 좁혔다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J7",
+   "text": "근거를 바꿔 다시 적어 보았다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J8",
+   "text": "내 한 줄이 브랜드가 쓰는 말이 됐다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J8",
+   "text": "내 제안이 광고주 결정에 쓰였다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J1",
+   "text": "쓸 매체의 범위를 좁혀 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J1",
+   "text": "쓰지 않을 매체와 그 까닭을 적어 두었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J2",
+   "text": "받는 사람과 예산을 매체와 양 조건으로 옮겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J2",
+   "text": "지킬 도달 목표를 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J2",
+   "text": "끝에 확인할 항목을 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J3",
+   "text": "돈이 모자랄 때 뺄 매체를 직접 정했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J3",
+   "text": "낼 때를 직접 가렸다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J3",
+   "text": "줄일 양을 직접 정했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J4",
+   "text": "쓸 지표와 집계 방식을 골라 적용했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J4",
+   "text": "방식이 맞지 않아 다른 방식으로 바꿨다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J5",
+   "text": "매체 집행 계획을 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J5",
+   "text": "매체를 고른 근거를 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J5",
+   "text": "매체별 규격과 바꾼 것을 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J6",
+   "text": "짠 계획을 매체별 도달 자료와 대조했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J6",
+   "text": "지난 회차의 결과와 견주었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J7",
+   "text": "안 닿는다는 말의 까닭을 좁혔다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J7",
+   "text": "한 가지를 바꿔 다시 내 보았다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J8",
+   "text": "내 집행 방식이 브랜드의 기본이 됐다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J8",
+   "text": "내 계획이 예산 결정에 쓰였다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J1",
+   "text": "찍을 것을 좁혀 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J1",
+   "text": "찍지 않을 것과 그 까닭을 적어 두었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J2",
+   "text": "구성안의 장면을 앵글과 빛의 조건으로 옮겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J2",
+   "text": "지킬 노출과 색온도를 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J2",
+   "text": "끝에 확인할 항목을 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J3",
+   "text": "시간이 모자랄 때 버릴 장면을 직접 정했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J3",
+   "text": "앵글을 직접 가렸다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J3",
+   "text": "줄일 조명 설치를 직접 정했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J4",
+   "text": "쓸 렌즈와 조명 방식을 골라 적용했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J4",
+   "text": "방식이 맞지 않아 다른 방식으로 바꿨다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J5",
+   "text": "촬영 계획을 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J5",
+   "text": "앵글과 조명을 적어 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J5",
+   "text": "노출과 색온도 기록을 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J6",
+   "text": "찍은 화면을 모니터와 파형과 대조했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J6",
+   "text": "비슷한 사례의 화면과 견주었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J7",
+   "text": "다시 찍어야 한다는 말의 까닭을 좁혔다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J7",
+   "text": "한 가지를 바꿔 다시 찍어 보았다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J8",
+   "text": "내 촬영 설정이 작품의 기본이 됐다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J8",
+   "text": "내 기록이 후반 작업의 바탕으로 쓰였다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J1",
+   "text": "담을 소리와 지울 소리를 갈라 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J1",
+   "text": "쓰지 않을 소리와 그 까닭을 적어 두었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J2",
+   "text": "매체의 소리 규격을 조건으로 옮겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J2",
+   "text": "지킬 기준 크기를 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J2",
+   "text": "끝에 확인할 항목을 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J3",
+   "text": "마이크를 어디에 둘지 직접 정했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J3",
+   "text": "쓸 트랙과 뺄 트랙을 직접 가렸다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J3",
+   "text": "울림을 줄일 방법을 직접 정했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J4",
+   "text": "마이크 종류와 섞는 방법을 골라 적용했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J4",
+   "text": "방법이 맞지 않아 다른 방법으로 바꿨다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J5",
+   "text": "마이크 배치를 그림으로 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J5",
+   "text": "녹음 기록과 트랙 목록을 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J5",
+   "text": "섞은 결과의 크기 수치를 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J6",
+   "text": "섞은 결과를 기준 크기에 재어 대조했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J6",
+   "text": "현장에서 잰 소음 수치와 견주었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J7",
+   "text": "안 들린다는 말의 까닭을 좁혔다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J7",
+   "text": "한 가지를 바꿔 다시 들어 보았다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J8",
+   "text": "내 소리 기준이 그 조직의 녹음 방식이 됐다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J8",
+   "text": "내 배치 기록이 다른 현장에 쓰였다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J1",
+   "text": "보여 줄 장면과 빼는 장면을 갈라 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J1",
+   "text": "쓰지 않을 소재와 그 까닭을 적어 두었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J2",
+   "text": "전하려는 말을 장면 조건으로 옮겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J2",
+   "text": "지킬 분량을 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J2",
+   "text": "끝에 확인할 항목을 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J3",
+   "text": "어느 장면을 접을지 직접 정했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J3",
+   "text": "첫 장면과 끝 장면을 직접 가렸다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J3",
+   "text": "대사를 줄일 자리를 직접 정했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J4",
+   "text": "구성 방식과 대본 쓰는 방법을 골라 적용했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J4",
+   "text": "방식이 맞지 않아 다른 방식으로 바꿨다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J5",
+   "text": "구성안 한 벌을 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J5",
+   "text": "대본을 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J5",
+   "text": "장면별 길이 표를 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J6",
+   "text": "짠 구성을 읽어 보며 잰 시간과 대조했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J6",
+   "text": "비슷한 사례의 구성과 견주었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J7",
+   "text": "지루하다는 말의 까닭을 좁혔다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J7",
+   "text": "한 가지를 바꿔 다시 읽어 보았다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J8",
+   "text": "내 구성 방식이 그 조직의 틀이 됐다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J8",
+   "text": "내 대본 서식이 다른 사람에게 쓰였다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J1",
+   "text": "살릴 장면과 버릴 장면을 갈라 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J1",
+   "text": "쓰지 않을 자료와 그 까닭을 적어 두었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J2",
+   "text": "나갈 곳의 규격과 길이 제한을 조건으로 옮겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J2",
+   "text": "지킬 길이를 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J2",
+   "text": "끝에 확인할 항목을 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J3",
+   "text": "붙이는 차례를 직접 정했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J3",
+   "text": "자막을 넣을 자리를 직접 가렸다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J3",
+   "text": "뺄 구간을 직접 정했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J4",
+   "text": "편집 방식과 색 보정 방법을 골라 적용했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J4",
+   "text": "방식이 맞지 않아 다른 방식으로 바꿨다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J5",
+   "text": "편집본을 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J5",
+   "text": "쓴 장면과 버린 장면 목록을 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J5",
+   "text": "판본과 수정 기록을 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J6",
+   "text": "내보낸 파일을 나갈 곳의 규격과 대조했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J6",
+   "text": "구성안이 바란 길이와 견주었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J7",
+   "text": "안 붙는다는 말의 까닭을 좁혔다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J7",
+   "text": "한 가지를 바꿔 다시 내 보았다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J8",
+   "text": "내 후반 작업 방식이 그 조직의 기본이 됐다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J8",
+   "text": "내 판본 관리 방식이 다른 작업에 쓰였다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J1",
+   "text": "할 것과 뺄 것을 갈라 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J1",
+   "text": "하지 않을 것과 그 까닭을 적어 두었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J2",
+   "text": "그 자리의 크기와 설비를 조건으로 옮겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J2",
+   "text": "지킬 안전 기준을 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J2",
+   "text": "끝에 확인할 항목을 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J3",
+   "text": "앞이 밀렸을 때 무엇을 줄일지 그 자리에서 정했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J3",
+   "text": "사람의 자리를 직접 바꿨다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J3",
+   "text": "넘기는 신호를 직접 정했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J4",
+   "text": "진행 방식과 신호 주는 방법을 골라 적용했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J4",
+   "text": "방법이 맞지 않아 다른 방법으로 바꿨다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J5",
+   "text": "큐시트를 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J5",
+   "text": "사람과 장비 배치도를 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J5",
+   "text": "그날 바꾼 것과 그 까닭을 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J6",
+   "text": "그날 걸린 시간을 짜 둔 시간과 대조했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J6",
+   "text": "안전 점검 목록과 견주었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J7",
+   "text": "끊긴 자리의 까닭을 좁혔다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J7",
+   "text": "한 가지를 바꿔 다음 회차를 진행했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J8",
+   "text": "내 진행 방식이 그 조직의 기본이 됐다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J8",
+   "text": "내 안전 점검 목록이 다른 현장에 쓰였다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J1",
+   "text": "맞출 것과 그대로 두는 것을 갈라 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J1",
+   "text": "손대지 않을 자리와 그 까닭을 적어 두었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J2",
+   "text": "대본이 바라는 결을 조건으로 옮겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J2",
+   "text": "지킬 길이와 말투를 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J2",
+   "text": "끝에 확인할 항목을 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J3",
+   "text": "그날 쓸 판을 직접 골랐다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J3",
+   "text": "누가 맡을지 직접 가렸다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J3",
+   "text": "뺄 대사를 직접 정했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J4",
+   "text": "연습 방식과 고쳐 가는 방법을 골라 적용했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J4",
+   "text": "방식이 맞지 않아 다른 방식으로 바꿨다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J5",
+   "text": "연습 기록을 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J5",
+   "text": "사람별 지시 사항을 적어 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J5",
+   "text": "고친 자리와 그 까닭을 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J6",
+   "text": "연습한 결과를 대본이 바란 결과 대조했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J6",
+   "text": "비슷한 사례의 연기와 견주었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J7",
+   "text": "밋밋하다는 말의 까닭을 좁혔다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J7",
+   "text": "한 가지를 바꿔 다시 해 보았다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J8",
+   "text": "내 연습 방식이 그 조직의 기본이 됐다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J8",
+   "text": "내 지시 사항 서식이 다른 작품에 쓰였다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J1",
+   "text": "셀 것과 세지 않을 것을 갈라 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J1",
+   "text": "쓰지 않을 지표와 그 까닭을 적어 두었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J2",
+   "text": "세워 둔 목표를 셀 수 있는 지표로 옮겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J2",
+   "text": "볼 기간을 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J2",
+   "text": "끝에 확인할 항목을 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J3",
+   "text": "지표가 다른 말을 할 때 어느 쪽을 쓸지 정했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J3",
+   "text": "견줄 대상을 직접 가렸다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J3",
+   "text": "뺄 자료를 직접 정했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J4",
+   "text": "자료 수집 방식과 견주는 방법을 골라 적용했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J4",
+   "text": "방법이 맞지 않아 다른 방법으로 바꿨다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J5",
+   "text": "지표 정의표를 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J5",
+   "text": "자료를 정리한 표를 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J5",
+   "text": "읽은 것을 적은 보고를 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J6",
+   "text": "나온 수를 세워 둔 목표와 견주었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J6",
+   "text": "지난 회차의 수와 대조했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J7",
+   "text": "수가 떨어진 까닭을 좁혔다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J7",
+   "text": "한 가지를 바꿔 다음 회차를 내보냈다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J8",
+   "text": "내 지표 정의가 그 조직의 기준이 됐다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J8",
+   "text": "내 측정 방식이 다른 과제에 쓰였다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J1",
+   "text": "말할 것과 말하지 않을 것을 갈라 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J1",
+   "text": "지금 말하지 않을 자리와 그 까닭을 적어 두었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J2",
+   "text": "확인된 사실과 막는 규정을 문장 조건으로 옮겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J2",
+   "text": "지킬 수 있는 약속의 범위를 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J2",
+   "text": "끝에 확인할 항목을 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J3",
+   "text": "어디까지 말할지 직접 정했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J3",
+   "text": "먼저 낼 자료를 직접 가렸다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J3",
+   "text": "내보낼 때를 직접 정했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J4",
+   "text": "배포 방식과 질문 받는 방법을 골라 적용했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J4",
+   "text": "방식이 맞지 않아 다른 방식으로 바꿨다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J5",
+   "text": "보도 자료를 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J5",
+   "text": "질문과 답 묶음을 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J5",
+   "text": "대응 기록과 그날의 선을 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J6",
+   "text": "쓴 문장을 확인된 사실과 대조했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J6",
+   "text": "법과 규정이 막는 자리와 견주었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J7",
+   "text": "말이 다르게 읽힌 까닭을 좁혔다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J7",
+   "text": "한 가지를 바꿔 다시 내보냈다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J8",
+   "text": "내 공개 기준이 그 조직의 선이 됐다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J8",
+   "text": "내 질문과 답 묶음이 다른 부서에 쓰였다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J1",
+   "text": "확인할 범위와 확인하지 않을 범위를 갈라 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J1",
+   "text": "쓰지 않을 소재와 그 까닭을 적어 두었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J2",
+   "text": "심의 기준과 계약 범위를 확인 항목으로 옮겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J2",
+   "text": "지킬 규격을 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J2",
+   "text": "끝에 확인할 항목을 적었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J3",
+   "text": "쓸지 바꿀지 직접 정했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J3",
+   "text": "받을 동의의 범위를 직접 가렸다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J3",
+   "text": "뺄 소재를 직접 정했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J4",
+   "text": "확인 방식과 판본 관리 방법을 골라 적용했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J4",
+   "text": "방식이 맞지 않아 다른 방식으로 바꿨다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J5",
+   "text": "권리 확인 기록을 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J5",
+   "text": "동의서와 계약 사본 목록을 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J5",
+   "text": "판본과 그 근거를 남겼다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J6",
+   "text": "확인한 것을 심의 기준에 대조했다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J6",
+   "text": "맺은 계약의 범위와 견주었다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J7",
+   "text": "내보낼 수 없다는 말의 까닭을 좁혔다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J7",
+   "text": "한 가지를 바꿔 다시 올려 보았다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J8",
+   "text": "내 확인 목록이 그 조직의 절차가 됐다",
+   "source": "media_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J8",
+   "text": "내 판본 관리 방식이 다른 작품에 쓰였다",
+   "source": "media_v1"
+  }
+ ]
+}

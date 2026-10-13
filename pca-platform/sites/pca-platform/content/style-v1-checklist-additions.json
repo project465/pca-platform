@@ -1,0 +1,1374 @@
+{
+ "schema_version": "style-v1-checklist-additions.1",
+ "note": "판단 근거 목록이다. 응시자가 `직접 정했거나 결과물로 남긴 것` 을 고르는 자리에 그대로 뜬다. 전부 고를 수 있는 문장으로 적는다: 두 낱말짜리 이름표를 올리면 그 자리에서 응시자가 무엇을 고르는지 알 수 없다. 칸마다 둘 이상인 까닭은 소유가 근거 둘 이상일 때만 올라가기 때문이다",
+ "items": [
+  {
+   "td": "TD01",
+   "axis": "J1",
+   "text": "낼 품목과 내지 않을 품목을 갈라 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J1",
+   "text": "다루지 않을 받는 사람과 그 까닭을 적어 두었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J2",
+   "text": "매장이 말한 것을 확인 항목으로 옮겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J2",
+   "text": "지킬 값의 범위를 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J2",
+   "text": "끝에 확인할 항목을 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J3",
+   "text": "먼저 볼 받는 사람을 직접 정했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J3",
+   "text": "낼 수를 직접 가렸다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J3",
+   "text": "뺄 품목을 직접 정했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J4",
+   "text": "조사 방법과 값 세우는 방법을 골라 적용했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J4",
+   "text": "방법이 맞지 않아 다른 방법으로 바꿨다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J5",
+   "text": "기획서를 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J5",
+   "text": "품목 목록과 수를 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J5",
+   "text": "접은 품목과 그 까닭을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J6",
+   "text": "세운 기획을 지난 철의 기록과 견주었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J6",
+   "text": "비슷한 상품의 값과 대조했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J7",
+   "text": "안 팔린 까닭을 좁혔다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J7",
+   "text": "한 가지를 바꿔 다음 철에 내 보았다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J8",
+   "text": "내 기획이 그 브랜드의 방향이 됐다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J8",
+   "text": "내 기획 서식이 다른 사람에게 쓰였다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J1",
+   "text": "쓸 소재의 범위를 좁혀 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J1",
+   "text": "쓰지 않을 소재와 그 까닭을 적어 두었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J2",
+   "text": "바라는 느낌과 표시 기준을 소재 조건으로 옮겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J2",
+   "text": "지킬 등급을 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J2",
+   "text": "끝에 확인할 항목을 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J3",
+   "text": "값과 느낌이 부딪힐 때 직접 정했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J3",
+   "text": "쓸 등급을 직접 가렸다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J3",
+   "text": "뺄 소재를 직접 정했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J4",
+   "text": "시험 방법과 등급 가리는 방법을 골라 적용했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J4",
+   "text": "방법이 맞지 않아 다른 방법으로 바꿨다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J5",
+   "text": "소재 목록과 등급을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J5",
+   "text": "시험 결과 기록을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J5",
+   "text": "단가와 입고 기간 표를 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J6",
+   "text": "고른 소재를 시험 결과와 대조했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J6",
+   "text": "표시 기준과 허용 범위와 견주었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J7",
+   "text": "줄거나 변색된 까닭을 좁혔다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J7",
+   "text": "한 가지를 바꿔 다시 시험해 보았다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J8",
+   "text": "내 소재 기준이 그 브랜드의 기준이 됐다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J8",
+   "text": "내 소재 목록이 다른 품목에 쓰였다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J1",
+   "text": "맞출 몸의 범위를 좁혀 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J1",
+   "text": "맞추지 않을 범위와 그 까닭을 적어 두었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J2",
+   "text": "디자인 그림을 치수와 여유의 조건으로 옮겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J2",
+   "text": "지킬 치수 허용 범위를 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J2",
+   "text": "끝에 확인할 항목을 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J3",
+   "text": "여유를 어디에 얼마나 둘지 직접 정했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J3",
+   "text": "조각의 나누는 자리를 직접 가렸다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J3",
+   "text": "뺄 조각을 직접 정했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J4",
+   "text": "패턴 작업 방식과 치수 등급 늘리는 방법을 골라 적용했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J4",
+   "text": "방식이 맞지 않아 다른 방식으로 바꿨다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J5",
+   "text": "패턴 한 벌을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J5",
+   "text": "기준 치수표를 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J5",
+   "text": "조각 목록과 수량을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J6",
+   "text": "세운 치수를 인체 치수 자료와 대조했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J6",
+   "text": "가봉해 본 결과와 견주었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J7",
+   "text": "안 맞는다는 말의 까닭을 좁혔다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J7",
+   "text": "한 가지를 바꿔 다시 가봉해 보았다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J8",
+   "text": "내 기준 치수가 그 브랜드의 치수가 됐다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J8",
+   "text": "내 패턴이 다른 품목에 쓰였다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J1",
+   "text": "우리가 할 것과 밖에 맡길 것을 갈라 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J1",
+   "text": "하지 않을 공정과 그 까닭을 적어 두었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J2",
+   "text": "넘길 날과 지킬 품질을 공정 조건으로 옮겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J2",
+   "text": "지킬 불량률을 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J2",
+   "text": "끝에 확인할 항목을 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J3",
+   "text": "차례가 갈리는 자리에서 직접 정했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J3",
+   "text": "먼저 할 공정을 직접 가렸다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J3",
+   "text": "뺄 공정을 직접 정했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J4",
+   "text": "쓸 설비와 바늘과 실을 골라 적용했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J4",
+   "text": "설비가 맞지 않아 다른 설비로 바꿨다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J5",
+   "text": "작업 지시서를 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J5",
+   "text": "공정 차례를 적은 한 장을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J5",
+   "text": "걸린 시간 기록을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J6",
+   "text": "만든 것을 봉제 견본과 대조했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J6",
+   "text": "지킬 품질과 견주었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J7",
+   "text": "같은 자리가 또 터진 까닭을 좁혔다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J7",
+   "text": "한 가지를 바꿔 다시 만들어 보았다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J8",
+   "text": "내 공정이 그 공장의 기본이 됐다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J8",
+   "text": "내 작업 지시서가 다른 품목에 쓰였다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J1",
+   "text": "고칠 자리와 그대로 둘 자리를 갈라 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J1",
+   "text": "손대지 않을 자리와 그 까닭을 적어 두었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J2",
+   "text": "지킬 모양과 시간을 수선 조건으로 옮겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J2",
+   "text": "지킬 허용 범위를 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J2",
+   "text": "끝에 확인할 항목을 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J3",
+   "text": "줄일지 늘릴지 직접 정했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J3",
+   "text": "먼저 고칠 자리를 직접 가렸다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J3",
+   "text": "고치지 않을 자리를 직접 정했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J4",
+   "text": "표시 방법과 수선 방법을 골라 적용했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J4",
+   "text": "방법이 맞지 않아 다른 방법으로 바꿨다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J5",
+   "text": "고칠 자리를 적은 한 장을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J5",
+   "text": "수선 기록을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J5",
+   "text": "고친 치수표를 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J6",
+   "text": "고친 결과를 기준 치수표와 대조했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J6",
+   "text": "움직여 본 결과와 견주었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J7",
+   "text": "불편하다는 말의 까닭을 좁혔다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J7",
+   "text": "한 가지를 바꿔 다시 입혀 보았다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J8",
+   "text": "내 수선 기준이 그 브랜드의 기준이 됐다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J8",
+   "text": "내 수선 기록이 다음 패턴에 쓰였다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J1",
+   "text": "쓸 색의 범위를 좁혀 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J1",
+   "text": "쓰지 않을 색과 그 까닭을 적어 두었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J2",
+   "text": "피부와 머리색과 빛을 색 조건으로 옮겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J2",
+   "text": "지킬 브랜드의 색을 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J2",
+   "text": "끝에 확인할 항목을 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J3",
+   "text": "색이 갈리는 자리에서 직접 정했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J3",
+   "text": "섞을 비율을 직접 가렸다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J3",
+   "text": "뺄 색을 직접 정했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J4",
+   "text": "색 측정 방법과 섞는 방법을 골라 적용했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J4",
+   "text": "방법이 맞지 않아 다른 방법으로 바꿨다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J5",
+   "text": "쓸 색 묶음을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J5",
+   "text": "섞은 비율을 적은 한 장을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J5",
+   "text": "빛 아래에서의 차이 기록을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J6",
+   "text": "올린 색을 색 견본과 대조했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J6",
+   "text": "빛을 바꿔 본 결과와 견주었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J7",
+   "text": "색이 다르게 나온 까닭을 좁혔다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J7",
+   "text": "비율을 바꿔 다시 올려 보았다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J8",
+   "text": "내 색 묶음이 그 브랜드의 색이 됐다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J8",
+   "text": "내 비율표가 다른 사람에게 쓰였다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J1",
+   "text": "쓸 묶음과 쓰지 않을 묶음을 갈라 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J1",
+   "text": "뺄 품목과 그 까닭을 적어 두었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J2",
+   "text": "그 자리의 성격과 금기를 묶음 조건으로 옮겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J2",
+   "text": "지킬 선을 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J2",
+   "text": "끝에 확인할 항목을 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J3",
+   "text": "두 묶음이 비슷할 때 직접 정했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J3",
+   "text": "입히는 차례를 직접 가렸다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J3",
+   "text": "뺄 것을 직접 정했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J4",
+   "text": "묶음 짜는 방식과 맞추는 방법을 골라 적용했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J4",
+   "text": "방식이 맞지 않아 다른 방식으로 바꿨다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J5",
+   "text": "묶음 목록을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J5",
+   "text": "입히는 차례를 적은 한 장을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J5",
+   "text": "그날 사진 기록을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J6",
+   "text": "짠 묶음을 그 자리의 성격과 대조했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J6",
+   "text": "사진으로 본 모습과 견주었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J7",
+   "text": "어색하다는 말의 까닭을 좁혔다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J7",
+   "text": "한 가지를 바꿔 다시 입혀 보았다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J8",
+   "text": "내 연출 방식이 그 조직의 기본이 됐다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J8",
+   "text": "내 묶음 목록이 다른 자리에 쓰였다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J1",
+   "text": "볼 자리와 보지 않을 자리를 갈라 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J1",
+   "text": "다루지 않을 상태와 그 까닭을 적어 두었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J2",
+   "text": "말한 것과 금기를 확인 항목으로 옮겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J2",
+   "text": "지킬 선을 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J2",
+   "text": "끝에 확인할 항목을 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J3",
+   "text": "등급이 갈리는 자리에서 직접 정했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J3",
+   "text": "먼저 볼 자리를 직접 가렸다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J3",
+   "text": "지금 하지 않을 것을 직접 정했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J4",
+   "text": "측정 도구와 등급 가리는 방법을 골라 적용했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J4",
+   "text": "방법이 맞지 않아 다른 방법으로 바꿨다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J5",
+   "text": "상태 기록과 등급을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J5",
+   "text": "재어 본 값을 적은 한 장을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J5",
+   "text": "지금 할 수 없는 것 목록을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J6",
+   "text": "재어 본 값을 지난번 기록과 대조했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J6",
+   "text": "같은 상태의 기준 사진과 견주었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J7",
+   "text": "나아지지 않은 까닭을 좁혔다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J7",
+   "text": "한 가지를 바꿔 다시 재어 보았다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J8",
+   "text": "내 판단 기준이 그 샵의 기준이 됐다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J8",
+   "text": "내 기록 서식이 다른 사람에게 쓰였다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J1",
+   "text": "이번에 할 것과 미룰 것을 갈라 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J1",
+   "text": "하지 않을 시술과 그 까닭을 적어 두었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J2",
+   "text": "바라는 것과 금기를 시술 조건으로 옮겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J2",
+   "text": "지킬 시간과 세기의 범위를 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J2",
+   "text": "끝에 확인할 항목을 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J3",
+   "text": "세기를 올릴지 멈출지 그 자리에서 정했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J3",
+   "text": "하는 차례를 직접 가렸다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J3",
+   "text": "뺄 단계를 직접 정했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J4",
+   "text": "쓸 제품과 기구와 세기를 골라 적용했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J4",
+   "text": "제품이 맞지 않아 다른 제품으로 바꿨다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J5",
+   "text": "시술 기록을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J5",
+   "text": "쓴 제품과 세기를 적은 한 장을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J5",
+   "text": "그날 멈춘 자리와 그 까닭을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J6",
+   "text": "끝난 결과를 앞서 적어 둔 상태와 대조했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J6",
+   "text": "절차서가 적어 둔 범위와 견주었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J7",
+   "text": "뜻대로 안 된 까닭을 좁혔다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J7",
+   "text": "한 가지를 바꿔 다시 해 보았다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J8",
+   "text": "내 시술 차례가 그 샵의 절차가 됐다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J8",
+   "text": "내 기록 서식이 다른 사람에게 쓰였다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J1",
+   "text": "점검할 범위와 점검하지 않을 범위를 갈라 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J1",
+   "text": "다루지 않을 자리와 그 까닭을 적어 두었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J2",
+   "text": "법과 규정이 요구하는 것을 점검 항목으로 옮겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J2",
+   "text": "지킬 주기를 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J2",
+   "text": "끝에 확인할 항목을 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J3",
+   "text": "지금 멈출지 그대로 갈지 직접 정했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J3",
+   "text": "먼저 고칠 자리를 직접 가렸다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J3",
+   "text": "쓰지 않을 기구를 직접 정했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J4",
+   "text": "소독 방법과 점검 주기를 골라 적용했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J4",
+   "text": "방법이 맞지 않아 다른 방법으로 바꿨다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J5",
+   "text": "점검 항목 목록을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J5",
+   "text": "점검 기록을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J5",
+   "text": "이상 반응 대응 기록을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J6",
+   "text": "점검한 것을 법과 규정과 대조했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J6",
+   "text": "제품이 적어 둔 보관 조건과 견주었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J7",
+   "text": "이상 반응이 난 까닭을 좁혔다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J7",
+   "text": "한 가지를 바꿔 다시 점검해 보았다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J8",
+   "text": "내 점검 목록이 그 조직의 절차가 됐다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J8",
+   "text": "내 대응 기록이 다른 자리에 쓰였다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J1",
+   "text": "들일 품목과 들이지 않을 품목을 갈라 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J1",
+   "text": "뺄 품목과 그 까닭을 적어 두었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J2",
+   "text": "자리의 크기와 기간을 발주 조건으로 옮겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J2",
+   "text": "지킬 재고 수를 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J2",
+   "text": "끝에 확인할 항목을 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J3",
+   "text": "둘 자리가 갈릴 때 직접 정했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J3",
+   "text": "먼저 보일 품목을 직접 가렸다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J3",
+   "text": "뺄 자리를 직접 정했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J4",
+   "text": "발주 방식과 진열 짜는 방법을 골라 적용했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J4",
+   "text": "방식이 맞지 않아 다른 방식으로 바꿨다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J5",
+   "text": "들일 품목 목록과 수를 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J5",
+   "text": "진열 도면을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J5",
+   "text": "주별 판매 기록을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J6",
+   "text": "짠 구성을 지난주의 판매 수와 대조했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J6",
+   "text": "남은 재고와 견주었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J7",
+   "text": "안 팔린 까닭을 좁혔다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J7",
+   "text": "한 가지를 바꿔 다시 걸어 보았다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J8",
+   "text": "내 구성 방식이 그 조직의 기본이 됐다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J8",
+   "text": "내 진열 도면이 다른 매장에 쓰였다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J1",
+   "text": "다룰 범위와 다루지 않을 범위를 갈라 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J1",
+   "text": "권하지 않을 것과 그 까닭을 적어 두었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J2",
+   "text": "말한 것을 확인 항목으로 옮겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J2",
+   "text": "지킬 금기를 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J2",
+   "text": "끝에 확인할 항목을 적었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J3",
+   "text": "권할 것이 갈릴 때 직접 정했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J3",
+   "text": "먼저 권할 것을 직접 가렸다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J3",
+   "text": "지금 권하지 않을 것을 직접 정했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J4",
+   "text": "되묻는 방법과 적어 남기는 방법을 골라 적용했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J4",
+   "text": "방법이 맞지 않아 다른 방법으로 바꿨다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J5",
+   "text": "상담 기록을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J5",
+   "text": "권한 것과 그 까닭을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J5",
+   "text": "다음에 볼 것을 남겼다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J6",
+   "text": "권한 것을 앞서 적어 둔 기록과 대조했다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J6",
+   "text": "지킬 금기와 견주었다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J7",
+   "text": "다시 오지 않은 까닭을 좁혔다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J7",
+   "text": "한 가지를 바꿔 다시 권해 보았다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J8",
+   "text": "내 상담 범위가 그 샵의 기준이 됐다",
+   "source": "style_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J8",
+   "text": "내 상담 서식이 다른 사람에게 쓰였다",
+   "source": "style_v1"
+  }
+ ]
+}

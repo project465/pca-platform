@@ -1,0 +1,2392 @@
+{
+ "schema_version": "style-v1-relations.1",
+ "core": "STYLE_CORE_V1",
+ "note": "기술영역과 산업, 기술영역과 역할의 관계를 두 표로 둔다. 세 축을 미리 곱해 두지 않는다: 열두 영역과 여덟 산업과 여덟 역할을 곱하면 칠백예순여덟 줄이 되고 그만큼의 줄을 사람이 손으로 유지할 수 없다. 어느 줄도 점수를 만들지 않는다: `strength` 는 설명하는 차례를 정하고 `appears_as` 는 결과지가 그 말로 옮겨 적을 때 읽는다",
+ "combine_rule": "산업 하나와 역할 하나를 함께 고른 사람에게는 두 표에서 같은 영역의 줄을 뽑아 나란히 놓는다. 둘 다 `중심` 인 영역이 먼저 서고, 한쪽만 중심인 영역이 다음이고, 양쪽이 드문 영역은 적지 않는다",
+ "td_industry": [
+  {
+   "td": "TD01",
+   "td_name": "기획·대상 정의",
+   "industry": "INDUSTRY_APPAREL_V1",
+   "industry_name": "의류 브랜드",
+   "strength": "중심",
+   "appears_as": "의류 브랜드 에서는 낼 품목을 좁히는가 · 판매 수와 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ],
+   "dimensions": [
+    "낼 품목을 좁히는가",
+    "판매 수와 견주는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·대상 정의",
+   "industry": "INDUSTRY_SEWING_V1",
+   "industry_name": "봉제 공장·생산",
+   "strength": "드묾",
+   "appears_as": "봉제 공장·생산 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·대상 정의",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "매장·유통",
+   "strength": "드묾",
+   "appears_as": "매장·유통 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·대상 정의",
+   "industry": "INDUSTRY_HAIR_V1",
+   "industry_name": "헤어·두피",
+   "strength": "드묾",
+   "appears_as": "헤어·두피 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·대상 정의",
+   "industry": "INDUSTRY_SKIN_V1",
+   "industry_name": "피부·네일",
+   "strength": "드묾",
+   "appears_as": "피부·네일 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·대상 정의",
+   "industry": "INDUSTRY_COSMETIC_V1",
+   "industry_name": "화장품 브랜드·제조",
+   "strength": "있음",
+   "appears_as": "화장품 브랜드·제조 에서는 낼 제품을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "낼 제품을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·대상 정의",
+   "industry": "INDUSTRY_STYLING_V1",
+   "industry_name": "스타일링·방송 현장",
+   "strength": "있음",
+   "appears_as": "스타일링·방송 현장 에서는 그 자리의 조건을 옮겨 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "그 자리의 조건을 옮겨 적는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·대상 정의",
+   "industry": "INDUSTRY_LIFESTYLE_V1",
+   "industry_name": "라이프스타일·개인 상담",
+   "strength": "드묾",
+   "appears_as": "라이프스타일·개인 상담 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "소재·성분 선정",
+   "industry": "INDUSTRY_APPAREL_V1",
+   "industry_name": "의류 브랜드",
+   "strength": "있음",
+   "appears_as": "의류 브랜드 에서는 원단을 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "원단을 고르는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "소재·성분 선정",
+   "industry": "INDUSTRY_SEWING_V1",
+   "industry_name": "봉제 공장·생산",
+   "strength": "있음",
+   "appears_as": "봉제 공장·생산 에서는 원단의 다루기를 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "원단의 다루기를 고르는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "소재·성분 선정",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "매장·유통",
+   "strength": "드묾",
+   "appears_as": "매장·유통 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "소재·성분 선정",
+   "industry": "INDUSTRY_HAIR_V1",
+   "industry_name": "헤어·두피",
+   "strength": "드묾",
+   "appears_as": "헤어·두피 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "소재·성분 선정",
+   "industry": "INDUSTRY_SKIN_V1",
+   "industry_name": "피부·네일",
+   "strength": "있음",
+   "appears_as": "피부·네일 에서는 쓸 제품을 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "쓸 제품을 고르는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "소재·성분 선정",
+   "industry": "INDUSTRY_COSMETIC_V1",
+   "industry_name": "화장품 브랜드·제조",
+   "strength": "중심",
+   "appears_as": "화장품 브랜드·제조 에서는 쓸 성분을 고르는가 · 표시 기준과 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ],
+   "dimensions": [
+    "쓸 성분을 고르는가",
+    "표시 기준과 대조하는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "소재·성분 선정",
+   "industry": "INDUSTRY_STYLING_V1",
+   "industry_name": "스타일링·방송 현장",
+   "strength": "드묾",
+   "appears_as": "스타일링·방송 현장 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "소재·성분 선정",
+   "industry": "INDUSTRY_LIFESTYLE_V1",
+   "industry_name": "라이프스타일·개인 상담",
+   "strength": "드묾",
+   "appears_as": "라이프스타일·개인 상담 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "패턴·치수 설계",
+   "industry": "INDUSTRY_APPAREL_V1",
+   "industry_name": "의류 브랜드",
+   "strength": "있음",
+   "appears_as": "의류 브랜드 에서는 기준 치수를 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "기준 치수를 남기는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "패턴·치수 설계",
+   "industry": "INDUSTRY_SEWING_V1",
+   "industry_name": "봉제 공장·생산",
+   "strength": "있음",
+   "appears_as": "봉제 공장·생산 에서는 치수를 재어 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "치수를 재어 대조하는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "패턴·치수 설계",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "매장·유통",
+   "strength": "드묾",
+   "appears_as": "매장·유통 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "패턴·치수 설계",
+   "industry": "INDUSTRY_HAIR_V1",
+   "industry_name": "헤어·두피",
+   "strength": "드묾",
+   "appears_as": "헤어·두피 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "패턴·치수 설계",
+   "industry": "INDUSTRY_SKIN_V1",
+   "industry_name": "피부·네일",
+   "strength": "드묾",
+   "appears_as": "피부·네일 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "패턴·치수 설계",
+   "industry": "INDUSTRY_COSMETIC_V1",
+   "industry_name": "화장품 브랜드·제조",
+   "strength": "있음",
+   "appears_as": "화장품 브랜드·제조 에서는 용기 치수를 옮겨 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "용기 치수를 옮겨 적는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "패턴·치수 설계",
+   "industry": "INDUSTRY_STYLING_V1",
+   "industry_name": "스타일링·방송 현장",
+   "strength": "드묾",
+   "appears_as": "스타일링·방송 현장 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "패턴·치수 설계",
+   "industry": "INDUSTRY_LIFESTYLE_V1",
+   "industry_name": "라이프스타일·개인 상담",
+   "strength": "드묾",
+   "appears_as": "라이프스타일·개인 상담 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "봉제·제작 공정",
+   "industry": "INDUSTRY_APPAREL_V1",
+   "industry_name": "의류 브랜드",
+   "strength": "있음",
+   "appears_as": "의류 브랜드 에서는 넘길 날을 공정 조건으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "넘길 날을 공정 조건으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "봉제·제작 공정",
+   "industry": "INDUSTRY_SEWING_V1",
+   "industry_name": "봉제 공장·생산",
+   "strength": "중심",
+   "appears_as": "봉제 공장·생산 에서는 공정 차례를 고르는가 · 또 터진 까닭을 좁히는가 · 작업 지시서를 남기는가 · 할 것과 맡길 것을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J4",
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "공정 차례를 고르는가",
+    "또 터진 까닭을 좁히는가",
+    "작업 지시서를 남기는가",
+    "할 것과 맡길 것을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "봉제·제작 공정",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "매장·유통",
+   "strength": "드묾",
+   "appears_as": "매장·유통 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "봉제·제작 공정",
+   "industry": "INDUSTRY_HAIR_V1",
+   "industry_name": "헤어·두피",
+   "strength": "드묾",
+   "appears_as": "헤어·두피 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "봉제·제작 공정",
+   "industry": "INDUSTRY_SKIN_V1",
+   "industry_name": "피부·네일",
+   "strength": "드묾",
+   "appears_as": "피부·네일 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "봉제·제작 공정",
+   "industry": "INDUSTRY_COSMETIC_V1",
+   "industry_name": "화장품 브랜드·제조",
+   "strength": "드묾",
+   "appears_as": "화장품 브랜드·제조 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "봉제·제작 공정",
+   "industry": "INDUSTRY_STYLING_V1",
+   "industry_name": "스타일링·방송 현장",
+   "strength": "드묾",
+   "appears_as": "스타일링·방송 현장 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "봉제·제작 공정",
+   "industry": "INDUSTRY_LIFESTYLE_V1",
+   "industry_name": "라이프스타일·개인 상담",
+   "strength": "드묾",
+   "appears_as": "라이프스타일·개인 상담 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "착용·피팅 보정",
+   "industry": "INDUSTRY_APPAREL_V1",
+   "industry_name": "의류 브랜드",
+   "strength": "중심",
+   "appears_as": "의류 브랜드 에서는 고칠 자리를 가르는가 · 반품 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ],
+   "dimensions": [
+    "고칠 자리를 가르는가",
+    "반품 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "착용·피팅 보정",
+   "industry": "INDUSTRY_SEWING_V1",
+   "industry_name": "봉제 공장·생산",
+   "strength": "있음",
+   "appears_as": "봉제 공장·생산 에서는 고칠 자리를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "고칠 자리를 가르는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "착용·피팅 보정",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "매장·유통",
+   "strength": "있음",
+   "appears_as": "매장·유통 에서는 즉석 수선을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "즉석 수선을 가르는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "착용·피팅 보정",
+   "industry": "INDUSTRY_HAIR_V1",
+   "industry_name": "헤어·두피",
+   "strength": "드묾",
+   "appears_as": "헤어·두피 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "착용·피팅 보정",
+   "industry": "INDUSTRY_SKIN_V1",
+   "industry_name": "피부·네일",
+   "strength": "드묾",
+   "appears_as": "피부·네일 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "착용·피팅 보정",
+   "industry": "INDUSTRY_COSMETIC_V1",
+   "industry_name": "화장품 브랜드·제조",
+   "strength": "드묾",
+   "appears_as": "화장품 브랜드·제조 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "착용·피팅 보정",
+   "industry": "INDUSTRY_STYLING_V1",
+   "industry_name": "스타일링·방송 현장",
+   "strength": "중심",
+   "appears_as": "스타일링·방송 현장 에서는 그 자리에서 고칠 자리를 가르는가 · 보정 기록을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ],
+   "dimensions": [
+    "그 자리에서 고칠 자리를 가르는가",
+    "보정 기록을 남기는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "착용·피팅 보정",
+   "industry": "INDUSTRY_LIFESTYLE_V1",
+   "industry_name": "라이프스타일·개인 상담",
+   "strength": "있음",
+   "appears_as": "라이프스타일·개인 상담 에서는 고칠 자리를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "고칠 자리를 가르는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "색채·톤 판단",
+   "industry": "INDUSTRY_APPAREL_V1",
+   "industry_name": "의류 브랜드",
+   "strength": "있음",
+   "appears_as": "의류 브랜드 에서는 철의 색을 옮겨 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "철의 색을 옮겨 적는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "색채·톤 판단",
+   "industry": "INDUSTRY_SEWING_V1",
+   "industry_name": "봉제 공장·생산",
+   "strength": "드묾",
+   "appears_as": "봉제 공장·생산 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "색채·톤 판단",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "매장·유통",
+   "strength": "있음",
+   "appears_as": "매장·유통 에서는 색 묶음을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "색 묶음을 가르는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "색채·톤 판단",
+   "industry": "INDUSTRY_HAIR_V1",
+   "industry_name": "헤어·두피",
+   "strength": "중심",
+   "appears_as": "헤어·두피 에서는 섞을 비율을 가르는가 · 비율표를 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ],
+   "dimensions": [
+    "섞을 비율을 가르는가",
+    "비율표를 남기는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "색채·톤 판단",
+   "industry": "INDUSTRY_SKIN_V1",
+   "industry_name": "피부·네일",
+   "strength": "드묾",
+   "appears_as": "피부·네일 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "색채·톤 판단",
+   "industry": "INDUSTRY_COSMETIC_V1",
+   "industry_name": "화장품 브랜드·제조",
+   "strength": "있음",
+   "appears_as": "화장품 브랜드·제조 에서는 색을 맞춰 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "색을 맞춰 남기는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "색채·톤 판단",
+   "industry": "INDUSTRY_STYLING_V1",
+   "industry_name": "스타일링·방송 현장",
+   "strength": "있음",
+   "appears_as": "스타일링·방송 현장 에서는 화면의 색과 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "화면의 색과 대조하는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "색채·톤 판단",
+   "industry": "INDUSTRY_LIFESTYLE_V1",
+   "industry_name": "라이프스타일·개인 상담",
+   "strength": "있음",
+   "appears_as": "라이프스타일·개인 상담 에서는 맞는 색을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "맞는 색을 가르는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "스타일링·연출",
+   "industry": "INDUSTRY_APPAREL_V1",
+   "industry_name": "의류 브랜드",
+   "strength": "있음",
+   "appears_as": "의류 브랜드 에서는 진열 묶음을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "진열 묶음을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "스타일링·연출",
+   "industry": "INDUSTRY_SEWING_V1",
+   "industry_name": "봉제 공장·생산",
+   "strength": "드묾",
+   "appears_as": "봉제 공장·생산 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "스타일링·연출",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "매장·유통",
+   "strength": "있음",
+   "appears_as": "매장·유통 에서는 권할 묶음을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "권할 묶음을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "스타일링·연출",
+   "industry": "INDUSTRY_HAIR_V1",
+   "industry_name": "헤어·두피",
+   "strength": "드묾",
+   "appears_as": "헤어·두피 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "스타일링·연출",
+   "industry": "INDUSTRY_SKIN_V1",
+   "industry_name": "피부·네일",
+   "strength": "드묾",
+   "appears_as": "피부·네일 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "스타일링·연출",
+   "industry": "INDUSTRY_COSMETIC_V1",
+   "industry_name": "화장품 브랜드·제조",
+   "strength": "드묾",
+   "appears_as": "화장품 브랜드·제조 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "스타일링·연출",
+   "industry": "INDUSTRY_STYLING_V1",
+   "industry_name": "스타일링·방송 현장",
+   "strength": "중심",
+   "appears_as": "스타일링·방송 현장 에서는 쓸 묶음을 좁히는가 · 그날 묶음을 가르는가 · 묶음 목록을 남기는가 · 어색한 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J3",
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "쓸 묶음을 좁히는가",
+    "그날 묶음을 가르는가",
+    "묶음 목록을 남기는가",
+    "어색한 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "스타일링·연출",
+   "industry": "INDUSTRY_LIFESTYLE_V1",
+   "industry_name": "라이프스타일·개인 상담",
+   "strength": "중심",
+   "appears_as": "라이프스타일·개인 상담 에서는 묶음을 좁히는가 · 묶음 목록을 남기는가 · 안 입은 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "묶음을 좁히는가",
+    "묶음 목록을 남기는가",
+    "안 입은 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "두피·피부 상태 판단",
+   "industry": "INDUSTRY_APPAREL_V1",
+   "industry_name": "의류 브랜드",
+   "strength": "드묾",
+   "appears_as": "의류 브랜드 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "두피·피부 상태 판단",
+   "industry": "INDUSTRY_SEWING_V1",
+   "industry_name": "봉제 공장·생산",
+   "strength": "드묾",
+   "appears_as": "봉제 공장·생산 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "두피·피부 상태 판단",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "매장·유통",
+   "strength": "있음",
+   "appears_as": "매장·유통 에서는 권할 범위를 상태로 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "권할 범위를 상태로 좁히는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "두피·피부 상태 판단",
+   "industry": "INDUSTRY_HAIR_V1",
+   "industry_name": "헤어·두피",
+   "strength": "중심",
+   "appears_as": "헤어·두피 에서는 상태를 재어 확인 항목으로 옮기는가 · 지난번 기록과 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ],
+   "dimensions": [
+    "상태를 재어 확인 항목으로 옮기는가",
+    "지난번 기록과 대조하는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "두피·피부 상태 판단",
+   "industry": "INDUSTRY_SKIN_V1",
+   "industry_name": "피부·네일",
+   "strength": "중심",
+   "appears_as": "피부·네일 에서는 상태 등급을 가르는가 · 재어 본 값을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ],
+   "dimensions": [
+    "상태 등급을 가르는가",
+    "재어 본 값을 남기는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "두피·피부 상태 판단",
+   "industry": "INDUSTRY_COSMETIC_V1",
+   "industry_name": "화장품 브랜드·제조",
+   "strength": "있음",
+   "appears_as": "화장품 브랜드·제조 에서는 권할 범위를 상태로 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "권할 범위를 상태로 좁히는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "두피·피부 상태 판단",
+   "industry": "INDUSTRY_STYLING_V1",
+   "industry_name": "스타일링·방송 현장",
+   "strength": "드묾",
+   "appears_as": "스타일링·방송 현장 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "두피·피부 상태 판단",
+   "industry": "INDUSTRY_LIFESTYLE_V1",
+   "industry_name": "라이프스타일·개인 상담",
+   "strength": "있음",
+   "appears_as": "라이프스타일·개인 상담 에서는 상태를 재어 확인하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "상태를 재어 확인하는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "시술 설계·수행",
+   "industry": "INDUSTRY_APPAREL_V1",
+   "industry_name": "의류 브랜드",
+   "strength": "드묾",
+   "appears_as": "의류 브랜드 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "시술 설계·수행",
+   "industry": "INDUSTRY_SEWING_V1",
+   "industry_name": "봉제 공장·생산",
+   "strength": "드묾",
+   "appears_as": "봉제 공장·생산 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "시술 설계·수행",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "매장·유통",
+   "strength": "드묾",
+   "appears_as": "매장·유통 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "시술 설계·수행",
+   "industry": "INDUSTRY_HAIR_V1",
+   "industry_name": "헤어·두피",
+   "strength": "중심",
+   "appears_as": "헤어·두피 에서는 쓸 약과 세기를 고르는가 · 시술 기록을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ],
+   "dimensions": [
+    "쓸 약과 세기를 고르는가",
+    "시술 기록을 남기는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "시술 설계·수행",
+   "industry": "INDUSTRY_SKIN_V1",
+   "industry_name": "피부·네일",
+   "strength": "중심",
+   "appears_as": "피부·네일 에서는 회차 설계를 고르는가 · 끝난 결과를 대조하는가 · 나아지지 않은 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J6",
+    "J7"
+   ],
+   "dimensions": [
+    "회차 설계를 고르는가",
+    "끝난 결과를 대조하는가",
+    "나아지지 않은 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "시술 설계·수행",
+   "industry": "INDUSTRY_COSMETIC_V1",
+   "industry_name": "화장품 브랜드·제조",
+   "strength": "있음",
+   "appears_as": "화장품 브랜드·제조 에서는 쓰는 차례를 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "쓰는 차례를 고르는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "시술 설계·수행",
+   "industry": "INDUSTRY_STYLING_V1",
+   "industry_name": "스타일링·방송 현장",
+   "strength": "있음",
+   "appears_as": "스타일링·방송 현장 에서는 쓸 제품과 기구를 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "쓸 제품과 기구를 고르는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "시술 설계·수행",
+   "industry": "INDUSTRY_LIFESTYLE_V1",
+   "industry_name": "라이프스타일·개인 상담",
+   "strength": "드묾",
+   "appears_as": "라이프스타일·개인 상담 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "위생·안전 관리",
+   "industry": "INDUSTRY_APPAREL_V1",
+   "industry_name": "의류 브랜드",
+   "strength": "드묾",
+   "appears_as": "의류 브랜드 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "위생·안전 관리",
+   "industry": "INDUSTRY_SEWING_V1",
+   "industry_name": "봉제 공장·생산",
+   "strength": "있음",
+   "appears_as": "봉제 공장·생산 에서는 점검 기록을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "점검 기록을 남기는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "위생·안전 관리",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "매장·유통",
+   "strength": "있음",
+   "appears_as": "매장·유통 에서는 보관과 표시를 확인하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "보관과 표시를 확인하는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "위생·안전 관리",
+   "industry": "INDUSTRY_HAIR_V1",
+   "industry_name": "헤어·두피",
+   "strength": "중심",
+   "appears_as": "헤어·두피 에서는 소독 주기를 고르는가 · 이상 반응의 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J7"
+   ],
+   "dimensions": [
+    "소독 주기를 고르는가",
+    "이상 반응의 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "위생·안전 관리",
+   "industry": "INDUSTRY_SKIN_V1",
+   "industry_name": "피부·네일",
+   "strength": "중심",
+   "appears_as": "피부·네일 에서는 점검 항목을 남기는가 · 멈출 선을 가르는가 · 보관 조건과 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J6"
+   ],
+   "dimensions": [
+    "점검 항목을 남기는가",
+    "멈출 선을 가르는가",
+    "보관 조건과 대조하는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "위생·안전 관리",
+   "industry": "INDUSTRY_COSMETIC_V1",
+   "industry_name": "화장품 브랜드·제조",
+   "strength": "중심",
+   "appears_as": "화장품 브랜드·제조 에서는 점검 기록을 남기는가 · 이상 반응의 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "점검 기록을 남기는가",
+    "이상 반응의 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "위생·안전 관리",
+   "industry": "INDUSTRY_STYLING_V1",
+   "industry_name": "스타일링·방송 현장",
+   "strength": "있음",
+   "appears_as": "스타일링·방송 현장 에서는 빌린 것의 상태를 확인하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "빌린 것의 상태를 확인하는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "위생·안전 관리",
+   "industry": "INDUSTRY_LIFESTYLE_V1",
+   "industry_name": "라이프스타일·개인 상담",
+   "strength": "드묾",
+   "appears_as": "라이프스타일·개인 상담 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "상품 구성·진열",
+   "industry": "INDUSTRY_APPAREL_V1",
+   "industry_name": "의류 브랜드",
+   "strength": "있음",
+   "appears_as": "의류 브랜드 에서는 들일 수를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "들일 수를 가르는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "상품 구성·진열",
+   "industry": "INDUSTRY_SEWING_V1",
+   "industry_name": "봉제 공장·생산",
+   "strength": "중심",
+   "appears_as": "봉제 공장·생산 에서는 넘길 날을 조건으로 옮기는가 · 입고가 늦은 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ],
+   "dimensions": [
+    "넘길 날을 조건으로 옮기는가",
+    "입고가 늦은 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "상품 구성·진열",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "매장·유통",
+   "strength": "중심",
+   "appears_as": "매장·유통 에서는 들일 품목과 수를 옮겨 적는가 · 안 팔린 까닭을 좁히는가 · 진열 도면을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "들일 품목과 수를 옮겨 적는가",
+    "안 팔린 까닭을 좁히는가",
+    "진열 도면을 남기는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "상품 구성·진열",
+   "industry": "INDUSTRY_HAIR_V1",
+   "industry_name": "헤어·두피",
+   "strength": "드묾",
+   "appears_as": "헤어·두피 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "상품 구성·진열",
+   "industry": "INDUSTRY_SKIN_V1",
+   "industry_name": "피부·네일",
+   "strength": "드묾",
+   "appears_as": "피부·네일 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "상품 구성·진열",
+   "industry": "INDUSTRY_COSMETIC_V1",
+   "industry_name": "화장품 브랜드·제조",
+   "strength": "있음",
+   "appears_as": "화장품 브랜드·제조 에서는 묶음 구성을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "묶음 구성을 가르는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "상품 구성·진열",
+   "industry": "INDUSTRY_STYLING_V1",
+   "industry_name": "스타일링·방송 현장",
+   "strength": "드묾",
+   "appears_as": "스타일링·방송 현장 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "상품 구성·진열",
+   "industry": "INDUSTRY_LIFESTYLE_V1",
+   "industry_name": "라이프스타일·개인 상담",
+   "strength": "있음",
+   "appears_as": "라이프스타일·개인 상담 에서는 가진 것을 목록으로 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "가진 것을 목록으로 좁히는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "고객 상담·기록",
+   "industry": "INDUSTRY_APPAREL_V1",
+   "industry_name": "의류 브랜드",
+   "strength": "드묾",
+   "appears_as": "의류 브랜드 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "고객 상담·기록",
+   "industry": "INDUSTRY_SEWING_V1",
+   "industry_name": "봉제 공장·생산",
+   "strength": "드묾",
+   "appears_as": "봉제 공장·생산 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "고객 상담·기록",
+   "industry": "INDUSTRY_RETAIL_V1",
+   "industry_name": "매장·유통",
+   "strength": "중심",
+   "appears_as": "매장·유통 에서는 권하지 않을 것을 남기는가 · 판매 수와 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ],
+   "dimensions": [
+    "권하지 않을 것을 남기는가",
+    "판매 수와 견주는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "고객 상담·기록",
+   "industry": "INDUSTRY_HAIR_V1",
+   "industry_name": "헤어·두피",
+   "strength": "중심",
+   "appears_as": "헤어·두피 에서는 권하지 않을 것을 가르는가 · 다시 오지 않은 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ],
+   "dimensions": [
+    "권하지 않을 것을 가르는가",
+    "다시 오지 않은 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "고객 상담·기록",
+   "industry": "INDUSTRY_SKIN_V1",
+   "industry_name": "피부·네일",
+   "strength": "있음",
+   "appears_as": "피부·네일 에서는 권할 범위를 옮겨 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "권할 범위를 옮겨 적는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "고객 상담·기록",
+   "industry": "INDUSTRY_COSMETIC_V1",
+   "industry_name": "화장품 브랜드·제조",
+   "strength": "드묾",
+   "appears_as": "화장품 브랜드·제조 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "고객 상담·기록",
+   "industry": "INDUSTRY_STYLING_V1",
+   "industry_name": "스타일링·방송 현장",
+   "strength": "드묾",
+   "appears_as": "스타일링·방송 현장 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "고객 상담·기록",
+   "industry": "INDUSTRY_LIFESTYLE_V1",
+   "industry_name": "라이프스타일·개인 상담",
+   "strength": "중심",
+   "appears_as": "라이프스타일·개인 상담 에서는 권할 범위를 옮겨 적는가 · 권하지 않을 것을 남기는가 · 권한 것과 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J5",
+    "J6"
+   ],
+   "dimensions": [
+    "권할 범위를 옮겨 적는가",
+    "권하지 않을 것을 남기는가",
+    "권한 것과 견주는가"
+   ]
+  }
+ ],
+ "td_role": [
+  {
+   "td": "TD01",
+   "td_name": "기획·대상 정의",
+   "role": "ROLE_PROPOSE_V1",
+   "role_name": "기획·제안",
+   "strength": "중심",
+   "appears_as": "기획·제안 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J2",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·대상 정의",
+   "role": "ROLE_LOOK_V1",
+   "role_name": "조사·분석",
+   "strength": "중심",
+   "appears_as": "조사·분석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·대상 정의",
+   "role": "ROLE_JUDGE_V1",
+   "role_name": "판정·검수",
+   "strength": "드묾",
+   "appears_as": "판정·검수 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·대상 정의",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·대상 정의",
+   "role": "ROLE_MAKE_V1",
+   "role_name": "제작·시술 현장",
+   "strength": "드묾",
+   "appears_as": "제작·시술 현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·대상 정의",
+   "role": "ROLE_RUN_V1",
+   "role_name": "운영·조정",
+   "strength": "중심",
+   "appears_as": "운영·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·대상 정의",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "기획·대상 정의",
+   "role": "ROLE_SAFE_V1",
+   "role_name": "위생·규정 관리",
+   "strength": "드묾",
+   "appears_as": "위생·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "소재·성분 선정",
+   "role": "ROLE_PROPOSE_V1",
+   "role_name": "기획·제안",
+   "strength": "드묾",
+   "appears_as": "기획·제안 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "소재·성분 선정",
+   "role": "ROLE_LOOK_V1",
+   "role_name": "조사·분석",
+   "strength": "중심",
+   "appears_as": "조사·분석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J4",
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "소재·성분 선정",
+   "role": "ROLE_JUDGE_V1",
+   "role_name": "판정·검수",
+   "strength": "중심",
+   "appears_as": "판정·검수 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "소재·성분 선정",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "소재·성분 선정",
+   "role": "ROLE_MAKE_V1",
+   "role_name": "제작·시술 현장",
+   "strength": "드묾",
+   "appears_as": "제작·시술 현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "소재·성분 선정",
+   "role": "ROLE_RUN_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "소재·성분 선정",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "중심",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J4"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "소재·성분 선정",
+   "role": "ROLE_SAFE_V1",
+   "role_name": "위생·규정 관리",
+   "strength": "드묾",
+   "appears_as": "위생·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "패턴·치수 설계",
+   "role": "ROLE_PROPOSE_V1",
+   "role_name": "기획·제안",
+   "strength": "드묾",
+   "appears_as": "기획·제안 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "패턴·치수 설계",
+   "role": "ROLE_LOOK_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "패턴·치수 설계",
+   "role": "ROLE_JUDGE_V1",
+   "role_name": "판정·검수",
+   "strength": "드묾",
+   "appears_as": "판정·검수 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "패턴·치수 설계",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "중심",
+   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "패턴·치수 설계",
+   "role": "ROLE_MAKE_V1",
+   "role_name": "제작·시술 현장",
+   "strength": "드묾",
+   "appears_as": "제작·시술 현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "패턴·치수 설계",
+   "role": "ROLE_RUN_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "패턴·치수 설계",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "패턴·치수 설계",
+   "role": "ROLE_SAFE_V1",
+   "role_name": "위생·규정 관리",
+   "strength": "드묾",
+   "appears_as": "위생·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "봉제·제작 공정",
+   "role": "ROLE_PROPOSE_V1",
+   "role_name": "기획·제안",
+   "strength": "드묾",
+   "appears_as": "기획·제안 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "봉제·제작 공정",
+   "role": "ROLE_LOOK_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "봉제·제작 공정",
+   "role": "ROLE_JUDGE_V1",
+   "role_name": "판정·검수",
+   "strength": "중심",
+   "appears_as": "판정·검수 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J6",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "봉제·제작 공정",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "봉제·제작 공정",
+   "role": "ROLE_MAKE_V1",
+   "role_name": "제작·시술 현장",
+   "strength": "중심",
+   "appears_as": "제작·시술 현장 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "봉제·제작 공정",
+   "role": "ROLE_RUN_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "봉제·제작 공정",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "봉제·제작 공정",
+   "role": "ROLE_SAFE_V1",
+   "role_name": "위생·규정 관리",
+   "strength": "드묾",
+   "appears_as": "위생·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "착용·피팅 보정",
+   "role": "ROLE_PROPOSE_V1",
+   "role_name": "기획·제안",
+   "strength": "드묾",
+   "appears_as": "기획·제안 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "착용·피팅 보정",
+   "role": "ROLE_LOOK_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "착용·피팅 보정",
+   "role": "ROLE_JUDGE_V1",
+   "role_name": "판정·검수",
+   "strength": "드묾",
+   "appears_as": "판정·검수 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "착용·피팅 보정",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "착용·피팅 보정",
+   "role": "ROLE_MAKE_V1",
+   "role_name": "제작·시술 현장",
+   "strength": "중심",
+   "appears_as": "제작·시술 현장 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "착용·피팅 보정",
+   "role": "ROLE_RUN_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "착용·피팅 보정",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "중심",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "착용·피팅 보정",
+   "role": "ROLE_SAFE_V1",
+   "role_name": "위생·규정 관리",
+   "strength": "드묾",
+   "appears_as": "위생·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "색채·톤 판단",
+   "role": "ROLE_PROPOSE_V1",
+   "role_name": "기획·제안",
+   "strength": "드묾",
+   "appears_as": "기획·제안 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "색채·톤 판단",
+   "role": "ROLE_LOOK_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "색채·톤 판단",
+   "role": "ROLE_JUDGE_V1",
+   "role_name": "판정·검수",
+   "strength": "드묾",
+   "appears_as": "판정·검수 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "색채·톤 판단",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "색채·톤 판단",
+   "role": "ROLE_MAKE_V1",
+   "role_name": "제작·시술 현장",
+   "strength": "드묾",
+   "appears_as": "제작·시술 현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "색채·톤 판단",
+   "role": "ROLE_RUN_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "색채·톤 판단",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "색채·톤 판단",
+   "role": "ROLE_SAFE_V1",
+   "role_name": "위생·규정 관리",
+   "strength": "드묾",
+   "appears_as": "위생·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "스타일링·연출",
+   "role": "ROLE_PROPOSE_V1",
+   "role_name": "기획·제안",
+   "strength": "중심",
+   "appears_as": "기획·제안 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J4",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "스타일링·연출",
+   "role": "ROLE_LOOK_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "스타일링·연출",
+   "role": "ROLE_JUDGE_V1",
+   "role_name": "판정·검수",
+   "strength": "드묾",
+   "appears_as": "판정·검수 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "스타일링·연출",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "스타일링·연출",
+   "role": "ROLE_MAKE_V1",
+   "role_name": "제작·시술 현장",
+   "strength": "드묾",
+   "appears_as": "제작·시술 현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "스타일링·연출",
+   "role": "ROLE_RUN_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "스타일링·연출",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "스타일링·연출",
+   "role": "ROLE_SAFE_V1",
+   "role_name": "위생·규정 관리",
+   "strength": "드묾",
+   "appears_as": "위생·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "두피·피부 상태 판단",
+   "role": "ROLE_PROPOSE_V1",
+   "role_name": "기획·제안",
+   "strength": "드묾",
+   "appears_as": "기획·제안 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "두피·피부 상태 판단",
+   "role": "ROLE_LOOK_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "두피·피부 상태 판단",
+   "role": "ROLE_JUDGE_V1",
+   "role_name": "판정·검수",
+   "strength": "드묾",
+   "appears_as": "판정·검수 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "두피·피부 상태 판단",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "두피·피부 상태 판단",
+   "role": "ROLE_MAKE_V1",
+   "role_name": "제작·시술 현장",
+   "strength": "드묾",
+   "appears_as": "제작·시술 현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "두피·피부 상태 판단",
+   "role": "ROLE_RUN_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "두피·피부 상태 판단",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "중심",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "두피·피부 상태 판단",
+   "role": "ROLE_SAFE_V1",
+   "role_name": "위생·규정 관리",
+   "strength": "드묾",
+   "appears_as": "위생·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "시술 설계·수행",
+   "role": "ROLE_PROPOSE_V1",
+   "role_name": "기획·제안",
+   "strength": "드묾",
+   "appears_as": "기획·제안 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "시술 설계·수행",
+   "role": "ROLE_LOOK_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "시술 설계·수행",
+   "role": "ROLE_JUDGE_V1",
+   "role_name": "판정·검수",
+   "strength": "드묾",
+   "appears_as": "판정·검수 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "시술 설계·수행",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "중심",
+   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "시술 설계·수행",
+   "role": "ROLE_MAKE_V1",
+   "role_name": "제작·시술 현장",
+   "strength": "중심",
+   "appears_as": "제작·시술 현장 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "시술 설계·수행",
+   "role": "ROLE_RUN_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "시술 설계·수행",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "시술 설계·수행",
+   "role": "ROLE_SAFE_V1",
+   "role_name": "위생·규정 관리",
+   "strength": "중심",
+   "appears_as": "위생·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "위생·안전 관리",
+   "role": "ROLE_PROPOSE_V1",
+   "role_name": "기획·제안",
+   "strength": "드묾",
+   "appears_as": "기획·제안 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "위생·안전 관리",
+   "role": "ROLE_LOOK_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "위생·안전 관리",
+   "role": "ROLE_JUDGE_V1",
+   "role_name": "판정·검수",
+   "strength": "중심",
+   "appears_as": "판정·검수 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "위생·안전 관리",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "위생·안전 관리",
+   "role": "ROLE_MAKE_V1",
+   "role_name": "제작·시술 현장",
+   "strength": "드묾",
+   "appears_as": "제작·시술 현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "위생·안전 관리",
+   "role": "ROLE_RUN_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "위생·안전 관리",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "위생·안전 관리",
+   "role": "ROLE_SAFE_V1",
+   "role_name": "위생·규정 관리",
+   "strength": "중심",
+   "appears_as": "위생·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J5",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "상품 구성·진열",
+   "role": "ROLE_PROPOSE_V1",
+   "role_name": "기획·제안",
+   "strength": "중심",
+   "appears_as": "기획·제안 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "상품 구성·진열",
+   "role": "ROLE_LOOK_V1",
+   "role_name": "조사·분석",
+   "strength": "중심",
+   "appears_as": "조사·분석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "상품 구성·진열",
+   "role": "ROLE_JUDGE_V1",
+   "role_name": "판정·검수",
+   "strength": "드묾",
+   "appears_as": "판정·검수 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "상품 구성·진열",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "상품 구성·진열",
+   "role": "ROLE_MAKE_V1",
+   "role_name": "제작·시술 현장",
+   "strength": "드묾",
+   "appears_as": "제작·시술 현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "상품 구성·진열",
+   "role": "ROLE_RUN_V1",
+   "role_name": "운영·조정",
+   "strength": "중심",
+   "appears_as": "운영·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "상품 구성·진열",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "상품 구성·진열",
+   "role": "ROLE_SAFE_V1",
+   "role_name": "위생·규정 관리",
+   "strength": "드묾",
+   "appears_as": "위생·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "고객 상담·기록",
+   "role": "ROLE_PROPOSE_V1",
+   "role_name": "기획·제안",
+   "strength": "드묾",
+   "appears_as": "기획·제안 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "고객 상담·기록",
+   "role": "ROLE_LOOK_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "고객 상담·기록",
+   "role": "ROLE_JUDGE_V1",
+   "role_name": "판정·검수",
+   "strength": "드묾",
+   "appears_as": "판정·검수 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "고객 상담·기록",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "중심",
+   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J2"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "고객 상담·기록",
+   "role": "ROLE_MAKE_V1",
+   "role_name": "제작·시술 현장",
+   "strength": "드묾",
+   "appears_as": "제작·시술 현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "고객 상담·기록",
+   "role": "ROLE_RUN_V1",
+   "role_name": "운영·조정",
+   "strength": "중심",
+   "appears_as": "운영·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J4",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "고객 상담·기록",
+   "role": "ROLE_STUDY_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "고객 상담·기록",
+   "role": "ROLE_SAFE_V1",
+   "role_name": "위생·규정 관리",
+   "strength": "중심",
+   "appears_as": "위생·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  }
+ ]
+}
