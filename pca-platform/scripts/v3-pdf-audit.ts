@@ -25,7 +25,8 @@ import {
   attemptOf, checklistFor, choosePack, content, moveTo, openAttempt,
   saveAnswer, savePicks, submit, viewOf, type CampusEntry,
 } from "../src/lib/me-v3/runtime/session";
-import type { Answer, Tier, V3Attempt } from "../src/lib/me-v3/scoring/types";
+import type { Answer, Tier } from "../src/lib/me-v3/scoring/types";
+import type { V3Attempt } from "../src/lib/me-v3/runtime/session";
 
 loadEnv();
 

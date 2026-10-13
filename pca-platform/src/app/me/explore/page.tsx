@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
+import { activeMajorName } from "@/lib/me-v3/major-name";
 import { latestResult, profileOf, activeCore } from "@/lib/me-v3/platform";
 import {
   domainName, industryChoices, industryDomains, industryScene,
@@ -32,6 +33,7 @@ export const metadata = { title: "탐색 · 내 CareerMatri" };
  */
 export default async function Explore() {
   const user = await requireUser();
+  const major = await activeMajorName(user.id);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
   const core = await activeCore(user.id);
   const [profile, result] = await Promise.all([
@@ -167,7 +169,7 @@ export default async function Explore() {
   );
 
   return (
-    <CmShell active="/me/explore" title="탐색">
+    <CmShell active="/me/explore" title="탐색" major={major}>
       <CmHead
         title="산업과 직무"
         lead="지금 확인된 영역과 이어지는 쪽이 먼저 섭니다."

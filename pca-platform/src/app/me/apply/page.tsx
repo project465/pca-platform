@@ -1,4 +1,5 @@
 import { requireUser } from "@/lib/session";
+import { activeMajorName } from "@/lib/me-v3/major-name";
 import { APPLY_STATES, applicationsOf, activeCore } from "@/lib/me-v3/platform";
 import { industryChoices, roleChoices } from "@/lib/me-v3/runtime/session";
 import { orgTypes, regionLayer } from "@/lib/me-v3/region";
@@ -20,6 +21,7 @@ export const metadata = { title: "지원한 곳 · 내 CareerMatri" };
  */
 export default async function Apply() {
   const user = await requireUser();
+  const major = await activeMajorName(user.id);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
   const core = await activeCore(user.id);
   const rows = await applicationsOf(user.id);
@@ -36,7 +38,7 @@ export default async function Apply() {
   }
 
   return (
-    <CmShell active="/me/apply" title="지원한 곳">
+    <CmShell active="/me/apply" title="지원한 곳" major={major}>
       <CmHead
         title="직접 지원하신 곳"
         lead={"지원은 본인이 직접 하시고 여기에는 그 사실만 적습니다. "

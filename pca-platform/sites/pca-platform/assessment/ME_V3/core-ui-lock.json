@@ -3,32 +3,32 @@
  "note": "Core 화면 열넷의 묶음 동결. 측정 동결과 별개다. layout 대변경은 별도 STOP GATE 이고, 고쳤으면 그 화면의 판본을 올리고 세 동결을 다시 적은 다음 `CORE_UI_FREEZE=write npm run v3:freeze:core`",
  "label": "CAREERMATRI_CORE_UI_FREEZE_1",
  "locks": {
-  "assessment": "873cff11c9e09fc6",
-  "result": "c21abb3a85d1cc54",
-  "workspace": "42ee75f235988ff3"
+  "assessment": "b7092be5961da493",
+  "result": "5331354b4fa6606d",
+  "workspace": "229f9e0c52b97b51"
  },
  "versions": {
-  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V20",
+  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V21",
   "assessment_copy_version": "me-v3-2-assessment-copy.14",
-  "result_ui_version": "ME_V3_RESULT_UI_V22",
+  "result_ui_version": "ME_V3_RESULT_UI_V23",
   "result_copy_version": "me-v3-result-copy.18",
-  "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V26",
+  "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V27",
   "workspace_copy_version": "careermatri-workspace-copy.18"
  },
  "screens": {
-  "Home": "workspace:3d9156c940340075",
-  "Assessment Intro": "assessment:f1dd10ef842ca356",
-  "Assessment": "assessment:a464aea0e72c8472",
+  "Home": "workspace:f7d7c418aa4041e4",
+  "Assessment Intro": "assessment:74a4f5e2612a77e7",
+  "Assessment": "assessment:a61f8b6cbe5e28ab",
   "Completion Bridge": "assessment:6c39b5aae12b8c1e",
-  "Experience": "workspace:0d8de7cf4a60d9cb",
-  "Current State": "workspace:3287908c8b0b8c7b",
-  "Next Action": "workspace:d72daf020f47e5ad",
-  "Result Summary": "result:8650ab7e82e9ddc9",
-  "Result Detail": "result:8650ab7e82e9ddc9",
-  "Explore": "workspace:8cb7b5ab4cc96b86",
-  "Result History": "workspace:03a5104207b5b52d",
-  "New Experience": "workspace:0d8de7cf4a60d9cb",
-  "Track": "workspace:d80d48f41a0266fc",
-  "App Shell": "workspace:e9dfecab7afc4454"
+  "Experience": "workspace:4142d63e58ed2daa",
+  "Current State": "workspace:6207012a58cc3486",
+  "Next Action": "workspace:24105a531ab780be",
+  "Result Summary": "result:f7f7edd933998c2a",
+  "Result Detail": "result:f7f7edd933998c2a",
+  "Explore": "workspace:3af1c7ac7cee9f5c",
+  "Result History": "workspace:49d681e1d5ffe678",
+  "New Experience": "workspace:4142d63e58ed2daa",
+  "Track": "workspace:ae2d4b70225b5ba6",
+  "App Shell": "workspace:823c694d48282e65"
  }
 }

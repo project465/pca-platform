@@ -1,4 +1,5 @@
 import { requireUser } from "@/lib/session";
+import { activeMajorName } from "@/lib/me-v3/major-name";
 import { profileOf, activeCore } from "@/lib/me-v3/platform";
 import { regionGaps, regionLayer, regionOpen, regionOrganizations } from "@/lib/me-v3/region";
 import { industryChoices, roleChoices } from "@/lib/me-v3/runtime/session";
@@ -21,6 +22,7 @@ export const metadata = { title: "지역과 기관 · 내 CareerMatri" };
  */
 export default async function Region() {
   const user = await requireUser();
+  const major = await activeMajorName(user.id);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
   const core = await activeCore(user.id);
   const profile = await profileOf(user.id);
@@ -35,7 +37,7 @@ export default async function Region() {
   const orgs = await regionOrganizations(profile?.home_region ?? null, [], 6);
 
   return (
-    <CmShell active="/me/region" title="지역과 기관">
+    <CmShell active="/me/region" title="지역과 기관" major={major}>
       <CmHead
         title="어디에서 일하고 싶은지"
         lead={"이 선택은 기술영역 결과를 바꾸지 않습니다. "

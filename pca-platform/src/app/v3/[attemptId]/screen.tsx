@@ -11,8 +11,8 @@ import {
   picksAction3, profileAction,
 } from "./actions";
 import {
-  FIELD_LABEL, STAGE_LABEL, UNDERGRAD_ASK, UNDERGRAD_GLOSS, UNDERGRAD_HELP,
-  UNDERGRAD_LABEL,
+  FIELD_LABEL, STAGE_LABEL, UNDERGRAD_ASK, UNDERGRAD_HELP,
+  undergradGloss, undergradLabel,
 } from "../tier-text";
 import type { Field, ProgressModel, ScreenModel } from "./model";
 
@@ -46,9 +46,14 @@ const AUTO_MS = 250;
  * 지우지 않는다: 영역이 빠지면 읽히지 않을 뿐이고 되돌아오면 그대로 쓰인다.
  */
 export default function Screen({
-  s, prog, tier, tierLabel,
+  s, prog, tier, tierLabel, major, majorExamples,
 }: {
   s: ScreenModel; prog: ProgressModel; tier: string; tierLabel: string;
+  /** 이 응시가 읽는 전공 이름. **글자로 적지 않는다**: 전공이 늘면 이
+      화면이 다른 전공 이름을 적는다 */
+  major: string;
+  /** 그 계열에 드는 학과 보기. 등록부의 별칭에서 온다 */
+  majorExamples: string;
 }) {
   const router = useRouter();
   const [vals, setVals] = useState<Record<string, number | string | null>>(
@@ -363,8 +368,10 @@ export default function Screen({
                           }} />
                         <span className="qs-mark" aria-hidden />
                         <span className="qs-body">
-                          <span className="qs-label">{UNDERGRAD_LABEL[v]}</span>
-                          <span className="qs-gloss">{UNDERGRAD_GLOSS[v]}</span>
+                          <span className="qs-label">{undergradLabel(major)[v]}</span>
+                          <span className="qs-gloss">
+                            {undergradGloss(major, majorExamples)[v]}
+                          </span>
                         </span>
                       </label>
                     ))}
@@ -377,14 +384,14 @@ export default function Screen({
                 멈추고 전공 고르는 자리로 돌려보낸다 */}
             {offCore ? (
               <div className="qs-stop" role="alert">
-                <b>이 검사는 기계공학 경험을 읽습니다.</b>
+                <b>이 검사는 {major} 경험을 읽습니다.</b>
                 <p>
-                  학부와 대학원이 모두 기계공학 계열이 아니면 지금 드릴 수
+                  학부와 대학원이 모두 {major} 계열이 아니면 지금 드릴 수
                   있는 결과가 없습니다. 끝까지 답하셔도 결과가 비어 있어
                   여기서 멈춥니다.
                 </p>
                 <p>
-                  학부가 기계공학 계열이면 위에서 다시 골라주세요. 전공별
+                  학부가 {major} 계열이면 위에서 다시 골라주세요. 전공별
                   검사는 준비되는 대로 전공 목록에 열립니다.
                 </p>
                 <a className="qs-btn qs-btn-main" href="/cores">전공 목록으로</a>

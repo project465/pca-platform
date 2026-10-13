@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
+import { activeMajorName } from "@/lib/me-v3/major-name";
 import { trackInterest } from "@/lib/me-v3/platform";
 import { CmShell, CmHead } from "../shell";
 import { toggleInterest } from "./actions";
@@ -58,12 +59,13 @@ const ALREADY: { href: string; label: string }[] = [
 
 export default async function Track() {
   const user = await requireUser();
+  const major = await activeMajorName(user.id);
   const on = (await trackInterest(user.id)).length > 0;
 
   return (
     /* **세로 가운데로 띄우지 않는다**(규격 §17). 담긴 것이 둘 뿐일 때
        가운데 맞춤은 빈 면을 위아래로 갈라 놓아 더 비어 보인다 */
-    <CmShell active="/me/track" title="Track" read>
+    <CmShell active="/me/track" title="Track" read major={major}>
       <CmHead
         kicker="준비 중"
         title="상황이 바뀌면 다시 계산해 드립니다"

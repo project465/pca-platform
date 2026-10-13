@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
+import { majorNameOf } from "@/lib/me-v3/major-name";
 import { currentState, resultHistory, activeCore } from "@/lib/me-v3/platform";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import { recentChangeKo } from "@/lib/me-v3/change-text.ko";
@@ -25,6 +26,7 @@ export default async function Results() {
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
   const core = await activeCore(user.id);
   const [st, rows] = await Promise.all([currentState(user.id), resultHistory(user.id)]);
+  const major = majorNameOf(st.core);
   const snaps = rows.filter((r) => r.kind === "SNAPSHOT");
   /* 세 화면이 같이 쓰는 문장(규격 §8). 여기서 따로 적으면 같은 변화가
      홈과 현재 상태와 이 쪽에서 서로 다른 말로 읽힌다 */
@@ -32,6 +34,7 @@ export default async function Results() {
 
   return (
     <CmShell active="/me/results" title="결과 기록"
+      major={majorNameOf(st.core)}
       bar={<Link className="cm-btn" href="/me/state">현재 상태</Link>}>
       <CmHead
         title="검사 당시 결과와 현재 상태"
@@ -103,7 +106,7 @@ export default async function Results() {
                 <div className="cm-item-row">
                   <span className="cm-item-t">
                     <b>{r.at ?? ""}</b>
-                    <em>기계공학 · {r.tier ?? ""}</em>
+                    <em>{major ?? "전공 진단"} · {r.tier ?? ""}</em>
                     <span className="cm-lockmark">고정됨</span>
                   </span>
                   <span className="cm-item-meta">

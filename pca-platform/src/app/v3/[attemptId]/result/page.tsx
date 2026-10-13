@@ -25,6 +25,7 @@ import {
 } from "@/lib/me-v3/region";
 import { core as coreEntry } from "@/lib/me-v3/core-registry";
 import { profileOf } from "@/lib/me-v3/platform";
+import { resultMeta } from "@/lib/me-v3/result/meta";
 import { participantOf, savedActions } from "@/lib/me-v3/pilot/store";
 import { takeActionsFromResult } from "@/app/me/next/actions";
 import ResultNav from "./result-nav";
@@ -462,7 +463,7 @@ function Plan(
  * 번호가 그대로 화면과 종이에 나갔다(`TR_TAG_1`). 응시자에게 문항 번호를
  * 보여 줄 자리는 하나도 없어서, 여기서는 아예 줄을 만들지 않는다.
  */
-function Translation({ view }: { view: TranslationView }) {
+function Translation({ view, major }: { view: TranslationView; major: string }) {
   /* 열 단계만 세운다. 꼬리표(`TR_TAG_*`)는 이야기의 한 마디가 아니다 */
   const rows = TRANS_ORDER
     .map((id) => view.steps.find((s) => s.item_id === id))
@@ -499,8 +500,8 @@ function Translation({ view }: { view: TranslationView }) {
         <div className="rs-pack">
           <h3>대학원 경험을 어디에 걸칠지</h3>
           <p>
-            학부에서 기계공학을 하시고 대학원은 다른 분야를 하셨다고 답해주셨습니다.
-            대학원 경험은 기계공학 영역 확인과 따로 보고, 아래 번역에서 읽었습니다.
+            학부에서 {major}을(를) 하시고 대학원은 다른 분야를 하셨다고 답해주셨습니다.
+            대학원 경험은 {major} 영역 확인과 따로 보고, 아래 번역에서 읽었습니다.
           </p>
           <dl>
             {xf.map((x) => (
@@ -573,6 +574,9 @@ export default async function V3Result({
      core** 를 읽어야 한다. 전공을 바꿔 다시 응시한 사람의 옛 결과지가
      새 전공 이름으로 그려지면 그 종이는 거짓이 된다 */
   const core = coreOf(model);
+  /* **첫 쪽의 머리 한 줄**(규격 §15): 학교 · 학과 · 전공 · 등급 · 응답일.
+     전공 이름을 글자로 적지 않는다: 그 결과의 Core 에서 읽는다 */
+  const meta = await resultMeta(attemptId, core);
   const h = headlineKo(model);
   /* **확인된 영역에서 거꾸로 읽는다**(규격 Reverse Mapping). 고른 산업
      하나와 직무 하나만 적으면, 아직 아무것도 고르지 않은 사람에게
@@ -735,9 +739,17 @@ export default async function V3Result({
 
       <main className="rs-main">
         <section className="rs-hero">
-          <p className="rs-kicker">기계공학 진로 진단 결과</p>
+          <p className="rs-kicker">{meta.major ?? "전공"} 진로 진단 결과</p>
           <h1 className="rs-h1">{h.title}</h1>
           <p className="rs-lead">{h.lead}</p>
+          {/* **종이는 보관되고 전달된다.** 누구의 어느 전공이 언제 친
+              것인지가 첫 쪽에 없으면 그 종이는 혼자서는 읽히지 않는다.
+              학교 진입이 아니면 학교와 학과 자리는 서지 않는다 */}
+          <p className="rs-ident">
+            {[meta.school, meta.department, meta.specialization,
+              model.tier, meta.answeredOn ? `${meta.answeredOn} 응답` : null]
+              .filter(Boolean).join(" · ")}
+          </p>
           {/* **첫 서른 초에 무엇까지 봤는지가 보여야 한다.** 깊게 물은
               응시에서만 센 숫자라, 네 축만 물은 응시에는 두지 않는다 */}
           {/* **종이로 가는 길을 결과 안에 둔다.** 전에는 스크립트로만
@@ -1179,7 +1191,9 @@ export default async function V3Result({
           </section>
         ) : null}
 
-        {model.translation ? <Translation view={model.translation} /> : null}
+        {model.translation
+          ? <Translation view={model.translation} major={meta.major ?? "이 전공"} />
+          : null}
 
         {/* ── 다음에 할 일 ── */}
         <section className="rs-sect" id="plan">

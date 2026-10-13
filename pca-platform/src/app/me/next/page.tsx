@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
+import { majorNameOf } from "@/lib/me-v3/major-name";
 import { currentState, latestResult, type ActionRow, activeCore } from "@/lib/me-v3/platform";
 import { openActions } from "@/lib/me-v3/open-actions";
 import { domainName } from "@/lib/me-v3/runtime/session";
@@ -166,6 +167,7 @@ export default async function Next(
 
   return (
     <CmShell active="/me/next" title="다음 할 일" read
+      major={majorNameOf(st.core)}
       bar={st.model
         ? <Link className="cm-btn" href="/me/experience/new">+ 경험 추가</Link>
         : null}>
@@ -187,7 +189,9 @@ export default async function Next(
             <Link className="cm-btn" href="/me/state#gaps">현재 상태 보기</Link>
           )
         ) : (
-          <Link className="cm-btn is-primary" href="/cores">기계공학 검사 시작</Link>
+          <Link className="cm-btn is-primary" href="/cores">
+            {majorNameOf(st.core) ? `${majorNameOf(st.core)} 검사 시작` : "검사 시작"}
+          </Link>
         )}
       />
 

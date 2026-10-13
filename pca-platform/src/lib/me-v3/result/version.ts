@@ -18,7 +18,7 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.18";
  * 문장 하나를 고친 날 화면 판본까지 올리면, 되짚을 때 무엇이 바뀐
  * 것인지 알 수 없다. 넷이 따로 간다: 화면 · 문장 · 모델 · 판단.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V22";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V23";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

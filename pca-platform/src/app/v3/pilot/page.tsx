@@ -75,7 +75,7 @@ export default async function PilotJoin({
       <header className="rs-head">
         <div className="rs-head-in">
           <span className="rs-brand"><BrandMark size={20} />CareerMatri</span>
-          <span className="rs-tier">기계공학 진로진단 베타</span>
+          <span className="rs-tier">진로진단 베타</span>
         </div>
       </header>
       <main className="rs-main" style={{ maxWidth: 760 }}>

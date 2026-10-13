@@ -46,7 +46,9 @@ export default async function V3Intro({
 
   const t = TIER_WHAT[a.tier];
   const coreName = (() => {
-    try { return core(a.core_code).name_ko; } catch { return "기계공학"; }
+    /* **모르면 전공 이름을 지어내지 않는다.** 전에는 기계공학으로
+       떨어져서, 다른 전공 응시의 시작 안내가 기계공학으로 적혔다 */
+    try { return core(a.core_code).name_ko; } catch { return "이 전공"; }
   })();
 
   /**

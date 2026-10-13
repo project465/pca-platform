@@ -125,6 +125,16 @@
   max-width: 62ch;
 }
 
+/* ── 첫 쪽의 머리 한 줄(규격 §15) ──
+   학교 · 학과 · 전공 · 등급 · 응답일. **종이에서 더 또렷하게 선다**:
+   보관된 종이는 혼자 읽히고, 그때 누구의 어느 전공이 언제 친 것인지가
+   없으면 그 종이는 쓸 수 없다 */
+.rs-ident {
+  margin: var(--r-s3) 0 0; padding-top: var(--r-s2);
+  border-top: 1px solid var(--r-line);
+  font-size: var(--r-t-meta); color: var(--r-ink-3); letter-spacing: .01em;
+}
+
 /* **첫 서른 초에 등급의 차이가 보여야 한다.** 네 축만 물은 응시에는 이
    띠가 없고, 깊게 물은 응시에만 센 숫자가 선다. 등수가 아니라 개수다 */
 .rs-count {
@@ -783,6 +793,9 @@
   .rs-hero { padding: 16px 0 10px; max-width: none; }
   .rs-h1 { font-size: 19pt; }
   .rs-lead { font-size: 10.5pt; margin-top: 8px; }
+  /* 머리 한 줄은 종이에서 한 단 더 또렷하다. 보관된 종이가 혼자 읽혀야
+     한다(규격 §15) */
+  .rs-ident { font-size: 9pt; color: var(--r-ink-2); margin-top: 10px; padding-top: 8px; }
   /* 숫자 띠는 종이에서 머리띠 바로 아래 한 줄로 붙인다 */
   .rs-count { margin-top: 12px; gap: 6px 20px; }
   .rs-count b { font-size: 14pt; }

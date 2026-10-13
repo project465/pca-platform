@@ -10,6 +10,7 @@ import { Icon, type IconName } from "@/components/sf/icon";
 import { openActions } from "@/lib/me-v3/open-actions";
 import { recentChangeKo } from "@/lib/me-v3/change-text.ko";
 import { mark } from "@/lib/me-v3/workspace-events";
+import { majorNameOf } from "@/lib/me-v3/major-name";
 import { CmShell, CmHead } from "./shell";
 import {
   ActivityRow, DomainTile, EmptyState, PrimaryActionHero, RecordRow,
@@ -113,14 +114,16 @@ export default async function Home() {
    * 돌아보는 쪽**이 된다. 결과가 있는 사람에게 다음 걸음은 하나뿐이라
    * 그 자리를 비워 두지 않는다. 검사 전과 진행 중만 갈린다.
    */
+  /* **전공 이름을 글자로 적지 않는다.** 이 사람이 쓰는 Core 에서 읽는다 */
+  const major = majorNameOf(st.core);
   const cta = st.stage === "NO_ASSESSMENT"
-    ? { href: "/cores", label: "기계공학 검사 시작" }
+    ? { href: "/cores", label: major ? `${major} 검사 시작` : "검사 시작" }
     : st.stage === "IN_PROGRESS"
       ? { href: st.open ? `/v3/${st.open.id}` : "/cores", label: "검사 이어하기" }
       : { href: "/me/next", label: "지금 할 일" };
 
   return (
-    <CmShell active="/me" title="홈" who={user.name}
+    <CmShell active="/me" title="홈" who={user.name} major={major}
       /* **없는 기능을 그려 넣지 않는다**(규격 §4). 목표 화면의 검색과
          알림은 CareerMatri 에 없는 기능이라 두지 않았다. 여기 서는 것은
          실제로 있는 한 가지다 */
@@ -133,7 +136,7 @@ export default async function Home() {
            이름이 제목이면 쪽마다 같은 글자가 가장 크게 선다 */
         title={HEAD[st.stage]}
         /* 제목 아래 한 줄(규격 §4) */
-        meta={`기계공학${st.result_at ? ` · 최근 업데이트 ${st.result_at}` : ""}`}
+        meta={`${major ?? "전공 진단"}${st.result_at ? ` · 최근 업데이트 ${st.result_at}` : ""}`}
         /* **결과가 있는 사람에게는 설명 문단을 두지 않는다**(규격 §9).
            바로 아래 Hero 가 그 사람이 지금 할 일을 들고 있어서, 그 위의
            문단은 행동 앞에 놓인 읽을거리가 된다 */
@@ -334,7 +337,7 @@ export default async function Home() {
             sub="최근 검사 결과와 경험을 확인할 수 있습니다." />
           <ul className="cm-feed is-rec">
             <RecordRow icon="report"
-              title={`기계공학 진로진단 결과 (${st.model.tier})`}
+              title={`${major ?? "진로진단"} 결과 (${st.model.tier})`}
               note="고정됨 · 그날의 문항과 기준으로 굳어 있습니다"
               time={st.result_at ?? ""}
               actions={
@@ -378,7 +381,7 @@ export default async function Home() {
  * 지금 들고 있는 것의 이름이다.
  */
 const HEAD: Record<string, string> = {
-  NO_ASSESSMENT: "기계공학 진로 검사",
+  NO_ASSESSMENT: "전공 진로 검사",
   IN_PROGRESS: "풀던 검사가 있습니다",
   /* 홈의 제목을 `현재 상태` 로 두지 않는다. 그 이름은 띠에 제 줄이 있는
      다른 쪽(`/me/state`)의 이름이고, 홈의 첫 카드가 그쪽의 요약이다 */

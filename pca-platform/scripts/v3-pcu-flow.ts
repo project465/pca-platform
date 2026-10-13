@@ -81,7 +81,8 @@ async function main(): Promise<void> {
     ok("학교 진입이 열린다", (await p.locator("body").innerText()).includes(u.university_name));
 
     /* 2. 학과 상세 */
-    await p.goto(`${BASE}${row.path ?? `/campus/pcu/d/${leaf.code}`}`, { waitUntil: "networkidle" });
+    await p.goto(`${BASE}/campus/${u.university_code.toLowerCase()}/d/${leaf.code}`,
+      { waitUntil: "networkidle" });
     const det = await p.locator("body").innerText();
     ok("학과 상세가 선다", det.includes(leaf.name), leaf.name);
     ok("검사 시작 단추가 있다", await p.getByRole("button", { name: "이 전공으로 검사 시작" }).count() > 0);

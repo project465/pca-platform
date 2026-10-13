@@ -1,4 +1,5 @@
 import { requireUser } from "@/lib/session";
+import { activeMajorName } from "@/lib/me-v3/major-name";
 import { EXPERIENCE_KINDS, activeCore } from "@/lib/me-v3/platform";
 import { content, domainName } from "@/lib/me-v3/runtime/session";
 import { mark } from "@/lib/me-v3/workspace-events";
@@ -45,6 +46,7 @@ export default async function NewExperience(
   { searchParams }: { searchParams: Promise<{ e?: string }> },
 ) {
   const user = await requireUser();
+  const major = await activeMajorName(user.id);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
   const core = await activeCore(user.id);
   const e = (await searchParams).e ?? "";
@@ -58,7 +60,7 @@ export default async function NewExperience(
     (lists[td]?.[ax] ?? []).map((x) => x.text).slice(0, n);
 
   return (
-    <CmShell active="/me/experience" title="경험 추가" form>
+    <CmShell active="/me/experience" title="경험 추가" form major={major}>
       {/* **부담 없는 한 건이다**(규격 §8). 1~2분 안에 하나를 적는 자리라
           적기 전에 읽을 것을 없애고 까닭은 폼 아래로 접는다.
 

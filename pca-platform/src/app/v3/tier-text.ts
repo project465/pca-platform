@@ -35,21 +35,24 @@ export const FIELD_LABEL: Record<string, string> = {
 };
 
 /**
- * 학부 전공이 기계공학 계열인가.
+ * 학부 전공이 **이 검사의 전공 계열**인가.
  *
- * 대학원이 인문사회나 경상 계열인 사람에게만 묻는다. 이 검사는 기계공학
- * 경험을 재므로 **기계공학 경험이 아예 없는 사람에게는 줄 것이 없다.**
- * 학부가 기계공학이면 경험이 실제로 있고, 그때는 받는다.
+ * 대학원이 인문사회나 경상 계열인 사람에게만 묻는다. 이 검사는 그 전공의
+ * 경험을 재므로 **그 경험이 아예 없는 사람에게는 줄 것이 없다.** 학부가
+ * 그 계열이면 경험이 실제로 있고, 그때는 받는다.
+ *
+ * **전공 이름을 글자로 적지 않는다.** 전에는 `기계공학` 이 박혀 있어서,
+ * 경영 Core 를 치는 사람이 `학부가 기계공학 계열이었습니까` 를 받았다.
  */
-export const UNDERGRAD_LABEL: Record<string, string> = {
-  ME: "기계공학 계열이었습니다",
-  OTHER: "기계공학 계열이 아니었습니다",
-};
+export const undergradLabel = (major: string): Record<string, string> => ({
+  ME: `${major} 계열이었습니다`,
+  OTHER: `${major} 계열이 아니었습니다`,
+});
 
-export const UNDERGRAD_GLOSS: Record<string, string> = {
-  ME: "기계공학 · 기계시스템 · 자동차 · 항공우주 · 조선해양 · 메카트로닉스",
-  OTHER: "학부에서 기계공학 계열이 아니었던 경우입니다.",
-};
+export const undergradGloss = (major: string, examples: string): Record<string, string> => ({
+  ME: examples,
+  OTHER: `학부에서 ${major} 계열이 아니었던 경우입니다.`,
+});
 
 /**
  * 학부 전공을 **대학원생 전부에게** 묻는 까닭.
@@ -101,7 +104,8 @@ export const OWNERSHIP_HELP = [
   "기준까지 내가 정함",
 ];
 
-/** 산업에서 기계공학자가 실제로 다루는 것. **추천이 아니라 탐색 안내다** */
+/** 그 산업에서 실제로 다루는 것. **추천이 아니라 탐색 안내다**.
+    기계공학 산업팩의 줄이고, 다른 Core 의 팩은 제 자료가 들고 있다 */
 export const INDUSTRY_HINT: Record<string, string> = {
   INDUSTRY_SEMICON_V2: "정밀 구조 · 열변형 · 떨림 · 진공 · 장비 가동",
   INDUSTRY_DEFENSE_V2: "요구조건 · 경량화 근거 · 충격과 진동 · 환경 시험",

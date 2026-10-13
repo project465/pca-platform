@@ -4,8 +4,8 @@
  "item_bank_version": "BIZ_V1_ITEM_BANK_V1",
  "note": "경영 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=BIZ_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
-  "biz-industry-packs.json": "604dcdc34ea148d2f0ca1311d27c6b294bdb04764468a472ca3dd297fb4097d4",
-  "biz-role-packs.json": "f9988279f2984e86e0e06b78394db0994475f5ee33ce2f12c0600da8c6f2385c",
+  "biz-industry-packs.json": "9c090b3be8c80733b2e02e315567b7f71c6abb22289f5ac2aa2429494e5a7b55",
+  "biz-role-packs.json": "d4b947e7f0ec1e01db1f99951838b8cd782e5e449a60b3d7344e3375a62f9d85",
   "biz-v1-checklist-additions.json": "39b1d65219dbfedcc97e9eab9779bd5e1bb29f16830ad96cf2032d0b55598452",
   "biz-v1-checklists.json": "dff84f3e3003f87a57ad63a5433f68aca0e660f341658b07555a232745fbbf56",
   "biz-v1-common-additions.json": "29fc63cfccc492e95558c15778b02cbcfee06963110758af5efdfc89a8831465",

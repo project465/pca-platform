@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { requireUser } from "@/lib/session";
+import { majorExamplesOf, majorNameOf } from "@/lib/me-v3/major-name";
 import { OWNERSHIP } from "@/lib/me-v3/scoring/ownership";
 import { controlOf } from "@/lib/me-v3/runtime/menus";
 import {
@@ -215,7 +216,9 @@ export default async function V3Screen({
      캡처에서는 쪽마다 새로 뜨므로 드러나지 않았고, 사람이 눌러야 보였다 */
   return (
     <Screen key={`${model.attemptId}:${model.index}`} s={model} prog={prog}
-      tier={v.attempt.tier} tierLabel={v.attempt.tier} />
+      tier={v.attempt.tier} tierLabel={v.attempt.tier}
+      major={majorNameOf(v.attempt.core_code) ?? "이 전공"}
+      majorExamples={majorExamplesOf(v.attempt.core_code)} />
   );
 }
 

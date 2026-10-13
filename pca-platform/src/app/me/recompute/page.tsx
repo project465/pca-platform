@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
+import { activeMajorName } from "@/lib/me-v3/major-name";
 import {
   previewRecompute, recomputeStatus, type Candidate,
 } from "@/lib/me-v3/recompute";
@@ -56,6 +57,7 @@ export default async function Recompute(
   { searchParams }: { searchParams: Promise<{ new?: string; e?: string; r?: string }> },
 ) {
   const user = await requireUser();
+  const major = await activeMajorName(user.id);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
   const core = await activeCore(user.id);
   const sp = await searchParams;
@@ -102,7 +104,7 @@ export default async function Recompute(
     .find((a) => !closed.has(`${a.domain ?? ""}.${a.axis ?? ""}`)) ?? null;
 
   return (
-    <CmShell active="/me/experience" title="저장한 경험">
+    <CmShell active="/me/experience" title="저장한 경험" major={major}>
       <CmHead
         kicker="경험 저장"
         /* 상태 말은 제품 전체가 같은 마디를 쓴다(규격 §21) */

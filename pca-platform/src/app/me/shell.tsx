@@ -23,8 +23,14 @@ import { Icon } from "@/components/sf/icon";
 import { BrandMark } from "@/components/sf/brand-mark";
 import { CM_GROUPS, CM_TABS, CM_NAV, navOn } from "./nav";
 
-/** 지금 어느 전공인가. 전공이 늘면 이 자리가 고르는 자리가 된다 (§57) */
-const MAJOR = "기계공학";
+/**
+ * 지금 어느 전공인가. **쪽이 넘겨 준다.**
+ *
+ * 전에는 이 자리에 `기계공학` 이 글자로 박혀 있어서, 다른 전공을 친
+ * 사람의 작업공간이 전부 기계공학으로 적혔다. 모르면 전공 이름을 적지
+ * 않는다: 아무 이름이나 적으면 그 사람은 자기가 그 검사를 친 줄 안다.
+ */
+const MAJOR_FALLBACK = "전공 진단";
 
 function NavRow({ it, active }: { it: typeof CM_NAV[number]; active: string }) {
   const on = navOn(it.href, active);
@@ -66,9 +72,11 @@ function CmUtil({ name }: { name: string }) {
 }
 
 export function CmShell({
-  active, title, form, read, hold, bar, who, children,
+  active, title, form, read, hold, bar, who, major, children,
 }: {
   active: string; title?: string;
+  /** 이 사람이 쓰고 있는 전공 이름. 모르면 비운다 */
+  major?: string | null;
   /** 쪽 머리 오른쪽에 서는 **한 가지**. 둘을 세우면 도구막대가 된다 */
   bar?: ReactNode;
   /** 로그인한 사람의 이름. 주면 오른쪽 위에 계정 한 자리가 선다 */
@@ -135,7 +143,7 @@ export function CmShell({
             <BrandMark size={34} className="cm-rail-mark" />
             <span className="cm-rail-name">
               <b>CareerMatri</b>
-              <small>{MAJOR}</small>
+              <small>{major ?? MAJOR_FALLBACK}</small>
             </span>
           </Link>
 
@@ -185,7 +193,7 @@ export function CmShell({
             <span>더보기</span>
           </summary>
           <div className="cm-sheet">
-            <p className="cm-sheet-head">CareerMatri · {MAJOR}</p>
+            <p className="cm-sheet-head">CareerMatri · {major ?? MAJOR_FALLBACK}</p>
             {CM_GROUPS.map((g) => (
               <section className="cm-group" key={g.title}>
                 <h2>{g.title}</h2>

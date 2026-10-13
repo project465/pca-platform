@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
+import { activeMajorName } from "@/lib/me-v3/major-name";
 import {
   EXPERIENCE_KINDS, experiencesOf, reflectedExperiences, activeCore } from "@/lib/me-v3/platform";
 import { recomputeStatus } from "@/lib/me-v3/recompute";
@@ -28,6 +29,7 @@ const KIND = new Map(EXPERIENCE_KINDS.map((k) => [k.code as string, k.label]));
  */
 export default async function Experiences() {
   const user = await requireUser();
+  const major = await activeMajorName(user.id);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
   const core = await activeCore(user.id);
   const [rows, st, done] = await Promise.all([
@@ -35,7 +37,7 @@ export default async function Experiences() {
   ]);
 
   return (
-    <CmShell active="/me/experience" title="경험"
+    <CmShell active="/me/experience" title="경험" major={major}
       bar={<Link className="cm-btn is-primary" href="/me/experience/new">새 경험 추가</Link>}>
       <CmHead
         title="경험"

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
+import { activeMajorName } from "@/lib/me-v3/major-name";
 import { latestResult, postingCount, savedJobCount, activeCore } from "@/lib/me-v3/platform";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import { CmShell, CmHead } from "../shell";
@@ -19,6 +20,7 @@ export const metadata = { title: "공고 · 내 CareerMatri" };
  */
 export default async function Jobs() {
   const user = await requireUser();
+  const major = await activeMajorName(user.id);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
   const core = await activeCore(user.id);
   const [postings, saved, result] = await Promise.all([
@@ -28,7 +30,7 @@ export default async function Jobs() {
   const gaps = (result?.gaps ?? []).slice(0, 3);
 
   return (
-    <CmShell active="/me/jobs" title="공고">
+    <CmShell active="/me/jobs" title="공고" major={major}>
       {/* **왼쪽 띠에 줄을 두지 않았다.** 이 쪽은 Track 이 켜지는 날의
           자리이고, 지금 혼자 서면 메뉴에 빈 쪽이 하나 늘어난다. 들어오는
           길은 Track 쪽이고 띠에서는 Track 줄이 켜진다 */}

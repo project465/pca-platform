@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
+import { majorNameOf } from "@/lib/me-v3/major-name";
 import { currentState, profileOf, activeCore } from "@/lib/me-v3/platform";
 import { openActions } from "@/lib/me-v3/open-actions";
 import { domainName, industryChoices, roleName } from "@/lib/me-v3/runtime/session";
@@ -73,7 +74,7 @@ export default async function State(
 
   if (!st.model) {
     return (
-      <CmShell active="/me/state" title="현재 상태"
+      <CmShell active="/me/state" title="현재 상태" major={majorNameOf(st.core)}
       bar={<Link className="cm-btn" href="/me/experience/new">+ 경험 추가</Link>}>
         <CmHead title="아직 볼 것이 없습니다"
           lead="검사를 한 번 끝내면 확인된 근거와 아직 부족한 부분이 여기에 섭니다." />
@@ -82,7 +83,7 @@ export default async function State(
           <p style={{ marginTop: 10 }}>
             {st.open
               ? <Link href={`/v3/${st.open.id}`}>풀던 검사 이어하기</Link>
-              : <Link href="/cores">기계공학 검사 시작</Link>}
+              : <Link href="/cores">{majorNameOf(st.core) ? `${majorNameOf(st.core)} 검사 시작` : "검사 시작"}</Link>}
           </p>
         </div>
       </CmShell>
@@ -114,7 +115,7 @@ export default async function State(
   const fallback = m.actions[0] ?? null;
 
   return (
-    <CmShell active="/me/state" title="현재 상태"
+    <CmShell active="/me/state" title="현재 상태" major={majorNameOf(st.core)}
       bar={<Link className="cm-btn" href="/me/experience/new">+ 경험 추가</Link>}>
       {/* ①② 제목과 최근 반영 날짜.
 

@@ -29,7 +29,7 @@
  */
 
 /** 화면 구조와 상호작용. 흐름이나 화면이 바뀌면 올린다 */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V20";
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V21";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
 export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.14";
