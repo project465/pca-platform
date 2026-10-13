@@ -447,8 +447,9 @@
          "code": "PCU26_SPORTSREHAB",
          "name": "운동재활복지학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null
+         "core_code": "SPORTS_CORE_V1",
+         "specialization": "SPORTS_REHAB",
+         "mapping_note": "운동재활 갈래로 간다. 묻는 것이 다친 사람을 단계별로 돌려보내는 쪽이다"
         }
        ]
       },
@@ -653,8 +654,9 @@
            "code": "PCU26_LEISURE_COACH",
            "name": "스포츠지도·건강재활전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null
+           "core_code": "SPORTS_CORE_V1",
+           "specialization": "SPORTS_COACHING",
+           "mapping_note": "스포츠지도 갈래로 간다. 묻는 것이 그날 그 자리에서 사람을 움직이게 하는 쪽이다"
           },
           {
            "code": "PCU26_LEISURE_MKT",
@@ -723,9 +725,10 @@
            "code": "PCU26_LIFE_SENIOR",
            "name": "시니어운동처방전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null,
-           "audience": "ADULT_LEARNER"
+           "core_code": "SPORTS_CORE_V1",
+           "specialization": "SPORTS_SENIOR",
+           "audience": "ADULT_LEARNER",
+           "mapping_note": "시니어운동처방 갈래로 간다. 묻는 것이 넘어지지 않고 끝까지 오게 하는 쪽이다"
           },
           {
            "code": "PCU26_LIFE_HUMANARTS",
@@ -1023,8 +1026,9 @@
          "code": "PCU27_SPORTSREHAB",
          "name": "운동재활복지학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null
+         "core_code": "SPORTS_CORE_V1",
+         "specialization": "SPORTS_REHAB",
+         "mapping_note": "운동재활 갈래로 간다. 묻는 것이 다친 사람을 단계별로 돌려보내는 쪽이다"
         }
        ]
       },
@@ -1250,8 +1254,9 @@
            "code": "PCU27_LEISURE_COACH",
            "name": "스포츠지도·건강재활전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null
+           "core_code": "SPORTS_CORE_V1",
+           "specialization": "SPORTS_COACHING",
+           "mapping_note": "스포츠지도 갈래로 간다. 묻는 것이 그날 그 자리에서 사람을 움직이게 하는 쪽이다"
           },
           {
            "code": "PCU27_LEISURE_MKT",
@@ -1321,9 +1326,10 @@
            "code": "PCU27_LIFE_SENIORGOLF",
            "name": "시니어운동처방·파크골프전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null,
-           "audience": "ADULT_LEARNER"
+           "core_code": "SPORTS_CORE_V1",
+           "specialization": "SPORTS_SENIOR",
+           "audience": "ADULT_LEARNER",
+           "mapping_note": "시니어운동처방 갈래로 간다. 묻는 것이 넘어지지 않고 끝까지 오게 하는 쪽이다. 파크골프는 그 자리에서 쓰는 종목이고 재는 판단은 같다"
           },
           {
            "code": "PCU27_LIFE_HUMANARTS",

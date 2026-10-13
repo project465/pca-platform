@@ -1,0 +1,2386 @@
+{
+ "schema_version": "sports-v1-relations.1",
+ "core": "SPORTS_CORE_V1",
+ "note": "기술영역과 산업, 기술영역과 역할의 관계를 두 표로 둔다. 세 축을 미리 곱해 두지 않는다: 열두 영역과 여덟 산업과 여덟 역할을 곱하면 칠백예순여덟 줄이 되고 그만큼의 줄을 사람이 손으로 유지할 수 없다. 어느 줄도 점수를 만들지 않는다: `strength` 는 설명하는 차례를 정하고 `appears_as` 는 결과지가 그 말로 옮겨 적을 때 읽는다",
+ "combine_rule": "산업 하나와 역할 하나를 함께 고른 사람에게는 두 표에서 같은 영역의 줄을 뽑아 나란히 놓는다. 둘 다 `중심` 인 영역이 먼저 서고, 한쪽만 중심인 영역이 다음이고, 양쪽이 드문 영역은 적지 않는다",
+ "td_industry": [
+  {
+   "td": "TD01",
+   "td_name": "운동 수행력 측정·평가",
+   "industry": "INDUSTRY_PROTEAM_V1",
+   "industry_name": "프로팀·선수단",
+   "strength": "있음",
+   "appears_as": "프로팀·선수단 에서는 경기력 지표를 골라 재는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "경기력 지표를 골라 재는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "운동 수행력 측정·평가",
+   "industry": "INDUSTRY_REHAB_V1",
+   "industry_name": "병원·재활센터",
+   "strength": "중심",
+   "appears_as": "병원·재활센터 에서는 기능 검사를 골라 재는가 · 재는 조건을 적어 두는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ],
+   "dimensions": [
+    "기능 검사를 골라 재는가",
+    "재는 조건을 적어 두는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "운동 수행력 측정·평가",
+   "industry": "INDUSTRY_FITNESS_V1",
+   "industry_name": "체육관·피트니스",
+   "strength": "있음",
+   "appears_as": "체육관·피트니스 에서는 등록 때 잴 항목을 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "등록 때 잴 항목을 고르는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "운동 수행력 측정·평가",
+   "industry": "INDUSTRY_SCHOOL_V1",
+   "industry_name": "학교·유소년",
+   "strength": "있음",
+   "appears_as": "학교·유소년 에서는 체력 검사 조건을 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "체력 검사 조건을 맞추는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "운동 수행력 측정·평가",
+   "industry": "INDUSTRY_SENIOR_V1",
+   "industry_name": "노인·건강증진",
+   "strength": "중심",
+   "appears_as": "노인·건강증진 에서는 넘어질 위험을 재어 가르는가 · 기준표와 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ],
+   "dimensions": [
+    "넘어질 위험을 재어 가르는가",
+    "기준표와 견주는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "운동 수행력 측정·평가",
+   "industry": "INDUSTRY_EVENT_V1",
+   "industry_name": "대회·경기 운영",
+   "strength": "드묾",
+   "appears_as": "대회·경기 운영 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "운동 수행력 측정·평가",
+   "industry": "INDUSTRY_SPORTSCI_V1",
+   "industry_name": "스포츠 과학·측정",
+   "strength": "중심",
+   "appears_as": "스포츠 과학·측정 에서는 재는 방법을 골라 그 까닭을 남기는가 · 재는 조건을 적어 두는가 · 값을 다른 자료와 대조하는가 · 값이 흔들린 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J5",
+    "J6",
+    "J7"
+   ],
+   "dimensions": [
+    "재는 방법을 골라 그 까닭을 남기는가",
+    "재는 조건을 적어 두는가",
+    "값을 다른 자료와 대조하는가",
+    "값이 흔들린 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "운동 수행력 측정·평가",
+   "industry": "INDUSTRY_FACILITY_V1",
+   "industry_name": "시설 운영·행정",
+   "strength": "드묾",
+   "appears_as": "시설 운영·행정 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "운동 처방 설계",
+   "industry": "INDUSTRY_PROTEAM_V1",
+   "industry_name": "프로팀·선수단",
+   "strength": "드묾",
+   "appears_as": "프로팀·선수단 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "운동 처방 설계",
+   "industry": "INDUSTRY_REHAB_V1",
+   "industry_name": "병원·재활센터",
+   "strength": "있음",
+   "appears_as": "병원·재활센터 에서는 통증이 남을 때 멈출지 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "통증이 남을 때 멈출지 정하는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "운동 처방 설계",
+   "industry": "INDUSTRY_FITNESS_V1",
+   "industry_name": "체육관·피트니스",
+   "strength": "중심",
+   "appears_as": "체육관·피트니스 에서는 바람을 주당 횟수로 옮기는가 · 기구를 그 사람에 맞춰 바꾸는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J4"
+   ],
+   "dimensions": [
+    "바람을 주당 횟수로 옮기는가",
+    "기구를 그 사람에 맞춰 바꾸는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "운동 처방 설계",
+   "industry": "INDUSTRY_SCHOOL_V1",
+   "industry_name": "학교·유소년",
+   "strength": "드묾",
+   "appears_as": "학교·유소년 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "운동 처방 설계",
+   "industry": "INDUSTRY_SENIOR_V1",
+   "industry_name": "노인·건강증진",
+   "strength": "중심",
+   "appears_as": "노인·건강증진 에서는 앉아서 할 수 있게 바꾸는가 · 그만둘 조건을 적어 두는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ],
+   "dimensions": [
+    "앉아서 할 수 있게 바꾸는가",
+    "그만둘 조건을 적어 두는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "운동 처방 설계",
+   "industry": "INDUSTRY_EVENT_V1",
+   "industry_name": "대회·경기 운영",
+   "strength": "드묾",
+   "appears_as": "대회·경기 운영 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "운동 처방 설계",
+   "industry": "INDUSTRY_SPORTSCI_V1",
+   "industry_name": "스포츠 과학·측정",
+   "strength": "드묾",
+   "appears_as": "스포츠 과학·측정 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "운동 처방 설계",
+   "industry": "INDUSTRY_FACILITY_V1",
+   "industry_name": "시설 운영·행정",
+   "strength": "드묾",
+   "appears_as": "시설 운영·행정 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "운동 지도·수업 운영",
+   "industry": "INDUSTRY_PROTEAM_V1",
+   "industry_name": "프로팀·선수단",
+   "strength": "드묾",
+   "appears_as": "프로팀·선수단 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "운동 지도·수업 운영",
+   "industry": "INDUSTRY_REHAB_V1",
+   "industry_name": "병원·재활센터",
+   "strength": "드묾",
+   "appears_as": "병원·재활센터 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "운동 지도·수업 운영",
+   "industry": "INDUSTRY_FITNESS_V1",
+   "industry_name": "체육관·피트니스",
+   "strength": "있음",
+   "appears_as": "체육관·피트니스 에서는 그 자리에서 수업을 바꾸는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "그 자리에서 수업을 바꾸는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "운동 지도·수업 운영",
+   "industry": "INDUSTRY_SCHOOL_V1",
+   "industry_name": "학교·유소년",
+   "strength": "중심",
+   "appears_as": "학교·유소년 에서는 학기에 할 것과 뺄 것을 가르는가 · 그 자리에서 진행을 바꾸는가 · 안 따라온 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J3",
+    "J7"
+   ],
+   "dimensions": [
+    "학기에 할 것과 뺄 것을 가르는가",
+    "그 자리에서 진행을 바꾸는가",
+    "안 따라온 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "운동 지도·수업 운영",
+   "industry": "INDUSTRY_SENIOR_V1",
+   "industry_name": "노인·건강증진",
+   "strength": "중심",
+   "appears_as": "노인·건강증진 에서는 그날 강도를 바꾸는가 · 안 따라온 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ],
+   "dimensions": [
+    "그날 강도를 바꾸는가",
+    "안 따라온 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "운동 지도·수업 운영",
+   "industry": "INDUSTRY_EVENT_V1",
+   "industry_name": "대회·경기 운영",
+   "strength": "있음",
+   "appears_as": "대회·경기 운영 에서는 진행 방식을 인원에 맞춰 바꾸는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "진행 방식을 인원에 맞춰 바꾸는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "운동 지도·수업 운영",
+   "industry": "INDUSTRY_SPORTSCI_V1",
+   "industry_name": "스포츠 과학·측정",
+   "strength": "드묾",
+   "appears_as": "스포츠 과학·측정 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "운동 지도·수업 운영",
+   "industry": "INDUSTRY_FACILITY_V1",
+   "industry_name": "시설 운영·행정",
+   "strength": "있음",
+   "appears_as": "시설 운영·행정 에서는 진행 방식을 공간에 맞춰 바꾸는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "진행 방식을 공간에 맞춰 바꾸는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "손상 평가·현장 응급",
+   "industry": "INDUSTRY_PROTEAM_V1",
+   "industry_name": "프로팀·선수단",
+   "strength": "중심",
+   "appears_as": "프로팀·선수단 에서는 경기 중 멈출지 가르는가 · 내 판단을 진단과 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ],
+   "dimensions": [
+    "경기 중 멈출지 가르는가",
+    "내 판단을 진단과 대조하는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "손상 평가·현장 응급",
+   "industry": "INDUSTRY_REHAB_V1",
+   "industry_name": "병원·재활센터",
+   "strength": "있음",
+   "appears_as": "병원·재활센터 에서는 보낼지 그 자리에서 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "보낼지 그 자리에서 가르는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "손상 평가·현장 응급",
+   "industry": "INDUSTRY_FITNESS_V1",
+   "industry_name": "체육관·피트니스",
+   "strength": "드묾",
+   "appears_as": "체육관·피트니스 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "손상 평가·현장 응급",
+   "industry": "INDUSTRY_SCHOOL_V1",
+   "industry_name": "학교·유소년",
+   "strength": "중심",
+   "appears_as": "학교·유소년 에서는 다친 아이를 두고 가르는가 · 그 자리에서 한 조치를 적는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ],
+   "dimensions": [
+    "다친 아이를 두고 가르는가",
+    "그 자리에서 한 조치를 적는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "손상 평가·현장 응급",
+   "industry": "INDUSTRY_SENIOR_V1",
+   "industry_name": "노인·건강증진",
+   "strength": "드묾",
+   "appears_as": "노인·건강증진 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "손상 평가·현장 응급",
+   "industry": "INDUSTRY_EVENT_V1",
+   "industry_name": "대회·경기 운영",
+   "strength": "있음",
+   "appears_as": "대회·경기 운영 에서는 다친 사람을 그 자리에서 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "다친 사람을 그 자리에서 가르는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "손상 평가·현장 응급",
+   "industry": "INDUSTRY_SPORTSCI_V1",
+   "industry_name": "스포츠 과학·측정",
+   "strength": "드묾",
+   "appears_as": "스포츠 과학·측정 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "손상 평가·현장 응급",
+   "industry": "INDUSTRY_FACILITY_V1",
+   "industry_name": "시설 운영·행정",
+   "strength": "드묾",
+   "appears_as": "시설 운영·행정 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "재활 단계 설정·복귀 판정",
+   "industry": "INDUSTRY_PROTEAM_V1",
+   "industry_name": "프로팀·선수단",
+   "strength": "중심",
+   "appears_as": "프로팀·선수단 에서는 복귀 조건을 적어 두는가 · 다시 다친 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ],
+   "dimensions": [
+    "복귀 조건을 적어 두는가",
+    "다시 다친 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "재활 단계 설정·복귀 판정",
+   "industry": "INDUSTRY_REHAB_V1",
+   "industry_name": "병원·재활센터",
+   "strength": "중심",
+   "appears_as": "병원·재활센터 에서는 소견을 올리는 조건으로 옮기는가 · 좌우를 견주어 판정하는가 · 조건을 못 채웠을 때 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J6"
+   ],
+   "dimensions": [
+    "소견을 올리는 조건으로 옮기는가",
+    "좌우를 견주어 판정하는가",
+    "조건을 못 채웠을 때 가르는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "재활 단계 설정·복귀 판정",
+   "industry": "INDUSTRY_FITNESS_V1",
+   "industry_name": "체육관·피트니스",
+   "strength": "드묾",
+   "appears_as": "체육관·피트니스 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "재활 단계 설정·복귀 판정",
+   "industry": "INDUSTRY_SCHOOL_V1",
+   "industry_name": "학교·유소년",
+   "strength": "드묾",
+   "appears_as": "학교·유소년 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "재활 단계 설정·복귀 판정",
+   "industry": "INDUSTRY_SENIOR_V1",
+   "industry_name": "노인·건강증진",
+   "strength": "드묾",
+   "appears_as": "노인·건강증진 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "재활 단계 설정·복귀 판정",
+   "industry": "INDUSTRY_EVENT_V1",
+   "industry_name": "대회·경기 운영",
+   "strength": "드묾",
+   "appears_as": "대회·경기 운영 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "재활 단계 설정·복귀 판정",
+   "industry": "INDUSTRY_SPORTSCI_V1",
+   "industry_name": "스포츠 과학·측정",
+   "strength": "드묾",
+   "appears_as": "스포츠 과학·측정 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "재활 단계 설정·복귀 판정",
+   "industry": "INDUSTRY_FACILITY_V1",
+   "industry_name": "시설 운영·행정",
+   "strength": "드묾",
+   "appears_as": "시설 운영·행정 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "자세·동작 분석",
+   "industry": "INDUSTRY_PROTEAM_V1",
+   "industry_name": "프로팀·선수단",
+   "strength": "있음",
+   "appears_as": "프로팀·선수단 에서는 기술 동작의 어긋남을 짚는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "기술 동작의 어긋남을 짚는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자세·동작 분석",
+   "industry": "INDUSTRY_REHAB_V1",
+   "industry_name": "병원·재활센터",
+   "strength": "있음",
+   "appears_as": "병원·재활센터 에서는 움직임의 어긋남을 짚는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "움직임의 어긋남을 짚는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자세·동작 분석",
+   "industry": "INDUSTRY_FITNESS_V1",
+   "industry_name": "체육관·피트니스",
+   "strength": "있음",
+   "appears_as": "체육관·피트니스 에서는 자세의 어긋남을 짚는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "자세의 어긋남을 짚는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자세·동작 분석",
+   "industry": "INDUSTRY_SCHOOL_V1",
+   "industry_name": "학교·유소년",
+   "strength": "있음",
+   "appears_as": "학교·유소년 에서는 기본 동작을 보고 짚는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "기본 동작을 보고 짚는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자세·동작 분석",
+   "industry": "INDUSTRY_SENIOR_V1",
+   "industry_name": "노인·건강증진",
+   "strength": "드묾",
+   "appears_as": "노인·건강증진 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "자세·동작 분석",
+   "industry": "INDUSTRY_EVENT_V1",
+   "industry_name": "대회·경기 운영",
+   "strength": "드묾",
+   "appears_as": "대회·경기 운영 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "자세·동작 분석",
+   "industry": "INDUSTRY_SPORTSCI_V1",
+   "industry_name": "스포츠 과학·측정",
+   "strength": "중심",
+   "appears_as": "스포츠 과학·측정 에서는 찍는 각도와 방법을 고르는가 · 분석 절차를 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ],
+   "dimensions": [
+    "찍는 각도와 방법을 고르는가",
+    "분석 절차를 남기는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자세·동작 분석",
+   "industry": "INDUSTRY_FACILITY_V1",
+   "industry_name": "시설 운영·행정",
+   "strength": "드묾",
+   "appears_as": "시설 운영·행정 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "체력·건강 상담",
+   "industry": "INDUSTRY_PROTEAM_V1",
+   "industry_name": "프로팀·선수단",
+   "strength": "드묾",
+   "appears_as": "프로팀·선수단 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "체력·건강 상담",
+   "industry": "INDUSTRY_REHAB_V1",
+   "industry_name": "병원·재활센터",
+   "strength": "있음",
+   "appears_as": "병원·재활센터 에서는 안 이어 갈 때 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "안 이어 갈 때 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "체력·건강 상담",
+   "industry": "INDUSTRY_FITNESS_V1",
+   "industry_name": "체육관·피트니스",
+   "strength": "중심",
+   "appears_as": "체육관·피트니스 에서는 할 수 있는 한 가지를 함께 고르는가 · 하기로 한 것을 적어 남기는가 · 끊긴 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "할 수 있는 한 가지를 함께 고르는가",
+    "하기로 한 것을 적어 남기는가",
+    "끊긴 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "체력·건강 상담",
+   "industry": "INDUSTRY_SCHOOL_V1",
+   "industry_name": "학교·유소년",
+   "strength": "드묾",
+   "appears_as": "학교·유소년 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "체력·건강 상담",
+   "industry": "INDUSTRY_SENIOR_V1",
+   "industry_name": "노인·건강증진",
+   "strength": "드묾",
+   "appears_as": "노인·건강증진 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "체력·건강 상담",
+   "industry": "INDUSTRY_EVENT_V1",
+   "industry_name": "대회·경기 운영",
+   "strength": "드묾",
+   "appears_as": "대회·경기 운영 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "체력·건강 상담",
+   "industry": "INDUSTRY_SPORTSCI_V1",
+   "industry_name": "스포츠 과학·측정",
+   "strength": "드묾",
+   "appears_as": "스포츠 과학·측정 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "체력·건강 상담",
+   "industry": "INDUSTRY_FACILITY_V1",
+   "industry_name": "시설 운영·행정",
+   "strength": "드묾",
+   "appears_as": "시설 운영·행정 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "시설·장비 안전 관리",
+   "industry": "INDUSTRY_PROTEAM_V1",
+   "industry_name": "프로팀·선수단",
+   "strength": "드묾",
+   "appears_as": "프로팀·선수단 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "시설·장비 안전 관리",
+   "industry": "INDUSTRY_REHAB_V1",
+   "industry_name": "병원·재활센터",
+   "strength": "드묾",
+   "appears_as": "병원·재활센터 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "시설·장비 안전 관리",
+   "industry": "INDUSTRY_FITNESS_V1",
+   "industry_name": "체육관·피트니스",
+   "strength": "있음",
+   "appears_as": "체육관·피트니스 에서는 기구 위험을 적어 두는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "기구 위험을 적어 두는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "시설·장비 안전 관리",
+   "industry": "INDUSTRY_SCHOOL_V1",
+   "industry_name": "학교·유소년",
+   "strength": "있음",
+   "appears_as": "학교·유소년 에서는 체육관의 위험을 적어 두는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "체육관의 위험을 적어 두는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "시설·장비 안전 관리",
+   "industry": "INDUSTRY_SENIOR_V1",
+   "industry_name": "노인·건강증진",
+   "strength": "있음",
+   "appears_as": "노인·건강증진 에서는 바닥과 손잡이를 점검하는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "바닥과 손잡이를 점검하는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "시설·장비 안전 관리",
+   "industry": "INDUSTRY_EVENT_V1",
+   "industry_name": "대회·경기 운영",
+   "strength": "있음",
+   "appears_as": "대회·경기 운영 에서는 경기장 위험을 점검하는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "경기장 위험을 점검하는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "시설·장비 안전 관리",
+   "industry": "INDUSTRY_SPORTSCI_V1",
+   "industry_name": "스포츠 과학·측정",
+   "strength": "드묾",
+   "appears_as": "스포츠 과학·측정 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "시설·장비 안전 관리",
+   "industry": "INDUSTRY_FACILITY_V1",
+   "industry_name": "시설 운영·행정",
+   "strength": "중심",
+   "appears_as": "시설 운영·행정 에서는 점검 기준을 항목으로 옮기는가 · 닫을지 그대로 쓸지 가르는가 · 점검표를 남기는가 · 사고 뒤 조건을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "점검 기준을 항목으로 옮기는가",
+    "닫을지 그대로 쓸지 가르는가",
+    "점검표를 남기는가",
+    "사고 뒤 조건을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "경기·대회 운영",
+   "industry": "INDUSTRY_PROTEAM_V1",
+   "industry_name": "프로팀·선수단",
+   "strength": "드묾",
+   "appears_as": "프로팀·선수단 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "경기·대회 운영",
+   "industry": "INDUSTRY_REHAB_V1",
+   "industry_name": "병원·재활센터",
+   "strength": "드묾",
+   "appears_as": "병원·재활센터 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "경기·대회 운영",
+   "industry": "INDUSTRY_FITNESS_V1",
+   "industry_name": "체육관·피트니스",
+   "strength": "드묾",
+   "appears_as": "체육관·피트니스 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "경기·대회 운영",
+   "industry": "INDUSTRY_SCHOOL_V1",
+   "industry_name": "학교·유소년",
+   "strength": "있음",
+   "appears_as": "학교·유소년 에서는 보호자에게 할 말을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "보호자에게 할 말을 가르는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "경기·대회 운영",
+   "industry": "INDUSTRY_SENIOR_V1",
+   "industry_name": "노인·건강증진",
+   "strength": "있음",
+   "appears_as": "노인·건강증진 에서는 쉬운 말로 바꾸는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "쉬운 말로 바꾸는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "경기·대회 운영",
+   "industry": "INDUSTRY_EVENT_V1",
+   "industry_name": "대회·경기 운영",
+   "strength": "중심",
+   "appears_as": "대회·경기 운영 에서는 규정을 편성 조건으로 옮기는가 · 밀릴 때 줄일 것을 가르는가 · 운영 계획을 남기는가 · 밀린 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "규정을 편성 조건으로 옮기는가",
+    "밀릴 때 줄일 것을 가르는가",
+    "운영 계획을 남기는가",
+    "밀린 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "경기·대회 운영",
+   "industry": "INDUSTRY_SPORTSCI_V1",
+   "industry_name": "스포츠 과학·측정",
+   "strength": "드묾",
+   "appears_as": "스포츠 과학·측정 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "경기·대회 운영",
+   "industry": "INDUSTRY_FACILITY_V1",
+   "industry_name": "시설 운영·행정",
+   "strength": "있음",
+   "appears_as": "시설 운영·행정 에서는 사용률을 지난해와 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "사용률을 지난해와 견주는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "생활체육·동호회 운영",
+   "industry": "INDUSTRY_PROTEAM_V1",
+   "industry_name": "프로팀·선수단",
+   "strength": "드묾",
+   "appears_as": "프로팀·선수단 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "생활체육·동호회 운영",
+   "industry": "INDUSTRY_REHAB_V1",
+   "industry_name": "병원·재활센터",
+   "strength": "드묾",
+   "appears_as": "병원·재활센터 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "생활체육·동호회 운영",
+   "industry": "INDUSTRY_FITNESS_V1",
+   "industry_name": "체육관·피트니스",
+   "strength": "있음",
+   "appears_as": "체육관·피트니스 에서는 재등록을 지난달과 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "재등록을 지난달과 견주는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "생활체육·동호회 운영",
+   "industry": "INDUSTRY_SCHOOL_V1",
+   "industry_name": "학교·유소년",
+   "strength": "있음",
+   "appears_as": "학교·유소년 에서는 학기 종목을 지난해와 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "학기 종목을 지난해와 견주는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "생활체육·동호회 운영",
+   "industry": "INDUSTRY_SENIOR_V1",
+   "industry_name": "노인·건강증진",
+   "strength": "중심",
+   "appears_as": "노인·건강증진 에서는 열 회차와 대상을 짜는가 · 집계를 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ],
+   "dimensions": [
+    "열 회차와 대상을 짜는가",
+    "집계를 남기는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "생활체육·동호회 운영",
+   "industry": "INDUSTRY_EVENT_V1",
+   "industry_name": "대회·경기 운영",
+   "strength": "있음",
+   "appears_as": "대회·경기 운영 에서는 참가 집계를 지난 대회와 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "참가 집계를 지난 대회와 견주는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "생활체육·동호회 운영",
+   "industry": "INDUSTRY_SPORTSCI_V1",
+   "industry_name": "스포츠 과학·측정",
+   "strength": "드묾",
+   "appears_as": "스포츠 과학·측정 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "생활체육·동호회 운영",
+   "industry": "INDUSTRY_FACILITY_V1",
+   "industry_name": "시설 운영·행정",
+   "strength": "중심",
+   "appears_as": "시설 운영·행정 에서는 쓸 시간과 공간을 가르는가 · 예산과 공간을 회차로 옮기는가 · 운영 계획을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5"
+   ],
+   "dimensions": [
+    "쓸 시간과 공간을 가르는가",
+    "예산과 공간을 회차로 옮기는가",
+    "운영 계획을 남기는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "선수 관리·훈련 계획",
+   "industry": "INDUSTRY_PROTEAM_V1",
+   "industry_name": "프로팀·선수단",
+   "strength": "중심",
+   "appears_as": "프로팀·선수단 에서는 일정에서 거꾸로 세어 부하를 가르는가 · 전술을 훈련량으로 옮기는가 · 피로가 남을 때 줄일지 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J2",
+    "J3"
+   ],
+   "dimensions": [
+    "일정에서 거꾸로 세어 부하를 가르는가",
+    "전술을 훈련량으로 옮기는가",
+    "피로가 남을 때 줄일지 정하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "선수 관리·훈련 계획",
+   "industry": "INDUSTRY_REHAB_V1",
+   "industry_name": "병원·재활센터",
+   "strength": "드묾",
+   "appears_as": "병원·재활센터 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "선수 관리·훈련 계획",
+   "industry": "INDUSTRY_FITNESS_V1",
+   "industry_name": "체육관·피트니스",
+   "strength": "드묾",
+   "appears_as": "체육관·피트니스 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "선수 관리·훈련 계획",
+   "industry": "INDUSTRY_SCHOOL_V1",
+   "industry_name": "학교·유소년",
+   "strength": "드묾",
+   "appears_as": "학교·유소년 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "선수 관리·훈련 계획",
+   "industry": "INDUSTRY_SENIOR_V1",
+   "industry_name": "노인·건강증진",
+   "strength": "드묾",
+   "appears_as": "노인·건강증진 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "선수 관리·훈련 계획",
+   "industry": "INDUSTRY_EVENT_V1",
+   "industry_name": "대회·경기 운영",
+   "strength": "드묾",
+   "appears_as": "대회·경기 운영 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "선수 관리·훈련 계획",
+   "industry": "INDUSTRY_SPORTSCI_V1",
+   "industry_name": "스포츠 과학·측정",
+   "strength": "중심",
+   "appears_as": "스포츠 과학·측정 에서는 다룰 물음을 좁히는가 · 볼 지표를 정의로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J2"
+   ],
+   "dimensions": [
+    "다룰 물음을 좁히는가",
+    "볼 지표를 정의로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "선수 관리·훈련 계획",
+   "industry": "INDUSTRY_FACILITY_V1",
+   "industry_name": "시설 운영·행정",
+   "strength": "드묾",
+   "appears_as": "시설 운영·행정 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "규정·자격·윤리",
+   "industry": "INDUSTRY_PROTEAM_V1",
+   "industry_name": "프로팀·선수단",
+   "strength": "있음",
+   "appears_as": "프로팀·선수단 에서는 금지 범위를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "금지 범위를 가르는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "규정·자격·윤리",
+   "industry": "INDUSTRY_REHAB_V1",
+   "industry_name": "병원·재활센터",
+   "strength": "있음",
+   "appears_as": "병원·재활센터 에서는 의료 행위와의 경계를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "의료 행위와의 경계를 가르는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "규정·자격·윤리",
+   "industry": "INDUSTRY_FITNESS_V1",
+   "industry_name": "체육관·피트니스",
+   "strength": "드묾",
+   "appears_as": "체육관·피트니스 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "규정·자격·윤리",
+   "industry": "INDUSTRY_SCHOOL_V1",
+   "industry_name": "학교·유소년",
+   "strength": "드묾",
+   "appears_as": "학교·유소년 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "규정·자격·윤리",
+   "industry": "INDUSTRY_SENIOR_V1",
+   "industry_name": "노인·건강증진",
+   "strength": "드묾",
+   "appears_as": "노인·건강증진 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "규정·자격·윤리",
+   "industry": "INDUSTRY_EVENT_V1",
+   "industry_name": "대회·경기 운영",
+   "strength": "중심",
+   "appears_as": "대회·경기 운영 에서는 규정 적용을 가르는가 · 이의 처리를 적어 두는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ],
+   "dimensions": [
+    "규정 적용을 가르는가",
+    "이의 처리를 적어 두는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "규정·자격·윤리",
+   "industry": "INDUSTRY_SPORTSCI_V1",
+   "industry_name": "스포츠 과학·측정",
+   "strength": "중심",
+   "appears_as": "스포츠 과학·측정 에서는 말할 범위를 가르는가 · 참여 동의를 적어 두는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ],
+   "dimensions": [
+    "말할 범위를 가르는가",
+    "참여 동의를 적어 두는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "규정·자격·윤리",
+   "industry": "INDUSTRY_FACILITY_V1",
+   "industry_name": "시설 운영·행정",
+   "strength": "있음",
+   "appears_as": "시설 운영·행정 에서는 규정과 자격의 범위를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "규정과 자격의 범위를 가르는가"
+   ]
+  }
+ ],
+ "td_role": [
+  {
+   "td": "TD01",
+   "td_name": "운동 수행력 측정·평가",
+   "role": "ROLE_PROGRAM_V1",
+   "role_name": "프로그램 설계",
+   "strength": "드묾",
+   "appears_as": "프로그램 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "운동 수행력 측정·평가",
+   "role": "ROLE_MEASURE_V1",
+   "role_name": "측정·평가",
+   "strength": "중심",
+   "appears_as": "측정·평가 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J4",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "운동 수행력 측정·평가",
+   "role": "ROLE_RETURN_V1",
+   "role_name": "복귀·적합 판정",
+   "strength": "드묾",
+   "appears_as": "복귀·적합 판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "운동 수행력 측정·평가",
+   "role": "ROLE_RECORDS_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "중심",
+   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "운동 수행력 측정·평가",
+   "role": "ROLE_COACH_V1",
+   "role_name": "현장 지도",
+   "strength": "드묾",
+   "appears_as": "현장 지도 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "운동 수행력 측정·평가",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "운동 수행력 측정·평가",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "중심",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "운동 수행력 측정·평가",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "운동 처방 설계",
+   "role": "ROLE_PROGRAM_V1",
+   "role_name": "프로그램 설계",
+   "strength": "중심",
+   "appears_as": "프로그램 설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J3",
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "운동 처방 설계",
+   "role": "ROLE_MEASURE_V1",
+   "role_name": "측정·평가",
+   "strength": "드묾",
+   "appears_as": "측정·평가 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "운동 처방 설계",
+   "role": "ROLE_RETURN_V1",
+   "role_name": "복귀·적합 판정",
+   "strength": "드묾",
+   "appears_as": "복귀·적합 판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "운동 처방 설계",
+   "role": "ROLE_RECORDS_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "운동 처방 설계",
+   "role": "ROLE_COACH_V1",
+   "role_name": "현장 지도",
+   "strength": "드묾",
+   "appears_as": "현장 지도 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "운동 처방 설계",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "운동 처방 설계",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "운동 처방 설계",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "운동 지도·수업 운영",
+   "role": "ROLE_PROGRAM_V1",
+   "role_name": "프로그램 설계",
+   "strength": "드묾",
+   "appears_as": "프로그램 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "운동 지도·수업 운영",
+   "role": "ROLE_MEASURE_V1",
+   "role_name": "측정·평가",
+   "strength": "드묾",
+   "appears_as": "측정·평가 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "운동 지도·수업 운영",
+   "role": "ROLE_RETURN_V1",
+   "role_name": "복귀·적합 판정",
+   "strength": "드묾",
+   "appears_as": "복귀·적합 판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "운동 지도·수업 운영",
+   "role": "ROLE_RECORDS_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "운동 지도·수업 운영",
+   "role": "ROLE_COACH_V1",
+   "role_name": "현장 지도",
+   "strength": "중심",
+   "appears_as": "현장 지도 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J3",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "운동 지도·수업 운영",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "운동 지도·수업 운영",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "운동 지도·수업 운영",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "중심",
+   "appears_as": "안전·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "손상 평가·현장 응급",
+   "role": "ROLE_PROGRAM_V1",
+   "role_name": "프로그램 설계",
+   "strength": "드묾",
+   "appears_as": "프로그램 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "손상 평가·현장 응급",
+   "role": "ROLE_MEASURE_V1",
+   "role_name": "측정·평가",
+   "strength": "드묾",
+   "appears_as": "측정·평가 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "손상 평가·현장 응급",
+   "role": "ROLE_RETURN_V1",
+   "role_name": "복귀·적합 판정",
+   "strength": "중심",
+   "appears_as": "복귀·적합 판정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "손상 평가·현장 응급",
+   "role": "ROLE_RECORDS_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "손상 평가·현장 응급",
+   "role": "ROLE_COACH_V1",
+   "role_name": "현장 지도",
+   "strength": "중심",
+   "appears_as": "현장 지도 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "손상 평가·현장 응급",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "손상 평가·현장 응급",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "손상 평가·현장 응급",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "재활 단계 설정·복귀 판정",
+   "role": "ROLE_PROGRAM_V1",
+   "role_name": "프로그램 설계",
+   "strength": "드묾",
+   "appears_as": "프로그램 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "재활 단계 설정·복귀 판정",
+   "role": "ROLE_MEASURE_V1",
+   "role_name": "측정·평가",
+   "strength": "드묾",
+   "appears_as": "측정·평가 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "재활 단계 설정·복귀 판정",
+   "role": "ROLE_RETURN_V1",
+   "role_name": "복귀·적합 판정",
+   "strength": "중심",
+   "appears_as": "복귀·적합 판정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J5",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "재활 단계 설정·복귀 판정",
+   "role": "ROLE_RECORDS_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "재활 단계 설정·복귀 판정",
+   "role": "ROLE_COACH_V1",
+   "role_name": "현장 지도",
+   "strength": "드묾",
+   "appears_as": "현장 지도 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "재활 단계 설정·복귀 판정",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "재활 단계 설정·복귀 판정",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "재활 단계 설정·복귀 판정",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자세·동작 분석",
+   "role": "ROLE_PROGRAM_V1",
+   "role_name": "프로그램 설계",
+   "strength": "드묾",
+   "appears_as": "프로그램 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자세·동작 분석",
+   "role": "ROLE_MEASURE_V1",
+   "role_name": "측정·평가",
+   "strength": "중심",
+   "appears_as": "측정·평가 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자세·동작 분석",
+   "role": "ROLE_RETURN_V1",
+   "role_name": "복귀·적합 판정",
+   "strength": "드묾",
+   "appears_as": "복귀·적합 판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자세·동작 분석",
+   "role": "ROLE_RECORDS_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "중심",
+   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J5",
+    "J6",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자세·동작 분석",
+   "role": "ROLE_COACH_V1",
+   "role_name": "현장 지도",
+   "strength": "드묾",
+   "appears_as": "현장 지도 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자세·동작 분석",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자세·동작 분석",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "중심",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자세·동작 분석",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "체력·건강 상담",
+   "role": "ROLE_PROGRAM_V1",
+   "role_name": "프로그램 설계",
+   "strength": "중심",
+   "appears_as": "프로그램 설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "체력·건강 상담",
+   "role": "ROLE_MEASURE_V1",
+   "role_name": "측정·평가",
+   "strength": "드묾",
+   "appears_as": "측정·평가 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "체력·건강 상담",
+   "role": "ROLE_RETURN_V1",
+   "role_name": "복귀·적합 판정",
+   "strength": "드묾",
+   "appears_as": "복귀·적합 판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "체력·건강 상담",
+   "role": "ROLE_RECORDS_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "체력·건강 상담",
+   "role": "ROLE_COACH_V1",
+   "role_name": "현장 지도",
+   "strength": "중심",
+   "appears_as": "현장 지도 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "체력·건강 상담",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "체력·건강 상담",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "체력·건강 상담",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "시설·장비 안전 관리",
+   "role": "ROLE_PROGRAM_V1",
+   "role_name": "프로그램 설계",
+   "strength": "드묾",
+   "appears_as": "프로그램 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "시설·장비 안전 관리",
+   "role": "ROLE_MEASURE_V1",
+   "role_name": "측정·평가",
+   "strength": "드묾",
+   "appears_as": "측정·평가 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "시설·장비 안전 관리",
+   "role": "ROLE_RETURN_V1",
+   "role_name": "복귀·적합 판정",
+   "strength": "드묾",
+   "appears_as": "복귀·적합 판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "시설·장비 안전 관리",
+   "role": "ROLE_RECORDS_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "시설·장비 안전 관리",
+   "role": "ROLE_COACH_V1",
+   "role_name": "현장 지도",
+   "strength": "드묾",
+   "appears_as": "현장 지도 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "시설·장비 안전 관리",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "중심",
+   "appears_as": "운영·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "시설·장비 안전 관리",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "시설·장비 안전 관리",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "중심",
+   "appears_as": "안전·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "경기·대회 운영",
+   "role": "ROLE_PROGRAM_V1",
+   "role_name": "프로그램 설계",
+   "strength": "드묾",
+   "appears_as": "프로그램 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "경기·대회 운영",
+   "role": "ROLE_MEASURE_V1",
+   "role_name": "측정·평가",
+   "strength": "드묾",
+   "appears_as": "측정·평가 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "경기·대회 운영",
+   "role": "ROLE_RETURN_V1",
+   "role_name": "복귀·적합 판정",
+   "strength": "드묾",
+   "appears_as": "복귀·적합 판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "경기·대회 운영",
+   "role": "ROLE_RECORDS_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "중심",
+   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "경기·대회 운영",
+   "role": "ROLE_COACH_V1",
+   "role_name": "현장 지도",
+   "strength": "드묾",
+   "appears_as": "현장 지도 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "경기·대회 운영",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "중심",
+   "appears_as": "운영·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "경기·대회 운영",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "경기·대회 운영",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "생활체육·동호회 운영",
+   "role": "ROLE_PROGRAM_V1",
+   "role_name": "프로그램 설계",
+   "strength": "중심",
+   "appears_as": "프로그램 설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "생활체육·동호회 운영",
+   "role": "ROLE_MEASURE_V1",
+   "role_name": "측정·평가",
+   "strength": "드묾",
+   "appears_as": "측정·평가 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "생활체육·동호회 운영",
+   "role": "ROLE_RETURN_V1",
+   "role_name": "복귀·적합 판정",
+   "strength": "드묾",
+   "appears_as": "복귀·적합 판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "생활체육·동호회 운영",
+   "role": "ROLE_RECORDS_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "생활체육·동호회 운영",
+   "role": "ROLE_COACH_V1",
+   "role_name": "현장 지도",
+   "strength": "드묾",
+   "appears_as": "현장 지도 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "생활체육·동호회 운영",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "중심",
+   "appears_as": "운영·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "생활체육·동호회 운영",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "생활체육·동호회 운영",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "선수 관리·훈련 계획",
+   "role": "ROLE_PROGRAM_V1",
+   "role_name": "프로그램 설계",
+   "strength": "드묾",
+   "appears_as": "프로그램 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "선수 관리·훈련 계획",
+   "role": "ROLE_MEASURE_V1",
+   "role_name": "측정·평가",
+   "strength": "중심",
+   "appears_as": "측정·평가 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "선수 관리·훈련 계획",
+   "role": "ROLE_RETURN_V1",
+   "role_name": "복귀·적합 판정",
+   "strength": "드묾",
+   "appears_as": "복귀·적합 판정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "선수 관리·훈련 계획",
+   "role": "ROLE_RECORDS_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "선수 관리·훈련 계획",
+   "role": "ROLE_COACH_V1",
+   "role_name": "현장 지도",
+   "strength": "드묾",
+   "appears_as": "현장 지도 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "선수 관리·훈련 계획",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "선수 관리·훈련 계획",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "중심",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J4",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "선수 관리·훈련 계획",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "규정·자격·윤리",
+   "role": "ROLE_PROGRAM_V1",
+   "role_name": "프로그램 설계",
+   "strength": "드묾",
+   "appears_as": "프로그램 설계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "규정·자격·윤리",
+   "role": "ROLE_MEASURE_V1",
+   "role_name": "측정·평가",
+   "strength": "드묾",
+   "appears_as": "측정·평가 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "규정·자격·윤리",
+   "role": "ROLE_RETURN_V1",
+   "role_name": "복귀·적합 판정",
+   "strength": "중심",
+   "appears_as": "복귀·적합 판정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "규정·자격·윤리",
+   "role": "ROLE_RECORDS_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "규정·자격·윤리",
+   "role": "ROLE_COACH_V1",
+   "role_name": "현장 지도",
+   "strength": "드묾",
+   "appears_as": "현장 지도 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "규정·자격·윤리",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "규정·자격·윤리",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "규정·자격·윤리",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "중심",
+   "appears_as": "안전·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  }
+ ]
+}

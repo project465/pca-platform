@@ -1,0 +1,1374 @@
+{
+ "schema_version": "sports-v1-checklist-additions.1",
+ "note": "판단 근거 목록이다. 응시자가 `직접 정했거나 결과물로 남긴 것` 을 고르는 자리에 그대로 뜬다. 전부 고를 수 있는 문장으로 적는다: 두 낱말짜리 이름표를 올리면 그 자리에서 응시자가 무엇을 고르는지 알 수 없다. 칸마다 둘 이상인 까닭은 소유가 근거 둘 이상일 때만 올라가기 때문이다",
+ "items": [
+  {
+   "td": "TD01",
+   "axis": "J1",
+   "text": "잴 항목을 좁혀 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J1",
+   "text": "재지 않을 항목과 그 까닭을 적어 두었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J2",
+   "text": "목표를 잴 수 있는 수로 옮겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J2",
+   "text": "쓸 기준표를 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J2",
+   "text": "다시 잴 때를 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J3",
+   "text": "다시 잴지 그대로 쓸지 직접 정했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J3",
+   "text": "쓸 기준을 직접 골랐다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J3",
+   "text": "버릴 값을 직접 가렸다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J4",
+   "text": "쓸 측정 방법과 장비를 골라 적용했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J4",
+   "text": "그 사람의 상태에 맞춰 방법을 바꿨다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J5",
+   "text": "측정 기록을 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J5",
+   "text": "재는 조건을 적어 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J5",
+   "text": "기준과 견준 결과를 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J6",
+   "text": "낸 값을 기준표와 대조했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J6",
+   "text": "지난 기록이나 다른 측정자의 결과와 견주었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J7",
+   "text": "값이 들쭉날쭉한 까닭을 좁혔다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J7",
+   "text": "조건을 바꿔 다시 재 보았다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J8",
+   "text": "내 측정이 처방을 바꿨다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J8",
+   "text": "내 측정 묶음이 기관의 기본이 됐다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J1",
+   "text": "넣을 종목을 좁혀 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J1",
+   "text": "빼는 종목과 그 까닭을 적어 두었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J2",
+   "text": "목표를 주당 횟수와 강도로 옮겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J2",
+   "text": "늘리는 차례를 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J2",
+   "text": "그만둘 조건을 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J3",
+   "text": "강도를 올릴지 멈출지 직접 정했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J3",
+   "text": "먼저 할 종목의 차례를 직접 짰다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J3",
+   "text": "뺄 종목을 직접 가렸다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J4",
+   "text": "종목이나 기구를 그 사람에 맞춰 바꿨다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J4",
+   "text": "집에서 할 수 있게 방법을 바꿨다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J5",
+   "text": "운동 처방표를 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J5",
+   "text": "종목을 고른 근거를 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J5",
+   "text": "늘리는 차례를 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J6",
+   "text": "세운 처방을 측정 결과와 대조했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J6",
+   "text": "지난 처방의 결과나 지침과 견주었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J7",
+   "text": "따라오지 못한 까닭을 좁혔다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J7",
+   "text": "조건을 바꿔 다시 해 보았다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J8",
+   "text": "내 처방이 기관의 기본 프로그램이 됐다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J8",
+   "text": "내 처방이 복귀 계획에 쓰였다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J1",
+   "text": "그날 할 것을 좁혀 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J1",
+   "text": "뒤로 둘 것과 그 까닭을 적어 두었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J2",
+   "text": "강도를 그 자리에서 셀 신호로 옮겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J2",
+   "text": "쉬는 시간과 횟수를 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J2",
+   "text": "멈출 선을 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J3",
+   "text": "무엇을 바꿀지 그 자리에서 직접 정했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J3",
+   "text": "뺄 동작을 직접 가렸다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J3",
+   "text": "따로 볼 사람을 직접 정했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J4",
+   "text": "보여 주는 방법이나 기구를 바꿨다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J4",
+   "text": "공간 배치를 바꿔 맞췄다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J5",
+   "text": "수업 기록을 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J5",
+   "text": "바꾼 것의 까닭을 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J5",
+   "text": "출석과 진행 집계를 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J6",
+   "text": "그날 진행을 짜 둔 계획과 대조했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J6",
+   "text": "지난 회차나 다른 지도자의 진행과 견주었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J7",
+   "text": "안 따라온 까닭을 좁혔다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J7",
+   "text": "방법을 바꿔 다시 해 보았다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J8",
+   "text": "내 진행 방식이 기관의 수업 방식이 됐다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J8",
+   "text": "내 기록이 프로그램 개편에 쓰였다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J1",
+   "text": "볼 신호를 좁혀 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J1",
+   "text": "보지 않을 신호와 그 까닭을 적어 두었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J2",
+   "text": "절차서 기준을 멈출 선으로 옮겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J2",
+   "text": "다시 볼 때를 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J2",
+   "text": "보낼 기준을 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J3",
+   "text": "멈출지 보낼지 직접 정했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J3",
+   "text": "그날 빼는 것을 직접 가렸다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J3",
+   "text": "그 자리에서 할 조치를 직접 정했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J4",
+   "text": "쓸 평가 방법이나 응급 물품을 골랐다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J4",
+   "text": "그 자리의 형편에 맞춰 방법을 바꿨다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J5",
+   "text": "평가 기록을 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J5",
+   "text": "그 자리에서 한 조치를 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J5",
+   "text": "보낸 기록과 그 뒤를 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J6",
+   "text": "내 판단을 절차서 기준과 대조했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J6",
+   "text": "병원 진단이나 다른 평가자의 판단과 견주었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J7",
+   "text": "가볍게 본 사람이 나빠진 까닭을 되짚었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J7",
+   "text": "볼 신호를 바꿔 다시 해 보았다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J8",
+   "text": "내 평가가 치료 방향을 바꿨다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J8",
+   "text": "내 멈춤 기준이 팀의 규칙이 됐다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J1",
+   "text": "이번 단계에서 볼 것을 좁혀 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J1",
+   "text": "다음 단계로 미룰 것과 그 까닭을 적어 두었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J2",
+   "text": "소견을 올리는 조건으로 옮겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J2",
+   "text": "되돌리는 조건을 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J2",
+   "text": "돌아갈 수 있는 선을 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J3",
+   "text": "올릴지 되돌릴지 직접 정했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J3",
+   "text": "그날 멈출 것을 직접 가렸다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J3",
+   "text": "돌아갈 시점을 직접 정했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J4",
+   "text": "쓸 기능 검사나 보조 기구를 골랐다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J4",
+   "text": "종목의 요구에 맞춰 검사를 바꿨다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J5",
+   "text": "복귀 판정서를 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J5",
+   "text": "단계를 올린 근거를 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J5",
+   "text": "되돌린 기록과 그 까닭을 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J6",
+   "text": "다친 쪽과 안 다친 쪽을 견주었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J6",
+   "text": "단계 기준이나 의료진 소견과 대조했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J7",
+   "text": "다시 다친 까닭을 좁혔다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J7",
+   "text": "조건을 바꿔 다시 해 보았다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J8",
+   "text": "내 판정이 복귀 결정에 쓰였다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J8",
+   "text": "내 단계 기준이 기관의 절차가 됐다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J1",
+   "text": "볼 자리를 좁혀 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J1",
+   "text": "보지 않을 자리와 그 까닭을 적어 두었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J2",
+   "text": "어긋난 모습을 재어 볼 항목으로 옮겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J2",
+   "text": "쓸 각도와 기준을 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J2",
+   "text": "다시 볼 때를 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J3",
+   "text": "무엇부터 고칠지 직접 정했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J3",
+   "text": "뺄 교정 동작을 직접 가렸다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J3",
+   "text": "그 사람에게 맞는 난이도를 직접 정했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J4",
+   "text": "찍는 각도나 재는 방법을 골랐다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J4",
+   "text": "공간이나 장비에 맞춰 방법을 바꿨다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J5",
+   "text": "분석 기록을 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J5",
+   "text": "고칠 차례를 적어 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J5",
+   "text": "전후 비교 자료를 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J6",
+   "text": "전과 후의 영상을 견주었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J6",
+   "text": "좌우 차이나 다른 분석자의 판단과 대조했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J7",
+   "text": "안 고쳐진 까닭을 좁혔다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J7",
+   "text": "조건을 바꿔 다시 해 보았다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J8",
+   "text": "내 분석이 처방을 바꿨다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J8",
+   "text": "내 분석 묶음이 기관의 기본이 됐다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J1",
+   "text": "이번에 다룰 것을 좁혀 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J1",
+   "text": "미룰 것과 그 까닭을 적어 두었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J2",
+   "text": "바람을 주 몇 번 무엇을 할지로 옮겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J2",
+   "text": "확인할 때를 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J2",
+   "text": "그만둘 선을 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J3",
+   "text": "무엇부터 할지 직접 정했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J3",
+   "text": "작게 쪼갠 한 가지를 직접 골랐다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J3",
+   "text": "빼고 갈 것을 직접 가렸다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J4",
+   "text": "묻는 방법이나 자료를 바꿨다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J4",
+   "text": "그 사람의 형편에 맞춰 설명을 바꿨다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J5",
+   "text": "상담 기록을 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J5",
+   "text": "하기로 한 한 가지를 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J5",
+   "text": "확인한 결과를 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J6",
+   "text": "다음에 온 날의 일지와 견주었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J6",
+   "text": "다시 잰 값이나 지난 상담과 대조했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J7",
+   "text": "끊긴 까닭을 좁혔다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J7",
+   "text": "조건을 바꿔 다시 해 보았다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J8",
+   "text": "내 상담이 처방을 바꿨다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J8",
+   "text": "내 상담 차례가 센터의 방식이 됐다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J1",
+   "text": "먼저 볼 자리를 좁혀 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J1",
+   "text": "뒤로 둘 자리와 그 까닭을 적어 두었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J2",
+   "text": "안전 기준을 확인할 항목으로 옮겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J2",
+   "text": "점검 주기를 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J2",
+   "text": "닫을 선을 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J3",
+   "text": "닫을지 그대로 쓸지 직접 정했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J3",
+   "text": "먼저 고칠 것을 직접 가렸다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J3",
+   "text": "쓰는 사람의 범위를 직접 정했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J4",
+   "text": "점검 방법이나 보호 장비를 골랐다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J4",
+   "text": "공간이나 기구에 맞춰 방법을 바꿨다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J5",
+   "text": "위험 목록을 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J5",
+   "text": "점검표와 점검 기록을 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J5",
+   "text": "닫은 기록과 그 까닭을 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J6",
+   "text": "점검 결과를 법정 기준과 대조했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J6",
+   "text": "사고 집계나 제조사 지침과 견주었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J7",
+   "text": "사고가 난 뒤 겹친 조건을 되짚었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J7",
+   "text": "조건을 바꿔 다시 나지 않게 했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J8",
+   "text": "내 점검 차례가 기관의 절차가 됐다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J8",
+   "text": "내 개선 보고가 다른 시설에서 쓰였다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J1",
+   "text": "열 종목을 좁혀 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J1",
+   "text": "빼는 종목과 그 까닭을 적어 두었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J2",
+   "text": "규정을 편성과 일정의 조건으로 옮겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J2",
+   "text": "쓸 코트와 시간을 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J2",
+   "text": "멈출 선을 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J3",
+   "text": "무엇을 줄이거나 미룰지 직접 정했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J3",
+   "text": "조 편성을 직접 가렸다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J3",
+   "text": "멈출지 이어 갈지 직접 정했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J4",
+   "text": "편성 방법이나 진행 방식을 바꿨다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J4",
+   "text": "인원과 코트 수에 맞춰 방식을 바꿨다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J5",
+   "text": "대회 운영 계획을 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J5",
+   "text": "조 편성을 가른 근거를 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J5",
+   "text": "일정 변경 기록을 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J6",
+   "text": "진행 결과를 요강과 대조했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J6",
+   "text": "지난 대회나 걸린 시간 집계와 견주었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J7",
+   "text": "일정이 밀린 까닭을 좁혔다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J7",
+   "text": "편성을 바꿔 다시 해 보았다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J8",
+   "text": "내 운영 방식이 기관의 기본이 됐다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J8",
+   "text": "내 집계가 다음 대회 규모에 쓰였다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J1",
+   "text": "올해 열 것을 좁혀 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J1",
+   "text": "접을 것과 그 까닭을 적어 두었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J2",
+   "text": "예산과 공간을 회차와 인원으로 옮겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J2",
+   "text": "모을 대상을 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J2",
+   "text": "끝난 뒤 볼 지표를 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J3",
+   "text": "먼저 열 종목을 직접 정했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J3",
+   "text": "시간대를 직접 골랐다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J3",
+   "text": "줄일 회차를 직접 가렸다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J4",
+   "text": "모으는 방법이나 시간대를 바꿨다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J4",
+   "text": "대상에 맞춰 종목을 바꿨다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J5",
+   "text": "운영 계획을 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J5",
+   "text": "종목을 고른 근거를 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J5",
+   "text": "참여 집계를 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J6",
+   "text": "참여 집계를 지난해와 대조했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J6",
+   "text": "만족도 설문이나 재등록 비율과 견주었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J7",
+   "text": "안 모인 까닭을 좁혔다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J7",
+   "text": "조건을 바꿔 다시 해 보았다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J8",
+   "text": "내 프로그램이 해마다 하는 사업이 됐다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J8",
+   "text": "내 집계가 다음 해 예산의 근거가 됐다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J1",
+   "text": "이번 주기에 올릴 것을 좁혀 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J1",
+   "text": "빼는 것과 그 까닭을 적어 두었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J2",
+   "text": "전술을 주당 훈련량으로 옮겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J2",
+   "text": "볼 지표를 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J2",
+   "text": "쉬는 날을 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J3",
+   "text": "훈련을 줄일지 그대로 갈지 직접 정했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J3",
+   "text": "뺄 선수를 직접 가렸다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J3",
+   "text": "쉬는 날을 직접 정했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J4",
+   "text": "부하를 재는 방법이나 회복 수단을 골랐다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J4",
+   "text": "종목과 선수에 맞춰 방법을 바꿨다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J5",
+   "text": "훈련 계획을 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J5",
+   "text": "부하를 가른 근거를 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J5",
+   "text": "주간 집계와 고친 기록을 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J6",
+   "text": "주간 집계를 지난 시즌과 대조했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J6",
+   "text": "피로 설문이나 경기 수행과 견주었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J7",
+   "text": "컨디션이 안 올라온 까닭을 좁혔다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J7",
+   "text": "부하를 바꿔 다시 해 보았다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J8",
+   "text": "내 주기가 팀의 시즌 계획이 됐다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J8",
+   "text": "내 집계가 선수 기용에 쓰였다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J1",
+   "text": "내가 다룰 범위를 좁혀 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J1",
+   "text": "넘겨 보낼 범위와 그 까닭을 적어 두었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J2",
+   "text": "법령과 규정을 지킬 항목으로 옮겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J2",
+   "text": "받을 동의의 범위를 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J2",
+   "text": "남길 기록을 적었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J3",
+   "text": "할지 넘길지 직접 정했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J3",
+   "text": "알릴 범위를 직접 가렸다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J3",
+   "text": "거절할 것을 직접 정했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J4",
+   "text": "알리고 동의받는 방법을 바꿨다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J4",
+   "text": "그 사람의 처지에 맞춰 설명을 바꿨다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J5",
+   "text": "동의 기록을 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J5",
+   "text": "범위를 가른 근거를 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J5",
+   "text": "넘겨 보낸 기록을 남겼다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J6",
+   "text": "내 판단을 법령과 대조했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J6",
+   "text": "협회의 해석이나 지난 사례와 견주었다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J7",
+   "text": "뒤에 문제가 된 까닭을 좁혔다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J7",
+   "text": "절차를 바꿔 다시 나지 않게 했다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J8",
+   "text": "내가 올린 사례가 기관의 지침이 됐다",
+   "source": "sports_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J8",
+   "text": "내 기록이 분쟁 처리의 근거로 쓰였다",
+   "source": "sports_v1"
+  }
+ ]
+}
