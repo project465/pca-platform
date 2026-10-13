@@ -1,0 +1,1368 @@
+{
+ "schema_version": "health-v1-checklist-additions.1",
+ "note": "판단 근거 목록이다. 응시자가 `직접 정했거나 결과물로 남긴 것` 을 고르는 자리에 그대로 뜬다. 전부 고를 수 있는 문장으로 적는다: 두 낱말짜리 이름표를 올리면 그 자리에서 응시자가 무엇을 고르는지 알 수 없다. 칸마다 둘 이상인 까닭은 소유가 근거 둘 이상일 때만 올라가기 때문이다",
+ "items": [
+  {
+   "td": "TD01",
+   "axis": "J1",
+   "text": "올해 할 것을 좁혀 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J1",
+   "text": "미룰 것과 그 까닭을 적어 두었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J2",
+   "text": "지침을 대상과 횟수로 옮겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J2",
+   "text": "볼 성과지표를 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J2",
+   "text": "필요한 예산과 인력을 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J3",
+   "text": "줄일 사업을 직접 정했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J3",
+   "text": "먼저 할 차례를 직접 짰다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J3",
+   "text": "대상 범위를 직접 가렸다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J4",
+   "text": "쓸 조사 방식이나 대상 선정 방법을 골라 적용했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J4",
+   "text": "접근 방법을 바꿔 가며 맞췄다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J5",
+   "text": "사업계획서를 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J5",
+   "text": "우선순위를 가른 근거를 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J5",
+   "text": "집행 결과 보고를 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J6",
+   "text": "세운 계획을 상위 지침과 대조했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J6",
+   "text": "지역 자료나 지난해 달성률과 견주었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J7",
+   "text": "대상이 오지 않은 까닭을 좁혔다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J7",
+   "text": "조건을 바꿔 다시 해 보았다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J8",
+   "text": "내가 세운 사업이 다음 해 계획이 됐다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD01",
+   "axis": "J8",
+   "text": "내 계획서를 다른 기관이 가져다 썼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J1",
+   "text": "답할 물음을 좁혀 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J1",
+   "text": "답하지 않을 물음과 그 까닭을 적어 두었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J2",
+   "text": "물음을 계산할 지표로 옮겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J2",
+   "text": "견줄 집단을 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J2",
+   "text": "지표의 정의와 분모를 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J3",
+   "text": "빠진 자료의 처리를 직접 정했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J3",
+   "text": "제외할 사례를 직접 가렸다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J3",
+   "text": "집계 단위를 직접 정했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J4",
+   "text": "쓸 분석 방법을 골라 적용했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J4",
+   "text": "집계 단위를 바꿔 가며 맞췄다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J5",
+   "text": "분석 보고를 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J5",
+   "text": "계산 과정을 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J5",
+   "text": "자료의 한계를 적어 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J6",
+   "text": "계산한 값을 공식 통계와 대조했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J6",
+   "text": "다른 방법으로 다시 계산해 견주었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J7",
+   "text": "값이 튄 까닭을 좁혔다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J7",
+   "text": "처리 방식을 바꿔 다시 계산했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J8",
+   "text": "내 분석이 사업 방향을 바꿨다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD02",
+   "axis": "J8",
+   "text": "내 집계표를 다른 기관이 가져다 썼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J1",
+   "text": "다룰 것을 좁혀 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J1",
+   "text": "다음으로 넘길 것과 그 까닭을 적어 두었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J2",
+   "text": "알릴 것을 알아들을 말로 옮겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J2",
+   "text": "할 활동과 차례를 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J2",
+   "text": "준비물과 시간을 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J3",
+   "text": "그 자리에서 바꿀 것을 직접 정했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J3",
+   "text": "뺄 활동을 직접 가렸다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J3",
+   "text": "진행 시간을 직접 조정했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J4",
+   "text": "쓸 자료나 진행 방식을 골라 적용했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J4",
+   "text": "진행 방식을 바꿔 가며 맞췄다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J5",
+   "text": "진행 기록을 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J5",
+   "text": "바꾼 것과 그 까닭을 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J5",
+   "text": "참여 집계를 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J6",
+   "text": "이번 반응을 지난 회차와 대조했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J6",
+   "text": "설문 결과와 견주었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J7",
+   "text": "사람이 안 모인 까닭을 좁혔다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J7",
+   "text": "알리는 방법을 바꿔 다시 열었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J8",
+   "text": "내 진행안이 상시 자료가 됐다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD03",
+   "axis": "J8",
+   "text": "내 운영이 다른 지역에 쓰였다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J1",
+   "text": "손볼 구간을 좁혀 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J1",
+   "text": "손대지 않을 구간과 그 까닭을 적어 두었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J2",
+   "text": "규정을 창구 절차로 옮겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J2",
+   "text": "필요한 서류와 확인 항목을 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J2",
+   "text": "처리 시간 목표를 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J3",
+   "text": "먼저 볼 환자를 직접 정했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J3",
+   "text": "배정을 직접 바꿨다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J3",
+   "text": "예외 처리를 직접 가렸다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J4",
+   "text": "쓸 접수 방식이나 배정 규칙을 골라 적용했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J4",
+   "text": "창구 배치를 바꿔 가며 맞췄다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J5",
+   "text": "업무 절차서를 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J5",
+   "text": "접수와 수납 기록을 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J5",
+   "text": "민원 처리 기록을 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J6",
+   "text": "대기 집계를 지난 기간과 대조했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J6",
+   "text": "민원 내용과 처리 기록을 견주었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J7",
+   "text": "대기가 길어진 까닭을 좁혔다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J7",
+   "text": "차례를 바꿔 다시 확인했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J8",
+   "text": "내가 짠 절차가 기관의 기준이 됐다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD04",
+   "axis": "J8",
+   "text": "내 절차서를 다른 기관이 가져다 썼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J1",
+   "text": "다룰 청구 범위를 좁혀 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J1",
+   "text": "다루지 않을 범위와 그 까닭을 적어 두었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J2",
+   "text": "고시를 붙일 코드로 옮겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J2",
+   "text": "필요한 증빙을 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J2",
+   "text": "청구 단위와 기한을 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J3",
+   "text": "애매한 건을 직접 가렸다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J3",
+   "text": "뺄 항목을 직접 정했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J3",
+   "text": "이의신청을 할지 직접 정했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J4",
+   "text": "쓸 점검 절차를 골라 적용했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J4",
+   "text": "코드 찾는 방식을 바꿔 가며 맞췄다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J5",
+   "text": "청구 자료를 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J5",
+   "text": "코드를 붙인 근거를 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J5",
+   "text": "삭감 대응 기록을 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J6",
+   "text": "붙인 코드를 급여 기준과 대조했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J6",
+   "text": "지난 삭감 내역이나 공개 사례와 견주었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J7",
+   "text": "삭감이 난 까닭을 좁혔다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J7",
+   "text": "점검 절차를 바꿔 다시 확인했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J8",
+   "text": "내가 세운 청구 기준이 지침이 됐다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD05",
+   "axis": "J8",
+   "text": "내 대응 기록이 다른 건에 쓰였다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J1",
+   "text": "점검할 기록 범위를 좁혀 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J1",
+   "text": "하지 않을 범위와 그 까닭을 적어 두었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J2",
+   "text": "법과 지침을 확인 항목으로 옮겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J2",
+   "text": "항목마다 보관 기간을 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J2",
+   "text": "줄 수 있는 범위를 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J3",
+   "text": "요청을 받아들일지 직접 정했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J3",
+   "text": "줄 범위를 직접 가렸다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J3",
+   "text": "파기할 때를 직접 정했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J4",
+   "text": "쓸 점검 방식이나 권한 설정 방법을 골라 적용했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J4",
+   "text": "확인 방법을 바꿔 가며 맞췄다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J5",
+   "text": "기록 점검 결과를 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J5",
+   "text": "열람과 발급 기록을 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J5",
+   "text": "파기 기록을 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J6",
+   "text": "기록의 상태를 법이 정한 항목과 대조했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J6",
+   "text": "열람 기록과 권한 설정을 견주었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J7",
+   "text": "빠진 기록이 되풀이되는 자리를 좁혔다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J7",
+   "text": "서식을 바꿔 다시 확인했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J8",
+   "text": "내 점검 장치가 상시 업무로 남았다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD06",
+   "axis": "J8",
+   "text": "내 권한 설계가 다른 기관에 쓰였다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J1",
+   "text": "볼 것을 좁혀 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J1",
+   "text": "보지 않을 것과 그 까닭을 적어 두었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J2",
+   "text": "말한 어려움을 확인 항목으로 옮겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J2",
+   "text": "항목마다 수준을 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J2",
+   "text": "다시 볼 때를 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J3",
+   "text": "경계에 걸린 사람을 직접 가렸다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J3",
+   "text": "먼저 붙일 것을 직접 정했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J3",
+   "text": "다시 사정할지 직접 정했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J4",
+   "text": "쓸 사정 도구를 골라 적용했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J4",
+   "text": "방문과 면담 방식을 바꿔 가며 맞췄다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J5",
+   "text": "사정 결과를 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J5",
+   "text": "볼 항목을 정한 근거를 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J5",
+   "text": "말할 수 없는 것을 적어 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J6",
+   "text": "사정 결과를 판정 기준표와 대조했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J6",
+   "text": "다른 평가자의 결과나 이용 기록과 견주었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J7",
+   "text": "사정과 실제가 어긋난 까닭을 좁혔다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J7",
+   "text": "항목을 바꿔 다시 사정했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J8",
+   "text": "내 사정이 배정 결정에 쓰였다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD07",
+   "axis": "J8",
+   "text": "내 사정 양식이 다른 기관에 쓰였다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J1",
+   "text": "맡을 범위를 좁혀 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J1",
+   "text": "넘길 범위와 그 까닭을 적어 두었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J2",
+   "text": "필요한 것을 자격 요건에 맞게 옮겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J2",
+   "text": "갖출 서류를 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J2",
+   "text": "연계 기한을 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J3",
+   "text": "보낼 곳을 직접 정했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J3",
+   "text": "붙일 자원을 직접 골랐다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J3",
+   "text": "미룰 연계를 직접 가렸다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J4",
+   "text": "쓸 연계 경로를 골라 적용했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J4",
+   "text": "추적 방식을 바꿔 가며 맞췄다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J5",
+   "text": "연계 기록을 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J5",
+   "text": "맡을 범위를 가른 근거를 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J5",
+   "text": "끊긴 자리와 그 까닭을 적어 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J6",
+   "text": "연계 결과를 실제로 이어졌는지와 대조했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J6",
+   "text": "본인이 말한 어려움과 내 판단을 견주었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J7",
+   "text": "연계가 끊긴 까닭을 좁혔다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J7",
+   "text": "경로를 바꿔 다시 이었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J8",
+   "text": "내 연계 경로가 상시 경로가 됐다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD08",
+   "axis": "J8",
+   "text": "내 판단이 기관 간 협의에 쓰였다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J1",
+   "text": "할 것을 좁혀 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J1",
+   "text": "미룰 것과 그 까닭을 적어 두었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J2",
+   "text": "상태를 할 수 있는 활동으로 옮겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J2",
+   "text": "필요한 도움의 양을 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J2",
+   "text": "시간 배분을 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J3",
+   "text": "미룰 것을 직접 정했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J3",
+   "text": "사람 배치를 직접 짰다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J3",
+   "text": "그 자리에서 일정을 직접 바꿨다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J4",
+   "text": "쓸 활동 방식이나 보조 방법을 골라 적용했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J4",
+   "text": "방식을 바꿔 가며 맞췄다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J5",
+   "text": "운영 기록을 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J5",
+   "text": "인계 노트를 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J5",
+   "text": "사고와 조치 기록을 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J6",
+   "text": "오늘의 상태를 어제의 기록과 대조했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J6",
+   "text": "가족이 말한 것과 내 관찰을 견주었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J7",
+   "text": "일정이 밀린 까닭을 좁혔다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J7",
+   "text": "일정을 바꿔 다시 돌렸다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J8",
+   "text": "내가 짠 운영 방식이 기관의 기준이 됐다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD09",
+   "axis": "J8",
+   "text": "내 인계 서식을 다른 조가 가져다 썼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J1",
+   "text": "볼 구역을 좁혀 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J1",
+   "text": "보지 않을 구역과 그 까닭을 적어 두었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J2",
+   "text": "법과 지침을 점검 항목으로 옮겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J2",
+   "text": "항목마다 확인 방법을 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J2",
+   "text": "점검 주기를 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J3",
+   "text": "멈출지 그대로 갈지를 직접 정했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J3",
+   "text": "보고할 것과 현장에서 끝낼 것을 직접 가렸다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J4",
+   "text": "쓸 점검 방식이나 소독 방법을 골라 적용했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J4",
+   "text": "확인 방법을 바꿔 가며 맞췄다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J5",
+   "text": "점검표를 만들어 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J5",
+   "text": "점검 기록을 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J5",
+   "text": "벗어난 날의 조치를 적어 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J6",
+   "text": "현장 상태를 법정 기준과 대조했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J6",
+   "text": "감염 발생 집계와 점검 기록을 견주었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J7",
+   "text": "같은 사고가 또 난 자리를 좁혔다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J7",
+   "text": "절차를 바꿔 재발을 막았다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J8",
+   "text": "내 지적으로 기관의 절차가 바뀌었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD10",
+   "axis": "J8",
+   "text": "내 점검표를 다른 기관이 가져다 썼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J1",
+   "text": "맞출 기준을 좁혀 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J1",
+   "text": "미룰 기준과 그 까닭을 적어 두었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J2",
+   "text": "기준집을 확인 항목으로 옮겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J2",
+   "text": "항목마다 모을 증빙을 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J2",
+   "text": "점검 주기를 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J3",
+   "text": "먼저 고칠 자리를 직접 정했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J3",
+   "text": "미룰 항목을 직접 가렸다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J3",
+   "text": "증빙으로 쓸 것을 직접 골랐다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J4",
+   "text": "쓸 자체 점검 방식을 골라 적용했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J4",
+   "text": "증빙 모으는 방법을 바꿔 가며 맞췄다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J5",
+   "text": "자체 점검 결과를 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J5",
+   "text": "증빙 묶음을 갖춰 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J5",
+   "text": "개선 계획과 결과를 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J6",
+   "text": "지금의 업무를 기준집과 대조했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J6",
+   "text": "지난 평가 결과나 업무 기록과 견주었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J7",
+   "text": "점수가 오르지 않은 까닭을 좁혔다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J7",
+   "text": "방식을 바꿔 다시 점검했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J8",
+   "text": "내 자체 기준이 상시 점검이 됐다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD11",
+   "axis": "J8",
+   "text": "내 대응 자료가 다른 기관에 쓰였다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J1",
+   "text": "다룰 범위를 좁혀 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J1",
+   "text": "다루지 않을 범위와 그 까닭을 적어 두었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J2",
+   "text": "법령을 지킬 항목으로 옮겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J2",
+   "text": "받을 동의의 범위를 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J2",
+   "text": "신고 기한을 적었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J3",
+   "text": "알릴 것과 알리지 않을 것을 직접 가렸다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J3",
+   "text": "보고할 범위를 직접 정했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J3",
+   "text": "신고할지 직접 정했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J4",
+   "text": "쓸 동의 절차를 골라 적용했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J4",
+   "text": "확인 방식을 바꿔 가며 맞췄다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J5",
+   "text": "동의 기록을 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J5",
+   "text": "알린 범위를 가른 근거를 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J5",
+   "text": "신고와 보고 기록을 남겼다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J6",
+   "text": "이번 처리를 법령과 내부 규정에 대조했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J6",
+   "text": "지난 사례의 처리와 견주었다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J7",
+   "text": "지적을 받은 까닭을 좁혔다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J7",
+   "text": "절차를 바꿔 다시 확인했다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J8",
+   "text": "내가 쓴 지침이 내부 규정이 됐다",
+   "source": "health_v1"
+  },
+  {
+   "td": "TD12",
+   "axis": "J8",
+   "text": "내 판단이 다른 사안의 기준으로 쓰였다",
+   "source": "health_v1"
+  }
+ ]
+}

@@ -1,0 +1,797 @@
+{
+ "schema_version": "health-role-packs.1",
+ "core": "HEALTH_CORE_V1",
+ "note": "공고 직무명 단위의 깊이 모듈이다. 새 축을 만들지 않는다: `core_ref` 로 Core 의 기술영역과 역할기능을 가리킨다. 역할기능과 역할팩이 하나씩 맞물린다. `differs_from` 은 이웃 역할과 무엇이 다른지를 한 줄로 적고 결과지가 그 줄을 읽는다. 문항은 역할마다 다른 판단을 묻는다",
+ "caps": {
+  "industry_items_max": 10,
+  "role_items_max": 7,
+  "deep_industry_max": 1,
+  "deep_role_max": 2,
+  "interest_pick_max": 2
+ },
+ "exploration": {
+  "browse": "all",
+  "deep_per_attempt": 1,
+  "add_later": true,
+  "subscription_gate": false,
+  "note": "여덟 역할 전부를 견줄 수 있다. 한 번에 쉰여섯을 묻지 않고 Core 심화가 끝난 뒤에 관심 있는 역할을 둘까지 고르고, 고른 역할을 STANDARD 부터 깊게 확인한다. 고르지 않은 역할은 Core 의 확인된 축으로 견준다. 역할 선택이 Core 판정을 바꾸지 않는다"
+ },
+ "packs": [
+  {
+   "code": "ROLE_PLAN_V1",
+   "version": 1,
+   "name_ko": "사업·제도 기획",
+   "name_en": "Program and Policy Planning",
+   "core": "HEALTH_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD01",
+     "TD02",
+     "TD11"
+    ],
+    "rf": [
+     "RF1"
+    ]
+   },
+   "required_axes": [
+    "J1",
+    "J5"
+   ],
+   "owns": "무엇을 하고 무엇을 접을지 확정한다",
+   "decides": [
+    "먼저 할 사업",
+    "접을 사업",
+    "쓸 예산",
+    "닿을 범위"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_FIELD_V1",
+     "line": "현장 쪽은 정해진 것을 그날 돌아가게 하고 기획 쪽은 무엇을 할지 가른다"
+    },
+    {
+     "vs": "ROLE_RESEARCH_V1",
+     "line": "연구 쪽은 아직 답이 없는 것을 좁히고 기획 쪽은 집행할 수 있는 한 벌로 묶는다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_PLAN_V1_R1",
+     "axis": "J1",
+     "domain": "TD01",
+     "ask": "올해 먼저 할 사업을 가를 권한을 가지고 그것을 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_PLAN_V1_R2",
+     "axis": "J3",
+     "domain": "TD01",
+     "ask": "예산과 닿을 범위가 부딪힐 때 어느 쪽을 지킬지 내 이름으로 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_PLAN_V1_R3",
+     "axis": "J5",
+     "domain": "TD01",
+     "ask": "다른 담당자가 그대로 집행할 수 있는 사업 계획 한 벌을 내 이름으로 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_PLAN_V1_R4",
+     "axis": "J2",
+     "domain": "TD02",
+     "ask": "사업을 세우기 전에 볼 지표를 정해 분석 쪽에 요청한 경험이 있다"
+    },
+    {
+     "id": "ROLE_PLAN_V1_R5",
+     "axis": "J6",
+     "domain": "TD11",
+     "ask": "지난해 집행 결과와 견주어 올해 계획을 고친 경험이 있다"
+    },
+    {
+     "id": "ROLE_PLAN_V1_R6",
+     "axis": "J4",
+     "domain": "TD02",
+     "ask": "닿은 사람 수를 어떤 방법으로 셀지 내가 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_PLAN_V1_R7",
+     "axis": "J8",
+     "domain": "TD01",
+     "ask": "내가 세운 사업 방향이 그 해 기관 운영 계획이 된 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_FIELD_V1",
+    "ROLE_RESEARCH_V1",
+    "ROLE_CASEMGMT_V1"
+   ],
+   "application_material": [
+    "사업 계획 한 벌",
+    "접은 것을 가른 근거",
+    "닿을 범위를 정한 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_ASSESS_V1",
+   "version": 1,
+   "name_ko": "평가·사정",
+   "name_en": "Assessment and Needs Evaluation",
+   "core": "HEALTH_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD07",
+     "TD02",
+     "TD06"
+    ],
+    "rf": [
+     "RF2"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "owns": "그 사람이 지금 어느 상태인지를 확정한다",
+   "decides": [
+    "볼 항목",
+    "쓸 도구",
+    "매길 단계",
+    "말할 수 없는 것"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_CASEMGMT_V1",
+     "line": "사례 쪽은 사정 결과로 보낼 곳을 잇고 사정 쪽은 그 상태를 가른다"
+    },
+    {
+     "vs": "ROLE_REVIEW_V1",
+     "line": "심사 쪽은 한 것이 기준에 맞는지 보고 사정 쪽은 하기 전에 상태를 본다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_ASSESS_V1_R1",
+     "axis": "J3",
+     "domain": "TD07",
+     "ask": "대상자를 어느 단계로 볼지 내 이름으로 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_ASSESS_V1_R2",
+     "axis": "J6",
+     "domain": "TD07",
+     "ask": "내가 낸 사정 결과를 다른 담당자의 결과와 맞춰 보고 결론을 바꾼 경험이 있다"
+    },
+    {
+     "id": "ROLE_ASSESS_V1_R3",
+     "axis": "J1",
+     "domain": "TD07",
+     "ask": "무엇을 볼지 사정 항목을 고를 권한을 가지고 그것을 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_ASSESS_V1_R4",
+     "axis": "J5",
+     "domain": "TD06",
+     "ask": "다른 사람이 그대로 읽고 판단할 수 있는 사정 기록 한 벌을 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_ASSESS_V1_R5",
+     "axis": "J4",
+     "domain": "TD02",
+     "ask": "쓸 사정 도구를 고르고 그 까닭을 남긴 경험이 있다"
+    },
+    {
+     "id": "ROLE_ASSESS_V1_R6",
+     "axis": "J2",
+     "domain": "TD02",
+     "ask": "사정에 필요한 자료가 모자랄 때 받을 범위를 다시 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_ASSESS_V1_R7",
+     "axis": "J8",
+     "domain": "TD07",
+     "ask": "내 사정 결과가 그 사람의 서비스 배정에 그대로 쓰인 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_CASEMGMT_V1",
+    "ROLE_REVIEW_V1",
+    "ROLE_RESEARCH_V1"
+   ],
+   "application_material": [
+    "사정 기록 한 벌",
+    "쓸 도구를 고른 근거",
+    "말할 수 없는 것을 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_REVIEW_V1",
+   "version": 1,
+   "name_ko": "청구·심사 판정",
+   "name_en": "Claims Review and Adjudication",
+   "core": "HEALTH_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD05",
+     "TD11",
+     "TD12"
+    ],
+    "rf": [
+     "RF3"
+    ]
+   },
+   "required_axes": [
+    "J2",
+    "J6"
+   ],
+   "owns": "그 건이 기준에 드는지를 확정한다",
+   "decides": [
+    "볼 기준",
+    "인정할 범위",
+    "삭감할 건",
+    "이의를 낼 건"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_RECORDS_V1",
+     "line": "기록 쪽은 같은 것이 같게 남게 하고 심사 쪽은 그 기록으로 인정 범위를 가른다"
+    },
+    {
+     "vs": "ROLE_ASSESS_V1",
+     "line": "사정 쪽은 하기 전의 상태를 보고 심사 쪽은 한 것이 기준에 맞는지 본다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_REVIEW_V1_R1",
+     "axis": "J2",
+     "domain": "TD05",
+     "ask": "청구를 그대로 낼지 고쳐 낼지 내 이름으로 가른 경험이 있다"
+    },
+    {
+     "id": "ROLE_REVIEW_V1_R2",
+     "axis": "J6",
+     "domain": "TD05",
+     "ask": "깎인 건을 기준에 다시 대어 이의를 낼지 접을지 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_REVIEW_V1_R3",
+     "axis": "J3",
+     "domain": "TD11",
+     "ask": "기준이 애매한 건에서 어느 쪽으로 판정할지 내 판단으로 정해진 경험이 있다"
+    },
+    {
+     "id": "ROLE_REVIEW_V1_R4",
+     "axis": "J5",
+     "domain": "TD05",
+     "ask": "다른 담당자가 그대로 따라 판정할 수 있는 심사 의견 한 벌을 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_REVIEW_V1_R5",
+     "axis": "J4",
+     "domain": "TD11",
+     "ask": "같은 기준이 사람마다 다르게 적용되지 않게 볼 차례를 내가 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_REVIEW_V1_R6",
+     "axis": "J7",
+     "domain": "TD12",
+     "ask": "지난 판정이 뒤집힌 날 어느 해석에서 갈렸는지 되짚어 기준을 고친 경험이 있다"
+    },
+    {
+     "id": "ROLE_REVIEW_V1_R7",
+     "axis": "J8",
+     "domain": "TD05",
+     "ask": "내 판정이 그 기관의 다음 청구 방식을 바꾼 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_RECORDS_V1",
+    "ROLE_ASSESS_V1",
+    "ROLE_SAFETY_V1"
+   ],
+   "application_material": [
+    "심사 의견 한 벌",
+    "인정 범위를 가른 근거",
+    "이의 결과를 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_RECORDS_V1",
+   "version": 1,
+   "name_ko": "기록·정보 관리",
+   "name_en": "Health Records and Information",
+   "core": "HEALTH_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD06",
+     "TD04",
+     "TD12"
+    ],
+    "rf": [
+     "RF4"
+    ]
+   },
+   "required_axes": [
+    "J5",
+    "J6"
+   ],
+   "owns": "무엇을 어떤 서식으로 남길지 확정한다",
+   "decides": [
+    "남길 항목",
+    "쓸 서식",
+    "열 범위",
+    "정본으로 둘 쪽"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_REVIEW_V1",
+     "line": "심사 쪽은 남은 기록으로 인정 범위를 가르고 기록 쪽은 그 기록이 같게 남게 한다"
+    },
+    {
+     "vs": "ROLE_SAFETY_V1",
+     "line": "안전 쪽은 기준이 현장에서 지켜지게 하고 기록 쪽은 그 결과가 남게 한다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_RECORDS_V1_R1",
+     "axis": "J5",
+     "domain": "TD06",
+     "ask": "기관에서 쓰는 서식과 기록 항목을 내 이름으로 확정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_RECORDS_V1_R2",
+     "axis": "J6",
+     "domain": "TD06",
+     "ask": "기록이 실제로 그 서식대로 남았는지 점검해 고친 경험이 있다"
+    },
+    {
+     "id": "ROLE_RECORDS_V1_R3",
+     "axis": "J3",
+     "domain": "TD12",
+     "ask": "누구에게까지 그 기록을 열지 내 판단으로 정해진 경험이 있다"
+    },
+    {
+     "id": "ROLE_RECORDS_V1_R4",
+     "axis": "J2",
+     "domain": "TD04",
+     "ask": "접수에서 받는 항목을 늘릴지 줄일지 내가 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_RECORDS_V1_R5",
+     "axis": "J4",
+     "domain": "TD06",
+     "ask": "코드와 분류를 어떤 기준으로 붙일지 정해 다른 사람에게 알린 경험이 있다"
+    },
+    {
+     "id": "ROLE_RECORDS_V1_R6",
+     "axis": "J7",
+     "domain": "TD06",
+     "ask": "같은 항목이 두 곳에 달리 적혀 있던 날 어느 쪽을 정본으로 할지 가른 경험이 있다"
+    },
+    {
+     "id": "ROLE_RECORDS_V1_R7",
+     "axis": "J8",
+     "domain": "TD06",
+     "ask": "내가 만든 서식이 기관의 표준 서식이 된 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_REVIEW_V1",
+    "ROLE_SAFETY_V1",
+    "ROLE_CASEMGMT_V1"
+   ],
+   "application_material": [
+    "서식 한 벌",
+    "열 범위를 정한 근거",
+    "점검 결과를 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_FIELD_V1",
+   "version": 1,
+   "name_ko": "현장 운영",
+   "name_en": "Care and Program Operations",
+   "core": "HEALTH_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD09",
+     "TD03",
+     "TD10"
+    ],
+    "rf": [
+     "RF5"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J7"
+   ],
+   "owns": "그날 일이 돌아가게 하는 것을 확정한다",
+   "decides": [
+    "그날 일정",
+    "줄일 것",
+    "먼저 지킬 절차",
+    "넘길 일"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_PLAN_V1",
+     "line": "기획 쪽은 무엇을 할지 가르고 현장 쪽은 정해진 것을 그날 돌아가게 한다"
+    },
+    {
+     "vs": "ROLE_SAFETY_V1",
+     "line": "안전 쪽은 기준을 세우고 현장 쪽은 사람이 모자란 날 그 기준 안에서 돌린다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_FIELD_V1_R1",
+     "axis": "J3",
+     "domain": "TD09",
+     "ask": "그날 일정을 바꿀 권한을 가지고 그것을 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_FIELD_V1_R2",
+     "axis": "J7",
+     "domain": "TD09",
+     "ask": "계획대로 되지 않은 날 그 자리에서 무엇을 접을지 내 이름으로 가른 경험이 있다"
+    },
+    {
+     "id": "ROLE_FIELD_V1_R3",
+     "axis": "J1",
+     "domain": "TD03",
+     "ask": "프로그램을 열지 접을지가 내 판단으로 정해진 경험이 있다"
+    },
+    {
+     "id": "ROLE_FIELD_V1_R4",
+     "axis": "J5",
+     "domain": "TD09",
+     "ask": "다음 근무자가 그대로 이어받을 수 있는 인계 한 벌을 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_FIELD_V1_R5",
+     "axis": "J6",
+     "domain": "TD03",
+     "ask": "끝난 뒤 참여 기록과 견주어 다음 회차를 고친 경험이 있다"
+    },
+    {
+     "id": "ROLE_FIELD_V1_R6",
+     "axis": "J2",
+     "domain": "TD10",
+     "ask": "사람이 모자란 날 어느 안전 절차를 먼저 지킬지 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_FIELD_V1_R7",
+     "axis": "J8",
+     "domain": "TD09",
+     "ask": "내가 바꾼 운영 방식이 그 기관의 일과가 된 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_PLAN_V1",
+    "ROLE_SAFETY_V1",
+    "ROLE_CASEMGMT_V1"
+   ],
+   "application_material": [
+    "인계 한 벌",
+    "그날 접은 것을 가른 근거",
+    "다음 회차를 고친 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_CASEMGMT_V1",
+   "version": 1,
+   "name_ko": "사례·행정 관리",
+   "name_en": "Case and Service Coordination",
+   "core": "HEALTH_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD08",
+     "TD07",
+     "TD04"
+    ],
+    "rf": [
+     "RF6"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J5"
+   ],
+   "owns": "여러 기관의 결정을 한 사람의 계획으로 묶는 것을 확정한다",
+   "decides": [
+    "보낼 곳",
+    "먼저 이을 사람",
+    "맞출 서식",
+    "다시 갈 곳"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_ASSESS_V1",
+     "line": "사정 쪽은 그 상태를 가르고 사례 쪽은 그 결과로 보낼 곳을 잇는다"
+    },
+    {
+     "vs": "ROLE_FIELD_V1",
+     "line": "현장 쪽은 그 자리에서 돌리고 사례 쪽은 기관 밖까지 이어 붙인다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_CASEMGMT_V1_R1",
+     "axis": "J3",
+     "domain": "TD08",
+     "ask": "어느 기관으로 보낼지 내 이름으로 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_CASEMGMT_V1_R2",
+     "axis": "J5",
+     "domain": "TD08",
+     "ask": "여러 기관의 결정을 한 장으로 묶어 사례 관리표를 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_CASEMGMT_V1_R3",
+     "axis": "J1",
+     "domain": "TD08",
+     "ask": "누구를 먼저 연계할지 가를 권한을 가지고 그것을 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_CASEMGMT_V1_R4",
+     "axis": "J6",
+     "domain": "TD07",
+     "ask": "이은 뒤 그 사람의 상태가 나아졌는지 확인해 계획을 고친 경험이 있다"
+    },
+    {
+     "id": "ROLE_CASEMGMT_V1_R5",
+     "axis": "J2",
+     "domain": "TD04",
+     "ask": "기관마다 서식이 다를 때 어디까지 맞춰 적을지 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_CASEMGMT_V1_R6",
+     "axis": "J7",
+     "domain": "TD08",
+     "ask": "보낸 곳에서 받지 않은 날 다음에 갈 곳을 다시 가른 경험이 있다"
+    },
+    {
+     "id": "ROLE_CASEMGMT_V1_R7",
+     "axis": "J8",
+     "domain": "TD08",
+     "ask": "내가 만든 연계 경로가 그 지역의 일하는 방식이 된 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_ASSESS_V1",
+    "ROLE_FIELD_V1",
+    "ROLE_PLAN_V1"
+   ],
+   "application_material": [
+    "사례 관리표 한 벌",
+    "보낼 곳을 가른 근거",
+    "이은 뒤를 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_RESEARCH_V1",
+   "version": 1,
+   "name_ko": "조사·연구",
+   "name_en": "Health Research and Statistics",
+   "core": "HEALTH_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD02",
+     "TD01",
+     "TD11"
+    ],
+    "rf": [
+     "RF7"
+    ]
+   },
+   "required_axes": [
+    "J4",
+    "J6"
+   ],
+   "owns": "그 수치를 믿을 수 있는 범위를 확정한다",
+   "decides": [
+    "물을 것",
+    "쓸 설계",
+    "말할 범위",
+    "다시 볼 자료"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_PLAN_V1",
+     "line": "기획 쪽은 집행할 한 벌로 묶고 연구 쪽은 아직 답이 없는 것을 좁힌다"
+    },
+    {
+     "vs": "ROLE_ASSESS_V1",
+     "line": "사정 쪽은 한 사람의 상태를 보고 연구 쪽은 여러 사람의 자료로 답한다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_RESEARCH_V1_R1",
+     "axis": "J4",
+     "domain": "TD02",
+     "ask": "조사 설계를 고를 권한을 가지고 그것을 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_RESEARCH_V1_R2",
+     "axis": "J6",
+     "domain": "TD02",
+     "ask": "내가 낸 수치를 다른 자료와 맞춰 보고 결론을 바꾼 경험이 있다"
+    },
+    {
+     "id": "ROLE_RESEARCH_V1_R3",
+     "axis": "J1",
+     "domain": "TD02",
+     "ask": "무엇을 물을지 연구 질문을 내 이름으로 세운 경험이 있다"
+    },
+    {
+     "id": "ROLE_RESEARCH_V1_R4",
+     "axis": "J5",
+     "domain": "TD02",
+     "ask": "다른 사람이 그대로 다시 돌릴 수 있는 분석 절차 한 벌을 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_RESEARCH_V1_R5",
+     "axis": "J3",
+     "domain": "TD11",
+     "ask": "자료가 모자란 자리에서 말할 수 있는 범위를 내 판단으로 그은 경험이 있다"
+    },
+    {
+     "id": "ROLE_RESEARCH_V1_R6",
+     "axis": "J2",
+     "domain": "TD01",
+     "ask": "받아 온 물음을 잴 수 있는 지표로 다시 적은 경험이 있다"
+    },
+    {
+     "id": "ROLE_RESEARCH_V1_R7",
+     "axis": "J8",
+     "domain": "TD02",
+     "ask": "내 조사 결과가 그 기관의 사업 방향을 바꾼 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_PLAN_V1",
+    "ROLE_ASSESS_V1",
+    "ROLE_REVIEW_V1"
+   ],
+   "application_material": [
+    "분석 절차 한 벌",
+    "설계를 고른 근거",
+    "말할 범위를 그은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_SAFETY_V1",
+   "version": 1,
+   "name_ko": "감염·안전 규정 관리",
+   "name_en": "Infection Control and Safety Compliance",
+   "core": "HEALTH_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD10",
+     "TD11",
+     "TD12"
+    ],
+    "rf": [
+     "RF8"
+    ]
+   },
+   "required_axes": [
+    "J5",
+    "J7"
+   ],
+   "owns": "기준이 내내 지켜지게 하는 것을 확정한다",
+   "decides": [
+    "먼저 볼 자리",
+    "지킬 절차",
+    "알릴 범위",
+    "고칠 것"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_FIELD_V1",
+     "line": "현장 쪽은 사람이 모자란 날 돌리는 쪽을 보고 안전 쪽은 그래도 지킬 선을 세운다"
+    },
+    {
+     "vs": "ROLE_RECORDS_V1",
+     "line": "기록 쪽은 남은 것이 같게 남게 하고 안전 쪽은 현장에서 지켜지게 한다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_SAFETY_V1_R1",
+     "axis": "J5",
+     "domain": "TD10",
+     "ask": "기관에서 지킬 감염·안전 절차를 내 이름으로 확정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_SAFETY_V1_R2",
+     "axis": "J7",
+     "domain": "TD10",
+     "ask": "사고가 난 뒤 어느 단계에서 지켜지지 않았는지 되짚어 절차를 고친 경험이 있다"
+    },
+    {
+     "id": "ROLE_SAFETY_V1_R3",
+     "axis": "J3",
+     "domain": "TD10",
+     "ask": "절차를 지키면 일이 멈추는 자리에서 어느 쪽을 택할지 내 판단으로 정해진 경험이 있다"
+    },
+    {
+     "id": "ROLE_SAFETY_V1_R4",
+     "axis": "J6",
+     "domain": "TD11",
+     "ask": "점검에서 나온 결과를 기준에 대어 고칠 것을 가른 경험이 있다"
+    },
+    {
+     "id": "ROLE_SAFETY_V1_R5",
+     "axis": "J2",
+     "domain": "TD12",
+     "ask": "알릴 범위와 보고 기한을 내가 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_SAFETY_V1_R6",
+     "axis": "J1",
+     "domain": "TD10",
+     "ask": "어디를 먼저 점검할지 가를 권한을 가지고 그것을 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_SAFETY_V1_R7",
+     "axis": "J8",
+     "domain": "TD10",
+     "ask": "내가 세운 절차가 그 기관의 점검표가 된 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_FIELD_V1",
+    "ROLE_RECORDS_V1",
+    "ROLE_REVIEW_V1"
+   ],
+   "application_material": [
+    "점검표 한 벌",
+    "지킬 선을 세운 근거",
+    "고친 것을 적은 한 장"
+   ]
+  }
+ ]
+}

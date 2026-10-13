@@ -1287,6 +1287,242 @@
    "aliases_note": "`생명과학과` 와 `분자생물학과` 와 `미생물학과` 는 여기 적지 않는다. 그 이름은 `BIO_CORE_V1`(생명과학)이 들고 있고, **한 학과 이름이 두 Core 를 가리키면 그 학과 학생이 어느 자로 재어졌는지 아무도 모른다.** 어느 쪽인지는 그 학과를 아는 분이 정한다"
   },
   {
+   "code": "NURSING_CORE_V1",
+   "family": "STEM",
+   "major": "NURSING",
+   "name_ko": "간호",
+   "name_en": "Nursing",
+   "assessment_version": "NURSING_V1",
+   "status": "building",
+   "maturity": "FOUNDATION",
+   "aliases": [
+    "간호학과",
+    "간호학부"
+   ],
+   "markets": [
+    "KR"
+   ],
+   "files": {
+    "taxonomy": "nursing-v1-taxonomy.json",
+    "domains": "nursing-v1-domains.json",
+    "checklists": "nursing-v1-checklists.json",
+    "items_blueprint": "nursing-v1-items-blueprint.json",
+    "checklist_additions": "nursing-v1-checklist-additions.json",
+    "common_additions": "nursing-v1-common-additions.json",
+    "items": "nursing-v1-items.json",
+    "relations": "nursing-v1-relations.json",
+    "constructs": "nursing-v1-constructs.json"
+   },
+   "domain_count": 12,
+   "axis_count": 8,
+   "family_note": "`STEM` 으로 둔 까닭. 이 Core 가 재는 것은 사람의 몸을 보고 내리는 임상 판단이고, 같은 계열에서 사업과 기록과 청구를 가르는 판단은 `HEALTH_CORE_V1` 이 든다. **두 Core 를 가르는 선**은 그 사람에게 직접 손을 대는가다",
+   "aliases_note": "둘만 두었다. `보건행정학과` 와 `재활복지학과` 는 `HEALTH_CORE_V1` 이 들고 있고 `물리치료학과` 와 `작업치료학과` 는 어느 Core 도 들지 않았다: 그 둘이 묻는 판단은 몸의 기능을 재어 운동과 활동으로 되돌리는 쪽이라 이 Core 의 열두 영역과 겹치지 않고, 그 전공을 아는 분이 따로 세워야 한다. **한 학과 이름이 두 Core 로 갈리면 그 학과 학생이 어느 자로 재어졌는지 아무도 모른다**",
+   "role_function_count": 8,
+   "packs": {
+    "industry": "nursing-industry-packs.json",
+    "role": "nursing-role-packs.json"
+   },
+   "domains_note": "열둘은 앞 Core 들의 열둘을 맞춘 수가 아니다. 간호계열이 실제로 내리는 판단을 세어 사정과 계획과 투약과 변화 감지와 처치와 기록과 감염관리와 환자안전과 교육과 중증도 분류와 근무 운영과 윤리·법규까지 열둘이다. **사정과 계획을 나눈 까닭**은 앞엣것이 지금 무엇이 문제인지를 가리는 일이고 뒤엣것이 그 문제에 무엇을 어느 차례로 할지를 정하는 일이어서다. 상태 변화 감지와 중증도 분류도 나눴다: 앞엣것은 맡은 한 사람이 나빠지는 것을 먼저 보고 뒤엣것은 여러 사람 가운데 누구를 먼저 볼지 가른다. **국가고시 과목으로 자르지 않았다**: 과목으로 자르면 `성인간호학` 한 칸에 사정과 투약과 처치와 교육이 함께 들어가 그 안에서 무엇이 확인됐는지 가를 수 없다",
+   "packs_note": "산업팩은 여덟이고 간호사가 실제로 서는 자리로 갈랐다. **`간호` 를 산업으로 두지 않는다**: 그것은 하는 일의 이름이지 서는 자리가 아니고, 같은 일을 놓고 급성기 병동과 중환자실과 요양기관과 보건소가 서로 다른 판단을 묻는다. 중환자·응급과 급성기 병동을 따로 둔 까닭은 앞엣것은 몇 분 안에 가르는 일이, 뒤엣것은 한 교대에 여러 사람을 같은 질로 보는 일이 기준을 정하기 때문이다",
+   "measurement_note": "**돌봄 성향을 재지 않는다.** 묻는 것은 `환자를 따뜻하게 대한다` 가 아니라 무엇을 직접 정했고 그것이 어디까지 갔는가다. 짝 표가 선호 문항에 소유 사다리 넷을 붙이는 길을 막고 있고, 문항마다 primary construct 를 적어 두어 추론으로 지나갈 수 없다. **면허 여부도 재지 않는다**: 이 Core 가 내놓는 것은 확인된 판단이고 자격이 아니다",
+   "open_to_students": false,
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다",
+   "fixtures": {
+    "personas": "sites/pca-platform/assessment/NURSING_V1/personas.json",
+    "bank_lock": "sites/pca-platform/assessment/NURSING_V1/bank-lock.json",
+    "measurement_map": "docs/metri/NURSING_CORE_V1_MEASURE.md",
+    "gaming_doc": "docs/metri/NURSING_CORE_V1_GAMING.md"
+   },
+   "specializations": [],
+   "specializations_note": "없다. 배재대 간호학과는 두 Catalog 모두 트랙을 두지 않아 갈래 없이 Core 로 바로 간다. **쓰이지 않는 갈래를 미리 적어 두지 않는다**: 중환자·응급 갈래와 지역사회 갈래는 그 자리를 가리키는 학과나 트랙이 생기는 날 그 전공을 아는 분이 쓴다"
+  },
+  {
+   "code": "HEALTH_CORE_V1",
+   "family": "HUMANITIES_SOCIAL",
+   "major": "HEALTH",
+   "name_ko": "보건·의료복지",
+   "name_en": "Health Administration and Social Welfare",
+   "assessment_version": "HEALTH_V1",
+   "status": "building",
+   "maturity": "FOUNDATION",
+   "aliases": [
+    "보건의료복지학과",
+    "보건행정학과",
+    "보건관리학과",
+    "의료경영학과",
+    "의료정보학과",
+    "노인복지학과",
+    "장기요양학과",
+    "재활복지학과",
+    "보건복지행정학과"
+   ],
+   "markets": [
+    "KR"
+   ],
+   "files": {
+    "taxonomy": "health-v1-taxonomy.json",
+    "domains": "health-v1-domains.json",
+    "checklists": "health-v1-checklists.json",
+    "items_blueprint": "health-v1-items-blueprint.json",
+    "checklist_additions": "health-v1-checklist-additions.json",
+    "common_additions": "health-v1-common-additions.json",
+    "items": "health-v1-items.json",
+    "relations": "health-v1-relations.json",
+    "constructs": "health-v1-constructs.json"
+   },
+   "domain_count": 12,
+   "axis_count": 8,
+   "family_note": "`HUMANITIES_SOCIAL` 로 둔 까닭. 이름에 `보건` 이 들어 있어 STEM 으로 읽히기 쉽지만, 이 Core 가 재는 것은 사업과 제도와 기록과 청구와 사례를 가르는 판단이고 생명과학 실험대의 판단은 BT Core 가 든다. **계열은 어느 상품인가이고 시장 정책이 가리는 값이라** 재는 것에 맞춰 둔다",
+   "aliases_note": "`간호학과` 와 `물리치료학과` 와 `작업치료학과` 는 넣지 않았다. **한 학과 이름이 두 Core 로 갈리지 않는다**: 그 이름들이 묻는 판단은 그 사람에게 직접 손을 대는 쪽이고 이 Core 가 묻는 것은 사업과 기록과 청구와 사례를 가르는 쪽이라, 간호 Core 가 서는 날 그 전공을 아는 분이 가른다. `심리상담학과` 도 넣지 않았다: 그쪽은 재고 판정하고 개입하는 쪽이라 PSY Core 가 들고 있다. `사회복지학과` 도 빼 두었다: 그 이름은 `SOC_CORE_V1` 이 이미 들고 있고 **한 학과 이름이 두 Core 로 갈리면 그 학과 학생이 어느 자로 재어졌는지 아무도 모른다.** 저쪽이 아직 `planned` 라 옮기는 것이 맞을 수 있지만, 그 판단은 두 Core 를 다 아는 분이 한다",
+   "role_function_count": 8,
+   "packs": {
+    "industry": "health-industry-packs.json",
+    "role": "health-role-packs.json"
+   },
+   "domains_note": "열둘은 앞 Core 들의 열둘을 맞춘 수가 아니다. 보건·의료복지계열이 실제로 내리는 판단을 세어 사업 기획과 자료 분석과 교육 운영과 원무 행정과 청구 대응과 기록 관리와 평가·사정과 자원 연계와 현장 운영과 감염·안전과 질 관리와 법규·윤리까지 열둘이다. **평가·사정과 질 관리를 나눈 까닭**은 앞엣것이 하기 전에 그 사람의 상태를 보는 일이고 뒤엣것이 한 것이 기준에 들었는지 보는 일이어서다. `사람을 돌보는 마음` 은 영역으로 두지 않았다: 그것은 성향이고 이 Core 는 재지 않는다",
+   "packs_note": "산업팩은 여덟이고 보건·의료복지계열이 실제로 서는 자리로 갈랐다. **`공공기관` 을 산업으로 두지 않는다**: 그것은 소속의 성격이지 하는 일이 아니고, 같은 공공기관 안에서 보건소와 심사기관과 복지관이 서로 다른 판단을 묻는다. 병원과 요양기관을 따로 둔 까닭은 앞엣것은 재원일수와 환자 안전이, 뒤엣것은 등급과 입소율과 사고 없음이 기준을 정하기 때문이다",
+   "measurement_note": "**돌봄 성향을 재지 않는다.** 묻는 것은 `사람을 돕는 일이 좋다` 가 아니라 무엇을 직접 정했고 그것이 어디까지 갔는가다. 짝 표가 선호 문항에 소유 사다리 넷을 붙이는 길을 막고 있고, 문항마다 primary construct 를 적어 두어 추론으로 지나갈 수 없다",
+   "open_to_students": false,
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다",
+   "fixtures": {
+    "personas": "sites/pca-platform/assessment/HEALTH_V1/personas.json",
+    "bank_lock": "sites/pca-platform/assessment/HEALTH_V1/bank-lock.json",
+    "measurement_map": "docs/metri/HEALTH_CORE_V1_MEASURE.md",
+    "gaming_doc": "docs/metri/HEALTH_CORE_V1_GAMING.md"
+   },
+   "specializations": [
+    {
+     "code": "SPEC_HEALTH_LIFECARE",
+     "name_ko": "라이프케어",
+     "note": "그 사람의 하루가 돌아가게 하는 쪽",
+     "authored": true,
+     "domain_emphasis": {
+      "lead": [
+       "TD09",
+       "TD07",
+       "TD03"
+      ],
+      "support": [
+       "TD08",
+       "TD10",
+       "TD01"
+      ],
+      "rare": [
+       "TD05",
+       "TD06",
+       "TD11"
+      ],
+      "note": "설명하는 차례만 정한다. 축 수준과 묶음 조건과 확인된 축 개수에 들어가지 않는다"
+     },
+     "industry_mapping": {
+      "lead": [
+       "INDUSTRY_LTC_V1",
+       "INDUSTRY_REHAB_V1",
+       "INDUSTRY_WELFARE_V1"
+      ],
+      "support": [
+       "INDUSTRY_PUBHEALTH_V1",
+       "INDUSTRY_HOSPITAL_V1"
+      ]
+     },
+     "role_mapping": {
+      "lead": [
+       "ROLE_FIELD_V1",
+       "ROLE_ASSESS_V1",
+       "ROLE_CASEMGMT_V1"
+      ],
+      "support": [
+       "ROLE_PLAN_V1",
+       "ROLE_SAFETY_V1"
+      ]
+     },
+     "examples": {
+      "scene": [
+       "사람이 모자란 날 그날 일정에서 무엇을 접을지 그 자리에서 가른다",
+       "같은 프로그램을 받은 사람의 상태가 달라진 것을 보고 다음 회차를 고친다",
+       "넘어질 위험이 보이는 자리를 먼저 막고 그 기록을 남긴다"
+      ],
+      "artifacts": [
+       "그날의 운영 기록",
+       "다음 근무자에게 넘기는 인계 한 벌",
+       "대상자별 사정 결과",
+       "그 사람의 돌봄 계획 한 장"
+      ]
+     },
+     "evidence_action": {
+      "first": "맡았던 한 사람의 사정 결과와 그에 맞춰 바꾼 일정을 한 장으로 남긴다",
+      "next": "그 계획을 지난 회차의 기록과 견주어 나아진 자리와 그대로인 자리를 적어 둔다",
+      "note": "할 일의 재료는 그 영역의 `verify_targets` 와 `artifacts` 에서 가져온다. 여기서 새 재료를 지어내지 않는다"
+     }
+    },
+    {
+     "code": "SPEC_HEALTH_SOCIALWELFARE",
+     "name_ko": "사회복지·상담",
+     "note": "여러 기관의 결정을 한 사람의 계획으로 묶는 쪽",
+     "authored": true,
+     "domain_emphasis": {
+      "lead": [
+       "TD07",
+       "TD08",
+       "TD03"
+      ],
+      "support": [
+       "TD01",
+       "TD12",
+       "TD09"
+      ],
+      "rare": [
+       "TD05",
+       "TD10",
+       "TD11"
+      ],
+      "note": "설명하는 차례만 정한다. 축 수준과 묶음 조건과 확인된 축 개수에 들어가지 않는다"
+     },
+     "industry_mapping": {
+      "lead": [
+       "INDUSTRY_WELFARE_V1",
+       "INDUSTRY_LTC_V1",
+       "INDUSTRY_PUBHEALTH_V1"
+      ],
+      "support": [
+       "INDUSTRY_REHAB_V1",
+       "INDUSTRY_HOSPITAL_V1"
+      ]
+     },
+     "role_mapping": {
+      "lead": [
+       "ROLE_CASEMGMT_V1",
+       "ROLE_ASSESS_V1",
+       "ROLE_PLAN_V1"
+      ],
+      "support": [
+       "ROLE_FIELD_V1",
+       "ROLE_RECORDS_V1"
+      ]
+     },
+     "examples": {
+      "scene": [
+       "받을 수 있는 제도가 여럿일 때 어느 쪽부터 이을지 가른다",
+       "보낸 기관에서 받지 않은 날 다음에 갈 곳을 다시 정한다",
+       "어디까지 알릴 수 있는지를 당사자와 맞추고 그 선을 적어 둔다"
+      ],
+      "artifacts": [
+       "사례 관리표 한 벌",
+       "연계 기록과 그 결과",
+       "사정 결과와 바뀐 계획",
+       "알릴 범위를 적은 동의 기록"
+      ]
+     },
+     "evidence_action": {
+      "first": "맡았던 한 사례의 사정 결과와 이은 기관과 그 뒤를 한 장으로 남긴다",
+      "next": "이은 뒤 그 사람의 상태가 나아졌는지 확인한 기록을 처음 계획과 견주어 적어 둔다",
+      "note": "할 일의 재료는 그 영역의 `verify_targets` 와 `artifacts` 에서 가져온다. 여기서 새 재료를 지어내지 않는다"
+     }
+    }
+   ],
+   "specializations_note": "둘이다. 라이프케어전공은 묻는 판단이 그 사람의 하루가 돌아가게 하는 쪽이고 사회복지상담전공은 여러 기관의 결정을 한 계획으로 묶는 쪽이라 따로 둔다. **쓰이지 않는 갈래를 미리 적어 두지 않는다**: 보건행정 갈래와 의료정보 갈래는 그 자리를 가리키는 학과나 트랙이 생기는 날 그 전공을 아는 분이 쓴다"
+  },
+  {
    "code": "FOOD_CORE_V1",
    "family": "STEM",
    "major": "FOOD",
