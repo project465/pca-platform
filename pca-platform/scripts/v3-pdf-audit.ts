@@ -13,10 +13,12 @@
  *   UI_BASE=http://127.0.0.1:3100 npx tsx scripts/v3-pdf-audit.ts
  */
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync, statSync } from "node:fs";
 import { chromium } from "playwright";
 import {
-  BASE, assertFreshServer, gateCreds, loadEnv, login, makeStudent,
+  BASE, assertFreshServer, assertPreviewServer, gateCreds, loadEnv, login,
+  makeStudent,
 } from "./_loop-fixture";
 import { query } from "../src/lib/db";
 import { coreFile, core as coreEntry, hasCoreFile, packs, registry } from "../src/lib/me-v3/core-registry";
@@ -49,10 +51,21 @@ const PENDING = BUILDING.filter((c) => !hasCoreFile(c, "items"));
 const CORES = (process.env.CORES ?? BUILDING.filter((c) => hasCoreFile(c, "items")).join(",")).split(",");
 const TIERS = ((process.env.TIERS ?? "BASIC,STANDARD,PRO").split(",")) as Tier[];
 const OUT = "var/pdf-audit";
+/**
+ * 끝에서 **쓰지 않았다는 것**을 세는 자리.
+ *
+ * 전에는 이 목록이 쓰는 자리였다: 닫아 둔 Core 의 종이를 뽑으려고
+ * `open_to_students` 를 잠시 열고 끝에서 되돌렸는데, **그 창이 열려 있는
+ * 동안 학생에게도 열려 있다.** 지금은 서버와 이 과정이 함께 들고 도는
+ * `V3_PREVIEW_OPEN` 이 그 일을 하고 등록부는 읽기만 한다.
+ */
 const REGS = [
   "sites/pca-platform/content/major-cores.json",
   ".next/standalone/sites/pca-platform/content/major-cores.json",
 ];
+
+const sha = (f: string) =>
+  createHash("sha256").update(readFileSync(f)).digest("hex").slice(0, 16);
 
 /** 손님 화면과 종이에 서면 안 되는 안쪽 코드 */
 const INTERNAL = [
@@ -136,15 +149,6 @@ function fillOf(file: string): number[] {
     out.push(Math.round(((low - top) / (bot - top)) * 100));
   }
   return out;
-}
-
-function setOpen(code: string, open: boolean): void {
-  for (const f of REGS) {
-    const reg = JSON.parse(readFileSync(f, "utf8")) as
-      { cores: { code: string; open_to_students?: boolean }[] };
-    const row = reg.cores.find((c) => c.code === code);
-    if (row) { row.open_to_students = open; writeFileSync(f, `${JSON.stringify(reg, null, 1)}\n`); }
-  }
 }
 
 /** 그 Core 를 가리키는 학교 자리 하나. 없으면 일반 응시다 */
@@ -234,10 +238,11 @@ async function main(): Promise<void> {
   const gate = gateCreds();
   const browser = await chromium.launch({ args: ["--no-sandbox"] });
   const rows: Row[] = [];
-  const opened: string[] = [];
+  const before = REGS.map(sha);
   try {
+    /* **등록부를 쓰지 않는다.** 미리보기로 띄운 서버인지만 확인한다 */
     for (const core of CORES) {
-      if (coreEntry(core).open_to_students === false) { setOpen(core, true); opened.push(core); }
+      if (coreEntry(core).open_to_students === false) assertPreviewServer(core);
     }
     const names = new Map(CORES.map((c) =>
       [c, coreFile<{ domains: { name: string }[] }>(c, "domains").domains.map((d) => d.name)]));
@@ -360,8 +365,19 @@ async function main(): Promise<void> {
       }
     }
   } finally {
-    for (const c of opened) setOpen(c, false);
     await browser.close();
+  }
+
+  /* **등록부를 한 바이트도 쓰지 않았는가.** 이 검사가 학생 공개 상태를
+     고치던 자리라 그 사실을 값으로 센다 */
+  {
+    const after = REGS.map(sha);
+    const same = before.every((h, i) => h === after[i]);
+    console.log(`\n등록부 ${same ? "그대로다" : "달라졌다"} — ${before[0]} → ${after[0]}`);
+    if (!same) {
+      console.error("걸림 — 이 검사는 등록부를 써서는 안 됩니다.");
+      process.exit(1);
+    }
   }
 
   console.log("\n쪽별 글자 수와 찬 비율");

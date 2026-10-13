@@ -9,18 +9,25 @@
  * 응시 화면을 지나 결과지와 종이까지 막히지 않고 가는가**다. 그래서 자리를
  * 주소로 열지 않고 사람이 누르는 차례 그대로 간다.
  *
- * 짓고 있는 Core 는 **학생에게 닫혀 있다**(`open_to_students: false`). 그래서
- * 이 검사가 하는 일 가운데 가장 중요한 것이 **닫힌 상태를 먼저 확인하고,
- * 열어서 길을 밟고, 되돌린 뒤 다시 닫혔는지 세는 것**이다. 열어 둔 채로
- * 끝나면 그날부터 학생이 짓고 있는 검사를 받는다.
+ * 짓고 있는 Core 는 **학생에게 닫혀 있다**(`open_to_students: false`). 전에는
+ * 이 검사가 그 칸을 잠시 `true` 로 쓰고 끝에서 되돌렸는데, **그 창이 열려
+ * 있는 몇 초 동안 학생에게도 열려 있고** 되돌림이 다른 쓰기와 겹치면 열린
+ * 칸이 그대로 남는다. 한 번 열여섯 Core 가 그렇게 남았다.
  *
+ * 그래서 **이 검사는 등록부를 한 바이트도 쓰지 않는다.** 여는 일을 서버의
+ * 환경변수로 옮겼고(`V3_PREVIEW_OPEN`), 이 검사가 세는 것은 셋이다: 등록부가
+ * 진짜 닫혀 있는가 · 그래도 자료는 다 섰는가 · 미리보기로 띄운 서버에서
+ * 길이 끝까지 밟히는가. 끝에서 등록부 파일이 글자까지 그대로인지 다시 센다.
+ *
+ *   V3_PREVIEW_OPEN=CS_CORE_V1 bash scripts/stage-serve.sh 3100
  *   UI_BASE=http://127.0.0.1:3100 CORE=CS_CORE_V1 npm run core:walk
  */
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { chromium, type Page } from "playwright";
 import {
-  BASE, assertFreshServer, gateCreds, loadEnv, login, makeStudent,
+  BASE, assertFreshServer, assertPreviewServer, gateCreds, loadEnv, login,
+  makeStudent,
 } from "./_loop-fixture";
 import { enterAssessment, walk } from "./_v3-walk";
 import { query, queryOne } from "../src/lib/db";
@@ -41,9 +48,10 @@ const TD_NAMES = coreFile<{ domains: { name: string }[] }>(CORE, "domains")
   .domains.map((d) => d.name);
 const MAIL = `${CORE.toLowerCase().replace(/_/g, "-")}-walk@test.invalid`;
 /**
- * **두 자리를 같이 고친다.** standalone 서버는 빌드가 떠 둔 복사본을
- * 읽는다. 저장소 쪽만 고치면 화면은 닫힌 채로 남고, 까닭을 `검사가 열리지
- * 않는다` 로 거꾸로 적게 된다.
+ * 끝에서 **글자까지 그대로인지** 세는 자리.
+ *
+ * standalone 서버는 빌드가 떠 둔 복사본을 읽으므로 두 벌이 있다. 전에는 이
+ * 목록이 **쓰는 자리**였고, 지금은 **쓰지 않았다는 것을 세는 자리**다.
  */
 const REGS = [
   "sites/pca-platform/content/major-cores.json",
@@ -57,18 +65,6 @@ const ok = (w: string, c: boolean, saw = "") => {
 };
 const sha = (p: string) =>
   createHash("sha256").update(readFileSync(p)).digest("hex").slice(0, 16);
-
-/** 그 Core 의 개방 칸을 두 복사본에서 함께 바꾼다 */
-function setOpen(open: boolean): void {
-  for (const f of REGS) {
-    const reg = JSON.parse(readFileSync(f, "utf8")) as
-      { cores: { code: string; open_to_students?: boolean }[] };
-    const row = reg.cores.find((c) => c.code === CORE);
-    if (!row) throw new Error(`등록부에 ${CORE} 가 없습니다: ${f}`);
-    row.open_to_students = open;
-    writeFileSync(f, `${JSON.stringify(reg, null, 1)}\n`);
-  }
-}
 
 /**
  * 그 Core 를 가리키는 학교 자리 하나.
@@ -100,15 +96,22 @@ async function main(): Promise<void> {
   const leaf = anyLeaf();
   console.log(`  core  ${CORE} · 자리 ${leaf.code} ${leaf.name}\n`);
 
-  /* 1~2. 열기 전에 닫혀 있는가 */
+  /* 1~2. 등록부가 진짜 닫혀 있는가.
+     **`{ preview: false }` 로 묻는다.** 미리보기를 거쳐 물으면 이 줄이
+     아무것도 세지 않는다: 열어 둔 서버에서는 늘 `READY` 가 나온다 */
   {
     const u = university("PCU")!;
     const row = allLeaves(u).find((r) => r.leaf.code === leaf.code)!;
-    ok("열기 전에는 학생 표시가 준비 중이다", statusOf(u, row) === "PREPARING",
-      statusOf(u, row));
-    ok("그래도 자료는 다 서 있다", readinessOf(u, row) === "ASSESSMENT_READY",
-      readinessOf(u, row));
+    const real = statusOf(u, row, undefined, { preview: false });
+    ok("학생에게는 준비 중이다 (등록부)", real === "PREPARING", real);
+    const rd = readinessOf(u, row, undefined, { preview: false });
+    ok("그래도 자료는 다 서 있다", rd === "ASSESSMENT_READY", rd);
   }
+
+  /* 3. 미리보기로 띄운 서버인가.
+     안 열려 있으면 학과 화면이 `준비 중` 으로 서고, 까닭을
+     **`검사가 열리지 않는다` 로 거꾸로 적게 된다** */
+  assertPreviewServer(CORE);
 
   const gate = gateCreds();
   const browser = await chromium.launch();
@@ -134,9 +137,10 @@ async function main(): Promise<void> {
     [student.id, `ME_V3_${TIER}_KR`, TIER]);
   let attempt = "";
   try {
-    setOpen(true);
-    /* 3. 열면 그 자리가 검사 가능으로 선다 */
-    ok("열면 검사 가능으로 선다", (() => {
+    /* 4. 미리보기에서는 그 자리가 검사 가능으로 선다.
+       **이 과정도 서버와 같은 `V3_PREVIEW_OPEN` 을 들고 돌아야** 이 줄이
+       선다. 안 들고 돌면 길은 밟히는데 이 줄만 걸려 까닭이 흐려진다 */
+    ok("미리보기에서는 검사 가능으로 선다", (() => {
       const u = university("PCU")!;
       const row = allLeaves(u).find((r) => r.leaf.code === leaf.code)!;
       return statusOf(u, row) === "READY" && readinessOf(u, row) === "RESULT_READY";
@@ -285,19 +289,17 @@ async function main(): Promise<void> {
     await narrow.close();
     await ctx.close();
   } finally {
-    /* **열어 둔 채로 끝나지 않는다.** 되돌리는 자리를 `finally` 에 두는
-       까닭은, 가운데서 터져도 학생에게 열린 상태가 남으면 안 되기 때문이다 */
-    setOpen(false);
     await browser.close();
   }
 
-  /* 14~16. 되돌렸는가 */
+  /* 14~16. 등록부를 한 바이트도 쓰지 않았는가 */
   ok("등록부가 글자까지 그대로다", REGS.every((f, i) => sha(f) === before[i]),
     REGS.map((f, i) => `${sha(f) === before[i] ? "같다" : "다르다"}`).join(" · "));
   {
     const u = university("PCU")!;
     const row = allLeaves(u).find((r) => r.leaf.code === leaf.code)!;
-    ok("다시 준비 중으로 닫혔다", statusOf(u, row) === "PREPARING", statusOf(u, row));
+    const real = statusOf(u, row, undefined, { preview: false });
+    ok("학생에게는 여전히 준비 중이다", real === "PREPARING", real);
   }
   /* 쓴 자료는 지운다. **운영과 같은 표를 쓰므로 남기지 않는다** */
   if (attempt) {

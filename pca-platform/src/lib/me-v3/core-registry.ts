@@ -11,6 +11,7 @@
  */
 import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
+import { appEnv } from "../env";
 
 /**
  * 내용 파일이 있는 자리.
@@ -264,11 +265,49 @@ export function coresForMarket(market: string, dir = CONTENT_DIR): CoreEntry[] {
  * 지나지 않는 길로 응시가 열리지 않는다: 가격표와 `/cores` 와 학교 진입과
  * `openAttempt` 가 전부 여기를 읽는다.
  */
-export function sellableCores(market: string, dir = CONTENT_DIR): CoreEntry[] {
+export function sellableCores(
+  market: string, dir = CONTENT_DIR, opts: { preview?: boolean } = {},
+): CoreEntry[] {
+  const usePreview = opts.preview !== false;
   return coresForMarket(market, dir).filter(
-    (c) => (c.status === "building" || c.status === "live") &&
-      c.open_to_students !== false,
+    (c) => (c.status === "building" || c.status === "live")
+      && (c.open_to_students !== false || (usePreview && previewOpen(c.code))),
   );
+}
+
+/**
+ * 아직 열지 않은 Core 를 **등록부를 고치지 않고** 눌러 보는 자리.
+ *
+ * 전에는 검사가 `open_to_students` 를 잠시 `true` 로 쓰고 끝에서 되돌렸다.
+ * 그 사이에 등록부를 건드리는 다른 일이 겹치면 **되돌림이 열린 칸을
+ * 남긴다**: 실제로 한 번 열여섯 Core 가 열린 채로 남았고, 그 상태에서
+ * `v3:majors` 와 `v3:provenance` 가 걸렸다. 까닭이 제품이 아니라 검사끼리의
+ * race 였다. 더 나쁜 것은 그 창이 열려 있던 몇 초 동안 **학생에게도
+ * 열려 있었다**는 점이다.
+ *
+ * 그래서 **학생 공개 상태를 검사가 고치지 않는다.** 눌러 보는 일을
+ * 환경변수로 옮겼다: `V3_PREVIEW_OPEN` 에 Core 코드를 쉼표로 적고(`*` 는
+ * 전부) 그 값을 들고 띄운 서버만 그 Core 를 연다. 등록부 파일은 한 바이트도
+ * 바뀌지 않는다.
+ *
+ * **운영에서는 어떤 값으로도 열리지 않는다.** 이 문이 운영에 섞이면 아직
+ * 문항을 쓰는 중인 Core 가 학생에게 열린다. `mockPaymentsAllowed()` 가
+ * 문을 아예 없앤 것과 같은 까닭이다.
+ *
+ * `{ preview: false }` 를 넘기면 이 문을 보지 않는다. **진짜 닫혀 있는지**를
+ * 재는 자리가 있어야 하기 때문이다: 그 확인까지 미리보기를 거치면 아무것도
+ * 세지 않는 줄이 된다.
+ */
+export function previewOpenCores(): string[] {
+  if (appEnv() === "production") return [];
+  const raw = (process.env.V3_PREVIEW_OPEN ?? "").trim();
+  if (!raw) return [];
+  return raw.split(",").map((x) => x.trim()).filter(Boolean);
+}
+
+export function previewOpen(code: string): boolean {
+  const list = previewOpenCores();
+  return list.includes("*") || list.includes(code);
 }
 
 /** core 의 파일이 등록돼 있고 실제로 있는가 */

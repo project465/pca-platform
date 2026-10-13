@@ -19,6 +19,11 @@ var/reports/
 # 지금 떠 있는 서버가 어느 빌드인지. 기계마다 다르다
 var/.serving-build
 
+# 지금 떠 있는 서버가 어느 Core 를 미리보기로 열어 두었는지.
+# **등록부가 아니다**: 학생 공개 상태는 `major-cores.json` 이 정하고 이 파일은
+# 눌러 보는 검사에게 "이 서버가 무엇을 열어 두었는가" 를 알려 주는 쪽지다.
+var/.serving-preview
+
 # 검증하다 만든 임시 파일. 저장소에 남길 것이 아니다
 var/tmp/
 var/pdf-audit/

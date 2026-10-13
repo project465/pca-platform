@@ -405,6 +405,7 @@ export function mappingStatusOf(
  */
 export function statusOf(
   u: CampusUniversity, row: CampusLeaf, dir = CONTENT_DIR,
+  opts: { preview?: boolean } = {},
 ): CampusStatus {
   const prov = provenanceOf(row.catalog, row.leaf);
   if (prov.status === "RETIRED") return "PREPARING";
@@ -414,7 +415,7 @@ export function statusOf(
   /* **같은 판단을 두 곳에서 하지 않는다.** 전에는 이 자리가 상태 글자를
      직접 보고 있었고, 그래서 `open_to_students` 가 생긴 날 가격표는 닫히고
      학교 화면만 열려 있을 수 있었다 */
-  const open = sellableCores(u.market_code, dir)
+  const open = sellableCores(u.market_code, dir, opts)
     .some((c) => c.code === row.leaf.core_code);
   return open ? "READY" : "PREPARING";
 }
@@ -548,6 +549,7 @@ export type CampusReadiness =
 
 export function readinessOf(
   u: CampusUniversity, row: CampusLeaf, dir = CONTENT_DIR,
+  opts: { preview?: boolean } = {},
 ): CampusReadiness {
   const core = coreOf(row.leaf, dir);
   if (!core || row.leaf.routing_only) return "CATALOG_ONLY";
@@ -560,7 +562,7 @@ export function readinessOf(
   const whole = files.every((k) => hasCoreFile(core.code, k as CoreFile, dir));
   if (!whole) return "CORE_LINKED";
   /* 자료는 다 섰다. 학생에게 열렸는지는 `statusOf` 가 말한다 */
-  return statusOf(u, row, dir) === "READY" ? "RESULT_READY" : "ASSESSMENT_READY";
+  return statusOf(u, row, dir, opts) === "READY" ? "RESULT_READY" : "ASSESSMENT_READY";
 }
 
 /**

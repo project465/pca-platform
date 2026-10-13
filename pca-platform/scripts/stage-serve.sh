@@ -46,6 +46,19 @@ export REPORT_PDF_DIR="${REPORT_PDF_DIR:-$PWD/var/reports}"
 mkdir -p var
 cat .next/BUILD_ID > var/.serving-build 2>/dev/null || true
 
+# **아직 열지 않은 Core 를 눌러 볼 때 무엇을 열어 두었는지도 적어 둔다.**
+#
+# 전에는 검사가 등록부의 `open_to_students` 를 잠시 `true` 로 써서 열었다.
+# 그 창이 열려 있는 몇 초 동안 **학생에게도 열려 있고**, 되돌림이 다른
+# 쓰기와 겹치면 열린 칸이 그대로 남는다(한 번 열여섯 Core 가 남았다).
+# 지금은 `V3_PREVIEW_OPEN` 을 들고 띄운 서버만 그 Core 를 열고 **등록부
+# 파일은 한 바이트도 바뀌지 않는다.** 눌러 보는 검사가 "이 서버가 그
+# Core 를 열어 두었는가" 를 여기서 읽는다: 안 적어 두면 까닭을
+# `검사가 열리지 않는다` 로 거꾸로 적게 된다.
+#
+# **운영에서는 이 값으로도 열리지 않는다**(`previewOpenCores()` 가 거절한다).
+printf '%s' "${V3_PREVIEW_OPEN:-}" > var/.serving-preview
+
 cd .next/standalone
-echo "띄웁니다 http://127.0.0.1:$PORT  (APP_ENV=$APP_ENV · 빌드 $(cat ../../var/.serving-build 2>/dev/null))"
+echo "띄웁니다 http://127.0.0.1:$PORT  (APP_ENV=$APP_ENV · 빌드 $(cat ../../var/.serving-build 2>/dev/null)$([ -n "${V3_PREVIEW_OPEN:-}" ] && echo " · 미리보기 $V3_PREVIEW_OPEN"))"
 exec node server.js

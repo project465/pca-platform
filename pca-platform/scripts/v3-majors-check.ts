@@ -8,7 +8,9 @@
  *   npm run v3:majors
  */
 import { readdirSync, readFileSync } from "node:fs";
-import { coresForMarket, sellableCores } from "../src/lib/me-v3/core-registry";
+import {
+  coresForMarket, previewOpenCores, sellableCores,
+} from "../src/lib/me-v3/core-registry";
 
 let fail = 0, pass = 0;
 function ok(n: string, good: boolean, d = ""): void {
@@ -151,6 +153,81 @@ function main(): void {
   ok("GLOBAL 에 비이공계가 새지 않는다",
      gl.every((c) => c.family === "STEM"),
      `GLOBAL ${gl.length}개 · 전부 STEM`);
+
+  /**
+   * **학생 공개 상태를 검사가 고치지 않는다.**
+   *
+   * 이번 회차의 가장 중요한 안전 조건이다. 전에는 눌러 보는 검사 다섯이
+   * `open_to_students` 를 잠시 `true` 로 쓰고 끝에서 되돌렸다. 그 창이 열려
+   * 있는 동안 **학생에게도 열려 있고**, 되돌림이 다른 쓰기와 겹치면 열린
+   * 칸이 그대로 남는다: 실제로 한 번 열여섯 Core 가 남았다.
+   *
+   * 지금은 여는 일이 `V3_PREVIEW_OPEN` 이고 등록부 파일은 읽기만 한다.
+   * **한 번 걷는 것으로는 돌아온다**: 다음 사람이 모르고 다시 쓴다. 그래서
+   * `scripts/` 에서 등록부에 쓰는 줄을 센다.
+   *
+   * **주석은 걷어 내고 본다**: 이 저장소는 `왜 지웠는가` 를 주석으로 남기는
+   * 쪽을 택했고, 그 기록에는 지운 코드가 그대로 들어 있다. 세면 맞는 기록을
+   * 지우라고 요구하게 된다.
+   */
+  console.log("\n── 검사가 등록부를 쓰지 않는가\n");
+  {
+    const strip = (t: string) => t
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .split("\n").map((l) => l.replace(/\s\/\/.*$/, "")).join("\n");
+    const writes: string[] = [];
+    const walkDir = (d: string): string[] => readdirSync(d, { withFileTypes: true })
+      .flatMap((e) => (e.isDirectory() ? walkDir(`${d}/${e.name}`)
+        : [`${d}/${e.name}`]));
+    for (const f of walkDir("scripts")) {
+      if (!/\.(ts|mjs|js|sh)$/.test(f)) continue;
+      if (f.endsWith("v3-majors-check.ts")) continue;
+      const src = strip(readFileSync(f, "utf8"));
+      /**
+       * **임시 자리에 가짜 core 를 만드는 파일은 뺀다.** 확장성 검사가 그
+       * 자리이고(`CONTENT_DIR` 를 `mkdtempSync` 로 바꿔 돌린다) 그 파일은
+       * 운영 등록부를 쓸 수 없다. 대신 그런 파일이라도 **운영 경로를 글자로
+       * 들고 쓰는 줄**은 그대로 센다: 임시 자리를 만들었다는 것이 운영에
+       * 쓸 자격이 되지는 않는다.
+       */
+      const sandboxed = /mkdtempSync/.test(src);
+      for (const line of src.split("\n")) {
+        /* 등록부 파일 이름과 쓰는 낱말이 같은 줄에 있으면 쓰는 줄이다 */
+        if (!/major-cores\.json/.test(line)) continue;
+        if (!/writeFileSync|appendFileSync|createWriteStream|>\s*["'`]?\S*major-cores/
+          .test(line)) continue;
+        const toReal = /sites\/pca-platform\/content|CONTENT_DIR/.test(line);
+        if (toReal || !sandboxed) writes.push(`${f}: ${line.trim().slice(0, 70)}`);
+      }
+      /* `open_to_students` 에 값을 **대입하는** 줄도 센다. 등록부 이름이 상수로
+         빠져 있으면 위의 줄이 못 본다 */
+      for (const line of src.split("\n")) {
+        if (/\bopen_to_students\s*=[^=]/.test(line)) {
+          writes.push(`${f}: ${line.trim().slice(0, 70)}`);
+        }
+      }
+    }
+    ok("검사가 등록부의 학생 공개 상태를 고치지 않는다", writes.length === 0,
+      writes.length ? writes.join(" · ") : "쓰는 줄 0");
+  }
+
+  /* 운영에서는 미리보기 문이 아예 열리지 않는다 */
+  {
+    const keptEnv = process.env.V3_PREVIEW_OPEN;
+    const keptApp = process.env.APP_ENV;
+    process.env.V3_PREVIEW_OPEN = "*";
+    process.env.APP_ENV = "production";
+    const prod = previewOpenCores();
+    process.env.APP_ENV = "staging";
+    const stage = previewOpenCores();
+    if (keptEnv === undefined) delete process.env.V3_PREVIEW_OPEN;
+    else process.env.V3_PREVIEW_OPEN = keptEnv;
+    if (keptApp === undefined) delete process.env.APP_ENV;
+    else process.env.APP_ENV = keptApp;
+    ok("운영에서는 미리보기로도 열리지 않는다", prod.length === 0,
+      prod.join(" ") || "빈 목록");
+    ok("staging 에서는 미리보기가 선다", stage.length === 1, stage.join(" "));
+  }
 
   console.log("\n── 성숙도 분포\n");
   const dist: Record<string, number> = {};

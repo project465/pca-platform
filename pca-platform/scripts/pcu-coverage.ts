@@ -11,17 +11,27 @@
  * 그래서 종이는 **갈래마다 한 자리씩** 뽑고, 나머지 자리는 결과 쪽이
  * 그 학과 이름과 갈래 이름을 적는지까지 본다.
  *
- * 닫아 둔 Core 는 학교 맥락이 통째로 버려지는 것이 설계라, 세는 동안만
- * 개방 칸을 열고 **반드시 되돌린다**(`finally`).
+ * 닫아 둔 Core 는 학교 맥락이 통째로 버려지는 것이 설계다. 전에는 세는
+ * 동안만 등록부의 개방 칸을 쓰고 끝에서 되돌렸는데, **그 창이 열려 있는
+ * 동안 학생에게도 열려 있고** 되돌림이 다른 쓰기와 겹치면 열린 칸이 그대로
+ * 남는다. 실제로 한 번 열여섯 Core 가 그렇게 남았고, 그 상태에서
+ * `v3:majors` 와 `v3:provenance` 가 걸렸다.
  *
- *   UI_BASE=http://127.0.0.1:3100 npx tsx scripts/pcu-coverage.ts
+ * 그래서 **이 검사는 등록부를 한 바이트도 쓰지 않는다.** 여는 일을 서버와
+ * 이 과정의 환경변수로 옮겼다(`V3_PREVIEW_OPEN=*`, 운영에서는 어떤 값으로도
+ * 열리지 않는다). 끝에서 등록부 파일이 글자까지 그대로인지 다시 센다.
+ *
+ *   V3_PREVIEW_OPEN='*' bash scripts/stage-serve.sh 3100
+ *   UI_BASE=http://127.0.0.1:3100 V3_PREVIEW_OPEN='*' \
+ *     npx tsx scripts/pcu-coverage.ts
  */
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { chromium, type BrowserContext, type Page } from "playwright";
 import {
-  BASE, assertFreshServer, gateCreds, loadEnv, login, makeStudent,
+  BASE, assertFreshServer, assertPreviewServer, gateCreds, loadEnv, login,
+  makeStudent,
 } from "./_loop-fixture";
 import { query, queryOne } from "../src/lib/db";
 import { core as coreEntry, packs } from "../src/lib/me-v3/core-registry";
@@ -40,6 +50,7 @@ loadEnv();
 const UNI = process.env.UNI ?? "PCU";
 const TIER = (process.env.TIER ?? "BASIC") as Tier;
 const OUT = "var/pcu-coverage";
+/** 끝에서 **쓰지 않았다는 것**을 세는 자리. 전에는 쓰는 자리였다 */
 const REGS = [
   "sites/pca-platform/content/major-cores.json",
   ".next/standalone/sites/pca-platform/content/major-cores.json",
@@ -56,15 +67,6 @@ const ok = (w: string, c: boolean, saw = ""): void => {
   else { bad.push(w); console.log(`  걸림  ${w}${saw ? ` — ${saw}` : ""}`); }
 };
 const sha = (p: string) => createHash("sha256").update(readFileSync(p)).digest("hex").slice(0, 16);
-
-function setOpen(code: string, open: boolean): void {
-  for (const f of REGS) {
-    const reg = JSON.parse(readFileSync(f, "utf8")) as
-      { cores: { code: string; open_to_students?: boolean }[] };
-    const row = reg.cores.find((c) => c.code === code);
-    if (row) { row.open_to_students = open; writeFileSync(f, `${JSON.stringify(reg, null, 1)}\n`); }
-  }
-}
 
 function firstPack(core: string, kind: "industry" | "role"): string | null {
   try { return packs<{ packs: { code: string }[] }>(core, kind).packs[0]?.code ?? null; }
@@ -158,18 +160,21 @@ async function main(): Promise<void> {
     if (!paper.has(key)) { paper.add(key); (s as Slot & { paper?: boolean }).paper = true; }
   }
 
+  /* 시작할 때의 학생 공개 상태. 끝에서 **바뀌지 않았는지** 견준다 */
+  const openBefore = new Map(cores.map((c) => [c, coreEntry(c).open_to_students]));
   const gate = gateCreds();
   const browser = await chromium.launch({ args: ["--no-sandbox"] });
   let ctx: BrowserContext | null = null;
   try {
-    for (const c of cores) if (coreEntry(c).open_to_students === false) setOpen(c, true);
+    /* **등록부를 쓰지 않는다.** 미리보기로 띄운 서버인지만 확인한다 */
+    for (const c of cores) assertPreviewServer(c);
 
-    /* 2. 연 뒤에는 그 자리가 전부 검사 가능으로 선다 */
+    /* 2. 미리보기에서는 그 자리가 전부 검사 가능으로 선다 */
     {
       const u2 = university(UNI)!;
       const open = allLeaves(u2).filter((r) =>
         ready.some((s) => s.code === r.leaf.code) && statusOf(u2, r) === "READY");
-      ok("자료가 다 선 자리가 열면 전부 검사 가능으로 선다",
+      ok("자료가 다 선 자리가 미리보기에서 전부 검사 가능으로 선다",
         open.length === ready.length, `${open.length} / ${ready.length}`);
     }
 
@@ -250,10 +255,17 @@ async function main(): Promise<void> {
   } finally {
     await ctx?.close();
     await browser.close();
-    for (const c of cores) if (coreEntry(c).open_to_students === true) setOpen(c, false);
     const after = REGS.map(sha);
-    ok("등록부를 되돌렸다", before.every((h, i) => h === after[i]),
+    ok("등록부를 한 바이트도 쓰지 않았다", before.every((h, i) => h === after[i]),
       `${before[0]} → ${after[0]}`);
+    /* **학생 공개 상태가 시작할 때와 같은지 값으로 한 번 더 센다.**
+       지문만 보면 같은 바이트 수로 뒤집힌 경우를 놓친다. `false` 로 못
+       박지 않는 까닭은 **이미 열려 있는 Core 를 가리키는 자리가 생기는
+       날 멀쩡한 자리가 걸리기** 때문이다: 재는 것은 `닫혀 있는가` 가
+       아니고 `이 검사가 바꾸지 않았는가` 다 */
+    const moved = cores.filter((c) => coreEntry(c).open_to_students !== openBefore.get(c));
+    ok("자리의 Core 의 학생 공개 상태가 시작할 때와 같다", moved.length === 0,
+      moved.join(" ") || `${cores.length}개 그대로`);
   }
 
   console.log(`\n확인 ${pass + bad.length}가지 — 통과 ${pass} · 걸림 ${bad.length}`);

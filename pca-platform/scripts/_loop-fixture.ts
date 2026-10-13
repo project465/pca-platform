@@ -62,6 +62,35 @@ export function assertFreshServer(): void {
     + " `npm run stage:serve <포트>` 로 다시 띄우십시오.");
 }
 
+/**
+ * **떠 있는 서버가 이 Core 를 미리보기로 열어 두었는가.**
+ *
+ * 아직 열지 않은 Core 를 눌러 보려면 그 Core 가 열려 있어야 한다. 전에는
+ * 검사가 등록부의 `open_to_students` 를 잠시 `true` 로 써서 열었는데, 그
+ * 창이 열려 있는 몇 초 동안 **학생에게도 열려 있고** 되돌림이 다른 쓰기와
+ * 겹치면 열린 칸이 그대로 남는다. 한 번 열여섯 Core 가 그렇게 남았다.
+ *
+ * 지금은 서버를 `V3_PREVIEW_OPEN` 과 함께 띄우고 **등록부를 건드리지
+ * 않는다.** 그 값은 이 과정이 아니라 **서버의** 환경이라 여기서 직접 읽을
+ * 수 없으므로, 띄우는 쪽이 `var/.serving-preview` 에 적어 둔 것을 읽는다.
+ * 안 열려 있으면 그 자리에서 멈춘다: 닫힌 서버에서 밟으면 학과 화면이
+ * `준비 중` 으로 서고 까닭을 **`검사가 열리지 않는다` 로 거꾸로 적게
+ * 된다.**
+ */
+export function assertPreviewServer(core: string): void {
+  let raw = "";
+  try {
+    raw = readFileSync(resolve(process.cwd(), "var/.serving-preview"), "utf8").trim();
+  } catch { raw = ""; }
+  const list = raw.split(",").map((x) => x.trim()).filter(Boolean);
+  if (list.includes("*") || list.includes(core)) return;
+  throw new Error(
+    `떠 있는 서버가 ${core} 를 미리보기로 열지 않았습니다`
+    + `${raw ? ` (지금: ${raw})` : " (지금: 없음)"}.\n`
+    + `  V3_PREVIEW_OPEN=${core} bash scripts/stage-serve.sh <포트>\n`
+    + "  로 다시 띄우십시오. **등록부는 건드리지 않습니다.**");
+}
+
 /** 공개 전 배포본의 자물쇠. **우리도 그 문을 지난다** */
 export function gateCreds(): { username: string; password: string } | null {
   const g = process.env.STAGING_BASIC_AUTH || "";

@@ -15,7 +15,7 @@
  *   npm run v3:provenance
  */
 import { createHash } from "node:crypto";
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { loadEnv, makeStudent } from "./_loop-fixture";
 loadEnv();
 
@@ -208,23 +208,23 @@ async function main(): Promise<void> {
     const { openAttempt } = await import("../src/lib/me-v3/runtime/session");
     /**
      * 닫아 둔 Core 는 학교 맥락이 **통째로 버려진다**(그것이 설계다). 그래서
-     * 전기전자로 응시 줄을 열어 보려면 그 칸을 잠시 열어야 한다. `ee:walk`
-     * 와 같은 길이고 **반드시 되돌린다**: `finally` 가 되돌리고 지문을 견준다.
+     * 다른 Core 로 응시 줄을 열어 보려면 그 Core 가 열려 있어야 한다.
+     *
+     * **등록부 파일을 쓰지 않는다.** 전에는 그 칸을 잠시 `true` 로 쓰고
+     * `finally` 에서 되돌렸는데, 되돌림이 다른 쓰기와 겹치면 열린 칸이 그대로
+     * 남는다(한 번 열여섯 Core 가 그렇게 남았다). 더 나쁜 것은 그 창이 열려
+     * 있던 동안 **학생에게도 열려 있었다**는 점이다.
+     *
+     * 지금은 이 과정의 환경변수만 쓴다. 파일에 닿지 않으므로 같이 도는 다른
+     * 일과 겹칠 자리가 없고, **운영에서는 이 값으로도 열리지 않는다**.
      */
     const REG = `${CONTENT_DIR}/major-cores.json`;
     const kept = readFileSync(REG);
-    const flip = (code: string, open: boolean) => {
-      const reg = JSON.parse(readFileSync(REG, "utf8")) as
-        { cores: { code: string; open_to_students?: boolean }[] };
-      const row = reg.cores.find((c) => c.code === code);
-      if (!row) throw new Error(`등록부에 ${code} 가 없습니다`);
-      row.open_to_students = open;
-      writeFileSync(REG, `${JSON.stringify(reg, null, 1)}\n`);
-    };
+    const keptEnv = process.env.V3_PREVIEW_OPEN;
     const made: string[] = [];
     const mix: string[] = [];
     try {
-      for (const c of LIVE) flip(c, true);
+      process.env.V3_PREVIEW_OPEN = LIVE.join(",");
       /* **번갈아 연다.** 같은 Core 를 잇따라 열면 섞이는 것을 볼 수 없다 */
       const order = [...LIVE, ...LIVE];
       for (let n = 0; n < order.length; n += 1) {
@@ -247,16 +247,21 @@ async function main(): Promise<void> {
         if (got !== need) mix.push(`${n}: ${got} (바라던 것 ${need})`);
       }
     } finally {
-      writeFileSync(REG, kept);
+      if (keptEnv === undefined) delete process.env.V3_PREVIEW_OPEN;
+      else process.env.V3_PREVIEW_OPEN = keptEnv;
     }
     ok("번갈아 열어도 응시 줄의 Core 와 판본이 짝이 맞는다", mix.length === 0,
       mix.length ? mix.join(" · ") : `${LIVE.length * 2}줄 · ${LIVE.join(" ")}`);
-    ok("등록부를 글자까지 되돌렸다",
+    ok("등록부를 한 바이트도 쓰지 않았다",
       createHash("sha256").update(readFileSync(REG)).digest("hex")
         === createHash("sha256").update(kept).digest("hex"));
-    ok("되돌린 뒤 전기전자가 다시 닫혀 있다",
-      !sellableCores("KR").some((c) => c.code === "EE_CORE_V1"),
-      sellableCores("KR").map((c) => c.code).join(" "));
+    /* **등록부가 정하는 학생 공개 상태를 `{ preview: false }` 로 묻는다.**
+       미리보기를 거쳐 물으면 이 줄이 아무것도 세지 않는다 */
+    ok("학생에게는 전기전자가 여전히 닫혀 있다",
+      !sellableCores("KR", undefined, { preview: false })
+        .some((c) => c.code === "EE_CORE_V1"),
+      sellableCores("KR", undefined, { preview: false })
+        .map((c) => c.code).join(" ") || "열린 Core 없음");
     /* 치운다. 남겨 두면 다음 사람이 이 줄을 손님 자료로 읽는다 */
     for (const id of made) {
       await query("DELETE FROM v3_attempts WHERE user_id=$1", [id]);

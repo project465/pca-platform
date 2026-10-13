@@ -5,16 +5,19 @@
  *   → 내 CareerMatri → 경험 추가 → 반영 → 현재 상태
  *
  * `core:walk` 이 보는 것은 **종이까지**이고, 여기서는 그 뒤 작업공간의
- * 되돌아오는 길까지 본다. 짓고 있는 Core 는 학생에게 닫혀 있으므로 그
- * 칸을 잠시 열고 **반드시 되돌린다**.
+ * 되돌아오는 길까지 본다. 짓고 있는 Core 는 학생에게 닫혀 있고, **이 검사는
+ * 그 칸을 쓰지 않는다**: 여는 일은 `V3_PREVIEW_OPEN` 이 한다.
  *
- *   UI_BASE=http://127.0.0.1:3100 CORE=BIZ_CORE_V1 TIER=BASIC \
- *     npx tsx scripts/v3-pcu-flow.ts
+ *   V3_PREVIEW_OPEN=BIZ_CORE_V1 bash scripts/stage-serve.sh 3100
+ *   UI_BASE=http://127.0.0.1:3100 V3_PREVIEW_OPEN=BIZ_CORE_V1 \
+ *     CORE=BIZ_CORE_V1 TIER=BASIC npx tsx scripts/v3-pcu-flow.ts
  */
-import { readFileSync, writeFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 import { chromium, type Page } from "playwright";
 import {
-  BASE, assertFreshServer, fillExperience, gateCreds, loadEnv, login, makeStudent,
+  BASE, assertFreshServer, assertPreviewServer, fillExperience, gateCreds,
+  loadEnv, login, makeStudent,
 } from "./_loop-fixture";
 import { walk } from "./_v3-walk";
 import { query, queryOne } from "../src/lib/db";
@@ -25,6 +28,14 @@ loadEnv();
 
 const CORE = process.env.CORE ?? defaultCore();
 const TIER = (process.env.TIER ?? "BASIC") as "BASIC" | "STANDARD" | "PRO";
+/**
+ * 끝에서 **쓰지 않았다는 것**을 세는 자리.
+ *
+ * 전에는 쓰는 자리였다: 닫아 둔 Core 로 길을 밟으려고 `open_to_students` 를
+ * 잠시 열고 끝에서 되돌렸는데, **그 창이 열려 있는 동안 학생에게도 열려
+ * 있다.** 지금은 서버와 이 과정이 함께 들고 도는 `V3_PREVIEW_OPEN` 이 그
+ * 일을 하고 등록부는 읽기만 한다.
+ */
 const REGS = [
   "sites/pca-platform/content/major-cores.json",
   ".next/standalone/sites/pca-platform/content/major-cores.json",
@@ -36,14 +47,8 @@ const ok = (w: string, c: boolean, saw = "") => {
   else { bad.push(w); console.log(`  걸림  ${w}${saw ? " — " + saw : ""}`); }
 };
 
-function setOpen(open: boolean): void {
-  for (const f of REGS) {
-    const reg = JSON.parse(readFileSync(f, "utf8")) as
-      { cores: { code: string; open_to_students?: boolean }[] };
-    const row = reg.cores.find((c) => c.code === CORE);
-    if (row) { row.open_to_students = open; writeFileSync(f, `${JSON.stringify(reg, null, 1)}\n`); }
-  }
-}
+const sha = (f: string) =>
+  createHash("sha256").update(readFileSync(f)).digest("hex").slice(0, 16);
 
 async function main(): Promise<void> {
   assertFreshServer();
@@ -62,11 +67,13 @@ async function main(): Promise<void> {
      VALUES ($1,$2,'report',$3,'ME','ME_V3_2','active')`,
     [st.id, `ME_V3_${TIER}_KR`, TIER]);
 
-  const closed = coreEntry(CORE).open_to_students === false;
+  /* **등록부를 쓰지 않는다.** 닫아 둔 Core 면 미리보기로 띄운 서버인지만
+     확인한다. 안 열려 있으면 그 자리에서 멈춘다 */
+  if (coreEntry(CORE).open_to_students === false) assertPreviewServer(CORE);
+  const before = REGS.map(sha);
   const browser = await chromium.launch({ args: ["--no-sandbox"] });
   const gate = gateCreds();
   try {
-    if (closed) setOpen(true);
     const ctx = await browser.newContext({
       viewport: { width: 1440, height: 900 },
       ...(gate ? { httpCredentials: gate } : {}),
@@ -151,9 +158,10 @@ async function main(): Promise<void> {
     ok("브라우저 오류 0", errs.length === 0, errs[0] ?? "없음");
     await ctx.close();
   } finally {
-    if (closed) setOpen(false);
     await browser.close();
   }
+  ok("등록부를 한 바이트도 쓰지 않았다",
+    before.every((h, i) => h === REGS.map(sha)[i]), before[0]);
   console.log(`\n확인 ${pass + bad.length}가지 — 통과 ${pass} · 걸림 ${bad.length}`);
   if (bad.length) process.exitCode = 1;
 }
