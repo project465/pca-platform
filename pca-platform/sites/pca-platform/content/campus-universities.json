@@ -357,42 +357,42 @@
                   "name": "경영학과",
                   "kind": "department",
                   "core_code": "BIZ_CORE_V1",
-                  "specialization": null
+                  "specialization": "SPEC_BIZ_GENERAL"
                 },
                 {
                   "code": "PCU26_MIS",
                   "name": "IT경영정보학과",
                   "kind": "department",
                   "core_code": "BIZ_CORE_V1",
-                  "specialization": null
+                  "specialization": "SPEC_BIZ_MIS"
                 },
                 {
                   "code": "PCU26_GLOBALBIZ",
                   "name": "글로벌비즈니스학과",
                   "kind": "department",
                   "core_code": "BIZ_CORE_V1",
-                  "specialization": null
+                  "specialization": "SPEC_BIZ_GLOBAL"
                 },
                 {
                   "code": "PCU26_TOURISM",
                   "name": "관광경영학과",
                   "kind": "department",
-                  "core_code": null,
-                  "specialization": null
+                  "core_code": "BIZ_CORE_V1",
+                  "specialization": "SPEC_BIZ_TOURISM"
                 },
                 {
                   "code": "PCU26_HOTELAIR",
                   "name": "호텔항공경영학과",
                   "kind": "department",
-                  "core_code": null,
-                  "specialization": null
+                  "core_code": "BIZ_CORE_V1",
+                  "specialization": "SPEC_BIZ_HOTEL_AIR"
                 },
                 {
                   "code": "PCU26_AIRSERVICE",
                   "name": "항공서비스학과",
                   "kind": "department",
-                  "core_code": null,
-                  "specialization": null
+                  "core_code": "BIZ_CORE_V1",
+                  "specialization": "SPEC_BIZ_AIR_SERVICE"
                 }
               ]
             },
@@ -932,42 +932,42 @@
                   "name": "경영학과",
                   "kind": "department",
                   "core_code": "BIZ_CORE_V1",
-                  "specialization": null
+                  "specialization": "SPEC_BIZ_GENERAL"
                 },
                 {
                   "code": "PCU27_MIS",
                   "name": "IT경영정보학과",
                   "kind": "department",
                   "core_code": "BIZ_CORE_V1",
-                  "specialization": null
+                  "specialization": "SPEC_BIZ_MIS"
                 },
                 {
                   "code": "PCU27_GLOBALBIZ",
                   "name": "글로벌비즈니스학과",
                   "kind": "department",
                   "core_code": "BIZ_CORE_V1",
-                  "specialization": null
+                  "specialization": "SPEC_BIZ_GLOBAL"
                 },
                 {
                   "code": "PCU27_TOURISM",
                   "name": "관광경영학과",
                   "kind": "department",
-                  "core_code": null,
-                  "specialization": null
+                  "core_code": "BIZ_CORE_V1",
+                  "specialization": "SPEC_BIZ_TOURISM"
                 },
                 {
                   "code": "PCU27_HOTELAIR",
                   "name": "호텔항공경영학과",
                   "kind": "department",
-                  "core_code": null,
-                  "specialization": null
+                  "core_code": "BIZ_CORE_V1",
+                  "specialization": "SPEC_BIZ_HOTEL_AIR"
                 },
                 {
                   "code": "PCU27_AIRSERVICE",
                   "name": "항공서비스학과",
                   "kind": "department",
-                  "core_code": null,
-                  "specialization": null
+                  "core_code": "BIZ_CORE_V1",
+                  "specialization": "SPEC_BIZ_AIR_SERVICE"
                 }
               ]
             },

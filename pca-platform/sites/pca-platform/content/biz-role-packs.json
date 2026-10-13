@@ -1,0 +1,797 @@
+{
+ "schema_version": "biz-role-packs.1",
+ "core": "BIZ_CORE_V1",
+ "note": "공고 직무명 단위의 깊이 모듈이다. 새 축을 만들지 않는다: `core_ref` 로 Core 의 기술영역과 역할기능을 가리킨다. 역할기능과 역할팩이 하나씩 맞물린다. `differs_from` 은 이웃 역할과 무엇이 다른지를 한 줄로 적고 결과지가 그 줄을 읽는다. 문항은 역할마다 다른 판단을 묻는다",
+ "caps": {
+  "industry_items_max": 10,
+  "role_items_max": 7,
+  "deep_industry_max": 1,
+  "deep_role_max": 2,
+  "interest_pick_max": 2
+ },
+ "exploration": {
+  "browse": "all",
+  "deep_per_attempt": 1,
+  "add_later": true,
+  "subscription_gate": false,
+  "note": "여덟 역할 전부를 견줄 수 있다. 한 번에 쉰여섯을 묻지 않고 Core 심화가 끝난 뒤에 관심 있는 역할을 둘까지 고르고, 고른 역할을 STANDARD 부터 깊게 확인한다. 고르지 않은 역할은 Core 의 확인된 축으로 견준다. 역할 선택이 Core 판정을 바꾸지 않는다"
+ },
+ "packs": [
+  {
+   "code": "ROLE_PLAN_V1",
+   "version": 1,
+   "name_ko": "경영기획",
+   "name_en": "Corporate Planning",
+   "core": "BIZ_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD01",
+     "TD04",
+     "TD08"
+    ],
+    "rf": [
+     "RF1"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J5"
+   ],
+   "owns": "목표와 지표와 자원 배분을 확정한다",
+   "decides": [
+    "볼 지표",
+    "예산과 인원 배분",
+    "하지 않을 것",
+    "검토 주기"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_ANALYTICS_V1",
+     "line": "분석 쪽은 근거를 만들고 기획은 그 근거로 자원을 움직일 권한을 가진다"
+    },
+    {
+     "vs": "ROLE_FINACC_V1",
+     "line": "회계 쪽은 일어난 것을 닫고 기획은 앞으로 쓸 것을 정한다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_PLAN_V1_R1",
+     "axis": "J3",
+     "domain": "TD01",
+     "ask": "예산이나 인원 배분을 바꿀 권한을 가지고 직접 정해 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_PLAN_V1_R2",
+     "axis": "J5",
+     "domain": "TD01",
+     "ask": "다른 사람이 보고 실행한 기획안을 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_PLAN_V1_R3",
+     "axis": "J2",
+     "domain": "TD01",
+     "ask": "부딪히는 목표 가운데 무엇을 먼저 지킬지 정해 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_PLAN_V1_R4",
+     "axis": "J3",
+     "domain": "TD04",
+     "ask": "추정에 쓸 가정을 정해 판단 근거로 올린 경험이 있다"
+    },
+    {
+     "id": "ROLE_PLAN_V1_R5",
+     "axis": "J6",
+     "domain": "TD08",
+     "ask": "지표로 견준 결과를 들고 배분을 바꾼 경험이 있다"
+    },
+    {
+     "id": "ROLE_PLAN_V1_R6",
+     "axis": "J7",
+     "domain": "TD01",
+     "ask": "달성이 안 된 까닭을 좁혀 다음 계획을 바꿔 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_PLAN_V1_R7",
+     "axis": "J8",
+     "domain": "TD01",
+     "ask": "내 기획으로 다른 팀이 일을 시작한 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_ANALYTICS_V1",
+    "ROLE_FINACC_V1",
+    "ROLE_SALES_V1"
+   ],
+   "application_material": [
+    "목표와 지표 표 한 벌",
+    "자원 배분 근거",
+    "하지 않기로 한 것을 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_ANALYTICS_V1",
+   "version": 1,
+   "name_ko": "데이터·분석",
+   "name_en": "Business Analytics",
+   "core": "BIZ_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD08",
+     "TD10",
+     "TD02"
+    ],
+    "rf": [
+     "RF2"
+    ]
+   },
+   "required_axes": [
+    "J4",
+    "J6"
+   ],
+   "owns": "지표 정의와 비교 조건과 결론의 근거를 확정한다",
+   "decides": [
+    "지표 정의",
+    "비교 조건",
+    "넣고 뺄 자료",
+    "분석 방법"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_PLAN_V1",
+     "line": "기획은 자원을 움직이고 분석은 움직일 근거를 만든다"
+    },
+    {
+     "vs": "ROLE_MKT_V1",
+     "line": "마케팅은 메시지를 고르고 분석은 고를 기준을 만든다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_ANALYTICS_V1_R1",
+     "axis": "J4",
+     "domain": "TD08",
+     "ask": "분석 방법을 골라 그 까닭을 남긴 경험이 있다"
+    },
+    {
+     "id": "ROLE_ANALYTICS_V1_R2",
+     "axis": "J6",
+     "domain": "TD08",
+     "ask": "다른 사람이 낸 결론을 같은 자료로 다시 재어 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_ANALYTICS_V1_R3",
+     "axis": "J3",
+     "domain": "TD08",
+     "ask": "자료에서 넣을 것과 뺄 것을 판단해 그 근거를 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_ANALYTICS_V1_R4",
+     "axis": "J6",
+     "domain": "TD10",
+     "ask": "예측이 틀린 폭을 재어 추정 방법을 고친 경험이 있다"
+    },
+    {
+     "id": "ROLE_ANALYTICS_V1_R5",
+     "axis": "J2",
+     "domain": "TD02",
+     "ask": "팀이 쓰는 지표의 정의를 내 이름으로 확정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_ANALYTICS_V1_R6",
+     "axis": "J5",
+     "domain": "TD08",
+     "ask": "다른 사람이 쓴 지표 정의표나 분석 보고를 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_ANALYTICS_V1_R7",
+     "axis": "J8",
+     "domain": "TD08",
+     "ask": "내 분석이 예산이나 품목 결정에 쓰인 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_PLAN_V1",
+    "ROLE_MKT_V1",
+    "ROLE_OPS_V1"
+   ],
+   "application_material": [
+    "지표 정의표 한 벌",
+    "비교 조건을 적은 분석 보고",
+    "결론이 뒤집히는 조건을 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_FINACC_V1",
+   "version": 1,
+   "name_ko": "재무·회계",
+   "name_en": "Finance and Accounting",
+   "core": "BIZ_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD05",
+     "TD04",
+     "TD11"
+    ],
+    "rf": [
+     "RF3"
+    ]
+   },
+   "required_axes": [
+    "J5",
+    "J6"
+   ],
+   "owns": "적용 기준과 분류와 결산 판정을 확정한다",
+   "decides": [
+    "계정 분류",
+    "기간 귀속",
+    "원가 배부 기준",
+    "조정 항목"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_PLAN_V1",
+     "line": "기획은 앞으로 쓸 것을 정하고 회계는 일어난 것을 기준에 맞춰 닫는다"
+    },
+    {
+     "vs": "ROLE_ANALYTICS_V1",
+     "line": "분석은 지표를 정의하고 회계는 숫자가 증빙과 맞는지 판정한다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_FINACC_V1_R1",
+     "axis": "J3",
+     "domain": "TD05",
+     "ask": "계정 분류나 기간 귀속을 바꿀 권한을 가지고 정해 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_FINACC_V1_R2",
+     "axis": "J6",
+     "domain": "TD05",
+     "ask": "장부와 증빙을 대조해 차이를 조정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_FINACC_V1_R3",
+     "axis": "J5",
+     "domain": "TD05",
+     "ask": "보고나 심사에 쓰인 결산 자료를 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_FINACC_V1_R4",
+     "axis": "J4",
+     "domain": "TD04",
+     "ask": "추정 방법이나 원가 배부 방법을 골라 그 까닭을 남긴 경험이 있다"
+    },
+    {
+     "id": "ROLE_FINACC_V1_R5",
+     "axis": "J2",
+     "domain": "TD11",
+     "ask": "적용할 규정을 찾아 지켜야 할 요건으로 정리한 경험이 있다"
+    },
+    {
+     "id": "ROLE_FINACC_V1_R6",
+     "axis": "J7",
+     "domain": "TD05",
+     "ask": "숫자가 안 맞는 까닭을 좁혀 기록 절차를 바꿔 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_FINACC_V1_R7",
+     "axis": "J8",
+     "domain": "TD05",
+     "ask": "내가 낸 원가 숫자가 가격이나 예산 결정에 쓰인 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_PLAN_V1",
+    "ROLE_ANALYTICS_V1",
+    "ROLE_OPS_V1"
+   ],
+   "application_material": [
+    "결산 자료와 대조표 한 벌",
+    "적용 기준을 적은 한 장",
+    "조정한 항목과 까닭"
+   ]
+  },
+  {
+   "code": "ROLE_OPS_V1",
+   "version": 1,
+   "name_ko": "운영관리",
+   "name_en": "Operations Management",
+   "core": "BIZ_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD07",
+     "TD10",
+     "TD12"
+    ],
+    "rf": [
+     "RF4"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J7"
+   ],
+   "owns": "절차와 일정과 자원 배분을 확정한다",
+   "decides": [
+    "일의 순서",
+    "역할 배분",
+    "재고를 둘 자리",
+    "점검 시점"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_CS_V1",
+     "line": "고객 운영은 그 자리에서 문제를 끝내고 운영관리는 그 문제가 안 나게 절차를 바꾼다"
+    },
+    {
+     "vs": "ROLE_HR_V1",
+     "line": "인사는 사람의 기준을 세우고 운영관리는 그 사람들의 일을 배분한다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_OPS_V1_R1",
+     "axis": "J3",
+     "domain": "TD07",
+     "ask": "일의 순서나 역할 배분을 바꿀 권한을 가지고 정해 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_OPS_V1_R2",
+     "axis": "J7",
+     "domain": "TD07",
+     "ask": "늦어진 까닭을 좁혀 절차를 바꿔 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_OPS_V1_R3",
+     "axis": "J5",
+     "domain": "TD07",
+     "ask": "다른 사람이 보고 일한 업무 절차서를 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_OPS_V1_R4",
+     "axis": "J6",
+     "domain": "TD07",
+     "ask": "바꾸기 전과 뒤를 같은 조건에서 견준 경험이 있다"
+    },
+    {
+     "id": "ROLE_OPS_V1_R5",
+     "axis": "J3",
+     "domain": "TD10",
+     "ask": "재고나 수량을 어디에 둘지 판단해 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_OPS_V1_R6",
+     "axis": "J2",
+     "domain": "TD12",
+     "ask": "운영이 지킬 합격선을 숫자로 못 박은 경험이 있다"
+    },
+    {
+     "id": "ROLE_OPS_V1_R7",
+     "axis": "J8",
+     "domain": "TD07",
+     "ask": "내가 만든 절차가 조직의 기본 절차가 된 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_CS_V1",
+    "ROLE_HR_V1",
+    "ROLE_FINACC_V1"
+   ],
+   "application_material": [
+    "업무 절차서 한 벌",
+    "개선 전후 비교 표",
+    "병목이라고 본 근거를 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_CS_V1",
+   "version": 1,
+   "name_ko": "서비스·고객운영",
+   "name_en": "Customer Service Operations",
+   "core": "BIZ_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD09",
+     "TD07",
+     "TD10"
+    ],
+    "rf": [
+     "RF5"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J7"
+   ],
+   "owns": "응대 기준과 그 자리에서 처리할 예외 범위를 확정한다",
+   "decides": [
+    "응대 기준",
+    "예외 처리 범위",
+    "위로 올릴 기준",
+    "보상 한도"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_OPS_V1",
+     "line": "운영관리는 절차를 바꾸고 고객 운영은 지금 온 고객을 끝낸다"
+    },
+    {
+     "vs": "ROLE_MKT_V1",
+     "line": "마케팅은 오게 만들고 고객 운영은 떠나지 않게 한다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_CS_V1_R1",
+     "axis": "J3",
+     "domain": "TD09",
+     "ask": "그 자리에서 처리할 예외 범위를 바꿀 권한을 가지고 정해 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_CS_V1_R2",
+     "axis": "J7",
+     "domain": "TD09",
+     "ask": "되풀이되는 불만의 까닭을 좁혀 기준을 바꿔 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_CS_V1_R3",
+     "axis": "J5",
+     "domain": "TD09",
+     "ask": "다른 사람이 보고 응대한 기준 문서를 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_CS_V1_R4",
+     "axis": "J6",
+     "domain": "TD07",
+     "ask": "약속한 처리 시간과 실제를 대조한 경험이 있다"
+    },
+    {
+     "id": "ROLE_CS_V1_R5",
+     "axis": "J3",
+     "domain": "TD10",
+     "ask": "현장 상황을 보고 배정이나 조건을 바꿔 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_CS_V1_R6",
+     "axis": "J2",
+     "domain": "TD09",
+     "ask": "고객에게 약속할 수준을 내 권한으로 정해 공지한 경험이 있다"
+    },
+    {
+     "id": "ROLE_CS_V1_R7",
+     "axis": "J8",
+     "domain": "TD09",
+     "ask": "내가 만든 응대 기준이 조직의 지침이 된 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_OPS_V1",
+    "ROLE_MKT_V1",
+    "ROLE_HR_V1"
+   ],
+   "application_material": [
+    "응대 기준 한 벌",
+    "불만 처리와 재발 방지 기록",
+    "그 자리에서 할 수 없는 것을 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_SALES_V1",
+   "version": 1,
+   "name_ko": "영업·사업개발",
+   "name_en": "Sales and Business Development",
+   "core": "BIZ_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD03",
+     "TD11",
+     "TD02"
+    ],
+    "rf": [
+     "RF6"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J5"
+   ],
+   "owns": "제시할 조건과 양보하지 않을 선을 확정한다",
+   "decides": [
+    "제시 가격",
+    "납기와 결제 조건",
+    "양보하지 않을 조건",
+    "거래 우선순위"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_MKT_V1",
+     "line": "마케팅은 묶음으로 알리고 영업은 개별 거래의 조건을 합의한다"
+    },
+    {
+     "vs": "ROLE_PLAN_V1",
+     "line": "기획은 어디서 벌지 정하고 영업은 그 자리에서 조건을 만든다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_SALES_V1_R1",
+     "axis": "J3",
+     "domain": "TD03",
+     "ask": "제시할 가격이나 할인 폭을 바꿀 권한을 가지고 정해 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_SALES_V1_R2",
+     "axis": "J5",
+     "domain": "TD03",
+     "ask": "다른 사람이 받아 상담을 이어간 제안서를 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_SALES_V1_R3",
+     "axis": "J2",
+     "domain": "TD03",
+     "ask": "고객이 말로 한 요구를 수량과 기한으로 옮긴 경험이 있다"
+    },
+    {
+     "id": "ROLE_SALES_V1_R4",
+     "axis": "J6",
+     "domain": "TD03",
+     "ask": "제안 둘을 원가 기준으로 견주어 하나를 고른 경험이 있다"
+    },
+    {
+     "id": "ROLE_SALES_V1_R5",
+     "axis": "J3",
+     "domain": "TD11",
+     "ask": "국경을 넘는 거래의 조건이나 서류 구성을 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_SALES_V1_R6",
+     "axis": "J7",
+     "domain": "TD02",
+     "ask": "거래가 깨진 까닭을 좁혀 조건을 바꿔 다시 제안한 경험이 있다"
+    },
+    {
+     "id": "ROLE_SALES_V1_R7",
+     "axis": "J8",
+     "domain": "TD03",
+     "ask": "내가 가져온 조건이 생산이나 운영 계획에 쓰인 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_MKT_V1",
+    "ROLE_PLAN_V1",
+    "ROLE_CS_V1"
+   ],
+   "application_material": [
+    "제안서와 견적 한 벌",
+    "합의 조건 기록",
+    "양보하지 않은 선을 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_MKT_V1",
+   "version": 1,
+   "name_ko": "마케팅",
+   "name_en": "Marketing",
+   "core": "BIZ_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD02",
+     "TD08",
+     "TD09"
+    ],
+    "rf": [
+     "RF7"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "owns": "볼 고객과 쓸 채널과 재는 방식을 확정한다",
+   "decides": [
+    "고객 구분 기준",
+    "채널 배분",
+    "메시지 안",
+    "성과 측정 방식"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_SALES_V1",
+     "line": "영업은 개별 조건을 합의하고 마케팅은 누구에게 무엇을 알릴지를 묶음으로 정한다"
+    },
+    {
+     "vs": "ROLE_ANALYTICS_V1",
+     "line": "분석은 기준을 만들고 마케팅은 그 기준으로 채널을 고를 권한을 가진다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_MKT_V1_R1",
+     "axis": "J3",
+     "domain": "TD02",
+     "ask": "고객 구분이나 채널 배분을 바꿀 권한을 가지고 정해 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_MKT_V1_R2",
+     "axis": "J6",
+     "domain": "TD02",
+     "ask": "성과가 낮은 채널의 예산을 줄일 근거를 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_MKT_V1_R3",
+     "axis": "J5",
+     "domain": "TD02",
+     "ask": "다른 사람이 보고 집행한 캠페인 기획서를 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_MKT_V1_R4",
+     "axis": "J4",
+     "domain": "TD08",
+     "ask": "비교할 기간과 대조 집단을 어떻게 잡을지 정해 측정 틀을 세운 경험이 있다"
+    },
+    {
+     "id": "ROLE_MKT_V1_R5",
+     "axis": "J7",
+     "domain": "TD02",
+     "ask": "반응이 낮은 까닭을 좁혀 메시지나 채널을 바꿔 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_MKT_V1_R6",
+     "axis": "J2",
+     "domain": "TD09",
+     "ask": "캠페인의 합격선을 숫자로 정해 둔 경험이 있다"
+    },
+    {
+     "id": "ROLE_MKT_V1_R7",
+     "axis": "J8",
+     "domain": "TD02",
+     "ask": "내 분석이 다음 예산 배분에 쓰인 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_SALES_V1",
+    "ROLE_ANALYTICS_V1",
+    "ROLE_CS_V1"
+   ],
+   "application_material": [
+    "캠페인 기획서 한 벌",
+    "채널별 성과 비교표",
+    "쓰지 않기로 한 채널과 까닭"
+   ]
+  },
+  {
+   "code": "ROLE_HR_V1",
+   "version": 1,
+   "name_ko": "인사",
+   "name_en": "Human Resources",
+   "core": "BIZ_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD06",
+     "TD07",
+     "TD01"
+    ],
+    "rf": [
+     "RF8"
+    ]
+   },
+   "required_axes": [
+    "J2",
+    "J3"
+   ],
+   "owns": "직무 기준과 뽑는 기준과 재는 기준을 확정한다",
+   "decides": [
+    "직무 기준",
+    "선발 기준",
+    "평가 기준",
+    "교육 범위"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_OPS_V1",
+     "line": "운영관리는 일을 배분하고 인사는 그 일을 할 사람의 기준을 세운다"
+    },
+    {
+     "vs": "ROLE_PLAN_V1",
+     "line": "기획은 인원 수를 정하고 인사는 어떤 사람인지를 정한다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_HR_V1_R1",
+     "axis": "J2",
+     "domain": "TD06",
+     "ask": "자리마다 갖춰야 할 조건을 공고에 쓸 말로 확정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_HR_V1_R2",
+     "axis": "J3",
+     "domain": "TD06",
+     "ask": "선발이나 평가 기준을 바꿀 권한을 가지고 정해 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_HR_V1_R3",
+     "axis": "J5",
+     "domain": "TD06",
+     "ask": "다른 면접관이 그대로 쓴 평가표를 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_HR_V1_R4",
+     "axis": "J6",
+     "domain": "TD06",
+     "ask": "지원자나 안 둘을 같은 기준에 올려 견준 경험이 있다"
+    },
+    {
+     "id": "ROLE_HR_V1_R5",
+     "axis": "J3",
+     "domain": "TD07",
+     "ask": "누가 어느 일을 맡을지 배치를 판단해 정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_HR_V1_R6",
+     "axis": "J7",
+     "domain": "TD06",
+     "ask": "맞지 않은 까닭을 좁혀 기준을 바꿔 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_HR_V1_R7",
+     "axis": "J8",
+     "domain": "TD01",
+     "ask": "내가 만든 기준이 조직의 평가 제도로 쓰인 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_OPS_V1",
+    "ROLE_PLAN_V1",
+    "ROLE_CS_V1"
+   ],
+   "application_material": [
+    "직무 기준과 평가표 한 벌",
+    "선발 근거 기록",
+    "기준을 바꾼 까닭을 적은 한 장"
+   ]
+  }
+ ]
+}

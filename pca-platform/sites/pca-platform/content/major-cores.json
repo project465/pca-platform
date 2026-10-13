@@ -1089,59 +1089,441 @@
    "code": "BIZ_CORE_V1",
    "family": "BUSINESS",
    "major": "BIZ",
-   "name_ko": "경영학",
+   "name_ko": "경영",
    "name_en": "Business Administration",
-   "assessment_version": null,
-   "status": "planned",
-   "maturity": "FOUNDATION",
+   "assessment_version": "BIZ_V1",
+   "status": "building",
+   "maturity": "READY_FOR_DOMAIN_REVIEW",
    "aliases": [
     "경영학과",
-    "경영정보학과",
     "경영학부",
+    "IT경영정보학과",
+    "경영정보학과",
+    "글로벌비즈니스학과",
+    "관광경영학과",
+    "호텔항공경영학과",
+    "항공서비스학과",
     "글로벌경영학과",
     "벤처경영학과"
    ],
    "specializations": [
     {
-     "code": "SPEC_BIZ_MKT",
-     "name_ko": "마케팅",
-     "note": "시장과 고객 쪽",
-     "authored": false,
-     "domain_emphasis": null,
-     "industry_mapping": null,
-     "role_mapping": null,
-     "examples": null,
-     "evidence_action": null
+     "code": "SPEC_BIZ_GENERAL",
+     "name_ko": "경영 일반",
+     "note": "기획과 재무와 인사와 운영을 두루 보는 쪽",
+     "authored": true,
+     "domain_emphasis": {
+      "lead": [
+       "TD01",
+       "TD04",
+       "TD06"
+      ],
+      "support": [
+       "TD05",
+       "TD07",
+       "TD08"
+      ],
+      "rare": [
+       "TD10",
+       "TD11",
+       "TD12"
+      ],
+      "note": "설명하는 차례만 정한다. 축 수준과 묶음 조건과 확인된 축 개수에 들어가지 않는다"
+     },
+     "industry_mapping": {
+      "lead": [
+       "INDUSTRY_B2B_V1",
+       "INDUSTRY_CONSUMER_V1",
+       "INDUSTRY_FINANCE_V1"
+      ],
+      "support": [
+       "INDUSTRY_DIGITAL_V1",
+       "INDUSTRY_PUBLIC_V1"
+      ]
+     },
+     "role_mapping": {
+      "lead": [
+       "ROLE_PLAN_V1",
+       "ROLE_FINACC_V1",
+       "ROLE_HR_V1"
+      ],
+      "support": [
+       "ROLE_OPS_V1",
+       "ROLE_SALES_V1"
+      ]
+     },
+     "examples": {
+      "scene": [
+       "목표를 지표로 옮기고 자원을 어디에 쓸지 정한다",
+       "들어오고 나갈 돈을 추정해 넣을지 판단한다",
+       "할 일에 맞춰 사람을 뽑고 배치하는 기준을 세운다"
+      ],
+      "artifacts": [
+       "목표와 지표 표",
+       "추정 재무제표",
+       "직무 기준",
+       "사업계획 한 벌"
+      ]
+     },
+     "evidence_action": {
+      "first": "자원 배분을 정한 근거와 하지 않기로 한 것을 한 장으로 남긴다",
+      "next": "세운 계획과 실제 집행을 같은 기준으로 대조해 적어 둔다",
+      "note": "할 일의 재료는 그 영역의 `verify_targets` 와 `artifacts` 에서 가져온다. 여기서 새 재료를 지어내지 않는다"
+     }
     },
     {
-     "code": "SPEC_BIZ_OM",
-     "name_ko": "생산·운영",
-     "note": "공급과 운영 쪽",
-     "authored": false,
-     "domain_emphasis": null,
-     "industry_mapping": null,
-     "role_mapping": null,
-     "examples": null,
-     "evidence_action": null
+     "code": "SPEC_BIZ_MIS",
+     "name_ko": "IT경영정보",
+     "note": "업무 요구를 시스템 요구로 옮기고 자료로 판단하는 쪽",
+     "authored": true,
+     "domain_emphasis": {
+      "lead": [
+       "TD12",
+       "TD08",
+       "TD07"
+      ],
+      "support": [
+       "TD01",
+       "TD05",
+       "TD03"
+      ],
+      "rare": [
+       "TD09",
+       "TD10",
+       "TD11"
+      ],
+      "note": "설명하는 차례만 정한다. 축 수준과 묶음 조건과 확인된 축 개수에 들어가지 않는다"
+     },
+     "industry_mapping": {
+      "lead": [
+       "INDUSTRY_DIGITAL_V1",
+       "INDUSTRY_B2B_V1",
+       "INDUSTRY_PUBLIC_V1"
+      ],
+      "support": [
+       "INDUSTRY_FINANCE_V1",
+       "INDUSTRY_CONSUMER_V1"
+      ]
+     },
+     "role_mapping": {
+      "lead": [
+       "ROLE_ANALYTICS_V1",
+       "ROLE_OPS_V1",
+       "ROLE_PLAN_V1"
+      ],
+      "support": [
+       "ROLE_FINACC_V1",
+       "ROLE_SALES_V1"
+      ]
+     },
+     "examples": {
+      "scene": [
+       "담당자가 말로 한 요구를 시스템이 할 일 목록으로 옮긴다",
+       "어느 일을 사람이 하고 어느 일을 시스템이 할지 가른다",
+       "지표를 정의해 자료에서 뽑아 판단 근거로 쓴다"
+      ],
+      "artifacts": [
+       "요구사항 정의서",
+       "업무 흐름 도식",
+       "지표 정의표",
+       "도입 전후 비교"
+      ]
+     },
+     "evidence_action": {
+      "first": "업무 요구를 할 일 목록으로 옮긴 한 장과 도입 범위를 남긴다",
+      "next": "도입 전과 뒤의 처리 시간을 같은 조건에서 대조해 적어 둔다",
+      "note": "할 일의 재료는 그 영역의 `verify_targets` 와 `artifacts` 에서 가져온다. 여기서 새 재료를 지어내지 않는다"
+     }
     },
     {
-     "code": "SPEC_BIZ_HR",
-     "name_ko": "조직·인사",
-     "note": "사람과 조직 쪽",
-     "authored": false,
-     "domain_emphasis": null,
-     "industry_mapping": null,
-     "role_mapping": null,
-     "examples": null,
-     "evidence_action": null
+     "code": "SPEC_BIZ_GLOBAL",
+     "name_ko": "글로벌비즈니스",
+     "note": "국경을 넘는 거래와 규정과 환위험 쪽",
+     "authored": true,
+     "domain_emphasis": {
+      "lead": [
+       "TD11",
+       "TD03",
+       "TD01"
+      ],
+      "support": [
+       "TD04",
+       "TD05",
+       "TD02"
+      ],
+      "rare": [
+       "TD09",
+       "TD12",
+       "TD06"
+      ],
+      "note": "설명하는 차례만 정한다. 축 수준과 묶음 조건과 확인된 축 개수에 들어가지 않는다"
+     },
+     "industry_mapping": {
+      "lead": [
+       "INDUSTRY_B2B_V1",
+       "INDUSTRY_CONSUMER_V1",
+       "INDUSTRY_PUBLIC_V1"
+      ],
+      "support": [
+       "INDUSTRY_FINANCE_V1",
+       "INDUSTRY_TRAVEL_V1"
+      ]
+     },
+     "role_mapping": {
+      "lead": [
+       "ROLE_SALES_V1",
+       "ROLE_PLAN_V1",
+       "ROLE_FINACC_V1"
+      ],
+      "support": [
+       "ROLE_ANALYTICS_V1",
+       "ROLE_OPS_V1"
+      ]
+     },
+     "examples": {
+      "scene": [
+       "상대국 규정과 조건을 지켜야 할 요건으로 옮긴다",
+       "적용할 규정과 서류 구성을 골라 정한다",
+       "환율을 반영해 손익을 다시 계산한다"
+      ],
+      "artifacts": [
+       "수출입 서류 한 벌",
+       "시장 진입 계획",
+       "환위험 대응안",
+       "규정 정리"
+      ]
+     },
+     "evidence_action": {
+      "first": "적용할 규정과 서류 구성을 고른 근거를 한 장으로 남긴다",
+      "next": "상대국 규정과 우리 서류를 하나씩 대조해 적어 둔다",
+      "note": "할 일의 재료는 그 영역의 `verify_targets` 와 `artifacts` 에서 가져온다. 여기서 새 재료를 지어내지 않는다"
+     }
+    },
+    {
+     "code": "SPEC_BIZ_TOURISM",
+     "name_ko": "관광경영",
+     "note": "여행 상품과 수요와 고객 여정 쪽",
+     "authored": true,
+     "domain_emphasis": {
+      "lead": [
+       "TD10",
+       "TD02",
+       "TD09"
+      ],
+      "support": [
+       "TD03",
+       "TD07",
+       "TD04"
+      ],
+      "rare": [
+       "TD06",
+       "TD12",
+       "TD05"
+      ],
+      "note": "설명하는 차례만 정한다. 축 수준과 묶음 조건과 확인된 축 개수에 들어가지 않는다"
+     },
+     "industry_mapping": {
+      "lead": [
+       "INDUSTRY_TRAVEL_V1",
+       "INDUSTRY_CONSUMER_V1",
+       "INDUSTRY_PUBLIC_V1"
+      ],
+      "support": [
+       "INDUSTRY_DIGITAL_V1",
+       "INDUSTRY_AVIATION_V1"
+      ]
+     },
+     "role_mapping": {
+      "lead": [
+       "ROLE_MKT_V1",
+       "ROLE_CS_V1",
+       "ROLE_SALES_V1"
+      ],
+      "support": [
+       "ROLE_OPS_V1",
+       "ROLE_ANALYTICS_V1"
+      ]
+     },
+     "examples": {
+      "scene": [
+       "일정과 원가와 값을 묶어 상품을 짠다",
+       "남은 수량과 남은 기간을 보고 값을 바꾼다",
+       "고객이 겪는 단계를 그려 손볼 자리를 정한다"
+      ],
+      "artifacts": [
+       "상품 기획안",
+       "수요 추정표",
+       "고객 여정 그림",
+       "제휴 조건 기록"
+      ]
+     },
+     "evidence_action": {
+      "first": "값이나 배정을 바꾼 근거와 남은 수량을 한 장으로 남긴다",
+      "next": "예약과 실제 이용을 대조해 추정이 맞았는지 적어 둔다",
+      "note": "할 일의 재료는 그 영역의 `verify_targets` 와 `artifacts` 에서 가져온다. 여기서 새 재료를 지어내지 않는다"
+     }
+    },
+    {
+     "code": "SPEC_BIZ_HOTEL_AIR",
+     "name_ko": "호텔항공경영",
+     "note": "객실과 좌석 재고와 현장 운영 쪽",
+     "authored": true,
+     "domain_emphasis": {
+      "lead": [
+       "TD10",
+       "TD09",
+       "TD07"
+      ],
+      "support": [
+       "TD04",
+       "TD05",
+       "TD06"
+      ],
+      "rare": [
+       "TD11",
+       "TD12",
+       "TD08"
+      ],
+      "note": "설명하는 차례만 정한다. 축 수준과 묶음 조건과 확인된 축 개수에 들어가지 않는다"
+     },
+     "industry_mapping": {
+      "lead": [
+       "INDUSTRY_TRAVEL_V1",
+       "INDUSTRY_AVIATION_V1",
+       "INDUSTRY_CONSUMER_V1"
+      ],
+      "support": [
+       "INDUSTRY_FINANCE_V1",
+       "INDUSTRY_PUBLIC_V1"
+      ]
+     },
+     "role_mapping": {
+      "lead": [
+       "ROLE_CS_V1",
+       "ROLE_OPS_V1",
+       "ROLE_ANALYTICS_V1"
+      ],
+      "support": [
+       "ROLE_MKT_V1",
+       "ROLE_FINACC_V1"
+      ]
+     },
+     "examples": {
+      "scene": [
+       "오늘 안 팔리면 사라지는 재고를 값과 배정으로 다룬다",
+       "현장 절차와 점검표로 누가 와도 같게 만든다",
+       "비는 기간의 손익을 미리 계산한다"
+      ],
+      "artifacts": [
+       "가격과 배정 기준",
+       "현장 절차",
+       "점검표",
+       "예측과 실적 비교"
+      ]
+     },
+     "evidence_action": {
+      "first": "값과 배정을 정한 근거와 남은 수량을 한 장으로 남긴다",
+      "next": "바꾸기 전과 뒤의 판매율을 같은 조건에서 대조해 적어 둔다",
+      "note": "할 일의 재료는 그 영역의 `verify_targets` 와 `artifacts` 에서 가져온다. 여기서 새 재료를 지어내지 않는다"
+     }
+    },
+    {
+     "code": "SPEC_BIZ_AIR_SERVICE",
+     "name_ko": "항공서비스",
+     "note": "규정 안에서 내리는 현장 판단 쪽",
+     "authored": true,
+     "domain_emphasis": {
+      "lead": [
+       "TD09",
+       "TD07",
+       "TD12"
+      ],
+      "support": [
+       "TD10",
+       "TD06",
+       "TD02"
+      ],
+      "rare": [
+       "TD04",
+       "TD05",
+       "TD08"
+      ],
+      "note": "설명하는 차례만 정한다. 축 수준과 묶음 조건과 확인된 축 개수에 들어가지 않는다"
+     },
+     "industry_mapping": {
+      "lead": [
+       "INDUSTRY_AVIATION_V1",
+       "INDUSTRY_TRAVEL_V1",
+       "INDUSTRY_PUBLIC_V1"
+      ],
+      "support": [
+       "INDUSTRY_CONSUMER_V1",
+       "INDUSTRY_FINANCE_V1"
+      ]
+     },
+     "role_mapping": {
+      "lead": [
+       "ROLE_CS_V1",
+       "ROLE_OPS_V1",
+       "ROLE_HR_V1"
+      ],
+      "support": [
+       "ROLE_MKT_V1",
+       "ROLE_ANALYTICS_V1"
+      ]
+     },
+     "examples": {
+      "scene": [
+       "안전과 보안 규정 안에서 그 자리에 판단을 내린다",
+       "정해진 시각을 지키게 순서를 정한다",
+       "현장에서 바로 볼 응대 기준을 적어 둔다"
+      ],
+      "artifacts": [
+       "응대 기준",
+       "현장 지침",
+       "불만 처리 기록",
+       "안전 점검 기록"
+      ]
+     },
+     "evidence_action": {
+      "first": "규정 안에서 내린 판단과 그 범위를 한 장으로 남긴다",
+      "next": "약속한 처리 시간과 실제를 대조해 적어 둔다",
+      "note": "할 일의 재료는 그 영역의 `verify_targets` 와 `artifacts` 에서 가져온다. 여기서 새 재료를 지어내지 않는다"
+     }
     }
    ],
    "markets": [
     "KR"
    ],
-   "files": {},
-   "domain_count": null,
-   "axis_count": 8
+   "files": {
+    "taxonomy": "biz-v1-taxonomy.json",
+    "domains": "biz-v1-domains.json",
+    "checklists": "biz-v1-checklists.json",
+    "items_blueprint": "biz-v1-items-blueprint.json",
+    "checklist_additions": "biz-v1-checklist-additions.json",
+    "common_additions": "biz-v1-common-additions.json",
+    "items": "biz-v1-items.json",
+    "relations": "biz-v1-relations.json",
+    "constructs": "biz-v1-constructs.json"
+   },
+   "domain_count": 12,
+   "axis_count": 8,
+   "role_function_count": 8,
+   "packs": {
+    "industry": "biz-industry-packs.json",
+    "role": "biz-role-packs.json"
+   },
+   "domains_note": "열둘은 기계공학과 전기전자의 열둘을 맞춘 수가 아니다. 사업주 후보 열에서 재무와 회계를 갈라 열하나가 되고, 정보시스템(IT경영정보 갈래의 중심)과 수요·예약·가격(관광과 호텔과 항공이 실제로 내리는 판단)을 세워 열셋이 된 뒤, `개발 환경과 협업` 같은 **일하는 방식**은 영역으로 두지 않아 열둘에서 멈췄다",
+   "packs_note": "산업팩은 일곱이다. 사업주 후보 여덟에서 `스타트업` 을 뺐다: 그것은 산업이 아니라 조직의 크기와 단계이고 조직환경 축이 `OC7 스타트업·소규모 팀` 으로 이미 들고 있다. 두 축에서 같은 것을 묻게 되면 고른 산업이 결과를 바꾸지 않는 칸이 하나 생긴다",
+   "open_to_students": false,
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다. 자료와 자동 검사는 끝났고 남은 것은 **그 전공 전문가가 읽는 일**이다: 검토 묶음이 `docs/metri/BIZ_CORE_V1_REVIEW.md` 이고 그 판정이 돌아오기 전에는 이 칸을 올리지 않는다",
+   "fixtures": {
+    "personas": "sites/pca-platform/assessment/BIZ_V1/personas.json",
+    "bank_lock": "sites/pca-platform/assessment/BIZ_V1/bank-lock.json",
+    "measurement_map": "docs/metri/BIZ_CORE_V1_MEASURE.md",
+    "gaming_doc": "docs/metri/BIZ_CORE_V1_GAMING.md"
+   },
+   "specializations_note": "여섯이고 배재대 경영대학의 여섯 학과와 하나씩 맞물린다. 옛 세 줄(`SPEC_BIZ_MKT` · `SPEC_BIZ_OM` · `SPEC_BIZ_HR`)은 **학과가 아니라 세부 전공으로 적혀 있었고 그 코드를 가리키는 자리가 없었다.** 학과 이름과 갈래 이름이 갈리면 같은 것을 두 이름으로 부르게 되므로 학과 쪽으로 맞췄다. 갈래는 Core 판정을 바꾸지 않고 다섯 층만 조정한다"
   },
   {
    "code": "ECON_CORE_V1",

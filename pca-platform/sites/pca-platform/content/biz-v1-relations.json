@@ -1,0 +1,2290 @@
+{
+ "schema_version": "biz-v1-relations.1",
+ "core": "BIZ_CORE_V1",
+ "note": "기술영역과 산업, 기술영역과 역할의 관계를 두 표로 둔다. 세 축을 미리 곱해 두지 않는다: 열두 영역과 여덟 산업과 여덟 역할을 곱하면 칠백예순여덟 줄이 되고 그만큼의 줄을 사람이 손으로 유지할 수 없다. 어느 줄도 점수를 만들지 않는다: `strength` 는 설명하는 차례를 정하고 `appears_as` 는 결과지가 그 말로 옮겨 적을 때 읽는다",
+ "combine_rule": "산업 하나와 역할 하나를 함께 고른 사람에게는 두 표에서 같은 영역의 줄을 뽑아 나란히 놓는다. 둘 다 `중심` 인 영역이 먼저 서고, 한쪽만 중심인 영역이 다음이고, 양쪽이 드문 영역은 적지 않는다",
+ "td_industry": [
+  {
+   "td": "TD01",
+   "td_name": "경영전략·기획",
+   "industry": "INDUSTRY_B2B_V1",
+   "industry_name": "일반기업·기업간 거래",
+   "strength": "있음",
+   "appears_as": "일반기업·기업간 거래 에서는 자원 배분을 수주 상황에 맞춰 바꾸는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "자원 배분을 수주 상황에 맞춰 바꾸는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "경영전략·기획",
+   "industry": "INDUSTRY_CONSUMER_V1",
+   "industry_name": "소비재·유통",
+   "strength": "있음",
+   "appears_as": "소비재·유통 에서는 고객을 나눠 다르게 알리는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "고객을 나눠 다르게 알리는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "경영전략·기획",
+   "industry": "INDUSTRY_DIGITAL_V1",
+   "industry_name": "정보기술·플랫폼",
+   "strength": "있음",
+   "appears_as": "정보기술·플랫폼 에서는 무엇을 먼저 만들지 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "무엇을 먼저 만들지 가르는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "경영전략·기획",
+   "industry": "INDUSTRY_FINANCE_V1",
+   "industry_name": "금융·보험",
+   "strength": "있음",
+   "appears_as": "금융·보험 에서는 자원 배분을 건전성 안에서 하는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "자원 배분을 건전성 안에서 하는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "경영전략·기획",
+   "industry": "INDUSTRY_TRAVEL_V1",
+   "industry_name": "관광·호텔",
+   "strength": "드묾",
+   "appears_as": "관광·호텔 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "경영전략·기획",
+   "industry": "INDUSTRY_AVIATION_V1",
+   "industry_name": "항공·운송 서비스",
+   "strength": "드묾",
+   "appears_as": "항공·운송 서비스 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "경영전략·기획",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·공기관",
+   "strength": "있음",
+   "appears_as": "공공·공기관 에서는 규정을 지켜야 할 요건으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "규정을 지켜야 할 요건으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "마케팅·시장",
+   "industry": "INDUSTRY_B2B_V1",
+   "industry_name": "일반기업·기업간 거래",
+   "strength": "드묾",
+   "appears_as": "일반기업·기업간 거래 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "마케팅·시장",
+   "industry": "INDUSTRY_CONSUMER_V1",
+   "industry_name": "소비재·유통",
+   "strength": "있음",
+   "appears_as": "소비재·유통 에서는 채널별 수익을 갈라 보는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "채널별 수익을 갈라 보는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "마케팅·시장",
+   "industry": "INDUSTRY_DIGITAL_V1",
+   "industry_name": "정보기술·플랫폼",
+   "strength": "있음",
+   "appears_as": "정보기술·플랫폼 에서는 채널별 유입과 전환을 재는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "채널별 유입과 전환을 재는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "마케팅·시장",
+   "industry": "INDUSTRY_FINANCE_V1",
+   "industry_name": "금융·보험",
+   "strength": "드묾",
+   "appears_as": "금융·보험 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "마케팅·시장",
+   "industry": "INDUSTRY_TRAVEL_V1",
+   "industry_name": "관광·호텔",
+   "strength": "있음",
+   "appears_as": "관광·호텔 에서는 원가와 가격을 묶어 상품을 짜는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "원가와 가격을 묶어 상품을 짜는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "마케팅·시장",
+   "industry": "INDUSTRY_AVIATION_V1",
+   "industry_name": "항공·운송 서비스",
+   "strength": "있음",
+   "appears_as": "항공·운송 서비스 에서는 고객 알림과 보상 기준을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "고객 알림과 보상 기준을 정하는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "마케팅·시장",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·공기관",
+   "strength": "드묾",
+   "appears_as": "공공·공기관 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "영업·사업개발",
+   "industry": "INDUSTRY_B2B_V1",
+   "industry_name": "일반기업·기업간 거래",
+   "strength": "있음",
+   "appears_as": "일반기업·기업간 거래 에서는 고객사 요구를 수량과 기한으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "고객사 요구를 수량과 기한으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "영업·사업개발",
+   "industry": "INDUSTRY_CONSUMER_V1",
+   "industry_name": "소비재·유통",
+   "strength": "있음",
+   "appears_as": "소비재·유통 에서는 거래 조건을 공급처와 합의하는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "거래 조건을 공급처와 합의하는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "영업·사업개발",
+   "industry": "INDUSTRY_DIGITAL_V1",
+   "industry_name": "정보기술·플랫폼",
+   "strength": "있음",
+   "appears_as": "정보기술·플랫폼 에서는 거래 조건을 제안서로 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "거래 조건을 제안서로 남기는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "영업·사업개발",
+   "industry": "INDUSTRY_FINANCE_V1",
+   "industry_name": "금융·보험",
+   "strength": "있음",
+   "appears_as": "금융·보험 에서는 판매 조건을 문서로 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "판매 조건을 문서로 남기는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "영업·사업개발",
+   "industry": "INDUSTRY_TRAVEL_V1",
+   "industry_name": "관광·호텔",
+   "strength": "있음",
+   "appears_as": "관광·호텔 에서는 제휴 조건을 합의해 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "제휴 조건을 합의해 남기는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "영업·사업개발",
+   "industry": "INDUSTRY_AVIATION_V1",
+   "industry_name": "항공·운송 서비스",
+   "strength": "있음",
+   "appears_as": "항공·운송 서비스 에서는 제휴와 운임 조건을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "제휴와 운임 조건을 남기는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "영업·사업개발",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·공기관",
+   "strength": "있음",
+   "appears_as": "공공·공기관 에서는 입찰과 계약 절차를 지키는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "입찰과 계약 절차를 지키는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "재무·투자 판단",
+   "industry": "INDUSTRY_B2B_V1",
+   "industry_name": "일반기업·기업간 거래",
+   "strength": "있음",
+   "appears_as": "일반기업·기업간 거래 에서는 수주와 자금 시점을 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "수주와 자금 시점을 맞추는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "재무·투자 판단",
+   "industry": "INDUSTRY_CONSUMER_V1",
+   "industry_name": "소비재·유통",
+   "strength": "드묾",
+   "appears_as": "소비재·유통 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "재무·투자 판단",
+   "industry": "INDUSTRY_DIGITAL_V1",
+   "industry_name": "정보기술·플랫폼",
+   "strength": "있음",
+   "appears_as": "정보기술·플랫폼 에서는 반복 매출과 비용을 함께 보는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "반복 매출과 비용을 함께 보는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "재무·투자 판단",
+   "industry": "INDUSTRY_FINANCE_V1",
+   "industry_name": "금융·보험",
+   "strength": "있음",
+   "appears_as": "금융·보험 에서는 추정에 쓴 가정을 적어 두는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "추정에 쓴 가정을 적어 두는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "재무·투자 판단",
+   "industry": "INDUSTRY_TRAVEL_V1",
+   "industry_name": "관광·호텔",
+   "strength": "있음",
+   "appears_as": "관광·호텔 에서는 비수기 손익을 미리 계산하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "비수기 손익을 미리 계산하는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "재무·투자 판단",
+   "industry": "INDUSTRY_AVIATION_V1",
+   "industry_name": "항공·운송 서비스",
+   "strength": "있음",
+   "appears_as": "항공·운송 서비스 에서는 노선과 상품의 손익을 보는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "노선과 상품의 손익을 보는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "재무·투자 판단",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·공기관",
+   "strength": "있음",
+   "appears_as": "공공·공기관 에서는 집행률과 남은 예산을 보는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "집행률과 남은 예산을 보는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "회계·원가",
+   "industry": "INDUSTRY_B2B_V1",
+   "industry_name": "일반기업·기업간 거래",
+   "strength": "있음",
+   "appears_as": "일반기업·기업간 거래 에서는 원가를 알고 단가를 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "원가를 알고 단가를 정하는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "회계·원가",
+   "industry": "INDUSTRY_CONSUMER_V1",
+   "industry_name": "소비재·유통",
+   "strength": "있음",
+   "appears_as": "소비재·유통 에서는 할인이 이익을 얼마 깎는지 세는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "할인이 이익을 얼마 깎는지 세는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "회계·원가",
+   "industry": "INDUSTRY_DIGITAL_V1",
+   "industry_name": "정보기술·플랫폼",
+   "strength": "드묾",
+   "appears_as": "정보기술·플랫폼 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "회계·원가",
+   "industry": "INDUSTRY_FINANCE_V1",
+   "industry_name": "금융·보험",
+   "strength": "있음",
+   "appears_as": "금융·보험 에서는 증빙과 숫자를 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "증빙과 숫자를 대조하는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "회계·원가",
+   "industry": "INDUSTRY_TRAVEL_V1",
+   "industry_name": "관광·호텔",
+   "strength": "드묾",
+   "appears_as": "관광·호텔 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "회계·원가",
+   "industry": "INDUSTRY_AVIATION_V1",
+   "industry_name": "항공·운송 서비스",
+   "strength": "드묾",
+   "appears_as": "항공·운송 서비스 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "회계·원가",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·공기관",
+   "strength": "있음",
+   "appears_as": "공공·공기관 에서는 근거를 기록으로 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "근거를 기록으로 남기는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "인사·조직",
+   "industry": "INDUSTRY_B2B_V1",
+   "industry_name": "일반기업·기업간 거래",
+   "strength": "있음",
+   "appears_as": "일반기업·기업간 거래 에서는 인원 배치를 과제에 맞춰 바꾸는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "인원 배치를 과제에 맞춰 바꾸는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "인사·조직",
+   "industry": "INDUSTRY_CONSUMER_V1",
+   "industry_name": "소비재·유통",
+   "strength": "있음",
+   "appears_as": "소비재·유통 에서는 현장 인원을 바쁜 때에 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "현장 인원을 바쁜 때에 맞추는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "인사·조직",
+   "industry": "INDUSTRY_DIGITAL_V1",
+   "industry_name": "정보기술·플랫폼",
+   "strength": "있음",
+   "appears_as": "정보기술·플랫폼 에서는 사람을 어느 일에 둘지 바꾸는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "사람을 어느 일에 둘지 바꾸는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "인사·조직",
+   "industry": "INDUSTRY_FINANCE_V1",
+   "industry_name": "금융·보험",
+   "strength": "있음",
+   "appears_as": "금융·보험 에서는 자격과 교육 요건을 관리하는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "자격과 교육 요건을 관리하는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "인사·조직",
+   "industry": "INDUSTRY_TRAVEL_V1",
+   "industry_name": "관광·호텔",
+   "strength": "있음",
+   "appears_as": "관광·호텔 에서는 성수기에 맞춰 사람을 배치하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "성수기에 맞춰 사람을 배치하는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "인사·조직",
+   "industry": "INDUSTRY_AVIATION_V1",
+   "industry_name": "항공·운송 서비스",
+   "strength": "있음",
+   "appears_as": "항공·운송 서비스 에서는 자격과 교육 요건을 관리하는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "자격과 교육 요건을 관리하는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "인사·조직",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·공기관",
+   "strength": "있음",
+   "appears_as": "공공·공기관 에서는 선정 기준을 공정하게 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "선정 기준을 공정하게 정하는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "운영·프로세스",
+   "industry": "INDUSTRY_B2B_V1",
+   "industry_name": "일반기업·기업간 거래",
+   "strength": "있음",
+   "appears_as": "일반기업·기업간 거래 에서는 납기를 지킬 절차를 두는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "납기를 지킬 절차를 두는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "운영·프로세스",
+   "industry": "INDUSTRY_CONSUMER_V1",
+   "industry_name": "소비재·유통",
+   "strength": "있음",
+   "appears_as": "소비재·유통 에서는 재고를 어디에 둘지 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "재고를 어디에 둘지 정하는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "운영·프로세스",
+   "industry": "INDUSTRY_DIGITAL_V1",
+   "industry_name": "정보기술·플랫폼",
+   "strength": "있음",
+   "appears_as": "정보기술·플랫폼 에서는 일의 순서를 짧게 돌려 바꾸는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "일의 순서를 짧게 돌려 바꾸는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "운영·프로세스",
+   "industry": "INDUSTRY_FINANCE_V1",
+   "industry_name": "금융·보험",
+   "strength": "있음",
+   "appears_as": "금융·보험 에서는 심사 절차를 지켜 진행하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "심사 절차를 지켜 진행하는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "운영·프로세스",
+   "industry": "INDUSTRY_TRAVEL_V1",
+   "industry_name": "관광·호텔",
+   "strength": "있음",
+   "appears_as": "관광·호텔 에서는 현장 절차와 점검표를 두는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "현장 절차와 점검표를 두는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "운영·프로세스",
+   "industry": "INDUSTRY_AVIATION_V1",
+   "industry_name": "항공·운송 서비스",
+   "strength": "있음",
+   "appears_as": "항공·운송 서비스 에서는 정시성을 지킬 절차를 두는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "정시성을 지킬 절차를 두는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "운영·프로세스",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·공기관",
+   "strength": "있음",
+   "appears_as": "공공·공기관 에서는 집행 절차와 순서를 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "집행 절차와 순서를 정하는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "데이터·의사결정",
+   "industry": "INDUSTRY_B2B_V1",
+   "industry_name": "일반기업·기업간 거래",
+   "strength": "있음",
+   "appears_as": "일반기업·기업간 거래 에서는 실적을 자료로 보고 다음을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "실적을 자료로 보고 다음을 정하는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "데이터·의사결정",
+   "industry": "INDUSTRY_CONSUMER_V1",
+   "industry_name": "소비재·유통",
+   "strength": "있음",
+   "appears_as": "소비재·유통 에서는 무엇을 들여올지 자료로 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "무엇을 들여올지 자료로 고르는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "데이터·의사결정",
+   "industry": "INDUSTRY_DIGITAL_V1",
+   "industry_name": "정보기술·플랫폼",
+   "strength": "있음",
+   "appears_as": "정보기술·플랫폼 에서는 지표를 정의해 결정 근거로 쓰는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "지표를 정의해 결정 근거로 쓰는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "데이터·의사결정",
+   "industry": "INDUSTRY_FINANCE_V1",
+   "industry_name": "금융·보험",
+   "strength": "있음",
+   "appears_as": "금융·보험 에서는 손실 가능 범위를 세어 두는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "손실 가능 범위를 세어 두는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "데이터·의사결정",
+   "industry": "INDUSTRY_TRAVEL_V1",
+   "industry_name": "관광·호텔",
+   "strength": "있음",
+   "appears_as": "관광·호텔 에서는 예약과 실제 이용을 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "예약과 실제 이용을 대조하는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "데이터·의사결정",
+   "industry": "INDUSTRY_AVIATION_V1",
+   "industry_name": "항공·운송 서비스",
+   "strength": "있음",
+   "appears_as": "항공·운송 서비스 에서는 지연이 번지는 자리를 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "지연이 번지는 자리를 좁히는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "데이터·의사결정",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·공기관",
+   "strength": "있음",
+   "appears_as": "공공·공기관 에서는 정책 효과를 지표로 보는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "정책 효과를 지표로 보는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "고객·서비스 운영",
+   "industry": "INDUSTRY_B2B_V1",
+   "industry_name": "일반기업·기업간 거래",
+   "strength": "있음",
+   "appears_as": "일반기업·기업간 거래 에서는 고객사 불만을 기준으로 되돌리는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "고객사 불만을 기준으로 되돌리는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "고객·서비스 운영",
+   "industry": "INDUSTRY_CONSUMER_V1",
+   "industry_name": "소비재·유통",
+   "strength": "있음",
+   "appears_as": "소비재·유통 에서는 매장 현장의 응대 기준을 두는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "매장 현장의 응대 기준을 두는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "고객·서비스 운영",
+   "industry": "INDUSTRY_DIGITAL_V1",
+   "industry_name": "정보기술·플랫폼",
+   "strength": "있음",
+   "appears_as": "정보기술·플랫폼 에서는 고객이 떠나는 자리를 찾아 고치는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "고객이 떠나는 자리를 찾아 고치는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "고객·서비스 운영",
+   "industry": "INDUSTRY_FINANCE_V1",
+   "industry_name": "금융·보험",
+   "strength": "있음",
+   "appears_as": "금융·보험 에서는 고객 설명 기준을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "고객 설명 기준을 정하는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "고객·서비스 운영",
+   "industry": "INDUSTRY_TRAVEL_V1",
+   "industry_name": "관광·호텔",
+   "strength": "있음",
+   "appears_as": "관광·호텔 에서는 고객이 겪는 단계를 그려 손보는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "고객이 겪는 단계를 그려 손보는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "고객·서비스 운영",
+   "industry": "INDUSTRY_AVIATION_V1",
+   "industry_name": "항공·운송 서비스",
+   "strength": "있음",
+   "appears_as": "항공·운송 서비스 에서는 규정 안에서 현장 판단을 내리는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "규정 안에서 현장 판단을 내리는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "고객·서비스 운영",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·공기관",
+   "strength": "있음",
+   "appears_as": "공공·공기관 에서는 민원 처리 기준을 두는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "민원 처리 기준을 두는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "수요·예약·가격 관리",
+   "industry": "INDUSTRY_B2B_V1",
+   "industry_name": "일반기업·기업간 거래",
+   "strength": "있음",
+   "appears_as": "일반기업·기업간 거래 에서는 검사와 기준을 지켜 넘기는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "검사와 기준을 지켜 넘기는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "수요·예약·가격 관리",
+   "industry": "INDUSTRY_CONSUMER_V1",
+   "industry_name": "소비재·유통",
+   "strength": "있음",
+   "appears_as": "소비재·유통 에서는 팔릴 양을 보고 들여올 양을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "팔릴 양을 보고 들여올 양을 정하는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "수요·예약·가격 관리",
+   "industry": "INDUSTRY_DIGITAL_V1",
+   "industry_name": "정보기술·플랫폼",
+   "strength": "있음",
+   "appears_as": "정보기술·플랫폼 에서는 요금 구조를 정해 보는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "요금 구조를 정해 보는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "수요·예약·가격 관리",
+   "industry": "INDUSTRY_FINANCE_V1",
+   "industry_name": "금융·보험",
+   "strength": "있음",
+   "appears_as": "금융·보험 에서는 상품 구조와 요율을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "상품 구조와 요율을 정하는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "수요·예약·가격 관리",
+   "industry": "INDUSTRY_TRAVEL_V1",
+   "industry_name": "관광·호텔",
+   "strength": "있음",
+   "appears_as": "관광·호텔 에서는 남은 객실과 기간을 보고 값을 바꾸는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "남은 객실과 기간을 보고 값을 바꾸는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "수요·예약·가격 관리",
+   "industry": "INDUSTRY_AVIATION_V1",
+   "industry_name": "항공·운송 서비스",
+   "strength": "있음",
+   "appears_as": "항공·운송 서비스 에서는 좌석과 화물 배정을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "좌석과 화물 배정을 정하는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "수요·예약·가격 관리",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·공기관",
+   "strength": "있음",
+   "appears_as": "공공·공기관 에서는 대상 범위와 요금 기준을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "대상 범위와 요금 기준을 정하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "글로벌 비즈니스",
+   "industry": "INDUSTRY_B2B_V1",
+   "industry_name": "일반기업·기업간 거래",
+   "strength": "드묾",
+   "appears_as": "일반기업·기업간 거래 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "글로벌 비즈니스",
+   "industry": "INDUSTRY_CONSUMER_V1",
+   "industry_name": "소비재·유통",
+   "strength": "있음",
+   "appears_as": "소비재·유통 에서는 수입 상품의 규정과 서류를 다루는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "수입 상품의 규정과 서류를 다루는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "글로벌 비즈니스",
+   "industry": "INDUSTRY_DIGITAL_V1",
+   "industry_name": "정보기술·플랫폼",
+   "strength": "드묾",
+   "appears_as": "정보기술·플랫폼 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "글로벌 비즈니스",
+   "industry": "INDUSTRY_FINANCE_V1",
+   "industry_name": "금융·보험",
+   "strength": "있음",
+   "appears_as": "금융·보험 에서는 규정을 지켜야 할 요건으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "규정을 지켜야 할 요건으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "글로벌 비즈니스",
+   "industry": "INDUSTRY_TRAVEL_V1",
+   "industry_name": "관광·호텔",
+   "strength": "있음",
+   "appears_as": "관광·호텔 에서는 안전과 위생 규정을 지켜 운영하는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "안전과 위생 규정을 지켜 운영하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "글로벌 비즈니스",
+   "industry": "INDUSTRY_AVIATION_V1",
+   "industry_name": "항공·운송 서비스",
+   "strength": "있음",
+   "appears_as": "항공·운송 서비스 에서는 안전과 보안 요건을 정리하는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "안전과 보안 요건을 정리하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "글로벌 비즈니스",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·공기관",
+   "strength": "드묾",
+   "appears_as": "공공·공기관 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "정보시스템·업무 요구",
+   "industry": "INDUSTRY_B2B_V1",
+   "industry_name": "일반기업·기업간 거래",
+   "strength": "있음",
+   "appears_as": "일반기업·기업간 거래 에서는 담당자가 바뀌어도 이어지게 적는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "담당자가 바뀌어도 이어지게 적는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "정보시스템·업무 요구",
+   "industry": "INDUSTRY_CONSUMER_V1",
+   "industry_name": "소비재·유통",
+   "strength": "드묾",
+   "appears_as": "소비재·유통 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "정보시스템·업무 요구",
+   "industry": "INDUSTRY_DIGITAL_V1",
+   "industry_name": "정보기술·플랫폼",
+   "strength": "있음",
+   "appears_as": "정보기술·플랫폼 에서는 업무 요구를 시스템 요구로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "업무 요구를 시스템 요구로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "정보시스템·업무 요구",
+   "industry": "INDUSTRY_FINANCE_V1",
+   "industry_name": "금융·보험",
+   "strength": "드묾",
+   "appears_as": "금융·보험 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "정보시스템·업무 요구",
+   "industry": "INDUSTRY_TRAVEL_V1",
+   "industry_name": "관광·호텔",
+   "strength": "있음",
+   "appears_as": "관광·호텔 에서는 되풀이되는 불만을 기준으로 바꾸는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "되풀이되는 불만을 기준으로 바꾸는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "정보시스템·업무 요구",
+   "industry": "INDUSTRY_AVIATION_V1",
+   "industry_name": "항공·운송 서비스",
+   "strength": "있음",
+   "appears_as": "항공·운송 서비스 에서는 응대 기준과 권한을 적어 두는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "응대 기준과 권한을 적어 두는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "정보시스템·업무 요구",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·공기관",
+   "strength": "있음",
+   "appears_as": "공공·공기관 에서는 서식과 시스템에 맞춰 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "서식과 시스템에 맞춰 적는가"
+   ]
+  }
+ ],
+ "td_role": [
+  {
+   "td": "TD01",
+   "td_name": "경영전략·기획",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "경영기획",
+   "strength": "중심",
+   "appears_as": "경영기획 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "경영전략·기획",
+   "role": "ROLE_ANALYTICS_V1",
+   "role_name": "데이터·분석",
+   "strength": "드묾",
+   "appears_as": "데이터·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "경영전략·기획",
+   "role": "ROLE_FINACC_V1",
+   "role_name": "재무·회계",
+   "strength": "드묾",
+   "appears_as": "재무·회계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "경영전략·기획",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영관리",
+   "strength": "드묾",
+   "appears_as": "운영관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "경영전략·기획",
+   "role": "ROLE_CS_V1",
+   "role_name": "서비스·고객운영",
+   "strength": "드묾",
+   "appears_as": "서비스·고객운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "경영전략·기획",
+   "role": "ROLE_SALES_V1",
+   "role_name": "영업·사업개발",
+   "strength": "드묾",
+   "appears_as": "영업·사업개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "경영전략·기획",
+   "role": "ROLE_MKT_V1",
+   "role_name": "마케팅",
+   "strength": "드묾",
+   "appears_as": "마케팅 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "경영전략·기획",
+   "role": "ROLE_HR_V1",
+   "role_name": "인사",
+   "strength": "중심",
+   "appears_as": "인사 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J8"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "마케팅·시장",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "경영기획",
+   "strength": "드묾",
+   "appears_as": "경영기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "마케팅·시장",
+   "role": "ROLE_ANALYTICS_V1",
+   "role_name": "데이터·분석",
+   "strength": "중심",
+   "appears_as": "데이터·분석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "마케팅·시장",
+   "role": "ROLE_FINACC_V1",
+   "role_name": "재무·회계",
+   "strength": "드묾",
+   "appears_as": "재무·회계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "마케팅·시장",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영관리",
+   "strength": "드묾",
+   "appears_as": "운영관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "마케팅·시장",
+   "role": "ROLE_CS_V1",
+   "role_name": "서비스·고객운영",
+   "strength": "드묾",
+   "appears_as": "서비스·고객운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "마케팅·시장",
+   "role": "ROLE_SALES_V1",
+   "role_name": "영업·사업개발",
+   "strength": "중심",
+   "appears_as": "영업·사업개발 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "마케팅·시장",
+   "role": "ROLE_MKT_V1",
+   "role_name": "마케팅",
+   "strength": "중심",
+   "appears_as": "마케팅 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J6",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "마케팅·시장",
+   "role": "ROLE_HR_V1",
+   "role_name": "인사",
+   "strength": "드묾",
+   "appears_as": "인사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "영업·사업개발",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "경영기획",
+   "strength": "드묾",
+   "appears_as": "경영기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "영업·사업개발",
+   "role": "ROLE_ANALYTICS_V1",
+   "role_name": "데이터·분석",
+   "strength": "드묾",
+   "appears_as": "데이터·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "영업·사업개발",
+   "role": "ROLE_FINACC_V1",
+   "role_name": "재무·회계",
+   "strength": "드묾",
+   "appears_as": "재무·회계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "영업·사업개발",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영관리",
+   "strength": "드묾",
+   "appears_as": "운영관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "영업·사업개발",
+   "role": "ROLE_CS_V1",
+   "role_name": "서비스·고객운영",
+   "strength": "드묾",
+   "appears_as": "서비스·고객운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "영업·사업개발",
+   "role": "ROLE_SALES_V1",
+   "role_name": "영업·사업개발",
+   "strength": "중심",
+   "appears_as": "영업·사업개발 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "영업·사업개발",
+   "role": "ROLE_MKT_V1",
+   "role_name": "마케팅",
+   "strength": "드묾",
+   "appears_as": "마케팅 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "영업·사업개발",
+   "role": "ROLE_HR_V1",
+   "role_name": "인사",
+   "strength": "드묾",
+   "appears_as": "인사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "재무·투자 판단",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "경영기획",
+   "strength": "중심",
+   "appears_as": "경영기획 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "재무·투자 판단",
+   "role": "ROLE_ANALYTICS_V1",
+   "role_name": "데이터·분석",
+   "strength": "드묾",
+   "appears_as": "데이터·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "재무·투자 판단",
+   "role": "ROLE_FINACC_V1",
+   "role_name": "재무·회계",
+   "strength": "중심",
+   "appears_as": "재무·회계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "재무·투자 판단",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영관리",
+   "strength": "드묾",
+   "appears_as": "운영관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "재무·투자 판단",
+   "role": "ROLE_CS_V1",
+   "role_name": "서비스·고객운영",
+   "strength": "드묾",
+   "appears_as": "서비스·고객운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "재무·투자 판단",
+   "role": "ROLE_SALES_V1",
+   "role_name": "영업·사업개발",
+   "strength": "드묾",
+   "appears_as": "영업·사업개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "재무·투자 판단",
+   "role": "ROLE_MKT_V1",
+   "role_name": "마케팅",
+   "strength": "드묾",
+   "appears_as": "마케팅 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "재무·투자 판단",
+   "role": "ROLE_HR_V1",
+   "role_name": "인사",
+   "strength": "드묾",
+   "appears_as": "인사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "회계·원가",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "경영기획",
+   "strength": "드묾",
+   "appears_as": "경영기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "회계·원가",
+   "role": "ROLE_ANALYTICS_V1",
+   "role_name": "데이터·분석",
+   "strength": "드묾",
+   "appears_as": "데이터·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "회계·원가",
+   "role": "ROLE_FINACC_V1",
+   "role_name": "재무·회계",
+   "strength": "중심",
+   "appears_as": "재무·회계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J6",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "회계·원가",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영관리",
+   "strength": "드묾",
+   "appears_as": "운영관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "회계·원가",
+   "role": "ROLE_CS_V1",
+   "role_name": "서비스·고객운영",
+   "strength": "드묾",
+   "appears_as": "서비스·고객운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "회계·원가",
+   "role": "ROLE_SALES_V1",
+   "role_name": "영업·사업개발",
+   "strength": "드묾",
+   "appears_as": "영업·사업개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "회계·원가",
+   "role": "ROLE_MKT_V1",
+   "role_name": "마케팅",
+   "strength": "드묾",
+   "appears_as": "마케팅 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "회계·원가",
+   "role": "ROLE_HR_V1",
+   "role_name": "인사",
+   "strength": "드묾",
+   "appears_as": "인사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "인사·조직",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "경영기획",
+   "strength": "드묾",
+   "appears_as": "경영기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "인사·조직",
+   "role": "ROLE_ANALYTICS_V1",
+   "role_name": "데이터·분석",
+   "strength": "드묾",
+   "appears_as": "데이터·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "인사·조직",
+   "role": "ROLE_FINACC_V1",
+   "role_name": "재무·회계",
+   "strength": "드묾",
+   "appears_as": "재무·회계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "인사·조직",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영관리",
+   "strength": "드묾",
+   "appears_as": "운영관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "인사·조직",
+   "role": "ROLE_CS_V1",
+   "role_name": "서비스·고객운영",
+   "strength": "드묾",
+   "appears_as": "서비스·고객운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "인사·조직",
+   "role": "ROLE_SALES_V1",
+   "role_name": "영업·사업개발",
+   "strength": "드묾",
+   "appears_as": "영업·사업개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "인사·조직",
+   "role": "ROLE_MKT_V1",
+   "role_name": "마케팅",
+   "strength": "드묾",
+   "appears_as": "마케팅 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "인사·조직",
+   "role": "ROLE_HR_V1",
+   "role_name": "인사",
+   "strength": "중심",
+   "appears_as": "인사 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5",
+    "J6",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "운영·프로세스",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "경영기획",
+   "strength": "드묾",
+   "appears_as": "경영기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "운영·프로세스",
+   "role": "ROLE_ANALYTICS_V1",
+   "role_name": "데이터·분석",
+   "strength": "드묾",
+   "appears_as": "데이터·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "운영·프로세스",
+   "role": "ROLE_FINACC_V1",
+   "role_name": "재무·회계",
+   "strength": "드묾",
+   "appears_as": "재무·회계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "운영·프로세스",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영관리",
+   "strength": "중심",
+   "appears_as": "운영관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J6",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "운영·프로세스",
+   "role": "ROLE_CS_V1",
+   "role_name": "서비스·고객운영",
+   "strength": "중심",
+   "appears_as": "서비스·고객운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "운영·프로세스",
+   "role": "ROLE_SALES_V1",
+   "role_name": "영업·사업개발",
+   "strength": "드묾",
+   "appears_as": "영업·사업개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "운영·프로세스",
+   "role": "ROLE_MKT_V1",
+   "role_name": "마케팅",
+   "strength": "드묾",
+   "appears_as": "마케팅 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "운영·프로세스",
+   "role": "ROLE_HR_V1",
+   "role_name": "인사",
+   "strength": "중심",
+   "appears_as": "인사 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "데이터·의사결정",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "경영기획",
+   "strength": "중심",
+   "appears_as": "경영기획 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "데이터·의사결정",
+   "role": "ROLE_ANALYTICS_V1",
+   "role_name": "데이터·분석",
+   "strength": "중심",
+   "appears_as": "데이터·분석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J4",
+    "J5",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "데이터·의사결정",
+   "role": "ROLE_FINACC_V1",
+   "role_name": "재무·회계",
+   "strength": "드묾",
+   "appears_as": "재무·회계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "데이터·의사결정",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영관리",
+   "strength": "드묾",
+   "appears_as": "운영관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "데이터·의사결정",
+   "role": "ROLE_CS_V1",
+   "role_name": "서비스·고객운영",
+   "strength": "드묾",
+   "appears_as": "서비스·고객운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "데이터·의사결정",
+   "role": "ROLE_SALES_V1",
+   "role_name": "영업·사업개발",
+   "strength": "드묾",
+   "appears_as": "영업·사업개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "데이터·의사결정",
+   "role": "ROLE_MKT_V1",
+   "role_name": "마케팅",
+   "strength": "중심",
+   "appears_as": "마케팅 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "데이터·의사결정",
+   "role": "ROLE_HR_V1",
+   "role_name": "인사",
+   "strength": "드묾",
+   "appears_as": "인사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "고객·서비스 운영",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "경영기획",
+   "strength": "드묾",
+   "appears_as": "경영기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "고객·서비스 운영",
+   "role": "ROLE_ANALYTICS_V1",
+   "role_name": "데이터·분석",
+   "strength": "드묾",
+   "appears_as": "데이터·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "고객·서비스 운영",
+   "role": "ROLE_FINACC_V1",
+   "role_name": "재무·회계",
+   "strength": "드묾",
+   "appears_as": "재무·회계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "고객·서비스 운영",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영관리",
+   "strength": "드묾",
+   "appears_as": "운영관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "고객·서비스 운영",
+   "role": "ROLE_CS_V1",
+   "role_name": "서비스·고객운영",
+   "strength": "중심",
+   "appears_as": "서비스·고객운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "고객·서비스 운영",
+   "role": "ROLE_SALES_V1",
+   "role_name": "영업·사업개발",
+   "strength": "드묾",
+   "appears_as": "영업·사업개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "고객·서비스 운영",
+   "role": "ROLE_MKT_V1",
+   "role_name": "마케팅",
+   "strength": "중심",
+   "appears_as": "마케팅 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "고객·서비스 운영",
+   "role": "ROLE_HR_V1",
+   "role_name": "인사",
+   "strength": "드묾",
+   "appears_as": "인사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "수요·예약·가격 관리",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "경영기획",
+   "strength": "드묾",
+   "appears_as": "경영기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "수요·예약·가격 관리",
+   "role": "ROLE_ANALYTICS_V1",
+   "role_name": "데이터·분석",
+   "strength": "중심",
+   "appears_as": "데이터·분석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "수요·예약·가격 관리",
+   "role": "ROLE_FINACC_V1",
+   "role_name": "재무·회계",
+   "strength": "드묾",
+   "appears_as": "재무·회계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "수요·예약·가격 관리",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영관리",
+   "strength": "중심",
+   "appears_as": "운영관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "수요·예약·가격 관리",
+   "role": "ROLE_CS_V1",
+   "role_name": "서비스·고객운영",
+   "strength": "중심",
+   "appears_as": "서비스·고객운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "수요·예약·가격 관리",
+   "role": "ROLE_SALES_V1",
+   "role_name": "영업·사업개발",
+   "strength": "드묾",
+   "appears_as": "영업·사업개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "수요·예약·가격 관리",
+   "role": "ROLE_MKT_V1",
+   "role_name": "마케팅",
+   "strength": "드묾",
+   "appears_as": "마케팅 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "수요·예약·가격 관리",
+   "role": "ROLE_HR_V1",
+   "role_name": "인사",
+   "strength": "드묾",
+   "appears_as": "인사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "글로벌 비즈니스",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "경영기획",
+   "strength": "드묾",
+   "appears_as": "경영기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "글로벌 비즈니스",
+   "role": "ROLE_ANALYTICS_V1",
+   "role_name": "데이터·분석",
+   "strength": "드묾",
+   "appears_as": "데이터·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "글로벌 비즈니스",
+   "role": "ROLE_FINACC_V1",
+   "role_name": "재무·회계",
+   "strength": "중심",
+   "appears_as": "재무·회계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "글로벌 비즈니스",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영관리",
+   "strength": "드묾",
+   "appears_as": "운영관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "글로벌 비즈니스",
+   "role": "ROLE_CS_V1",
+   "role_name": "서비스·고객운영",
+   "strength": "드묾",
+   "appears_as": "서비스·고객운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "글로벌 비즈니스",
+   "role": "ROLE_SALES_V1",
+   "role_name": "영업·사업개발",
+   "strength": "중심",
+   "appears_as": "영업·사업개발 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "글로벌 비즈니스",
+   "role": "ROLE_MKT_V1",
+   "role_name": "마케팅",
+   "strength": "드묾",
+   "appears_as": "마케팅 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "글로벌 비즈니스",
+   "role": "ROLE_HR_V1",
+   "role_name": "인사",
+   "strength": "드묾",
+   "appears_as": "인사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "정보시스템·업무 요구",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "경영기획",
+   "strength": "드묾",
+   "appears_as": "경영기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "정보시스템·업무 요구",
+   "role": "ROLE_ANALYTICS_V1",
+   "role_name": "데이터·분석",
+   "strength": "드묾",
+   "appears_as": "데이터·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "정보시스템·업무 요구",
+   "role": "ROLE_FINACC_V1",
+   "role_name": "재무·회계",
+   "strength": "드묾",
+   "appears_as": "재무·회계 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "정보시스템·업무 요구",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영관리",
+   "strength": "중심",
+   "appears_as": "운영관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "정보시스템·업무 요구",
+   "role": "ROLE_CS_V1",
+   "role_name": "서비스·고객운영",
+   "strength": "드묾",
+   "appears_as": "서비스·고객운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "정보시스템·업무 요구",
+   "role": "ROLE_SALES_V1",
+   "role_name": "영업·사업개발",
+   "strength": "드묾",
+   "appears_as": "영업·사업개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "정보시스템·업무 요구",
+   "role": "ROLE_MKT_V1",
+   "role_name": "마케팅",
+   "strength": "드묾",
+   "appears_as": "마케팅 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "정보시스템·업무 요구",
+   "role": "ROLE_HR_V1",
+   "role_name": "인사",
+   "strength": "드묾",
+   "appears_as": "인사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  }
+ ]
+}
