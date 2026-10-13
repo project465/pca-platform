@@ -1,0 +1,2450 @@
+{
+ "schema_version": "bt-v1-relations.1",
+ "core": "BT_CORE_V1",
+ "note": "기술영역과 산업, 기술영역과 역할의 관계를 두 표로 둔다. 세 축을 미리 곱해 두지 않는다: 열두 영역과 여덟 산업과 여덟 역할을 곱하면 칠백예순여덟 줄이 되고 그만큼의 줄을 사람이 손으로 유지할 수 없다. 어느 줄도 점수를 만들지 않는다: `strength` 는 설명하는 차례를 정하고 `appears_as` 는 결과지가 그 말로 옮겨 적을 때 읽는다",
+ "combine_rule": "산업 하나와 역할 하나를 함께 고른 사람에게는 두 표에서 같은 영역의 줄을 뽑아 나란히 놓는다. 둘 다 `중심` 인 영역이 먼저 서고, 한쪽만 중심인 영역이 다음이고, 양쪽이 드문 영역은 적지 않는다",
+ "td_industry": [
+  {
+   "td": "TD01",
+   "td_name": "분자생물 실험",
+   "industry": "INDUSTRY_PHARMA_V1",
+   "industry_name": "의약품·바이오의약품",
+   "strength": "있음",
+   "appears_as": "의약품·바이오의약품 에서는 시험 기록을 다른 사람이 읽게 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "시험 기록을 다른 사람이 읽게 남기는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "분자생물 실험",
+   "industry": "INDUSTRY_CDMO_V1",
+   "industry_name": "위탁 개발·생산",
+   "strength": "드묾",
+   "appears_as": "위탁 개발·생산 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "분자생물 실험",
+   "industry": "INDUSTRY_DIAGNOSTIC_V1",
+   "industry_name": "진단·시약·장비",
+   "strength": "있음",
+   "appears_as": "진단·시약·장비 에서는 검출 방법을 골라 조건을 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "검출 방법을 골라 조건을 맞추는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "분자생물 실험",
+   "industry": "INDUSTRY_FOODBIO_V1",
+   "industry_name": "식품·발효·소재",
+   "strength": "있음",
+   "appears_as": "식품·발효·소재 에서는 균이 맞는지 확인해 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "균이 맞는지 확인해 대조하는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "분자생물 실험",
+   "industry": "INDUSTRY_AGRIBIO_V1",
+   "industry_name": "농업·종자·동물",
+   "strength": "있음",
+   "appears_as": "농업·종자·동물 에서는 유전형 확인 기록을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "유전형 확인 기록을 남기는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "분자생물 실험",
+   "industry": "INDUSTRY_ENVBIO_V1",
+   "industry_name": "환경·바이오에너지",
+   "strength": "있음",
+   "appears_as": "환경·바이오에너지 에서는 미생물 군집을 분석하는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "미생물 군집을 분석하는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "분자생물 실험",
+   "industry": "INDUSTRY_COSMETIC_V1",
+   "industry_name": "화장품·기능성 소재",
+   "strength": "드묾",
+   "appears_as": "화장품·기능성 소재 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "분자생물 실험",
+   "industry": "INDUSTRY_PUBLICLAB_V1",
+   "industry_name": "공공 연구·검정 기관",
+   "strength": "있음",
+   "appears_as": "공공 연구·검정 기관 에서는 시험 항목의 기준을 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "시험 항목의 기준을 적는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "세포·조직 배양",
+   "industry": "INDUSTRY_PHARMA_V1",
+   "industry_name": "의약품·바이오의약품",
+   "strength": "있음",
+   "appears_as": "의약품·바이오의약품 에서는 세포주가 흔들린 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "세포주가 흔들린 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "세포·조직 배양",
+   "industry": "INDUSTRY_CDMO_V1",
+   "industry_name": "위탁 개발·생산",
+   "strength": "있음",
+   "appears_as": "위탁 개발·생산 에서는 고객이 지정한 세포를 유지하는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "고객이 지정한 세포를 유지하는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "세포·조직 배양",
+   "industry": "INDUSTRY_DIAGNOSTIC_V1",
+   "industry_name": "진단·시약·장비",
+   "strength": "있음",
+   "appears_as": "진단·시약·장비 에서는 세포로 하는 시험을 지난 값과 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "세포로 하는 시험을 지난 값과 견주는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "세포·조직 배양",
+   "industry": "INDUSTRY_FOODBIO_V1",
+   "industry_name": "식품·발효·소재",
+   "strength": "있음",
+   "appears_as": "식품·발효·소재 에서는 오염된 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "오염된 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "세포·조직 배양",
+   "industry": "INDUSTRY_AGRIBIO_V1",
+   "industry_name": "농업·종자·동물",
+   "strength": "있음",
+   "appears_as": "농업·종자·동물 에서는 조직 배양 조건을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "조직 배양 조건을 정하는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "세포·조직 배양",
+   "industry": "INDUSTRY_ENVBIO_V1",
+   "industry_name": "환경·바이오에너지",
+   "strength": "있음",
+   "appears_as": "환경·바이오에너지 에서는 독성이나 영향을 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "독성이나 영향을 견주는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "세포·조직 배양",
+   "industry": "INDUSTRY_COSMETIC_V1",
+   "industry_name": "화장품·기능성 소재",
+   "strength": "있음",
+   "appears_as": "화장품·기능성 소재 에서는 세포 시험 조건을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "세포 시험 조건을 정하는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "세포·조직 배양",
+   "industry": "INDUSTRY_PUBLICLAB_V1",
+   "industry_name": "공공 연구·검정 기관",
+   "strength": "있음",
+   "appears_as": "공공 연구·검정 기관 에서는 표준 세포나 균주를 유지하는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "표준 세포나 균주를 유지하는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "미생물·발효",
+   "industry": "INDUSTRY_PHARMA_V1",
+   "industry_name": "의약품·바이오의약품",
+   "strength": "드묾",
+   "appears_as": "의약품·바이오의약품 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "미생물·발효",
+   "industry": "INDUSTRY_CDMO_V1",
+   "industry_name": "위탁 개발·생산",
+   "strength": "있음",
+   "appears_as": "위탁 개발·생산 에서는 배양 조건을 우리 설비에 맞춰 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "배양 조건을 우리 설비에 맞춰 정하는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "미생물·발효",
+   "industry": "INDUSTRY_DIAGNOSTIC_V1",
+   "industry_name": "진단·시약·장비",
+   "strength": "드묾",
+   "appears_as": "진단·시약·장비 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "미생물·발효",
+   "industry": "INDUSTRY_FOODBIO_V1",
+   "industry_name": "식품·발효·소재",
+   "strength": "있음",
+   "appears_as": "식품·발효·소재 에서는 쓸 균주와 배지를 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "쓸 균주와 배지를 고르는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "미생물·발효",
+   "industry": "INDUSTRY_AGRIBIO_V1",
+   "industry_name": "농업·종자·동물",
+   "strength": "있음",
+   "appears_as": "농업·종자·동물 에서는 미생물 제제를 만들어 쓰는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "미생물 제제를 만들어 쓰는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "미생물·발효",
+   "industry": "INDUSTRY_ENVBIO_V1",
+   "industry_name": "환경·바이오에너지",
+   "strength": "있음",
+   "appears_as": "환경·바이오에너지 에서는 처리에 쓸 미생물을 다루는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "처리에 쓸 미생물을 다루는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "미생물·발효",
+   "industry": "INDUSTRY_COSMETIC_V1",
+   "industry_name": "화장품·기능성 소재",
+   "strength": "있음",
+   "appears_as": "화장품·기능성 소재 에서는 발효 소재가 안 된 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "발효 소재가 안 된 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "미생물·발효",
+   "industry": "INDUSTRY_PUBLICLAB_V1",
+   "industry_name": "공공 연구·검정 기관",
+   "strength": "드묾",
+   "appears_as": "공공 연구·검정 기관 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "단백질·효소 공학",
+   "industry": "INDUSTRY_PHARMA_V1",
+   "industry_name": "의약품·바이오의약품",
+   "strength": "있음",
+   "appears_as": "의약품·바이오의약품 에서는 정제 차례와 조건을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "정제 차례와 조건을 정하는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "단백질·효소 공학",
+   "industry": "INDUSTRY_CDMO_V1",
+   "industry_name": "위탁 개발·생산",
+   "strength": "있음",
+   "appears_as": "위탁 개발·생산 에서는 수율을 작은 규모의 값과 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "수율을 작은 규모의 값과 견주는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "단백질·효소 공학",
+   "industry": "INDUSTRY_DIAGNOSTIC_V1",
+   "industry_name": "진단·시약·장비",
+   "strength": "있음",
+   "appears_as": "진단·시약·장비 에서는 항체나 효소를 만들어 쓰는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "항체나 효소를 만들어 쓰는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "단백질·효소 공학",
+   "industry": "INDUSTRY_FOODBIO_V1",
+   "industry_name": "식품·발효·소재",
+   "strength": "있음",
+   "appears_as": "식품·발효·소재 에서는 쓸 효소와 쓰지 않을 것을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "쓸 효소와 쓰지 않을 것을 가르는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "단백질·효소 공학",
+   "industry": "INDUSTRY_AGRIBIO_V1",
+   "industry_name": "농업·종자·동물",
+   "strength": "드묾",
+   "appears_as": "농업·종자·동물 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "단백질·효소 공학",
+   "industry": "INDUSTRY_ENVBIO_V1",
+   "industry_name": "환경·바이오에너지",
+   "strength": "있음",
+   "appears_as": "환경·바이오에너지 에서는 효소나 전처리를 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "효소나 전처리를 고르는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "단백질·효소 공학",
+   "industry": "INDUSTRY_COSMETIC_V1",
+   "industry_name": "화장품·기능성 소재",
+   "strength": "있음",
+   "appears_as": "화장품·기능성 소재 에서는 추출이나 발효로 소재를 만드는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "추출이나 발효로 소재를 만드는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "단백질·효소 공학",
+   "industry": "INDUSTRY_PUBLICLAB_V1",
+   "industry_name": "공공 연구·검정 기관",
+   "strength": "드묾",
+   "appears_as": "공공 연구·검정 기관 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "유전자 조작·클로닝",
+   "industry": "INDUSTRY_PHARMA_V1",
+   "industry_name": "의약품·바이오의약품",
+   "strength": "있음",
+   "appears_as": "의약품·바이오의약품 에서는 쓸 세포주와 쓰지 않을 것을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "쓸 세포주와 쓰지 않을 것을 가르는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "유전자 조작·클로닝",
+   "industry": "INDUSTRY_CDMO_V1",
+   "industry_name": "위탁 개발·생산",
+   "strength": "있음",
+   "appears_as": "위탁 개발·생산 에서는 받은 균주와 이력을 목록으로 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "받은 균주와 이력을 목록으로 남기는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "유전자 조작·클로닝",
+   "industry": "INDUSTRY_DIAGNOSTIC_V1",
+   "industry_name": "진단·시약·장비",
+   "strength": "드묾",
+   "appears_as": "진단·시약·장비 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "유전자 조작·클로닝",
+   "industry": "INDUSTRY_FOODBIO_V1",
+   "industry_name": "식품·발효·소재",
+   "strength": "드묾",
+   "appears_as": "식품·발효·소재 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "유전자 조작·클로닝",
+   "industry": "INDUSTRY_AGRIBIO_V1",
+   "industry_name": "농업·종자·동물",
+   "strength": "있음",
+   "appears_as": "농업·종자·동물 에서는 넣을 형질과 방법을 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "넣을 형질과 방법을 고르는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "유전자 조작·클로닝",
+   "industry": "INDUSTRY_ENVBIO_V1",
+   "industry_name": "환경·바이오에너지",
+   "strength": "드묾",
+   "appears_as": "환경·바이오에너지 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "유전자 조작·클로닝",
+   "industry": "INDUSTRY_COSMETIC_V1",
+   "industry_name": "화장품·기능성 소재",
+   "strength": "드묾",
+   "appears_as": "화장품·기능성 소재 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "유전자 조작·클로닝",
+   "industry": "INDUSTRY_PUBLICLAB_V1",
+   "industry_name": "공공 연구·검정 기관",
+   "strength": "있음",
+   "appears_as": "공공 연구·검정 기관 에서는 균주나 재료를 등록해 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "균주나 재료를 등록해 남기는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분석·기기 측정",
+   "industry": "INDUSTRY_PHARMA_V1",
+   "industry_name": "의약품·바이오의약품",
+   "strength": "있음",
+   "appears_as": "의약품·바이오의약품 에서는 분석법이 요구 정확도를 내는지 보는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "분석법이 요구 정확도를 내는지 보는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분석·기기 측정",
+   "industry": "INDUSTRY_CDMO_V1",
+   "industry_name": "위탁 개발·생산",
+   "strength": "있음",
+   "appears_as": "위탁 개발·생산 에서는 이관받은 분석법을 우리 기기로 돌리는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "이관받은 분석법을 우리 기기로 돌리는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분석·기기 측정",
+   "industry": "INDUSTRY_DIAGNOSTIC_V1",
+   "industry_name": "진단·시약·장비",
+   "strength": "있음",
+   "appears_as": "진단·시약·장비 에서는 성능을 다른 방법의 값과 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "성능을 다른 방법의 값과 견주는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분석·기기 측정",
+   "industry": "INDUSTRY_FOODBIO_V1",
+   "industry_name": "식품·발효·소재",
+   "strength": "있음",
+   "appears_as": "식품·발효·소재 에서는 표시할 성분을 규격으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "표시할 성분을 규격으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분석·기기 측정",
+   "industry": "INDUSTRY_AGRIBIO_V1",
+   "industry_name": "농업·종자·동물",
+   "strength": "있음",
+   "appears_as": "농업·종자·동물 에서는 성분을 재어 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "성분을 재어 고르는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분석·기기 측정",
+   "industry": "INDUSTRY_ENVBIO_V1",
+   "industry_name": "환경·바이오에너지",
+   "strength": "있음",
+   "appears_as": "환경·바이오에너지 에서는 배출 기준과 측정값을 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "배출 기준과 측정값을 대조하는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분석·기기 측정",
+   "industry": "INDUSTRY_COSMETIC_V1",
+   "industry_name": "화장품·기능성 소재",
+   "strength": "있음",
+   "appears_as": "화장품·기능성 소재 에서는 성분을 재어 정량하는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "성분을 재어 정량하는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분석·기기 측정",
+   "industry": "INDUSTRY_PUBLICLAB_V1",
+   "industry_name": "공공 연구·검정 기관",
+   "strength": "있음",
+   "appears_as": "공공 연구·검정 기관 에서는 표준품에 대고 보는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "표준품에 대고 보는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "생물정보·데이터",
+   "industry": "INDUSTRY_PHARMA_V1",
+   "industry_name": "의약품·바이오의약품",
+   "strength": "드묾",
+   "appears_as": "의약품·바이오의약품 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "생물정보·데이터",
+   "industry": "INDUSTRY_CDMO_V1",
+   "industry_name": "위탁 개발·생산",
+   "strength": "있음",
+   "appears_as": "위탁 개발·생산 에서는 배치 자료를 고객이 보는 지표로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "배치 자료를 고객이 보는 지표로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "생물정보·데이터",
+   "industry": "INDUSTRY_DIAGNOSTIC_V1",
+   "industry_name": "진단·시약·장비",
+   "strength": "있음",
+   "appears_as": "진단·시약·장비 에서는 판정 규칙을 자료로 세우는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "판정 규칙을 자료로 세우는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "생물정보·데이터",
+   "industry": "INDUSTRY_FOODBIO_V1",
+   "industry_name": "식품·발효·소재",
+   "strength": "있음",
+   "appears_as": "식품·발효·소재 에서는 관능과 측정 자료를 함께 처리하는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "관능과 측정 자료를 함께 처리하는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "생물정보·데이터",
+   "industry": "INDUSTRY_AGRIBIO_V1",
+   "industry_name": "농업·종자·동물",
+   "strength": "있음",
+   "appears_as": "농업·종자·동물 에서는 형질 자료를 지난 세대와 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "형질 자료를 지난 세대와 견주는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "생물정보·데이터",
+   "industry": "INDUSTRY_ENVBIO_V1",
+   "industry_name": "환경·바이오에너지",
+   "strength": "있음",
+   "appears_as": "환경·바이오에너지 에서는 무엇을 계속 지켜볼지 지표를 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "무엇을 계속 지켜볼지 지표를 정하는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "생물정보·데이터",
+   "industry": "INDUSTRY_COSMETIC_V1",
+   "industry_name": "화장품·기능성 소재",
+   "strength": "있음",
+   "appears_as": "화장품·기능성 소재 에서는 효능 자료를 정리해 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "효능 자료를 정리해 남기는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "생물정보·데이터",
+   "industry": "INDUSTRY_PUBLICLAB_V1",
+   "industry_name": "공공 연구·검정 기관",
+   "strength": "있음",
+   "appears_as": "공공 연구·검정 기관 에서는 공개할 자료를 처리하는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "공개할 자료를 처리하는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "면역·진단",
+   "industry": "INDUSTRY_PHARMA_V1",
+   "industry_name": "의약품·바이오의약품",
+   "strength": "있음",
+   "appears_as": "의약품·바이오의약품 에서는 역가나 활성을 다른 방법으로 한 번 더 보는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "역가나 활성을 다른 방법으로 한 번 더 보는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "면역·진단",
+   "industry": "INDUSTRY_CDMO_V1",
+   "industry_name": "위탁 개발·생산",
+   "strength": "드묾",
+   "appears_as": "위탁 개발·생산 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "면역·진단",
+   "industry": "INDUSTRY_DIAGNOSTIC_V1",
+   "industry_name": "진단·시약·장비",
+   "strength": "있음",
+   "appears_as": "진단·시약·장비 에서는 양성과 음성을 가르는 선을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "양성과 음성을 가르는 선을 정하는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "면역·진단",
+   "industry": "INDUSTRY_FOODBIO_V1",
+   "industry_name": "식품·발효·소재",
+   "strength": "드묾",
+   "appears_as": "식품·발효·소재 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "면역·진단",
+   "industry": "INDUSTRY_AGRIBIO_V1",
+   "industry_name": "농업·종자·동물",
+   "strength": "드묾",
+   "appears_as": "농업·종자·동물 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "면역·진단",
+   "industry": "INDUSTRY_ENVBIO_V1",
+   "industry_name": "환경·바이오에너지",
+   "strength": "드묾",
+   "appears_as": "환경·바이오에너지 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "면역·진단",
+   "industry": "INDUSTRY_COSMETIC_V1",
+   "industry_name": "화장품·기능성 소재",
+   "strength": "있음",
+   "appears_as": "화장품·기능성 소재 에서는 효능을 잴 지표로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "효능을 잴 지표로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "면역·진단",
+   "industry": "INDUSTRY_PUBLICLAB_V1",
+   "industry_name": "공공 연구·검정 기관",
+   "strength": "있음",
+   "appears_as": "공공 연구·검정 기관 에서는 시험이 안 된 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "시험이 안 된 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "생물공정·스케일업",
+   "industry": "INDUSTRY_PHARMA_V1",
+   "industry_name": "의약품·바이오의약품",
+   "strength": "있음",
+   "appears_as": "의약품·바이오의약품 에서는 공정 조건을 범위로 잡아 두는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "공정 조건을 범위로 잡아 두는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "생물공정·스케일업",
+   "industry": "INDUSTRY_CDMO_V1",
+   "industry_name": "위탁 개발·생산",
+   "strength": "있음",
+   "appears_as": "위탁 개발·생산 에서는 배치마다 벌어진 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "배치마다 벌어진 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "생물공정·스케일업",
+   "industry": "INDUSTRY_DIAGNOSTIC_V1",
+   "industry_name": "진단·시약·장비",
+   "strength": "있음",
+   "appears_as": "진단·시약·장비 에서는 양산 절차서를 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "양산 절차서를 남기는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "생물공정·스케일업",
+   "industry": "INDUSTRY_FOODBIO_V1",
+   "industry_name": "식품·발효·소재",
+   "strength": "있음",
+   "appears_as": "식품·발효·소재 에서는 발효 운전 조건을 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "발효 운전 조건을 맞추는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "생물공정·스케일업",
+   "industry": "INDUSTRY_AGRIBIO_V1",
+   "industry_name": "농업·종자·동물",
+   "strength": "있음",
+   "appears_as": "농업·종자·동물 에서는 증식이 안 된 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "증식이 안 된 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "생물공정·스케일업",
+   "industry": "INDUSTRY_ENVBIO_V1",
+   "industry_name": "환경·바이오에너지",
+   "strength": "있음",
+   "appears_as": "환경·바이오에너지 에서는 처리 조건과 투입량을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "처리 조건과 투입량을 정하는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "생물공정·스케일업",
+   "industry": "INDUSTRY_COSMETIC_V1",
+   "industry_name": "화장품·기능성 소재",
+   "strength": "있음",
+   "appears_as": "화장품·기능성 소재 에서는 생산 지표를 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "생산 지표를 정하는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "생물공정·스케일업",
+   "industry": "INDUSTRY_PUBLICLAB_V1",
+   "industry_name": "공공 연구·검정 기관",
+   "strength": "있음",
+   "appears_as": "공공 연구·검정 기관 에서는 중간 평가의 지표와 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "중간 평가의 지표와 견주는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질관리·규격",
+   "industry": "INDUSTRY_PHARMA_V1",
+   "industry_name": "의약품·바이오의약품",
+   "strength": "있음",
+   "appears_as": "의약품·바이오의약품 에서는 규격에 맞는지 판정해 출하를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "규격에 맞는지 판정해 출하를 가르는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질관리·규격",
+   "industry": "INDUSTRY_CDMO_V1",
+   "industry_name": "위탁 개발·생산",
+   "strength": "있음",
+   "appears_as": "위탁 개발·생산 에서는 고객 규격에 맞춘 성적서를 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "고객 규격에 맞춘 성적서를 남기는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질관리·규격",
+   "industry": "INDUSTRY_DIAGNOSTIC_V1",
+   "industry_name": "진단·시약·장비",
+   "strength": "있음",
+   "appears_as": "진단·시약·장비 에서는 요구 성능을 규격으로 적어 두는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "요구 성능을 규격으로 적어 두는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질관리·규격",
+   "industry": "INDUSTRY_FOODBIO_V1",
+   "industry_name": "식품·발효·소재",
+   "strength": "있음",
+   "appears_as": "식품·발효·소재 에서는 기준에 맞는지 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "기준에 맞는지 대조하는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질관리·규격",
+   "industry": "INDUSTRY_AGRIBIO_V1",
+   "industry_name": "농업·종자·동물",
+   "strength": "있음",
+   "appears_as": "농업·종자·동물 에서는 품질 규격을 적어 두는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "품질 규격을 적어 두는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질관리·규격",
+   "industry": "INDUSTRY_ENVBIO_V1",
+   "industry_name": "환경·바이오에너지",
+   "strength": "있음",
+   "appears_as": "환경·바이오에너지 에서는 측정 기록을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "측정 기록을 남기는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질관리·규격",
+   "industry": "INDUSTRY_COSMETIC_V1",
+   "industry_name": "화장품·기능성 소재",
+   "strength": "있음",
+   "appears_as": "화장품·기능성 소재 에서는 표시 기준과 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "표시 기준과 대조하는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질관리·규격",
+   "industry": "INDUSTRY_PUBLICLAB_V1",
+   "industry_name": "공공 연구·검정 기관",
+   "strength": "있음",
+   "appears_as": "공공 연구·검정 기관 에서는 적합한지 판정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "적합한지 판정하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "연구 설계·통계",
+   "industry": "INDUSTRY_PHARMA_V1",
+   "industry_name": "의약품·바이오의약품",
+   "strength": "있음",
+   "appears_as": "의약품·바이오의약품 에서는 임상에서 볼 지표를 미리 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "임상에서 볼 지표를 미리 정하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "연구 설계·통계",
+   "industry": "INDUSTRY_CDMO_V1",
+   "industry_name": "위탁 개발·생산",
+   "strength": "있음",
+   "appears_as": "위탁 개발·생산 에서는 이관 범위와 맡지 않을 것을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "이관 범위와 맡지 않을 것을 가르는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "연구 설계·통계",
+   "industry": "INDUSTRY_DIAGNOSTIC_V1",
+   "industry_name": "진단·시약·장비",
+   "strength": "있음",
+   "appears_as": "진단·시약·장비 에서는 성능을 보일 시험을 설계하는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "성능을 보일 시험을 설계하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "연구 설계·통계",
+   "industry": "INDUSTRY_FOODBIO_V1",
+   "industry_name": "식품·발효·소재",
+   "strength": "있음",
+   "appears_as": "식품·발효·소재 에서는 비교 시험을 설계하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "비교 시험을 설계하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "연구 설계·통계",
+   "industry": "INDUSTRY_AGRIBIO_V1",
+   "industry_name": "농업·종자·동물",
+   "strength": "있음",
+   "appears_as": "농업·종자·동물 에서는 현장 시험에서 볼 지표를 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "현장 시험에서 볼 지표를 정하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "연구 설계·통계",
+   "industry": "INDUSTRY_ENVBIO_V1",
+   "industry_name": "환경·바이오에너지",
+   "strength": "있음",
+   "appears_as": "환경·바이오에너지 에서는 현장 시험 범위를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "현장 시험 범위를 가르는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "연구 설계·통계",
+   "industry": "INDUSTRY_COSMETIC_V1",
+   "industry_name": "화장품·기능성 소재",
+   "strength": "있음",
+   "appears_as": "화장품·기능성 소재 에서는 사람에게 해 볼 시험을 설계하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "사람에게 해 볼 시험을 설계하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "연구 설계·통계",
+   "industry": "INDUSTRY_PUBLICLAB_V1",
+   "industry_name": "공공 연구·검정 기관",
+   "strength": "있음",
+   "appears_as": "공공 연구·검정 기관 에서는 과제의 범위와 뺄 것을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "과제의 범위와 뺄 것을 가르는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "생물안전·규제",
+   "industry": "INDUSTRY_PHARMA_V1",
+   "industry_name": "의약품·바이오의약품",
+   "strength": "있음",
+   "appears_as": "의약품·바이오의약품 에서는 판단의 근거가 추적되게 기록을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "판단의 근거가 추적되게 기록을 남기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "생물안전·규제",
+   "industry": "INDUSTRY_CDMO_V1",
+   "industry_name": "위탁 개발·생산",
+   "strength": "있음",
+   "appears_as": "위탁 개발·생산 에서는 고객이 요구한 안전 조건을 옮겨 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "고객이 요구한 안전 조건을 옮겨 적는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "생물안전·규제",
+   "industry": "INDUSTRY_DIAGNOSTIC_V1",
+   "industry_name": "진단·시약·장비",
+   "strength": "있음",
+   "appears_as": "진단·시약·장비 에서는 쓸 수 있는 검체와 범위를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "쓸 수 있는 검체와 범위를 가르는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "생물안전·규제",
+   "industry": "INDUSTRY_FOODBIO_V1",
+   "industry_name": "식품·발효·소재",
+   "strength": "있음",
+   "appears_as": "식품·발효·소재 에서는 위생 관리를 기록으로 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "위생 관리를 기록으로 남기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "생물안전·규제",
+   "industry": "INDUSTRY_AGRIBIO_V1",
+   "industry_name": "농업·종자·동물",
+   "strength": "있음",
+   "appears_as": "농업·종자·동물 에서는 환경에 내보낼 범위를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "환경에 내보낼 범위를 가르는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "생물안전·규제",
+   "industry": "INDUSTRY_ENVBIO_V1",
+   "industry_name": "환경·바이오에너지",
+   "strength": "있음",
+   "appears_as": "환경·바이오에너지 에서는 법 기준을 운전 조건으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "법 기준을 운전 조건으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "생물안전·규제",
+   "industry": "INDUSTRY_COSMETIC_V1",
+   "industry_name": "화장품·기능성 소재",
+   "strength": "있음",
+   "appears_as": "화장품·기능성 소재 에서는 안전하게 쓸 범위를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "안전하게 쓸 범위를 가르는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "생물안전·규제",
+   "industry": "INDUSTRY_PUBLICLAB_V1",
+   "industry_name": "공공 연구·검정 기관",
+   "strength": "있음",
+   "appears_as": "공공 연구·검정 기관 에서는 승인과 신고 서류를 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "승인과 신고 서류를 남기는가"
+   ]
+  }
+ ],
+ "td_role": [
+  {
+   "td": "TD01",
+   "td_name": "분자생물 실험",
+   "role": "ROLE_RNDLAB_V1",
+   "role_name": "연구개발 실험",
+   "strength": "중심",
+   "appears_as": "연구개발 실험 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "분자생물 실험",
+   "role": "ROLE_BIOINFO_V1",
+   "role_name": "생물정보·데이터 분석",
+   "strength": "드묾",
+   "appears_as": "생물정보·데이터 분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "분자생물 실험",
+   "role": "ROLE_VALIDATION_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "분자생물 실험",
+   "role": "ROLE_PROCESS_V1",
+   "role_name": "생물공정·생산",
+   "strength": "드묾",
+   "appears_as": "생물공정·생산 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "분자생물 실험",
+   "role": "ROLE_FACILITY_V1",
+   "role_name": "장비·시설 운용",
+   "strength": "드묾",
+   "appears_as": "장비·시설 운용 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "분자생물 실험",
+   "role": "ROLE_PROJECT_V1",
+   "role_name": "과제·임상 운영",
+   "strength": "드묾",
+   "appears_as": "과제·임상 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "분자생물 실험",
+   "role": "ROLE_DISCOVERY_V1",
+   "role_name": "탐색 연구",
+   "strength": "드묾",
+   "appears_as": "탐색 연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "분자생물 실험",
+   "role": "ROLE_QARA_V1",
+   "role_name": "품질보증·규제",
+   "strength": "드묾",
+   "appears_as": "품질보증·규제 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "세포·조직 배양",
+   "role": "ROLE_RNDLAB_V1",
+   "role_name": "연구개발 실험",
+   "strength": "중심",
+   "appears_as": "연구개발 실험 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "세포·조직 배양",
+   "role": "ROLE_BIOINFO_V1",
+   "role_name": "생물정보·데이터 분석",
+   "strength": "드묾",
+   "appears_as": "생물정보·데이터 분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "세포·조직 배양",
+   "role": "ROLE_VALIDATION_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "세포·조직 배양",
+   "role": "ROLE_PROCESS_V1",
+   "role_name": "생물공정·생산",
+   "strength": "드묾",
+   "appears_as": "생물공정·생산 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "세포·조직 배양",
+   "role": "ROLE_FACILITY_V1",
+   "role_name": "장비·시설 운용",
+   "strength": "중심",
+   "appears_as": "장비·시설 운용 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "세포·조직 배양",
+   "role": "ROLE_PROJECT_V1",
+   "role_name": "과제·임상 운영",
+   "strength": "드묾",
+   "appears_as": "과제·임상 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "세포·조직 배양",
+   "role": "ROLE_DISCOVERY_V1",
+   "role_name": "탐색 연구",
+   "strength": "드묾",
+   "appears_as": "탐색 연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "세포·조직 배양",
+   "role": "ROLE_QARA_V1",
+   "role_name": "품질보증·규제",
+   "strength": "드묾",
+   "appears_as": "품질보증·규제 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "미생물·발효",
+   "role": "ROLE_RNDLAB_V1",
+   "role_name": "연구개발 실험",
+   "strength": "드묾",
+   "appears_as": "연구개발 실험 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "미생물·발효",
+   "role": "ROLE_BIOINFO_V1",
+   "role_name": "생물정보·데이터 분석",
+   "strength": "드묾",
+   "appears_as": "생물정보·데이터 분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "미생물·발효",
+   "role": "ROLE_VALIDATION_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "미생물·발효",
+   "role": "ROLE_PROCESS_V1",
+   "role_name": "생물공정·생산",
+   "strength": "중심",
+   "appears_as": "생물공정·생산 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "미생물·발효",
+   "role": "ROLE_FACILITY_V1",
+   "role_name": "장비·시설 운용",
+   "strength": "드묾",
+   "appears_as": "장비·시설 운용 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "미생물·발효",
+   "role": "ROLE_PROJECT_V1",
+   "role_name": "과제·임상 운영",
+   "strength": "드묾",
+   "appears_as": "과제·임상 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "미생물·발효",
+   "role": "ROLE_DISCOVERY_V1",
+   "role_name": "탐색 연구",
+   "strength": "드묾",
+   "appears_as": "탐색 연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "미생물·발효",
+   "role": "ROLE_QARA_V1",
+   "role_name": "품질보증·규제",
+   "strength": "드묾",
+   "appears_as": "품질보증·규제 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "단백질·효소 공학",
+   "role": "ROLE_RNDLAB_V1",
+   "role_name": "연구개발 실험",
+   "strength": "드묾",
+   "appears_as": "연구개발 실험 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "단백질·효소 공학",
+   "role": "ROLE_BIOINFO_V1",
+   "role_name": "생물정보·데이터 분석",
+   "strength": "드묾",
+   "appears_as": "생물정보·데이터 분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "단백질·효소 공학",
+   "role": "ROLE_VALIDATION_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "단백질·효소 공학",
+   "role": "ROLE_PROCESS_V1",
+   "role_name": "생물공정·생산",
+   "strength": "중심",
+   "appears_as": "생물공정·생산 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "단백질·효소 공학",
+   "role": "ROLE_FACILITY_V1",
+   "role_name": "장비·시설 운용",
+   "strength": "드묾",
+   "appears_as": "장비·시설 운용 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "단백질·효소 공학",
+   "role": "ROLE_PROJECT_V1",
+   "role_name": "과제·임상 운영",
+   "strength": "드묾",
+   "appears_as": "과제·임상 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "단백질·효소 공학",
+   "role": "ROLE_DISCOVERY_V1",
+   "role_name": "탐색 연구",
+   "strength": "드묾",
+   "appears_as": "탐색 연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "단백질·효소 공학",
+   "role": "ROLE_QARA_V1",
+   "role_name": "품질보증·규제",
+   "strength": "드묾",
+   "appears_as": "품질보증·규제 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "유전자 조작·클로닝",
+   "role": "ROLE_RNDLAB_V1",
+   "role_name": "연구개발 실험",
+   "strength": "중심",
+   "appears_as": "연구개발 실험 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "유전자 조작·클로닝",
+   "role": "ROLE_BIOINFO_V1",
+   "role_name": "생물정보·데이터 분석",
+   "strength": "드묾",
+   "appears_as": "생물정보·데이터 분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "유전자 조작·클로닝",
+   "role": "ROLE_VALIDATION_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "유전자 조작·클로닝",
+   "role": "ROLE_PROCESS_V1",
+   "role_name": "생물공정·생산",
+   "strength": "드묾",
+   "appears_as": "생물공정·생산 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "유전자 조작·클로닝",
+   "role": "ROLE_FACILITY_V1",
+   "role_name": "장비·시설 운용",
+   "strength": "드묾",
+   "appears_as": "장비·시설 운용 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "유전자 조작·클로닝",
+   "role": "ROLE_PROJECT_V1",
+   "role_name": "과제·임상 운영",
+   "strength": "드묾",
+   "appears_as": "과제·임상 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "유전자 조작·클로닝",
+   "role": "ROLE_DISCOVERY_V1",
+   "role_name": "탐색 연구",
+   "strength": "중심",
+   "appears_as": "탐색 연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "유전자 조작·클로닝",
+   "role": "ROLE_QARA_V1",
+   "role_name": "품질보증·규제",
+   "strength": "드묾",
+   "appears_as": "품질보증·규제 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분석·기기 측정",
+   "role": "ROLE_RNDLAB_V1",
+   "role_name": "연구개발 실험",
+   "strength": "드묾",
+   "appears_as": "연구개발 실험 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분석·기기 측정",
+   "role": "ROLE_BIOINFO_V1",
+   "role_name": "생물정보·데이터 분석",
+   "strength": "중심",
+   "appears_as": "생물정보·데이터 분석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분석·기기 측정",
+   "role": "ROLE_VALIDATION_V1",
+   "role_name": "시험·검증",
+   "strength": "중심",
+   "appears_as": "시험·검증 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분석·기기 측정",
+   "role": "ROLE_PROCESS_V1",
+   "role_name": "생물공정·생산",
+   "strength": "드묾",
+   "appears_as": "생물공정·생산 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분석·기기 측정",
+   "role": "ROLE_FACILITY_V1",
+   "role_name": "장비·시설 운용",
+   "strength": "중심",
+   "appears_as": "장비·시설 운용 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분석·기기 측정",
+   "role": "ROLE_PROJECT_V1",
+   "role_name": "과제·임상 운영",
+   "strength": "드묾",
+   "appears_as": "과제·임상 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분석·기기 측정",
+   "role": "ROLE_DISCOVERY_V1",
+   "role_name": "탐색 연구",
+   "strength": "드묾",
+   "appears_as": "탐색 연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "분석·기기 측정",
+   "role": "ROLE_QARA_V1",
+   "role_name": "품질보증·규제",
+   "strength": "드묾",
+   "appears_as": "품질보증·규제 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "생물정보·데이터",
+   "role": "ROLE_RNDLAB_V1",
+   "role_name": "연구개발 실험",
+   "strength": "드묾",
+   "appears_as": "연구개발 실험 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "생물정보·데이터",
+   "role": "ROLE_BIOINFO_V1",
+   "role_name": "생물정보·데이터 분석",
+   "strength": "중심",
+   "appears_as": "생물정보·데이터 분석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "생물정보·데이터",
+   "role": "ROLE_VALIDATION_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "생물정보·데이터",
+   "role": "ROLE_PROCESS_V1",
+   "role_name": "생물공정·생산",
+   "strength": "드묾",
+   "appears_as": "생물공정·생산 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "생물정보·데이터",
+   "role": "ROLE_FACILITY_V1",
+   "role_name": "장비·시설 운용",
+   "strength": "드묾",
+   "appears_as": "장비·시설 운용 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "생물정보·데이터",
+   "role": "ROLE_PROJECT_V1",
+   "role_name": "과제·임상 운영",
+   "strength": "드묾",
+   "appears_as": "과제·임상 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "생물정보·데이터",
+   "role": "ROLE_DISCOVERY_V1",
+   "role_name": "탐색 연구",
+   "strength": "중심",
+   "appears_as": "탐색 연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "생물정보·데이터",
+   "role": "ROLE_QARA_V1",
+   "role_name": "품질보증·규제",
+   "strength": "드묾",
+   "appears_as": "품질보증·규제 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "면역·진단",
+   "role": "ROLE_RNDLAB_V1",
+   "role_name": "연구개발 실험",
+   "strength": "드묾",
+   "appears_as": "연구개발 실험 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "면역·진단",
+   "role": "ROLE_BIOINFO_V1",
+   "role_name": "생물정보·데이터 분석",
+   "strength": "드묾",
+   "appears_as": "생물정보·데이터 분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "면역·진단",
+   "role": "ROLE_VALIDATION_V1",
+   "role_name": "시험·검증",
+   "strength": "중심",
+   "appears_as": "시험·검증 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "면역·진단",
+   "role": "ROLE_PROCESS_V1",
+   "role_name": "생물공정·생산",
+   "strength": "드묾",
+   "appears_as": "생물공정·생산 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "면역·진단",
+   "role": "ROLE_FACILITY_V1",
+   "role_name": "장비·시설 운용",
+   "strength": "드묾",
+   "appears_as": "장비·시설 운용 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "면역·진단",
+   "role": "ROLE_PROJECT_V1",
+   "role_name": "과제·임상 운영",
+   "strength": "중심",
+   "appears_as": "과제·임상 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "면역·진단",
+   "role": "ROLE_DISCOVERY_V1",
+   "role_name": "탐색 연구",
+   "strength": "드묾",
+   "appears_as": "탐색 연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "면역·진단",
+   "role": "ROLE_QARA_V1",
+   "role_name": "품질보증·규제",
+   "strength": "드묾",
+   "appears_as": "품질보증·규제 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "생물공정·스케일업",
+   "role": "ROLE_RNDLAB_V1",
+   "role_name": "연구개발 실험",
+   "strength": "드묾",
+   "appears_as": "연구개발 실험 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "생물공정·스케일업",
+   "role": "ROLE_BIOINFO_V1",
+   "role_name": "생물정보·데이터 분석",
+   "strength": "드묾",
+   "appears_as": "생물정보·데이터 분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "생물공정·스케일업",
+   "role": "ROLE_VALIDATION_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "생물공정·스케일업",
+   "role": "ROLE_PROCESS_V1",
+   "role_name": "생물공정·생산",
+   "strength": "중심",
+   "appears_as": "생물공정·생산 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "생물공정·스케일업",
+   "role": "ROLE_FACILITY_V1",
+   "role_name": "장비·시설 운용",
+   "strength": "드묾",
+   "appears_as": "장비·시설 운용 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "생물공정·스케일업",
+   "role": "ROLE_PROJECT_V1",
+   "role_name": "과제·임상 운영",
+   "strength": "드묾",
+   "appears_as": "과제·임상 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "생물공정·스케일업",
+   "role": "ROLE_DISCOVERY_V1",
+   "role_name": "탐색 연구",
+   "strength": "드묾",
+   "appears_as": "탐색 연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "생물공정·스케일업",
+   "role": "ROLE_QARA_V1",
+   "role_name": "품질보증·규제",
+   "strength": "중심",
+   "appears_as": "품질보증·규제 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질관리·규격",
+   "role": "ROLE_RNDLAB_V1",
+   "role_name": "연구개발 실험",
+   "strength": "드묾",
+   "appears_as": "연구개발 실험 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질관리·규격",
+   "role": "ROLE_BIOINFO_V1",
+   "role_name": "생물정보·데이터 분석",
+   "strength": "드묾",
+   "appears_as": "생물정보·데이터 분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질관리·규격",
+   "role": "ROLE_VALIDATION_V1",
+   "role_name": "시험·검증",
+   "strength": "중심",
+   "appears_as": "시험·검증 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질관리·규격",
+   "role": "ROLE_PROCESS_V1",
+   "role_name": "생물공정·생산",
+   "strength": "드묾",
+   "appears_as": "생물공정·생산 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질관리·규격",
+   "role": "ROLE_FACILITY_V1",
+   "role_name": "장비·시설 운용",
+   "strength": "드묾",
+   "appears_as": "장비·시설 운용 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질관리·규격",
+   "role": "ROLE_PROJECT_V1",
+   "role_name": "과제·임상 운영",
+   "strength": "드묾",
+   "appears_as": "과제·임상 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질관리·규격",
+   "role": "ROLE_DISCOVERY_V1",
+   "role_name": "탐색 연구",
+   "strength": "드묾",
+   "appears_as": "탐색 연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "품질관리·규격",
+   "role": "ROLE_QARA_V1",
+   "role_name": "품질보증·규제",
+   "strength": "중심",
+   "appears_as": "품질보증·규제 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "연구 설계·통계",
+   "role": "ROLE_RNDLAB_V1",
+   "role_name": "연구개발 실험",
+   "strength": "드묾",
+   "appears_as": "연구개발 실험 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "연구 설계·통계",
+   "role": "ROLE_BIOINFO_V1",
+   "role_name": "생물정보·데이터 분석",
+   "strength": "중심",
+   "appears_as": "생물정보·데이터 분석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "연구 설계·통계",
+   "role": "ROLE_VALIDATION_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "연구 설계·통계",
+   "role": "ROLE_PROCESS_V1",
+   "role_name": "생물공정·생산",
+   "strength": "드묾",
+   "appears_as": "생물공정·생산 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "연구 설계·통계",
+   "role": "ROLE_FACILITY_V1",
+   "role_name": "장비·시설 운용",
+   "strength": "드묾",
+   "appears_as": "장비·시설 운용 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "연구 설계·통계",
+   "role": "ROLE_PROJECT_V1",
+   "role_name": "과제·임상 운영",
+   "strength": "중심",
+   "appears_as": "과제·임상 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "연구 설계·통계",
+   "role": "ROLE_DISCOVERY_V1",
+   "role_name": "탐색 연구",
+   "strength": "중심",
+   "appears_as": "탐색 연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "연구 설계·통계",
+   "role": "ROLE_QARA_V1",
+   "role_name": "품질보증·규제",
+   "strength": "드묾",
+   "appears_as": "품질보증·규제 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "생물안전·규제",
+   "role": "ROLE_RNDLAB_V1",
+   "role_name": "연구개발 실험",
+   "strength": "드묾",
+   "appears_as": "연구개발 실험 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "생물안전·규제",
+   "role": "ROLE_BIOINFO_V1",
+   "role_name": "생물정보·데이터 분석",
+   "strength": "드묾",
+   "appears_as": "생물정보·데이터 분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "생물안전·규제",
+   "role": "ROLE_VALIDATION_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "생물안전·규제",
+   "role": "ROLE_PROCESS_V1",
+   "role_name": "생물공정·생산",
+   "strength": "드묾",
+   "appears_as": "생물공정·생산 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "생물안전·규제",
+   "role": "ROLE_FACILITY_V1",
+   "role_name": "장비·시설 운용",
+   "strength": "중심",
+   "appears_as": "장비·시설 운용 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "생물안전·규제",
+   "role": "ROLE_PROJECT_V1",
+   "role_name": "과제·임상 운영",
+   "strength": "중심",
+   "appears_as": "과제·임상 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "생물안전·규제",
+   "role": "ROLE_DISCOVERY_V1",
+   "role_name": "탐색 연구",
+   "strength": "드묾",
+   "appears_as": "탐색 연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "생물안전·규제",
+   "role": "ROLE_QARA_V1",
+   "role_name": "품질보증·규제",
+   "strength": "중심",
+   "appears_as": "품질보증·규제 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ]
+  }
+ ]
+}

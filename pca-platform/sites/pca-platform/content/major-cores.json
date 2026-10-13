@@ -1238,22 +1238,53 @@
    "major": "BT",
    "name_ko": "바이오·생명공학",
    "name_en": "Biotechnology and Bioengineering",
-   "assessment_version": null,
-   "status": "planned",
+   "assessment_version": "BT_V1",
+   "status": "building",
    "maturity": "FOUNDATION",
    "aliases": [
     "생명공학과",
     "바이오공학과",
     "의생명공학과",
-    "바이오메디컬공학과"
+    "바이오메디컬공학과",
+    "유전공학과",
+    "바이오의약학과",
+    "응용생명공학과"
    ],
    "markets": [
     "KR",
     "GLOBAL"
    ],
-   "files": {},
-   "domain_count": null,
-   "axis_count": 8
+   "files": {
+    "taxonomy": "bt-v1-taxonomy.json",
+    "domains": "bt-v1-domains.json",
+    "checklists": "bt-v1-checklists.json",
+    "items_blueprint": "bt-v1-items-blueprint.json",
+    "checklist_additions": "bt-v1-checklist-additions.json",
+    "common_additions": "bt-v1-common-additions.json",
+    "items": "bt-v1-items.json",
+    "relations": "bt-v1-relations.json",
+    "constructs": "bt-v1-constructs.json"
+   },
+   "domain_count": 12,
+   "axis_count": 8,
+   "role_function_count": 8,
+   "packs": {
+    "industry": "bt-industry-packs.json",
+    "role": "bt-role-packs.json"
+   },
+   "domains_note": "열둘은 앞 Core 들의 열둘을 맞춘 수가 아니다. 생명공학이 실제로 내리는 판단을 세어 분자 실험과 배양과 발효와 단백질과 유전자와 분석과 자료와 진단과 공정과 품질과 연구 설계와 생물안전까지 열둘이고, `실험 노트 쓰기` 와 `문헌 읽기` 같은 **일하는 방식**은 영역으로 두지 않았다. 그런 것은 열두 영역 전부에 걸쳐 있어서 영역으로 두면 같은 자리를 두 번 센다",
+   "packs_note": "산업팩은 여덟이고 생명공학이 실제로 서는 자리로 갈랐다. **`바이오` 를 산업으로 두지 않는다**: 그것은 분야 이름이지 하는 일이 아니고, 같은 분야 안에서 의약품과 진단과 식품과 환경이 서로 다른 판단을 묻는다. 완제 의약품과 위탁 개발생산을 따로 둔 것도 같은 까닭이다: 앞엣것은 허가 서류가 기준을 정하고 뒤엣것은 고객사 한 곳의 규격이 기준을 정한다",
+   "open_to_students": false,
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다",
+   "fixtures": {
+    "personas": "sites/pca-platform/assessment/BT_V1/personas.json",
+    "bank_lock": "sites/pca-platform/assessment/BT_V1/bank-lock.json",
+    "measurement_map": "docs/metri/BT_CORE_V1_MEASURE.md",
+    "gaming_doc": "docs/metri/BT_CORE_V1_GAMING.md"
+   },
+   "specializations": [],
+   "specializations_note": "갈래가 없다. 배재대 생명공학과는 두 Catalog 모두 트랙을 두지 않고 학과 하나로 선다. **쓰이지 않는 갈래를 미리 적어 두지 않는다**: 이름만 있는 갈래는 그 학과를 `갈래 작성 필요` 로 세워 놓고 아무것도 조정하지 않는다",
+   "aliases_note": "`생명과학과` 와 `분자생물학과` 와 `미생물학과` 는 여기 적지 않는다. 그 이름은 `BIO_CORE_V1`(생명과학)이 들고 있고, **한 학과 이름이 두 Core 를 가리키면 그 학과 학생이 어느 자로 재어졌는지 아무도 모른다.** 어느 쪽인지는 그 학과를 아는 분이 정한다"
   },
   {
    "code": "FOOD_CORE_V1",
