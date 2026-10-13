@@ -1,20 +1,22 @@
 /**
- * 전기전자 Core 의 검토표를 **은행에서 읽어** 만든다.
+ * 그 Core 의 검토표를 **은행에서 읽어** 만든다. 전공 이름과 파일 이름은
+ * 등록부에서 끌어온다: 적어 두면 Core 를 하나 더 만드는 일이 베끼는 일이 된다.
  *
  * 손으로 적으면 문면을 고친 날 표가 조용히 옛 문장을 들고 있다. 그래서
  * 사람이 적는 자리는 원본 JSON 하나고 여기서 나오는 것은 생성물이다.
  *
- *   npm run ee:qa
+ *   CORE=CS_CORE_V1 npm run core:qa
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const DIR = "sites/pca-platform/content";
-const CORE = process.env.CORE ?? "EE_CORE_V1";
+const CORE = process.env.CORE ?? "ME_CORE_V3";
 const read = (n) => JSON.parse(readFileSync(join(DIR, n), "utf8"));
 const reg = read("major-cores.json");
 const entry = reg.cores.find((c) => c.code === CORE);
 if (!entry) throw new Error(`등록부에 ${CORE} 가 없습니다`);
+const NM = entry.name_ko ?? CORE;
 
 const tax = read(entry.files.taxonomy);
 const dom = read(entry.files.domains);
@@ -35,10 +37,11 @@ const secName = bp.result_sections;
 
 /* ── 영역별 검토표 ───────────────────────────────────────────────── */
 const L = [];
-L.push(`# 전기전자 Core 영역별 검토표 (${entry.assessment_version} · ${bank.item_bank_version})`);
+L.push(`# ${NM} Core 영역별 검토표 (${entry.assessment_version} · ${bank.item_bank_version})`);
 L.push("");
 L.push("이 파일은 **생성물이다**. 고칠 곳은 `" + entry.files.items + "` 와"
-  + " `" + entry.files.domains + "` 이고, 고친 뒤 `npm run ee:qa` 를 돌린다.");
+  + " `" + entry.files.domains + "` 이고, 고친 뒤 `CORE=" + CORE
+  + " npm run core:qa` 를 돌린다.");
 L.push("");
 L.push(`영역 ${dom.domains.length} · 축 ${AX.length} · 체크리스트 `
   + `${Object.values(lists.domains).reduce((a, d) => a + Object.values(d).reduce((x, v) => x + v.length, 0), 0)}`
@@ -72,12 +75,12 @@ for (const d of dom.domains) {
   L.push(`견주는 대상: ${d.verify_targets.join(" · ")}`);
   L.push("");
 }
-writeFileSync("docs/metri/EE_CORE_V1_DOMAINS.md", L.join("\n") + "\n");
-console.log(`  docs/metri/EE_CORE_V1_DOMAINS.md · 영역 ${dom.domains.length} · 줄 ${L.length}`);
+writeFileSync(`docs/metri/${CORE}_DOMAINS.md`, L.join("\n") + "\n");
+console.log(`  docs/metri/${CORE}_DOMAINS.md · 영역 ${dom.domains.length} · 줄 ${L.length}`);
 
 /* ── 문항 추적표 ─────────────────────────────────────────────────── */
 const T = [];
-T.push(`# 전기전자 Core 문항 추적표 (${bank.item_bank_version})`);
+T.push(`# ${NM} Core 문항 추적표 (${bank.item_bank_version})`);
 T.push("");
 T.push("문항마다 **무엇을 재는가 · 어느 영역 · 어느 판단 축 · 어느 결과 절 ·"
   + " 어떻게 받는가**를 적는다. 빈칸이 있으면 그 문항은 받고 쓰지 않는 자리다.");
@@ -99,12 +102,12 @@ for (const i of bank.items) {
 }
 T.push("");
 T.push("결과 절: " + Object.entries(secName).map(([k, v]) => `${k} ${v}`).join(" · "));
-writeFileSync("docs/metri/EE_CORE_V1_ITEMS.md", T.join("\n") + "\n");
-console.log(`  docs/metri/EE_CORE_V1_ITEMS.md · 문항 ${bank.items.length} · 줄 ${T.length}`);
+writeFileSync(`docs/metri/${CORE}_ITEMS.md`, T.join("\n") + "\n");
+console.log(`  docs/metri/${CORE}_ITEMS.md · 문항 ${bank.items.length} · 줄 ${T.length}`);
 
 /* ── 팩과 관계표 ─────────────────────────────────────────────────── */
 const P = [];
-P.push(`# 전기전자 Core 산업팩과 역할팩 (${CORE})`);
+P.push(`# ${NM} Core 산업팩과 역할팩 (${CORE})`);
 P.push("");
 P.push(`산업 ${ind.packs.length} · 역할 ${role.packs.length}`
   + ` · 관계표 영역×산업 ${rel.td_industry.length} · 영역×역할 ${rel.td_role.length}`);
@@ -151,5 +154,5 @@ for (const p of role.packs) {
   P.push(`지원 자료: ${p.application_material.join(" · ")}`);
   P.push("");
 }
-writeFileSync("docs/metri/EE_CORE_V1_PACKS.md", P.join("\n") + "\n");
-console.log(`  docs/metri/EE_CORE_V1_PACKS.md · 팩 ${ind.packs.length + role.packs.length} · 줄 ${P.length}`);
+writeFileSync(`docs/metri/${CORE}_PACKS.md`, P.join("\n") + "\n");
+console.log(`  docs/metri/${CORE}_PACKS.md · 팩 ${ind.packs.length + role.packs.length} · 줄 ${P.length}`);

@@ -1,0 +1,1010 @@
+{
+ "schema_version": "cs-v1-personas.1",
+ "core": "CS_CORE_V1",
+ "note": "판단 엔진의 고정 fixture 다. 기대하는 묶음과 까닭을 **자료보다 먼저** 적어 두었고, 규칙을 고치면 여기서 먼저 깨진다. `golden` 은 Core 판정의 지문이고 `GOLDEN=update CORE=CS_CORE_V1 npm run v3:scoring` 으로만 다시 적는다. 축 하나에 수를 적으면 그 칸의 문항 전부가 같은 값을 받는다: 선별 축은 영역마다 문항이 둘이다",
+ "shorthand": {
+  "grid": "영역마다 [관심 1~5, 경험 0~2, 학습 의향 1~5]",
+  "axes": "영역마다 축별 보기 번호(0~3). 한 칸에 문항이 둘이면 배열로 적는다",
+  "checklist": "영역·축마다 고른 항목 수. 실제 체크리스트에서 앞에서부터 센다",
+  "artifacts": "영역마다 고른 산출물 수",
+  "verify": "영역마다 고른 검증 대상 수",
+  "note": "심화를 연 영역은 선별 네 축도 함께 열린다(expander 가 더해 준다)"
+ },
+ "cases": {
+  "note": "변형 검사 A~G 와 15·17·18 절이 가리키는 자리. 검사 스크립트에 Core 이름을 적지 않으려고 자료로 적는다",
+  "base": "P12",
+  "interest_only": "P11",
+  "verify_only": "P10",
+  "industries": [
+   "INDUSTRY_PLATFORM_V1",
+   "INDUSTRY_FINTECH_V1",
+   "INDUSTRY_GAME_V1",
+   null
+  ],
+  "roles": [
+   "ROLE_DEV_V1",
+   "ROLE_QA_V1",
+   "ROLE_QUALITY_V1",
+   null
+  ],
+  "industry_labels": "플랫폼·금융·게임·없음",
+  "role_labels": "개발·시험·품질·없음",
+  "interest_domain": "TD01",
+  "output_domain": "TD10",
+  "verify_domain": "TD08",
+  "reading": {
+   "note": "읽는 규칙이 가리키는 자리. 벌 번호와 영역 코드는 Core 마다 다르다",
+   "established": {
+    "persona": "P12",
+    "domain": "TD03"
+   },
+   "output_missing": {
+    "persona": "P11",
+    "domain": "TD10"
+   },
+   "axis_missing": {
+    "persona": "P08",
+    "domain": "TD02"
+   },
+   "interest_only": {
+    "persona": "P02",
+    "domain": "TD09"
+   },
+   "tier_invariant": "P11"
+  },
+  "pack": {
+   "industry": "INDUSTRY_FINTECH_V1",
+   "role": "ROLE_QA_V1",
+   "industry_version": "INDUSTRY_FINTECH_V1.v1",
+   "role_version": "ROLE_QA_V1.v1"
+  },
+  "sloppy": {
+   "CN_1A": {
+    "kind": "level",
+    "index": 3
+   },
+   "CN_1B": {
+    "kind": "level",
+    "index": 0
+   },
+   "CN_2A": {
+    "kind": "level",
+    "index": 3
+   },
+   "CN_2B": {
+    "kind": "level",
+    "index": 0
+   }
+  }
+ },
+ "personas": [
+  {
+   "id": "P01",
+   "name": "경험 없는 학부생",
+   "tier": "BASIC",
+   "stage": "bachelor",
+   "field": null,
+   "probe": [
+    "TD01",
+    "TD03"
+   ],
+   "deep": [],
+   "grid": {
+    "TD01": [
+     3,
+     0,
+     3
+    ],
+    "TD03": [
+     3,
+     0,
+     3
+    ]
+   },
+   "axes": {
+    "TD01": {
+     "J3": 0,
+     "J5": 0,
+     "J6": 0,
+     "J7": 0
+    },
+    "TD03": {
+     "J3": 0,
+     "J5": 0,
+     "J6": 0,
+     "J7": 0
+    }
+   },
+   "expect": {
+    "TD01": {
+     "zone": "Z4_INSUFFICIENT_EVIDENCE",
+     "reasons": [
+      "TIER_WITHOUT_DEEP_AXES",
+      "NO_CONFIRMED_AXIS"
+     ],
+     "next": []
+    },
+    "TD03": {
+     "zone": "Z4_INSUFFICIENT_EVIDENCE",
+     "reasons": [
+      "TIER_WITHOUT_DEEP_AXES",
+      "NO_CONFIRMED_AXIS"
+     ],
+     "next": []
+    }
+   },
+   "expect_focus": [],
+   "expect_quality": "LOW_VARIANCE",
+   "golden": "1688fa050d611e61"
+  },
+  {
+   "id": "P02",
+   "name": "관심만 높은 학부생",
+   "tier": "BASIC",
+   "stage": "bachelor",
+   "field": null,
+   "probe": [
+    "TD09",
+    "TD11"
+   ],
+   "deep": [],
+   "grid": {
+    "TD09": [
+     5,
+     0,
+     5
+    ],
+    "TD11": [
+     5,
+     0,
+     4
+    ]
+   },
+   "axes": {
+    "TD09": {
+     "J3": 0,
+     "J5": 0,
+     "J6": 0,
+     "J7": 0
+    },
+    "TD11": {
+     "J3": 0,
+     "J5": 0,
+     "J6": 0,
+     "J7": 0
+    }
+   },
+   "expect": {
+    "TD09": {
+     "zone": "Z4_INSUFFICIENT_EVIDENCE",
+     "reasons": [
+      "TIER_WITHOUT_DEEP_AXES",
+      "NO_CONFIRMED_AXIS"
+     ],
+     "next": [
+      "TRY_SHORT_EXPERIENCE",
+      "STUDY_NEXT"
+     ],
+     "quadrant": "B_HIGH_LOW"
+    },
+    "TD11": {
+     "zone": "Z4_INSUFFICIENT_EVIDENCE",
+     "reasons": [
+      "TIER_WITHOUT_DEEP_AXES",
+      "NO_CONFIRMED_AXIS"
+     ],
+     "next": [
+      "TRY_SHORT_EXPERIENCE",
+      "STUDY_NEXT"
+     ],
+     "quadrant": "B_HIGH_LOW"
+    }
+   },
+   "expect_focus": [
+    "TD09",
+    "TD11"
+   ],
+   "expect_quality": "OK",
+   "golden": "e448aab86859555b"
+  },
+  {
+   "id": "P03",
+   "name": "경험은 있고 관심이 낮은 학부생",
+   "tier": "BASIC",
+   "stage": "bachelor",
+   "field": null,
+   "probe": [
+    "TD04",
+    "TD10",
+    "TD07"
+   ],
+   "deep": [],
+   "grid": {
+    "TD04": [
+     2,
+     2,
+     2
+    ],
+    "TD10": [
+     1,
+     2,
+     1
+    ],
+    "TD07": [
+     1,
+     1,
+     1
+    ]
+   },
+   "axes": {
+    "TD04": {
+     "J3": 2,
+     "J5": 2,
+     "J6": 1,
+     "J7": 0
+    },
+    "TD10": {
+     "J3": 2,
+     "J5": 1,
+     "J6": 2,
+     "J7": 1
+    },
+    "TD07": {
+     "J3": 1,
+     "J5": 1,
+     "J6": 1,
+     "J7": 1
+    }
+   },
+   "expect": {
+    "TD04": {
+     "zone": "Z3_EVIDENCE_LOW_INTEREST",
+     "next": [
+      "ADD_VERIFICATION",
+      "RECHECK_DIRECTION"
+     ],
+     "quadrant": "C_LOW_HIGH"
+    },
+    "TD10": {
+     "zone": "Z3_EVIDENCE_LOW_INTEREST",
+     "next": [
+      "BUILD_OUTPUT",
+      "RECHECK_DIRECTION"
+     ],
+     "quadrant": "C_LOW_HIGH"
+    },
+    "TD07": {
+     "quadrant": "D_LOW_LOW"
+    }
+   },
+   "expect_focus": [],
+   "expect_quality": "OK",
+   "golden": "9b9b9c62fb17ec35"
+  },
+  {
+   "id": "P04",
+   "name": "전부 최고로 답한 사람",
+   "tier": "BASIC",
+   "stage": "bachelor",
+   "field": null,
+   "probe": [
+    "TD01",
+    "TD02"
+   ],
+   "deep": [],
+   "grid": {
+    "TD01": [
+     5,
+     2,
+     5
+    ],
+    "TD02": [
+     5,
+     2,
+     5
+    ]
+   },
+   "axes": {
+    "TD01": {
+     "J3": 3,
+     "J5": 3,
+     "J6": 3,
+     "J7": 3
+    },
+    "TD02": {
+     "J3": 3,
+     "J5": 3,
+     "J6": 3,
+     "J7": 3
+    }
+   },
+   "expect": {
+    "TD01": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "reasons": [
+      "TIER_WITHOUT_DEEP_AXES"
+     ],
+     "owned_has": []
+    },
+    "TD02": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "reasons": [
+      "TIER_WITHOUT_DEEP_AXES"
+     ],
+     "owned_has": []
+    }
+   },
+   "expect_focus": [
+    "TD01",
+    "TD02"
+   ],
+   "expect_quality": "REVIEW",
+   "golden": "b24e26e1dda9e5aa"
+  },
+  {
+   "id": "P05",
+   "name": "선별 네 축이 다 선 학부생",
+   "tier": "BASIC",
+   "stage": "bachelor",
+   "field": null,
+   "probe": [
+    "TD03",
+    "TD05"
+   ],
+   "deep": [],
+   "grid": {
+    "TD03": [
+     4,
+     2,
+     4
+    ],
+    "TD05": [
+     4,
+     2,
+     3
+    ]
+   },
+   "axes": {
+    "TD03": {
+     "J3": 2,
+     "J5": 2,
+     "J6": 2,
+     "J7": 2
+    },
+    "TD05": {
+     "J3": 2,
+     "J5": 2,
+     "J6": 2,
+     "J7": 2
+    }
+   },
+   "expect": {
+    "TD03": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "reasons": [
+      "TIER_WITHOUT_DEEP_AXES"
+     ]
+    },
+    "TD05": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "reasons": [
+      "TIER_WITHOUT_DEEP_AXES"
+     ]
+    }
+   },
+   "expect_focus": [
+    "TD03",
+    "TD05"
+   ],
+   "expect_quality": "OK",
+   "golden": "43c1ac44e1981c72"
+  },
+  {
+   "id": "P06",
+   "name": "산출물이 빈 학부생",
+   "tier": "STANDARD",
+   "stage": "bachelor",
+   "field": null,
+   "probe": [
+    "TD01",
+    "TD04"
+   ],
+   "deep": [
+    "TD01",
+    "TD04"
+   ],
+   "grid": {
+    "TD01": [
+     4,
+     2,
+     4
+    ],
+    "TD04": [
+     4,
+     1,
+     4
+    ]
+   },
+   "axes": {
+    "TD01": {
+     "J1": 2,
+     "J2": 2,
+     "J3": 2,
+     "J4": 2,
+     "J5": 0,
+     "J6": 2,
+     "J7": 2,
+     "J8": 1
+    },
+    "TD04": {
+     "J1": 2,
+     "J2": 2,
+     "J3": 1,
+     "J4": 2,
+     "J5": 0,
+     "J6": 1,
+     "J7": 1,
+     "J8": 0
+    }
+   },
+   "checklist": {
+    "TD01": {
+     "J3": 2,
+     "J6": 2
+    }
+   },
+   "expect": {
+    "TD01": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "reasons": [
+      "MISSING_OUTPUT"
+     ],
+     "next": [
+      "BUILD_OUTPUT"
+     ]
+    },
+    "TD04": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "reasons": [
+      "INSUFFICIENT_CONFIRMED_AXES",
+      "MISSING_OUTPUT",
+      "MISSING_REQUIRED_AXIS",
+      "MISSING_VERIFICATION"
+     ]
+    }
+   },
+   "expect_focus": [
+    "TD01",
+    "TD04"
+   ],
+   "expect_quality": "OK",
+   "golden": "afb033dd08e83336"
+  },
+  {
+   "id": "P07",
+   "name": "고르게 답한 대학원생",
+   "tier": "STANDARD",
+   "stage": "master",
+   "field": "STEM",
+   "probe": [
+    "TD02",
+    "TD06",
+    "TD08"
+   ],
+   "deep": [
+    "TD02",
+    "TD06",
+    "TD08"
+   ],
+   "grid": {
+    "TD02": [
+     3,
+     1,
+     3
+    ],
+    "TD06": [
+     3,
+     1,
+     3
+    ],
+    "TD08": [
+     3,
+     1,
+     3
+    ]
+   },
+   "axes": {
+    "TD02": {
+     "J1": 2,
+     "J2": 2,
+     "J3": 2,
+     "J4": 2,
+     "J5": 2,
+     "J6": 2,
+     "J7": 2,
+     "J8": 2
+    },
+    "TD06": {
+     "J1": 2,
+     "J2": 2,
+     "J3": 2,
+     "J4": 2,
+     "J5": 2,
+     "J6": 2,
+     "J7": 2,
+     "J8": 2
+    },
+    "TD08": {
+     "J1": 2,
+     "J2": 2,
+     "J3": 2,
+     "J4": 2,
+     "J5": 2,
+     "J6": 2,
+     "J7": 2,
+     "J8": 2
+    }
+   },
+   "checklist": {
+    "TD02": {
+     "J3": 1
+    },
+    "TD06": {
+     "J3": 1
+    },
+    "TD08": {
+     "J2": 1
+    }
+   },
+   "expect": {
+    "TD02": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE"
+    },
+    "TD06": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE"
+    },
+    "TD08": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE"
+    }
+   },
+   "expect_focus": [
+    "TD02",
+    "TD06",
+    "TD08"
+   ],
+   "expect_quality": "LOW_VARIANCE",
+   "golden": "56a5a026ba1814c0"
+  },
+  {
+   "id": "P08",
+   "name": "검증이 빈 대학원생",
+   "tier": "STANDARD",
+   "stage": "master",
+   "field": "STEM",
+   "probe": [
+    "TD02",
+    "TD11",
+    "TD05"
+   ],
+   "deep": [
+    "TD02",
+    "TD11",
+    "TD05"
+   ],
+   "grid": {
+    "TD02": [
+     4,
+     2,
+     4
+    ],
+    "TD11": [
+     5,
+     2,
+     5
+    ],
+    "TD05": [
+     5,
+     0,
+     5
+    ]
+   },
+   "axes": {
+    "TD02": {
+     "J1": 2,
+     "J2": 2,
+     "J3": 2,
+     "J4": 2,
+     "J5": 2,
+     "J6": 0,
+     "J7": 2,
+     "J8": 2
+    },
+    "TD11": {
+     "J1": 2,
+     "J2": 2,
+     "J3": 2,
+     "J4": 2,
+     "J5": 2,
+     "J6": 0,
+     "J7": 1,
+     "J8": 1
+    },
+    "TD05": {
+     "J1": 1,
+     "J2": 1,
+     "J3": 1,
+     "J4": 1,
+     "J5": 1,
+     "J6": 1,
+     "J7": 1,
+     "J8": 1
+    }
+   },
+   "checklist": {
+    "TD02": {
+     "J3": 2,
+     "J5": 2
+    }
+   },
+   "artifacts": {
+    "TD02": 2
+   },
+   "expect": {
+    "TD02": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE"
+    },
+    "TD11": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE"
+    },
+    "TD05": {
+     "zone": "Z4_INSUFFICIENT_EVIDENCE",
+     "reasons": [
+      "NO_CONFIRMED_AXIS"
+     ],
+     "next": [
+      "TRY_SHORT_EXPERIENCE",
+      "STUDY_NEXT"
+     ]
+    }
+   },
+   "expect_focus": [
+    "TD02",
+    "TD11"
+   ],
+   "expect_quality": "OK",
+   "golden": "48749c19ece75710"
+  },
+  {
+   "id": "P09",
+   "name": "소유까지 선 대학원생",
+   "tier": "STANDARD",
+   "stage": "master",
+   "field": "STEM",
+   "probe": [
+    "TD03"
+   ],
+   "deep": [
+    "TD03"
+   ],
+   "grid": {
+    "TD03": [
+     5,
+     2,
+     5
+    ]
+   },
+   "axes": {
+    "TD03": {
+     "J1": 2,
+     "J2": 2,
+     "J3": 3,
+     "J4": 2,
+     "J5": 3,
+     "J6": 2,
+     "J7": 2,
+     "J8": 2
+    }
+   },
+   "checklist": {
+    "TD03": {
+     "J3": 2,
+     "J5": 2,
+     "J6": 2
+    }
+   },
+   "artifacts": {
+    "TD03": 2
+   },
+   "verify": {
+    "TD03": 2
+   },
+   "expect": {
+    "TD03": {
+     "zone": "Z1_EVIDENCE_ESTABLISHED",
+     "reasons": [],
+     "next": [],
+     "owned_has": [
+      "J3",
+      "J5"
+     ]
+    }
+   },
+   "expect_focus": [
+    "TD03"
+   ],
+   "expect_quality": "OK",
+   "golden": "60d00424dcdb6024"
+  },
+  {
+   "id": "P10",
+   "name": "검증만 선 대학원생",
+   "tier": "PRO",
+   "stage": "master",
+   "field": "STEM",
+   "probe": [
+    "TD10",
+    "TD08"
+   ],
+   "deep": [
+    "TD10",
+    "TD08"
+   ],
+   "grid": {
+    "TD10": [
+     4,
+     2,
+     4
+    ],
+    "TD08": [
+     4,
+     2,
+     4
+    ]
+   },
+   "axes": {
+    "TD10": {
+     "J1": 2,
+     "J2": 2,
+     "J3": 1,
+     "J4": 2,
+     "J5": 1,
+     "J6": 3,
+     "J7": 2,
+     "J8": 1
+    },
+    "TD08": {
+     "J1": 2,
+     "J2": 2,
+     "J3": 1,
+     "J4": 2,
+     "J5": 1,
+     "J6": 0,
+     "J7": 1,
+     "J8": 1
+    }
+   },
+   "checklist": {
+    "TD10": {
+     "J6": 2
+    }
+   },
+   "verify": {
+    "TD10": 2
+   },
+   "industry": "INDUSTRY_FINTECH_V1",
+   "role": "ROLE_QA_V1",
+   "expect": {
+    "TD10": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "reasons": [
+      "MISSING_OUTPUT"
+     ]
+    },
+    "TD08": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "reasons": [
+      "INSUFFICIENT_CONFIRMED_AXES",
+      "MISSING_OUTPUT",
+      "MISSING_REQUIRED_AXIS",
+      "MISSING_VERIFICATION"
+     ]
+    }
+   },
+   "expect_focus": [
+    "TD08",
+    "TD10"
+   ],
+   "expect_quality": "OK",
+   "golden": "91e7d4a357c115a3"
+  },
+  {
+   "id": "P11",
+   "name": "타계열 대학원생",
+   "tier": "PRO",
+   "stage": "master",
+   "field": "BUSINESS",
+   "undergrad": "CS_CORE_V1",
+   "probe": [
+    "TD01",
+    "TD10"
+   ],
+   "deep": [
+    "TD01",
+    "TD10"
+   ],
+   "grid": {
+    "TD01": [
+     5,
+     1,
+     5
+    ],
+    "TD10": [
+     4,
+     2,
+     4
+    ]
+   },
+   "axes": {
+    "TD01": {
+     "J1": 2,
+     "J2": 2,
+     "J3": 1,
+     "J4": 1,
+     "J5": 0,
+     "J6": 1,
+     "J7": 0,
+     "J8": 2
+    },
+    "TD10": {
+     "J1": 2,
+     "J2": 2,
+     "J3": 2,
+     "J4": 2,
+     "J5": 1,
+     "J6": 2,
+     "J7": 2,
+     "J8": 2
+    }
+   },
+   "checklist": {
+    "TD10": {
+     "J6": 2,
+     "J7": 2
+    }
+   },
+   "industry": "INDUSTRY_HEALTH_V1",
+   "role": "ROLE_PM_V1",
+   "expect": {
+    "TD01": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "quadrant": "B_HIGH_LOW"
+    },
+    "TD10": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "reasons": [
+      "MISSING_OUTPUT"
+     ]
+    }
+   },
+   "expect_focus": [
+    "TD01",
+    "TD10"
+   ],
+   "expect_quality": "OK",
+   "golden": "46a7eb67f5b90f39"
+  },
+  {
+   "id": "P12",
+   "name": "근거가 선 영역 둘",
+   "tier": "PRO",
+   "stage": "master",
+   "field": "STEM",
+   "probe": [
+    "TD03",
+    "TD04",
+    "TD10"
+   ],
+   "deep": [
+    "TD03",
+    "TD04",
+    "TD10"
+   ],
+   "grid": {
+    "TD03": [
+     5,
+     2,
+     5
+    ],
+    "TD04": [
+     5,
+     2,
+     4
+    ],
+    "TD10": [
+     4,
+     2,
+     4
+    ]
+   },
+   "axes": {
+    "TD03": {
+     "J1": 2,
+     "J2": 2,
+     "J3": 3,
+     "J4": 2,
+     "J5": 3,
+     "J6": 2,
+     "J7": 2,
+     "J8": 2
+    },
+    "TD04": {
+     "J1": 2,
+     "J2": 2,
+     "J3": 2,
+     "J4": 2,
+     "J5": 2,
+     "J6": 2,
+     "J7": 2,
+     "J8": 2
+    },
+    "TD10": {
+     "J1": 2,
+     "J2": 2,
+     "J3": 3,
+     "J4": 2,
+     "J5": 0,
+     "J6": 2,
+     "J7": 2,
+     "J8": 0
+    }
+   },
+   "checklist": {
+    "TD03": {
+     "J3": 2,
+     "J5": 2,
+     "J6": 1
+    }
+   },
+   "artifacts": {
+    "TD03": 2,
+    "TD04": 1
+   },
+   "verify": {
+    "TD03": 1
+   },
+   "industry": null,
+   "role": null,
+   "expect": {
+    "TD03": {
+     "zone": "Z1_EVIDENCE_ESTABLISHED",
+     "reasons": [],
+     "next": [],
+     "owned_has": [
+      "J3",
+      "J5"
+     ]
+    },
+    "TD04": {
+     "zone": "Z1_EVIDENCE_ESTABLISHED",
+     "reasons": [],
+     "next": []
+    },
+    "TD10": {
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "reasons": [
+      "MISSING_OUTPUT"
+     ],
+     "next": [
+      "BUILD_OUTPUT"
+     ]
+    }
+   },
+   "expect_focus": [
+    "TD03",
+    "TD04"
+   ],
+   "expect_quality": "OK",
+   "golden": "cd0fb990eaeb2af7"
+  }
+ ]
+}

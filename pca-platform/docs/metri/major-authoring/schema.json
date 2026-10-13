@@ -38,7 +38,9 @@
       "relations",
       "migration",
       "constructs"
-    ]
+    ],
+    "default_core": "ME_CORE_V3",
+    "default_core_note": "`CORE` 를 적지 않은 `v3:*` 검사가 보는 Core. 짓고 있는 Core 가 둘이 되는 날 그 검사들이 전부 던지지 않게 사람이 정해 적는다"
   },
   "files": {
     "taxonomy": {
@@ -194,6 +196,7 @@
       "domain_count",
       "family",
       "files",
+      "fixtures",
       "frozen",
       "major",
       "markets",

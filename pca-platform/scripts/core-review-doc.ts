@@ -1,5 +1,8 @@
 /**
- * 전기전자 전공자가 **코드를 열지 않고** 검토할 자료를 만든다.
+ * 그 전공 전문가가 **코드를 열지 않고** 검토할 자료를 만든다.
+ *
+ * 전공 이름을 이 파일에 적지 않는다: 등록부의 `name_ko` 를 읽는다. 적어
+ * 두면 Core 를 하나 더 만드는 일이 이 생성기를 베끼는 일이 된다.
  *
  * 손으로 적으면 문면을 고친 날 검토표가 조용히 옛 문장을 들고 있다.
  * 그래서 사람이 적는 자리는 원본 JSON 이고 여기서 나오는 것은 생성물이다.
@@ -9,7 +12,9 @@
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { core as coreEntry, CONTENT_DIR } from "../src/lib/me-v3/core-registry";
+import {
+  core as coreEntry, CONTENT_DIR, defaultCore,
+} from "../src/lib/me-v3/core-registry";
 import { load, score } from "../src/lib/me-v3/scoring/engine";
 import { expand, type Fixture } from "../src/lib/me-v3/scoring/fixtures";
 import { buildResult } from "../src/lib/me-v3/result/build";
@@ -18,8 +23,10 @@ import {
 } from "../src/lib/me-v3/result/text.ko";
 import type { Submission } from "../src/lib/me-v3/scoring/types";
 
-const CORE = process.env.CORE ?? "EE_CORE_V1";
+const CORE = process.env.CORE ?? defaultCore();
 const entry = coreEntry(CORE);
+/** 사람이 읽는 전공 이름. 등록부가 정본이다 */
+const NM = entry.name_ko ?? CORE;
 const read = <T>(n: string): T =>
   JSON.parse(readFileSync(join(CONTENT_DIR, n), "utf8")) as T;
 
@@ -62,29 +69,29 @@ const L: string[] = [];
 const p = (s = "") => L.push(s);
 
 /* ── 머리말 ─────────────────────────────────────────────── */
-p(`# 전기전자 Core 전공자 검토표 (${CORE} · ${bank.item_bank_version})`);
+p(`# ${NM} Core 전공자 검토표 (${CORE} · ${bank.item_bank_version})`);
 p();
-p("이 문서는 전기전자공학 전공자와 현직자가 읽고 판정하는 자료입니다.");
+p(`이 문서는 ${NM} 전공자와 현직자가 읽고 판정하는 자료입니다.`);
 p("코드를 열지 않고 읽을 수 있게 만들었고, 항목마다 판정 칸이 비어 있습니다.");
 p("표시는 네 가지입니다.");
 p();
 p("| 표시 | 뜻 |");
 p("|---|---|");
 p("| 유지 | 그대로 둡니다 |");
-p("| 수정 필요 | 내용이 전기전자에서 하는 판단과 어긋납니다 |");
+p(`| 수정 필요 | 내용이 ${NM}에서 하는 판단과 어긋납니다 |`);
 p("| 삭제 | 이 항목이 재는 것이 없습니다 |");
 p("| 표현 수정 | 재는 것은 맞고 문장만 고칩니다 |");
 p();
 p("판정은 이 문서에 바로 적어도 되고, 표로 모아 적으시려면 같은 폴더의");
-p("`EE_CORE_V1_REVIEW.csv` 를 쓰시면 됩니다. 두 파일의 코드가 같습니다.");
+p(`\`${CORE}_REVIEW.csv\` 를 쓰시면 됩니다. 두 파일의 코드가 같습니다.`);
 p();
 p("## 검토하실 때 묻는 열 가지");
 p();
 p("항목마다 아래 열 가지를 보시면 됩니다. 한 항목이 전부에 걸리지는 않습니다.");
 p();
 [
-  "전기전자 학부생이 읽고 뜻을 알 수 있는 문장인가",
-  "실제 전기전자에서 하는 판단인가",
+  `${NM} 학부생이 읽고 뜻을 알 수 있는 문장인가`,
+  `실제 ${NM}에서 하는 판단인가`,
   "지나치게 세부 전공에 치우치지 않았는가",
   "학부와 석사와 박사의 수준 표현이 알맞은가",
   "관심과 경험을 한 문항에서 섞어 묻지 않았는가",
@@ -192,7 +199,7 @@ for (const k of ind.packs) {
   p();
   for (const d of q.demands) p(`- ${d}`);
   p();
-  p("**어떤 전기전자 판단을 보는가**");
+  p(`**어떤 ${NM} 판단을 보는가**`);
   p();
   p("| 보는 판단 | 영역 | 축 | 왜 |");
   p("|---|---|---|---|");
@@ -345,14 +352,14 @@ p("---");
 p();
 p("## 검토가 끝난 뒤");
 p();
-p("판정이 돌아오면 원본 JSON 을 고치고 `npm run ee:all` 을 돌립니다. 문면을");
-p("고치면 문항 은행 판본을 올리고 지문을 다시 적습니다. 학생에게 여는 것은 그");
-p("다음이고, 지금은 등록부에서 닫혀 있습니다.");
+p(`판정이 돌아오면 원본 JSON 을 고치고 \`CORE=${CORE} npm run core:all\` 을`);
+p("돌립니다. 문면을 고치면 문항 은행 판본을 올리고 지문을 다시 적습니다.");
+p("학생에게 여는 것은 그 다음이고, 지금은 등록부에서 닫혀 있습니다.");
 p();
 p("이 검사는 아직 실제 응답으로 신뢰도와 타당도를 재지 않았습니다. 그래서 어느");
 p("자리에서도 `검증된 검사` 로 적지 않습니다.");
 
-const md = `docs/metri/${CORE === "EE_CORE_V1" ? "EE_CORE_V1" : CORE}_REVIEW.md`;
+const md = `docs/metri/${CORE}_REVIEW.md`;
 const cs = md.replace(/\.md$/, ".csv");
 writeFileSync(md, `${L.join("\n")}\n`);
 writeFileSync(cs, `${csv.map((r) =>

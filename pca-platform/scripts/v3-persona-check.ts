@@ -11,12 +11,22 @@
  *   npm run v3:persona
  */
 import { readFileSync } from "node:fs";
-import { registry, defaultCore,} from "../src/lib/me-v3/core-registry";
+import {
+  registry, defaultCore, core as coreEntry,
+} from "../src/lib/me-v3/core-registry";
 import { load, score } from "../src/lib/me-v3/scoring/engine";
 import { expand, type Fixture } from "../src/lib/me-v3/scoring/fixtures";
 import type { Snapshot } from "../src/lib/me-v3/scoring/types";
 
-const FIX = "sites/pca-platform/assessment/ME_V3/personas.json";
+
+/** 읽는 규칙이 가리키는 자리. 벌 번호와 영역 코드는 Core 마다 다르다 */
+type Reading = {
+  established?: { persona: string; domain: string };
+  output_missing?: { persona: string; domain: string };
+  axis_missing?: { persona: string; domain: string };
+  interest_only?: { persona: string; domain: string };
+  tier_invariant?: string;
+};
 
 let fail = 0, pass = 0;
 function ok(n: string, good: boolean, d = ""): void {
@@ -32,7 +42,14 @@ function pickCore(): string {
 function main(): void {
   const core = pickCore();
   const loaded = load(core);
-  const fx = JSON.parse(readFileSync(FIX, "utf8")) as { personas: Fixture[] };
+  /**
+   * 사람 열두 벌은 **그 Core 의 fixture** 다. 경로를 이 파일에 적지 않는다:
+   * 적어 두면 다른 Core 로 돌릴 때 **남의 사람 벌로 이 Core 를 읽는다.**
+   */
+  const fix = coreEntry(core).fixtures?.personas;
+  if (!fix) throw new Error(`${core} 의 fixtures.personas 가 등록부에 없습니다`);
+  const fx = JSON.parse(readFileSync(fix, "utf8")) as
+    { personas: Fixture[]; cases?: { reading?: Reading } };
   console.log(`  core  ${core} · 사람 ${fx.personas.length}벌 (제품 엔진으로 돌린다)\n`);
 
   const out = new Map<string, Snapshot>();
@@ -51,41 +68,58 @@ function main(): void {
   }
   console.log("");
 
+  /**
+   * 어느 벌의 어느 영역이 어느 상태를 맡는지도 **그 Core 의 자료**다. 사람
+   * 벌의 번호와 영역 코드를 이 파일에 적으면, 다른 Core 로 돌릴 때 그 번호가
+   * 가리키는 벌이 전혀 다른 처지라 **읽는 규칙이 아니라 fixture 가 걸린다.**
+   */
+  const R = (fx.cases?.reading ?? {}) as Reading;
+  for (const k of ["established", "output_missing", "axis_missing",
+                   "interest_only", "tier_invariant"] as const) {
+    if (!R[k]) throw new Error(`${core} 의 cases.reading.${k} 가 fixture 에 없습니다`);
+  }
+  const slot = (k: keyof Reading) => R[k] as { persona: string; domain: string };
+
   /* 1. 근거가 선 영역과 덜 선 영역이 갈린다 */
+  const est = slot("established"), omi = slot("output_missing");
+  const ami = slot("axis_missing"), iop = slot("interest_only");
   ok("판단과 산출물과 검증이 다 있으면 근거가 선다",
-     dom("P12", "TD02")?.zone === "Z1_EVIDENCE_ESTABLISHED",
-     `확인 ${dom("P12", "TD02")?.confirmed.length}축`);
+     dom(est.persona, est.domain)?.zone === "Z1_EVIDENCE_ESTABLISHED",
+     `확인 ${dom(est.persona, est.domain)?.confirmed.length}축`);
   ok("판단이 많아도 남은 것이 없으면 근거가 서지 않는다",
-     dom("P11", "TD02")?.zone === "Z2_EVIDENCE_INCOMPLETE" &&
-     dom("P11", "TD02")?.reasons.includes("MISSING_OUTPUT") === true,
-     `확인 ${dom("P11", "TD02")?.confirmed.length}축 · 산출물이 비어 있다`);
+     dom(omi.persona, omi.domain)?.zone === "Z2_EVIDENCE_INCOMPLETE" &&
+     dom(omi.persona, omi.domain)?.reasons.includes("MISSING_OUTPUT") === true,
+     `확인 ${dom(omi.persona, omi.domain)?.confirmed.length}축 · 산출물이 비어 있다`);
   ok("산출물만 있고 직접 판단이 비면 근거가 서지 않는다",
-     dom("P10", "TD02")?.zone === "Z2_EVIDENCE_INCOMPLETE" &&
-     dom("P10", "TD02")?.reasons.includes("MISSING_REQUIRED_AXIS") === true,
+     dom(ami.persona, ami.domain)?.zone === "Z2_EVIDENCE_INCOMPLETE" &&
+     dom(ami.persona, ami.domain)?.reasons.includes("MISSING_REQUIRED_AXIS") === true,
      "필수 축 J3 가 비어 있다");
   ok("관심만 높고 겪은 적이 없으면 근거 부족으로 적는다",
-     dom("P02", "TD01")?.zone === "Z4_INSUFFICIENT_EVIDENCE" &&
-     dom("P02", "TD01")?.next.includes("TRY_SHORT_EXPERIENCE") === true,
+     dom(iop.persona, iop.domain)?.zone === "Z4_INSUFFICIENT_EVIDENCE" &&
+     dom(iop.persona, iop.domain)?.next.includes("TRY_SHORT_EXPERIENCE") === true,
      "짧게 겪어 보는 것이 먼저다");
 
   /* 2. 많이 해 본 사람과 아무 경험이 없는 사람을 한 칸에 넣지 않는다 */
-  const many = dom("P11", "TD02");
-  const none = dom("P02", "TD01");
+  const many = dom(omi.persona, omi.domain);
+  const none = dom(iop.persona, iop.domain);
   ok("경험이 많고 남은 것이 없는 사람과 경험이 없는 사람이 다른 묶음이다",
      many?.zone !== none?.zone,
      `${many?.zone} · ${none?.zone}`);
 
   /* 3. 첫 쪽에 올리는 영역 */
   ok("근거가 선 영역이 먼저 올라간다",
-     S("P12").focus.join(",") === S("P12").zones.Z1_EVIDENCE_ESTABLISHED.join(","),
-     S("P12").focus.join(","));
+     S(est.persona).focus.join(",") ===
+       S(est.persona).zones.Z1_EVIDENCE_ESTABLISHED.join(","),
+     S(est.persona).focus.join(","));
   ok("근거가 선 영역이 없으면 덜 선 쪽을 올린다",
-     S("P11").focus.join(",") === S("P11").zones.Z2_EVIDENCE_INCOMPLETE.join(","),
-     S("P11").focus.join(","));
+     S(omi.persona).focus.join(",") ===
+       S(omi.persona).zones.Z2_EVIDENCE_INCOMPLETE.join(","),
+     S(omi.persona).focus.join(","));
   ok("둘 다 없으면 관심이 높은 쪽을 올린다",
-     S("P02").focus.length > 0 &&
-     S("P02").focus.every((td) => dom("P02", td)?.interest.band === "HIGH"),
-     S("P02").focus.join(","));
+     S(iop.persona).focus.length > 0 &&
+     S(iop.persona).focus.every((td) =>
+       dom(iop.persona, td)?.interest.band === "HIGH"),
+     S(iop.persona).focus.join(","));
 
   /* 4. 관심과 근거를 네 칸으로 갈라 읽는다 */
   const quads = new Set<string>();
@@ -96,7 +130,7 @@ function main(): void {
      [...quads].sort().join(" · "));
 
   /* 5. 학습 의향을 관심에 더하지 않는다 */
-  const p02 = dom("P02", "TD01");
+  const p02 = dom(iop.persona, iop.domain);
   ok("관심이 높고 경험이 없으면 공부보다 겪어 보기를 먼저 적는다",
      p02?.next[0] === "TRY_SHORT_EXPERIENCE",
      p02?.next.join(" · "));
@@ -111,12 +145,13 @@ function main(): void {
        d.reasons.includes("TIER_WITHOUT_DEEP_AXES") || d.zone === "NOT_EXPLORED")));
 
   /* 7. PRO 라서 판정이 올라가지 않는다 */
-  const p11pro = S("P11");
+  const tiId = R.tier_invariant as string;
+  const asPro = S(tiId);
   const asStandard = score(expand({
-    ...(fx.personas.find((f) => f.id === "P11") as Fixture), tier: "STANDARD",
+    ...(fx.personas.find((f) => f.id === tiId) as Fixture), tier: "STANDARD",
   }, core), loaded);
   ok("등급을 올려도 영역 판정이 저절로 오르지 않는다",
-     JSON.stringify(p11pro.zones) === JSON.stringify(asStandard.zones),
+     JSON.stringify(asPro.zones) === JSON.stringify(asStandard.zones),
      "번역과 목표가 더해질 뿐이다");
 
   /* 8. 동점을 오류로 보지 않는다 */

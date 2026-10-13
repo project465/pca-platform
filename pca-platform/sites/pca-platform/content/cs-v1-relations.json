@@ -1,0 +1,2082 @@
+{
+ "schema_version": "cs-v1-relations.1",
+ "core": "CS_CORE_V1",
+ "note": "기술영역과 산업, 기술영역과 역할의 관계를 두 표로 둔다. 세 축을 미리 곱해 두지 않는다: 열두 영역과 여덟 산업과 여덟 역할을 곱하면 칠백예순여덟 줄이 되고 그만큼의 줄을 사람이 손으로 유지할 수 없다. 어느 줄도 점수를 만들지 않는다: `strength` 는 설명하는 차례를 정하고 `appears_as` 는 결과지가 그 말로 옮겨 적을 때 읽는다",
+ "combine_rule": "산업 하나와 역할 하나를 함께 고른 사람에게는 두 표에서 같은 영역의 줄을 뽑아 나란히 놓는다. 둘 다 `중심` 인 영역이 먼저 서고, 한쪽만 중심인 영역이 다음이고, 양쪽이 드문 영역은 적지 않는다",
+ "td_industry": [
+  {
+   "td": "TD01",
+   "td_name": "소프트웨어 설계·구조",
+   "industry": "INDUSTRY_PLATFORM_V1",
+   "industry_name": "플랫폼·온라인 서비스",
+   "strength": "있음",
+   "appears_as": "플랫폼·온라인 서비스 에서는 오래 고칠 수 있게 모듈을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "오래 고칠 수 있게 모듈을 가르는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "소프트웨어 설계·구조",
+   "industry": "INDUSTRY_FINTECH_V1",
+   "industry_name": "금융·결제",
+   "strength": "있음",
+   "appears_as": "금융·결제 에서는 변경 이력을 추적할 수 있게 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "변경 이력을 추적할 수 있게 남기는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "소프트웨어 설계·구조",
+   "industry": "INDUSTRY_GAME_V1",
+   "industry_name": "게임·실시간 콘텐츠",
+   "strength": "있음",
+   "appears_as": "게임·실시간 콘텐츠 에서는 무엇을 보여 주고 무엇을 생략할지 합의하는가 로 나타납니다",
+   "axes_watched": [
+    "J8"
+   ],
+   "dimensions": [
+    "무엇을 보여 주고 무엇을 생략할지 합의하는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "소프트웨어 설계·구조",
+   "industry": "INDUSTRY_ENTERPRISE_V1",
+   "industry_name": "기업용 소프트웨어·수탁 개발",
+   "strength": "중심",
+   "appears_as": "기업용 소프트웨어·수탁 개발 에서는 고객 요구를 받지 않을 것까지 가르는가 · 오래 고칠 수 있게 모듈을 가르는가 · 무엇을 왜 바꿨는지 남겨 추적되는가 · 요구 변경을 기한과 묶어 조정하는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5",
+    "J8"
+   ],
+   "dimensions": [
+    "고객 요구를 받지 않을 것까지 가르는가",
+    "오래 고칠 수 있게 모듈을 가르는가",
+    "무엇을 왜 바꿨는지 남겨 추적되는가",
+    "요구 변경을 기한과 묶어 조정하는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "소프트웨어 설계·구조",
+   "industry": "INDUSTRY_MOBILITY_V1",
+   "industry_name": "자동차·모빌리티 소프트웨어",
+   "strength": "있음",
+   "appears_as": "자동차·모빌리티 소프트웨어 에서는 안전과 기능 사이를 조정하는가 로 나타납니다",
+   "axes_watched": [
+    "J8"
+   ],
+   "dimensions": [
+    "안전과 기능 사이를 조정하는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "소프트웨어 설계·구조",
+   "industry": "INDUSTRY_HEALTH_V1",
+   "industry_name": "의료·보건 정보",
+   "strength": "있음",
+   "appears_as": "의료·보건 정보 에서는 사람이 판단할 자리를 남겨 두는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "사람이 판단할 자리를 남겨 두는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "소프트웨어 설계·구조",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·국방 정보화",
+   "strength": "중심",
+   "appears_as": "공공·국방 정보화 에서는 아주 오래 유지할 것을 생각해 나누는가 · 요구 변경을 절차에 맞춰 조정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J8"
+   ],
+   "dimensions": [
+    "아주 오래 유지할 것을 생각해 나누는가",
+    "요구 변경을 절차에 맞춰 조정하는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "자료구조·알고리즘",
+   "industry": "INDUSTRY_PLATFORM_V1",
+   "industry_name": "플랫폼·온라인 서비스",
+   "strength": "있음",
+   "appears_as": "플랫폼·온라인 서비스 에서는 자료 표현을 사용량에 맞춰 바꾸는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "자료 표현을 사용량에 맞춰 바꾸는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "자료구조·알고리즘",
+   "industry": "INDUSTRY_FINTECH_V1",
+   "industry_name": "금융·결제",
+   "strength": "있음",
+   "appears_as": "금융·결제 에서는 계산 결과의 반올림까지 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "계산 결과의 반올림까지 맞추는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "자료구조·알고리즘",
+   "industry": "INDUSTRY_GAME_V1",
+   "industry_name": "게임·실시간 콘텐츠",
+   "strength": "있음",
+   "appears_as": "게임·실시간 콘텐츠 에서는 자료 표현을 계산량 기준으로 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "자료 표현을 계산량 기준으로 고르는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "자료구조·알고리즘",
+   "industry": "INDUSTRY_ENTERPRISE_V1",
+   "industry_name": "기업용 소프트웨어·수탁 개발",
+   "strength": "드묾",
+   "appears_as": "기업용 소프트웨어·수탁 개발 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "자료구조·알고리즘",
+   "industry": "INDUSTRY_MOBILITY_V1",
+   "industry_name": "자동차·모빌리티 소프트웨어",
+   "strength": "드묾",
+   "appears_as": "자동차·모빌리티 소프트웨어 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "자료구조·알고리즘",
+   "industry": "INDUSTRY_HEALTH_V1",
+   "industry_name": "의료·보건 정보",
+   "strength": "드묾",
+   "appears_as": "의료·보건 정보 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "자료구조·알고리즘",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·국방 정보화",
+   "strength": "드묾",
+   "appears_as": "공공·국방 정보화 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "서버·API 구현",
+   "industry": "INDUSTRY_PLATFORM_V1",
+   "industry_name": "플랫폼·온라인 서비스",
+   "strength": "있음",
+   "appears_as": "플랫폼·온라인 서비스 에서는 요청이 늘어도 버티는 구조를 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "요청이 늘어도 버티는 구조를 정하는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "서버·API 구현",
+   "industry": "INDUSTRY_FINTECH_V1",
+   "industry_name": "금융·결제",
+   "strength": "있음",
+   "appears_as": "금융·결제 에서는 한 번만 처리되게 거래 범위를 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "한 번만 처리되게 거래 범위를 정하는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "서버·API 구현",
+   "industry": "INDUSTRY_GAME_V1",
+   "industry_name": "게임·실시간 콘텐츠",
+   "strength": "있음",
+   "appears_as": "게임·실시간 콘텐츠 에서는 서버가 가진 상태를 기준으로 판정하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "서버가 가진 상태를 기준으로 판정하는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "서버·API 구현",
+   "industry": "INDUSTRY_ENTERPRISE_V1",
+   "industry_name": "기업용 소프트웨어·수탁 개발",
+   "strength": "있음",
+   "appears_as": "기업용 소프트웨어·수탁 개발 에서는 기존 시스템과 주고받을 규약을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "기존 시스템과 주고받을 규약을 정하는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "서버·API 구현",
+   "industry": "INDUSTRY_MOBILITY_V1",
+   "industry_name": "자동차·모빌리티 소프트웨어",
+   "strength": "드묾",
+   "appears_as": "자동차·모빌리티 소프트웨어 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "서버·API 구현",
+   "industry": "INDUSTRY_HEALTH_V1",
+   "industry_name": "의료·보건 정보",
+   "strength": "드묾",
+   "appears_as": "의료·보건 정보 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "서버·API 구현",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·국방 정보화",
+   "strength": "있음",
+   "appears_as": "공공·국방 정보화 에서는 자료를 넘기고 받는 규약을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "자료를 넘기고 받는 규약을 정하는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "데이터 저장·질의 설계",
+   "industry": "INDUSTRY_PLATFORM_V1",
+   "industry_name": "플랫폼·온라인 서비스",
+   "strength": "있음",
+   "appears_as": "플랫폼·온라인 서비스 에서는 질의와 색인을 사용량 기준으로 보는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "질의와 색인을 사용량 기준으로 보는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "데이터 저장·질의 설계",
+   "industry": "INDUSTRY_FINTECH_V1",
+   "industry_name": "금융·결제",
+   "strength": "있음",
+   "appears_as": "금융·결제 에서는 기록이 지워지지 않게 저장을 설계하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "기록이 지워지지 않게 저장을 설계하는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "데이터 저장·질의 설계",
+   "industry": "INDUSTRY_GAME_V1",
+   "industry_name": "게임·실시간 콘텐츠",
+   "strength": "드묾",
+   "appears_as": "게임·실시간 콘텐츠 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "데이터 저장·질의 설계",
+   "industry": "INDUSTRY_ENTERPRISE_V1",
+   "industry_name": "기업용 소프트웨어·수탁 개발",
+   "strength": "있음",
+   "appears_as": "기업용 소프트웨어·수탁 개발 에서는 고객 자료를 옮기는 절차를 만드는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "고객 자료를 옮기는 절차를 만드는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "데이터 저장·질의 설계",
+   "industry": "INDUSTRY_MOBILITY_V1",
+   "industry_name": "자동차·모빌리티 소프트웨어",
+   "strength": "드묾",
+   "appears_as": "자동차·모빌리티 소프트웨어 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "데이터 저장·질의 설계",
+   "industry": "INDUSTRY_HEALTH_V1",
+   "industry_name": "의료·보건 정보",
+   "strength": "중심",
+   "appears_as": "의료·보건 정보 에서는 기관마다 다른 꼴을 하나로 맞추는가 · 오래 보관되게 저장을 설계하는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ],
+   "dimensions": [
+    "기관마다 다른 꼴을 하나로 맞추는가",
+    "오래 보관되게 저장을 설계하는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "데이터 저장·질의 설계",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·국방 정보화",
+   "strength": "있음",
+   "appears_as": "공공·국방 정보화 에서는 기존 자료를 새 구조로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "기존 자료를 새 구조로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "사용자 인터페이스 구현",
+   "industry": "INDUSTRY_PLATFORM_V1",
+   "industry_name": "플랫폼·온라인 서비스",
+   "strength": "있음",
+   "appears_as": "플랫폼·온라인 서비스 에서는 화면 상태를 늘어나는 기능에 맞게 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "화면 상태를 늘어나는 기능에 맞게 가르는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "사용자 인터페이스 구현",
+   "industry": "INDUSTRY_FINTECH_V1",
+   "industry_name": "금융·결제",
+   "strength": "드묾",
+   "appears_as": "금융·결제 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "사용자 인터페이스 구현",
+   "industry": "INDUSTRY_GAME_V1",
+   "industry_name": "게임·실시간 콘텐츠",
+   "strength": "있음",
+   "appears_as": "게임·실시간 콘텐츠 에서는 입력에서 화면까지의 지연을 다루는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "입력에서 화면까지의 지연을 다루는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "사용자 인터페이스 구현",
+   "industry": "INDUSTRY_ENTERPRISE_V1",
+   "industry_name": "기업용 소프트웨어·수탁 개발",
+   "strength": "드묾",
+   "appears_as": "기업용 소프트웨어·수탁 개발 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "사용자 인터페이스 구현",
+   "industry": "INDUSTRY_MOBILITY_V1",
+   "industry_name": "자동차·모빌리티 소프트웨어",
+   "strength": "드묾",
+   "appears_as": "자동차·모빌리티 소프트웨어 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "사용자 인터페이스 구현",
+   "industry": "INDUSTRY_HEALTH_V1",
+   "industry_name": "의료·보건 정보",
+   "strength": "드묾",
+   "appears_as": "의료·보건 정보 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "사용자 인터페이스 구현",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·국방 정보화",
+   "strength": "드묾",
+   "appears_as": "공공·국방 정보화 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "시스템·동시성 프로그래밍",
+   "industry": "INDUSTRY_PLATFORM_V1",
+   "industry_name": "플랫폼·온라인 서비스",
+   "strength": "있음",
+   "appears_as": "플랫폼·온라인 서비스 에서는 자원을 쥐고 놓는 때를 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "자원을 쥐고 놓는 때를 정하는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "시스템·동시성 프로그래밍",
+   "industry": "INDUSTRY_FINTECH_V1",
+   "industry_name": "금융·결제",
+   "strength": "드묾",
+   "appears_as": "금융·결제 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "시스템·동시성 프로그래밍",
+   "industry": "INDUSTRY_GAME_V1",
+   "industry_name": "게임·실시간 콘텐츠",
+   "strength": "있음",
+   "appears_as": "게임·실시간 콘텐츠 에서는 자원을 언제 올리고 내릴지 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "자원을 언제 올리고 내릴지 정하는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "시스템·동시성 프로그래밍",
+   "industry": "INDUSTRY_ENTERPRISE_V1",
+   "industry_name": "기업용 소프트웨어·수탁 개발",
+   "strength": "있음",
+   "appears_as": "기업용 소프트웨어·수탁 개발 에서는 문제가 나면 고객 환경에서 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "문제가 나면 고객 환경에서 좁히는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "시스템·동시성 프로그래밍",
+   "industry": "INDUSTRY_MOBILITY_V1",
+   "industry_name": "자동차·모빌리티 소프트웨어",
+   "strength": "중심",
+   "appears_as": "자동차·모빌리티 소프트웨어 에서는 정해진 시간 안에 끝나게 처리를 나누는가 · 좁은 자원 안에서 메모리를 다루는가 · 기록으로 사고 원인을 되짚는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "정해진 시간 안에 끝나게 처리를 나누는가",
+    "좁은 자원 안에서 메모리를 다루는가",
+    "기록으로 사고 원인을 되짚는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "시스템·동시성 프로그래밍",
+   "industry": "INDUSTRY_HEALTH_V1",
+   "industry_name": "의료·보건 정보",
+   "strength": "드묾",
+   "appears_as": "의료·보건 정보 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "시스템·동시성 프로그래밍",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·국방 정보화",
+   "strength": "드묾",
+   "appears_as": "공공·국방 정보화 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "네트워크·분산 시스템",
+   "industry": "INDUSTRY_PLATFORM_V1",
+   "industry_name": "플랫폼·온라인 서비스",
+   "strength": "있음",
+   "appears_as": "플랫폼·온라인 서비스 에서는 부분 실패에서 전체가 멈추지 않게 하는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "부분 실패에서 전체가 멈추지 않게 하는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "네트워크·분산 시스템",
+   "industry": "INDUSTRY_FINTECH_V1",
+   "industry_name": "금융·결제",
+   "strength": "있음",
+   "appears_as": "금융·결제 에서는 정합성 수준을 돈 기준으로 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "정합성 수준을 돈 기준으로 고르는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "네트워크·분산 시스템",
+   "industry": "INDUSTRY_GAME_V1",
+   "industry_name": "게임·실시간 콘텐츠",
+   "strength": "있음",
+   "appears_as": "게임·실시간 콘텐츠 에서는 많이 모인 순간의 동시 처리를 버티는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "많이 모인 순간의 동시 처리를 버티는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "네트워크·분산 시스템",
+   "industry": "INDUSTRY_ENTERPRISE_V1",
+   "industry_name": "기업용 소프트웨어·수탁 개발",
+   "strength": "드묾",
+   "appears_as": "기업용 소프트웨어·수탁 개발 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "네트워크·분산 시스템",
+   "industry": "INDUSTRY_MOBILITY_V1",
+   "industry_name": "자동차·모빌리티 소프트웨어",
+   "strength": "있음",
+   "appears_as": "자동차·모빌리티 소프트웨어 에서는 통신이 끊긴 상태를 기본으로 두는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "통신이 끊긴 상태를 기본으로 두는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "네트워크·분산 시스템",
+   "industry": "INDUSTRY_HEALTH_V1",
+   "industry_name": "의료·보건 정보",
+   "strength": "드묾",
+   "appears_as": "의료·보건 정보 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "네트워크·분산 시스템",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·국방 정보화",
+   "strength": "있음",
+   "appears_as": "공공·국방 정보화 에서는 망이 끊긴 상태를 전제로 두는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "망이 끊긴 상태를 전제로 두는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "정보보안",
+   "industry": "INDUSTRY_PLATFORM_V1",
+   "industry_name": "플랫폼·온라인 서비스",
+   "strength": "있음",
+   "appears_as": "플랫폼·온라인 서비스 에서는 개인 정보가 흘러나갈 길을 막는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "개인 정보가 흘러나갈 길을 막는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "정보보안",
+   "industry": "INDUSTRY_FINTECH_V1",
+   "industry_name": "금융·결제",
+   "strength": "중심",
+   "appears_as": "금융·결제 에서는 규제 요구를 설계 조건으로 옮기는가 · 권한을 최소로 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ],
+   "dimensions": [
+    "규제 요구를 설계 조건으로 옮기는가",
+    "권한을 최소로 좁히는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "정보보안",
+   "industry": "INDUSTRY_GAME_V1",
+   "industry_name": "게임·실시간 콘텐츠",
+   "strength": "드묾",
+   "appears_as": "게임·실시간 콘텐츠 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "정보보안",
+   "industry": "INDUSTRY_ENTERPRISE_V1",
+   "industry_name": "기업용 소프트웨어·수탁 개발",
+   "strength": "있음",
+   "appears_as": "기업용 소프트웨어·수탁 개발 에서는 권한 요구를 고객 조직 구조에 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "권한 요구를 고객 조직 구조에 맞추는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "정보보안",
+   "industry": "INDUSTRY_MOBILITY_V1",
+   "industry_name": "자동차·모빌리티 소프트웨어",
+   "strength": "있음",
+   "appears_as": "자동차·모빌리티 소프트웨어 에서는 차량 자료를 보내는 길을 보호하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "차량 자료를 보내는 길을 보호하는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "정보보안",
+   "industry": "INDUSTRY_HEALTH_V1",
+   "industry_name": "의료·보건 정보",
+   "strength": "중심",
+   "appears_as": "의료·보건 정보 에서는 볼 수 있는 사람을 좁히고 기록하는가 · 규정 요구를 설계 조건으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ],
+   "dimensions": [
+    "볼 수 있는 사람을 좁히고 기록하는가",
+    "규정 요구를 설계 조건으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "정보보안",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·국방 정보화",
+   "strength": "중심",
+   "appears_as": "공공·국방 정보화 에서는 규정 요구를 설계 조건으로 옮기는가 · 누가 무엇을 했는지 남기는가 · 권한을 조직 규정에 맞게 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5"
+   ],
+   "dimensions": [
+    "규정 요구를 설계 조건으로 옮기는가",
+    "누가 무엇을 했는지 남기는가",
+    "권한을 조직 규정에 맞게 좁히는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "기계학습·데이터 분석",
+   "industry": "INDUSTRY_PLATFORM_V1",
+   "industry_name": "플랫폼·온라인 서비스",
+   "strength": "있음",
+   "appears_as": "플랫폼·온라인 서비스 에서는 지표로 기능을 켜고 끌 판단을 하는가 로 나타납니다",
+   "axes_watched": [
+    "J8"
+   ],
+   "dimensions": [
+    "지표로 기능을 켜고 끌 판단을 하는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "기계학습·데이터 분석",
+   "industry": "INDUSTRY_FINTECH_V1",
+   "industry_name": "금융·결제",
+   "strength": "있음",
+   "appears_as": "금융·결제 에서는 이상 거래를 자료에서 가려내는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "이상 거래를 자료에서 가려내는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "기계학습·데이터 분석",
+   "industry": "INDUSTRY_GAME_V1",
+   "industry_name": "게임·실시간 콘텐츠",
+   "strength": "있음",
+   "appears_as": "게임·실시간 콘텐츠 에서는 사용 기록으로 난이도를 판단하는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "사용 기록으로 난이도를 판단하는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "기계학습·데이터 분석",
+   "industry": "INDUSTRY_ENTERPRISE_V1",
+   "industry_name": "기업용 소프트웨어·수탁 개발",
+   "strength": "드묾",
+   "appears_as": "기업용 소프트웨어·수탁 개발 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "기계학습·데이터 분석",
+   "industry": "INDUSTRY_MOBILITY_V1",
+   "industry_name": "자동차·모빌리티 소프트웨어",
+   "strength": "있음",
+   "appears_as": "자동차·모빌리티 소프트웨어 에서는 센서 자료의 잡음을 처리하는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "센서 자료의 잡음을 처리하는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "기계학습·데이터 분석",
+   "industry": "INDUSTRY_HEALTH_V1",
+   "industry_name": "의료·보건 정보",
+   "strength": "중심",
+   "appears_as": "의료·보건 정보 에서는 자료 품질을 쓰기 전에 확인하는가 · 성능을 따로 둔 자료로 확인하는가 · 틀린 사례를 모아 원인을 좁히는가 · 자료가 어디서 왔는지 남기는가 · 결과를 의료진에게 설명하는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J5",
+    "J6",
+    "J7",
+    "J8"
+   ],
+   "dimensions": [
+    "자료 품질을 쓰기 전에 확인하는가",
+    "성능을 따로 둔 자료로 확인하는가",
+    "틀린 사례를 모아 원인을 좁히는가",
+    "자료가 어디서 왔는지 남기는가",
+    "결과를 의료진에게 설명하는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "기계학습·데이터 분석",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·국방 정보화",
+   "strength": "드묾",
+   "appears_as": "공공·국방 정보화 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "테스트·품질·배포 운영",
+   "industry": "INDUSTRY_PLATFORM_V1",
+   "industry_name": "플랫폼·온라인 서비스",
+   "strength": "있음",
+   "appears_as": "플랫폼·온라인 서비스 에서는 되돌릴 수 있는 배포 경로를 두는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "되돌릴 수 있는 배포 경로를 두는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "테스트·품질·배포 운영",
+   "industry": "INDUSTRY_FINTECH_V1",
+   "industry_name": "금융·결제",
+   "strength": "중심",
+   "appears_as": "금융·결제 에서는 기준과 대조해 통과를 판정하는가 · 장애가 나면 되돌리고 원인을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J6",
+    "J7"
+   ],
+   "dimensions": [
+    "기준과 대조해 통과를 판정하는가",
+    "장애가 나면 되돌리고 원인을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "테스트·품질·배포 운영",
+   "industry": "INDUSTRY_GAME_V1",
+   "industry_name": "게임·실시간 콘텐츠",
+   "strength": "있음",
+   "appears_as": "게임·실시간 콘텐츠 에서는 출시 뒤 더하는 내용을 되돌릴 수 있게 내보내는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "출시 뒤 더하는 내용을 되돌릴 수 있게 내보내는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "테스트·품질·배포 운영",
+   "industry": "INDUSTRY_ENTERPRISE_V1",
+   "industry_name": "기업용 소프트웨어·수탁 개발",
+   "strength": "중심",
+   "appears_as": "기업용 소프트웨어·수탁 개발 에서는 인수 기준과 결과를 대조해 판정하는가 · 고객 환경에서도 같게 설치되게 하는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ],
+   "dimensions": [
+    "인수 기준과 결과를 대조해 판정하는가",
+    "고객 환경에서도 같게 설치되게 하는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "테스트·품질·배포 운영",
+   "industry": "INDUSTRY_MOBILITY_V1",
+   "industry_name": "자동차·모빌리티 소프트웨어",
+   "strength": "중심",
+   "appears_as": "자동차·모빌리티 소프트웨어 에서는 안전 기준을 설계 조건으로 옮기는가 · 차량에 들어간 코드를 안전하게 갱신하는가 · 기준 적합을 근거와 함께 보이는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J6"
+   ],
+   "dimensions": [
+    "안전 기준을 설계 조건으로 옮기는가",
+    "차량에 들어간 코드를 안전하게 갱신하는가",
+    "기준 적합을 근거와 함께 보이는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "테스트·품질·배포 운영",
+   "industry": "INDUSTRY_HEALTH_V1",
+   "industry_name": "의료·보건 정보",
+   "strength": "드묾",
+   "appears_as": "의료·보건 정보 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "테스트·품질·배포 운영",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·국방 정보화",
+   "strength": "중심",
+   "appears_as": "공공·국방 정보화 에서는 기준 적합을 근거와 함께 보이는가 · 나뉜 망 안에서 도구를 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ],
+   "dimensions": [
+    "기준 적합을 근거와 함께 보이는가",
+    "나뉜 망 안에서 도구를 고르는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "실시간 그래픽스·게임 구현",
+   "industry": "INDUSTRY_PLATFORM_V1",
+   "industry_name": "플랫폼·온라인 서비스",
+   "strength": "드묾",
+   "appears_as": "플랫폼·온라인 서비스 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "실시간 그래픽스·게임 구현",
+   "industry": "INDUSTRY_FINTECH_V1",
+   "industry_name": "금융·결제",
+   "strength": "드묾",
+   "appears_as": "금융·결제 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "실시간 그래픽스·게임 구현",
+   "industry": "INDUSTRY_GAME_V1",
+   "industry_name": "게임·실시간 콘텐츠",
+   "strength": "중심",
+   "appears_as": "게임·실시간 콘텐츠 에서는 한 프레임 예산 안에서 그리는 차례를 정하는가 · 기기마다 재어 목표와 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ],
+   "dimensions": [
+    "한 프레임 예산 안에서 그리는 차례를 정하는가",
+    "기기마다 재어 목표와 견주는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "실시간 그래픽스·게임 구현",
+   "industry": "INDUSTRY_ENTERPRISE_V1",
+   "industry_name": "기업용 소프트웨어·수탁 개발",
+   "strength": "드묾",
+   "appears_as": "기업용 소프트웨어·수탁 개발 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "실시간 그래픽스·게임 구현",
+   "industry": "INDUSTRY_MOBILITY_V1",
+   "industry_name": "자동차·모빌리티 소프트웨어",
+   "strength": "드묾",
+   "appears_as": "자동차·모빌리티 소프트웨어 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "실시간 그래픽스·게임 구현",
+   "industry": "INDUSTRY_HEALTH_V1",
+   "industry_name": "의료·보건 정보",
+   "strength": "드묾",
+   "appears_as": "의료·보건 정보 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "실시간 그래픽스·게임 구현",
+   "industry": "INDUSTRY_PUBLIC_V1",
+   "industry_name": "공공·국방 정보화",
+   "strength": "드묾",
+   "appears_as": "공공·국방 정보화 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  }
+ ],
+ "td_role": [
+  {
+   "td": "TD01",
+   "td_name": "소프트웨어 설계·구조",
+   "role": "ROLE_DEV_V1",
+   "role_name": "설계·개발",
+   "strength": "중심",
+   "appears_as": "설계·개발 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "소프트웨어 설계·구조",
+   "role": "ROLE_PERF_V1",
+   "role_name": "해석·예측",
+   "strength": "드묾",
+   "appears_as": "해석·예측 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "소프트웨어 설계·구조",
+   "role": "ROLE_QA_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "소프트웨어 설계·구조",
+   "role": "ROLE_DEPLOY_V1",
+   "role_name": "빌드·배포 자동화",
+   "strength": "드묾",
+   "appears_as": "빌드·배포 자동화 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "소프트웨어 설계·구조",
+   "role": "ROLE_SRE_V1",
+   "role_name": "서비스 운영",
+   "strength": "드묾",
+   "appears_as": "서비스 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "소프트웨어 설계·구조",
+   "role": "ROLE_PM_V1",
+   "role_name": "통합·조정",
+   "strength": "중심",
+   "appears_as": "통합·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J4",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "소프트웨어 설계·구조",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "탐색·연구",
+   "strength": "드묾",
+   "appears_as": "탐색·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "소프트웨어 설계·구조",
+   "role": "ROLE_QUALITY_V1",
+   "role_name": "품질·신뢰성",
+   "strength": "드묾",
+   "appears_as": "품질·신뢰성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "자료구조·알고리즘",
+   "role": "ROLE_DEV_V1",
+   "role_name": "설계·개발",
+   "strength": "드묾",
+   "appears_as": "설계·개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "자료구조·알고리즘",
+   "role": "ROLE_PERF_V1",
+   "role_name": "해석·예측",
+   "strength": "중심",
+   "appears_as": "해석·예측 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "자료구조·알고리즘",
+   "role": "ROLE_QA_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "자료구조·알고리즘",
+   "role": "ROLE_DEPLOY_V1",
+   "role_name": "빌드·배포 자동화",
+   "strength": "드묾",
+   "appears_as": "빌드·배포 자동화 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "자료구조·알고리즘",
+   "role": "ROLE_SRE_V1",
+   "role_name": "서비스 운영",
+   "strength": "드묾",
+   "appears_as": "서비스 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "자료구조·알고리즘",
+   "role": "ROLE_PM_V1",
+   "role_name": "통합·조정",
+   "strength": "드묾",
+   "appears_as": "통합·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "자료구조·알고리즘",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "탐색·연구",
+   "strength": "중심",
+   "appears_as": "탐색·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "자료구조·알고리즘",
+   "role": "ROLE_QUALITY_V1",
+   "role_name": "품질·신뢰성",
+   "strength": "드묾",
+   "appears_as": "품질·신뢰성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "서버·API 구현",
+   "role": "ROLE_DEV_V1",
+   "role_name": "설계·개발",
+   "strength": "중심",
+   "appears_as": "설계·개발 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "서버·API 구현",
+   "role": "ROLE_PERF_V1",
+   "role_name": "해석·예측",
+   "strength": "드묾",
+   "appears_as": "해석·예측 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "서버·API 구현",
+   "role": "ROLE_QA_V1",
+   "role_name": "시험·검증",
+   "strength": "중심",
+   "appears_as": "시험·검증 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "서버·API 구현",
+   "role": "ROLE_DEPLOY_V1",
+   "role_name": "빌드·배포 자동화",
+   "strength": "드묾",
+   "appears_as": "빌드·배포 자동화 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "서버·API 구현",
+   "role": "ROLE_SRE_V1",
+   "role_name": "서비스 운영",
+   "strength": "중심",
+   "appears_as": "서비스 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "서버·API 구현",
+   "role": "ROLE_PM_V1",
+   "role_name": "통합·조정",
+   "strength": "드묾",
+   "appears_as": "통합·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "서버·API 구현",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "탐색·연구",
+   "strength": "드묾",
+   "appears_as": "탐색·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "서버·API 구현",
+   "role": "ROLE_QUALITY_V1",
+   "role_name": "품질·신뢰성",
+   "strength": "드묾",
+   "appears_as": "품질·신뢰성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "데이터 저장·질의 설계",
+   "role": "ROLE_DEV_V1",
+   "role_name": "설계·개발",
+   "strength": "드묾",
+   "appears_as": "설계·개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "데이터 저장·질의 설계",
+   "role": "ROLE_PERF_V1",
+   "role_name": "해석·예측",
+   "strength": "중심",
+   "appears_as": "해석·예측 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "데이터 저장·질의 설계",
+   "role": "ROLE_QA_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "데이터 저장·질의 설계",
+   "role": "ROLE_DEPLOY_V1",
+   "role_name": "빌드·배포 자동화",
+   "strength": "드묾",
+   "appears_as": "빌드·배포 자동화 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "데이터 저장·질의 설계",
+   "role": "ROLE_SRE_V1",
+   "role_name": "서비스 운영",
+   "strength": "드묾",
+   "appears_as": "서비스 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "데이터 저장·질의 설계",
+   "role": "ROLE_PM_V1",
+   "role_name": "통합·조정",
+   "strength": "중심",
+   "appears_as": "통합·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "데이터 저장·질의 설계",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "탐색·연구",
+   "strength": "드묾",
+   "appears_as": "탐색·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "데이터 저장·질의 설계",
+   "role": "ROLE_QUALITY_V1",
+   "role_name": "품질·신뢰성",
+   "strength": "드묾",
+   "appears_as": "품질·신뢰성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "사용자 인터페이스 구현",
+   "role": "ROLE_DEV_V1",
+   "role_name": "설계·개발",
+   "strength": "중심",
+   "appears_as": "설계·개발 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "사용자 인터페이스 구현",
+   "role": "ROLE_PERF_V1",
+   "role_name": "해석·예측",
+   "strength": "드묾",
+   "appears_as": "해석·예측 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "사용자 인터페이스 구현",
+   "role": "ROLE_QA_V1",
+   "role_name": "시험·검증",
+   "strength": "중심",
+   "appears_as": "시험·검증 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "사용자 인터페이스 구현",
+   "role": "ROLE_DEPLOY_V1",
+   "role_name": "빌드·배포 자동화",
+   "strength": "드묾",
+   "appears_as": "빌드·배포 자동화 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "사용자 인터페이스 구현",
+   "role": "ROLE_SRE_V1",
+   "role_name": "서비스 운영",
+   "strength": "드묾",
+   "appears_as": "서비스 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "사용자 인터페이스 구현",
+   "role": "ROLE_PM_V1",
+   "role_name": "통합·조정",
+   "strength": "드묾",
+   "appears_as": "통합·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "사용자 인터페이스 구현",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "탐색·연구",
+   "strength": "드묾",
+   "appears_as": "탐색·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "사용자 인터페이스 구현",
+   "role": "ROLE_QUALITY_V1",
+   "role_name": "품질·신뢰성",
+   "strength": "드묾",
+   "appears_as": "품질·신뢰성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "시스템·동시성 프로그래밍",
+   "role": "ROLE_DEV_V1",
+   "role_name": "설계·개발",
+   "strength": "드묾",
+   "appears_as": "설계·개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "시스템·동시성 프로그래밍",
+   "role": "ROLE_PERF_V1",
+   "role_name": "해석·예측",
+   "strength": "드묾",
+   "appears_as": "해석·예측 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "시스템·동시성 프로그래밍",
+   "role": "ROLE_QA_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "시스템·동시성 프로그래밍",
+   "role": "ROLE_DEPLOY_V1",
+   "role_name": "빌드·배포 자동화",
+   "strength": "중심",
+   "appears_as": "빌드·배포 자동화 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "시스템·동시성 프로그래밍",
+   "role": "ROLE_SRE_V1",
+   "role_name": "서비스 운영",
+   "strength": "드묾",
+   "appears_as": "서비스 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "시스템·동시성 프로그래밍",
+   "role": "ROLE_PM_V1",
+   "role_name": "통합·조정",
+   "strength": "드묾",
+   "appears_as": "통합·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "시스템·동시성 프로그래밍",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "탐색·연구",
+   "strength": "드묾",
+   "appears_as": "탐색·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "시스템·동시성 프로그래밍",
+   "role": "ROLE_QUALITY_V1",
+   "role_name": "품질·신뢰성",
+   "strength": "중심",
+   "appears_as": "품질·신뢰성 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "네트워크·분산 시스템",
+   "role": "ROLE_DEV_V1",
+   "role_name": "설계·개발",
+   "strength": "드묾",
+   "appears_as": "설계·개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "네트워크·분산 시스템",
+   "role": "ROLE_PERF_V1",
+   "role_name": "해석·예측",
+   "strength": "중심",
+   "appears_as": "해석·예측 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "네트워크·분산 시스템",
+   "role": "ROLE_QA_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "네트워크·분산 시스템",
+   "role": "ROLE_DEPLOY_V1",
+   "role_name": "빌드·배포 자동화",
+   "strength": "중심",
+   "appears_as": "빌드·배포 자동화 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J7"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "네트워크·분산 시스템",
+   "role": "ROLE_SRE_V1",
+   "role_name": "서비스 운영",
+   "strength": "중심",
+   "appears_as": "서비스 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "네트워크·분산 시스템",
+   "role": "ROLE_PM_V1",
+   "role_name": "통합·조정",
+   "strength": "드묾",
+   "appears_as": "통합·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "네트워크·분산 시스템",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "탐색·연구",
+   "strength": "드묾",
+   "appears_as": "탐색·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "네트워크·분산 시스템",
+   "role": "ROLE_QUALITY_V1",
+   "role_name": "품질·신뢰성",
+   "strength": "드묾",
+   "appears_as": "품질·신뢰성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "정보보안",
+   "role": "ROLE_DEV_V1",
+   "role_name": "설계·개발",
+   "strength": "드묾",
+   "appears_as": "설계·개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "정보보안",
+   "role": "ROLE_PERF_V1",
+   "role_name": "해석·예측",
+   "strength": "드묾",
+   "appears_as": "해석·예측 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "정보보안",
+   "role": "ROLE_QA_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "정보보안",
+   "role": "ROLE_DEPLOY_V1",
+   "role_name": "빌드·배포 자동화",
+   "strength": "드묾",
+   "appears_as": "빌드·배포 자동화 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "정보보안",
+   "role": "ROLE_SRE_V1",
+   "role_name": "서비스 운영",
+   "strength": "드묾",
+   "appears_as": "서비스 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "정보보안",
+   "role": "ROLE_PM_V1",
+   "role_name": "통합·조정",
+   "strength": "드묾",
+   "appears_as": "통합·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "정보보안",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "탐색·연구",
+   "strength": "드묾",
+   "appears_as": "탐색·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "정보보안",
+   "role": "ROLE_QUALITY_V1",
+   "role_name": "품질·신뢰성",
+   "strength": "중심",
+   "appears_as": "품질·신뢰성 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "기계학습·데이터 분석",
+   "role": "ROLE_DEV_V1",
+   "role_name": "설계·개발",
+   "strength": "드묾",
+   "appears_as": "설계·개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "기계학습·데이터 분석",
+   "role": "ROLE_PERF_V1",
+   "role_name": "해석·예측",
+   "strength": "드묾",
+   "appears_as": "해석·예측 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "기계학습·데이터 분석",
+   "role": "ROLE_QA_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "기계학습·데이터 분석",
+   "role": "ROLE_DEPLOY_V1",
+   "role_name": "빌드·배포 자동화",
+   "strength": "드묾",
+   "appears_as": "빌드·배포 자동화 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "기계학습·데이터 분석",
+   "role": "ROLE_SRE_V1",
+   "role_name": "서비스 운영",
+   "strength": "드묾",
+   "appears_as": "서비스 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "기계학습·데이터 분석",
+   "role": "ROLE_PM_V1",
+   "role_name": "통합·조정",
+   "strength": "드묾",
+   "appears_as": "통합·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "기계학습·데이터 분석",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "탐색·연구",
+   "strength": "중심",
+   "appears_as": "탐색·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J4",
+    "J6",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "기계학습·데이터 분석",
+   "role": "ROLE_QUALITY_V1",
+   "role_name": "품질·신뢰성",
+   "strength": "드묾",
+   "appears_as": "품질·신뢰성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "테스트·품질·배포 운영",
+   "role": "ROLE_DEV_V1",
+   "role_name": "설계·개발",
+   "strength": "드묾",
+   "appears_as": "설계·개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "테스트·품질·배포 운영",
+   "role": "ROLE_PERF_V1",
+   "role_name": "해석·예측",
+   "strength": "드묾",
+   "appears_as": "해석·예측 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "테스트·품질·배포 운영",
+   "role": "ROLE_QA_V1",
+   "role_name": "시험·검증",
+   "strength": "중심",
+   "appears_as": "시험·검증 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J6",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "테스트·품질·배포 운영",
+   "role": "ROLE_DEPLOY_V1",
+   "role_name": "빌드·배포 자동화",
+   "strength": "중심",
+   "appears_as": "빌드·배포 자동화 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J4",
+    "J5",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "테스트·품질·배포 운영",
+   "role": "ROLE_SRE_V1",
+   "role_name": "서비스 운영",
+   "strength": "중심",
+   "appears_as": "서비스 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "테스트·품질·배포 운영",
+   "role": "ROLE_PM_V1",
+   "role_name": "통합·조정",
+   "strength": "중심",
+   "appears_as": "통합·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "테스트·품질·배포 운영",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "탐색·연구",
+   "strength": "드묾",
+   "appears_as": "탐색·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "테스트·품질·배포 운영",
+   "role": "ROLE_QUALITY_V1",
+   "role_name": "품질·신뢰성",
+   "strength": "중심",
+   "appears_as": "품질·신뢰성 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "실시간 그래픽스·게임 구현",
+   "role": "ROLE_DEV_V1",
+   "role_name": "설계·개발",
+   "strength": "드묾",
+   "appears_as": "설계·개발 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "실시간 그래픽스·게임 구현",
+   "role": "ROLE_PERF_V1",
+   "role_name": "해석·예측",
+   "strength": "드묾",
+   "appears_as": "해석·예측 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "실시간 그래픽스·게임 구현",
+   "role": "ROLE_QA_V1",
+   "role_name": "시험·검증",
+   "strength": "드묾",
+   "appears_as": "시험·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "실시간 그래픽스·게임 구현",
+   "role": "ROLE_DEPLOY_V1",
+   "role_name": "빌드·배포 자동화",
+   "strength": "드묾",
+   "appears_as": "빌드·배포 자동화 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "실시간 그래픽스·게임 구현",
+   "role": "ROLE_SRE_V1",
+   "role_name": "서비스 운영",
+   "strength": "드묾",
+   "appears_as": "서비스 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "실시간 그래픽스·게임 구현",
+   "role": "ROLE_PM_V1",
+   "role_name": "통합·조정",
+   "strength": "드묾",
+   "appears_as": "통합·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "실시간 그래픽스·게임 구현",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "탐색·연구",
+   "strength": "중심",
+   "appears_as": "탐색·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "실시간 그래픽스·게임 구현",
+   "role": "ROLE_QUALITY_V1",
+   "role_name": "품질·신뢰성",
+   "strength": "드묾",
+   "appears_as": "품질·신뢰성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J6",
+    "J7"
+   ]
+  }
+ ]
+}

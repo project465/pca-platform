@@ -42,7 +42,13 @@ import type { GradField, Stage, Tier } from "../src/lib/me-v3/scoring/types";
 import { sellableCores } from "../src/lib/me-v3/core-registry";
 
 /** 검사도 core 를 글자로 박지 않는다. 등록부가 지금 열어 둔 것을 쓴다 */
-const CORE = sellableCores("KR")[0].code;
+/**
+ * **`CORE` 를 적으면 그 Core 를 본다.** 적지 않으면 등록부가 지금 열어 둔
+ * 첫 Core 다. 전에는 열어 둔 Core 만 보았고, 그래서 짓고 있는 Core 로
+ * 돌려도 **기계공학을 재고 그 수를 그 Core 의 수로 읽었다**: 짓고 있는
+ * Core 는 `open_to_students: false` 라 그 목록에 들지 않는다.
+ */
+const CORE = process.env.CORE || sellableCores("KR")[0].code;
 
 
 let fail = 0, pass = 0;

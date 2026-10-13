@@ -282,8 +282,23 @@ function main(): void {
          전기전자에서 아날로그 회로 설계다. Core 마다 다른 표는
          `result/chains.ts` 가 들고 이 파일은 담겨 온 것을 읽는다 */
       "src/lib/me-v3/result/text.ko.ts",
+      /* 읽는 규칙을 보는 자리. **이 파일이 한 Core 의 사람 벌 경로와 영역
+         코드를 들고 있어서, 다른 Core 로 돌리면 남의 열두 벌로 이 Core 를
+         읽었다**: 그 상태로는 통과도 걸림도 그 Core 에 대한 답이 아니다.
+         어느 벌의 어느 영역이 어느 상태를 맡는지는 fixture 의 `cases.reading`
+         이 적는다 */
+      "scripts/v3-persona-check.ts",
+      /* 경험에서 지금 값으로 가는 길을 보는 자리. **체크리스트와 영역 사전을
+         한 Core 로 못 박아 두면, 다른 Core 의 응시가 가장 최근일 때 남의 영역
+         사전으로 경험을 적는다.** 그 응시의 Core 를 함께 꺼내 읽는다 */
+      "scripts/v3-recompute-check.ts",
+      "scripts/v3-length-check.ts",
     ];
-    const banned = [/me-v3-/, /me-evidence-map/, /ME_CORE/, /\bTD0\d\b/, /ME_V3_DOMAIN/];
+    const banned = [
+      /me-v3-/, /me-evidence-map/, /ME_CORE/, /\bTD0\d\b/, /ME_V3_DOMAIN/,
+      /* 한 Core 의 fixture 폴더를 글자로 적은 자리 */
+      /assessment\/[A-Z]+_V\d/,
+    ];
     const stuck: string[] = [];
     for (const f of agnostic) {
       const body = readFileSync(f, "utf8")

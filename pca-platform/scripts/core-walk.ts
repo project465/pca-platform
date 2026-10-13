@@ -1,16 +1,20 @@
 /**
- * **전기전자 Core 를 진입에서 결과지까지 한 사람이 이어서 밟는다.**
+ * **그 Core 를 진입에서 결과지까지 한 사람이 이어서 밟는다.**
+ *
+ * `CORE` 하나로 어느 Core 든 밟는다. **전공 이름을 이 파일에 적지 않는다**:
+ * 적어 두면 Core 를 하나 더 만드는 일이 이 검사를 베끼는 일이 되고, 베낀
+ * 쪽은 화면이 한 번 바뀐 날 한 곳만 고쳐진다.
  *
  * 묻는 것은 `쪽이 서는가` 가 아니다. **학교 학과에서 고른 사람이 공통
  * 응시 화면을 지나 결과지와 종이까지 막히지 않고 가는가**다. 그래서 자리를
  * 주소로 열지 않고 사람이 누르는 차례 그대로 간다.
  *
- * 이 Core 는 아직 **학생에게 닫혀 있다**(`open_to_students: false`). 그래서
+ * 짓고 있는 Core 는 **학생에게 닫혀 있다**(`open_to_students: false`). 그래서
  * 이 검사가 하는 일 가운데 가장 중요한 것이 **닫힌 상태를 먼저 확인하고,
  * 열어서 길을 밟고, 되돌린 뒤 다시 닫혔는지 세는 것**이다. 열어 둔 채로
  * 끝나면 그날부터 학생이 짓고 있는 검사를 받는다.
  *
- *   UI_BASE=http://127.0.0.1:3100 npm run ee:walk
+ *   UI_BASE=http://127.0.0.1:3100 CORE=CS_CORE_V1 npm run core:walk
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { createHash } from "node:crypto";
@@ -20,13 +24,22 @@ import {
 } from "./_loop-fixture";
 import { enterAssessment, walk } from "./_v3-walk";
 import { query, queryOne } from "../src/lib/db";
+import { coreFile } from "../src/lib/me-v3/core-registry";
 import {
   allLeaves, readinessOf, statusOf, university,
 } from "../src/lib/campus/registry";
+import { defaultCore } from "../src/lib/me-v3/core-registry";
 
 loadEnv();
 
-const CORE = process.env.CORE ?? "EE_CORE_V1";
+const CORE = process.env.CORE ?? defaultCore();
+/** 손님 화면에 서면 안 되는 안쪽 코드. **Core 이름을 글자로 적지 않는다** */
+const INNER = new RegExp(`${CORE}|\\bTD\\d\\d\\b|\\bJ[1-8]\\b|INDUSTRY_|ROLE_`);
+const INNER_LEAF = new RegExp(`${CORE}|TD0\\d|PCU2[67]_\\w*`);
+/** 이 Core 의 영역 이름. 결과지가 그 전공의 말을 적는지 **자료로** 센다 */
+const TD_NAMES = coreFile<{ domains: { name: string }[] }>(CORE, "domains")
+  .domains.map((d) => d.name);
+const MAIL = `${CORE.toLowerCase().replace(/_/g, "-")}-walk@test.invalid`;
 /**
  * **두 자리를 같이 고친다.** standalone 서버는 빌드가 떠 둔 복사본을
  * 읽는다. 저장소 쪽만 고치면 화면은 닫힌 채로 남고, 까닭을 `검사가 열리지
@@ -95,11 +108,11 @@ async function main(): Promise<void> {
    * 서는지는 **유료 등급으로 한 번 더 밟아야** 답이 나온다.
    */
   const TIER = (process.env.TIER ?? "PRO") as "BASIC" | "STANDARD" | "PRO";
-  const student = await makeStudent("ee-walk@test.invalid");
+  const student = await makeStudent(MAIL);
   /**
    * **이용권이 아직 Core 를 가리키지 않는다.** `v3Grants` 가 거르는 칸은
    * 엔진의 전역 판본(`ASSESSMENT_VERSION`)이고 상품표의 `product_code` 는
-   * 기계공학 쪽 줄이다. 그래서 전기전자 응시도 그 줄로 열린다. 고치는 일은
+   * 기계공학 쪽 줄이다. 그래서 다른 Core 의 응시도 그 줄로 열린다. 고치는 일은
    * 이용권과 상품 구조를 건드리므로 이 회차의 범위 밖이고, 보고에 적는다.
    * **파는 줄을 새로 만들지 않는다**: 쓰는 상품은 `active = false` 다.
    */
@@ -123,7 +136,7 @@ async function main(): Promise<void> {
       ...(gate ? { httpCredentials: gate } : {}),
     });
     const errs: string[] = [];
-    const p: Page = await login(ctx, "ee-walk@test.invalid", student.pw);
+    const p: Page = await login(ctx, MAIL, student.pw);
     p.on("pageerror", (e) => errs.push(String(e.message).slice(0, 120)));
     p.on("response", (r) => { if (r.status() >= 500) errs.push(`${r.status()} ${r.url()}`); });
 
@@ -131,8 +144,8 @@ async function main(): Promise<void> {
     await p.goto(`${BASE}${leaf.path}`, { waitUntil: "networkidle" });
     const detail = await p.locator("body").innerText();
     ok("학과 상세가 그 학과 이름을 적는다", detail.includes(leaf.name));
-    ok("학과 상세에 안쪽 코드가 없다", !/EE_CORE_V1|TD0\d|PCU2[67]_/.test(detail),
-      (detail.match(/EE_CORE_V1|TD0\d|PCU2[67]_\w+/) ?? ["없다"])[0]);
+    ok("학과 상세에 안쪽 코드가 없다", !INNER_LEAF.test(detail),
+      (detail.match(INNER_LEAF) ?? ["없다"])[0]);
     await p.getByRole("button", { name: "이 전공으로 검사 시작" }).click();
     await p.waitForURL(/\/v3\/start/, { timeout: 30000 });
     await p.waitForLoadState("networkidle");
@@ -207,12 +220,11 @@ async function main(): Promise<void> {
         heads.slice(0, 12).join(" / "));
     }
     ok("결과지에 다음 할 일이 선다", /지금 해볼 것|다음에 할 일|지금 할 일/.test(body));
-    ok("결과지가 이 전공의 영역 이름을 적는다",
-      /아날로그 회로 설계|전력전자|제어·자동화|계측·시험/.test(body),
-      (body.match(/아날로그 회로 설계|전력전자|제어·자동화|계측·시험/) ?? ["없다"])[0]);
-    ok("결과지에 안쪽 코드가 없다",
-      !/EE_CORE_V1|\bTD\d\d\b|\bJ[1-8]\b|INDUSTRY_|ROLE_/.test(body),
-      (body.match(/EE_CORE_V1|\bTD\d\d\b|\bJ[1-8]\b|INDUSTRY_\w+|ROLE_\w+/) ?? ["없다"])[0]);
+    const said = TD_NAMES.filter((n) => body.includes(n));
+    ok("결과지가 이 전공의 영역 이름을 적는다", said.length > 0,
+      said.slice(0, 3).join(" · ") || "없다");
+    ok("결과지에 안쪽 코드가 없다", !INNER.test(body),
+      (body.match(INNER) ?? ["없다"])[0]);
 
     const pdf = await p.request.get(`${BASE}/v3/${attempt}/result/pdf`, { timeout: 120000 });
     ok("종이가 나온다", pdf.status() === 200
@@ -232,7 +244,7 @@ async function main(): Promise<void> {
       viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true,
       ...(gate ? { httpCredentials: gate } : {}),
     });
-    const np = await login(narrow, "ee-walk@test.invalid", student.pw);
+    const np = await login(narrow, MAIL, student.pw);
     const over: string[] = [];
     for (const [name, path] of [
       ["학과 목록", `/campus/${leaf.uni.toLowerCase()}/majors`],

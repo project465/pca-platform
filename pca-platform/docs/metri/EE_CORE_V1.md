@@ -209,7 +209,7 @@ Market → Major Core(EE) → Industry Pack → Role Pack → Region Layer
 | `v3:scoring` 판단 엔진 | 확인 31 · 통과 31 |
 | `v3:measure` 측정 지도와 받고 쓰지 않는 문항 | 통과 28 · 보고 1 |
 | `v3:gaming` 꾸며 낸 응답 열셋 | 통과 26 |
-| `v3:persona` 사람 열두 벌 | 확인 15 · 통과 15 |
+| `v3:persona` 사람 열두 벌 | 확인 15 · 통과 15 (**이 값은 2026-10-13 에 틀린 것으로 드러났다. ⑥ 를 보십시오**) |
 | `v3:length` 화면과 응답과 분 | 확인 19 · 통과 19 |
 | `v3:result:copy` 결과지 한국어 | 확인 10 · 통과 10 |
 | `v3:result` 결과 모델 | 확인 25 · **통과 24 · 걸림 1** (9절) |
@@ -316,6 +316,23 @@ Market → Major Core(EE) → Industry Pack → Role Pack → Region Layer
 있고, `claim()` 이 5분 지난 줄을 다시 집어 저절로 풀린다. 재분석은
 `v3_snapshots` 에 한 줄도 쓰지 않아 결과에 닿지 않는다.
 
+### ⑥ 읽는 규칙 검사가 기계공학 사람 벌로 돌고 있었다 (2026-10-13 에 닫았다)
+
+위 표의 `v3:persona 통과 15` 가 **이 Core 에 대한 답이 아니었다.**
+`scripts/v3-persona-check.ts` 가 사람 열두 벌의 경로를
+`assessment/ME_V3/personas.json` 으로 글자로 들고 있어서, `CORE=EE_CORE_V1`
+로 돌려도 읽은 것이 **기계공학 열두 벌**이었다. 이 Core 의 fixture 로 돌리면
+`통과 8 · 걸림 7` 이고, 걸린 일곱은 읽는 규칙의 자리를 기계공학 번호로
+가리켰기 때문이다(`P12` 가 기계공학에서는 판단과 산출물과 검증이 다 선 포닥
+이고 여기서는 다른 처지다).
+
+경로를 등록부에서 읽게 하고 어느 벌의 어느 영역이 어느 상태를 맡는지를
+fixture 의 `cases.reading` 으로 옮겼다. 그리고 이 Core 의 fixture 에 빈 칸
+하나가 있었다: 관심과 근거의 네 칸 가운데 `관심도 낮고 근거도 얕은` 칸을 어느
+벌도 만들지 않아서, 결과지의 그 칸을 한 번도 그려 보지 않은 상태였다. P03 에
+셋째 영역을 세워 메웠고 그 벌의 판정 지문을 다시 적었다. **그 벌의 결과지
+한국어는 그대로다.** 자세한 것은 `docs/metri/MAJOR_CORE_PIPELINE.md` E 절.
+
 ### ⑤ `v3:migrate` 가 이 Core 에 돌지 않는다
 
 옛 문항 은행이 없는 1차 판본이라 `migration` 파일과 동결한 지난 판본이 둘
@@ -361,7 +378,7 @@ Core 를 가리키는 자리가 검사 가능으로 서지 않는가.
 DB 스키마를 한 줄도 바꾸지 않았으므로 마이그레이션은 필요 없다.
 
 ```bash
-npm run ee:all     # 전기전자 Core 열네 묶음 (끝의 한 줄이 9절 ①)
+npm run ee:all     # 전기전자 Core 검사 스물한 묶음 (`CORE` 와 `core:all` 한 줄이다)
 npm run ee:walk    # 학과에서 결과지 PDF 까지 한 사람이 이어서
 npm run ee:qa      # 영역 검토표 · 문항 추적표 · 팩 문서를 다시 만든다
 ```

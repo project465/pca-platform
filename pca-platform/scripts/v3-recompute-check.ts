@@ -49,10 +49,13 @@ type Lists = { domains: Record<string, Record<string, { text: string }[]>> };
 type Doms = { domains: { code: string; artifacts: string[]; verify_targets: string[] }[] };
 
 async function main(): Promise<void> {
-  const row = await queryOne<{ id: string }>(
+  const row = await queryOne<{ id: string; core: string }>(
     /* 스냅샷은 응시에 달려 있고 사람은 응시에 달려 있다. **스냅샷에
-       사람 칸이 없다**: 한 다리를 건너야 한다 */
-    `SELECT a.user_id::text AS id FROM v3_snapshots s
+       사람 칸이 없다**: 한 다리를 건너야 한다.
+       **그 응시의 Core 도 함께 꺼낸다**: 체크리스트와 영역 사전을 한 Core 로
+       못 박아 두면, 다른 Core 의 응시가 가장 최근일 때 **남의 영역 사전으로
+       경험을 적는다**(영역 코드는 Core 안에서만 뜻이 있다) */
+    `SELECT a.user_id::text AS id, a.core_code AS core FROM v3_snapshots s
        JOIN v3_attempts a ON a.id = s.attempt_id
       ORDER BY s.id DESC LIMIT 1`);
   if (!row) {
@@ -64,8 +67,9 @@ async function main(): Promise<void> {
   if (!before) { console.log("  못 봄  결과 모델이 없습니다."); process.exit(0); }
   const beforePrint = stable(before);
 
-  const lists = coreFile<Lists>("ME_CORE_V3", "checklists");
-  const doms = coreFile<Doms>("ME_CORE_V3", "domains");
+  const core = row.core;
+  const lists = coreFile<Lists>(core, "checklists");
+  const doms = coreFile<Doms>(core, "domains");
 
   /* **아직 아무것도 확인되지 않은 영역**에 적는다. 이미 선 영역에 적으면
      올라간 것이 경험 덕인지 검사 덕인지 갈리지 않는다 */

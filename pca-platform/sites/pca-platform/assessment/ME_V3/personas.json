@@ -55,6 +55,26 @@
     "kind": "scale5",
     "value": 5
    }
+  },
+  "reading": {
+   "note": "읽는 규칙이 가리키는 자리. 2026-10-13 이전에 v3-persona-check.ts 에 박혀 있던 값과 같다",
+   "established": {
+    "persona": "P12",
+    "domain": "TD02"
+   },
+   "output_missing": {
+    "persona": "P11",
+    "domain": "TD02"
+   },
+   "axis_missing": {
+    "persona": "P10",
+    "domain": "TD02"
+   },
+   "interest_only": {
+    "persona": "P02",
+    "domain": "TD01"
+   },
+   "tier_invariant": "P11"
   }
  },
  "personas": [

@@ -31,10 +31,16 @@ import {
 } from "../src/lib/me-v3/runtime/session";
 import type { GradField, Stage, Tier } from "../src/lib/me-v3/scoring/types";
 
-import { sellableCores } from "../src/lib/me-v3/core-registry";
+import { packs, sellableCores } from "../src/lib/me-v3/core-registry";
 
 /** 검사도 core 를 글자로 박지 않는다. 등록부가 지금 열어 둔 것을 쓴다 */
-const CORE = sellableCores("KR")[0].code;
+/**
+ * **`CORE` 를 적으면 그 Core 를 본다.** 적지 않으면 등록부가 지금 열어 둔
+ * 첫 Core 다. 전에는 열어 둔 Core 만 보았고, 그래서 짓고 있는 Core 로
+ * 돌려도 **기계공학을 재고 그 수를 그 Core 의 수로 읽었다**: 짓고 있는
+ * Core 는 `open_to_students: false` 라 그 목록에 들지 않는다.
+ */
+const CORE = process.env.CORE || sellableCores("KR")[0].code;
 
 
 let fail = 0, pass = 0;
@@ -292,12 +298,19 @@ function main(): void {
      five.length ? five.map((i) => i.item_id).join(",")
        : "관심 역할과 선호 조직은 고르기로 받는다");
 
-  /* --- 10. 산업 여덟과 역할 여덟 전부를 고를 수 있다 --- */
-  ok("산업 여덟과 역할 여덟 전부를 고를 수 있다",
-     industryChoices(CORE).length === 8 && roleChoices(CORE).length === 8 &&
+  /* --- 10. 그 Core 의 산업과 역할 전부를 고를 수 있다 ---
+     **수를 글자로 적지 않는다.** 여덟은 기계공학의 수이고, 산업이 일곱인
+     Core 에서 여덟을 요구하면 **그 Core 의 콘텐츠가 모자란 것으로 읽힌다.**
+     세는 것은 팩 파일에 적힌 것이 빠짐없이 화면에 서는가다 */
+  const indAll = packs<{ packs: { code: string }[] }>(CORE, "industry").packs;
+  const roleAll = packs<{ packs: { code: string }[] }>(CORE, "role").packs;
+  ok("그 Core 의 산업과 역할 전부를 고를 수 있다",
+     industryChoices(CORE).length === indAll.length &&
+     roleChoices(CORE).length === roleAll.length &&
      industryChoices(CORE).every((x) => x.name && x.first) &&
      roleChoices(CORE).every((x) => x.name && x.domains.length),
-     `산업 ${industryChoices(CORE).length} · 역할 ${roleChoices(CORE).length}`);
+     `산업 ${industryChoices(CORE).length}/${indAll.length}`
+     + ` · 역할 ${roleChoices(CORE).length}/${roleAll.length}`);
 
   /* --- 11. 고르기 전에는 팩 문항이 계획에 없다 --- */
   const noPack = plan({ tier: "PRO", stage: "master", field: "STEM",

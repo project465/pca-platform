@@ -32,6 +32,26 @@
   "interest_domain": "TD10",
   "output_domain": "TD08",
   "verify_domain": "TD11",
+  "reading": {
+   "note": "읽는 규칙이 가리키는 자리. 벌 번호와 영역 코드는 Core 마다 다르다",
+   "established": {
+    "persona": "P12",
+    "domain": "TD01"
+   },
+   "output_missing": {
+    "persona": "P11",
+    "domain": "TD08"
+   },
+   "axis_missing": {
+    "persona": "P08",
+    "domain": "TD10"
+   },
+   "interest_only": {
+    "persona": "P02",
+    "domain": "TD05"
+   },
+   "tier_invariant": "P12"
+  },
   "pack": {
    "industry": "INDUSTRY_AUTOEV_V1",
    "role": "ROLE_ANALYSIS_V1",
@@ -195,7 +215,8 @@
    "field": null,
    "probe": [
     "TD09",
-    "TD12"
+    "TD12",
+    "TD05"
    ],
    "deep": [],
    "grid": {
@@ -207,6 +228,11 @@
     "TD12": [
      1,
      2,
+     1
+    ],
+    "TD05": [
+     1,
+     1,
      1
     ]
    },
@@ -222,6 +248,12 @@
      "J5": 0,
      "J6": 2,
      "J7": 2
+    },
+    "TD05": {
+     "J3": 1,
+     "J5": 1,
+     "J6": 1,
+     "J7": 1
     }
    },
    "expect": {
@@ -248,11 +280,14 @@
       "RECHECK_DIRECTION"
      ],
      "quadrant": "C_LOW_HIGH"
+    },
+    "TD05": {
+     "quadrant": "D_LOW_LOW"
     }
    },
    "expect_focus": [],
    "expect_quality": "OK",
-   "golden": "26706bd81a747e90"
+   "golden": "f28827bf6880cd66"
   },
   {
    "id": "P04",

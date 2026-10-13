@@ -1,6 +1,6 @@
-# 전기전자 Core 영역별 검토표 (EE_V1 · EE_ITEM_BANK_V1)
+# 전기전자공학 Core 영역별 검토표 (EE_V1 · EE_V1_ITEM_BANK_V1)
 
-이 파일은 **생성물이다**. 고칠 곳은 `ee-v1-items.json` 와 `ee-v1-domains.json` 이고, 고친 뒤 `npm run ee:qa` 를 돌린다.
+이 파일은 **생성물이다**. 고칠 곳은 `ee-v1-items.json` 와 `ee-v1-domains.json` 이고, 고친 뒤 `CORE=EE_CORE_V1 npm run core:qa` 를 돌린다.
 
 영역 12 · 축 8 · 체크리스트 231 · 문항 자리 101 · 문항 은행 369
 
