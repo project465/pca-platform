@@ -22,3 +22,6 @@ var/.serving-build
 # 검증하다 만든 임시 파일. 저장소에 남길 것이 아니다
 var/tmp/
 var/pdf-audit/
+
+# PCU Coverage walk 산출물. 저장소에 올리지 않는다
+var/pcu-coverage/

@@ -70,12 +70,23 @@ function setOpen(open: boolean): void {
   }
 }
 
-/** 그 Core 를 가리키는 학교 자리 하나 */
+/**
+ * 그 Core 를 가리키는 학교 자리 하나.
+ *
+ * **`LEAF` 로 자리를 고를 수 있다.** 한 Core 가 여러 학과를 여는데 늘 첫
+ * 자리만 밟으면, 갈래를 더해 새로 연 자리는 한 번도 눌리지 않는다.
+ */
 function anyLeaf(): { uni: string; path: string; code: string; name: string } {
   const u = university("PCU");
   if (!u) throw new Error("등록부에 PCU 가 없습니다");
-  const row = allLeaves(u).find((r) => r.leaf.core_code === CORE);
-  if (!row) throw new Error(`${CORE} 를 가리키는 학교 자리가 없습니다`);
+  const want = process.env.LEAF;
+  const rows = allLeaves(u).filter((r) => r.leaf.core_code === CORE);
+  const row = want ? rows.find((r) => r.leaf.code === want) : rows[0];
+  if (!row) {
+    throw new Error(want
+      ? `${CORE} 의 자리 가운데 ${want} 가 없습니다 (${rows.map((r) => r.leaf.code).join(" ")})`
+      : `${CORE} 를 가리키는 학교 자리가 없습니다`);
+  }
   return {
     uni: u.university_code, code: row.leaf.code, name: row.leaf.name,
     path: `/campus/${u.university_code.toLowerCase()}/d/${row.leaf.code}`

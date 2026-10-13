@@ -155,6 +155,7 @@
     "campus:check": "tsx scripts/campus-check.ts",
     "campus:shots": "node scripts/campus-shots.mjs",
     "campus:walk": "tsx scripts/campus-walk.ts && tsx scripts/campus-agg-check.ts",
+    "pcu:coverage": "tsx scripts/pcu-coverage.ts",
     "core:walk": "tsx scripts/core-walk.ts",
     "core:qa": "node scripts/core-qa-doc.mjs",
     "core:review": "tsx scripts/core-review-doc.ts",

@@ -15,9 +15,14 @@ Source of Truth 는 지금 등록부(`campus-universities.json`)이고, **학과
 | 분류 | 뜻 | 자리 |
 |---|---|---|
 | **A. EXISTING_CORE** | 이미 쓴 Core 로 바로 이어진다 | **24** |
-| **B. SPECIALIZATION_ONLY** | 이미 쓴 Core 에 갈래만 더하면 된다 | **17** |
-| **C. NEW_CORE_REQUIRED** | 새 Canonical Core 가 필요하다 | **74** |
+| **B. SPECIALIZATION_ONLY** | 이미 쓴 Core 에 갈래만 더하면 된다 | **18** |
+| **C. NEW_CORE_REQUIRED** | 새 Canonical Core 가 필요하다 | **73** |
 | **D. ROUTING_MAJOR** | 아직 전공이 정해지지 않은 자리 | **2** |
+
+**B 는 2026-10-13 에 닫혔다**(`docs/metri/PCU_PHASE1_SPECIALIZATION.md`).
+처음 적을 때 B 를 17 로 세었는데 자리마다 다시 세니 **열여덟**이다:
+Core 별로는 EE 넷 · CS 둘 · BIZ 열둘이고, 합이 42 = A 24 + B 18 이다.
+지금 `자료가 다 선 자리` 가 **42 / 117** 이다.
 
 **D 에 가짜 Core 를 만들지 않는다.** 자율전공학부(재학생·2027 각 하나)는
 전공 탐색 route 로 보내고, 전공이 정해지면 그 Core 로 이어진다.
