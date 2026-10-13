@@ -424,8 +424,9 @@
          "code": "PCU26_HORTI",
          "name": "원예산림학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null
+         "core_code": "AGRI_CORE_V1",
+         "specialization": "SPEC_AGRI_HORTIFOREST",
+         "mapping_note": "원예산림학과가 묻는 판단은 기르고 거두고 숲을 재는 쪽이라 원예·산림 갈래로 간다"
         },
         {
          "code": "PCU26_HEALTHWELFARE",
@@ -551,8 +552,9 @@
          "code": "PCU26_LANDSCAPE",
          "name": "조경학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null
+         "core_code": "AGRI_CORE_V1",
+         "specialization": "SPEC_AGRI_LANDSCAPE",
+         "mapping_note": "조경학과가 묻는 판단은 사람이 쓰는 공간을 심어 만들고 지키는 쪽이라 조경 갈래로 간다"
         },
         {
          "code": "PCU26_ARTWEBTOON",
@@ -1003,8 +1005,9 @@
          "code": "PCU27_HORTI",
          "name": "원예산림학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null
+         "core_code": "AGRI_CORE_V1",
+         "specialization": "SPEC_AGRI_HORTIFOREST",
+         "mapping_note": "원예산림학과가 묻는 판단은 기르고 거두고 숲을 재는 쪽이라 원예·산림 갈래로 간다"
         },
         {
          "code": "PCU27_HEALTHWELFARE",
@@ -1151,8 +1154,9 @@
          "code": "PCU27_LANDSCAPE",
          "name": "조경학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null
+         "core_code": "AGRI_CORE_V1",
+         "specialization": "SPEC_AGRI_LANDSCAPE",
+         "mapping_note": "조경학과가 묻는 판단은 사람이 쓰는 공간을 심어 만들고 지키는 쪽이라 조경 갈래로 간다"
         },
         {
          "code": "PCU27_ARTWEBTOON",

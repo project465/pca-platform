@@ -1,0 +1,2380 @@
+{
+ "schema_version": "agri-v1-relations.1",
+ "core": "AGRI_CORE_V1",
+ "note": "기술영역과 산업, 기술영역과 역할의 관계를 두 표로 둔다. 세 축을 미리 곱해 두지 않는다: 열두 영역과 여덟 산업과 여덟 역할을 곱하면 칠백예순여덟 줄이 되고 그만큼의 줄을 사람이 손으로 유지할 수 없다. 어느 줄도 점수를 만들지 않는다: `strength` 는 설명하는 차례를 정하고 `appears_as` 는 결과지가 그 말로 옮겨 적을 때 읽는다",
+ "combine_rule": "산업 하나와 역할 하나를 함께 고른 사람에게는 두 표에서 같은 영역의 줄을 뽑아 나란히 놓는다. 둘 다 `중심` 인 영역이 먼저 서고, 한쪽만 중심인 영역이 다음이고, 양쪽이 드문 영역은 적지 않는다",
+ "td_industry": [
+  {
+   "td": "TD01",
+   "td_name": "작물·수종 선정",
+   "industry": "INDUSTRY_PROTECTED_V1",
+   "industry_name": "시설원예·양액 재배",
+   "strength": "드묾",
+   "appears_as": "시설원예·양액 재배 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "작물·수종 선정",
+   "industry": "INDUSTRY_OPENFIELD_V1",
+   "industry_name": "노지 채소·과수",
+   "strength": "중심",
+   "appears_as": "노지 채소·과수 에서는 심을 품목을 좁히는가 · 지난 철과 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ],
+   "dimensions": [
+    "심을 품목을 좁히는가",
+    "지난 철과 견주는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "작물·수종 선정",
+   "industry": "INDUSTRY_SEEDLING_V1",
+   "industry_name": "종묘·육묘",
+   "strength": "중심",
+   "appears_as": "종묘·육묘 에서는 다룰 품종 범위를 좁히는가 · 고를 품종을 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ],
+   "dimensions": [
+    "다룰 품종 범위를 좁히는가",
+    "고를 품종을 견주는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "작물·수종 선정",
+   "industry": "INDUSTRY_FLORI_V1",
+   "industry_name": "화훼·절화",
+   "strength": "있음",
+   "appears_as": "화훼·절화 에서는 날짜에서 거꾸로 세어 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "날짜에서 거꾸로 세어 고르는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "작물·수종 선정",
+   "industry": "INDUSTRY_LANDSCAPE_V1",
+   "industry_name": "조경 설계·시공",
+   "strength": "드묾",
+   "appears_as": "조경 설계·시공 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "작물·수종 선정",
+   "industry": "INDUSTRY_PARKGREEN_V1",
+   "industry_name": "공원·녹지 관리",
+   "strength": "드묾",
+   "appears_as": "공원·녹지 관리 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "작물·수종 선정",
+   "industry": "INDUSTRY_FOREST_V1",
+   "industry_name": "산림·임업",
+   "strength": "드묾",
+   "appears_as": "산림·임업 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "작물·수종 선정",
+   "industry": "INDUSTRY_AGRITECH_V1",
+   "industry_name": "스마트팜·농업 자료",
+   "strength": "있음",
+   "appears_as": "스마트팜·농업 자료 에서는 작목 선정에 자료를 쓰는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "작목 선정에 자료를 쓰는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "재배·생육 관리",
+   "industry": "INDUSTRY_PROTECTED_V1",
+   "industry_name": "시설원예·양액 재배",
+   "strength": "중심",
+   "appears_as": "시설원예·양액 재배 에서는 솎음과 유인을 가르는가 · 그날 바꾼 것을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ],
+   "dimensions": [
+    "솎음과 유인을 가르는가",
+    "그날 바꾼 것을 남기는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "재배·생육 관리",
+   "industry": "INDUSTRY_OPENFIELD_V1",
+   "industry_name": "노지 채소·과수",
+   "strength": "중심",
+   "appears_as": "노지 채소·과수 에서는 그날 할 작업을 가르는가 · 비가 온 뒤 고치는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ],
+   "dimensions": [
+    "그날 할 작업을 가르는가",
+    "비가 온 뒤 고치는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "재배·생육 관리",
+   "industry": "INDUSTRY_SEEDLING_V1",
+   "industry_name": "종묘·육묘",
+   "strength": "있음",
+   "appears_as": "종묘·육묘 에서는 모의 관리를 그 자리에서 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "모의 관리를 그 자리에서 가르는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "재배·생육 관리",
+   "industry": "INDUSTRY_FLORI_V1",
+   "industry_name": "화훼·절화",
+   "strength": "중심",
+   "appears_as": "화훼·절화 에서는 생장 조절 방법을 고르는가 · 다른 동과 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ],
+   "dimensions": [
+    "생장 조절 방법을 고르는가",
+    "다른 동과 견주는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "재배·생육 관리",
+   "industry": "INDUSTRY_LANDSCAPE_V1",
+   "industry_name": "조경 설계·시공",
+   "strength": "드묾",
+   "appears_as": "조경 설계·시공 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "재배·생육 관리",
+   "industry": "INDUSTRY_PARKGREEN_V1",
+   "industry_name": "공원·녹지 관리",
+   "strength": "드묾",
+   "appears_as": "공원·녹지 관리 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "재배·생육 관리",
+   "industry": "INDUSTRY_FOREST_V1",
+   "industry_name": "산림·임업",
+   "strength": "있음",
+   "appears_as": "산림·임업 에서는 조림이 실패한 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "조림이 실패한 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "재배·생육 관리",
+   "industry": "INDUSTRY_AGRITECH_V1",
+   "industry_name": "스마트팜·농업 자료",
+   "strength": "중심",
+   "appears_as": "스마트팜·농업 자료 에서는 생육 목표를 기록 항목으로 옮기는가 · 기록 규격을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J5"
+   ],
+   "dimensions": [
+    "생육 목표를 기록 항목으로 옮기는가",
+    "기록 규격을 남기는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "병해충·방제 판단",
+   "industry": "INDUSTRY_PROTECTED_V1",
+   "industry_name": "시설원예·양액 재배",
+   "strength": "있음",
+   "appears_as": "시설원예·양액 재배 에서는 방제 뒤 다시 보는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "방제 뒤 다시 보는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "병해충·방제 판단",
+   "industry": "INDUSTRY_OPENFIELD_V1",
+   "industry_name": "노지 채소·과수",
+   "strength": "중심",
+   "appears_as": "노지 채소·과수 에서는 칠지 두고 볼지 가르는가 · 발생 기준을 옮겨 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ],
+   "dimensions": [
+    "칠지 두고 볼지 가르는가",
+    "발생 기준을 옮겨 적는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "병해충·방제 판단",
+   "industry": "INDUSTRY_SEEDLING_V1",
+   "industry_name": "종묘·육묘",
+   "strength": "드묾",
+   "appears_as": "종묘·육묘 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "병해충·방제 판단",
+   "industry": "INDUSTRY_FLORI_V1",
+   "industry_name": "화훼·절화",
+   "strength": "있음",
+   "appears_as": "화훼·절화 에서는 약을 칠지 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "약을 칠지 가르는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "병해충·방제 판단",
+   "industry": "INDUSTRY_LANDSCAPE_V1",
+   "industry_name": "조경 설계·시공",
+   "strength": "드묾",
+   "appears_as": "조경 설계·시공 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "병해충·방제 판단",
+   "industry": "INDUSTRY_PARKGREEN_V1",
+   "industry_name": "공원·녹지 관리",
+   "strength": "중심",
+   "appears_as": "공원·녹지 관리 에서는 민원을 확인 항목으로 옮기는가 · 쓸 수 있는 약을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ],
+   "dimensions": [
+    "민원을 확인 항목으로 옮기는가",
+    "쓸 수 있는 약을 가르는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "병해충·방제 판단",
+   "industry": "INDUSTRY_FOREST_V1",
+   "industry_name": "산림·임업",
+   "strength": "있음",
+   "appears_as": "산림·임업 에서는 산림 병해충 기준과 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "산림 병해충 기준과 대조하는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "병해충·방제 판단",
+   "industry": "INDUSTRY_AGRITECH_V1",
+   "industry_name": "스마트팜·농업 자료",
+   "strength": "드묾",
+   "appears_as": "스마트팜·농업 자료 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "토양·양분 관리",
+   "industry": "INDUSTRY_PROTECTED_V1",
+   "industry_name": "시설원예·양액 재배",
+   "strength": "중심",
+   "appears_as": "시설원예·양액 재배 에서는 넣을 농도를 계산하는가 · 다시 잰 값과 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ],
+   "dimensions": [
+    "넣을 농도를 계산하는가",
+    "다시 잰 값과 대조하는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "토양·양분 관리",
+   "industry": "INDUSTRY_OPENFIELD_V1",
+   "industry_name": "노지 채소·과수",
+   "strength": "있음",
+   "appears_as": "노지 채소·과수 에서는 넣을 양을 계산하는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "넣을 양을 계산하는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "토양·양분 관리",
+   "industry": "INDUSTRY_SEEDLING_V1",
+   "industry_name": "종묘·육묘",
+   "strength": "드묾",
+   "appears_as": "종묘·육묘 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "토양·양분 관리",
+   "industry": "INDUSTRY_FLORI_V1",
+   "industry_name": "화훼·절화",
+   "strength": "드묾",
+   "appears_as": "화훼·절화 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "토양·양분 관리",
+   "industry": "INDUSTRY_LANDSCAPE_V1",
+   "industry_name": "조경 설계·시공",
+   "strength": "있음",
+   "appears_as": "조경 설계·시공 에서는 땅을 고칠 양을 계산하는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "땅을 고칠 양을 계산하는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "토양·양분 관리",
+   "industry": "INDUSTRY_PARKGREEN_V1",
+   "industry_name": "공원·녹지 관리",
+   "strength": "드묾",
+   "appears_as": "공원·녹지 관리 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "토양·양분 관리",
+   "industry": "INDUSTRY_FOREST_V1",
+   "industry_name": "산림·임업",
+   "strength": "드묾",
+   "appears_as": "산림·임업 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "토양·양분 관리",
+   "industry": "INDUSTRY_AGRITECH_V1",
+   "industry_name": "스마트팜·농업 자료",
+   "strength": "있음",
+   "appears_as": "스마트팜·농업 자료 에서는 자료로 처방을 계산하는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "자료로 처방을 계산하는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "번식·육묘",
+   "industry": "INDUSTRY_PROTECTED_V1",
+   "industry_name": "시설원예·양액 재배",
+   "strength": "드묾",
+   "appears_as": "시설원예·양액 재배 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "번식·육묘",
+   "industry": "INDUSTRY_OPENFIELD_V1",
+   "industry_name": "노지 채소·과수",
+   "strength": "드묾",
+   "appears_as": "노지 채소·과수 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "번식·육묘",
+   "industry": "INDUSTRY_SEEDLING_V1",
+   "industry_name": "종묘·육묘",
+   "strength": "중심",
+   "appears_as": "종묘·육묘 에서는 번식 방법을 고르는가 · 육묘 조건을 남기는가 · 발아율 기준과 대조하는가 · 안 난 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J5",
+    "J6",
+    "J7"
+   ],
+   "dimensions": [
+    "번식 방법을 고르는가",
+    "육묘 조건을 남기는가",
+    "발아율 기준과 대조하는가",
+    "안 난 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "번식·육묘",
+   "industry": "INDUSTRY_FLORI_V1",
+   "industry_name": "화훼·절화",
+   "strength": "드묾",
+   "appears_as": "화훼·절화 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "번식·육묘",
+   "industry": "INDUSTRY_LANDSCAPE_V1",
+   "industry_name": "조경 설계·시공",
+   "strength": "드묾",
+   "appears_as": "조경 설계·시공 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "번식·육묘",
+   "industry": "INDUSTRY_PARKGREEN_V1",
+   "industry_name": "공원·녹지 관리",
+   "strength": "드묾",
+   "appears_as": "공원·녹지 관리 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "번식·육묘",
+   "industry": "INDUSTRY_FOREST_V1",
+   "industry_name": "산림·임업",
+   "strength": "드묾",
+   "appears_as": "산림·임업 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "번식·육묘",
+   "industry": "INDUSTRY_AGRITECH_V1",
+   "industry_name": "스마트팜·농업 자료",
+   "strength": "드묾",
+   "appears_as": "스마트팜·농업 자료 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "수확·수확 후 관리",
+   "industry": "INDUSTRY_PROTECTED_V1",
+   "industry_name": "시설원예·양액 재배",
+   "strength": "있음",
+   "appears_as": "시설원예·양액 재배 에서는 등급 기준을 옮겨 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "등급 기준을 옮겨 적는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "수확·수확 후 관리",
+   "industry": "INDUSTRY_OPENFIELD_V1",
+   "industry_name": "노지 채소·과수",
+   "strength": "중심",
+   "appears_as": "노지 채소·과수 에서는 선별 기준을 남기는가 · 받아 준 곳의 반응과 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ],
+   "dimensions": [
+    "선별 기준을 남기는가",
+    "받아 준 곳의 반응과 대조하는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "수확·수확 후 관리",
+   "industry": "INDUSTRY_SEEDLING_V1",
+   "industry_name": "종묘·육묘",
+   "strength": "있음",
+   "appears_as": "종묘·육묘 에서는 받은 쪽의 활착을 따라가는가 로 나타납니다",
+   "axes_watched": [
+    "J8"
+   ],
+   "dimensions": [
+    "받은 쪽의 활착을 따라가는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "수확·수확 후 관리",
+   "industry": "INDUSTRY_FLORI_V1",
+   "industry_name": "화훼·절화",
+   "strength": "중심",
+   "appears_as": "화훼·절화 에서는 절화 등급을 옮겨 적는가 · 수송 조건을 남기는가 · 반품 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "절화 등급을 옮겨 적는가",
+    "수송 조건을 남기는가",
+    "반품 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "수확·수확 후 관리",
+   "industry": "INDUSTRY_LANDSCAPE_V1",
+   "industry_name": "조경 설계·시공",
+   "strength": "드묾",
+   "appears_as": "조경 설계·시공 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "수확·수확 후 관리",
+   "industry": "INDUSTRY_PARKGREEN_V1",
+   "industry_name": "공원·녹지 관리",
+   "strength": "드묾",
+   "appears_as": "공원·녹지 관리 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "수확·수확 후 관리",
+   "industry": "INDUSTRY_FOREST_V1",
+   "industry_name": "산림·임업",
+   "strength": "드묾",
+   "appears_as": "산림·임업 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "수확·수확 후 관리",
+   "industry": "INDUSTRY_AGRITECH_V1",
+   "industry_name": "스마트팜·농업 자료",
+   "strength": "드묾",
+   "appears_as": "스마트팜·농업 자료 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "시설·관수 환경 제어",
+   "industry": "INDUSTRY_PROTECTED_V1",
+   "industry_name": "시설원예·양액 재배",
+   "strength": "중심",
+   "appears_as": "시설원예·양액 재배 에서는 작물의 요구를 설정값으로 옮기는가 · 설비가 멈춘 날 되짚는가 · 그날 본 상태로 값을 바꾸는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J7"
+   ],
+   "dimensions": [
+    "작물의 요구를 설정값으로 옮기는가",
+    "설비가 멈춘 날 되짚는가",
+    "그날 본 상태로 값을 바꾸는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "시설·관수 환경 제어",
+   "industry": "INDUSTRY_OPENFIELD_V1",
+   "industry_name": "노지 채소·과수",
+   "strength": "드묾",
+   "appears_as": "노지 채소·과수 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "시설·관수 환경 제어",
+   "industry": "INDUSTRY_SEEDLING_V1",
+   "industry_name": "종묘·육묘",
+   "strength": "있음",
+   "appears_as": "종묘·육묘 에서는 육묘장 환경을 옮겨 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "육묘장 환경을 옮겨 적는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "시설·관수 환경 제어",
+   "industry": "INDUSTRY_FLORI_V1",
+   "industry_name": "화훼·절화",
+   "strength": "중심",
+   "appears_as": "화훼·절화 에서는 개화를 맞출 조건을 옮겨 적는가 · 그날 조절을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ],
+   "dimensions": [
+    "개화를 맞출 조건을 옮겨 적는가",
+    "그날 조절을 가르는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "시설·관수 환경 제어",
+   "industry": "INDUSTRY_LANDSCAPE_V1",
+   "industry_name": "조경 설계·시공",
+   "strength": "드묾",
+   "appears_as": "조경 설계·시공 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "시설·관수 환경 제어",
+   "industry": "INDUSTRY_PARKGREEN_V1",
+   "industry_name": "공원·녹지 관리",
+   "strength": "드묾",
+   "appears_as": "공원·녹지 관리 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "시설·관수 환경 제어",
+   "industry": "INDUSTRY_FOREST_V1",
+   "industry_name": "산림·임업",
+   "strength": "드묾",
+   "appears_as": "산림·임업 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "시설·관수 환경 제어",
+   "industry": "INDUSTRY_AGRITECH_V1",
+   "industry_name": "스마트팜·농업 자료",
+   "strength": "중심",
+   "appears_as": "스마트팜·농업 자료 에서는 제어 규칙을 정하는가 · 센서를 다시 재는가 · 자료가 튄 날 좁히는가 · 규칙을 그 자리에서 끄는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J4",
+    "J6",
+    "J7"
+   ],
+   "dimensions": [
+    "제어 규칙을 정하는가",
+    "센서를 다시 재는가",
+    "자료가 튄 날 좁히는가",
+    "규칙을 그 자리에서 끄는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "조경 설계·식재 계획",
+   "industry": "INDUSTRY_PROTECTED_V1",
+   "industry_name": "시설원예·양액 재배",
+   "strength": "드묾",
+   "appears_as": "시설원예·양액 재배 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "조경 설계·식재 계획",
+   "industry": "INDUSTRY_OPENFIELD_V1",
+   "industry_name": "노지 채소·과수",
+   "strength": "드묾",
+   "appears_as": "노지 채소·과수 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "조경 설계·식재 계획",
+   "industry": "INDUSTRY_SEEDLING_V1",
+   "industry_name": "종묘·육묘",
+   "strength": "드묾",
+   "appears_as": "종묘·육묘 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "조경 설계·식재 계획",
+   "industry": "INDUSTRY_FLORI_V1",
+   "industry_name": "화훼·절화",
+   "strength": "드묾",
+   "appears_as": "화훼·절화 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "조경 설계·식재 계획",
+   "industry": "INDUSTRY_LANDSCAPE_V1",
+   "industry_name": "조경 설계·시공",
+   "strength": "중심",
+   "appears_as": "조경 설계·시공 에서는 무엇을 어디에 심을지 정하는가 · 도면으로 남기는가 · 바라는 모습을 수량으로 옮기는가 · 구할 수 있는 것과 대조하는가 · 내 도면이 시공으로 가는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J2",
+    "J5",
+    "J6",
+    "J8"
+   ],
+   "dimensions": [
+    "무엇을 어디에 심을지 정하는가",
+    "도면으로 남기는가",
+    "바라는 모습을 수량으로 옮기는가",
+    "구할 수 있는 것과 대조하는가",
+    "내 도면이 시공으로 가는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "조경 설계·식재 계획",
+   "industry": "INDUSTRY_PARKGREEN_V1",
+   "industry_name": "공원·녹지 관리",
+   "strength": "있음",
+   "appears_as": "공원·녹지 관리 에서는 교체 식재 범위를 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "교체 식재 범위를 좁히는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "조경 설계·식재 계획",
+   "industry": "INDUSTRY_FOREST_V1",
+   "industry_name": "산림·임업",
+   "strength": "드묾",
+   "appears_as": "산림·임업 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "조경 설계·식재 계획",
+   "industry": "INDUSTRY_AGRITECH_V1",
+   "industry_name": "스마트팜·농업 자료",
+   "strength": "드묾",
+   "appears_as": "스마트팜·농업 자료 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "녹지·수목 유지 관리",
+   "industry": "INDUSTRY_PROTECTED_V1",
+   "industry_name": "시설원예·양액 재배",
+   "strength": "드묾",
+   "appears_as": "시설원예·양액 재배 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "녹지·수목 유지 관리",
+   "industry": "INDUSTRY_OPENFIELD_V1",
+   "industry_name": "노지 채소·과수",
+   "strength": "드묾",
+   "appears_as": "노지 채소·과수 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "녹지·수목 유지 관리",
+   "industry": "INDUSTRY_SEEDLING_V1",
+   "industry_name": "종묘·육묘",
+   "strength": "드묾",
+   "appears_as": "종묘·육묘 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "녹지·수목 유지 관리",
+   "industry": "INDUSTRY_FLORI_V1",
+   "industry_name": "화훼·절화",
+   "strength": "드묾",
+   "appears_as": "화훼·절화 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "녹지·수목 유지 관리",
+   "industry": "INDUSTRY_LANDSCAPE_V1",
+   "industry_name": "조경 설계·시공",
+   "strength": "중심",
+   "appears_as": "조경 설계·시공 에서는 교체할 것을 가르는가 · 하자 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ],
+   "dimensions": [
+    "교체할 것을 가르는가",
+    "하자 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "녹지·수목 유지 관리",
+   "industry": "INDUSTRY_PARKGREEN_V1",
+   "industry_name": "공원·녹지 관리",
+   "strength": "중심",
+   "appears_as": "공원·녹지 관리 에서는 자를 가지를 가르는가 · 작업 기록을 남기는가 · 내 기록이 연간 계획으로 가는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J8"
+   ],
+   "dimensions": [
+    "자를 가지를 가르는가",
+    "작업 기록을 남기는가",
+    "내 기록이 연간 계획으로 가는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "녹지·수목 유지 관리",
+   "industry": "INDUSTRY_FOREST_V1",
+   "industry_name": "산림·임업",
+   "strength": "있음",
+   "appears_as": "산림·임업 에서는 벨 나무를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "벨 나무를 가르는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "녹지·수목 유지 관리",
+   "industry": "INDUSTRY_AGRITECH_V1",
+   "industry_name": "스마트팜·농업 자료",
+   "strength": "드묾",
+   "appears_as": "스마트팜·농업 자료 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "산림 자원 조사·경영",
+   "industry": "INDUSTRY_PROTECTED_V1",
+   "industry_name": "시설원예·양액 재배",
+   "strength": "드묾",
+   "appears_as": "시설원예·양액 재배 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "산림 자원 조사·경영",
+   "industry": "INDUSTRY_OPENFIELD_V1",
+   "industry_name": "노지 채소·과수",
+   "strength": "드묾",
+   "appears_as": "노지 채소·과수 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "산림 자원 조사·경영",
+   "industry": "INDUSTRY_SEEDLING_V1",
+   "industry_name": "종묘·육묘",
+   "strength": "드묾",
+   "appears_as": "종묘·육묘 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "산림 자원 조사·경영",
+   "industry": "INDUSTRY_FLORI_V1",
+   "industry_name": "화훼·절화",
+   "strength": "드묾",
+   "appears_as": "화훼·절화 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "산림 자원 조사·경영",
+   "industry": "INDUSTRY_LANDSCAPE_V1",
+   "industry_name": "조경 설계·시공",
+   "strength": "드묾",
+   "appears_as": "조경 설계·시공 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "산림 자원 조사·경영",
+   "industry": "INDUSTRY_PARKGREEN_V1",
+   "industry_name": "공원·녹지 관리",
+   "strength": "드묾",
+   "appears_as": "공원·녹지 관리 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "산림 자원 조사·경영",
+   "industry": "INDUSTRY_FOREST_V1",
+   "industry_name": "산림·임업",
+   "strength": "중심",
+   "appears_as": "산림·임업 에서는 표준지와 방법을 정하는가 · 재적표와 대조하는가 · 조사 범위를 좁히는가 · 경영 목표를 조사 항목으로 옮기는가 · 야장을 남기는가 · 내 조사가 계획으로 가는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J2",
+    "J4",
+    "J5",
+    "J6",
+    "J8"
+   ],
+   "dimensions": [
+    "표준지와 방법을 정하는가",
+    "재적표와 대조하는가",
+    "조사 범위를 좁히는가",
+    "경영 목표를 조사 항목으로 옮기는가",
+    "야장을 남기는가",
+    "내 조사가 계획으로 가는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "산림 자원 조사·경영",
+   "industry": "INDUSTRY_AGRITECH_V1",
+   "industry_name": "스마트팜·농업 자료",
+   "strength": "있음",
+   "appears_as": "스마트팜·농업 자료 에서는 원격 자료를 쓰는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "원격 자료를 쓰는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공간·이용자 안전 관리",
+   "industry": "INDUSTRY_PROTECTED_V1",
+   "industry_name": "시설원예·양액 재배",
+   "strength": "드묾",
+   "appears_as": "시설원예·양액 재배 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "공간·이용자 안전 관리",
+   "industry": "INDUSTRY_OPENFIELD_V1",
+   "industry_name": "노지 채소·과수",
+   "strength": "드묾",
+   "appears_as": "노지 채소·과수 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "공간·이용자 안전 관리",
+   "industry": "INDUSTRY_SEEDLING_V1",
+   "industry_name": "종묘·육묘",
+   "strength": "드묾",
+   "appears_as": "종묘·육묘 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "공간·이용자 안전 관리",
+   "industry": "INDUSTRY_FLORI_V1",
+   "industry_name": "화훼·절화",
+   "strength": "드묾",
+   "appears_as": "화훼·절화 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "공간·이용자 안전 관리",
+   "industry": "INDUSTRY_LANDSCAPE_V1",
+   "industry_name": "조경 설계·시공",
+   "strength": "있음",
+   "appears_as": "조경 설계·시공 에서는 공정과 안전을 옮겨 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "공정과 안전을 옮겨 적는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공간·이용자 안전 관리",
+   "industry": "INDUSTRY_PARKGREEN_V1",
+   "industry_name": "공원·녹지 관리",
+   "strength": "중심",
+   "appears_as": "공원·녹지 관리 에서는 점검표를 남기는가 · 사고 뒤 되짚는가 · 닫을지 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "점검표를 남기는가",
+    "사고 뒤 되짚는가",
+    "닫을지 가르는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공간·이용자 안전 관리",
+   "industry": "INDUSTRY_FOREST_V1",
+   "industry_name": "산림·임업",
+   "strength": "드묾",
+   "appears_as": "산림·임업 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "공간·이용자 안전 관리",
+   "industry": "INDUSTRY_AGRITECH_V1",
+   "industry_name": "스마트팜·농업 자료",
+   "strength": "드묾",
+   "appears_as": "스마트팜·농업 자료 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "법규·인증·기록",
+   "industry": "INDUSTRY_PROTECTED_V1",
+   "industry_name": "시설원예·양액 재배",
+   "strength": "있음",
+   "appears_as": "시설원예·양액 재배 에서는 이력을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "이력을 남기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "법규·인증·기록",
+   "industry": "INDUSTRY_OPENFIELD_V1",
+   "industry_name": "노지 채소·과수",
+   "strength": "있음",
+   "appears_as": "노지 채소·과수 에서는 이력을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "이력을 남기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "법규·인증·기록",
+   "industry": "INDUSTRY_SEEDLING_V1",
+   "industry_name": "종묘·육묘",
+   "strength": "있음",
+   "appears_as": "종묘·육묘 에서는 종자 이력을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "종자 이력을 남기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "법규·인증·기록",
+   "industry": "INDUSTRY_FLORI_V1",
+   "industry_name": "화훼·절화",
+   "strength": "있음",
+   "appears_as": "화훼·절화 에서는 검역 서류를 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "검역 서류를 남기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "법규·인증·기록",
+   "industry": "INDUSTRY_LANDSCAPE_V1",
+   "industry_name": "조경 설계·시공",
+   "strength": "있음",
+   "appears_as": "조경 설계·시공 에서는 준공 서류를 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "준공 서류를 남기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "법규·인증·기록",
+   "industry": "INDUSTRY_PARKGREEN_V1",
+   "industry_name": "공원·녹지 관리",
+   "strength": "있음",
+   "appears_as": "공원·녹지 관리 에서는 법정 기준과 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "법정 기준과 대조하는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "법규·인증·기록",
+   "industry": "INDUSTRY_FOREST_V1",
+   "industry_name": "산림·임업",
+   "strength": "있음",
+   "appears_as": "산림·임업 에서는 인가 서류를 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "인가 서류를 남기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "법규·인증·기록",
+   "industry": "INDUSTRY_AGRITECH_V1",
+   "industry_name": "스마트팜·농업 자료",
+   "strength": "있음",
+   "appears_as": "스마트팜·농업 자료 에서는 자료 이력을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "자료 이력을 남기는가"
+   ]
+  }
+ ],
+ "td_role": [
+  {
+   "td": "TD01",
+   "td_name": "작물·수종 선정",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "재배·식재 계획",
+   "strength": "중심",
+   "appears_as": "재배·식재 계획 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J3",
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "작물·수종 선정",
+   "role": "ROLE_DIAGNOSE_V1",
+   "role_name": "조사·진단",
+   "strength": "드묾",
+   "appears_as": "조사·진단 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "작물·수종 선정",
+   "role": "ROLE_GRADE_V1",
+   "role_name": "판정·검사",
+   "strength": "드묾",
+   "appears_as": "판정·검사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "작물·수종 선정",
+   "role": "ROLE_RECORDS_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "작물·수종 선정",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 관리",
+   "strength": "드묾",
+   "appears_as": "현장 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "작물·수종 선정",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "작물·수종 선정",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "작물·수종 선정",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "재배·생육 관리",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "재배·식재 계획",
+   "strength": "드묾",
+   "appears_as": "재배·식재 계획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "재배·생육 관리",
+   "role": "ROLE_DIAGNOSE_V1",
+   "role_name": "조사·진단",
+   "strength": "드묾",
+   "appears_as": "조사·진단 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "재배·생육 관리",
+   "role": "ROLE_GRADE_V1",
+   "role_name": "판정·검사",
+   "strength": "드묾",
+   "appears_as": "판정·검사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "재배·생육 관리",
+   "role": "ROLE_RECORDS_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "중심",
+   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "재배·생육 관리",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 관리",
+   "strength": "중심",
+   "appears_as": "현장 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "재배·생육 관리",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "재배·생육 관리",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "재배·생육 관리",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "병해충·방제 판단",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "재배·식재 계획",
+   "strength": "드묾",
+   "appears_as": "재배·식재 계획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "병해충·방제 판단",
+   "role": "ROLE_DIAGNOSE_V1",
+   "role_name": "조사·진단",
+   "strength": "중심",
+   "appears_as": "조사·진단 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "병해충·방제 판단",
+   "role": "ROLE_GRADE_V1",
+   "role_name": "판정·검사",
+   "strength": "드묾",
+   "appears_as": "판정·검사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "병해충·방제 판단",
+   "role": "ROLE_RECORDS_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "병해충·방제 판단",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 관리",
+   "strength": "드묾",
+   "appears_as": "현장 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "병해충·방제 판단",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "병해충·방제 판단",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "병해충·방제 판단",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "중심",
+   "appears_as": "안전·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "토양·양분 관리",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "재배·식재 계획",
+   "strength": "드묾",
+   "appears_as": "재배·식재 계획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "토양·양분 관리",
+   "role": "ROLE_DIAGNOSE_V1",
+   "role_name": "조사·진단",
+   "strength": "중심",
+   "appears_as": "조사·진단 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "토양·양분 관리",
+   "role": "ROLE_GRADE_V1",
+   "role_name": "판정·검사",
+   "strength": "드묾",
+   "appears_as": "판정·검사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "토양·양분 관리",
+   "role": "ROLE_RECORDS_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "토양·양분 관리",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 관리",
+   "strength": "드묾",
+   "appears_as": "현장 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "토양·양분 관리",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "토양·양분 관리",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "중심",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "토양·양분 관리",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "번식·육묘",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "재배·식재 계획",
+   "strength": "드묾",
+   "appears_as": "재배·식재 계획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "번식·육묘",
+   "role": "ROLE_DIAGNOSE_V1",
+   "role_name": "조사·진단",
+   "strength": "드묾",
+   "appears_as": "조사·진단 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "번식·육묘",
+   "role": "ROLE_GRADE_V1",
+   "role_name": "판정·검사",
+   "strength": "드묾",
+   "appears_as": "판정·검사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "번식·육묘",
+   "role": "ROLE_RECORDS_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "중심",
+   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "번식·육묘",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 관리",
+   "strength": "드묾",
+   "appears_as": "현장 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "번식·육묘",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "번식·육묘",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "중심",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "번식·육묘",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "수확·수확 후 관리",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "재배·식재 계획",
+   "strength": "중심",
+   "appears_as": "재배·식재 계획 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "수확·수확 후 관리",
+   "role": "ROLE_DIAGNOSE_V1",
+   "role_name": "조사·진단",
+   "strength": "드묾",
+   "appears_as": "조사·진단 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "수확·수확 후 관리",
+   "role": "ROLE_GRADE_V1",
+   "role_name": "판정·검사",
+   "strength": "중심",
+   "appears_as": "판정·검사 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "수확·수확 후 관리",
+   "role": "ROLE_RECORDS_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "수확·수확 후 관리",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 관리",
+   "strength": "드묾",
+   "appears_as": "현장 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "수확·수확 후 관리",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "중심",
+   "appears_as": "운영·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "수확·수확 후 관리",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "수확·수확 후 관리",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "시설·관수 환경 제어",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "재배·식재 계획",
+   "strength": "드묾",
+   "appears_as": "재배·식재 계획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "시설·관수 환경 제어",
+   "role": "ROLE_DIAGNOSE_V1",
+   "role_name": "조사·진단",
+   "strength": "드묾",
+   "appears_as": "조사·진단 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "시설·관수 환경 제어",
+   "role": "ROLE_GRADE_V1",
+   "role_name": "판정·검사",
+   "strength": "드묾",
+   "appears_as": "판정·검사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "시설·관수 환경 제어",
+   "role": "ROLE_RECORDS_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "시설·관수 환경 제어",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 관리",
+   "strength": "중심",
+   "appears_as": "현장 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "시설·관수 환경 제어",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "시설·관수 환경 제어",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "시설·관수 환경 제어",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "조경 설계·식재 계획",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "재배·식재 계획",
+   "strength": "중심",
+   "appears_as": "재배·식재 계획 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "조경 설계·식재 계획",
+   "role": "ROLE_DIAGNOSE_V1",
+   "role_name": "조사·진단",
+   "strength": "드묾",
+   "appears_as": "조사·진단 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "조경 설계·식재 계획",
+   "role": "ROLE_GRADE_V1",
+   "role_name": "판정·검사",
+   "strength": "드묾",
+   "appears_as": "판정·검사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "조경 설계·식재 계획",
+   "role": "ROLE_RECORDS_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "조경 설계·식재 계획",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 관리",
+   "strength": "드묾",
+   "appears_as": "현장 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "조경 설계·식재 계획",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "중심",
+   "appears_as": "운영·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "조경 설계·식재 계획",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "조경 설계·식재 계획",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "녹지·수목 유지 관리",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "재배·식재 계획",
+   "strength": "드묾",
+   "appears_as": "재배·식재 계획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "녹지·수목 유지 관리",
+   "role": "ROLE_DIAGNOSE_V1",
+   "role_name": "조사·진단",
+   "strength": "드묾",
+   "appears_as": "조사·진단 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "녹지·수목 유지 관리",
+   "role": "ROLE_GRADE_V1",
+   "role_name": "판정·검사",
+   "strength": "중심",
+   "appears_as": "판정·검사 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "녹지·수목 유지 관리",
+   "role": "ROLE_RECORDS_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "녹지·수목 유지 관리",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 관리",
+   "strength": "중심",
+   "appears_as": "현장 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "녹지·수목 유지 관리",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "녹지·수목 유지 관리",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "녹지·수목 유지 관리",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "산림 자원 조사·경영",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "재배·식재 계획",
+   "strength": "드묾",
+   "appears_as": "재배·식재 계획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "산림 자원 조사·경영",
+   "role": "ROLE_DIAGNOSE_V1",
+   "role_name": "조사·진단",
+   "strength": "중심",
+   "appears_as": "조사·진단 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "산림 자원 조사·경영",
+   "role": "ROLE_GRADE_V1",
+   "role_name": "판정·검사",
+   "strength": "드묾",
+   "appears_as": "판정·검사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "산림 자원 조사·경영",
+   "role": "ROLE_RECORDS_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "산림 자원 조사·경영",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 관리",
+   "strength": "드묾",
+   "appears_as": "현장 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "산림 자원 조사·경영",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "산림 자원 조사·경영",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "중심",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "산림 자원 조사·경영",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "드묾",
+   "appears_as": "안전·규정 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공간·이용자 안전 관리",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "재배·식재 계획",
+   "strength": "드묾",
+   "appears_as": "재배·식재 계획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공간·이용자 안전 관리",
+   "role": "ROLE_DIAGNOSE_V1",
+   "role_name": "조사·진단",
+   "strength": "드묾",
+   "appears_as": "조사·진단 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공간·이용자 안전 관리",
+   "role": "ROLE_GRADE_V1",
+   "role_name": "판정·검사",
+   "strength": "드묾",
+   "appears_as": "판정·검사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공간·이용자 안전 관리",
+   "role": "ROLE_RECORDS_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "드묾",
+   "appears_as": "기록·표준 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공간·이용자 안전 관리",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 관리",
+   "strength": "드묾",
+   "appears_as": "현장 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공간·이용자 안전 관리",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "중심",
+   "appears_as": "운영·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공간·이용자 안전 관리",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공간·이용자 안전 관리",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "중심",
+   "appears_as": "안전·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "법규·인증·기록",
+   "role": "ROLE_PLAN_V1",
+   "role_name": "재배·식재 계획",
+   "strength": "드묾",
+   "appears_as": "재배·식재 계획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "법규·인증·기록",
+   "role": "ROLE_DIAGNOSE_V1",
+   "role_name": "조사·진단",
+   "strength": "드묾",
+   "appears_as": "조사·진단 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "법규·인증·기록",
+   "role": "ROLE_GRADE_V1",
+   "role_name": "판정·검사",
+   "strength": "중심",
+   "appears_as": "판정·검사 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J7"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "법규·인증·기록",
+   "role": "ROLE_RECORDS_V1",
+   "role_name": "기록·표준 관리",
+   "strength": "중심",
+   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J5",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "법규·인증·기록",
+   "role": "ROLE_FIELD_V1",
+   "role_name": "현장 관리",
+   "strength": "드묾",
+   "appears_as": "현장 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "법규·인증·기록",
+   "role": "ROLE_OPS_V1",
+   "role_name": "운영·조정",
+   "strength": "드묾",
+   "appears_as": "운영·조정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "법규·인증·기록",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·연구",
+   "strength": "드묾",
+   "appears_as": "조사·연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "법규·인증·기록",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "안전·규정 관리",
+   "strength": "중심",
+   "appears_as": "안전·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  }
+ ]
+}
