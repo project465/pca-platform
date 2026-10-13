@@ -8392,3 +8392,62 @@ V3_PREVIEW_OPEN='*' V3_CAMPUS_FIXTURE=scripts/fixtures/campus-zztest.json \
 UI_BASE=http://127.0.0.1:3100 \
   V3_CAMPUS_FIXTURE=scripts/fixtures/campus-zztest.json npm run campus:walk
 ```
+
+**운영 오픈을 재는 자리를 세웠다. 운영은 못 열었다.** (2026-10-13)
+
+새 Core 를 만들지 않았다. 이 회차가 물은 것은 **실제 학생과 담당자가 지금
+쓸 수 있는 상태인가**이고, 답은 `자료는 다 섰고 운영에서 확인하지 못했다`
+다. 자세한 것은 `docs/metri/PCU_PRODUCTION_OPEN.md`.
+
+**못 본 것과 깨진 것을 섞지 않는다.** 네트워크 정책이
+`app.careermatri.com:443` 을 막아(게이트웨이가 CONNECT 에 403 · 두 호스트
+HTTP 000) 운영 배포본을 한 번도 열지 못했고 Railway Shell 권한도 없다.
+그래서 상용화 필수 넷이 LOCAL 에서 전부 PASS 이고 운영에서는 전부
+`UNVERIFIED` 다. **`FAIL` 로 적지 않는다**: 섞으면 둘 다 쓸모가 없어진다
+(`ops:check` 가 `UNKNOWN` 을 `BLOCKED` 와 가르는 것과 같은 까닭이다).
+판정은 `PCU PRODUCTION OPEN BLOCKED` 이고 막는 것 셋이 전부 이 세션 밖에
+있다.
+
+**`ASSESSMENT_READY` 는 `열렸다` 는 뜻이 아니다.** 그 값이 말하는 것은 그
+Core 의 파일이 다 섰다까지다. 배재대 고르는 자리 117 가운데 115 가
+`ASSESSMENT_READY` 이고 학생에게 열린 자리는 **0** 이다. 여는 것은
+`open_to_students` 가 정하고, 배재대 자리를 가리키는 Core 열아홉 벌이 전부
+`false` 다. **어느 Core 도 `validated` 가 아니다**: 규준도 percentile 도
+적합도 % 도 합격 가능성도 내지 않는다.
+
+**공개 조건을 스스로 낮추지 않았다.** `open_to_students: true` 는 운영
+smoke 가 PASS 한 Core 부터 열 수 있고, 운영을 열지 못했으므로 **한 Core 도
+열지 않았다.**
+
+**담당자 화면은 기관 줄을 요구한다**(`npm run pcu:ops` · LOCAL 20 / 20).
+학생 흐름은 기관 줄 없이도 돈다(`/campus/pcu` 로 들어온 응시는
+`v3_attempts.university_code` 로 묶인다). 기관 줄이 필요한 쪽은 담당자
+화면이고, `organizations.code` 가 `PCU` 여야 그 학생들이 잡힌다. 아니면
+담당자가 빈 화면을 보고 **`아직 아무도 안 쳤다` 로 읽는다.** 이 DB 에 그
+줄이 없어서 **운영에서 만들 일로 적었다**: 기관 한 줄과 `org_admin`
+membership 하나. **이 검사가 운영에 만들어 주지 않는다**: 담당자 열쇠는
+사람이 받는 것이고 그 자리에서 한 번만 보여야 한다. 쓰는 검사라 **로컬이
+아닌 주소면 그 자리에서 멈춘다**(`backup-restore.sh` 와 같은 까닭이다).
+
+**세우는 수를 손으로 적지 않는다.** 5명 규칙의 양쪽을 보려고 여섯 명을
+넣고 화면에 6 이 서는지 봤는데, 그 학과에 앞서 돌린 검사의 응시가 한 줄
+남아 있어 화면이 7 을 적었다. **멀쩡한 화면이 걸렸다.** 세는 것은 DB 의
+수와 화면의 수가 같은가이고, 넣은 수는 거기서 아무것도 말하지 않는다.
+5명 규칙의 선도 `MIN_CELL` 에서 읽는다.
+
+**대표 Core 아홉을 작업공간까지 밟았다**(`v3-pcu-flow`, 자리마다 17가지).
+EE · CS · BIZ · PUBADM · BT · LANG(인문사회) · NURSING(생명보건) ·
+MEDIA(문화예술) · CIV. `core:walk` 이 보는 것은 종이까지이고 여기서는 그
+뒤 경험과 반영과 현재 상태까지 본다.
+
+```bash
+npm run pcu:ops      # 담당자 화면이 실제 응시를 반영하는가 (LOCAL · 쓴다)
+npm run pcu:coverage # 자리 115 / 115
+npm run v3:majors    # 검사가 두 등록부를 쓰지 않는가
+```
+
+**아직 아닌 것.** 운영 배포본과 운영 DB 를 못 봤다. 배포본이
+`d21a542` 를 들고 있는지 **모른다**(Deployments 를 읽는 도구가 없고 주소가
+막혔다). PCU 기관과 담당자 계정이 운영에 있는지 모른다. 종이가 운영
+컨테이너에서 뽑히는지는 재배포 뒤 `[v3-pdf]` 로그 한 줄로만 확정된다.
+iPhone Safari 실기기 확인이 남아 있다.

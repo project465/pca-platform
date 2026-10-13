@@ -209,8 +209,18 @@ export function campusRegistry(dir = CONTENT_DIR): CampusRegistry {
   ) as CampusRegistry;
   const fx = campusFixturePath();
   if (!fx) return reg;
-  const extra = (JSON.parse(readFileSync(fx, "utf8")) as
-    { universities?: CampusUniversity[] }).universities ?? [];
+  /* **깨진 fixture 를 조용히 넘기지 않는다.** 넘기면 확인용 학교가 404 로
+     서고 까닭을 `학교 진입이 깨졌다` 로 거꾸로 적게 된다. 날것의
+     `ENOENT` 도 그 자리를 가리키지 않으므로 경로를 적어 던진다. 운영에서는
+     `campusFixturePath()` 가 이미 `null` 을 돌려주므로 여기 닿지 않는다 */
+  let extra: CampusUniversity[] = [];
+  try {
+    extra = (JSON.parse(readFileSync(fx, "utf8")) as
+      { universities?: CampusUniversity[] }).universities ?? [];
+  } catch (e) {
+    throw new Error(
+      `V3_CAMPUS_FIXTURE 를 읽지 못했습니다: ${fx} (${String(e).slice(0, 80)})`);
+  }
   const have = new Set(reg.universities.map((u) => u.university_code));
   return {
     ...reg,
