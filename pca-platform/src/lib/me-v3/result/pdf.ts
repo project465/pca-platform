@@ -182,7 +182,11 @@ export async function drawResultPdf(opts: DrawOpts): Promise<Buffer> {
     await page.emulateMedia({ media: "print" });
     const pdf = await page.pdf({
       format: "A4", printBackground: true,
-      margin: { top: "16mm", bottom: "16mm", left: "14mm", right: "14mm" },
+      /* **쪽수는 본문을 깎지 않고 여백에서 돌려받는다**(상용화 PHASE 0).
+         위아래 16mm 는 쪽머리와 쪽번호가 들어가는 자리까지 치고도 남는
+         값이었다. 14mm 로 줄여 쪽마다 두 줄을 더 싣는다. 좌우는 그대로
+         둔다: 줄을 더 길게 하면 종이에서 읽는 속도가 떨어진다 */
+      margin: { top: "14mm", bottom: "14mm", left: "14mm", right: "14mm" },
       displayHeaderFooter: true,
       headerTemplate: '<div style="font-size:7pt;color:#5f6e86;width:100%;'
         + 'padding:0 14mm;font-family:sans-serif">CareerMatri</div>',

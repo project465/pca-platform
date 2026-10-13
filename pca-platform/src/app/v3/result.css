@@ -782,7 +782,11 @@
      아래로는 `body` 의 연회색이 그대로 깔린다. 화면에서는 안 보이지만
      종이에서는 마지막 쪽의 남은 자리가 통째로 회색 바닥으로 뽑혔다 */
   html, body { background: #fff; }
-  .rs { background: #fff; font-size: 10.5pt; line-height: 1.55; min-height: 0; }
+  /* **본문 활자는 10pt 다**(상용화 PHASE 0). 10.5pt · 1.55 로 두었을
+     때 STANDARD 가 열 쪽이고 마지막 쪽에 고지문 한 덩이만 남았다. 담긴
+     글을 한 줄도 덜어내지 않고 활자와 줄 사이에서 돌려받는다: A4 에서
+     10pt 는 보고서 본문 크기이고 1.5 는 한국어가 편히 읽히는 줄 사이다 */
+  .rs { background: #fff; font-size: 10pt; line-height: 1.5; min-height: 0; }
   /* 쪽머리에 이미 `CareerMatri` 가 찍힌다. 한 쪽에 두 번 적지 않는다 */
   .rs-head { position: static; backdrop-filter: none; background: #fff; border: 0; }
   .rs-brand, .rs-back, .rs-mark { display: none; }
@@ -847,16 +851,24 @@
      어디서 절이 갈리는지가 안 읽힌다. **여백을 금 위아래로 나눠 가진다**:
      금을 그으면서 위 여백까지 그대로 두면 절마다 한 뼘이 늘어 STANDARD 가
      아홉 쪽에서 열 쪽이 됐다. 쪽수는 본문을 깎지 않고 여백에서 돌려받는다 */
-  .rs-sect { margin-top: 14px; }
+  .rs-sect { margin-top: 9px; }
   .rs-sect > h2 {
-    font-size: 13pt; break-after: avoid;
-    padding-top: 7px; border-top: 1px solid var(--r-line);
+    font-size: 12.5pt; break-after: avoid;
+    padding-top: 6px; border-top: 1px solid var(--r-line);
+    margin-bottom: 4px;
   }
   .rs-sect > .rs-h2b { border-top: 0; padding-top: 0; }
   .rs-sect > .rs-h2b { margin-top: 24px; }
   /* **머리글만 붙여 둔다.** 안내 줄까지 `avoid` 를 걸면 크롬이 다음
      덩이 전체를 끌고 가고, 그 앞 쪽이 머리글 두 줄만 남긴 채 비었다 */
-  .rs-sect > .rs-note { margin-bottom: 12px; }
+  .rs-sect > .rs-note { margin-bottom: 9px; }
+  /* **쪽수는 본문이 아니라 여백에서 돌려받는다**(상용화 PHASE 0).
+     묶음 상자의 안쪽 여백과 줄 사이를 한 단 줄인다. 담긴 글은 한 줄도
+     줄이지 않는다 */
+  .rs-pack { padding: 10px 14px; margin-top: 10px; }
+  .rs-pack dl > div { padding: 5px 0; }
+  .rs-gap { padding: 10px 14px; margin-top: 8px; }
+  .rs-ev > section { margin-top: 12px; }
   /* **묶음 전체를 붙여 두지 않는다.** 아홉 줄짜리 묶음에 `avoid` 를 걸면
      통째로 다음 쪽으로 밀리고 그 앞 쪽이 절반 비어 뽑힌다. 쪼개지면 뜻이
      사라지는 것은 줄 하나지 묶음 전체가 아니다 */
@@ -864,6 +876,25 @@
   .rs-when li, .rs-steps li, .rs-rows li, .rs-ev .row {
     break-inside: avoid;
   }
+  /* **칩 줄은 종이에서 줄글로 흐르게 둔다**(상용화 PHASE 0).
+     `해 본 일`·`남긴 것`·`비교한 것` 의 `dd` 가 flex 상자인데, 크롬은
+     flex 상자 안에서 쪽을 가르지 못한다. 칩이 열다섯 개면 그 묶음이
+     통째로 다음 쪽으로 밀리고 **그 앞 쪽이 절반 비어 뽑힌다**(CS
+     STANDARD 첫 쪽이 그랬다). 줄글 흐름으로 바꾸면 칩 하나 단위로
+     넘어간다. 보이는 것은 같다: 칩은 `inline-block` 이고 줄 사이로
+     flex 의 `gap` 을 대신한다 */
+  .rs-why dd, .rs-pack dd { display: block; line-height: 1.95; }
+  .rs-why dd > span, .rs-pack dd > span { margin-right: 4px; }
+  /* 줄글만 담긴 두 묶음은 칩 줄의 줄 사이를 쓰지 않는다 */
+  #nearby dd, #fourkeys dd { line-height: 1.5; }
+  /* **영역 한 자리의 안쪽 여백을 한 단 줄인다**(상용화 PHASE 0).
+     BASIC 은 영역마다 `관심 · 해 본 횟수 · 배울 뜻` 석 줄과 일하는 차례
+     두 줄이 서는데, 화면 여백 그대로 종이에 옮기면 그 다섯 줄이 쪽의
+     3분의 1을 쓴다. 담긴 글은 그대로 두고 여백에서 돌려받는다 */
+  .rs-why { padding-top: 2px; padding-bottom: 10px; }
+  .rs-why dt { padding-top: 9px; }
+  .rs-why dd { margin-top: 3px; }
+  .rs-why3 dd { line-height: 1.5; }
   /* **영역 패널은 쪽을 넘게 둔다.** 한 쪽에 안 들어가는 상자에 `avoid` 가
      걸려 있으면 그 앞 쪽이 통째로 빈다. 첫 쪽이 머리글 두 줄만 남기고
      비어 뽑혔다. 쪼개지면 뜻이 사라지는 것은 줄 하나지 패널 전체가 아니다 */
@@ -905,8 +936,15 @@
 
   /* **A4 의 글 폭은 690px 안팎이다.** 좁은 화면 규칙(719px)이 종이에서도
      걸리므로 여기서 되돌린다. 안 되돌리면 인쇄본이 손전화 화면이 된다 */
+  /* **여덟 축 표를 종이에서 압축한다**(상용화 PHASE 0).
+     영역마다 여덟 줄이 두 줄씩(판정 + `무엇을 했는가`) 서면, 열두 영역에
+     같은 모양이 열두 번 되풀이되면서 그 표가 종이에서 가장 큰 덩이가
+     된다. **담긴 판정은 그대로 두고** 묻는 말만 걷어 한 줄로 만든다:
+     묻는 말은 바로 위 `해 본 일`·`남긴 것` 이 이미 말하고 있다 */
   .rs-axes { grid-template-columns: 1fr 1fr; }
-  .rs-axis { padding: 7px 16px 7px 13px; }
+  .rs-axis { padding: 4px 14px 4px 11px; }
+  .rs-axis-q { display: none; }
+  .rs-axis-s { font-size: 8.5pt; line-height: 1.45; }
   /* **격자 상자는 쪽을 넘지 못한다.** 두 칸으로 둔 채 뽑았더니 묶음
      전체가 다음 쪽으로 통째로 밀렸고, 그 앞 쪽이 머리글 두 줄만 남긴 채
      비었다. 종이에서는 한 칸으로 풀어 줄 단위로 흐르게 둔다 */
@@ -921,18 +959,47 @@
   .rs-steps li > span { width: 120px; }
   .rs-steps li { padding: 8px 16px; }
   .rs-domain > header, .rs-why, .rs-intro { padding-left: 18px; padding-right: 18px; }
-  .rs-domain > header { padding-top: 12px; padding-bottom: 12px; }
+  .rs-domain > header { padding-top: 9px; padding-bottom: 9px; }
+  .rs-intro { padding-top: 9px; padding-bottom: 10px; }
+  .rs-intro dd + dt { margin-top: 7px; }
 
   /* 단서는 각주 크기로 내려 둔다. 결과를 밀어내지 않는다 */
   /* **닫는 안내를 한 줄 때문에 다음 쪽으로 보내지 않는다.** 여백을
      24px 로 두었더니 두 줄 가운데 뒤의 한 줄이 넘어가, 마지막 쪽이 그
      한 줄만 들고 따로 섰다. 두 줄을 묶어 두고 여백을 줄인다 */
-  .rs-fine { margin-top: 12px; padding-top: 8px; font-size: 7.5pt; line-height: 1.5; }
+  .rs-fine { margin-top: 8px; padding-top: 6px; font-size: 7.5pt; line-height: 1.5; }
+  /* 묶음 상자의 머리 아래와 꼬리 위 여백도 한 단 줄인다 */
+  .rs-pack > p { margin-bottom: 6px; }
+  .rs-pack > .rs-others { margin-top: 6px; }
+  /* 화면에서만 서는 줄. 누를 자리와 되짚는 수는 종이에 찍지 않는다 */
+  .rs-webonly { display: none !important; }
   /* **본문의 펼침은 종이에서 쪽을 넘게 둔다.** 이 줄이 한동안 모든
      펼침에 걸려 있었다. 각주만 들어 있을 때는 맞았는데, 본문의 긴 절을
      펼침 안으로 옮기자(규격 §4) **한 쪽에 안 들어가는 상자에 `avoid` 가
      걸려** 그 앞 쪽이 통째로 비어 뽑혔다. BASIC 이 5쪽에서 6쪽이 되고
      둘째 쪽이 거의 빈 채로 나왔다. 붙여 두는 것은 각주뿐이다 */
+  /* **읽는 기준 다섯을 종이에서 두 칸으로 세운다**(상용화 PHASE 0).
+     한 줄씩 다섯이 서면 그 덩이가 쪽 하나를 새로 열고, 그 쪽에는 고지문
+     말고 아무것도 남지 않는다. **담긴 글을 한 줄도 덜어내지 않고** 두
+     칸으로 접어 앞 쪽의 남은 자리에 들어가게 한다. 다섯 줄은 서로 이어
+     읽는 글이 아니라 각각 따로 읽는 단서라 칸을 갈라도 뜻이 상하지 않는다 */
+  /* **짧은 값이 줄마다 한 줄씩 서는 묶음은 종이에서 두 칸으로 접는다**
+     (상용화 PHASE 0). `이어 볼 곳` 은 산업 넷과 직무 넷이 각각 이름 한
+     줄과 걸린 영역 한 줄을 쓰고, `이 넷이 모이면` 은 네 칸이 값 한 마디씩
+     쓴다. 한 칸으로 두면 그 둘이 종이에서 열여섯 줄을 먹고, 그만큼이
+     마지막 쪽을 새로 열었다. **담긴 글을 한 줄도 덜어내지 않는다**: 각
+     줄이 따로 읽는 항목이라 칸을 갈라도 읽는 차례가 상하지 않는다 */
+  #nearby dl, #fourkeys dl {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0 18px;
+  }
+  #nearby dl > div, #fourkeys dl > div { padding: 0 0 4px; }
+  #nearby dt, #fourkeys dt { padding-top: 0; }
+  #nearby dd, #fourkeys dd { margin-top: 2px; }
+  .rs-fine #howto dl {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0 18px;
+  }
+  .rs-fine #howto dl > div { padding: 0 0 7px; }
+  .rs-fine #howto dt { padding-top: 0; }
   .rs-fine .rs-disc > div { break-inside: avoid; }
   .rs-fine a { color: inherit; text-decoration: none; }
 }

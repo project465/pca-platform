@@ -513,15 +513,25 @@ function Translation({ view, major }: { view: TranslationView; major: string }) 
           </dl>
         </div>
       ) : null}
-      {rows.length ? (
-      <ol className="rs-steps">
-        {rows.map((s) => (
-          <li key={s.item_id}>
-            <span>{TRANS_STEP_KO[s.item_id]}</span>
-            <b>{s.choice ?? "적지 않으셨습니다"}</b>
-          </li>
-        ))}
-      </ol>
+      {/* **빈 표를 통째로 싣지 않는다.** 열 줄이 전부 `적지 않으셨습니다`
+          이면 그 표는 한 쪽을 먹으면서 아무것도 말하지 않는다. 적어 주신
+          줄만 세우고, 비어 있는 줄은 **수와 이름으로** 한 줄에 모은다 */}
+      {rows.some((s) => s.choice) ? (
+        <ol className="rs-steps">
+          {rows.filter((s) => s.choice).map((s) => (
+            <li key={s.item_id}>
+              <span>{TRANS_STEP_KO[s.item_id]}</span>
+              <b>{s.choice}</b>
+            </li>
+          ))}
+        </ol>
+      ) : null}
+      {rows.some((s) => !s.choice) ? (
+        <p className="rs-note">
+          아직 적지 않으신 단계 {rows.filter((s) => !s.choice).length}개 ·{" "}
+          {rows.filter((s) => !s.choice)
+            .map((s) => TRANS_STEP_KO[s.item_id]).join(" · ")}
+        </p>
       ) : null}
       {draft.length >= 3 ? (
         <div className="rs-draft">
@@ -1103,13 +1113,18 @@ export default async function V3Result({
                 ? "무엇이 비었는지와 그것이 왜 필요한지, 다음에 무엇을 하면 되는지를 함께 적었습니다."
                 : "완전히 비어 있는 축은 없습니다. 남은 일은 확인된 경험을 설명 문장으로 만드는 쪽입니다."}
             </p>
-            {model.gaps.slice(0, 8).map((g) => {
+            {/* **같은 까닭을 세 번 적지 않는다**(규격 §4). 같은 종류의
+                빈자리는 까닭이 글자까지 같고, 카드마다 되풀이되면 세 칸이
+                기계가 찍어 낸 표로 읽힌다. 바로 앞 카드와 같으면 비운다 */}
+            {(() => { let lastWhy = ""; return model.gaps.slice(0, 8).map((g) => {
               const k = gapKo(g, domainName(core, g.domain));
               const act = model.actions.find((x) => x.id === g.action_id);
+              const sameWhy = k.why === lastWhy;
+              lastWhy = k.why;
               return (
                 <article className="rs-gap" key={g.id}>
                   <h3>{k.title}</h3>
-                  <p>{k.why}</p>
+                  {sameWhy ? null : <p>{k.why}</p>}
                   {act ? (
                     <p className="rs-do">
                       <b>다음에 이렇게</b>
@@ -1118,7 +1133,7 @@ export default async function V3Result({
                   ) : null}
                 </article>
               );
-            })}
+            }); })()}
           </section>
         ) : null}
 
@@ -1229,7 +1244,7 @@ export default async function V3Result({
               걸리는가뿐이고, **새 점수를 만들지 않는다.** 그래서 순위도
               적합도도 없고 걸린 영역 이름만 적는다 */}
           {revIndustry.length || revRole.length ? (
-            <div className="rs-pack">
+            <div className="rs-pack" id="nearby">
               <h3>지금 확인된 영역에서 이어 볼 곳</h3>
               <p className="rs-note">
                 확인된 기술영역이 어느 산업과 직무에서 자주 쓰이는지를 적은
@@ -1331,7 +1346,11 @@ export default async function V3Result({
               것은 지역 선택이 무엇을 바꾸고 무엇을 바꾸지 않는가 한 줄과
               고르러 가는 길이다 */}
           <Disclose label="권역과 고르신 것 보기">
-          <div className="rs-pack">
+          {/* **종이에서는 권역 다섯 설명을 싣지 않는다**(상용화 PHASE 0).
+              어느 응시에서나 같은 글이고, 종이에서 읽는 사람이 다음에 할
+              일을 정하는 데 쓰이지 않는다. 고른 권역과 그 지역의 기관
+              상태는 위에 그대로 선다 */}
+          <div className="rs-pack rs-webonly">
             <h3>권역마다 자리의 성격이 다릅니다</h3>
             <dl>
               {regionLayer().regions.map((r) => (
@@ -1346,7 +1365,7 @@ export default async function V3Result({
               전까지 짐작으로 채우지 않습니다.
             </p>
           </div>
-          <div className="rs-pack">
+          <div className="rs-pack" id="fourkeys">
             <h3>이 넷이 모이면 그 조합을 물어볼 수 있습니다</h3>
             <dl>
               {exploreKey.map(([k, v]) => (
@@ -1408,7 +1427,10 @@ export default async function V3Result({
             </div>
           ) : null}
           </Disclose>
-          <p className="rs-note">
+          {/* **종이에는 누를 자리를 두지 않는다**(상용화 PHASE 0). 링크는
+              화면에서만 선다: 뽑아 둔 종이에서는 눌리지 않고, 마지막 쪽에
+              혼자 서면 밑줄 친 글자 한 줄이 남는다 */}
+          <p className="rs-note rs-webonly">
             <Link href="/me/region">희망 지역 고르기</Link>
           </p>
         </section>
@@ -1419,7 +1441,11 @@ export default async function V3Result({
             **어디를 먼저 누를지 고르는 일**을 한 번 더 했다. 그 자리는
             결과지의 마지막 인상이라 메뉴판이 서면 이 제품이 결과를 나눠
             주는 곳으로 읽힌다. 이어지는 자리는 하나다 */}
-        <section className="rs-sect" id="next">
+        {/* **종이에는 이어지는 길을 세우지 않는다**(상용화 PHASE 0).
+            여기 선 것은 전부 눌러서 가는 자리라 뽑아 둔 종이에서는 밑줄
+            친 글자 목록으로만 남고, 마지막 쪽을 한 장 더 늘린다. 종이가
+            끝나는 자리는 해석 기준이다 */}
+        <section className="rs-sect rs-webonly" id="next">
           <h2>이 다음에</h2>
           <div className="rs-cta">
             <p>
@@ -1499,7 +1525,10 @@ export default async function V3Result({
                 본문 첫 줄에 두면 **점수처럼 읽힌다.** 되짚어 보실 자리에
                 한 줄로 둔다 */}
             {deep ? (
-              <p className="rs-note">
+              /* **종이에서는 이 줄을 세우지 않는다.** 되짚어 보실 자리이고,
+                 마지막 쪽에 홀로 서면 숫자 한 줄이 결과의 마지막 인상이
+                 된다. 같은 수는 영역마다 제자리에 적혀 있다 */
+              <p className="rs-note rs-webonly">
                 확인된 판단 {counts.confirmed_axes} · 직접 정한 것 {counts.owned_axes}
                 {" · "}고르신 근거 {counts.evidence_items}
               </p>
