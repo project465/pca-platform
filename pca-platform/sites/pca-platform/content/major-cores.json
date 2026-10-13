@@ -2424,22 +2424,118 @@
    "major": "LANG",
    "name_ko": "국어·언어·문학",
    "name_en": "Language and Literature",
-   "assessment_version": null,
-   "status": "planned",
+   "assessment_version": "LANG_V1",
+   "status": "building",
    "maturity": "FOUNDATION",
    "aliases": [
     "국어국문학과",
+    "국어국문한국어교육학과",
     "영어영문학과",
     "중어중문학과",
+    "일어일문학과",
     "언어학과",
-    "문예창작학과"
+    "문예창작학과",
+    "한국어교육과",
+    "문헌정보학과"
    ],
    "markets": [
     "KR"
    ],
-   "files": {},
-   "domain_count": null,
-   "axis_count": 8
+   "files": {
+    "taxonomy": "lang-v1-taxonomy.json",
+    "domains": "lang-v1-domains.json",
+    "checklists": "lang-v1-checklists.json",
+    "items_blueprint": "lang-v1-items-blueprint.json",
+    "checklist_additions": "lang-v1-checklist-additions.json",
+    "common_additions": "lang-v1-common-additions.json",
+    "items": "lang-v1-items.json",
+    "relations": "lang-v1-relations.json",
+    "constructs": "lang-v1-constructs.json"
+   },
+   "domain_count": 12,
+   "axis_count": 8,
+   "role_function_count": 8,
+   "packs": {
+    "industry": "lang-industry-packs.json",
+    "role": "lang-role-packs.json"
+   },
+   "domains_note": "열둘은 앞 Core 들의 열둘을 맞춘 수가 아니다. 어문계열이 실제로 내리는 판단을 세어 문헌과 해석과 언어 구조와 말뭉치와 번역과 편집과 교육 설계와 수업 평가와 창작과 지역 이해와 조사와 콘텐츠까지 열둘이고, `발표 잘하기` 같은 **일하는 방식**은 영역으로 두지 않았다. 번역과 편집을 나눈 까닭은 앞엣것은 다른 말로 된 뜻을 옮기고 뒤엣것은 이쪽 말로 된 글을 고쳐 내보내기 때문이다",
+   "packs_note": "산업팩은 여덟이고 어문계열이 실제로 서는 자리로 갈랐다. **`문학` 을 산업으로 두지 않는다**: 그것은 다루는 대상이지 하는 일이 아니고, 같은 대상을 놓고 출판과 교육과 번역과 연구가 서로 다른 판단을 묻는다. 출판과 콘텐츠를 따로 둔 까닭은 앞엣것은 한 권의 완성도가, 뒤엣것은 회차마다의 반응이 기준을 정하기 때문이다",
+   "open_to_students": false,
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다",
+   "fixtures": {
+    "personas": "sites/pca-platform/assessment/LANG_V1/personas.json",
+    "bank_lock": "sites/pca-platform/assessment/LANG_V1/bank-lock.json",
+    "measurement_map": "docs/metri/LANG_CORE_V1_MEASURE.md",
+    "gaming_doc": "docs/metri/LANG_CORE_V1_GAMING.md"
+   },
+   "specializations": [
+    {
+     "code": "SPEC_LANG_JAPAN",
+     "name_ko": "일본지역학",
+     "note": "일본의 말과 글과 사회를 함께 다루는 쪽",
+     "authored": true,
+     "domain_emphasis": {
+      "lead": [
+       "TD05",
+       "TD10",
+       "TD02"
+      ],
+      "support": [
+       "TD01",
+       "TD06",
+       "TD11"
+      ],
+      "rare": [
+       "TD07",
+       "TD09",
+       "TD04"
+      ],
+      "note": "설명하는 차례만 정한다. 축 수준과 묶음 조건과 확인된 축 개수에 들어가지 않는다"
+     },
+     "industry_mapping": {
+      "lead": [
+       "INDUSTRY_TRANSLATE_V1",
+       "INDUSTRY_CORPCOMM_V1",
+       "INDUSTRY_PUBCULTURE_V1"
+      ],
+      "support": [
+       "INDUSTRY_CONTENT_V1",
+       "INDUSTRY_ACADEMIA_V1"
+      ]
+     },
+     "role_mapping": {
+      "lead": [
+       "ROLE_EDIT_V1",
+       "ROLE_ANALYSIS_V1",
+       "ROLE_PROJECT_V1"
+      ],
+      "support": [
+       "ROLE_RESEARCH_V1",
+       "ROLE_STANDARD_V1"
+      ]
+     },
+     "examples": {
+      "scene": [
+       "옮길 때 살릴 것과 버릴 것을 가른다",
+       "그 사회에서 통할 말과 피할 말을 가른다",
+       "현지 담당자에게 확인해 적용 범위를 줄인다"
+      ],
+      "artifacts": [
+       "용어 대응표 한 벌",
+       "현지 확인 기록",
+       "맥락 정리 한 장",
+       "번역문과 감수 반영 기록"
+      ]
+     },
+     "evidence_action": {
+      "first": "옮긴 글 하나에서 살린 것과 버린 것을 그 까닭과 함께 한 장으로 남긴다",
+      "next": "현지 담당자나 현지 매체의 쓰임에 대어 보고 벌어진 만큼의 까닭을 적어 둔다",
+      "note": "할 일의 재료는 그 영역의 `verify_targets` 와 `artifacts` 에서 가져온다. 여기서 새 재료를 지어내지 않는다"
+     }
+    }
+   ],
+   "specializations_note": "하나다. 배재대 일본학과가 가리키는 자리이고 국어국문한국어교육학과는 갈래 없이 Core 로 바로 간다. **쓰이지 않는 갈래를 미리 적어 두지 않는다**: 중국·영미 지역학 갈래는 그 자리를 가리키는 학과가 생기는 날 그 전공을 아는 분이 쓴다"
   },
   {
    "code": "EDU_CORE_V1",

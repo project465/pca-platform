@@ -1,0 +1,2450 @@
+{
+ "schema_version": "lang-v1-relations.1",
+ "core": "LANG_CORE_V1",
+ "note": "기술영역과 산업, 기술영역과 역할의 관계를 두 표로 둔다. 세 축을 미리 곱해 두지 않는다: 열두 영역과 여덟 산업과 여덟 역할을 곱하면 칠백예순여덟 줄이 되고 그만큼의 줄을 사람이 손으로 유지할 수 없다. 어느 줄도 점수를 만들지 않는다: `strength` 는 설명하는 차례를 정하고 `appears_as` 는 결과지가 그 말로 옮겨 적을 때 읽는다",
+ "combine_rule": "산업 하나와 역할 하나를 함께 고른 사람에게는 두 표에서 같은 영역의 줄을 뽑아 나란히 놓는다. 둘 다 `중심` 인 영역이 먼저 서고, 한쪽만 중심인 영역이 다음이고, 양쪽이 드문 영역은 적지 않는다",
+ "td_industry": [
+  {
+   "td": "TD01",
+   "td_name": "문헌·자료 조사",
+   "industry": "INDUSTRY_KLANGEDU_V1",
+   "industry_name": "한국어교육·국제교류",
+   "strength": "있음",
+   "appears_as": "한국어교육·국제교류 에서는 쓰는 자료의 출처를 확인하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "쓰는 자료의 출처를 확인하는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문헌·자료 조사",
+   "industry": "INDUSTRY_PUBLISH_V1",
+   "industry_name": "출판·편집",
+   "strength": "있음",
+   "appears_as": "출판·편집 에서는 사실 확인의 경로를 골라 쓰는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "사실 확인의 경로를 골라 쓰는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문헌·자료 조사",
+   "industry": "INDUSTRY_CONTENT_V1",
+   "industry_name": "콘텐츠·스토리",
+   "strength": "있음",
+   "appears_as": "콘텐츠·스토리 에서는 다룰 소재의 범위를 먼저 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "다룰 소재의 범위를 먼저 가르는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문헌·자료 조사",
+   "industry": "INDUSTRY_TRANSLATE_V1",
+   "industry_name": "번역·현지화",
+   "strength": "있음",
+   "appears_as": "번역·현지화 에서는 원문의 출처와 판본을 확인하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "원문의 출처와 판본을 확인하는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문헌·자료 조사",
+   "industry": "INDUSTRY_PUBCULTURE_V1",
+   "industry_name": "공공·문화기관",
+   "strength": "있음",
+   "appears_as": "공공·문화기관 에서는 사업의 범위를 먼저 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "사업의 범위를 먼저 가르는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문헌·자료 조사",
+   "industry": "INDUSTRY_CORPCOMM_V1",
+   "industry_name": "기업 커뮤니케이션",
+   "strength": "있음",
+   "appears_as": "기업 커뮤니케이션 에서는 내보낼 사실을 원자료에서 확인하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "내보낼 사실을 원자료에서 확인하는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문헌·자료 조사",
+   "industry": "INDUSTRY_LANGTECH_V1",
+   "industry_name": "언어 데이터·언어기술",
+   "strength": "있음",
+   "appears_as": "언어 데이터·언어기술 에서는 원자료에서 쓸 것을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "원자료에서 쓸 것을 가르는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문헌·자료 조사",
+   "industry": "INDUSTRY_ACADEMIA_V1",
+   "industry_name": "대학·연구기관",
+   "strength": "있음",
+   "appears_as": "대학·연구기관 에서는 다룰 범위를 좁혀 적는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "다룰 범위를 좁혀 적는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "텍스트 분석·해석",
+   "industry": "INDUSTRY_KLANGEDU_V1",
+   "industry_name": "한국어교육·국제교류",
+   "strength": "드묾",
+   "appears_as": "한국어교육·국제교류 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "텍스트 분석·해석",
+   "industry": "INDUSTRY_PUBLISH_V1",
+   "industry_name": "출판·편집",
+   "strength": "있음",
+   "appears_as": "출판·편집 에서는 원고의 주장을 근거와 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "원고의 주장을 근거와 대조하는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "텍스트 분석·해석",
+   "industry": "INDUSTRY_CONTENT_V1",
+   "industry_name": "콘텐츠·스토리",
+   "strength": "있음",
+   "appears_as": "콘텐츠·스토리 에서는 원작의 뜻을 옮길 조건으로 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "원작의 뜻을 옮길 조건으로 적는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "텍스트 분석·해석",
+   "industry": "INDUSTRY_TRANSLATE_V1",
+   "industry_name": "번역·현지화",
+   "strength": "있음",
+   "appears_as": "번역·현지화 에서는 두 가지로 읽히는 자리를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "두 가지로 읽히는 자리를 가르는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "텍스트 분석·해석",
+   "industry": "INDUSTRY_PUBCULTURE_V1",
+   "industry_name": "공공·문화기관",
+   "strength": "있음",
+   "appears_as": "공공·문화기관 에서는 자료의 해석을 근거와 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "자료의 해석을 근거와 견주는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "텍스트 분석·해석",
+   "industry": "INDUSTRY_CORPCOMM_V1",
+   "industry_name": "기업 커뮤니케이션",
+   "strength": "있음",
+   "appears_as": "기업 커뮤니케이션 에서는 같은 사실을 어느 뜻으로 쓸지 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "같은 사실을 어느 뜻으로 쓸지 가르는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "텍스트 분석·해석",
+   "industry": "INDUSTRY_LANGTECH_V1",
+   "industry_name": "언어 데이터·언어기술",
+   "strength": "있음",
+   "appears_as": "언어 데이터·언어기술 에서는 애매한 글을 어떻게 읽을지 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "애매한 글을 어떻게 읽을지 맞추는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "텍스트 분석·해석",
+   "industry": "INDUSTRY_ACADEMIA_V1",
+   "industry_name": "대학·연구기관",
+   "strength": "있음",
+   "appears_as": "대학·연구기관 에서는 읽는 틀을 세워 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "읽는 틀을 세워 고르는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "언어 구조 분석",
+   "industry": "INDUSTRY_KLANGEDU_V1",
+   "industry_name": "한국어교육·국제교류",
+   "strength": "있음",
+   "appears_as": "한국어교육·국제교류 에서는 문법을 설명할 단위로 쪼개는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "문법을 설명할 단위로 쪼개는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "언어 구조 분석",
+   "industry": "INDUSTRY_PUBLISH_V1",
+   "industry_name": "출판·편집",
+   "strength": "있음",
+   "appears_as": "출판·편집 에서는 표기와 용어를 기준에 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "표기와 용어를 기준에 대조하는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "언어 구조 분석",
+   "industry": "INDUSTRY_CONTENT_V1",
+   "industry_name": "콘텐츠·스토리",
+   "strength": "드묾",
+   "appears_as": "콘텐츠·스토리 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "언어 구조 분석",
+   "industry": "INDUSTRY_TRANSLATE_V1",
+   "industry_name": "번역·현지화",
+   "strength": "있음",
+   "appears_as": "번역·현지화 에서는 표기를 지침에 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "표기를 지침에 대조하는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "언어 구조 분석",
+   "industry": "INDUSTRY_PUBCULTURE_V1",
+   "industry_name": "공공·문화기관",
+   "strength": "드묾",
+   "appears_as": "공공·문화기관 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "언어 구조 분석",
+   "industry": "INDUSTRY_CORPCOMM_V1",
+   "industry_name": "기업 커뮤니케이션",
+   "strength": "있음",
+   "appears_as": "기업 커뮤니케이션 에서는 용어와 표기를 통일하는가 로 나타납니다",
+   "axes_watched": [
+    "J8"
+   ],
+   "dimensions": [
+    "용어와 표기를 통일하는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "언어 구조 분석",
+   "industry": "INDUSTRY_LANGTECH_V1",
+   "industry_name": "언어 데이터·언어기술",
+   "strength": "있음",
+   "appears_as": "언어 데이터·언어기술 에서는 언어 현상을 매길 단위로 쪼개는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "언어 현상을 매길 단위로 쪼개는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "언어 구조 분석",
+   "industry": "INDUSTRY_ACADEMIA_V1",
+   "industry_name": "대학·연구기관",
+   "strength": "있음",
+   "appears_as": "대학·연구기관 에서는 기술을 선행 연구와 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "기술을 선행 연구와 대조하는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "말뭉치·언어 자료",
+   "industry": "INDUSTRY_KLANGEDU_V1",
+   "industry_name": "한국어교육·국제교류",
+   "strength": "있음",
+   "appears_as": "한국어교육·국제교류 에서는 다룰 어휘를 빈도로 추리는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "다룰 어휘를 빈도로 추리는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "말뭉치·언어 자료",
+   "industry": "INDUSTRY_PUBLISH_V1",
+   "industry_name": "출판·편집",
+   "strength": "있음",
+   "appears_as": "출판·편집 에서는 색인과 용어를 맞춰 정리하는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "색인과 용어를 맞춰 정리하는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "말뭉치·언어 자료",
+   "industry": "INDUSTRY_CONTENT_V1",
+   "industry_name": "콘텐츠·스토리",
+   "strength": "있음",
+   "appears_as": "콘텐츠·스토리 에서는 쓴 표현을 모아 다시 쓰는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "쓴 표현을 모아 다시 쓰는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "말뭉치·언어 자료",
+   "industry": "INDUSTRY_TRANSLATE_V1",
+   "industry_name": "번역·현지화",
+   "strength": "있음",
+   "appears_as": "번역·현지화 에서는 용어 대응표를 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "용어 대응표를 남기는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "말뭉치·언어 자료",
+   "industry": "INDUSTRY_PUBCULTURE_V1",
+   "industry_name": "공공·문화기관",
+   "strength": "있음",
+   "appears_as": "공공·문화기관 에서는 기록을 찾을 수 있게 정리하는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "기록을 찾을 수 있게 정리하는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "말뭉치·언어 자료",
+   "industry": "INDUSTRY_CORPCOMM_V1",
+   "industry_name": "기업 커뮤니케이션",
+   "strength": "드묾",
+   "appears_as": "기업 커뮤니케이션 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "말뭉치·언어 자료",
+   "industry": "INDUSTRY_LANGTECH_V1",
+   "industry_name": "언어 데이터·언어기술",
+   "strength": "있음",
+   "appears_as": "언어 데이터·언어기술 에서는 쓰임을 주석 항목과 선으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "쓰임을 주석 항목과 선으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "말뭉치·언어 자료",
+   "industry": "INDUSTRY_ACADEMIA_V1",
+   "industry_name": "대학·연구기관",
+   "strength": "있음",
+   "appears_as": "대학·연구기관 에서는 자료를 처리할 방법을 골라 쓰는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "자료를 처리할 방법을 골라 쓰는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "번역·통역",
+   "industry": "INDUSTRY_KLANGEDU_V1",
+   "industry_name": "한국어교육·국제교류",
+   "strength": "있음",
+   "appears_as": "한국어교육·국제교류 에서는 두 말을 견주어 설명할 말을 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "두 말을 견주어 설명할 말을 고르는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "번역·통역",
+   "industry": "INDUSTRY_PUBLISH_V1",
+   "industry_name": "출판·편집",
+   "strength": "있음",
+   "appears_as": "출판·편집 에서는 번역 원고의 어색한 자리를 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "번역 원고의 어색한 자리를 좁히는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "번역·통역",
+   "industry": "INDUSTRY_CONTENT_V1",
+   "industry_name": "콘텐츠·스토리",
+   "strength": "있음",
+   "appears_as": "콘텐츠·스토리 에서는 대사의 말투를 골라 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "대사의 말투를 골라 맞추는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "번역·통역",
+   "industry": "INDUSTRY_TRANSLATE_V1",
+   "industry_name": "번역·현지화",
+   "strength": "있음",
+   "appears_as": "번역·현지화 에서는 옮기는 단위와 용어를 직접 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "옮기는 단위와 용어를 직접 고르는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "번역·통역",
+   "industry": "INDUSTRY_PUBCULTURE_V1",
+   "industry_name": "공공·문화기관",
+   "strength": "드묾",
+   "appears_as": "공공·문화기관 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "번역·통역",
+   "industry": "INDUSTRY_CORPCOMM_V1",
+   "industry_name": "기업 커뮤니케이션",
+   "strength": "있음",
+   "appears_as": "기업 커뮤니케이션 에서는 외국어판의 표현을 맞춰 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "외국어판의 표현을 맞춰 남기는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "번역·통역",
+   "industry": "INDUSTRY_LANGTECH_V1",
+   "industry_name": "언어 데이터·언어기술",
+   "strength": "있음",
+   "appears_as": "언어 데이터·언어기술 에서는 두 말이 걸린 자리를 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "두 말이 걸린 자리를 견주는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "번역·통역",
+   "industry": "INDUSTRY_ACADEMIA_V1",
+   "industry_name": "대학·연구기관",
+   "strength": "있음",
+   "appears_as": "대학·연구기관 에서는 번역 인용의 어긋남을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "번역 인용의 어긋남을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "글쓰기·편집",
+   "industry": "INDUSTRY_KLANGEDU_V1",
+   "industry_name": "한국어교육·국제교류",
+   "strength": "있음",
+   "appears_as": "한국어교육·국제교류 에서는 자료를 다른 교사가 쓸 수 있게 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "자료를 다른 교사가 쓸 수 있게 남기는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "글쓰기·편집",
+   "industry": "INDUSTRY_PUBLISH_V1",
+   "industry_name": "출판·편집",
+   "strength": "있음",
+   "appears_as": "출판·편집 에서는 고칠 범위와 그대로 둘 범위를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "고칠 범위와 그대로 둘 범위를 가르는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "글쓰기·편집",
+   "industry": "INDUSTRY_CONTENT_V1",
+   "industry_name": "콘텐츠·스토리",
+   "strength": "있음",
+   "appears_as": "콘텐츠·스토리 에서는 안 읽히는 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "안 읽히는 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "글쓰기·편집",
+   "industry": "INDUSTRY_TRANSLATE_V1",
+   "industry_name": "번역·현지화",
+   "strength": "있음",
+   "appears_as": "번역·현지화 에서는 번역 메모리와 도구를 맞춰 쓰는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "번역 메모리와 도구를 맞춰 쓰는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "글쓰기·편집",
+   "industry": "INDUSTRY_PUBCULTURE_V1",
+   "industry_name": "공공·문화기관",
+   "strength": "있음",
+   "appears_as": "공공·문화기관 에서는 누구나 읽을 수 있게 쓰는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "누구나 읽을 수 있게 쓰는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "글쓰기·편집",
+   "industry": "INDUSTRY_CORPCOMM_V1",
+   "industry_name": "기업 커뮤니케이션",
+   "strength": "있음",
+   "appears_as": "기업 커뮤니케이션 에서는 읽는 사람에 맞게 수준을 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "읽는 사람에 맞게 수준을 옮기는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "글쓰기·편집",
+   "industry": "INDUSTRY_LANGTECH_V1",
+   "industry_name": "언어 데이터·언어기술",
+   "strength": "있음",
+   "appears_as": "언어 데이터·언어기술 에서는 매긴 결과를 서로 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "매긴 결과를 서로 대조하는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "글쓰기·편집",
+   "industry": "INDUSTRY_ACADEMIA_V1",
+   "industry_name": "대학·연구기관",
+   "strength": "있음",
+   "appears_as": "대학·연구기관 에서는 남이 되짚을 수 있게 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "남이 되짚을 수 있게 남기는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "한국어 교육 설계",
+   "industry": "INDUSTRY_KLANGEDU_V1",
+   "industry_name": "한국어교육·국제교류",
+   "strength": "있음",
+   "appears_as": "한국어교육·국제교류 에서는 학습 목표를 할 수 있게 될 것으로 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "학습 목표를 할 수 있게 될 것으로 적는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "한국어 교육 설계",
+   "industry": "INDUSTRY_PUBLISH_V1",
+   "industry_name": "출판·편집",
+   "strength": "드묾",
+   "appears_as": "출판·편집 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "한국어 교육 설계",
+   "industry": "INDUSTRY_CONTENT_V1",
+   "industry_name": "콘텐츠·스토리",
+   "strength": "드묾",
+   "appears_as": "콘텐츠·스토리 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "한국어 교육 설계",
+   "industry": "INDUSTRY_TRANSLATE_V1",
+   "industry_name": "번역·현지화",
+   "strength": "드묾",
+   "appears_as": "번역·현지화 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "한국어 교육 설계",
+   "industry": "INDUSTRY_PUBCULTURE_V1",
+   "industry_name": "공공·문화기관",
+   "strength": "있음",
+   "appears_as": "공공·문화기관 에서는 교육 프로그램을 짜는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "교육 프로그램을 짜는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "한국어 교육 설계",
+   "industry": "INDUSTRY_CORPCOMM_V1",
+   "industry_name": "기업 커뮤니케이션",
+   "strength": "드묾",
+   "appears_as": "기업 커뮤니케이션 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "한국어 교육 설계",
+   "industry": "INDUSTRY_LANGTECH_V1",
+   "industry_name": "언어 데이터·언어기술",
+   "strength": "드묾",
+   "appears_as": "언어 데이터·언어기술 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "한국어 교육 설계",
+   "industry": "INDUSTRY_ACADEMIA_V1",
+   "industry_name": "대학·연구기관",
+   "strength": "있음",
+   "appears_as": "대학·연구기관 에서는 가르칠 범위를 과정으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "가르칠 범위를 과정으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "수업 운영·평가",
+   "industry": "INDUSTRY_KLANGEDU_V1",
+   "industry_name": "한국어교육·국제교류",
+   "strength": "있음",
+   "appears_as": "한국어교육·국제교류 에서는 채점 결과를 기준표에 대고 보는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "채점 결과를 기준표에 대고 보는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "수업 운영·평가",
+   "industry": "INDUSTRY_PUBLISH_V1",
+   "industry_name": "출판·편집",
+   "strength": "드묾",
+   "appears_as": "출판·편집 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "수업 운영·평가",
+   "industry": "INDUSTRY_CONTENT_V1",
+   "industry_name": "콘텐츠·스토리",
+   "strength": "있음",
+   "appears_as": "콘텐츠·스토리 에서는 독자 반응을 셀 수 있는 항목으로 두는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "독자 반응을 셀 수 있는 항목으로 두는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "수업 운영·평가",
+   "industry": "INDUSTRY_TRANSLATE_V1",
+   "industry_name": "번역·현지화",
+   "strength": "있음",
+   "appears_as": "번역·현지화 에서는 검수 기준으로 합격을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "검수 기준으로 합격을 가르는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "수업 운영·평가",
+   "industry": "INDUSTRY_PUBCULTURE_V1",
+   "industry_name": "공공·문화기관",
+   "strength": "있음",
+   "appears_as": "공공·문화기관 에서는 참여자 평가를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "참여자 평가를 가르는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "수업 운영·평가",
+   "industry": "INDUSTRY_CORPCOMM_V1",
+   "industry_name": "기업 커뮤니케이션",
+   "strength": "있음",
+   "appears_as": "기업 커뮤니케이션 에서는 반응을 셀 수 있는 항목으로 두는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "반응을 셀 수 있는 항목으로 두는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "수업 운영·평가",
+   "industry": "INDUSTRY_LANGTECH_V1",
+   "industry_name": "언어 데이터·언어기술",
+   "strength": "있음",
+   "appears_as": "언어 데이터·언어기술 에서는 합격과 반송을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "합격과 반송을 가르는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "수업 운영·평가",
+   "industry": "INDUSTRY_ACADEMIA_V1",
+   "industry_name": "대학·연구기관",
+   "strength": "드묾",
+   "appears_as": "대학·연구기관 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "창작·구성",
+   "industry": "INDUSTRY_KLANGEDU_V1",
+   "industry_name": "한국어교육·국제교류",
+   "strength": "드묾",
+   "appears_as": "한국어교육·국제교류 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "창작·구성",
+   "industry": "INDUSTRY_PUBLISH_V1",
+   "industry_name": "출판·편집",
+   "strength": "있음",
+   "appears_as": "출판·편집 에서는 한 권의 범위를 먼저 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "한 권의 범위를 먼저 가르는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "창작·구성",
+   "industry": "INDUSTRY_CONTENT_V1",
+   "industry_name": "콘텐츠·스토리",
+   "strength": "있음",
+   "appears_as": "콘텐츠·스토리 에서는 인물과 사건의 선택을 직접 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "인물과 사건의 선택을 직접 정하는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "창작·구성",
+   "industry": "INDUSTRY_TRANSLATE_V1",
+   "industry_name": "번역·현지화",
+   "strength": "드묾",
+   "appears_as": "번역·현지화 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "창작·구성",
+   "industry": "INDUSTRY_PUBCULTURE_V1",
+   "industry_name": "공공·문화기관",
+   "strength": "있음",
+   "appears_as": "공공·문화기관 에서는 창작 사업의 결과물을 범위로 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "창작 사업의 결과물을 범위로 적는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "창작·구성",
+   "industry": "INDUSTRY_CORPCOMM_V1",
+   "industry_name": "기업 커뮤니케이션",
+   "strength": "있음",
+   "appears_as": "기업 커뮤니케이션 에서는 한 해에 알릴 것을 먼저 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "한 해에 알릴 것을 먼저 가르는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "창작·구성",
+   "industry": "INDUSTRY_LANGTECH_V1",
+   "industry_name": "언어 데이터·언어기술",
+   "strength": "드묾",
+   "appears_as": "언어 데이터·언어기술 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "창작·구성",
+   "industry": "INDUSTRY_ACADEMIA_V1",
+   "industry_name": "대학·연구기관",
+   "strength": "있음",
+   "appears_as": "대학·연구기관 에서는 쓴 것을 처음 계획과 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "쓴 것을 처음 계획과 견주는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "문화·지역 이해",
+   "industry": "INDUSTRY_KLANGEDU_V1",
+   "industry_name": "한국어교육·국제교류",
+   "strength": "있음",
+   "appears_as": "한국어교육·국제교류 에서는 학습자의 배경을 확인 항목으로 두는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "학습자의 배경을 확인 항목으로 두는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "문화·지역 이해",
+   "industry": "INDUSTRY_PUBLISH_V1",
+   "industry_name": "출판·편집",
+   "strength": "있음",
+   "appears_as": "출판·편집 에서는 해외 판권의 맥락을 확인 항목으로 두는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "해외 판권의 맥락을 확인 항목으로 두는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "문화·지역 이해",
+   "industry": "INDUSTRY_CONTENT_V1",
+   "industry_name": "콘텐츠·스토리",
+   "strength": "있음",
+   "appears_as": "콘텐츠·스토리 에서는 그 지역 정서에 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "그 지역 정서에 대조하는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "문화·지역 이해",
+   "industry": "INDUSTRY_TRANSLATE_V1",
+   "industry_name": "번역·현지화",
+   "strength": "있음",
+   "appears_as": "번역·현지화 에서는 현지에서 통할 범위를 항목으로 두는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "현지에서 통할 범위를 항목으로 두는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "문화·지역 이해",
+   "industry": "INDUSTRY_PUBCULTURE_V1",
+   "industry_name": "공공·문화기관",
+   "strength": "있음",
+   "appears_as": "공공·문화기관 에서는 지역의 맥락을 보고 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "지역의 맥락을 보고 가르는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "문화·지역 이해",
+   "industry": "INDUSTRY_CORPCOMM_V1",
+   "industry_name": "기업 커뮤니케이션",
+   "strength": "있음",
+   "appears_as": "기업 커뮤니케이션 에서는 고객의 말과 회사의 말을 견주는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "고객의 말과 회사의 말을 견주는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "문화·지역 이해",
+   "industry": "INDUSTRY_LANGTECH_V1",
+   "industry_name": "언어 데이터·언어기술",
+   "strength": "있음",
+   "appears_as": "언어 데이터·언어기술 에서는 다룰 언어와 변이를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "다룰 언어와 변이를 가르는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "문화·지역 이해",
+   "industry": "INDUSTRY_ACADEMIA_V1",
+   "industry_name": "대학·연구기관",
+   "strength": "있음",
+   "appears_as": "대학·연구기관 에서는 지역 자료를 확인 경로로 쓰는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "지역 자료를 확인 경로로 쓰는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "조사·면담 설계",
+   "industry": "INDUSTRY_KLANGEDU_V1",
+   "industry_name": "한국어교육·국제교류",
+   "strength": "있음",
+   "appears_as": "한국어교육·국제교류 에서는 학습자의 요구를 물어 확인하는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "학습자의 요구를 물어 확인하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "조사·면담 설계",
+   "industry": "INDUSTRY_PUBLISH_V1",
+   "industry_name": "출판·편집",
+   "strength": "있음",
+   "appears_as": "출판·편집 에서는 저자와 독자의 말을 모아 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "저자와 독자의 말을 모아 남기는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "조사·면담 설계",
+   "industry": "INDUSTRY_CONTENT_V1",
+   "industry_name": "콘텐츠·스토리",
+   "strength": "있음",
+   "appears_as": "콘텐츠·스토리 에서는 취재할 사람과 범위를 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "취재할 사람과 범위를 정하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "조사·면담 설계",
+   "industry": "INDUSTRY_TRANSLATE_V1",
+   "industry_name": "번역·현지화",
+   "strength": "있음",
+   "appears_as": "번역·현지화 에서는 감수 의견을 받아 반영하는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "감수 의견을 받아 반영하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "조사·면담 설계",
+   "industry": "INDUSTRY_PUBCULTURE_V1",
+   "industry_name": "공공·문화기관",
+   "strength": "있음",
+   "appears_as": "공공·문화기관 에서는 물을 사람과 항목을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "물을 사람과 항목을 정하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "조사·면담 설계",
+   "industry": "INDUSTRY_CORPCOMM_V1",
+   "industry_name": "기업 커뮤니케이션",
+   "strength": "있음",
+   "appears_as": "기업 커뮤니케이션 에서는 안내가 통하는지 물어 확인하는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "안내가 통하는지 물어 확인하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "조사·면담 설계",
+   "industry": "INDUSTRY_LANGTECH_V1",
+   "industry_name": "언어 데이터·언어기술",
+   "strength": "있음",
+   "appears_as": "언어 데이터·언어기술 에서는 작업 지침과 사례를 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "작업 지침과 사례를 남기는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "조사·면담 설계",
+   "industry": "INDUSTRY_ACADEMIA_V1",
+   "industry_name": "대학·연구기관",
+   "strength": "있음",
+   "appears_as": "대학·연구기관 에서는 조사 항목을 미리 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "조사 항목을 미리 적는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "콘텐츠 기획·유통",
+   "industry": "INDUSTRY_KLANGEDU_V1",
+   "industry_name": "한국어교육·국제교류",
+   "strength": "있음",
+   "appears_as": "한국어교육·국제교류 에서는 모집과 안내의 자리를 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "모집과 안내의 자리를 고르는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "콘텐츠 기획·유통",
+   "industry": "INDUSTRY_PUBLISH_V1",
+   "industry_name": "출판·편집",
+   "strength": "있음",
+   "appears_as": "출판·편집 에서는 어디에 어떤 꼴로 낼지 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "어디에 어떤 꼴로 낼지 적는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "콘텐츠 기획·유통",
+   "industry": "INDUSTRY_CONTENT_V1",
+   "industry_name": "콘텐츠·스토리",
+   "strength": "있음",
+   "appears_as": "콘텐츠·스토리 에서는 회차와 형식 지침을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "회차와 형식 지침을 남기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "콘텐츠 기획·유통",
+   "industry": "INDUSTRY_TRANSLATE_V1",
+   "industry_name": "번역·현지화",
+   "strength": "있음",
+   "appears_as": "번역·현지화 에서는 발주처 지침을 작업 조건으로 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "발주처 지침을 작업 조건으로 적는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "콘텐츠 기획·유통",
+   "industry": "INDUSTRY_PUBCULTURE_V1",
+   "industry_name": "공공·문화기관",
+   "strength": "있음",
+   "appears_as": "공공·문화기관 에서는 반응을 앞선 사업과 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "반응을 앞선 사업과 대조하는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "콘텐츠 기획·유통",
+   "industry": "INDUSTRY_CORPCOMM_V1",
+   "industry_name": "기업 커뮤니케이션",
+   "strength": "있음",
+   "appears_as": "기업 커뮤니케이션 에서는 어디에 어떤 꼴로 낼지 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "어디에 어떤 꼴로 낼지 고르는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "콘텐츠 기획·유통",
+   "industry": "INDUSTRY_LANGTECH_V1",
+   "industry_name": "언어 데이터·언어기술",
+   "strength": "있음",
+   "appears_as": "언어 데이터·언어기술 에서는 쓰임과 납품 조건을 적는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "쓰임과 납품 조건을 적는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "콘텐츠 기획·유통",
+   "industry": "INDUSTRY_ACADEMIA_V1",
+   "industry_name": "대학·연구기관",
+   "strength": "드묾",
+   "appears_as": "대학·연구기관 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  }
+ ],
+ "td_role": [
+  {
+   "td": "TD01",
+   "td_name": "문헌·자료 조사",
+   "role": "ROLE_PLANNING_V1",
+   "role_name": "기획·편성",
+   "strength": "중심",
+   "appears_as": "기획·편성 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문헌·자료 조사",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "분석·해석",
+   "strength": "드묾",
+   "appears_as": "분석·해석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문헌·자료 조사",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "검수·평가",
+   "strength": "드묾",
+   "appears_as": "검수·평가 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문헌·자료 조사",
+   "role": "ROLE_EDIT_V1",
+   "role_name": "제작·편집",
+   "strength": "드묾",
+   "appears_as": "제작·편집 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문헌·자료 조사",
+   "role": "ROLE_OPERATION_V1",
+   "role_name": "과정 운영",
+   "strength": "드묾",
+   "appears_as": "과정 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문헌·자료 조사",
+   "role": "ROLE_PROJECT_V1",
+   "role_name": "사업·과제 관리",
+   "strength": "중심",
+   "appears_as": "사업·과제 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문헌·자료 조사",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구",
+   "strength": "중심",
+   "appears_as": "연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문헌·자료 조사",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "표기·규범",
+   "strength": "드묾",
+   "appears_as": "표기·규범 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "텍스트 분석·해석",
+   "role": "ROLE_PLANNING_V1",
+   "role_name": "기획·편성",
+   "strength": "드묾",
+   "appears_as": "기획·편성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "텍스트 분석·해석",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "분석·해석",
+   "strength": "중심",
+   "appears_as": "분석·해석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "텍스트 분석·해석",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "검수·평가",
+   "strength": "드묾",
+   "appears_as": "검수·평가 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "텍스트 분석·해석",
+   "role": "ROLE_EDIT_V1",
+   "role_name": "제작·편집",
+   "strength": "드묾",
+   "appears_as": "제작·편집 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "텍스트 분석·해석",
+   "role": "ROLE_OPERATION_V1",
+   "role_name": "과정 운영",
+   "strength": "드묾",
+   "appears_as": "과정 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "텍스트 분석·해석",
+   "role": "ROLE_PROJECT_V1",
+   "role_name": "사업·과제 관리",
+   "strength": "드묾",
+   "appears_as": "사업·과제 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "텍스트 분석·해석",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구",
+   "strength": "중심",
+   "appears_as": "연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J6",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "텍스트 분석·해석",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "표기·규범",
+   "strength": "드묾",
+   "appears_as": "표기·규범 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "언어 구조 분석",
+   "role": "ROLE_PLANNING_V1",
+   "role_name": "기획·편성",
+   "strength": "드묾",
+   "appears_as": "기획·편성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "언어 구조 분석",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "분석·해석",
+   "strength": "중심",
+   "appears_as": "분석·해석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J6",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "언어 구조 분석",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "검수·평가",
+   "strength": "드묾",
+   "appears_as": "검수·평가 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "언어 구조 분석",
+   "role": "ROLE_EDIT_V1",
+   "role_name": "제작·편집",
+   "strength": "드묾",
+   "appears_as": "제작·편집 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "언어 구조 분석",
+   "role": "ROLE_OPERATION_V1",
+   "role_name": "과정 운영",
+   "strength": "드묾",
+   "appears_as": "과정 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "언어 구조 분석",
+   "role": "ROLE_PROJECT_V1",
+   "role_name": "사업·과제 관리",
+   "strength": "드묾",
+   "appears_as": "사업·과제 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "언어 구조 분석",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구",
+   "strength": "드묾",
+   "appears_as": "연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "언어 구조 분석",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "표기·규범",
+   "strength": "중심",
+   "appears_as": "표기·규범 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "말뭉치·언어 자료",
+   "role": "ROLE_PLANNING_V1",
+   "role_name": "기획·편성",
+   "strength": "드묾",
+   "appears_as": "기획·편성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "말뭉치·언어 자료",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "분석·해석",
+   "strength": "중심",
+   "appears_as": "분석·해석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "말뭉치·언어 자료",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "검수·평가",
+   "strength": "중심",
+   "appears_as": "검수·평가 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "말뭉치·언어 자료",
+   "role": "ROLE_EDIT_V1",
+   "role_name": "제작·편집",
+   "strength": "드묾",
+   "appears_as": "제작·편집 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "말뭉치·언어 자료",
+   "role": "ROLE_OPERATION_V1",
+   "role_name": "과정 운영",
+   "strength": "드묾",
+   "appears_as": "과정 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "말뭉치·언어 자료",
+   "role": "ROLE_PROJECT_V1",
+   "role_name": "사업·과제 관리",
+   "strength": "드묾",
+   "appears_as": "사업·과제 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "말뭉치·언어 자료",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구",
+   "strength": "드묾",
+   "appears_as": "연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "말뭉치·언어 자료",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "표기·규범",
+   "strength": "중심",
+   "appears_as": "표기·규범 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "번역·통역",
+   "role": "ROLE_PLANNING_V1",
+   "role_name": "기획·편성",
+   "strength": "드묾",
+   "appears_as": "기획·편성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "번역·통역",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "분석·해석",
+   "strength": "드묾",
+   "appears_as": "분석·해석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "번역·통역",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "검수·평가",
+   "strength": "드묾",
+   "appears_as": "검수·평가 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "번역·통역",
+   "role": "ROLE_EDIT_V1",
+   "role_name": "제작·편집",
+   "strength": "중심",
+   "appears_as": "제작·편집 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "번역·통역",
+   "role": "ROLE_OPERATION_V1",
+   "role_name": "과정 운영",
+   "strength": "드묾",
+   "appears_as": "과정 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "번역·통역",
+   "role": "ROLE_PROJECT_V1",
+   "role_name": "사업·과제 관리",
+   "strength": "드묾",
+   "appears_as": "사업·과제 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "번역·통역",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구",
+   "strength": "드묾",
+   "appears_as": "연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "번역·통역",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "표기·규범",
+   "strength": "드묾",
+   "appears_as": "표기·규범 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "글쓰기·편집",
+   "role": "ROLE_PLANNING_V1",
+   "role_name": "기획·편성",
+   "strength": "드묾",
+   "appears_as": "기획·편성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "글쓰기·편집",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "분석·해석",
+   "strength": "드묾",
+   "appears_as": "분석·해석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "글쓰기·편집",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "검수·평가",
+   "strength": "중심",
+   "appears_as": "검수·평가 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "글쓰기·편집",
+   "role": "ROLE_EDIT_V1",
+   "role_name": "제작·편집",
+   "strength": "중심",
+   "appears_as": "제작·편집 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "글쓰기·편집",
+   "role": "ROLE_OPERATION_V1",
+   "role_name": "과정 운영",
+   "strength": "드묾",
+   "appears_as": "과정 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "글쓰기·편집",
+   "role": "ROLE_PROJECT_V1",
+   "role_name": "사업·과제 관리",
+   "strength": "드묾",
+   "appears_as": "사업·과제 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "글쓰기·편집",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구",
+   "strength": "드묾",
+   "appears_as": "연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "글쓰기·편집",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "표기·규범",
+   "strength": "중심",
+   "appears_as": "표기·규범 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "한국어 교육 설계",
+   "role": "ROLE_PLANNING_V1",
+   "role_name": "기획·편성",
+   "strength": "드묾",
+   "appears_as": "기획·편성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "한국어 교육 설계",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "분석·해석",
+   "strength": "드묾",
+   "appears_as": "분석·해석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "한국어 교육 설계",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "검수·평가",
+   "strength": "드묾",
+   "appears_as": "검수·평가 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "한국어 교육 설계",
+   "role": "ROLE_EDIT_V1",
+   "role_name": "제작·편집",
+   "strength": "드묾",
+   "appears_as": "제작·편집 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "한국어 교육 설계",
+   "role": "ROLE_OPERATION_V1",
+   "role_name": "과정 운영",
+   "strength": "중심",
+   "appears_as": "과정 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "한국어 교육 설계",
+   "role": "ROLE_PROJECT_V1",
+   "role_name": "사업·과제 관리",
+   "strength": "드묾",
+   "appears_as": "사업·과제 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "한국어 교육 설계",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구",
+   "strength": "드묾",
+   "appears_as": "연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "한국어 교육 설계",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "표기·규범",
+   "strength": "드묾",
+   "appears_as": "표기·규범 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "수업 운영·평가",
+   "role": "ROLE_PLANNING_V1",
+   "role_name": "기획·편성",
+   "strength": "드묾",
+   "appears_as": "기획·편성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "수업 운영·평가",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "분석·해석",
+   "strength": "드묾",
+   "appears_as": "분석·해석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "수업 운영·평가",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "검수·평가",
+   "strength": "중심",
+   "appears_as": "검수·평가 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "수업 운영·평가",
+   "role": "ROLE_EDIT_V1",
+   "role_name": "제작·편집",
+   "strength": "드묾",
+   "appears_as": "제작·편집 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "수업 운영·평가",
+   "role": "ROLE_OPERATION_V1",
+   "role_name": "과정 운영",
+   "strength": "중심",
+   "appears_as": "과정 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "수업 운영·평가",
+   "role": "ROLE_PROJECT_V1",
+   "role_name": "사업·과제 관리",
+   "strength": "드묾",
+   "appears_as": "사업·과제 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "수업 운영·평가",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구",
+   "strength": "드묾",
+   "appears_as": "연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "수업 운영·평가",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "표기·규범",
+   "strength": "드묾",
+   "appears_as": "표기·규범 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "창작·구성",
+   "role": "ROLE_PLANNING_V1",
+   "role_name": "기획·편성",
+   "strength": "중심",
+   "appears_as": "기획·편성 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "창작·구성",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "분석·해석",
+   "strength": "드묾",
+   "appears_as": "분석·해석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "창작·구성",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "검수·평가",
+   "strength": "드묾",
+   "appears_as": "검수·평가 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "창작·구성",
+   "role": "ROLE_EDIT_V1",
+   "role_name": "제작·편집",
+   "strength": "중심",
+   "appears_as": "제작·편집 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "창작·구성",
+   "role": "ROLE_OPERATION_V1",
+   "role_name": "과정 운영",
+   "strength": "드묾",
+   "appears_as": "과정 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "창작·구성",
+   "role": "ROLE_PROJECT_V1",
+   "role_name": "사업·과제 관리",
+   "strength": "드묾",
+   "appears_as": "사업·과제 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "창작·구성",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구",
+   "strength": "드묾",
+   "appears_as": "연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "창작·구성",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "표기·규범",
+   "strength": "드묾",
+   "appears_as": "표기·규범 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "문화·지역 이해",
+   "role": "ROLE_PLANNING_V1",
+   "role_name": "기획·편성",
+   "strength": "드묾",
+   "appears_as": "기획·편성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "문화·지역 이해",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "분석·해석",
+   "strength": "드묾",
+   "appears_as": "분석·해석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "문화·지역 이해",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "검수·평가",
+   "strength": "드묾",
+   "appears_as": "검수·평가 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "문화·지역 이해",
+   "role": "ROLE_EDIT_V1",
+   "role_name": "제작·편집",
+   "strength": "드묾",
+   "appears_as": "제작·편집 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "문화·지역 이해",
+   "role": "ROLE_OPERATION_V1",
+   "role_name": "과정 운영",
+   "strength": "드묾",
+   "appears_as": "과정 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "문화·지역 이해",
+   "role": "ROLE_PROJECT_V1",
+   "role_name": "사업·과제 관리",
+   "strength": "드묾",
+   "appears_as": "사업·과제 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "문화·지역 이해",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구",
+   "strength": "드묾",
+   "appears_as": "연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "문화·지역 이해",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "표기·규범",
+   "strength": "드묾",
+   "appears_as": "표기·규범 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "조사·면담 설계",
+   "role": "ROLE_PLANNING_V1",
+   "role_name": "기획·편성",
+   "strength": "드묾",
+   "appears_as": "기획·편성 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "조사·면담 설계",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "분석·해석",
+   "strength": "드묾",
+   "appears_as": "분석·해석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "조사·면담 설계",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "검수·평가",
+   "strength": "드묾",
+   "appears_as": "검수·평가 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "조사·면담 설계",
+   "role": "ROLE_EDIT_V1",
+   "role_name": "제작·편집",
+   "strength": "드묾",
+   "appears_as": "제작·편집 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "조사·면담 설계",
+   "role": "ROLE_OPERATION_V1",
+   "role_name": "과정 운영",
+   "strength": "중심",
+   "appears_as": "과정 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "조사·면담 설계",
+   "role": "ROLE_PROJECT_V1",
+   "role_name": "사업·과제 관리",
+   "strength": "중심",
+   "appears_as": "사업·과제 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "조사·면담 설계",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구",
+   "strength": "중심",
+   "appears_as": "연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "조사·면담 설계",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "표기·규범",
+   "strength": "드묾",
+   "appears_as": "표기·규범 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "콘텐츠 기획·유통",
+   "role": "ROLE_PLANNING_V1",
+   "role_name": "기획·편성",
+   "strength": "중심",
+   "appears_as": "기획·편성 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "콘텐츠 기획·유통",
+   "role": "ROLE_ANALYSIS_V1",
+   "role_name": "분석·해석",
+   "strength": "드묾",
+   "appears_as": "분석·해석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "콘텐츠 기획·유통",
+   "role": "ROLE_REVIEW_V1",
+   "role_name": "검수·평가",
+   "strength": "드묾",
+   "appears_as": "검수·평가 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "콘텐츠 기획·유통",
+   "role": "ROLE_EDIT_V1",
+   "role_name": "제작·편집",
+   "strength": "드묾",
+   "appears_as": "제작·편집 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "콘텐츠 기획·유통",
+   "role": "ROLE_OPERATION_V1",
+   "role_name": "과정 운영",
+   "strength": "드묾",
+   "appears_as": "과정 운영 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "콘텐츠 기획·유통",
+   "role": "ROLE_PROJECT_V1",
+   "role_name": "사업·과제 관리",
+   "strength": "중심",
+   "appears_as": "사업·과제 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "콘텐츠 기획·유통",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "연구",
+   "strength": "드묾",
+   "appears_as": "연구 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "콘텐츠 기획·유통",
+   "role": "ROLE_STANDARD_V1",
+   "role_name": "표기·규범",
+   "strength": "드묾",
+   "appears_as": "표기·규범 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  }
+ ]
+}

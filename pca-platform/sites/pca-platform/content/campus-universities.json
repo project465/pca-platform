@@ -282,9 +282,8 @@
                   "name": "일본학과",
                   "kind": "department",
                   "core_code": "LANG_CORE_V1",
-                  "specialization": null,
-                  "specialization_required": true,
-                  "note": "어문 Core 는 있는데 지역학 갈래가 아직 없다"
+                  "specialization": "SPEC_LANG_JAPAN",
+                  "note": "일본지역학 갈래로 간다"
                 },
                 {
                   "code": "PCU26_POLICE_LAW",
@@ -856,9 +855,8 @@
                   "name": "일본학과",
                   "kind": "department",
                   "core_code": "LANG_CORE_V1",
-                  "specialization": null,
-                  "specialization_required": true,
-                  "note": "어문 Core 는 있는데 지역학 갈래가 아직 없다"
+                  "specialization": "SPEC_LANG_JAPAN",
+                  "note": "일본지역학 갈래로 간다"
                 },
                 {
                   "code": "PCU27_POLICE_LAW",
