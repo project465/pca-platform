@@ -738,8 +738,11 @@ export default async function V3Result({
           <Link className="rs-back" href="/me">내 CareerMatri</Link>
           {/* **산 것의 이름을 적는다.** 별명(`경험 번역`)은 가격표에도
               결제에도 없는 말이라, 받은 사람이 자기가 무엇을 샀는지
-              되짚을 수 없다(규격 §24) */}
-          <span className="rs-tier">{model.tier}</span>
+              되짚을 수 없다(규격 §24).
+              **학교 진입에는 적지 않는다**: 학생이 고른 값이 아니고 학교가
+              산 것이므로, 종이에 상품명처럼 서면 사지 않은 등급 이름으로
+              읽힌다. 응시 줄과 스냅샷에는 PRO 가 그대로 적힌다 */}
+          {meta.school ? null : <span className="rs-tier">{model.tier}</span>}
           {/* **절 목록을 여기 두지 않는다.** 본문 아홉 절은 아래
               `자세한 내용 보기` 안에 접혀 있어(규격 §9), 접힌 동안 이
               링크들은 눌러도 아무 일이 없다. 절 목록은 펼친 자리 안에
@@ -757,7 +760,8 @@ export default async function V3Result({
               학교 진입이 아니면 학교와 학과 자리는 서지 않는다 */}
           <p className="rs-ident">
             {[meta.school, meta.department, meta.specialization,
-              model.tier, meta.answeredOn ? `${meta.answeredOn} 응답` : null]
+              meta.school ? null : model.tier,
+              meta.answeredOn ? `${meta.answeredOn} 응답` : null]
               .filter(Boolean).join(" · ")}
           </p>
           {/* **첫 서른 초에 무엇까지 봤는지가 보여야 한다.** 깊게 물은

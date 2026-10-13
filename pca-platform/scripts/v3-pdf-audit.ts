@@ -48,11 +48,47 @@ const INTERNAL = [
 ];
 /** 쪽이 거의 비었다고 보는 선. 마지막 쪽은 남은 만큼만 찬다 */
 const THIN = 120, THIN_LAST = 40;
+/**
+ * **마지막 쪽이 이만큼은 차야 한다**(상용화 P1, 백분율).
+ *
+ * 상단에 짧은 해석 안내만 있고 아래가 절반 넘게 빈 마지막 쪽은 기능
+ * 실패가 아니지만 받은 사람에게는 덜 만든 종이로 읽힌다. 선을 50 으로
+ * 두지 않고 45 로 둔 것은, 쪽 높이가 고정이고 종이에 세로 균형을 잡는
+ * 수단이 없어서 **문서 길이가 쪽 경계에 어디쯤 떨어지는가**로 몇 %는
+ * 늘 흔들리기 때문이다. 그 아래로 내려가면 여백과 배치에서 되찾는다.
+ */
+const LAST_FILL_MIN = 45;
 
 type Row = {
   core: string; tier: Tier; pages: number; kb: number;
-  perPage: number[]; problems: string[]; heads: string[];
+  perPage: number[]; pageFill: number[]; problems: string[]; heads: string[];
 };
+
+/**
+ * **쪽마다 세로로 어디까지 찼는지**(0~100).
+ *
+ * 글자 수로는 알 수 없다: 활자가 큰 쪽은 글자가 적어도 꽉 차 있고,
+ * 7.5pt 고지문만 든 쪽은 글자가 많아도 반이 빈다. 그래서 글자의 아래쪽
+ * 좌표를 읽는다. 쪽머리와 쪽수는 여백 안에 찍히므로 글 자리 밖이다.
+ */
+function fillOf(file: string): number[] {
+  let xml = "";
+  try {
+    xml = execFileSync("pdftotext", ["-bbox", file, "-"], { encoding: "utf8" });
+  } catch { return []; }
+  const out: number[] = [];
+  for (const pg of xml.split("<page").slice(1)) {
+    const h = Number(/height="([\d.]+)"/.exec(pg)?.[1] ?? 842);
+    const top = h * 0.047, bot = h * 0.955;
+    let low = top;
+    for (const m of pg.matchAll(/yMax="([\d.]+)"/g)) {
+      const y = Number(m[1]);
+      if (y > top && y < bot && y > low) low = y;
+    }
+    out.push(Math.round(((low - top) / (bot - top)) * 100));
+  }
+  return out;
+}
 
 function setOpen(code: string, open: boolean): void {
   for (const f of REGS) {
@@ -156,8 +192,25 @@ async function main(): Promise<void> {
       [c, coreFile<{ domains: { name: string }[] }>(c, "domains").domains.map((d) => d.name)]));
 
     for (const core of CORES) {
+      /**
+       * **학교 진입은 PRO 하나다**(추가 확정 1).
+       *
+       * 그래서 학교 자리를 가리키는 Core 는 종이도 **PRO 한 벌**만 센다.
+       * BASIC·STANDARD 종이는 그 Core 에서 **설 수 없는 상태다**: 학교
+       * 응시는 서버가 PRO 로 열고, 개인 B2C 는 그 Core 를 살 수 없다
+       * (`open_to_students: false` 이고 이용권이 Core 를 가리키지 않는다).
+       * 설 수 없는 상태의 종이를 세면 같은 종이를 세 번 세거나, 제품에
+       * 없는 조합을 규격으로 굳히게 된다.
+       *
+       * 등급 셋은 **개인 B2C 가 실제로 파는 Core**(학교 자리가 없는 쪽)
+       * 에서 그대로 센다.
+       */
       const leaf = leafOf(core);
-      for (const tier of TIERS) {
+      const tiers = leaf ? TIERS.filter((t) => t === "PRO") : TIERS;
+      if (leaf && tiers.length !== TIERS.length) {
+        console.log(`  ${core} — 학교 자리를 가리키는 Core 라 PRO 한 벌만 센다`);
+      }
+      for (const tier of tiers) {
         const problems: string[] = [];
         const mail = `pdfaudit-${core.toLowerCase().replace(/_/g, "-")}-${tier.toLowerCase()}@test.invalid`;
         const st = await makeStudent(mail);
@@ -170,6 +223,10 @@ async function main(): Promise<void> {
           userId: st.id, tier, stage: "bachelor", gradField: null, campus: leaf,
         });
         if (a.core_code !== core) problems.push(`응시 줄의 Core 가 ${a.core_code} 다`);
+        /* **학교 응시가 선별 등급으로 열리면 걸린다.** 넘긴 등급이 PRO 라
+           여기서 갈릴 일은 없지만, 막는 자리가 사라지면 그날 걸린다 */
+        if (leaf && a.tier !== "PRO") problems.push(`학교 응시가 ${a.tier} 로 열렸다`);
+        if (!leaf && a.tier !== tier) problems.push(`개인 응시가 ${a.tier} 로 열렸다`);
         await fill(core, a, st.id);
         const done = (await attemptOf(a.id, st.id)) as V3Attempt;
         const { snapshot } = await submit(done);
@@ -186,7 +243,8 @@ async function main(): Promise<void> {
         const web = await p.locator("body").innerText();
         const res = await p.request.get(`${BASE}/v3/${a.id}/result/pdf`, { timeout: 180000 });
         const file = `${OUT}/${core}-${tier}.pdf`;
-        let pages = 0; let kb = 0; const perPage: number[] = []; const heads: string[] = [];
+        let pages = 0; let kb = 0; let pageFill: number[] = [];
+        const perPage: number[] = []; const heads: string[] = [];
         if (res.status() !== 200 || !(res.headers()["content-type"] ?? "").includes("pdf")) {
           problems.push(`PDF ${res.status()} ${res.headers()["content-type"] ?? ""}`);
         } else {
@@ -201,6 +259,11 @@ async function main(): Promise<void> {
           for (const t of texts) {
             perPage.push(t.replace(/\s+/g, "").length);
             heads.push((t.split("\n").map((x) => x.trim()).filter(Boolean)[1] ?? "").slice(0, 28));
+          }
+          pageFill = fillOf(file);
+          const lastFill = pageFill[pageFill.length - 1] ?? 100;
+          if (pages > 1 && lastFill < LAST_FILL_MIN) {
+            problems.push(`마지막 쪽이 ${lastFill}%만 찼다`);
           }
           const all = texts.join("\n");
           /* 1. 한글이 뽑히는가 (글꼴이 없으면 네모가 되어 글자가 0 이다) */
@@ -235,7 +298,7 @@ async function main(): Promise<void> {
           if (!/적성|합격|순위/.test(all)) problems.push("해석 안내(적성검사 아님)가 없다");
         }
         await ctx.close();
-        rows.push({ core, tier, pages, kb, perPage, problems, heads });
+        rows.push({ core, tier, pages, kb, perPage, pageFill, problems, heads });
         console.log(`  ${core} ${tier} — ${pages}쪽 · ${kb}KB · `
           + (problems.length ? `걸림 ${problems.length}: ${problems.join(" / ")}` : "걸림 0"));
       }
@@ -245,10 +308,12 @@ async function main(): Promise<void> {
     await browser.close();
   }
 
-  console.log("\n쪽별 글자 수");
+  console.log("\n쪽별 글자 수와 찬 비율");
   for (const r of rows) {
     console.log(`  ${r.core.padEnd(12)} ${r.tier.padEnd(9)} ${String(r.pages).padStart(2)}쪽 `
-      + `· ${r.perPage.join("/")}`);
+      + `· ${r.perPage.join("/")}\n`
+      + `  ${" ".repeat(22)} 찬 비율 ${r.pageFill.join("/")}% `
+      + `· 마지막 ${r.pageFill[r.pageFill.length - 1] ?? 0}%`);
   }
   const bad = rows.filter((r) => r.problems.length);
   console.log(`\nPDF ${rows.length}벌 · 걸림 ${bad.length}벌`);

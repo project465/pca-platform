@@ -29,7 +29,6 @@ export default async function V3Start({
   if (open) redirect(`/v3/${open.id}`);
 
   const grants = await v3Grants(user.id);
-  const tier: Tier = grants[0]?.tier ?? "BASIC";
   /* **어느 전공을 시작하는가.** 이용권이 가리키는 core 를 읽고, 아직
      아무것도 고르지 않았으면 그 시장에서 열려 있는 core 를 묻는다.
      기본값으로 한 전공을 박아 두면 다른 전공 학생이 **남의 전공 시간**
@@ -41,6 +40,14 @@ export default async function V3Start({
    * 않은 전공은 여기 오지 않는다. 없으면 전과 같다.
    */
   const campus = await readCampusEntry();
+  /**
+   * **학교 진입은 등급을 고르지 않는다. 늘 PRO 다.**
+   *
+   * 정하는 자리는 `openAttempt()` 하나이고(설계 원칙 10) 이 화면은 그
+   * 규칙을 **읽어서** 적는 수를 고를 뿐이다. 두 자리가 따로 정하면 학교
+   * 학생이 선별 등급의 문항 수를 보고 앉았다가 여덟 축을 답하게 된다.
+   */
+  const tier: Tier = campus ? "PRO" : (grants[0]?.tier ?? "BASIC");
   const core = campus?.core_code ?? sellableCores("KR")[0]?.code ?? null;
   if (!core) redirect("/cores");
   /* 쪽 머리에 전공 이름을 적는다. **안쪽 코드를 적지 않는다** */
@@ -74,7 +81,10 @@ export default async function V3Start({
         <div className="qs-head-in">
           <div className="qs-top" style={{ paddingBottom: 14 }}>
             <span className="qs-brand"><BrandMark size={20} />CareerMatri</span>
-            <span className="qs-tier">{tier} · <b>{t.label}</b></span>
+            {/* **학교 진입에는 등급을 적지 않는다.** 학생이 고를 수 있는
+                값이 아니고, 적어 두면 사지 않은 상품 이름으로 읽힌다.
+                안쪽 응시 줄에는 PRO 가 그대로 적힌다 */}
+            {campus ? null : <span className="qs-tier">{tier} · <b>{t.label}</b></span>}
           </div>
         </div>
       </header>
@@ -110,7 +120,7 @@ export default async function V3Start({
         <ul className="qs-facts">
           <li><b>{items}</b>문항</li>
           <li>약 <b>{mins}</b>분</li>
-          <li><b>{tier}</b>{t.label}</li>
+          {campus ? null : <li><b>{tier}</b>{t.label}</li>}
           <li>자동 저장</li>
         </ul>
 

@@ -26,6 +26,7 @@ import { copyFileSync, readFileSync, writeFileSync, unlinkSync } from "node:fs";
 import { chromium, type BrowserContext, type Page } from "playwright";
 import { BASE, loadEnv, login, makeStudent } from "./_loop-fixture";
 import { query, queryOne } from "../src/lib/db";
+import { openAttempt } from "../src/lib/me-v3/runtime/session";
 
 loadEnv();
 /**
@@ -213,14 +214,21 @@ async function main(): Promise<void> {
     const row = await queryOne<{
       core_code: string; university_code: string | null; college_code: string | null;
       department_code: string | null; specialization_code: string | null;
+      tier: string;
     }>(`SELECT core_code, university_code, college_code, department_code,
-               specialization_code
+               specialization_code, tier
           FROM v3_attempts WHERE user_id = $1 ORDER BY started_at DESC LIMIT 1`,
       [who.id]);
     ok("응시 줄에 학교 맥락이 적힌다",
       row?.university_code === "ZZTEST" && row?.college_code === "ZZ_ENG"
       && row?.department_code === "ZZ26_ME" && row?.core_code === "ME_CORE_V3",
       JSON.stringify(row));
+    /* **학교 진입은 이용권이 없어도 PRO 다.** 이 사람에게 V3 이용권이 한
+       줄도 없어서 화면이 넘긴 등급은 `BASIC` 이다. 그래도 PRO 로 적혀야
+       같은 학과 학생의 결과를 한 표에서 읽을 수 있다 */
+    ok("학교 응시는 이용권 없이도 PRO 로 열린다", row?.tier === "PRO", row?.tier);
+    ok("시작 화면이 학생에게 등급을 적지 않는다",
+      !/\bBASIC\b|\bSTANDARD\b|\bPRO\b/.test(start), start.slice(0, 200));
 
     /* **쿠키를 더 들고 있지 않는다.** 다음 응시에 묻어 들어가면 그 사람이
        고르지 않은 학과로 검사가 시작된다 */
@@ -258,6 +266,34 @@ async function main(): Promise<void> {
       ok(`고친 쿠키가 맥락을 적지 못한다 — ${f}`,
         got?.university_code === null && got?.department_code === null
         && got?.core_code === "ME_CORE_V3", JSON.stringify(got));
+    }
+
+    /**
+     * **등급을 막는 자리가 서버 하나다**(설계 원칙 10).
+     *
+     * 화면에서 고르는 칸을 없앤 것으로는 모자란다: 폼이나 주소로 등급을
+     * 넣는 길이 남아 있으면 어느 날 학교 응시 하나가 선별 등급으로 열리고,
+     * 그 학생의 결과는 같은 학과의 나머지와 한 표에서 읽히지 않는다.
+     * 그래서 **서버 함수를 직접 세 등급으로 불러** 본다: 학교 맥락이 선
+     * 응시는 받은 등급을 보지 않고 PRO 로 열려야 하고, 개인 응시는 받은
+     * 등급이 그대로여야 한다(B2C 는 셋을 계속 판다).
+     */
+    const CAMPUS = {
+      university_code: "ZZTEST", college_code: "ZZ_ENG",
+      department_code: "ZZ26_ME", core_code: "ME_CORE_V3",
+      specialization: null,
+    };
+    for (const t of ["BASIC", "STANDARD", "PRO"] as const) {
+      await query(`DELETE FROM v3_attempts WHERE user_id = $1`, [who.id]);
+      const a = await openAttempt({
+        userId: who.id, tier: t, stage: "bachelor", gradField: null, campus: CAMPUS });
+      ok(`학교 응시는 ${t} 를 넣어도 PRO 로 열린다`, a.tier === "PRO", a.tier);
+    }
+    for (const t of ["BASIC", "STANDARD", "PRO"] as const) {
+      await query(`DELETE FROM v3_attempts WHERE user_id = $1`, [who.id]);
+      const a = await openAttempt({
+        userId: who.id, tier: t, stage: "bachelor", gradField: null });
+      ok(`개인 응시는 ${t} 가 그대로다`, a.tier === t, a.tier);
     }
 
     /* 일반 B2C 로 들어오면 학교 맥락이 비어 있다 */

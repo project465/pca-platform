@@ -442,6 +442,20 @@ export async function openAttempt(args: {
    */
   const coreCode = campus?.core_code ?? defaultCore();
   const coreEntry = coreOf(coreCode);
+  /**
+   * **학교 진입은 등급을 고르지 않는다. 늘 PRO 다.**
+   *
+   * 개인 B2C 는 BASIC·STANDARD·PRO 셋을 그대로 팔고, 학교 계약은 학생에게
+   * 등급을 묻지 않는다. 그러면 같은 학과 안에서 어떤 학생은 네 축만 답한
+   * 결과를 받고 어떤 학생은 여덟 축을 답한 결과를 받아, **담당자가 두 벌을
+   * 한 표에서 읽을 수 없다.**
+   *
+   * 막는 자리를 여기 둔 까닭은 등급을 정하는 자리가 하나여야 하기 때문이다
+   * (설계 원칙 10). 화면이 지키게 두면 주소나 폼으로 `BASIC` 을 넣어 학교
+   * 응시를 선별 등급으로 여는 길이 남는다. 그래서 **받은 등급을 보지 않고**
+   * 학교 맥락이 선 응시는 그 자리에서 PRO 로 적는다.
+   */
+  const tier: Tier = campus ? "PRO" : args.tier;
   const row = await queryOne<{ id: string }>(
     `INSERT INTO v3_attempts
        (user_id, entitlement_id, tier, market_code, education_stage, grad_field,
@@ -452,7 +466,7 @@ export async function openAttempt(args: {
      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,'profile',
              $11,$12,$13,$14,$15)
      RETURNING id::text`,
-    [args.userId, args.entitlementId ?? null, args.tier, market,
+    [args.userId, args.entitlementId ?? null, tier, market,
      args.stage, args.gradField, args.undergradCore ?? null,
      coreEntry.assessment_version,
      bankVersionOf(coreCode), SCORING_VERSION,

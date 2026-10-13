@@ -29,7 +29,16 @@
  */
 
 /** 화면 구조와 상호작용. 흐름이나 화면이 바뀌면 올린다 */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V21";
+/**
+ * V22 — **학교 진입은 등급을 고르지 않는다. 늘 PRO 다**(추가 확정 1).
+ *
+ * 막는 자리는 `openAttempt()` 하나이고(설계 원칙 10) 시작 화면은 그
+ * 규칙을 읽어서 적는 문항 수를 고른다. 화면에서 바뀐 것은 하나다:
+ * 학교 맥락이 있으면 등급 딱지(`BASIC · STANDARD · PRO`)를 적지 않는다.
+ * 학생이 고를 수 있는 값이 아니고, 적어 두면 사지 않은 상품 이름으로
+ * 읽힌다. **문항 문면과 묻는 차례와 저장되는 값은 그대로다.**
+ */
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V22";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
 export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.14";
