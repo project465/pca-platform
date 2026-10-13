@@ -1,0 +1,2438 @@
+{
+ "schema_version": "pubadm-v1-relations.1",
+ "core": "PUBADM_CORE_V1",
+ "note": "기술영역과 산업, 기술영역과 역할의 관계를 두 표로 둔다. 세 축을 미리 곱해 두지 않는다: 열두 영역과 여덟 산업과 여덟 역할을 곱하면 칠백예순여덟 줄이 되고 그만큼의 줄을 사람이 손으로 유지할 수 없다. 어느 줄도 점수를 만들지 않는다: `strength` 는 설명하는 차례를 정하고 `appears_as` 는 결과지가 그 말로 옮겨 적을 때 읽는다",
+ "combine_rule": "산업 하나와 역할 하나를 함께 고른 사람에게는 두 표에서 같은 영역의 줄을 뽑아 나란히 놓는다. 둘 다 `중심` 인 영역이 먼저 서고, 한쪽만 중심인 영역이 다음이고, 양쪽이 드문 영역은 적지 않는다",
+ "td_industry": [
+  {
+   "td": "TD01",
+   "td_name": "정책·사업 기획",
+   "industry": "INDUSTRY_CENTRAL_V1",
+   "industry_name": "중앙행정·정책",
+   "strength": "있음",
+   "appears_as": "중앙행정·정책 에서는 정책 목표를 전국에 적용할 기준으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "정책 목표를 전국에 적용할 기준으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "정책·사업 기획",
+   "industry": "INDUSTRY_LOCAL_V1",
+   "industry_name": "지방행정·주민서비스",
+   "strength": "있음",
+   "appears_as": "지방행정·주민서비스 에서는 지역 사업을 계획으로 세우는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "지역 사업을 계획으로 세우는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "정책·사업 기획",
+   "industry": "INDUSTRY_WELFARE_V1",
+   "industry_name": "복지·보건 행정",
+   "strength": "있음",
+   "appears_as": "복지·보건 행정 에서는 지원 절차를 다시 쓸 수 있게 적는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "지원 절차를 다시 쓸 수 있게 적는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "정책·사업 기획",
+   "industry": "INDUSTRY_SAFETY_V1",
+   "industry_name": "재난·소방·안전",
+   "strength": "드묾",
+   "appears_as": "재난·소방·안전 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "정책·사업 기획",
+   "industry": "INDUSTRY_INFRA_V1",
+   "industry_name": "도시·교통·환경 행정",
+   "strength": "있음",
+   "appears_as": "도시·교통·환경 행정 에서는 계획에 담을 범위를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "계획에 담을 범위를 가르는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "정책·사업 기획",
+   "industry": "INDUSTRY_ECONDEV_V1",
+   "industry_name": "산업·경제 진흥",
+   "strength": "중심",
+   "appears_as": "산업·경제 진흥 에서는 지원 대상과 요건을 적는가 · 안 되는 사업의 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ],
+   "dimensions": [
+    "지원 대상과 요건을 적는가",
+    "안 되는 사업의 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "정책·사업 기획",
+   "industry": "INDUSTRY_EDUCULT_V1",
+   "industry_name": "교육·문화 행정",
+   "strength": "있음",
+   "appears_as": "교육·문화 행정 에서는 프로그램 목표와 대상을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "프로그램 목표와 대상을 가르는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "정책·사업 기획",
+   "industry": "INDUSTRY_PUBCORP_V1",
+   "industry_name": "공공기관·공기업 운영",
+   "strength": "드묾",
+   "appears_as": "공공기관·공기업 운영 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "법령·규정 해석",
+   "industry": "INDUSTRY_CENTRAL_V1",
+   "industry_name": "중앙행정·정책",
+   "strength": "있음",
+   "appears_as": "중앙행정·정책 에서는 조문과 지침의 적용 범위를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "조문과 지침의 적용 범위를 가르는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "법령·규정 해석",
+   "industry": "INDUSTRY_LOCAL_V1",
+   "industry_name": "지방행정·주민서비스",
+   "strength": "있음",
+   "appears_as": "지방행정·주민서비스 에서는 조례와 지침의 적용을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "조례와 지침의 적용을 가르는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "법령·규정 해석",
+   "industry": "INDUSTRY_WELFARE_V1",
+   "industry_name": "복지·보건 행정",
+   "strength": "드묾",
+   "appears_as": "복지·보건 행정 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "법령·규정 해석",
+   "industry": "INDUSTRY_SAFETY_V1",
+   "industry_name": "재난·소방·안전",
+   "strength": "있음",
+   "appears_as": "재난·소방·안전 에서는 시정 요구 범위를 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "시정 요구 범위를 정하는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "법령·규정 해석",
+   "industry": "INDUSTRY_INFRA_V1",
+   "industry_name": "도시·교통·환경 행정",
+   "strength": "있음",
+   "appears_as": "도시·교통·환경 행정 에서는 환경과 안전 기준의 적용을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "환경과 안전 기준의 적용을 가르는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "법령·규정 해석",
+   "industry": "INDUSTRY_ECONDEV_V1",
+   "industry_name": "산업·경제 진흥",
+   "strength": "있음",
+   "appears_as": "산업·경제 진흥 에서는 규제를 풀거나 적용할 범위를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "규제를 풀거나 적용할 범위를 가르는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "법령·규정 해석",
+   "industry": "INDUSTRY_EDUCULT_V1",
+   "industry_name": "교육·문화 행정",
+   "strength": "드묾",
+   "appears_as": "교육·문화 행정 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "법령·규정 해석",
+   "industry": "INDUSTRY_PUBCORP_V1",
+   "industry_name": "공공기관·공기업 운영",
+   "strength": "있음",
+   "appears_as": "공공기관·공기업 운영 에서는 내부 규정을 정비해 지키게 하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "내부 규정을 정비해 지키게 하는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "예산 편성·집행",
+   "industry": "INDUSTRY_CENTRAL_V1",
+   "industry_name": "중앙행정·정책",
+   "strength": "있음",
+   "appears_as": "중앙행정·정책 에서는 재정 소요를 추계해 편성에 담는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "재정 소요를 추계해 편성에 담는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "예산 편성·집행",
+   "industry": "INDUSTRY_LOCAL_V1",
+   "industry_name": "지방행정·주민서비스",
+   "strength": "있음",
+   "appears_as": "지방행정·주민서비스 에서는 집행률을 보고 예산을 바꾸는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "집행률을 보고 예산을 바꾸는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "예산 편성·집행",
+   "industry": "INDUSTRY_WELFARE_V1",
+   "industry_name": "복지·보건 행정",
+   "strength": "있음",
+   "appears_as": "복지·보건 행정 에서는 필요 예산을 추계해 담는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "필요 예산을 추계해 담는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "예산 편성·집행",
+   "industry": "INDUSTRY_SAFETY_V1",
+   "industry_name": "재난·소방·안전",
+   "strength": "있음",
+   "appears_as": "재난·소방·안전 에서는 안전 예산을 추계해 담는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "안전 예산을 추계해 담는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "예산 편성·집행",
+   "industry": "INDUSTRY_INFRA_V1",
+   "industry_name": "도시·교통·환경 행정",
+   "strength": "있음",
+   "appears_as": "도시·교통·환경 행정 에서는 예산을 공정에 맞춰 나누는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "예산을 공정에 맞춰 나누는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "예산 편성·집행",
+   "industry": "INDUSTRY_ECONDEV_V1",
+   "industry_name": "산업·경제 진흥",
+   "strength": "있음",
+   "appears_as": "산업·경제 진흥 에서는 예산을 사업별로 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "예산을 사업별로 가르는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "예산 편성·집행",
+   "industry": "INDUSTRY_EDUCULT_V1",
+   "industry_name": "교육·문화 행정",
+   "strength": "있음",
+   "appears_as": "교육·문화 행정 에서는 예산을 프로그램별로 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "예산을 프로그램별로 가르는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "예산 편성·집행",
+   "industry": "INDUSTRY_PUBCORP_V1",
+   "industry_name": "공공기관·공기업 운영",
+   "strength": "있음",
+   "appears_as": "공공기관·공기업 운영 에서는 예산과 집행을 규정에 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "예산과 집행을 규정에 맞추는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "행정 절차·민원 처리",
+   "industry": "INDUSTRY_CENTRAL_V1",
+   "industry_name": "중앙행정·정책",
+   "strength": "드묾",
+   "appears_as": "중앙행정·정책 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "행정 절차·민원 처리",
+   "industry": "INDUSTRY_LOCAL_V1",
+   "industry_name": "지방행정·주민서비스",
+   "strength": "중심",
+   "appears_as": "지방행정·주민서비스 에서는 들어온 신청을 기한 안에 끝내는가 · 되풀이되는 민원의 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ],
+   "dimensions": [
+    "들어온 신청을 기한 안에 끝내는가",
+    "되풀이되는 민원의 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "행정 절차·민원 처리",
+   "industry": "INDUSTRY_WELFARE_V1",
+   "industry_name": "복지·보건 행정",
+   "strength": "있음",
+   "appears_as": "복지·보건 행정 에서는 대상자 요건을 사례에 맞춰 적용하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "대상자 요건을 사례에 맞춰 적용하는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "행정 절차·민원 처리",
+   "industry": "INDUSTRY_SAFETY_V1",
+   "industry_name": "재난·소방·안전",
+   "strength": "드묾",
+   "appears_as": "재난·소방·안전 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "행정 절차·민원 처리",
+   "industry": "INDUSTRY_INFRA_V1",
+   "industry_name": "도시·교통·환경 행정",
+   "strength": "드묾",
+   "appears_as": "도시·교통·환경 행정 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "행정 절차·민원 처리",
+   "industry": "INDUSTRY_ECONDEV_V1",
+   "industry_name": "산업·경제 진흥",
+   "strength": "드묾",
+   "appears_as": "산업·경제 진흥 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "행정 절차·민원 처리",
+   "industry": "INDUSTRY_EDUCULT_V1",
+   "industry_name": "교육·문화 행정",
+   "strength": "드묾",
+   "appears_as": "교육·문화 행정 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "행정 절차·민원 처리",
+   "industry": "INDUSTRY_PUBCORP_V1",
+   "industry_name": "공공기관·공기업 운영",
+   "strength": "있음",
+   "appears_as": "공공기관·공기업 운영 에서는 이용자 요구를 절차로 받는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "이용자 요구를 절차로 받는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "인사·조직 운영",
+   "industry": "INDUSTRY_CENTRAL_V1",
+   "industry_name": "중앙행정·정책",
+   "strength": "있음",
+   "appears_as": "중앙행정·정책 에서는 정원과 직무 기준을 전 부처에 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "정원과 직무 기준을 전 부처에 맞추는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "인사·조직 운영",
+   "industry": "INDUSTRY_LOCAL_V1",
+   "industry_name": "지방행정·주민서비스",
+   "strength": "드묾",
+   "appears_as": "지방행정·주민서비스 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "인사·조직 운영",
+   "industry": "INDUSTRY_WELFARE_V1",
+   "industry_name": "복지·보건 행정",
+   "strength": "있음",
+   "appears_as": "복지·보건 행정 에서는 상담과 지원 인력을 배치하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "상담과 지원 인력을 배치하는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "인사·조직 운영",
+   "industry": "INDUSTRY_SAFETY_V1",
+   "industry_name": "재난·소방·안전",
+   "strength": "있음",
+   "appears_as": "재난·소방·안전 에서는 대응 인력과 장비를 배치하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "대응 인력과 장비를 배치하는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "인사·조직 운영",
+   "industry": "INDUSTRY_INFRA_V1",
+   "industry_name": "도시·교통·환경 행정",
+   "strength": "드묾",
+   "appears_as": "도시·교통·환경 행정 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "인사·조직 운영",
+   "industry": "INDUSTRY_ECONDEV_V1",
+   "industry_name": "산업·경제 진흥",
+   "strength": "드묾",
+   "appears_as": "산업·경제 진흥 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD05",
+   "td_name": "인사·조직 운영",
+   "industry": "INDUSTRY_EDUCULT_V1",
+   "industry_name": "교육·문화 행정",
+   "strength": "있음",
+   "appears_as": "교육·문화 행정 에서는 일정과 인력을 맞춰 돌리는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "일정과 인력을 맞춰 돌리는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "인사·조직 운영",
+   "industry": "INDUSTRY_PUBCORP_V1",
+   "industry_name": "공공기관·공기업 운영",
+   "strength": "있음",
+   "appears_as": "공공기관·공기업 운영 에서는 조직과 정원을 평가에 맞춰 보는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "조직과 정원을 평가에 맞춰 보는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "성과 관리·평가",
+   "industry": "INDUSTRY_CENTRAL_V1",
+   "industry_name": "중앙행정·정책",
+   "strength": "있음",
+   "appears_as": "중앙행정·정책 에서는 성과를 밖에 설명할 지표로 두는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "성과를 밖에 설명할 지표로 두는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "성과 관리·평가",
+   "industry": "INDUSTRY_LOCAL_V1",
+   "industry_name": "지방행정·주민서비스",
+   "strength": "드묾",
+   "appears_as": "지방행정·주민서비스 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "성과 관리·평가",
+   "industry": "INDUSTRY_WELFARE_V1",
+   "industry_name": "복지·보건 행정",
+   "strength": "있음",
+   "appears_as": "복지·보건 행정 에서는 대상자 변화를 지표로 보이는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "대상자 변화를 지표로 보이는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "성과 관리·평가",
+   "industry": "INDUSTRY_SAFETY_V1",
+   "industry_name": "재난·소방·안전",
+   "strength": "있음",
+   "appears_as": "재난·소방·안전 에서는 훈련 결과를 기준과 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "훈련 결과를 기준과 대조하는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "성과 관리·평가",
+   "industry": "INDUSTRY_INFRA_V1",
+   "industry_name": "도시·교통·환경 행정",
+   "strength": "있음",
+   "appears_as": "도시·교통·환경 행정 에서는 완료 뒤 효과를 지표로 보는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "완료 뒤 효과를 지표로 보는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "성과 관리·평가",
+   "industry": "INDUSTRY_ECONDEV_V1",
+   "industry_name": "산업·경제 진흥",
+   "strength": "있음",
+   "appears_as": "산업·경제 진흥 에서는 고용과 매출로 성과를 보이는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "고용과 매출로 성과를 보이는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "성과 관리·평가",
+   "industry": "INDUSTRY_EDUCULT_V1",
+   "industry_name": "교육·문화 행정",
+   "strength": "중심",
+   "appears_as": "교육·문화 행정 에서는 참여와 만족을 지표로 옮기는가 · 안 온 까닭을 좁혀 고치는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J7"
+   ],
+   "dimensions": [
+    "참여와 만족을 지표로 옮기는가",
+    "안 온 까닭을 좁혀 고치는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "성과 관리·평가",
+   "industry": "INDUSTRY_PUBCORP_V1",
+   "industry_name": "공공기관·공기업 운영",
+   "strength": "있음",
+   "appears_as": "공공기관·공기업 운영 에서는 경영평가 지표로 사업을 세우는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "경영평가 지표로 사업을 세우는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "공공데이터·통계 분석",
+   "industry": "INDUSTRY_CENTRAL_V1",
+   "industry_name": "중앙행정·정책",
+   "strength": "있음",
+   "appears_as": "중앙행정·정책 에서는 통계와 행정 자료로 근거를 만드는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "통계와 행정 자료로 근거를 만드는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "공공데이터·통계 분석",
+   "industry": "INDUSTRY_LOCAL_V1",
+   "industry_name": "지방행정·주민서비스",
+   "strength": "있음",
+   "appears_as": "지방행정·주민서비스 에서는 동네 단위로 자료를 갈라 보는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "동네 단위로 자료를 갈라 보는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "공공데이터·통계 분석",
+   "industry": "INDUSTRY_WELFARE_V1",
+   "industry_name": "복지·보건 행정",
+   "strength": "있음",
+   "appears_as": "복지·보건 행정 에서는 사각지대를 자료로 찾아내는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "사각지대를 자료로 찾아내는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "공공데이터·통계 분석",
+   "industry": "INDUSTRY_SAFETY_V1",
+   "industry_name": "재난·소방·안전",
+   "strength": "있음",
+   "appears_as": "재난·소방·안전 에서는 사고 자료로 위험을 미리 보는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "사고 자료로 위험을 미리 보는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "공공데이터·통계 분석",
+   "industry": "INDUSTRY_INFRA_V1",
+   "industry_name": "도시·교통·환경 행정",
+   "strength": "있음",
+   "appears_as": "도시·교통·환경 행정 에서는 자료로 통행과 이용을 추정하는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "자료로 통행과 이용을 추정하는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "공공데이터·통계 분석",
+   "industry": "INDUSTRY_ECONDEV_V1",
+   "industry_name": "산업·경제 진흥",
+   "strength": "있음",
+   "appears_as": "산업·경제 진흥 에서는 기업 수요를 조사해 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "기업 수요를 조사해 좁히는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "공공데이터·통계 분석",
+   "industry": "INDUSTRY_EDUCULT_V1",
+   "industry_name": "교육·문화 행정",
+   "strength": "있음",
+   "appears_as": "교육·문화 행정 에서는 참여 자료를 갈라 보는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "참여 자료를 갈라 보는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "공공데이터·통계 분석",
+   "industry": "INDUSTRY_PUBCORP_V1",
+   "industry_name": "공공기관·공기업 운영",
+   "strength": "있음",
+   "appears_as": "공공기관·공기업 운영 에서는 자료로 운영 실적을 보이는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "자료로 운영 실적을 보이는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "회계·감사",
+   "industry": "INDUSTRY_CENTRAL_V1",
+   "industry_name": "중앙행정·정책",
+   "strength": "있음",
+   "appears_as": "중앙행정·정책 에서는 결산과 집행을 증빙과 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "결산과 집행을 증빙과 맞추는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "회계·감사",
+   "industry": "INDUSTRY_LOCAL_V1",
+   "industry_name": "지방행정·주민서비스",
+   "strength": "드묾",
+   "appears_as": "지방행정·주민서비스 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "회계·감사",
+   "industry": "INDUSTRY_WELFARE_V1",
+   "industry_name": "복지·보건 행정",
+   "strength": "있음",
+   "appears_as": "복지·보건 행정 에서는 보조금 정산을 증빙과 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "보조금 정산을 증빙과 맞추는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "회계·감사",
+   "industry": "INDUSTRY_SAFETY_V1",
+   "industry_name": "재난·소방·안전",
+   "strength": "드묾",
+   "appears_as": "재난·소방·안전 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "회계·감사",
+   "industry": "INDUSTRY_INFRA_V1",
+   "industry_name": "도시·교통·환경 행정",
+   "strength": "드묾",
+   "appears_as": "도시·교통·환경 행정 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "회계·감사",
+   "industry": "INDUSTRY_ECONDEV_V1",
+   "industry_name": "산업·경제 진흥",
+   "strength": "있음",
+   "appears_as": "산업·경제 진흥 에서는 보조금 정산을 증빙과 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "보조금 정산을 증빙과 맞추는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "회계·감사",
+   "industry": "INDUSTRY_EDUCULT_V1",
+   "industry_name": "교육·문화 행정",
+   "strength": "드묾",
+   "appears_as": "교육·문화 행정 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "회계·감사",
+   "industry": "INDUSTRY_PUBCORP_V1",
+   "industry_name": "공공기관·공기업 운영",
+   "strength": "있음",
+   "appears_as": "공공기관·공기업 운영 에서는 감사 지적을 받아 절차를 고치는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "감사 지적을 받아 절차를 고치는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "주민 참여·협력",
+   "industry": "INDUSTRY_CENTRAL_V1",
+   "industry_name": "중앙행정·정책",
+   "strength": "있음",
+   "appears_as": "중앙행정·정책 에서는 입법 예고로 의견을 받아 반영하는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "입법 예고로 의견을 받아 반영하는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "주민 참여·협력",
+   "industry": "INDUSTRY_LOCAL_V1",
+   "industry_name": "지방행정·주민서비스",
+   "strength": "있음",
+   "appears_as": "지방행정·주민서비스 에서는 주민 의견을 받아 사업에 반영하는가 로 나타납니다",
+   "axes_watched": [
+    "J8"
+   ],
+   "dimensions": [
+    "주민 의견을 받아 사업에 반영하는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "주민 참여·협력",
+   "industry": "INDUSTRY_WELFARE_V1",
+   "industry_name": "복지·보건 행정",
+   "strength": "있음",
+   "appears_as": "복지·보건 행정 에서는 당사자 의견을 사업에 담는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "당사자 의견을 사업에 담는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "주민 참여·협력",
+   "industry": "INDUSTRY_SAFETY_V1",
+   "industry_name": "재난·소방·안전",
+   "strength": "있음",
+   "appears_as": "재난·소방·안전 에서는 주민에게 알리고 대피를 설명하는가 로 나타납니다",
+   "axes_watched": [
+    "J8"
+   ],
+   "dimensions": [
+    "주민에게 알리고 대피를 설명하는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "주민 참여·협력",
+   "industry": "INDUSTRY_INFRA_V1",
+   "industry_name": "도시·교통·환경 행정",
+   "strength": "있음",
+   "appears_as": "도시·교통·환경 행정 에서는 주민 의견을 받아 계획을 고치는가 로 나타납니다",
+   "axes_watched": [
+    "J8"
+   ],
+   "dimensions": [
+    "주민 의견을 받아 계획을 고치는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "주민 참여·협력",
+   "industry": "INDUSTRY_ECONDEV_V1",
+   "industry_name": "산업·경제 진흥",
+   "strength": "있음",
+   "appears_as": "산업·경제 진흥 에서는 관련 기관과 역할을 나누는가 로 나타납니다",
+   "axes_watched": [
+    "J8"
+   ],
+   "dimensions": [
+    "관련 기관과 역할을 나누는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "주민 참여·협력",
+   "industry": "INDUSTRY_EDUCULT_V1",
+   "industry_name": "교육·문화 행정",
+   "strength": "있음",
+   "appears_as": "교육·문화 행정 에서는 참여자 의견을 받아 고치는가 로 나타납니다",
+   "axes_watched": [
+    "J8"
+   ],
+   "dimensions": [
+    "참여자 의견을 받아 고치는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "주민 참여·협력",
+   "industry": "INDUSTRY_PUBCORP_V1",
+   "industry_name": "공공기관·공기업 운영",
+   "strength": "있음",
+   "appears_as": "공공기관·공기업 운영 에서는 지역 사회와 협력을 이어 가는가 로 나타납니다",
+   "axes_watched": [
+    "J8"
+   ],
+   "dimensions": [
+    "지역 사회와 협력을 이어 가는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "재난·안전 관리",
+   "industry": "INDUSTRY_CENTRAL_V1",
+   "industry_name": "중앙행정·정책",
+   "strength": "드묾",
+   "appears_as": "중앙행정·정책 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "재난·안전 관리",
+   "industry": "INDUSTRY_LOCAL_V1",
+   "industry_name": "지방행정·주민서비스",
+   "strength": "있음",
+   "appears_as": "지방행정·주민서비스 에서는 현장 점검으로 위험을 미리 보는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "현장 점검으로 위험을 미리 보는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "재난·안전 관리",
+   "industry": "INDUSTRY_WELFARE_V1",
+   "industry_name": "복지·보건 행정",
+   "strength": "드묾",
+   "appears_as": "복지·보건 행정 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "재난·안전 관리",
+   "industry": "INDUSTRY_SAFETY_V1",
+   "industry_name": "재난·소방·안전",
+   "strength": "중심",
+   "appears_as": "재난·소방·안전 에서는 먼저 볼 위험과 대상을 가르는가 · 법정 점검 항목을 현장 항목으로 옮기는가 · 사고가 되풀이된 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J2",
+    "J7"
+   ],
+   "dimensions": [
+    "먼저 볼 위험과 대상을 가르는가",
+    "법정 점검 항목을 현장 항목으로 옮기는가",
+    "사고가 되풀이된 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "재난·안전 관리",
+   "industry": "INDUSTRY_INFRA_V1",
+   "industry_name": "도시·교통·환경 행정",
+   "strength": "있음",
+   "appears_as": "도시·교통·환경 행정 에서는 공사 안전을 점검해 조치하는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "공사 안전을 점검해 조치하는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "재난·안전 관리",
+   "industry": "INDUSTRY_ECONDEV_V1",
+   "industry_name": "산업·경제 진흥",
+   "strength": "드묾",
+   "appears_as": "산업·경제 진흥 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "재난·안전 관리",
+   "industry": "INDUSTRY_EDUCULT_V1",
+   "industry_name": "교육·문화 행정",
+   "strength": "있음",
+   "appears_as": "교육·문화 행정 에서는 시설 안전을 점검해 조치하는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "시설 안전을 점검해 조치하는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "재난·안전 관리",
+   "industry": "INDUSTRY_PUBCORP_V1",
+   "industry_name": "공공기관·공기업 운영",
+   "strength": "드묾",
+   "appears_as": "공공기관·공기업 운영 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "공공사업 관리·조달",
+   "industry": "INDUSTRY_CENTRAL_V1",
+   "industry_name": "중앙행정·정책",
+   "strength": "있음",
+   "appears_as": "중앙행정·정책 에서는 부처 사이 역할을 미리 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J8"
+   ],
+   "dimensions": [
+    "부처 사이 역할을 미리 가르는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공공사업 관리·조달",
+   "industry": "INDUSTRY_LOCAL_V1",
+   "industry_name": "지방행정·주민서비스",
+   "strength": "있음",
+   "appears_as": "지방행정·주민서비스 에서는 용역과 공사를 감독해 받는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "용역과 공사를 감독해 받는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공공사업 관리·조달",
+   "industry": "INDUSTRY_WELFARE_V1",
+   "industry_name": "복지·보건 행정",
+   "strength": "있음",
+   "appears_as": "복지·보건 행정 에서는 현장 기관과 역할을 나누는가 로 나타납니다",
+   "axes_watched": [
+    "J8"
+   ],
+   "dimensions": [
+    "현장 기관과 역할을 나누는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공공사업 관리·조달",
+   "industry": "INDUSTRY_SAFETY_V1",
+   "industry_name": "재난·소방·안전",
+   "strength": "있음",
+   "appears_as": "재난·소방·안전 에서는 기관 사이 역할을 미리 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J8"
+   ],
+   "dimensions": [
+    "기관 사이 역할을 미리 가르는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공공사업 관리·조달",
+   "industry": "INDUSTRY_INFRA_V1",
+   "industry_name": "도시·교통·환경 행정",
+   "strength": "중심",
+   "appears_as": "도시·교통·환경 행정 에서는 과업 범위와 산출물을 적는가 · 납품물을 과업과 맞춰 판정하는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ],
+   "dimensions": [
+    "과업 범위와 산출물을 적는가",
+    "납품물을 과업과 맞춰 판정하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공공사업 관리·조달",
+   "industry": "INDUSTRY_ECONDEV_V1",
+   "industry_name": "산업·경제 진흥",
+   "strength": "있음",
+   "appears_as": "산업·경제 진흥 에서는 심사 기준과 배점을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "심사 기준과 배점을 정하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공공사업 관리·조달",
+   "industry": "INDUSTRY_EDUCULT_V1",
+   "industry_name": "교육·문화 행정",
+   "strength": "있음",
+   "appears_as": "교육·문화 행정 에서는 외부 강사와 위탁을 관리하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "외부 강사와 위탁을 관리하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공공사업 관리·조달",
+   "industry": "INDUSTRY_PUBCORP_V1",
+   "industry_name": "공공기관·공기업 운영",
+   "strength": "있음",
+   "appears_as": "공공기관·공기업 운영 에서는 외부 위탁과 계약을 관리하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "외부 위탁과 계약을 관리하는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "디지털 행정·정보 공개",
+   "industry": "INDUSTRY_CENTRAL_V1",
+   "industry_name": "중앙행정·정책",
+   "strength": "있음",
+   "appears_as": "중앙행정·정책 에서는 정보 공개 범위를 기준으로 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "정보 공개 범위를 기준으로 가르는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "디지털 행정·정보 공개",
+   "industry": "INDUSTRY_LOCAL_V1",
+   "industry_name": "지방행정·주민서비스",
+   "strength": "있음",
+   "appears_as": "지방행정·주민서비스 에서는 창구 업무를 전자화해 줄이는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "창구 업무를 전자화해 줄이는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "디지털 행정·정보 공개",
+   "industry": "INDUSTRY_WELFARE_V1",
+   "industry_name": "복지·보건 행정",
+   "strength": "있음",
+   "appears_as": "복지·보건 행정 에서는 개인 정보를 다룰 범위를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "개인 정보를 다룰 범위를 가르는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "디지털 행정·정보 공개",
+   "industry": "INDUSTRY_SAFETY_V1",
+   "industry_name": "재난·소방·안전",
+   "strength": "드묾",
+   "appears_as": "재난·소방·안전 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "디지털 행정·정보 공개",
+   "industry": "INDUSTRY_INFRA_V1",
+   "industry_name": "도시·교통·환경 행정",
+   "strength": "있음",
+   "appears_as": "도시·교통·환경 행정 에서는 도면과 기록을 남겨 이어 쓰는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "도면과 기록을 남겨 이어 쓰는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "디지털 행정·정보 공개",
+   "industry": "INDUSTRY_ECONDEV_V1",
+   "industry_name": "산업·경제 진흥",
+   "strength": "있음",
+   "appears_as": "산업·경제 진흥 에서는 신청과 심사를 전자화하는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "신청과 심사를 전자화하는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "디지털 행정·정보 공개",
+   "industry": "INDUSTRY_EDUCULT_V1",
+   "industry_name": "교육·문화 행정",
+   "strength": "있음",
+   "appears_as": "교육·문화 행정 에서는 신청과 수납을 전자화하는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "신청과 수납을 전자화하는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "디지털 행정·정보 공개",
+   "industry": "INDUSTRY_PUBCORP_V1",
+   "industry_name": "공공기관·공기업 운영",
+   "strength": "있음",
+   "appears_as": "공공기관·공기업 운영 에서는 정보 공시와 공개를 챙기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "정보 공시와 공개를 챙기는가"
+   ]
+  }
+ ],
+ "td_role": [
+  {
+   "td": "TD01",
+   "td_name": "정책·사업 기획",
+   "role": "ROLE_POLICY_V1",
+   "role_name": "정책 기획",
+   "strength": "중심",
+   "appears_as": "정책 기획 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "정책·사업 기획",
+   "role": "ROLE_BUDGET_V1",
+   "role_name": "예산·재정",
+   "strength": "드묾",
+   "appears_as": "예산·재정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "정책·사업 기획",
+   "role": "ROLE_AUDIT_V1",
+   "role_name": "심사·감사",
+   "strength": "드묾",
+   "appears_as": "심사·감사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "정책·사업 기획",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "재난·안전 관리",
+   "strength": "드묾",
+   "appears_as": "재난·안전 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "정책·사업 기획",
+   "role": "ROLE_CIVIL_V1",
+   "role_name": "민원·현장",
+   "strength": "드묾",
+   "appears_as": "민원·현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "정책·사업 기획",
+   "role": "ROLE_PROCURE_V1",
+   "role_name": "사업관리·조달",
+   "strength": "드묾",
+   "appears_as": "사업관리·조달 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "정책·사업 기획",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·분석",
+   "strength": "중심",
+   "appears_as": "조사·분석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "정책·사업 기획",
+   "role": "ROLE_HR_V1",
+   "role_name": "인사·제도",
+   "strength": "드묾",
+   "appears_as": "인사·제도 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "법령·규정 해석",
+   "role": "ROLE_POLICY_V1",
+   "role_name": "정책 기획",
+   "strength": "드묾",
+   "appears_as": "정책 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "법령·규정 해석",
+   "role": "ROLE_BUDGET_V1",
+   "role_name": "예산·재정",
+   "strength": "드묾",
+   "appears_as": "예산·재정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "법령·규정 해석",
+   "role": "ROLE_AUDIT_V1",
+   "role_name": "심사·감사",
+   "strength": "중심",
+   "appears_as": "심사·감사 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "법령·규정 해석",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "재난·안전 관리",
+   "strength": "드묾",
+   "appears_as": "재난·안전 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "법령·규정 해석",
+   "role": "ROLE_CIVIL_V1",
+   "role_name": "민원·현장",
+   "strength": "드묾",
+   "appears_as": "민원·현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "법령·규정 해석",
+   "role": "ROLE_PROCURE_V1",
+   "role_name": "사업관리·조달",
+   "strength": "드묾",
+   "appears_as": "사업관리·조달 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "법령·규정 해석",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "법령·규정 해석",
+   "role": "ROLE_HR_V1",
+   "role_name": "인사·제도",
+   "strength": "중심",
+   "appears_as": "인사·제도 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "예산 편성·집행",
+   "role": "ROLE_POLICY_V1",
+   "role_name": "정책 기획",
+   "strength": "드묾",
+   "appears_as": "정책 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "예산 편성·집행",
+   "role": "ROLE_BUDGET_V1",
+   "role_name": "예산·재정",
+   "strength": "중심",
+   "appears_as": "예산·재정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5",
+    "J6",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "예산 편성·집행",
+   "role": "ROLE_AUDIT_V1",
+   "role_name": "심사·감사",
+   "strength": "드묾",
+   "appears_as": "심사·감사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "예산 편성·집행",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "재난·안전 관리",
+   "strength": "드묾",
+   "appears_as": "재난·안전 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "예산 편성·집행",
+   "role": "ROLE_CIVIL_V1",
+   "role_name": "민원·현장",
+   "strength": "드묾",
+   "appears_as": "민원·현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "예산 편성·집행",
+   "role": "ROLE_PROCURE_V1",
+   "role_name": "사업관리·조달",
+   "strength": "중심",
+   "appears_as": "사업관리·조달 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "예산 편성·집행",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "예산 편성·집행",
+   "role": "ROLE_HR_V1",
+   "role_name": "인사·제도",
+   "strength": "드묾",
+   "appears_as": "인사·제도 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "행정 절차·민원 처리",
+   "role": "ROLE_POLICY_V1",
+   "role_name": "정책 기획",
+   "strength": "드묾",
+   "appears_as": "정책 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "행정 절차·민원 처리",
+   "role": "ROLE_BUDGET_V1",
+   "role_name": "예산·재정",
+   "strength": "드묾",
+   "appears_as": "예산·재정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "행정 절차·민원 처리",
+   "role": "ROLE_AUDIT_V1",
+   "role_name": "심사·감사",
+   "strength": "드묾",
+   "appears_as": "심사·감사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "행정 절차·민원 처리",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "재난·안전 관리",
+   "strength": "드묾",
+   "appears_as": "재난·안전 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "행정 절차·민원 처리",
+   "role": "ROLE_CIVIL_V1",
+   "role_name": "민원·현장",
+   "strength": "중심",
+   "appears_as": "민원·현장 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "행정 절차·민원 처리",
+   "role": "ROLE_PROCURE_V1",
+   "role_name": "사업관리·조달",
+   "strength": "드묾",
+   "appears_as": "사업관리·조달 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "행정 절차·민원 처리",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "행정 절차·민원 처리",
+   "role": "ROLE_HR_V1",
+   "role_name": "인사·제도",
+   "strength": "드묾",
+   "appears_as": "인사·제도 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "인사·조직 운영",
+   "role": "ROLE_POLICY_V1",
+   "role_name": "정책 기획",
+   "strength": "드묾",
+   "appears_as": "정책 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "인사·조직 운영",
+   "role": "ROLE_BUDGET_V1",
+   "role_name": "예산·재정",
+   "strength": "드묾",
+   "appears_as": "예산·재정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "인사·조직 운영",
+   "role": "ROLE_AUDIT_V1",
+   "role_name": "심사·감사",
+   "strength": "드묾",
+   "appears_as": "심사·감사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "인사·조직 운영",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "재난·안전 관리",
+   "strength": "중심",
+   "appears_as": "재난·안전 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "인사·조직 운영",
+   "role": "ROLE_CIVIL_V1",
+   "role_name": "민원·현장",
+   "strength": "드묾",
+   "appears_as": "민원·현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "인사·조직 운영",
+   "role": "ROLE_PROCURE_V1",
+   "role_name": "사업관리·조달",
+   "strength": "드묾",
+   "appears_as": "사업관리·조달 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "인사·조직 운영",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "인사·조직 운영",
+   "role": "ROLE_HR_V1",
+   "role_name": "인사·제도",
+   "strength": "중심",
+   "appears_as": "인사·제도 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "성과 관리·평가",
+   "role": "ROLE_POLICY_V1",
+   "role_name": "정책 기획",
+   "strength": "중심",
+   "appears_as": "정책 기획 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "성과 관리·평가",
+   "role": "ROLE_BUDGET_V1",
+   "role_name": "예산·재정",
+   "strength": "드묾",
+   "appears_as": "예산·재정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "성과 관리·평가",
+   "role": "ROLE_AUDIT_V1",
+   "role_name": "심사·감사",
+   "strength": "드묾",
+   "appears_as": "심사·감사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "성과 관리·평가",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "재난·안전 관리",
+   "strength": "드묾",
+   "appears_as": "재난·안전 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "성과 관리·평가",
+   "role": "ROLE_CIVIL_V1",
+   "role_name": "민원·현장",
+   "strength": "드묾",
+   "appears_as": "민원·현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "성과 관리·평가",
+   "role": "ROLE_PROCURE_V1",
+   "role_name": "사업관리·조달",
+   "strength": "중심",
+   "appears_as": "사업관리·조달 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J7"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "성과 관리·평가",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "성과 관리·평가",
+   "role": "ROLE_HR_V1",
+   "role_name": "인사·제도",
+   "strength": "중심",
+   "appears_as": "인사·제도 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "공공데이터·통계 분석",
+   "role": "ROLE_POLICY_V1",
+   "role_name": "정책 기획",
+   "strength": "드묾",
+   "appears_as": "정책 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "공공데이터·통계 분석",
+   "role": "ROLE_BUDGET_V1",
+   "role_name": "예산·재정",
+   "strength": "중심",
+   "appears_as": "예산·재정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J8"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "공공데이터·통계 분석",
+   "role": "ROLE_AUDIT_V1",
+   "role_name": "심사·감사",
+   "strength": "드묾",
+   "appears_as": "심사·감사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "공공데이터·통계 분석",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "재난·안전 관리",
+   "strength": "드묾",
+   "appears_as": "재난·안전 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "공공데이터·통계 분석",
+   "role": "ROLE_CIVIL_V1",
+   "role_name": "민원·현장",
+   "strength": "드묾",
+   "appears_as": "민원·현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "공공데이터·통계 분석",
+   "role": "ROLE_PROCURE_V1",
+   "role_name": "사업관리·조달",
+   "strength": "드묾",
+   "appears_as": "사업관리·조달 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "공공데이터·통계 분석",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·분석",
+   "strength": "중심",
+   "appears_as": "조사·분석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J4",
+    "J5",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "공공데이터·통계 분석",
+   "role": "ROLE_HR_V1",
+   "role_name": "인사·제도",
+   "strength": "드묾",
+   "appears_as": "인사·제도 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "회계·감사",
+   "role": "ROLE_POLICY_V1",
+   "role_name": "정책 기획",
+   "strength": "드묾",
+   "appears_as": "정책 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "회계·감사",
+   "role": "ROLE_BUDGET_V1",
+   "role_name": "예산·재정",
+   "strength": "중심",
+   "appears_as": "예산·재정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "회계·감사",
+   "role": "ROLE_AUDIT_V1",
+   "role_name": "심사·감사",
+   "strength": "중심",
+   "appears_as": "심사·감사 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J6",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "회계·감사",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "재난·안전 관리",
+   "strength": "드묾",
+   "appears_as": "재난·안전 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "회계·감사",
+   "role": "ROLE_CIVIL_V1",
+   "role_name": "민원·현장",
+   "strength": "드묾",
+   "appears_as": "민원·현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "회계·감사",
+   "role": "ROLE_PROCURE_V1",
+   "role_name": "사업관리·조달",
+   "strength": "드묾",
+   "appears_as": "사업관리·조달 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "회계·감사",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "회계·감사",
+   "role": "ROLE_HR_V1",
+   "role_name": "인사·제도",
+   "strength": "드묾",
+   "appears_as": "인사·제도 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "주민 참여·협력",
+   "role": "ROLE_POLICY_V1",
+   "role_name": "정책 기획",
+   "strength": "중심",
+   "appears_as": "정책 기획 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J8"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "주민 참여·협력",
+   "role": "ROLE_BUDGET_V1",
+   "role_name": "예산·재정",
+   "strength": "드묾",
+   "appears_as": "예산·재정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "주민 참여·협력",
+   "role": "ROLE_AUDIT_V1",
+   "role_name": "심사·감사",
+   "strength": "드묾",
+   "appears_as": "심사·감사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "주민 참여·협력",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "재난·안전 관리",
+   "strength": "드묾",
+   "appears_as": "재난·안전 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "주민 참여·협력",
+   "role": "ROLE_CIVIL_V1",
+   "role_name": "민원·현장",
+   "strength": "중심",
+   "appears_as": "민원·현장 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J4",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "주민 참여·협력",
+   "role": "ROLE_PROCURE_V1",
+   "role_name": "사업관리·조달",
+   "strength": "드묾",
+   "appears_as": "사업관리·조달 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "주민 참여·협력",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "주민 참여·협력",
+   "role": "ROLE_HR_V1",
+   "role_name": "인사·제도",
+   "strength": "드묾",
+   "appears_as": "인사·제도 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "재난·안전 관리",
+   "role": "ROLE_POLICY_V1",
+   "role_name": "정책 기획",
+   "strength": "드묾",
+   "appears_as": "정책 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "재난·안전 관리",
+   "role": "ROLE_BUDGET_V1",
+   "role_name": "예산·재정",
+   "strength": "드묾",
+   "appears_as": "예산·재정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "재난·안전 관리",
+   "role": "ROLE_AUDIT_V1",
+   "role_name": "심사·감사",
+   "strength": "드묾",
+   "appears_as": "심사·감사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "재난·안전 관리",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "재난·안전 관리",
+   "strength": "중심",
+   "appears_as": "재난·안전 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "재난·안전 관리",
+   "role": "ROLE_CIVIL_V1",
+   "role_name": "민원·현장",
+   "strength": "드묾",
+   "appears_as": "민원·현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "재난·안전 관리",
+   "role": "ROLE_PROCURE_V1",
+   "role_name": "사업관리·조달",
+   "strength": "드묾",
+   "appears_as": "사업관리·조달 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "재난·안전 관리",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "재난·안전 관리",
+   "role": "ROLE_HR_V1",
+   "role_name": "인사·제도",
+   "strength": "드묾",
+   "appears_as": "인사·제도 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공공사업 관리·조달",
+   "role": "ROLE_POLICY_V1",
+   "role_name": "정책 기획",
+   "strength": "드묾",
+   "appears_as": "정책 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공공사업 관리·조달",
+   "role": "ROLE_BUDGET_V1",
+   "role_name": "예산·재정",
+   "strength": "드묾",
+   "appears_as": "예산·재정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공공사업 관리·조달",
+   "role": "ROLE_AUDIT_V1",
+   "role_name": "심사·감사",
+   "strength": "중심",
+   "appears_as": "심사·감사 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공공사업 관리·조달",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "재난·안전 관리",
+   "strength": "중심",
+   "appears_as": "재난·안전 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공공사업 관리·조달",
+   "role": "ROLE_CIVIL_V1",
+   "role_name": "민원·현장",
+   "strength": "드묾",
+   "appears_as": "민원·현장 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공공사업 관리·조달",
+   "role": "ROLE_PROCURE_V1",
+   "role_name": "사업관리·조달",
+   "strength": "중심",
+   "appears_as": "사업관리·조달 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공공사업 관리·조달",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·분석",
+   "strength": "드묾",
+   "appears_as": "조사·분석 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "공공사업 관리·조달",
+   "role": "ROLE_HR_V1",
+   "role_name": "인사·제도",
+   "strength": "드묾",
+   "appears_as": "인사·제도 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "디지털 행정·정보 공개",
+   "role": "ROLE_POLICY_V1",
+   "role_name": "정책 기획",
+   "strength": "드묾",
+   "appears_as": "정책 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "디지털 행정·정보 공개",
+   "role": "ROLE_BUDGET_V1",
+   "role_name": "예산·재정",
+   "strength": "드묾",
+   "appears_as": "예산·재정 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "디지털 행정·정보 공개",
+   "role": "ROLE_AUDIT_V1",
+   "role_name": "심사·감사",
+   "strength": "드묾",
+   "appears_as": "심사·감사 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "디지털 행정·정보 공개",
+   "role": "ROLE_SAFETY_V1",
+   "role_name": "재난·안전 관리",
+   "strength": "드묾",
+   "appears_as": "재난·안전 관리 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "디지털 행정·정보 공개",
+   "role": "ROLE_CIVIL_V1",
+   "role_name": "민원·현장",
+   "strength": "중심",
+   "appears_as": "민원·현장 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "디지털 행정·정보 공개",
+   "role": "ROLE_PROCURE_V1",
+   "role_name": "사업관리·조달",
+   "strength": "드묾",
+   "appears_as": "사업관리·조달 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "디지털 행정·정보 공개",
+   "role": "ROLE_RESEARCH_V1",
+   "role_name": "조사·분석",
+   "strength": "중심",
+   "appears_as": "조사·분석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "axes_watched": [
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "디지털 행정·정보 공개",
+   "role": "ROLE_HR_V1",
+   "role_name": "인사·제도",
+   "strength": "드묾",
+   "appears_as": "인사·제도 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  }
+ ]
+}

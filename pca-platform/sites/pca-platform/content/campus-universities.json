@@ -317,16 +317,14 @@
                       "name": "일반행정트랙",
                       "kind": "track",
                       "core_code": "PUBADM_CORE_V1",
-                      "specialization": null
+                      "specialization": "SPEC_PUBADM_GENERAL"
                     },
                     {
                       "code": "PCU26_PUBADM_FIRE",
                       "name": "소방행정트랙",
                       "kind": "track",
                       "core_code": "PUBADM_CORE_V1",
-                      "specialization": null,
-                      "specialization_required": true,
-                      "note": "소방 쪽 갈래가 아직 없다"
+                      "specialization": "SPEC_PUBADM_FIRE"
                     }
                   ]
                 },
@@ -893,16 +891,14 @@
                       "name": "일반행정트랙",
                       "kind": "track",
                       "core_code": "PUBADM_CORE_V1",
-                      "specialization": null
+                      "specialization": "SPEC_PUBADM_GENERAL"
                     },
                     {
                       "code": "PCU27_PUBADM_FIRE",
                       "name": "소방행정트랙",
                       "kind": "track",
                       "core_code": "PUBADM_CORE_V1",
-                      "specialization": null,
-                      "specialization_required": true,
-                      "note": "소방 쪽 갈래가 아직 없다"
+                      "specialization": "SPEC_PUBADM_FIRE"
                     }
                   ]
                 },

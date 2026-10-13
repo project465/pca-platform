@@ -1,0 +1,797 @@
+{
+ "schema_version": "pubadm-role-packs.1",
+ "core": "PUBADM_CORE_V1",
+ "note": "공고 직무명 단위의 깊이 모듈이다. 새 축을 만들지 않는다: `core_ref` 로 Core 의 기술영역과 역할기능을 가리킨다. 역할기능과 역할팩이 하나씩 맞물린다. `differs_from` 은 이웃 역할과 무엇이 다른지를 한 줄로 적고 결과지가 그 줄을 읽는다. 문항은 역할마다 다른 판단을 묻는다",
+ "caps": {
+  "industry_items_max": 10,
+  "role_items_max": 7,
+  "deep_industry_max": 1,
+  "deep_role_max": 2,
+  "interest_pick_max": 2
+ },
+ "exploration": {
+  "browse": "all",
+  "deep_per_attempt": 1,
+  "add_later": true,
+  "subscription_gate": false,
+  "note": "여덟 역할 전부를 견줄 수 있다. 한 번에 쉰여섯을 묻지 않고 Core 심화가 끝난 뒤에 관심 있는 역할을 둘까지 고르고, 고른 역할을 STANDARD 부터 깊게 확인한다. 고르지 않은 역할은 Core 의 확인된 축으로 견준다. 역할 선택이 Core 판정을 바꾸지 않는다"
+ },
+ "packs": [
+  {
+   "code": "ROLE_POLICY_V1",
+   "version": 1,
+   "name_ko": "정책 기획",
+   "name_en": "Policy Planning",
+   "core": "PUBADM_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD01",
+     "TD06",
+     "TD09"
+    ],
+    "rf": [
+     "RF1"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J5"
+   ],
+   "owns": "무엇을 할지와 하지 않을지를 확정한다",
+   "decides": [
+    "볼 지표",
+    "대상 범위",
+    "하지 않을 것",
+    "추진 차례"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_RESEARCH_V1",
+     "line": "조사 쪽은 근거를 만들고 기획은 그 근거로 자원을 움직일 권한을 가진다"
+    },
+    {
+     "vs": "ROLE_BUDGET_V1",
+     "line": "예산 쪽은 얼마를 붙일지 가르고 기획은 무엇을 할지 가른다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_POLICY_V1_R1",
+     "axis": "J3",
+     "domain": "TD01",
+     "ask": "사업의 대상 범위를 바꿀 권한을 가지고 그 자리에서 확정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_POLICY_V1_R2",
+     "axis": "J5",
+     "domain": "TD01",
+     "ask": "다른 부서가 그대로 집행한 계획안을 내 이름으로 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_POLICY_V1_R3",
+     "axis": "J2",
+     "domain": "TD01",
+     "ask": "서로 부딪히는 요구 가운데 먼저 지킬 것을 내가 정해 올린 경험이 있다"
+    },
+    {
+     "id": "ROLE_POLICY_V1_R4",
+     "axis": "J3",
+     "domain": "TD06",
+     "ask": "어디까지면 달성으로 볼지를 내가 정해 평가 기준이 된 경험이 있다"
+    },
+    {
+     "id": "ROLE_POLICY_V1_R5",
+     "axis": "J6",
+     "domain": "TD06",
+     "ask": "견준 결과를 들고 사업 내용을 바꾸자고 올려 통과시킨 경험이 있다"
+    },
+    {
+     "id": "ROLE_POLICY_V1_R6",
+     "axis": "J7",
+     "domain": "TD01",
+     "ask": "뜻대로 안 된 자리를 좁혀 다음 계획의 조건을 바꾼 경험이 있다"
+    },
+    {
+     "id": "ROLE_POLICY_V1_R7",
+     "axis": "J8",
+     "domain": "TD09",
+     "ask": "내 계획을 근거로 다른 기관이 일을 시작한 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_RESEARCH_V1",
+    "ROLE_BUDGET_V1",
+    "ROLE_PROCURE_V1"
+   ],
+   "application_material": [
+    "목표와 성과지표 표 한 벌",
+    "자원 배분 근거",
+    "하지 않기로 한 것을 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_BUDGET_V1",
+   "version": 1,
+   "name_ko": "예산·재정",
+   "name_en": "Budget and Finance",
+   "core": "PUBADM_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD03",
+     "TD08",
+     "TD07"
+    ],
+    "rf": [
+     "RF2"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "owns": "어느 사업에 얼마를 붙일지 확정한다",
+   "decides": [
+    "사업별 금액",
+    "줄일 사업",
+    "집행 시기",
+    "변경과 이월"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_POLICY_V1",
+     "line": "기획은 무엇을 할지 가르고 예산은 그 일에 얼마를 붙일지 가른다"
+    },
+    {
+     "vs": "ROLE_AUDIT_V1",
+     "line": "감사 쪽은 이미 나간 돈을 보고 예산은 앞으로 나갈 돈을 가른다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_BUDGET_V1_R1",
+     "axis": "J3",
+     "domain": "TD03",
+     "ask": "요구액을 깎을 권한을 가지고 그 자리에서 금액을 확정한 경험이 있다"
+    },
+    {
+     "id": "ROLE_BUDGET_V1_R2",
+     "axis": "J6",
+     "domain": "TD03",
+     "ask": "지난 집행 실적을 들고 올라온 요구를 되돌린 경험이 있다"
+    },
+    {
+     "id": "ROLE_BUDGET_V1_R3",
+     "axis": "J2",
+     "domain": "TD03",
+     "ask": "심의에서 설명할 산출 근거를 내 이름으로 세운 경험이 있다"
+    },
+    {
+     "id": "ROLE_BUDGET_V1_R4",
+     "axis": "J3",
+     "domain": "TD08",
+     "ask": "불용이나 이월로 돌릴지를 내가 판단해 처리한 경험이 있다"
+    },
+    {
+     "id": "ROLE_BUDGET_V1_R5",
+     "axis": "J5",
+     "domain": "TD03",
+     "ask": "다른 부서가 그대로 가져다 쓴 산출 서식을 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_BUDGET_V1_R6",
+     "axis": "J7",
+     "domain": "TD03",
+     "ask": "집행이 어긋난 자리를 좁혀 다음 해 추계 방식을 바꾼 경험이 있다"
+    },
+    {
+     "id": "ROLE_BUDGET_V1_R7",
+     "axis": "J8",
+     "domain": "TD07",
+     "ask": "내 추계가 최종 예산에 숫자 그대로 들어간 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_POLICY_V1",
+    "ROLE_AUDIT_V1",
+    "ROLE_PROCURE_V1"
+   ],
+   "application_material": [
+    "사업별 산출 근거 한 벌",
+    "집행 계획표",
+    "줄인 사업과 그 까닭을 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_AUDIT_V1",
+   "version": 1,
+   "name_ko": "심사·감사",
+   "name_en": "Review and Audit",
+   "core": "PUBADM_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD08",
+     "TD02",
+     "TD11"
+    ],
+    "rf": [
+     "RF3"
+    ]
+   },
+   "required_axes": [
+    "J5",
+    "J6"
+   ],
+   "owns": "볼 범위와 지적할 범위를 확정한다",
+   "decides": [
+    "볼 표본",
+    "볼 기간",
+    "지적 범위",
+    "예외로 인정할 것"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_BUDGET_V1",
+     "line": "예산 쪽은 앞으로 쓸 돈을 가르고 감사는 이미 나간 돈을 본다"
+    },
+    {
+     "vs": "ROLE_CIVIL_V1",
+     "line": "민원 쪽은 기한 안에 끝내고 감사는 그 처리가 기준에 맞았는지 본다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_AUDIT_V1_R1",
+     "axis": "J3",
+     "domain": "TD08",
+     "ask": "어디까지 지적할지를 내 이름으로 확정해 통보한 경험이 있다"
+    },
+    {
+     "id": "ROLE_AUDIT_V1_R2",
+     "axis": "J6",
+     "domain": "TD08",
+     "ask": "올라온 설명을 증빙 원본으로 되짚어 처음 판단을 뒤집은 경험이 있다"
+    },
+    {
+     "id": "ROLE_AUDIT_V1_R3",
+     "axis": "J5",
+     "domain": "TD08",
+     "ask": "다른 사람이 근거로 가져다 쓴 점검 조서를 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_AUDIT_V1_R4",
+     "axis": "J2",
+     "domain": "TD02",
+     "ask": "조문의 요건을 점검 항목으로 풀어 조서 서식이 된 경험이 있다"
+    },
+    {
+     "id": "ROLE_AUDIT_V1_R5",
+     "axis": "J6",
+     "domain": "TD11",
+     "ask": "받을지 말지를 내가 판정해 대금이나 재이행이 갈린 경험이 있다"
+    },
+    {
+     "id": "ROLE_AUDIT_V1_R6",
+     "axis": "J7",
+     "domain": "TD08",
+     "ask": "같은 지적이 되풀이되는 자리를 좁혀 제도를 바꾸게 한 경험이 있다"
+    },
+    {
+     "id": "ROLE_AUDIT_V1_R7",
+     "axis": "J8",
+     "domain": "TD02",
+     "ask": "내 판정이 기관의 공식 회신이나 처분으로 나간 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_BUDGET_V1",
+    "ROLE_CIVIL_V1",
+    "ROLE_PROCURE_V1"
+   ],
+   "application_material": [
+    "점검 조서 한 벌",
+    "지적 사항과 근거",
+    "표본을 그렇게 고른 까닭을 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_SAFETY_V1",
+   "version": 1,
+   "name_ko": "재난·안전 관리",
+   "name_en": "Disaster and Safety Management",
+   "core": "PUBADM_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD10",
+     "TD05",
+     "TD11"
+    ],
+    "rf": [
+     "RF4"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J7"
+   ],
+   "owns": "먼저 볼 위험과 났을 때의 단계를 확정한다",
+   "decides": [
+    "먼저 볼 대상",
+    "시정 요구 범위",
+    "대응 단계",
+    "멈출지 말지"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_CIVIL_V1",
+     "line": "민원 쪽은 들어온 요구를 받고 안전은 들어오기 전에 가려낸다"
+    },
+    {
+     "vs": "ROLE_AUDIT_V1",
+     "line": "감사 쪽은 끝난 뒤를 보고 안전은 그 자리에서 멈출 권한을 가진다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_SAFETY_V1_R1",
+     "axis": "J3",
+     "domain": "TD10",
+     "ask": "현장을 멈출 권한을 가지고 그 자리에서 판단해 본 경험이 있다"
+    },
+    {
+     "id": "ROLE_SAFETY_V1_R2",
+     "axis": "J7",
+     "domain": "TD10",
+     "ask": "같은 사고가 되풀이되는 자리를 좁혀 기준을 올리게 한 경험이 있다"
+    },
+    {
+     "id": "ROLE_SAFETY_V1_R3",
+     "axis": "J5",
+     "domain": "TD10",
+     "ask": "다른 사람이 그것만 보고 움직인 대응 매뉴얼을 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_SAFETY_V1_R4",
+     "axis": "J3",
+     "domain": "TD05",
+     "ask": "누구를 어디에 보낼지를 내가 정해 그대로 움직인 경험이 있다"
+    },
+    {
+     "id": "ROLE_SAFETY_V1_R5",
+     "axis": "J6",
+     "domain": "TD11",
+     "ask": "점검 결과를 들고 맡긴 쪽에 보완을 요구해 받아낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_SAFETY_V1_R6",
+     "axis": "J2",
+     "domain": "TD05",
+     "ask": "대응 단계마다 할 일을 적어 기관의 기준이 된 경험이 있다"
+    },
+    {
+     "id": "ROLE_SAFETY_V1_R7",
+     "axis": "J8",
+     "domain": "TD10",
+     "ask": "내가 만든 매뉴얼로 여러 기관이 같은 차례로 움직인 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_CIVIL_V1",
+    "ROLE_AUDIT_V1",
+    "ROLE_PROCURE_V1"
+   ],
+   "application_material": [
+    "대응 매뉴얼 한 벌",
+    "점검 조서와 시정 요구",
+    "멈춘 까닭을 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_CIVIL_V1",
+   "version": 1,
+   "name_ko": "민원·현장",
+   "name_en": "Civil Service Frontline",
+   "core": "PUBADM_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD04",
+     "TD09",
+     "TD12"
+    ],
+    "rf": [
+     "RF5"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J7"
+   ],
+   "owns": "그 자리의 신청 하나를 기한 안에 끝낸다",
+   "decides": [
+    "그 자리에서 처리할 범위",
+    "보완을 요구할 범위",
+    "현장 확인 여부",
+    "안내 문구"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_AUDIT_V1",
+     "line": "감사 쪽은 맞았는지 보고 민원은 기한 안에 결과로 끝낸다"
+    },
+    {
+     "vs": "ROLE_SAFETY_V1",
+     "line": "안전 쪽은 위험을 미리 가리고 민원은 들어온 요구를 받는다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_CIVIL_V1_R1",
+     "axis": "J3",
+     "domain": "TD04",
+     "ask": "돌려보낼 권한을 가지고 그 자리에서 보완을 요구한 경험이 있다"
+    },
+    {
+     "id": "ROLE_CIVIL_V1_R2",
+     "axis": "J7",
+     "domain": "TD04",
+     "ask": "같은 불만이 몰리는 자리를 좁혀 안내 문구를 바꾸게 한 경험이 있다"
+    },
+    {
+     "id": "ROLE_CIVIL_V1_R3",
+     "axis": "J5",
+     "domain": "TD04",
+     "ask": "다른 담당자가 그대로 따라 한 처리 절차서를 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_CIVIL_V1_R4",
+     "axis": "J6",
+     "domain": "TD12",
+     "ask": "앞선 처리 사례를 꺼내 내 결정을 되짚어 바꾼 경험이 있다"
+    },
+    {
+     "id": "ROLE_CIVIL_V1_R5",
+     "axis": "J2",
+     "domain": "TD04",
+     "ask": "창구에서 바로 쓸 점검표를 내가 만들어 쓰이게 한 경험이 있다"
+    },
+    {
+     "id": "ROLE_CIVIL_V1_R6",
+     "axis": "J8",
+     "domain": "TD09",
+     "ask": "내 처리 기준이 부서가 같게 처리하는 기준이 된 경험이 있다"
+    },
+    {
+     "id": "ROLE_CIVIL_V1_R7",
+     "axis": "J4",
+     "domain": "TD09",
+     "ask": "현장을 확인하는 차례를 내가 정해 그대로 돌아간 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_AUDIT_V1",
+    "ROLE_SAFETY_V1",
+    "ROLE_POLICY_V1"
+   ],
+   "application_material": [
+    "처리 절차서 한 벌",
+    "처분 결정 기록",
+    "돌려보낸 까닭을 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_PROCURE_V1",
+   "version": 1,
+   "name_ko": "사업관리·조달",
+   "name_en": "Project and Procurement",
+   "core": "PUBADM_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD11",
+     "TD03",
+     "TD06"
+    ],
+    "rf": [
+     "RF6"
+    ]
+   },
+   "required_axes": [
+    "J2",
+    "J5"
+   ],
+   "owns": "무엇을 어떤 방식으로 맡기고 받을지 확정한다",
+   "decides": [
+    "과업 범위",
+    "발주 방식",
+    "평가 배점",
+    "검수 판정"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_AUDIT_V1",
+     "line": "감사 쪽은 끝난 뒤를 보고 조달은 맡기기 전에 범위를 적는다"
+    },
+    {
+     "vs": "ROLE_BUDGET_V1",
+     "line": "예산 쪽은 금액을 가르고 조달은 그 금액으로 무엇을 받을지 적는다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_PROCURE_V1_R1",
+     "axis": "J2",
+     "domain": "TD11",
+     "ask": "받을 것을 항목으로 못 박아 과업지시서에 그대로 들어간 경험이 있다"
+    },
+    {
+     "id": "ROLE_PROCURE_V1_R2",
+     "axis": "J5",
+     "domain": "TD11",
+     "ask": "다른 사업이 서식째 가져다 쓴 과업지시서를 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_PROCURE_V1_R3",
+     "axis": "J3",
+     "domain": "TD11",
+     "ask": "어떤 방식으로 맡길지를 내가 골라 그대로 발주된 경험이 있다"
+    },
+    {
+     "id": "ROLE_PROCURE_V1_R4",
+     "axis": "J6",
+     "domain": "TD11",
+     "ask": "범위를 못 채웠다고 판정해 보완을 받아낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_PROCURE_V1_R5",
+     "axis": "J3",
+     "domain": "TD03",
+     "ask": "변경 요구를 받지 않겠다고 내가 정해 통보한 경험이 있다"
+    },
+    {
+     "id": "ROLE_PROCURE_V1_R6",
+     "axis": "J7",
+     "domain": "TD06",
+     "ask": "납품이 어긋난 자리를 좁혀 과업 적는 방식을 바꾸게 한 경험이 있다"
+    },
+    {
+     "id": "ROLE_PROCURE_V1_R7",
+     "axis": "J8",
+     "domain": "TD11",
+     "ask": "여러 기관과 맡을 범위를 합의해 문서로 남긴 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_AUDIT_V1",
+    "ROLE_BUDGET_V1",
+    "ROLE_POLICY_V1"
+   ],
+   "application_material": [
+    "과업지시서 한 벌",
+    "검수 조서",
+    "변경을 받지 않은 까닭을 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_RESEARCH_V1",
+   "version": 1,
+   "name_ko": "조사·분석",
+   "name_en": "Research and Analysis",
+   "core": "PUBADM_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD07",
+     "TD12",
+     "TD01"
+    ],
+    "rf": [
+     "RF7"
+    ]
+   },
+   "required_axes": [
+    "J4",
+    "J6"
+   ],
+   "owns": "지표 정의와 비교 조건과 결론의 근거를 확정한다",
+   "decides": [
+    "지표 정의",
+    "비교 조건",
+    "넣고 뺄 자료",
+    "조사 방법"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_POLICY_V1",
+     "line": "기획은 자원을 움직이고 조사는 움직일 근거를 만든다"
+    },
+    {
+     "vs": "ROLE_AUDIT_V1",
+     "line": "감사 쪽은 규정에 맞는지 보고 조사는 얼마나 됐는지 센다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_RESEARCH_V1_R1",
+     "axis": "J4",
+     "domain": "TD07",
+     "ask": "어떤 방법으로 셀지를 내가 골라 그 까닭이 보고에 남은 경험이 있다"
+    },
+    {
+     "id": "ROLE_RESEARCH_V1_R2",
+     "axis": "J6",
+     "domain": "TD07",
+     "ask": "남이 낸 결론을 같은 자료로 다시 세어 뒤집은 경험이 있다"
+    },
+    {
+     "id": "ROLE_RESEARCH_V1_R3",
+     "axis": "J3",
+     "domain": "TD07",
+     "ask": "무엇을 빼고 셀지를 내가 정해 그 기준이 쓰인 경험이 있다"
+    },
+    {
+     "id": "ROLE_RESEARCH_V1_R4",
+     "axis": "J2",
+     "domain": "TD01",
+     "ask": "기관이 쓰는 지표의 정의를 내 이름으로 못 박은 경험이 있다"
+    },
+    {
+     "id": "ROLE_RESEARCH_V1_R5",
+     "axis": "J5",
+     "domain": "TD07",
+     "ask": "다른 사람이 그대로 다시 돌린 분석 절차를 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_RESEARCH_V1_R6",
+     "axis": "J6",
+     "domain": "TD12",
+     "ask": "공표 통계와 어긋난 자리를 찾아 처리 기준을 바꾼 경험이 있다"
+    },
+    {
+     "id": "ROLE_RESEARCH_V1_R7",
+     "axis": "J8",
+     "domain": "TD07",
+     "ask": "내 조사 결과가 예산이나 사업 결정의 근거로 쓰인 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_POLICY_V1",
+    "ROLE_AUDIT_V1",
+    "ROLE_HR_V1"
+   ],
+   "application_material": [
+    "지표 정의표 한 벌",
+    "조사 보고",
+    "뺀 자료와 그 까닭을 적은 한 장"
+   ]
+  },
+  {
+   "code": "ROLE_HR_V1",
+   "version": 1,
+   "name_ko": "인사·제도",
+   "name_en": "Human Resources and Institutions",
+   "core": "PUBADM_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD05",
+     "TD06",
+     "TD02"
+    ],
+    "rf": [
+     "RF8"
+    ]
+   },
+   "required_axes": [
+    "J2",
+    "J8"
+   ],
+   "owns": "자리와 사람의 기준이 내내 지켜지게 한다",
+   "decides": [
+    "정원과 배치",
+    "볼 요건",
+    "평가 항목",
+    "제도 개정 범위"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_POLICY_V1",
+     "line": "기획은 사업을 가르고 인사는 그 사업을 할 사람의 기준을 가른다"
+    },
+    {
+     "vs": "ROLE_AUDIT_V1",
+     "line": "감사 쪽은 지난 일을 보고 인사는 다음에도 지켜질 기준을 세운다"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_HR_V1_R1",
+     "axis": "J2",
+     "domain": "TD05",
+     "ask": "자리마다 볼 요건을 내가 적어 채용이나 배치 기준이 된 경험이 있다"
+    },
+    {
+     "id": "ROLE_HR_V1_R2",
+     "axis": "J8",
+     "domain": "TD05",
+     "ask": "협의 자리에서 설명해 내 기준이 발령으로 이어진 경험이 있다"
+    },
+    {
+     "id": "ROLE_HR_V1_R3",
+     "axis": "J3",
+     "domain": "TD05",
+     "ask": "정원을 늘리거나 줄이자고 내가 정해 올린 경험이 있다"
+    },
+    {
+     "id": "ROLE_HR_V1_R4",
+     "axis": "J5",
+     "domain": "TD06",
+     "ask": "다른 부서가 가져다 쓴 평가 기준표를 낸 경험이 있다"
+    },
+    {
+     "id": "ROLE_HR_V1_R5",
+     "axis": "J6",
+     "domain": "TD06",
+     "ask": "비슷한 조직의 기준과 견주어 우리 기준을 고친 경험이 있다"
+    },
+    {
+     "id": "ROLE_HR_V1_R6",
+     "axis": "J7",
+     "domain": "TD05",
+     "ask": "자리가 비거나 겹치는 까닭을 좁혀 배치 기준을 바꾼 경험이 있다"
+    },
+    {
+     "id": "ROLE_HR_V1_R7",
+     "axis": "J3",
+     "domain": "TD02",
+     "ask": "규정을 고치자고 내가 정해 개정으로 이어진 경험이 있다"
+    }
+   ],
+   "compare_with": [
+    "ROLE_POLICY_V1",
+    "ROLE_AUDIT_V1",
+    "ROLE_RESEARCH_V1"
+   ],
+   "application_material": [
+    "직무 기준 한 벌",
+    "평가 기준표",
+    "정원을 그렇게 본 까닭을 적은 한 장"
+   ]
+  }
+ ]
+}
