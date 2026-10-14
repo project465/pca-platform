@@ -177,8 +177,11 @@ async function main(): Promise<void> {
     await registerCampusStudent(peer.id, UNI, where.leaf.code);
     const at = await openAttempt({
       userId: peer.id, tier: "PRO", stage: "bachelor", gradField: null,
+      /* **단과대학 코드를 비워 넘기지 않는다.** 제품은 등록부에서
+         그 자리의 단과대학을 채워 넣는데(`contextOf`), 검사가 빈 글자를
+         넘기면 담당자 화면에 **이름 없는 막대**가 선다 */
       campus: {
-        university_code: u.university_code, college_code: "",
+        university_code: u.university_code, college_code: where.college.code,
         department_code: where.leaf.code,
         core_code: where.leaf.core_code as string,
         specialization: where.leaf.specialization ?? null,
@@ -271,7 +274,7 @@ async function main(): Promise<void> {
     /* 05~11. 결과. 검사는 서버에서 끝까지 채운다 — 여기가 재는 것은 결과를
        받은 사람이 보는 화면이고, 검사가 도는지는 `v3:runtime` 이 센다 */
     const entry: CampusEntry = {
-      university_code: u.university_code, college_code: "",
+      university_code: u.university_code, college_code: row.college.code,
       department_code: row.leaf.code, core_code: core,
       specialization: row.leaf.specialization ?? null,
     };
@@ -340,7 +343,10 @@ async function main(): Promise<void> {
     const od = await mk(WIDE), om = await mk(NARROW);
     const gd = await login(od, staffLogin, staffPw);
     const gm = await login(om, staffLogin, staffPw);
-    await both(gd, gm, "/org/v3", "17-admin-overview");
+    /* **담당자 화면은 기본으로 손님만 센다**(§23). 여기서 세운 사람은
+       전부 시연 계정이라 그대로 열면 KPI 넷만 서고 집계가 한 줄도 없다.
+       섞어 보는 주소로 찍고, 화면이 그 사실을 적는다 */
+    await both(gd, gm, "/org/v3?demo=1", "17-admin-overview");
     for (const [p, who] of [[gd, "d"], [gm, "m"]] as const) {
       const sect = p.locator("section.sf-section")
         .filter({ has: p.locator("h2.sf-h2", { hasText: "학과" }) }).first();

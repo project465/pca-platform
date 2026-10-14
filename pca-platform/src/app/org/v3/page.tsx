@@ -212,14 +212,29 @@ export default async function CampusV3({
             note="학교가 계정을 발급한 학생" />
           <Kpi label="검사를 시작한 학생" value={v3.started} unit="명" />
           <Kpi label="결과를 받은 학생" value={v3.scored} unit="명" />
+          {/* **바닥이 어느 쪽인지를 그 자리에 적는다**(규격 §23).
+              바닥은 대상자와 시작한 학생 가운데 큰 쪽인데, 적는 말은
+              `대상자가 있으면 대상자 기준` 이었다. 그래서 **명단에 없는
+              학생이 들어와 시작한 수가 더 큰 날**, 시작한 수로 나눈 비율
+              옆에 `대상자 기준` 이 적혔다. 이름과 단위가 어긋나면 그 수는
+              아무도 못 믿는다 */}
           <Kpi label="완료율"
             value={v3.completion === null ? "—" : `${v3.completion}%`}
-            note={v3.roster ? "대상자 기준" : "시작한 학생 기준"} />
+            note={v3.roster >= v3.started ? "대상자 기준" : "시작한 학생 기준"} />
         </div>
         <p className="sf-meta" style={{ marginTop: 10 }}>
           지금 푸는 중 {v3.in_progress}명 · 경험을 더해 갱신한 학생
           {" "}{v3.recomputed}명
         </p>
+        {/* **명단보다 응시가 많으면 그 사실을 적는다**(규격 §23). 숨기면
+            완료율이 왜 시작한 학생 기준인지 읽는 사람이 알 수 없다 */}
+        {v3.started > v3.roster ? (
+          <p className="sf-meta" style={{ marginTop: 6 }}>
+            명단에 없는 학생 {v3.started - v3.roster}명이 학교 전용 진입으로
+            들어와 검사를 시작했습니다. 그래서 완료율의 바닥을 시작한 학생
+            수로 둡니다.
+          </p>
+        ) : null}
         {/* **섞어서 보고 있으면 화면이 그 사실을 적는다.** 적지 않으면
             캡처한 수가 손님 수로 읽힌다 */}
         {withDemo ? (

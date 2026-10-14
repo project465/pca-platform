@@ -227,7 +227,10 @@ export async function campusV3(scope: CampusScope): Promise<CampusV3> {
 
   const group = async (col: string, scoredOnly = false, campusOnly = false) =>
     query<{ k: string; n: string }>(
-      `SELECT coalesce(a.${col}, '(고르지 않음)') AS k,
+      /* **빈 글자를 이름 없는 막대로 세우지 않는다.** `NULL` 만 거르면
+         빈 글자(`''`)로 적힌 줄이 **이름 없는 막대**로 선다(한 번 그렇게
+         섰다). 안 고른 것과 빈 글자는 담당자에게 같은 뜻이다 */
+      `SELECT coalesce(nullif(a.${col}, ''), '(고르지 않음)') AS k,
               count(DISTINCT a.user_id)::text AS n
          ${FROM}
           ${scoredOnly ? "AND a.status = 'scored'" : ""}
