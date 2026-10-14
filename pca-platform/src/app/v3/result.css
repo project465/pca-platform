@@ -1388,3 +1388,6 @@
   margin: var(--r-s6) 0 var(--r-s2); font-size: var(--r-t-h3);
   font-weight: var(--ui-w-sb); color: var(--r-ink);
 }
+
+/* 분포 절 안에서 글자로 되짚는 덩이 */
+.rs-sub { margin-top: var(--r-s6); }

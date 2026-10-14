@@ -359,12 +359,20 @@ async function main(): Promise<void> {
            * 개인 B2C 종이는 제 등급을 적는 것이 맞으므로 재지 않는다.
            */
           if (leaf) {
-            const tierHit = all.match(
+            /**
+             * **좁히되 느슨하게 하지 않는다.**
+             *
+             * 규격 §3 이 신분 줄에 `CareerMatri PRO` 를 적으라고 한다. 막는
+             * 뜻은 **등급 선택 구조**이고 그것은 제품 이름이라, 그 한 덩이만
+             * 빼고 센다. 혼자 선 `PRO` 와 `등급을 고르` 는 그대로 걸린다.
+             */
+            const tiered = all.replace(/CareerMatri (BASIC|STANDARD|PRO)/g, "CareerMatri");
+            const tierHit = tiered.match(
               /\bBASIC\b|\bSTANDARD\b|\bPRO\b|등급을 고르|등급 선택|상위 등급|등급별|등급이 올라/);
             if (tierHit) problems.push(`학교 종이에 등급 구조가 드러난다 — ${tierHit[0]}`);
           }
           /* 6. 웹과 종이가 같은 말을 하는가 (첫 화면 네 칸) */
-          for (const key of ["지금 확인된 것", "지금 할 일"]) {
+          for (const key of ["확인된 경험", "남긴 근거", "지금 할 일"]) {
             if (web.includes(key) && !all.includes(key)) {
               problems.push(`웹에는 있고 종이에 없다 — ${key}`);
             }

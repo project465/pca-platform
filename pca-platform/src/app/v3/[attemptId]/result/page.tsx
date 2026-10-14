@@ -780,8 +780,16 @@ export default async function V3Result({
   const packLackName = model.industry_context
     ? industryName(model.industry_context.code)
     : model.role_context ? roleName(model.role_context.code) : null;
-  const lackTitle = packLackName
-    ? `${packLackName} 쪽에서 비어 있는 것` : "아직 비어 있는 것";
+  /**
+   * 셋째 칸의 이름은 `더 채울 부분` 하나다(규격 §3).
+   *
+   * 전에는 고르신 산업 이름을 머리에 달아 `정보기술·플랫폼 쪽에서 비어
+   * 있는 것` 으로 섰다. 넷을 나란히 놓고 보면 이 칸만 이름이 길고 매번
+   * 달라서, 네 칸이 같은 자리에서 같은 일을 한다는 것이 읽히지 않는다.
+   * 어느 쪽에서 본 것인지는 아래 한 줄이 그대로 든다.
+   */
+  const lackTitle = "더 채울 부분";
+  const lackWhere = packLackName ? `${packLackName} 쪽에서 봅니다` : null;
   const lackText = packLack && packLack.requested.length
     ? packLack.requested.slice(0, 2)
       .map((r) => `${domainName(core, r.domain)} · ${AXIS_KO[r.axis]}`).join(" · ")
@@ -986,9 +994,19 @@ export default async function V3Result({
           {/* **같은 말을 두 번 적지 않는다.** 학교 진입이면 학교와 학과와
               갈래는 바로 위 띠가 이미 들었고, 여기 남는 것은 언제 친
               것인가다. 개인 결제면 산 등급이 여기 선다 */}
+          {/* **신분 줄이 다섯을 든다**(규격 §3): 학교 · 학과 · 전공 맥락 ·
+              제품 이름 · 응답일. 앞의 셋은 바로 위 띠가 들었고 여기 남는
+              것이 뒤의 둘이다.
+
+              **제품 이름을 적되 등급 칩을 세우지 않는다.** 앞 회차는 학교
+              진입에서 등급을 통째로 감췄는데, 그러면 학생이 받은 것이
+              무엇인지 종이 어디에도 없다. 머리띠의 `PRO` 한 글자는 고를 수
+              있는 값으로 읽히므로 그대로 두고, 여기에는 산 것의 이름을
+              온전히 적는다 */}
           <p className="rs-ident">
             {(meta.school
-              ? [meta.answeredOn ? `${meta.answeredOn} 응답` : null]
+              ? [`CareerMatri ${model.tier}`,
+                meta.answeredOn ? `${meta.answeredOn} 응답` : null]
               : [meta.specialization, model.tier,
                 meta.answeredOn ? `${meta.answeredOn} 응답` : null])
               .filter(Boolean).join(" · ")}
@@ -1010,7 +1028,7 @@ export default async function V3Result({
         <div className="rs-top">
           {/* ① 실제로 해본 것 */}
           <div>
-            <h3>실제로 해본 것</h3>
+            <h3>확인된 경험</h3>
             {focus.length ? (<>
               <p>{focus.map((d) => domainName(core, d.code)).join(" · ")}</p>
               {deep ? (
@@ -1033,7 +1051,7 @@ export default async function V3Result({
           {/* ② 근거가 남은 것(규격 §8). **수를 앞세우지 않는다**: 몇
               가지인지보다 **어느 자리에서 꺼내 쓸 수 있는가**가 먼저다 */}
           <div>
-            <h3>근거가 남은 것</h3>
+            <h3>남긴 근거</h3>
             {model.evidence.ready.length ? (<>
               <p>{[...new Set(model.evidence.ready
                 .map((e) => domainName(core, e.domain)))].slice(0, 3).join(" · ")}</p>
@@ -1048,12 +1066,14 @@ export default async function V3Result({
             )}
           </div>
 
-          {/* ③ 아직 보완할 것 */}
+          {/* ③ 더 채울 부분. **`부족한 역량` 이라고 적지 않는다**(§12):
+              재지 않은 것을 모자란다고 말하는 셈이 된다 */}
           <div>
             <h3>{lackTitle}</h3>
             {lackText
               ? <p>{lackText}</p>
               : <p className="none">지금 응답에서 비어 있다고 적을 자리가 없습니다</p>}
+            {lackText && lackWhere ? <p>{lackWhere}</p> : null}
           </div>
 
           {/* ④ 지금 할 일.
@@ -1127,6 +1147,145 @@ export default async function V3Result({
               수이고, 영역마다 물은 축의 수가 달라 비율로 바꾸지 않습니다.
             </p>
             <StageBars model={model} name={(c) => domainName(core, c)} />
+          {/* ── 열두 영역 ──
+              **네 축만 물은 응시에 근거 묶음을 보여주지 않는다.** 묶음 이름에
+              `근거를 더 만들어야 하는 영역` 이 들어 있어서, 근거를 묻지 않은
+              응시에 그대로 세우면 재지 않은 것을 판정으로 적는 셈이다 */}
+          <div className="rs-sub" id="zones">
+            {/* **절을 둘로 읽히게 두지 않는다.** 이 덩이는 위 그래프가
+                말한 것을 글자로 되짚는 자리라 한 단 아래에 선다 */}
+            <h3 className="pv-h3">전체 기술영역이 지금 어디에 있는가</h3>
+            <p className="rs-note">
+              {deep
+                ? "순위가 아니라 현재 상태를 보여드립니다."
+                : "관심과 배울 뜻에 답하신 내용으로만 묶었습니다."}
+            </p>
+            {/* **기본 Reading Path 를 다섯으로 제한한다**(규격 §2).
+                기본 화면이 답하는 것은 지금 확인된 것 · 지금 할 일 · 먼저
+                채울 것 · 산업·직무 연결 · 먼저 볼 기술영역까지다. 열두 영역을
+                묶음별로 늘어놓은 이 목록은 **되짚어 보실 자리**라, 펼쳐 두면
+                읽는 흐름이 여기서 한 번 끊긴다. 담긴 것은 그대로고 종이에서는
+                펴진다 */}
+            <Disclose label="전체 기술영역 상태 보기">
+            <div className="rs-zones">
+              {deep ? zoneRows.filter((r) => r.list.length).map(({ z, list }) => (
+                <section key={z}>
+                  <h3>{ZONE_TITLE_KO[z]}</h3>
+                  <p>{ZONE_LEAD_KO[z]}</p>
+                  <ul>{list.map((c) => <li key={c}>{domainName(core, c)}</li>)}</ul>
+                </section>
+              )) : BASIC_GROUPS.filter((k) => (bg?.[k].length ?? 0) > 0).map((k) => (
+                <section key={k}>
+                  <h3>{BASIC_GROUP_KO[k].title}</h3>
+                  <p>{BASIC_GROUP_KO[k].lead}</p>
+                  {/* **이름만 늘어놓으면 고를 수가 없다.** `동역학·진동·NVH`
+                      가 무슨 일인지 모르는 사람에게 영역 이름 열둘은 고를
+                      거리가 아니라 외울 거리다. 해 볼지 말지 정하라고 적은
+                      두 묶음에는 그 영역이 일하는 차례를 한 줄씩 붙인다 */}
+                  {k === "do_now" || k === "scan" ? (
+                    <ul className="rs-rows">
+                      {bg![k].map((c) => (
+                        <li key={c}>
+                          <b>{domainName(core, c)}</b>
+                          <span>{domainChainKo(core, c).join(" → ")}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <ul>{bg![k].map((c) => <li key={c}>{domainName(core, c)}</li>)}</ul>
+                  )}
+                </section>
+              ))}
+              {/* **빈 묶음마다 한 자리씩 내주지 않는다.** 근거가 고르게 선
+                  사람에게는 빈 묶음이 셋이고, 그 셋이 `해당하는 영역이
+                  없습니다` 로 종이 한 쪽을 가져갔다. 한 줄로 모은다 */}
+              {deep && zoneRows.some((r) => !r.list.length) ? (
+                <p className="rs-zempty">
+                  {zoneRows.filter((r) => !r.list.length)
+                    .map((r) => ZONE_TITLE_KO[r.z]).join(" · ")}
+                  {" — 해당하는 영역이 없습니다"}
+                </p>
+              ) : null}
+              {deep && model.overview.not_explored.length ? (
+                <section>
+                  <h3>{ZONE_TITLE_KO.NOT_EXPLORED}</h3>
+                  <p>이번 응시에서 묻지 않은 영역입니다. 경험이 없다는 뜻이 아닙니다.</p>
+                  <ul>{model.overview.not_explored.map((c) => <li key={c}>{domainName(core, c)}</li>)}</ul>
+                </section>
+              ) : null}
+            </div>
+            </Disclose>
+            {/* **고르신 쪽을 돌려드린다.** 격자에 고르게 답하신 분께는
+                `차이가 없습니다` 만 남는데, 그 분이 묶인 둘 가운데 한쪽을
+                두 번 고르셨다. 차례로 적지 않고 고른 것으로 적는다 */}
+            {model.overview.tied_pick.length ? (
+              <p className="rs-zempty">
+                {`영역 훑기에서 같은 값으로 답하신 둘을 놓고 ${model.overview.tied_pick
+                  .map((c) => domainName(core, c)).join(" · ")} 쪽을 고르셨습니다. `}
+                위의 묶음은 그 선택과 상관없이 응답에서 나온 것입니다.
+              </p>
+            ) : null}
+            {/* **영역에 걸치지 않는 판단을 버리지 않는다.** 공통 판단과 학위
+                묶음은 기술영역이 없어서 위의 열두 영역에 들어갈 자리가 없다.
+                그렇다고 떨어뜨리면 박사와 포닥이 가장 많이 답한 자리가 결과지에
+                한 글자도 나오지 않는다 */}
+            {cm.owned.length || cm.confirmed.length ? (
+              /* **기본 본문에서 내린다**(규격 §12). 이 묶음은 핵심 결과가
+                 아니라 영역을 가로지르는 단서이고, 긴 목록이 펼쳐져 있으면
+                 결과를 읽어 내려가는 흐름이 거기서 끊긴다 */
+              <Disclose label="여러 영역에서 공통으로 확인된 판단">
+              <div className="rs-pack">
+                <p>
+                  어느 기술영역에서 한 일인지는 묻지 않은 자리입니다. 위의 영역별
+                  판정에는 들어가지 않습니다.
+                </p>
+                <dl>
+                  {cm.owned.length ? (
+                    <div>
+                      <dt>직접 정한 것으로 확인</dt>
+                      <dd>{cm.owned.join(" · ")}</dd>
+                    </div>
+                  ) : null}
+                  {cm.confirmed.length ? (
+                    <div>
+                      <dt>해 본 것으로 확인</dt>
+                      <dd>{cm.confirmed.join(" · ")}</dd>
+                    </div>
+                  ) : null}
+                </dl>
+                {/* **축 이름만 적으면 응시자가 자기 답을 못 알아본다.** 공통
+                    판단 여섯과 학위 묶음 여섯이 축 여덟으로 접히면, 한 축에
+                    문항이 둘인 자리에서 짝이 가려 답 하나가 아예 안 보인다.
+                    고르신 판단을 그대로 되돌려 준다(규격 §18) */}
+                {cm.didOwn.length || cm.didConfirm.length ? (
+                  /* **열두 줄짜리 목록을 펼쳐 두지 않는다**(규격 §26).
+                     이 자리는 축 이름만 적으면 자기 답을 못 알아보는 자리라
+                     고르신 판단을 그대로 돌려주는데, 그 목록이 스물넷까지
+                     간다. 바로 위의 두 줄(`직접 정한 것으로 확인` ·
+                     `해 본 것으로 확인`)이 이미 무엇이 확인됐는지를 말하므로
+                     목록은 **되짚어 보실 자리**다. 접어도 담긴 것은 그대로고
+                     종이에서는 펴진다 */
+                  <Fold label="고르신 판단 모두 보기">
+                    <div className="rs-cmitems">
+                      {cm.didOwn.length ? (
+                        <section>
+                          <h4>직접 정하고 그 결과가 쓰였다고 답하신 것</h4>
+                          <ul>{cm.didOwn.map((t) => <li key={t}>{t}</li>)}</ul>
+                        </section>
+                      ) : null}
+                      {cm.didConfirm.length ? (
+                        <section>
+                          <h4>직접 해 보셨다고 답하신 것</h4>
+                          <ul>{cm.didConfirm.map((t) => <li key={t}>{t}</li>)}</ul>
+                        </section>
+                      ) : null}
+                    </div>
+                  </Fold>
+                ) : null}
+              </div>
+              </Disclose>
+            ) : null}
+          </div>
           </section>
         ) : null}
 
@@ -1270,143 +1429,6 @@ export default async function V3Result({
           ) : null}
         </section>
 
-        {/* ── 열두 영역 ──
-            **네 축만 물은 응시에 근거 묶음을 보여주지 않는다.** 묶음 이름에
-            `근거를 더 만들어야 하는 영역` 이 들어 있어서, 근거를 묻지 않은
-            응시에 그대로 세우면 재지 않은 것을 판정으로 적는 셈이다 */}
-        <section className="rs-sect" id="zones">
-          <h2>전체 기술영역이 지금 어디에 있는가</h2>
-          <p className="rs-note">
-            {deep
-              ? "순위가 아니라 현재 상태를 보여드립니다."
-              : "관심과 배울 뜻에 답하신 내용으로만 묶었습니다."}
-          </p>
-          {/* **기본 Reading Path 를 다섯으로 제한한다**(규격 §2).
-              기본 화면이 답하는 것은 지금 확인된 것 · 지금 할 일 · 먼저
-              채울 것 · 산업·직무 연결 · 먼저 볼 기술영역까지다. 열두 영역을
-              묶음별로 늘어놓은 이 목록은 **되짚어 보실 자리**라, 펼쳐 두면
-              읽는 흐름이 여기서 한 번 끊긴다. 담긴 것은 그대로고 종이에서는
-              펴진다 */}
-          <Disclose label="전체 기술영역 상태 보기">
-          <div className="rs-zones">
-            {deep ? zoneRows.filter((r) => r.list.length).map(({ z, list }) => (
-              <section key={z}>
-                <h3>{ZONE_TITLE_KO[z]}</h3>
-                <p>{ZONE_LEAD_KO[z]}</p>
-                <ul>{list.map((c) => <li key={c}>{domainName(core, c)}</li>)}</ul>
-              </section>
-            )) : BASIC_GROUPS.filter((k) => (bg?.[k].length ?? 0) > 0).map((k) => (
-              <section key={k}>
-                <h3>{BASIC_GROUP_KO[k].title}</h3>
-                <p>{BASIC_GROUP_KO[k].lead}</p>
-                {/* **이름만 늘어놓으면 고를 수가 없다.** `동역학·진동·NVH`
-                    가 무슨 일인지 모르는 사람에게 영역 이름 열둘은 고를
-                    거리가 아니라 외울 거리다. 해 볼지 말지 정하라고 적은
-                    두 묶음에는 그 영역이 일하는 차례를 한 줄씩 붙인다 */}
-                {k === "do_now" || k === "scan" ? (
-                  <ul className="rs-rows">
-                    {bg![k].map((c) => (
-                      <li key={c}>
-                        <b>{domainName(core, c)}</b>
-                        <span>{domainChainKo(core, c).join(" → ")}</span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <ul>{bg![k].map((c) => <li key={c}>{domainName(core, c)}</li>)}</ul>
-                )}
-              </section>
-            ))}
-            {/* **빈 묶음마다 한 자리씩 내주지 않는다.** 근거가 고르게 선
-                사람에게는 빈 묶음이 셋이고, 그 셋이 `해당하는 영역이
-                없습니다` 로 종이 한 쪽을 가져갔다. 한 줄로 모은다 */}
-            {deep && zoneRows.some((r) => !r.list.length) ? (
-              <p className="rs-zempty">
-                {zoneRows.filter((r) => !r.list.length)
-                  .map((r) => ZONE_TITLE_KO[r.z]).join(" · ")}
-                {" — 해당하는 영역이 없습니다"}
-              </p>
-            ) : null}
-            {deep && model.overview.not_explored.length ? (
-              <section>
-                <h3>{ZONE_TITLE_KO.NOT_EXPLORED}</h3>
-                <p>이번 응시에서 묻지 않은 영역입니다. 경험이 없다는 뜻이 아닙니다.</p>
-                <ul>{model.overview.not_explored.map((c) => <li key={c}>{domainName(core, c)}</li>)}</ul>
-              </section>
-            ) : null}
-          </div>
-          </Disclose>
-          {/* **고르신 쪽을 돌려드린다.** 격자에 고르게 답하신 분께는
-              `차이가 없습니다` 만 남는데, 그 분이 묶인 둘 가운데 한쪽을
-              두 번 고르셨다. 차례로 적지 않고 고른 것으로 적는다 */}
-          {model.overview.tied_pick.length ? (
-            <p className="rs-zempty">
-              {`영역 훑기에서 같은 값으로 답하신 둘을 놓고 ${model.overview.tied_pick
-                .map((c) => domainName(core, c)).join(" · ")} 쪽을 고르셨습니다. `}
-              위의 묶음은 그 선택과 상관없이 응답에서 나온 것입니다.
-            </p>
-          ) : null}
-          {/* **영역에 걸치지 않는 판단을 버리지 않는다.** 공통 판단과 학위
-              묶음은 기술영역이 없어서 위의 열두 영역에 들어갈 자리가 없다.
-              그렇다고 떨어뜨리면 박사와 포닥이 가장 많이 답한 자리가 결과지에
-              한 글자도 나오지 않는다 */}
-          {cm.owned.length || cm.confirmed.length ? (
-            /* **기본 본문에서 내린다**(규격 §12). 이 묶음은 핵심 결과가
-               아니라 영역을 가로지르는 단서이고, 긴 목록이 펼쳐져 있으면
-               결과를 읽어 내려가는 흐름이 거기서 끊긴다 */
-            <Disclose label="여러 영역에서 공통으로 확인된 판단">
-            <div className="rs-pack">
-              <p>
-                어느 기술영역에서 한 일인지는 묻지 않은 자리입니다. 위의 영역별
-                판정에는 들어가지 않습니다.
-              </p>
-              <dl>
-                {cm.owned.length ? (
-                  <div>
-                    <dt>직접 정한 것으로 확인</dt>
-                    <dd>{cm.owned.join(" · ")}</dd>
-                  </div>
-                ) : null}
-                {cm.confirmed.length ? (
-                  <div>
-                    <dt>해 본 것으로 확인</dt>
-                    <dd>{cm.confirmed.join(" · ")}</dd>
-                  </div>
-                ) : null}
-              </dl>
-              {/* **축 이름만 적으면 응시자가 자기 답을 못 알아본다.** 공통
-                  판단 여섯과 학위 묶음 여섯이 축 여덟으로 접히면, 한 축에
-                  문항이 둘인 자리에서 짝이 가려 답 하나가 아예 안 보인다.
-                  고르신 판단을 그대로 되돌려 준다(규격 §18) */}
-              {cm.didOwn.length || cm.didConfirm.length ? (
-                /* **열두 줄짜리 목록을 펼쳐 두지 않는다**(규격 §26).
-                   이 자리는 축 이름만 적으면 자기 답을 못 알아보는 자리라
-                   고르신 판단을 그대로 돌려주는데, 그 목록이 스물넷까지
-                   간다. 바로 위의 두 줄(`직접 정한 것으로 확인` ·
-                   `해 본 것으로 확인`)이 이미 무엇이 확인됐는지를 말하므로
-                   목록은 **되짚어 보실 자리**다. 접어도 담긴 것은 그대로고
-                   종이에서는 펴진다 */
-                <Fold label="고르신 판단 모두 보기">
-                  <div className="rs-cmitems">
-                    {cm.didOwn.length ? (
-                      <section>
-                        <h4>직접 정하고 그 결과가 쓰였다고 답하신 것</h4>
-                        <ul>{cm.didOwn.map((t) => <li key={t}>{t}</li>)}</ul>
-                      </section>
-                    ) : null}
-                    {cm.didConfirm.length ? (
-                      <section>
-                        <h4>직접 해 보셨다고 답하신 것</h4>
-                        <ul>{cm.didConfirm.map((t) => <li key={t}>{t}</li>)}</ul>
-                      </section>
-                    ) : null}
-                  </div>
-                </Fold>
-              ) : null}
-            </div>
-            </Disclose>
-          ) : null}
-        </section>
 
         {/* ── 비어 있는 자리 ── 빨간 목록으로 만들지 않는다.
             **여덟 축을 묻지 않은 응시에는 이 절을 두지 않는다**: 안 물어본

@@ -254,8 +254,8 @@ async function run(browser: Browser): Promise<void> {
       await p.reload({ waitUntil: "networkidle" });
       await p.emulateMedia({ media: "print" });
       await p.waitForTimeout(400);
-      const want = ["focus", "zones", "evidence", "gaps", "industry", "role",
-        "plan", "howto"];
+      const want = ["spread", "focus", "zones", "evidence", "gaps", "industry",
+        "role", "plan", "howto"];
       const gone: string[] = [];
       for (const id of want) {
         const h = await p.locator(`#${id}`).evaluate((e) => {
