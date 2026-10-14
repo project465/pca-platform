@@ -211,11 +211,17 @@ async function main(): Promise<void> {
     ok("답이 서버에 쌓인다", Number(ans?.n ?? 0) > 20, `${ans?.n}개`);
 
     /* 6. 결과와 종이 */
-    const snap = await queryOne<{ core: string }>(
-      `SELECT core_code core FROM v3_snapshots
-        WHERE attempt_id = $1::bigint ORDER BY id DESC LIMIT 1`, [att]);
+    /* **`v3_snapshots` 에 `core_code` 칸이 없다.** Core 는 판본 묶음
+       안에 적힌다(`module_versions->>'core_version'`). 처음에는 칸 이름을
+       짐작해 적었다가 42703 으로 멈췄다 */
+    const snap = await queryOne<{ core: string | null; model: string }>(
+      `SELECT (module_versions->>'core_version') AS core,
+              (result_model IS NOT NULL)::text AS model
+         FROM v3_snapshots WHERE attempt_id = $1::bigint
+        ORDER BY id DESC LIMIT 1`, [att]);
     ok("결과가 만들어진다", snap?.core === seat.leaf.core_code,
       snap?.core ?? "없다");
+    ok("결과 모델이 함께 굳는다", snap?.model === "true", String(snap?.model));
     await p.goto(`${BASE}/v3/${att}/result`, { waitUntil: "domcontentloaded" });
     await p.waitForLoadState("networkidle").catch(() => undefined);
     const res = (await p.locator("body").innerText()).replace(/\s+/g, " ");
