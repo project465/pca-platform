@@ -2975,8 +2975,8 @@
    },
    "domains_note": "열둘은 기계공학과 전기전자의 열둘을 맞춘 수가 아니다. 사업주 후보 열에서 재무와 회계를 갈라 열하나가 되고, 정보시스템(IT경영정보 갈래의 중심)과 수요·예약·가격(관광과 호텔과 항공이 실제로 내리는 판단)을 세워 열셋이 된 뒤, `개발 환경과 협업` 같은 **일하는 방식**은 영역으로 두지 않아 열둘에서 멈췄다",
    "packs_note": "산업팩은 일곱이다. 사업주 후보 여덟에서 `스타트업` 을 뺐다: 그것은 산업이 아니라 조직의 크기와 단계이고 조직환경 축이 `OC7 스타트업·소규모 팀` 으로 이미 들고 있다. 두 축에서 같은 것을 묻게 되면 고른 산업이 결과를 바꾸지 않는 칸이 하나 생긴다",
-   "open_to_students": false,
-   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다. 자료와 자동 검사는 끝났고 남은 것은 **그 전공 전문가가 읽는 일**이다: 검토 묶음이 `docs/metri/BIZ_CORE_V1_REVIEW.md` 이고 그 판정이 돌아오기 전에는 이 칸을 올리지 않는다",
+   "open_to_students": true,
+   "open_note": "**Canary 로 하나만 열었다.** 배재대 운영 공개를 재려면 닫힌 Core 로는 할 수 없다: 운영에서는 `V3_PREVIEW_OPEN` 이 설계상 거절되므로(`appEnv() === \"production\"`) 학과 화면이 `준비 중` 으로 서고 서버가 시작 폼도 거절한다. 그래서 사업주 결정으로 이 Core 하나만 먼저 열고 나머지 PCU Core 는 전부 닫아 둔다. **여는 것이 `validated` 를 뜻하지 않는다**: 이 칸이 말하는 것은 `ASSESSMENT_READY` 까지이고, 규준도 percentile 도 적합도 % 도 합격 가능성도 내지 않는다. 전공자 검토 묶음은 `docs/metri/BIZ_CORE_V1_REVIEW.md` 이고 그 판정은 아직 돌아오지 않았다. 운영 smoke 가 한 걸음이라도 걸리면 이 칸을 다시 `false` 로 내린다",
    "fixtures": {
     "personas": "sites/pca-platform/assessment/BIZ_V1/personas.json",
     "bank_lock": "sites/pca-platform/assessment/BIZ_V1/bank-lock.json",

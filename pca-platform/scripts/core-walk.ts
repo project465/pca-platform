@@ -96,22 +96,30 @@ async function main(): Promise<void> {
   const leaf = anyLeaf();
   console.log(`  core  ${CORE} · 자리 ${leaf.code} ${leaf.name}\n`);
 
-  /* 1~2. 등록부가 진짜 닫혀 있는가.
+  /* 1~2. 지금 학생에게 어떤 상태인가.
      **`{ preview: false }` 로 묻는다.** 미리보기를 거쳐 물으면 이 줄이
-     아무것도 세지 않는다: 열어 둔 서버에서는 늘 `READY` 가 나온다 */
-  {
+     아무것도 세지 않는다: 열어 둔 서버에서는 늘 `READY` 가 나온다.
+
+     **`준비 중` 으로 못 박지 않는다.** 운영 공개를 시작하면 이 자리의
+     Core 가 실제로 열려 있고, 그때 멀쩡한 자리가 걸린다. 재는 것은
+     `닫혀 있는가` 가 아니고 **이 검사가 그 상태를 바꾸지 않았는가**다
+     (끝에서 다시 센다). */
+  const openBefore = ((): string => {
     const u = university("PCU")!;
     const row = allLeaves(u).find((r) => r.leaf.code === leaf.code)!;
     const real = statusOf(u, row, undefined, { preview: false });
-    ok("학생에게는 준비 중이다 (등록부)", real === "PREPARING", real);
+    console.log(`  적어둠  이 자리의 학생 공개 상태 — ${real}`);
     const rd = readinessOf(u, row, undefined, { preview: false });
-    ok("그래도 자료는 다 서 있다", rd === "ASSESSMENT_READY", rd);
-  }
+    ok("자료가 다 서 있다", rd === "ASSESSMENT_READY", rd);
+    return real;
+  })();
 
-  /* 3. 미리보기로 띄운 서버인가.
+  /* 3. 닫혀 있으면 미리보기로 띄운 서버여야 한다.
      안 열려 있으면 학과 화면이 `준비 중` 으로 서고, 까닭을
-     **`검사가 열리지 않는다` 로 거꾸로 적게 된다** */
-  assertPreviewServer(CORE);
+     **`검사가 열리지 않는다` 로 거꾸로 적게 된다**. 이미 학생에게 열려
+     있으면 그 문이 필요 없다 */
+  if (openBefore === "PREPARING") assertPreviewServer(CORE);
+  else console.log(`  적어둠  학생에게 열려 있어 미리보기 문을 쓰지 않는다`);
 
   const gate = gateCreds();
   const browser = await chromium.launch();
@@ -299,7 +307,8 @@ async function main(): Promise<void> {
     const u = university("PCU")!;
     const row = allLeaves(u).find((r) => r.leaf.code === leaf.code)!;
     const real = statusOf(u, row, undefined, { preview: false });
-    ok("학생에게는 여전히 준비 중이다", real === "PREPARING", real);
+    ok("학생 공개 상태가 시작할 때와 같다", real === openBefore,
+      `${openBefore} → ${real}`);
   }
   /* 쓴 자료는 지운다. **운영과 같은 표를 쓰므로 남기지 않는다** */
   if (attempt) {
