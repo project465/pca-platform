@@ -20,6 +20,7 @@
  *
  *   npm run v3:length
  */
+import { termGlossOf } from "../src/lib/me-v3/runtime/terms";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
@@ -64,6 +65,7 @@ const DEPS = {
   gridRow: (td: string) => gridRowOf(CORE, td),
   scene: (c: string) => industryScene(CORE, c),
   gloss: (i: string) => industryGloss(CORE, i),
+  termGloss: (t: string) => termGlossOf(CORE, t),
   roleName: (c: string) => roleName(CORE, c),
 };
 /* 문면은 길이 계산에 쓰지 않는다. 자리만 선다 */

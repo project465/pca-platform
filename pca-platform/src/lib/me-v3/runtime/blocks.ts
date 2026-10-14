@@ -203,6 +203,15 @@ export type Deps = {
   scene: (code: string) => IndustryScene | null;
   /** 산업팩 문항의 쉬운 말 풀이 */
   gloss: (itemId: string) => string | null;
+  /**
+   * 그 전공의 말에 붙는 쉬운 말 한 줄.
+   *
+   * 산업팩의 `gloss` 와 하는 일이 같고 **적는 자리가 다르다**: 저쪽은
+   * 문항마다 적고 이쪽은 말마다 적는다(`content/me-v3-terms.json`). 같은
+   * 말이 문항 여덟 자리에 서는데 여덟 번 따로 적으면 그 가운데 하나가
+   * 어긋난다. **판정에 들어가지 않는다**: 화면의 한 줄이다
+   */
+  termGloss: (text: string) => string | null;
   roleName: (code: string) => string;
 };
 
@@ -471,6 +480,13 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
         question: cell.length > 1
           ? (AX_ASK[ax] ?? "어떻게 하셨는지")
           : wording(cell[0].item_id, input.stage),
+        /* **용어를 모르면 해 본 사람도 `없다` 를 고른다**(규격 §5).
+           그 전공의 말은 빼지 않고 아래에 쉬운 말 한 줄로 받친다. 받침이
+           없는 말은 `v3:items:copy` 가 센다 */
+        ...(() => {
+          const g = d.termGloss(cell.map((x) => wording(x.item_id, input.stage)).join(" "));
+          return g ? { help: g } : {};
+        })(),
         /* 묶음의 첫 질문에만 얹는다. 매 화면에 세우면 그 줄이 질문
            다음으로 큰 덩이가 된다 */
         ...(judgeStrip ? { strip: judgeStrip } : {}),
@@ -496,6 +512,10 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
           question: pair.length > 1
             ? pair.map((i) => AX_ASK[i.evidence_axis ?? ""] ?? "").filter(Boolean).join(" · ")
             : wording(pair[0].item_id, input.stage),
+          ...(() => {
+            const g = d.termGloss(pair.map((x) => wording(x.item_id, input.stage)).join(" "));
+            return g ? { help: g } : {};
+          })(),
           ...(deepStrip ? { strip: deepStrip } : {}),
           items: pair.map((i) => i.item_id), domain: td,
         });

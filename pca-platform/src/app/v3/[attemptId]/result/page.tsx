@@ -16,7 +16,7 @@ import {
 } from "@/lib/me-v3/result/model";
 import {
   actionKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO, BASIC_GROUP_KO, bridgeKo,
-  commonKo, domainChainKo, draftKo, FIRST_MOVE_KO, gapKo, gapShortKo, headlineKo,
+  commonKo, domainChainKo, draftKo, FIRST_MOVE_KO, gapCellKo, gapKo, gapShortKo, headlineKo,
   HORIZON_KO, QUALITY_KO, TIER_NOTE_KO, TRANS_ORDER, TRANS_STEP_KO, XFIELD_KO,
   XFIELD_ORDER, ZONE_LEAD_KO, ZONE_TITLE_KO,
 } from "@/lib/me-v3/result/text.ko";
@@ -175,7 +175,11 @@ function Axes({ d }: { d: ResultDomain }) {
 
 const BAND_KO = { HIGH: "높음", MID: "보통", LOW: "낮음" } as const;
 const EXP_KO = {
-  NONE: "해 본 적 없음", ONCE_OR_TWICE: "1~2회", SEVERAL: "3회 이상",
+  /* **응시 화면과 같은 세 낱말이다**(규격 §7). 전에는 첫 칸만
+     `해 본 적 없음` 이라, 응시할 때 읽은 척도(`없음 · 1~2회 · 3회 이상`)와
+     결과지의 척도가 한 칸 어긋났다. 같은 값을 두 이름으로 적으면 읽는
+     사람이 둘을 다른 척도로 읽는다 */
+  NONE: "없음", ONCE_OR_TWICE: "1~2회", SEVERAL: "3회 이상",
 } as const;
 
 /**
@@ -220,10 +224,33 @@ function Basic({ core, d }: { core: string; d: ResultDomain }) {
   );
 }
 
+/**
+ * **한 칸에 같은 항목을 두 번 적지 않는다**(규격 §10).
+ *
+ * 산출물 축을 직접 정한 사람의 카드에서 `지형도` 가 `직접 정한 것` 과
+ * `남긴 것` 에 나란히 섰다. 둘 다 맞는 말인데, 바로 아래 줄이 그것을 제
+ * 이름으로 다시 적으므로 위에서는 뺀다. 스무 Core 의 사람 C 에서 영역
+ * 80자리가 그 모양이었다.
+ *
+ * **빼서 빈 칸이 되면 빼지 않는다**: `Picks` 가 빈 목록에 `아직 고른 것이
+ * 없습니다` 를 적는데, 직접 정한 것이 있는 사람에게 그 문장은 거짓이다.
+ * 되풀이를 없애되 정보를 지우지 않는다.
+ *
+ * **판정에 닿지 않는다**: 결과 모델의 `decided` 와 `artifacts` 는 그대로고
+ * 여기서 고르는 것은 어느 줄에 적을지뿐이다.
+ */
+function evidenceRows(d: ResultDomain): { decided: string[]; did: string[] } {
+  const named = new Set([...d.artifacts, ...d.verifications]);
+  const trimmed = d.decided.filter((x) => !named.has(x));
+  return {
+    decided: trimmed.length ? trimmed : d.decided,
+    did: d.did.filter((x) => !d.decided.includes(x) && !named.has(x)),
+  };
+}
+
 /** 왜 이 결과인가. **해석보다 그 사람이 고른 항목이 큰 자리를 차지한다** */
 function Why({ d }: { d: ResultDomain }) {
-  const decided = d.decided;
-  const did = d.did.filter((x) => !decided.includes(x));
+  const { decided, did } = evidenceRows(d);
   return (
     <div className="rs-why">
       <dl>
@@ -268,15 +295,21 @@ function Why({ d }: { d: ResultDomain }) {
  * 않는 수인데 영역 이름 옆에서 가장 먼저 읽혔다. 상세 안으로 내렸다.
  */
 function DomainPanel(
-  { core, d, showAxes, gap, action, stage }: {
+  { core, d, showAxes, gap, action, stage, sameZone }: {
     core: string; d: ResultDomain; showAxes: boolean;
     /** 이 영역에서 가장 급한 빈자리 하나 */
     gap?: Gap; action?: Action; stage?: ResultModel["stage"];
+    /** 바로 앞 카드와 같은 묶음인가. 같으면 상태 문장을 비운다 */
+    sameZone?: boolean;
   },
 ) {
   const name = domainName(core, d.code);
   const g = gap ? gapKo(gap, name) : null;
-  const a = action ? actionKo(action, name, stage) : null;
+  const gapCell = gap ? gapCellKo(gap) : "";
+  /* 할 일 문장은 이 카드에서 적지 않는다(아래 주석). 인자는 그대로 받아
+     둔다: 부르는 자리가 그 영역의 할 일을 이미 골라 넘기고 있어서, 여기서
+     빼면 고르는 코드가 두 벌이 된다 */
+  void action; void stage;
   return (
     <article className="rs-domain">
       <header>
@@ -289,21 +322,27 @@ function DomainPanel(
         ) : null}
       </header>
       {showAxes ? (<>
-        {/* 현재 상태 한 줄. 묶음 딱지가 말하는 것을 문장으로 한 번 */}
-        <p className="rs-dstate">{ZONE_LEAD_KO[d.zone]}</p>
+        {/* 현재 상태 한 줄. 묶음 딱지가 말하는 것을 문장으로 한 번.
+            **같은 묶음이 잇따르면 비운다**(규격 §10). 같은 상태의 영역은
+            이 문장이 글자까지 같아서, 카드 넷에 네 번 서면 읽는 사람이
+            같은 데를 또 도는 줄 안다. 딱지는 카드마다 그대로 선다: 그것은
+            이름표이고 되풀이되는 것이 맞다 */}
+        {sameZone ? null : <p className="rs-dstate">{ZONE_LEAD_KO[d.zone]}</p>}
         <Strongest d={d} />
         {g ? (
           <div className="rs-dgap">
             <h4>아직 확인이 부족한 부분</h4>
-            <p>{g.title}</p>
+            {/* **카드에는 칸의 말을 적는다**(규격 §10). 긴 문장은 아래
+                `앞으로 채울 것` 절이 들고, 영역 이름은 카드 머리가 든다 */}
+            <p>{gapCell}</p>
           </div>
         ) : null}
-        {a ? (
-          <div className="rs-dnext">
-            <h4>다음에 정리할 것</h4>
-            <p>{a.do}</p>
-          </div>
-        ) : null}
+        {/* **할 일을 카드마다 다시 적지 않는다**(규격 §10·§12).
+            같은 문장이 아래 `앞으로 채울 것` 의 그 빈자리 칸과 `다음에 할
+            일` 목록에 글자까지 같게 선다. 한 종이에서 같은 줄을 세 번
+            읽으면 그것이 할 일로 읽히지 않는다. 할 일이 서는 자리는
+            규격이 정한 차례대로 **빈자리 절과 할 일 절**이고, 영역 카드가
+            맡는 것은 그 영역에서 무엇이 확인됐는가다 */}
       </>) : <Basic core={core} d={d} />}
       {showAxes ? (
         /* **여덟 축을 기본으로 펼치지 않는다**(규격 §14). 여덟 줄이
@@ -353,14 +392,17 @@ function Strongest({ d }: { d: ResultDomain }) {
   /* **이름표를 줄마다 되풀이하지 않는다**(규격 §11). 묶음 머리에 한 번
      적고 아래에는 행동만 선다 */
   const groups = [
-    { label: "직접 판단한 것", items: take(d.decided) },
+    /* 산출물 이름은 아래 줄이 제 이름으로 적는다(`evidenceRows`) */
+    { label: "직접 판단한 것", items: take(evidenceRows(d).decided) },
     { label: "남긴 결과", items: take(d.artifacts) },
   ].filter((g) => g.items.length);
   if (!groups.length) {
     return (
-      <p className="rs-dnone">
-        고르신 근거 항목이 없어, 지금은 이 영역에서 설명할 재료가 없습니다.
-      </p>
+      /* **카드마다 같은 문장을 되풀이하지 않는다**(규격 §10). 근거를
+         고르지 않은 영역이 넷이면 이 문장이 네 번 선다. 그 영역의 상태와
+         빈자리는 바로 위와 아래가 이미 적고 있으므로, 여기는 **고른 것이
+         없다는 사실**만 칸의 말로 적는다 */
+      <p className="rs-dnone">고르신 근거 항목이 없음</p>
     );
   }
   return (
@@ -410,10 +452,12 @@ function EvidenceRow(
 }
 
 function Plan(
-  { core, actions, stage, attemptId, saved }: {
+  { core, actions, stage, attemptId, saved, where }: {
     core: string; actions: Action[]; stage: ResultModel["stage"];
     /** 파일럿 참가자일 때만 담아두기 단추가 선다 */
     attemptId: string; saved: string[] | null;
+    /** 넓게 살펴보라는 할 일이 가리킬 영역 이름(규격 §16) */
+    where: string[];
   },
 ) {
   const groups = (["NOW", "NEXT", "LATER"] as const)
@@ -426,25 +470,54 @@ function Plan(
           <h3>{HORIZON_KO[h]}</h3>
           <ol>
             {(() => {
+              /**
+               * **영역만 바뀐 같은 할 일을 줄마다 다시 적지 않는다**(규격 §10).
+               *
+               * 같은 빈자리가 영역 셋에 있으면 `~에서 어느 값을 직접 정했는지
+               * 적어보세요` 가 세 줄에 글자까지 같게 선다(한 결과지에서 일곱
+               * 번까지 봤다). **정보를 지우지 않는다**: 한 줄로 묶고 영역
+               * 이름을 나란히 적는다. 담아두기 단추는 묶인 할 일마다 그대로
+               * 선다 — 그 줄은 사람이 하나씩 고르는 자리다.
+               *
+               * 묶는 기준은 **영역 이름을 뺀 문장**이다. 영역 이름 자리에
+               * 자리표를 넣어 문장을 만들고, 같은 문장이면 같은 할 일로 본다.
+               */
+              const MARK = "\u0000";
+              const key = (a: Action) => (
+                a.code === "EXPLORE_BROADLY"
+                  ? `explore:${a.id}`
+                  : actionKo(a, MARK, stage).do + (actionKo(a, MARK, stage).guide ?? ""));
+              const merged: { key: string; list: Action[] }[] = [];
+              for (const a of list) {
+                const k = key(a);
+                const hit = merged.find((m) => m.key === k);
+                if (hit) hit.list.push(a);
+                else merged.push({ key: k, list: [a] });
+              }
               /* **같은 덧말을 줄마다 되풀이하지 않는다.** 학위에 따라 붙는
                  줄은 한 사람에게 늘 같아서, 세 줄이면 세 번 똑같이 적힌다.
                  처음 나올 때 한 번만 적고 그다음부터는 줄인다 */
               let last = "";
-              return list.map((a) => {
-                const t = actionKo(a, a.domain ? domainName(core, a.domain) : "", stage);
+              return merged.map(({ list: same }) => {
+                const a = same[0];
+                const names = same.map((x) => (x.domain ? domainName(core, x.domain) : "전체"));
+                const t = actionKo(
+                  a, same.every((x) => x.domain) ? names.join(" · ") : "",
+                  stage,
+                  a.code === "EXPLORE_BROADLY" ? where : undefined);
                 const note = t.note && t.note !== last ? t.note : "";
                 if (t.note) last = t.note;
                 return (
                   <li key={a.id} data-action-id={a.id}>
-                    <span>{a.domain ? domainName(core, a.domain) : "전체"}</span>
+                    <span>{names.join(" · ")}</span>
                     <div className="rs-doit">
                       <b>{t.do}</b>
                       {note ? <i>{note}</i> : null}
                     </div>
-                    {saved ? (
-                      <SaveAction attemptId={attemptId} actionId={a.id}
-                        saved={saved.includes(a.id)} />
-                    ) : null}
+                    {saved ? same.map((x) => (
+                      <SaveAction key={x.id} attemptId={attemptId} actionId={x.id}
+                        saved={saved.includes(x.id)} />
+                    )) : null}
                   </li>
                 );
               });
@@ -630,7 +703,21 @@ export default async function V3Result({
   const industryName = (c: string) =>
     industryChoices(core).find((x) => x.code === c)?.name ?? c;
   const roleName = (c: string) => roleChoices(core).find((x) => x.code === c)?.name ?? c;
-  const say = (x: Action) => actionKo(x, x.domain ? domainName(core, x.domain) : "", stage).do;
+  /**
+   * 넓게 살펴보라는 할 일이 **어느 영역에서**인가(규격 §16).
+   *
+   * 고르신 산업과 이어지는 영역을 먼저 쓰고, 고르지 않으셨으면 결과 모델이
+   * 적은 영역 차례를 쓴다. **새로 판정하지 않는다**: 둘 다 모델이 이미
+   * 들고 있는 값이고, 차례도 모델이 적은 그대로다
+   */
+  const exploreWhere = (): string[] => [
+    ...(model.industry_context?.domains ?? []),
+    ...(model.role_context?.domains ?? []),
+    ...model.domains.map((d) => d.code),
+  ].filter((c, i, xs) => xs.indexOf(c) === i).slice(0, 2).map((c) => domainName(core, c));
+  const say = (x: Action) => actionKo(
+    x, x.domain ? domainName(core, x.domain) : "", stage,
+    x.code === "EXPLORE_BROADLY" ? exploreWhere() : undefined).do;
   const gapTile = (g: Gap) => gapShortKo(g, domainName(core, g.domain));
 
   /**
@@ -651,6 +738,18 @@ export default async function V3Result({
     return { text: "응답이 적어 다음 걸음까지 적지 못했습니다.", usedId: null };
   };
   const { text: moveText } = moveOf();
+  /**
+   * 할 일 칸의 둘째 줄. **그래서 지금 무엇을 하면 되는가**(규격 §8).
+   *
+   * `FILL_GAP` 일 때 이 칸이 들고 있던 것은 빈자리의 이름이었다
+   * (`경영전략·기획 · 어디까지 직접 정했는지`). 칸 제목이 `가장 먼저
+   * 채울 것` 이므로 틀린 말은 아니지만, 그러면 첫 화면 넷 가운데 셋이
+   * **비어 있는 것**을 적고 행동을 적는 칸이 한 자리도 없다. 그 빈자리에
+   * 붙은 할 일은 모델이 이미 들고 있다(`gap.action_id`).
+   */
+  const moveNext = move === "FILL_GAP" && topGap
+    ? model.actions.find((x) => x.id === topGap.action_id)
+    : null;
 
   /**
    * 첫 화면 둘째 칸. **보고 있는 산업과 직무를 기준으로 적는다.**
@@ -696,6 +795,50 @@ export default async function V3Result({
       ? `${[...new Set(linkReady)].slice(0, 2).join(" · ")}에서 이어집니다`
       : "지금 확인된 것으로는 아직 이어지는 영역이 없습니다")
     : "";
+
+  /**
+   * 산업 절과 직무 절이 닫는 할 일.
+   *
+   * **두 절이 같은 문장으로 닫지 않는다**(규격 §10). 고르신 산업과 직무가
+   * 같은 영역의 빈자리를 가리키면 `model.actions.find` 가 같은 할 일을
+   * 돌려주고, 그러면 한 종이에서 같은 줄을 두 번 읽는다. 직무 절은 그
+   * 직무가 가리키는 다른 할 일을 먼저 찾고, 없을 때만 같은 것을 쓴다.
+   */
+  const packAction = (v: PackView | null, used: (Action | null)[]): Action | null => {
+    if (!v) return null;
+    const ids = new Set(used.filter(Boolean).map((a) => (a as Action).id));
+    const mine = model.actions.filter((a) => v.requested.some((r) => r.domain === a.domain));
+    /* **이미 적은 할 일을 다시 적지 않는다.** 쓸 수 있는 할 일이 하나뿐이면
+       이 절은 할 일 없이 닫는다: 그 한 줄은 첫 화면과 `다음에 할 일` 이
+       이미 들고 있고, 한 종이에서 같은 줄을 네 번 읽게 된다 */
+    return mine.find((a) => !ids.has(a.id))
+      ?? model.actions.find((a) => !ids.has(a.id)) ?? null;
+  };
+  /** 첫 화면 할 일 칸이 이미 적은 것 */
+  const shownAction = moveNext
+    ?? (move === "WRITE_UP" ? writeUp : null)
+    ?? (move === "FILL_GAP" ? null : model.actions[0] ?? null);
+  const indAction = packAction(model.industry_context, [shownAction]);
+  const roleAction = packAction(model.role_context, [shownAction, indAction]);
+
+  /**
+   * **산업 절과 직무 절이 같은 문장으로 열지 않는다**(규격 §10).
+   *
+   * 두 다리 문장이 모두 `확인된 것 → 이 자리에서 모자란 것` 으로 서는데,
+   * 앞엣것이 같은 영역을 가리키면 **첫 문장이 글자까지 같다.** 산업 절을
+   * 읽고 바로 직무 절을 읽는 사람이 같은 줄을 두 번 읽는다. 뒤에 서는
+   * 절에서 **이미 적은 줄만** 걷는다: 모자란 것은 자리마다 다르므로 그
+   * 줄은 그대로 선다.
+   */
+  const indBridge = model.industry_context
+    ? bridgeKo(model.industry_context, industryName(model.industry_context.code),
+      (td: string) => domainName(core, td), null, model.stage)
+    : [];
+  const roleBridge = model.role_context
+    ? bridgeKo(model.role_context, roleName(model.role_context.code),
+      (td: string) => domainName(core, td), null, model.stage)
+      .filter((l) => !indBridge.includes(l))
+    : [];
 
   const zoneRows = ([
     "Z1_EVIDENCE_ESTABLISHED", "Z2_EVIDENCE_INCOMPLETE",
@@ -808,6 +951,7 @@ export default async function V3Result({
           <div className="is-do">
             <h3>{FIRST_MOVE_KO[move]}</h3>
             <p>{moveText}</p>
+            {moveNext ? <p style={{ fontWeight: 400 }}>{say(moveNext)}</p> : null}
           </div>
           <div>
             <h3>{lackTitle}</h3>
@@ -886,8 +1030,9 @@ export default async function V3Result({
               ? "응답에서 확인된 내용만 정리했습니다."
               : "지금 응답만으로는 어느 영역이 앞선다고 보기 어렵습니다. 아래 전체 영역을 보시고 한 가지부터 해보세요."}
           </p>
-          {focus.map((d) => (
+          {focus.map((d, i) => (
             <DomainPanel key={d.code} core={core} d={d} showAxes={deep}
+              sameZone={i > 0 && focus[i - 1].zone === d.zone}
               gap={gapFor(d.code)} action={actionFor(d.code)} stage={model.stage} />
           ))}
           {compare.length ? (
@@ -896,8 +1041,9 @@ export default async function V3Result({
               <p className="rs-note">
                 먼저 볼 영역과 같은 상태이거나 바로 다음입니다. 차례를 매기지 않았습니다.
               </p>
-              {compare.map((d) => (
+              {compare.map((d, i) => (
                 <DomainPanel key={d.code} core={core} d={d} showAxes={deep}
+                  sameZone={i > 0 && compare[i - 1].zone === d.zone}
                   gap={gapFor(d.code)} action={actionFor(d.code)} stage={model.stage} />
               ))}
             </>
@@ -1084,7 +1230,7 @@ export default async function V3Result({
                       위의 영역별 설명에서 보실 수 있습니다.
                     </p>
                   ) : null}
-                </>) : <p>아직 없습니다. 아래 &lsquo;다음에 할 일&rsquo;부터 보세요.</p>}
+                </>) : <p>아직 없습니다.</p>}
               </section>
               <section>
                 <h3>경험은 있지만 설명 근거를 더 붙일 부분</h3>
@@ -1112,32 +1258,91 @@ export default async function V3Result({
         {deep ? (
           <section className="rs-sect" id="gaps">
             <h2>앞으로 채울 것</h2>
+            {/* **빈자리가 0 인 까닭이 둘이다**(규격 §8).
+                하나는 다 채운 사람이고, 하나는 **빈자리를 셀 만큼 해 본
+                일이 아직 없는 사람**이다. 전에는 둘을 한 문장으로 적어서,
+                경험이 하나도 없는 응시자가 `완전히 비어 있는 축은
+                없습니다. 남은 일은 확인된 경험을 설명 문장으로 만드는
+                쪽입니다` 를 받았다. 바로 위 절은 같은 사람에게 `지금 바로
+                꺼내 쓸 경험은 아직 없습니다` 를 적고 있었다 — 한 종이에서
+                두 문장이 서로를 부순다.
+                까닭은 모델이 이미 들고 있다(`first_move`). 여기서 다시
+                판정하지 않고 그 값을 읽는다 */}
             <p className="rs-note">
               {model.gaps.length
                 ? "무엇이 비었는지와 그것이 왜 필요한지, 다음에 무엇을 하면 되는지를 함께 적었습니다."
-                : "완전히 비어 있는 축은 없습니다. 남은 일은 확인된 경험을 설명 문장으로 만드는 쪽입니다."}
+                : move === "WRITE_UP"
+                  ? "완전히 비어 있는 축은 없습니다. 남은 일은 확인된 경험을 설명 문장으로 만드는 쪽입니다."
+                  : "지금 응답에서는 비어 있는 축을 셀 만큼의 경험이 아직 확인되지 않았습니다."
+                    + " 아래 ‘다음에 할 일’ 의 첫 줄부터 해 보시면 됩니다."}
             </p>
             {/* **같은 까닭을 세 번 적지 않는다**(규격 §4). 같은 종류의
                 빈자리는 까닭이 글자까지 같고, 카드마다 되풀이되면 세 칸이
                 기계가 찍어 낸 표로 읽힌다. 바로 앞 카드와 같으면 비운다 */}
-            {(() => { let lastWhy = ""; return model.gaps.slice(0, 8).map((g) => {
-              const k = gapKo(g, domainName(core, g.domain));
-              const act = model.actions.find((x) => x.id === g.action_id);
-              const sameWhy = k.why === lastWhy;
-              lastWhy = k.why;
-              return (
-                <article className="rs-gap" key={g.id}>
-                  <h3>{k.title}</h3>
-                  {sameWhy ? null : <p>{k.why}</p>}
-                  {act ? (
-                    <p className="rs-do">
-                      <b>다음에 이렇게</b>
-                      {say(act)}
-                    </p>
-                  ) : null}
-                </article>
-              );
-            }); })()}
+            {(() => {
+              /**
+               * **영역만 바뀐 같은 빈자리를 칸마다 다시 적지 않는다**(규격 §10).
+               *
+               * 같은 종류의 빈자리가 영역 셋에 있으면 제목과 까닭과 할 일이
+               * 셋 다 글자까지 같다. 전에는 까닭만 비웠는데, 그러면 제목과
+               * 할 일이 그대로 세 번 서서 **기계가 찍어 낸 표**로 읽힌다.
+               * 한 칸으로 묶고 영역 이름을 나란히 적는다: 정보는 그대로다.
+               */
+              const MARK = "\u0000";
+              const key = (g: Gap) => {
+                const k = gapKo(g, MARK);
+                const act = model.actions.find((x) => x.id === g.action_id);
+                return `${k.title}|${k.why}|${act ? actionKo(act, MARK, stage).do : ""}`;
+              };
+              const merged: { key: string; list: Gap[] }[] = [];
+              for (const g of model.gaps.slice(0, 8)) {
+                const k = key(g);
+                const hit = merged.find((m) => m.key === k);
+                if (hit) hit.list.push(g);
+                else merged.push({ key: k, list: [g] });
+              }
+              /* **같은 까닭은 그 절에서 한 번만 적는다**(규격 §10).
+                 바로 앞 칸과만 견주던 것을 절 전체로 넓혔다: 종류가 다른
+                 빈자리 둘이 같은 까닭을 들고 있으면(남은 결과물 · 비교와
+                 검증) 사이에 다른 칸이 끼어 **같은 문장이 두 번** 섰다 */
+              const saidWhy = new Set<string>();
+              return merged.map(({ list }) => {
+                const g = list[0];
+                const names = list.map((x) => domainName(core, x.domain)).join(" · ");
+                const k = gapKo(g, names);
+                const act = model.actions.find((x) => x.id === g.action_id);
+                const sameWhy = saidWhy.has(k.why);
+                saidWhy.add(k.why);
+                return (
+                  <article className="rs-gap" key={g.id}>
+                    <h3>{k.title}</h3>
+                    {sameWhy ? null : <p>{k.why}</p>}
+                    {/* **첫 화면이 이미 적은 할 일을 여기서 다시 적지
+                        않는다**(규격 §10). 그 한 줄은 첫 화면과 아래
+                        `다음에 할 일` 이 함께 들고 있어서, 그대로 두면 한
+                        종이에서 같은 문장을 세 번 읽는다. **지우지 않고
+                        어디에 있는지 적는다**: 이 칸이 비면 왜 비었는지
+                        읽는 사람이 알 수 없다.
+
+                        **`shownAction` 이 아니라 `moveNext` 로 센다**: 첫
+                        화면이 실제로 그리는 것이 그 하나이고, 앞엣것은
+                        산업·직무 절이 같은 할 일을 다시 쓰지 않게 하려고
+                        들고 있는 더 넓은 값이다 */}
+                    {act && moveNext && act.id === moveNext.id ? (
+                      <p className="rs-do">
+                        <b>다음에 이렇게</b>
+                        맨 위 ‘지금 할 일’ 에 적은 것이 이 자리입니다.
+                      </p>
+                    ) : act ? (
+                      <p className="rs-do">
+                        <b>다음에 이렇게</b>
+                        {actionKo(act, names, stage).do}
+                      </p>
+                    ) : null}
+                  </article>
+                );
+              });
+            })()}
           </section>
         ) : null}
 
@@ -1153,13 +1358,11 @@ export default async function V3Result({
                 보려면 모자란 것 → 다음에 할 일이 한 문단이다. 전에는 넷이
                 따로 서서, 네 번 읽고도 `그래서 무엇이 더 필요한가` 가 한
                 문장으로 서지 않았다 */}
-            <p className="rs-bridge">
-              {bridgeKo(model.industry_context,
-                industryName(model.industry_context.code), (td: string) => domainName(core, td),
-                model.actions.find((a) => model.industry_context?.requested
-                  .some((r) => r.domain === a.domain)) ?? model.actions[0] ?? null,
-                model.stage).join(" ")}
-            </p>
+            {/* **할 일을 이 문단에 한 번 더 넣지 않는다**(규격 §10).
+                바로 아래 `다음에 만들 근거` 가 같은 문장을 글자까지 같게
+                들고 있어서, 한 절에서 같은 할 일을 두 번 읽게 됐다. 이
+                문단이 맡는 것은 확인된 것과 이 산업에서 모자란 것까지다 */}
+            <p className="rs-bridge">{indBridge.join(" ")}</p>
             <p className="rs-note">
               같은 경험을 {industryName(model.industry_context.code)}에서 쓰는
               표현으로 놓았습니다. 맞는다거나 맞지 않는다고 판정하지 않습니다.
@@ -1167,8 +1370,7 @@ export default async function V3Result({
             <PackBody v={model.industry_context}
               name={industryName(model.industry_context.code)}
               domainName={(td: string) => domainName(core, td)} say={say}
-              action={model.actions.find((a) => model.industry_context?.requested
-                .some((r) => r.domain === a.domain)) ?? model.actions[0] ?? null} />
+              action={indAction} />
             {model.industry_context.others.length ? (
               <p className="rs-others">
                 다른 산업에서 보시려면 다시 응시하지 않아도 됩니다. 기술영역
@@ -1181,13 +1383,8 @@ export default async function V3Result({
         {model.role_context ? (
           <section className="rs-sect" id="role">
             <h2>{roleName(model.role_context.code)} 직무에 연결하면</h2>
-            <p className="rs-bridge">
-              {bridgeKo(model.role_context, roleName(model.role_context.code),
-                (td: string) => domainName(core, td),
-                model.actions.find((a) => model.role_context?.requested
-                  .some((r) => r.domain === a.domain)) ?? model.actions[0] ?? null,
-                model.stage).join(" ")}
-            </p>
+            {roleBridge.length
+              ? <p className="rs-bridge">{roleBridge.join(" ")}</p> : null}
             <p className="rs-note">
               같은 경험을 {roleName(model.role_context.code)}에서 먼저 읽는 차례로
               놓았습니다. 기술영역 결과는 그대로입니다.
@@ -1199,8 +1396,7 @@ export default async function V3Result({
             <PackBody v={model.role_context}
               name={roleName(model.role_context.code)}
               domainName={(td: string) => domainName(core, td)} say={say}
-              action={model.actions.find((a) => model.role_context?.requested
-                .some((r) => r.domain === a.domain)) ?? model.actions[0] ?? null} />
+              action={roleAction} />
             {model.role_context.compare_with.length ? (
               <p className="rs-others">
                 같이 놓고 보실 직무 {model.role_context.compare_with
@@ -1222,7 +1418,7 @@ export default async function V3Result({
               그 영역에서 실제로 할 수 있는 한 걸음으로 적었습니다.
             </p>
             <Plan core={core} actions={model.actions} stage={model.stage}
-              attemptId={attemptId} saved={saved} />
+              attemptId={attemptId} saved={saved} where={exploreWhere()} />
           </>) : (
             /* **머리글만 세워 두지 않는다.** 할 일이 없는 응시에서 약속하는
                문장 아래가 비어 있었다. 빈 자리는 고장으로 읽히고, 읽는
@@ -1382,54 +1578,6 @@ export default async function V3Result({
               조합부터 보여드립니다.
             </p>
           </div>
-          {/* **고르신 것을 돌려드린다.** 관심 기관 유형과 목표는 응시 중에
-              받아 두고 결과지에 한 글자도 나오지 않았다. 판정에 들어가지
-              않는다는 것도 함께 적는다 */}
-          {model.targets.orgs.length || goal.role || goal.industry || goal.org ? (
-            <div className="rs-pack">
-              <h3>고르신 자리</h3>
-              <p>
-                응시하면서 고르신 것입니다. 기술영역 결과에는 들어가지 않고,
-                산업과 직무를 읽는 순서에만 쓰입니다.
-              </p>
-              <dl>
-                {model.targets.orgs.length ? (
-                  <div>
-                    <dt>고르신 조직환경</dt>
-                    <dd>{model.targets.orgs.map(orgName).join(" · ")}</dd>
-                  </div>
-                ) : null}
-                {/* **조직환경과 기관 유형은 다른 층이다.** 앞엣것은 그 일을
-                    하는 자리의 성격이고 뒤엣것은 그 자리를 가진 기관의
-                    종류다. 하나로 못 박지 않는다: 완성품 기업은 대기업에도
-                    중견기업에도 있다 */}
-                {orgKinds.length ? (
-                  <div>
-                    <dt>그런 자리가 있는 기관</dt>
-                    <dd>{orgKinds.join(" · ")}</dd>
-                  </div>
-                ) : null}
-                {goal.industry ? (
-                  <div>
-                    <dt>목표 산업</dt>
-                    <dd>{industryName(goal.industry)}</dd>
-                  </div>
-                ) : null}
-                {goal.role ? (
-                  <div>
-                    <dt>목표 직무</dt>
-                    <dd>{roleName(goal.role)}</dd>
-                  </div>
-                ) : null}
-                {goal.org ? (
-                  <div>
-                    <dt>가고 싶은 조직</dt>
-                    <dd>{orgName(goal.org)}</dd>
-                  </div>
-                ) : null}
-              </dl>
-            </div>
-          ) : null}
           </Disclose>
           {/* **종이에는 누를 자리를 두지 않는다**(상용화 PHASE 0). 링크는
               화면에서만 선다: 뽑아 둔 종이에서는 눌리지 않고, 마지막 쪽에
@@ -1479,7 +1627,63 @@ export default async function V3Result({
 
         </Detail>
 
+        {/* ── 닫는 부록 ──
+            **읽는 기준과 고르신 자리를 한 묶음으로 둔다.**
+            둘 다 판정이 아니다: 하나는 무엇을 재고 무엇을 재지 않았는지이고
+            하나는 그 사람이 응시 중에 고른 것이다. 본문이 끝난 뒤에 함께
+            읽는 자리라 한 덩이로 묶었고, 종이에서는 그 덩이가 쪼개지지 않게
+            둔다(`result.css` 의 `.rs-fine { break-inside: avoid }`).
+            전에는 `고르신 자리` 가 지역 절 안에 있고 읽는 기준만 마지막에
+            남아서, **마지막 쪽에 221자(13%)만 선 종이**가 여섯 벌 나왔다 */}
         <div className="rs-fine">
+          {/* **고르신 것을 돌려드린다.** 관심 기관 유형과 목표는 응시 중에
+              받아 두고 결과지에 한 글자도 나오지 않았다. 판정에 들어가지
+              않는다는 것도 함께 적는다 */}
+          {model.targets.orgs.length || goal.role || goal.industry || goal.org ? (
+            <div className="rs-pack">
+              <h3>고르신 자리</h3>
+              <p>
+                응시하면서 고르신 것입니다. 기술영역 결과에는 들어가지 않고,
+                산업과 직무를 읽는 순서에만 쓰입니다.
+              </p>
+              <dl>
+                {model.targets.orgs.length ? (
+                  <div>
+                    <dt>고르신 조직환경</dt>
+                    <dd>{model.targets.orgs.map(orgName).join(" · ")}</dd>
+                  </div>
+                ) : null}
+                {/* **조직환경과 기관 유형은 다른 층이다.** 앞엣것은 그 일을
+                    하는 자리의 성격이고 뒤엣것은 그 자리를 가진 기관의
+                    종류다. 하나로 못 박지 않는다: 완성품 기업은 대기업에도
+                    중견기업에도 있다 */}
+                {orgKinds.length ? (
+                  <div>
+                    <dt>그런 자리가 있는 기관</dt>
+                    <dd>{orgKinds.join(" · ")}</dd>
+                  </div>
+                ) : null}
+                {goal.industry ? (
+                  <div>
+                    <dt>목표 산업</dt>
+                    <dd>{industryName(goal.industry)}</dd>
+                  </div>
+                ) : null}
+                {goal.role ? (
+                  <div>
+                    <dt>목표 직무</dt>
+                    <dd>{roleName(goal.role)}</dd>
+                  </div>
+                ) : null}
+                {goal.org ? (
+                  <div>
+                    <dt>가고 싶은 조직</dt>
+                    <dd>{orgName(goal.org)}</dd>
+                  </div>
+                ) : null}
+              </dl>
+            </div>
+          ) : null}
           {/* **장문 해설을 본문에 두지 않는다**(규격 §6).
               `이 결과를 어떻게 읽을 것인가` 는 네 칸짜리 긴 해설이라 본문
               아래에 늘 펼쳐 두면 결과의 마지막 인상이 그 해설이 된다.

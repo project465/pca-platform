@@ -2,8 +2,8 @@
  "schema_version": "me-v3-ui-lock.1",
  "note": "검사 화면 1차 동결. 결과지 작업 중에는 명백한 버그와 접근성 오류만 고치고, 고쳤으면 `ui-version.ts` 의 판본을 올린 뒤 `FREEZE=update npm run v3:freeze` 로 지문을 다시 적는다",
  "versions": {
-  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V24",
-  "assessment_copy_version": "me-v3-2-assessment-copy.14",
+  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V25",
+  "assessment_copy_version": "me-v3-2-assessment-copy.15",
   "assessment_version": "ME_V3_2",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.5",
   "scoring_version": "me-v3-scoring.5"
@@ -11,20 +11,22 @@
  "files": {
   "src/app/v3/layout.tsx": "5169464a4bd3741726beea4d17ee6ddb9d070c090513a3ca029f526883e05864",
   "src/app/v3/assessment.css": "b1841caeae58e30acdb7ef8ee5421f418dcbf1dc083effb2635d4eaa1f46d04b",
-  "src/app/v3/tier-text.ts": "978f49f4f69e960101b4642aa4c65f7756b8fdc316f94662c687cf29cab1f8ff",
+  "src/app/v3/tier-text.ts": "b20db43fa75c30050249b0acf9a6dceaf9b9d113119a308126cd51b224151f28",
   "src/app/v3/start/page.tsx": "1ae435340e23d4263f3903d419cccca79a60df5c4861ebc7f8c56eb321232167",
   "src/app/v3/start/start-form.tsx": "7d036552acb6beca01bace9adc746b9ac42991692de6204444592c1acea968bc",
   "src/app/v3/start/actions.ts": "e7408bddd0d8e11fe1dbfb79ebbc5a2fffcacd33a2f2df0773e473c04b765edf",
-  "src/app/v3/[attemptId]/page.tsx": "a61f8b6cbe5e28abdcbc1bbce5773c6751874c742e30be373e7911d8b52efd23",
+  "src/app/v3/[attemptId]/page.tsx": "5257e69687b7f3e688b49c085a3730f2693c3348e9c4c02c32ae247613737d1f",
   "src/app/v3/[attemptId]/intro/page.tsx": "74a4f5e2612a77e74408d448ff72522c1bd5e805dd8051104df22b4b88f12aa0",
   "src/app/v3/[attemptId]/done/page.tsx": "6c39b5aae12b8c1e743d93e70035ad667ccbd4c3592e4ef6765cea686b98d314",
   "src/app/v3/[attemptId]/screen.tsx": "8daf539475488b73afe85fcf66b74c54888485e335037f27250e1fbb6e1b125e",
   "src/app/v3/[attemptId]/model.ts": "f2b5532df31bca4028ea888f06be2bc31d98250be7d1f4f64cb5bcffc10e55df",
   "src/app/v3/[attemptId]/actions.ts": "f753168a487328557abb1fa5d66ebf03040bcad16c4f4e7bea55fb8a5dadcb08",
-  "src/lib/me-v3/runtime/blocks.ts": "92dbaab80cfad98bbaa3067bd96c0b7d9af4c1492ac58af28535600a27f8fb1f",
+  "src/lib/me-v3/runtime/blocks.ts": "27c8b87bb46dd81dd5713a908730717fb1fbf180bbf8bacf7e68d7c8cc84a05e",
   "src/lib/me-v3/runtime/menus.ts": "4f29f5a63c9363d86a07acd8a96dc58a23aae5b5c7a04bed3205a3a2c013e599",
-  "src/lib/me-v3/runtime/session.ts": "e0c00e548b4110faf57b37c2d7c7a3b05883b300ea37cff76773824f88907c9c",
+  "src/lib/me-v3/runtime/session.ts": "6d8fee558bc870f0a3948b24b109eec70bc698072ef1d0ae886ecfa67a21791f",
   "src/lib/me-v3/runtime/routing.ts": "37de46a97c7bc3f68ba69fd04079c696ee13c333b478041d1b888732b2325f53",
-  "src/lib/me-v3/runtime/progress.ts": "c1cf550f3215d15e5ba8de6bda8939a9ef0ee19564b90989008875a4eff92fd1"
+  "src/lib/me-v3/runtime/progress.ts": "c1cf550f3215d15e5ba8de6bda8939a9ef0ee19564b90989008875a4eff92fd1",
+  "src/lib/me-v3/runtime/terms.ts": "abd799351b24f70d5a5c63580c5a4f5a25272230f23f0d948ff2d2460ced8d4a",
+  "sites/pca-platform/content/me-v3-terms.json": "6810177f0d644899e9aae67e5eb39804fc9c38c371c18d04f17dc7e3d2750ec5"
  }
 }

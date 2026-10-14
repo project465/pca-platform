@@ -13,6 +13,7 @@
  *
  *   npm run v3:copy
  */
+import { termGlossOf } from "../src/lib/me-v3/runtime/terms";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
@@ -243,6 +244,7 @@ for (const tier of ["BASIC", "STANDARD", "PRO"] as Tier[]) {
       gridRow: (td: string) => gridRowOf(CORE, td),
       scene: (c: string) => industryScene(CORE, c),
       gloss: (i: string) => industryGloss(CORE, i),
+      termGloss: (t: string) => termGlossOf(CORE, t),
       roleName: (c: string) => roleName(CORE, c),
     });
     for (const s of plan.screens) {
@@ -274,9 +276,29 @@ for (const l of lines) {
     if (dots > 1 || l.text.length > 160) {
       flag(`산업 장면이 길다(${l.text.length}자 · ${dots + 1}문장) — [${l.id}] ${l.text}`);
     }
+  } else if (l.slot === "help" && isGloss(l.text)) {
+    /**
+     * **그 전공의 말에 붙는 받침은 다른 자로 잰다**(규격 §5).
+     *
+     * 안내문이 아니라 **낱말 하나를 받치는 줄**이고, 화면에 서는 꼴이
+     * `낱말 — 쉬운 말` 이다. 안내문의 60자 한도로 재면 두 낱말이 걸린
+     * 문항에서 멀쩡한 받침이 걸린다. 여기서 재는 것은 둘이다: 한 줄에
+     * 두 낱말까지와, 낱말마다 쉬운 말이 40자 안이다
+     */
+    const parts = l.text.split(" · ");
+    if (parts.length > 2) flag(`받침이 ${parts.length}개다 — [${l.id}] ${l.text}`);
+    for (const one of parts) {
+      const plain = one.split(" — ")[1] ?? "";
+      if (plain.length > 40) flag(`받침이 길다(${plain.length}자) — [${l.id}] ${one}`);
+    }
   } else if (l.slot === "help" && l.kind !== "transition" && l.text.length > 60) {
     flag(`도움말이 길다(${l.text.length}자) — [${l.id}] ${l.text}`);
   }
+}
+
+/** 그 전공의 말에 붙는 받침인가. 꼴이 `낱말 — 쉬운 말` 이다 */
+function isGloss(t: string): boolean {
+  return t.split(" · ").every((x) => / — /.test(x)) && / — /.test(t);
 }
 
 /* 같은 도움말이 성격이 다른 화면에 돌려 쓰이는가. 같은 종류의 화면이
@@ -284,6 +306,10 @@ for (const l of lines) {
 const byHelp = new Map<string, Set<string>>();
 for (const l of lines) {
   if (l.slot !== "help") continue;
+  /* 받침은 **말마다 하나씩** 적어 둔 표에서 온다. 같은 낱말이 single 화면과
+     pair 화면에 다 서는 것이 그 표의 설계이고, 그것을 돌려 쓴 안내문으로
+     세면 멀쩡한 받침을 지우라고 요구하게 된다 */
+  if (isGloss(l.text)) continue;
   if (!byHelp.has(l.text)) byHelp.set(l.text, new Set());
   byHelp.get(l.text)!.add(l.kind);
 }

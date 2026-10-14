@@ -27,6 +27,7 @@ import {
 } from "./blocks";
 import { enqueue, syncProfile } from "../platform";
 import { progressOf, type Progress } from "./progress";
+import { termGlossOf } from "./terms";
 import { ASSESSMENT_COPY_VERSION, ASSESSMENT_UI_VERSION } from "./ui-version";
 import {
   branchBlock, crossField, pickDomains, ROLE_SECOND_MAX,
@@ -739,6 +740,7 @@ function planDeps(core: string) {
     gridRow: (td: string) => gridRowOf(core, td),
     scene: (code: string) => industryScene(core, code),
     gloss: (itemId: string) => industryGloss(core, itemId),
+    termGloss: (text: string) => termGlossOf(core, text),
     roleName: (code: string) => roleName(core, code),
   };
 }

@@ -37,11 +37,23 @@
  * 학교 맥락이 있으면 등급 딱지(`BASIC · STANDARD · PRO`)를 적지 않는다.
  * 학생이 고를 수 있는 값이 아니고, 적어 두면 사지 않은 상품 이름으로
  * 읽힌다. **문항 문면과 묻는 차례와 저장되는 값은 그대로다.**
+ *
+ * V25 — **그 전공의 말에 쉬운 말 한 줄을 받친다**(상용 콘텐츠 QA §5·§6).
+ *
+ * 둘이 바뀌었다. 하나는 문항 아래의 받침이다: `불확도` 와 `중재` 와
+ * `양생` 처럼 그 전공에서 제자리에 쓰는 말을 **빼지 않고**, 표
+ * (`content/me-v3-terms.json`)에서 읽어 한 줄로 받친다. 막으려는 것은
+ * 낱말 하나를 몰라서 `해 본 적 없음` 을 고르는 일이고, 그 응답은 경험이
+ * 없다는 뜻이 아니다. 하나는 보기 넷의 뜻풀이에 그 자리에서만 맞는 장면을
+ * 하나씩 붙인 것이다(둘째와 셋째와 넷째가 갈리지 않는다는 지적).
+ *
+ * **문항 은행과 보기와 저장되는 값과 판정은 한 글자도 바뀌지 않았다.**
  */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V24";
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V25";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
-export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.14";
+/* copy.15 — 받침 한 줄과 보기 넷의 예시가 화면에 서는 글자다 */
+export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.15";
 
 /*
  * `V19` · `copy.14` 로 올린 까닭. **경험 빈도의 화면 말을 공통으로

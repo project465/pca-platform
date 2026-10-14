@@ -32,3 +32,7 @@ var/pdf-audit/
 # PCU Coverage walk 산출물. 저장소에 올리지 않는다
 var/pcu-coverage/
 var/pdf-lab/
+
+# 상용 콘텐츠 QA 가 떠 두는 실제 출력. 결과지 60벌 × 네 가지라 수백 MB 다
+var/content-qa*/
+var/pcu-content/

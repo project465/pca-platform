@@ -57,51 +57,49 @@ export const AXIS_STATE_SHORT_KO = {
 type Said = "OWNED" | "CONFIRMED" | "PARTICIPATED";
 const AXIS_SENT_KO: Record<Axis, Record<Said, string>> = {
   J1: {
-    OWNED: "무엇을 풀 문제로 잡을지 직접 정했습니다",
-    CONFIRMED: "주어진 범위 안에서 문제를 직접 잡았습니다",
-    PARTICIPATED: "문제를 잡을 때 함께했습니다",
+    OWNED: "무엇을 풀 문제로 잡을지 직접 정함",
+    CONFIRMED: "주어진 범위 안에서 문제를 직접 잡음",
+    PARTICIPATED: "문제를 잡을 때 함께함",
   },
   J2: {
-    OWNED: "받은 요구를 어떤 조건으로 옮길지 직접 정했습니다",
-    CONFIRMED: "받은 요구를 조건으로 옮기는 일을 직접 했습니다",
-    PARTICIPATED: "옮겨진 조건을 받아 썼습니다",
+    OWNED: "받은 요구를 어떤 조건으로 옮길지 직접 정함",
+    CONFIRMED: "받은 요구를 조건으로 옮기는 일을 직접 함",
+    PARTICIPATED: "옮겨진 조건을 받아 씀",
   },
   J3: {
-    OWNED: "조건과 기준값을 직접 정했습니다",
-    CONFIRMED: "조건과 기준값을 다루는 일을 직접 했습니다",
-    PARTICIPATED: "정해진 조건과 기준값을 받아 썼습니다",
+    OWNED: "조건과 기준값을 직접 정함",
+    CONFIRMED: "조건과 기준값을 다루는 일을 직접 함",
+    PARTICIPATED: "정해진 조건과 기준값을 받아 씀",
   },
   J4: {
-    OWNED: "어떤 방법과 도구로 풀지 직접 골랐습니다",
-    CONFIRMED: "그 방법과 도구를 직접 다뤘습니다",
-    PARTICIPATED: "정해진 방법과 도구를 받아 썼습니다",
+    OWNED: "어떤 방법과 도구로 풀지 직접 고름",
+    CONFIRMED: "그 방법과 도구를 직접 다룸",
+    PARTICIPATED: "정해진 방법과 도구를 받아 씀",
   },
   J5: {
-    OWNED: "무엇을 결과물로 남길지 직접 정했습니다",
-    CONFIRMED: "결과물을 직접 만들어 남겼습니다",
-    PARTICIPATED: "결과물 만드는 일에 함께했습니다",
+    OWNED: "무엇을 결과물로 남길지 직접 정함",
+    CONFIRMED: "결과물을 직접 만들어 남김",
+    PARTICIPATED: "결과물 만드는 일에 함께함",
   },
   J6: {
-    OWNED: "무엇과 비교해 확인할지 직접 정했습니다",
-    CONFIRMED: "낸 값을 다른 것과 직접 비교했습니다",
-    PARTICIPATED: "비교한 결과를 받아 읽었습니다",
+    OWNED: "무엇과 비교해 확인할지 직접 정함",
+    CONFIRMED: "낸 값을 다른 것과 직접 비교함",
+    PARTICIPATED: "비교한 결과를 받아 읽음",
   },
   J7: {
-    OWNED: "안 됐을 때 무엇을 고칠지 직접 정했습니다",
-    CONFIRMED: "안 되던 부분을 직접 고쳤습니다",
-    PARTICIPATED: "고치는 일에 함께했습니다",
+    OWNED: "안 됐을 때 무엇을 고칠지 직접 정함",
+    CONFIRMED: "안 되던 부분을 직접 고침",
+    PARTICIPATED: "고치는 일에 함께함",
   },
   J8: {
-    OWNED: "그 결과를 어디에 쓸지 직접 정했습니다",
-    CONFIRMED: "그 결과가 쓰이는 데까지 직접 따라갔습니다",
-    PARTICIPATED: "그 결과가 쓰인 곳을 전해 들었습니다",
+    OWNED: "그 결과를 어디에 쓸지 직접 정함",
+    CONFIRMED: "그 결과가 쓰이는 데까지 직접 따라감",
+    PARTICIPATED: "그 결과가 쓰인 곳을 전해 들음",
   },
 };
 
 export function axisStateKo(axis: Axis, state: AxisState): string {
-  if (state === "NOT_OBSERVED") {
-    return `${withJosa(AXIS_KO[axis], "은는")} 이번 응답에서 확인되지 않았습니다`;
-  }
+  if (state === "NOT_OBSERVED") return "이번 응답에서 확인되지 않음";
   return AXIS_SENT_KO[axis][state];
 }
 
@@ -213,6 +211,18 @@ export function gapShortKo(g: Gap, domainName: string): string {
   return `${domainName} · ${GAP_SHORT_KO[g.kind](g.axis ? AXIS_KO[g.axis] : "")}`;
 }
 
+/**
+ * 영역 카드 안에 적는 꼴. **영역 이름도 문장도 아니다**(규격 §10).
+ *
+ * 카드 머리가 영역을 이미 적고 있고, 같은 빈자리의 **긴 문장**은 아래
+ * `앞으로 채울 것` 절이 든다. 카드에 그 문장을 그대로 세우면 한 종이에서
+ * 같은 줄을 두 번 읽고, 영역 이름을 떼면 이번에는 카드끼리 글자까지 같은
+ * 줄이 선다. 그래서 카드에는 **칸의 말**을 적는다.
+ */
+export function gapCellKo(g: Gap): string {
+  return GAP_SHORT_KO[g.kind](g.axis ? AXIS_KO[g.axis] : "");
+}
+
 /** 반쯤 선 자리는 까닭도 다르다. `보여줄 방법이 없다` 는 참이 아니다 */
 const PARTIAL_WHY_KO = "해 본 것은 확인됐습니다. 지원서에서는 여기서"
   + " 무엇을 직접 정했는지까지 묻습니다.";
@@ -319,6 +329,16 @@ const FILL_KO: Record<Axis, (d: string) => string> = {
  */
 export function actionKo(
   a: Action, domainName: string, stage?: Stage,
+  /**
+   * 어느 영역에서 해 보면 되는가. **`EXPLORE_BROADLY` 에만 쓴다.**
+   *
+   * 그 할 일은 영역을 들고 있지 않아서(`domain: null`) 문장이 전공과
+   * 무관해진다. 그래서 스무 Core 의 결과지가 전공 이름만 바꾼 것처럼
+   * 읽혔다(규격 §16: 경험이 없는 응시자에서 글자 겹침 0.90). 여기 들어오는
+   * 이름은 **결과 모델이 이미 들고 있는 것**이고(고르신 산업과 이어지는
+   * 영역), 새로 판정하지 않는다. 넘기지 않으면 전과 같은 문장이다
+   */
+  where?: string[],
 ): { do: string; note?: string; guide?: string } {
   const w = a.material.workflow;
   const art = orList(a.material.artifacts.length ? a.material.artifacts
@@ -350,9 +370,15 @@ export function actionKo(
   }
   if (a.code === "EXPLORE_BROADLY") {
     /* **판정을 할 일 자리에 적지 않는다**(규격 §9). `어느 영역이 앞선다고
-       보기 어렵습니다` 는 까닭이고, 그 자리는 화면의 `왜 필요한가` 다 */
+       보기 어렵습니다` 는 까닭이고, 그 자리는 화면의 `왜 필요한가` 다.
+       **어디에서 해 보면 되는지는 적는다**(규격 §16): 영역 이름이 없으면
+       이 줄이 전공과 무관한 말이 되고, 그러면 스무 전공의 결과지가 이름만
+       바꾼 것으로 읽힌다 */
+    const list = (where ?? []).slice(0, 2);
     return {
-      do: "수업이나 교내 과제 가운데 하나를 골라 짧게 해 본 뒤에 다시 보세요.",
+      do: list.length
+        ? `${list.join(" · ")} 가운데 하나를 수업이나 교내 과제로 짧게 해 본 뒤에 다시 보세요.`
+        : "수업이나 교내 과제 가운데 하나를 골라 짧게 해 본 뒤에 다시 보세요.",
     };
   }
   if (a.code === "BUILD_OUTPUT") {

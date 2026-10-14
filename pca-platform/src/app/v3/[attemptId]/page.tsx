@@ -10,7 +10,8 @@ import {
 } from "@/lib/me-v3/runtime/session";
 import type { Field, Group, PickKind, ProgressModel, ScreenModel } from "./model";
 import {
-  INDUSTRY_HINT, ORG_HINT, OWNERSHIP_HELP, OWNERSHIP_LABEL, ROLE_HINT, TIER_WHAT,
+  INDUSTRY_HINT, ORG_HINT, OWNERSHIP_EXAMPLE, OWNERSHIP_HELP, OWNERSHIP_LABEL,
+  ROLE_HINT, TIER_WHAT,
 } from "../tier-text";
 import Screen from "./screen";
 
@@ -83,8 +84,12 @@ export default async function V3Screen({
       optionHelp: control.kind === "level" ? OWNERSHIP_HELP : undefined,
       /* 보기 넷의 뜻은 `ownership.ts` 하나에서 온다. 화면이 따로 적으면
          어느 날 채점과 다른 말을 한다 */
+      /* **뜻풀이 뒤에 그 자리에서만 맞는 장면을 하나 붙인다**(규격 §6).
+         뜻만 적으면 둘째와 셋째와 넷째가 끝까지 읽어도 갈리지 않는다.
+         뜻은 `ownership.ts` 가 들고(측정 동결) 장면은 화면이 든다 */
       optionHelpFold: control.kind === "level" && id === firstLevelItem
-        ? OWNERSHIP.map((o) => o.means) : undefined,
+        ? OWNERSHIP.map((o, n) => (OWNERSHIP_EXAMPLE[n]
+          ? `${o.means}. 예: ${OWNERSHIP_EXAMPLE[n]}` : o.means)) : undefined,
       optionFoldOpen: control.kind === "level" && firstLevel && id === firstLevelItem,
     };
   };

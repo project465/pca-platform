@@ -1024,6 +1024,12 @@
      날에도 통째로 다음 쪽으로 넘어간다. 줄 단위로 흐르게 두면 앞 쪽
      바닥을 쓰고 남은 만큼만 넘어간다. 네 칸짜리 표는 칸 하나가 쪼개지지
      않게 그 자리에만 `avoid` 를 남긴다 */
+  /* **닫는 부록은 한 덩이로 움직인다**(상용 콘텐츠 QA §13).
+     읽는 기준만 마지막에 남으면 그 쪽에 221자(13%)가 선다. 고르신 자리를
+     같이 묶어 두면 그 쪽이 350~500자가 되고, 들어갈 자리가 있으면 앞 쪽
+     바닥에 함께 들어간다. 안쪽의 네 칸짜리 표는 칸 하나가 쪼개지지 않게
+     그 자리에만 `avoid` 를 남긴다 */
+  .rs-fine { break-inside: avoid; }
   .rs-fine .rs-disc > div { break-inside: auto; }
   .rs-fine #howto dl > div { break-inside: avoid; }
   .rs-fine a { color: inherit; text-decoration: none; }

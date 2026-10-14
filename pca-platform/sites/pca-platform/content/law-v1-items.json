@@ -1,9 +1,9 @@
 {
  "schema_version": "law-v1-items.1",
- "core": "EE_CORE_V1",
+ "core": "LAW_CORE_V1",
  "assessment_version": "LAW_V1",
- "item_bank_version": "LAW_V1_ITEM_BANK_V1",
- "note": "문면을 손으로 썼다. 원본은 이 파일이다: 문면을 고칠 곳이 여기이고, 고친 뒤 `CORE=EE_CORE_V1 npm run v3:wording` 과 `v3:items` 를 돌린다. 영역에 붙지 않는 자리의 번호는 기계공학 Core 와 같다",
+ "item_bank_version": "LAW_V1_ITEM_BANK_V1.1",
+ "note": "문면을 손으로 썼다. 원본은 이 파일이다: 문면을 고칠 곳이 여기이고, 고친 뒤 `CORE=LAW_CORE_V1 npm run v3:wording` 과 `v3:items` 를 돌린다. 영역에 붙지 않는 자리의 번호는 기계공학 Core 와 같다",
  "level_options": [
   "없다",
   "남이 한 것을 받아 썼다",

@@ -39,6 +39,11 @@ const FILES = [
      여기서 정해진다 */
   "src/lib/me-v3/runtime/routing.ts",
   "src/lib/me-v3/runtime/progress.ts",
+  /* **그 전공의 말에 붙는 쉬운 말 한 줄**(규격 §5). 여기 없으면 받침이
+     아무 때나 바뀐다: 응시자가 읽는 글이고, 같은 문항이 받침에 따라 다르게
+     읽힌다. 표와 그것을 읽는 자리를 함께 적는다 */
+  "src/lib/me-v3/runtime/terms.ts",
+  "sites/pca-platform/content/me-v3-terms.json",
 ];
 
 const sha = (p: string) => createHash("sha256").update(readFileSync(p)).digest("hex");

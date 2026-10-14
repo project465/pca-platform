@@ -282,7 +282,7 @@
          "name": "국어국문한국어교육학과",
          "kind": "department",
          "core_code": "LANG_CORE_V1",
-         "specialization": null
+         "specialization": "SPEC_LANG_KOREAN"
         },
         {
          "code": "PCU26_JAPAN",
@@ -417,7 +417,7 @@
          "name": "식품영양학과",
          "kind": "department",
          "core_code": "FOOD_CORE_V1",
-         "specialization": null
+         "specialization": "SPEC_FOOD_NUTRITION"
         },
         {
          "code": "PCU26_CULINARY",
@@ -440,7 +440,7 @@
          "name": "보건의료복지학과",
          "kind": "department",
          "core_code": "HEALTH_CORE_V1",
-         "specialization": null,
+         "specialization": "SPEC_HEALTH_GENERAL",
          "mapping_note": "보건의료복지학과가 묻는 판단은 사업과 기록과 청구와 사례를 가르는 쪽이라 Core 로 바로 간다"
         },
         {
@@ -471,7 +471,7 @@
          "name": "전기전자공학과",
          "kind": "department",
          "core_code": "EE_CORE_V1",
-         "specialization": null
+         "specialization": "SPEC_EE_GENERAL"
         },
         {
          "code": "PCU26_BATTERY",
@@ -877,7 +877,7 @@
          "name": "국어국문한국어교육학과",
          "kind": "department",
          "core_code": "LANG_CORE_V1",
-         "specialization": null
+         "specialization": "SPEC_LANG_KOREAN"
         },
         {
          "code": "PCU27_JAPAN",
@@ -1012,7 +1012,7 @@
          "name": "식품영양학과",
          "kind": "department",
          "core_code": "FOOD_CORE_V1",
-         "specialization": null
+         "specialization": "SPEC_FOOD_NUTRITION"
         },
         {
          "code": "PCU27_CULINARY",
@@ -1035,7 +1035,7 @@
          "name": "보건의료복지학과",
          "kind": "department",
          "core_code": "HEALTH_CORE_V1",
-         "specialization": null,
+         "specialization": "SPEC_HEALTH_GENERAL",
          "mapping_note": "보건의료복지학과가 묻는 판단은 사업과 기록과 청구와 사례를 가르는 쪽이라 Core 로 바로 간다"
         },
         {
