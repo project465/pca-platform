@@ -29,6 +29,7 @@ import {
   checkStudent, provisionStudent,
 } from "../src/lib/campus/students";
 import { allLeaves, statusOf, university } from "../src/lib/campus/registry";
+import { openAttempt } from "../src/lib/me-v3/runtime/session";
 import { campusV3 } from "../src/lib/me-v3/campus";
 
 loadEnv();
@@ -234,31 +235,136 @@ async function main(): Promise<void> {
         && (pdf.headers()["content-type"] ?? "").includes("pdf"),
       `${pdf.status()} ${pdf.headers()["content-type"] ?? ""}`);
 
-    /* 7. 담당자 집계 */
+    /**
+     * 7. 담당자 집계 — **양쪽을 다 재야 뜻이 선다.**
+     *
+     * `campusV3` 는 `started < MIN_CELL` 이면 전체 응시와 완료만 내고
+     * **쪼갠 줄을 하나도 내지 않는다**(`campus.ts` 의 `사람이 다섯이 안
+     * 되면 아래를 세지 않는다`). 칸의 수만 비우는 것이 아니라 줄 자체가
+     * 없다: 네 명짜리 표에서는 전공과 학위를 겹치면 누구인지 짐작이 된다.
+     *
+     * 그래서 한 명으로 `단과대학 줄이 선다` 를 세면 **그것이 걸리는 것이
+     * 맞고**, 그 걸림은 제품이 지켜 준 일이다. 처음에 그렇게 적어 네 줄이
+     * 걸렸다. 재는 것을 둘로 나눈다: 5명 미만에서는 쪼갠 줄이 없는가 ·
+     * 5명 이상에서는 그 줄이 서고 **DB 의 수와 같은가**.
+     *
+     * **넣은 수를 세지 않는다.** 그 학과에 앞서 돌린 응시가 남아 있을 수
+     * 있어 화면의 수가 넣은 수와 다르다. DB 에 묻고 그 값과 견준다.
+     */
+    const dbCount = async (dep: string): Promise<number> => {
+      const r = await queryOne<{ n: string }>(
+        `SELECT count(DISTINCT user_id)::text n FROM v3_attempts
+          WHERE university_code = $1 AND department_code = $2`, [UNI, dep]);
+      return Number(r?.n ?? 0);
+    };
+    const started0 = await queryOne<{ n: string }>(
+      `SELECT count(DISTINCT user_id)::text n FROM v3_attempts
+        WHERE university_code = $1`, [UNI]);
+    const few = await campusV3({ universityCode: UNI, orgIds: [Number(orgId)] });
+    ok("전체 응시에 들어간다", (few.started ?? 0) >= 1, `${few.started}`);
+    ok("완료에 들어간다", (few.scored ?? 0) >= 1, `${few.scored}`);
+    if (Number(started0?.n ?? 0) < MIN_CELL) {
+      ok(`${MIN_CELL}명 미만이면 쪼갠 줄을 내지 않는다`,
+        few.too_few
+          && !(few.by_college ?? []).length
+          && !(few.by_department ?? []).length
+          && !(few.by_core ?? []).length,
+        `단과대학 ${(few.by_college ?? []).length}줄 · 학과 `
+        + `${(few.by_department ?? []).length}줄 · Core `
+        + `${(few.by_core ?? []).length}줄`);
+      say("담당자가 보는 것 (사람이 적을 때)",
+        `전체 응시 ${few.started} · 완료 ${few.scored}`
+        + ` · 쪼갠 줄은 ${MIN_CELL}명 미만이라 내지 않는다`);
+    } else {
+      say("이 DB 에 이미 사람이 많다", `${started0?.n}명 — 아래에서 바로 센다`);
+    }
+
+    /* ── 5명을 넘기면 쪼갠 줄이 서는가 ───────────────────────
+       브라우저로 다섯을 더 풀게 하지 않는다: 여기가 재는 것은 집계이고
+       검사가 도는지는 위에서 이미 봤다 */
+    const seatB = open.find((r) => r.college.code !== seat.college.code)
+      ?? open.find((r) => r.leaf.code !== seat.leaf.code) ?? null;
+    const addA = Math.max(0, MIN_CELL + 1 - await dbCount(seat.leaf.code));
+    for (let i = 0; i < addA; i += 1) {
+      const sid2 = `zzagg${Date.now()}${i}`.slice(0, 14);
+      const cc = checkStudent(UNI, {
+        student_id: sid2, name: "확인용", department_code: seat.leaf.code,
+        college_code: seat.college.code,
+      });
+      if (!cc.ok) throw new Error(cc.why);
+      const pv = await provisionStudent(orgId, cc.value);
+      made.push(pv.userId);
+      await openAttempt({
+        userId: pv.userId, tier: "BASIC", stage: "bachelor", gradField: null,
+        campus: { ...cc.value.ctx } as never,
+      });
+    }
+    /* 적은 쪽도 하나 둔다. **양쪽이 있어야 가린다는 것이 보인다** */
+    let fewDep: string | null = null;
+    if (seatB) {
+      const seen = await dbCount(seatB.leaf.code);
+      const addB = Math.max(0, Math.min(2, MIN_CELL - 1 - seen));
+      for (let i = 0; i < addB; i += 1) {
+        const sid3 = `zzfew${Date.now()}${i}`.slice(0, 14);
+        const cc = checkStudent(UNI, {
+          student_id: sid3, name: "확인용", department_code: seatB.leaf.code,
+          college_code: seatB.college.code,
+        });
+        if (!cc.ok) throw new Error(cc.why);
+        const pv = await provisionStudent(orgId, cc.value);
+        made.push(pv.userId);
+        await openAttempt({
+          userId: pv.userId, tier: "BASIC", stage: "bachelor", gradField: null,
+          campus: { ...cc.value.ctx } as never,
+        });
+      }
+      if (addB > 0 || seen > 0) fewDep = seatB.leaf.code;
+    }
+
     const agg = await campusV3({ universityCode: UNI, orgIds: [Number(orgId)] });
-    /* 칸의 열쇠가 `key` 다. 학과 코드를 그 자리에서 찾는다 */
-    const mineDep = (agg.by_department ?? [])
-      .find((d) => d.key === seat.leaf.code);
-    ok("전체 응시에 들어간다", (agg.started ?? 0) >= 1, `${agg.started}`);
-    ok("완료에 들어간다", (agg.scored ?? 0) >= 1, `${agg.scored}`);
+    const want = await dbCount(seat.leaf.code);
+    const mineDep = (agg.by_department ?? []).find((d) => d.key === seat.leaf.code);
     ok("단과대학 줄이 선다", (agg.by_college ?? []).length >= 1,
       `${(agg.by_college ?? []).length}줄`);
     ok("학과 줄이 선다", Boolean(mineDep), seat.leaf.name);
     ok("Core 줄이 선다", (agg.by_core ?? []).length >= 1,
       `${(agg.by_core ?? []).length}줄`);
-    /* **한 명이면 학과 칸의 수를 내지 않는 것이 맞다.** 담당자가 그 빈
-       칸을 `집계가 안 된다` 로 읽지 않게 여기서 적어 둔다 */
-    ok(`${MIN_CELL}명 미만인 학과 칸은 수를 내지 않는다`,
-      mineDep ? mineDep.n === null : false,
-      mineDep ? `n=${String(mineDep.n)}` : "줄이 없다");
+    ok("학과 칸의 수가 DB 의 수와 같다", mineDep?.n === want,
+      `화면 ${String(mineDep?.n)} · DB ${want}`);
+    if (fewDep) {
+      const fewCell = (agg.by_department ?? []).find((d) => d.key === fewDep);
+      const fewWant = await dbCount(fewDep);
+      ok(`${MIN_CELL}명 미만인 학과 칸은 수를 내지 않는다`,
+        Boolean(fewCell) && fewCell?.n === null && fewWant < MIN_CELL,
+        `DB ${fewWant}명 · 화면 ${String(fewCell?.n)}`);
+      ok("가린 칸을 0 으로 적지 않는다", fewCell?.n !== 0, String(fewCell?.n));
+    }
     say("담당자가 보는 것", `전체 응시 ${agg.started} · 완료 ${agg.scored}`
-      + ` · 학과 칸은 ${MIN_CELL}명 미만이라 빈칸`);
+      + ` · ${seat.leaf.name} ${String(mineDep?.n)}명`);
 
     await ctx.close();
   } finally {
     await browser.close();
     /* 쓴 자료를 치운다. **운영과 같은 표를 쓰므로 남기지 않는다** */
+    /* **응시가 사람 삭제로 따라 지워지지 않는다.** 남겨 두면 다음 번
+       집계가 그 줄을 세고, 그러면 `DB 의 수와 같은가` 가 지난 실행의
+       자료를 재게 된다 */
     for (const id of made) {
+      const att = await query<{ id: string }>(
+        `SELECT id::text FROM v3_attempts WHERE user_id = $1::bigint`, [id])
+        .catch(() => [] as { id: string }[]);
+      for (const a of att) {
+        for (const t of ["v3_responses", "v3_snapshots", "v3_screen_trace"]) {
+          await query(`DELETE FROM ${t} WHERE attempt_id = $1::bigint`, [a.id])
+            .catch(() => undefined);
+        }
+      }
+      for (const t of ["v3_attempts", "campus_students", "memberships",
+        "career_profiles", "career_events", "v3_experiences", "v3_actions",
+        "analytics_events", "entitlements"]) {
+        await query(`DELETE FROM ${t} WHERE user_id = $1::bigint`, [id])
+          .catch(() => undefined);
+      }
       await query(`DELETE FROM users WHERE id = $1::bigint`, [id])
         .catch(() => undefined);
     }
