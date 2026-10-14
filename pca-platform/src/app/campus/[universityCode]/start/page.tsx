@@ -6,7 +6,6 @@ import {
   coreOf, findLeaf, specializationName, statusOf, university,
 } from "@/lib/campus/registry";
 import { campusStudentContext } from "@/lib/campus/students";
-import { setCampusEntry } from "@/lib/campus/entry";
 import { currentUser } from "@/lib/session";
 import { CmHead } from "../../../me/shell";
 import { CampusShell } from "../../shell";
@@ -62,9 +61,15 @@ export default async function CampusStart({ params }: Params) {
   const core = coreOf(found.leaf);
   const spec = specializationName(found.leaf);
 
-  /* 들어온 자리에서 맥락을 복원한다. 시작 폼이 다시 보내 주지만, 쿠키를
-     여기서 적어 두면 **중간에 다른 쪽을 둘러보고 와도** 그대로다 */
-  if (ready) await setCampusEntry(u.university_code, found.leaf.code);
+  /**
+   * **여기서 쿠키를 적지 않는다.** 서버 컴포넌트에서 쓰면 Next 가
+   * `Cookies can only be modified in a Server Action or Route Handler` 로
+   * 거절하고, 그 쪽이 통째로 오류 화면이 된다(한 번 그렇게 섰다: 학과
+   * 이름도 학번도 시작 단추도 없이 `화면을 불러오지 못했습니다` 였다).
+   *
+   * 맥락을 적는 자리는 아래 폼이 부르는 `startFromCampus` 하나다. 그
+   * 액션이 학교와 학과를 받아 등록부로 다시 맞춰 보고 쿠키를 적는다.
+   */
 
   return (
     <CampusShell u={u}>

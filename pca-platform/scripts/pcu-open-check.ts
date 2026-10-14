@@ -32,11 +32,23 @@ function main(): void {
   if (!u) throw new Error(`등록부에 ${UNI} 가 없습니다`);
   console.log(`\n── ${u.university_name} 학생 공개 상태 (읽기만)\n`);
 
-  /* ── Core 쪽 ────────────────────────────────────────────── */
-  const openCores = coreRegistry().cores
-    .filter((c) => c.open_to_students === true).map((c) => c.code);
+  /**
+   * ── Core 쪽 ──────────────────────────────────────────────
+   *
+   * **`open_to_students === true` 만 세면 적게 센다.** 그 칸이 **없는**
+   * Core 도 팔 수 있다(`sellableCores` 가 `!== false` 로 본다). 처음에는
+   * `true` 만 세어 `열린 Core 1벌` 로 적었는데, 실제로 열려 있던 것은
+   * `ME_CORE_V3` 와 `BIZ_CORE_V1` **둘**이었다. 그 수에 매달려 있는 자리가
+   * 따로 있어서(갓 가입한 사람의 작업공간) 적게 세면 그 쪽의 판단까지
+   * 틀리게 읽는다.
+   */
   const sellable = sellableCores(u.market_code, undefined, SHUT).map((c) => c.code);
-  console.log(`  열린 Core  ${openCores.length ? openCores.join(" · ") : "없다"}`);
+  const byFlag = coreRegistry().cores
+    .filter((c) => c.open_to_students === true).map((c) => c.code);
+  const noFlag = sellable.filter((c) => !byFlag.includes(c));
+  console.log(`  팔 수 있는 Core  ${sellable.length ? sellable.join(" · ") : "없다"}`);
+  console.log(`    칸을 올려 연 것   ${byFlag.length ? byFlag.join(" · ") : "없다"}`);
+  console.log(`    칸이 없어 열린 것 ${noFlag.length ? noFlag.join(" · ") : "없다"}`);
 
   /* ── 자리 쪽 ────────────────────────────────────────────── */
   const rows = allLeaves(u);
@@ -90,6 +102,13 @@ function main(): void {
     ok("여는 목록의 자리가 실제로 검사 가능하다", shut.length === 0,
       shut.length ? `${shut.join(" ")} 가 준비 중이다` : `${listed.length}자리`);
   }
+  /* **이 수에 매달린 자리가 따로 있다.** 갓 가입한 사람은 응시도 지금
+     값도 없어서, 팔 수 있는 Core 가 하나일 때만 짐작이 선다. 하나가
+     아니면 작업공간이 전공 목록으로 보낸다(`activeCoreOrPick`) */
+  say("팔 수 있는 Core 수", `${sellable.length}벌 — `
+    + (sellable.length === 1
+      ? "갓 가입한 사람도 바로 작업공간으로 간다"
+      : "갓 가입한 사람은 전공 목록에서 고르고 들어간다"));
   ok("준비 중인 자리가 하나도 열려 있지 않다",
     prep.every((r) => statusOf(u, r, undefined, SHUT) !== "READY"),
     `${prep.length}자리`);
