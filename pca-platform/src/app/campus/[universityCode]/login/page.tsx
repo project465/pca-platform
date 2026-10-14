@@ -3,6 +3,7 @@ import "../../../surface.css";
 import "../../campus.css";
 import { university } from "@/lib/campus/registry";
 import { currentUser } from "@/lib/session";
+import { campusStudentOf } from "@/lib/campus/students";
 import { safeNext } from "@/lib/safe-next";
 import { CmHead } from "../../../me/shell";
 import { CampusShell } from "../../shell";
@@ -40,7 +41,19 @@ export default async function CampusLogin({ params, searchParams }: Params) {
   const code = u.university_code.toLowerCase();
   /* 열린 리다이렉트를 막는 자리가 한 곳이다(`safe-next.ts`) */
   const nx = safeNext(next, `/campus/${code}/start`);
-  if (await currentUser()) redirect(nx);
+  /**
+   * **다른 계정이 열려 있어도 학교 로그인이 닫히지 않는다.**
+   *
+   * 전에는 세션이 있으면 그대로 돌려보냈다. 그래서 실습실 PC 처럼 앞사람의
+   * 세션이 남아 있는 자리에서는 **학교 계정으로 바꿀 길이 아예 없었고**,
+   * 학과 쪽에서 누른 `검사 시작` 이 그 앞사람의 응시를 열었다. 운영
+   * Canary 에서 발급한 계정과 응시한 계정이 갈린 자리가 여기다.
+   *
+   * 그 학교의 학생으로 들어와 있을 때만 돌려보낸다.
+   */
+  const who = await currentUser();
+  const mine = who ? await campusStudentOf(who.id, u.university_code) : null;
+  if (mine) redirect(nx);
 
   return (
     <CampusShell u={u}>
@@ -49,6 +62,15 @@ export default async function CampusLogin({ params, searchParams }: Params) {
         title="로그인"
         lead="학교에서 안내받은 계정으로 로그인해주세요."
       />
+      {who ? (
+        /* **앞사람의 세션이 남아 있다는 것을 적는다.** 적지 않으면 로그인
+           화면이 왜 또 떴는지 알 수 없고, 그대로 누른 `검사 시작` 이 남의
+           응시를 연다. 누구인지는 적지 않는다 */
+        <p className="cm-note" style={{ marginBottom: 14 }}>
+          지금 다른 계정으로 로그인되어 있습니다. 학교에서 받은 계정으로
+          다시 로그인해주세요.
+        </p>
+      ) : null}
       <CampusLoginForm next={nx} />
       <p className="cm-note" style={{ marginTop: 18 }}>
         아이디는 학번입니다. 비밀번호를 잊으셨으면 학과 담당자에게 알려

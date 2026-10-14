@@ -429,6 +429,18 @@ export async function openAttempt(args: {
   const open = await currentAttempt(args.userId);
   if (open) return open;
   const market = args.market ?? "KR";
+  /**
+   * 여기 온 학교 맥락은 **이미 신분이 맞춰진 값이다.**
+   *
+   * 쿠키를 그 사람의 등록된 줄에 대고 맞추는 자리는 `/v3/start` 의 서버
+   * 액션 하나다(`campusStudentOf`). 그 자리를 거치지 않은 맥락이 여기
+   * 들어오면 학생이 아닌 사람의 응시에 학교가 적히므로, **새 호출자를
+   * 더할 때 그 자리를 함께 지난다.** `campus:walk` 이 브라우저로 그
+   * 성질을 끝에서 센다.
+   *
+   * 다만 Core 는 그대로 믿지 않는다: 그 시장에서 지금 응시할 수 있는
+   * Core 가 아니면 맥락을 통째로 버린다.
+   */
   const campus = args.campus && sellableCores(market)
     .some((c) => c.code === args.campus?.core_code) ? args.campus : null;
   /**

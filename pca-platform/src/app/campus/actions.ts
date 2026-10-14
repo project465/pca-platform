@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/session";
 import { setCampusEntry, setCatalogChoice } from "@/lib/campus/entry";
+import { campusStudentOf } from "@/lib/campus/students";
 import { catalogByYear, findLeaf, statusOf, university } from "@/lib/campus/registry";
 
 /**
@@ -47,7 +48,22 @@ export async function startFromCampus(form: FormData): Promise<void> {
    * 확인하는 자리로 돌려보낸다. 고른 학과는 쿠키가 이미 들고 있다.
    */
   const who = await currentUser();
-  if (!who) {
+  /**
+   * **그 학교의 학생이 아니면 학교 맥락을 들고 들어가지 않는다.**
+   *
+   * 로그인했는지만 보고 보냈다. 그래서 **이미 다른 계정으로 들어와 있던
+   * 사람**이 여기서 `검사 시작` 을 누르면 그 사람의 응시가 열리고 거기에
+   * 학교와 학과가 적혔다. 운영 Canary 에서 발급한 계정과 응시한 계정이
+   * 갈린 자리가 여기다.
+   *
+   * 학교 로그인으로 보낸다. 거기가 **앞사람의 세션을 학교 계정으로 바꾸는
+   * 자리**이고, 개인으로 가입해 들어온 사람은 그 쪽에서 나갈 수 있다.
+   * 응시를 여는 자리도 같은 자를 한 번 더 본다(`openAttempt`): 화면이
+   * 지키게 두면 쿠키를 들고 `/v3/start` 를 바로 치는 길이 남는다.
+   */
+  const mine = who
+    ? await campusStudentOf(who.id, u.university_code) : null;
+  if (!mine) {
     redirect(`/campus/${code}/login?next=${
       encodeURIComponent(`/campus/${code}/start`)}`);
   }

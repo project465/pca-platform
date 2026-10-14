@@ -127,9 +127,15 @@ export async function drawResultPdf(opts: DrawOpts): Promise<Buffer> {
         await ctx.addCookies(cookiesFor(opts.cookie, base));
       } catch (e) {
         /* 쿠키를 못 넣으면 그 다음은 전부 로그인 쪽이다. 여기서 끊어야
-           로그에 `왜` 가 남는다 */
+           로그에 `왜` 가 남는다.
+           **이름만 적는다.** 크로뮴이 거절한 까닭이 어느 줄에 있는지는
+           이름으로 좁혀지고, 값은 그 사람의 세션 그 자체라 로그에 적지
+           않는다(`oplog` 와 같은 규칙이다) */
+        const names = cookiesFor(opts.cookie, base)
+          .map((c) => c.name).join(" ");
         throw new PdfFailed("cookie",
-          `로그인 쿠키를 넘기지 못했습니다: ${(e as Error).message.split("\n")[0]}`);
+          `로그인 쿠키를 넘기지 못했습니다(${names}): `
+          + `${(e as Error).message.split("\n")[0]}`);
       }
     }
     const page = await ctx.newPage();

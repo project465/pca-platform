@@ -36,6 +36,7 @@ import { readFileSync } from "node:fs";
 import { chromium, type BrowserContext, type Page } from "playwright";
 import {
   BASE, assertCampusFixtureServer, loadEnv, login, makeStudent,
+  registerCampusStudent,
 } from "./_loop-fixture";
 import { query, queryOne } from "../src/lib/db";
 import { openAttempt } from "../src/lib/me-v3/runtime/session";
@@ -118,6 +119,11 @@ async function main(): Promise<void> {
     }
 
     const who = await makeStudent("campus-walk@test.invalid");
+    /* **그 학교의 학생으로 적어 두고 밟는다.** 학교 쪽 `검사 시작` 과
+       응시를 여는 경계가 그 줄을 본다(운영 Canary 에서 발급한 계정과
+       응시한 계정이 갈린 자리다). 줄 없이 밟으면 학교 로그인으로
+       되돌려지고, 그러면 아래가 제품이 아닌 길을 재게 된다 */
+    await registerCampusStudent(who.id, "ZZTEST", "ZZ26_ME");
     const browser = await chromium.launch();
     const ctx: BrowserContext = await browser.newContext({
       viewport: { width: 1440, height: 900 } });
@@ -156,17 +162,21 @@ async function main(): Promise<void> {
       !nextText.includes(CUR_NAME));
 
     /**
-     * **다음 학년도 자리로도 응시가 열리고, 응시 줄의 코드가 어느 해
-     * 구조인지 그대로 든다**(규격 §1).
+     * **응시 줄의 코드가 어느 해 구조인지 그대로 든다**(규격 §1). 이것이
+     * DB 에 Catalog 칸을 더하지 않아도 되는 까닭이다: 코드가 Catalog 를
+     * 들지 않으면 집계와 담당자 화면이 두 해 구조를 한 줄로 뭉갠다.
      *
-     * 이것이 DB 에 Catalog 칸을 더하지 않아도 되는 까닭이다. 코드가
-     * Catalog 를 들지 않으면 집계와 담당자 화면이 두 해 구조를 한 줄로
-     * 뭉갠다.
+     * **어느 해 구조인지는 명단이 정한다.** 다른 해 자리를 눌러도 응시
+     * 줄은 명단에 적힌 자리를 든다. 눌러서 바뀌게 두면 학생이 자기 학과와
+     * 다른 자리를 고를 수 있고, 그 응시는 담당자 화면에서 **남의 학과
+     * 줄에 선다**(규격 §7 · 학과 확인 쪽이 전부터 같은 까닭으로 다시
+     * 고르게 하지 않는다). 고칠 자리는 명단이고 그 길은 `pcu:students`
+     * 하나다.
      */
     await query(`DELETE FROM v3_attempts WHERE user_id = $1`, [who.id]);
     const future = await startAttempt(page, "/campus/zztest/d/ZZ27_ME", who.id);
-    ok("다음 학년도 자리로 연 응시 줄이 그 해 구조를 든다",
-      future?.department_code === "ZZ27_ME" && future?.college_code === "ZZ_ENG"
+    ok("다른 해 자리를 눌러도 응시 줄은 명단의 자리를 든다",
+      future?.department_code === "ZZ26_ME" && future?.college_code === "ZZ_ENG"
       && future?.university_code === "ZZTEST"
       && future?.core_code === "ME_CORE_V3", JSON.stringify(future));
 

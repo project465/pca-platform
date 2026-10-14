@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { clearCampusEntry, readCampusEntry } from "@/lib/campus/entry";
+import { campusStudentOf } from "@/lib/campus/students";
 import {
   currentAttempt, openAttempt, setProfile, v3Grants,
 } from "@/lib/me-v3/runtime/session";
@@ -63,18 +64,29 @@ export async function startV3(form: FormData): Promise<void> {
    * 맞춰 본 값**이다(`readCampusEntry`). 그래서 주소나 폼을 고쳐 아직
    * 열리지 않은 전공으로 들어가는 길이 없다.
    */
-  const campus = await readCampusEntry();
+  const entry = await readCampusEntry();
+
+  /**
+   * **학교 맥락은 그 학교의 학생에게만 적는다.**
+   *
+   * 전에는 쿠키가 들고 온 것을 그대로 넘기고, 그 사람이 그 학교의 학생인지
+   * 묻지 않았다. 그래서 **이미 다른 계정으로 로그인해 있던 사람**이 학과
+   * 쪽에서 `검사 시작` 을 누르면 그 사람의 응시에 학교와 단과대학과 학과가
+   * 적히고 등급이 PRO 로 섰다. 발급한 계정과 응시한 계정이 갈리고, 담당자
+   * 화면은 그 줄을 그 학과의 학생으로 센다. 운영 Canary 가 그렇게 났다.
+   *
+   * **쿠키의 학과를 믿지 않고 등록된 줄을 쓴다.** 믿을 것은 명단이 적어 준
+   * 자리이고(규격 §7) 쿠키는 어느 학교 쪽에서 들어왔는지만 말한다. 학생이
+   * 아니면 맥락을 버리고 일반 B2C 응시를 연다: 그 사람은 개인 회원이고,
+   * 비슷한 자리로 짐작해 학교에 넣지 않는다.
+   */
+  const mine = entry
+    ? await campusStudentOf(user.id, entry.university_code) : null;
 
   const a = await openAttempt({
     userId: user.id, tier, stage: stage as Stage, gradField,
     entitlementId: grants[0]?.entitlement_id ?? null,
-    campus: campus ? {
-      university_code: campus.university_code,
-      college_code: campus.college_code,
-      department_code: campus.department_code,
-      core_code: campus.core_code,
-      specialization: campus.specialization,
-    } : null,
+    campus: mine ? mine.ctx : null,
   });
   /* 응시 줄에 적혔으므로 쿠키는 더 들고 있지 않는다 */
   await clearCampusEntry();

@@ -184,6 +184,50 @@ async function core(w: Who): Promise<void> {
   line("그래서 고르는 Core", a?.core ?? prof?.core ?? "둘 다 없다 — /cores 로 보낸다");
 }
 
+/**
+ * **발급한 계정과 응시한 계정이 같은가.**
+ *
+ * 운영 Canary 에서 둘이 갈렸다. 학교가 `pcu:students` 로 발급한 계정은
+ * 학번을 들고 있고 `campus_students` 에 줄이 있다. 그런데 실제로 응시한
+ * 계정은 아이디가 없고 그 줄도 없었다. 그러면 담당자 화면은 그 응시를 그
+ * 학과의 학생으로 세고, 발급받은 학생은 아직 아무것도 하지 않은 상태다.
+ *
+ * **세션은 여기서 볼 수 없다**(이 자리는 명령줄이다). A 와 B 를 적고,
+ * C 는 브라우저에서 그 사람으로 들어가 `/me` 를 열어 맞춘다.
+ */
+async function identity(): Promise<void> {
+  head(`발급한 계정과 응시한 계정 (${UNI})`);
+  const issued = await query<{ sid: string; uid: string; login: string | null }>(
+    `SELECT s.student_id sid, s.user_id::text uid, u.login_id login
+       FROM campus_students s JOIN users u ON u.id = s.user_id
+      WHERE s.university_code = $1 ORDER BY s.student_id`, [UNI]);
+  line("발급한 계정", issued.length
+    ? issued.map((x) => `${x.sid}(user ${x.uid})`).join(" · ")
+    : "한 줄도 없다 — npm run pcu:students 로 발급합니다");
+  const took = await query<{ aid: string; uid: string; login: string | null;
+    dep: string | null; sub: string | null; reg: string }>(
+    `SELECT a.id::text aid, a.user_id::text uid, u.login_id login,
+            a.department_code dep, a.submitted_at::text sub,
+            (EXISTS (SELECT 1 FROM campus_students s
+                      WHERE s.user_id = a.user_id
+                        AND s.university_code = a.university_code))::text reg
+       FROM v3_attempts a JOIN users u ON u.id = a.user_id
+      WHERE a.university_code = $1 ORDER BY a.id DESC LIMIT 10`, [UNI]);
+  if (!took.length) { line("학교 맥락이 적힌 응시", "한 줄도 없다"); return; }
+  let stray = 0;
+  for (const t of took) {
+    if (t.reg !== "true") stray += 1;
+    line(`응시 ${t.aid}`,
+      `user ${t.uid} · 아이디 ${t.login ?? "없다"} · ${t.dep ?? "학과 없음"}`
+      + ` · ${t.sub ? "제출" : "진행 중"}`
+      + ` · ${t.reg === "true" ? "발급 계정이다" : "발급 계정이 아니다"}`);
+  }
+  console.log(stray
+    ? `\n  **신분이 갈린 응시 ${stray}건.** 발급하지 않은 계정에 학교가`
+      + " 적혀 있습니다.\n  담당자 집계가 그 줄을 그 학과의 학생으로 셉니다."
+    : "\n  갈린 줄 없음. 학교가 적힌 응시가 전부 발급 계정의 것입니다.");
+}
+
 async function pdfFails(): Promise<void> {
   head("종이가 깨진 기록 (`job_failures`)");
   const rows = await query<{ at: string; trace: string | null; msg: string }>(
@@ -260,6 +304,7 @@ async function main(): Promise<void> {
     await attempts(w);
     await core(w);
   }
+  await identity();
   await pdfFails();
   await canDraw();
   console.log("\n  읽기만 했습니다. 한 줄도 바꾸지 않았습니다.\n");

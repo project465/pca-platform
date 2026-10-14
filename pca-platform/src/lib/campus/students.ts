@@ -203,6 +203,20 @@ export async function campusStudentContext(
   };
 }
 
+/**
+ * **이 사람이 그 학교의 학생인가.** 묻는 자리가 넷이라 자를 하나로 둔다.
+ *
+ * 학교 로그인과 학과 확인 쪽과 `검사 시작` 과 응시를 여는 자리가 전부 이
+ * 판단을 쓴다. 넷이 따로 물으면 어느 날 하나가 갈리고, 갈린 그 하나로
+ * **학생이 아닌 사람의 응시에 학교가 적힌다.**
+ */
+export async function campusStudentOf(
+  userId: string, universityCode: string,
+): Promise<Awaited<ReturnType<typeof campusStudentContext>>> {
+  const mine = await campusStudentContext(userId);
+  return mine && mine.row.university_code === universityCode ? mine : null;
+}
+
 /** 그 학교의 학생 계정이 몇 줄인가. 담당자 화면과 발급 보고가 읽는다 */
 export async function campusStudentCount(
   universityCode: string,

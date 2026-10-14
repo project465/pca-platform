@@ -5,7 +5,7 @@ import "../../campus.css";
 import {
   coreOf, findLeaf, specializationName, statusOf, university,
 } from "@/lib/campus/registry";
-import { campusStudentContext } from "@/lib/campus/students";
+import { campusStudentOf } from "@/lib/campus/students";
 import { currentUser } from "@/lib/session";
 import { CmHead } from "../../../me/shell";
 import { CampusShell } from "../../shell";
@@ -42,13 +42,15 @@ export default async function CampusStart({ params }: Params) {
   const user = await currentUser();
   if (!user) redirect(`/campus/${code}/login`);
 
-  const mine = await campusStudentContext(user.id);
+  const mine = await campusStudentOf(user.id, u.university_code);
 
-  /* 학교 발급 계정이 아니거나 그 학교가 아니면 개인 쪽으로 보낸다.
-     **막다른 길로 두지 않는다**: 개인으로 가입해 들어온 사람이 이 주소를
-     눌렀을 수 있고, 그 사람에게는 학과 목록이 맞는 자리다 */
-  if (!mine || mine.row.university_code !== u.university_code) {
-    redirect(`/campus/${code}/majors`);
+  /* 학교 발급 계정이 아니거나 그 학교가 아니면 학교 로그인으로 보낸다.
+     **막다른 길로 두지 않는다**: 앞사람의 세션이 남아 있는 자리에서 학교
+     계정으로 바꿀 자리가 거기다. 개인으로 가입해 들어온 사람은 그 쪽에서
+     개인 홈으로 나갈 수 있다 */
+  if (!mine) {
+    redirect(`/campus/${code}/login?next=${
+      encodeURIComponent(`/campus/${code}/start`)}`);
   }
 
   const found = findLeaf(u, mine.row.department_code);

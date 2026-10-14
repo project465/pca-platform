@@ -31,6 +31,7 @@ loadEnv();
 import type { BrowserContext, Page } from "playwright";
 import { query, queryOne } from "../src/lib/db";
 import { hashPassword } from "../src/lib/password";
+import { findLeaf, university } from "../src/lib/campus/registry";
 
 export const BASE = (process.env.UI_BASE || process.env.BASE
   || "http://127.0.0.1:3000").replace(/\/$/, "");
@@ -176,6 +177,39 @@ export async function makeStudent(login: string): Promise<{ id: string; pw: stri
  * 올라가는지 정한다. 응시만 옮기면 계획이 늘 비어 **끊긴 루프를 검사가
  * 통과시킨다.**
  */
+/**
+ * 그 사람을 그 자리의 **학교 학생으로 적는다.** 검사만 쓰는 자리다.
+ *
+ * 학교 쪽 `검사 시작` 과 응시를 여는 경계가 **그 학교의 학생인지** 본다.
+ * 운영에서 그 줄을 만드는 것은 `pcu:students` 하나이고, 학교 진입을
+ * 브라우저로 밟는 검사는 그 줄을 먼저 두어야 제품과 같은 길을 밟는다.
+ * 전에는 줄 없이 들어갔고, 그래서 **학생이 아닌 사람이 학교 응시를 여는
+ * 것을 검사가 정상으로 보고 있었다**(운영 Canary 가 그렇게 갈렸다).
+ *
+ * 적는 값은 **등록부에서 읽는다**: 손으로 적으면 단과대학이 어긋난 줄이
+ * 생기고 `campusStudentContext` 가 그 줄을 버린다.
+ */
+export async function registerCampusStudent(
+  userId: string, universityCode: string, departmentCode: string,
+): Promise<void> {
+  const u = university(universityCode);
+  if (!u) throw new Error(`등록부에 ${universityCode} 가 없습니다`);
+  const found = findLeaf(u, departmentCode);
+  if (!found) throw new Error(`등록부에 ${departmentCode} 가 없습니다`);
+  await query(
+    `INSERT INTO campus_students
+       (user_id, university_code, student_id, college_code,
+        department_code, specialization)
+     VALUES ($1::bigint,$2,$3,$4,$5,$6)
+     ON CONFLICT (user_id) DO UPDATE
+       SET university_code = EXCLUDED.university_code,
+           college_code    = EXCLUDED.college_code,
+           department_code = EXCLUDED.department_code,
+           specialization  = EXCLUDED.specialization`,
+    [userId, u.university_code, `zzfix${userId}`, found.college.code,
+     found.leaf.code, found.leaf.specialization ?? null]);
+}
+
 export async function cloneFinished(
   userId: string, tier?: "BASIC" | "STANDARD" | "PRO",
 ): Promise<string | null> {

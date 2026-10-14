@@ -30,12 +30,20 @@ export type Membership = { orgId: string; role: Role };
  * 로그인 식별자는 학번(login_id)이거나 이메일이다.
  * 학생 계정은 email 이 NULL 일 수 있으므로 둘 다 받는다.
  * 이메일은 대소문자를 구분하지 않는다.
+ *
+ * **둘이 걸리면 학번이 이긴다.** 전에는 차례 없이 `LIMIT 1` 이라, 한 사람의
+ * `login_id` 와 다른 사람의 `email` 이 같은 글자일 때 **어느 줄이 오는지가
+ * 정해지지 않았다.** 학교가 발급한 학번으로 들어온 사람이 남의 계정으로
+ * 들어앉는 길이고, 그 응시는 되돌릴 수 없다. `NULLS LAST` 를 붙인 까닭은
+ * 내림차순의 기본값이 `NULLS FIRST` 라서 **아이디가 없는 줄이 앞에 서는**
+ * 것을 막으려는 것이다.
  */
 async function findUserByIdentifier(identifier: string): Promise<UserRow | null> {
   return queryOne<UserRow>(
     `SELECT id, display_name, password_hash, status, must_reset_pw, locale
        FROM users
       WHERE login_id = $1 OR lower(email) = lower($1)
+      ORDER BY (login_id = $1) DESC NULLS LAST, id
       LIMIT 1`,
     [identifier],
   );

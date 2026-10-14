@@ -38,7 +38,7 @@
  * 학생이 고를 수 있는 값이 아니고, 적어 두면 사지 않은 상품 이름으로
  * 읽힌다. **문항 문면과 묻는 차례와 저장되는 값은 그대로다.**
  */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V23";
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V24";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
 export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.14";

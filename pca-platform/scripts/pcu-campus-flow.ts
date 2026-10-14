@@ -18,9 +18,9 @@
  */
 import { chromium } from "playwright";
 import {
-  BASE, assertFreshServer, gateCreds, loadEnv,
+  BASE, assertFreshServer, gateCreds, loadEnv, login, makeStudent,
 } from "./_loop-fixture";
-import { walk } from "./_v3-walk";
+import { pickOne, walk } from "./_v3-walk";
 import { query, queryOne } from "../src/lib/db";
 import { hashPassword } from "../src/lib/password";
 import { appEnv } from "../src/lib/env";
@@ -148,6 +148,74 @@ async function main(): Promise<void> {
       /학교에서 안내받은 계정/.test(body));
     await anon.close();
 
+    /**
+     * **앞사람의 세션이 남아 있는 자리**(규격 P0-1).
+     *
+     * 운영 Canary 에서 발급한 계정과 응시한 계정이 갈렸다. 학교 쪽은
+     * 로그인했는지만 보고 보냈고, 그래서 이미 다른 계정으로 들어와 있던
+     * 사람이 `검사 시작` 을 누르면 **그 사람의 응시에 학교와 학과가
+     * 적히고 등급이 PRO 로 섰다.** 담당자 화면은 그 줄을 그 학과의
+     * 학생으로 센다.
+     *
+     * 여기서 재는 것이 셋이다. 그 사람을 학교 쪽으로 보내지 않는가 ·
+     * **다른 세션이 있어도 학교 로그인이 열리는가**(실습실 PC 에서 학교
+     * 계정으로 바꿀 자리가 거기다) · 쿠키를 들고 `/v3/start` 를 바로
+     * 쳐도 **학교 맥락이 적히지 않는가.**
+     */
+    const b2cMail = `zzb2c${Date.now()}@test.invalid`;
+    const out = await makeStudent(b2cMail);
+    made.push(out.id);
+    /* **응시가 실제로 열리게 두고 센다.** 이용권이 없어 응시가 아예 안
+       열리면 아래 줄이 `학교 맥락이 없다` 를 통과시키면서 **아무것도
+       말하지 않는다**(이 저장소에서 그렇게 거짓 통과한 자리가 있었다) */
+    await query(
+      `INSERT INTO entitlements
+         (user_id, product_code, kind, tier, major_code, assessment_version, status)
+       VALUES ($1,'ME_V3_BASIC_KR','report','BASIC','ME','ME_V3_2','active')`,
+      [out.id]);
+    const bc = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    if (gateCreds()) await bc.setHTTPCredentials(gateCreds()!);
+    const bp = await login(bc, b2cMail, out.pw).catch(() => null);
+    const b = bp ?? await bc.newPage();
+    if (!bp) {
+      /* 아이디로 들어가지 못하면 그 자리에서 멈춘다: 로그인하지 않은
+         사람으로 재면 아래 세 줄이 아무것도 말하지 않는다 */
+      throw new Error("개인 계정으로 로그인하지 못했습니다");
+    }
+    await b.goto(`${BASE}/campus/${code}/d/${seat.leaf.code}`,
+      { waitUntil: "domcontentloaded" });
+    await b.locator('form button[type="submit"]').first().click()
+      .catch(() => undefined);
+    await b.waitForLoadState("networkidle").catch(() => undefined);
+    const bland = new URL(b.url()).pathname;
+    ok("개인 계정으로 들어와 있으면 학교 응시로 보내지 않는다",
+      bland === `/campus/${code}/login`, bland);
+    const bbody = (await b.locator("body").innerText()).replace(/\s+/g, " ");
+    ok("다른 세션이 있어도 학교 로그인이 열린다",
+      /학교에서 안내받은 계정/.test(bbody)
+        && /다른 계정으로 로그인되어 있습니다/.test(bbody));
+    /* 쿠키는 이미 심어졌다. 주소를 바로 쳐서 넘어가 본다 */
+    await b.goto(`${BASE}/v3/start`, { waitUntil: "domcontentloaded" });
+    await b.waitForLoadState("networkidle").catch(() => undefined);
+    /* **고르는 칸은 `pickOne` 으로 누른다.** 글자를 바로 누르면 하이드레이션이
+       끝나기 전에는 React 가 그 변화를 못 받고, 그러면 폼이 학업 단계 없이
+       가서 응시가 열리지 않는다. 그 상태로는 아래 줄이 통과하면서 아무것도
+       말하지 않는다 */
+    await pickOne(b.locator("fieldset.qs-opts").first(), 0);
+    await b.getByRole("button", { name: "검사 시작" }).click()
+      .catch(() => undefined);
+    await b.waitForURL((x) => !/\/v3\/start/.test(new URL(x).pathname),
+      { timeout: 20000 }).catch(() => undefined);
+    await b.waitForLoadState("networkidle").catch(() => undefined);
+    const brow = await queryOne<{ uni: string | null; tier: string; core: string }>(
+      `SELECT university_code uni, tier, core_code core FROM v3_attempts
+        WHERE user_id = $1::bigint ORDER BY id DESC LIMIT 1`, [out.id]);
+    ok("쿠키를 들고 바로 쳐도 학교 맥락이 적히지 않는다",
+      Boolean(brow) && brow?.uni === null && brow?.tier !== "PRO",
+      brow ? `${brow.uni ?? "학교 없음"} · ${brow.tier} · ${brow.core}`
+        : "응시가 열리지 않아 아무것도 재지 못했다");
+    await bc.close();
+
     /* 3. 그 계정으로 로그인 → 학과가 복원되는가 */
     const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
     if (gateCreds()) await ctx.setHTTPCredentials(gateCreds()!);
@@ -202,6 +270,12 @@ async function main(): Promise<void> {
       arow?.uni === UNI && arow?.dep === seat.leaf.code,
       `${arow?.uni} · ${arow?.col} · ${arow?.dep} · ${arow?.core}`);
     ok("등급이 PRO 로 강제된다", arow?.tier === "PRO", arow?.tier ?? "없다");
+    /* **발급한 계정과 응시한 계정이 같다**(규격 P0-1). 운영 Canary 에서
+       갈린 자리라 글자로 센다 */
+    const owner = await queryOne<{ uid: string }>(
+      `SELECT user_id::text uid FROM v3_attempts WHERE id = $1::bigint`, [att]);
+    ok("발급한 계정이 응시한 계정이다", owner?.uid === prov.userId,
+      `발급 ${prov.userId} · 응시 ${owner?.uid ?? "없다"}`);
     const first = (await p.locator("body").innerText()).replace(/\s+/g, " ");
     ok("검사 화면에 등급 선택이 없다",
       !/BASIC|STANDARD|등급을 고르|등급 선택/.test(first));

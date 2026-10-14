@@ -333,8 +333,8 @@ npm run pcu:students  # 읽기만. 명단은 `import <파일>` · 실제 발급�
 npm run pcu:diag      # 읽기만. 종이와 작업공간이 왜 깨졌는지 한 장에
 ```
 
-운영 Canary 를 사람이 밟고 남은 셋(종이 · 작업공간 · 담당자 집계)은
-`docs/metri/PCU_CANARY_P0.md` 에 따로 적었다.
+운영 Canary 를 사람이 밟고 남은 넷(학생 신분 · 종이 · 작업공간 · 담당자
+집계)은 `docs/metri/PCU_CANARY_P0.md` 에 따로 적었다.
 
 그다음 밖의 브라우저로 네 걸음이다.
 
