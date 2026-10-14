@@ -8781,6 +8781,12 @@ Registry 구조 · `open_to_students` · auth · DB 스키마를 한 줄도 건�
 검사가 함께 쓴다. 베껴 두면 화면이 한 번 바뀐 날 한 곳만 고쳐진다 —
 `_loop-fixture` 와 `_v3-walk` 에서 이미 겪은 자리다.
 
+**마지막 한 바퀴.** 자리 117 가운데 COMPLETE 115 · THIN 0 · GENERIC 0 ·
+미검토 0 이고, 자리 115 를 끝까지 밟아 **확인 118가지 · 통과 118 · 걸림 0**
+이다. 종이 60벌이 전부 아홉 쪽이고 남의 전공 말이 0건이다. 그 바퀴를 돌고도
+**등록부 지문이 시작할 때와 같고**(`b16c2bb4cd37f2c7`) 자리의 Core 의 학생
+공개 상태가 **19개 그대로**다.
+
 ```bash
 npm run pcu:content    # 자리마다 COMPLETE / THIN / GENERIC (읽기만)
 npm run pcu:generic    # 같은 Core 의 학과 둘이 같은 결과를 받는가 (실제 브라우저)
