@@ -51,7 +51,10 @@ RUN npx esbuild scripts/make-admin.ts \
       --external:pg --outfile=ops-build/pcu-open.cjs \
  && npx esbuild scripts/pcu-students.ts \
       --bundle --platform=node --format=cjs --target=node22 \
-      --external:pg --outfile=ops-build/pcu-students.cjs
+      --external:pg --outfile=ops-build/pcu-students.cjs \
+ && npx esbuild scripts/pcu-diag.ts \
+      --bundle --platform=node --format=cjs --target=node22 \
+      --external:pg --external:playwright --outfile=ops-build/pcu-diag.cjs
 
 FROM node:22-alpine AS run
 WORKDIR /app

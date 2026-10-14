@@ -178,6 +178,14 @@ function codeRefs(tables: Set<string>): Map<string, Set<string>> {
       /* 표가 하나뿐인 SQL 에서는 앞에 안 붙인 이름도 그 표의 칸이다.
          **둘 이상 나오면 건너뛴다**: 어느 표의 칸인지 알 수 없고, 짐작해서
          세면 거짓 경보가 난다 */
+      /* **표 이름이 끼워 넣은 값이면 세지 않는다.** 치우는 줄이
+         `DELETE FROM ${t} WHERE attempt_id IN (SELECT id FROM v3_attempts …)`
+         인데, 글자로 적힌 표가 `v3_attempts` 하나뿐이라 그 바깥 표의 칸
+         (`attempt_id`)이 **v3_attempts 의 칸으로** 세어졌다. 멀쩡한 줄이
+         `없는 칸` 으로 걸렸고, 거짓 경보를 내는 검사는 그 다음부터 아무도
+         안 본다. 끼워 넣은 자리가 있으면 어느 표인지 알 수 없으므로
+         **짐작하지 않고 건너뛴다**(표가 둘 이상일 때와 같은 까닭이다) */
+      if (/\b(?:FROM|JOIN|INTO|UPDATE)\s*\$\{/i.test(sql)) continue;
       const named = [...new Set([...sql.matchAll(
         /\b(?:FROM|JOIN|INTO|UPDATE)\s+([a-z][a-z0-9_]*)/gi)].map((x) => x[1].toLowerCase()))]
         .filter((t) => tables.has(t));

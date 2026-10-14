@@ -50,7 +50,12 @@ export async function openActions(userId: string): Promise<OpenActions> {
   if (rows.length || !model || dropped > 0) {
     return { rows, fromResult: false, model };
   }
-  const derived: ActionRow[] = model.actions.map((a, i) => ({
+  /* **옛 굳은 결과에 없는 칸을 견딘다.** 결과 모델에 칸을 더한 날 그 전에
+     응시한 사람의 줄에는 그 칸이 없고, 그러면 여기서 던져 작업공간이 통째로
+     오류 화면이 된다. 결과지 쪽은 전에 같은 자리를 겪어 고쳐 두었고
+     (`v3:result` 가 칸을 하나씩 지워 보며 센다) 작업공간만 빠져 있었다.
+     없으면 **끌어올 할 일이 없는 것이 맞다** */
+  const derived: ActionRow[] = (model.actions ?? []).map((a, i) => ({
     /* 표에 없는 줄이라 번호가 없다. 화면이 이 값으로 상태를 바꾸지
        않는다(바꾸려면 먼저 담아야 한다) */
     id: `r${i}`,

@@ -187,6 +187,7 @@
     "pcu:org": "tsx scripts/pcu-org-setup.ts",
     "pcu:open": "tsx scripts/pcu-open-check.ts",
     "pcu:students": "tsx scripts/pcu-students.ts",
+    "pcu:diag": "tsx scripts/pcu-diag.ts",
     "pcu:campus": "tsx scripts/pcu-campus-flow.ts"
   },
   "dependencies": {

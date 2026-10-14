@@ -330,7 +330,11 @@ npm run db:verify     # 핵심 표 7/7 · ME_V3 5/5 · 내 CareerMatri 5/5
 npm run pcu:org       # 읽기만. 없으면 APPLY=yes 로 만든다
 npm run pcu:open      # 검사 가능이 1자리인지 (변경 후 확인)
 npm run pcu:students  # 읽기만. 명단은 `import <파일>` · 실제 발급은 APPLY=yes
+npm run pcu:diag      # 읽기만. 종이와 작업공간이 왜 깨졌는지 한 장에
 ```
+
+운영 Canary 를 사람이 밟고 남은 셋(종이 · 작업공간 · 담당자 집계)은
+`docs/metri/PCU_CANARY_P0.md` 에 따로 적었다.
 
 그다음 밖의 브라우저로 네 걸음이다.
 

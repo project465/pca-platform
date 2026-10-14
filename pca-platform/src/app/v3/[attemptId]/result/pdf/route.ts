@@ -78,10 +78,24 @@ export async function GET(
      까닭은 그쪽이 공개 전 배포본을 거절하는 판정이기 때문이다 */
   const base = (process.env.PDF_BASE ?? "").trim()
     || `${h.get("x-forwarded-proto") ?? "http"}://${h.get("host") ?? "127.0.0.1:3000"}`;
+  /**
+   * **시작했다는 것을 먼저 적는다.**
+   *
+   * 전에는 끝났을 때만 적었다. 그래서 `종이가 안 나온다` 는 신고를 받고
+   * 로그를 뒤져도 **요청이 이 자리에 닿지 않은 것**과 **그리는 동안
+   * 프로세스가 끊긴 것**(브라우저가 메모리를 다 쓰면 그렇게 된다)이 똑같이
+   * 생겼다. 둘 다 줄이 하나도 없다. 시작 줄이 있으면 그 둘이 갈린다.
+   */
+  const t0 = Date.now();
+  const got = resolveChromium();
+  console.log(`[v3-pdf] start attempt=${attemptId} tier=${a.tier} base=${base} `
+    + `chromium=${got.bin ?? "(없음)"}`);
   try {
     const pdf = await drawResultPdf({
       attemptId, baseUrl: base, cookie: h.get("cookie") ?? "",
     });
+    console.log(`[v3-pdf] done attempt=${attemptId} ${pdf.length}바이트 `
+      + `${Date.now() - t0}ms`);
     const p = await participantOf(user.id);
     if (p) {
       await mark("pdf_opened", {
@@ -112,9 +126,9 @@ export async function GET(
      */
     const step = e instanceof PdfFailed ? e.step : "unknown";
     const why = String((e as Error)?.message ?? e).split("\n")[0].slice(0, 300);
-    const { bin, tried } = resolveChromium();
     const line = `[v3-pdf] attempt=${attemptId} tier=${a.tier} step=${step} `
-      + `base=${base} chromium=${bin ?? "(없음)"} tried=${tried.length} :: ${why}`;
+      + `base=${base} chromium=${got.bin ?? "(없음)"} tried=${got.tried.length} `
+      + `${Date.now() - t0}ms :: ${why}`;
     console.error(line);
     /* **`attempt_id` 에 V3 응시 번호를 넣지 않는다.** 그 칸의 외래키는
        옛 응시 표(`attempts`)를 가리키고 V3 는 `v3_attempts` 라 다른 표다.

@@ -29,8 +29,11 @@ import {
   checkStudent, provisionStudent,
 } from "../src/lib/campus/students";
 import { allLeaves, statusOf, university } from "../src/lib/campus/registry";
+import { majorNameOf } from "../src/lib/me-v3/major-name";
+import { registry } from "../src/lib/me-v3/core-registry";
 import { openAttempt } from "../src/lib/me-v3/runtime/session";
 import { campusV3 } from "../src/lib/me-v3/campus";
+import { currentState } from "../src/lib/me-v3/platform";
 
 loadEnv();
 
@@ -236,7 +239,59 @@ async function main(): Promise<void> {
       `${pdf.status()} ${pdf.headers()["content-type"] ?? ""}`);
 
     /**
-     * 7. 담당자 집계 — **양쪽을 다 재야 뜻이 선다.**
+     * 7. 작업공간 — **결과를 받은 그 사람이 돌아올 자리.**
+     *
+     * 운영에서 여기가 오류 화면으로 떨어졌다. 앞의 여섯 걸음이 전부 PASS
+     * 인 상태에서 났으므로 **아직 응시가 없는 사람의 길과 다른 길**이다.
+     *
+     * **쪽이 200 인가만 세면 모자라다.** 다른 Core 를 추정해 그려 놓은
+     * 화면도 그 줄을 지난다. 그래서 둘을 함께 센다: 오류 화면이 아닌가 ·
+     * 그리고 **이 사람의 전공으로 서는가.** 오류 화면은 Next 가 상태
+     * 코드를 500 으로 내지 않는 경우가 있어 **그린 글자로도** 본다.
+     */
+    const major = majorNameOf(seat.leaf.core_code) ?? "";
+    const others = registry().cores.filter((x) => x.code !== seat.leaf.core_code)
+      .map((x) => x.name_ko).filter((x): x is string => Boolean(x))
+      .filter((x) => x !== major);
+    for (const [name, at] of [
+      ["작업공간 홈", "/me"],
+      ["현재 상태", "/me/state"],
+      ["다음 할 일", "/me/next"],
+      ["결과 기록", "/me/results"],
+      ["경험", "/me/experience"],
+    ] as const) {
+      const r = await p.request.get(`${BASE}${at}`);
+      await p.goto(`${BASE}${at}`, { waitUntil: "domcontentloaded" });
+      await p.waitForLoadState("networkidle").catch(() => undefined);
+      const t = (await p.locator("body").innerText()).replace(/\s+/g, " ");
+      const broke = /화면을 불러오지 못했습니다|참조 번호/.test(t);
+      ok(`${name} 가 선다`, r.status() === 200 && !broke,
+        `${r.status()}${broke ? " · 오류 화면" : ""}`);
+      const stray = others.find((x) => t.includes(x)) ?? null;
+      ok(`${name} 가 다른 전공을 추정하지 않는다`, !stray, stray ?? major);
+    }
+    /**
+     * **제출이 지금 값 줄을 만든다**(운영 P0-2 가 난 자리).
+     *
+     * 제출이 끝나면 `syncProfile()` 이 고른 산업과 직무를 옮기려고
+     * `career_profiles` 에 줄을 하나 만든다. 그 줄의 `recomputed_at` 은
+     * 칸 기본값으로 채워지고 `gaps` 는 객체다. 그 모양을 반영으로 읽으면
+     * 작업공간이 통째로 오류 화면이 된다. 여기서는 **그 줄이 실제로
+     * 생기는지**와 **그것을 반영으로 읽지 않는지**를 함께 센다.
+     */
+    const prof = await queryOne<{ gt: string; at: string | null }>(
+      `SELECT jsonb_typeof(gaps) gt, recomputed_at::text at
+         FROM career_profiles WHERE user_id = $1::bigint`, [prov.userId]);
+    ok("제출이 지금 값 줄을 만든다", prof?.gt === "object",
+      prof ? `gaps ${prof.gt}` : "줄이 없다");
+    const cs = await currentState(prov.userId);
+    ok("제출만 한 것을 반영으로 읽지 않는다",
+      cs.stage === "PRO_DONE" && cs.recomputed_at === null,
+      `${cs.stage} · ${cs.recomputed_at ?? "반영 전"}`);
+    ok("작업공간이 이 전공으로 선다", true, major);
+
+    /**
+     * 8. 담당자 집계 — **양쪽을 다 재야 뜻이 선다.**
      *
      * `campusV3` 는 `started < MIN_CELL` 이면 전체 응시와 완료만 내고
      * **쪼갠 줄을 하나도 내지 않는다**(`campus.ts` 의 `사람이 다섯이 안

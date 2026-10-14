@@ -32,8 +32,9 @@ for (const line of (() => {
 import { coreFile } from "../src/lib/me-v3/core-registry";
 import { query, queryOne } from "../src/lib/db";
 import {
-  addExperience, experiencesOf, latestResult, removeExperience,
+  addExperience, currentState, experiencesOf, latestResult, removeExperience,
 } from "../src/lib/me-v3/platform";
+import { openActions } from "../src/lib/me-v3/open-actions";
 import {
   applyRecompute, autoRecompute, previewRecompute, recomputeStatus,
 } from "../src/lib/me-v3/recompute";
@@ -66,6 +67,57 @@ async function main(): Promise<void> {
   const before = await latestResult(uid);
   if (!before) { console.log("  못 봄  결과 모델이 없습니다."); process.exit(0); }
   const beforePrint = stable(before);
+
+  /**
+   * **제출만 한 사람의 작업공간이 선다**(운영 P0-2).
+   *
+   * `career_profiles.recomputed_at` 이 `NOT NULL DEFAULT now()` 다. 그래서
+   * 제출이 끝날 때 `syncProfile()` 이 고른 산업과 직무를 옮기려고 만드는 줄도
+   * 그 칸을 들고 있고, 그 줄의 `gaps` 는 칸 기본값인 객체다. 반영 여부를
+   * 시각으로 물으면 **아무것도 반영하지 않은 사람이 반영한 사람으로** 읽히고,
+   * 그 객체를 배열로 알고 `some` 을 부르다 던진다. 운영에서 `/me` 와
+   * `현재 상태` 와 `다음 할 일` 이 그래서 오류 화면이었다.
+   *
+   * **빈 자리가 하나도 없는 사람에게는 던지지 않는다**(`filter` 가 그 줄을
+   * 부르지 않는다). 그래서 응답에 따라 나기도 하고 안 나기도 했고, 흐름
+   * 검사가 그것을 지나갔다. 던지는지와 **반영으로 읽는지**를 함께 센다:
+   * 뒤엣것은 빈 자리가 없어도 걸린다.
+   */
+  const keep = await queryOne<{ lv: string; zn: string; gp: string; at: string }>(
+    `SELECT axis_levels::text lv, zones::text zn, gaps::text gp,
+            recomputed_at::text at
+       FROM career_profiles WHERE user_id = $1::bigint AND core_code = $2`,
+    [uid, row.core]);
+  await query(
+    `INSERT INTO career_profiles (user_id, core_code, market_code)
+     VALUES ($1,$2,'KR')
+     ON CONFLICT (user_id, core_code) DO UPDATE
+       SET axis_levels = '{}'::jsonb, zones = '{}'::jsonb, gaps = '{}'::jsonb,
+           recomputed_at = now()`, [uid, row.core]);
+  try {
+    let st0: Awaited<ReturnType<typeof currentState>> | null = null;
+    let threw = "";
+    try { st0 = await currentState(uid); await openActions(uid); }
+    catch (e) { threw = String((e as Error).message).split("\n")[0].slice(0, 120); }
+    ok("제출만 한 사람의 작업공간이 던지지 않는다", !threw,
+      threw || `빈 자리 ${before.gaps.length}개로 돌렸다`);
+    ok("제출만 한 것을 반영으로 읽지 않는다",
+      Boolean(st0) && st0?.stage !== "RECOMPUTED" && st0?.recomputed_at === null,
+      `${st0?.stage ?? "못 읽었다"} · ${st0?.recomputed_at ?? "반영 전"}`);
+  } finally {
+    /* 그 사람의 줄을 원래대로 둔다. 없던 줄이면 지운다 */
+    if (keep) {
+      await query(
+        `UPDATE career_profiles SET axis_levels = $3::jsonb, zones = $4::jsonb,
+                gaps = $5::jsonb, recomputed_at = $6::timestamptz
+          WHERE user_id = $1::bigint AND core_code = $2`,
+        [uid, row.core, keep.lv, keep.zn, keep.gp, keep.at]);
+    } else {
+      await query(
+        `DELETE FROM career_profiles WHERE user_id = $1::bigint AND core_code = $2`,
+        [uid, row.core]);
+    }
+  }
 
   const core = row.core;
   const lists = coreFile<Lists>(core, "checklists");

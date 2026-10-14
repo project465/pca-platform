@@ -14,6 +14,7 @@
     "pilot:check": "node ops/pilot-check.cjs",
     "pcu:org": "node ops/pcu-org.cjs",
     "pcu:open": "node ops/pcu-open.cjs",
-    "pcu:students": "node ops/pcu-students.cjs"
+    "pcu:students": "node ops/pcu-students.cjs",
+    "pcu:diag": "node ops/pcu-diag.cjs"
   }
 }

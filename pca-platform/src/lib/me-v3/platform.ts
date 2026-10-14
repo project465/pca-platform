@@ -148,6 +148,8 @@ export type CurrentState = {
 type ProfileRow = {
   levels: string | null; zones: string | null; gaps: string | null;
   at: string | null;
+  /** 반영된 값이 실제로 들어 있는가. **시각으로 묻지 않는다**(아래 참조) */
+  applied: boolean | null;
 };
 
 export async function currentState(userId: string): Promise<CurrentState> {
@@ -162,9 +164,30 @@ export async function currentState(userId: string): Promise<CurrentState> {
          FROM v3_snapshots s JOIN v3_attempts a ON a.id = s.attempt_id
         WHERE a.user_id = $1 AND s.result_model IS NOT NULL
         ORDER BY s.created_at DESC, s.id DESC LIMIT 1`, [userId]),
+    /**
+     * **반영한 적이 있는가를 시각으로 묻지 않는다.**
+     *
+     * `career_profiles.recomputed_at` 은 `NOT NULL DEFAULT now()` 다. 그래서
+     * 그 표에 줄을 만드는 다른 자리가 전부 그 칸을 채운다. 제출이 끝나면
+     * `syncProfile()` 이 고른 산업과 직무를 옮기려고 줄을 하나 만드는데,
+     * 그 줄의 `gaps` 는 칸 기본값인 `{}` 이고 `recomputed_at` 은 그 순간이다.
+     * 시각으로 물으면 **아무것도 반영하지 않은 사람이 반영한 사람으로**
+     * 읽히고, 아래에서 `{}` 를 배열로 알고 `live.some` 을 부르다 던진다.
+     * 그 던짐이 `/me` 와 `현재 상태` 와 `다음 할 일` 의 오류 화면이었다.
+     * 빈 자리가 하나도 없는 사람에게는 `filter` 가 그 줄을 안 불러서
+     * 나지 않는다. 그래서 **쓰는 사람에 따라 나기도 하고 안 나기도 했다.**
+     *
+     * 반영된 값을 적는 자리는 `applyRecompute()` 하나이고 그쪽은 `gaps` 를
+     * **배열로** 적는다. 칸 기본값은 객체다. 그래서 `배열인가` 가 곧
+     * `반영된 적이 있는가` 이고, 짐작이 들어가지 않는다. 시각도 그때만
+     * 내놓는다: 아직 반영하지 않은 사람에게 제출 시각을 `최근 반영` 으로
+     * 적으면 그 화면이 거짓을 적는다.
+     */
     queryOne<ProfileRow>(
       `SELECT axis_levels::text AS levels, zones::text AS zones, gaps::text AS gaps,
-              to_char(recomputed_at, 'YYYY-MM-DD') AS at
+              (jsonb_typeof(gaps) = 'array') AS applied,
+              CASE WHEN jsonb_typeof(gaps) = 'array'
+                   THEN to_char(recomputed_at, 'YYYY-MM-DD') END AS at
          FROM career_profiles WHERE user_id = $1 AND core_code = $2`, [userId, core]),
     pendingRecompute(userId),
   ]);
@@ -175,7 +198,7 @@ export async function currentState(userId: string): Promise<CurrentState> {
 
   /* 반영한 적이 없으면 굳은 결과가 곧 지금 상태다. 두 줄로 적으면
      사용자가 같은 값을 두 번 읽는다 */
-  const applied = !!prof?.at;
+  const applied = prof?.applied === true;
   const zoneOf = { ...base };
   const raised: CurrentState["raised"] = [];
   const zoneMoved: CurrentState["zoneMoved"] = [];
