@@ -27,7 +27,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { appEnv } from "@/lib/env";
 import {
-  CONTENT_DIR, sellableCores, registry as coreRegistry, hasCoreFile,
+  CONTENT_DIR, sellableCores, previewOpen, registry as coreRegistry, hasCoreFile,
   specializationAuthored, specializationOf,
   type CoreEntry, type CoreFile,
 } from "@/lib/me-v3/core-registry";
@@ -152,6 +152,26 @@ export type CampusUniversity = {
   region_hint: string | null;
   region_cities: string[];
   region_note?: string;
+  /**
+   * **학생에게 어느 자리를 여는가.**
+   *
+   * Core 의 `open_to_students` 는 `이 Core 를 팔 수 있는가` 를 정하고, 이
+   * 칸은 `이 학교의 어느 자리에서 그 Core 를 열 것인가` 를 정한다. 둘을 한
+   * 칸으로 두면 **Core 하나를 열는 일이 그 Core 를 가리키는 모든 학과를
+   * 한꺼번에 여는 일**이 된다(경영 Core 하나가 배재대 자리 스물넷이다).
+   *
+   * `mode: "LEAF"` 면 `leaves` 에 적힌 자리만 열린다. 없거나
+   * `mode: "CORE"` 면 Core 가 열린 자리가 전부 열린다.
+   *
+   * **미리보기는 이 목록을 보지 않는다.** 그쪽은 운영에서 거절되는 문이고
+   * (`previewOpenCores()`), 자리 목록까지 요구하면 눌러 보는 검사가 밟을
+   * 자리가 없어진다.
+   */
+  student_open?: {
+    mode: "LEAF" | "CORE";
+    leaves?: string[];
+    note?: string;
+  };
   /** 먼저 만들 **Core**. 차례가 곧 만드는 차례다 */
   wave1?: string[];
   wave1_note?: string;
@@ -463,7 +483,30 @@ export function statusOf(
      학교 화면만 열려 있을 수 있었다 */
   const open = sellableCores(u.market_code, dir, opts)
     .some((c) => c.code === row.leaf.core_code);
-  return open ? "READY" : "PREPARING";
+  if (!open) return "PREPARING";
+  /* **미리보기로 열린 Core 는 자리 목록을 보지 않는다.** 그 문은 운영에서
+     거절되고, 자리 목록까지 요구하면 눌러 보는 검사가 밟을 자리가 없다 */
+  if (opts.preview !== false && previewOpen(row.leaf.core_code ?? "")) {
+    return "READY";
+  }
+  return leafOpen(u, row.leaf) ? "READY" : "PREPARING";
+}
+
+/**
+ * **이 학교에서 이 자리를 학생에게 열었는가.**
+ *
+ * Core 가 열려 있어도 자리 목록이 `LEAF` 면 적힌 자리만 열린다. 운영
+ * 공개를 한 자리씩 넓히려면 여는 범위가 Core 와 따로 있어야 한다: 경영
+ * Core 하나가 배재대 자리 스물넷을 가리키므로, Core 만으로 열면 smoke 를
+ * 돌리려고 스물넷을 동시에 여는 셈이 된다.
+ *
+ * **적지 않은 학교는 전과 같다**(`CORE`). 그러지 않으면 학교를 더하는
+ * 사람이 이 칸을 모르고 모든 자리가 조용히 닫힌다.
+ */
+export function leafOpen(u: CampusUniversity, leaf: CampusUnit): boolean {
+  const o = u.student_open;
+  if (!o || o.mode === "CORE") return true;
+  return (o.leaves ?? []).includes(leaf.code);
 }
 
 /** 학생 화면에 세우는 자리인가 */

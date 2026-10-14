@@ -521,6 +521,41 @@ ok("학교 코드가 겹치지 않는다",
   ok("매핑이 덜 선 자리와 감춘 자리와 끝난 구조는 열리지 않는다", !wrong.length,
     wrong.join(" "));
 
+  /**
+   * **여는 범위가 Core 와 따로 있다**(`student_open`).
+   *
+   * Core 의 `open_to_students` 는 그 Core 를 팔 수 있는가를 정하고 이 칸은
+   * 이 학교의 어느 자리에서 그것을 열 것인가를 정한다. 둘을 한 칸으로 두면
+   * **Core 하나를 여는 일이 그 Core 를 가리키는 모든 학과를 한꺼번에 여는
+   * 일**이 된다(경영 Core 하나가 배재대 자리 스물넷이다).
+   *
+   * 여기서 세는 것은 적어 둔 목록이 **실제 자리를 가리키는가**다. 없는
+   * 코드나 내려놓은 코드를 적어 두면 그 줄은 아무 자리도 열지 않는데,
+   * 적어 둔 쪽만 보면 열린 줄 안다.
+   */
+  {
+    const modes: string[] = []; const ghost: string[] = []; const dead: string[] = [];
+    for (const u of reg.universities) {
+      const o = u.student_open;
+      if (!o) continue;
+      modes.push(`${u.university_code}:${o.mode}`);
+      const codes = new Set(allLeaves(u).map((r) => r.leaf.code));
+      const retired = new Set((u.retired_codes ?? []).map((r) => r.code));
+      for (const c of o.leaves ?? []) {
+        if (!codes.has(c)) ghost.push(`${u.university_code}/${c}`);
+        if (retired.has(c)) dead.push(`${u.university_code}/${c}`);
+      }
+      if (o.mode === "LEAF" && !(o.leaves ?? []).length) {
+        modes.push(`${u.university_code}:LEAF 인데 자리가 없다`);
+      }
+    }
+    ok("여는 방식이 `LEAF` 와 `CORE` 둘뿐이다",
+      modes.every((m) => m.endsWith(":LEAF") || m.endsWith(":CORE")),
+      modes.join(" · ") || "적어 둔 학교 없음");
+    ok("여는 목록의 자리가 등록부에 있다", !ghost.length, ghost.join(" "));
+    ok("여는 목록에 내려놓은 코드가 없다", !dead.length, dead.join(" "));
+  }
+
   /* **안쪽 단계를 학생 화면에 적지 않는다**(규격 §7) */
   /* **값을 센다. 칸 이름은 세지 않는다.** `c.catalog_code` 는 React 의
      열쇠로 쓰이는 식별자이고 화면에 그려지는 글자가 아니다. 식별자까지
