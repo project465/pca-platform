@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { majorExamplesOf, majorNameOf } from "@/lib/me-v3/major-name";
+import { resultMeta } from "@/lib/me-v3/result/meta";
 import { OWNERSHIP } from "@/lib/me-v3/scoring/ownership";
 import { controlOf } from "@/lib/me-v3/runtime/menus";
 import {
@@ -219,9 +220,26 @@ export default async function V3Screen({
      답이 남고, 넘어가는 동안 켜 둔 `moving` 이 꺼지지 않아 **`다음` 이 한 번
      눌린 뒤로 영원히 꺼진 채** 선다. 자리 목록으로 한 쪽씩 열어 보는
      캡처에서는 쪽마다 새로 뜨므로 드러나지 않았고, 사람이 눌러야 보였다 */
+  /**
+   * 머리띠에 설 **학교와 학과**(규격 §6).
+   *
+   * 전에는 머리띠가 `CareerMatri · 기본 정보 · 관심 산업 · PRO · 1 / 1`
+   * 이었다. 학교에서 받은 검사를 풀고 있는 사람에게 **자기 학과가 화면
+   * 어디에도 없었고**, 대신 사지도 않은 등급이 적혀 있었다.
+   *
+   * **값을 여기서 만들지 않는다.** 결과지 머리 한 줄이 읽는 자리를 그대로
+   * 쓴다(`resultMeta`): 두 곳에서 따로 읽으면 어느 날 검사 화면과 결과지가
+   * 다른 학과를 적는다(설계 원칙 10).
+   */
+  const meta = await resultMeta(v.attempt.id, v.attempt.core_code);
+
   return (
     <Screen key={`${model.attemptId}:${model.index}`} s={model} prog={prog}
-      tier={v.attempt.tier} tierLabel={v.attempt.tier}
+      tier={v.attempt.tier}
+      /* **학교 맥락에서는 등급을 적지 않는다.** 학과가 사는 것은 등급이
+         아니라 한 벌이고, 적어 두면 고를 수 있는 값이 있는 줄로 읽힌다 */
+      tierLabel={meta.school ? null : v.attempt.tier}
+      school={meta.school} department={meta.department}
       major={majorNameOf(v.attempt.core_code) ?? "이 전공"}
       majorExamples={majorExamplesOf(v.attempt.core_code)} />
   );

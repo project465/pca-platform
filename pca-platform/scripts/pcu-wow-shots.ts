@@ -41,10 +41,22 @@ const ok = (w: string, c: boolean, saw = "") => {
   else { bad.push(w); console.log(`  걸림  ${w}${saw ? " — " + saw : ""}`); }
 };
 
+/**
+ * 찍으면서 **가로로 밀리는지 함께 센다**(규격 §17).
+ *
+ * 그림만 모아 두면 375px 에서 한 칸이 창을 넘는 것을 사람이 눈으로
+ * 찾아야 한다. 재는 자리는 찍는 자리와 같아야 한다: 따로 돌리면 그
+ * 사이에 쪽이 다른 상태로 바뀐다.
+ */
+const overflow: { where: string; px: number }[] = [];
+
 async function shot(p: Page, name: string, who: "d" | "m"): Promise<void> {
   const file = `${OUT}/${name}.${who === "d" ? "desktop" : "mobile"}.png`;
   await p.waitForLoadState("networkidle").catch(() => undefined);
   await p.waitForTimeout(220);
+  const over = await p.evaluate(() =>
+    document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  if (over > 1) overflow.push({ where: `${name}.${who}`, px: over });
   await p.screenshot({ path: file, fullPage: true });
 }
 
@@ -158,9 +170,15 @@ async function main(): Promise<void> {
     let found = false;
     for (let i = 0; i < 24 && !found; i += 1) {
       await d.waitForLoadState("networkidle").catch(() => undefined);
-      /* **시작 화면의 보기를 검사 화면으로 읽지 않는다**: 주소가 응시
-         번호를 들고 있을 때만 센다 */
-      if (/\/v3\/\d+/.test(d.url()) && await d.locator(".qs-list").count()) {
+      /**
+       * **아무 보기나 선 화면을 검사 화면으로 읽지 않는다.**
+       *
+       * `.qs-list` 는 학업 단계를 고르는 자리에도 있다. 그래서 그것만
+       * 보면 한 문항도 안 푼 프로필 화면을 찍어 놓고 `보기 넷이 선 검사
+       * 화면` 이라고 적는다(한 번 그렇게 찍혔다). 이 검사의 얼굴은 소유
+       * 넷이 선 자리(`.qs-own`)이고, 주소가 응시 번호를 들고 있어야 한다.
+       */
+      if (/\/v3\/\d+/.test(d.url()) && await d.locator(".qs-own").count()) {
         found = true; break;
       }
       const boxes = d.locator("fieldset.qs-opts, fieldset.qs-sw, .qs-cards, .qs-list");
@@ -234,6 +252,8 @@ async function main(): Promise<void> {
     const gm = await login(om, staffLogin, staffPw);
     await both(gd, gm, "/org/v3", "10-org");
     ok("담당자 화면을 찍었다", !/\/login/.test(gd.url()), gd.url());
+    ok(`열 자리가 가로로 밀리지 않는다 — 넘친 자리 ${overflow.length}`,
+      !overflow.length, overflow.map((x) => `${x.where} ${x.px}px`).join(" · "));
     await od.close(); await om.close();
     await sd.close(); await sm.close();
   } finally {

@@ -156,12 +156,32 @@
   font-size: var(--q-t-sub); font-weight: var(--ui-w-bd); color: var(--q-ink);
   letter-spacing: -.015em;
 }
-/* 등급과 번호는 오른쪽 끝에 한 묶음이다. 번호는 자리가 흔들리지 않게 등폭 */
+/*
+ * 어느 학과 기준으로 묻는가. 상표 바로 옆이다(규격 §6).
+ *
+ * **상표와 같은 짙기로 세우지 않는다**: 머리띠에 이름이 둘 선 것처럼
+ * 읽힌다. 학교 이름이 한 단 짙고 학과가 그 뒤에 붙는다.
+ */
+.qs-where {
+  flex: none; display: inline-flex; align-items: baseline; gap: 6px;
+  padding-left: var(--q-s3); margin-left: 1px;
+  border-left: 1px solid var(--q-line);
+  color: var(--q-ink-2); font-size: var(--q-t-meta); font-weight: var(--ui-w-sb);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 38ch;
+}
+.qs-where b { color: var(--q-ink); font-weight: var(--ui-w-bd); }
+
+/* 진행과 등급은 오른쪽 끝에 한 묶음이다. 수는 자리가 흔들리지 않게 등폭 */
 .qs-tier {
   flex: none; margin-left: auto; order: 9;
-  color: var(--q-ink-2); font-weight: var(--ui-w-sb);
+  display: inline-flex; align-items: baseline; gap: var(--q-s2);
+  color: var(--q-ink-3); font-weight: var(--ui-w-sb);
   font-variant-numeric: tabular-nums; white-space: nowrap;
 }
+.qs-tier em { font-style: normal; color: var(--q-ink-2); }
+.qs-tier .qs-step { color: var(--q-ink-3); }
+/* 지금까지 얼마나 왔는가. **이 줄에서 가장 센 자리다** */
+.qs-tier b { color: var(--q-accent); font-weight: var(--ui-w-bd); font-size: var(--q-t-sub); }
 
 /* 진행. **지나온 단계와 지금과 다음만 적는다.** 여덟을 늘어놓으면 그것이
    화면에서 가장 큰 덩이가 되고, 좁은 화면에서는 세 줄로 접힌다 */
@@ -1100,6 +1120,12 @@
   text-decoration: underline; text-underline-offset: 3px;
 }
 .qs-save:focus-visible { outline: 2px solid var(--q-accent); outline-offset: 2px; }
+/* 한 화면에 질문이 둘일 때 몇째인지. **번호가 질문보다 크지 않다** */
+.qs-n {
+  display: block; margin-bottom: 4px;
+  font-style: normal; font-size: var(--q-t-cap); font-weight: var(--ui-w-bd);
+  color: var(--q-accent); letter-spacing: .08em;
+}
 .qs-need { font-size: var(--q-t-meta); color: var(--sf-part); font-weight: var(--ui-w-sb); }
 
 /* ── 시작과 완료 ── */
@@ -1244,6 +1270,25 @@
   .qs-cell i { font-size: var(--q-t-cap); }
   .qs-cell:not(:has(b)) i { font-size: var(--q-t-sub); }
   .qs-crumb .prev, .qs-crumb .next, .qs-crumb i { display: none; }
+  /* 좁은 화면에서는 학교 이름을 접고 학과만 남긴다. 둘 다 세우면 상표와
+     진행 사이가 한 줄을 넘는다 */
+  .qs-where {
+    /* **줄이 아니라 칸이 줄어야 한다.** `flex: none` 으로 두면 학과
+       이름이 긴 자리에서 머리띠가 통째로 창을 넘고, 그 넘침은 320px
+       에서만 난다 */
+    flex: 0 1 auto; min-width: 0;
+    max-width: 14ch; padding-left: var(--q-s2);
+  }
+  .qs-where b { display: none; }
+  /* 묶음 이름은 바로 아래 진행 줄이 이미 들고 있다 */
+  .qs-tier em, .qs-tier .qs-step { display: none; }
+}
+
+/* 320~380px. **진행 %만 남긴다**: 이 폭에서 머리띠에 설 수 있는 것은
+   상표와 학과와 지금까지 온 자리 셋뿐이다 */
+@media (max-width: 380px) {
+  .qs-top { gap: var(--q-s2); }
+  .qs-where { max-width: 9ch; }
 }
 
 @media (prefers-reduced-motion: reduce) {

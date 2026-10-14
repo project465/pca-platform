@@ -54,9 +54,14 @@ const MOVE_TIMEOUT_MS = 8000;
  * 지우지 않는다: 영역이 빠지면 읽히지 않을 뿐이고 되돌아오면 그대로 쓰인다.
  */
 export default function Screen({
-  s, prog, tier, tierLabel, major, majorExamples,
+  s, prog, tier, tierLabel, school, department, major, majorExamples,
 }: {
-  s: ScreenModel; prog: ProgressModel; tier: string; tierLabel: string;
+  s: ScreenModel; prog: ProgressModel; tier: string;
+  /** 산 등급. **학교 진입이면 `null`** 이고 그때는 머리띠에 서지 않는다 */
+  tierLabel: string | null;
+  /** 학교 진입으로 들어온 응시면 그 학교와 학과. 아니면 둘 다 `null` */
+  school?: string | null;
+  department?: string | null;
   /** 이 응시가 읽는 전공 이름. **글자로 적지 않는다**: 전공이 늘면 이
       화면이 다른 전공 이름을 적는다 */
   major: string;
@@ -267,6 +272,15 @@ export default function Screen({
         <div className="qs-head-in">
           <div className="qs-top">
             <span className="qs-brand"><BrandMark size={20} />CareerMatri</span>
+            {/* **어느 학과 기준으로 묻는지가 끊기지 않는다**(규격 §6).
+                학교에서 받은 검사를 푸는 사람이 가장 먼저 확인하는 것이
+                `내 학과 기준으로 묻고 있는가` 이고, 그 줄이 없으면 공통
+                검사를 풀고 있는 것으로 읽힌다. 학교 진입이 아니면 전공
+                이름이 그 자리를 든다 */}
+            <span className="qs-where">
+              {school ? <b>{school}</b> : null}
+              {department ?? major}
+            </span>
             <span className="qs-crumb">
               {prog.prev ? <><span className="prev">{prog.prev}</span><i>›</i></> : null}
               <span className="now">{prog.now}</span>
@@ -290,7 +304,14 @@ export default function Screen({
                 breadcrumb 의 단계 이름(`경험 심화`)과 생김새가 같아서 둘
                 가운데 무엇이 진행인지 읽히지 않았다. 산 것의 이름은
                 가격표와 결제와 같은 말(BASIC · STANDARD · PRO)이다 */}
-            <span className="qs-tier">{tierLabel} · {prog.inStage.index} / {prog.inStage.total}</span>
+            {/* **진행을 수로도 적는다**(규격 §6). 막대만으로는 얼마나
+                남았는지 가늠이 안 되고, `1 / 1` 만 적혀 있으면 끝난 것으로
+                읽힌다. 백분율이 먼저고 묶음 안의 몇째인가가 거든다 */}
+            <span className="qs-tier">
+              {tierLabel ? <em>{tierLabel}</em> : null}
+              <span className="qs-step">{prog.inStage.index} / {prog.inStage.total}</span>
+              <b>{prog.percent}%</b>
+            </span>
           </div>
           <div className="qs-bar" role="progressbar" aria-valuenow={prog.percent}
             aria-valuemin={0} aria-valuemax={100}
@@ -467,8 +488,14 @@ export default function Screen({
 
         {s.kind !== "sweep" && s.fields.length > 1 ? (
           <div className="qs-rows">
-            {s.fields.map((f) => (
+            {/* **한 화면에 질문이 둘이라는 것을 적는다**(규격 §6). 적지
+                않으면 첫 질문의 뜻풀이를 펼친 사람에게 둘째 질문이
+                화면 밖으로 밀리고, 그 사람은 한 문항만 답한 채 `다음` 을
+                누른다. 묶어 세우는 것 자체는 그대로다: 하나씩 끊으면
+                화면이 예순여섯에서 백을 넘는다 */}
+            {s.fields.map((f, i) => (
               <Row key={f.itemId} f={f} value={vals[f.itemId]} onPick={setAnswer}
+                n={i + 1} of={s.fields.length}
                 notes={notes} onNote={setNote} onNoteDone={flushNote} />
             ))}
           </div>
@@ -859,9 +886,11 @@ function Sweep({
 }
 
 function Row({
-  f, value, onPick, notes, onNote, onNoteDone,
+  f, value, onPick, n, of, notes, onNote, onNoteDone,
 }: {
   f: Field; value: number | string | null;
+  /** 이 화면의 몇째 질문인가. 둘 이상일 때만 적는다 */
+  n?: number; of?: number;
   onPick: (f: Field, raw: number | string, a: Answer) => void;
   notes: Record<string, string>;
   onNote: (f: Field, t: string) => void;
@@ -905,7 +934,12 @@ function Row({
        한 번 받으므로 여기서는 `aria-hidden` 으로 되풀이를 막는다 */
     return (
       <div className="qs-row">
-        {f.label ? <span aria-hidden>{f.label}</span> : null}
+        {f.label ? (
+          <span aria-hidden>
+            {of && of > 1 ? <i className="qs-n">{n} / {of}</i> : null}
+            {f.label}
+          </span>
+        ) : null}
         <One f={f} value={value} onPick={onPick}
           notes={notes} onNote={onNote} onNoteDone={onNoteDone} />
       </div>

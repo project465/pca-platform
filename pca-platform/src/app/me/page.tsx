@@ -11,6 +11,7 @@ import { openActions } from "@/lib/me-v3/open-actions";
 import { recentChangeKo } from "@/lib/me-v3/change-text.ko";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { majorNameOf } from "@/lib/me-v3/major-name";
+import { resultMeta } from "@/lib/me-v3/result/meta";
 import { CmShell, CmHead } from "./shell";
 import {
   ActivityRow, DomainTile, EmptyState, PrimaryActionHero, RecordRow,
@@ -116,6 +117,16 @@ export default async function Home() {
    */
   /* **전공 이름을 글자로 적지 않는다.** 이 사람이 쓰는 Core 에서 읽는다 */
   const major = majorNameOf(st.core);
+  /**
+   * 학교에서 받은 검사인가(규격 §15).
+   *
+   * **값을 여기서 만들지 않는다**: 결과지 머리와 검사 머리띠가 읽는 자리를
+   * 그대로 쓴다(`resultMeta`). 세 화면이 따로 읽으면 어느 날 하나만 다른
+   * 학과를 적는다(설계 원칙 10).
+   */
+  const meta = st.model
+    ? await resultMeta(String(st.model.attempt_id), st.core)
+    : null;
   const cta = st.stage === "NO_ASSESSMENT"
     ? { href: "/cores", label: major ? `${major} 검사 시작` : "검사 시작" }
     : st.stage === "IN_PROGRESS"
@@ -123,7 +134,11 @@ export default async function Home() {
       : { href: "/me/next", label: "지금 할 일" };
 
   return (
-    <CmShell active="/me" title="홈" who={user.name} major={major}
+    <CmShell active="/me" title="홈" who={user.name}
+      /* **왼쪽 띠에 학교 이름이 선다**(규격 §15). 학교에서 받은 검사를
+         푼 사람에게 전공 이름만 적어 두면, 이 작업공간이 학교와 무관한
+         개인 서비스로 읽힌다 */
+      major={meta?.school ? `${meta.school} · ${meta.department ?? major}` : major}
       /* **없는 기능을 그려 넣지 않는다**(규격 §4). 목표 화면의 검색과
          알림은 CareerMatri 에 없는 기능이라 두지 않았다. 여기 서는 것은
          실제로 있는 한 가지다 */
@@ -335,10 +350,18 @@ export default async function Home() {
           <SectionHeader icon="clock" tone="c" title="최근 기록"
             moreHref="/me/results" moreLabel="모두 보기 →"
             sub="최근 검사 결과와 경험을 확인할 수 있습니다." />
+          {/* **학교 · 학과 · 검사일이 한 줄에 선다**(규격 §15). 전에는
+              `경영 결과 (PRO)` 였고, 학교에서 받은 검사라는 것도 어느 학과로
+              친 것인지도 이 줄에 없었다. 학교 진입이면 등급을 적지 않는다:
+              학생이 고른 값이 아니다 */}
           <ul className="cm-feed is-rec">
             <RecordRow icon="report"
-              title={`${major ?? "진로진단"} 결과 (${st.model.tier})`}
-              note="고정됨 · 그날의 문항과 기준으로 굳어 있습니다"
+              title={meta?.school
+                ? `${meta.school} · ${meta.department ?? major ?? "진로진단"}`
+                : `${major ?? "진로진단"} 결과 (${st.model.tier})`}
+              note={meta?.school
+                ? `${major ?? "진로진단"} 진로 분석 리포트 · 고정됨`
+                : "고정됨 · 그날의 문항과 기준으로 굳어 있습니다"}
               time={st.result_at ?? ""}
               actions={
                 <>

@@ -16,7 +16,7 @@ import {
 } from "@/lib/me-v3/result/model";
 import {
   actionKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO, BASIC_GROUP_KO, bridgeKo,
-  commonKo, domainChainKo, draftKo, FIRST_MOVE_KO, gapCellKo, gapKo, gapShortKo, headlineKo,
+  commonKo, domainChainKo, draftKo, gapCellKo, gapKo, gapShortKo, headlineKo,
   HORIZON_KO, QUALITY_KO, TIER_NOTE_KO, TRANS_ORDER, TRANS_STEP_KO, XFIELD_KO,
   XFIELD_ORDER, ZONE_LEAD_KO, ZONE_TITLE_KO,
 } from "@/lib/me-v3/result/text.ko";
@@ -885,7 +885,11 @@ export default async function V3Result({
   ];
 
   return (
-    <div className="rs">
+    /* **학교가 전달하는 리포트일 때만 장을 나눈다.** 표지와 장 바뀜은
+       학교가 보관·전달하는 종이의 모양이고(규격 §14), 개인 결제 종이는
+       전과 같은 이어지는 문서다. 한 벌로 묶었더니 선별 등급 종이의
+       마지막 장이 16% 만 찼다 */
+    <div className={`rs${meta.school ? " is-report" : ""}`}>
       {pilot ? <Track attemptId={attemptId} /> : null}
       <header className="rs-head">
         <div className="rs-head-in">
@@ -909,17 +913,81 @@ export default async function V3Result({
       </header>
 
       <main className="rs-main">
+        {/*
+            ── 종이 표지 ── **화면에는 서지 않는다**(규격 §14).
+
+            전까지 종이는 웹 결과지를 그대로 찍은 것이었다. 받은 학생이
+            보관하고 학교가 결과물로 전달하는 자리인데, 첫 장이 바로
+            본문이라 **그 종이가 어느 학교의 무슨 문서인지** 혼자서는
+            말하지 못했다. 표지가 드는 것은 넷뿐이다: 학교 · 문서 이름 ·
+            누구의 어느 학과 · 언제 친 것인가.
+
+            **지어낸 값을 두지 않는다.** 로고도 사진도 점수도 없고, 적는
+            것은 전부 응시 줄과 등록부가 이미 들고 있는 값이다.
+        */}
+        {meta.school ? (
+          <section className="rs-cover" aria-hidden="true">
+            <div className="rs-cover-top">
+              <b>{meta.school}</b>
+              <span>CareerMatri</span>
+            </div>
+            <div className="rs-cover-mid">
+              <h2>진로 분석 리포트</h2>
+              {/* **같은 말을 두 번 적지 않는다.** 갈래 이름이 있으면 전공
+                  이름은 그 안에 들어 있다(`경영학과 · 경영 일반 · 경영`) */}
+              <p className="rs-cover-who">
+                {[meta.department, meta.specialization ?? meta.major]
+                  .filter(Boolean).join(" · ")}
+              </p>
+              {meta.answeredOn ? (
+                <p className="rs-cover-day">{meta.answeredOn} 응답</p>
+              ) : null}
+            </div>
+            {/* 차례. **쪽 번호를 적지 않는다**: 담긴 양에 따라 밀리는데,
+                적어 두면 어긋난 번호가 찍힌다 */}
+            <ol className="rs-cover-toc">
+              <li>한눈에 보는 결과</li>
+              <li>내가 이미 가진 근거</li>
+              <li>먼저 볼 영역</li>
+              <li>전체 기술영역</li>
+              <li>앞으로 채울 것</li>
+              <li>산업·직무 연결</li>
+              <li>다음에 할 일</li>
+              <li>지원서·면접에서 쓸 문장</li>
+              <li>어디에서 찾을지</li>
+            </ol>
+            <p className="rs-cover-foot">
+              이 리포트는 응답한 내용만으로 만들어집니다. 적성이나 합격
+              가능성을 내지 않고, 순위도 매기지 않습니다.
+            </p>
+          </section>
+        ) : null}
+
         <section className="rs-hero">
+          {/* **학교의 자리가 맨 위다**(규격 §8). 전에는 학교와 학과가 큰
+              문장 아래 회색 한 줄이었다. 학교에서 받은 리포트인지가 먼저
+              읽혀야 그 아래 문장이 학교가 보증한 말로 읽힌다 */}
+          {meta.school ? (
+            <p className="rs-school">
+              <b>{meta.school}</b>
+              <span>{[meta.department, meta.specialization]
+                .filter(Boolean).join(" · ")}</span>
+            </p>
+          ) : null}
           <p className="rs-kicker">{meta.major ?? "전공"} 진로 진단 결과</p>
           <h1 className="rs-h1">{h.title}</h1>
           <p className="rs-lead">{h.lead}</p>
           {/* **종이는 보관되고 전달된다.** 누구의 어느 전공이 언제 친
               것인지가 첫 쪽에 없으면 그 종이는 혼자서는 읽히지 않는다.
               학교 진입이 아니면 학교와 학과 자리는 서지 않는다 */}
+          {/* **같은 말을 두 번 적지 않는다.** 학교 진입이면 학교와 학과와
+              갈래는 바로 위 띠가 이미 들었고, 여기 남는 것은 언제 친
+              것인가다. 개인 결제면 산 등급이 여기 선다 */}
           <p className="rs-ident">
-            {[meta.school, meta.department, meta.specialization,
-              meta.school ? null : model.tier,
-              meta.answeredOn ? `${meta.answeredOn} 응답` : null]
+            {(meta.school
+              ? [meta.answeredOn ? `${meta.answeredOn} 응답` : null]
+              : [meta.specialization, model.tier,
+                meta.answeredOn ? `${meta.answeredOn} 응답` : null])
               .filter(Boolean).join(" · ")}
           </p>
           {/* **첫 서른 초에 무엇까지 봤는지가 보여야 한다.** 깊게 물은
@@ -937,8 +1005,9 @@ export default async function V3Result({
             이었다. 까닭은 아래 영역 절이 한 자리에서 말하므로, 첫 화면의
             자리는 **비어 있는 것**에 내준다 */}
         <div className="rs-top">
+          {/* ① 실제로 해본 것 */}
           <div>
-            <h3>지금 확인된 것</h3>
+            <h3>실제로 해본 것</h3>
             {focus.length ? (<>
               <p>{focus.map((d) => domainName(core, d.code)).join(" · ")}</p>
               {deep ? (
@@ -957,38 +1026,59 @@ export default async function V3Result({
               )}
             </>) : <p className="none">응답만으로는 영역 사이에 차이가 생기지 않았습니다</p>}
           </div>
-          {/* **둘째 칸이 `지금 할 일` 이다**(규격 §22).
-              차례가 곧 중요도다: 확인된 것 → 지금 할 일 → 먼저 채울 것 →
-              산업·직무 연결. 전에는 `먼저 채울 것` 이 둘째라, 결과를 연
-              사람이 **행동 앞에서 비어 있는 자리를 먼저 읽었다.** 비어
-              있는 자리는 그 행동이 왜 나왔는지의 배경이고, 배경을 먼저
-              읽게 하면 읽는 사람이 한 번 더 고르는 일을 한다 */}
-          <div className="is-do">
-            <h3>{FIRST_MOVE_KO[move]}</h3>
-            <p>{moveText}</p>
-            {moveNext ? <p style={{ fontWeight: 400 }}>{say(moveNext)}</p> : null}
+
+          {/* ② 근거가 남은 것(규격 §8). **수를 앞세우지 않는다**: 몇
+              가지인지보다 **어느 자리에서 꺼내 쓸 수 있는가**가 먼저다 */}
+          <div>
+            <h3>근거가 남은 것</h3>
+            {model.evidence.ready.length ? (<>
+              <p>{[...new Set(model.evidence.ready
+                .map((e) => domainName(core, e.domain)))].slice(0, 3).join(" · ")}</p>
+              <p style={{ fontWeight: 400 }}>
+                지원서에서 바로 꺼내 쓸 수 있는 자리가
+                {" "}{model.evidence.ready.length}가지 확인됐습니다
+              </p>
+            </>) : (
+              <p className="none">
+                지금 바로 꺼내 쓸 근거는 아직 확인되지 않았습니다
+              </p>
+            )}
           </div>
+
+          {/* ③ 아직 보완할 것 */}
           <div>
             <h3>{lackTitle}</h3>
             {lackText
               ? <p>{lackText}</p>
               : <p className="none">지금 응답에서 비어 있다고 적을 자리가 없습니다</p>}
           </div>
-          {/* ④ 산업·직무 연결 맥락(규격 §13). **고르지 않으셨으면 그
-              사실을 적는다**: 비워 두면 첫 화면이 `그래서 어디에 쓰는가`
-              에 답하지 않고 끝난다 */}
-          <div>
-            <h3>산업·직무 연결</h3>
-            {linkNames.length ? (<>
-              <p>{linkNames.join(" · ")}</p>
-              <p style={{ fontWeight: 400 }}>{linkText}</p>
-            </>) : (
-              <p className="none">
-                보실 산업과 직무를 아직 고르지 않으셨습니다
-              </p>
-            )}
+
+          {/* ④ 지금 할 일.
+              **차례는 §8 을 따르고 무게는 행동이 가져간다.** 넷 가운데
+              마지막이지만 면이 짙어서 눈이 먼저 닿는다: 결과를 연 사람이
+              읽고 나서 하는 일이 이것 하나다 */}
+          <div className="is-do">
+            {/* **칸 이름은 `지금 할 일` 하나다**(규격 §8). 전에는
+                `가장 먼저 채울 것` 이었는데, 바로 왼쪽 칸이 이미
+                `비어 있는 것` 을 적고 있어서 **넷 가운데 셋이 비어 있는
+                것을 말하고 행동을 적는 칸이 한 자리도 없었다.**
+                빈자리의 이름 대신 거기 붙은 할 일을 세운다 */}
+            <h3>지금 할 일</h3>
+            <p>{moveNext ? say(moveNext) : moveText}</p>
           </div>
         </div>
+
+        {/* **산업·직무 연결은 한 줄 띠로 첫 화면에 남긴다**(규격 §13).
+            카드 넷에서 빠졌다고 첫 화면이 `그래서 어디에 쓰는가` 에 답하지
+            않고 끝나면 안 된다. 자세한 것은 아래 산업·직무 절이 든다 */}
+        <p className="rs-link">
+          {linkNames.length ? (<>
+            <b>{linkNames.join(" · ")}</b>
+            <span>{linkText}</span>
+          </>) : (
+            <span>보실 산업과 직무를 아직 고르지 않으셨습니다.</span>
+          )}
+        </p>
 
         {/* **첫 화면에서 할 수 있는 일을 적는다**(규격 §9).
             결과를 읽고 나서 하는 일은 둘이다: 이 할 일을 내 자리로 옮기고,
@@ -1014,6 +1104,90 @@ export default async function V3Result({
             결과 PDF 저장<small>몇 초 걸립니다</small>
           </a>
         </div>
+
+        {/* ── 내가 이미 가진 근거 ── **접은 자리 안에 두지 않는다**(규격 §10).
+            이 절은 읽는 사람이 결과지에서 가장 먼저 자기를 알아보는
+            자리다. 본문 아홉 절과 함께 `자세한 내용 보기` 안에 접어 두면,
+            펼치지 않은 사람은 **자기가 이미 가진 것을 한 줄도 못 보고**
+            비어 있는 자리와 할 일만 읽는다 */}
+        {deep ? (
+          <section className="rs-sect" id="evidence">
+            <h2>내가 이미 가진 근거</h2>
+            {/* **기본은 먼저 쓸 것 셋까지다**(규격 §13). 전에는 큰 카드 둘에
+                긴 설명과 고르신 항목이 여섯씩 깔려 이 절 하나가 종이 반 장을
+                먹었다. 바로 꺼내 쓸 수 있는 쪽만 한 줄씩 적고, 갈라 보는
+                자리는 아래로 접는다 */}
+            {model.evidence.ready.length ? (
+              <>
+                <p className="rs-note">지원서에서 먼저 쓸 경험입니다.</p>
+                <ul className="rs-first">
+                  {model.evidence.ready.slice(0, 3).map((e) => (
+                    <li key={`${e.domain}.${e.axis}`}>
+                      <b>{domainName(core, e.domain)}</b>
+                      {axisStateKo(e.axis, e.state)}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <>
+                <p className="rs-note">
+                  지금 바로 꺼내 쓸 경험은 아직 없습니다. 아래 &lsquo;다음에 할
+                  일&rsquo;부터 보세요.
+                </p>
+                {/* **그 학과 학생이 낼 수 있는 근거를 적는다**(갈래 계약의
+                    `examples.evidence`). 아직 아무것도 확인되지 않은 사람에게
+                    `없습니다` 만 적으면 **무엇을 하면 적히는지**가 종이
+                    어디에도 없다. 지어내지 않는다: 등록부에 그 학과로 적어 둔
+                    목록이고, 여기서 판정에 넣지 않는다 */}
+                {sv.evidence.length ? (
+                  <>
+                    <p className="rs-note">이런 경험이면 여기에 적힙니다.</p>
+                    <ul className="rs-first">
+                      {sv.evidence.slice(0, 3).map((t) => <li key={t}>{t}</li>)}
+                    </ul>
+                  </>
+                ) : null}
+              </>
+            )}
+            <Disclose label="전체 보기">
+            <div className="rs-ev">
+              <section>
+                <h3>지원서에서 설명할 수 있는 경험</h3>
+                <p>직접 정한 것으로 확인됐고, 고르신 근거가 함께 있는 자리입니다.</p>
+                {model.evidence.ready.length ? (<>
+                  {model.evidence.ready.slice(0, 6).map((e) => (
+                    <EvidenceRow key={`${e.domain}.${e.axis}`} core={core} domain={e.domain}
+                      axis={e.axis} state={e.state} picks={e.picks} own />
+                  ))}
+                  {model.evidence.ready.length > 6 ? (
+                    <p className="rs-none rs-evmore">
+                      이 밖에 {model.evidence.ready.length - 6}가지가 더 확인됐습니다.
+                      위의 영역별 설명에서 보실 수 있습니다.
+                    </p>
+                  ) : null}
+                </>) : <p>아직 없습니다.</p>}
+              </section>
+              <section>
+                <h3>경험은 있지만 설명 근거를 더 붙일 부분</h3>
+                <p>해 본 것은 확인됐고, 어디까지 직접 정했는지가 덜 적힌 자리입니다.</p>
+                {model.evidence.partial.length ? (<>
+                  {model.evidence.partial.slice(0, 6).map((e) => (
+                    <EvidenceRow key={`${e.domain}.${e.axis}`} core={core} domain={e.domain}
+                      axis={e.axis} state={e.state} picks={e.picks} />
+                  ))}
+                  {model.evidence.partial.length > 6 ? (
+                    <p className="rs-none rs-evmore">
+                      이 밖에 {model.evidence.partial.length - 6}가지가 더 있습니다.
+                    </p>
+                  ) : null}
+                </>) : <p>해당하는 자리가 없습니다.</p>}
+              </section>
+            </div>
+            </Disclose>
+          </section>
+        ) : null}
+
 
         {model.response_quality.flag !== "OK" ? (
           <p className="rs-flag">
@@ -1202,85 +1376,6 @@ export default async function V3Result({
             </Disclose>
           ) : null}
         </section>
-
-        {/* ── 근거 두 층 ── */}
-        {deep ? (
-          <section className="rs-sect" id="evidence">
-            <h2>지원서에 연결할 수 있는 경험</h2>
-            {/* **기본은 먼저 쓸 것 셋까지다**(규격 §13). 전에는 큰 카드 둘에
-                긴 설명과 고르신 항목이 여섯씩 깔려 이 절 하나가 종이 반 장을
-                먹었다. 바로 꺼내 쓸 수 있는 쪽만 한 줄씩 적고, 갈라 보는
-                자리는 아래로 접는다 */}
-            {model.evidence.ready.length ? (
-              <>
-                <p className="rs-note">지원서에서 먼저 쓸 경험입니다.</p>
-                <ul className="rs-first">
-                  {model.evidence.ready.slice(0, 3).map((e) => (
-                    <li key={`${e.domain}.${e.axis}`}>
-                      <b>{domainName(core, e.domain)}</b>
-                      {axisStateKo(e.axis, e.state)}
-                    </li>
-                  ))}
-                </ul>
-              </>
-            ) : (
-              <>
-                <p className="rs-note">
-                  지금 바로 꺼내 쓸 경험은 아직 없습니다. 아래 &lsquo;다음에 할
-                  일&rsquo;부터 보세요.
-                </p>
-                {/* **그 학과 학생이 낼 수 있는 근거를 적는다**(갈래 계약의
-                    `examples.evidence`). 아직 아무것도 확인되지 않은 사람에게
-                    `없습니다` 만 적으면 **무엇을 하면 적히는지**가 종이
-                    어디에도 없다. 지어내지 않는다: 등록부에 그 학과로 적어 둔
-                    목록이고, 여기서 판정에 넣지 않는다 */}
-                {sv.evidence.length ? (
-                  <>
-                    <p className="rs-note">이런 경험이면 여기에 적힙니다.</p>
-                    <ul className="rs-first">
-                      {sv.evidence.slice(0, 3).map((t) => <li key={t}>{t}</li>)}
-                    </ul>
-                  </>
-                ) : null}
-              </>
-            )}
-            <Disclose label="전체 보기">
-            <div className="rs-ev">
-              <section>
-                <h3>지원서에서 설명할 수 있는 경험</h3>
-                <p>직접 정한 것으로 확인됐고, 고르신 근거가 함께 있는 자리입니다.</p>
-                {model.evidence.ready.length ? (<>
-                  {model.evidence.ready.slice(0, 6).map((e) => (
-                    <EvidenceRow key={`${e.domain}.${e.axis}`} core={core} domain={e.domain}
-                      axis={e.axis} state={e.state} picks={e.picks} own />
-                  ))}
-                  {model.evidence.ready.length > 6 ? (
-                    <p className="rs-none rs-evmore">
-                      이 밖에 {model.evidence.ready.length - 6}가지가 더 확인됐습니다.
-                      위의 영역별 설명에서 보실 수 있습니다.
-                    </p>
-                  ) : null}
-                </>) : <p>아직 없습니다.</p>}
-              </section>
-              <section>
-                <h3>경험은 있지만 설명 근거를 더 붙일 부분</h3>
-                <p>해 본 것은 확인됐고, 어디까지 직접 정했는지가 덜 적힌 자리입니다.</p>
-                {model.evidence.partial.length ? (<>
-                  {model.evidence.partial.slice(0, 6).map((e) => (
-                    <EvidenceRow key={`${e.domain}.${e.axis}`} core={core} domain={e.domain}
-                      axis={e.axis} state={e.state} picks={e.picks} />
-                  ))}
-                  {model.evidence.partial.length > 6 ? (
-                    <p className="rs-none rs-evmore">
-                      이 밖에 {model.evidence.partial.length - 6}가지가 더 있습니다.
-                    </p>
-                  ) : null}
-                </>) : <p>해당하는 자리가 없습니다.</p>}
-              </section>
-            </div>
-            </Disclose>
-          </section>
-        ) : null}
 
         {/* ── 비어 있는 자리 ── 빨간 목록으로 만들지 않는다.
             **여덟 축을 묻지 않은 응시에는 이 절을 두지 않는다**: 안 물어본

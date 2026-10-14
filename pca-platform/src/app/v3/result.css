@@ -112,6 +112,26 @@
 
 /* ── 첫 화면 ── 열 초 안에 넷을 답한다 */
 .rs-hero { padding: var(--r-s6) 0 var(--r-s5); max-width: var(--r-read); }
+/*
+ * 학교의 자리. **큰 문장보다 먼저 선다**(규격 §8).
+ *
+ * 전에는 학교와 학과가 큰 문장 아래 회색 한 줄이었다. 학교가 제공한
+ * 리포트인지가 먼저 읽혀야 그 아래 문장이 학교가 보증한 말로 읽힌다.
+ * 종이는 학생이 보관하고 대학이 결과물로 전달하는 자리라 더 그렇다.
+ */
+.rs-school {
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px;
+  margin: 0 0 var(--r-s3); padding-bottom: var(--r-s3);
+  border-bottom: 1px solid var(--r-line);
+}
+.rs-school b {
+  font-size: var(--r-t-h3); font-weight: var(--ui-w-bd);
+  color: var(--r-ink); letter-spacing: -.02em;
+}
+.rs-school span {
+  font-size: var(--r-t-body); font-weight: var(--ui-w-sb); color: var(--r-ink-2);
+}
+
 .rs-kicker {
   margin: 0 0 var(--r-s2); font-size: var(--r-t-meta); font-weight: var(--ui-w-sb);
   letter-spacing: .09em; color: var(--r-accent);
@@ -192,6 +212,31 @@
    쓰고, 읽는 자리의 위계는 선과 굵기로 만든다(규격 §33) */
 .rs-top > div.is-do { box-shadow: inset 0 2px 0 var(--r-accent); }
 .rs-top > div.is-do > p:first-of-type { color: var(--r-ink); font-weight: var(--ui-w-bd); }
+
+/*
+ * 확인된 경험이 어디에서 쓰이는가. **첫 화면에 한 줄로 남긴다**(규격 §13).
+ *
+ * 카드 넷에서 빠졌다고 첫 화면이 `그래서 어디에 쓰는가` 에 답하지 않고
+ * 끝나면 안 된다. 자세한 것은 아래 산업·직무 절이 든다.
+ */
+.rs-link {
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px;
+  margin: var(--r-s3) 0 0; padding: 12px 16px;
+  border: 1px solid var(--r-line); border-radius: var(--r-r);
+  background: var(--r-paper);
+  font-size: var(--r-t-gloss); color: var(--r-ink-2);
+}
+.rs-link b {
+  font-size: var(--r-t-body); font-weight: var(--ui-w-bd); color: var(--r-ink);
+}
+
+/*
+ * 종이 표지. **화면에는 서지 않는다**(규격 §14).
+ *
+ * `display: none` 으로 두고 인쇄 매체에서만 켠다. 담긴 것이 전부 응시
+ * 줄과 등록부가 이미 들고 있는 값이라 여기서 판정하지 않는다.
+ */
+.rs-cover { display: none; }
 
 /* ── 절 ── */
 .rs-sect { margin-top: var(--r-s7); scroll-margin-top: 72px; }
@@ -832,7 +877,27 @@
      한 것은 강조색이 누르는 자리와 겨루기 때문이고, 종이에는 누를 자리가
      없다. 그래서 색조는 이 블록 안에만 있다 */
   .rs-h1 { font-size: 20.5pt; line-height: 1.26; }
-  .rs-kicker { margin-bottom: 5px; }
+  /*
+ * 학교의 자리. **큰 문장보다 먼저 선다**(규격 §8).
+ *
+ * 전에는 학교와 학과가 큰 문장 아래 회색 한 줄이었다. 학교가 제공한
+ * 리포트인지가 먼저 읽혀야 그 아래 문장이 학교가 보증한 말로 읽힌다.
+ * 종이는 학생이 보관하고 대학이 결과물로 전달하는 자리라 더 그렇다.
+ */
+.rs-school {
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px;
+  margin: 0 0 var(--r-s3); padding-bottom: var(--r-s3);
+  border-bottom: 1px solid var(--r-line);
+}
+.rs-school b {
+  font-size: var(--r-t-h3); font-weight: var(--ui-w-bd);
+  color: var(--r-ink); letter-spacing: -.02em;
+}
+.rs-school span {
+  font-size: var(--r-t-body); font-weight: var(--ui-w-sb); color: var(--r-ink-2);
+}
+
+.rs-kicker { margin-bottom: 5px; }
   /* **묶음 전체를 붙여 두지 않는다.** 네 칸에 `avoid` 를 걸었더니 그
      묶음이 첫 쪽에 다 안 들어가는 날 통째로 다음 쪽으로 밀리고 첫 쪽이
      절반 비었다(STANDARD 가 열 쪽이 된 까닭이다). 쪼개지면 뜻이 사라지는
@@ -865,6 +930,62 @@
      1.42 로 줄이면 여덟 쪽이 되지만 **줄 사이는 읽는 속도라** 건드리지
      않았다. 절과 묶음의 위 여백을 7px 에서 5px 로 돌려받으니 여덟 쪽이고
      마지막 쪽이 91% 다. **담긴 글을 한 줄도 덜어내지 않았다** */
+  /* ── 표지 ──
+     쪽 하나를 통째로 쓰고 바로 다음 장에서 본문이 시작한다. **쪽 높이를
+     vh 로 잡지 않는다**: 인쇄에서 그 값은 창 높이라 종이와 맞지 않는다.
+     `A4 - 위아래 여백` 이 약 269mm 다 */
+  /* **쪽 높이를 꽉 채우지 않는다.** `A4 - 위아래 여백` 이 269mm 인데 그
+     값을 그대로 주면 마지막 한 줄이 다음 장으로 넘어가 **글자 이백 자
+     짜리 빈 장**이 하나 생긴다(한 번 그렇게 뽑혔다). 아래를 비워 둔다 */
+  .rs-cover {
+    display: flex; flex-direction: column; gap: 0;
+    height: 238mm; break-after: page; break-inside: avoid;
+  }
+  .rs-cover-top {
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding-bottom: 8mm; border-bottom: 1.5pt solid var(--r-ink);
+  }
+  .rs-cover-top b { font-size: 15pt; font-weight: 700; color: var(--r-ink); }
+  .rs-cover-top span {
+    font-size: 10pt; font-weight: 700; color: var(--r-accent);
+    letter-spacing: .04em;
+  }
+  .rs-cover-mid { margin-top: 36mm; }
+  .rs-cover-mid h2 {
+    margin: 0; font-size: 30pt; font-weight: 700; letter-spacing: -.03em;
+    color: var(--r-ink);
+  }
+  .rs-cover-who {
+    margin: 7mm 0 0; font-size: 13pt; font-weight: 600; color: var(--r-ink-2);
+  }
+  .rs-cover-day { margin: 3mm 0 0; font-size: 10pt; color: var(--r-ink-3); }
+  /* 차례. **쪽 번호를 적지 않는다**: 담긴 양에 따라 밀리는데 적어 두면
+     어긋난 번호가 찍힌다 */
+  .rs-cover-toc {
+    margin: auto 0 0; padding: 0 0 0 1.4em;
+    columns: 2; column-gap: 14mm;
+    font-size: 10pt; line-height: 2; color: var(--r-ink-2);
+  }
+  .rs-cover-foot {
+    margin: 8mm 0 0; padding-top: 4mm; border-top: 1px solid var(--r-line);
+    font-size: 8.5pt; color: var(--r-ink-3);
+  }
+
+  /* ── 장이 바뀌면 쪽이 바뀐다 ──
+     **본문을 이어 붙인 문서가 아니라 장이 있는 리포트다**(규격 §14).
+     전에는 아홉 절이 쪽 경계와 무관하게 이어져서, 넘겨 보는 사람이 지금
+     어느 장을 읽는지 쪽머리 말고는 알 수 없었다.
+     **모든 절에 걸지 않는다.** 처음에는 일곱에 걸었더니 쪽이 아홉에서
+     열여섯이 됐고, 그중 둘은 글자가 이백 자도 안 되는 **거의 빈 장**
+     이었다. 장이 있는 문서로 읽히게 하는 데 필요한 것은 네 자리다:
+     가진 근거 · 채울 것 · 산업·직무 · 할 일. 역할은 산업 바로 뒤가 맞고,
+     전체 기술영역과 지원서 문장과 지역은 앞 장에 이어 붙는 쪽이 맞다 */
+  /* **표지가 선 종이에만 걸린다.** 장 바뀜은 표지와 한 벌이고, 표지가
+     없는 개인 결제 종이에 걸면 장이 넷으로 갈리면서 **선별 등급의
+     마지막 장이 16% 만 차서** 덜 만든 종이로 읽힌다 */
+  .is-report #evidence, .is-report #gaps,
+  .is-report #industry, .is-report #plan { break-before: page; }
+
   .rs-sect { margin-top: 5px; }
   .rs-sect > h2 {
     font-size: 12.5pt; break-after: avoid;

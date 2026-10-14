@@ -24,6 +24,14 @@ export type DrawOpts = {
   baseUrl: string;
   /** 부른 사람이 들고 온 쿠키 머리글 그대로 */
   cookie: string;
+  /**
+   * 쪽마다 위에 적는 한 줄. 학교 진입이면 `학교 · 학과 · 리포트 이름` 이다.
+   *
+   * **쪽머리에 상품 이름만 적지 않는다**(규격 §14). 종이는 학생이 보관하고
+   * 학교가 결과물로 전달하는 자리다. 넘겨 보다 한 장만 떨어져 나와도 그
+   * 장이 어느 학교의 무슨 문서인지 혼자 말해야 한다.
+   */
+  header?: string;
 };
 
 /**
@@ -99,6 +107,12 @@ function cookiesFor(header: string, url: string) {
     const i = pair.indexOf("=");
     return { name: pair.slice(0, i), value: pair.slice(i + 1), url: origin };
   }).filter((c) => c.name);
+}
+
+/** 쪽머리에 넣기 전에 꺾쇠를 막는다. 학교 이름에 `&` 가 들어갈 수 있다 */
+function escapeHtml(t: string): string {
+  return t.replace(/[&<>"]/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c] ?? c));
 }
 
 export async function drawResultPdf(opts: DrawOpts): Promise<Buffer> {
@@ -195,7 +209,8 @@ export async function drawResultPdf(opts: DrawOpts): Promise<Buffer> {
       margin: { top: "14mm", bottom: "14mm", left: "14mm", right: "14mm" },
       displayHeaderFooter: true,
       headerTemplate: '<div style="font-size:7pt;color:#5f6e86;width:100%;'
-        + 'padding:0 14mm;font-family:sans-serif">CareerMatri</div>',
+        + 'padding:0 14mm;font-family:sans-serif">'
+        + escapeHtml(opts.header ?? "CareerMatri") + '</div>',
       footerTemplate: '<div style="font-size:7pt;color:#5f6e86;width:100%;'
         + 'padding:0 14mm;text-align:right;font-family:sans-serif">'
         + '<span class="pageNumber"></span> / <span class="totalPages"></span></div>',

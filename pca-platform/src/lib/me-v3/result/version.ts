@@ -12,7 +12,7 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
 /** 결과지에 나가는 한국어. 문장만 바뀌면 이것만 올린다 */
 /* copy.19 — `EXPLORE_BROADLY` 가 어디에서 해 보면 되는지를 적고(§16),
    경험 빈도의 첫 칸이 응시 화면과 같은 `없음` 이다(§7) */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.19";
+export const RESULT_COPY_VERSION = "me-v3-result-copy.20";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -104,7 +104,7 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.19";
  * **판정에 닿지 않는다**: `spec-view.ts` 는 채점 모듈을 하나도 들여오지
  * 않고 축 수준과 묶음과 빈자리와 할 일은 결과 모델이 정한 그대로다.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V31";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V32";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

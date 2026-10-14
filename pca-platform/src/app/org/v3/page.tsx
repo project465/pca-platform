@@ -4,7 +4,8 @@ import { requireRole } from "@/lib/session";
 import { resolveLang } from "@/lib/locale-server";
 import { orgsOf, MIN_CELL } from "@/lib/org";
 import { campusV3, type Cell } from "@/lib/me-v3/campus";
-import { core as coreEntry } from "@/lib/me-v3/core-registry";
+import { core as coreEntry, registry } from "@/lib/me-v3/core-registry";
+import { industryChoices, roleChoices } from "@/lib/me-v3/runtime/session";
 import { allLeaves, facultyOf, retiredCodeOf, university } from "@/lib/campus/registry";
 import { BRAND, toLang2 } from "@/lib/surface-text";
 import { Shell, PageHead, Section } from "@/components/sf/shell";
@@ -54,12 +55,69 @@ function campusNames(universityCode: string | null): {
   };
 }
 
-const PACK_KO = (code: string): string => code
-  .replace(/^INDUSTRY_/, "").replace(/^ROLE_/, "").replace(/_V\d+$/, "");
+/**
+ * 산업·직무 팩 코드를 담당자가 읽는 이름으로.
+ *
+ * 전에는 앞뒤를 떼어 `CENTRAL` · `FOUNDRY` · `COMPTEAM` 을 그대로 세웠다.
+ * 그것은 **그 팩 파일의 안쪽 코드**이고, 담당자 화면에 그 글자가 서면
+ * 읽는 사람은 집계가 깨진 줄로 본다(규격 §16).
+ *
+ * **이름은 전부 팩 파일이 들고 있다.** 집계는 전공을 가로질러 세므로 Core
+ * 를 하나 고를 수 없고, 그래서 열려 있는 전공 전부에서 모아 한 표로
+ * 만든다. 같은 코드가 두 전공에서 다른 이름이면 둘 다 적는다: 한쪽을
+ * 골라 적으면 다른 전공 담당자가 남의 산업 이름을 읽는다.
+ */
+function packNames(): (code: string) => string {
+  const map = new Map<string, Set<string>>();
+  const add = (code: string, name: string) => {
+    const got = map.get(code) ?? new Set<string>();
+    got.add(name); map.set(code, got);
+  };
+  for (const c of registry().cores) {
+    try { for (const x of industryChoices(c.code)) add(x.code, x.name); } catch { /* 자료가 아직 없는 전공 */ }
+    try { for (const x of roleChoices(c.code)) add(x.code, x.name); } catch { /* 같은 까닭 */ }
+  }
+  return (code: string) => {
+    if (code === "(고르지 않음)") return "고르지 않음";
+    const got = map.get(code);
+    return got ? [...got].join(" / ") : code;
+  };
+}
 
-function bars(rows: Cell[], name: (k: string) => string) {
+/**
+ * 최근 2주 추이. **막대 하나가 하루다.**
+ *
+ * 새 지표를 만들지 않는다: 세는 것은 그날 시작한 사람과 그날 결과를 받은
+ * 사람뿐이고, 둘 다 다섯 명이 안 되는 날은 **값을 만들지 않는다.**
+ */
+function Trend({ rows }: {
+  rows: { day: string; started: number | null; scored: number | null }[];
+}) {
+  /** 그리는 자리의 높이. **백분율로 그리지 않는다**: flex 안에서 퍼센트
+      높이가 풀리지 않아 스물일곱이 2px 로 섰다(한 번 그렇게 찍혔다) */
+  const PLOT = 112;
+  const top = Math.max(1, ...rows.map((r) => Math.max(r.started ?? 0, r.scored ?? 0)));
+  const px = (n: number | null) => Math.max(2, Math.round(((n ?? 0) / top) * PLOT));
+  return (
+    <div className="cv-trend" style={{ ["--cv-plot" as string]: `${PLOT}px` }}>
+      {rows.map((r) => (
+        <div className="cv-day" key={r.day}>
+          <div className="cv-cols">
+            <i style={{ height: px(r.started) }}
+              title={`시작 ${r.started ?? "5명 미만"}`} />
+            <b style={{ height: px(r.scored) }}
+              title={`완료 ${r.scored ?? "5명 미만"}`} />
+          </div>
+          <span>{r.day}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function bars(rows: Cell[], name?: (k: string) => string) {
   return rows.map((r) => ({
-    label: name(r.key), value: r.n ?? 0, hidden: r.n === null,
+    label: name ? name(r.key) : r.label, value: r.n ?? 0, hidden: r.n === null,
   }));
 }
 
@@ -83,6 +141,8 @@ export default async function CampusV3({
   const user = await requireRole(["org_admin", "instructor"]);
   const { lang: q } = await searchParams;
   const L = toLang2(await resolveLang(q));
+
+  const packKo = packNames();
 
   const orgs = await orgsOf(user.id);
   const org = orgs[0];
@@ -133,15 +193,37 @@ export default async function CampusV3({
           + `사람이 ${MIN_CELL}명이 안 되는 칸은 숫자를 내지 않습니다.`}
       />
 
+      {/* **KPI 는 넷이다**(규격 §16): 대상자 · 시작 · 완료 · 완료율.
+          캡처해서 내부 보고자료로 쓰는 자리라 이 넷이 한 줄에 서야 한다.
+          **새 지표를 만들지 않는다**: 완료율도 세어 둔 둘을 나눈 것이고,
+          나눌 바닥이 0 이면 비율을 만들지 않는다 */}
       <Section>
-        <div className="sf-kpis">
+        {/* **쓰는 이름이 CSS 에 있는지 본다.** `sf-kpis` 는 이 저장소의 어느
+            CSS 에도 규칙이 없어서 KPI 넷이 세로로 한 줄씩 섰다. 쪽은 200
+            으로 멀쩡히 뜨고 생김새만 없는 그 모양이 여기서 아홉 번째다
+            (`.btn` · `--sf-r` · `.lg` · `empty` · `industries` · `OC*` ·
+            `qs-steps` · `.cm-snap`). 다른 화면이 쓰는 이름으로 맞춘다 */}
+        <div className="sf-grid sf-g4">
+          <Kpi label="대상자" value={v3.roster} unit="명"
+            note="학교가 계정을 발급한 학생" />
           <Kpi label="검사를 시작한 학생" value={v3.started} unit="명" />
           <Kpi label="결과를 받은 학생" value={v3.scored} unit="명" />
-          <Kpi label="지금 푸는 중" value={v3.in_progress} unit="명" />
-          <Kpi label="경험을 더해 갱신한 학생" value={v3.recomputed} unit="명"
-            note="검사 뒤에 다시 들어온 수" />
+          <Kpi label="완료율"
+            value={v3.completion === null ? "—" : `${v3.completion}%`}
+            note={v3.roster ? "대상자 기준" : "시작한 학생 기준"} />
         </div>
+        <p className="sf-meta" style={{ marginTop: 10 }}>
+          지금 푸는 중 {v3.in_progress}명 · 경험을 더해 갱신한 학생
+          {" "}{v3.recomputed}명
+        </p>
       </Section>
+
+      {v3.recent.length ? (
+        <Section title="최근 응시 추이"
+          note="최근 2주입니다. 옅은 막대가 시작, 짙은 막대가 완료입니다">
+          <Trend rows={v3.recent} />
+        </Section>
+      ) : null}
 
       {v3.too_few ? (
         <Section title="아직 집계를 내지 않습니다">
@@ -182,19 +264,19 @@ export default async function CampusV3({
 
           <Section title="학위 단계"
             note="묻는 장면이 단계마다 갈립니다">
-            <BarList rows={bars(v3.by_stage, (k) => k)}
+            <BarList rows={bars(v3.by_stage)}
               hiddenLabel={`${MIN_CELL}명 미만`} emptyLabel="아직 없습니다" />
           </Section>
 
           <Section title="고른 산업"
             note="응시 중에 깊게 보기로 고른 산업입니다. 적합도가 아닙니다">
-            <BarList rows={bars(v3.by_industry, PACK_KO)}
+            <BarList rows={bars(v3.by_industry, packKo)}
               hiddenLabel={`${MIN_CELL}명 미만`} emptyLabel="아직 없습니다" />
           </Section>
 
           <Section title="고른 직무"
             note="응시 중에 깊게 보기로 고른 직무입니다. 추천이 아닙니다">
-            <BarList rows={bars(v3.by_role, PACK_KO)}
+            <BarList rows={bars(v3.by_role, packKo)}
               hiddenLabel={`${MIN_CELL}명 미만`} emptyLabel="아직 없습니다" />
           </Section>
 
@@ -203,7 +285,9 @@ export default async function CampusV3({
             note={"사람 수가 아니라 (학생 × 기술영역) 칸 수입니다. "
               + "학생 한 명이 영역 열둘을 들고 있습니다"}
           >
-            <BarList rows={bars(v3.zone_cells, (k) => k)}
+            {/* 묶음 이름은 집계 쪽이 이미 사람의 말로 적어 준다
+                (`campus.ts` 의 `zoneKo`). 여기서 코드를 다시 적지 않는다 */}
+            <BarList rows={bars(v3.zone_cells)}
               hiddenLabel={`${MIN_CELL}명 미만`} emptyLabel="아직 없습니다" />
           </Section>
         </>

@@ -49,7 +49,7 @@
  *
  * **문항 은행과 보기와 저장되는 값과 판정은 한 글자도 바뀌지 않았다.**
  */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V25";
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V26";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
 /* copy.15 — 받침 한 줄과 보기 넷의 예시가 화면에 서는 글자다 */

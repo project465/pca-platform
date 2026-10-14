@@ -22,6 +22,21 @@ import { MIN_CELL } from "@/lib/org";
 export type Cell = { key: string; label: string; n: number | null };
 
 export type CampusV3 = {
+  /**
+   * 학교가 명단으로 발급한 사람(대상자).
+   *
+   * **시작한 사람과 다른 수다.** 발급은 했는데 아무도 안 들어온 날과
+   * 아무에게도 발급하지 않은 날이 `시작 0` 으로 같아 보이면, 담당자는
+   * 무엇을 해야 하는지 알 수 없다. 학교 등록부의 학교가 없으면 0 이다.
+   */
+  roster: number;
+  /**
+   * 완료율. **대상자가 있으면 그것을 바닥으로, 없으면 시작한 사람을.**
+   *
+   * **나눌 바닥이 0 이면 비율을 만들지 않는다**(설계 원칙). 아무도
+   * 시작하지 않았는데 0% 를 찍으면 그것은 거짓이다.
+   */
+  completion: number | null;
   /** 이 기관에서 V3 를 시작한 사람 */
   started: number;
   /** 끝내고 결과를 받은 사람 */
@@ -55,6 +70,14 @@ export type CampusV3 = {
    * 화면이 함께 적는다.
    */
   zone_cells: Cell[];
+  /**
+   * 최근 응시 추이. 날짜마다 시작한 사람과 결과를 받은 사람.
+   *
+   * **5명 규칙을 날짜 칸에도 건다.** 하루에 한 사람만 친 날이 그대로
+   * 찍히면 그 사람이 누구인지 담당자가 짐작할 수 있다. 가리는 것이
+   * 아니라 **값을 만들지 않는다**(`n` 이 `null`).
+   */
+  recent: { day: string; started: number | null; scored: number | null }[];
   /** 집계에 들어간 사람이 5명이 안 되는가. 그러면 아래 칸이 전부 null 이다 */
   too_few: boolean;
 };
@@ -67,6 +90,19 @@ const ZONE_KO: Record<string, string> = {
   Z3: "근거는 있고 관심이 낮은 영역", Z4: "아직 판단하기 어려운 영역",
   Z5: "이번에 열지 않은 영역",
 };
+
+/**
+ * 굳은 결과가 들고 있는 묶음 코드를 담당자가 읽는 말로.
+ *
+ * **앞 두 글자만 보고 끝내지 않는다.** 저장된 값은
+ * `Z1_EVIDENCE_ESTABLISHED` 처럼 꼬리가 붙어 있고 `NOT_EXPLORED` 는
+ * 애초에 `Z` 로 시작하지 않는다. 그래서 전에는 `ZONE_KO[r.k]` 가 늘
+ * 빗나가 **담당자 화면에 안쪽 코드가 그대로 찍혔다**(규격 §16).
+ */
+function zoneKo(code: string): string {
+  if (code === "NOT_EXPLORED") return "이번에 열지 않은 영역";
+  return ZONE_KO[code.slice(0, 2)] ?? "아직 판단하기 어려운 영역";
+}
 
 /** 5명 미만이면 숫자를 내지 않는다. **0 으로 적지도 않는다** */
 function cell(key: string, label: string, n: number): Cell {
@@ -90,6 +126,7 @@ export type CampusScope = {
 
 export async function campusV3(scope: CampusScope): Promise<CampusV3> {
   const empty: CampusV3 = {
+    roster: 0, completion: null, recent: [],
     started: 0, scored: 0, in_progress: 0, recomputed: 0,
     by_core: [], by_stage: [], by_industry: [], by_role: [],
     by_college: [], by_department: [],
@@ -123,8 +160,29 @@ export async function campusV3(scope: CampusScope): Promise<CampusV3> {
 
   /* **사람이 다섯이 안 되면 아래를 세지 않는다.** 네 명짜리 표에서는
      전공과 학위를 겹치면 누구인지 짐작이 된다 */
+  /* 대상자. **학교 등록부의 학교일 때만 셀 수 있다**: 명단은 그 표에
+     학교 코드로 적힌다 */
+  const roster = uni
+    ? Number((await queryOne<{ n: string }>(
+      `SELECT count(*)::text AS n FROM campus_students
+        WHERE university_code = $1`, [uni]))?.n ?? 0)
+    : 0;
+  /**
+   * 바닥은 **대상자와 응시자 가운데 큰 쪽**이다.
+   *
+   * 명단에 없는 학생이 학교 쪽으로 들어와 친 응시가 섞이면 응시자가
+   * 대상자보다 많아진다. 그때 대상자만 바닥으로 쓰면 **완료율이 289%**
+   * 로 찍힌다(한 번 그렇게 찍혔다). 비율이 100 을 넘으면 그 수는 아무도
+   * 못 믿는다.
+   */
+  const base = Math.max(roster, started);
+  const completion = base > 0 ? Math.round((scored / base) * 100) : null;
+
   if (started < MIN_CELL) {
-    return { ...empty, started, scored, in_progress: Number(head?.open ?? 0) };
+    return {
+      ...empty, roster, completion,
+      started, scored, in_progress: Number(head?.open ?? 0),
+    };
   }
 
   const rec = await queryOne<{ n: string }>(
@@ -171,7 +229,37 @@ export async function campusV3(scope: CampusScope): Promise<CampusV3> {
         AND d ->> 'zone' IS NOT NULL
       GROUP BY 1 ORDER BY 2 DESC`, args);
 
+  /*
+   * 최근 2주. **빈 날을 건너뛰지 않는다**: 줄이 없는 날과 0 인 날이
+   * 그래프에서 같아 보이면 담당자가 추이를 거꾸로 읽는다.
+   *
+   * **거르는 조건을 바깥 `WHERE` 에 두지 않는다.** 그렇게 두면 그날 응시가
+   * 있었는데 전부 남의 기관 것이면 그 **날짜가 통째로 사라진다**: 열나흘을
+   * 그린다고 적어 놓고 열흘만 선다(한 번 그렇게 섰다). 거르는 일은 안쪽
+   * 부분질의가 하고, 날짜는 `generate_series` 가 끝까지 든다.
+   */
+  const days = await query<{ d: string; a: string; b: string }>(
+    `SELECT to_char(g.d, 'MM-DD') AS d,
+            count(DISTINCT t.user_id) FILTER (WHERE t.started_at::date = g.d)::text AS a,
+            count(DISTINCT t.user_id) FILTER (WHERE t.submitted_at::date = g.d)::text AS b
+       FROM generate_series(current_date - 13, current_date, interval '1 day') AS g(d)
+       LEFT JOIN (
+         SELECT DISTINCT a.user_id, a.started_at, a.submitted_at
+           FROM v3_attempts a
+           LEFT JOIN memberships m
+             ON m.user_id = a.user_id AND m.org_id = ANY($1::bigint[])
+          WHERE (m.org_id IS NOT NULL
+                 OR ($2::text IS NOT NULL AND a.university_code = $2))
+       ) t ON (t.started_at::date = g.d OR t.submitted_at::date = g.d)
+      GROUP BY g.d ORDER BY g.d`, args);
+
+  const hide = (n: number) => (n > 0 && n < MIN_CELL ? null : n);
+
   return {
+    roster, completion,
+    recent: days.map((r) => ({
+      day: r.d, started: hide(Number(r.a)), scored: hide(Number(r.b)),
+    })),
     started, scored, in_progress: Number(head?.open ?? 0),
     recomputed: Number(rec?.n ?? 0),
     by_core: cores.map((r) => cell(r.k, r.k, Number(r.n))),
@@ -180,7 +268,7 @@ export async function campusV3(scope: CampusScope): Promise<CampusV3> {
     by_stage: stages.map((r) => cell(r.k, STAGE_KO[r.k] ?? r.k, Number(r.n))),
     by_industry: inds.map((r) => cell(r.k, r.k, Number(r.n))),
     by_role: roles.map((r) => cell(r.k, r.k, Number(r.n))),
-    zone_cells: zones.map((r) => cell(r.k, ZONE_KO[r.k] ?? r.k, Number(r.n))),
+    zone_cells: zones.map((r) => cell(r.k, zoneKo(r.k), Number(r.n))),
     too_few: false,
   };
 }

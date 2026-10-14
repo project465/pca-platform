@@ -61,7 +61,7 @@
  *   들어오는 길이 지금 무엇인지 적지 않으면 구글로 가입하신 분이
  *   비밀번호 찾기를 누르고 메일을 기다린다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V29";
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V30";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -75,7 +75,7 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V29";
  * 셋은 우리가 안에서 그 일을 부르던 말이고, 손님 화면에서는 그 말이
  * 무엇을 가리키는지 알 수 없다.
  */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.18";
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.19";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

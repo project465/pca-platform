@@ -12,6 +12,7 @@ import { headers } from "next/headers";
 import { requireUser } from "@/lib/session";
 import { query } from "@/lib/db";
 import { attemptOf, latestResult } from "@/lib/me-v3/runtime/session";
+import { resultMeta } from "@/lib/me-v3/result/meta";
 import { drawResultPdf, PdfFailed, resolveChromium } from "@/lib/me-v3/result/pdf";
 import { participantOf, record } from "@/lib/me-v3/pilot/store";
 import { mark } from "@/lib/me-v3/pilot/funnel";
@@ -91,8 +92,13 @@ export async function GET(
   console.log(`[v3-pdf] start attempt=${attemptId} tier=${a.tier} base=${base} `
     + `chromium=${got.bin ?? "(없음)"}`);
   try {
+    /* 쪽머리 한 줄. **값을 여기서 만들지 않는다**: 결과지 머리와 같은
+       자리를 읽어(`resultMeta`) 종이와 화면이 다른 학과를 적지 않게 한다 */
+    const meta = await resultMeta(attemptId, a.core_code);
+    const header = [meta.school, meta.department]
+      .filter(Boolean).concat("CareerMatri 진로 분석 리포트").join(" · ");
     const pdf = await drawResultPdf({
-      attemptId, baseUrl: base, cookie: h.get("cookie") ?? "",
+      attemptId, baseUrl: base, cookie: h.get("cookie") ?? "", header,
     });
     console.log(`[v3-pdf] done attempt=${attemptId} ${pdf.length}바이트 `
       + `${Date.now() - t0}ms`);
