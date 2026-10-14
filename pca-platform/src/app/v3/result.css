@@ -1250,3 +1250,141 @@
   font-weight: var(--ui-w-rg); color: var(--r-ink-3); text-decoration: none;
   font-size: var(--r-t-gloss);
 }
+
+/* ── 시각화 넷 (§4·§7·§8·§9) ─────────────────────────────────
+   **색만으로 상태를 가르지 않는다.** 네 단계는 밝기가 차례로 어두워지고
+   둘째 칸에 빗금이 더 들어가며, 같은 사실이 글자로도 적힌다. 그래서 흑백
+   으로 뽑아도 넷이 갈린다 */
+.pv-note {
+  margin: var(--r-s3) 0 0; padding: var(--r-s3) var(--r-s4);
+  background: var(--r-sunk); border-radius: var(--r-r-sm);
+  font-size: var(--r-t-gloss); color: var(--r-ink-2); line-height: 1.6;
+}
+.pv-sub {
+  margin: var(--r-s3) 0 0; font-size: var(--r-t-meta);
+  color: var(--r-ink-3); line-height: 1.6;
+}
+
+/* A. Radar. **꼭짓점에 이름을 두지 않는다**: 열두 이름이 위아래에서
+   겹치고, 좁은 화면에서는 데스크톱을 줄인 것이 되어 더 못 읽는다 */
+.pv-radar { display: grid; gap: var(--r-s4); }
+.pv-radar-svg { width: 100%; max-width: 340px; height: auto; margin: 0 auto; }
+.pv-legend {
+  display: grid; grid-template-columns: 1fr; gap: 2px 14px;
+  margin: 0; padding: 0; list-style: none; max-width: 480px;
+}
+.pv-legend li {
+  display: grid; grid-template-columns: 20px 1fr auto; align-items: baseline;
+  gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--r-line-soft);
+  font-size: var(--r-t-gloss);
+}
+.pv-legend b {
+  width: 20px; height: 20px; border-radius: 50%; display: grid;
+  place-items: center; background: var(--r-sunk); color: var(--r-ink);
+  font-size: var(--r-t-meta); font-weight: var(--ui-w-sb);
+}
+.pv-legend em { font-style: normal; color: var(--r-ink-2); }
+
+@media (min-width: 720px) {
+  .pv-radar { grid-template-columns: 340px 1fr; align-items: center; }
+  .pv-radar .pv-sub { grid-column: 1 / -1; }
+}
+
+/* B. 경험 단계 막대 */
+.pv-bars { display: grid; gap: var(--r-s4); }
+.pv-bar-h {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: var(--r-s3); margin-bottom: 4px; font-size: var(--r-t-gloss);
+}
+.pv-bar-h b { font-weight: var(--ui-w-sb); }
+.pv-bar-h span { color: var(--r-ink-3); font-size: var(--r-t-meta); }
+/* **막대 높이를 폭에 매달지 않는다**: 넓은 화면에서 막대 하나가 66px 로
+   섰다. 네 토막의 너비만 응답이 정하고 높이는 늘 같다 */
+.pv-bar-track {
+  display: flex; height: 26px; border-radius: var(--r-r-sm);
+  overflow: hidden; background: var(--r-sunk);
+}
+.pv-seg {
+  display: grid; place-items: center; min-width: 0;
+  font-size: var(--r-t-meta); font-weight: var(--ui-w-md);
+}
+.pv-seg.is-0 { background: #e6ecf5; color: #46506a; }
+/* 둘째 칸에만 빗금이 더 들어간다. **색만으로 가르지 않는다**(§9·§27) */
+.pv-seg.is-1 {
+  color: #2b3650;
+  background: repeating-linear-gradient(45deg,
+    #9fb3cc 0 3px, #ffffff 3px 6px);
+}
+.pv-seg.is-2 { background: #2d6cdf; color: #fff; }
+.pv-seg.is-3 { background: #0a1b31; color: #fff; }
+.pv-key {
+  display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 0; padding: 0;
+  list-style: none; font-size: var(--r-t-meta); color: var(--r-ink-2);
+}
+.pv-key li { display: flex; align-items: center; gap: 6px; }
+.pv-key i {
+  width: 16px; height: 11px; border-radius: 2px;
+  border: 1px solid var(--r-line); display: block;
+}
+
+/* C. Evidence Matrix */
+.pv-matrix { overflow-x: auto; }
+.pv-matrix table {
+  width: 100%; border-collapse: collapse; font-size: var(--r-t-gloss);
+}
+.pv-matrix th, .pv-matrix td {
+  padding: 8px 10px; border-bottom: 1px solid var(--r-line-soft);
+  text-align: right; white-space: nowrap;
+}
+.pv-matrix thead th {
+  color: var(--r-ink-3); font-weight: var(--ui-w-md);
+  font-size: var(--r-t-meta); border-bottom: 1px solid var(--r-line);
+}
+.pv-matrix th[scope="row"], .pv-matrix thead th:first-child {
+  text-align: left; font-weight: var(--ui-w-sb);
+}
+
+/* D. Action Roadmap */
+.pv-road {
+  display: grid; gap: var(--r-s3); margin: 0; padding: 0; list-style: none;
+  counter-reset: pv;
+}
+.pv-road > li {
+  position: relative; padding: var(--r-s4);
+  border: 1px solid var(--r-line); border-radius: var(--r-r);
+  background: var(--r-paper);
+}
+.pv-road-n {
+  display: inline-grid; place-items: center; width: 22px; height: 22px;
+  border-radius: 50%; background: var(--r-accent); color: #fff;
+  font-size: var(--r-t-meta); font-weight: var(--ui-w-sb);
+}
+.pv-road h4 {
+  margin: 8px 0 6px; font-size: var(--r-t-body); font-weight: var(--ui-w-sb);
+}
+.pv-road ul { margin: 0; padding-left: 16px; font-size: var(--r-t-gloss); }
+.pv-road ul li { margin: 2px 0; }
+.pv-road-none, .pv-road-s {
+  margin: 6px 0 0; font-size: var(--r-t-meta); color: var(--r-ink-3);
+}
+@media (min-width: 860px) {
+  .pv-road { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* 종이. **그래프가 쪽 경계에서 쪼개지지 않는다** */
+@media print {
+  .pv-radar, .pv-bar, .pv-road > li, .pv-matrix { break-inside: avoid; }
+  /* 종이에서는 바탕색이 빠질 수 있다. 네 토막에 테를 둘러 둔다 */
+  .pv-seg { border: 1px solid #0a1b31; }
+  .pv-bar-track { height: 22px; }
+  .pv-radar { grid-template-columns: 300px 1fr; }
+  .pv-legend { grid-template-columns: 1fr 1fr; }
+  .pv-road { grid-template-columns: repeat(2, 1fr); }
+  .pv-note { background: none; border: 1px solid var(--r-line); }
+}
+
+/* 차트 위의 작은 머리. 절 머리(h2)와 같은 무게로 서면 절이 둘로 읽힌다 */
+.pv-h3 {
+  margin: var(--r-s6) 0 var(--r-s2); font-size: var(--r-t-h3);
+  font-weight: var(--ui-w-sb); color: var(--r-ink);
+}

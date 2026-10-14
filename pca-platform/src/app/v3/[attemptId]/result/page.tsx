@@ -29,6 +29,9 @@ import { resultMeta } from "@/lib/me-v3/result/meta";
 import { leadFirst, specView } from "@/lib/me-v3/result/spec-view";
 import { participantOf, savedActions } from "@/lib/me-v3/pilot/store";
 import { takeActionsFromResult } from "@/app/me/next/actions";
+import {
+  ActionRoadmap, ChartNote, EvidenceMatrix, Radar, StageBars,
+} from "./charts";
 import ResultNav from "./result-nav";
 import "../../result.css";
 import Detail from "./detail";
@@ -1105,6 +1108,28 @@ export default async function V3Result({
           </a>
         </div>
 
+        {/* ── 경험·근거 분포 ──
+            **그래프는 재는 층이 아니라 읽기 쉽게 다시 그리는 층이다**(§0).
+            축마다 표시값이 무엇을 뜻하는지는 `PCU_PREMIUM_VISUAL.md` A절에
+            먼저 적었고, 여기 서는 값은 전부 결과 모델이 이미 들고 있는
+            상태와 개수다. 적성 순위도 직무 적합도도 만들지 않는다 */}
+        {deep ? (
+          <section className="rs-sect" id="spread">
+            <h2>경험·근거 분포</h2>
+            <p className="rs-note">
+              어느 영역에서 무엇까지 확인됐는지를 한눈에 봅니다.
+            </p>
+            <Radar model={model} name={(c) => domainName(core, c)} />
+            <ChartNote />
+            <h3 className="pv-h3">영역별 경험 단계</h3>
+            <p className="rs-note">
+              이번 응시에서 판단을 물은 영역입니다. 막대의 길이는 물은 축의
+              수이고, 영역마다 물은 축의 수가 달라 비율로 바꾸지 않습니다.
+            </p>
+            <StageBars model={model} name={(c) => domainName(core, c)} />
+          </section>
+        ) : null}
+
         {/* ── 내가 이미 가진 근거 ── **접은 자리 안에 두지 않는다**(규격 §10).
             이 절은 읽는 사람이 결과지에서 가장 먼저 자기를 알아보는
             자리다. 본문 아홉 절과 함께 `자세한 내용 보기` 안에 접어 두면,
@@ -1185,6 +1210,12 @@ export default async function V3Result({
               </section>
             </div>
             </Disclose>
+            {/* **같은 사실을 두 번 적지 않는다**(§A-6). 위가 꺼내 쓸 자리를
+                문장으로 적고, 이 표는 그 자리가 어느 영역에서 무엇으로
+                섰는지를 한 눈에 보인다. 개수를 더하거나 점수로 바꾸지
+                않는다 */}
+            <h3 className="pv-h3">근거가 어디에 어떻게 남아 있는가</h3>
+            <EvidenceMatrix model={model} name={(c) => domainName(core, c)} />
           </section>
         ) : null}
 
@@ -1528,6 +1559,10 @@ export default async function V3Result({
             <p className="rs-note">
               그 영역에서 실제로 할 수 있는 한 걸음으로 적었습니다.
             </p>
+            {/* **새 Action 을 만들지 않는다**(§13). 네 칸이 전부 위
+                목록과 같은 할 일에서 오고, 다른 것은 **언제 할 수 있는
+                일인가**로 묶어 차례를 보인 것뿐이다 */}
+            <ActionRoadmap model={model} name={(c) => domainName(core, c)} />
             <Plan core={core} actions={model.actions} stage={model.stage}
               attemptId={attemptId} saved={saved} where={exploreWhere()} />
           </>) : (

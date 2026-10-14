@@ -151,6 +151,9 @@ const FILES = [
   "src/app/v3/[attemptId]/intro/page.tsx",
   "src/app/v3/[attemptId]/done/page.tsx",
   "src/app/v3/tier-text.ts",
+  /* 결과지의 시각화 넷. **그래프 옆의 한 줄도 손님이 읽는 글이다**:
+     여기만 빠뜨리면 차트를 더하는 회차마다 검사 밖의 원고가 늘어난다 */
+  "src/app/v3/[attemptId]/result/charts.tsx",
   "src/lib/me-v3/runtime/blocks.ts",
   "src/lib/me-v3/runtime/menus.ts",
   "src/lib/me-v3/runtime/session.ts",

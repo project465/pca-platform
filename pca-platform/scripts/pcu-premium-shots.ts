@@ -287,7 +287,7 @@ async function main(): Promise<void> {
     const SECTS: [string, string][] = [
       ["05-result-hero", ".rs-hero"],
       ["06-result-summary", ".rs-top"],
-      ["07-radar", "#zones"],
+      ["07-radar", "#spread, #zones"],
       ["08-evidence", "#evidence"],
       ["09-gap", "#gaps"],
       ["10-industry", "#industry"],
