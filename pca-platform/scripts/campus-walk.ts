@@ -81,7 +81,7 @@ async function startAttempt(page: Page, path: string, userId: string): Promise<{
   department_code: string | null; specialization_code: string | null;
 } | null> {
   await page.goto(`${BASE}${path}`, { waitUntil: "networkidle" });
-  await page.getByRole("button", { name: "이 전공으로 검사 시작" }).click();
+  await page.getByRole("button", { name: "검사 시작하기" }).click();
   await page.waitForURL(/\/v3\/start/, { timeout: 30000 });
   await page.waitForLoadState("networkidle");
   await page.getByText("학부", { exact: true }).click();
@@ -131,10 +131,10 @@ async function main(): Promise<void> {
 
     /* ── 기본 목록은 재학생 구조만 세운다(규격 §2 · §3) ──────── */
     await page.goto(`${BASE}/campus/zztest/majors`, { waitUntil: "networkidle" });
-    const open = await page.evaluate(() => [...document.querySelectorAll("a.cm-pc")]
-      .map((e) => ({
-        name: e.querySelector(".cm-pc-h > b")?.textContent?.trim(),
-        state: e.querySelector(".cm-pc-h > em")?.textContent?.trim(),
+    const open = await page.evaluate(() =>
+      [...document.querySelectorAll("a.cm-cmp-row")].map((e) => ({
+        name: e.querySelector(".cm-cmp-row-name")?.textContent?.trim(),
+        state: e.querySelector(".cm-cmp-chip")?.textContent?.trim(),
         href: e.getAttribute("href"),
       })));
     ok("검사 가능 학과가 누를 수 있는 칸으로 선다",
@@ -152,8 +152,9 @@ async function main(): Promise<void> {
     /* ── 다음 학년도 구조로 되돌아간다(규격 §4) ─────────────── */
     await page.goto(`${BASE}/campus/zztest/majors?y=2027`,
       { waitUntil: "networkidle" });
-    const nextList = await page.evaluate(() => [...document.querySelectorAll("a.cm-pc")]
-      .map((e) => e.querySelector(".cm-pc-h > b")?.textContent?.trim()));
+    const nextList = await page.evaluate(() =>
+      [...document.querySelectorAll("a.cm-cmp-row")]
+        .map((e) => e.querySelector(".cm-cmp-row-name")?.textContent?.trim()));
     ok("다음 학년도 목록에 그쪽 학과가 선다",
       nextList.length === 1 && nextList[0] === NEXT_NAME,
       JSON.stringify(nextList));
@@ -192,7 +193,7 @@ async function main(): Promise<void> {
     await page.screenshot({
       path: "docs/metri/shots/campus/desktop/04-ready-detail.png", fullPage: true });
 
-    await page.getByRole("button", { name: "이 전공으로 검사 시작" }).click();
+    await page.getByRole("button", { name: "검사 시작하기" }).click();
     await page.waitForURL(/\/v3\/start/, { timeout: 30000 });
     await page.waitForLoadState("networkidle");
     const start = await page.evaluate(() => document.body.innerText);
@@ -311,7 +312,7 @@ async function main(): Promise<void> {
       /* 학과를 다시 고른다. 응시가 열리면 쿠키를 버리므로 */
       await page.goto(`${BASE}/campus/zztest/d/${encodeURIComponent("ZZ26_ME")}`,
         { waitUntil: "networkidle" });
-      await page.getByRole("button", { name: "이 전공으로 검사 시작" }).click();
+      await page.getByRole("button", { name: "검사 시작하기" }).click();
       await page.waitForURL(/\/v3\/start/, { timeout: 30000 });
       /* 주소에 등급을 붙인다 */
       await page.goto(`${BASE}/v3/start?tier=${t}&upgrade=${t}`,

@@ -92,10 +92,10 @@ async function main(): Promise<void> {
       { waitUntil: "networkidle" });
     const det = await p.locator("body").innerText();
     ok("학과 상세가 선다", det.includes(leaf.name), leaf.name);
-    ok("검사 시작 단추가 있다", await p.getByRole("button", { name: "이 전공으로 검사 시작" }).count() > 0);
+    ok("검사 시작 단추가 있다", await p.getByRole("button", { name: "검사 시작하기" }).count() > 0);
 
     /* 3. 검사 시작 */
-    await p.getByRole("button", { name: "이 전공으로 검사 시작" }).click();
+    await p.getByRole("button", { name: "검사 시작하기" }).click();
     await p.waitForURL(/\/v3\/start/, { timeout: 30000 });
     await p.getByText("학부", { exact: true }).click();
     await p.getByRole("button", { name: "검사 시작" }).click();

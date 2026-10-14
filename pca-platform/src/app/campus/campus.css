@@ -1,62 +1,440 @@
+@import "./campus.tokens.css";
 @import "../me/platform.css";
 
 /*
- * 학교 전용 진입의 껍데기.
+ * 배재대학교 전용 CareerMatri Portal.
  *
- * **새 테마를 만들지 않는다**(규격 §18). 값은 `workspace.tokens.css` 가
- * 들고 있고 칸과 단추와 접는 줄은 `platform.css` 의 이름을 그대로 쓴다.
- * 여기 두는 것은 **왼쪽 띠가 없는 틀** 하나뿐이다: 이 쪽을 보는 사람은
- * 아직 로그인하지 않았을 수 있어서 작업공간의 메뉴를 세울 수 없고,
- * 세우면 들어갈 수 없는 줄 아홉이 메뉴에 선다.
+ * **작업공간을 학교 색으로 칠한 것이 아니다**(규격 §2). 여기 서는 것은
+ * 학교가 제공하는 진로 분석 포털이고, 그 쪽에 필요한 틀은 작업공간의
+ * 틀과 다르다: 왼쪽 띠가 없고(아직 로그인하지 않았을 수 있다), 맨 위에
+ * **학교의 자리**가 서고, 첫 화면이 고르는 자리 하나로 끝난다.
  *
- * 이름을 `cm-cmp-` 으로 감쌌다. 이 저장소에서 이름이 겹쳐 조용히 깨진
- * 자리가 여덟이고(`.btn` · `--sf-r` · `.lg` · `empty` · `industries` ·
- * `OC*` · `.qs-steps` · `.cm-snap`), 그래서 새 이름을 짓기 전에 저쪽을
- * 본다. `npm run campus:check` 가 여기 없는 이름을 센다.
+ * 이름을 전부 `cm-cmp-` 으로 감쌌다. 이 저장소에서 이름이 겹쳐 조용히
+ * 깨진 자리가 여덟이고(`.btn` · `--sf-r` · `.lg` · `empty` ·
+ * `industries` · `OC*` · `.qs-steps` · `.cm-snap`), 그래서 새 이름을
+ * 짓기 전에 저쪽을 본다. `npm run campus:check` 가 여기 없는 이름을 센다.
+ *
+ * **값은 `campus.tokens.css` 가 들고 `--pcu-` 로 시작한다.** 작업공간의
+ * `--ui-*` 와 `--sf-*` 와 `--cm-*` 를 다시 적지 않는다: 그러면 같은
+ * 토큰을 읽는 개인 B2C 화면이 학교 색으로 바뀐다.
  */
 
-/* 작업공간은 아래 띠 높이만큼 본문 아래를 비운다. 이쪽에는 그 띠가
-   없으므로 그만큼을 돌려준다 */
-.cm-cmp .cm-canvas { padding-bottom: 40px; }
+.cm-cmp {
+  /* **바닥까지 채운다.** 담긴 글이 짧은 쪽(로그인)에서 꼬리말 아래가
+     다른 회색으로 남으면, 쪽이 덜 그려진 것으로 읽힌다 */
+  min-height: 100vh;
+  background: var(--pcu-bg);
+  color: var(--pcu-ink-2);
+  display: flex; flex-direction: column;
+}
+
+/* ── 학교의 자리 ────────────────────────────────────────────────── */
 
 /*
- * 머리띠. **넓은 화면에서도 선다.**
+ * 맨 위의 띠. **넓은 화면에서도 선다.**
  *
  * 작업공간의 머리띠는 손전화에서만 서고 넓은 화면은 왼쪽 띠가 그 일을
- * 한다. 이쪽은 왼쪽 띠가 없어서, 머리띠를 감추면 학교 이름이 본문
- * 안에서만 보이고 쪽을 옮기면 사라진다. **어느 학교로 들어왔는지가
- * 끊기지 않아야 한다.**
+ * 한다. 이쪽은 왼쪽 띠가 없어서, 감추면 학교 이름이 본문 안에서만 보이고
+ * 쪽을 옮기면 사라진다. **어느 학교로 들어왔는지가 끊기지 않아야 한다.**
+ *
+ * **학교 로고를 그려 넣지 않는다**(규격 §4 · 레퍼런스 사용 규칙). 저장소에
+ * 정식 asset 이 없고, 학교 상표를 우리가 다시 그리면 그 학교가 승인한 적
+ * 없는 상표가 학생 화면에 선다. 서는 것은 학교 **이름 글자**와 공식
+ * CareerMatri 상표 하나다.
  */
-.cm-cmp-top {
-  display: flex; align-items: center; gap: 10px;
-  padding: 11px 24px; border-bottom: 1px solid var(--sf-line);
-  background: var(--sf-surface);
-  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+.cm-cmp-band {
+  background: var(--pcu-navy);
+  border-bottom: 1px solid rgba(255, 255, 255, .06);
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
 }
-.cm-cmp-top a { text-decoration: none; }
+.cm-cmp-band-in {
+  max-width: var(--pcu-max); margin: 0 auto;
+  min-height: var(--pcu-band-h);
+  padding: 0 24px;
+  display: flex; align-items: center; gap: 12px;
+}
+.cm-cmp-band a { text-decoration: none; }
+/* 학교 이름. **이 띠에서 가장 센 자리다**: 학생이 먼저 확인하는 것이
+   `우리 학교가 맞는가` 이고, 그 다음이 무엇으로 보는가다 */
+.cm-cmp-id {
+  color: var(--pcu-on-navy);
+  font-size: 16px; font-weight: 700; letter-spacing: -.015em;
+  white-space: nowrap;
+}
+.cm-cmp-sep {
+  width: 1px; height: 18px; background: var(--pcu-navy-line);
+  flex: none;
+}
 .cm-cmp-brand {
-  display: inline-flex; align-items: center; gap: 8px;
-  color: var(--sf-ink); font-weight: var(--ui-w-bd); font-size: 16px;
-  letter-spacing: -.015em;
+  display: inline-flex; align-items: center; gap: 7px;
+  color: var(--pcu-on-navy-2);
+  font-size: 14px; font-weight: 600; letter-spacing: -.01em;
+  white-space: nowrap;
 }
-/* 학교 이름. **브랜드와 같은 짙기로 세우지 않는다**: 머리띠에 이름이
-   둘 선 것처럼 읽힌다 */
-.cm-cmp-school {
-  font-size: var(--ui-t-sub); font-weight: var(--ui-w-sb); color: var(--sf-ink-2);
-  padding-left: 11px; margin-left: 1px;
-  border-left: 1px solid var(--sf-line);
-}
-@media (max-width: 719px) {
-  .cm-cmp-top { padding: 9px 14px; }
-  .cm-cmp-brand { font-size: 15.5px; }
-  .cm-cmp-school { font-size: var(--ui-t-cap); padding-left: 9px; }
+/* 띠 오른쪽. **메뉴가 아니다**: 들어갈 수 없는 줄을 세우면 안내가 아니라
+   막다른 길이다. 적는 것은 이 포털이 누구 것인가 한 줄이다 */
+.cm-cmp-tag {
+  margin-left: auto;
+  color: var(--pcu-on-navy-2); font-size: var(--pcu-t-cap);
+  letter-spacing: .02em; white-space: nowrap;
 }
 
-/* 첫 화면. 고르는 자리로 보내는 **한 가지**가 서는 틀이다 */
-.cm-cmp-hero { margin: 4px 0 var(--cm-gap-section); }
-.cm-cmp-hero > p {
-  margin: 0 0 18px; font-size: var(--ui-t-body); line-height: 1.75;
-  color: var(--sf-ink-2); max-width: 60ch;
+/* ── 본문 틀 ────────────────────────────────────────────────────── */
+
+.cm-cmp-main { flex: 1 0 auto; padding: 28px 0 56px; }
+.cm-cmp-wrap {
+  max-width: var(--pcu-max); margin: 0 auto;
+  padding-inline: 24px;
+}
+/* 읽는 자리(학과 상세 · 로그인)는 더 좁다 */
+.cm-cmp-wrap.is-read { max-width: var(--pcu-read); }
+
+.cm-cmp-foot {
+  border-top: 1px solid var(--pcu-line);
+  background: var(--pcu-surface);
+  padding: 18px 0 calc(18px + env(safe-area-inset-bottom, 0px));
+}
+.cm-cmp-foot p {
+  max-width: var(--pcu-max); margin: 0 auto; padding-inline: 24px;
+  font-size: var(--pcu-t-meta); color: var(--pcu-ink-3);
+}
+
+/* ── 첫 화면의 한 가지 ──────────────────────────────────────────── */
+
+/*
+ * Hero. **깊이를 두 겹으로 둔다**: 면 위에 아주 옅은 빛을 깔아 글이 선
+ * 쪽이 밝아진다. 담긴 값을 그린 것이 아니라 면의 결이다.
+ */
+.cm-cmp-hero {
+  position: relative; overflow: hidden;
+  display: grid; gap: 34px;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  border-radius: var(--pcu-r-lg);
+  background:
+    radial-gradient(900px 320px at 88% -20%, rgba(111, 179, 255, .20), transparent 62%),
+    linear-gradient(152deg, var(--pcu-navy) 0%, var(--pcu-navy-2) 58%, var(--pcu-navy-3) 100%);
+  color: var(--pcu-on-navy);
+  padding: 44px 40px 40px;
+}
+/* 넓은 화면에서만 오른쪽에 절차가 선다. **빈 면을 그림으로 채우지
+   않는다**(규격 §2 · 레퍼런스 사용 규칙): 거기 서는 것은 이 검사가 실제로
+   밟는 세 걸음이고 지어낸 값이 아니다 */
+@media (min-width: 900px) {
+  .cm-cmp-hero.has-flow { grid-template-columns: minmax(0, 1fr) 300px; }
+}
+.cm-cmp-flow { margin: 0; padding: 0 0 0 20px; list-style: none;
+  border-left: 1px solid var(--pcu-navy-line); }
+.cm-cmp-flow li { padding: 11px 0; }
+.cm-cmp-flow b {
+  display: block; color: var(--pcu-blue-lit);
+  font-size: var(--pcu-t-cap); font-weight: 700; letter-spacing: .1em;
+}
+.cm-cmp-flow strong {
+  display: block; margin-top: 4px; color: var(--pcu-on-navy);
+  font-size: 15px; font-weight: 650; letter-spacing: -.015em;
+}
+.cm-cmp-flow span {
+  display: block; margin-top: 3px; color: var(--pcu-on-navy-2);
+  font-size: var(--pcu-t-meta); line-height: 1.6;
+}
+
+.cm-cmp-eyebrow {
+  margin: 0 0 12px;
+  color: var(--pcu-blue-lit);
+  font-size: var(--pcu-t-cap); font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.cm-cmp-title {
+  margin: 0; color: var(--pcu-on-navy);
+  font-size: var(--pcu-t-hero); font-weight: 700;
+  line-height: 1.24; letter-spacing: -.028em; text-wrap: balance;
+  max-width: 19ch;
+}
+.cm-cmp-lead {
+  margin: 14px 0 0; color: var(--pcu-on-navy-2);
+  font-size: 15.5px; line-height: 1.72; max-width: 48ch;
+}
+.cm-cmp-cta-row {
+  margin-top: 26px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
+}
+/*
+ * 주된 행동. **한 화면에 하나다.**
+ *
+ * 어두운 면 위에서 가장 읽히는 것은 흰 면이다. 밝은 파랑을 면으로 쓰면
+ * 흰 글자가 4.5:1 에 닿지 않아, 강조색은 눈썹과 밑줄과 표시에만 둔다.
+ */
+.cm-cmp-cta {
+  display: inline-flex; align-items: center; gap: 9px;
+  min-height: 50px; padding: 0 26px;
+  border-radius: 999px; border: 0;
+  background: var(--pcu-on-navy); color: var(--pcu-navy);
+  font-size: 16px; font-weight: 700; letter-spacing: -.01em;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .22);
+}
+.cm-cmp-cta:hover { background: #eef4ff; }
+.cm-cmp-cta:focus-visible { outline: 3px solid var(--pcu-blue-lit); outline-offset: 3px; }
+.cm-cmp-cta-2 {
+  display: inline-flex; align-items: center; min-height: 50px; padding: 0 20px;
+  border-radius: 999px;
+  border: 1px solid var(--pcu-navy-line); background: var(--pcu-navy-soft);
+  color: var(--pcu-on-navy); font-size: 15px; font-weight: 600;
+  text-decoration: none;
+}
+.cm-cmp-cta-2:hover { background: rgba(255, 255, 255, .12); }
+
+/* ── 네 핵심 가치 ───────────────────────────────────────────────── */
+
+/*
+ * **번호는 장식이 아니다**(규격 §2). 넷은 이 제품이 생각하는 차례다:
+ * 전공에서 시작해 · 해 본 경험을 확인하고 · 산업과 직무로 잇고 · 다음에
+ * 할 일을 낸다. 차례가 아니면 번호를 붙이지 않는다.
+ */
+.cm-cmp-values {
+  margin-top: 18px;
+  display: grid; gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.cm-cmp-value {
+  background: var(--pcu-surface); border: 1px solid var(--pcu-line);
+  border-radius: var(--pcu-r); padding: 18px 18px 17px;
+  box-shadow: var(--pcu-sh);
+}
+.cm-cmp-value-n {
+  display: block; margin-bottom: 9px;
+  color: var(--pcu-blue); font-size: var(--pcu-t-cap); font-weight: 700;
+  letter-spacing: .1em;
+}
+.cm-cmp-value h3 {
+  margin: 0 0 6px; color: var(--pcu-ink);
+  font-size: var(--pcu-t-tile); font-weight: 700; letter-spacing: -.015em;
+}
+.cm-cmp-value p {
+  margin: 0; color: var(--pcu-ink-3);
+  font-size: var(--pcu-t-meta); line-height: 1.62;
+}
+
+/* ── 절 머리 ────────────────────────────────────────────────────── */
+
+.cm-cmp-sect { margin-top: 34px; }
+.cm-cmp-sect-h {
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+  margin: 0 0 4px;
+}
+.cm-cmp-sect-h h2 {
+  margin: 0; color: var(--pcu-ink);
+  font-size: var(--pcu-t-sect); font-weight: 700; letter-spacing: -.02em;
+}
+.cm-cmp-sect-h p {
+  margin: 0; color: var(--pcu-ink-3); font-size: var(--pcu-t-meta);
+}
+
+/* ── 줄 목록 (단과대학 · 학과) ──────────────────────────────────── */
+
+/*
+ * **칸을 카드로 늘어놓지 않는다**(규격 §4). 학과가 쉰일곱이면 같은
+ * 생김새의 카드 쉰일곱이 서고, 그 목록은 훑을 수 없다. 줄로 세우면 눈이
+ * 왼쪽 이름만 따라 내려간다.
+ */
+.cm-cmp-list {
+  margin-top: 10px;
+  background: var(--pcu-surface); border: 1px solid var(--pcu-line);
+  border-radius: var(--pcu-r); overflow: hidden;
+  box-shadow: var(--pcu-sh);
+}
+.cm-cmp-row {
+  display: flex; align-items: center; gap: 14px;
+  width: 100%; min-height: 60px; padding: 13px 18px;
+  border: 0; border-top: 1px solid var(--pcu-line-2);
+  background: none; color: inherit; font: inherit; text-align: left;
+  text-decoration: none;
+}
+.cm-cmp-row:first-child { border-top: 0; }
+a.cm-cmp-row:hover { background: var(--pcu-surface-2); }
+a.cm-cmp-row:focus-visible { outline: 2px solid var(--pcu-blue); outline-offset: -2px; }
+.cm-cmp-row-main { min-width: 0; flex: 1; }
+.cm-cmp-row-name {
+  display: block; color: var(--pcu-ink);
+  font-size: var(--pcu-t-tile); font-weight: 650; letter-spacing: -.015em;
+}
+.cm-cmp-row-sub {
+  display: block; margin-top: 3px; color: var(--pcu-ink-3);
+  font-size: var(--pcu-t-meta); line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+/* 지금 할 수 있는가. **안쪽 상태 코드를 적지 않는다**(규격 §4) */
+.cm-cmp-chip {
+  flex: none; padding: 4px 10px; border-radius: 999px;
+  font-size: var(--pcu-t-cap); font-weight: 700; letter-spacing: -.005em;
+  background: var(--pcu-blue-soft); color: var(--pcu-blue-ink);
+  border: 1px solid var(--pcu-blue-line);
+}
+.cm-cmp-chip.is-wait {
+  background: var(--pcu-surface-2); color: var(--pcu-ink-3);
+  border-color: var(--pcu-line);
+}
+.cm-cmp-arrow { flex: none; color: var(--pcu-ink-3); font-size: 17px; line-height: 1; }
+.cm-cmp-row.is-off { cursor: default; }
+.cm-cmp-row.is-off .cm-cmp-row-name { color: var(--pcu-ink-3); font-weight: 600; }
+
+/* ── 단과대학 탭 ────────────────────────────────────────────────── */
+
+/*
+ * **select box 를 쓰지 않는다**(규격 §4). 고르기 전에 무엇이 있는지
+ * 보이지 않는 입력이라, 자기 단과대학이 들어 있는지 확인하려면 열어야
+ * 한다. 탭은 그 자리에서 전부 보인다.
+ *
+ * 손전화에서는 가로로 밀어 고른다. **한 손 탐색**이 되려면 누르는 자리가
+ * 44px 위여야 하고 세로로 쌓이면 목록 앞에 탭이 두 뼘 선다.
+ */
+.cm-cmp-tabs {
+  margin-top: 14px;
+  display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none;
+  border-bottom: 1px solid var(--pcu-line);
+}
+.cm-cmp-tabs::-webkit-scrollbar { display: none; }
+.cm-cmp-tab {
+  flex: none; display: inline-flex; align-items: center;
+  min-height: 46px; padding: 0 14px;
+  border: 0; border-bottom: 2px solid transparent; background: none;
+  color: var(--pcu-ink-3); font-size: 14.5px; font-weight: 600;
+  text-decoration: none; white-space: nowrap; cursor: pointer;
+}
+.cm-cmp-tab:hover { color: var(--pcu-ink-2); }
+.cm-cmp-tab.is-on {
+  color: var(--pcu-ink); border-bottom-color: var(--pcu-blue);
+  font-weight: 700;
+}
+.cm-cmp-tab:focus-visible { outline: 2px solid var(--pcu-blue); outline-offset: -2px; }
+/* 탭 안의 학부 머리. **고르는 자리가 아니다** */
+.cm-cmp-sub-h {
+  margin: 20px 0 0; color: var(--pcu-ink-2);
+  font-size: var(--pcu-t-meta); font-weight: 700; letter-spacing: .02em;
+}
+
+/* ── 학교 전용 로그인 ───────────────────────────────────────────── */
+
+.cm-cmp-auth {
+  max-width: 420px; margin: 24px auto 0;
+  background: var(--pcu-surface); border: 1px solid var(--pcu-line);
+  border-radius: var(--pcu-r-lg); padding: 32px 28px 26px;
+  box-shadow: var(--pcu-sh-lift);
+}
+.cm-cmp-auth-id {
+  display: flex; align-items: center; justify-content: center; gap: 9px;
+  margin-bottom: 18px;
+}
+.cm-cmp-auth-id b {
+  color: var(--pcu-ink); font-size: 15px; font-weight: 700; letter-spacing: -.015em;
+}
+.cm-cmp-auth-id span {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--pcu-ink-3); font-size: 13.5px; font-weight: 600;
+}
+.cm-cmp-auth h1 {
+  margin: 0; text-align: center; color: var(--pcu-ink);
+  font-size: 23px; font-weight: 700; letter-spacing: -.025em;
+}
+.cm-cmp-auth-lead {
+  margin: 9px 0 22px; text-align: center;
+  color: var(--pcu-ink-3); font-size: var(--pcu-t-meta); line-height: 1.6;
+}
+.cm-cmp-auth .field { margin-bottom: 14px; }
+.cm-cmp-auth .field label {
+  display: block; margin-bottom: 6px;
+  color: var(--pcu-ink-2); font-size: var(--pcu-t-meta); font-weight: 700;
+}
+.cm-cmp-auth .field input {
+  width: 100%; min-height: 48px; padding: 0 14px;
+  border: 1px solid var(--pcu-line); border-radius: var(--pcu-r-sm);
+  background: var(--pcu-surface); color: var(--pcu-ink);
+  font-size: 15px;
+}
+.cm-cmp-auth .field input:focus-visible {
+  outline: 2px solid var(--pcu-blue); outline-offset: 1px;
+  border-color: var(--pcu-blue);
+}
+.cm-cmp-auth button[type="submit"] {
+  width: 100%; min-height: 50px; margin-top: 6px;
+  border: 0; border-radius: var(--pcu-r-sm);
+  background: var(--pcu-blue); color: #fff;
+  font-size: 16px; font-weight: 700; letter-spacing: -.01em; cursor: pointer;
+}
+.cm-cmp-auth button[type="submit"]:hover { background: var(--pcu-blue-ink); }
+.cm-cmp-auth button[type="submit"]:disabled { opacity: .6; cursor: default; }
+.cm-cmp-auth button[type="submit"]:focus-visible {
+  outline: 3px solid var(--pcu-blue-line); outline-offset: 2px;
+}
+/* 앞사람의 세션이 남아 있다는 알림. **오류가 아니다**: 붉게 칠하면 읽는
+   사람이 자기가 뭘 잘못한 줄 안다 */
+.cm-cmp-warn {
+  margin: 0 0 14px; padding: 11px 13px; border-radius: var(--pcu-r-sm);
+  background: var(--pcu-blue-soft); border: 1px solid var(--pcu-blue-line);
+  color: var(--pcu-blue-ink); font-size: var(--pcu-t-meta); line-height: 1.6;
+}
+.cm-cmp-auth .notice.error {
+  margin: 0 0 14px; padding: 11px 13px; border-radius: var(--pcu-r-sm);
+  background: #fdeceb; color: #9a2720; border: 1px solid #f6cfcc;
+  font-size: var(--pcu-t-meta);
+}
+
+/* ── 거드는 글과 단추 ───────────────────────────────────────────── */
+
+.cm-cmp-note {
+  margin: 16px 0 0; color: var(--pcu-ink-3);
+  font-size: var(--pcu-t-meta); line-height: 1.7;
+}
+.cm-cmp-acts {
+  margin-top: 22px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+}
+.cm-cmp-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 0 20px;
+  border: 1px solid var(--pcu-line); border-radius: var(--pcu-r-sm);
+  background: var(--pcu-surface); color: var(--pcu-ink-2);
+  font-size: 15px; font-weight: 600; text-decoration: none; cursor: pointer;
+}
+.cm-cmp-btn:hover { background: var(--pcu-surface-2); }
+.cm-cmp-btn.is-primary {
+  border-color: transparent; background: var(--pcu-blue); color: #fff;
+  font-weight: 700;
+}
+.cm-cmp-btn.is-primary:hover { background: var(--pcu-blue-ink); }
+.cm-cmp-btn:focus-visible { outline: 3px solid var(--pcu-blue-line); outline-offset: 2px; }
+
+/*
+ * 학교가 적어 준 것을 확인시키는 줄.
+ *
+ * **고르는 칸으로 두지 않는다**(규격 §7). 다시 고르게 하면 학생이 자기
+ * 학과와 다른 자리를 고를 수 있고, 그 응시는 담당자 화면에서 남의 학과
+ * 줄에 선다.
+ */
+.cm-cmp-facts {
+  margin: 18px 0 0; padding: 0;
+  background: var(--pcu-surface); border: 1px solid var(--pcu-line);
+  border-radius: var(--pcu-r); overflow: hidden; box-shadow: var(--pcu-sh);
+}
+.cm-cmp-facts > div {
+  display: flex; align-items: baseline; gap: 14px;
+  padding: 13px 18px; border-top: 1px solid var(--pcu-line-2);
+}
+.cm-cmp-facts > div:first-child { border-top: 0; }
+.cm-cmp-facts dt {
+  flex: none; width: 56px;
+  color: var(--pcu-ink-3); font-size: var(--pcu-t-meta); font-weight: 700;
+}
+.cm-cmp-facts dd {
+  margin: 0; min-width: 0; color: var(--pcu-ink);
+  font-size: var(--pcu-t-body); font-weight: 600; overflow-wrap: anywhere;
+}
+
+/* 살펴보는 영역의 알약. **점수가 아니다**: 그 전공이 무엇을 보는지다 */
+.cm-cmp-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; padding: 0; list-style: none; }
+.cm-cmp-tags li {
+  padding: 7px 12px; border-radius: 999px;
+  background: var(--pcu-surface); border: 1px solid var(--pcu-line);
+  color: var(--pcu-ink-2); font-size: var(--pcu-t-meta); font-weight: 600;
 }
 
 /*
@@ -69,8 +447,52 @@
  */
 .cm-cmp-swap {
   background: none; border: 0; padding: 0; margin: 0;
-  font: inherit; color: var(--sf-accent-ink);
+  font: inherit; color: var(--pcu-blue);
   text-decoration: underline; text-underline-offset: 2px; cursor: pointer;
 }
 .cm-cmp-swap:hover { text-decoration: none; }
-.cm-cmp-swap:focus-visible { outline: 2px solid var(--sf-accent); outline-offset: 2px; }
+.cm-cmp-swap:focus-visible { outline: 2px solid var(--pcu-blue); outline-offset: 2px; }
+
+/* ── 좁은 화면 ──────────────────────────────────────────────────── */
+
+/*
+ * **375px 에서 가로로 밀리지 않는다**(규격 §17). 옆 여백은 16px 이고
+ * 어느 덩이도 창보다 넓지 않다. 탭만 제 안에서 가로로 민다.
+ */
+@media (max-width: 860px) {
+  .cm-cmp-values { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cm-cmp-hero { padding: 34px 24px 30px; }
+}
+@media (max-width: 719px) {
+  .cm-cmp-band-in { padding: 0 16px; min-height: 52px; gap: 9px; }
+  .cm-cmp-id { font-size: 15px; }
+  .cm-cmp-brand { font-size: 13px; }
+  /* 좁은 화면에서는 오른쪽 한 줄을 접는다. 학교 이름과 상표가 먼저다 */
+  .cm-cmp-tag { display: none; }
+
+  .cm-cmp-main { padding: 16px 0 40px; }
+  .cm-cmp-wrap { padding-inline: 16px; }
+  .cm-cmp-foot p { padding-inline: 16px; }
+
+  .cm-cmp-hero { border-radius: var(--pcu-r); padding: 28px 20px 26px; gap: 22px; }
+  /* 손전화에서는 걸음을 한 줄씩으로 접는다. 뜻은 그대로 두고 높이만
+     돌려받는다: 첫 화면에서 할 일은 학과를 고르는 것이고, 설명을 읽느라
+     그 단추가 두 뼘 위로 밀리면 안 된다 */
+  .cm-cmp-flow { padding-left: 14px; }
+  .cm-cmp-flow li { padding: 7px 0; }
+  .cm-cmp-flow b, .cm-cmp-flow strong { display: inline; }
+  .cm-cmp-flow b { margin-right: 8px; }
+  .cm-cmp-flow strong { font-size: 14.5px; }
+  .cm-cmp-flow span { display: none; }
+  .cm-cmp-title { max-width: none; }
+  .cm-cmp-lead { font-size: 14.5px; }
+  .cm-cmp-cta-row { margin-top: 20px; }
+  .cm-cmp-cta, .cm-cmp-cta-2 { width: 100%; justify-content: center; }
+
+  .cm-cmp-values { grid-template-columns: 1fr; gap: 8px; }
+  .cm-cmp-value { padding: 15px 16px; }
+
+  .cm-cmp-sect { margin-top: 26px; }
+  .cm-cmp-row { padding: 12px 14px; gap: 10px; }
+  .cm-cmp-auth { padding: 24px 18px 20px; margin-top: 12px; }
+}

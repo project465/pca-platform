@@ -7,7 +7,6 @@ import {
 } from "@/lib/campus/registry";
 import { campusStudentOf } from "@/lib/campus/students";
 import { currentUser } from "@/lib/session";
-import { CmHead } from "../../../me/shell";
 import { CampusShell } from "../../shell";
 import { startFromCampus } from "../../actions";
 
@@ -75,48 +74,50 @@ export default async function CampusStart({ params }: Params) {
 
   return (
     <CampusShell u={u}>
-      <CmHead
-        kicker={`${u.university_name} · ${found.college.name}`}
-        title={found.leaf.name}
-        meta={core
-          ? `CareerMatri ${core.name_ko}${spec ? ` · ${spec}` : ""} 검사로 이어집니다`
-          : undefined}
-        lead={ready
-          ? "학교에 등록된 학과입니다. 이 학과로 검사를 시작합니다."
-          : "이 학과는 아직 검사를 시작할 수 없습니다."}
-      />
-
-      {/* **새 class 이름을 짓지 않는다.** 이 저장소에서 CSS 에 규칙이 없는
-          이름을 쓴 탈이 일곱 번 났다(`.btn` · `--sf-r` · `.lg` · `empty` ·
-          `industries` · `OC*` · `qs-steps`). CSS 는 모르는 이름을 조용히
-          넘기고, 그러면 쪽은 200 으로 멀쩡히 뜨고 생김새만 없다 */}
-      <ul className="cm-rows" style={{ marginTop: 4 }}>
-        <li>학번 {mine.row.student_id}</li>
-        <li>이름 {user.name ?? "-"}</li>
-        <li>학과 {found.leaf.name}</li>
-      </ul>
-
-      {ready ? (
-        <>
-          <form action={startFromCampus} className="cm-acts" style={{ marginTop: 20 }}>
+      <section className="cm-cmp-hero">
+        <p className="cm-cmp-eyebrow">{u.university_name} · {found.college.name}</p>
+        <h1 className="cm-cmp-title">{found.leaf.name}</h1>
+        <p className="cm-cmp-lead">
+          {ready
+            ? "학교에 등록된 학과입니다. 이 학과 기준으로 검사를 시작합니다."
+            : "이 학과는 아직 검사를 시작할 수 없습니다."}
+        </p>
+        {ready ? (
+          <form action={startFromCampus} className="cm-cmp-cta-row">
             <input type="hidden" name="u" value={u.university_code} />
             <input type="hidden" name="d" value={found.leaf.code} />
-            <button type="submit" className="cm-btn is-primary">검사 시작</button>
+            <button type="submit" className="cm-cmp-cta">
+              검사 시작하기<span aria-hidden="true">→</span>
+            </button>
           </form>
-          <p className="cm-note" style={{ marginTop: 16 }}>
-            문항마다 저장되어 창을 닫아도 보던 자리에서 이어집니다.
-          </p>
-        </>
-      ) : (
-        <>
-          <p className="cm-note" style={{ marginTop: 16 }}>
-            학과 담당자에게 알려 주시면 학교와 함께 확인해 드립니다.
-          </p>
-          <div className="cm-acts" style={{ marginTop: 18 }}>
-            <Link className="cm-btn" href={`/campus/${code}`}>처음으로</Link>
+        ) : (
+          <div className="cm-cmp-cta-row">
+            <Link className="cm-cmp-cta" href={`/campus/${code}`}>
+              처음으로<span aria-hidden="true">→</span>
+            </Link>
           </div>
-        </>
-      )}
+        )}
+      </section>
+
+      {/* **학과를 다시 고르게 하지 않는다**(규격 §7). 학교가 적어 준 것을
+          확인시키는 자리라, 서는 것은 고르는 칸이 아니라 읽는 줄 셋이다 */}
+      <dl className="cm-cmp-facts">
+        <div><dt>학번</dt><dd>{mine.row.student_id}</dd></div>
+        <div><dt>이름</dt><dd>{user.name ?? "-"}</dd></div>
+        <div><dt>학과</dt><dd>{found.leaf.name}</dd></div>
+        {core ? (
+          <div>
+            <dt>검사</dt>
+            <dd>CareerMatri {core.name_ko}{spec ? ` · ${spec}` : ""}</dd>
+          </div>
+        ) : null}
+      </dl>
+
+      <p className="cm-cmp-note">
+        {ready
+          ? "문항마다 저장되어 창을 닫아도 보던 자리에서 이어집니다."
+          : "학과 담당자에게 알려 주시면 학교와 함께 확인해 드립니다."}
+      </p>
     </CampusShell>
   );
 }
@@ -130,15 +131,15 @@ export default async function CampusStart({ params }: Params) {
 function Blocked({ u, why }: { u: ReturnType<typeof university> & {}; why: string }) {
   return (
     <CampusShell u={u}>
-      <CmHead
-        kicker={`${u.university_name} · CareerMatri`}
-        title="학과 확인이 필요합니다"
-        lead="등록된 학과를 확인하지 못해 검사를 시작할 수 없습니다."
-      />
-      <p className="cm-note" style={{ marginTop: 16 }}>
-        학과 담당자에게 알려 주시면 학교와 함께 확인해 드립니다.
-      </p>
-      <p className="cm-note" style={{ marginTop: 8 }}>{why}</p>
+      <section className="cm-cmp-hero">
+        <p className="cm-cmp-eyebrow">{u.university_name} · CareerMatri</p>
+        <h1 className="cm-cmp-title">학과 확인이 필요합니다</h1>
+        <p className="cm-cmp-lead">
+          등록된 학과를 확인하지 못해 검사를 시작할 수 없습니다. 학과
+          담당자에게 알려 주시면 학교와 함께 확인해 드립니다.
+        </p>
+      </section>
+      <p className="cm-cmp-note">{why}</p>
     </CampusShell>
   );
 }

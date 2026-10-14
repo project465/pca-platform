@@ -5,7 +5,7 @@ import { university } from "@/lib/campus/registry";
 import { currentUser } from "@/lib/session";
 import { campusStudentOf } from "@/lib/campus/students";
 import { safeNext } from "@/lib/safe-next";
-import { CmHead } from "../../../me/shell";
+import { BrandMark } from "@/components/sf/brand-mark";
 import { CampusShell } from "../../shell";
 import CampusLoginForm from "./login-form";
 
@@ -57,22 +57,39 @@ export default async function CampusLogin({ params, searchParams }: Params) {
 
   return (
     <CampusShell u={u}>
-      <CmHead
-        kicker={`${u.university_name} · CareerMatri`}
-        title="로그인"
-        lead="학교에서 안내받은 계정으로 로그인해주세요."
-      />
-      {who ? (
-        /* **앞사람의 세션이 남아 있다는 것을 적는다.** 적지 않으면 로그인
-           화면이 왜 또 떴는지 알 수 없고, 그대로 누른 `검사 시작` 이 남의
-           응시를 연다. 누구인지는 적지 않는다 */
-        <p className="cm-note" style={{ marginBottom: 14 }}>
-          지금 다른 계정으로 로그인되어 있습니다. 학교에서 받은 계정으로
-          다시 로그인해주세요.
+      {/*
+        * **학교 전용이라는 것을 폼 위에 적는다**(규격 §5).
+        *
+        * 일반 회원가입도 소셜 단추도 개인 B2C 진입도 두지 않는다. 학교가
+        * 발급한 계정에는 연결된 공급자가 없어서, 그 단추는 누르면 다른
+        * 계정을 만드는 길이다.
+        */}
+      <div className="cm-cmp-auth">
+        <div className="cm-cmp-auth-id">
+          <b>{u.university_name}</b>
+          <span className="cm-cmp-sep" aria-hidden="true"
+            style={{ background: "var(--pcu-line)" }} />
+          <span><BrandMark size={18} /> CareerMatri</span>
+        </div>
+        <h1>{u.university_name} 학생 전용 검사</h1>
+        <p className="cm-cmp-auth-lead">
+          학교에서 발급받은 계정으로 로그인하세요.
         </p>
-      ) : null}
-      <CampusLoginForm next={nx} />
-      <p className="cm-note" style={{ marginTop: 18 }}>
+
+        {who ? (
+          /* **앞사람의 세션이 남아 있다는 것을 적는다.** 적지 않으면
+             로그인 화면이 왜 또 떴는지 알 수 없고, 그대로 누른
+             `검사 시작` 이 남의 응시를 연다. 누구인지는 적지 않는다 */
+          <p className="cm-cmp-warn" role="status">
+            지금 다른 계정으로 로그인되어 있습니다. 학교에서 받은 계정으로
+            다시 로그인해주세요.
+          </p>
+        ) : null}
+
+        <CampusLoginForm next={nx} />
+      </div>
+
+      <p className="cm-cmp-note" style={{ textAlign: "center" }}>
         아이디는 학번입니다. 비밀번호를 잊으셨으면 학과 담당자에게 알려
         주십시오.
       </p>

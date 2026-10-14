@@ -1,21 +1,19 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import "../../../surface.css";
 import "../../campus.css";
 import {
-  coreOf, leavesOf, offered, otherCatalogs, specializationName, statusOf,
-  university,
-  type CampusLeaf, type CampusUnit, type CampusUniversity,
+  leavesOf, offered, otherCatalogs, statusOf, university,
+  type CampusCatalog, type CampusLeaf, type CampusUniversity,
 } from "@/lib/campus/registry";
 import { pickCatalog } from "@/lib/campus/pick";
 import { rememberCatalog } from "../../actions";
-import { CmHead } from "../../../me/shell";
-import { PickCard, PickGrid, SectionHeader } from "../../../me/ui";
 import { CampusShell } from "../../shell";
-import type { IconName } from "@/components/sf/icon";
+import { domainNames } from "../../domains";
 
 type Params = {
   params: Promise<{ universityCode: string }>;
-  searchParams: Promise<{ y?: string | string[] }>;
+  searchParams: Promise<{ y?: string | string[]; c?: string | string[] }>;
 };
 
 export async function generateMetadata({ params }: Params) {
@@ -24,118 +22,120 @@ export async function generateMetadata({ params }: Params) {
   return { title: u ? `학과 선택 · ${u.university_name}` : "CareerMatri" };
 }
 
-/**
- * 단과대학마다 쓰는 표시의 색조.
- *
- * **뜻을 갖지 않는다.** 단과대학 여섯이 한 덩이로 읽히지 않게 갈라 두는
- * 것이고, 순위도 우선순위도 아니다.
- */
-const TONES: ("b" | "c" | "v" | "w")[] = ["b", "w", "v", "c"];
-const ICONS: IconName[] = ["layers", "grid", "building", "box"];
+const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
 
 /**
  * 그 자리에 적는 한 줄.
  *
- * **학과 소개를 지어내지 않는다.** 우리가 아는 것은 그 학과가 어느 Major
- * Core 로 가는가까지이고, 학과가 무엇을 가르치는지는 학교가 적는 글이다.
- * 그래서 적는 것은 지금 할 수 있는 일과 아직 할 수 없는 까닭이다.
+ * **학과 소개를 지어내지 않는다.** 응시할 수 있는 자리에는 그 검사가
+ * 실제로 묻는 영역 이름을 적고(그 값은 Core 의 taxonomy 가 들고 있다),
+ * 아직 열리지 않은 자리에는 **아무것도 적지 않는다.**
  *
- * **같은 말을 마흔 번 적지 않는다.** 준비 중인 까닭이 대부분 같아서,
- * 칸마다 되풀이하면 목록이 기계가 찍어 낸 표로 읽히고 정작 다른 부분이
- * 묻힌다. 까닭은 쪽 머리가 한 번 적고, 칸에는 그 자리에만 맞는 줄만 남긴다.
+ * **같은 말을 마흔 번 적지 않는다**(규격 §2). 준비 중인 까닭이 대부분
+ * 같아서, 칸마다 되풀이하면 목록이 기계가 찍어 낸 표로 읽히고 정작 다른
+ * 부분이 묻힌다. 까닭은 쪽 머리가 한 번 적는다.
  */
-function leadOf(u: CampusUniversity, row: CampusLeaf): string | undefined {
-  if (statusOf(u, row) === "READY") {
-    return "해 본 일과 직접 판단한 경험을 읽어 지금 설명할 수 있는 것과"
-      + " 아직 부족한 부분을 정리합니다.";
+function subOf(u: CampusUniversity, row: CampusLeaf): string | undefined {
+  if (statusOf(u, row) === "READY" && row.leaf.core_code) {
+    const d = domainNames(row.leaf.core_code);
+    if (d.length) return d.slice(0, 3).join(" · ");
+    return undefined;
   }
-  if (row.leaf.routing_only) {
-    return "전공을 정한 뒤에 그 전공으로 시작합니다.";
-  }
-  if (row.leaf.unverified_majors) {
-    return "전공 목록을 학교와 확인하고 있습니다.";
-  }
-  /* **Core 가 아직 없는 자리에 같은 문장을 스물네 번 적지 않는다.**
-     준비 중인 까닭은 쪽 머리가 한 번 적었고, 칸마다 되풀이하면 목록이
-     기계가 찍어 낸 표로 읽힌다 */
+  if (row.leaf.routing_only) return "전공을 정한 뒤 그 전공으로 시작합니다.";
+  if (row.leaf.unverified_majors) return "전공 목록을 학교와 확인하고 있습니다.";
   return undefined;
 }
 
-/** 어느 전공 검사로 이어지는가. **안쪽 코드를 적지 않는다** */
-function coreLine(leaf: CampusUnit): string | null {
-  const core = coreOf(leaf);
-  if (!core) return null;
-  const spec = specializationName(leaf);
-  return `CareerMatri ${core.name_ko}${spec ? ` · ${spec}` : ""}`;
-}
-
-function Tile({ u, code, row, tone }: {
+function Row({ u, code, row }: {
   u: CampusUniversity; code: string; row: CampusLeaf;
-  tone: "b" | "c" | "v" | "w";
 }) {
   const ready = statusOf(u, row) === "READY";
-  return (
-    <PickCard
-      href={ready ? `/campus/${code}/d/${row.leaf.code}` : undefined}
-      disabled={!ready}
-      icon="compass"
-      tone={tone}
-      title={row.leaf.name}
-      tag={ready ? "검사 가능" : "준비 중"}
-      lead={leadOf(u, row)}
-      meta={coreLine(row.leaf)}
-      cta={ready ? "이 학과로 보기" : undefined}
-      strong={ready}
-    />
+  const sub = subOf(u, row);
+  const body = (
+    <>
+      <span className="cm-cmp-row-main">
+        <span className="cm-cmp-row-name">{row.leaf.name}</span>
+        {sub ? <span className="cm-cmp-row-sub">{sub}</span> : null}
+      </span>
+      <span className={`cm-cmp-chip${ready ? "" : " is-wait"}`}>
+        {ready ? "검사 가능" : "준비 중"}
+      </span>
+      {ready ? <span className="cm-cmp-arrow" aria-hidden="true">›</span> : null}
+    </>
+  );
+  /* **준비 중인 자리는 눌리지 않는다.** 링크로 두고 상세에서 돌려보내면
+     누른 사람이 한 번 더 걸음을 쓴다 */
+  return ready ? (
+    <Link className="cm-cmp-row" href={`/campus/${code}/d/${row.leaf.code}`}>
+      {body}
+    </Link>
+  ) : (
+    <div className="cm-cmp-row is-off">{body}</div>
   );
 }
 
 /**
- * 학과 선택.
+ * 학과 선택. **단과대학 탭 → 학과 줄**이다(규격 §4).
  *
- * **학과 이름을 이 쪽에 적지 않는다**(규격 §7). 단과대학과 학부와 전공과
- * 그 자리가 가는 Core 는 전부 등록부에 있고 이 쪽은 그것을 그린다. 그래서
- * 두 번째 학교를 붙이는 일이 **파일 한 벌을 더하는 일**이 된다.
+ * **select box 를 쓰지 않는다.** 고르기 전에 무엇이 있는지 보이지 않는
+ * 입력이라, 자기 학과가 들어 있는지 확인하려면 열어야 한다.
  *
- * **한 화면에 한 Catalog 만 선다**(규격 §3). 개편 전 구조와 개편 후 구조를
- * 한 목록에 섞으면 같은 이름의 전공이 두 번 서고, 읽는 사람은 둘 가운데
- * 어느 쪽이 자기 자리인지 가를 수 없다.
+ * **한 화면에 한 단과대학만 세운다.** 전에는 쉰일곱 칸을 한 쪽에 깔아
+ * 데스크톱에서 6,500px 이었고 손전화에서 15,000px 이었다. 그 목록은
+ * 훑을 수 없고, 한 손으로는 더더욱 닿지 않는다.
  *
- * **학부와 전공을 한 칸으로 뭉개지 않는다**(규격 §2). 학부를 고르게 두면
- * 그 학생이 어느 전공으로 재어졌는지 아무도 모른다.
+ * **Core code 와 갈래 코드와 안쪽 상태를 적지 않는다**(규격 §4). 서는
+ * 것은 학과명과 그 검사가 묻는 영역 한 줄과 지금 할 수 있는가와 화살표다.
  *
- * **준비 중인 학과는 눌러도 들어가지 않는다**(규격 §5·§9). 칸을 꺼 두는
- * 것은 안내이고, 막는 것은 학과 상세 쪽과 시작 처리가 상태를 다시 보는
+ * **한 화면에 한 Catalog 만 선다**(규격 §3 전 회차). 개편 전 구조와 개편
+ * 후 구조를 한 목록에 섞으면 같은 이름의 전공이 두 번 서고, 읽는 사람은
+ * 둘 가운데 어느 쪽이 자기 자리인지 가를 수 없다.
+ *
+ * **학부와 전공을 한 칸으로 뭉개지 않는다.** 학부를 고르게 두면 그
+ * 학생이 어느 전공으로 재어졌는지 아무도 모른다.
+ *
+ * **준비 중인 학과는 눌러도 들어가지 않는다.** 줄을 꺼 두는 것은
+ * 안내이고, 막는 것은 학과 상세 쪽과 시작 처리가 상태를 다시 보는
  * 자리다: 주소를 손으로 쳐도 거절한다.
  */
 export default async function CampusMajors({ params, searchParams }: Params) {
   const { universityCode } = await params;
   const u = university(universityCode);
   if (!u) notFound();
-  const { y } = await searchParams;
-  const cat = await pickCatalog(u, y);
+  const { y, c } = await searchParams;
+  const cat: CampusCatalog = await pickCatalog(u, y);
   const code = u.university_code.toLowerCase();
+  const keep = one(y);
+  const q = keep ? `y=${encodeURIComponent(keep)}&` : "";
 
-  /**
-   * **검사 가능한 자리를 위로 올린다**(규격 §9). 지금 할 수 있는 것이
-   * 있으면 그것이 먼저다.
-   *
-   * **같은 학과를 두 번 세우지 않는다.** 맨 위에 따로 모으면 그 칸이
-   * 자기 단과대학에도 한 번 더 서고, 읽는 사람은 둘이 다른 것인 줄
-   * 안다. 차례만 바꾼다: 검사 가능한 자리가 있는 단과대학이 앞에 서고,
-   * 그 안에서도 검사 가능한 칸이 앞이다.
-   */
-  const rows = leavesOf(cat);
-  const isReady = (r: CampusLeaf) => statusOf(u, r) === "READY";
-  const first = <T, >(xs: T[], on: (x: T) => boolean) =>
-    [...xs].sort((a, b) => Number(on(b)) - Number(on(a)));
   /* 끝난 구조의 자리와 감춘 자리는 목록에 세우지 않는다(`offered`) */
-  const live = rows.filter(offered);
-  const colleges = first(cat.colleges, (c) =>
-    live.some((r) => r.college.code === c.code && isReady(r)));
+  const live = leavesOf(cat).filter(offered);
+  const isReady = (r: CampusLeaf) => statusOf(u, r) === "READY";
+  const ready = new Set(live.filter(isReady).map((r) => r.college.code));
 
   /**
-   * 다른 학년도 구조로 가는 되돌림(규격 §4).
+   * **지금 할 수 있는 것이 있는 단과대학이 앞에 선다**(규격 §4).
+   *
+   * **같은 학과를 두 번 세우지 않는다.** 맨 위에 따로 모으면 그 줄이
+   * 자기 단과대학에도 한 번 더 서고, 읽는 사람은 둘이 다른 것인 줄 안다.
+   * 차례만 바꾼다.
+   */
+  const colleges = [...cat.colleges]
+    .filter((x) => live.some((r) => r.college.code === x.code))
+    .sort((a, b) => Number(ready.has(b.code)) - Number(ready.has(a.code)));
+
+  /* 고른 탭. 주소에 없으면 맨 앞(= 지금 할 수 있는 자리가 있는 쪽)이다 */
+  const want = one(c);
+  const on = colleges.find((x) => x.code === want) ?? colleges[0];
+
+  const mine = on ? live.filter((r) => r.college.code === on.code) : [];
+  const first = <T, >(xs: T[], hot: (x: T) => boolean) =>
+    [...xs].sort((a, b) => Number(hot(b)) - Number(hot(a)));
+  const plain = first(mine.filter((r) => r.unit.code === r.leaf.code), isReady);
+  const faculties = on ? on.units.filter((x) => x.majors?.length) : [];
+
+  /**
+   * 다른 학년도 구조로 가는 되돌림(규격 §4 전 회차).
    *
    * **고르는 걸음을 하나 더 두지 않는다.** 들어오는 사람 거의 모두가
    * 재학생이라 목록은 그 구조로 서고, 이 줄은 **자기 학과를 못 찾은
@@ -146,75 +146,69 @@ export default async function CampusMajors({ params, searchParams }: Params) {
 
   return (
     <CampusShell u={u} wide>
-      <CmHead
-        kicker={`${u.university_name} 전용 진입`}
-        title="현재 소속 학과를 선택해주세요"
-        lead={"학과에 따라 살펴보는 경험과 기술 분야가 달라집니다."
-          + " 준비 중인 학과는 문항과 산업 자료를 준비하고 있어 지금"
-          + " 응시할 수 없습니다."}
-      />
+      <div className="cm-cmp-sect-h" style={{ marginTop: 4 }}>
+        <h2>현재 소속 학과를 선택해주세요</h2>
+        <p>{cat.label} 기준</p>
+      </div>
+      <p className="cm-cmp-note" style={{ marginTop: 6 }}>
+        학과에 따라 살펴보는 경험과 영역이 달라집니다. 준비 중인 학과는
+        문항과 산업 자료를 준비하고 있어 지금 응시할 수 없습니다.
+      </p>
 
-      {colleges.map((college, i) => {
-        const tone = TONES[i % TONES.length];
-        const mine = live.filter((r) => r.college.code === college.code);
-        const plain = first(mine.filter((r) => r.unit.code === r.leaf.code), isReady);
-        const faculties = college.units.filter((x) => x.majors?.length);
-        if (!plain.length && !faculties.length) return null;
+      <nav className="cm-cmp-tabs" aria-label="단과대학">
+        {colleges.map((x) => (
+          <Link
+            key={x.code}
+            className={`cm-cmp-tab${on && x.code === on.code ? " is-on" : ""}`}
+            href={`/campus/${code}/majors?${q}c=${encodeURIComponent(x.code)}`}
+            aria-current={on && x.code === on.code ? "page" : undefined}
+          >
+            {x.name}
+          </Link>
+        ))}
+      </nav>
+
+      {plain.length ? (
+        <div className="cm-cmp-list">
+          {plain.map((r) => <Row key={r.leaf.code} u={u} code={code} row={r} />)}
+        </div>
+      ) : null}
+
+      {faculties.map((f) => {
+        const kids = first(mine.filter((r) => r.unit.code === f.code), isReady);
+        if (!kids.length) return null;
         return (
-          <section key={college.code} id={college.code}>
-            <SectionHeader
-              icon={ICONS[i % ICONS.length]}
-              tone={i % 2 ? "c" : undefined}
-              title={college.name}
-            />
-            {plain.length ? (
-              <PickGrid cols={3}>
-                {plain.map((r) => (
-                  <Tile key={r.leaf.code} u={u} code={code} row={r} tone={tone} />
-                ))}
-              </PickGrid>
-            ) : null}
-            {faculties.map((f) => {
-              const kids = first(
-                mine.filter((r) => r.unit.code === f.code), isReady);
-              if (!kids.length) return null;
-              return (
-                <section key={f.code}>
-                  {/* 학부 이름은 묶음 머리로 서고, 고르는 자리는 그 아래
-                      전공이다 */}
-                  <h3 className="cm-sub-h">{f.name}</h3>
-                  <PickGrid cols={3}>
-                    {kids.map((r) => (
-                      <Tile key={r.leaf.code} u={u} code={code} row={r} tone={tone} />
-                    ))}
-                  </PickGrid>
-                </section>
-              );
-            })}
+          <section key={f.code}>
+            {/* 학부 이름은 묶음 머리로 서고, 고르는 자리는 그 아래 전공이다 */}
+            <h3 className="cm-cmp-sub-h">{f.name}</h3>
+            <div className="cm-cmp-list">
+              {kids.map((r) => <Row key={r.leaf.code} u={u} code={code} row={r} />)}
+            </div>
           </section>
         );
       })}
 
       {/**
         * 지금 어느 편제를 보고 있는지 한 줄로 적고, **그 자리에서 고칠 수
-        * 있게 둔다**(규격 작업 2). 고르는 걸음을 하나 더 만들지 않는다:
-        * 목록은 이미 서 있고 이 줄은 자기 학과를 못 찾은 사람만 쓴다.
+        * 있게 둔다**(규격 작업 2 전 회차). 고르는 걸음을 하나 더 만들지
+        * 않는다: 목록은 이미 서 있고 이 줄은 자기 학과를 못 찾은 사람만
+        * 쓴다.
         *
         * **`p` 안에 `form` 을 두지 않는다.** 브라우저가 그것을 밖으로
         * 끌어내고, 서버가 보낸 것과 브라우저가 세운 것이 달라진다. 이
         * 저장소에서 같은 탈이 한 번 났다.
         */}
       {others.length ? (
-        <div className="cm-note" style={{ marginTop: 22 }}>
-          {cat.label} 기준 학과 구조를 보여드리고 있습니다. 찾는 학과가 없으면{" "}
-          {others.map((c, i) => (
-            <span key={c.catalog_year}>
+        <div className="cm-cmp-note" style={{ marginTop: 22 }}>
+          찾는 학과가 없으면{" "}
+          {others.map((x, i) => (
+            <span key={x.catalog_year}>
               {i ? ", " : ""}
               <form action={rememberCatalog} style={{ display: "inline" }}>
                 <input type="hidden" name="u" value={u.university_code} />
-                <input type="hidden" name="y" value={c.catalog_year} />
+                <input type="hidden" name="y" value={x.catalog_year} />
                 <button type="submit" className="cm-cmp-swap">
-                  {c.label} 학과 구조
+                  {x.label} 학과 구조
                 </button>
               </form>
             </span>

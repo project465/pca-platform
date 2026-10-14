@@ -168,16 +168,7 @@ try {
        걸음이 **앞 걸음이 남긴 상태**를 재게 된다 */
     await ctx.clearCookies();
     await page.goto(`${BASE}/campus/${UNI}/majors`, { waitUntil: "networkidle" });
-    const offs = await page.evaluate(() => {
-      const out = [];
-      for (const el of document.querySelectorAll(".cm-pc")) {
-        const tag = el.tagName.toLowerCase();
-        const name = el.querySelector(".cm-pc-h > b")?.textContent?.trim() ?? "";
-        const state = el.querySelector(".cm-pc-h > em")?.textContent?.trim() ?? "";
-        out.push({ tag, name, state, href: el.getAttribute("href") ?? "" });
-      }
-      return out;
-    });
+    const offs = await rows(page);
     const prep = offs.filter((o) => o.state === "준비 중");
     ok(`${tag} 준비 중 학과 칸이 링크가 아니다 — ${prep.length}개`,
       prep.length > 0 && prep.every((o) => o.tag !== "a" && !o.href),
@@ -193,7 +184,7 @@ try {
     ok(`${tag} 준비 중 학과 상세가 열린다(404 가 아니다)`, r3?.status() === 200,
       String(r3?.status()));
     await page.screenshot({ path: join(dir, "03-preparing.png"), fullPage: true });
-    const hasStart = await page.getByRole("button", { name: "이 전공으로 검사 시작" })
+    const hasStart = await page.getByRole("button", { name: "검사 시작하기" })
       .count();
     ok(`${tag} 준비 중 학과에 시작 단추가 없다`, hasStart === 0, String(hasStart));
     await shape(page, `${tag} 준비 중 학과`);
@@ -225,11 +216,40 @@ try {
   await browser.close();
 }
 
-/** 목록에 선 칸의 이름 그대로 */
+/**
+ * 목록에 선 줄 그대로. **탭을 전부 돌아 모은다.**
+ *
+ * 학과 목록은 단과대학 탭 하나씩 선다(규격 §4). 첫 탭만 보면 그 뒤의
+ * 단과대학이 통째로 안 세어지고, 그러면 `섞이지 않는다` 가 **아무것도
+ * 재지 않은 채** 통과한다. 이 저장소에서 선택자가 바뀐 날 그 모양으로
+ * 거짓 통과가 났다.
+ */
+async function rows(page) {
+  const grab = () => page.evaluate(() =>
+    [...document.querySelectorAll(".cm-cmp-row")].map((el) => ({
+      tag: el.tagName.toLowerCase(),
+      name: el.querySelector(".cm-cmp-row-name")?.textContent?.trim() ?? "",
+      state: el.querySelector(".cm-cmp-chip")?.textContent?.trim() ?? "",
+      href: el.getAttribute("href") ?? "",
+    })));
+  const tabs = await page.evaluate(() =>
+    [...document.querySelectorAll(".cm-cmp-tab")]
+      .map((a) => a.getAttribute("href") ?? "").filter(Boolean));
+  const out = await grab();
+  const seen = new Set(out.map((r) => r.name));
+  for (const href of tabs) {
+    await page.goto(new URL(href, page.url()).toString(),
+      { waitUntil: "networkidle" });
+    for (const r of await grab()) {
+      if (seen.has(r.name)) continue;
+      seen.add(r.name); out.push(r);
+    }
+  }
+  return out;
+}
+
 async function tileNames(page) {
-  return page.evaluate(() =>
-    [...document.querySelectorAll(".cm-pc .cm-pc-h > b")]
-      .map((e) => e.textContent?.trim() ?? ""));
+  return (await rows(page)).map((r) => r.name);
 }
 
 /** 가로 넘침 · 안쪽 코드 · 짙은 단추 */

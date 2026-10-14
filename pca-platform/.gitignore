@@ -37,3 +37,9 @@ var/pdf-lab/
 var/content-qa*/
 var/pcu-content/
 var/pcu-generic/
+
+# 띄워 둔 서버의 기록. 기계마다 다르고 저장소에 남길 것이 아니다
+var/*.log
+
+# BEFORE/AFTER 로 뜬 결과지 원본. 쪽 그림만 남긴다
+docs/metri/shots/pcu-wow/**/report.pdf

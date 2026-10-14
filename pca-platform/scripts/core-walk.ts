@@ -187,7 +187,7 @@ async function main(): Promise<void> {
     ok("학과 상세가 그 학과 이름을 적는다", detail.includes(leaf.name));
     ok("학과 상세에 안쪽 코드가 없다", !INNER_LEAF.test(detail),
       (detail.match(INNER_LEAF) ?? ["없다"])[0]);
-    await p.getByRole("button", { name: "이 전공으로 검사 시작" }).click();
+    await p.getByRole("button", { name: "검사 시작하기" }).click();
     await p.waitForURL(/\/v3\/start/, { timeout: 30000 });
     await p.waitForLoadState("networkidle");
     const start = await p.locator("body").innerText();
