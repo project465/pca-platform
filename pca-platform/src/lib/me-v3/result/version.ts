@@ -12,7 +12,7 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
 /** 결과지에 나가는 한국어. 문장만 바뀌면 이것만 올린다 */
 /* copy.19 — `EXPLORE_BROADLY` 가 어디에서 해 보면 되는지를 적고(§16),
    경험 빈도의 첫 칸이 응시 화면과 같은 `없음` 이다(§7) */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.20";
+export const RESULT_COPY_VERSION = "me-v3-result-copy.21";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -104,7 +104,15 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.20";
  * **판정에 닿지 않는다**: `spec-view.ts` 는 채점 모듈을 하나도 들여오지
  * 않고 축 수준과 묶음과 빈자리와 할 일은 결과 모델이 정한 그대로다.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V32";
+/**
+ * V33 — **시각화 넷이 섰다**(프리미엄 §4·§7). 경험·근거 분포 Radar 와
+ * 영역별 경험 단계 막대와 Evidence Matrix 와 Action Roadmap 이고, 값은
+ * 전부 결과 모델이 이미 들고 있던 상태와 개수다. 첫 화면의 네 칸 이름이
+ * 규격 §3 의 이름이 됐고, 신분 줄에 산 것의 이름이 적힌다. 전체 기술영역
+ * 절은 분포 절 안으로 들어갔고, 종이는 장을 쪽으로 가르는 대신 장 머리에
+ * 선을 긋는다(11~12쪽).
+ */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V33";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

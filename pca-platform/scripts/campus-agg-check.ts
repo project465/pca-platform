@@ -79,7 +79,9 @@ async function main(): Promise<void> {
   }
 
   /* **소속이 한 줄도 없다.** 학교 진입만으로 잡혀야 한다 */
-  const v = await campusV3({ orgIds: [], universityCode: "PCU" });
+  /* **검사가 만든 계정은 전부 시연이다**(`users.is_demo`). 담당자 화면은
+     이제 그것을 기본으로 거르므로(§23) 여기서는 섞어 보는 쪽으로 묻는다 */
+  const v = await campusV3({ orgIds: [], universityCode: "PCU", withDemo: true });
   ok(`학교 진입만으로 응시가 잡힌다 — ${v.started}명`, v.started === MIN_CELL + 1);
   /* 두 Catalog 의 자리가 같은 단과대학이면 **한 줄로 굴러간다** */
   ok("단과대학 칸이 한 줄로 선다", v.by_college.length === 1
@@ -125,7 +127,7 @@ async function main(): Promise<void> {
           scoring_version, university_code, college_code, department_code)
        VALUES ($1,'BASIC','ME_CORE_V3','bachelor','x','y','PCU',$2,$3)`,
       [r?.id, COL, gone.code]);
-    const v2 = await campusV3({ orgIds: [], universityCode: "PCU" });
+    const v2 = await campusV3({ orgIds: [], universityCode: "PCU", withDemo: true });
     const row = v2.by_department.find((c) => c.key === gone.code);
     ok(`지난 코드가 제 줄로 선다 — ${gone.code}`, Boolean(row),
       JSON.stringify(v2.by_department.map((c) => c.key)));
@@ -137,7 +139,7 @@ async function main(): Promise<void> {
   }
 
   /* 학교를 안 넘기면 한 명도 잡히지 않는다 */
-  const none = await campusV3({ orgIds: [], universityCode: null });
+  const none = await campusV3({ orgIds: [], universityCode: null, withDemo: true });
   ok("학교도 소속도 없으면 집계가 비어 있다", none.started === 0);
 
   for (const id of ids) {

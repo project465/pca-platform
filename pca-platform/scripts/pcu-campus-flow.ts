@@ -389,7 +389,7 @@ async function main(): Promise<void> {
     const started0 = await queryOne<{ n: string }>(
       `SELECT count(DISTINCT user_id)::text n FROM v3_attempts
         WHERE university_code = $1`, [UNI]);
-    const few = await campusV3({ universityCode: UNI, orgIds: [Number(orgId)] });
+    const few = await campusV3({ universityCode: UNI, orgIds: [Number(orgId)], withDemo: true });
     ok("전체 응시에 들어간다", (few.started ?? 0) >= 1, `${few.started}`);
     ok("완료에 들어간다", (few.scored ?? 0) >= 1, `${few.scored}`);
     if (Number(started0?.n ?? 0) < MIN_CELL) {
@@ -453,7 +453,7 @@ async function main(): Promise<void> {
       if (addB > 0 || seen > 0) fewDep = seatB.leaf.code;
     }
 
-    const agg = await campusV3({ universityCode: UNI, orgIds: [Number(orgId)] });
+    const agg = await campusV3({ universityCode: UNI, orgIds: [Number(orgId)], withDemo: true });
     const want = await dbCount(seat.leaf.code);
     const mineDep = (agg.by_department ?? []).find((d) => d.key === seat.leaf.code);
     ok("단과대학 줄이 선다", (agg.by_college ?? []).length >= 1,

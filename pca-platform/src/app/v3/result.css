@@ -1463,7 +1463,14 @@
      그렇게 두고 쪽수가 그대로인 것을 보고서야 알았다 */
   .rs-cmitems ul { display: block; columns: 2; column-gap: 8mm; }
   .rs-cmitems li { break-inside: avoid; }
-  .pv-bars { grid-template-columns: 1fr 1fr; gap: 4mm 8mm; }
-  .pv-bar-track { height: 18px; }
-  .pv-note { padding: 3mm 4mm; }
+  .pv-bars { grid-template-columns: 1fr 1fr; gap: 3mm 8mm; }
+  .pv-bar-track { height: 16px; }
+  .pv-note { padding: 2.5mm 4mm; }
+  /* 네 칸은 짧은 줄뿐이라 종이에서 한 행에 선다. **담긴 것은 그대로다** */
+  .pv-road { grid-template-columns: repeat(4, 1fr); gap: 3mm; }
+  .pv-road > li { padding: 3mm; }
+  .pv-matrix table { font-size: 8.5pt; }
+  .pv-matrix th, .pv-matrix td { padding: 1.5mm 2mm; }
+  .pv-legend { columns: 2; column-gap: 8mm; display: block; }
+  .pv-legend li { break-inside: avoid; }
 }

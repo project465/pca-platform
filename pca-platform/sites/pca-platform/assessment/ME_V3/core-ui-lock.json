@@ -4,14 +4,14 @@
  "label": "CAREERMATRI_CORE_UI_FREEZE_1",
  "locks": {
   "assessment": "ff3480f20df1dd02",
-  "result": "410a0bfa97abe2df",
+  "result": "b90ccd558444fe31",
   "workspace": "f8b91edc635a855e"
  },
  "versions": {
   "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V26",
   "assessment_copy_version": "me-v3-2-assessment-copy.15",
-  "result_ui_version": "ME_V3_RESULT_UI_V32",
-  "result_copy_version": "me-v3-result-copy.20",
+  "result_ui_version": "ME_V3_RESULT_UI_V33",
+  "result_copy_version": "me-v3-result-copy.21",
   "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V30",
   "workspace_copy_version": "careermatri-workspace-copy.19"
  },
@@ -23,8 +23,8 @@
   "Experience": "workspace:ae46fc8631139398",
   "Current State": "workspace:62e55459b9b5132f",
   "Next Action": "workspace:0651b29bec6a3de1",
-  "Result Summary": "result:441c52b20b312642",
-  "Result Detail": "result:441c52b20b312642",
+  "Result Summary": "result:656d8db30b1c0ec6",
+  "Result Detail": "result:656d8db30b1c0ec6",
   "Explore": "workspace:618b41d5f018ba0e",
   "Result History": "workspace:4fcb52c2dfffb6e0",
   "New Experience": "workspace:ae46fc8631139398",

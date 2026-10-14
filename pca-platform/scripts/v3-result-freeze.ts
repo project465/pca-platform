@@ -46,6 +46,11 @@ const FILES = [
      학생이 읽는 글을 고르므로 이 동결이 덮는다 */
   "src/lib/me-v3/result/spec-view.ts",
   "src/lib/me-v3/result/meta.ts",
+  /* 시각화 넷과 그것이 읽을 값. **결과지가 그리는 것이라 이 동결이
+     덮는다**: 새 파일을 목록에 적지 않으면 그 파일을 고친 날 동결이
+     모르는 채로 통과한다 */
+  "src/app/v3/[attemptId]/result/charts.tsx",
+  "src/lib/me-v3/result/chart-data.ts",
   "src/lib/me-v3/runtime/domain-facts.ts",
 ];
 
