@@ -166,9 +166,26 @@ async function main(): Promise<void> {
     ok("안쪽 코드가 학생 화면에 없다",
       !new RegExp(`${seat.leaf.code}|${seat.leaf.core_code}`).test(st));
 
-    /* 4. 검사 시작 → PRO 강제 */
+    /**
+     * 4. 검사 시작 → PRO 강제
+     *
+     * **학업 단계를 묻는 걸음은 지나야 한다.** 학교 쪽에서 `검사 시작` 을
+     * 누르면 공통 시작 화면(`/v3/start`)이 서고 거기서 학업 단계를 고른다.
+     * 그 값은 routing 이 쓰는 값이라 묻는 것이 맞고, **등급과는 다른
+     * 자리다**: 등급은 이용권이 정하고 화면이 고를 수 없다. 처음에는 이
+     * 걸음을 몰라 `/v3/start` 에서 응시가 안 열렸다고 적었다.
+     */
     await p.locator('form button[type="submit"]').first().click();
-    await p.waitForURL(/\/v3\//, { timeout: 30000 }).catch(() => undefined);
+    await p.waitForURL(/\/v3\/start/, { timeout: 30000 }).catch(() => undefined);
+    await p.waitForLoadState("networkidle").catch(() => undefined);
+    const common = (await p.locator("body").innerText()).replace(/\s+/g, " ");
+    ok("공통 시작 화면이 그 학과를 적는다", common.includes(seat.leaf.name),
+      seat.leaf.name);
+    ok("공통 시작 화면에 등급 선택이 없다",
+      !/BASIC|STANDARD|등급을 고르|등급 선택/.test(common));
+    await p.getByText("학부", { exact: true }).click();
+    await p.getByRole("button", { name: "검사 시작" }).click();
+    await p.waitForURL(/\/v3\/\d+/, { timeout: 30000 }).catch(() => undefined);
     await p.waitForLoadState("networkidle").catch(() => undefined);
     const att = /\/v3\/(\d+)/.exec(p.url())?.[1] ?? null;
     ok("응시가 열린다", Boolean(att), p.url().replace(BASE, ""));
