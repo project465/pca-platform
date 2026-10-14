@@ -331,6 +331,7 @@ npm run pcu:org       # 읽기만. 없으면 APPLY=yes 로 만든다
 npm run pcu:open      # 검사 가능이 1자리인지 (변경 후 확인)
 npm run pcu:students  # 읽기만. 명단은 `import <파일>` · 실제 발급은 APPLY=yes
 npm run pcu:diag      # 읽기만. 종이와 작업공간이 왜 깨졌는지 한 장에
+APPLY=yes ROTATE=yes npm run pcu:students rotate <아이디>   # 열쇠만 다시
 ```
 
 운영 Canary 를 사람이 밟고 남은 넷(학생 신분 · 종이 · 작업공간 · 담당자

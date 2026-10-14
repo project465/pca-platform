@@ -5,6 +5,7 @@
  *   npm run pcu:students import students.csv   미리 본다 (쓰지 않는다)
  *   APPLY=yes npm run pcu:students import students.csv
  *   APPLY=yes OUT=/tmp/pcu-accounts.csv npm run pcu:students import students.csv
+ *   APPLY=yes ROTATE=yes npm run pcu:students rotate test001
  *
  * CSV 머리글: `student_id,name,email,college_code,department_code`
  * (`email` 과 `college_code` 는 비어 있어도 된다. `login_id` 칸을 두면
@@ -27,14 +28,23 @@
  * **이미 있는 학생의 열쇠를 바꾸지 않는다.** 명단을 다시 올리는 것이 가장
  * 흔한 두 번째 실행이고, 그때 비밀번호가 갈리면 어제 받아 간 학생이 그
  * 자리에서 잠긴다. 바꾸려면 `ROTATE=yes` 를 함께 준다.
+ *
+ * **한 사람의 열쇠만 다시 내는 자리를 따로 둔다**(`rotate <아이디>`).
+ * 명단으로도 `ROTATE=yes` 가 돌지만 그 길은 CSV 에 적힌 이름과 학과를
+ * 그 사람의 줄에 **다시 쓴다**(`ON CONFLICT DO UPDATE`). 초기 비밀번호를
+ * 잃어버려 다시 내는 자리에서는 바꿀 것이 열쇠 하나뿐인데, CSV 를 손으로
+ * 적다 한 칸이 어긋나면 그 학생의 이름이나 학과가 조용히 갈리고 그 응시는
+ * 담당자 화면에서 남의 학과 줄에 선다. 그래서 이쪽은 **DB 에 적힌 것을
+ * 그대로 두고 `password_hash` 한 칸만** 바꾼다.
  */
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { query, queryOne } from "../src/lib/db";
 import {
-  checkStudent, provisionStudent, campusStudentCount,
+  checkStudent, provisionStudent, campusStudentCount, initialPassword,
   type CampusStudentInput,
 } from "../src/lib/campus/students";
+import { hashPassword } from "../src/lib/password";
 
 const UNI = process.env.UNI ?? "PCU";
 
@@ -86,6 +96,82 @@ function assertOutside(out: string): string {
   return abs;
 }
 
+/**
+ * **한 사람의 열쇠만 다시 낸다.** 바꾸는 칸이 `password_hash` 하나다.
+ *
+ * 초기 비밀번호를 적어 둔 파일이 사라졌을 때 쓰는 자리다. 들고 있던 열쇠를
+ * 되살릴 길은 없다(해시만 남기므로 그것이 설계다). 그래서 새로 하나 내고
+ * 그 자리에서 한 번 보여 준다.
+ *
+ * **그 학교의 발급 계정만 받는다.** `campus_students` 줄이 없는 사람은
+ * 거절한다: 학교가 발급하지 않은 계정의 열쇠를 이 자리에서 바꿀 일이
+ * 없고, 그 길을 열어 두면 아이디 하나로 아무 계정의 열쇠를 바꿀 수 있다.
+ *
+ * **아이디로만 찾는다.** 로그인 쪽은 아이디와 이메일을 둘 다 받지만, 여기는
+ * 운영자가 적어 준 글자가 아이디다. 이메일로도 찾으면 같은 글자를 든 다른
+ * 사람의 열쇠를 바꿀 수 있다.
+ */
+async function rotateOne(
+  loginId: string, apply: boolean, rotate: boolean,
+): Promise<void> {
+  if (!loginId) {
+    console.error("쓰임: npm run pcu:students rotate <아이디>");
+    process.exit(2);
+  }
+  const who = await queryOne<{
+    id: string; login: string; name: string; status: string;
+    sid: string; col: string; dep: string; sp: string | null; hash: string;
+  }>(
+    `SELECT u.id::text, u.login_id AS login, u.display_name AS name, u.status,
+            s.student_id AS sid, s.college_code AS col,
+            s.department_code AS dep, s.specialization AS sp,
+            u.password_hash AS hash
+       FROM users u JOIN campus_students s ON s.user_id = u.id
+      WHERE u.login_id = $1 AND s.university_code = $2`, [loginId, UNI]);
+  console.log(`\n── ${UNI} 초기 비밀번호 ${apply ? "재발급" : "미리보기"}\n`);
+  if (!who) {
+    console.error(`  ${loginId} 는 ${UNI} 가 발급한 학생 계정이 아닙니다.`);
+    console.error("  학번(아이디)을 그대로 적었는지 보십시오."
+      + " 발급 목록은 npm run pcu:diag 가 적습니다.");
+    process.exit(1);
+  }
+  console.log(`  아이디       ${who.login}  (user ${who.id})`);
+  console.log(`  학번         ${who.sid}`);
+  console.log(`  학과         ${who.col} · ${who.dep} · ${who.sp ?? "갈래 없음"}`);
+  console.log(`  상태         ${who.status}`);
+  if (!apply || !rotate) {
+    console.log("\n  아직 아무것도 바꾸지 않았습니다.");
+    console.log("  바꾸려면 두 자물쇠를 함께 주십시오:");
+    console.log(`    APPLY=yes ROTATE=yes npm run pcu:students rotate ${who.login}\n`);
+    process.exit(0);
+  }
+  const pw = initialPassword();
+  await query(
+    `UPDATE users SET password_hash = $2 WHERE id = $1::bigint`,
+    [who.id, await hashPassword(pw)]);
+  /* **바꾼 것이 그 한 칸뿐임을 값으로 센다.** 적어 두는 것으로는 다음
+     사람이 믿을 수 없고, 이 자리가 틀리면 그 학생의 학과가 조용히 갈린다 */
+  const after = await queryOne<{ same: string }>(
+    `SELECT (u.login_id = $2 AND u.display_name = $3 AND u.status = $4
+             AND s.student_id = $5 AND s.college_code = $6
+             AND s.department_code = $7
+             AND coalesce(s.specialization,'') = coalesce($8,'')
+             AND u.password_hash <> $9)::text AS same
+       FROM users u JOIN campus_students s ON s.user_id = u.id
+      WHERE u.id = $1::bigint`,
+    [who.id, who.login, who.name, who.status, who.sid, who.col, who.dep,
+     who.sp, who.hash]);
+  console.log(`\n  바꾼 칸      password_hash 하나`);
+  console.log(`  그대로       아이디 · 이름 · 상태 · 학번 · 학과`
+    + ` (${after?.same === "true" ? "값으로 확인했습니다" : "확인하지 못했습니다"})`);
+  console.log("  건드리지 않은 것  소속 · 응시 · 결과 · 학과 매핑");
+  console.log("\n  초기 비밀번호 (이 화면에서 한 번만 보여 줍니다)\n");
+  console.log(`  ${who.sid},${who.name},${who.login},${pw}`);
+  console.log("\n  전달한 뒤 이 화면을 닫으십시오."
+    + " 다시 보여 주는 길은 없고 또 내면 그때 것이 됩니다.\n");
+  process.exit(after?.same === "true" ? 0 : 1);
+}
+
 async function main(): Promise<void> {
   if (!process.env.DATABASE_URL) {
     console.error("DATABASE_URL 이 없습니다."); process.exit(2);
@@ -98,6 +184,8 @@ async function main(): Promise<void> {
   const org = await queryOne<{ id: string }>(
     `SELECT id::text FROM organizations WHERE code = $1`, [UNI]);
 
+  if (cmd === "rotate") { await rotateOne(file, apply, rotate); return; }
+
   if (cmd !== "import") {
     console.log(`\n── ${UNI} 학생 계정 (읽기만)\n`);
     console.log(`  기관 줄      ${org ? "있다" : "없다 — npm run pcu:org 로 먼저 만든다"}`);
@@ -105,6 +193,9 @@ async function main(): Promise<void> {
     console.log("  명단을 올리려면:");
     console.log("    npm run pcu:students import students.csv        미리 본다");
     console.log("    APPLY=yes npm run pcu:students import students.csv\n");
+    console.log("  한 사람의 초기 비밀번호만 다시 내려면:");
+    console.log("    npm run pcu:students rotate <아이디>            미리 본다");
+    console.log("    APPLY=yes ROTATE=yes npm run pcu:students rotate <아이디>\n");
     process.exit(0);
   }
   if (!file) {
