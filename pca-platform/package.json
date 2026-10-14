@@ -157,6 +157,7 @@
     "routes:check": "tsx scripts/routes-check.ts",
     "campus:check": "tsx scripts/campus-check.ts",
     "campus:shots": "node scripts/campus-shots.mjs",
+    "campus:rate": "tsx scripts/campus-rate-check.ts",
     "campus:walk": "tsx scripts/campus-walk.ts && tsx scripts/campus-agg-check.ts",
     "pcu:coverage": "tsx scripts/pcu-coverage.ts",
     "pcu:content": "tsx scripts/pcu-content-check.ts",

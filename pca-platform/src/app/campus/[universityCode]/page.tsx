@@ -106,7 +106,7 @@ export default async function CampusEntry({ params, searchParams }: Params) {
         <p className="cm-cmp-eyebrow">{u.university_name} 학생 전용</p>
         <h1 className="cm-cmp-title">내 전공에서 시작하는 진로 분석</h1>
         <p className="cm-cmp-lead">
-          지금까지 해본 경험을 바탕으로 산업·직무 연결과 다음 준비 방향을
+          지금까지 해본 경험에서 산업·직무 연결과 다음 준비 방향을
           확인합니다.
         </p>
         <div className="cm-cmp-cta-row">

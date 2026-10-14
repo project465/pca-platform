@@ -21,6 +21,17 @@ import { MIN_CELL } from "@/lib/org";
 /** 한 칸. 5명 미만이면 `n` 이 `null` 이다 */
 export type Cell = { key: string; label: string; n: number | null };
 
+/** 단과대학 한 줄. 다섯이 안 되는 칸은 `null` 이고 화면이 빗금으로 그린다 */
+export type CollegeRow = {
+  code: string;
+  /** 명단과 학교 진입을 합친 사람(§22). `시작 ≤ 대상자` 가 늘 참이다 */
+  target: number | null;
+  started: number | null;
+  scored: number | null;
+  /** 완료 ÷ 대상자. **clamp 하지 않는다** */
+  rate: number | null;
+};
+
 export type CampusV3 = {
   /**
    * 학교가 명단으로 발급한 사람(대상자).
@@ -31,7 +42,18 @@ export type CampusV3 = {
    */
   roster: number;
   /**
-   * 완료율. **대상자가 있으면 그것을 바닥으로, 없으면 시작한 사람을.**
+   * 대상자(규격 §22). **명단과 학교 진입을 합친 사람 수**다.
+   *
+   * 명단에 없는 학생이 `/campus/{학교}` 로 들어와 응시하면 시작한 사람이
+   * 명단보다 많아진다. 그때 명단만 바닥으로 쓰면 **완료율이 289% 로**
+   * 찍히고(한 번 그렇게 찍혔다), 비율이 100 을 넘으면 그 수는 아무도 못
+   * 믿는다. **clamp 로 막지 않는다**: 100 에서 자르면 틀린 집계가 맞아
+   * 보이기만 한다. 두 모집단의 합집합을 세면 `완료 ≤ 시작 ≤ 대상자` 가
+   * 집계 자체로 참이 된다.
+   */
+  target: number;
+  /**
+   * 완료율. **바닥은 늘 `target` 이다.**
    *
    * **나눌 바닥이 0 이면 비율을 만들지 않는다**(설계 원칙). 아무도
    * 시작하지 않았는데 0% 를 찍으면 그것은 거짓이다.
@@ -55,6 +77,16 @@ export type CampusV3 = {
    * 자기 학교 학생이 그만큼 있는 줄로 읽는다.
    */
   by_college: Cell[];
+  /**
+   * 단과대학 한 줄(규격 §21). **막대 하나로는 담당자가 판단하지 못한다**:
+   * 응시 수만 보여 주면 `많다 · 적다` 밖에 못 읽고, 그 단과대학이 **몇
+   * 명 가운데 몇 명인지**가 없다. 네 칸이 한 줄에 선다.
+   *
+   * 다섯이 안 되는 칸은 수를 내지 않는다(`null`). 가리는 것이 아니라
+   * **값을 만들지 않는다**: 화면이 알아서 가려 주기를 바라면 내보내기나
+   * 캡처에서 새어 나간다.
+   */
+  college_rows: CollegeRow[];
   by_department: Cell[];
   /** 학위 단계별 */
   by_stage: Cell[];
@@ -148,7 +180,7 @@ export type CampusScope = {
 
 export async function campusV3(scope: CampusScope): Promise<CampusV3> {
   const empty: CampusV3 = {
-    roster: 0, completion: null, recent: [],
+    roster: 0, target: 0, completion: null, recent: [], college_rows: [],
     started: 0, scored: 0, in_progress: 0, recomputed: 0,
     by_core: [], by_stage: [], by_industry: [], by_role: [],
     by_college: [], by_department: [],
@@ -203,12 +235,29 @@ export async function campusV3(scope: CampusScope): Promise<CampusV3> {
    * 로 찍힌다(한 번 그렇게 찍혔다). 비율이 100 을 넘으면 그 수는 아무도
    * 못 믿는다.
    */
-  const base = Math.max(roster, started);
-  const completion = base > 0 ? Math.round((scored / base) * 100) : null;
+  /**
+   * 대상자는 **명단과 학교 진입의 합집합**이다(규격 §22).
+   *
+   * `max(명단, 시작)` 으로 두면 명단에 있으면서 응시하지 않은 사람과
+   * 명단 밖에서 응시한 사람이 **같은 날 함께 있으면** 어느 쪽도 맞지
+   * 않는다(명단 10 · 그 가운데 2명 응시 · 명단 밖 3명 응시 → 참값은 13
+   * 인데 `max` 는 10 을 돌려준다). 합집합은 그 자리에서 13 이고, 그래서
+   * **시작 ≤ 대상자가 clamp 없이 참이 된다.**
+   */
+  const target = uni
+    ? Number((await queryOne<{ n: string }>(
+      `SELECT count(*)::text AS n FROM (
+         SELECT cs.user_id FROM campus_students cs
+          WHERE cs.university_code = $2 AND ${live("cs.user_id")}
+         UNION
+         SELECT a.user_id ${FROM}
+       ) u`, args))?.n ?? 0)
+    : started;
+  const completion = target > 0 ? Math.round((scored / target) * 100) : null;
 
   if (started < MIN_CELL) {
     return {
-      ...empty, roster, completion,
+      ...empty, roster, target, completion,
       started, scored, in_progress: Number(head?.open ?? 0),
     };
   }
@@ -289,6 +338,30 @@ export async function campusV3(scope: CampusScope): Promise<CampusV3> {
        ) t ON (t.started_at::date = g.d OR t.submitted_at::date = g.d)
       GROUP BY g.d ORDER BY g.d`, args);
 
+  /**
+   * 단과대학 한 줄(규격 §21). **대상자와 시작과 완료를 한 질의에서 센다.**
+   *
+   * 셋을 따로 세면 어느 날 세는 법이 갈린다. 대상자는 전체와 같은 규칙,
+   * 곧 **명단과 학교 진입의 합집합**이라 `시작 ≤ 대상자` 가 줄마다 참이다.
+   */
+  const colRows = await query<{ k: string; t: string; a: string; b: string }>(
+    `SELECT k,
+            count(DISTINCT user_id)::text AS t,
+            count(DISTINCT user_id) FILTER (WHERE src = 'a')::text AS a,
+            count(DISTINCT user_id) FILTER (WHERE done)::text AS b
+       FROM (
+         SELECT coalesce(nullif(a.college_code, ''), '(고르지 않음)') AS k,
+                a.user_id, 'a'::text AS src, (a.status = 'scored') AS done
+           ${FROM}
+            AND a.university_code IS NOT NULL
+         UNION ALL
+         SELECT cs.college_code AS k, cs.user_id, 'r'::text, FALSE
+           FROM campus_students cs
+          WHERE $2::text IS NOT NULL AND cs.university_code = $2
+            AND ${live("cs.user_id")}
+       ) t
+      GROUP BY k ORDER BY 2 DESC`, args);
+
   const hide = (n: number) => (n > 0 && n < MIN_CELL ? null : n);
 
   /* 주의가 필요한 학과. **새로 세지 않고 위의 둘을 뺀다** */
@@ -303,12 +376,22 @@ export async function campusV3(scope: CampusScope): Promise<CampusV3> {
     .sort((a, b) => b.open - a.open);
 
   return {
-    roster, completion,
+    roster, target, completion,
     recent: days.map((r) => ({
       day: r.d, started: hide(Number(r.a)), scored: hide(Number(r.b)),
     })),
     started, scored, in_progress: Number(head?.open ?? 0),
     recomputed: Number(rec?.n ?? 0),
+    /* 다섯이 안 되는 칸은 **값을 만들지 않는다**. 비율도 그때는 없다:
+       바닥이 가려진 비율은 그 자리에서 사람을 되짚게 한다 */
+    college_rows: colRows.map((r) => {
+      const t = hide(Number(r.t)); const a = hide(Number(r.a));
+      const b = hide(Number(r.b));
+      return {
+        code: r.k, target: t, started: a, scored: b,
+        rate: t !== null && b !== null && t > 0 ? Math.round((b / t) * 100) : null,
+      };
+    }),
     by_core: cores.map((r) => cell(r.k, r.k, Number(r.n))),
     by_college: colleges.map((r) => cell(r.k, r.k, Number(r.n))),
     by_department: depts.map((r) => cell(r.k, r.k, Number(r.n))),

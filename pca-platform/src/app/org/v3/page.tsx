@@ -208,19 +208,25 @@ export default async function CampusV3({
             (`.btn` · `--sf-r` · `.lg` · `empty` · `industries` · `OC*` ·
             `qs-steps` · `.cm-snap`). 다른 화면이 쓰는 이름으로 맞춘다 */}
         <div className="sf-grid sf-g4">
-          <Kpi label="대상자" value={v3.roster} unit="명"
-            note="학교가 계정을 발급한 학생" />
+          {/* **대상자는 명단과 학교 진입의 합집합이다**(규격 §22).
+              명단만 세면 `/campus/{학교}` 로 혼자 들어와 친 학생이 분모
+              밖에 남고, 그 자리에서 완료율이 100 을 넘는다. 두 모집단을
+              합쳐 세면 **완료 ≤ 시작 ≤ 대상자가 집계 자체로 참**이고,
+              100 에서 자르는 clamp 가 필요 없다 */}
+          <Kpi label="대상자" value={v3.target} unit="명"
+            note={v3.target > v3.roster
+              ? `명단 ${v3.roster}명 + 학교 진입 ${v3.target - v3.roster}명`
+              : "학교가 계정을 발급한 학생"} />
           <Kpi label="검사를 시작한 학생" value={v3.started} unit="명" />
           <Kpi label="결과를 받은 학생" value={v3.scored} unit="명" />
-          {/* **바닥이 어느 쪽인지를 그 자리에 적는다**(규격 §23).
-              바닥은 대상자와 시작한 학생 가운데 큰 쪽인데, 적는 말은
-              `대상자가 있으면 대상자 기준` 이었다. 그래서 **명단에 없는
-              학생이 들어와 시작한 수가 더 큰 날**, 시작한 수로 나눈 비율
-              옆에 `대상자 기준` 이 적혔다. 이름과 단위가 어긋나면 그 수는
-              아무도 못 믿는다 */}
+          {/* **바닥은 늘 대상자 하나다**(규격 §22). 앞 판본은 바닥을
+              `max(명단, 시작)` 으로 두고 어느 쪽이 바닥인지를 라벨로
+              적었는데, 그러면 **같은 화면의 수가 날마다 다른 모집단으로
+              나뉜다.** 대상자를 합집합으로 세면 바닥이 하나로 고정되고
+              라벨도 하나다 */}
           <Kpi label="완료율"
             value={v3.completion === null ? "—" : `${v3.completion}%`}
-            note={v3.roster >= v3.started ? "대상자 기준" : "시작한 학생 기준"} />
+            note="대상자 기준" />
         </div>
         <p className="sf-meta" style={{ marginTop: 10 }}>
           지금 푸는 중 {v3.in_progress}명 · 경험을 더해 갱신한 학생
@@ -228,11 +234,11 @@ export default async function CampusV3({
         </p>
         {/* **명단보다 응시가 많으면 그 사실을 적는다**(규격 §23). 숨기면
             완료율이 왜 시작한 학생 기준인지 읽는 사람이 알 수 없다 */}
-        {v3.started > v3.roster ? (
+        {v3.target > v3.roster ? (
           <p className="sf-meta" style={{ marginTop: 6 }}>
-            명단에 없는 학생 {v3.started - v3.roster}명이 학교 전용 진입으로
-            들어와 검사를 시작했습니다. 그래서 완료율의 바닥을 시작한 학생
-            수로 둡니다.
+            명단에 없는 학생 {v3.target - v3.roster}명이 학교 전용 진입으로
+            들어와 검사를 시작했습니다. 대상자에 그 학생들이 함께 들어
+            있습니다.
           </p>
         ) : null}
         {/* **섞어서 보고 있으면 화면이 그 사실을 적는다.** 적지 않으면
@@ -267,11 +273,44 @@ export default async function CampusV3({
         <>
           {/* **학교 전용 진입으로 들어온 응시만 선다**(규격 §13). 소속으로만
               묶인 학생은 학과 칸이 비어 있어 이 두 묶음에 서지 않는다 */}
-          {v3.by_college.length ? (
-            <Section title="단과대학"
+          {/* ── 단과대학별 응시 현황(규격 §21) ──
+              **막대 하나로는 담당자가 판단하지 못한다.** 응시 수만 보여
+              주면 `많다 · 적다` 밖에 못 읽고, 그 단과대학이 **몇 명 가운데
+              몇 명인지**가 없다. 네 칸을 한 줄에 세우면 어디에 안내를 한 번
+              더 보낼지가 그 줄에서 정해진다.
+
+              **등수를 매기지 않는다**: 차례는 사람 수이고 그 옆에 등수를
+              적지 않는다. 다섯이 안 되는 칸은 수를 내지 않는다 */}
+          {v3.college_rows.length ? (
+            <Section title="단과대학별 응시 현황"
               note="학교 전용 진입으로 들어온 응시입니다">
-              <BarList rows={bars(v3.by_college, name.college)}
-                hiddenLabel={`${MIN_CELL}명 미만`} emptyLabel="아직 없습니다" />
+              <div className="sf-tw">
+                <table className="sf-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">단과대학</th>
+                      <th scope="col">대상자</th>
+                      <th scope="col">시작</th>
+                      <th scope="col">완료</th>
+                      <th scope="col">완료율</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {v3.college_rows.map((r) => (
+                      <tr key={r.code}>
+                        <th scope="row">{name.college(r.code)}</th>
+                        <td>{r.target === null
+                          ? `${MIN_CELL}명 미만` : `${r.target}명`}</td>
+                        <td>{r.started === null
+                          ? `${MIN_CELL}명 미만` : `${r.started}명`}</td>
+                        <td>{r.scored === null
+                          ? `${MIN_CELL}명 미만` : `${r.scored}명`}</td>
+                        <td>{r.rate === null ? "—" : `${r.rate}%`}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </Section>
           ) : null}
 

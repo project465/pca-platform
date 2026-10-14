@@ -693,6 +693,25 @@ export default async function V3Result({
     regionOrganizations(regionCode, [coreEntry(core).major], 5),
     regionOrgCount(regionCode),
   ]);
+  /**
+   * Evidence 사슬 네 칸(규격 §11).
+   *
+   * **새 값을 만들지 않는다.** 네 칸이 전부 결과 모델이 이미 들고 있는
+   * `did` · `decided` · `artifacts` · `verifications` 에서 그대로 온다.
+   * 세우는 영역은 **지원서에서 먼저 쓸 자리로 이미 선 영역**이고, 여기서
+   * 순위를 다시 매기지 않는다.
+   */
+  const chains = [...new Set(model.evidence.ready.map((e) => e.domain))]
+    .slice(0, 2)
+    .map((code) => {
+      const d = model.domains.find((x) => x.code === code);
+      return {
+        code,
+        did: d?.did[0] ?? null,
+        decided: d?.decided[0] ?? null,
+        left: d?.artifacts[0] ?? d?.verifications[0] ?? null,
+      };
+    });
   const focus = model.domains.filter((d) => model.overview.focus.includes(d.code));
   const compare = model.domains.filter((d) => model.overview.compare.includes(d.code));
   const deep = model.limits.deep_axes;
@@ -957,28 +976,28 @@ export default async function V3Result({
                     .filter(Boolean).join(" · ")}
                 </p>
               </div>
-              {/* **시각 요소는 이 제품의 말로 그린다**(규격 §16·§20).
-                  사진을 쓰지 않는다: 사용권이 확인된 배재대 사진이 없고,
-                  사람이 찍힌 사진은 그 자리에서 Evidence 로 오해된다.
-                  여기 선 것은 결과지가 쓰는 열두 꼭짓점 격자이고 **값이
-                  한 점도 들어 있지 않다**: 표지에서 수를 읽게 하지 않는다 */}
+              {/* **표지에서 Radar 를 뺐다**(규격 §16).
+                  앞 판본은 결과지가 쓰는 열두 꼭짓점 격자를 표지에 그대로
+                  올렸다. 값이 한 점도 없는 빈 격자인데도, 본문의 Radar 와
+                  같은 모양이라 **받은 사람이 거기서 자기 점수를 읽으려
+                  했다.** 표지가 먼저 말할 것은 신분이고 그림은 그 뒤다.
+
+                  대신 선 것은 **길 motif** 하나다: 한 행동에서 지원서
+                  문장까지 네 마디로 간다는 이 제품의 읽는 차례를 그린
+                  것이고, 눈금도 축도 값도 없어서 수로 읽히지 않는다.
+                  사진을 쓰지 않는 까닭은 그대로다: 사용권이 확인된 배재대
+                  사진이 없고, 사람이 찍힌 사진은 그 자리에서 Evidence 로
+                  오해된다 */}
               <svg className="rs-cover-art" viewBox="0 0 200 200" aria-hidden="true">
-                {[1, 2, 3].map((k) => (
-                  <polygon key={k} points={Array.from({ length: 12 }, (_, i) => {
-                    const a = (-90 + i * 30) * (Math.PI / 180);
-                    const r = (72 * k) / 3;
-                    return `${100 + r * Math.cos(a)},${100 + r * Math.sin(a)}`;
-                  }).join(" ")} fill="none" stroke="#c9d4e3" strokeWidth="0.8" />
+                <path d="M24 164 C 64 164, 54 112, 94 112 S 136 60, 176 44"
+                  fill="none" stroke="#c9d4e3" strokeWidth="1.6"
+                  strokeLinecap="round" />
+                {[[24, 164], [94, 112], [176, 44]].map(([x, y], i) => (
+                  <circle key={i} cx={x} cy={y} r={i === 2 ? 5.2 : 3.4}
+                    fill={i === 2 ? "#2d6cdf" : "#ffffff"}
+                    stroke={i === 2 ? "#2d6cdf" : "#9fb0c7"} strokeWidth="1.4" />
                 ))}
-                {Array.from({ length: 12 }, (_, i) => {
-                  const a = (-90 + i * 30) * (Math.PI / 180);
-                  return (
-                    <line key={i} x1="100" y1="100"
-                      x2={100 + 72 * Math.cos(a)} y2={100 + 72 * Math.sin(a)}
-                      stroke="#e2e9f2" strokeWidth="0.8" />
-                  );
-                })}
-                <circle cx="100" cy="100" r="2.6" fill="#2d6cdf" />
+                <path d="M24 186 H 176" stroke="#e2e9f2" strokeWidth="1" />
               </svg>
             </div>
             {/* **표지 가운데를 비워 두지 않는다**(규격 §18). 앞 판본은
@@ -1013,47 +1032,45 @@ export default async function V3Result({
         ) : null}
 
         <section className="rs-hero">
-          {/* **학교의 자리가 맨 위다**(규격 §8). 전에는 학교와 학과가 큰
-              문장 아래 회색 한 줄이었다. 학교에서 받은 리포트인지가 먼저
-              읽혀야 그 아래 문장이 학교가 보증한 말로 읽힌다 */}
-          {meta.school ? (
-            <p className="rs-school">
-              <b>{meta.school}</b>
-              <span>{[meta.department, meta.specialization]
-                .filter(Boolean).join(" · ")}</span>
+          {/* ── A. Identity ──
+              규격 §6 이 첫 화면의 차례를 셋으로 못 박았다: 누구의 어느
+              응시인가 → 엔진이 낸 한 문장 → 한눈에 보는 결과 넷. 전에는
+              신분이 둘로 쪼개져 학교는 맨 위에, 등급과 응답일은 큰 문장
+              **아래**에 있었다. 보관된 종이는 혼자 읽히므로 신분은 한
+              덩이로 먼저 선다 */}
+          <div className="rs-id">
+            {meta.school ? (
+              <p className="rs-school">
+                <b>{meta.school}</b>
+                <span>{[meta.department, meta.specialization]
+                  .filter(Boolean).join(" · ")}</span>
+              </p>
+            ) : null}
+            <p className="rs-ident">
+              {(meta.school
+                ? [`CareerMatri ${model.tier}`,
+                  meta.answeredOn ? `${meta.answeredOn} 응답` : null]
+                : [meta.specialization, `CareerMatri ${model.tier}`,
+                  meta.answeredOn ? `${meta.answeredOn} 응답` : null])
+                .filter(Boolean).join(" · ")}
             </p>
-          ) : null}
+          </div>
           <p className="rs-kicker">{meta.major ?? "전공"} 진로 진단 결과</p>
-          <h1 className="rs-h1">{h.title}</h1>
-          <p className="rs-lead">{h.lead}</p>
+          {/* ── B. 엔진이 낸 한 문장 ──
+              **지어낸 문장이 아니다.** `headlineKo(model)` 이 결과 모델의
+              묶음과 축 상태에서 뽑는 말이고, 여기서 다시 쓰지 않는다.
+              면을 한 겹 깔아 신분 줄과 아래 네 칸 사이에서 **이 한 문장이
+              결과의 요지**라는 것이 보이게 한다(§6) */}
+          <div className="rs-say">
+            <h1 className="rs-h1">{h.title}</h1>
+            <p className="rs-lead">{h.lead}</p>
+          </div>
           {/* **종이는 보관되고 전달된다.** 누구의 어느 전공이 언제 친
               것인지가 첫 쪽에 없으면 그 종이는 혼자서는 읽히지 않는다.
-              학교 진입이 아니면 학교와 학과 자리는 서지 않는다 */}
-          {/* **같은 말을 두 번 적지 않는다.** 학교 진입이면 학교와 학과와
-              갈래는 바로 위 띠가 이미 들었고, 여기 남는 것은 언제 친
-              것인가다. 개인 결제면 산 등급이 여기 선다 */}
-          {/* **신분 줄이 다섯을 든다**(규격 §3): 학교 · 학과 · 전공 맥락 ·
-              제품 이름 · 응답일. 앞의 셋은 바로 위 띠가 들었고 여기 남는
-              것이 뒤의 둘이다.
-
-              **제품 이름을 적되 등급 칩을 세우지 않는다.** 앞 회차는 학교
-              진입에서 등급을 통째로 감췄는데, 그러면 학생이 받은 것이
-              무엇인지 종이 어디에도 없다. 머리띠의 `PRO` 한 글자는 고를 수
-              있는 값으로 읽히므로 그대로 두고, 여기에는 산 것의 이름을
-              온전히 적는다 */}
-          <p className="rs-ident">
-            {(meta.school
-              ? [`CareerMatri ${model.tier}`,
-                meta.answeredOn ? `${meta.answeredOn} 응답` : null]
-              : [meta.specialization, model.tier,
-                meta.answeredOn ? `${meta.answeredOn} 응답` : null])
-              .filter(Boolean).join(" · ")}
-          </p>
-          {/* **첫 서른 초에 무엇까지 봤는지가 보여야 한다.** 깊게 물은
-              응시에서만 센 숫자라, 네 축만 물은 응시에는 두지 않는다 */}
-          {/* **종이로 가는 길을 결과 안에 둔다.** 전에는 스크립트로만
-              뽑혔고, 사업주가 직접 눌러 볼 자리가 없었다. 웹과 종이가 같은
-              결과 모델을 읽으므로 둘의 판단이 갈리지 않는다 */}
+              그 다섯은 위 Identity 덩이가 한 자리에서 든다(규격 §6).
+              학교 진입이면 등급 칩을 머리띠에 두지 않고 제품 이름을
+              온전히 적는다: 받은 것이 무엇인지 종이 어디에도 없으면
+              학생이 자기가 받은 것을 묻게 된다 */}
         </section>
 
         {/* 열 초 안에 셋을 답한다: 어디부터 · 왜 · 지금 무엇을 */}
@@ -1372,6 +1389,50 @@ export default async function V3Result({
                 ) : null}
               </>
             )}
+            {/* ── Evidence 사슬(규격 §11) ──
+                **항목을 늘어놓는 것으로는 차별점이 서지 않는다.** 이
+                제품이 파는 자리는 한 행동이 지원서 문장이 되기까지의
+                이음매라서, 네 칸을 그 차례 그대로 세운다:
+                한 행동 → 직접 정한 기준 → 남긴 결과 → 지원서·면접 활용.
+                **새 값을 만들지 않는다**: 네 칸이 전부 결과 모델의
+                `did` · `decided` · `artifacts` · `verifications` 에서
+                그대로 오고, 비어 있는 칸은 비었다고 적는다 */}
+            {chains.length ? (
+              <div className="rs-chain">
+                {chains.map((c) => (
+                  <section key={c.code}>
+                    <h3>{domainName(core, c.code)}</h3>
+                    <ol>
+                      <li>
+                        <b>한 행동</b>
+                        <span>{c.did ?? "이 영역에서 해 본 일이 아직 적히지 않았습니다"}</span>
+                      </li>
+                      <li>
+                        <b>직접 정한 기준</b>
+                        <span>{c.decided ?? "조건이나 기준을 직접 정한 자리가 아직 없습니다"}</span>
+                      </li>
+                      <li>
+                        <b>남긴 결과</b>
+                        <span>{c.left ?? "남은 산출물이 아직 적히지 않았습니다"}</span>
+                      </li>
+                      <li>
+                        <b>지원서·면접</b>
+                        <span>
+                          {c.decided && c.left
+                            ? "이 차례 그대로 적으면 지원서 항목과 면접 답변이 됩니다"
+                            : "앞 칸이 채워지면 이 경험을 지원서에서 설명할 수 있습니다"}
+                        </span>
+                      </li>
+                    </ol>
+                  </section>
+                ))}
+                <p className="rs-note">
+                  네 칸은 응답에서 고르신 항목을 그대로 옮긴 것입니다.
+                  문장으로 적는 차례는 아래 <a href="#translation">지원서·면접에서 쓸 문장</a>에
+                  이어집니다.
+                </p>
+              </div>
+            ) : null}
             <Disclose label="전체 보기">
             <div className="rs-ev">
               <section>
@@ -1411,8 +1472,14 @@ export default async function V3Result({
                 문장으로 적고, 이 표는 그 자리가 어느 영역에서 무엇으로
                 섰는지를 한 눈에 보인다. 개수를 더하거나 점수로 바꾸지
                 않는다 */}
-            <h3 className="pv-h3">근거가 어디에 어떻게 남아 있는가</h3>
-            <EvidenceMatrix model={model} name={(c) => domainName(core, c)} />
+            {/* **열두 줄짜리 표를 기본으로 펼쳐 두지 않는다**(규격 §10).
+                이 표가 드는 것은 **되짚어 보실 자리**이고, 손전화에서
+                펼쳐 두면 첫 화면이 창의 여섯 배를 넘는다(`v3:result:height`
+                가 그 자리에서 걸렸다). 담긴 것은 그대로고 종이에서는
+                펴진다 */}
+            <Disclose label="근거가 어디에 어떻게 남아 있는가">
+              <EvidenceMatrix model={model} name={(c) => domainName(core, c)} />
+            </Disclose>
           </section>
         ) : null}
 

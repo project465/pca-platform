@@ -12,7 +12,7 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
 /** 결과지에 나가는 한국어. 문장만 바뀌면 이것만 올린다 */
 /* copy.19 — `EXPLORE_BROADLY` 가 어디에서 해 보면 되는지를 적고(§16),
    경험 빈도의 첫 칸이 응시 화면과 같은 `없음` 이다(§7) */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.21";
+export const RESULT_COPY_VERSION = "me-v3-result-copy.22";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -112,7 +112,23 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.21";
  * 절은 분포 절 안으로 들어갔고, 종이는 장을 쪽으로 가르는 대신 장 머리에
  * 선을 긋는다(11~12쪽).
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V33";
+/**
+ * `ME_V3_RESULT_UI_V34` · `me-v3-result-copy.22` (2026-10-14)
+ *
+ * **Radar 가 이번 응시에서 판단한 영역만 축으로 든다**(규격 §8). 열두
+ * 영역을 전부 꼭짓점으로 두면 묻지 않은 영역이 중심에 찍히고 그 점은
+ * 0점으로 읽힌다. 전체 영역은 Evidence Matrix 가 줄로 들고 거기에
+ * `이번에 묻지 않음` 이 적힌다.
+ *
+ * 첫 화면을 **Identity → 엔진이 낸 한 문장 → 네 칸** 으로 세웠다(§6).
+ * Evidence 는 **한 행동 → 직접 정한 기준 → 남긴 결과 → 지원서·면접**
+ * 네 칸 사슬이 섰다(§11). 종이 표지에서는 열두 꼭짓점 격자를 빼고 길
+ * motif 하나를 두었다(§16).
+ *
+ * **`RESULT_MODEL_VERSION` 과 채점 판본은 올리지 않는다**: 네 칸도 사슬도
+ * 전부 결과 모델이 이미 들고 있던 값이고, 판정이 한 줄도 바뀌지 않았다.
+ */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V34";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

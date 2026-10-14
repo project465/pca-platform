@@ -25,22 +25,43 @@ export function asked(d: ResultDomain): boolean {
  *
  * `level` 은 **점수가 아니라 이름이 붙은 네 단계**다. 단조라 뒤 단계가 앞
  * 단계를 포함하고, 그래서 한 눈금에 서로 다른 뜻이 섞이지 않는다.
+ *
+ * **반지름의 뜻**(§9): 중심에서 바깥으로 가는 거리는 그 영역에서 **응답이
+ * 어느 단계까지 확인됐는가** 하나다. 서로 다른 개념을 합친 composite
+ * score 가 아니고, 관심도도 학습 의향도 적합도도 들어가지 않는다.
  */
 export type RadarPoint = {
   code: string;
   /** 0 해본 적 없음 · 1 경험이 있다고 답함 · 2 응답에서 확인됨 · 3 직접 정함 */
   level: 0 | 1 | 2 | 3;
-  /** 그 영역의 축을 물었는가. **안 물어본 것을 `없다` 로 적지 않으려고 둔다** */
-  asked: boolean;
 };
 
+function levelOf(d: ResultDomain): RadarPoint["level"] {
+  return d.owned.length ? 3
+    : d.confirmed.length ? 2
+      : d.experience && d.experience !== "NONE" ? 1 : 0;
+}
+
+/**
+ * **이번 응시에서 실제로 판단한 영역만 Radar 에 선다**(§8).
+ *
+ * 열두 영역을 전부 꼭짓점으로 두면 묻지 않은 영역이 중심에 찍히고, 그
+ * 점은 **0점으로 읽힌다.** routing 이 축을 묻는 영역은 두셋에서 네댓이고
+ * 나머지는 이번에 보지 않은 영역이다. 전체 영역은 Evidence Matrix 와
+ * 아래 영역 목록이 글자로 들고, 거기에는 `이번에 묻지 않음` 이 적힌다.
+ */
 export function radarPoints(m: ResultModel): RadarPoint[] {
-  return m.domains.map((d) => {
-    const level: RadarPoint["level"] = d.owned.length ? 3
-      : d.confirmed.length ? 2
-        : d.experience && d.experience !== "NONE" ? 1 : 0;
-    return { code: d.code, level, asked: asked(d) };
-  });
+  return m.domains.filter(asked).map((d) => ({ code: d.code, level: levelOf(d) }));
+}
+
+/**
+ * Radar 를 그릴 수 있는가.
+ *
+ * 꼭짓점이 셋 미만이면 다각형이 서지 않는다(둘이면 선분이고 하나면 점이다).
+ * **억지로 그리지 않는다**: 그 자리는 막대와 Matrix 가 이미 글자로 든다.
+ */
+export function canRadar(m: ResultModel): boolean {
+  return m.domains.filter(asked).length >= 3;
 }
 
 /** 누적 막대 한 줄. **비율로 바꾸지 않는다**: 적게 물은 영역이 많이 확인된 것처럼 보인다 */
@@ -73,6 +94,8 @@ export function barRows(m: ResultModel): BarRow[] {
  */
 export type MatrixRow = {
   code: string;
+  /** 이번 응시에서 그 영역의 판단을 물었는가. **전체 영역이 줄로 선다**(§8) */
+  asked: boolean;
   /** 해 본 것 이상으로 확인된 축의 개수 */
   did: number;
   /** 직접 정한 것으로 확인된 축의 개수 */
@@ -85,11 +108,19 @@ export type MatrixRow = {
   verify: AxisState | null;
 };
 
+/**
+ * **전체 영역이 줄로 선다**(§8 2순위).
+ *
+ * Radar 는 이번에 판단한 영역만 축으로 두므로, 나머지 영역이 어디로
+ * 갔는지를 적는 자리가 필요하다. 묻지 않은 줄은 개수를 0 으로 적지 않고
+ * 화면이 `이번에 묻지 않음` 으로 적는다.
+ */
 export function matrixRows(m: ResultModel): MatrixRow[] {
-  return m.domains.filter(asked).map((d) => {
+  return m.domains.map((d) => {
     const j6 = d.axes.find((a) => a.axis === "J6");
     return {
       code: d.code,
+      asked: asked(d),
       did: d.confirmed.length,
       decided: d.owned.length,
       artifacts: d.artifacts.length,

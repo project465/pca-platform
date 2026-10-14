@@ -15,7 +15,7 @@ import type { ReactNode } from "react";
 import type { AxisState } from "@/lib/me-v3/scoring/types";
 import type { ResultModel } from "@/lib/me-v3/result/model";
 import {
-  barRows, matrixRows, radarPoints, roadmap,
+  barRows, canRadar, matrixRows, radarPoints, roadmap,
   type BarRow, type MatrixRow, type RadarPoint, type Roadmap,
 } from "@/lib/me-v3/result/chart-data";
 import { OWNERSHIP_LABEL } from "@/app/v3/tier-text";
@@ -66,25 +66,35 @@ function ring(n: number, r: number): string {
 }
 
 /**
- * **꼭짓점에 이름을 두지 않고 번호를 둔다.**
+ * **이번 응시에서 실제로 판단한 영역만 축으로 선다**(§8).
  *
- * 영역이 열둘이고 이름이 `수요·예약·가격 관리` 처럼 긴 자리가 있어서,
- * 꼭짓점마다 이름을 적으면 위아래에서 글자가 겹친다(§8). 손전화에서는
- * 데스크톱을 줄인 것이 되어 더 못 읽는다. 번호를 두고 아래 표가 번호와
- * 이름과 단계를 글자로 적으면 **그 표가 곧 그래프의 글 대체물**이다(§27).
+ * 열두 영역을 전부 꼭짓점으로 두면 **묻지 않은 영역이 중심에 찍히고 그
+ * 점은 0점으로 읽힌다.** routing 이 축을 묻는 영역은 두셋에서 네댓이고
+ * 나머지는 이번에 보지 않은 영역이다. 전체 영역은 아래 Evidence Matrix
+ * 와 영역 목록이 글자로 들고, 거기에 `이번에 묻지 않음` 이 적힌다.
+ *
+ * **반지름의 뜻은 하나다**(§9): 중심에서 바깥으로 가는 거리는 그 영역의
+ * 응답이 어느 단계까지 확인됐는가다. 관심도도 학습 의향도 적합도도 들어
+ * 가지 않고, 서로 다른 개념을 합친 composite score 가 아니다.
+ *
+ * **꼭짓점에 이름을 두지 않고 번호를 둔다.** 영역 이름이
+ * `수요·예약·가격 관리` 처럼 긴 자리가 있어서 꼭짓점마다 이름을 적으면
+ * 위아래에서 글자가 겹친다. 번호를 두고 아래 표가 번호와 이름과 단계를
+ * 글자로 적으면 **그 표가 곧 그래프의 글 대체물**이다(§27).
  */
 export function Radar(
   { model, name }: { model: ResultModel; name: (c: string) => string },
-): React.JSX.Element {
+): React.JSX.Element | null {
   const pts: RadarPoint[] = radarPoints(model);
   const n = pts.length;
+  /* 꼭짓점이 셋 미만이면 다각형이 서지 않는다. 억지로 그리지 않는다 */
+  if (!canRadar(model)) return null;
   const poly = pts.map((p, i) => at(i, n, (R * p.level) / 3).join(",")).join(" ");
-  const askedN = pts.filter((p) => p.asked).length;
 
   return (
     <div className="pv-radar">
       <svg viewBox="0 0 320 300" className="pv-radar-svg" role="img"
-        aria-label={`영역 ${n}개의 경험·근거 분포. 축을 물은 영역 ${askedN}개.`}>
+        aria-label={`이번 응시에서 판단을 물은 영역 ${n}개의 확인 단계.`}>
         {[1, 2, 3].map((k) => (
           <polygon key={k} points={ring(n, (R * k) / 3)}
             fill="none" stroke="#d8e0ec" strokeWidth="1" />
@@ -98,10 +108,7 @@ export function Radar(
           stroke="#2d6cdf" strokeWidth="2" strokeLinejoin="round" />
         {pts.map((p, i) => {
           const [x, y] = at(i, n, (R * p.level) / 3);
-          return p.asked
-            ? <circle key={p.code} cx={x} cy={y} r="3.4" fill="#0a1b31" />
-            : <circle key={p.code} cx={x} cy={y} r="3.4" fill="#ffffff"
-              stroke="#8c9bb2" strokeWidth="1.2" strokeDasharray="2 2" />;
+          return <circle key={p.code} cx={x} cy={y} r="3.4" fill="#0a1b31" />;
         })}
         {pts.map((p, i) => {
           const [x, y] = at(i, n, R + 20);
@@ -120,13 +127,14 @@ export function Radar(
           <li key={p.code}>
             <b>{i + 1}</b>
             <span>{name(p.code)}</span>
-            <em>{p.asked ? LEVEL_KO[p.level] : "이번에 묻지 않음"}</em>
+            <em>{LEVEL_KO[p.level]}</em>
           </li>
         ))}
       </ol>
       <p className="pv-sub">
-        눈금 셋은 바깥으로 갈수록 확인된 것이 많다는 뜻입니다.
-        빈 점은 이번 응시에서 그 영역의 판단을 묻지 않았다는 표시입니다.
+        이번 응시에서 판단을 물은 영역만 축으로 섭니다. 눈금 셋은 바깥으로
+        갈수록 확인된 단계가 높다는 뜻이고, 묻지 않은 영역은 아래 표가
+        글자로 적습니다.
       </p>
     </div>
   );
@@ -199,21 +207,29 @@ export function EvidenceMatrix(
         </thead>
         <tbody>
           {rows.map((r) => (
-            <tr key={r.code}>
+            <tr key={r.code} className={r.asked ? undefined : "is-unasked"}>
               <th scope="row">{name(r.code)}</th>
-              <td>{cell(r.did)}</td>
-              <td>{cell(r.decided)}</td>
-              <td>{cell(r.artifacts)}</td>
-              <td>{cell(r.verifications)}</td>
-              <td>{r.verify ? STATE_KO[r.verify] : "묻지 않음"}</td>
+              {/* **묻지 않은 줄에 0 을 적지 않는다.** 0 은 `없다` 로 읽히고,
+                  안 물어본 것을 없다고 적으면 응시자가 자기가 빠뜨린 줄
+                  안다. 칸을 합쳐 한 번만 적는다 */}
+              {r.asked ? (<>
+                <td>{cell(r.did)}</td>
+                <td>{cell(r.decided)}</td>
+                <td>{cell(r.artifacts)}</td>
+                <td>{cell(r.verifications)}</td>
+                <td>{r.verify ? STATE_KO[r.verify] : "묻지 않음"}</td>
+              </>) : (
+                <td colSpan={5}>이번에 묻지 않음</td>
+              )}
             </tr>
           ))}
         </tbody>
       </table>
       <p className="pv-sub">
-        직접 수행과 기준 설정은 확인된 판단축의 개수이고, 산출물과 비교는
-        응답에서 고르신 항목의 개수입니다. 개수를 더하거나 점수로 바꾸지
-        않습니다.
+        열두 영역이 모두 줄로 섭니다. 직접 수행과 기준 설정은 확인된
+        판단축의 개수이고, 산출물과 비교는 응답에서 고르신 항목의
+        개수입니다. 개수를 더하거나 점수로 바꾸지 않습니다. 이번 응시에서
+        판단을 묻지 않은 영역은 그 사실을 그대로 적습니다.
       </p>
     </div>
   );
