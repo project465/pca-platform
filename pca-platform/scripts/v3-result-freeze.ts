@@ -42,6 +42,10 @@ const FILES = [
   "src/lib/me-v3/result/text.ko.ts",
   "src/lib/me-v3/result/josa.ts",
   "src/lib/me-v3/result/version.ts",
+  /* 갈래가 적어 둔 사례와 읽는 차례를 꺼내는 자리. **판정에 닿지 않지만**
+     학생이 읽는 글을 고르므로 이 동결이 덮는다 */
+  "src/lib/me-v3/result/spec-view.ts",
+  "src/lib/me-v3/result/meta.ts",
   "src/lib/me-v3/runtime/domain-facts.ts",
 ];
 

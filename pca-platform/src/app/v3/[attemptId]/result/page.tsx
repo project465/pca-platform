@@ -26,6 +26,7 @@ import {
 import { core as coreEntry } from "@/lib/me-v3/core-registry";
 import { profileOf } from "@/lib/me-v3/platform";
 import { resultMeta } from "@/lib/me-v3/result/meta";
+import { leadFirst, specView } from "@/lib/me-v3/result/spec-view";
 import { participantOf, savedActions } from "@/lib/me-v3/pilot/store";
 import { takeActionsFromResult } from "@/app/me/next/actions";
 import ResultNav from "./result-nav";
@@ -667,8 +668,22 @@ export default async function V3Result({
      **새 점수를 만들지 않는다**: `relations` 표의 강도를 그대로 읽는다 */
   const confirmedDomains = model.domains
     .filter((d) => d.confirmed.length > 0).map((d) => d.code);
-  const revIndustry = industriesFromDomains(core, confirmedDomains).slice(0, 4);
-  const revRole = rolesFromDomains(core, confirmedDomains).slice(0, 4);
+  /**
+   * **그 학과의 읽는 차례로 세운다**(갈래 계약의 `industry_mapping` ·
+   * `role_mapping`).
+   *
+   * 걸린 자리는 응답이 정한 그대로이고 **빼거나 더하지 않는다.** 바뀌는
+   * 것은 차례뿐이다: 같은 Core 를 쓰는 학과 둘이 같은 목록을 받더라도
+   * 자기 전공이 자주 서는 자리를 먼저 읽는다. 자르기 전에 세워야 **그
+   * 학과의 자리가 넷 밖으로 밀리지 않는다.**
+   */
+  const sv = specView(core, meta.specializationCode);
+  const revIndustry = leadFirst(
+    industriesFromDomains(core, confirmedDomains), sv.industryLead, (r) => r.code,
+  ).slice(0, 4);
+  const revRole = leadFirst(
+    rolesFromDomains(core, confirmedDomains), sv.roleLead, (r) => r.code,
+  ).slice(0, 4);
   /* **기관은 확인된 줄만 선다.** 출처 없는 줄은 DB 가 거절하므로 여기서
      걸러낼 일이 없고, 비면 비었다고 적는다 */
   const [regionOrgs, regionOrgN] = await Promise.all([
@@ -1209,10 +1224,25 @@ export default async function V3Result({
                 </ul>
               </>
             ) : (
-              <p className="rs-note">
-                지금 바로 꺼내 쓸 경험은 아직 없습니다. 아래 &lsquo;다음에 할
-                일&rsquo;부터 보세요.
-              </p>
+              <>
+                <p className="rs-note">
+                  지금 바로 꺼내 쓸 경험은 아직 없습니다. 아래 &lsquo;다음에 할
+                  일&rsquo;부터 보세요.
+                </p>
+                {/* **그 학과 학생이 낼 수 있는 근거를 적는다**(갈래 계약의
+                    `examples.evidence`). 아직 아무것도 확인되지 않은 사람에게
+                    `없습니다` 만 적으면 **무엇을 하면 적히는지**가 종이
+                    어디에도 없다. 지어내지 않는다: 등록부에 그 학과로 적어 둔
+                    목록이고, 여기서 판정에 넣지 않는다 */}
+                {sv.evidence.length ? (
+                  <>
+                    <p className="rs-note">이런 경험이면 여기에 적힙니다.</p>
+                    <ul className="rs-first">
+                      {sv.evidence.slice(0, 3).map((t) => <li key={t}>{t}</li>)}
+                    </ul>
+                  </>
+                ) : null}
+              </>
             )}
             <Disclose label="전체 보기">
             <div className="rs-ev">
@@ -1270,7 +1300,8 @@ export default async function V3Result({
                 판정하지 않고 그 값을 읽는다 */}
             <p className="rs-note">
               {model.gaps.length
-                ? "무엇이 비었는지와 그것이 왜 필요한지, 다음에 무엇을 하면 되는지를 함께 적었습니다."
+                ? "무엇이 비었는지와 그것이 왜 필요한지를 적었습니다."
+                  + " 할 일은 아래 ‘다음에 할 일’ 에 영역별로 모았습니다."
                 : move === "WRITE_UP"
                   ? "완전히 비어 있는 축은 없습니다. 남은 일은 확인된 경험을 설명 문장으로 만드는 쪽입니다."
                   : "지금 응답에서는 비어 있는 축을 셀 만큼의 경험이 아직 확인되지 않았습니다."
@@ -1310,35 +1341,20 @@ export default async function V3Result({
                 const g = list[0];
                 const names = list.map((x) => domainName(core, x.domain)).join(" · ");
                 const k = gapKo(g, names);
-                const act = model.actions.find((x) => x.id === g.action_id);
                 const sameWhy = saidWhy.has(k.why);
                 saidWhy.add(k.why);
                 return (
                   <article className="rs-gap" key={g.id}>
                     <h3>{k.title}</h3>
                     {sameWhy ? null : <p>{k.why}</p>}
-                    {/* **첫 화면이 이미 적은 할 일을 여기서 다시 적지
-                        않는다**(규격 §10). 그 한 줄은 첫 화면과 아래
-                        `다음에 할 일` 이 함께 들고 있어서, 그대로 두면 한
-                        종이에서 같은 문장을 세 번 읽는다. **지우지 않고
-                        어디에 있는지 적는다**: 이 칸이 비면 왜 비었는지
-                        읽는 사람이 알 수 없다.
-
-                        **`shownAction` 이 아니라 `moveNext` 로 센다**: 첫
-                        화면이 실제로 그리는 것이 그 하나이고, 앞엣것은
-                        산업·직무 절이 같은 할 일을 다시 쓰지 않게 하려고
-                        들고 있는 더 넓은 값이다 */}
-                    {act && moveNext && act.id === moveNext.id ? (
-                      <p className="rs-do">
-                        <b>다음에 이렇게</b>
-                        맨 위 ‘지금 할 일’ 에 적은 것이 이 자리입니다.
-                      </p>
-                    ) : act ? (
-                      <p className="rs-do">
-                        <b>다음에 이렇게</b>
-                        {actionKo(act, names, stage).do}
-                      </p>
-                    ) : null}
+                    {/* **할 일 문장은 이 절에 적지 않는다**(규격 §10).
+                        바로 아래 `다음에 할 일` 이 영역마다 같은 문장을
+                        들고 있고, 첫 화면과 산업·직무 절도 하나씩 든다.
+                        그대로 두면 한 종이에서 같은 줄을 세 번 읽는다.
+                        **칸마다 `아래에 있습니다` 를 적지도 않는다**: 그
+                        안내가 빈자리 수만큼 서면 그것이 또 되풀이다. 절
+                        머리에 한 번 적는다. 이 절이 맡는 것은 무엇이
+                        비었는지와 왜 필요한지까지다 */}
                   </article>
                 );
               });

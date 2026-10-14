@@ -99,7 +99,7 @@ function packCodes(core: string, kind: "industry" | "role"): Set<string> {
 type Row = {
   leaf: string; name: string; college: string; catalog: string;
   core: string | null; spec: string | null;
-  grade: "COMPLETE" | "THIN" | "GENERIC" | "NO_CORE";
+  grade: "COMPLETE" | "THIN" | "GENERIC" | "NO_CORE" | "ROUTING";
   why: string[];
 };
 
@@ -144,10 +144,19 @@ function main(): void {
     const key = `${r.leaf.core_code ?? "-"}/${r.leaf.specialization ?? "-"}`;
     const why: string[] = [];
     if (!r.leaf.core_code) {
+      /**
+       * **전공을 고르는 자리는 콘텐츠를 받는 자리가 아니다.**
+       *
+       * 자율전공학부처럼 `routing_only` 인 칸은 고르면 전공 목록으로
+       * 돌려보낸다. 그 자리에 Core 를 붙이면 아직 전공을 고르지 않은
+       * 학생이 **남의 전공의 자로 재어진다.** 그래서 `Core 없음` 이 맞는
+       * 상태이고, 세는 자리에서 뺀다.
+       */
       rows.push({
         leaf: r.leaf.code, name: r.leaf.name, college: r.college.name,
         catalog: r.catalog.catalog_code, core: null, spec: null,
-        grade: "NO_CORE", why: ["Core 가 붙어 있지 않다"],
+        grade: r.leaf.routing_only ? "ROUTING" : "NO_CORE",
+        why: r.leaf.routing_only ? [] : ["Core 가 붙어 있지 않다"],
       });
       continue;
     }
@@ -205,7 +214,8 @@ function main(): void {
   const by = (g: Row["grade"]) => rows.filter((r) => r.grade === g);
   console.log(`PCU 학과 콘텐츠 — 자리 ${rows.length} · ${OUT}/content.tsv`);
   console.log(`  COMPLETE ${by("COMPLETE").length} · THIN ${by("THIN").length}`
-    + ` · GENERIC ${by("GENERIC").length} · Core 없음 ${by("NO_CORE").length}`);
+    + ` · GENERIC ${by("GENERIC").length} · Core 없음 ${by("NO_CORE").length}`
+    + ` · 전공 고르는 자리 ${by("ROUTING").length}`);
 
   const byCollege = new Map<string, Row[]>();
   for (const r of rows) byCollege.set(r.college, [...(byCollege.get(r.college) ?? []), r]);
@@ -220,7 +230,7 @@ function main(): void {
     for (const o of overlap.slice(0, 10)) console.log(`    ${o}`);
     if (overlap.length > 10) console.log(`    … 그 밖에 ${overlap.length - 10}짝`);
   }
-  const bad = rows.filter((r) => r.grade !== "COMPLETE");
+  const bad = rows.filter((r) => r.grade !== "COMPLETE" && r.grade !== "ROUTING");
   if (bad.length) {
     console.log(`\n  얕은 자리 ${bad.length}`);
     for (const r of bad.slice(0, 12)) {

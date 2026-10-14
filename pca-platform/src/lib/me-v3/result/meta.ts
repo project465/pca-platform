@@ -20,6 +20,14 @@ export type ResultMeta = {
   department: string | null;
   /** 갈래. 학과가 갈래를 가리키면 그 이름 */
   specialization: string | null;
+  /**
+   * 갈래의 코드. **화면에 적지 않는다.**
+   *
+   * 결과지가 그 학과의 사례와 읽는 차례를 등록부에서 꺼낼 때 쓴다
+   * (`result/spec-view.ts`). 이름만으로는 등록부를 되찾을 수 없고, 이름이
+   * 같은 갈래가 Core 둘에 설 수 있다.
+   */
+  specializationCode: string | null;
   /** 응답을 끝낸 날. 없으면 결과를 굳힌 날 */
   answeredOn: string | null;
 };
@@ -64,5 +72,9 @@ export async function resultMeta(attemptId: string, core: string): Promise<Resul
     specialization = specializationOf(core, row.specialization_code)?.name_ko ?? null;
   }
 
-  return { major, school, department, specialization, answeredOn: row?.answered ?? null };
+  return {
+    major, school, department, specialization,
+    specializationCode: row?.specialization_code ?? null,
+    answeredOn: row?.answered ?? null,
+  };
 }

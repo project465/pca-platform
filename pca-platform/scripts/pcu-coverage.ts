@@ -34,7 +34,9 @@ import {
   makeStudent,
 } from "./_loop-fixture";
 import { query, queryOne } from "../src/lib/db";
-import { core as coreEntry, packs } from "../src/lib/me-v3/core-registry";
+import {
+  core as coreEntry, hasCoreFile, packs, registry,
+} from "../src/lib/me-v3/core-registry";
 import {
   allLeaves, readinessOf, specializationName, statusOf, university,
 } from "../src/lib/campus/registry";
@@ -49,6 +51,8 @@ loadEnv();
 
 const UNI = process.env.UNI ?? "PCU";
 const TIER = (process.env.TIER ?? "BASIC") as Tier;
+/** 한 자리만 다시 밟을 때. **고친 뒤 그 자리만 보려고 둔다** */
+const ONLY = (process.env.ONLY ?? "").split(",").filter(Boolean);
 const OUT = "var/pcu-coverage";
 /** 끝에서 **쓰지 않았다는 것**을 세는 자리. 전에는 쓰는 자리였다 */
 const REGS = [
@@ -60,6 +64,49 @@ const INTERNAL = [
   /\bTD\d{2}\b/, /\bJ[1-8]\b/, /\bOC[1-7]\b/, /\bZ[1-4]\b/,
   /\bSPEC_[A-Z0-9_]+\b/, /\b[A-Z]+_CORE_V\d\b/, /\bPCU2[67]_[A-Z_]+\b/,
 ];
+
+/** 종이가 들고 있어야 하는 절(받은 규격 §14) */
+const PAPER_NEEDS = [
+  "먼저 볼 영역", "지원서에 연결할 수 있는 경험", "앞으로 채울 것", "다음에 할 일",
+];
+
+/**
+ * **남의 전공의 말이 섞였는가**(§14).
+ *
+ * 세는 것은 **그 Core 에만 있는 영역 이름**이다. 두 Core 가 함께 쓰는
+ * 이름(`품질` 같은 말)을 세면 멀쩡한 종이가 걸리고, 그러면 그 다음부터
+ * 아무도 이 검사를 보지 않는다.
+ */
+function foreignDomainNames(mine: string): { name: string; core: string }[] {
+  const all = new Map<string, Set<string>>();
+  for (const c of registry().cores) {
+    if (!hasCoreFile(c.code, "domains")) continue;
+    let names: string[] = [];
+    try {
+      names = content(c.code).domains.domains.map((d: { name_ko?: string; name?: string }) =>
+        d.name_ko ?? d.name ?? "");
+    } catch { names = []; }
+    for (const n of names.filter(Boolean)) {
+      all.set(n, (all.get(n) ?? new Set()).add(c.code));
+    }
+  }
+  const mineNames = [...all].filter(([, c]) => c.has(mine)).map(([n]) => n);
+  const out: { name: string; core: string }[] = [];
+  for (const [n, cores] of all) {
+    if (cores.size !== 1 || cores.has(mine)) continue;
+    /**
+     * **내 영역 이름 안에 든 말은 남의 말이 아니다.**
+     *
+     * `수업 운영`(교육)은 어문의 `수업 운영·평가` 안에 그대로 들어 있고
+     * `인사·조직`(경영)은 행정의 `인사·조직 관리` 안에 들어 있다. 글자로
+     * 찾으면 **멀쩡한 종이 넷이 걸렸다.** 짧은 이름이 긴 이름 안에 드는
+     * 자리를 빼고 센다.
+     */
+    if (mineNames.some((m) => m.includes(n) || n.includes(m))) continue;
+    out.push({ name: n, core: [...cores][0] });
+  }
+  return out;
+}
 
 let pass = 0; const bad: string[] = [];
 const ok = (w: string, c: boolean, saw = ""): void => {
@@ -159,6 +206,12 @@ async function main(): Promise<void> {
     const key = `${s.core}:${s.spec ?? "-"}`;
     if (!paper.has(key)) { paper.add(key); (s as Slot & { paper?: boolean }).paper = true; }
   }
+  if (ONLY.length) {
+    /* **고친 자리만 다시 밟는다.** 종이는 그 자리에서 반드시 뽑는다:
+       한 자리만 보는 까닭이 거의 늘 종이이기 때문이다 */
+    ready.splice(0, ready.length, ...ready.filter((s) => ONLY.includes(s.code))
+      .map((s) => Object.assign(s, { paper: true })));
+  }
 
   /* 시작할 때의 학생 공개 상태. 끝에서 **바뀌지 않았는지** 견준다 */
   const openBefore = new Map(cores.map((c) => [c, coreEntry(c).open_to_students]));
@@ -225,12 +278,34 @@ async function main(): Promise<void> {
       const leak = INTERNAL.map((re) => (web.match(re) ?? [])[0]).find(Boolean);
 
       let pages = 0;
+      const paperBad: string[] = [];
       if ((s as Slot & { paper?: boolean }).paper) {
         const res = await p.request.get(`${BASE}/v3/${a0.id}/result/pdf`, { timeout: 180000 });
         if (res.status() === 200 && (res.headers()["content-type"] ?? "").includes("pdf")) {
           const file = `${OUT}/${s.code}.pdf`;
           writeFileSync(file, await res.body());
           pages = (readFileSync(file, "latin1").match(/\/Type\s*\/Page[^s]/g) ?? []).length;
+          /**
+           * **쪽수만 세지 않는다**(§14). 종이는 학교가 학생에게 건네는
+           * 결과물이라, 거기 적힌 것이 그 학과의 것인지까지 본다. 쪽이
+           * 아홉인 것과 그 아홉 쪽이 그 학과의 말인 것은 다른 질문이다.
+           */
+          let txt = "";
+          try {
+            txt = execFileSync("pdftotext", [file, "-"], { encoding: "utf8" });
+          } catch { txt = ""; }
+          if (!txt) paperBad.push("종이에서 글자를 못 꺼냈다");
+          else {
+            if (!txt.includes(u.university_name)) paperBad.push("종이에 학교가 없다");
+            if (!txt.includes(s.name.replace(/\s+/g, ""))
+              && !txt.includes(s.name)) paperBad.push("종이에 학과가 없다");
+            if (specKo && !txt.includes(specKo)) paperBad.push("종이에 갈래가 없다");
+            for (const need of PAPER_NEEDS) {
+              if (!txt.includes(need)) paperBad.push(`종이에 '${need}' 절이 없다`);
+            }
+            const hit = foreignDomainNames(s.core).find((x) => txt.includes(x.name));
+            if (hit) paperBad.push(`남의 전공 말 — ${hit.name}(${hit.core})`);
+          }
         }
       }
       const problems: string[] = [];
@@ -241,6 +316,7 @@ async function main(): Promise<void> {
       if ((s as Slot & { paper?: boolean }).paper && !(pages >= 3 && pages <= 12)) {
         problems.push(`종이 ${pages}쪽`);
       }
+      problems.push(...paperBad);
       if (problems.length) bad.push(`${s.code} ${s.name}: ${problems.join(" / ")}`);
       else pass += 1;
       const mark = problems.length ? "걸림" : "통과";

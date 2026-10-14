@@ -38,10 +38,11 @@ import {
   BASE, assertFreshServer, assertPreviewServer, gateCreds, loadEnv, login,
   makeStudent,
 } from "./_loop-fixture";
+import { controlOf } from "../src/lib/me-v3/runtime/menus";
+import { PEOPLE, answerAll, firstPack, type Policy } from "./_v3-answer";
 import { query, queryOne } from "../src/lib/db";
 import { core as coreEntry, hasCoreFile, packs, registry } from "../src/lib/me-v3/core-registry";
 import { allLeaves, university } from "../src/lib/campus/registry";
-import { controlOf } from "../src/lib/me-v3/runtime/menus";
 import {
   attemptOf, axisAsk, checklistFor, choosePack, content, domainName, gridRowOf,
   industryChoices, itemOf, levelOptions, menuContextOf, moveTo, openAttempt,
@@ -61,41 +62,6 @@ const BUILDING = registry().cores
 const CORES = (process.env.CORES ?? BUILDING.join(",")).split(",");
 const OUT = process.env.OUT ?? "var/content-qa";
 
-/**
- * 사람 셋이 답하는 규칙.
- *
- * `level` 은 보기 넷의 자리(0~3)이고 `levelBy` 가 축마다 그 자리를
- * 덮는다. `picks` 는 근거 묶음마다 앞에서부터 고를 수다: **지어내지 않고**
- * 실제 체크리스트에서 센다.
- */
-type Policy = {
-  id: string; name: string;
-  grid: [number, number, number];
-  level: number; levelBy?: Record<string, number>;
-  scale5: number;
-  picks: number; artifacts: number; verify: number;
-  /** 고르기 문항에서 몇째 보기를 고르는가 */
-  choice: number;
-};
-
-const PEOPLE: Policy[] = [
-  {
-    id: "A", name: "거의 경험이 없는 학생",
-    grid: [2, 0, 2], level: 0, scale5: 2,
-    picks: 0, artifacts: 0, verify: 0, choice: 0,
-  },
-  {
-    id: "B", name: "일부 경험과 일부 증거가 있는 학생",
-    grid: [4, 1, 4], level: 1, levelBy: { J1: 2, J3: 2 }, scale5: 4,
-    picks: 1, artifacts: 0, verify: 0, choice: 1,
-  },
-  {
-    id: "C", name: "여러 영역을 직접 수행하고 증거가 있는 학생",
-    grid: [5, 2, 4], level: 2, levelBy: { J3: 3, J5: 3 }, scale5: 5,
-    picks: 2, artifacts: 2, verify: 2, choice: 2,
-  },
-];
-
 /** 그 Core 를 가리키는 학교 자리 하나. 없으면 일반 응시다 */
 function leafOf(core: string): CampusEntry | null {
   const u = university("PCU");
@@ -109,14 +75,6 @@ function leafOf(core: string): CampusEntry | null {
   };
 }
 
-function firstPack(core: string, kind: "industry" | "role"): string | null {
-  try {
-    const p = packs<{ packs: { code: string }[] }>(core, kind);
-    return p.packs[0]?.code ?? null;
-  } catch { return null; }
-}
-
-/** 화면에 서는 글자. **화면이 부르는 함수를 그대로 부른다** */
 async function screenText(
   core: string, a: V3Attempt, v: Awaited<ReturnType<typeof viewOf>>,
 ): Promise<string> {
@@ -179,70 +137,6 @@ async function screenText(
 }
 
 /** 사람 하나의 답을 실제 runtime 에 넣는다. 지나온 화면 글자를 돌려준다 */
-async function fill(
-  core: string, a0: V3Attempt, userId: string, pol: Policy,
-): Promise<string[]> {
-  const ind = firstPack(core, "industry");
-  const role = firstPack(core, "role");
-  for (const d of content(core).domains.domains) {
-    await saveAnswer(a0.id, `G_${d.code}_INT`, { kind: "scale5", value: pol.grid[0] });
-    await saveAnswer(a0.id, `G_${d.code}_EXP`, { kind: "exposure", value: pol.grid[1] });
-    await saveAnswer(a0.id, `G_${d.code}_LEA`, { kind: "scale5", value: pol.grid[2] });
-  }
-  let a = (await attemptOf(a0.id, userId)) as V3Attempt;
-  const screens: string[] = [];
-  let want: string | null = null, guard = 0;
-  for (;;) {
-    if ((guard += 1) > 400) throw new Error("화면이 끝나지 않는다");
-    const v = await viewOf(a, want);
-    screens.push(await screenText(core, a, v));
-    const ctx = await menuContextOf(a);
-    for (const id of v.screen.items) {
-      if (v.answers[id]) continue;
-      const it = itemOf(core, id);
-      if (!it) continue;
-      const control = controlOf(it, ctx);
-      let ans: Answer | null = null;
-      if (control.kind === "level") {
-        const ax = it.evidence_axis ?? "";
-        const idx = pol.levelBy?.[ax] ?? pol.level;
-        ans = { kind: "level", index: Math.min(idx, control.options.length - 1) };
-      } else if (control.kind === "scale5") {
-        ans = { kind: "scale5", value: pol.scale5 };
-      } else if (control.kind === "exposure") {
-        ans = { kind: "exposure", value: pol.grid[1] };
-      } else if (control.kind === "steps") {
-        const opts = control.options.filter((o) => o.value !== null);
-        const pick = control.answer === "exposure"
-          ? opts[Math.min(pol.grid[1], opts.length - 1)]
-          : opts[Math.min(pol.scale5 - 1, opts.length - 1)];
-        ans = control.answer === "exposure"
-          ? { kind: "exposure", value: pick.value as number }
-          : { kind: "scale5", value: pick.value as number };
-      } else if (control.kind === "choice" && control.options.length) {
-        ans = {
-          kind: "choice",
-          value: control.options[Math.min(pol.choice, control.options.length - 1)].value,
-        };
-      }
-      if (ans) await saveAnswer(a.id, id, ans);
-    }
-    if (v.screen.kind === "checklist" && v.screen.domain) {
-      for (const g of checklistFor(core, v.screen.domain)) {
-        const n = g.slot === "ARTIFACT" ? pol.artifacts
-          : g.slot === "VERIFY" ? pol.verify : pol.picks;
-        await savePicks(a.id, v.screen.domain, g.slot, g.items.slice(0, n));
-      }
-    }
-    if (v.screen.kind === "pick-industry" && ind) await choosePack(core, a.id, "industry", ind);
-    if (v.screen.kind === "pick-role" && role) await choosePack(core, a.id, "role", role);
-    if (!v.nextId) { await moveTo(a.id, v.screen.id); break; }
-    await moveTo(a.id, v.nextId);
-    want = v.nextId;
-    a = (await attemptOf(a.id, userId)) as V3Attempt;
-  }
-  return screens;
-}
 
 /** 쪽마다 세로로 어디까지 찼는지(0~100) */
 function fillOf(file: string): number[] {
@@ -337,7 +231,7 @@ async function main(): Promise<void> {
           userId: st.id, tier: "PRO", stage: "bachelor", gradField: null, campus: leaf,
         });
         if (a.core_code !== core) problems.push(`응시 줄의 Core 가 ${a.core_code} 다`);
-        const screens = await fill(core, a, st.id, pol);
+        const screens = await answerAll(core, a, st.id, pol, screenText);
         writeFileSync(`${OUT}/${core}-${pol.id}.screens.txt`,
           `${core} · 사람 ${pol.id} — ${pol.name}\n\n${screens.join("\n\n")}\n`);
         const done = (await attemptOf(a.id, st.id)) as V3Attempt;
