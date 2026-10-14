@@ -942,30 +942,68 @@ export default async function V3Result({
               <b>{meta.school}</b>
               <span>CareerMatri</span>
             </div>
-            <div className="rs-cover-mid">
-              <h2>진로 분석 리포트</h2>
-              {/* **같은 말을 두 번 적지 않는다.** 갈래 이름이 있으면 전공
-                  이름은 그 안에 들어 있다(`경영학과 · 경영 일반 · 경영`) */}
-              <p className="rs-cover-who">
-                {[meta.department, meta.specialization ?? meta.major]
-                  .filter(Boolean).join(" · ")}
-              </p>
-              {meta.answeredOn ? (
-                <p className="rs-cover-day">{meta.answeredOn} 응답</p>
-              ) : null}
+            <div className="rs-cover-band">
+              <div className="rs-cover-mid">
+                <h2>진로 분석 리포트</h2>
+                {/* **같은 말을 두 번 적지 않는다.** 갈래 이름이 있으면 전공
+                    이름은 그 안에 들어 있다(`경영학과 · 경영 일반 · 경영`) */}
+                <p className="rs-cover-who">
+                  {[meta.department, meta.specialization ?? meta.major]
+                    .filter(Boolean).join(" · ")}
+                </p>
+                <p className="rs-cover-day">
+                  {[`CareerMatri ${model.tier}`,
+                    meta.answeredOn ? `${meta.answeredOn} 응답` : null]
+                    .filter(Boolean).join(" · ")}
+                </p>
+              </div>
+              {/* **시각 요소는 이 제품의 말로 그린다**(규격 §16·§20).
+                  사진을 쓰지 않는다: 사용권이 확인된 배재대 사진이 없고,
+                  사람이 찍힌 사진은 그 자리에서 Evidence 로 오해된다.
+                  여기 선 것은 결과지가 쓰는 열두 꼭짓점 격자이고 **값이
+                  한 점도 들어 있지 않다**: 표지에서 수를 읽게 하지 않는다 */}
+              <svg className="rs-cover-art" viewBox="0 0 200 200" aria-hidden="true">
+                {[1, 2, 3].map((k) => (
+                  <polygon key={k} points={Array.from({ length: 12 }, (_, i) => {
+                    const a = (-90 + i * 30) * (Math.PI / 180);
+                    const r = (72 * k) / 3;
+                    return `${100 + r * Math.cos(a)},${100 + r * Math.sin(a)}`;
+                  }).join(" ")} fill="none" stroke="#c9d4e3" strokeWidth="0.8" />
+                ))}
+                {Array.from({ length: 12 }, (_, i) => {
+                  const a = (-90 + i * 30) * (Math.PI / 180);
+                  return (
+                    <line key={i} x1="100" y1="100"
+                      x2={100 + 72 * Math.cos(a)} y2={100 + 72 * Math.sin(a)}
+                      stroke="#e2e9f2" strokeWidth="0.8" />
+                  );
+                })}
+                <circle cx="100" cy="100" r="2.6" fill="#2d6cdf" />
+              </svg>
             </div>
+            {/* **표지 가운데를 비워 두지 않는다**(규격 §18). 앞 판본은
+                제목과 차례 사이가 통째로 비어 덜 만든 종이로 읽혔다.
+                여기 적는 셋은 본문이 실제로 답하는 것이고, **값을 적지
+                않는다**: 표지에서 결과를 먼저 읽게 하지 않는다 */}
+            <ol className="rs-cover-asks">
+              <li>지금 무엇이 확인됐는가</li>
+              <li>무엇이 더 필요한가</li>
+              <li>다음에 무엇을 하면 되는가</li>
+            </ol>
+
             {/* 차례. **쪽 번호를 적지 않는다**: 담긴 양에 따라 밀리는데,
                 적어 두면 어긋난 번호가 찍힌다 */}
             <ol className="rs-cover-toc">
               <li>한눈에 보는 결과</li>
+              <li>경험·근거 분포</li>
               <li>내가 이미 가진 근거</li>
               <li>먼저 볼 영역</li>
-              <li>전체 기술영역</li>
               <li>앞으로 채울 것</li>
               <li>산업·직무 연결</li>
               <li>다음에 할 일</li>
               <li>지원서·면접에서 쓸 문장</li>
               <li>어디에서 찾을지</li>
+              <li>이 결과를 읽는 기준</li>
             </ol>
             <p className="rs-cover-foot">
               이 리포트는 응답한 내용만으로 만들어집니다. 적성이나 합격

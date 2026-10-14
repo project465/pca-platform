@@ -950,7 +950,31 @@
     font-size: 10pt; font-weight: 700; color: var(--r-accent);
     letter-spacing: .04em;
   }
-  .rs-cover-mid { margin-top: 36mm; }
+  /* 큰 글씨 왼쪽, 시각 요소 오른쪽. **가운데 36mm 를 비워 두던 자리를
+     쓴다**: 표지 가운데가 통째로 비어 있어 덜 만든 종이로 읽혔다 */
+  .rs-cover-band {
+    display: flex; align-items: center; gap: 10mm; margin-top: 24mm;
+  }
+  .rs-cover-mid { flex: 1 1 auto; min-width: 0; }
+  .rs-cover-art { flex: 0 0 56mm; width: 56mm; height: 56mm; }
+  /* 본문이 답하는 셋. 표지에서 값을 읽게 하지 않는다 */
+  /* **`counter(list-item)` 을 쓰지 않는다.** `display: flex` 를 준 `li` 는
+     더 이상 목록 항목이 아니라 그 셈이 늘지 않고 셋 다 `0` 으로 찍힌다
+     (한 번 그렇게 뽑혔다). 셈을 따로 둔다 */
+  .rs-cover-asks {
+    margin: 14mm 0 0; padding: 0; list-style: none;
+    display: grid; gap: 4mm; max-width: 112mm; counter-reset: cask;
+  }
+  .rs-cover-asks li {
+    display: flex; align-items: baseline; gap: 5mm;
+    padding-bottom: 3mm; border-bottom: 1px solid var(--r-line);
+    font-size: 11pt; color: var(--r-ink-2);
+  }
+  .rs-cover-asks li { counter-increment: cask; }
+  .rs-cover-asks li::before {
+    content: counter(cask); flex: none; width: 6mm;
+    font-size: 9pt; font-weight: 700; color: var(--r-accent);
+  }
   .rs-cover-mid h2 {
     margin: 0; font-size: 30pt; font-weight: 700; letter-spacing: -.03em;
     color: var(--r-ink);
@@ -1391,3 +1415,37 @@
 
 /* 분포 절 안에서 글자로 되짚는 덩이 */
 .rs-sub { margin-top: var(--r-s6); }
+
+/* 종이에서 그래프를 더 모은다. **담긴 것을 덜어내지 않고 자리만 줄인다** */
+@media print {
+  .pv-radar { gap: 4mm; }
+  .pv-radar-svg { max-width: 52mm; }
+  .pv-legend { font-size: 8.5pt; }
+  .pv-legend li { padding: 1px 0; }
+  .pv-legend b { width: 16px; height: 16px; }
+  /* 분포 절이 쪽을 **아주 조금** 넘으면 그 뒤 장 바뀜 때문에 다음 쪽이
+     12% 만 차서 거의 빈 장이 된다. 담긴 것을 덜어내지 않고 자리만 줄인다 */
+  .rs-sub { margin-top: 5mm; }
+  /* **같은 사실을 두 번 적지 않는다**(§A-6). 묶음 이름과 한 줄 설명은
+     Radar 가 말하지 못하는 것이라 남기고, 영역 이름 알약은 바로 위
+     범례가 이미 열둘을 적었으므로 종이에서는 줄글로 눕힌다. 담긴 것은
+     그대로다 */
+  .rs-sub .rs-zones section { padding: 3mm 0 1mm; }
+  .rs-sub .rs-zones h3 { font-size: 10.5pt; }
+  .rs-sub .rs-zones p { margin-bottom: 1mm; }
+  .rs-sub .rs-zones ul { display: block; }
+  .rs-sub .rs-zones li {
+    display: inline; padding: 0; border: 0; background: none;
+  }
+  .rs-sub .rs-zones li + li::before { content: " · "; }
+  /* **두 줄 때문에 쪽이 하나 더 생기지 않게 한다.** 고르신 판단 목록이
+     스물넷까지 가는데 그 끝의 두 줄이 넘치면서 뒷장이 4% 만 찬 채로
+     뽑혔다. 종이에서는 두 칸으로 눕힌다 — 담긴 것은 그대로다 */
+  /* **`display: grid` 위에 `columns` 를 얹어도 아무 일이 없다.** 한 번
+     그렇게 두고 쪽수가 그대로인 것을 보고서야 알았다 */
+  .rs-cmitems ul { display: block; columns: 2; column-gap: 8mm; }
+  .rs-cmitems li { break-inside: avoid; }
+  .pv-bars { grid-template-columns: 1fr 1fr; gap: 4mm 8mm; }
+  .pv-bar-track { height: 18px; }
+  .pv-note { padding: 3mm 4mm; }
+}
