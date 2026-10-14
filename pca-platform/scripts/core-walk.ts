@@ -110,7 +110,11 @@ async function main(): Promise<void> {
     const real = statusOf(u, row, undefined, { preview: false });
     console.log(`  적어둠  이 자리의 학생 공개 상태 — ${real}`);
     const rd = readinessOf(u, row, undefined, { preview: false });
-    ok("자료가 다 서 있다", rd === "ASSESSMENT_READY", rd);
+    /* **`RESULT_READY` 도 자료가 다 선 것이다.** `readinessOf` 는 학생에게
+       열린 자리를 한 칸 올려 적는다. 앞엣것만 받으면 **운영 공개를 시작한
+       자리에서 멀쩡한 자료가 걸린다**(자리 하나를 연 날 실제로 걸렸다) */
+    ok("자료가 다 서 있다",
+      rd === "ASSESSMENT_READY" || rd === "RESULT_READY", rd);
     return real;
   })();
 
@@ -145,10 +149,11 @@ async function main(): Promise<void> {
     [student.id, `ME_V3_${TIER}_KR`, TIER]);
   let attempt = "";
   try {
-    /* 4. 미리보기에서는 그 자리가 검사 가능으로 선다.
-       **이 과정도 서버와 같은 `V3_PREVIEW_OPEN` 을 들고 돌아야** 이 줄이
-       선다. 안 들고 돌면 길은 밟히는데 이 줄만 걸려 까닭이 흐려진다 */
-    ok("미리보기에서는 검사 가능으로 선다", (() => {
+    /* 4. 이 과정이 보는 등록부에서도 그 자리가 검사 가능으로 선다.
+       닫힌 Core 를 밟을 때는 **이 과정도 서버와 같은 `V3_PREVIEW_OPEN` 을
+       들고 돌아야** 이 줄이 선다. 안 들고 돌면 길은 밟히는데 이 줄만 걸려
+       까닭이 흐려진다 */
+    ok("이 자리가 검사 가능으로 선다", (() => {
       const u = university("PCU")!;
       const row = allLeaves(u).find((r) => r.leaf.code === leaf.code)!;
       return statusOf(u, row) === "READY" && readinessOf(u, row) === "RESULT_READY";
