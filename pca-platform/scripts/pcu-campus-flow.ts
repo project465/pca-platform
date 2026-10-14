@@ -286,7 +286,10 @@ async function main(): Promise<void> {
       ?? open.find((r) => r.leaf.code !== seat.leaf.code) ?? null;
     const addA = Math.max(0, MIN_CELL + 1 - await dbCount(seat.leaf.code));
     for (let i = 0; i < addA; i += 1) {
-      const sid2 = `zzagg${Date.now()}${i}`.slice(0, 14);
+      /* **구분자를 앞에 둔다.** `zzagg${Date.now()}${i}` 를 14자로 자르면
+           `i` 가 잘려 다섯 번이 **같은 학번**이 되고, 그러면 한 명만
+           늘어 5명 선을 영원히 못 넘는다. 한 번 그렇게 걸렸다 */
+      const sid2 = `zzagg${i}x${Date.now()}`.slice(0, 14);
       const cc = checkStudent(UNI, {
         student_id: sid2, name: "확인용", department_code: seat.leaf.code,
         college_code: seat.college.code,
@@ -305,7 +308,7 @@ async function main(): Promise<void> {
       const seen = await dbCount(seatB.leaf.code);
       const addB = Math.max(0, Math.min(2, MIN_CELL - 1 - seen));
       for (let i = 0; i < addB; i += 1) {
-        const sid3 = `zzfew${Date.now()}${i}`.slice(0, 14);
+        const sid3 = `zzfew${i}x${Date.now()}`.slice(0, 14);
         const cc = checkStudent(UNI, {
           student_id: sid3, name: "확인용", department_code: seatB.leaf.code,
           college_code: seatB.college.code,
