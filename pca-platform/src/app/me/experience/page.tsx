@@ -2,7 +2,7 @@ import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import { activeMajorName } from "@/lib/me-v3/major-name";
 import {
-  EXPERIENCE_KINDS, experiencesOf, reflectedExperiences, activeCore } from "@/lib/me-v3/platform";
+  EXPERIENCE_KINDS, experiencesOf, reflectedExperiences, activeCoreOrPick } from "@/lib/me-v3/platform";
 import { recomputeStatus } from "@/lib/me-v3/recompute";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import { CmShell, CmHead } from "../shell";
@@ -31,7 +31,7 @@ export default async function Experiences() {
   const user = await requireUser();
   const major = await activeMajorName(user.id);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
-  const core = await activeCore(user.id);
+  const core = await activeCoreOrPick(user.id);
   const [rows, st, done] = await Promise.all([
     experiencesOf(user.id), recomputeStatus(user.id), reflectedExperiences(user.id),
   ]);

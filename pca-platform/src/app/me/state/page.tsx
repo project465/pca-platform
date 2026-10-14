@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import { majorNameOf } from "@/lib/me-v3/major-name";
-import { currentState, profileOf, activeCore } from "@/lib/me-v3/platform";
+import { currentState, profileOf, activeCoreOrPick } from "@/lib/me-v3/platform";
 import { openActions } from "@/lib/me-v3/open-actions";
 import { domainName, industryChoices, roleName } from "@/lib/me-v3/runtime/session";
 import { moveLabel, orgLabel, regionName } from "@/lib/me-v3/region";
@@ -64,7 +64,7 @@ export default async function State(
 ) {
   const user = await requireUser();
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
-  const core = await activeCore(user.id);
+  const core = await activeCoreOrPick(user.id);
   /* 방금 반영하고 온 사람인가. **반영 화면에 세워 두지 않고 여기로
      보내되**, 무엇 때문에 이 화면이 열렸는지는 적어 준다 */
   const justApplied = (await searchParams).r === "1";

@@ -1,6 +1,6 @@
 import { requireUser } from "@/lib/session";
 import { activeMajorName } from "@/lib/me-v3/major-name";
-import { EXPERIENCE_KINDS, activeCore } from "@/lib/me-v3/platform";
+import { EXPERIENCE_KINDS, activeCoreOrPick } from "@/lib/me-v3/platform";
 import { content, domainName } from "@/lib/me-v3/runtime/session";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { CmShell, CmHead } from "../../shell";
@@ -48,7 +48,7 @@ export default async function NewExperience(
   const user = await requireUser();
   const major = await activeMajorName(user.id);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
-  const core = await activeCore(user.id);
+  const core = await activeCoreOrPick(user.id);
   const e = (await searchParams).e ?? "";
   /* **적기 시작한 사람과 저장한 사람을 가른다.** 둘이 크게 벌어지면
      고칠 자리는 결과가 아니라 이 화면이다 */

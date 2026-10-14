@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import { majorNameOf } from "@/lib/me-v3/major-name";
-import { currentState, latestResult, type ActionRow, activeCore } from "@/lib/me-v3/platform";
+import { currentState, latestResult, type ActionRow, activeCoreOrPick } from "@/lib/me-v3/platform";
 import { openActions } from "@/lib/me-v3/open-actions";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import { domainArtifacts } from "@/lib/me-v3/runtime/domain-facts";
@@ -74,7 +74,7 @@ export default async function Next(
 ) {
   const user = await requireUser();
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
-  const core = await activeCore(user.id);
+  const core = await activeCoreOrPick(user.id);
   /* 결과지에서 담고 온 사람인가(규격 §16). **`0` 은 고장이 아니다**:
      담는 함수가 영역과 문장으로 보아 두 번 눌러도 늘지 않으므로, 이미
      담아 둔 사람이 다시 누르면 0 이 맞는 답이다. 그 사실을 적지 않으면

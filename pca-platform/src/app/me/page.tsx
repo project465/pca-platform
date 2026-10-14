@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import {
-  EXPERIENCE_KINDS, applicationsOf, currentState, experiencesOf, activeCore } from "@/lib/me-v3/platform";
+  EXPERIENCE_KINDS, applicationsOf, currentState, experiencesOf, activeCoreOrPick } from "@/lib/me-v3/platform";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import {
   ZONE_TITLE_KO, actionKo, domainChainKo, gapKo,
@@ -39,7 +39,7 @@ export const metadata = { title: "홈 · CareerMatri" };
 export default async function Home() {
   const user = await requireUser();
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
-  const core = await activeCore(user.id);
+  const core = await activeCoreOrPick(user.id);
   /* **홈이 묻지 않는 것은 읽지도 않는다**(규격 §10). 고르신 산업과
      직무와 지역은 왼쪽 띠의 제 쪽이 들고, 결과 기록은 머리의 링크가
      보낸다. 쓰지 않는 값을 네 번 더 물으면 홈이 그만큼 늦어진다 */

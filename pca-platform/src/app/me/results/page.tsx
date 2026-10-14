@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import { majorNameOf } from "@/lib/me-v3/major-name";
-import { currentState, resultHistory, activeCore } from "@/lib/me-v3/platform";
+import { currentState, resultHistory, activeCoreOrPick } from "@/lib/me-v3/platform";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import { recentChangeKo } from "@/lib/me-v3/change-text.ko";
 import { registry } from "@/lib/me-v3/core-registry";
@@ -24,7 +24,7 @@ export const metadata = { title: "결과 기록 · CareerMatri" };
 export default async function Results() {
   const user = await requireUser();
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
-  const core = await activeCore(user.id);
+  const core = await activeCoreOrPick(user.id);
   const [st, rows] = await Promise.all([currentState(user.id), resultHistory(user.id)]);
   const major = majorNameOf(st.core);
   const snaps = rows.filter((r) => r.kind === "SNAPSHOT");

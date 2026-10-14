@@ -5,7 +5,7 @@ import {
   previewRecompute, recomputeStatus, type Candidate,
 } from "@/lib/me-v3/recompute";
 import { axisLabel, domainName } from "@/lib/me-v3/runtime/session";
-import { experiencesOf, latestResult, activeCore } from "@/lib/me-v3/platform";
+import { experiencesOf, latestResult, activeCoreOrPick } from "@/lib/me-v3/platform";
 import { actionKo, gapKo } from "@/lib/me-v3/result/text.ko";
 import {
   NO_CHANGE_KO, noChangeWhy, raisedKo, zoneMovedKo,
@@ -59,7 +59,7 @@ export default async function Recompute(
   const user = await requireUser();
   const major = await activeMajorName(user.id);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
-  const core = await activeCore(user.id);
+  const core = await activeCoreOrPick(user.id);
   const sp = await searchParams;
   /* 방금 저장하고 온 사람인가. 번호가 있으면 **이번 경험**으로 좁혀 적고,
      없으면(띠에서 바로 들어온 사람) 쌓인 것 전부를 적는다 */

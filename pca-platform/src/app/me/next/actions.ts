@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
-import { actionsOf, importActions, latestResult, setActionState, activeCore } from "@/lib/me-v3/platform";
+import { actionsOf, importActions, latestResult, setActionState, activeCoreOrPick } from "@/lib/me-v3/platform";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import { actionKo } from "@/lib/me-v3/result/text.ko";
 import { mark } from "@/lib/me-v3/workspace-events";
@@ -11,7 +11,7 @@ import { mark } from "@/lib/me-v3/workspace-events";
 /** 결과지가 낸 할 일을 내 CareerMatri 로 옮긴다. 두 번 눌러도 늘지 않는다 */
 /** 담는 일 하나. 두 자리(결과지 · 할 일 쪽)가 같은 코드를 부른다 */
 async function importActionRows(userId: string): Promise<number> {
-  const core = await activeCore(userId);
+  const core = await activeCoreOrPick(userId);
   const result = await latestResult(userId);
   if (!result) return 0;
   const H = { NOW: 30, NEXT: 90, LATER: 365 } as const;
@@ -31,7 +31,7 @@ async function importActionRows(userId: string): Promise<number> {
 export async function pullActions(): Promise<void> {
   const user = await requireUser();
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
-  const core = await activeCore(user.id);
+  const core = await activeCoreOrPick(user.id);
   await importActionRows(user.id);
 }
 

@@ -34,10 +34,23 @@ export async function startFromCampus(form: FormData): Promise<void> {
 
   await setCampusEntry(u.university_code, found.leaf.code);
 
-  /* **로그인 뒤에 제자리로 돌아온다.** 쿠키는 이미 적혀 있으므로 돌아온
-     사람은 고른 학과를 그대로 들고 있다 */
+  /**
+   * **개인 회원가입으로 보내지 않는다**(규격 §6).
+   *
+   * 전에는 `/login` 으로 보냈다. 그 쪽에는 소셜 단추와 `회원가입` 링크가
+   * 있어서, 학교 계약 학생이 그 길로 들어가면 **계약과 무관한 개인 계정**이
+   * 하나 생긴다. 그 계정의 응시에는 학교 맥락이 없어 담당자 화면에 잡히지
+   * 않고, 담당자는 그것을 `아직 아무도 안 쳤다` 로 읽는다. 그리고 가입을
+   * 마친 사람이 `/me` 에서 멈추는 자리가 따로 있었다.
+   *
+   * 학교 전용 로그인으로 보내고, 들어온 뒤에는 **학교가 적어 준 학과**를
+   * 확인하는 자리로 돌려보낸다. 고른 학과는 쿠키가 이미 들고 있다.
+   */
   const who = await currentUser();
-  if (!who) redirect(`/login?next=${encodeURIComponent("/v3/start")}`);
+  if (!who) {
+    redirect(`/campus/${code}/login?next=${
+      encodeURIComponent(`/campus/${code}/start`)}`);
+  }
   redirect("/v3/start");
 }
 

@@ -1,6 +1,6 @@
 import { requireUser } from "@/lib/session";
 import { activeMajorName } from "@/lib/me-v3/major-name";
-import { profileOf, activeCore } from "@/lib/me-v3/platform";
+import { profileOf, activeCoreOrPick } from "@/lib/me-v3/platform";
 import { regionGaps, regionLayer, regionOpen, regionOrganizations } from "@/lib/me-v3/region";
 import { industryChoices, roleChoices } from "@/lib/me-v3/runtime/session";
 import { CmShell, CmHead } from "../shell";
@@ -24,7 +24,7 @@ export default async function Region() {
   const user = await requireUser();
   const major = await activeMajorName(user.id);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
-  const core = await activeCore(user.id);
+  const core = await activeCoreOrPick(user.id);
   const profile = await profileOf(user.id);
   const L = regionLayer();
   /* 이름을 못 찾은 코드는 버린다. 화면에 `OC1` 이 서던 자리다 */

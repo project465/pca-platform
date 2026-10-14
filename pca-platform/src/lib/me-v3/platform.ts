@@ -14,6 +14,7 @@
  * 회차다. 저장만으로 Gap 이 바뀌지 않는 것이 지금 상태이고, 화면이 그
  * 사실을 적는다.
  */
+import { redirect } from "next/navigation";
 import { query, queryOne } from "@/lib/db";
 import type { Gap, ResultModel } from "./result/model";
 import type { Axis, AxisState, Zone } from "./scoring/types";
@@ -39,6 +40,38 @@ const DEFAULT_MARKET = "KR";
  * 열려 있는 core 가 둘 이상인데 이 사람이 아직 아무것도 고르지 않았으면
  * 그것도 답할 수 없는 상태라 던진다. 그 자리에서 **고르게 해야 한다.**
  */
+/**
+ * 화면이 부르는 쪽. **던지지 않고 고르는 자리로 보낸다.**
+ *
+ * `activeCore` 는 답할 수 없을 때 던진다. 그 설계는 맞다: 짐작하면 그
+ * 사람의 기록이 남의 전공 줄에 쌓인다. 그런데 **아직 아무것도 고르지
+ * 않은 사람은 답할 수 없는 것이 정상**이고, 갓 가입한 사람이 전부 그
+ * 처지다. 작업공간 쪽 열한 자리가 그것을 그대로 부르고 있어서, 가입을
+ * 마치고 `/me` 로 들어온 사람이 **`화면을 불러오지 못했습니다` 와 참조
+ * 번호**를 받았다.
+ *
+ * 열린 core 가 **하나일 때만** 짐작이 서는 구조라 그 수에 매달려 있었다:
+ * 하나도 안 열렸을 때와 여럿 열렸을 때가 둘 다 던진다. 그래서 전공을
+ * 하나 열어 둔 동안에는 이 탈이 **가려지고**, 전체를 여는 날 다시 돌아온다.
+ *
+ * 그 함수의 주석이 이미 답을 적어 두었다: `그 자리에서 고르게 해야 한다`.
+ */
+export async function activeCoreOrPick(userId: string): Promise<string> {
+  const row = await queryOne<{ core: string }>(
+    `SELECT core_code AS core FROM v3_attempts
+      WHERE user_id = $1 ORDER BY id DESC LIMIT 1`, [userId]);
+  if (row?.core) return row.core;
+  const prof = await queryOne<{ core: string }>(
+    `SELECT core_code AS core FROM career_profiles
+      WHERE user_id = $1 ORDER BY recomputed_at DESC NULLS LAST LIMIT 1`, [userId]);
+  if (prof?.core) return prof.core;
+  const open = sellableCores(DEFAULT_MARKET);
+  if (open.length === 1) return open[0].code;
+  /* 고를 것이 없으면 전공 목록으로 보낸다. 거기가 지금 무엇이 열려 있고
+     무엇이 아직 아닌지를 적는 유일한 자리다 */
+  redirect("/cores");
+}
+
 export async function activeCore(userId: string): Promise<string> {
   const row = await queryOne<{ core: string }>(
     `SELECT core_code AS core FROM v3_attempts

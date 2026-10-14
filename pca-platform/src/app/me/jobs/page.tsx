@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import { activeMajorName } from "@/lib/me-v3/major-name";
-import { latestResult, postingCount, savedJobCount, activeCore } from "@/lib/me-v3/platform";
+import { latestResult, postingCount, savedJobCount, activeCoreOrPick } from "@/lib/me-v3/platform";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import { CmShell, CmHead } from "../shell";
 
@@ -22,7 +22,7 @@ export default async function Jobs() {
   const user = await requireUser();
   const major = await activeMajorName(user.id);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
-  const core = await activeCore(user.id);
+  const core = await activeCoreOrPick(user.id);
   const [postings, saved, result] = await Promise.all([
     postingCount(), savedJobCount(user.id), latestResult(user.id),
   ]);

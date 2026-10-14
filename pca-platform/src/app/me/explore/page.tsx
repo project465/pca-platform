@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import { activeMajorName } from "@/lib/me-v3/major-name";
-import { latestResult, profileOf, activeCore } from "@/lib/me-v3/platform";
+import { latestResult, profileOf, activeCoreOrPick } from "@/lib/me-v3/platform";
 import {
   domainName, industryChoices, industryDomains, industryScene,
   roleChoices, roleDomains,
@@ -35,7 +35,7 @@ export default async function Explore() {
   const user = await requireUser();
   const major = await activeMajorName(user.id);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
-  const core = await activeCore(user.id);
+  const core = await activeCoreOrPick(user.id);
   const [profile, result] = await Promise.all([
     profileOf(user.id), latestResult(user.id),
   ]);
