@@ -183,7 +183,8 @@
     "v3:screens": "tsx scripts/v3-screens-check.ts",
     "major:kit": "tsx scripts/major-kit-check.ts",
     "v3:provenance": "tsx scripts/v3-provenance-check.ts",
-    "pcu:ops": "tsx scripts/pcu-ops-check.ts"
+    "pcu:ops": "tsx scripts/pcu-ops-check.ts",
+    "pcu:org": "tsx scripts/pcu-org-setup.ts"
   },
   "dependencies": {
     "@types/nodemailer": "^8.0.1",

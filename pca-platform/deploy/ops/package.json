@@ -11,6 +11,7 @@
     "ops:check": "node ops/ops-check.cjs",
     "pg:smoke": "node ops/pg-smoke.cjs",
     "pg:confirm": "node ops/pg-confirm.cjs",
-    "pilot:check": "node ops/pilot-check.cjs"
+    "pilot:check": "node ops/pilot-check.cjs",
+    "pcu:org": "node ops/pcu-org.cjs"
   }
 }
