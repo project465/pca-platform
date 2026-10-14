@@ -143,6 +143,14 @@ export const ROUTE_TABLE: RouteRow[] = [
     oldUser: "같음", cls: "CURRENT" },
   { route: "/campus/[universityCode]/d/[department]", newUser: "학과 상세와 시작",
     oldUser: "같음", cls: "CURRENT" },
+  /* 학교 전용 로그인. **개인 회원가입으로 보내지 않는다**: 학교 계약 학생이
+     `/login` 으로 가면 계약과 무관한 개인 계정이 생기고 그 응시는 담당자
+     화면에 잡히지 않는다. 인증 자체는 개인 쪽과 같은 자리를 쓴다 */
+  { route: "/campus/[universityCode]/login", newUser: "학교 전용 로그인",
+    oldUser: "같음", cls: "CURRENT" },
+  /* 들어온 뒤 학과를 확인만 하는 자리. **다시 고르게 하지 않는다** */
+  { route: "/campus/[universityCode]/start", newUser: "학과 확인과 시작",
+    oldUser: "같음", cls: "CURRENT" },
   { route: "/pricing", newUser: "지금 판본만 선다", oldUser: "같음", cls: "CURRENT" },
   { route: "/product", newUser: "상품 소개", oldUser: "같음", cls: "CURRENT" },
   { route: "/checkout", newUser: "결제", oldUser: "같음", cls: "CURRENT" },
