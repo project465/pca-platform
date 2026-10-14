@@ -1809,3 +1809,14 @@ body:has(.stgmark) .cm-tabs { bottom: var(--stg-h) }
   .cv-cols i, .cv-cols b { width: 7px; }
   .cv-day > span { font-size: 9.5px; }
 }
+
+/* 담당자 화면의 되짚는 자리. **쓰는 이름이 CSS 에 있는지 본다**:
+   이 저장소에서 없는 이름을 쓴 탓에 화면이 조용히 무너진 일이 아홉 번
+   있었다(`.btn` · `--sf-r` · `.lg` · `empty` · `industries` · `OC*` ·
+   `.qs-steps` · `.cm-snap` · `.sf-kpis`) */
+.sf-fold { margin-top: var(--ui-6); }
+.sf-fold > summary {
+  cursor: pointer; padding: var(--ui-3) 0; font-size: var(--ui-t-body);
+  font-weight: var(--ui-w-sb); color: var(--sf-accent-ink);
+}
+.sf-fold > summary::marker { color: var(--sf-ink-3); }

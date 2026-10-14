@@ -1007,8 +1007,21 @@
   /* **표지가 선 종이에만 걸린다.** 장 바뀜은 표지와 한 벌이고, 표지가
      없는 개인 결제 종이에 걸면 장이 넷으로 갈리면서 **선별 등급의
      마지막 장이 16% 만 차서** 덜 만든 종이로 읽힌다 */
-  .is-report #evidence, .is-report #gaps,
-  .is-report #industry, .is-report #plan { break-before: page; }
+  /* **장을 셋으로 줄였다**(규격 §17). 그래프가 들어오면서 종이가
+     열셋에서 열넷이 됐고, 허용은 10~12 다. 장 하나가 끝나는 쪽은 평균
+     절반쯤만 차므로, 장을 하나 줄이는 것이 담긴 글을 덜어내지 않고
+     쪽을 되찾는 유일한 자리였다. **산업·직무는 바로 앞 장(채울 것)과
+     같은 이야기다**: 무엇이 비었는가 다음에 그것이 어느 산업에서
+     필요한가가 온다 */
+  /* **장을 쪽으로 가르지 않는다**(규격 §17·§18). 장 하나가 끝나는 쪽은
+     평균 절반만 차고, 그래프가 들어온 뒤로 종이가 열셋에서 열넷이 됐다.
+     허용은 10~12 다. 장이 있는 문서로 읽히게 하는 일은 쪽을 바꾸는 것이
+     아니라 **장 머리를 눈에 띄게 세우는 것**으로 한다 */
+  .is-report #evidence > h2, .is-report #gaps > h2,
+  .is-report #industry > h2, .is-report #plan > h2 {
+    margin-top: 6mm; padding-top: 4mm;
+    border-top: 1.2pt solid var(--r-ink);
+  }
 
   .rs-sect { margin-top: 5px; }
   .rs-sect > h2 {
@@ -1397,7 +1410,12 @@
 
 /* 종이. **그래프가 쪽 경계에서 쪼개지지 않는다** */
 @media print {
-  .pv-radar, .pv-bar, .pv-road > li, .pv-matrix { break-inside: avoid; }
+  /* **그래프 묶음을 통째로 붙여 두지 않는다.** 범례 열두 줄까지 한 덩이로
+     묶으면 남은 자리에 안 들어가 통째로 밀리고, 그 앞 쪽이 절반 빈 채로
+     뽑힌다(CS·원예가 50% 였다). 그림만 쪼개지지 않으면 된다 */
+  .pv-radar { break-inside: auto; }
+  .pv-radar-svg { break-inside: avoid; break-after: avoid; }
+  .pv-bar, .pv-road > li, .pv-matrix { break-inside: avoid; }
   /* 종이에서는 바탕색이 빠질 수 있다. 네 토막에 테를 둘러 둔다 */
   .pv-seg { border: 1px solid #0a1b31; }
   .pv-bar-track { height: 22px; }

@@ -344,6 +344,19 @@ async function main(): Promise<void> {
           /* 4. 이 전공의 영역 이름이 적히는가 */
           const said = (names.get(core) ?? []).filter((n) => all.includes(n));
           if (!said.length) problems.push("이 전공의 영역 이름이 한 줄도 없다");
+          /**
+           * 4-2. **학교 종이는 열두 쪽을 넘지 않는다**(규격 §17).
+           *
+           * 그래프가 들어오면서 한 쪽이 늘었고, 장을 쪽으로 가르던 규칙이
+           * 끝나는 쪽마다 절반을 비웠다. 넘으면 **담긴 글을 덜어내지 말고**
+           * 여백과 배치에서 되찾는다. 열보다 짧은 것은 걸림이 아니라
+           * 보고다: 담긴 것이 적은 응시가 그만큼 짧은 것은 맞는 일이다.
+           */
+          if (leaf && pages > 12) {
+            problems.push(`학교 종이가 ${pages}쪽이다 (허용 10~12)`);
+          } else if (leaf && pages < 10) {
+            notes.push(`학교 종이가 ${pages}쪽이다 (허용 10~12)`);
+          }
           /* 5. 갈래가 있으면 종이에 그 학과가 적히는가 */
           if (leaf && !all.includes("배재")) problems.push("학교 맥락이 종이에 없다");
           /**

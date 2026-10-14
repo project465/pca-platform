@@ -78,6 +78,19 @@ export type CampusV3 = {
    * 아니라 **값을 만들지 않는다**(`n` 이 `null`).
    */
   recent: { day: string; started: number | null; scored: number | null }[];
+  /**
+   * 주의가 필요한 학과(규격 §22).
+   *
+   * **새 지표를 만들지 않는다.** 여기 서는 둘은 위에서 이미 센 것이고
+   * (시작한 사람 · 결과를 받은 사람) 셋째는 그 둘의 차다. 학과끼리 줄을
+   * 세우지 않고, **아직 끝내지 않은 사람이 많은 쪽을 먼저 적는다**:
+   * 담당자가 이 화면에서 할 일이 그 학과에 안내를 한 번 더 보내는 것이다.
+   *
+   * 5명 규칙을 그대로 지난다. 시작한 사람이 다섯이 안 되는 학과는 이
+   * 목록에 서지 않는다 — 그런 학과에서 `한 명이 아직 안 끝냈습니다` 는
+   * 그 한 사람을 가리키는 말이다.
+   */
+  attention: { code: string; label: string; started: number; scored: number; open: number }[];
   /** 집계에 들어간 사람이 5명이 안 되는가. 그러면 아래 칸이 전부 null 이다 */
   too_few: boolean;
 };
@@ -122,6 +135,15 @@ export type CampusScope = {
   orgIds: number[];
   /** 그 기관이 학교 등록부의 어느 학교인가(`organizations.code`). 없으면 null */
   universityCode?: string | null;
+  /**
+   * 시연 자료까지 섞어서 본다. **기본은 끈다.**
+   *
+   * 운영 지표에서 시연과 검사 계정을 거르는 규칙은 이 저장소가 전부터
+   * 들고 있었는데(`admin-overview` · `funnel` · `ops`), **학교 집계만
+   * 그 줄을 빠뜨리고 있었다.** 그래서 담당자 화면의 대상자와 완료자에
+   * 우리가 만든 계정이 섞이고, 그 수로 낸 완료율이 100 을 넘었다.
+   */
+  withDemo?: boolean;
 };
 
 export async function campusV3(scope: CampusScope): Promise<CampusV3> {
@@ -130,11 +152,15 @@ export async function campusV3(scope: CampusScope): Promise<CampusV3> {
     started: 0, scored: 0, in_progress: 0, recomputed: 0,
     by_core: [], by_stage: [], by_industry: [], by_role: [],
     by_college: [], by_department: [],
-    zone_cells: [], too_few: true,
+    zone_cells: [], attention: [], too_few: true,
   };
   const orgIds = scope.orgIds;
   const uni = scope.universityCode ?? null;
   if (!orgIds.length && !uni) return empty;
+  /* 시연과 검사 계정을 빼는 조건. 섞어 보기로 했으면 늘 참이다 */
+  const live = (col: string) => (scope.withDemo
+    ? "TRUE"
+    : `NOT EXISTS (SELECT 1 FROM users du WHERE du.id = ${col} AND du.is_demo)`);
 
   /**
    * 두 길을 한 조건으로 묶는다.
@@ -147,7 +173,8 @@ export async function campusV3(scope: CampusScope): Promise<CampusV3> {
        LEFT JOIN memberships m
          ON m.user_id = a.user_id AND m.org_id = ANY($1::bigint[])
       WHERE (m.org_id IS NOT NULL
-             OR ($2::text IS NOT NULL AND a.university_code = $2))`;
+             OR ($2::text IS NOT NULL AND a.university_code = $2))
+        AND ${live("a.user_id")}`;
   const args = [orgIds, uni];
 
   const head = await queryOne<{ started: string; scored: string; open: string }>(
@@ -164,8 +191,9 @@ export async function campusV3(scope: CampusScope): Promise<CampusV3> {
      학교 코드로 적힌다 */
   const roster = uni
     ? Number((await queryOne<{ n: string }>(
-      `SELECT count(*)::text AS n FROM campus_students
-        WHERE university_code = $1`, [uni]))?.n ?? 0)
+      `SELECT count(DISTINCT cs.user_id)::text AS n FROM campus_students cs
+        WHERE cs.university_code = $1
+          AND ${live("cs.user_id")}`, [uni]))?.n ?? 0)
     : 0;
   /**
    * 바닥은 **대상자와 응시자 가운데 큰 쪽**이다.
@@ -189,6 +217,7 @@ export async function campusV3(scope: CampusScope): Promise<CampusV3> {
     `SELECT count(DISTINCT p.user_id)::text AS n
        FROM career_profiles p
       WHERE p.recomputed_at IS NOT NULL
+        AND ${live("p.user_id")}
         AND (EXISTS (SELECT 1 FROM memberships m
                       WHERE m.user_id = p.user_id AND m.org_id = ANY($1::bigint[]))
              OR ($2::text IS NOT NULL
@@ -205,13 +234,16 @@ export async function campusV3(scope: CampusScope): Promise<CampusV3> {
           ${campusOnly ? "AND a.university_code IS NOT NULL" : ""}
         GROUP BY 1 ORDER BY 2 DESC`, args);
 
-  const [cores, stages, inds, roles, colleges, depts] = await Promise.all([
+  const [cores, stages, inds, roles, colleges, depts, deptsDone] = await Promise.all([
     group("core_code"), group("education_stage"),
     group("industry_pack", true), group("role_pack", true),
     /* **학교 진입으로 들어온 응시만 센다**(규격 §13). 소속으로만 묶인
        학생은 이 칸이 비어 있고, 그 빈 칸을 `(고르지 않음)` 한 줄로
        세우면 담당자가 그만큼의 학생이 어느 학과인지 모르는 줄로 읽는다 */
     group("college_code", false, true), group("department_code", false, true),
+    /* 학과마다 끝낸 사람. **같은 질의를 등급만 바꿔 한 번 더 부른다**:
+       세는 법을 두 곳에 적으면 어느 날 갈린다 */
+    group("department_code", true, true),
   ]);
 
   /* 묶음 분포는 굳은 결과에서 읽는다. **다시 계산하지 않는다** */
@@ -250,10 +282,22 @@ export async function campusV3(scope: CampusScope): Promise<CampusV3> {
              ON m.user_id = a.user_id AND m.org_id = ANY($1::bigint[])
           WHERE (m.org_id IS NOT NULL
                  OR ($2::text IS NOT NULL AND a.university_code = $2))
+            AND ${live("a.user_id")}
        ) t ON (t.started_at::date = g.d OR t.submitted_at::date = g.d)
       GROUP BY g.d ORDER BY g.d`, args);
 
   const hide = (n: number) => (n > 0 && n < MIN_CELL ? null : n);
+
+  /* 주의가 필요한 학과. **새로 세지 않고 위의 둘을 뺀다** */
+  const done = new Map(deptsDone.map((r) => [r.k, Number(r.n)]));
+  const attention = depts
+    .map((r) => {
+      const st = Number(r.n);
+      const sc = done.get(r.k) ?? 0;
+      return { code: r.k, label: r.k, started: st, scored: sc, open: st - sc };
+    })
+    .filter((r) => r.started >= MIN_CELL && r.open > 0)
+    .sort((a, b) => b.open - a.open);
 
   return {
     roster, completion,
@@ -269,6 +313,7 @@ export async function campusV3(scope: CampusScope): Promise<CampusV3> {
     by_industry: inds.map((r) => cell(r.k, r.k, Number(r.n))),
     by_role: roles.map((r) => cell(r.k, r.k, Number(r.n))),
     zone_cells: zones.map((r) => cell(r.k, zoneKo(r.k), Number(r.n))),
+    attention,
     too_few: false,
   };
 }

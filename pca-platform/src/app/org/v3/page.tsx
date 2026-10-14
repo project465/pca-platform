@@ -137,10 +137,14 @@ function bars(rows: Cell[], name?: (k: string) => string) {
  */
 export default async function CampusV3({
   searchParams,
-}: { searchParams: Promise<{ lang?: string }> }) {
+}: { searchParams: Promise<{ lang?: string; demo?: string }> }) {
   const user = await requireRole(["org_admin", "instructor"]);
-  const { lang: q } = await searchParams;
+  const { lang: q, demo } = await searchParams;
   const L = toLang2(await resolveLang(q));
+  /* **시연 자료는 기본으로 거른다**(§23). 운영 지표에서 검사 계정을 빼는
+     규칙은 이 저장소가 전부터 들고 있었고 학교 집계만 그 줄을 빠뜨리고
+     있었다. 섞어 볼 때는 화면이 그 사실을 적는다 */
+  const withDemo = demo === "1";
 
   const packKo = packNames();
 
@@ -157,7 +161,7 @@ export default async function CampusV3({
   const uni = orgs.map((o) => o.code).find((c) => Boolean(university(c))) ?? null;
   const name = campusNames(uni);
   const v3 = await campusV3({
-    orgIds: orgs.map((o) => Number(o.id)), universityCode: uni,
+    orgIds: orgs.map((o) => Number(o.id)), universityCode: uni, withDemo,
   });
 
   const shell = (children: React.ReactNode) => (
@@ -216,6 +220,14 @@ export default async function CampusV3({
           지금 푸는 중 {v3.in_progress}명 · 경험을 더해 갱신한 학생
           {" "}{v3.recomputed}명
         </p>
+        {/* **섞어서 보고 있으면 화면이 그 사실을 적는다.** 적지 않으면
+            캡처한 수가 손님 수로 읽힌다 */}
+        {withDemo ? (
+          <p className="sf-meta" style={{ marginTop: 6 }}>
+            시연·검사 계정을 섞어서 보고 있습니다.{" "}
+            <Link href="/org/v3">손님만 보기</Link>
+          </p>
+        ) : null}
       </Section>
 
       {v3.recent.length ? (
@@ -238,12 +250,6 @@ export default async function CampusV3({
         </Section>
       ) : (
         <>
-          <Section title="전공"
-            note="학생이 어느 Major Core 로 응시했는가">
-            <BarList rows={bars(v3.by_core, niceCore)}
-              hiddenLabel={`${MIN_CELL}명 미만`} emptyLabel="아직 없습니다" />
-          </Section>
-
           {/* **학교 전용 진입으로 들어온 응시만 선다**(규격 §13). 소속으로만
               묶인 학생은 학과 칸이 비어 있어 이 두 묶음에 서지 않는다 */}
           {v3.by_college.length ? (
@@ -261,6 +267,58 @@ export default async function CampusV3({
                 hiddenLabel={`${MIN_CELL}명 미만`} emptyLabel="아직 없습니다" />
             </Section>
           ) : null}
+
+          {/* ── 주의가 필요한 학과(규격 §22) ──
+              **학과끼리 줄을 세우지 않는다.** 여기 적는 것은 아직 끝내지
+              않은 사람이 몇인가이고, 담당자가 이 화면에서 할 수 있는 일이
+              그 학과에 안내를 한 번 더 보내는 것이다. 시작한 사람이 다섯이
+              안 되는 학과는 서지 않는다: 그런 학과에서 `한 명이 아직 안
+              끝냈습니다` 는 그 한 사람을 가리키는 말이다 */}
+          <Section title="주의가 필요한 학과"
+            note="아직 결과를 받지 않은 학생이 남아 있는 학과입니다">
+            {v3.attention.length ? (
+              <ul className="sf-list">
+                {v3.attention.slice(0, 6).map((r) => (
+                  <li key={r.code}>
+                    <b>{name.dept(r.code)}</b> — 시작 {r.started}명 가운데
+                    {" "}{r.open}명이 아직 결과를 받지 않았습니다
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="sf-meta">
+                시작한 학생이 다섯 이상인 학과 가운데 아직 끝내지 않은 학생이
+                남은 곳은 없습니다.
+              </p>
+            )}
+          </Section>
+
+          {/* ── 최근 응시 ── 날짜마다 몇 명이 시작하고 받았는가.
+              **5명 규칙을 날짜 칸에도 건다**: 하루에 한 사람만 친 날이
+              그대로 찍히면 그 사람이 누구인지 짐작이 된다 */}
+          <Section title="최근 응시"
+            note="최근 이레입니다. 다섯이 안 되는 날은 수를 내지 않습니다">
+            <ul className="sf-list">
+              {v3.recent.slice(-7).map((d) => (
+                <li key={d.day}>
+                  <b>{d.day}</b> — 시작 {d.started === null ? "5명 미만" : `${d.started}명`}
+                  {" · "}결과 {d.scored === null ? "5명 미만" : `${d.scored}명`}
+                </li>
+              ))}
+            </ul>
+          </Section>
+
+          {/* **긴 목록을 첫 화면에 펼치지 않는다**(규격 §22). 담당자가 이
+              화면을 여는 까닭은 위의 여섯이고, 아래 다섯은 되짚어 보실
+              자리다. 담긴 것은 그대로다 */}
+          <details className="sf-fold">
+            <summary>전공 · 학위 · 산업 · 직무 · 영역 분포 보기</summary>
+
+          <Section title="전공"
+            note="학생이 어느 Major Core 로 응시했는가">
+            <BarList rows={bars(v3.by_core, niceCore)}
+              hiddenLabel={`${MIN_CELL}명 미만`} emptyLabel="아직 없습니다" />
+          </Section>
 
           <Section title="학위 단계"
             note="묻는 장면이 단계마다 갈립니다">
@@ -290,6 +348,7 @@ export default async function CampusV3({
             <BarList rows={bars(v3.zone_cells)}
               hiddenLabel={`${MIN_CELL}명 미만`} emptyLabel="아직 없습니다" />
           </Section>
+          </details>
         </>
       )}
 
