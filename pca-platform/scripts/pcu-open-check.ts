@@ -26,6 +26,9 @@ const ok = (w: string, c: boolean, saw = ""): void => {
   if (c) { pass += 1; console.log(`  통과  ${w}${saw ? ` — ${saw}` : ""}`); }
   else { bad.push(w); console.log(`  걸림  ${w}${saw ? ` — ${saw}` : ""}`); }
 };
+/** 세지 않고 적어만 두는 줄. 통과 수에 들어가지 않는다 */
+const say = (w: string, saw: string): void =>
+  console.log(`  적어둠  ${w} — ${saw}`);
 
 function main(): void {
   const u = university(UNI);
