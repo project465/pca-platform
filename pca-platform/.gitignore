@@ -39,6 +39,8 @@ var/pcu-content/
 var/pcu-generic/
 # 학과 여덟 항목 판정표. 명령을 다시 돌리면 다시 생긴다
 var/pcu-dept/
+# 갈래 아홉 항목 판정표(`pcu:spec`). 사람이 읽을 묶음은 `docs/metri/` 에 있다
+var/pcu-spec/
 
 # 띄워 둔 서버의 기록. 기계마다 다르고 저장소에 남길 것이 아니다
 var/*.log
