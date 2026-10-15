@@ -165,6 +165,9 @@ export const ROUTE_TABLE: RouteRow[] = [
   { route: "/me/next", newUser: "다음 할 일", oldUser: "같음", cls: "CURRENT" },
   { route: "/me/experience", newUser: "경험 목록", oldUser: "같음", cls: "CURRENT" },
   { route: "/me/experience/new", newUser: "경험 추가", oldUser: "같음", cls: "CURRENT" },
+  /* 적어 둔 경험을 고치는 자리. 적는 자리는 새로 적는 쪽과 한 벌이다 */
+  { route: "/me/experience/[id]/edit", newUser: "경험 고치기", oldUser: "같음",
+    cls: "CURRENT" },
   { route: "/me/recompute", newUser: "새 경험 반영", oldUser: "같음", cls: "CURRENT" },
   { route: "/me/explore", newUser: "산업·직무 탐색", oldUser: "같음", cls: "CURRENT" },
   { route: "/me/region", newUser: "지역과 기관", oldUser: "같음", cls: "CURRENT" },

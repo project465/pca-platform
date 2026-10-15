@@ -11,7 +11,7 @@ import { FIELD_LABEL, STAGE_LABEL } from "../tier-text";
  * 칸이 하나 서고, 그 칸이 비어 있는 것을 응시자가 자기 잘못으로 읽는다.
  * 묻는 장면만 달라지고 판정 기준은 같다는 것을 한 줄로 적어 둔다.
  */
-export default function StartForm({ error }: { error?: string }) {
+export default function StartForm({ error, core }: { error?: string; core?: string }) {
   /**
    * **미리 골라 두지 않는다.**
    *
@@ -27,6 +27,10 @@ export default function StartForm({ error }: { error?: string }) {
 
   return (
     <form action={startV3}>
+      {/* **고른 전공을 들고 간다**(규격 §20). 믿는 자리는 서버 하나이고
+          (`openAttempt`), 응시할 수 없는 Core 면 거기서 버린다. 학교 진입은
+          쿠키의 학과가 정하므로 이 칸을 세우지 않는다 */}
+      {core ? <input type="hidden" name="core" value={core} /> : null}
       <fieldset className="qs-opts">
         <legend>현재 학업 단계</legend>
         <h2 className="qs-eyebrow" aria-hidden>현재 학업 단계</h2>

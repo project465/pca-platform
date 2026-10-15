@@ -40,6 +40,7 @@ import {
 } from "./_loop-fixture";
 import { query, queryOne } from "../src/lib/db";
 import { openAttempt } from "../src/lib/me-v3/runtime/session";
+import { defaultCore } from "../src/lib/me-v3/core-registry";
 
 loadEnv();
 /**
@@ -296,6 +297,33 @@ async function main(): Promise<void> {
     }
 
     /**
+     * **고른 전공을 받는 칸이 학교 학과를 덮지 못한다**(규격 §20).
+     *
+     * 개인 회원은 전공 목록에서 고른 Core 를 폼으로 들고 온다. 그 칸이
+     * 학교 맥락보다 먼저 읽히면 **학과가 정한 자가 아닌 자로** 그 학생이
+     * 재어지고, 담당자 화면은 그 줄을 그 학과의 학생으로 센다. 믿는 차례는
+     * `openAttempt()` 하나이고 학교 맥락이 늘 먼저다.
+     */
+    await query(`DELETE FROM v3_attempts WHERE user_id = $1`, [who.id]);
+    const other = await openAttempt({
+      userId: who.id, tier: "BASIC", stage: "bachelor", gradField: null,
+      campus: CAMPUS, core: "STYLE_CORE_V1" });
+    ok("학교 응시는 다른 전공을 넣어도 학과의 Core 로 열린다",
+      other.core_code === "ME_CORE_V3", other.core_code);
+    await query(`DELETE FROM v3_attempts WHERE user_id = $1`, [who.id]);
+    const picked2 = await openAttempt({
+      userId: who.id, tier: "BASIC", stage: "bachelor", gradField: null,
+      core: "STYLE_CORE_V1" });
+    ok("개인 응시는 고른 전공으로 열린다",
+      picked2.core_code === "STYLE_CORE_V1", picked2.core_code);
+    await query(`DELETE FROM v3_attempts WHERE user_id = $1`, [who.id]);
+    const junk = await openAttempt({
+      userId: who.id, tier: "BASIC", stage: "bachelor", gradField: null,
+      core: "NO_SUCH_CORE_V9" });
+    ok("응시할 수 없는 전공을 넣으면 버린다",
+      junk.core_code === defaultCore(), junk.core_code);
+
+    /**
      * **주소와 폼으로 넣어도 PRO 다** (운영 오픈 §2).
      *
      * 위의 줄은 서버 함수를 직접 부른다. 그것만으로는 **화면에서 서버까지
@@ -326,24 +354,31 @@ async function main(): Promise<void> {
         const f = document.querySelector("form");
         if (!f) return 0;
         let n = 0;
-        for (const name of ["tier", "upgrade", "product_code"]) {
+        /* **전공 칸도 함께 꽂는다.** 개인 회원이 고른 전공을 들고 오는
+           칸이라, 그 칸으로 학과의 Core 를 덮을 수 있으면 학과가 정한
+           자가 아닌 자로 그 학생이 재어진다 */
+        for (const name of ["tier", "upgrade", "product_code", "core"]) {
           const i = document.createElement("input");
           i.type = "hidden"; i.name = name;
-          i.value = name === "product_code" ? `ME_V3_${want}_KR` : want;
+          i.value = name === "product_code" ? `ME_V3_${want}_KR`
+            : name === "core" ? "STYLE_CORE_V1" : want;
           f.appendChild(i); n += 1;
         }
         return n;
       }, t);
-      ok(`폼에 숨은 등급 칸을 꽂았다 — ${t}`, put === 3, `${put}개`);
+      ok(`폼에 숨은 등급 칸을 꽂았다 — ${t}`, put === 4, `${put}개`);
       await page.getByText("학부", { exact: true }).click();
       await page.getByRole("button", { name: "검사 시작" }).click();
       await page.waitForURL(/\/v3\/\d+/, { timeout: 30000 });
-      const inj = await queryOne<{ tier: string; university_code: string | null }>(
-        `SELECT tier, university_code FROM v3_attempts
+      const inj = await queryOne<
+        { tier: string; university_code: string | null; core_code: string }>(
+        `SELECT tier, university_code, core_code FROM v3_attempts
           WHERE user_id = $1 ORDER BY started_at DESC LIMIT 1`, [who.id]);
       ok(`주소와 폼으로 ${t} 를 넣어도 PRO 응시가 만들어진다`,
         inj?.tier === "PRO" && inj?.university_code === "ZZTEST",
         JSON.stringify(inj));
+      ok(`폼에 다른 전공을 꽂아도 학과의 Core 로 열린다 — ${t}`,
+        inj?.core_code === "ME_CORE_V3", inj?.core_code ?? "없음");
     }
 
     /* 일반 B2C 로 들어오면 학교 맥락이 비어 있다 */

@@ -70,8 +70,20 @@
  * 할 일에서 `경험에 추가` 로 가는 길이 **그 할 일의 기술영역을 들고
  * 간다**(§10). 들고 가지 않으면 그 줄을 읽고 누른 사람이 열두 영역에서
  * 그 하나를 다시 찾는다.
+ *
+ * `V32` — **전공을 고르지 않은 사람도 계정 쪽이 열린다**(§4 · §21). `/my`
+ * 가 지금 상태를 읽으려고 Core 를 묻는데, 열린 전공이 하나가 아니면 그
+ * 물음에 답할 수 없어 **그 쪽이 통째로 500** 이었다. 묻기만 하는 자리
+ * (`coreIfAny()`)를 두어 모르면 묻지 않는다. 그 쪽의 markup 과 글자는
+ * 그대로다.
+ *
+ * 전공 목록에서 **고른 전공을 들고 간다**(§20). 카드가 전부 같은
+ * `/v3/start` 를 가리켜서, 전공이 둘 열린 날부터 경영학을 누른 사람이
+ * 기계공학으로 시작했다. 그리고 **학교가 발급한 계정은 학교 쪽 문으로
+ * 보낸다**: 개인 회원의 길로 들어가면 응시에 학교와 학과가 적히지 않아
+ * 담당자 화면이 그 학생을 세지 못한다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V31";
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V32";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -87,8 +99,12 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V31";
  *
  * `.20` 에서 고치는 자리의 머리글과 단추가 새로 섰다(`적어 둔 경험
  * 고치기` · `고친 내용 저장`).
+ *
+ * `.21` 에서 전공 목록에 **학교가 발급한 계정의 줄**이 새로 섰다
+ * (`학교에서 받은 계정입니다` · `학과 확인하고 시작하기`). 학교 학생이
+ * 개인 회원의 길로 들어가면 담당자 화면이 그 학생을 세지 못한다.
  */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.20";
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.21";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

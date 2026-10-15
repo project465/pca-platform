@@ -425,6 +425,14 @@ export async function openAttempt(args: {
    * 같은 까닭이다). 그러면 응시는 열리고 Core 는 기본값으로 남는다.
    */
   campus?: CampusEntry | null;
+  /**
+   * 개인 회원이 전공 목록에서 고른 Core. **없으면 기본 전공이다.**
+   *
+   * 학교 맥락이 늘 먼저다(그쪽은 명단이 적어 준 자리다). 그리고 여기 온
+   * 값도 그대로 믿지 않는다: 그 시장에서 지금 응시할 수 있는 Core 가
+   * 아니면 버리고 기본 전공으로 연다.
+   */
+  core?: string | null;
 }): Promise<V3Attempt> {
   /* 이어보기가 먼저다. 중복 응시를 만들지 않는다 */
   const open = await currentAttempt(args.userId);
@@ -453,7 +461,21 @@ export async function openAttempt(args: {
    * EE_CORE_V1` 과 `item_bank_version = ME_V3_ITEM_BANK_V2.5` 를 나란히
    * 들었다. 한 줄 안에서 두 칸이 서로 다른 Core 를 가리킨 것이다.
    */
-  const coreCode = campus?.core_code ?? defaultCore();
+  /**
+   * **고른 전공이 있으면 그 전공으로 연다**(규격 §20: 학생 선택 기반).
+   *
+   * 전에는 학교 맥락이 없을 때 늘 `defaultCore()` 였다. 전공이 하나만
+   * 열려 있던 동안에는 그 값이 곧 고른 전공이었지만, 둘이 열린 날부터는
+   * **전공 목록에서 경영학을 누른 사람의 응시가 기계공학으로 열렸다.**
+   * 고른 것과 다른 자로 재는 것이라 결과를 되돌릴 수 없다.
+   *
+   * 받은 값을 그대로 믿지 않는다: 그 시장에서 지금 응시할 수 있는 Core
+   * 가 아니면 버린다. 열려 있는 Core 는 정의상 학생에게 열린 것이므로
+   * 이 길로 닫힌 전공이 열리지 않는다.
+   */
+  const picked = args.core
+    && sellableCores(market).some((c) => c.code === args.core) ? args.core : null;
+  const coreCode = campus?.core_code ?? picked ?? defaultCore();
   const coreEntry = coreOf(coreCode);
   /**
    * **학교 진입은 등급을 고르지 않는다. 늘 PRO 다.**

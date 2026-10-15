@@ -86,6 +86,36 @@ export async function activeCore(userId: string): Promise<string> {
   throw new Error("core 를 정할 수 없다: 응시도 지금 값도 없고 열린 core 가 하나가 아니다");
 }
 
+/**
+ * 묻기만 하는 쪽. **답할 수 없으면 `null` 이고 던지지도 보내지도 않는다.**
+ *
+ * 계정 쪽(`/my`)은 Core 를 알아야 그릴 수 있는 쪽이 아니다. 거기서 Core
+ * 로 읽는 것은 `지금 검사의 결과가 있는가` 한 줄뿐인데, 아직 전공을 고르지
+ * 않은 사람에게는 **그 답이 늘 `없다`** 다(응시가 없으면 스냅샷도 없다).
+ * 그런데 `currentState()` 가 `activeCore()` 를 그대로 불러서, 열린 core 가
+ * 하나가 아닌 배포본에서는 **계정 쪽이 통째로 500** 이었다. 학교가 나눠 준
+ * 계정으로 처음 들어온 학생이 `계정` 을 누르면 그 화면을 받는다.
+ *
+ * **고르는 자리로 보내지도 않는다**(`activeCoreOrPick`): 계정은 전공을
+ * 고르러 들어오는 자리가 아니라 비밀번호와 로그아웃을 찾으러 들어오는
+ * 자리고, 거기서 전공 목록으로 튕기면 나가는 길이 사라진다.
+ *
+ * **짐작하지 않는 성질은 그대로다.** 돌려주는 값은 전과 같이 그 사람의
+ * 자료에서만 오고, 모르면 모른다고 답한다.
+ */
+export async function coreIfAny(userId: string): Promise<string | null> {
+  const row = await queryOne<{ core: string }>(
+    `SELECT core_code AS core FROM v3_attempts
+      WHERE user_id = $1 ORDER BY id DESC LIMIT 1`, [userId]);
+  if (row?.core) return row.core;
+  const prof = await queryOne<{ core: string }>(
+    `SELECT core_code AS core FROM career_profiles
+      WHERE user_id = $1 ORDER BY recomputed_at DESC NULLS LAST LIMIT 1`, [userId]);
+  if (prof?.core) return prof.core;
+  const open = sellableCores(DEFAULT_MARKET);
+  return open.length === 1 ? open[0].code : null;
+}
+
 /* ── Workspace 가 읽는 한 자리 ─────────────────────────────────────── */
 
 /**

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import { coresForMarket } from "@/lib/me-v3/core-registry";
 import { currentAttempt, v3Grants } from "@/lib/me-v3/runtime/session";
+import { campusStudentContext } from "@/lib/campus/students";
 import "../surface.css";
 import "../me/platform.css";
 import { CmShell, CmHead } from "../me/shell";
@@ -36,6 +37,19 @@ export default async function Cores() {
   const cores = coresForMarket("KR");
   const live = cores.filter((c) => c.status === "building" || c.status === "live");
   const planned = cores.filter((c) => c.status === "planned");
+  /**
+   * **학교가 발급한 계정은 학교 쪽 문으로 보낸다.**
+   *
+   * 이 쪽의 `검사 시작` 은 개인 회원의 길이다. 학교 학생이 그 길로 들어가면
+   * 응시에 학교와 학과가 적히지 않고 등급도 학교 계약이 정한 것이 아니어서,
+   * **담당자 화면이 그 학생을 세지 못하고** 그 결과가 같은 학과의 나머지와
+   * 한 표에서 읽히지 않는다. 가입 쪽에서 이미 막아 둔 것과 같은 자리다.
+   *
+   * **여기서 짐작해 적지 않는다.** 하는 일은 학교가 적어 준 학과로 가는 길
+   * 하나를 세우는 것뿐이고, 응시에 학교를 적는 자리는 전과 같이
+   * `openAttempt()` 하나다(설계 원칙 10).
+   */
+  const mine = await campusStudentContext(user.id);
 
   return (
     <CmShell active="/cores" title="검사">
@@ -67,12 +81,36 @@ export default async function Cores() {
         </div>
       ) : null}
 
+      {mine ? (
+        <>
+          <SectionHeader icon="clipboard" title="학교에서 받은 계정입니다" />
+          <PickGrid cols={1}>
+            <PickCard
+              href={open ? `/v3/${open.id}`
+                : `/campus/${mine.row.university_code.toLowerCase()}`
+                  + `/d/${encodeURIComponent(mine.row.department_code)}`}
+              icon="compass"
+              title={`${mine.university_name} ${mine.department_name}`}
+              tag="학교 계약"
+              lead={"학교가 적어 준 학과로 검사를 시작합니다. 결과는 그 학과 "
+                + "담당자의 집계에 들어갑니다."}
+              meta="적힌 학과가 다르면 학과 담당자에게 알려 주세요."
+              cta={open ? "이어하기" : "학과 확인하고 시작하기"}
+              strong
+            />
+          </PickGrid>
+        </>
+      ) : (
+      <>
       <SectionHeader icon="clipboard" title="사용 가능한 전공" />
       <PickGrid cols={live.length === 1 ? 1 : 2}>
         {live.map((c) => (
           <PickCard
             key={c.code}
-            href={open ? `/v3/${open.id}` : "/v3/start"}
+            /* **고른 전공을 들고 간다**(규격 §20). 전에는 카드마다 같은
+               `/v3/start` 를 가리켜서, 전공이 둘 열린 날부터 경영학을 누른
+               사람이 기계공학으로 시작했다. 믿는 자리는 서버 하나다 */
+            href={open ? `/v3/${open.id}` : `/v3/start?core=${c.code}`}
             icon="compass"
             title={c.name_ko}
             tag="지금 검사 가능"
@@ -85,6 +123,8 @@ export default async function Cores() {
           />
         ))}
       </PickGrid>
+      </>
+      )}
 
       {/* **같은 문장을 아홉 번 쓰지 않는다.** 준비 중인 Core 마다 카드를
           세우고 같은 설명을 되풀이하면, 아홉 장이 한 문단을 아홉 번 읽게

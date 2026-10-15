@@ -22,9 +22,9 @@ export const metadata = { title: "검사 시작 · CareerMatri" };
  */
 export default async function V3Start({
   searchParams,
-}: { searchParams: Promise<{ e?: string }> }) {
+}: { searchParams: Promise<{ e?: string; core?: string }> }) {
   const user = await requireUser();
-  const { e } = await searchParams;
+  const { e, core: want } = await searchParams;
 
   const open = await currentAttempt(user.id);
   if (open) redirect(`/v3/${open.id}`);
@@ -62,7 +62,20 @@ export default async function V3Start({
    * 학생이 선별 등급의 문항 수를 보고 앉았다가 여덟 축을 답하게 된다.
    */
   const tier: Tier = campus ? "PRO" : (grants[0]?.tier ?? "BASIC");
-  const core = campus?.core_code ?? sellableCores("KR")[0]?.code ?? null;
+  /**
+   * **전공 목록에서 고른 Core 를 받는다**(규격 §20).
+   *
+   * 전에는 학교 맥락이 없으면 늘 `sellableCores("KR")[0]` 이었다. 전공이
+   * 하나만 열려 있던 동안에는 그 값이 곧 고른 전공이었는데, 둘이 열린
+   * 날부터는 **경영학 카드를 누른 사람이 기계공학 시작 화면에 앉았다.**
+   *
+   * 받은 값을 그대로 믿지 않는다: 지금 응시할 수 있는 Core 가 아니면
+   * 버린다. 그리고 여기서 정한 값은 적는 수를 고르는 데만 쓰이고, 응시
+   * 줄에 적는 자리는 `openAttempt()` 하나다(설계 원칙 10).
+   */
+  const picked = want && sellableCores("KR").some((c) => c.code === want)
+    ? want : null;
+  const core = campus?.core_code ?? picked ?? sellableCores("KR")[0]?.code ?? null;
   if (!core) redirect("/cores");
   /* 쪽 머리에 전공 이름을 적는다. **안쪽 코드를 적지 않는다** */
   const coreName = (() => {
@@ -166,7 +179,7 @@ export default async function V3Start({
         </div>
 
         <div className="qs-sect">
-          <StartForm error={e} />
+          <StartForm error={e} core={campus ? undefined : (picked ?? undefined)} />
         </div>
 
         <p className="qs-fine">

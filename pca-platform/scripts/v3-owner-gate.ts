@@ -28,6 +28,8 @@ for (const line of (() => {
 
 import { chromium, type Browser, type BrowserContext, type Page } from "playwright";
 import { fillExperience } from "./_loop-fixture";
+import { enterAssessment } from "./_v3-walk";
+import { defaultCore, sellableCores } from "../src/lib/me-v3/core-registry";
 import { query, queryOne } from "../src/lib/db";
 import { hashPassword } from "../src/lib/password";
 import { CM_NAV } from "../src/app/me/nav";
@@ -43,6 +45,31 @@ const INTERNAL: RegExp[] = [
   /\bTR_[A-Z0-9_]+\b/, /\b[A-Z]{2,4}_[A-Z0-9]{2,}\b/,
   /ME_V3|ITEM_BANK|me-v3-scoring|result-model/,
 ];
+
+/**
+ * **떠 있는 서버가 지금 몇 전공을 열어 두었는가.**
+ *
+ * 전공을 아직 고르지 않은 학생이 로그인해서 가는 자리는 그 수가 정한다:
+ * 하나면 작업공간 첫 화면(`/me`)이고, 둘 이상이면 고르는 자리(`/cores`)다.
+ * 둘 다 작업공간 안이고 둘 다 맞는 상태라, **그 수를 보지 않고 한쪽만
+ * 요구하면 멀쩡한 배포본이 걸린다**(운영 Canary 로 경영학을 열고 나서
+ * 실제로 그렇게 걸렸다).
+ *
+ * 그 수를 정하는 것은 이 과정이 아니라 **서버의** 환경(`V3_PREVIEW_OPEN`)
+ * 이므로, 띄우는 쪽이 `var/.serving-preview` 에 적어 둔 것을 읽어 같은
+ * 값으로 센다. 느슨하게 세는 것이 아니다: 어느 쪽을 요구할지가 그 값으로
+ * **못 박힌다.**
+ */
+function openCoreCount(): number {
+  try {
+    /* **빈 값도 그대로 쓴다.** 띄운 쪽이 미리보기 없이 띄웠다는 뜻이고,
+       그때 이 과정의 환경(`V3_PREVIEW_OPEN`)을 그대로 두면 서버가 열지
+       않은 전공까지 세어 **기대하는 자리를 거꾸로 적는다** */
+    process.env.V3_PREVIEW_OPEN =
+      readFileSync(resolve(process.cwd(), "var/.serving-preview"), "utf8").trim();
+  } catch { /* 적어 둔 것이 없다. 이 과정의 환경으로 센다 */ }
+  return sellableCores("KR").length;
+}
 
 let pass = 0, fail = 0;
 function ok(n: string, good: boolean, d = ""): void {
@@ -128,7 +155,18 @@ async function main(): Promise<void> {
     watch(c1);
     const p = await login(c1, LOGIN, stu.pw);
     const at = new URL(p.url()).pathname;
-    ok("학생이 로그인하면 작업공간으로 간다", at === "/me", at);
+    const opened = openCoreCount();
+    /* 전공을 고르지 않은 학생의 자리는 열린 전공 수가 정한다. 하나면
+       `/me`, 둘 이상이면 고르는 자리다. 아래 12b 가 **고른 뒤에는 늘
+       `/me` 인 것**을 따로 센다 */
+    const land = opened === 1 ? "/me" : "/cores";
+    ok("학생이 로그인하면 작업공간으로 간다", at === land,
+      `${at} · 열린 전공 ${opened} · 기대 ${land}`);
+    if (land === "/cores") {
+      const pick = await p.evaluate(() => document.body.innerText);
+      ok("전공을 고르는 자리가 선다", /전공을 선택|사용 가능한 전공/.test(pick),
+        pick.replace(/\s+/g, " ").slice(0, 60));
+    }
 
     const nav = await p.$eval("body", (e) => e.textContent ?? "").catch(() => "");
     /* 띠의 이름은 `me/nav.ts` 가 들고 있다. 여기 글자로 적어 두면 이름을
@@ -157,6 +195,63 @@ async function main(): Promise<void> {
       ok(`${path} 가 열리고 그 쪽의 글이 선다`,
         r?.status() === 200 && want.test(txt), `${r?.status()}`);
     }
+
+    /* ── 12b. 전공을 고른 뒤에는 늘 작업공간 첫 화면이다 ─────────── */
+    /**
+     * **고르는 자리에서 실제로 골라 본다.**
+     *
+     * 위의 열두 줄은 전공을 **아직 고르지 않은** 학생을 재고, 여기서부터는
+     * 고른 학생을 잰다. 두 처지가 다른 화면을 받는 것이 맞고, 한쪽만 재면
+     * 다른 쪽이 깨진 줄 아무도 모른다. 고르는 길은 제품의 길 그대로다:
+     * 전공 목록 → 검사 시작 → 학업 단계 → 응시.
+     *
+     * **경험을 적는 자리는 전공이 정해진 뒤에만 선다**: 걸음 2가 그 전공의
+     * 기술영역을 묻기 때문이다. 그래서 아래 열세 줄도 이 자리를 지나야
+     * 뜻이 있다.
+     */
+    console.log("\n── 12b. 전공 고르기");
+    await p.goto(`${B}/cores`, { waitUntil: "networkidle" });
+    /* **기본 전공이 아닌 자리를 고른다.** 첫 카드는 `defaultCore()` 와
+       같아서, 고른 값을 들고 가지 않아도 그 자리가 열린다. 그러면 이 줄이
+       아무것도 세지 않는다. 열린 전공이 하나뿐이면 고를 것이 하나이므로
+       그때는 그 하나다 */
+    const cards = p.locator('a[href^="/v3/start"]');
+    const card = cards.nth(Math.max(0, (await cards.count()) - 1));
+    const href = await card.getAttribute("href").catch(() => null);
+    ok("전공 카드가 고른 전공을 들고 간다", /\/v3\/start\?core=[A-Z0-9_]+/.test(href ?? ""),
+      href ?? "링크 없음");
+    await Promise.all([
+      p.waitForURL(/\/v3\/start/, { timeout: 30000 }).catch(() => undefined),
+      card.click().catch(() => undefined),
+    ]);
+    /* **이름표를 누른다.** 보기의 `input` 은 숨어 있고 눌리는 자리가
+       이름표다(`v3:owner` 와 같은 까닭) */
+    await p.locator('label:has(input[name="stage"][value="bachelor"])').first()
+      .click().catch(() => undefined);
+    await Promise.all([
+      p.waitForURL(/\/v3\/\d+/, { timeout: 30000 }).catch(() => undefined),
+      p.locator('button[type="submit"]').last().click({ force: true })
+        .catch(() => undefined),
+    ]);
+    await p.waitForLoadState("networkidle").catch(() => undefined);
+    await enterAssessment(p);
+    const started = /\/v3\/\d+/.test(p.url());
+    ok("고른 전공으로 응시가 열린다", started, new URL(p.url()).pathname);
+    /* **고른 전공이 그 응시 줄에 적혔는가.** 화면이 그 전공 이름을 적는
+       것과 응시 줄이 그 Core 를 들고 있는 것은 다른 질문이다 */
+    const wantCore = (href ?? "").split("core=")[1] ?? "";
+    const row = await queryOne<{ core: string }>(
+      `SELECT core_code AS core FROM v3_attempts
+        WHERE user_id = $1 ORDER BY id DESC LIMIT 1`, [stu.id]);
+    ok("응시 줄에 고른 전공이 적힌다", !!wantCore && row?.core === wantCore,
+      `${row?.core ?? "없음"} ← ${wantCore || "없음"} · 기본 ${defaultCore()}`);
+
+    const c2 = await browser.newContext({ ...opts, viewport: { width: 1440, height: 900 } });
+    watch(c2);
+    const p2 = await login(c2, LOGIN, stu.pw);
+    ok("전공을 고른 학생은 로그인하면 작업공간 첫 화면이다",
+      new URL(p2.url()).pathname === "/me", new URL(p2.url()).pathname);
+    await c2.close();
 
     /* ── 13. 경험이 실제로 저장되는가 ────────────────────────────── */
     console.log("\n── 13. 경험 저장");

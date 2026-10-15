@@ -20,6 +20,7 @@
  *   → 묶음 다시 판정 → 비어 있는 자리 다시 계산 → 할 일 손질 → 지금 값 저장
  */
 import { query, queryOne } from "@/lib/db";
+import { opFail, ref } from "@/lib/oplog";
 import type { Axis, AxisState, Zone } from "./scoring/types";
 import { decide } from "./scoring/zones";
 import { coreOf, type ResultModel } from "./result/model";
@@ -374,7 +375,29 @@ export async function autoRecompute(userId: string): Promise<AutoOutcome> {
     await finish(ids, true);
     return { state: "done", plan: { ...plan, pending: 0 } };
   } catch (e) {
-    await finish(ids, false, e).catch(() => undefined);
+    /**
+     * **줄을 닫는 일까지 실패하면 그 사실을 남긴다.**
+     *
+     * 전에는 `.catch(() => undefined)` 였다. 닫기가 실패하면 그 줄이
+     * `running` 으로 남아 화면이 `돌고 있습니다` 로 서는데, **까닭이
+     * 어디에도 없었다.** 5분이 지나면 `claim()` 이 그 줄을 다시 집어
+     * 저절로 풀리므로 여기서 던지지는 않는다: 던지면 다시 셀 일 하나가
+     * 사람의 화면을 오류로 만들고, 굳은 결과는 어차피 바뀌지 않는다.
+     *
+     * **돌려주는 것은 전과 같이 `failed` 다.** 바뀐 것은 조용하던 자리에
+     * 줄 하나가 남는 것뿐이다(규격 §4).
+     */
+    try {
+      await finish(ids, false, e);
+    } catch (e2) {
+      opFail({
+        operation: "recompute.finish",
+        ref: ref("user", userId),
+        step: "close",
+        category: "db",
+        detail: `events=${ids.length}`,
+      }, e2);
+    }
     return { state: "failed" };
   }
 }

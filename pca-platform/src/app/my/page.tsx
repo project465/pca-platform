@@ -3,7 +3,7 @@ import { requireRole } from "@/lib/session";
 import { resolveLang } from "@/lib/locale-server";
 import { v2State } from "@/lib/me-v2/lifecycle";
 import { resumePathFor } from "@/lib/engine-entry";
-import { currentState } from "@/lib/me-v3/platform";
+import { coreIfAny, currentState } from "@/lib/me-v3/platform";
 import { BRAND, toLang2, txer } from "@/lib/surface-text";
 import { ROLE_LABEL } from "@/lib/roles";
 import { CmShell, CmHead } from "@/app/me/shell";
@@ -44,7 +44,20 @@ export default async function AccountHome({
 
   /* 지금 검사와 옛 검사를 같은 칸에 섞지 않는다. 여기서 보는 것은
      `그쪽에 결과가 있는가` 하나뿐이다 */
-  const [v3, v2] = await Promise.all([currentState(user.id), v2State(user.id)]);
+  /**
+   * **전공을 아직 고르지 않은 사람도 이 쪽은 열려야 한다**(규격 §4 · §21).
+   *
+   * `currentState()` 는 Core 를 알아야 지금 값을 읽을 수 있고, 답할 수
+   * 없으면 던진다. 그 설계는 맞지만 여기서 Core 로 읽는 것은 아래 한
+   * 줄뿐이고 **그 답은 전공을 고르지 않은 사람에게 늘 `없다`** 다. 그래서
+   * 열린 전공이 하나가 아닌 배포본에서는 학교가 나눠 준 계정으로 처음
+   * 들어온 학생이 `계정` 을 누르는 순간 500 을 받았다. 모르면 묻지 않는다.
+   */
+  const core = await coreIfAny(user.id);
+  const [v3, v2] = await Promise.all([
+    core ? currentState(user.id) : Promise.resolve(null),
+    v2State(user.id),
+  ]);
 
   return (
     <CmShell active="/my" title="계정">
@@ -113,7 +126,7 @@ export default async function AccountHome({
           <h2>{T("acOld")}</h2>
           <p>{T("acOldBody")}</p>
           <div className="cm-acts">
-            {v3.model ? (
+            {v3?.model ? (
               <Link href="/me/results" className="cm-btn is-primary">{T("acOldResults")}</Link>
             ) : null}
             <Link href="/my/assessments" className="cm-btn">{T("navAssessments")}</Link>

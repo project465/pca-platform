@@ -29,10 +29,14 @@ export async function startV3(form: FormData): Promise<void> {
   const user = await requireUser();
   const stage = String(form.get("stage") ?? "");
   const field = String(form.get("field") ?? "");
-  if (!STAGES.includes(stage as Stage)) redirect("/v3/start?e=stage");
+  /* **고른 전공을 돌려보낼 때도 들고 간다.** 빠뜨리면 학업 단계를 고르지
+     않아 돌아온 사람이 그 다음에 **기본 전공으로** 시작한다 */
+  const picked = String(form.get("core") ?? "").trim();
+  const back = picked ? `&core=${encodeURIComponent(picked)}` : "";
+  if (!STAGES.includes(stage as Stage)) redirect(`/v3/start?e=stage${back}`);
   const gradField = stage === "bachelor" ? null
     : FIELDS.includes(field as GradField) ? (field as GradField) : null;
-  if (stage !== "bachelor" && !gradField) redirect("/v3/start?e=field");
+  if (stage !== "bachelor" && !gradField) redirect(`/v3/start?e=field${back}`);
 
   /**
    * **이미 열린 응시가 있으면 폼의 답을 버리지 않고 그 응시에 적는다.**
@@ -91,10 +95,14 @@ export async function startV3(form: FormData): Promise<void> {
   const mine = entry
     ? await campusStudentOf(user.id, entry.university_code) : null;
 
+  /* **고른 전공을 그 응시에 적는다**(규격 §20). 폼이 들고 온 값이고,
+     믿는 자리는 `openAttempt()` 하나다: 그 시장에서 응시할 수 있는 Core
+     가 아니면 거기서 버리고 기본 전공으로 연다(학교 맥락이 늘 먼저다) */
   const a = await openAttempt({
     userId: user.id, tier, stage: stage as Stage, gradField,
     entitlementId: grants[0]?.entitlement_id ?? null,
     campus: mine ? mine.ctx : null,
+    core: picked || null,
   });
   /* 응시 줄에 적혔으므로 쿠키는 더 들고 있지 않는다 */
   await clearCampusEntry();
