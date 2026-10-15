@@ -99,9 +99,33 @@ const DOMAIN_OK: RegExp[] = [
  * 온다.** 손으로 적으면 문항이 하나 늘 때마다 이 목록이 뒤처지고,
  * 뒤처진 날 멀쩡한 화면이 걸린다.
  */
+/**
+ * **이 목록이 뒤처지면 멀쩡한 화면이 걸린다.** 바로 위에 적어 둔 그대로
+ * 한 번 일어났다: 학과 콘텐츠의 층 넷(근거 예시 · 흔히 남기는 것 ·
+ * 다음 걸음 · 지원서와 면접)이 결과지와 작업공간에 서게 된 날, 그 키가
+ * 여기 없어서 **그 분야의 말로 쓴 `난 자리` 와 `어긋난 자리` 가 전부
+ * 우리 쪽 비유로 세어졌다.** 그 말들은 전공자가 쓰는 평범한 한국어이고,
+ * 고치라고 요구하면 콘텐츠가 더 나빠진다.
+ *
+ * 우리 쪽 비유가 콘텐츠 안에 숨는 것은 아래 `METAPHOR` 가 **파일에 대고**
+ * 따로 센다: 걷어 내는 것과 숨는 것을 한 자리에서 막지 않는다.
+ */
 const BANK_KEYS = new Set([
   "text", "stem", "grid_row", "grid_stem", "label", "gloss", "name", "scene",
+  "artifacts", "evidence", "first", "next", "resume", "interview",
 ]);
+
+/**
+ * 우리 쪽 비유가 **콘텐츠 파일 안에** 들어 있지 않은가.
+ *
+ * 화면에서 걷어 내고 끝내면, 다음 사람이 `비어 있는 자리` 를 갈래 글에
+ * 적는 날 그 줄이 조용히 학생 화면에 선다. 그래서 띄운 쪽과 따로,
+ * 콘텐츠에 대고 한 번 더 센다.
+ */
+const METAPHOR = [
+  "비어 있는 자리", "붙일 자리", "자리가 섭니다", "자리가 선다",
+  "묶음이 달라진", "현재 상태에 반영",
+];
 
 function bankStrings(): string[] {
   const out = new Set<string>();
@@ -545,6 +569,18 @@ async function main(): Promise<void> {
 
     /* **코드만 세면 말이 지나간다**(규격 §19). 같은 쪽을 한 번 더 훑어
        우리 쪽 비유를 센다 */
+    /* 콘텐츠 파일에 우리 쪽 비유가 들어 있지 않은가 */
+    const inContent: string[] = [];
+    for (const f of readdirSync("sites/pca-platform/content")) {
+      if (!f.endsWith(".json")) continue;
+      const body = readFileSync(`sites/pca-platform/content/${f}`, "utf8");
+      for (const m of METAPHOR) {
+        if (body.includes(m)) inContent.push(`${f}: ${m}`);
+      }
+    }
+    ok("학과 콘텐츠에 우리 쪽 비유가 없다", inContent.length === 0,
+      inContent.slice(0, 3).join(" / "));
+
     const jargon: string[] = [];
     const BANK = bankStrings();
     for (const path of LOOP) {
