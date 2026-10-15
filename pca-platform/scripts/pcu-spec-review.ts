@@ -119,6 +119,17 @@ function proOnly(t: string): boolean {
 /** §3 1~2학년이 할 수 있는 일 */
 const BASIC_CUE = /관찰|조사|찾아|모은|모아|읽고|정리|적어 본|기초|따라가며|견학|둘러보|목록을 만들|견주어 본|정리해|적은 일/;
 
+/**
+ * §3 그 줄이 선 자리가 저학년도 서는 자리인가.
+ *
+ * **저학년 말씨만 세지 않는다.** `캡스톤에서 … 모아 적은 일` 은 말씨는
+ * 저학년인데 그 자리에 서는 것은 3~4학년이다. 1~2학년이 자기 자리를 찾는
+ * 것은 수업과 실습과 동아리와 봉사이고, 그 자리에 **관찰하고 모으고
+ * 정리하는 줄**이 하나는 있어야 한다.
+ */
+const JUNIOR_SITE = /수업|실습|동아리|봉사|견학|스터디|강의|세미나/;
+const SENIOR_SITE = /캡스톤|현장실습|공모전|대회|연재|학회/;
+
 /** §3 3~4학년이 하는 일 */
 const ADV_CUE = /기준을 정|직접 정|설계|검증|캡스톤|현장실습|인턴|제안|기획|한계|판정|개선|설정|계획을 세|대조|시험|보완/;
 
@@ -374,9 +385,12 @@ function main(): void {
 
       /* §3 학년 난이도 양쪽 */
       const adv = sv.evidence.filter((t) => ADV_CUE.test(t)).length;
-      const bas = sv.evidence.filter((t) => BASIC_CUE.test(t)).length;
+      const junior = sv.evidence.filter((t) => BASIC_CUE.test(t)
+        && JUNIOR_SITE.test(t) && !SENIOR_SITE.test(t)).length;
       if (!adv) mark(0, "TOO_BASIC", "기준을 정하거나 검증하는 줄이 하나도 없다");
-      if (!bas) mark(0, "TOO_ADVANCED", "1~2학년이 할 수 있는 줄이 하나도 없다");
+      if (!junior) {
+        mark(0, "TOO_ADVANCED", "1~2학년이 수업·실습·동아리에서 할 수 있는 줄이 없다");
+      }
     }
 
     /* 2 학생이 직접 정하는 기준 ─────────────────────────────────── */
