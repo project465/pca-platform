@@ -18,7 +18,7 @@
  *   UI_BASE=http://127.0.0.1:3100 npx tsx scripts/v3-ui-delta.ts
  */
 import {
-  BASE as B, cloneFinished, gateCreds, login, makeStudent,
+  BASE as B, cloneFinished, gateCreds, grantRetake, login, makeStudent,
 } from "./_loop-fixture";
 import { chromium, type Browser, type Page } from "playwright";
 import { enterAssessment } from "./_v3-walk";
@@ -228,6 +228,15 @@ async function main(): Promise<void> {
   const me = await makeStudent(WHO);
   const at = await cloneFinished(me.id, "PRO");
   if (!at) throw new Error("끝낸 응시를 베끼지 못했습니다");
+  /**
+   * **끝낸 사람은 기본적으로 다시 못 연다**(규격 §7). 이 검사는 결과지와
+   * 검사 격자를 **한 사람으로** 봐야 하므로, 담당자가 하는 일을 그대로
+   * 해 둔다: 쓰지 않은 이용권 한 줄.
+   *
+   * 막는 자리를 끄지 않는다. 끄면 그 자리가 언젠가 운영에서 켜지고,
+   * 같은 사람의 응답이 두 벌 쌓인다.
+   */
+  await grantRetake(me.id);
   const b: Browser = await chromium.launch({ args: ["--no-sandbox"] });
 
   for (const [name, w, hh] of [["데스크톱", 1440, 900], ["손전화", 390, 844]] as const) {

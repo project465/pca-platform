@@ -210,6 +210,25 @@ export async function registerCampusStudent(
      found.leaf.code, found.leaf.specialization ?? null]);
 }
 
+/**
+ * 끝낸 사람에게 **한 번 더 열어 준다**(규격 §7).
+ *
+ * 재응시는 기본으로 막혀 있다: 결과를 받은 사람이 `/v3/start` 를 다시
+ * 열면 지난 결과로 돌아간다. 담당자가 열어 주는 길은 **쓰지 않은 이용권
+ * 한 줄**이고, 검사가 끝낸 응시 뒤에 새 응시를 밟아야 하면 **담당자가
+ * 하는 그 일을 그대로** 해야 한다.
+ *
+ * **막는 자리를 끄지 않는다.** 환경값이나 분기를 두면 그 자리가 언젠가
+ * 운영에서 켜진다. 여기서 하는 것은 제품이 이미 아는 `열어 줌` 뿐이다.
+ */
+export async function grantRetake(userId: string): Promise<void> {
+  await query(
+    `INSERT INTO entitlements
+       (user_id, product_code, kind, tier, major_code, assessment_version, status)
+     VALUES ($1,'ME_V3_PRO_KR','report','PRO','ME','ME_V3_2','active')`,
+    [userId]);
+}
+
 export async function cloneFinished(
   userId: string, tier?: "BASIC" | "STANDARD" | "PRO",
 ): Promise<string | null> {
