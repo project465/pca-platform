@@ -106,7 +106,7 @@ export default async function CampusV3({
   searchParams,
 }: {
   searchParams: Promise<{
-    lang?: string; demo?: string;
+    lang?: string; demo?: string; e?: string;
     from?: string; to?: string; college?: string; department?: string;
   }>;
 }) {
@@ -194,6 +194,18 @@ export default async function CampusV3({
         sub={"지금 쓰는 검사를 친 학생의 집계입니다. "
           + `사람이 ${MIN_CELL}명이 안 되는 칸은 숫자를 내지 않습니다.`}
       />
+
+      {/* 내려받기가 거절된 자리(규격 §21). **통보로 끝내지 않고 누구에게
+          말하면 되는지 적는다**: 담당자가 고칠 수 있는 값이 아니다 */}
+      {sp.e === "scope" ? (
+        <Section>
+          <p className="sf-note is-bad" role="alert">
+            이 계정에 연결된 기관이 학교 등록부의 학교로 잡히지 않아 자료를
+            내려받지 못했습니다. 집계는 그대로 보실 수 있습니다. 계속 안 되면
+            고객지원으로 알려 주세요.
+          </p>
+        </Section>
+      ) : null}
 
       {/* ── 좁혀 보기(규격 §16) ──
           **GET 폼이다.** 주소에 조건이 적히므로 담당자가 그 주소를 그대로

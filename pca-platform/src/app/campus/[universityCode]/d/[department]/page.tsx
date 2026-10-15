@@ -42,6 +42,11 @@ export default async function CampusDepartment({ params }: Params) {
   const { leaf } = found;
   const code = u.university_code.toLowerCase();
   const ready = statusOf(u, found) === "READY";
+  /* **고르는 자리는 준비 중이 아니다**(규격 §20). 자율전공학부처럼 전공을
+     뒤에 정하는 자리는 우리가 안 만든 것이 아니라 **학생이 고르는
+     자리**다. 여기서 Core 를 자동으로 정해 주지 않는다: 자동으로 정하면
+     그 학생이 고르지 않은 전공의 자로 재어진다 */
+  const routing = Boolean(leaf.routing_only);
   const core = coreOf(leaf);
   const spec = specializationName(leaf);
   const domains = ready && leaf.core_code ? domainNames(leaf.core_code) : [];
@@ -64,7 +69,10 @@ export default async function CampusDepartment({ params }: Params) {
           {ready
             ? "이 전공이 다루는 영역마다 해 본 일과 직접 정한 것을 묻습니다."
               + " 문항마다 저장되어 창을 닫아도 보던 자리에서 이어집니다."
-            : "이 학과는 지금 응시할 수 없습니다."}
+            : routing
+              ? "전공을 고른 뒤에 그 전공으로 시작합니다. 지금 가장 관심 있는"
+                + " 전공을 고르시면 됩니다. 나중에 다시 고를 수 있습니다."
+              : "이 학과는 지금 응시할 수 없습니다."}
         </p>
         {ready ? (
           /* **주소로 전공을 바꿀 수 없다.** 폼이 보내는 것은 학교와 학과
@@ -79,8 +87,9 @@ export default async function CampusDepartment({ params }: Params) {
           </form>
         ) : (
           <div className="cm-cmp-cta-row">
-            <Link className="cm-cmp-cta" href={back}>
-              다른 학과 선택<span aria-hidden="true">→</span>
+            <Link className="cm-cmp-cta" href={routing ? `${back}&pick=1` : back}>
+              {routing ? "전공 고르기" : "다른 학과 선택"}
+              <span aria-hidden="true">→</span>
             </Link>
           </div>
         )}
@@ -100,8 +109,9 @@ export default async function CampusDepartment({ params }: Params) {
         ) : null
       ) : (
         <p className="cm-cmp-note">
-          {leaf.routing_only
-            ? "전공을 정한 뒤에 그 전공으로 시작합니다."
+          {routing
+            ? "어느 전공으로 재는지는 고르신 전공이 정합니다. 학부 이름만"
+              + " 보고 특정 전공으로 판단하지 않습니다."
             : leaf.core_code
               ? "이 학과의 문항과 산업 자료를 그 전공을 아는 분이 써야 열립니다."
               : "어느 전공 검사로 이을지 학교와 확인하고 있습니다."}

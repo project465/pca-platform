@@ -249,6 +249,40 @@ async function main(): Promise<void> {
       ok(`학생에게 ${path} 가 열리지 않는다`, !leaked, `${r.status} ${r.type}`);
     }
     await sctx.close();
+
+    /**
+     * ── 8. 담당자가 볼 수 없는 것(규격 §23) ──
+     *
+     * 담당자가 할 수 있는 일은 계정 상태와 응시 여부와 집계까지다.
+     * **학생 개별 응답과 결과지는 그 자리에 없다.** 위에서 담당자에게
+     * 열리는 것을 먼저 보았으므로, 여기서 닫히는 것을 짝으로 본다.
+     */
+    const mine = await queryOne<{ id: string }>(
+      `SELECT a.id::text FROM v3_attempts a
+        WHERE a.university_code = $1 AND a.status = 'scored'
+        ORDER BY a.submitted_at DESC NULLS LAST LIMIT 1`, [UNI]);
+    const sctx2 = await browser.newContext({
+      viewport: { width: 1280, height: 800 },
+      ...(gate ? { httpCredentials: gate } : {}),
+    });
+    const pp = await login(sctx2, who.login, who.pw);
+    ok("담당자로 다시 로그인한다", !pp.url().includes("/login"), pp.url());
+    if (mine?.id) {
+      for (const path of [`/v3/${mine.id}/result`, `/v3/${mine.id}/result/pdf`]) {
+        const r = await get(sctx2, path);
+        ok(`담당자가 학생 결과를 열 수 없다 — ${path}`,
+          r.status === 404 || r.status === 403, String(r.status));
+      }
+    } else {
+      console.log("  보고  끝낸 응시가 없어 결과 열람 금지를 세지 못했습니다");
+    }
+    /* 명단 화면에 **답한 내용이 서지 않는다.** CSV 와 같은 규칙이고,
+       가리는 자리가 둘이면 어느 날 한쪽만 고쳐진다 */
+    const list = await get(sctx2, "/org/v3/students");
+    const shown = [/\bQ\d{1,3}\b/, /\bJ[1-8]\b/, /\bZ[1-5]_/, /응답 값/]
+      .filter((re) => re.test(list.body)).map(String);
+    ok("명단 화면에 답한 내용이 없다", !shown.length, shown.join(" "));
+    await sctx2.close();
   } finally {
     await browser.close();
     /* **쓴 자료는 가운데서 터져도 지운다.** `finally` 밖에 두면 한 번

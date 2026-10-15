@@ -168,14 +168,53 @@ try {
        걸음이 **앞 걸음이 남긴 상태**를 재게 된다 */
     await ctx.clearCookies();
     await page.goto(`${BASE}/campus/${UNI}/majors`, { waitUntil: "networkidle" });
-    const offs = await rows(page);
+    /**
+     * **한 탭만 보고 끝내지 않는다.** 준비 중인 자리가 어느 단과대학에
+     * 있는지는 Core 가 열릴 때마다 달라지고, 첫 탭에 하나도 없는 날
+     * 이 검사가 **아무것도 세지 않은 채로** 지나간다.
+     */
+    const tabs = await page.$$eval(".cm-cmp-tab",
+      (xs) => xs.map((x) => x.getAttribute("href")).filter(Boolean));
+    const offs = [];
+    for (const href of tabs.length ? tabs : [`/campus/${UNI}/majors`]) {
+      await page.goto(`${BASE}${href}`, { waitUntil: "networkidle" });
+      offs.push(...(await rows(page)));
+    }
     const prep = offs.filter((o) => o.state === "준비 중");
-    ok(`${tag} 준비 중 학과 칸이 링크가 아니다 — ${prep.length}개`,
-      prep.length > 0 && prep.every((o) => o.tag !== "a" && !o.href),
-      prep.filter((o) => o.tag === "a").map((o) => o.name).join(" "));
+    /**
+     * **없는 줄을 요구하지 않는다.**
+     *
+     * 미리보기로 Core 를 전부 열어 둔 서버에서는 준비 중인 자리가 하나도
+     * 없는 것이 **맞는 상태**다. 그때 `하나 이상` 을 요구하면 멀쩡한
+     * 배포본이 걸리고, 거짓 경보를 내는 검사는 그 다음부터 아무도 안 본다.
+     *
+     * **막는 자리는 여기가 아니다.** 줄을 꺼 두는 것은 안내이고, 실제로
+     * 막는 것은 아래 ④⑤ 가 서버에 대고 세는 자리다.
+     */
+    if (prep.length) {
+      ok(`${tag} 준비 중 학과 칸이 링크가 아니다 — ${prep.length}개`,
+        prep.every((o) => o.tag !== "a" && !o.href),
+        prep.filter((o) => o.tag === "a").map((o) => o.name).join(" "));
+    } else {
+      console.log(`  보고  ${tag} 이 배포본에는 준비 중인 자리가 없습니다`);
+    }
+    /**
+     * **고르는 자리는 눌린다**(규격 §20).
+     *
+     * 자율전공처럼 전공을 뒤에 정하는 자리는 우리가 아직 안 만든 것이
+     * 아니라 **학생이 고르는 자리**다. 준비 중과 같은 말로 적고 꺼 두면
+     * 그 학부 학생이 자기 차례를 기다리는 줄 알고 닫는다.
+     */
+    const route = offs.filter((o) => o.state === "전공 선택");
+    ok(`${tag} 고르는 자리는 눌린다 — ${route.length}개`,
+      route.length > 0 && route.every((o) => o.tag === "a" && o.href),
+      route.filter((o) => o.tag !== "a").map((o) => o.name).join(" "));
     const states = new Set(offs.map((o) => o.state));
-    ok(`${tag} 화면에 서는 상태가 둘뿐이다`,
-      [...states].every((s) => s === "검사 가능" || s === "준비 중"),
+    /* **없는 상태를 새로 만들지 않는다.** 셋 밖의 말이 서면 그것은 화면이
+       스스로 지어낸 상태다 */
+    ok(`${tag} 화면에 서는 상태가 셋뿐이다`,
+      [...states].every((s) =>
+        s === "검사 가능" || s === "준비 중" || s === "전공 선택"),
       [...states].join(" "));
 
     /* ── 준비 중 학과 주소를 손으로 친다 ───────────────────── */

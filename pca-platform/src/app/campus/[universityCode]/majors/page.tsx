@@ -13,7 +13,9 @@ import { domainNames } from "../../domains";
 
 type Params = {
   params: Promise<{ universityCode: string }>;
-  searchParams: Promise<{ y?: string | string[]; c?: string | string[] }>;
+  searchParams: Promise<{
+    y?: string | string[]; c?: string | string[]; pick?: string | string[];
+  }>;
 };
 
 export async function generateMetadata({ params }: Params) {
@@ -41,7 +43,10 @@ function subOf(u: CampusUniversity, row: CampusLeaf): string | undefined {
     if (d.length) return d.slice(0, 3).join(" · ");
     return undefined;
   }
-  if (row.leaf.routing_only) return "전공을 정한 뒤 그 전공으로 시작합니다.";
+  /* **자율전공을 `준비 중` 으로 적지 않는다**(규격 §20). 그 자리는 우리가
+     아직 안 만든 것이 아니라 **학생이 전공을 고르는 자리**다. 둘을 같은
+     말로 적으면 그 학부 학생이 자기 차례를 기다리는 줄 안다 */
+  if (row.leaf.routing_only) return "관심 있는 전공을 고르면 그 전공으로 시작합니다.";
   if (row.leaf.unverified_majors) return "전공 목록을 학교와 확인하고 있습니다.";
   return undefined;
 }
@@ -50,6 +55,9 @@ function Row({ u, code, row }: {
   u: CampusUniversity; code: string; row: CampusLeaf;
 }) {
   const ready = statusOf(u, row) === "READY";
+  /* 고르는 자리. **검사를 자동으로 정해 주지 않는다**(규격 §20): 누르면
+     전공 목록으로 가고, 어느 전공으로 재는지는 학생이 고른다 */
+  const routing = Boolean(row.leaf.routing_only);
   const sub = subOf(u, row);
   const body = (
     <>
@@ -57,15 +65,16 @@ function Row({ u, code, row }: {
         <span className="cm-cmp-row-name">{row.leaf.name}</span>
         {sub ? <span className="cm-cmp-row-sub">{sub}</span> : null}
       </span>
-      <span className={`cm-cmp-chip${ready ? "" : " is-wait"}`}>
-        {ready ? "검사 가능" : "준비 중"}
+      <span className={`cm-cmp-chip${ready || routing ? "" : " is-wait"}`}>
+        {ready ? "검사 가능" : routing ? "전공 선택" : "준비 중"}
       </span>
-      {ready ? <span className="cm-cmp-arrow" aria-hidden="true">›</span> : null}
+      {ready || routing
+        ? <span className="cm-cmp-arrow" aria-hidden="true">›</span> : null}
     </>
   );
   /* **준비 중인 자리는 눌리지 않는다.** 링크로 두고 상세에서 돌려보내면
      누른 사람이 한 번 더 걸음을 쓴다 */
-  return ready ? (
+  return ready || routing ? (
     <Link className="cm-cmp-row" href={`/campus/${code}/d/${row.leaf.code}`}>
       {body}
     </Link>
@@ -102,7 +111,10 @@ export default async function CampusMajors({ params, searchParams }: Params) {
   const { universityCode } = await params;
   const u = university(universityCode);
   if (!u) notFound();
-  const { y, c } = await searchParams;
+  const { y, c, pick } = await searchParams;
+  /* 자율전공 자리에서 넘어왔는가(규격 §20). 넘어온 사람에게는 **지금 무엇을
+     하는 걸음인지**를 적는다: 목록만 다시 보여 주면 왜 돌아왔는지 모른다 */
+  const picking = Boolean(one(pick));
   const cat: CampusCatalog = await pickCatalog(u, y);
   const code = u.university_code.toLowerCase();
   const keep = one(y);
@@ -147,12 +159,18 @@ export default async function CampusMajors({ params, searchParams }: Params) {
   return (
     <CampusShell u={u} wide>
       <div className="cm-cmp-sect-h" style={{ marginTop: 4 }}>
-        <h2>현재 소속 학과를 선택해주세요</h2>
+        <h2>{picking ? "관심 있는 전공을 고르세요" : "현재 소속 학과를 선택해주세요"}</h2>
         <p>{cat.label} 기준</p>
       </div>
       <p className="cm-cmp-note" style={{ marginTop: 6 }}>
-        학과에 따라 살펴보는 경험과 영역이 달라집니다. 준비 중인 학과는
-        문항과 산업 자료를 준비하고 있어 지금 응시할 수 없습니다.
+        {picking
+          /* **학과 이름을 화면 코드에 적지 않는다.** 등록부가 이름을 들고
+             있고, 적어 두면 학교가 이름을 바꾸는 날 고칠 자리가 둘이 된다 */
+          ? "전공을 고른 뒤에 그 전공으로 시작합니다. 지금 가장 관심 있는"
+            + " 전공을 고르시면 되고, 나중에 다시 고를 수 있습니다. 고르신"
+            + " 전공이 어느 영역을 묻는지가 달라집니다."
+          : "학과에 따라 살펴보는 경험과 영역이 달라집니다. 준비 중인 학과는"
+            + " 문항과 산업 자료를 준비하고 있어 지금 응시할 수 없습니다."}
       </p>
 
       <nav className="cm-cmp-tabs" aria-label="단과대학">

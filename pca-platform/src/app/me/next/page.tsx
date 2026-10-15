@@ -300,7 +300,14 @@ export default async function Next(
             {/* **여기서 루프가 이어진다**(규격 §9). 할 일을 읽은 사람이
                 다음에 하는 일은 그것을 해 보고 경험으로 적는 것이다 */}
             <div className="cm-acts" style={{ marginTop: 12 }}>
-              <Link className="cm-btn is-primary" href="/me/experience/new">
+              {/* **그 할 일의 기술영역을 들고 간다**(규격 §10). 이 줄을
+                  읽고 누른 사람은 **그 영역의 일**을 적으러 가는 것이고,
+                  들고 가지 않으면 열두 영역에서 그 하나를 다시 찾는다.
+                  영역이 없는 할 일(정리 쪽)은 전처럼 빈 폼으로 간다 */}
+              <Link className="cm-btn is-primary"
+                href={first.td_code
+                  ? `/me/experience/new?td=${encodeURIComponent(first.td_code)}`
+                  : "/me/experience/new"}>
                 경험에 추가
               </Link>
               {/* **표에 없는 줄이면 담고 나서 바꾼다.** 번호가 없으므로

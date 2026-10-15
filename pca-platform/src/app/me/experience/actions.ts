@@ -3,7 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
-import { addExperience, removeExperience } from "@/lib/me-v3/platform";
+import {
+  addExperience, removeExperience, updateExperience,
+} from "@/lib/me-v3/platform";
 import { autoRecompute } from "@/lib/me-v3/recompute";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { opFail, ref } from "@/lib/oplog";
@@ -111,6 +113,64 @@ export async function saveExperience(form: FormData): Promise<void> {
      움직였는지**를 가려낼 수 없다 */
   revalidatePath("/me/state");
   revalidatePath("/me/next");
+  redirect(`/me/recompute?new=${id}&r=${auto.state}`);
+}
+
+/**
+ * 적어 둔 경험을 고친다(규격 §9).
+ *
+ * **저장하는 자리와 같은 폼을 읽는다.** 칸 이름이 하나라도 갈리면 고치러
+ * 들어온 사람이 **고르지 않은 값을 지운 채로** 저장한다.
+ *
+ * **저장 실패와 반영 실패를 가른다.** 앞엣사람은 고친 것을 잃었으므로
+ * 다시 눌러야 하고, 뒤엣사람은 다시 적을 일이 없다.
+ */
+export async function editExperience(form: FormData): Promise<void> {
+  const user = await requireUser();
+  const id = String(form.get("id") ?? "");
+  const title = String(form.get("title") ?? "").trim();
+  const kind = String(form.get("kind") ?? "");
+  if (!id) redirect("/me/experience");
+  if (!title || !kind) redirect(`/me/experience/${id}/edit?e=form`);
+  let ok = false;
+  try {
+    ok = await updateExperience(user.id, id, {
+      kind, title,
+      started_on: monthOf(form, "started_on"),
+      ended_on: form.get("ongoing") ? null : monthOf(form, "ended_on"),
+      td_codes: form.getAll("td").map(String),
+      axis_codes: form.getAll("axis").map(String),
+      problems: form.getAll("problem").map(String),
+      decisions: form.getAll("decision").map(String),
+      artifacts: form.getAll("artifact").map(String),
+      verifications: form.getAll("verification").map(String),
+      used_where: form.getAll("used_where").map(String),
+      note_text: String(form.get("note") ?? ""),
+    });
+  } catch (e) {
+    opFail({
+      operation: "experience.edit", ref: ref("user", user.id),
+      step: "update", category: "db",
+    }, e);
+    ok = false;
+  }
+  /* **없는 기록을 고쳤다고 적지 않는다.** `user_id` 로 걸러 한 줄도 안
+     고쳐졌으면 그것은 남의 번호이거나 지워진 기록이다 */
+  if (!ok) redirect(`/me/experience/${id}/edit?e=save`);
+  const auto = await autoRecompute(user.id).catch((e) => {
+    opFail({
+      operation: "experience.autoRecompute", ref: ref("user", user.id),
+      step: "apply", category: "db",
+    }, e);
+    return { state: "failed" as const };
+  });
+  revalidatePath("/me");
+  revalidatePath("/me/experience");
+  revalidatePath("/me/recompute");
+  revalidatePath("/me/state");
+  revalidatePath("/me/next");
+  /* 고친 뒤에도 **달라지는 것을 먼저 보여 준다**: 고친 사람이 바로 알고
+     싶은 것은 `그래서 무엇이 달라지나` 다 */
   redirect(`/me/recompute?new=${id}&r=${auto.state}`);
 }
 

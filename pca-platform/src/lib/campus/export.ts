@@ -67,7 +67,7 @@ function head(title: string, scopeKo: string, uni: string): unknown[][] {
 /**
  * 학생 응시 상태(규격 §18).
  *
- * **답한 내용은 없다.** 칸은 여섯이고 전부 담당자가 명단을 들고 확인하는
+ * **답한 내용은 없다.** 칸은 일곱이고 전부 담당자가 명단을 들고 확인하는
  * 값이다. 리마인드 대상은 같은 함수에 상태만 좁혀 부른다(규격 §17).
  */
 export async function studentStatusCsv(

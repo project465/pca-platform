@@ -60,8 +60,18 @@
  *   **`/my` 에 `로그인 방법` 이 섰다.** 소셜 로그인이 붙어서, 이 계정에
  *   들어오는 길이 지금 무엇인지 적지 않으면 구글로 가입하신 분이
  *   비밀번호 찾기를 누르고 메일을 기다린다.
+ *
+ * `V31` — **적어 둔 경험을 고칠 수 있다**(상용 완성 §9). 지우고 다시 적게
+ * 하면 그 기록의 번호가 바뀌어 쌓여 있던 다시 셀 일과 반영 기록이 사라진
+ * 기록을 가리키고, 고치는 사람은 손대지 않을 칸까지 전부 다시 고른다.
+ * 적는 자리는 **새로 적는 쪽과 한 벌**(`me/experience/compose.tsx`)이다:
+ * 두 벌로 두면 걸음이 한 번 바뀐 날 한 곳만 고쳐진다.
+ *
+ * 할 일에서 `경험에 추가` 로 가는 길이 **그 할 일의 기술영역을 들고
+ * 간다**(§10). 들고 가지 않으면 그 줄을 읽고 누른 사람이 열두 영역에서
+ * 그 하나를 다시 찾는다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V30";
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V31";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -74,8 +84,11 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V30";
  * `비어 있는 자리` 는 `부족한 부분`, `쓰인 자리` 는 `쓰인 곳` 이다. 앞의
  * 셋은 우리가 안에서 그 일을 부르던 말이고, 손님 화면에서는 그 말이
  * 무엇을 가리키는지 알 수 없다.
+ *
+ * `.20` 에서 고치는 자리의 머리글과 단추가 새로 섰다(`적어 둔 경험
+ * 고치기` · `고친 내용 저장`).
  */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.19";
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.20";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

@@ -21,7 +21,10 @@ export async function GET(req: Request): Promise<Response> {
      명단과 이 파일이 늘 같은 학교를 본다 */
   const v = await campusViewer();
   if (!v.uni) {
-    return new Response("학교 등록부에 연결된 기관이 아닙니다.", { status: 403 });
+    /* **날글자를 내려받게 하지 않는다**(규격 §21). 내려받기 링크를 누른
+       사람에게 글자 한 줄이 든 빈 쪽이 뜨면 그것이 고장으로 읽힌다.
+       보던 화면으로 돌려보내고 거기서 까닭을 적는다 */
+    return Response.redirect(new URL("/org/v3?e=scope", req.url), 303);
   }
   const url = new URL(req.url);
   const sp = Object.fromEntries(url.searchParams);

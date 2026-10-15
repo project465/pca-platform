@@ -54,7 +54,11 @@ const FILES = [
   "src/app/me/next/actions.ts",
   "src/app/me/experience/page.tsx",
   "src/app/me/experience/new/page.tsx",
-  "src/app/me/experience/new/steps.tsx",
+  /* 적는 자리는 **새로 적는 쪽과 고치는 쪽이 한 벌**이다. 목록에 적지
+     않으면 그 한 벌을 고친 날 동결이 모르는 채로 통과한다 */
+  "src/app/me/experience/compose.tsx",
+  "src/app/me/experience/steps.tsx",
+  "src/app/me/experience/[id]/edit/page.tsx",
   "src/app/me/experience/actions.ts",
   "src/app/me/recompute/page.tsx",
   "src/app/me/recompute/apply.tsx",

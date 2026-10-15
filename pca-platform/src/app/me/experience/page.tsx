@@ -146,6 +146,12 @@ export default async function Experiences() {
                         ) : null}
                       </div>
                       <div className="cm-acts">
+                        {/* **고치기가 먼저다**(규격 §9). 적어 둔 기록에서
+                            가장 자주 하는 일이 한 칸을 더 고르는 것이고,
+                            지우고 다시 적게 하면 그 사람이 손대지 않을
+                            칸까지 전부 다시 고른다 */}
+                        <Link className="cm-btn is-primary"
+                          href={`/me/experience/${e.id}/edit`}>고치기</Link>
                         {/* **지우기를 줄 머리에 두지 않는다**: 훑는 자리에서
                             가장 되돌리기 어려운 단추가 가장 먼저 눌린다 */}
                         <form action={dropExperience}>

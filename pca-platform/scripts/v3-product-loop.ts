@@ -197,6 +197,79 @@ async function main(): Promise<void> {
     ok("목록이 날짜와 기술영역과 더했는지를 적는다",
       /2025-03|2025/.test(listTxt) && /더함|더하지 않음/.test(listTxt));
 
+    /**
+     * ── 2b. 고치기(규격 §9) ──
+     *
+     * **지우고 다시 적게 하지 않는다.** 그러면 번호가 바뀌고, 그 번호를
+     * 들고 있는 줄이 사라진 기록을 가리킨다. 그래서 세는 것이 셋이다:
+     * 적어 둔 값이 되돌아오는가 · 고친 값이 저장되는가 · **번호가 그대로인가**.
+     */
+    console.log("\n── 2b. 고쳐 적는다");
+    const was = await queryOne<{
+      id: string; title: string; decisions: string[]; td_codes: string[];
+    }>(
+      `SELECT id::text, title, decisions, td_codes FROM v3_experiences
+        WHERE user_id = $1 ORDER BY created_at DESC LIMIT 1`, [a.id]);
+    ok("고칠 기록이 있다", !!was?.id, was?.id ?? "없음");
+    await p2.goto(`${B}/me/experience/${was?.id}/edit`, { waitUntil: "networkidle" });
+    const nowTitle = await p2.locator('input[name="title"]').inputValue()
+      .catch(() => "");
+    ok("적어 둔 제목이 되돌아온다", nowTitle === title, nowTitle);
+    const tdOn = await p2.locator('input[name="td"]:checked').count();
+    ok("고르셨던 기술영역이 켜진 채로 선다", tdOn > 0, `${tdOn}개`);
+    const kindOn = await p2.locator('input[name="kind"]:checked').count();
+    ok("고르셨던 종류가 켜진 채로 선다", kindOn === 1, `${kindOn}개`);
+    const newTitle = `${title} (고침)`;
+    await p2.fill('input[name="title"]', newTitle);
+    /* **한 칸만 고치고 나가는 길이 1단에 있다**(규격 §9). 고치러 들어온
+       사람에게 가장 흔한 일이고, 그 길이 없으면 제목 한 줄을 고치려고
+       세 걸음을 지나야 한다 */
+    const saveNow = p2.locator('button:has-text("고친 내용 저장")').first();
+    ok("1단에서도 고친 것을 저장할 수 있다",
+      (await saveNow.count()) > 0);
+    await saveNow.click();
+    await p2.waitForURL((u) => !u.toString().includes("/edit"), { timeout: 30000 })
+      .catch(() => undefined);
+    const now = await queryOne<{
+      id: string; title: string; n: string; decisions: string[]; td_codes: string[];
+    }>(
+      `SELECT id::text, title, decisions, td_codes,
+              (SELECT count(*)::text FROM v3_experiences WHERE user_id = $1) AS n
+         FROM v3_experiences WHERE id = $2::bigint`, [a.id, was?.id]);
+    ok("고친 제목이 저장된다", now?.title === newTitle, now?.title ?? "없음");
+    ok("기록이 늘지 않는다", Number(now?.n ?? 0) === 1, `${now?.n ?? 0}건`);
+    ok("번호가 그대로다", now?.id === was?.id, `${was?.id} → ${now?.id}`);
+    /**
+     * **손대지 않은 칸이 지워지지 않는다.**
+     *
+     * 이것이 고치기에서 가장 비싼 자리다. 되돌려 주는 값이 빠지면 폼은
+     * 멀쩡히 저장되고 **고른 적 있는 항목만 조용히 사라진다**: 고친
+     * 사람은 제목이 바뀐 것만 보고 떠난다.
+     */
+    const same = (x?: string[], y?: string[]) =>
+      JSON.stringify([...(x ?? [])].sort()) === JSON.stringify([...(y ?? [])].sort());
+    ok("손대지 않은 판단이 그대로 남는다",
+      same(was?.decisions, now?.decisions),
+      `${(was?.decisions ?? []).length}개 → ${(now?.decisions ?? []).length}개`);
+    ok("손대지 않은 기술영역이 그대로 남는다",
+      same(was?.td_codes, now?.td_codes),
+      `${(was?.td_codes ?? []).join(" ")} → ${(now?.td_codes ?? []).join(" ")}`);
+    /**
+     * **남의 기록은 열리지 않는다**(규격 §23). 막히는 것만 세면 전부 막는
+     * 코드가 통과하므로, 위에서 제 기록이 열리는 것을 먼저 보고 여기서
+     * 짝으로 본다.
+     */
+    const notMine = await queryOne<{ id: string }>(
+      `SELECT id::text FROM v3_experiences WHERE user_id <> $1
+        ORDER BY created_at DESC LIMIT 1`, [a.id]);
+    if (notMine?.id) {
+      const r = await p2.goto(`${B}/me/experience/${notMine.id}/edit`,
+        { waitUntil: "domcontentloaded" });
+      ok("남의 기록을 고치러 들어갈 수 없다", (r?.status() ?? 0) === 404,
+        String(r?.status() ?? 0));
+    }
+    await p2.goto(`${B}/me/experience`, { waitUntil: "networkidle" });
+
     /* ── 3. recompute triggered ──────────────────────────────────── */
     console.log("\n── 3. 저절로 반영된다");
     /* **누르는 단추가 없다**(규격 §1). 저장이 끝난 그 자리에서 이미
@@ -327,8 +400,14 @@ async function main(): Promise<void> {
       .filter((h) => nextTxt.includes(h));
     ok("할 일에 왜와 어느 부분과 어떤 경험으로가 붙는다", four.length >= 2,
       four.join(" / ") || "하나도 없다");
+    /* **그 할 일의 영역을 들고 가는 길도 센다**(규격 §10). 주소를 글자로
+       못 박으면 영역을 싣는 날 멀쩡한 링크가 걸린다 */
     ok("할 일에서 경험으로 돌아가는 길이 있다",
-      (await p2.locator('a[href="/me/experience/new"]').count()) > 0);
+      (await p2.locator('a[href^="/me/experience/new"]').count()) > 0);
+    const back = await p2.locator('a[href^="/me/experience/new"]').first()
+      .getAttribute("href") ?? "";
+    ok("그 할 일의 기술영역을 들고 간다",
+      back === "/me/experience/new" || /\?td=TD\d{2}/.test(back), back);
     /* 규격 §10. **한 화면에 짙은 단추 하나** */
     const prim = await p2.locator(".cm-btn.is-primary").count();
     ok("할 일 쪽에 짙은 단추가 하나다", prim <= 1, `${prim}개`);

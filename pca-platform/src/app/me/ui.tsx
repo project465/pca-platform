@@ -256,7 +256,7 @@ export function EmptyState({
  * 기록의 값이 한 줄도 바뀌지 않는다.**
  */
 export function MonthPick({
-  name, label, hint, ongoing, years = 20,
+  name, label, hint, ongoing, years = 20, value, on,
 }: {
   /** 보내는 이름. 실제로는 `<name>_y` 와 `<name>_m` 둘이 간다 */
   name: string;
@@ -265,11 +265,26 @@ export function MonthPick({
   /** `아직 진행 중` 을 함께 받을 자리인가. 끝난 달에만 둔다 */
   ongoing?: { name: string; label: string };
   years?: number;
+  /**
+   * 적어 둔 달(`2025-03` 또는 `2025-03-01`). **고치는 자리에서 쓴다.**
+   *
+   * 비워 두면 새로 적는 자리다. 적어 둔 값을 되돌려 주지 않으면 고치러
+   * 들어온 사람이 **고치지 않은 칸까지 다시 고르게** 되고, 한 칸을
+   * 빠뜨리면 전에 적은 달이 지워진다.
+   */
+  value?: string | null;
+  /** `아직 진행 중` 이 켜진 채로 선다 */
+  on?: boolean;
 }) {
   /* **범위를 못 박지 않는다.** 올해부터 거꾸로 세어, 해가 바뀌어도 그 해가
      목록에 들어온다. 손으로 적어 두면 내년 1월에 적을 수 없는 칸이 된다 */
   const now = new Date().getFullYear();
   const ys = Array.from({ length: years + 1 }, (_, i) => now - i);
+  const m = /^(\d{4})-(\d{2})/.exec(value ?? "");
+  const yNow = m ? m[1] : "";
+  /* `03` 이 아니라 `3` 으로 적는다: 보기의 값이 `1`~`12` 라 `03` 은
+     어느 보기와도 맞지 않아 **고른 달이 비어 보인다** */
+  const mNow = m ? String(Number(m[2])) : "";
   return (
     <fieldset className="cm-field is-month">
       <legend><span>{label}</span></legend>
@@ -277,14 +292,14 @@ export function MonthPick({
       <div className="cm-month">
         <label className="cm-month-c">
           <span>연도</span>
-          <select className="cm-select" name={`${name}_y`} defaultValue="">
+          <select className="cm-select" name={`${name}_y`} defaultValue={yNow}>
             <option value="">선택</option>
             {ys.map((y) => <option key={y} value={y}>{y}년</option>)}
           </select>
         </label>
         <label className="cm-month-c">
           <span>월</span>
-          <select className="cm-select" name={`${name}_m`} defaultValue="">
+          <select className="cm-select" name={`${name}_m`} defaultValue={mNow}>
             <option value="">선택</option>
             {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
               <option key={m} value={m}>{m}월</option>
@@ -298,7 +313,7 @@ export function MonthPick({
            것은 CSS 가 하므로 자바스크립트가 없는 자리에서도 값은 그대로
            비어 간다(`비어 있음` 이 곧 진행 중이다) */
         <label className="cm-pick cm-month-on">
-          <input type="checkbox" name={ongoing.name} value="yes" />
+          <input type="checkbox" name={ongoing.name} value="yes" defaultChecked={on} />
           {ongoing.label}
         </label>
       ) : null}

@@ -42,11 +42,38 @@ const STEPS = [
  * 일어나지 않는 단추**를 본다. 그래서 1단을 지나기 전에 그 칸들을 여기서
  * 먼저 본다: 지나왔으면 채워져 있으므로 마지막 저장에서 걸릴 것이 없다.
  */
+/**
+ * 적어 둔 값. **고치는 자리에서 쓴다**(규격 §9).
+ *
+ * 비워 두면 새로 적는 자리다. 되돌려 주지 않으면 고치러 들어온 사람이
+ * **고치지 않은 칸까지 다시 고르게** 되고, 한 칸을 빠뜨리면 전에 고른
+ * 항목이 지워진다.
+ */
+export type Picked = {
+  td: string[]; problems: string[]; decisions: string[];
+  artifacts: string[]; verifications: string[];
+};
+
 export default function Steps(
-  { domains, one, three }: { domains: Dom[]; one: ReactNode; three: ReactNode },
+  { domains, one, three, value, saveLabel }: {
+    domains: Dom[]; one: ReactNode; three: ReactNode; value?: Picked;
+    /**
+     * 걸음 어디서나 저장할 수 있게 한다. **고치는 자리에서만 켠다.**
+     *
+     * 고치러 들어온 사람은 칸이 전부 채워진 채로 서고, 가장 흔한 일이
+     * **한 칸만 고치고 나가는 것**이다. 그런데 저장이 마지막 걸음에만
+     * 있으면 제목 한 줄을 고치려고 세 걸음을 지나야 한다.
+     *
+     * 새로 적는 자리에서는 켜지 않는다: 1단에서 저장하면 영역도 판단도
+     * 없는 기록이 쌓이고, 그 기록은 현재 상태에 더해지지 않는다.
+     */
+    saveLabel?: string;
+  },
 ) {
   const [step, setStep] = useState(1);
-  const [on, setOn] = useState<string[]>([]);
+  /* 고쳐 적는 자리는 **적어 둔 영역이 켜진 채로** 선다. 그래야 그 영역의
+     판단과 결과물 칸이 처음부터 보인다 */
+  const [on, setOn] = useState<string[]>(value?.td ?? []);
   const firstPanel = useRef<HTMLDivElement>(null);
   const picked = domains.filter((d) => on.includes(d.code));
 
@@ -74,15 +101,28 @@ export default function Steps(
     if (typeof window !== "undefined") window.scrollTo({ top: 0 });
   }
 
+  /**
+   * 고른 적이 있는 항목.
+   *
+   * **보기 목록에 없는 값도 지키려면** 보낸 쪽이 그대로 들고 있어야
+   * 하는데, 지금 보기는 전부 그 영역의 체크리스트에서 오므로 목록 밖의
+   * 값이 생기지 않는다. 영역을 지우면 그 영역의 항목도 함께 빠지는 것이
+   * 맞다: 영역 없이 남은 판단은 어느 자리의 것인지 알 수 없다.
+   */
+  const was = (name: keyof Picked, x: string): boolean =>
+    Boolean(value && (value[name] as string[]).includes(x));
+
   const group = (
     label: string, name: string, items: string[], key: string,
+    field: keyof Picked,
   ) => items.length ? (
     <div className="cm-sub" key={key}>
       <p>{label}</p>
       <div className="cm-pickset">
         {items.map((x) => (
           <label className="cm-pick" key={x}>
-            <input type="checkbox" name={name} value={x} />{x}
+            <input type="checkbox" name={name} value={x}
+              defaultChecked={was(field, x)} />{x}
           </label>
         ))}
       </div>
@@ -129,8 +169,8 @@ export default function Steps(
           {picked.map((d) => (
             <section className="cm-subs" key={`j-${d.code}`}>
               <h4>{d.name}</h4>
-              {group("어떤 문제였나", "problem", d.problems, `${d.code}-p`)}
-              {group("무엇을 직접 정했나", "decision", d.decisions, `${d.code}-d`)}
+              {group("어떤 문제였나", "problem", d.problems, `${d.code}-p`, "problems")}
+              {group("무엇을 직접 정했나", "decision", d.decisions, `${d.code}-d`, "decisions")}
             </section>
           ))}
           {!picked.length ? (
@@ -157,8 +197,9 @@ export default function Steps(
             {picked.map((d, i) => {
               const body = (
                 <>
-                  {group("무엇이 남았나", "artifact", d.artifacts, `${d.code}-a`)}
-                  {group("무엇과 비교해 확인했나", "verification", d.verify, `${d.code}-v`)}
+                  {group("무엇이 남았나", "artifact", d.artifacts, `${d.code}-a`, "artifacts")}
+                  {group("무엇과 비교해 확인했나", "verification", d.verify, `${d.code}-v`,
+                    "verifications")}
                 </>
               );
               return i === 0 ? (
@@ -215,8 +256,11 @@ export default function Steps(
         )}
         {/* 2단에서도 저장할 수 있게 둔다. **3단은 전부 선택 칸이라**
             거기까지 가야 저장되는 구조면 비워 둘 사람이 한 걸음을 헛돈다 */}
-        {step === 2 ? (
+        {step === 2 && !saveLabel ? (
           <button key="save2" className="cm-btn" type="submit">여기까지 저장</button>
+        ) : null}
+        {saveLabel && step < 3 ? (
+          <button key="saveNow" className="cm-btn" type="submit">{saveLabel}</button>
         ) : null}
       </div>
     </>

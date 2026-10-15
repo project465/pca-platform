@@ -48,12 +48,21 @@
  * 하나씩 붙인 것이다(둘째와 셋째와 넷째가 갈리지 않는다는 지적).
  *
  * **문항 은행과 보기와 저장되는 값과 판정은 한 글자도 바뀌지 않았다.**
+ *
+ * V27 — **제출 전에 빠뜨린 문항을 적는다**(상용 완성 §6). 마지막 화면에서
+ * 미응답 문항을 줄로 세우고 누르면 그 자리로 간다. **세는 것은 응답이 빈
+ * 자리뿐이고 scoring 을 바꾸지 않는다**: 같은 응답이면 같은 판정이다.
+ *
+ * 끝낸 응시로 다시 들어온 사람에게 **재응시 정책을 적는다**(§7). 담당자가
+ * 이용권으로 열어 주기 전에는 응시가 하나 더 열리지 않는다: 같은 사람의
+ * 응답이 두 벌 쌓이면 학과 집계가 그만큼 틀어진다.
  */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V26";
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V27";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
 /* copy.15 — 받침 한 줄과 보기 넷의 예시가 화면에 서는 글자다 */
-export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.15";
+/* copy.16 — 제출 전 검토 목록과 재응시 안내가 새로 서는 글자다 */
+export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.16";
 
 /*
  * `V19` · `copy.14` 로 올린 까닭. **경험 빈도의 화면 말을 공통으로

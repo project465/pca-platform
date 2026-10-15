@@ -341,6 +341,66 @@ export async function addExperience(userId: string, e: {
   return row?.id ?? "";
 }
 
+/**
+ * 적어 둔 경험 하나(규격 §9).
+ *
+ * **남의 기록을 열지 않는다.** 번호를 주소에 넣어도 `user_id` 로 거른다.
+ */
+export async function experienceOf(
+  userId: string, id: string,
+): Promise<Experience | null> {
+  return queryOne<Experience>(
+    `SELECT id::text, kind, title, started_on::text, ended_on::text,
+            td_codes, axis_codes, problems, decisions, artifacts, verifications,
+            used_where, note_text, status, created_at::text
+       FROM v3_experiences
+      WHERE id = $1::bigint AND user_id = $2`, [id, userId]);
+}
+
+/**
+ * 적어 둔 경험을 고친다(규격 §9).
+ *
+ * **지우고 다시 넣지 않는다.** 그러면 번호가 바뀌고, 그 번호를 들고
+ * 있는 줄(`career_events` 의 다시 계산할 일 · 반영 기록)이 전부 사라진
+ * 기록을 가리킨다. 한 줄을 그 자리에서 고친다.
+ *
+ * **고친 것도 다시 셀 일로 쌓는다.** 영역이나 고른 항목이 바뀌면 지금
+ * 상태가 달라질 수 있고, 그 계산을 여기서 바로 돌리면 저장이 느려지고
+ * 계산이 깨진 날 고치는 것까지 막힌다.
+ *
+ * **검사 당시 결과는 한 글자도 바뀌지 않는다**: 굳은 결과는
+ * `v3_snapshots` 에 있고 이 표를 읽지 않는다.
+ */
+export async function updateExperience(userId: string, id: string, e: {
+  kind: string; title: string; started_on?: string | null; ended_on?: string | null;
+  td_codes?: string[]; axis_codes?: string[];
+  problems?: string[]; decisions?: string[]; artifacts?: string[];
+  verifications?: string[]; used_where?: string[];
+  note_text?: string | null;
+}): Promise<boolean> {
+  const note = (e.note_text ?? "").trim() || null;
+  const row = await queryOne<{ id: string }>(
+    `UPDATE v3_experiences
+        SET kind = $3, title = $4, started_on = $5, ended_on = $6,
+            td_codes = $7, axis_codes = $8, problems = $9, decisions = $10,
+            artifacts = $11, verifications = $12, used_where = $13,
+            note_text = $14::text,
+            /* **기한은 글이 있는 동안만 선다.** 지웠다가 다시 적으면 그
+               날부터 1년이고, 비우면 지울 글이 없으므로 기한도 없앤다 */
+            purge_after = CASE WHEN $14::text IS NULL
+                               THEN NULL ELSE current_date + 365 END
+      WHERE id = $1::bigint AND user_id = $2
+      RETURNING id::text`,
+    [id, userId, e.kind, e.title.slice(0, 120),
+     asDate(e.started_on), asDate(e.ended_on),
+     e.td_codes ?? [], e.axis_codes ?? [],
+     e.problems ?? [], e.decisions ?? [], e.artifacts ?? [], e.verifications ?? [],
+     e.used_where ?? [], note]);
+  if (!row) return false;
+  await enqueue(userId, "evidence.edited", { experience_id: id });
+  return true;
+}
+
 export async function removeExperience(userId: string, id: string): Promise<void> {
   await query(`DELETE FROM v3_experiences WHERE id=$1 AND user_id=$2`, [id, userId]);
   await enqueue(userId, "evidence.edited", { experience_id: id });
