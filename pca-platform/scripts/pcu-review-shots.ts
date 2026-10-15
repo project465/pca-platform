@@ -43,7 +43,19 @@ const ok = (w: string, c: boolean, saw = "") => {
 };
 
 /** 자리 하나. `look` 은 사람이 그 그림에서 볼 것이다 */
-type Spot = { id: string; what: string; url: string; look: string; guest: boolean };
+type Spot = {
+  id: string; what: string; url: string; look: string; guest: boolean;
+  /**
+   * 로그인하지 않은 사람으로 찍는가.
+   *
+   * **학교 전용 로그인은 들어온 사람에게 서지 않는다**: 그 학교의 학생이
+   * 들어와 있으면 그 쪽이 학과 확인 자리로 돌려보내므로, 로그인한
+   * 묶음으로 찍으면 **S04 와 S05 가 같은 그림**이 된다(처음에 그렇게
+   * 찍혔고 같은 그림을 세는 줄이 그것을 잡았다). 학생이 실제로 그 쪽을
+   * 보는 때가 로그인 전이라, 찍는 자리도 거기다.
+   */
+  anon?: boolean;
+};
 
 const CODE = /\bTD\d\d\b|\b[A-Z]{2,6}_CORE_V\d\b|\bSPEC_[A-Z_]+\b|\bPCU2[67]_[A-Z_]+\b|\bZ[1-4]_[A-Z_]+\b/;
 
@@ -235,13 +247,13 @@ async function main(): Promise<void> {
 
     const code = UNI.toLowerCase();
     const S: Spot[] = [
-      { id: "S01", what: "학교 포털 첫 화면", url: `/campus/${code}`,
+      { anon: true, id: "S01", what: "학교 포털 첫 화면", url: `/campus/${code}`,
         look: "학교 이름과 다음 한 걸음. 개발 진행 숫자가 서지 않는다", guest: true },
-      { id: "S02", what: "학과 고르기", url: `/campus/${code}/majors`,
+      { anon: true, id: "S02", what: "학과 고르기", url: `/campus/${code}/majors`,
         look: "단과대학 Tabs 와 학과 줄. 같은 본문이 되풀이되지 않는다", guest: true },
-      { id: "S03", what: "학과 상세", url: `/campus/${code}/d/${seat.leaf.code}`,
+      { anon: true, id: "S03", what: "학과 상세", url: `/campus/${code}/d/${seat.leaf.code}`,
         look: "그 전공이 다루는 영역과 시작 단추 하나", guest: true },
-      { id: "S04", what: "학교 전용 로그인", url: `/campus/${code}/login`,
+      { anon: true, id: "S04", what: "학교 전용 로그인", url: `/campus/${code}/login`,
         look: "회원가입과 소셜 단추가 없다. 아이디가 학번이라고 적는다", guest: true },
       { id: "S05", what: "학과 확인과 시작", url: `/campus/${code}/start`,
         look: "학과를 다시 고르게 하지 않는다. 등급을 적지 않는다", guest: true },
@@ -287,10 +299,15 @@ async function main(): Promise<void> {
     for (const [w, ww, hh] of WIDTHS) {
       const dir = `${OUT}/${w}`;
       mkdirSync(dir, { recursive: true });
+      /* 아직 들어오지 않은 사람 — 포털과 학과와 학교 로그인 */
+      const c0 = await browser.newContext({ viewport: { width: ww, height: hh }, ...opts });
+      const p0 = await c0.newPage();
+      for (const s of S.filter((x) => x.anon)) await shoot(c0, p0, s, w, OUT, seen);
+      await c0.close();
       /* 학생 — 발급 계정 */
       const c1 = await browser.newContext({ viewport: { width: ww, height: hh }, ...opts });
       const p1 = await login(c1, sid, st.password);
-      for (const s of S) await shoot(c1, p1, s, w, OUT, seen);
+      for (const s of S.filter((x) => !x.anon)) await shoot(c1, p1, s, w, OUT, seen);
       await c1.close();
       /* 자율전공 학생 */
       const c2 = await browser.newContext({ viewport: { width: ww, height: hh }, ...opts });
