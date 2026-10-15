@@ -52,6 +52,10 @@ const FILES = [
   "src/app/v3/[attemptId]/result/charts.tsx",
   "src/lib/me-v3/result/chart-data.ts",
   "src/lib/me-v3/runtime/domain-facts.ts",
+  /* 영역마다의 작성 차례. **학생이 읽는 글인데 이 목록에 없었다**: 사람이
+     짚어 세 자리를 고칠 때까지 고쳐도 아무 기록이 흔들리지 않았다
+     (PCU HUMAN REVIEW FINAL CORRECTION §4) */
+  "src/lib/me-v3/result/chains.ts",
 ];
 
 /** 동결 조건과 그것을 지키는 검사 */

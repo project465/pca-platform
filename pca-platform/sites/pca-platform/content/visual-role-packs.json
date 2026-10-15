@@ -214,7 +214,7 @@
   {
    "code": "ROLE_REVIEW_V1",
    "version": 1,
-   "name_ko": "판정·검수",
+   "name_ko": "디자인 검수·품질관리",
    "name_en": "Review and Approval",
    "core": "VISUAL_CORE_V1",
    "markets": [

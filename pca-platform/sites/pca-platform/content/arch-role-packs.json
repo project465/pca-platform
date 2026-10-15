@@ -117,7 +117,7 @@
   {
    "code": "ROLE_REVIEW_V1",
    "version": 1,
-   "name_ko": "조사·검토",
+   "name_ko": "법규·인허가 검토",
    "name_en": "Survey and Feasibility Review",
    "core": "ARCH_CORE_V1",
    "markets": [
@@ -505,7 +505,7 @@
   {
    "code": "ROLE_OPS_V1",
    "version": 1,
-   "name_ko": "운영·조정",
+   "name_ko": "설계지원·프로젝트 조정",
    "name_en": "Coordination and Scheduling",
    "core": "ARCH_CORE_V1",
    "markets": [

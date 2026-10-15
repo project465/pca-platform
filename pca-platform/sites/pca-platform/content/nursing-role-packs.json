@@ -20,7 +20,7 @@
   {
    "code": "ROLE_PLAN_V1",
    "version": 1,
-   "name_ko": "간호 계획 설계",
+   "name_ko": "간호계획 수립",
    "name_en": "Nursing Care Planning",
    "core": "NURSING_CORE_V1",
    "markets": [

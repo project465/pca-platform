@@ -52,8 +52,45 @@ const ITEMS = [
   "지원서 활용", "면접 질문", "Industry", "Role",
 ] as const;
 
-/** 판정 다섯 줄(§18). 차례가 규격의 차례다 */
-const YES = ["Reality", "Evidence", "Action", "Job application", "Interview"] as const;
+/**
+ * 판정 여덟 줄(Reality Audit). 차례가 규격의 차례다.
+ *
+ * 다섯이던 것을 여덟로 늘렸다. 늘어난 셋은 **저학년 자리**와 **고학년
+ * 자리**와 **Gap 과 Action 이 같은 축인가**이고, 셋 다 전에도 항목 판정
+ * 안에서 세고 있었는데 줄로 내놓지 않아 **사람이 읽는 표에서 보이지
+ * 않았다.**
+ */
+const YES = [
+  "Reality", "Low grade", "Senior grade", "Own criteria",
+  "Evidence", "Gap<->Action", "Job application", "Interview",
+] as const;
+
+/**
+ * §6 Reverse Audit 다섯 갈래. **판정을 새로 만들지 않는다**: 여기서 세는
+ * 것은 아홉 항목이 이미 본 자리를 **갈래로 묶어 세는 줄**이다.
+ *
+ *   A  Core 문장 잔존        같은 Core 의 다른 갈래와 긴 글이 글자까지 같다
+ *   B  다른 전공 문맥 유입    남의 Core 의 영역 이름이 그 글에 섞였다
+ *   C  학부생 권한 초과      의료 진단·처방 · 독립 상담 판단 · 법적 최종 판단 · 조직 전체 의사결정
+ *   D  특정 세부직무로 좁힘   그 Core 의 영역 이름이 한 가지 이하만 나타난다
+ *   E  Gap 과 Action 불일치  할 일이 강조 영역의 견줄 것·남길 것과 한 낱말도 겹치지 않는다
+ */
+const REV = [
+  "A Core 문장 잔존", "B 다른 전공 문맥 유입", "C 학부생 권한 초과",
+  "D 특정 세부직무로 좁힘", "E Gap 과 Action 불일치",
+] as const;
+
+/**
+ * C 가 세는 말. **그 전공의 표준 용어는 세지 않는다**: `간호 진단` 과
+ * `투약` 은 간호학이 쓰는 말이고 `토양 처방` 은 농학이 쓰는 말이라, 세면
+ * 맞는 용어를 지우라고 요구하게 된다.
+ */
+const OVERREACH: [string, RegExp][] = [
+  ["의료 진단·처방", /의학적|병명|복용|처방전|운동 처방|처방표|복귀 판정서|치료 계획/],
+  ["독립 상담 판단", /내담자|상담 진단|독립 상담/],
+  ["법적 최종 판단", /유권해석|최종 판단|판결|처분 결정/],
+  ["조직 전체 의사결정", /전사 |전 조직|경영진|부서 전체|조직 전체/],
+];
 
 const RANK: Record<Verdict, number> = {
   PASS: 0, WEAK: 1, GENERIC: 2, TOO_BASIC: 3, TOO_ADVANCED: 4, UNREALISTIC: 5,
@@ -198,8 +235,10 @@ type Row = {
   core: string; coreName: string; spec: string; name: string;
   sv: SpecView;
   v: Verdict[]; why: string[][];
-  /** §18 다섯 줄 */
+  /** Reality Audit 여덟 줄 */
   yes: boolean[];
+  /** §6 Reverse Audit 다섯 갈래 */
+  rev: boolean[];
 };
 
 type DomainRow = {
@@ -214,6 +253,30 @@ function domainsOf(core: string): DomainRow[] {
   catch { rows = []; }
   domainCache.set(core, rows);
   return rows;
+}
+
+/**
+ * 남의 Core 의 영역 이름. **제 Core 의 이름 안에 든 짧은 이름은 세지
+ * 않는다**: 교육의 `수업 운영` 은 어문의 `수업 운영·평가` 안에 그대로 들어
+ * 있어, 글자로 찾으면 멀쩡한 글이 걸린다(`pcu:coverage` 에서 겪은 자리다).
+ * 두 글자짜리 이름도 세지 않는다.
+ */
+const otherCache = new Map<string, string[]>();
+function otherNames(core: string): string[] {
+  if (otherCache.has(core)) return otherCache.get(core)!;
+  const mine = domainsOf(core).map((d) => d.name).filter(Boolean);
+  const out: string[] = [];
+  for (const c of registry().cores) {
+    if (c.code === core) continue;
+    for (const d of domainsOf(c.code)) {
+      const n = d.name;
+      if (!n || n.length < 3) continue;
+      if (mine.some((m) => m.includes(n))) continue;
+      if (!out.includes(n)) out.push(n);
+    }
+  }
+  otherCache.set(core, out);
+  return out;
 }
 
 const packCache = new Map<string, Set<string>>();
@@ -250,6 +313,7 @@ function blank(core: string, coreName: string, spec: string, name: string, sv: S
     v: ITEMS.map(() => "PASS" as Verdict),
     why: ITEMS.map(() => [] as string[]),
     yes: YES.map(() => true),
+    rev: REV.map(() => false),
   };
 }
 
@@ -354,6 +418,21 @@ function main(): void {
 
   const missing: { set: string; what: string }[] = [];
   const broken: string[] = [];
+
+  /**
+   * A 가 보는 표. **같은 Core 안에서** 긴 글이 몇 번 나오는지 센다. Core 를
+   * 열쇠에 넣는 까닭은, 서로 다른 Core 의 갈래가 같은 문장을 쓰는 것과 한
+   * Core 안의 갈래가 제 내용을 받지 못한 것은 다른 일이기 때문이다.
+   */
+  const sameCore = new Map<string, number>();
+  for (const r of rows) {
+    for (const t of [...r.sv.evidence, r.sv.evidenceFirst, r.sv.evidenceNext,
+      r.sv.application.resume, ...r.sv.application.interview]) {
+      if (t.length < 12) continue;
+      const key = `${r.core}\u0000${t}`;
+      sameCore.set(key, (sameCore.get(key) ?? 0) + 1);
+    }
+  }
 
   for (const r of rows) {
     const sv = r.sv, k = keyOf(r);
@@ -547,13 +626,47 @@ function main(): void {
       for (const w of has(all, HYPE)) mark(i, "GENERIC", `과장한 말 ${w}`);
     }
 
-    /* §18 다섯 줄 */
+    /* ── §6 Reverse Audit A~E ── */
+    const longText = [...sv.evidence, sv.evidenceFirst, sv.evidenceNext,
+      sv.application.resume, ...sv.application.interview].filter((x) => x.length >= 12);
+    /* A 같은 Core 의 다른 갈래와 글자까지 같은 긴 글 */
+    r.rev[0] = longText.some((t) => (sameCore.get(`${r.core}\u0000${t}`) ?? 0) > 1);
+    /* B 남의 Core 의 영역 이름. **제 Core 이름 안에 든 짧은 이름은 세지 않는다** */
+    r.rev[1] = otherNames(r.core).some((n) => all.includes(n));
+    /* C 학부생 권한 초과 */
+    r.rev[2] = OVERREACH.some(([, re]) => re.test(all));
+    /**
+     * D 한 세부직무로 좁았는가. **영역 이름을 세지 않는다**: 이름은 그
+     * 갈래가 쓰는 말이 아니라 사전의 머리말이라, 세면 수출 절차처럼 제
+     * 말을 쓰는 갈래가 걸린다. 세는 것은 **그 전공 낱말 하나가 근거 여섯
+     * 줄 가운데 다섯 줄 이상에 나오는가**다(실용음악이 녹음·믹싱으로,
+     * 글로벌IT 가 배포로 좁았던 자리가 이 모양이었다).
+     */
+    const evLines = sv.evidence.filter(Boolean);
+    const seen = new Map<string, number>();
+    for (const t of evLines) {
+      for (const w of new Set(words(t))) {
+        if (rare(w)) seen.set(w, (seen.get(w) ?? 0) + 1);
+      }
+    }
+    const top = [...seen.values()].reduce((a, b) => Math.max(a, b), 0);
+    r.rev[3] = evLines.length >= 5 && top >= evLines.length - 1;
+    /* E 할 일이 강조 영역의 재료와 한 낱말도 겹치지 않는가 */
+    const mat = new Set(lead.flatMap((d) =>
+      words(`${(d.verify_targets ?? []).join(" ")} ${(d.artifacts ?? []).join(" ")}`)));
+    r.rev[4] = mat.size > 0
+      && !words(`${sv.evidenceFirst} ${sv.evidenceNext}`).some((w) => mat.has(w));
+
+    /* Reality Audit 여덟 줄 */
     r.yes[0] = r.v[0] !== "UNREALISTIC" && r.v[2] !== "UNREALISTIC" && r.v[4] !== "UNREALISTIC"
-      && r.v[0] !== "TOO_ADVANCED";
-    r.yes[1] = r.v[2] === "PASS";
-    r.yes[2] = r.v[4] === "PASS";
-    r.yes[3] = r.v[5] === "PASS";
-    r.yes[4] = r.v[6] === "PASS";
+      && r.v[0] !== "TOO_ADVANCED" && !r.rev[2];
+    r.yes[1] = r.v[0] !== "TOO_ADVANCED";
+    r.yes[2] = r.v[0] !== "TOO_BASIC";
+    r.yes[3] = r.v[1] === "PASS";
+    r.yes[4] = r.v[2] === "PASS";
+    r.yes[5] = r.v[3] === "PASS" && r.v[4] === "PASS" && !r.rev[4];
+    r.yes[6] = r.v[5] === "PASS";
+    r.yes[7] = r.v[6] === "PASS";
   }
 
   /* ── 내보내기 ── */
@@ -584,7 +697,14 @@ function main(): void {
   for (const c of counts) for (const x of kinds) total[x] += c[x];
   console.log(`  ${"합계".padEnd(18)}` + kinds.map((x) => String(total[x]).padStart(13)).join(""));
 
-  console.log("\n[§18 다섯 줄]");
+  console.log(`\n[§6 Reverse Audit] 63세트 전수`);
+  REV.forEach((name, i) => {
+    const hit = rows.filter((r) => r.rev[i]);
+    console.log(`  ${name.padEnd(24)} ${hit.length} / ${rows.length}`
+      + (hit.length ? `   ← ${hit.map((r) => r.spec || r.core).slice(0, 6).join(" · ")}` : ""));
+  });
+
+  console.log("\n[§7 Reality Audit 여덟 줄]");
   YES.forEach((name, i) => {
     const y = rows.filter((r) => r.yes[i]).length;
     console.log(`  ${name.padEnd(18)} ${y} / ${rows.length}${y === rows.length ? "" : "   ← NO " + rows.filter((r) => !r.yes[i]).length}`);
