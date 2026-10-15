@@ -30,13 +30,14 @@
  *   UI_BASE=http://127.0.0.1:3100 npx tsx scripts/v3-product-loop.ts
  */
 import { randomBytes, createHash } from "node:crypto";
-import { readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 
 import {
   BASE as B, cloneFinished, fillExperience, gateCreds, login, makeStudent,
 } from "./_loop-fixture";
 import { chromium, type Browser } from "playwright";
 import { query, queryOne } from "../src/lib/db";
+import { CHAIN_KO } from "../src/lib/me-v3/result/chains";
 
 /** 둘을 띄운다. 격리는 **짝으로만** 셀 수 있다: 전부 막는 코드가 한쪽만
  *  보는 검사를 통과하면서 산 사람도 못 보게 한다 */
@@ -113,6 +114,13 @@ const DOMAIN_OK: RegExp[] = [
 const BANK_KEYS = new Set([
   "text", "stem", "grid_row", "grid_stem", "label", "gloss", "name", "scene",
   "artifacts", "evidence", "first", "next", "resume", "interview",
+  /* 두 번째로 뒤처졌다. 역할기능 한 줄(`one_line`)과 역할팩이 가진 권한
+     (`owns`)과 영역 업무 흐름 단계(`detail`)와 산업팩 요구(`demands`)가
+     결과지와 탐색에 서게 된 뒤, 그 분야의 평범한 말이 전부 우리 쪽
+     비유로 세어졌다: 식품의 `팔 자리와 가격대`(판매처) · 법·경찰의
+     `규정이 아직 정해지지 않은 자리` · 역할기능 R5 의 `그 자리에서 일이
+     돌아가게 한다`(그 직책). 셋 다 고치라고 요구하면 콘텐츠가 더 나빠진다 */
+  "one_line", "owns", "detail", "demands",
 ]);
 
 /**
@@ -127,20 +135,53 @@ const METAPHOR = [
   "묶음이 달라진", "현재 상태에 반영",
 ];
 
+/**
+ * 세지 않는 **옛 판본 자료**.
+ *
+ * 이 두 벌은 지금 파는 ME_V3 의 학과 콘텐츠가 아니고 **ME_V2 결과지와 그
+ * 번역 사전**이다. 거기 든 `비어 있는 자리` 는 그 판본의 결과지에 그대로
+ * 나간 글이라, 고치면 **그 판본으로 응시한 사람의 결과지가 달라진다**
+ * (설계 원칙 4). `report-i18n.json` 은 더 좁은 까닭이 하나 더 있다:
+ * **열쇠가 한국어 원문 자체라** 한 글자를 고치면 그 줄의 영어 짝이 그
+ * 자리에서 끊긴다.
+ *
+ * 이 검사가 막으려는 것은 **다음 사람이 갈래 글에 우리 비유를 적는 일**
+ * 이고, 옛 판본 결과지는 그 자리가 아니다.
+ */
+const OLD_BANK = ["me-value-paths.json", "report-i18n.json"];
+
 function bankStrings(): string[] {
   const out = new Set<string>();
   const walk = (o: unknown): void => {
     if (Array.isArray(o)) { o.forEach(walk); return; }
     if (!o || typeof o !== "object") return;
     for (const [k, v] of Object.entries(o as Record<string, unknown>)) {
-      if (BANK_KEYS.has(k) && typeof v === "string" && v.length > 1) out.add(v);
-      else walk(v);
+      if (!BANK_KEYS.has(k)) { walk(v); continue; }
+      /* 산업팩의 요구(`demands`)처럼 **낱말이 아닌 문장이 배열로** 오는
+         자리가 있다. 배열이면 그 안의 글을 그대로 걷어 낸다 */
+      if (typeof v === "string" && v.length > 1) out.add(v);
+      else if (Array.isArray(v)) {
+        for (const x of v) {
+          if (typeof x === "string" && x.length > 1) out.add(x);
+          else walk(x);
+        }
+      } else walk(v);
     }
   };
   for (const f of readdirSync("sites/pca-platform/content")) {
     if (!f.endsWith(".json")) continue;
     try { walk(JSON.parse(readFileSync(`sites/pca-platform/content/${f}`, "utf8"))); }
     catch { /* 자료가 아닌 파일은 지나간다 */ }
+  }
+  /* **영역 사례를 적는 차례도 그 Core 의 전공 말이다.** 식품의 첫 칸이
+     `팔 자리와 가격대와 쓸 수 있는 원료`(판매처)인데 그 글은 `content/`
+     밖(`result/chains.ts`)에 있어 위 묶음에 들지 않았다. 손으로 적지
+     않고 그 표에서 그대로 읽어 온다: 손으로 적으면 Core 가 하나 늘 때마다
+     이 목록이 뒤처지고, 뒤처진 날 멀쩡한 화면이 걸린다 */
+  for (const byCore of Object.values(CHAIN_KO)) {
+    for (const steps of Object.values(byCore)) {
+      for (const x of steps) if (x.length > 1) out.add(x);
+    }
   }
   /* 긴 것부터 걷어 내야 짧은 것이 긴 것을 조각내지 않는다 */
   return [...out].sort((a, b) => b.length - a.length);
@@ -571,15 +612,37 @@ async function main(): Promise<void> {
        우리 쪽 비유를 센다 */
     /* 콘텐츠 파일에 우리 쪽 비유가 들어 있지 않은가 */
     const inContent: string[] = [];
+    const gone = OLD_BANK.filter(
+      (f) => !existsSync(`sites/pca-platform/content/${f}`));
+    /* **걷어 낸 자리는 여기서 받는다.** 영역 사례 차례를 위 `bankStrings`
+       가 걷어 내므로, 거기 우리 비유를 적으면 띄운 쪽에서는 안 걸린다.
+       그 표도 콘텐츠로 보고 센다 */
+    for (const [core, byCore] of Object.entries(CHAIN_KO)) {
+      for (const steps of Object.values(byCore)) {
+        for (const x of steps) {
+          for (const m of METAPHOR) {
+            if (x.includes(m)) inContent.push(`chains.ts ${core}: ${m}`);
+          }
+        }
+      }
+    }
     for (const f of readdirSync("sites/pca-platform/content")) {
-      if (!f.endsWith(".json")) continue;
+      if (!f.endsWith(".json") || OLD_BANK.includes(f)) continue;
       const body = readFileSync(`sites/pca-platform/content/${f}`, "utf8");
       for (const m of METAPHOR) {
         if (body.includes(m)) inContent.push(`${f}: ${m}`);
       }
     }
     ok("학과 콘텐츠에 우리 쪽 비유가 없다", inContent.length === 0,
-      inContent.slice(0, 3).join(" / "));
+      inContent.slice(0, 3).join(" / ")
+      || `파일 ${readdirSync("sites/pca-platform/content")
+        .filter((f) => f.endsWith(".json") && !OLD_BANK.includes(f)).length}벌`
+      + ` · 사례 차례 ${Object.keys(CHAIN_KO).length}벌`);
+    /* **빼 두는 목록이 뒤처지면 그 자리가 조용히 안 세어진다.** 이름이
+       바뀐 파일을 계속 빼고 있으면, 같은 글이 든 새 파일이 아무 검사도
+       받지 않는다 */
+    ok("빼 두는 옛 판본 자료가 그 이름으로 있다", gone.length === 0,
+      gone.join(" / ") || `옛 판본 ${OLD_BANK.length}벌`);
 
     const jargon: string[] = [];
     const BANK = bankStrings();
