@@ -28,6 +28,7 @@ import { chromium } from "playwright";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { query, queryOne } from "../src/lib/db";
+import { clearCampusCohort, seedCampusCohort } from "./_campus-fixture";
 import { hashPassword } from "../src/lib/password";
 import { addStudentAccount } from "../src/lib/campus/manage";
 import { campusStudentOf } from "../src/lib/campus/students";
@@ -116,6 +117,15 @@ async function main(): Promise<void> {
   if (!org) throw new Error(`${UNI} 기관 줄이 없습니다 (npm run pcu:org)`);
 
   const boss = await auditActor();
+  /**
+   * **학교에 사람이 다섯은 있어야 학과 줄을 볼 수 있다**(§31).
+   *
+   * 집계는 학교 전체가 다섯에 못 미치면 아래 칸을 아예 만들지 않는다
+   * (`too_few`). 그 상태로 `자율전공학부 줄이 선다` 를 재면 **가리는
+   * 규칙이 맞게 돈 것을 집계의 잘못으로 적는다.** 그래서 작은 묶음을
+   * 세우고 끝에서 치운다.
+   */
+  const cohort = await seedCampusCohort(UNI, "route");
   const sid = `zzroute${Date.now()}`;
   const made: string[] = [];
   const browser = await chromium.launch({ args: ["--no-sandbox"] });
@@ -237,6 +247,7 @@ async function main(): Promise<void> {
     await ctx.close();
   } finally {
     await browser.close();
+    await clearCampusCohort(cohort.logins);
     for (const id of made) {
       await query(`DELETE FROM v3_responses WHERE attempt_id IN
         (SELECT id FROM v3_attempts WHERE user_id = $1::bigint)`, [id]);
