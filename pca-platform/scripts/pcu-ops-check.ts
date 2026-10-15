@@ -115,7 +115,10 @@ async function main(): Promise<void> {
    */
   const seen = new Map((await query<{ d: string; n: string }>(
     `SELECT department_code d, count(DISTINCT user_id)::text n FROM v3_attempts
-      WHERE university_code = $1 AND department_code IS NOT NULL GROUP BY 1`,
+      WHERE university_code = $1 AND department_code IS NOT NULL
+        AND NOT EXISTS (SELECT 1 FROM users du
+                         WHERE du.id = user_id AND du.is_demo)
+      GROUP BY 1`,
     [UNI])).map((r) => [r.d, Number(r.n)]));
   const A = rows[0];
   const B = rows.find((r) => r.college.code !== A.college.code
@@ -168,6 +171,12 @@ async function main(): Promise<void> {
       for (let i = 0; i < n; i += 1) {
         const st = await makeStudent(`pcu-ops-${tag}-${i}@test.invalid`);
         made.push(st.id);
+        /* **시연 계정이 아니어야 담당자 화면에 선다**(§23). 집계와 명단이
+           둘 다 시연·검사 계정을 거르므로, 시연으로 두면 이 줄이 화면에
+           아예 서지 않고 **세는 자리가 아무것도 말하지 않는 채로 걸린다**:
+           DB 의 수와 화면의 수가 서로 다른 모집단이 된다 */
+        await query(`UPDATE users SET is_demo = FALSE WHERE id = $1::bigint`,
+          [st.id]);
         await openAttempt({
           userId: st.id, tier: "BASIC", stage: "bachelor", gradField: null,
           campus: {
@@ -210,13 +219,25 @@ async function main(): Promise<void> {
     p.on("pageerror", (e) => errs.push(String(e.message).slice(0, 120)));
     p.on("response", (r) => { if (r.status() >= 500) errs.push(`${r.status()} ${r.url()}`); });
     await p.goto(`${BASE}/org/v3`, { waitUntil: "networkidle" });
+    /* **접힌 자리를 펴고 본다.** 담당자 화면의 묶음 여럿이 펼침 안에 있고,
+       `innerText` 는 닫힌 자리의 글을 돌려주지 않는다. 그 상태로 세면
+       **담긴 묶음을 없는 것으로 적는다** */
+    await p.evaluate(() => {
+      for (const d of document.querySelectorAll("details")) d.open = true;
+    });
+    await p.waitForTimeout(150);
     const txt = await p.evaluate(() => document.body.innerText);
     ok("담당자 화면이 열린다", /전공 진단 집계/.test(txt), p.url());
     ok("`연결된 기관이 없습니다` 가 아니다", !txt.includes("연결된 기관이 없습니다"));
 
+    /* **화면과 같은 모집단을 센다**(§23). 집계는 시연·검사 계정을 거르므로
+       거르지 않은 수와 견주면 **두 수가 다른 사람들을 센 값**이 되고, 그
+       차이를 화면의 잘못으로 적게 된다 */
     const started = await queryOne<{ n: string }>(
       `SELECT count(DISTINCT user_id)::text n FROM v3_attempts
-        WHERE university_code = $1`, [UNI]);
+        WHERE university_code = $1
+          AND NOT EXISTS (SELECT 1 FROM users du
+                           WHERE du.id = user_id AND du.is_demo)`, [UNI]);
     const kpi = await p.evaluate(() => [...document.querySelectorAll(".sf-kpi")]
       .map((e) => (e as HTMLElement).innerText.replace(/\s+/g, " ").trim()));
     ok("검사를 시작한 학생 수가 DB 와 같다",
@@ -235,11 +256,15 @@ async function main(): Promise<void> {
     const dept = section("학과별 응시");
     const nA = Number((await queryOne<{ n: string }>(
       `SELECT count(DISTINCT user_id)::text n FROM v3_attempts
-        WHERE university_code = $1 AND department_code = $2`,
+        WHERE university_code = $1 AND department_code = $2
+          AND NOT EXISTS (SELECT 1 FROM users du
+                           WHERE du.id = user_id AND du.is_demo)`,
       [UNI, A.leaf.code]))?.n ?? "0");
     const nB = Number((await queryOne<{ n: string }>(
       `SELECT count(DISTINCT user_id)::text n FROM v3_attempts
-        WHERE university_code = $1 AND department_code = $2`,
+        WHERE university_code = $1 AND department_code = $2
+          AND NOT EXISTS (SELECT 1 FROM users du
+                           WHERE du.id = user_id AND du.is_demo)`,
       [UNI, B.leaf.code]))?.n ?? "0");
     ok(`많은 쪽을 다섯 넘게 세웠다 (${nA}명)`, nA >= MIN_CELL);
     ok(`적은 쪽은 다섯에 못 미친다 (${nB}명)`, nB > 0 && nB < MIN_CELL);

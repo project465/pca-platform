@@ -92,11 +92,19 @@ async function main(): Promise<void> {
   const leaves = allLeaves(u);
   const route = leaves.find((r) => r.leaf.routing_only);
   if (!route) throw new Error("등록부에 전공을 고르는 자리가 없습니다");
-  const picks = leaves.filter((r) => statusOf(u, r) === "READY"
-    && coreOf(r.leaf)).slice(0, 2);
+  /* **Core 가 서로 다른 자리 둘을 고른다.** 앞에서 둘을 그냥 집으면 같은
+     Core 를 쓰는 학과 둘이 걸려(국어국문과 일본학은 둘 다 어문 Core 다)
+     `고른 전공이 다르면 Core 도 다르다` 가 아무것도 재지 못한다 */
+  const ready = leaves.filter((r) => statusOf(u, r) === "READY" && coreOf(r.leaf));
+  const picks: typeof ready = [];
+  for (const r of ready) {
+    if (picks.some((x) => x.leaf.core_code === r.leaf.core_code)) continue;
+    picks.push(r);
+    if (picks.length === 2) break;
+  }
   if (picks.length < 2) {
-    throw new Error("고를 수 있는 자리가 둘 미만입니다"
-      + " — V3_PREVIEW_OPEN 을 들고 띄운 서버가 필요합니다");
+    throw new Error("Core 가 서로 다른 자리가 둘 미만입니다"
+      + " (V3_PREVIEW_OPEN 을 들고 띄운 서버가 필요합니다)");
   }
   for (const p of picks) assertPreviewServer(p.leaf.core_code ?? "");
   console.log(`\n  적어둠  고르는 자리 — ${route.college.name} ${route.leaf.name}`
