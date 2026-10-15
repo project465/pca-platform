@@ -1,12 +1,15 @@
 import Link from "next/link";
 import { ROLE_LABEL } from "@/lib/roles";
-import { requireRole } from "@/lib/session";
 import { resolveLang } from "@/lib/locale-server";
-import { orgsOf, MIN_CELL } from "@/lib/org";
+import { MIN_CELL } from "@/lib/org";
 import { campusV3, type Cell } from "@/lib/me-v3/campus";
 import { core as coreEntry, registry } from "@/lib/me-v3/core-registry";
 import { industryChoices, roleChoices } from "@/lib/me-v3/runtime/session";
-import { allLeaves, facultyOf, retiredCodeOf, university } from "@/lib/campus/registry";
+import { campusNames, collegeChoices, leafChoices } from "@/lib/campus/labels";
+import {
+  campusQuery, campusQueryKo, campusQueryString, campusViewer,
+} from "@/lib/campus/viewer";
+import { studentCounts } from "@/lib/campus/manage";
 import { BRAND, toLang2 } from "@/lib/surface-text";
 import { Shell, PageHead, Section } from "@/components/sf/shell";
 import { NAV_CAMPUS } from "@/components/sf/nav";
@@ -19,42 +22,6 @@ export const metadata = { title: `전공 진단 집계 · ${BRAND.campus}` };
 function niceCore(code: string): string {
   try { return coreEntry(code).name_ko; } catch { return code; }
 }
-/**
- * 단과대학과 학과 코드를 담당자가 읽는 이름으로.
- *
- * **등록부 하나에서 읽는다**(`campus-universities.json`). 화면에 학과
- * 이름을 적어 두면 학교가 이름을 바꾸는 날 고칠 자리가 둘이 된다.
- */
-function campusNames(universityCode: string | null): {
-  college: (k: string) => string; dept: (k: string) => string;
-} {
-  const u = universityCode ? university(universityCode) : null;
-  if (!u) return { college: (k) => k, dept: (k) => k };
-  /* **Catalog 를 가로질러 읽는다.** 응시 줄에 적힌 코드가 어느 해 구조의
-     자리인지는 코드 앞머리가 들고 있고, 담당자가 보는 것은 이름이다 */
-  const col = new Map(u.catalogs.flatMap((c) =>
-    c.colleges.map((x) => [x.code, x.name] as [string, string])));
-  /* **학부가 있으면 함께 적는다**(규격 §12). 같은 이름의 전공이 다른
-     학부에 설 수 있고, 집계에서 그 둘이 한 줄로 보이면 안 된다. 굴림은
-     등록부가 하고 DB 에 칸을 더하지 않는다 */
-  const dep = new Map(allLeaves(u).map((r) => {
-    const f = facultyOf(u, r.leaf.code);
-    return [r.leaf.code, f ? `${f.name} · ${r.leaf.name}` : r.leaf.name];
-  }));
-  /* **내려놓은 코드를 학과 이름으로 읽지 않는다.** 등록부에서 내려온
-     코드가 담당자 화면에 날것으로 찍히면 읽는 사람이 등록부가 깨진 줄로
-     본다. 그 코드가 무엇이었는지를 적는다 */
-  return {
-    college: (k: string) => col.get(k) ?? k,
-    dept: (k: string) => {
-      const live = dep.get(k);
-      if (live) return live;
-      const gone = retiredCodeOf(u, k);
-      return gone ? `${gone.was} (지난 등록부 자리)` : k;
-    },
-  };
-}
-
 /**
  * 산업·직무 팩 코드를 담당자가 읽는 이름으로.
  *
@@ -137,32 +104,63 @@ function bars(rows: Cell[], name?: (k: string) => string) {
  */
 export default async function CampusV3({
   searchParams,
-}: { searchParams: Promise<{ lang?: string; demo?: string }> }) {
-  const user = await requireRole(["org_admin", "instructor"]);
-  const { lang: q, demo } = await searchParams;
-  const L = toLang2(await resolveLang(q));
+}: {
+  searchParams: Promise<{
+    lang?: string; demo?: string;
+    from?: string; to?: string; college?: string; department?: string;
+  }>;
+}) {
+  const sp = await searchParams;
+  const L = toLang2(await resolveLang(sp.lang));
   /* **시연 자료는 기본으로 거른다**(§23). 운영 지표에서 검사 계정을 빼는
      규칙은 이 저장소가 전부터 들고 있었고 학교 집계만 그 줄을 빠뜨리고
      있었다. 섞어 볼 때는 화면이 그 사실을 적는다 */
-  const withDemo = demo === "1";
+  const withDemo = sp.demo === "1";
 
   const packKo = packNames();
 
-  const orgs = await orgsOf(user.id);
-  const org = orgs[0];
   /**
-   * **이 기관이 학교 등록부의 어느 학교인가.**
+   * **범위를 이 화면에서 정하지 않는다**(설계 원칙 10).
    *
-   * `organizations.code` 가 `PCU` 면 그 학교로 들어온 응시가 이 집계에
-   * 함께 선다. 소속으로만 묶으면 `/campus/{학교}` 로 혼자 들어온 학생이
-   * 담당자 화면에 한 명도 잡히지 않고, 담당자는 그것을 `아직 아무도 안
-   * 쳤다` 로 읽는다.
+   * 집계와 명단과 내려받는 자료와 운영 요약이 같은 함수에 묻는다. 각자
+   * 정하면 어느 날 한 자리가 기관을 빠뜨리고 **A 대학 담당자가 B 대학
+   * 학생의 줄을 받는다.**
    */
-  const uni = orgs.map((o) => o.code).find((c) => Boolean(university(c))) ?? null;
+  const view = await campusViewer();
+  const { user, orgs, org, uni } = view;
   const name = campusNames(uni);
+  /* **좁히는 값은 집계 함수에 넘긴다**(규격 §16). 화면이 받아서 따로
+     거르면 **5명 미만 규칙이 그 뒤에 적용되어** 가려야 할 칸이 드러난다 */
+  const q = campusQuery(sp);
+  const qs = campusQueryString(q, withDemo ? { demo: "1" } : {});
+  const scopeKo = campusQueryKo(q, name);
+  const narrowed = Boolean(q.from || q.to || q.college || q.department);
   const v3 = await campusV3({
-    orgIds: orgs.map((o) => Number(o.id)), universityCode: uni, withDemo,
+    orgIds: view.orgIds, universityCode: uni, withDemo,
+    from: q.from, to: q.to, college: q.college, department: q.department,
   });
+  /**
+   * 미응시 · 진행중 · 완료(규격 §17).
+   *
+   * **새 지표를 만들지 않는다.** 명단 화면이 상태 tab 마다 세는 것과 같은
+   * 함수이고, 그래서 이 수를 눌러 넘어간 목록의 수가 늘 같다. 두 자리에서
+   * 따로 세면 담당자가 어느 쪽을 믿어야 할지 모른다.
+   */
+  /* **명단 화면은 기간으로 좁히지 않는다.** `campus_students` 는 발급
+     명단이고 날짜 칸이 없다. 기간을 들고 넘기면 주소에 쓰이지 않는 값이
+     남아, 담당자가 그 주소를 북마크했을 때 좁혀진 줄로 읽는다 */
+  const place = campusQueryString({ ...q, from: null, to: null },
+    withDemo ? { demo: "1" } : {});
+  const toStudents = (state: string) =>
+    `/org/v3/students${place}${place ? "&" : "?"}state=${state}`;
+  const toCsv = (state: string) =>
+    `/org/v3/export/students.csv${place}${place ? "&" : "?"}state=${state}`;
+  const counts = uni
+    ? await studentCounts({
+      universityCode: uni, withDemo,
+      college: q.college ?? undefined, department: q.department ?? undefined,
+    })
+    : null;
 
   const shell = (children: React.ReactNode) => (
     <Shell
@@ -196,6 +194,55 @@ export default async function CampusV3({
         sub={"지금 쓰는 검사를 친 학생의 집계입니다. "
           + `사람이 ${MIN_CELL}명이 안 되는 칸은 숫자를 내지 않습니다.`}
       />
+
+      {/* ── 좁혀 보기(규격 §16) ──
+          **GET 폼이다.** 주소에 조건이 적히므로 담당자가 그 주소를 그대로
+          북마크하고 같은 표를 다시 연다. 내려받기 링크도 같은 조건을 들고
+          가서, **화면의 수와 CSV 의 수가 갈리지 않는다.**
+
+          **고치는 폼이 아니다.** 여기서 바뀌는 것은 보는 범위뿐이고 학생
+          계정과 응시와 결과에 손대지 않는다 */}
+      <Section title="좁혀 보기"
+        note="기간과 단과대학과 학과로 좁힙니다. 비우면 전체입니다">
+        <form className="sf-filters" method="get" action="/org/v3">
+          {withDemo ? <input type="hidden" name="demo" value="1" /> : null}
+          <label className="sf-field">
+            <span>시작일</span>
+            <input type="date" name="from" defaultValue={q.from ?? ""} />
+          </label>
+          <label className="sf-field">
+            <span>종료일</span>
+            <input type="date" name="to" defaultValue={q.to ?? ""} />
+          </label>
+          <label className="sf-field">
+            <span>단과대학</span>
+            <select name="college" defaultValue={q.college ?? ""}>
+              <option value="">전체</option>
+              {collegeChoices(uni).map((c) => (
+                <option key={c.code} value={c.code}>{c.name}</option>
+              ))}
+            </select>
+          </label>
+          <label className="sf-field">
+            <span>학과</span>
+            <select name="department" defaultValue={q.department ?? ""}>
+              <option value="">전체</option>
+              {leafChoices(uni).map((c) => (
+                <option key={c.code} value={c.code}>{c.name}</option>
+              ))}
+            </select>
+          </label>
+          <div className="sf-field">
+            <span>&nbsp;</span>
+            <button className="sf-btn" type="submit">좁혀 보기</button>
+          </div>
+        </form>
+        {narrowed ? (
+          <p className="sf-meta" style={{ marginTop: 8 }}>
+            지금 보는 범위 — {scopeKo} · <Link href="/org/v3">전체로 돌아가기</Link>
+          </p>
+        ) : null}
+      </Section>
 
       {/* **KPI 는 넷이다**(규격 §16): 대상자 · 시작 · 완료 · 완료율.
           캡처해서 내부 보고자료로 쓰는 자리라 이 넷이 한 줄에 서야 한다.
@@ -249,6 +296,82 @@ export default async function CampusV3({
             <Link href="/org/v3">손님만 보기</Link>
           </p>
         ) : null}
+      </Section>
+
+      {/* ── 미응시 · 진행중 · 완료(규격 §17) ──
+          **메일이나 문자를 여기서 보내지 않는다.** 그 기능이 이 제품에
+          없는데 단추를 만들면 누른 담당자가 보낸 줄로 읽고, 학생은 아무
+          것도 받지 않는다. 그래서 하는 일은 둘이다: 그 목록으로 넘어가기와
+          **리마인드 대상 명단을 CSV 로 받기** */}
+      {counts ? (
+        <Section title="응시 상태별 학생"
+          note="명단에 올라온 학생을 상태로 가른 수입니다. 눌러서 그 목록으로 갑니다">
+          <ul className="sf-list">
+            <li>
+              <b>아직 시작하지 않은 학생 {counts.none}명</b>{" "}
+              <Link href={toStudents("none")}>
+                목록 보기
+              </Link>{" · "}
+              <a href={toCsv("none")}>
+                리마인드 대상 CSV
+              </a>
+            </li>
+            <li>
+              <b>푸는 중인 학생 {counts.in_progress}명</b>{" "}
+              <Link href={toStudents("in_progress")}>
+                목록 보기
+              </Link>{" · "}
+              <a href={toCsv("in_progress")}>
+                CSV
+              </a>
+            </li>
+            <li>
+              <b>결과를 받은 학생 {counts.scored}명</b>{" "}
+              <Link href={toStudents("scored")}>
+                목록 보기
+              </Link>{" · "}
+              <a href={toCsv("scored")}>
+                CSV
+              </a>
+            </li>
+            <li>
+              이용이 멈춘 계정 {counts.disabled}명{" "}
+              <Link href={toStudents("disabled")}>
+                목록 보기
+              </Link>
+            </li>
+          </ul>
+          <p className="sf-meta" style={{ marginTop: 8 }}>
+            이 제품은 학생에게 메일이나 문자를 보내지 않습니다. 안내는 학교가
+            쓰는 길로 보내시고, 받는 학생 명단을 위에서 내려받으십시오.
+          </p>
+        </Section>
+      ) : null}
+
+      {/* ── 내려받기(규격 §18) ──
+          **개별 답변은 한 칸도 나가지 않는다**(§23). 나가는 것은 계정
+          상태와 응시 여부와 집계까지다. 지금 좁혀 본 조건이 그대로 따라
+          가고, 받은 파일의 머리에 그 조건이 적힌다 */}
+      <Section title="내려받기"
+        note="지금 좁혀 본 범위 그대로 받습니다. 개별 답변은 들어 있지 않습니다">
+        <ul className="sf-list">
+          <li>
+            <a href={`/org/v3/export/students.csv${qs}`}>
+              학생 응시 상태 CSV
+            </a>{" "}— 학번 · 이름 · 학과 · 계정 상태 · 응시 상태 · 완료일
+          </li>
+          <li>
+            <a href={`/org/v3/export/departments.csv${qs}`}>
+              학과별 집계 CSV
+            </a>{" "}— 단과대학과 학과별 대상자 · 시작 · 완료. {MIN_CELL}명
+            미만 칸은 수가 비어 있습니다
+          </li>
+          <li>
+            <a href={`/org/v3/report.pdf${qs}`}>대학 운영 요약 PDF</a>{" · "}
+            <Link href={`/org/v3/report${qs}`}>미리 보기</Link>{" "}
+            — 개인 응답은 들어 있지 않습니다
+          </li>
+        </ul>
       </Section>
 
       {v3.recent.length ? (

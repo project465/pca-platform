@@ -176,6 +176,17 @@ export type CampusScope = {
    * 우리가 만든 계정이 섞이고, 그 수로 낸 완료율이 100 을 넘었다.
    */
   withDemo?: boolean;
+  /**
+   * 기간과 자리로 좁혀 본다(규격 §16). **없으면 전부다.**
+   *
+   * 담당자가 사업보고를 쓸 때 묻는 것은 `이 학기에` 와 `우리 단과대학에서`
+   * 다. 좁히는 자리를 집계 함수 하나에 두는 까닭은 **화면이 따로 거르면
+   * 5명 미만 규칙이 그 뒤에 적용되어** 가려야 할 칸이 드러나기 때문이다.
+   */
+  from?: string | null;
+  to?: string | null;
+  college?: string | null;
+  department?: string | null;
 };
 
 export async function campusV3(scope: CampusScope): Promise<CampusV3> {
@@ -201,19 +212,44 @@ export async function campusV3(scope: CampusScope): Promise<CampusV3> {
    * `count(DISTINCT a.user_id)` 라 수가 부풀지 않는다. **`JOIN` 으로 두면
    * 소속이 없는 학생이 통째로 빠진다.**
    */
+  const args: unknown[] = [orgIds, uni];
+  const argsF: unknown[] = [orgIds, uni];
+  /* 좁히는 값이 몇 번째 자리에 들어갔는가. **번호를 손으로 세지 않는다**:
+     조건 하나를 더하면 그 뒤 번호가 전부 밀리고, 밀린 자리를 하나 빠뜨리면
+     질의가 남의 값으로 거른다 */
+  const P: Record<"from" | "to" | "college" | "department", number> = {
+    from: 0, to: 0, college: 0, department: 0,
+  };
+  const put = (k: keyof typeof P, v: string | null | undefined): void => {
+    if (!v) return;
+    argsF.push(v); P[k] = argsF.length;
+  };
+  put("from", scope.from); put("to", scope.to);
+  put("college", scope.college); put("department", scope.department);
+
   const FROM = `FROM v3_attempts a
        LEFT JOIN memberships m
          ON m.user_id = a.user_id AND m.org_id = ANY($1::bigint[])
       WHERE (m.org_id IS NOT NULL
              OR ($2::text IS NOT NULL AND a.university_code = $2))
-        AND ${live("a.user_id")}`;
-  const args = [orgIds, uni];
+        AND ${live("a.user_id")}
+        ${P.from ? `AND a.started_at >= $${P.from}::date` : ""}
+        ${P.to ? `AND a.started_at < ($${P.to}::date + 1)` : ""}
+        ${P.college ? `AND a.college_code = $${P.college}` : ""}
+        ${P.department ? `AND a.department_code = $${P.department}` : ""}`;
+  /**
+   * **두 벌을 둔다.** `FROM` 을 쓰는 질의는 좁히는 값까지 받고, 제 `WHERE`
+   * 를 따로 들고 있는 질의(추이 · 묶음 분포 · 재분석 수)는 앞의 둘만
+   * 받는다. PostgreSQL 은 **쓰지 않는 자리를 더 넘기면 그 자리에서
+   * 거절한다**: 한 벌로 돌려 쓰면 좁혀 보는 날 화면이 통째로 멈춘다.
+   */
+
 
   const head = await queryOne<{ started: string; scored: string; open: string }>(
     `SELECT count(DISTINCT a.user_id)::text AS started,
             count(DISTINCT a.user_id) FILTER (WHERE a.status = 'scored')::text AS scored,
             count(DISTINCT a.user_id) FILTER (WHERE a.status = 'in_progress')::text AS open
-       ${FROM}`, args);
+       ${FROM}`, argsF);
   const started = Number(head?.started ?? 0);
   const scored = Number(head?.scored ?? 0);
 
@@ -249,9 +285,11 @@ export async function campusV3(scope: CampusScope): Promise<CampusV3> {
       `SELECT count(*)::text AS n FROM (
          SELECT cs.user_id FROM campus_students cs
           WHERE cs.university_code = $2 AND ${live("cs.user_id")}
+            ${P.college ? `AND cs.college_code = $${P.college}` : ""}
+            ${P.department ? `AND cs.department_code = $${P.department}` : ""}
          UNION
          SELECT a.user_id ${FROM}
-       ) u`, args))?.n ?? 0)
+       ) u`, argsF))?.n ?? 0)
     : started;
   const completion = target > 0 ? Math.round((scored / target) * 100) : null;
 
@@ -284,7 +322,7 @@ export async function campusV3(scope: CampusScope): Promise<CampusV3> {
          ${FROM}
           ${scoredOnly ? "AND a.status = 'scored'" : ""}
           ${campusOnly ? "AND a.university_code IS NOT NULL" : ""}
-        GROUP BY 1 ORDER BY 2 DESC`, args);
+        GROUP BY 1 ORDER BY 2 DESC`, argsF);
 
   const [cores, stages, inds, roles, colleges, depts, deptsDone] = await Promise.all([
     group("core_code"), group("education_stage"),
@@ -360,7 +398,7 @@ export async function campusV3(scope: CampusScope): Promise<CampusV3> {
           WHERE $2::text IS NOT NULL AND cs.university_code = $2
             AND ${live("cs.user_id")}
        ) t
-      GROUP BY k ORDER BY 2 DESC`, args);
+      GROUP BY k ORDER BY 2 DESC`, argsF);
 
   const hide = (n: number) => (n > 0 && n < MIN_CELL ? null : n);
 

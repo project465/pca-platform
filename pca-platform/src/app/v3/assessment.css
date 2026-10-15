@@ -1377,3 +1377,29 @@
   border-color: var(--q-line-soft); background: var(--q-field);
 }
 .qs-card.is-off:hover { border-color: var(--q-line-soft); }
+
+/* ── 제출 전 검토(규격 §6) ──
+   **막는 자리가 아니라 되돌아갈 자리다.** 빨강으로 칠하지 않는다: 비워 둔
+   채로 제출해도 되고, 칠하면 그 화면이 시험지의 오답 표시가 된다 */
+.qs-review {
+  margin: var(--q-s5) 0 0; padding: var(--q-s4);
+  border: 1px solid var(--q-line); border-radius: var(--q-r);
+  background: var(--q-paper);
+}
+.qs-review h2 {
+  margin: 0 0 6px; font-size: var(--q-t-sub); font-weight: var(--ui-w-bd);
+  color: var(--q-ink);
+}
+.qs-review > p { margin: 0 0 var(--q-s3); font-size: var(--q-t-gloss); color: var(--q-ink-2); }
+.qs-review ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+.qs-review li button {
+  width: 100%; min-height: 44px; text-align: left; cursor: pointer;
+  padding: 10px 14px; border: 1px solid var(--q-line); border-radius: var(--q-r-sm);
+  background: #fff; color: var(--q-ink); font: inherit;
+  font-size: var(--q-t-gloss);
+}
+.qs-review li button:hover { border-color: var(--q-accent); color: var(--q-accent-ink); }
+.qs-review li button:disabled { opacity: .55; cursor: default; }
+.qs-review-ok {
+  margin: var(--q-s5) 0 0; font-size: var(--q-t-gloss); color: var(--q-ink-2);
+}

@@ -612,6 +612,33 @@ export default function Screen({
                 ) : null}
               </ul>
             ) : null}
+            {/* ── 제출 전 검토(규격 §6) ──
+                **아직 비어 있는 자리를 적고 그리로 보낸다.** 전에는 다 풀지
+                않고도 제출 단추가 그대로 섰고, 어디가 비었는지는 아무 화면도
+                말하지 않았다. **제출을 막지는 않는다**: 묻지 않은 자리와
+                답하지 않은 자리를 가르는 일은 채점이 이미 하고, 여기서 막으면
+                답할 수 없는 문항 하나에 사람이 갇힌다 */}
+            {!s.done && s.gaps?.length ? (
+              <div className="qs-review">
+                <h2>아직 답하지 않은 자리가 {s.gaps.length}곳 있습니다</h2>
+                <p>눌러서 그 자리로 돌아가 고칠 수 있습니다. 비워 둔 채로
+                  제출해도 됩니다 — 답하지 않은 자리는 결과에서 그 사실을
+                  그대로 적습니다.</p>
+                <ul>
+                  {s.gaps.map((g) => (
+                    <li key={g.index}>
+                      <button type="button" onClick={() => go(g.index)}
+                        disabled={moving}>{g.label}</button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+            {!s.done && s.gaps && !s.gaps.length ? (
+              <p className="qs-review-ok" role="status">
+                답해야 하는 자리를 모두 채우셨습니다.
+              </p>
+            ) : null}
             <p className="qs-help" style={{ marginTop: 24 }}>
               {s.done
                 ? "검사는 끝이 아니라 시작입니다. 경험이 늘면 근거와 부족한 부분을 다시 계산합니다."

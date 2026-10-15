@@ -49,6 +49,28 @@ async function findUserByIdentifier(identifier: string): Promise<UserRow | null>
   );
 }
 
+/**
+ * 비밀번호는 맞는데 계정이 열려 있지 않은가(규격 §4).
+ *
+ * **왜 따로 묻는가.** `authorize()` 는 어느 까닭으로 막히든 `null` 을
+ * 돌려주고, Auth.js 는 그 까닭을 밖으로 내보내지 않는다. 그래서 담당자가
+ * 꺼 둔 계정으로 들어온 학생이 `아이디 또는 비밀번호가 올바르지 않습니다`
+ * 를 읽고 **제 비밀번호를 의심해 몇 번 더 찍다가 잠긴다.**
+ *
+ * **계정이 있는지를 알려 주지 않는다.** 이 함수는 **비밀번호가 맞았을
+ * 때만** 까닭을 돌려준다. 비밀번호를 모르는 쪽에서는 `null` 이라 응답이
+ * 전과 같고, 비밀번호를 아는 사람은 이미 그 계정의 주인이다.
+ */
+export async function inactiveReason(
+  identifier: string, password: string,
+): Promise<"disabled" | "erased" | null> {
+  const user = await findUserByIdentifier(identifier);
+  if (!user || !user.password_hash) return null;
+  if (user.status === "active") return null;
+  if (!(await verifyPassword(password, user.password_hash))) return null;
+  return user.status === "erased" ? "erased" : "disabled";
+}
+
 async function loadMemberships(userId: string): Promise<Membership[]> {
   const rows = await query<{ org_id: string; role: string }>(
     `SELECT org_id, role FROM memberships WHERE user_id = $1 ORDER BY id`,

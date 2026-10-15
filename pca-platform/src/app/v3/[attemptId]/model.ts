@@ -97,6 +97,13 @@ export type ScreenModel = {
   profile?: { stage: string; field: string | null; undergrad: string | null };
   /** 완료 화면이 적는 것. **판정은 담지 않는다** */
   answered?: number;
+  /**
+   * 아직 답하지 않은 자리(규격 §6). **끝 화면에서만 선다.**
+   *
+   * 판정이 아니라 **되돌아갈 자리의 목록**이다: 비어 있어도 제출은 막지
+   * 않는다. 묻지 않은 자리와 답하지 않은 자리를 가르는 일은 채점이 한다.
+   */
+  gaps?: { index: number; label: string }[];
   done?: boolean;
   summary?: {
     explored: number;

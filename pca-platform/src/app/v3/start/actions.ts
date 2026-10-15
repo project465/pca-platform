@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
+import { retakeState } from "@/lib/me-v3/retake";
 import { clearCampusEntry, readCampusEntry } from "@/lib/campus/entry";
 import { campusStudentOf } from "@/lib/campus/students";
 import {
@@ -52,6 +53,13 @@ export async function startV3(form: FormData): Promise<void> {
        않은 학과로 검사가 시작된다 */
     await clearCampusEntry();
     redirect(`/v3/${open.id}`);
+  }
+
+  /* **막는 자리는 서버다**(규격 §7). 화면이 먼저 돌려보내지만, 폼을 직접
+     보내는 길이 남아 있으면 끝낸 사람의 응시가 하나 더 생긴다 */
+  const retake = await retakeState(user.id);
+  if (!retake.canStart && retake.lastAttemptId) {
+    redirect(`/v3/${retake.lastAttemptId}/result?again=1`);
   }
 
   const grants = await v3Grants(user.id);

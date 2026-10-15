@@ -1820,3 +1820,107 @@ body:has(.stgmark) .cm-tabs { bottom: var(--stg-h) }
   font-weight: var(--ui-w-sb); color: var(--sf-accent-ink);
 }
 .sf-fold > summary::marker { color: var(--sf-ink-3); }
+
+/* ══════════════════════════════════════════════════════════════════
+   학생 관리(규격 §12·§24·§25)
+
+   **새 디자인 체계를 만들지 않는다.** 값은 전부 위의 `--sf-*` 토큰이고,
+   여기 있는 것은 그 토큰 위에 올라가는 자리뿐이다. 새 기능을 기본 HTML
+   표로만 붙이고 끝내지 않으려고 둔다.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* 검색과 좁히기 한 줄. **GET 폼이라 주소가 그 상태를 든다** */
+.sf-filters {
+  display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px;
+  margin: 0 0 16px;
+}
+.sf-field { display: grid; gap: 5px; min-width: 0; }
+.sf-field > span {
+  font-size: 12px; font-weight: var(--ui-w-sb); color: var(--sf-ink-3);
+  letter-spacing: .02em;
+}
+.sf-field > span em { font-style: normal; font-weight: var(--ui-w-rg); }
+.sf-field input, .sf-field select, .sf-field textarea {
+  min-height: 40px; padding: 8px 12px; font: inherit; font-size: 14px;
+  color: var(--sf-ink); background: var(--sf-surface);
+  border: 1px solid var(--sf-line); border-radius: var(--sf-radius-sm);
+  min-width: 0; max-width: 100%;
+}
+.sf-field textarea { min-height: 96px; resize: vertical; font-family: inherit; }
+.sf-field input:focus, .sf-field select:focus, .sf-field textarea:focus {
+  outline: 2px solid var(--sf-accent-line); outline-offset: 1px;
+  border-color: var(--sf-accent);
+}
+.sf-filters .sf-field { flex: 1 1 200px; }
+.sf-filters .sf-btn { min-height: 40px; }
+
+/* 세로로 선 폼. 한 명 추가와 CSV 가 같은 모양을 쓴다 */
+.sf-form { display: grid; gap: 14px; max-width: 520px; }
+.sf-form .sf-btn { justify-self: start; }
+
+/* 상태 tab. **수를 함께 적는다**: 담당자가 묻는 것이 `몇 명` 이다 */
+.sf-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.sf-tab {
+  display: inline-flex; align-items: center; gap: 7px;
+  min-height: 38px; padding: 0 14px; border-radius: 999px;
+  border: 1px solid var(--sf-line); background: var(--sf-surface);
+  font-size: 13.5px; font-weight: var(--ui-w-md); color: var(--sf-ink-2);
+  text-decoration: none;
+}
+.sf-tab:hover { border-color: var(--sf-accent-line); color: var(--sf-accent-ink); }
+.sf-tab em {
+  font-style: normal; font-variant-numeric: tabular-nums;
+  font-size: 12.5px; color: var(--sf-ink-3);
+}
+.sf-tab.is-on {
+  background: var(--sf-accent); border-color: var(--sf-accent); color: #fff;
+}
+.sf-tab.is-on em { color: rgba(255, 255, 255, .82); }
+
+/* 줄에 붙는 일. **단추를 작게 둔다**: 이 줄의 주인은 학생 이름이다 */
+.sf-rowacts { display: flex; flex-wrap: wrap; gap: 6px; }
+.sf-rowacts form { display: contents; }
+.sf-mini {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 32px; padding: 0 10px; cursor: pointer;
+  border: 1px solid var(--sf-line); border-radius: var(--sf-radius-sm);
+  background: var(--sf-surface); color: var(--sf-ink-2);
+  font: inherit; font-size: 12.5px; white-space: nowrap; text-decoration: none;
+}
+.sf-mini:hover { border-color: var(--sf-accent-line); color: var(--sf-accent-ink); }
+.sf-mini:disabled { opacity: .5; cursor: default; }
+
+/* 한 번만 보이는 비밀번호(규격 §13).
+   **금색을 쓴다**: 지금 복사하지 않으면 다시 볼 수 없는 자리라, 읽고
+   지나가는 줄과 같은 무게로 서면 안 된다 */
+.sf-issued {
+  margin: 0 0 16px; padding: 14px 16px;
+  border: 1px solid var(--sf-gold-line); border-radius: var(--sf-radius-sm);
+  background: var(--sf-gold-soft); color: var(--sf-ink);
+}
+.sf-issued > b { display: block; font-size: 13.5px; color: var(--sf-gold); }
+.sf-issued > p { margin: 6px 0 0; font-size: 12.5px; color: var(--sf-ink-2); }
+.sf-issued ul { margin: 10px 0 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+.sf-issued li { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; }
+.sf-issued li span { font-size: 13px; color: var(--sf-ink-2); min-width: 120px; }
+.sf-issued li code {
+  font-size: 14px; font-weight: var(--ui-w-sb); letter-spacing: .04em;
+  color: var(--sf-ink);
+}
+.sf-issued small { display: block; margin-top: 10px; font-size: 12px; color: var(--sf-ink-2); }
+
+/* 알림 두 가지. 위의 `.sf-note` 가 바탕이고 왼쪽 선만 갈린다 */
+.sf-note.is-ok { border-left-color: var(--sf-ok); background: var(--sf-ok-soft); }
+.sf-note.is-bad { border-left-color: var(--sf-warn); background: var(--sf-warn-soft); }
+
+/* 응시 상태 알약. **색으로만 가르지 않는다**: 글자가 먼저 읽힌다 */
+.sf-pill.is-scored { background: var(--sf-ok-soft); color: var(--sf-ok); }
+.sf-pill.is-in_progress { background: var(--sf-part-soft); color: var(--sf-part); }
+.sf-pill.is-none { background: var(--sf-not-soft); color: var(--sf-not); }
+.sf-pill.is-off { background: var(--sf-warn-soft); color: var(--sf-warn); }
+
+@media (max-width: 720px) {
+  .sf-filters { gap: 10px; }
+  .sf-filters .sf-field { flex: 1 1 100%; }
+  .sf-issued li span { min-width: 0; }
+}

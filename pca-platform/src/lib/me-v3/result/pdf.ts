@@ -231,3 +231,109 @@ export async function saveResultPdf(attemptId: string, pdf: Buffer): Promise<str
   await writeFile(file, pdf);
   return file;
 }
+
+/**
+ * 담당자가 받는 쪽을 그대로 A4 로 뽑는다(규격 §19).
+ *
+ * **결과지 함수를 돌려 쓰지 않는다.** 저쪽은 응시 하나를 열고 본문 절이
+ * 섰는지로 기다리는데, 운영 요약은 응시가 없고 기다릴 자리도 다르다.
+ * 한 함수에 분기를 넣으면 **결과지를 못 고치고는 운영 요약을 못 고친다.**
+ *
+ * 같이 쓰는 것은 **브라우저를 찾는 자리와 쿠키를 넘기는 모양**이다. 그
+ * 둘이 운영에서만 나는 실패의 거의 전부라, 두 벌로 적어 두면 한쪽만
+ * 고쳐지는 날이 온다(`__Secure-` 쿠키가 거절되던 자리가 그랬다).
+ */
+export type PageDrawOpts = {
+  /** 뽑을 쪽. `/` 로 시작하는 이 배포본의 주소다 */
+  path: string;
+  baseUrl: string;
+  cookie: string;
+  header?: string;
+  /** 쪽이 섰다고 볼 자리 */
+  waitFor: string;
+  /** 가로로 뽑는다. 표가 넓은 자리에서만 켠다 */
+  landscape?: boolean;
+};
+
+export async function drawPagePdf(opts: PageDrawOpts): Promise<Buffer> {
+  const { chromium } = await import("playwright");
+  const { bin, tried } = resolveChromium();
+  let browser;
+  try {
+    browser = await chromium.launch({
+      args: ["--no-sandbox", "--disable-dev-shm-usage"],
+      ...(bin ? { executablePath: bin } : {}),
+    });
+  } catch (e) {
+    throw new PdfFailed("browser",
+      `${(e as Error).message.split("\n")[0]} / 찾아본 자리: ${tried.join(" ")}`);
+  }
+  try {
+    const gate = stagingGate();
+    const ctx = await browser.newContext({
+      viewport: { width: 1200, height: 900 },
+      ...(gate ? { httpCredentials: { username: gate.user, password: gate.pass } } : {}),
+    });
+    const base = opts.baseUrl.replace(/\/$/, "");
+    if (opts.cookie) {
+      try {
+        await ctx.addCookies(cookiesFor(opts.cookie, base));
+      } catch (e) {
+        const names = cookiesFor(opts.cookie, base).map((c) => c.name).join(" ");
+        throw new PdfFailed("cookie",
+          `로그인 쿠키를 넘기지 못했습니다(${names}): `
+          + `${(e as Error).message.split("\n")[0]}`);
+      }
+    }
+    const page = await ctx.newPage();
+    const url = `${base}${opts.path}`;
+    let res;
+    try {
+      res = await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45000 });
+    } catch (e) {
+      throw new PdfFailed("open",
+        `${url} 로 못 갔습니다: ${(e as Error).message.split("\n")[0]}`);
+    }
+    if (!res || res.status() !== 200) {
+      throw new PdfFailed("open", `쪽이 ${res ? res.status() : 0} 입니다 (${url})`);
+    }
+    /* **로그인 쪽으로 떨어진 것을 본문 없음으로 적지 않는다.** 쿠키가 안
+       넘어가면 로그인 쪽이 200 으로 열리고, 그러면 아래 기다림이 시간을
+       다 쓰고 `본문이 서지 않았습니다` 로 끝난다 */
+    if (!page.url().startsWith(`${base}${opts.path.split("?")[0]}`)) {
+      throw new PdfFailed("auth",
+        `로그인 쪽으로 떨어졌습니다: ${page.url().slice(0, 120)}`);
+    }
+    try {
+      await page.waitForSelector(opts.waitFor, { state: "attached", timeout: 20000 });
+      await page.waitForLoadState("load", { timeout: 20000 }).catch(() => undefined);
+    } catch (e) {
+      throw new PdfFailed("render",
+        `쪽이 열렸는데 본문이 서지 않았습니다: ${(e as Error).message.split("\n")[0]}`);
+    }
+    await page.emulateMedia({ media: "print" });
+    /**
+     * **여기서 기다린다.** `return page.pdf(...)` 로 두면 종이를 접는
+     * 동안 아래 `finally` 가 브라우저를 닫고, 크로뮴이
+     * `Printing failed` 로 거절한다. 그 실패는 밖에서 보면 **브라우저가
+     * 못 뜬 것과 구별되지 않는다**(한 번 그렇게 적혔다).
+     */
+    const pdf = await page.pdf({
+      format: "A4", printBackground: true, landscape: Boolean(opts.landscape),
+      margin: { top: "14mm", bottom: "14mm", left: "14mm", right: "14mm" },
+      displayHeaderFooter: true,
+      headerTemplate: '<div style="font-size:7pt;color:#5f6e86;width:100%;'
+        + 'padding:0 14mm;font-family:sans-serif">'
+        + escapeHtml(opts.header ?? "CareerMatri") + '</div>',
+      footerTemplate: '<div style="font-size:7pt;color:#5f6e86;width:100%;'
+        + 'padding:0 14mm;text-align:right;font-family:sans-serif">'
+        + '<span class="pageNumber"></span> / <span class="totalPages"></span></div>',
+    });
+    return pdf;
+  } catch (e) {
+    if (e instanceof PdfFailed) throw e;
+    throw new PdfFailed("render", (e as Error).message.split("\n")[0]);
+  } finally {
+    await browser.close();
+  }
+}

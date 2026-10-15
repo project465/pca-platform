@@ -194,7 +194,8 @@
     "pcu:open": "tsx scripts/pcu-open-check.ts",
     "pcu:students": "tsx scripts/pcu-students.ts",
     "pcu:diag": "tsx scripts/pcu-diag.ts",
-    "pcu:campus": "tsx scripts/pcu-campus-flow.ts"
+    "pcu:campus": "tsx scripts/pcu-campus-flow.ts",
+    "campus:export": "tsx scripts/campus-export-check.ts"
   },
   "dependencies": {
     "@types/nodemailer": "^8.0.1",

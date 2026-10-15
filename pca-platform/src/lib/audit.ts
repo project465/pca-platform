@@ -15,6 +15,14 @@ export const AUDITED = [
   "refund.record",
   "product.update", "site.update", "country_pack.update",
   "business.update",
+  /* 학교 담당자가 학생 계정에 하는 일(규격 §3·§13·§14).
+     **평문 열쇠를 적지 않는다**: 누가 언제 누구의 계정을 다뤘는지까지가
+     남을 것이고, 새 비밀번호는 화면에서 한 번 보이고 끝난다 */
+  "campus.student.create", "campus.student.update",
+  "campus.student.enable", "campus.student.disable",
+  "campus.student.password.rotate",
+  "campus.student.import",
+  "campus.student.retake.allow",
 ] as const;
 export type AuditAction = (typeof AUDITED)[number];
 

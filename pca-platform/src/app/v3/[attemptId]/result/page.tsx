@@ -2,6 +2,7 @@ import Link from "next/link";
 import { BrandMark } from "@/components/sf/brand-mark";
 import { notFound, redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
+import { RETAKE_BLOCKED_KO } from "@/lib/me-v3/retake";
 import { mark } from "@/lib/me-v3/workspace-events";
 import {
   attemptOf, domainName, industryChoices, latestResult, orgChoices, roleChoices,
@@ -625,10 +626,16 @@ function Translation({ view, major }: { view: TranslationView; major: string }) 
 }
 
 export default async function V3Result({
-  params,
-}: { params: Promise<{ attemptId: string }> }) {
+  params, searchParams,
+}: {
+  params: Promise<{ attemptId: string }>;
+  searchParams: Promise<{ again?: string }>;
+}) {
   const user = await requireUser();
   const { attemptId } = await params;
+  /* 재응시를 누르고 여기로 돌아온 사람(규격 §7). **왜 돌아왔는지를
+     적는다**: 아무 말 없이 결과로 보내면 단추가 고장 난 줄 안다 */
+  const { again } = await searchParams;
   const a = await attemptOf(attemptId, user.id);
   if (!a) notFound();
   if (a.status === "in_progress") redirect(`/v3/${attemptId}`);
@@ -1029,6 +1036,16 @@ export default async function V3Result({
               가능성을 내지 않고, 순위도 매기지 않습니다.
             </p>
           </section>
+        ) : null}
+
+        {again ? (
+          /* **막는 말만 적지 않는다**(규격 §21). 무슨 일이 일어났는지와
+             무엇을 하면 되는지를 함께 적는다 */
+          <p className="rs-again" role="status">
+            <b>{RETAKE_BLOCKED_KO.title}</b>
+            <span>{RETAKE_BLOCKED_KO.body}</span>
+            <span>{RETAKE_BLOCKED_KO.how}</span>
+          </p>
         ) : null}
 
         <section className="rs-hero">

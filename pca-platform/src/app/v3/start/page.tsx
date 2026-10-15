@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { BrandMark } from "@/components/sf/brand-mark";
 import { requireUser } from "@/lib/session";
+import { retakeState } from "@/lib/me-v3/retake";
 import { currentAttempt, estimate, v3Grants } from "@/lib/me-v3/runtime/session";
 import { core as coreEntry, sellableCores } from "@/lib/me-v3/core-registry";
 import { readCampusEntry } from "@/lib/campus/entry";
@@ -27,6 +28,19 @@ export default async function V3Start({
 
   const open = await currentAttempt(user.id);
   if (open) redirect(`/v3/${open.id}`);
+
+  /**
+   * **이미 끝낸 사람은 새 응시를 열지 않는다**(규격 §7).
+   *
+   * 전에는 여기서 아무것도 보지 않아 결과를 받은 학생이 단추를 한 번 더
+   * 누르면 응시가 하나 더 생겼다. 지금은 **담당자가 열어 준 때만**(쓰지
+   * 않은 이용권 한 줄) 다시 열리고, 그렇지 않으면 지난 결과로 보낸다.
+   * **지난 결과를 지우지 않는다**: 막는 것은 새 줄을 만드는 일이다.
+   */
+  const retake = await retakeState(user.id);
+  if (!retake.canStart && retake.lastAttemptId) {
+    redirect(`/v3/${retake.lastAttemptId}/result?again=1`);
+  }
 
   const grants = await v3Grants(user.id);
   /* **어느 전공을 시작하는가.** 이용권이 가리키는 core 를 읽고, 아직

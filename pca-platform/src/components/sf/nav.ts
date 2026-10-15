@@ -36,6 +36,10 @@ export const NAV_CAMPUS: NavItem[] = [
   /* 지금 파는 검사의 집계. 옛 검사 집계(`/org/insights`)와 따로 둔다:
      둘을 한 쪽에 담으면 어느 검사의 수인지 담당자가 가릴 수 없다 */
   { href: "/org/v3", label: "navV3Insights", icon: "compass" },
+  /* 학생 계정을 담당자가 직접 다루는 자리(규격 §12·§25). **집계 바로
+     아래다**: 집계에서 `아직 안 친 학생이 몇` 을 읽은 사람이 다음에 하는
+     일이 그 학생들을 보는 것이다 */
+  { href: "/org/v3/students", label: "navV3Students", icon: "users" },
   { href: "/org/insights", label: "navCareerInsights", icon: "compass" },
   { href: "/org/evidence-insights", label: "navEvidenceInsights", icon: "ladder" },
   { href: "/org/reports", label: "navReports", icon: "doc", soon: true },

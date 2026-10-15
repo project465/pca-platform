@@ -119,6 +119,18 @@
  * 리포트인지가 먼저 읽혀야 그 아래 문장이 학교가 보증한 말로 읽힌다.
  * 종이는 학생이 보관하고 대학이 결과물로 전달하는 자리라 더 그렇다.
  */
+/* 재응시가 막혀 돌아온 사람에게 적는 줄(규격 §7·§21).
+   **화면에서만 선다**: 종이에 찍히면 그 종이를 받은 학생이 자기 결과가
+   거절된 것으로 읽는다 */
+.rs-again {
+  display: grid; gap: 4px; margin: 0 0 var(--r-s4);
+  padding: var(--r-s3) var(--r-s4); border-radius: var(--r-r);
+  background: var(--r-sunk); box-shadow: inset 3px 0 0 var(--r-accent);
+  font-size: var(--r-t-gloss); color: var(--r-ink-2);
+}
+.rs-again b { font-size: var(--r-t-body); color: var(--r-ink); }
+@media print { .rs-again { display: none; } }
+
 /* ── A. Identity 한 덩이(규격 §6) ──
    학교 · 학과 · 전공 맥락 · 제품 이름 · 응답일이 한 자리에 선다. 전에는
    학교가 맨 위, 등급과 응답일이 큰 문장 **아래**로 갈려 있어서 신분을

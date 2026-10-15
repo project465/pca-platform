@@ -149,7 +149,33 @@ export default async function V3Screen({
     : pickKind === "role" ? (v.attempt.role_interest ?? [])
       : pickKind === "org" ? (v.attempt.org_interest ?? []) : undefined;
 
-  const answered = Object.keys(await answersOf(v.attempt.id)).length;
+  const saved = await answersOf(v.attempt.id);
+  const answered = Object.keys(saved).length;
+
+  /**
+   * 제출 전 검토(규격 §6).
+   *
+   * **답해야 하는 화면 가운데 아직 비어 있는 자리**를 끝 화면이 적는다.
+   * 전에는 다 풀지 않고도 제출 단추가 그대로 섰고, 비어 있는 자리가 어디
+   * 인지는 **아무 화면도 말하지 않았다.**
+   *
+   * **채점을 바꾸지 않는다**: 여기서 세는 것은 저장된 응답이 있는가뿐이고,
+   * 비어 있어도 제출은 막지 않는다(묻지 않은 자리와 답하지 않은 자리를
+   * 가르는 일은 채점이 이미 한다). 하는 일은 **어디로 돌아가면 되는지를
+   * 적는 것**이다.
+   */
+  const gaps = sc.kind === "done"
+    ? v.plan.screens
+      .map((x, i) => ({ x, i }))
+      .filter(({ x }) => x.required && x.items.length
+        && x.items.some((id) => saved[id] === undefined))
+      .map(({ x, i }) => ({
+        index: i,
+        label: [x.eyebrow, x.question ?? x.subject].filter(Boolean).join(" · ")
+          || `${i + 1}번째 화면`,
+      }))
+      .slice(0, 12)
+    : undefined;
 
   const model: ScreenModel = {
     attemptId: v.attempt.id,
@@ -197,6 +223,8 @@ export default async function V3Screen({
          않는다: 그 둘이 섞인 수는 응시자에게 `설문 쉰 문항` 으로 읽힌다 */
       judged: judgedCount(v.plan.screens),
     } : undefined,
+    /* 아직 비어 있는 자리. 끝 화면에서만 센다 */
+    gaps,
     /* 기본 정보는 시작 화면에서 받았다. 이 화면은 **고치는 자리**다 */
     profile: sc.kind === "profile"
       ? { stage, field: v.attempt.grad_field, undergrad: v.attempt.undergrad_core }
