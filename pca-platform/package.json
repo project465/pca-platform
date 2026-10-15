@@ -201,7 +201,8 @@
     "pcu:cli": "tsx scripts/pcu-cli-audit.ts",
     "pcu:readiness": "tsx scripts/pcu-readiness.ts",
     "pcu:routing": "tsx scripts/pcu-routing-check.ts",
-    "pcu:review": "tsx scripts/pcu-review-shots.ts"
+    "pcu:review": "tsx scripts/pcu-review-shots.ts",
+    "pcu:spec": "tsx scripts/pcu-spec-review.ts"
   },
   "dependencies": {
     "@types/nodemailer": "^8.0.1",
