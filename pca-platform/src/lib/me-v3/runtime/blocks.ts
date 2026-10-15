@@ -213,6 +213,21 @@ export type Deps = {
    */
   termGloss: (text: string) => string | null;
   roleName: (code: string) => string;
+  /**
+   * 그 전공의 이름. 등록부의 `name_ko` 를 그대로 받는다.
+   *
+   * **이 파일에 전공 이름을 글자로 적지 않는다.** 산업 장면의 큰 글씨가
+   * `기계공학자` 를 박아 두고 있었고, 그래서 **스무 Core 전부**가 관심
+   * 산업을 고른 바로 다음 화면에서 기계공학 문맥을 받았다. 경영학과
+   * 학생이 `고른 두 산업에서 기계공학자가 다루는 일` 을 읽은 자리가
+   * 이것이다. `ME_CORE` 로 떨어진 것이 아니라 **떨어질 자리가 없었다**:
+   * `core_code` 도 세션 복구도 멀쩡했고 문구만 상수였다.
+   *
+   * 받아 오는 쪽으로 고치면 Core 를 하나 더 만드는 일이 이 파일을 고치는
+   * 일이 되지 않는다(`result/chains.ts` 에서 영역 코드를 공통 층에 박아
+   * 두어 전기전자 응시자에게 기계공학 작성 차례가 나간 것과 같은 종류다).
+   */
+  majorName: string;
 };
 
 /**
@@ -249,7 +264,7 @@ const AX_ASK: Record<string, string> = {
 const TIER_RANK: Record<string, number> = { BASIC: 0, STANDARD: 1, PRO: 2 };
 
 export function buildPlan(input: PlanInput, d: Deps): Plan {
-  const { domainName, wording, gridRow } = d;
+  const { domainName, wording, gridRow, majorName } = d;
   /**
    * **등급 거름막을 한자리에 둔다.**
    *
@@ -303,8 +318,8 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
       pack: scenes[0].code,
       eyebrow: "관심 산업",
       question: scenes.length > 1
-        ? "고른 두 산업에서 기계공학자가 다루는 일"
-        : `${scenes[0].sc.name}에서 기계공학자가 다루는 일`,
+        ? `고른 두 산업에서 ${majorName} 전공자가 다루는 일`
+        : `${scenes[0].sc.name}에서 ${majorName} 전공자가 다루는 일`,
       help: "이 틀을 가지고 다음 질문을 읽으시면 됩니다.",
       /* **산업마다 카드 하나이고 줄은 셋까지다**(규격 §6).
          앞 판본은 산업 설명 한 문단(`scene`)을 큰 글씨 아래에 깔고 그
@@ -430,8 +445,8 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
         eyebrow: "대학원 경험",
         question: "대학원 경험을 따로 확인합니다",
         help: "이 전공을 받으실 수 있게 하려고 묻는 자리입니다.",
-        chips: ["다룬 분야", "옮겨 쓸 수 있는 방법", "기계공학 작업 시점",
-                "학부에서 깊게 간 작업"],
+        chips: ["다룬 분야", "옮겨 쓸 수 있는 방법", `${majorName} 쪽 활동 시점`,
+                "학부에서 깊게 간 활동"],
         items: [],
       });
     }

@@ -36,7 +36,8 @@ import { buildPlan, type Plan } from "../src/lib/me-v3/runtime/blocks";
 import { branchBlock, crossField } from "../src/lib/me-v3/runtime/routing";
 import {
   content, domainName, estimate, gridRowOf, industryChoices, industryGloss,
-  industryScene, roleChoices, roleName, wordingOf } from "../src/lib/me-v3/runtime/session";
+  industryScene, planDeps, roleChoices, roleName, wordingOf,
+} from "../src/lib/me-v3/runtime/session";
 import { planCost } from "../src/lib/me-v3/response-count";
 import type { GradField, Stage, Tier } from "../src/lib/me-v3/scoring/types";
 
@@ -58,16 +59,9 @@ function ok(n: string, good: boolean, d = ""): void {
   else { fail += 1; console.log(`  걸림  ${n}${d ? " — " + d : ""}`); }
 }
 
-const DEPS = {
-  items: content(CORE).bank.items as never,
-  domainName: (td: string) => domainName(CORE, td),
-  wording: (id: string, st: string) => wordingOf(CORE, id, st),
-  gridRow: (td: string) => gridRowOf(CORE, td),
-  scene: (c: string) => industryScene(CORE, c),
-  gloss: (i: string) => industryGloss(CORE, i),
-  termGloss: (t: string) => termGlossOf(CORE, t),
-  roleName: (c: string) => roleName(CORE, c),
-};
+/* **제품이 쓰는 묶음 하나를 그대로 읽는다**(`planDeps`). 베낀 묶음은
+   화면이 읽는 값이 늘 때 뒤처진다 */
+const DEPS = planDeps(CORE);
 /* 문면은 길이 계산에 쓰지 않는다. 자리만 선다 */
 function wordingHack(id: string, _st: string): string { return id; }
 

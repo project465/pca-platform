@@ -9,8 +9,15 @@
  */
 import { readdirSync, readFileSync } from "node:fs";
 import {
-  coresForMarket, previewOpenCores, sellableCores,
+  coresForMarket, hasCoreFile, previewOpenCores, sellableCores,
 } from "../src/lib/me-v3/core-registry";
+import { buildPlan } from "../src/lib/me-v3/runtime/blocks";
+import { branchBlock } from "../src/lib/me-v3/runtime/routing";
+import {
+  content, industryChoices, planDeps, roleChoices,
+} from "../src/lib/me-v3/runtime/session";
+import { xfieldKo } from "../src/lib/me-v3/result/text.ko";
+import { CONTENT_DIR } from "../src/lib/me-v3/core-registry";
 import { campusFixturePath } from "../src/lib/campus/registry";
 
 let fail = 0, pass = 0;
@@ -247,6 +254,98 @@ function main(): void {
     else process.env.APP_ENV = keptApp;
     ok("운영에서는 확인용 학교가 붙지 않는다", prod === null, prod ?? "붙지 않는다");
     ok("staging 에서는 확인용 학교가 붙는다", stage !== null, stage ?? "없다");
+  }
+
+  /**
+   * **다른 Core 가 기계공학 문맥으로 새지 않는다.**
+   *
+   * 운영에서 실제로 났다. 경영학과 학생이 관심 산업을 고른 바로 다음 화면
+   * 에서 `고른 두 산업에서 기계공학자가 다루는 일` 을 읽었다. `core_code`
+   * 도 등록부도 세션 복구도 멀쩡했고, Core 를 모르게 짠 화면 묶음 층이
+   * 그 문구를 **글자로** 들고 있었다: 그래서 스무 Core 전부가 그 자리에서
+   * 같은 것을 받았다.
+   *
+   * 그 모양을 고친 것으로 끝내지 않는다. 화면 묶음의 틀(머리말 · 주제 ·
+   * 질문 · 도움말 · 맥락 줄 · 알약)은 전공 이름 말고는 Core 를 모르는
+   * 글이라, **거기에 다른 전공 이름이 서면 그것이 곧 누출이다.** 문항
+   * 문면과 팩 이름은 그 Core 의 콘텐츠라 여기서 세지 않는다.
+   */
+  console.log("\n── 다른 Core 가 남의 전공 문맥을 받지 않는가\n");
+  {
+    const terms = JSON.parse(readFileSync(
+      `${CONTENT_DIR}/me-v3-terms.json`, "utf8")) as
+      { by_core: Record<string, Record<string, string>> };
+    const withItems = cores.filter((c) => hasCoreFile(c.code, "items"));
+    const names = withItems.map((c) => c.name_ko);
+    const noOwn: string[] = [];
+    const leaked: string[] = [];
+    for (const c of withItems) {
+      const tds = content(c.code).domains.domains.map((d) => d.code);
+      const inds = industryChoices(c.code).map((x) => x.code);
+      const roles = roleChoices(c.code).map((x) => x.code);
+      /* 타계열 대학원생으로 세운다: 대학원 맥락 묶음까지 서게 해야
+         그 자리의 알약도 함께 세어진다 */
+      const plan = buildPlan({
+        tier: "PRO", stage: "master",
+        branchBlock: branchBlock("master", "BUSINESS"), crossField: true,
+        probe: tds.slice(0, 2), deep: tds.slice(0, 3),
+        industryInterest: inds.slice(0, 2), roleInterest: roles.slice(0, 1),
+        tiedPair: tds.slice(0, 2),
+      }, planDeps(c.code));
+      const scene = plan.screens.find((x) => x.id === "scene");
+      if (!scene?.question?.includes(c.name_ko)) {
+        noOwn.push(`${c.code} ← ${scene?.question ?? "장면 화면 없음"}`);
+      }
+      /* 그 Core 의 콘텐츠에서 온 이름(산업팩 · 역할팩)은 걷어 내고 본다.
+         걷지 않으면 팩 이름 안의 글자가 남의 전공 이름으로 세어져
+         **멀쩡한 Core 가 걸린다** */
+      /* 그 Core 의 콘텐츠에서 오는 말은 전부 걷어 낸다: 전공 이름 ·
+         산업팩 · 역할팩 · 영역 이름 · 그 전공의 용어 받침. 걷지 않으면
+         간호의 `처치나 교육` 과 보건의 `건강 교육·캠페인 운영` 이 남의
+         전공 이름으로 세어져 **멀쩡한 Core 가 걸린다** */
+      const mine = [
+        c.name_ko,
+        ...industryChoices(c.code).map((x) => x.name),
+        ...roleChoices(c.code).map((x) => x.name),
+        ...content(c.code).domains.domains.map((d) => d.name),
+        ...Object.values(terms.by_core[c.code] ?? {}),
+      ];
+      /**
+       * **문항이 선 화면의 큰 글씨와 주제는 세지 않는다.** 저쪽은 문항
+       * 문면과 영역 이름이 그대로 서는 자리라 그 Core 의 콘텐츠다. 간호의
+       * `처치나 교육` 과 보건의 `건강 교육·캠페인 운영` 이 거기서 와서,
+       * 세면 **멀쩡한 Core 가 걸린다.** 세는 것은 화면 묶음이 스스로 적는
+       * 글(머리말 · 도움말 · 맥락 줄 · 알약)과 **읽기만 하는 화면의 큰
+       * 글씨**(산업 장면 · 전환 · 고르기)다.
+       */
+      const chrome = plan.screens.flatMap((x) => [
+        x.eyebrow ?? "", x.help ?? "", x.strip ?? "", ...(x.chips ?? []),
+        ...(x.items.length ? [] : [x.subject ?? "", x.question ?? ""]),
+      ]).join(" ⋮ ");
+      /* **긴 말을 먼저 걷는다.** 짧은 쪽을 먼저 걷으면 긴 말 안이 끊겨
+         남은 토막이 남의 전공 이름으로 세어진다: `간호` 를 먼저 걷으면
+         `간호사가 직접 하는 처치나 교육` 이라는 용어 받침이 그 뒤로는
+         짝이 맞지 않아 `교육` 이 남았다 */
+      let left = chrome;
+      for (const m of [...mine].sort((a, b) => b.length - a.length)) {
+        left = left.split(m).join(" ");
+      }
+      for (const n of names) {
+        if (n !== c.name_ko && left.includes(n)) leaked.push(`${c.code} ← ${n}`);
+      }
+      /* 결과지의 대학원 맥락 이름표도 같은 자리였다 */
+      const bridge = xfieldKo("XF_BRIDGE", c.name_ko) ?? "";
+      if (!bridge.includes(c.name_ko)) leaked.push(`${c.code} ← 결과 이름표`);
+      for (const n of names) {
+        if (n !== c.name_ko && !c.name_ko.includes(n) && bridge.includes(n)) {
+          leaked.push(`${c.code} ← 결과 이름표에 ${n}`);
+        }
+      }
+    }
+    ok("Core 마다 제 전공 이름이 산업 장면 화면에 선다", noOwn.length === 0,
+      noOwn.length ? noOwn.join(" · ") : `${withItems.length}개`);
+    ok("화면 틀에 남의 전공 이름이 서지 않는다", leaked.length === 0,
+      leaked.length ? leaked.join(" · ") : `${withItems.length}개 × 틀 전부`);
   }
 
   console.log("\n── 성숙도 분포\n");

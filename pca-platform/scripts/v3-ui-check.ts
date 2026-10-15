@@ -28,7 +28,7 @@ import { controlOf, type MenuContext } from "../src/lib/me-v3/runtime/menus";
 import { branchBlock, crossField } from "../src/lib/me-v3/runtime/routing";
 import {
   content, domainName, gridRowOf, industryChoices, industryGloss, industryScene,
-  itemOf, levelOptions, orgChoices, roleChoices, roleName, wordingOf,
+  itemOf, levelOptions, orgChoices, planDeps, roleChoices, roleName, wordingOf,
 } from "../src/lib/me-v3/runtime/session";
 import type { GradField, Stage, Tier } from "../src/lib/me-v3/scoring/types";
 
@@ -80,16 +80,9 @@ function ctx(tied: string[]): MenuContext {
   };
 }
 
-const DEPS = {
-  items: content(CORE).bank.items as never,
-  domainName: (td: string) => domainName(CORE, td),
-  wording: (id: string, st: string) => wordingOf(CORE, id, st),
-  gridRow: (td: string) => gridRowOf(CORE, td),
-  scene: (c: string) => industryScene(CORE, c),
-  gloss: (i: string) => industryGloss(CORE, i),
-  termGloss: (t: string) => termGlossOf(CORE, t),
-  roleName: (c: string) => roleName(CORE, c),
-};
+/* **제품이 쓰는 묶음 하나를 그대로 읽는다.** 베껴 두었더니 화면이 읽는
+   값이 늘 때(전공 이름) 이쪽이 뒤처져 옛 화면을 세고 있었다 */
+const DEPS = planDeps(CORE);
 
 function plan(args: {
   tier: Tier; stage: Stage; field: GradField | null;

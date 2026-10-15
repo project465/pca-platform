@@ -27,11 +27,13 @@ import { createHash } from "node:crypto";
 import { chromium, type Page } from "playwright";
 import {
   BASE, assertFreshServer, assertPreviewServer, gateCreds, loadEnv, login,
-  makeStudent,
+  makeStudent, registerCampusStudent,
 } from "./_loop-fixture";
 import { enterAssessment, walk } from "./_v3-walk";
 import { query, queryOne } from "../src/lib/db";
-import { coreFile } from "../src/lib/me-v3/core-registry";
+import {
+  core as coreMeta, coreFile, registry,
+} from "../src/lib/me-v3/core-registry";
 import {
   allLeaves, readinessOf, statusOf, university,
 } from "../src/lib/campus/registry";
@@ -136,6 +138,15 @@ async function main(): Promise<void> {
   const TIER = (process.env.TIER ?? "PRO") as "BASIC" | "STANDARD" | "PRO";
   const student = await makeStudent(MAIL);
   /**
+   * **학교가 발급한 계정으로 밟는다.**
+   *
+   * 학과 상세의 `검사 시작하기` 는 **그 학교의 등록된 학생**에게만 공통
+   * 시작 화면을 연다(운영 Canary 에서 발급 계정과 응시 계정이 갈린 뒤로
+   * 둔 규칙이다). 줄 없이 들어가면 그 단추가 학교 로그인으로 돌려보내고,
+   * 이 검사는 **멀쩡한 제품을 `검사가 열리지 않는다` 로 적는다.**
+   */
+  await registerCampusStudent(student.id, leaf.uni, leaf.code);
+  /**
    * **이용권이 아직 Core 를 가리키지 않는다.** `v3Grants` 가 거르는 칸은
    * 엔진의 전역 판본(`ASSESSMENT_VERSION`)이고 상품표의 `product_code` 는
    * 기계공학 쪽 줄이다. 그래서 다른 Core 의 응시도 그 줄로 열린다. 고치는 일은
@@ -218,6 +229,27 @@ async function main(): Promise<void> {
 
     const first = await walk(p, 400);
     ok("끝까지 간다", first.done, `화면 ${first.screens}`);
+    /**
+     * **지나온 화면이 그 전공의 말로 섰는가.**
+     *
+     * 운영 Canary 의 P0 가 이 자리였다. 경영학과 학생이 관심 산업을 고른
+     * 바로 다음 화면에서 `고른 두 산업에서 기계공학자가 다루는 일` 을
+     * 읽었고, **끝까지 가는지만 보던 이 검사는 그것을 보지 못했다.**
+     * 세는 것은 둘이다: 그 자리에 제 전공 이름이 서는가, 그리고 화면
+     * 어디에도 남의 전공 이름이 서지 않는가.
+     */
+    {
+      const mine = coreMeta(CORE).name_ko;
+      const scene = first.heads.find((h) => /다루는 일$/.test(h));
+      ok("산업 장면 화면이 이 전공의 이름을 적는다",
+        !!scene && scene.includes(mine), scene ?? "그 화면을 지나지 않았다");
+      const others = registry().cores
+        .map((c) => c.name_ko).filter((n) => n !== mine && !mine.includes(n));
+      const chrome = first.heads.filter((h) => /다루는 일$|시점$|분야$/.test(h));
+      const leak = chrome.filter((h) => others.some((n) => h.includes(n)));
+      ok("지나온 화면에 남의 전공 이름이 없다", leak.length === 0,
+        leak[0] ?? `${chrome.length}줄`);
+    }
     const answers = Number((await queryOne<{ n: string }>(
       `SELECT count(*)::text AS n FROM v3_responses WHERE attempt_id = $1`,
       [attempt]))?.n ?? 0);
@@ -256,8 +288,13 @@ async function main(): Promise<void> {
          다음 사람이 화면을 다시 열어 눈으로 찾는다 */
       const heads = (await p.locator("h2, h3").allInnerTexts())
         .map((t) => t.trim().split("\n")[0]).filter(Boolean);
+      /* **이름이 바뀐 것과 절이 사라진 것은 다른 일이다.** 그 칸은
+         `앞으로 채울 것` 에서 `더 채울 부분` 으로 이름이 갈렸고(규격 §3),
+         그 뒤로 이 줄은 절이 멀쩡히 서 있어도 늘 걸리는 줄이었다. 옛
+         이름을 지우지 않는 까닭은 옛 판본으로 굳은 결과지를 이 검사가
+         그대로 읽기 때문이다 */
       ok("결과지에 부족한 부분이 선다",
-        /앞으로 채울 것|비어 있는 것|설명 근거를 더 붙일/.test(body),
+        /더 채울 부분|앞으로 채울 것|비어 있는 것|설명 근거를 더 붙일/.test(body),
         heads.slice(0, 12).join(" / "));
     }
     ok("결과지에 다음 할 일이 선다", /지금 해볼 것|다음에 할 일|지금 할 일/.test(body));

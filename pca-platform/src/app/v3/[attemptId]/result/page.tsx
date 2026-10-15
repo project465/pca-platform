@@ -18,8 +18,8 @@ import {
 import {
   actionKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO, BASIC_GROUP_KO, bridgeKo,
   commonKo, domainChainKo, draftKo, gapCellKo, gapKo, gapShortKo, headlineKo,
-  HORIZON_KO, QUALITY_KO, TIER_NOTE_KO, TRANS_ORDER, TRANS_STEP_KO, XFIELD_KO,
-  XFIELD_ORDER, ZONE_LEAD_KO, ZONE_TITLE_KO,
+  HORIZON_KO, QUALITY_KO, TIER_NOTE_KO, TRANS_ORDER, TRANS_STEP_KO,
+  XFIELD_ORDER, xfieldKo, ZONE_LEAD_KO, ZONE_TITLE_KO,
 } from "@/lib/me-v3/result/text.ko";
 import {
   orgTypesFor, regionLayer, regionOrganizations, regionOrgCount,
@@ -550,7 +550,7 @@ function Translation({ view, major }: { view: TranslationView; major: string }) 
      어디로도 가지 않으면 받고 쓰지 않은 응답이 된다 */
   const xf = XFIELD_ORDER
     .map((id) => view.xfield.find((x) => x.item_id === id))
-    .filter((x): x is TranslationView["xfield"][number] => !!x && !!XFIELD_KO[x.item_id]);
+    .filter((x): x is TranslationView["xfield"][number] => !!x && !!xfieldKo(x.item_id, major));
   if (!rows.length && !xf.length) return null;
   const draft = draftKo(view.steps);
   return (
@@ -584,7 +584,7 @@ function Translation({ view, major }: { view: TranslationView; major: string }) 
           <dl>
             {xf.map((x) => (
               <div key={x.item_id}>
-                <dt>{XFIELD_KO[x.item_id]}</dt>
+                <dt>{xfieldKo(x.item_id, major)}</dt>
                 <dd>{x.choice}</dd>
               </div>
             ))}

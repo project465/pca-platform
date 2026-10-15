@@ -23,7 +23,7 @@ import type {
 import type { Bank, BankItem } from "../scoring/normalize";
 import { bankVersionOf, SCORING_VERSION } from "../scoring/version";
 import {
-  buildPlan, type IndustryScene, type Plan, type PlanInput, type Screen,
+  buildPlan, type Deps, type IndustryScene, type Plan, type PlanInput, type Screen,
 } from "./blocks";
 import { enqueue, syncProfile } from "../platform";
 import { progressOf, type Progress } from "./progress";
@@ -753,8 +753,15 @@ export function tiedPairIn(answers: Record<string, Answer>, tds: string[]): stri
   return tied.length > 1 ? tied.slice(0, 2) : [];
 }
 
-/** `buildPlan` 이 읽는 것. 한자리에서 묶어 두 자리가 갈리지 않게 한다 */
-function planDeps(core: string) {
+/**
+ * `buildPlan` 이 읽는 것. 한자리에서 묶어 두 자리가 갈리지 않게 한다.
+ *
+ * **내보내는 까닭이 있다.** 눌러 보지 않는 검사 셋(`v3:ui` · `v3:length` ·
+ * `v3:copy`)이 이 묶음을 각각 베껴 들고 있었다. 그러면 화면이 읽는 값이
+ * 하나 늘 때 네 자리 가운데 세 곳이 뒤처지고, **그 셋이 보는 것은 그만큼
+ * 옛 화면**이다. 전공 이름이 여기로 들어오는 자리가 그 모양이었다.
+ */
+export function planDeps(core: string): Deps {
   return {
     items: content(core).bank.items,
     domainName: (td: string) => domainName(core, td),
@@ -764,6 +771,10 @@ function planDeps(core: string) {
     gloss: (itemId: string) => industryGloss(core, itemId),
     termGloss: (text: string) => termGlossOf(core, text),
     roleName: (code: string) => roleName(core, code),
+    /* 그 전공의 이름. **등록부가 유일한 출처다**(설계 원칙 10): 화면 쪽에
+       따로 적어 두면 Core 를 더하는 날 둘이 갈리고, 갈린 쪽이 남의 전공
+       이름을 적는다 */
+    majorName: coreOf(core).name_ko,
   };
 }
 

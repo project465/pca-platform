@@ -49,8 +49,16 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
  * 글자뿐이고, 그래서 이 판본만 올린다. 그리고 **그 파일을 결과지 동결
  * 목록에 같이 적었다**: 목록에 없는 파일은 고쳐도 동결이 모르는 채로
  * 통과한다.
+ *
+ * copy.27 — **타계열 대학원 맥락의 이름표 둘이 `기계공학` 을 박고 있었다**
+ * (운영 Canary P0 와 같은 종류). 문항 은행은 Core 마다 제 말로 묻고 있었고
+ * (`경영 문제에도 쓸 수 있는 것`) **읽는 이름표만** 한 Core 의 말을 들고
+ * 있어서, 타계열 대학원을 다닌 경영학과 학생의 결과지가 `기계공학 문제에도
+ * 쓸 수 있는 방법` 을 적었다. 표를 함수로 바꿔 결과지가 이미 들고 있는
+ * 전공 이름(`resultMeta.major`)을 받는다. **판정도 결과 모델도 한 줄
+ * 바뀌지 않았다.**
  */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.26";
+export const RESULT_COPY_VERSION = "me-v3-result-copy.27";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**

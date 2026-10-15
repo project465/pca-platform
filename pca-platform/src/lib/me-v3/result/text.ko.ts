@@ -642,13 +642,23 @@ export const TRANS_ORDER = [
  *
  * **문항 번호를 화면에 적지 않는다.** 여기 없는 자리는 화면이 아예 세우지
  * 않는다(`TRANS_STEP_KO` 와 같은 규칙이다).
+ *
+ * **전공 이름을 글자로 적지 않는다.** 표로 두었을 때 둘이 `기계공학` 을
+ * 박고 있었고, 그래서 타계열 대학원을 다닌 경영학과 학생의 결과지가
+ * `기계공학 문제에도 쓸 수 있는 방법` 을 적었다. 문항 은행은 Core 마다
+ * 제 말로 묻고 있었고(`경영 문제에도 쓸 수 있는 것`) **읽는 이름표만**
+ * 한 Core 의 말을 들고 있었다: 응시 화면의 산업 장면과 같은 종류다.
+ * 전공 이름은 결과지가 이미 들고 있는 값(`resultMeta.major`)을 받는다.
  */
-export const XFIELD_KO: Record<string, string> = {
-  XF_FIELD: "대학원에서 다룬 분야",
-  XF_BRIDGE: "기계공학 문제에도 쓸 수 있는 방법",
-  XF_ME_RECENT: "기계공학 쪽 작업을 마지막으로 한 때",
-  XF_ME_DEPTH: "학부에서 가장 깊게 간 작업",
-};
+export function xfieldKo(id: string, major: string): string | null {
+  switch (id) {
+    case "XF_FIELD": return "대학원에서 다룬 분야";
+    case "XF_BRIDGE": return `${major} 쪽 문제에도 쓸 수 있는 방법`;
+    case "XF_ME_RECENT": return `${major} 쪽 활동을 마지막으로 한 때`;
+    case "XF_ME_DEPTH": return "학부에서 가장 깊게 간 활동";
+    default: return null;
+  }
+}
 
 export const XFIELD_ORDER = [
   "XF_ME_DEPTH", "XF_ME_RECENT", "XF_FIELD", "XF_BRIDGE",

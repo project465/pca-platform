@@ -80,15 +80,40 @@ export async function pickOne(
  * 품질이 `다시 볼 것` 으로 붙고, 그러면 예행이 만든 자료가 파일럿 표에서
  * 손볼 일로 선다.
  */
+/**
+ * 지나온 화면의 **큰 글씨와 머리말**을 모아 돌려준다.
+ *
+ * 운영 Canary 의 P0 가 이 자리였다: 관심 산업을 고른 바로 다음 화면이
+ * Core 와 상관없이 `기계공학자` 를 적었고, **끝까지 가는지만 보는 검사는
+ * 그것을 보지 못했다.** 쪽이 서는가와 그 쪽이 그 전공의 말로 서는가는
+ * 다른 질문이다.
+ */
+export type WalkOut = {
+  screens: number; done: boolean; covered: number; heads: string[];
+};
+
 export async function walk(
   p: Page, max: number,
-): Promise<{ screens: number; done: boolean; covered: number }> {
+): Promise<WalkOut> {
   /* **시작 안내를 먼저 지난다.** 그 쪽에도 짙은 단추가 하나 있어서, 모르고
      들어오면 `끝 화면` 으로 보고 한 문항도 안 푼 응시를 통과시킨다 */
   await enterAssessment(p);
   let screens = 0, covered = 0, stuck = 0;
+  const heads: string[] = [];
+  const note = async (): Promise<void> => {
+    for (const sel of ["h1.qs-q", "p.qs-eyebrow", "p.qs-ctx"]) {
+      /* **없는 자리를 기다리지 않는다.** 머리말과 맥락 줄이 있는 화면은
+         절반뿐인데, 기본 기다림으로 두면 한 화면에 삼십 초를 쓰고 예순
+         화면짜리 검사가 끝나지 않는다 */
+      const one = p.locator(sel).first();
+      if (!(await one.count())) continue;
+      const t = await one.textContent({ timeout: 500 }).catch(() => null);
+      if (t?.trim()) heads.push(t.trim());
+    }
+  };
   for (let i = 0; i < max; i += 1) {
     await p.waitForLoadState("networkidle");
+    await note();
 
     /* 1. 고르는 묶음마다 하나씩. 이미 고른 자리는 덮지 않는다.
           **한 칸으로 밀지 않는다**: 열두 영역에 같은 값을 넣으면 영역
@@ -161,15 +186,15 @@ export async function walk(
     if (await seeResult.count()) {
       await seeResult.first().click().catch(() => undefined);
       await p.waitForLoadState("networkidle");
-      return { screens, done: true, covered };
+      return { screens, done: true, covered, heads };
     }
     const go = p.locator("button.qs-btn-main");
-    if (!(await go.count())) return { screens, done: false, covered };
+    if (!(await go.count())) return { screens, done: false, covered, heads };
     const before = p.url();
     await go.first().click({ force: true }).catch(() => undefined);
     await p.waitForTimeout(400);
     await p.waitForLoadState("networkidle");
-    if (/\/result/.test(p.url())) return { screens, done: true, covered };
+    if (/\/result/.test(p.url())) return { screens, done: true, covered, heads };
     if (p.url() === before) {
       /* **같은 자리에서 맴돌면 그만둔다.** 사백 번을 돌고 나서 `끝까지 가지
          못했다` 만 적으면 어디서 막혔는지 모른다. 세 번 더 보고 멈춘다 */
@@ -195,11 +220,11 @@ export async function walk(
           console.error(`[walk]   쪽을 ${process.env.WALK_DUMP} 에 떠 두었다`);
         }
       }
-      return { screens, done: false, covered };
+      return { screens, done: false, covered, heads };
     }
     stuck = 0;
   }
-  return { screens, done: false, covered };
+  return { screens, done: false, covered, heads };
 }
 
 /** 알약으로 고르는 자리. `select` 가 아니라 `label` 을 누른다 */

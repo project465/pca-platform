@@ -29,7 +29,7 @@ import { coreFile } from "../src/lib/me-v3/core-registry";
 import { buildPlan } from "../src/lib/me-v3/runtime/blocks";
 import { branchBlock } from "../src/lib/me-v3/runtime/routing";
 import {
-  content, domainName, gridRowOf, industryGloss, industryScene, roleName,
+  content, domainName, gridRowOf, industryGloss, industryScene, planDeps, roleName,
   wordingOf,
 } from "../src/lib/me-v3/runtime/session";
 import {
@@ -242,16 +242,8 @@ for (const tier of ["BASIC", "STANDARD", "PRO"] as Tier[]) {
       industryInterest: ["INDUSTRY_SEMICON_V2"],
       roleInterest: ["ROLE_CAE_V2"],
       tiedPair: TD.slice(0, 2),
-    }, {
-      items: content(CORE).bank.items as never,
-      domainName: (td: string) => domainName(CORE, td),
-      wording: (id: string, st: string) => wordingOf(CORE, id, st),
-      gridRow: (td: string) => gridRowOf(CORE, td),
-      scene: (c: string) => industryScene(CORE, c),
-      gloss: (i: string) => industryGloss(CORE, i),
-      termGloss: (t: string) => termGlossOf(CORE, t),
-      roleName: (c: string) => roleName(CORE, c),
-    });
+    /* **제품이 쓰는 묶음 하나를 그대로 읽는다**(`planDeps`) */
+    }, planDeps(CORE));
     for (const s of plan.screens) {
       for (const slot of ["eyebrow", "subject", "question", "help"] as const) {
         const text = (s as unknown as Record<string, string>)[slot];
