@@ -245,7 +245,12 @@ const GAP_REASONS = [
 
 /** 무엇은 확인됐고 무엇은 아직인지 **같이** 적혀 있는가 */
 function gapShapeOf(t: string): { ok: boolean; why: string } {
-  const good = /확인됐|답하셨|내셨|하셨는데|서 있|확인된 판단 (가운데 )?[^ ]*은/.test(t);
+  /**
+   * **확인된 자리를 적은 토막.** `있고,` 와 `있지만` 을 낱말로 센다:
+   * `아직 비어 있습니다` 의 `있습니다` 까지 세면 **모자란 쪽만 적은 줄이
+   * 통과한다.**
+   */
+  const good = /확인됐|답하셨|내셨|하셨는데|서 있는|있고,|있지만/.test(t);
   const gap = /아직|비어/.test(t);
   if (!gap) return { ok: false, why: "무엇이 아직 없는지가 없다" };
   if (!good) return { ok: false, why: "무엇은 확인됐는지가 없다" };

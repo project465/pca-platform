@@ -8,12 +8,12 @@
 import type { ReasonCode } from "./reason-codes";
 
 export const REASON_KO: Record<ReasonCode, string> = {
-  MISSING_REQUIRED_AXIS: "이 영역이 꼭 보는 판단 가운데 하나가 아직 확인되지 않았습니다",
+  MISSING_REQUIRED_AXIS: "확인된 판단은 있지만, 이 영역이 꼭 보는 판단 가운데 하나가 아직 확인되지 않았습니다",
   MISSING_OUTPUT: "실제 판단 경험은 확인됐지만 이를 남긴 산출물이 아직 확인되지 않았습니다",
   MISSING_OUTPUT_EVIDENCE: "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다",
-  MISSING_VERIFICATION: "무엇과 견주어 확인했는지가 아직 비어 있습니다",
-  INSUFFICIENT_CONFIRMED_AXES: "확인된 판단이 아직 넷에 못 미칩니다",
-  NO_CONFIRMED_AXIS: "이 영역에서 확인된 판단이 아직 없습니다",
+  MISSING_VERIFICATION: "확인된 판단은 있고, 그것을 무엇과 견주어 확인했는지는 아직 비어 있습니다",
+  INSUFFICIENT_CONFIRMED_AXES: "확인된 판단은 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다",
+  NO_CONFIRMED_AXIS: "이 영역의 문항에는 답하셨고, 직접 판단한 자리는 아직 확인되지 않았습니다",
   NO_RESPONSE: "이 영역의 심화 문항에 답이 없습니다",
   NOT_ROUTED: "이 영역은 이번 응시에서 열리지 않았습니다",
   TIER_WITHOUT_DEEP_AXES: "무료 응시는 여덟 판단축을 묻지 않습니다",

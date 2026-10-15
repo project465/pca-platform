@@ -12,7 +12,28 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
 /** 결과지에 나가는 한국어. 문장만 바뀌면 이것만 올린다 */
 /* copy.19 — `EXPLORE_BROADLY` 가 어디에서 해 보면 되는지를 적고(§16),
    경험 빈도의 첫 칸이 응시 화면과 같은 `없음` 이다(§7) */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.24";
+/*
+ * copy.25 — **Gap 이 무엇은 확인됐고 무엇은 아직 없는지 같이 적는다**
+ * (갈래 전문가 검토 §6).
+ *
+ * `확인된 판단이 아직 넷에 못 미칩니다` 는 **무엇이 모자란지만** 적는다.
+ * 그 줄만 읽은 사람은 자기가 한 일이 하나도 세어지지 않은 줄로 읽고, 그
+ * 다음 할 일도 그 틀에서 읽는다. 네 줄을
+ * `확인된 판단은 있고, … 는 아직 …` 으로 고쳤다(`MISSING_REQUIRED_AXIS` ·
+ * `MISSING_VERIFICATION` · `INSUFFICIENT_CONFIRMED_AXES` ·
+ * `NO_CONFIRMED_AXIS`). **없는 것을 있다고 적지 않는다**: 네 줄 모두
+ * `zones.ts` 가 **확인된 판단이 하나 이상일 때만** 내놓는 코드이고
+ * (`confirmedAll === 0` 이면 `NO_CONFIRMED_AXIS` 나 `NO_RESPONSE` 로 먼저
+ * 갈린다), `NO_CONFIRMED_AXIS` 는 `anyAnswer` 일 때만 선다.
+ *
+ * 그리고 **직무를 권하지 않는다**(§11): `지금 확인된 영역에서 이어 볼 곳`
+ * 을 `이 경험이 활용될 수 있는 일` 로 적는다.
+ *
+ * **판정도 결과 모델도 한 줄 바뀌지 않았다.** `REASON_KO` 는 `scoring/`
+ * 에 있지만 채점이 읽지 않는 번역표이고, 바뀐 것은 그 코드를 사람의 말로
+ * 옮기는 글자뿐이다.
+ */
+export const RESULT_COPY_VERSION = "me-v3-result-copy.25";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
