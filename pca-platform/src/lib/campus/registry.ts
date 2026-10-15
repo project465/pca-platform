@@ -577,6 +577,36 @@ export function contextOf(u: CampusUniversity, found: CampusLeaf): CampusContext
 }
 
 /**
+ * 전공을 고르는 자리의 맥락. **Core 를 비운 채로 돌려준다**(규격 §32).
+ *
+ * 자율전공학부가 하는 일은 **학생이 전공을 고르는 것**이다. 그래서 그
+ * 학부 학생에게도 계정이 나가야 하고, 그 계정의 소속은 등록부에 적힌
+ * 그대로다. 다만 **어느 전공의 자로 재는가는 자동으로 정하지 않는다**:
+ * `core_code` 를 비워 두고, 학생이 전공을 고른 뒤에 그 값이 채워진다.
+ *
+ * 비우는 값을 `null` 이 아니라 빈 글자로 둔 까닭은 `CampusContext` 를
+ * 읽는 자리가 여럿이고, `null` 로 두면 **맥락이 아예 없는 것**과
+ * 구별되지 않아 그 학생의 응시가 학교 집계에서 빠지기 때문이다.
+ */
+export function routingContextOf(
+  u: CampusUniversity, found: CampusLeaf,
+): CampusContext | null {
+  if (!found.leaf.routing_only) return null;
+  return {
+    university_code: u.university_code,
+    college_code: found.college.code,
+    department_code: found.leaf.code,
+    core_code: "",
+    specialization: null,
+  };
+}
+
+/** 학생이 전공을 고른 뒤에 Core 가 정해지는 자리인가 */
+export function pickRequired(ctx: CampusContext): boolean {
+  return ctx.core_code === "";
+}
+
+/**
  * 그 자리가 속한 학부. 학과면 `null`.
  *
  * 집계가 `단과대학 → 학부 → 전공` 으로 굴러갈 수 있는 것이 이 함수

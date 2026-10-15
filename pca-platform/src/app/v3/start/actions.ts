@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { retakeState } from "@/lib/me-v3/retake";
 import { clearCampusEntry, readCampusEntry } from "@/lib/campus/entry";
+import { pickRequired } from "@/lib/campus/registry";
 import { campusStudentOf } from "@/lib/campus/students";
 import {
   currentAttempt, openAttempt, setProfile, v3Grants,
@@ -95,13 +96,39 @@ export async function startV3(form: FormData): Promise<void> {
   const mine = entry
     ? await campusStudentOf(user.id, entry.university_code) : null;
 
+  /**
+   * **자율전공학부 학생의 Core 는 고른 전공이 정한다**(규격 §32 · §33).
+   *
+   * 소속은 등록된 줄 그대로 적고(자율전공학부) 어느 전공의 자로 재는가만
+   * 학생이 고른 자리에서 가져온다. **자동으로 배정하지 않는다**: 고르지
+   * 않았으면 그 자리로 되돌려 보내고, 학부 이름만 보고 특정 Core 로
+   * 짐작하지 않는다.
+   *
+   * 고른 값은 쿠키가 들고 오지만 **그것을 그대로 믿지 않는다**:
+   * `readCampusEntry()` 가 등록부로 다시 맞춰 보고 그 자리가 지금
+   * 응시할 수 있는지까지 본 값이고, 거기서 가져오는 것은 Core 와 갈래
+   * 둘뿐이다. 학과와 단과대학은 늘 등록된 줄이 정한다.
+   */
+  let campus = mine ? mine.ctx : null;
+  if (campus && pickRequired(campus)) {
+    if (!entry || !entry.core_code) {
+      redirect(`/campus/${
+        mine!.row.university_code.toLowerCase()}/majors?pick=1`);
+    }
+    campus = {
+      ...campus,
+      core_code: entry.core_code,
+      specialization: entry.specialization,
+    };
+  }
+
   /* **고른 전공을 그 응시에 적는다**(규격 §20). 폼이 들고 온 값이고,
      믿는 자리는 `openAttempt()` 하나다: 그 시장에서 응시할 수 있는 Core
      가 아니면 거기서 버리고 기본 전공으로 연다(학교 맥락이 늘 먼저다) */
   const a = await openAttempt({
     userId: user.id, tier, stage: stage as Stage, gradField,
     entitlementId: grants[0]?.entitlement_id ?? null,
-    campus: mine ? mine.ctx : null,
+    campus,
     core: picked || null,
   });
   /* 응시 줄에 적혔으므로 쿠키는 더 들고 있지 않는다 */

@@ -3,7 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import "../../../surface.css";
 import "../../campus.css";
 import {
-  coreOf, findLeaf, specializationName, statusOf, university,
+  coreOf, findLeaf, pickRequired, specializationName, statusOf, university,
 } from "@/lib/campus/registry";
 import { campusStudentOf } from "@/lib/campus/students";
 import { currentUser } from "@/lib/session";
@@ -58,7 +58,15 @@ export default async function CampusStart({ params }: Params) {
   if (!found) {
     return <Blocked u={u} why="등록부에서 학과를 찾지 못했습니다" />;
   }
-  const ready = statusOf(u, found) === "READY";
+  /**
+   * **전공을 고르는 자리의 학생은 여기서 시작하지 않는다**(규격 §32·§33).
+   *
+   * 자율전공학부는 준비 중인 자리가 아니라 **학생이 전공을 고르는
+   * 자리**다. 그래서 `준비 중` 으로 적지 않고, `당신은 이 전공입니다` 로
+   * 정해 주지도 않는다. 하는 일은 전공 목록으로 보내는 것 하나다.
+   */
+  const picking = pickRequired(mine.ctx);
+  const ready = !picking && statusOf(u, found) === "READY";
   const core = coreOf(found.leaf);
   const spec = specializationName(found.leaf);
 
@@ -78,11 +86,19 @@ export default async function CampusStart({ params }: Params) {
         <p className="cm-cmp-eyebrow">{u.university_name} · {found.college.name}</p>
         <h1 className="cm-cmp-title">{found.leaf.name}</h1>
         <p className="cm-cmp-lead">
-          {ready
-            ? "학교에 등록된 학과입니다. 이 학과 기준으로 검사를 시작합니다."
-            : "이 학과는 아직 검사를 시작할 수 없습니다."}
+          {picking
+            ? "관심 있는 전공을 고르면 그 전공 기준으로 검사를 시작합니다."
+            : ready
+              ? "학교에 등록된 학과입니다. 이 학과 기준으로 검사를 시작합니다."
+              : "이 학과는 아직 검사를 시작할 수 없습니다."}
         </p>
-        {ready ? (
+        {picking ? (
+          <div className="cm-cmp-cta-row">
+            <Link className="cm-cmp-cta" href={`/campus/${code}/majors?pick=1`}>
+              전공 고르기<span aria-hidden="true">→</span>
+            </Link>
+          </div>
+        ) : ready ? (
           <form action={startFromCampus} className="cm-cmp-cta-row">
             <input type="hidden" name="u" value={u.university_code} />
             <input type="hidden" name="d" value={found.leaf.code} />
@@ -105,7 +121,12 @@ export default async function CampusStart({ params }: Params) {
         <div><dt>학번</dt><dd>{mine.row.student_id}</dd></div>
         <div><dt>이름</dt><dd>{user.name ?? "-"}</dd></div>
         <div><dt>학과</dt><dd>{found.leaf.name}</dd></div>
-        {core ? (
+        {picking ? (
+          <div>
+            <dt>검사</dt>
+            <dd>고른 전공이 정합니다</dd>
+          </div>
+        ) : core ? (
           <div>
             <dt>검사</dt>
             <dd>CareerMatri {core.name_ko}{spec ? ` · ${spec}` : ""}</dd>
@@ -114,9 +135,11 @@ export default async function CampusStart({ params }: Params) {
       </dl>
 
       <p className="cm-cmp-note">
-        {ready
-          ? "문항마다 저장되어 창을 닫아도 보던 자리에서 이어집니다."
-          : "학과 담당자에게 알려 주시면 학교와 함께 확인해 드립니다."}
+        {picking
+          ? "고른 전공은 이 응시에만 적용되고 학과 소속은 그대로 남습니다."
+          : ready
+            ? "문항마다 저장되어 창을 닫아도 보던 자리에서 이어집니다."
+            : "학과 담당자에게 알려 주시면 학교와 함께 확인해 드립니다."}
       </p>
     </CampusShell>
   );

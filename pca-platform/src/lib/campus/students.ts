@@ -20,7 +20,7 @@ import { randomBytes } from "node:crypto";
 import { query, queryOne } from "@/lib/db";
 import { hashPassword } from "@/lib/password";
 import {
-  contextOf, findLeaf, university, type CampusContext,
+  contextOf, findLeaf, routingContextOf, university, type CampusContext,
 } from "./registry";
 
 export type CampusStudentRow = {
@@ -76,13 +76,18 @@ export function checkStudent(
         + ` · 등록부 ${found.college.code}`,
     };
   }
-  if (found.leaf.routing_only) {
-    return {
-      ok: false,
-      why: `전공을 정한 뒤에 고르는 자리입니다: ${found.leaf.name}`,
-    };
-  }
-  const ctx = contextOf(u, found);
+  /**
+   * **자율전공학부 학생도 계정을 받는다**(규격 §32).
+   *
+   * 전에는 이 자리에서 거절했다. 그래서 자율전공학부 명단을 올리면 줄마다
+   * 오류가 나고, **그 학부 학생에게는 계정이 나갈 길이 아예 없었다.**
+   * 전공을 고르는 자리라는 것은 `어느 전공의 자로 재는가` 를 아직 모른다는
+   * 뜻이고, `학생이 아니다` 라는 뜻이 아니다.
+   *
+   * 그래서 소속은 등록부에 적힌 그대로 적고 **Core 는 비워 둔다**: 학생이
+   * 전공을 고를 때 채워진다(`routingContextOf`).
+   */
+  const ctx = contextOf(u, found) ?? routingContextOf(u, found);
   if (!ctx) {
     return {
       ok: false,
@@ -194,7 +199,8 @@ export async function campusStudentContext(
   const found = findLeaf(u, row.department_code);
   if (!found) return null;
   if (found.college.code !== row.college_code) return null;
-  const ctx = contextOf(u, found);
+  /* 전공을 고르는 자리의 학생은 Core 가 비어 있는 맥락을 든다(규격 §32) */
+  const ctx = contextOf(u, found) ?? routingContextOf(u, found);
   if (!ctx) return null;
   return {
     ctx, row,

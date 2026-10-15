@@ -257,6 +257,46 @@ async function main(): Promise<void> {
     ok("응시 화면에 점수 구조를 설명하는 줄이 없다", leak.length === 0,
       leak.length ? leak.join(" · ") : `화면 ${look.length + 1}자리`);
 
+    /* ── 4. 하나만 답하고 `다음` 을 누르면 무엇이 비었는지 짚는가 ────
+       예행이 두 문항 화면에서 멈춘 자리를 쫓다 드러난 자리다. 멈추는
+       것은 맞는데, **띠에 뜬 한 줄은 어느 질문이 비었는지 말하지
+       않았다.** 답한 사람은 자기가 답했다고 알고 있으므로 그 줄을
+       고장으로 읽는다. 단추를 끄지 않는 설계는 그대로 둔다: 끄면 왜 못
+       넘어가는지가 화면에서 사라진다 */
+    const pair = look[0];
+    if (pair === undefined) {
+      ok("하나만 답한 자리를 볼 수 있다", false, "두 문항 화면이 없다");
+    } else {
+      const q = await ctx.newPage();
+      await q.goto(`${B}/v3/${made.id}?s=${pair}`, { waitUntil: "networkidle" });
+      /* 첫 줄만 고른다. 둘째 줄은 비워 둔다 */
+      const first = q.locator(".qs-row").first();
+      await first.locator("label").nth(1).click({ timeout: 5000 })
+        .catch(() => undefined);
+      const got = await first.locator('input[type="radio"]:checked').count();
+      ok("첫 질문만 골라 둔다", got === 1, `고름 ${got}`);
+      const was = q.url();
+      await q.locator("button.qs-btn-main").first().click({ timeout: 5000 })
+        .catch(() => undefined);
+      await q.waitForTimeout(700);
+      ok("답하지 않은 자리가 있으면 넘어가지 않는다", q.url() === was,
+        new URL(q.url()).search);
+      const nav = (await q.locator(".qs-need").innerText().catch(() => ""))
+        .replace(/\s+/g, " ");
+      ok("몇 개가 비었는지 띠가 적는다", /아직 답하지 않은 질문이 \d+개/.test(nav),
+        nav || "없다");
+      const marks = await q.$$eval(".qs-row", (els) => els.map((e) => ({
+        miss: e.classList.contains("is-miss"),
+        said: (e.querySelector(".qs-miss")?.textContent ?? "").trim(),
+      })));
+      ok("비어 있는 질문만 짚는다",
+        marks.filter((m) => m.miss).length === marks.length - 1
+          && marks.some((m) => m.said.includes("아직 답하지 않았습니다"))
+          && !marks[0].miss,
+        marks.map((m) => (m.miss ? "짚음" : "그대로")).join(" · "));
+      await q.close();
+    }
+
     await ctx.close();
   } finally {
     await browser.close();

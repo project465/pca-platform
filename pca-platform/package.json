@@ -197,7 +197,11 @@
     "pcu:students": "tsx scripts/pcu-students.ts",
     "pcu:diag": "tsx scripts/pcu-diag.ts",
     "pcu:campus": "tsx scripts/pcu-campus-flow.ts",
-    "campus:export": "tsx scripts/campus-export-check.ts"
+    "campus:export": "tsx scripts/campus-export-check.ts",
+    "pcu:cli": "tsx scripts/pcu-cli-audit.ts",
+    "pcu:readiness": "tsx scripts/pcu-readiness.ts",
+    "pcu:routing": "tsx scripts/pcu-routing-check.ts",
+    "pcu:review": "tsx scripts/pcu-review-shots.ts"
   },
   "dependencies": {
     "@types/nodemailer": "^8.0.1",

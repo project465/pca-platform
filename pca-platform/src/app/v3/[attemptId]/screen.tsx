@@ -169,7 +169,20 @@ export default function Screen({
     if (s.pickKind) push(() => picksAction3(s.attemptId, s.pickKind as string as "industry", []));
   };
 
-  const filled = s.fields.every((f) => vals[f.itemId] !== null && vals[f.itemId] !== undefined);
+  const empty = (f: Field): boolean =>
+    vals[f.itemId] === null || vals[f.itemId] === undefined;
+  const filled = s.fields.every((f) => !empty(f));
+  /**
+   * **무엇이 비었는지를 질문 옆에 적는다**(규격 §4).
+   *
+   * 한 화면에 질문이 둘인 자리가 검사의 절반이다. 거기서 하나만 답하고
+   * `다음` 을 누르면 띠에 한 줄이 떴는데, 그 줄은 **어느 질문이 비었는지
+   * 말하지 않는다.** 답한 사람은 자기가 답했다고 알고 있으므로 그 줄을
+   * 고장으로 읽는다. 그래서 비어 있는 질문을 그 자리에서 짚는다.
+   *
+   * **단추를 끄지 않는다**: 끄면 왜 못 넘어가는지가 화면에서 사라진다.
+   */
+  const missing = s.fields.filter(empty);
 
   /**
    * 기본 정보 화면에서 **이 Core 를 받을 수 있는가.**
@@ -495,7 +508,7 @@ export default function Screen({
                 화면이 예순여섯에서 백을 넘는다 */}
             {s.fields.map((f, i) => (
               <Row key={f.itemId} f={f} value={vals[f.itemId]} onPick={setAnswer}
-                n={i + 1} of={s.fields.length}
+                n={i + 1} of={s.fields.length} miss={warn && empty(f)}
                 notes={notes} onNote={setNote} onNoteDone={flushNote} />
             ))}
           </div>
@@ -679,7 +692,13 @@ export default function Screen({
           {/* 전환과 완료에는 저장할 것이 없다. 거기 띄우면 뜻 없는 글자가
               다음 걸음 옆에 선다 */}
           {warn && !offCore
-            ? <span className="qs-need">답을 고른 뒤 다음으로 넘어가세요</span>
+            ? (
+              <span className="qs-need" role="status">
+                {s.fields.length > 1 && missing.length
+                  ? `아직 답하지 않은 질문이 ${missing.length}개 있습니다`
+                  : "답을 고른 뒤 다음으로 넘어가세요"}
+              </span>
+            )
             : null}
           {s.kind === "done" ? (
             s.done ? (
@@ -913,11 +932,13 @@ function Sweep({
 }
 
 function Row({
-  f, value, onPick, n, of, notes, onNote, onNoteDone,
+  f, value, onPick, n, of, miss, notes, onNote, onNoteDone,
 }: {
   f: Field; value: number | string | null;
   /** 이 화면의 몇째 질문인가. 둘 이상일 때만 적는다 */
   n?: number; of?: number;
+  /** 아직 답하지 않은 자리인가. `다음` 을 누른 뒤에만 켜진다 */
+  miss?: boolean;
   onPick: (f: Field, raw: number | string, a: Answer) => void;
   notes: Record<string, string>;
   onNote: (f: Field, t: string) => void;
@@ -932,9 +953,10 @@ function Row({
     /* 1 에서 5 · 없음에서 3회 이상. **값의 뜻을 양 끝에만 적지 않는다**:
        가운데 칸이 무엇인지 모르면 사람들은 가운데를 누른다 */
     return (
-      <fieldset className="qs-row qs-opts">
+      <fieldset className={`qs-row qs-opts${miss ? " is-miss" : ""}`}>
         <legend>{f.label ?? "척도"}</legend>
         {f.label ? <span aria-hidden>{f.label}</span> : null}
+        {miss ? <span className="qs-miss">아직 답하지 않았습니다</span> : null}
         <div className="qs-scale">
           {labels.map((label, i) => {
             const v = c.kind === "scale5" ? i + 1 : i;
@@ -960,13 +982,14 @@ function Row({
        무엇에 답하는지가 화면에 없다. 보조 기기는 `legend` 로 같은 말을
        한 번 받으므로 여기서는 `aria-hidden` 으로 되풀이를 막는다 */
     return (
-      <div className="qs-row">
+      <div className={`qs-row${miss ? " is-miss" : ""}`}>
         {f.label ? (
           <span aria-hidden>
             {of && of > 1 ? <i className="qs-n">{n} / {of}</i> : null}
             {f.label}
           </span>
         ) : null}
+        {miss ? <span className="qs-miss">아직 답하지 않았습니다</span> : null}
         <One f={f} value={value} onPick={onPick}
           notes={notes} onNote={onNote} onNoteDone={onNoteDone} />
       </div>

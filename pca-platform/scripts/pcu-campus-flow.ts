@@ -130,11 +130,20 @@ async function main(): Promise<void> {
     const anon = await browser.newContext({ viewport: { width: 1440, height: 900 } });
     if (gateCreds()) await anon.setHTTPCredentials(gateCreds()!);
     const a = await anon.newPage();
+    /* **누를 수 있게 된 뒤에 누른다.** `domcontentloaded` 직후에 누르면
+       하이드레이션 전이라 클릭이 그냥 떨어지고, 그러면 그 자리에 그대로
+       서 있는 것을 **`학교 로그인으로 가지 않는다` 로 거꾸로 적는다.**
+       한 번 더 눌러 보는 까닭도 같다: 서버 쪽이 303 을 내는 것은 따로
+       확인했고 여기서 세는 것은 **눌러서 그리로 가는가**다 */
     await a.goto(`${BASE}/campus/${code}/d/${seat.leaf.code}`,
-      { waitUntil: "domcontentloaded" });
-    await a.locator('form button[type="submit"]').first().click()
-      .catch(() => undefined);
-    await a.waitForLoadState("networkidle").catch(() => undefined);
+      { waitUntil: "networkidle" });
+    const startBtn = a.locator('form button[type="submit"]').first();
+    for (let t = 0; t < 2 && new URL(a.url()).pathname !== `/campus/${code}/login`; t += 1) {
+      await startBtn.click({ timeout: 5000 }).catch(() => undefined);
+      await a.waitForURL((u) => new URL(u).pathname !== `/campus/${code}/d/${seat.leaf.code}`,
+        { timeout: 15000 }).catch(() => undefined);
+      await a.waitForLoadState("networkidle").catch(() => undefined);
+    }
     const landed = new URL(a.url()).pathname;
     ok("비로그인 학생이 학교 전용 로그인으로 간다",
       landed === `/campus/${code}/login`, landed);
@@ -145,7 +154,7 @@ async function main(): Promise<void> {
     ok("학교 로그인 화면에 소셜 단추가 없다",
       !/구글|Google|애플|Apple/.test(body));
     ok("학교에서 받은 계정으로 들어오라고 적는다",
-      /학교에서 안내받은 계정/.test(body));
+      /학교에서 발급받은 계정/.test(body));
     await anon.close();
 
     /**
@@ -183,16 +192,20 @@ async function main(): Promise<void> {
       throw new Error("개인 계정으로 로그인하지 못했습니다");
     }
     await b.goto(`${BASE}/campus/${code}/d/${seat.leaf.code}`,
-      { waitUntil: "domcontentloaded" });
-    await b.locator('form button[type="submit"]').first().click()
-      .catch(() => undefined);
-    await b.waitForLoadState("networkidle").catch(() => undefined);
+      { waitUntil: "networkidle" });
+    const bBtn = b.locator('form button[type="submit"]').first();
+    for (let t = 0; t < 2 && new URL(b.url()).pathname !== `/campus/${code}/login`; t += 1) {
+      await bBtn.click({ timeout: 5000 }).catch(() => undefined);
+      await b.waitForURL((u) => new URL(u).pathname !== `/campus/${code}/d/${seat.leaf.code}`,
+        { timeout: 15000 }).catch(() => undefined);
+      await b.waitForLoadState("networkidle").catch(() => undefined);
+    }
     const bland = new URL(b.url()).pathname;
     ok("개인 계정으로 들어와 있으면 학교 응시로 보내지 않는다",
       bland === `/campus/${code}/login`, bland);
     const bbody = (await b.locator("body").innerText()).replace(/\s+/g, " ");
     ok("다른 세션이 있어도 학교 로그인이 열린다",
-      /학교에서 안내받은 계정/.test(bbody)
+      /학교에서 발급받은 계정/.test(bbody)
         && /다른 계정으로 로그인되어 있습니다/.test(bbody));
     /* 쿠키는 이미 심어졌다. 주소를 바로 쳐서 넘어가 본다 */
     await b.goto(`${BASE}/v3/start`, { waitUntil: "domcontentloaded" });

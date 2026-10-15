@@ -167,7 +167,15 @@ export default async function CampusStudents({
       <Section title="학생" note={`${total}명 · ${page} / ${pages}쪽`}>
         {rows.length ? (
           <>
-            <StudentRows rows={rows} deptName={deptName} />
+            {/* **함수를 클라이언트 컴포넌트로 넘기지 않는다.** 전에는
+                `deptName` 을 그대로 넘겼고, Next 가 그것을 직렬화하지
+                못해 **이 쪽이 통째로 500 이었다**(담당자가 명단을 열 수
+                없었다). 쪽은 열리는 것으로 보이는 다른 검사들이 이 쪽을
+                한 번도 열지 않아 몇 회차 동안 조용했다. 읽는 자리는 그대로
+                등록부 하나이고, 넘기는 것은 **그 줄에 쓸 이름뿐**이다 */}
+            <StudentRows rows={rows}
+              deptNames={Object.fromEntries(
+                rows.map((r) => [r.department_code, deptName(r.department_code)]))} />
             {pages > 1 ? (
               <nav className="sf-pager" aria-label="쪽">
                 {page > 1 ? <Link href={link({ page: String(page - 1) })}>이전</Link> : null}

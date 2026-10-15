@@ -31,14 +31,37 @@ export async function pickOne(
   box: Locator, want: number,
 ): Promise<"ok" | "covered" | "none"> {
   const labels = box.locator("label");
-  if (!(await labels.count())) return "none";
+  const n = await labels.count();
+  if (!n) return "none";
+  const on = () => box.locator('input[type="radio"]:checked').count();
   const label = labels.nth(want);
   await label.scrollIntoViewIfNeeded().catch(() => undefined);
   await label.click({ timeout: 2500 }).catch(() => undefined);
-  if (await box.locator('input[type="radio"]:checked').count()) return "ok";
+  if (await on()) return "ok";
   await label.locator('input[type="radio"]')
     .evaluate((el) => (el as HTMLInputElement).click()).catch(() => undefined);
-  return (await box.locator('input[type="radio"]:checked').count()) ? "covered" : "none";
+  if (await on()) return "covered";
+  /**
+   * **한 자리가 안 눌렸다고 그 화면을 포기하지 않는다.**
+   *
+   * 한 화면에 질문이 둘인 자리에서 둘째 묶음의 그 칸만 안 눌리면, 예행이
+   * 거기서 멈추고 **`검사가 끝까지 가지 않는다` 로 적는다.** 그 말은 그
+   * 화면이 멈췄다는 뜻으로 읽히는데 실제로는 누르는 자리 하나를 못 집은
+   * 것이다. 그래서 같은 묶음의 다른 보기를 차례로 더 눌러 본다. **고른
+   * 값의 뜻은 그대로다**: 어느 칸이든 그 묶음의 보기이고, 한 칸으로
+   * 밀지 않으려고 차례를 흔드는 규칙은 위에서 이미 정했다.
+   */
+  for (let k = 0; k < n; k += 1) {
+    if (k === want) continue;
+    const alt = labels.nth(k);
+    await alt.scrollIntoViewIfNeeded().catch(() => undefined);
+    await alt.click({ timeout: 1500, force: true }).catch(() => undefined);
+    if (await on()) return "covered";
+    await alt.locator('input[type="radio"]')
+      .evaluate((el) => (el as HTMLInputElement).click()).catch(() => undefined);
+    if (await on()) return "covered";
+  }
+  return "none";
 }
 
 /**

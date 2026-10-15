@@ -45,3 +45,4 @@ var/*.log
 
 # BEFORE/AFTER 로 뜬 결과지 원본. 쪽 그림만 남긴다
 docs/metri/shots/pcu-wow/**/report.pdf
+var/pcu-readiness/

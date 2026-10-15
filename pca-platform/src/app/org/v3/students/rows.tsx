@@ -23,7 +23,17 @@ const ATTEMPT_KO: Record<StudentRow["attempt"], string> = {
  * 학생이 들고 있던 열쇠가 그 자리에서 죽는다.
  */
 export default function StudentRows(
-  { rows, deptName }: { rows: StudentRow[]; deptName: (c: string) => string },
+  { rows, deptNames }: {
+    rows: StudentRow[];
+    /**
+     * 학과 코드 → 담당자가 읽는 이름.
+     *
+     * **함수를 받지 않는다.** 서버 컴포넌트의 함수를 그대로 받으면 Next 가
+     * 직렬화하지 못해 이 쪽이 통째로 500 이 된다. 이름을 푸는 자리는 그대로
+     * 등록부 하나이고(`campusNames`), 여기로 오는 것은 이 묶음에 쓸 이름뿐이다.
+     */
+    deptNames: Record<string, string>;
+  },
 ) {
   const [state, run, pending] = useActionState(
     async (prev: ManageState, form: FormData): Promise<ManageState> => {
@@ -72,7 +82,7 @@ export default function StudentRows(
               <tr key={r.user_id}>
                 <th scope="row" className="sf-strong">{r.name}</th>
                 <td>{r.student_id}</td>
-                <td>{deptName(r.department_code)}</td>
+                <td>{deptNames[r.department_code] ?? r.department_code}</td>
                 <td>
                   <span className={`sf-pill${r.account === "active" ? "" : " is-off"}`}>
                     {r.account === "active" ? "사용 중"

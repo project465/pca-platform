@@ -1128,6 +1128,23 @@
 }
 .qs-need { font-size: var(--q-t-meta); color: var(--sf-part); font-weight: var(--ui-w-sb); }
 
+/**
+ * 아직 답하지 않은 질문을 그 자리에서 짚는다(규격 §4).
+ *
+ * **색으로만 말하지 않는다.** 한 줄을 글자로 적고 왼쪽에 금을 하나
+ * 그어, 색을 가려 두는 설정에서도 어느 질문이 비었는지 읽힌다. 금은
+ * 질문 상자의 안쪽 여백만큼만 들여서 **상자가 하나 더 생긴 것으로
+ * 보이지 않게** 한다.
+ */
+.qs-miss {
+  display: block; margin-top: 4px;
+  font-size: var(--q-t-meta); color: var(--sf-warn); font-weight: var(--ui-w-sb);
+}
+.qs-row.is-miss {
+  border-left: 3px solid var(--sf-warn-line);
+  padding-left: calc(var(--q-s4) - 3px);
+}
+
 /* ── 시작과 완료 ── */
 /**
  * 시작 화면.
