@@ -51,8 +51,14 @@ export async function pickOne(
    * 값의 뜻은 그대로다**: 어느 칸이든 그 묶음의 보기이고, 한 칸으로
    * 밀지 않으려고 차례를 흔드는 규칙은 위에서 이미 정했다.
    */
-  for (let k = 0; k < n; k += 1) {
+  /* **보기 넷이 아닌 묶음에서는 더 눌러 보지 않는다.** 복수 선택 자리는
+     네모라 라디오로 세면 늘 0 이고, 거기서 모든 보기를 눌러 보면 켜고
+     끄는 자리를 휘저으면서 시간만 쓴다. 그리고 세 칸까지만 본다: 그
+     이상은 못 눌리는 까닭이 보기 하나가 아니라는 뜻이다 */
+  if (!(await box.locator('input[type="radio"]').count())) return "none";
+  for (let k = 0, tried = 0; k < n && tried < 3; k += 1) {
     if (k === want) continue;
+    tried += 1;
     const alt = labels.nth(k);
     await alt.scrollIntoViewIfNeeded().catch(() => undefined);
     await alt.click({ timeout: 1500, force: true }).catch(() => undefined);
