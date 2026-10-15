@@ -28,11 +28,31 @@ export type SpecView = {
   domainLead: string[];
   industryLead: string[];
   roleLead: string[];
+  /**
+   * 그 전공에서 지금 할 수 있는 한 걸음과 그 다음 한 걸음.
+   *
+   * **결과 모델의 할 일을 덮지 않는다.** 저쪽은 응답이 가리킨 영역에서
+   * 나온 것이고 이것은 **그 학과라면 어디에서 무엇을 남기면 되는지**를
+   * 적은 줄이다. 둘을 한 자리에 섞으면 어느 것이 내 응답에서 나온
+   * 말인지 읽는 사람이 가를 수 없다.
+   */
+  evidenceFirst: string;
+  evidenceNext: string;
+  /**
+   * 그 경험을 지원서와 면접에서 어떻게 꺼내는가(규격 §11).
+   *
+   * `resume` 는 한 문장, `interview` 는 질문 둘이다. **답을 적어 주지
+   * 않는다**: 적는 것은 무엇을 묻는 자리인가까지이고, 거기에 들어갈 말은
+   * 그 사람이 고른 항목에서 나온다.
+   */
+  application: { resume: string; interview: string[] };
 };
 
 const EMPTY: SpecView = {
   scene: [], artifacts: [], evidence: [],
   domainLead: [], industryLead: [], roleLead: [],
+  evidenceFirst: "", evidenceNext: "",
+  application: { resume: "", interview: [] },
 };
 
 function list(v: unknown): string[] {
@@ -49,6 +69,8 @@ export function specView(core: string, spec: string | null): SpecView {
   if (!c && !s) return EMPTY;
   const pick = (k: string) => (s?.[k] ?? c?.[k]);
   const ex = obj(pick("examples"));
+  const ea = obj(pick("evidence_action"));
+  const ap = obj(pick("application"));
   return {
     scene: list(ex.scene),
     artifacts: list(ex.artifacts),
@@ -56,6 +78,12 @@ export function specView(core: string, spec: string | null): SpecView {
     domainLead: list(obj(pick("domain_emphasis")).lead),
     industryLead: list(obj(pick("industry_mapping")).lead),
     roleLead: list(obj(pick("role_mapping")).lead),
+    evidenceFirst: typeof ea.first === "string" ? ea.first : "",
+    evidenceNext: typeof ea.next === "string" ? ea.next : "",
+    application: {
+      resume: typeof ap.resume === "string" ? ap.resume : "",
+      interview: list(ap.interview),
+    },
   };
 }
 

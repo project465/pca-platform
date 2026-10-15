@@ -4,6 +4,7 @@ import { Icon, type IconName } from "@/components/sf/icon";
 import { requireUser } from "@/lib/session";
 import { attemptOf, estimate } from "@/lib/me-v3/runtime/session";
 import { core } from "@/lib/me-v3/core-registry";
+import { specView } from "@/lib/me-v3/result/spec-view";
 import { TIER_WHAT } from "../../tier-text";
 
 export const metadata = { title: "검사 시작 전 안내 · CareerMatri" };
@@ -59,6 +60,18 @@ export default async function V3Intro({
    * 심화 영역이 넷까지 열릴 수 있어 수가 늘 수 있으므로 **올려 적는다**:
    * 적게 말하면 시간을 그만큼만 비워 둔 사람이 중간에 끊는다.
    */
+  /**
+   * **그 전공에서 자주 서는 장면**(갈래 계약의 `examples.scene`).
+   *
+   * 전까지 이 줄은 등록부에 적혀 있고 **학생이 읽는 자리에 한 글자도
+   * 닿지 않았다.** 그래서 어느 전공으로 들어와도 시작 안내가 같은 말을
+   * 했고, 읽는 쪽은 이 검사가 자기 전공을 모른다고 읽었다.
+   *
+   * **묻는 것이 아니다.** 문항도 보기도 routing 도 등급도 건드리지 않고,
+   * 답을 유도하지 않게 **장면만 적고 무엇을 고르라고 적지 않는다.**
+   */
+  const sv = specView(a.core_code, a.specialization_code);
+
   const est = estimate(a.core_code, a.education_stage, a.grad_field);
   const low = est.responses[a.tier] ?? 0;
   const high = a.tier === "BASIC" ? low
@@ -88,6 +101,19 @@ export default async function V3Intro({
           경험과 판단과 학습 의향을 묻고, 지금 설명할 수 있는 영역과 앞으로
           보완할 부분을 정리합니다.
         </p>
+
+        {sv.scene.length ? (
+          <section className="qs-major">
+            <h2>{coreName} 쪽에서 자주 서는 자리</h2>
+            <p>
+              아래 같은 자리에서 무엇을 직접 정했는지를 묻습니다. 겪은 적이
+              없는 자리는 없다고 고르시면 됩니다.
+            </p>
+            <ul>
+              {sv.scene.slice(0, 3).map((t) => <li key={t}>{t}</li>)}
+            </ul>
+          </section>
+        ) : null}
 
         <ul className="qs-three">
           {GUIDE.map(([ic, title, note]) => (

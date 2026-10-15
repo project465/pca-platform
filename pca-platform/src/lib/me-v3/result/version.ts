@@ -12,7 +12,7 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
 /** 결과지에 나가는 한국어. 문장만 바뀌면 이것만 올린다 */
 /* copy.19 — `EXPLORE_BROADLY` 가 어디에서 해 보면 되는지를 적고(§16),
    경험 빈도의 첫 칸이 응시 화면과 같은 `없음` 이다(§7) */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.23";
+export const RESULT_COPY_VERSION = "me-v3-result-copy.24";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -139,7 +139,7 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.23";
  *
  * **판정도 결과 모델도 한 줄 바뀌지 않았다.**
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V35";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V36";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX
@@ -568,4 +568,30 @@ export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V35";
  *
  * 결과는 BASIC 5~6 · STANDARD 9 · PRO 9~10 이고 네 Core 열두 벌 모두
  * 자동 점검 걸림 0 이다.
+ */
+
+/*
+ * `V36` · `copy.24` 로 올린 까닭. **등록부에 적혀 있고 결과지가 읽지
+ * 않던 층 넷을 읽는 자리에 세웠다.**
+ *
+ * `pcu:dept` 가 재어 보니 갈래 계약의 아홉 층 가운데 결과지에 닿는 것이
+ * 셋뿐이었다: 근거 예시 세 줄과 산업·직무의 읽는 차례. 남은 넷(그 전공이
+ * 먼저 보는 영역 · 흔히 남기는 것 · 그 전공의 한 걸음 둘 · 지원서와 면접
+ * 재료)은 **받고 쓰지 않는 자리**였다. 그래서 같은 Core 를 쓰는 학과 둘이
+ * 열두 영역을 같은 무게로 읽고, 할 일이 어느 자리에서 나오는지도 그 학과의
+ * 말로 서지 않았다.
+ *
+ * 선 자리는 셋이다. `#spread` 에 그 전공이 먼저 보는 영역의 읽는 차례 한
+ * 줄, `#evidence` 에 그 전공에서 흔히 남기는 것, `#plan` 에 그 전공의 한
+ * 걸음 둘과 지원서·면접 재료.
+ *
+ * **판정에 한 줄도 닿지 않는다.** 묶음과 축 상태와 빈자리와 할 일은 결과
+ * 모델이 정한 그대로이고, 새로 선 네 묶음은 전부 등록부가 들고 있던 글이다.
+ * 결과 모델 판본(`RESULT_MODEL_VERSION`)과 채점 판본을 올리지 않았고
+ * `v3:freeze:measure` 가 기록을 다시 적지 않은 채로 통과한다.
+ *
+ * **위의 할 일을 덮지 않는다.** 모델이 낸 할 일은 응답이 가리킨 영역에서
+ * 나온 것이고 새 묶음은 그 학과라면 어디에서 무엇을 남기면 되는지다. 둘을
+ * 한 자리에 섞으면 어느 것이 내 응답에서 나온 말인지 읽는 사람이 가를 수
+ * 없어서, 묶음을 따로 두고 머리에 전공 이름을 적는다.
  */

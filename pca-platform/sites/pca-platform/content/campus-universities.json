@@ -789,7 +789,7 @@
            "name": "글로벌경영전공",
            "kind": "major",
            "core_code": "BIZ_CORE_V1",
-           "specialization": "SPEC_BIZ_GLOBAL",
+           "specialization": "SPEC_BIZ_GLOBAL_MGMT",
            "audience": "INTERNATIONAL"
           },
           {
@@ -814,7 +814,7 @@
            "name": "국제의료관광전공",
            "kind": "major",
            "core_code": "BIZ_CORE_V1",
-           "specialization": "SPEC_BIZ_TOURISM",
+           "specialization": "SPEC_BIZ_MEDTOUR",
            "audience": "INTERNATIONAL",
            "note": "이미 있는 갈래다. 묻는 것이 상품과 수요와 고객 여정이다"
           }
@@ -1406,7 +1406,7 @@
            "name": "글로벌경영전공",
            "kind": "major",
            "core_code": "BIZ_CORE_V1",
-           "specialization": "SPEC_BIZ_GLOBAL",
+           "specialization": "SPEC_BIZ_GLOBAL_MGMT",
            "audience": "INTERNATIONAL"
           },
           {
@@ -1432,7 +1432,7 @@
            "name": "국제의료관광전공",
            "kind": "major",
            "core_code": "BIZ_CORE_V1",
-           "specialization": "SPEC_BIZ_TOURISM",
+           "specialization": "SPEC_BIZ_MEDTOUR",
            "audience": "INTERNATIONAL",
            "note": "이미 있는 갈래다. 묻는 것이 상품과 수요와 고객 여정이다"
           },

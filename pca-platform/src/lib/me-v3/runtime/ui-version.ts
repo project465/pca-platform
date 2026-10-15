@@ -71,12 +71,13 @@
  * 값과 판정도 그대로다: 바뀐 것은 어느 전공의 자로 재는가를 고른 사람이
  * 정한다는 것뿐이다.
  */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V28";
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V29";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
 /* copy.15 — 받침 한 줄과 보기 넷의 예시가 화면에 서는 글자다 */
 /* copy.16 — 제출 전 검토 목록과 재응시 안내가 새로 서는 글자다 */
-export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.16";
+/* copy.17 — 시작 안내에 그 전공에서 자주 서는 자리 셋이 새로 선다 */
+export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.17";
 
 /*
  * `V19` · `copy.14` 로 올린 까닭. **경험 빈도의 화면 말을 공통으로
@@ -404,4 +405,23 @@ export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.16";
  * 둘뿐이고, 어느 Core 로 가는가는 서버가 쿠키에 적힌 학교·학과 코드를
  * 등록부로 맞춰 본 값이다. `openAttempt()` 가 한 번 더 본다: 그 시장에서
  * 지금 응시할 수 있는 Core 가 아니면 맥락을 통째로 버린다.
+ */
+
+/*
+ * `V29` · `copy.17` 로 올린 까닭. **그 전공에서 자주 서는 자리를 시작
+ * 안내에 세웠다.**
+ *
+ * 갈래 계약의 `examples.scene` 은 등록부에 적혀 있고 **학생이 읽는 자리에
+ * 한 글자도 닿지 않았다**(`pcu:dept` 가 그것을 센다). 그래서 어느 전공으로
+ * 들어와도 시작 안내가 같은 말을 했고, 읽는 쪽은 이 검사가 자기 전공을
+ * 모른다고 읽었다. 적어 두고 읽지 않으면 적어 두지 않은 것과 같다.
+ *
+ * **묻는 것이 아니다.** 문항도 보기도 routing 도 등급도 판정도 한 줄도
+ * 바뀌지 않았고, 답을 유도하지 않게 **장면만 적고 무엇을 고르라고 적지
+ * 않는다.** 그래서 `v3:freeze:measure` 가 기록을 다시 적지 않은 채로
+ * 통과한다.
+ *
+ * **이름을 `qs-scene` 으로 짓지 않았다.** 그 이름은 산업 장면 화면이 이미
+ * 쓰고 있어서 격자 규칙이 함께 걸린다. 이 저장소에서 같은 탈이 열한 번
+ * 났다. 쓴 이름은 `qs-major` 다.
  */

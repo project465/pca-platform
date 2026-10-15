@@ -161,6 +161,8 @@
     "campus:walk": "tsx scripts/campus-walk.ts && tsx scripts/campus-agg-check.ts",
     "pcu:coverage": "tsx scripts/pcu-coverage.ts",
     "pcu:content": "tsx scripts/pcu-content-check.ts",
+    "pcu:dept": "tsx scripts/pcu-dept-qa.ts",
+    "pcu:pack": "tsx scripts/pcu-review-pack.ts",
     "pcu:generic": "tsx scripts/pcu-generic-check.ts",
     "core:walk": "tsx scripts/core-walk.ts",
     "core:qa": "node scripts/core-qa-doc.mjs",

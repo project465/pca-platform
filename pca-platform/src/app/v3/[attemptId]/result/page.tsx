@@ -1213,6 +1213,19 @@ export default async function V3Result({
             </p>
             <Radar model={model} name={(c) => domainName(core, c)} />
             <ChartNote />
+            {/* **그 전공이 먼저 보는 영역**(갈래 계약의 `domain_emphasis.lead`).
+                등록부에 적혀 있고 **읽는 자리에 한 글자도 닿지 않던 층**이다.
+                적는 것은 읽는 차례까지이고 축 수준과 묶음과 확인된 축 개수에
+                들어가지 않는다: 이 줄이 없으면 같은 Core 를 쓰는 학과 둘이
+                열두 영역을 같은 무게로 읽는다 */}
+            {sv.domainLead.length ? (
+              <p className="rs-note">
+                <b>{meta.specialization ?? meta.major} 쪽에서 먼저 보는 영역</b>
+                {" — "}
+                {sv.domainLead.map((c) => domainName(core, c)).join(" · ")}
+                . 아래 막대에서 그 영역을 먼저 보시면 됩니다.
+              </p>
+            ) : null}
             <h3 className="pv-h3">영역별 경험 단계</h3>
             <p className="rs-note">
               이번 응시에서 판단을 물은 영역입니다. 막대의 길이는 물은 축의
@@ -1406,6 +1419,24 @@ export default async function V3Result({
                 ) : null}
               </>
             )}
+            {/* **그 전공에서 흔히 남기는 것**(갈래 계약의 `examples.artifacts`).
+                등록부에 적혀 있었고 어느 화면도 읽지 않았다. 적어 두고 읽지
+                않으면 적어 두지 않은 것과 같다.
+                **판정에 넣지 않는다**: 아래 사슬의 `남긴 결과` 는 그 사람이
+                고른 항목이고, 이 줄은 **그 학과라면 무엇이 그 자리에 들어가는
+                가**를 적은 보기다. 그래서 묶음을 따로 두고 이름도 갈라 둔다 */}
+            {sv.artifacts.length ? (
+              <div className="rs-pack" id="deptartifacts">
+                <h3>{meta.specialization ?? meta.major} 쪽에서 흔히 남기는 것</h3>
+                <p className="rs-note">
+                  이 가운데 하나라도 손에 있으면 위의 사슬에서 남긴 결과 칸이
+                  채워집니다.
+                </p>
+                <ul className="rs-first">
+                  {sv.artifacts.slice(0, 4).map((t) => <li key={t}>{t}</li>)}
+                </ul>
+              </div>
+            ) : null}
             {/* ── Evidence 사슬(규격 §11) ──
                 **항목을 늘어놓는 것으로는 차별점이 서지 않는다.** 이
                 제품이 파는 자리는 한 행동이 지원서 문장이 되기까지의
@@ -1719,6 +1750,40 @@ export default async function V3Result({
               해보신 뒤에 다시 보시면 그 자리에 적힙니다.
             </p>
           )}
+
+          {/* ── 그 전공의 한 걸음과 지원서·면접(갈래 계약 · 규격 §10·§11) ──
+              **위의 할 일을 덮지 않는다.** 저쪽은 응답이 가리킨 영역에서
+              나온 것이고 이 묶음은 **그 학과라면 어디에서 무엇을 정하고
+              무엇을 남기면 되는지**다. 둘을 한 자리에 섞으면 어느 것이 내
+              응답에서 나온 말인지 읽는 사람이 가를 수 없어서, 묶음을 따로
+              두고 머리에 전공 이름을 적는다.
+              **면접 답을 적어 주지 않는다**: 적는 것은 무엇을 묻는 자리인가
+              까지이고 거기 들어갈 말은 그 사람이 고른 항목에서 나온다 */}
+          {(sv.evidenceFirst || sv.application.resume) ? (
+            <div className="rs-pack" id="deptnext">
+              <h3>{meta.specialization ?? meta.major} 쪽에서 지금 할 수 있는 한 걸음</h3>
+              {sv.evidenceFirst ? (
+                <ul className="rs-first">
+                  <li>{sv.evidenceFirst}</li>
+                  {sv.evidenceNext ? <li>{sv.evidenceNext}</li> : null}
+                </ul>
+              ) : null}
+              {sv.application.resume ? (
+                <>
+                  <h3>그 경험을 지원서에서 꺼내는 자리</h3>
+                  <p className="rs-note">{sv.application.resume}</p>
+                </>
+              ) : null}
+              {sv.application.interview.length ? (
+                <>
+                  <h3>면접에서 같은 구조로 되묻는 자리</h3>
+                  <ul className="rs-first">
+                    {sv.application.interview.map((t) => <li key={t}>{t}</li>)}
+                  </ul>
+                </>
+              ) : null}
+            </div>
+          ) : null}
         </section>
 
         {/* ── 8. 지역과 기관 탐색 ──

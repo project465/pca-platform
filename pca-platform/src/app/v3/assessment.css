@@ -1152,6 +1152,36 @@
 }
 .qs-lead { margin: 0; font-size: var(--q-t-opt); color: var(--q-ink-2); line-height: 1.75; }
 /**
+ * **그 전공에서 자주 서는 자리.** 등록부의 갈래 계약에서 그대로 온다.
+ *
+ * 이름을 `qs-scene` 으로 짓지 않았다: 그 이름은 산업 장면 화면이 이미
+ * 쓰고 있어서 격자 규칙이 함께 걸린다. **CSS 는 아는 이름을 조용히
+ * 가져간다.**
+ *
+ * 안내 셋보다 먼저 세우고 면을 옅게 둔다. 이 자리가 말하는 것은 `이
+ * 검사가 네 전공을 안다` 이고, 흰 카드로 세우면 안내 셋과 무게가 같아져
+ * 읽는 차례가 사라진다.
+ */
+.qs-major {
+  margin: var(--q-s4) 0 0; padding: var(--q-s3) var(--q-s4) var(--q-s4);
+  background: var(--q-accent-soft); border-radius: var(--q-r);
+}
+.qs-major h2 {
+  margin: 0 0 var(--q-s1); font-size: var(--q-t-opt); font-weight: var(--ui-w-sb);
+  color: var(--q-ink); letter-spacing: -.015em;
+}
+.qs-major p {
+  margin: 0 0 var(--q-s2); font-size: var(--q-t-gloss); color: var(--q-ink-2);
+  line-height: 1.6; word-break: keep-all;
+}
+.qs-major ul { margin: 0; padding-left: 18px; }
+.qs-major li {
+  font-size: var(--q-t-gloss); color: var(--q-ink-2); line-height: 1.6;
+  word-break: keep-all;
+}
+.qs-major li + li { margin-top: 4px; }
+
+/**
  * 시작 화면이 먼저 말하는 셋. **이 검사가 무엇을 보는가**다.
  *
  * 문항 수와 시간을 맨 위에 두면 사는 쪽이 분량으로 값을 매긴다. 그 둘은

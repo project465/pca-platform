@@ -48,6 +48,14 @@ export type Specialization = {
   authored?: boolean;
   domain_emphasis?: unknown; industry_mapping?: unknown;
   role_mapping?: unknown; examples?: unknown; evidence_action?: unknown;
+  /**
+   * 그 경험을 지원서와 면접에서 어떻게 꺼내는가(규격 §11).
+   *
+   * **`authored` 를 가르는 다섯 층에 넣지 않는다.** 이 칸이 비어 있어도 그
+   * 갈래는 결과를 그 학과의 말로 적을 수 있고, 넣으면 비어 있는 자리가
+   * **아직 쓰이지 않은 갈래**로 세어진다.
+   */
+  application?: unknown;
 };
 
 export type CoreEntry = {
