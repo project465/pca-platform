@@ -9843,7 +9843,9 @@ npm run pcu:humanize   # 여섯 Core 를 밟으며 검사·결과·종이·작�
 **아직 아닌 것.** 규격이 가리킨 ChatGPT 1~8 Reference 이미지가 이 세션에
 첨부되지 않아 그 대조를 하지 못했다. 네트워크 정책이
 `app.careermatri.com:443` 을 막아 운영 배포본을 밖에서 열지 못했고
-**학생 공개 상태를 바꾸지 않았다**(열린 Core 0개). 그래서 판정은
-`LOCAL PASS / PRODUCTION UNVERIFIED` 이고 `PCU CANARY BLOCKED` 가 그대로다.
+**학생 공개 상태를 바꾸지 않았다**: 열려 있는 Core 는 운영 Canary 의
+`BIZ_CORE_V1` 하나뿐이고 이 회차가 연 Core 는 0개이며 등록부 diff 가 0 이다.
+그래서 판정은 `LOCAL PASS / PRODUCTION UNVERIFIED` 이고
+`PCU CANARY BLOCKED` 가 그대로다.
 문항 5,953개가 그 전공에서 자연스럽게 읽히는지는 **그 전공을 아는 분과
 파일럿이** 답한다.

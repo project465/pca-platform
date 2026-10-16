@@ -309,7 +309,7 @@ sites/pca-platform/content/*-packs.json` 이고 바뀐 문면이 **5,934개**다
 | 결과 문장 | 10가지 통과 | `npm run v3:result:copy` |
 | Registry | `major-cores.json` · `campus-universities.json` diff 0 | `git diff --stat` |
 | DB schema | `db/` diff 0 — 마이그레이션 필요 없음 | 같음 |
-| 학생 공개 | `open_to_students: true` 인 Core 0개 | `npm run v3:majors` |
+| 학생 공개 | 기준선과 같다 — 열려 있는 Core 는 운영 Canary 의 `BIZ_CORE_V1` 하나뿐이고 **이 회차가 연 Core 는 0개**다 | `major-cores.json` diff 0 |
 
 올린 판본은 **화면과 문장과 문항 은행뿐**이다: `ME_V3_2_ASSESSMENT_UI_V33`
 · `me-v3-2-assessment-copy.21` · `me-v3-result-copy.29` · 그리고 문면을
@@ -446,7 +446,8 @@ MEDIA 3).
 - 네트워크 정책이 `app.careermatri.com:443` 을 막아 **운영 배포본을 밖에서
   한 번도 열지 못했다**(HTTP 000). 그래서 판정은
   `LOCAL PASS / PRODUCTION UNVERIFIED` 이고 `PCU CANARY BLOCKED` 가
-  그대로다.
+  그대로다. **운영에 배포하지 않았고** 학생 공개도 한 자리도 늘리지
+  않았다(`BIZ_CORE_V1` 하나는 이 회차 전부터 열려 있던 Canary 자리다).
 - 문항 5,953개가 그 전공에서 자연스럽게 읽히는지와, 보기 둘·셋·넷을
   응시자가 실제로 가르는지는 **그 전공을 아는 분과 파일럿이** 답한다.
   규준이 없으므로 `검증된 검사` 로 팔지 않는다.
