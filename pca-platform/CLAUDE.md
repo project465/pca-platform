@@ -10453,3 +10453,60 @@ Operations 는 미검토이고 Production Canary 는 네트워크 정책이
 와 `PCU CANARY BLOCKED` 를 그대로 둔다. 학교 시연은 YES 이고 실제 학생
 Pilot 과 정식 상용 운영은 NO 다. ChatGPT Reference 화면이 첨부되지 않아
 `REFERENCE UNAVAILABLE` 로 적고 Reference Match 를 PASS 로 적지 않는다.
+
+**운영자 화면을 찍어서 세었다. 첫 화면이 비어 있었다.** (2026-10-16)
+
+이 회차는 **기능을 하나도 만들지 않았다.** `src/` 의 diff 가 0줄이고 등록부
+두 벌의 지문이 그대로이며 학생 공개 상태를 한 칸도 바꾸지 않았다. 한 일은
+운영자 화면의 자리를 코드에서 세고, 그 자리를 실제 브라우저로 찍고, 보이는
+단추를 눌러 DB 가 실제로 바뀌는지 본 것이다. 보고는
+`docs/metri/PCU_OPS_SURVEY.md` 이고 그림 34장의 목록은
+`docs/metri/shots/pcu-ops-survey/INDEX.md` 다.
+
+**버튼이 보인다고 IMPLEMENTED 로 적지 않는다.** 여덟을 실제로 누르고 DB 를
+다시 읽었다. 학생 추가가 줄을 만들고, 재발급이 `password_hash` 를 바꾸고,
+멈춤과 다시 열기가 `users.status` 를 오가고, **CSV 미리 보기가 한 줄도 쓰지
+않고**(186 에서 186) 적용이 정상 두 줄만 만든다(189 에서 191). 내려받기
+셋은 바이트를 받아 두었다.
+
+**로그인이 닿는 첫 화면이 비어 있다.** `/org` 이 옛 계약·회차 모델만 읽어서
+`현재 활성 계약이 없습니다 · 회차 0` 으로 선다. 학교 전용 진입으로 들어온
+학생이 백 명 넘게 있어도 그 화면은 0 이고, 담당자는 메뉴의 다섯째 줄에 있는
+`전공 진단 집계` 를 스스로 찾아야 한다. **집계가 맞는 것과 담당자가 그것을
+보는 것은 다른 질문이다.**
+
+**`v3_attempts` 를 읽는 담당자 화면은 둘뿐이다**(`/org/v3` 와
+`/org/v3/students`). `/org/participants` 는 115명을 전부 `검사 시작 전` 과
+`결과지 열람 불가` 로 적는다. 그 쪽이 읽는 표가 옛 `attempts` 라서다.
+`/org/licenses` 와 `/org/cohorts` 와 `/org/insights` 와
+`/org/evidence-insights` 도 같은 자리다.
+
+**없는 자리는 그림을 만들지 않았다.** 학생 상세와 권한·role 화면과 학교
+담당자용 오류 화면이 `MISSING` 이다. 비슷한 쪽을 찍어 두면 다음 사람이
+그것을 그 화면으로 읽는다. 같은 그림이 두 이름으로 저장되면 찍는 쪽이 그
+자리에서 걸리게 두었고, 만들자마자 **CSV 오류 화면이 미리 보기와 같은
+그림**인 것을 잡았다.
+
+**학교 운영 업무에 CLI 가 필요 없다**(`pcu:cli` 통과 57 · 걸림 0). 학생
+추가와 비밀번호 재발급과 CSV 등록과 학생 상태 조회와 export 다섯이 전부
+화면에서 끝나고, 담당자 화면 다섯에 `Railway` 와 `psql` 과 `npm run` 과
+`DATABASE_URL` 이 0건이다. 본사 쪽은 그대로 CLI 다(`pcu:org` · `pcu:open` ·
+`db:upgrade`).
+
+**띄운 서버를 틀리면 검사가 거짓말을 한다(일곱 번째).** `pkill -9 -f
+"standalone/server.js"` 가 **그 명령을 적은 셸 자신**을 집어 빌드가 통째로
+죽었다. 그리고 `.next` 의 빌드가 커밋보다 스무 분 앞서 있어 다시 구웠다.
+찍은 그림이 지금 코드의 화면이라는 것은 `var/.serving-build` 와
+`.next/BUILD_ID` 가 같은 값일 때만 말할 수 있다.
+
+```bash
+V3_PREVIEW_OPEN='*' bash scripts/stage-serve.sh 3100
+UI_BASE=http://127.0.0.1:3100 npx tsx scripts/pcu-ops-survey.ts   # 확인 116가지
+UI_BASE=http://127.0.0.1:3100 npm run -s pcu:cli                  # CLI 의존 0
+```
+
+**판정.** `DEMO POSSIBLE: YES` · `OPERATOR USABLE: NO` · `PILOT READY: NO`.
+`PRODUCTION UNVERIFIED` 와 `PCU CANARY BLOCKED` 를 그대로 둔다: 네트워크
+정책이 `app.careermatri.com:443` 을 막아 운영 배포본을 밖에서 한 번도 열지
+못했다. 다음 구현 우선순위는 첫 화면과 권한 화면과 옛 검사 화면 다섯의
+거취이고, **이 회차에서는 하나도 만들지 않았다.**
