@@ -110,12 +110,21 @@ export function axisStateKo(axis: Axis, state: AxisState): string {
  * 화면에는 짧은 쪽이 선다. 둘이 어긋나지 않게 긴 말은 그대로 가져와
  * 설명 줄로 쓴다.
  */
+/**
+ * **학생이 먼저 보는 줄은 자연어다**(FINAL POLISH §2).
+ *
+ * `근거가 선 영역` 과 `이번에 깊게 묻지 않은 영역` 은 우리가 판정을
+ * 부르는 말이고, 상담 자리에서 학생에게 그대로 말하지 않는다. 가리키는
+ * 묶음과 그 묶음에 드는 조건은 한 줄도 바뀌지 않았다: **이름만 그 자리에서
+ * 부르는 말로 적는다.** 안쪽 코드(`Z1_EVIDENCE_ESTABLISHED` …)는 그대로이고
+ * 되짚는 자리에서 쓰는 긴 말은 `scoring/text.ko.ts` 가 그대로 든다.
+ */
 export const ZONE_TITLE_KO = {
-  Z1_EVIDENCE_ESTABLISHED: "근거가 선 영역",
-  Z2_EVIDENCE_INCOMPLETE: "경험은 있고 근거가 더 필요한 영역",
+  Z1_EVIDENCE_ESTABLISHED: "지금 설명할 재료가 있는 영역",
+  Z2_EVIDENCE_INCOMPLETE: "해 봤고 설명할 재료가 더 필요한 영역",
   Z3_EVIDENCE_LOW_INTEREST: "해 봤지만 지금 관심이 낮은 영역",
   Z4_INSUFFICIENT_EVIDENCE: "아직 이야기할 재료가 적은 영역",
-  NOT_EXPLORED: "이번에 깊게 묻지 않은 영역",
+  NOT_EXPLORED: "이번 검사에서는 자세히 다루지 않은 영역",
 } as const;
 
 /**
@@ -131,7 +140,7 @@ export const ZONE_LEAD_KO = {
   Z2_EVIDENCE_INCOMPLETE: "해 보신 일은 있고, 손에 남은 것이 아직 적습니다.",
   Z3_EVIDENCE_LOW_INTEREST: "해 보신 일은 있고, 지금 관심은 다른 쪽에 있습니다.",
   Z4_INSUFFICIENT_EVIDENCE: "아직 이야기로 꺼낼 만한 것이 모이지 않았습니다.",
-  NOT_EXPLORED: "이번에는 깊게 묻지 않았습니다.",
+  NOT_EXPLORED: "이번 검사에서는 자세히 다루지 않았습니다.",
 } as const;
 
 /**
@@ -324,16 +333,24 @@ const GAP_TITLE_KO: Record<Gap["kind"], (ax: string, a?: Axis | null) => string>
  * 맡는다.
  */
 const GAP_SHORT_KO: Record<Gap["kind"], (ax: string) => string> = {
-  REQUIRED_AXIS: (ax) => `${ax} 경험`,
+  REQUIRED_AXIS: (ax) => ax,
   OUTPUT: () => "남은 결과물",
   OUTPUT_EVIDENCE: () => "남긴 결과물이 무엇인지",
   VERIFICATION: () => "무엇과 비교해 확인했는지",
-  AXIS: (ax) => `${ax} 경험`,
+  AXIS: (ax) => ax,
   PARTIAL_EVIDENCE: () => "어디까지 직접 정했는지",
 };
 
+/**
+ * **축 이름을 이 자리에 적지 않는다**(FINAL POLISH §2).
+ *
+ * 전에는 `요구 해석 경험` 과 `직접 판단 경험` 이 영역 카드와 첫 화면에
+ * 그대로 섰다. 그 말은 우리 쪽 분류이고, 학생이 먼저 읽는 줄에 서면
+ * 자기 결과 대신 분류표를 읽는다. 쓰는 말을 `AXIS_NEED_KO` 로 바꾼다:
+ * 가리키는 축도 빈자리의 종류도 그대로이고 **부르는 말만 갈린다.**
+ */
 export function gapShortKo(g: Gap, domainName: string): string {
-  return `${domainName} · ${GAP_SHORT_KO[g.kind](g.axis ? AXIS_KO[g.axis] : "")}`;
+  return `${domainName} · ${GAP_SHORT_KO[g.kind](g.axis ? AXIS_NEED_KO[g.axis] : "")}`;
 }
 
 /**
@@ -345,7 +362,7 @@ export function gapShortKo(g: Gap, domainName: string): string {
  * 줄이 선다. 그래서 카드에는 **칸의 말**을 적는다.
  */
 export function gapCellKo(g: Gap): string {
-  return GAP_SHORT_KO[g.kind](g.axis ? AXIS_KO[g.axis] : "");
+  return GAP_SHORT_KO[g.kind](g.axis ? AXIS_NEED_KO[g.axis] : "");
 }
 
 /** 반쯤 선 자리는 까닭도 다르다. `보여줄 방법이 없다` 는 참이 아니다 */

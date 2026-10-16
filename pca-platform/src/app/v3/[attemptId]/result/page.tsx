@@ -1084,18 +1084,26 @@ export default async function V3Result({
 
             {/* 차례. **쪽 번호를 적지 않는다**: 담긴 양에 따라 밀리는데,
                 적어 두면 어긋난 번호가 찍힌다 */}
+            {/* **차례가 핵심과 부록을 가른다**(FINAL POLISH §3).
+                앞의 여덟이 지금 상태와 다음 행동을 읽는 자리이고, 뒤의 넷은
+                되짚어 볼 자료다. 한 줄로 늘어놓으면 열둘이 같은 무게로
+                서서, 받은 사람이 **어디까지 읽으면 되는지**를 모른다 */}
             <ol className="rs-cover-toc">
               <li>한눈에 보는 결과</li>
-              {/* **그리지 않은 절을 차례에 적지 않는다.** 판단을 물은 영역이
-                  셋 미만이면 그래프가 서지 않는다 */}
-              {hasRadar || hasBars ? <li>경험·근거 분포</li> : null}
               <li>내가 이미 가진 근거</li>
               <li>먼저 볼 영역</li>
               <li>앞으로 채울 것</li>
               <li>산업·직무 연결</li>
               <li>다음에 할 일</li>
               <li>지원서·면접에서 쓸 문장</li>
-              <li>어디에서 찾을지</li>
+            </ol>
+            <p className="rs-cover-appx">부록</p>
+            <ol className="rs-cover-toc is-appx">
+              {/* **그리지 않은 절을 차례에 적지 않는다.** 판단을 물은 영역이
+                  셋 미만이면 그래프가 서지 않는다 */}
+              <li>전체 기술영역{hasRadar || hasBars ? "과 경험·근거 분포" : ""}</li>
+              <li>이 경험을 쓸 곳</li>
+              <li>검사에서 고르신 목표</li>
               <li>이 결과를 읽는 기준</li>
             </ol>
             <p className="rs-cover-foot">
@@ -1316,240 +1324,6 @@ export default async function V3Result({
           </a>
         </div>
 
-        {/* ── 경험·근거 분포 ──
-            **그래프는 재는 층이 아니라 읽기 쉽게 다시 그리는 층이다**(§0).
-            축마다 표시값이 무엇을 뜻하는지는 `PCU_PREMIUM_VISUAL.md` A절에
-            먼저 적었고, 여기 서는 값은 전부 결과 모델이 이미 들고 있는
-            상태와 개수다. 적성 순위도 직무 적합도도 만들지 않는다 */}
-        {deep ? (
-          <section className="rs-sect" id="spread">
-            {/* **쪽마다 답하는 질문 하나**(COMMERCIAL FINAL §10). 종이에서만 선다:
-              화면은 절 머리와 첫 화면 넷이 그 일을 이미 하고 있어서, 여기에
-              한 줄을 더 세우면 같은 말이 두 번 선다 */}
-            <p className="rs-q">이번 응답에서 무엇이 확인됐는가</p>
-          {/* **글이 먼저고 그림이 뒤다**(GOLD MASTER §14·§15).
-              전에는 이 절이 레이더로 열려서, 결과를 연 사람이 가장
-              먼저 보는 본문이 **분포 그림**이었다. 그림은 재는 층이
-              아니라 읽기 쉽게 다시 그리는 층이라 주인공이 아니다.
-              지금 차례는 열두 영역이 지금 어디에 있는가를 글로 먼저
-              적고, 그 다음에 같은 것을 그림으로 되짚는다 */}
-          {/* ── 열두 영역 ──
-              **네 축만 물은 응시에 근거 묶음을 보여주지 않는다.** 묶음 이름에
-              `근거를 더 만들어야 하는 영역` 이 들어 있어서, 근거를 묻지 않은
-              응시에 그대로 세우면 재지 않은 것을 판정으로 적는 셈이다 */}
-          <div className="rs-sub" id="zones">
-            {/* **절을 둘로 읽히게 두지 않는다.** 아래 그림이 이 덩이를
-                그림으로 되짚는 자리라, 둘이 한 절 안에 선다 */}
-            {/* 이 절의 머리다. **그림이 아니라 글이 절을 연다**(§15) */}
-            <h2>전체 기술영역이 지금 어디에 있는가</h2>
-            <p className="rs-note">
-              {deep
-                ? "순위가 아니라 현재 상태를 보여드립니다."
-                : "관심과 배울 뜻에 답하신 내용으로만 묶었습니다."}
-            </p>
-            {/* **기본 Reading Path 를 다섯으로 제한한다**(규격 §2).
-                기본 화면이 답하는 것은 지금 확인된 것 · 지금 할 일 · 먼저
-                채울 것 · 산업·직무 연결 · 먼저 볼 기술영역까지다. 열두 영역을
-                묶음별로 늘어놓은 이 목록은 **되짚어 보실 자리**라, 펼쳐 두면
-                읽는 흐름이 여기서 한 번 끊긴다. 담긴 것은 그대로고 종이에서는
-                펴진다 */}
-            <Disclose label="전체 기술영역 상태 보기">
-            <div className="rs-zones">
-              {deep ? zoneRows.filter((r) => r.list.length).map(({ z, list }) => (
-                <section key={z}>
-                  <h3>{ZONE_TITLE_KO[z]}</h3>
-                  <p>{ZONE_LEAD_KO[z]}</p>
-                  <ul>{list.map((c) => <li key={c}>{domainName(core, c)}</li>)}</ul>
-                </section>
-              )) : BASIC_GROUPS.filter((k) => (bg?.[k].length ?? 0) > 0).map((k) => (
-                <section key={k}>
-                  <h3>{BASIC_GROUP_KO[k].title}</h3>
-                  <p>{BASIC_GROUP_KO[k].lead}</p>
-                  {/* **이름만 늘어놓으면 고를 수가 없다.** `동역학·진동·NVH`
-                      가 무슨 일인지 모르는 사람에게 영역 이름 열둘은 고를
-                      거리가 아니라 외울 거리다. 해 볼지 말지 정하라고 적은
-                      두 묶음에는 그 영역이 일하는 차례를 한 줄씩 붙인다 */}
-                  {k === "do_now" || k === "scan" ? (
-                    <ul className="rs-rows">
-                      {bg![k].map((c) => (
-                        <li key={c}>
-                          <b>{domainName(core, c)}</b>
-                          <span>{domainChainKo(core, c).join(" → ")}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <ul>{bg![k].map((c) => <li key={c}>{domainName(core, c)}</li>)}</ul>
-                  )}
-                </section>
-              ))}
-              {/* **빈 묶음의 이름을 늘어놓지 않는다**(COMMERCIAL GOLD
-                  MASTER §11). 한 줄로 모으기는 했는데, 그 한 줄이 `경험은
-                  있고 근거가 더 필요한 영역 · 해 봤지만 지금 관심이 낮은
-                  영역 · 아직 이야기할 재료가 적은 영역 — 해당하는 영역이
-                  없습니다` 였다. 읽는 사람이 받는 것은 **자기 결과가 아니라
-                  우리 분류표**이고, 끝이 `없습니다` 라 빈손으로 읽힌다.
-                  **사실은 숨기지 않는다**: 걸린 곳이 없다는 것을 적고 그
-                  다음에 볼 자리로 잇는다 */}
-              {deep && zoneRows.some((r) => !r.list.length) ? (
-                <p className="rs-zempty">
-                  나머지 묶음에 걸린 영역은 지금 없습니다.
-                  더 채울 곳은 ‘앞으로 채울 것’ 에 적혀 있습니다.
-                </p>
-              ) : null}
-              {deep && model.overview.not_explored.length ? (
-                <section>
-                  <h3>{ZONE_TITLE_KO.NOT_EXPLORED}</h3>
-                  <p>이번 응시에서 묻지 않은 영역입니다. 경험이 없다는 뜻이 아닙니다.</p>
-                  <ul>{model.overview.not_explored.map((c) => <li key={c}>{domainName(core, c)}</li>)}</ul>
-                </section>
-              ) : null}
-            </div>
-            </Disclose>
-            {/* **고르신 쪽을 돌려드린다.** 격자에 고르게 답하신 분께는
-                `차이가 없습니다` 만 남는데, 그 분이 묶인 둘 가운데 한쪽을
-                두 번 고르셨다. 차례로 적지 않고 고른 것으로 적는다 */}
-            {model.overview.tied_pick.length ? (
-              <p className="rs-zempty">
-                {`영역 훑기에서 같은 값으로 답하신 둘을 놓고 ${model.overview.tied_pick
-                  .map((c) => domainName(core, c)).join(" · ")} 쪽을 고르셨습니다. `}
-                위의 묶음은 그 선택과 상관없이 응답에서 나온 것입니다.
-              </p>
-            ) : null}
-            {/* **영역에 걸치지 않는 판단을 버리지 않는다.** 공통 판단과 학위
-                묶음은 기술영역이 없어서 위의 열두 영역에 들어갈 자리가 없다.
-                그렇다고 떨어뜨리면 박사와 포닥이 가장 많이 답한 자리가 결과지에
-                한 글자도 나오지 않는다 */}
-            {cm.owned.length || cm.confirmed.length ? (
-              /* **기본 본문에서 내린다**(규격 §12). 이 묶음은 핵심 결과가
-                 아니라 영역을 가로지르는 단서이고, 긴 목록이 펼쳐져 있으면
-                 결과를 읽어 내려가는 흐름이 거기서 끊긴다 */
-              <Disclose label="여러 영역에서 공통으로 확인된 판단">
-              <div className="rs-pack">
-                {/* **우리 쪽 비유(`자리`)와 판정이라는 말을 걷는다**
-                    (COMMERCIAL FINAL §4·§5). 사람이 학생에게 하는 말은
-                    `어느 영역에서 한 일인지까지는 묻지 않았습니다` 다 */}
-                <p>
-                  어느 기술영역에서 한 일인지까지는 묻지 않았습니다. 그래서
-                  위의 영역별 결과에는 들어가지 않습니다.
-                </p>
-                <dl>
-                  {cm.owned.length ? (
-                    <div>
-                      <dt>직접 정한 것으로 확인</dt>
-                      <dd>{cm.owned.join(" · ")}</dd>
-                    </div>
-                  ) : null}
-                  {cm.confirmed.length ? (
-                    <div>
-                      <dt>해 본 것으로 확인</dt>
-                      <dd>{cm.confirmed.join(" · ")}</dd>
-                    </div>
-                  ) : null}
-                </dl>
-                {/* **축 이름만 적으면 응시자가 자기 답을 못 알아본다.** 공통
-                    판단 여섯과 학위 묶음 여섯이 축 여덟으로 접히면, 한 축에
-                    문항이 둘인 자리에서 짝이 가려 답 하나가 아예 안 보인다.
-                    고르신 판단을 그대로 되돌려 준다(규격 §18) */}
-                {cm.didOwn.length || cm.didConfirm.length ? (
-                  /* **열두 줄짜리 목록을 펼쳐 두지 않는다**(규격 §26).
-                     이 자리는 축 이름만 적으면 자기 답을 못 알아보는 자리라
-                     고르신 판단을 그대로 돌려주는데, 그 목록이 스물넷까지
-                     간다. 바로 위의 두 줄(`직접 정한 것으로 확인` ·
-                     `해 본 것으로 확인`)이 이미 무엇이 확인됐는지를 말하므로
-                     목록은 **되짚어 보실 자리**다. 접어도 담긴 것은 그대로고
-                     종이에서는 펴진다 */
-                  <Fold label="고르신 판단 모두 보기">
-                    <div className="rs-cmitems">
-                      {cm.didOwn.length ? (
-                        <section>
-                          <h4>직접 정하고 그 결과가 쓰였다고 답하신 것</h4>
-                          <ul>{cm.didOwn.map((t) => <li key={t}>{t}</li>)}</ul>
-                        </section>
-                      ) : null}
-                      {cm.didConfirm.length ? (
-                        <section>
-                          <h4>직접 해 보셨다고 답하신 것</h4>
-                          <ul>{cm.didConfirm.map((t) => <li key={t}>{t}</li>)}</ul>
-                        </section>
-                      ) : null}
-                    </div>
-                  </Fold>
-                ) : null}
-              </div>
-              </Disclose>
-            ) : null}
-          </div>
-            {/* **그 전공이 먼저 보는 영역**(갈래 계약의 `domain_emphasis.lead`).
-                등록부에 적혀 있고 **읽는 자리에 한 글자도 닿지 않던 층**이다.
-                적는 것은 읽는 차례까지이고 축 수준과 묶음과 확인된 축 개수에
-                들어가지 않는다: 이 줄이 없으면 같은 Core 를 쓰는 학과 둘이
-                열두 영역을 같은 무게로 읽는다 */}
-            {sv.domainLead.length ? (
-              <p className="rs-note">
-                <b>{meta.specialization ?? meta.major} 쪽에서 먼저 보는 영역</b>
-                {" · "}
-                {sv.domainLead.map((c) => domainName(core, c)).join(" · ")}
-                {hasBars ? ". 아래 막대에서 그 영역을 먼저 보시면 됩니다."
-                  : ". 위 묶음에서 그 영역을 먼저 보시면 됩니다."}
-              </p>
-            ) : null}
-            {/* ── 그림은 보조 정보다(COMMERCIAL FINAL §11) ──
-                **Radar 를 주인공으로 키우지 않는다.** 전에는 그림 묶음이
-                레이더로 열렸고, 꼭짓점이 바깥으로 뻗은 그림은 읽는 쪽에서
-                점수로 읽힌다. 지금 차례는 막대가 먼저다: 막대는 영역마다
-                어느 단계까지 확인됐는지를 한 줄씩 그대로 보여 주고, 레이더는
-                그 열두 줄을 한 장으로 되짚는 자리라 뒤에 작게 선다.
-                **종이에서 제 쪽을 열지는 않는다**: `break-before: page` 로
-                재어 보니 그 쪽이 20%만 차고 학교 종이가 한 쪽 늘었다 */}
-            {hasRadar || hasBars ? (
-              <div className="rs-figs">
-                {/* **쪽 질문 줄(`rs-q`)을 여기 두지 않는다**(SIGN-OFF §13).
-                    이 묶음은 종이에서 제 쪽을 열지 않아서(`break-before: page`
-                    를 재어 보고 걷었다) 한 쪽에 질문 줄이 둘 서게 된다.
-                    이 묶음이 답하는 질문은 아래 머리글이 든다 */}
-                {/* **제목이 그 쪽의 핵심 질문이다**(§12). 전에는
-                    `같은 것을 그림으로` 였다. 무엇을 보는 자리인지는 말하지만
-                    **읽는 사람이 거기서 무엇을 알게 되는지**를 말하지 않아,
-                    종이에서 그 쪽이 보조 자료로 읽혔다 */}
-                <h3 className="pv-h3">내 경험은 어느 단계까지 와 있는가</h3>
-                {hasBars ? (
-                  <>
-                    {/* **설명이 그림보다 먼저 서면 안 된다**(§13).
-                        차례는 머리글 → 그림 → 설명이다: 설명을 앞에 두면
-                        읽는 사람이 자기 그림을 보기 전에 읽는 법을 먼저
-                        읽는다 */}
-                    <h4 className="pv-h4">영역별 경험 단계</h4>
-                    <StageBars model={model} name={(c) => domainName(core, c)} />
-                    <p className="rs-note">
-                      이번 응시에서 판단을 물은 영역입니다. 막대의 길이는 물은
-                      축의 수이고, 영역마다 물은 축의 수가 달라 비율로 바꾸지
-                      않습니다.
-                    </p>
-                  </>
-                ) : null}
-                {hasRadar ? (
-                  <div className="rs-fig-aside">
-                    {/* **머리를 하나 더 세우지 않는다.** 레이더는 제 범례에
-                        축 이름과 상태를 글자로 적고 있어서, 위에 이름을 또
-                        붙이면 그림 하나에 머리가 둘이 된다. 종이에서는 그
-                        한 줄이 쪽을 하나 더 열 수 있다 */}
-                    <Radar model={model} name={(c) => domainName(core, c)} />
-                    {/* **경고는 그대로 둔다**(SIGN-OFF §14). 레이더는 적성도
-                        역량 순위도 직무 적합도가 아니고, 그 줄이 빠지면
-                        꼭짓점이 뻗은 그림이 점수로 읽힌다 */}
-                    <ChartNote />
-                  </div>
-                ) : null}
-                {/* 그림 묶음을 닫는 한 줄. **그림 뒤에 둔다**(§13) */}
-                <p className="rs-note">
-                  위에 적은 상태를 그림으로 되짚는 자리입니다. 점수도
-                  순위도 아닙니다.
-                </p>
-              </div>
-            ) : null}
-          </section>
-        ) : null}
 
         {/* ── 내가 이미 가진 근거 ── **접은 자리 안에 두지 않는다**(규격 §10).
             이 절은 읽는 사람이 결과지에서 가장 먼저 자기를 알아보는
@@ -2029,6 +1803,296 @@ export default async function V3Result({
           ? <Translation view={model.translation} major={meta.major ?? "이 전공"} />
           : null}
 
+        {/* ── 결과 다음에 갈 자리 ──
+            **이어지는 자리를 여섯 장짜리 메뉴판으로 두지 않는다**(규격 §7).
+            전에는 같은 무게의 카드 여섯이 격자로 서서, 다 읽은 사람이
+            **어디를 먼저 누를지 고르는 일**을 한 번 더 했다. 그 자리는
+            결과지의 마지막 인상이라 메뉴판이 서면 이 제품이 결과를 나눠
+            주는 곳으로 읽힌다. 이어지는 자리는 하나다 */}
+        {/* **종이에는 이어지는 길을 세우지 않는다**(상용화 PHASE 0).
+            여기 선 것은 전부 눌러서 가는 자리라 뽑아 둔 종이에서는 밑줄
+            친 글자 목록으로만 남고, 마지막 쪽을 한 장 더 늘린다. 종이가
+            끝나는 자리는 해석 기준이다 */}
+        <section className="rs-sect rs-webonly" id="next">
+          <h2>이 다음에</h2>
+          <div className="rs-cta">
+            <p>
+              이 결과는 그날의 기록으로 굳어 있습니다. 여기서부터는 경험을
+              더하면서 현재 상태를 이어서 보실 수 있습니다.
+            </p>
+            <Link className="rs-cta-main" href="/me">내 CareerMatri에서 계속하기</Link>
+            {/* **거드는 길은 줄로 적는다.** 테를 두르고 설명을 붙이면 그
+                순간 주된 길과 같은 무게가 된다. 담긴 자리는 그대로고
+                무게만 내려간다 */}
+            <ul className="rs-cta-sub">
+              <li><Link href="/me/state">현재 상태</Link></li>
+              <li><Link href="/me/experience/new">경험 추가</Link></li>
+              <li><Link href="/me/next">지금 할 일</Link></li>
+              <li><Link href="/me/explore">산업·직무</Link></li>
+              {/* **종이 길은 `Link` 로 걸지 않는다.** Next 가 화면에 들어온
+                  `Link` 를 미리 불러오는데, 그 길은 머리 없는 브라우저를
+                  띄워 종이를 만드는 자리다. 아래까지 내려 읽기만 해도
+                  종이가 한 벌씩 만들어졌다 */}
+              <li><a href={`/v3/${attemptId}/result/pdf`}>PDF 저장</a></li>
+            </ul>
+            {/* **준비 중인 것을 카드로 세우지 않는다**(규격 §7). 테를
+                두르면 그 순간 있는 기능처럼 보인다 */}
+            <p className="rs-cta-note">CareerMatri Track 은 준비 중입니다.</p>
+          </div>
+        </section>
+
+        {/* ══ 여기서 핵심 리포트가 끝난다 ══
+            **지우지 않고 뒤로 보낸다**(FINAL POLISH §3).
+
+            앞까지가 학생이 자기 상태와 다음 행동을 읽는 자리이고, 여기부터는
+            **되짚어 볼 자료**다. 전에는 열두 영역 전체와 지역·기관 목록이
+            본문 한가운데에 있어서, 결과를 연 사람이 `그래서 무엇을 하면
+            되는가` 에 닿기까지 가장 긴 두 덩이를 지나야 했다.
+
+            **담긴 글을 한 줄도 덜어내지 않았다.** 차례만 바뀌고 종이에서는
+            이 머리가 부록의 시작을 적는다 */}
+        <section className="rs-sect rs-appx-head" id="appendix">
+          <h2>부록</h2>
+          <p className="rs-note">
+            여기서부터는 참고 자료입니다. 앞의 내용만으로도 지금 상태와 다음
+            행동을 확인하실 수 있습니다.
+          </p>
+        </section>
+
+        {/* ── 경험·근거 분포 ──
+            **그래프는 재는 층이 아니라 읽기 쉽게 다시 그리는 층이다**(§0).
+            축마다 표시값이 무엇을 뜻하는지는 `PCU_PREMIUM_VISUAL.md` A절에
+            먼저 적었고, 여기 서는 값은 전부 결과 모델이 이미 들고 있는
+            상태와 개수다. 적성 순위도 직무 적합도도 만들지 않는다 */}
+        {deep ? (
+          <section className="rs-sect" id="spread">
+            {/* **쪽마다 답하는 질문 하나**(COMMERCIAL FINAL §10). 종이에서만 선다:
+              화면은 절 머리와 첫 화면 넷이 그 일을 이미 하고 있어서, 여기에
+              한 줄을 더 세우면 같은 말이 두 번 선다 */}
+            <p className="rs-q">이번 응답에서 무엇이 확인됐는가</p>
+          {/* **글이 먼저고 그림이 뒤다**(GOLD MASTER §14·§15).
+              전에는 이 절이 레이더로 열려서, 결과를 연 사람이 가장
+              먼저 보는 본문이 **분포 그림**이었다. 그림은 재는 층이
+              아니라 읽기 쉽게 다시 그리는 층이라 주인공이 아니다.
+              지금 차례는 열두 영역이 지금 어디에 있는가를 글로 먼저
+              적고, 그 다음에 같은 것을 그림으로 되짚는다 */}
+          {/* ── 열두 영역 ──
+              **네 축만 물은 응시에 근거 묶음을 보여주지 않는다.** 묶음 이름에
+              `근거를 더 만들어야 하는 영역` 이 들어 있어서, 근거를 묻지 않은
+              응시에 그대로 세우면 재지 않은 것을 판정으로 적는 셈이다 */}
+          <div className="rs-sub" id="zones">
+            {/* **절을 둘로 읽히게 두지 않는다.** 아래 그림이 이 덩이를
+                그림으로 되짚는 자리라, 둘이 한 절 안에 선다 */}
+            {/* 이 절의 머리다. **그림이 아니라 글이 절을 연다**(§15) */}
+            <h2>전체 기술영역이 지금 어디에 있는가</h2>
+            <p className="rs-note">
+              {deep
+                ? "순위가 아니라 현재 상태를 보여드립니다."
+                : "관심과 배울 뜻에 답하신 내용으로만 묶었습니다."}
+            </p>
+            {/* **기본 Reading Path 를 다섯으로 제한한다**(규격 §2).
+                기본 화면이 답하는 것은 지금 확인된 것 · 지금 할 일 · 먼저
+                채울 것 · 산업·직무 연결 · 먼저 볼 기술영역까지다. 열두 영역을
+                묶음별로 늘어놓은 이 목록은 **되짚어 보실 자리**라, 펼쳐 두면
+                읽는 흐름이 여기서 한 번 끊긴다. 담긴 것은 그대로고 종이에서는
+                펴진다 */}
+            <Disclose label="전체 기술영역 상태 보기">
+            <div className="rs-zones">
+              {deep ? zoneRows.filter((r) => r.list.length).map(({ z, list }) => (
+                <section key={z}>
+                  <h3>{ZONE_TITLE_KO[z]}</h3>
+                  <p>{ZONE_LEAD_KO[z]}</p>
+                  <ul>{list.map((c) => <li key={c}>{domainName(core, c)}</li>)}</ul>
+                </section>
+              )) : BASIC_GROUPS.filter((k) => (bg?.[k].length ?? 0) > 0).map((k) => (
+                <section key={k}>
+                  <h3>{BASIC_GROUP_KO[k].title}</h3>
+                  <p>{BASIC_GROUP_KO[k].lead}</p>
+                  {/* **이름만 늘어놓으면 고를 수가 없다.** `동역학·진동·NVH`
+                      가 무슨 일인지 모르는 사람에게 영역 이름 열둘은 고를
+                      거리가 아니라 외울 거리다. 해 볼지 말지 정하라고 적은
+                      두 묶음에는 그 영역이 일하는 차례를 한 줄씩 붙인다 */}
+                  {k === "do_now" || k === "scan" ? (
+                    <ul className="rs-rows">
+                      {bg![k].map((c) => (
+                        <li key={c}>
+                          <b>{domainName(core, c)}</b>
+                          <span>{domainChainKo(core, c).join(" → ")}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <ul>{bg![k].map((c) => <li key={c}>{domainName(core, c)}</li>)}</ul>
+                  )}
+                </section>
+              ))}
+              {/* **빈 묶음의 이름을 늘어놓지 않는다**(COMMERCIAL GOLD
+                  MASTER §11). 한 줄로 모으기는 했는데, 그 한 줄이 `경험은
+                  있고 근거가 더 필요한 영역 · 해 봤지만 지금 관심이 낮은
+                  영역 · 아직 이야기할 재료가 적은 영역 — 해당하는 영역이
+                  없습니다` 였다. 읽는 사람이 받는 것은 **자기 결과가 아니라
+                  우리 분류표**이고, 끝이 `없습니다` 라 빈손으로 읽힌다.
+                  **사실은 숨기지 않는다**: 걸린 곳이 없다는 것을 적고 그
+                  다음에 볼 자리로 잇는다 */}
+              {deep && zoneRows.some((r) => !r.list.length) ? (
+                <p className="rs-zempty">
+                  나머지 묶음에 걸린 영역은 지금 없습니다.
+                  더 채울 곳은 ‘앞으로 채울 것’ 에 적혀 있습니다.
+                </p>
+              ) : null}
+              {deep && model.overview.not_explored.length ? (
+                <section>
+                  <h3>{ZONE_TITLE_KO.NOT_EXPLORED}</h3>
+                  <p>이번 응시에서 묻지 않은 영역입니다. 경험이 없다는 뜻이 아닙니다.</p>
+                  <ul>{model.overview.not_explored.map((c) => <li key={c}>{domainName(core, c)}</li>)}</ul>
+                </section>
+              ) : null}
+            </div>
+            </Disclose>
+            {/* **고르신 쪽을 돌려드린다.** 격자에 고르게 답하신 분께는
+                `차이가 없습니다` 만 남는데, 그 분이 묶인 둘 가운데 한쪽을
+                두 번 고르셨다. 차례로 적지 않고 고른 것으로 적는다 */}
+            {model.overview.tied_pick.length ? (
+              <p className="rs-zempty">
+                {`영역 훑기에서 같은 값으로 답하신 둘을 놓고 ${model.overview.tied_pick
+                  .map((c) => domainName(core, c)).join(" · ")} 쪽을 고르셨습니다. `}
+                위의 묶음은 그 선택과 상관없이 응답에서 나온 것입니다.
+              </p>
+            ) : null}
+            {/* **영역에 걸치지 않는 판단을 버리지 않는다.** 공통 판단과 학위
+                묶음은 기술영역이 없어서 위의 열두 영역에 들어갈 자리가 없다.
+                그렇다고 떨어뜨리면 박사와 포닥이 가장 많이 답한 자리가 결과지에
+                한 글자도 나오지 않는다 */}
+            {cm.owned.length || cm.confirmed.length ? (
+              /* **기본 본문에서 내린다**(규격 §12). 이 묶음은 핵심 결과가
+                 아니라 영역을 가로지르는 단서이고, 긴 목록이 펼쳐져 있으면
+                 결과를 읽어 내려가는 흐름이 거기서 끊긴다 */
+              <Disclose label="여러 영역에서 공통으로 확인된 판단">
+              <div className="rs-pack">
+                {/* **우리 쪽 비유(`자리`)와 판정이라는 말을 걷는다**
+                    (COMMERCIAL FINAL §4·§5). 사람이 학생에게 하는 말은
+                    `어느 영역에서 한 일인지까지는 묻지 않았습니다` 다 */}
+                <p>
+                  어느 기술영역에서 한 일인지까지는 묻지 않았습니다. 그래서
+                  위의 영역별 결과에는 들어가지 않습니다.
+                </p>
+                <dl>
+                  {cm.owned.length ? (
+                    <div>
+                      <dt>직접 정한 것으로 확인</dt>
+                      <dd>{cm.owned.join(" · ")}</dd>
+                    </div>
+                  ) : null}
+                  {cm.confirmed.length ? (
+                    <div>
+                      <dt>해 본 것으로 확인</dt>
+                      <dd>{cm.confirmed.join(" · ")}</dd>
+                    </div>
+                  ) : null}
+                </dl>
+                {/* **축 이름만 적으면 응시자가 자기 답을 못 알아본다.** 공통
+                    판단 여섯과 학위 묶음 여섯이 축 여덟으로 접히면, 한 축에
+                    문항이 둘인 자리에서 짝이 가려 답 하나가 아예 안 보인다.
+                    고르신 판단을 그대로 되돌려 준다(규격 §18) */}
+                {cm.didOwn.length || cm.didConfirm.length ? (
+                  /* **열두 줄짜리 목록을 펼쳐 두지 않는다**(규격 §26).
+                     이 자리는 축 이름만 적으면 자기 답을 못 알아보는 자리라
+                     고르신 판단을 그대로 돌려주는데, 그 목록이 스물넷까지
+                     간다. 바로 위의 두 줄(`직접 정한 것으로 확인` ·
+                     `해 본 것으로 확인`)이 이미 무엇이 확인됐는지를 말하므로
+                     목록은 **되짚어 보실 자리**다. 접어도 담긴 것은 그대로고
+                     종이에서는 펴진다 */
+                  <Fold label="고르신 판단 모두 보기">
+                    <div className="rs-cmitems">
+                      {cm.didOwn.length ? (
+                        <section>
+                          <h4>직접 정하고 그 결과가 쓰였다고 답하신 것</h4>
+                          <ul>{cm.didOwn.map((t) => <li key={t}>{t}</li>)}</ul>
+                        </section>
+                      ) : null}
+                      {cm.didConfirm.length ? (
+                        <section>
+                          <h4>직접 해 보셨다고 답하신 것</h4>
+                          <ul>{cm.didConfirm.map((t) => <li key={t}>{t}</li>)}</ul>
+                        </section>
+                      ) : null}
+                    </div>
+                  </Fold>
+                ) : null}
+              </div>
+              </Disclose>
+            ) : null}
+          </div>
+            {/* **그 전공이 먼저 보는 영역**(갈래 계약의 `domain_emphasis.lead`).
+                등록부에 적혀 있고 **읽는 자리에 한 글자도 닿지 않던 층**이다.
+                적는 것은 읽는 차례까지이고 축 수준과 묶음과 확인된 축 개수에
+                들어가지 않는다: 이 줄이 없으면 같은 Core 를 쓰는 학과 둘이
+                열두 영역을 같은 무게로 읽는다 */}
+            {sv.domainLead.length ? (
+              <p className="rs-note">
+                <b>{meta.specialization ?? meta.major} 쪽에서 먼저 보는 영역</b>
+                {" · "}
+                {sv.domainLead.map((c) => domainName(core, c)).join(" · ")}
+                {hasBars ? ". 아래 막대에서 그 영역을 먼저 보시면 됩니다."
+                  : ". 위 묶음에서 그 영역을 먼저 보시면 됩니다."}
+              </p>
+            ) : null}
+            {/* ── 그림은 보조 정보다(COMMERCIAL FINAL §11) ──
+                **Radar 를 주인공으로 키우지 않는다.** 전에는 그림 묶음이
+                레이더로 열렸고, 꼭짓점이 바깥으로 뻗은 그림은 읽는 쪽에서
+                점수로 읽힌다. 지금 차례는 막대가 먼저다: 막대는 영역마다
+                어느 단계까지 확인됐는지를 한 줄씩 그대로 보여 주고, 레이더는
+                그 열두 줄을 한 장으로 되짚는 자리라 뒤에 작게 선다.
+                **종이에서 제 쪽을 열지는 않는다**: `break-before: page` 로
+                재어 보니 그 쪽이 20%만 차고 학교 종이가 한 쪽 늘었다 */}
+            {hasRadar || hasBars ? (
+              <div className="rs-figs">
+                {/* **쪽 질문 줄(`rs-q`)을 여기 두지 않는다**(SIGN-OFF §13).
+                    이 묶음은 종이에서 제 쪽을 열지 않아서(`break-before: page`
+                    를 재어 보고 걷었다) 한 쪽에 질문 줄이 둘 서게 된다.
+                    이 묶음이 답하는 질문은 아래 머리글이 든다 */}
+                {/* **제목이 그 쪽의 핵심 질문이다**(§12). 전에는
+                    `같은 것을 그림으로` 였다. 무엇을 보는 자리인지는 말하지만
+                    **읽는 사람이 거기서 무엇을 알게 되는지**를 말하지 않아,
+                    종이에서 그 쪽이 보조 자료로 읽혔다 */}
+                <h3 className="pv-h3">내 경험은 어느 단계까지 와 있는가</h3>
+                {hasBars ? (
+                  <>
+                    {/* **설명이 그림보다 먼저 서면 안 된다**(§13).
+                        차례는 머리글 → 그림 → 설명이다: 설명을 앞에 두면
+                        읽는 사람이 자기 그림을 보기 전에 읽는 법을 먼저
+                        읽는다 */}
+                    <h4 className="pv-h4">영역별 경험 단계</h4>
+                    <StageBars model={model} name={(c) => domainName(core, c)} />
+                    <p className="rs-note">
+                      이번 응시에서 판단을 물은 영역입니다. 막대의 길이는 물은
+                      축의 수이고, 영역마다 물은 축의 수가 달라 비율로 바꾸지
+                      않습니다.
+                    </p>
+                  </>
+                ) : null}
+                {hasRadar ? (
+                  <div className="rs-fig-aside">
+                    {/* **머리를 하나 더 세우지 않는다.** 레이더는 제 범례에
+                        축 이름과 상태를 글자로 적고 있어서, 위에 이름을 또
+                        붙이면 그림 하나에 머리가 둘이 된다. 종이에서는 그
+                        한 줄이 쪽을 하나 더 열 수 있다 */}
+                    <Radar model={model} name={(c) => domainName(core, c)} />
+                    {/* **경고는 그대로 둔다**(SIGN-OFF §14). 레이더는 적성도
+                        역량 순위도 직무 적합도가 아니고, 그 줄이 빠지면
+                        꼭짓점이 뻗은 그림이 점수로 읽힌다 */}
+                    <ChartNote />
+                  </div>
+                ) : null}
+                {/* 그림 묶음을 닫는 한 줄. **그림 뒤에 둔다**(§13) */}
+                <p className="rs-note">
+                  위에 적은 상태를 그림으로 되짚는 자리입니다. 점수도
+                  순위도 아닙니다.
+                </p>
+              </div>
+            ) : null}
+          </section>
+        ) : null}
         {/* ── 8. 지역과 기관 탐색 ──
             **기업 이름을 담지 않는다.** 직업정보제공사업으로 할 수 있는
             것은 공고를 띄우는 데까지다. 그리고 기관 수를 짐작으로 채우지
@@ -2192,43 +2256,6 @@ export default async function V3Result({
           </p>
         </section>
 
-        {/* ── 결과 다음에 갈 자리 ──
-            **이어지는 자리를 여섯 장짜리 메뉴판으로 두지 않는다**(규격 §7).
-            전에는 같은 무게의 카드 여섯이 격자로 서서, 다 읽은 사람이
-            **어디를 먼저 누를지 고르는 일**을 한 번 더 했다. 그 자리는
-            결과지의 마지막 인상이라 메뉴판이 서면 이 제품이 결과를 나눠
-            주는 곳으로 읽힌다. 이어지는 자리는 하나다 */}
-        {/* **종이에는 이어지는 길을 세우지 않는다**(상용화 PHASE 0).
-            여기 선 것은 전부 눌러서 가는 자리라 뽑아 둔 종이에서는 밑줄
-            친 글자 목록으로만 남고, 마지막 쪽을 한 장 더 늘린다. 종이가
-            끝나는 자리는 해석 기준이다 */}
-        <section className="rs-sect rs-webonly" id="next">
-          <h2>이 다음에</h2>
-          <div className="rs-cta">
-            <p>
-              이 결과는 그날의 기록으로 굳어 있습니다. 여기서부터는 경험을
-              더하면서 현재 상태를 이어서 보실 수 있습니다.
-            </p>
-            <Link className="rs-cta-main" href="/me">내 CareerMatri에서 계속하기</Link>
-            {/* **거드는 길은 줄로 적는다.** 테를 두르고 설명을 붙이면 그
-                순간 주된 길과 같은 무게가 된다. 담긴 자리는 그대로고
-                무게만 내려간다 */}
-            <ul className="rs-cta-sub">
-              <li><Link href="/me/state">현재 상태</Link></li>
-              <li><Link href="/me/experience/new">경험 추가</Link></li>
-              <li><Link href="/me/next">지금 할 일</Link></li>
-              <li><Link href="/me/explore">산업·직무</Link></li>
-              {/* **종이 길은 `Link` 로 걸지 않는다.** Next 가 화면에 들어온
-                  `Link` 를 미리 불러오는데, 그 길은 머리 없는 브라우저를
-                  띄워 종이를 만드는 자리다. 아래까지 내려 읽기만 해도
-                  종이가 한 벌씩 만들어졌다 */}
-              <li><a href={`/v3/${attemptId}/result/pdf`}>PDF 저장</a></li>
-            </ul>
-            {/* **준비 중인 것을 카드로 세우지 않는다**(규격 §7). 테를
-                두르면 그 순간 있는 기능처럼 보인다 */}
-            <p className="rs-cta-note">CareerMatri Track 은 준비 중입니다.</p>
-          </div>
-        </section>
 
         </Detail>
 
@@ -2246,7 +2273,11 @@ export default async function V3Result({
               않는다는 것도 함께 적는다 */}
           {model.targets.orgs.length || goal.role || goal.industry || goal.org ? (
             <div className="rs-pack">
-              <h3>고르신 자리</h3>
+              {/* **`고른 자리` 는 우리 쪽 말이다**(FINAL POLISH §2).
+                  이 묶음이 드는 것은 응시 중에 고르신 목표 산업·직무·조직
+                  이고, 그 자리를 부르는 자연스러운 말이 `목표` 다. 담는
+                  값과 쓰이지 않는다는 설명은 그대로다 */}
+              <h3>검사에서 고르신 목표</h3>
               <p>
                 응시하면서 고르신 것입니다. 기술영역 결과에는 들어가지 않고,
                 산업과 직무를 읽는 순서에만 쓰입니다.

@@ -226,6 +226,18 @@ async function main(): Promise<void> {
       const pages = txt.split("\f");
       ok(`${name} 종이에 쪽이 선다`, pages.length > 2, `${pages.length - 1}쪽`);
       execFileSync("pdftoppm", ["-png", "-r", "110", "-f", "1", "-l", "4", f, `${OUT}/09-report`]);
+      /* **부록이 어디서 시작하는지도 그림으로 남긴다**(FINAL POLISH §3·§9).
+         핵심 리포트가 끝나는 쪽을 보지 않으면 가름이 섰는지 알 수 없다.
+         글자에서 그 쪽을 찾아 그 쪽과 앞 쪽을 뜬다 */
+      /* **표지의 차례에도 `부록` 이 적혀 있다.** 앞에서부터 찾으면 늘
+         첫 쪽이 걸리고, 그러면 이 줄이 아무것도 세지 않는다 */
+      const ax = pages.map((t, i) => (/부록/.test(t) ? i : -1))
+        .filter((i) => i > 0).pop() ?? -1;
+      ok(`${name} 종이에 부록이 갈린다`, ax > 0, ax > 0 ? `${ax + 1}쪽` : "없음");
+      if (ax > 0) {
+        execFileSync("pdftoppm", ["-png", "-r", "110",
+          "-f", String(ax), "-l", String(ax + 1), f, `${OUT}/09b-appendix`]);
+      }
     }
 
     /* ⑩ 작업공간 */

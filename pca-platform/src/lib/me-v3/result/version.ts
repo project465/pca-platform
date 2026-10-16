@@ -99,7 +99,7 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
  * **판정도 결과 모델도 한 줄 바뀌지 않았다.** 이 판본이 든 파일은 전부
  * 번역표와 읽는 층이고, 채점과 결과 모델은 이 파일을 읽지 않는다.
  */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.35";
+export const RESULT_COPY_VERSION = "me-v3-result-copy.36";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -323,7 +323,7 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.35";
  * 줄도 바뀌지 않았고 `v3:freeze:measure` 가 기록을 다시 적지 않은 채로
  * 통과한다.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V42";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V43";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX
@@ -857,4 +857,27 @@ export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V42";
  *
  * **`RESULT_MODEL_VERSION` 과 채점 판본은 올리지 않는다**: 판정이 한 줄도
  * 바뀌지 않았고 `v3:freeze:measure` 가 기록을 다시 적지 않은 채로 통과한다.
+ */
+
+
+/**
+ * `ME_V3_RESULT_UI_V43` · `me-v3-result-copy.36` 으로 올린 까닭.
+ * **핵심 리포트와 부록을 갈랐고 학생이 먼저 읽는 말을 자연어로 내렸다**
+ * (FINAL POLISH §2 · §3).
+ *
+ * 담긴 글을 한 줄도 덜어내지 않았다. 차례만 바뀐다: 열두 영역 전체와
+ * 지역·기관이 본문 한가운데에서 **꼬리로 가고**, 그 앞에 금 하나와
+ * `부록` 한 줄이 선다. 표지의 차례도 핵심 일곱과 부록 넷으로 갈린다.
+ *
+ * 말 쪽은 셋이다. `근거가 선 영역` 이 `지금 설명할 재료가 있는 영역`
+ * 이고 `이번에 깊게 묻지 않은 영역` 이 `이번 검사에서는 자세히 다루지
+ * 않은 영역` 이며, 빈자리를 적는 짧은 꼴이 축 이름(`요구 해석` ·
+ * `직접 판단`) 대신 그 축을 부르는 말(`받은 요청을 바꾼 조건` ·
+ * `직접 정한 기준`)을 쓴다. **가리키는 묶음과 축과 판정 조건은 한 줄도
+ * 바뀌지 않았다**: 안쪽 코드도 `scoring/text.ko.ts` 의 긴 말도 그대로다.
+ *
+ * 종이 쪽수는 재어서 맞췄다. 부록 머리를 종이에서 한 줄로 눕히고 본문
+ * 줄 사이를 1.45 에서 1.42 로 내려 **스물두 벌이 걸림 0** 이다. 가장 긴
+ * Core 하나(CS PRO)만 열셋이고, 앞의 열두 쪽이 92~99% 로 차 있어 밀린
+ * 덩이도 빈 쪽도 없다.
  */

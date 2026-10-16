@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { BrandMark } from "@/components/sf/brand-mark";
 import { useRouter } from "next/navigation";
 import { UNKNOWN, type Answer } from "@/lib/me-v3/scoring/types";
@@ -95,6 +95,16 @@ export default function Screen({
   const lastRun = useRef<(() => Promise<unknown>) | null>(null);
   const [moving, setMoving] = useState(false);
   const [warn, setWarn] = useState(false);
+  /**
+   * 영역 훑기에서 **지금 펴 둔 질문**. `null` 이면 아직 답하지 않은 첫
+   * 질문이 선다(FINAL POLISH §1).
+   *
+   * **쪽 나누기도 저장도 건드리지 않는다**: 한 화면에 받는 문항은 그대로
+   * 넷이고 고르면 그 자리에서 보낸다. 바뀌는 것은 넷 가운데 어느 줄이
+   * 펴져 있는가뿐이고, 그 판단은 넓은 화면에서 쓰이지 않는다(아래
+   * `assessment.css` 의 `@media` 가 넓은 화면에서는 넷을 다 펴 둔다).
+   */
+  const [openAt, setOpenAt] = useState<number | null>(null);
   const queue = useRef<Promise<unknown>>(Promise.resolve());
 
   /** 읽는 법 한 줄이 붙을 질문. **첫 사다리 하나뿐이다**: 화면마다 깔면
@@ -189,6 +199,53 @@ export default function Screen({
   const missing = s.fields.filter(empty);
 
   /**
+   * 영역 훑기에서 **지금 답할 질문이 어느 줄인가.**
+   *
+   * 고른 줄이 있으면 그 줄이고, 없으면 아직 답하지 않은 첫 줄이다. 넷을
+   * 다 답했으면 `-1` 이라 넷이 모두 요약 한 줄로 서고 **고친 것을 다시
+   * 훑어보는 자리**가 된다. 넓은 화면은 이 값을 쓰지 않는다.
+   */
+  const firstEmpty = s.fields.findIndex(empty);
+  const focusAt = s.kind !== "sweep" ? -1
+    : openAt !== null && openAt < s.fields.length ? openAt
+    : firstEmpty;
+
+  /**
+   * 훑기에서 하나를 고른다. **저장은 `setAnswer` 하나가 그대로 한다.**
+   *
+   * 고른 뒤에 **아직 답하지 않은 다음 줄**로 옮긴다: 고른 줄은 그 자리에서
+   * 고른 말을 단 요약 한 줄이 되고 다음 질문이 펴진다. 남은 줄이 없으면
+   * 자동 판단으로 되돌려(`null`) 넷이 모두 요약으로 선다.
+   */
+  /**
+   * 펴진 질문이 **엄지로 닿는 자리에 오게** 한다(FINAL POLISH §1).
+   *
+   * 접힌 줄이 위에 쌓이므로 넷째 질문이 펴지면 그 보기 다섯이 화면
+   * 아래쪽에 선다. 고른 사람이 그때마다 손으로 쓸어 내리게 두면 접은
+   * 보람이 없다. **창 안에 이미 들어와 있으면 움직이지 않는다**: 까닥하면
+   * 고르는 자리가 매번 흔들린다. 넓은 화면은 접지 않으므로 지나간다.
+   */
+  const first = useRef(true);
+  useEffect(() => {
+    if (s.kind !== "sweep") return;
+    if (first.current) { first.current = false; return; }
+    if (window.innerWidth > 719) return;
+    const el = document.querySelector<HTMLElement>(".qs-fold.is-now");
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    if (r.top >= 0 && r.bottom <= window.innerHeight - 88) return;
+    const calm = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    el.scrollIntoView({ block: "center", behavior: calm ? "auto" : "smooth" });
+  }, [focusAt, s.kind]);
+
+  const pickSweep = (f: Field, raw: number | string, a: Answer) => {
+    setAnswer(f, raw, a);
+    const i = s.fields.indexOf(f);
+    const to = s.fields.findIndex((g, k) => k > i && empty(g));
+    setOpenAt(to >= 0 ? to : null);
+  };
+
+  /**
    * 기본 정보 화면에서 **이 Core 를 받을 수 있는가.**
    *
    * `eligible()` 은 전부터 이 규칙을 들고 있었는데 **부르는 자리가 한
@@ -241,7 +298,16 @@ export default function Screen({
   };
 
   const next = async () => {
-    if (blocked) { setWarn(true); return; }
+    if (blocked) {
+      setWarn(true);
+      /* **접힌 줄에 `아직 답하지 않았습니다` 를 적어도 보이지 않는다.**
+         좁은 화면에서는 넷 가운데 하나만 펴져 있으므로, 비어 있는 첫
+         질문을 그 자리에서 펴 준다 */
+      if (s.kind === "sweep" && missing.length) {
+        setOpenAt(s.fields.indexOf(missing[0]));
+      }
+      return;
+    }
     await go(s.nextIndex);
   };
 
@@ -496,13 +562,27 @@ export default function Screen({
             **질문 하나와 뜻이 적힌 보기**로 세운다: 실제 판단을 묻는
             화면과 같은 모양이라 검사 전체가 한 제품으로 읽힌다.
             끊는 자리는 `blocks.ts` 이고 묻는 문항과 저장되는 값은 그대로다 */}
+        {/* **좁은 화면에서는 한 번에 한 질문만 펴 둔다**(FINAL POLISH §1).
+            넷을 다 펴 두면 같은 보기 다섯이 네 번 세로로 쌓여, 문항 넷이
+            아니라 **스무 줄짜리 설문지**로 읽힌다. 답한 줄은 고른 말을 단
+            요약 한 줄로 접히고(그래서 **무엇을 골랐는지가 그 자리에
+            남는다**) 아직 답하지 않은 줄은 한 단 흐린 한 줄로 기다린다.
+            넓은 화면은 보기 다섯이 한 행에 서서 넷이 이미 짧으므로
+            그대로 넷을 다 펴 둔다: 가르는 자리는 `assessment.css` 의
+            `@media` 하나이고 **문항 수와 저장과 쪽 나누기는 그대로다** */}
         {s.kind === "sweep" ? (
           <div className="qs-rows qs-sweep">
             {s.fields.map((f, i) => (
-              <Row key={f.itemId} f={f} value={vals[f.itemId]}
-                n={i + 1} of={s.fields.length} miss={warn && empty(f)}
-                onPick={setAnswer}
-                notes={notes} onNote={setNote} onNoteDone={flushNote} />
+              <div key={f.itemId}
+                className={`qs-fold${i === focusAt ? " is-now"
+                  : empty(f) ? " is-later" : " is-done"}`}>
+                <Sum f={f} value={vals[f.itemId]} n={i + 1} of={s.fields.length}
+                  miss={warn && empty(f)} onOpen={() => setOpenAt(i)} />
+                <Row f={f} value={vals[f.itemId]}
+                  n={i + 1} of={s.fields.length} miss={warn && empty(f)}
+                  onPick={pickSweep}
+                  notes={notes} onNote={setNote} onNoteDone={flushNote} />
+              </div>
             ))}
           </div>
         ) : null}
@@ -913,6 +993,59 @@ function Steps({
         </label>
       ) : null}
     </fieldset>
+  );
+}
+
+/**
+ * 고른 답을 그 보기의 **말로** 돌려준다. 값이 없으면 `null`.
+ *
+ * **문항 은행이 유일한 출처다**: 여기서 낱말을 새로 적지 않고 그 보기의
+ * 밝혀 적는 말(`full`)을 그대로 쓴다. 번호가 앞에 붙어 있어 `2` 와 `4`
+ * 사이가 몇 칸인지도 같이 읽힌다.
+ */
+function pickedLabel(f: Field, value: number | string | null): string | null {
+  if (value === null || value === undefined) return null;
+  const c = f.control;
+  if (c.kind === "steps") {
+    const o = c.options.find((x) =>
+      (x.value === null ? UNKNOWN : x.value) === value);
+    return o ? o.full : null;
+  }
+  if (c.kind === "scale5") return c.labels[Number(value) - 1] ?? null;
+  if (c.kind === "exposure") return c.options[Number(value)] ?? null;
+  if (c.kind === "level") return (f.optionLabel ?? c.options)[Number(value)] ?? null;
+  if (c.kind === "choice") return c.options.find((o) => o.value === value)?.label ?? null;
+  return null;
+}
+
+/**
+ * 접힌 질문 한 줄(FINAL POLISH §1).
+ *
+ * **고른 말을 그 자리에 남긴다.** 접었다고 질문만 적으면 응시자는 자기가
+ * 무엇을 골랐는지 확인하러 다시 펴야 하고, 그러면 접은 것이 일을 하나 더
+ * 만든 셈이 된다. 답한 줄은 `질문 — 고른 말`, 아직인 줄은 한 단 흐린
+ * 질문 한 줄이다.
+ *
+ * **단추로 둔다.** 눌러서 펴지는 자리라 키보드로 닿아야 하고, 접힌
+ * 상태라는 것을 보조 기기에도 적어야 한다(`aria-expanded`).
+ */
+function Sum({
+  f, value, n, of, miss, onOpen,
+}: {
+  f: Field; value: number | string | null;
+  n: number; of: number; miss?: boolean;
+  onOpen: () => void;
+}) {
+  const label = pickedLabel(f, value);
+  return (
+    <button type="button" onClick={onOpen} aria-expanded={false}
+      className={`qs-sum${label ? " is-done" : ""}${miss ? " is-miss" : ""}`}>
+      <span className="qs-sum-n" aria-hidden>{n} / {of}</span>
+      <span className="qs-sum-q">{f.label}</span>
+      <span className="qs-sum-a">
+        {label ?? (miss ? "아직 답하지 않았습니다" : "답할 차례")}
+      </span>
+    </button>
   );
 }
 

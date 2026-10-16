@@ -29,8 +29,19 @@ async function measure(p: Page, label: string): Promise<void> {
     const out: Record<string, unknown> = {};
     const nav = document.querySelector<HTMLElement>(".qs-nav");
     out.navH = nav ? Math.round(nav.getBoundingClientRect().height) : 0;
-    const rows = [...document.querySelectorAll<HTMLElement>("fieldset.qs-opts, .qs-sweep-row")];
+    const rows = [...document.querySelectorAll<HTMLElement>("fieldset.qs-opts, .qs-sweep-row")]
+      .filter((e) => e.checkVisibility?.() !== false);
     out.rows = rows.length;
+    /* **접힌 줄을 따로 센다**(FINAL POLISH §1). 펴진 질문이 하나이고
+       나머지가 요약 한 줄이어야 한다. `display: none` 인 자리는 자리를
+       돌려주지 않으므로 `checkVisibility` 로 가른다 */
+    const sums = [...document.querySelectorAll<HTMLElement>(".qs-sum")]
+      .filter((e) => e.checkVisibility?.() !== false);
+    out.folded = sums.length;
+    out.foldH = sums.map((e) => Math.round(e.getBoundingClientRect().height));
+    out.foldPicked = sums.filter((e) => e.className.includes("is-done")).length;
+    const now = document.querySelector<HTMLElement>(".qs-fold.is-now");
+    out.nowTop = now ? Math.round(now.getBoundingClientRect().top) : null;
     const q = document.querySelector<HTMLElement>(".qs-q");
     const first = rows[0];
     if (q && first) {
@@ -157,6 +168,15 @@ async function main(): Promise<void> {
       console.log(`\n== ${w}px  (훑기 ${grid} · 판단 ${quest})`);
       await p.goto(`${BASE}/v3/${att}?s=${grid}`, { waitUntil: "networkidle" });
       await measure(p, "훑기");
+      /* 재어 놓고 보지 않으면 숫자만 늘어난다. 눈으로 읽을 그림을 같이 둔다 */
+      if (process.env.SHOT) {
+        const dir = process.env.SHOT;
+        await p.screenshot({ path: `${dir}/interest-${w}-a.png`, fullPage: true });
+        await p.locator(".qs-fold.is-now .qs-opt").nth(3).click({ force: true })
+          .catch(() => undefined);
+        await p.waitForTimeout(600);
+        await p.screenshot({ path: `${dir}/interest-${w}-b.png`, fullPage: true });
+      }
       if (process.env.TREE) {
         console.log(await p.evaluate(() => {
           const lines: string[] = [];

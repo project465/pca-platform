@@ -2,8 +2,8 @@
  "schema_version": "me-v3-result-lock.1",
  "note": "결과지 화면 1차 동결. 문장만 고치면 `RESULT_COPY_VERSION` 만 올리고, 칸이나 절이 바뀌면 `RESULT_MODEL_VERSION`, 화면 구조가 바뀌면 `RESULT_UI_VERSION` 을 올린다. 채점 판본은 이 가운데 무엇으로도 올리지 않는다",
  "versions": {
-  "result_ui_version": "ME_V3_RESULT_UI_V42",
-  "result_copy_version": "me-v3-result-copy.35",
+  "result_ui_version": "ME_V3_RESULT_UI_V43",
+  "result_copy_version": "me-v3-result-copy.36",
   "result_model_version": "me-v3-result-model.6",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.5",
   "scoring_version": "me-v3-scoring.5"
@@ -20,15 +20,15 @@
   "종이에 빈 쪽과 범위 밖 쪽수가 없다": "v3:result:pdf"
  },
  "files": {
-  "src/app/v3/result.css": "35672afb366d05789d790e5589c86d670f8d61c301e112c52bf15a26914ce164",
-  "src/app/v3/[attemptId]/result/page.tsx": "59acd25e8920c23baad68aef50f23feddb9027928f200a5abbe191aac5a7334a",
+  "src/app/v3/result.css": "e9086e04a5ad4e34d84d31a8bda57d34c489fbfe28eaf6c98581db743d0ad7f7",
+  "src/app/v3/[attemptId]/result/page.tsx": "10db8c52e07c2391a7ef66a712e7398bfd9d0ec4f1b1e89b04ad573d61950dba",
   "src/app/v3/[attemptId]/result/fold.tsx": "da6c8b16f124941d283dc9ae4ad0f41b2271fd8d8233028bfdc3d4c500d4fbb4",
   "src/app/v3/[attemptId]/result/disclose.tsx": "a82c70b1d0897647877cfff4a672e8ebffd8716f76e6cfcc3d25e066f074f455",
   "src/app/v3/[attemptId]/result/save.tsx": "2830e503419eba94015798787ab2f7cd4abca39c8126fe1cf3dca087f6c6e7c1",
   "src/app/v3/[attemptId]/result/track.tsx": "6136c271ee7df7323f029912182c7496a8633fdf7479b6080697a6f4a217787c",
-  "src/lib/me-v3/result/text.ko.ts": "d3e8728914b99f9722553f2d663f433c77f4ef0fe50059abfb8d21a1bc266183",
+  "src/lib/me-v3/result/text.ko.ts": "945c60beae856009f2cbdc4ea73251e588ff3a608c96f71fd55b6d1959563306",
   "src/lib/me-v3/result/josa.ts": "152cd30c2af136172618c14fa6fb4175b97cf16350db631e3e2e6c72fd7dd4af",
-  "src/lib/me-v3/result/version.ts": "6338c572283db8e18d547db45797c0805a9440ac7cbd0af3d5e72f7570448fae",
+  "src/lib/me-v3/result/version.ts": "1b802d5d7c81933b233d2938308f9c050fd3325484b4316c5c52830dce27922a",
   "src/lib/me-v3/result/spec-view.ts": "5996808b444eead599e03d41d22629c6ae8ce2690e06937ce64471d189b04fe7",
   "src/lib/me-v3/result/meta.ts": "bf2c3f49a2bc49108e6e63f6c9ac6f03cce070b6fe50f24ad8a3f4027aaa85cc",
   "src/app/v3/[attemptId]/result/charts.tsx": "0ccccdbdd1f17a7e86b3d3df9c502f990ea08aed4ded68c69f8c4a8d1ed2d925",

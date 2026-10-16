@@ -140,9 +140,12 @@ export default async function V3Intro({
         {/* **첫 인상이 `긴 검사` 가 아니어야 한다**(§4). 제목이 분량을
             말하지 않고 **이 검사가 무엇을 하는 자리인가**를 말한다 */}
         <h1 className="qs-h1">내 전공과 경험을 정리합니다</h1>
+        {/* **두 줄 안에서 끝낸다**(FINAL POLISH §4). 손전화에서 한 줄이
+            스물여섯 자쯤이라 쉰 자를 넘으면 세 줄이 되고, 그러면 제목과
+            카드 사이에 읽을거리가 한 덩이 더 선다 */}
         <p className="qs-lead">
-          {coreName} 쪽에서 지금까지 해 본 일과 그때 직접 정한 것을 묻고,
-          지금 설명할 수 있는 영역과 다음에 채울 부분을 정리합니다.
+          {coreName} 쪽에서 해 본 일과 그때 직접 정한 것을 묻고, 설명할 수
+          있는 영역과 채울 부분을 정리합니다.
         </p>
 
         <ul className="qs-three">
@@ -164,11 +167,15 @@ export default async function V3Intro({
           ))}
         </ul>
 
+        {/* **이 쪽의 단추는 하나다**(FINAL POLISH §4). `나중에 하기` 가
+            테를 두른 단추로 나란히 서니 둘 가운데 어느 쪽이 이 쪽의 행동
+            인지 고르는 일이 한 번 더 생겼다. 나가는 길은 남기되 **글줄**
+            로 내린다: 길이 사라진 것이 아니라 무게가 갈린 것이다 */}
         <div className="qs-start-nav">
           <a className="qs-btn qs-btn-main qs-btn-go" href={`/v3/${attemptId}`}>
             검사 시작하기 →
           </a>
-          <a className="qs-btn qs-btn-ghost" href="/me">나중에 하기</a>
+          <a className="qs-later" href="/me">나중에 하기</a>
         </div>
 
         {/* **나머지는 접는다**(§4). 지우지 않는 까닭은 전공 장면과 묻는
@@ -211,10 +218,12 @@ export default async function V3Intro({
           </ul>
         </details>
 
-        <p className="qs-fine">
-          나중에 하기를 눌러도 지금까지의 응답은 그대로 남습니다. 다시
-          들어오면 보던 자리에서 이어집니다.
-        </p>
+        {/* **이어진다는 말을 세 번 적지 않는다**(FINAL POLISH §4).
+            카드 셋째가 이미 `중간에 닫아도 이어집니다` 를 적고 접힌 자리의
+            표가 `문항마다 자동 저장` 을 한 번 더 적는다. 그리고 이 쪽은
+            **첫 문항 앞**이라 `지금까지의 응답` 이라고 할 응답이 아직
+            없다: 맞지도 않는 줄을 바닥에 한 줄 더 두면 시작 단추가 그만큼
+            아래로 밀린다 */}
       </main>
     </div>
   );
