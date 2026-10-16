@@ -1,17 +1,17 @@
 {
  "schema_version": "ee-v1-bank-lock.1",
- "item_bank_version": "EE_V1_ITEM_BANK_V1",
+ "item_bank_version": "EE_V1_ITEM_BANK_V1.1",
  "note": "전기전자 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=EE_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
-  "ee-industry-packs.json": "26bc92d4fc34d416755f77040ac4532cc2e41dbbacec3cdb441ba5e2e1046006",
-  "ee-role-packs.json": "10c1da06c836f83d51cd7c4f127b81d2ac3751ab28e50f060a436ea315af4b52",
+  "ee-industry-packs.json": "d2d064c1a8ddb954fa5712a030e75e66691c53bd590b1e3d6782d770c71d6015",
+  "ee-role-packs.json": "58d866d3edc1088c7d26b1827a5c63f424ac09ae41ca00642a793bad777d2bf1",
   "ee-v1-checklist-additions.json": "5525eee477a012df03f05a2719d331a6a68df2b724915771e45ec57b826b70fb",
   "ee-v1-checklists.json": "cbe58b52fa9dc7e4249c527e61b1f105a587b3b8caa7c8532e8d6efb052626fd",
   "ee-v1-common-additions.json": "41b359f8ebeb7211d8c88cb4b246e74f8e8af35b4e37dac122d674721b213b4f",
   "ee-v1-constructs.json": "91ff645931afdaa42cc73b48b5284fe0f866c1bbeba5a089db14b364ff6c49e2",
   "ee-v1-domains.json": "6b07b55e67dd2a84c50a25705e44d2ee81a542da5bddb21606b04b4d3b173454",
   "ee-v1-items-blueprint.json": "4311be046a62c8474854460e6767b6eccab86849641da8dc2b981c175a1f20eb",
-  "ee-v1-items.json": "b68943b7b8b045a329bf57fe7c79ce4aee1434cb65589d1ab68a561222e3c2fb",
+  "ee-v1-items.json": "9b763f44bd487e6c71676599e812f76844e86224053b2d480160f1261ecc9708",
   "ee-v1-relations.json": "9121fc4127c39df0d0cdb359c1d813c93f62fb7bbe5b2cf22fa705e2032851be",
   "ee-v1-taxonomy.json": "e107d0122f09ddd1739a51cad5fb695c44a327513908db3569f5b9e63b6ad248"
  },

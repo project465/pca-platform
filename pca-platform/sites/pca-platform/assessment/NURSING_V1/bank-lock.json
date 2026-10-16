@@ -1,7 +1,7 @@
 {
  "schema_version": "nursing-v1-bank-lock.1",
  "core": "NURSING_CORE_V1",
- "item_bank_version": "NURSING_V1_ITEM_BANK_V1.1",
+ "item_bank_version": "NURSING_V1_ITEM_BANK_V1.2",
  "note": "간호 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=NURSING_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {},
  "scoring_version": "me-v3-scoring.5"

@@ -216,7 +216,11 @@ function main(): void {
            문면에 그 산업의 전문 낱말만 덜렁 놓인 자리를 찾는다 */
   const jargonOnly = indItems.filter((i) => {
     const ask = String(i.ask);
-    return !/경험이 있다$|적이 있다$/.test(ask) || ask.length < 18;
+    /* **묻는 꼴이 둘이다.** 2026-10-16 회차에서 사다리 문항의 종결을
+       `…한 적이 있다` 에서 `…해 봤나요?` 로 바꿨다. 재는 것은 종결 글자가
+       아니라 **경험을 묻는 꼴인가**이므로 두 꼴을 다 받는다. 길이 선은
+       그대로다: 그 산업의 낱말만 덜렁 놓인 자리를 거른다 */
+    return !/경험이 있다$|적이 있다$|나요\?$/.test(ask) || ask.length < 18;
   });
   ok("산업팩 문항이 경험을 묻는 꼴이다", jargonOnly.length === 0,
      jargonOnly.length ? jargonOnly.map((i) => i.id).join(" ") : `${indItems.length}개`);
