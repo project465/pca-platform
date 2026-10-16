@@ -61,6 +61,6 @@
   "src/lib/me-v3/platform.ts": "d97ebc5ff8672fd5e9f03fd67ed9ec9d20468b470b4e9d143a04d784605c999f",
   "src/lib/me-v3/open-actions.ts": "50b6ce5c31533ebd7ce62596ebe8d69434f361a159b3d41e73c85c71e38e0025",
   "src/lib/me-v3/workspace-events.ts": "f235ed162e6f7b000e7f1858cc34dfa25474304f54c0d2ece46a08cce772461f",
-  "src/lib/me-v3/workspace-version.ts": "4c6d6fb1c6107adaa2e3c7492940121724696df8f9eda288c8a523a71d985941"
+  "src/lib/me-v3/workspace-version.ts": "264dbd73fc17e3a0b293f20fe49ae8ad616addf3480e738071e85c153773c375"
  }
 }

@@ -816,9 +816,6 @@ export default async function V3Result({
    * 않는다**: 둘 다 없으면 그 사실을 적는다.
    */
   const packLack = model.industry_context ?? model.role_context;
-  const packLackName = model.industry_context
-    ? industryName(model.industry_context.code)
-    : model.role_context ? roleName(model.role_context.code) : null;
   /**
    * 셋째 칸의 이름은 `더 채울 부분` 하나다(규격 §3).
    *
@@ -828,7 +825,6 @@ export default async function V3Result({
    * 어느 쪽에서 본 것인지는 아래 한 줄이 그대로 든다.
    */
   const lackTitle = "더 채울 부분";
-  const lackWhere = packLackName ? `${packLackName} 쪽에서 봅니다` : null;
   /* **영역 이름을 축마다 다시 적지 않는다.** 둘을 `영역 · 축` 으로
      만들어 또 `·` 로 이으면 같은 영역이 두 번 서고 가운뎃점이 넷이
      되어, 읽는 사람이 어디까지가 한 자리인지 가를 수 없다
@@ -1155,7 +1151,11 @@ export default async function V3Result({
           <div>
             <h3>확인된 경험</h3>
             {focus.length ? (<>
-              <p>{focus.map((d) => domainName(core, d.code)).join(" · ")}</p>
+              {/* **본문 첫 줄은 두 줄을 넘기지 않는다**(PRODUCT POLISH §1).
+                  네 영역을 이으면 이 칸의 큰 글씨가 두 줄 반을 먹고 넷
+                  가운데 가장 먼저 읽는 자리가 가장 읽기 어려운 자리가 된다.
+                  전체 목록은 아래 영역 절이 한 자리에서 든다 */}
+              <p>{focus.slice(0, 3).map((d) => domainName(core, d.code)).join(" · ")}</p>
               {deep ? (
                 <p style={{ fontWeight: 400 }}>
                   {(focus[0].decided.length ? focus[0].decided : focus[0].did)
@@ -1210,10 +1210,14 @@ export default async function V3Result({
               재지 않은 것을 모자란다고 말하는 셈이 된다 */}
           <div>
             <h3>{lackTitle}</h3>
+            {/* **본문은 두 줄까지다**(PRODUCT POLISH §1). 전에는 셋째 줄로
+                `어느 산업·직무 쪽에서 봅니다` 가 섰는데, 그 말은 바로 아래
+                한 줄 띠(`rs-link`)가 이미 한 자리에서 하고 있어서 **같은
+                말이 한 화면에 두 번** 섰다. 칸이 답하는 것은 `무엇이 비었고
+                무엇을 적으면 되는가` 두 줄까지다 */}
             {lackWhat ? (<>
               <p>{lackWhat}</p>
               <p>{lackNeed}</p>
-              {lackWhere ? <p>{lackWhere}</p> : null}
             </>) : (
               <p className="none">지금 응답에서 더 채울 곳은 보이지 않습니다</p>
             )}
@@ -1563,20 +1567,29 @@ export default async function V3Result({
                         한 이야기로 읽히지 않았다. 지금은 사람이 묻는 차례
                         그대로다: 내가 한 일 → 내가 직접 정한 것 → 남아 있는
                         결과 → 지원서·면접에서 쓸 부분 */}
+                    {/* **채워진 칸과 빈 칸을 표시로 가른다**
+                        (PRODUCT POLISH §4). 넷이 같은 표시로 서면 텍스트
+                        덩어리 네 개로 읽히고, 어디에서 이야기가 끊겼는지
+                        읽는 사람이 네 줄을 다 읽고 나서 스스로 찾아야 한다.
+                        채워진 칸은 꽉 찬 표시와 짙은 선으로 이어지고 빈
+                        칸부터 선이 옅어진다: **그 끊긴 자리가 곧 다음에 할
+                        일**이다. **판정이 아니다**: 표시가 보는 것은 그
+                        칸에 적을 것이 있는지뿐이고 값은 결과 모델이 준
+                        그대로다 */}
                     <ol>
-                      <li>
+                      <li className={c.did ? undefined : "is-empty"}>
                         <b>내가 한 일</b>
                         <span>{c.did ?? "이 영역에서 해 본 일을 아직 적지 않으셨습니다"}</span>
                       </li>
-                      <li>
+                      <li className={c.decided ? undefined : "is-empty"}>
                         <b>내가 직접 정한 것</b>
                         <span>{c.decided ?? "그때 직접 정한 것이 아직 적혀 있지 않습니다"}</span>
                       </li>
-                      <li>
+                      <li className={c.left ? undefined : "is-empty"}>
                         <b>남아 있는 결과</b>
                         <span>{c.left ?? "손에 남은 것이 아직 적혀 있지 않습니다"}</span>
                       </li>
-                      <li>
+                      <li className={c.decided && c.left ? "is-end" : "is-empty"}>
                         <b>지원서·면접에서 쓸 부분</b>
                         <span>
                           {c.decided && c.left

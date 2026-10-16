@@ -217,17 +217,36 @@
    **칸 수가 나누어떨어지게 둔다.** 처음에는 네 칸 격자에 첫 칸만 둘을
    쓰게 했는데, 그러면 넷째 칸이 다음 줄로 혼자 내려가고 그 오른쪽에
    **격자 바탕이 그대로 드러난 큰 회색 네모**가 남았다. 담긴 것이 없는
-   그 면이 덜 그린 화면으로 읽힌다(규격 §17). 셋으로 두면 1 + 3 이라
-   남는 칸이 없다 */
+   그 면이 덜 그린 화면으로 읽힌다(규격 §17). 그때는 1 + 3 으로 두어
+   남는 칸을 없앴고, 지금은 2 × 2 다(아래) */
+/* **넷 가운데 둘이 먼저 보인다**(PRODUCT POLISH §1).
+   앞 판본은 첫 칸이 한 줄을 통째로 쓰고 나머지 셋이 아래에 삼등분으로
+   섰다. 그러면 `지금 할 일` 이 그 줄의 **오른쪽 끝**에 서서 읽는 눈이
+   마지막에 닿는데, 상담 자리에서 먼저 짚는 칸이 그것이다. 그래서 두 줄
+   × 두 칸으로 두고 **위 줄에 `해본 것` 과 `지금 할 일`** 을, 아래 줄에
+   거드는 둘을 놓는다. 1 + 3 과 마찬가지로 남는 칸이 없다.
+   **차례를 DOM 에서 바꾸지 않는다**: 칸 넷에 누르는 자리가 없고, 종이와
+   보조기기가 읽는 차례는 `해본 것 → 남긴 것 → 더 채울 것 → 지금 할 일`
+   이라는 규격 그대로여야 한다. 화면에서 자리만 옮긴다 */
 @media (min-width: 860px) {
-  .rs-top { grid-template-columns: repeat(3, 1fr); }
-  .rs-top > div:first-child { grid-column: 1 / -1; }
+  .rs-top { grid-template-columns: repeat(2, 1fr); }
+  .rs-top > div:nth-child(1) { grid-area: 1 / 1; }
+  .rs-top > div:nth-child(4) { grid-area: 1 / 2; }
+  .rs-top > div:nth-child(2) { grid-area: 2 / 1; }
+  .rs-top > div:nth-child(3) { grid-area: 2 / 2; }
 }
-/* 첫 칸만 한 단 크게. **색을 더 쓰지 않는다**: 센 것은 색이 아니라 크기와
-   자리다(규격 §20) */
-.rs-top > div:first-child > p:first-of-type {
+/* 위 줄 둘만 한 단 크게. **색을 더 쓰지 않는다**: 센 것은 색이 아니라
+   크기와 자리다(규격 §20) */
+.rs-top > div:nth-child(1) > p:first-of-type,
+.rs-top > div:nth-child(4) > p:first-of-type {
   font-size: var(--r-t-h3); line-height: 1.4; letter-spacing: -.01em;
 }
+/* 거드는 둘은 한 단 작고 한 단 옅은 면에 선다. **같은 무게로 두지
+   않는다**(PRODUCT POLISH §1) */
+.rs-top > div:nth-child(2),
+.rs-top > div:nth-child(3) { background: var(--r-sunk); }
+.rs-top > div:nth-child(2) > p:first-of-type,
+.rs-top > div:nth-child(3) > p:first-of-type { font-size: var(--r-t-gloss); }
 .rs-top > div { background: var(--r-paper); padding: 20px 22px; }
 .rs-top h3 {
   margin: 0 0 var(--r-s2); font-size: var(--r-t-meta); font-weight: var(--ui-w-sb);
@@ -599,15 +618,35 @@
 .rs-chain ol > li::before {
   content: counter(rsch); position: absolute; left: 0; top: 1px;
   width: 17px; height: 17px; border-radius: 50%;
-  background: var(--r-accent-soft, rgba(45,108,223,.1)); color: var(--r-accent-ink, #1a4ea8);
+  background: var(--r-accent); color: #fff;
   font-size: 10px; line-height: 17px; text-align: center; font-weight: var(--ui-w-bd);
 }
-/* 칸을 잇는 선. **마지막 칸 아래로는 긋지 않는다** */
+/* **아직 적을 것이 없는 칸은 비어 보인다**(PRODUCT POLISH §4).
+   꽉 찬 표시와 테만 두른 표시가 갈려야 네 칸이 하나의 흐름으로 읽히고,
+   흐름이 어디에서 끊겼는지가 읽기 전에 보인다 */
+.rs-chain ol > li.is-empty::before {
+  background: var(--r-paper); color: var(--r-ink-3);
+  box-shadow: inset 0 0 0 1px var(--r-line);
+}
+/* 마지막 칸은 이 사슬이 닿는 자리라 금색으로 닫는다 */
+.rs-chain ol > li.is-end::before { background: var(--r-gold); }
+/* 칸을 잇는 선. **마지막 칸 아래로는 긋지 않는다.**
+   이은 자리는 짙고 끊긴 자리는 옅다: 선이 한 짙기면 넷이 이어져 있다는
+   것만 보이고 **어디까지 이어졌는지**는 보이지 않는다 */
 .rs-chain ol > li:not(:last-child)::after {
-  content: ""; position: absolute; left: 8px; top: 20px; bottom: 4px;
-  width: 1px; background: var(--r-line);
+  /* **한 줄로 이어 보이게 한다**(PRODUCT POLISH §4). 칸마다 끊어 그으면
+     네 토막이 되고, 그러면 이은 것이 아니라 네 개를 나란히 둔 것으로
+     읽힌다. 다음 칸의 표시까지 닿게 아래를 0 으로 둔다 */
+  content: ""; position: absolute; left: 8px; top: 19px; bottom: 0;
+  width: 2px; background: var(--r-accent-line);
+}
+.rs-chain ol > li.is-empty:not(:last-child)::after {
+  width: 1px; left: 8.5px; background: var(--r-line);
 }
 .rs-chain ol > li:last-child { padding-bottom: 0; }
+/* 비어 있는 칸의 글은 한 단 옅게. **지우지 않는다**: 무엇이 비었는지가
+   그 칸에 적혀 있어야 다음에 할 일이 읽힌다 */
+.rs-chain ol > li.is-empty span { color: var(--r-ink-3); }
 .rs-chain ol b {
   display: block; font-size: var(--r-t-meta); font-weight: var(--ui-w-sb);
   letter-spacing: .06em; color: var(--r-ink-3);
@@ -975,6 +1014,12 @@
      **무엇을 먼저 읽는지가 면의 짙기로** 읽힌다 */
   .rs-top > div:first-child { background: var(--r-sunk); }
   .rs-top > div.is-do { background: var(--r-accent-soft); }
+  /* 종이는 1 + 3 을 그대로 쓴다. 화면에서 거드는 둘에 깔아 둔 면을
+     되돌린다: 넷이 전부 면을 깔면 **첫 칸과 할 일 칸이 서야 할 자리**가
+     사라진다 */
+  .rs-top > div:nth-child(2),
+  .rs-top > div:nth-child(3) { background: var(--r-paper); }
+  .rs-top > div:nth-child(4) > p:first-of-type { font-size: 9.5pt; }
   .rs-top > div:first-child > p:first-of-type { font-size: 12.5pt; line-height: 1.35; }
   /* 칸 머리에 색 표시 하나. **뜻을 갖지 않는다**: 넷을 한 덩이로 읽지
      않게 갈라 주는 자리이고, 무엇의 칸인지는 그 옆 글자가 든다 */
@@ -1494,7 +1539,14 @@
      뽑힌다(CS·원예가 50% 였다). 그림만 쪼개지지 않으면 된다 */
   .pv-radar { break-inside: auto; }
   .pv-radar-svg { break-inside: avoid; break-after: avoid; }
-  .pv-bar, .pv-road > li, .pv-matrix { break-inside: avoid; }
+  .pv-bar, .pv-road > li { break-inside: avoid; }
+  /* **열두 줄짜리 표를 한 덩이로 붙여 두지 않는다**(PRODUCT POLISH §6).
+     붙여 두었더니 그 표가 한 쪽에 안 들어가는 자리에서 통째로 밀려
+     **그 앞 쪽이 71%만 찼다.** 쪼개지면 안 되는 것은 줄 하나이고, 표가
+     쪽을 넘으면 머리줄이 다시 선다(`thead`). 한 쪽을 넘길 덩이에
+     `avoid` 를 걸면 그 앞 쪽이 빈다. 이 저장소가 여러 번 겪은 자리다 */
+  .pv-matrix tr { break-inside: avoid; }
+  .pv-matrix thead { display: table-header-group; }
   /* 종이에서는 바탕색이 빠질 수 있다. 네 토막에 테를 둘러 둔다 */
   .pv-seg { border: 1px solid #0a1b31; }
   .pv-bar-track { height: 22px; }
@@ -1583,7 +1635,14 @@
      `avoid` 를 걸면 그 앞 쪽이 빈다 — 이 저장소가 여러 번 겪은 자리다.
      그래서 **쪼개지면 안 되는 작은 덩이에만 건다**: 레이더와 그 범례가
      한 자리에 서면 그 쪽이 답하는 질문이 둘로 갈리지 않는다 */
-  .rs-fig-aside { break-inside: avoid; margin-top: 3mm; }
+  /* **레이더와 범례를 한 덩이로 붙여 두지 않는다**(PRODUCT POLISH §6).
+     붙여 두었더니 그 덩이가 한 쪽에 안 들어가는 자리에서 통째로 밀려
+     **그 앞 쪽이 71%만 차고** 밀린 만큼이 마지막 쪽에 16%짜리 꼬리로
+     남았다. 쪼개지면 안 되는 것은 그림 하나와 범례 한 줄이고, 둘
+     사이는 갈려도 뜻이 상하지 않는다: 범례가 번호로 그림을 가리킨다 */
+  .rs-fig-aside { margin-top: 3mm; }
+  .rs-fig-aside .pv-radar-svg,
+  .rs-fig-aside .pv-legend li { break-inside: avoid; }
   /* 그림 묶음의 작은 머리도 종이에서는 한 단 줄인다 */
   .pv-h4 { margin: 3mm 0 1mm; font-size: 9pt; }
   .rs-fig-aside .pv-radar-svg { max-width: 46mm; }
@@ -1595,10 +1654,14 @@
    그 쪽이 무엇에 답하는 쪽인지 적어 둔다. */
 .rs-q { display: none; }
 @media print {
+  /* **한 문장이 먼저 읽혀야 한다**(PRODUCT POLISH §6). 8pt 흐린 회색으로
+     두었더니 머리글 위의 각주처럼 읽혀, 그 쪽이 무엇에 답하는 쪽인지가
+     먼저 서지 않았다. 강조색 한 줄로 올린다: 머리글보다 작지만 **본문
+     회색보다는 세다** */
   .is-report .rs-q {
-    display: block; margin: 0 0 0.5mm;
-    font-size: 8pt; font-weight: var(--ui-w-sb);
-    letter-spacing: 0.02em; color: var(--r-ink-3);
+    display: block; margin: 0 0 1mm;
+    font-size: 8.5pt; font-weight: var(--ui-w-bd);
+    letter-spacing: 0.04em; color: var(--r-accent);
     break-after: avoid;
   }
 }

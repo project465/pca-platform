@@ -208,6 +208,27 @@ ok("할 일 한 줄이 백 자를 넘지 않는다", long.length === 0,
 if (process.env.DUMP_LONG) {
   for (const a of long) console.log(`    긴 줄 ${a.who} ${a.text.length}자 — ${a.text}`);
 }
+/* **한 문장이 한 메시지인가는 길이로 후보를 뽑는다**(PRODUCT POLISH §2).
+   한 문장에 영역과 행동과 판단과 결과와 활용이 같이 들어가면 학생이 한 번에
+   읽지 못하고, 그런 문장은 거의 예외 없이 길다. **한도를 거는 검사로 두지
+   않는다**: 길어도 뜻이 한 가지인 문장이 있고, 숫자만 맞추려고 자르면 뜻이
+   끊긴다. 후보만 적고 판단은 사람이 한다 */
+if (process.env.DUMP_SENT) {
+  const cut = Number(process.env.DUMP_SENT) || 70;
+  const seen = new Set<string>();
+  const cand: Line[] = [];
+  for (const l of lines) {
+    for (const t of l.text.split(/(?<=[.!?])\s+/)) {
+      const x = t.trim();
+      if (x.length <= cut || seen.has(x)) continue;
+      seen.add(x);
+      cand.push({ who: l.who, where: l.where, text: x });
+    }
+  }
+  cand.sort((a, b) => b.text.length - a.text.length);
+  console.log(`    긴 문장 후보 ${cand.length}개 (${cut}자 초과)`);
+  for (const c of cand) console.log(`    ${c.text.length}자 [${c.where}] ${c.text}`);
+}
 
 /* ── 7. 재지 않은 단정과 광고 말투 ─────────────────────────────────── */
 const BAN = [
