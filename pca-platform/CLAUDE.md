@@ -9692,3 +9692,55 @@ CORE=ME_CORE_V3 npx tsx scripts/lab/probe-scene.ts   # 학교 자리가 없는 C
 `LOCAL PASS / PRODUCTION UNVERIFIED` 이고 **P0 가 운영에서 닫혔다고 적지
 않는다**: 재배포 뒤에 사람이 그 화면을 한 번 보아야 한다. 그때까지
 `PCU CANARY BLOCKED` 와 `Production Canary PASS 선언 보류` 가 그대로다.
+
+**아홉 걸음을 사람이 밟을 수 있게 적어 두었다. 운영은 못 열었다.** (2026-10-16)
+
+새 기능을 만들지 않았고 코드도 고치지 않았다. 이 회차가 한 것은 둘이다.
+**PCU PRODUCTION CANARY FINAL 의 아홉 걸음을 사업주가 운영에서 그대로 밟을 수
+있게 적은 것**과 **그 런북이 가리키는 명령이 실제로 운영 이미지에 있는지를
+매번 세게 한 것.** scoring · item id · item count · result decision ·
+Evidence decision · Gap decision · registry · `student_open` 을 한 줄도
+건드리지 않았다. 런북은 `docs/metri/PCU_CANARY_FINAL.md`.
+
+**판정 세 줄을 그대로 둔다.** `LOCAL PASS` · `PRODUCTION UNVERIFIED` ·
+`PCU CANARY BLOCKED`. 네트워크 정책이 두 호스트를 막고(프록시가 CONNECT 에
+`connect_rejected` · `HTTP 000`) Railway Shell 권한이 없어 아홉 걸음 가운데
+하나도 운영에서 밟지 못했다. **못 본 것을 `FAIL` 로 적지 않는다**: 섞으면 못
+본 자리를 빨강으로 적어 고칠 것 없는 줄이 남거나, 안 본 자리가 초록으로 선다.
+
+**이 세션에서 읽은 배포 증거는 하나다.** 최신 커밋 `2448e43` 의 배포가
+`feisty-generosity / production` 에 `2026-10-15T14:24:24Z` 로 만들어지고,
+커밋 상태 `feisty-generosity - pca-platform` 가 `2026-10-15T14:27:50Z` 에
+`success` 로 섰다. Deployments API 쪽은 `in_progress` 로 남아 있는데 **그것을
+실패로 읽지 않는다**: 같은 회차의 앞 커밋(`daf8416`)도 그 모양이었고 커밋
+상태만 `success` 로 섰으며 간격도 3분대로 같다. **서 있는 컨테이너의 SHA 는
+다른 질문이다**: 그것은 운영에서 `ops:check` 가 답한다.
+
+**걸음마다 곁에서 대어 볼 한 줄을 짝지었다.** 화면만 보면 가려지는 자리가
+있어서다. 발급한 계정과 응시한 계정이 갈렸는지와 종이를 그리는 브라우저가
+뜨는지는 `pcu:diag` 가, 내 CareerMatri 표가 섰는지는 `db:verify` 가, 열린
+자리가 한 자리인지는 `pcu:open` 이, 담당자 화면이 빈 까닭은 `pcu:org` 가
+답한다.
+
+**런북이 없는 명령을 가리키면 그 자리에서 걸린다.** 운영 이미지의
+`package.json` 은 저장소 것과 다르다(`Dockerfile` 이
+`deploy/ops/package.json` 을 `/app/package.json` 으로 덮는다). 78번 런북에
+그 줄이 전부터 있었고 **Canary 런북에는 없었다.** `runbook:check` 에 네 줄을
+더했다: 아홉 걸음이 서 있는가 · 걸음마다 PASS 와 FAIL 이 적혀 있는가 ·
+컨테이너 절의 명령이 운영 이미지에 있는가 · 판정 세 줄이 그대로 서 있는가.
+
+**만들자마자 내가 쓴 문서가 걸렸다.** 컨테이너 절의 맺는 문장이 지키는 자리로
+`npm run runbook:check` 를 가리키고 있었는데, 그 이름은 저장소에만 있다. 급한
+날 그 줄을 치는 사람은 `Missing script` 를 받는다. 문장을 고쳤고, 걸음 하나를
+지우고 없는 명령을 심고 판정 한 줄을 지워 **셋이 전부 걸리는 것까지** 확인한
+뒤 되돌렸다.
+
+```bash
+npm run runbook:check   # 두 런북이 가리키는 것이 실제로 있는가 11가지
+```
+
+**아직 아닌 것.** 아홉 걸음이 전부 `UNVERIFIED` 다. 그 아홉을 운영에서 밟고
+`P0 = 0` 일 때만 판정 세 줄을 바꾸고, 그 뒤에 `PCU HUMANIZATION PASS` 를 따로
+시작한다. **그 회차에도 위의 여덟 Freeze 는 그대로다.** 고치지 않고 적어 둔
+자리 둘(`eligible()` 의 학부 `"ME"` 와 쿠키 없이 `/v3/start` 를 치는 학교
+학생)은 응시 자격과 집계가 함께 바뀌는 결정이라 사업주 확인을 받는다.
