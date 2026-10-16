@@ -1564,7 +1564,16 @@ export default async function V3Result({
                       위의 영역별 설명에서 보실 수 있습니다.
                     </p>
                   ) : null}
-                </>) : <p>아직 없습니다.</p>}
+                {/* **`아직 없습니다` 로 끝내지 않는다**(COMMERCIAL GOLD
+                    MASTER §11). 사실은 그대로 적되 그 자리에서 무엇을
+                    하면 채워지는지로 잇는다 */}
+                </>) : (
+                  <p>
+                    지금 바로 꺼내 쓸 자리는 아직 없습니다. 아래
+                    ‘다음에 할 일’ 가운데 하나를 끝내면 이 칸이 먼저
+                    채워집니다.
+                  </p>
+                )}
               </section>
               <section>
                 <h3>경험은 있지만 설명 근거를 더 붙일 부분</h3>
@@ -1579,7 +1588,13 @@ export default async function V3Result({
                       이 밖에 {model.evidence.partial.length - 6}가지가 더 있습니다.
                     </p>
                   ) : null}
-                </>) : <p>해당하는 자리가 없습니다.</p>}
+                </>) : (
+                  <p>
+                    여기에 걸린 자리는 지금 없습니다. 해 본 일이 확인된
+                    영역에서 어디까지 직접 정했는지를 적으면 이 칸이
+                    생깁니다.
+                  </p>
+                )}
               </section>
             </div>
             </Disclose>
@@ -1790,10 +1805,6 @@ export default async function V3Result({
           </section>
         ) : null}
 
-        {model.translation
-          ? <Translation view={model.translation} major={meta.major ?? "이 전공"} />
-          : null}
-
         {/* ── 다음에 할 일 ── */}
         <section className="rs-sect" id="plan">
           <h2>다음에 할 일</h2>
@@ -1852,6 +1863,14 @@ export default async function V3Result({
             </div>
           ) : null}
         </section>
+
+        {/* **지원서·면접은 할 일 다음이다**(COMMERCIAL GOLD MASTER §15).
+            읽는 차례가 `연결해볼 산업·직무 → 지금 할 일 → 지원서·면접에서
+            활용하기` 라, 문장 만드는 자리를 할 일 앞에 두면 아직 하지도
+            않은 일을 적는 차례가 된다 */}
+        {model.translation
+          ? <Translation view={model.translation} major={meta.major ?? "이 전공"} />
+          : null}
 
         {/* ── 8. 지역과 기관 탐색 ──
             **기업 이름을 담지 않는다.** 직업정보제공사업으로 할 수 있는

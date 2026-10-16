@@ -58,7 +58,7 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
  * 전공 이름(`resultMeta.major`)을 받는다. **판정도 결과 모델도 한 줄
  * 바뀌지 않았다.**
  */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.31";
+export const RESULT_COPY_VERSION = "me-v3-result-copy.32";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -185,7 +185,24 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.31";
  *
  * **판정도 결과 모델도 한 줄 바뀌지 않았다.**
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V38";
+/*
+ * `V39` 로 올린 까닭. **읽는 차례와 빈 자리의 말**(COMMERCIAL GOLD MASTER
+ * §11 · §15).
+ *
+ * 지원서·면접 문장이 `다음에 할 일` 앞에 서 있었다. 규격이 적은 읽는
+ * 차례는 `연결해볼 산업·직무 → 지금 할 일 → 지원서·면접에서 활용하기`
+ * 이고, 문장 만드는 자리를 할 일 앞에 두면 아직 하지도 않은 일을 적는
+ * 차례가 된다. 절을 옮겼고 **담긴 값은 그대로다.**
+ *
+ * 빈 묶음 셋의 이름을 가운뎃점으로 이어 적고 `해당하는 영역이 없습니다`
+ * 를 붙이던 한 줄을 걷었다. 읽는 사람이 받는 것이 자기 결과 대신 우리
+ * 분류표이고 끝이 `없습니다` 라 빈손으로 읽힌다. `아직 없습니다.` 로
+ * 끝나던 두 자리도 같은 까닭으로 다음 자리를 가리키게 고쳤다.
+ *
+ * 종이의 레이더 범례를 한 칸으로 되돌렸다. 그림 옆 자리가 좁은데 거기서
+ * 다시 둘로 나누니 영역 이름과 상태가 글자 단위로 접혔다.
+ */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V39";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX
