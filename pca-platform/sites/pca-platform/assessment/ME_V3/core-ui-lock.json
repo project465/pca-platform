@@ -4,14 +4,14 @@
  "label": "CAREERMATRI_CORE_UI_FREEZE_1",
  "locks": {
   "assessment": "7fe58bb89c65b7f1",
-  "result": "1d7fb5d03fa66e85",
+  "result": "09f0e7d000cf7bf5",
   "workspace": "e3984db0c1d244fc"
  },
  "versions": {
   "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V38",
   "assessment_copy_version": "me-v3-2-assessment-copy.24",
   "result_ui_version": "ME_V3_RESULT_UI_V43",
-  "result_copy_version": "me-v3-result-copy.36",
+  "result_copy_version": "me-v3-result-copy.37",
   "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V34",
   "workspace_copy_version": "careermatri-workspace-copy.24"
  },

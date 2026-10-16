@@ -10373,3 +10373,83 @@ CORE=BIZ_CORE_V1 LEAF=PCU26_BIZ PERSON=C npx tsx scripts/pcu-gold-shots.ts
 `app.careermatri.com:443` 을 막아 **운영 배포본을 밖에서 한 번도 열지
 못했으므로** `PRODUCTION UNVERIFIED` 와 `PCU CANARY BLOCKED` 를 그대로
 둔다. **학생 공개 상태를 한 칸도 바꾸지 않았다.**
+
+**Gate 로만 판정했다. 세 FAIL 의 원인이 하나였다.** (2026-10-16)
+
+`마지막` 과 `Final` 과 `Ready` 로 상태를 적지 않고 **Gate 아홉을 실제
+화면으로 읽어 PASS 또는 FAIL 둘 중 하나로만** 적었다. 측정은
+`ME_V3_MEASUREMENT_FREEZE_1` 에 그대로 머문다: scoring · threshold ·
+item · construct · Domain · Core architecture · Result/Evidence/Gap
+decision · registry · DB schema · `student_open` · `open_to_students` 를
+한 줄도 건드리지 않았고 그 동결이 **기록을 다시 적지 않은 채로**
+통과한다. 판정표와 §14 기록은 `docs/metri/PCU_GATE_REVIEW.md`.
+
+```
+1차  PASS 6 · FAIL 3   (Result Language · Action · Cross-Core)
+2차  PASS 9 · FAIL 0
+```
+
+**세 FAIL 이 전부 이전 회차에서 이미 고친 자리였다.** 그래서 §14 대로
+문구를 바로 다시 고치지 않고 네 가지를 먼저 적었다. 거기서 나온 공통
+원인이 하나다: **학생이 읽는 문장을 Core 를 모르는 축 단위 상수 하나로
+적어 두고, 영역 사전의 재료를 붙일 수 있는 축에만 붙였다.** 그 한
+결정이 세 Gate 에서 서로 다른 증상으로 나온다. ① 남은 축의 문장이 축
+이름을 풀어 쓴 말로 끝나 상담 자리의 말이 아니고 ② 남길 결과가 없고
+③ Core 를 갈아 끼워도 영역 이름만 바뀐다.
+
+**할 일이 무엇을 남기고 끝나는지 적는다.** `OWN_KO` 와 `FILL_KO` 열여섯
+줄이 전부 그 영역 사전에 적힌 결과물 이름으로 끝난다. 꺼내는 자리는
+`keep(m, i, alt)` 하나이고 축마다 다른 자리를 집는다. **이름을 지어내지
+않는다**: 영역 사전에 결과물이 없으면 `정리한 문서` 로 내려간다. 그래서
+BIZ 는 `제안서` 와 `추정 재무제표`, NURSING 은 `간호계획`, MEDIA 는
+`촬영 계획` 으로 끝나고 여섯 Core 사이에 같은 문장이 0 이다.
+
+**묶음 이름과 축 이름씨를 상담 자리의 말로.** `지금 설명할 재료가 있는
+영역` → `지원서에 쓸 수 있는 경험이 있는 영역`, `받은 요청을 바꾼 조건`
+→ `받은 요구를 어떤 조건으로 옮겼는지`. `재료` 는 우리 쪽 비유이고 뒤엣
+것은 관형절이 겹쳐 한 번 읽어 뜻이 서지 않는다. **가리키는 묶음과 축과
+판정 조건은 한 줄도 바뀌지 않았다.** 새 이름은 같은 축의 빈자리 문장과
+상태 문장이 이미 쓰던 말이라, 한 결과지에서 같은 축이 세 가지 이름으로
+불리던 것도 함께 닫힌다.
+
+**`-는지` 로 끝나는 이름씨에 `를` 을 붙이지 않는다.** `어떤 조건으로
+옮겼는지를 세 줄로 적어 보세요` 는 틀리지 않지만 사람이 그렇게 말하지
+않는다. 받침을 보고 붙이는 자리는 그대로 두고 이 모양만 뺀다.
+
+**되돌이 검사 셋을 `v3:result:copy` 에 넣었다**(13가지로 늘었다). 할
+일마다 남길 결과가 적혀 있는가(Core 20 × 축 8 × 2) · 축 문장이 Core 마다
+갈리는가 · 묶음 이름과 축 이름씨에 우리 쪽 비유가 없는가. **셋 다 되돌려
+넣어 실제로 걸리는 것까지 봤다.**
+
+**세는 자리가 제품과 같은 재료를 받아야 한다.** 처음에는 영역 흐름을 빈
+값으로 넘겼는데, 그러면 문장이 늘 기본 가지로 떨어져 **제품이 내보내는
+문장이 아니라 그 가지만** 세게 된다. `build.ts` 와 같은 자리(흐름
+3·4·6·8번)를 꺼내 쓴다.
+
+**걸림과 보고를 가른다.** `MEDIA` · `STYLE` · `VISUAL` 의 첫 영역 사전이
+같은 결과물 이름을 적고 있어 그 셋 사이에서 축 문장 다섯 쌍이 글자까지
+같다. 고칠 자리는 틀 쪽이 아니고 **그 Core 의 영역 사전**이며, 그 파일은
+문항 은행 지문이 덮는 자리라 §12 Freeze 안이다. 그래서 까닭과 이름을
+적어 보고로 남긴다. Cross-Core Gate 가 견주는 여섯 안에는 겹치는 쌍이
+없다.
+
+**띄운 서버를 틀리면 검사가 거짓말을 한다(여섯 번째).** `pkill` 이 옛
+서버를 못 잡은 채로 `/api/health` 가 200 을 돌려줘서, 그것을 새 빌드가
+선 것으로 읽을 뻔했다. `var/.serving-build` 와 `.next/BUILD_ID` 를 견주면
+그 자리에서 갈린다.
+
+```bash
+npm run v3:result:copy   # 결과지 한국어 13가지 (되돌이 검사 셋이 늘었다)
+npm run v3:human         # 할 일에 남길 결과물이 적혀 있다 54개
+npx tsx scripts/lab/interest-metrics.ts   # 360·390·430 을 재어 본다
+```
+
+판본은 결과 문장만 올랐다: `me-v3-result-copy.37`. **문항 은행과 판단
+규칙과 결과 모델과 검사 화면과 작업공간은 그대로다.**
+
+**판정.** `PCU STUDENT DEMO EXPERIENCE PASS`. 상용화는 별개다: University
+Operations 는 미검토이고 Production Canary 는 네트워크 정책이
+`app.careermatri.com:443` 을 막아 UNVERIFIED 라, `PRODUCTION UNVERIFIED`
+와 `PCU CANARY BLOCKED` 를 그대로 둔다. 학교 시연은 YES 이고 실제 학생
+Pilot 과 정식 상용 운영은 NO 다. ChatGPT Reference 화면이 첨부되지 않아
+`REFERENCE UNAVAILABLE` 로 적고 Reference Match 를 PASS 로 적지 않는다.

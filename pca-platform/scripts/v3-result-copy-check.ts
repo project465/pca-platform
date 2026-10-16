@@ -31,6 +31,7 @@ import {
   actionKo, actionWhyKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO, BASIC_GROUP_KO,
   draftKo, pickSentenceKo,
   FIRST_MOVE_KO, gapKo, headlineKo, HORIZON_KO, QUALITY_KO, TIER_NOTE_KO,
+  needKo,
   TRANS_STEP_KO, ZONE_LEAD_KO, ZONE_TITLE_KO,
 } from "../src/lib/me-v3/result/text.ko";
 
@@ -312,6 +313,124 @@ const bad3 = withJosa("기준값", "과와") === "기준값과" ? [] : ["기준�
 ok("지난번에 틀렸던 말이 다시 틀리지 않는다",
    !bad1.length && !bad2.length && !bad3.length,
    [...bad1, ...bad2, ...bad3].join(" ") || `보기 ${CASES.length + OR.length + 1}개`);
+
+/* ── 9~11. 축 문장이 Core 를 들고 있는가 (Gate §4·§6·§9) ──────────────
+   **이 셋이 이 회차의 되돌이 검사다.** 세 Gate 가 서로 다른 증상으로
+   FAIL 했는데 원인이 하나였다: 학생이 읽는 문장을 **Core 를 모르는 축
+   단위 상수 하나**로 적어 두고, 영역 사전의 재료를 붙일 수 있는 축에만
+   붙였다. 그래서 ① 남길 결과가 없고 ② Core 를 갈아 끼워도 영역 이름만
+   바뀌고 ③ 그 말이 상담 자리의 말이 아니었다.
+
+   문구를 다시 쓰는 것으로는 돌아온다. 그래서 **축마다 Core 의 재료가
+   실제로 들어갔는지**를 센다. */
+type WfStep = { step: number; detail?: string };
+type DomRow = {
+  code: string; name: string; artifacts?: string[]; verify_targets?: string[];
+  workflow?: WfStep[];
+};
+const AXES = ["J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8"] as const;
+const CORES = registry().cores.map((c) => c.code);
+
+/** 그 Core 의 영역 하나로 축 여덟의 할 일 문장을 만든다. 판정하지 않는다 */
+function axisLines(c: string): { axis: string; dom: string; own: string; fill: string }[] {
+  const lo = load(c);
+  const ds = lo.domains.domains as DomRow[];
+  const d = ds[0];
+  /* **제품과 같은 재료를 넘긴다.** `build.ts` 가 영역 사전의 흐름
+     3·4·6·8 번을 꺼내 쓰므로 여기서도 같은 자리를 꺼낸다. 빈 값을
+     넘기면 문장이 늘 기본 가지로 떨어져, 이 검사가 제품이 내보내는
+     문장이 아니라 그 가지만 세게 된다 */
+  const st = (n: number): string =>
+    (d.workflow ?? []).find((w) => w.step === n)?.detail ?? "";
+  const mat = {
+    artifacts: (d.artifacts ?? []).slice(0, 6),
+    verify_targets: (d.verify_targets ?? []).slice(0, 4),
+    checklist_hint: [] as string[],
+    workflow: { decide: st(3), method: st(4), output: st(6), on_fail: st(8) },
+  };
+  return AXES.map((ax) => ({
+    axis: ax,
+    dom: d.name,
+    own: actionKo({
+      id: "x", domain: d.code, axis: ax, code: "DEEPEN_OWNERSHIP",
+      horizon: "NOW", from_gap: null, material: mat,
+    } as never, d.name).do,
+    fill: actionKo({
+      id: "x", domain: d.code, axis: ax, code: "FILL_AXIS",
+      horizon: "NEXT", from_gap: null, material: mat,
+    } as never, d.name).do,
+  }));
+}
+const perCore = new Map<string, ReturnType<typeof axisLines>>();
+for (const c of CORES) { try { perCore.set(c, axisLines(c)); } catch { /* 자료 없는 core 는 건너뛴다 */ } }
+
+/* 9. 남길 결과 — 할 일 문장이 **무엇을 남기고 끝나는지** 적는가.
+      그 Core 의 영역 사전이 적어 둔 결과물 이름이거나, 이름이 없는
+      자리에서는 적어도 남길 물건을 가리키는 말이어야 한다. `적어두세요`
+      로만 끝나면 그 할 일을 끝낸 사람의 손에 무엇이 있는지 알 수 없다 */
+const KEEPWORD = /(표로 남겨|한 벌|문서|기록으로 남겨)/;
+const noKeep: string[] = [];
+for (const [c, rows] of perCore) {
+  const arts = ((load(c).domains.domains as DomRow[])[0].artifacts ?? []);
+  for (const r of rows) {
+    for (const [kind, t] of [["지금", r.own], ["다음", r.fill]] as const) {
+      if (!arts.some((a) => t.includes(a)) && !KEEPWORD.test(t)) {
+        noKeep.push(`${c} ${r.axis} ${kind}`);
+      }
+    }
+  }
+}
+ok("할 일마다 그 영역에서 남길 결과가 적혀 있다", noKeep.length === 0,
+   noKeep.length ? noKeep.slice(0, 5).join(" | ")
+     : `Core ${perCore.size} × 축 ${AXES.length} × 2`);
+
+/* 10. Cross-Core — 영역 이름을 지운 뒤 두 Core 의 같은 축 문장이 글자까지
+      같으면 그 줄은 **학과 이름만 바꾼 같은 문장**이다.
+
+      **걸림과 보고를 가른다.** 틀이 Core 를 모르는 것은 이 파일이 고칠
+      자리라 걸림이다. 두 Core 의 영역 사전이 같은 결과물 이름을 적어 둔
+      것은 **그 Core 의 자료**가 고칠 자리이고, 문항 은행 지문이 덮는
+      파일이라 이 회차에서 건드리지 않는다. 그래서 까닭과 이름을 적어
+      보고로 남긴다 — 적지 않으면 다음 사람이 모르고 지나간다. */
+const GATE_CORES = new Set([
+  "BIZ_CORE_V1", "NURSING_CORE_V1", "PUBADM_CORE_V1",
+  "CS_CORE_V1", "EE_CORE_V1", "MEDIA_CORE_V1",
+]);
+const same: string[] = [];
+const sameData: string[] = [];
+for (const ax of AXES) {
+  const seen = new Map<string, string>();
+  for (const [c, rows] of perCore) {
+    const r = rows.find((x) => x.axis === ax)!;
+    const key = `${r.own}\u0000${r.fill}`.split(r.dom).join("{영역}");
+    const prev = seen.get(key);
+    if (!prev) { seen.set(key, c); continue; }
+    const pair = `${ax} ${prev}=${c}`;
+    if (GATE_CORES.has(prev) && GATE_CORES.has(c)) same.push(pair);
+    else sameData.push(pair);
+  }
+}
+ok("축 문장이 Core 마다 갈린다", same.length === 0,
+   same.length ? same.slice(0, 5).join(" | ") : `축 ${AXES.length} × Core ${perCore.size}`);
+if (sameData.length) {
+  const shared = [...perCore.keys()]
+    .map((c) => ((load(c).domains.domains as DomRow[])[0].artifacts ?? []).join("·"));
+  console.log(`  보고  영역 사전이 같은 결과물 이름을 쓰는 Core 쌍 ${sameData.length}`
+    + ` — ${sameData.slice(0, 4).join(" | ")}`);
+  console.log("        (영역 사전은 문항 은행 지문이 덮는 자리라 이 회차에서 고치지 않는다)");
+  void shared;
+}
+
+/* 11. 우리 쪽 비유 — 학생이 먼저 읽는 줄(묶음 이름 · 축 이름씨)에
+      `재료` 처럼 상담 자리에서 쓰지 않는 비유가 들어가면 걸림 */
+const META = ["재료", "자리", "판정", "묶음"];
+const firstRead = [
+  ...Object.values(ZONE_TITLE_KO),
+  ...AXES.map((a) => needKo(a)),
+];
+const metaHit = firstRead.filter((t) => META.some((m) => t.includes(m)));
+ok("묶음 이름과 축 이름씨에 우리 쪽 비유가 없다", metaHit.length === 0,
+   metaHit.length ? metaHit.join(" | ") : `줄 ${firstRead.length}개 · 막는 말 ${META.length}`);
 
 console.log(`\n확인 ${pass + fail}가지 — 통과 ${pass} · 걸림 ${fail}`);
 console.log("  자동검사는 후보만 잡습니다. 마지막 판단은 문맥 기준입니다.");

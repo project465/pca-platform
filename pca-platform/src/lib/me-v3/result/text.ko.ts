@@ -120,10 +120,10 @@ export function axisStateKo(axis: Axis, state: AxisState): string {
  * 되짚는 자리에서 쓰는 긴 말은 `scoring/text.ko.ts` 가 그대로 든다.
  */
 export const ZONE_TITLE_KO = {
-  Z1_EVIDENCE_ESTABLISHED: "지금 설명할 재료가 있는 영역",
-  Z2_EVIDENCE_INCOMPLETE: "해 봤고 설명할 재료가 더 필요한 영역",
+  Z1_EVIDENCE_ESTABLISHED: "지원서에 쓸 수 있는 경험이 있는 영역",
+  Z2_EVIDENCE_INCOMPLETE: "해 봤고 아직 정리가 덜 된 영역",
   Z3_EVIDENCE_LOW_INTEREST: "해 봤지만 지금 관심이 낮은 영역",
-  Z4_INSUFFICIENT_EVIDENCE: "아직 이야기할 재료가 적은 영역",
+  Z4_INSUFFICIENT_EVIDENCE: "아직 해 본 일이 적은 영역",
   NOT_EXPLORED: "이번 검사에서는 자세히 다루지 않은 영역",
 } as const;
 
@@ -293,7 +293,7 @@ const AXIS_GAP_KO: Record<Axis, string> = {
  */
 const AXIS_NEED_KO: Record<Axis, string> = {
   J1: "풀려고 한 문제",
-  J2: "받은 요청을 바꾼 조건",
+  J2: "받은 요구를 어떤 조건으로 옮겼는지",
   J3: "직접 정한 기준",
   J4: "쓴 방법",
   J5: "손에 남은 결과물",
@@ -306,11 +306,23 @@ export function needKo(axis: Axis): string {
   return AXIS_NEED_KO[axis];
 }
 
+/**
+ * 축 이름씨 뒤에 붙이는 자리토씨.
+ *
+ * **`-는지` 로 끝나는 이름씨에는 `를` 을 붙이지 않는다.** `어떤 조건으로
+ * 옮겼는지를 세 줄로 적어 보세요` 는 틀리지 않지만 상담 자리에서 사람이
+ * 그렇게 말하지 않는다. 받침을 보고 붙이는 자리는 그대로 두고, 이
+ * 모양만 뺀다.
+ */
+function needWithJosa(need: string): string {
+  return /는지$/.test(need) ? need : withJosa(need, "을를");
+}
+
 /** 여럿을 한 문장으로. `A와 B를 아직 적지 않으셨습니다` */
 export function needSentenceKo(axes: Axis[]): string {
   const xs = [...new Set(axes)].map((a) => AXIS_NEED_KO[a]);
   if (!xs.length) return "";
-  return `${withJosa(andList(xs), "을를")} 아직 적지 않으셨습니다`;
+  return `${needWithJosa(andList(xs))} 아직 적지 않으셨습니다`;
 }
 
 const GAP_TITLE_KO: Record<Gap["kind"], (ax: string, a?: Axis | null) => string> = {
@@ -441,6 +453,26 @@ const bring = (d: string): string => `최근 ${d} 과제 하나를 골라보세�
 const bringNext = (d: string): string => `다음 ${d} 과제를 하나 정해보세요.`;
 
 /**
+ * 할 일이 **무엇을 남기고 끝나는지**(Gate §6).
+ *
+ * 전에는 축 여덟 가운데 셋이 `적어두세요` 로 끝났다. 대상과 행동은 있고
+ * 남길 결과가 없으면 그 할 일을 끝낸 사람의 손에 무엇이 있는지 알 수
+ * 없고, 지원서에서 꺼낼 것도 생기지 않는다.
+ *
+ * **이름을 지어내지 않는다.** 돌려주는 것은 그 영역 사전의 `남기는 것`
+ * 이고, 축마다 다른 자리를 집어 한 결과지에서 같은 이름이 되풀이되지
+ * 않게 한다. 그래서 **Core 를 갈아 끼우면 이 자리가 함께 바뀐다**:
+ * 축 문장이 Core 를 모르는 상수 하나였던 것이 Cross-Core 에서 영역
+ * 이름만 바뀐 같은 문장으로 읽히던 원인이었다.
+ *
+ * 영역 사전에 결과물이 적혀 있지 않으면 지어내지 않고 `alt` 로 내려간다.
+ */
+const keep = (m: Mat, i: number, alt: string): string => {
+  const xs = m.artifacts;
+  return xs.length ? xs[i % xs.length] : alt;
+};
+
+/**
  * 해 본 것은 확인됐고 **어디까지 직접 정했는지**가 덜 적힌 축.
  *
  * `경험을 더 쌓으세요` 로 끝내면 할 말이 없어진다. 이미 한 일에서 자기
@@ -456,49 +488,54 @@ const bringNext = (d: string): string => `다음 ${d} 과제를 하나 정해보
  * 다른 문장을 받는다.
  */
 const OWN_KO: Record<Axis, (d: string, m: Mat) => string> = {
-  J1: (d) => `${bring(d)} 그때 무엇을 문제로 잡았는지 세 줄로 적어두세요.`,
-  J2: (d) => `${bring(d)} 받은 요청을 어떤 조건으로 바꿨는지 적고,`
-    + " 한 장으로 정리해두세요.",
+  J1: (d, m) => `${bring(d)} 그때 무엇을 문제로 잡았는지 세 줄로 써서`
+    + ` ${keep(m, 0, "정리한 문서")} 맨 앞에 붙여 두세요.`,
+  J2: (d, m) => `${bring(d)} 받은 요구를 어떤 조건으로 옮겼는지 적고,`
+    + ` 그 조건을 ${keep(m, 1, "정리한 문서")}에 그대로 옮겨 두세요.`,
   /* **재료가 긴 영역이 있다.** `볼 손상 원인의 후보와 어느 재질을 어느
      강도로 갈지` 처럼 영역 사전의 말이 길면 한 줄이 백 자를 넘고, 그러면
      할 일로 읽히지 않는다. 그 자리에서는 재료를 그대로 쓰고 뒤를 줄인다 */
   J3: (d, m) => `${bring(d)} ${m.workflow.decide
-    ? `${m.workflow.decide} 가운데 직접 정한 것을 적어두세요.`
-    : "목표를 정할 때 쓴 기준 세 가지를 적고, 한 장으로 정리해두세요."}`,
+    ? `${m.workflow.decide} 가운데 직접 정한 것과 그 까닭을`
+    : "그때 직접 정한 것과 그 까닭을"}`
+    + ` ${keep(m, 2, "정리한 문서")}에 적어 두세요.`,
   J4: (d, m) => `${bring(d)} ${m.workflow.method
     ? `${m.workflow.method} 가운데 왜 그 방법을 골랐는지`
-    : "왜 그 방법을 골랐는지"} 다른 선택과 나란히 적어두세요.`,
+    : "왜 그 방법을 골랐는지"} 다른 선택과 나란히`
+    + ` ${keep(m, 3, "정리한 문서")}에 적어 두세요.`,
   J5: (d, m) => `${bring(d)} ${m.artifacts.length
     ? `그때 남긴 ${orList(m.artifacts)}에`
     : "그때 손에 남은 것에"} 가정과 한계를 한 줄씩 덧붙여두세요.`,
   J6: (d, m) => `${bring(d)} ${m.verify_targets.length
     ? `${orList(m.verify_targets)} 가운데 무엇과 견줬는지`
     : "그 결과를 무엇과 견줬는지"} 적고, 차이를 표로 남겨두세요.`,
-  J7: (d) => `${bring(d)} 안 됐을 때 무엇을 바꿨는지 차례대로 적어두세요.`,
-  J8: (d) => `${bring(d)} 그 결과가 어디에 쓰였는지 한 문단으로 적어두세요.`,
+  J7: (d, m) => `${bring(d)} 안 됐을 때 무엇을 바꿨는지 차례대로`
+    + ` ${keep(m, 4, "정리한 문서")}에 덧붙여 두세요.`,
+  J8: (d, m) => `${bring(d)} 그 결과가 어디에 쓰였는지 한 문단으로 써서`
+    + ` ${keep(m, 5, "정리한 문서")} 끝에 붙여 두세요.`,
 };
 
 /** 축마다 다음에 맡아볼 일이 다르다. **경험 → 행동 → 결과물 차례는 같다** */
-const FILL_KO: Record<Axis, (d: string) => string> = {
-  J1: (d) => `${bringNext(d)} 무엇을 문제로 잡을지 직접 정하고,`
-    + " 그 범위를 한 줄 적어두세요.",
-  J2: (d) => `${bringNext(d)} 받은 요청을 숫자로 바꾸는 일을 맡고,`
-    + " 그 조건을 한 장으로 남겨두세요.",
-  J3: (d) => `${bringNext(d)} 기준이 되는 값을 직접 정하고,`
-    + " 왜 그 값인지 함께 적어두세요.",
-  J4: (d) => `${bringNext(d)} 쓸 방법을 직접 고르고,`
-    + " 고른 까닭을 한 줄 남겨두세요.",
-  J5: (d) => `${bringNext(d)} 손에 남는 것이 생길 때까지 가보고,`
-    + " 무엇이 남았는지 적어두세요.",
-  J6: (d) => `${bringNext(d)} 낸 값을 다른 방법으로 한 번 더 확인하고,`
-    + " 두 값을 나란히 적어두세요.",
+const FILL_KO: Record<Axis, (d: string, m: Mat) => string> = {
+  J1: (d, m) => `${bringNext(d)} 무엇을 문제로 잡을지 직접 정하고,`
+    + ` 그 범위를 ${keep(m, 0, "정리한 문서")} 맨 앞에 한 줄 적어 두세요.`,
+  J2: (d, m) => `${bringNext(d)} 받은 요구를 숫자로 옮기는 일을 맡고,`
+    + ` 그 조건을 ${keep(m, 1, "정리한 문서")}로 남겨 두세요.`,
+  J3: (d, m) => `${bringNext(d)} 기준이 되는 값을 직접 정하고,`
+    + ` 왜 그 값인지 ${keep(m, 2, "정리한 문서")}에 함께 적어 두세요.`,
+  J4: (d, m) => `${bringNext(d)} 쓸 방법을 직접 고르고,`
+    + ` 고른 까닭을 ${keep(m, 3, "정리한 문서")}에 한 줄 남겨 두세요.`,
+  J5: (d, m) => `${bringNext(d)} 끝까지 가서 ${keep(m, 0, "남는 것")} 한 벌을`
+    + " 손에 남겨 두세요.",
+  J6: (d, m) => `${bringNext(d)} 낸 값을 다른 방법으로 한 번 더 확인하고,`
+    + ` 두 값을 ${keep(m, 4, "정리한 문서")}에 나란히 적어 두세요.`,
   /* **`자리` 는 우리 쪽 비유다**(GOLD MASTER §19). 손님 화면에서 그
      말이 가리키는 것이 축인지 공정의 한 지점인지 읽는 사람이 가를 수
      없다. 둘 다 그 일의 말로 적는다 */
-  J7: (d) => `${bringNext(d)} 안 된 까닭을 좁혀 고치고,`
-    + " 그 과정을 기록으로 남겨두세요.",
-  J8: (d) => `${bringNext(d)} 낸 결과가 어디에 쓰이는지 따라가 보고,`
-    + " 쓰인 곳을 적어두세요.",
+  J7: (d, m) => `${bringNext(d)} 안 된 까닭을 좁혀 고치고,`
+    + ` 그 과정을 ${keep(m, 5, "정리한 문서")}에 기록으로 남겨 두세요.`,
+  J8: (d, m) => `${bringNext(d)} 낸 결과가 어디에 쓰이는지 따라가 보고,`
+    + ` 쓰인 곳을 ${keep(m, 2, "정리한 문서")} 끝에 적어 두세요.`,
 };
 
 /**
@@ -554,7 +591,7 @@ export function actionBriefKo(
       return `최근 ${d} 과제 하나를 골라 한 쪽으로 적어 두세요.`;
     case "DEEPEN_OWNERSHIP":
       return need
-        ? `${d} 과제 하나에서 ${withJosa(need, "을를")} 세 줄로 적어 보세요.`
+        ? `${d} 과제 하나에서 ${needWithJosa(need)} 세 줄로 적어 보세요.`
         : `${d} 과제 하나에서 직접 정한 것을 세 줄로 적어 보세요.`;
     case "BUILD_OUTPUT":
       return `다음 ${d} 과제에서 문서 한 장을 남겨 보세요.`;
@@ -562,7 +599,7 @@ export function actionBriefKo(
       return `${d}에서 낸 값을 다른 값과 표 한 장에 나란히 적어 보세요.`;
     case "FILL_AXIS":
       return need
-        ? `다음 ${d} 과제에서 ${withJosa(need, "을를")} 직접 정하고, 그 까닭을 한 줄 적어 두세요.`
+        ? `다음 ${d} 과제에서 ${needWithJosa(need)} 직접 정하고, 그 까닭을 한 줄 적어 두세요.`
         : `다음 ${d} 과제에서 한 가지를 직접 정하고, 그 까닭을 한 줄 적어 두세요.`;
     case "TRY_SHORT_EXPERIENCE":
       return `${withJosa(d, "을를")} 수업 과제로 한 번 해 보고, 한 일을 다섯 줄로 적어 두세요.`;
@@ -726,7 +763,7 @@ export function actionKo(
     };
   }
   if (a.code === "FILL_AXIS" && a.axis) {
-    return { do: FILL_KO[a.axis](domainName), note: depth };
+    return { do: FILL_KO[a.axis](domainName, a.material), note: depth };
   }
   if (a.code === "TRY_SHORT_EXPERIENCE") {
     /* **화면이 이미 보여 준 것을 문장으로 다시 설명하지 않는다.** 관심이
