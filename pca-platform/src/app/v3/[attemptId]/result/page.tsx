@@ -19,7 +19,7 @@ import {
   actionBriefKo, actionHeadKo, actionKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO,
   BASIC_GROUP_KO, bridgeKo,
   commonKo, domainChainKo, draftKo, gapCellKo, gapKo, gapNeedKo, gapNeedShortKo, gapShortKo,
-  headlineKo, needSentenceKo,
+  actionWhyKo, headlineKo, needSentenceKo, pickSentenceKo,
   HORIZON_KO, QUALITY_KO, TIER_NOTE_KO, TRANS_ORDER, TRANS_STEP_KO,
   XFIELD_ORDER, xfieldKo, ZONE_LEAD_KO, ZONE_TITLE_KO,
 } from "@/lib/me-v3/result/text.ko";
@@ -126,6 +126,17 @@ function PackBody(
           <div>
             <dt>관련된 기술영역</dt>
             <dd>{v.domains.map((c) => dn(c)).join(" · ")}</dd>
+          </div>
+        ) : null}
+        {/* **축 이름은 되짚는 자리에 둔다**(SIGN-OFF §9). `요구 해석` 과
+            `직접 판단` 과 `산출물` 은 우리 쪽 분류를 줄인 말이라, 절의
+            본문에 서면 읽는 사람이 자기 결과 대신 분류표를 읽는다.
+            지우지는 않는다: 어느 판단을 먼저 보는 자리인지는 되짚어
+            보실 값이다 */}
+        {v.explain_order.length ? (
+          <div>
+            <dt>{name} 쪽에서 먼저 보는 판단</dt>
+            <dd>{v.explain_order.map((x) => AXIS_KO[x]).join(" · ")}</dd>
           </div>
         ) : null}
       </dl>
@@ -401,7 +412,7 @@ function Strongest({ d }: { d: ResultDomain }) {
      적고 아래에는 행동만 선다 */
   const groups = [
     /* 산출물 이름은 아래 줄이 제 이름으로 적는다(`evidenceRows`) */
-    { label: "직접 판단한 것", items: take(evidenceRows(d).decided) },
+    { label: "직접 정한 것", items: take(evidenceRows(d).decided) },
     { label: "남긴 결과", items: take(d.artifacts) },
   ].filter((g) => g.items.length);
   if (!groups.length) {
@@ -674,7 +685,10 @@ export default async function V3Result({
   /* **첫 쪽의 머리 한 줄**(규격 §15): 학교 · 학과 · 전공 · 등급 · 응답일.
      전공 이름을 글자로 적지 않는다: 그 결과의 Core 에서 읽는다 */
   const meta = await resultMeta(attemptId, core);
-  const h = headlineKo(model);
+  /* **첫 줄에서 무엇이 있는지까지 말한다**(SIGN-OFF §2). 이름을 넘기면
+     머리글이 떠받치는 영역의 이름을 적고, 그 묶음이 비어 있으면 전과 같은
+     문장이 선다. 영역 이름은 **그 결과의 Core 사전**에서 온다 */
+  const h = headlineKo(model, (td: string) => domainName(core, td));
   /* **확인된 영역에서 거꾸로 읽는다**(규격 Reverse Mapping). 고른 산업
      하나와 직무 하나만 적으면, 아직 아무것도 고르지 않은 사람에게
      `어떤 산업과 연결되는가` 가 결과지에서 답해지지 않는다.
@@ -839,6 +853,8 @@ export default async function V3Result({
    * 결과 대신 분류표를 읽는다. 데이터 구조는 그대로 두고 **읽는 자리에서만**
    * 학생의 말로 내린다(`needSentenceKo`).
    */
+  /* 손에 남은 것. 첫 화면 둘째 칸이 든다. **결과 모델이 준 그대로다** */
+  const left = [...new Set(focus.flatMap((d) => d.artifacts))];
   const lackBy = new Map<string, Axis[]>();
   for (const r of packLack?.requested.slice(0, 2) ?? []) {
     const d = domainName(core, r.domain);
@@ -917,6 +933,8 @@ export default async function V3Result({
       shownAction, shownAction.domain ? domainName(core, shownAction.domain) : "",
       shownAction.code === "EXPLORE_BROADLY" ? exploreWhere() : undefined)
     : topGap ? gapNeedKo(topGap, domainName(core, topGap.domain)) : null;
+  /* 할 일이 있을 때만 적는다. 없는 자리에 이유를 적으면 그 줄이 거짓이 된다 */
+  const doWhy = shownAction ? actionWhyKo(shownAction) : null;
   const indAction = packAction(model.industry_context, [shownAction]);
   const roleAction = packAction(model.role_context, [shownAction, indAction]);
 
@@ -1157,9 +1175,14 @@ export default async function V3Result({
                   전체 목록은 아래 영역 절이 한 자리에서 든다 */}
               <p>{focus.slice(0, 3).map((d) => domainName(core, d.code)).join(" · ")}</p>
               {deep ? (
+                /* **고르신 항목을 늘어놓지 않는다**(SIGN-OFF §4).
+                   가운뎃점으로 이으면 그 꼴이 자료 목록이고, 넷 가운데
+                   가장 먼저 읽는 칸이 그렇게 서면 읽는 사람이 자기 경험
+                   대신 목록을 읽는다. **새 사실을 만들지 않는다**: 고르신
+                   문장을 그대로 두고 끝맺음만 이어 붙인다 */
                 <p style={{ fontWeight: 400 }}>
-                  {(focus[0].decided.length ? focus[0].decided : focus[0].did)
-                    .slice(0, 2).join(" · ") || "해 보신 일이 있습니다"}
+                  {pickSentenceKo(focus[0].decided.length
+                    ? focus[0].decided : focus[0].did) || "해 보신 일이 있습니다"}
                 </p>
               ) : (
                 /* 여덟 축을 묻지 않은 응시에서 `직접 정한 것` 을 적지 않는다.
@@ -1193,8 +1216,16 @@ export default async function V3Result({
           <div>
             <h3>남긴 근거</h3>
             {model.evidence.ready.length ? (<>
-              <p>{[...new Set(model.evidence.ready
-                .map((e) => domainName(core, e.domain)))].slice(0, 3).join(" · ")}</p>
+              {/* **카드 둘이 같은 줄로 열지 않는다**(SIGN-OFF §7). 전에는
+                  이 칸의 첫 줄이 영역 이름이었는데, 바로 왼쪽 위 칸이 이미
+                  같은 목록을 적고 있어서 **2×2 가운데 둘이 글자까지 같은
+                  줄로 열렸다.** 이 칸이 답하는 것은 `손에 무엇이 남았는가`
+                  이므로 남긴 것을 그대로 적는다. **지어내지 않는다**: 남긴
+                  것이 적혀 있지 않으면 전처럼 어느 영역인지를 적는다 */}
+              <p>{(left.length
+                ? left.slice(0, 2)
+                : [...new Set(model.evidence.ready
+                  .map((e) => domainName(core, e.domain)))].slice(0, 3)).join(" · ")}</p>
               <p style={{ fontWeight: 400 }}>
                 지원서에 그대로 옮길 이야기가
                 {" "}{model.evidence.ready.length}가지 모였습니다
@@ -1236,8 +1267,17 @@ export default async function V3Result({
             <h3>지금 할 일</h3>
             <p>{doHead}</p>
             {doDetail ? <p>{doDetail}</p> : null}
+            {/* **왜 이걸 해야 하는지를 한 줄 잇는다**(SIGN-OFF §5).
+                할 일만 적으면 읽는 사람이 그 까닭을 스스로 메워야 한다.
+                적는 것은 **Evidence 에서 지원서로 가는 구조가 이미 들고
+                있는 것**까지이고, 합격이나 적합을 말하지 않는다 */}
+            {doWhy ? <p className="rs-outcome">{doWhy}</p> : null}
           </div>
         </div>
+
+        {/* 종이에서만 서는 까닭 한 줄. 위 칸 안의 같은 줄은 인쇄에서
+            숨고 이 줄이 글 폭 전체를 쓴다(SIGN-OFF §5, `result.css`) */}
+        {doWhy ? <p className="rs-outcome-print">{doWhy}</p> : null}
 
         {/* **산업·직무 연결은 한 줄 띠로 첫 화면에 남긴다**(규격 §13).
             카드 넷에서 빠졌다고 첫 화면이 `그래서 어디에 쓰는가` 에 답하지
@@ -1460,24 +1500,32 @@ export default async function V3Result({
                 점수로 읽힌다. 지금 차례는 막대가 먼저다: 막대는 영역마다
                 어느 단계까지 확인됐는지를 한 줄씩 그대로 보여 주고, 레이더는
                 그 열두 줄을 한 장으로 되짚는 자리라 뒤에 작게 선다.
-                **종이에서는 이 묶음이 제 쪽에서 시작한다**(§10): 글과 그림을
-                한 쪽에 몰아 넣으면 그 쪽이 답하는 질문이 둘이 된다 */}
+                **종이에서 제 쪽을 열지는 않는다**: `break-before: page` 로
+                재어 보니 그 쪽이 20%만 차고 학교 종이가 한 쪽 늘었다 */}
             {hasRadar || hasBars ? (
               <div className="rs-figs">
-                <h3 className="pv-h3">같은 것을 그림으로</h3>
-                <p className="rs-note">
-                  위에 적은 상태를 그림으로 되짚는 자리입니다. 점수도
-                  순위도 아닙니다.
-                </p>
+                {/* **쪽 질문 줄(`rs-q`)을 여기 두지 않는다**(SIGN-OFF §13).
+                    이 묶음은 종이에서 제 쪽을 열지 않아서(`break-before: page`
+                    를 재어 보고 걷었다) 한 쪽에 질문 줄이 둘 서게 된다.
+                    이 묶음이 답하는 질문은 아래 머리글이 든다 */}
+                {/* **제목이 그 쪽의 핵심 질문이다**(§12). 전에는
+                    `같은 것을 그림으로` 였다. 무엇을 보는 자리인지는 말하지만
+                    **읽는 사람이 거기서 무엇을 알게 되는지**를 말하지 않아,
+                    종이에서 그 쪽이 보조 자료로 읽혔다 */}
+                <h3 className="pv-h3">내 경험은 어느 단계까지 와 있는가</h3>
                 {hasBars ? (
                   <>
+                    {/* **설명이 그림보다 먼저 서면 안 된다**(§13).
+                        차례는 머리글 → 그림 → 설명이다: 설명을 앞에 두면
+                        읽는 사람이 자기 그림을 보기 전에 읽는 법을 먼저
+                        읽는다 */}
                     <h4 className="pv-h4">영역별 경험 단계</h4>
+                    <StageBars model={model} name={(c) => domainName(core, c)} />
                     <p className="rs-note">
                       이번 응시에서 판단을 물은 영역입니다. 막대의 길이는 물은
                       축의 수이고, 영역마다 물은 축의 수가 달라 비율로 바꾸지
                       않습니다.
                     </p>
-                    <StageBars model={model} name={(c) => domainName(core, c)} />
                   </>
                 ) : null}
                 {hasRadar ? (
@@ -1487,9 +1535,17 @@ export default async function V3Result({
                         붙이면 그림 하나에 머리가 둘이 된다. 종이에서는 그
                         한 줄이 쪽을 하나 더 열 수 있다 */}
                     <Radar model={model} name={(c) => domainName(core, c)} />
+                    {/* **경고는 그대로 둔다**(SIGN-OFF §14). 레이더는 적성도
+                        역량 순위도 직무 적합도가 아니고, 그 줄이 빠지면
+                        꼭짓점이 뻗은 그림이 점수로 읽힌다 */}
                     <ChartNote />
                   </div>
                 ) : null}
+                {/* 그림 묶음을 닫는 한 줄. **그림 뒤에 둔다**(§13) */}
+                <p className="rs-note">
+                  위에 적은 상태를 그림으로 되짚는 자리입니다. 점수도
+                  순위도 아닙니다.
+                </p>
               </div>
             ) : null}
           </section>
@@ -1576,25 +1632,39 @@ export default async function V3Result({
                         일**이다. **판정이 아니다**: 표시가 보는 것은 그
                         칸에 적을 것이 있는지뿐이고 값은 결과 모델이 준
                         그대로다 */}
+                    {/* **빈 칸을 `아직 없음` 으로 끝내지 않는다**
+                        (SIGN-OFF §8). 비었다는 말만 적으면 읽는 사람이
+                        그 칸을 메우는 방법을 스스로 찾아야 한다. 한 줄로
+                        **다음에 무엇을 남기면 되는지**까지 잇는다. 채워진
+                        칸에는 설명을 보태지 않는다: 그 칸이 드는 것은
+                        고르신 내용 그대로다 */}
                     <ol>
                       <li className={c.did ? undefined : "is-empty"}>
                         <b>내가 한 일</b>
-                        <span>{c.did ?? "이 영역에서 해 본 일을 아직 적지 않으셨습니다"}</span>
+                        <span>{c.did
+                          ?? "아직 없습니다. 이 영역 과제 하나를 골라 한 일부터 적어 두세요"}</span>
                       </li>
                       <li className={c.decided ? undefined : "is-empty"}>
                         <b>내가 직접 정한 것</b>
-                        <span>{c.decided ?? "그때 직접 정한 것이 아직 적혀 있지 않습니다"}</span>
+                        <span>{c.decided
+                          ?? "아직 없습니다. 그때 무엇을 직접 골랐는지 한 줄 적어 두세요"}</span>
                       </li>
                       <li className={c.left ? undefined : "is-empty"}>
                         <b>남아 있는 결과</b>
-                        <span>{c.left ?? "손에 남은 것이 아직 적혀 있지 않습니다"}</span>
+                        <span>{c.left
+                          ?? "아직 없습니다. 다음 과제에서 문서 한 장을 남겨 두세요"}</span>
                       </li>
                       <li className={c.decided && c.left ? "is-end" : "is-empty"}>
                         <b>지원서·면접에서 쓸 부분</b>
+                        {/* **어느 칸이 비었는지까지 적는다.** `앞 줄이
+                            채워지면` 으로 두면 넷 가운데 무엇을 메워야
+                            하는지를 읽는 사람이 다시 세어야 한다 */}
                         <span>
                           {c.decided && c.left
                             ? "앞의 세 줄을 그대로 이으면 지원서 한 문단이 됩니다"
-                            : "앞 줄이 채워지면 이 경험을 지원서에서 설명할 수 있습니다"}
+                            : `위의 ${[!c.decided ? "직접 정한 것" : null,
+                              !c.left ? "남아 있는 결과" : null]
+                              .filter(Boolean).join("과 ")} 칸을 채우면 한 문단이 됩니다`}
                         </span>
                       </li>
                     </ol>
@@ -1875,10 +1945,6 @@ export default async function V3Result({
               같은 경험을 {roleName(model.role_context.code)}에서 먼저 읽는 차례로
               놓았습니다. 기술영역 결과는 그대로입니다.
             </p>
-            <p className="rs-note">
-              이 직무가 먼저 보는 판단 {model.role_context.explain_order
-                .map((x) => AXIS_KO[x]).join(" · ")}
-            </p>
             <PackBody v={model.role_context}
               name={roleName(model.role_context.code)}
               domainName={(td: string) => domainName(core, td)} say={say}
@@ -1968,7 +2034,10 @@ export default async function V3Result({
             것은 공고를 띄우는 데까지다. 그리고 기관 수를 짐작으로 채우지
             않는다: 그 수가 근거처럼 읽힌다 */}
         <section className="rs-sect" id="region">
-          <h2>어디에서 찾을지</h2>
+          {/* **제목이 그 절이 답하는 질문이다**(SIGN-OFF §12). 전에는
+              `어디에서 찾을지` 였다. 무엇을 찾는 자리인지가 빠져 있어서
+              읽는 사람이 제목만으로는 이 절을 건너뛸지 정할 수 없었다 */}
+          <h2>이 경험을 쓸 곳은 어디에 있는가</h2>
 
           {/* ── 확인된 영역에서 이어 볼 산업과 직무 ──
               **고르신 하나만 적지 않는다**(규격 Reverse Mapping). 세는
@@ -2253,7 +2322,7 @@ export default async function V3Result({
                 <div>
                   <dt>고정되어 있습니다</dt>
                   <dd>
-                    응시하신 시점의 문항과 판정 기준으로 굳어 있습니다. 나중에
+                    응시하신 시점의 문항과 기준으로 굳어 있습니다. 나중에
                     기준이 바뀌어도 이 결과는 달라지지 않습니다.
                   </dd>
                 </div>

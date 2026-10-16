@@ -3,28 +3,28 @@
  "note": "Core 화면 열넷의 묶음 동결. 측정 동결과 별개다. layout 대변경은 별도 STOP GATE 이고, 고쳤으면 그 화면의 판본을 올리고 세 동결을 다시 적은 다음 `CORE_UI_FREEZE=write npm run v3:freeze:core`",
  "label": "CAREERMATRI_CORE_UI_FREEZE_1",
  "locks": {
-  "assessment": "90b7840719ee2c47",
-  "result": "c03d5b1345098d0f",
-  "workspace": "167473b79ff30a0d"
+  "assessment": "64d53a6f40581c8a",
+  "result": "6a88f665fbfb12d1",
+  "workspace": "e3984db0c1d244fc"
  },
  "versions": {
-  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V36",
+  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V37",
   "assessment_copy_version": "me-v3-2-assessment-copy.23",
-  "result_ui_version": "ME_V3_RESULT_UI_V41",
-  "result_copy_version": "me-v3-result-copy.34",
+  "result_ui_version": "ME_V3_RESULT_UI_V42",
+  "result_copy_version": "me-v3-result-copy.35",
   "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V34",
-  "workspace_copy_version": "careermatri-workspace-copy.23"
+  "workspace_copy_version": "careermatri-workspace-copy.24"
  },
  "screens": {
-  "Home": "workspace:d479c14e3b357129",
+  "Home": "workspace:eb55b69bd2620680",
   "Assessment Intro": "assessment:7f348479a165996e",
   "Assessment": "assessment:9bf971e055a1eb12",
   "Completion Bridge": "assessment:6c39b5aae12b8c1e",
   "Experience": "workspace:4d6458476098850d",
   "Current State": "workspace:62e55459b9b5132f",
   "Next Action": "workspace:cb1b07b713a875b4",
-  "Result Summary": "result:f927602b61ce64fb",
-  "Result Detail": "result:f927602b61ce64fb",
+  "Result Summary": "result:59acd25e8920c23b",
+  "Result Detail": "result:59acd25e8920c23b",
   "Explore": "workspace:618b41d5f018ba0e",
   "Result History": "workspace:4fcb52c2dfffb6e0",
   "New Experience": "workspace:4d6458476098850d",

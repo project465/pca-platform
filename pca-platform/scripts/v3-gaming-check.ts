@@ -40,6 +40,11 @@ const core = process.env.CORE ?? defaultCore();
 const OUT = coreEntry(core).fixtures?.gaming_doc;
 if (!OUT) throw new Error(`${core} 의 fixtures.gaming_doc 가 등록부에 없습니다`);
 const loaded = load(core);
+/* **머리글이 영역 이름까지 적는다**(SIGN-OFF §2). 넘기지 않으면 개인화된
+   첫 줄이 한 번도 서지 않는다 */
+const DNAME = (td: string): string =>
+  (loaded.domains.domains as { code: string; name: string }[])
+    .find((d) => d.code === td)?.name ?? td;
 const bank = loaded.bank as unknown as { items: BankItem[] };
 type DomainData = {
   code: string; name: string; required_axes: Axis[];
@@ -225,7 +230,7 @@ const rows: Row[] = SPECS.map((spec) => {
    * 것이었다.**
    */
   const words = [
-    headlineKo(model).title, headlineKo(model).lead,
+    headlineKo(model, DNAME).title, headlineKo(model, DNAME).lead,
     FIRST_MOVE_KO[model.overview.first_move],
     QUALITY_KO[snap.response_quality.flag as keyof typeof QUALITY_KO] ?? "",
     model.overview.basic_groups
@@ -310,12 +315,12 @@ ok("여덟 벌이 서로 다른 결과 문장을 받는다", same.length === 0, 
      전부 확인된 사람이 `아직 판단할 재료가 모이지 않았습니다` 를 받았다 */
   ok("관심 2·근거 있음 에게 `재료가 모이지 않았다` 고 적지 않는다",
      c.headline === "EVIDENCE_LOW_INTEREST",
-     `머리글 ${headlineKo(c.model).title}`);
+     `머리글 ${headlineKo(c.model, DNAME).title}`);
   ok("관심 2·근거 있음 에게 `지금 해볼 것` 을 먼저 적지 않는다",
      c.first !== "TRY" && c.first !== "NONE",
      `첫 걸음 ${FIRST_MOVE_KO[c.model.overview.first_move]}`);
   ok("관심 5·경험 없음 에게 근거가 확인됐다고 적지 않는다",
-     b.headline === "EXPLORING", `머리글 ${headlineKo(b.model).title}`);
+     b.headline === "EXPLORING", `머리글 ${headlineKo(b.model, DNAME).title}`);
 }
 
 /* ── §8 고르게 답한 사람에게 방향을 만들어 주지 않는다 ────────── */
@@ -376,14 +381,14 @@ L.push("");
 L.push("| 벌 | 어떻게 답했나 | 근거가 선 영역 | 덜 선 영역 | 확인된 축 | 소유 축 | 머리글 | 첫 걸음 | 응답 품질 | 비어 있는 자리 | 할 일 |");
 L.push("|---|---|---|---|---|---|---|---|---|---|---|");
 for (const r of rows) {
-  L.push(`| ${r.spec.id} ${r.spec.name} | ${r.spec.what} | ${r.z1.length} | ${r.z2.length} | ${r.confirmed} | ${r.owned} | ${headlineKo(r.model).title} | ${FIRST_MOVE_KO[r.model.overview.first_move]} | ${QUALITY_KO[r.flag as keyof typeof QUALITY_KO] ?? r.flag} | ${r.gaps} | ${r.actions} |`);
+  L.push(`| ${r.spec.id} ${r.spec.name} | ${r.spec.what} | ${r.z1.length} | ${r.z2.length} | ${r.confirmed} | ${r.owned} | ${headlineKo(r.model, DNAME).title} | ${FIRST_MOVE_KO[r.model.overview.first_move]} | ${QUALITY_KO[r.flag as keyof typeof QUALITY_KO] ?? r.flag} | ${r.gaps} | ${r.actions} |`);
 }
 L.push("");
 L.push("## 전부 최고로 답한 사람(A)이 받는 말");
 L.push("");
 const a = R("A");
-L.push(`- 머리글: **${headlineKo(a.model).title}**`);
-L.push(`- 이끄는 줄: ${headlineKo(a.model).lead}`);
+L.push(`- 머리글: **${headlineKo(a.model, DNAME).title}**`);
+L.push(`- 이끄는 줄: ${headlineKo(a.model, DNAME).lead}`);
 L.push(`- 첫 걸음: ${FIRST_MOVE_KO[a.model.overview.first_move]}`);
 L.push(`- 응답 품질: ${QUALITY_KO[a.flag as keyof typeof QUALITY_KO] ?? a.flag}`);
 L.push(`- 근거가 선 영역 ${a.z1.length}개 · 소유 축 ${a.owned}칸 · 비어 있는 자리 ${a.gaps}개`);
@@ -396,7 +401,7 @@ L.push("| 벌 | 머리글 | 이끄는 줄 |");
 L.push("|---|---|---|");
 for (const id of ["N1", "N2", "N3", "N4", "H"]) {
   const r = R(id);
-  L.push(`| ${id} ${r.spec.name} | ${headlineKo(r.model).title} | ${headlineKo(r.model).lead} |`);
+  L.push(`| ${id} ${r.spec.name} | ${headlineKo(r.model, DNAME).title} | ${headlineKo(r.model, DNAME).lead} |`);
 }
 L.push("");
 mkdirSync("docs/metri", { recursive: true });

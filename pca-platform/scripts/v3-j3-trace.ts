@@ -35,6 +35,11 @@ function ok(n: string, good: boolean, d = ""): void {
 
 const coreCode = process.env.CORE ?? defaultCore();
 const loaded = load(coreCode);
+/* **머리글이 영역 이름까지 적는다**(SIGN-OFF §2). 넘기지 않으면 개인화된
+   첫 줄이 한 번도 서지 않는다 */
+const DNAME = (td: string): string =>
+  (loaded.domains.domains as { code: string; name: string }[])
+    .find((d) => d.code === td)?.name ?? td;
 type Item = {
   item_id: string; module: string; measurement_axis: string; tier: string;
   evidence_axis: string | null; response_scale: string | null;
@@ -285,7 +290,7 @@ for (const f of fx.personas) {
   now[f.id] = {
     core: stable(coreOnly(s)),
     quality: s.response_quality.flag,
-    headline: headlineKo(m).title,
+    headline: headlineKo(m, DNAME).title,
     first: FIRST_MOVE_KO[m.overview.first_move],
     gaps: m.gaps.length, actions: m.actions.length,
   };

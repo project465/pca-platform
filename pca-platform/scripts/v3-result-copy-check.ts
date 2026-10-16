@@ -28,7 +28,8 @@ import { expand, type Fixture } from "../src/lib/me-v3/scoring/fixtures";
 import { buildResult } from "../src/lib/me-v3/result/build";
 import { josaOf, orList, withJosa } from "../src/lib/me-v3/result/josa";
 import {
-  actionKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO, BASIC_GROUP_KO, draftKo,
+  actionKo, actionWhyKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO, BASIC_GROUP_KO,
+  draftKo, pickSentenceKo,
   FIRST_MOVE_KO, gapKo, headlineKo, HORIZON_KO, QUALITY_KO, TIER_NOTE_KO,
   TRANS_STEP_KO, ZONE_LEAD_KO, ZONE_TITLE_KO,
 } from "../src/lib/me-v3/result/text.ko";
@@ -81,7 +82,7 @@ for (const f of fx.personas) {
   const m = buildResult(s, loaded, f.tier === "PRO"
     ? { translation: transIds.map((id) => ({ item_id: id, choice: "하중 조건을 직접 정했다" })) }
     : {});
-  const h = headlineKo(m);
+  const h = headlineKo(m, (td: string) => NAME.get(td) ?? td);
   lines.push({ who: f.id, where: "첫 줄", text: h.title });
   lines.push({ who: f.id, where: "첫 줄", text: h.lead });
   for (const g of m.gaps) {
@@ -94,6 +95,14 @@ for (const f of fx.personas) {
     lines.push({ who: f.id, where: `할 일 ${a.code}`, text: t.do });
     if (t.note) lines.push({ who: f.id, where: `할 일 ${a.code}`, text: t.note });
     actions.push({ who: f.id, text: t.do, note: t.note ?? "" });
+    /* **할 일 칸의 이유 한 줄도 센다**(SIGN-OFF §5). 새로 선 글자를
+       세는 자리에 넣지 않으면 그 줄은 어느 검사도 보지 않는다 */
+    lines.push({ who: f.id, where: `할 일 이유 ${a.code}`, text: actionWhyKo(a) });
+  }
+  /* **확인된 경험 칸의 한 문장도 센다**(§4) */
+  for (const d of m.domains) {
+    const one = pickSentenceKo(d.decided.length ? d.decided : d.did);
+    if (one) lines.push({ who: f.id, where: `확인된 경험 ${d.code}`, text: one });
   }
   for (const d of m.domains) {
     for (const ax of d.axes) {

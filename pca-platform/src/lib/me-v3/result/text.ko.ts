@@ -11,7 +11,7 @@
  *   3. **막연한 할 일을 쓰지 않는다.** `경험을 쌓으세요` 대신 그 영역의
  *      자료에서 가져온 재료로 문장을 만든다.
  */
-import type { Axis, AxisState, Stage } from "../scoring/types";
+import type { Axis, AxisState, Stage, Zone } from "../scoring/types";
 import { chainFor } from "./chains";
 import { andList, josaOf, orList, withJosa } from "./josa";
 import { REASON_KO } from "../scoring/text.ko";
@@ -158,27 +158,28 @@ const HEADLINE_KO: Record<HeadlineCode, { title: string; lead: string }> = {
      경험이고 밖에서 검증된 성과가 아니다 */
   EVIDENCE_READY: {
     title: "지금 답변에는 지원서에서 꺼내 쓸 수 있는 경험이 있습니다",
-    lead: "어떤 일을 했고 그때 무엇을 정했는지가 함께 적혀 있습니다."
-      + " 아래에서 그 경험부터 보시면 됩니다.",
+    /* **왜 이렇게 보았는지를 짧게 적는다**(SIGN-OFF §3). 장문 해석을 두지
+       않는다: 이 자리는 최대 두 줄이고, 자세한 것은 아래 영역 절이 든다 */
+    lead: "해 본 일과 그때 직접 정한 것이 함께 확인됐습니다.",
   },
   EVIDENCE_PARTIAL: {
     title: "해 본 일은 있습니다. 이제 정리만 하면 됩니다",
     /* **`바로 쓸 수 있다` 고 적지 않는다.** 쓰는 사람이 할 일을 우리가
        끝낸 것으로 적는 말이고, `v3:result:copy` 가 그것을 센다 */
-    lead: "그때 무엇을 정했고 무엇이 남았는지를 적어 두면 지원서에서"
-      + " 그대로 설명할 수 있습니다.",
+    lead: "해 본 일은 확인됐고, 그때 무엇을 정했는지가 아직 적혀 있지"
+      + " 않습니다.",
   },
   /* **관심과 근거를 한 점수로 합치지 않는다.** 관심이 낮다고 근거가 없는
      것이 아니다. 그 사람에게 할 말은 `이 영역을 진로로 둘지 정하세요` 이고
      `더 해 보세요` 는 이미 해 본 사람에게 할 말이 못 된다 */
   EVIDENCE_LOW_INTEREST: {
     title: "해 본 일도 있고 남긴 것도 있습니다. 계속할 쪽인지만 정하면 됩니다",
-    lead: "관심이 높다고 답하신 쪽은 아니어서, 이 일을 계속할지 먼저"
-      + " 정하는 편이 좋습니다.",
+    lead: "해 본 일과 남긴 것은 확인됐고, 관심이 높다고 답하신 쪽은"
+      + " 아닙니다.",
   },
   EXPLORING: {
     title: "아직 직접 해 본 일은 많지 않습니다",
-    lead: "해 보고 싶은 쪽은 또렷합니다. 먼저 한 가지를 짧게 해 보면 됩니다.",
+    lead: "해 보고 싶은 쪽은 또렷하고, 아직 겪어 본 일은 적습니다.",
   },
   /* **첫 줄을 모자람으로 열지 않는다**(규격 §6). 전에는 `아직 판단할
      재료가 모이지 않았습니다` 로 열었다. 사실이지만 결과지를 연 사람이
@@ -187,10 +188,62 @@ const HEADLINE_KO: Record<HeadlineCode, { title: string; lead: string }> = {
      지금 이 응답으로 할 수 있는 말을 그대로 적는다 */
   NO_EVIDENCE: {
     title: "한 쪽이 크게 앞서지는 않습니다",
-    lead: "여러 영역이 비슷하게 나타났습니다. 지금은 하나를 골라 조금 더"
-      + " 해 보는 편이 좋습니다.",
+    lead: "여러 영역이 비슷하게 나타나 앞서는 쪽이 생기지 않았습니다.",
   },
 };
+
+/**
+ * 머리글이 **어느 영역에서 나온 말인지**(SIGN-OFF §2).
+ *
+ * 머리글 코드는 `headlineOf()` 가 묶음을 보고 정한다. 그러니 그 머리글을
+ * 떠받치는 영역은 그 묶음에 든 영역이고, 그 이름을 머리글에 적으면
+ * `무엇이 있는지` 까지 첫 줄에서 말할 수 있다.
+ *
+ * **가짜 개인화를 하지 않는다.** 머리글마다 떠받치는 묶음을 못 박아 두고,
+ * 그 묶음에 실제로 든 영역만 이름을 적는다. 겪어 본 것이 없는 머리글
+ * (`EXPLORING` · `NO_EVIDENCE`)은 이 표에 줄이 없어서 전과 같은 문장이
+ * 그대로 선다: 꺼내 쓸 경험이 없는 사람에게 영역 이름을 적으면 그 줄이
+ * 거짓이 된다.
+ */
+const HEADLINE_ZONE: Partial<Record<HeadlineCode, Zone>> = {
+  EVIDENCE_READY: "Z1_EVIDENCE_ESTABLISHED",
+  EVIDENCE_PARTIAL: "Z2_EVIDENCE_INCOMPLETE",
+  EVIDENCE_LOW_INTEREST: "Z3_EVIDENCE_LOW_INTEREST",
+};
+
+/**
+ * 영역 이름을 받아 머리글 한 줄을 만든다.
+ *
+ * **묶음마다 할 말이 다르다**: 근거가 선 쪽에는 꺼내 쓸 것이 있다고 적고,
+ * 해 보기만 한 쪽에는 정리만 남았다고 적고, 관심이 다른 쪽에는 계속할지를
+ * 정하라고 적는다. 상태를 바꿔 적지 않고 **그 상태에 이름만 붙인다.**
+ */
+const HEADLINE_SAID_KO: Partial<Record<HeadlineCode, (where: string) => string>> = {
+  EVIDENCE_READY: (w) => `${w} 쪽에서 지원서에 꺼내 쓸 경험이 있습니다`,
+  EVIDENCE_PARTIAL: (w) => `${w} 쪽은 해 본 일이 있습니다. 정리만 남았습니다`,
+  EVIDENCE_LOW_INTEREST: (w) => `${w} 쪽은 근거가 있고, 관심은 다른 쪽에 있습니다`,
+};
+
+/**
+ * 머리글에 이름을 적을 영역.
+ *
+ * 차례는 결과 모델이 정한 그대로다(`focus` · `low_interest`). **여기서
+ * 차례를 다시 세우지 않는다**: 세우면 첫 줄이 가리키는 영역과 바로 아래
+ * 칸이 가리키는 영역이 어긋난다.
+ *
+ * **둘까지만 적는다.** 넷을 이으면 첫 줄이 두 줄 반을 먹고, 결과지에서 가장
+ * 먼저 읽는 자리가 가장 읽기 어려운 자리가 된다. 전체 목록은 아래 영역 절이
+ * 한 자리에서 든다.
+ */
+function headlineDomains(m: ResultModel): string[] {
+  const want = HEADLINE_ZONE[m.overview.headline];
+  if (!want) return [];
+  const inZone = new Set(m.domains.filter((d) => d.zone === want).map((d) => d.code));
+  const order = m.overview.headline === "EVIDENCE_LOW_INTEREST"
+    ? m.overview.low_interest : m.overview.focus;
+  const picked = order.filter((c) => inZone.has(c));
+  return (picked.length ? picked : [...inZone]).slice(0, 2);
+}
 
 const WHY_KO: Record<GapWhy, string> = {
   REQUIRED_FOR_DOMAIN: "이 영역에서 빠지면 경험을 설명하기 어려운 부분입니다",
@@ -510,6 +563,60 @@ export function actionBriefKo(
 }
 
 /**
+ * 할 일을 끝내면 **무엇이 남는가** 한 줄(SIGN-OFF §5).
+ *
+ * 할 일만 적으면 읽는 사람이 `왜 이걸 해야 하지` 를 스스로 메워야 한다.
+ * 이 자리는 그 답이고, **Evidence 에서 지원서로 가는 구조가 들고 있는
+ * 것만** 적는다: 남긴 것이 있으면 무엇으로 보여줄지 말할 수 있고, 견준
+ * 것이 있으면 어떻게 확인했는지 말할 수 있고, 직접 정한 것이 적혀 있으면
+ * 그 기준을 설명할 수 있다.
+ *
+ * **합격이나 적합을 말하지 않는다.** 여기서 약속하는 것은 설명할 수 있게
+ * 된다까지이고, 그 뒤는 읽는 사람의 일이다.
+ */
+const ACTION_WHY_KO: Record<ActionCode, string> = {
+  WRITE_UP: "한 쪽으로 묶어 두면 면접에서 그대로 꺼내 쓸 수 있습니다.",
+  DEEPEN_OWNERSHIP: "이렇게 적어 두면 지원서에서 내가 직접 정한 기준을"
+    + " 설명하기 쉬워집니다.",
+  BUILD_OUTPUT: "남겨 둔 것이 있으면 그 일을 무엇으로 보여줄지 말할 수 있습니다.",
+  ADD_VERIFICATION: "견줘 둔 표가 있으면 그 값을 어떻게 확인했는지 말할 수 있습니다.",
+  FILL_AXIS: "까닭이 한 줄 적혀 있으면 그 자리에서 무엇을 정했는지 말할 수 있습니다.",
+  TRY_SHORT_EXPERIENCE: "짧게라도 한 번 해 두면 다음에 적을 이야기가 생깁니다.",
+  EXPLORE_BROADLY: "한 가지를 겪어 보면 나머지와 견줄 기준이 생깁니다.",
+  STUDY_NEXT: "들은 것을 과제 하나에 써 보면 그 자리에 기록이 남습니다.",
+  RECHECK_DIRECTION: "먼저 정해 두면 다음에 무엇을 쌓을지가 또렷해집니다.",
+};
+
+/** 할 일 칸의 **이유 한 줄**. 할 일이 없으면 적지 않는다 */
+export function actionWhyKo(a: Action): string {
+  return ACTION_WHY_KO[a.code];
+}
+
+/**
+ * 고르신 항목 둘을 **한 사람 문장으로** 잇는다(SIGN-OFF §4).
+ *
+ * 전에는 이 자리가 고르신 항목을 가운뎃점으로 늘어놓았다
+ * (`여러 안 가운데 하나를 근거를 들어 골랐다 · 예산이나 인원을 항목별로
+ * 나눴다`). 뜻은 맞지만 그 꼴은 자료를 늘어놓은 줄이고, 결과지에서 가장
+ * 먼저 읽는 칸이 그렇게 서면 읽는 사람이 자기 경험 대신 목록을 읽는다.
+ *
+ * **새로운 사실을 만들지 않는다.** 고르신 문장을 그대로 쓰고 **끝맺음만**
+ * 바꾼다: 앞엣것은 `~다` 를 `~고` 로, 뒤엣것은 `~다` 를 `~습니다` 로.
+ * 낱말 하나도 더하지 않으므로 없던 경험이 생기지 않는다.
+ *
+ * **고쳐 쓸 수 없는 항목은 그대로 둔다.** 옛 증거 지도에서 온 이름표는
+ * 끝맺음이 `~다` 가 아니라서(`공차` · `제조 가능성`) 손대면 뜻이 깨진다.
+ * 그때는 전처럼 가운뎃점으로 늘어놓는다.
+ */
+export function pickSentenceKo(picks: string[]): string {
+  const x = picks.filter(Boolean).slice(0, 2);
+  if (!x.length) return "";
+  if (!x.every((t) => t.endsWith("다"))) return x.join(" · ");
+  const last = `${x[x.length - 1].slice(0, -1)}습니다.`;
+  return x.length === 1 ? last : `${x[0].slice(0, -1)}고, ${last}`;
+}
+
+/**
  * 비어 있는 자리를 할 일 칸의 **설명 줄**로.
  *
  * `FILL_GAP` 인데 그 빈자리에 붙은 할 일이 모델에 없는 응시가 있다. 전에는
@@ -683,8 +790,30 @@ export function bridgeKo(
   return out;
 }
 
-export function headlineKo(m: ResultModel): { title: string; lead: string } {
-  return HEADLINE_KO[m.overview.headline];
+/**
+ * 결과 첫 줄.
+ *
+ * `name` 을 넘기면 **머리글을 떠받치는 영역의 이름까지** 적는다(§2). 넘기지
+ * 않으면 전과 같은 문장이다: 영역 이름은 그 결과의 Core 사전에서 와야 하고
+ * 그 사전을 읽는 코드는 DB 를 끌고 들어오므로, 번역표가 직접 읽지 않는다.
+ *
+ * **이끄는 줄은 개인화하지 않는다**(§3). 그 자리가 답하는 것은 `왜 이렇게
+ * 보았는가` 이고, 그 까닭은 묶음마다 하나다. 영역 이름을 거기 또 적으면 두
+ * 줄이 같은 말을 한다.
+ */
+export function headlineKo(
+  m: ResultModel, name?: (td: string) => string,
+): { title: string; lead: string } {
+  const base = HEADLINE_KO[m.overview.headline];
+  const said = HEADLINE_SAID_KO[m.overview.headline];
+  if (!name || !said) return base;
+  const names = headlineDomains(m).map(name).filter(Boolean);
+  if (!names.length) return base;
+  const title = said(andList(names));
+  /* **첫 줄이 두 줄로 벌어지면 이름을 하나만 적는다.** 영역 이름 길이는
+     전공마다 달라서(`수요·예약·가격 관리`) 둘을 이으면 자리마다 결과가
+     다르다. 자르지는 않는다: 글자를 잘라 두면 뜻이 가운데서 끊긴다 */
+  return { title: title.length > 42 ? said(names[0]) : title, lead: base.lead };
 }
 
 /** 등급마다 무엇까지 말하는가. **BASIC 에 근거가 섰다는 판정을 두지 않는다** */
@@ -899,7 +1028,7 @@ export const COMMON_ITEM_KO: Record<string, string> = {
   /* 학부 장면 */
   UG_SCOPE: "캡스톤에서 다룰 범위를 직접 좁히기",
   UG_DECIDE: "수업 과제에서 조건이나 치수를 직접 정하기",
-  UG_OUTPUT: "산출물을 남이 읽고 쓸 수 있게 정리하기",
+  UG_OUTPUT: "만든 것을 남이 읽고 쓸 수 있게 정리하기",
   UG_CHECK: "실험값과 계산값을 대조해 차이를 설명하기",
   UG_FIX: "예상과 다른 결과의 원인을 좁혀 다시 하기",
   UG_USED: "내가 만든 것이 팀의 다음 작업에 쓰이기",

@@ -115,7 +115,7 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V34";
  * (`학교에서 받은 계정입니다` · `학과 확인하고 시작하기`). 학교 학생이
  * 개인 회원의 길로 들어가면 담당자 화면이 그 학생을 세지 못한다.
  */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.23";
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.24";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**
@@ -625,4 +625,18 @@ export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.23";
  * **기계공학이 읽는 글은 한 글자도 바뀌지 않았다**: 옛 값을 글자까지 그대로
  * 옮겼다. 화면 판본을 올리지 않는 까닭은 markup 과 자리가 그대로이고 바뀐
  * 것이 넘기는 값 하나이기 때문이다.
+ */
+
+/*
+ * `careermatri-workspace-copy.24` 로 올린 까닭. **홈 Hero 의 둘째 층이
+ * 그걸 하면 무엇이 남는지다**(SIGN-OFF §6).
+ *
+ * 전에는 둘째 줄이 `어느 경험을 가져와 얼마나 적으면 되는지`(할 일의 설명
+ * 줄)였다. 맞는 말이지만 그것은 **어떻게**이고, 홈을 여는 사람이 먼저
+ * 알아야 하는 것은 **왜**다. 결과지의 `지금 할 일` 칸이 쓰는 같은
+ * 함수(`actionWhyKo`)를 부르므로 두 쪽의 말이 갈리지 않는다. 어떻게 적으면
+ * 되는지와 그렇게 본 까닭은 `다음 할 일` 과 `현재 상태` 쪽이 그대로 든다.
+ *
+ * **화면 구조는 한 줄도 바뀌지 않았다**: `WORKSPACE_UI_VERSION` 은
+ * 그대로이고 바뀐 것은 그 칸에 넘기는 값 하나다.
  */

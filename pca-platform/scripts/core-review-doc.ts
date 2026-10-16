@@ -291,6 +291,11 @@ p("아래 셋은 실제 엔진이 낸 결과입니다. 손으로 적은 예시�
 p("가상의 응답자 셋을 등급마다 하나씩 골라 돌렸습니다.");
 p();
 const loaded = load(CORE);
+/* **머리글이 영역 이름까지 적는다**(SIGN-OFF §2). 넘기지 않으면 개인화된
+   첫 줄이 한 번도 서지 않는다 */
+const DNAME = (td: string): string =>
+  (loaded.domains.domains as { code: string; name: string }[])
+    .find((d) => d.code === td)?.name ?? td;
 const fx = JSON.parse(readFileSync(entry.fixtures!.personas!, "utf8")) as
   { personas: Fixture[] };
 const SAMPLE: { tier: Submission["tier"]; id: string; why: string }[] = [
@@ -307,7 +312,7 @@ for (const s of SAMPLE) {
   p();
   p(`${s.why}.`);
   p();
-  const h = headlineKo(m);
+  const h = headlineKo(m, DNAME);
   p(`- 첫 줄: **${h.title}**`);
   p(`- 이어지는 줄: ${h.lead}`);
   p(`- 먼저 볼 영역: ${m.overview.focus.map((c) => `${c} ${domName(c)}`).join(" · ") || "없다"}`);

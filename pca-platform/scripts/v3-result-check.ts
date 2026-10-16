@@ -33,6 +33,12 @@ const sha = (s: string) => createHash("sha256").update(s).digest("hex").slice(0,
 
 const core = process.env.CORE ?? defaultCore();
 const loaded = load(core);
+/* **머리글이 영역 이름까지 적는다**(SIGN-OFF §2). 그러니 이 검사도 그
+   이름을 넘겨 받은 글자를 센다: 넘기지 않으면 개인화된 첫 줄이 한 번도
+   서지 않고, 그 줄은 아무것도 세지 않는다 */
+const DNAME = (td: string): string =>
+  (loaded.domains.domains as { code: string; name: string }[])
+    .find((d) => d.code === td)?.name ?? td;
 /**
  * 사람 열두 벌은 **그 Core 의 fixture** 다. 경로를 이 파일에 적지 않는다:
  * 적어 두면 다른 Core 로 돌릴 때 **남의 자료로 이 Core 의 결과지를 만든다.**
@@ -119,7 +125,7 @@ const CODE = new RegExp([
 
 /** 화면과 종이에 서는 글자 전부. **여기 빠진 자리가 다음에 새는 자리다** */
 function rendered(m: ReturnType<typeof buildResult>): string[] {
-  const out: string[] = [headlineKo(m).title, headlineKo(m).lead,
+  const out: string[] = [headlineKo(m, DNAME).title, headlineKo(m, DNAME).lead,
     ...Object.values(ZONE_TITLE_KO), ...Object.values(ZONE_LEAD_KO),
     ...Object.values(TIER_NOTE_KO), ...Object.values(QUALITY_KO),
     ...Object.values(AXIS_KO), ...Object.values(AXIS_WHAT_KO),
@@ -441,7 +447,7 @@ if (bareM.common.axes.some((a) => a.confirmed)) bareBad.push("공통 판단 확�
 if (bareM.targets.orgs.length || bareM.targets.goal.role) bareBad.push("고르신 자리");
 if (bareM.overview.tied_pick.length) bareBad.push("고르신 쪽");
 ok("아무것도 답하지 않은 응시에 확인 판정이 없다", bareBad.length === 0,
-   bareBad.length ? bareBad.join(" ") : "머리글 " + headlineKo(bareM).title.slice(0, 18));
+   bareBad.length ? bareBad.join(" ") : "머리글 " + headlineKo(bareM, DNAME).title.slice(0, 18));
 
 /* 그리고 그런 응시에도 **다음 걸음은 받는다.** 빈 결과를 빈 화면으로
    두면 읽는 사람은 자기 결과가 덜 만들어진 줄 안다 */
@@ -528,7 +534,7 @@ ok("산업·직무 절은 고르신 분께만 선다", packGhost.length === 0,
 console.log("");
 for (const f of fx.personas) {
   const m = models.get(f.id)!;
-  const h = headlineKo(m);
+  const h = headlineKo(m, DNAME);
   console.log(`  ${f.id} ${f.name.padEnd(22)} ${m.tier.padEnd(9)}`
     + `${h.title.slice(0, 22).padEnd(24)}`
     + `먼저 ${(m.overview.focus.map((c) => NAME.get(c) ?? c).join("·") || "없음").padEnd(22)}`

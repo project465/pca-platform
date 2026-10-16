@@ -4,7 +4,8 @@ import {
   EXPERIENCE_KINDS, applicationsOf, currentState, experiencesOf, activeCoreOrPick } from "@/lib/me-v3/platform";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import {
-  ZONE_TITLE_KO, actionBriefKo, actionHeadKo, domainChainKo, gapKo,
+  ZONE_TITLE_KO, actionBriefKo, actionHeadKo, actionWhyKo, domainChainKo,
+  gapKo,
 } from "@/lib/me-v3/result/text.ko";
 import { Icon, type IconName } from "@/components/sf/icon";
 import { openActions } from "@/lib/me-v3/open-actions";
@@ -86,8 +87,15 @@ export default async function Home() {
    */
   const nowDomain = nowModel?.domain ? domainName(core, nowModel.domain) : "";
   const nowSay = nowModel && st.model
-    ? { head: actionHeadKo(nowModel), brief: actionBriefKo(nowModel, nowDomain) }
-    : { head: first?.body ?? "", brief: "" };
+    ? {
+      head: actionHeadKo(nowModel),
+      brief: actionBriefKo(nowModel, nowDomain),
+      /* **둘째 층은 그걸 하면 무엇이 남는지다**(SIGN-OFF §6). 결과지의
+         `지금 할 일` 칸이 같은 함수를 부르므로 두 쪽의 말이 갈리지
+         않는다. 어떻게 적으면 되는지는 `다음 할 일` 쪽이 든다 */
+      gain: actionWhyKo(nowModel),
+    }
+    : { head: first?.body ?? "", brief: "", gain: "" };
   const nowGap = first
     ? st.gaps.find((g) => g.domain === first.td_code
         && (g.axis ?? "") === (first.axis_code ?? ""))
@@ -279,11 +287,14 @@ export default async function Home() {
           <PrimaryActionHero
             tag="지금 할 일"
             title={first ? nowSay.head : "지금 꼭 해야 하는 일은 없습니다."}
-            /* **설명 줄은 어느 경험을 가져와 얼마나 적으면 되는지다**(§7).
-               까닭(`nowWhy`)은 `현재 상태` 와 `지금 할 일` 쪽이 든다:
-               홈의 이 칸에 둘을 다 세우면 다시 다섯 줄이 된다.
-               **까닭을 지어내지 않는다**: 둘 다 없으면 그 줄이 없다 */
-            why={first ? (nowSay.brief || nowWhy || undefined) : NO_ACTION_WHY}
+            /* **두 층이다**(SIGN-OFF §6): 위가 할 일이고 아래가 그걸
+               하면 무엇이 남는지다. 어떻게 적으면 되는지와 그렇게 본
+               까닭은 `다음 할 일` 과 `현재 상태` 쪽이 든다: 홈의 이 칸에
+               셋을 다 세우면 다시 다섯 줄이 된다. **지어내지 않는다**:
+               셋 다 없으면 그 줄이 없다 */
+            why={first
+              ? (nowSay.gain || nowSay.brief || nowWhy || undefined)
+              : NO_ACTION_WHY}
             action={
               <Link className="cm-btn is-primary" href="/me/experience/new">
                 {first ? "지금 정리하기 →" : "경험 추가 →"}

@@ -206,7 +206,8 @@
     "pcu:review": "tsx scripts/pcu-review-shots.ts",
     "pcu:humanize": "tsx scripts/pcu-humanize-shots.ts",
     "pcu:spec": "tsx scripts/pcu-spec-review.ts",
-    "pcu:spec:pack": "tsx scripts/pcu-spec-pack.ts"
+    "pcu:spec:pack": "tsx scripts/pcu-spec-pack.ts",
+    "pcu:signoff": "tsx scripts/pcu-signoff-shots.ts"
   },
   "dependencies": {
     "@types/nodemailer": "^8.0.1",

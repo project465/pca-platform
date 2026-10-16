@@ -672,7 +672,9 @@
      보기 다섯이 세로로 서므로 한 질문이 이미 한 뼘이다. 거기에 넓은
      화면의 여백을 그대로 두면 네 질문이 긴 세로 설문지로 읽힌다 */
   .qs-rows { gap: var(--q-s4); }
-  .qs-rows > .qs-row + .qs-row { padding-top: var(--q-s4); }
+  /* **질문 사이는 질문 안보다 넓다**(SIGN-OFF §10). 금 한 줄에 24px 을
+     더해 40px 이고, 질문에서 그 질문의 보기까지는 24px 이다 */
+  .qs-rows > .qs-row + .qs-row { padding-top: var(--q-s5); }
 }
 
 /**
@@ -1249,6 +1251,26 @@
   .qs { --q-gutter: 20px; }
   .qs-opt { padding: var(--q-s3) var(--q-s4); }
   .qs-rows { margin-top: var(--q-s4); gap: var(--q-s4); }
+  /*
+   * **질문은 자기 보기와 한 묶음이어야 한다**(SIGN-OFF §10).
+   *
+   * 재어 보니 손전화에서 질문 글 아래 32px 이 비고 질문 사이는 16px 이었다.
+   * 그래서 **질문이 제 보기보다 앞 질문의 보기에 더 가까이** 섰고, 넷을
+   * 잇따라 누르는 자리에서 어디까지가 한 질문인지가 눈으로 갈리지 않았다.
+   * 안을 좁히고 사이를 벌린다: 질문에서 보기까지 24px(글의 8px + 여기
+   * 16px)이고 질문 사이는 금 한 줄에 40px 이다. **구조는 그대로다**:
+   * 묻는 것도 보기 차례도 저장되는 값도 바뀌지 않았다.
+   */
+  .qs-opts { margin-top: var(--q-s4); }
+  /* **누르는 자리는 48px 부터다.** 보기 줄은 재어 보니 50~51px 이지만
+     바닥을 44 로 두면 글이 한 줄인 자리에서 44 로 내려앉는다 */
+  .qs-own .qs-opt { min-height: 48px; }
+  /*
+   * `모르겠다` 는 척도 밖이다(규격 §4). 다섯 칸에서 8px 만 떨어져 있어
+   * 여섯째 칸처럼 읽혔다. 떼어 두고 누르는 자리를 48px 로 올린다:
+   * 아직 모르는 사람이 가장 많이 누르는 자리다
+   */
+  .qs-escape { margin-top: var(--q-s3); min-height: 48px; }
   .qs-cell i { font-size: var(--q-t-cap); }
   .qs-cell:not(:has(b)) i { font-size: var(--q-t-sub); }
   .qs-crumb .prev, .qs-crumb .next, .qs-crumb i { display: none; }

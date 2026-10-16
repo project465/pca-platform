@@ -200,7 +200,7 @@ export function EvidenceMatrix(
             <th scope="col">영역</th>
             <th scope="col">직접 수행</th>
             <th scope="col">기준 설정</th>
-            <th scope="col">산출물</th>
+            <th scope="col">남긴 것</th>
             <th scope="col">비교</th>
             <th scope="col">검증</th>
           </tr>
@@ -227,7 +227,7 @@ export function EvidenceMatrix(
       </table>
       <p className="pv-sub">
         열두 영역이 모두 줄로 섭니다. 직접 수행과 기준 설정은 확인된
-        판단축의 개수이고, 산출물과 비교는 응답에서 고르신 항목의
+        판단축의 개수이고, 남긴 것과 비교는 응답에서 고르신 항목의
         개수입니다. 개수를 더하거나 점수로 바꾸지 않습니다. 이번 응시에서
         판단을 묻지 않은 영역은 그 사실을 그대로 적습니다.
       </p>
