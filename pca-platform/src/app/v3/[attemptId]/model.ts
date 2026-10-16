@@ -35,6 +35,14 @@ export type Field = {
   optionHelpFold?: string[];
   /** 보기 넷을 처음 만나는 화면에서만 펼쳐 둔다 */
   optionFoldOpen?: boolean;
+  /**
+   * 질문과 보기 사이에 서는 **한 줄짜리 실제 예시**(규격: 질문 → 예시 →
+   * 선택). 보기 넷 문항에서만 담긴다.
+   *
+   * 지어낸 문장이 아니다. 영역 문항은 그 Core 의 체크리스트에서, 산업팩
+   * 문항은 그 문항의 `gloss` 에서 온다(`runtime/examples.ts`).
+   */
+  example?: string;
 };
 
 export type Group = {
@@ -77,6 +85,14 @@ export type ScreenModel = {
   strip?: string;
   /** 보기 읽는 법 한 줄. 보기 넷 화면에서만 */
   guide?: string;
+  /**
+   * **어디에서 해 본 것이든 괜찮다는 한 줄.** 묶음의 첫 질문에만 담긴다.
+   *
+   * 학생이 떠올릴 자리(수업 · 조별 과제 · 실습 · 동아리 · 공모전)를
+   * 그 Core 의 장면 묶음에서 읽어 온다. 문항마다 붙이지 않는 까닭은
+   * `runtime/examples.ts` 의 `sceneHint` 주석에 적었다.
+   */
+  scenes?: string;
   fields: Field[];
   groups?: Group[];
   /** 산업 장면처럼 읽기만 하는 자리의 본문 */

@@ -91,7 +91,7 @@
  * **문항과 보기와 저장되는 값과 판정은 그대로다.** 바뀐 것은 그 화면이
  * 적는 글자뿐이고, 그래서 문장 판본도 같이 올린다.
  */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V31";
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V32";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
 /* copy.15 — 받침 한 줄과 보기 넷의 예시가 화면에 서는 글자다 */
@@ -99,7 +99,7 @@ export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V31";
 /* copy.17 — 시작 안내에 그 전공에서 자주 서는 자리 셋이 새로 선다 */
 /* copy.18 — 비어 있는 질문을 짚는 한 줄과 남은 수를 적는 줄이 새로 선다 */
 /* copy.19 — 산업 장면과 대학원 알약이 그 전공의 이름으로 선다(P0) */
-export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.19";
+export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.20";
 
 /*
  * `V19` · `copy.14` 로 올린 까닭. **경험 빈도의 화면 말을 공통으로

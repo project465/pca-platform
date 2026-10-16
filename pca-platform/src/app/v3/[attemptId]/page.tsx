@@ -3,10 +3,11 @@ import { requireUser } from "@/lib/session";
 import { majorExamplesOf, majorNameOf } from "@/lib/me-v3/major-name";
 import { resultMeta } from "@/lib/me-v3/result/meta";
 import { OWNERSHIP } from "@/lib/me-v3/scoring/ownership";
+import { exampleOf, sceneHint } from "@/lib/me-v3/runtime/examples";
 import { controlOf } from "@/lib/me-v3/runtime/menus";
 import {
   answersOf, attemptOf, axisAsk, checklistFor, content, domainName,
-  industryChoices, itemOf, menuContextOf, moveTo, optionGuidance, orgChoices,
+  industryChoices, industryGloss, itemOf, menuContextOf, moveTo, optionGuidance, orgChoices,
   roleChoices, viewOf, wordingOf,
 } from "@/lib/me-v3/runtime/session";
 import type { Field, Group, PickKind, ProgressModel, ScreenModel } from "./model";
@@ -92,6 +93,12 @@ export default async function V3Screen({
         ? OWNERSHIP.map((o, n) => (OWNERSHIP_EXAMPLE[n]
           ? `${o.means}. 예: ${OWNERSHIP_EXAMPLE[n]}` : o.means)) : undefined,
       optionFoldOpen: control.kind === "level" && firstLevel && id === firstLevelItem,
+      /* **질문 → 예시 → 선택.** 한 줄짜리 예시가 그 가운데다. 산업팩
+         문항은 `gloss`(그 판단을 일반 말로 바꿔 적은 줄)를 쓰고, 그
+         줄은 전에는 검사 셋만 읽고 **화면에 한 번도 서지 않았다** */
+      example: control.kind === "level"
+        ? exampleOf(a0.core_code, it, industryGloss(a0.core_code, id)) ?? undefined
+        : undefined,
     };
   };
 
@@ -191,6 +198,9 @@ export default async function V3Screen({
     help: sc.help,
     strip: sc.strip,
     guide: fields.some((f) => f.control.kind === "level") ? optionGuidance(a0.core_code) : undefined,
+    /* 묶음이 바뀐 첫 질문에만. 매 화면에 세우면 그것이 새 틀이 된다 */
+    scenes: sc.strip && fields.some((f) => f.control.kind === "level")
+      ? sceneHint(a0.core_code) : undefined,
     fields,
     groups,
     body: sc.body,

@@ -39,13 +39,15 @@ import {
   makeStudent,
 } from "./_loop-fixture";
 import { controlOf } from "../src/lib/me-v3/runtime/menus";
+import { exampleOf, sceneHint } from "../src/lib/me-v3/runtime/examples";
+import { OWNERSHIP_LABEL } from "../src/app/v3/tier-text";
 import { PEOPLE, answerAll, firstPack, type Policy } from "./_v3-answer";
 import { query, queryOne } from "../src/lib/db";
 import { core as coreEntry, hasCoreFile, packs, registry } from "../src/lib/me-v3/core-registry";
 import { allLeaves, university } from "../src/lib/campus/registry";
 import {
   attemptOf, axisAsk, checklistFor, choosePack, content, domainName, gridRowOf,
-  industryChoices, itemOf, levelOptions, menuContextOf, moveTo, openAttempt,
+  industryChoices, industryGloss, itemOf, levelOptions, menuContextOf, moveTo, openAttempt,
   optionGuidance, orgChoices, roleChoices, saveAnswer, savePicks, submit,
   viewOf, wordingOf, type CampusEntry,
 } from "../src/lib/me-v3/runtime/session";
@@ -92,6 +94,7 @@ async function screenText(
     out.push(`묶음: ${s.name}`);
     for (const l of s.lines) out.push(`  - ${l}`);
   }
+  if (sc.strip) out.push(`장면: ${sceneHint(core)}`);
   const ctx = await menuContextOf(a);
   for (const id of sc.items) {
     const it = itemOf(core, id);
@@ -104,8 +107,16 @@ async function screenText(
     out.push(`  문면: ${stem}`);
     const control = controlOf(it, ctx);
     if (control.kind === "level") {
+      /* **화면이 세우는 예시 한 줄.** 질문 → 예시 → 선택의 가운데이고,
+         화면이 부르는 함수를 그대로 부른다 */
+      const ex = exampleOf(core, it, industryGloss(core, id));
+      if (ex) out.push(`  예시: ${ex}`);
+      out.push(`  보기(화면): ${OWNERSHIP_LABEL.join(" | ")}`);
       out.push(`  보기(은행): ${control.options.join(" | ")}`);
-      out.push(`  보기 읽는 법: ${control.guide}`);
+      /* **화면이 세우는 줄을 적는다.** `control.guide` 는 빈 칸이고
+         보기 읽는 법은 화면이 `optionGuidance` 로 따로 세운다. 빈 칸을
+         떠 두면 읽는 사람이 그 줄이 없는 줄로 읽는다 */
+      out.push(`  보기 읽는 법: ${control.guide || optionGuidance(core)}`);
     } else if (control.kind === "scale5") {
       out.push(`  보기: ${control.labels.join(" | ")}`);
     } else if (control.kind === "exposure") {

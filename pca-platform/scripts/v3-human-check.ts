@@ -20,6 +20,7 @@
  */
 import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { registry } from "../src/lib/me-v3/core-registry";
+import { studentScenes } from "../src/lib/me-v3/runtime/examples";
 
 let pass = 0;
 const bad: string[] = [];
@@ -139,14 +140,22 @@ const allWork = rows.flatMap((r) => r.work);
 ok("직장 경력이 있어야 답할 수 있는 문항이 없다", allWork.length === 0,
   allWork.length ? `${allWork.length}개 — ${allWork.slice(0, 5).join(" · ")}` : "");
 
-/* 학생 장면. **한 자리도 빠짐없이**를 요구하지 않는다: 영역 이름 자체가
-   학교에서 하는 일인 자리가 있고, 그때 장면을 억지로 붙이면 같은 말이
-   문항마다 서서 그것이 새 틀이 된다. 한도는 절반이다 */
-const thinScene = rows.filter((r) => r.scene / r.n < 0.5);
-ok("사다리 문항의 절반 이상이 학생 장면을 들고 있다", thinScene.length === 0,
-  thinScene.length
-    ? thinScene.map((r) => `${r.core} ${(r.scene / r.n * 100).toFixed(0)}%`).join(" · ")
-    : rows.map((r) => `${(r.scene / r.n * 100).toFixed(0)}%`).join(" "));
+/**
+ * 학생 장면.
+ *
+ * **문항마다 장면을 붙이라고 요구하지 않는다.** 같은 말이 문항마다 서면
+ * 그것이 새 틀이 되고, 더 나쁜 것은 장면이 그 판단과 안 맞는 자리가
+ * 생기는 것이다(간호의 `줄 약을 처방과 대조했다` 에 `간호 동아리에서` 가
+ * 붙었다). 장면은 **묶음마다 한 번** 서고, 그 목록이 Core 마다 적혀
+ * 있는지를 여기서 센다. 화면에 실제로 섰는지는 아래 떠 둔 글이 센다.
+ */
+const noScenes: string[] = [];
+for (const c of cores) {
+  try { studentScenes(c.code); } catch { noScenes.push(c.code); }
+}
+ok("Core 마다 학생 장면 묶음이 적혀 있다", noScenes.length === 0,
+  noScenes.length ? noScenes.join(" ") : `${cores.length}개 Core`);
+note(`문면에 장면이 든 사다리 문항 — ${rows.map((r) => `${r.core.split("_")[0]} ${(r.scene / r.n * 100).toFixed(0)}%`).join(" · ")}`);
 
 /* 틀 쏠림. 한 Core 안에서 끝 아홉 자가 같은 문항이 5% 를 넘지 않는다 */
 const heavy = rows.filter((r) => r.topTail[1] / r.n > 0.05);
@@ -196,11 +205,30 @@ if (!existsSync(DUMP)) {
   ok("묻는 화면에서 설명문이 질문보다 길지 않다", louder.length === 0,
     louder.length ? `${louder.length}자리 — ${louder.slice(0, 3).join(" / ")}` : "");
 
-  /* 화면에 실제 예시가 한 줄 선다. 질문 → 예시 → 선택 */
-  const noEx = screens.filter((f) =>
-    !/^ {2}예시: /m.test(readFileSync(`${DUMP}/${f}`, "utf8")));
-  ok("묻는 화면에 그 영역의 실제 예시가 선다", noEx.length === 0,
-    noEx.length ? `${noEx.length}벌에 없다 — ${noEx.slice(0, 3).join(" ")}` : `${screens.length}벌`);
+  /**
+   * 질문 → 예시 → 선택.
+   *
+   * **벌 단위로 세지 않는다.** 한 벌에 예시가 한 줄만 있어도 통과하므로,
+   * 보기 넷으로 받는 문항마다 그 줄이 있는지 센다.
+   */
+  let lad = 0; let withEx = 0; const exGap: string[] = [];
+  let blocks = 0; let withScene = 0;
+  for (const f of screens) {
+    const txt = readFileSync(`${DUMP}/${f}`, "utf8");
+    for (const b of txt.split(/^### /m).slice(1)) {
+      if (/^장면: /m.test(b)) withScene++;
+      if (/^문항 /m.test(b)) blocks++;
+      for (const chunk of b.split(/^문항 /m).slice(1)) {
+        if (!/보기\(화면\)/.test(chunk)) continue;
+        lad++;
+        if (/^ {2}예시: /m.test(chunk)) withEx++;
+        else exGap.push(`${f.split(".")[0]} ${chunk.split(/[ \n]/)[0]}`);
+      }
+    }
+  }
+  ok("보기 넷 문항마다 실제 예시가 한 줄 선다", lad > 0 && exGap.length === 0,
+    exGap.length ? `${withEx} / ${lad} — ${exGap.slice(0, 3).join(" · ")}` : `${lad}자리`);
+  note(`묶음 첫 질문의 장면 줄 — 묻는 화면 ${blocks}개 가운데 ${withScene}개`);
 
   /* 판정문 되풀이. 한 결과지에서 같은 판정 꼴이 네 번을 넘지 않는다 */
   const JUDGE = [

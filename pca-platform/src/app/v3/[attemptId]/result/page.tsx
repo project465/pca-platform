@@ -336,7 +336,7 @@ function DomainPanel(
         <Strongest d={d} />
         {g ? (
           <div className="rs-dgap">
-            <h4>아직 확인이 부족한 부분</h4>
+            <h4>여기서 더 보여줄 것</h4>
             {/* **카드에는 칸의 말을 적는다**(규격 §10). 긴 문장은 아래
                 `앞으로 채울 것` 절이 들고, 영역 이름은 카드 머리가 든다 */}
             <p>{gapCell}</p>
@@ -407,7 +407,7 @@ function Strongest({ d }: { d: ResultDomain }) {
          고르지 않은 영역이 넷이면 이 문장이 네 번 선다. 그 영역의 상태와
          빈자리는 바로 위와 아래가 이미 적고 있으므로, 여기는 **고른 것이
          없다는 사실**만 칸의 말로 적는다 */
-      <p className="rs-dnone">고르신 근거 항목이 없음</p>
+      <p className="rs-dnone">아직 고른 근거 없음</p>
     );
   }
   return (
@@ -1106,7 +1106,7 @@ export default async function V3Result({
               {deep ? (
                 <p style={{ fontWeight: 400 }}>
                   {(focus[0].decided.length ? focus[0].decided : focus[0].did)
-                    .slice(0, 2).join(" · ") || "해 본 일이 확인됐습니다"}
+                    .slice(0, 2).join(" · ") || "해 보신 일이 있습니다"}
                 </p>
               ) : (
                 /* 여덟 축을 묻지 않은 응시에서 `직접 정한 것` 을 적지 않는다.
@@ -1128,12 +1128,12 @@ export default async function V3Result({
               <p>{[...new Set(model.evidence.ready
                 .map((e) => domainName(core, e.domain)))].slice(0, 3).join(" · ")}</p>
               <p style={{ fontWeight: 400 }}>
-                지원서에서 바로 꺼내 쓸 수 있는 자리가
-                {" "}{model.evidence.ready.length}가지 확인됐습니다
+                지원서에 그대로 옮길 이야기가
+                {" "}{model.evidence.ready.length}가지 모였습니다
               </p>
             </>) : (
               <p className="none">
-                지금 바로 꺼내 쓸 근거는 아직 확인되지 않았습니다
+                지원서에 그대로 옮길 이야기는 아직 모이지 않았습니다
               </p>
             )}
           </div>
@@ -1144,7 +1144,7 @@ export default async function V3Result({
             <h3>{lackTitle}</h3>
             {lackText
               ? <p>{lackText}</p>
-              : <p className="none">지금 응답에서 비어 있다고 적을 자리가 없습니다</p>}
+              : <p className="none">지금 응답에서는 더 채울 자리가 보이지 않습니다</p>}
             {lackText && lackWhere ? <p>{lackWhere}</p> : null}
           </div>
 

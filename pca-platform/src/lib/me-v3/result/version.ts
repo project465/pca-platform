@@ -58,7 +58,7 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
  * 전공 이름(`resultMeta.major`)을 받는다. **판정도 결과 모델도 한 줄
  * 바뀌지 않았다.**
  */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.27";
+export const RESULT_COPY_VERSION = "me-v3-result-copy.28";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -185,7 +185,7 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.27";
  *
  * **판정도 결과 모델도 한 줄 바뀌지 않았다.**
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V36";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V37";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

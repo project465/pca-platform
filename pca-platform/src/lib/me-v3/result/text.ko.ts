@@ -99,7 +99,7 @@ const AXIS_SENT_KO: Record<Axis, Record<Said, string>> = {
 };
 
 export function axisStateKo(axis: Axis, state: AxisState): string {
-  if (state === "NOT_OBSERVED") return "이번 응답에서 확인되지 않음";
+  if (state === "NOT_OBSERVED") return "이번 응답에는 없음";
   return AXIS_SENT_KO[axis][state];
 }
 
@@ -111,11 +111,11 @@ export function axisStateKo(axis: Axis, state: AxisState): string {
  * 설명 줄로 쓴다.
  */
 export const ZONE_TITLE_KO = {
-  Z1_EVIDENCE_ESTABLISHED: "근거가 확인된 영역",
-  Z2_EVIDENCE_INCOMPLETE: "경험은 있지만 근거를 더 만들어야 하는 영역",
-  Z3_EVIDENCE_LOW_INTEREST: "경험은 있지만 지금 관심이 낮은 영역",
-  Z4_INSUFFICIENT_EVIDENCE: "아직 판단하기 어려운 영역",
-  NOT_EXPLORED: "이번에 보지 않은 영역",
+  Z1_EVIDENCE_ESTABLISHED: "근거가 선 영역",
+  Z2_EVIDENCE_INCOMPLETE: "경험은 있고 근거가 더 필요한 영역",
+  Z3_EVIDENCE_LOW_INTEREST: "해 봤지만 지금 관심이 낮은 영역",
+  Z4_INSUFFICIENT_EVIDENCE: "아직 이야기할 재료가 적은 영역",
+  NOT_EXPLORED: "이번에 깊게 묻지 않은 영역",
 } as const;
 
 /**
@@ -127,10 +127,10 @@ export const ZONE_TITLE_KO = {
  * 줄을 읽지 않고, 그 자리가 들어야 할 **무엇이 확인됐는가**가 사라진다.
  */
 export const ZONE_LEAD_KO = {
-  Z1_EVIDENCE_ESTABLISHED: "직접 정한 것과 남긴 결과물이 함께 확인됐습니다.",
-  Z2_EVIDENCE_INCOMPLETE: "해 본 것은 확인됐고, 남긴 결과물이 아직 모자랍니다.",
-  Z3_EVIDENCE_LOW_INTEREST: "근거는 확인됐고, 지금 관심 우선순위가 낮습니다.",
-  Z4_INSUFFICIENT_EVIDENCE: "아직 판단할 재료가 모이지 않았습니다.",
+  Z1_EVIDENCE_ESTABLISHED: "직접 정한 것과 남긴 결과물이 함께 보입니다.",
+  Z2_EVIDENCE_INCOMPLETE: "해 보신 것은 보이고, 남긴 결과물이 아직 모자랍니다.",
+  Z3_EVIDENCE_LOW_INTEREST: "근거는 있고, 지금은 관심 순위가 낮습니다.",
+  Z4_INSUFFICIENT_EVIDENCE: "아직 이야기할 재료가 모이지 않았습니다.",
   NOT_EXPLORED: "이번 응시에서 깊게 묻지 않았습니다.",
 } as const;
 
@@ -180,15 +180,35 @@ const WHY_KO: Record<GapWhy, string> = {
   NEEDED_BY_ROLE: "고르신 역할에서 특히 자주 묻는 부분입니다",
 };
 
-const GAP_TITLE_KO: Record<Gap["kind"], (ax: string) => string> = {
-  REQUIRED_AXIS: (ax) => `${ax} 경험이 아직 확인되지 않았습니다`,
-  OUTPUT: () => "남은 결과물이 아직 확인되지 않았습니다",
-  OUTPUT_EVIDENCE: () => "남긴 결과물이 무엇인지 아직 고르지 않았습니다",
-  VERIFICATION: () => "무엇과 비교해 확인했는지가 비어 있습니다",
-  AXIS: (ax) => `${ax} 경험이 아직 확인되지 않았습니다`,
-  /* **확인된 축에 `확인되지 않았습니다` 를 붙이지 않는다.** 해 본 것은
-     확인됐고, 덜 적힌 것은 어디까지 직접 정했는지다 */
-  PARTIAL_EVIDENCE: (ax) => `${ax} 경험은 확인됐고, 어디까지 직접 정했는지가 덜 적혔습니다`,
+/**
+ * 축마다 **비어 있는 것을 그 축의 말로** 적는다(규격: 판정문 되풀이 금지).
+ *
+ * 전에는 여덟 축이 모두 `…경험이 아직 확인되지 않았습니다` 였다. 빈자리가
+ * 일곱이면 한 결과지에 거의 같은 줄이 일곱 번 서고, 그러면 읽는 사람은
+ * 그 절을 **하나의 빨간 목록**으로 읽는다. 상담 자리에서 사람은 축마다
+ * 다른 말을 한다: 산출물이 없는 것과 비교를 안 한 것은 다른 이야기다.
+ */
+const AXIS_GAP_KO: Record<Axis, string> = {
+  J1: "무엇을 풀 문제로 잡았는지가 아직 안 보입니다",
+  J2: "받은 요구를 어떤 조건으로 옮겼는지가 아직 없습니다",
+  J3: "직접 정한 조건이나 기준이 아직 안 보입니다",
+  J4: "어떤 방법과 도구로 했는지가 아직 없습니다",
+  J5: "손에 남은 결과물이 아직 없습니다",
+  J6: "무엇과 비교해 봤는지가 아직 없습니다",
+  J7: "안 됐을 때 무엇을 고쳤는지가 아직 없습니다",
+  J8: "그 결과가 어디에 쓰였는지가 아직 없습니다",
+};
+
+const GAP_TITLE_KO: Record<Gap["kind"], (ax: string, a?: Axis | null) => string> = {
+  REQUIRED_AXIS: (ax, a) => (a ? AXIS_GAP_KO[a] : `${ax} 쪽 이야기가 아직 없습니다`),
+  OUTPUT: () => "손에 남은 결과물이 아직 없습니다",
+  OUTPUT_EVIDENCE: () => "무엇을 남겼는지 아직 고르지 않았습니다",
+  VERIFICATION: () => "무엇과 비교해 봤는지가 아직 없습니다",
+  AXIS: (ax, a) => (a ? AXIS_GAP_KO[a] : `${ax} 쪽 이야기가 아직 없습니다`),
+  /* **해 본 것을 없다고 적지 않는다.** 덜 적힌 것은 어디까지 직접
+     정했는지다 */
+  PARTIAL_EVIDENCE: (ax) =>
+    `${withJosa(ax, "은는")} 해 보셨고, 어디까지 직접 정했는지가 덜 적혔습니다`,
 };
 
 /**
@@ -281,38 +301,53 @@ export function domainChainKo(core: string, domain: string): string[] {
  */
 type Mat = Action["material"];
 const OWN_KO: Record<Axis, (d: string, m: Mat) => string> = {
-  J1: (d) => `${d} 사례에서 문제 범위를 누가 정했는지 한 줄로 적어보세요.`,
-  J2: (d) => `${d}에서 요구를 조건으로 옮길 때 어느 값을 직접 정했는지 적어보세요.`,
+  J1: (d) => `지난 ${d} 과제 하나를 골라, 문제 범위를 누가 어디까지 정했는지`
+    + " 한 쪽으로 정리해보세요.",
+  J2: (d) => `${d}에서 받은 요구를 조건으로 옮길 때 직접 정한 값을`
+    + " 조건표 한 장에 모아보세요.",
   /* **영역마다 정하는 것이 다르다.** 영역 사전의 `먼저 정하는 것` 을
      그대로 가져오면 열두 영역이 서로 다른 문장을 받는다 */
   J3: (d, m) => (m.workflow.decide
-    ? `${d}에서 ${m.workflow.decide} 가운데 직접 정한 것을 하나 골라 근거까지 적어보세요.`
-    : `${d}에서 직접 정한 조건이나 기준값을 하나 골라 그 근거까지 적어보세요.`),
+    ? `${d}에서 ${m.workflow.decide} 가운데 직접 정한 것 하나를 고르고,`
+      + " 그 근거를 세 줄로 남겨보세요."
+    : `${d}에서 직접 정한 조건 하나를 고르고, 그 근거를 세 줄로 남겨보세요.`),
   J4: (d, m) => (m.workflow.method
-    ? `${d}에서 ${m.workflow.method} 같은 선택을 왜 그렇게 했는지 한 줄 덧붙여보세요.`
-    : `${d}에서 그 방법과 도구를 왜 골랐는지 한 줄 덧붙여보세요.`),
+    ? `${d}에서 ${m.workflow.method} 가운데 왜 그 방법을 골랐는지`
+      + " 비교 표로 적어보세요."
+    : `${d}에서 그 방법과 도구를 왜 골랐는지 비교 표로 적어보세요.`),
   J5: (d, m) => (m.artifacts.length
-    ? `${d}에서 남긴 ${orList(m.artifacts)}에 가정과 한계를 한 줄씩 적어보세요.`
-    : `${d}에서 남긴 결과물에 가정과 한계를 한 줄씩 적어보세요.`),
+    ? `${d}에서 남긴 ${orList(m.artifacts)}에 가정과 한계를 한 줄씩 덧붙여`
+      + " 다시 저장해두세요."
+    : `${d}에서 남긴 결과물에 가정과 한계를 한 줄씩 덧붙여 다시 저장해두세요.`),
   J6: (d, m) => (m.verify_targets.length
-    ? `${d}에서 ${orList(m.verify_targets)} 가운데 무엇과 견줬는지, 차이가 난 까닭까지 적어보세요.`
-    : `${d}에서 비교한 기준과 차이가 난 까닭을 적어보세요.`),
+    ? `${d}에서 ${orList(m.verify_targets)} 가운데 무엇과 견줬는지,`
+      + " 차이와 그 까닭을 대조 표로 남겨보세요."
+    : `${d}에서 비교한 기준과 차이가 난 까닭을 대조 표로 남겨보세요.`),
   J7: (d, m) => (m.workflow.on_fail
-    ? `${d}에서 안 됐을 때 원인을 어디까지 좁혔는지 적어보세요. ${m.workflow.on_fail}`
-    : `${d}에서 안 됐을 때 원인을 어디까지 좁혔는지 적어보세요.`),
-  J8: (d) => `${d}에서 낸 결과가 다음 결정에 어떻게 쓰였는지 적어보세요.`,
+    ? `${d}에서 안 됐을 때 원인을 어디까지 좁혔는지 기록으로 남겨보세요.`
+      + ` ${m.workflow.on_fail}`
+    : `${d}에서 안 됐을 때 원인을 어디까지 좁혔는지 기록으로 남겨보세요.`),
+  J8: (d) => `${d}에서 낸 결과가 다음 결정에 어떻게 쓰였는지`
+    + " 한 문단으로 적어두세요.",
 };
 
 /** 축마다 다음에 맡아볼 일이 다르다 */
 const FILL_KO: Record<Axis, (d: string) => string> = {
-  J1: (d) => `${d}에서 무엇을 풀 문제로 잡을지 한 번 직접 정해보세요.`,
-  J2: (d) => `${d}에서 받은 요구를 수치 조건으로 옮기는 일을 한 번 맡아보세요.`,
-  J3: (d) => `${d}에서 조건이나 기준값을 직접 정하는 일을 한 번 맡아보세요.`,
-  J4: (d) => `${d}에서 어떤 방법과 도구로 풀지 직접 골라보세요.`,
-  J5: (d) => `${d}에서 한 일이 결과물로 남도록 한 번 끝까지 가보세요.`,
-  J6: (d) => `${d}에서 낸 값을 다른 방법으로 한 번 더 확인해보세요.`,
-  J7: (d) => `${d}에서 안 됐을 때 원인을 좁혀 고친 사례를 하나 만들어보세요.`,
-  J8: (d) => `${d}에서 낸 결과가 다음 작업에 쓰이는 데까지 따라가 보세요.`,
+  J1: (d) => `다음 ${d} 과제에서 무엇을 풀 문제로 잡을지 직접 정하고,`
+    + " 그 범위를 한 줄로 적어두세요.",
+  J2: (d) => `다음 ${d} 과제에서 받은 요구를 수치 조건으로 옮기는 일을 맡고,`
+    + " 그 조건표를 남겨보세요.",
+  J3: (d) => `다음 ${d} 과제에서 기준값을 직접 정해보고, 왜 그 값인지`
+    + " 함께 적어두세요.",
+  J4: (d) => `다음 ${d} 과제에서 쓸 방법을 직접 골라보고, 고른 까닭을`
+    + " 한 줄 남겨보세요.",
+  J5: (d) => `다음 ${d} 과제는 결과물이 하나 남을 때까지 끝까지 가보세요.`,
+  J6: (d) => `다음 ${d} 과제에서 낸 값을 다른 방법으로 한 번 더 확인하고,`
+    + " 두 값을 나란히 적어보세요.",
+  J7: (d) => `다음 ${d} 과제에서 안 된 자리의 원인을 좁혀 고친 과정을`
+    + " 기록으로 남겨보세요.",
+  J8: (d) => `다음 ${d} 과제의 결과가 어디에 쓰이는지 따라가 보고,`
+    + " 쓰인 자리를 적어두세요.",
 };
 
 /**
@@ -377,8 +412,10 @@ export function actionKo(
     const list = (where ?? []).slice(0, 2);
     return {
       do: list.length
-        ? `${list.join(" · ")} 가운데 하나를 수업이나 교내 과제로 짧게 해 본 뒤에 다시 보세요.`
-        : "수업이나 교내 과제 가운데 하나를 골라 짧게 해 본 뒤에 다시 보세요.",
+        ? `${list.join(" · ")} 가운데 하나를 수업이나 교내 과제로 짧게 해 보고,`
+          + " 무엇을 했고 무엇을 정했는지 다섯 줄로 적어두세요."
+        : "수업이나 교내 과제 가운데 하나를 골라 짧게 해 보고,"
+          + " 무엇을 했고 무엇을 정했는지 다섯 줄로 적어두세요.",
     };
   }
   if (a.code === "BUILD_OUTPUT") {
@@ -395,7 +432,7 @@ export function actionKo(
     const target = vt || "기준값";
     return {
       do: `다음에는 ${domainName} 결과를 ${withJosa(target, "과와")} 비교하고,`
-        + " 차이가 난 이유를 적어보세요.",
+        + " 두 값과 차이가 난 이유를 대조 표로 남겨보세요.",
       note: w?.on_fail ? `어긋났을 때는 ${w.on_fail}` : undefined,
     };
   }
@@ -406,19 +443,21 @@ export function actionKo(
     /* **화면이 이미 보여 준 것을 문장으로 다시 설명하지 않는다.** 관심이
        높다는 것은 바로 위 칸에 적혀 있고, 여기 필요한 것은 할 일이다 */
     return {
-      do: `${withJosa(domainName, "을를")} 짧은 과제나 스터디로 한 번 해보세요.`,
+      do: `${withJosa(domainName, "을를")} 짧은 과제나 스터디로 한 번 해보고,`
+        + " 한 일과 직접 정한 것을 다섯 줄로 남겨보세요.",
       note: stage ? TRY_KO[stage] : undefined,
     };
   }
   if (a.code === "STUDY_NEXT") {
     return {
-      do: `${domainName} 수업이나 교육을 하나 들어보세요.`,
-      note: "들은 뒤에 작은 과제로 한 번 써보면 경험으로 남습니다.",
+      do: `${domainName} 수업이나 교육을 하나 듣고, 배운 것을 작은 과제에`
+        + " 한 번 써 보세요.",
+      note: "그 과제에서 남긴 것이 다음에 설명할 근거가 됩니다.",
     };
   }
   return {
-    do: `${withJosa(domainName, "은는")} 해 본 일이 있는데 지금 관심이 낮습니다.`
-      + " 원하는 방향인지 한 번 더 보세요.",
+    do: `${domainName}에서 한 일을 한 쪽으로 적어두고, 계속 쓸 경험인지`
+      + " 한 번 정해보세요.",
   };
 }
 
@@ -427,7 +466,7 @@ export function gapKo(g: Gap, domainName: string): {
 } {
   const ax = g.axis ? AXIS_KO[g.axis] : "";
   return {
-    title: `${domainName} · ${GAP_TITLE_KO[g.kind](ax)}`,
+    title: `${domainName} · ${GAP_TITLE_KO[g.kind](ax, g.axis ?? null)}`,
     why: g.kind === "PARTIAL_EVIDENCE" ? PARTIAL_WHY_KO : WHY_KO[g.why],
     detail: REASON_KO[g.reason],
   };

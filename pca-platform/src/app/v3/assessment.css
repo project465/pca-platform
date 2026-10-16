@@ -511,6 +511,41 @@
  */
 .qs-main:has(.qs-rows) .qs-q { font-size: var(--q-t-q); }
 
+/**
+ * **질문 아래 한 줄짜리 예시.** 질문 → 예시 → 선택의 가운데다.
+ *
+ * 질문보다 세지 않게 한 단 작은 글씨에 흐린 색이고, 왼쪽에 `예` 한 자가
+ * 알약으로 선다. 상자나 테를 두르지 않는 까닭은 그러면 이 줄이 보기 넷과
+ * 같은 무게로 읽히고, 고르는 자리가 다섯으로 보인다.
+ *
+ * 담긴 글은 그 영역 체크리스트나 산업팩의 쉬운 말 풀이에서 온다
+ * (`runtime/examples.ts`). 길면 두 줄까지 눕고 줄이지 않는다: 자리가
+ * 좁다고 예시를 자르면 그 줄이 하는 일이 사라진다.
+ */
+.qs-ex {
+  display: flex; gap: 8px; align-items: baseline;
+  margin: 10px 0 0; font-size: var(--q-t-gloss); line-height: 1.5;
+  color: var(--q-ink-2);
+}
+.qs-ex > span {
+  flex: none; padding: 1px 7px; border-radius: 999px;
+  background: var(--q-sunk); color: var(--q-ink-3);
+  font-size: var(--q-t-meta); font-weight: var(--ui-w-sb); letter-spacing: .02em;
+}
+
+/**
+ * **묶음의 첫 질문에만 서는 장면 한 줄.**
+ *
+ * 보기 아래 뜻과 같은 크기이고 왼쪽에 금 하나를 세워 질문과 가른다.
+ * 카드로 두르지 않는다: 그러면 읽을 것이 하나 더 생긴 것으로 보이고,
+ * 이 줄이 하는 일은 묻는 자리의 범위를 넓히는 것뿐이다.
+ */
+.qs-anywhere {
+  margin: var(--q-s4) 0 0; padding-left: var(--q-s3);
+  border-left: 2px solid var(--q-line);
+  font-size: var(--q-t-gloss); line-height: 1.55; color: var(--q-ink-2);
+}
+
 /* 둘 사이에 선을 하나 둔다. 상자가 어디서 갈리는지 눈으로 보인다 */
 .qs-rows > .qs-row + .qs-row {
   border-top: 1px solid var(--q-line); padding-top: var(--q-s5);

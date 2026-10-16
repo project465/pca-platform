@@ -514,6 +514,10 @@ export default function Screen({
           </div>
         ) : null}
 
+        {/* **어디에서 해 본 것이든 괜찮다는 한 줄**(묶음의 첫 질문에만).
+            학부생이 `해본 적 없음` 을 고르는 까닭 가운데 하나가 그
+            판단을 직장에서만 하는 일로 읽는 것이다 */}
+        {s.scenes ? <p className="qs-anywhere">{s.scenes}</p> : null}
         {s.guide ? <p className="qs-guide">{s.guide}</p> : null}
 
         {/* ── 근거 고르기 ──
@@ -990,6 +994,11 @@ function Row({
           </span>
         ) : null}
         {miss ? <span className="qs-miss">아직 답하지 않았습니다</span> : null}
+        {/* **질문 → 예시 → 선택**(규격). 지어낸 문장이 아니라 그 영역의
+            체크리스트나 그 산업팩의 쉬운 말 풀이에서 온 한 줄이다.
+            `aria-hidden` 을 두지 않는다: 보조 기기로 읽는 사람에게도
+            이 줄이 질문을 자기 경험에 대 보게 하는 자리다 */}
+        {f.example ? <p className="qs-ex"><span>예</span>{f.example}</p> : null}
         <One f={f} value={value} onPick={onPick}
           notes={notes} onNote={onNote} onNoteDone={onNoteDone} />
       </div>
