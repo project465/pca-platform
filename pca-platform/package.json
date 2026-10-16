@@ -203,6 +203,7 @@
     "pcu:readiness": "tsx scripts/pcu-readiness.ts",
     "pcu:routing": "tsx scripts/pcu-routing-check.ts",
     "pcu:review": "tsx scripts/pcu-review-shots.ts",
+    "pcu:humanize": "tsx scripts/pcu-humanize-shots.ts",
     "pcu:spec": "tsx scripts/pcu-spec-review.ts",
     "pcu:spec:pack": "tsx scripts/pcu-spec-pack.ts"
   },

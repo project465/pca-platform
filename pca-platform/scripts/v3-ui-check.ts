@@ -398,9 +398,15 @@ function main(): void {
   /* 산업 판단은 **비어 있는 축을 먼저 세우고 여섯에서 끊는다.** Core 에서
      이미 강하게 답한 축을 그 산업 말로 한 번 더 묻는 것은 같은 판단을
      표현만 바꿔 되묻는 일이다 */
+  /* **푸는 자리를 도움말 칸에서 찾지 않는다.** 그 풀이는 질문 바로 아래
+     `예` 줄로 선다(`runtime/examples.ts` 의 `exampleOf`). 도움말 칸에 함께
+     두었더니 같은 글이 한 화면에 두 번 섰다 */
+  const glossMissing = indScreens.filter(
+     (s) => (industryGloss(CORE, s.items[0] ?? "") ?? "").length <= 10);
   ok("산업 문항마다 쉬운 말 풀이가 함께 뜬다",
-     indScreens.length >= 8 && indScreens.every((s) => (s.help ?? "").length > 10),
-     `${indScreens.length}개 — 수를 끊지 않고 차례만 바꾼다`);
+     indScreens.length >= 8 && glossMissing.length === 0,
+     `${indScreens.length}개 — 수를 끊지 않고 차례만 바꾼다`
+     + (glossMissing.length ? ` · 풀이 없음 ${glossMissing.length}` : ""));
 
   /* --- 21. 타계열 대학원은 학부 묶음과 번역 맥락을 받는다 --- */
   const xf = plan({ tier: "BASIC", stage: "master", field: "HUMANITIES_SOCIAL",

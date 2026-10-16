@@ -2,7 +2,7 @@
  "schema_version": "biz-v1-items.1",
  "core": "BIZ_CORE_V1",
  "assessment_version": "BIZ_V1",
- "item_bank_version": "BIZ_V1_ITEM_BANK_V1.2",
+ "item_bank_version": "BIZ_V1_ITEM_BANK_V1.3",
  "note": "문면을 손으로 썼다. 원본은 이 파일이다: 문면을 고칠 곳이 여기이고, 고친 뒤 `CORE=BIZ_CORE_V1 npm run v3:wording` 과 `v3:items` 를 돌린다. 영역에 붙지 않는 자리의 번호는 기계공학 Core 와 같다",
  "level_options": [
   "없다",
@@ -8258,7 +8258,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "의뢰한 쪽가 끊길 뻔한 자리를 찾아 담당 범위를 바꿔 봤나요?",
+   "wording": "의뢰한 쪽이 끊길 뻔한 자리를 찾아 담당 범위를 바꿔 봤나요?",
    "stage_wording": null,
    "options": [
     "없다",

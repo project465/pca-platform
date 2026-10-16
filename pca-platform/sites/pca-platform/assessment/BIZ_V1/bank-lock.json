@@ -1,10 +1,10 @@
 {
  "schema_version": "biz-v1-bank-lock.1",
  "core": "BIZ_CORE_V1",
- "item_bank_version": "BIZ_V1_ITEM_BANK_V1.2",
+ "item_bank_version": "BIZ_V1_ITEM_BANK_V1.3",
  "note": "경영 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=BIZ_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
-  "biz-industry-packs.json": "0066d8f6c85e05b65730e52fcd4c8c62608468ae241cab81a3e6e88575a4a6e7",
+  "biz-industry-packs.json": "28d0d34f59beb534b32fb3e75845fb5249279d799145a9910e3738aab2c00be2",
   "biz-role-packs.json": "3ed3ab95c10b84623bf2932201b73a3a97042f649738217a3d796175a1197d2a",
   "biz-v1-checklist-additions.json": "39b1d65219dbfedcc97e9eab9779bd5e1bb29f16830ad96cf2032d0b55598452",
   "biz-v1-checklists.json": "dff84f3e3003f87a57ad63a5433f68aca0e660f341658b07555a232745fbbf56",
@@ -12,7 +12,7 @@
   "biz-v1-constructs.json": "2f7ae00799b9446fd68d32da11cd00e4408dc809074dce5b5661abd55d5ed9bb",
   "biz-v1-domains.json": "a27fbeda717a5a2bd34721d016ee1336c243e47bcd3479addd78caec46567ecd",
   "biz-v1-items-blueprint.json": "63a6b695cc5db9494fdb4ac963b6e6aec44ee7089a6a0946cf27dbcd7f7c1cbf",
-  "biz-v1-items.json": "7833a09840b70fe7629799d7d0e1c459ff8af84a7e91cd58fb3e7e567c10d185",
+  "biz-v1-items.json": "7479bf992b08e884d7d245116aedf4ca06489e45af963fdf134387fb12adef70",
   "biz-v1-relations.json": "9666e035e17474bf425406787e261db75cecde094dca5cbc5abb6eda1e9cf434",
   "biz-v1-taxonomy.json": "d57e36ebda92d985a403cc54423df440ad209e919808960a78317969bbc08e1b"
  },

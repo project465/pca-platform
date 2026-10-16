@@ -35,6 +35,7 @@ import {
 } from "./charts";
 import ResultNav from "./result-nav";
 import "../../result.css";
+import { barRows, canRadar } from "@/lib/me-v3/result/chart-data";
 import Detail from "./detail";
 import Disclose from "./disclose";
 import Fold from "./fold";
@@ -722,6 +723,12 @@ export default async function V3Result({
   const focus = model.domains.filter((d) => model.overview.focus.includes(d.code));
   const compare = model.domains.filter((d) => model.overview.compare.includes(d.code));
   const deep = model.limits.deep_axes;
+  /* **그릴 것이 없으면 그 절의 머리와 안내도 세우지 않는다.** `Radar` 는
+     판단을 물은 영역이 셋 미만이면 `null` 이고 `StageBars` 는 줄이 없으면
+     `null` 인데, 머리글과 `막대의 길이는 …` 안내는 그대로 서 있었다.
+     그러면 읽는 사람은 그래프가 안 그려진 고장으로 읽는다 */
+  const hasRadar = canRadar(model);
+  const hasBars = barRows(model).length > 0;
 
   /**
    * 영역 한 자리에서 끝내기 위해 그 영역의 **빈자리 하나와 할 일 하나**를
@@ -816,9 +823,18 @@ export default async function V3Result({
    */
   const lackTitle = "더 채울 부분";
   const lackWhere = packLackName ? `${packLackName} 쪽에서 봅니다` : null;
-  const lackText = packLack && packLack.requested.length
-    ? packLack.requested.slice(0, 2)
-      .map((r) => `${domainName(core, r.domain)} · ${AXIS_KO[r.axis]}`).join(" · ")
+  /* **영역 이름을 축마다 다시 적지 않는다.** 둘을 `영역 · 축` 으로
+     만들어 또 `·` 로 이으면 같은 영역이 두 번 서고 가운뎃점이 넷이
+     되어, 읽는 사람이 어디까지가 한 자리인지 가를 수 없다
+     (`인사·조직 · 요구 해석 · 인사·조직 · 직접 판단`). 영역으로 묶어
+     한 번만 적는다 */
+  const lackBy = new Map<string, string[]>();
+  for (const r of packLack?.requested.slice(0, 2) ?? []) {
+    const d = domainName(core, r.domain);
+    lackBy.set(d, [...(lackBy.get(d) ?? []), AXIS_KO[r.axis]]);
+  }
+  const lackText = lackBy.size
+    ? [...lackBy].map(([d, ax]) => `${d}에서 ${ax.join(" · ")}`).join(", ")
     : topGap ? gapTile(topGap) : "";
 
   /**
@@ -1021,7 +1037,9 @@ export default async function V3Result({
                 적어 두면 어긋난 번호가 찍힌다 */}
             <ol className="rs-cover-toc">
               <li>한눈에 보는 결과</li>
-              <li>경험·근거 분포</li>
+              {/* **그리지 않은 절을 차례에 적지 않는다.** 판단을 물은 영역이
+                  셋 미만이면 그래프가 서지 않는다 */}
+              {hasRadar || hasBars ? <li>경험·근거 분포</li> : null}
               <li>내가 이미 가진 근거</li>
               <li>먼저 볼 영역</li>
               <li>앞으로 채울 것</li>
@@ -1207,12 +1225,20 @@ export default async function V3Result({
             상태와 개수다. 적성 순위도 직무 적합도도 만들지 않는다 */}
         {deep ? (
           <section className="rs-sect" id="spread">
-            <h2>경험·근거 분포</h2>
-            <p className="rs-note">
-              어느 영역에서 무엇까지 확인됐는지를 한눈에 봅니다.
-            </p>
-            <Radar model={model} name={(c) => domainName(core, c)} />
-            <ChartNote />
+            {hasRadar || hasBars ? (
+              <>
+                <h2>경험·근거 분포</h2>
+                <p className="rs-note">
+                  어느 영역에서 무엇까지 확인됐는지를 한눈에 봅니다.
+                </p>
+              </>
+            ) : null}
+            {hasRadar ? (
+              <>
+                <Radar model={model} name={(c) => domainName(core, c)} />
+                <ChartNote />
+              </>
+            ) : null}
             {/* **그 전공이 먼저 보는 영역**(갈래 계약의 `domain_emphasis.lead`).
                 등록부에 적혀 있고 **읽는 자리에 한 글자도 닿지 않던 층**이다.
                 적는 것은 읽는 차례까지이고 축 수준과 묶음과 확인된 축 개수에
@@ -1223,15 +1249,21 @@ export default async function V3Result({
                 <b>{meta.specialization ?? meta.major} 쪽에서 먼저 보는 영역</b>
                 {" — "}
                 {sv.domainLead.map((c) => domainName(core, c)).join(" · ")}
-                . 아래 막대에서 그 영역을 먼저 보시면 됩니다.
+                {hasBars ? ". 아래 막대에서 그 영역을 먼저 보시면 됩니다."
+                  : ". 아래 묶음에서 그 영역을 먼저 보시면 됩니다."}
               </p>
             ) : null}
-            <h3 className="pv-h3">영역별 경험 단계</h3>
-            <p className="rs-note">
-              이번 응시에서 판단을 물은 영역입니다. 막대의 길이는 물은 축의
-              수이고, 영역마다 물은 축의 수가 달라 비율로 바꾸지 않습니다.
-            </p>
-            <StageBars model={model} name={(c) => domainName(core, c)} />
+            {hasBars ? (
+              <>
+                <h3 className="pv-h3">영역별 경험 단계</h3>
+                <p className="rs-note">
+                  이번 응시에서 판단을 물은 영역입니다. 막대의 길이는 물은
+                  축의 수이고, 영역마다 물은 축의 수가 달라 비율로 바꾸지
+                  않습니다.
+                </p>
+                <StageBars model={model} name={(c) => domainName(core, c)} />
+              </>
+            ) : null}
           {/* ── 열두 영역 ──
               **네 축만 물은 응시에 근거 묶음을 보여주지 않는다.** 묶음 이름에
               `근거를 더 만들어야 하는 영역` 이 들어 있어서, 근거를 묻지 않은
@@ -1400,9 +1432,13 @@ export default async function V3Result({
               </>
             ) : (
               <>
+                {/* **가리키는 줄이고 할 일이 아니다.** `…부터 보세요` 로 적어
+                    두었더니 `할 일에 남길 결과물이 적혀 있다` 를 세는 자리가
+                    이 줄을 할 일로 보고 결과지 마흔 벌에서 걸었다. 여기서
+                    남길 것을 적을 수는 없다: 어느 영역인지가 아직 없다 */}
                 <p className="rs-note">
                   지금 바로 꺼내 쓸 경험은 아직 없습니다. 아래 &lsquo;다음에 할
-                  일&rsquo;부터 보세요.
+                  일&rsquo;부터 보시면 됩니다.
                 </p>
                 {/* **그 학과 학생이 낼 수 있는 근거를 적는다**(갈래 계약의
                     `examples.evidence`). 아직 아무것도 확인되지 않은 사람에게
@@ -1560,7 +1596,7 @@ export default async function V3Result({
           <p className="rs-note">
             {focus.length
               ? "응답에서 확인된 내용만 정리했습니다."
-              : "지금 응답만으로는 어느 영역이 앞선다고 보기 어렵습니다. 아래 전체 영역을 보시고 한 가지부터 해보세요."}
+              : "지금 응답만으로는 어느 영역이 앞선다고 보기 어렵습니다. 아래 전체 영역에서 한 가지를 골라 짧게 해 보고, 무엇을 했고 무엇을 정했는지 다섯 줄로 적어보세요."}
           </p>
           {focus.map((d, i) => (
             <DomainPanel key={d.code} core={core} d={d} showAxes={deep}
@@ -1605,7 +1641,7 @@ export default async function V3Result({
                   + " 할 일은 아래 ‘다음에 할 일’ 에 영역별로 모았습니다."
                 : move === "WRITE_UP"
                   ? "완전히 비어 있는 축은 없습니다. 남은 일은 확인된 경험을 설명 문장으로 만드는 쪽입니다."
-                  : "지금 응답에서는 비어 있는 축을 셀 만큼의 경험이 아직 확인되지 않았습니다."
+                  : "지금 응답만으로는 비어 있는 축을 셀 만큼의 경험이 모이지 않았습니다."
                     + " 아래 ‘다음에 할 일’ 의 첫 줄부터 해 보시면 됩니다."}
             </p>
             {/* **같은 까닭을 세 번 적지 않는다**(규격 §4). 같은 종류의

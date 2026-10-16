@@ -82,9 +82,24 @@ function main(): void {
     if (got !== lock.files[file]) drift.push(file);
   }
   /* **지문을 다시 적는 길을 둔다.** 전에는 손으로 고쳐야 했고, 손으로
-     고치면 판본을 올리는 것을 빠뜨린다. 일부러 고쳤을 때만 쓴다 */
+     고치면 판본을 올리는 것을 빠뜨린다. 일부러 고쳤을 때만 쓴다.
+
+     **셀 파일 목록을 이 기록에서 읽지 않는다.** 전에는 위에서처럼
+     `lock.files` 의 열쇠만 돌았고, 그래서 `files: {}` 로 적혀 있던 Core
+     아홉은 `BANK=update` 를 몇 번 돌려도 **영원히 빈 기록**이었다. 잠근
+     척하고 아무것도 세지 않는 자리다. 목록은 등록부가 들고 있는 그 Core
+     의 파일(문항 네 벌 + 보탠 것 + 산업·역할팩)에서 만든다 */
   if (process.env.BANK === "update") {
-    lock.files = fresh;
+    const e = coreEntry(core);
+    const want = [...Object.values(e.files ?? {}),
+                  ...Object.values(e.packs ?? {})]
+      .filter((x): x is string => typeof x === "string" && x.endsWith(".json"));
+    for (const file of [...new Set(want)].sort()) {
+      if (fresh[file]) continue;
+      fresh[file] = createHash("sha256")
+        .update(readFileSync(`${CONTENT_DIR}/${file}`)).digest("hex");
+    }
+    lock.files = Object.fromEntries(Object.keys(fresh).sort().map((k) => [k, fresh[k]]));
     lock.item_bank_version = bankVersion;
     (lock as unknown as Record<string, unknown>).scoring_version = SCORING_VERSION;
     writeFileSync(LOCK, `${JSON.stringify(lock, null, 1)}\n`);

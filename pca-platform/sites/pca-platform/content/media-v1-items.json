@@ -2,7 +2,7 @@
  "schema_version": "media-v1-items.1",
  "core": "MEDIA_CORE_V1",
  "assessment_version": "MEDIA_V1",
- "item_bank_version": "MEDIA_V1_ITEM_BANK_V1.2",
+ "item_bank_version": "MEDIA_V1_ITEM_BANK_V1.3",
  "note": "문면을 손으로 썼다. 원본은 이 파일이다: 문면을 고칠 곳이 여기이고, 고친 뒤 `CORE=MEDIA_CORE_V1 npm run v3:wording` 과 `v3:items` 를 돌린다. 영역에 붙지 않는 자리의 번호는 기계공학 Core 와 같다",
  "level_options": [
   "없다",
@@ -622,7 +622,7 @@
     "매우 관심 있다",
     "잘 모르겠다"
    ],
-   "grid_row": "한 줄로 무엇을 말할지 가리는 일",
+   "grid_row": "한 줄로 무엇을 말할지 고르는 일",
    "grid_stem": "해 보고 싶다",
    "option_values": [
     1,
@@ -658,7 +658,7 @@
     "한두 번",
     "여러 번"
    ],
-   "grid_row": "한 줄로 무엇을 말할지 가리는 일",
+   "grid_row": "한 줄로 무엇을 말할지 고르는 일",
    "grid_stem": "해 본 적이 있다",
    "option_values": [
     0,
@@ -694,7 +694,7 @@
     "매우 배우고 싶다",
     "잘 모르겠다"
    ],
-   "grid_row": "한 줄로 무엇을 말할지 가리는 일",
+   "grid_row": "한 줄로 무엇을 말할지 고르는 일",
    "grid_stem": "지금 배우고 싶다",
    "option_values": [
     1,
@@ -1153,7 +1153,7 @@
     "매우 관심 있다",
     "잘 모르겠다"
    ],
-   "grid_row": "어디에 얼마나 어떻게 낼지 가리는 일",
+   "grid_row": "어디에 얼마나 어떻게 낼지 짜는 일",
    "grid_stem": "해 보고 싶다",
    "option_values": [
     1,
@@ -1189,7 +1189,7 @@
     "한두 번",
     "여러 번"
    ],
-   "grid_row": "어디에 얼마나 어떻게 낼지 가리는 일",
+   "grid_row": "어디에 얼마나 어떻게 낼지 짜는 일",
    "grid_stem": "해 본 적이 있다",
    "option_values": [
     0,
@@ -1225,7 +1225,7 @@
     "매우 배우고 싶다",
     "잘 모르겠다"
    ],
-   "grid_row": "어디에 얼마나 어떻게 낼지 가리는 일",
+   "grid_row": "어디에 얼마나 어떻게 낼지 짜는 일",
    "grid_stem": "지금 배우고 싶다",
    "option_values": [
     1,
@@ -2215,7 +2215,7 @@
     "매우 관심 있다",
     "잘 모르겠다"
    ],
-   "grid_row": "어떻게 들릴지를 가리는 일",
+   "grid_row": "어떻게 들릴지를 잡는 일",
    "grid_stem": "해 보고 싶다",
    "option_values": [
     1,
@@ -2251,7 +2251,7 @@
     "한두 번",
     "여러 번"
    ],
-   "grid_row": "어떻게 들릴지를 가리는 일",
+   "grid_row": "어떻게 들릴지를 잡는 일",
    "grid_stem": "해 본 적이 있다",
    "option_values": [
     0,
@@ -2287,7 +2287,7 @@
     "매우 배우고 싶다",
     "잘 모르겠다"
    ],
-   "grid_row": "어떻게 들릴지를 가리는 일",
+   "grid_row": "어떻게 들릴지를 잡는 일",
    "grid_stem": "지금 배우고 싶다",
    "option_values": [
     1,

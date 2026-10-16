@@ -97,6 +97,10 @@ export default function Screen({
   const [warn, setWarn] = useState(false);
   const queue = useRef<Promise<unknown>>(Promise.resolve());
 
+  /** 읽는 법 한 줄이 붙을 질문. **첫 사다리 하나뿐이다**: 화면마다 깔면
+   *  같은 네 줄이 스물여덟 번 서고, 질문보다 센 설명문이 된다 */
+  const guideAt = s.fields.findIndex((f) => f.control.kind === "level");
+
   /** 보내는 것을 줄 세운다. 둘이 겹치면 늦게 끝난 쪽이 먼저 끝난 쪽을 덮는다 */
   const push = useCallback((run: () => Promise<unknown>) => {
     setSaving((n) => n + 1);
@@ -362,6 +366,10 @@ export default function Screen({
             그것을 할 일 목록으로 읽는다. 지금은 설명 한 줄과 **읽기만 하는
             칩**이고, 쉬는 자리가 질문 화면의 절반을 넘지 않는다 */}
         {s.help ? <p className="qs-help">{s.help}</p> : null}
+        {/* **낱말의 뜻은 안내가 아니다.** 답하는 법을 적는 `qs-help` 와
+            같은 모양으로 세워 두면 여덟 자 질문 아래 서른 자 회색 글이
+            서서 그 줄이 질문보다 세게 읽힌다. `예` 줄과 같은 꼴로 받친다 */}
+        {s.term ? <p className="qs-term"><span>뜻</span>{s.term}</p> : null}
         {s.chips?.length ? (
           <ul className="qs-next">
             {s.chips.map((x) => <li key={x}>{x}</li>)}
@@ -495,7 +503,7 @@ export default function Screen({
 
         {/* ── 보기 하나를 고르는 화면 ── */}
         {s.kind !== "sweep" && s.fields.length === 1 ? (
-          <One f={s.fields[0]} value={vals[s.fields[0].itemId]}
+          <One f={s.fields[0]} value={vals[s.fields[0].itemId]} guide={s.guide}
             onPick={setAnswer} notes={notes} onNote={setNote} onNoteDone={flushNote} />
         ) : null}
 
@@ -509,6 +517,7 @@ export default function Screen({
             {s.fields.map((f, i) => (
               <Row key={f.itemId} f={f} value={vals[f.itemId]} onPick={setAnswer}
                 n={i + 1} of={s.fields.length} miss={warn && empty(f)}
+                guide={i === guideAt ? s.guide : undefined}
                 notes={notes} onNote={setNote} onNoteDone={flushNote} />
             ))}
           </div>
@@ -518,7 +527,6 @@ export default function Screen({
             학부생이 `해본 적 없음` 을 고르는 까닭 가운데 하나가 그
             판단을 직장에서만 하는 일로 읽는 것이다 */}
         {s.scenes ? <p className="qs-anywhere">{s.scenes}</p> : null}
-        {s.guide ? <p className="qs-guide">{s.guide}</p> : null}
 
         {/* ── 근거 고르기 ──
             **접었다가 펼친다**(규격 §16). 여덟 묶음을 전부 펼쳐 두면 쪽이
@@ -735,9 +743,12 @@ export default function Screen({
 /* ── 보기 하나를 고르는 자리 ───────────────────────────────────────── */
 
 function One({
-  f, value, onPick, notes, onNote, onNoteDone,
+  f, value, onPick, notes, onNote, onNoteDone, guide,
 }: {
   f: Field; value: number | string | null;
+  /** 보기 둘째와 넷째를 가르는 한 줄. 이 응시에서 **처음 만나는 사다리
+   *  문항에만** 선다(`ScreenModel.guide`) */
+  guide?: string;
   onPick: (f: Field, raw: number | string, a: Answer) => void;
   notes: Record<string, string>;
   onNote: (f: Field, t: string) => void;
@@ -780,6 +791,12 @@ function One({
         {f.optionHelpFold ? (
           <details className="qs-optfold" open={f.optionFoldOpen}>
             <summary>보기가 어떻게 갈리나요</summary>
+            {/* **읽는 법을 한 자리에 모은다.** 전에는 같은 내용이 보기
+                아래 줄글로 한 번 더 섰다. 접힌 `보기가 어떻게 갈리나요`
+                와 같은 말을 하는 자리라, 한 화면에 설명이 두 번 서고
+                그 줄글이 질문보다 긴 덩이가 됐다. 접는 자리 안으로
+                넣으면 둘이 한 자리가 된다(규격: 긴 안내는 접거나 제거) */}
+            {guide ? <p className="qs-optlead">{guide}</p> : null}
             <ul>
               {c.options.map((label, i) => (
                 <li key={i}><b>{labels[i] ?? label}</b>{f.optionHelpFold?.[i]}</li>
@@ -936,9 +953,11 @@ function Sweep({
 }
 
 function Row({
-  f, value, onPick, n, of, miss, notes, onNote, onNoteDone,
+  f, value, onPick, n, of, miss, notes, onNote, onNoteDone, guide,
 }: {
   f: Field; value: number | string | null;
+  /** 이 화면에서 읽는 법 한 줄을 받는 질문인가 (첫 사다리 하나뿐) */
+  guide?: string;
   /** 이 화면의 몇째 질문인가. 둘 이상일 때만 적는다 */
   n?: number; of?: number;
   /** 아직 답하지 않은 자리인가. `다음` 을 누른 뒤에만 켜진다 */
@@ -999,7 +1018,7 @@ function Row({
             `aria-hidden` 을 두지 않는다: 보조 기기로 읽는 사람에게도
             이 줄이 질문을 자기 경험에 대 보게 하는 자리다 */}
         {f.example ? <p className="qs-ex"><span>예</span>{f.example}</p> : null}
-        <One f={f} value={value} onPick={onPick}
+        <One f={f} value={value} onPick={onPick} guide={guide}
           notes={notes} onNote={onNote} onNoteDone={onNoteDone} />
       </div>
     );

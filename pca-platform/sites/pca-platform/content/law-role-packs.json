@@ -70,7 +70,7 @@
      "id": "ROLE_POLICYDRAFT_V1_R2",
      "axis": "J5",
      "domain": "TD12",
-     "ask": "다른 팀가 그대로 적용한 조문을 내 이름으로 낸 적 있나요?"
+     "ask": "다른 팀이 그대로 적용한 조문을 내 이름으로 낸 적 있나요?"
     },
     {
      "id": "ROLE_POLICYDRAFT_V1_R3",
@@ -100,7 +100,7 @@
      "id": "ROLE_POLICYDRAFT_V1_R7",
      "axis": "J8",
      "domain": "TD03",
-     "ask": "내가 적은 요건을 근거로 다른 팀가 일을 시작한 적 있나요?"
+     "ask": "내가 적은 요건을 근거로 다른 팀이 일을 시작한 적 있나요?"
     }
    ],
    "compare_with": [

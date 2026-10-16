@@ -70,7 +70,7 @@
      "id": "ROLE_PLANNING_V1_R2",
      "axis": "J5",
      "domain": "TD12",
-     "ask": "다른 팀가 그대로 집행한 기획안을 내 이름으로 낸 적 있나요?"
+     "ask": "다른 팀이 그대로 집행한 기획안을 내 이름으로 낸 적 있나요?"
     },
     {
      "id": "ROLE_PLANNING_V1_R3",
@@ -767,7 +767,7 @@
      "id": "ROLE_STANDARD_V1_R5",
      "axis": "J5",
      "domain": "TD03",
-     "ask": "다른 팀가 그대로 따른 표기 지침을 낸 적 있나요?"
+     "ask": "다른 팀이 그대로 따른 표기 지침을 낸 적 있나요?"
     },
     {
      "id": "ROLE_STANDARD_V1_R6",

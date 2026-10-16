@@ -2,7 +2,7 @@
  "schema_version": "health-v1-items.1",
  "core": "HEALTH_CORE_V1",
  "assessment_version": "HEALTH_V1",
- "item_bank_version": "HEALTH_V1_ITEM_BANK_V1.2",
+ "item_bank_version": "HEALTH_V1_ITEM_BANK_V1.3",
  "note": "문면을 손으로 썼다. 원본은 이 파일이다: 문면을 고칠 곳이 여기이고, 고친 뒤 `CORE=HEALTH_CORE_V1 npm run v3:wording` 과 `v3:items` 를 돌린다. 영역에 붙지 않는 자리의 번호는 기계공학 Core 와 같다",
  "level_options": [
   "없다",
@@ -10328,7 +10328,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "작업 환경에서 생기는 건강 문제를 팀와 작업 단계로 갈라 셀 수 있게 적은 적 있나요?",
+   "wording": "작업 환경에서 생기는 건강 문제를 팀과 작업 단계로 갈라 셀 수 있게 적은 적 있나요?",
    "stage_wording": null,
    "options": [
     "없다",

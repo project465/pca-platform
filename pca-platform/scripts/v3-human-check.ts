@@ -166,6 +166,42 @@ ok("한 종결 틀이 그 Core 사다리 문항의 5% 를 넘지 않는다", hea
 
 note(`종결 꼴 종류 — ${rows.map((r) => `${r.core.split("_")[0]} ${r.tails}`).join(" · ")}`);
 
+/**
+ * 영역 훑기 열두 줄.
+ *
+ * 격자는 응시자가 **가장 먼저 읽는 화면**이고 열두 줄이 한눈에 선다.
+ * 그래서 줄마다 끝맺음이 같으면 그 화면이 진단이 아니라 **한 틀을 열두
+ * 번 찍은 표**로 읽힌다. 실제로 EE·ARCH·VISUAL 은 열두 줄이 전부
+ * `…정하는 일` 과 `…가리는 일` 하나로 끝났고, 위의 `사다리 문항` 쏠림
+ * 규칙은 격자 줄을 세지 않아 그 자리를 한 번도 보지 못했다.
+ *
+ * **한도를 0 으로 두지 않는다.** 격자는 나란히 읽는 자리라 줄이 서로
+ * 비슷한 꼴이어야 훑어진다. 재는 것은 한 끝맺음이 **절반을 넘는가**다.
+ */
+const gridHeavy: string[] = [];
+const gridTop: string[] = [];
+for (const c of cores) {
+  const bank = JSON.parse(readFileSync(c.items, "utf8")) as { items: Item[] };
+  const seen: string[] = [];
+  for (const it of bank.items) {
+    if (it.grid_row && !seen.includes(it.grid_row)) seen.push(it.grid_row);
+  }
+  if (!seen.length) continue;
+  const tail = new Map<string, number>();
+  for (const r of seen) {
+    const k = r.slice(-5);
+    tail.set(k, (tail.get(k) ?? 0) + 1);
+  }
+  const [top, n] = [...tail].sort((a, b) => b[1] - a[1])[0];
+  gridTop.push(`${c.code.split("_")[0]} ${n}/${seen.length}`);
+  if (n > seen.length / 2) gridHeavy.push(`${c.code} ${n}/${seen.length} …${top}`);
+}
+ok("영역 훑기 열두 줄이 한 틀로만 끝나지 않는다", gridHeavy.length === 0,
+  gridHeavy.length ? gridHeavy.join(" · ") : `가장 쏠린 자리 ${gridTop
+    .map((x) => Number(x.split(" ")[1].split("/")[0]))
+    .reduce((a, b) => Math.max(a, b), 0)}줄`);
+note(`격자 줄의 가장 쏠린 끝맺음 — ${gridTop.join(" · ")}`);
+
 /* ── 3. 떠 둔 화면과 결과 ──────────────────────────────────────── */
 if (!existsSync(DUMP)) {
   ok(`떠 둔 글이 있다 — ${DUMP}`, false,
@@ -247,8 +283,10 @@ if (!existsSync(DUMP)) {
     noisy.length ? `${noisy.length}자리 — ${noisy.slice(0, 4).join(" · ")}` : `${webs.length}벌`);
 
   /* 할 일에 남길 결과물이 적혀 있다. 대상과 행동만 있으면 무엇이 남는지
-     모른다. `한 줄` · `한 쪽` · 그 영역의 산출물 이름 가운데 하나는 있어야 한다 */
-  const RESULT = /한 줄|한 쪽|한 문단|한 벌|표|기록|문서|정리본|메모|보고서|계획서|도면|대본|대조표|목록/;
+     모른다. `세 줄` · `한 쪽` · 그 영역의 산출물 이름 가운데 하나는 있어야
+     한다. **줄 수를 센 말도 남길 결과물이다**: `근거를 세 줄로 남겨보세요`
+     는 무엇이 남는지를 적은 문장인데 `한 줄` 만 세면 그 할 일이 걸린다 */
+  const RESULT = /[한두세네다섯여섯\d]+ ?줄|한 쪽|한 문단|한 벌|표|기록|문서|정리본|메모|보고서|계획서|도면|대본|대조표|목록/;
   const vague: string[] = [];
   let acts = 0;
   for (const f of webs) {

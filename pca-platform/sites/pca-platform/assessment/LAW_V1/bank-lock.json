@@ -1,8 +1,20 @@
 {
  "schema_version": "law-v1-bank-lock.1",
  "core": "LAW_CORE_V1",
- "item_bank_version": "LAW_V1_ITEM_BANK_V1.2",
+ "item_bank_version": "LAW_V1_ITEM_BANK_V1.3",
  "note": "법·경찰 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=LAW_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
- "files": {},
+ "files": {
+  "law-industry-packs.json": "2e91cdce0762affefdf11a3862dfef7e764cd97fbc80376e41aeb67bc75299d1",
+  "law-role-packs.json": "836179586a8e8983d185218999dd4fea2f0dd424247d05fffbfe5aa99652c9e7",
+  "law-v1-checklist-additions.json": "f1b0a85dbff8f1d168b18e4677420f0b06d04f6fa0baf741345d93fef07add32",
+  "law-v1-checklists.json": "42b04ef677f3d42c618f24945e7d019b5621ced98699fbcef0bd05cd0aabe174",
+  "law-v1-common-additions.json": "f5386c154e39a8ffaf8361055953af186347dc5058611d6a1e0ad832a405c15b",
+  "law-v1-constructs.json": "5618cff847bec644354634b0028d7958d67b83a84a5381de815aeda0905bf314",
+  "law-v1-domains.json": "b7b41f112cc665c7c9450af9d6dabd547e8cbf169b1883c6acb512c854fbd1a8",
+  "law-v1-items-blueprint.json": "f43443a6c47af56fdacec2f91066fa1fc712cb467666d466f1e84897392d911a",
+  "law-v1-items.json": "c4ace9e7440bedf54c3a510f42f72f4790a72dc0cd3209183449aebb3565df16",
+  "law-v1-relations.json": "6596ee9955e1a7f602f2868eb6ef77a905a59d82c3bfffe1a047d1e823357159",
+  "law-v1-taxonomy.json": "e95a26bc52503878c7df8258d34b5255443ee48ef5564d266cdc5e9a34bf27c1"
+ },
  "scoring_version": "me-v3-scoring.5"
 }

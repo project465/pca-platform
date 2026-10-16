@@ -56,6 +56,17 @@ export type Screen = {
   /** 필요할 때만 한 줄 */
   help?: string;
   /**
+   * 질문에 든 **그 전공의 말 하나를 쉬운 말로 받치는 줄**(규격 §5).
+   *
+   * **`help` 와 한 칸에 담지 않는다.** 둘은 하는 일이 다르다: `help` 는
+   * 답하는 법을 적는 안내이고 이것은 낱말의 뜻이다. 한 칸에 담아 두었더니
+   * `무엇이 남았는지`(여덟 자) 아래에 `복잡도 — 입력이 늘 때 …`(서른일곱
+   * 자)가 서서, **설명문이 질문보다 센 자리**를 세는 검사가 멀쩡한 받침을
+   * 예순세 자리나 걸었다. 재는 자가 틀린 것이 아니라 두 글이 한 칸에
+   * 들어 있던 것이 틀렸다.
+   */
+  term?: string;
+  /**
    * 다음 묶음으로 넘어왔다는 것을 **질문 위 한 줄**로 적는 자리(규격 §12).
    *
    * 전에는 묶음이 바뀔 때마다 전환 화면을 한 장 세웠다. 그 가운데 셋은
@@ -339,14 +350,18 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
     id: "sweep-interest", stage: "EXPLORE", kind: "sweep", required: true, auto: false,
     eyebrow: "영역 훑기 1 / 2",
     question: "해 보고 싶은 일을 골라주세요",
-    help: "열두 줄을 한 번에 봅니다. 잘 모르는 줄은 가운데를 고르면 됩니다.",
+    /* **안내가 질문보다 세지 않게 한 줄로 줄였다**(규격: 긴 안내는 접거나
+       제거). 그리고 전에 적혀 있던 `잘 모르는 줄은 가운데를 고르면 됩니다`
+       는 **보기에 있는 `잘 모르겠다` 와 어긋나는 말**이었다: 그대로 두면
+       아직 모르는 사람이 `보통` 으로 적힌다 */
+    help: "모르는 줄은 ‘잘 모르겠다’를 고르세요.",
     items: pick("interest").map((i) => i.item_id),
   });
   add({
     id: "sweep-exposure", stage: "EXPLORE", kind: "sweep", required: true, auto: false,
     eyebrow: "영역 훑기 2 / 2",
     question: "해 본 적이 있는 일을 골라주세요",
-    help: "수업과 실험과 캡스톤과 인턴과 연구를 모두 포함해 답해주세요.",
+    help: "수업·실습·동아리·아르바이트도 포함해주세요.",
     items: pick("exposure").map((i) => i.item_id),
   });
 
@@ -500,7 +515,7 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
            없는 말은 `v3:items:copy` 가 센다 */
         ...(() => {
           const g = d.termGloss(cell.map((x) => wording(x.item_id, input.stage)).join(" "));
-          return g ? { help: g } : {};
+          return g ? { term: g } : {};
         })(),
         /* 묶음의 첫 질문에만 얹는다. 매 화면에 세우면 그 줄이 질문
            다음으로 큰 덩이가 된다 */
@@ -529,7 +544,7 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
             : wording(pair[0].item_id, input.stage),
           ...(() => {
             const g = d.termGloss(pair.map((x) => wording(x.item_id, input.stage)).join(" "));
-            return g ? { help: g } : {};
+            return g ? { term: g } : {};
           })(),
           ...(deepStrip ? { strip: deepStrip } : {}),
           items: pair.map((i) => i.item_id), domain: td,
@@ -636,7 +651,11 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
         required: false, auto: true, pack: deepIndustry,
         eyebrow: sc?.name ?? "산업 판단",
         question: wording(i.item_id, input.stage),
-        help: d.gloss(i.item_id) ?? undefined,
+        /* **쉬운 말 풀이를 도움말 칸에 또 담지 않는다.** 그 풀이는 이제
+           질문 바로 아래 `예` 줄로 서므로(`runtime/examples.ts` 의
+           `exampleOf` 가 산업팩 문항에서 그것을 돌려준다), 여기 두면 같은
+           글이 한 화면에 두 번 서고 열여덟 자 질문 아래 서른세 자 회색
+           글이 또 선다 */
         ...(indStrip ? { strip: indStrip } : {}),
         items: [i.item_id],
       });

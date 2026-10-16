@@ -143,7 +143,7 @@ const HEADLINE_KO: Record<HeadlineCode, { title: string; lead: string }> = {
   },
   EVIDENCE_PARTIAL: {
     title: "해 본 일은 있고, 설명할 재료가 아직 모자랍니다",
-    lead: "경험은 확인됐습니다. 남은 것은 그 경험을 설명할 결과물과 비교 기록입니다.",
+    lead: "해 보신 일은 보입니다. 남은 것은 그 경험을 설명할 결과물과 비교 기록입니다.",
   },
   /* **관심과 근거를 한 점수로 합치지 않는다.** 관심이 낮다고 근거가 없는
      것이 아니다. 그 사람에게 할 말은 `이 영역을 진로로 둘지 정하세요` 이고
@@ -244,7 +244,7 @@ export function gapCellKo(g: Gap): string {
 }
 
 /** 반쯤 선 자리는 까닭도 다르다. `보여줄 방법이 없다` 는 참이 아니다 */
-const PARTIAL_WHY_KO = "해 본 것은 확인됐습니다. 지원서에서는 여기서"
+const PARTIAL_WHY_KO = "해 보신 것은 보입니다. 지원서에서는 여기서"
   + " 무엇을 직접 정했는지까지 묻습니다.";
 
 
@@ -270,7 +270,7 @@ const TRY_KO: Record<Stage, string> = {
   bachelor: "수업 프로젝트나 교내 과제 하나면 충분합니다.",
   master: "연구실 과제에서 작은 범위를 하나 맡아보는 것으로 됩니다.",
   phd: "본 연구 옆에 작은 검증 과제를 하나 두는 쪽이 빠릅니다.",
-  postdoc: "협업 과제나 외부 의뢰 가운데 짧은 것을 하나 맡아보세요.",
+  postdoc: "협업 과제나 외부 의뢰 가운데 짧은 것을 하나 맡아 기록을 남기면 됩니다.",
 };
 
 /**
@@ -341,7 +341,8 @@ const FILL_KO: Record<Axis, (d: string) => string> = {
     + " 함께 적어두세요.",
   J4: (d) => `다음 ${d} 과제에서 쓸 방법을 직접 골라보고, 고른 까닭을`
     + " 한 줄 남겨보세요.",
-  J5: (d) => `다음 ${d} 과제는 결과물이 하나 남을 때까지 끝까지 가보세요.`,
+  J5: (d) => `다음 ${d} 과제는 손에 남는 것이 생길 때까지 끝까지 가보고,`
+    + " 무엇이 남았는지 목록으로 적어두세요.",
   J6: (d) => `다음 ${d} 과제에서 낸 값을 다른 방법으로 한 번 더 확인하고,`
     + " 두 값을 나란히 적어보세요.",
   J7: (d) => `다음 ${d} 과제에서 안 된 자리의 원인을 좁혀 고친 과정을`
@@ -422,7 +423,7 @@ export function actionKo(
     const chain = chainOf(a).slice(0, 3).join(" → ");
     return {
       do: art
-        ? `다음 ${domainName} 과제에서는 ${art} 같은 결과물을 하나 남겨보세요.`
+        ? `다음 ${domainName} 과제에서는 ${art} 한 벌을 남겨보세요.`
         : `다음 ${domainName} 과제에서는 판단한 내용을 문서 하나로 남겨보세요.`,
       note: chain ? undefined : depth,
       guide: chain ? `${chain} 까지 적혀 있으면 설명 재료가 됩니다.` : undefined,
@@ -501,7 +502,7 @@ export function bridgeKo(
   const est = pack.established[0];
   if (est && est.axes.length) {
     const axes = andList(est.axes.slice(0, 2).map((a) => AXIS_KO[a]));
-    out.push(`${withJosa(domainName(est.domain), "은는")} ${axes} 쪽이 확인됐습니다.`);
+    out.push(`${withJosa(domainName(est.domain), "은는")} ${axes} 쪽을 직접 해 보셨습니다.`);
   }
 
   const req = pack.requested[0];
@@ -578,7 +579,7 @@ export const FIRST_MOVE_KO: Record<FirstMove, string> = {
 export const BASIC_GROUP_KO = {
   do_now: {
     title: "직접 해볼 영역",
-    lead: "관심도 배울 뜻도 높다고 답한 영역입니다. 여기부터 한 번 해보세요.",
+    lead: "관심도 배울 뜻도 높다고 답한 영역입니다. 아래 할 일부터 보시면 됩니다.",
   },
   scan: {
     title: "짧게 탐색할 영역",

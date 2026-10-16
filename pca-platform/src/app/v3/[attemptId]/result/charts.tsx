@@ -274,7 +274,7 @@ export function ActionRoadmap(
           ) : (
             <p className="pv-road-none">
               {i === 3
-                ? "지금 바로 꺼내 쓸 자리는 아직 확인되지 않았습니다"
+                ? "지원서에 그대로 옮길 자리는 아직 모이지 않았습니다"
                 : "이 자리에 적을 것이 아직 없습니다"}
             </p>
           )}

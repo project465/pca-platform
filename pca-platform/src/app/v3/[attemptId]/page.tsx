@@ -92,7 +92,11 @@ export default async function V3Screen({
       optionHelpFold: control.kind === "level" && id === firstLevelItem
         ? OWNERSHIP.map((o, n) => (OWNERSHIP_EXAMPLE[n]
           ? `${o.means}. 예: ${OWNERSHIP_EXAMPLE[n]}` : o.means)) : undefined,
-      optionFoldOpen: control.kind === "level" && firstLevel && id === firstLevelItem,
+      /* **처음 만나는 화면에서도 펼쳐 두지 않는다**(규격: 긴 안내는 접거나
+         제거). 펼쳐 두었더니 그 네 줄(약 250자)이 질문과 예시를 합친 것보다
+         큰 덩이가 되어, 눈으로 읽으면 **설명문이 질문보다 세다.** 뜻은 이제
+         보기 아래 네 글자 꼬리표와 한 마디가 들고 있다 */
+      optionFoldOpen: false,
       /* **질문 → 예시 → 선택.** 한 줄짜리 예시가 그 가운데다. 산업팩
          문항은 `gloss`(그 판단을 일반 말로 바꿔 적은 줄)를 쓰고, 그
          줄은 전에는 검사 셋만 읽고 **화면에 한 번도 서지 않았다** */
@@ -196,8 +200,14 @@ export default async function V3Screen({
     subject: sc.subject,
     question: sc.question,
     help: sc.help,
+    term: sc.term,
     strip: sc.strip,
-    guide: fields.some((f) => f.control.kind === "level") ? optionGuidance(a0.core_code) : undefined,
+    /* **보기 읽는 법을 화면마다 되풀이하지 않는다.** 선별 등급에서만
+       스물여덟 화면에 같은 두 줄이 섰고, 바로 아래 `보기가 어떻게
+       갈리나요` 와 같은 말이라 한 화면에 설명이 두 번 선 셈이었다.
+       처음 만나는 화면에서 한 번만 적는다 */
+    guide: firstLevel && fields.some((f) => f.control.kind === "level")
+      ? optionGuidance(a0.core_code) : undefined,
     /* 묶음이 바뀐 첫 질문에만. 매 화면에 세우면 그것이 새 틀이 된다 */
     scenes: sc.strip && fields.some((f) => f.control.kind === "level")
       ? sceneHint(a0.core_code) : undefined,

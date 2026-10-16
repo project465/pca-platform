@@ -88,6 +88,9 @@ async function screenText(
   if (sc.subject) out.push(`주어: ${sc.subject}`);
   if (sc.question) out.push(`질문: ${sc.question}`);
   if (sc.help) out.push(`도움말: ${sc.help}`);
+  /* **받침은 도움말과 다른 줄로 적는다.** 한 줄로 적어 두면 `설명문이
+     질문보다 센 자리` 를 세는 검사가 멀쩡한 용어 받침을 건다 */
+  if (sc.term) out.push(`받침: ${sc.term}`);
   for (const b of sc.body ?? []) out.push(`본문: ${b}`);
   for (const c of sc.chips ?? []) out.push(`칩: ${c}`);
   for (const s of sc.sections ?? []) {

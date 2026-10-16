@@ -1,18 +1,20 @@
 {
  "schema_version": "cm-bank-lock.1",
  "core": "STYLE_CORE_V1",
- "item_bank_version": "STYLE_V1_ITEM_BANK_V1.2",
+ "item_bank_version": "STYLE_V1_ITEM_BANK_V1.3",
  "note": "문면을 고치면 이 지문이 어긋난다. 그때 판본을 올리고 BANK=update 로 다시 적는다",
  "files": {
-  "style-v1-taxonomy.json": "a965ad67d092c64c6fb35ad83e3a7d82ad91fcfbc1c81d0f31c66d60891e5d3e",
-  "style-v1-domains.json": "0ef1562ed3974432c2ceded0f79a5a35fa4030f189a471fed0174219df6a0996",
-  "style-v1-checklists.json": "f6b536c43cc737e025dca42e3eef2ee53ad20f3fc92d7cd2a9e0508888cbb715",
-  "style-v1-items-blueprint.json": "bef7a02d29a02681657f495e9398898a12429521bd64f8d479b16bbb30b72982",
-  "style-v1-items.json": "af66707f4f503a0c4ee33eccf4c0f3124e9a61b1278d20a19df43c8706bee61e",
-  "style-v1-relations.json": "347c80462d717b8d7d1d3e60442780958782952cf1be1f86c245a60bf3f83405",
-  "style-v1-constructs.json": "3281ea400e1e29e93fcd5e1edcb82385be3f5b3009ffea6dc6c183dd8c9397ff",
   "style-industry-packs.json": "49d51e7000332a5f7ccd84787255388188a38dabfd4e9e2569d912b50aa67ca0",
-  "style-role-packs.json": "fb6a03e800045547675d0e595e97d92198f801dd0c596884c254bc8c7a8df35f"
+  "style-role-packs.json": "fb6a03e800045547675d0e595e97d92198f801dd0c596884c254bc8c7a8df35f",
+  "style-v1-checklist-additions.json": "8e87123ca2c3c1b36439f26263d9b186730bf1135f31c264740072fc5defa93b",
+  "style-v1-checklists.json": "f6b536c43cc737e025dca42e3eef2ee53ad20f3fc92d7cd2a9e0508888cbb715",
+  "style-v1-common-additions.json": "2c4d77b2e7b44403f964c528644c42090f2b917d59152a45e6bf3e405eb77047",
+  "style-v1-constructs.json": "3281ea400e1e29e93fcd5e1edcb82385be3f5b3009ffea6dc6c183dd8c9397ff",
+  "style-v1-domains.json": "0ef1562ed3974432c2ceded0f79a5a35fa4030f189a471fed0174219df6a0996",
+  "style-v1-items-blueprint.json": "bef7a02d29a02681657f495e9398898a12429521bd64f8d479b16bbb30b72982",
+  "style-v1-items.json": "c235d5f7fd8cbed1ff417ad3f2063e754cfc39010b0856a375059381048d1b2a",
+  "style-v1-relations.json": "347c80462d717b8d7d1d3e60442780958782952cf1be1f86c245a60bf3f83405",
+  "style-v1-taxonomy.json": "a965ad67d092c64c6fb35ad83e3a7d82ad91fcfbc1c81d0f31c66d60891e5d3e"
  },
  "scoring_version": "me-v3-scoring.5"
 }

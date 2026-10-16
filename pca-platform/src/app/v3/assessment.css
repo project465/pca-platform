@@ -534,6 +534,25 @@
 }
 
 /**
+ * **질문에 든 그 전공의 말을 받치는 줄.**
+ *
+ * `qs-help`(답하는 법)와 모양을 가른다: 저쪽은 질문 아래 회색 한 줄이고
+ * 이쪽은 `예` 줄과 같은 꼴로 알약 하나를 앞에 세운다. 한동안 둘이 같은
+ * 칸(`help`)에 들어 있었고, 그래서 여덟 자 질문 아래 서른일곱 자 받침이
+ * 서서 **설명문이 질문보다 센 자리**로 세어졌다.
+ */
+.qs-term {
+  display: flex; gap: 8px; align-items: baseline;
+  margin: 8px 0 0; font-size: var(--q-t-gloss); line-height: 1.5;
+  color: var(--q-ink-2);
+}
+.qs-term > span {
+  flex: none; padding: 1px 7px; border-radius: 999px;
+  background: var(--q-sunk); color: var(--q-ink-3);
+  font-size: var(--q-t-meta); font-weight: var(--ui-w-sb); letter-spacing: .02em;
+}
+
+/**
  * **묶음의 첫 질문에만 서는 장면 한 줄.**
  *
  * 보기 아래 뜻과 같은 크기이고 왼쪽에 금 하나를 세워 질문과 가른다.
@@ -1408,6 +1427,12 @@
 .qs-optfold > summary::marker, .qs-optfold > summary::-webkit-details-marker { display: none; }
 .qs-optfold > summary::before { content: "＋ "; }
 .qs-optfold[open] > summary::before { content: "－ "; }
+/* 보기 둘째와 넷째를 가르는 한 줄. **접는 자리 안이다**: 밖에 두면
+   같은 말을 하는 설명이 한 화면에 두 번 선다 */
+.qs-optlead {
+  margin: 0 0 10px; font-size: var(--q-t-gloss); line-height: 1.7;
+  color: var(--q-ink-2);
+}
 .qs-optfold ul {
   margin: 0; padding: 12px 14px; list-style: none;
   border: 1px solid var(--q-line-soft); border-radius: var(--q-r-sm);

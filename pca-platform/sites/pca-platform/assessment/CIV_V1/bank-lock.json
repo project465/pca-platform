@@ -4,15 +4,17 @@
  "item_bank_version": "CIV_V1_ITEM_BANK_V1.2",
  "note": "문면을 고치면 이 지문이 어긋난다. 그때 판본을 올리고 BANK=update 로 다시 적는다",
  "files": {
-  "civ-v1-taxonomy.json": "cd0c16850ecad800e0208b36fcb8ff0f00a05d0b9d359e6761e3f5337bf564fd",
-  "civ-v1-domains.json": "82686e220b0ad0f9b220865fe7dafaaeb1de2261cae80e84d8407066436d821d",
+  "civ-industry-packs.json": "b9905da40c9fbb43729baf01a1ab7e56cdcad23356d303674d34d3ca7e00c9bb",
+  "civ-role-packs.json": "48420c5879de379ab429f9f25446b71b1486e6625870d670b088fc0b8d4e7efb",
+  "civ-v1-checklist-additions.json": "60127ecfafc163c8e0831368e91f93390bd185b13d8a39f5110e27bc014c3938",
   "civ-v1-checklists.json": "d27ffd313f33ae3598d33106f705b363c02289119b08a0c873d44157adfa6d05",
+  "civ-v1-common-additions.json": "6264d24d71517b8a24aef5e6b6fa3c2174ee85bbe5ba496f6972bbee32e32cf6",
+  "civ-v1-constructs.json": "0101968a394890bb6bbe9bde025b278e8a9343755b0f2d64553f0149647a4890",
+  "civ-v1-domains.json": "82686e220b0ad0f9b220865fe7dafaaeb1de2261cae80e84d8407066436d821d",
   "civ-v1-items-blueprint.json": "2f865fc0e05ffb0f21ccc2b4c97af0911de082dfe95d7753a740bbc3ab80ad7c",
   "civ-v1-items.json": "5d3d87cc761e0a340922d7f67c1dfeb4aff94d9aeb1274f4024cb1db1af47577",
   "civ-v1-relations.json": "8ed5d5014f1762e8d38a8609d1a4dde4eb47b798378bf576d3c829b00806fe23",
-  "civ-v1-constructs.json": "0101968a394890bb6bbe9bde025b278e8a9343755b0f2d64553f0149647a4890",
-  "civ-industry-packs.json": "b9905da40c9fbb43729baf01a1ab7e56cdcad23356d303674d34d3ca7e00c9bb",
-  "civ-role-packs.json": "48420c5879de379ab429f9f25446b71b1486e6625870d670b088fc0b8d4e7efb"
+  "civ-v1-taxonomy.json": "cd0c16850ecad800e0208b36fcb8ff0f00a05d0b9d359e6761e3f5337bf564fd"
  },
  "scoring_version": "me-v3-scoring.5"
 }

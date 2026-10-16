@@ -2,7 +2,7 @@
  "schema_version": "food-v1-items.1",
  "core": "FOOD_CORE_V1",
  "assessment_version": "FOOD_V1",
- "item_bank_version": "FOOD_V1_ITEM_BANK_V1.2",
+ "item_bank_version": "FOOD_V1_ITEM_BANK_V1.3",
  "note": "문면을 손으로 썼다. 원본은 이 파일이다: 문면을 고칠 곳이 여기이고, 고친 뒤 `CORE=FOOD_CORE_V1 npm run v3:wording` 과 `v3:items` 를 돌린다. 영역에 붙지 않는 자리의 번호는 기계공학 Core 와 같다",
  "level_options": [
   "없다",
@@ -1569,12 +1569,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "의뢰한 쪽와 법이 요구한 것을 측정 항목과 한계선으로 옮겨 적어 봤나요?",
+   "wording": "의뢰한 쪽과 법이 요구한 것을 측정 항목과 한계선으로 옮겨 적어 봤나요?",
    "stage_wording": {
-    "bachelor": "과제 조건을 받고 의뢰한 쪽와 법이 요구한 것을 측정 항목과 한계선으로 옮겨 적어 봤나요?",
-    "master": "과제 목표를 받고 의뢰한 쪽와 법이 요구한 것을 측정 항목과 한계선으로 옮겨 적어 봤나요?",
-    "phd": "연구 목표를 세우면서 의뢰한 쪽와 법이 요구한 것을 측정 항목과 한계선으로 옮겨 적어 봤나요?",
-    "postdoc": "연구 공고나 과제 목표를 보고 의뢰한 쪽와 법이 요구한 것을 측정 항목과 한계선으로 옮겨 적어 봤나요?"
+    "bachelor": "과제 조건을 받고 의뢰한 쪽과 법이 요구한 것을 측정 항목과 한계선으로 옮겨 적어 봤나요?",
+    "master": "과제 목표를 받고 의뢰한 쪽과 법이 요구한 것을 측정 항목과 한계선으로 옮겨 적어 봤나요?",
+    "phd": "연구 목표를 세우면서 의뢰한 쪽과 법이 요구한 것을 측정 항목과 한계선으로 옮겨 적어 봤나요?",
+    "postdoc": "연구 공고나 과제 목표를 보고 의뢰한 쪽과 법이 요구한 것을 측정 항목과 한계선으로 옮겨 적어 봤나요?"
    },
    "options": [
     "없다",
@@ -8348,7 +8348,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "의뢰한 쪽가 말로 전한 요구를 배합의 목표 숫자로 바꿔 올린 적 있나요?",
+   "wording": "의뢰한 쪽이 말로 전한 요구를 배합의 목표 숫자로 바꿔 올린 적 있나요?",
    "stage_wording": null,
    "options": [
     "없다",

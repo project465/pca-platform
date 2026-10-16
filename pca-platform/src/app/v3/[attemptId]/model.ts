@@ -77,6 +77,13 @@ export type ScreenModel = {
   question?: string;
   help?: string;
   /**
+   * 질문에 든 그 전공의 말을 쉬운 말로 받치는 줄.
+   *
+   * `help`(답하는 법)와 **다른 칸이다**: 까닭은
+   * `runtime/blocks.ts` 의 `Screen.term` 주석에 적었다.
+   */
+  term?: string;
+  /**
    * 묶음이 바뀐 것을 적는 질문 위 한 줄(규격 §12).
    *
    * `runtime/blocks.ts` 의 `Screen.strip` 을 그대로 옮긴 것이고, 묶음의

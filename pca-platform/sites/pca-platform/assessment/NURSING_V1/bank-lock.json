@@ -3,6 +3,18 @@
  "core": "NURSING_CORE_V1",
  "item_bank_version": "NURSING_V1_ITEM_BANK_V1.2",
  "note": "간호 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=NURSING_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
- "files": {},
+ "files": {
+  "nursing-industry-packs.json": "f2b92958ecf0a618fb3b3c5f916f8c51fbe14d3693c6f3db5592ba159945f7b1",
+  "nursing-role-packs.json": "fca3fd8b20cd8af2e2ef8e7eac09611279dafc698fe482c4992f8b4326acf234",
+  "nursing-v1-checklist-additions.json": "d95697b1067d535d0a75253f1cf5197fa76431ea1f0f1772e9c165dfcdb7d856",
+  "nursing-v1-checklists.json": "30c43306c63ec344bb6c23f0c67fa4fd6d8d76b89f436679513011832cf8ea36",
+  "nursing-v1-common-additions.json": "8ccb55e80bc68e2623db7bc2d8461694eca584b95fee89b32d11273b18b09b8c",
+  "nursing-v1-constructs.json": "7d05a6335f92cb8ed00af11e98c5083c3d7148f6d2e289ed2515b0bf0f40d1b7",
+  "nursing-v1-domains.json": "2c9f38e50d755ca9e43e837c53b54507c3620288cf35752c766f5675c1a822ce",
+  "nursing-v1-items-blueprint.json": "ce60ae5cf4ce59be6ce3c949371e495347c4a138ae2678e26a54290d6b02b48d",
+  "nursing-v1-items.json": "8a059b64c8b7967f9ceae49dedd1d345f8d5207cc9db95f94e550d73f9686709",
+  "nursing-v1-relations.json": "d466df31db4fde7431d0326eb23fcbfecdfee0fdbcce7c73492f9da2a66d8f2d",
+  "nursing-v1-taxonomy.json": "75f930685c6adbf482edc02b7ed7999c8803fe2c779e3699b94fef3f6f2c6d57"
+ },
  "scoring_version": "me-v3-scoring.5"
 }
