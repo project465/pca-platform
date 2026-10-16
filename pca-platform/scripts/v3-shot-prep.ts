@@ -251,14 +251,14 @@ async function main() {
   out.push({ name: "03_industry_scene", who: "shots", note: "산업 장면",
     ...(await shot(a01, (_id, k) => k === "scene", "산업 장면")) });
   out.push({ name: "04_screening", who: "shots", note: "영역 훑기",
-    ...(await shot(a01, (id) => id === "sweep-interest", "영역 훑기 · 관심")) });
+    ...(await shot(a01, (id) => id.startsWith("sweep-interest"), "영역 훑기 · 관심")) });
   out.push({ name: "04b_screening_exp", who: "shots", note: "영역 훑기 · 경험",
-    ...(await shot(a01, (id) => id === "sweep-exposure", "영역 훑기 · 경험")) });
+    ...(await shot(a01, (id) => id.startsWith("sweep-exposure"), "영역 훑기 · 경험")) });
   /* **배우고 싶은 정도를 따로 찍는다**(규격 §19). 관심과 같은 격자를
      쓰지만 다섯 칸의 밝혀 적는 말이 다르다(`1 전혀 배우고 싶지 않음` ~
      `5 매우 배우고 싶음`). 한 장만 찍으면 그 차이를 아무도 안 본다 */
   out.push({ name: "04c_screening_learn", who: "shots", note: "영역 훑기 · 배울 뜻",
-    ...(await shot(a01, (id) => id === "sweep-learning", "영역 훑기 · 배울 뜻")) });
+    ...(await shot(a01, (id) => id.startsWith("sweep-learning"), "영역 훑기 · 배울 뜻")) });
 
   /* P03 캡스톤 학생 · STANDARD */
   const p03 = await freshAttempt(shots, "STANDARD", "bachelor", null);

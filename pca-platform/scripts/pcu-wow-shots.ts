@@ -181,7 +181,7 @@ async function main(): Promise<void> {
       if (/\/v3\/\d+/.test(d.url()) && await d.locator(".qs-own").count()) {
         found = true; break;
       }
-      const boxes = d.locator("fieldset.qs-opts, fieldset.qs-sw, .qs-cards, .qs-list");
+      const boxes = d.locator("fieldset.qs-opts, .qs-cards, .qs-list");
       const bn = await boxes.count();
       const was = d.url();
       for (let g = 0; g < bn; g += 1) {

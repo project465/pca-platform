@@ -97,7 +97,7 @@ async function login(ctx: BrowserContext, pw: string): Promise<Page> {
 async function oneScreen(p: Page): Promise<boolean> {
   await p.waitForLoadState("networkidle");
   const was = p.url();
-  const boxes = p.locator("fieldset.qs-opts, fieldset.qs-sw, .qs-cards, .qs-list");
+  const boxes = p.locator("fieldset.qs-opts, .qs-cards, .qs-list");
   const bn = await boxes.count();
   for (let g = 0; g < bn; g += 1) {
     const box = boxes.nth(g);
@@ -272,7 +272,7 @@ async function main(): Promise<void> {
       const finish = p3.locator("button.qs-btn-main");
       const label = (await finish.first().textContent().catch(() => "")) ?? "";
       /* 고르는 묶음마다 하나씩 */
-      const boxes = p3.locator("fieldset.qs-opts, fieldset.qs-sw, .qs-cards, .qs-list");
+      const boxes = p3.locator("fieldset.qs-opts, .qs-cards, .qs-list");
       for (let g = 0; g < (await boxes.count()); g += 1) {
         const box = boxes.nth(g);
         if (await box.locator("input:checked").count()) continue;

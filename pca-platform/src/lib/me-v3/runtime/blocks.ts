@@ -197,6 +197,21 @@ function byTwo<T>(list: T[]): T[][] {
   return out;
 }
 
+/**
+ * 영역 훑기를 **넷씩 끊는다**(COMMERCIAL GOLD MASTER §5 · §6).
+ *
+ * 열둘을 한 화면에 쌓으면 그 화면이 `문장 + 보기 + 모르겠다` 가 열두 번
+ * 되풀이되는 설문표가 된다. 넷이면 질문이 크게 서고 보기가 **낱말로**
+ * 설 자리가 생기며, 손전화에서도 한 화면에 들어온다. **서로 견주는
+ * 값은 그대로다**: 넷 안에서 견주고, 묻는 문항과 저장되는 값과 차례는
+ * 한 글자도 바뀌지 않는다.
+ */
+function byFour<T>(list: T[]): T[][] {
+  const out: T[][] = [];
+  for (let i = 0; i < list.length; i += 4) out.push(list.slice(i, i + 4));
+  return out;
+}
+
 /** 선별 네 축을 묻는 차례. 화면 묶기에 쓴다 */
 const AX_ORDER = ["J3", "J5", "J6", "J7"] as const;
 
@@ -371,24 +386,39 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
   /* ── 영역 훑기 두 화면. 열두 줄을 한 화면에서 본다 ── */
   const grid = byModule("CORE-GRID");
   const pick = (c: string) => grid.filter((i) => i.measurement_axis === c);
-  add({
-    id: "sweep-interest", stage: "EXPLORE", kind: "sweep", required: true, auto: false,
-    eyebrow: "영역 훑기 1 / 2",
-    question: "해 보고 싶은 일을 골라주세요",
-    /* **안내가 질문보다 세지 않게 한 줄로 줄였다**(규격: 긴 안내는 접거나
-       제거). 그리고 전에 적혀 있던 `잘 모르는 줄은 가운데를 고르면 됩니다`
-       는 **보기에 있는 `잘 모르겠다` 와 어긋나는 말**이었다: 그대로 두면
-       아직 모르는 사람이 `보통` 으로 적힌다 */
-    help: "모르는 줄은 ‘잘 모르겠다’를 고르세요.",
-    items: pick("interest").map((i) => i.item_id),
-  });
-  add({
-    id: "sweep-exposure", stage: "EXPLORE", kind: "sweep", required: true, auto: false,
-    eyebrow: "영역 훑기 2 / 2",
-    question: "해 본 적이 있는 일을 골라주세요",
-    help: "수업·실습·동아리·아르바이트도 포함해주세요.",
-    items: pick("exposure").map((i) => i.item_id),
-  });
+  /**
+   * **넷씩 끊어 세운다**(§5). 머리말과 질문은 묶음마다 같고 **도움말은
+   * 첫 묶음에만** 적는다: 같은 두 줄을 세 번 읽히면 그것이 곧 설문지의
+   * 되풀이다. 묶음이 하나뿐이면 번호를 붙이지 않는다.
+   *
+   * **머리말에 큰 질문을 다시 적지 않는다.** `해 보고 싶은 일 1 / 3` 과
+   * `해 보고 싶은 일을 골라주세요` 를 위아래로 세우면 같은 말이 두 번
+   * 선다. 머리말은 지금 어느 축을 묻는지만 짧게 든다.
+   */
+  const sweeps = (
+    id: string, eyebrow: string, question: string, help: string,
+    ids: string[], required: boolean,
+  ): void => {
+    const gs = byFour(ids);
+    gs.forEach((g, k) => add({
+      id: gs.length > 1 ? `${id}-${k + 1}` : id,
+      stage: "EXPLORE", kind: "sweep", required, auto: false,
+      eyebrow: gs.length > 1 ? `${eyebrow} ${k + 1} / ${gs.length}` : eyebrow,
+      question,
+      help: k === 0 ? help : "",
+      items: g,
+    }));
+  };
+  /* **안내가 질문보다 세지 않게 한 줄로 줄였다**(규격: 긴 안내는 접거나
+     제거). 그리고 전에 적혀 있던 `잘 모르는 줄은 가운데를 고르면 됩니다`
+     는 **보기에 있는 `잘 모르겠다` 와 어긋나는 말**이었다: 그대로 두면
+     아직 모르는 사람이 `보통` 으로 적힌다 */
+  sweeps("sweep-interest", "관심", "해 보고 싶은 일을 골라주세요",
+    "모르는 일은 ‘잘 모르겠다’를 고르세요.",
+    pick("interest").map((i) => i.item_id), true);
+  sweeps("sweep-exposure", "해 본 적", "해 본 적이 있는 일을 골라주세요",
+    "수업·실습·동아리·아르바이트도 포함해주세요.",
+    pick("exposure").map((i) => i.item_id), true);
 
   /* 묶인 영역 가르기. 묶이지 않았으면 띄우지 않는다 */
   if (input.tiedPair.length >= 2) {
@@ -430,13 +460,10 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
   const lea = pick("learning_intent")
     .filter((i) => input.probe.includes(String(i.technical_domain)));
   if (lea.length) {
-    add({
-      id: "sweep-learning", stage: "EXPLORE", kind: "sweep", required: false, auto: false,
-      eyebrow: "배우고 싶은 정도",
-      question: "지금 시간을 들여 배우고 싶은 일을 골라주세요",
-      help: "자세히 보기로 한 영역만 묻습니다.",
-      items: lea.map((i) => i.item_id),
-    });
+    sweeps("sweep-learning", "배우고 싶은 정도",
+      "지금 시간을 들여 배우고 싶은 일을 골라주세요",
+      "자세히 보기로 한 영역만 묻습니다.",
+      lea.map((i) => i.item_id), false);
   }
 
   /* ── 공통 판단과 학위 장면 ──

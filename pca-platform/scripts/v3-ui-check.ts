@@ -320,12 +320,29 @@ function main(): void {
   ok("화면 이름이 겹치지 않는다", new Set(ids).size === ids.length,
      `${ids.length}개`);
 
-  /* --- 13. 영역 훑기는 두 화면이고 줄마다 영역 이름이 있다 --- */
+  /* --- 13. 영역 훑기는 넷씩 끊기고 열두 영역을 빠짐없이 묻는다 ---
+     **화면 수를 세지 않는다**(COMMERCIAL GOLD MASTER §5). 넷씩 끊는 것이
+     설계이므로 화면 수는 영역 수가 정한다. 세는 것은 둘이다: 한 화면이
+     넷을 넘지 않는가와, 끊고 나서도 **열두 영역이 축마다 한 번씩** 서는가.
+     한 묶음이라도 빠지면 그 영역이 통째로 안 물어진다 */
   const sweeps = pBasic.screens.filter((s) => s.kind === "sweep");
-  const fixed = sweeps.filter((s) => s.items.length === TDS.length);
-  ok("영역 훑기는 두 화면으로 접힌다",
-     fixed.length === 2 && sweeps.length <= 3,
-     `열두 줄 화면 ${fixed.length}개 · 학습 의향까지 ${sweeps.length}개`);
+  ok("훑기 한 화면이 넷을 넘지 않는다",
+     sweeps.every((s) => s.items.length <= 4 && s.items.length > 0),
+     sweeps.map((s) => s.items.length).join("·"));
+  const axisOf = (id: string): string => itemOf(CORE, id)?.measurement_axis ?? "";
+  const byAxis = new Map<string, Set<string>>();
+  for (const s of sweeps) {
+    for (const id of s.items) {
+      const a = axisOf(id);
+      const d = String(itemOf(CORE, id)?.technical_domain ?? "");
+      if (!byAxis.has(a)) byAxis.set(a, new Set());
+      byAxis.get(a)?.add(d);
+    }
+  }
+  ok("관심과 해 본 적이 열두 영역을 빠짐없이 묻는다",
+     byAxis.get("interest")?.size === TDS.length
+       && byAxis.get("exposure")?.size === TDS.length,
+     `관심 ${byAxis.get("interest")?.size ?? 0} · 경험 ${byAxis.get("exposure")?.size ?? 0}`);
   const rows = sweeps.flatMap((s) => s.items)
     .every((id) => !!itemOf(CORE, id)?.grid_row);
   ok("훑기 줄마다 영역을 말하는 줄이 있다", rows);
@@ -364,7 +381,7 @@ function main(): void {
   /* --- 17. 산업이 검사 앞에 선다 --- */
   const order = pPro.screens.map((s) => s.id);
   const atPickIndustry = order.indexOf("pick-industry");
-  const atFirstSweep = order.indexOf("sweep-interest");
+  const atFirstSweep = order.findIndex((x) => x.startsWith("sweep-"));
   const atFirstProbe = order.findIndex((x) => x.startsWith("probe-"));
   ok("관심 산업을 영역 훑기 앞에서 고른다",
      atPickIndustry > 0 && atPickIndustry < atFirstSweep,
@@ -383,9 +400,21 @@ function main(): void {
         무게로 세어진다. 응답 비중은 `v3:wording` 이 따로 적는다 */
   const judgeScreens = pBasic.screens.filter((s) =>
     s.id.startsWith("probe-") || s.id.startsWith("judge-") || s.id.startsWith("branch-"));
-  const ratio = judgeScreens.length / pBasic.screens.length;
+  /**
+   * **훑기를 몇 장으로 끊었는지로 이 비율이 흔들리면 안 된다.**
+   *
+   * 영역 훑기는 넷씩 끊겨 있는데(COMMERCIAL GOLD MASTER §5), 끊는 수를
+   * 바꾸면 **묻는 것이 한 글자도 안 바뀌어도** 이 비율이 오르내린다. 그때
+   * 이 줄은 검사의 성격이 아니라 쪽 나누기를 재는 줄이 된다. 그래서 한
+   * 축의 훑기 묶음은 **몇 장이든 하나로** 센다: `sweep-interest-1·2·3` 은
+   * 응시자에게 `해 보고 싶은 일을 고르는 자리` 하나다.
+   */
+  const unit = (id: string): string => id.replace(/-\d+$/, "");
+  const all = new Set(pBasic.screens.map((s) =>
+    (s.kind === "sweep" ? unit(s.id) : s.id)));
+  const ratio = judgeScreens.length / all.size;
   ok("선별 등급 화면의 절반 이상이 실제 판단이다", ratio >= 0.5,
-     `판단 ${judgeScreens.length} / 전체 ${pBasic.screens.length} 화면 · ${Math.round(ratio * 100)}%`);
+     `판단 ${judgeScreens.length} / 전체 ${all.size}자리 · ${Math.round(ratio * 100)}%`);
 
   /* --- 19. 관심 역할은 Core 심화 뒤에 고른다 --- */
   const atRole = order.indexOf("pick-role");

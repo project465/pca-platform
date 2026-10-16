@@ -121,17 +121,8 @@ async function openAssessment(p: Page): Promise<boolean> {
 
 /** 지금 선 화면에 답한다. **답하지 않으면 `다음` 이 막혀 있다** */
 async function answer(p: Page): Promise<void> {
-  /* 열두 줄 격자. 줄마다 가운데 칸을 누른다 */
-  const rows = p.locator("fieldset.qs-sw");
-  const n = await rows.count();
-  if (n) {
-    for (let i = 0; i < n; i += 1) {
-      await rows.nth(i).locator(".qs-grade-b").nth(2)
-        .click({ timeout: 2500 }).catch(() => undefined);
-    }
-    return;
-  }
-  /* 보기 묶음마다 하나씩. 묶음이 둘인 화면이 검사의 절반이다 */
+  /* 보기 묶음마다 하나씩. 훑기도 같은 모양이라 따로 세지 않는다(§5):
+     영역 훑기가 넷씩 끊긴 질문이 되면서 보기가 `label.qs-opt` 로 선다 */
   const sets = p.locator("fieldset.qs-opts");
   const m = await sets.count();
   for (let i = 0; i < m; i += 1) {

@@ -185,9 +185,13 @@ async function main(): Promise<void> {
   const p03 = await freshAttempt(userId, "STANDARD", "bachelor", null);
   await fillGrid(p03, { TD01: [5, 2, 5], TD08: [4, 1, 4], TD02: [4, 1, 3] });
   const v0 = await viewOf(p03);
-  await moveTo(p03.id, "sweep-exposure");
+  /* 훑기는 넷씩 끊겨 있어 이름이 `sweep-exposure-1` 꼴이다(§5).
+     **글자로 못 박지 않는다**: 영역 수가 바뀌면 묶음 수도 바뀐다 */
+  const expId = (await viewOf(p03)).plan?.screens
+    .find((x) => x.id.startsWith("sweep-exposure"))?.id ?? "sweep-exposure";
+  await moveTo(p03.id, expId);
   const resumed = await viewOf((await attemptOf(p03.id, userId)) as V3Attempt);
-  ok("이어 들어오면 마지막 화면이 열린다", resumed.screen.id === "sweep-exposure",
+  ok("이어 들어오면 마지막 화면이 열린다", resumed.screen.id === expId,
      `${v0.screen.id} → ${resumed.screen.id}`);
   const w03 = await walk(p03, userId, strong);
   const a03 = (await attemptOf(p03.id, userId)) as V3Attempt;
@@ -312,7 +316,8 @@ async function main(): Promise<void> {
   ok("ME_V2 표에 V3 응답이 들어가지 않는다", v2[0].n === "0", `${v2[0].n}줄`);
 
   /* 12. 진행률은 두 수준이고 거짓 정밀도를 쓰지 않는다 */
-  const vp = await viewOf((await attemptOf(four.id, userId)) as V3Attempt, "sweep-interest");
+  const vp = await viewOf((await attemptOf(four.id, userId)) as V3Attempt,
+    "sweep-interest-1");
   ok("진행률이 큰 단계와 묶음 안으로 갈린다",
      vp.progress.stages.length >= 4 && vp.progress.inStage.total > 1 &&
      vp.progress.inStage.index <= vp.progress.inStage.total,

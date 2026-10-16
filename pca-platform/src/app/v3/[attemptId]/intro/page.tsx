@@ -26,14 +26,20 @@ export const metadata = { title: "검사 시작 전 안내 · CareerMatri" };
  * 위에 두면 읽는 쪽이 이 검사를 분량으로 값을 매긴다.
  */
 
-/** 안내 셋. 아이콘은 저장소의 선 아이콘 한 벌에서 가져온다 */
+/**
+ * **읽을 것을 셋으로 줄인다**(COMMERCIAL GOLD MASTER §4).
+ *
+ * 학생이 시작 전에 알아야 하는 것은 셋뿐이다: 무엇을 보는 검사인가 ·
+ * 어떻게 답하면 되는가 · 얼마나 걸리는가. 나머지(전공 장면 · 묻는 차례 ·
+ * 문항 수)는 접어 둔다. 전에는 그 셋이 일곱 묶음 아래에 묻혀 있어서
+ * **첫 인상이 `긴 검사`** 였다. 셋째 줄의 값은 부르는 쪽이 채운다.
+ */
 const GUIDE: [IconName, string, string][] = [
-  ["compass", "정답은 없습니다",
-    "지금 자신에게 가장 가까운 선택지를 고르세요."],
-  ["skip", "잘 모르겠으면 넘어가도 됩니다",
-    "판단하기 어려운 문항은 모르겠다를 고를 수 있습니다."],
-  ["bolt", "결과는 다음 행동으로 이어집니다",
-    "현재 상태와 보완할 부분과 산업·직무 연결과 다음 행동을 봅니다."],
+  ["compass", "무엇을 보나요",
+    "관심과 해 본 일과 그때 직접 정한 것을 봅니다. 전공지식 시험이 아닙니다."],
+  ["skip", "어떻게 답하나요",
+    "보기에서 고르기만 하면 됩니다. 어려운 문항은 모르겠다로 넘어갑니다."],
+  ["bolt", "얼마나 걸리나요", ""],
 ];
 
 export default async function V3Intro({
@@ -116,9 +122,12 @@ export default async function V3Intro({
             {/* **학교로 들어온 응시에는 등급을 적지 않는다**(GOLD MASTER §19).
                 학교 계약은 등급을 고르지 않고 서버가 PRO 로 연다. 고를 수
                 없는 값을 머리에 적으면 학생이 `나는 어느 등급을 받은
-                것인가` 를 묻게 된다. 안쪽 응시 줄에는 그대로 남는다 */}
+                것인가` 를 묻게 된다. 한동안 등급 이름만 남겨 두었는데
+                (`경험 번역`), 그 말도 파는 쪽의 이름이라 시작 화면에서
+                가장 오른쪽에 혼자 섰다(COMMERCIAL GOLD MASTER §4).
+                안쪽 응시 줄과 스냅샷에는 그대로 남는다 */}
             {meta.school
-              ? <span className="qs-tier"><b>{t.label}</b></span>
+              ? null
               : <span className="qs-tier">{a.tier} · <b>{t.label}</b></span>}
           </div>
         </div>
@@ -128,60 +137,31 @@ export default async function V3Intro({
         <p className="qs-kicker">
           {[meta.school, meta.department ?? coreName].filter(Boolean).join(" · ")}
         </p>
-        <h1 className="qs-h1">검사를 시작하기 전에</h1>
+        {/* **첫 인상이 `긴 검사` 가 아니어야 한다**(§4). 제목이 분량을
+            말하지 않고 **이 검사가 무엇을 하는 자리인가**를 말한다 */}
+        <h1 className="qs-h1">내 전공과 경험을 정리합니다</h1>
         <p className="qs-lead">
-          이 검사는 전공지식 자체를 시험하는 문제가 아닙니다. 지금의 관심과
-          경험과 판단과 학습 의향을 묻고, 지금 설명할 수 있는 영역과 앞으로
-          보완할 부분을 정리합니다.
+          {coreName} 쪽에서 지금까지 해 본 일과 그때 직접 정한 것을 묻고,
+          지금 설명할 수 있는 영역과 다음에 채울 부분을 정리합니다.
         </p>
 
-        {sv.scene.length ? (
-          <section className="qs-major">
-            <h2>{coreName} 쪽에서 자주 서는 자리</h2>
-            <p>
-              아래 같은 자리에서 무엇을 직접 정했는지를 묻습니다. 겪은 적이
-              없는 자리는 없다고 고르시면 됩니다.
-            </p>
-            <ul>
-              {sv.scene.slice(0, 3).map((t) => <li key={t}>{t}</li>)}
-            </ul>
-          </section>
-        ) : null}
-
-        {steps.length > 2 ? (
-          <section className="qs-steps-pre">
-            <h2>이런 차례로 묻습니다</h2>
-            <ol>
-              {steps.map((x, i) => (
-                <li key={x.label}>
-                  <b>{`${i + 1}. ${x.label}`}</b>
-                  <span>{x.lead}</span>
-                </li>
-              ))}
-            </ol>
-          </section>
-        ) : null}
-
         <ul className="qs-three">
-          {GUIDE.map(([ic, title, note]) => (
+          {GUIDE.map(([ic, title, note], i) => (
             <li key={title}>
               <span className="qs-three-ic" aria-hidden>
                 <Icon name={ic} size={18} />
               </span>
               <div className="qs-three-tx">
                 <b>{title}</b>
-                <span>{note}</span>
+                {/* 셋째 줄만 이 응시의 값이다. **문항 수를 여기 적지
+                    않는다**: 분량이 첫 인상이 되면 읽는 쪽이 이 검사를
+                    길이로 값 매긴다 */}
+                <span>{i === 2
+                  ? `약 ${mins}분입니다. 문항마다 자동 저장되어 중간에 닫아도 이어집니다.`
+                  : note}</span>
               </div>
             </li>
           ))}
-        </ul>
-
-        <ul className="qs-facts">
-          <li><span>예상 소요시간</span><b>약 {mins}분</b></li>
-          <li><span>문항</span><b>{items}개</b></li>
-          <li><span>응답 방식</span><b>선택형</b></li>
-          <li><span>중간 저장</span><b>문항마다 자동 저장</b></li>
-          <li><span>결과</span><b>완료 후 바로 확인</b></li>
         </ul>
 
         <div className="qs-start-nav">
@@ -190,6 +170,46 @@ export default async function V3Intro({
           </a>
           <a className="qs-btn qs-btn-ghost" href="/me">나중에 하기</a>
         </div>
+
+        {/* **나머지는 접는다**(§4). 지우지 않는 까닭은 전공 장면과 묻는
+            차례가 이 검사가 무엇을 묻는지 미리 알고 싶은 사람에게 쓸모가
+            있어서다. 다만 시작을 막는 자리에 두지 않는다 */}
+        <details className="qs-more">
+          <summary>검사에 대해 더 알아보기</summary>
+          {sv.scene.length ? (
+            <section className="qs-major">
+              <h2>{coreName} 쪽에서 자주 서는 자리</h2>
+              <p>
+                아래 같은 자리에서 무엇을 직접 정했는지를 묻습니다. 겪은 적이
+                없는 자리는 없다고 고르시면 됩니다.
+              </p>
+              <ul>
+                {sv.scene.slice(0, 3).map((t) => <li key={t}>{t}</li>)}
+              </ul>
+            </section>
+          ) : null}
+
+          {steps.length > 2 ? (
+            <section className="qs-steps-pre">
+              <h2>이런 차례로 묻습니다</h2>
+              <ol>
+                {steps.map((x, i) => (
+                  <li key={x.label}>
+                    <b>{`${i + 1}. ${x.label}`}</b>
+                    <span>{x.lead}</span>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          ) : null}
+
+          <ul className="qs-facts">
+            <li><span>문항</span><b>{items}개</b></li>
+            <li><span>응답 방식</span><b>선택형</b></li>
+            <li><span>중간 저장</span><b>문항마다 자동 저장</b></li>
+            <li><span>결과</span><b>완료 후 바로 확인</b></li>
+          </ul>
+        </details>
 
         <p className="qs-fine">
           나중에 하기를 눌러도 지금까지의 응답은 그대로 남습니다. 다시

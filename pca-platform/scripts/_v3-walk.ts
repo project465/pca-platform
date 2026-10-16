@@ -123,7 +123,7 @@ export async function walk(
     /* **영역 훑기의 줄도 고르는 묶음이다.** 열두 줄이 한 화면에 서고 줄마다
        보기가 셋이라, `fieldset.qs-opts` 만 찾으면 그 화면에서 아무것도
        고르지 않고 넘어간다 */
-    const boxes = p.locator("fieldset.qs-opts, fieldset.qs-sw, .qs-cards, .qs-list");
+    const boxes = p.locator("fieldset.qs-opts, .qs-cards, .qs-list");
     const bn = await boxes.count();
     let advanced = false;
     for (let g = 0; g < bn; g += 1) {
@@ -217,7 +217,7 @@ export async function walk(
       if (process.env.WALK_DEBUG) {
         const h = await p.locator(".qs-q, h1, h2").first().innerText().catch(() => "");
         console.error(`[walk] 막힌 자리 ${p.url()} — ${h.replace(/\s+/g, " ").slice(0, 120)}`);
-        const bx = p.locator("fieldset.qs-opts, fieldset.qs-sw, .qs-cards, .qs-list");
+        const bx = p.locator("fieldset.qs-opts, .qs-cards, .qs-list");
         const bc = await bx.count();
         for (let k = 0; k < bc; k += 1) {
           const on = await bx.nth(k).locator("input:checked").count();

@@ -170,14 +170,19 @@ function main(): void {
 
   /* **실제 판단을 묻는 화면의 비중.**
      V1 은 서른두 화면 가운데 여덟만 판단이었다. 응답으로 세면 5초짜리
-     훑기가 13초짜리 판단과 같은 무게로 세어지므로 화면으로 센다 */
+     훑기가 13초짜리 판단과 같은 무게로 세어지므로 화면으로 센다.
+     **훑기를 몇 장으로 끊었는지는 세지 않는다**(COMMERCIAL GOLD MASTER
+     §5): 넷씩 끊는 것은 쪽 나누기이고 묻는 것이 바뀌지 않는다. 한 축의
+     훑기는 몇 장이든 `고르는 자리 하나` 로 센다 */
   {
     const p = plan("BASIC", "bachelor", null, 0);
     const judge = p.screens.filter((x) =>
       x.id.startsWith("probe-") || x.id.startsWith("judge-") || x.id.startsWith("branch-"));
-    const pct = Math.round(judge.length / p.screens.length * 100);
+    const spots = new Set(p.screens.map((x) =>
+      (x.kind === "sweep" ? x.id.replace(/-\d+$/, "") : x.id)));
+    const pct = Math.round(judge.length / spots.size * 100);
     ok("선별 등급 화면의 절반 이상이 실제 판단", pct >= 50,
-       `판단 ${judge.length} / 전체 ${p.screens.length} 화면 · ${pct}%`);
+       `판단 ${judge.length} / 전체 ${spots.size}자리 · ${pct}%`);
   }
 
   /* 학위 넷이 서로 다른 묶음을 받는다. 같은 문항을 받으면 학위를 바꿔도

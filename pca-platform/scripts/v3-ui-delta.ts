@@ -43,7 +43,7 @@ async function walkToGrid(p: Page): Promise<boolean> {
   }
   await enterAssessment(p);
   for (let i = 0; i < 14; i += 1) {
-    if (await p.locator("fieldset.qs-sw").count()) return true;
+    if (await p.locator(".qs-sweep").count()) return true;
     const sets = p.locator("fieldset.qs-opts");
     const m = await sets.count();
     for (let j = 0; j < m; j += 1) {
@@ -59,46 +59,40 @@ async function walkToGrid(p: Page): Promise<boolean> {
 }
 
 /**
- * A. 미선택 1~5 가 누를 수 있는 요소로 보이는가.
+ * A. 고르기 전의 보기가 **누를 수 있는 것으로 보이는가.**
  *
- * 넷을 함께 본다. 하나라도 빠지면 **흰 자리에 놓인 숫자**가 된다.
- *
- *   1. 누를 수 있는 요소다(라디오를 품은 `label`)
- *   2. 다섯 칸을 담은 덩이에 테가 있고 바탕이 뒤와 다르다
- *   3. 칸 사이에 눈금이 있다
- *   4. 칸마다 테를 돌리지 않는다(돌리면 다시 표가 된다)
- *   5. 누르는 자리가 44px 이상이다
+ * 영역 훑기가 넷씩 끊긴 질문이 되면서 보기는 낱말이 적힌 칸이다
+ * (COMMERCIAL GOLD MASTER §5). 그래서 세는 것이 바뀌었다: 번호가 아니라
+ * **말이 적혀 있는가**와, 그 칸이 라디오를 품은 누르는 자리인가와,
+ * 누르는 자리가 44px 이상인가다. 숫자를 세던 줄은 지웠다 — 숫자가 없는
+ * 것이 지금의 설계라 그대로 두면 멀쩡한 화면이 걸린다.
  */
 async function affordance(p: Page, label: string): Promise<void> {
   const r = await p.evaluate(() => {
-    const row = document.querySelector("fieldset.qs-sw");
-    const grid = row?.querySelector(".qs-grade");
-    if (!grid) return null;
-    const cells = [...grid.querySelectorAll(".qs-grade-b")];
-    const gs = getComputedStyle(grid);
-    const behind = getComputedStyle(row as Element).backgroundColor;
+    const box = document.querySelector("fieldset.qs-opts .qs-own");
+    if (!box) return null;
+    const cells = [...box.querySelectorAll("label.qs-opt")];
     const cs = cells.map((c) => getComputedStyle(c));
-    const tick = cells.length > 1
-      ? getComputedStyle(cells[1], "::before").width : "0px";
     const heights = cells.map((c) => c.getBoundingClientRect().height);
     return {
       n: cells.length,
       control: cells.every((c) => c.tagName === "LABEL"
         && !!c.querySelector('input[type="radio"]')),
-      gridBorder: parseFloat(gs.borderTopWidth) || 0,
-      gridBg: gs.backgroundColor,
-      behind,
-      tick: parseFloat(tick) || 0,
-      cellBorder: Math.max(...cs.map((s) => parseFloat(s.borderTopWidth) || 0)),
+      worded: cells.every((c) =>
+        ((c.querySelector(".qs-label")?.textContent ?? "").trim().length >= 2)),
+      border: Math.min(...cs.map((s) => parseFloat(s.borderTopWidth) || 0)),
+      boxBorder: parseFloat(getComputedStyle(box).borderTopWidth) || 0,
       minH: Math.min(...heights),
     };
   });
-  if (!r) { ok(`A ${label} 격자가 선다`, false, "격자를 찾지 못했다"); return; }
-  ok(`A ${label} 1~5 가 누를 수 있는 요소다`, r.control && r.n === 5, `${r.n}칸`);
-  ok(`A ${label} 다섯 칸이 한 덩이로 테를 두른다`,
-    r.gridBorder >= 1 && r.gridBg !== r.behind, `테 ${r.gridBorder}px · ${r.gridBg}`);
-  ok(`A ${label} 칸 사이에 눈금이 있다`, r.tick >= 1, `${r.tick}px`);
-  ok(`A ${label} 칸마다 테를 돌리지 않는다`, r.cellBorder === 0, `${r.cellBorder}px`);
+  if (!r) { ok(`A ${label} 보기가 선다`, false, "보기를 찾지 못했다"); return; }
+  ok(`A ${label} 보기가 누를 수 있는 요소다`, r.control && r.n >= 3, `${r.n}칸`);
+  ok(`A ${label} 보기마다 뜻이 적혀 있다`, r.worded);
+  /* **좁은 화면에서는 칸마다 테를 두르지 않는다.** 거기서는 다섯 칸이
+     한 덩이 안에 줄로 서고 테는 덩이에 한 겹이다(`.qs-list`). 칸마다
+     테를 요구하면 그 모양이 걸리는데, 그것이 승인된 손전화 모양이다 */
+  ok(`A ${label} 보기가 테로 묶인다`, r.border >= 1 || r.boxBorder >= 1,
+     `칸 ${r.border}px · 덩이 ${r.boxBorder}px`);
   ok(`A ${label} 누르는 자리가 44px 이상이다`, r.minH >= 44, `${Math.round(r.minH)}px`);
 }
 

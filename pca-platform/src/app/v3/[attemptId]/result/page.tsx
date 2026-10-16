@@ -1300,14 +1300,18 @@ export default async function V3Result({
                   )}
                 </section>
               ))}
-              {/* **빈 묶음마다 한 자리씩 내주지 않는다.** 근거가 고르게 선
-                  사람에게는 빈 묶음이 셋이고, 그 셋이 `해당하는 영역이
-                  없습니다` 로 종이 한 쪽을 가져갔다. 한 줄로 모은다 */}
+              {/* **빈 묶음의 이름을 늘어놓지 않는다**(COMMERCIAL GOLD
+                  MASTER §11). 한 줄로 모으기는 했는데, 그 한 줄이 `경험은
+                  있고 근거가 더 필요한 영역 · 해 봤지만 지금 관심이 낮은
+                  영역 · 아직 이야기할 재료가 적은 영역 — 해당하는 영역이
+                  없습니다` 였다. 읽는 사람이 받는 것은 **자기 결과가 아니라
+                  우리 분류표**이고, 끝이 `없습니다` 라 빈손으로 읽힌다.
+                  **사실은 숨기지 않는다**: 걸린 곳이 없다는 것을 적고 그
+                  다음에 볼 자리로 잇는다 */}
               {deep && zoneRows.some((r) => !r.list.length) ? (
                 <p className="rs-zempty">
-                  {zoneRows.filter((r) => !r.list.length)
-                    .map((r) => ZONE_TITLE_KO[r.z]).join(" · ")}
-                  {" — 해당하는 영역이 없습니다"}
+                  나머지 묶음에 걸린 영역은 지금 없습니다.
+                  더 채울 곳은 ‘앞으로 채울 것’ 에 적혀 있습니다.
                 </p>
               ) : null}
               {deep && model.overview.not_explored.length ? (
