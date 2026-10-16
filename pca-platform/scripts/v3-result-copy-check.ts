@@ -203,6 +203,11 @@ ok("한 가지 틀이 할 일의 절반을 넘지 않는다", share <= 0.5,
 const long = actions.filter((a) => a.text.length > 100);
 ok("할 일 한 줄이 백 자를 넘지 않는다", long.length === 0,
    long.slice(0, 2).map((a) => `${a.who} ${a.text.length}자`).join(" | "));
+/* **어느 줄이 긴지 적어 준다.** 길이만 적으면 고치는 쪽이 그 줄을 찾느라
+   같은 검사를 다시 만든다 */
+if (process.env.DUMP_LONG) {
+  for (const a of long) console.log(`    긴 줄 ${a.who} ${a.text.length}자 — ${a.text}`);
+}
 
 /* ── 7. 재지 않은 단정과 광고 말투 ─────────────────────────────────── */
 const BAN = [

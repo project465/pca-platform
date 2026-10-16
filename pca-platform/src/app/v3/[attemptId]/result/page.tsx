@@ -16,8 +16,10 @@ import {
   type ResultModel, type TranslationView,
 } from "@/lib/me-v3/result/model";
 import {
-  actionKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO, BASIC_GROUP_KO, bridgeKo,
-  commonKo, domainChainKo, draftKo, gapCellKo, gapKo, gapShortKo, headlineKo,
+  actionBriefKo, actionHeadKo, actionKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO,
+  BASIC_GROUP_KO, bridgeKo,
+  commonKo, domainChainKo, draftKo, gapCellKo, gapKo, gapNeedKo, gapNeedShortKo, gapShortKo,
+  headlineKo, needSentenceKo,
   HORIZON_KO, QUALITY_KO, TIER_NOTE_KO, TRANS_ORDER, TRANS_STEP_KO,
   XFIELD_ORDER, xfieldKo, ZONE_LEAD_KO, ZONE_TITLE_KO,
 } from "@/lib/me-v3/result/text.ko";
@@ -832,14 +834,26 @@ export default async function V3Result({
      되어, 읽는 사람이 어디까지가 한 자리인지 가를 수 없다
      (`인사·조직 · 요구 해석 · 인사·조직 · 직접 판단`). 영역으로 묶어
      한 번만 적는다 */
-  const lackBy = new Map<string, string[]>();
+  /**
+   * **첫 줄은 영역이고 비어 있는 자리는 그 아래 줄이 든다**
+   * (COMMERCIAL FINAL §5).
+   *
+   * 전에는 이 칸이 `경영전략·기획에서 요구 해석 · 직접 판단` 으로 섰다.
+   * 축 이름은 우리 쪽 분류이고, 그것이 칸의 첫 줄에 서면 읽는 사람이 자기
+   * 결과 대신 분류표를 읽는다. 데이터 구조는 그대로 두고 **읽는 자리에서만**
+   * 학생의 말로 내린다(`needSentenceKo`).
+   */
+  const lackBy = new Map<string, Axis[]>();
   for (const r of packLack?.requested.slice(0, 2) ?? []) {
     const d = domainName(core, r.domain);
-    lackBy.set(d, [...(lackBy.get(d) ?? []), AXIS_KO[r.axis]]);
+    lackBy.set(d, [...(lackBy.get(d) ?? []), r.axis]);
   }
-  const lackText = lackBy.size
-    ? [...lackBy].map(([d, ax]) => `${d}에서 ${ax.join(" · ")}`).join(", ")
-    : topGap ? gapTile(topGap) : "";
+  const lackWhat = lackBy.size
+    ? [...lackBy.keys()].join(" · ")
+    : topGap ? domainName(core, topGap.domain) : "";
+  const lackNeed = lackBy.size
+    ? needSentenceKo([...lackBy.values()].flat())
+    : topGap ? gapNeedShortKo(topGap) : "";
 
   /**
    * 첫 화면 넷째 칸. **산업·직무 연결 맥락**(규격 §13).
@@ -862,10 +876,13 @@ export default async function V3Result({
     ...(model.industry_context?.established ?? []),
     ...(model.role_context?.established ?? []),
   ].map((e) => domainName(core, e.domain));
+  /* **상담 자리에서 그대로 말할 수 있는 문장만 쓴다**(COMMERCIAL FINAL §4).
+     전에는 `지금 확인된 것으로는 아직 이어지는 영역이 없습니다` 였다.
+     뜻은 맞지만 사람이 학생을 앞에 두고 그렇게 말하지 않는다 */
   const linkText = linkNames.length
     ? (linkReady.length
-      ? `${[...new Set(linkReady)].slice(0, 2).join(" · ")}에서 이어집니다`
-      : "지금 확인된 것으로는 아직 이어지는 영역이 없습니다")
+      ? `${[...new Set(linkReady)].slice(0, 2).join(" · ")}에서 해 본 일이 이어집니다`
+      : "아직 이쪽으로 이어지는 경험은 보이지 않습니다")
     : "";
 
   /**
@@ -890,6 +907,20 @@ export default async function V3Result({
   const shownAction = moveNext
     ?? (move === "WRITE_UP" ? writeUp : null)
     ?? (move === "FILL_GAP" ? null : model.actions[0] ?? null);
+  /**
+   * `지금 할 일` 칸은 **머리 한 줄과 설명 두 줄까지다**(COMMERCIAL FINAL §7).
+   *
+   * 전에는 이 칸이 할 일 문장 하나를 그대로 들어서, 영역 이름과 재료가
+   * 붙은 긴 줄이 세 줄로 벌어졌다. 네 칸 가운데 가장 중요한 칸이 가장
+   * 읽기 어려운 칸이 되는 자리다. 세부 차례는 `다음에 할 일` 절이 든다.
+   */
+  const doHead = shownAction ? actionHeadKo(shownAction)
+    : topGap ? "먼저 적어 두기" : moveText;
+  const doDetail = shownAction
+    ? actionBriefKo(
+      shownAction, shownAction.domain ? domainName(core, shownAction.domain) : "",
+      shownAction.code === "EXPLORE_BROADLY" ? exploreWhere() : undefined)
+    : topGap ? gapNeedKo(topGap, domainName(core, topGap.domain)) : null;
   const indAction = packAction(model.industry_context, [shownAction]);
   const roleAction = packAction(model.role_context, [shownAction, indAction]);
 
@@ -1179,10 +1210,13 @@ export default async function V3Result({
               재지 않은 것을 모자란다고 말하는 셈이 된다 */}
           <div>
             <h3>{lackTitle}</h3>
-            {lackText
-              ? <p>{lackText}</p>
-              : <p className="none">지금 응답에서는 더 채울 자리가 보이지 않습니다</p>}
-            {lackText && lackWhere ? <p>{lackWhere}</p> : null}
+            {lackWhat ? (<>
+              <p>{lackWhat}</p>
+              <p>{lackNeed}</p>
+              {lackWhere ? <p>{lackWhere}</p> : null}
+            </>) : (
+              <p className="none">지금 응답에서 더 채울 곳은 보이지 않습니다</p>
+            )}
           </div>
 
           {/* ④ 지금 할 일.
@@ -1196,7 +1230,8 @@ export default async function V3Result({
                 것을 말하고 행동을 적는 칸이 한 자리도 없었다.**
                 빈자리의 이름 대신 거기 붙은 할 일을 세운다 */}
             <h3>지금 할 일</h3>
-            <p>{moveNext ? say(moveNext) : moveText}</p>
+            <p>{doHead}</p>
+            {doDetail ? <p>{doDetail}</p> : null}
           </div>
         </div>
 
@@ -1244,6 +1279,10 @@ export default async function V3Result({
             상태와 개수다. 적성 순위도 직무 적합도도 만들지 않는다 */}
         {deep ? (
           <section className="rs-sect" id="spread">
+            {/* **쪽마다 답하는 질문 하나**(COMMERCIAL FINAL §10). 종이에서만 선다:
+              화면은 절 머리와 첫 화면 넷이 그 일을 이미 하고 있어서, 여기에
+              한 줄을 더 세우면 같은 말이 두 번 선다 */}
+            <p className="rs-q">이번 응답에서 무엇이 확인됐는가</p>
           {/* **글이 먼저고 그림이 뒤다**(GOLD MASTER §14·§15).
               전에는 이 절이 레이더로 열려서, 결과를 연 사람이 가장
               먼저 보는 본문이 **분포 그림**이었다. 그림은 재는 층이
@@ -1343,9 +1382,12 @@ export default async function V3Result({
                  결과를 읽어 내려가는 흐름이 거기서 끊긴다 */
               <Disclose label="여러 영역에서 공통으로 확인된 판단">
               <div className="rs-pack">
+                {/* **우리 쪽 비유(`자리`)와 판정이라는 말을 걷는다**
+                    (COMMERCIAL FINAL §4·§5). 사람이 학생에게 하는 말은
+                    `어느 영역에서 한 일인지까지는 묻지 않았습니다` 다 */}
                 <p>
-                  어느 기술영역에서 한 일인지는 묻지 않은 자리입니다. 위의 영역별
-                  판정에는 들어가지 않습니다.
+                  어느 기술영역에서 한 일인지까지는 묻지 않았습니다. 그래서
+                  위의 영역별 결과에는 들어가지 않습니다.
                 </p>
                 <dl>
                   {cm.owned.length ? (
@@ -1394,21 +1436,6 @@ export default async function V3Result({
               </Disclose>
             ) : null}
           </div>
-            {hasRadar || hasBars ? (
-              <>
-                <h3 className="pv-h3">같은 것을 그림으로</h3>
-                <p className="rs-note">
-                  위에 적은 상태를 한 장으로 되짚는 자리입니다. 점수도
-                  순위도 아닙니다.
-                </p>
-              </>
-            ) : null}
-            {hasRadar ? (
-              <>
-                <Radar model={model} name={(c) => domainName(core, c)} />
-                <ChartNote />
-              </>
-            ) : null}
             {/* **그 전공이 먼저 보는 영역**(갈래 계약의 `domain_emphasis.lead`).
                 등록부에 적혀 있고 **읽는 자리에 한 글자도 닿지 않던 층**이다.
                 적는 것은 읽는 차례까지이고 축 수준과 묶음과 확인된 축 개수에
@@ -1417,22 +1444,49 @@ export default async function V3Result({
             {sv.domainLead.length ? (
               <p className="rs-note">
                 <b>{meta.specialization ?? meta.major} 쪽에서 먼저 보는 영역</b>
-                {" — "}
+                {" · "}
                 {sv.domainLead.map((c) => domainName(core, c)).join(" · ")}
                 {hasBars ? ". 아래 막대에서 그 영역을 먼저 보시면 됩니다."
-                  : ". 아래 묶음에서 그 영역을 먼저 보시면 됩니다."}
+                  : ". 위 묶음에서 그 영역을 먼저 보시면 됩니다."}
               </p>
             ) : null}
-            {hasBars ? (
-              <>
-                <h3 className="pv-h3">영역별 경험 단계</h3>
+            {/* ── 그림은 보조 정보다(COMMERCIAL FINAL §11) ──
+                **Radar 를 주인공으로 키우지 않는다.** 전에는 그림 묶음이
+                레이더로 열렸고, 꼭짓점이 바깥으로 뻗은 그림은 읽는 쪽에서
+                점수로 읽힌다. 지금 차례는 막대가 먼저다: 막대는 영역마다
+                어느 단계까지 확인됐는지를 한 줄씩 그대로 보여 주고, 레이더는
+                그 열두 줄을 한 장으로 되짚는 자리라 뒤에 작게 선다.
+                **종이에서는 이 묶음이 제 쪽에서 시작한다**(§10): 글과 그림을
+                한 쪽에 몰아 넣으면 그 쪽이 답하는 질문이 둘이 된다 */}
+            {hasRadar || hasBars ? (
+              <div className="rs-figs">
+                <h3 className="pv-h3">같은 것을 그림으로</h3>
                 <p className="rs-note">
-                  이번 응시에서 판단을 물은 영역입니다. 막대의 길이는 물은
-                  축의 수이고, 영역마다 물은 축의 수가 달라 비율로 바꾸지
-                  않습니다.
+                  위에 적은 상태를 그림으로 되짚는 자리입니다. 점수도
+                  순위도 아닙니다.
                 </p>
-                <StageBars model={model} name={(c) => domainName(core, c)} />
-              </>
+                {hasBars ? (
+                  <>
+                    <h4 className="pv-h4">영역별 경험 단계</h4>
+                    <p className="rs-note">
+                      이번 응시에서 판단을 물은 영역입니다. 막대의 길이는 물은
+                      축의 수이고, 영역마다 물은 축의 수가 달라 비율로 바꾸지
+                      않습니다.
+                    </p>
+                    <StageBars model={model} name={(c) => domainName(core, c)} />
+                  </>
+                ) : null}
+                {hasRadar ? (
+                  <div className="rs-fig-aside">
+                    {/* **머리를 하나 더 세우지 않는다.** 레이더는 제 범례에
+                        축 이름과 상태를 글자로 적고 있어서, 위에 이름을 또
+                        붙이면 그림 하나에 머리가 둘이 된다. 종이에서는 그
+                        한 줄이 쪽을 하나 더 열 수 있다 */}
+                    <Radar model={model} name={(c) => domainName(core, c)} />
+                    <ChartNote />
+                  </div>
+                ) : null}
+              </div>
             ) : null}
           </section>
         ) : null}
@@ -1444,6 +1498,10 @@ export default async function V3Result({
             비어 있는 자리와 할 일만 읽는다 */}
         {deep ? (
           <section className="rs-sect" id="evidence">
+            {/* **쪽마다 답하는 질문 하나**(COMMERCIAL FINAL §10). 종이에서만 선다:
+              화면은 절 머리와 첫 화면 넷이 그 일을 이미 하고 있어서, 여기에
+              한 줄을 더 세우면 같은 말이 두 번 선다 */}
+            <p className="rs-q">지원서에서 꺼내 쓸 경험은 무엇인가</p>
             <h2>내가 이미 가진 근거</h2>
             {/* **기본은 먼저 쓸 것 셋까지다**(규격 §13). 전에는 큰 카드 둘에
                 긴 설명과 고르신 항목이 여섯씩 깔려 이 절 하나가 종이 반 장을
@@ -1486,24 +1544,6 @@ export default async function V3Result({
                 ) : null}
               </>
             )}
-            {/* **그 전공에서 흔히 남기는 것**(갈래 계약의 `examples.artifacts`).
-                등록부에 적혀 있었고 어느 화면도 읽지 않았다. 적어 두고 읽지
-                않으면 적어 두지 않은 것과 같다.
-                **판정에 넣지 않는다**: 아래 사슬의 `남긴 결과` 는 그 사람이
-                고른 항목이고, 이 줄은 **그 학과라면 무엇이 그 자리에 들어가는
-                가**를 적은 보기다. 그래서 묶음을 따로 두고 이름도 갈라 둔다 */}
-            {sv.artifacts.length ? (
-              <div className="rs-pack" id="deptartifacts">
-                <h3>{meta.specialization ?? meta.major} 쪽에서 흔히 남기는 것</h3>
-                <p className="rs-note">
-                  이 가운데 하나라도 손에 있으면 위의 사슬에서 남긴 결과 칸이
-                  채워집니다.
-                </p>
-                <ul className="rs-first">
-                  {sv.artifacts.slice(0, 4).map((t) => <li key={t}>{t}</li>)}
-                </ul>
-              </div>
-            ) : null}
             {/* ── Evidence 사슬(규격 §11) ──
                 **항목을 늘어놓는 것으로는 차별점이 서지 않는다.** 이
                 제품이 파는 자리는 한 행동이 지원서 문장이 되기까지의
@@ -1517,25 +1557,31 @@ export default async function V3Result({
                 {chains.map((c) => (
                   <section key={c.code}>
                     <h3>{domainName(core, c.code)}</h3>
+                    {/* **학생이 자기 말로 읽는 네 단계다**(COMMERCIAL FINAL §9).
+                        전에는 칸 이름이 `한 행동` · `직접 정한 기준` ·
+                        `남긴 결과` 였다. 우리 쪽 분류를 줄인 말이라 네 칸이
+                        한 이야기로 읽히지 않았다. 지금은 사람이 묻는 차례
+                        그대로다: 내가 한 일 → 내가 직접 정한 것 → 남아 있는
+                        결과 → 지원서·면접에서 쓸 부분 */}
                     <ol>
                       <li>
-                        <b>한 행동</b>
-                        <span>{c.did ?? "이 영역에서 해 본 일이 아직 적히지 않았습니다"}</span>
+                        <b>내가 한 일</b>
+                        <span>{c.did ?? "이 영역에서 해 본 일을 아직 적지 않으셨습니다"}</span>
                       </li>
                       <li>
-                        <b>직접 정한 기준</b>
-                        <span>{c.decided ?? "조건이나 기준을 직접 정한 자리가 아직 없습니다"}</span>
+                        <b>내가 직접 정한 것</b>
+                        <span>{c.decided ?? "그때 직접 정한 것이 아직 적혀 있지 않습니다"}</span>
                       </li>
                       <li>
-                        <b>남긴 결과</b>
-                        <span>{c.left ?? "남은 산출물이 아직 적히지 않았습니다"}</span>
+                        <b>남아 있는 결과</b>
+                        <span>{c.left ?? "손에 남은 것이 아직 적혀 있지 않습니다"}</span>
                       </li>
                       <li>
-                        <b>지원서·면접</b>
+                        <b>지원서·면접에서 쓸 부분</b>
                         <span>
                           {c.decided && c.left
-                            ? "이 차례 그대로 적으면 지원서 항목과 면접 답변이 됩니다"
-                            : "앞 칸이 채워지면 이 경험을 지원서에서 설명할 수 있습니다"}
+                            ? "앞의 세 줄을 그대로 이으면 지원서 한 문단이 됩니다"
+                            : "앞 줄이 채워지면 이 경험을 지원서에서 설명할 수 있습니다"}
                         </span>
                       </li>
                     </ol>
@@ -1546,6 +1592,26 @@ export default async function V3Result({
                   문장으로 적는 차례는 아래 <a href="#translation">지원서·면접에서 쓸 문장</a>에
                   이어집니다.
                 </p>
+              </div>
+            ) : null}
+            {/* **그 전공에서 흔히 남기는 것**(갈래 계약의 `examples.artifacts`).
+                등록부에 적혀 있었고 어느 화면도 읽지 않았다. 적어 두고 읽지
+                않으면 적어 두지 않은 것과 같다.
+                **판정에 넣지 않는다**: 위 네 단계의 `남아 있는 결과` 는 그
+                사람이 고른 항목이고, 이 줄은 **그 학과라면 무엇이 그 칸에
+                들어가는가**를 적은 보기다. 그래서 묶음을 따로 두고 이름도
+                갈라 둔다. 네 단계 뒤에 두는 까닭은 **그 넷이 한 이야기로
+                이어져 읽혀야** 하기 때문이다(COMMERCIAL FINAL §9) */}
+            {sv.artifacts.length ? (
+              <div className="rs-pack" id="deptartifacts">
+                <h3>{meta.specialization ?? meta.major} 쪽에서 흔히 남기는 것</h3>
+                <p className="rs-note">
+                  이 가운데 하나라도 손에 있으면 위의 ‘남아 있는 결과’ 가
+                  채워집니다.
+                </p>
+                <ul className="rs-first">
+                  {sv.artifacts.slice(0, 4).map((t) => <li key={t}>{t}</li>)}
+                </ul>
               </div>
             ) : null}
             <Disclose label="전체 보기">
@@ -1670,6 +1736,10 @@ export default async function V3Result({
             것을 `비어 있지 않습니다` 라고 적으면 거짓이 된다 */}
         {deep ? (
           <section className="rs-sect" id="gaps">
+            {/* **쪽마다 답하는 질문 하나**(COMMERCIAL FINAL §10). 종이에서만 선다:
+              화면은 절 머리와 첫 화면 넷이 그 일을 이미 하고 있어서, 여기에
+              한 줄을 더 세우면 같은 말이 두 번 선다 */}
+            <p className="rs-q">무엇을 더 채우면 되는가</p>
             <h2>앞으로 채울 것</h2>
             {/* **빈자리가 0 인 까닭이 둘이다**(규격 §8).
                 하나는 다 채운 사람이고, 하나는 **빈자리를 셀 만큼 해 본
@@ -1750,6 +1820,10 @@ export default async function V3Result({
             제목이 이미 `연결하면` 이라고 말하고 있다 */}
         {model.industry_context ? (
           <section className="rs-sect" id="industry">
+            {/* **쪽마다 답하는 질문 하나**(COMMERCIAL FINAL §10). 종이에서만 선다:
+              화면은 절 머리와 첫 화면 넷이 그 일을 이미 하고 있어서, 여기에
+              한 줄을 더 세우면 같은 말이 두 번 선다 */}
+            <p className="rs-q">이 경험이 어느 산업으로 이어지는가</p>
             {/* **산업을 직무라고 적지 않는다.** 반도체는 산업이고 설계는
                 직무다. 한 말로 적으면 둘의 층이 같아 보인다 */}
             <h2>{industryName(model.industry_context.code)} 쪽에 연결하면</h2>
@@ -1807,6 +1881,10 @@ export default async function V3Result({
 
         {/* ── 다음에 할 일 ── */}
         <section className="rs-sect" id="plan">
+            {/* **쪽마다 답하는 질문 하나**(COMMERCIAL FINAL §10). 종이에서만 선다:
+              화면은 절 머리와 첫 화면 넷이 그 일을 이미 하고 있어서, 여기에
+              한 줄을 더 세우면 같은 말이 두 번 선다 */}
+            <p className="rs-q">지금 무엇부터 하면 되는가</p>
           <h2>다음에 할 일</h2>
           {model.actions.length ? (<>
             <p className="rs-note">

@@ -1196,6 +1196,13 @@
   .rs-ev > section:first-child { margin-top: 10px; }
   .rs-when li, .rs-steps li { flex-direction: row; gap: var(--r-s3); }
   .rs-when li > span { width: 104px; }
+  /* **쪽수는 본문이 아니라 여백에서 돌려받는다**(상용화 PHASE 0).
+     할 일 문장이 경험 → 행동 → 결과물 차례로 두 마디가 되면서
+     (COMMERCIAL FINAL §8) 줄마다 한 줄이 늘었다. 담긴 글을 한 줄도
+     덜어내지 않고 줄 사이와 안쪽 여백만 한 단 줄인다 */
+  .rs-when li { padding-top: 9px; padding-bottom: 9px; }
+  .rs-when > h3 { padding-top: 8px; padding-bottom: 8px; }
+  .rs-doit > i { margin-top: 2px; }
   .rs-steps li > span { width: 120px; }
   .rs-steps li { padding: 8px 16px; }
   .rs-domain > header, .rs-why, .rs-intro { padding-left: 18px; padding-right: 18px; }
@@ -1550,4 +1557,48 @@
   .pv-legend { columns: 1; display: block; }
   .pv-legend li { break-inside: avoid; }
   .pv-legend li > span { word-break: keep-all; }
+}
+
+/* ── 그림 묶음(COMMERCIAL FINAL §10·§11) ──
+   **Radar 는 보조 정보다.** 막대가 먼저 서고 레이더는 그 뒤에서 열두 줄을
+   한 장으로 되짚는다. 그래서 작은 머리도 한 단 낮추고(`pv-h4`) 그림 폭도
+   한 단 줄인다: 크게 세우면 꼭짓점이 뻗은 그림이 점수로 읽힌다. */
+.rs-figs { margin-top: var(--r-s6); }
+.pv-h4 {
+  margin: var(--r-s5) 0 var(--r-s2); font-size: var(--r-t-gloss);
+  font-weight: var(--ui-w-sb); color: var(--r-ink-2);
+  letter-spacing: 0.01em;
+}
+.rs-fig-aside { margin-top: var(--r-s5); }
+.rs-fig-aside .pv-radar-svg { max-width: 260px; }
+
+@media print {
+  /* **글과 그림을 한 쪽에 몰아 넣지 않는다**(§10). 열두 영역 목록과
+     레이더와 막대와 안내가 한 쪽에 서면 그 쪽이 답하는 질문이 둘이 된다.
+     **다만 쪽을 새로 열지는 않는다.** `break-before: page` 로 재어 보니
+     그 묶음이 든 쪽이 20%만 차고 학교 종이가 열둘에서 열셋이 됐다(허용
+     10~12). 그림 묶음은 담긴 것이 적어서 제 쪽을 채우지 못한다.
+     **묶음 전체를 붙여 두는 것도 걸렸다**: 전기전자가 열셋, 컴퓨터가
+     열넷이 되고 중간 쪽이 62%·69% 로 비었다. 한 쪽을 넘길 만한 덩이에
+     `avoid` 를 걸면 그 앞 쪽이 빈다 — 이 저장소가 여러 번 겪은 자리다.
+     그래서 **쪼개지면 안 되는 작은 덩이에만 건다**: 레이더와 그 범례가
+     한 자리에 서면 그 쪽이 답하는 질문이 둘로 갈리지 않는다 */
+  .rs-fig-aside { break-inside: avoid; margin-top: 3mm; }
+  /* 그림 묶음의 작은 머리도 종이에서는 한 단 줄인다 */
+  .pv-h4 { margin: 3mm 0 1mm; font-size: 9pt; }
+  .rs-fig-aside .pv-radar-svg { max-width: 46mm; }
+}
+
+/* **쪽마다 답하는 질문 하나**(COMMERCIAL FINAL §10).
+   화면에서는 서지 않는다: 절 머리와 첫 화면 넷이 그 일을 이미 하고 있어서
+   한 줄을 더 세우면 같은 말이 두 번 선다. 종이는 혼자 읽히는 물건이라
+   그 쪽이 무엇에 답하는 쪽인지 적어 둔다. */
+.rs-q { display: none; }
+@media print {
+  .is-report .rs-q {
+    display: block; margin: 0 0 0.5mm;
+    font-size: 8pt; font-weight: var(--ui-w-sb);
+    letter-spacing: 0.02em; color: var(--r-ink-3);
+    break-after: avoid;
+  }
 }

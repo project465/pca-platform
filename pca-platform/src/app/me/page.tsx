@@ -4,7 +4,7 @@ import {
   EXPERIENCE_KINDS, applicationsOf, currentState, experiencesOf, activeCoreOrPick } from "@/lib/me-v3/platform";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import {
-  ZONE_TITLE_KO, actionKo, domainChainKo, gapKo,
+  ZONE_TITLE_KO, actionBriefKo, actionHeadKo, domainChainKo, gapKo,
 } from "@/lib/me-v3/result/text.ko";
 import { Icon, type IconName } from "@/components/sf/icon";
 import { openActions } from "@/lib/me-v3/open-actions";
@@ -72,10 +72,22 @@ export default async function Home() {
         (a.domain ?? "") === (first.td_code ?? "")
         && (a.axis ?? "") === (first.axis_code ?? "")) ?? null
     : null;
+  /**
+   * **Hero 는 머리 한 줄과 설명 두 줄까지다**(BIZ COMMERCIAL FINAL §7).
+   *
+   * 할 일 문장이 경험 → 행동 → 결과물 두 마디가 되면서(§8) 이 자리에
+   * 그대로 들어가니 **큰 글씨가 다섯 줄**이 됐다. 홈에서 가장 강한 칸이
+   * 가장 읽기 어려운 칸이 되는 자리다. 머리에는 할 일의 종류를 적고,
+   * 어느 경험을 가져와 얼마나 적으면 되는지는 아래 줄이 든다.
+   *
+   * **문장을 여기서 짓지 않는다**: 결과지와 `다음 할 일` 이 쓰는 같은
+   * 함수를 부른다. 굳은 결과에서 그 할 일을 못 찾으면(담아 둔 줄만 있는
+   * 경우) 담긴 문장을 그대로 쓴다.
+   */
+  const nowDomain = nowModel?.domain ? domainName(core, nowModel.domain) : "";
   const nowSay = nowModel && st.model
-    ? actionKo(nowModel, nowModel.domain ? domainName(core, nowModel.domain) : "",
-               st.model.stage)
-    : { do: first?.body ?? "" };
+    ? { head: actionHeadKo(nowModel), brief: actionBriefKo(nowModel, nowDomain) }
+    : { head: first?.body ?? "", brief: "" };
   const nowGap = first
     ? st.gaps.find((g) => g.domain === first.td_code
         && (g.axis ?? "") === (first.axis_code ?? ""))
@@ -266,9 +278,12 @@ export default async function Home() {
               않는다**: 결과지와 `다음 할 일` 이 쓰는 같은 함수를 부른다 */}
           <PrimaryActionHero
             tag="지금 할 일"
-            title={first ? nowSay.do : "지금 꼭 해야 하는 일은 없습니다."}
-            /* **까닭을 지어내지 않는다**: 빈자리를 못 찾으면 그 줄이 없다 */
-            why={first ? (nowWhy || undefined) : NO_ACTION_WHY}
+            title={first ? nowSay.head : "지금 꼭 해야 하는 일은 없습니다."}
+            /* **설명 줄은 어느 경험을 가져와 얼마나 적으면 되는지다**(§7).
+               까닭(`nowWhy`)은 `현재 상태` 와 `지금 할 일` 쪽이 든다:
+               홈의 이 칸에 둘을 다 세우면 다시 다섯 줄이 된다.
+               **까닭을 지어내지 않는다**: 둘 다 없으면 그 줄이 없다 */
+            why={first ? (nowSay.brief || nowWhy || undefined) : NO_ACTION_WHY}
             action={
               <Link className="cm-btn is-primary" href="/me/experience/new">
                 {first ? "지금 정리하기 →" : "경험 추가 →"}

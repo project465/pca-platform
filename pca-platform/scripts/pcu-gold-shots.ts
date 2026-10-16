@@ -248,6 +248,58 @@ async function main(): Promise<void> {
     await openAll(m);
     await m.waitForTimeout(300);
     await snap(m, "m5-result-detail", true);
+
+    /**
+     * **손전화 폭 셋에서 답할 수 있는지 재어 본다**(COMMERCIAL FINAL §13).
+     *
+     * 390 하나만 보면 보급형 안드로이드(360)와 큰 iPhone(430)이 빠진다.
+     * 세는 것은 넷이다: 가로로 밀리지 않는가 · **바닥 띠가 마지막 보기를
+     * 덮지 않는가** · 고른 상태가 화면에 또렷한가 · 지금 묻는 질문이
+     * 화면에 있는가. 그림은 폭마다 따로 떠 둔다: 한 폭만 찍으면 접히는
+     * 자리가 폭마다 다른 것을 볼 수 없다
+     */
+    for (const w of [360, 430] as const) {
+      const q = await ctx.newPage();
+      await q.setViewportSize({ width: w, height: 820 });
+      for (const [id, url] of [
+        [`w${w}-interest`, `/v3/${att}?s=${grid}`],
+        [`w${w}-experience`, `/v3/${att}?s=${quest}`],
+      ] as const) {
+        await q.goto(`${BASE}${url}`, { waitUntil: "networkidle" });
+        await q.waitForTimeout(200);
+        const over = await q.evaluate(() =>
+          document.documentElement.scrollWidth > window.innerWidth + 2);
+        ok(`${id} 가로로 밀리지 않는다`, !over);
+        /* **바닥 띠가 답을 가리지 않는다.** 쪽 맨 아래까지 내려서 잰다:
+           위에서 재면 마지막 보기가 아직 창 밖이라 늘 통과한다 */
+        await q.evaluate(() => window.scrollTo({ top: 1e6 }));
+        await q.waitForTimeout(250);
+        const hid = await q.evaluate(() => {
+          const nav = document.querySelector(".qs-nav");
+          if (!nav) return 0;
+          const top = nav.getBoundingClientRect().top;
+          const els = [...document.querySelectorAll("label.qs-opt, .qs-escape")];
+          return els.filter((e) => {
+            if (!(e as HTMLElement).checkVisibility?.()) return false;
+            const r = e.getBoundingClientRect();
+            return r.bottom > top + 1 && r.top < window.innerHeight;
+          }).length;
+        });
+        ok(`${id} 바닥 띠가 보기를 덮지 않는다`, hid === 0, `${hid}개`);
+        const has = await q.locator(".qs-q, h1.qs-h1, .qs-row > .qs-rowq").count();
+        ok(`${id} 묻는 말이 화면에 있다`, has > 0);
+        await snap(q, id, true);
+      }
+      /* 고른 상태가 또렷한가 — 눌러서 `is-on` 이 서는지 본다 */
+      await q.goto(`${BASE}/v3/${att}?s=${quest}`, { waitUntil: "networkidle" });
+      const row = q.locator("fieldset.qs-opts").first();
+      await pickOne(row, 2);
+      await q.waitForTimeout(400);
+      const on = await q.locator("label.qs-opt.is-on").count();
+      ok(`w${w} 고른 보기가 화면에서 또렷하다`, on > 0, `${on}개`);
+      await snap(q, `w${w}-picked`, true);
+      await q.close();
+    }
   } finally {
     await ctx.close(); await browser.close();
     await query(`DELETE FROM users WHERE id = $1::bigint`, [stu.id])

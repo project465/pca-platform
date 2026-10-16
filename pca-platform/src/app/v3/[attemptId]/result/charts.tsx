@@ -254,14 +254,14 @@ export function ActionRoadmap(
     (a.domain ? name(a.domain) : "영역을 가리지 않는 할 일");
   const r: Roadmap = roadmap(model, where);
   const steps: [string, string[], string][] = [
-    ["지금", [...new Set(r.now)], "이번 주에 손댈 수 있는 자리입니다"],
-    ["다음 경험", [...new Set(r.next)], "그다음에 겪어 둘 자리입니다"],
+    ["지금", [...new Set(r.now)], "이번 주에 손댈 수 있는 영역입니다"],
+    ["다음 경험", [...new Set(r.next)], "그다음에 겪어 두면 되는 영역입니다"],
     /* **손님 화면에 안쪽 이름을 적지 않는다.** 규격이 이 칸을
        `남길 Evidence` 로 적었지만, 이 제품은 학생 화면에서 그 말을 늘
        `근거` 로 적어 왔고 `v3:copy` 가 그것을 센다. 한 칸의 사정으로
        공통 검사를 느슨하게 하면 다음 화면이 그 느슨해진 줄을 물려받는다 */
     ["남길 근거", r.leave, "그 경험에서 남겨 둘 것입니다"],
-    ["지원서·면접", r.use.map(name), "꺼내 쓸 수 있는 자리입니다"],
+    ["지원서·면접", r.use.map(name), "지원서에서 꺼내 쓸 수 있는 영역입니다"],
   ];
   return (
     <ol className="pv-road">
