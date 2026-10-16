@@ -123,6 +123,7 @@
     "v3:copy": "tsx scripts/v3-copy-check.ts",
     "v3:items:copy": "tsx scripts/v3-item-copy-check.ts",
     "v3:human": "tsx scripts/v3-human-check.ts",
+    "v3:drift": "tsx scripts/v3-drift-audit.ts",
     "v3:content:qa": "tsx scripts/v3-content-qa.ts",
     "v3:content:audit": "tsx scripts/v3-content-audit.ts",
     "v3:freeze": "tsx scripts/v3-freeze-check.ts",
