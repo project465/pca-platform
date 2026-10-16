@@ -90,6 +90,14 @@ export type ScreenModel = {
    * **첫 질문에만** 담긴다.
    */
   strip?: string;
+  /**
+   * 단계가 바뀐 것을 잇는 한 줄(GOLD MASTER §3).
+   *
+   * `runtime/blocks.ts` 의 `STAGE_LEAD` 를 그대로 옮긴 것이고, 그
+   * 단계의 **첫 화면에만** 담긴다. 묻는 방식이 달라지는 자리에서만
+   * 서고 화면마다 되풀이되지 않는다.
+   */
+  stageLead?: string;
   /** 보기 읽는 법 한 줄. 보기 넷 화면에서만 */
   guide?: string;
   /**

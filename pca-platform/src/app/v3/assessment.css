@@ -592,6 +592,19 @@
  * `overflow: clip` 만 남긴다: `hidden` 은 이 상자를 스크롤 상자로 만들어
  * 안쪽의 `position: sticky` 가 창이 아니라 이 상자를 기준으로 삼는다.
  */
+/**
+ * 단계를 잇는 한 줄(GOLD MASTER §3). **그 단계의 첫 화면에만 선다.**
+ *
+ * 묻는 방식이 바뀌는 자리에서만 서므로 질문보다 세지 않게 둔다: 왼쪽에
+ * 짧은 금 하나와 한 단 작은 글자다. 설명문이 아니라 **길잡이 한 줄**이다.
+ */
+.qs-stagelead {
+  margin: 0 0 var(--q-s4);
+  padding-left: var(--q-s3);
+  border-left: 2px solid var(--q-accent);
+  font-size: var(--q-t-gloss); line-height: 1.6; color: var(--q-ink-2);
+}
+
 .qs-sweep { margin-top: var(--q-s5); overflow: clip; }
 /**
  * 격자 머리. 다섯 칸이 무엇인지 **여기에만** 적는다(규격 §14 · §15).
@@ -635,11 +648,16 @@
   border: 0; background: none; border-radius: 0;
 }
 .qs-swhead .qs-grade[data-n="3"] { grid-template-columns: none; }
+/* **의미가 먼저 읽혀야 한다**(GOLD MASTER §4). 전에는 11px 흐린
+   글씨라 다섯 단계가 잔글씨로 읽히고 칸의 번호만 눈에 들어왔다. 한 단
+   키우고 짙게 두되, 질문보다는 작다 */
 .qs-swhead .qs-grade > span {
   display: inline; padding: 0; min-width: 0;
-  font-size: var(--q-t-meta); color: var(--q-ink-3);
-  text-align: left; word-break: keep-all; line-height: 1.5;
+  font-size: var(--q-t-gloss); color: var(--q-ink-2);
+  text-align: left; word-break: keep-all; line-height: 1.55;
 }
+.qs-swhead .qs-grade > span:first-child,
+.qs-swhead .qs-grade > span:last-child { font-weight: var(--ui-w-md); }
 .qs-swhead .qs-grade > span + span::before {
   content: "·"; margin-right: var(--q-s3); color: var(--q-line);
 }
@@ -655,7 +673,66 @@
      낱말이 척도의 끝으로 읽히는데, 저것은 값이 비어 있다는 뜻이다 */
   content: "척도 밖:"; margin-right: 4px; color: var(--q-ink-3); opacity: .75;
 }
+/**
+ * 다섯 단계의 말을 **고르는 칸 바로 위에** 세운다(GOLD MASTER §4).
+ *
+ * 줄글로 풀어 둔 범례는 뜻이 적혀 있어도 고르는 자리와 떨어져 있어서,
+ * 읽는 사람이 번호만 보고 고른다. 그래서 넓은 화면에서는 이 묶음이
+ * **격자 한 줄과 같은 자리**에 서고 `1 전혀 관심 없음` 이 1번 칸 위에
+ * 온다. **칸마다 낱말을 또 적지 않는다**: 그러면 열두 줄 × 다섯 칸에
+ * 같은 말이 예순 번 서서 표 계산기가 된다(그 자리는 한 번 겪었다).
+ *
+ * 좁은 화면에서는 `display: contents` 라 지금까지와 같은 줄글이다:
+ * 칸 하나가 48px 아래로 내려가면 다섯 낱말이 설 자리가 없다.
+ */
+.qs-swlegend { display: contents; }
+@media (min-width: 760px) {
+  /* 칸을 넓혀야 그 위에 낱말이 두 줄로 선다. **다섯 칸의 값과 자리는
+     그대로이고** 폭만 넓어진다 */
+  .qs-sweep { --q-grade-w: 78px; --q-esc-w: 78px; }
+  .qs-swlegend {
+    display: flex; align-items: flex-end; gap: var(--q-s4);
+  }
+  .qs-swhead .qs-sw-row { display: block; }
+  .qs-swhead .qs-grade {
+    display: grid; grid-template-columns: repeat(5, var(--q-grade-w));
+    width: auto; gap: 0;
+  }
+  .qs-swhead .qs-grade > span {
+    display: block; text-align: center; padding: 0 3px;
+    font-size: var(--q-t-meta); line-height: 1.3;
+  }
+  .qs-swhead .qs-grade > span + span::before { content: none; margin: 0; }
+  /* 척도 밖의 자리도 줄의 `모르겠다` 바로 위에 선다. **두 칸의 폭을
+     같이 못 박아야** 격자가 머리와 어긋나지 않는다 */
+  .qs-grade-esc, .qs-grade-esc.is-head { min-width: var(--q-esc-w); }
+  .qs-grade-esc.is-head {
+    display: block; margin-left: var(--q-s2); text-align: center;
+    line-height: 1.3;
+  }
+  .qs-grade-esc.is-head::before { display: block; margin-right: 0; }
+}
 .qs-sweep > .qs-sw:first-of-type { border-top: 0; }
+.qs-swrow:first-of-type > .qs-sw { border-top: 0; }
+/* 넷째 줄마다 한 번 숨을 돌린다. **이름도 번호도 붙이지 않는다**:
+   열두 영역에는 차례가 없고, 번호를 붙이면 순위로 읽힌다 */
+.qs-swrow.is-break { margin-top: var(--q-s4); }
+.qs-swrow.is-break > .qs-sw { border-top-color: var(--q-line); }
+/* 답한 줄은 질문 쪽을 한 단 눌러 **남은 줄이 먼저 눈에 들어오게** 한다 */
+.qs-sw.is-done > .qs-sw-row { color: var(--q-ink-2); }
+/* 고른 칸 아래의 말. 그 칸 하나에만 선다 */
+.qs-grade-w {
+  display: block; margin-top: 1px;
+  font-size: 10.5px; line-height: 1.2; font-weight: var(--ui-w-md);
+  color: var(--q-accent-ink, var(--q-accent)); white-space: nowrap;
+}
+/* 이 격자에서 답한 줄 수. **진행률이 아니다**: 머리띠의 진행률은 검사
+   전체를 세고 이 수는 지금 보이는 열두 줄만 센다 */
+.qs-swcount {
+  margin: var(--q-s2) 0 0; text-align: right;
+  font-size: var(--q-t-meta); color: var(--q-ink-3);
+}
+.qs-swcount b { font-size: var(--q-t-gloss); color: var(--q-ink); }
 
 .qs-sw {
   display: flex; align-items: center; gap: var(--q-s4);
@@ -839,6 +916,10 @@
     min-height: 56px; min-width: 0; padding: var(--q-s1) 2px;
     font-size: var(--q-t-meta);
   }
+  /* 고른 칸의 말이 칸을 넘지 않게 두 줄로 접는다. **줄이지 않는다**:
+     좁은 화면에서는 격자 머리의 다섯 단계가 줄글로 풀려 칸과 떨어져
+     있으므로, 고른 자리의 이 한 줄이 그 칸의 뜻을 든다 */
+  .qs-grade-w { white-space: normal; font-size: 10px; }
   /* 칸에는 번호만 선다. 그 번호가 머리의 몇째 단계인지를 가리키므로
      **줄이지 않는다** */
   .qs-grade-n { font-size: var(--q-t-sub); }
@@ -1233,6 +1314,36 @@
  * 검사가 네 전공을 안다` 이고, 흰 카드로 세우면 안내 셋과 무게가 같아져
  * 읽는 차례가 사라진다.
  */
+/**
+ * 시작 전에 보여 주는 **단계 차례**(GOLD MASTER §3).
+ *
+ * 카드로 세우지 않는다: 테를 두르면 눌러서 들어가는 자리로 읽히는데
+ * 여기는 읽고 지나가는 줄이다. 번호와 이름이 먼저, 그 단계에서 무엇을
+ * 묻는지가 한 단 작게 뒤따른다.
+ */
+.qs-steps-pre { margin: var(--q-s5) 0 0; }
+.qs-steps-pre h2 {
+  margin: 0 0 var(--q-s3); font-size: var(--q-t-gloss);
+  font-weight: var(--ui-w-sb); color: var(--q-ink-3);
+  letter-spacing: .02em;
+}
+.qs-steps-pre ol {
+  margin: 0; padding: 0; list-style: none;
+  display: grid; gap: var(--q-s3);
+}
+.qs-steps-pre li {
+  display: grid; gap: 2px;
+  padding-left: var(--q-s3);
+  border-left: 2px solid var(--q-line);
+}
+.qs-steps-pre li b {
+  font-size: var(--q-t-opt); font-weight: var(--ui-w-sb); color: var(--q-ink);
+}
+.qs-steps-pre li span {
+  font-size: var(--q-t-gloss); color: var(--q-ink-2); line-height: 1.6;
+  word-break: keep-all;
+}
+
 .qs-major {
   margin: var(--q-s4) 0 0; padding: var(--q-s3) var(--q-s4) var(--q-s4);
   background: var(--q-accent-soft); border-radius: var(--q-r);

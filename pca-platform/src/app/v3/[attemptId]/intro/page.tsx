@@ -5,6 +5,9 @@ import { requireUser } from "@/lib/session";
 import { attemptOf, estimate } from "@/lib/me-v3/runtime/session";
 import { core } from "@/lib/me-v3/core-registry";
 import { specView } from "@/lib/me-v3/result/spec-view";
+import { resultMeta } from "@/lib/me-v3/result/meta";
+import { planFor } from "@/lib/me-v3/runtime/session";
+import { STAGE_LEAD, STAGES } from "@/lib/me-v3/runtime/blocks";
 import { TIER_WHAT } from "../../tier-text";
 
 export const metadata = { title: "검사 시작 전 안내 · CareerMatri" };
@@ -72,6 +75,28 @@ export default async function V3Intro({
    */
   const sv = specView(a.core_code, a.specialization_code);
 
+  /**
+   * **누구의 검사인지를 첫 줄에 적는다**(GOLD MASTER §9·§12).
+   *
+   * 결과지의 첫 줄과 같은 자리(`resultMeta`)에서 읽는다: 학교와 학과를
+   * 두 곳에서 따로 만들면 어느 날 둘이 갈린다.
+   */
+  const meta = await resultMeta(attemptId, a.core_code);
+
+  /**
+   * **이 응시가 실제로 지나는 단계**를 미리 보여 준다(GOLD MASTER §3).
+   *
+   * 관심을 묻는 자리와 해 본 일을 묻는 자리와 남긴 것을 고르는 자리는
+   * 응답 방식이 다르다. 시작 전에 그 차례를 한 번 보여 주면, 중간에
+   * 화면이 바뀔 때 **다른 검사가 시작됐다**고 읽지 않는다.
+   *
+   * **없는 단계를 지어내지 않는다**: routing 이 연 단계만 센다.
+   */
+  const plan = await planFor(a);
+  const steps = STAGES
+    .filter((x) => (plan.perStage[x.code] ?? 0) > 0 && STAGE_LEAD[x.code])
+    .map((x) => ({ label: x.label, lead: STAGE_LEAD[x.code] }));
+
   const est = estimate(a.core_code, a.education_stage, a.grad_field);
   const low = est.responses[a.tier] ?? 0;
   const high = a.tier === "BASIC" ? low
@@ -88,13 +113,21 @@ export default async function V3Intro({
         <div className="qs-head-in">
           <div className="qs-top" style={{ paddingBottom: 14 }}>
             <span className="qs-brand"><BrandMark size={20} />CareerMatri</span>
-            <span className="qs-tier">{a.tier} · <b>{t.label}</b></span>
+            {/* **학교로 들어온 응시에는 등급을 적지 않는다**(GOLD MASTER §19).
+                학교 계약은 등급을 고르지 않고 서버가 PRO 로 연다. 고를 수
+                없는 값을 머리에 적으면 학생이 `나는 어느 등급을 받은
+                것인가` 를 묻게 된다. 안쪽 응시 줄에는 그대로 남는다 */}
+            {meta.school
+              ? <span className="qs-tier"><b>{t.label}</b></span>
+              : <span className="qs-tier">{a.tier} · <b>{t.label}</b></span>}
           </div>
         </div>
       </header>
 
       <main className="qs-intro">
-        <p className="qs-kicker">{coreName} CareerMatri</p>
+        <p className="qs-kicker">
+          {[meta.school, meta.department ?? coreName].filter(Boolean).join(" · ")}
+        </p>
         <h1 className="qs-h1">검사를 시작하기 전에</h1>
         <p className="qs-lead">
           이 검사는 전공지식 자체를 시험하는 문제가 아닙니다. 지금의 관심과
@@ -112,6 +145,20 @@ export default async function V3Intro({
             <ul>
               {sv.scene.slice(0, 3).map((t) => <li key={t}>{t}</li>)}
             </ul>
+          </section>
+        ) : null}
+
+        {steps.length > 2 ? (
+          <section className="qs-steps-pre">
+            <h2>이런 차례로 묻습니다</h2>
+            <ol>
+              {steps.map((x, i) => (
+                <li key={x.label}>
+                  <b>{`${i + 1}. ${x.label}`}</b>
+                  <span>{x.lead}</span>
+                </li>
+              ))}
+            </ol>
           </section>
         ) : null}
 

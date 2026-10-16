@@ -192,13 +192,26 @@ export async function walk(
     if (!(await go.count())) return { screens, done: false, covered, heads };
     const before = p.url();
     await go.first().click({ force: true }).catch(() => undefined);
-    await p.waitForTimeout(400);
-    await p.waitForLoadState("networkidle");
+    /* **넘어간 것을 시각으로 기다리지 않는다.** 전에는 0.4초를 센 뒤 바로
+       다음 화면을 눌렀고, 그러면 아직 가는 중인 이동이 다음 클릭에 끊겨
+       (`net::ERR_ABORTED`) 라우터가 어긋난 자리에서 **아무것도 눌리지 않는
+       화면**이 섰다. 같은 응시가 한 번은 끝까지 가고 한 번은 중간에 멈춰서,
+       걸린 까닭을 `화면이 멈췄다` 로 거꾸로 읽게 된다 */
+    await p.waitForURL((u) => u.href !== before, { timeout: 15000 }).catch(() => undefined);
+    await p.waitForLoadState("networkidle").catch(() => undefined);
     if (/\/result/.test(p.url())) return { screens, done: true, covered, heads };
     if (p.url() === before) {
       /* **같은 자리에서 맴돌면 그만둔다.** 사백 번을 돌고 나서 `끝까지 가지
          못했다` 만 적으면 어디서 막혔는지 모른다. 세 번 더 보고 멈춘다 */
       stuck += 1;
+      /* **어긋난 라우터는 한 번 다시 열면 풀린다.** 끊긴 이동 뒤에는 글이
+         서 있는데 React 가 그 쪽을 쥐고 있지 않아 보기도 단추도 눌리지
+         않는다. 다시 열어도 **답은 서버에 있으므로 고른 것이 사라지지
+         않는다** */
+      if (stuck === 1) {
+        await p.reload({ waitUntil: "networkidle" }).catch(() => undefined);
+        continue;
+      }
       if (stuck < 3) continue;
       /* **어디서 막혔는지 적지 않으면 다음 사람이 처음부터 다시 찾는다** */
       if (process.env.WALK_DEBUG) {

@@ -42,7 +42,7 @@ const FIELD_AXIS: { field: keyof Experience & string; axis: Axis; what: string }
   { field: "decisions", axis: "J3", what: "직접 정한 것" },
   { field: "artifacts", axis: "J5", what: "남긴 것" },
   { field: "verifications", axis: "J6", what: "견주어 확인한 것" },
-  { field: "used_where", axis: "J8", what: "쓰인 자리" },
+  { field: "used_where", axis: "J8", what: "쓰인 곳" },
 ];
 
 /** 경험으로 올라갈 수 있는 가장 높은 자리. **소유는 검사에서만 선다** */

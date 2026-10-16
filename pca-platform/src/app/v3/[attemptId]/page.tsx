@@ -10,9 +10,10 @@ import {
   industryChoices, industryGloss, itemOf, menuContextOf, moveTo, optionGuidance, orgChoices,
   roleChoices, viewOf, wordingOf,
 } from "@/lib/me-v3/runtime/session";
+import { STAGE_LEAD } from "@/lib/me-v3/runtime/blocks";
 import type { Field, Group, PickKind, ProgressModel, ScreenModel } from "./model";
 import {
-  INDUSTRY_HINT, ORG_HINT, OWNERSHIP_EXAMPLE, OWNERSHIP_HELP, OWNERSHIP_LABEL,
+  INDUSTRY_HINT, ORG_HINT, OWNERSHIP_EXAMPLE, OWNERSHIP_LABEL, OWNERSHIP_SHORT,
   ROLE_HINT, TIER_WHAT,
 } from "../tier-text";
 import Screen from "./screen";
@@ -82,8 +83,10 @@ export default async function V3Screen({
          긴 뜻풀이는 `보기가 어떻게 갈리나요` 로 내린다. 처음 만나는
          화면에서는 펼쳐 두고 그 뒤에는 접어 둔다: 네 줄을 보기마다 깔아
          두면 선별 등급에서만 스물여덟 화면에 똑같은 네 줄이 선다 */
-      optionLabel: control.kind === "level" ? OWNERSHIP_LABEL : undefined,
-      optionHelp: control.kind === "level" ? OWNERSHIP_HELP : undefined,
+      /* **첫 줄은 두 낱말, 아래 줄이 정확한 뜻**(GOLD MASTER §6).
+         전에는 긴 쪽이 첫 줄이라 둘째와 넷째가 끝까지 읽어야 갈렸다 */
+      optionLabel: control.kind === "level" ? OWNERSHIP_SHORT : undefined,
+      optionHelp: control.kind === "level" ? OWNERSHIP_LABEL : undefined,
       /* 보기 넷의 뜻은 `ownership.ts` 하나에서 온다. 화면이 따로 적으면
          어느 날 채점과 다른 말을 한다 */
       /* **뜻풀이 뒤에 그 자리에서만 맞는 장면을 하나 붙인다**(규격 §6).
@@ -202,6 +205,11 @@ export default async function V3Screen({
     help: sc.help,
     term: sc.term,
     strip: sc.strip,
+    /* **단계의 첫 화면에만** 선다(GOLD MASTER §3). 화면마다 세우면 그
+       줄이 새 틀이 되고, 아예 없으면 관심을 묻다가 경험을 묻는 자리에서
+       응시자가 다른 검사로 넘어온 줄 안다 */
+    stageLead: v.plan.screens.findIndex((x) => x.stage === sc.stage) === v.index
+      ? (STAGE_LEAD[sc.stage] || undefined) : undefined,
     /* **보기 읽는 법을 화면마다 되풀이하지 않는다.** 선별 등급에서만
        스물여덟 화면에 같은 두 줄이 섰고, 바로 아래 `보기가 어떻게
        갈리나요` 와 같은 말이라 한 화면에 설명이 두 번 선 셈이었다.

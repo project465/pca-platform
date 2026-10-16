@@ -663,7 +663,14 @@ async function main(): Promise<void> {
       for (const ok of DOMAIN_OK) t = t.replace(ok, "");
       for (const re of JARGON) {
         const m = re.exec(t);
-        if (m) jargon.push(`${path}: ${m[0]}`);
+        /* **낱말만 적으면 다음 사람이 처음부터 다시 찾는다.** 그 말이 선
+           자리를 앞뒤로 조금 함께 적는다: 어느 문장인지 알아야 고칠
+           자리를 집는다 */
+        if (m) {
+          const i = m.index ?? 0;
+          const near = t.slice(Math.max(0, i - 24), i + m[0].length + 24).trim();
+          jargon.push(`${path}: ${m[0]} … ${near}`);
+        }
       }
     }
     ok("손님 화면에 우리 쪽 비유가 없다", jargon.length === 0,

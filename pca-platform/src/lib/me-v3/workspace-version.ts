@@ -83,7 +83,7 @@
  * 보낸다**: 개인 회원의 길로 들어가면 응시에 학교와 학과가 적히지 않아
  * 담당자 화면이 그 학생을 세지 못한다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V32";
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V33";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -104,7 +104,7 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V32";
  * (`학교에서 받은 계정입니다` · `학과 확인하고 시작하기`). 학교 학생이
  * 개인 회원의 길로 들어가면 담당자 화면이 그 학생을 세지 못한다.
  */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.21";
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.23";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

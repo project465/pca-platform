@@ -349,6 +349,10 @@ export default function Screen({
             것이 `이제 ~를 묻습니다` 와 영역 이름 목록뿐이었다. 영역 이름은
             **바로 다음 화면의 머리말에 다시 적혀 있어서**, 읽을 것이 없는
             화면에 `계속` 을 세 번 더 누르게 했다. 묶음의 첫 질문에만 선다 */}
+        {/* **단계가 바뀐 자리를 한 줄로 잇는다**(GOLD MASTER §3).
+            관심을 묻다가 경험을 묻는 자리에서 화면만 바뀌면 응시자는
+            다른 검사가 시작된 줄 안다. 그 단계의 첫 화면에만 선다 */}
+        {s.stageLead ? <p className="qs-stagelead">{s.stageLead}</p> : null}
         {s.strip ? <p className="qs-ctx">{s.strip}</p> : null}
         {s.eyebrow ? <p className="qs-eyebrow">{s.eyebrow}</p> : null}
         {s.subject ? <p className="qs-subject">{s.subject}</p> : null}
@@ -494,9 +498,18 @@ export default function Screen({
                 칸이 한 자 위에 있는 것으로 읽히지 않는다. 여기에 **묻는
                 말에 맞춘 온전한 다섯 단계**를 한 번 적는다. 문항 은행의
                 문면 그대로이고 채점에는 쓰이지 않는다 */}
-            <SweepHead f={s.fields[0]} />
-            {s.fields.map((f) => (
-              <Sweep key={f.itemId} f={f} value={vals[f.itemId]} onPick={setAnswer} />
+            <SweepHead f={s.fields[0]} all={s.fields.length}
+              ans={s.fields.filter((f) => vals[f.itemId] !== null
+                && vals[f.itemId] !== undefined).length} />
+            {/* **열두 줄을 넷씩 묶는다**(GOLD MASTER §5). 한 덩이로 쌓으면
+                긴 표로 읽히고, 줄마다 테를 돌리면 다시 격자가 된다. 묶음
+                사이에 여백 한 번을 두는 것이 전부이고 **묶음에 이름이나
+                번호를 붙이지 않는다**: 열두 영역에는 차례가 없다 */}
+            {s.fields.map((f, i) => (
+              <div key={f.itemId}
+                className={`qs-swrow${i > 0 && i % 4 === 0 ? " is-break" : ""}`}>
+                <Sweep f={f} value={vals[f.itemId]} onPick={setAnswer} />
+              </div>
             ))}
           </div>
         ) : null}
@@ -778,9 +791,17 @@ function One({
               {/* **눈금을 두지 않는다.** 한 칸씩 올라가는 막대를 보기 옆에
                   두니 `1점 · 2점 · 3점 · 4점` 으로 읽혔다. 이 넷은 누가
                   정했는가의 단계이고 점수가 아니다 */}
+              {/* **긴 뜻풀이를 질문마다 되풀이하지 않는다**(GOLD MASTER §6).
+                  한 화면에 질문이 둘이면 같은 네 줄이 여덟 번 서고, 응시자는
+                  이 보기를 백 번 가까이 본다. 처음 만나는 사다리 화면에서만
+                  보기 옆에 세우고 그 뒤에는 **짧은 꼬리표만** 남긴다.
+                  자세한 뜻은 아래 `보기가 어떻게 갈리나요` 가 늘 들고 있고,
+                  줄인 말과 긴 말이 같은 자리(`해본 적 없음`)에서는 긴 쪽을
+                  적지 않는다 */}
               <span className="qs-body">
                 <span className="qs-label">{label}</span>
-                {f.optionHelp?.[i] ? <span className="qs-gloss">{f.optionHelp[i]}</span> : null}
+                {f.optionFoldOpen && f.optionHelp?.[i] && f.optionHelp[i] !== label
+                  ? <span className="qs-gloss">{f.optionHelp[i]}</span> : null}
               </span>
             </label>
           ))}
@@ -843,7 +864,7 @@ function One({
 /* ── 훑기 한 줄. 왼쪽에 영역, 오른쪽에 보기 셋 ──────────────────── */
 
 /** 격자 머리. 다섯 칸의 뜻을 **화면에 한 번** 적는다(규격 §3) */
-function SweepHead({ f }: { f: Field }) {
+function SweepHead({ f, ans, all }: { f: Field; ans?: number; all?: number }) {
   const c = f.control;
   if (c.kind !== "steps") return null;
   /**
@@ -857,8 +878,15 @@ function SweepHead({ f }: { f: Field }) {
   const steps = c.options.filter((o) => o.value !== null);
   const esc = c.options.find((o) => o.value === null);
   return (
-    <div className="qs-swhead" aria-hidden>
-      <span className="qs-sw-row" />
+    <div className="qs-swhead">
+      {/* **다섯 단계의 말을 칸 위에 세운다**(GOLD MASTER §4). 넓은 화면
+          에서는 이 묶음이 격자 한 줄과 같은 자리에 서서 `전혀 관심 없음`
+          이 1번 칸 위에, `매우 관심 있음` 이 5번 칸 위에 온다. 줄글로
+          풀어 두면 뜻은 적혀 있어도 **고르는 자리와 떨어져 있어** 읽는
+          사람이 번호만 보고 고른다. 좁은 화면에서는 `display: contents`
+          라 지금까지와 같은 줄글이다 */}
+      <div className="qs-swlegend">
+      <span className="qs-sw-row" aria-hidden />
       {/* **다섯 칸의 뜻은 여기에만 적는다**(규격 §14).
           `1 전혀 관심 없음` 에서 `5 매우 관심 있음` 까지, 재는 축의 말
           그대로다. 칸 안에는 번호만 들어가고 그 번호가 이 머리의 몇째
@@ -872,7 +900,20 @@ function SweepHead({ f }: { f: Field }) {
         {steps.map((o) => <span key={o.label}>{o.full}</span>)}
       </div>
       {esc ? <span className="qs-grade-esc is-head">{esc.short}</span> : null}
+      </div>
+      {typeof ans === "number" && typeof all === "number"
+        ? <SweepCount done={ans} all={all} /> : null}
     </div>
+  );
+}
+
+/** 이 화면에서 답한 줄 수. **진행률이 아니라 이 격자 안의 수다** */
+function SweepCount({ done, all }: { done: number; all: number }) {
+  return (
+    <p className="qs-swcount" aria-live="polite">
+      <b>{done}</b>
+      <span>{` / ${all}줄 답함`}</span>
+    </p>
   );
 }
 
@@ -910,7 +951,7 @@ function Sweep({
       ? { kind: "exposure", value: o.value }
       : { kind: "scale5", value: o.value });
   return (
-    <fieldset className="qs-sw">
+    <fieldset className={`qs-sw${value === null ? "" : " is-done"}`}>
       <legend>{f.label ?? ""}</legend>
       <span className="qs-sw-row" aria-hidden>{f.label}</span>
       <div className="qs-grade" data-n={steps.length}>
@@ -935,7 +976,17 @@ function Sweep({
               <input type="radio" name={f.itemId} checked={on}
                 aria-label={`${f.label ?? ""} · ${o.full}`} onChange={pick(o)} />
               {num
-                ? <b className="qs-grade-n" aria-hidden>{o.value}</b>
+                ? (
+                  <>
+                    <b className="qs-grade-n" aria-hidden>{o.value}</b>
+                    {/* **고른 칸에만 그 단계의 말을 적는다**(GOLD MASTER
+                        §4). 칸마다 적으면 열두 줄 × 다섯 칸에 같은 낱말이
+                        예순 번 서서 표 계산기가 되고, 아무 데도 안 적으면
+                        번호만 남아 **숫자가 주인공인 설문지**가 된다.
+                        고른 자리 하나에만 서므로 한 화면에 많아야 열둘이다 */}
+                    {on ? <span className="qs-grade-w" aria-hidden>{o.short}</span> : null}
+                  </>
+                )
                 : <span>{o.short}</span>}
             </label>
           );

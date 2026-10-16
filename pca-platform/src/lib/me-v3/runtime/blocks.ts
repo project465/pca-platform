@@ -39,6 +39,31 @@ export const STAGES = [
 ] as const;
 export type StageCode = typeof STAGES[number]["code"];
 
+/**
+ * 단계가 바뀔 때 **왜 묻는 방식이 달라지는지** 한 줄로 잇는다
+ * (GOLD MASTER §3).
+ *
+ * 관심을 묻는 자리와 해 본 일을 묻는 자리와 남긴 것을 고르는 자리는
+ * 재는 것이 달라서 응답 방식도 다르다. 그 자체는 맞는 설계인데, 아무
+ * 말 없이 화면만 바뀌면 응시자는 **갑자기 다른 검사가 시작됐다**고
+ * 읽는다. 그래서 그 단계의 **첫 화면에만** 한 줄이 선다.
+ *
+ * **없는 단계를 지어내지 않는다.** 여기 적힌 것은 전부 `STAGES` 에
+ * 이미 있는 자리이고, routing 이 그 단계를 열지 않으면 그 줄도 서지
+ * 않는다. 문항과 보기와 저장되는 값은 한 글자도 바뀌지 않는다.
+ */
+export const STAGE_LEAD: Record<StageCode, string> = {
+  PROFILE: "먼저 어디에서 무엇을 공부하고 있는지만 확인합니다.",
+  FIELD: "관심이 가는 산업을 고르고, 그 산업에서 하는 일을 먼저 봅니다.",
+  EXPLORE: "먼저 어떤 일을 해보고 싶은지, 해본 적은 있는지 가볍게 살펴봅니다.",
+  JUDGE: "이제 실제로 해본 경험을 확인합니다.",
+  DEEP: "해보신 자리를 조금 더 자세히 묻습니다.",
+  EVIDENCE: "마지막으로 그때 무엇을 남겼는지 고릅니다.",
+  PACK: "고르신 산업과 직무에서 같은 판단을 한 번 더 봅니다.",
+  TRANSLATE: "답하신 것을 지원서에 쓸 말로 옮깁니다.",
+  DONE: "",
+};
+
 export type ScreenKind =
   | "profile" | "sweep" | "single" | "pair" | "group" | "checklist" | "scene"
   | "pick-industry" | "pick-role" | "pick-org" | "transition" | "done";

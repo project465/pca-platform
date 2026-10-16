@@ -61,7 +61,7 @@ export const CM_GROUPS: CmNavGroup[] = [
        * 안에 두었더니 결과와 경험 사이에 끼어, 홈에서 권한 그 한 가지를
        * 메뉴에서 다시 찾을 때 지나가는 줄이 되었다.
        */
-      { href: "/me/next", label: "다음 할 일", icon: "spark" },
+      { href: "/me/next", label: "지금 할 일", icon: "spark" },
     ],
   },
   {

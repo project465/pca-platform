@@ -15,6 +15,17 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 PORT="${1:-3100}"
 
+# **이미 누가 그 포트를 잡고 있으면 그 자리에서 멈춘다.**
+#
+# 아래에서 `var/.serving-build` 에 이 빌드를 적는데, 띄우기가 `EADDRINUSE`
+# 로 실패해도 그 줄은 **이미 적혀 있다.** 그러면 `assertFreshServer()` 가
+# 통과하고 대답하는 쪽은 지난 빌드다. 한 번 그렇게 속아 멀쩡한 화면을
+# 500 으로 적었다. 표식을 적기 전에 먼저 두드린다.
+if curl -s --noproxy '*' --max-time 2 -o /dev/null "http://127.0.0.1:$PORT/api/health"; then
+  echo "이미 http://127.0.0.1:$PORT 에 서버가 떠 있습니다. 그 서버를 먼저 끄십시오."
+  exit 1
+fi
+
 [ -f .next/standalone/server.js ] || { echo "먼저 npm run build 를 돌리십시오."; exit 1; }
 rm -rf .next/standalone/.next/static .next/standalone/public
 cp -r .next/static .next/standalone/.next/static

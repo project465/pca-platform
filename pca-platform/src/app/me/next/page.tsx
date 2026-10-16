@@ -13,7 +13,7 @@ import {
 } from "../ui";
 import { moveAction, pullActions } from "./actions";
 
-export const metadata = { title: "다음 할 일 · CareerMatri" };
+export const metadata = { title: "지금 할 일 · CareerMatri" };
 
 /**
  * 다음 할 일.
@@ -166,7 +166,7 @@ export default async function Next(
   };
 
   return (
-    <CmShell active="/me/next" title="다음 할 일" read
+    <CmShell active="/me/next" title="지금 할 일" read
       major={majorNameOf(st.core)}
       bar={st.model
         ? <Link className="cm-btn" href="/me/experience/new">+ 경험 추가</Link>

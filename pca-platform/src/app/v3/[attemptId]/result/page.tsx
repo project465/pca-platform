@@ -723,6 +723,10 @@ export default async function V3Result({
   const focus = model.domains.filter((d) => model.overview.focus.includes(d.code));
   const compare = model.domains.filter((d) => model.overview.compare.includes(d.code));
   const deep = model.limits.deep_axes;
+  /* 첫 칸이 비었을 때 돌려줄 자리. **지어내지 않는다**: 그 영역에서
+     `해 본 적이 있다` 고 고르신 줄만 모은다 */
+  const tried = model.domains.filter(
+    (d) => d.experience && d.experience !== "NONE");
   /* **그릴 것이 없으면 그 절의 머리와 안내도 세우지 않는다.** `Radar` 는
      판단을 물은 영역이 셋 미만이면 `null` 이고 `StageBars` 는 줄이 없으면
      `null` 인데, 머리글과 `막대의 길이는 …` 안내는 그대로 서 있었다.
@@ -1135,7 +1139,22 @@ export default async function V3Result({
                     : "해 본 적이 있습니다"}
                 </p>
               )}
-            </>) : <p className="none">응답만으로는 영역 사이에 차이가 생기지 않았습니다</p>}
+            </>) : tried.length ? (<>
+              {/* **척도 이야기를 이 칸에 적지 않는다**(GOLD MASTER §11·§13).
+                  바로 위 한 문장이 이미 `영역 사이의 차이가 크지 않다` 를
+                  적고 있어서, 이 칸이 같은 말을 또 하면 **넷 가운데 첫
+                  칸이 결과 대신 자(尺) 이야기**를 한다. 이 칸이 답하는 것은
+                  `내가 이미 해본 것` 이므로, 해 본 적이 있다고 답하신 영역을
+                  그대로 돌려준다 */}
+              <p>{tried.slice(0, 3).map((d) => domainName(core, d.code)).join(" · ")}</p>
+              <p style={{ fontWeight: 400 }}>
+                해 본 적이 있다고 답하신 영역입니다
+              </p>
+            </>) : (
+              <p className="none">
+                해 본 적이 있다고 답하신 영역이 아직 없습니다
+              </p>
+            )}
           </div>
 
           {/* ② 근거가 남은 것(규격 §8). **수를 앞세우지 않는다**: 몇
@@ -1225,53 +1244,21 @@ export default async function V3Result({
             상태와 개수다. 적성 순위도 직무 적합도도 만들지 않는다 */}
         {deep ? (
           <section className="rs-sect" id="spread">
-            {hasRadar || hasBars ? (
-              <>
-                <h2>경험·근거 분포</h2>
-                <p className="rs-note">
-                  어느 영역에서 무엇까지 확인됐는지를 한눈에 봅니다.
-                </p>
-              </>
-            ) : null}
-            {hasRadar ? (
-              <>
-                <Radar model={model} name={(c) => domainName(core, c)} />
-                <ChartNote />
-              </>
-            ) : null}
-            {/* **그 전공이 먼저 보는 영역**(갈래 계약의 `domain_emphasis.lead`).
-                등록부에 적혀 있고 **읽는 자리에 한 글자도 닿지 않던 층**이다.
-                적는 것은 읽는 차례까지이고 축 수준과 묶음과 확인된 축 개수에
-                들어가지 않는다: 이 줄이 없으면 같은 Core 를 쓰는 학과 둘이
-                열두 영역을 같은 무게로 읽는다 */}
-            {sv.domainLead.length ? (
-              <p className="rs-note">
-                <b>{meta.specialization ?? meta.major} 쪽에서 먼저 보는 영역</b>
-                {" — "}
-                {sv.domainLead.map((c) => domainName(core, c)).join(" · ")}
-                {hasBars ? ". 아래 막대에서 그 영역을 먼저 보시면 됩니다."
-                  : ". 아래 묶음에서 그 영역을 먼저 보시면 됩니다."}
-              </p>
-            ) : null}
-            {hasBars ? (
-              <>
-                <h3 className="pv-h3">영역별 경험 단계</h3>
-                <p className="rs-note">
-                  이번 응시에서 판단을 물은 영역입니다. 막대의 길이는 물은
-                  축의 수이고, 영역마다 물은 축의 수가 달라 비율로 바꾸지
-                  않습니다.
-                </p>
-                <StageBars model={model} name={(c) => domainName(core, c)} />
-              </>
-            ) : null}
+          {/* **글이 먼저고 그림이 뒤다**(GOLD MASTER §14·§15).
+              전에는 이 절이 레이더로 열려서, 결과를 연 사람이 가장
+              먼저 보는 본문이 **분포 그림**이었다. 그림은 재는 층이
+              아니라 읽기 쉽게 다시 그리는 층이라 주인공이 아니다.
+              지금 차례는 열두 영역이 지금 어디에 있는가를 글로 먼저
+              적고, 그 다음에 같은 것을 그림으로 되짚는다 */}
           {/* ── 열두 영역 ──
               **네 축만 물은 응시에 근거 묶음을 보여주지 않는다.** 묶음 이름에
               `근거를 더 만들어야 하는 영역` 이 들어 있어서, 근거를 묻지 않은
               응시에 그대로 세우면 재지 않은 것을 판정으로 적는 셈이다 */}
           <div className="rs-sub" id="zones">
-            {/* **절을 둘로 읽히게 두지 않는다.** 이 덩이는 위 그래프가
-                말한 것을 글자로 되짚는 자리라 한 단 아래에 선다 */}
-            <h3 className="pv-h3">전체 기술영역이 지금 어디에 있는가</h3>
+            {/* **절을 둘로 읽히게 두지 않는다.** 아래 그림이 이 덩이를
+                그림으로 되짚는 자리라, 둘이 한 절 안에 선다 */}
+            {/* 이 절의 머리다. **그림이 아니라 글이 절을 연다**(§15) */}
+            <h2>전체 기술영역이 지금 어디에 있는가</h2>
             <p className="rs-note">
               {deep
                 ? "순위가 아니라 현재 상태를 보여드립니다."
@@ -1403,6 +1390,46 @@ export default async function V3Result({
               </Disclose>
             ) : null}
           </div>
+            {hasRadar || hasBars ? (
+              <>
+                <h3 className="pv-h3">같은 것을 그림으로</h3>
+                <p className="rs-note">
+                  위에 적은 상태를 한 장으로 되짚는 자리입니다. 점수도
+                  순위도 아닙니다.
+                </p>
+              </>
+            ) : null}
+            {hasRadar ? (
+              <>
+                <Radar model={model} name={(c) => domainName(core, c)} />
+                <ChartNote />
+              </>
+            ) : null}
+            {/* **그 전공이 먼저 보는 영역**(갈래 계약의 `domain_emphasis.lead`).
+                등록부에 적혀 있고 **읽는 자리에 한 글자도 닿지 않던 층**이다.
+                적는 것은 읽는 차례까지이고 축 수준과 묶음과 확인된 축 개수에
+                들어가지 않는다: 이 줄이 없으면 같은 Core 를 쓰는 학과 둘이
+                열두 영역을 같은 무게로 읽는다 */}
+            {sv.domainLead.length ? (
+              <p className="rs-note">
+                <b>{meta.specialization ?? meta.major} 쪽에서 먼저 보는 영역</b>
+                {" — "}
+                {sv.domainLead.map((c) => domainName(core, c)).join(" · ")}
+                {hasBars ? ". 아래 막대에서 그 영역을 먼저 보시면 됩니다."
+                  : ". 아래 묶음에서 그 영역을 먼저 보시면 됩니다."}
+              </p>
+            ) : null}
+            {hasBars ? (
+              <>
+                <h3 className="pv-h3">영역별 경험 단계</h3>
+                <p className="rs-note">
+                  이번 응시에서 판단을 물은 영역입니다. 막대의 길이는 물은
+                  축의 수이고, 영역마다 물은 축의 수가 달라 비율로 바꾸지
+                  않습니다.
+                </p>
+                <StageBars model={model} name={(c) => domainName(core, c)} />
+              </>
+            ) : null}
           </section>
         ) : null}
 
@@ -2006,7 +2033,7 @@ export default async function V3Result({
             <ul className="rs-cta-sub">
               <li><Link href="/me/state">현재 상태</Link></li>
               <li><Link href="/me/experience/new">경험 추가</Link></li>
-              <li><Link href="/me/next">다음 할 일</Link></li>
+              <li><Link href="/me/next">지금 할 일</Link></li>
               <li><Link href="/me/explore">산업·직무</Link></li>
               {/* **종이 길은 `Link` 로 걸지 않는다.** Next 가 화면에 들어온
                   `Link` 를 미리 불러오는데, 그 길은 머리 없는 브라우저를

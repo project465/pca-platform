@@ -8,12 +8,12 @@
 import type { ReasonCode } from "./reason-codes";
 
 export const REASON_KO: Record<ReasonCode, string> = {
-  MISSING_REQUIRED_AXIS: "직접 판단한 자리가 있고, 이 영역에서 꼭 보는 판단 하나가 아직 비어 있습니다",
-  MISSING_OUTPUT: "직접 판단한 자리는 있고, 그 판단이 남은 결과물이 아직 없습니다",
+  MISSING_REQUIRED_AXIS: "직접 판단한 것이 있고, 이 영역에서 꼭 보는 판단 하나가 아직 비어 있습니다",
+  MISSING_OUTPUT: "직접 판단한 것은 있고, 그 판단이 남은 결과물이 아직 없습니다",
   MISSING_OUTPUT_EVIDENCE: "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다",
-  MISSING_VERIFICATION: "판단한 자리는 있고, 그 값을 무엇과 견주었는지가 아직 없습니다",
-  INSUFFICIENT_CONFIRMED_AXES: "직접 판단한 자리가 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다",
-  NO_CONFIRMED_AXIS: "이 영역의 문항에는 답하셨고, 직접 판단한 자리는 아직 보이지 않습니다",
+  MISSING_VERIFICATION: "판단한 것은 있고, 그 값을 무엇과 견주었는지가 아직 없습니다",
+  INSUFFICIENT_CONFIRMED_AXES: "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다",
+  NO_CONFIRMED_AXIS: "이 영역의 문항에는 답하셨고, 직접 판단한 것은 아직 보이지 않습니다",
   NO_RESPONSE: "이 영역의 심화 문항에 답이 없습니다",
   NOT_ROUTED: "이 영역은 이번 응시에서 열리지 않았습니다",
   TIER_WITHOUT_DEEP_AXES: "무료 응시는 여덟 판단축을 묻지 않습니다",
@@ -23,11 +23,11 @@ export const REASON_KO: Record<ReasonCode, string> = {
   BUILD_OUTPUT: "판단은 하셨고 남은 것이 없습니다. 남길 산출물 하나가 다음 걸음입니다",
   ADD_VERIFICATION: "남은 것은 있고 무엇과 견주었는지가 없습니다",
   RECHECK_DIRECTION: "이미 가진 근거입니다. 원하는 방향인지 다시 보십시오",
-  NOT_A_PRIORITY: "지금 먼저 보실 자리는 아닙니다",
+  NOT_A_PRIORITY: "지금 먼저 보실 곳은 아닙니다",
   REVERSE_PAIR_AGREED: "서로 반대 방향인 두 문항에 비슷하게 답하셨습니다. 이 결과는 좁게 읽으십시오",
   LOW_VARIANCE_GRID: "영역 사이에 차이가 생기지 않았습니다. 고르신 쪽을 먼저 적었습니다",
   CONSISTENCY_PAIR_GAP: "수업 장면과 실무 장면의 답이 다릅니다. 낮은 쪽으로 적었습니다",
-  CHECKLIST_MISMATCH_HIGH: "하셨다고 답한 축에 고른 항목이 없습니다. 그 자리를 비워 두었습니다",
+  CHECKLIST_MISMATCH_HIGH: "하셨다고 답한 축에 고른 항목이 없습니다. 그 칸을 비워 두었습니다",
   CHECKLIST_MISMATCH_LOW: "고르신 항목이 있는 축에 답이 없습니다",
 };
 
