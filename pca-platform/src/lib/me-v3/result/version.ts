@@ -99,7 +99,7 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
  * **판정도 결과 모델도 한 줄 바뀌지 않았다.** 이 판본이 든 파일은 전부
  * 번역표와 읽는 층이고, 채점과 결과 모델은 이 파일을 읽지 않는다.
  */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.48";
+export const RESULT_COPY_VERSION = "me-v3-result-copy.49";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -323,7 +323,7 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.48";
  * 줄도 바뀌지 않았고 `v3:freeze:measure` 가 기록을 다시 적지 않은 채로
  * 통과한다.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V56";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V57";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX
@@ -917,4 +917,26 @@ export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V56";
  * **`RESULT_MODEL_VERSION` 과 채점 판본은 올리지 않는다**: 판정이 한 줄도
  * 바뀌지 않았고 `v3:freeze:measure` 가 기록을 다시 적지 않은 채로 통과하며
  * 사람 열두 벌의 지문이 그대로다.
+ */
+
+/**
+ * `ME_V3_RESULT_UI_V57` · `me-v3-result-copy.49` 로 올린 까닭.
+ *
+ * **근거 절을 다시 세웠다**(R9). 앞 판본은 경험마다 같은 네 칸을 세우고
+ * 칸마다 설명문 한 줄을 붙였다. 담는 그릇을 바꿔도 **안의 차례가 같으면**
+ * 두 경험이 한 틀의 변형으로 읽히고, 우리가 덧붙인 설명이 그 사람이 고른
+ * 답보다 길어진다. 그래서 차례 자체를 갈랐다.
+ *
+ *   첫 경험    이어 주는 말 → 큰 한 마디(`~ 본 경험`) → 금 둘 사이에 띄운
+ *              남은 결과 → 이름표를 **위에** 둔 지원서 포인트 · 면접 질문
+ *   둘째 경험  남은 결과가 **머리로** → 평서문 한 줄 → 이름표를 **앞에** 둔 두 줄
+ *
+ * 다섯 토막의 **꼴을 서로 다르게** 둔 것이 이 판본의 요지다: 이어 주는 말
+ * 한 토막 · 이름씨로 닫는 큰 한 마디 · 이름씨 둘 · 이름씨 · 물음표.
+ * 한 묶음이 전부 `~요` 로 닫히지 않는 까닭이 이것이다.
+ *
+ * **판정은 한 줄도 바뀌지 않았다**: 다섯 토막이 전부 결과 모델이 이미 들고
+ * 있는 `did` · `decided` · `artifacts` · `verifications` 와 그 영역이 일하는
+ * 차례에서 오고, 재료가 없는 토막은 비운다. 그래서 측정 동결이 기록을 다시
+ * 적지 않은 채로 통과한다.
  */

@@ -83,7 +83,7 @@ async function evSize(p: Page, name: string): Promise<void> {
   const out = await p.evaluate(() => {
     const s = document.querySelector("section#evidence") as HTMLElement | null;
     const xs = Array.from(
-      document.querySelectorAll("section#evidence .rs-ev-x")) as HTMLElement[];
+      document.querySelectorAll("section#evidence .rs-st, section#evidence .rs-nx")) as HTMLElement[];
     return {
       sec: s ? Math.round(s.getBoundingClientRect().height) : -1,
       ex: xs.map((x) => Math.round(x.getBoundingClientRect().height)),
@@ -187,7 +187,7 @@ async function main(): Promise<void> {
     await evSize(p, "desktop");
     /* **경험마다 따로 뜬다**(R7 §제출). 둘이 같은 틀의 변형인지는 둘을
        나란히 놓고 글자가 읽히는 크기로 봐야 가려진다 */
-    const cards = p.locator("section#evidence .rs-ev-x");
+    const cards = p.locator("section#evidence .rs-st, section#evidence .rs-nx");
     for (let i = 0; i < Math.min(2, await cards.count()); i += 1) {
       const f = `${OUT}/gate4-desktop-card${i ? "2" : ""}.png`;
       await cards.nth(i).screenshot({ path: f });
@@ -206,7 +206,7 @@ async function main(): Promise<void> {
     await m.waitForTimeout(400);
     await clipTo(m, "section#evidence h2", ".rs-chain", `${OUT}/gate4-mobile.png`);
     await evSize(m, "mobile");
-    const mcards = m.locator("section#evidence .rs-ev-x");
+    const mcards = m.locator("section#evidence .rs-st, section#evidence .rs-nx");
     for (let i = 0; i < Math.min(2, await mcards.count()); i += 1) {
       const f = `${OUT}/gate4-mobile-card${i ? "2" : ""}.png`;
       await mcards.nth(i).screenshot({ path: f });
