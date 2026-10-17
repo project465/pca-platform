@@ -154,7 +154,7 @@ async function main(): Promise<void> {
     /* ── Gate 3 Desktop ── 첫 화면만. 아래 절은 Gate 4 가 든다 */
     await p.goto(`${BASE}/v3/${att}/result`, { waitUntil: "networkidle" });
     await p.waitForTimeout(400);
-    await clipTo(p, ".rs-hero", ".rs-banner", `${OUT}/gate3-desktop.png`);
+    await clipTo(p, ".rs-hero", ".rs-use", `${OUT}/gate3-desktop.png`);
     /* **Hero 와 Summary 를 따로 더 뜬다**(R3 §49). 첫 화면 한 장은 글자가
        작아져서 결론 한 줄의 활자 위계와 네 칸의 무게 차등을 눈으로 가릴 수
        없다. 자른 자리가 겹치지만 **같은 그림은 아니다**: `mark()` 가 지문을
@@ -165,9 +165,10 @@ async function main(): Promise<void> {
     /* ── Gate 4 Desktop ── 근거 절과 그 안의 네 단계 카드 하나 */
     await openAll(p);
     await p.waitForTimeout(400);
-    await p.locator("section#evidence").first()
-      .screenshot({ path: `${OUT}/gate4-desktop.png` });
-    mark(`${OUT}/gate4-desktop.png`);
+    /* **Gate 4 는 네 줄 이야기까지다.** 절 전체를 뜨면 아래 펼친 자리까지
+       딸려와 글자가 작아지고, 묻는 것(`한 경험으로 읽히는가`)에 답할 수
+       없다 */
+    await clipTo(p, "section#evidence h2", ".rs-chain", `${OUT}/gate4-desktop.png`);
     const card = p.locator("section#evidence .rs-chain > section").first();
     if (await card.count()) {
       await card.screenshot({ path: `${OUT}/gate4-desktop-card.png` });
@@ -179,14 +180,12 @@ async function main(): Promise<void> {
     await m.setViewportSize({ width: 390, height: 844 });
     await m.goto(`${BASE}/v3/${att}/result`, { waitUntil: "networkidle" });
     await m.waitForTimeout(400);
-    await clipTo(m, ".rs-hero", ".rs-banner", `${OUT}/gate3-mobile.png`);
+    await clipTo(m, ".rs-hero", ".rs-use", `${OUT}/gate3-mobile.png`);
     await clipTo(m, ".rs-hero", ".rs-hero", `${OUT}/gate3-mobile-hero.png`);
     await clipTo(m, ".rs-use", ".rs-use", `${OUT}/gate3-mobile-summary.png`);
     await openAll(m);
     await m.waitForTimeout(400);
-    await m.locator("section#evidence").first()
-      .screenshot({ path: `${OUT}/gate4-mobile.png` });
-    mark(`${OUT}/gate4-mobile.png`);
+    await clipTo(m, "section#evidence h2", ".rs-chain", `${OUT}/gate4-mobile.png`);
     const mcard = m.locator("section#evidence .rs-chain > section").first();
     if (await mcard.count()) {
       await mcard.screenshot({ path: `${OUT}/gate4-mobile-card.png` });

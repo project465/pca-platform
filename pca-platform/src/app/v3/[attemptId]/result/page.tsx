@@ -21,7 +21,7 @@ import {
   commonKo, domainChainKo, draftKo, gapCellKo, gapKo, gapNeedKo, gapNeedShortKo, gapShortKo,
   actionWhyKo, AXIS_DID_KO, headlineBadgeKo, headlineKo, needSentenceKo,
   pickSentenceKo,
-  evidenceUseKo, keptNoteKo, moreReadyKo, saidKo,
+  evidenceUseKo, evidenceUsePartsKo, keptNoteKo, moreReadyKo, saidKo,
   HORIZON_KO, QUALITY_KO, TIER_NOTE_KO, TRANS_ORDER, TRANS_STEP_KO,
   XFIELD_ORDER, xfieldKo, ZONE_LEAD_KO, ZONE_TITLE_KO,
 } from "@/lib/me-v3/result/text.ko";
@@ -31,6 +31,7 @@ import {
 import { core as coreEntry } from "@/lib/me-v3/core-registry";
 import { profileOf } from "@/lib/me-v3/platform";
 import { chainFor } from "@/lib/me-v3/result/chains";
+import { nextStepKo, thingKo } from "@/lib/me-v3/result/say";
 import { withJosa } from "@/lib/me-v3/result/josa";
 import { resultMeta } from "@/lib/me-v3/result/meta";
 import { leadFirst, specView } from "@/lib/me-v3/result/spec-view";
@@ -937,8 +938,11 @@ export default async function V3Result({
   const useAxes = [...focus.flatMap((d) => d.axes)]
     .filter((a) => a.state === "CONFIRMED" || a.state === "OWNED")
     .sort((a, b) => (b.state === "OWNED" ? 1 : 0) - (a.state === "OWNED" ? 1 : 0));
-  const useChips = [...new Set(useAxes.map((a) => AXIS_KO[a.axis]))].slice(0, 4);
-  const useWhy = useAxes.length ? `${AXIS_DID_KO[useAxes[0].axis]} 경험이에요.` : "";
+  /* **판정을 설명하지 않는다**(Gate §2). `~ 경험이에요` 는 우리가 그렇게
+     읽었다는 말이고, 학생이 듣고 싶은 것은 **그래서 지원서에서 무슨 말을
+     할 수 있는가**다. 말끝도 윗줄과 갈라 리듬을 만든다(Gate §4) */
+  const useWhy = useAxes.length
+    ? `그 과정에서 ${AXIS_DID_KO[useAxes[0].axis]} 경험이 있습니다.` : "";
   /*
    * `이런 쪽과 이어져요` 세 칸.
    *
@@ -1039,13 +1043,22 @@ export default async function V3Result({
       shownAction, shownAction.domain ? domainName(core, shownAction.domain) : "",
       shownAction.code === "EXPLORE_BROADLY" ? exploreWhere() : undefined)
     : topGap ? gapNeedKo(topGap, domainName(core, topGap.domain)) : null;
-  /*
-   * 할 일 칸의 짧은 목록. **무엇을 적을지**를 그 영역이 일하는 차례에서
-   * 가져온다(`chainFor` 둘째~넷째 토막: 먼저 정하는 것 · 쓰는 방법 ·
-   * 남기는 것). 지어낸 항목이 아니라 그 Core 사전이 이미 들고 있는 값이다
+  /**
+   * 할 일을 **대상 · 행동 · 남길 결과** 세 문장으로(Gate §6).
+   *
+   * 전에는 이 칸이 머리 한 줄(`그때 직접 정한 것을 적어 두기`)과 그 영역이
+   * 일하는 차례를 이름씨로 늘어놓은 목록을 들었다. 머리는 무엇을 하라는
+   * 것인지 말하지 않고, 이름씨 목록은 **명사 나열**이라 할 일로 읽히지
+   * 않는다. `actionKo` 가 이미 그 셋을 문장으로 들고 있으므로 여기서는
+   * 끊어서 세우기만 한다. **새 문장을 짓지 않는다**
    */
-  const doDomain = shownAction?.domain ?? focus[0]?.code ?? "";
-  const doSteps = doDomain ? chainFor(core, doDomain).slice(1, 4).filter(Boolean) : [];
+  const doSay = shownAction
+    ? actionKo(
+      shownAction, shownAction.domain ? domainName(core, shownAction.domain) : "",
+      model.stage,
+      shownAction.code === "EXPLORE_BROADLY" ? exploreWhere() : undefined).do
+      .split(/(?<=\.)\s+/).map((x) => x.trim()).filter(Boolean)
+    : [];
   /* 할 일이 있을 때만 적는다. 없는 자리에 이유를 적으면 그 줄이 거짓이 된다 */
   const doWhy = shownAction ? actionWhyKo(shownAction) : null;
   const indAction = packAction(model.industry_context, [shownAction]);
@@ -1284,33 +1297,35 @@ export default async function V3Result({
             <p className="rs-card-l">내가 해본 경험</p>
             <p className="rs-card-h">{cardSay || openLine}</p>
             {useWhy ? <p className="rs-card-p">{useWhy}</p> : null}
-            {useChips.length ? (
-              <ul className="rs-chips">
-                {useChips.map((x) => <li key={x}>{x}</li>)}
-              </ul>
-            ) : null}
+            {/* **축 이름을 칩으로 깔지 않는다**(Gate §5). `직접 판단 ·
+                산출물 · 문제 정의` 는 우리 쪽 분류이고, hero 의 영역 태그
+                바로 아래에 또 한 줄이 서면 이 화면의 주인공이 학생의
+                경험이 아니라 taxonomy 가 된다. 같은 내용은 윗줄이 말로
+                들고, 축마다의 상태는 아래 열두 영역 절이 그대로 든다 */}
           </article>
 
-          {/* ② 지금 할 일. 이 절에서 **면과 테를 가진 자리는 여기 하나**다 */}
+          {/* ② 지금 할 일. 이 절에서 **면과 테를 가진 자리는 여기 하나**다.
+              담는 것은 셋이다: 어떤 경험을 가져올지 · 무엇을 적을지 ·
+              적어 두면 무엇이 남는지(Gate §6) */}
           <article className="rs-card is-next">
             <p className="rs-card-l"><i className="rs-ic"><Ic name="list" /></i>지금 할 일</p>
-            <p className="rs-card-h">{doHead}</p>
-            {doSteps.length ? (
-              /* **무엇을 적을지 바로 보인다.** 긴 설명 대신 짧은 목록이다 */
-              <ul className="rs-todo">
-                {doSteps.map((x) => <li key={x}>{x}</li>)}
-              </ul>
-            ) : doDetail ? <p className="rs-card-p">{doDetail}</p> : null}
+            {doSay.length ? (<>
+              <p className="rs-card-h">{doSay[0]}</p>
+              {doSay.slice(1).map((x) => <p className="rs-card-p" key={x}>{x}</p>)}
+            </>) : (<>
+              <p className="rs-card-h">{doHead}</p>
+              {doDetail ? <p className="rs-card-p">{doDetail}</p> : null}
+            </>)}
+            {doWhy ? <p className="rs-gain">{doWhy}</p> : null}
             {/* **단추의 말이 약속한 일을 그 자리에서 한다**(규격 §16) */}
             <form action={takeActionsFromResult}>
               <button className="rs-go" type="submit">
-                지금 정리하기<Ic name="pen" />
+                지금 할 일에 담아두기<Ic name="pen" />
               </button>
             </form>
-            {/* 까닭 한 줄은 종이와 아래 할 일 절이 든다 */}
-            {doWhy ? <p className="rs-outcome-print">{doWhy}</p> : null}
-            {doSteps.length && doDetail
-              ? <p className="rs-outcome-print">{doDetail}</p> : null}
+            {/* **세부 차례를 종이에 한 번 더 적지 않는다.** 아래 `다음에
+                할 일` 절이 그 차례를 그대로 들고, 여기 또 적으면 같은 줄이
+                한 종이에 두 번 선다 */}
           </article>
 
           {/* ③ 남긴 근거 · 더 채울 부분. **작은 보조 정보다**: 금 한 줄
@@ -1320,7 +1335,7 @@ export default async function V3Result({
               <p className="rs-card-s">남긴 근거</p>
               {left.length ? (
                 <ul className="rs-files">
-                  {left.slice(0, 3).map((x) => <li key={x}>{x}</li>)}
+                  {left.slice(0, 3).map((x) => <li key={x}>{thingKo(x)}</li>)}
                 </ul>
               ) : (
                 <p className="rs-card-p">남은 결과물을 적어두면 여기가 채워져요.</p>
@@ -1328,8 +1343,11 @@ export default async function V3Result({
             </div>
             <div className="rs-sup">
               <p className="rs-card-s">더 채울 부분</p>
+              {/* **모자람을 적지 않는다**(Gate §8). 같은 사실을 다음에 할
+                  일로 적는다. 판정은 그대로이고 적는 꼴만 바뀐다 */}
               <p className="rs-card-p">
-                {lackNeed || "직접 정한 기준을 적어두면 여기가 채워져요."}
+                {nextStepKo(lackNeed)
+                  || "다음 과제에서는 직접 정한 기준을 한 줄만 적어두면 좋아요."}
               </p>
             </div>
           </article>
@@ -1435,8 +1453,8 @@ export default async function V3Result({
                  그 넷으로 들어가는 한 줄만 든다. 축마다의 상태는 아래 열두
                  영역 절이 한 자리에서 그대로 든다 */
               <p className="rs-note">
-                아래 네 줄은 한 경험을 지원서에서 말하는 차례 그대로
-                풀어 놓은 거예요. 넷이 이어져야 한 이야기가 됩니다.
+                아래는 한 경험을 지원서에서 말하는 차례 그대로 풀어 놓은
+                거예요. 네 줄이 이어져야 한 이야기가 됩니다.
               </p>
             ) : (
               <>
@@ -1473,82 +1491,62 @@ export default async function V3Result({
                 그대로 오고, 비어 있는 칸은 비었다고 적는다 */}
             {chains.length ? (
               <div className="rs-chain">
-                {chains.map((c) => (
+                {chains.map((c) => {
+                  const use = c.decided && c.left
+                    ? evidenceUsePartsKo(core, c.code, c.left) : null;
+                  return (
                   <section key={c.code}>
-                    <h3>{domainName(core, c.code)}</h3>
-                    {/* **학생이 자기 말로 읽는 네 단계다**(COMMERCIAL FINAL §9).
-                        전에는 칸 이름이 `한 행동` · `직접 정한 기준` ·
-                        `남긴 결과` 였다. 우리 쪽 분류를 줄인 말이라 네 칸이
-                        한 이야기로 읽히지 않았다. 지금은 사람이 묻는 차례
-                        그대로다: 내가 한 일 → 내가 직접 정한 것 → 남아 있는
-                        결과 → 지원서·면접에서 쓸 부분 */}
-                    {/* **채워진 칸과 빈 칸을 표시로 가른다**
-                        (PRODUCT POLISH §4). 넷이 같은 표시로 서면 텍스트
-                        덩어리 네 개로 읽히고, 어디에서 이야기가 끊겼는지
-                        읽는 사람이 네 줄을 다 읽고 나서 스스로 찾아야 한다.
-                        채워진 칸은 꽉 찬 표시와 짙은 선으로 이어지고 빈
-                        칸부터 선이 옅어진다: **그 끊긴 자리가 곧 다음에 할
-                        일**이다. **판정이 아니다**: 표시가 보는 것은 그
-                        칸에 적을 것이 있는지뿐이고 값은 결과 모델이 준
-                        그대로다 */}
-                    {/* **빈 칸을 `아직 없음` 으로 끝내지 않는다**
-                        (SIGN-OFF §8). 비었다는 말만 적으면 읽는 사람이
-                        그 칸을 메우는 방법을 스스로 찾아야 한다. 한 줄로
-                        **다음에 무엇을 남기면 되는지**까지 잇는다. 채워진
-                        칸에는 설명을 보태지 않는다: 그 칸이 드는 것은
-                        고르신 내용 그대로다 */}
-                    {/* **①②③ 은 말끝을 맞춘다**(R2 §8). 고르신 체크리스트
-                        문장은 끝맺음이 `~다` 라서 그대로 세우면 네 줄이
-                        메모 넷으로 읽힌다. `saidKo` 가 **끝맺음만** 바꾸므로
-                        낱말이 하나도 늘지 않는다 */}
+                    {/* **영역 이름은 작은 이름표다**(Gate §5·§10). 머리글로
+                        세우면 이 묶음에서 가장 먼저 읽히는 것이 학생의
+                        경험이 아니라 우리 쪽 분류가 된다 */}
+                    <p className="rs-ev-of">{domainName(core, c.code)}</p>
+                    {/* **한 경험을 네 줄로 읽는다**(Gate §10). 칸 이름은
+                        사람이 묻는 차례 그대로이고, 비어 있는 칸은 다음에
+                        무엇을 적으면 되는지까지 한 줄로 잇는다.
+                        **말끝은 `say.ts` 가 돌린다**: 고르신 문장을 그대로
+                        읽어 주면 그 자리가 검사지로 읽힌다(Gate §14) */}
                     <ol>
                       <li className={c.did ? undefined : "is-empty"}>
                         <b>내가 한 일</b>
                         <span>{c.did ? saidKo(c.did)
-                          : "아직 없습니다. 이 영역 과제 하나를 골라 한 일부터 적어 두세요"}</span>
+                          : "아직 없어요. 이 영역 과제 하나를 골라 한 일부터 적어 두세요"}</span>
                       </li>
                       <li className={c.decided ? undefined : "is-empty"}>
                         <b>내가 직접 정한 것</b>
                         <span>{c.decided ? saidKo(c.decided)
-                          : "아직 없습니다. 그때 무엇을 직접 골랐는지 한 줄 적어 두세요"}</span>
+                          : "아직 없어요. 그때 무엇을 직접 골랐는지 한 줄 적어 두세요"}</span>
                       </li>
                       <li className={c.left ? undefined : "is-empty"}>
                         <b>남아 있는 결과</b>
-                        <span>{c.left
-                          ?? "아직 없습니다. 다음 과제에서 문서 한 장을 남겨 두세요"}</span>
-                      </li>
-                      <li className={c.decided && c.left ? "is-end" : "is-empty"}>
-                        <b>지원서·면접에서 쓸 부분</b>
-                        {/* **읽는 법 안내를 이 칸에 적지 않는다**(R2 §11).
-                            전에는 `앞의 세 줄을 그대로 이으면 지원서 한
-                            문단이 됩니다` 였다. 네 단계의 마지막 칸이 그렇게
-                            서면 이 절이 파는 것(`이 경험을 어떻게 설명하는가`)
-                            이 사라진다. `evidenceUseKo` 가 그 영역이 일하는
-                            차례와 남은 결과에서 실제 활용 장면을 적는다.
-                            **어느 칸이 비었는지까지 적는다**: `앞 줄이
-                            채워지면` 으로 두면 넷 가운데 무엇을 메워야
-                            하는지를 읽는 사람이 다시 세어야 한다 */}
-                        <span>
-                          {c.decided && c.left
-                            ? evidenceUseKo(core, c.code, c.left)
-                            : `위의 ${[!c.decided ? "직접 정한 것" : null,
-                              !c.left ? "남아 있는 결과" : null]
-                              .filter(Boolean).join("과 ")} 칸을 채우면 이 경험을`
-                              + " 지원서에서 이야기할 수 있습니다"}
-                        </span>
+                        <span>{c.left ? thingKo(c.left)
+                          : "아직 없어요. 다음 과제에서 문서 한 장을 남겨 두세요"}</span>
                       </li>
                     </ol>
+                    {/* **쓰는 자리를 갈라 적는다**(Gate §11). 넷째 칸만 옅은
+                        면 하나를 들어 앞의 셋보다 한 단 세게 선다. 담긴
+                        말은 위 셋과 같은 재료에서 오고 새로 짓지 않는다 */}
+                    <div className={`rs-ev-use${use ? "" : " is-empty"}`}>
+                      <p className="rs-ev-of">지원서·면접에서 쓸 부분</p>
+                      {use ? (<>
+                        <p><b>지원서에는</b> {use.resume}</p>
+                        <p><b>면접에서는</b> {use.interview}</p>
+                      </>) : (
+                        <p>
+                          위의 {[!c.decided ? "직접 정한 것" : null,
+                            !c.left ? "남아 있는 결과" : null]
+                            .filter(Boolean).join("과 ")} 칸을 채우면 이 경험을
+                          지원서에서 이야기할 수 있어요.
+                        </p>
+                      )}
+                    </div>
                   </section>
-                ))}
-                {/* **셋째 영역이 결과지 어디에도 서지 않으면 안 된다**
-                    (R2 §16). 네 단계는 둘까지 세우고(한 영역이 네 줄이라
-                    셋을 세우면 이 절이 종이 한 장을 먹는다) 나머지는 한 줄로
-                    잇는다. 차례는 결과 모델이 정한 그대로다 */}
+                  );
+                })}
                 {restReady.length ? (
                   <p className="rs-note">{moreReadyKo(restReady)}</p>
                 ) : null}
                 <p className="rs-note">
-                  네 칸은 답하실 때 고르신 항목을 그대로 옮긴 거예요.
+                  네 줄은 답하실 때 고르신 내용을 그대로 옮긴 거예요.
                   문장으로 적는 차례는 아래 <a href="#translation">지원서·면접에서 쓸 문장</a>에
                   이어집니다.
                 </p>
@@ -1570,7 +1568,7 @@ export default async function V3Result({
                   채워집니다.
                 </p>
                 <ul className="rs-first">
-                  {sv.artifacts.slice(0, 4).map((t) => <li key={t}>{t}</li>)}
+                  {sv.artifacts.slice(0, 4).map((t) => <li key={t}>{thingKo(t)}</li>)}
                 </ul>
               </div>
             ) : null}

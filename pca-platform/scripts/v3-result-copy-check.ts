@@ -27,6 +27,7 @@ import { load, score } from "../src/lib/me-v3/scoring/engine";
 import { expand, type Fixture } from "../src/lib/me-v3/scoring/fixtures";
 import { buildResult } from "../src/lib/me-v3/result/build";
 import { josaOf, orList, withJosa } from "../src/lib/me-v3/result/josa";
+import { thingKo } from "../src/lib/me-v3/result/say";
 import {
   actionKo, actionWhyKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO, BASIC_GROUP_KO,
   draftKo, pickSentenceKo,
@@ -391,7 +392,13 @@ for (const [c, rows] of perCore) {
   const arts = ((load(c).domains.domains as DomRow[])[0].artifacts ?? []);
   for (const r of rows) {
     for (const [kind, t] of [["지금", r.own], ["다음", r.fill]] as const) {
-      if (!arts.some((a) => t.includes(a)) && !KEEPWORD.test(t)) {
+      /* **읽는 층이 돌린 이름도 그 이름이다**(Gate §7). `say.ts` 가
+         세는 말을 떼고(`사업계획 한 벌` → `사업계획`) 이어 붙은 이름씨
+         사이에 조사를 넣으므로, 사전의 날글자만 찾으면 멀쩡한 할 일이
+         걸린다. 세는 것은 **남길 것을 가리켰는가**이지 글자가 같은가가
+         아니다 */
+      if (!arts.some((a) => t.includes(a) || t.includes(thingKo(a)))
+        && !KEEPWORD.test(t)) {
         noKeep.push(`${c} ${r.axis} ${kind}`);
       }
     }

@@ -40,6 +40,7 @@ const FILES = [
   "src/app/v3/[attemptId]/result/save.tsx",
   "src/app/v3/[attemptId]/result/track.tsx",
   "src/lib/me-v3/result/text.ko.ts",
+  "src/lib/me-v3/result/say.ts",
   "src/lib/me-v3/result/josa.ts",
   "src/lib/me-v3/result/version.ts",
   /* 갈래가 적어 둔 사례와 읽는 차례를 꺼내는 자리. **판정에 닿지 않지만**

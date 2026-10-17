@@ -12,6 +12,7 @@
  *      자료에서 가져온 재료로 문장을 만든다.
  */
 import type { Axis, AxisState, Stage, Zone } from "../scoring/types";
+import { sayKo, thingKo } from "./say";
 import { chainFor } from "./chains";
 import { andList, josaOf, orList, withJosa } from "./josa";
 import { REASON_KO } from "../scoring/text.ko";
@@ -492,7 +493,10 @@ export function domainChainKo(core: string, domain: string): string[] {
  * **낱말을 더하지도 빼지도 않는다**: `polite()` 가 끝맺음만 바꾼다.
  */
 export function saidKo(clause: string): string {
-  return `${polite(clause)}.`;
+  /* **그 사람이 한 일을 `습니다` 로 적지 않는다**(Gate §3·§4). 네 칸이
+     모두 `했습니다` 로 닫히면 그 자리가 기록부로 읽힌다. 어순과 낱말은
+     `say.ts` 가 돌리고 여기서는 문장으로 닫기만 한다 */
+  return `${sayKo(clause)}.`;
 }
 
 /**
@@ -540,6 +544,26 @@ export function evidenceUseKo(
   return left
     ? `${front}, 면접에서는 그걸 어떻게 만들었는지 이야기하면 돼요.`
     : `${front}, 면접에서는 그 판단을 왜 그렇게 골랐는지 이야기하면 돼요.`;
+}
+
+/**
+ * 같은 내용을 **쓰는 자리별로 갈라** 낸다(Gate §11).
+ *
+ * 한 줄로 이어 두면 `지원서에는 …, 면접에서는 …` 이 한 문단으로 읽혀서,
+ * 정작 쓰는 사람이 어느 자리의 말인지 다시 가려야 한다. 글자는 위
+ * `evidenceUseKo` 와 같은 재료에서 오고 **새로 짓지 않는다**.
+ */
+export function evidenceUsePartsKo(
+  core: string, domain: string, left: string | null,
+): { resume: string; interview: string } {
+  const step = chainFor(core, domain)[1] ?? "";
+  const resume = step && step.length <= 20
+    ? `${withJosa(step, "을를")} 어떤 기준으로 정했는지 쓰면 돼요.`
+    : "그때 무엇을 직접 정했는지 쓰면 돼요.";
+  const interview = left
+    ? "그걸 어떻게 만들었는지 이야기하면 돼요."
+    : "그 판단을 왜 그렇게 골랐는지 이야기하면 돼요.";
+  return { resume, interview };
 }
 
 /**
@@ -592,7 +616,9 @@ const bringNext = (d: string): string => `다음 ${d} 과제를 하나 정해보
  */
 const keep = (m: Mat, i: number, alt: string): string => {
   const xs = m.artifacts;
-  return xs.length ? xs[i % xs.length] : alt;
+  /* **이상한 명사 결합을 그대로 적지 않는다**(Gate §7). 세는 말을 떼고
+     이어 붙은 이름씨 사이에 조사를 넣는 것이 전부이고, 이름은 그대로다 */
+  return xs.length ? thingKo(xs[i % xs.length]) : alt;
 };
 
 /**
@@ -816,8 +842,12 @@ export function pickSentenceKo(picks: string[]): string {
   if (!x.every((t) => t.endsWith("다"))) {
     return `${withJosa(andList(x), "을를")} 다뤄 보셨어요.`;
   }
-  const last = `${x[x.length - 1].slice(0, -1)}어요.`;
-  return x.length === 1 ? last : `${x[0].slice(0, -1)}고, ${last}`;
+  /* **재는 말을 그대로 읽어 주지 않는다**(Gate §1·§14). 어순과 몇 안 되는
+     낱말을 `say.ts` 가 학생의 말로 돌린다. 뜻은 그대로다 */
+  const said = x.map((t) => sayKo(t));
+  const last = `${said[said.length - 1]}.`;
+  return x.length === 1 ? last
+    : `${said[0].replace(/어요$/, "고")}, ${last}`;
 }
 
 /**
