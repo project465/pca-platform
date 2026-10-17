@@ -146,15 +146,16 @@ async function main(): Promise<void> {
     }
     if (!/\/(done|result)/.test(p.url())) throw new Error(`제출 못함 ${p.url()}`);
 
-    /* ── Desktop 1440 ── OPENING · NOW · NEXT */
+    /* ── Desktop 1440 ── HERO · 활용 · 추천 직무 · 다음 행동 · 배너 */
     await p.goto(`${BASE}/v3/${att}/result`, { waitUntil: "networkidle" });
     await p.waitForTimeout(400);
-    await clipTo(p, ".rs-open", ".rs-next", `${OUT}/desk-1-first.png`);
+    await p.screenshot({ path: `${OUT}/desk-1-full.png`, fullPage: false });
+    mark(`${OUT}/desk-1-full.png`);
+    await clipTo(p, ".rs-hero", ".rs-hero", `${OUT}/desk-2-hero.png`);
     /* 자른 자리가 겹치지만 **같은 그림은 아니다**: `mark()` 가 지문을
        견주므로 둘이 같은 그림이면 그 자리에서 멈춘다 */
-    await clipTo(p, ".rs-open", ".rs-open", `${OUT}/desk-2-hero.png`);
-    await clipTo(p, ".rs-now", ".rs-now", `${OUT}/desk-3-summary.png`);
-    await clipTo(p, ".rs-next", ".rs-next", `${OUT}/desk-4-action.png`);
+    await clipTo(p, ".rs-band", ".rs-paths", `${OUT}/desk-3-mid.png`);
+    await clipTo(p, ".rs-explore", ".rs-banner", `${OUT}/desk-4-next.png`);
 
     /* ── Mobile 390 ── 첫 장은 **창 그대로** 뜬다: 묻는 것이
        `첫 viewport 에 무엇이 들어오는가` 이므로 긴 쪽을 이어 붙이면 그
@@ -165,13 +166,10 @@ async function main(): Promise<void> {
     await m.waitForTimeout(400);
     await m.screenshot({ path: `${OUT}/mob-1-first.png` });
     mark(`${OUT}/mob-1-first.png`);
-    await clipTo(m, ".rs-open", ".rs-open", `${OUT}/mob-2-hero.png`);
-    await clipTo(m, ".rs-now", ".rs-now", `${OUT}/mob-3-experience.png`);
-    await clipTo(m, ".rs-next", ".rs-next", `${OUT}/mob-4-action.png`);
-    /* 다섯째는 **이어지는 자리**다. 첫 화면이 셋으로 끝난 뒤 스크롤이
-       어디로 가는지를 보여 준다 */
-    await clipTo(m, "section#evidence", "section#evidence",
-      `${OUT}/mob-5-support.png`);
+    await clipTo(m, ".rs-hero", ".rs-hero", `${OUT}/mob-2-hero.png`);
+    await clipTo(m, ".rs-band", ".rs-use", `${OUT}/mob-3-use.png`);
+    await clipTo(m, ".rs-paths", ".rs-paths", `${OUT}/mob-4-paths.png`);
+    await clipTo(m, ".rs-explore", ".rs-banner", `${OUT}/mob-5-next.png`);
 
     console.log(`  응시 ${att} · ${CORE}`);
   } finally {

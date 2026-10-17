@@ -29,6 +29,8 @@ import {
 } from "@/lib/me-v3/region";
 import { core as coreEntry } from "@/lib/me-v3/core-registry";
 import { profileOf } from "@/lib/me-v3/platform";
+import { chainFor } from "@/lib/me-v3/result/chains";
+import { withJosa } from "@/lib/me-v3/result/josa";
 import { resultMeta } from "@/lib/me-v3/result/meta";
 import { leadFirst, specView } from "@/lib/me-v3/result/spec-view";
 import { participantOf, savedActions } from "@/lib/me-v3/pilot/store";
@@ -36,6 +38,7 @@ import { takeActionsFromResult } from "@/app/me/next/actions";
 import {
   ActionRoadmap, ChartNote, EvidenceMatrix, Radar, StageBars,
 } from "./charts";
+import { StudyArt } from "./art";
 import ResultNav from "./result-nav";
 import "../../result.css";
 import { barRows, canRadar } from "@/lib/me-v3/result/chart-data";
@@ -867,13 +870,68 @@ export default async function V3Result({
    * 자리에서는 판정 한 줄로 내려간다. **새로 짓지 않는다**: 둘 다 결과
    * 모델이 이미 들고 있는 값이다
    */
-  const openQuote = deep && focus.length
-    ? pickSentenceKo(focus[0].decided.length ? focus[0].decided : focus[0].did)
-    : "";
+  /* **한 화면에 같은 문장을 두 번 세우지 않는다.** 고르신 문장을 길이로
+     세워 **짧은 쪽이 hero 의 큰 글씨**로 가고 그다음 것이 아래 카드로
+     간다. 짧은 쪽을 올리는 까닭은 큰 글씨가 네 줄로 벌어지면 한눈에
+     들어오지 않아서다. **새로 짓지 않는다**: 둘 다 결과 모델이 이미
+     들고 있는 값이다 */
+  const says = deep && focus.length
+    ? [...new Set([...focus[0].decided, ...focus[0].did])].filter(Boolean)
+    : [];
+  /*
+   * 첫 화면의 큰 글씨.
+   *
+   * **학생이 자기 경험을 말하는 문장만 올린다.** 고르신 항목에는 문장
+   * (`~다`)과 이름표(`전사 목표`)가 섞여 있는데, 이름표를 올리면
+   * `전사 목표를 다뤄 보셨어요` 처럼 **무슨 과제였는지 알 수 없는 판정형
+   * 한 줄**이 된다. 그래서 큰 글씨는 문장만 받고, 문장이 하나도 없으면
+   * 판정 한 줄로 내려간다(이름표는 아래 카드와 칩이 그대로 든다).
+   *
+   * **직접 정한 것이 먼저다**: 서류와 면접에서 읽히는 쪽이 그쪽이다.
+   * 길이는 스물여덟 자 안팎이 한 줄 반이고, 더 길면 네 줄로 벌어져
+   * 한눈에 들어오지 않는다.
+   */
+  const toldAll = (xs: string[]): string[] => xs.filter((x) => x.endsWith("다"));
+  const told = (focus.length && toldAll(focus[0].decided).length)
+    ? toldAll(focus[0].decided) : toldAll(says);
+  const best = [...told].sort(
+    (a, b) => Math.abs(a.length - 28) - Math.abs(b.length - 28))[0] ?? "";
+  const openQuote = best ? pickSentenceKo([best]) : "";
+  /* 카드는 **다른 문장**을 든다. 아래 목록이 이미 적는 이름을 다시
+     문장으로 세우지 않는다 */
+  const cardPick = says.find(
+    (x) => x !== best && !left.some((a) => x.includes(a))) ?? "";
+  const cardSay = cardPick ? pickSentenceKo([cardPick]) : "";
   const openLine = openQuote || h.title;
-  /* 분류 이름은 문장 **아래** 칩이다(§15). 셋까지 */
+  /* 분류 이름은 문장 **아래** 칩이다(§15). 넷까지 */
   const openTags = (focus.length ? focus : tried)
-    .slice(0, 3).map((d) => domainName(core, d.code));
+    .slice(0, 4).map((d) => domainName(core, d.code));
+  /*
+   * 카드 B `이 경험에서 쓸 수 있는 것`.
+   *
+   * **없는 역량을 적지 않는다.** 여기 서는 칩은 전부 그 응시에서 **확인된
+   * 판단축**이고, 이름은 학생이 읽는 말로 적는다(`AXIS_KO`). 재지 않은
+   * 역량 보유를 단정하는 말을 쓰지 않는 것은 전과 같다 */
+  const useChips = [...new Set(focus.flatMap(
+    (d) => d.axes
+      .filter((a) => a.state === "CONFIRMED" || a.state === "OWNED")
+      .map((a) => AXIS_KO[a.axis])))]
+    .slice(0, 4);
+  /*
+   * `이런 쪽과 이어져요` 세 칸.
+   *
+   * **새로 순위를 만들지 않는다**: 결과 모델이 적은 `focus` 차례 그대로이고,
+   * 한 줄 설명은 그 Core 사전의 **먼저 정하는 것**(`chainFor` 둘째 토막)이다 */
+  const pathCards = (focus.length ? focus : tried).slice(0, 3).map((d) => {
+    /* 토막만 세우면 `하지 않을 것과 먼저 할 것` 처럼 끊긴 말이 된다.
+       **낱말을 더하지 않고** 한 마디로 문장을 닫는다 */
+    const first = chainFor(core, d.code)[1] ?? "";
+    return {
+      code: d.code,
+      name: domainName(core, d.code),
+      what: first ? `${withJosa(first, "이가")} 먼저인 쪽이에요.` : "",
+    };
+  });
   const lackBy = new Map<string, Axis[]>();
   for (const r of packLack?.requested.slice(0, 2) ?? []) {
     const d = domainName(core, r.domain);
@@ -1143,94 +1201,132 @@ export default async function V3Result({
         ) : null}
 
         {/* ══════════════════════════════════════════════════════════
-            OPENING — **학생이 쓴 문장이 첫 화면의 큰 글씨다**(R5 Reset).
+            1. HERO — 학생이 쓰고 싶어지는 서비스 화면의 첫 자리.
 
-            앞 판본의 첫 화면은 `메타 세 줄 → 눈썹 → 판정 한 문장 → 거드는
-            한 줄 → 카드 넷` 이었다. 색과 둥글기를 바꿔도 그 뼈대가 남아
-            있는 한 화면은 **시스템이 자기 판정을 발표하는 자리**로 읽힌다.
-
-            그래서 자리를 바꿨다. 큰 글씨는 그 사람이 고른 문장이고, 판정은
-            그 위의 **작은 알약 하나**로 내려간다. 분류 이름은 문장 아래
-            칩이다(§15). 학생이 5초 안에 알아야 하는 첫째 — `내가 실제로
-            해본 것` 이 그 자리에서 바로 읽힌다.
-
-            **판정을 바꾸지 않았다**: 알약도 문장도 결과 모델이 이미 들고
-            있는 값이고, 여기서 다시 세지 않는다.
+            리포트의 머리가 아니다. 캐릭터 그림과 큰 한 줄과 칩이 먼저
+            보이고, 판정은 작은 알약 하나로 내려간다. 큰 글씨는 **그 사람이
+            고른 문장**이고, 분류 이름은 그 아래 칩이다.
             ══════════════════════════════════════════════════════════ */}
-        <section className="rs-open">
-          <p className="rs-who">
-            {[meta.school,
-              [meta.department, meta.specialization].filter(Boolean).join(" · "),
-              `CareerMatri ${model.tier}`,
-              meta.answeredOn ? `${meta.answeredOn} 응답` : null]
-              .filter(Boolean).join("  ·  ")}
-          </p>
-          <p className="rs-badge">{headlineBadgeKo(model)}</p>
-          <h1 className="rs-quote">{openLine}</h1>
-          {openTags.length ? (
-            <ul className="rs-tags">
-              {openTags.map((t) => <li key={t}>{t}</li>)}
-            </ul>
-          ) : null}
-          {/* 종이에서만 서는 판정 한 줄. **보관된 종이는 혼자 읽히므로**
-              무엇을 보고 그렇게 적었는지가 첫 쪽에 있어야 한다 */}
-          <p className="rs-verdict">{h.title}</p>
+        <section className="rs-hero">
+          <div className="rs-hero-say">
+            <p className="rs-who">
+              {[meta.school,
+                [meta.department, meta.specialization].filter(Boolean).join(" · "),
+                meta.answeredOn ? `${meta.answeredOn}` : null]
+                .filter(Boolean).join(" · ")}
+            </p>
+            <p className="rs-badge">{headlineBadgeKo(model)}</p>
+            <h1 className="rs-quote">{openLine}</h1>
+            {openTags.length ? (
+              <ul className="rs-tags">
+                {openTags.map((t) => <li key={t}>{t}</li>)}
+              </ul>
+            ) : null}
+            {/* 종이에서만 서는 판정 한 줄 */}
+            <p className="rs-verdict">{h.title}</p>
+          </div>
+          {/* 오른쪽은 그림이다. **왼쪽 큰 글과 한 쌍이고 장식이 아니다** */}
+          <div className="rs-hero-art" aria-hidden="true"><StudyArt /></div>
         </section>
 
-        {/* ══ NOW — 두 칸 대조. **카드가 아니다**: 가운데 금 하나로
-            나뉜 테 없는 두 칸이고, 좁은 화면에서는 그 금이 가로로 눕는다.
-            학생이 알아야 하는 둘째와 셋째를 한 줄에 마주 세운다 ══ */}
-        <section className="rs-now">
-          <div>
-            <h2>지금 이야기할 수 있는 것</h2>
+        {/* ══ 2. 지금, 이렇게 활용해보세요 — 카드 셋 ══ */}
+        <h2 className="rs-band">지금, 이렇게 활용해보세요</h2>
+        <section className="rs-use">
+          <article className="rs-card is-did">
+            <p className="rs-card-l"><i className="rs-ic ic-note" />내가 해본 경험</p>
+            {cardSay || !left.length
+              ? <p className="rs-card-h">{cardSay || openLine}</p> : null}
             {left.length ? (
-              <p>{left.slice(0, 3).join(" · ")}</p>
-            ) : model.evidence.ready.length ? (
-              <p>{[...new Set(model.evidence.ready
-                .map((e) => domainName(core, e.domain)))].slice(0, 3).join(" · ")}</p>
-            ) : (
-              <p className="none">아직 적어 두신 것이 없어요</p>
-            )}
-            {/* 화면이 이미 보여 주는 것을 글로 다시 적지 않는다. 종이에만 */}
-            <p className="rs-pr">{keptNoteKo(left.length > 0)}</p>
-          </div>
-          <div>
-            <h2>{lackTitle}</h2>
-            {lackWhat ? (<>
-              <p>{lackNeed}</p>
-              <p className="rs-now-sub">{lackWhat}</p>
+              <ul className="rs-mini">
+                {left.slice(0, 3).map((x) => <li key={x}>{x}</li>)}
+              </ul>
+            ) : null}
+          </article>
+
+          <article className="rs-card is-use">
+            <p className="rs-card-l"><i className="rs-ic ic-star" />이 경험에서 쓸 수 있는 것</p>
+            {useChips.length ? (<>
+              <ul className="rs-chips">
+                {useChips.map((x) => <li key={x}>{x}</li>)}
+              </ul>
+              <p className="rs-card-p">자기소개서에서 바로 꺼내 쓸 수 있어요.</p>
             </>) : (
-              <p className="none">지금은 비어 보이는 곳이 없어요</p>
+              <p className="rs-card-p">직접 정한 기준을 적어두면 여기가 채워져요.</p>
             )}
+          </article>
+
+          <article className="rs-card is-next">
+            <p className="rs-card-l"><i className="rs-ic ic-arrow" />지금 다음으로 할 일</p>
+            <p className="rs-card-h">{doHead}</p>
+            {doDetail ? <p className="rs-card-p">{doDetail}</p> : null}
+            {/* **단추의 말이 약속한 일을 그 자리에서 한다**(규격 §16) */}
+            <form action={takeActionsFromResult}>
+              <button className="rs-go" type="submit">지금 정리하기</button>
+            </form>
+            {/* 까닭 한 줄은 종이와 아래 할 일 절이 든다 */}
+            {doWhy ? <p className="rs-outcome-print">{doWhy}</p> : null}
+          </article>
+        </section>
+
+        {/* ══ 3. 이런 직무와 진로를 고려해볼 수 있어요 ══ */}
+        {pathCards.length ? (<>
+          <h2 className="rs-band">이런 직무와 잘 이어져요</h2>
+          <section className="rs-paths">
+            {pathCards.map((c, i) => (
+              <article key={c.code} className={`rs-path p${i + 1}`}>
+                <span className="rs-path-ic" aria-hidden="true" />
+                <h3>{c.name}</h3>
+                {c.what ? <p>{c.what}</p> : null}
+              </article>
+            ))}
+          </section>
+          {/* 아직 채울 곳 한 줄. **모자람으로 열지 않는다**: 무엇을 적으면
+              되는지까지 한 문장이다 */}
+          {lackNeed ? <p className="rs-paths-note">{lackNeed}</p> : null}
+        </>) : null}
+
+        {/* ══ 4. 더 알아보고 싶다면 ══
+            **없는 기능을 단추로 두지 않는다.** 여기 서는 넷은 전부 지금
+            열려 있는 자리다 */}
+        <h2 className="rs-band">더 알아보고 싶은 정보</h2>
+        <section className="rs-explore">
+          <Link className="rs-ex-a m1" href="/me/experience/new">
+            <span className="rs-ex-ic" aria-hidden="true" />
+            <b>경험 더 적어보기</b>
+            <i>적을수록 쓸 이야기가 늘어요</i>
+          </Link>
+          <Link className="rs-ex-a m2" href="/me/next">
+            <span className="rs-ex-ic" aria-hidden="true" />
+            <b>할 일 이어서 하기</b>
+            <i>담아둔 것부터 하나씩</i>
+          </Link>
+          <Link className="rs-ex-a m3" href="/me/explore">
+            <span className="rs-ex-ic" aria-hidden="true" />
+            <b>산업·직무 둘러보기</b>
+            <i>어디에서 쓰이는지 보기</i>
+          </Link>
+          {/* **종이 길은 `Link` 로 걸지 않는다.** Next 가 미리 불러오면
+              머리 없는 브라우저가 떠서 종이가 한 벌씩 만들어진다 */}
+          <a className="rs-ex-a m4" href={`/v3/${attemptId}/result/pdf`}>
+            <span className="rs-ex-ic" aria-hidden="true" />
+            <b>PDF 로 저장하기</b>
+            <i>몇 초 걸려요</i>
+          </a>
+        </section>
+
+        {/* ══ 5. 아래 배너 ══ */}
+        <section className="rs-banner">
+          <div>
+            <p className="rs-banner-l">{meta.school ?? "CareerMatri"}</p>
+            <p className="rs-banner-h">결과는 저장돼요. 언제든 다시 열어보세요.</p>
+            <p className="rs-banner-p">
+              경험을 더 적으면 지금 상태가 다시 계산돼요.
+            </p>
           </div>
+          <Link className="rs-banner-a" href="/me">내 CareerMatri 열기</Link>
         </section>
 
-        {/* ══ NEXT — **이 쪽의 focal point 하나**. 색면도 CTA 도 여기
-            하나이고, 가운데로 선다. 앞 판본은 할 일 칸과 CTA 줄이 따로
-            떨어져 있어서, 읽은 사람이 `그래서 지금 뭘 누르지` 를 한 번 더
-            찾아야 했다 ══ */}
-        <section className="rs-next">
-          <p className="rs-next-l">지금 하면 좋은 일</p>
-          <h2>{doHead}</h2>
-          {doDetail ? <p>{doDetail}</p> : null}
-          {/* **단추의 말이 약속한 일을 그 자리에서 한다**(규격 §16) */}
-          <form action={takeActionsFromResult}>
-            <button className="rs-next-cta" type="submit">지금 할 일로 담기</button>
-          </form>
-          <p className="rs-next-more">
-            <Link href="/me/experience/new">경험 추가</Link>
-            {/* **종이 길은 `Link` 로 걸지 않는다.** Next 가 미리 불러오면
-                머리 없는 브라우저가 떠서 종이가 한 벌씩 만들어진다 */}
-            <a href={`/v3/${attemptId}/result/pdf`}>결과 PDF 저장</a>
-            <Link href="/me">내 CareerMatri</Link>
-          </p>
-          {/* 까닭 한 줄은 종이와 아래 할 일 절이 든다(설명 과잉 §Action) */}
-          {doWhy ? <p className="rs-outcome-print">{doWhy}</p> : null}
-        </section>
-
-        {/* 이어지는 산업·직무는 **첫 화면에서 뺐다**(R5 Reset): 첫 화면이
-            답할 것은 셋이고 이것은 넷째다. 아래 산업·직무 절이 한 자리에서
-            들고, 보관되는 종이에서만 이 한 줄이 선다 */}
+        {/* 산업·직무 한 줄은 **종이에만** 선다 */}
         <p className="rs-link">
           {linkNames.length ? (<>
             {linkNames.map((x) => <b key={x}>{x}</b>)}

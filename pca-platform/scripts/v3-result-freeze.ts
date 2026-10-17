@@ -50,6 +50,9 @@ const FILES = [
      덮는다**: 새 파일을 목록에 적지 않으면 그 파일을 고친 날 동결이
      모르는 채로 통과한다 */
   "src/app/v3/[attemptId]/result/charts.tsx",
+  /* hero 의 그림. **값을 그리지 않지만 학생이 가장 먼저 보는 면**이라
+     이 동결이 덮는다 */
+  "src/app/v3/[attemptId]/result/art.tsx",
   "src/lib/me-v3/result/chart-data.ts",
   "src/lib/me-v3/runtime/domain-facts.ts",
   /* 영역마다의 작성 차례. **학생이 읽는 글인데 이 목록에 없었다**: 사람이
