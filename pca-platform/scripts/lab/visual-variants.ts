@@ -25,7 +25,6 @@ import { queryOne } from "../../src/lib/db";
 import { load } from "../../src/lib/me-v3/scoring/engine";
 import type { ResultModel } from "../../src/lib/me-v3/result/model";
 import { chainFor } from "../../src/lib/me-v3/result/chains";
-import { industryChoices, roleChoices } from "../../src/lib/me-v3/runtime/session";
 import {
   actionBriefKo, actionHeadKo, actionWhyKo, headlineKo, keptNoteKo,
   needSentenceKo, pickSentenceKo,
@@ -92,21 +91,10 @@ async function content(): Promise<Content> {
   const g0 = m.gaps[0];
   const a0 = m.actions[0];
   const gapDomains = [...new Set(m.gaps.map((g) => nm(g.domain)))].slice(0, 2);
-  /**
-   * 이어 볼 산업과 역할의 **이름**.
-   *
-   * 결과 모델이 들고 있는 것은 고르신 팩의 코드(`industry_context` ·
-   * `role_context`)이고, 사람이 읽는 이름은 그 Core 의 팩 목록이 든다.
-   * 제품 결과지가 쓰는 같은 자리를 그대로 읽는다(설계 원칙 10).
-   */
-  const iName = (c: string): string =>
-    industryChoices(row.core_code).find((x) => x.code === c)?.name ?? c;
-  const rName = (c: string): string =>
-    roleChoices(row.core_code).find((x) => x.code === c)?.name ?? c;
-  const linkNames = [
-    m.industry_context ? iName(m.industry_context.code) : null,
-    m.role_context ? rName(m.role_context.code) : null,
-  ].filter(Boolean).join(" · ");
+  const linkNames = [...new Set([
+    ...m.links.industries.map((x) => x.name),
+    ...m.links.roles.map((x) => x.name),
+  ])].slice(0, 2).join(" · ");
 
   return {
     school: "배재대학교",
@@ -277,9 +265,7 @@ function variantB(c: Content): string {
   .hero h1{font-size:40px;line-height:1.28;letter-spacing:-.035em;
     font-weight:800;color:var(--ink)}
   .hero .lead{margin-top:18px;font-size:16.5px;max-width:46ch}
-  /* 두 단의 폭이 다르되 길이는 서로 받는다. 한 단에만 카드를 쌓으면
-     다른 단의 아래가 통째로 빈 면이 되어 덜 그린 화면으로 읽힌다 */
-  .grid{display:grid;grid-template-columns:1.45fr 1fr;gap:26px;align-items:start}
+  .grid{display:grid;grid-template-columns:1.45fr 1fr;gap:26px}
   .exp{background:var(--white);border-radius:18px;padding:34px 36px}
   .exp h2{margin-top:12px;font-size:22px;line-height:1.5;color:var(--ink);
     font-weight:700;letter-spacing:-.015em}
@@ -304,15 +290,10 @@ function variantB(c: Content): string {
     .meta{padding-top:0;gap:5px}
     .hero h1{font-size:30px;letter-spacing:-.03em}
     .hero .lead{font-size:15.5px;margin-top:14px}
-    /* 좁은 화면은 두 단을 그대로 쌓지 않는다: 그대로 쌓으면 할 일이
-       남긴 근거 아래로 밀려 엄지로 한 번 더 넘겨야 닿는다 */
-    .grid{display:flex;flex-direction:column;gap:16px}
-    .side{display:contents}
-    .exp{order:1;padding:24px 22px}
-    .act{order:2;padding:22px 20px}
-    .box.kept{order:3}
-    .box.lack{order:4}
+    .grid{grid-template-columns:1fr;gap:16px}
+    .exp{padding:24px 22px}
     .exp h2{font-size:18.5px}
+    .act{padding:22px 20px}
   }`;
   const body = `<div class="wrap">
   <header class="hero">
@@ -325,21 +306,19 @@ function variantB(c: Content): string {
     <div><h1>${c.headline}</h1><p class="lead">${c.lead}</p></div>
   </header>
   <div class="grid">
-    <div class="side">
-      <section class="exp">
-        <span class="label">내가 해본 경험</span>
-        <h2>${c.expSentence}</h2>
-        <ul class="tagrow">${c.expTags.map((t) => `<li class="tag">${t}</li>`).join("")}</ul>
-      </section>
-      <div class="box kept"><span class="label">남긴 근거</span>
-        <h4>${c.keptItems.join(" · ")}</h4><p>${c.keptNote}</p></div>
-    </div>
+    <section class="exp">
+      <span class="label">내가 해본 경험</span>
+      <h2>${c.expSentence}</h2>
+      <ul class="tagrow">${c.expTags.map((t) => `<li class="tag">${t}</li>`).join("")}</ul>
+    </section>
     <div class="side">
       <section class="act">
         <span class="head">${CHECK} 지금 하면 좋은 일</span>
         <h3>${c.actHead}</h3><p>${c.actBrief}</p><p class="why">${c.actWhy}</p>
       </section>
-      <div class="box lack"><span class="label">더 채울 부분</span>
+      <div class="box"><span class="label">남긴 근거</span>
+        <h4>${c.keptItems.join(" · ")}</h4><p>${c.keptNote}</p></div>
+      <div class="box"><span class="label">더 채울 부분</span>
         <h4>${c.gapItems.join(" · ")}</h4><p>${c.gapNeed}</p></div>
     </div>
   </div>
@@ -360,11 +339,9 @@ function variantC(c: Content): string {
   .hero{background:var(--white);border-radius:28px;padding:54px 48px 0;
     overflow:hidden}
   .hero .eyebrow{display:block;color:var(--cyan)}
-  /* 글 폭을 좁게 잡으면 그 오른쪽이 빈 면으로 남는다. 면이 넓으면 글도
-     그만큼 쓴다: 머리는 두 줄, 거드는 줄은 한 줄이다 */
   .hero h1{margin-top:20px;font-size:38px;line-height:1.32;letter-spacing:-.033em;
-    font-weight:800;color:var(--ink);max-width:28ch;text-wrap:balance}
-  .hero .lead{margin-top:18px;font-size:16.5px;max-width:62ch}
+    font-weight:800;color:var(--ink);max-width:19ch}
+  .hero .lead{margin-top:18px;font-size:16.5px;max-width:44ch}
   .act{margin:38px -48px 0;background:var(--pale);padding:28px 48px 30px;
     display:flex;gap:20px;align-items:flex-start}
   .act .ic{flex:none;width:36px;height:36px;border-radius:12px;background:var(--navy);
