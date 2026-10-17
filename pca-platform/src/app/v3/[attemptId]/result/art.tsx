@@ -39,10 +39,16 @@ import { join } from "node:path";
  *   같아서, 읽어 주면 같은 말을 두 번 듣는다.
  */
 const HERO_FILES = ["student-desk.png", "student-desk.webp", "student-desk.jpg"];
-const heroAsset = HERO_FILES.find(
-  (n) => existsSync(join(process.cwd(), "public", "brand", "hero", n)));
+/* **그릴 때마다 본다.** 모듈이 올라올 때 한 번만 보면, 파일을 넣고 서버만
+   다시 띄운 자리에서 옛 답이 그대로 남는다. `existsSync` 한 번이라 값이
+   싸고, 이 쪽은 응시 하나를 그릴 때 한 번 그린다 */
+function heroAssetFile(): string | undefined {
+  return HERO_FILES.find(
+    (n) => existsSync(join(process.cwd(), "public", "brand", "hero", n)));
+}
 
 export function HeroVisual() {
+  const heroAsset = heroAssetFile();
   if (heroAsset) {
     /* eslint-disable-next-line @next/next/no-img-element */
     return <img className="rs-hero-img" src={`/brand/hero/${heroAsset}`} alt="" />;
