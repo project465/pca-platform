@@ -259,6 +259,10 @@
     align-items: center; gap: var(--r-s7);
     padding: 54px var(--r-s7);
   }
+  /* 공식 그림을 아직 받지 못한 자리. **빈 칸을 남기지 않는다**: 400px
+     을 비워 두면 오른쪽 절반이 덜 그려진 화면으로 읽힌다 */
+  .rs-hero.is-noart { grid-template-columns: minmax(0, 1fr); }
+  .rs-hero.is-noart .rs-quote { max-width: 24ch; }
 }
 /* 누구의 어느 응시인가. **한 줄이다** */
 .rs-who {
@@ -304,7 +308,6 @@
 .rs-verdict { display: none; }
 /* 그림. **왼쪽 큰 글과 한 쌍이다** */
 .rs-hero-art { justify-self: center; width: 100%; max-width: 440px; }
-.rs-hero-art svg { display: block; width: 100%; height: auto; }
 /* 공식 그림이 들어온 자리. **비율을 찌그러뜨리지 않는다** */
 .rs-hero-img {
   display: block; width: 100%; height: auto;

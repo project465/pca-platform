@@ -39,7 +39,7 @@ import { takeActionsFromResult } from "@/app/me/next/actions";
 import {
   ActionRoadmap, ChartNote, EvidenceMatrix, Radar, StageBars,
 } from "./charts";
-import { HeroVisual, Ic, type IcName } from "./art";
+import { HeroVisual, hasHeroAsset, Ic, type IcName } from "./art";
 import ResultNav from "./result-nav";
 import "../../result.css";
 import { barRows, canRadar } from "@/lib/me-v3/result/chart-data";
@@ -911,6 +911,8 @@ export default async function V3Result({
     (x) => x !== best && !left.some((a) => x.includes(a))) ?? "";
   const cardSay = cardPick ? pickSentenceKo([cardPick]) : "";
   const openLine = openQuote || h.title;
+  /* 공식 Hero 그림이 들어와 있는가. 없으면 글이 hero 폭을 다 쓴다 */
+  const heroArt = hasHeroAsset();
   /*
    * 분류 이름은 문장 **아래** 칩이다(§15). **셋까지**.
    *
@@ -1241,7 +1243,7 @@ export default async function V3Result({
             보이고, 판정은 작은 알약 하나로 내려간다. 큰 글씨는 **그 사람이
             고른 문장**이고, 분류 이름은 그 아래 칩이다.
             ══════════════════════════════════════════════════════════ */}
-        <section className="rs-hero">
+        <section className={`rs-hero${heroArt ? "" : " is-noart"}`}>
           <div className="rs-hero-say">
             <p className="rs-who">
               {[meta.school,
@@ -1259,8 +1261,12 @@ export default async function V3Result({
             {/* 종이에서만 서는 판정 한 줄 */}
             <p className="rs-verdict">{h.title}</p>
           </div>
-          {/* 오른쪽은 그림이다. **왼쪽 큰 글과 한 쌍이고 장식이 아니다** */}
-          <div className="rs-hero-art" aria-hidden="true"><HeroVisual /></div>
+          {/* 오른쪽은 그림이다. **왼쪽 큰 글과 한 쌍이고 장식이 아니다.**
+              공식 그림을 아직 받지 못했으면 그 칸을 세우지 않는다: 빈
+              칸을 남기거나 임시 그림으로 메우면 그것이 제품으로 읽힌다 */}
+          {heroArt
+            ? <div className="rs-hero-art" aria-hidden="true"><HeroVisual /></div>
+            : null}
         </section>
 
         {/* ══ 2. 지금, 이렇게 활용해보세요 — 카드 셋 ══

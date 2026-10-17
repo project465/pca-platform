@@ -323,7 +323,7 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.43";
  * 줄도 바뀌지 않았고 `v3:freeze:measure` 가 기록을 다시 적지 않은 채로
  * 통과한다.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V49";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V50";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX
