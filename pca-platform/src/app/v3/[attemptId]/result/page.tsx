@@ -897,16 +897,30 @@ export default async function V3Result({
     ? toldAll(focus[0].decided) : toldAll(says);
   const best = [...told].sort(
     (a, b) => Math.abs(a.length - 28) - Math.abs(b.length - 28))[0] ?? "";
-  const openQuote = best ? pickSentenceKo([best]) : "";
+  /* **짧으면 한 토막 더 잇는다.** 고르신 문장 둘을 `~고, ~어요` 로 이으면
+     한 일과 그때 정한 것이 한 호흡에 들어온다. 서른네 자를 넘기면 잇지
+     않는다: 그 위로는 큰 글씨가 세 줄로 벌어져 한눈에 안 들어온다 */
+  const more = best
+    ? [...told].filter((x) => x !== best).sort((a, b) => a.length - b.length)
+      .find((x) => best.length + x.length <= 34) ?? ""
+    : "";
+  const openQuote = best ? pickSentenceKo(more ? [best, more] : [best]) : "";
   /* 카드는 **다른 문장**을 든다. 아래 목록이 이미 적는 이름을 다시
      문장으로 세우지 않는다 */
   const cardPick = says.find(
     (x) => x !== best && !left.some((a) => x.includes(a))) ?? "";
   const cardSay = cardPick ? pickSentenceKo([cardPick]) : "";
   const openLine = openQuote || h.title;
-  /* 분류 이름은 문장 **아래** 칩이다(§15). 넷까지 */
+  /*
+   * 분류 이름은 문장 **아래** 칩이다(§15). **셋까지**.
+   *
+   * 넷을 세우면 390px 에서 두 줄로 쌓이고, 흰 알약 넷이 큰 글씨 바로
+   * 아래에 깔리면 먼저 읽히는 것이 그 사람의 경험이 아니라 우리 쪽
+   * 분류가 된다. 나머지 영역은 아래 `이런 직무와 잘 이어져요` 와 열두
+   * 영역 절이 그대로 든다.
+   */
   const openTags = (focus.length ? focus : tried)
-    .slice(0, 4).map((d) => domainName(core, d.code));
+    .slice(0, 3).map((d) => domainName(core, d.code));
   /*
    * 카드 B `이 경험에서 쓸 수 있는 것`.
    *

@@ -292,10 +292,13 @@
   display: flex; flex-wrap: wrap; gap: 7px;
   margin: var(--r-s5) 0 0; padding: 0; list-style: none;
 }
+/* **큰 글씨에서 시선을 빼앗지 않는다.** 흰 알약이되 글자는 한 단 옅고
+   굵기도 한 단 낮다: 여기 서는 것은 우리 쪽 분류이고 주인공은 그 위의
+   문장이다 */
 .rs-tags li {
-  padding: 6px 14px; border-radius: var(--r-r-pill);
-  background: #ffffff; color: var(--r-accent-ink);
-  font-size: var(--r-t-meta); font-weight: var(--ui-w-sb); white-space: nowrap;
+  padding: 5px 13px; border-radius: var(--r-r-pill);
+  background: rgba(255, 255, 255, .78); color: var(--r-ink-2);
+  font-size: var(--r-t-meta); font-weight: var(--ui-w-md); white-space: nowrap;
 }
 /* 판정 한 줄은 종이에만 */
 .rs-verdict { display: none; }
