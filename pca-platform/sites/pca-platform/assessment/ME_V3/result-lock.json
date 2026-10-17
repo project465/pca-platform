@@ -2,8 +2,8 @@
  "schema_version": "me-v3-result-lock.1",
  "note": "결과지 화면 1차 동결. 문장만 고치면 `RESULT_COPY_VERSION` 만 올리고, 칸이나 절이 바뀌면 `RESULT_MODEL_VERSION`, 화면 구조가 바뀌면 `RESULT_UI_VERSION` 을 올린다. 채점 판본은 이 가운데 무엇으로도 올리지 않는다",
  "versions": {
-  "result_ui_version": "ME_V3_RESULT_UI_V43",
-  "result_copy_version": "me-v3-result-copy.37",
+  "result_ui_version": "ME_V3_RESULT_UI_V44",
+  "result_copy_version": "me-v3-result-copy.38",
   "result_model_version": "me-v3-result-model.6",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.5",
   "scoring_version": "me-v3-scoring.5"
@@ -21,19 +21,19 @@
  },
  "files": {
   "src/app/v3/result.css": "e9086e04a5ad4e34d84d31a8bda57d34c489fbfe28eaf6c98581db743d0ad7f7",
-  "src/app/v3/[attemptId]/result/page.tsx": "10db8c52e07c2391a7ef66a712e7398bfd9d0ec4f1b1e89b04ad573d61950dba",
+  "src/app/v3/[attemptId]/result/page.tsx": "ee6fffdda62105869d60e67765f79e538b324ab4e2decbfae2f89a57dbceb88a",
   "src/app/v3/[attemptId]/result/fold.tsx": "da6c8b16f124941d283dc9ae4ad0f41b2271fd8d8233028bfdc3d4c500d4fbb4",
   "src/app/v3/[attemptId]/result/disclose.tsx": "a82c70b1d0897647877cfff4a672e8ebffd8716f76e6cfcc3d25e066f074f455",
   "src/app/v3/[attemptId]/result/save.tsx": "2830e503419eba94015798787ab2f7cd4abca39c8126fe1cf3dca087f6c6e7c1",
   "src/app/v3/[attemptId]/result/track.tsx": "6136c271ee7df7323f029912182c7496a8633fdf7479b6080697a6f4a217787c",
-  "src/lib/me-v3/result/text.ko.ts": "382909abb3af64b054d7b57235322f288726640c18e2f84787dddaceba8b4e26",
+  "src/lib/me-v3/result/text.ko.ts": "99038444ef7c393398c22b3360556b8a28c3ffc9f5ec145dedc235df951dad3f",
   "src/lib/me-v3/result/josa.ts": "152cd30c2af136172618c14fa6fb4175b97cf16350db631e3e2e6c72fd7dd4af",
-  "src/lib/me-v3/result/version.ts": "05900fbf935ef68e5c946a9ec29b728e66b1c9903370e4da8d5a93ee32ef1a01",
+  "src/lib/me-v3/result/version.ts": "f15915ddee3d994649fb4fe467db0d0af9fcf51dfeeeae228f21d701dcd62be8",
   "src/lib/me-v3/result/spec-view.ts": "5996808b444eead599e03d41d22629c6ae8ce2690e06937ce64471d189b04fe7",
   "src/lib/me-v3/result/meta.ts": "bf2c3f49a2bc49108e6e63f6c9ac6f03cce070b6fe50f24ad8a3f4027aaa85cc",
   "src/app/v3/[attemptId]/result/charts.tsx": "0ccccdbdd1f17a7e86b3d3df9c502f990ea08aed4ded68c69f8c4a8d1ed2d925",
   "src/lib/me-v3/result/chart-data.ts": "62e508fa151b0664b0c89e46745ac4f452390534ff919ba62f0ddac070734308",
   "src/lib/me-v3/runtime/domain-facts.ts": "49f73a7eb5de3b5ae72885f5d8399bd147c20a2b82bab62167338c4ae48b2695",
-  "src/lib/me-v3/result/chains.ts": "b04f9a38d7cde60f9e73e92c0a3e6f4a922534561313112d41431d4bd9b97d3c"
+  "src/lib/me-v3/result/chains.ts": "adae59ca54527e45bffada3c4531a1297f9b08615accd24bc927959c33ccf5d6"
  }
 }

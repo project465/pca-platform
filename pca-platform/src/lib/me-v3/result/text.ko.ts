@@ -166,25 +166,23 @@ const HEADLINE_KO: Record<HeadlineCode, { title: string; lead: string }> = {
   /* **품질까지 보증하는 말을 쓰지 않는다.** 우리가 본 것은 응답에서 확인된
      경험이고 밖에서 검증된 성과가 아니다 */
   EVIDENCE_READY: {
-    title: "지금 답변에는 지원서에서 꺼내 쓸 수 있는 경험이 있습니다",
-    /* **왜 이렇게 보았는지를 짧게 적는다**(SIGN-OFF §3). 장문 해석을 두지
-       않는다: 이 자리는 최대 두 줄이고, 자세한 것은 아래 영역 절이 든다 */
-    lead: "해 본 일과 그때 직접 정한 것이 함께 확인됐습니다.",
+    title: "직접 판단해 본 경험이 또렷하게 남아 있습니다",
+    /* 이름 없는 자리의 기본값이다. 실제로는 아래 `headlineLead()` 가
+       그 사람이 고른 답에서 두 문장을 만들어 이 자리를 덮는다 */
+    lead: "직접 정해 본 일과, 그래서 남은 결과가 함께 있습니다.",
   },
   EVIDENCE_PARTIAL: {
     title: "해 본 일은 있습니다. 이제 정리만 하면 됩니다",
     /* **`바로 쓸 수 있다` 고 적지 않는다.** 쓰는 사람이 할 일을 우리가
        끝낸 것으로 적는 말이고, `v3:result:copy` 가 그것을 센다 */
-    lead: "해 본 일은 확인됐고, 그때 무엇을 정했는지가 아직 적혀 있지"
-      + " 않습니다.",
+    lead: "해 보신 일은 적혀 있고, 그때 무엇을 정했는지가 아직 비어 있습니다.",
   },
   /* **관심과 근거를 한 점수로 합치지 않는다.** 관심이 낮다고 근거가 없는
      것이 아니다. 그 사람에게 할 말은 `이 영역을 진로로 둘지 정하세요` 이고
      `더 해 보세요` 는 이미 해 본 사람에게 할 말이 못 된다 */
   EVIDENCE_LOW_INTEREST: {
-    title: "해 본 일도 있고 남긴 것도 있습니다. 계속할 쪽인지만 정하면 됩니다",
-    lead: "해 본 일과 남긴 것은 확인됐고, 관심이 높다고 답하신 쪽은"
-      + " 아닙니다.",
+    title: "쌓아 둔 경험은 있고, 지금 더 끌리는 쪽은 다른 데 있습니다",
+    lead: "해 보신 일과 남긴 것은 있고, 관심이 높다고 답하신 쪽은 아닙니다.",
   },
   EXPLORING: {
     title: "아직 직접 해 본 일은 많지 않습니다",
@@ -197,7 +195,7 @@ const HEADLINE_KO: Record<HeadlineCode, { title: string; lead: string }> = {
      지금 이 응답으로 할 수 있는 말을 그대로 적는다 */
   NO_EVIDENCE: {
     title: "한 쪽이 크게 앞서지는 않습니다",
-    lead: "여러 영역이 비슷하게 나타나 앞서는 쪽이 생기지 않았습니다.",
+    lead: "답하신 내용이 여러 쪽에 비슷하게 퍼져 있습니다.",
   },
 };
 
@@ -228,9 +226,10 @@ const HEADLINE_ZONE: Partial<Record<HeadlineCode, Zone>> = {
  * 정하라고 적는다. 상태를 바꿔 적지 않고 **그 상태에 이름만 붙인다.**
  */
 const HEADLINE_SAID_KO: Partial<Record<HeadlineCode, (where: string) => string>> = {
-  EVIDENCE_READY: (w) => `${w} 쪽에서 지원서에 꺼내 쓸 경험이 있습니다`,
-  EVIDENCE_PARTIAL: (w) => `${w} 쪽은 해 본 일이 있습니다. 정리만 남았습니다`,
-  EVIDENCE_LOW_INTEREST: (w) => `${w} 쪽은 근거가 있고, 관심은 다른 쪽에 있습니다`,
+  EVIDENCE_READY: (w) => `${w}에서 직접 판단해 본 경험이 또렷합니다`,
+  EVIDENCE_PARTIAL: (w) => `${w}에서 해 본 일은 있고, 정리가 아직 남았습니다`,
+  EVIDENCE_LOW_INTEREST: (w) =>
+    `${w}에 쌓아 둔 경험은 있고, 지금 더 끌리는 쪽은 다른 데 있습니다`,
 };
 
 /**
@@ -332,9 +331,12 @@ const GAP_TITLE_KO: Record<Gap["kind"], (ax: string, a?: Axis | null) => string>
   VERIFICATION: () => "무엇과 비교해 봤는지가 아직 없습니다",
   AXIS: (ax, a) => (a ? AXIS_GAP_KO[a] : `${ax} 쪽 이야기가 아직 없습니다`),
   /* **해 본 것을 없다고 적지 않는다.** 덜 적힌 것은 어디까지 직접
-     정했는지다 */
-  PARTIAL_EVIDENCE: (ax) =>
-    `${withJosa(ax, "은는")} 해 보셨고, 어디까지 직접 정했는지가 덜 적혔습니다`,
+     정했는지다.
+     **축 이름을 이 자리에 적지 않는다**(R2 §12). 전에는 `요구 해석은 해
+     보셨고 …` 로 섰다. `요구 해석` 은 우리 쪽 분류이고, 바로 앞에 영역
+     이름이 이미 적혀 있어서 그 말이 없어도 어디의 이야기인지 읽힌다 */
+  PARTIAL_EVIDENCE: () =>
+    "해 보신 일은 적혀 있고, 어디까지 직접 정했는지가 아직 없습니다",
 };
 
 /**
@@ -430,6 +432,73 @@ export function domainChainKo(core: string, domain: string): string[] {
 }
 
 /**
+ * 고르신 항목 한 줄을 **높임꼴로** 옮긴다(R2 §8).
+ *
+ * Evidence 네 단계의 ①②③ 은 응답에서 고르신 체크리스트 문장이고 끝맺음이
+ * `~다` 다. 그대로 세우면 네 줄이 **메모 넷**으로 읽히고, 바로 위 첫 화면과
+ * 아래 할 일은 `~습니다` 라서 한 절 안에서 말투가 갈린다. 네 단계가 한
+ * 경험을 네 문장으로 풀어낸 것으로 읽히려면 말끝이 같아야 한다.
+ *
+ * **낱말을 더하지도 빼지도 않는다**: `polite()` 가 끝맺음만 바꾼다.
+ */
+export function saidKo(clause: string): string {
+  return `${polite(clause)}.`;
+}
+
+/**
+ * 첫 화면 ② `남긴 근거` 의 둘째 줄.
+ *
+ * 전에는 `지원서에 그대로 옮길 이야기가 8가지 모였습니다` 였다. **수를
+ * 앞세우면 그 칸이 셈이 된다**(R2 §15·§17): 여덟이라는 수는 읽는 사람이
+ * 다음에 무엇을 할지 정하는 데 쓰이지 않고, 우리가 센 축의 개수다.
+ */
+export function keptNoteKo(hasArtifacts: boolean): string {
+  return hasArtifacts
+    ? "과제에서 직접 만들어 남긴 것입니다."
+    : "직접 정한 내용이 이 영역에 적혀 있습니다.";
+}
+
+/**
+ * Evidence 네 단계의 ④. **지원서와 면접에서 실제로 하는 말을 적는다**
+ * (R2 §11).
+ *
+ * 전에는 `앞의 세 줄을 그대로 이으면 지원서 한 문단이 됩니다` 였다. 그
+ * 줄은 **읽는 법 안내**이고, 네 단계의 마지막 칸이 그렇게 서면 이 절이
+ * 파는 것(`이 경험을 어떻게 설명하는가`)이 사라진다.
+ *
+ * **지어내지 않는다.** 가져오는 것 둘이 전부 이미 있는 값이다: 그 영역이
+ * 일하는 차례에서 **먼저 정하는 것**(`chainFor` 의 둘째 토막, 그 Core 의
+ * 사전에 사람이 적어 둔 말)과, 응답에서 고르신 **남아 있는 결과**다. 그래서
+ * 같은 틀이라도 경영은 `하지 않을 것과 먼저 할 것` 을 묻고 간호는 `볼
+ * 항목과 지금 상태` 를 묻는다.
+ */
+export function evidenceUseKo(
+  core: string, domain: string, left: string | null,
+): string {
+  const step = chainFor(core, domain)[1] ?? "";
+  /* **긴 토막은 넣지 않는다.** 전공마다 길이가 달라서(`입원 기록과
+     활력징후와 검사값과 환자와 가족의 말`) 그대로 끼우면 이 줄이 세 줄로
+     벌어지고, 네 단계 가운데 마지막 칸이 가장 읽기 어려운 칸이 된다 */
+  const front = step && step.length <= 20
+    ? `지원서에서는 ${withJosa(step, "을를")} 어떤 기준으로 정했는지 쓰고`
+    : "지원서에서는 그때 무엇을 직접 정했는지 쓰고";
+  return left
+    ? `${front}, 면접에서는 ${withJosa(left, "을를")} 어떻게 만들었는지`
+      + " 이야기하면 됩니다."
+    : `${front}, 면접에서는 그 판단을 왜 그렇게 골랐는지 이야기하면 됩니다.`;
+}
+
+/**
+ * 네 단계는 둘까지 세우고, 나머지 영역은 **한 줄로** 잇는다.
+ *
+ * 네 단계를 영역마다 세우면 이 절이 종이 한 장을 먹는다(R2 §16). 그렇다고
+ * 적지 않으면 셋째 영역이 결과지 어디에도 서지 않는다.
+ */
+export function moreReadyKo(names: string[]): string {
+  return `${andList(names)}에서도 직접 정한 내용이 남아 있습니다.`;
+}
+
+/**
  * 해 본 것은 확인됐고 **어디까지 직접 정했는지**가 덜 적힌 축.
  *
  * `경험을 더 쌓으세요` 로 끝내면 할 말이 없어진다. 이미 한 일에서 자기
@@ -496,11 +565,11 @@ const OWN_KO: Record<Axis, (d: string, m: Mat) => string> = {
      강도로 갈지` 처럼 영역 사전의 말이 길면 한 줄이 백 자를 넘고, 그러면
      할 일로 읽히지 않는다. 그 자리에서는 재료를 그대로 쓰고 뒤를 줄인다 */
   J3: (d, m) => `${bring(d)} ${m.workflow.decide
-    ? `${m.workflow.decide} 가운데 직접 정한 것과 그 까닭을`
+    ? `${fewer(m.workflow.decide)} 직접 정한 것과 그 까닭을`
     : "그때 직접 정한 것과 그 까닭을"}`
     + ` ${keep(m, 2, "정리한 문서")}에 적어 두세요.`,
   J4: (d, m) => `${bring(d)} ${m.workflow.method
-    ? `${m.workflow.method} 가운데 왜 그 방법을 골랐는지`
+    ? `${fewer(m.workflow.method)} 왜 그 방법을 골랐는지`
     : "왜 그 방법을 골랐는지"} 다른 선택과 나란히`
     + ` ${keep(m, 3, "정리한 문서")}에 적어 두세요.`,
   J5: (d, m) => `${bring(d)} ${m.artifacts.length
@@ -514,6 +583,22 @@ const OWN_KO: Record<Axis, (d: string, m: Mat) => string> = {
   J8: (d, m) => `${bring(d)} 그 결과가 어디에 쓰였는지 한 문단으로 써서`
     + ` ${keep(m, 5, "정리한 문서")} 끝에 붙여 두세요.`,
 };
+
+/**
+ * 영역 사전의 목록을 **둘까지만** 적는다(R2 §16·§22).
+ *
+ * 영역마다 방법과 정할 것의 수가 달라서(`지표 정의, 자료 정리, 집단
+ * 나누기, 비교, 결론 쓰기`) 다섯을 그대로 이으면 할 일 한 줄이 백 자를
+ * 넘는다. 백 자가 넘는 줄은 할 일로 읽히지 않고 설명문으로 읽힌다.
+ *
+ * **줄이지만 거짓으로 적지 않는다**: 둘만 남길 때는 끝을 `가운데` 에서
+ * `같은 것 가운데` 로 바꿔, 적힌 둘이 전부가 아니라는 것을 밝힌다.
+ */
+function fewer(list: string): string {
+  const xs = list.split(/\s*,\s*/).filter(Boolean);
+  if (xs.length <= 2) return `${list} 가운데`;
+  return `${xs.slice(0, 2).join(", ")} 같은 것 가운데`;
+}
 
 /** 축마다 다음에 맡아볼 일이 다르다. **경험 → 행동 → 결과물 차례는 같다** */
 const FILL_KO: Record<Axis, (d: string, m: Mat) => string> = {
@@ -665,7 +750,14 @@ export function actionWhyKo(a: Action): string {
 export function pickSentenceKo(picks: string[]): string {
   const x = picks.filter(Boolean).slice(0, 2);
   if (!x.length) return "";
-  if (!x.every((t) => t.endsWith("다"))) return x.join(" · ");
+  /* **목록으로 끝내지 않는다**(R2 §10). 끝맺음을 고칠 수 없는 이름표는
+     가운뎃점으로 늘어놓고 있었는데, 그 꼴은 자료 목록이고 넷 가운데 가장
+     먼저 읽는 칸이 그렇게 서면 읽는 사람이 자기 경험 대신 목록을 읽는다.
+     **낱말을 더하지 않는다**: 고르신 이름을 그대로 두고 `다뤄 보셨습니다`
+     한 마디만 붙여 문장으로 세운다 */
+  if (!x.every((t) => t.endsWith("다"))) {
+    return `${withJosa(andList(x), "을를")} 다뤄 보셨습니다.`;
+  }
   const last = `${x[x.length - 1].slice(0, -1)}습니다.`;
   return x.length === 1 ? last : `${x[0].slice(0, -1)}고, ${last}`;
 }
@@ -704,7 +796,12 @@ export function actionKo(
   const w = a.material.workflow;
   const art = orList(a.material.artifacts.length ? a.material.artifacts
     : (w?.output ? [w.output] : []));
-  const vt = orList(a.material.verify_targets);
+  /* **견줄 대상 목록도 둘까지다**(R2 §16). 영역마다 길이가 달라서
+     (`낸 결과를 그 사람이 다시 말해 보게 한 결과`) 셋을 이으면 한 줄이
+     백 자를 넘는다. 긴 자리에서는 맨 앞 하나만 적는다: `또는` 으로 이은
+     긴 구절 셋은 읽는 사람이 어디까지가 한 대상인지 가를 수 없다 */
+  const vts = a.material.verify_targets;
+  const vt = orList(vts.join("").length > 24 ? vts.slice(0, 1) : vts.slice(0, 2));
   const depth = stage ? DEPTH_KO[stage] : undefined;
 
   if (a.code === "WRITE_UP") {
@@ -821,20 +918,24 @@ export function bridgeKo(
 ): string[] {
   const out: string[] = [];
 
-  /* **축 이름은 짧은 쪽을 쓴다.** `무엇을 풀 문제로 잡았는가` 같은 물음
-     꼴을 문장 안에 넣으면 `A와 B 쪽이 확인됐습니다` 가 물음 둘을 명사처럼
-     쓰는 문장이 되고, 읽는 사람이 한 번 멈춘다 */
+  /* **축 이름을 이 자리에 적지 않는다**(R2 §12). 전에는 `문제 정의와
+     직접 판단 쪽을 직접 해 보셨습니다` 로 섰다. `문제 정의` 와 `직접
+     판단` 은 우리 쪽 분류이고, 학생이 산업과 직무를 보는 자리에서 그
+     말이 서면 자기 경험 대신 분류표를 읽는다. 쓰는 말을 `AXIS_NEED_KO`
+     로 바꾼다: 가리키는 축은 그대로이고 **부르는 말만 갈린다** */
   const est = pack.established[0];
   if (est && est.axes.length) {
-    const axes = andList(est.axes.slice(0, 2).map((a) => AXIS_KO[a]));
-    out.push(`${withJosa(domainName(est.domain), "은는")} ${axes} 쪽을 직접 해 보셨습니다.`);
+    const needs = andList(est.axes.slice(0, 2).map((a) => AXIS_NEED_KO[a]));
+    out.push(`${withJosa(domainName(est.domain), "은는")} ${needs}까지`
+      + " 적어 두셨습니다.");
   }
 
   const req = pack.requested[0];
   if (req) {
-    const what = AXIS_KO[req.axis];
+    const what = AXIS_NEED_KO[req.axis];
     const where = domainName(req.domain);
-    out.push(`${withJosa(packName, "을를")} 보려면 ${where}에서 ${what} 근거가 아직 모자랍니다.`);
+    out.push(`${withJosa(packName, "을를")} 보려면 ${where}에서`
+      + ` ${needWithJosa(what)} 적는 자리가 아직 비어 있습니다.`);
   }
 
   if (action) {
@@ -855,19 +956,63 @@ export function bridgeKo(
  * 보았는가` 이고, 그 까닭은 묶음마다 하나다. 영역 이름을 거기 또 적으면 두
  * 줄이 같은 말을 한다.
  */
+/**
+ * 머리글 아래 한 줄을 **그 사람이 고른 답에서** 만든다(R2 §4).
+ *
+ * 전에는 이 자리가 묶음마다 고정된 한 문장이었다(`해 본 일과 그때 직접
+ * 정한 것이 함께 확인됐습니다`). 뜻은 맞지만 그것은 **시스템이 자기 판정을
+ * 설명하는 말**이고, 결과지의 둘째 줄이 그렇게 서면 읽는 사람은 자기
+ * 경험 대신 판정표를 읽는다.
+ *
+ * 그래서 사실 → 의미 두 문장으로 적는다: 먼저 **무엇을 직접 정했는지**를
+ * 고르신 문장 그대로 옮기고, 그 뒤에 **그 판단이 무엇으로 남았는지**를
+ * 잇는다. **없는 내용을 지어내지 않는다**: 두 토막이 전부 결과 모델의
+ * `decided` · `did` · `artifacts` · `verifications` 에서 오고, 그 자리가
+ * 비어 있으면 이 함수는 `null` 을 돌려주어 묶음의 기본 문장이 그대로 선다.
+ */
+function headlineLead(m: ResultModel): string | null {
+  const code = headlineDomains(m)[0];
+  const d = code ? m.domains.find((x) => x.code === code) : undefined;
+  if (!d) return null;
+  const left = d.artifacts[0] ?? d.verifications[0] ?? null;
+  const decided = d.decided[0] ?? null;
+  const did = d.did[0] ?? null;
+  if (m.overview.headline === "EVIDENCE_PARTIAL") {
+    if (!did) return null;
+    return `${polite(did)}. 그때 무엇을 직접 정했는지는 아직 적지`
+      + " 않으셨습니다.";
+  }
+  if (m.overview.headline === "EVIDENCE_READY"
+    || m.overview.headline === "EVIDENCE_LOW_INTEREST") {
+    /* **첫 화면 ① 칸과 같은 문장을 쓰지 않는다.** 그 칸은 `decided` 를
+       들고 있어서, 여기서도 같은 것을 집으면 한 화면에 같은 줄이 두 번
+       선다. 이 자리가 드는 것은 `무엇을 하다가 그렇게 됐는가` 이므로 한
+       일(`did`)을 먼저 집고, 그것이 없을 때만 정한 것으로 내려간다 */
+    const act = did ?? decided;
+    if (!act) return null;
+    const first = `${polite(act)}.`;
+    /* **남은 것이 없으면 남았다고 적지 않는다.** 한 문장으로 끝낸다 */
+    return left
+      ? `${first} 그 판단이 ${withJosa(left, "으로")} 남아 있습니다.`
+      : first;
+  }
+  return null;
+}
+
 export function headlineKo(
   m: ResultModel, name?: (td: string) => string,
 ): { title: string; lead: string } {
   const base = HEADLINE_KO[m.overview.headline];
+  const lead = headlineLead(m) ?? base.lead;
   const said = HEADLINE_SAID_KO[m.overview.headline];
-  if (!name || !said) return base;
+  if (!name || !said) return { title: base.title, lead };
   const names = headlineDomains(m).map(name).filter(Boolean);
-  if (!names.length) return base;
+  if (!names.length) return { title: base.title, lead };
   const title = said(andList(names));
   /* **첫 줄이 두 줄로 벌어지면 이름을 하나만 적는다.** 영역 이름 길이는
      전공마다 달라서(`수요·예약·가격 관리`) 둘을 이으면 자리마다 결과가
      다르다. 자르지는 않는다: 글자를 잘라 두면 뜻이 가운데서 끊긴다 */
-  return { title: title.length > 42 ? said(names[0]) : title, lead: base.lead };
+  return { title: title.length > 42 ? said(names[0]) : title, lead };
 }
 
 /** 등급마다 무엇까지 말하는가. **BASIC 에 근거가 섰다는 판정을 두지 않는다** */

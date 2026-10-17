@@ -20,6 +20,7 @@ import {
   BASIC_GROUP_KO, bridgeKo,
   commonKo, domainChainKo, draftKo, gapCellKo, gapKo, gapNeedKo, gapNeedShortKo, gapShortKo,
   actionWhyKo, headlineKo, needSentenceKo, pickSentenceKo,
+  evidenceUseKo, keptNoteKo, moreReadyKo, saidKo,
   HORIZON_KO, QUALITY_KO, TIER_NOTE_KO, TRANS_ORDER, TRANS_STEP_KO,
   XFIELD_ORDER, xfieldKo, ZONE_LEAD_KO, ZONE_TITLE_KO,
 } from "@/lib/me-v3/result/text.ko";
@@ -736,6 +737,9 @@ export default async function V3Result({
         left: d?.artifacts[0] ?? d?.verifications[0] ?? null,
       };
     });
+  /* 네 단계에 세우지 못한 나머지 영역. **차례를 다시 매기지 않는다** */
+  const readyDomains = [...new Set(model.evidence.ready.map((e) => e.domain))];
+  const restReady = readyDomains.slice(2).map((c) => domainName(core, c));
   const focus = model.domains.filter((d) => model.overview.focus.includes(d.code));
   const compare = model.domains.filter((d) => model.overview.compare.includes(d.code));
   const deep = model.limits.deep_axes;
@@ -1234,13 +1238,14 @@ export default async function V3Result({
                 ? left.slice(0, 2)
                 : [...new Set(model.evidence.ready
                   .map((e) => domainName(core, e.domain)))].slice(0, 3)).join(" · ")}</p>
-              <p style={{ fontWeight: 400 }}>
-                지원서에 그대로 옮길 이야기가
-                {" "}{model.evidence.ready.length}가지 모였습니다
-              </p>
+              {/* **수를 앞세우지 않는다**(R2 §15·§17). 전에는
+                  `지원서에 그대로 옮길 이야기가 8가지 모였습니다` 였다.
+                  여덟은 우리가 센 축의 개수이고, 읽는 사람이 다음에 무엇을
+                  할지 정하는 데 쓰이지 않는다 */}
+              <p style={{ fontWeight: 400 }}>{keptNoteKo(left.length > 0)}</p>
             </>) : (
               <p className="none">
-                지원서에 그대로 옮길 이야기는 아직 모이지 않았습니다
+                과제에서 남긴 결과물은 아직 적지 않으셨습니다
               </p>
             )}
           </div>
@@ -1342,17 +1347,18 @@ export default async function V3Result({
                 먹었다. 바로 꺼내 쓸 수 있는 쪽만 한 줄씩 적고, 갈라 보는
                 자리는 아래로 접는다 */}
             {model.evidence.ready.length ? (
-              <>
-                <p className="rs-note">지원서에서 먼저 쓸 경험입니다.</p>
-                <ul className="rs-first">
-                  {model.evidence.ready.slice(0, 3).map((e) => (
-                    <li key={`${e.domain}.${e.axis}`}>
-                      <b>{domainName(core, e.domain)}</b>
-                      {axisStateKo(e.axis, e.state)}
-                    </li>
-                  ))}
-                </ul>
-              </>
+              /* **축 목록을 이 절의 첫 줄에 두지 않는다**(R2 §9·§18).
+                 전에는 `경영전략·기획 조건과 기준값을 직접 정함` 처럼 축
+                 이름을 풀어 쓴 세 줄이 먼저 섰다. 그 셋은 우리 쪽 분류를
+                 문장으로 바꾼 것이라, 이 절에서 가장 먼저 읽히는 자리가
+                 **학생의 경험이 아니라 taxonomy** 였다. 바로 아래 네 단계가
+                 같은 영역을 그 사람이 고른 말로 풀고 있으므로 이 자리는
+                 그 넷으로 들어가는 한 줄만 든다. 축마다의 상태는 아래 열두
+                 영역 절이 한 자리에서 그대로 든다 */
+              <p className="rs-note">
+                아래 네 줄은 지원서와 면접에서 이야기할 수 있는 경험을
+                그 차례대로 풀어 놓은 것입니다.
+              </p>
             ) : (
               <>
                 {/* **가리키는 줄이고 할 일이 아니다.** `…부터 보세요` 로 적어
@@ -1412,16 +1418,20 @@ export default async function V3Result({
                         **다음에 무엇을 남기면 되는지**까지 잇는다. 채워진
                         칸에는 설명을 보태지 않는다: 그 칸이 드는 것은
                         고르신 내용 그대로다 */}
+                    {/* **①②③ 은 말끝을 맞춘다**(R2 §8). 고르신 체크리스트
+                        문장은 끝맺음이 `~다` 라서 그대로 세우면 네 줄이
+                        메모 넷으로 읽힌다. `saidKo` 가 **끝맺음만** 바꾸므로
+                        낱말이 하나도 늘지 않는다 */}
                     <ol>
                       <li className={c.did ? undefined : "is-empty"}>
                         <b>내가 한 일</b>
-                        <span>{c.did
-                          ?? "아직 없습니다. 이 영역 과제 하나를 골라 한 일부터 적어 두세요"}</span>
+                        <span>{c.did ? saidKo(c.did)
+                          : "아직 없습니다. 이 영역 과제 하나를 골라 한 일부터 적어 두세요"}</span>
                       </li>
                       <li className={c.decided ? undefined : "is-empty"}>
                         <b>내가 직접 정한 것</b>
-                        <span>{c.decided
-                          ?? "아직 없습니다. 그때 무엇을 직접 골랐는지 한 줄 적어 두세요"}</span>
+                        <span>{c.decided ? saidKo(c.decided)
+                          : "아직 없습니다. 그때 무엇을 직접 골랐는지 한 줄 적어 두세요"}</span>
                       </li>
                       <li className={c.left ? undefined : "is-empty"}>
                         <b>남아 있는 결과</b>
@@ -1430,20 +1440,34 @@ export default async function V3Result({
                       </li>
                       <li className={c.decided && c.left ? "is-end" : "is-empty"}>
                         <b>지원서·면접에서 쓸 부분</b>
-                        {/* **어느 칸이 비었는지까지 적는다.** `앞 줄이
+                        {/* **읽는 법 안내를 이 칸에 적지 않는다**(R2 §11).
+                            전에는 `앞의 세 줄을 그대로 이으면 지원서 한
+                            문단이 됩니다` 였다. 네 단계의 마지막 칸이 그렇게
+                            서면 이 절이 파는 것(`이 경험을 어떻게 설명하는가`)
+                            이 사라진다. `evidenceUseKo` 가 그 영역이 일하는
+                            차례와 남은 결과에서 실제 활용 장면을 적는다.
+                            **어느 칸이 비었는지까지 적는다**: `앞 줄이
                             채워지면` 으로 두면 넷 가운데 무엇을 메워야
                             하는지를 읽는 사람이 다시 세어야 한다 */}
                         <span>
                           {c.decided && c.left
-                            ? "앞의 세 줄을 그대로 이으면 지원서 한 문단이 됩니다"
+                            ? evidenceUseKo(core, c.code, c.left)
                             : `위의 ${[!c.decided ? "직접 정한 것" : null,
                               !c.left ? "남아 있는 결과" : null]
-                              .filter(Boolean).join("과 ")} 칸을 채우면 한 문단이 됩니다`}
+                              .filter(Boolean).join("과 ")} 칸을 채우면 이 경험을`
+                              + " 지원서에서 이야기할 수 있습니다"}
                         </span>
                       </li>
                     </ol>
                   </section>
                 ))}
+                {/* **셋째 영역이 결과지 어디에도 서지 않으면 안 된다**
+                    (R2 §16). 네 단계는 둘까지 세우고(한 영역이 네 줄이라
+                    셋을 세우면 이 절이 종이 한 장을 먹는다) 나머지는 한 줄로
+                    잇는다. 차례는 결과 모델이 정한 그대로다 */}
+                {restReady.length ? (
+                  <p className="rs-note">{moreReadyKo(restReady)}</p>
+                ) : null}
                 <p className="rs-note">
                   네 칸은 응답에서 고르신 항목을 그대로 옮긴 것입니다.
                   문장으로 적는 차례는 아래 <a href="#translation">지원서·면접에서 쓸 문장</a>에
