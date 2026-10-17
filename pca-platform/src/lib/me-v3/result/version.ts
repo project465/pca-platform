@@ -99,7 +99,7 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
  * **판정도 결과 모델도 한 줄 바뀌지 않았다.** 이 판본이 든 파일은 전부
  * 번역표와 읽는 층이고, 채점과 결과 모델은 이 파일을 읽지 않는다.
  */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.51";
+export const RESULT_COPY_VERSION = "me-v3-result-copy.52";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -323,7 +323,7 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.51";
  * 줄도 바뀌지 않았고 `v3:freeze:measure` 가 기록을 다시 적지 않은 채로
  * 통과한다.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V59";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V60";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

@@ -21,7 +21,7 @@ import {
   commonKo, domainChainKo, draftKo, gapCellKo, gapKo, gapNeedKo, gapNeedShortKo, gapShortKo,
   actionWhyKo, AXIS_DID_KO, headlineBadgeKo, headlineKo, needSentenceKo,
   pickSentenceKo,
-  evidenceOpenKo, evidenceAlsoKo, keptNoteKo, moreReadyKo,
+  evidenceStoryKo, keptNoteKo, moreReadyKo,
   HORIZON_KO, QUALITY_KO, TIER_NOTE_KO, TRANS_ORDER, TRANS_STEP_KO,
   XFIELD_ORDER, xfieldKo, ZONE_LEAD_KO, ZONE_TITLE_KO,
 } from "@/lib/me-v3/result/text.ko";
@@ -926,11 +926,14 @@ export default async function V3Result({
     (x) => x !== best && !left.some((a) => x.includes(a))) ?? "";
   const cardSay = cardPick ? pickSentenceKo([cardPick]) : "";
   const openLine = openQuote || h.title;
-  /* 근거 절의 네 막. **쓰는 쪽에서 가를 일이 없게** 여는 경험과 곁근거가
-     서로 다른 모양을 돌려받는다(R11 §3) */
-  const evOpen = chains[0]
-    ? evidenceOpenKo(core, chains[0].code, chains[0]) : null;
-  const evAlso = chains[1] ? evidenceAlsoKo(chains[1]) : null;
+  /* 근거 절의 두 이야기. **둘이 같은 꼴을 돌려받는다**(R12 §1): 가르는
+     것은 자료 꼴이 아니라 화면 쪽 DOM 이다 */
+  const evLead = chains[0] ? evidenceStoryKo(
+    core, chains[0].code, chains[0], "lead",
+    domainName(core, chains[0].code)) : null;
+  const evAlso = chains[1] ? evidenceStoryKo(
+    core, chains[1].code, chains[1], "second",
+    domainName(core, chains[1].code)) : null;
   /* 공식 Hero 그림이 들어와 있는가. 없으면 글이 hero 폭을 다 쓴다 */
   const heroArt = hasHeroAsset();
   /*
@@ -1486,64 +1489,111 @@ export default async function V3Result({
                 ) : null}
               </>
             )}
-            {/* ── 근거 ── **네 막으로 읽는다**(R11 §3).
-                데이터 구조를 화면 구조로 옮기지 않는다. 영역 · 한 일 ·
-                직접 정한 것 · 남은 결과 · 지원서 · 면접 여섯 칸을 그대로
-                세우면 그건 field 출력이다.
+            {/* ── 근거 ── **경험 하나를 한 이야기로**(R12 §2).
 
-                  ① 여는 한 마디   카드 없이 큰 활자 하나
-                  ② 한 행동과 남은 것  행동문 → 결과물 조각
-                  ③ 꺼내 쓰는 자리  지원서는 **출발점**(면 하나), 면접은 **물음**
-                  ④ 곁근거        훨씬 짧은 띠 하나
+                받은 참조 구현을 그대로 세운다: INTRO → 여는 경험 → 띠 →
+                곁근거 → 남은 영역. **두 이야기가 같은 자료 꼴을 쓰고 DOM 이
+                갈린다**(`is-primary` / `is-second`): 꼴을 둘로 두면 같은
+                재료에서 나온 한 이야기라는 것이 자료 쪽에서부터 흐려진다.
 
-                **막마다 조판이 다르다**(§4·§6): 면을 가진 자리는 ③ 하나
-                뿐이고 나머지는 여백 · 활자 · 금 · 정렬로 가른다 */}
-            {evOpen ? (
-              <div className="rs-ev2">
-                {/* ① 여는 한 마디. **판정문이 아니라 한 행동이다** */}
-                <p className="rs-ev2-of">{domainName(core, chains[0].code)}</p>
-                <h3 className="rs-ev2-head">{evOpen.head}</h3>
+                여는 경험은 왼쪽에 한 행동과 남은 결과, 오른쪽에 꺼내 쓰는
+                자리 둘을 세운 비대칭 두 단이고, 곁근거는 **머리가 가로로
+                눕고**(영역과 행동 | 남긴 것) 쓰는 자리가 두 칸으로 선다.
 
-                {/* ② 한 행동 → 남은 것. 결과물은 **실제 물건처럼** 선다 */}
-                <div className="rs-ev2-act">
-                  {evOpen.did ? <p className="rs-ev2-do">{evOpen.did}</p> : null}
-                  {evOpen.out.length ? (
-                    <ul className="rs-ev2-out">
-                      {evOpen.out.map((t) => <li key={t}>{t}</li>)}
-                    </ul>
-                  ) : null}
-                </div>
+                **class 이름을 `cm-` 으로 두지 않는다**: 그 이름은 작업공간
+                디자인 시스템이 쓰고(`src/app/me/platform.css`) `v3:workspace`
+                가 그 이름이 CSS 에 있는지 센다. 이 저장소에서 이름이 겹친
+                것이 열세 번 버그였다 */}
+            {evLead ? (
+              <div className="rs-ev3">
+                <header className="rs-ev3-intro">
+                  {/* **줄바꿈 앞뒤에 사이띄개를 둔다.** 좁은 화면에서는
+                      `<br>` 을 세우지 않는데, 그때 이 자리가 비어 있으면
+                      앞뒤 글자가 그대로 붙는다(`경험은이미`) */}
+                  <h3>
+                    지원서에 쓸 만한 경험은{" "}<br />이미 여기 있습니다
+                  </h3>
+                  <p>
+                    검사에서 고른 답 가운데, 실제로 해본 일이 분명한 경험부터
+                    꺼냈습니다
+                  </p>
+                </header>
 
-                {/* ③ 꺼내 쓰는 자리. 둘의 **시각적 역할이 다르다**: 지원서는
-                    쓰기 시작할 자리(옅은 면 하나), 면접은 실제 물음(면 없이
-                    큰 활자) */}
-                <div className="rs-ev2-use">
-                  <div className="rs-ev2-cue">
-                    <i>지원서</i>
-                    <p>{evOpen.cue}</p>
+                <article className="rs-ev3-story is-primary">
+                  <p className="rs-ev3-meta">
+                    <span>{evLead.domain}</span>
+                    <i>먼저 써볼 경험</i>
+                  </p>
+                  <div className="rs-ev3-main">
+                    <div className="rs-ev3-narr">
+                      <h4>{evLead.action}</h4>
+                      {evLead.decision ? (
+                        <p className="rs-ev3-dec">{evLead.decision}</p>
+                      ) : null}
+                      {evLead.outputs.length ? (
+                        <div className="rs-ev3-outs">
+                          <span>남아 있는 결과</span>
+                          <ul>
+                            {evLead.outputs.map((t) => <li key={t}>{t}</li>)}
+                          </ul>
+                        </div>
+                      ) : null}
+                    </div>
+                    {/* 꺼내 쓰는 자리 둘. **시각적 역할이 다르다**: 지원서는
+                        쓰기 시작할 자리, 면접은 큰 활자로 띄운 실제 물음 */}
+                    <aside className="rs-ev3-use">
+                      <div className="rs-ev3-ub">
+                        <span>지원서</span>
+                        <p>{evLead.application}</p>
+                      </div>
+                      <div className="rs-ev3-ub is-interview">
+                        <span>면접에서 이어질 질문</span>
+                        <blockquote>{evLead.interview}</blockquote>
+                      </div>
+                    </aside>
                   </div>
-                  <blockquote className="rs-ev2-q">
-                    <p>{evOpen.ask}</p>
-                    <cite>면접에서 이어질 질문</cite>
-                  </blockquote>
-                </div>
+                </article>
 
-                {/* ④ 곁근거. **여는 경험을 베끼지 않는다**: 머리도 조판도
-                    다르고, 네 줄이 가로로 눕는다 */}
                 {evAlso ? (
-                  <aside className="rs-ev2-also">
-                    <p className="rs-ev2-also-of">{domainName(core, chains[1].code)}</p>
-                    {evAlso.out ? <p className="rs-ev2-also-h">{evAlso.out}</p> : null}
-                    {evAlso.own ? <p className="rs-ev2-also-s">{evAlso.own}</p> : null}
-                    <p className="rs-ev2-also-u">{evAlso.cue}</p>
-                    <p className="rs-ev2-also-q">{evAlso.ask}</p>
-                  </aside>
+                  <>
+                    <div className="rs-ev3-tr"><span>그리고 하나 더</span></div>
+                    <article className="rs-ev3-story is-second">
+                      <div className="rs-ev3-sh">
+                        <div>
+                          <p className="rs-ev3-meta">
+                            <span>{evAlso.domain}</span>
+                          </p>
+                          <h4>{evAlso.action}</h4>
+                        </div>
+                        {evAlso.outputs.length ? (
+                          <p className="rs-ev3-so">
+                            <span>남긴 것</span>
+                            <strong>{evAlso.outputs.join(" · ")}</strong>
+                          </p>
+                        ) : null}
+                      </div>
+                      {evAlso.decision ? (
+                        <p className="rs-ev3-sd">{evAlso.decision}</p>
+                      ) : null}
+                      <div className="rs-ev3-su">
+                        <div>
+                          <span>지원서</span>
+                          <p>{evAlso.application}</p>
+                        </div>
+                        <div>
+                          <span>면접</span>
+                          <p>{evAlso.interview}</p>
+                        </div>
+                      </div>
+                    </article>
+                  </>
                 ) : null}
 
                 {restReady.length ? (
-                  <p className="rs-ev2-rest">
-                    <i>그 밖에</i>{moreReadyKo(restReady)}
-                  </p>
+                  <footer className="rs-ev3-more">
+                    <span>다른 경험도 남아 있습니다</span>
+                    <p>{moreReadyKo(restReady)}</p>
+                  </footer>
                 ) : null}
               </div>
             ) : null}

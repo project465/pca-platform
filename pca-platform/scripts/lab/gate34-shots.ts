@@ -83,7 +83,7 @@ async function evSize(p: Page, name: string): Promise<void> {
   const out = await p.evaluate(() => {
     const s = document.querySelector("section#evidence") as HTMLElement | null;
     const xs = Array.from(
-      document.querySelectorAll("section#evidence .rs-ev2 > *")) as HTMLElement[];
+      document.querySelectorAll("section#evidence .rs-ev3 > *")) as HTMLElement[];
     return {
       sec: s ? Math.round(s.getBoundingClientRect().height) : -1,
       ex: xs.map((x) => Math.round(x.getBoundingClientRect().height)),
@@ -183,18 +183,19 @@ async function main(): Promise<void> {
     /* **Gate 4 는 네 줄 이야기까지다.** 절 전체를 뜨면 아래 펼친 자리까지
        딸려와 글자가 작아지고, 묻는 것(`한 경험으로 읽히는가`)에 답할 수
        없다 */
-    await clipTo(p, "section#evidence h2", ".rs-ev2", `${OUT}/gate4-desktop.png`);
+    await clipTo(p, "section#evidence h2", ".rs-ev3", `${OUT}/gate4-desktop.png`);
     await evSize(p, "desktop");
     /* **Hero → Summary → 근거가 한 제품으로 이어지는가**(R10 §제출 7).
        자리마다 따로 뜨면 그 물음에 답할 수 없다: 이어진 한 장이 있어야
        첫 화면의 면과 근거 절의 면이 같은 집안인지 눈으로 가려진다 */
-    await clipTo(p, ".rs-hero", ".rs-ev2", `${OUT}/flow-desktop.png`);
+    await clipTo(p, ".rs-hero", ".rs-ev3", `${OUT}/flow-desktop.png`);
     /* **경험마다 따로 뜬다**(R7 §제출). 둘이 같은 틀의 변형인지는 둘을
        나란히 놓고 글자가 읽히는 크기로 봐야 가려진다 */
     /* **첫 경험은 장면과 쓰는 자리가 한 이야기**라 둘을 한 장으로 뜬다.
        둘째 경험은 그 자체가 한 덩이다 */
-    await clipTo(p, ".rs-ev2-of", ".rs-ev2-use", `${OUT}/gate4-desktop-card.png`);
-    const also = p.locator("section#evidence .rs-ev2-also").first();
+    await clipTo(p, ".rs-ev3-intro", ".rs-ev3-story.is-primary",
+      `${OUT}/gate4-desktop-card.png`);
+    const also = p.locator("section#evidence .rs-ev3-story.is-second").first();
     if (await also.count()) {
       const f = `${OUT}/gate4-desktop-card2.png`;
       await also.screenshot({ path: f });
@@ -211,11 +212,12 @@ async function main(): Promise<void> {
     await clipTo(m, ".rs-use", ".rs-use", `${OUT}/gate3-mobile-summary.png`);
     await openAll(m);
     await m.waitForTimeout(400);
-    await clipTo(m, "section#evidence h2", ".rs-ev2", `${OUT}/gate4-mobile.png`);
+    await clipTo(m, "section#evidence h2", ".rs-ev3", `${OUT}/gate4-mobile.png`);
     await evSize(m, "mobile");
-    await clipTo(m, ".rs-hero", ".rs-ev2", `${OUT}/flow-mobile.png`);
-    await clipTo(m, ".rs-ev2-of", ".rs-ev2-use", `${OUT}/gate4-mobile-card.png`);
-    const malso = m.locator("section#evidence .rs-ev2-also").first();
+    await clipTo(m, ".rs-hero", ".rs-ev3", `${OUT}/flow-mobile.png`);
+    await clipTo(m, ".rs-ev3-intro", ".rs-ev3-story.is-primary",
+      `${OUT}/gate4-mobile-card.png`);
+    const malso = m.locator("section#evidence .rs-ev3-story.is-second").first();
     if (await malso.count()) {
       const f = `${OUT}/gate4-mobile-card2.png`;
       await malso.screenshot({ path: f });

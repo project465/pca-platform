@@ -908,122 +908,166 @@
  * 테만 남은 네모와 옅은 금이다. 그 끊긴 자리가 곧 다음에 할 일이다.
  * **카드로 두르지 않는다**(§20): 영역 하나가 흰 상자로 서면 영역이 둘일
  * 때 또 2×2 가 된다 */
-/* ── Evidence ── **네 막으로 읽는 한 장면**(R11 §3·§4·§5·§6).
+/* ── Evidence ── **경험 하나를 한 이야기로**(R12 §2·§3).
  *
- * 경험 카드 목록을 버렸다. 막마다 **조판의 종류가 다르다**:
+ * 받은 참조 구현의 짜임을 그대로 세운다. 바꾼 것은 값을 적는 자리뿐이다:
+ * 참조가 적어 둔 색 여섯(`--ink` · `--ink-soft` · `--line` · `--surface` ·
+ * `--cyan-soft` · `--cyan`)은 결과지 팔레트의 `--r-ink` · `--r-ink-2` ·
+ * `--r-line` · `--r-field` · `--r-cyan-soft` · `--r-teal` 과 눈으로
+ * 갈리지 않는 자리라 **팔레트를 한 벌 더 두지 않는다**: 이 저장소는 토큰
+ * 네 벌이 한 쪽씩 볼 때는 전부 멀쩡하고 이어서 누를 때만 갈려 보이던 것을
+ * 겪고 한 벌로 합쳤다. 굵기도 650/720/750/760 대신 네 토큰을 쓴다.
  *
- *   ① 여는 한 마디   면 없이 큰 활자 하나 · 오른쪽을 비운다
- *   ② 한 행동 → 남은 것  행동문 한 줄 + 결과물 조각(둥글기 10)
- *   ③ 꺼내 쓰는 자리  옅은 면 하나(둥글기 20) + 면 없는 큰 물음
- *   ④ 곁근거        금 한 줄 아래 **가로로 눕는 띠** (둥글기 0)
+ *   INTRO      가운데 · 큰 머리 하나와 옅은 한 줄
+ *   PRIMARY    둥근 면 하나(32) · 왼쪽 이야기 / 오른쪽 꺼내 쓰는 자리
+ *   TRANSITION 금 두 줄 사이의 한 마디
+ *   SECONDARY  면 없이 금 한 줄 아래 · 오른쪽으로 들여 **훨씬 짧다**
+ *   MORE       금 한 줄 위의 남은 영역 이름
  *
- * **면을 가진 자리는 ③ 하나**이고(§4) 나머지는 여백 · 활자 · 금 · 정렬로
- * 가른다. 둥글기도 한 가지로 통일하지 않는다(§5): 0 / 10 / 20 세 단이다.
- * 색은 첫 화면과 같은 묶음만 쓴다(흰색 · cool off-white · navy · muted
- * cyan). **손전화는 따로 짠다**(§9). */
-.rs-ev2 { margin: var(--r-s5) 0 0; }
+ * **폭은 결과지 container 를 그대로 쓴다**: 참조의 1180px 을 여기서 못
+ * 박으면 이 절만 다른 글 폭으로 서서, 이어 내려 읽을 때 절들이 서로 다른
+ * 화면을 붙여 놓은 것으로 보인다. */
+.rs-ev3 { margin: var(--r-s5) 0 0; }
 
-/* ── ① 여는 한 마디 ── */
-.rs-ev2-of {
-  margin: 0; font-size: var(--r-t-meta); letter-spacing: .03em;
-  font-weight: var(--ui-w-md); color: var(--r-cyan);
+/* ── INTRO ── 가운데. 절 머리(`#evidence > h2`)가 눈썹 자리를 들고 있어서
+   여기서 그 말을 다시 적지 않는다 */
+.rs-ev3-intro { max-width: 40ch; margin: 0 auto; text-align: center; }
+/* **`text-wrap: balance` 를 쓰지 않는다**: 줄바꿈이 글에 적혀 있어서 둘이
+   서로 다투면 `지원서에 쓸 / 만한 경험은` 처럼 한 마디가 끊긴다 */
+.rs-ev3-intro h3 {
+  margin: 0; font-size: clamp(26px, 3vw, 38px); line-height: 1.26;
+  font-weight: var(--ui-w-bd); letter-spacing: -.038em; color: var(--r-ink);
 }
-/* **이 절의 주인공.** 판정이 아니라 그 사람이 한 행동 하나다 */
-.rs-ev2-head {
-  margin: var(--r-s3) 0 0; max-width: 15ch;
-  font-size: clamp(27px, 3.1vw, 42px); line-height: 1.26;
-  font-weight: var(--ui-w-bd); letter-spacing: -.038em;
-  color: var(--r-ink); text-wrap: balance;
+.rs-ev3-intro p {
+  margin: var(--r-s3) 0 0; font-size: var(--r-t-body); line-height: 1.6;
+  color: var(--r-ink-3); text-wrap: pretty;
 }
 
-/* ── ② 한 행동 → 남은 것 ── 면도 테도 없다 */
-.rs-ev2-act { margin: var(--r-s6) 0 0; display: grid; gap: var(--r-s4); }
-.rs-ev2-do {
-  margin: 0; max-width: 34ch;
-  font-size: var(--r-t-lead); line-height: 1.6; color: var(--r-ink-2);
+/* ── PRIMARY ── 이 절의 유일한 면. 둥글기 32 */
+.rs-ev3-story { margin: var(--r-s6) 0 0; }
+.rs-ev3-story.is-primary {
+  padding: var(--r-s5); border-radius: 32px;
+  background: linear-gradient(135deg, var(--r-field),
+    color-mix(in srgb, var(--r-cyan-soft) 55%, var(--r-paper)));
 }
-/* 결과물은 **실제 물건처럼** 선다: 흰 조각에 얇은 테와 작은 문서 눈금
-   하나. 알약이 아니다(알약은 분류 태그 자리다) */
-.rs-ev2-out {
-  display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0;
-  list-style: none;
+.rs-ev3-meta {
+  display: flex; align-items: center; gap: var(--r-s3); margin: 0;
+  font-size: var(--r-t-meta); letter-spacing: .03em;
 }
-.rs-ev2-out li {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 9px 14px; border-radius: 10px;
+.rs-ev3-meta span { font-weight: var(--ui-w-sb); color: var(--r-cyan); }
+.rs-ev3-meta i {
+  font-style: normal; padding: 3px 10px; border-radius: 999px;
+  background: var(--r-paper); color: var(--r-ink-3);
+}
+.rs-ev3-main { margin: var(--r-s5) 0 0; display: grid; gap: var(--r-s5); }
+/* **이 이야기의 주인공.** 판정이 아니라 그 사람이 한 행동 하나다 */
+.rs-ev3-narr h4 {
+  margin: 0; font-size: clamp(22px, 2.3vw, 29px); line-height: 1.34;
+  font-weight: var(--ui-w-bd); letter-spacing: -.03em;
+  color: var(--r-ink); text-wrap: pretty;
+}
+.rs-ev3-dec {
+  margin: var(--r-s3) 0 0; max-width: 38ch;
+  font-size: var(--r-t-body); line-height: 1.6; color: var(--r-ink-2);
+}
+.rs-ev3-outs { margin: var(--r-s5) 0 0; }
+.rs-ev3-outs > span {
+  display: block; font-size: var(--r-t-meta); letter-spacing: .03em;
+  color: var(--r-ink-3);
+}
+/* 남은 것은 **실제 물건처럼** 선다: 흰 조각에 얇은 테. 알약이 아니다
+   (알약은 분류 태그 자리다) */
+.rs-ev3-outs ul {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin: var(--r-s2) 0 0; padding: 0; list-style: none;
+}
+.rs-ev3-outs li {
+  padding: 10px 14px; border-radius: 12px;
   background: var(--r-paper); border: 1px solid var(--r-line);
   font-size: var(--r-t-gloss); font-weight: var(--ui-w-md); color: var(--r-ink);
 }
-.rs-ev2-out li::before {
-  content: ""; flex: none; width: 9px; height: 11px; border-radius: 1.5px;
-  border: 1.6px solid var(--r-cyan); border-top-width: 3px;
-}
 
-/* ── ③ 꺼내 쓰는 자리 ── 둘의 역할이 다르다(§3) */
-.rs-ev2-use { margin: var(--r-s6) 0 0; display: grid; gap: var(--r-s5); }
-/* 지원서는 **쓰기 시작할 자리**. 이 절의 유일한 면이다 */
-.rs-ev2-cue {
-  padding: var(--r-s4) var(--r-s5); border-radius: 20px;
-  background: var(--r-cyan-soft);
-}
-.rs-ev2-cue i {
-  font-style: normal; font-size: var(--r-t-meta); letter-spacing: .04em;
+/* 꺼내 쓰는 자리 둘. **역할이 다르다**: 지원서는 면 없이 쓰기 시작할
+   자리, 면접은 옅은 면 위의 큰 물음 */
+.rs-ev3-use { display: grid; gap: var(--r-s4); align-content: start; }
+.rs-ev3-ub > span {
+  display: block; font-size: var(--r-t-meta); letter-spacing: .04em;
   font-weight: var(--ui-w-sb); color: var(--r-cyan);
 }
-.rs-ev2-cue p {
-  margin: 5px 0 0; font-size: var(--r-t-lead); line-height: 1.5;
-  font-weight: var(--ui-w-md); color: var(--r-ink);
+.rs-ev3-ub > p {
+  margin: 6px 0 0; font-size: var(--r-t-body); line-height: 1.55;
+  color: var(--r-ink-2);
 }
-/* 면접은 **실제 물음**. 면도 테도 없고 활자가 크다 */
-.rs-ev2-q { margin: 0; }
-.rs-ev2-q p {
-  margin: 0; font-size: clamp(20px, 1.9vw, 26px); line-height: 1.4;
-  font-weight: var(--ui-w-sb); letter-spacing: -.025em;
+.rs-ev3-ub.is-interview {
+  padding: var(--r-s4); border-radius: 20px; background: var(--r-cyan-soft);
+}
+.rs-ev3-ub.is-interview > span {
+  letter-spacing: .03em; font-weight: var(--ui-w-md); color: var(--r-ink-3);
+}
+.rs-ev3-ub.is-interview blockquote {
+  margin: 6px 0 0; font-size: clamp(19px, 1.7vw, 22px); line-height: 1.4;
+  font-weight: var(--ui-w-bd); letter-spacing: -.025em;
   color: var(--r-accent); text-wrap: pretty;
 }
-.rs-ev2-q cite {
-  display: block; margin: var(--r-s3) 0 0; font-style: normal;
-  font-size: var(--r-t-meta); letter-spacing: .03em; color: var(--r-ink-3);
-}
 
-/* ── ④ 곁근거 ── 금 한 줄 아래 눕는 띠. **둥글기 0** */
-.rs-ev2-also {
-  margin: var(--r-s7) 0 0; padding-top: var(--r-s5);
-  border-top: 1px solid var(--r-line);
-  display: grid; gap: 6px;
-}
-.rs-ev2-also-of {
-  margin: 0; font-size: var(--r-t-meta); letter-spacing: .03em;
+/* ── TRANSITION ── 금 두 줄 사이의 한 마디 */
+.rs-ev3-tr {
+  margin: var(--r-s6) 0 0; display: flex; align-items: center;
+  gap: var(--r-s4); font-size: var(--r-t-meta); letter-spacing: .03em;
   color: var(--r-ink-3);
 }
-.rs-ev2-also-h {
-  margin: 0; font-size: var(--r-t-h3); line-height: 1.45;
+.rs-ev3-tr::before, .rs-ev3-tr::after {
+  content: ""; flex: 1; height: 1px; background: var(--r-line);
+}
+
+/* ── SECONDARY ── **여는 경험을 베끼지 않는다**: 면이 없고 머리가 가로로
+   눕고 활자가 한 단 작다. 둥글기 0 */
+.rs-ev3-story.is-second {
+  margin: var(--r-s5) 0 0; padding-top: var(--r-s5);
+  border-top: 1px solid var(--r-line);
+}
+.rs-ev3-sh { display: grid; gap: var(--r-s3); }
+.rs-ev3-sh h4 {
+  margin: 4px 0 0; font-size: var(--r-t-h3); line-height: 1.45;
   font-weight: var(--ui-w-sb); letter-spacing: -.02em; color: var(--r-ink);
 }
-.rs-ev2-also-s {
-  margin: 0; font-size: var(--r-t-gloss); line-height: 1.55; color: var(--r-ink-2);
+.rs-ev3-so { margin: 0; }
+.rs-ev3-so span {
+  display: block; font-size: var(--r-t-meta); letter-spacing: .03em;
+  color: var(--r-ink-3);
 }
-/* 쓰는 자리 둘은 **금 하나로 이야기에서 갈린다**: 네 줄이 같은 무게로
-   서면 그게 목록이다 */
-.rs-ev2-also-u {
-  margin: var(--r-s2) 0 0; padding-left: var(--r-s4);
-  border-left: 1px solid var(--r-line-soft);
-  font-size: var(--r-t-gloss); line-height: 1.55; color: var(--r-ink-2);
+.rs-ev3-so strong {
+  display: block; margin-top: 3px; font-size: var(--r-t-gloss);
+  font-weight: var(--ui-w-sb); color: var(--r-ink);
 }
-.rs-ev2-also-q {
-  margin: 0; padding-left: var(--r-s4);
-  border-left: 1px solid var(--r-line-soft);
-  font-size: var(--r-t-body); line-height: 1.5;
-  font-weight: var(--ui-w-md); color: var(--r-accent);
+.rs-ev3-sd {
+  margin: var(--r-s3) 0 0; font-size: var(--r-t-gloss); line-height: 1.55;
+  color: var(--r-ink-2);
+}
+.rs-ev3-su { margin: var(--r-s4) 0 0; display: grid; gap: var(--r-s4); }
+.rs-ev3-su span {
+  display: block; font-size: var(--r-t-meta); letter-spacing: .03em;
+  color: var(--r-ink-3);
+}
+.rs-ev3-su p {
+  margin: 3px 0 0; font-size: var(--r-t-gloss); line-height: 1.55;
+  color: var(--r-ink-2);
 }
 
-.rs-ev2-rest {
-  margin: var(--r-s5) 0 0; font-size: var(--r-t-meta);
-  line-height: 1.5; color: var(--r-ink-3);
+/* ── MORE ── 남은 영역은 **이름만** 잇는다 */
+.rs-ev3-more {
+  margin: var(--r-s5) 0 0; padding-top: var(--r-s4);
+  border-top: 1px solid var(--r-line-soft);
 }
-.rs-ev2-rest i { font-style: normal; margin-right: 8px; letter-spacing: .03em; }
+.rs-ev3-more > span {
+  font-size: var(--r-t-meta); letter-spacing: .03em; color: var(--r-ink-3);
+}
+.rs-ev3-more > p {
+  margin: 4px 0 0; font-size: var(--r-t-gloss); line-height: 1.5;
+  color: var(--r-ink-2);
+}
 
-/* 절 머리를 **눈썹으로 내린다**(§3 ACT 1): 큰 글씨 자리는 학생의 행동이
+/* 절 머리를 **눈썹으로 내린다**: 큰 글씨 자리는 INTRO 와 학생의 행동이
    가져간다. 금은 다른 절과 같은 것을 그대로 쓴다 */
 #evidence > h2 {
   margin: 0 0 var(--r-s5); font-size: var(--r-t-meta);
@@ -1031,29 +1075,21 @@
 }
 
 @media (min-width: 880px) {
-  /* **넓은 화면을 실제로 쓴다**(§9). 여는 한 마디는 왼쪽에서 크게 서고
-     오른쪽이 비어 비대칭이 생긴다. ② 는 글(왼쪽)과 결과물(오른쪽)이
-     갈리고, ③ 은 좁은 면(왼쪽)과 큰 물음(오른쪽)이 **한 단 내려가** 선다 */
-  .rs-ev2-head { font-size: clamp(34px, 3.4vw, 46px); }
-  /* **행동 → 결과물이 붙어 읽혀야 한다**(§3 ACT 2). 결과물을 오른쪽
-     끝으로 밀면 둘이 따로 선 두 덩이가 된다. 한 들여쓰기만 둔다 */
-  .rs-ev2-out { margin-left: var(--r-s7); }
-  .rs-ev2-use {
-    grid-template-columns: minmax(0, 23rem) minmax(0, 1fr);
-    align-items: start; column-gap: var(--r-s7);
+  /* **넓은 화면을 실제로 쓴다.** 여는 경험은 이야기(왼쪽)와 꺼내 쓰는
+     자리(오른쪽)가 **비대칭 두 단**으로 갈리고, 곁근거는 오른쪽으로 들여
+     서서 여는 경험보다 짧다는 것이 자리로 읽힌다 */
+  .rs-ev3-story.is-primary { padding: var(--r-s6) var(--r-s7); }
+  .rs-ev3-main {
+    grid-template-columns: minmax(0, 1.25fr) minmax(18rem, .75fr);
+    column-gap: var(--r-s7); align-items: start;
   }
-  .rs-ev2-q { padding-top: var(--r-s5); }
-  /* 곁근거는 **가로로 눕는다**: 여는 경험이 세로로 흐르므로 여기서
-     한 번 방향이 꺾인다 */
-  .rs-ev2-also {
-    grid-template-columns: minmax(0, 17rem) minmax(0, 1fr) minmax(0, 1.1fr);
-    column-gap: var(--r-s6); row-gap: 5px; align-items: start;
+  .rs-ev3-story.is-second { width: min(100%, 46rem); margin-left: auto; }
+  .rs-ev3-sh {
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: var(--r-s5); align-items: start;
   }
-  .rs-ev2-also-of { grid-column: 1; }
-  .rs-ev2-also-h { grid-column: 1; }
-  .rs-ev2-also-s { grid-column: 2; grid-row: 1 / span 2; }
-  .rs-ev2-also-u { grid-column: 3; grid-row: 1; margin-top: 0; }
-  .rs-ev2-also-q { grid-column: 3; grid-row: 2; padding-top: 4px; }
+  .rs-ev3-so { text-align: right; }
+  .rs-ev3-su { grid-template-columns: 1fr 1fr; column-gap: var(--r-s5); }
 }
 
 .rs-first { margin: var(--r-s3) 0 0; padding: 0; list-style: none; }
@@ -1277,17 +1313,25 @@
     border-radius: 24px; text-align: center; justify-items: center;
   }
   .rs-banner-a { width: 100%; justify-content: center; min-height: 52px; }
-  /* **손전화를 따로 짠다**(R11 §9). 데스크톱을 세로로 쌓은 것이 아니다:
-     여는 한 마디와 결과물이 **첫 화면 위쪽에서 끝나고**, 꺼내 쓰는 자리는
-     면 → 물음으로 자연스럽게 이어지며, 곁근거는 한 단으로 눕는다 */
-  .rs-ev2-head { max-width: none; font-size: 27px; line-height: 1.24; }
-  .rs-ev2-act { margin-top: var(--r-s5); gap: var(--r-s3); }
-  .rs-ev2-do { max-width: none; font-size: var(--r-t-body); }
-  .rs-ev2-use { margin-top: var(--r-s5); gap: var(--r-s4); }
-  .rs-ev2-cue { padding: var(--r-s4); border-radius: 16px; }
-  .rs-ev2-q p { font-size: 21px; }
-  .rs-ev2-also { margin-top: var(--r-s6); padding-top: var(--r-s4); }
-  .rs-ev2-rest { margin-top: var(--r-s4); }
+  /* **손전화를 따로 짠다**(R12 §4). 데스크톱을 세로로 쌓은 것이 아니다:
+     INTRO 가 왼쪽 정렬로 내려오고(가운데 맞춤은 좁은 화면에서 줄마다
+     시작 자리가 흔들린다), 여는 경험은 한 단으로 흐르고, 곁근거는 들여쓰기
+     없이 금 한 줄 아래에 선다 */
+  .rs-ev3-intro { max-width: none; text-align: left; }
+  /* **줄바꿈을 못 박지 않는다**: 390px 에서 `<br>` 이 한 낱말만 남긴 줄을
+     만든다. 넓은 화면에서만 선다 */
+  .rs-ev3-intro h3 br { display: none; }
+  .rs-ev3-intro h3 { font-size: 25px; line-height: 1.26; }
+  .rs-ev3-story.is-primary {
+    padding: var(--r-s4); border-radius: 24px;
+  }
+  .rs-ev3-main { margin-top: var(--r-s4); gap: var(--r-s5); }
+  .rs-ev3-narr h4 { font-size: 22px; }
+  .rs-ev3-dec { max-width: none; }
+  .rs-ev3-ub.is-interview { padding: var(--r-s4); border-radius: 16px; }
+  .rs-ev3-ub.is-interview blockquote { font-size: 20px; }
+  .rs-ev3-story.is-second { margin-top: var(--r-s5); }
+  .rs-ev3-su { margin-top: var(--r-s3); }
   .rs { --r-gutter: 16px; }
   /* **두 줄로 접히면 브랜드 줄을 덮는다.** 한 줄로 두고 옆으로 민다 */
   .rs-head-in { gap: var(--r-s2); flex-wrap: wrap; padding-bottom: 6px; }
@@ -1644,50 +1688,82 @@
     margin: 0 0 4px; font-size: 11pt; font-weight: var(--ui-w-bd);
     letter-spacing: 0; color: var(--r-ink);
   }
-  .rs-ev2 { margin: 5px 0 0; }
-  .rs-ev2-of, .rs-ev2-also-of { margin: 0; font-size: 7.5pt; }
-  .rs-ev2-head {
-    margin: 1px 0 0; max-width: none; font-size: 10pt; line-height: 1.4;
+  .rs-ev3 { margin: 5px 0 0; }
+  /* INTRO 는 **종이에서 한 줄로 눕는다**: 큰 머리와 가운데 맞춤은 화면의
+     짜임이고 종이에서는 쪽을 늘린다 */
+  .rs-ev3-intro { max-width: none; text-align: left; }
+  .rs-ev3-intro h3 {
+    display: inline; margin: 0; font-size: 10pt; line-height: 1.4;
     letter-spacing: 0;
   }
-  .rs-ev2-act, .rs-ev2-use {
+  .rs-ev3-intro h3 br { display: none; }
+  .rs-ev3-intro p {
+    display: inline; margin: 0 0 0 5px; font-size: 9pt; line-height: 1.45;
+    color: var(--r-ink-2);
+  }
+  .rs-ev3-story { margin: 5px 0 0; }
+  .rs-ev3-story.is-primary {
+    padding: 0; border-radius: 0; background: none;
+  }
+  .rs-ev3-meta { display: block; margin: 0; font-size: 7.5pt; }
+  .rs-ev3-meta i {
+    padding: 0; border-radius: 0; background: none; margin-left: 5px;
+  }
+  .rs-ev3-main, .rs-ev3-use, .rs-ev3-sh, .rs-ev3-su {
     display: block; margin: 2px 0 0; gap: 0;
   }
-  .rs-ev2-do { margin: 0; max-width: none; font-size: 9pt; line-height: 1.45; }
-  .rs-ev2-out { display: block; margin: 1px 0 0; }
-  .rs-ev2-out li {
+  .rs-ev3-narr h4 {
+    margin: 1px 0 0; font-size: 10pt; line-height: 1.4; letter-spacing: 0;
+  }
+  .rs-ev3-dec {
+    margin: 0; max-width: none; font-size: 9pt; line-height: 1.45;
+  }
+  .rs-ev3-outs { margin: 1px 0 0; }
+  .rs-ev3-outs > span { display: inline; font-size: 7.5pt; margin-right: 5px; }
+  .rs-ev3-outs ul { display: inline; margin: 0; }
+  .rs-ev3-outs li {
     display: inline; padding: 0; border: 0; border-radius: 0; background: none;
     font-size: 9pt; color: var(--r-ink); font-weight: var(--ui-w-sb);
   }
-  .rs-ev2-out li::before { display: none; }
-  .rs-ev2-out li + li::before {
-    content: " / "; display: inline; color: var(--r-ink-3);
-    border: 0; width: auto; height: auto;
+  .rs-ev3-outs li + li::before {
+    content: " / "; color: var(--r-ink-3); font-weight: var(--ui-w-rg);
   }
-  .rs-ev2-cue {
-    padding: 0; border-radius: 0; background: none; margin-top: 2px;
+  .rs-ev3-ub { margin-top: 2px; }
+  .rs-ev3-ub.is-interview {
+    padding: 0; border-radius: 0; background: none;
   }
-  .rs-ev2-cue i { margin-right: 5px; font-size: 7.5pt; color: var(--r-ink-3); }
-  .rs-ev2-cue p {
+  .rs-ev3-ub > span, .rs-ev3-su span, .rs-ev3-so span {
+    display: inline; margin-right: 5px; font-size: 7.5pt;
+    letter-spacing: 0; font-weight: var(--ui-w-rg); color: var(--r-ink-3);
+  }
+  .rs-ev3-ub > p, .rs-ev3-su p {
     display: inline; margin: 0; font-size: 9pt; line-height: 1.45;
-    font-weight: var(--ui-w-rg);
-  }
-  .rs-ev2-q { padding: 0; margin-top: 1px; }
-  .rs-ev2-q p {
-    margin: 0; font-size: 9pt; line-height: 1.45; letter-spacing: 0;
     font-weight: var(--ui-w-rg); color: var(--r-ink);
   }
-  .rs-ev2-q cite { display: inline; margin: 0 0 0 5px; font-size: 7.5pt; }
-  .rs-ev2-also {
-    display: block; margin: 5px 0 0; padding-top: 4px;
+  .rs-ev3-ub.is-interview blockquote {
+    display: inline; margin: 0; font-size: 9pt; line-height: 1.45;
+    letter-spacing: 0; font-weight: var(--ui-w-rg); color: var(--r-ink);
+  }
+  /* 띠는 종이에서 서지 않는다: 바로 아래 곁근거가 금 한 줄로 이미 갈린다 */
+  .rs-ev3-tr { display: none; }
+  .rs-ev3-story.is-second {
+    width: auto; margin: 5px 0 0; padding-top: 4px;
     border-top: 1.2pt solid var(--r-accent);
   }
-  .rs-ev2-also-h { margin: 0; font-size: 9.5pt; line-height: 1.4; letter-spacing: 0; }
-  .rs-ev2-also-s, .rs-ev2-also-u, .rs-ev2-also-q {
-    margin: 0; font-size: 9pt; line-height: 1.45; color: var(--r-ink);
-    font-weight: var(--ui-w-rg);
+  .rs-ev3-sh h4 {
+    margin: 0; font-size: 9.5pt; line-height: 1.4; letter-spacing: 0;
   }
-  .rs-ev2-rest { margin: 4px 0 0; font-size: 8.5pt; }
+  .rs-ev3-so { margin: 0; text-align: left; }
+  .rs-ev3-so strong {
+    display: inline; margin: 0; font-size: 9pt; font-weight: var(--ui-w-sb);
+  }
+  .rs-ev3-sd { margin: 0; font-size: 9pt; line-height: 1.45; }
+  .rs-ev3-su > div + div { margin-top: 1px; }
+  .rs-ev3-more { margin: 4px 0 0; padding-top: 0; border: 0; }
+  .rs-ev3-more > span { font-size: 8.5pt; margin-right: 5px; }
+  .rs-ev3-more > p {
+    display: inline; margin: 0; font-size: 8.5pt; line-height: 1.45;
+  }
   .rs-first > li { padding: 5px 0; }
   .rs-pack dl > div { padding: 4px 0; }
   .rs-gap { padding: 10px 14px; margin-top: 8px; }

@@ -513,20 +513,30 @@ export function keptNoteKo(hasArtifacts: boolean): string {
 }
 
 /**
- * **근거 절을 네 막으로**(R11 §1·§3).
+ * **경험 하나를 한 이야기로**(R12 §1).
  *
- * 데이터 구조를 화면 구조로 그대로 옮기지 않는다. 영역 · 한 일 · 직접
- * 정한 것 · 남은 결과 · 지원서 · 면접 여섯 칸을 그대로 세우면 그건
- * **field 출력**이고, 학생에게 필요한 것은 셋뿐이다: 무엇을 먼저 쓸 수
- * 있는가 · 그 경험에 무엇이 남았는가 · 어디에 어떻게 꺼내는가.
+ * 받은 참조 구현이 `primary` 와 `secondary` 를 **같은 꼴 하나**로 두고
+ * 둘을 layout 으로만 가른다. 그래서 여는 경험과 곁근거가 서로 다른 자료
+ * 꼴을 들고 있던 것을 하나로 합쳤다. 꼴을 둘로 두면 **같은 재료에서 나온
+ * 한 이야기**라는 것이 자료 쪽에서부터 흐려지고, 읽는 층이 두 벌로 갈려
+ * 한쪽만 고쳐지는 날이 온다.
  *
- *   ① 여는 한 마디   `head`  `~ 본 경험` (이름씨. 마침표가 없다)
- *   ② 한 행동과 남은 것 `did` `out`  행동문 하나 + 이름씨 둘
- *   ③ 꺼내 쓰는 자리 `cue` `ask`  지원서는 **출발점**, 면접은 **물음**
- *   ④ 곁근거        `evidenceAlsoKo`  훨씬 짧은 띠 하나
+ *   domain       그 경험이 선 영역 이름
+ *   action       한 행동. 행동문 하나
+ *   decision     그 안에서 직접 정한 것. 행동문 하나 (재료가 없으면 비운다)
+ *   outputs      손에 남은 것. **이름씨**
+ *   application  지원서에서 꺼낼 자리
+ *   interview    면접에서 이어질 **실제 물음**
  *
- * 세 가지 꼴을 섞는다(§7): 행동문(`~습니다`) · 이름씨 · 실제 물음.
- * **한 묶음이 전부 `~요` 로 닫히지 않는다.**
+ * **세 가지 꼴을 섞는다**(R11 §7): 행동문 · 이름씨 · 실제 물음. 그래서 한
+ * 묶음이 전부 같은 어미로 닫히지 않는다. `decision` 이 `action` 과 같은
+ * 문장이 되면 비운다: 같은 줄을 두 번 적으면 둘 가운데 하나는 읽히지 않는다.
+ *
+ * **두 경험을 같은 틀의 변형으로 두지 않는다.** 꼴이 하나이므로 가르는
+ * 자리를 자료 쪽에 둔다: 여는 경험은 **그 영역이 일하는 차례**에서 꺼낼
+ * 자리를 집고, 곁근거는 **손에 남은 것**에서 그것을 그렇게 만든 까닭을
+ * 집는다. 화면 쪽은 그 둘을 서로 다른 DOM 으로 세운다(참조 구현의
+ * `--primary` / `--secondary`).
  *
  * **뜻을 더하지 않는다**: 토막이 전부 고르신 항목과 그 영역이 일하는
  * 차례에서 오고, 재료가 없는 토막은 비운다.
@@ -539,30 +549,20 @@ export type UseEv = {
   decisions?: string[]; artifacts?: string[]; verifications?: string[];
 };
 
-/** 여는 경험 하나. 이 절의 주인공이다 */
-export type EvOpen = {
-  /** 큰 한 마디. 이름씨로 닫히므로 **마침표가 없다** */
-  head: string;
+/** 경험 하나. **여는 경험과 곁근거가 같은 꼴을 쓴다** */
+export type EvidenceStory = {
+  /** 그 경험이 선 영역 이름. 부르는 쪽이 넘긴다 */
+  domain: string;
   /** 한 행동. 행동문 하나 */
-  did: string;
-  /** 그 행동에서 남은 것. 이름씨 */
-  out: string[];
+  action: string;
+  /** 그 안에서 직접 정한 것. 재료가 없으면 비운다 */
+  decision?: string;
+  /** 손에 남은 것. 이름씨 */
+  outputs: string[];
   /** 지원서에서의 **출발점**. 문장이 아니라 꺼낼 자리다 */
-  cue: string;
+  application: string;
   /** 면접에서 이어질 **실제 물음** */
-  ask: string;
-};
-
-/** 곁근거. 여는 경험을 베끼지 않는다 */
-export type EvAlso = {
-  /** 남은 것 한 줄 */
-  out: string;
-  /** 직접 정한 것 한 줄 */
-  own: string;
-  /** 지원서 한 줄 */
-  cue: string;
-  /** 면접 한 줄 */
-  ask: string;
+  interview: string;
 };
 
 /** `A를 ~했다` 에서 `A`. 목적어가 없거나 길면 돌려주지 않는다 */
@@ -576,30 +576,6 @@ function objsOf(ev: UseEv): string[] {
   const picks = [ev.decided, ...(ev.decisions ?? [])]
     .filter((t): t is string => !!t);
   return [...new Set(picks.map(objKo).filter((t): t is string => !!t))];
-}
-
-/**
- * 아/어 꼴.
- *
- * 지난 일의 ㅆ 받침을 떼면 규칙으로 나온다: `골랐`→`골라` · `했`→`해` ·
- * `적었`→`적어` · `나눴`→`나눠`. 받침이 ㅆ 이 아니면 **손대지 않는다**:
- * 거기서 꼴을 지어내면 없는 말이 나간다.
- */
-function aeoKo(stem: string): string | null {
-  if (!stem) return null;
-  const ch = stem.charCodeAt(stem.length - 1);
-  if (ch < 0xac00 || ch > 0xd7a3) return null;
-  const base = ch - 0xac00;
-  if (base % 28 !== 20) return null;           /* 20 = 받침 ㅆ */
-  return `${stem.slice(0, -1)}${String.fromCharCode(0xac00 + base - 20)}`;
-}
-
-/** `~했다` → `~해 본 경험`. 꼴이 맞지 않으면 돌려주지 않는다 */
-function doneKo(clause: string): string | null {
-  const t = plainKo(clause);
-  if (!/[가-힣]다$/.test(t)) return null;
-  const aeo = aeoKo(t.slice(0, -1));
-  return aeo ? `${aeo} 본 경험` : null;
 }
 
 /**
@@ -621,67 +597,90 @@ function keepsOf(ev: UseEv): string[] {
     .filter((t) => t.length >= 2 && t.length <= 18).slice(0, 2);
 }
 
-/** 면접은 **실제 묻는 말**로. 견준 자리가 있으면 그쪽을 묻는다 */
+/**
+ * 면접은 **실제 묻는 말**로.
+ *
+ * 인용 부호를 글에 넣지 않는다: 그 자리를 `blockquote` 로 세우므로 부호가
+ * 화면과 자료에 두 번 서게 된다(참조 구현의 `cm-use-block--interview`).
+ * **겹토씨를 붙이지 않는다**: 받침을 보고 고른 토씨 뒤에 글자를 또 이어
+ * 붙이면 그 자리를 세는 검사에 걸리고, 떼고 읽어도 뜻이 그대로다.
+ */
 function askKo(ev: UseEv, skip?: string): string {
   const vs = (ev.verifications ?? []).filter((t) => t.length >= 2 && t.length <= 14);
-  /* **겹토씨를 붙이지 않는다**: 받침을 보고 고른 토씨 뒤에 글자를 또
-     이어 붙이면 그 자리를 세는 검사에 걸린다. 떼고 읽어도 뜻이 그대로다 */
-  if (vs.length) return `“${withJosa(vs[0], "과와")} 어떻게 맞췄나요?”`;
+  if (vs.length) return `${withJosa(vs[0], "과와")} 어떻게 맞췄나요?`;
   const o = objsOf(ev).find((t) => t !== skip) ?? objsOf(ev)[0];
-  return o ? `“${withJosa(o, "은는")} 어떻게 정했나요?”` : "“그때 무엇을 보고 정했나요?”";
+  return o ? `${withJosa(o, "은는")} 어떻게 정했나요?` : "그때 무엇을 보고 정했나요?";
 }
 
-export function evidenceOpenKo(
-  core: string, domain: string, ev: UseEv,
-): EvOpen {
+/** 여는 경험의 꺼낼 자리. 그 영역이 **일하는 차례**에서 집는다 */
+function leadUseKo(core: string, domain: string, ev: UseEv): string {
   const step = chainFor(core, domain)[1] ?? "";
+  if (step && step.length <= 20) {
+    return `${withJosa(step, "을를")} 어떤 기준으로 나눴는지부터 꺼내보세요`;
+  }
+  /* **되풀이되는 틀을 두 번 쓰지 않는다.** 위가 `어떤 기준으로 나눴는지`
+     이므로 여기서 `어떤 기준으로 정했는지` 를 쓰면 같은 틀이 Core 마다
+     돌아간다(`v3:result:copy` 14번이 세는 자리다) */
   const o = objsOf(ev)[0];
-  /* 지원서는 **쓰기 시작할 자리**까지다. `적어보세요` 를 붙이면 그 줄이
-     할 일 자리가 되고, 할 일은 아래 절이 따로 든다(§3) */
-  const cue = step && step.length <= 20
-    ? `${withJosa(step, "을를")} 어떤 기준으로 나눴는지부터`
-    /* **되풀이되는 틀을 두 번 쓰지 않는다.** 위가 `어떤 기준으로 나눴는지`
-       이므로 여기서 `어떤 기준으로 정했는지` 를 쓰면 같은 틀이 Core 마다
-       돌아간다(`v3:result:copy` 14번이 세는 자리다) */
-    : o ? `${withJosa(o, "을를")} 어디까지 직접 정했는지부터`
-      : "그때 무엇을 먼저 정했는지부터";
-  return {
-    head: (ev.decided ? doneKo(ev.decided) : null)
-      ?? (ev.decisions ?? []).map(doneKo).find((t): t is string => !!t)
-      ?? (ev.did ? doneKo(ev.did) : null)
-      ?? "직접 정해 본 경험",
-    /* **행동문 하나**(§7-A). 여는 한 마디가 고른 판단을 들었으므로 여기는
-       그 앞에 한 일을 든다 */
-    did: ev.did ? sayKo(ev.did, "nida") : "",
-    out: keepsOf(ev),
-    cue,
-    ask: askKo(ev),
-  };
+  return o
+    ? `${withJosa(o, "을를")} 어디까지 직접 정했는지부터 꺼내보세요`
+    : "그때 무엇을 먼저 정했는지부터 꺼내보세요";
 }
 
-export function evidenceAlsoKo(ev: UseEv): EvAlso {
-  const keep = keepsOf(ev);
+/** 곁근거의 묻는 자리. 고른 판단 가운데 꺼낼 자리에서 쓰지 않은 쪽 */
+function alsoAskKo(ev: UseEv): string {
   const objs = objsOf(ev);
-  /* 지원서와 면접이 **서로 다른 판단**을 든다. 한 자리에서 같은 것을 두 번
-     적으면 둘 가운데 하나는 읽히지 않는다 */
   const point = objs[1] ?? objs[0];
   const other = objs.find((t) => t !== point) ?? objs[0];
-  const b = ev.decided ? plainKo(ev.decided) : "";
-  const own = /^(.+)([을를])\s정했다$/.exec(b);
+  return other
+    ? `${withJosa(other, "은는")} 어떻게 정했나요?`
+    : askKo(ev);
+}
+
+/** 곁근거의 꺼낼 자리. **손에 남은 것**에서 까닭을 집는다 */
+function alsoUseKo(ev: UseEv): string {
+  const objs = objsOf(ev);
+  const keep = keepsOf(ev);
+  const point = objs[1] ?? objs[0];
+  if (point) return `${withJosa(point, "을를")} 그렇게 정한 까닭까지 이어 적으면 좋아요`;
+  if (keep.length) return `${withJosa(keep[0], "을를")} 그렇게 만든 까닭까지 이어 적으면 좋아요`;
+  return "그때 직접 고른 것까지 이어 적으면 좋아요";
+}
+
+/**
+ * 경험 하나를 이야기 하나로.
+ *
+ * `slot` 이 가르는 것은 **꺼낼 자리와 묻는 자리**뿐이다. 자료 꼴은 둘이
+ * 같고, 화면 쪽이 그 둘을 서로 다른 DOM 으로 세운다.
+ */
+export function evidenceStoryKo(
+  core: string, domain: string, ev: UseEv,
+  slot: UseSlot = "lead", name = "",
+): EvidenceStory {
+  const objs = objsOf(ev);
+  const did = ev.did ? sayKo(ev.did, "nida") : "";
+  const decided = ev.decided ? sayKo(ev.decided, "nida") : "";
+  /* **여는 경험의 큰 한 마디는 고른 판단이다.** 서류와 면접에서 읽히는
+     쪽이 한 일이 아니라 그 안에서 직접 정한 것이고(설계 원칙 `한 일과
+     고른 것을 가른다`), 곁근거는 반대로 한 일이 머리에 선다. 그래서 두
+     이야기가 같은 꼴을 써도 **먼저 읽히는 토막이 서로 다르다** */
+  const action = slot === "lead" ? (decided || did) : (did || decided);
+  /* 곁근거의 둘째 줄은 `~도` 로 받아 **한 일에 더해진 것**으로 읽히게
+     한다(참조 구현의 `cm-story__secondary-decision`) */
+  const own = slot === "second"
+    ? (objs.length ? `${objs[0]}도 직접 정했습니다` : decided)
+    : did;
   return {
-    /* **같은 어미를 세 번 쓰지 않는다**(§7). 아래 `own` 이 행동문이므로
-       이 자리는 이름씨로 둔다: 곁근거의 머리는 결과물이다 */
-    out: keep.join(" / "),
-    own: own ? `${withJosa(own[1], "은는")} 직접 정했습니다`
-      : b ? sayKo(b, "nida") : "",
-    cue: point ? `지원서엔 ${withJosa(point, "을를")} 정한 근거`
-      : keep.length ? `지원서엔 ${withJosa(keep[0], "을를")} 그렇게 만든 까닭`
-      : "지원서엔 그때 직접 고른 것",
-    /* **여는 경험과 같은 꼴로 묻지 않는다.** 저쪽은 견준 자리를 묻고
-       (`~와 어떻게 맞췄나요?`) 이쪽은 고른 기준을 묻는다 */
-    ask: other
-      ? `“${withJosa(other, "은는")} 어떻게 정했나요?”`
-      : askKo(ev),
+    domain: name,
+    action,
+    decision: own && own !== action ? own : undefined,
+    outputs: keepsOf(ev),
+    application: slot === "lead" ? leadUseKo(core, domain, ev) : alsoUseKo(ev),
+    /* **여는 경험과 같은 꼴로 묻지 않는다.** 저쪽은 견준 자리를 먼저 묻고
+       이쪽은 **고른 기준**을 묻는다. 고른 판단이 하나뿐이어도 그것을 쓴다:
+       여기서 `askKo` 로 내려가면 견준 자리를 둘 다 묻게 되고, 그 둘이
+       글자까지 같아진다(`v3:result:copy` 14번이 세는 자리다) */
+    interview: slot === "lead" ? askKo(ev) : alsoAskKo(ev),
   };
 }
 
@@ -689,20 +688,16 @@ export function evidenceAlsoKo(ev: UseEv): EvAlso {
 export function evidenceUsePartsKo(
   core: string, domain: string, ev: UseEv, slot: UseSlot = "lead",
 ): { resume: string; interview: string } {
-  if (slot === "lead") {
-    const s = evidenceOpenKo(core, domain, ev);
-    return { resume: s.cue, interview: s.ask };
-  }
-  const s = evidenceAlsoKo(ev);
-  return { resume: s.cue, interview: s.ask };
+  const s = evidenceStoryKo(core, domain, ev, slot);
+  return { resume: s.application, interview: s.interview };
 }
 
 /** 한 줄로 잇는다 */
 export function evidenceUseKo(
   core: string, domain: string, left: string | null,
 ): string {
-  const s = evidenceOpenKo(core, domain, { artifacts: left ? [left] : [] });
-  return `지원서 ${s.cue} · 면접 ${s.ask}`;
+  const s = evidenceStoryKo(core, domain, { artifacts: left ? [left] : [] });
+  return `지원서 ${s.application} · 면접 ${s.interview}`;
 }
 
 /**
