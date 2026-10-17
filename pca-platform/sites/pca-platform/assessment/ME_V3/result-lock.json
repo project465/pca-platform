@@ -2,8 +2,8 @@
  "schema_version": "me-v3-result-lock.1",
  "note": "결과지 화면 1차 동결. 문장만 고치면 `RESULT_COPY_VERSION` 만 올리고, 칸이나 절이 바뀌면 `RESULT_MODEL_VERSION`, 화면 구조가 바뀌면 `RESULT_UI_VERSION` 을 올린다. 채점 판본은 이 가운데 무엇으로도 올리지 않는다",
  "versions": {
-  "result_ui_version": "ME_V3_RESULT_UI_V52",
-  "result_copy_version": "me-v3-result-copy.44",
+  "result_ui_version": "ME_V3_RESULT_UI_V53",
+  "result_copy_version": "me-v3-result-copy.45",
   "result_model_version": "me-v3-result-model.6",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.5",
   "scoring_version": "me-v3-scoring.5"
@@ -20,8 +20,8 @@
   "종이에 빈 쪽과 범위 밖 쪽수가 없다": "v3:result:pdf"
  },
  "files": {
-  "src/app/v3/result.css": "194fcfca1a0e315533391f44b5e2b4773b6209aeae2e24b0d1c9e161f4d21ae6",
-  "src/app/v3/[attemptId]/result/page.tsx": "5c91b3cbc60b1267890c35c2c8d6d6fbe669f978aaa48da4de49a2cb435b7221",
+  "src/app/v3/result.css": "bb5f6bcb9a875b8ea7beae93366d2a7e2d0d56fcf23e74a5c2b9e307400deecd",
+  "src/app/v3/[attemptId]/result/page.tsx": "4f55b8ea99391a7e09c659be5d5dd2870b3258c34994b6cf1c3345c4685f613f",
   "src/app/v3/[attemptId]/result/fold.tsx": "da6c8b16f124941d283dc9ae4ad0f41b2271fd8d8233028bfdc3d4c500d4fbb4",
   "src/app/v3/[attemptId]/result/disclose.tsx": "a82c70b1d0897647877cfff4a672e8ebffd8716f76e6cfcc3d25e066f074f455",
   "src/app/v3/[attemptId]/result/save.tsx": "2830e503419eba94015798787ab2f7cd4abca39c8126fe1cf3dca087f6c6e7c1",
@@ -29,7 +29,7 @@
   "src/lib/me-v3/result/text.ko.ts": "107a2f915152eb59a3bea69852cd0ecc6dce9754240c36fb28888182dac9a19c",
   "src/lib/me-v3/result/say.ts": "f29488fcaa0f03c0c7a7fc8c4cce6a1d817b44fe548f22734e1361f9bf1a656d",
   "src/lib/me-v3/result/josa.ts": "152cd30c2af136172618c14fa6fb4175b97cf16350db631e3e2e6c72fd7dd4af",
-  "src/lib/me-v3/result/version.ts": "78d5e488a80cea7598e5b49ed7ebc261b5b05b83d57ab0912a11cfcc9371bf27",
+  "src/lib/me-v3/result/version.ts": "80c62c8ae9da4f9824104dad7349fe3ac105bfc94dc43e5b9f8a412031d8cf17",
   "src/lib/me-v3/result/spec-view.ts": "5996808b444eead599e03d41d22629c6ae8ce2690e06937ce64471d189b04fe7",
   "src/lib/me-v3/result/meta.ts": "bf2c3f49a2bc49108e6e63f6c9ac6f03cce070b6fe50f24ad8a3f4027aaa85cc",
   "src/app/v3/[attemptId]/result/charts.tsx": "0ccccdbdd1f17a7e86b3d3df9c502f990ea08aed4ded68c69f8c4a8d1ed2d925",

@@ -942,7 +942,7 @@ export default async function V3Result({
      읽었다는 말이고, 학생이 듣고 싶은 것은 **그래서 지원서에서 무슨 말을
      할 수 있는가**다. 말끝도 윗줄과 갈라 리듬을 만든다(Gate §4) */
   const useWhy = useAxes.length
-    ? `그 과정에서 ${AXIS_DID_KO[useAxes[0].axis]} 경험이 있습니다.` : "";
+    ? `그 과정에서 ${AXIS_DID_KO[useAxes[0].axis]} 경험도 있어요.` : "";
   /*
    * `이런 쪽과 이어져요` 세 칸.
    *
@@ -1452,9 +1452,12 @@ export default async function V3Result({
                  같은 영역을 그 사람이 고른 말로 풀고 있으므로 이 자리는
                  그 넷으로 들어가는 한 줄만 든다. 축마다의 상태는 아래 열두
                  영역 절이 한 자리에서 그대로 든다 */
+              /* **결과지가 자기 구조를 설명하지 않는다**(Gate §2). 몇
+                 줄인지 · 어떤 차례로 만들어졌는지는 우리 쪽 사정이고,
+                 학생이 알아야 하는 것은 이 자리에서 무엇을 얻는가다 */
               <p className="rs-note">
-                아래는 한 경험을 지원서에서 말하는 차례 그대로 풀어 놓은
-                거예요. 네 줄이 이어져야 한 이야기가 됩니다.
+                해 보신 일을 지원서와 면접에서 바로 꺼내 쓸 수 있게
+                정리해 뒀어요.
               </p>
             ) : (
               <>
@@ -1546,9 +1549,8 @@ export default async function V3Result({
                   <p className="rs-note">{moreReadyKo(restReady)}</p>
                 ) : null}
                 <p className="rs-note">
-                  네 줄은 답하실 때 고르신 내용을 그대로 옮긴 거예요.
-                  문장으로 적는 차례는 아래 <a href="#translation">지원서·면접에서 쓸 문장</a>에
-                  이어집니다.
+                  문장으로 옮겨 적을 때는 아래 <a href="#translation">지원서·면접에서 쓸 문장</a>을
+                  같이 보시면 좋아요.
                 </p>
               </div>
             ) : null}
@@ -1585,7 +1587,7 @@ export default async function V3Result({
                   {model.evidence.ready.length > 6 ? (
                     <p className="rs-none rs-evmore">
                       이 밖에 {model.evidence.ready.length - 6}가지가 더 확인됐습니다.
-                      위의 영역별 설명에서 보실 수 있습니다.
+                      위의 영역별 설명에서 보실 수 있어요.
                     </p>
                   ) : null}
                 {/* **`아직 없습니다` 로 끝내지 않는다**(COMMERCIAL GOLD
@@ -1609,7 +1611,7 @@ export default async function V3Result({
                   ))}
                   {model.evidence.partial.length > 6 ? (
                     <p className="rs-none rs-evmore">
-                      이 밖에 {model.evidence.partial.length - 6}가지가 더 있습니다.
+                      이 밖에 {model.evidence.partial.length - 6}가지가 더 있어요.
                     </p>
                   ) : null}
                 </>) : (
