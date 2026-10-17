@@ -513,57 +513,61 @@ export function keptNoteKo(hasArtifacts: boolean): string {
 }
 
 /**
- * Evidence 네 단계의 ④. **지원서와 면접에서 실제로 하는 말을 적는다**
- * (R2 §11).
+ * **그 경험을 어디에 어떻게 쓰는가**(R6 §5·§13).
  *
- * 전에는 `앞의 세 줄을 그대로 이으면 지원서 한 문단이 됩니다` 였다. 그
- * 줄은 **읽는 법 안내**이고, 네 단계의 마지막 칸이 그렇게 서면 이 절이
- * 파는 것(`이 경험을 어떻게 설명하는가`)이 사라진다.
+ * 전에는 면접 줄이 두 갈래 고정값이라, 경험이 둘이면 **두 카드의 마지막
+ * 줄이 글자까지 같았다.** 같은 문장이 되풀이되면 그 묶음이 한 틀을 복사해
+ * 찍은 것으로 읽히고, 이 절이 파는 것(`내 경험을 이렇게 쓴다`)이 사라진다.
  *
- * **지어내지 않는다.** 가져오는 것 둘이 전부 이미 있는 값이다: 그 영역이
- * 일하는 차례에서 **먼저 정하는 것**(`chainFor` 의 둘째 토막, 그 Core 의
- * 사전에 사람이 적어 둔 말)과, 응답에서 고르신 **남아 있는 결과**다. 그래서
- * 같은 틀이라도 경영은 `하지 않을 것과 먼저 할 것` 을 묻고 간호는 `볼
- * 항목과 지금 상태` 를 묻는다.
+ * **지어내지 않는다.** 가져오는 것 셋이 전부 이미 있는 값이다.
+ *
+ * - 그 영역이 일하는 차례의 **먼저 정하는 것**(`chainFor` 둘째 토막)
+ * - 응답에서 고르신 **남아 있는 결과**(`left`)
+ * - 그 차례의 **무엇과 견주는가**(`chainFor` 다섯째 토막)
+ *
+ * 앞의 둘이 지원서 줄을 가르고 셋째가 면접 줄을 가른다. 그래서 경험이
+ * 둘이면 **두 줄 다** 달라진다: 영역이 다르면 정하는 것과 견주는 것이
+ * 다르고, 남긴 것은 그 사람이 고른 항목이다.
  */
+function compareStep(core: string, domain: string): string | null {
+  /* 다섯째 토막은 `끝난 뒤 달성률 대조` 처럼 **대조** 로 닫는다. 문장에
+     넣을 때는 그 말을 떼고 쓴다. 떼고 나서 `와`·`과` 가 남는 자리가
+     있어(`규준과 면담 자료와 대조`) 그것까지 떼어 낸다 */
+  const raw = chainFor(core, domain)[4] ?? "";
+  const t = raw.replace(/\s*대조$/, "").replace(/[와과]$/, "").trim();
+  /* **긴 토막은 넣지 않는다**: 전공마다 길이가 달라 그대로 끼우면 이 줄이
+     세 줄로 벌어진다. 못 쓰면 이 자리는 기본 문장으로 내려간다 */
+  return t && t.length <= 14 ? t : null;
+}
+
+export function evidenceUsePartsKo(
+  core: string, domain: string, ev: { decided?: string | null; left: string | null },
+): { resume: string; interview: string } {
+  const step = chainFor(core, domain)[1] ?? "";
+  const head = step && step.length <= 20
+    ? `${withJosa(step, "을를")} 어떤 기준으로 정했는지`
+    : "그때 무엇을 직접 정했는지";
+  const keep = ev.left ? thingKo(ev.left) : null;
+  /* **이름을 두 번 적지 않는다**: 남긴 것이 짧을 때만 문장에 넣고, 길면
+     되짚는 말로 잇는다 */
+  const resume = keep && keep.length <= 18
+    ? `${head} 쓰고, ${withJosa(keep, "을를")} 근거로 붙이면 돼요.`
+    : `${head} 한 문단으로 쓰면 돼요.`;
+  const cmp = compareStep(core, domain);
+  const interview = cmp
+    ? `${withJosa(cmp, "을를")} 어떻게 봤는지까지 이야기하면 돼요.`
+    : ev.decided
+      ? "그 선택을 왜 그렇게 골랐는지 이야기하면 돼요."
+      : "그때 무엇을 보고 판단했는지 이야기하면 돼요.";
+  return { resume, interview };
+}
+
+/** 같은 재료를 **한 줄로** 잇는다. 종이 밖에서 읽는 자리가 쓴다 */
 export function evidenceUseKo(
   core: string, domain: string, left: string | null,
 ): string {
-  const step = chainFor(core, domain)[1] ?? "";
-  /* **긴 토막은 넣지 않는다.** 전공마다 길이가 달라서(`입원 기록과
-     활력징후와 검사값과 환자와 가족의 말`) 그대로 끼우면 이 줄이 세 줄로
-     벌어지고, 네 단계 가운데 마지막 칸이 가장 읽기 어려운 칸이 된다 */
-  const front = step && step.length <= 20
-    ? `지원서에는 ${withJosa(step, "을를")} 어떤 기준으로 정했는지 쓰고`
-    : "지원서에는 그때 무엇을 직접 정했는지 쓰고";
-  /* **바로 위 칸이 이름을 적었으면 여기서 다시 적지 않는다**(R3 §29).
-     전에는 `면접에서는 목표와 지표 표를 어떻게 만들었는지` 로 결과물
-     이름을 한 번 더 끼웠다. 그 이름은 Domain 쪽에서 오는 값이라 문장
-     안에 들어가면 기계적 명사 결합으로 읽히고, 셋째 칸이 이미 그 이름을
-     적었으니 **되짚는 말**로 이으면 넷이 한 이야기로 읽힌다 */
-  return left
-    ? `${front}, 면접에서는 그걸 어떻게 만들었는지 이야기하면 돼요.`
-    : `${front}, 면접에서는 그 판단을 왜 그렇게 골랐는지 이야기하면 돼요.`;
-}
-
-/**
- * 같은 내용을 **쓰는 자리별로 갈라** 낸다(Gate §11).
- *
- * 한 줄로 이어 두면 `지원서에는 …, 면접에서는 …` 이 한 문단으로 읽혀서,
- * 정작 쓰는 사람이 어느 자리의 말인지 다시 가려야 한다. 글자는 위
- * `evidenceUseKo` 와 같은 재료에서 오고 **새로 짓지 않는다**.
- */
-export function evidenceUsePartsKo(
-  core: string, domain: string, left: string | null,
-): { resume: string; interview: string } {
-  const step = chainFor(core, domain)[1] ?? "";
-  const resume = step && step.length <= 20
-    ? `${withJosa(step, "을를")} 어떤 기준으로 정했는지 쓰면 돼요.`
-    : "그때 무엇을 직접 정했는지 쓰면 돼요.";
-  const interview = left
-    ? "그걸 어떻게 만들었는지 이야기하면 돼요."
-    : "그 판단을 왜 그렇게 골랐는지 이야기하면 돼요.";
-  return { resume, interview };
+  const { resume, interview } = evidenceUsePartsKo(core, domain, { left });
+  return `지원서에는 ${resume.replace(/ 돼요\.$/, " 돼요")}, 면접에서는 ${interview}`;
 }
 
 /**
