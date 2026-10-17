@@ -19,7 +19,8 @@ import {
   actionBriefKo, actionHeadKo, actionKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO,
   BASIC_GROUP_KO, bridgeKo,
   commonKo, domainChainKo, draftKo, gapCellKo, gapKo, gapNeedKo, gapNeedShortKo, gapShortKo,
-  actionWhyKo, headlineBadgeKo, headlineKo, needSentenceKo, pickSentenceKo,
+  actionWhyKo, AXIS_DID_KO, headlineBadgeKo, headlineKo, needSentenceKo,
+  pickSentenceKo,
   evidenceUseKo, keptNoteKo, moreReadyKo, saidKo,
   HORIZON_KO, QUALITY_KO, TIER_NOTE_KO, TRANS_ORDER, TRANS_STEP_KO,
   XFIELD_ORDER, xfieldKo, ZONE_LEAD_KO, ZONE_TITLE_KO,
@@ -38,7 +39,7 @@ import { takeActionsFromResult } from "@/app/me/next/actions";
 import {
   ActionRoadmap, ChartNote, EvidenceMatrix, Radar, StageBars,
 } from "./charts";
-import { StudyArt } from "./art";
+import { HeroVisual, Ic, type IcName } from "./art";
 import ResultNav from "./result-nav";
 import "../../result.css";
 import { barRows, canRadar } from "@/lib/me-v3/result/chart-data";
@@ -912,24 +913,36 @@ export default async function V3Result({
    * **없는 역량을 적지 않는다.** 여기 서는 칩은 전부 그 응시에서 **확인된
    * 판단축**이고, 이름은 학생이 읽는 말로 적는다(`AXIS_KO`). 재지 않은
    * 역량 보유를 단정하는 말을 쓰지 않는 것은 전과 같다 */
-  const useChips = [...new Set(focus.flatMap(
-    (d) => d.axes
-      .filter((a) => a.state === "CONFIRMED" || a.state === "OWNED")
-      .map((a) => AXIS_KO[a.axis])))]
-    .slice(0, 4);
+  /**
+   * 확인된 판단축. 칩은 축 이름이고 **그 위 한 줄은 학생의 말**이다
+   * (`AXIS_DID_KO`). 소유까지 간 축을 먼저 세워, 그 사람이 가장 깊게
+   * 들어간 자리가 한 줄로 선다. **새로 판정하지 않는다.**
+   */
+  const useAxes = [...focus.flatMap((d) => d.axes)]
+    .filter((a) => a.state === "CONFIRMED" || a.state === "OWNED")
+    .sort((a, b) => (b.state === "OWNED" ? 1 : 0) - (a.state === "OWNED" ? 1 : 0));
+  const useChips = [...new Set(useAxes.map((a) => AXIS_KO[a.axis]))].slice(0, 4);
+  const useWhy = useAxes.length ? `${AXIS_DID_KO[useAxes[0].axis]} 경험이에요.` : "";
   /*
    * `이런 쪽과 이어져요` 세 칸.
    *
    * **새로 순위를 만들지 않는다**: 결과 모델이 적은 `focus` 차례 그대로이고,
    * 한 줄 설명은 그 Core 사전의 **먼저 정하는 것**(`chainFor` 둘째 토막)이다 */
-  const pathCards = (focus.length ? focus : tried).slice(0, 3).map((d) => {
+  const PATH_IC: IcName[] = ["brief", "chart", "hands"];
+  const pathCards = (focus.length ? focus : tried).slice(0, 3).map((d, i) => {
     /* 토막만 세우면 `하지 않을 것과 먼저 할 것` 처럼 끊긴 말이 된다.
        **낱말을 더하지 않고** 한 마디로 문장을 닫는다 */
     const first = chainFor(core, d.code)[1] ?? "";
+    /* **왜 이 경험과 이어지는가**는 그 영역에서 확인된 축이 말한다.
+       태그도 같은 축이라 둘이 서로를 받친다 */
+    const on = d.axes.filter((a) => a.state === "CONFIRMED" || a.state === "OWNED");
     return {
       code: d.code,
+      icon: PATH_IC[i] ?? "brief",
       name: domainName(core, d.code),
+      why: on.length ? `${AXIS_DID_KO[on[0].axis]} 경험과 이어져요.` : "",
       what: first ? `${withJosa(first, "이가")} 먼저인 쪽이에요.` : "",
+      tags: [...new Set(on.map((a) => AXIS_KO[a.axis]))].slice(0, 3),
     };
   });
   const lackBy = new Map<string, Axis[]>();
@@ -1010,6 +1023,13 @@ export default async function V3Result({
       shownAction, shownAction.domain ? domainName(core, shownAction.domain) : "",
       shownAction.code === "EXPLORE_BROADLY" ? exploreWhere() : undefined)
     : topGap ? gapNeedKo(topGap, domainName(core, topGap.domain)) : null;
+  /*
+   * 할 일 칸의 짧은 목록. **무엇을 적을지**를 그 영역이 일하는 차례에서
+   * 가져온다(`chainFor` 둘째~넷째 토막: 먼저 정하는 것 · 쓰는 방법 ·
+   * 남기는 것). 지어낸 항목이 아니라 그 Core 사전이 이미 들고 있는 값이다
+   */
+  const doDomain = shownAction?.domain ?? focus[0]?.code ?? "";
+  const doSteps = doDomain ? chainFor(core, doDomain).slice(1, 4).filter(Boolean) : [];
   /* 할 일이 있을 때만 적는다. 없는 자리에 이유를 적으면 그 줄이 거짓이 된다 */
   const doWhy = shownAction ? actionWhyKo(shownAction) : null;
   const indAction = packAction(model.industry_context, [shownAction]);
@@ -1226,57 +1246,85 @@ export default async function V3Result({
             <p className="rs-verdict">{h.title}</p>
           </div>
           {/* 오른쪽은 그림이다. **왼쪽 큰 글과 한 쌍이고 장식이 아니다** */}
-          <div className="rs-hero-art" aria-hidden="true"><StudyArt /></div>
+          <div className="rs-hero-art" aria-hidden="true"><HeroVisual /></div>
         </section>
 
-        {/* ══ 2. 지금, 이렇게 활용해보세요 — 카드 셋 ══ */}
+        {/* ══ 2. 지금, 이렇게 활용해보세요 — 카드 셋 ══
+            **짧은 글을 여러 조각으로 나눠 담는다.** 한 카드가 긴 설명 한
+            덩이가 되면 읽히지 않고, 칸만 크고 담긴 것이 없으면 덜 만든
+            화면으로 보인다. 그래서 칸마다 머리 한 줄 · 작은 목록 · 칩 ·
+            띠 가운데 둘셋을 섞어 든다 */}
         <h2 className="rs-band">지금, 이렇게 활용해보세요</h2>
         <section className="rs-use">
           <article className="rs-card is-did">
-            <p className="rs-card-l"><i className="rs-ic ic-note" />내가 해본 경험</p>
+            <p className="rs-card-l"><i className="rs-ic"><Ic name="note" /></i>내가 해본 경험</p>
             {cardSay || !left.length
               ? <p className="rs-card-h">{cardSay || openLine}</p> : null}
-            {left.length ? (
-              <ul className="rs-mini">
-                {left.slice(0, 3).map((x) => <li key={x}>{x}</li>)}
+            {left.length ? (<>
+              <p className="rs-card-s">남아 있는 결과물</p>
+              <ul className="rs-files">
+                {left.slice(0, 3).map((x) => (
+                  <li key={x}><i aria-hidden="true"><Ic name="file" /></i>{x}</li>
+                ))}
               </ul>
-            ) : null}
+            </>) : null}
           </article>
 
           <article className="rs-card is-use">
-            <p className="rs-card-l"><i className="rs-ic ic-star" />이 경험에서 쓸 수 있는 것</p>
+            <p className="rs-card-l"><i className="rs-ic"><Ic name="spark" /></i>이 경험에서 쓸 수 있는 것</p>
             {useChips.length ? (<>
+              {/* 띠 한 줄이 **왜 이 역량으로 볼 수 있는지**를 말한다 */}
+              {useWhy ? (
+                <p className="rs-strip"><i aria-hidden="true"><Ic name="check" /></i>{useWhy}</p>
+              ) : null}
               <ul className="rs-chips">
                 {useChips.map((x) => <li key={x}>{x}</li>)}
               </ul>
-              <p className="rs-card-p">자기소개서에서 바로 꺼내 쓸 수 있어요.</p>
+              <p className="rs-card-p">자기소개서에서 이렇게 연결해 말하면 돼요.</p>
             </>) : (
               <p className="rs-card-p">직접 정한 기준을 적어두면 여기가 채워져요.</p>
             )}
           </article>
 
           <article className="rs-card is-next">
-            <p className="rs-card-l"><i className="rs-ic ic-arrow" />지금 다음으로 할 일</p>
+            <p className="rs-card-l"><i className="rs-ic"><Ic name="list" /></i>지금 다음으로 할 일</p>
             <p className="rs-card-h">{doHead}</p>
-            {doDetail ? <p className="rs-card-p">{doDetail}</p> : null}
+            {doSteps.length ? (
+              /* **무엇을 적을지 바로 보인다.** 긴 설명 대신 짧은 목록이다 */
+              <ul className="rs-todo">
+                {doSteps.map((x) => <li key={x}>{x}</li>)}
+              </ul>
+            ) : doDetail ? <p className="rs-card-p">{doDetail}</p> : null}
             {/* **단추의 말이 약속한 일을 그 자리에서 한다**(규격 §16) */}
             <form action={takeActionsFromResult}>
-              <button className="rs-go" type="submit">지금 정리하기</button>
+              <button className="rs-go" type="submit">
+                지금 정리하기<Ic name="pen" />
+              </button>
             </form>
             {/* 까닭 한 줄은 종이와 아래 할 일 절이 든다 */}
             {doWhy ? <p className="rs-outcome-print">{doWhy}</p> : null}
+            {doSteps.length && doDetail
+              ? <p className="rs-outcome-print">{doDetail}</p> : null}
           </article>
         </section>
 
-        {/* ══ 3. 이런 직무와 진로를 고려해볼 수 있어요 ══ */}
+        {/* ══ 3. 이런 직무와 잘 이어져요 ══
+            직무명과 한 줄로 끝내지 않는다: 아이콘 · 이름 · **왜 이 경험과
+            이어지는지** · 그 쪽이 먼저 정하는 것 · 확인된 축 태그다 */}
         {pathCards.length ? (<>
           <h2 className="rs-band">이런 직무와 잘 이어져요</h2>
           <section className="rs-paths">
             {pathCards.map((c, i) => (
               <article key={c.code} className={`rs-path p${i + 1}`}>
-                <span className="rs-path-ic" aria-hidden="true" />
+                <span className="rs-path-ic" aria-hidden="true"><Ic name={c.icon} /></span>
                 <h3>{c.name}</h3>
+                {c.why ? <p className="rs-path-why">{c.why}</p> : null}
                 {c.what ? <p>{c.what}</p> : null}
+                {c.tags.length ? (
+                  <ul className="rs-path-tags">
+                    {c.tags.map((t) => <li key={t}>{t}</li>)}
+                  </ul>
+                ) : null}
               </article>
             ))}
           </section>
@@ -1285,36 +1333,35 @@ export default async function V3Result({
           {lackNeed ? <p className="rs-paths-note">{lackNeed}</p> : null}
         </>) : null}
 
-        {/* ══ 4. 더 알아보고 싶다면 ══
-            **없는 기능을 단추로 두지 않는다.** 여기 서는 넷은 전부 지금
-            열려 있는 자리다 */}
+        {/* ══ 4. 더 알아보고 싶은 정보 ══
+            **기능 이름이 아니라 눌렀을 때 얻는 것을 적는다.** 그리고 여기
+            서는 넷은 전부 지금 열려 있는 자리다 */}
         <h2 className="rs-band">더 알아보고 싶은 정보</h2>
         <section className="rs-explore">
           <Link className="rs-ex-a m1" href="/me/experience/new">
-            <span className="rs-ex-ic" aria-hidden="true" />
+            <span className="rs-ex-ic" aria-hidden="true"><Ic name="plus" /></span>
             <b>경험 더 적어보기</b>
-            <i>적을수록 쓸 이야기가 늘어요</i>
+            <i>내 결과를 더 구체적으로 만들어요</i>
           </Link>
           <Link className="rs-ex-a m2" href="/me/next">
-            <span className="rs-ex-ic" aria-hidden="true" />
+            <span className="rs-ex-ic" aria-hidden="true"><Ic name="list" /></span>
             <b>할 일 이어서 하기</b>
-            <i>담아둔 것부터 하나씩</i>
+            <i>오늘 하나만 끝내도 기록이 남아요</i>
           </Link>
           <Link className="rs-ex-a m3" href="/me/explore">
-            <span className="rs-ex-ic" aria-hidden="true" />
+            <span className="rs-ex-ic" aria-hidden="true"><Ic name="compass" /></span>
             <b>산업·직무 둘러보기</b>
-            <i>어디에서 쓰이는지 보기</i>
+            <i>내 경험이 어디에서 쓰이는지 확인해요</i>
           </Link>
           {/* **종이 길은 `Link` 로 걸지 않는다.** Next 가 미리 불러오면
               머리 없는 브라우저가 떠서 종이가 한 벌씩 만들어진다 */}
           <a className="rs-ex-a m4" href={`/v3/${attemptId}/result/pdf`}>
-            <span className="rs-ex-ic" aria-hidden="true" />
+            <span className="rs-ex-ic" aria-hidden="true"><Ic name="file" /></span>
             <b>PDF 로 저장하기</b>
-            <i>몇 초 걸려요</i>
+            <i>상담이나 포트폴리오 준비에 써요</i>
           </a>
         </section>
 
-        {/* ══ 5. 아래 배너 ══ */}
         <section className="rs-banner">
           <div>
             <p className="rs-banner-l">{meta.school ?? "CareerMatri"}</p>

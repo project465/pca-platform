@@ -2,8 +2,8 @@
  "schema_version": "me-v3-result-lock.1",
  "note": "결과지 화면 1차 동결. 문장만 고치면 `RESULT_COPY_VERSION` 만 올리고, 칸이나 절이 바뀌면 `RESULT_MODEL_VERSION`, 화면 구조가 바뀌면 `RESULT_UI_VERSION` 을 올린다. 채점 판본은 이 가운데 무엇으로도 올리지 않는다",
  "versions": {
-  "result_ui_version": "ME_V3_RESULT_UI_V47",
-  "result_copy_version": "me-v3-result-copy.41",
+  "result_ui_version": "ME_V3_RESULT_UI_V48",
+  "result_copy_version": "me-v3-result-copy.42",
   "result_model_version": "me-v3-result-model.6",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.5",
   "scoring_version": "me-v3-scoring.5"
@@ -20,19 +20,19 @@
   "종이에 빈 쪽과 범위 밖 쪽수가 없다": "v3:result:pdf"
  },
  "files": {
-  "src/app/v3/result.css": "a7e642b952aadbfef5f99bb01337e7fce6a773b24ff773691c6b22176bce097a",
-  "src/app/v3/[attemptId]/result/page.tsx": "2a86025f8c425337be16a1241294df97e151ef0fa753c783ecccdbb94eb4c9fb",
+  "src/app/v3/result.css": "b55ee1fca03cad0809382edfc77c0fcd7aeaf3e3c5d4879af52defd1f00b1444",
+  "src/app/v3/[attemptId]/result/page.tsx": "67b8bda9d479e916ba4dc48547dd53a96cc507105bc60384a27c657379b97dfe",
   "src/app/v3/[attemptId]/result/fold.tsx": "da6c8b16f124941d283dc9ae4ad0f41b2271fd8d8233028bfdc3d4c500d4fbb4",
   "src/app/v3/[attemptId]/result/disclose.tsx": "a82c70b1d0897647877cfff4a672e8ebffd8716f76e6cfcc3d25e066f074f455",
   "src/app/v3/[attemptId]/result/save.tsx": "2830e503419eba94015798787ab2f7cd4abca39c8126fe1cf3dca087f6c6e7c1",
   "src/app/v3/[attemptId]/result/track.tsx": "6136c271ee7df7323f029912182c7496a8633fdf7479b6080697a6f4a217787c",
-  "src/lib/me-v3/result/text.ko.ts": "fd0d586091d9c2ec96696f0b78dc07a341a6863839c5e9d66cdc15aaebee48f6",
+  "src/lib/me-v3/result/text.ko.ts": "a884d9ac6b34e5352448cccfb6ea0bab2f0f4bf833461e757c29fed903be5c1a",
   "src/lib/me-v3/result/josa.ts": "152cd30c2af136172618c14fa6fb4175b97cf16350db631e3e2e6c72fd7dd4af",
-  "src/lib/me-v3/result/version.ts": "9bd53e1f5467bc5c89b2e34baf04048266089aeaa04a2167e7a4a9a3dd165d01",
+  "src/lib/me-v3/result/version.ts": "c975cc1054d8943d1f6ddc4462d57f11ce722ec9f2127dfb3319a859ebfc6095",
   "src/lib/me-v3/result/spec-view.ts": "5996808b444eead599e03d41d22629c6ae8ce2690e06937ce64471d189b04fe7",
   "src/lib/me-v3/result/meta.ts": "bf2c3f49a2bc49108e6e63f6c9ac6f03cce070b6fe50f24ad8a3f4027aaa85cc",
   "src/app/v3/[attemptId]/result/charts.tsx": "0ccccdbdd1f17a7e86b3d3df9c502f990ea08aed4ded68c69f8c4a8d1ed2d925",
-  "src/app/v3/[attemptId]/result/art.tsx": "76f7a3056706020d9361cc1580b4d0a5805ac4e996195dfecc2c195c68077633",
+  "src/app/v3/[attemptId]/result/art.tsx": "4a98a90e02e21884ffab109aa122173203321675d2b63b6f2a2f232d19d5dde6",
   "src/lib/me-v3/result/chart-data.ts": "62e508fa151b0664b0c89e46745ac4f452390534ff919ba62f0ddac070734308",
   "src/lib/me-v3/runtime/domain-facts.ts": "49f73a7eb5de3b5ae72885f5d8399bd147c20a2b82bab62167338c4ae48b2695",
   "src/lib/me-v3/result/chains.ts": "adae59ca54527e45bffada3c4531a1297f9b08615accd24bc927959c33ccf5d6"

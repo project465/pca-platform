@@ -255,7 +255,7 @@
 }
 @media (min-width: 880px) {
   .rs-hero {
-    grid-template-columns: minmax(0, 1fr) 320px;
+    grid-template-columns: minmax(0, 1fr) 380px;
     align-items: center; gap: var(--r-s7);
     padding: 54px var(--r-s7);
   }
@@ -300,8 +300,13 @@
 /* 판정 한 줄은 종이에만 */
 .rs-verdict { display: none; }
 /* 그림. **왼쪽 큰 글과 한 쌍이다** */
-.rs-hero-art { justify-self: center; width: 100%; max-width: 320px; }
+.rs-hero-art { justify-self: center; width: 100%; max-width: 400px; }
 .rs-hero-art svg { display: block; width: 100%; height: auto; }
+/* 공식 그림이 들어온 자리. **비율을 찌그러뜨리지 않는다** */
+.rs-hero-img {
+  display: block; width: 100%; height: auto;
+  object-fit: contain; object-position: center;
+}
 
 /* ── 절 제목 ── 가운데에 선다. 왼쪽 일변도를 끊는 자리다 ─────────── */
 .rs-band {
@@ -330,25 +335,13 @@
 .rs-card.is-did  .rs-card-l { color: var(--r-blue); }
 .rs-card.is-use  .rs-card-l { color: var(--r-lilac); }
 .rs-card.is-next .rs-card-l { color: var(--r-mint); }
-/* 카드마다 작은 표시 하나. 흰 둥근 네모 안의 선 모양이고 emoji 는 아니다 */
+/* 카드마다 **그 칸이 무엇인지 읽히는 선 아이콘** 하나. 굵기와 둥근 끝이
+   전부 같아 한 벌로 읽히고, 색은 그 카드의 역할색을 그대로 받는다 */
 .rs-ic {
-  flex: none; width: 26px; height: 26px; border-radius: 9px;
+  flex: none; width: 28px; height: 28px; border-radius: 9px;
   background: #ffffff; display: inline-grid; place-items: center;
 }
-.rs-ic::before { content: ""; display: block; }
-.rs-ic.ic-note::before {
-  width: 10px; height: 8px;
-  border-top: 1.8px solid currentColor; border-bottom: 1.8px solid currentColor;
-}
-.rs-ic.ic-star::before {
-  width: 9px; height: 9px; border-radius: 2px;
-  background: currentColor; transform: rotate(45deg);
-}
-.rs-ic.ic-arrow::before {
-  width: 7px; height: 7px;
-  border-right: 1.8px solid currentColor; border-top: 1.8px solid currentColor;
-  transform: rotate(45deg) translate(-1px, 1px);
-}
+.rs-ic svg { width: 17px; height: 17px; display: block; }
 .rs-card-h {
   margin: 0; font-size: var(--r-t-say); line-height: 1.42;
   font-weight: var(--ui-w-bd); color: var(--r-ink); letter-spacing: -.02em;
@@ -356,15 +349,39 @@
 .rs-card-p {
   margin: 0; font-size: var(--r-t-gloss); line-height: 1.6; color: var(--r-ink-2);
 }
-/* 손에 남은 것. **칩이 아니라 줄이다**: 카드 안에서 칩이 또 서면 알약이
-   한 화면에 세 종류가 된다 */
-.rs-mini { margin: 2px 0 0; padding: 0; list-style: none; display: grid; gap: 5px; }
-.rs-mini li {
-  display: flex; gap: 8px; font-size: var(--r-t-gloss); color: var(--r-ink-2);
+/* 작은 머리. 아래 목록이 무엇인지만 적고 설명하지 않는다 */
+.rs-card-s {
+  margin: 2px 0 -2px; font-size: var(--r-t-meta); font-weight: var(--ui-w-sb);
+  color: var(--r-ink-3); letter-spacing: .02em;
 }
-.rs-mini li::before {
-  content: ""; flex: none; width: 5px; height: 5px; margin-top: 8px;
-  border-radius: 50%; background: var(--r-blue);
+/* 남아 있는 결과물. **글머리 점이 아니라 작은 조각이다**: 흰 알약 위에
+   문서 아이콘이 서서 손에 남은 것으로 읽힌다 */
+.rs-files { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+.rs-files li {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 11px; border-radius: 11px; background: #ffffff;
+  font-size: var(--r-t-gloss); font-weight: var(--ui-w-md); color: var(--r-ink);
+}
+.rs-files li i { flex: none; display: block; color: var(--r-blue); }
+.rs-files li svg { width: 15px; height: 15px; display: block; }
+/* 띠 한 줄. **까닭을 말하는 자리**이고 한 카드에 하나뿐이다 */
+.rs-strip {
+  display: flex; align-items: flex-start; gap: 8px; margin: 0;
+  padding: 10px 12px; border-radius: 13px; background: #ffffff;
+  font-size: var(--r-t-gloss); line-height: 1.55; font-weight: var(--ui-w-md);
+  color: var(--r-ink);
+}
+.rs-strip i { flex: none; display: block; margin-top: 1px; color: var(--r-lilac); }
+.rs-strip svg { width: 16px; height: 16px; display: block; }
+/* 짧은 할 일 목록. 무엇을 적을지가 바로 보인다 */
+.rs-todo { margin: 0; padding: 0; list-style: none; display: grid; gap: 7px; }
+.rs-todo li {
+  display: flex; align-items: flex-start; gap: 9px;
+  font-size: var(--r-t-gloss); line-height: 1.5; color: var(--r-ink);
+}
+.rs-todo li::before {
+  content: ""; flex: none; width: 15px; height: 15px; margin-top: 2px;
+  border: 1.8px solid var(--r-mint-line); border-radius: 5px; background: #fff;
 }
 /* 쓸 수 있는 것은 칩이다. 그 자리에서 셋넷을 한눈에 훑는다 */
 .rs-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 2px 0 0; padding: 0; list-style: none; }
@@ -381,11 +398,7 @@
   background: var(--r-accent); color: #fff;
   font-size: var(--r-t-body); font-weight: var(--ui-w-sb); line-height: 1;
 }
-.rs-go::after {
-  content: ""; flex: none; margin-left: 10px; width: 7px; height: 7px;
-  border-right: 1.8px solid currentColor; border-top: 1.8px solid currentColor;
-  transform: rotate(45deg);
-}
+.rs-go svg { flex: none; margin-left: 9px; width: 16px; height: 16px; display: block; }
 .rs-go:hover { filter: brightness(1.1); }
 .rs-go:focus-visible { outline: 2px solid var(--r-accent); outline-offset: 3px; }
 
@@ -404,23 +417,38 @@
 .rs-path.p2 { background: var(--r-amber-soft); border-color: var(--r-amber-line); }
 .rs-path.p3 { background: var(--r-lilac-soft); border-color: var(--r-lilac-line); }
 .rs-path-ic {
-  display: block; width: 34px; height: 34px; border-radius: 12px;
-  background: #ffffff; position: relative;
+  display: grid; place-items: center; width: 36px; height: 36px;
+  border-radius: 12px; background: #ffffff;
 }
-.rs-path-ic::before {
-  content: ""; position: absolute; inset: 0; margin: auto;
-  width: 12px; height: 12px; border-radius: 4px;
-}
-.rs-path.p1 .rs-path-ic::before { background: var(--r-cyan); }
-.rs-path.p2 .rs-path-ic::before { background: var(--r-amber); }
-.rs-path.p3 .rs-path-ic::before { background: var(--r-lilac); }
+.rs-path-ic svg { width: 19px; height: 19px; display: block; }
+.rs-path.p1 .rs-path-ic { color: var(--r-cyan); }
+.rs-path.p2 .rs-path-ic { color: var(--r-amber); }
+.rs-path.p3 .rs-path-ic { color: var(--r-lilac); }
 .rs-path h3 {
   margin: var(--r-s3) 0 0; font-size: var(--r-t-h3); font-weight: var(--ui-w-bd);
   color: var(--r-ink); letter-spacing: -.016em;
 }
-.rs-path p {
-  margin: 7px 0 0; font-size: var(--r-t-gloss); line-height: 1.6; color: var(--r-ink-2);
+/* **왜 이 경험과 이어지는가** 한 줄. 그 아래 한 줄은 그 쪽이 먼저 정하는
+   것이고, 둘이 서로 다른 말을 한다 */
+.rs-path-why {
+  margin: 7px 0 0; font-size: var(--r-t-gloss); line-height: 1.55;
+  font-weight: var(--ui-w-sb); color: var(--r-ink);
 }
+.rs-path p {
+  margin: 5px 0 0; font-size: var(--r-t-gloss); line-height: 1.55; color: var(--r-ink-2);
+}
+/* 확인된 축 태그 둘셋. 위 한 줄과 같은 자리를 가리킨다 */
+.rs-path-tags {
+  display: flex; flex-wrap: wrap; gap: 5px;
+  margin: var(--r-s3) 0 0; padding: 0; list-style: none;
+}
+.rs-path-tags li {
+  padding: 4px 10px; border-radius: var(--r-r-pill); background: #ffffff;
+  font-size: 12px; font-weight: var(--ui-w-sb); white-space: nowrap;
+}
+.rs-path.p1 .rs-path-tags li { color: var(--r-cyan); }
+.rs-path.p2 .rs-path-tags li { color: var(--r-amber); }
+.rs-path.p3 .rs-path-tags li { color: var(--r-lilac); }
 .rs-paths-note {
   margin: var(--r-s4) auto 0; max-width: 56ch; text-align: center;
   font-size: var(--r-t-gloss); line-height: 1.6; color: var(--r-ink-3);
@@ -447,16 +475,14 @@
 }
 .rs-ex-a i { font-style: normal; font-size: var(--r-t-gloss); color: var(--r-ink-3); }
 .rs-ex-ic {
-  width: 30px; height: 30px; border-radius: 11px; position: relative;
+  display: grid; place-items: center; width: 34px; height: 34px;
+  border-radius: 12px;
 }
-.rs-ex-ic::before {
-  content: ""; position: absolute; inset: 0; margin: auto;
-  width: 11px; height: 11px; border-radius: 4px; background: #ffffff;
-}
-.rs-ex-a.m1 .rs-ex-ic { background: var(--r-blue); }
-.rs-ex-a.m2 .rs-ex-ic { background: var(--r-mint); }
-.rs-ex-a.m3 .rs-ex-ic { background: var(--r-lilac); }
-.rs-ex-a.m4 .rs-ex-ic { background: var(--r-cyan); }
+.rs-ex-ic svg { width: 18px; height: 18px; display: block; }
+.rs-ex-a.m1 .rs-ex-ic { background: var(--r-blue-soft); color: var(--r-blue); }
+.rs-ex-a.m2 .rs-ex-ic { background: var(--r-mint-soft); color: var(--r-mint); }
+.rs-ex-a.m3 .rs-ex-ic { background: var(--r-lilac-soft); color: var(--r-lilac); }
+.rs-ex-a.m4 .rs-ex-ic { background: var(--r-cyan-soft); color: var(--r-cyan); }
 
 /* ── [5] 학교 연계 배너 ───────────────────────────────────────── */
 .rs-banner {
@@ -1122,7 +1148,7 @@
   }
   .rs-quote { letter-spacing: -.03em; line-height: 1.3; }
   .rs-tags { justify-content: center; }
-  .rs-hero-art { max-width: 248px; }
+  .rs-hero-art { max-width: 320px; }
   .rs-band { margin: var(--r-s6) 0 var(--r-s4); font-size: var(--r-t-say); }
   .rs-use, .rs-paths { gap: var(--r-s4); }
   .rs-card { padding: var(--r-s4); border-radius: 22px; }
@@ -1215,6 +1241,7 @@
   /* 그림은 종이에 찍지 않는다. 잉크를 넓게 칠하면 그 쪽이 광고로 읽히고,
      보관된 리포트에서 그 자리가 할 일이 없다 */
   .rs-hero-art { display: none; }
+  .rs-hero-img { display: none; }
   /* 누구의 어느 응시인가. 보관된 종이가 혼자 읽혀야 한다(규격 §15) */
   .rs-who {
     font-size: 9pt; color: var(--r-ink-2);
@@ -1267,7 +1294,17 @@
   .rs-card-l { font-size: 7.5pt; color: var(--r-ink-3); }
   .rs-card-h { font-size: 9.5pt; line-height: 1.4; }
   .rs-card-p { font-size: 8.5pt; }
-  .rs-mini li, .rs-chips li { font-size: 8pt; }
+  .rs-files li, .rs-chips li { font-size: 8pt; }
+  .rs-files li { padding: 0; background: none; }
+  .rs-files li i { display: none; }
+  .rs-card-s { margin: 1mm 0 0; font-size: 7.5pt; }
+  /* 할 일의 짧은 목록은 **종이에 두 번 서지 않는다**: 바로 아래 까닭 줄과
+     `다음에 할 일` 절이 같은 차례를 이미 적는다 */
+  .rs-todo { display: none; }
+  .rs-strip { padding: 0; background: none; font-size: 8.5pt; }
+  .rs-strip i { display: none; }
+  .rs-path-why { font-size: 8.5pt; }
+  .rs-path-tags { display: none; }
   .rs-chips li { padding: 0; background: none; color: var(--r-ink-2); }
   .rs-chips li + li::before { content: " · "; }
   /* 카드 머리의 색 표시. **뜻을 갖지 않는다**: 셋을 한 덩이로 읽지 않게
@@ -1275,7 +1312,7 @@
   .rs-ic {
     width: 7pt; height: 7pt; border-radius: 2pt; background: var(--r-accent-line);
   }
-  .rs-ic::before { display: none; }
+  .rs-ic svg, .rs-go svg { display: none; }
   .rs-card.is-next .rs-ic { background: var(--r-accent); }
 
   /* ── 이어지는 쪽 ── 줄글로 눕힌다. 담긴 것은 그대로다 */
