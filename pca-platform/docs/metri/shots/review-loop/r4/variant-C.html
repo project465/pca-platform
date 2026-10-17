@@ -1,0 +1,105 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CareerMatri</title>
+<style>:root{
+  --navy:#15284a; --navy-2:#24395f;
+  --blue:#2563c9; --blue-ink:#1d4ea6;
+  --cyan:#1b7f8c;
+  --ink:#16203a; --ink-2:#44506b; --ink-3:#737e96;
+  --white:#ffffff; --off:#fbfbfd; --cool:#f6f8fc; --gray:#f2f4f7;
+  --pale:#eaf1fd; --pale-line:#d4e2f8;
+  --line:#e6e9f0; --line-2:#eef0f5;
+}
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",
+      "Noto Sans KR","Malgun Gothic",sans-serif;
+    -webkit-font-smoothing:antialiased; color:var(--ink-2);
+    word-break:keep-all; overflow-wrap:break-word; line-height:1.6;
+  }
+  h1,h2,h3,p,ul{margin:0}
+  ul{padding:0;list-style:none}
+  .eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;color:var(--blue-ink)}
+  .ident{font-size:12.5px;color:var(--ink-3)}
+  .school{font-size:15px;font-weight:700;color:var(--ink)}
+  .dept{font-size:13.5px;color:var(--ink-2)}
+  .lead{color:var(--ink-2)}
+  .label{font-size:11.5px;font-weight:700;letter-spacing:.12em;color:var(--ink-3)}
+  .tagrow{display:flex;flex-wrap:wrap;gap:6px}
+  .tag{font-size:12px;color:var(--ink-3);background:var(--gray);
+       padding:4px 10px;border-radius:999px}
+  .chip{font-size:13px;color:var(--navy);background:var(--pale);
+        padding:6px 12px;border-radius:999px;font-weight:600}
+
+  body{background:var(--cool)}
+  .wrap{max-width:1080px;margin:0 auto;padding:30px 32px 76px}
+  .top{display:flex;align-items:baseline;gap:10px;padding-bottom:22px}
+  .top .ident{margin-left:auto}
+  .hero{background:var(--white);border-radius:28px;padding:54px 48px 0;
+    overflow:hidden}
+  .hero .eyebrow{display:block;color:var(--cyan)}
+  /* 글 폭을 좁게 잡으면 그 오른쪽이 빈 면으로 남는다. 면이 넓으면 글도
+     그만큼 쓴다: 머리는 두 줄, 거드는 줄은 한 줄이다 */
+  .hero h1{margin-top:20px;font-size:38px;line-height:1.32;letter-spacing:-.033em;
+    font-weight:800;color:var(--ink);max-width:28ch;text-wrap:balance}
+  .hero .lead{margin-top:18px;font-size:16.5px;max-width:62ch}
+  .act{margin:38px -48px 0;background:var(--pale);padding:28px 48px 30px;
+    display:flex;gap:20px;align-items:flex-start}
+  .act .ic{flex:none;width:36px;height:36px;border-radius:12px;background:var(--navy);
+    color:#fff;display:grid;place-items:center}
+  .act .head{font-size:11.5px;font-weight:700;letter-spacing:.12em;color:var(--blue-ink)}
+  .act h3{margin-top:7px;font-size:19px;font-weight:700;color:var(--navy);
+    letter-spacing:-.015em}
+  .act p{margin-top:8px;font-size:14.5px;color:var(--navy-2);max-width:62ch}
+  .act .why{margin-top:10px;font-size:13.5px;color:var(--ink-2)}
+  .mods{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+  .exp{grid-column:1/-1;background:var(--white);border-radius:22px;padding:32px 36px}
+  .exp h2{margin-top:12px;font-size:21px;line-height:1.5;color:var(--ink);
+    font-weight:700;letter-spacing:-.015em}
+  .exp .tagrow{margin-top:18px}
+  .mod{background:var(--white);border-radius:14px;padding:22px 24px}
+  .mod h4{margin-top:8px;font-size:15px;font-weight:700;color:var(--ink)}
+  .mod p{margin-top:6px;font-size:13.5px;color:var(--ink-3)}
+  .link{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+    font-size:13.5px;color:var(--ink-3);padding:0 6px}
+  @media(max-width:719px){
+    .wrap{padding:18px 16px 52px}
+    .top{flex-wrap:wrap;gap:4px;padding-bottom:14px}
+    .top .ident{margin-left:0;width:100%}
+    .hero{border-radius:22px;padding:34px 22px 0}
+    .hero h1{font-size:28px;letter-spacing:-.028em;max-width:none}
+    .hero .lead{font-size:15.5px;margin-top:14px}
+    .act{margin:26px -22px 0;padding:22px 22px 24px;gap:14px}
+    .act .ic{width:30px;height:30px;border-radius:10px}
+    .mods{grid-template-columns:1fr;gap:12px;margin-top:12px}
+    .exp{padding:24px 22px;border-radius:18px}
+    .exp h2{font-size:18px}
+  }</style></head><body><div class="wrap">
+  <div class="top"><span class="school">배재대학교</span>
+    <span class="dept">경영학과 · 경영 일반</span><span class="ident">CareerMatri PRO · 2026-10-17 응답</span></div>
+  <header class="hero">
+    <span class="eyebrow">경영 진로 진단 결과</span>
+    <h1>하지 않을 것과 먼저 할 것을 가리고, 볼 고객과 쓸 채널을 직접 골라 본 경험이 있어요.</h1>
+    <p class="lead">여기까지 해 봤으면 지원서에서 이야기할 거리는 이미 모였어요.</p>
+    <div class="act">
+      <span class="ic"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"
+  aria-hidden="true"><path d="M3.2 8.4 6.3 11.5 12.8 5" stroke="currentColor"
+  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <div><span class="head">지금 하면 좋은 일</span><h3>그때 직접 정한 것을 적어 두기</h3>
+        <p>경영전략·기획 과제 하나에서 받은 요구를 어떤 조건으로 옮겼는지 세 줄로 적어 보세요.</p><p class="why">세 줄만 적어 두면 지원서에서 어떤 기준으로 정했는지를 그대로 옮겨 쓸 수 있어요.</p></div>
+    </div>
+  </header>
+  <div class="mods">
+    <section class="exp">
+      <span class="label">내가 해본 경험</span>
+      <h2>여러 안 가운데 하나를 근거를 들어 골랐고, 예산이나 인원을 항목별로 나눴습니다.</h2>
+      <ul class="tagrow"><li class="tag">경영전략·기획</li><li class="tag">마케팅·시장</li><li class="tag">영업·사업개발</li></ul>
+    </section>
+    <div class="mod"><span class="label">남긴 근거</span>
+      <h4>목표와 지표 표 · 사업계획 한 벌</h4><p>과제에서 직접 만들어 남긴 것이에요.</p></div>
+    <div class="mod"><span class="label">더 채울 부분</span>
+      <h4>경영전략·기획 · 마케팅·시장</h4><p>받은 요구를 어떤 조건으로 옮겼는지 아직 적지 않으셨어요</p></div>
+  </div>
+  <p class="link"><span class="chip">일반기업·기업간 거래 · 경영기획</span> 에서 해 본 일이 이어져요</p>
+</div></body></html>

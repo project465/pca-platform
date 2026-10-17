@@ -10726,3 +10726,39 @@ CORE=BIZ_CORE_V1 LEAF=PCU26_BIZ npx tsx scripts/lab/gate34-shots.ts
 **아직 아닌 것.** 네트워크 정책이 `app.careermatri.com:443` 을 막아 운영
 배포본을 밖에서 열지 못했고 **학생 공개 상태를 바꾸지 않았다**:
 `PRODUCTION UNVERIFIED` 와 `PCU CANARY BLOCKED` 가 그대로다.
+
+**BIZ Result Hero + Summary 의 Visual Variant 셋.** (2026-10-17)
+
+제품 코드에 적용하지 않았다. `src/` 와 `sites/` 와 `assessment/` 와 `db/` 의
+diff 가 0줄이고 scoring · 결과 모델 · 문항 은행 · 등록부 · `open_to_students`
+가 그대로다. 만든 것은 **굳은 결과 하나를 세 가지 짜임으로 그려 본 HTML 셋**과
+그 캡처 여섯 장이고(`docs/metri/shots/review-loop/r4/`), 어느 쪽으로 갈지는
+사람이 고른다.
+
+**세 벌이 같은 글을 쓴다.** 글은 `v3_snapshots.result_model` 에서 꺼내
+`text.ko.ts` 가 만든 것을 그대로 읽고, 이 파일이 따로 짓는 문장은 머리글 한
+줄뿐이며 그것도 영역 사전의 `먼저 정하는 것` 두 토막에서 온다.
+**하드코딩하지 않는다**: 학교와 학과 이름까지 응시 줄이 들고 있는 값이다.
+
+**색만 다른 셋을 만들지 않는다.** 갈린 것은 정렬(가운데 · 비대칭 · 모듈)과
+Hero 짜임과 둥근 면을 쓰는 방식(없음+22 · 18+12 · 28+22+14)과 할 일을 세우는
+방식(알약 + 옅은 면 · 남색으로 채운 카드 · Hero 안에서 가로로 번지는 면)과
+여백과 정보 위계다. 팔레트는 셋이 **같다**: deep navy 하나 · clean blue 하나 ·
+muted cyan 하나 · cool gray 와 흰 면. **베이지와 brown tone 을 쓰지 않았고**
+한 화면의 면이 셋까지다.
+
+**담긴 것이 없는 면을 남기지 않는다.** 처음 뽑은 그림에서 B 는 오른쪽 단이
+길다고 왼쪽 카드가 그만큼 늘어나 아래 절반이 비었고, C 는 머리 글 폭을 좁게
+잡아 그 오른쪽이 빈 면으로 남았다. 두 단이 길이를 서로 받게 하고 글 폭을 면에
+맞췄다. **찍어 놓고 읽지 않으면 그림은 파일만 늘린다.**
+
+**좁은 화면은 두 단을 그대로 쌓지 않는다.** B 를 그대로 쌓으면 할 일이 남긴
+근거 아래로 밀려 엄지로 한 번 더 넘겨야 닿는다. 좁은 화면에서만 차례를
+바꾼다(경험 → 할 일 → 남긴 근거 → 더 채울 부분).
+
+```bash
+ATT=9715 OUT=docs/metri/shots/review-loop/r4 npx tsx scripts/lab/visual-variants.ts
+```
+
+**아직 아닌 것.** 어느 쪽이 낫다고 적지 않는다. 고른 방향을 NURSING 과
+PUBADM 과 나머지 Core 로 넓히는 일과 Evidence 쪽 재설계는 그 뒤다.
