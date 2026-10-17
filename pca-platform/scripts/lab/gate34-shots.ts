@@ -155,6 +155,12 @@ async function main(): Promise<void> {
     await p.goto(`${BASE}/v3/${att}/result`, { waitUntil: "networkidle" });
     await p.waitForTimeout(400);
     await clipTo(p, ".rs-hero", ".rs-link", `${OUT}/gate3-desktop.png`);
+    /* **Hero 와 Summary 를 따로 더 뜬다**(R3 §49). 첫 화면 한 장은 글자가
+       작아져서 결론 한 줄의 활자 위계와 네 칸의 무게 차등을 눈으로 가릴 수
+       없다. 자른 자리가 겹치지만 **같은 그림은 아니다**: `mark()` 가 지문을
+       견주므로 둘이 같은 그림이면 그 자리에서 멈춘다 */
+    await clipTo(p, ".rs-hero", ".rs-hero", `${OUT}/gate3-desktop-hero.png`);
+    await clipTo(p, ".rs-top", ".rs-link", `${OUT}/gate3-desktop-summary.png`);
 
     /* ── Gate 4 Desktop ── 근거 절과 그 안의 네 단계 카드 하나 */
     await openAll(p);
@@ -174,6 +180,8 @@ async function main(): Promise<void> {
     await m.goto(`${BASE}/v3/${att}/result`, { waitUntil: "networkidle" });
     await m.waitForTimeout(400);
     await clipTo(m, ".rs-hero", ".rs-link", `${OUT}/gate3-mobile.png`);
+    await clipTo(m, ".rs-hero", ".rs-hero", `${OUT}/gate3-mobile-hero.png`);
+    await clipTo(m, ".rs-top", ".rs-link", `${OUT}/gate3-mobile-summary.png`);
     await openAll(m);
     await m.waitForTimeout(400);
     await m.locator("section#evidence").first()

@@ -449,6 +449,32 @@ const metaHit = firstRead.filter((t) => META.some((m) => t.includes(m)));
 ok("묶음 이름과 축 이름씨에 우리 쪽 비유가 없다", metaHit.length === 0,
    metaHit.length ? metaHit.join(" | ") : `줄 ${firstRead.length}개 · 막는 말 ${META.length}`);
 
+/* ── 12·13. R3 §43 되돌이 검사 ─────────────────────────────────────
+      묶음마다 고정된 한 문장이 Gate 3 첫 줄에 서는 버릇이 두 번 돌아왔다.
+      지운 것이 늘 **그 문장 하나**이고 **그 문장을 만드는 틀**은 그대로였기
+      때문이다. 그래서 틀 쪽을 센다. */
+
+/* 12. 머리글 다섯이 한 틀로 끝나지 않는가.
+      전에는 다섯 줄이 전부 `~습니다` 한 꼴로 닫혀서, 들어가는 값이 달라도
+      나오는 문장의 꼴이 같았고 그 꼴이 판정문으로 읽혔다 */
+const headSrc = body(readFileSync(SRC[0], "utf8"));
+const headBlock = /const HEADLINE_KO[\s\S]*?\n};/.exec(headSrc)?.[0] ?? "";
+const titles = [...headBlock.matchAll(/title:\s*"([^"]+)"/g)].map((m) => m[1]);
+const endings = new Set(titles.map((t) => t.replace(/[^가-힣]/g, "").slice(-3)));
+ok("머리글 다섯이 한 틀로 끝나지 않는다", titles.length >= 5 && endings.size >= 3,
+   `머리글 ${titles.length}줄 · 끝맺음 ${endings.size}가지`);
+
+/* 13. 첫 줄이 결과물 이름을 문장 재료로 쓰지 않는가.
+      `목표와 지표 표` 와 `사업계획서 한 벌` 은 Domain 쪽에서 오는 이름이라
+      문장 안에 끼우면 기계적 명사 결합이 결과지의 첫 줄에 선다. 이름이 설
+      자리는 라벨 아래의 목록이고 거기서는 사물의 이름으로 읽힌다 */
+const leadFn = /function headlineLead[\s\S]*?\n}/.exec(headSrc)?.[0] ?? "";
+const leadGlue = [...leadFn.matchAll(/\$\{(?:withJosa\()?(left|artifacts)\b/g)]
+  .map((m) => m[0]);
+ok("머리글 첫 줄이 결과물 이름을 문장에 끼우지 않는다",
+   leadFn.length > 0 && leadGlue.length === 0,
+   leadGlue.length ? leadGlue.join(" | ") : `headlineLead ${leadFn.length}자`);
+
 console.log(`\n확인 ${pass + fail}가지 — 통과 ${pass} · 걸림 ${fail}`);
 console.log("  자동검사는 후보만 잡습니다. 마지막 판단은 문맥 기준입니다.");
 process.exitCode = fail ? 1 : 0;

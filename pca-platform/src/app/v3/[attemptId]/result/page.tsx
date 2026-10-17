@@ -897,7 +897,7 @@ export default async function V3Result({
      뜻은 맞지만 사람이 학생을 앞에 두고 그렇게 말하지 않는다 */
   const linkText = linkNames.length
     ? (linkReady.length
-      ? `${[...new Set(linkReady)].slice(0, 2).join(" · ")}에서 해 본 일이 이어집니다`
+      ? `${[...new Set(linkReady)].slice(0, 2).join(" · ")}에서 해 본 일이 이어져요`
       : "아직 이쪽으로 이어지는 경험은 보이지 않습니다")
     : "";
 
@@ -1179,7 +1179,7 @@ export default async function V3Result({
         <div className="rs-top">
           {/* ① 실제로 해본 것 */}
           <div>
-            <h3>확인된 경험</h3>
+            <h3>내가 해본 경험</h3>
             {focus.length ? (<>
               {/* **본문 첫 줄은 두 줄을 넘기지 않는다**(PRODUCT POLISH §1).
                   네 영역을 이으면 이 칸의 큰 글씨가 두 줄 반을 먹고 넷
@@ -1214,11 +1214,11 @@ export default async function V3Result({
                   그대로 돌려준다 */}
               <p>{tried.slice(0, 3).map((d) => domainName(core, d.code)).join(" · ")}</p>
               <p style={{ fontWeight: 400 }}>
-                해 본 적이 있다고 답하신 영역입니다
+                해 본 적이 있다고 답하신 쪽이에요
               </p>
             </>) : (
               <p className="none">
-                해 본 적이 있다고 답하신 영역이 아직 없습니다
+                해 본 적이 있다고 답하신 쪽이 아직 없어요
               </p>
             )}
           </div>
@@ -1245,7 +1245,7 @@ export default async function V3Result({
               <p style={{ fontWeight: 400 }}>{keptNoteKo(left.length > 0)}</p>
             </>) : (
               <p className="none">
-                과제에서 남긴 결과물은 아직 적지 않으셨습니다
+                과제에서 남긴 것은 아직 적지 않으셨어요
               </p>
             )}
           </div>
@@ -1263,7 +1263,7 @@ export default async function V3Result({
               <p>{lackWhat}</p>
               <p>{lackNeed}</p>
             </>) : (
-              <p className="none">지금 응답에서 더 채울 곳은 보이지 않습니다</p>
+              <p className="none">지금 답하신 내용에서는 더 채울 곳이 보이지 않아요</p>
             )}
           </div>
 
@@ -1300,7 +1300,7 @@ export default async function V3Result({
             <b>{linkNames.join(" · ")}</b>
             <span>{linkText}</span>
           </>) : (
-            <span>보실 산업과 직무를 아직 고르지 않으셨습니다.</span>
+            <span>보실 산업과 직무를 아직 고르지 않으셨어요.</span>
           )}
         </p>
 
@@ -1356,8 +1356,8 @@ export default async function V3Result({
                  그 넷으로 들어가는 한 줄만 든다. 축마다의 상태는 아래 열두
                  영역 절이 한 자리에서 그대로 든다 */
               <p className="rs-note">
-                아래 네 줄은 지원서와 면접에서 이야기할 수 있는 경험을
-                그 차례대로 풀어 놓은 것입니다.
+                아래 네 줄은 한 경험을 지원서에서 말하는 차례 그대로
+                풀어 놓은 거예요. 넷이 이어져야 한 이야기가 됩니다.
               </p>
             ) : (
               <>
@@ -1469,7 +1469,7 @@ export default async function V3Result({
                   <p className="rs-note">{moreReadyKo(restReady)}</p>
                 ) : null}
                 <p className="rs-note">
-                  네 칸은 응답에서 고르신 항목을 그대로 옮긴 것입니다.
+                  네 칸은 답하실 때 고르신 항목을 그대로 옮긴 거예요.
                   문장으로 적는 차례는 아래 <a href="#translation">지원서·면접에서 쓸 문장</a>에
                   이어집니다.
                 </p>

@@ -25,6 +25,11 @@ const BAN = [
 /* 규격 §12 가 이름을 댄 내부 용어. **그 분야의 말은 세지 않는다** */
 const INNER = ["요구 해석", "직접 판단 경험", "근거 수준", "상태값",
   "산출물", "판정값", "taxonomy"];
+/* **그 분야의 표준 용어는 세지 않는다.** `빌드 산출물` 은 임베디드
+   소프트웨어에서 컴파일 결과를 가리키는 말이고 EE Core 의 영역 사전에
+   그 이름으로 적혀 있다. 글자만 보고 세면 맞는 용어를 고치라고 요구하게
+   된다(`상위 법령` 을 `상위 N` 에서 뺀 것과 같은 까닭이다) */
+const INNER_OK = ["빌드 산출물"];
 
 /** Gate 3·4 구간만 잘라 온다. 열두 영역 절과 부록은 이 회차 밖이다 */
 function slice(text: string): string {
@@ -54,7 +59,11 @@ if (!bad) console.log(`  통과  ${BAN.length}가지 모두 0건`);
 console.log(`\n[§12 내부 용어]`);
 let inner = 0;
 for (const b of INNER) {
-  const hit = rows.filter((r) => r.text.includes(b));
+  const hit = rows.filter((r) => {
+    let t = r.text;
+    for (const ok of INNER_OK) t = t.split(ok).join(" ");
+    return t.includes(b);
+  });
   if (hit.length) {
     inner += 1;
     console.log(`  걸림  ${b} — ${hit.map((h) => `${h.core}.${h.who}`).join(" ")}`);

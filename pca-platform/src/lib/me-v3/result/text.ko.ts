@@ -166,27 +166,31 @@ const HEADLINE_KO: Record<HeadlineCode, { title: string; lead: string }> = {
   /* **품질까지 보증하는 말을 쓰지 않는다.** 우리가 본 것은 응답에서 확인된
      경험이고 밖에서 검증된 성과가 아니다 */
   EVIDENCE_READY: {
-    title: "직접 판단해 본 경험이 또렷하게 남아 있습니다",
+    title: "직접 정하고 끝까지 해 본 일이 있어요",
     /* 이름 없는 자리의 기본값이다. 실제로는 아래 `headlineLead()` 가
        그 사람이 고른 답에서 두 문장을 만들어 이 자리를 덮는다 */
-    lead: "직접 정해 본 일과, 그래서 남은 결과가 함께 있습니다.",
+    lead: "직접 정해 본 일이 있고, 그때 만든 것도 남아 있어요."
+      + " 지원서와 면접에서 꺼내 쓸 거리는 이미 모인 셈입니다.",
   },
   EVIDENCE_PARTIAL: {
-    title: "해 본 일은 있습니다. 이제 정리만 하면 됩니다",
+    title: "해 본 일은 있고, 정리가 아직 남았어요",
     /* **`바로 쓸 수 있다` 고 적지 않는다.** 쓰는 사람이 할 일을 우리가
        끝낸 것으로 적는 말이고, `v3:result:copy` 가 그것을 센다 */
-    lead: "해 보신 일은 적혀 있고, 그때 무엇을 정했는지가 아직 비어 있습니다.",
+    lead: "해 보신 일은 적혀 있어요. 그때 무엇을 직접 정했는지만"
+      + " 더 적으면 지원서에서 이야기가 됩니다.",
   },
   /* **관심과 근거를 한 점수로 합치지 않는다.** 관심이 낮다고 근거가 없는
      것이 아니다. 그 사람에게 할 말은 `이 영역을 진로로 둘지 정하세요` 이고
      `더 해 보세요` 는 이미 해 본 사람에게 할 말이 못 된다 */
   EVIDENCE_LOW_INTEREST: {
-    title: "쌓아 둔 경험은 있고, 지금 더 끌리는 쪽은 다른 데 있습니다",
-    lead: "해 보신 일과 남긴 것은 있고, 관심이 높다고 답하신 쪽은 아닙니다.",
+    title: "해 본 일은 쌓여 있는데, 마음은 다른 쪽에 있어요",
+    lead: "해 보신 일과 남긴 것은 그대로 있어요."
+      + " 이 쪽을 계속 볼지부터 정하면 좋겠습니다.",
   },
   EXPLORING: {
-    title: "아직 직접 해 본 일은 많지 않습니다",
-    lead: "해 보고 싶은 쪽은 또렷하고, 아직 겪어 본 일은 적습니다.",
+    title: "아직 직접 해 본 일은 많지 않아요",
+    lead: "해 보고 싶은 쪽은 또렷해요. 짧게 한 번 해 보는 것부터"
+      + " 시작하면 이야기할 거리가 생깁니다.",
   },
   /* **첫 줄을 모자람으로 열지 않는다**(규격 §6). 전에는 `아직 판단할
      재료가 모이지 않았습니다` 로 열었다. 사실이지만 결과지를 연 사람이
@@ -194,8 +198,9 @@ const HEADLINE_KO: Record<HeadlineCode, { title: string; lead: string }> = {
      틀에서 읽힌다. **좋게 꾸미지도 않는다**: 적합도나 강점을 말하지 않고,
      지금 이 응답으로 할 수 있는 말을 그대로 적는다 */
   NO_EVIDENCE: {
-    title: "한 쪽이 크게 앞서지는 않습니다",
-    lead: "답하신 내용이 여러 쪽에 비슷하게 퍼져 있습니다.",
+    title: "한쪽이 크게 앞서지는 않아요",
+    lead: "답하신 내용이 여러 쪽에 비슷하게 퍼져 있어요."
+      + " 아래에서 해 본 적이 있다고 답하신 쪽부터 좁혀 보면 됩니다.",
   },
 };
 
@@ -226,10 +231,10 @@ const HEADLINE_ZONE: Partial<Record<HeadlineCode, Zone>> = {
  * 정하라고 적는다. 상태를 바꿔 적지 않고 **그 상태에 이름만 붙인다.**
  */
 const HEADLINE_SAID_KO: Partial<Record<HeadlineCode, (where: string) => string>> = {
-  EVIDENCE_READY: (w) => `${w}에서 직접 판단해 본 경험이 또렷합니다`,
-  EVIDENCE_PARTIAL: (w) => `${w}에서 해 본 일은 있고, 정리가 아직 남았습니다`,
+  EVIDENCE_READY: (w) => `${w}에서 직접 정하고 끝까지 해 본 일이 있어요`,
+  EVIDENCE_PARTIAL: (w) => `${w}에서 해 본 일은 있고, 정리가 아직 남았어요`,
   EVIDENCE_LOW_INTEREST: (w) =>
-    `${w}에 쌓아 둔 경험은 있고, 지금 더 끌리는 쪽은 다른 데 있습니다`,
+    `${w}에 해 본 일은 쌓여 있는데, 마음은 다른 쪽에 있어요`,
 };
 
 /**
@@ -269,13 +274,13 @@ const WHY_KO: Record<GapWhy, string> = {
  * 다른 말을 한다: 산출물이 없는 것과 비교를 안 한 것은 다른 이야기다.
  */
 const AXIS_GAP_KO: Record<Axis, string> = {
-  J1: "무엇을 풀 문제로 잡았는지가 아직 안 보입니다",
+  J1: "무엇을 풀 문제로 잡았는지가 아직 안 보여요",
   J2: "받은 요구를 어떤 조건으로 옮겼는지가 아직 없습니다",
-  J3: "직접 정한 조건이나 기준이 아직 안 보입니다",
+  J3: "직접 정한 조건이나 기준이 아직 안 보여요",
   J4: "어떤 방법과 도구로 했는지가 아직 없습니다",
-  J5: "손에 남은 결과물이 아직 없습니다",
+  J5: "과제에서 손에 남은 것이 아직 없어요",
   J6: "무엇과 비교해 봤는지가 아직 없습니다",
-  J7: "안 됐을 때 무엇을 고쳤는지가 아직 없습니다",
+  J7: "안 됐을 때 무엇을 고쳤는지가 아직 없어요",
   J8: "그 결과가 어디에 쓰였는지가 아직 없습니다",
 };
 
@@ -321,14 +326,14 @@ function needWithJosa(need: string): string {
 export function needSentenceKo(axes: Axis[]): string {
   const xs = [...new Set(axes)].map((a) => AXIS_NEED_KO[a]);
   if (!xs.length) return "";
-  return `${needWithJosa(andList(xs))} 아직 적지 않으셨습니다`;
+  return `${needWithJosa(andList(xs))} 아직 적지 않으셨어요`;
 }
 
 const GAP_TITLE_KO: Record<Gap["kind"], (ax: string, a?: Axis | null) => string> = {
   REQUIRED_AXIS: (ax, a) => (a ? AXIS_GAP_KO[a] : `${ax} 쪽 이야기가 아직 없습니다`),
-  OUTPUT: () => "손에 남은 결과물이 아직 없습니다",
+  OUTPUT: () => "과제에서 손에 남은 것이 아직 없어요",
   OUTPUT_EVIDENCE: () => "무엇을 남겼는지 아직 고르지 않았습니다",
-  VERIFICATION: () => "무엇과 비교해 봤는지가 아직 없습니다",
+  VERIFICATION: () => "무엇과 비교해 봤는지가 아직 없어요",
   AXIS: (ax, a) => (a ? AXIS_GAP_KO[a] : `${ax} 쪽 이야기가 아직 없습니다`),
   /* **해 본 것을 없다고 적지 않는다.** 덜 적힌 것은 어디까지 직접
      정했는지다.
@@ -454,8 +459,8 @@ export function saidKo(clause: string): string {
  */
 export function keptNoteKo(hasArtifacts: boolean): string {
   return hasArtifacts
-    ? "과제에서 직접 만들어 남긴 것입니다."
-    : "직접 정한 내용이 이 영역에 적혀 있습니다.";
+    ? "과제에서 직접 만들어 남긴 것이에요."
+    : "직접 정한 내용이 이 쪽에 적혀 있어요.";
 }
 
 /**
@@ -480,12 +485,16 @@ export function evidenceUseKo(
      활력징후와 검사값과 환자와 가족의 말`) 그대로 끼우면 이 줄이 세 줄로
      벌어지고, 네 단계 가운데 마지막 칸이 가장 읽기 어려운 칸이 된다 */
   const front = step && step.length <= 20
-    ? `지원서에서는 ${withJosa(step, "을를")} 어떤 기준으로 정했는지 쓰고`
-    : "지원서에서는 그때 무엇을 직접 정했는지 쓰고";
+    ? `지원서에는 ${withJosa(step, "을를")} 어떤 기준으로 정했는지 쓰고`
+    : "지원서에는 그때 무엇을 직접 정했는지 쓰고";
+  /* **바로 위 칸이 이름을 적었으면 여기서 다시 적지 않는다**(R3 §29).
+     전에는 `면접에서는 목표와 지표 표를 어떻게 만들었는지` 로 결과물
+     이름을 한 번 더 끼웠다. 그 이름은 Domain 쪽에서 오는 값이라 문장
+     안에 들어가면 기계적 명사 결합으로 읽히고, 셋째 칸이 이미 그 이름을
+     적었으니 **되짚는 말**로 이으면 넷이 한 이야기로 읽힌다 */
   return left
-    ? `${front}, 면접에서는 ${withJosa(left, "을를")} 어떻게 만들었는지`
-      + " 이야기하면 됩니다."
-    : `${front}, 면접에서는 그 판단을 왜 그렇게 골랐는지 이야기하면 됩니다.`;
+    ? `${front}, 면접에서는 그걸 어떻게 만들었는지 이야기하면 돼요.`
+    : `${front}, 면접에서는 그 판단을 왜 그렇게 골랐는지 이야기하면 돼요.`;
 }
 
 /**
@@ -495,7 +504,7 @@ export function evidenceUseKo(
  * 적지 않으면 셋째 영역이 결과지 어디에도 서지 않는다.
  */
 export function moreReadyKo(names: string[]): string {
-  return `${andList(names)}에서도 직접 정한 내용이 남아 있습니다.`;
+  return `${andList(names)}에서도 직접 정한 내용이 남아 있어요.`;
 }
 
 /**
@@ -714,13 +723,13 @@ export function actionBriefKo(
  * 된다까지이고, 그 뒤는 읽는 사람의 일이다.
  */
 const ACTION_WHY_KO: Record<ActionCode, string> = {
-  WRITE_UP: "한 쪽으로 묶어 두면 면접에서 그대로 꺼내 쓸 수 있습니다.",
-  DEEPEN_OWNERSHIP: "이렇게 적어 두면 지원서에서 내가 직접 정한 기준을"
-    + " 설명하기 쉬워집니다.",
+  WRITE_UP: "한 쪽으로 묶어 두면 면접에서 그대로 꺼내 쓸 수 있어요.",
+  DEEPEN_OWNERSHIP: "세 줄만 적어 두면 지원서에서 어떤 기준으로 정했는지를"
+    + " 그대로 옮겨 쓸 수 있어요.",
   BUILD_OUTPUT: "남겨 둔 것이 있으면 그 일을 무엇으로 보여줄지 말할 수 있습니다.",
-  ADD_VERIFICATION: "견줘 둔 표가 있으면 그 값을 어떻게 확인했는지 말할 수 있습니다.",
+  ADD_VERIFICATION: "견줘 둔 표가 있으면 그 값을 어떻게 확인했는지 말할 수 있어요.",
   FILL_AXIS: "까닭이 한 줄 적혀 있으면 그 자리에서 무엇을 정했는지 말할 수 있습니다.",
-  TRY_SHORT_EXPERIENCE: "짧게라도 한 번 해 두면 다음에 적을 이야기가 생깁니다.",
+  TRY_SHORT_EXPERIENCE: "짧게라도 한 번 해 두면 다음에 적을 이야기가 생겨요.",
   EXPLORE_BROADLY: "한 가지를 겪어 보면 나머지와 견줄 기준이 생깁니다.",
   STUDY_NEXT: "들은 것을 과제 하나에 써 보면 그 자리에 기록이 남습니다.",
   RECHECK_DIRECTION: "먼저 정해 두면 다음에 무엇을 쌓을지가 또렷해집니다.",
@@ -974,13 +983,12 @@ function headlineLead(m: ResultModel): string | null {
   const code = headlineDomains(m)[0];
   const d = code ? m.domains.find((x) => x.code === code) : undefined;
   if (!d) return null;
-  const left = d.artifacts[0] ?? d.verifications[0] ?? null;
   const decided = d.decided[0] ?? null;
   const did = d.did[0] ?? null;
   if (m.overview.headline === "EVIDENCE_PARTIAL") {
     if (!did) return null;
-    return `${polite(did)}. 그때 무엇을 직접 정했는지는 아직 적지`
-      + " 않으셨습니다.";
+    return `${polite(did)}. 그때 무엇을 직접 정했는지만 더 적으면`
+      + " 지원서에서 이야기가 됩니다.";
   }
   if (m.overview.headline === "EVIDENCE_READY"
     || m.overview.headline === "EVIDENCE_LOW_INTEREST") {
@@ -990,11 +998,17 @@ function headlineLead(m: ResultModel): string | null {
        일(`did`)을 먼저 집고, 그것이 없을 때만 정한 것으로 내려간다 */
     const act = did ?? decided;
     if (!act) return null;
-    const first = `${polite(act)}.`;
-    /* **남은 것이 없으면 남았다고 적지 않는다.** 한 문장으로 끝낸다 */
-    return left
-      ? `${first} 그 판단이 ${withJosa(left, "으로")} 남아 있습니다.`
-      : first;
+    /* **결과물 이름을 문장 재료로 쓰지 않는다**(R3 §29·§41).
+       전에는 `그 판단이 ${결과물}로 남아 있습니다` 로 이었는데, 그
+       이름들은 frozen Domain 콘텐츠이고(`목표와 지표 표` ·
+       `사업계획서 한 벌`) 문장 안에 끼우면 기계적 명사 결합이 결과지의
+       첫 줄에 선다. 이름이 설 자리는 **라벨 아래의 목록**이고 거기서는
+       사물의 이름으로 읽힌다. 여기서는 그 경험이 지금 무엇이 되는지만
+       적는다 */
+    const meaning = m.overview.headline === "EVIDENCE_READY"
+      ? "여기까지 해 봤으면 지원서에서 이야기할 거리는 모인 셈입니다."
+      : "해 본 일은 그대로 남아 있으니, 이 쪽을 계속 볼지부터 정하면 좋겠습니다.";
+    return `${polite(act)}. ${meaning}`;
   }
   return null;
 }
