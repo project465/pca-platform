@@ -305,7 +305,26 @@ async function main(): Promise<void> {
       /* 고른 상태가 또렷한가 — 눌러서 `is-on` 이 서는지 본다 */
       await q.goto(`${BASE}/v3/${att}?s=${quest}`, { waitUntil: "networkidle" });
       const row = q.locator("fieldset.qs-opts").first();
-      await pickOne(row, 2);
+      /**
+       * **이미 고른 칸을 다시 누르면 앞서 찍은 그림과 같아진다.**
+       *
+       * `PERSON=C` 는 남은 문항을 미리 채워 두므로 이 화면에 들어오면 보기
+       * 하나가 벌써 켜져 있다. 그 자리를 또 누르면 화면이 한 점도 바뀌지
+       * 않고, 그러면 `w360-picked` 가 `w360-experience` 와 바이트까지 같은
+       * 그림으로 저장된다(같은 그림을 거르는 줄이 그것을 잡는다). 켜져
+       * 있는 칸이 아닌 보기를 고른다: **재는 것은 고른 상태가 화면에서
+       * 또렷한가**이고 어느 보기든 그 묶음의 보기다.
+       */
+      const radios = row.locator('input[type="radio"]');
+      const n = await radios.count();
+      const already = await radios.evaluateAll((els) =>
+        els.findIndex((e) => (e as HTMLInputElement).checked));
+      /* **보기 차례로 세지 않고 라디오 차례로 센다.** 한 묶음의 `label` 에는
+         보기 아닌 것이 섞일 수 있어 `label` 몇 번째로 집으면 라디오 몇 번째와
+         어긋난다. 실제로 어긋나서 이미 고른 칸을 다시 눌렀다 */
+      const want = n > 1 ? (already + 1) % n : 0;
+      await radios.nth(want).evaluate((el) => (el as HTMLInputElement).click())
+        .catch(() => undefined);
       await q.waitForTimeout(400);
       const on = await q.locator("label.qs-opt.is-on").count();
       ok(`w${w} 고른 보기가 화면에서 또렷하다`, on > 0, `${on}개`);

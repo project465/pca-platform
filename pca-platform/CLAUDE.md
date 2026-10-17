@@ -10510,3 +10510,43 @@ UI_BASE=http://127.0.0.1:3100 npm run -s pcu:cli                  # CLI 의존 0
 정책이 `app.careermatri.com:443` 을 막아 운영 배포본을 밖에서 한 번도 열지
 못했다. 다음 구현 우선순위는 첫 화면과 권한 화면과 옛 검사 화면 다섯의
 거취이고, **이 회차에서는 하나도 만들지 않았다.**
+
+**학생 화면을 Loop 로 돌린다. 기준선 여섯 Core 를 찍어 올렸다.** (2026-10-17)
+
+학생용 제품을 대형 일괄 수정으로 끝내지 않는다. 화면을 제출하고, 사람이 읽어
+PASS 또는 FAIL 을 적고, **FAIL 이 적힌 화면만** 고쳐 같은 화면을 다시
+제출한다. PASS 가 적힌 화면은 regression 이 없는 한 건드리지 않는다. 절차와
+Gate 여덟과 Human Review 기준은 `docs/metri/SCREENSHOT_REVIEW_LOOP.md`.
+
+**제품 코드를 한 줄도 고치지 않았다.** `src/` 와 `sites/` 와
+`assessment/` 와 `db/` 의 diff 가 0줄이고 측정 동결이 **기록을 다시 적지 않은
+채로** 통과하며 학생 공개 상태를 한 칸도 바꾸지 않았다.
+
+**이 Loop 에서 여덟 Gate 가 전부 `UNVERIFIED` 다.** 앞 회차의 Gate 검수는 이
+Loop 가 아니고, 그 판정을 여기로 옮겨 적지 않는다. 상태는 `PASS` 와 `FAIL` 과
+`UNVERIFIED` 셋만 쓴다: `거의 마지막` 과 `Final` 과 `Ready 에 가까움` 은
+쓰지 않는다.
+
+**근거가 있는 응시로 찍는다.** 보기를 흔들어 고르면 경험이 거의 없는 응답이
+되고 그 결과지는 `아직 없습니다` 로 찬다. 그 그림으로는 상품성을 가릴 수 없다.
+검사 화면은 그대로 눌러서 찍고 남은 문항은 사람 셋의 규칙으로 채운다.
+
+**이미 고른 칸을 다시 눌러 같은 그림을 두 이름으로 저장하고 있었다.** 고른
+상태를 찍는 자리가 `label` 몇 번째로 집어서 라디오 차례와 어긋났고, 그래서
+켜져 있는 칸을 또 눌러 화면이 한 점도 바뀌지 않았다. 같은 그림을 거르는 줄이
+그것을 잡았다. 집는 자리를 라디오 차례로 바꿨다: 지금 켜져 있는 칸의 다음
+보기를 고른다.
+
+```bash
+V3_PREVIEW_OPEN='*' V3_CAMPUS_FIXTURE=scripts/fixtures/campus-zztest.json \
+  bash scripts/stage-serve.sh 3100
+UI_BASE=http://127.0.0.1:3100 V3_PREVIEW_OPEN='*' PERSON=C \
+  CORE=BIZ_CORE_V1 LEAF=PCU26_BIZ \
+  OUT=docs/metri/shots/review-loop/r1/BIZ npx tsx scripts/pcu-gold-shots.ts
+```
+
+**아직 아닌 것.** 여덟 Gate 가 전부 `UNVERIFIED` 다. 네트워크 정책이
+`app.careermatri.com:443` 을 막아 운영 배포본을 밖에서 열지 못했고
+`PRODUCTION UNVERIFIED` 와 `PCU CANARY BLOCKED` 가 그대로다. ChatGPT
+Reference 화면이 첨부되지 않아 `REFERENCE UNAVAILABLE` 로 적고 Reference
+Match 를 PASS 로 적지 않는다.
