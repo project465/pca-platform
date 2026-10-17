@@ -1269,45 +1269,31 @@ export default async function V3Result({
             : null}
         </section>
 
-        {/* ══ 2. 지금, 이렇게 활용해보세요 — 카드 셋 ══
-            **짧은 글을 여러 조각으로 나눠 담는다.** 한 카드가 긴 설명 한
-            덩이가 되면 읽히지 않고, 칸만 크고 담긴 것이 없으면 덜 만든
-            화면으로 보인다. 그래서 칸마다 머리 한 줄 · 작은 목록 · 칩 ·
-            띠 가운데 둘셋을 섞어 든다 */}
+        {/* ══ 2. 지금, 이렇게 활용해보세요 ══
+            **같은 크기의 파스텔 카드 셋을 늘어놓지 않는다.** 셋이 같은
+            무게로 서면 읽는 사람이 셋을 다 읽고 나서 무엇이 먼저인지
+            스스로 정해야 하고, 그 꼴이 곧 대시보드다. 차례는 셋이다:
+            ① 내가 해본 경험(글 중심) ② 지금 할 일(이 절에서 **면을 가진
+            유일한 자리**) ③ 남긴 근거와 더 채울 부분(작은 보조 정보).
+            색도 셋으로 가르지 않는다 — hero 와 같은 말(흰 면 · 찬 회색 ·
+            navy · muted cyan)만 쓴다 */}
         <h2 className="rs-band">지금, 이렇게 활용해보세요</h2>
         <section className="rs-use">
+          {/* ① 내가 해본 경험. **면도 테도 없다**: 글이 먼저 읽힌다 */}
           <article className="rs-card is-did">
-            <p className="rs-card-l"><i className="rs-ic"><Ic name="note" /></i>내가 해본 경험</p>
-            {cardSay || !left.length
-              ? <p className="rs-card-h">{cardSay || openLine}</p> : null}
-            {left.length ? (<>
-              <p className="rs-card-s">남아 있는 결과물</p>
-              <ul className="rs-files">
-                {left.slice(0, 3).map((x) => (
-                  <li key={x}><i aria-hidden="true"><Ic name="file" /></i>{x}</li>
-                ))}
-              </ul>
-            </>) : null}
-          </article>
-
-          <article className="rs-card is-use">
-            <p className="rs-card-l"><i className="rs-ic"><Ic name="spark" /></i>이 경험에서 쓸 수 있는 것</p>
-            {useChips.length ? (<>
-              {/* 띠 한 줄이 **왜 이 역량으로 볼 수 있는지**를 말한다 */}
-              {useWhy ? (
-                <p className="rs-strip"><i aria-hidden="true"><Ic name="check" /></i>{useWhy}</p>
-              ) : null}
+            <p className="rs-card-l">내가 해본 경험</p>
+            <p className="rs-card-h">{cardSay || openLine}</p>
+            {useWhy ? <p className="rs-card-p">{useWhy}</p> : null}
+            {useChips.length ? (
               <ul className="rs-chips">
                 {useChips.map((x) => <li key={x}>{x}</li>)}
               </ul>
-              <p className="rs-card-p">자기소개서에서 이렇게 연결해 말하면 돼요.</p>
-            </>) : (
-              <p className="rs-card-p">직접 정한 기준을 적어두면 여기가 채워져요.</p>
-            )}
+            ) : null}
           </article>
 
+          {/* ② 지금 할 일. 이 절에서 **면과 테를 가진 자리는 여기 하나**다 */}
           <article className="rs-card is-next">
-            <p className="rs-card-l"><i className="rs-ic"><Ic name="list" /></i>지금 다음으로 할 일</p>
+            <p className="rs-card-l"><i className="rs-ic"><Ic name="list" /></i>지금 할 일</p>
             <p className="rs-card-h">{doHead}</p>
             {doSteps.length ? (
               /* **무엇을 적을지 바로 보인다.** 긴 설명 대신 짧은 목록이다 */
@@ -1325,6 +1311,27 @@ export default async function V3Result({
             {doWhy ? <p className="rs-outcome-print">{doWhy}</p> : null}
             {doSteps.length && doDetail
               ? <p className="rs-outcome-print">{doDetail}</p> : null}
+          </article>
+
+          {/* ③ 남긴 근거 · 더 채울 부분. **작은 보조 정보다**: 금 한 줄
+              아래에 작은 글로 서고, 위의 둘과 무게를 겨루지 않는다 */}
+          <article className="rs-card is-use">
+            <div className="rs-sup">
+              <p className="rs-card-s">남긴 근거</p>
+              {left.length ? (
+                <ul className="rs-files">
+                  {left.slice(0, 3).map((x) => <li key={x}>{x}</li>)}
+                </ul>
+              ) : (
+                <p className="rs-card-p">남은 결과물을 적어두면 여기가 채워져요.</p>
+              )}
+            </div>
+            <div className="rs-sup">
+              <p className="rs-card-s">더 채울 부분</p>
+              <p className="rs-card-p">
+                {lackNeed || "직접 정한 기준을 적어두면 여기가 채워져요."}
+              </p>
+            </div>
           </article>
         </section>
 
@@ -1348,9 +1355,8 @@ export default async function V3Result({
               </article>
             ))}
           </section>
-          {/* 아직 채울 곳 한 줄. **모자람으로 열지 않는다**: 무엇을 적으면
-              되는지까지 한 문장이다 */}
-          {lackNeed ? <p className="rs-paths-note">{lackNeed}</p> : null}
+          {/* 아직 채울 곳 한 줄은 **위의 `더 채울 부분` 이 든다.** 한
+              화면에 같은 문장을 두 번 세우지 않는다 */}
         </>) : null}
 
         {/* ══ 4. 더 알아보고 싶은 정보 ══
