@@ -30,9 +30,7 @@ import {
 } from "@/lib/me-v3/region";
 import { core as coreEntry } from "@/lib/me-v3/core-registry";
 import { profileOf } from "@/lib/me-v3/platform";
-import { chainFor } from "@/lib/me-v3/result/chains";
 import { nextStepKo, sayKo, thingKo } from "@/lib/me-v3/result/say";
-import { withJosa } from "@/lib/me-v3/result/josa";
 import { resultMeta } from "@/lib/me-v3/result/meta";
 import { leadFirst, specView } from "@/lib/me-v3/result/spec-view";
 import { participantOf, savedActions } from "@/lib/me-v3/pilot/store";
@@ -40,12 +38,13 @@ import { takeActionsFromResult } from "@/app/me/next/actions";
 import {
   ActionRoadmap, ChartNote, EvidenceMatrix, Radar, StageBars,
 } from "./charts";
-import { HeroVisual, hasHeroAsset, Ic, type IcName } from "./art";
+import { HeroVisual, hasHeroAsset, Ic } from "./art";
 import ResultNav from "./result-nav";
 import "../../result.css";
 import { barRows, canRadar } from "@/lib/me-v3/result/chart-data";
 import Detail from "./detail";
 import Disclose from "./disclose";
+import SecondStory from "./second";
 import Fold from "./fold";
 import SaveAction from "./save";
 import Track from "./track";
@@ -532,11 +531,19 @@ function Plan(
                   a.code === "EXPLORE_BROADLY" ? where : undefined);
                 const note = t.note && t.note !== last ? t.note : "";
                 if (t.note) last = t.note;
+                /* **왼쪽 칸이 이미 적은 것을 문장이 다시 적지 않는다**
+                   (R17 §5·§6). 할 일의 첫 마디가 `최근 ○○ 과제 하나를
+                   골라보세요.` 라, 영역 이름이 한 줄에 두 번 서고 네 줄이
+                   같은 마디로 열려 **기계가 찍어 낸 표**로 읽힌다. 그
+                   마디는 절 머리에 한 번만 적고 줄은 행동부터 연다.
+                   **문장을 고치지 않는다**: `actionKo` 가 내놓는 값은
+                   그대로이고 이 자리에서 앞 마디만 덜어 읽는다 */
+                const doText = t.do.replace(/^최근 .{1,40}? 과제 하나를 골라보세요\.\s*/, "");
                 return (
                   <li key={a.id} data-action-id={a.id}>
                     <span>{names.join(" · ")}</span>
                     <div className="rs-doit">
-                      <b>{t.do}</b>
+                      <b>{doText}</b>
                       {note ? <i>{note}</i> : null}
                     </div>
                     {saved ? same.map((x) => (
@@ -934,6 +941,24 @@ export default async function V3Result({
   const evAlso = chains[1] ? evidenceStoryKo(
     core, chains[1].code, chains[1], "second",
     domainName(core, chains[1].code)) : null;
+  /*
+   * **첫 화면의 큰 글과 근거 절의 큰 글이 같은 문장이면 안 된다**(R17 §3).
+   *
+   * 둘 다 `focus[0].decided` 에서 오므로 말끝만 다른 같은 문장이 한
+   * 쪽에서 두 번 선다(`…골랐어요.` / `…골랐습니다`). 1,500px 떨어져
+   * 있어 눈에 잘 안 띄지만, 읽는 사람은 근거 절에서 **새로 읽을 것이
+   * 없다**고 느낀다.
+   *
+   * 같으면 근거 절이 **그 사람이 고른 다른 문장**(`decision`)을 큰 글로
+   * 올리고 겹친 쪽을 아래 줄로 내린다. **판정도 자료도 바뀌지 않는다**:
+   * 둘 다 `EvidenceStory` 가 이미 들고 있는 값이고 자리만 바뀐다.
+   */
+  const stem = (t: string) => t
+    .replace(/[.。]\s*$/, "").replace(/(습니다|어요|아요|였다|했다|다)$/, "").trim();
+  const evOpen = (evLead && evLead.decision
+    && stem(evLead.action) === stem(openLine))
+    ? { ...evLead, action: evLead.decision, decision: evLead.action }
+    : evLead;
   /* 공식 Hero 그림이 들어와 있는가. 없으면 글이 hero 폭을 다 쓴다 */
   const heroArt = hasHeroAsset();
   /*
@@ -965,28 +990,6 @@ export default async function V3Result({
      할 수 있는가**다. 말끝도 윗줄과 갈라 리듬을 만든다(Gate §4) */
   const useWhy = useAxes.length
     ? `그 과정에서 ${AXIS_DID_KO[useAxes[0].axis]} 경험도 있어요.` : "";
-  /*
-   * `이런 쪽과 이어져요` 세 칸.
-   *
-   * **새로 순위를 만들지 않는다**: 결과 모델이 적은 `focus` 차례 그대로이고,
-   * 한 줄 설명은 그 Core 사전의 **먼저 정하는 것**(`chainFor` 둘째 토막)이다 */
-  const PATH_IC: IcName[] = ["brief", "chart", "hands"];
-  const pathCards = (focus.length ? focus : tried).slice(0, 3).map((d, i) => {
-    /* 토막만 세우면 `하지 않을 것과 먼저 할 것` 처럼 끊긴 말이 된다.
-       **낱말을 더하지 않고** 한 마디로 문장을 닫는다 */
-    const first = chainFor(core, d.code)[1] ?? "";
-    /* **왜 이 경험과 이어지는가**는 그 영역에서 확인된 축이 말한다.
-       태그도 같은 축이라 둘이 서로를 받친다 */
-    const on = d.axes.filter((a) => a.state === "CONFIRMED" || a.state === "OWNED");
-    return {
-      code: d.code,
-      icon: PATH_IC[i] ?? "brief",
-      name: domainName(core, d.code),
-      why: on.length ? `${AXIS_DID_KO[on[0].axis]} 경험과 이어져요.` : "",
-      what: first ? `${withJosa(first, "이가")} 먼저인 쪽이에요.` : "",
-      tags: [...new Set(on.map((a) => AXIS_KO[a.axis]))].slice(0, 3),
-    };
-  });
   const lackBy = new Map<string, Axis[]>();
   for (const r of packLack?.requested.slice(0, 2) ?? []) {
     const d = domainName(core, r.domain);
@@ -1304,33 +1307,36 @@ export default async function V3Result({
             : null}
         </section>
 
-        {/* ══ 2. 지금, 이렇게 활용해보세요 ══
-            **같은 크기의 파스텔 카드 셋을 늘어놓지 않는다.** 셋이 같은
-            무게로 서면 읽는 사람이 셋을 다 읽고 나서 무엇이 먼저인지
-            스스로 정해야 하고, 그 꼴이 곧 대시보드다. 차례는 셋이다:
-            ① 내가 해본 경험(글 중심) ② 지금 할 일(이 절에서 **면을 가진
-            유일한 자리**) ③ 남긴 근거와 더 채울 부분(작은 보조 정보).
-            색도 셋으로 가르지 않는다 — hero 와 같은 말(흰 면 · 찬 회색 ·
-            navy · muted cyan)만 쓴다 */}
-        <h2 className="rs-band">지금, 이렇게 활용해보세요</h2>
+        {/* ══ 2. 지금 ══
+            **상자를 먼저 집지 않는다**(R17 §1). 전에는 이 자리가 흰 카드
+            셋이었고 그중 하나가 연한 파란 둥근 면이었다. 그 꼴이 곧
+            `AI 가 정리해 준 카드`다. 지금 서는 것은 셋이다:
+            ① 테도 면도 없는 큰 글(해본 일) ② **이 화면에서 면을 가진
+            유일한 자리**(지금 할 일) ③ 오른쪽으로 들인 작은 주석.
+            남긴 결과물은 ① 아래의 **가로 object rail** 이라 라벨·값 짝이
+            되풀이되지 않는다 */}
+        <p className="rs-eyebrow">지금</p>
         <section className="rs-use">
-          {/* ① 내가 해본 경험. **면도 테도 없다**: 글이 먼저 읽힌다 */}
+          {/* ① 해본 일. 큰 글 하나가 이 자리의 전부다 */}
           <article className="rs-card is-did">
-            <p className="rs-card-l">내가 해본 경험</p>
+            <p className="rs-card-l">해본 일</p>
             <p className="rs-card-h">{cardSay || openLine}</p>
             {useWhy ? <p className="rs-card-p">{useWhy}</p> : null}
-            {/* **축 이름을 칩으로 깔지 않는다**(Gate §5). `직접 판단 ·
-                산출물 · 문제 정의` 는 우리 쪽 분류이고, hero 의 영역 태그
-                바로 아래에 또 한 줄이 서면 이 화면의 주인공이 학생의
-                경험이 아니라 taxonomy 가 된다. 같은 내용은 윗줄이 말로
-                들고, 축마다의 상태는 아래 열두 영역 절이 그대로 든다 */}
+            {/* **남긴 결과물은 목록이 아니라 object 다**(R17 §4). 세로로
+                쌓으면 `라벨 · 값` 짝이 한 번 더 서고, 가로로 놓으면 손에
+                쥔 것으로 읽힌다 */}
+            {left.length ? (
+              <ul className="rs-rail">
+                {left.slice(0, 3).map((x) => <li key={x}>{thingKo(x)}</li>)}
+              </ul>
+            ) : null}
           </article>
 
-          {/* ② 지금 할 일. 이 절에서 **면과 테를 가진 자리는 여기 하나**다.
-              담는 것은 셋이다: 어떤 경험을 가져올지 · 무엇을 적을지 ·
-              적어 두면 무엇이 남는지(Gate §6) */}
+          {/* ② 지금 할 일. **이 화면의 단 하나의 강한 색면**이고 둥글기도
+              여기만 다르다(R17 §1·§8). 담는 것은 셋이다: 어떤 경험을
+              가져올지 · 무엇을 적을지 · 적어 두면 무엇이 남는지 */}
           <article className="rs-card is-next">
-            <p className="rs-card-l"><i className="rs-ic"><Ic name="list" /></i>지금 할 일</p>
+            <p className="rs-card-l">지금 할 일</p>
             {doSay.length ? (<>
               <p className="rs-card-h">{doSay[0]}</p>
               {doSay.slice(1).map((x) => <p className="rs-card-p" key={x}>{x}</p>)}
@@ -1341,102 +1347,18 @@ export default async function V3Result({
             {doWhy ? <p className="rs-gain">{doWhy}</p> : null}
             {/* **단추의 말이 약속한 일을 그 자리에서 한다**(규격 §16) */}
             <form action={takeActionsFromResult}>
-              <button className="rs-go" type="submit">
+              <button className="rs-take" type="submit">
                 지금 할 일에 담아두기<Ic name="pen" />
               </button>
             </form>
-            {/* **세부 차례를 종이에 한 번 더 적지 않는다.** 아래 `다음에
-                할 일` 절이 그 차례를 그대로 들고, 여기 또 적으면 같은 줄이
-                한 종이에 두 번 선다 */}
           </article>
 
-          {/* ③ 남긴 근거 · 더 채울 부분. **작은 보조 정보다**: 금 한 줄
-              아래에 작은 글로 서고, 위의 둘과 무게를 겨루지 않는다 */}
-          <article className="rs-card is-use">
-            <div className="rs-sup">
-              <p className="rs-card-s">남긴 근거</p>
-              {left.length ? (
-                <ul className="rs-files">
-                  {left.slice(0, 3).map((x) => <li key={x}>{thingKo(x)}</li>)}
-                </ul>
-              ) : (
-                <p className="rs-card-p">남은 결과물을 적어두면 여기가 채워져요.</p>
-              )}
-            </div>
-            <div className="rs-sup">
-              <p className="rs-card-s">더 채울 부분</p>
-              {/* **모자람을 적지 않는다**(Gate §8). 같은 사실을 다음에 할
-                  일로 적는다. 판정은 그대로이고 적는 꼴만 바뀐다 */}
-              <p className="rs-card-p">
-                {nextStepKo(lackNeed)
-                  || "다음 과제에서는 직접 정한 기준을 한 줄만 적어두면 좋아요."}
-              </p>
-            </div>
-          </article>
-        </section>
-
-        {/* ══ 3. 이런 직무와 잘 이어져요 ══
-            직무명과 한 줄로 끝내지 않는다: 아이콘 · 이름 · **왜 이 경험과
-            이어지는지** · 그 쪽이 먼저 정하는 것 · 확인된 축 태그다 */}
-        {pathCards.length ? (<>
-          <h2 className="rs-band">이런 직무와 잘 이어져요</h2>
-          <section className="rs-paths">
-            {pathCards.map((c, i) => (
-              <article key={c.code} className={`rs-path p${i + 1}`}>
-                <span className="rs-path-ic" aria-hidden="true"><Ic name={c.icon} /></span>
-                <h3>{c.name}</h3>
-                {c.why ? <p className="rs-path-why">{c.why}</p> : null}
-                {c.what ? <p>{c.what}</p> : null}
-                {c.tags.length ? (
-                  <ul className="rs-path-tags">
-                    {c.tags.map((t) => <li key={t}>{t}</li>)}
-                  </ul>
-                ) : null}
-              </article>
-            ))}
-          </section>
-          {/* 아직 채울 곳 한 줄은 **위의 `더 채울 부분` 이 든다.** 한
-              화면에 같은 문장을 두 번 세우지 않는다 */}
-        </>) : null}
-
-        {/* ══ 4. 더 알아보고 싶은 정보 ══
-            **기능 이름이 아니라 눌렀을 때 얻는 것을 적는다.** 그리고 여기
-            서는 넷은 전부 지금 열려 있는 자리다 */}
-        <h2 className="rs-band">더 알아보고 싶은 정보</h2>
-        <section className="rs-explore">
-          <Link className="rs-ex-a m1" href="/me/experience/new">
-            <span className="rs-ex-ic" aria-hidden="true"><Ic name="plus" /></span>
-            <b>경험 더 적어보기</b>
-            <i>내 결과를 더 구체적으로 만들어요</i>
-          </Link>
-          <Link className="rs-ex-a m2" href="/me/next">
-            <span className="rs-ex-ic" aria-hidden="true"><Ic name="list" /></span>
-            <b>할 일 이어서 하기</b>
-            <i>오늘 하나만 끝내도 기록이 남아요</i>
-          </Link>
-          <Link className="rs-ex-a m3" href="/me/explore">
-            <span className="rs-ex-ic" aria-hidden="true"><Ic name="compass" /></span>
-            <b>산업·직무 둘러보기</b>
-            <i>내 경험이 어디에서 쓰이는지 확인해요</i>
-          </Link>
-          {/* **종이 길은 `Link` 로 걸지 않는다.** Next 가 미리 불러오면
-              머리 없는 브라우저가 떠서 종이가 한 벌씩 만들어진다 */}
-          <a className="rs-ex-a m4" href={`/v3/${attemptId}/result/pdf`}>
-            <span className="rs-ex-ic" aria-hidden="true"><Ic name="file" /></span>
-            <b>PDF 로 저장하기</b>
-            <i>상담이나 포트폴리오 준비에 써요</i>
-          </a>
-        </section>
-
-        <section className="rs-banner">
-          <div>
-            <p className="rs-banner-l">{meta.school ?? "CareerMatri"}</p>
-            <p className="rs-banner-h">결과는 저장돼요. 언제든 다시 열어보세요.</p>
-            <p className="rs-banner-p">
-              경험을 더 적으면 지금 상태가 다시 계산돼요.
-            </p>
-          </div>
-          <Link className="rs-banner-a" href="/me">내 CareerMatri 열기</Link>
+          {/* ③ 다음 한 줄. **오른쪽으로 들인 작은 주석이다**(R17 §4).
+              왼쪽 일변도를 끊고, 위의 둘과 무게를 겨루지 않는다 */}
+          <p className="rs-aside">
+            {nextStepKo(lackNeed)
+              || "다음 과제에서는 직접 정한 기준을 한 줄만 적어두면 좋아요."}
+          </p>
         </section>
 
         {/* 산업·직무 한 줄은 **종이에만** 선다 */}
@@ -1504,7 +1426,7 @@ export default async function V3Result({
                 디자인 시스템이 쓰고(`src/app/me/platform.css`) `v3:workspace`
                 가 그 이름이 CSS 에 있는지 센다. 이 저장소에서 이름이 겹친
                 것이 열세 번 버그였다 */}
-            {evLead ? (
+            {evOpen ? (
               <div className="rs-ev3">
                 <header className="rs-ev3-intro">
                   {/* **줄바꿈 앞뒤에 사이띄개를 둔다.** 좁은 화면에서는
@@ -1513,28 +1435,30 @@ export default async function V3Result({
                   <h3>
                     지원서에 쓸 만한 경험은{" "}<br />이미 여기 있습니다
                   </h3>
-                  <p>
-                    검사에서 고른 답 가운데, 실제로 해본 일이 분명한 경험부터
-                    꺼냈습니다
-                  </p>
+                  {/* **고르는 방법을 설명하지 않는다**(R17 §4).
+                      `검사에서 고른 답 가운데, 실제로 해본 일이 분명한
+                      경험부터 꺼냈습니다` 는 우리가 무엇을 했는지를 적은
+                      줄이고, 읽는 사람이 알고 싶은 것은 **그래서 무엇을
+                      쓰라는 것인가**다. 쓰는 자리를 적는다 */}
+                  <p>지원서 한 문단과 면접 한 질문으로 바로 간다</p>
                 </header>
 
                 <article className="rs-ev3-story is-primary">
                   <p className="rs-ev3-meta">
-                    <span>{evLead.domain}</span>
+                    <span>{evOpen.domain}</span>
                     <i>먼저 써볼 경험</i>
                   </p>
                   <div className="rs-ev3-main">
                     <div className="rs-ev3-narr">
-                      <h4>{evLead.action}</h4>
-                      {evLead.decision ? (
-                        <p className="rs-ev3-dec">{evLead.decision}</p>
+                      <h4>{evOpen.action}</h4>
+                      {evOpen.decision ? (
+                        <p className="rs-ev3-dec">{evOpen.decision}</p>
                       ) : null}
-                      {evLead.outputs.length ? (
+                      {evOpen.outputs.length ? (
                         <div className="rs-ev3-outs">
                           <span>남아 있는 결과</span>
                           <ul>
-                            {evLead.outputs.map((t) => <li key={t}>{t}</li>)}
+                            {evOpen.outputs.map((t) => <li key={t}>{t}</li>)}
                           </ul>
                         </div>
                       ) : null}
@@ -1544,19 +1468,18 @@ export default async function V3Result({
                     <aside className="rs-ev3-use">
                       <div className="rs-ev3-ub">
                         <span>지원서</span>
-                        <p>{evLead.application}</p>
+                        <p>{evOpen.application}</p>
                       </div>
                       <div className="rs-ev3-ub is-interview">
                         <span>면접에서 이어질 질문</span>
-                        <blockquote>{evLead.interview}</blockquote>
+                        <blockquote>{evOpen.interview}</blockquote>
                       </div>
                     </aside>
                   </div>
                 </article>
 
                 {evAlso ? (
-                  <>
-                    <div className="rs-ev3-tr"><span>그리고 하나 더</span></div>
+                  <SecondStory name={evAlso.domain}>
                     <article className="rs-ev3-story is-second">
                       <div className="rs-ev3-sh">
                         <div>
@@ -1586,7 +1509,7 @@ export default async function V3Result({
                         </div>
                       </div>
                     </article>
-                  </>
+                  </SecondStory>
                 ) : null}
 
                 {restReady.length ? (
@@ -1776,10 +1699,14 @@ export default async function V3Result({
                * 한 칸으로 묶고 영역 이름을 나란히 적는다: 정보는 그대로다.
                */
               const MARK = "\u0000";
+              /* **이 절에 적지 않는 문장을 묶는 열쇠에 넣지 않는다**(R17 §5).
+                 전에는 열쇠에 할 일 문장이 들어 있었다. 그 문장은 영역마다
+                 결과물 이름이 달라 **같은 종류의 빈자리가 끝내 묶이지
+                 않았고**, 그래서 글자까지 같은 칸이 넷 섰다. 이 절이 적는
+                 것은 제목과 까닭까지이므로 묶는 열쇠도 그 둘이다 */
               const key = (g: Gap) => {
                 const k = gapKo(g, MARK);
-                const act = model.actions.find((x) => x.id === g.action_id);
-                return `${k.title}|${k.why}|${act ? actionKo(act, MARK, stage).do : ""}`;
+                return `${k.title}|${k.why}`;
               };
               const merged: { key: string; list: Gap[] }[] = [];
               for (const g of model.gaps.slice(0, 8)) {
@@ -1886,8 +1813,11 @@ export default async function V3Result({
             <p className="rs-q">지금 무엇부터 하면 되는가</p>
           <h2>다음에 할 일</h2>
           {model.actions.length ? (<>
+            {/* **그 마디를 여기서 한 번만 적는다**(R17 §6). 아래 줄마다
+                되풀이되던 `최근 ○○ 과제 하나를 골라보세요` 가 이 자리로
+                올라왔다 */}
             <p className="rs-note">
-              그 영역에서 실제로 할 수 있는 한 걸음으로 적었습니다.
+              최근 과제 하나를 골라 그 영역의 줄대로 적어 두세요.
             </p>
             {/* **새 Action 을 만들지 않는다**(§13). 네 칸이 전부 위
                 목록과 같은 할 일에서 오고, 다른 것은 **언제 할 수 있는
@@ -1960,30 +1890,31 @@ export default async function V3Result({
             친 글자 목록으로만 남고, 마지막 쪽을 한 장 더 늘린다. 종이가
             끝나는 자리는 해석 기준이다 */}
         <section className="rs-sect rs-webonly" id="next">
-          <h2>이 다음에</h2>
-          <div className="rs-cta">
-            <p>
-              이 결과는 그날의 기록으로 굳어 있습니다. 여기서부터는 경험을
-              더하면서 현재 상태를 이어서 보실 수 있습니다.
+          {/* **닫는 자리가 이 쪽의 두 번째이자 마지막 색면이다**(R17 §1).
+              전에는 여기 흰 면 위의 글 묶음이 서고, 쪽 위쪽에 같은 말을
+              하는 navy 띠가 따로 있었다. 둘을 하나로 합쳐 **끝나는 자리
+              하나**로 둔다. 거드는 길은 밑줄 친 글줄이라 주된 단추와
+              무게를 겨루지 않는다 */}
+          <div className="rs-end">
+            <p className="rs-end-l">{meta.school ?? "CareerMatri"}</p>
+            <h2 className="rs-end-h">다음 한 줄은 내 CareerMatri에서</h2>
+            <p className="rs-end-p">
+              이 결과는 그날의 기록으로 굳어 있습니다. 경험을 더하면 지금
+              상태가 이어서 바뀝니다.
             </p>
-            <Link className="rs-cta-main" href="/me">내 CareerMatri에서 계속하기</Link>
-            {/* **거드는 길은 줄로 적는다.** 테를 두르고 설명을 붙이면 그
-                순간 주된 길과 같은 무게가 된다. 담긴 자리는 그대로고
-                무게만 내려간다 */}
-            <ul className="rs-cta-sub">
+            <Link className="rs-end-a" href="/me">내 CareerMatri 열기</Link>
+            <ul className="rs-end-sub">
               <li><Link href="/me/state">현재 상태</Link></li>
               <li><Link href="/me/experience/new">경험 추가</Link></li>
               <li><Link href="/me/next">지금 할 일</Link></li>
               <li><Link href="/me/explore">산업·직무</Link></li>
               {/* **종이 길은 `Link` 로 걸지 않는다.** Next 가 화면에 들어온
                   `Link` 를 미리 불러오는데, 그 길은 머리 없는 브라우저를
-                  띄워 종이를 만드는 자리다. 아래까지 내려 읽기만 해도
-                  종이가 한 벌씩 만들어졌다 */}
+                  띄워 종이를 만드는 자리다 */}
               <li><a href={`/v3/${attemptId}/result/pdf`}>PDF 저장</a></li>
             </ul>
-            {/* **준비 중인 것을 카드로 세우지 않는다**(규격 §7). 테를
-                두르면 그 순간 있는 기능처럼 보인다 */}
-            <p className="rs-cta-note">CareerMatri Track 은 준비 중입니다.</p>
+            {/* **준비 중인 것을 카드로 세우지 않는다**(규격 §7) */}
+            <p className="rs-end-note">CareerMatri Track 은 준비 중입니다.</p>
           </div>
         </section>
 

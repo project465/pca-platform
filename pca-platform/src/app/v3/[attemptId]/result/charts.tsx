@@ -263,22 +263,26 @@ export function ActionRoadmap(
     ["남길 근거", r.leave, "그 경험에서 남겨 둘 것입니다"],
     ["지원서·면접", r.use.map(name), "지원서에서 꺼내 쓸 수 있는 영역입니다"],
   ];
+  /* **번호 붙은 카드 넷을 세우지 않는다**(R17 §5·§7). 테를 두른 같은
+     크기의 칸이 넷 서고 그 안에 동그란 번호와 제목과 목록과 설명이
+     되풀이되면, 읽는 사람이 받는 것은 차례가 아니라 **표**다. 지금 서는
+     것은 금 한 줄 위를 지나가는 **흐름**이다: 상자도 번호도 없고 단계
+     이름과 그 자리의 영역 이름만 선다 */
   return (
-    <ol className="pv-road">
-      {steps.map(([t, xs, sub], i) => (
+    <ol className="pv-flow">
+      {steps.map(([t, xs, sub]) => (
         <li key={t}>
-          <span className="pv-road-n">{i + 1}</span>
           <h4>{t}</h4>
           {xs.length ? (
-            <ul>{xs.slice(0, 3).map((x) => <li key={x}>{x}</li>)}</ul>
+            <p className="pv-flow-v">{xs.slice(0, 3).join(" · ")}</p>
           ) : (
-            <p className="pv-road-none">
-              {i === 3
-                ? "지원서에 그대로 옮길 자리는 아직 모이지 않았습니다"
-                : "이 자리에 적을 것이 아직 없습니다"}
+            <p className="pv-flow-none">
+              {t === "지원서·면접"
+                ? "아직 모이지 않았습니다"
+                : "아직 적을 것이 없습니다"}
             </p>
           )}
-          <p className="pv-road-s">{sub}</p>
+          <p className="pv-flow-s">{sub}</p>
         </li>
       ))}
     </ol>

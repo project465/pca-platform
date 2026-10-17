@@ -99,7 +99,7 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
  * **판정도 결과 모델도 한 줄 바뀌지 않았다.** 이 판본이 든 파일은 전부
  * 번역표와 읽는 층이고, 채점과 결과 모델은 이 파일을 읽지 않는다.
  */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.52";
+export const RESULT_COPY_VERSION = "me-v3-result-copy.53";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -323,7 +323,7 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.52";
  * 줄도 바뀌지 않았고 `v3:freeze:measure` 가 기록을 다시 적지 않은 채로
  * 통과한다.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V60";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V61";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX
@@ -964,4 +964,27 @@ export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V60";
  * **판정은 한 줄도 바뀌지 않았다**: 토막이 전부 결과 모델이 이미 들고
  * 있던 `did` · `decided` · `artifacts` · `verifications` 와 영역 사전의
  * 일하는 차례에서 온다. 측정 동결이 기록을 다시 적지 않은 채로 통과한다.
+ */
+
+/**
+ * `ME_V3_RESULT_UI_V61` · `me-v3-result-copy.53` 으로 올린 까닭.
+ *
+ * **상자를 먼저 집던 버릇을 쪽 전체에서 걷었다**(R17). 앞 회차들은 근거
+ * 절 하나를 다시 짰는데, 그 절을 고쳐도 쪽을 이어 내려 읽으면 같은 인상이
+ * 남았다. 까닭이 쪽의 나머지에 있었다: 파스텔 세 칸 · 아이콘 카드 넷 ·
+ * 글자까지 같은 빈자리 카드 넷 · 번호 붙은 할 일 카드 넷 · 알약 벽.
+ *
+ *   버린 것   `.rs-paths`(3열 파스텔) · `.rs-explore`(아이콘 카드 넷) ·
+ *             `.rs-banner`(쪽 가운데의 두 번째 CTA 띠)
+ *   다시 짠 것 `.rs-use`(비대칭 두 단 · 면 하나) · 닫는 자리 `.rs-end` ·
+ *             할 일 차례(`.pv-flow`) · 빈자리 · 묶음 · 칩 · 할 일 표
+ *   접은 것   곁근거 한 벌(`SecondStory`) — 기본 접힘, 종이에서는 펴진다
+ *
+ * **강한 색면이 쪽 전체에 둘이다**: 첫 화면의 `지금 할 일` 과 닫는 자리.
+ * 그 밖은 바탕 위의 글과 금 한 줄이다.
+ *
+ * **판정도 결과 모델도 한 줄 바뀌지 않았다.** 바뀐 파일이 전부 읽는 층과
+ * 화면이고, `v3:freeze:measure` 가 기록을 다시 적지 않은 채로 통과한다.
+ * 문장이 바뀐 자리는 셋뿐이다: 근거 절 들머리 한 줄(우리가 고르는 방법을
+ * 적던 줄), 할 일 절 머리 한 줄, 닫는 자리의 머리와 설명.
  */
