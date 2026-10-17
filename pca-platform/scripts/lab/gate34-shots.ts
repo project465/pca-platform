@@ -169,10 +169,13 @@ async function main(): Promise<void> {
        딸려와 글자가 작아지고, 묻는 것(`한 경험으로 읽히는가`)에 답할 수
        없다 */
     await clipTo(p, "section#evidence h2", ".rs-chain", `${OUT}/gate4-desktop.png`);
-    const card = p.locator("section#evidence .rs-ev-x").first();
-    if (await card.count()) {
-      await card.screenshot({ path: `${OUT}/gate4-desktop-card.png` });
-      mark(`${OUT}/gate4-desktop-card.png`);
+    /* **경험마다 따로 뜬다**(R7 §제출). 둘이 같은 틀의 변형인지는 둘을
+       나란히 놓고 글자가 읽히는 크기로 봐야 가려진다 */
+    const cards = p.locator("section#evidence .rs-ev-x");
+    for (let i = 0; i < Math.min(2, await cards.count()); i += 1) {
+      const f = `${OUT}/gate4-desktop-card${i ? "2" : ""}.png`;
+      await cards.nth(i).screenshot({ path: f });
+      mark(f);
     }
 
     /* ── 390px ── */
@@ -186,10 +189,11 @@ async function main(): Promise<void> {
     await openAll(m);
     await m.waitForTimeout(400);
     await clipTo(m, "section#evidence h2", ".rs-chain", `${OUT}/gate4-mobile.png`);
-    const mcard = m.locator("section#evidence .rs-ev-x").first();
-    if (await mcard.count()) {
-      await mcard.screenshot({ path: `${OUT}/gate4-mobile-card.png` });
-      mark(`${OUT}/gate4-mobile-card.png`);
+    const mcards = m.locator("section#evidence .rs-ev-x");
+    for (let i = 0; i < Math.min(2, await mcards.count()); i += 1) {
+      const f = `${OUT}/gate4-mobile-card${i ? "2" : ""}.png`;
+      await mcards.nth(i).screenshot({ path: f });
+      mark(f);
     }
     console.log(`  응시 ${att} · ${CORE}`);
   } finally {

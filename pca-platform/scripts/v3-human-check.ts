@@ -287,15 +287,30 @@ if (!existsSync(DUMP)) {
      한다. **줄 수를 센 말도 남길 결과물이다**: `근거를 세 줄로 남겨보세요`
      는 무엇이 남는지를 적은 문장인데 `한 줄` 만 세면 그 할 일이 걸린다 */
   const RESULT = /[한두세네다섯여섯\d]+ ?줄|한 쪽|한 문단|한 벌|표|기록|문서|정리본|메모|보고서|계획서|도면|대본|대조표|목록/;
+  /* **할 일이 아닌 줄을 할 일로 세지 않는다.** 둘을 거른다.
+
+     - 마침표가 없는 줄은 **머리말**이다(`지금, 이렇게 활용해보세요`).
+     - 결과지를 다시 여는 안내는 남길 것이 없는 줄이 맞다.
+
+     그리고 할 일 한 줄이 **두 문장으로 나뉘어** 서는 자리가 있다(첫 화면
+     `지금 할 일` 칸). 뒤 문장이 남길 것을 들고 있으므로 **이어지는 줄까지
+     함께 본다**: 한 줄씩 보면 멀쩡한 할 일이 걸린다 */
+  /* **면접에서 할 말은 남길 결과물이 없는 것이 맞다.** `~말해보세요` 는
+     그 자리에서 입으로 하는 말이라 손에 남는 것을 요구할 수 없다 */
+  const NOT_ACTION = /결과는 저장돼요|말해보세요\.$|말하면 좋아요\.$/;
   const vague: string[] = [];
   let acts = 0;
   for (const f of webs) {
-    const lines = readFileSync(`${DUMP}/${f}`, "utf8").split("\n")
-      .map((l) => l.trim())
-      .filter((l) => /보세요\.?$/.test(l) && l.length > 12);
-    for (const l of new Set(lines)) {
+    const all = readFileSync(`${DUMP}/${f}`, "utf8").split("\n").map((l) => l.trim());
+    const seen = new Set<string>();
+    for (let i = 0; i < all.length; i += 1) {
+      const l = all[i];
+      if (!/보세요\.$/.test(l) || l.length <= 12) continue;
+      if (NOT_ACTION.test(l) || seen.has(l)) continue;
+      seen.add(l);
       acts++;
-      if (!RESULT.test(l)) vague.push(`${f.replace(".web.txt", "")} — ${l}`);
+      const next = all.slice(i + 1).find((x) => x.length > 0) ?? "";
+      if (!RESULT.test(`${l} ${next}`)) vague.push(`${f.replace(".web.txt", "")} — ${l}`);
     }
   }
   ok("할 일에 남길 결과물이 적혀 있다", vague.length === 0,

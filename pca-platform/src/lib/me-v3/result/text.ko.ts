@@ -513,21 +513,19 @@ export function keptNoteKo(hasArtifacts: boolean): string {
 }
 
 /**
- * **그 경험을 어디에 어떻게 쓰는가**(R6 §5·§13).
+ * **그 경험을 어디에 어떻게 쓰는가**(R6 §5 · R7 PRIORITY 2·3).
  *
- * 전에는 면접 줄이 두 갈래 고정값이라, 경험이 둘이면 **두 카드의 마지막
- * 줄이 글자까지 같았다.** 같은 문장이 되풀이되면 그 묶음이 한 틀을 복사해
- * 찍은 것으로 읽히고, 이 절이 파는 것(`내 경험을 이렇게 쓴다`)이 사라진다.
+ * 두 가지를 함께 막는다.
  *
- * **지어내지 않는다.** 가져오는 것 셋이 전부 이미 있는 값이다.
+ * - **긴 설명 카드로 읽히지 않게**: 한 자리에 한 문장이고, 바로 위에서
+ *   이름을 적은 것을 문장 안에서 다시 적지 않는다.
+ * - **두 경험이 같은 틀로 보이지 않게**: 경험마다 **문장 골격 자체가**
+ *   다르다. 앞엣것은 `무엇을 어떻게 잡았는지 → 쓰면 돼요`, 뒤엣것은
+ *   `남긴 것을 왜 그렇게 만들었는지 → 적어보세요` 다. 시작도 끝도 갈린다.
  *
- * - 그 영역이 일하는 차례의 **먼저 정하는 것**(`chainFor` 둘째 토막)
- * - 응답에서 고르신 **남아 있는 결과**(`left`)
- * - 그 차례의 **무엇과 견주는가**(`chainFor` 다섯째 토막)
- *
- * 앞의 둘이 지원서 줄을 가르고 셋째가 면접 줄을 가른다. 그래서 경험이
- * 둘이면 **두 줄 다** 달라진다: 영역이 다르면 정하는 것과 견주는 것이
- * 다르고, 남긴 것은 그 사람이 고른 항목이다.
+ * **지어내지 않는다.** 재료 셋이 전부 이미 있는 값이다: 그 영역이 일하는
+ * 차례의 **먼저 정하는 것**(`chainFor` 둘째 토막)과 **무엇과 견주는가**
+ * (다섯째 토막), 그리고 응답에서 고르신 **남아 있는 결과**다.
  */
 function compareStep(core: string, domain: string): string | null {
   /* 다섯째 토막은 `끝난 뒤 달성률 대조` 처럼 **대조** 로 닫는다. 문장에
@@ -540,25 +538,42 @@ function compareStep(core: string, domain: string): string | null {
   return t && t.length <= 14 ? t : null;
 }
 
+/** 경험 자리마다 **다른 골격**을 쓴다. `lead` 가 첫 경험이다 */
+export type UseSlot = "lead" | "second";
+
 export function evidenceUsePartsKo(
-  core: string, domain: string, ev: { decided?: string | null; left: string | null },
+  core: string, domain: string,
+  ev: { decided?: string | null; left: string | null },
+  slot: UseSlot = "lead",
 ): { resume: string; interview: string } {
   const step = chainFor(core, domain)[1] ?? "";
-  const head = step && step.length <= 20
-    ? `${withJosa(step, "을를")} 어떤 기준으로 정했는지`
-    : "그때 무엇을 직접 정했는지";
   const keep = ev.left ? thingKo(ev.left) : null;
-  /* **이름을 두 번 적지 않는다**: 남긴 것이 짧을 때만 문장에 넣고, 길면
-     되짚는 말로 잇는다 */
-  const resume = keep && keep.length <= 18
-    ? `${head} 쓰고, ${withJosa(keep, "을를")} 근거로 붙이면 돼요.`
-    : `${head} 한 문단으로 쓰면 돼요.`;
   const cmp = compareStep(core, domain);
+  if (slot === "lead") {
+    /* **`어떤 기준으로 정했는지` 를 쓰지 않는다**(R7 Template 감지). 그
+       말은 두 경험에서 똑같이 설 수 있는 꼴이고, 한 번 서면 다음 경험이
+       그 틀을 베낀 것으로 읽힌다 */
+    const resume = step && step.length <= 20
+      ? `${step}, 이걸 어떻게 잡았는지부터 쓰면 돼요.`
+      : "무엇을 먼저 하기로 했는지부터 쓰면 돼요.";
+    /* **둘째 경험과 골격이 겹치지 않게 한다**(R7 Template 감지). 저쪽이
+       `~은 어떻게 ~했는지 말해보세요` 라서, 이쪽은 **조건절**로 연다:
+       명사만 바꾼 같은 문장으로 읽히지 않는다 */
+    const interview = cmp
+      ? `${cmp}까지 봤다면 그 얘기부터 꺼내면 좋아요.`
+      : "그 선택을 왜 그렇게 했는지부터 꺼내면 좋아요.";
+    return { resume, interview };
+  }
+  /* 둘째 경험은 **손에 남은 것에서 출발한다.** 앞 경험이 정한 것에서
+     출발했으니 같은 자리에서 또 시작하면 두 묶음이 겹쳐 읽힌다 */
+  const resume = keep && keep.length <= 18
+    ? `${withJosa(keep, "을를")} 왜 그렇게 만들었는지 적어보세요.`
+    : step && step.length <= 20
+      ? `${withJosa(step, "을를")} 어디까지 직접 골랐는지 적어보세요.`
+      : "그때 직접 고른 것을 적어보세요.";
   const interview = cmp
-    ? `${withJosa(cmp, "을를")} 어떻게 봤는지까지 이야기하면 돼요.`
-    : ev.decided
-      ? "그 선택을 왜 그렇게 골랐는지 이야기하면 돼요."
-      : "그때 무엇을 보고 판단했는지 이야기하면 돼요.";
+    ? `${withJosa(cmp, "은는")} 어떻게 확인했는지 말해보세요.`
+    : "그 결과를 어떻게 확인했는지 말해보세요.";
   return { resume, interview };
 }
 
@@ -568,6 +583,31 @@ export function evidenceUseKo(
 ): string {
   const { resume, interview } = evidenceUsePartsKo(core, domain, { left });
   return `지원서에는 ${resume.replace(/ 돼요\.$/, " 돼요")}, 면접에서는 ${interview}`;
+}
+
+/**
+ * 손에 남은 것 한 줄.
+ *
+ * **이름표를 세우지 않는다**(R7 추상 표현 → 행동 표현). `남아 있는
+ * 결과물이 있습니다` 는 우리가 센 것을 적은 말이고, 학생이 듣는 말은
+ * **무엇이 남아 있는가** 다.
+ */
+export function keptLineKo(left: string): string {
+  const t = thingKo(left);
+  return `${withJosa(t, "이가")} 남아 있어요.`;
+}
+
+/**
+ * 직접 정한 것 한 줄.
+ *
+ * `~을 정했어요` 를 그대로 세우면 누가 정했는지가 빠진다. 고르신 축이
+ * **직접 정한 것**이므로 그 말을 문장 안에 세운다. **낱말을 더하는 것은
+ * 이 한 마디뿐이고**, 꼴이 맞지 않는 문장은 그대로 둔다.
+ */
+export function decidedLineKo(clause: string): string {
+  const t = sayKo(clause);
+  const m = /^(.+)([을를])\s정했어요$/.exec(t);
+  return m ? `${m[1]}${m[2] === "을" ? "은" : "는"} 직접 정했어요.` : `${t}.`;
 }
 
 /**

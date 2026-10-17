@@ -21,7 +21,8 @@ import {
   commonKo, domainChainKo, draftKo, gapCellKo, gapKo, gapNeedKo, gapNeedShortKo, gapShortKo,
   actionWhyKo, AXIS_DID_KO, headlineBadgeKo, headlineKo, needSentenceKo,
   pickSentenceKo,
-  evidenceUseKo, evidenceUsePartsKo, keptNoteKo, moreReadyKo, saidKo,
+  evidenceUseKo, evidenceUsePartsKo, keptLineKo, decidedLineKo,
+  keptNoteKo, moreReadyKo, saidKo,
   HORIZON_KO, QUALITY_KO, TIER_NOTE_KO, TRANS_ORDER, TRANS_STEP_KO,
   XFIELD_ORDER, xfieldKo, ZONE_LEAD_KO, ZONE_TITLE_KO,
 } from "@/lib/me-v3/result/text.ko";
@@ -31,7 +32,7 @@ import {
 import { core as coreEntry } from "@/lib/me-v3/core-registry";
 import { profileOf } from "@/lib/me-v3/platform";
 import { chainFor } from "@/lib/me-v3/result/chains";
-import { nextStepKo, thingKo } from "@/lib/me-v3/result/say";
+import { nextStepKo, sayKo, thingKo } from "@/lib/me-v3/result/say";
 import { withJosa } from "@/lib/me-v3/result/josa";
 import { resultMeta } from "@/lib/me-v3/result/meta";
 import { leadFirst, specView } from "@/lib/me-v3/result/spec-view";
@@ -1458,8 +1459,8 @@ export default async function V3Result({
               /* **전부 왼쪽으로만 흐르지 않게 한다**(R6 §7). 들머리 한
                  줄은 가운데에 넓게 서고, 본문은 왼쪽으로 읽힌다 */
               <p className="rs-ev-intro">
-                해 보신 일을 지원서와 면접에서 바로 꺼내 쓸 수 있게
-                정리해 뒀어요.
+                여기 있는 건 전부 직접 하신 일이에요. 지원서 쓸 때
+                여기서 꺼내 쓰면 돼요.
               </p>
             ) : (
               <>
@@ -1468,8 +1469,8 @@ export default async function V3Result({
                     이 줄을 할 일로 보고 결과지 마흔 벌에서 걸었다. 여기서
                     남길 것을 적을 수는 없다: 어느 영역인지가 아직 없다 */}
                 <p className="rs-note">
-                  지금 바로 꺼내 쓸 경험은 아직 없습니다. 아래 &lsquo;다음에 할
-                  일&rsquo;부터 보시면 됩니다.
+                  지금 바로 꺼내 쓸 경험은 아직 없어요. 아래 &lsquo;다음에 할
+                  일&rsquo;부터 보시면 돼요.
                 </p>
                 {/* **그 학과 학생이 낼 수 있는 근거를 적는다**(갈래 계약의
                     `examples.evidence`). 아직 아무것도 확인되지 않은 사람에게
@@ -1478,7 +1479,7 @@ export default async function V3Result({
                     목록이고, 여기서 판정에 넣지 않는다 */}
                 {sv.evidence.length ? (
                   <>
-                    <p className="rs-note">이런 경험이면 여기에 적힙니다.</p>
+                    <p className="rs-note">이런 걸 해보면 여기에 적혀요.</p>
                     <ul className="rs-first">
                       {sv.evidence.slice(0, 3).map((t) => <li key={t}>{t}</li>)}
                     </ul>
@@ -1497,22 +1498,30 @@ export default async function V3Result({
             {chains.length ? (
               <div className="rs-chain">
                 {chains.map((c, i) => {
-                  /* **경험 둘을 같은 틀로 복사하지 않는다**(R6 §6). 자료
-                     구조는 같아도 **짜임은 같을 까닭이 없다**: 첫 경험은
-                     한 일과 직접 정한 것을 한 문장으로 이어 가장 크게
-                     세우고, 둘째 경험은 한 일을 세운 뒤 **남긴 결과를
-                     가운데로 들어** 결이 갈린다. 둘 다 같은 말(흰 면 ·
-                     cool off-white · navy · muted cyan)을 쓴다 */
+                  /* **경험 둘을 같은 틀로 복사하지 않는다**(R6 §6 · R7
+                     PRIORITY 3). 자료 구조는 같아도 **읽는 리듬은 같을
+                     까닭이 없다.**
+
+                       경험 1  한 일 + 직접 정한 것을 한 문장 → 남은 것
+                               한 줄 → 둥근 cyan 면에 쓰는 자리 둘
+                       경험 2  한 일 한 문장 → **남긴 것을 가운데 크게**
+                               → 직접 정한 것 한 줄 → 금 아래 짧은 두 줄
+
+                     문장 골격도 자리마다 다르다(`evidenceUsePartsKo` 의
+                     `slot`): 시작도 끝도 갈려서 명사만 바꾼 같은 문장으로
+                     읽히지 않는다 */
                   const lead = i === 0;
                   const use = c.decided || c.left
-                    ? evidenceUsePartsKo(core, c.code, c) : null;
-                  /* **한 경험이 한 이야기로 읽혀야 한다**(R6 §3·§11). 칸
-                     넷을 같은 꼴로 늘어놓으면 `~적었어요 · ~골랐어요 ·
-                     ~남겼어요` 가 줄마다 되풀이된다. 첫 경험은 `A고, B어요`
-                     로 이어 한 장면으로 읽히게 한다 */
+                    ? evidenceUsePartsKo(core, c.code, c, lead ? "lead" : "second")
+                    : null;
+                  /* **한 경험이 한 이야기로 읽혀야 한다**(R6 §3·§11). 첫
+                     경험은 `A고, B어요` 로 한 장면을 만들고, 둘째 경험은
+                     한 일 한 문장만 세운다. 말끝도 갈라 둔다: 둘 다
+                     `~적었어요` 로 닫히면 한 틀을 찍은 것으로 읽힌다 */
                   const story = lead
                     ? pickSentenceKo([c.did, c.decided].filter(Boolean) as string[])
-                    : c.did ? saidKo(c.did) : c.decided ? saidKo(c.decided) : "";
+                    : c.did ? `${sayKo(c.did, "kept")}.`
+                      : c.decided ? decidedLineKo(c.decided) : "";
                   const keep = c.left ? thingKo(c.left) : null;
                   return (
                   <article key={c.code} className={`rs-ev-x${lead ? " is-lead" : " is-second"}`}>
@@ -1523,35 +1532,29 @@ export default async function V3Result({
                       {lead ? <i>지원서에 먼저 쓸 경험</i> : null}
                     </p>
                     {story ? <p className="rs-ev-story">{story}</p> : null}
-                    {lead ? (<>
-                      {/* 거드는 줄. **상자에 넣지 않는다**(R6 §4·§8):
-                          금 한 줄 아래 작은 이름표와 본문이면 된다 */}
-                      <dl className="rs-ev-rows">
-                        <div>
-                          <dt>남은 결과</dt>
-                          <dd>{keep ?? "아직 없어요. 다음 과제에서 문서 한 장을 남겨 두세요"}</dd>
-                        </div>
-                      </dl>
-                    </>) : (<>
-                      {/* 둘째 경험의 주인공은 **남긴 결과**다. 가운데로
+                    {lead ? (
+                      /* **이름표를 세우지 않는다**(R7). `남은 결과 /
+                         목표와 지표를 정리한 표` 두 줄이던 것을 **무엇이
+                         남아 있는가** 한 줄로 적는다 */
+                      <p className="rs-ev-kept">
+                        {c.left ? keptLineKo(c.left)
+                          : "지금은 남은 게 없어요. 다음 과제에서 한 장만 남겨두면 좋아요."}
+                      </p>
+                    ) : (<>
+                      {/* 둘째 경험의 주인공은 **남긴 것**이다. 가운데로
                           들어 첫 경험과 읽는 결을 가른다(R6 §6·§7) */}
-                      {keep ? (
-                        <p className="rs-ev-keep"><i>남은 결과</i><b>{keep}</b></p>
-                      ) : null}
+                      {keep ? <p className="rs-ev-keep"><b>{keep}</b></p> : null}
                       {c.decided ? (
-                        <dl className="rs-ev-rows">
-                          <div>
-                            <dt>내가 정한 기준</dt>
-                            <dd>{saidKo(c.decided)}</dd>
-                          </div>
-                        </dl>
+                        <p className="rs-ev-line">{decidedLineKo(c.decided)}</p>
                       ) : null}
                     </>)}
                     {/* **쓰는 자리를 한 단 세게 둔다**(R6 §5). 다만 같은
                         cyan 상자를 경험마다 복사하지 않는다: 첫 경험은
                         둥근 면이고 둘째 경험은 금 한 줄 아래 눕는다 */}
                     <div className={`rs-ev-use${lead ? "" : " is-flat"}${use ? "" : " is-empty"}`}>
-                      <p className="rs-ev-ul">이 경험을 이렇게 써볼 수 있어요</p>
+                      {lead ? (
+                        <p className="rs-ev-ul">이 경험을 이렇게 써볼 수 있어요</p>
+                      ) : null}
                       {use ? (
                         <dl className="rs-ev-two">
                           <div><dt>지원서</dt><dd>{use.resume}</dd></div>
@@ -1559,10 +1562,8 @@ export default async function V3Result({
                         </dl>
                       ) : (
                         <p className="rs-ev-p">
-                          위의 {[!c.decided ? "직접 정한 것" : null,
-                            !c.left ? "남아 있는 결과" : null]
-                            .filter(Boolean).join("과 ")} 를 채우면 이 경험을
-                          지원서에서 이야기할 수 있어요.
+                          {!c.decided ? "그때 무엇을 직접 골랐는지" : "무엇이 남았는지"}
+                          {" "}한 줄만 더 적으면 지원서에서 이 이야기를 쓸 수 있어요.
                         </p>
                       )}
                     </div>
@@ -1573,8 +1574,8 @@ export default async function V3Result({
                   <p className="rs-note">{moreReadyKo(restReady)}</p>
                 ) : null}
                 <p className="rs-note">
-                  문장으로 옮겨 적을 때는 아래 <a href="#translation">지원서·면접에서 쓸 문장</a>을
-                  같이 보시면 좋아요.
+                  문장으로 옮길 때는 아래 <a href="#translation">지원서·면접에서 쓸 문장</a>을
+                  같이 펼쳐 두면 좋아요.
                 </p>
               </div>
             ) : null}

@@ -30,7 +30,7 @@ import { josaOf, orList, withJosa } from "../src/lib/me-v3/result/josa";
 import { thingKo } from "../src/lib/me-v3/result/say";
 import {
   actionKo, actionWhyKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO, BASIC_GROUP_KO,
-  draftKo, pickSentenceKo,
+  draftKo, evidenceUsePartsKo, pickSentenceKo,
   FIRST_MOVE_KO, gapKo, headlineKo, HORIZON_KO, QUALITY_KO, TIER_NOTE_KO,
   needKo,
   TRANS_STEP_KO, ZONE_LEAD_KO, ZONE_TITLE_KO,
@@ -481,6 +481,36 @@ const leadGlue = [...leadFn.matchAll(/\$\{(?:withJosa\()?(left|artifacts)\b/g)]
 ok("머리글 첫 줄이 결과물 이름을 문장에 끼우지 않는다",
    leadFn.length > 0 && leadGlue.length === 0,
    leadGlue.length ? leadGlue.join(" | ") : `headlineLead ${leadFn.length}자`);
+
+/* ── 14 · 경험 둘의 쓰는 문장이 **같은 틀의 변형이 아니다** ──
+   한 결과지에 경험이 둘 서는데 지원서 줄끼리 · 면접 줄끼리 시작과 끝이
+   같으면, 읽는 사람에게는 **명사만 바꾼 한 문장**이다. 그 꼴이 한 번
+   서면 그 묶음 전체가 찍어 낸 것으로 읽힌다(R7 Template 감지).
+
+   Core 마다 영역 둘을 집어 `lead` 와 `second` 를 세우고 넷을 견준다 */
+const twin: string[] = [];
+for (const core of CORES) {
+  /* 자료가 아직 없는 core 는 건너뛴다(`perCore` 와 같은 규칙이다) */
+  let two: string[] = [];
+  try { two = (load(core).domains.domains as DomRow[]).slice(0, 2).map((d) => d.code); }
+  catch { continue; }
+  if (two.length < 2) continue;
+  const a = evidenceUsePartsKo(core, two[0], { decided: "x", left: null }, "lead");
+  const b = evidenceUsePartsKo(core, two[1], { decided: "x", left: "표" }, "second");
+  const head = (t: string): string => t.slice(0, 6);
+  const tailOf = (t: string): string => t.slice(-8);
+  if (head(a.resume) === head(b.resume) || tailOf(a.resume) === tailOf(b.resume)) {
+    twin.push(`${core} 지원서 ${a.resume} / ${b.resume}`);
+  }
+  if (head(a.interview) === head(b.interview) || tailOf(a.interview) === tailOf(b.interview)) {
+    twin.push(`${core} 면접 ${a.interview} / ${b.interview}`);
+  }
+  for (const t of [a.resume, a.interview, b.resume, b.interview]) {
+    if (t.includes("어떤 기준으로 정했는지")) twin.push(`${core} 되풀이되는 틀 ${t}`);
+  }
+}
+ok("경험 둘의 지원서·면접 문장이 같은 틀이 아니다", twin.length === 0,
+   twin.length ? twin.slice(0, 3).join(" | ") : `Core ${CORES.length}벌 × 4줄`);
 
 console.log(`\n확인 ${pass + fail}가지 — 통과 ${pass} · 걸림 ${fail}`);
 console.log("  자동검사는 후보만 잡습니다. 마지막 판단은 문맥 기준입니다.");
