@@ -170,8 +170,8 @@ for (const t of plan.targets) {
    눈으로는 다 괜찮아 보인다. 전에 `a11y:check` 를 처음 돌렸을 때 마흔
    가지가 걸린 자리가 그것이라, 검사 화면도 세어 둔다 */
 {
-  const ROLES = [".rs-h1", ".rs-lead", ".rs-kicker", ".rs-tier", ".rs-head nav a",
-    ".rs-top h3", ".rs-top p", ".rs-sect > h2", ".rs-note", ".rs-domain > header h3",
+  const ROLES = [".rs-quote", ".rs-badge", ".rs-who", ".rs-tier", ".rs-head nav a",
+    ".rs-now h2", ".rs-now p", ".rs-next h2", ".rs-sect > h2", ".rs-note", ".rs-domain > header h3",
     ".rs-zone", ".rs-pick", ".rs-axis > b", ".rs-axis > span", ".rs-axis .state",
     ".rs-gap > h3", ".rs-gap > p", ".rs-do", ".rs-when > h3", ".rs-when li",
     ".rs-zones h3", ".rs-zones p", ".rs-zones li", ".rs-ev h3", ".rs-steps li > span",

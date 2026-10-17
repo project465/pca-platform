@@ -35,8 +35,11 @@
      무엇이 거드는 말인지가 크기로 읽히지 않는다.** 본문 16px 은 건드리지
      않는다: 검사 화면과 같은 값이라 검사를 끝낸 사람이 결과지로 넘어갈 때
      글자 크기가 바뀌면 다른 제품으로 읽힌다 */
-  --r-t-h1: clamp(27px, 3.1vw, 38px);   /* 결론 한 줄 */
-  --r-t-lead: clamp(17px, 1.5vw, 19px); /* 그래서 무엇이 되는가 */
+  /* **크기 차이를 크게 둔다**(R5 트렌디 §5·§11). 38px 과 19px 과 16px 이
+     한 뼘에 몰려 있으면 무엇이 결론인지가 크기로 읽히지 않는다 */
+  --r-t-h1: clamp(30px, 3.6vw, 44px);   /* 결론 한 줄 */
+  --r-t-say: clamp(19px, 1.9vw, 23px);  /* 내가 해본 경험 한 문장 */
+  --r-t-lead: clamp(16px, 1.4vw, 18px); /* Hero 보조 한 줄 */
   --r-t-h2: clamp(19px, 1.7vw, 23px);   /* 절 제목 */
   --r-t-h3: 17px;                       /* 칸 머리 · 사슬 머리 */
   --r-t-body: var(--ui-t-body);         /* 본문 16px (검사 화면과 같다) */
@@ -47,41 +50,88 @@
   --r-s4: var(--ui-4); --r-s5: var(--ui-5); --r-s6: var(--ui-6);
   --r-s7: var(--ui-7); --r-s8: var(--ui-8);
 
-  /* ── 둥글기(R3 §17·§18·§19) ──
-     12 · 16px 둥근 상자를 되풀이하면 흔한 SaaS dashboard 가 된다. 종이
-     리포트의 결에 맞춰 **거의 각지게** 두고, 세 단의 차이는 남긴다:
-     묶음(4) · 작은 칩(3) · 사진처럼 큰 면(6). 알약(999px)은 쓰지 않는다 */
-  --r-r: 4px;
-  --r-r-sm: 3px;
-  --r-r-lg: 6px;
+  /* ── 둥글기 위계(R5 §10) ──
+     R3 은 둥글기를 3·4·6px 으로 내려 종이 리포트의 결에 맞췄다. 확정된
+     Visual Direction 은 그 반대다: **부드러운 둥근 면**이 기본이고,
+     다만 **전부 같은 값으로 두지 않는다.** 네 단을 역할로 갈랐다.
 
-  /* ── 색(R3 §13) ──
+       Hero 면      24px   쪽이 시작하는 자리
+       Primary 카드 20px   내가 해본 경험 · 지금 할 일
+       묶음 면      16px   절과 큰 면
+       거드는 카드  13px   남긴 근거 · 더 채울 부분 · 작은 면
+       칩           알약   taxonomy 칩과 작은 단추(§14)
+
+     **숫자를 기계적으로 적용하지 않는다**(§10): 네 단의 차이가 실제
+     캡처에서 읽히는지를 보고 잡았다 */
+  --r-r-hero: 24px;
+  --r-r-lg: 20px;
+  --r-r: 16px;
+  --r-r-sm: 13px;
+  --r-r-pill: 999px;
+
+  /* ── 색(R5 §7·§8·§9) ──
      `--ui-*` 는 검사 화면과 작업공간이 함께 쓰는 값이라 **건드리지
      않는다**(Gate 1·2 는 PASS·동결이다). 여기서만 덮어쓴다.
-     바탕은 아주 옅은 따뜻한 회색, 글자는 charcoal 과 deep navy,
-     강조는 deep navy 하나와 muted teal 하나다. 연한 하늘색과 라벤더를
-     쓰지 않는다: 그 둘이 흔한 AI SaaS template 의 표시색이다 */
-  --r-line: #e3e0d9;
-  --r-line-sel: #1f3a5f;
-  --r-line-soft: #edeae3;
+
+     R3 의 따뜻한 회색(`#f6f5f1` · `#efede7`)을 **버렸다.** 종이의 결을
+     노린 값이었는데 화면에서는 베이지와 갈색 끼로 읽혀, 결과지가
+     `오래된 문서` 가 됐다. 지금 쓰는 것은 §8 의 여섯이다.
+
+       Primary     deep navy  #15284a   CTA · 머리글 · 작은 표시
+       Secondary   clean blue #2563c9   누르는 자리의 보조
+       Supporting  muted cyan #1b7f8c   사슬이 닿는 자리 하나
+       Neutral     cool gray  #44506b / #737e96 / #e5e9f0
+       Surface     white
+       Optional    아주 옅은 파랑 #eaf1fd
+
+     **베이지 · 크림 · 양피지 · 갈색 끼 회색을 쓰지 않는다**(§8).
+
+     **색면은 한 화면에 하나다**(§9). 지금 그 자리는 `지금 하면 좋은 일`
+     의 mint 면 하나이고, 전에 `--r-sunk` · `--r-accent-soft` 를 쓰던
+     자리는 **중성 cool 면**으로 남는다: 카드마다 옅은 색을 깔면 그 색이
+     아무것도 가리키지 않는다 */
+  --r-line: #e5e9f0;
+  --r-line-sel: #15284a;
+  --r-line-soft: #eef1f6;
   --r-paper: #ffffff;
-  --r-field: #f6f5f1;
-  --r-sunk: #efede7;
-  --r-ink: #1b2430;
-  --r-ink-2: #3c4654;
-  --r-ink-3: #6c7484;
-  --r-accent: #1f3a5f;
-  --r-accent-ink: #162c48;
-  --r-accent-soft: #eceef1;
-  --r-accent-line: #c3c8d1;
-  /* 사슬이 닿는 자리 하나에만 쓰는 둘째 강조. **금색을 쓰지 않는다**:
+  /* 쪽 바탕. **아주 옅은 cool gray**(§7 의 권장값) */
+  --r-field: #f5f7fb;
+  /* 중성 cool 면. 카드도 칩도 이 면을 쓴다 */
+  --r-sunk: #f1f4f9;
+  --r-ink: #16203a;
+  --r-ink-2: #44506b;
+  --r-ink-3: #737e96;
+  --r-accent: #15284a;
+  --r-accent-ink: #24395f;
+  /* 작은 칩과 띠가 쓰는 옅은 면. **파랑으로 두지 않는다**(§9):
+     열 자리가 넘게 쓰여서 파랑으로 두면 그 색이 쪽 전체에 번진다 */
+  --r-accent-soft: #eef2f8;
+  --r-accent-line: #d6dde8;
+  /* Secondary. 누르는 자리의 보조와 `내가 해본 경험` 의 이름표 */
+  --r-blue: #2563c9;
+  --r-blue-soft: #eaf1fd;
+  /* ── 역할마다 다른 accent(R5 트렌디 §2·§3) ──
+     navy · blue · gray 만 돌면 전문적이지만 보수적으로 읽힌다. 그렇다고
+     카드마다 색을 다르게 두면 rainbow UI 가 된다(§4). 그래서 **세 역할
+     에만** 아주 옅은 면 하나와 짙은 글자 하나씩을 둔다.
+
+       가진 것   clean blue   내가 해본 경험
+       할 것     soft mint    지금 할 일   ← 한 화면의 색면은 여기 하나다
+       채울 것   soft lilac   다음에 채울 부분 (이름표만)
+
+     바탕과 큰 면은 그대로 흰색과 cool off-white 다 */
+  --r-mint: #0f7f6c;
+  --r-mint-soft: #e7f6f1;
+  --r-mint-line: #c6e8dd;
+  --r-lilac: #6f63a6;
+  /* 사슬이 닿는 자리 하나에만 쓰는 Supporting. **금색을 쓰지 않는다**:
      금색 원이 번호형 timeline 의 마지막 칸을 가리키고 있었고, 그 모양이
      흔한 step indicator 로 읽혔다 */
-  --r-teal: #3c6b63;
-  --r-teal-soft: #e9efed;
+  --r-teal: #1b7f8c;
+  --r-teal-soft: #e4f1f4;
   --r-gold: var(--r-teal);
   --r-gold-soft: var(--r-teal-soft);
-  --r-gold-line: #c6d3cf;
+  --r-gold-line: #bcdfe5;
 
   background: var(--r-field);
   color: var(--r-ink-2);
@@ -134,15 +184,23 @@
 
 .rs-main { width: 100%; max-width: var(--r-wide); margin: 0 auto; padding: 0 var(--r-gutter) var(--r-s7); }
 
-/* ── 첫 화면 ── 열 초 안에 넷을 답한다 */
-.rs-hero { padding: var(--r-s7) 0 var(--r-s5); max-width: var(--r-read); }
-/*
- * 학교의 자리. **큰 문장보다 먼저 선다**(규격 §8).
- *
- * 전에는 학교와 학과가 큰 문장 아래 회색 한 줄이었다. 학교가 제공한
- * 리포트인지가 먼저 읽혀야 그 아래 문장이 학교가 보증한 말로 읽힌다.
- * 종이는 학생이 보관하고 대학이 결과물로 전달하는 자리라 더 그렇다.
- */
+/* ══════════════════════════════════════════════════════════════════
+   첫 화면 — OPENING · NOW · NEXT (R5 Skeleton Reset)
+
+   앞 판본의 뼈대는 `Hero(메타·눈썹·판정문·거드는 줄) → 카드 넷 → 띠 →
+   CTA 줄` 이었다. 색과 둥글기와 문구를 바꿔도 그 뼈대가 남아 있는 한,
+   화면은 **시스템이 판정을 발표하고 그 근거를 표로 늘어놓는 자리**로
+   읽힌다. 그래서 뼈대를 다시 세웠다.
+
+     OPENING   흰 둥근 면 · 가운데 · 그 사람이 고른 문장이 큰 글씨
+     NOW       테 없는 두 칸 · 왼쪽 · 금 하나로 갈린다
+     NEXT      mint 둥근 면 · 가운데 · 할 일과 CTA 가 한 덩이
+
+   정렬이 가운데 → 왼쪽 → 가운데로 바뀌고, 면이 흰색 → 없음 → mint 로
+   바뀌고, 둥글기가 24 → 0 → 20 으로 바뀐다. **한 종류의 component 가
+   화면을 지배하지 않는다.**
+   ══════════════════════════════════════════════════════════════════ */
+
 /* 재응시가 막혀 돌아온 사람에게 적는 줄(규격 §7·§21).
    **화면에서만 선다**: 종이에 찍히면 그 종이를 받은 학생이 자기 결과가
    거절된 것으로 읽는다 */
@@ -155,200 +213,149 @@
 .rs-again b { font-size: var(--r-t-body); color: var(--r-ink); }
 @media print { .rs-again { display: none; } }
 
-/* ── A. Identity 한 덩이(규격 §6) ──
-   학교 · 학과 · 전공 맥락 · 제품 이름 · 응답일이 한 자리에 선다. 전에는
-   학교가 맨 위, 등급과 응답일이 큰 문장 **아래**로 갈려 있어서 신분을
-   읽으려면 눈이 큰 문장을 건너뛰었다가 돌아와야 했다 */
-.rs-id {
-  margin: 0 0 var(--r-s4); padding-bottom: var(--r-s3);
-  border-bottom: 1px solid var(--r-line);
+/* ── OPENING ─────────────────────────────────────────────────────── */
+.rs-open {
+  margin: var(--r-s4) 0 0;
+  padding: var(--r-s6) var(--r-s5) var(--r-s7);
+  background: var(--r-paper);
+  border-radius: var(--r-r-hero);
+  text-align: center;
 }
-.rs-school {
-  display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px;
-  margin: 0;
+/* 누구의 어느 응시인가. **한 줄이다**: 앞 판본은 이 자리가 세 줄이었고,
+   큰 글씨 앞에 작은 글씨가 세 줄 서면 읽기 전부터 피곤해 보인다 */
+.rs-who {
+  margin: 0; font-size: var(--r-t-meta); color: var(--r-ink-3);
+  letter-spacing: .01em;
 }
-.rs-school b {
-  font-size: var(--r-t-h3); font-weight: var(--ui-w-bd);
-  color: var(--r-ink); letter-spacing: -.02em;
+/* 판정은 **알약 하나**로 내려간다. 큰 글씨 자리는 학생의 말이 가져간다 */
+.rs-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  margin: var(--r-s5) 0 0; padding: 6px 15px;
+  border-radius: var(--r-r-pill);
+  background: var(--r-blue-soft); color: var(--r-blue);
+  font-size: var(--r-t-meta); font-weight: var(--ui-w-sb); letter-spacing: .01em;
 }
-.rs-school span {
-  font-size: var(--r-t-body); font-weight: var(--ui-w-sb); color: var(--r-ink-2);
+/* 작은 체크 하나(§16). emoji 는 쓰지 않는다 */
+.rs-badge::before {
+  content: ""; flex: none; width: 9px; height: 5px;
+  border-left: 1.6px solid currentColor; border-bottom: 1.6px solid currentColor;
+  transform: rotate(-45deg) translate(1px, -1px);
 }
-
-/* **눈썹 금 하나가 이 제품의 표시다**(R3 §33). 절마다 같은 금이 서서
-   `어디서 본 듯한 template` 이 아니라 한 벌의 리포트로 읽히게 한다.
-   아이콘도 색면도 쓰지 않는다: 24px × 2px 짜리 금 하나다 */
-.rs-kicker {
-  margin: 0 0 var(--r-s3); font-size: var(--r-t-meta); font-weight: var(--ui-w-sb);
-  letter-spacing: .12em; color: var(--r-ink-3);
-  display: flex; align-items: center; gap: 10px;
-}
-.rs-kicker::before {
-  content: ""; flex: none; width: 24px; height: 2px; background: var(--r-accent);
-}
-.rs-h1 {
-  margin: 0; font-size: var(--r-t-h1); line-height: 1.24; font-weight: var(--ui-w-bd);
-  color: var(--r-ink); letter-spacing: -.032em; text-wrap: balance;
-}
-/* **본문보다 한 단 크고 한 단 옅다.** 결론 다음에 읽는 줄이라, 같은
-   크기로 두면 h1 이 두 줄로 벌어진 것처럼 보인다 */
-.rs-lead {
-  margin: var(--r-s4) 0 0; font-size: var(--r-t-lead); line-height: 1.62;
-  color: var(--r-ink-2); max-width: 52ch;
-}
-
-/* ── B. 엔진이 낸 한 문장(R3 §12) ──
-   **면을 걷었다.** 앞 판본은 큰 문장을 옅은 파란 면에 얹고 왼쪽에 파란
-   기둥을 세웠다. 옅은 파란 면 + 기둥 + 둥근 모서리 넷이 겹치면 그 모양이
-   흔한 SaaS 알림 카드이고, 결과지의 결론이 **알림처럼** 읽힌다. 지금 이
-   문장을 세우는 것은 크기와 여백뿐이다(§16 의 강조 차례 ①②③) */
-.rs-say { margin: 0; padding: 0; background: none; box-shadow: none; }
-.rs-say .rs-lead { color: var(--r-ink-2); }
-
-/* ── 첫 쪽의 머리 한 줄(규격 §15) ──
-   학교 · 학과 · 전공 · 등급 · 응답일. **종이에서 더 또렷하게 선다**:
-   보관된 종이는 혼자 읽히고, 그때 누구의 어느 전공이 언제 친 것인지가
-   없으면 그 종이는 쓸 수 없다 */
-.rs-ident {
-  margin: 6px 0 0;
-  font-size: var(--r-t-meta); color: var(--r-ink-3); letter-spacing: .01em;
-}
-
-/* **첫 서른 초에 등급의 차이가 보여야 한다.** 네 축만 물은 응시에는 이
-   띠가 없고, 깊게 물은 응시에만 센 숫자가 선다. 등수가 아니라 개수다 */
-.rs-count {
-  margin: var(--r-s4) 0 0; padding: 0; list-style: none;
-  display: flex; flex-wrap: wrap; gap: var(--r-s2) var(--r-s4);
-}
-.rs-count li {
-  font-size: var(--r-t-gloss); color: var(--r-ink-3);
-  display: flex; align-items: baseline; gap: 6px; word-break: keep-all;
-}
-.rs-count b {
-  font-size: var(--r-t-h3); font-weight: var(--ui-w-bd); color: var(--r-ink);
-  font-variant-numeric: tabular-nums; letter-spacing: -.02em;
-}
-
-/* ── 첫 화면 넷(R3 §22·§23) ──
+/*
+ * **첫 화면의 큰 글씨**(R5 Reset).
  *
- * **같은 사각 카드 넷을 되풀이하지 않는다.** 앞 판본은 1px 격자선으로
- * 네 칸을 가른 한 덩이였고, 그 모양이 **2×2 dashboard** 다. 흰 칸 넷이
- * 같은 테를 두르고 같은 둥글기로 서면 읽는 사람은 넷을 다 읽고 나서
- * 무엇이 중요한지 스스로 정해야 한다.
- *
- * 역할을 셋으로 갈랐다(§23). **칸 수는 그대로 넷이다**(§22):
- *
- *   Primary    내가 해본 경험   테도 면도 없고 글자가 가장 크다
- *   Secondary  지금 할 일       꺼진 면 + 왼쪽 금 하나. 한 화면의 강조 한 곳
- *   Supporting 남긴 근거        금 한 줄 위에 작은 글씨로
- *   Supporting 더 채울 부분     같음
- *
- * **차례를 DOM 에서 바꾸지 않는다**: 종이와 보조기기가 읽는 차례는
- * `해본 것 → 남긴 것 → 더 채울 것 → 지금 할 일` 이라는 규격 그대로여야
- * 한다. 화면에서 자리만 옮긴다.
+ * 680px 이면 데스크톱에서 두세 줄이고 390px 에서 서너 줄이다.
+ * `text-wrap: balance` 로 한 낱말만 남는 줄이 생기지 않게 한다.
  */
-.rs-top {
-  display: grid; gap: var(--r-s4); margin-top: var(--r-s6);
-  grid-template-columns: 1fr;
-  /* 테와 면과 격자선을 전부 걷었다(§20·§21) */
-  background: none; border: 0; border-radius: 0;
+.rs-quote {
+  margin: var(--r-s4) auto 0; max-width: 680px;
+  font-size: var(--r-t-h1); line-height: 1.3; font-weight: var(--ui-w-bd);
+  color: var(--r-ink); letter-spacing: -.03em; text-wrap: balance;
 }
-.rs-top > div { background: none; padding: 0; }
-/* ── 손전화는 데스크톱 축소판이 아니다(R3 §37) ──
-   좁은 화면에서는 넷이 세로로 쌓이는데, DOM 차례대로 두면 `지금 할 일` 이
-   네 번째로 서서 **엄지로 세 번 넘긴 뒤에** 읽는 자리가 된다. 상담 자리에서
-   먼저 짚는 칸이 그것이므로 `해본 경험` 바로 아래로 올린다. **차례를 DOM
-   에서 바꾸지 않는다**: 종이와 보조기기가 읽는 차례는 규격 그대로다 */
-.rs-top > div:nth-child(1) { order: 1; }
-.rs-top > div.is-do { order: 2; }
-.rs-top > div:nth-child(2) { order: 3; }
-.rs-top > div:nth-child(3) { order: 4; }
+/* 분류 칩. **주인공이 아니다**(§15) */
+.rs-tags {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;
+  margin: var(--r-s5) 0 0; padding: 0; list-style: none;
+}
+.rs-tags li {
+  padding: 4px 12px; border-radius: var(--r-r-pill);
+  background: var(--r-sunk); color: var(--r-ink-2);
+  font-size: var(--r-t-meta); font-weight: var(--ui-w-md); white-space: nowrap;
+}
+/* 판정 한 줄은 종이에만. 보관된 종이는 혼자 읽힌다 */
+.rs-verdict { display: none; }
+
+/* ── NOW ─────────────────────────────────────────────────────────── */
+.rs-now {
+  display: grid; gap: var(--r-s4);
+  margin: var(--r-s6) 0 0; padding: 0 var(--r-s3);
+}
+/* **카드가 아니다.** 금 하나가 두 칸을 가르고, 그 금의 방향이 폭에 따라
+   바뀐다: 좁은 화면에서는 가로로 눕고 넓은 화면에서는 세로로 선다 */
+.rs-now > div + div {
+  padding-top: var(--r-s4); border-top: 1px solid var(--r-line);
+}
 @media (min-width: 760px) {
-  .rs-top {
-    grid-template-columns: 1fr 1fr;
-    column-gap: var(--r-s5);
+  .rs-now { grid-template-columns: 1fr 1fr; gap: 0; }
+  .rs-now > div + div {
+    padding: 0 0 0 var(--r-s6); border-top: 0;
+    border-left: 1px solid var(--r-line);
   }
-  .rs-top > div:nth-child(1) { grid-area: 1 / 1 / 2 / 3; }
-  .rs-top > div:nth-child(4) { grid-area: 2 / 1 / 3 / 3; }
-  .rs-top > div:nth-child(2) { grid-area: 3 / 1; }
-  .rs-top > div:nth-child(3) { grid-area: 3 / 2; }
+  .rs-now > div:first-child { padding-right: var(--r-s6); }
 }
-/* 칸 이름. **대문자 변환도 알약도 쓰지 않는다**: 라벨은 작고 넓은 자간
-   하나로 충분하다 */
-.rs-top h3 {
+.rs-now h2 {
   margin: 0 0 var(--r-s2); font-size: var(--r-t-meta); font-weight: var(--ui-w-sb);
-  letter-spacing: .1em; color: var(--r-ink-3);
+  letter-spacing: .1em;
 }
-.rs-top p { margin: 0; font-size: var(--r-t-body); color: var(--r-ink); font-weight: var(--ui-w-sb); }
-.rs-top p + p { margin-top: 5px; font-weight: var(--ui-w-rg); color: var(--r-ink-2); font-size: var(--r-t-gloss); }
-.rs-top .none { color: var(--r-ink-3); font-weight: var(--ui-w-rg); }
-
-/* ① Primary. 글자가 가장 크고 테가 없다 */
-.rs-top > div:nth-child(1) > p:first-of-type {
-  font-size: var(--r-t-lead); line-height: 1.44; letter-spacing: -.015em;
-  font-weight: var(--ui-w-bd);
+.rs-now > div:first-child h2 { color: var(--r-blue); }
+.rs-now > div + div h2 { color: var(--r-lilac); }
+.rs-now p {
+  margin: 0; font-size: var(--r-t-lead); line-height: 1.5;
+  font-weight: var(--ui-w-sb); color: var(--r-ink);
 }
-
-/* ②③ Supporting. **면을 깔지 않고 금 한 줄 위에 선다**(§20).
-   면을 깔면 그 둘이 다시 카드가 되고, 그러면 넷 가운데 셋이 면을 들어
-   무게가 평평해진다 */
-.rs-top > div:nth-child(2),
-.rs-top > div:nth-child(3) {
-  padding-top: var(--r-s3); border-top: 1px solid var(--r-line);
-}
-.rs-top > div:nth-child(2) > p:first-of-type,
-.rs-top > div:nth-child(3) > p:first-of-type { font-size: var(--r-t-gloss); }
-
-/* ④ Secondary. **한 화면에서 강한 강조는 여기 하나다**(§16).
-   꺼진 면 하나와 왼쪽 금 하나이고 그림자도 둥근 모서리도 없다 */
-.rs-top > div.is-do {
-  padding: var(--r-s4) var(--r-s5);
-  background: var(--r-sunk);
-  border-left: 3px solid var(--r-accent);
-  box-shadow: none;
-}
-.rs-top > div.is-do > h3 { color: var(--r-accent-ink); }
-/* 라벨 앞의 작은 line icon 하나(§34). **절제한다**: 24px 안짝의 선
-   아이콘이고 네 칸 가운데 이 칸에만 선다. emoji 는 쓰지 않는다(§35) */
-.rs-top > div.is-do > h3::before {
-  content: ""; display: inline-block; vertical-align: -1px;
-  width: 11px; height: 11px; margin-right: 7px;
-  border-right: 1.5px solid currentColor; border-top: 1.5px solid currentColor;
-  transform: rotate(45deg);
-}
-.rs-top > div.is-do > p:first-of-type {
-  font-size: var(--r-t-lead); line-height: 1.44;
-  color: var(--r-ink); font-weight: var(--ui-w-bd); letter-spacing: -.015em;
-}
-/* **왜 이걸 해야 하는가**(SIGN-OFF §5). 금 한 줄로 떼어 둔다 */
-.rs-top > div.is-do > p.rs-outcome {
-  margin-top: 10px; padding-top: 9px;
-  border-top: 1px solid var(--r-accent-line);
+.rs-now p.rs-now-sub {
+  margin-top: 5px; font-size: var(--r-t-gloss);
   font-weight: var(--ui-w-rg); color: var(--r-ink-2);
 }
-/* 종이에서만 선다. 아래 §5 주석을 볼 것 */
-.rs-outcome-print { display: none; }
+.rs-now p.none {
+  font-size: var(--r-t-gloss); font-weight: var(--ui-w-rg); color: var(--r-ink-3);
+}
 
-/*
- * 확인된 경험이 어디에서 쓰이는가. **첫 화면에 한 줄로 남긴다**(규격 §13).
- *
- * 카드 넷에서 빠졌다고 첫 화면이 `그래서 어디에 쓰는가` 에 답하지 않고
- * 끝나면 안 된다. 자세한 것은 아래 산업·직무 절이 든다.
- */
-/* **띠를 상자로 두르지 않는다**(R3 §20). 바로 위 넷이 이미 금과 면으로
-   무게를 갈라 놓았는데 그 아래에 테 두른 흰 상자가 하나 더 서면 **또
-   하나의 카드**가 되고, 읽는 사람은 그것을 다섯째 칸으로 읽는다. 금 한
-   줄 위에 한 줄로 눕힌다 */
-.rs-link {
-  display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px;
-  margin: var(--r-s5) 0 0; padding: var(--r-s3) 0 0;
-  border: 0; border-top: 1px solid var(--r-line); border-radius: 0;
-  background: none;
-  font-size: var(--r-t-gloss); color: var(--r-ink-2);
+/* ── NEXT ────────────────────────────────────────────────────────── */
+/* **한 화면의 색면도 CTA 도 여기 하나다.** 앞 판본은 할 일 칸과 CTA 줄이
+   따로 떨어져 있어서, 다 읽은 사람이 `그래서 뭘 누르지` 를 한 번 더
+   찾아야 했다. 둥글기는 OPENING 보다 한 단 작다 */
+.rs-next {
+  margin: var(--r-s6) 0 0;
+  padding: var(--r-s6) var(--r-s5);
+  background: var(--r-mint-soft);
+  border-radius: var(--r-r-lg);
+  text-align: center;
 }
-.rs-link b {
-  font-size: var(--r-t-body); font-weight: var(--ui-w-bd); color: var(--r-ink);
+.rs-next-l {
+  margin: 0; font-size: var(--r-t-meta); font-weight: var(--ui-w-sb);
+  letter-spacing: .1em; color: var(--r-mint);
 }
+.rs-next h2 {
+  margin: var(--r-s3) auto 0; max-width: 560px;
+  font-size: var(--r-t-say); line-height: 1.45; font-weight: var(--ui-w-bd);
+  color: var(--r-ink); letter-spacing: -.018em; text-wrap: balance;
+}
+.rs-next > p:not(.rs-next-l):not(.rs-next-more) {
+  margin: var(--r-s3) auto 0; max-width: 560px;
+  font-size: var(--r-t-gloss); line-height: 1.6; color: var(--r-ink-2);
+}
+.rs-next form { display: flex; justify-content: center; margin-top: var(--r-s5); }
+.rs-next-cta {
+  display: inline-flex; align-items: center; min-height: 50px; padding: 0 26px;
+  border: 0; border-radius: var(--r-r-pill); cursor: pointer; font-family: inherit;
+  background: var(--r-accent); color: #fff;
+  font-size: var(--r-t-body); font-weight: var(--ui-w-sb); line-height: 1;
+}
+.rs-next-cta::after {
+  content: ""; flex: none; margin-left: 10px; width: 7px; height: 7px;
+  border-right: 1.6px solid currentColor; border-top: 1.6px solid currentColor;
+  transform: rotate(45deg);
+}
+.rs-next-cta:hover { filter: brightness(1.08); }
+.rs-next-cta:focus-visible { outline: 2px solid var(--r-accent); outline-offset: 3px; }
+/* 거드는 길 셋. **테를 두르지 않는다**: 두르면 주된 단추와 같은 무게가 된다 */
+.rs-next-more {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 20px;
+  margin: var(--r-s4) 0 0;
+}
+.rs-next-more a {
+  display: inline-flex; align-items: center; min-height: 36px;
+  font-size: var(--r-t-gloss); font-weight: var(--ui-w-md); color: var(--r-ink-2);
+  text-decoration: underline; text-decoration-color: var(--r-line);
+  text-underline-offset: 3px;
+}
+.rs-next-more a:hover { color: var(--r-blue); text-decoration-color: var(--r-blue); }
+
+/* 산업·직무 한 줄은 **종이에만 선다**(R5 Reset): 첫 화면이 답할 것은
+   셋이고 이것은 넷째다. 화면에서는 아래 산업·직무 절이 한 자리에서 든다 */
+.rs-link { display: none; }
+.rs-outcome-print, .rs-pr { display: none; }
 
 /*
  * 종이 표지. **화면에는 서지 않는다**(규격 §14).
@@ -411,7 +418,7 @@
 }
 .rs-zone {
   font-size: var(--r-t-meta); font-weight: var(--ui-w-sb); letter-spacing: .02em;
-  padding: 3px 9px; border-radius: var(--r-r-sm); white-space: nowrap;
+  padding: 3px 10px; border-radius: var(--r-r-pill); white-space: nowrap;
 }
 .rs-zone.z1 { color: var(--sf-ok); background: var(--sf-ok-soft); }
 .rs-zone.z2 { color: var(--sf-part); background: var(--sf-part-soft); }
@@ -497,7 +504,7 @@
 .rs-why3 dt { grid-row: 1; }
 .rs-why3 dd { grid-row: 2; }
 .rs-pick {
-  display: inline-block; padding: 5px 11px; border-radius: var(--r-r-sm);
+  display: inline-block; padding: 5px 12px; border-radius: var(--r-r-pill);
   font-size: var(--r-t-gloss); color: var(--r-ink); background: var(--r-sunk);
   border: 1px solid var(--r-line-soft);
 }
@@ -557,7 +564,7 @@
 .rs-zones p { margin: 0 0 var(--r-s2); font-size: var(--r-t-gloss); color: var(--r-ink-3); }
 .rs-zones ul { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
 .rs-zones li {
-  padding: 6px 12px; border-radius: var(--r-r-sm); font-size: var(--r-t-gloss);
+  padding: 6px 13px; border-radius: var(--r-r-pill); font-size: var(--r-t-gloss);
   background: var(--r-paper); border: 1px solid var(--r-line); color: var(--r-ink-2);
 }
 .rs-zones .none { color: var(--r-ink-3); font-size: var(--r-t-gloss); }
@@ -629,7 +636,7 @@
 /* 담아두기. **파일럿 참가자에게만 선다** */
 .rs-save {
   flex: none; align-self: flex-start; cursor: pointer; font-family: inherit;
-  min-height: 32px; padding: 0 12px; border-radius: var(--r-r-sm);
+  min-height: 32px; padding: 0 13px; border-radius: var(--r-r-pill);
   font-size: var(--r-t-meta); font-weight: var(--ui-w-sb); white-space: nowrap;
   color: var(--r-ink-3); background: var(--r-sunk);
   border: 1px solid var(--r-line);
@@ -926,53 +933,6 @@
 }
 .rs-scale label:has(input:checked) > span { color: var(--r-accent-ink); }
 
-/* ── 첫 화면에서 할 수 있는 일 ────────────────────────────────────────
-   **결과는 끝이 아니라 시작점이다**(규격 §9·§17). 첫 화면에서 답한 셋
-   바로 아래에 다음 걸음이 서야, 읽은 사람이 종이만 받고 끝내지 않는다.
-   **짙은 단추는 하나다**: 나머지 둘은 글자 링크로 거든다 */
-.rs-do {
-  display: flex; flex-wrap: wrap; align-items: center;
-  gap: var(--r-s3); margin: var(--r-s5) 0 0;
-}
-/* **짙은 단추가 `button` 이다.** 담는 일이 서버에서 일어나므로 폼이
-   한 겹 끼는데, 폼을 그냥 두면 그 자리가 블록이 되어 띠의 `gap` 밖으로
-   선다. 폼은 자리만 차지하지 않게 두고 모양은 단추가 든다 */
-.rs-do form { display: flex; }
-.rs-do-main {
-  display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px;
-  background: var(--r-accent); color: #fff; border-radius: var(--r-r-sm);
-  font-size: var(--r-t-body); font-weight: var(--ui-w-sb); text-decoration: none;
-  border: 0; cursor: pointer; font-family: inherit; line-height: 1;
-}
-.rs-do-main:hover { filter: brightness(1.06); }
-/* 둘째 층. **테를 두른 단추**(규격 §12) — 전에는 둘째와 셋째가 둘 다
-   밑줄 친 글자라, 셋이 한 줄에 서면 `담기` 하나만 단추로 보이고 나머지
-   둘이 같은 무게로 붙어 다녔다. 다음 걸음이 되는 둘(경험 추가 · 내
-   CareerMatri)은 테를 두르고, 받아 두는 자리(PDF)만 글자로 남긴다 */
-.rs-do-sub {
-  display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px;
-  color: var(--r-ink-2); font-size: var(--r-t-sub); font-weight: var(--ui-w-sb);
-  border: 1px solid var(--r-line); border-radius: var(--r-r-sm);
-  background: var(--r-paper); text-decoration: none;
-}
-.rs-do-sub:hover { color: var(--r-accent-ink); border-color: var(--r-accent-line); }
-/* 셋째 층. **받아 두는 자리는 단추가 아니다** — 결과를 읽고 나서 하는
-   일이 아니라 들고 가는 일이라, 앞의 둘과 같은 무게로 서면 안 된다 */
-.rs-do-sub.is-pdf {
-  border-color: transparent; background: none; padding: 0 4px;
-  color: var(--r-ink-3); font-weight: var(--ui-w-md); margin-left: auto;
-}
-.rs-do-sub.is-pdf:hover { color: var(--r-ink-2); border-color: transparent; }
-/* 넷째 층. **돌아가는 길은 단추가 아니다** — 결과를 다 읽은 사람이
-   가는 자리이지 결과를 읽고 하는 일이 아니다. 테를 두르면 한 줄에
-   테 두른 칸이 둘이 되고, 그 둘 가운데 무엇이 다음 걸음인지 흐려진다 */
-.rs-do-back {
-  display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px;
-  color: var(--r-ink-3); font-size: var(--r-t-sub); font-weight: var(--ui-w-md);
-  text-decoration: none;
-}
-.rs-do-back:hover { color: var(--r-ink-2); text-decoration: underline; }
-
 /* ── 자세한 내용 ──────────────────────────────────────────────────────
    본문 아홉 절을 한 자리에서 연다. **접힌 상태가 기본이다**: 웹에서 이
    쪽이 하는 일은 `지금 무엇을 하면 되는가` 까지이고, 근거는 그것을 다시
@@ -1012,14 +972,14 @@
 .rs-foldbtn i { font-style: normal; margin-left: auto; }
 
 @media (max-width: 719px) {
-  /* 좁은 화면의 Hero. **제목만 줄이지 않는다**: 위 여백도 같이 줄여야
-     첫 창에 결론과 그 아래 한 칸이 함께 들어온다 */
-  .rs-hero { padding-top: var(--r-s5); padding-bottom: var(--r-s4); }
-  .rs-h1 { letter-spacing: -.028em; line-height: 1.28; }
-  .rs-lead { margin-top: var(--r-s3); max-width: none; }
-  .rs-top { gap: var(--r-s4); margin-top: var(--r-s5); }
-  /* 할 일 칸의 안쪽 여백을 줄여 엄지로 한 번에 읽는 높이로 둔다 */
-  .rs-top > div.is-do { padding: var(--r-s3) var(--r-s4); }
+  /* 좁은 화면의 OPENING. **글자만 줄이지 않는다**: 여백도 같이 줄여야
+     첫 창에 큰 글씨와 그 아래 두 자리가 함께 들어온다 */
+  .rs-open { padding: var(--r-s5) var(--r-s4) var(--r-s6); }
+  .rs-quote { letter-spacing: -.028em; line-height: 1.32; }
+  .rs-badge { margin-top: var(--r-s4); }
+  .rs-tags { margin-top: var(--r-s4); }
+  .rs-now { margin-top: var(--r-s5); padding: 0; }
+  .rs-next { margin-top: var(--r-s5); padding: var(--r-s5) var(--r-s4); }
   /* 사슬은 한 칸이고, 금과 표시가 좁은 화면에서도 그대로 선다 */
   .rs-chain { gap: var(--r-s5); }
   .rs-chain > section > h3 { margin-bottom: var(--r-s3); }
@@ -1033,8 +993,6 @@
   }
   .rs-head nav::-webkit-scrollbar { display: none; }
   .rs-head nav a { white-space: nowrap; min-height: 40px; }
-  .rs-count { gap: var(--r-s2) var(--r-s3); }
-  .rs-count b { font-size: var(--r-t-h3); }
   .rs-axis { padding: 10px 16px 10px 13px; }
   .rs-domain > header, .rs-why, .rs-intro { padding-left: 16px; padding-right: 16px; }
   .rs-when li { flex-direction: column; gap: 4px; padding: 13px 16px; }
@@ -1086,107 +1044,99 @@
      그래서 **첫 쪽이 63%만 차고** 그 0.37쪽이 문서 끝에서 거의 빈
      마지막 쪽으로 돌아왔다(기계공학 PRO 가 열 쪽이고 마지막 쪽이
      33%였던 까닭이다). 담긴 글은 한 줄도 덜어내지 않는다 */
-  .rs-hero { padding: 10px 0 8px; max-width: none; }
-  .rs-h1 { font-size: 19pt; }
-  .rs-lead { font-size: 10.5pt; margin-top: 6px; }
-  /* 머리 한 줄은 종이에서 한 단 더 또렷하다. 보관된 종이가 혼자 읽혀야
-     한다(규격 §15) */
-  .rs-ident { font-size: 9pt; color: var(--r-ink-2); margin-top: 8px; padding-top: 6px; }
-  /* 숫자 띠는 종이에서 머리띠 바로 아래 한 줄로 붙인다 */
-  .rs-count { margin-top: 12px; gap: 6px 20px; }
-  .rs-count b { font-size: 14pt; }
+  /* ══ 종이의 첫 쪽(R5 Skeleton Reset) ══
+     **웹 결과지는 디지털 제품이고 종이는 보관·전달되는 리포트다**(§43).
+     화면에서는 학생이 고른 문장이 큰 글씨이고 판정이 알약이지만, 종이는
+     혼자 읽히므로 **판정 한 줄이 제목으로 선다.** 담긴 것은 같고 어느
+     것이 크게 서는가만 갈린다.
 
-  /* 첫 화면 넷 → 종이에서도 첫 칸이 한 줄, 나머지 셋이 그 아래.
-     **종이 글 폭이 690px 안팎이라** 화면 쪽 `min-width: 860px` 규칙이
-     여기서는 걸리지 않는다. 그대로 두면 넷이 세 칸 격자에 들어가 남는
-     칸 둘이 빈 회색 네모로 뽑힌다 */
-  .rs-top { grid-template-columns: repeat(3, 1fr); margin-top: 10px; }
-  .rs-top > div:first-child { grid-column: 1 / -1; }
-  .rs-top > div { padding: 8px 11px; }
-  .rs-top h3 { font-size: 7.5pt; }
-  .rs-top p { font-size: 9.5pt; }
-  .rs-top p + p { font-size: 8.5pt; }
-
-  /* ── 첫 두 쪽의 위계(규격 §7) ──────────────────────────────────────
-     **담긴 것을 한 줄도 덜어내지 않는다.** 바꾼 것은 같은 네 칸을 어떤
-     크기와 어떤 면으로 세우는가다. 상담 자리에서 처음 펴는 쪽이 이쪽이라,
-     `지금 확인된 것 · 먼저 해볼 것 · 먼저 채울 것 · 산업·직무 연결` 넷이
-     한눈에 갈려야 한다. 전에는 넷이 같은 흰 면에 같은 활자로 서서, 종이에
-     서는 **네 열짜리 표**로 읽혔다.
-
-     **화면은 건드리지 않는다**(규격 §20). 화면에서 색을 더 쓰지 않기로
-     한 것은 강조색이 누르는 자리와 겨루기 때문이고, 종이에는 누를 자리가
-     없다. 그래서 색조는 이 블록 안에만 있다 */
-  .rs-h1 { font-size: 20.5pt; line-height: 1.26; }
-  /* Identity 덩이는 종이에서 더 또렷하다. **보관된 종이는 혼자 읽힌다**:
-     누구의 어느 전공이 언제 친 것인지가 첫 쪽에 없으면 그 종이는 쓸 수
-     없다. 선은 덩이가 한 번만 긋는다 */
-  .rs-id { margin-bottom: 7mm; padding-bottom: 3mm; }
-  .rs-school b { font-size: 13pt; }
-  .rs-school span { font-size: 10.5pt; }
-  .rs-ident { font-size: 8.5pt; }
-  .rs-kicker { margin-bottom: 5px; }
-  /* 엔진이 낸 한 문장. 종이에서는 면을 아주 옅게만 깔고 기둥으로 가른다:
-     잉크를 넓게 칠하면 그 쪽이 광고로 읽힌다 */
-  .rs-say {
+     가운데 정렬도 색면도 종이에서는 되돌린다: 잉크를 넓게 칠하면 그 쪽이
+     광고로 읽힌다 */
+  .rs-open {
+    margin: 0; padding: 10px 0 8px;
+    background: none; border-radius: 0; text-align: left;
+  }
+  /* 누구의 어느 응시인가. 보관된 종이가 혼자 읽혀야 한다(규격 §15) */
+  .rs-who {
+    font-size: 9pt; color: var(--r-ink-2);
+    padding-bottom: 3mm; margin-bottom: 5mm;
+    border-bottom: 1px solid var(--r-line);
+  }
+  /* 판정 한 줄이 종이의 제목이다 */
+  .rs-verdict {
+    display: block; margin: 0 0 4mm;
+    font-size: 19pt; line-height: 1.26; font-weight: var(--ui-w-bd);
+    color: var(--r-ink); letter-spacing: -.03em; break-after: avoid;
+  }
+  /* 알약은 종이에서 글줄 하나로 눕는다. 잉크를 칠하지 않는다 */
+  .rs-badge {
+    display: block; margin: 0 0 2mm; padding: 0;
+    background: none; color: var(--r-accent); font-size: 9pt;
+  }
+  .rs-badge::before { display: none; }
+  /* 학생이 고른 문장은 종이에서 제목 아래 옅은 면에 선다 */
+  .rs-quote {
+    max-width: none; margin: 0;
     padding: 4mm 5mm; background: var(--r-sunk);
     box-shadow: inset 2.5pt 0 0 var(--r-accent);
+    font-size: 11.5pt; line-height: 1.4; letter-spacing: -.01em;
     break-inside: avoid;
   }
-  /* **묶음 전체를 붙여 두지 않는다.** 네 칸에 `avoid` 를 걸었더니 그
-     묶음이 첫 쪽에 다 안 들어가는 날 통째로 다음 쪽으로 밀리고 첫 쪽이
-     절반 비었다(STANDARD 가 열 쪽이 된 까닭이다). 쪼개지면 뜻이 사라지는
-     것은 칸 하나지 네 칸 전체가 아니다 */
-  .rs-top > div { break-inside: avoid; }
-  /* 첫 칸과 `먼저 해볼 것` 만 면이 한 단 짙다. 나머지 둘은 흰 면에 남아
-     **무엇을 먼저 읽는지가 면의 짙기로** 읽힌다 */
-  .rs-top > div:first-child { background: var(--r-sunk); }
-  .rs-top > div.is-do { background: var(--r-accent-soft); }
-  /* **까닭 한 줄은 종이에서 칸 밖으로 내린다**(SIGN-OFF §5). 네 칸이
-     나란히 선 종이에서 한 칸의 글 폭이 230px 쯤이라 이 줄이 세 줄로
-     접히고, 그 11mm 가 문서 끝에서 쪽 하나를 더 열었다(CS PRO 가 열세
-     쪽이 된 까닭이다). 담긴 글을 덜어내지 않고 **글 폭 전체를 쓰는 자리로
-     옮겨** 한 줄에 담는다. 화면은 그대로 칸 안이다: 거기서는 세로로 쌓여
-     폭이 넉넉하고, 할 일 칸 안에 있어야 그 할 일의 까닭으로 읽힌다 */
-  .rs-top > div.is-do > p.rs-outcome { display: none; }
-  .rs-outcome-print {
-    display: block; margin: 5px 0 0; font-size: 8pt;
-    color: var(--r-ink-2); break-before: avoid;
+  /* 칩은 줄글로 눕힌다. 담긴 것은 그대로다 */
+  .rs-tags { display: block; justify-content: flex-start; margin-top: 3mm; }
+  .rs-tags li {
+    display: inline; padding: 0; background: none; border-radius: 0;
+    font-size: 8pt; color: var(--r-ink-3);
   }
-  /* 종이는 1 + 3 을 그대로 쓴다. 화면에서 거드는 둘에 깔아 둔 면을
-     되돌린다: 넷이 전부 면을 깔면 **첫 칸과 할 일 칸이 서야 할 자리**가
-     사라진다 */
-  .rs-top > div:nth-child(2),
-  .rs-top > div:nth-child(3) { background: var(--r-paper); }
-  /* ── R3: 화면에서 걷은 격자선을 종이에서는 되돌린다 ──
-     화면은 금과 면으로 무게를 가르지만, 종이에서는 넷이 세 칸 격자에
-     나란히 서서 **금이 없으면 네 칸이 한 덩이로 붙는다.** 흰 면 둘이
-     흰 종이에 서면 경계가 아예 없다. 그래서 1px 격자선만 되돌린다:
-     화면 쪽 왼쪽 금과 돌린 표시는 종이에서 쓰지 않는다 */
-  .rs-top {
-    gap: 1px; background: var(--r-line); border: 1px solid var(--r-line);
-    border-radius: var(--r-r); overflow: hidden;
+  .rs-tags li + li::before { content: " · "; }
+
+  /* ── NOW ── 종이에서는 금 두 줄이 아니라 1px 격자 한 벌로 */
+  .rs-now {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+    margin-top: 6mm; padding: 0;
+    background: var(--r-line); border: 1px solid var(--r-line);
+    border-radius: var(--r-r-sm); overflow: hidden;
   }
-  .rs-top > div:nth-child(2),
-  .rs-top > div:nth-child(3) { border-top: 0; padding: 8px 11px; }
-  .rs-top > div.is-do { border-left: 0; padding: 8px 11px; }
-  .rs-top > div.is-do > h3::before {
-    transform: none; border: 0; margin-right: 0;
-    width: 7pt; height: 7pt; border-radius: 2pt;
+  .rs-now > div {
+    padding: 8px 11px; background: var(--r-paper); break-inside: avoid;
+    border: 0;
   }
-  /* 산업·직무 한 줄 띠는 종이에서 네 칸 아래 금 한 줄로 그대로 선다 */
-  .rs-link { margin-top: 8px; padding-top: 6px; }
-  .rs-top > div:nth-child(4) > p:first-of-type { font-size: 9.5pt; }
-  .rs-top > div:first-child > p:first-of-type { font-size: 12.5pt; line-height: 1.35; }
-  /* 칸 머리에 색 표시 하나. **뜻을 갖지 않는다**: 넷을 한 덩이로 읽지
+  .rs-now > div + div { padding: 8px 11px; border: 0; }
+  .rs-now h2 { font-size: 7.5pt; color: var(--r-ink-3); }
+  .rs-now p { font-size: 9.5pt; }
+  .rs-now p.rs-now-sub { font-size: 8.5pt; }
+  /* 칸 머리에 색 표시 하나. **뜻을 갖지 않는다**: 둘을 한 덩이로 읽지
      않게 갈라 주는 자리이고, 무엇의 칸인지는 그 옆 글자가 든다 */
-  .rs-top h3 { display: flex; align-items: center; gap: 5px; }
-  .rs-top h3::before {
+  .rs-now h2 { display: flex; align-items: center; gap: 5px; }
+  .rs-now h2::before {
     content: ""; flex: 0 0 auto; width: 7pt; height: 7pt; border-radius: 2pt;
     background: var(--r-accent-line);
   }
-  .rs-top > div:first-child h3::before { background: var(--r-accent); }
-  .rs-top > div.is-do h3::before { background: var(--r-gold); }
+  .rs-now > div:first-child h2::before { background: var(--r-accent); }
+
+  /* ── NEXT ── 색면은 종이에서도 한 자리뿐이다 */
+  .rs-next {
+    margin-top: 5mm; padding: 4mm 5mm;
+    background: var(--r-mint-soft); border-radius: var(--r-r-sm);
+    text-align: left; break-inside: avoid;
+  }
+  .rs-next-l { font-size: 7.5pt; }
+  .rs-next h2 { margin: 2mm 0 0; max-width: none; font-size: 12pt; line-height: 1.35; }
+  .rs-next > p:not(.rs-next-l):not(.rs-next-more) {
+    margin: 2mm 0 0; max-width: none; font-size: 9pt;
+  }
+  .rs-outcome-print {
+    display: block; margin: 2mm 0 0; font-size: 8pt;
+    color: var(--r-ink-2); break-before: avoid;
+  }
+  /* 산업·직무 한 줄은 종이에만 선다 */
+  .rs-link {
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline;
+    margin-top: 4mm; padding-top: 3mm; border-top: 1px solid var(--r-line);
+    font-size: 8.5pt; color: var(--r-ink-2);
+  }
+  .rs-link b { font-weight: var(--ui-w-sb); color: var(--r-ink); }
+  .rs-pr { display: block; }
 
   /* 절 머리 위에 금 하나. 종이에서는 머리글이 같은 크기로 이어 서면
      어디서 절이 갈리는지가 안 읽힌다. **여백을 금 위아래로 나눠 가진다**:
@@ -1415,7 +1365,7 @@
   /* 종이에서 눌릴 수 없는 것은 내보내지 않는다. `결과 PDF 저장` 이 그
      PDF 안에 찍혀 있으면 읽는 사람이 한 번 더 누르려고 한다 */
   .rs-foldbtn, .rs-discbtn, .rs-openbtn, .rs-save, .rs-pdf,
-  .rs-do { display: none !important; }
+  .rs-next form, .rs-next-more { display: none !important; }
   /* 닫는 자리의 길도 종이에서는 눌릴 수 없다. 남겨 두면 마지막 쪽이
      링크 한 줄만 들고 따로 서고, 그 쪽이 통째로 빈 종이로 읽힌다 */
   .rs-fine > p { display: none; }
@@ -1636,13 +1586,6 @@
   margin: 12px 0 0; font-size: var(--r-t-meta); color: var(--r-ink-3);
 }
 @media print { .rs-cta { display: none; } }
-
-/* 종이 길은 거드는 자리다. 한 줄 안에서 작은 설명을 달고 선다 */
-.rs-do-sub.is-pdf { gap: 6px; }
-.rs-do-sub.is-pdf small {
-  font-weight: var(--ui-w-rg); color: var(--r-ink-3); text-decoration: none;
-  font-size: var(--r-t-gloss);
-}
 
 /* ── 시각화 넷 (§4·§7·§8·§9) ─────────────────────────────────
    **색만으로 상태를 가르지 않는다.** 네 단계는 밝기가 차례로 어두워지고

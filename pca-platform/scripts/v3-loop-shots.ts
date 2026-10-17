@@ -280,7 +280,7 @@ async function main(): Promise<void> {
     console.log("\n── Journey 3. 결과 → 할 일 → 경험 → 현재 상태");
     await p.goto(`${B}/v3/${att}/result`, { waitUntil: "networkidle" });
     await shot(p, "j3_01_result__desktop", false);
-    await p.locator(".rs-do-main").first().click({ force: true });
+    await p.locator(".rs-next-cta").first().click({ force: true });
     await p.waitForLoadState("networkidle").catch(() => undefined);
     await p.waitForTimeout(600);
     ok("결과지의 짙은 단추가 할 일 쪽으로 보낸다",

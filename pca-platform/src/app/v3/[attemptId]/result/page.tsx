@@ -19,7 +19,7 @@ import {
   actionBriefKo, actionHeadKo, actionKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO,
   BASIC_GROUP_KO, bridgeKo,
   commonKo, domainChainKo, draftKo, gapCellKo, gapKo, gapNeedKo, gapNeedShortKo, gapShortKo,
-  actionWhyKo, headlineKo, needSentenceKo, pickSentenceKo,
+  actionWhyKo, headlineBadgeKo, headlineKo, needSentenceKo, pickSentenceKo,
   evidenceUseKo, keptNoteKo, moreReadyKo, saidKo,
   HORIZON_KO, QUALITY_KO, TIER_NOTE_KO, TRANS_ORDER, TRANS_STEP_KO,
   XFIELD_ORDER, xfieldKo, ZONE_LEAD_KO, ZONE_TITLE_KO,
@@ -842,7 +842,7 @@ export default async function V3Result({
    * 달라서, 네 칸이 같은 자리에서 같은 일을 한다는 것이 읽히지 않는다.
    * 어느 쪽에서 본 것인지는 아래 한 줄이 그대로 든다.
    */
-  const lackTitle = "더 채울 부분";
+  const lackTitle = "다음에 채울 부분";
   /* **영역 이름을 축마다 다시 적지 않는다.** 둘을 `영역 · 축` 으로
      만들어 또 `·` 로 이으면 같은 영역이 두 번 서고 가운뎃점이 넷이
      되어, 읽는 사람이 어디까지가 한 자리인지 가를 수 없다
@@ -859,6 +859,21 @@ export default async function V3Result({
    */
   /* 손에 남은 것. 첫 화면 둘째 칸이 든다. **결과 모델이 준 그대로다** */
   const left = [...new Set(focus.flatMap((d) => d.artifacts))];
+  /*
+   * 첫 화면의 큰 글씨(R5 Skeleton Reset).
+   *
+   * **그 사람이 고른 문장이다.** 깊게 물은 응시에서는 직접 정한 것(없으면
+   * 한 일)을 그대로 세우고, 네 축만 물은 응시처럼 고른 문장이 없는
+   * 자리에서는 판정 한 줄로 내려간다. **새로 짓지 않는다**: 둘 다 결과
+   * 모델이 이미 들고 있는 값이다
+   */
+  const openQuote = deep && focus.length
+    ? pickSentenceKo(focus[0].decided.length ? focus[0].decided : focus[0].did)
+    : "";
+  const openLine = openQuote || h.title;
+  /* 분류 이름은 문장 **아래** 칩이다(§15). 셋까지 */
+  const openTags = (focus.length ? focus : tried)
+    .slice(0, 3).map((d) => domainName(core, d.code));
   const lackBy = new Map<string, Axis[]>();
   for (const r of packLack?.requested.slice(0, 2) ?? []) {
     const d = domainName(core, r.domain);
@@ -1127,208 +1142,103 @@ export default async function V3Result({
           </p>
         ) : null}
 
-        <section className="rs-hero">
-          {/* ── A. Identity ──
-              규격 §6 이 첫 화면의 차례를 셋으로 못 박았다: 누구의 어느
-              응시인가 → 엔진이 낸 한 문장 → 한눈에 보는 결과 넷. 전에는
-              신분이 둘로 쪼개져 학교는 맨 위에, 등급과 응답일은 큰 문장
-              **아래**에 있었다. 보관된 종이는 혼자 읽히므로 신분은 한
-              덩이로 먼저 선다 */}
-          <div className="rs-id">
-            {meta.school ? (
-              <p className="rs-school">
-                <b>{meta.school}</b>
-                <span>{[meta.department, meta.specialization]
-                  .filter(Boolean).join(" · ")}</span>
-              </p>
-            ) : null}
-            <p className="rs-ident">
-              {(meta.school
-                ? [`CareerMatri ${model.tier}`,
-                  meta.answeredOn ? `${meta.answeredOn} 응답` : null]
-                : [meta.specialization, `CareerMatri ${model.tier}`,
-                  meta.answeredOn ? `${meta.answeredOn} 응답` : null])
-                .filter(Boolean).join(" · ")}
-            </p>
-          </div>
-          <p className="rs-kicker">{meta.major ?? "전공"} 진로 진단 결과</p>
-          {/* ── B. 엔진이 낸 한 문장 ──
-              **지어낸 문장이 아니다.** `headlineKo(model)` 이 결과 모델의
-              묶음과 축 상태에서 뽑는 말이고, 여기서 다시 쓰지 않는다.
-              면을 한 겹 깔아 신분 줄과 아래 네 칸 사이에서 **이 한 문장이
-              결과의 요지**라는 것이 보이게 한다(§6) */}
-          <div className="rs-say">
-            <h1 className="rs-h1">{h.title}</h1>
-            <p className="rs-lead">{h.lead}</p>
-          </div>
-          {/* **종이는 보관되고 전달된다.** 누구의 어느 전공이 언제 친
-              것인지가 첫 쪽에 없으면 그 종이는 혼자서는 읽히지 않는다.
-              그 다섯은 위 Identity 덩이가 한 자리에서 든다(규격 §6).
-              학교 진입이면 등급 칩을 머리띠에 두지 않고 제품 이름을
-              온전히 적는다: 받은 것이 무엇인지 종이 어디에도 없으면
-              학생이 자기가 받은 것을 묻게 된다 */}
+        {/* ══════════════════════════════════════════════════════════
+            OPENING — **학생이 쓴 문장이 첫 화면의 큰 글씨다**(R5 Reset).
+
+            앞 판본의 첫 화면은 `메타 세 줄 → 눈썹 → 판정 한 문장 → 거드는
+            한 줄 → 카드 넷` 이었다. 색과 둥글기를 바꿔도 그 뼈대가 남아
+            있는 한 화면은 **시스템이 자기 판정을 발표하는 자리**로 읽힌다.
+
+            그래서 자리를 바꿨다. 큰 글씨는 그 사람이 고른 문장이고, 판정은
+            그 위의 **작은 알약 하나**로 내려간다. 분류 이름은 문장 아래
+            칩이다(§15). 학생이 5초 안에 알아야 하는 첫째 — `내가 실제로
+            해본 것` 이 그 자리에서 바로 읽힌다.
+
+            **판정을 바꾸지 않았다**: 알약도 문장도 결과 모델이 이미 들고
+            있는 값이고, 여기서 다시 세지 않는다.
+            ══════════════════════════════════════════════════════════ */}
+        <section className="rs-open">
+          <p className="rs-who">
+            {[meta.school,
+              [meta.department, meta.specialization].filter(Boolean).join(" · "),
+              `CareerMatri ${model.tier}`,
+              meta.answeredOn ? `${meta.answeredOn} 응답` : null]
+              .filter(Boolean).join("  ·  ")}
+          </p>
+          <p className="rs-badge">{headlineBadgeKo(model)}</p>
+          <h1 className="rs-quote">{openLine}</h1>
+          {openTags.length ? (
+            <ul className="rs-tags">
+              {openTags.map((t) => <li key={t}>{t}</li>)}
+            </ul>
+          ) : null}
+          {/* 종이에서만 서는 판정 한 줄. **보관된 종이는 혼자 읽히므로**
+              무엇을 보고 그렇게 적었는지가 첫 쪽에 있어야 한다 */}
+          <p className="rs-verdict">{h.title}</p>
         </section>
 
-        {/* 열 초 안에 셋을 답한다: 어디부터 · 왜 · 지금 무엇을 */}
-        {/* ── 첫 화면 세 칸 ──
-            **읽는 사람이 열 초 안에 답해야 하는 것이 셋이다**: 지금 무엇이
-            확인됐는가 · 보고 있는 산업과 직무에서 무엇이 비어 있는가 · 지금
-            무엇을 하면 되는가. 전에는 넷이었고 둘째 칸이 `그렇게 본 까닭`
-            이었다. 까닭은 아래 영역 절이 한 자리에서 말하므로, 첫 화면의
-            자리는 **비어 있는 것**에 내준다 */}
-        <div className="rs-top">
-          {/* ① 실제로 해본 것 */}
+        {/* ══ NOW — 두 칸 대조. **카드가 아니다**: 가운데 금 하나로
+            나뉜 테 없는 두 칸이고, 좁은 화면에서는 그 금이 가로로 눕는다.
+            학생이 알아야 하는 둘째와 셋째를 한 줄에 마주 세운다 ══ */}
+        <section className="rs-now">
           <div>
-            <h3>내가 해본 경험</h3>
-            {focus.length ? (<>
-              {/* **본문 첫 줄은 두 줄을 넘기지 않는다**(PRODUCT POLISH §1).
-                  네 영역을 이으면 이 칸의 큰 글씨가 두 줄 반을 먹고 넷
-                  가운데 가장 먼저 읽는 자리가 가장 읽기 어려운 자리가 된다.
-                  전체 목록은 아래 영역 절이 한 자리에서 든다 */}
-              <p>{focus.slice(0, 3).map((d) => domainName(core, d.code)).join(" · ")}</p>
-              {deep ? (
-                /* **고르신 항목을 늘어놓지 않는다**(SIGN-OFF §4).
-                   가운뎃점으로 이으면 그 꼴이 자료 목록이고, 넷 가운데
-                   가장 먼저 읽는 칸이 그렇게 서면 읽는 사람이 자기 경험
-                   대신 목록을 읽는다. **새 사실을 만들지 않는다**: 고르신
-                   문장을 그대로 두고 끝맺음만 이어 붙인다 */
-                <p style={{ fontWeight: 400 }}>
-                  {pickSentenceKo(focus[0].decided.length
-                    ? focus[0].decided : focus[0].did) || "해 보신 일이 있습니다"}
-                </p>
-              ) : (
-                /* 여덟 축을 묻지 않은 응시에서 `직접 정한 것` 을 적지 않는다.
-                   받은 것은 관심과 경험과 배울 뜻 셋뿐이다 */
-                <p style={{ fontWeight: 400 }}>
-                  {focus[0].interest === "HIGH" ? "관심이 높고 " : "관심이 보통이고 "}
-                  {focus[0].experience === "NONE" ? "아직 해 본 적이 없습니다"
-                    : "해 본 적이 있습니다"}
-                </p>
-              )}
-            </>) : tried.length ? (<>
-              {/* **척도 이야기를 이 칸에 적지 않는다**(GOLD MASTER §11·§13).
-                  바로 위 한 문장이 이미 `영역 사이의 차이가 크지 않다` 를
-                  적고 있어서, 이 칸이 같은 말을 또 하면 **넷 가운데 첫
-                  칸이 결과 대신 자(尺) 이야기**를 한다. 이 칸이 답하는 것은
-                  `내가 이미 해본 것` 이므로, 해 본 적이 있다고 답하신 영역을
-                  그대로 돌려준다 */}
-              <p>{tried.slice(0, 3).map((d) => domainName(core, d.code)).join(" · ")}</p>
-              <p style={{ fontWeight: 400 }}>
-                해 본 적이 있다고 답하신 쪽이에요
-              </p>
-            </>) : (
-              <p className="none">
-                해 본 적이 있다고 답하신 쪽이 아직 없어요
-              </p>
+            <h2>지금 이야기할 수 있는 것</h2>
+            {left.length ? (
+              <p>{left.slice(0, 3).join(" · ")}</p>
+            ) : model.evidence.ready.length ? (
+              <p>{[...new Set(model.evidence.ready
+                .map((e) => domainName(core, e.domain)))].slice(0, 3).join(" · ")}</p>
+            ) : (
+              <p className="none">아직 적어 두신 것이 없어요</p>
             )}
+            {/* 화면이 이미 보여 주는 것을 글로 다시 적지 않는다. 종이에만 */}
+            <p className="rs-pr">{keptNoteKo(left.length > 0)}</p>
           </div>
-
-          {/* ② 근거가 남은 것(규격 §8). **수를 앞세우지 않는다**: 몇
-              가지인지보다 **어느 자리에서 꺼내 쓸 수 있는가**가 먼저다 */}
           <div>
-            <h3>남긴 근거</h3>
-            {model.evidence.ready.length ? (<>
-              {/* **카드 둘이 같은 줄로 열지 않는다**(SIGN-OFF §7). 전에는
-                  이 칸의 첫 줄이 영역 이름이었는데, 바로 왼쪽 위 칸이 이미
-                  같은 목록을 적고 있어서 **2×2 가운데 둘이 글자까지 같은
-                  줄로 열렸다.** 이 칸이 답하는 것은 `손에 무엇이 남았는가`
-                  이므로 남긴 것을 그대로 적는다. **지어내지 않는다**: 남긴
-                  것이 적혀 있지 않으면 전처럼 어느 영역인지를 적는다 */}
-              <p>{(left.length
-                ? left.slice(0, 2)
-                : [...new Set(model.evidence.ready
-                  .map((e) => domainName(core, e.domain)))].slice(0, 3)).join(" · ")}</p>
-              {/* **수를 앞세우지 않는다**(R2 §15·§17). 전에는
-                  `지원서에 그대로 옮길 이야기가 8가지 모였습니다` 였다.
-                  여덟은 우리가 센 축의 개수이고, 읽는 사람이 다음에 무엇을
-                  할지 정하는 데 쓰이지 않는다 */}
-              <p style={{ fontWeight: 400 }}>{keptNoteKo(left.length > 0)}</p>
-            </>) : (
-              <p className="none">
-                과제에서 남긴 것은 아직 적지 않으셨어요
-              </p>
-            )}
-          </div>
-
-          {/* ③ 더 채울 부분. **`부족한 역량` 이라고 적지 않는다**(§12):
-              재지 않은 것을 모자란다고 말하는 셈이 된다 */}
-          <div>
-            <h3>{lackTitle}</h3>
-            {/* **본문은 두 줄까지다**(PRODUCT POLISH §1). 전에는 셋째 줄로
-                `어느 산업·직무 쪽에서 봅니다` 가 섰는데, 그 말은 바로 아래
-                한 줄 띠(`rs-link`)가 이미 한 자리에서 하고 있어서 **같은
-                말이 한 화면에 두 번** 섰다. 칸이 답하는 것은 `무엇이 비었고
-                무엇을 적으면 되는가` 두 줄까지다 */}
+            <h2>{lackTitle}</h2>
             {lackWhat ? (<>
-              <p>{lackWhat}</p>
               <p>{lackNeed}</p>
+              <p className="rs-now-sub">{lackWhat}</p>
             </>) : (
-              <p className="none">지금 답하신 내용에서는 더 채울 곳이 보이지 않아요</p>
+              <p className="none">지금은 비어 보이는 곳이 없어요</p>
             )}
           </div>
+        </section>
 
-          {/* ④ 지금 할 일.
-              **차례는 §8 을 따르고 무게는 행동이 가져간다.** 넷 가운데
-              마지막이지만 면이 짙어서 눈이 먼저 닿는다: 결과를 연 사람이
-              읽고 나서 하는 일이 이것 하나다 */}
-          <div className="is-do">
-            {/* **칸 이름은 `지금 할 일` 하나다**(규격 §8). 전에는
-                `가장 먼저 채울 것` 이었는데, 바로 왼쪽 칸이 이미
-                `비어 있는 것` 을 적고 있어서 **넷 가운데 셋이 비어 있는
-                것을 말하고 행동을 적는 칸이 한 자리도 없었다.**
-                빈자리의 이름 대신 거기 붙은 할 일을 세운다 */}
-            <h3>지금 할 일</h3>
-            <p>{doHead}</p>
-            {doDetail ? <p>{doDetail}</p> : null}
-            {/* **왜 이걸 해야 하는지를 한 줄 잇는다**(SIGN-OFF §5).
-                할 일만 적으면 읽는 사람이 그 까닭을 스스로 메워야 한다.
-                적는 것은 **Evidence 에서 지원서로 가는 구조가 이미 들고
-                있는 것**까지이고, 합격이나 적합을 말하지 않는다 */}
-            {doWhy ? <p className="rs-outcome">{doWhy}</p> : null}
-          </div>
-        </div>
+        {/* ══ NEXT — **이 쪽의 focal point 하나**. 색면도 CTA 도 여기
+            하나이고, 가운데로 선다. 앞 판본은 할 일 칸과 CTA 줄이 따로
+            떨어져 있어서, 읽은 사람이 `그래서 지금 뭘 누르지` 를 한 번 더
+            찾아야 했다 ══ */}
+        <section className="rs-next">
+          <p className="rs-next-l">지금 하면 좋은 일</p>
+          <h2>{doHead}</h2>
+          {doDetail ? <p>{doDetail}</p> : null}
+          {/* **단추의 말이 약속한 일을 그 자리에서 한다**(규격 §16) */}
+          <form action={takeActionsFromResult}>
+            <button className="rs-next-cta" type="submit">지금 할 일로 담기</button>
+          </form>
+          <p className="rs-next-more">
+            <Link href="/me/experience/new">경험 추가</Link>
+            {/* **종이 길은 `Link` 로 걸지 않는다.** Next 가 미리 불러오면
+                머리 없는 브라우저가 떠서 종이가 한 벌씩 만들어진다 */}
+            <a href={`/v3/${attemptId}/result/pdf`}>결과 PDF 저장</a>
+            <Link href="/me">내 CareerMatri</Link>
+          </p>
+          {/* 까닭 한 줄은 종이와 아래 할 일 절이 든다(설명 과잉 §Action) */}
+          {doWhy ? <p className="rs-outcome-print">{doWhy}</p> : null}
+        </section>
 
-        {/* 종이에서만 서는 까닭 한 줄. 위 칸 안의 같은 줄은 인쇄에서
-            숨고 이 줄이 글 폭 전체를 쓴다(SIGN-OFF §5, `result.css`) */}
-        {doWhy ? <p className="rs-outcome-print">{doWhy}</p> : null}
-
-        {/* **산업·직무 연결은 한 줄 띠로 첫 화면에 남긴다**(규격 §13).
-            카드 넷에서 빠졌다고 첫 화면이 `그래서 어디에 쓰는가` 에 답하지
-            않고 끝나면 안 된다. 자세한 것은 아래 산업·직무 절이 든다 */}
+        {/* 이어지는 산업·직무는 **첫 화면에서 뺐다**(R5 Reset): 첫 화면이
+            답할 것은 셋이고 이것은 넷째다. 아래 산업·직무 절이 한 자리에서
+            들고, 보관되는 종이에서만 이 한 줄이 선다 */}
         <p className="rs-link">
           {linkNames.length ? (<>
-            <b>{linkNames.join(" · ")}</b>
+            {linkNames.map((x) => <b key={x}>{x}</b>)}
             <span>{linkText}</span>
           </>) : (
             <span>보실 산업과 직무를 아직 고르지 않으셨어요.</span>
           )}
         </p>
-
-        {/* **첫 화면에서 할 수 있는 일을 적는다**(규격 §9).
-            결과를 읽고 나서 하는 일은 둘이다: 이 할 일을 내 자리로 옮기고,
-            새 경험을 적어 현재 상태를 다시 세우는 것. 종이로 받는 길은
-            위 머리에 이미 있다 */}
-        <div className="rs-do">
-          {/* **단추의 말이 약속한 일을 그 자리에서 한다**(규격 §16).
-              전에는 `/me/next` 로 옮기기만 하는 링크여서, 누른 사람이 그
-              쪽에서 `결과의 할 일 담기` 를 한 번 더 찾아 눌러야 했다.
-              담기지 않았는데 담긴 줄 알고 떠나는 것이 막다른 길보다 나쁘다 */}
-          <form action={takeActionsFromResult}>
-            <button className="rs-do-main" type="submit">지금 할 일로 담기</button>
-          </form>
-          <Link className="rs-do-sub" href="/me/experience/new">경험 추가</Link>
-          {/* **들어온 자리로 돌아가는 길을 둔다**(규격 §12). 머리의
-              `← 내 CareerMatri` 는 위로 올라가야 보이고, 결과를 다 읽은
-              사람이 다음에 가는 자리가 거기다 */}
-          <Link className="rs-do-back" href="/me">내 CareerMatri로 돌아가기</Link>
-          {/* **종이 길은 `Link` 로 걸지 않는다.** Next 가 화면에 들어온
-              `Link` 를 미리 불러오는데, 그 길은 머리 없는 브라우저를 띄워
-              종이를 만드는 자리다. 읽기만 해도 종이가 한 벌씩 만들어졌다 */}
-          <a className="rs-do-sub is-pdf" href={`/v3/${attemptId}/result/pdf`}>
-            결과 PDF 저장<small>몇 초 걸립니다</small>
-          </a>
-        </div>
-
 
         {/* ── 내가 이미 가진 근거 ── **접은 자리 안에 두지 않는다**(규격 §10).
             이 절은 읽는 사람이 결과지에서 가장 먼저 자기를 알아보는

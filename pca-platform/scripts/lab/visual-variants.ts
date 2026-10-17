@@ -25,6 +25,7 @@ import { queryOne } from "../../src/lib/db";
 import { load } from "../../src/lib/me-v3/scoring/engine";
 import type { ResultModel } from "../../src/lib/me-v3/result/model";
 import { chainFor } from "../../src/lib/me-v3/result/chains";
+import { industryChoices, roleChoices } from "../../src/lib/me-v3/runtime/session";
 import {
   actionBriefKo, actionHeadKo, actionWhyKo, headlineKo, keptNoteKo,
   needSentenceKo, pickSentenceKo,
@@ -91,10 +92,19 @@ async function content(): Promise<Content> {
   const g0 = m.gaps[0];
   const a0 = m.actions[0];
   const gapDomains = [...new Set(m.gaps.map((g) => nm(g.domain)))].slice(0, 2);
-  const linkNames = [...new Set([
-    ...m.links.industries.map((x) => x.name),
-    ...m.links.roles.map((x) => x.name),
-  ])].slice(0, 2).join(" · ");
+  /* **제품이 쓰는 helper 를 그대로 쓴다**(설계 원칙 10). `ResultModel` 에
+     `links` 라는 칸은 없고 고른 팩은 `industry_context` · `role_context`
+     에 **코드로** 들어 있다. 이름은 `result/page.tsx` 와 같은 자리에서
+     푼다: 여기서 따로 사전을 들면 그 사전이 어느 날 뒤처진다 */
+  const packName = (
+    code: string, kind: "industry" | "role",
+  ): string => (kind === "industry"
+    ? industryChoices(row.core_code)
+    : roleChoices(row.core_code)).find((x) => x.code === code)?.name ?? code;
+  const linkNames = [
+    m.industry_context ? packName(m.industry_context.code, "industry") : null,
+    m.role_context ? packName(m.role_context.code, "role") : null,
+  ].filter((x): x is string => Boolean(x)).slice(0, 2).join(" · ");
 
   return {
     school: "배재대학교",

@@ -525,7 +525,7 @@ async function main(): Promise<void> {
        `0` 을 고장으로 적지 않는지도 함께 본다 */
     const n0 = Number((await queryOne<{ n: string }>(
       `SELECT count(*)::text AS n FROM v3_actions WHERE user_id = $1`, [a.id]))?.n ?? 0);
-    await p2.locator('.rs-do form button[type="submit"]').first()
+    await p2.locator('.rs-next form button[type="submit"]').first()
       .click({ force: true }).catch(() => undefined);
     await p2.waitForLoadState("networkidle").catch(() => undefined);
     await p2.waitForTimeout(1000);
