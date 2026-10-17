@@ -736,10 +736,24 @@ export default async function V3Result({
     .slice(0, 2)
     .map((code) => {
       const d = model.domains.find((x) => x.code === code);
+      /* **고르신 항목을 그대로 들고 간다.** 쓰는 자리의 두 줄이 이 네
+         묶음 안에서만 만들어진다: 견준 자리(`verifications`)가 비어
+         있으면 그 이야기를 **권하지 않는다**(R8 §5). 아직 하지 않은 일을
+         결과지가 조건절로라도 꺼내면 그것은 할 일이지 근거가 아니다 */
       return {
         code,
         did: d?.did[0] ?? null,
         decided: d?.decided[0] ?? null,
+        /* 고르신 판단 가운데 **문장으로 적힌 것**만. 산출물 이름이 같은
+           배열에 섞여 있어서(`목표와 지표 표`) 그대로 쓰면 이름이 문장
+           자리에 선다 */
+        /* **화면에 이미 선 판단은 빼고 넘긴다.** 둘째 이야기는 고르신
+           판단 하나를 글줄로 세우는데, 쓰는 자리가 같은 것을 또 집으면
+           한 묶음 안에서 같은 말이 두 번 선다 */
+        decisions: (d?.decided ?? [])
+          .filter((t) => t.endsWith("다") && t !== d?.decided[0]),
+        artifacts: d?.artifacts ?? [],
+        verifications: d?.verifications ?? [],
         left: d?.artifacts[0] ?? d?.verifications[0] ?? null,
       };
     });
@@ -1498,75 +1512,56 @@ export default async function V3Result({
             {chains.length ? (
               <div className="rs-chain">
                 {chains.map((c, i) => {
-                  /* **경험 둘을 같은 틀로 복사하지 않는다**(R6 §6 · R7
-                     PRIORITY 3). 자료 구조는 같아도 **읽는 리듬은 같을
-                     까닭이 없다.**
+                  /* **카드 둘을 세우지 않는다**(R8 §2·§3). 둘은 같은 기록을
+                     두 틀로 그린 것이 아니라 **편집자가 무게를 달리 둔
+                     자리**다.
 
-                       경험 1  한 일 + 직접 정한 것을 한 문장 → 남은 것
-                               한 줄 → 둥근 cyan 면에 쓰는 자리 둘
-                       경험 2  한 일 한 문장 → **남긴 것을 가운데 크게**
-                               → 직접 정한 것 한 줄 → 금 아래 짧은 두 줄
+                       먼저 쓸 이야기  큰 활자로 두 문장 → 만들어 둔 것 한 줄
+                                      → 옅은 면 하나에 쓰는 자리 두 줄
+                       같이 쓸 이야기  금 한 줄 아래 한 단 작게 · 면도 테도 없이
 
-                     문장 골격도 자리마다 다르다(`evidenceUsePartsKo` 의
-                     `slot`): 시작도 끝도 갈려서 명사만 바꾼 같은 문장으로
-                     읽히지 않는다 */
+                     둥근 면은 **한 화면에 하나**다: 첫 이야기의 쓰는 자리
+                     하나뿐이고 나머지는 여백과 활자와 금으로 가른다 */
                   const lead = i === 0;
-                  const use = c.decided || c.left
+                  const use = c.decisions.length || c.artifacts.length || c.verifications.length
                     ? evidenceUsePartsKo(core, c.code, c, lead ? "lead" : "second")
                     : null;
-                  /* **한 경험이 한 이야기로 읽혀야 한다**(R6 §3·§11). 첫
-                     경험은 `A고, B어요` 로 한 장면을 만들고, 둘째 경험은
-                     한 일 한 문장만 세운다. 말끝도 갈라 둔다: 둘 다
-                     `~적었어요` 로 닫히면 한 틀을 찍은 것으로 읽힌다 */
-                  const story = lead
-                    ? pickSentenceKo([c.did, c.decided].filter(Boolean) as string[])
-                    : c.did ? `${sayKo(c.did, "kept")}.`
-                      : c.decided ? decidedLineKo(c.decided) : "";
-                  const keep = c.left ? thingKo(c.left) : null;
+                  /* **한 문장에 두 가지를 눌러 담지 않는다**(R8 §4). 한 일과
+                     직접 정한 것을 `A고, B어요` 로 이으면 결과 두 칸을
+                     자연어로 붙인 꼴이 된다. 사람은 거기서 한 번 쉰다 */
+                  const act = c.did ? saidKo(c.did) : "";
+                  const chose = c.decided ? decidedLineKo(c.decided) : "";
                   return (
-                  <article key={c.code} className={`rs-ev-x${lead ? " is-lead" : " is-second"}`}>
-                    {/* 작은 metadata. **머리글이 아니다**: 이 묶음에서 가장
-                        먼저 읽히는 것은 그 사람의 경험 한 문장이다 */}
+                  <article key={c.code} className={`rs-ev-x${lead ? " is-lead" : " is-sub"}`}>
                     <p className="rs-ev-of">
-                      {domainName(core, c.code)}
-                      {lead ? <i>지원서에 먼저 쓸 경험</i> : null}
+                      <b>{domainName(core, c.code)}</b>
+                      <i>{lead ? "먼저 쓸 이야기" : "같이 쓸 이야기"}</i>
                     </p>
-                    {story ? <p className="rs-ev-story">{story}</p> : null}
-                    {lead ? (
-                      /* **이름표를 세우지 않는다**(R7). `남은 결과 /
-                         목표와 지표를 정리한 표` 두 줄이던 것을 **무엇이
-                         남아 있는가** 한 줄로 적는다 */
-                      <p className="rs-ev-kept">
-                        {c.left ? keptLineKo(c.left)
-                          : "지금은 남은 게 없어요. 다음 과제에서 한 장만 남겨두면 좋아요."}
-                      </p>
-                    ) : (<>
-                      {/* 둘째 경험의 주인공은 **남긴 것**이다. 가운데로
-                          들어 첫 경험과 읽는 결을 가른다(R6 §6·§7) */}
-                      {keep ? <p className="rs-ev-keep"><b>{keep}</b></p> : null}
-                      {c.decided ? (
-                        <p className="rs-ev-line">{decidedLineKo(c.decided)}</p>
+                    <div className="rs-ev-say">
+                      {act ? <p className="rs-ev-story">{act}</p> : null}
+                      {chose ? (
+                        <p className={lead ? "rs-ev-story is-two" : "rs-ev-line"}>{chose}</p>
                       ) : null}
-                    </>)}
-                    {/* **쓰는 자리를 한 단 세게 둔다**(R6 §5). 다만 같은
-                        cyan 상자를 경험마다 복사하지 않는다: 첫 경험은
-                        둥근 면이고 둘째 경험은 금 한 줄 아래 눕는다 */}
-                    <div className={`rs-ev-use${lead ? "" : " is-flat"}${use ? "" : " is-empty"}`}>
-                      {lead ? (
-                        <p className="rs-ev-ul">이 경험을 이렇게 써볼 수 있어요</p>
+                      {/* 만들어 둔 것. **이름표를 세우지 않는다**: 무엇을
+                          만들어 뒀는지가 그대로 문장이다 */}
+                      {c.artifacts.length ? (
+                        <p className="rs-ev-kept">{keptLineKo(c.artifacts)}</p>
                       ) : null}
-                      {use ? (
-                        <dl className="rs-ev-two">
-                          <div><dt>지원서</dt><dd>{use.resume}</dd></div>
-                          <div><dt>면접</dt><dd>{use.interview}</dd></div>
-                        </dl>
-                      ) : (
-                        <p className="rs-ev-p">
-                          {!c.decided ? "그때 무엇을 직접 골랐는지" : "무엇이 남았는지"}
-                          {" "}한 줄만 더 적으면 지원서에서 이 이야기를 쓸 수 있어요.
-                        </p>
-                      )}
                     </div>
+                    {/* 쓰는 자리. **색칠한 상자에 답을 넣지 않는다**(R8 §1):
+                        첫 이야기는 아주 옅은 면 하나, 둘째 이야기는 금 한
+                        줄이다. 이름표는 작은 회색이고 문장이 먼저 읽힌다 */}
+                    {use ? (
+                      <dl className="rs-ev-use">
+                        <div><dt>지원서</dt><dd>{use.resume}</dd></div>
+                        <div><dt>면접</dt><dd>{use.interview}</dd></div>
+                      </dl>
+                    ) : (
+                      <p className="rs-ev-p">
+                        그때 직접 고른 것을 한 줄만 더 적으면 지원서에서 이
+                        이야기를 쓸 수 있어요.
+                      </p>
+                    )}
                   </article>
                   );
                 })}

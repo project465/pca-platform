@@ -19,7 +19,7 @@
  *   DUMP=var/content-qa-final npm run v3:human     떠 둔 자리를 고른다
  */
 import { readFileSync, existsSync, readdirSync } from "node:fs";
-import { registry } from "../src/lib/me-v3/core-registry";
+import { registry, core as coreOf } from "../src/lib/me-v3/core-registry";
 import { studentScenes } from "../src/lib/me-v3/runtime/examples";
 
 let pass = 0;
@@ -287,6 +287,33 @@ if (!existsSync(DUMP)) {
      한다. **줄 수를 센 말도 남길 결과물이다**: `근거를 세 줄로 남겨보세요`
      는 무엇이 남는지를 적은 문장인데 `한 줄` 만 세면 그 할 일이 걸린다 */
   const RESULT = /[한두세네다섯여섯\d]+ ?줄|한 쪽|한 문단|한 벌|표|기록|문서|정리본|메모|보고서|계획서|도면|대본|대조표|목록/;
+  /* **그 Core 가 실제로 들고 있는 산출물 이름도 남길 결과물이다.** 위의
+     낱말 목록은 손으로 적은 것이라 Core 가 늘 때마다 뒤처진다: `간호계획`
+     과 `검토 의견서` 는 영역 사전이 산출물로 적어 둔 이름인데 목록에
+     없다는 까닭으로 멀쩡한 할 일이 걸렸다. 자리마다 **그 Core 의 영역
+     사전**에서 읽어 온다 */
+  const artifactsOf = new Map<string, RegExp | null>();
+  function coreArtifacts(code: string): RegExp | null {
+    if (artifactsOf.has(code)) return artifactsOf.get(code) ?? null;
+    let re: RegExp | null = null;
+    try {
+      const name = coreOf(code).files.domains;
+      if (!name) throw new Error("영역 사전이 없다");
+      const body = JSON.parse(readFileSync(
+        `sites/pca-platform/content/${name}`, "utf8")) as {
+        domains?: { artifacts?: string[] }[] };
+      const names = (body.domains ?? [])
+        .flatMap((d) => d.artifacts ?? [])
+        .map((x) => x.trim())
+        .filter((x) => x.length >= 2 && x.length <= 20);
+      if (names.length) {
+        re = new RegExp([...new Set(names)]
+          .map((x) => x.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|"));
+      }
+    } catch { re = null; }
+    artifactsOf.set(code, re);
+    return re;
+  }
   /* **할 일이 아닌 줄을 할 일로 세지 않는다.** 둘을 거른다.
 
      - 마침표가 없는 줄은 **머리말**이다(`지금, 이렇게 활용해보세요`).
@@ -310,7 +337,12 @@ if (!existsSync(DUMP)) {
       seen.add(l);
       acts++;
       const next = all.slice(i + 1).find((x) => x.length > 0) ?? "";
-      if (!RESULT.test(`${l} ${next}`)) vague.push(`${f.replace(".web.txt", "")} — ${l}`);
+      const both = `${l} ${next}`;
+      const art = coreArtifacts(f.split("-C.web.txt")[0].split(".web.txt")[0]
+        .replace(/-[A-Z]$/, ""));
+      if (!RESULT.test(both) && !(art && art.test(both))) {
+        vague.push(`${f.replace(".web.txt", "")} — ${l}`);
+      }
     }
   }
   ok("할 일에 남길 결과물이 적혀 있다", vague.length === 0,

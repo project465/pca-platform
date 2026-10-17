@@ -12,7 +12,7 @@
  *      자료에서 가져온 재료로 문장을 만든다.
  */
 import type { Axis, AxisState, Stage, Zone } from "../scoring/types";
-import { sayKo, thingKo } from "./say";
+import { plainKo, sayKo, thingKo } from "./say";
 import { chainFor } from "./chains";
 import { andList, josaOf, orList, withJosa } from "./josa";
 import { REASON_KO } from "../scoring/text.ko";
@@ -513,67 +513,76 @@ export function keptNoteKo(hasArtifacts: boolean): string {
 }
 
 /**
- * **그 경험을 어디에 어떻게 쓰는가**(R6 §5 · R7 PRIORITY 2·3).
+ * **그 경험을 어디에 어떻게 쓰는가**(R8 §5 · R7 PRIORITY 2·3).
  *
- * 두 가지를 함께 막는다.
+ * **Evidence 는 이미 한 것만 말한다.** 전에는 면접 줄이 그 영역의 일하는
+ * 차례에서 `무엇과 견주는가`(`chainFor` 다섯째 토막)를 가져와
+ * `끝난 뒤 달성률까지 봤다면` 처럼 적었다. 그 토막은 **그 일의 보통
+ * 차례**이지 이 사람이 한 일이 아니다. 조건절이어도 결과지가 **안 해 본
+ * 일을 꺼내는 셈**이고, 그건 근거 자리가 아니라 할 일 자리에서 할 말이다.
  *
- * - **긴 설명 카드로 읽히지 않게**: 한 자리에 한 문장이고, 바로 위에서
- *   이름을 적은 것을 문장 안에서 다시 적지 않는다.
- * - **두 경험이 같은 틀로 보이지 않게**: 경험마다 **문장 골격 자체가**
- *   다르다. 앞엣것은 `무엇을 어떻게 잡았는지 → 쓰면 돼요`, 뒤엣것은
- *   `남긴 것을 왜 그렇게 만들었는지 → 적어보세요` 다. 시작도 끝도 갈린다.
+ * 그래서 쓰는 자리의 두 줄은 **고르신 항목 안에서만** 만든다.
  *
- * **지어내지 않는다.** 재료 셋이 전부 이미 있는 값이다: 그 영역이 일하는
- * 차례의 **먼저 정하는 것**(`chainFor` 둘째 토막)과 **무엇과 견주는가**
- * (다섯째 토막), 그리고 응답에서 고르신 **남아 있는 결과**다.
+ * - 견준 자리(`verifications`)는 응답에서 고르신 것이라 그대로 쓴다
+ * - 남긴 것(`artifacts`)도 고르신 것이다
+ * - 직접 정한 것(`decisions`)은 고르신 문장 그대로다
+ *
+ * 그 가운데 **자리마다 다른 재료**를 집어 두 경험의 골격이 겹치지 않게
+ * 한다(§Template 감지).
  */
-function compareStep(core: string, domain: string): string | null {
-  /* 다섯째 토막은 `끝난 뒤 달성률 대조` 처럼 **대조** 로 닫는다. 문장에
-     넣을 때는 그 말을 떼고 쓴다. 떼고 나서 `와`·`과` 가 남는 자리가
-     있어(`규준과 면담 자료와 대조`) 그것까지 떼어 낸다 */
-  const raw = chainFor(core, domain)[4] ?? "";
-  const t = raw.replace(/\s*대조$/, "").replace(/[와과]$/, "").trim();
-  /* **긴 토막은 넣지 않는다**: 전공마다 길이가 달라 그대로 끼우면 이 줄이
-     세 줄로 벌어진다. 못 쓰면 이 자리는 기본 문장으로 내려간다 */
-  return t && t.length <= 14 ? t : null;
-}
-
-/** 경험 자리마다 **다른 골격**을 쓴다. `lead` 가 첫 경험이다 */
 export type UseSlot = "lead" | "second";
 
+export type UseEv = {
+  decisions?: string[]; artifacts?: string[]; verifications?: string[];
+};
+
+/** `~했다` 를 `~ 어떻게 했는지` 로. **낱말을 더하지 않는다**: 마디 하나다 */
+function howKo(clause: string): string | null {
+  const t = plainKo(clause);
+  const w = t.split(" ");
+  const last = w.pop() ?? "";
+  if (!/[가-힣]다$/.test(last) || !w.length) return null;
+  return `${w.join(" ")} 어떻게 ${last.slice(0, -1)}는지`;
+}
+
 export function evidenceUsePartsKo(
-  core: string, domain: string,
-  ev: { decided?: string | null; left: string | null },
-  slot: UseSlot = "lead",
+  core: string, domain: string, ev: UseEv, slot: UseSlot = "lead",
 ): { resume: string; interview: string } {
   const step = chainFor(core, domain)[1] ?? "";
-  const keep = ev.left ? thingKo(ev.left) : null;
-  const cmp = compareStep(core, domain);
+  const keep = (ev.artifacts ?? []).map(thingKo).filter((t) => t.length <= 18);
+  const vs = (ev.verifications ?? []).filter((t) => t.length <= 14);
+  const picks = (ev.decisions ?? []).filter(Boolean);
   if (slot === "lead") {
-    /* **`어떤 기준으로 정했는지` 를 쓰지 않는다**(R7 Template 감지). 그
-       말은 두 경험에서 똑같이 설 수 있는 꼴이고, 한 번 서면 다음 경험이
-       그 틀을 베낀 것으로 읽힌다 */
+    /* 지원서는 **무엇을 먼저 갈랐는가**부터. 그 영역에서 먼저 정하는
+       자리의 이름이고, 이 영역은 직접 정한 것이 확인된 자리다 */
     const resume = step && step.length <= 20
       ? `${step}, 이걸 어떻게 잡았는지부터 쓰면 돼요.`
       : "무엇을 먼저 하기로 했는지부터 쓰면 돼요.";
-    /* **둘째 경험과 골격이 겹치지 않게 한다**(R7 Template 감지). 저쪽이
-       `~은 어떻게 ~했는지 말해보세요` 라서, 이쪽은 **조건절**로 연다:
-       명사만 바꾼 같은 문장으로 읽히지 않는다 */
-    const interview = cmp
-      ? `${cmp}까지 봤다면 그 얘기부터 꺼내면 좋아요.`
-      : "그 선택을 왜 그렇게 했는지부터 꺼내면 좋아요.";
+    /* 면접은 **견준 자리**가 있을 때만 그 이야기를 꺼낸다 */
+    const interview = vs.length
+      ? `${withJosa(vs[0], "과와")} 견줘 본 이야기로 이어서 말해보세요.`
+      : keep.length
+        ? `${withJosa(keep[0], "을를")} 어떻게 만들었는지부터 말하면 돼요.`
+        : "그때 무엇을 보고 정했는지부터 말하면 돼요.";
     return { resume, interview };
   }
-  /* 둘째 경험은 **손에 남은 것에서 출발한다.** 앞 경험이 정한 것에서
-     출발했으니 같은 자리에서 또 시작하면 두 묶음이 겹쳐 읽힌다 */
-  const resume = keep && keep.length <= 18
-    ? `${withJosa(keep, "을를")} 왜 그렇게 만들었는지 적어보세요.`
+  /* 둘째 경험은 **손에 남은 것에서 출발한다.** 앞 경험이 정한 자리에서
+     열었으니 같은 데서 또 열면 두 묶음이 겹쳐 읽힌다 */
+  /* **손에 남은 것이 없으면 무엇이 남는지를 적는다.** `직접 고른 것을
+     적어보세요` 는 끝내고 나서 손에 무엇이 남는지 말해 주지 않는다 */
+  const resume = keep.length
+    ? `${withJosa(keep[0], "을를")} 왜 그렇게 만들었는지 적어보세요.`
     : step && step.length <= 20
-      ? `${withJosa(step, "을를")} 어디까지 직접 골랐는지 적어보세요.`
-      : "그때 직접 고른 것을 적어보세요.";
-  const interview = cmp
-    ? `${withJosa(cmp, "은는")} 어떻게 확인했는지 말해보세요.`
-    : "그 결과를 어떻게 확인했는지 말해보세요.";
+      ? `${withJosa(step, "을를")} 어디까지 직접 골랐는지 세 줄로 적어보세요.`
+      : "그때 직접 고른 것을 세 줄로 적어보세요.";
+  /* 면접은 **고르신 판단 하나**를 그대로 세운다. 앞 경험이 견준 자리를
+     썼으므로 여기서는 재료도 골격도 갈린다 */
+  const how = picks.map(howKo).find((t): t is string => !!t && t.length <= 26);
+  const interview = how
+    ? `${how} 설명해볼 수 있어요.`
+    : vs.length
+      ? `${withJosa(vs[0], "과와")} 견준 이야기도 같이 꺼내면 좋아요.`
+      : "그때 직접 고른 것을 그대로 설명해볼 수 있어요.";
   return { resume, interview };
 }
 
@@ -581,20 +590,21 @@ export function evidenceUsePartsKo(
 export function evidenceUseKo(
   core: string, domain: string, left: string | null,
 ): string {
-  const { resume, interview } = evidenceUsePartsKo(core, domain, { left });
+  const { resume, interview } = evidenceUsePartsKo(
+    core, domain, { artifacts: left ? [left] : [] });
   return `지원서에는 ${resume.replace(/ 돼요\.$/, " 돼요")}, 면접에서는 ${interview}`;
 }
 
 /**
- * 손에 남은 것 한 줄.
+ * 손에 남은 것 한 줄. **만들어 둔 쪽으로 적는다**(R8 §6).
  *
- * **이름표를 세우지 않는다**(R7 추상 표현 → 행동 표현). `남아 있는
- * 결과물이 있습니다` 는 우리가 센 것을 적은 말이고, 학생이 듣는 말은
- * **무엇이 남아 있는가** 다.
+ * `남아 있습니다` 는 우리가 센 것을 적은 말이다. 학생이 듣는 말은
+ * **무엇을 만들어 뒀는가**이고, 그 둘은 같은 사실의 다른 쪽이다.
  */
-export function keptLineKo(left: string): string {
-  const t = thingKo(left);
-  return `${withJosa(t, "이가")} 남아 있어요.`;
+export function keptLineKo(left: string[]): string {
+  const x = left.map(thingKo).slice(0, 2);
+  if (!x.length) return "";
+  return `${withJosa(x.join(", "), "을를")} 만들어 뒀어요.`;
 }
 
 /**

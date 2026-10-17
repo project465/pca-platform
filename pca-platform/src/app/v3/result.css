@@ -908,121 +908,107 @@
  * 테만 남은 네모와 옅은 금이다. 그 끊긴 자리가 곧 다음에 할 일이다.
  * **카드로 두르지 않는다**(§20): 영역 하나가 흰 상자로 서면 영역이 둘일
  * 때 또 2×2 가 된다 */
-/* ── Evidence ── **한 경험을 읽는 자리**(R6 §2~§9).
+/* ── Evidence ── **편집된 쪽**(R8 §1~§3·§7·§8·§10).
  *
- * 흰 카드 둘을 같은 크기 · 같은 안쪽 차례 · 같은 cyan 상자로 세우면,
- * 자료로는 맞아도 **DB 필드를 찍어 낸 화면**으로 읽힌다. 그래서 뼈대를
- * 다시 세운다. 뜻 넷(한 일 · 직접 정한 것 · 남은 결과 · 쓰는 자리)은
- * 그대로이고 **보이는 짜임만** 바꾼다.
+ * 색칠한 상자 안에 답을 넣는 꼴을 버렸다. 그 모양은 어디서나 쓰는 답변
+ * 카드이고, 이 절이 파는 것(**상담사가 내 경험을 편집해 준 쪽**)과
+ * 반대로 읽힌다. 남은 것은 여백과 활자와 금 하나다.
  *
- *   들머리   가운데 · 넓게
- *   경험 1   금 한 줄 왼쪽 · 큰 이야기 한 문장 · 거드는 줄 · 둥근 면
- *   경험 2   둥근 큰 면 · 이야기 · 남은 결과를 가운데로 들어 올림 · 금 아래 눕는 활용
+ *   먼저 쓸 이야기   큰 활자 두 문장 → 만들어 둔 것 → 아주 옅은 면 하나
+ *   같이 쓸 이야기   금 한 줄 아래 한 단 작게 · 면도 테도 없이
  *
- * **모든 것을 카드로 만들지 않는다**: 테 없는 글 묶음과 금 한 줄과 작은
- * metadata 와 **한 군데의 강조 면**을 섞는다. */
-.rs-chain { margin: var(--r-s5) 0 0; display: grid; gap: var(--r-s7); }
+ * **둥근 면은 한 화면에 하나**(§3)이고 색은 이름표와 금에만 선다(§1).
+ * 손전화를 먼저 맞추고(§9) 넓은 화면에서는 **두 단으로 갈라** 세로로 늘인
+ * 꼴이 되지 않게 한다(§10). */
+.rs-chain { margin: var(--r-s5) 0 0; display: grid; gap: var(--r-s6); }
 
 .rs-ev-intro {
-  margin: 0 auto var(--r-s6); max-width: 36rem; text-align: center;
+  margin: 0 auto var(--r-s6); max-width: 32rem; text-align: center;
   font-size: var(--r-t-lead); line-height: 1.62; color: var(--r-ink-2);
+  /* **끝 한 마디만 다음 줄에 떨어지는 것을 막는다.** 줄을 고르게 나눈다 */
+  text-wrap: balance;
 }
 
 .rs-ev-x { display: grid; gap: var(--r-s4); }
-/* 첫 경험. **상자에 넣지 않는다**: navy 금 한 줄이 묶는 일을 한다 */
-.rs-ev-x.is-lead {
-  padding-left: var(--r-s5); border-left: 2px solid var(--r-accent);
+/* **둘째 이야기만 금 한 줄로 가른다.** 상자도 면도 두지 않는다 */
+.rs-ev-x.is-sub {
+  gap: var(--r-s3); padding-top: var(--r-s5);
+  border-top: 1px solid var(--r-line);
 }
-/* 둘째 경험. 둥근 면 하나로 묶고 **폭을 줄여** 첫 경험과 결을 가른다.
-   **면은 흰색이다**: 쪽 바탕이 이미 cool off-white 라 같은 계열의 옅은
-   면을 깔면 그 면이 보이지 않고, 묶는 일을 하지 못한다 */
-.rs-ev-x.is-second {
-  padding: var(--r-s6); border-radius: 28px;
-  background: var(--r-paper); border: 1px solid var(--r-line);
-}
-/* 작은 metadata. 머리글이 아니다 */
+/* 작은 metadata. 영역 이름과 그 이야기의 무게 */
 .rs-ev-of {
-  margin: 0; display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline;
-  font-size: var(--r-t-meta); font-weight: var(--ui-w-md);
-  letter-spacing: .02em; color: var(--r-ink-3);
+  margin: 0; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline;
+  font-size: var(--r-t-meta); letter-spacing: .02em;
 }
+.rs-ev-of b { font-weight: var(--ui-w-md); color: var(--r-ink-2); }
 .rs-ev-of i {
-  font-style: normal; font-weight: var(--ui-w-sb); color: var(--r-teal);
+  font-style: normal; font-weight: var(--ui-w-md); color: var(--r-ink-3);
 }
-/* **이 묶음의 주인공.** 그 사람이 한 일 한 문장이 가장 크다 */
+.rs-ev-of i::before { content: "· "; color: var(--r-line); }
+.rs-ev-say { display: grid; gap: var(--r-s2); }
+/* **이 쪽의 주인공.** 그 사람이 한 일 한 문장이 가장 크다 */
 .rs-ev-story {
-  margin: 0; max-width: 32rem;
+  margin: 0; max-width: 30rem;
   font-size: clamp(19px, 1.8vw, 23px); line-height: 1.46;
   font-weight: var(--ui-w-sb); letter-spacing: -.022em;
   color: var(--r-ink); text-wrap: pretty;
 }
-.rs-ev-x.is-second .rs-ev-story { font-size: clamp(17px, 1.5vw, 20px); }
-/* 손에 남은 것 한 줄. **이름표를 세우지 않는다**(R7): `남은 결과` 라는
-   줄과 그 아래 값 두 줄이던 것을 한 문장으로 눕힌다 */
-.rs-ev-kept {
-  margin: 0; padding-top: var(--r-s3); border-top: 1px solid var(--r-line-soft);
-  font-size: var(--r-t-body); line-height: 1.5; color: var(--r-ink-2);
+/* 둘째 문장은 한 단 낮다: 두 문장이 같은 크기면 다시 한 덩이로 읽힌다 */
+.rs-ev-story.is-two {
+  font-size: clamp(17px, 1.5vw, 19px); font-weight: var(--ui-w-md);
+  color: var(--r-ink-2);
 }
-/* 둘째 경험만 **남은 것을 가운데로 들어 올린다**(§6·§7). 이름표도 없이
-   그 이름 하나만 선다: 이 묶음에서 가장 먼저 눈에 들어오는 자리다 */
-.rs-ev-keep { margin: var(--r-s2) 0 0; text-align: center; }
-.rs-ev-keep b {
-  font-size: clamp(18px, 1.6vw, 21px); font-weight: var(--ui-w-sb);
-  letter-spacing: -.015em; color: var(--r-teal);
-}
-/* 그 아래 한 줄. 가운데로 받아 위의 이름과 한 덩이로 읽힌다 */
+.rs-ev-x.is-sub .rs-ev-story { font-size: clamp(17px, 1.4vw, 19px); max-width: 28rem; }
 .rs-ev-line {
-  margin: 0; text-align: center;
-  font-size: var(--r-t-gloss); line-height: 1.55; color: var(--r-ink-2);
+  margin: 0; font-size: var(--r-t-body); line-height: 1.55; color: var(--r-ink-2);
 }
-/* 쓰는 자리. **한 단 세다.** 다만 경험마다 같은 상자를 복사하지 않는다 */
-.rs-ev-use {
-  display: grid; gap: var(--r-s3);
-  padding: var(--r-s5); border-radius: 20px; background: var(--r-cyan-soft);
+/* 만들어 둔 것. **한 줄이고 이름표가 없다** */
+.rs-ev-kept {
+  margin: var(--r-s2) 0 0; font-size: var(--r-t-body); line-height: 1.5;
+  color: var(--r-teal); font-weight: var(--ui-w-md);
 }
-.rs-ev-use.is-flat {
-  padding: var(--r-s4) 0 0; border-radius: 0; background: none;
-  border-top: 2px solid var(--r-cyan-line);
+/* 쓰는 자리. 첫 이야기만 **아주 옅은 면 하나**, 둘째는 금 한 줄 */
+.rs-ev-use { margin: 0; display: grid; gap: var(--r-s3); }
+.rs-ev-x.is-lead .rs-ev-use {
+  padding: var(--r-s4) var(--r-s5); border-radius: 16px; background: var(--r-sunk);
 }
-.rs-ev-ul {
-  margin: 0; text-align: center; font-size: var(--r-t-meta);
-  font-weight: var(--ui-w-sb); letter-spacing: .05em; color: var(--r-cyan);
+.rs-ev-x.is-sub .rs-ev-use { padding-top: var(--r-s3); border-top: 1px solid var(--r-line-soft); }
+.rs-ev-use > div { display: grid; grid-template-columns: auto 1fr; gap: var(--r-s3); }
+/* **이름표가 문장보다 먼저 튀지 않는다**(§7): 작은 회색이고 그 앞에
+   teal 금 한 칸만 선다 */
+/* **줄이 쪼개지면 이름표가 아니라 덩이가 된다**: 한 줄로 못 박는다 */
+.rs-ev-use dt {
+  font-size: var(--r-t-meta); font-weight: var(--ui-w-md);
+  color: var(--r-ink-3); letter-spacing: .02em; white-space: nowrap;
+  padding-left: 7px; border-left: 2px solid var(--r-teal);
 }
-.rs-ev-use.is-flat .rs-ev-ul { text-align: left; }
-.rs-ev-two { margin: 0; display: grid; gap: var(--r-s3); }
-.rs-ev-two > div { display: grid; gap: 5px; }
-/* 둘째 경험은 **머리말 없이 두 줄로** 눕는다: 이름표가 줄 앞에 서고
-   문장이 그 뒤를 잇는다. 첫 경험의 알약 두 칸과 결이 갈린다 */
-.rs-ev-use.is-flat .rs-ev-two > div {
-  grid-template-columns: 3.1rem 1fr; gap: var(--r-s3); align-items: baseline;
+/* 둘째 이야기는 이름표를 **글 위에** 둔다. 첫 이야기의 왼쪽 금과 결이
+   갈려서, 같은 조각을 두 번 쓴 것으로 읽히지 않는다 */
+.rs-ev-x.is-sub .rs-ev-use > div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+.rs-ev-x.is-sub .rs-ev-use dt {
+  padding: 0; border: 0; color: var(--r-teal); letter-spacing: .06em;
 }
-/* 지원서와 면접이 **한눈에 갈린다**(§5). 알약 하나로 자리를 적는다 */
-.rs-ev-two dt {
-  justify-self: start; padding: 2px 10px; border-radius: 999px;
-  background: var(--r-paper); color: var(--r-cyan);
-  font-size: var(--r-t-meta); font-weight: var(--ui-w-sb); letter-spacing: .02em;
+.rs-ev-use dd {
+  margin: 0; font-size: var(--r-t-body); line-height: 1.55; color: var(--r-ink);
 }
-.rs-ev-use.is-flat .rs-ev-two dt {
-  padding: 0; background: none; color: var(--r-cyan);
-}
-.rs-ev-two dd {
-  margin: 0; font-size: var(--r-t-gloss); line-height: 1.62; color: var(--r-ink);
-}
-.rs-ev-use.is-empty { background: var(--r-sunk); }
-.rs-ev-use.is-empty .rs-ev-ul { color: var(--r-ink-3); }
 .rs-ev-p { margin: 0; font-size: var(--r-t-gloss); line-height: 1.6; color: var(--r-ink-2); }
 @media (min-width: 860px) {
-  /* **같은 폭으로 두 장을 세우지 않는다.** 둘째 경험은 한 단 좁고 오른쪽
-     으로 물러서서, 눈이 위에서 아래로 흐르는 동안 결이 한 번 바뀐다 */
-  /* **빈 면을 크게 남기지 않는다**: 첫 경험도 폭을 한 번 잡아 두 묶음이
-     어긋나게 서되 왼쪽이 통째로 비지 않는다 */
-  .rs-ev-x.is-lead { width: min(100%, 52rem); }
-  /* **지나치게 오른쪽으로 밀지 않는다**(R7 Desktop): 왼쪽에 큰 빈 면이
-     남으면 그 자리가 덜 그린 화면으로 읽힌다. 50:50 으로 가르지도
-     않는다 — 두 묶음은 위아래로 읽히고 폭만 한 단 다르다 */
-  .rs-ev-x.is-second { width: min(100%, 50rem); justify-self: end; }
-  .rs-ev-two { grid-template-columns: 1fr 1fr; gap: var(--r-s5); }
-  .rs-ev-use.is-flat .rs-ev-two { column-gap: var(--r-s6); }
+  /* **세로로 늘인 꼴이 되지 않게 한다**(§10). 먼저 쓸 이야기는 글과 쓰는
+     자리를 **두 단으로 갈라** 세우고, 같이 쓸 이야기는 한 단 좁게 들여
+     쓴다. 50:50 으로 나누지 않는다 */
+  .rs-ev-x.is-lead {
+    grid-template-columns: minmax(0, 1fr) 20rem;
+    align-items: start; column-gap: var(--r-s7);
+  }
+  .rs-ev-x.is-lead .rs-ev-of,
+  .rs-ev-x.is-lead .rs-ev-say { grid-column: 1; }
+  .rs-ev-x.is-lead .rs-ev-use { grid-column: 2; grid-row: 1 / span 2; }
+  .rs-ev-x.is-sub {
+    width: min(100%, 46rem); margin-left: auto;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  /* 넓은 화면에서는 둘째 이야기의 쓰는 자리를 두 칸으로 눕힌다 */
+  .rs-ev-x.is-sub .rs-ev-use { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--r-s6); }
 }
 
 .rs-first { margin: var(--r-s3) 0 0; padding: 0; list-style: none; }
@@ -1248,18 +1234,16 @@
   .rs-banner-a { width: 100%; justify-content: center; min-height: 52px; }
   /* 좁은 화면에서도 **한 경험이 너무 긴 카드가 되지 않게** 한다(R6 §14):
      묶음 사이는 벌리고 안쪽 여백은 줄인다 */
-  /* **한 경험이 한 화면에 들어오게 한다**(R7 PRIORITY 1). 글자를 줄이지
-     않고 **여백과 겹치는 줄**을 걷는다: 묶음 사이만 벌리고 안쪽은 좁힌다 */
-  .rs-chain { gap: var(--r-s6); }
+  /* **390 을 먼저 맞춘다**(R8 §9). 글자를 줄이지 않고 **겹치는 줄과
+     여백**을 걷는다: 묶음 사이만 벌리고 안쪽은 좁힌다 */
+  .rs-chain { gap: var(--r-s5); }
   .rs-ev-x { gap: var(--r-s3); }
-  .rs-ev-x.is-lead { padding-left: var(--r-s4); }
-  .rs-ev-x.is-second { padding: var(--r-s5); border-radius: 22px; }
+  .rs-ev-x.is-sub { padding-top: var(--r-s4); }
   .rs-ev-story { font-size: 18px; line-height: 1.44; }
-  .rs-ev-kept { padding-top: var(--r-s2); }
-  .rs-ev-use { padding: var(--r-s4); border-radius: 16px; gap: var(--r-s2); }
-  .rs-ev-use.is-flat { padding-top: var(--r-s3); }
-  .rs-ev-two { gap: var(--r-s2); }
-  .rs-ev-use.is-flat .rs-ev-two > div { grid-template-columns: 2.9rem 1fr; }
+  .rs-ev-story.is-two { font-size: 16px; }
+  .rs-ev-x.is-lead .rs-ev-use { padding: var(--r-s4); border-radius: 14px; }
+  .rs-ev-use { gap: var(--r-s2); }
+  .rs-ev-use > div { gap: 10px; }
   .rs-ev-intro { margin-bottom: var(--r-s5); font-size: var(--r-t-body); }
   .rs { --r-gutter: 16px; }
   /* **두 줄로 접히면 브랜드 줄을 덮는다.** 한 줄로 두고 옆으로 민다 */
@@ -1614,9 +1598,13 @@
   /* **종이에서는 면도 금도 쓰지 않는다**: 둥근 면과 왼쪽 금은 화면의
      짜임이고, 종이에서는 잉크가 되고 쪽을 늘린다. 경험 둘을 같은 줄로
      눕히고 쪽수는 22벌 감사가 지킨다 */
-  .rs-ev-x, .rs-ev-x.is-lead, .rs-ev-x.is-second {
+  /* **종이에서는 면도 금도 쓰지 않는다**: 옅은 면과 들여쓰기는 화면의
+     짜임이고 종이에서는 잉크가 되고 쪽을 늘린다. 두 이야기를 같은 줄로
+     눕히고 쪽수는 22벌 감사가 지킨다 */
+  .rs-ev-x, .rs-ev-x.is-lead, .rs-ev-x.is-sub {
     border: 0; border-top: 1.2pt solid var(--r-accent); border-radius: 0;
-    padding: 4px 0 0; background: none; gap: 4px; width: auto;
+    padding: 4px 0 0; background: none; gap: 3px; width: auto;
+    margin-left: 0; display: block;
   }
   .rs-ev-intro {
     margin: 0 0 6px; max-width: none; text-align: left;
@@ -1624,28 +1612,24 @@
   }
   .rs-ev-of { font-size: 7.5pt; }
   .rs-ev-of i { color: var(--r-ink-3); }
-  .rs-ev-story {
+  .rs-ev-say { display: block; }
+  .rs-ev-story, .rs-ev-story.is-two, .rs-ev-x.is-sub .rs-ev-story {
     max-width: none; font-size: 9.5pt; line-height: 1.4;
-    font-weight: var(--ui-w-sb); letter-spacing: 0;
+    font-weight: var(--ui-w-sb); letter-spacing: 0; color: var(--r-ink);
   }
-  .rs-ev-x.is-second .rs-ev-story { font-size: 9.5pt; }
-  .rs-ev-kept, .rs-ev-line {
-    padding-top: 2px; border-top: 0; text-align: left;
-    font-size: 9pt; line-height: 1.45;
+  .rs-ev-story.is-two { font-weight: var(--ui-w-rg); }
+  .rs-ev-line, .rs-ev-kept { margin: 0; font-size: 9pt; line-height: 1.45; }
+  .rs-ev-kept { color: var(--r-ink); font-weight: var(--ui-w-sb); }
+  .rs-ev-x.is-lead .rs-ev-use, .rs-ev-x.is-sub .rs-ev-use {
+    padding: 2px 0 0; border: 0; border-radius: 0; background: none;
+    display: block; gap: 0;
   }
-  /* 가운데로 들어 올린 결과물도 종이에서는 한 줄로 눕는다 */
-  .rs-ev-keep { margin: 0; text-align: left; }
-  .rs-ev-keep b { font-size: 9pt; font-weight: var(--ui-w-sb); color: var(--r-ink); }
-  .rs-ev-use, .rs-ev-use.is-flat, .rs-ev-use.is-empty {
-    padding: 0; border-radius: 0; background: none; border: 0; gap: 2px;
+  .rs-ev-use > div,
+  .rs-ev-x.is-sub .rs-ev-use > div { grid-template-columns: 3.2em 1fr; gap: 6px; }
+  .rs-ev-use dt {
+    padding: 0; border: 0; color: var(--r-ink-3); font-size: 7.5pt;
   }
-  .rs-ev-ul { text-align: left; font-size: 7.5pt; color: var(--r-ink-3); letter-spacing: .02em; }
-  .rs-ev-two { gap: 2px; grid-template-columns: none; }
-  .rs-ev-two > div { grid-template-columns: 3.2em 1fr; gap: 6px; align-items: baseline; }
-  .rs-ev-two dt {
-    padding: 0; background: none; color: var(--r-ink-3); font-size: 7.5pt;
-  }
-  .rs-ev-two dd, .rs-ev-p { font-size: 9pt; line-height: 1.45; }
+  .rs-ev-use dd, .rs-ev-p { font-size: 9pt; line-height: 1.45; }
   .rs-first > li { padding: 5px 0; }
   .rs-pack dl > div { padding: 4px 0; }
   .rs-gap { padding: 10px 14px; margin-top: 8px; }

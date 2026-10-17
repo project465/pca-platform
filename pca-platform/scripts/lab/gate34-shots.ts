@@ -77,6 +77,21 @@ async function clipTo(p: Page, from: string, to: string, file: string): Promise<
   mark(file);
 }
 
+/** 근거 절과 경험마다의 세로 길이를 잰다. 손전화 한 화면에 드는지는
+    그림만으로 가려지지 않는다 */
+async function evSize(p: Page, name: string): Promise<void> {
+  const out = await p.evaluate(() => {
+    const s = document.querySelector("section#evidence") as HTMLElement | null;
+    const xs = Array.from(
+      document.querySelectorAll("section#evidence .rs-ev-x")) as HTMLElement[];
+    return {
+      sec: s ? Math.round(s.getBoundingClientRect().height) : -1,
+      ex: xs.map((x) => Math.round(x.getBoundingClientRect().height)),
+    };
+  });
+  console.log(`  ${name} 근거 절 ${out.sec}px · 경험 ${out.ex.join(" / ")}px`);
+}
+
 async function main(): Promise<void> {
   assertFreshServer();
   assertPreviewServer(CORE);
@@ -169,6 +184,7 @@ async function main(): Promise<void> {
        딸려와 글자가 작아지고, 묻는 것(`한 경험으로 읽히는가`)에 답할 수
        없다 */
     await clipTo(p, "section#evidence h2", ".rs-chain", `${OUT}/gate4-desktop.png`);
+    await evSize(p, "desktop");
     /* **경험마다 따로 뜬다**(R7 §제출). 둘이 같은 틀의 변형인지는 둘을
        나란히 놓고 글자가 읽히는 크기로 봐야 가려진다 */
     const cards = p.locator("section#evidence .rs-ev-x");
@@ -189,6 +205,7 @@ async function main(): Promise<void> {
     await openAll(m);
     await m.waitForTimeout(400);
     await clipTo(m, "section#evidence h2", ".rs-chain", `${OUT}/gate4-mobile.png`);
+    await evSize(m, "mobile");
     const mcards = m.locator("section#evidence .rs-ev-x");
     for (let i = 0; i < Math.min(2, await mcards.count()); i += 1) {
       const f = `${OUT}/gate4-mobile-card${i ? "2" : ""}.png`;

@@ -495,8 +495,13 @@ for (const core of CORES) {
   try { two = (load(core).domains.domains as DomRow[]).slice(0, 2).map((d) => d.code); }
   catch { continue; }
   if (two.length < 2) continue;
-  const a = evidenceUsePartsKo(core, two[0], { decided: "x", left: null }, "lead");
-  const b = evidenceUsePartsKo(core, two[1], { decided: "x", left: "표" }, "second");
+  /* **고르신 항목만 넘긴다**(R8 §5). 견준 자리가 있는 사람과 없는 사람의
+     문장이 갈리므로, 둘 다 들고 있는 자리로 세워 골격을 견준다 */
+  const ev = {
+    decisions: ["기준을 정했다"], artifacts: ["계획표"], verifications: ["지난 기록"],
+  };
+  const a = evidenceUsePartsKo(core, two[0], ev, "lead");
+  const b = evidenceUsePartsKo(core, two[1], ev, "second");
   const head = (t: string): string => t.slice(0, 6);
   const tailOf = (t: string): string => t.slice(-8);
   if (head(a.resume) === head(b.resume) || tailOf(a.resume) === tailOf(b.resume)) {
