@@ -10954,3 +10954,96 @@ R8 은 근거 절의 카드와 색면을 걷었는데도 화면이 계속 비슷
 틀이 스무 Core 에 그대로 서지만, 콘텐츠를 더 쓰거나 Core 쪽 자료를 고치지
 않았다. 운영 배포본을 밖에서 열지 못했고 **학생 공개 상태를 바꾸지
 않았다**: `PRODUCTION UNVERIFIED` 와 `PCU CANARY BLOCKED` 가 그대로다.
+
+**근거 절을 네 막으로. 카드 둘을 버렸다.** (2026-10-17)
+
+R9 는 경험 둘의 **차례**를 갈랐는데도 화면이 계속 `카드 두 장` 으로
+읽혔다. 까닭이 하나였다: 차례는 달라도 **조각의 성격이 둘 다 카드 한
+장**이었다. 그래서 이번에는 빈 캔버스에서 `학생이 3초 봤을 때 무엇을
+먼저 알아야 하는가` 부터 묻고 DOM 을 대부분 지웠다. 측정은
+`ME_V3_MEASUREMENT_FREEZE_1` 에 그대로 머문다: measurement · scoring ·
+item bank · assessment question · answer meaning · result decision ·
+evidence decision · gap decision · registry · DB schema ·
+`student_open` 을 한 줄도 건드리지 않았고 그 동결이 **기록을 다시 적지
+않은 채로** 통과한다. 보고 ①~⑦ 은 `docs/metri/R11_EVIDENCE_RESTRUCTURE.md`.
+
+```
+ACT1 OPENING   eyebrow + 큰 headline        (카드 금지 · 판정문 금지)
+ACT2 WHAT I DID 행동 장면 하나 → 들여쓴 document chip   ACTION → OUTPUT
+ACT3 USE IT    [지원서] action cue  |  "실제 질문" 큰 인용   (좌우 비대칭)
+ACT4 SECONDARY 금 한 줄 → 결과물이 머리 → hairline proof strip
+```
+
+**데이터 구조를 UI 구조로 그대로 옮기지 않는다.** 앞 판본은 결과 모델이
+들고 있는 `did` · `decided` · `artifacts` · `verifications` 를 경험마다
+네 칸으로 그려서, 읽는 사람이 받는 것이 **그 사람의 경험 대신 필드
+목록**이었다. 지금은 한 경험이 한 장면이고 네 막의 조각이 전부 다르다.
+
+**ACT2 와 ACT4 가 DOM 까지 다르다.** 같은 component 를 무게만 달리
+그리면 둘이 한 틀의 변형으로 읽힌다. ACT2 는 `p` + `ul > li`(chip)이고
+ACT4 는 `aside` 안의 `p` 넷이며 격자 자리도 다르다. ACT4 는 Desktop 에서
+ACT2+3 의 39% 높이다.
+
+**강한 둥근 면이 한 화면에 하나다**(radius 20 cyan `.rs-ev2-cue`). 보조
+면은 document chip(radius 10)뿐이고 editorial 요소는 radius 0~10 이며
+999px pill 은 `지원서` 태그 하나에만 쓴다. beige/brown · lilac ·
+pastel card 3종 · rainbow · gradient 가 0건이다.
+
+**지원서와 면접의 시각 역할을 다르게 했다.** 왼쪽은 `지원서` 태그가 붙은
+**행동 지시**이고 오른쪽은 **실제 질문**을 큰 활자로 띄운 `blockquote`
+다. 전에는 둘이 같은 cyan panel 안의 `label → value` 두 줄이어서, 그
+묶음이 경험마다 되풀이되는 것이 이 절에서 가장 큰 덩이였다.
+
+**세 가지 꼴을 섞는다.** 행동문(`…적었습니다`)과 명사형(`목표·지표
+정리표`)과 실제 질문(`“전사 목표와 어떻게 맞췄나요?”`)이다. 자리마다
+꼴이 정해져 있으면 같은 어미가 세 번 잇따를 수 없다. 같은 응답에서
+마침표 0개 · `~요` 0줄 · `습니다` 2줄이고 금지 라벨 일곱과 금지 표현
+열둘이 전부 0건이다.
+
+**Core/Domain 이름을 문장 template 에 끼워 넣지 않는다.** 영역 이름이
+서는 자리는 문장 밖의 작은 `of` 줄 하나뿐이고, 활용 문장은 그 영역이
+일하는 차례의 `먼저 정하는 것` 과 응답의 `verifications` 에서 온다.
+
+**상담사는 질문을 그대로 말한다.** `그 기준은 어떻게 정했는지
+말해보세요` 는 매 문장마다 묻는 `취업상담사가 학생 옆에서 실제로 이 말을
+할까` 에 NO 였다. `“전사 목표와 어떻게 맞췄나요?”` 로 바꿨다.
+
+**Desktop 과 Mobile 을 따로 설계했다.** Desktop 은 활용이
+`23rem / 1fr` 비대칭 두 단이고 ACT4 가 `17rem / 1fr / 1.1fr` 세 단이라
+1400px 격자를 실제로 쓴다. Mobile 390 은 세로지만 **축소판이 아니다**:
+OPENING + 행동 장면 + chip 이 첫 화면에서 완결되고 활용이 그다음 화면이며
+본문이 16px 아래로 줄지 않는다. 절 높이가 2535px 과 4031px 이다.
+
+**screenshot 자체 수정을 두 번 돌렸다.** 1차에서 A~L 열두 문항 가운데
+넷이 YES 였다. **padding 조정으로 끝내지 않았다**: ACTION → OUTPUT 이
+끊겨 읽힌 것은 chip 을 2단 격자 오른쪽 끝에 둔 **격자를 버려서** 고치고,
+Desktop 중앙에 작은 문서가 뜬 것은 중앙 한 단을 **비대칭 두 단으로
+바꿔서** 고쳤다. 어미가 셋 잇따른 것은 ACT4 결과물 줄을 **이름씨로
+바꿔서** 고쳤다. 2차에서 ACT4 머리가 15rem 단에서 두 줄로 접혀 본 근거와
+비슷한 덩이가 된 자리를 한 번 더 고쳤다.
+
+**첫 노출 글자량을 눈으로 재지 않는다.** 앞 판본의 `text.ko.ts` 를 그
+커밋에서 임시로 들여와 같은 스냅샷으로 두 벌을 렌더해 세었다. R11 셈이
+204자인데 **R10 의 185자와 범위가 다르다**: eyebrow 와 `지원서` 태그와
+`면접에서 이어질 질문` cite 가 R10 셈에 없었고 그 스물을 빼면 184자다.
+**다른 회차에 다른 범위로 잰 수로 뺄셈을 하지 않는다.**
+
+**검사를 느슨하게 하지 않았다.** `v3:result:copy` 가
+`기준을 어떤 기준으로 정했는지부터` 를 금지 template 로 잡았다(영역
+흐름을 쓸 수 없는 ARCH·HEALTH·FOOD 에서 그 꼴이 나온다). 한도를 늘리지
+않고 fallback 을 `…을 어디까지 직접 정했는지부터` 로 바꿨다.
+
+**빌드가 OOM 으로 죽으면 `.next` 가 옛 빌드로 남는다(다섯 번째).** 쪽은
+200 으로 멀쩡히 뜨고 **고친 것이 한 줄도 없는 화면**이 선다.
+`NODE_OPTIONS="--max-old-space-size=4096"` 으로 끝까지 돌리고
+`var/.serving-build` 와 `.next/BUILD_ID` 를 견준 뒤에 찍는다.
+
+판본은 결과지 화면과 문장만 올렸다: `ME_V3_RESULT_UI_V59` ·
+`me-v3-result-copy.51`. **문항 은행과 판단 규칙과 결과 모델은 그대로다.**
+
+**아직 아닌 것.** 네트워크 정책이 `app.careermatri.com:443` 을 막아 운영
+배포본을 밖에서 열지 못했고 **학생 공개 상태를 한 칸도 바꾸지 않았다**:
+`PRODUCTION UNVERIFIED` 와 `PCU CANARY BLOCKED` 가 그대로다. **다른
+Core 로 넓히지 않았고 115개 학과로 복제하지 않았다.** 영역 사전이 같은
+결과물 이름을 쓰는 Core 쌍(BIZ = PUBADM)과 종이 보고 셋은 문항 은행
+지문이 덮는 자리라 그대로 적어 둔다.

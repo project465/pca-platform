@@ -99,7 +99,7 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
  * **판정도 결과 모델도 한 줄 바뀌지 않았다.** 이 판본이 든 파일은 전부
  * 번역표와 읽는 층이고, 채점과 결과 모델은 이 파일을 읽지 않는다.
  */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.49";
+export const RESULT_COPY_VERSION = "me-v3-result-copy.51";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -323,7 +323,7 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.49";
  * 줄도 바뀌지 않았고 `v3:freeze:measure` 가 기록을 다시 적지 않은 채로
  * 통과한다.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V57";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V59";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX
@@ -939,4 +939,29 @@ export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V57";
  * 있는 `did` · `decided` · `artifacts` · `verifications` 와 그 영역이 일하는
  * 차례에서 오고, 재료가 없는 토막은 비운다. 그래서 측정 동결이 기록을 다시
  * 적지 않은 채로 통과한다.
+ */
+
+/**
+ * `ME_V3_RESULT_UI_V59` · `me-v3-result-copy.51` 로 올린 까닭.
+ *
+ * **근거 절을 제품 구조 층에서 다시 설계했다**(R11). 앞 판본들은 경험
+ * 카드를 손봤고, 그러면 돌려주는 모양이 한 가지라 두 경험이 **같은 정보
+ * 구조의 변형**으로 남는다. 이번에는 데이터 구조를 화면 구조로 옮기는
+ * 방식 자체를 버렸다.
+ *
+ *   ① 여는 한 마디   `~ 본 경험` · 면 없이 큰 활자 하나
+ *   ② 한 행동 → 남은 것  행동문 하나 + 결과물 조각(둥글기 10)
+ *   ③ 꺼내 쓰는 자리  지원서는 **출발점**(옅은 면 하나), 면접은 **물음**
+ *   ④ 곁근거        금 한 줄 아래 가로로 눕는 띠(둥글기 0)
+ *
+ * 영역 · 한 일 · 직접 정한 것 · 남은 결과 · 지원서 · 면접 **여섯 칸을
+ * 그대로 세우지 않는다**: 학생에게 필요한 것은 셋이다 — 무엇을 먼저 쓸 수
+ * 있는가 · 그 경험에 무엇이 남았는가 · 어디에 어떻게 꺼내는가.
+ *
+ * 말투도 세 가지를 섞는다: 행동문(`~습니다`) · 이름씨 · 실제 물음. 그래서
+ * 이 절에 마침표가 0개이고 `~요` 로 닫는 줄이 0줄이다.
+ *
+ * **판정은 한 줄도 바뀌지 않았다**: 토막이 전부 결과 모델이 이미 들고
+ * 있던 `did` · `decided` · `artifacts` · `verifications` 와 영역 사전의
+ * 일하는 차례에서 온다. 측정 동결이 기록을 다시 적지 않은 채로 통과한다.
  */

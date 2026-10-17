@@ -21,7 +21,7 @@ import {
   commonKo, domainChainKo, draftKo, gapCellKo, gapKo, gapNeedKo, gapNeedShortKo, gapShortKo,
   actionWhyKo, AXIS_DID_KO, headlineBadgeKo, headlineKo, needSentenceKo,
   pickSentenceKo,
-  evidenceStoryKo, keptNoteKo, moreReadyKo,
+  evidenceOpenKo, evidenceAlsoKo, keptNoteKo, moreReadyKo,
   HORIZON_KO, QUALITY_KO, TIER_NOTE_KO, TRANS_ORDER, TRANS_STEP_KO,
   XFIELD_ORDER, xfieldKo, ZONE_LEAD_KO, ZONE_TITLE_KO,
 } from "@/lib/me-v3/result/text.ko";
@@ -926,6 +926,11 @@ export default async function V3Result({
     (x) => x !== best && !left.some((a) => x.includes(a))) ?? "";
   const cardSay = cardPick ? pickSentenceKo([cardPick]) : "";
   const openLine = openQuote || h.title;
+  /* 근거 절의 네 막. **쓰는 쪽에서 가를 일이 없게** 여는 경험과 곁근거가
+     서로 다른 모양을 돌려받는다(R11 §3) */
+  const evOpen = chains[0]
+    ? evidenceOpenKo(core, chains[0].code, chains[0]) : null;
+  const evAlso = chains[1] ? evidenceAlsoKo(chains[1]) : null;
   /* 공식 Hero 그림이 들어와 있는가. 없으면 글이 hero 폭을 다 쓴다 */
   const heroArt = hasHeroAsset();
   /*
@@ -1453,14 +1458,10 @@ export default async function V3Result({
               한 줄을 더 세우면 같은 말이 두 번 선다 */}
             <p className="rs-q">지원서에서 꺼내 쓸 경험은 무엇인가</p>
             <h2>내가 이미 가진 근거</h2>
-            {/* **들머리를 설명문으로 두지 않는다**(R9 §0·§1·§4).
-                전에는 `여기 있는 건 전부 직접 하신 일이에요. 지원서 쓸 때
-                여기서 꺼내 쓰면 돼요.` 두 문장이 섰다. 뒤 문장은 아래
-                지원서·면접 줄이 이미 하는 말이고, 앞 문장은 한 토막으로
-                줄여도 뜻이 그대로다. **마침표도 두지 않는다** */}
-            {model.evidence.ready.length ? (
-              <p className="rs-ev-open">전부 직접 하신 일</p>
-            ) : (
+            {/* **들머리를 두지 않는다**(R10 §D). `여기 있는 건 전부 직접
+                하신 일이에요` 는 서비스가 제 구조를 설명하는 말이고, 줄여
+                놓아도 성격이 그대로다. 절 머리가 이미 같은 말을 한다 */}
+            {model.evidence.ready.length ? null : (
               <>
                 {/* **가리키는 줄이고 할 일이 아니다.** `…부터 보세요` 로 적어
                     두었더니 `할 일에 남길 결과물이 적혀 있다` 를 세는 자리가
@@ -1485,58 +1486,62 @@ export default async function V3Result({
                 ) : null}
               </>
             )}
-            {/* ── 근거 ── **경험 하나를 이야기 하나로**(R9 §4~§7).
-                앞 판본은 같은 네 칸을 경험마다 세웠다. 담는 그릇을 바꿔도
-                **안의 차례가 같으면** 두 경험이 한 틀의 변형으로 읽히므로,
-                이번에는 차례 자체를 갈랐다.
+            {/* ── 근거 ── **네 막으로 읽는다**(R11 §3).
+                데이터 구조를 화면 구조로 옮기지 않는다. 영역 · 한 일 ·
+                직접 정한 것 · 남은 결과 · 지원서 · 면접 여섯 칸을 그대로
+                세우면 그건 field 출력이다.
 
-                  첫 경험    이어 주는 말 → 큰 한 마디 → 띄운 남은 결과
-                             → 지원서 포인트 · 면접 질문
-                  둘째 경험  남은 결과가 머리로 → 평서문 한 줄 → 두 줄
+                  ① 여는 한 마디   카드 없이 큰 활자 하나
+                  ② 한 행동과 남은 것  행동문 → 결과물 조각
+                  ③ 꺼내 쓰는 자리  지원서는 **출발점**(면 하나), 면접은 **물음**
+                  ④ 곁근거        훨씬 짧은 띠 하나
 
-                **새 값을 만들지 않는다**: 다섯 토막이 전부 결과 모델의
-                `did` · `decided` · `artifacts` · `verifications` 와 그
-                영역이 일하는 차례에서 오고, 재료가 없는 토막은 비운다 */}
-            {chains.length ? (
-              <div className="rs-chain">
-                {chains.map((c, i) => {
-                  const s = evidenceStoryKo(core, c.code, c, i === 0 ? "lead" : "second");
-                  return i === 0 ? (
-                    <article key={c.code} className="rs-st">
-                      <p className="rs-st-of">{domainName(core, c.code)}</p>
-                      {/* **판정문이 아니라 그 사람이 정한 한 마디**가 가장
-                          크다. 이름씨로 닫히므로 마침표가 없다(§1) */}
-                      <h3 className="rs-st-head">{s.head}</h3>
-                      {s.lead ? <p className="rs-st-lead">{s.lead}</p> : null}
-                      {s.kept.length ? (
-                        <p className="rs-st-kept">
-                          <i>남은 결과</i>{s.kept.join(" / ")}
-                        </p>
-                      ) : null}
-                      {/* 쓰는 자리. **이름표가 위**이고 값은 이름씨다(§3) */}
-                      <div className="rs-st-use">
-                        <p><i>지원서에 꺼낼 포인트</i><b>{s.resume}</b></p>
-                        <p><i>면접에서 받을 질문</i><b>{s.ask}</b></p>
-                      </div>
-                    </article>
-                  ) : (
-                    <article key={c.code} className="rs-nx">
-                      <p className="rs-nx-of">
-                        {domainName(core, c.code)}<em>에서 남은 것</em>
-                      </p>
-                      {/* **둘째는 결과물이 머리로 선다**(§7) */}
-                      <h3 className="rs-nx-head">{s.head}</h3>
-                      {s.lead ? <p className="rs-nx-say">{s.lead}</p> : null}
-                      {/* 이름표를 **앞에** 둔 두 줄. 첫 경험과 조각이 갈린다 */}
-                      <dl className="rs-nx-use">
-                        <div><dt>지원서</dt><dd>{s.resume}</dd></div>
-                        <div><dt>면접</dt><dd>{s.ask}</dd></div>
-                      </dl>
-                    </article>
-                  );
-                })}
+                **막마다 조판이 다르다**(§4·§6): 면을 가진 자리는 ③ 하나
+                뿐이고 나머지는 여백 · 활자 · 금 · 정렬로 가른다 */}
+            {evOpen ? (
+              <div className="rs-ev2">
+                {/* ① 여는 한 마디. **판정문이 아니라 한 행동이다** */}
+                <p className="rs-ev2-of">{domainName(core, chains[0].code)}</p>
+                <h3 className="rs-ev2-head">{evOpen.head}</h3>
+
+                {/* ② 한 행동 → 남은 것. 결과물은 **실제 물건처럼** 선다 */}
+                <div className="rs-ev2-act">
+                  {evOpen.did ? <p className="rs-ev2-do">{evOpen.did}</p> : null}
+                  {evOpen.out.length ? (
+                    <ul className="rs-ev2-out">
+                      {evOpen.out.map((t) => <li key={t}>{t}</li>)}
+                    </ul>
+                  ) : null}
+                </div>
+
+                {/* ③ 꺼내 쓰는 자리. 둘의 **시각적 역할이 다르다**: 지원서는
+                    쓰기 시작할 자리(옅은 면 하나), 면접은 실제 물음(면 없이
+                    큰 활자) */}
+                <div className="rs-ev2-use">
+                  <div className="rs-ev2-cue">
+                    <i>지원서</i>
+                    <p>{evOpen.cue}</p>
+                  </div>
+                  <blockquote className="rs-ev2-q">
+                    <p>{evOpen.ask}</p>
+                    <cite>면접에서 이어질 질문</cite>
+                  </blockquote>
+                </div>
+
+                {/* ④ 곁근거. **여는 경험을 베끼지 않는다**: 머리도 조판도
+                    다르고, 네 줄이 가로로 눕는다 */}
+                {evAlso ? (
+                  <aside className="rs-ev2-also">
+                    <p className="rs-ev2-also-of">{domainName(core, chains[1].code)}</p>
+                    {evAlso.out ? <p className="rs-ev2-also-h">{evAlso.out}</p> : null}
+                    {evAlso.own ? <p className="rs-ev2-also-s">{evAlso.own}</p> : null}
+                    <p className="rs-ev2-also-u">{evAlso.cue}</p>
+                    <p className="rs-ev2-also-q">{evAlso.ask}</p>
+                  </aside>
+                ) : null}
+
                 {restReady.length ? (
-                  <p className="rs-ev-rest">
+                  <p className="rs-ev2-rest">
                     <i>그 밖에</i>{moreReadyKo(restReady)}
                   </p>
                 ) : null}
