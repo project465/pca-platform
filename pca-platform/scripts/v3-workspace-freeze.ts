@@ -39,6 +39,14 @@ const FILES = [
   "src/components/sf/brand-mark.tsx",
   "src/app/me/platform.css",
   "src/app/me/shell.tsx",
+  /* 머리 오른쪽의 바로가기 찾기. **껍데기와 한 벌이다**: 뒤지는 목록을
+     껍데기가 메뉴 정본에서 만들어 넘긴다 */
+  "src/app/me/find.tsx",
+  /* **선 아이콘 한 벌도 여기 적는다.** 작업공간과 검사와 결과지가 같은
+     파일을 읽는데 어느 동결 목록에도 없어서, 그림 하나를 고쳐도 아무
+     기록이 흔들리지 않았다. 상표(`brand-mark.tsx`)를 이 목록에 둔 것과
+     같은 까닭이다: 파일은 하나이고 서는 자리가 여럿이다 */
+  "src/components/sf/icon.tsx",
   /* 적다 만 것을 들고 나가지 않게 막는 자리(규격 §4) */
   "src/app/me/unsaved.tsx",
   "src/app/me/nav.ts",

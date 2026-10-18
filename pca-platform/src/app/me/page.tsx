@@ -7,6 +7,7 @@ import {
   ZONE_TITLE_KO, actionBriefKo, actionHeadKo, actionWhyKo, domainChainKo,
   gapKo,
 } from "@/lib/me-v3/result/text.ko";
+import { thingKo } from "@/lib/me-v3/result/say";
 import { Icon, type IconName } from "@/components/sf/icon";
 import { openActions } from "@/lib/me-v3/open-actions";
 import { recentChangeKo } from "@/lib/me-v3/change-text.ko";
@@ -120,6 +121,23 @@ export default async function Home() {
     .filter(([, z]) => READY_ZONES.includes(z))
     .map(([d]) => d)
     .slice(0, HOME_ROWS);
+  /**
+   * 영역 칸의 거드는 한 줄.
+   *
+   * 전에는 그 영역이 일하는 차례 두 토막을 가운뎃점으로 이어서
+   * `전사 목표와 쓸 수 있는 자원 · 하지 않을 …` 로 **잘렸다.** 그 칸의
+   * 글은 한 줄에서 끊기므로(`white-space: nowrap`) 긴 설명을 담을 수
+   * 없고, 목표 화면의 그 자리도 세 낱말짜리 짧은 줄이다.
+   *
+   * **그 사람이 남긴 것을 적는다.** 영역 설명보다 짧고, 읽는 사람이 제
+   * 답을 알아본다. 하나도 없으면 그 영역이 먼저 정하는 것으로 내려간다:
+   * 비워 두면 칸 셋이 이름만 든 줄이 된다.
+   */
+  const tileSub = (d: string): string => {
+    const left = st.model?.domains.find((x) => x.code === d)?.artifacts ?? [];
+    if (left.length) return left.slice(0, 3).map(thingKo).join(" · ");
+    return domainChainKo(core, d)[0] ?? "";
+  };
   /* **홈이 요약을 따로 짓지 않는다**(규격 §11). 네 묶음이 전부
      `currentState()` 한 자리에서 오고, `최근 변화` 의 문장은 저장 직후
      화면과 현재 상태가 쓰는 함수를 그대로 부른다 */
@@ -155,6 +173,11 @@ export default async function Home() {
 
   return (
     <CmShell active="/me" title="홈" who={user.name}
+      /* 바로가기 찾기가 더 찾게 해 줄 것. **이 쪽이 이미 들고 있는
+         값이다**: 서버를 한 번도 더 부르지 않는다 */
+      finds={Object.keys(st.zoneOf).map((d) => ({
+        label: domainName(core, d), sub: "기술영역", href: "/me/state",
+      }))}
       /* **왼쪽 띠에 학교 이름이 선다**(규격 §15). 학교에서 받은 검사를
          푼 사람에게 전공 이름만 적어 두면, 이 작업공간이 학교와 무관한
          개인 서비스로 읽힌다 */
@@ -320,9 +343,9 @@ export default async function Home() {
               {ready.map((d) => (
                 <DomainTile key={d} href="/me/state"
                   icon={TILE_ICON[d] ?? "box"} title={domainName(core, d)}
-                  /* 그 영역이 일하는 차례. **응답에서 온 값이 아니라
-                     영역 설명이다**: 여기서 새 수를 만들지 않는다 */
-                  sub={domainChainKo(core, d).slice(0, 2).join(" · ")} />
+                  /* **여기서 새 수를 만들지 않는다**: 고르신 항목의
+                     이름이거나 영역 설명 한 토막이다 */
+                  sub={tileSub(d)} />
               ))}
             </div>
           ) : null}
@@ -373,9 +396,13 @@ export default async function Home() {
           ) : null}
 
           {/* ── 최근 기록 (규격 §8) ── 굳은 결과 하나와 최근 경험 둘까지 */}
+          {/* **화면이 보여 주는 것을 문장으로 다시 적지 않는다.** 전에는
+              `최근 검사 결과와 경험을 확인할 수 있습니다` 가 머리 아래에
+              섰는데, 바로 아래 줄이 결과 하나와 경험 둘을 이름으로 적고
+              있다. 제품이 자기 기능을 설명하는 문장이고 목표 화면의 그
+              자리에도 없다 */}
           <SectionHeader icon="clock" tone="c" title="최근 기록"
-            moreHref="/me/results" moreLabel="모두 보기 →"
-            sub="최근 검사 결과와 경험을 확인할 수 있습니다." />
+            moreHref="/me/results" moreLabel="모두 보기 →" />
           {/* **학교 · 학과 · 검사일이 한 줄에 선다**(규격 §15). 전에는
               `경영 결과 (PRO)` 였고, 학교에서 받은 검사라는 것도 어느 학과로
               친 것인지도 이 줄에 없었다. 학교 진입이면 등급을 적지 않는다:

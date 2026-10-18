@@ -207,6 +207,9 @@ async function main(): Promise<void> {
     await p.goto(`${BASE}/me`, { waitUntil: "networkidle" });
     await p.waitForTimeout(400);
     await shot(p, ".cm-canvas", `${OUT}/d8-me-home.png`);
+    /* ⑧b 작업공간 홈 전체(띠 포함). **레퍼런스와 나란히 놓을 자리다** */
+    await p.screenshot({ path: `${OUT}/d8b-me-full.png`, fullPage: true });
+    mark(`${OUT}/d8b-me-full.png`);
     /* ⑨ 전체(접힌 기본 상태) */
     await p.goto(URLR, { waitUntil: "networkidle" });
     await p.waitForTimeout(450);
@@ -236,6 +239,9 @@ async function main(): Promise<void> {
     await m.goto(`${BASE}/me`, { waitUntil: "networkidle" });
     await m.waitForTimeout(400);
     await shot(m, ".cm-tabs", `${OUT}/m15-nav.png`);
+    /* ⑮b 손전화 작업공간 홈 첫 창 */
+    await m.screenshot({ path: `${OUT}/m15b-me-first.png` });
+    mark(`${OUT}/m15b-me-first.png`);
     /* ⑯ 전체(접힌 기본 상태) */
     await m.goto(URLR, { waitUntil: "networkidle" });
     await m.waitForTimeout(450);
