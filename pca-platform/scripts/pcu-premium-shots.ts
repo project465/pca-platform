@@ -288,7 +288,7 @@ async function main(): Promise<void> {
 
     /** 결과지의 절 일곱. BEFORE 에 그래프가 있는 자리는 없다 */
     const SECTS: [string, string][] = [
-      ["05-result-hero", ".rs-hero"],
+      ["05-result-hero", ".rs-open"],
       ["06-result-summary", ".rs-top"],
       ["07-radar", "#spread, #zones"],
       ["08-evidence", "#evidence"],

@@ -529,7 +529,7 @@ async function main(): Promise<void> {
        오른쪽 칸이 `.rs-card.is-next` 에서 `.rs-now` 가 됐다: 남색 채운
        카드를 걷어 낸 자리다. 옛 이름으로 두면 멀쩡한 화면이 걸리고,
        다음 사람이 그 빨강을 제품 고장으로 읽는다 */
-    await p2.locator('.rs-now form button[type="submit"]').first()
+    await p2.locator('.rs-do1 form button[type="submit"]').first()
       .click({ force: true }).catch(() => undefined);
     await p2.waitForLoadState("networkidle").catch(() => undefined);
     await p2.waitForTimeout(1000);

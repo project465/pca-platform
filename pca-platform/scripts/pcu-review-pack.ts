@@ -191,7 +191,7 @@ async function main(): Promise<void> {
       }
       await p.waitForTimeout(300);
       const text = await p.locator("body").innerText();
-      const head = await p.locator(".rs-head h1, .rs-hero h1, h1").first()
+      const head = await p.locator(".rs-head h1, .rs-open h1, h1").first()
         .innerText().catch(() => "");
       await ctx.close();
 

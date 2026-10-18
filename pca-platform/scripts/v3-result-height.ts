@@ -203,7 +203,7 @@ async function run(browser: Browser): Promise<void> {
 
   /* E 두 판본이 섞이지 않는다 */
   const frames = await lp.locator("iframe").count();
-  const v3hero = await lp.locator(".rs-hero").count();
+  const v3hero = await lp.locator(".rs-open, .rs-do1").count();
   ok("E 옛 결과 화면에 V3 renderer 조각이 없다", v3hero === 0 && frames === 1,
     `iframe ${frames} · rs-hero ${v3hero}`);
 

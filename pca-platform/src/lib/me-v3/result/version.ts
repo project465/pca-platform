@@ -151,7 +151,7 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
  * **판정도 결과 모델도 한 줄 바뀌지 않았다.** 여기 서는 값은 전부 결과
  * 모델이 이미 들고 있던 것이고, 바뀐 것은 그것을 부르는 말과 자리다.
  */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.56";
+export const RESULT_COPY_VERSION = "me-v3-result-copy.57";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -400,7 +400,7 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.56";
 /* V64 — 현재 상태를 세 마디 한 이야기로, 영역 카드 셋을 두 묶음의 줄로,
    `적을 과제 고르기` 를 **실제로 시작하는 고르는 줄**로(`?td=`). 구조적으로
    늘 비는 `남긴 기록` 절은 적어 둔 것이 있을 때만 선다 */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V64";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V65";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX
