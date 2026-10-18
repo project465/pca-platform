@@ -59,6 +59,13 @@ const FILES = [
   /* 카드 세부 한 줄을 학생의 말로 적는 자리. **판정에 닿지 않지만**
      학생이 읽는 글을 고르므로 이 동결이 덮는다 */
   "src/lib/me-v3/result/tile-sub.ts",
+  /* **학생이 읽는 말의 정본**(CROSS-CORE §1 · §6). 결과지와 작업공간이
+     같은 object 를 읽으므로 **두 동결이 함께 덮는다**: 한쪽만 적어 두면
+     그 사전을 고친 날 다른 쪽이 모르는 채로 통과한다(`surface.css` 와
+     같은 자리다) */
+  "src/lib/me-v3/student/copy.ts",
+  "src/lib/me-v3/student/icon.ts",
+  "src/lib/me-v3/student/index.ts",
   "src/lib/me-v3/result/spec-view.ts",
   "src/lib/me-v3/result/meta.ts",
   /* 시각화 넷과 그것이 읽을 값. **결과지가 그리는 것이라 이 동결이

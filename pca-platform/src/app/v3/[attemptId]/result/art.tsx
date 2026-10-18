@@ -160,7 +160,16 @@ export function Ic({ name }: { name: IcName }) {
    - 축선이 없다. 선을 그으면 그 순간 그래프가 되고, 이 자리가 재는
      것은 수가 아니다
    ══════════════════════════════════════════════════════════════════ */
-export type IcFName = "bars" | "plan" | "cube" | "note";
+/**
+ * 면으로 선 글리프 열둘. **표시 갈래 하나에 글리프 하나다**(§5).
+ *
+ * 전에는 넷뿐이었고 결과지가 그 가운데 셋을 `i % 3` 으로 돌려 썼다.
+ * 그래서 여섯 Core 전부 첫 칸이 막대이고 셋째가 문서였다. 갈래와
+ * 글리프를 잇는 표는 `src/lib/me-v3/student/icon.ts` 한 자리에 있다.
+ */
+export type IcFName =
+  | "bars" | "cube" | "note" | "goal" | "table" | "person"
+  | "flask" | "chip" | "bubble" | "coins" | "pin" | "verdict";
 
 const FILLS: Record<IcFName, React.ReactNode> = {
   /* 막대 셋 — 절 머리. 가운데만 다른 색이다 */
@@ -170,12 +179,6 @@ const FILLS: Record<IcFName, React.ReactNode> = {
       fill="var(--r-mark-2)" />
     <rect x="17.8" y="0.7" width="6.2" height="23.3" rx="3.1" />
   </>),
-  /* 맥 — 선이지만 굵기가 칸의 15% 다 */
-  plan: (
-    <path d="M2.4 15.4 6.6 6.3 10.5 17.9 13.7 10.6 17.1 19.9 21.6 8.3"
-      fill="none" stroke="currentColor" strokeWidth="3.4"
-      strokeLinecap="round" strokeLinejoin="round" />
-  ),
   /* 정육면체 — 면 하나에 흰 모서리 */
   cube: (<>
     <path d="M12 1.8 21.2 7v10L12 22.2 2.8 17V7z" />
@@ -188,6 +191,61 @@ const FILLS: Record<IcFName, React.ReactNode> = {
     <path d="M13.4 2.4v5.3h5.3M8.4 13.4h7.4M8.4 17.6h4.8"
       fill="none" stroke="#ffffff" strokeWidth="1.8" strokeLinecap="round"
       strokeLinejoin="round" />
+  </>),
+  /* 과녁 — 계획·우선순위. 가운데가 그 영역이 먼저 정하는 자리다 */
+  goal: (<>
+    <path d="M12 1.5a10.5 10.5 0 1 0 0 21 10.5 10.5 0 0 0 0-21zm0 4.3a6.2 6.2 0 1 1 0 12.4 6.2 6.2 0 0 1 0-12.4z" />
+    <circle cx="12" cy="12" r="3" />
+  </>),
+  /* 표 — 데이터·기록. 면 하나에 흰 금 둘 */
+  table: (<>
+    <path d="M3.4 3.6h17.2a1.9 1.9 0 0 1 1.9 1.9v13a1.9 1.9 0 0 1-1.9 1.9H3.4a1.9 1.9 0 0 1-1.9-1.9v-13a1.9 1.9 0 0 1 1.9-1.9z" />
+    <path d="M1.5 9.5h21M9.3 9.5v10.9"
+      fill="none" stroke="#ffffff" strokeWidth="1.9" />
+  </>),
+  /* 사람 — 사람·사용자 */
+  person: (<>
+    <circle cx="12" cy="7.1" r="4.5" />
+    <path d="M12 13.3c-4.7 0-8.4 3-8.4 6.6 0 1.3 1 2.3 2.3 2.3h12.2c1.3 0 2.3-1 2.3-2.3 0-3.6-3.7-6.6-8.4-6.6z" />
+  </>),
+  /* 플라스크 — 실험·검증. 안쪽에 흰 금 하나 */
+  flask: (<>
+    <path d="M9.4 2.2h5.2v6.1l5.1 9.6c1 1.8-.3 4-2.4 4H6.7c-2.1 0-3.4-2.2-2.4-4l5.1-9.6z" />
+    <path d="M8 1.9h8" fill="none" stroke="currentColor" strokeWidth="2.2"
+      strokeLinecap="round" />
+    <path d="M6.9 16.3h10.2" fill="none" stroke="#ffffff" strokeWidth="1.8"
+      strokeLinecap="round" />
+  </>),
+  /* 칩 — 시스템·구현. 가운데를 흰 면으로 판다 */
+  chip: (<>
+    <path d="M6 5.6h12a2.6 2.6 0 0 1 2.6 2.6v7.6A2.6 2.6 0 0 1 18 18.4H6a2.6 2.6 0 0 1-2.6-2.6V8.2A2.6 2.6 0 0 1 6 5.6z" />
+    <rect x="9.4" y="9.4" width="5.2" height="5.2" rx="1.2" fill="#ffffff" />
+    <path d="M9 2v3.6M15 2v3.6M9 18.4V22M15 18.4V22M2 9h1.4M2 15h1.4M20.6 9H22M20.6 15H22"
+      fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+  </>),
+  /* 말풍선 — 커뮤니케이션 */
+  bubble: (<>
+    <path d="M4.3 3.2h15.4a2.7 2.7 0 0 1 2.7 2.7v8.6a2.7 2.7 0 0 1-2.7 2.7h-7.4l-5.1 4.1v-4.1H4.3a2.7 2.7 0 0 1-2.7-2.7V5.9a2.7 2.7 0 0 1 2.7-2.7z" />
+    <path d="M6.4 8.1h11.2M6.4 12.1h7.1"
+      fill="none" stroke="#ffffff" strokeWidth="1.8" strokeLinecap="round" />
+  </>),
+  /* 동전 — 자원·비용 */
+  coins: (<>
+    <ellipse cx="12" cy="5.8" rx="8.4" ry="3.6" />
+    <path d="M3.6 9.4v3.1c0 2 3.8 3.6 8.4 3.6s8.4-1.6 8.4-3.6V9.4c0 2-3.8 3.6-8.4 3.6S3.6 11.4 3.6 9.4z" />
+    <path d="M3.6 14.9v3.1c0 2 3.8 3.6 8.4 3.6s8.4-1.6 8.4-3.6v-3.1c0 2-3.8 3.6-8.4 3.6s-8.4-1.6-8.4-3.6z" />
+  </>),
+  /* 자리 표시 — 현장·운영 */
+  pin: (<>
+    <path d="M12 1.6c-4.5 0-8.1 3.5-8.1 7.9 0 5.7 7.2 12.4 7.5 12.7.3.3.9.3 1.2 0 .3-.3 7.5-7 7.5-12.7 0-4.4-3.6-7.9-8.1-7.9z" />
+    <circle cx="12" cy="9.3" r="3.1" fill="#ffffff" />
+  </>),
+  /* 확정 — 의사결정. 면 하나에 흰 표 */
+  verdict: (<>
+    <path d="M6.8 2.4h10.4a4.4 4.4 0 0 1 4.4 4.4v10.4a4.4 4.4 0 0 1-4.4 4.4H6.8a4.4 4.4 0 0 1-4.4-4.4V6.8a4.4 4.4 0 0 1 4.4-4.4z" />
+    <path d="M7.5 12.3l3.1 3.1 5.9-6.5"
+      fill="none" stroke="#ffffff" strokeWidth="2.6"
+      strokeLinecap="round" strokeLinejoin="round" />
   </>),
 };
 

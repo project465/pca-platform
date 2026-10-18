@@ -151,7 +151,7 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
  * **판정도 결과 모델도 한 줄 바뀌지 않았다.** 여기 서는 값은 전부 결과
  * 모델이 이미 들고 있던 것이고, 바뀐 것은 그것을 부르는 말과 자리다.
  */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.60";
+export const RESULT_COPY_VERSION = "me-v3-result-copy.61";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -420,7 +420,7 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.60";
  * **판정도 문장도 바뀌지 않았다.** 그래서 `RESULT_COPY_VERSION` 과
  * `RESULT_MODEL_VERSION` 은 그대로다.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V71";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V72";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX
@@ -1121,7 +1121,7 @@ export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V71";
 
 
 /**
- * `ME_V3_RESULT_UI_V68` · `me-v3-result-copy.60` 로 올린 까닭 — R27 SCENE 1.
+ * `ME_V3_RESULT_UI_V68` · `me-v3-result-copy.61` 로 올린 까닭 — R27 SCENE 1.
  *
  * **레퍼런스를 구현 기준 화면으로 두고 CURRENT STATE 한 장면만 다시
  * 세웠다.** 값은 짐작이 아니라 `docs/metri/R27_DESIGN_CONTRACT.md` 에서

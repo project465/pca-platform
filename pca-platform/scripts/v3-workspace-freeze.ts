@@ -72,6 +72,10 @@ const FILES = [
   /* 적는 자리는 **새로 적는 쪽과 고치는 쪽이 한 벌**이다. 목록에 적지
      않으면 그 한 벌을 고친 날 동결이 모르는 채로 통과한다 */
   "src/app/me/experience/compose.tsx",
+  /* 학생이 읽는 말의 정본. **결과지 동결과 함께 덮는다**(CROSS-CORE §6) */
+  "src/lib/me-v3/student/copy.ts",
+  "src/lib/me-v3/student/icon.ts",
+  "src/lib/me-v3/student/index.ts",
   "src/app/me/experience/steps.tsx",
   "src/app/me/experience/[id]/edit/page.tsx",
   "src/app/me/experience/actions.ts",

@@ -13,6 +13,9 @@ import { openActions } from "@/lib/me-v3/open-actions";
 import { recentChangeKo } from "@/lib/me-v3/change-text.ko";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { majorNameOf } from "@/lib/me-v3/major-name";
+import {
+  FAMILY_LINE, NEUTRAL_LINE, studentEvidence, studentFamily,
+} from "@/lib/me-v3/student";
 import { resultMeta } from "@/lib/me-v3/result/meta";
 import { CmShell, CmHead } from "./shell";
 import {
@@ -134,13 +137,26 @@ export default async function Home() {
    * 비워 두면 칸 셋이 이름만 든 줄이 된다.
    */
   const tileSub = (d: string): string => {
+    /* **결과지와 한 사전을 읽는다**(CROSS-CORE §6). 전에는 이 칸이 그
+       사람이 남긴 것(`artifacts[0]`)을 적고 결과지는 학생 행동 구를
+       적어서, 같은 영역이 두 화면에서 서로 이어지지 않는 말로 섰다.
+       지금은 `Domain → Activity → Evidence` 를 한 object 가 공급하고
+       이 칸이 그 가운데 `evidence` 를 든다.
+
+       **말줄임이 서지 않는다**: 이 칸의 글 폭이 168px 안팎이라 열 자가
+       넘으면 가려졌는데, 사전의 `evidence` 는 여덟 자 안짝으로 적는다.
+       **말줄임은 담긴 것을 가리는 것이지 줄인 것이 아니다** */
+    const dict = studentEvidence(core, d);
+    if (dict) return dict;
+    /* 아직 사전을 적지 않은 Core. 전과 같이 그 사람이 남긴 것을 쓴다 */
     const left = st.model?.domains.find((x) => x.code === d)?.artifacts ?? [];
-    /* **하나다.** 셋을 이으면 R24 에서 글자를 목표 화면 크기로 올린 뒤
-       한 줄에 들어가지 않아 말줄임이 붙었고, 둘로 줄여도 그대로였다.
-       이 칸의 글 폭이 168px 안팎인데 `해석 모델 · 해석 결과` 만으로도
-       11 글자다. **말줄임은 담긴 것을 가리는 것이지 줄인 것이 아니다** */
     if (left.length) return thingKo(left[0]);
     return domainChainKo(core, d)[0] ?? "";
+  };
+  /** 갈래를 선 글리프로. 적어 두지 않은 Core 는 한 가지 표시로 선다 */
+  const tileIcon = (d: string): IconName => {
+    const fam = studentFamily(core, d);
+    return fam ? FAMILY_LINE[fam] : NEUTRAL_LINE;
   };
   /* **홈이 요약을 따로 짓지 않는다**(규격 §11). 네 묶음이 전부
      `currentState()` 한 자리에서 오고, `최근 변화` 의 문장은 저장 직후
@@ -336,17 +352,21 @@ export default async function Home() {
           />
 
           {/* ── 현재 상태 (규격 §6) ── 작은 가로 칸 셋. 큰 dashboard tile
-              로 만들지 않는다 */}
+              로 만들지 않는다.
+
+              거드는 줄에 `영역` 을 쓰지 않는다: 바로 아래 칸이 그 분류를
+              이름으로 적고 있어서, 위에서 한 번 더 세면 이 줄이 그 사람이
+              한 일 대신 우리 표를 가리킨다 */}
           <SectionHeader icon="chart" title="현재 상태"
             moreHref="/me/state" moreLabel="전체 보기 →"
             sub={ready.length
-              ? `지금 설명할 수 있는 주요 영역 ${ready.length}가지입니다.`
+              ? `지금 설명할 수 있는 일 ${ready.length}가지입니다.`
               : READY_NONE} />
           {ready.length ? (
             <div className="cm-tiles">
               {ready.map((d) => (
                 <DomainTile key={d} href="/me/state"
-                  icon={TILE_ICON[d] ?? "box"} title={domainName(core, d)}
+                  icon={tileIcon(d)} title={domainName(core, d)}
                   /* **여기서 새 수를 만들지 않는다**: 고르신 항목의
                      이름이거나 영역 설명 한 토막이다 */
                   sub={tileSub(d)} />
@@ -527,11 +547,14 @@ const READY_ZONES: string[] = ["Z1_EVIDENCE_ESTABLISHED", "Z2_EVIDENCE_INCOMPLET
  * 하는 표시이고, 영역마다 고정이라 새로고침해도 같은 자리에 같은 그림이
  * 선다. 여기 없는 코드는 기본 모양으로 간다.
  */
-const TILE_ICON: Record<string, IconName> = {
-  TD01: "gear", TD02: "box", TD03: "globe", TD04: "spark",
-  TD05: "window", TD06: "alert", TD07: "chart", TD08: "layers",
-  TD09: "building", TD10: "ladder", TD11: "compass", TD12: "log",
-};
+/**
+ * **표시를 코드 번호로 정하지 않는다**(CROSS-CORE §5).
+ *
+ * 전에는 이 자리가 `TD01: gear` 한 표였고 **스무 Core 가 그것을 같이
+ * 썼다.** TD01 은 Core 마다 다른 일이라, 경영전략·기획과 간호 사정과
+ * 소프트웨어 설계가 모두 기어를 들었다. 지금은 그 영역이 어느 갈래인지를
+ * 사전이 적고 이 화면은 갈래를 글리프로 옮기기만 한다.
+ */
 
 /** 경험 종류를 사람의 말로. **표의 코드를 화면에 내지 않는다** */
 const KIND_KO = new Map(EXPERIENCE_KINDS.map((k) => [k.code as string, k.label]));

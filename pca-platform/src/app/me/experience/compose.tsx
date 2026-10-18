@@ -3,6 +3,7 @@ import {
   EXPERIENCE_KINDS, activeCoreOrPick, type Experience,
 } from "@/lib/me-v3/platform";
 import { content, domainName } from "@/lib/me-v3/runtime/session";
+import { experienceExample } from "@/lib/me-v3/student";
 import { CmShell, CmHead } from "../shell";
 import { MonthPick } from "../ui";
 import { saveExperience, editExperience } from "./actions";
@@ -169,7 +170,12 @@ export default async function Compose(
                 <span>무엇을 했는지 한 줄로</span>
                 <input className="cm-input" name="title" maxLength={120} required
                   defaultValue={value?.title ?? ""}
-                  placeholder="예: 전동 스쿠터 프레임 경량화 캡스톤" />
+                  /* **다른 전공의 예시를 공통 화면에 박아 두지
+                     않는다**(CROSS-CORE §7). 전에는 이 자리가
+                     `예: 전동 스쿠터 프레임 경량화 캡스톤` 한 줄이라
+                     경영학과 학생이 기계공학 예시를 읽었다. 운영
+                     Canary 의 `기계공학자` 와 같은 모양이다 */
+                  placeholder={experienceExample(core)} />
               </label>
 
               {/* **언제는 한 칸이다**(규격 §3). 시작과 끝을 같은 크기의 큰

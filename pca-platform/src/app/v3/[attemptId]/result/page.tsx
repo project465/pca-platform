@@ -40,7 +40,10 @@ import { takeActionsFromResult } from "@/app/me/next/actions";
 import {
   ChartNote, EvidenceMatrix, Radar, StageBars,
 } from "./charts";
-import { Ic, IcF } from "./art";
+import { Ic, IcF, type IcFName } from "./art";
+import {
+  FAMILY_FILL, NEUTRAL_FILL, studentFamily,
+} from "@/lib/me-v3/student";
 import ResultNav from "./result-nav";
 import "../../result.css";
 import { barRows, canRadar } from "@/lib/me-v3/result/chart-data";
@@ -968,15 +971,23 @@ export default async function V3Result({
    * 빈 줄을 돌려준다. **순위를 다시 매기지 않는다.**
    */
   /* 배지의 색조. **값을 그리지 않는다**: 셋이 한 줄에 서므로 같은
-     색이면 눈이 셋을 한 덩이로 읽는다. 색은 뜻을 갖지 않는다 */
-  const TILE_IC = ["plan", "cube", "note"] as const;
-  const stateTiles = focus.slice(0, 3).map((d, i) => ({
-    code: d.code,
-    name: domainName(core, d.code),
-    sub: tileSub(core, d.code),
-    icon: TILE_IC[i % TILE_IC.length],
-    tint: i % 3,
-  }));
+     색이면 눈이 셋을 한 덩이로 읽는다. 색은 뜻을 갖지 않는다.
+
+     **표시는 자리가 아니라 뜻이 고른다**(CROSS-CORE §5). 전에는 글리프
+     셋을 `i % 3` 으로 돌려서 **여섯 Core 전부 첫 칸이 막대이고 셋째가
+     문서**였다. 간호 사정에 막대가 서는 자리다. 지금은 그 영역이 어느
+     갈래인지를 사전이 적고, 적어 두지 않은 Core 는 **짐작하지 않고** 한
+     가지 표시로 선다: 번호로 돌리면 그것이 곧 자리로 정하는 일이다 */
+  const stateTiles = focus.slice(0, 3).map((d, i) => {
+    const fam = studentFamily(core, d.code);
+    return {
+      code: d.code,
+      name: domainName(core, d.code),
+      sub: tileSub(core, d.code),
+      icon: (fam ? FAMILY_FILL[fam] : NEUTRAL_FILL) as IcFName,
+      tint: i % 3,
+    };
+  });
   /* 절 머리 아래 **한 줄**. 가진 것과 비어 있는 것을 한 문장에 담는다:
      두 문장을 이어 붙이면 설명 아래 설명이 되고, 그것이 규격 §5 가
      막는 모양이다. 비어 있는 쪽은 **하나만** 적는다 */
@@ -988,9 +999,14 @@ export default async function V3Result({
      **명사형으로 끊는다**(규격 §5). 앞 판본은
      `3가지는 지금 설명할 수 있고, 회계·원가 쪽은 아직 비어 있어요.` 였고
      거기서 걸리는 것이 셋이다: 한 줄에 두 질문 · 금지한 `~있어요` ·
-     쉼표로 이은 두 마디 */
+     쉼표로 이은 두 마디
+
+     **`영역` 을 쓰지 않는다**: 학생이 읽는 글에서 그 말은 우리 쪽 분류의
+     이름이고, 바로 아래 카드 셋이 이미 그 분류를 이름으로 적는다. 그
+     위에서 한 번 더 분류를 세면 이 줄이 가리키는 것이 그 사람이 한 일이
+     아니라 우리 표가 된다. 세는 것은 그대로 카드 수다 */
   const stateLead = stateTiles.length
-    ? `지금 설명할 수 있는 영역 ${stateTiles.length}개`
+    ? `지금 설명할 수 있는 일 ${stateTiles.length}가지`
     : "";
 
   /**

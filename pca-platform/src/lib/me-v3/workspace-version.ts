@@ -305,7 +305,7 @@
  * Hero 높이 −21). 화면에 서는 글자가 한 줄도 바뀌지 않아 문장 판본은
  * 그대로다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V42";
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V43";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -334,7 +334,7 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V42";
  * 경험을 확인할 수 있습니다.`). 걷은 까닭으로 적어 둔 `목표 화면에
  * 없다` 가 틀린 판정이었다.
  */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.26";
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.27";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

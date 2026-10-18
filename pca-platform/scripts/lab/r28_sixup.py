@@ -8,7 +8,8 @@
 import sys
 from PIL import Image, ImageDraw
 
-ROOT = "docs/metri/shots/review-loop/r28"
+import os
+ROOT = os.environ.get("SIXUP_ROOT", "docs/metri/shots/review-loop/r28")
 CORES = ["BIZ", "NURSING", "PUBADM", "CS", "EE", "MEDIA"]
 NAME = {"BIZ": "경영", "NURSING": "간호", "PUBADM": "행정",
         "CS": "컴퓨터", "EE": "전기전자", "MEDIA": "미디어"}
