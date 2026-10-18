@@ -48,3 +48,8 @@ var/*.log
 # BEFORE/AFTER 로 뜬 결과지 원본. 쪽 그림만 남긴다
 docs/metri/shots/pcu-wow/**/report.pdf
 var/pcu-readiness/
+
+# 목표 화면을 재면서 떠 둔 자국(R24). **재는 자는 `scripts/lab/r24-*.ts`
+# 이고 그 자국을 읽는 코드가 0 이다**: 남겨 두면 다음 사람이 이것을
+# 기준값으로 읽는다
+var/r24/
