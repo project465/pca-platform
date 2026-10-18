@@ -26,8 +26,8 @@ async function main() {
       [".cm-meta", "쪽 메타"],
       [".cm-hero-h", "Hero 머리"],
       [".cm-hero-why", "Hero 까닭"],
-      [".cm-sh b", "절 머리"],
-      [".cm-sh p", "절 거드는 줄"],
+      [".cm-sh", "절 머리"],
+      [".cm-shsub", "절 거드는 줄"],
       [".cm-tile-txt b", "영역 이름"],
       [".cm-tile-txt small", "영역 거드는 줄"],
       [".cm-feed-txt b", "기록 이름"],
@@ -42,6 +42,24 @@ async function main() {
       out.push(r[1] + ": " + st.fontSize + " / w" + st.fontWeight
         + " / lh" + st.lineHeight);
     }
+    // **표시의 크기도 함께 센다.** 활자만 재면 "글씨는 맞는데 그림이
+    // 작다" 를 셈으로 가려낼 수 없다
+    const boxes = [
+      [".cm-sh > svg", "절 머리 표시"],
+      [".cm-tile-ico", "영역 배지"],
+      [".cm-tile-ico > svg", "영역 배지 글리프"],
+      ["a.cm-tile", "영역 칸"],
+      [".cm-feed-ico", "기록 표시"],
+      [".cm-hero-art > svg", "Hero 그림"],
+    ];
+    for (const b of boxes) {
+      const e = document.querySelector(b[0]);
+      if (!e) { out.push(b[1] + ": 없음"); continue; }
+      const r = e.getBoundingClientRect();
+      out.push(b[1] + ": " + Math.round(r.width) + "x" + Math.round(r.height));
+    }
+    const mainEl = document.querySelector(".cm-main");
+    if (mainEl) out.push("본문 폭: " + Math.round(mainEl.getBoundingClientRect().width));
     out.push("문서 높이: " + document.documentElement.scrollHeight + " (창 900)");
     const secs = [];
     for (const e of document.querySelectorAll(".cm-in > *")) secs.push(e.className || e.tagName);
