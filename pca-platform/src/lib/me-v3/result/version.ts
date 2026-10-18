@@ -135,7 +135,23 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
  * **판정도 결과 모델도 한 줄 바뀌지 않았다**: `v3:freeze:measure` 가
  * 기록을 다시 적지 않은 채로 통과한다.
  */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.55";
+/**
+ * copy.56 — **8 / 4 / 4 를 걷고 세 마디를 한 문장처럼 이었다**
+ * (GOLD MASTER CLOSURE §2-1·§2-3).
+ *
+ * 걷은 글자: 센 수 셋의 이름표(`손에 남은 것` · `설명할 영역` ·
+ * `채울 자리`)와 영역 줄의 system data(`확인된 판단 8 · 남긴 것 2`)와
+ * 가짜 진행 다섯 마디(`검사 → 결과 → 근거 → 할 일 → 내 CareerMatri`).
+ *
+ * 선 글자: 위의 경험과 아래 할 일을 잇는 다리 한 문장(`그런데 …`),
+ * 영역 줄의 묶음 이름 둘(`지금 꺼내 쓸 수 있는 곳` · `한 줄이 비어 있는
+ * 곳`)과 그 줄이 드는 **남은 결과물 이름**, 고르는 줄의 둘째 칸
+ * (`needKo` 의 축 이름씨), 닫는 자리에서 **저쪽이 들고 있는 것** 한 줄.
+ *
+ * **판정도 결과 모델도 한 줄 바뀌지 않았다.** 여기 서는 값은 전부 결과
+ * 모델이 이미 들고 있던 것이고, 바뀐 것은 그것을 부르는 말과 자리다.
+ */
+export const RESULT_COPY_VERSION = "me-v3-result-copy.56";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -381,7 +397,10 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.55";
  * 줄도 바뀌지 않았고 `v3:freeze:measure` 가 기록을 다시 적지 않은 채로
  * 통과한다.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V63";
+/* V64 — 현재 상태를 세 마디 한 이야기로, 영역 카드 셋을 두 묶음의 줄로,
+   `적을 과제 고르기` 를 **실제로 시작하는 고르는 줄**로(`?td=`). 구조적으로
+   늘 비는 `남긴 기록` 절은 적어 둔 것이 있을 때만 선다 */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V64";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

@@ -19,7 +19,7 @@ import {
   actionBriefKo, actionHeadKo, actionKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO,
   BASIC_GROUP_KO, bridgeKo,
   commonKo, domainChainKo, draftKo, gapCellKo, gapKo, gapNeedKo, gapNeedShortKo, gapShortKo,
-  actionWhyKo, AXIS_DID_KO, headlineBadgeKo, headlineKo, needSentenceKo,
+  actionWhyKo, AXIS_DID_KO, headlineBadgeKo, headlineKo, needKo, needSentenceKo,
   pickSentenceKo,
   evidenceStoryKo, keptNoteKo, moreReadyKo,
   HORIZON_KO, QUALITY_KO, TIER_NOTE_KO, TRANS_ORDER, TRANS_STEP_KO,
@@ -32,6 +32,7 @@ import { core as coreEntry } from "@/lib/me-v3/core-registry";
 import { experiencesOf, profileOf } from "@/lib/me-v3/platform";
 import { openActions } from "@/lib/me-v3/open-actions";
 import { sayKo, thingKo } from "@/lib/me-v3/result/say";
+import { withJosa } from "@/lib/me-v3/result/josa";
 import { resultMeta } from "@/lib/me-v3/result/meta";
 import { leadFirst, specView } from "@/lib/me-v3/result/spec-view";
 import { participantOf, savedActions } from "@/lib/me-v3/pilot/store";
@@ -916,22 +917,27 @@ export default async function V3Result({
    * 하면 되는지가 이 자리에서 보이지 않고, 셋 다 비어 있는 쪽이면 이 절이
    * 모자람 목록이 된다.
    */
-  const tiles: { code: string; name: string; meta: string; kind: string; href: string }[] = [
+  const rows: { code: string; name: string; meta: string; kind: string; href: string }[] = [
     ...focus.slice(0, 2).map((d) => ({
       code: d.code,
       name: domainName(core, d.code),
-      meta: [d.confirmed.length ? `확인된 판단 ${d.confirmed.length}` : null,
-        d.artifacts.length ? `남긴 것 ${d.artifacts.length}` : null]
-        .filter(Boolean).join(" · ") || "해 본 일이 확인됐어요",
+      /* **센 수를 적지 않는다**(GOLD MASTER CLOSURE §2-2). `확인된 판단 8 ·
+         남긴 것 2` 는 우리가 세는 말이고, 학생이 이 줄에서 알아야 하는 것은
+         **그 영역에서 무엇을 꺼내 쓸 수 있는가**다 */
+      meta: d.artifacts.length
+        ? `${withJosa(thingKo(d.artifacts[0]), "이가")} 남아 있어요`
+        : "해 본 일을 설명할 수 있어요",
       kind: "have",
       href: "#evidence",
     })),
-    ...model.gaps.slice(0, 1).map((g) => ({
+    ...model.gaps.slice(0, 2).map((g) => ({
       code: `gap-${g.domain}-${g.axis ?? ""}`,
       name: domainName(core, g.domain),
       meta: gapNeedShortKo(g),
       kind: "fill",
-      href: "#gaps",
+      /* **이 줄에서 바로 시작한다**(§2-4). 고른 영역이 경험 추가 1단에
+         그대로 들어간다: 읽고 나서 그 자리를 다시 찾게 하지 않는다 */
+      href: `/me/experience/new?td=${g.domain}`,
     })),
   ];
   /*
@@ -1362,11 +1368,20 @@ export default async function V3Result({
             **면을 가진 자리는 그 단추뿐이다.**
             전에 여기 있던 남색 둥근 면은 걷었다: 그 꼴이 곧
             `AI 가 골라 준 추천 카드` 다 */}
+        {/* ══ SCENE 2 · 지금 ══
+            **세 마디가 한 문장처럼 이어진다**(GOLD MASTER CLOSURE §2-3):
+            「아, 내가 이런 경험이 있구나」 → 「그런데 이 한 부분이
+            빠졌구나」 → 「그럼 지금 이걸 하나 적으면 되는구나」.
+
+            **8 / 4 / 4 를 걷었다**(§2-1). 그 셋은 우리가 내부에서 세는
+            수였고, 읽는 사람은 8이 좋은 상태인지도 `설명할 영역` 과
+            `채울 자리` 가 어떻게 다른지도 화면에서 알 수 없었다. 같은
+            수가 근거 절의 표에서 한 번 더 서기도 했다. 상태를 말하는
+            일은 **아래 줄 목록**이 맡고, 가운데 마디는 숫자가 아니라
+            빠진 한 가지를 적는 문장이 든다 */}
         <p className="rs-eyebrow">현재 상태</p>
         <section className="rs-use">
-          {/* ① 지금 가진 것. 큰 글 하나와 손에 남은 것뿐이다. **그 아래
-              설명 문장을 두지 않는다**: 바로 아래 strip 이 같은 것을
-              이름으로 적는다 */}
+          {/* ① 내가 이런 경험이 있구나 */}
           <div className="rs-did">
             <p className="rs-did-h">{cardSay || openLine}</p>
             {left.length ? (
@@ -1374,70 +1389,67 @@ export default async function V3Result({
                 {left.slice(0, 3).map((x) => <li key={x}>{thingKo(x)}</li>)}
               </ul>
             ) : null}
+            {/* ② 그런데 이 한 부분이 빠졌구나. **이 줄이 다리다**: 위의
+                경험과 아래 할 일이 이 한 문장으로 이어진다 */}
+            {lackWhat && lackNeed ? (
+              <p className="rs-but">
+                <i aria-hidden="true" />
+                <span>그런데 {lackWhat}에서 {lackNeed}</span>
+              </p>
+            ) : null}
           </div>
 
-          {/* ② 상태와 지금 할 일. **셈과 행동이 한 자리에 선다**(R19 §1).
-              Workspace 가 `현재 상태` 와 `지금 할 일` 을 한 화면에 세우는
-              까닭이 그것이다: 상태만 보여 주면 읽을거리가 되고, 행동만
-              세우면 왜 그것을 하라는지가 없다.
-
-              **셋 다 센 수이고 만든 수가 아니다**(R19 §5): 고르신 결과물
-              수 · 설명할 수 있는 영역 수 · 아직 비어 있는 자리 수.
-              **점수도 퍼센트도 적합도도 순위도 없다** */}
+          {/* ③ 그럼 지금 이걸 하나 적으면 되는구나. **면을 가진 자리는
+              이 단추뿐이다** */}
           <div className="rs-now">
-            <ul className="rs-stat">
-              <li><b>{left.length}</b><span>손에 남은 것</span></li>
-              <li><b>{focus.length}</b><span>설명할 영역</span></li>
-              <li><b>{model.gaps.length}</b><span>채울 자리</span></li>
-            </ul>
-            <p className="rs-now-l">지금 할 일</p>
+            <p className="rs-now-l">그래서 지금</p>
             <p className="rs-now-h">{doHead}</p>
-            {/* **단추의 말이 약속한 일을 그 자리에서 한다**(규격 §16) */}
+            {doDetail ? <p className="rs-now-d">{doDetail}</p> : null}
             <form action={takeActionsFromResult}>
               <button className="rs-take" type="submit">
                 지금 할 일에 담아두기<Ic name="pen" />
               </button>
             </form>
-            {/* **담아 둔 것이 있으면 그 사실을 적는다.** 없으면 적지 않는다:
-                0 을 적으면 담지 않은 사람에게 담았다고 말하는 꼴이 된다 */}
             {kept ? (
               <p className="rs-now-k">
                 이미 담아 둔 할 일 {kept}개 · <Link href="/me/next">보기</Link>
               </p>
             ) : null}
-            {doSay.length || doDetail || doWhy ? (
-              <Disclose label="무엇을 적나요">
-                {doSay.length
-                  ? doSay.map((x) => <p key={x}>{x}</p>)
-                  : doDetail ? <p>{doDetail}</p> : null}
-                {doWhy ? <p>{doWhy}</p> : null}
-              </Disclose>
-            ) : null}
           </div>
         </section>
 
-        {/* ── 영역 타일 ── **Workspace 의 `현재 상태` 와 같은 꼴이다**(R19 §1).
-            이름과 센 수와 꺾쇠와 `전체 보기` 다. **설명문을 상자에 담지
-            않는다**(R19 §8): 여기 서는 것은 전부 눌러서 들어가는 자리이고
-            담긴 값은 센 수뿐이다.
+        {/* ── 영역 줄 ── **카드 벽을 기본 해법으로 쓰지 않는다**(§2-2).
+            전에는 같은 크기·같은 radius 의 흰 면 셋이 나란히 서고 그 안에
+            `확인된 판단 8 · 남긴 것 2` 가 적혔다. 셋 가운데 하나만 뜻이
+            다른데(채울 자리) 생김새가 같아 읽는 사람이 가르지 못했다.
 
-            **쓸 수 있는 쪽과 채울 쪽을 섞어 세운다**: 강한 쪽만 세우면
-            다음에 무엇을 하면 되는지가 이 자리에서 보이지 않고, 비어 있는
-            쪽만 세우면 모자람 목록이 된다 */}
-        {tiles.length ? (
-          <div className="rs-state">
-            <ul className="rs-tile">
-              {tiles.map((t) => (
-                <li key={t.code}>
-                  <a href={t.href}>
-                    <i className={`rs-tile-k is-${t.kind}`} aria-hidden="true" />
-                    <span className="rs-tile-n">{t.name}</span>
-                    <span className="rs-tile-m">{t.meta}</span>
-                    <em aria-hidden="true">›</em>
-                  </a>
-                </li>
-              ))}
-            </ul>
+            지금 서는 것은 **테도 면도 없는 두 묶음의 줄**이다. 쓸 수 있는
+            쪽은 남은 결과물 이름을 적고, 채울 쪽은 그 자리에서 바로 적기로
+            간다 */}
+        {rows.length ? (
+          <div className="rs-cs">
+            {(["have", "fill"] as const).map((k) => {
+              const g = rows.filter((r) => r.kind === k);
+              if (!g.length) return null;
+              return (
+                <div className={`rs-cs-g is-${k}`} key={k}>
+                  <p className="rs-cs-l">
+                    {k === "have" ? "지금 꺼내 쓸 수 있는 곳" : "한 줄이 비어 있는 곳"}
+                  </p>
+                  <ul className="rs-cs-r">
+                    {g.map((t) => (
+                      <li key={t.code}>
+                        <a href={t.href}>
+                          <b>{t.name}</b>
+                          <span>{t.meta}</span>
+                          <em aria-hidden="true">{k === "fill" ? "적기" : "보기"}</em>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
             <a className="rs-state-a" href="#zones">전체 기술영역 보기 →</a>
           </div>
         ) : null}
@@ -1709,41 +1721,54 @@ export default async function V3Result({
               화면은 절 머리와 첫 화면 넷이 그 일을 이미 하고 있어서, 여기에
               한 줄을 더 세우면 같은 말이 두 번 선다 */}
             <p className="rs-q">지금 무엇부터 하면 되는가</p>
-          <h2>적을 과제 고르기</h2>
+          <h2>적을 경험 하나 고르기</h2>
           {model.actions.length ? (<>
-            {/* ── 적는 차례 ── **네 장짜리 카드로 두지 않는다**(R19 §8).
-                서는 것은 이어진 한 줄기이고, 칸마다 테도 면도 둥글기도
-                없다. 번호와 금이 차례를 말한다.
+            {/* ── 고르는 자리 ── **설명문 넷을 가로로 늘어놓지 않는다**
+                (GOLD MASTER CLOSURE §2-4). 전에는 1·2·3·4 걸음과 그 설명이
+                가로로 서고, 그 아래에 영역 이름과 긴 문장이 label / value
+                로 네 줄 서고, 그 아래가 또 긴 본문이었다. **읽고 나서
+                시작하는 자리를 따로 찾아야 했다.**
 
-                **네 걸음이 전부 실제로 도는 길이다**(R19 §4): 앞의 셋은
-                `경험 추가` 한 도구의 세 걸음이고(그 도구가 고르기로 받는다)
-                넷째는 이 쪽의 지원서 문장 자리다. 없는 기능을 걸음으로
-                세우지 않는다 */}
-            <ol className="rs-step">
-              <li><b>최근 과제 고르기</b><span>경험 추가 1단에서 고릅니다</span></li>
-              <li><b>정한 기준 한 줄</b><span>2단에서 직접 정한 것을 고릅니다</span></li>
-              <li><b>남긴 결과물</b><span>3단에서 남은 것을 고릅니다</span></li>
-              <li><b>지원서에 담기</b>
-                <span>{model.translation ? "아래 문장 자리로 이어집니다" : "문장 자리는 PRO 에서 섭니다"}</span>
-              </li>
-            </ol>
-            {/* **한 번에 한 걸음이다**(R19 §4). 이 절의 주된 단추는 그
-                도구를 여는 하나이고, 담아 두는 저장은 위 `현재 상태` 가
-                이미 들고 있다. 같은 말의 단추를 두 번 세우면 읽는 사람이
-                **어느 쪽이 그 일을 하는지** 고르는 일을 한 번 더 한다 */}
-            <div className="rs-do">
-              <Link className="rs-do-a is-main" href="/me/experience/new">
-                경험 추가 열기
-              </Link>
+                지금 이 자리가 하는 일은 하나다: **지금 한 경험을 골라
+                CareerMatri 에 넣게 만드는 것.** 그래서 서는 것이 고르는
+                줄이고, 그 줄을 누르면 고른 영역이 경험 추가 1단에 그대로
+                들어간다(`?td=`). 걸음 설명과 영역별 긴 문장은 아래
+                `고르고 나면 무엇을 적나요` 안이다 */}
+            <p className="rs-pk-l">누르면 그 영역이 경험 추가 1단에 그대로 들어가요</p>
+            <ul className="rs-pk">
+              {model.actions.slice(0, 4).map((a) => (
+                <li key={a.id}>
+                  <Link href={a.domain
+                    ? `/me/experience/new?td=${a.domain}`
+                    : "/me/experience/new"}>
+                    <b>{a.domain ? domainName(core, a.domain) : "어느 영역이든"}</b>
+                    {/* **네 줄이 같은 말을 적지 않는다.** `actionHeadKo` 는
+                        할 일의 **종류**로 고르는 말이라, 네 영역이 같은
+                        종류면 네 줄이 글자까지 같아진다. 여기 적을 것은
+                        그 줄에서 **무엇을 적는가**이고 그것은 축이 든다 */}
+                    <span>{a.axis ? needKo(a.axis) : actionHeadKo(a)}</span>
+                    <em aria-hidden="true">적기</em>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <p className="rs-pk-f">
               {model.translation
-                ? <a className="rs-do-a is-txt" href="#translation">지원서 문장 보기</a>
+                ? <a href="#translation">적고 나서 쓸 지원서 문장 →</a>
                 : null}
-            </div>
-            {/* **그 밖의 할 일은 접는다**(R19 §9 · Workspace reference 의
-                `그 밖에 할 일 2개`). 영역마다의 할 일을 한 번에 다 펴면 이
-                절에서 가장 큰 덩이가 그 목록이 되고, 위에 적은 `지금 할
-                일 하나` 가 묻힌다. 담긴 글은 그대로이고 종이에서는 펴진다 */}
-            <Disclose label={`그 밖에 할 일 ${Math.max(model.actions.length - 1, 0)}개`}>
+              <Link href="/me/experience">적어 둔 경험 보기 →</Link>
+            </p>
+            {/* **긴 설명은 눌러서 편다**(§2-5). 담긴 글은 한 줄도 덜어내지
+                않았고 종이에서는 그대로 펴진다 */}
+            <Disclose label="고르고 나면 무엇을 적나요">
+              <ol className="rs-how">
+                <li><b>최근 과제 하나</b><span>1단에서 고릅니다</span></li>
+                <li><b>그때 직접 정한 것</b><span>2단에서 고릅니다</span></li>
+                <li><b>남긴 결과물</b><span>3단에서 고릅니다</span></li>
+                <li><b>지원서에 담기</b>
+                  <span>{model.translation ? "이 쪽의 문장 자리로 이어집니다" : "문장 자리는 PRO 에서 섭니다"}</span>
+                </li>
+              </ol>
               <Plan core={core} actions={model.actions} stage={model.stage}
                 attemptId={attemptId} saved={saved} where={exploreWhere()} />
             </Disclose>
@@ -2575,35 +2600,30 @@ export default async function V3Result({
 
             **읽을거리가 아니라 조작할 수 있는 줄이다**: 줄마다 눌러서
             그 기록으로 가고, 머리에 `모두 보기` 가 선다 */}
-        <section className="rs-sect rs-webonly" id="records">
-          <h2>남긴 기록</h2>
-          {exps.length ? (
-            <>
-              <ul className="rs-rec">
-                {exps.slice(0, 3).map((e) => (
-                  <li key={e.id}>
-                    <Link href="/me/experience">
-                      <span className="rs-rec-t">{e.title}</span>
-                      <span className="rs-rec-d">{e.created_at.slice(0, 10)}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              <p className="rs-rec-f">
-                <Link href="/me/experience">경험 {exps.length}개 모두 보기 →</Link>
-                {kept ? <Link href="/me/next">담아 둔 할 일 {kept}개 →</Link> : null}
-              </p>
-            </>
-          ) : (
-            /* **빈 상태를 조용히 두지 않는다.** 적은 것이 없다는 사실과
-               적으면 무엇이 달라지는지를 함께 적는다 */
-            <p className="rs-note">
-              아직 적어 둔 경험이 없습니다. 하나를 적으면 그 경험이 어느
-              판단으로 가는지 맞춰 보고, 지금 상태가 이어서 바뀝니다.
-              <Link className="rs-rec-a" href="/me/experience/new">경험 추가 →</Link>
+        {/* **구조적으로 늘 비는 절을 세우지 않는다**(GOLD MASTER CLOSURE §2-6).
+            결과를 막 받은 사람에게 이 절은 언제나 `아직 적어 둔 경험이
+            없습니다` 한 줄이고, 그 한 줄이 절 하나를 차지했다. 적게 만드는
+            일은 위 `적을 경험 하나 고르기` 가 맡고, 여기는 **이미 적어 둔
+            것이 있을 때만** 선다 */}
+        {exps.length ? (
+          <section className="rs-sect rs-webonly" id="records">
+            <h2>남긴 기록</h2>
+            <ul className="rs-rec">
+              {exps.slice(0, 3).map((e) => (
+                <li key={e.id}>
+                  <Link href="/me/experience">
+                    <span className="rs-rec-t">{e.title}</span>
+                    <span className="rs-rec-d">{e.created_at.slice(0, 10)}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <p className="rs-rec-f">
+              <Link href="/me/experience">경험 {exps.length}개 모두 보기 →</Link>
+              {kept ? <Link href="/me/next">담아 둔 할 일 {kept}개 →</Link> : null}
             </p>
-          )}
-        </section>
+          </section>
+        ) : null}
 
         <section className="rs-sect rs-webonly" id="next">
           {/* **닫는 자리가 이 쪽의 두 번째이자 마지막 색면이다**(R17 §1).
@@ -2622,13 +2642,21 @@ export default async function V3Result({
                 실제로 도는 자리이고, 지금 어디에 서 있는지만 표시한다.
                 **퍼센트도 걸음 수도 적지 않는다**: 재지 않은 것을 수로
                 적으면 그 수가 근거처럼 읽힌다 */}
-            <ol className="rs-flow">
-              <li>검사</li>
-              <li className="is-at">결과</li>
-              <li>근거</li>
-              <li>할 일</li>
-              <li>내 CareerMatri</li>
-            </ol>
+            {/* **가짜 진행 표시를 두지 않는다**(GOLD MASTER CLOSURE §2-8).
+                전에는 `검사 → 결과 → 근거 → 할 일 → 내 CareerMatri` 다섯
+                마디가 섰는데, 가운데 셋은 **같은 쪽의 절 이름**이고 가는
+                자리가 아니다. 지금 위치를 굵게 적어 두어 단계처럼 보였다.
+
+                지금 적는 것은 **저쪽에서 실제로 기다리고 있는 것**이다:
+                담아 둔 할 일과 적어 둔 경험. 둘 다 그 표가 들고 있는
+                수이고, 없으면 비어 있다는 것을 그대로 적는다 */}
+            <p className="rs-end-w">
+              {kept || exps.length
+                ? [kept ? `담아 둔 할 일 ${kept}개` : null,
+                  exps.length ? `적어 둔 경험 ${exps.length}개` : null]
+                  .filter(Boolean).join(" · ") + "이 기다리고 있어요"
+                : "아직 담아 둔 것이 없어요. 위에서 하나를 고르면 저쪽에 쌓입니다"}
+            </p>
             <Link className="rs-end-a" href="/me">내 CareerMatri 열기</Link>
             <ul className="rs-end-sub">
               <li><Link href="/me/state">현재 상태</Link></li>
