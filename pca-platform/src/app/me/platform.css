@@ -64,12 +64,13 @@
 /* **상표 뒤에 면을 깔지 않는다.** 공식 상표가 제 색을 들고 있어서,
    원이나 사각을 한 겹 더 두면 상표가 아이콘처럼 그 안에 들어앉는다 */
 /* 표시의 크기. **목표 화면에서 이 그림이 제품 이름의 글자보다 크다**:
-   34px 로 못 박아 두면 이름을 키우는 순간 그림이 글자 옆의 장식으로
-   내려앉는다. `width`·`height` 를 적는 것이 속성을 덮는다 */
-.cm-rail-mark {
-  display: block; flex: 0 0 auto;
-  width: clamp(34px, 2.43vw, 35px); height: clamp(34px, 2.43vw, 35px);
-}
+   작게 못 박아 두면 이름을 키우는 순간 그림이 글자 옆의 장식으로
+   내려앉는다. **크기는 여기서 적지 않는다**: `BrandMark` 가 비율을
+   고정하려고 `style` 로 적고, 인라인이 이 규칙을 이긴다. 여기 숫자를
+   두면 아무 일도 하지 않는 줄이 남고 다음 사람이 그것을 고친다.
+   목표 화면의 상표는 16 × 15 ref px(= 40.2 × 37.7)이고
+   `shell.tsx` 가 39 로 넘긴다 */
+.cm-rail-mark { display: block; }
 .cm-rail-name {
   display: block; min-width: 0;
   color: var(--cm-rail-ink-on); line-height: 1.2;
@@ -134,7 +135,7 @@ a.cm-nav {
   /* **띠의 줄은 본문의 거드는 글과 같은 자가 아니다.** 목표 화면에서
      이 자리의 글자가 쪽 제목의 3분의 2쯤이고, 공유 토큰을 그대로
      읽으면 그보다 한 단 작다 */
-  font-size: clamp(16px, 1.44vw, 20.7px);
+  font-size: clamp(16px, 1.56vw, 22.5px);
   font-weight: var(--ui-w-sb); min-height: var(--cm-nav-h);
 }
 /* 줄의 아이콘. **크기와 선 굵기를 하나로 맞춘다**(규격 §1·§7): 띠에서
@@ -143,7 +144,7 @@ a.cm-nav > svg {
   /* **선이 얇으면 큰 글자 옆에서 그림이 먼저 지워진다.** 목표 화면의
      띠 그림은 면으로 그려져 있어 멀리서도 줄마다 무엇인지가 읽힌다 */
   opacity: .78; stroke-width: 1.8;
-  width: clamp(19px, 1.81vw, 26px); height: clamp(19px, 1.81vw, 26px);
+  width: clamp(19px, 1.92vw, 27.6px); height: clamp(19px, 1.92vw, 27.6px);
 }
 a.cm-nav > svg { flex: 0 0 auto; }
 a.cm-nav > span { display: block; min-width: 0; }
@@ -325,12 +326,12 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
   margin: 0 0 6px;
 }
 .cm-h1 {
-  font-size: clamp(24px, 2.24vw, 32.3px); line-height: 1.26; font-weight: var(--ui-w-bd);
+  font-size: clamp(24px, 2.33vw, 33.5px); line-height: 1.26; font-weight: var(--ui-w-bd);
   color: var(--sf-ink); margin: 0; text-wrap: balance; letter-spacing: -.022em;
 }
 /* 제목 아래 한 줄(규격 §4). `기계공학 · 최근 업데이트 YYYY.MM.DD` */
 .cm-meta {
-  margin: 5px 0 0; font-size: clamp(13px, 1.26vw, 18.2px);
+  margin: 5px 0 0; font-size: clamp(13px, 1.29vw, 18.6px);
   font-weight: var(--ui-w-md); color: var(--sf-ink-3);
 }
 .cm-head { position: relative; }
@@ -346,8 +347,8 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
  * 시작인지**를 글자를 읽기 전에 안다.
  */
 .cm-sh {
-  display: flex; align-items: center; gap: clamp(9px, 2.01vw, 29px);
-  margin: clamp(24px, 2.08vw, 30px) 0 0; font-size: clamp(17px, 1.94vw, 28px);
+  display: flex; align-items: center; gap: clamp(9px, 1.6vw, 23px);
+  margin: clamp(24px, 2.08vw, 30px) 0 0; font-size: clamp(17px, 2vw, 28.8px);
   font-weight: var(--ui-w-bd); color: var(--sf-ink);
   letter-spacing: -.015em;
 }
@@ -365,20 +366,20 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .cm-sh.is-b > svg { color: #d4572e; }
 .cm-sh.is-c > svg { color: #4f4bb0; }
 .cm-sh > a {
-  margin-left: auto; font-size: clamp(13px, 1.37vw, 19.8px);
+  margin-left: auto; font-size: clamp(13px, 1.31vw, 18.8px);
   font-weight: var(--ui-w-sb);
   color: var(--sf-accent-ink); text-decoration: none; white-space: nowrap;
 }
 .cm-sh > a:hover { text-decoration: underline; }
 .cm-shsub {
   margin: clamp(4px, 1.22vw, 17.6px) 0 clamp(11px, 1.94vw, 28px);
-  font-size: clamp(14px, 1.32vw, 19px); color: var(--sf-ink-3);
+  font-size: clamp(14px, 1.28vw, 18.5px); color: var(--sf-ink-3);
 }
 /* **거드는 줄은 표시가 아니라 이름에 맞춰 선다.** 목표 화면이 그렇고,
    그래야 머리 한 덩이가 왼쪽에서 한 번만 꺾인다. `.cm-sh` 바로 뒤에
    올 때만이다: 혼자 서는 거드는 줄은 맞출 이름이 없다 */
 .cm-sh + .cm-shsub {
-  padding-left: calc(var(--cm-sh-ico) + clamp(9px, 2.01vw, 29px));
+  padding-left: calc(var(--cm-sh-ico) + clamp(9px, 1.6vw, 23px));
 }
 
 /* ── 지금 할 일 Hero ──────────────────────────────────────────────
@@ -424,24 +425,24 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
   display: inline-flex; align-items: center; gap: clamp(7px, .42vw, 6px);
   margin: 0 0 0 calc(-1 * clamp(0px, 2.57vw, 37px));
   padding: 0; border: 0; background: none;
-  font-size: clamp(15px, 1.67vw, 24px); font-weight: var(--ui-w-bd);
+  font-size: clamp(15px, 1.69vw, 24.4px); font-weight: var(--ui-w-bd);
   color: var(--sf-accent-ink); letter-spacing: 0;
 }
 /* 꼬리표 앞의 과녁. **빨강은 여기 한 자리뿐이다**: 지금 해야 하는 일을
    가리키는 표시라, 파랑 일색의 면에서 눈이 거기부터 닿는다 */
 .cm-hero-tag > svg {
   color: #d4572e; flex: 0 0 auto;
-  width: clamp(18px, 2.43vw, 35px); height: clamp(18px, 2.43vw, 35px);
+  width: clamp(18px, 2.01vw, 29px); height: clamp(18px, 2.01vw, 29px);
 }
 .cm-hero-h {
   margin: clamp(10px, .76vw, 11px) 0 0;
-  font-size: clamp(21px, 2.12vw, 30.5px); line-height: 1.57;
+  font-size: clamp(21px, 2.22vw, 32px); line-height: 1.57;
   font-weight: var(--ui-w-bd); color: var(--sf-ink); letter-spacing: -.024em;
   max-width: 22ch; text-wrap: balance;
 }
 .cm-hero-why {
   margin: clamp(10px, 1.04vw, 15px) 0 0;
-  font-size: clamp(14px, 1.42vw, 20.5px); line-height: 1.6;
+  font-size: clamp(14px, 1.61vw, 23.2px); line-height: 1.6;
   color: var(--sf-ink-2); max-width: 50ch;
 }
 .cm-hero-acts {
@@ -463,7 +464,7 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 /* 거드는 자리는 **테도 면도 없다**: 주된 단추와 같은 무게로 서면 둘 가운데
    무엇을 눌러야 하는지를 읽는 사람이 한 번 더 고른다 */
 .cm-hero-more {
-  font-size: clamp(14px, 1.39vw, 20px); font-weight: var(--ui-w-sb);
+  font-size: clamp(14px, 1.43vw, 20.6px); font-weight: var(--ui-w-sb);
   color: var(--sf-ink-3);
   text-decoration: none; display: inline-flex; align-items: center; gap: 5px;
   min-height: 46px; padding: 0; border-radius: var(--ui-r-sm);
@@ -557,12 +558,12 @@ a.cm-tile:nth-child(3n+3) .cm-tile-ico {
 }
 .cm-tile-txt { display: block; min-width: 0; flex: 1 1 auto; }
 .cm-tile-txt b {
-  display: block; font-size: clamp(18px, 1.49vw, 21.4px);
+  display: block; font-size: clamp(18px, 1.56vw, 22.4px);
   font-weight: var(--ui-w-bd); color: var(--sf-ink);
   letter-spacing: -.015em; line-height: 1.3;
 }
 .cm-tile-txt small {
-  display: block; margin-top: 5px; font-size: clamp(14px, 1.28vw, 18.4px);
+  display: block; margin-top: 5px; font-size: clamp(14px, 1.38vw, 19.8px);
   color: var(--sf-not);
   line-height: 1.35;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
@@ -635,11 +636,15 @@ a.cm-feed-row:hover, .cm-feed > li:hover { background: #fafcfe; }
   font-size: clamp(15.5px, 1.38vw, 19.9px);
   line-height: 1.4; letter-spacing: -.01em;
 }
-.cm-feed-txt small { display: block; margin-top: 3px; font-size: var(--ui-t-cap); color: var(--sf-ink-3); line-height: 1.4; }
+.cm-feed-txt small {
+  display: block; margin-top: 3px;
+  /* 목표 화면의 `기록#08912` 가 잉크 37 ref px 다 → 17.3 */
+  font-size: clamp(12.5px, 1.2vw, 17.3px); color: var(--sf-ink-3); line-height: 1.4;
+}
 /* 날짜는 **거드는 값이다**(규격 §5): 글보다 한 단 약하고 줄 끝에 선다 */
 .cm-feed time {
   flex: 0 0 auto; align-self: center;
-  font-size: clamp(12px, 1.17vw, 16.8px); color: #93a2b8;
+  font-size: clamp(12px, 1.38vw, 19.8px); color: #93a2b8;
   font-weight: var(--ui-w-md);
   font-variant-numeric: tabular-nums; white-space: nowrap;
 }
@@ -665,19 +670,20 @@ a.cm-feed-row:hover, .cm-feed > li:hover { background: #fafcfe; }
 /* **기록 줄만 면을 두른다**(목표 화면): 눌러서 들어가는 줄이라, 지나간
    일을 세어 둔 변화 줄과 같은 무게로 서면 안 된다 */
 .cm-feed.is-rec .cm-feed-ico {
-  width: clamp(38px, 2.99vw, 43px); height: clamp(38px, 2.99vw, 43px);
-  border-radius: clamp(12px, .97vw, 14px);
+  width: clamp(38px, 3.54vw, 51px); height: clamp(38px, 3.54vw, 51px);
+  border-radius: clamp(12px, 1.11vw, 16px);
   background: #f2f5f9; border: 1px solid #e8edf4; color: #5a6b83;
 }
 .cm-feed.is-rec .cm-feed-ico > svg {
-  width: clamp(18px, 1.46vw, 21px); height: clamp(18px, 1.46vw, 21px);
+  width: clamp(18px, 1.92vw, 27.6px); height: clamp(18px, 1.92vw, 27.6px);
 }
 .cm-feed-acts { flex: 0 0 auto; display: flex; gap: 7px; }
 /* 줄 끝의 단추. **흰 테가 아니라 옅은 파란 면이다**(규격 §5): 흰 줄
    위의 흰 단추는 줄 안에서 떠오르지 않는다 */
 .cm-feed-acts .cm-btn {
-  min-height: 34px; padding: 0 14px; font-size: 12.5px; font-weight: var(--ui-w-sb);
-  border-radius: 9px;
+  min-height: clamp(34px, 3.49vw, 50px); padding: 0 clamp(14px, 2.64vw, 38px);
+  font-size: clamp(12.5px, 1.29vw, 18.6px); font-weight: var(--ui-w-sb);
+  border-radius: clamp(9px, .83vw, 12px);
   background: #eaf2fd; border-color: #d2e3f8; color: var(--sf-accent-ink);
 }
 .cm-feed-acts .cm-btn:hover { background: #ddebfb; border-color: #bbd5f2; }

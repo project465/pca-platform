@@ -1,9 +1,14 @@
 /**
- * 목표 화면의 자리와 우리 자리를 같은 자로 견준다(R23).
+ * 목표 화면의 자리와 우리 자리를 같은 자로 견준다(R23 · R24).
  *
  * **눈으로 재지 않는다.** 목표 화면 쪽은 `scripts/lab/ref-geom.py` 가
  * 화소로 재어 1440 짜리 창으로 옮긴 값이고, 이쪽은 **실제로 그려진**
  * 상자(`getBoundingClientRect`)와 계산된 활자다. 둘을 나란히 적는다.
+ *
+ * **활자는 `scripts/lab/r24-need.ts` 가 다시 쟀다**: 목표 화면의 가로
+ * 잉크 폭을 **우리 글꼴이 그 글자를 그리는 em 폭**으로 나눈 값이다.
+ * 앞 회차는 글자마다의 진폭을 손으로 적은 표에서 가져와, 라틴과 숫자와
+ * 사이띄개에서 그 표가 틀린 만큼 자리마다 다른 배율이 나왔다.
  */
 import { loadEnv, BASE, makeStudent, cloneFinished, login } from "../_loop-fixture";
 loadEnv();
@@ -13,19 +18,19 @@ import { query } from "../../src/lib/db";
 /** 목표 화면에서 잰 값(1440 환산). `ref-geom.py` 의 셈이 출처다. */
 const REF: Record<string, number> = {
   "띠 폭": 309,
-  "띠 상표": 35,
+  "띠 상표": 39,
   "띠 제품 이름": 26.3,
   "띠 전공": 18,
   "묶음 머리": 20,
-  "줄 글자": 20.7,
-  "줄 표시": 26,
+  "줄 글자": 22.5,
+  "줄 표시": 27.6,
   "줄 높이(pill)": 58,
   "줄 간격(pitch)": 54,
   "줄 글자 왼쪽(띠에서)": 93,
   "줄 표시 왼쪽(띠에서)": 40,
   "본문 왼쪽 여백": 38,
-  "쪽 제목": 32.3,
-  "쪽 메타": 18.2,
+  "쪽 제목": 33.5,
+  "쪽 메타": 18.6,
   "찾기 칸 너비": 289,
   "찾기 칸 높이": 58,
   "종 표시": 30,
@@ -33,19 +38,30 @@ const REF: Record<string, number> = {
   "계정 이름": 18.2,
   "Hero 너비": 1063,
   "Hero 높이": 329,
-  "절 머리 표시": 40,
-  "절 머리 글자": 28,
-  "절 머리 사이": 29,
-  "절 오른쪽 링크": 19.8,
-  "절 거드는 줄": 19,
+  "절 머리 표시": 44,
+  "절 머리 글자": 28.8,
+  "절 머리 사이": 23,
+  "절 오른쪽 링크": 18.8,
+  "절 거드는 줄": 18.5,
   "타일 너비": 348,
   "타일 높이": 108,
   "타일 사이": 12.6,
   "타일 배지": 80,
   "타일 왼쪽 여백": 25,
   "배지와 글 사이": 30,
-  "타일 제목": 21.4,
-  "타일 거드는 줄": 18.4,
+  "타일 제목": 22.4,
+  "타일 거드는 줄": 19.8,
+  "Hero 꼬리표": 24.4,
+  "Hero 과녁": 29,
+  "Hero 머리": 32,
+  "Hero 까닭": 23.2,
+  "Hero 더보기": 20.6,
+  "변화 시각": 19.8,
+  "기록 줄 표시": 51,
+  "기록 줄 글리프": 27.6,
+  "기록 번호": 17.3,
+  "기록 단추 높이": 50,
+  "기록 단추 글자": 18.6,
 };
 
 async function main() {
@@ -115,6 +131,17 @@ async function main() {
     o["배지와 글 사이"] = ico && ttl ? ttl.x - (ico.x + ico.w) : null;
     o["타일 제목"] = F(".cm-tile-txt b");
     o["타일 거드는 줄"] = F(".cm-tile-txt small");
+    o["Hero 꼬리표"] = F(".cm-hero-tag");
+    o["Hero 과녁"] = R(".cm-hero-tag > svg") && R(".cm-hero-tag > svg").w;
+    o["Hero 머리"] = F(".cm-hero-h");
+    o["Hero 까닭"] = F(".cm-hero-why");
+    o["Hero 더보기"] = F(".cm-hero-more");
+    o["변화 시각"] = F(".cm-feed time");
+    o["기록 줄 표시"] = R(".cm-feed.is-rec .cm-feed-ico") && R(".cm-feed.is-rec .cm-feed-ico").w;
+    o["기록 줄 글리프"] = R(".cm-feed.is-rec .cm-feed-ico > svg") && R(".cm-feed.is-rec .cm-feed-ico > svg").w;
+    o["기록 번호"] = F(".cm-feed.is-rec .cm-feed-txt small");
+    o["기록 단추 높이"] = R(".cm-feed-acts .cm-btn") && R(".cm-feed-acts .cm-btn").h;
+    o["기록 단추 글자"] = F(".cm-feed-acts .cm-btn");
     o["문서 높이"] = document.documentElement.scrollHeight;
     return o;
   })()`)) as Record<string, number | null>;

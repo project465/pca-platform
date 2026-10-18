@@ -135,7 +135,11 @@ export default async function Home() {
    */
   const tileSub = (d: string): string => {
     const left = st.model?.domains.find((x) => x.code === d)?.artifacts ?? [];
-    if (left.length) return left.slice(0, 3).map(thingKo).join(" · ");
+    /* **하나다.** 셋을 이으면 R24 에서 글자를 목표 화면 크기로 올린 뒤
+       한 줄에 들어가지 않아 말줄임이 붙었고, 둘로 줄여도 그대로였다.
+       이 칸의 글 폭이 168px 안팎인데 `해석 모델 · 해석 결과` 만으로도
+       11 글자다. **말줄임은 담긴 것을 가리는 것이지 줄인 것이 아니다** */
+    if (left.length) return thingKo(left[0]);
     return domainChainKo(core, d)[0] ?? "";
   };
   /* **홈이 요약을 따로 짓지 않는다**(규격 §11). 네 묶음이 전부
@@ -396,13 +400,13 @@ export default async function Home() {
           ) : null}
 
           {/* ── 최근 기록 (규격 §8) ── 굳은 결과 하나와 최근 경험 둘까지 */}
-          {/* **화면이 보여 주는 것을 문장으로 다시 적지 않는다.** 전에는
-              `최근 검사 결과와 경험을 확인할 수 있습니다` 가 머리 아래에
-              섰는데, 바로 아래 줄이 결과 하나와 경험 둘을 이름으로 적고
-              있다. 제품이 자기 기능을 설명하는 문장이고 목표 화면의 그
-              자리에도 없다 */}
+          {/* **거드는 줄을 되돌렸다.** 앞 회차에 `목표 화면의 그 자리에도
+              없다` 고 적고 걷었는데, 그림을 세 배로 올려 다시 읽으니 이
+              줄이 거기 그대로 있다(`최근 변화` 쪽도 같다). 눈으로 읽고
+              적은 판정이 틀렸던 자리다 */}
           <SectionHeader icon="clock" tone="c" title="최근 기록"
-            moreHref="/me/results" moreLabel="모두 보기 →" />
+            moreHref="/me/results" moreLabel="모두 보기 →"
+            sub="최근 검사 결과와 경험을 확인할 수 있습니다." />
           {/* **학교 · 학과 · 검사일이 한 줄에 선다**(규격 §15). 전에는
               `경영 결과 (PRO)` 였고, 학교에서 받은 검사라는 것도 어느 학과로
               친 것인지도 이 줄에 없었다. 학교 진입이면 등급을 적지 않는다:

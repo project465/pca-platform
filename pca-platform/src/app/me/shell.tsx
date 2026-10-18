@@ -180,7 +180,7 @@ export function CmShell({
             {/* **공식 상표 하나만 쓴다**(규격 §4). 임시 아이콘과 네모를
                 쓰던 자리가 셋이었고 셋이 서로 달랐다. 출처는
                 `public/brand/careermatri/mark.svg` 파일 하나다 */}
-            <BrandMark size={34} className="cm-rail-mark" />
+            <BrandMark size={39} className="cm-rail-mark" />
             <span className="cm-rail-name">
               <b>CareerMatri</b>
               <small>{major ?? MAJOR_FALLBACK}</small>
