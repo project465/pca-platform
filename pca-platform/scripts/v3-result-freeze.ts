@@ -56,6 +56,9 @@ const FILES = [
   "src/lib/me-v3/result/version.ts",
   /* 갈래가 적어 둔 사례와 읽는 차례를 꺼내는 자리. **판정에 닿지 않지만**
      학생이 읽는 글을 고르므로 이 동결이 덮는다 */
+  /* 카드 세부 한 줄을 학생의 말로 적는 자리. **판정에 닿지 않지만**
+     학생이 읽는 글을 고르므로 이 동결이 덮는다 */
+  "src/lib/me-v3/result/tile-sub.ts",
   "src/lib/me-v3/result/spec-view.ts",
   "src/lib/me-v3/result/meta.ts",
   /* 시각화 넷과 그것이 읽을 값. **결과지가 그리는 것이라 이 동결이

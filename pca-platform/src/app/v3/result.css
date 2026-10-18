@@ -496,7 +496,7 @@
   align-items: center; align-content: center;
   column-gap: clamp(24px, 1.8vw, 26px); row-gap: 2px;
   min-height: 70px; padding: 8px 18px;
-  border: 1px solid var(--r-line-soft); border-radius: 17px;
+  border: 1px solid var(--r-line-3); border-radius: 17px;
   background: #ffffff; text-decoration: none; color: inherit;
 }
 @media (min-width: 880px) {
@@ -515,15 +515,15 @@
   grid-column: 1; grid-row: 1 / span 2;
   flex: none; display: grid; place-items: center;
   width: 52px; height: 52px; border-radius: clamp(19px, 1.94vw, 28px);
-  background: #eef5fe;
+  background: #f4f8fd;
   color: var(--r-glyph-0);
 }
 .rs-tile a[data-t="1"] i {
-  background: #f1effd;
+  background: #f6f4fd;
   color: var(--r-glyph-1);
 }
 .rs-tile a[data-t="2"] i {
-  background: #ecf6fe;
+  background: #f3f9fe;
   color: var(--r-glyph-2);
 }
 @media (min-width: 880px) { .rs-tile i { width: 78px; height: 78px; } }
@@ -531,9 +531,9 @@
    아니라 무게다: 41 은 레퍼런스에서 잰 값이라 그대로 두고 짙기만
    내린다. 손전화에서 한 단 더 내리는 까닭은 좁은 화면의 읽는 차례가
    이름 → 세부 → 꺾쇠 → 표시여야 하기 때문이다 */
-.rs-tile i svg { width: 53%; height: 53%; opacity: .6; }
+.rs-tile i svg { width: 53%; height: 53%; opacity: .46; }
 @media (min-width: 880px) {
-  .rs-tile i svg { opacity: .8; }
+  .rs-tile i svg { opacity: .62; }
 }
 .rs-tile b {
   grid-column: 2; grid-row: 1;
@@ -547,6 +547,14 @@
   grid-column: 2; grid-row: 2;
   font-size: var(--r-t-gloss); color: var(--r-ink-3); line-height: 1.35;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+/* **데스크톱에서는 줄을 바꾼다.** 카드가 344 인데 배지와 사이와 꺾쇠가
+   그 폭의 절반을 쓰므로 글이 설 자리가 열 자쯤이다. 거기에 학생의 말을
+   담으면 말줄임이 서고, **말줄임은 줄인 것이 아니라 가린 것이다**. 카드
+   키 124 에 두 줄이 들어간다(제목 26 + 두 줄 50 + 안쪽 여백 42). 손전화는
+   글이 설 자리가 넓어 한 줄 그대로다 */
+@media (min-width: 880px) {
+  .rs-tile small { white-space: normal; text-overflow: clip; }
 }
 /* 꺾쇠. **글자로 그리지 않는다**: `›` 는 활자마다 자리와 키가 달라서
    레퍼런스의 10 × 18.5 를 맞출 길이 없다. 정사각을 45° 돌려 세우면

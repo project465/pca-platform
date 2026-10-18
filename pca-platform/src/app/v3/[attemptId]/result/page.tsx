@@ -5,9 +5,10 @@ import { requireUser } from "@/lib/session";
 import { RETAKE_BLOCKED_KO } from "@/lib/me-v3/retake";
 import { mark } from "@/lib/me-v3/workspace-events";
 import {
-  attemptOf, domainName, domainSub, industryChoices, latestResult, orgChoices,
+  attemptOf, domainName, industryChoices, latestResult, orgChoices,
   roleChoices, industriesFromDomains, rolesFromDomains,
 } from "@/lib/me-v3/runtime/session";
+import { tileSub } from "@/lib/me-v3/result/tile-sub";
 import { domainArtifacts } from "@/lib/me-v3/runtime/domain-facts";
 import type { Axis } from "@/lib/me-v3/scoring/types";
 import {
@@ -972,7 +973,7 @@ export default async function V3Result({
   const stateTiles = focus.slice(0, 3).map((d, i) => ({
     code: d.code,
     name: domainName(core, d.code),
-    sub: domainSub(core, d.code),
+    sub: tileSub(core, d.code),
     icon: TILE_IC[i % TILE_IC.length],
     tint: i % 3,
   }));
