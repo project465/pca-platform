@@ -94,7 +94,15 @@
  * 같은 함수를 부른다. 까닭 한 줄(`nowWhy`)은 `현재 상태` 와 `지금 할 일`
  * 쪽이 든다: 홈의 이 칸에 둘을 다 세우면 다시 다섯 줄이 된다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V34";
+/*
+ * `V35` 로 올린 까닭. **읽는 함수 하나에 Core 를 넘길 수 있게 했다**(R19).
+ *
+ * `experiencesOf(userId)` 가 늘 `activeCore()` 로 읽어서, 다른 전공으로
+ * 한 번 더 응시한 사람의 **옛 결과지에 남의 전공 기록이 설** 수 있었다.
+ * 둘째 인자로 Core 를 받고, 안 주면 전과 같다. **화면에 서는 글자는 한
+ * 줄도 바뀌지 않았으므로 문장 판본은 올리지 않는다.**
+ */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V35";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.

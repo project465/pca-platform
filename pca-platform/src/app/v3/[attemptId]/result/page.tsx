@@ -29,7 +29,8 @@ import {
   orgTypesFor, regionLayer, regionOrganizations, regionOrgCount,
 } from "@/lib/me-v3/region";
 import { core as coreEntry } from "@/lib/me-v3/core-registry";
-import { profileOf } from "@/lib/me-v3/platform";
+import { experiencesOf, profileOf } from "@/lib/me-v3/platform";
+import { openActions } from "@/lib/me-v3/open-actions";
 import { sayKo, thingKo } from "@/lib/me-v3/result/say";
 import { resultMeta } from "@/lib/me-v3/result/meta";
 import { leadFirst, specView } from "@/lib/me-v3/result/spec-view";
@@ -695,6 +696,23 @@ export default async function V3Result({
      core** 를 읽어야 한다. 전공을 바꿔 다시 응시한 사람의 옛 결과지가
      새 전공 이름으로 그려지면 그 종이는 거짓이 된다 */
   const core = coreOf(model);
+  /**
+   * 작업공간 쪽 자료. **결과지가 Workspace 의 입구이기 때문이다**(R19 §10).
+   *
+   * **없는 자료를 만들지 않는다**: 여기 서는 것은 그 사람이 실제로 적어
+   * 둔 경험과 실제로 담아 둔 할 일뿐이고, 둘 다 작업공간이 읽는 같은
+   * 함수에서 온다(설계 원칙 10). 하나도 없으면 그 사실을 적는다.
+   *
+   * **`experiencesOf` 에 이 응시의 Core 를 넘긴다**: 안 넘기면 가장 최근
+   * 응시의 Core 로 읽어서, 다른 전공으로 한 번 더 응시한 사람의 옛
+   * 결과지에 남의 전공 기록이 선다.
+   */
+  const [exps, op] = await Promise.all([
+    experiencesOf(user.id, core), openActions(user.id),
+  ]);
+  /* 담아 둔 줄만 센다. `fromResult` 는 아직 표에 담기지 않은 상태이고,
+     그것을 센 수로 적으면 **담지 않은 사람에게 담았다고 말한다** */
+  const kept = op.fromResult ? 0 : op.rows.filter((r) => r.state !== "done").length;
   /* **첫 쪽의 머리 한 줄**(규격 §15): 학교 · 학과 · 전공 · 등급 · 응답일.
      전공 이름을 글자로 적지 않는다: 그 결과의 Core 에서 읽는다 */
   const meta = await resultMeta(attemptId, core);
@@ -885,6 +903,37 @@ export default async function V3Result({
    */
   /* 손에 남은 것. 첫 화면 둘째 칸이 든다. **결과 모델이 준 그대로다** */
   const left = [...new Set(focus.flatMap((d) => d.artifacts))];
+  /**
+   * 현재 상태 타일(R19 §1 · Workspace reference 의 `현재 상태`).
+   *
+   * **차례를 여기서 만들지 않는다**: 설명할 수 있는 영역은 결과 모델이
+   * 정한 `focus` 차례 그대로이고, 채울 자리는 `gaps` 차례 그대로다.
+   *
+   * **센 수만 적는다**(R19 §5). 타일이 드는 것은 영역 이름과 확인된 판단
+   * 수와 남긴 것 수뿐이다: 점수도 퍼센트도 적합도도 적지 않는다.
+   *
+   * **쓸 수 있는 쪽 둘과 채울 쪽 하나다.** 셋 다 강한 쪽이면 다음에 무엇을
+   * 하면 되는지가 이 자리에서 보이지 않고, 셋 다 비어 있는 쪽이면 이 절이
+   * 모자람 목록이 된다.
+   */
+  const tiles: { code: string; name: string; meta: string; kind: string; href: string }[] = [
+    ...focus.slice(0, 2).map((d) => ({
+      code: d.code,
+      name: domainName(core, d.code),
+      meta: [d.confirmed.length ? `확인된 판단 ${d.confirmed.length}` : null,
+        d.artifacts.length ? `남긴 것 ${d.artifacts.length}` : null]
+        .filter(Boolean).join(" · ") || "해 본 일이 확인됐어요",
+      kind: "have",
+      href: "#evidence",
+    })),
+    ...model.gaps.slice(0, 1).map((g) => ({
+      code: `gap-${g.domain}-${g.axis ?? ""}`,
+      name: domainName(core, g.domain),
+      meta: gapNeedShortKo(g),
+      kind: "fill",
+      href: "#gaps",
+    })),
+  ];
   /*
    * 첫 화면의 큰 글씨(R5 Skeleton Reset).
    *
@@ -1313,12 +1362,11 @@ export default async function V3Result({
             **면을 가진 자리는 그 단추뿐이다.**
             전에 여기 있던 남색 둥근 면은 걷었다: 그 꼴이 곧
             `AI 가 골라 준 추천 카드` 다 */}
-        <p className="rs-eyebrow">지금</p>
+        <p className="rs-eyebrow">현재 상태</p>
         <section className="rs-use">
-          {/* ① 해본 일. 큰 글 하나와 손에 남은 것뿐이다. **그 아래 설명
-              문장을 두지 않는다**: `그 과정에서 ~ 경험도 있어요` 는 우리가
-              그렇게 읽었다는 말이고, 바로 아래 strip 이 같은 것을 이름으로
-              적는다 */}
+          {/* ① 지금 가진 것. 큰 글 하나와 손에 남은 것뿐이다. **그 아래
+              설명 문장을 두지 않는다**: 바로 아래 strip 이 같은 것을
+              이름으로 적는다 */}
           <div className="rs-did">
             <p className="rs-did-h">{cardSay || openLine}</p>
             {left.length ? (
@@ -1328,11 +1376,21 @@ export default async function V3Result({
             ) : null}
           </div>
 
-          {/* ② 지금. **짧은 한 마디와 단추 하나**(R18 §3).
-              무엇을 적는지는 세 문장이라 첫 화면에 두지 않고 눌러서
-              편다. 담긴 글은 그대로이고 종이에서는 펴진다 */}
+          {/* ② 상태와 지금 할 일. **셈과 행동이 한 자리에 선다**(R19 §1).
+              Workspace 가 `현재 상태` 와 `지금 할 일` 을 한 화면에 세우는
+              까닭이 그것이다: 상태만 보여 주면 읽을거리가 되고, 행동만
+              세우면 왜 그것을 하라는지가 없다.
+
+              **셋 다 센 수이고 만든 수가 아니다**(R19 §5): 고르신 결과물
+              수 · 설명할 수 있는 영역 수 · 아직 비어 있는 자리 수.
+              **점수도 퍼센트도 적합도도 순위도 없다** */}
           <div className="rs-now">
-            <p className="rs-now-l">다음</p>
+            <ul className="rs-stat">
+              <li><b>{left.length}</b><span>손에 남은 것</span></li>
+              <li><b>{focus.length}</b><span>설명할 영역</span></li>
+              <li><b>{model.gaps.length}</b><span>채울 자리</span></li>
+            </ul>
+            <p className="rs-now-l">지금 할 일</p>
             <p className="rs-now-h">{doHead}</p>
             {/* **단추의 말이 약속한 일을 그 자리에서 한다**(규격 §16) */}
             <form action={takeActionsFromResult}>
@@ -1340,6 +1398,13 @@ export default async function V3Result({
                 지금 할 일에 담아두기<Ic name="pen" />
               </button>
             </form>
+            {/* **담아 둔 것이 있으면 그 사실을 적는다.** 없으면 적지 않는다:
+                0 을 적으면 담지 않은 사람에게 담았다고 말하는 꼴이 된다 */}
+            {kept ? (
+              <p className="rs-now-k">
+                이미 담아 둔 할 일 {kept}개 · <Link href="/me/next">보기</Link>
+              </p>
+            ) : null}
             {doSay.length || doDetail || doWhy ? (
               <Disclose label="무엇을 적나요">
                 {doSay.length
@@ -1350,6 +1415,32 @@ export default async function V3Result({
             ) : null}
           </div>
         </section>
+
+        {/* ── 영역 타일 ── **Workspace 의 `현재 상태` 와 같은 꼴이다**(R19 §1).
+            이름과 센 수와 꺾쇠와 `전체 보기` 다. **설명문을 상자에 담지
+            않는다**(R19 §8): 여기 서는 것은 전부 눌러서 들어가는 자리이고
+            담긴 값은 센 수뿐이다.
+
+            **쓸 수 있는 쪽과 채울 쪽을 섞어 세운다**: 강한 쪽만 세우면
+            다음에 무엇을 하면 되는지가 이 자리에서 보이지 않고, 비어 있는
+            쪽만 세우면 모자람 목록이 된다 */}
+        {tiles.length ? (
+          <div className="rs-state">
+            <ul className="rs-tile">
+              {tiles.map((t) => (
+                <li key={t.code}>
+                  <a href={t.href}>
+                    <i className={`rs-tile-k is-${t.kind}`} aria-hidden="true" />
+                    <span className="rs-tile-n">{t.name}</span>
+                    <span className="rs-tile-m">{t.meta}</span>
+                    <em aria-hidden="true">›</em>
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <a className="rs-state-a" href="#zones">전체 기술영역 보기 →</a>
+          </div>
+        ) : null}
 
         {/* 산업·직무 한 줄은 **종이에만** 선다 */}
         <p className="rs-link">
@@ -1620,32 +1711,42 @@ export default async function V3Result({
             <p className="rs-q">지금 무엇부터 하면 되는가</p>
           <h2>적을 과제 고르기</h2>
           {model.actions.length ? (<>
-            {/* **interaction 이 정보보다 먼저다**(R18 §5). 셋 다 실제로
-                도는 길이다: 경험 적는 쪽과 담아 두는 서버 동작과 지원서
-                문장 자리. **없는 기능을 단추로 두지 않는다** */}
+            {/* ── 적는 차례 ── **네 장짜리 카드로 두지 않는다**(R19 §8).
+                서는 것은 이어진 한 줄기이고, 칸마다 테도 면도 둥글기도
+                없다. 번호와 금이 차례를 말한다.
+
+                **네 걸음이 전부 실제로 도는 길이다**(R19 §4): 앞의 셋은
+                `경험 추가` 한 도구의 세 걸음이고(그 도구가 고르기로 받는다)
+                넷째는 이 쪽의 지원서 문장 자리다. 없는 기능을 걸음으로
+                세우지 않는다 */}
+            <ol className="rs-step">
+              <li><b>최근 과제 고르기</b><span>경험 추가 1단에서 고릅니다</span></li>
+              <li><b>정한 기준 한 줄</b><span>2단에서 직접 정한 것을 고릅니다</span></li>
+              <li><b>남긴 결과물</b><span>3단에서 남은 것을 고릅니다</span></li>
+              <li><b>지원서에 담기</b>
+                <span>{model.translation ? "아래 문장 자리로 이어집니다" : "문장 자리는 PRO 에서 섭니다"}</span>
+              </li>
+            </ol>
+            {/* **한 번에 한 걸음이다**(R19 §4). 이 절의 주된 단추는 그
+                도구를 여는 하나이고, 담아 두는 저장은 위 `현재 상태` 가
+                이미 들고 있다. 같은 말의 단추를 두 번 세우면 읽는 사람이
+                **어느 쪽이 그 일을 하는지** 고르는 일을 한 번 더 한다 */}
             <div className="rs-do">
               <Link className="rs-do-a is-main" href="/me/experience/new">
-                경험 한 줄 남기기
+                경험 추가 열기
               </Link>
-              <form action={takeActionsFromResult}>
-                <button className="rs-do-a" type="submit">지금 할 일에 담아두기</button>
-              </form>
               {model.translation
-                ? <a className="rs-do-a is-txt" href="#translation">지원서 문장 만들기</a>
+                ? <a className="rs-do-a is-txt" href="#translation">지원서 문장 보기</a>
                 : null}
             </div>
-            {/* **그 마디를 여기서 한 번만 적는다**(R17 §6). 아래 줄마다
-                되풀이되던 `최근 ○○ 과제 하나를 골라보세요` 가 이 자리로
-                올라왔다 */}
-            <p className="rs-note">
-              최근 과제 하나를 골라 그 영역의 줄대로 적어 두세요.
-            </p>
-            {/* **네 칸짜리 흐름 표를 걷었다**(R18 §5). `지금 · 다음 경험 ·
-                남길 근거 · 지원서·면접` 은 전부 아래 목록과 같은 할 일을
-                묶어 다시 적은 것이고, 이 절에서 가장 큰 덩이가 **그 묶음
-                표**였다. 아래 목록이 이미 언제 할 일인지로 나뉘어 있다 */}
-            <Plan core={core} actions={model.actions} stage={model.stage}
-              attemptId={attemptId} saved={saved} where={exploreWhere()} />
+            {/* **그 밖의 할 일은 접는다**(R19 §9 · Workspace reference 의
+                `그 밖에 할 일 2개`). 영역마다의 할 일을 한 번에 다 펴면 이
+                절에서 가장 큰 덩이가 그 목록이 되고, 위에 적은 `지금 할
+                일 하나` 가 묻힌다. 담긴 글은 그대로이고 종이에서는 펴진다 */}
+            <Disclose label={`그 밖에 할 일 ${Math.max(model.actions.length - 1, 0)}개`}>
+              <Plan core={core} actions={model.actions} stage={model.stage}
+                attemptId={attemptId} saved={saved} where={exploreWhere()} />
+            </Disclose>
           </>) : (
             /* **머리글만 세워 두지 않는다.** 할 일이 없는 응시에서 약속하는
                문장 아래가 비어 있었다. 빈 자리는 고장으로 읽히고, 읽는
@@ -2467,6 +2568,43 @@ export default async function V3Result({
             여기 선 것은 전부 눌러서 가는 자리라 뽑아 둔 종이에서는 밑줄
             친 글자 목록으로만 남고, 마지막 쪽을 한 장 더 늘린다. 종이가
             끝나는 자리는 해석 기준이다 */}
+        {/* ── 남긴 기록 ── **Workspace reference 의 `최근 기록`**(R19 §6).
+            **없는 자료를 만들지 않는다**: 서는 것은 그 사람이 실제로 적어
+            둔 경험과 실제로 담아 둔 할 일뿐이다. 날짜도 제목도 그 줄이
+            들고 있는 값이고, 하나도 없으면 그 사실과 적는 자리를 적는다.
+
+            **읽을거리가 아니라 조작할 수 있는 줄이다**: 줄마다 눌러서
+            그 기록으로 가고, 머리에 `모두 보기` 가 선다 */}
+        <section className="rs-sect rs-webonly" id="records">
+          <h2>남긴 기록</h2>
+          {exps.length ? (
+            <>
+              <ul className="rs-rec">
+                {exps.slice(0, 3).map((e) => (
+                  <li key={e.id}>
+                    <Link href="/me/experience">
+                      <span className="rs-rec-t">{e.title}</span>
+                      <span className="rs-rec-d">{e.created_at.slice(0, 10)}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <p className="rs-rec-f">
+                <Link href="/me/experience">경험 {exps.length}개 모두 보기 →</Link>
+                {kept ? <Link href="/me/next">담아 둔 할 일 {kept}개 →</Link> : null}
+              </p>
+            </>
+          ) : (
+            /* **빈 상태를 조용히 두지 않는다.** 적은 것이 없다는 사실과
+               적으면 무엇이 달라지는지를 함께 적는다 */
+            <p className="rs-note">
+              아직 적어 둔 경험이 없습니다. 하나를 적으면 그 경험이 어느
+              판단으로 가는지 맞춰 보고, 지금 상태가 이어서 바뀝니다.
+              <Link className="rs-rec-a" href="/me/experience/new">경험 추가 →</Link>
+            </p>
+          )}
+        </section>
+
         <section className="rs-sect rs-webonly" id="next">
           {/* **닫는 자리가 이 쪽의 두 번째이자 마지막 색면이다**(R17 §1).
               전에는 여기 흰 면 위의 글 묶음이 서고, 쪽 위쪽에 같은 말을
@@ -2480,6 +2618,17 @@ export default async function V3Result({
               이 결과는 그날의 기록으로 굳어 있습니다. 경험을 더하면 지금
               상태가 이어서 바뀝니다.
             </p>
+            {/* **입구라는 것을 눈으로 보인다**(R19 §10). 다섯 마디가 전부
+                실제로 도는 자리이고, 지금 어디에 서 있는지만 표시한다.
+                **퍼센트도 걸음 수도 적지 않는다**: 재지 않은 것을 수로
+                적으면 그 수가 근거처럼 읽힌다 */}
+            <ol className="rs-flow">
+              <li>검사</li>
+              <li className="is-at">결과</li>
+              <li>근거</li>
+              <li>할 일</li>
+              <li>내 CareerMatri</li>
+            </ol>
             <Link className="rs-end-a" href="/me">내 CareerMatri 열기</Link>
             <ul className="rs-end-sub">
               <li><Link href="/me/state">현재 상태</Link></li>

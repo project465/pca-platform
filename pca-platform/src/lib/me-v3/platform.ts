@@ -307,7 +307,13 @@ export type Experience = {
   created_at: string;
 };
 
-export async function experiencesOf(userId: string): Promise<Experience[]> {
+/* **어느 전공의 기록인지 부르는 쪽이 알 때는 그 값을 쓴다.** 안 주면
+   전과 같이 가장 최근 응시의 Core 로 읽는다. 결과지는 **그 응시의**
+   Core 를 알고 있고, 그 사람이 다른 전공으로 한 번 더 응시한 뒤에 옛
+   결과지를 열면 `activeCore()` 는 **새 전공**을 돌려준다: 그러면 옛
+   결과지의 기록 자리에 남의 전공 기록이 선다 */
+export async function experiencesOf(
+  userId: string, core?: string): Promise<Experience[]> {
   return query<Experience>(
     `SELECT id::text, kind, title, started_on::text, ended_on::text,
             td_codes, axis_codes, problems, decisions, artifacts, verifications,
@@ -315,7 +321,7 @@ export async function experiencesOf(userId: string): Promise<Experience[]> {
        FROM v3_experiences
       WHERE user_id = $1 AND core_code = $2
       ORDER BY created_at DESC`,
-    [userId, await activeCore(userId)]);
+    [userId, core ?? await activeCore(userId)]);
 }
 
 /**

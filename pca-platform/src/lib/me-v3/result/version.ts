@@ -119,7 +119,23 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
  * `chains.ts` 의 diff 가 0줄이고, 바뀐 글은 전부 읽는 층이 세우는
  * 이름표와 머리글이다.
  */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.54";
+/*
+ * `copy.55` · `V63` 으로 올린 까닭. **결과지를 Workspace 의 입구로**
+ * (R19).
+ *
+ * 결과지가 다섯 장면으로 서 있었지만 그 다섯이 전부 **읽는 자리**였다.
+ * 이번에 선 것은 Workspace reference 가 한 화면에 세우는 넷이다: 현재
+ * 상태(센 수 셋과 영역 타일) · 지금 할 일(한 가지와 담아두기) · 남긴
+ * 기록(적어 둔 경험과 담아 둔 할 일) · 다음 행동(검사→결과→근거→할
+ * 일→내 CareerMatri 흐름 한 줄).
+ *
+ * **센 수만 적는다**: 점수도 퍼센트도 적합도도 순위도 만들지 않았고,
+ * 기록 줄은 그 사람이 실제로 적어 둔 것과 실제로 담아 둔 것뿐이다.
+ *
+ * **판정도 결과 모델도 한 줄 바뀌지 않았다**: `v3:freeze:measure` 가
+ * 기록을 다시 적지 않은 채로 통과한다.
+ */
+export const RESULT_COPY_VERSION = "me-v3-result-copy.55";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -365,7 +381,7 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.54";
  * 줄도 바뀌지 않았고 `v3:freeze:measure` 가 기록을 다시 적지 않은 채로
  * 통과한다.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V62";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V63";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX
