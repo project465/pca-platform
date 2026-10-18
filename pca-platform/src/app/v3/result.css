@@ -26,8 +26,19 @@
    사람이 결과지로 넘어갈 때 글자 크기가 조용히 바뀌었다. */
 .rs {
   --r-read: var(--ui-read);    /* 읽는 자리 */
-  --r-wide: var(--ui-evidence);/* 견주는 자리 */
+  /* **글 폭을 레퍼런스에서 받아 왔다**(R27 §B). 목표 화면의 본문 글 폭이
+     748 화소 = 1064 CSS 이고 여기는 992 였다. 72px 이 좁으면 카드 셋의
+     폭이 320 이 되어 **레퍼런스의 344 를 재현할 길이 없다**: 격자가 1 : 1 : 1
+     이라 칸 폭은 글 폭이 정한다. 여백 24 는 그대로 둔다 — 손전화에서
+     그 값이 레퍼런스의 22.6 과 같은 자리다 */
+  --r-wide: 1112px;            /* 견주는 자리. 1064 + 24×2 */
   --r-gutter: var(--ui-5);
+
+  /* ── 절 머리의 두 값(R27 §B·§C) ──
+     표시가 데스크톱 41 · 손전화 29 이고, 표시와 이름 사이가 31 · 19 다.
+     거드는 줄은 **이름 왼쪽에 맞춰** 그 둘의 합만큼 들여쓴다 */
+  --r-sh-ic: clamp(29px, 2.85vw, 41px);
+  --r-sh-gap: clamp(19px, 2.15vw, 31px);
 
   /* ── 활자 다섯 단(R3 §14) ──
      전에는 `--ui-t-*` 를 그대로 받아서 h1 과 lead 와 카드 머리가 전부
@@ -68,6 +79,12 @@
   --r-t-lead: clamp(16px, 1.61vw, 23.2px); /* Hero 보조 한 줄 */
   --r-t-h2: clamp(19px, 2vw, 28.8px);      /* 절 제목 */
   --r-t-h3: clamp(17px, 1.43vw, 20.6px);   /* 칸 머리 · 사슬 머리 */
+  /* ── 레퍼런스의 CURRENT STATE 가 쓰는 두 단(R27 §B·§C) ──
+     카드 제목이 데스크톱 22.0 · 손전화 16.5 이고, 절 머리의 오른쪽 링크가
+     21.1 · (손전화에는 서지 않는다). 둘 다 위의 다섯 단 어디에도 없다:
+     카드 제목은 `h3`(20.6)보다 한 뼘 크고 링크는 `gloss`(18.6)보다 크다 */
+  --r-t-tile: clamp(16.5px, 1.53vw, 22px);  /* 카드 제목 */
+  --r-t-link: clamp(15px, 1.46vw, 21px);    /* 절 머리 오른쪽 링크 */
   --r-t-body: var(--ui-t-body);         /* 본문 (검사 화면과 같다) */
   --r-t-gloss: var(--ui-t-sub);         /* 거드는 글 */
   --r-t-meta: var(--ui-t-cap);          /* 라벨 */
@@ -399,44 +416,53 @@
    절이 무엇을 보여 주는지 적고, 본문 가운데 대시 달린 문장을 두지
    않는다(규격 §5 의 `레퍼런스에 없는 장식 divider`) */
 
-/* ══ SCENE 2 (1) CURRENT STATE ══ **레퍼런스의 카드 셋이다**(R26 §F).
+/* ══ SCENE 2 (1) CURRENT STATE ══ **레퍼런스를 화소로 재어 세웠다**(R27).
 
-   목표 화면에서 절 머리는 넷을 든다: 표시(44px) · 절 이름(0.86) ·
-   오른쪽 링크(0.59) · 그 아래 거드는 줄(0.56). 넷이 늘 같은 자리에
-   서고, **되풀이되는 것은 이 머리 하나뿐**이다 */
+   이 장면이 답하는 질문은 하나다: **내가 지금 무엇을 설명할 수 있는가.**
+   비어 있는 영역은 여기 적지 않는다 — 그 질문은 다음 장면이 받는다.
+
+   값은 전부 `docs/metri/R27_DESIGN_CONTRACT.md` 에서 온다. 근사치로
+   비슷하게 맞춘 자리가 없다: 표시 41 · 사이 31 · 들여쓰기 72 · 카드 344 ×
+   124 · 안쪽 21 · 배지 78 · 배지 둥글기 0.36 · 배지→글 26 · 제목 22 ·
+   세부 18.7 · 꺾쇠 10 × 18.5 · 오른쪽 17 이고, 손전화는 그 짝을 따로 잰다 */
 .rs-sh {
-  display: flex; align-items: center; gap: 12px;
-  margin: var(--r-s7) 0 0;
+  display: flex; align-items: center; gap: var(--r-sh-gap);
+  margin: var(--r-s7) 0 0;   /* 절 끝 → 다음 절 머리 47 */
 }
 .rs-sh > i {
   flex: none; display: grid; place-items: center;
-  width: 30px; height: 30px; color: var(--r-blue);
+  width: var(--r-sh-ic); height: var(--r-sh-ic); color: var(--r-blue);
 }
 .rs-sh > i svg { width: 100%; height: 100%; }
 .rs-sh > h2 {
   margin: 0; font-size: var(--r-t-h2); font-weight: var(--ui-w-bd);
   color: var(--r-ink); letter-spacing: -.025em;
 }
-/* 오른쪽 링크. **면도 테도 없는 글줄이다** */
+/* 오른쪽 링크. **면도 테도 없는 글줄이다.** 레퍼런스의 손전화 판에는 이
+   줄이 서지 않는다 — 좁은 화면에서 절 이름과 같은 줄을 나눠 쓰면 이름이
+   먼저 줄어든다. 담긴 것은 아래 카드가 같은 자리로 데려간다 */
 .rs-sh > a {
-  margin-left: auto; font-size: var(--r-t-gloss); color: var(--r-ink-2);
+  display: none;
+  margin-left: auto; font-size: var(--r-t-link); color: var(--r-ink-2);
   font-weight: var(--ui-w-md); text-decoration: none; white-space: nowrap;
 }
+@media (min-width: 880px) { .rs-sh > a { display: block; } }
 .rs-sh > a:hover { color: var(--r-accent); }
 .rs-sh > a:focus-visible { outline: 2px solid var(--r-accent); outline-offset: 3px; }
-/* 절 머리 아래 한 줄. 재어 보니 머리와 7px 떨어져 있다 */
+/* 절 머리 아래 한 줄. 이름 아래 14(손전화 13.6) 떨어지고 **이름 왼쪽에
+   맞춘다** — 표시 아래로 흘리면 그 줄이 표시의 설명으로 읽힌다 */
 .rs-sh-s {
-  margin: 7px 0 0 42px; font-size: var(--r-t-gloss); line-height: 1.6;
-  color: var(--r-ink-3);
+  margin: clamp(13px, .97vw, 14px) 0 0
+          calc(var(--r-sh-ic) + var(--r-sh-gap));
+  font-size: var(--r-t-gloss); line-height: 1.5; color: var(--r-ink-3);
 }
 .rs-st { margin: 0; }
 
-/* 카드 셋. **이 쪽에서 카드를 쓰는 절은 여기 하나다.** 목표 화면에서
-   카드 폭이 344 · 사이가 16 · 높이가 121 이고, 안에 배지(75) · 이름
-   (0.68) · 세부(0.54) · 꺾쇠가 선다 */
+/* 카드 셋. **이 쪽에서 카드를 쓰는 절은 여기 하나다** */
 .rs-tile {
   display: grid; grid-template-columns: minmax(0, 1fr);
-  gap: 9px; margin: 19px 0 0; padding: 0; list-style: none;
+  gap: 8px; margin: clamp(13px, 1.3vw, 18.5px) 0 0;
+  padding: 0; list-style: none;
 }
 @media (min-width: 880px) {
   .rs-tile { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
@@ -444,47 +470,72 @@
 /* **칸 셋의 키를 맞춘다.** 세부가 한 줄인 칸과 두 줄인 칸이 섞이면
    그 줄이 서로 다른 부품을 모아 놓은 것으로 읽힌다 */
 .rs-tile > li { min-width: 0; display: grid; }
-/* 손전화의 줄 키. **목표 화면의 손전화 판에서 이 줄이 70px 쯤이다**
-   (판 62px × 390/345). 데스크톱의 카드를 그대로 줄여 세우면 95px 가
-   되어 셋이 화면 하나를 통째로 먹는다 */
+/* 줄 키. 손전화 70 · 데스크톱 124. **데스크톱의 카드를 그대로 줄여 세우지
+   않는다**: 그러면 손전화에서 셋이 화면 하나를 통째로 먹는다 */
 .rs-tile a {
   display: grid; grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center; column-gap: 14px; row-gap: 2px;
-  min-height: 70px; padding: 12px 14px;
-  border: 1px solid var(--r-line); border-radius: var(--r-r);
+  align-items: center; align-content: center;
+  column-gap: clamp(24px, 1.8vw, 26px); row-gap: 2px;
+  min-height: 70px; padding: 8px 18px;
+  border: 1px solid var(--r-line); border-radius: 17px;
   background: #ffffff; text-decoration: none; color: inherit;
 }
-@media (min-width: 880px) { .rs-tile a { min-height: 121px; padding: 18px 20px; } }
+@media (min-width: 880px) {
+  .rs-tile a { min-height: 124px; padding: 21px 17px 21px 21px; }
+}
 .rs-tile a:hover { border-color: var(--r-accent-line); }
 .rs-tile a:focus-visible { outline: 2px solid var(--r-accent); outline-offset: 2px; }
 /* 배지. **값을 그리지 않는다**: 색은 뜻을 갖지 않고 셋을 가르기만 한다.
-   목표 화면의 칸 셋도 색조가 조금씩 다르다 — 셋이 한 줄에 서므로 같은
-   색이면 눈이 셋을 한 덩이로 읽는다 */
+   셋이 한 줄에 서므로 같은 색이면 눈이 셋을 한 덩이로 읽는다.
+   둥글기를 백분율로 둔 까닭은 손전화(52)와 데스크톱(78)에서 **같은
+   비(0.36)** 를 지키려는 것이다 */
+/* **자리를 못 박는다.** 자동 배치에 맡기면 꺾쇠가 `small` 뒤에서 시작해
+   줄 2~3 을 차지하고, 그러면 카드에 **쓰지 않는 셋째 줄**이 생겨 키가
+   124 에서 129.5 가 된다. 눈으로는 5px 이 안 보이고 자로 재야 나온다 */
 .rs-tile i {
-  grid-row: span 2; flex: none; display: grid; place-items: center;
-  width: 44px; height: 44px; border-radius: 14px;
-  background: var(--r-cyan-soft); color: var(--r-blue);
+  grid-column: 1; grid-row: 1 / span 2;
+  flex: none; display: grid; place-items: center;
+  width: 52px; height: 52px; border-radius: clamp(19px, 1.94vw, 28px);
+  background: linear-gradient(180deg, #dbe9fd 0%, #eaf3fe 100%);
+  color: var(--r-blue);
 }
-.rs-tile a[data-t="1"] i { background: var(--r-blue-soft); color: var(--r-blue); }
-.rs-tile a[data-t="2"] i { background: var(--r-teal-soft); color: var(--r-teal); }
-@media (min-width: 880px) { .rs-tile i { width: 56px; height: 56px; } }
-.rs-tile i svg { width: 56%; height: 56%; }
+.rs-tile a[data-t="1"] i {
+  background: linear-gradient(180deg, #e5e1fd 0%, #efedfd 100%);
+  color: #5b53d6;
+}
+.rs-tile a[data-t="2"] i {
+  background: linear-gradient(180deg, #d8ecfb 0%, #e9f5fe 100%);
+  color: #1577c4;
+}
+@media (min-width: 880px) { .rs-tile i { width: 78px; height: 78px; } }
+.rs-tile i svg { width: 53%; height: 53%; }
 .rs-tile b {
-  align-self: end; font-size: var(--r-t-h3); font-weight: var(--ui-w-sb);
+  grid-column: 2; grid-row: 1;
+  font-size: var(--r-t-tile); font-weight: var(--ui-w-bd); line-height: 1.2;
   color: var(--r-ink); letter-spacing: -.02em;
 }
-/* 세부 줄. **말줄임은 줄인 것이 아니라 가린 것이다**(R24). 한 줄로
-   못 박으면 `모델링·해석 · 설계 변…` 으로 끊기므로 두 줄까지 접고
-   거기서 넘치면 가린다 */
+/* 세부 한 줄. **말줄임은 줄인 것이 아니라 가린 것이다**(R24): 줄이는 일은
+   `domainSub` 의 글자 예산이 하고 여기는 못 미더운 날의 그물일 뿐이다.
+   레퍼런스의 세 칸도 전부 한 줄이다 */
 .rs-tile small {
-  grid-column: 2; align-self: start;
-  font-size: var(--r-t-meta); color: var(--r-ink-3); line-height: 1.5;
-  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
-  overflow: hidden;
+  grid-column: 2; grid-row: 2;
+  font-size: var(--r-t-gloss); color: var(--r-ink-3); line-height: 1.35;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
+/* 꺾쇠. **글자로 그리지 않는다**: `›` 는 활자마다 자리와 키가 달라서
+   레퍼런스의 10 × 18.5 를 맞출 길이 없다. 정사각을 45° 돌려 세우면
+   키가 변의 √2 배이고 폭이 그 절반이라 두 수가 같이 정해진다 */
 .rs-tile em {
-  grid-row: span 2; font-style: normal; font-size: 22px;
-  color: var(--r-ink-3); line-height: 1;
+  grid-column: 3; grid-row: 1 / span 2;
+  position: relative; font-style: normal;
+  width: clamp(9px, .69vw, 10px); height: clamp(15px, 1.28vw, 18.5px);
+  color: var(--r-ink-3);
+}
+.rs-tile em::before {
+  content: ""; position: absolute; inset: 0; margin: auto;
+  width: clamp(11px, .9vw, 13px); height: clamp(11px, .9vw, 13px);
+  border-top: 2px solid currentColor; border-right: 2px solid currentColor;
+  transform: rotate(45deg) translate(-1px, 1px);
 }
 
 /* ══ SCENE 2 (2) PRIMARY ACTION ══ **이 쪽에서 면을 가진 자리는 여기
@@ -1555,7 +1606,9 @@
   .rs-ev3-q { font-size: 21px; }
   .rs-ev3-story.is-second { margin-top: var(--r-s5); }
   .rs-ev3-su { margin-top: var(--r-s3); }
-  .rs { --r-gutter: 16px; }
+  /* **레퍼런스의 손전화 본문 여백은 22.6 이다**(R27 §C). 16 으로 두면
+     글 폭이 358 이 되어 346 짜리 줄이 열두 화소 넓어진다 */
+  .rs { --r-gutter: 22px; }
   /* **두 줄로 접히면 브랜드 줄을 덮는다.** 한 줄로 두고 옆으로 민다 */
   .rs-head-in { gap: var(--r-s2); flex-wrap: wrap; padding-bottom: 6px; }
   .rs-head nav {

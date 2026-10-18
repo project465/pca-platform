@@ -847,14 +847,6 @@ export default async function V3Result({
     ? model.actions.find((x) => x.id === topGap.action_id)
     : null;
 
-  /**
-   * 첫 화면 둘째 칸. **보고 있는 산업과 직무를 기준으로 적는다.**
-   *
-   * 고르신 산업·직무가 있으면 그쪽에서 한 번 더 확인하는 자리를 적고,
-   * 없으면 Core 에서 비어 있는 자리를 적는다. **없는 것을 지어내지
-   * 않는다**: 둘 다 없으면 그 사실을 적는다.
-   */
-  const packLack = model.industry_context ?? model.role_context;
   /* 손에 남은 것. 첫 화면 둘째 칸이 든다. **결과 모델이 준 그대로다** */
   const left = [...new Set(focus.flatMap((d) => d.artifacts))];
   /* **`지금 꺼내 쓸 수 있는 곳 / 한 줄이 비어 있는 곳` 두 단 표를
@@ -957,18 +949,10 @@ export default async function V3Result({
   /* **첫 화면에서 걷었다**(R18 §1·§3). `그 과정에서 ~ 경험도 있어요` 는
      우리가 그렇게 읽었다는 말이고, 바로 아래 결과물 strip 이 같은 것을
      이름으로 적는다. 확인된 축은 근거 절과 열두 영역이 그대로 든다 */
-  const lackBy = new Map<string, Axis[]>();
-  for (const r of packLack?.requested.slice(0, 2) ?? []) {
-    const d = domainName(core, r.domain);
-    lackBy.set(d, [...(lackBy.get(d) ?? []), r.axis]);
-  }
-  /* **절 머리 아래 한 줄이 드는 영역은 하나다.** 둘을 ` · ` 로 이으면
-     영역 이름 안에 이미 가운뎃점이 있어(`회계·원가 · 인사·조직`) 읽는
-     사람이 어디까지가 한 이름인지 가를 수 없다. 비어 있는 자리 전부는
-     아래 `다음에 채울 부분` 절이 그대로 든다 */
-  const lackWhat = lackBy.size
-    ? [...lackBy.keys()][0]
-    : topGap ? domainName(core, topGap.domain) : "";
+  /* **비어 있는 영역은 이 장면이 들지 않는다**(규격 §3). 전에는 이 자리가
+     산업·직무 맥락에서 영역 하나를 뽑아 절 머리 아래 줄에 얹었다.
+     그 줄이 답하는 질문이 `무엇이 비었는가` 라, 같은 눈높이에 두 질문이
+     섰다. 비어 있는 자리는 아래 `더 채울 부분` 절이 전부 든다 */
 
   /**
    * ── SCENE 2 (1) CURRENT STATE 의 카드 셋 ──
@@ -995,10 +979,17 @@ export default async function V3Result({
   /* 절 머리 아래 **한 줄**. 가진 것과 비어 있는 것을 한 문장에 담는다:
      두 문장을 이어 붙이면 설명 아래 설명이 되고, 그것이 규격 §5 가
      막는 모양이다. 비어 있는 쪽은 **하나만** 적는다 */
+  /* **이 장면이 답하는 질문은 하나다**(규격 §3): 내가 지금 무엇을 설명할
+     수 있는가. 비어 있는 영역을 같은 줄에 적으면 한 눈에 두 질문이 서고,
+     읽는 사람이 어느 쪽부터 보라는 것인지 고르는 일을 한 번 더 한다. 그
+     질문은 아래 `더 채울 부분` 이 받는다.
+
+     **명사형으로 끊는다**(규격 §5). 앞 판본은
+     `3가지는 지금 설명할 수 있고, 회계·원가 쪽은 아직 비어 있어요.` 였고
+     거기서 걸리는 것이 셋이다: 한 줄에 두 질문 · 금지한 `~있어요` ·
+     쉼표로 이은 두 마디 */
   const stateLead = stateTiles.length
-    ? (lackWhat
-        ? `${stateTiles.length}가지는 지금 설명할 수 있고, ${lackWhat} 쪽은 아직 비어 있어요.`
-        : `${stateTiles.length}가지는 지금 설명할 수 있어요.`)
+    ? `지금 설명할 수 있는 영역 ${stateTiles.length}개`
     : "";
 
   /**
@@ -1370,7 +1361,7 @@ export default async function V3Result({
                     <i aria-hidden="true"><Ic name={t.icon} /></i>
                     <b>{t.name}</b>
                     {t.sub ? <small>{t.sub}</small> : null}
-                    <em aria-hidden="true">›</em>
+                    <em aria-hidden="true" />
                   </a>
                 </li>
               ))}

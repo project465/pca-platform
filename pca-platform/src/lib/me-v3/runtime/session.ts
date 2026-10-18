@@ -171,7 +171,7 @@ export function domainName(core: string, td: string): string {
  */
 type Sub = { areas: string[]; owns: string };
 const SUB = new Map<string, Map<string, Sub>>();
-export function domainSub(core: string, td: string, budget = 14): string {
+export function domainSub(core: string, td: string, budget = 11): string {
   let m = SUB.get(core);
   if (!m) {
     const tax = coreFile<{
@@ -189,7 +189,10 @@ export function domainSub(core: string, td: string, budget = 14): string {
   /* 첫 하나는 길어도 적는다. 비우면 그 칸이 무엇에 대한 칸인지가 사라진다 */
   let out = d.areas[0];
   for (const a of d.areas.slice(1)) {
-    const next = `${out} · ${a}`;
+    /* **사이띄개를 두지 않는다**(R27 §B). 레퍼런스의 세부 줄은
+       `모델링·해석·설계` 이고 ` · ` 가 아니다. 사이를 띄우면 같은 자리에
+       두 글자가 더 들어가 **한 줄에 들어가던 줄이 넘친다** */
+    const next = `${out}·${a}`;
     if (next.length > budget) break;
     out = next;
   }
