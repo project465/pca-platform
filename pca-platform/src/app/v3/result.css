@@ -155,6 +155,17 @@
   /* Secondary. 누르는 자리의 보조와 `내가 해본 경험` 의 이름표 */
   --r-blue: #2563c9;
   --r-blue-soft: #eaf1fd;
+  /* SCENE 1 의 채운 표시. **레퍼런스에서 잰 값이다**: 절 머리의 막대가
+     (10,139,218) 이고 가운데 막대가 (252,139,163) 이며, 배지 글리프 셋이
+     (3,95,253) · (43,83,253) · (0,94,254) 다. `--r-blue`(#2563c9) 보다
+     한 단 밝고 짙다 — 같은 크기로 놓아도 **존재감이 거기서 갈린다**.
+     이 값을 `--r-blue` 에 덮어쓰지 않는다: 그 토큰은 다른 장면이 함께
+     읽고, 그 장면들은 아직 레퍼런스에 대고 다시 세우지 않았다 */
+  --r-mark: #0a8bda;
+  --r-mark-2: #fc8ba3;
+  --r-glyph-0: #0360fd;
+  --r-glyph-1: #2b53fd;
+  --r-glyph-2: #005efe;
   /* ── 역할마다 다른 accent(R5 트렌디 §2·§3) ──
      navy · blue · gray 만 돌면 전문적이지만 보수적으로 읽힌다. 그렇다고
      카드마다 색을 다르게 두면 rainbow UI 가 된다(§4). 그래서 **세 역할
@@ -434,6 +445,10 @@
   width: var(--r-sh-ic); height: var(--r-sh-ic); color: var(--r-blue);
 }
 .rs-sh > i svg { width: 100%; height: 100%; }
+/* **SCENE 1 만** 채운 표시를 든다. 다른 절의 머리는 선 아이콘 그대로다:
+   그 장면들은 아직 레퍼런스에 대고 다시 세우지 않았고, 공통 자리에서
+   색을 바꾸면 손대지 않은 장면이 함께 바뀐다(규격 §6) */
+.rs-st > .rs-sh > i { color: var(--r-mark); }
 .rs-sh > h2 {
   margin: 0; font-size: var(--r-t-h2); font-weight: var(--ui-w-bd);
   color: var(--r-ink); letter-spacing: -.025em;
@@ -497,15 +512,15 @@
   flex: none; display: grid; place-items: center;
   width: 52px; height: 52px; border-radius: clamp(19px, 1.94vw, 28px);
   background: linear-gradient(180deg, #dbe9fd 0%, #eaf3fe 100%);
-  color: var(--r-blue);
+  color: var(--r-glyph-0);
 }
 .rs-tile a[data-t="1"] i {
   background: linear-gradient(180deg, #e5e1fd 0%, #efedfd 100%);
-  color: #5b53d6;
+  color: var(--r-glyph-1);
 }
 .rs-tile a[data-t="2"] i {
   background: linear-gradient(180deg, #d8ecfb 0%, #e9f5fe 100%);
-  color: #1577c4;
+  color: var(--r-glyph-2);
 }
 @media (min-width: 880px) { .rs-tile i { width: 78px; height: 78px; } }
 .rs-tile i svg { width: 53%; height: 53%; }

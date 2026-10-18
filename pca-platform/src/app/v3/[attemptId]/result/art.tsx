@@ -142,3 +142,62 @@ export function Ic({ name }: { name: IcName }) {
     </svg>
   );
 }
+
+
+/* ══════════════════════════════════════════════════════════════════
+   채운 표시 (SCENE 1).
+
+   **선 아이콘과 같은 벌이 아니다.** 레퍼런스의 표시는 전부 면으로
+   서 있고(기어 · 정육면체 · 막대), 선으로 그린 것도 굵기가 칸의
+   17% 다. 위의 `Ic` 는 굵기 1.8 / 24 = 7.5% 라, 같은 자리에 같은
+   크기로 놓아도 **존재감이 한 단 아래**로 읽힌다. 자로 재면 크기가
+   맞는데 사람이 보면 다른 제품인 자리가 여기다(규격 §7).
+
+   측정값(레퍼런스 px → 24 칸):
+   - 막대 셋 폭 6.2 · 사이 2.75 · 키 9.6 · 16.3 · 23.3 · 끝은 둥글다
+   - 가운데 막대만 색이 다르다. **값을 그리지 않는다**: 셋이 한 덩이로
+     읽히지 않게 색조만 가른다(배지 셋이 색조를 가르는 것과 같다)
+   - 축선이 없다. 선을 그으면 그 순간 그래프가 되고, 이 자리가 재는
+     것은 수가 아니다
+   ══════════════════════════════════════════════════════════════════ */
+export type IcFName = "bars" | "plan" | "cube" | "note";
+
+const FILLS: Record<IcFName, React.ReactNode> = {
+  /* 막대 셋 — 절 머리. 가운데만 다른 색이다 */
+  bars: (<>
+    <rect x="0" y="14.4" width="6.2" height="9.6" rx="3.1" />
+    <rect x="8.9" y="7.7" width="6.2" height="16.3" rx="3.1"
+      fill="var(--r-mark-2)" />
+    <rect x="17.8" y="0.7" width="6.2" height="23.3" rx="3.1" />
+  </>),
+  /* 맥 — 선이지만 굵기가 칸의 15% 다 */
+  plan: (
+    <path d="M2.4 15.4 6.6 6.3 10.5 17.9 13.7 10.6 17.1 19.9 21.6 8.3"
+      fill="none" stroke="currentColor" strokeWidth="3.4"
+      strokeLinecap="round" strokeLinejoin="round" />
+  ),
+  /* 정육면체 — 면 하나에 흰 모서리 */
+  cube: (<>
+    <path d="M12 1.8 21.2 7v10L12 22.2 2.8 17V7z" />
+    <path d="M2.8 7 12 12.2 21.2 7M12 12.2v10"
+      fill="none" stroke="#ffffff" strokeWidth="1.9" strokeLinejoin="round" />
+  </>),
+  /* 문서 — 면 하나에 흰 줄 */
+  note: (<>
+    <path d="M6.2 1.8h7.4L19.8 8v14.4a1.8 1.8 0 0 1-1.8 1.8H6.2a1.8 1.8 0 0 1-1.8-1.8V3.6a1.8 1.8 0 0 1 1.8-1.8z" />
+    <path d="M13.4 2.4v5.3h5.3M8.4 13.4h7.4M8.4 17.6h4.8"
+      fill="none" stroke="#ffffff" strokeWidth="1.8" strokeLinecap="round"
+      strokeLinejoin="round" />
+  </>),
+};
+
+export function IcF({ name }: { name: IcFName }) {
+  return (
+    <svg
+      viewBox="0 0 24 24" aria-hidden="true" focusable="false"
+      fill="currentColor"
+    >
+      {FILLS[name]}
+    </svg>
+  );
+}

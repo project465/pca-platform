@@ -39,7 +39,7 @@ import { takeActionsFromResult } from "@/app/me/next/actions";
 import {
   ChartNote, EvidenceMatrix, Radar, StageBars,
 } from "./charts";
-import { Ic } from "./art";
+import { Ic, IcF } from "./art";
 import ResultNav from "./result-nav";
 import "../../result.css";
 import { barRows, canRadar } from "@/lib/me-v3/result/chart-data";
@@ -968,7 +968,7 @@ export default async function V3Result({
    */
   /* 배지의 색조. **값을 그리지 않는다**: 셋이 한 줄에 서므로 같은
      색이면 눈이 셋을 한 덩이로 읽는다. 색은 뜻을 갖지 않는다 */
-  const TILE_IC = ["plan", "chart", "note"] as const;
+  const TILE_IC = ["plan", "cube", "note"] as const;
   const stateTiles = focus.slice(0, 3).map((d, i) => ({
     code: d.code,
     name: domainName(core, d.code),
@@ -1349,7 +1349,7 @@ export default async function V3Result({
         {stateTiles.length ? (
           <section className="rs-st" id="state">
             <div className="rs-sh">
-              <i aria-hidden="true"><Ic name="chart" /></i>
+              <i aria-hidden="true"><IcF name="bars" /></i>
               <h2>현재 상태</h2>
               <a href="#focus">전체 보기 →</a>
             </div>
@@ -1358,7 +1358,7 @@ export default async function V3Result({
               {stateTiles.map((t) => (
                 <li key={t.code}>
                   <a href="#focus" data-t={t.tint}>
-                    <i aria-hidden="true"><Ic name={t.icon} /></i>
+                    <i aria-hidden="true"><IcF name={t.icon} /></i>
                     <b>{t.name}</b>
                     {t.sub ? <small>{t.sub}</small> : null}
                     <em aria-hidden="true" />

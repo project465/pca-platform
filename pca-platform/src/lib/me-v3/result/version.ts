@@ -420,7 +420,7 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.59";
  * **판정도 문장도 바뀌지 않았다.** 그래서 `RESULT_COPY_VERSION` 과
  * `RESULT_MODEL_VERSION` 은 그대로다.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V68";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V69";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX
