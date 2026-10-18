@@ -291,4 +291,69 @@ ME 세 등급과 BIZ PRO 가 **쪽 수 · 쪽마다의 글자 수 · 파일 크�
 3. 선 아이콘 벌과 채운 벌이 한 쪽에 같이 서는 것. SCENE 3 이 제 차례에
    같은 벌을 받으면 닫힌다.
 
-REFERENCE-LOCKED PRODUCT — HUMAN REVIEW REQUESTED
+REFERENCE-LOCKED PRODUCT · HUMAN REVIEW REQUESTED
+
+---
+
+# 셋째 바퀴. 사람 검수 교정 (VISUAL WEIGHT)
+
+판정이 Structure PASS · Hierarchy PARTIAL · Density PASS · Visual
+Character PARTIAL · Interaction PASS · Copy Naturalness PARTIAL ·
+Reference Resemblance PARTIAL 로 왔다. 그래서 숫자를 다시 재지 않고
+무게만 낮췄다. **SCENE 1 은 아직 FREEZE 하지 않는다.**
+
+## KEEP
+
+geometry 와 spacing 34자리 전부. `r27-probe` 가 벌어진 자리 0 이다.
+배지 안 그림도 41 그대로다: **낮춘 것이 크기가 아니라 짙기다.**
+`지금 설명할 수 있는 영역 3개` 한 줄. 카드가 드는 넷과 그 자리와 꺾쇠.
+
+## DELETE
+
+배지 셋의 **기울기(gradient)**. 세 칸이 똑같은 결로 번져서 그 자리가
+장식물로 읽혔다. 색면 하나로 눕혔고 색은 그대로 셋을 가른다.
+
+## REBUILD
+
+| 자리 | BEFORE | AFTER |
+|---|---|---|
+| 절 머리 색 | `#0a8bda` · `#fc8ba3` | `#6b9ec7` · `#efa9b6` |
+| 절 머리 잉크 | 칸의 100% | 칸의 80%. **칸(41)은 그대로** |
+| 카드 테 | `--r-line` | `--r-line-soft` |
+| 배지 면 | 기울기 둘 | 색면 하나 · 한 단 옅게 |
+| 글리프 색 | `#0360fd` · `#2b53fd` · `#005efe` | `#4f7fc9` · `#6e71c6` · `#4a86c9` |
+| 글리프 짙기 | 1 | 데스크톱 .8 · 손전화 .6 |
+
+**손전화를 따로 잡았다.** 좁은 화면의 읽는 차례가 현재 상태 → 영역
+이름 → 한 줄 → 꺾쇠 → 표시여야 해서 글리프를 한 단 더 내렸다.
+데스크톱 CSS 를 줄여 쓰지 않았다.
+
+**표시 상자를 줄이지 않은 까닭.** 41 을 줄이면 표시와 이름 사이가 같이
+줄어 한 덩이로 읽히던 머리가 흩어진다. 그래서 상자를 두고 그 안의
+잉크만 들였다.
+
+## COPY BEFORE / AFTER
+
+바뀐 글이 **0자**다. `지금 설명할 수 있는 영역 3개` 를 그대로 둔다.
+
+**세부 세 줄을 사람 검수로 올린다.**
+
+| 지금 | 어디서 오는가 | 읽은 바 |
+|---|---|---|
+| 목표와 지표 세우기 | `subareas[0]` of TD01 | 학생이 자기 과제를 떠올릴 수 있다 |
+| 고객 나누기 | `subareas[0]` of TD02 | 분류표의 말에 가깝다 |
+| 고객 찾기 | `subareas[0]` of TD03 | 무엇을 말하는지 떠오르지 않는다 |
+
+셋 다 taxonomy 의 `subareas` 를 글자 예산(11자)으로 자른 값이고, 자른
+자리가 label 처럼 읽히게 만든다. 학생 언어 layer 를 두려면 20 Core ×
+12 영역의 표시 문구를 따로 써야 하고, 그것은 이 바퀴가 손대지 않기로
+한 자리다(측정 모델과 taxonomy key 는 그대로 둔다). **고치지 않고
+올린다.**
+
+## 회귀
+
+`r27-probe` 자리 34 · 벌어진 자리 0 · `v3:freeze:measure` 가 기록을
+다시 적지 않은 채로 통과 · 검사 화면 20벌과 작업공간 49벌 그대로 ·
+`copy:audit` 46개 기준선. 판본은 결과지 화면만 `ME_V3_RESULT_UI_V70`.
+
+SCENE 1 — HUMAN REVIEW REQUESTED
