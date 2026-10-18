@@ -66,7 +66,7 @@
   display: block; min-width: 0;
   color: var(--cm-rail-ink-on); line-height: 1.2;
 }
-.cm-rail-name > b { font-weight: var(--ui-w-bd); font-size: 17px; letter-spacing: -.02em; }
+.cm-rail-name > b { font-weight: var(--ui-w-bd); font-size: 17.5px; letter-spacing: -.02em; }
 /* **지금 어느 전공인지를 띠에 둔다.** 전공이 늘면 이 자리가 고르는
    자리가 된다. 없으면 사용자가 CareerMatri 를 검사 한 벌로 읽는다.
    **이름보다 한 단 아래다**: 둘이 같은 무게면 무엇이 제품 이름인지
@@ -99,8 +99,8 @@
    이름이 읽히는 말이 아니라 장식 띠가 된다 */
 .cm-group > h2 {
   margin: 0 0 7px; padding: 0 10px;
-  font-size: 12px; font-weight: var(--ui-w-sb); letter-spacing: 0;
-  color: var(--cm-rail-ink); opacity: .55;
+  font-size: 12.5px; font-weight: var(--ui-w-bd); letter-spacing: 0;
+  color: var(--cm-rail-ink); opacity: .6;
 }
 
 /* **빽빽하게 둔다**(규격 §21). 아홉 줄이 한 뼘 안에 들어와야 눈이
@@ -110,7 +110,7 @@ a.cm-nav {
   display: flex; align-items: center; gap: 11px;
   padding: 6px 10px; border-radius: 9px;
   color: var(--cm-rail-ink); text-decoration: none; font-size: var(--ui-t-sub);
-  min-height: 36px;
+  font-weight: var(--ui-w-sb); min-height: 36px;
 }
 /* 줄의 아이콘. **크기와 선 굵기를 하나로 맞춘다**(규격 §1·§7): 띠에서
    아홉 줄이 세로로 서므로 하나만 달라도 그 줄이 먼저 읽힌다 */
@@ -131,7 +131,7 @@ a.cm-nav:hover { background: rgba(255, 255, 255, .07); color: var(--cm-rail-ink-
    강조색은 누르는 자리에만 둔다 */
 a.cm-nav.is-on {
   position: relative;
-  background: #17375f; color: #fff; font-weight: var(--ui-w-sb);
+  background: #17375f; color: #fff; font-weight: var(--ui-w-bd);
 }
 /* **왼쪽 금을 두지 않는다**(목표 화면). 면 하나로 충분하고, 금까지
    더하면 고른 줄이 둘로 말한다 */
@@ -284,7 +284,8 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 }
 /* 제목 아래 한 줄(규격 §4). `기계공학 · 최근 업데이트 YYYY.MM.DD` */
 .cm-meta {
-  margin: 5px 0 0; font-size: var(--ui-t-sub); color: var(--sf-ink-3);
+  margin: 5px 0 0; font-size: var(--ui-t-sub); font-weight: var(--ui-w-md);
+  color: var(--sf-ink-3);
 }
 .cm-head { position: relative; }
 .cm-lead {
@@ -300,7 +301,7 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
  */
 .cm-sh {
   display: flex; align-items: center; gap: 9px;
-  margin: 16px 0 0; font-size: 18px; font-weight: var(--ui-w-bd); color: var(--sf-ink);
+  margin: 16px 0 0; font-size: 20px; font-weight: var(--ui-w-bd); color: var(--sf-ink);
   letter-spacing: -.015em;
 }
 /* 절 머리의 표시. **셋이 같은 파랑이면 절이 한 묶음으로 읽힌다**
@@ -314,7 +315,7 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
   color: var(--sf-accent-ink); text-decoration: none; white-space: nowrap;
 }
 .cm-sh > a:hover { text-decoration: underline; }
-.cm-shsub { margin: 3px 0 9px; font-size: 13px; color: var(--sf-ink-3); }
+.cm-shsub { margin: 3px 0 9px; font-size: 13.5px; color: var(--sf-ink-3); }
 
 /* ── 지금 할 일 Hero ──────────────────────────────────────────────
  *
@@ -458,11 +459,11 @@ a.cm-tile:nth-child(3n+3) .cm-tile-ico {
 }
 .cm-tile-txt { display: block; min-width: 0; flex: 1 1 auto; }
 .cm-tile-txt b {
-  display: block; font-size: 15.5px; font-weight: var(--ui-w-bd); color: var(--sf-ink);
+  display: block; font-size: 16.5px; font-weight: var(--ui-w-bd); color: var(--sf-ink);
   letter-spacing: -.015em; line-height: 1.3;
 }
 .cm-tile-txt small {
-  display: block; margin-top: 5px; font-size: 12.5px; color: var(--sf-not);
+  display: block; margin-top: 5px; font-size: 13px; color: var(--sf-not);
   line-height: 1.35;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
@@ -519,14 +520,14 @@ a.cm-feed-row:hover, .cm-feed > li:hover { background: #fafcfe; }
 }
 .cm-feed-txt { flex: 1 1 auto; min-width: 0; margin: 0; font-size: var(--ui-t-sub); color: var(--sf-ink-2); }
 .cm-feed-txt b {
-  display: block; color: var(--sf-ink); font-weight: var(--ui-w-sb); font-size: 14.5px;
+  display: block; color: var(--sf-ink); font-weight: var(--ui-w-bd); font-size: 15.5px;
   line-height: 1.4; letter-spacing: -.01em;
 }
 .cm-feed-txt small { display: block; margin-top: 3px; font-size: var(--ui-t-cap); color: var(--sf-ink-3); line-height: 1.4; }
 /* 날짜는 **거드는 값이다**(규격 §5): 글보다 한 단 약하고 줄 끝에 선다 */
 .cm-feed time {
   flex: 0 0 auto; align-self: center;
-  font-size: 11.5px; color: #93a2b8; font-weight: var(--ui-w-md);
+  font-size: 12px; color: #93a2b8; font-weight: var(--ui-w-md);
   font-variant-numeric: tabular-nums; white-space: nowrap;
 }
 /* 다 세우지 않은 나머지. **한 단 더 약하고 줄도 낮다**: 변화 하나가

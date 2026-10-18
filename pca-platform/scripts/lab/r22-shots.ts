@@ -19,7 +19,8 @@ loadEnv();
 import { chromium, type Page } from "playwright";
 import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync } from "node:fs";
-import { query } from "../../src/lib/db";
+import { query, queryOne } from "../../src/lib/db";
+import { applyRecompute } from "../../src/lib/me-v3/recompute";
 
 const CORE = process.env.CORE ?? "BIZ_CORE_V1";
 const OUT = process.env.OUT ?? "docs/metri/shots/review-loop/r22";
@@ -75,11 +76,20 @@ async function main(): Promise<void> {
      서지 않아 무엇이 다른지 읽을 수 없다 */
   const att = await cloneFinished(id, "PRO");
   if (!att) throw new Error("끝낸 응시를 베껴 올 수 없습니다");
+  /* **경험의 전공을 그 응시에서 읽어 온다.** 글자로 적어 두면 베껴 온
+     응시가 다른 전공일 때 그 기록이 홈에 서지 않는다(작업공간은 지금
+     전공의 것만 읽는다). 한 번 그렇게 찍혀 기록 줄 하나가 사라졌다 */
+  const core = (await queryOne<{ c: string }>(
+    "SELECT core_code AS c FROM v3_attempts WHERE id = $1::bigint", [att]))?.c;
+  if (!core) throw new Error("베껴 온 응시의 전공을 읽지 못했습니다");
   await query(
     `INSERT INTO v3_experiences
        (user_id, core_code, kind, title, started_on, td_codes, decisions)
      VALUES ($1, $2, 'project', '학생회 예산 배분 회의 정리', '2025-09-01',
-             ARRAY['TD01'], ARRAY['쓸 돈과 안 쓸 돈을 갈라 적었다'])`, [id, CORE]);
+             ARRAY['TD01'], ARRAY['쓸 돈과 안 쓸 돈을 갈라 적었다']),
+            ($1, $2, 'capstone', '캡스톤 과제 조건 정리', '2025-03-01',
+             ARRAY['TD02'], ARRAY['어디까지 맞추고 어디부터 버릴지 정했다'])`,
+    [id, core]);
 
   const b = await chromium.launch();
   try {
@@ -115,6 +125,20 @@ async function main(): Promise<void> {
     await p.waitForTimeout(260);
     await clip(p, ".cm-utilrow", 520, `${OUT}/d5-find-none.png`);
     await shot(p, ".cm-tiles", `${OUT}/d6-tiles.png`);
+
+    /*
+     * **`최근 변화` 가 선 상태도 뜬다.** 앞의 그림은 경험을 적어만 두고
+     * 더하지 않은 사람이라 그 절이 서지 않는데(빈 절을 세우지 않는 것이
+     * 설계다), 목표 화면은 그 절이 선 상태다. 빈 상태의 그림으로 목표
+     * 화면과 견주면 **무엇이 다른지 읽을 수 없다.**
+     */
+    await applyRecompute(id);
+    await p.goto(`${BASE}/me`, { waitUntil: "networkidle" });
+    await p.waitForTimeout(400);
+    await p.screenshot({ path: `${OUT}/d7-home-changed.png` });
+    mark(`${OUT}/d7-home-changed.png`);
+    const far = await p.evaluate(() => document.documentElement.scrollHeight);
+    console.log(`  반영 뒤 문서 높이 ${far}px (창 900)`);
     await d.close();
 
     const mc = await b.newContext({
@@ -124,13 +148,13 @@ async function main(): Promise<void> {
     const m = await login(mc, who, pw);
     await m.goto(`${BASE}/me`, { waitUntil: "networkidle" });
     await m.waitForTimeout(400);
-    await m.screenshot({ path: `${OUT}/m7-home.png` });
-    mark(`${OUT}/m7-home.png`);
+    await m.screenshot({ path: `${OUT}/m8-home-changed.png` });
+    mark(`${OUT}/m8-home-changed.png`);
     const mtall = await m.evaluate(() =>
       document.documentElement.scrollHeight > window.innerHeight + 1);
     if (mtall) {
-      await m.screenshot({ path: `${OUT}/m8-home-full.png`, fullPage: true });
-      mark(`${OUT}/m8-home-full.png`);
+      await m.screenshot({ path: `${OUT}/m9-home-changed-full.png`, fullPage: true });
+      mark(`${OUT}/m9-home-changed-full.png`);
     }
     /* 좁은 화면에서는 그 줄이 서지 않는다(위 띠가 그 일을 한다).
        **그것도 적어 둔다**: 안 서는 것이 설계이고 빠뜨린 것이 아니다 */
