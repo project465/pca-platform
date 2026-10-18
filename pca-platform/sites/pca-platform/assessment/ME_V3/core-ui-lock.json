@@ -3,16 +3,16 @@
  "note": "Core 화면 열넷의 묶음 동결. 측정 동결과 별개다. layout 대변경은 별도 STOP GATE 이고, 고쳤으면 그 화면의 판본을 올리고 세 동결을 다시 적은 다음 `CORE_UI_FREEZE=write npm run v3:freeze:core`",
  "label": "CAREERMATRI_CORE_UI_FREEZE_1",
  "locks": {
-  "assessment": "7fe58bb89c65b7f1",
-  "result": "0c0c652d77c47929",
-  "workspace": "dc64333b3241cada"
+  "assessment": "4b87c2bf0933788c",
+  "result": "36342d08fa923083",
+  "workspace": "c7de1e768884f793"
  },
  "versions": {
-  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V38",
+  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V39",
   "assessment_copy_version": "me-v3-2-assessment-copy.24",
-  "result_ui_version": "ME_V3_RESULT_UI_V65",
+  "result_ui_version": "ME_V3_RESULT_UI_V66",
   "result_copy_version": "me-v3-result-copy.57",
-  "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V41",
+  "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V42",
   "workspace_copy_version": "careermatri-workspace-copy.26"
  },
  "screens": {

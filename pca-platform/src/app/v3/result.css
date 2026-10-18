@@ -41,14 +41,25 @@
   /* **활자 역할을 더 가른다**(R17 §3). h1(결론)과 say(한 문장)만으로는
      `해본 일` 의 큰 글과 닫는 자리의 머리가 설 칸이 없어서, 둘이 say
      한 칸에 몰리고 그 순간 쪽 전체가 비슷한 크기로 읽힌다 */
-  --r-t-h1-s: clamp(23px, 2.5vw, 31px); /* 경험 제목 · 닫는 머리 */
-  --r-t-say: clamp(19px, 1.9vw, 23px);  /* 내가 해본 경험 한 문장 */
-  --r-t-lead: clamp(16px, 1.4vw, 18px); /* Hero 보조 한 줄 */
-  --r-t-h2: clamp(19px, 1.7vw, 23px);   /* 절 제목 */
-  --r-t-h3: 17px;                       /* 칸 머리 · 사슬 머리 */
-  --r-t-body: var(--ui-t-body);         /* 본문 16px (검사 화면과 같다) */
-  --r-t-gloss: var(--ui-t-sub);         /* 거드는 글 14px */
-  --r-t-meta: var(--ui-t-cap);          /* 라벨 12px */
+  /* **큰 화면의 값을 목표 화면에서 받아 왔다**(R24). 공통 단이 올라가면서
+     `lead`(18)와 `h3`(17)이 **본문(19.9)보다 작아졌다**: 거드는 줄이 본문보다
+     작아야 하는 자리에서 거꾸로 서면 무엇이 결론이고 무엇이 거드는 말인지가
+     크기로 읽히지 않는다. 그래서 다섯 단을 목표 화면에서 실제로 잰 자리에
+     붙였다: 경험 제목 33.5(쪽 제목) · 한 문장 32(Hero 머리) ·
+     절 제목 28.8(절 머리) · 보조 한 줄 23.2(Hero 까닭) ·
+     칸 머리 20.6(Hero 더보기).
+
+     **`h1` 은 올리지 않았다.** 결론 한 줄은 목표 화면에 짝이 없는 자리이고,
+     이미 그 화면의 가장 큰 글자(33.5)보다 크다. 비율로 같이 올리면 54px 가
+     되어 쪽에서 그 한 줄만 따로 떠 보인다 */
+  --r-t-h1-s: clamp(23px, 2.33vw, 33.5px); /* 경험 제목 · 닫는 머리 */
+  --r-t-say: clamp(19px, 2.22vw, 32px);    /* 내가 해본 경험 한 문장 */
+  --r-t-lead: clamp(16px, 1.61vw, 23.2px); /* Hero 보조 한 줄 */
+  --r-t-h2: clamp(19px, 2vw, 28.8px);      /* 절 제목 */
+  --r-t-h3: clamp(17px, 1.43vw, 20.6px);   /* 칸 머리 · 사슬 머리 */
+  --r-t-body: var(--ui-t-body);         /* 본문 (검사 화면과 같다) */
+  --r-t-gloss: var(--ui-t-sub);         /* 거드는 글 */
+  --r-t-meta: var(--ui-t-cap);          /* 라벨 */
 
   --r-s1: var(--ui-1); --r-s2: var(--ui-2); --r-s3: var(--ui-3);
   --r-s4: var(--ui-4); --r-s5: var(--ui-5); --r-s6: var(--ui-6);
@@ -1417,6 +1428,34 @@
  * 것(묶음 하나 · 할 일 하나 · 표 한 줄)에만 걸고 절에는 걸지 않는다.
  */
 @media print {
+  /* ── 종이의 활자 여섯 단 ──
+   *
+   * **화면의 비율을 그대로 종이로 옮긴다**(R25). 목표 화면을 화소로 재어
+   * 나온 여섯 단이 본문을 1 로 보면 이렇다: 머리말 0.869 · 거드는 글
+   * 0.935 · 칸 이름 1.126 · 절 제목 1.447 · 쪽 제목 1.683. 그래서 종이의
+   * 본문 10pt 에 그 비율을 곱한 값이 아래 여섯이다.
+   *
+   * **종이는 `--ui-t-*` 를 읽지 않는다.** 그 값이 `px` 이고 종이는 `pt`
+   * 라서, 화면 토큰을 그대로 받으면 A4 에서 자가 달라진다. 그래서 단
+   * 이름만 같게 두고 값은 이 자리에서 따로 적는다 — **비율이 같다는 것이
+   * 한 제품으로 읽히게 하는 자리이고 숫자가 같은 것이 아니다.**
+   *
+   * **작은 쪽 넷이 올라갔다.** 7.5 · 8 · 8.5 · 9 로 네 갈래였던 것이 화면
+   * 비율로는 두 갈래(0.869 · 0.935)다. 종이의 작은 글씨가 화면보다 한 단
+   * 더 작아서, 같은 결과지를 화면으로 읽은 사람이 종이에서 각주를 못
+   * 읽었다. 이름표와 각주는 8.7pt · 거드는 글과 둘째 줄은 9.4pt 다.
+   *
+   * **표지 쪽의 15 · 19 · 30pt 는 올리지 않았다.** 목표 화면에 표지가
+   * 없어서 견줄 자리가 없고, 그 셋은 이미 쪽 제목 비율(1.683 = 16.8pt)을
+   * 넘는다. 비율로 맞추겠다고 내리면 **표지가 본문 쪽보다 작아진다** */
+  .rs {
+    --pt-page: 16.8pt;   /* 쪽 제목 (1.683) */
+    --pt-sec: 14.5pt;    /* 절 제목 (1.447) */
+    --pt-q: 11.3pt;      /* 칸 이름 · 사슬 머리 (1.126) */
+    --pt-body: 10pt;     /* 본문 */
+    --pt-sub: 9.4pt;     /* 거드는 글 (0.935) */
+    --pt-cap: 8.7pt;     /* 이름표 · 각주 (0.869) */
+  }
   /* **바탕을 종이 끝까지 희게 한다.** 결과지는 `.rs` 안에서 끝나고 그
      아래로는 `body` 의 연회색이 그대로 깔린다. 화면에서는 안 보이지만
      종이에서는 마지막 쪽의 남은 자리가 통째로 회색 바닥으로 뽑혔다 */
@@ -1436,7 +1475,7 @@
      마지막 쪽이 13% 로 떨어졌다. 쪽 높이가 고정이라 이 자리는 제로섬
      이고, **담긴 글을 한 줄도 덜어내지 않고** 줄 사이에서 되찾는다.
      스물두 벌을 전부 다시 재어 고른다 */
-  .rs { background: #fff; font-size: 10pt; line-height: 1.45; min-height: 0; }
+  .rs { background: #fff; font-size: var(--pt-body); line-height: 1.45; min-height: 0; }
   /* 쪽머리에 이미 `CareerMatri` 가 찍힌다. 한 쪽에 두 번 적지 않는다 */
   .rs-head { position: static; backdrop-filter: none; background: #fff; border: 0; }
   .rs-brand, .rs-back, .rs-mark { display: none; }
@@ -1468,7 +1507,7 @@
   .rs-hero-img { display: none; }
   /* 누구의 어느 응시인가. 보관된 종이가 혼자 읽혀야 한다(규격 §15) */
   .rs-who {
-    font-size: 9pt; color: var(--r-ink-2);
+    font-size: var(--pt-sub); color: var(--r-ink-2);
     padding-bottom: 3mm; margin-bottom: 5mm;
     border-bottom: 1px solid var(--r-line);
   }
@@ -1481,7 +1520,7 @@
   /* 알약은 종이에서 글줄 하나로 눕는다. 잉크를 칠하지 않는다 */
   .rs-badge {
     display: block; margin: 0 0 2mm; padding: 0;
-    background: none; color: var(--r-accent); font-size: 9pt;
+    background: none; color: var(--r-accent); font-size: var(--pt-sub);
   }
   .rs-badge::before { display: none; }
   /* 학생이 고른 문장은 종이에서 제목 아래 옅은 면에 선다 */
@@ -1489,14 +1528,14 @@
     max-width: none; margin: 0;
     padding: 4mm 5mm; background: var(--r-sunk);
     box-shadow: inset 2.5pt 0 0 var(--r-accent);
-    font-size: 11.5pt; line-height: 1.4; letter-spacing: -.01em;
+    font-size: var(--pt-q); line-height: 1.4; letter-spacing: -.01em;
     break-inside: avoid;
   }
   /* 칩은 줄글로 눕힌다. 담긴 것은 그대로다 */
   .rs-tags { display: block; justify-content: flex-start; margin-top: 3mm; }
   .rs-tags li {
     display: inline; padding: 0; background: none; border-radius: 0;
-    font-size: 8pt; color: var(--r-ink-3);
+    font-size: var(--pt-cap); color: var(--r-ink-3);
   }
   .rs-tags li + li::before { content: " · "; }
 
@@ -1504,7 +1543,7 @@
      옮기지 않는다**: 어두운 면은 잉크를 먹고, 종이에서 가르는 일은 금
      한 줄이 한다 */
   .rs-eyebrow {
-    margin: 6mm 0 2.5mm; font-size: 7.5pt; letter-spacing: .12em;
+    margin: 6mm 0 2.5mm; font-size: var(--pt-cap); letter-spacing: .12em;
     color: var(--r-ink-3); break-after: avoid;
   }
   .rs-eyebrow::after { display: none; }
@@ -1516,15 +1555,15 @@
   }
   .rs-do1-l > i, .rs-do1-f { display: none; }
   .rs-do1-b { display: block; }
-  .rs-do1-l { font-size: 7.5pt; color: var(--r-ink-3); margin-bottom: 1mm; }
+  .rs-do1-l { font-size: var(--pt-cap); color: var(--r-ink-3); margin-bottom: 1mm; }
   .rs-quote, .rs-do1-h {
-    font-size: 9.5pt; line-height: 1.4; max-width: none; color: var(--r-ink);
+    font-size: var(--pt-body); line-height: 1.4; max-width: none; color: var(--r-ink);
     font-weight: var(--ui-w-sb);
   }
   .rs-rail { gap: 1.5mm; margin-top: 1.5mm; }
   .rs-rail li {
     padding: 0; background: none; border: 0; border-left: 0;
-    font-size: 8pt; color: var(--r-ink-2);
+    font-size: var(--pt-cap); color: var(--r-ink-2);
   }
   .rs-rail li + li::before { content: "· "; }
   .rs-chips li { padding: 0; background: none; border: 0; color: var(--r-ink-2); }
@@ -1536,10 +1575,10 @@
   /* 다리 문장은 종이에서도 선다. **금은 눕히고 표시는 지운다** */
   .rs-but {
     margin: 1.5mm 0 0; padding-top: 1.5mm; max-width: none;
-    font-size: 9pt; color: var(--r-ink-2);
+    font-size: var(--pt-sub); color: var(--r-ink-2);
   }
   .rs-but > i { display: none; }
-  .rs-do1-d { font-size: 9pt; max-width: none; margin-top: 1.5mm; }
+  .rs-do1-d { font-size: var(--pt-sub); max-width: none; margin-top: 1.5mm; }
   /* 눌러서 가는 자리는 종이에서 서지 않는다: 영역 줄과 담아 둔 줄과
      기록 줄과 저쪽에서 기다리는 줄이 전부 그 자리다. 열두 영역은 부록이 든다 */
   .rs-now-k, .rs-rec, .rs-rec-f, .rs-end-w,
@@ -1548,19 +1587,19 @@
   .rs-pk { margin: 1.5mm 0 2.5mm; break-inside: avoid; }
   .rs-pk li + li { border-top: 0; }
   .rs-pk a { display: block; padding: 0.8mm 0; }
-  .rs-pk span { display: inline; font-size: 9pt; color: var(--r-ink-3); }
+  .rs-pk span { display: inline; font-size: var(--pt-sub); color: var(--r-ink-3); }
   .rs-pk span::after { content: " — "; color: var(--r-ink-3); }
-  .rs-pk b { display: inline; margin: 0; font-size: 9pt; color: var(--r-ink-2); }
+  .rs-pk b { display: inline; margin: 0; font-size: var(--pt-sub); color: var(--r-ink-2); }
 
   .rs-outcome-print {
-    display: block; margin: 2mm 0 0; font-size: 8pt;
+    display: block; margin: 2mm 0 0; font-size: var(--pt-cap);
     color: var(--r-ink-2); break-before: avoid;
   }
   /* 산업·직무 한 줄은 종이에만 선다 */
   .rs-link {
     display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline;
     margin-top: 4mm; padding-top: 3mm; border-top: 1px solid var(--r-line);
-    font-size: 8.5pt; color: var(--r-ink-2);
+    font-size: var(--pt-sub); color: var(--r-ink-2);
   }
   .rs-link b { font-weight: var(--ui-w-sb); color: var(--r-ink); }
   .rs-pr { display: block; }
@@ -1594,7 +1633,7 @@
   }
   .rs-cover-top b { font-size: 15pt; font-weight: 700; color: var(--r-ink); }
   .rs-cover-top span {
-    font-size: 10pt; font-weight: 700; color: var(--r-accent);
+    font-size: var(--pt-body); font-weight: 700; color: var(--r-accent);
     letter-spacing: .04em;
   }
   /* 큰 글씨 왼쪽, 시각 요소 오른쪽. **가운데 36mm 를 비워 두던 자리를
@@ -1615,42 +1654,42 @@
   .rs-cover-asks li {
     display: flex; align-items: baseline; gap: 5mm;
     padding-bottom: 3mm; border-bottom: 1px solid var(--r-line);
-    font-size: 11pt; color: var(--r-ink-2);
+    font-size: var(--pt-q); color: var(--r-ink-2);
   }
   .rs-cover-asks li { counter-increment: cask; }
   .rs-cover-asks li::before {
     content: counter(cask); flex: none; width: 6mm;
-    font-size: 9pt; font-weight: 700; color: var(--r-accent);
+    font-size: var(--pt-sub); font-weight: 700; color: var(--r-accent);
   }
   .rs-cover-mid h2 {
     margin: 0; font-size: 30pt; font-weight: 700; letter-spacing: -.03em;
     color: var(--r-ink);
   }
   .rs-cover-who {
-    margin: 7mm 0 0; font-size: 13pt; font-weight: 600; color: var(--r-ink-2);
+    margin: 7mm 0 0; font-size: var(--pt-sec); font-weight: 600; color: var(--r-ink-2);
   }
-  .rs-cover-day { margin: 3mm 0 0; font-size: 10pt; color: var(--r-ink-3); }
+  .rs-cover-day { margin: 3mm 0 0; font-size: var(--pt-body); color: var(--r-ink-3); }
   /* 차례. **쪽 번호를 적지 않는다**: 담긴 양에 따라 밀리는데 적어 두면
      어긋난 번호가 찍힌다 */
   .rs-cover-toc {
     margin: auto 0 0; padding: 0 0 0 1.4em;
     columns: 2; column-gap: 14mm;
-    font-size: 10pt; line-height: 2; color: var(--r-ink-2);
+    font-size: var(--pt-body); line-height: 2; color: var(--r-ink-2);
   }
   /* 부록 차례. **핵심과 같은 무게로 두지 않는다**(FINAL POLISH §3):
      한 단 작고 한 단 옅다. 번호는 핵심에서 이어 세지 않는다 */
   .rs-cover-appx {
     margin: 5mm 0 0; padding-top: 3mm; border-top: 1px solid var(--r-line);
-    font-size: 8.5pt; font-weight: 700; letter-spacing: .06em;
+    font-size: var(--pt-sub); font-weight: 700; letter-spacing: .06em;
     color: var(--r-ink-3);
   }
   .rs-cover-toc.is-appx {
-    margin: 2mm 0 0; font-size: 9pt; line-height: 1.9; color: var(--r-ink-3);
+    margin: 2mm 0 0; font-size: var(--pt-sub); line-height: 1.9; color: var(--r-ink-3);
     list-style: disc;
   }
   .rs-cover-foot {
     margin: 8mm 0 0; padding-top: 4mm; border-top: 1px solid var(--r-line);
-    font-size: 8.5pt; color: var(--r-ink-3);
+    font-size: var(--pt-sub); color: var(--r-ink-3);
   }
 
   /* ── 장이 바뀌면 쪽이 바뀐다 ──
@@ -1705,15 +1744,15 @@
      하나가 1cm 를 먹고, 재어 보니 CS PRO 가 그 1cm 에서 열세 쪽이 됐다.
      가르는 일은 금이 하고 말은 그 옆에 붙는다 */
   .rs-appx-head > h2 {
-    display: inline; font-size: 10.5pt; letter-spacing: .06em;
+    display: inline; font-size: var(--pt-q); letter-spacing: .06em;
     border-top: 0; padding-top: 0;
   }
   .rs-appx-head > h2::after { content: " — "; font-weight: 400; }
   .rs-appx-head > .rs-note {
-    display: inline; margin: 0; font-size: 8pt;
+    display: inline; margin: 0; font-size: var(--pt-cap);
   }
   .rs-sect > h2 {
-    font-size: 12.5pt; break-after: avoid;
+    font-size: var(--pt-sec); break-after: avoid;
     padding-top: 6px; border-top: 1px solid var(--r-line);
     margin-bottom: 4px;
   }
@@ -1740,7 +1779,7 @@
      종이에서는 잉크가 되고 쪽을 늘린다. 네 막을 같은 줄로 눕히고 쪽수는
      22벌 감사가 지킨다. **담긴 글은 한 줄도 덜어내지 않는다** */
   #evidence > h2 {
-    margin: 0 0 4px; font-size: 11pt; font-weight: var(--ui-w-bd);
+    margin: 0 0 4px; font-size: var(--pt-q); font-weight: var(--ui-w-bd);
     letter-spacing: 0; color: var(--r-ink);
   }
   .rs-ev3 { margin: 5px 0 0; }
@@ -1748,7 +1787,7 @@
   .rs-ev3-story.is-primary {
     padding: 0; border-radius: 0; background: none;
   }
-  .rs-ev3-meta { display: block; margin: 0; font-size: 7.5pt; }
+  .rs-ev3-meta { display: block; margin: 0; font-size: var(--pt-cap); }
   .rs-ev3-meta i {
     padding: 0; border-radius: 0; background: none; margin-left: 5px;
   }
@@ -1756,37 +1795,37 @@
     display: block; margin: 2px 0 0; gap: 0;
   }
   .rs-ev3-narr h4 {
-    margin: 1px 0 0; font-size: 10pt; line-height: 1.4; letter-spacing: 0;
+    margin: 1px 0 0; font-size: var(--pt-body); line-height: 1.4; letter-spacing: 0;
   }
   .rs-ev3-dec {
-    margin: 0; max-width: none; font-size: 9pt; line-height: 1.45;
+    margin: 0; max-width: none; font-size: var(--pt-sub); line-height: 1.45;
   }
   .rs-ev3-arts { display: inline; margin: 0; }
   .rs-ev3-arts li {
     display: inline; padding: 0; border: 0; border-radius: 0; background: none;
-    font-size: 9pt; color: var(--r-ink); font-weight: var(--ui-w-sb);
+    font-size: var(--pt-sub); color: var(--r-ink); font-weight: var(--ui-w-sb);
   }
   .rs-ev3-arts li + li::before {
     content: " / "; color: var(--r-ink-3); font-weight: var(--ui-w-rg);
   }
   .rs-ev3-ap {
     margin: 2px 0 0; padding-top: 0; border-top: 0;
-    font-size: 9pt; line-height: 1.45; color: var(--r-ink);
+    font-size: var(--pt-sub); line-height: 1.45; color: var(--r-ink);
   }
   .rs-ev3-ap > span, .rs-ev3-su span, .rs-ev3-so span {
-    display: inline; margin: 0 5px 0 0; font-size: 7.5pt;
+    display: inline; margin: 0 5px 0 0; font-size: var(--pt-cap);
     letter-spacing: 0; font-weight: var(--ui-w-rg); color: var(--r-ink-3);
   }
   .rs-ev3-su p {
-    display: inline; margin: 0; font-size: 9pt; line-height: 1.45;
+    display: inline; margin: 0; font-size: var(--pt-sub); line-height: 1.45;
     font-weight: var(--ui-w-rg); color: var(--r-ink);
   }
   .rs-ev3-q {
-    margin: 2px 0 0; font-size: 9pt; line-height: 1.45;
+    margin: 2px 0 0; font-size: var(--pt-sub); line-height: 1.45;
     letter-spacing: 0; font-weight: var(--ui-w-rg); color: var(--r-ink);
   }
   .rs-ev3-q cite {
-    display: inline; margin: 0 0 0 5px; font-size: 7.5pt; color: var(--r-ink-3);
+    display: inline; margin: 0 0 0 5px; font-size: var(--pt-cap); color: var(--r-ink-3);
   }
   /* 띠는 종이에서 서지 않는다: 바로 아래 곁근거가 금 한 줄로 이미 갈린다 */
   .rs-ev3-tr { display: none; }
@@ -1795,18 +1834,18 @@
     border-top: 1.2pt solid var(--r-accent);
   }
   .rs-ev3-sh h4 {
-    margin: 0; font-size: 9.5pt; line-height: 1.4; letter-spacing: 0;
+    margin: 0; font-size: var(--pt-body); line-height: 1.4; letter-spacing: 0;
   }
   .rs-ev3-so { margin: 0; text-align: left; }
   .rs-ev3-so strong {
-    display: inline; margin: 0; font-size: 9pt; font-weight: var(--ui-w-sb);
+    display: inline; margin: 0; font-size: var(--pt-sub); font-weight: var(--ui-w-sb);
   }
-  .rs-ev3-sd { margin: 0; font-size: 9pt; line-height: 1.45; }
+  .rs-ev3-sd { margin: 0; font-size: var(--pt-sub); line-height: 1.45; }
   .rs-ev3-su > div + div { margin-top: 1px; }
   .rs-ev3-more { margin: 4px 0 0; padding-top: 0; border: 0; }
-  .rs-ev3-more > span { font-size: 8.5pt; margin-right: 5px; }
+  .rs-ev3-more > span { font-size: var(--pt-sub); margin-right: 5px; }
   .rs-ev3-more > p {
-    display: inline; margin: 0; font-size: 8.5pt; line-height: 1.45;
+    display: inline; margin: 0; font-size: var(--pt-sub); line-height: 1.45;
   }
   .rs-first > li { padding: 5px 0; }
   .rs-pack dl > div { padding: 4px 0; }
@@ -1888,7 +1927,7 @@
   .rs-axes { grid-template-columns: 1fr 1fr; }
   .rs-axis { padding: 4px 14px 4px 11px; }
   .rs-axis-q { display: none; }
-  .rs-axis-s { font-size: 8.5pt; line-height: 1.45; }
+  .rs-axis-s { font-size: var(--pt-sub); line-height: 1.45; }
   /* **격자 상자는 쪽을 넘지 못한다.** 두 칸으로 둔 채 뽑았더니 묶음
      전체가 다음 쪽으로 통째로 밀렸고, 그 앞 쪽이 머리글 두 줄만 남긴 채
      비었다. 종이에서는 한 칸으로 풀어 줄 단위로 흐르게 둔다 */
@@ -1928,7 +1967,7 @@
      앞 쪽에 42%가 비어 있고 닫는 부록이 43%라, **1%가 모자라 통째로
      밀리는** 자리였다. 여백과 줄 사이를 한 단 좁혀 그 1%를 돌려받는다.
      **담긴 글을 한 줄도 덜어내지 않았다** */
-  .rs-fine { margin-top: 15px; padding-top: 8px; font-size: 7.5pt; line-height: 1.45; }
+  .rs-fine { margin-top: 15px; padding-top: 8px; font-size: var(--pt-cap); line-height: 1.45; }
   /* 묶음 상자의 머리 아래와 꼬리 위 여백도 한 단 줄인다 */
   .rs-pack > p { margin-bottom: 6px; }
   .rs-pack > .rs-others { margin-top: 6px; }
@@ -2243,7 +2282,7 @@
 @media print {
   .pv-radar { gap: 4mm; }
   .pv-radar-svg { max-width: 52mm; }
-  .pv-legend { font-size: 8.5pt; }
+  .pv-legend { font-size: var(--pt-sub); }
   .pv-legend li { padding: 1px 0; }
   .pv-legend b { width: 16px; height: 16px; }
   /* 분포 절이 쪽을 **아주 조금** 넘으면 그 뒤 장 바뀜 때문에 다음 쪽이
@@ -2254,7 +2293,7 @@
      범례가 이미 열둘을 적었으므로 종이에서는 줄글로 눕힌다. 담긴 것은
      그대로다 */
   .rs-sub .rs-zones section { padding: 3mm 0 1mm; }
-  .rs-sub .rs-zones h3 { font-size: 10.5pt; }
+  .rs-sub .rs-zones h3 { font-size: var(--pt-q); }
   .rs-sub .rs-zones p { margin-bottom: 1mm; }
   .rs-sub .rs-zones ul { display: block; }
   .rs-sub .rs-zones li {
@@ -2272,7 +2311,7 @@
   .pv-bar-track { height: 16px; }
   .pv-note { padding: 2.5mm 4mm; }
   /* 네 칸은 짧은 줄뿐이라 종이에서 한 행에 선다. **담긴 것은 그대로다** */
-  .pv-matrix table { font-size: 8.5pt; }
+  .pv-matrix table { font-size: var(--pt-sub); }
   .pv-matrix th, .pv-matrix td { padding: 1.5mm 2mm; }
   /* **범례를 두 칸으로 눕히지 않는다.** 그림 옆 자리가 좁은데 거기서
      다시 둘로 나누면 한 줄이 30mm 안짝이 되고, 영역 이름과 상태가 글자
@@ -2316,7 +2355,7 @@
   .rs-fig-aside .pv-radar-svg,
   .rs-fig-aside .pv-legend li { break-inside: avoid; }
   /* 그림 묶음의 작은 머리도 종이에서는 한 단 줄인다 */
-  .pv-h4 { margin: 3mm 0 1mm; font-size: 9pt; }
+  .pv-h4 { margin: 3mm 0 1mm; font-size: var(--pt-sub); }
   .rs-fig-aside .pv-radar-svg { max-width: 46mm; }
 }
 
@@ -2332,7 +2371,7 @@
      회색보다는 세다** */
   .is-report .rs-q {
     display: block; margin: 0 0 1mm;
-    font-size: 8.5pt; font-weight: var(--ui-w-bd);
+    font-size: var(--pt-sub); font-weight: var(--ui-w-bd);
     letter-spacing: 0.04em; color: var(--r-accent);
     break-after: avoid;
   }

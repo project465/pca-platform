@@ -18,6 +18,13 @@ const LOCK = "sites/pca-platform/assessment/ME_V3/ui-lock.json";
 /** 화면을 이루는 파일. 여기 없는 파일을 고치면 이 검사가 모른다 */
 const FILES = [
   "src/app/v3/layout.tsx",
+  /* **활자 여섯 단의 정본도 이 화면의 일부다.** 크기와 여백과 둥글기의 값이
+     `surface.css` 의 `--ui-*` 한 자리에 있고 세 면이 그것을 별명으로 받는다.
+     그 파일을 어느 동결 목록에도 두지 않아서, 본문을 16 에서 19.9 로 올린 날
+     **세 동결이 그 파일을 모르는 채로 통과했다**(`chains.ts` 와 `icon.tsx` 와
+     같은 자리다). 한 벌을 셋이 함께 적는 것이 맞다: 그 값을 고치면 검사지와
+     결과지와 작업공간이 **같이** 바뀌므로 판본도 셋이 같이 올라야 한다 */
+  "src/app/surface.css",
   "src/app/v3/assessment.css",
   "src/app/v3/tier-text.ts",
   "src/app/v3/start/page.tsx",

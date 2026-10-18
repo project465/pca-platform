@@ -291,8 +291,21 @@
  * 운영 이미지에는 `font-noto-cjk` 가 깔려 굵은 판이 있으므로
  * (`Dockerfile:82`) 이것은 **찍는 자리의 문제**이고, 여기서 재어 둔
  * 굵기 차이를 제품의 값으로 읽으면 안 된다.
+ *
+ * ── R25 · 덮어쓰기를 걷고 여섯 단을 그대로 받는다 ────────────────
+ *
+ * R24 가 자리마다 재어 맞춘 크기는 `platform.css` 에 `clamp` 으로 그대로
+ * 있다. 바뀐 것은 **단을 덮어쓰던 두 줄**이다: `workspace.tokens.css` 가
+ * `--ui-t-sub` 과 `--ui-t-cap` 을 17 과 13.5 로 다시 적고 있었는데, 그
+ * 값이 `surface.css` 로 올라간(18.6 · 17.3) 지금은 **작업공간만 한 단 아래로
+ * 내려앉는다.** 덮어쓰기를 걷었다.
+ *
+ * **자리마다 잰 마흔여섯 가운데 마흔셋이 ±0.1 그대로다**(`r23-probe`).
+ * 남은 셋은 R24 가 적어 둔 그 셋이다(줄 높이 −4 · 본문 여백 −2 ·
+ * Hero 높이 −21). 화면에 서는 글자가 한 줄도 바뀌지 않아 문장 판본은
+ * 그대로다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V41";
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V42";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.

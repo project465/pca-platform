@@ -2,7 +2,7 @@
  "schema_version": "me-v3-result-lock.1",
  "note": "결과지 화면 1차 동결. 문장만 고치면 `RESULT_COPY_VERSION` 만 올리고, 칸이나 절이 바뀌면 `RESULT_MODEL_VERSION`, 화면 구조가 바뀌면 `RESULT_UI_VERSION` 을 올린다. 채점 판본은 이 가운데 무엇으로도 올리지 않는다",
  "versions": {
-  "result_ui_version": "ME_V3_RESULT_UI_V65",
+  "result_ui_version": "ME_V3_RESULT_UI_V66",
   "result_copy_version": "me-v3-result-copy.57",
   "result_model_version": "me-v3-result-model.6",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.5",
@@ -20,7 +20,8 @@
   "종이에 빈 쪽과 범위 밖 쪽수가 없다": "v3:result:pdf"
  },
  "files": {
-  "src/app/v3/result.css": "ca1737af8c2bfda0514424aa97dc267e233f0c3ec8f63d9e1f9bd0c37aac53bf",
+  "src/app/v3/result.css": "44fe9bc724d6b79938642a969b49724b047f5e04e66bcbd4b230a34f911795ec",
+  "src/app/surface.css": "b38cd6f0bb1eef6b4c6c8b0fb2ef7381be37c4960fec03a6879bc9f3a2a91ee3",
   "src/app/v3/[attemptId]/result/page.tsx": "ef5489f30e6e52baebd77a407e02ee6db6fa827aecf7a945eb9805ca2f44c4d6",
   "src/app/v3/[attemptId]/result/fold.tsx": "da6c8b16f124941d283dc9ae4ad0f41b2271fd8d8233028bfdc3d4c500d4fbb4",
   "src/app/v3/[attemptId]/result/disclose.tsx": "a82c70b1d0897647877cfff4a672e8ebffd8716f76e6cfcc3d25e066f074f455",
@@ -30,7 +31,7 @@
   "src/lib/me-v3/result/text.ko.ts": "50dd871695b5642fe7f62bd413204e59fe58e707bf3c452780fc9f0fc0337ab1",
   "src/lib/me-v3/result/say.ts": "1ca895cbeb84b08c5579fc3fcaaf4f8c89b766e131f277bcd92bba74abcebc95",
   "src/lib/me-v3/result/josa.ts": "152cd30c2af136172618c14fa6fb4175b97cf16350db631e3e2e6c72fd7dd4af",
-  "src/lib/me-v3/result/version.ts": "ae77a4da3b5a8ab826238a7a03e5e588c13e96c50bd83afbf281b4a750585d7a",
+  "src/lib/me-v3/result/version.ts": "53306f9815754c4ece998ac78167aba3451c2896a263e44f18ac8d19e079bf4d",
   "src/lib/me-v3/result/spec-view.ts": "5996808b444eead599e03d41d22629c6ae8ce2690e06937ce64471d189b04fe7",
   "src/lib/me-v3/result/meta.ts": "bf2c3f49a2bc49108e6e63f6c9ac6f03cce070b6fe50f24ad8a3f4027aaa85cc",
   "src/app/v3/[attemptId]/result/charts.tsx": "70847ff6e06269017ddae36cb0d420c366da850d4f9b49419d879f3e8beea3b2",
