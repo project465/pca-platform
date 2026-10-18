@@ -2,8 +2,8 @@
  "schema_version": "me-v3-result-lock.1",
  "note": "결과지 화면 1차 동결. 문장만 고치면 `RESULT_COPY_VERSION` 만 올리고, 칸이나 절이 바뀌면 `RESULT_MODEL_VERSION`, 화면 구조가 바뀌면 `RESULT_UI_VERSION` 을 올린다. 채점 판본은 이 가운데 무엇으로도 올리지 않는다",
  "versions": {
-  "result_ui_version": "ME_V3_RESULT_UI_V66",
-  "result_copy_version": "me-v3-result-copy.57",
+  "result_ui_version": "ME_V3_RESULT_UI_V67",
+  "result_copy_version": "me-v3-result-copy.58",
   "result_model_version": "me-v3-result-model.6",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.5",
   "scoring_version": "me-v3-scoring.5"
@@ -20,9 +20,9 @@
   "종이에 빈 쪽과 범위 밖 쪽수가 없다": "v3:result:pdf"
  },
  "files": {
-  "src/app/v3/result.css": "44fe9bc724d6b79938642a969b49724b047f5e04e66bcbd4b230a34f911795ec",
+  "src/app/v3/result.css": "18b9e3741872275bdd56d0191649f255cbc997370d2ba2dfe68f1c219e194f82",
   "src/app/surface.css": "b1875a36649fc8eee9c76575f66d0d9c49b5e6892e611965ba5e895b825c5fbe",
-  "src/app/v3/[attemptId]/result/page.tsx": "ef5489f30e6e52baebd77a407e02ee6db6fa827aecf7a945eb9805ca2f44c4d6",
+  "src/app/v3/[attemptId]/result/page.tsx": "af4e2fbfc7e03fc28d02e1ce8353ca281d873ae23034b90aa61a828131ae3475",
   "src/app/v3/[attemptId]/result/fold.tsx": "da6c8b16f124941d283dc9ae4ad0f41b2271fd8d8233028bfdc3d4c500d4fbb4",
   "src/app/v3/[attemptId]/result/disclose.tsx": "a82c70b1d0897647877cfff4a672e8ebffd8716f76e6cfcc3d25e066f074f455",
   "src/app/v3/[attemptId]/result/save.tsx": "2830e503419eba94015798787ab2f7cd4abca39c8126fe1cf3dca087f6c6e7c1",
@@ -31,7 +31,7 @@
   "src/lib/me-v3/result/text.ko.ts": "50dd871695b5642fe7f62bd413204e59fe58e707bf3c452780fc9f0fc0337ab1",
   "src/lib/me-v3/result/say.ts": "1ca895cbeb84b08c5579fc3fcaaf4f8c89b766e131f277bcd92bba74abcebc95",
   "src/lib/me-v3/result/josa.ts": "152cd30c2af136172618c14fa6fb4175b97cf16350db631e3e2e6c72fd7dd4af",
-  "src/lib/me-v3/result/version.ts": "53306f9815754c4ece998ac78167aba3451c2896a263e44f18ac8d19e079bf4d",
+  "src/lib/me-v3/result/version.ts": "8694e3696a7360ae507c711e36b12a111734e5d856d4ef9d669c0e9ab64d21b6",
   "src/lib/me-v3/result/spec-view.ts": "5996808b444eead599e03d41d22629c6ae8ce2690e06937ce64471d189b04fe7",
   "src/lib/me-v3/result/meta.ts": "bf2c3f49a2bc49108e6e63f6c9ac6f03cce070b6fe50f24ad8a3f4027aaa85cc",
   "src/app/v3/[attemptId]/result/charts.tsx": "70847ff6e06269017ddae36cb0d420c366da850d4f9b49419d879f3e8beea3b2",

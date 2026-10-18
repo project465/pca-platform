@@ -528,3 +528,18 @@ export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.24";
  * 0 이고(쪽 맨 아래까지 내려서 쟀다), 고른 칸은 면(#eaf1fb)과 1px 테와
  * 글자 굵기(500 → 600)와 찬 표시 넷으로 갈린다.
  */
+
+/**
+ * R26 — **판본을 올리지 않고 지문만 다시 적은 자리.**
+ *
+ * `runtime/session.ts` 가 검사 화면 동결 목록 안에 있는데, 이 회차에
+ * 거기 더한 것은 결과지의 `현재 상태` 카드가 읽는 함수 하나뿐이다
+ * (`domainSub` — taxonomy 의 `technical_domains[].subareas`). 검사 화면이
+ * 읽는 자리를 한 줄도 건드리지 않았고 묻는 말도 보기도 routing 도
+ * 그대로라, `ASSESSMENT_UI_VERSION` 과 `ASSESSMENT_COPY_VERSION` 을
+ * 올리지 않고 `ui-lock.json` 의 지문만 다시 적었다.
+ *
+ * **그냥 넘기는 길이 아니다.** 판본을 같이 올리면 되짚을 때 **검사
+ * 화면이 바뀐 회차와 바뀌지 않은 회차를 가를 수 없다**: 파일럿 뒤에
+ * `이 사람이 어느 화면으로 답했는가` 를 묻는 자리가 그 판본이다.
+ */

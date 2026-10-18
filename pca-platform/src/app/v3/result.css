@@ -53,6 +53,17 @@
      이미 그 화면의 가장 큰 글자(33.5)보다 크다. 비율로 같이 올리면 54px 가
      되어 쪽에서 그 한 줄만 따로 떠 보인다 */
   --r-t-h1-s: clamp(23px, 2.33vw, 33.5px); /* 경험 제목 · 닫는 머리 */
+  /* ── 레퍼런스에서 재어 온 두 단(R26 §D) ──
+     목표 화면을 화소로 재니 서로 다른 활자 단이 아홉이고, 그 가운데
+     둘이 우리 자에 없었다: **쪽 제목의 0.94 배(Hero 머리)** 와
+     **0.74 배(눈썹)**. 나머지 여섯은 `--ui-*` 가 이미 ±1px 안에 있다.
+
+     아래 값은 손전화 쪽도 재어서 넣었다: 목표 화면의 손전화 판은
+     데스크톱의 ×0.64(머리) · ×0.74(눈썹)로 줄어든다. 재는 법과 표는
+     `docs/metri/R26_REFERENCE_SPEC.md` D 절 */
+  --r-t-page: clamp(22.8px, 2.31vw, 33.3px);  /* 쪽 제목 1.00 */
+  --r-t-hero: clamp(20px, 2.18vw, 31.4px);    /* Hero 머리 0.94 */
+  --r-t-eyebrow: clamp(18.2px, 1.72vw, 24.7px); /* 눈썹 0.74 */
   --r-t-say: clamp(19px, 2.22vw, 32px);    /* 내가 해본 경험 한 문장 */
   --r-t-lead: clamp(16px, 1.61vw, 23.2px); /* Hero 보조 한 줄 */
   --r-t-h2: clamp(19px, 2vw, 28.8px);      /* 절 제목 */
@@ -122,6 +133,8 @@
      열 자리가 넘게 쓰여서 파랑으로 두면 그 색이 쪽 전체에 번진다 */
   --r-accent-soft: #eef2f8;
   --r-accent-line: #d6dde8;
+  /* 줄 사이 금. **면보다 한 단 옅다** */
+  --r-line-3: #f1f4f9;
   /* Secondary. 누르는 자리의 보조와 `내가 해본 경험` 의 이름표 */
   --r-blue: #2563c9;
   --r-blue-soft: #eaf1fd;
@@ -280,8 +293,11 @@
   .rs-hero.is-noart .rs-quote { max-width: 24ch; }
 }
 /* 누구의 어느 응시인가. **한 줄이다** */
+/* 누구의 어느 응시인가. **제목 바로 아래 한 줄이다**(레퍼런스의
+   `기계공학 · 최근 업데이트 2024.10.07` 자리). 재어 보니 그 줄은 쪽
+   제목의 0.54 배이고 사이가 7px 다 */
 .rs-who {
-  margin: 0; font-size: var(--r-t-meta); color: var(--r-ink-3);
+  margin: 7px 0 0; font-size: var(--r-t-gloss); color: var(--r-ink-3);
   letter-spacing: .01em;
 }
 /* 판정은 알약 하나로 내려간다. 큰 글씨 자리는 학생의 말이 가져간다 */
@@ -300,10 +316,13 @@
   transform: rotate(-45deg) translate(1px, -1px);
 }
 /* 첫 화면의 큰 글씨. **그 사람이 고른 문장이다** */
+/* **레퍼런스의 쪽 제목 자리다**(R26 §F). 목표 화면의 본문은 이름 한 줄과
+   바로 아래 메타 한 줄로 열고, 그 이름이 쪽에서 가장 큰 글이다. 전에는
+   이 자리가 44px 까지 가는 `--r-t-h1` 이라 두 줄짜리 인용으로 읽혔다 */
 .rs-quote {
-  margin: var(--r-s3) 0 0; max-width: 20ch;
-  font-size: var(--r-t-h1); line-height: 1.26; font-weight: var(--ui-w-bd);
-  color: var(--r-ink); letter-spacing: -.035em; text-wrap: balance;
+  margin: 0; max-width: 24ch;
+  font-size: var(--r-t-page); line-height: 1.3; font-weight: var(--ui-w-bd);
+  color: var(--r-ink); letter-spacing: -.03em; text-wrap: balance;
 }
 @media (max-width: 879px) { .rs-quote { max-width: none; } }
 /* 경험 칩. 흰 알약이라 면 위에서 떠 보인다 */
@@ -369,89 +388,226 @@
   font-size: var(--r-t-gloss); color: var(--r-ink-2);
 }
 .rs-rail li { font-weight: var(--ui-w-md); }
-.rs-rail li + li::before {
+/* **가운뎃점을 뒤 칸에 붙이지 않는다.** `li + li::before` 로 두면 좁은
+   화면에서 줄이 넘어갈 때 그 점이 **다음 줄의 첫 글자**로 서서
+   `· 채널별 성과 비교표` 가 된다. 앞 칸의 꼬리에 달아 둔다 */
+.rs-rail li:not(:last-child)::after {
   content: "·"; color: var(--r-ink-3); font-weight: 400; margin: 0 8px;
 }
-/* 다리 문장. **숫자가 아니라 빠진 한 가지를 적는다**: 위의 경험과 아래
-   할 일을 이 한 줄이 잇고, 앞에 가는 금 하나가 붙어 이어지는 마디로
-   읽힌다 */
-.rs-but {
-  display: flex; align-items: baseline; gap: 10px;
-  margin: var(--r-s4) 0 0;
-  font-size: var(--r-t-gloss); line-height: 1.65; color: var(--r-ink-2);
-  max-width: 42ch;
+/* **`그런데 …` 다리 문장을 걷었다**(R26 §G). 그 줄이 들던 것은 아래
+   `현재 상태` 의 거드는 줄로 갔다: 레퍼런스는 절 머리 아래 한 줄로 그
+   절이 무엇을 보여 주는지 적고, 본문 가운데 대시 달린 문장을 두지
+   않는다(규격 §5 의 `레퍼런스에 없는 장식 divider`) */
+
+/* ══ SCENE 2 (1) CURRENT STATE ══ **레퍼런스의 카드 셋이다**(R26 §F).
+
+   목표 화면에서 절 머리는 넷을 든다: 표시(44px) · 절 이름(0.86) ·
+   오른쪽 링크(0.59) · 그 아래 거드는 줄(0.56). 넷이 늘 같은 자리에
+   서고, **되풀이되는 것은 이 머리 하나뿐**이다 */
+.rs-sh {
+  display: flex; align-items: center; gap: 12px;
+  margin: var(--r-s7) 0 0;
 }
-.rs-but > span { flex: 1; min-width: 0; }
-.rs-but > i {
-  flex: none; width: 16px; height: 2px; margin-top: 10px;
-  background: var(--r-cyan-line);
+.rs-sh > i {
+  flex: none; display: grid; place-items: center;
+  width: 30px; height: 30px; color: var(--r-blue);
+}
+.rs-sh > i svg { width: 100%; height: 100%; }
+.rs-sh > h2 {
+  margin: 0; font-size: var(--r-t-h2); font-weight: var(--ui-w-bd);
+  color: var(--r-ink); letter-spacing: -.025em;
+}
+/* 오른쪽 링크. **면도 테도 없는 글줄이다** */
+.rs-sh > a {
+  margin-left: auto; font-size: var(--r-t-gloss); color: var(--r-ink-2);
+  font-weight: var(--ui-w-md); text-decoration: none; white-space: nowrap;
+}
+.rs-sh > a:hover { color: var(--r-accent); }
+.rs-sh > a:focus-visible { outline: 2px solid var(--r-accent); outline-offset: 3px; }
+/* 절 머리 아래 한 줄. 재어 보니 머리와 7px 떨어져 있다 */
+.rs-sh-s {
+  margin: 7px 0 0 42px; font-size: var(--r-t-gloss); line-height: 1.6;
+  color: var(--r-ink-3);
+}
+.rs-st { margin: 0; }
+
+/* 카드 셋. **이 쪽에서 카드를 쓰는 절은 여기 하나다.** 목표 화면에서
+   카드 폭이 344 · 사이가 16 · 높이가 121 이고, 안에 배지(75) · 이름
+   (0.68) · 세부(0.54) · 꺾쇠가 선다 */
+.rs-tile {
+  display: grid; grid-template-columns: minmax(0, 1fr);
+  gap: 9px; margin: 19px 0 0; padding: 0; list-style: none;
+}
+@media (min-width: 880px) {
+  .rs-tile { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+}
+/* **칸 셋의 키를 맞춘다.** 세부가 한 줄인 칸과 두 줄인 칸이 섞이면
+   그 줄이 서로 다른 부품을 모아 놓은 것으로 읽힌다 */
+.rs-tile > li { min-width: 0; display: grid; }
+/* 손전화의 줄 키. **목표 화면의 손전화 판에서 이 줄이 70px 쯤이다**
+   (판 62px × 390/345). 데스크톱의 카드를 그대로 줄여 세우면 95px 가
+   되어 셋이 화면 하나를 통째로 먹는다 */
+.rs-tile a {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center; column-gap: 14px; row-gap: 2px;
+  min-height: 70px; padding: 12px 14px;
+  border: 1px solid var(--r-line); border-radius: var(--r-r);
+  background: #ffffff; text-decoration: none; color: inherit;
+}
+@media (min-width: 880px) { .rs-tile a { min-height: 121px; padding: 18px 20px; } }
+.rs-tile a:hover { border-color: var(--r-accent-line); }
+.rs-tile a:focus-visible { outline: 2px solid var(--r-accent); outline-offset: 2px; }
+/* 배지. **값을 그리지 않는다**: 색은 뜻을 갖지 않고 셋을 가르기만 한다.
+   목표 화면의 칸 셋도 색조가 조금씩 다르다 — 셋이 한 줄에 서므로 같은
+   색이면 눈이 셋을 한 덩이로 읽는다 */
+.rs-tile i {
+  grid-row: span 2; flex: none; display: grid; place-items: center;
+  width: 44px; height: 44px; border-radius: 14px;
+  background: var(--r-cyan-soft); color: var(--r-blue);
+}
+.rs-tile a[data-t="1"] i { background: var(--r-blue-soft); color: var(--r-blue); }
+.rs-tile a[data-t="2"] i { background: var(--r-teal-soft); color: var(--r-teal); }
+@media (min-width: 880px) { .rs-tile i { width: 56px; height: 56px; } }
+.rs-tile i svg { width: 56%; height: 56%; }
+.rs-tile b {
+  align-self: end; font-size: var(--r-t-h3); font-weight: var(--ui-w-sb);
+  color: var(--r-ink); letter-spacing: -.02em;
+}
+/* 세부 줄. **말줄임은 줄인 것이 아니라 가린 것이다**(R24). 한 줄로
+   못 박으면 `모델링·해석 · 설계 변…` 으로 끊기므로 두 줄까지 접고
+   거기서 넘치면 가린다 */
+.rs-tile small {
+  grid-column: 2; align-self: start;
+  font-size: var(--r-t-meta); color: var(--r-ink-3); line-height: 1.5;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.rs-tile em {
+  grid-row: span 2; font-style: normal; font-size: 22px;
+  color: var(--r-ink-3); line-height: 1;
 }
 
-/* ── 지금 할 일 ── **읽고 이해한 뒤에 찾는 자리가 아니다.** 상태 바로
-   다음에 서고, **이 쪽에서 색을 가진 면은 여기 하나다**(레퍼런스) */
+/* ══ SCENE 2 (2) PRIMARY ACTION ══ **이 쪽에서 면을 가진 자리는 여기
+   하나다.** 목표 화면의 Hero 는 눈썹 → 두 줄 큰 글 → 본문 한 줄 →
+   채운 단추 → 글줄 링크 차례로 **왼쪽에 쌓이고** 오른쪽 31% 가 그림이다.
+   글과 그림의 비가 69 : 31 이다 */
 .rs-do1 {
-  margin: var(--r-s6) 0 0; padding: var(--r-s5) var(--r-s5) var(--r-s4);
-  border-radius: 20px;
+  position: relative; overflow: hidden;
+  margin: var(--r-s6) 0 0; padding: var(--r-s5);
+  border-radius: 16px;
   background: linear-gradient(170deg, #eef4fe 0%, #f4f8ff 100%);
 }
-@media (min-width: 880px) { .rs-do1 { padding: var(--r-s6) var(--r-s6) var(--r-s5); } }
-/* **한글에 자간을 벌리지 않는다.** 이름표로 읽히게 하는 것은 크기와
-   색이다. 앞의 작은 고리 하나가 레퍼런스의 ◎ 자리다 */
+@media (min-width: 880px) {
+  .rs-do1 { padding: 32px 32px 32px 46px; }
+  /* 목표 화면의 Hero 안쪽 왼 여백이 67px 이고 높이가 323px 다 */
+  .rs-do1-b { width: 69%; }
+}
+/* 눈썹. **한글에 자간을 벌리지 않는다**: 이름표로 읽히게 하는 것은
+   크기(0.74)와 색이다 */
 .rs-do1-l {
-  display: flex; align-items: center; gap: 7px;
-  margin: 0 0 12px; font-size: var(--r-t-meta);
-  font-weight: var(--ui-w-sb); color: var(--r-blue);
+  display: flex; align-items: center; gap: 10px;
+  margin: 0 0 10px; font-size: var(--r-t-eyebrow);
+  font-weight: var(--ui-w-bd); color: var(--r-ink);
 }
 .rs-do1-l > i {
-  flex: none; width: 11px; height: 11px; border-radius: 50%;
-  border: 2.5px solid currentColor;
+  flex: none; display: grid; place-items: center;
+  width: 26px; height: 26px; color: var(--r-blue);
 }
-/* 닫는 줄. **채운 단추 다음은 글줄이다** */
+.rs-do1-l > i svg { width: 100%; height: 100%; }
+.rs-do1-b { display: block; }
+.rs-do1-h {
+  margin: 0; font-size: var(--r-t-hero); line-height: 1.32; max-width: 20ch;
+  font-weight: var(--ui-w-bd); color: var(--r-ink); letter-spacing: -.028em;
+}
+/* 본문 한 줄. 재어 보니 쪽 제목의 0.57 배이고 **한 줄로 들어간다** */
+.rs-do1-d {
+  margin: 12px 0 0; font-size: var(--r-t-gloss); line-height: 1.6;
+  color: var(--r-ink-2); max-width: 46ch;
+}
+/* 채운 단추와 그 옆 글줄. **단추를 오른쪽 단에 띄우지 않는다** */
+.rs-do1-a {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: 10px var(--r-s5); margin-top: 20px;
+}
+.rs-do1-a form { display: contents; }
+.rs-do1-m {
+  font-size: var(--r-t-gloss); color: var(--r-ink-2); font-weight: var(--ui-w-md);
+  text-decoration: none; white-space: nowrap;
+}
+.rs-do1-m:hover { color: var(--r-accent); }
+/* 닫는 줄 */
 .rs-do1-f {
-  display: flex; flex-wrap: wrap; gap: 4px var(--r-s5);
-  margin: var(--r-s5) 0 0; font-size: var(--r-t-meta); color: var(--r-ink-3);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px var(--r-s5);
+  margin: 10px 0 0; font-size: var(--r-t-meta); color: var(--r-ink-3);
 }
 .rs-do1-f a { color: var(--r-blue); font-weight: var(--ui-w-md);
   text-decoration: underline; text-underline-offset: 4px; }
-/* **오른쪽에 단추만 띄우지 않는다**(R21 §A). 두 단으로 두었더니 오른쪽
-   아래에 단추 하나만 떠서 그 옆이 통째로 빈 면이 됐다. 지금은 글 아래에
-   바로 선다: 두 줄짜리 설명이라 읽고 나서 찾는 자리가 되지 않는다 */
-/* **색면 안을 비워 두지 않는다.** 왼쪽에 글이 서고 오른쪽에 단추가
-   서서 면이 양쪽에서 쓰인다. 레퍼런스가 그 자리에 그림을 두는 칸이다 */
-.rs-do1-b { display: block; }
+/* 오른쪽 그림. **값도 눈금도 없다**: 면의 결이고 그래프가 아니다 */
+.rs-do1-art { display: none; }
 @media (min-width: 880px) {
-  .rs-do1-b {
-    display: grid; grid-template-columns: minmax(0, 1fr) 15rem;
-    align-items: center; gap: var(--r-s7);
+  .rs-do1-art {
+    position: absolute; right: 42px; top: 50%; display: block;
+    width: 150px; height: 150px; margin-top: -75px;
+    color: var(--r-blue); opacity: .16; pointer-events: none;
   }
-  .rs-do1-a { margin-top: 0; flex-direction: column; align-items: stretch; gap: 14px; }
-  .rs-do1-a .rs-take { justify-content: center; }
-  .rs-do1-a .rs-keep { text-align: center; }
+  .rs-do1-art svg { width: 100%; height: 100%; }
 }
-.rs-do1-h {
-  margin: 0; font-size: var(--r-t-h1-s); line-height: 1.3; max-width: 19ch;
-  font-weight: var(--ui-w-bd); color: var(--r-ink); letter-spacing: -.026em;
-}
-/* 할 일 한 줄 설명. **머리 한 줄과 이 두 줄까지다** */
-.rs-do1-d {
-  margin: 12px 0 0; font-size: var(--r-t-gloss); line-height: 1.65;
-  color: var(--r-ink-2); max-width: 44ch;
-}
-.rs-do1-a {
-  display: flex; flex-wrap: wrap; align-items: center;
-  gap: var(--r-s4); margin-top: var(--r-s5);
-}
-.rs-do1-a form { display: contents; }
-/* 거드는 단추. **면을 두지 않는다**: 강한 면은 왼쪽 단추 하나다 */
+/* 거드는 단추. **면을 두지 않는다**: 강한 면은 위 단추 하나다 */
 .rs-keep {
-  min-height: 48px; padding: 0 2px; border: 0; background: none;
+  min-height: 44px; padding: 0 2px; border: 0; background: none;
   cursor: pointer; font-family: inherit; color: var(--r-ink-2);
-  font-size: var(--r-t-gloss); font-weight: var(--ui-w-md);
+  font-size: var(--r-t-meta); font-weight: var(--ui-w-md);
   text-decoration: underline; text-underline-offset: 5px;
   text-decoration-color: var(--r-line);
 }
 .rs-keep:hover { color: var(--r-accent); text-decoration-color: currentColor; }
 .rs-keep:focus-visible { outline: 2px solid var(--r-accent); outline-offset: 3px; }
+
+/* ══ SCENE 3 EVIDENCE 들머리 ══ **레퍼런스의 `최근 기록` 줄이다**.
+   카드가 아니라 줄이고, 줄끼리 가는 금으로만 갈린다. 재어 보니 줄
+   높이가 78px 이고 표시가 41px 다 */
+/* **줄 묶음은 흰 면 하나 안에 선다**(레퍼런스의 `최근 변화` · `최근
+   기록`). 줄마다 테를 두르면 같은 카드가 셋 서고, 테를 전부 걷으면
+   줄 묶음인지 문단인지 갈리지 않는다. 묶음에 테 하나, 줄 사이에 금 */
+.rs-ebr {
+  margin: 19px 0 0; padding: 0 18px; list-style: none;
+  border: 1px solid var(--r-line); border-radius: var(--r-r);
+  background: #ffffff;
+}
+.rs-ebr > li {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center; gap: 14px;
+  min-height: 63px; padding: 12px 0;
+  /* 줄 사이 금은 **면보다 한 단 옅다**: 같은 짙기면 줄 묶음이 표의
+     격자로 읽히고, 그 순간 기록이 아니라 자료표가 된다 */
+  border-top: 1px solid var(--r-line-3);
+}
+.rs-ebr > li:first-child { border-top: 0; }
+@media (min-width: 880px) { .rs-ebr > li { min-height: 78px; } }
+.rs-ebr i {
+  flex: none; display: grid; place-items: center;
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--r-cyan-soft); color: var(--r-teal);
+}
+.rs-ebr i svg { width: 54%; height: 54%; }
+.rs-ebr span { min-width: 0; }
+.rs-ebr b {
+  display: block; font-size: var(--r-t-body); line-height: 1.45;
+  font-weight: var(--ui-w-md); color: var(--r-ink);
+}
+.rs-ebr small {
+  display: block; margin-top: 2px;
+  font-size: var(--r-t-meta); color: var(--r-ink-3);
+}
+.rs-ebr em {
+  flex: none; font-style: normal; font-size: var(--r-t-meta);
+  color: var(--r-ink-2); font-weight: var(--ui-w-md); white-space: nowrap;
+}
+@media (max-width: 879px) {
+  .rs-ebr > li { grid-template-columns: auto minmax(0, 1fr); }
+  .rs-ebr em { grid-column: 2; margin-top: 2px; }
+}
+
 /* 담아 둔 것이 있을 때만 서는 한 줄 */
 .rs-now-k { margin: var(--r-s4) 0 0; font-size: var(--r-t-meta); color: var(--r-ink-3); }
 .rs-now-k a { color: var(--r-teal); text-decoration: underline; text-underline-offset: 3px; }
@@ -561,6 +717,10 @@
   border: 0; border-radius: var(--r-r-pill); cursor: pointer; font-family: inherit;
   background: var(--r-blue); color: #fff; border-radius: 10px;
   font-size: var(--r-t-body); font-weight: var(--ui-w-sb); line-height: 1;
+  /* **채운 단추의 글에 밑줄을 긋지 않는다.** `globals.css` 는 `a` 의 색만
+     되돌리고 꾸밈은 그대로 두어서, 이 자리가 `<Link>` 가 된 날부터
+     브라우저 기본 밑줄이 흰 글자 아래에 섰다 */
+  text-decoration: none;
 }
 .rs-take svg { flex: none; margin-left: 9px; width: 16px; height: 16px; display: block; }
 .rs-take:hover { background: #1e52a8; }
@@ -1565,7 +1725,7 @@
     padding: 0; background: none; border: 0; border-left: 0;
     font-size: var(--pt-cap); color: var(--r-ink-2);
   }
-  .rs-rail li + li::before { content: "· "; }
+  .rs-rail li:not(:last-child)::after { content: " ·"; }
   .rs-chips li { padding: 0; background: none; border: 0; color: var(--r-ink-2); }
   .rs-chips li + li::before { content: " · "; }
   /* 할 일의 짧은 목록은 **종이에 두 번 서지 않는다**: 바로 아래 까닭 줄과
@@ -1751,11 +1911,23 @@
   .rs-appx-head > .rs-note {
     display: inline; margin: 0; font-size: var(--pt-cap);
   }
-  .rs-sect > h2 {
+  .rs-sect > h2,
+  .rs-sect > .rs-sh > h2 {
     font-size: var(--pt-sec); break-after: avoid;
     padding-top: 6px; border-top: 1px solid var(--r-line);
     margin-bottom: 4px;
   }
+  /* **절 머리의 표시와 오른쪽 링크는 화면 것이다.** 종이에서 표시는
+     쪽을 먹기만 하고 링크는 누를 수 없다 */
+  .rs-sh { display: block; margin-top: 0; }
+  .rs-sh > i, .rs-sh > a { display: none; }
+  .rs-sh-s { margin-left: 0; font-size: var(--pt-cap); }
+  /* **CURRENT STATE 카드 셋과 EVIDENCE 들머리 줄은 화면 것이다**(R26 §G).
+     종이에는 `먼저 볼 영역` 과 `내가 이미 가진 근거` 네 단계가 같은
+     사실을 이미 적는다. 여기에 한 벌 더 세우면 같은 것을 두 번 읽고
+     쪽이 하나 늘어난다. **담긴 글을 덜어낸 것이 아니다**: 종이에서
+     그 내용이 사라지는 자리가 없다 */
+  .rs-st, .rs-ebr { display: none; }
   .rs-sect > .rs-h2b { border-top: 0; padding-top: 0; }
   .rs-sect > .rs-h2b { margin-top: 24px; }
   /* **머리글만 붙여 둔다.** 안내 줄까지 `avoid` 를 걸면 크롬이 다음

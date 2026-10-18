@@ -5,8 +5,8 @@ import { requireUser } from "@/lib/session";
 import { RETAKE_BLOCKED_KO } from "@/lib/me-v3/retake";
 import { mark } from "@/lib/me-v3/workspace-events";
 import {
-  attemptOf, domainName, industryChoices, latestResult, orgChoices, roleChoices,
-  industriesFromDomains, rolesFromDomains,
+  attemptOf, domainName, domainSub, industryChoices, latestResult, orgChoices,
+  roleChoices, industriesFromDomains, rolesFromDomains,
 } from "@/lib/me-v3/runtime/session";
 import { domainArtifacts } from "@/lib/me-v3/runtime/domain-facts";
 import type { Axis } from "@/lib/me-v3/scoring/types";
@@ -18,8 +18,8 @@ import {
 import {
   actionBriefKo, actionHeadKo, actionKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO,
   BASIC_GROUP_KO, bridgeKo,
-  commonKo, domainChainKo, draftKo, gapCellKo, gapKo, gapNeedKo, gapNeedShortKo, gapShortKo,
-  actionWhyKo, AXIS_DID_KO, headlineBadgeKo, headlineKo, needKo, needSentenceKo,
+  commonKo, domainChainKo, draftKo, gapCellKo, gapKo, gapNeedKo, gapShortKo,
+  actionWhyKo, AXIS_DID_KO, headlineBadgeKo, headlineKo, needKo,
   pickSentenceKo,
   evidenceStoryKo, keptNoteKo, moreReadyKo,
   HORIZON_KO, QUALITY_KO, TIER_NOTE_KO, TRANS_ORDER, TRANS_STEP_KO,
@@ -855,29 +855,6 @@ export default async function V3Result({
    * 않는다**: 둘 다 없으면 그 사실을 적는다.
    */
   const packLack = model.industry_context ?? model.role_context;
-  /**
-   * 셋째 칸의 이름은 `더 채울 부분` 하나다(규격 §3).
-   *
-   * 전에는 고르신 산업 이름을 머리에 달아 `정보기술·플랫폼 쪽에서 비어
-   * 있는 것` 으로 섰다. 넷을 나란히 놓고 보면 이 칸만 이름이 길고 매번
-   * 달라서, 네 칸이 같은 자리에서 같은 일을 한다는 것이 읽히지 않는다.
-   * 어느 쪽에서 본 것인지는 아래 한 줄이 그대로 든다.
-   */
-  const lackTitle = "다음에 채울 부분";
-  /* **영역 이름을 축마다 다시 적지 않는다.** 둘을 `영역 · 축` 으로
-     만들어 또 `·` 로 이으면 같은 영역이 두 번 서고 가운뎃점이 넷이
-     되어, 읽는 사람이 어디까지가 한 자리인지 가를 수 없다
-     (`인사·조직 · 요구 해석 · 인사·조직 · 직접 판단`). 영역으로 묶어
-     한 번만 적는다 */
-  /**
-   * **첫 줄은 영역이고 비어 있는 자리는 그 아래 줄이 든다**
-   * (COMMERCIAL FINAL §5).
-   *
-   * 전에는 이 칸이 `경영전략·기획에서 요구 해석 · 직접 판단` 으로 섰다.
-   * 축 이름은 우리 쪽 분류이고, 그것이 칸의 첫 줄에 서면 읽는 사람이 자기
-   * 결과 대신 분류표를 읽는다. 데이터 구조는 그대로 두고 **읽는 자리에서만**
-   * 학생의 말로 내린다(`needSentenceKo`).
-   */
   /* 손에 남은 것. 첫 화면 둘째 칸이 든다. **결과 모델이 준 그대로다** */
   const left = [...new Set(focus.flatMap((d) => d.artifacts))];
   /* **`지금 꺼내 쓸 수 있는 곳 / 한 줄이 비어 있는 곳` 두 단 표를
@@ -985,12 +962,66 @@ export default async function V3Result({
     const d = domainName(core, r.domain);
     lackBy.set(d, [...(lackBy.get(d) ?? []), r.axis]);
   }
+  /* **절 머리 아래 한 줄이 드는 영역은 하나다.** 둘을 ` · ` 로 이으면
+     영역 이름 안에 이미 가운뎃점이 있어(`회계·원가 · 인사·조직`) 읽는
+     사람이 어디까지가 한 이름인지 가를 수 없다. 비어 있는 자리 전부는
+     아래 `다음에 채울 부분` 절이 그대로 든다 */
   const lackWhat = lackBy.size
-    ? [...lackBy.keys()].join(" · ")
+    ? [...lackBy.keys()][0]
     : topGap ? domainName(core, topGap.domain) : "";
-  const lackNeed = lackBy.size
-    ? needSentenceKo([...lackBy.values()].flat())
-    : topGap ? gapNeedShortKo(topGap) : "";
+
+  /**
+   * ── SCENE 2 (1) CURRENT STATE 의 카드 셋 ──
+   *
+   * 레퍼런스의 `현재 상태` 는 **배지 · 영역 이름 · 그 영역의 세부 · 꺾쇠**
+   * 넷을 든 흰 카드 셋이다. 그 자를 그대로 쓴다.
+   *
+   * **새 값을 만들지 않는다.** 서는 영역은 결과 모델이 먼저 보라고 적은
+   * `overview.focus` 그대로이고, 거드는 줄은 **그 Core 의 taxonomy 가
+   * 들고 있는 세부**(`technical_domains[].subareas`)다. 영역 사전
+   * (`*-domains.json`)에는 그 칸이 없어서 거기서 찾으면 열두 영역이 모두
+   * 빈 줄을 돌려준다. **순위를 다시 매기지 않는다.**
+   */
+  /* 배지의 색조. **값을 그리지 않는다**: 셋이 한 줄에 서므로 같은
+     색이면 눈이 셋을 한 덩이로 읽는다. 색은 뜻을 갖지 않는다 */
+  const TILE_IC = ["plan", "chart", "note"] as const;
+  const stateTiles = focus.slice(0, 3).map((d, i) => ({
+    code: d.code,
+    name: domainName(core, d.code),
+    sub: domainSub(core, d.code),
+    icon: TILE_IC[i % TILE_IC.length],
+    tint: i % 3,
+  }));
+  /* 절 머리 아래 **한 줄**. 가진 것과 비어 있는 것을 한 문장에 담는다:
+     두 문장을 이어 붙이면 설명 아래 설명이 되고, 그것이 규격 §5 가
+     막는 모양이다. 비어 있는 쪽은 **하나만** 적는다 */
+  const stateLead = stateTiles.length
+    ? (lackWhat
+        ? `${stateTiles.length}가지는 지금 설명할 수 있고, ${lackWhat} 쪽은 아직 비어 있어요.`
+        : `${stateTiles.length}가지는 지금 설명할 수 있어요.`)
+    : "";
+
+  /**
+   * ── SCENE 3 EVIDENCE 들머리 ──
+   *
+   * 레퍼런스의 `최근 기록` 은 **표시 · 이름/거드는 줄 · 날짜 · 단추**를
+   * 든 줄이고 카드가 아니다. 근거 절의 들머리를 그 줄로 세운다.
+   *
+   * **새 값을 만들지 않는다.** 한 줄이 드는 것은 그 영역에서 고르신
+   * 판단 하나와 남은 결과 하나이고 둘 다 결과 모델에서 그대로 온다.
+   */
+  const evRows = [...new Set(model.evidence.ready.map((e) => e.domain))]
+    .slice(0, 3)
+    .map((code) => {
+      const d = model.domains.find((x) => x.code === code);
+      return {
+        code,
+        name: domainName(core, code),
+        said: d?.decided[0] ?? d?.did[0] ?? "",
+        left: d?.artifacts[0] ?? d?.verifications[0] ?? "",
+      };
+    })
+    .filter((r) => r.said);
 
   /**
    * 첫 화면 넷째 칸. **산업·직무 연결 맥락**(규격 §13).
@@ -1277,73 +1308,119 @@ export default async function V3Result({
         ) : null}
 
         {/* ══════════════════════════════════════════════════════════
-            SCENE 1 — 한 화면에 한 가지 생각.
+            SCENE 1 — HERO. **레퍼런스의 PAGE TITLE 문법이다.**
 
-            **읽는 머리가 아니라 하는 자리다.** 전에는 이 자리가 셋으로
-            나뉘어 있었다: 연청색 큰 박스 안의 그림과 큰 글 · 왼쪽 경험과
-            오른쪽 세로 금 안의 할 일 · 그 아래 `꺼내 쓸 수 있는 곳 /
-            한 줄이 비어 있는 곳` 두 단 표. 셋을 다 읽어야 지금 무엇을
-            하면 되는지가 나왔고, 손전화에서는 첫 화면이 그림으로 끝났다.
+            목표 화면의 본문은 면도 테도 없는 두 줄로 연다: 이름 한 줄
+            (33.3px · 굵게)과 바로 아래 메타 한 줄(17.9px · 회색).
+            그 자리가 이 쪽에서 가장 큰 글이고, **면을 가진 자리는 그
+            다음 Hero 하나뿐**이다.
 
-            지금 이 자리가 답하는 것은 셋이고 한 흐름이다. 무엇을 했는가 →
-            무엇이 비었는가 → 그래서 지금 무엇을 하는가.
+            전에는 이 자리가 큰 따옴표 두 줄과 회색 글줄 하나와 대시를
+            단 `그런데 …` 다리 문장을 들었다. 대시는 레퍼런스에 없는
+            장식이고(규격 §5), 두 줄짜리 큰 따옴표는 제품 머리가 아니라
+            편집 디자인의 인용이다.
+
+            **담긴 값은 그대로다**: 큰 글은 그 사람이 고른 문장이고
+            메타는 응시 줄이 들고 있는 신분이다. `그런데 …` 가 들던
+            것은 아래 CURRENT STATE 의 거드는 줄로 옮겼다.
             ══════════════════════════════════════════════════════════ */}
         <section className="rs-open">
+          <h1 className="rs-quote">{cardSay || openLine}</h1>
           <p className="rs-who">
             {[meta.school,
               [meta.department, meta.specialization].filter(Boolean).join(" · "),
-              meta.answeredOn ? `${meta.answeredOn}` : null]
+              meta.answeredOn ? `${meta.answeredOn} 응답` : null]
               .filter(Boolean).join(" · ")}
           </p>
-          <h1 className="rs-quote">{cardSay || openLine}</h1>
           {/* 손에 남은 것. **라벨과 값 짝이 아니라 가로로 놓인 물건이다** */}
           {left.length ? (
             <ul className="rs-rail">
               {left.slice(0, 3).map((x) => <li key={x}>{thingKo(x)}</li>)}
             </ul>
           ) : null}
-          {/* 다리 문장. 위의 경험과 아래 할 일이 이 한 줄로 이어진다 */}
-          {lackWhat && lackNeed ? (
-            <p className="rs-but">
-              <i aria-hidden="true" />
-              <span>그런데 {lackWhat}에서 {lackNeed}</span>
-            </p>
-          ) : null}
           {/* 판정 한 줄은 종이에만 */}
           <p className="rs-verdict">{h.title}</p>
         </section>
 
-        {/* ── 지금 할 일 ── **이 쪽에서 강한 면은 여기 단추 하나뿐이다.**
-            읽고 이해한 뒤에 찾는 자리가 아니라 상태 바로 다음에 선다 */}
-        {/* **이 쪽에서 면을 가진 자리는 여기 하나다**(레퍼런스 §지금 할 일).
-            레퍼런스의 작업공간 홈이 꼭대기에 옅은 파란 면 하나를 두고 그
-            안에서 큰 한 마디와 채운 단추 하나와 `그 밖에 할 일 N개` 로
-            닫는다. 같은 자를 결과지에 그대로 쓴다: 나머지 절은 흰 바탕
-            위의 글이고, 색면은 여기뿐이다 */}
-        <section className="rs-do1">
-          <p className="rs-do1-l"><i aria-hidden="true" />지금 할 일</p>
-          <div className="rs-do1-b">
-            <div className="rs-do1-t">
-              <p className="rs-do1-h">{doHead}</p>
-              {doDetail ? <p className="rs-do1-d">{doDetail}</p> : null}
+        {/* ══════════════════════════════════════════════════════════
+            SCENE 2 (1) — CURRENT STATE. **레퍼런스의 카드 셋이다.**
+
+            목표 화면의 `현재 상태` 는 절 머리(표시 + 이름 + 오른쪽
+            링크) + 거드는 줄 한 개 + **흰 카드 셋**이고, 카드 하나가
+            드는 것은 배지 · 이름 · 세부 · 꺾쇠 넷이다. 세로로 쌓은
+            줄도 표도 아니다.
+
+            **이 쪽에서 카드를 쓰는 절은 여기 하나다**(규격 §5 의
+            `동일한 흰 카드 3개` 를 피하는 길이 카드를 없애는 것이
+            아니라 **한 절에만 두는 것**이다). 아래 근거 절은 줄이고,
+            할 일은 면이다.
+            ══════════════════════════════════════════════════════════ */}
+        {stateTiles.length ? (
+          <section className="rs-st" id="state">
+            <div className="rs-sh">
+              <i aria-hidden="true"><Ic name="chart" /></i>
+              <h2>현재 상태</h2>
+              <a href="#focus">전체 보기 →</a>
             </div>
+            <p className="rs-sh-s">{stateLead}</p>
+            <ul className="rs-tile">
+              {stateTiles.map((t) => (
+                <li key={t.code}>
+                  <a href="#focus" data-t={t.tint}>
+                    <i aria-hidden="true"><Ic name={t.icon} /></i>
+                    <b>{t.name}</b>
+                    {t.sub ? <small>{t.sub}</small> : null}
+                    <em aria-hidden="true">›</em>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+
+        {/* ══════════════════════════════════════════════════════════
+            SCENE 2 (2) — PRIMARY ACTION. **레퍼런스의 Hero 면이다.**
+
+            목표 화면의 Hero 는 눈썹(표시 + 이름 · 0.74) → 두 줄 큰
+            글(0.94) → 본문 한 줄(0.57) → 채운 단추 → 그 옆의 글줄
+            링크 차례로 **왼쪽에 쌓이고**, 오른쪽 31% 는 그림이다.
+            글과 그림의 비가 69 : 31 이고 50 : 50 이 아니다.
+
+            전에는 이 면이 왼쪽에 글, 오른쪽에 단추를 두어 **오른쪽
+            절반이 단추 하나로 비었다.** 단추를 글 아래로 내리고
+            오른쪽을 그림 자리로 돌린다.
+            ══════════════════════════════════════════════════════════ */}
+        <section className="rs-do1">
+          <div className="rs-do1-b">
+            <p className="rs-do1-l"><i aria-hidden="true"><Ic name="plan" /></i>지금 할 일</p>
+            <p className="rs-do1-h">{doHead}</p>
+            {doDetail ? <p className="rs-do1-d">{doDetail}</p> : null}
             <div className="rs-do1-a">
               <Link className="rs-take" href={writeHref}>
-                경험 적으러 가기<Ic name="pen" />
+                지금 적어두기<Ic name="pen" />
               </Link>
+              {alsoActions.length ? (
+                <a className="rs-do1-m" href="#plan">
+                  그 밖에 할 일 {alsoActions.length}개 ∨
+                </a>
+              ) : null}
+            </div>
+            {/* **`p` 안에 `form` 을 두지 않는다.** 브라우저가 그것을 밖으로
+                끌어내서 서버가 보낸 것과 브라우저가 세운 것이 달라지고,
+                화면은 멀쩡해 보이는데 눌리는 것만 안 된다(R19 에서 한 번
+                겪은 자리다) */}
+            <div className="rs-do1-f">
               <form action={takeActionsFromResult}>
                 <button className="rs-keep" type="submit">할 일에 담아두기</button>
               </form>
+              {kept ? (
+                <span>이미 담아 둔 할 일 {kept}개 · <Link href="/me/next">보기</Link></span>
+              ) : null}
             </div>
           </div>
-          <p className="rs-do1-f">
-            {alsoActions.length
-              ? <a href="#plan">그 밖에 할 일 {alsoActions.length}개 ↓</a>
-              : null}
-            {kept ? (
-              <span>이미 담아 둔 할 일 {kept}개 · <Link href="/me/next">보기</Link></span>
-            ) : null}
-          </p>
+          {/* 오른쪽 그림 자리. **값을 그리지 않는다**: 눈금도 수도 없는
+              결의 그림이고, 레퍼런스가 그 자리에 두는 것과 같은 일을 한다 */}
+          <span className="rs-do1-art" aria-hidden="true"><Ic name="list" /></span>
         </section>
 
         {/* 산업·직무 한 줄은 **종이에만** 선다 */}
@@ -1371,7 +1448,45 @@ export default async function V3Result({
               화면은 절 머리와 첫 화면 넷이 그 일을 이미 하고 있어서, 여기에
               한 줄을 더 세우면 같은 말이 두 번 선다 */}
             <p className="rs-q">지원서에서 꺼내 쓸 경험은 무엇인가</p>
-            <h2>내가 이미 가진 근거</h2>
+            {/* ══════════════════════════════════════════════════════
+                SCENE 3 — EVIDENCE 들머리. **레퍼런스의 `최근 기록` 줄이다.**
+
+                목표 화면의 마지막 두 절은 카드가 아니라 **줄**이고, 줄끼리
+                가는 금으로만 갈린다. 드는 것은 표시 · 이름 · 거드는 줄 ·
+                오른쪽 값 넷이다. 그 자를 근거 절의 들머리에 쓴다.
+
+                **아래 이야기 둘을 걷지 않았다.** 저쪽은 한 경험을 네 마디로
+                펴는 자리이고 여기는 **무엇이 있는지 한눈에 보는 자리**다.
+                레퍼런스도 `최근 기록` 에서 줄을 보여 주고 누르면 그 기록으로
+                들어간다.
+
+                **새 값을 만들지 않는다**: 한 줄이 드는 것은 그 영역에서
+                고르신 판단 하나와 남은 결과 하나다.
+                ══════════════════════════════════════════════════════ */}
+            <div className="rs-sh">
+              <i aria-hidden="true"><Ic name="note" /></i>
+              <h2>내가 이미 가진 근거</h2>
+              {evRows.length ? <a href="#plan">다음 할 일 →</a> : null}
+            </div>
+            {evRows.length ? (
+              <>
+                <p className="rs-sh-s">
+                  지원서에서 바로 꺼내 쓸 수 있는 경험 {evRows.length}가지입니다.
+                </p>
+                <ul className="rs-ebr">
+                  {evRows.map((r) => (
+                    <li key={r.code}>
+                      <i aria-hidden="true"><Ic name="check" /></i>
+                      <span>
+                        <b>{sayKo(r.said)}</b>
+                        <small>{r.name}</small>
+                      </span>
+                      {r.left ? <em>{thingKo(r.left)}</em> : null}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : null}
             {/* **들머리를 두지 않는다**(R10 §D). `여기 있는 건 전부 직접
                 하신 일이에요` 는 서비스가 제 구조를 설명하는 말이고, 줄여
                 놓아도 성격이 그대로다. 절 머리가 이미 같은 말을 한다 */}

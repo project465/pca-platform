@@ -151,6 +151,51 @@ export function roleName(core: string, code: string): string {
 export function domainName(core: string, td: string): string {
   return content(core).domains.domains.find((d) => d.code === td)?.name ?? td;
 }
+
+/**
+ * 그 영역의 세부. **새 값을 만들지 않는다.**
+ *
+ * 읽는 자리는 taxonomy 의 `technical_domains` 다. 영역 사전
+ * (`*-domains.json`)에는 이 칸이 없어서, 거기서 찾으면 열두 영역이
+ * 모두 빈 줄을 돌려준다. 세부가 없는 core 를 더하는 날에는 그 영역이
+ * 맡는 일(`owns`)이 서고, 그것도 없으면 그 줄을 비운다.
+ *
+ * **개수가 아니라 길이로 끊는다.** 세부의 길이가 core 마다 다르다:
+ * 기계공학은 `피로·내구` 같은 짧은 이름이고 경영학은 `목표와 지표
+ * 세우기` 같은 구다. 개수로 끊으면 한쪽은 한 줄에 들어가고 다른 쪽은
+ * 두 줄로 접혀, 같은 자리가 core 마다 다른 키로 선다. 목표 화면의 그
+ * 줄이 여덟 자쯤이라 그 선을 기본값으로 둔다.
+ *
+ * **파일을 쪽마다 다시 읽지 않는다**: `coreFile` 은 캐시가 없어서 한
+ * 화면에 세 번 부르면 같은 JSON 을 세 번 푼다.
+ */
+type Sub = { areas: string[]; owns: string };
+const SUB = new Map<string, Map<string, Sub>>();
+export function domainSub(core: string, td: string, budget = 14): string {
+  let m = SUB.get(core);
+  if (!m) {
+    const tax = coreFile<{
+      technical_domains: { code: string; subareas?: string[]; owns?: string }[];
+    }>(core, "taxonomy");
+    m = new Map();
+    for (const d of tax.technical_domains) {
+      m.set(d.code, { areas: d.subareas ?? [], owns: d.owns ?? "" });
+    }
+    SUB.set(core, m);
+  }
+  const d = m.get(td);
+  if (!d) return "";
+  if (!d.areas.length) return d.owns;
+  /* 첫 하나는 길어도 적는다. 비우면 그 칸이 무엇에 대한 칸인지가 사라진다 */
+  let out = d.areas[0];
+  for (const a of d.areas.slice(1)) {
+    const next = `${out} · ${a}`;
+    if (next.length > budget) break;
+    out = next;
+  }
+  return out;
+}
+
 export function gridRowOf(core: string, td: string): string {
   const i = content(core).bank.items.find((x) => x.item_id === `G_${td}_INT`) as
     (BankItem & { grid_row?: string }) | undefined;
