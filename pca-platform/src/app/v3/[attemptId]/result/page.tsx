@@ -30,13 +30,13 @@ import {
 } from "@/lib/me-v3/region";
 import { core as coreEntry } from "@/lib/me-v3/core-registry";
 import { profileOf } from "@/lib/me-v3/platform";
-import { nextStepKo, sayKo, thingKo } from "@/lib/me-v3/result/say";
+import { sayKo, thingKo } from "@/lib/me-v3/result/say";
 import { resultMeta } from "@/lib/me-v3/result/meta";
 import { leadFirst, specView } from "@/lib/me-v3/result/spec-view";
 import { participantOf, savedActions } from "@/lib/me-v3/pilot/store";
 import { takeActionsFromResult } from "@/app/me/next/actions";
 import {
-  ActionRoadmap, ChartNote, EvidenceMatrix, Radar, StageBars,
+  ChartNote, EvidenceMatrix, Radar, StageBars,
 } from "./charts";
 import { HeroVisual, hasHeroAsset, Ic } from "./art";
 import ResultNav from "./result-nav";
@@ -292,7 +292,7 @@ function Why({ d }: { d: ResultDomain }) {
             <dd><Picks items={did} /></dd>
           </>
         ) : null}
-        <dt>남긴 것</dt>
+        <dt>손에 남은 것</dt>
         <dd><Picks items={d.artifacts} max={6} /></dd>
         <dt>비교한 것</dt>
         <dd><Picks items={d.verifications} max={6} /></dd>
@@ -985,11 +985,9 @@ export default async function V3Result({
   const useAxes = [...focus.flatMap((d) => d.axes)]
     .filter((a) => a.state === "CONFIRMED" || a.state === "OWNED")
     .sort((a, b) => (b.state === "OWNED" ? 1 : 0) - (a.state === "OWNED" ? 1 : 0));
-  /* **판정을 설명하지 않는다**(Gate §2). `~ 경험이에요` 는 우리가 그렇게
-     읽었다는 말이고, 학생이 듣고 싶은 것은 **그래서 지원서에서 무슨 말을
-     할 수 있는가**다. 말끝도 윗줄과 갈라 리듬을 만든다(Gate §4) */
-  const useWhy = useAxes.length
-    ? `그 과정에서 ${AXIS_DID_KO[useAxes[0].axis]} 경험도 있어요.` : "";
+  /* **첫 화면에서 걷었다**(R18 §1·§3). `그 과정에서 ~ 경험도 있어요` 는
+     우리가 그렇게 읽었다는 말이고, 바로 아래 결과물 strip 이 같은 것을
+     이름으로 적는다. 확인된 축은 근거 절과 열두 영역이 그대로 든다 */
   const lackBy = new Map<string, Axis[]>();
   for (const r of packLack?.requested.slice(0, 2) ?? []) {
     const d = domainName(core, r.domain);
@@ -1242,14 +1240,14 @@ export default async function V3Result({
             <ol className="rs-cover-toc">
               <li>한눈에 보는 결과</li>
               <li>내가 이미 가진 근거</li>
-              <li>먼저 볼 영역</li>
-              <li>앞으로 채울 것</li>
-              <li>산업·직무 연결</li>
-              <li>다음에 할 일</li>
+              <li>적을 과제 고르기</li>
               <li>지원서·면접에서 쓸 문장</li>
+              <li>산업·직무 연결</li>
             </ol>
             <p className="rs-cover-appx">부록</p>
             <ol className="rs-cover-toc is-appx">
+              <li>먼저 볼 영역</li>
+              <li>앞으로 채울 것</li>
               {/* **그리지 않은 절을 차례에 적지 않는다.** 판단을 물은 영역이
                   셋 미만이면 그래프가 서지 않는다 */}
               <li>전체 기술영역{hasRadar || hasBars ? "과 경험·근거 분포" : ""}</li>
@@ -1307,58 +1305,50 @@ export default async function V3Result({
             : null}
         </section>
 
-        {/* ══ 2. 지금 ══
-            **상자를 먼저 집지 않는다**(R17 §1). 전에는 이 자리가 흰 카드
-            셋이었고 그중 하나가 연한 파란 둥근 면이었다. 그 꼴이 곧
-            `AI 가 정리해 준 카드`다. 지금 서는 것은 셋이다:
-            ① 테도 면도 없는 큰 글(해본 일) ② **이 화면에서 면을 가진
-            유일한 자리**(지금 할 일) ③ 오른쪽으로 들인 작은 주석.
-            남긴 결과물은 ① 아래의 **가로 object rail** 이라 라벨·값 짝이
-            되풀이되지 않는다 */}
+        {/* ══ SCENE 2 · 지금 ══
+            **출발점이지 요약이 아니다**(R18 §3). 3초 안에 셋을 답한다:
+            이미 가진 것 · 지금 가장 중요한 하나 · 지금 할 행동.
+            **셋을 다 카드로 만들지 않는다.** 서는 것은 왼쪽 큰 글과
+            아래 결과물 strip 과 오른쪽 짧은 한 마디와 단추 하나이고,
+            **면을 가진 자리는 그 단추뿐이다.**
+            전에 여기 있던 남색 둥근 면은 걷었다: 그 꼴이 곧
+            `AI 가 골라 준 추천 카드` 다 */}
         <p className="rs-eyebrow">지금</p>
         <section className="rs-use">
-          {/* ① 해본 일. 큰 글 하나가 이 자리의 전부다 */}
-          <article className="rs-card is-did">
-            <p className="rs-card-l">해본 일</p>
-            <p className="rs-card-h">{cardSay || openLine}</p>
-            {useWhy ? <p className="rs-card-p">{useWhy}</p> : null}
-            {/* **남긴 결과물은 목록이 아니라 object 다**(R17 §4). 세로로
-                쌓으면 `라벨 · 값` 짝이 한 번 더 서고, 가로로 놓으면 손에
-                쥔 것으로 읽힌다 */}
+          {/* ① 해본 일. 큰 글 하나와 손에 남은 것뿐이다. **그 아래 설명
+              문장을 두지 않는다**: `그 과정에서 ~ 경험도 있어요` 는 우리가
+              그렇게 읽었다는 말이고, 바로 아래 strip 이 같은 것을 이름으로
+              적는다 */}
+          <div className="rs-did">
+            <p className="rs-did-h">{cardSay || openLine}</p>
             {left.length ? (
               <ul className="rs-rail">
                 {left.slice(0, 3).map((x) => <li key={x}>{thingKo(x)}</li>)}
               </ul>
             ) : null}
-          </article>
+          </div>
 
-          {/* ② 지금 할 일. **이 화면의 단 하나의 강한 색면**이고 둥글기도
-              여기만 다르다(R17 §1·§8). 담는 것은 셋이다: 어떤 경험을
-              가져올지 · 무엇을 적을지 · 적어 두면 무엇이 남는지 */}
-          <article className="rs-card is-next">
-            <p className="rs-card-l">지금 할 일</p>
-            {doSay.length ? (<>
-              <p className="rs-card-h">{doSay[0]}</p>
-              {doSay.slice(1).map((x) => <p className="rs-card-p" key={x}>{x}</p>)}
-            </>) : (<>
-              <p className="rs-card-h">{doHead}</p>
-              {doDetail ? <p className="rs-card-p">{doDetail}</p> : null}
-            </>)}
-            {doWhy ? <p className="rs-gain">{doWhy}</p> : null}
+          {/* ② 지금. **짧은 한 마디와 단추 하나**(R18 §3).
+              무엇을 적는지는 세 문장이라 첫 화면에 두지 않고 눌러서
+              편다. 담긴 글은 그대로이고 종이에서는 펴진다 */}
+          <div className="rs-now">
+            <p className="rs-now-l">다음</p>
+            <p className="rs-now-h">{doHead}</p>
             {/* **단추의 말이 약속한 일을 그 자리에서 한다**(규격 §16) */}
             <form action={takeActionsFromResult}>
               <button className="rs-take" type="submit">
                 지금 할 일에 담아두기<Ic name="pen" />
               </button>
             </form>
-          </article>
-
-          {/* ③ 다음 한 줄. **오른쪽으로 들인 작은 주석이다**(R17 §4).
-              왼쪽 일변도를 끊고, 위의 둘과 무게를 겨루지 않는다 */}
-          <p className="rs-aside">
-            {nextStepKo(lackNeed)
-              || "다음 과제에서는 직접 정한 기준을 한 줄만 적어두면 좋아요."}
-          </p>
+            {doSay.length || doDetail || doWhy ? (
+              <Disclose label="무엇을 적나요">
+                {doSay.length
+                  ? doSay.map((x) => <p key={x}>{x}</p>)
+                  : doDetail ? <p>{doDetail}</p> : null}
+                {doWhy ? <p>{doWhy}</p> : null}
+              </Disclose>
+            ) : null}
+          </div>
         </section>
 
         {/* 산업·직무 한 줄은 **종이에만** 선다 */}
@@ -1376,6 +1366,7 @@ export default async function V3Result({
             자리다. 본문 아홉 절과 함께 `자세한 내용 보기` 안에 접어 두면,
             펼치지 않은 사람은 **자기가 이미 가진 것을 한 줄도 못 보고**
             비어 있는 자리와 할 일만 읽는다 */}
+        <p className="rs-eyebrow">내 경험</p>
         {deep ? (
           <section className="rs-sect" id="evidence">
             {/* **쪽마다 답하는 질문 하나**(COMMERCIAL FINAL §10). 종이에서만 선다:
@@ -1393,8 +1384,8 @@ export default async function V3Result({
                     이 줄을 할 일로 보고 결과지 마흔 벌에서 걸었다. 여기서
                     남길 것을 적을 수는 없다: 어느 영역인지가 아직 없다 */}
                 <p className="rs-note">
-                  지금 바로 꺼내 쓸 경험은 아직 없어요. 아래 &lsquo;다음에 할
-                  일&rsquo;부터 보시면 돼요.
+                  지금 바로 꺼내 쓸 경험은 아직 없어요. 아래 &lsquo;적을 과제
+                  고르기&rsquo;부터 보시면 돼요.
                 </p>
                 {/* **그 학과 학생이 낼 수 있는 근거를 적는다**(갈래 계약의
                     `examples.evidence`). 아직 아무것도 확인되지 않은 사람에게
@@ -1428,52 +1419,50 @@ export default async function V3Result({
                 것이 열세 번 버그였다 */}
             {evOpen ? (
               <div className="rs-ev3">
-                <header className="rs-ev3-intro">
-                  {/* **줄바꿈 앞뒤에 사이띄개를 둔다.** 좁은 화면에서는
-                      `<br>` 을 세우지 않는데, 그때 이 자리가 비어 있으면
-                      앞뒤 글자가 그대로 붙는다(`경험은이미`) */}
-                  <h3>
-                    지원서에 쓸 만한 경험은{" "}<br />이미 여기 있습니다
-                  </h3>
-                  {/* **고르는 방법을 설명하지 않는다**(R17 §4).
-                      `검사에서 고른 답 가운데, 실제로 해본 일이 분명한
-                      경험부터 꺼냈습니다` 는 우리가 무엇을 했는지를 적은
-                      줄이고, 읽는 사람이 알고 싶은 것은 **그래서 무엇을
-                      쓰라는 것인가**다. 쓰는 자리를 적는다 */}
-                  <p>지원서 한 문단과 면접 한 질문으로 바로 간다</p>
-                </header>
-
+                {/* **들머리를 두지 않는다**(R18 §1).
+                    `지원서에 쓸 만한 경험은 이미 여기 있습니다` 는 제품이
+                    제 구조를 설명하는 말이고, 이 쪽에서 가장 큰 글씨가 그
+                    말이면 읽는 사람이 자기 경험보다 우리 설명을 먼저
+                    읽는다. 절 머리(`내가 이미 가진 근거`)가 같은 일을
+                    이미 하고 있다 */}
                 <article className="rs-ev3-story is-primary">
                   <p className="rs-ev3-meta">
                     <span>{evOpen.domain}</span>
                     <i>먼저 써볼 경험</i>
                   </p>
                   <div className="rs-ev3-main">
+                    {/* **결과물이 문장보다 먼저 선다**(R18 §4). 전에는
+                        큰 글과 설명 문장을 읽고 나서야 손에 남은 것이
+                        나왔다. 지원서를 쓰려고 이 절을 여는 사람이 가장
+                        먼저 찾는 것은 **무엇이 남아 있는가**다 */}
                     <div className="rs-ev3-narr">
+                      {evOpen.outputs.length ? (
+                        <ul className="rs-ev3-arts">
+                          {evOpen.outputs.map((t) => <li key={t}>{t}</li>)}
+                        </ul>
+                      ) : null}
                       <h4>{evOpen.action}</h4>
                       {evOpen.decision ? (
                         <p className="rs-ev3-dec">{evOpen.decision}</p>
                       ) : null}
-                      {evOpen.outputs.length ? (
-                        <div className="rs-ev3-outs">
-                          <span>남아 있는 결과</span>
-                          <ul>
-                            {evOpen.outputs.map((t) => <li key={t}>{t}</li>)}
-                          </ul>
-                        </div>
-                      ) : null}
                     </div>
                     {/* 꺼내 쓰는 자리 둘. **시각적 역할이 다르다**: 지원서는
                         쓰기 시작할 자리, 면접은 큰 활자로 띄운 실제 물음 */}
+                    {/* **둘이 같은 꼴이면 안 된다**(R18 §4). 지원서는
+                        한 문장짜리 쓰기 시작점이고 면접은 **실제로 받는
+                        물음**이다. 앞엣것은 가는 금 위의 작은 글줄,
+                        뒤엣것은 따옴표를 단 큰 인용이다 */}
                     <aside className="rs-ev3-use">
-                      <div className="rs-ev3-ub">
-                        <span>지원서</span>
-                        <p>{evOpen.application}</p>
-                      </div>
-                      <div className="rs-ev3-ub is-interview">
-                        <span>면접에서 이어질 질문</span>
-                        <blockquote>{evOpen.interview}</blockquote>
-                      </div>
+                      <p className="rs-ev3-ap">
+                        <span>지원서</span>{evOpen.application}
+                      </p>
+                      {/* **닫는 따옴표가 제 줄에 혼자 서지 않게** 물음만
+                          감싼다: `::after` 를 인용 전체에 걸면 그 부호가
+                          아래 이름표 다음 줄에 떨어진다 */}
+                      <blockquote className="rs-ev3-q">
+                        <p>{evOpen.interview}</p>
+                        <cite>면접에서 이어질 물음</cite>
+                      </blockquote>
                     </aside>
                   </div>
                 </article>
@@ -1490,7 +1479,7 @@ export default async function V3Result({
                         </div>
                         {evAlso.outputs.length ? (
                           <p className="rs-ev3-so">
-                            <span>남긴 것</span>
+                            <span>손에 남은 것</span>
                             <strong>{evAlso.outputs.join(" · ")}</strong>
                           </p>
                         ) : null}
@@ -1562,7 +1551,7 @@ export default async function V3Result({
                 </>) : (
                   <p>
                     지금 바로 꺼내 쓸 자리는 아직 없습니다. 아래
-                    ‘다음에 할 일’ 가운데 하나를 끝내면 이 칸이 먼저
+                    ‘적을 과제 고르기’ 가운데 하나를 끝내면 이 칸이 먼저
                     채워집니다.
                   </p>
                 )}
@@ -1612,19 +1601,188 @@ export default async function V3Result({
           </p>
         ) : null}
 
-        {/* ── 여기부터가 근거다 ──
-            **웹 결과지는 행동 화면이고 그 아래가 문서다**(규격 §9).
-            전에는 이 자리부터 아홉 절이 늘 펼쳐져 있어 쪽이 1만 px 을
-            넘었고, 첫 화면에서 답한 셋을 다시 확인하려면 그 열 뼘을 지나야
-            했다. 종이에서는 이 자리가 저절로 펴진다 */}
-        {/* **첫 화면에서 수를 세워 두지 않는다**(규격 §11).
+        {/* ══ SCENE 4 · 다음 ══
+            **Action 을 접힌 자리 안에 두지 않는다**(R18 §5·§6).
+            전에는 이 절이 `자세한 내용 보기` 안에 있어서, 펼치지 않은
+            사람은 **다음에 무엇을 하면 되는지를 한 줄도 못 보고** 쪽을
+            닫았다. 결과를 읽은 다음에 할 일이 하나라면 그것이 접힐 자리가
+            아니다 */}
+        {/* ── SCENE 4 ── **읽는 쪽이 아니라 하는 쪽이다**(R18 §5).
+            머리는 이 자리에서 학생이 하는 일 하나이고, 그 바로 아래가
+            **실제로 눌리는 세 가지**다. 정보(영역별 줄)는 그다음이다.
+            절 이름을 `다음에 할 일` 로 두지 않는다: 그 말은 §1 이 적은
+            제품이 제 구조를 설명하는 라벨이다 */}
+        <p className="rs-eyebrow">다음</p>
+        <section className="rs-sect" id="plan">
+            {/* **쪽마다 답하는 질문 하나**(COMMERCIAL FINAL §10). 종이에서만 선다:
+              화면은 절 머리와 첫 화면 넷이 그 일을 이미 하고 있어서, 여기에
+              한 줄을 더 세우면 같은 말이 두 번 선다 */}
+            <p className="rs-q">지금 무엇부터 하면 되는가</p>
+          <h2>적을 과제 고르기</h2>
+          {model.actions.length ? (<>
+            {/* **interaction 이 정보보다 먼저다**(R18 §5). 셋 다 실제로
+                도는 길이다: 경험 적는 쪽과 담아 두는 서버 동작과 지원서
+                문장 자리. **없는 기능을 단추로 두지 않는다** */}
+            <div className="rs-do">
+              <Link className="rs-do-a is-main" href="/me/experience/new">
+                경험 한 줄 남기기
+              </Link>
+              <form action={takeActionsFromResult}>
+                <button className="rs-do-a" type="submit">지금 할 일에 담아두기</button>
+              </form>
+              {model.translation
+                ? <a className="rs-do-a is-txt" href="#translation">지원서 문장 만들기</a>
+                : null}
+            </div>
+            {/* **그 마디를 여기서 한 번만 적는다**(R17 §6). 아래 줄마다
+                되풀이되던 `최근 ○○ 과제 하나를 골라보세요` 가 이 자리로
+                올라왔다 */}
+            <p className="rs-note">
+              최근 과제 하나를 골라 그 영역의 줄대로 적어 두세요.
+            </p>
+            {/* **네 칸짜리 흐름 표를 걷었다**(R18 §5). `지금 · 다음 경험 ·
+                남길 근거 · 지원서·면접` 은 전부 아래 목록과 같은 할 일을
+                묶어 다시 적은 것이고, 이 절에서 가장 큰 덩이가 **그 묶음
+                표**였다. 아래 목록이 이미 언제 할 일인지로 나뉘어 있다 */}
+            <Plan core={core} actions={model.actions} stage={model.stage}
+              attemptId={attemptId} saved={saved} where={exploreWhere()} />
+          </>) : (
+            /* **머리글만 세워 두지 않는다.** 할 일이 없는 응시에서 약속하는
+               문장 아래가 비어 있었다. 빈 자리는 고장으로 읽히고, 읽는
+               사람은 자기 결과가 덜 만들어졌다고 본다. 까닭을 적는다 */
+            <p className="rs-note">
+              지금 응답만으로는 다음 한 걸음을 적을 만큼 영역 사이에 차이가
+              생기지 않았습니다. 위의 영역 가운데 하나를 짧은 과제로 한 번
+              해보신 뒤에 다시 보시면 그 자리에 적힙니다.
+            </p>
+          )}
+
+          {/* ── 그 전공의 한 걸음과 지원서·면접(갈래 계약 · 규격 §10·§11) ──
+              **위의 할 일을 덮지 않는다.** 저쪽은 응답이 가리킨 영역에서
+              나온 것이고 이 묶음은 **그 학과라면 어디에서 무엇을 정하고
+              무엇을 남기면 되는지**다. 둘을 한 자리에 섞으면 어느 것이 내
+              응답에서 나온 말인지 읽는 사람이 가를 수 없어서, 묶음을 따로
+              두고 머리에 전공 이름을 적는다.
+              **면접 답을 적어 주지 않는다**: 적는 것은 무엇을 묻는 자리인가
+              까지이고 거기 들어갈 말은 그 사람이 고른 항목에서 나온다 */}
+          {/* **손전화에서 첫 화면을 여섯 뼘 아래로 둔다**(R18 §8).
+              이 묶음은 그 학과라면 무엇을 할 수 있는가를 적은 보기이고,
+              위의 할 일은 그 사람의 응답에서 나온 것이다. 담긴 글은
+              그대로이고 눌러서 펴지며 종이에서는 전부 펴진다 */}
+          {(sv.evidenceFirst || sv.application.resume) ? (
+            <Disclose label={`${meta.specialization ?? meta.major} 쪽에서 지금 할 수 있는 한 걸음`}>
+            <div className="rs-pack" id="deptnext">
+              {sv.evidenceFirst ? (
+                <ul className="rs-first">
+                  <li>{sv.evidenceFirst}</li>
+                  {sv.evidenceNext ? <li>{sv.evidenceNext}</li> : null}
+                </ul>
+              ) : null}
+              {sv.application.resume ? (
+                <>
+                  <h3>그 경험을 지원서에서 꺼내는 자리</h3>
+                  <p className="rs-note">{sv.application.resume}</p>
+                </>
+              ) : null}
+              {sv.application.interview.length ? (
+                <>
+                  <h3>면접에서 같은 구조로 되묻는 자리</h3>
+                  <ul className="rs-first">
+                    {sv.application.interview.map((t) => <li key={t}>{t}</li>)}
+                  </ul>
+                </>
+              ) : null}
+            </div>
+            </Disclose>
+          ) : null}
+        </section>
+        {/* **지원서·면접은 할 일 다음이다**(COMMERCIAL GOLD MASTER §15).
+            읽는 차례가 `연결해볼 산업·직무 → 지금 할 일 → 지원서·면접에서
+            활용하기` 라, 문장 만드는 자리를 할 일 앞에 두면 아직 하지도
+            않은 일을 적는 차례가 된다 */}
+        {model.translation
+          ? <Translation view={model.translation} major={meta.major ?? "이 전공"} />
+          : null}
+        {/* ══ SCENE 5 · 이 경험이 닿는 곳 ══
+            **같은 근거를 그 산업과 직무의 말로 다시 읽는 자리**이고,
+            이 쪽에서 밖으로 나가는 마지막 장면이다. 전에도 접힌 자리
+            안에 있어서, 산업과 직무를 고른 사람이 그 답을 못 보고
+            끝났다 */}
+        {/* ── 산업과 역할 ──
+            같은 근거를 그 말로 다시 읽는다. **설명을 한 번 더 하지 않는다**:
+            제목이 이미 `연결하면` 이라고 말하고 있다 */}
+        <p className="rs-eyebrow">닿는 곳</p>
+        {model.industry_context ? (
+          <section className="rs-sect" id="industry">
+            {/* **쪽마다 답하는 질문 하나**(COMMERCIAL FINAL §10). 종이에서만 선다:
+              화면은 절 머리와 첫 화면 넷이 그 일을 이미 하고 있어서, 여기에
+              한 줄을 더 세우면 같은 말이 두 번 선다 */}
+            <p className="rs-q">이 경험이 어느 산업으로 이어지는가</p>
+            {/* **산업을 직무라고 적지 않는다.** 반도체는 산업이고 설계는
+                직무다. 한 말로 적으면 둘의 층이 같아 보인다 */}
+            <h2>{industryName(model.industry_context.code)} 쪽에 연결하면</h2>
+            {/* **네 카드를 한 이야기로 잇는다.** 확인된 것 → 이 산업을
+                보려면 모자란 것 → 다음에 할 일이 한 문단이다. 전에는 넷이
+                따로 서서, 네 번 읽고도 `그래서 무엇이 더 필요한가` 가 한
+                문장으로 서지 않았다 */}
+            {/* **할 일을 이 문단에 한 번 더 넣지 않는다**(규격 §10).
+                바로 아래 `다음에 만들 근거` 가 같은 문장을 글자까지 같게
+                들고 있어서, 한 절에서 같은 할 일을 두 번 읽게 됐다. 이
+                문단이 맡는 것은 확인된 것과 이 산업에서 모자란 것까지다 */}
+            <p className="rs-bridge">{indBridge.join(" ")}</p>
+            <p className="rs-note">
+              같은 경험을 {industryName(model.industry_context.code)}에서 쓰는
+              표현으로 놓았습니다. 맞는다거나 맞지 않는다고 판정하지 않습니다.
+            </p>
+            <PackBody v={model.industry_context}
+              name={industryName(model.industry_context.code)}
+              domainName={(td: string) => domainName(core, td)} say={say}
+              action={indAction} />
+            {model.industry_context.others.length ? (
+              <p className="rs-others">
+                다른 산업에서 보시려면 다시 응시하지 않아도 됩니다. 기술영역
+                결과는 산업을 바꿔도 그대로입니다.
+              </p>
+            ) : null}
+          </section>
+        ) : null}
+
+        {model.role_context ? (
+          <section className="rs-sect" id="role">
+            <h2>{roleName(model.role_context.code)} 직무에 연결하면</h2>
+            {roleBridge.length
+              ? <p className="rs-bridge">{roleBridge.join(" ")}</p> : null}
+            <p className="rs-note">
+              같은 경험을 {roleName(model.role_context.code)}에서 먼저 읽는 차례로
+              놓았습니다. 기술영역 결과는 그대로입니다.
+            </p>
+            <PackBody v={model.role_context}
+              name={roleName(model.role_context.code)}
+              domainName={(td: string) => domainName(core, td)} say={say}
+              action={roleAction} />
+            {model.role_context.compare_with.length ? (
+              <p className="rs-others">
+                같이 놓고 보실 직무 {model.role_context.compare_with
+                  .map((c) => roleName(c)).join(" · ")}
+              </p>
+            ) : null}
+          </section>
+        ) : null}
+        {/* ══ 부록 ══
+            **다섯 장면에 들지 않는 것은 전부 여기다**(R18 §6).
+            먼저 볼 영역과 비어 있는 자리와 전체 기술영역과 지역은
+            되짚어 볼 자료이고, 위의 다섯 장면이 이미 그 셋을 요약해
+            적는다. 종이에서는 이 자리가 저절로 펴진다 */}
+        {/* **접힌 줄에 수를 적어 두지 않는다**(규격 §11).
             `확인된 판단 24 · 직접 정한 것 24 · 고르신 근거 60` 은 다음에
             무엇을 할지 정하는 데 쓰이지 않는 수인데, 접힌 줄의 오른쪽에
-            적어 두면 첫 화면에서 가장 큰 숫자가 된다. 수는 펼친 안쪽
-            첫 줄이 든다 */}
+            적어 두면 그 자리에서 가장 큰 숫자가 된다. 수는 펼친 안쪽
+            첫 줄이 든다.
+            **`다음에 할 일` 을 이 줄에 적지 않는다**: 그 절은 SCENE 4 로
+            올라가 접히지 않는 자리에 선다 */}
         <Detail
-          label="자세한 내용 보기"
-          note="전체 기술영역과 근거와 다음에 할 일">
+          label="전체 기술영역과 지역 자료 보기"
+          note="먼저 볼 영역 · 비어 있는 자리 · 열두 영역 전체">
 
         <ResultNav />
 
@@ -1680,11 +1838,11 @@ export default async function V3Result({
             <p className="rs-note">
               {model.gaps.length
                 ? "무엇이 비었는지와 그것이 왜 필요한지를 적었습니다."
-                  + " 할 일은 아래 ‘다음에 할 일’ 에 영역별로 모았습니다."
+                  + " 할 일은 위 ‘적을 과제 고르기’ 에 영역별로 모았습니다."
                 : move === "WRITE_UP"
                   ? "완전히 비어 있는 축은 없습니다. 남은 일은 확인된 경험을 설명 문장으로 만드는 쪽입니다."
                   : "지금 응답만으로는 비어 있는 축을 셀 만큼의 경험이 모이지 않았습니다."
-                    + " 아래 ‘다음에 할 일’ 의 첫 줄부터 해 보시면 됩니다."}
+                    + " 위 ‘적을 과제 고르기’ 의 첫 줄부터 해 보시면 됩니다."}
             </p>
             {/* **같은 까닭을 세 번 적지 않는다**(규격 §4). 같은 종류의
                 빈자리는 까닭이 글자까지 같고, 카드마다 되풀이되면 세 칸이
@@ -1745,178 +1903,6 @@ export default async function V3Result({
           </section>
         ) : null}
 
-        {/* ── 산업과 역할 ──
-            같은 근거를 그 말로 다시 읽는다. **설명을 한 번 더 하지 않는다**:
-            제목이 이미 `연결하면` 이라고 말하고 있다 */}
-        {model.industry_context ? (
-          <section className="rs-sect" id="industry">
-            {/* **쪽마다 답하는 질문 하나**(COMMERCIAL FINAL §10). 종이에서만 선다:
-              화면은 절 머리와 첫 화면 넷이 그 일을 이미 하고 있어서, 여기에
-              한 줄을 더 세우면 같은 말이 두 번 선다 */}
-            <p className="rs-q">이 경험이 어느 산업으로 이어지는가</p>
-            {/* **산업을 직무라고 적지 않는다.** 반도체는 산업이고 설계는
-                직무다. 한 말로 적으면 둘의 층이 같아 보인다 */}
-            <h2>{industryName(model.industry_context.code)} 쪽에 연결하면</h2>
-            {/* **네 카드를 한 이야기로 잇는다.** 확인된 것 → 이 산업을
-                보려면 모자란 것 → 다음에 할 일이 한 문단이다. 전에는 넷이
-                따로 서서, 네 번 읽고도 `그래서 무엇이 더 필요한가` 가 한
-                문장으로 서지 않았다 */}
-            {/* **할 일을 이 문단에 한 번 더 넣지 않는다**(규격 §10).
-                바로 아래 `다음에 만들 근거` 가 같은 문장을 글자까지 같게
-                들고 있어서, 한 절에서 같은 할 일을 두 번 읽게 됐다. 이
-                문단이 맡는 것은 확인된 것과 이 산업에서 모자란 것까지다 */}
-            <p className="rs-bridge">{indBridge.join(" ")}</p>
-            <p className="rs-note">
-              같은 경험을 {industryName(model.industry_context.code)}에서 쓰는
-              표현으로 놓았습니다. 맞는다거나 맞지 않는다고 판정하지 않습니다.
-            </p>
-            <PackBody v={model.industry_context}
-              name={industryName(model.industry_context.code)}
-              domainName={(td: string) => domainName(core, td)} say={say}
-              action={indAction} />
-            {model.industry_context.others.length ? (
-              <p className="rs-others">
-                다른 산업에서 보시려면 다시 응시하지 않아도 됩니다. 기술영역
-                결과는 산업을 바꿔도 그대로입니다.
-              </p>
-            ) : null}
-          </section>
-        ) : null}
-
-        {model.role_context ? (
-          <section className="rs-sect" id="role">
-            <h2>{roleName(model.role_context.code)} 직무에 연결하면</h2>
-            {roleBridge.length
-              ? <p className="rs-bridge">{roleBridge.join(" ")}</p> : null}
-            <p className="rs-note">
-              같은 경험을 {roleName(model.role_context.code)}에서 먼저 읽는 차례로
-              놓았습니다. 기술영역 결과는 그대로입니다.
-            </p>
-            <PackBody v={model.role_context}
-              name={roleName(model.role_context.code)}
-              domainName={(td: string) => domainName(core, td)} say={say}
-              action={roleAction} />
-            {model.role_context.compare_with.length ? (
-              <p className="rs-others">
-                같이 놓고 보실 직무 {model.role_context.compare_with
-                  .map((c) => roleName(c)).join(" · ")}
-              </p>
-            ) : null}
-          </section>
-        ) : null}
-
-        {/* ── 다음에 할 일 ── */}
-        <section className="rs-sect" id="plan">
-            {/* **쪽마다 답하는 질문 하나**(COMMERCIAL FINAL §10). 종이에서만 선다:
-              화면은 절 머리와 첫 화면 넷이 그 일을 이미 하고 있어서, 여기에
-              한 줄을 더 세우면 같은 말이 두 번 선다 */}
-            <p className="rs-q">지금 무엇부터 하면 되는가</p>
-          <h2>다음에 할 일</h2>
-          {model.actions.length ? (<>
-            {/* **그 마디를 여기서 한 번만 적는다**(R17 §6). 아래 줄마다
-                되풀이되던 `최근 ○○ 과제 하나를 골라보세요` 가 이 자리로
-                올라왔다 */}
-            <p className="rs-note">
-              최근 과제 하나를 골라 그 영역의 줄대로 적어 두세요.
-            </p>
-            {/* **새 Action 을 만들지 않는다**(§13). 네 칸이 전부 위
-                목록과 같은 할 일에서 오고, 다른 것은 **언제 할 수 있는
-                일인가**로 묶어 차례를 보인 것뿐이다 */}
-            <ActionRoadmap model={model} name={(c) => domainName(core, c)} />
-            <Plan core={core} actions={model.actions} stage={model.stage}
-              attemptId={attemptId} saved={saved} where={exploreWhere()} />
-          </>) : (
-            /* **머리글만 세워 두지 않는다.** 할 일이 없는 응시에서 약속하는
-               문장 아래가 비어 있었다. 빈 자리는 고장으로 읽히고, 읽는
-               사람은 자기 결과가 덜 만들어졌다고 본다. 까닭을 적는다 */
-            <p className="rs-note">
-              지금 응답만으로는 다음 한 걸음을 적을 만큼 영역 사이에 차이가
-              생기지 않았습니다. 위의 영역 가운데 하나를 짧은 과제로 한 번
-              해보신 뒤에 다시 보시면 그 자리에 적힙니다.
-            </p>
-          )}
-
-          {/* ── 그 전공의 한 걸음과 지원서·면접(갈래 계약 · 규격 §10·§11) ──
-              **위의 할 일을 덮지 않는다.** 저쪽은 응답이 가리킨 영역에서
-              나온 것이고 이 묶음은 **그 학과라면 어디에서 무엇을 정하고
-              무엇을 남기면 되는지**다. 둘을 한 자리에 섞으면 어느 것이 내
-              응답에서 나온 말인지 읽는 사람이 가를 수 없어서, 묶음을 따로
-              두고 머리에 전공 이름을 적는다.
-              **면접 답을 적어 주지 않는다**: 적는 것은 무엇을 묻는 자리인가
-              까지이고 거기 들어갈 말은 그 사람이 고른 항목에서 나온다 */}
-          {(sv.evidenceFirst || sv.application.resume) ? (
-            <div className="rs-pack" id="deptnext">
-              <h3>{meta.specialization ?? meta.major} 쪽에서 지금 할 수 있는 한 걸음</h3>
-              {sv.evidenceFirst ? (
-                <ul className="rs-first">
-                  <li>{sv.evidenceFirst}</li>
-                  {sv.evidenceNext ? <li>{sv.evidenceNext}</li> : null}
-                </ul>
-              ) : null}
-              {sv.application.resume ? (
-                <>
-                  <h3>그 경험을 지원서에서 꺼내는 자리</h3>
-                  <p className="rs-note">{sv.application.resume}</p>
-                </>
-              ) : null}
-              {sv.application.interview.length ? (
-                <>
-                  <h3>면접에서 같은 구조로 되묻는 자리</h3>
-                  <ul className="rs-first">
-                    {sv.application.interview.map((t) => <li key={t}>{t}</li>)}
-                  </ul>
-                </>
-              ) : null}
-            </div>
-          ) : null}
-        </section>
-
-        {/* **지원서·면접은 할 일 다음이다**(COMMERCIAL GOLD MASTER §15).
-            읽는 차례가 `연결해볼 산업·직무 → 지금 할 일 → 지원서·면접에서
-            활용하기` 라, 문장 만드는 자리를 할 일 앞에 두면 아직 하지도
-            않은 일을 적는 차례가 된다 */}
-        {model.translation
-          ? <Translation view={model.translation} major={meta.major ?? "이 전공"} />
-          : null}
-
-        {/* ── 결과 다음에 갈 자리 ──
-            **이어지는 자리를 여섯 장짜리 메뉴판으로 두지 않는다**(규격 §7).
-            전에는 같은 무게의 카드 여섯이 격자로 서서, 다 읽은 사람이
-            **어디를 먼저 누를지 고르는 일**을 한 번 더 했다. 그 자리는
-            결과지의 마지막 인상이라 메뉴판이 서면 이 제품이 결과를 나눠
-            주는 곳으로 읽힌다. 이어지는 자리는 하나다 */}
-        {/* **종이에는 이어지는 길을 세우지 않는다**(상용화 PHASE 0).
-            여기 선 것은 전부 눌러서 가는 자리라 뽑아 둔 종이에서는 밑줄
-            친 글자 목록으로만 남고, 마지막 쪽을 한 장 더 늘린다. 종이가
-            끝나는 자리는 해석 기준이다 */}
-        <section className="rs-sect rs-webonly" id="next">
-          {/* **닫는 자리가 이 쪽의 두 번째이자 마지막 색면이다**(R17 §1).
-              전에는 여기 흰 면 위의 글 묶음이 서고, 쪽 위쪽에 같은 말을
-              하는 navy 띠가 따로 있었다. 둘을 하나로 합쳐 **끝나는 자리
-              하나**로 둔다. 거드는 길은 밑줄 친 글줄이라 주된 단추와
-              무게를 겨루지 않는다 */}
-          <div className="rs-end">
-            <p className="rs-end-l">{meta.school ?? "CareerMatri"}</p>
-            <h2 className="rs-end-h">다음 한 줄은 내 CareerMatri에서</h2>
-            <p className="rs-end-p">
-              이 결과는 그날의 기록으로 굳어 있습니다. 경험을 더하면 지금
-              상태가 이어서 바뀝니다.
-            </p>
-            <Link className="rs-end-a" href="/me">내 CareerMatri 열기</Link>
-            <ul className="rs-end-sub">
-              <li><Link href="/me/state">현재 상태</Link></li>
-              <li><Link href="/me/experience/new">경험 추가</Link></li>
-              <li><Link href="/me/next">지금 할 일</Link></li>
-              <li><Link href="/me/explore">산업·직무</Link></li>
-              {/* **종이 길은 `Link` 로 걸지 않는다.** Next 가 화면에 들어온
-                  `Link` 를 미리 불러오는데, 그 길은 머리 없는 브라우저를
-                  띄워 종이를 만드는 자리다 */}
-              <li><a href={`/v3/${attemptId}/result/pdf`}>PDF 저장</a></li>
-            </ul>
-            {/* **준비 중인 것을 카드로 세우지 않는다**(규격 §7) */}
-            <p className="rs-end-note">CareerMatri Track 은 준비 중입니다.</p>
-          </div>
-        </section>
 
         {/* ══ 여기서 핵심 리포트가 끝난다 ══
             **지우지 않고 뒤로 보낸다**(FINAL POLISH §3).
@@ -2345,6 +2331,13 @@ export default async function V3Result({
             전에는 `고르신 자리` 가 지역 절 안에 있고 읽는 기준만 마지막에
             남아서, **마지막 쪽에 221자(13%)만 선 종이**가 여섯 벌 나왔다 */}
         <div className="rs-fine">
+          {/* **닫는 부록 둘을 한 접힘 안에 둔다**(R18 §8).
+              손전화 첫 화면에서 이 둘이 오백 픽셀을 먹는데, 담긴 것은
+              응시 중에 고르신 기록과 무엇을 재고 무엇을 재지 않았는지다.
+              **따로 접지 않는다**: 종이에서 둘을 가르면 읽는 기준만
+              마지막 쪽에 221자(13%)로 남는다. 이 저장소가 겪은 자리라
+              한 덩이로 묶어 둔다. 담긴 글은 그대로고 종이에서는 펴진다 */}
+          <Disclose label="결과 읽는 기준과 고르신 목표">
           {/* **고르신 것을 돌려드린다.** 관심 기관 유형과 목표는 응시 중에
               받아 두고 결과지에 한 글자도 나오지 않았다. 판정에 들어가지
               않는다는 것도 함께 적는다 */}
@@ -2402,7 +2395,7 @@ export default async function V3Result({
               아래에 늘 펼쳐 두면 결과의 마지막 인상이 그 해설이 된다.
               **지우지 않았다**: 무엇을 재고 무엇을 재지 않았는지는 결과의
               일부라, 읽는 기준을 모아 둔 이 자리로 옮기고 종이에서는 펴진다 */}
-          <Disclose label="결과 읽는 기준">
+            <h3>결과 읽는 기준</h3>
             <p>{TIER_NOTE_KO[model.tier]}</p>
             <div className="rs-pack" id="howto">
               <dl>
@@ -2464,6 +2457,44 @@ export default async function V3Result({
             <p><Link href={`/v3/${attemptId}/feedback`}>파일럿 의견 적기</Link></p>
           ) : null}
         </div>
+        {/* ── 결과 다음에 갈 자리 ──
+            **이어지는 자리를 여섯 장짜리 메뉴판으로 두지 않는다**(규격 §7).
+            전에는 같은 무게의 카드 여섯이 격자로 서서, 다 읽은 사람이
+            **어디를 먼저 누를지 고르는 일**을 한 번 더 했다. 그 자리는
+            결과지의 마지막 인상이라 메뉴판이 서면 이 제품이 결과를 나눠
+            주는 곳으로 읽힌다. 이어지는 자리는 하나다 */}
+        {/* **종이에는 이어지는 길을 세우지 않는다**(상용화 PHASE 0).
+            여기 선 것은 전부 눌러서 가는 자리라 뽑아 둔 종이에서는 밑줄
+            친 글자 목록으로만 남고, 마지막 쪽을 한 장 더 늘린다. 종이가
+            끝나는 자리는 해석 기준이다 */}
+        <section className="rs-sect rs-webonly" id="next">
+          {/* **닫는 자리가 이 쪽의 두 번째이자 마지막 색면이다**(R17 §1).
+              전에는 여기 흰 면 위의 글 묶음이 서고, 쪽 위쪽에 같은 말을
+              하는 navy 띠가 따로 있었다. 둘을 하나로 합쳐 **끝나는 자리
+              하나**로 둔다. 거드는 길은 밑줄 친 글줄이라 주된 단추와
+              무게를 겨루지 않는다 */}
+          <div className="rs-end">
+            <p className="rs-end-l">{meta.school ?? "CareerMatri"}</p>
+            <h2 className="rs-end-h">다음 한 줄은 내 CareerMatri에서</h2>
+            <p className="rs-end-p">
+              이 결과는 그날의 기록으로 굳어 있습니다. 경험을 더하면 지금
+              상태가 이어서 바뀝니다.
+            </p>
+            <Link className="rs-end-a" href="/me">내 CareerMatri 열기</Link>
+            <ul className="rs-end-sub">
+              <li><Link href="/me/state">현재 상태</Link></li>
+              <li><Link href="/me/experience/new">경험 추가</Link></li>
+              <li><Link href="/me/next">지금 할 일</Link></li>
+              <li><Link href="/me/explore">산업·직무</Link></li>
+              {/* **종이 길은 `Link` 로 걸지 않는다.** Next 가 화면에 들어온
+                  `Link` 를 미리 불러오는데, 그 길은 머리 없는 브라우저를
+                  띄워 종이를 만드는 자리다 */}
+              <li><a href={`/v3/${attemptId}/result/pdf`}>PDF 저장</a></li>
+            </ul>
+            {/* **준비 중인 것을 카드로 세우지 않는다**(규격 §7) */}
+            <p className="rs-end-note">CareerMatri Track 은 준비 중입니다.</p>
+          </div>
+        </section>
       </main>
     </div>
   );

@@ -235,56 +235,7 @@ export function EvidenceMatrix(
   );
 }
 
-/* ── D. Action Roadmap ──────────────────────────────────────── */
-
-/**
- * **같은 문장을 두 번 적지 않는다**(§A-6).
- *
- * 카드에 할 일의 문장을 그대로 적었더니 바로 아래 표가 같은 문장을 다시
- * 적었다. 이 네 칸이 하는 일은 **차례를 보이는 것**이라 어느 영역의
- * 일인지까지면 되고, 무엇을 하라는 말은 아래 표가 한 자리에서 든다.
- */
-export function ActionRoadmap(
-  { model, name }: {
-    model: ResultModel;
-    name: (c: string) => string;
-  },
-): React.JSX.Element {
-  const where = (a: ResultModel["actions"][number]) =>
-    (a.domain ? name(a.domain) : "영역을 가리지 않는 할 일");
-  const r: Roadmap = roadmap(model, where);
-  const steps: [string, string[], string][] = [
-    ["지금", [...new Set(r.now)], "이번 주에 손댈 수 있는 영역입니다"],
-    ["다음 경험", [...new Set(r.next)], "그다음에 겪어 두면 되는 영역입니다"],
-    /* **손님 화면에 안쪽 이름을 적지 않는다.** 규격이 이 칸을
-       `남길 Evidence` 로 적었지만, 이 제품은 학생 화면에서 그 말을 늘
-       `근거` 로 적어 왔고 `v3:copy` 가 그것을 센다. 한 칸의 사정으로
-       공통 검사를 느슨하게 하면 다음 화면이 그 느슨해진 줄을 물려받는다 */
-    ["남길 근거", r.leave, "그 경험에서 남겨 둘 것입니다"],
-    ["지원서·면접", r.use.map(name), "지원서에서 꺼내 쓸 수 있는 영역입니다"],
-  ];
-  /* **번호 붙은 카드 넷을 세우지 않는다**(R17 §5·§7). 테를 두른 같은
-     크기의 칸이 넷 서고 그 안에 동그란 번호와 제목과 목록과 설명이
-     되풀이되면, 읽는 사람이 받는 것은 차례가 아니라 **표**다. 지금 서는
-     것은 금 한 줄 위를 지나가는 **흐름**이다: 상자도 번호도 없고 단계
-     이름과 그 자리의 영역 이름만 선다 */
-  return (
-    <ol className="pv-flow">
-      {steps.map(([t, xs, sub]) => (
-        <li key={t}>
-          <h4>{t}</h4>
-          {xs.length ? (
-            <p className="pv-flow-v">{xs.slice(0, 3).join(" · ")}</p>
-          ) : (
-            <p className="pv-flow-none">
-              {t === "지원서·면접"
-                ? "아직 모이지 않았습니다"
-                : "아직 적을 것이 없습니다"}
-            </p>
-          )}
-          <p className="pv-flow-s">{sub}</p>
-        </li>
-      ))}
-    </ol>
-  );
-}
+/* **네 칸짜리 흐름 표(`ActionRoadmap`)를 걷었다**(R18 §5).
+   `지금 · 다음 경험 · 남길 근거 · 지원서·면접` 은 전부 할 일 목록과 같은
+   값을 묶어 다시 그린 것이고, Action 절에서 가장 큰 덩이가 그 표였다.
+   목록이 이미 언제 할 일인지로 나뉘어 있어 담긴 것이 줄지 않는다 */

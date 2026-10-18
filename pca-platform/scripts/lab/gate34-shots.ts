@@ -193,7 +193,7 @@ async function main(): Promise<void> {
        나란히 놓고 글자가 읽히는 크기로 봐야 가려진다 */
     /* **첫 경험은 장면과 쓰는 자리가 한 이야기**라 둘을 한 장으로 뜬다.
        둘째 경험은 그 자체가 한 덩이다 */
-    await clipTo(p, ".rs-ev3-intro", ".rs-ev3-story.is-primary",
+    await clipTo(p, "#evidence > h2", ".rs-ev3-story.is-primary",
       `${OUT}/gate4-desktop-card.png`);
     const also = p.locator("section#evidence .rs-ev3-story.is-second").first();
     if (await also.count()) {
@@ -215,7 +215,7 @@ async function main(): Promise<void> {
     await clipTo(m, "section#evidence h2", ".rs-ev3", `${OUT}/gate4-mobile.png`);
     await evSize(m, "mobile");
     await clipTo(m, ".rs-hero", ".rs-ev3", `${OUT}/flow-mobile.png`);
-    await clipTo(m, ".rs-ev3-intro", ".rs-ev3-story.is-primary",
+    await clipTo(m, "#evidence > h2", ".rs-ev3-story.is-primary",
       `${OUT}/gate4-mobile-card.png`);
     const malso = m.locator("section#evidence .rs-ev3-story.is-second").first();
     if (await malso.count()) {

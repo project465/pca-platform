@@ -171,7 +171,7 @@ for (const t of plan.targets) {
    가지가 걸린 자리가 그것이라, 검사 화면도 세어 둔다 */
 {
   const ROLES = [".rs-quote", ".rs-badge", ".rs-who", ".rs-tier", ".rs-head nav a",
-    ".rs-card-l", ".rs-card-h", ".rs-band", ".rs-sect > h2", ".rs-note", ".rs-domain > header h3",
+    ".rs-now-l", ".rs-now-h", ".rs-did-h", ".rs-sect > h2", ".rs-note", ".rs-domain > header h3",
     ".rs-zone", ".rs-pick", ".rs-axis > b", ".rs-axis > span", ".rs-axis .state",
     ".rs-gap > h3", ".rs-gap > p", ".rs-do", ".rs-when > h3", ".rs-when li",
     ".rs-zones h3", ".rs-zones p", ".rs-zones li", ".rs-ev h3", ".rs-steps li > span",

@@ -525,7 +525,11 @@ async function main(): Promise<void> {
        `0` 을 고장으로 적지 않는지도 함께 본다 */
     const n0 = Number((await queryOne<{ n: string }>(
       `SELECT count(*)::text AS n FROM v3_actions WHERE user_id = $1`, [a.id]))?.n ?? 0);
-    await p2.locator('.rs-card.is-next form button[type="submit"]').first()
+    /* **이름이 바뀌면 그 이름을 든 검사도 같이 고친다**(R18). 첫 화면
+       오른쪽 칸이 `.rs-card.is-next` 에서 `.rs-now` 가 됐다: 남색 채운
+       카드를 걷어 낸 자리다. 옛 이름으로 두면 멀쩡한 화면이 걸리고,
+       다음 사람이 그 빨강을 제품 고장으로 읽는다 */
+    await p2.locator('.rs-now form button[type="submit"]').first()
       .click({ force: true }).catch(() => undefined);
     await p2.waitForLoadState("networkidle").catch(() => undefined);
     await p2.waitForTimeout(1000);

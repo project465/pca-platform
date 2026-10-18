@@ -39,6 +39,10 @@ const FILES = [
   "src/app/v3/[attemptId]/result/disclose.tsx",
   "src/app/v3/[attemptId]/result/save.tsx",
   "src/app/v3/[attemptId]/result/track.tsx",
+  /* 곁근거를 여는 전환 줄. **학생이 읽는 글이고 누르는 자리인데 이 목록에
+     없었다**: R18 에서 그 줄의 말과 모양을 바꾸고서야 드러났다. 목록에
+     없는 파일은 고쳐도 동결이 모르는 채로 통과한다 */
+  "src/app/v3/[attemptId]/result/second.tsx",
   "src/lib/me-v3/result/text.ko.ts",
   "src/lib/me-v3/result/say.ts",
   "src/lib/me-v3/result/josa.ts",

@@ -236,8 +236,11 @@ async function run(browser: Browser): Promise<void> {
     ok(`A V3 ${tier} 초기 높이`, r?.status() === 200 && got.r <= RATIO_MAX,
       `${got.h}px · 창 ${got.r}배 (한도 ${RATIO_MAX})`);
 
+    /* **하나로 못 박지 않는다**(R18). 이 줄이 재는 것은 `본문이 기본으로
+       접혀 있는가` 이고, 접힌 자리가 몇이냐는 설계 선택이다. 곁근거를
+       접어 둔 뒤로 PRO 에서 둘이 되는데 그것은 고장이 아니다 */
     const hidden = await p.locator(".rs-open > div[hidden]").count();
-    ok(`B V3 ${tier} 상세 본문이 접혀 있다`, hidden === 1, `${hidden}개`);
+    ok(`B V3 ${tier} 상세 본문이 접혀 있다`, hidden >= 1, `${hidden}개`);
 
     await p.locator(".rs-openbtn").click({ timeout: 5000 }).catch(() => undefined);
     await p.waitForTimeout(600);
