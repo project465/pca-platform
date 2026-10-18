@@ -3,9 +3,9 @@
  "note": "Core 화면 열넷의 묶음 동결. 측정 동결과 별개다. layout 대변경은 별도 STOP GATE 이고, 고쳤으면 그 화면의 판본을 올리고 세 동결을 다시 적은 다음 `CORE_UI_FREEZE=write npm run v3:freeze:core`",
  "label": "CAREERMATRI_CORE_UI_FREEZE_1",
  "locks": {
-  "assessment": "4b87c2bf0933788c",
-  "result": "36342d08fa923083",
-  "workspace": "c7de1e768884f793"
+  "assessment": "5abc4e7be87ea85e",
+  "result": "657ae12e4c687b6f",
+  "workspace": "0d953b64d525c0cf"
  },
  "versions": {
   "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V39",

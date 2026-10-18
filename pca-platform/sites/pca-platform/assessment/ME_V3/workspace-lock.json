@@ -17,7 +17,7 @@
  },
  "files": {
   "src/app/workspace.tokens.css": "e01ca6a032854489d3410b7bf48030940fe361b501e4cd44bf06e6305bff1b88",
-  "src/app/surface.css": "b38cd6f0bb1eef6b4c6c8b0fb2ef7381be37c4960fec03a6879bc9f3a2a91ee3",
+  "src/app/surface.css": "b1875a36649fc8eee9c76575f66d0d9c49b5e6892e611965ba5e895b825c5fbe",
   "src/app/me/ui.tsx": "53a711fea2782e7fdf53a47b3a719ec34791499bed9478c51880a077179c301a",
   "src/components/sf/brand-mark.tsx": "ff11c4c78195a82ef30ad032332a1c714b64c569a52089066b610b3e6c7b82bf",
   "src/app/me/platform.css": "53827fe415a613ea5b6fd635317de0640ddaa2c9b5ed245049c3f81e6fe620b1",
