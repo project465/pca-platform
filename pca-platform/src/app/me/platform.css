@@ -43,7 +43,9 @@
   flex: 0 0 var(--cm-rail);
   background: var(--cm-rail-bg);
   color: var(--cm-rail-ink);
-  padding: 0 clamp(14px, 1.2vw, 17px)
+  /* 띠의 좌우 여백. **고른 줄의 면이 여기서 시작한다**: 목표 화면에서
+     그 면이 띠 왼쪽 끝에서 17.6px 떨어져 선다 */
+  padding: 0 clamp(14px, 1.18vw, 17px)
     calc(18px + var(--stg-h, 0px) + env(safe-area-inset-bottom, 0px));
   display: flex; flex-direction: column; gap: 4px;
   position: sticky; top: 0; align-self: flex-start;
@@ -53,9 +55,8 @@
    글자만 두었더니 아래 메뉴의 첫 줄과 같은 무게로 읽혔다 */
 .cm-rail-brand {
   display: flex; align-items: center; gap: clamp(11px, .95vw, 13px);
-  min-height: clamp(72px, 6.1vw, 88px); margin: 0 -14px 6px;
-  padding: 0 clamp(18px, 1.5vw, 22px);
-  border-bottom: 1px solid var(--cm-rail-line);
+  min-height: clamp(72px, 7.15vw, 103px);
+  padding: 0 0 0 clamp(4px, 1.11vw, 16px);
   text-decoration: none;
 }
 /* 표시. **글자 없는 모양 하나다**(규격 §1). 면에 안쪽 빛을 한 겹 더해
@@ -67,7 +68,7 @@
    내려앉는다. `width`·`height` 를 적는 것이 속성을 덮는다 */
 .cm-rail-mark {
   display: block; flex: 0 0 auto;
-  width: clamp(34px, 2.5vw, 36px); height: clamp(34px, 2.5vw, 36px);
+  width: clamp(34px, 2.43vw, 35px); height: clamp(34px, 2.43vw, 35px);
 }
 .cm-rail-name {
   display: block; min-width: 0;
@@ -77,7 +78,7 @@
    두었더니 바로 아래 메뉴의 첫 줄과 같은 크기라, 제품 이름이 아니라
    목록의 머리처럼 읽혔다 */
 .cm-rail-name > b {
-  font-weight: var(--ui-w-bd); font-size: clamp(17.5px, 1.77vw, 25px);
+  font-weight: var(--ui-w-bd); font-size: clamp(17.5px, 1.83vw, 26.3px);
   letter-spacing: -.02em;
 }
 /* **지금 어느 전공인지를 띠에 둔다.** 전공이 늘면 이 자리가 고르는
@@ -89,14 +90,14 @@
    이름 아래에 한 단 작고 옅은 글자로 선다 */
 .cm-rail-name small {
   display: block; margin-top: 3px;
-  font-weight: var(--ui-w-md); font-size: clamp(12px, 1.04vw, 15px);
+  font-weight: var(--ui-w-md); font-size: clamp(12px, 1.25vw, 18px);
   letter-spacing: 0;
   color: var(--cm-rail-ink);
 }
 .cm-rail-scroll {
   flex: 1 1 auto; min-height: 0; overflow-y: auto;
-  display: flex; flex-direction: column; gap: clamp(20px, 1.8vw, 26px);
-  padding-top: clamp(12px, 1.1vw, 16px);
+  display: flex; flex-direction: column; gap: clamp(20px, 2.29vw, 33px);
+  padding-top: clamp(12px, 1.74vw, 25px);
 }
 /* 마지막 묶음(`기타`)은 **아래로 내린다**(규격 §1). Track 과 계정은
    날마다 누르는 줄이 아니라, 위의 세 묶음과 떨어져 서야 띠가 쌓인
@@ -107,13 +108,17 @@
 
 /* **묶음 이름이 곧 section context 다.** 평평한 아홉 줄은 어디가
    `내 커리어` 인지 읽히지 않는다 */
-.cm-group { display: flex; flex-direction: column; gap: 2px; }
+/* **줄 사이를 띄우지 않는다**(목표 화면). 줄 간격이 곧 줄 높이이고,
+   고른 줄의 면이 그 줄을 통째로 채운다 */
+.cm-group { display: flex; flex-direction: column; gap: 0; }
 /* 묶음 머리. **한글을 영문 머리글처럼 늘리지 않는다**(목표 화면):
    대문자 변환은 한글에서 아무 일도 하지 않고 넓은 자간만 남아, 묶음
    이름이 읽히는 말이 아니라 장식 띠가 된다 */
 .cm-group > h2 {
-  margin: 0 0 7px; padding: 0 clamp(10px, .85vw, 12px);
-  font-size: clamp(12.5px, 1.04vw, 15px); font-weight: var(--ui-w-bd);
+  /* **묶음 머리는 표시 칸에서 시작한다**(목표 화면): 줄의 글자가 아니라
+     줄의 표시와 같은 선에 선다 */
+  margin: 0 0 clamp(7px, .7vw, 10px); padding: 0 clamp(10px, 1.25vw, 18px);
+  font-size: clamp(12.5px, 1.39vw, 20px); font-weight: var(--ui-w-bd);
   letter-spacing: 0;
   color: var(--cm-rail-ink); opacity: .6;
 }
@@ -122,14 +127,15 @@
    목록 전체를 한 번에 잡고, 그래야 띠가 메뉴가 아니라 제품의 틀로
    읽힌다. 누르는 자리는 36px 로 유지한다 */
 a.cm-nav {
-  display: flex; align-items: center; gap: clamp(11px, 1vw, 14px);
-  padding: 6px clamp(10px, .85vw, 12px); border-radius: 10px;
+  display: flex; align-items: center; gap: clamp(11px, 1.88vw, 27px);
+  padding: 0 clamp(10px, 1.53vw, 22px);
+  border-radius: clamp(9px, 1.74vw, 25px);
   color: var(--cm-rail-ink); text-decoration: none;
   /* **띠의 줄은 본문의 거드는 글과 같은 자가 아니다.** 목표 화면에서
      이 자리의 글자가 쪽 제목의 3분의 2쯤이고, 공유 토큰을 그대로
      읽으면 그보다 한 단 작다 */
   font-size: clamp(16px, 1.44vw, 20.7px);
-  font-weight: var(--ui-w-sb); min-height: clamp(38px, 3.15vw, 45px);
+  font-weight: var(--ui-w-sb); min-height: var(--cm-nav-h);
 }
 /* 줄의 아이콘. **크기와 선 굵기를 하나로 맞춘다**(규격 §1·§7): 띠에서
    아홉 줄이 세로로 서므로 하나만 달라도 그 줄이 먼저 읽힌다 */
@@ -137,7 +143,7 @@ a.cm-nav > svg {
   /* **선이 얇으면 큰 글자 옆에서 그림이 먼저 지워진다.** 목표 화면의
      띠 그림은 면으로 그려져 있어 멀리서도 줄마다 무엇인지가 읽힌다 */
   opacity: .78; stroke-width: 1.8;
-  width: clamp(19px, 1.74vw, 25px); height: clamp(19px, 1.74vw, 25px);
+  width: clamp(19px, 1.81vw, 26px); height: clamp(19px, 1.81vw, 26px);
 }
 a.cm-nav > svg { flex: 0 0 auto; }
 a.cm-nav > span { display: block; min-width: 0; }
@@ -155,7 +161,10 @@ a.cm-nav:hover { background: rgba(255, 255, 255, .07); color: var(--cm-rail-ink-
    강조색은 누르는 자리에만 둔다 */
 a.cm-nav.is-on {
   position: relative;
-  background: #17375f; color: #fff; font-weight: var(--ui-w-bd);
+  /* 고른 줄. **목표 화면의 면은 파란 기울기 하나다**: 왼쪽이 밝고
+     오른쪽으로 가라앉아, 띠 안에서 그 줄만 떠오른다 */
+  background: linear-gradient(90deg, #0046a9 0%, #0e3d78 100%);
+  color: #fff; font-weight: var(--ui-w-bd);
 }
 /* **왼쪽 금을 두지 않는다**(목표 화면). 면 하나로 충분하고, 금까지
    더하면 고른 줄이 둘로 말한다 */
@@ -173,24 +182,26 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
  * 여기는 서지 않는다.
  */
 .cm-utilrow {
-  float: right; display: flex; align-items: center; gap: 8px;
-  margin: 4px 0 0 16px;
+  float: right; display: flex; align-items: center; gap: clamp(8px, .97vw, 14px);
+  margin: 0 0 0 16px;
 }
 .cm-utilrow .cm-btn {
   min-height: var(--cm-util-h); padding: 0 clamp(15px, 1.3vw, 19px);
   font-size: var(--ui-t-sub);
 }
 .cm-util-me {
-  display: inline-flex; align-items: center; gap: 6px;
-  min-height: var(--cm-util-h); padding: 0 10px 0 5px; border-radius: 999px;
-  border: 1px solid var(--sf-line); background: var(--sf-surface);
+  /* **알약으로 두지 않는다**(목표 화면): 테와 면을 두르면 이 자리가
+     계정 이름이 아니라 누르는 칸으로 읽혀 머리 줄에서 가장 센 자리가
+     된다. 서는 것은 동그라미와 이름과 꺾쇠뿐이다 */
+  display: inline-flex; align-items: center; gap: clamp(6px, .63vw, 9px);
+  min-height: var(--cm-util-h); padding: 0 4px; border-radius: 999px;
+  border: 0; background: none;
   color: var(--sf-ink); text-decoration: none; white-space: nowrap;
-  box-shadow: var(--cm-card-sh);
 }
-.cm-util-me:hover { background: var(--sf-surface-2); border-color: var(--sf-accent-line); }
+.cm-util-me:hover > b { color: var(--sf-ink); }
 .cm-util-av {
   display: inline-flex; align-items: center; justify-content: center;
-  width: calc(var(--cm-util-h) - 10px); height: calc(var(--cm-util-h) - 10px);
+  width: clamp(28px, 3.2vw, 46px); height: clamp(28px, 3.2vw, 46px);
   border-radius: 999px;
   background: var(--sf-accent); color: #fff;
   font-size: var(--ui-t-cap); font-weight: var(--ui-w-bd);
@@ -198,7 +209,7 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 /* 이름. **좁은 화면에서는 첫 글자만 남는다**: 1100 아래에서 이름이
    서면 쪽 머리의 단추를 밀어낸다 */
 .cm-util-me > b {
-  font-size: clamp(13.5px, 1.1vw, 15.5px);
+  font-size: clamp(13.5px, 1.26vw, 18.2px);
   font-weight: var(--ui-w-sb); color: var(--sf-ink-2);
   max-width: 10ch; overflow: hidden; text-overflow: ellipsis;
 }
@@ -212,8 +223,9 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
  * 가라앉혀 **계정 칸이 그 줄의 끝**임을 남긴다.
  */
 .cm-find {
-  position: relative; display: flex; align-items: center; gap: 8px;
-  min-height: var(--cm-util-h); padding: 0 14px; border-radius: 999px;
+  position: relative; display: flex; align-items: center; gap: clamp(8px, .76vw, 11px);
+  min-height: var(--cm-util-h); padding: 0 clamp(14px, 1.18vw, 17px);
+  border-radius: 999px;
   border: 1px solid var(--sf-line); background: var(--sf-surface-2);
   color: var(--sf-ink-3);
 }
@@ -225,8 +237,8 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 /* 브라우저 기본 지우기 단추를 쓰지 않는다: 기기마다 다른 그림이 서고
    그 그림만 이 제품의 활자도 색도 쓰지 않는다 */
 .cm-find > input {
-  width: 15rem; min-width: 0; border: 0; background: none; padding: 0;
-  font: inherit; font-size: clamp(13.5px, 1.1vw, 15.5px); color: var(--sf-ink);
+  width: 14.2rem; min-width: 0; border: 0; background: none; padding: 0;
+  font: inherit; font-size: clamp(13.5px, 1.26vw, 18.2px); color: var(--sf-ink);
   appearance: none; outline: none;
 }
 .cm-find > input::-webkit-search-cancel-button { display: none; }
@@ -263,20 +275,24 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
  */
 .cm-util-bell {
   display: inline-flex; align-items: center; justify-content: center;
+  /* **테도 면도 두르지 않는다**(목표 화면): 머리 줄에서 테를 가진 것은
+     찾기 칸 하나이고, 종이 같은 테를 두르면 둘이 한 벌의 단추로 읽힌다 */
   width: var(--cm-util-h); height: var(--cm-util-h); flex: 0 0 auto;
-  border-radius: 999px;
-  border: 1px solid var(--sf-line); background: var(--sf-surface);
-  color: var(--sf-ink-2); box-shadow: var(--cm-card-sh);
+  border-radius: 999px; border: 0; background: none;
+  color: var(--sf-ink-2);
 }
-.cm-util-bell:hover {
-  background: var(--sf-surface-2); border-color: var(--sf-accent-line);
-  color: var(--sf-accent);
+.cm-util-bell > svg {
+  width: clamp(19px, 2.08vw, 30px); height: clamp(19px, 2.08vw, 30px);
 }
+.cm-util-bell:hover { color: var(--sf-accent); }
 @media (max-width: 900px) { .cm-utilrow { display: none; } }
 
 .cm-canvas {
   flex: 1 1 auto;
-  padding: 16px 24px calc(28px + var(--cm-tab));
+  /* **바탕은 흰 면이다**(목표 화면). 회색 바탕에 흰 카드를 올리면 카드가
+     바탕에서 떠올라 쪽이 카드의 모음으로 읽힌다 */
+  background: #fdfdfd;
+  padding: clamp(16px, 1.6vw, 23px) var(--cm-pad) calc(28px + var(--cm-tab));
 }
 .cm-in { max-width: var(--cm-max); margin: 0 auto; }
 /* 적는 자리(규격 §17). 작업공간 1100 은 견주는 폭이고 폼은 그 폭에서
@@ -303,19 +319,19 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 
 /* ── 쪽 머리 ──────────────────────────────────────────────────────── */
 
-.cm-head { margin-bottom: 22px; }
+.cm-head { margin-bottom: clamp(14px, 1.04vw, 15px); }
 .cm-kicker {
   font-size: var(--ui-t-cap); letter-spacing: .06em; color: var(--sf-ink-3);
   margin: 0 0 6px;
 }
 .cm-h1 {
-  font-size: clamp(24px, 2.36vw, 34px); line-height: 1.26; font-weight: var(--ui-w-bd);
+  font-size: clamp(24px, 2.24vw, 32.3px); line-height: 1.26; font-weight: var(--ui-w-bd);
   color: var(--sf-ink); margin: 0; text-wrap: balance; letter-spacing: -.022em;
 }
 /* 제목 아래 한 줄(규격 §4). `기계공학 · 최근 업데이트 YYYY.MM.DD` */
 .cm-meta {
-  margin: 5px 0 0; font-size: var(--ui-t-sub); font-weight: var(--ui-w-md);
-  color: var(--sf-ink-3);
+  margin: 5px 0 0; font-size: clamp(13px, 1.26vw, 18.2px);
+  font-weight: var(--ui-w-md); color: var(--sf-ink-3);
 }
 .cm-head { position: relative; }
 .cm-lead {
@@ -330,8 +346,8 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
  * 시작인지**를 글자를 읽기 전에 안다.
  */
 .cm-sh {
-  display: flex; align-items: center; gap: 9px;
-  margin: 22px 0 0; font-size: clamp(22px, 2.12vw, 30.5px);
+  display: flex; align-items: center; gap: clamp(9px, 2.01vw, 29px);
+  margin: clamp(24px, 2.08vw, 30px) 0 0; font-size: clamp(17px, 1.94vw, 28px);
   font-weight: var(--ui-w-bd); color: var(--sf-ink);
   letter-spacing: -.015em;
 }
@@ -349,17 +365,21 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .cm-sh.is-b > svg { color: #d4572e; }
 .cm-sh.is-c > svg { color: #4f4bb0; }
 .cm-sh > a {
-  margin-left: auto; font-size: var(--ui-t-sub); font-weight: var(--ui-w-sb);
+  margin-left: auto; font-size: clamp(13px, 1.37vw, 19.8px);
+  font-weight: var(--ui-w-sb);
   color: var(--sf-accent-ink); text-decoration: none; white-space: nowrap;
 }
 .cm-sh > a:hover { text-decoration: underline; }
 .cm-shsub {
-  margin: 4px 0 11px; font-size: clamp(14px, 1.17vw, 16.5px); color: var(--sf-ink-3);
+  margin: clamp(4px, 1.22vw, 17.6px) 0 clamp(11px, 1.94vw, 28px);
+  font-size: clamp(14px, 1.32vw, 19px); color: var(--sf-ink-3);
 }
 /* **거드는 줄은 표시가 아니라 이름에 맞춰 선다.** 목표 화면이 그렇고,
    그래야 머리 한 덩이가 왼쪽에서 한 번만 꺾인다. `.cm-sh` 바로 뒤에
    올 때만이다: 혼자 서는 거드는 줄은 맞출 이름이 없다 */
-.cm-sh + .cm-shsub { padding-left: calc(var(--cm-sh-ico) + 9px); }
+.cm-sh + .cm-shsub {
+  padding-left: calc(var(--cm-sh-ico) + clamp(9px, 2.01vw, 29px));
+}
 
 /* ── 지금 할 일 Hero ──────────────────────────────────────────────
  *
@@ -370,7 +390,11 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .cm-hero {
   display: flex; align-items: center; gap: 28px;
   position: relative; overflow: hidden;
-  margin-top: 10px; padding: 22px 30px;
+  /* 안쪽 여백. **글이 서는 선이 쪽 제목보다 한 번 더 들어간다**
+     (목표 화면): Hero 는 면을 가진 자리라 그 면의 안쪽에서 다시 시작한다 */
+  margin-top: clamp(8px, .5vw, 10px);
+  padding: clamp(22px, 2.08vw, 30px) clamp(18px, 2.08vw, 30px)
+           clamp(22px, 2.29vw, 33px) clamp(18px, 4.51vw, 65px);
   /* **면을 한 겹으로 두지 않는다**(규격 §3·§7). 왼쪽 위가 한 단 짙고
      오른쪽 아래로 갈수록 밝아지면, 글이 올라앉은 자리와 그림이 선 자리가
      같은 면 안에서 갈린다. 그림자는 쓰지 않는다 */
@@ -395,27 +419,39 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .cm-hero > * { position: relative; z-index: 1; }
 .cm-hero-txt { flex: 1 1 auto; min-width: 0; order: 1; }
 .cm-hero-tag {
-  display: inline-flex; align-items: center; gap: 7px; margin: 0;
+  /* 꼬리표의 표시는 **글이 서는 선 밖으로 걸린다**(목표 화면): 글은
+     안쪽 여백에서 시작하고 과녁만 그 왼쪽에 매달린다 */
+  display: inline-flex; align-items: center; gap: clamp(7px, .42vw, 6px);
+  margin: 0 0 0 calc(-1 * clamp(0px, 2.57vw, 37px));
   padding: 0; border: 0; background: none;
-  font-size: var(--ui-t-sub); font-weight: var(--ui-w-bd); color: var(--sf-accent-ink);
-  letter-spacing: 0;
+  font-size: clamp(15px, 1.67vw, 24px); font-weight: var(--ui-w-bd);
+  color: var(--sf-accent-ink); letter-spacing: 0;
 }
 /* 꼬리표 앞의 과녁. **빨강은 여기 한 자리뿐이다**: 지금 해야 하는 일을
    가리키는 표시라, 파랑 일색의 면에서 눈이 거기부터 닿는다 */
-.cm-hero-tag > svg { color: #d4572e; }
+.cm-hero-tag > svg {
+  color: #d4572e; flex: 0 0 auto;
+  width: clamp(18px, 2.43vw, 35px); height: clamp(18px, 2.43vw, 35px);
+}
 .cm-hero-h {
-  margin: 12px 0 0; font-size: clamp(23px, 2.64vw, 38px); line-height: 1.34;
+  margin: clamp(10px, .76vw, 11px) 0 0;
+  font-size: clamp(21px, 2.12vw, 30.5px); line-height: 1.57;
   font-weight: var(--ui-w-bd); color: var(--sf-ink); letter-spacing: -.024em;
   max-width: 22ch; text-wrap: balance;
 }
 .cm-hero-why {
-  margin: 11px 0 0; font-size: var(--ui-t-sub); line-height: 1.7;
+  margin: clamp(10px, 1.04vw, 15px) 0 0;
+  font-size: clamp(14px, 1.42vw, 20.5px); line-height: 1.6;
   color: var(--sf-ink-2); max-width: 50ch;
 }
-.cm-hero-acts { display: flex; align-items: center; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+.cm-hero-acts {
+  display: flex; align-items: center; gap: clamp(8px, 2.64vw, 38px);
+  margin-top: clamp(14px, 1.46vw, 21px); flex-wrap: wrap;
+}
 .cm-hero-acts .cm-btn.is-primary {
-  min-height: 48px; padding: 0 24px; font-size: var(--ui-t-body); font-weight: var(--ui-w-bd);
-  border-radius: 11px;
+  min-height: clamp(48px, 4.51vw, 65px); padding: 0 clamp(24px, 3.68vw, 53px);
+  font-size: clamp(16px, 1.53vw, 22px); font-weight: var(--ui-w-bd);
+  border-radius: clamp(11px, .97vw, 14px);
   background: linear-gradient(180deg, #2a72c9 0%, #1c5fb0 100%);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, .22),
@@ -427,9 +463,10 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 /* 거드는 자리는 **테도 면도 없다**: 주된 단추와 같은 무게로 서면 둘 가운데
    무엇을 눌러야 하는지를 읽는 사람이 한 번 더 고른다 */
 .cm-hero-more {
-  font-size: var(--ui-t-sub); font-weight: var(--ui-w-sb); color: var(--sf-ink-3);
-  text-decoration: none; display: inline-flex; align-items: center; gap: 3px;
-  min-height: 46px; padding: 0 12px; border-radius: var(--ui-r-sm);
+  font-size: clamp(14px, 1.39vw, 20px); font-weight: var(--ui-w-sb);
+  color: var(--sf-ink-3);
+  text-decoration: none; display: inline-flex; align-items: center; gap: 5px;
+  min-height: 46px; padding: 0; border-radius: var(--ui-r-sm);
 }
 .cm-hero-more:hover { color: var(--sf-accent-ink); background: rgba(255, 255, 255, .6); }
 /* 오른쪽의 가벼운 표시. **없는 값을 그리지 않는다**: 담긴 것은 모양뿐이고
@@ -468,14 +505,20 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
  * 넷이다: 아이콘 · 이름 · 그 영역이 일하는 차례 · 들어가는 표시.
  */
 .cm-tiles {
-  display: grid; gap: 12px;
+  display: grid; gap: clamp(9px, .88vw, 12.6px);
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   align-items: stretch;
 }
 a.cm-tile {
-  display: flex; align-items: center; gap: clamp(14px, 1.25vw, 18px);
-  padding: clamp(13px, 1.1vw, 16px) clamp(15px, 1.25vw, 18px);
-  min-height: clamp(86px, 8.1vw, 116px);
+  /* **사이를 `gap` 하나로 주지 않는다.** 그러면 배지와 글 사이에 준
+     30px 이 글과 꺾쇠 사이에도 그대로 들어가, 글이 설 폭이 60px 줄고
+     목표 화면에서 한 줄로 서는 이름이 두 줄로 접힌다 */
+  display: flex; align-items: center; gap: 0;
+  /* 위아래 여백. **칸의 키를 정하는 것은 배지다**(80): 여백을 키우면
+     목표 화면보다 칸이 두꺼워진다 */
+  padding: clamp(11px, .83vw, 12px) clamp(13px, 1.53vw, 22px)
+           clamp(11px, .83vw, 12px) clamp(15px, 1.74vw, 25px);
+  min-height: clamp(86px, 7.5vw, 108px);
   background: var(--sf-surface); border: 1px solid var(--sf-line);
   border-radius: var(--ui-r); text-decoration: none;
   box-shadow: var(--cm-card-sh);
@@ -492,6 +535,7 @@ a.cm-tile:hover {
   display: inline-flex; align-items: center; justify-content: center;
   width: var(--cm-tile-ico); height: var(--cm-tile-ico);
   flex: 0 0 auto; border-radius: calc(var(--cm-tile-ico) * .28);
+  margin-right: clamp(14px, 2.08vw, 30px);
   /* 면을 한 겹으로 두지 않는다: 위가 한 단 밝고 아래로 가라앉으면
      아이콘이 칸 위에 **놓인 것**으로 읽히고, 평평한 색 한 겹은
      글자 뒤의 색칠로 읽힌다 */
@@ -508,17 +552,17 @@ a.cm-tile:nth-child(3n+2) .cm-tile-ico {
   color: #4a46ab; border-color: #ded9f6;
 }
 a.cm-tile:nth-child(3n+3) .cm-tile-ico {
-  background: linear-gradient(160deg, #ecf7f9 0%, #ddeff4 100%);
-  color: #1b647a; border-color: #cfe7ee;
+  background: linear-gradient(160deg, #e9f3fe 0%, #d8e9fd 100%);
+  color: #1a6fd0; border-color: #cde0f8;
 }
 .cm-tile-txt { display: block; min-width: 0; flex: 1 1 auto; }
 .cm-tile-txt b {
-  display: block; font-size: clamp(18px, 1.66vw, 24px);
+  display: block; font-size: clamp(18px, 1.49vw, 21.4px);
   font-weight: var(--ui-w-bd); color: var(--sf-ink);
   letter-spacing: -.015em; line-height: 1.3;
 }
 .cm-tile-txt small {
-  display: block; margin-top: 6px; font-size: clamp(14px, 1.12vw, 16px);
+  display: block; margin-top: 5px; font-size: clamp(14px, 1.28vw, 18.4px);
   color: var(--sf-not);
   line-height: 1.35;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
@@ -527,6 +571,7 @@ a.cm-tile:nth-child(3n+3) .cm-tile-ico {
    따라 내려가 어느 줄에 속한 표시인지 흐려진다 */
 a.cm-tile > svg:last-child {
   flex: 0 0 auto; align-self: center; color: #9eacc1;
+  margin-left: clamp(6px, .7vw, 10px);
   transition: color .13s ease, transform .13s ease;
 }
 a.cm-tile:hover > svg:last-child { color: var(--sf-accent); transform: translateX(2px); }
@@ -543,22 +588,32 @@ a.cm-tile:hover > svg:last-child { color: var(--sf-accent); transform: translate
   box-shadow: var(--cm-card-sh);
 }
 .cm-feed > li {
-  display: flex; align-items: center; gap: 13px;
-  padding: 9px 16px; min-height: 48px;
+  display: flex; align-items: center; gap: clamp(13px, 1.25vw, 18px);
+  padding: 9px clamp(16px, 1.74vw, 25px); min-height: clamp(48px, 4.17vw, 60px);
   transition: background .12s ease;
 }
 /* 줄 사이 금은 **면보다 한 단 옅다**(규격 §4): 같은 짙기면 줄 묶음이
    표의 격자로 읽히고, 그 순간 활동 기록이 아니라 자료표가 된다 */
 .cm-feed > li + li { border-top: 1px solid #f1f4f9; }
 a.cm-feed-row:hover, .cm-feed > li:hover { background: #fafcfe; }
+/* 색은 뜻을 갖지 않는다. 줄 넷이 모두 같은 그림으로 서면 그 묶음이
+   한 덩이로 읽혀 변화 하나하나가 안 보인다 */
+.cm-feed-ico.t-2 > svg { color: #4a46ab; }
+.cm-feed-ico.t-3 > svg { color: #b37f12; }
+.cm-feed-ico.t-4 > svg { color: #1b647a; }
 .cm-feed-ico {
+  /* **변화 줄의 표시는 면을 두르지 않는다**(목표 화면): 줄이 셋이라
+     면을 두르면 그 셋이 한 덩이의 표로 읽힌다. 서는 것은 색을 가진
+     그림 하나다. 기록 줄은 아래에서 다시 면을 두른다 */
   display: inline-flex; align-items: center; justify-content: center;
-  width: 34px; height: 34px; flex: 0 0 auto; border-radius: 11px;
-  background: linear-gradient(160deg, #eef5fe 0%, #dfeafc 100%);
-  color: #1b5aa8; border: 1px solid #d6e5f9;
-  box-shadow: inset 0 1px 0 #fff;
+  width: clamp(26px, 2.08vw, 30px); height: clamp(26px, 2.08vw, 30px);
+  flex: 0 0 auto; border-radius: 0;
+  background: none; color: #1b5aa8; border: 0; box-shadow: none;
 }
-.cm-feed-ico > svg { width: 17px; height: 17px; stroke-width: 1.75; }
+.cm-feed-ico > svg {
+  width: clamp(22px, 1.81vw, 26px); height: clamp(22px, 1.81vw, 26px);
+  stroke-width: 1.75;
+}
 /* **줄마다 표시가 조금씩 다르다**(규격 §4). 같은 색 같은 모양이 넷이면
    눈이 그 묶음을 한 덩이로 읽고, 그 순간 기록표가 된다. 색은 뜻을
    갖지 않는다 */
@@ -577,14 +632,15 @@ a.cm-feed-row:hover, .cm-feed > li:hover { background: #fafcfe; }
 .cm-feed-txt { flex: 1 1 auto; min-width: 0; margin: 0; font-size: var(--ui-t-sub); color: var(--sf-ink-2); }
 .cm-feed-txt b {
   display: block; color: var(--sf-ink); font-weight: var(--ui-w-bd);
-  font-size: clamp(15.5px, 1.25vw, 18px);
+  font-size: clamp(15.5px, 1.38vw, 19.9px);
   line-height: 1.4; letter-spacing: -.01em;
 }
 .cm-feed-txt small { display: block; margin-top: 3px; font-size: var(--ui-t-cap); color: var(--sf-ink-3); line-height: 1.4; }
 /* 날짜는 **거드는 값이다**(규격 §5): 글보다 한 단 약하고 줄 끝에 선다 */
 .cm-feed time {
   flex: 0 0 auto; align-self: center;
-  font-size: 12px; color: #93a2b8; font-weight: var(--ui-w-md);
+  font-size: clamp(12px, 1.17vw, 16.8px); color: #93a2b8;
+  font-weight: var(--ui-w-md);
   font-variant-numeric: tabular-nums; white-space: nowrap;
 }
 /* 다 세우지 않은 나머지. **한 단 더 약하고 줄도 낮다**: 변화 하나가
@@ -603,9 +659,19 @@ a.cm-feed-row:hover, .cm-feed > li:hover { background: #fafcfe; }
 /* 기록 줄은 변화 줄보다 **한 단 크다**(규격 §5): 한쪽은 지나간 일을
    세어 둔 줄이고 한쪽은 눌러서 들어가는 줄이라, 같은 높이로 서면
    어느 쪽이 들어가는 자리인지 눌러 보고서야 안다 */
-.cm-feed.is-rec > li { min-height: 56px; padding: 11px 16px; }
-.cm-feed.is-rec .cm-feed-ico { width: 38px; height: 38px; border-radius: 12px; }
-.cm-feed.is-rec .cm-feed-ico > svg { width: 18px; height: 18px; }
+.cm-feed.is-rec > li {
+  min-height: clamp(56px, 5.07vw, 73px); padding: 11px clamp(16px, 1.74vw, 25px);
+}
+/* **기록 줄만 면을 두른다**(목표 화면): 눌러서 들어가는 줄이라, 지나간
+   일을 세어 둔 변화 줄과 같은 무게로 서면 안 된다 */
+.cm-feed.is-rec .cm-feed-ico {
+  width: clamp(38px, 2.99vw, 43px); height: clamp(38px, 2.99vw, 43px);
+  border-radius: clamp(12px, .97vw, 14px);
+  background: #f2f5f9; border: 1px solid #e8edf4; color: #5a6b83;
+}
+.cm-feed.is-rec .cm-feed-ico > svg {
+  width: clamp(18px, 1.46vw, 21px); height: clamp(18px, 1.46vw, 21px);
+}
 .cm-feed-acts { flex: 0 0 auto; display: flex; gap: 7px; }
 /* 줄 끝의 단추. **흰 테가 아니라 옅은 파란 면이다**(규격 §5): 흰 줄
    위의 흰 단추는 줄 안에서 떠오르지 않는다 */

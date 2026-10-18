@@ -2,7 +2,7 @@
  "schema_version": "careermatri-workspace-lock.1",
  "note": "작업공간 1차 동결. 문장만 고치면 `WORKSPACE_COPY_VERSION` 만 올리고, 쪽이나 띠의 묶음이 바뀌면 `WORKSPACE_UI_VERSION` 을 올린다. 검사 판본과 결과지 판본은 이 가운데 무엇으로도 올리지 않는다: 작업공간은 기존 검사 엔진 위에 올라가는 사용자 경험 층이다",
  "versions": {
-  "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V39",
+  "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V40",
   "workspace_copy_version": "careermatri-workspace-copy.25"
  },
  "guards": {
@@ -16,10 +16,10 @@
   "열어서 500 이 나는 쪽이 없다": "v3:smoke"
  },
  "files": {
-  "src/app/workspace.tokens.css": "8a1c3733e7668fee7fa97cd2b200e13ead7a41f5a04dd9526c27a104490af792",
+  "src/app/workspace.tokens.css": "a38f5642034bb00710394397f11ef4010acf9632e955fe23ff6ed582d32a2a4c",
   "src/app/me/ui.tsx": "53a711fea2782e7fdf53a47b3a719ec34791499bed9478c51880a077179c301a",
   "src/components/sf/brand-mark.tsx": "ff11c4c78195a82ef30ad032332a1c714b64c569a52089066b610b3e6c7b82bf",
-  "src/app/me/platform.css": "e54fbfdc74a61adac41685f53e13d536b05e0cab573122bb1d689748aa93d46a",
+  "src/app/me/platform.css": "0572dec3e01e7dba65aca5ac028ab217cf6b75086861043e671abf3f0f3bc54d",
   "src/app/me/shell.tsx": "429059d7914768b72fd267d2499b6183e892727941fb7c5f21b6e853b7b1438b",
   "src/app/me/find.tsx": "cd3f51c789822dcad20a134b04064f4e9787b2df1474c97b7e7d7a9c805aad6a",
   "src/components/sf/icon.tsx": "e57ac312a3fb2248ab1b3503a785540c35ce968c8ced6d7f6dd061a9573c009e",
@@ -63,6 +63,6 @@
   "src/lib/me-v3/platform.ts": "9552804b7bf136c9eb66f35d9bec62b2fef2ca712c0ae0fbe20105f9b8640a6e",
   "src/lib/me-v3/open-actions.ts": "50b6ce5c31533ebd7ce62596ebe8d69434f361a159b3d41e73c85c71e38e0025",
   "src/lib/me-v3/workspace-events.ts": "f235ed162e6f7b000e7f1858cc34dfa25474304f54c0d2ece46a08cce772461f",
-  "src/lib/me-v3/workspace-version.ts": "ecd4c716466a8365a1d05b86e473c8c531fd35f2e317a4aef185e65e1ec4b036"
+  "src/lib/me-v3/workspace-version.ts": "cb4456dd9f70fb382c4cb15d972029c972acee7d4f73d24fc76b9e7507b23092"
  }
 }
