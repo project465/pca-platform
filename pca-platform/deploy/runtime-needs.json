@@ -96,6 +96,14 @@
     [
       "ops/pcu-diag.cjs",
       "종이와 작업공간이 왜 깨졌는지 그 자리에서 읽을 수 없다"
+    ],
+    [
+      "ops/staging-bootstrap.cjs",
+      "staging 서비스를 사람이 눌러 볼 상태로 세울 수 없다 (기관 · 담당자 · 시험 학생)"
+    ],
+    [
+      "ops/staging-check.cjs",
+      "staging 이 공개 전답게 섰는지 컨테이너 안에서 셀 수 없다"
     ]
   ]
 }

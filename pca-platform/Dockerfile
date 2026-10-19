@@ -54,7 +54,13 @@ RUN npx esbuild scripts/make-admin.ts \
       --external:pg --outfile=ops-build/pcu-students.cjs \
  && npx esbuild scripts/pcu-diag.ts \
       --bundle --platform=node --format=cjs --target=node22 \
-      --external:pg --external:playwright --outfile=ops-build/pcu-diag.cjs
+      --external:pg --external:playwright --outfile=ops-build/pcu-diag.cjs \
+ && npx esbuild scripts/staging-bootstrap.ts \
+      --bundle --platform=node --format=cjs --target=node22 \
+      --external:pg --outfile=ops-build/staging-bootstrap.cjs \
+ && npx esbuild scripts/staging-check.ts \
+      --bundle --platform=node --format=cjs --target=node22 \
+      --external:pg --outfile=ops-build/staging-check.cjs
 
 FROM node:22-alpine AS run
 WORKDIR /app

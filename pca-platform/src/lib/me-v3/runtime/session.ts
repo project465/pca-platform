@@ -12,7 +12,7 @@
  * **routing 과 scoring 을 갈라 둔다.** 여기서는 무엇을 물을지만 정하고,
  * 판정은 `scoring/engine.ts` 가 끝에서 한 번 한다.
  */
-import { query, queryOne } from "@/lib/db";
+import { query, queryOne, tx } from "@/lib/db";
 import {
   core as coreOf, coreFile, defaultCore, packs as readPacks, sellableCores,
 } from "../core-registry";
@@ -1106,18 +1106,41 @@ export async function submit(a: V3Attempt): Promise<{ snapshot: Snapshot; id: st
     result_ui_version: RESULT_UI_VERSION,
     workspace_ui_version: WORKSPACE_UI_VERSION,
   };
-  const row = await queryOne<{ id: string }>(
-    `INSERT INTO v3_snapshots
-       (attempt_id, module_versions, response_quality, payload,
-        result_model, result_model_version, result_copy_version)
-     VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING id::text`,
-    [a.id, JSON.stringify(versions),
-     snapshot.response_quality.flag, JSON.stringify(snapshot),
-     JSON.stringify(result), RESULT_MODEL_VERSION, RESULT_COPY_VERSION],
-  );
-  await query(
-    `UPDATE v3_attempts SET status='scored', submitted_at=now(), current_screen='done'
-      WHERE id=$1`, [a.id]);
+  /**
+   * **같은 응시를 같은 순간에 두 번 제출해도 결과는 한 벌이다.**
+   *
+   * 화면은 `결과 만들기` 를 누르면 단추를 끄지만, 두 요청이 같은 순간에
+   * 들어오면(두 탭 · 끊긴 요청의 재시도 · 급한 두 번 클릭) 둘 다 `mine()`
+   * 을 지나 여기까지 온다. 그러면 스냅샷이 두 줄 쌓이고, 어느 쪽이 그
+   * 사람의 결과인지 읽는 자리마다 갈린다(R33 E2E 가 동시 호출 둘로 두 줄을
+   * 만들었다). 응시 줄을 잠그고 아직 `in_progress` 일 때만 적는다. 늦게 온
+   * 쪽은 **이미 굳은 줄**을 돌려받고 아무것도 더 쓰지 않는다.
+   */
+  const claimed = await tx(async (c) => {
+    const lock = await c.query<{ status: string }>(
+      `SELECT status FROM v3_attempts WHERE id = $1 FOR UPDATE`, [a.id]);
+    if (lock.rows[0]?.status !== "in_progress") {
+      const ex = await c.query<{ id: string }>(
+        `SELECT id::text FROM v3_snapshots WHERE attempt_id = $1
+          ORDER BY created_at DESC LIMIT 1`, [a.id]);
+      return { id: ex.rows[0]?.id as string, fresh: false };
+    }
+    const ins = await c.query<{ id: string }>(
+      `INSERT INTO v3_snapshots
+         (attempt_id, module_versions, response_quality, payload,
+          result_model, result_model_version, result_copy_version)
+       VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING id::text`,
+      [a.id, JSON.stringify(versions),
+       snapshot.response_quality.flag, JSON.stringify(snapshot),
+       JSON.stringify(result), RESULT_MODEL_VERSION, RESULT_COPY_VERSION],
+    );
+    await c.query(
+      `UPDATE v3_attempts SET status='scored', submitted_at=now(), current_screen='done'
+        WHERE id=$1`, [a.id]);
+    return { id: ins.rows[0]?.id as string, fresh: true };
+  });
+  if (!claimed.fresh) return { snapshot, id: claimed.id };
+  const row = { id: claimed.id };
   /* **검사가 끝나는 자리가 아니다.** 고른 산업과 직무와 조직을 지금 값으로
      옮기고 다시 계산할 일을 한 줄 쌓는다. 그것이 없으면 내 CareerMatri 가
      빈 쪽으로 서고, 다 푼 사람이 다시 들어올 이유가 사라진다.

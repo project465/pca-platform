@@ -234,14 +234,34 @@ export const authConfig: NextAuthConfig = {
       }
       if (!token.sub) return null;
 
-      const row = await queryOne<UserRow>(
-        `SELECT id, display_name, password_hash, status, must_reset_pw, locale
-           FROM users WHERE id = $1`,
-        [token.sub],
-      );
-      if (!row || row.status !== "active") return null;
-
-      const memberships = await loadMemberships(row.id);
+      /**
+       * **DB 가 잠깐 끊긴 것과 계정이 없는 것은 다른 일이다.**
+       *
+       * 매 요청마다 다시 읽는 설계라, PostgreSQL 이 몇 초 멈춘 동안 들어온
+       * 요청에서 이 조회가 던진다. 그것을 `계정이 없다` 와 같은 길(`null`)로
+       * 보내면 세션이 통째로 비고, `requireUser()` 가 로그인으로 보내고,
+       * **검사 한가운데 있던 학생이 `/me` 로 떨어져 보내지 못한 답을 잃는다**
+       * (R33 E2E 가 DB 를 실제로 멈춰서 그렇게 떨어졌다). 전에 한 번 확인된
+       * 토큰이면 그 값을 그대로 두고, 저장 실패는 **그 호출**이 제 자리에서
+       * `저장 실패 · 다시 시도` 로 적는다. 처음 들어오는 토큰(아직 확인된
+       * 값이 없는)은 전처럼 거절한다: 확인하지 못한 사람을 들이지 않는다.
+       */
+      let row: UserRow | null;
+      let memberships: Awaited<ReturnType<typeof loadMemberships>>;
+      try {
+        row = await queryOne<UserRow>(
+          `SELECT id, display_name, password_hash, status, must_reset_pw, locale
+             FROM users WHERE id = $1`,
+          [token.sub],
+        );
+        if (!row || row.status !== "active") return null;
+        memberships = await loadMemberships(row.id);
+      } catch (e) {
+        const verifiedBefore = typeof token.displayName === "string" && !!token.role;
+        console.error(`[auth] 세션을 다시 읽지 못했습니다 (DB): ${String((e as Error)?.message ?? e).slice(0, 120)}`
+          + (verifiedBefore ? " · 앞서 확인한 토큰을 그대로 둡니다" : " · 확인된 적 없는 토큰이라 거절합니다"));
+        return verifiedBefore ? token : null;
+      }
       token.displayName = row.display_name;
       token.locale = row.locale;
       token.mustResetPw = row.must_reset_pw;

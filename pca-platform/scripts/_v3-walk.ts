@@ -92,8 +92,15 @@ export type WalkOut = {
   screens: number; done: boolean; covered: number; heads: string[];
 };
 
+/**
+ * `onFinish` 가 있으면 끝 화면의 `결과 만들기` 를 그 함수가 누른다.
+ * **중복 클릭을 재는 자리다**: 사람이 급하게 두 번 누르는 일을 제품과 같은
+ * 단추에서 해 보려면 누르는 방식을 밖에서 정해야 한다. 없으면 전과 같이
+ * 한 번 누른다.
+ */
 export async function walk(
   p: Page, max: number,
+  opts?: { onFinish?: (btn: Locator, page: Page) => Promise<void> },
 ): Promise<WalkOut> {
   /* **시작 안내를 먼저 지난다.** 그 쪽에도 짙은 단추가 하나 있어서, 모르고
      들어오면 `끝 화면` 으로 보고 한 문항도 안 푼 응시를 통과시킨다 */
@@ -191,7 +198,10 @@ export async function walk(
     const go = p.locator("button.qs-btn-main");
     if (!(await go.count())) return { screens, done: false, covered, heads };
     const before = p.url();
-    await go.first().click({ force: true }).catch(() => undefined);
+    const isFinish = opts?.onFinish
+      && /결과 만들기/.test((await go.first().textContent().catch(() => "")) ?? "");
+    if (isFinish) await opts!.onFinish!(go.first(), p);
+    else await go.first().click({ force: true }).catch(() => undefined);
     /* **넘어간 것을 시각으로 기다리지 않는다.** 전에는 0.4초를 센 뒤 바로
        다음 화면을 눌렀고, 그러면 아직 가는 중인 이동이 다음 클릭에 끊겨
        (`net::ERR_ABORTED`) 라우터가 어긋난 자리에서 **아무것도 눌리지 않는
