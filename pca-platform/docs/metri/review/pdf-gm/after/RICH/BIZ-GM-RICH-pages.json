@@ -1,0 +1,78 @@
+{
+ "pdf": "docs/metri/review/pdf-gm/after/BIZ-GM-RICH.pdf",
+ "pages": 12,
+ "rows": [
+  {
+   "page": 1,
+   "file": "BIZ-GM-RICH-p-01.png",
+   "chars": 572,
+   "fill": 0.99
+  },
+  {
+   "page": 2,
+   "file": "BIZ-GM-RICH-p-02.png",
+   "chars": 821,
+   "fill": 0.87
+  },
+  {
+   "page": 3,
+   "file": "BIZ-GM-RICH-p-03.png",
+   "chars": 881,
+   "fill": 0.94
+  },
+  {
+   "page": 4,
+   "file": "BIZ-GM-RICH-p-04.png",
+   "chars": 840,
+   "fill": 0.95
+  },
+  {
+   "page": 5,
+   "file": "BIZ-GM-RICH-p-05.png",
+   "chars": 988,
+   "fill": 0.96
+  },
+  {
+   "page": 6,
+   "file": "BIZ-GM-RICH-p-06.png",
+   "chars": 1106,
+   "fill": 0.95
+  },
+  {
+   "page": 7,
+   "file": "BIZ-GM-RICH-p-07.png",
+   "chars": 1054,
+   "fill": 0.9
+  },
+  {
+   "page": 8,
+   "file": "BIZ-GM-RICH-p-08.png",
+   "chars": 957,
+   "fill": 0.69
+  },
+  {
+   "page": 9,
+   "file": "BIZ-GM-RICH-p-09.png",
+   "chars": 752,
+   "fill": 0.98
+  },
+  {
+   "page": 10,
+   "file": "BIZ-GM-RICH-p-10.png",
+   "chars": 720,
+   "fill": 0.84
+  },
+  {
+   "page": 11,
+   "file": "BIZ-GM-RICH-p-11.png",
+   "chars": 1068,
+   "fill": 0.94
+  },
+  {
+   "page": 12,
+   "file": "BIZ-GM-RICH-p-12.png",
+   "chars": 2408,
+   "fill": 0.9
+  }
+ ]
+}

@@ -12542,3 +12542,26 @@ AI_AUDIT.md · STAGING_CHECKS.md · pdf/ · sheets/ · shots/).
 42 / 42): 근거가 묶음과 Gap 과 할 일을 실제로 바꾸고, 다른 근거는 다른 글을 만들고,
 `검증된 · 증명 · 확인된 성과` 로 부풀린 자리가 0 이다. 보고는 `docs/metri/review/rb/`.
 판본: `ME_V3_2_ASSESSMENT_UI_V44` · `CAREERMATRI_WORKSPACE_UI_V48`.
+
+**PDF GOLD MASTER — PDF 전용 템플릿과 지역·기업 후보 (미리보기, 승인 대기).** (2026-10-19)
+
+운영 PDF 경로는 그대로다. 새 판은 `src/lib/me-v3/report-gm/` (분석 표현 층 ·
+경영 해석 언어 · PDF 전용 템플릿 · 후보 고르기)과 `scripts/lab/gm-*.ts` 로만 뽑는다.
+보고와 대표 쪽은 `docs/metri/review/pdf-gm/README.md`.
+
+**새 판단을 만들지 않는다.** 묶음 · 축 · 빈자리 · 할 일은 굳은 결과 모델 그대로이고,
+줄마다 근거의 층(`응답 · 고른 근거 · 고른 결과물 · 권장 · 2차 출처`)을 글자로 적는다.
+답에 없는 성과·수치·기간은 `직접 기입` 칸으로 남긴다.
+
+**실명 기업은 출처가 있는 것만, 공식 확인은 0줄이다.** `data/region/kr-chungcheong-orgs.v1.json`
+13곳은 이 환경에서 공식 홈페이지·DART·ALIO 를 열지 못해 검색 결과(2차 출처)로만 적었고
+줄마다 확인 수준과 확인일이 있다. **채용 여부는 전부 `미확인`, 근무지는 적지 않는다.**
+`추천 기업` 이라고 부르지 않고 `검토할 직무·기업 후보` 로 부른다(법적 범위). 적합도
+숫자를 만들지 않는다: 이어지는 까닭(목표 산업 · 관심 직무 · 확인된 경험 · 조직 유형)을
+글자로 적고 그 수로 차례만 세운다. **공식 확인 전에는 학생 공개 결과지에 싣지 않는다.**
+
+```bash
+SRC=74 npx tsx scripts/lab/gm-cases.ts     # BIZ 검토 응시 (근거 많음 · 적음)
+npx tsx scripts/lab/gm-report.ts           # 세 사례를 새 템플릿으로 뽑는다
+npx tsx scripts/lab/gm-trace.ts            # 결론마다 입력을 되짚는다 (28가지)
+```

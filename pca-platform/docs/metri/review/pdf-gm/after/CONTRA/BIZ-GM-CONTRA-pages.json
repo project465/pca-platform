@@ -1,0 +1,66 @@
+{
+ "pdf": "docs/metri/review/pdf-gm/after/BIZ-GM-CONTRA.pdf",
+ "pages": 10,
+ "rows": [
+  {
+   "page": 1,
+   "file": "BIZ-GM-CONTRA-p-01.png",
+   "chars": 574,
+   "fill": 0.99
+  },
+  {
+   "page": 2,
+   "file": "BIZ-GM-CONTRA-p-02.png",
+   "chars": 918,
+   "fill": 0.92
+  },
+  {
+   "page": 3,
+   "file": "BIZ-GM-CONTRA-p-03.png",
+   "chars": 808,
+   "fill": 0.92
+  },
+  {
+   "page": 4,
+   "file": "BIZ-GM-CONTRA-p-04.png",
+   "chars": 986,
+   "fill": 0.94
+  },
+  {
+   "page": 5,
+   "file": "BIZ-GM-CONTRA-p-05.png",
+   "chars": 925,
+   "fill": 0.96
+  },
+  {
+   "page": 6,
+   "file": "BIZ-GM-CONTRA-p-06.png",
+   "chars": 1242,
+   "fill": 0.95
+  },
+  {
+   "page": 7,
+   "file": "BIZ-GM-CONTRA-p-07.png",
+   "chars": 1031,
+   "fill": 0.88
+  },
+  {
+   "page": 8,
+   "file": "BIZ-GM-CONTRA-p-08.png",
+   "chars": 914,
+   "fill": 0.87
+  },
+  {
+   "page": 9,
+   "file": "BIZ-GM-CONTRA-p-09.png",
+   "chars": 1042,
+   "fill": 0.95
+  },
+  {
+   "page": 10,
+   "file": "BIZ-GM-CONTRA-p-10.png",
+   "chars": 1734,
+   "fill": 0.61
+  }
+ ]
+}

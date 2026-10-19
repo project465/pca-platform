@@ -1,0 +1,143 @@
+{
+  "schema": "careermatri-region-orgs.1",
+  "region_set": "KR-CHUNGCHEONG",
+  "checked_on": "2026-10-19",
+  "status": "PREVIEW_ONLY",
+  "note": "PDF GOLD MASTER 대표 쪽 검토용. 공식 홈페이지·DART·ALIO 를 이 작업 환경에서 열 수 없어(네트워크 정책) 모든 줄이 2차 출처(채용 정보 사이트 · 언론 · 커뮤니티)로만 확인됐다. 공식 확인 전에는 학생 공개 결과지에 싣지 않는다. 채용 여부는 한 줄도 확인하지 않았다.",
+  "verification_levels": {
+    "OFFICIAL": "기관 공식 홈페이지 · DART · ALIO 에서 직접 확인 (이 파일에는 0줄)",
+    "SECONDARY_DIRECTORY": "채용·기업정보 사이트(공공데이터 인용 포함)",
+    "SECONDARY_NEWS": "언론 보도",
+    "SECONDARY_COMMUNITY": "취업 커뮤니티 글 (가장 약함)",
+    "CONFLICTING": "출처끼리 다르다",
+    "UNVERIFIED": "확인하지 못했다"
+  },
+  "mapping_note": "industries · roles · domains 는 CareerMatri 경영 Core 의 산업팩·역할팩·영역과 잇는 우리 쪽 분류다. 그 기업이 그 직무를 모집한다는 뜻이 아니다.",
+  "region_facts": [
+    { "region": "DAEJEON", "fact": "유성구 명목 지역내총생산 17조 7,047억 원, 대전 전체(53조 3,174억 원)의 33.2% (2023년 기준)", "source": { "url": "https://www.youthdaily.co.kr/news/article.html?no=222673", "kind": "SECONDARY_NEWS", "title": "청년일보 — 대전 경제 이끄는 유성구" } },
+    { "region": "DAEJEON", "fact": "유성구가 대전 사업서비스업 총생산(7조 8,194억 원)의 59.1%를 차지", "source": { "url": "https://www.youthdaily.co.kr/news/article.html?no=222673", "kind": "SECONDARY_NEWS", "title": "청년일보 — 대전 경제 이끄는 유성구" } },
+    { "region": "DAEJEON", "fact": "대덕연구개발특구 입주 기관 3,063개 · 매출 27조 5,102억 원 (2024년 기준)", "source": { "url": "https://news.tf.co.kr/read/ogmeta/2361673.htm", "kind": "SECONDARY_NEWS", "title": "더팩트 — 세계적 연구 역량, 지역 기업 성장으로 연결해야" } },
+    { "region": "DAEJEON", "fact": "대전시 6대 전략산업: 우주항공 · 바이오헬스 · 나노반도체 · 국방 · 양자 · 로봇", "source": { "url": "https://newsseoul.co.kr/news/view/1065568235175781", "kind": "SECONDARY_NEWS", "title": "뉴스서울 — 대전시 선도연구개발지원단 선정" } },
+    { "region": "SEJONG", "fact": "중앙행정기관 40개와 국책연구기관 15개의 행정중심복합도시 이전이 마무리됐다 (2017년 보도)", "source": { "url": "https://www.ajunews.com/view/20170118161946224", "kind": "SECONDARY_NEWS", "title": "아주경제 (2017-01)" } },
+    { "region": "CHUNGNAM", "fact": "삼성디스플레이 아산(탕정) 디스플레이 클러스터 투자 확대", "source": { "url": "https://www.heraldk.com/article/2026070121250683470", "kind": "SECONDARY_NEWS", "title": "헤럴드경제 (2026-07)" } }
+  ],
+  "orgs": [
+    {
+      "id": "KR-DJ-KORAIL", "name": "한국철도공사(코레일)", "region": "DAEJEON", "scope": "LOCAL", "org_type": "PUBLIC_CORP",
+      "location": { "text": "대전 동구 (대전역 동광장 철도기관 공동사옥)", "kind": "HQ", "status": "SECONDARY_COMMUNITY" },
+      "workplace": { "text": null, "status": "UNVERIFIED", "note": "본사 소재지다. 신입 근무지는 전국 배치일 수 있어 근무지로 적지 않는다" },
+      "business": { "text": "철도 운송 공기업 (기관명 기준. 세부 사업은 공식 자료로 확인 전)", "status": "UNVERIFIED" },
+      "industries": ["INDUSTRY_AVIATION_V1", "INDUSTRY_PUBLIC_V1"], "roles": ["ROLE_CS_V1", "ROLE_OPS_V1", "ROLE_ANALYTICS_V1"], "domains": ["TD09", "TD07", "TD10", "TD08"],
+      "sources": [{ "url": "https://comento.kr/job-questions/%ED%95%9C%EA%B5%AD%EC%B2%A0%EB%8F%84%EA%B3%B5%EC%82%AC/%EC%A0%84%EA%B8%B0%EC%A7%81/%EB%8C%80%EC%A0%84%EC%97%90_%EC%9E%88%EB%8A%94_%EA%B3%B5%EA%B8%B0%EC%97%85_%EA%B4%80%EB%A0%A8_%EC%A7%88%EB%AC%B8%EC%9E%85%EB%8B%88%EB%8B%A4-126538", "kind": "SECONDARY_COMMUNITY", "what": "본사 대전 동구 · 국가철도공단과 공동사옥" }],
+      "hiring": { "status": "UNVERIFIED" }
+    },
+    {
+      "id": "KR-DJ-KRNA", "name": "국가철도공단", "region": "DAEJEON", "scope": "LOCAL", "org_type": "PUBLIC_CORP",
+      "location": { "text": "대전 동구 (코레일과 같은 공동사옥)", "kind": "HQ", "status": "SECONDARY_COMMUNITY" },
+      "workplace": { "text": null, "status": "UNVERIFIED" },
+      "business": { "text": "철도 시설 공공기관 (기관명 기준. 세부 사업은 공식 자료로 확인 전)", "status": "UNVERIFIED" },
+      "industries": ["INDUSTRY_PUBLIC_V1", "INDUSTRY_B2B_V1"], "roles": ["ROLE_PLAN_V1", "ROLE_FINACC_V1", "ROLE_OPS_V1"], "domains": ["TD01", "TD04", "TD05", "TD07"],
+      "sources": [{ "url": "https://comento.kr/job-questions/%ED%95%9C%EA%B5%AD%EC%B2%A0%EB%8F%84%EA%B3%B5%EC%82%AC/%EC%A0%84%EA%B8%B0%EC%A7%81/%EB%8C%80%EC%A0%84%EC%97%90_%EC%9E%88%EB%8A%94_%EA%B3%B5%EA%B8%B0%EC%97%85_%EA%B4%80%EB%A0%A8_%EC%A7%88%EB%AC%B8%EC%9E%85%EB%8B%88%EB%8B%A4-126538", "kind": "SECONDARY_COMMUNITY", "what": "코레일과 같은 사옥" }],
+      "hiring": { "status": "UNVERIFIED" }
+    },
+    {
+      "id": "KR-DJ-KWATER", "name": "한국수자원공사(K-water)", "region": "DAEJEON", "scope": "LOCAL", "org_type": "PUBLIC_CORP",
+      "location": { "text": "대전 대덕구", "kind": "HQ", "status": "SECONDARY_NEWS" },
+      "workplace": { "text": null, "status": "UNVERIFIED" },
+      "business": { "text": "수자원 관리 공기업 (기관명 기준. 세부 사업은 공식 자료로 확인 전)", "status": "UNVERIFIED" },
+      "industries": ["INDUSTRY_PUBLIC_V1"], "roles": ["ROLE_PLAN_V1", "ROLE_FINACC_V1", "ROLE_HR_V1", "ROLE_ANALYTICS_V1"], "domains": ["TD01", "TD04", "TD06", "TD08"],
+      "sources": [{ "url": "https://www.heraldk.com/article/2026041417293148932", "kind": "SECONDARY_NEWS", "what": "사진 설명 '대전시 대덕구 한국수자원공사 본사'" }],
+      "hiring": { "status": "UNVERIFIED" }
+    },
+    {
+      "id": "KR-DJ-KOMSCO", "name": "한국조폐공사", "region": "DAEJEON", "scope": "LOCAL", "org_type": "PUBLIC_CORP",
+      "location": { "text": "대전 유성구 과학로 80-67", "kind": "HQ", "status": "SECONDARY_DIRECTORY" },
+      "workplace": { "text": null, "status": "UNVERIFIED", "note": "커뮤니티 글에 본사만 대전이고 근무지는 다를 수 있다는 언급이 있다" },
+      "business": { "text": "화폐·보안 제품 공기업 (기관명 기준. 세부 사업은 공식 자료로 확인 전)", "status": "UNVERIFIED" },
+      "industries": ["INDUSTRY_PUBLIC_V1", "INDUSTRY_B2B_V1"], "roles": ["ROLE_PLAN_V1", "ROLE_SALES_V1", "ROLE_FINACC_V1", "ROLE_MKT_V1"], "domains": ["TD01", "TD03", "TD04", "TD02"],
+      "sources": [{ "url": "https://www.jobkorea.co.kr/company/1371859/info", "kind": "SECONDARY_DIRECTORY", "what": "주소 대전 유성구 과학로 80-67" }, { "url": "https://jasoseol.com/companies/882", "kind": "SECONDARY_DIRECTORY", "what": "같은 주소" }],
+      "hiring": { "status": "UNVERIFIED" }
+    },
+    {
+      "id": "KR-DJ-ROSSO", "name": "로쏘(주) — 성심당 운영사", "region": "DAEJEON", "scope": "LOCAL", "org_type": "MID",
+      "location": { "text": "대전 (도로명 주소 미확인)", "kind": "HQ", "status": "SECONDARY_DIRECTORY" },
+      "workplace": { "text": null, "status": "UNVERIFIED" },
+      "business": { "text": "제과 브랜드 성심당 운영. 2025년 매출 2,629억 원 · 영업이익 643억 원 (전자공시 인용 보도)", "status": "SECONDARY_NEWS" },
+      "industries": ["INDUSTRY_CONSUMER_V1", "INDUSTRY_TRAVEL_V1"], "roles": ["ROLE_MKT_V1", "ROLE_OPS_V1", "ROLE_CS_V1", "ROLE_ANALYTICS_V1"], "domains": ["TD02", "TD07", "TD09", "TD10"],
+      "sources": [{ "url": "https://thevc.kr/rosso", "kind": "SECONDARY_DIRECTORY", "what": "2001년 설립 · 본사 대전" }, { "url": "https://www.ddaily.co.kr/page/view/2026041217450859242", "kind": "SECONDARY_NEWS", "what": "2025년 매출 2,629억 원" }],
+      "hiring": { "status": "UNVERIFIED" }
+    },
+    {
+      "id": "KR-DJ-GYERYONG", "name": "계룡건설산업", "region": "DAEJEON", "scope": "LOCAL", "org_type": "LARGE",
+      "location": { "text": "대전 서구 탄방동 사옥 (번지 미확인)", "kind": "HQ", "status": "SECONDARY_DIRECTORY" },
+      "workplace": { "text": "한 채용 공고의 근무지가 대전 서구로 표시", "status": "SECONDARY_DIRECTORY" },
+      "business": { "text": "종합건설. 대전도시철도 2호선 공사 수주 보도", "status": "SECONDARY_NEWS" },
+      "industries": ["INDUSTRY_B2B_V1"], "roles": ["ROLE_FINACC_V1", "ROLE_PLAN_V1", "ROLE_HR_V1", "ROLE_SALES_V1"], "domains": ["TD04", "TD05", "TD06", "TD03"],
+      "sources": [{ "url": "https://www.sankun.com/company-info/bRrEM4IJ6aIAIBItqCLctw", "kind": "SECONDARY_DIRECTORY", "what": "2014년 탄방동 사옥 준공·이전" }, { "url": "https://m.catch.co.kr/NCS/RecruitInfoDetails/575276", "kind": "SECONDARY_DIRECTORY", "what": "채용 공고 근무지 대전 서구 (공고 게시 시점 미확인)" }, { "url": "https://www.digitaltoday.co.kr/aigongsi/amp/2136/gyeryong-construction-daejeon-metro-line-2-contract", "kind": "SECONDARY_NEWS", "what": "대전도시철도 2호선 공사 수주" }],
+      "hiring": { "status": "UNVERIFIED", "note": "과거 공고가 검색됐으나 현재 모집 여부는 모른다" }
+    },
+    {
+      "id": "KR-DJ-DJTO", "name": "대전관광공사", "region": "DAEJEON", "scope": "LOCAL", "org_type": "LOCAL_PUBLIC",
+      "location": { "text": "대전 (주소 미확인)", "kind": "HQ", "status": "UNVERIFIED" },
+      "workplace": { "text": null, "status": "UNVERIFIED" },
+      "business": { "text": "대전시 지방공기업. 컨벤션센터·전시장 등 MICE 시설 운영, 관광기업지원센터 운영", "status": "SECONDARY_DIRECTORY" },
+      "industries": ["INDUSTRY_TRAVEL_V1", "INDUSTRY_PUBLIC_V1"], "roles": ["ROLE_MKT_V1", "ROLE_PLAN_V1", "ROLE_CS_V1"], "domains": ["TD02", "TD01", "TD09", "TD10"],
+      "sources": [{ "url": "https://thevc.kr/daejeoncitytourismassociation", "kind": "SECONDARY_DIRECTORY", "what": "MICE · 관광 진흥 · 시설 운영" }, { "url": "https://newsseoul.co.kr/news/view/1065600038744845", "kind": "SECONDARY_NEWS", "what": "청주공항 연계 관광 활성화 협약 (2024-08)" }],
+      "hiring": { "status": "UNVERIFIED" }
+    },
+    {
+      "id": "KR-DJ-GOLFZON", "name": "골프존", "region": "DAEJEON", "scope": "LOCAL", "org_type": "LARGE",
+      "location": { "text": "대전 유성구 테크노11로 13 사업장(건물 용도 공장) · 본사 위치는 출처마다 다름", "kind": "SITE", "status": "CONFLICTING" },
+      "workplace": { "text": null, "status": "UNVERIFIED" },
+      "business": { "text": "골프 시뮬레이터·골프 플랫폼 (세부는 공식 자료로 확인 전)", "status": "UNVERIFIED" },
+      "industries": ["INDUSTRY_DIGITAL_V1", "INDUSTRY_CONSUMER_V1"], "roles": ["ROLE_ANALYTICS_V1", "ROLE_MKT_V1", "ROLE_PLAN_V1"], "domains": ["TD08", "TD02", "TD12"],
+      "sources": [{ "url": "https://safehomes.kr/risk-map/대전광역시/유성구/탑립동/기타/building/골프존/10741100171884", "kind": "SECONDARY_DIRECTORY", "what": "유성구 테크노11로 13 · 용도 공장" }, { "url": "https://www.jobplanet.co.kr/companies/85411/info/%EA%B3%A8%ED%94%84%EC%A1%B4", "kind": "SECONDARY_DIRECTORY", "what": "주소 서울 강남구 영동대로 735 로 표기" }],
+      "hiring": { "status": "UNVERIFIED" }
+    },
+    {
+      "id": "KR-CB-AEROK", "name": "에어로케이항공", "region": "CHUNGBUK", "scope": "ADJACENT", "org_type": "MID",
+      "location": { "text": "청주국제공항 거점 (본사 주소 미확인)", "kind": "BASE", "status": "SECONDARY_NEWS" },
+      "workplace": { "text": null, "status": "UNVERIFIED" },
+      "business": { "text": "청주국제공항 거점 저비용항공사. 일본 정기노선 11개 (2026-07 보도)", "status": "SECONDARY_NEWS" },
+      "industries": ["INDUSTRY_AVIATION_V1", "INDUSTRY_TRAVEL_V1"], "roles": ["ROLE_ANALYTICS_V1", "ROLE_CS_V1", "ROLE_OPS_V1", "ROLE_MKT_V1"], "domains": ["TD10", "TD09", "TD08", "TD07"],
+      "sources": [{ "url": "https://www.segye.com/newsView/20260723514592", "kind": "SECONDARY_NEWS", "what": "청주 출발 일본 노선 11개로 확대" }, { "url": "https://www.fnnews.com/news/202607131327059627", "kind": "SECONDARY_NEWS", "what": "청주·인천 기점 누적 탑승객 500만 명" }],
+      "hiring": { "status": "UNVERIFIED" }
+    },
+    {
+      "id": "KR-CN-SDC-ASAN", "name": "삼성디스플레이 아산캠퍼스", "region": "CHUNGNAM", "scope": "ADJACENT", "org_type": "LARGE",
+      "location": { "text": "충남 아산시 탕정면 일대 (사업장)", "kind": "SITE", "status": "SECONDARY_NEWS" },
+      "workplace": { "text": null, "status": "UNVERIFIED", "note": "사업장 위치다. 경영 직무의 근무지인지는 확인하지 않았다" },
+      "business": { "text": "디스플레이 생산 사업장. 아산 클러스터 투자 확대 보도", "status": "SECONDARY_NEWS" },
+      "industries": ["INDUSTRY_B2B_V1"], "roles": ["ROLE_OPS_V1", "ROLE_FINACC_V1", "ROLE_HR_V1", "ROLE_PLAN_V1"], "domains": ["TD07", "TD05", "TD06", "TD01"],
+      "sources": [{ "url": "https://www.heraldk.com/article/2026070121250683470", "kind": "SECONDARY_NEWS", "what": "아산 디스플레이 클러스터" }, { "url": "https://www.inews24.com/view/2001598", "kind": "SECONDARY_NEWS", "what": "아산 투자" }],
+      "hiring": { "status": "UNVERIFIED" }
+    },
+    {
+      "id": "KR-NA-KAL", "name": "대한항공", "region": "SEOUL", "scope": "NATIONAL", "org_type": "LARGE",
+      "location": { "text": "서울 강서구 하늘길 260 (공항동)", "kind": "HQ", "status": "SECONDARY_DIRECTORY" },
+      "workplace": { "text": null, "status": "UNVERIFIED" },
+      "business": { "text": "여객·화물 운송, 항공기 정비, 기내식 등", "status": "SECONDARY_DIRECTORY" },
+      "industries": ["INDUSTRY_AVIATION_V1"], "roles": ["ROLE_ANALYTICS_V1", "ROLE_CS_V1", "ROLE_SALES_V1", "ROLE_PLAN_V1"], "domains": ["TD10", "TD08", "TD09", "TD11"],
+      "sources": [{ "url": "https://jasoseol.com/companies/45", "kind": "SECONDARY_DIRECTORY", "what": "주소 하늘길 260" }, { "url": "https://www.itwiki.kr/w/%EB%8C%80%ED%95%9C%ED%95%AD%EA%B3%B5", "kind": "SECONDARY_DIRECTORY", "what": "사업 범위" }],
+      "hiring": { "status": "UNVERIFIED" }
+    },
+    {
+      "id": "KR-NA-KAC", "name": "한국공항공사", "region": "SEOUL", "scope": "NATIONAL", "org_type": "PUBLIC_CORP",
+      "location": { "text": "서울 강서구 하늘길 78", "kind": "HQ", "status": "SECONDARY_DIRECTORY" },
+      "workplace": { "text": null, "status": "UNVERIFIED", "note": "청주공항 등 지방 공항 근무 여부는 확인하지 않았다" },
+      "business": { "text": "공항 운영 공기업 (기관명 기준)", "status": "UNVERIFIED" },
+      "industries": ["INDUSTRY_AVIATION_V1", "INDUSTRY_PUBLIC_V1"], "roles": ["ROLE_OPS_V1", "ROLE_PLAN_V1", "ROLE_CS_V1", "ROLE_ANALYTICS_V1"], "domains": ["TD07", "TD01", "TD09", "TD08"],
+      "sources": [{ "url": "https://jasoseol.com/companies/202", "kind": "SECONDARY_DIRECTORY", "what": "주소 하늘길 78" }],
+      "hiring": { "status": "UNVERIFIED" }
+    },
+    {
+      "id": "KR-NA-IIAC", "name": "인천국제공항공사", "region": "INCHEON", "scope": "NATIONAL", "org_type": "PUBLIC_CORP",
+      "location": { "text": "인천 중구 공항로424번길 47", "kind": "HQ", "status": "SECONDARY_DIRECTORY" },
+      "workplace": { "text": null, "status": "UNVERIFIED" },
+      "business": { "text": "인천국제공항 운영 공기업 (기관명 기준)", "status": "UNVERIFIED" },
+      "industries": ["INDUSTRY_AVIATION_V1", "INDUSTRY_PUBLIC_V1"], "roles": ["ROLE_OPS_V1", "ROLE_CS_V1", "ROLE_ANALYTICS_V1", "ROLE_PLAN_V1"], "domains": ["TD07", "TD09", "TD08", "TD01"],
+      "sources": [{ "url": "https://linkareer.com/company-analysis/186", "kind": "SECONDARY_DIRECTORY", "what": "본사 주소" }],
+      "hiring": { "status": "UNVERIFIED" }
+    }
+  ]
+}

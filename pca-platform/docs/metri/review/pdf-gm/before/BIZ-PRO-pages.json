@@ -1,0 +1,72 @@
+{
+ "pdf": "docs/metri/review/rb/evidence/biz-with.pdf",
+ "pages": 11,
+ "rows": [
+  {
+   "page": 1,
+   "file": "BIZ-PRO-p-01.png",
+   "chars": 270,
+   "fill": 0.89
+  },
+  {
+   "page": 2,
+   "file": "BIZ-PRO-p-02.png",
+   "chars": 666,
+   "fill": 0.97
+  },
+  {
+   "page": 3,
+   "file": "BIZ-PRO-p-03.png",
+   "chars": 596,
+   "fill": 0.96
+  },
+  {
+   "page": 4,
+   "file": "BIZ-PRO-p-04.png",
+   "chars": 671,
+   "fill": 0.95
+  },
+  {
+   "page": 5,
+   "file": "BIZ-PRO-p-05.png",
+   "chars": 705,
+   "fill": 0.98
+  },
+  {
+   "page": 6,
+   "file": "BIZ-PRO-p-06.png",
+   "chars": 624,
+   "fill": 0.99
+  },
+  {
+   "page": 7,
+   "file": "BIZ-PRO-p-07.png",
+   "chars": 817,
+   "fill": 1.0
+  },
+  {
+   "page": 8,
+   "file": "BIZ-PRO-p-08.png",
+   "chars": 639,
+   "fill": 0.97
+  },
+  {
+   "page": 9,
+   "file": "BIZ-PRO-p-09.png",
+   "chars": 749,
+   "fill": 0.98
+  },
+  {
+   "page": 10,
+   "file": "BIZ-PRO-p-10.png",
+   "chars": 701,
+   "fill": 0.99
+  },
+  {
+   "page": 11,
+   "file": "BIZ-PRO-p-11.png",
+   "chars": 841,
+   "fill": 0.82
+  }
+ ]
+}
