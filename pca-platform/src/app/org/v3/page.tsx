@@ -12,7 +12,7 @@ import {
 import { studentCounts } from "@/lib/campus/manage";
 import { BRAND, toLang2 } from "@/lib/surface-text";
 import { Shell, PageHead, Section } from "@/components/sf/shell";
-import { NAV_CAMPUS } from "@/components/sf/nav";
+import { campusNav } from "@/lib/campus/org-mode";
 import { BarList, Empty, Kpi } from "@/components/sf/parts";
 import LangSelect from "@/components/sf/lang-select";
 
@@ -162,9 +162,10 @@ export default async function CampusV3({
     })
     : null;
 
+  const nav = await campusNav(user.id);
   const shell = (children: React.ReactNode) => (
     <Shell
-      surface="campus" lang={L} nav={NAV_CAMPUS} active="/org/v3"
+      surface="campus" lang={L} nav={nav} active="/org/v3"
       who={{ name: user.name, role: ROLE_LABEL[user.role] ?? "" }}
       topTitle={org ? org.name : BRAND.campus}
       topRight={<LangSelect current={L} />}
@@ -551,9 +552,13 @@ export default async function CampusV3({
           <li>합격 가능성이나 취업 확률을 내지 않습니다.</li>
           <li>개인 결과지는 본인 동의와 계약에 적힌 범위 안에서만 열립니다.</li>
         </ul>
-        <p className="sf-meta" style={{ marginTop: 10 }}>
-          <Link href="/org/insights">직무 집계 보기</Link>
-        </p>
+        {/* 옛 검사 집계로 가는 길. **학교 전용 진입으로만 운영하는 기관에는
+            그 화면이 읽을 자료가 없어 세우지 않는다** */}
+        {nav.some((n) => n.href === "/org/insights") ? (
+          <p className="sf-meta" style={{ marginTop: 10 }}>
+            <Link href="/org/insights">직무 집계 보기</Link>
+          </p>
+        ) : null}
       </Section>
     </>,
   );

@@ -361,7 +361,9 @@ export default function Screen({
                 검사를 풀고 있는 것으로 읽힌다. 학교 진입이 아니면 전공
                 이름이 그 자리를 든다 */}
             <span className="qs-where">
-              {school ? <b>{school}</b> : null}
+              {/* 학교와 학과 사이를 띄운다. 붙여 두면 `배재대학교경영학과`
+                  로 한 낱말처럼 읽혔다(R35 인벤토리) */}
+              {school ? <><b>{school}</b>{" "}</> : null}
               {department ?? major}
             </span>
             <span className="qs-crumb">

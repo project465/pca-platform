@@ -6,7 +6,7 @@ import { orgsOf } from "@/lib/org";
 import { university } from "@/lib/campus/registry";
 import { BRAND, toLang2 } from "@/lib/surface-text";
 import { Shell, PageHead, Section } from "@/components/sf/shell";
-import { NAV_CAMPUS } from "@/components/sf/nav";
+import { campusNav } from "@/lib/campus/org-mode";
 import { Empty } from "@/components/sf/parts";
 import LangSelect from "@/components/sf/lang-select";
 import ImportForm from "./form";
@@ -23,9 +23,10 @@ export default async function ImportPage({
   const org = orgs[0];
   const uni = orgs.map((o) => o.code).find((c) => Boolean(university(c))) ?? null;
 
+  const nav = await campusNav(user.id);
   return (
     <Shell
-      surface="campus" lang={L} nav={NAV_CAMPUS} active="/org/v3/students"
+      surface="campus" lang={L} nav={nav} active="/org/v3/students"
       who={{ name: user.name, role: ROLE_LABEL[user.role] ?? "" }}
       topTitle={org ? org.name : BRAND.campus}
       topRight={<LangSelect current={L} />}

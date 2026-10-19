@@ -1,0 +1,60 @@
+{
+ "pdf": "var/r35/pdf-final/MEDIA/MEDIA.pdf",
+ "pages": 9,
+ "rows": [
+  {
+   "page": 1,
+   "file": "MEDIA-p-1.png",
+   "chars": 279,
+   "fill": 0.84
+  },
+  {
+   "page": 2,
+   "file": "MEDIA-p-2.png",
+   "chars": 793,
+   "fill": 1.0
+  },
+  {
+   "page": 3,
+   "file": "MEDIA-p-3.png",
+   "chars": 779,
+   "fill": 0.99
+  },
+  {
+   "page": 4,
+   "file": "MEDIA-p-4.png",
+   "chars": 816,
+   "fill": 1.0
+  },
+  {
+   "page": 5,
+   "file": "MEDIA-p-5.png",
+   "chars": 695,
+   "fill": 1.0
+  },
+  {
+   "page": 6,
+   "file": "MEDIA-p-6.png",
+   "chars": 759,
+   "fill": 0.97
+  },
+  {
+   "page": 7,
+   "file": "MEDIA-p-7.png",
+   "chars": 822,
+   "fill": 0.97
+  },
+  {
+   "page": 8,
+   "file": "MEDIA-p-8.png",
+   "chars": 771,
+   "fill": 0.99
+  },
+  {
+   "page": 9,
+   "file": "MEDIA-p-9.png",
+   "chars": 774,
+   "fill": 0.78
+  }
+ ]
+}

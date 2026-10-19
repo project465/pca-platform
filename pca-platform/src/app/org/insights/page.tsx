@@ -1,4 +1,6 @@
 import { requireRole } from "@/lib/session";
+import { redirect } from "next/navigation";
+import { campusV3Only } from "@/lib/campus/org-mode";
 import { resolveLang } from "@/lib/locale-server";
 import { orgsOf } from "@/lib/org";
 import { careerDistribution, orgOverview } from "@/lib/insights";
@@ -29,6 +31,9 @@ export default async function CampusCareerInsights({
   searchParams,
 }: { searchParams: Promise<{ lang?: string }> }) {
   const user = await requireRole(["org_admin", "instructor"]);
+  /* 학교 전용 진입으로만 운영하는 기관에는 이 화면이 읽을 자료가 없다.
+     비어 있는 수를 세우지 않고 지금 검사의 집계로 보낸다(`campusV3Only`) */
+  if (await campusV3Only(user.id)) redirect("/org/v3");
   const { lang: q } = await searchParams;
   const L = toLang2(await resolveLang(q));
   const T = txer(L);

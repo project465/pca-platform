@@ -1926,7 +1926,8 @@ export default async function V3Result({
               위의 할 일은 그 사람의 응답에서 나온 것이다. 담긴 글은
               그대로이고 눌러서 펴지며 종이에서는 전부 펴진다 */}
           {(sv.evidenceFirst || sv.application.resume) ? (
-            <Disclose label={`${meta.specialization ?? meta.major} 쪽에서 지금 할 수 있는 한 걸음`}>
+            <Disclose label={`${meta.specialization ?? meta.major} 쪽에서 지금 할 수 있는 한 걸음`}
+              printLabel={`${meta.specialization ?? meta.major} 쪽에서 지금 할 수 있는 한 걸음`}>
             <div className="rs-pack" id="deptnext">
               {sv.evidenceFirst ? (
                 <ul className="rs-first">

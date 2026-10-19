@@ -436,7 +436,12 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.65";
  * R30 PHASE 1. 결과지 현재 상태 카드가 `studentStateView` 를 읽는다: 어느
  * 영역을 세우는가와 세부 한 줄이 작업공간 홈과 한 자리에서 정해진다.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V76";
+/**
+ * R35 · 종이에서 단추 이름이 그 묶음의 유일한 머리인 자리(`… 쪽에서 지금
+ * 할 수 있는 한 걸음`)를 머리로 세운다. 전에는 단추를 지우기만 해서 목록이
+ * 머리 없이 남았다. 화면과 글자와 결과 모델은 그대로다.
+ */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V77";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

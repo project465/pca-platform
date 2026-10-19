@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import { activeMajorName } from "@/lib/me-v3/major-name";
-import { latestResult, profileOf, activeCoreOrPick } from "@/lib/me-v3/platform";
+import { currentState, profileOf, activeCoreOrPick } from "@/lib/me-v3/platform";
 import {
   domainName, industryChoices, industryDomains, industryScene,
   roleChoices, roleDomains,
@@ -36,13 +36,25 @@ export default async function Explore() {
   const major = await activeMajorName(user.id);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
   const core = await activeCoreOrPick(user.id);
-  const [profile, result] = await Promise.all([
-    profileOf(user.id), latestResult(user.id),
+  const [profile, st] = await Promise.all([
+    profileOf(user.id), currentState(user.id),
   ]);
   const mine = new Set(profile?.target_industry ?? []);
   const myRoles = new Set(profile?.target_role ?? []);
   const region = regionLayer();
-  const confirmed = new Set((result?.evidence.ready ?? []).map((g) => g.domain));
+  /**
+   * **홈과 같은 `현재 상태` 를 읽는다**(설계 원칙 10).
+   *
+   * 전에는 굳은 결과의 `evidence.ready`(근거가 선 영역)만 봤다. 그래서 해 본
+   * 일은 있고 정리가 덜 된 영역(Z2)만 가진 사람과, 경험을 더해 근거가 선
+   * 사람이 **홈에서는 `설명할 수 있는 일 2가지` 를 읽고 여기서는 산업과
+   * 직무 열다섯 줄 전부 `겹치는 영역이 없습니다` 를 읽었다**(R35 인벤토리).
+   * 홈이 세우는 영역(근거가 선 영역과 정리가 덜 된 영역)과 같은 묶음을
+   * 지금 값(`zoneOf`)에서 읽는다. 판정을 여기서 다시 하지 않는다.
+   */
+  const confirmed = new Set(Object.entries(st.zoneOf)
+    .filter(([, z]) => z === "Z1_EVIDENCE_ESTABLISHED" || z === "Z2_EVIDENCE_INCOMPLETE")
+    .map(([d]) => d));
 
   /**
    * 확인된 영역과 겹치는 것만 이름으로 적는다.
@@ -148,10 +160,10 @@ export default async function Explore() {
               달라야 왜 이쪽에 섰는지가 읽힌다 */}
           <span className="cm-item-sub">
             {core.length
-              ? `${kind} 가장 많이 보는 영역 가운데 확인된 것 · ${names(core).join(" · ")}`
+              ? `${kind} 가장 많이 보는 영역 가운데 내가 해 본 것 · ${names(core).join(" · ")}`
               : link.length
                 ? `내 경험과 겹치는 영역 · ${names(link).join(" · ")}`
-                : "아직 이 쪽과 겹치는 확인된 영역이 없습니다"}
+                : "아직 이 쪽과 겹치는 내 경험이 없습니다"}
           </span>
         </summary>
         {more?.lines.length ? (
@@ -172,7 +184,7 @@ export default async function Explore() {
     <CmShell active="/me/explore" title="탐색" major={major}>
       <CmHead
         title="산업과 직무"
-        lead="지금 확인된 영역과 이어지는 쪽이 먼저 섭니다."
+        lead="내가 해 본 영역과 이어지는 쪽이 먼저 섭니다."
       />
 
       {/* **먼저 볼 산업은 카드로, 나머지는 줄로**(규격 §8). 여덟을 같은

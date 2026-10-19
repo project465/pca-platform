@@ -48,6 +48,18 @@ export const NAV_CAMPUS: NavItem[] = [
 ];
 
 /**
+ * **학교 전용 진입으로만 운영하는 기관의 메뉴**(`campusV3Only`).
+ *
+ * 옛 계약·좌석·`attempts` 를 읽는 줄을 두지 않는다. 그 화면들은 이 기관에서
+ * 늘 `0` 을 적고, 담당자는 그 0 을 집계가 깨진 것으로 읽는다. 운영 요약
+ * 종이와 내려받기는 첫 줄의 화면 안에 있다.
+ */
+export const NAV_CAMPUS_V3: NavItem[] = [
+  { href: "/org/v3", label: "navV3Insights", icon: "grid" },
+  { href: "/org/v3/students", label: "navV3Students", icon: "users" },
+];
+
+/**
  * 운영 메뉴.
  *
  * **한 벌만 둔다.** 예전에는 `/admin` 이 이 목록을, 나머지 열 쪽이

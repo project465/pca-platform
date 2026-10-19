@@ -1,0 +1,60 @@
+{
+ "pdf": "var/r35/pdf-final/PUBADM/PUBADM.pdf",
+ "pages": 9,
+ "rows": [
+  {
+   "page": 1,
+   "file": "PUBADM-p-1.png",
+   "chars": 283,
+   "fill": 0.84
+  },
+  {
+   "page": 2,
+   "file": "PUBADM-p-2.png",
+   "chars": 803,
+   "fill": 1.0
+  },
+  {
+   "page": 3,
+   "file": "PUBADM-p-3.png",
+   "chars": 777,
+   "fill": 0.99
+  },
+  {
+   "page": 4,
+   "file": "PUBADM-p-4.png",
+   "chars": 807,
+   "fill": 0.98
+  },
+  {
+   "page": 5,
+   "file": "PUBADM-p-5.png",
+   "chars": 726,
+   "fill": 1.0
+  },
+  {
+   "page": 6,
+   "file": "PUBADM-p-6.png",
+   "chars": 826,
+   "fill": 1.0
+  },
+  {
+   "page": 7,
+   "file": "PUBADM-p-7.png",
+   "chars": 817,
+   "fill": 0.97
+  },
+  {
+   "page": 8,
+   "file": "PUBADM-p-8.png",
+   "chars": 802,
+   "fill": 0.99
+  },
+  {
+   "page": 9,
+   "file": "PUBADM-p-9.png",
+   "chars": 719,
+   "fill": 0.73
+  }
+ ]
+}

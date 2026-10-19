@@ -1532,6 +1532,8 @@
 }
 .rs-discbtn:hover { color: var(--r-accent-ink); }
 .rs-discbtn i { font-style: normal; }
+/* 종이에서만 서는 묶음 머리(`Disclose` 의 `printLabel`). 화면에서는 단추가 그 자리다 */
+.rs-discprint { display: none; }
 .rs-disc > div > p + p { margin-top: 6px; }
 
 /* ── 파일럿 ── 결과지와 같은 토큰으로. 따로 디자인하지 않는다 ───────── */
@@ -2223,6 +2225,12 @@
   .rs-fine > p { display: none; }
   .rs-fold > [hidden], .rs-disc > [hidden],
   .rs-open > [hidden] { display: block !important; }
+  /* 단추 이름이 그 묶음의 유일한 머리인 자리는 종이에서 머리로 세운다(R35).
+     지우기만 하면 목록이 머리 없이 남아 무엇을 적은 줄인지 읽히지 않았다 */
+  .rs-discprint {
+    display: block; margin: 8pt 0 3pt; break-after: avoid;
+    font-size: var(--pt-q); font-weight: var(--ui-w-bd); color: var(--r-ink);
+  }
   /**
    * **종이에서는 요약 줄을 걷는다**(규격 §14).
    *

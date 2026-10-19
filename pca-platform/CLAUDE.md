@@ -12485,3 +12485,36 @@ AI_AUDIT.md · STAGING_CHECKS.md · pdf/ · sheets/ · shots/).
 `STAGING_CHECKS.md` 로 확인한다. Design PASS · Product PASS · Scene Freeze 는
 선언하지 않는다. `v3-pdf-audit` 이 EE · PUBADM · NURSING 에서 `없는 산업팩이다`
 로 멈추는 자리는 이 회차 전부터 있던 것이라 그 셋은 세지 못했다.
+
+**R35. 전체 제품 인벤토리에서 재현된 것만 고쳤다.** (2026-10-19)
+
+학생 · 검사 전 학생 · 배재대 학과 담당자 · 로그인 전 넷을 들고 145자리
+(데스크톱 · 모바일)를 실제 브라우저로 열어 분류했다(`scripts/lab/r35-inventory.ts`).
+새 기능은 없고 측정 · 채점 · 문항 은행 · 결과 모델은 그대로다. 패키지는
+`docs/metri/review/r35/`.
+
+**담당자가 로그인하자마자 빈 화면을 받았다.** `/org` 와 옛 메뉴 아홉 줄이 옛
+계약 · 좌석 · `attempts` 표를 읽는데, 학교 전용 진입으로 운영하는 기관은 그 표에
+줄이 없다. 그래서 학생 서른셋이 결과를 받은 날에도 첫 화면이 `현재 활성 계약이
+없습니다` 였고 참여자 화면은 서른여덟 명 전부 `시작 전` 이었다. 판정을
+`campusV3Only()` 하나에 두었다(등록부에 있는 학교 · 옛 계약 0줄): 그런 기관은
+`/org/v3` 로 들어오고 메뉴는 두 줄이며 옛 화면은 집계로 돌려보낸다.
+
+**탐색이 홈과 다른 원천을 읽고 있었다.** 홈은 지금 값(`zoneOf`)을, 탐색은 굳은
+결과의 `evidence.ready` 를 읽어서, 홈에서 `설명할 수 있는 일 2가지` 인 학생이
+탐색에서는 열다섯 줄 전부 `겹치는 영역이 없습니다` 를 받았다. 같은 값을 읽게 했다.
+
+**종이에서 단추 이름이 유일한 머리인 묶음**은 단추를 지우면 머리 없는 목록이 된다
+(`Disclose` 의 `printLabel`). 사람이 PDF 를 넘기다 찾았고 PDF 감사는 세지 않았다.
+
+**실제 여정**: BIZ 70/70(DB 정지 · 서버 재시작 · 동시 제출 · PDF 오류 포함, 빌드 둘)
+과 EE · CS · PUBADM · NURSING · MEDIA 54/54(`FAULTS=0` 으로 학생의 길만). 고장
+쪽은 전공을 가리지 않아 한 전공에서 본다.
+
+**`pkill -f` 의 패턴이 제 셸을 집었다(세 번째).** 기다리는 루프의 명령줄에 그
+글자가 들어 있으면 루프가 제 손으로 죽는다. 멈출 것은 PID 로 멈춘다.
+
+판본: `ME_V3_2_ASSESSMENT_UI_V43` · `ME_V3_RESULT_UI_V77` ·
+`CAREERMATRI_WORKSPACE_UI_V47` · `careermatri-workspace-copy.31`. Staging 은 이
+컨테이너에서 열리지 않아 NOT VERIFIED, 운영은 바뀌지 않았다. Gate 1 · 2 · 4 는
+사람의 판정이 필요해 NOT VERIFIED, Gate 5(AI)는 LLM 0 이라 FAIL 이다.

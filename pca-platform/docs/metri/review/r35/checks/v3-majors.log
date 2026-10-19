@@ -1,0 +1,46 @@
+
+── 등록부
+
+  통과  35개 전공군이 전부 Core 로 덮인다 — 35줄 → core 32개 · 등록 39개
+  통과  Core 마다 학과 별칭이 있다 — 별칭 229개
+  통과  한 학과 이름이 두 Core 로 갈리지 않는다 — 이름 229개
+
+── status 와 maturity 를 합치지 않는다
+
+  통과  Core 마다 maturity 가 적혀 있다 — 39개
+  통과  FOUNDATION 인 전공이 응시로 열려 있지 않다 — 열린 core ME_CORE_V3, BIZ_CORE_V1
+  통과  열린 Core 는 required 파일 넷을 들고 있다 — 2개 확인
+  통과  안쪽 성숙도 값이 손님 화면에 서지 않는다 — src/app · src/components — 0건
+  통과  성숙도 값이 정해진 넷 안에 있다 — VALIDATED · READY_FOR_REVIEW · READY_FOR_DOMAIN_REVIEW · FOUNDATION
+  통과  `VALIDATED` 로 적은 전공이 없다 — 규준과 인지 면접 전이라 어느 전공도 검증된 검사가 아니다
+
+── 갈래
+
+  통과  갈래 코드가 겹치지 않는다 — EE_CORE_V1(6) CS_CORE_V1(6) ARCH_CORE_V1(2) CIV_CORE_V1(1) SPORTS_CORE_V1(3) HEALTH_CORE_V1(3) FOOD_CORE_V1(3) BIZ_CORE_V1(13) PUBADM_CORE_V1(2) MEDIA_CORE_V1(4) LANG_CORE_V1(4) LAW_CORE_V1(2) EDU_CORE_V1(1) AGRI_CORE_V1(2) VISUAL_CORE_V1(4) STYLE_CORE_V1(4)
+
+── 시장 정책
+
+  통과  GLOBAL 에 비이공계가 새지 않는다 — GLOBAL 16개 · 전부 STEM
+
+── 검사가 등록부를 쓰지 않는가
+
+  통과  검사가 두 등록부를 쓰지 않는다 (Core · 학교) — 쓰는 줄 0
+  통과  운영에서는 미리보기로도 열리지 않는다 — 빈 목록
+  통과  staging 에서는 미리보기가 선다 — *
+  통과  운영에서는 확인용 학교가 붙지 않는다 — 붙지 않는다
+  통과  staging 에서는 확인용 학교가 붙는다 — scripts/fixtures/campus-zztest.json
+
+── 다른 Core 가 남의 전공 문맥을 받지 않는가
+
+  통과  Core 마다 제 전공 이름이 산업 장면 화면에 선다 — 20개
+  통과  화면 틀에 남의 전공 이름이 서지 않는다 — 20개 × 틀 전부
+
+── 성숙도 분포
+
+  READY_FOR_REVIEW   1개
+  READY_FOR_DOMAIN_REVIEW 3개
+  FOUNDATION         35개
+
+확인 18가지 — 통과 18 · 걸림 0
+
+  35개 전공군이 Core 로 덮였고 **내용이 없는 전공은 열려 있지 않다.**

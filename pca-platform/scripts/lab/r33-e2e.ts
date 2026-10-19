@@ -36,6 +36,13 @@ const UNI = "PCU";
 const CORE = process.env.CORE ?? "BIZ_CORE_V1";
 const LEAF = process.env.LEAF ?? "PCU26_BIZ";
 const OUT = process.env.OUT ?? "var/r33/e2e";
+/**
+ * `FAULTS=0` 이면 고장 내기(DB 멈춤 · 서버 재시작 · 동시 제출 · PDF 오류)를
+ * 건너뛰고 학생의 길만 밟는다. 고장 쪽은 Core 를 가리지 않으므로 한 Core 에서
+ * 한 번 보면 되고, 나머지 Core 는 같은 길이 그 전공의 말로 끝까지 가는지만
+ * 본다(R35). 기본은 전부 돈다.
+ */
+const FAULTS = process.env.FAULTS !== "0";
 const PORT = Number(new URL(BASE).port || 80);
 
 let pass = 0; const bad: string[] = []; const rows: string[] = [];
@@ -256,7 +263,8 @@ async function main(): Promise<void> {
     ok("브라우저를 닫고 다시 로그인해도 같은 응시로 이어진다",
       new RegExp(`/v3/${att}(\\?|/|$)`).test(p.url()), new URL(p.url()).pathname);
 
-    /* ── 5. 저장 실패 → 다시 시도 (PostgreSQL 을 실제로 멈춘다) ───── */
+    if (FAULTS) { /* 5·6 */
+/* ── 5. 저장 실패 → 다시 시도 (PostgreSQL 을 실제로 멈춘다) ───── */
     head("5. 저장 실패");
     const errsBeforeOutage = errs.length;
     const nBeforeFail = await count(`SELECT count(*)::text n FROM v3_responses WHERE attempt_id = $1`, [att]);
@@ -307,6 +315,8 @@ async function main(): Promise<void> {
     const nMid2 = await count(`SELECT count(*)::text n FROM v3_responses WHERE attempt_id = $1`, [att]);
     ok("재시작으로 답이 사라지지 않는다", nMid2 === nMid, `${nMid2}개`);
 
+        } else note("고장 내기 건너뜀 (FAULTS=0): 5·6");
+
     /* ── 7. 끝까지 → 제출 (중복 클릭) ──────────────────────────── */
     head("7. 제출 (중복 클릭)");
     if (!new RegExp(`/v3/${att}`).test(p.url())) {
@@ -341,7 +351,8 @@ async function main(): Promise<void> {
     const landed = new URL(p.url()).pathname;
     ok("제출 뒤 완료 안내나 결과에 선다", /\/(done|result)$/.test(landed), landed);
 
-    /* 7b. 같은 순간에 들어온 제출 둘 — 서버 함수 수준의 경쟁 */
+    if (FAULTS) { /* 7b */
+/* 7b. 같은 순간에 들어온 제출 둘 — 서버 함수 수준의 경쟁 */
     head("7b. 동시 제출 (서버 함수 두 번 동시에)");
     const twin = await makeStudent(`zzr33t${Date.now().toString().slice(-7)}`);
     const twinAtt = await q1<{ id: string }>(
@@ -373,6 +384,8 @@ async function main(): Promise<void> {
       await query(`DELETE FROM ${t} WHERE user_id = $1::bigint`, [twin.id]).catch(() => undefined);
     }
     await query(`DELETE FROM users WHERE id = $1::bigint`, [twin.id]).catch(() => undefined);
+
+        } else note("고장 내기 건너뜀 (FAULTS=0): 7b");
 
     /* ── 8. 결과 생성 ─────────────────────────────────────────────── */
     head("8. 결과");
@@ -520,7 +533,8 @@ async function main(): Promise<void> {
     ok("로그인하지 않으면 결과 화면이 로그인으로 간다", /\/login/.test(ap.url()), new URL(ap.url()).pathname);
     await anon.close();
 
-    /* ── 13. PDF 오류 (그리는 쪽이 닿을 수 없는 주소) ──────────── */
+    if (FAULTS) { /* 13·14 */
+/* ── 13. PDF 오류 (그리는 쪽이 닿을 수 없는 주소) ──────────── */
     head("13. PDF 오류");
     const failBefore = await count(`SELECT count(*)::text n FROM job_failures WHERE kind = 'pdf' AND trace_id LIKE $1`, [`v3-pdf-%-${att}`]);
     await restartServer({ PDF_BASE: "http://127.0.0.1:9" }, "pdf-broken");
@@ -553,6 +567,8 @@ async function main(): Promise<void> {
     await fp2.goto(`${BASE}/me`, { waitUntil: "networkidle" });
     ok("재시작 뒤 세션이 그대로 살아 있다", !/\/login/.test(fp2.url()));
     await fp2.close();
+        } else note("고장 내기 건너뜀 (FAULTS=0): 13·14");
+
     ok("브라우저 오류 · 5xx 0", errs.length === 0, errs.slice(0, 2).join(" | ") || "없음");
     await ctx.close();
   } finally {

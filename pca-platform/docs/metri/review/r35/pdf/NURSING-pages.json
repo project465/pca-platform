@@ -1,0 +1,60 @@
+{
+ "pdf": "var/r35/pdf-final/NURSING/NURSING.pdf",
+ "pages": 9,
+ "rows": [
+  {
+   "page": 1,
+   "file": "NURSING-p-1.png",
+   "chars": 267,
+   "fill": 0.87
+  },
+  {
+   "page": 2,
+   "file": "NURSING-p-2.png",
+   "chars": 766,
+   "fill": 0.99
+  },
+  {
+   "page": 3,
+   "file": "NURSING-p-3.png",
+   "chars": 771,
+   "fill": 0.98
+  },
+  {
+   "page": 4,
+   "file": "NURSING-p-4.png",
+   "chars": 785,
+   "fill": 1.0
+  },
+  {
+   "page": 5,
+   "file": "NURSING-p-5.png",
+   "chars": 634,
+   "fill": 0.98
+  },
+  {
+   "page": 6,
+   "file": "NURSING-p-6.png",
+   "chars": 786,
+   "fill": 1.0
+  },
+  {
+   "page": 7,
+   "file": "NURSING-p-7.png",
+   "chars": 849,
+   "fill": 0.99
+  },
+  {
+   "page": 8,
+   "file": "NURSING-p-8.png",
+   "chars": 714,
+   "fill": 1.0
+  },
+  {
+   "page": 9,
+   "file": "NURSING-p-9.png",
+   "chars": 921,
+   "fill": 0.89
+  }
+ ]
+}

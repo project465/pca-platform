@@ -1,0 +1,90 @@
+  통과  담당자로 로그인한다
+  통과  로그인한 자리가 담당자 화면이다
+
+[1] 업무마다 끝내는 자리와 들어가는 길
+  통과  T1 끝내는 자리가 열린다 — 집계를 연다 (누가 몇 명 어디까지 왔는가)
+  통과  T1 눌러서 닿는다 (/org → /org/v3)
+  통과  T1 그 자리에서 끝낸다 — 아직 시작하지 않은 학생
+  통과  T2 끝내는 자리가 열린다 — 학생 명단을 연다
+  통과  T2 눌러서 닿는다 (/org/v3 → /org/v3/students)
+  통과  T3 끝내는 자리가 열린다 — 학생 한 명을 등록해 계정을 낸다
+  통과  T3 눌러서 닿는다 (/org/v3 → /org/v3/students)
+  통과  T3 그 자리에서 끝낸다 — name="student_id"
+  통과  T3 그 자리에서 끝낸다 — name="department_code"
+  통과  T4 끝내는 자리가 열린다 — 명단을 CSV 로 한꺼번에 등록한다
+  통과  T4 눌러서 닿는다 (/org/v3/students → /org/v3/students/import)
+  통과  T4 그 자리에서 끝낸다 — <textarea
+  통과  T4 그 자리에서 끝낸다 — <form
+  통과  T5 끝내는 자리가 열린다 — 비밀번호를 다시 낸다
+  통과  T5 눌러서 닿는다 (/org/v3 → /org/v3/students)
+  통과  T5 그 자리에서 끝낸다 — value="rotate"
+  통과  T6 끝내는 자리가 열린다 — 계정을 멈추고 다시 연다
+  통과  T6 눌러서 닿는다 (/org/v3 → /org/v3/students)
+  통과  T6 그 자리에서 끝낸다 — value="status"
+  통과  T7 끝내는 자리가 열린다 — 끝낸 학생에게 재응시를 한 번 열어 준다
+  통과  T7 눌러서 닿는다 (/org/v3 → /org/v3/students?state=scored)
+  통과  T7 그 자리에서 끝낸다 — value="retake"
+  통과  T8 끝내는 자리가 열린다 — 아직 안 친 학생만 좁혀 본다
+  통과  T8 눌러서 닿는다 (/org/v3 → /org/v3/students?state=none)
+  통과  T9 끝내는 자리가 열린다 — 학과로 좁혀 본다
+  통과  T9 눌러서 닿는다 (/org/v3/students → /org/v3/students)
+  통과  T9 그 자리에서 끝낸다 — name="q"
+  통과  T10 끝내는 자리가 열린다 — 명단을 CSV 로 내려받는다
+  통과  T10 눌러서 닿는다 (/org/v3 → /org/v3/export/students.csv)
+  통과  T11 끝내는 자리가 열린다 — 학과 집계를 CSV 로 내려받는다
+  통과  T11 눌러서 닿는다 (/org/v3 → /org/v3/export/departments.csv)
+  통과  T12 끝내는 자리가 열린다 — 대학 운영 요약 PDF 를 뽑는다
+  통과  T12 눌러서 닿는다 (/org/v3 → /org/v3/report.pdf)
+  통과  T13 끝내는 자리가 열린다 — 운영 요약을 화면에서 먼저 본다
+  통과  T13 눌러서 닿는다 (/org/v3 → /org/v3/report)
+
+[2] 담당자 화면에 콘솔·CLI 를 적지 않는가
+  통과  /org 에 콘솔 지시가 없다
+  통과  /org/v3 에 콘솔 지시가 없다
+  통과  /org/v3/students 에 콘솔 지시가 없다
+  통과  /org/v3/students/import 에 콘솔 지시가 없다
+  통과  /org/v3/report 에 콘솔 지시가 없다
+
+[3] 본사 운영용 CLI 와 학교 업무가 갈려 있는가
+  통과  본사 CLI 가 실제로 있다 — pcu:org
+  통과  왜 본사 일인지 적혀 있다 — pcu:org
+  통과  본사 CLI 가 실제로 있다 — pcu:students
+  통과  왜 본사 일인지 적혀 있다 — pcu:students
+  통과  본사 CLI 가 실제로 있다 — pcu:diag
+  통과  왜 본사 일인지 적혀 있다 — pcu:diag
+  통과  본사 CLI 가 실제로 있다 — pcu:open
+  통과  왜 본사 일인지 적혀 있다 — pcu:open
+  통과  본사 CLI 가 실제로 있다 — db:upgrade
+  통과  왜 본사 일인지 적혀 있다 — db:upgrade
+  통과  본사 CLI 가 실제로 있다 — db:verify
+  통과  왜 본사 일인지 적혀 있다 — db:verify
+  통과  본사 CLI 가 실제로 있다 — ops:check
+  통과  왜 본사 일인지 적혀 있다 — ops:check
+  통과  학교 운영 업무 CLI 의존 0
+
+[4] 학교 운영 업무와 끝내는 자리
+  업무                                             자리                               CLI
+  T1 집계를 연다 (누가 몇 명 어디까지 왔는가)                     /org/v3                            필요 없음
+  T2 학생 명단을 연다                                    /org/v3/students                   필요 없음
+  T3 학생 한 명을 등록해 계정을 낸다                           /org/v3/students                   필요 없음
+  T4 명단을 CSV 로 한꺼번에 등록한다                          /org/v3/students/import            필요 없음
+  T5 비밀번호를 다시 낸다                                  /org/v3/students                   필요 없음
+  T6 계정을 멈추고 다시 연다                                /org/v3/students                   필요 없음
+  T7 끝낸 학생에게 재응시를 한 번 열어 준다                       /org/v3/students?state=scored      필요 없음
+  T8 아직 안 친 학생만 좁혀 본다                             /org/v3/students?state=none        필요 없음
+  T9 학과로 좁혀 본다                                    /org/v3/students                   필요 없음
+  T10 명단을 CSV 로 내려받는다                              /org/v3/export/students.csv        필요 없음
+  T11 학과 집계를 CSV 로 내려받는다                           /org/v3/export/departments.csv     필요 없음
+  T12 대학 운영 요약 PDF 를 뽑는다                           /org/v3/report.pdf                 필요 없음
+  T13 운영 요약을 화면에서 먼저 본다                            /org/v3/report                     필요 없음
+
+  본사 운영용 CLI (학교 담당자가 쓰지 않는다)
+  pcu:org          기관과 담당자 계정 발급 — 계약이 선 뒤 본사가 한 번 한다
+  pcu:students     발급 복구용. 같은 일을 담당자는 화면에서 한다(T3·T4·T5)
+  pcu:diag         장애를 좁히는 진단. 읽기만 한다
+  pcu:open         학생 공개 상태 확인 — 어느 Core 를 파는가는 본사 결정이다
+  db:upgrade       스키마 올리기 — 배포 작업이다
+  db:verify        배포 뒤 확인. 읽기만 한다
+  ops:check        배포본 상태 확인. 읽기만 한다
+
+통과 57 · 걸림 0

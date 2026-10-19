@@ -12,6 +12,7 @@ import LangSelect from "@/components/sf/lang-select";
 import LogoutButton from "@/components/logout-button";
 import LoginMethods from "./login-methods";
 import { isProvider, PROVIDER_LABEL } from "@/lib/auth-accounts";
+import { queryOne } from "@/lib/db";
 
 export const metadata = { title: `계정 · ${BRAND.root}` };
 
@@ -54,10 +55,21 @@ export default async function AccountHome({
    * 들어온 학생이 `계정` 을 누르는 순간 500 을 받았다. 모르면 묻지 않는다.
    */
   const core = await coreIfAny(user.id);
-  const [v3, v2] = await Promise.all([
+  const [v3, v2, held] = await Promise.all([
     core ? currentState(user.id) : Promise.resolve(null),
     v2State(user.id),
+    /* **없는 기록으로 가는 길을 세우지 않는다.** 학교가 발급한 계정은 옛
+       검사도 주문도 한 줄 없는데, 두 칸이 그대로 서서 누르면 빈 목록과
+       고객지원으로 갔다. 그 사람에게 그 두 칸은 무엇이 빠졌는지 찾게
+       만드는 자리다. 있는지만 묻고 없으면 칸을 세우지 않는다 */
+    queryOne<{ old: boolean; orders: boolean }>(
+      `SELECT EXISTS (SELECT 1 FROM attempts WHERE user_id = $1)
+           OR EXISTS (SELECT 1 FROM evidence_profiles WHERE user_id = $1) AS old,
+              EXISTS (SELECT 1 FROM orders WHERE user_id = $1) AS orders`,
+      [user.id]).catch(() => ({ old: true, orders: true })),
   ]);
+  const hasOld = held?.old ?? true;
+  const hasOrders = held?.orders ?? true;
 
   return (
     <CmShell active="/my" title="계정">
@@ -88,13 +100,15 @@ export default async function AccountHome({
           </div>
         </section>
 
-        <section className="cm-card">
-          <h2><Icon name="cart" size={17} />주문과 결제</h2>
-          <p>{T("acOrdersBody")}</p>
-          <div className="cm-acts">
-            <Link href="/support" className="cm-btn">문의하기</Link>
-          </div>
-        </section>
+        {hasOrders ? (
+          <section className="cm-card">
+            <h2><Icon name="cart" size={17} />주문과 결제</h2>
+            <p>{T("acOrdersBody")}</p>
+            <div className="cm-acts">
+              <Link href="/support" className="cm-btn">문의하기</Link>
+            </div>
+          </section>
+        ) : null}
 
         {/* ── 들어오는 길 ──
             **지금 무엇으로 들어오는지 적는다.** 적어 두지 않으면 구글로
@@ -122,6 +136,7 @@ export default async function AccountHome({
         </section>
 
         {/* ── 옛 검사 기록 ── 지금 검사의 결과가 어디 있는지를 먼저 적는다 ── */}
+        {hasOld ? (
         <section className="cm-card">
           <h2>{T("acOld")}</h2>
           <p>{T("acOldBody")}</p>
@@ -134,6 +149,7 @@ export default async function AccountHome({
             <Link href="/my/evidence" className="cm-btn">{T("navEvidence")}</Link>
           </div>
         </section>
+        ) : null}
 
         {/*
           전에 산 검사를 아직 끝내지 않은 분의 길. **줄을 지우지 않는다**:

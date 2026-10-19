@@ -29,7 +29,10 @@ const ORDER = [
  */
 const SAY_READY: Record<string, string> = {
   Z1_EVIDENCE_ESTABLISHED: "",
-  Z2_EVIDENCE_INCOMPLETE: "남긴 것을 더 붙이면 설명이 또렷해집니다",
+  /* **칸 세부가 두 줄을 넘지 않게 짧게 적는다**(R35 인벤토리). 스무 자로
+     두었더니 1440 에서 `남긴 것을 더 붙이면 설명이…` 로 잘렸다. 말줄임은
+     줄인 것이 아니라 가린 것이다. 위 한 줄이 쓰는 말과 같은 말이다 */
+  Z2_EVIDENCE_INCOMPLETE: "정리만 남은 영역",
 };
 const READY = ["Z1_EVIDENCE_ESTABLISHED", "Z2_EVIDENCE_INCOMPLETE"];
 /** 첫 화면이 드는 줄 수. **요약이 세부를 대신하면 세부가 죽는다** */

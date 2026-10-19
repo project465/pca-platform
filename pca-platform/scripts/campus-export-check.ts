@@ -186,8 +186,18 @@ async function main(): Promise<void> {
     const small = dep.body.split("\r\n").filter((l) => l.includes(`${MIN_CELL}명 미만`));
     for (const l of small) {
       const cols = l.split(",");
+      /* **대상자 칸은 따로 본다**(R35). 단과대학 줄은 `대상자 · 시작 · 완료 ·
+         완료율 · 비고` 이고, 비고의 `5명 미만` 은 **시작한 학생**을 두고 하는
+         말이다. 대상자가 다섯 이상이면 그 수는 5명 규칙 안이라 적히는 것이
+         맞다. 전에는 그 칸까지 비어야 한다고 셌고, 대상자가 마침 다섯인
+         단과대학이 생긴 날 멀쩡한 줄이 걸렸다. 대상자도 다섯 미만이면 그 칸이
+         비어야 한다는 것은 그대로 센다 */
+      const isCollege = cols.length >= 6;
+      const target = isCollege ? cols[1]?.trim() ?? "" : "";
+      const rest = isCollege ? cols.slice(2, -1) : cols.slice(1, -1);
       ok(`5명 미만 줄에 수가 없다 — ${cols[0]?.slice(0, 18)}`,
-        cols.slice(1, -1).every((c) => !/^\d+$/.test(c.trim())), l.slice(0, 80));
+        rest.every((c) => !/^\d+$/.test(c.trim()))
+          && (!/^\d+$/.test(target) || Number(target) >= MIN_CELL), l.slice(0, 80));
     }
     ok("5명 미만 학과 줄이 실제로 있다", small.length > 0,
       "그 줄이 없으면 이 검사가 가리는 자리를 세지 않는다");

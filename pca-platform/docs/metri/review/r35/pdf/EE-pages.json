@@ -1,0 +1,60 @@
+{
+ "pdf": "var/r35/pdf-final/EE/EE.pdf",
+ "pages": 9,
+ "rows": [
+  {
+   "page": 1,
+   "file": "EE-p-1.png",
+   "chars": 277,
+   "fill": 0.87
+  },
+  {
+   "page": 2,
+   "file": "EE-p-2.png",
+   "chars": 754,
+   "fill": 0.99
+  },
+  {
+   "page": 3,
+   "file": "EE-p-3.png",
+   "chars": 777,
+   "fill": 0.98
+  },
+  {
+   "page": 4,
+   "file": "EE-p-4.png",
+   "chars": 741,
+   "fill": 1.0
+  },
+  {
+   "page": 5,
+   "file": "EE-p-5.png",
+   "chars": 634,
+   "fill": 0.98
+  },
+  {
+   "page": 6,
+   "file": "EE-p-6.png",
+   "chars": 860,
+   "fill": 0.99
+  },
+  {
+   "page": 7,
+   "file": "EE-p-7.png",
+   "chars": 832,
+   "fill": 1.0
+  },
+  {
+   "page": 8,
+   "file": "EE-p-8.png",
+   "chars": 706,
+   "fill": 1.0
+  },
+  {
+   "page": 9,
+   "file": "EE-p-9.png",
+   "chars": 891,
+   "fill": 0.89
+  }
+ ]
+}

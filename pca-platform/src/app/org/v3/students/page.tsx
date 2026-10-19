@@ -8,7 +8,7 @@ import { campusNames, leafChoices } from "@/lib/campus/labels";
 import { campusViewer } from "@/lib/campus/viewer";
 import { BRAND, toLang2 } from "@/lib/surface-text";
 import { Shell, PageHead, Section } from "@/components/sf/shell";
-import { NAV_CAMPUS } from "@/components/sf/nav";
+import { campusNav } from "@/lib/campus/org-mode";
 import { Empty } from "@/components/sf/parts";
 import LangSelect from "@/components/sf/lang-select";
 import StudentRows from "./rows";
@@ -53,9 +53,10 @@ export default async function CampusStudents({
      `아직 시작하지 않은 학생 63명` 이 나란히 섰다 */
   const withDemo = sp.demo === "1";
 
+  const nav = await campusNav(user.id);
   const shell = (children: React.ReactNode) => (
     <Shell
-      surface="campus" lang={L} nav={NAV_CAMPUS} active="/org/v3/students"
+      surface="campus" lang={L} nav={nav} active="/org/v3/students"
       who={{ name: user.name, role: ROLE_LABEL[user.role] ?? "" }}
       topTitle={org ? org.name : BRAND.campus}
       topRight={<LangSelect current={L} />}

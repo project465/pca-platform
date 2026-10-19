@@ -3,7 +3,11 @@
    python3 scripts/lab/r34-sheet.py OUT.png "LABEL_A" a.png "LABEL_B" b.png [W]
 """
 import sys
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
+try:  # 한글 이름표. 기본 글꼴은 한글을 네모로 찍는다
+    FONT = ImageFont.truetype("/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc", 15)
+except OSError:
+    FONT = None
 out, la, a, lb, b = sys.argv[1:6]
 W = int(sys.argv[6]) if len(sys.argv) > 6 else 720
 def fit(p):
@@ -14,6 +18,6 @@ sheet = Image.new("RGB", (W * 2 + PAD * 3, max(ia.height, ib.height) + TOP + PAD
 d = ImageDraw.Draw(sheet)
 for i, (lab, im) in enumerate(((la, ia), (lb, ib))):
     x = PAD + i * (W + PAD)
-    d.text((x, 10), lab, fill="#0a1b31")
+    d.text((x, 10), lab, fill="#0a1b31", font=FONT)
     sheet.paste(im, (x, TOP + PAD))
 sheet.save(out); print(out, sheet.size)
