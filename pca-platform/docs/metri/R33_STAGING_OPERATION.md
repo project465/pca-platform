@@ -97,13 +97,17 @@ npm run staging:bootstrap
 `APP_ENV` 가 `staging` 이 아니면 **한 줄도 쓰지 않고 멈춘다.** 운영 컨테이너에서
 실수로 쳐도 아무 일이 일어나지 않는다.
 
-그다음 셋을 치고 전부 통과하는지 본다:
+그다음 넷을 치고 전부 통과하는지 본다:
 
 ```bash
 npm run staging:check   # 공개 전답게 섰는가 (APP_ENV · 자물쇠 · 가짜 결제)
 npm run db:verify       # 핵심 7 / 7 · ME_V3 5 / 5 · 내 CareerMatri 5 / 5
 npm run pcu:open        # 열린 자리. V3_PREVIEW_OPEN=* 이면 115 자리
+npm run ops:check       # DEPLOY 줄에 지금 서 있는 커밋(RAILWAY_GIT_COMMIT_SHA) · DATABASE 줄
+cat .next/BUILD_ID      # 배포 Build ID
 ```
+
+`ops:check` 의 `DEPLOY` 줄이 적는 커밋이 **배포 Commit** 이고 `.next/BUILD_ID` 가 **Build ID** 다. 둘을 받아 두면 3절을 밟은 결과가 어느 코드의 것인지 적을 수 있다.
 
 ### 1-6. 승인이 필요한 것 (이 절을 하기 전에)
 
@@ -111,6 +115,39 @@ npm run pcu:open        # 열린 자리. V3_PREVIEW_OPEN=* 이면 115 자리
 |---|---|---|
 | **유료 리소스**: 앱 서비스 1 + Postgres 1 이 늘어 Railway 사용량이 늘어난다 | 사업주 | 요금제의 사용량 한도에 따라 월 수 달러 단위가 추가된다. 끝나면 `staging` 환경을 지우면 사라진다 |
 | GitHub 가지 `claude/careermatri-screen-review-p0c8kb` 를 Railway 가 읽는 것 | 사업주 | 이미 저장소 연결이 있어 추가 권한은 없다. 운영 가지는 그대로다 |
+
+### 1-7. 운영 DB 와 섞이지 않았는지 (사용자가 · 넷 다 맞아야 한다)
+
+| | 어디서 | 보는 것 | 맞으면 | 틀리면 |
+|---|---|---|---|---|
+| ㄱ | staging 환경 → 앱 서비스 → **Variables** | `DATABASE_URL` 줄 | 값이 글자가 아니라 **참조**(`${{Postgres.DATABASE_URL}}`, 옆에 Postgres 아이콘)이고, 그 Postgres 가 **staging 환경 캔버스에 있는 카드**다 | 글자로 적힌 주소면 지우고 `Add Reference` 로 다시 꽂는다 |
+| ㄴ | staging 환경 → Postgres 카드 → **Variables** | `PGHOST` | `production` 환경의 Postgres 카드 `PGHOST` 와 **다르다**(환경 선택을 바꿔 둘을 번갈아 본다. 값을 어디에도 적지 않는다) | 같으면 그 Postgres 는 운영 것이다. staging 의 참조를 끊고 새 Postgres 를 만든다 |
+| ㄷ | staging Shell | `node -e 'console.log(new URL(process.env.DATABASE_URL).host)'` | ㄴ 에서 본 staging `PGHOST` 와 같은 호스트 | 운영 호스트가 찍히면 **`staging:bootstrap` 을 치지 않는다** |
+| ㄹ | staging Shell · bootstrap **전** | `npm run db:verify` | `이 DB 는 비어 있습니다` 또는 사람 0 · 응시 0 | 사람과 응시가 이미 수백이면 운영 DB 다 |
+
+**순서가 곧 안전장치다.** ㄱ~ㄹ 이 전부 맞은 뒤에만 1-5 를 친다. `staging:bootstrap` 자체도 `APP_ENV=staging` 이 아니면 멈추지만, 그 변수를 운영 DB 를 가리키는 서비스에 넣으면 그 장치는 뜻이 없다. 지키는 것은 **ㄷ** 이다.
+
+### 1-8. 비밀번호를 안전하게 받는 법
+
+- `staging:bootstrap` 의 표는 **그 Shell 화면에만** 선다. 파일로도 로그로도 남지 않고 DB 에는 해시만 있다.
+- 표를 **비밀번호 관리자나 사람에게만 보이는 자리**에 옮겨 적고 창을 닫는다. 채팅 · 이슈 · 캡처 · 공개 로그에 붙이지 않는다. 이 세션에 결과를 알려 줄 때도 **비밀번호 열은 지우고** 아이디 열까지만 붙인다.
+- 잃어버리면 `ROTATE=yes npm run staging:bootstrap` 이 새 열쇠를 낸다(옛 열쇠는 그 자리에서 죽는다). 학생 하나만 바꾸려면 `APPLY=yes ROTATE=yes npm run pcu:students rotate test-biz-01`.
+- 자물쇠(`STAGING_BASIC_AUTH`) 비밀번호는 Railway 변수에만 있다. 브라우저가 묻는 첫 창에 넣는 값이다.
+
+### 1-9. 비용
+
+Railway 는 **쓴 만큼** 청구한다(요금제의 월 요금에 사용량 크레딧이 포함되고 넘는 만큼 추가). staging 환경을 만들면 **늘 켜져 있는 앱 컨테이너 하나와 Postgres 하나(볼륨 포함)** 가 추가로 사용량을 만든다. 작은 앱과 작은 Postgres 라 보통 월 몇 달러 단위이지만, 정확한 값은 Railway → 프로젝트 → **Usage** 가 보여 주는 실측만 믿는다. 끝나면 `staging` 환경을 지우면 그날부터 사용량이 멈춘다. **운영 서비스의 비용은 바뀌지 않는다.**
+
+### 1-10. 끝났으면 이 세션에 알려 줄 것
+
+| 붙여 넣어도 되는 것 | 붙이면 안 되는 것 |
+|---|---|
+| Staging 도메인 (`xxxx.up.railway.app`) | `STAGING_BASIC_AUTH` 의 비밀번호 · `AUTH_SECRET` · `DATABASE_URL` |
+| Deployments 탭의 **커밋 7자리와 상태**(`Success`/`Healthy`) | 시험 계정의 비밀번호 열 |
+| Shell 에서 친 `npm run ops:check` · `db:verify` · `pcu:open` · `staging:check` 의 출력 | `staging:bootstrap` 표의 비밀번호 열 |
+| `cat .next/BUILD_ID` 의 값 | |
+
+그러면 이 세션이 **GitHub 쪽에서** 그 커밋의 Deployment 가 `staging` 환경에 이 가지(`claude/careermatri-screen-review-p0c8kb`)로 섰는지와 상태를 대어 본다. **이 컨테이너는 Railway 와 `*.up.railway.app` 에 닿지 못한다**(네트워크 정책 · HTTP 000). 그 도메인을 이 세션이 브라우저로 직접 두드리려면, 이 클라우드 세션의 환경 설정(세션 제목 줄의 환경 메뉴 → Edit → Network access → Allowed domains)에 그 도메인(또는 `*.up.railway.app`)을 더해 주어야 한다. 더해 주면 자물쇠 · `noindex` · 로그인 화면 · PDF 응답을 밖에서 같은 검사로 두드린다. 더해 주지 않으면 3절은 사용자가 밟고, 이 세션은 Shell 출력과 GitHub 기록으로만 대어 본다.
 
 ## 2. 이 회차가 실제로 검증한 것 (이 기계 · 같은 코드 · 실제 브라우저와 DB)
 
