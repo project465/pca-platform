@@ -45,3 +45,27 @@ COMMENT ON COLUMN campus_students.department_code IS
 -- 담당자 화면과 일괄 발급이 학교로 좁혀 읽는다
 CREATE INDEX IF NOT EXISTS campus_students_uni
   ON campus_students (university_code, department_code);
+
+-- ── 담당자가 열어 주는 재응시의 이용권 상품 ─────────────────────────
+--
+--  **담당자의 `재응시 열어 주기` 가 한 번도 저장되지 않았다.** 그 자리
+--  (`campus/manage.ts` 의 `allowRetake`)가 `CM_V3_CAMPUS_PRO` 를 가리키는
+--  이용권을 적는데 그 상품 줄이 어디에도 없어서, 외래키
+--  (`entitlements_product_code_fkey`)가 매번 거절했다. 단추는 서 있고 누르면
+--  아무것도 열리지 않았다.
+--
+--  **꺼 둔 채로 만든다**: `active` 가 false 라 가격표에도 결제에도 서지
+--  않는다(`catalog.ts` 가 `active` 로 거른다). 이용권이 가리킬 자리만 생긴다.
+--  금액이 0 인 것은 학교 계약이 결제 없이 여는 것이라서다. 학교 응시는 늘
+--  PRO 이므로 등급도 PRO 다. 이 상품 코드가 곧 **학교 이용권**의 표시다:
+--  시작 경로(`campus/start-gate.ts`)가 이 코드로 학교 이용권과 개인 이용권을
+--  가른다.
+INSERT INTO products
+  (code, kind, amount, currency, seat_count, active, report_level,
+   market, major_code, tier, assessment_version, price_status)
+VALUES
+  ('CM_V3_CAMPUS_PRO', 'assessment', 0, 'KRW', 1, false, 'full',
+   'KR', NULL, 'PRO', 'ME_V3_2', 'approved')
+ON CONFLICT (code) DO UPDATE
+  SET tier = EXCLUDED.tier, assessment_version = EXCLUDED.assessment_version,
+      active = false;

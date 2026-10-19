@@ -67,3 +67,4 @@ var/r34-*
 
 # R35 인벤토리·여정·PDF 작업 산출물. 고른 것은 docs/metri/review/r35/ 에 있다
 var/r35/
+var/rb/

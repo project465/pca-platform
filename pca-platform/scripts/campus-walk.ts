@@ -82,6 +82,22 @@ async function startAttempt(page: Page, path: string, userId: string): Promise<{
   department_code: string | null; specialization_code: string | null;
 } | null> {
   await page.goto(`${BASE}${path}`, { waitUntil: "networkidle" });
+  /**
+   * **명단과 다른 자리에서는 시작 단추가 서지 않는다**(출시 차단 해소).
+   * 전에는 그 자리에서도 `검사 시작하기` 가 서고, 누르면 **명단의 자리로**
+   * 응시가 열렸다. 적힌 말과 일어나는 일이 달라서 지금은 `등록된 학과로
+   * 가기` 가 서고 시작은 학교 시작 쪽에서 한다. 응시 줄이 명단의 자리를
+   * 드는 것은 전과 같다.
+   */
+  const toMine = page.getByRole("link", { name: /등록된 학과로 가기/ });
+  if (await toMine.count()) {
+    ok("명단과 다른 자리에서는 `등록된 학과로 가기` 가 선다", true);
+    ok("그 자리에 시작 단추가 서지 않는다",
+      await page.getByRole("button", { name: /검사 시작/ }).count() === 0);
+    await toMine.click();
+    await page.waitForURL(/\/start$/, { timeout: 30000 });
+    await page.waitForLoadState("networkidle");
+  }
   await page.getByRole("button", { name: "검사 시작하기" }).click();
   await page.waitForURL(/\/v3\/start/, { timeout: 30000 });
   await page.waitForLoadState("networkidle");
@@ -256,16 +272,15 @@ async function main(): Promise<void> {
         httpOnly: true, sameSite: "Lax",
       }]);
       await page.goto(`${BASE}/v3/start`, { waitUntil: "networkidle" });
-      await page.getByText("학부", { exact: true }).click();
-      await page.getByRole("button", { name: "검사 시작" }).click();
-      await page.waitForURL(/\/v3\/\d+/, { timeout: 30000 });
-      const got = await queryOne<{ core_code: string; university_code: string | null;
-        department_code: string | null }>(
-        `SELECT core_code, university_code, department_code FROM v3_attempts
-          WHERE user_id = $1 ORDER BY started_at DESC LIMIT 1`, [who.id]);
-      ok(`고친 쿠키가 맥락을 적지 못한다 — ${f}`,
-        got?.university_code === null && got?.department_code === null
-        && got?.core_code === "ME_CORE_V3", JSON.stringify(got));
+      /* **학교 학생에게는 개인 응시가 열리지 않는다**(출시 차단 해소). 전에는
+         맥락만 버리고 **개인 응시가 그대로 열렸다**: 그 응시는 담당자 화면에
+         잡히지 않고 학교 응시가 한 번이라는 정책도 그 길로 샜다. 지금은
+         학교 시작 쪽으로 돌려보내고 응시 줄이 생기지 않는다 */
+      const land = new URL(page.url()).pathname;
+      const got = await queryOne<{ n: string }>(
+        `SELECT count(*)::text n FROM v3_attempts WHERE user_id = $1`, [who.id]);
+      ok(`고친 쿠키로 응시가 열리지 않고 학교 시작 쪽으로 간다 — ${f}`,
+        land === "/campus/zztest/start" && got?.n === "0", `${land} · 응시 ${got?.n}`);
     }
 
     /**
@@ -381,8 +396,15 @@ async function main(): Promise<void> {
         inj?.core_code === "ME_CORE_V3", inj?.core_code ?? "없음");
     }
 
-    /* 일반 B2C 로 들어오면 학교 맥락이 비어 있다 */
+    /* 일반 B2C 로 들어오면 학교 맥락이 비어 있다. **학교 학생에게는 그 길이
+       없으므로**(출시 차단 해소) 이 사람을 명단에서 내리고 개인 회원으로 센다.
+       명단에 남겨 둔 채로 치면 학교 시작 쪽으로 돌려보내진다 */
     await query(`DELETE FROM v3_attempts WHERE user_id = $1`, [who.id]);
+    await page.goto(`${BASE}/v3/start`, { waitUntil: "networkidle" });
+    ok("명단의 학생이 /v3/start 를 치면 학교 시작 쪽으로 간다",
+      new URL(page.url()).pathname === "/campus/zztest/start",
+      new URL(page.url()).pathname);
+    await query(`DELETE FROM campus_students WHERE user_id = $1`, [who.id]);
     await page.goto(`${BASE}/v3/start`, { waitUntil: "networkidle" });
     const plain = await page.evaluate(() => document.body.innerText);
     ok("일반 진입에는 학교 이름이 서지 않는다", !plain.includes("확인용 대학"));

@@ -3,8 +3,11 @@ import { notFound } from "next/navigation";
 import "../../../../surface.css";
 import "../../../campus.css";
 import {
-  coreOf, findLeaf, specializationName, statusOf, university,
+  coreOf, findLeaf, pickRequired, specializationName, statusOf, university,
 } from "@/lib/campus/registry";
+import { currentUser } from "@/lib/session";
+import { campusStudentOf } from "@/lib/campus/students";
+import { CAMPUS_CTA_KO, campusAttemptState } from "@/lib/campus/attempt-state";
 import { CampusShell } from "../../../shell";
 import { startFromCampus } from "../../../actions";
 import { domainNames } from "../../../domains";
@@ -59,6 +62,22 @@ export default async function CampusDepartment({ params }: Params) {
      자기 목록을 다시 찾아야 한다 */
   const back = `/campus/${code}/majors?y=${found.catalog.catalog_year}`
     + `&c=${encodeURIComponent(found.college.code)}`;
+  /**
+   * **로그인한 그 학교의 학생이면 단추가 그 학생의 상태를 말한다.**
+   *
+   * 전에는 누구에게나 `검사 시작하기` 가 섰다. 결과를 받은 학생이 누르면
+   * 지난 결과로 돌아가고, 다른 학과로 등록된 학생이 누르면 **등록된 학과로**
+   * 시작했다(응시는 명단이 적어 준 학과로만 열린다). 적힌 말과 일어나는
+   * 일이 같아야 한다. 로그인하지 않았으면 전과 같다: 그 단추는 학교 로그인으로
+   * 간다.
+   */
+  const who = await currentUser();
+  const mine = who ? await campusStudentOf(who.id, u.university_code) : null;
+  /* 전공을 고르는 자리(자율전공)의 학생은 여기서 고른 전공으로 시작한다
+     (규격 §32): 그 학생에게 다른 학과 쪽은 고르는 자리다 */
+  const other = mine && !pickRequired(mine.ctx)
+    && mine.row.department_code !== leaf.code ? mine : null;
+  const st = mine && !other ? await campusAttemptState(who!.id) : null;
 
   return (
     <CampusShell u={u}>
@@ -66,7 +85,10 @@ export default async function CampusDepartment({ params }: Params) {
         <p className="cm-cmp-eyebrow">{u.university_name} · {where}</p>
         <h1 className="cm-cmp-title">{leaf.name}</h1>
         <p className="cm-cmp-lead">
-          {ready
+          {other
+            ? `학교에 등록된 학과는 ${other.department_name}입니다. 검사는`
+              + " 등록된 학과 기준으로 열립니다."
+            : ready
             ? "이 전공이 다루는 영역마다 해 본 일과 직접 정한 것을 묻습니다."
               + " 문항마다 저장되어 창을 닫아도 보던 자리에서 이어집니다."
             : routing
@@ -74,16 +96,34 @@ export default async function CampusDepartment({ params }: Params) {
                 + " 전공을 고르시면 됩니다. 나중에 다시 고를 수 있습니다."
               : "이 학과는 지금 응시할 수 없습니다."}
         </p>
-        {ready ? (
+        {other ? (
+          <div className="cm-cmp-cta-row">
+            <Link className="cm-cmp-cta" href={`/campus/${code}/start`}>
+              등록된 학과로 가기<span aria-hidden="true">→</span>
+            </Link>
+            <Link className="cm-cmp-cta-2" href={back}>다른 학과 보기</Link>
+          </div>
+        ) : st && (st.kind === "resume" || st.kind === "result") ? (
+          <div className="cm-cmp-cta-row">
+            <Link className="cm-cmp-cta" href={st.kind === "resume"
+              ? `/v3/${st.attemptId}` : `/v3/${st.attemptId}/result`}>
+              {CAMPUS_CTA_KO[st.kind].label}<span aria-hidden="true">→</span>
+            </Link>
+            <Link className="cm-cmp-cta-2" href={back}>다른 학과 보기</Link>
+          </div>
+        ) : ready ? (
           /* **주소로 전공을 바꿀 수 없다.** 폼이 보내는 것은 학교와 학과
              코드 둘뿐이고, 어느 Core 로 가는가는 서버가 등록부에서 읽는다 */
           <form action={startFromCampus} className="cm-cmp-cta-row">
             <input type="hidden" name="u" value={u.university_code} />
             <input type="hidden" name="d" value={leaf.code} />
             <button type="submit" className="cm-cmp-cta">
-              검사 시작하기<span aria-hidden="true">→</span>
+              {st?.kind === "retake" ? CAMPUS_CTA_KO.retake.label
+                : CAMPUS_CTA_KO.start.label}<span aria-hidden="true">→</span>
             </button>
-            <Link className="cm-cmp-cta-2" href={back}>다른 학과 선택</Link>
+            {st?.kind === "retake"
+              ? <Link className="cm-cmp-cta-2" href={`/v3/${st.attemptId}/result`}>지난 결과 보기</Link>
+              : <Link className="cm-cmp-cta-2" href={back}>다른 학과 선택</Link>}
           </form>
         ) : (
           <div className="cm-cmp-cta-row">

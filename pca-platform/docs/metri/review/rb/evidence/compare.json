@@ -1,0 +1,6170 @@
+{
+  "BIZ_CORE_V1": {
+    "source": "347",
+    "attempts": {
+      "NONE": "352",
+      "WITH": "353",
+      "ALT": "354"
+    },
+    "picked": [
+      {
+        "domain": "TD02",
+        "slot": "J1",
+        "item": "이번에 볼 고객과 보지 않을 고객을 갈라 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J1",
+        "item": "무엇을 알릴지 범위를 좁혀 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J2",
+        "item": "목표를 전환율이나 도달 수로 옮겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J2",
+        "item": "성과를 재는 기간과 방법을 정했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J3",
+        "item": "고객을 나누는 기준을 정했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J3",
+        "item": "채널별 예산 배분을 정했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J4",
+        "item": "설문이나 면접 같은 조사 방법을 골라 썼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J4",
+        "item": "반응을 재는 방법을 정했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J5",
+        "item": "캠페인 기획서를 문서로 남겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J5",
+        "item": "메시지 안을 여러 벌 적어 두었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J6",
+        "item": "채널 둘의 성과를 같은 기준으로 견주었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J6",
+        "item": "메시지 둘의 반응을 나눠 재어 견주었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J7",
+        "item": "반응이 낮은 까닭을 좁혀 들어갔다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J7",
+        "item": "메시지나 채널을 바꿔 다시 재었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J8",
+        "item": "캠페인 결과를 회의에서 설명했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J8",
+        "item": "내 분석이 다음 예산 배분에 쓰였다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "ARTIFACT",
+        "item": "캠페인 기획서"
+      },
+      {
+        "domain": "TD02",
+        "slot": "VERIFY",
+        "item": "지난 캠페인 반응"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J1",
+        "item": "답하려는 물음을 자료로 답할 크기로 좁혔다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J1",
+        "item": "이번에 보지 않을 것을 적어 두었다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J2",
+        "item": "물음을 셀 수 있는 지표로 옮겼다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J2",
+        "item": "지표를 재는 기간과 대상을 정했다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J3",
+        "item": "자료에서 넣을 것과 뺄 것을 정했다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J3",
+        "item": "집단을 나누는 기준을 정했다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J4",
+        "item": "분석 방법을 골라 적용했다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J4",
+        "item": "쓸 도구를 골라 익혀 썼다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J5",
+        "item": "지표 정의표를 문서로 남겼다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J5",
+        "item": "분석 보고를 남겼다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J6",
+        "item": "같은 조건에서 집단 둘을 견주었다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J6",
+        "item": "결론을 다른 방법으로 한 번 더 확인했다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J7",
+        "item": "결론이 뒤집힌 까닭을 좁혀 적었다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J7",
+        "item": "자료나 지표 정의를 고쳐 다시 분석했다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J8",
+        "item": "분석 결과를 회의에서 설명했다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J8",
+        "item": "내 분석이 실제 결정에 쓰였다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "ARTIFACT",
+        "item": "지표 정의표"
+      },
+      {
+        "domain": "TD08",
+        "slot": "VERIFY",
+        "item": "지난 기간 값"
+      }
+    ],
+    "picked_alt": [
+      {
+        "domain": "TD02",
+        "slot": "J1",
+        "item": "무엇을 알릴지 범위를 좁혀 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J1",
+        "item": "이번에 볼 고객과 보지 않을 고객을 갈라 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J2",
+        "item": "성과를 재는 기간과 방법을 정했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J2",
+        "item": "목표를 전환율이나 도달 수로 옮겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J3",
+        "item": "쓰지 않을 채널을 골라 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J3",
+        "item": "채널별 예산 배분을 정했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J4",
+        "item": "반응을 재는 방법을 정했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J4",
+        "item": "설문이나 면접 같은 조사 방법을 골라 썼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J5",
+        "item": "채널별 성과를 표로 정리했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J5",
+        "item": "메시지 안을 여러 벌 적어 두었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J6",
+        "item": "메시지 둘의 반응을 나눠 재어 견주었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J6",
+        "item": "채널 둘의 성과를 같은 기준으로 견주었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J7",
+        "item": "메시지나 채널을 바꿔 다시 재었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J7",
+        "item": "반응이 낮은 까닭을 좁혀 들어갔다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J8",
+        "item": "내 분석이 다음 예산 배분에 쓰였다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J8",
+        "item": "캠페인 결과를 회의에서 설명했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "ARTIFACT",
+        "item": "설문 결과"
+      },
+      {
+        "domain": "TD02",
+        "slot": "VERIFY",
+        "item": "고객 의견"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J1",
+        "item": "이번에 보지 않을 것을 적어 두었다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J1",
+        "item": "답하려는 물음을 자료로 답할 크기로 좁혔다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J2",
+        "item": "지표를 재는 기간과 대상을 정했다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J2",
+        "item": "물음을 셀 수 있는 지표로 옮겼다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J3",
+        "item": "결측과 이상값을 어떻게 다룰지 정했다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J3",
+        "item": "집단을 나누는 기준을 정했다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J4",
+        "item": "쓸 도구를 골라 익혀 썼다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J4",
+        "item": "분석 방법을 골라 적용했다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J5",
+        "item": "자료 정리 절차를 적어 두었다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J5",
+        "item": "분석 보고를 남겼다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J6",
+        "item": "결론을 다른 방법으로 한 번 더 확인했다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J6",
+        "item": "같은 조건에서 집단 둘을 견주었다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J7",
+        "item": "자료나 지표 정의를 고쳐 다시 분석했다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J7",
+        "item": "결론이 뒤집힌 까닭을 좁혀 적었다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J8",
+        "item": "내 분석이 실제 결정에 쓰였다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "J8",
+        "item": "분석 결과를 회의에서 설명했다"
+      },
+      {
+        "domain": "TD08",
+        "slot": "ARTIFACT",
+        "item": "현황판"
+      },
+      {
+        "domain": "TD08",
+        "slot": "VERIFY",
+        "item": "다른 분석 방법"
+      }
+    ],
+    "zoneDiff": [
+      "TD02",
+      "TD08"
+    ],
+    "axisDiff": 5,
+    "NONE": {
+      "headline": {
+        "title": "마케팅·시장 과제는 해 봤고, 정리만 남았어요",
+        "lead": "뭘 골랐는지만 덧붙이면 돼요."
+      },
+      "zones": {
+        "TD01": "NOT_EXPLORED",
+        "TD02": "Z2_EVIDENCE_INCOMPLETE",
+        "TD03": "NOT_EXPLORED",
+        "TD04": "NOT_EXPLORED",
+        "TD05": "NOT_EXPLORED",
+        "TD06": "NOT_EXPLORED",
+        "TD07": "NOT_EXPLORED",
+        "TD08": "Z2_EVIDENCE_INCOMPLETE",
+        "TD09": "Z2_EVIDENCE_INCOMPLETE",
+        "TD10": "NOT_EXPLORED",
+        "TD11": "NOT_EXPLORED",
+        "TD12": "NOT_EXPLORED"
+      },
+      "axes": {
+        "TD01": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD02": {
+          "0": "CONFIRMED",
+          "1": "PARTICIPATED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD03": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD04": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD05": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD06": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD07": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD08": {
+          "0": "PARTICIPATED",
+          "1": "PARTICIPATED",
+          "2": "PARTICIPATED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD09": {
+          "0": "PARTICIPATED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "PARTICIPATED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "PARTICIPATED"
+        },
+        "TD10": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD11": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD12": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        }
+      },
+      "evidence": [],
+      "gaps": [
+        {
+          "title": "고객·서비스 운영 · 과제에서 손에 남은 것이 아직 없어요",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "직접 판단한 것은 있고, 그 판단이 남은 결과물이 아직 없습니다"
+        },
+        {
+          "title": "마케팅·시장 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "마케팅·시장 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "데이터·의사결정 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "데이터·의사결정 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "고객·서비스 운영 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        }
+      ],
+      "actions": [
+        "최근 마케팅·시장 과제 하나. 어느 고객을 보고 어느 채널에 쓸지 가운데 직접 정한 것과 그 까닭을 고객 구분 기준에 한 줄씩 남깁니다.",
+        "최근 데이터·의사결정 과제 하나. 지표 정의, 자료 정리 같은 것 가운데 왜 그 방법을 골랐는지 다른 선택과 나란히 지표 정의표에 적습니다.",
+        "최근 고객·서비스 운영 과제 하나. 어디까지 그 자리에서 해결하고 무엇을 올릴지 가운데 직접 정한 것과 그 까닭을 불만 처리 기록에 한 줄씩 남깁니다.",
+        "다음 마케팅·시장 과제 하나. 끝까지 가서 캠페인 기획서나 채널별 성과 비교표 한 벌을 남겨 두세요.",
+        "다음 데이터·의사결정 과제 하나. 끝까지 가서 지표 정의표나 분석 보고 한 벌을 남겨 두세요.",
+        "다음 고객·서비스 운영 과제 하나. 끝까지 가서 서비스 절차나 응대 기준 한 벌을 남겨 두세요."
+      ]
+    },
+    "WITH": {
+      "headline": {
+        "title": "마케팅·시장 과제에서 방향을 직접 정해 본 일이 있어요",
+        "lead": "확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요."
+      },
+      "zones": {
+        "TD01": "NOT_EXPLORED",
+        "TD02": "Z1_EVIDENCE_ESTABLISHED",
+        "TD03": "NOT_EXPLORED",
+        "TD04": "NOT_EXPLORED",
+        "TD05": "NOT_EXPLORED",
+        "TD06": "NOT_EXPLORED",
+        "TD07": "NOT_EXPLORED",
+        "TD08": "Z1_EVIDENCE_ESTABLISHED",
+        "TD09": "Z2_EVIDENCE_INCOMPLETE",
+        "TD10": "NOT_EXPLORED",
+        "TD11": "NOT_EXPLORED",
+        "TD12": "NOT_EXPLORED"
+      },
+      "axes": {
+        "TD01": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD02": {
+          "0": "CONFIRMED",
+          "1": "PARTICIPATED",
+          "2": "OWNED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "OWNED",
+          "7": "OWNED"
+        },
+        "TD03": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD04": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD05": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD06": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD07": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD08": {
+          "0": "PARTICIPATED",
+          "1": "PARTICIPATED",
+          "2": "PARTICIPATED",
+          "3": "OWNED",
+          "4": "OWNED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD09": {
+          "0": "PARTICIPATED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "PARTICIPATED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "PARTICIPATED"
+        },
+        "TD10": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD11": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD12": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        }
+      },
+      "evidence": [
+        {
+          "code": "TD02",
+          "decided": [
+            "고객을 나누는 기준을 정했다",
+            "채널별 예산 배분을 정했다",
+            "메시지나 채널을 바꿔 다시 재었다",
+            "반응이 낮은 까닭을 좁혀 들어갔다",
+            "내 분석이 다음 예산 배분에 쓰였다",
+            "캠페인 결과를 회의에서 설명했다"
+          ],
+          "did": [
+            "무엇을 알릴지 범위를 좁혀 적었다",
+            "이번에 볼 고객과 보지 않을 고객을 갈라 적었다",
+            "고객을 나누는 기준을 정했다",
+            "채널별 예산 배분을 정했다",
+            "반응을 재는 방법을 정했다",
+            "설문이나 면접 같은 조사 방법을 골라 썼다",
+            "캠페인 기획서",
+            "메시지 안을 여러 벌 적어 두었다",
+            "캠페인 기획서를 문서로 남겼다",
+            "메시지 둘의 반응을 나눠 재어 견주었다",
+            "채널 둘의 성과를 같은 기준으로 견주었다",
+            "지난 캠페인 반응",
+            "메시지나 채널을 바꿔 다시 재었다",
+            "반응이 낮은 까닭을 좁혀 들어갔다",
+            "내 분석이 다음 예산 배분에 쓰였다",
+            "캠페인 결과를 회의에서 설명했다"
+          ],
+          "artifacts": [
+            "캠페인 기획서"
+          ],
+          "verifications": [
+            "지난 캠페인 반응"
+          ]
+        },
+        {
+          "code": "TD08",
+          "decided": [
+            "분석 방법을 골라 적용했다",
+            "쓸 도구를 골라 익혀 썼다",
+            "지표 정의표",
+            "분석 보고를 남겼다",
+            "지표 정의표를 문서로 남겼다"
+          ],
+          "did": [
+            "분석 방법을 골라 적용했다",
+            "쓸 도구를 골라 익혀 썼다",
+            "지표 정의표",
+            "분석 보고를 남겼다",
+            "지표 정의표를 문서로 남겼다",
+            "같은 조건에서 집단 둘을 견주었다",
+            "결론을 다른 방법으로 한 번 더 확인했다",
+            "지난 기간 값",
+            "결론이 뒤집힌 까닭을 좁혀 적었다",
+            "자료나 지표 정의를 고쳐 다시 분석했다",
+            "내 분석이 실제 결정에 쓰였다",
+            "분석 결과를 회의에서 설명했다"
+          ],
+          "artifacts": [
+            "지표 정의표"
+          ],
+          "verifications": [
+            "지난 기간 값"
+          ]
+        }
+      ],
+      "gaps": [
+        {
+          "title": "마케팅·시장 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "데이터·의사결정 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "고객·서비스 운영 · 과제에서 손에 남은 것이 아직 없어요",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "직접 판단한 것은 있고, 그 판단이 남은 결과물이 아직 없습니다"
+        }
+      ],
+      "actions": [
+        "최근 마케팅·시장 과제 하나. 지난 캠페인 반응이나 목표 지표 가운데 무엇과 견줬는지 적고, 그 차이를 채널별 성과 비교표에 남깁니다.",
+        "최근 데이터·의사결정 과제 하나. 지난 기간 값이나 다른 집단의 값 가운데 무엇과 견줬는지 적고, 그 차이를 분석 보고에 남깁니다.",
+        "다음 고객·서비스 운영 과제 하나. 끝까지 가서 서비스 절차나 응대 기준 한 벌을 남겨 두세요."
+      ]
+    },
+    "ALT": {
+      "headline": {
+        "title": "마케팅·시장 과제에서 방향을 직접 정해 본 일이 있어요",
+        "lead": "확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요."
+      },
+      "zones": {
+        "TD01": "NOT_EXPLORED",
+        "TD02": "Z1_EVIDENCE_ESTABLISHED",
+        "TD03": "NOT_EXPLORED",
+        "TD04": "NOT_EXPLORED",
+        "TD05": "NOT_EXPLORED",
+        "TD06": "NOT_EXPLORED",
+        "TD07": "NOT_EXPLORED",
+        "TD08": "Z1_EVIDENCE_ESTABLISHED",
+        "TD09": "Z2_EVIDENCE_INCOMPLETE",
+        "TD10": "NOT_EXPLORED",
+        "TD11": "NOT_EXPLORED",
+        "TD12": "NOT_EXPLORED"
+      },
+      "axes": {
+        "TD01": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD02": {
+          "0": "CONFIRMED",
+          "1": "PARTICIPATED",
+          "2": "OWNED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "OWNED",
+          "7": "OWNED"
+        },
+        "TD03": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD04": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD05": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD06": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD07": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD08": {
+          "0": "PARTICIPATED",
+          "1": "PARTICIPATED",
+          "2": "PARTICIPATED",
+          "3": "OWNED",
+          "4": "OWNED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD09": {
+          "0": "PARTICIPATED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "PARTICIPATED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "PARTICIPATED"
+        },
+        "TD10": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD11": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD12": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        }
+      },
+      "evidence": [
+        {
+          "code": "TD02",
+          "decided": [
+            "쓰지 않을 채널을 골라 적었다",
+            "채널별 예산 배분을 정했다",
+            "메시지나 채널을 바꿔 다시 재었다",
+            "반응이 낮은 까닭을 좁혀 들어갔다",
+            "내 분석이 다음 예산 배분에 쓰였다",
+            "캠페인 결과를 회의에서 설명했다"
+          ],
+          "did": [
+            "무엇을 알릴지 범위를 좁혀 적었다",
+            "이번에 볼 고객과 보지 않을 고객을 갈라 적었다",
+            "쓰지 않을 채널을 골라 적었다",
+            "채널별 예산 배분을 정했다",
+            "반응을 재는 방법을 정했다",
+            "설문이나 면접 같은 조사 방법을 골라 썼다",
+            "설문 결과",
+            "메시지 안을 여러 벌 적어 두었다",
+            "채널별 성과를 표로 정리했다",
+            "메시지 둘의 반응을 나눠 재어 견주었다",
+            "채널 둘의 성과를 같은 기준으로 견주었다",
+            "고객 의견",
+            "메시지나 채널을 바꿔 다시 재었다",
+            "반응이 낮은 까닭을 좁혀 들어갔다",
+            "내 분석이 다음 예산 배분에 쓰였다",
+            "캠페인 결과를 회의에서 설명했다"
+          ],
+          "artifacts": [
+            "설문 결과"
+          ],
+          "verifications": [
+            "고객 의견"
+          ]
+        },
+        {
+          "code": "TD08",
+          "decided": [
+            "분석 방법을 골라 적용했다",
+            "쓸 도구를 골라 익혀 썼다",
+            "현황판",
+            "분석 보고를 남겼다",
+            "자료 정리 절차를 적어 두었다"
+          ],
+          "did": [
+            "분석 방법을 골라 적용했다",
+            "쓸 도구를 골라 익혀 썼다",
+            "현황판",
+            "분석 보고를 남겼다",
+            "자료 정리 절차를 적어 두었다",
+            "같은 조건에서 집단 둘을 견주었다",
+            "결론을 다른 방법으로 한 번 더 확인했다",
+            "다른 분석 방법",
+            "결론이 뒤집힌 까닭을 좁혀 적었다",
+            "자료나 지표 정의를 고쳐 다시 분석했다",
+            "내 분석이 실제 결정에 쓰였다",
+            "분석 결과를 회의에서 설명했다"
+          ],
+          "artifacts": [
+            "현황판"
+          ],
+          "verifications": [
+            "다른 분석 방법"
+          ]
+        }
+      ],
+      "gaps": [
+        {
+          "title": "마케팅·시장 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "데이터·의사결정 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "고객·서비스 운영 · 과제에서 손에 남은 것이 아직 없어요",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "직접 판단한 것은 있고, 그 판단이 남은 결과물이 아직 없습니다"
+        }
+      ],
+      "actions": [
+        "최근 마케팅·시장 과제 하나. 지난 캠페인 반응이나 목표 지표 가운데 무엇과 견줬는지 적고, 그 차이를 채널별 성과 비교표에 남깁니다.",
+        "최근 데이터·의사결정 과제 하나. 지난 기간 값이나 다른 집단의 값 가운데 무엇과 견줬는지 적고, 그 차이를 분석 보고에 남깁니다.",
+        "다음 고객·서비스 운영 과제 하나. 끝까지 가서 서비스 절차나 응대 기준 한 벌을 남겨 두세요."
+      ]
+    }
+  },
+  "EE_CORE_V1": {
+    "source": "294",
+    "attempts": {
+      "NONE": "355",
+      "WITH": "356",
+      "ALT": "357"
+    },
+    "picked": [
+      {
+        "domain": "TD01",
+        "slot": "J1",
+        "item": "회로가 맡을 범위와 다루지 않을 것을 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J1",
+        "item": "요구가 없는 부분의 가정을 세워 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J2",
+        "item": "요구를 이득과 대역폭 수치로 옮겨 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J2",
+        "item": "잡음과 소비전류의 허용치를 설계 조건에 넣었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J3",
+        "item": "저항과 커패시터 값을 계산해 정했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J3",
+        "item": "바이어스 동작점을 정했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J4",
+        "item": "회로 시뮬레이터로 주파수 응답을 확인했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J4",
+        "item": "잡음 예산을 손계산으로 남겼다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J5",
+        "item": "회로도와 소자 선정표를 문서로 남겼다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J5",
+        "item": "설계 계산서를 다음 사람이 읽게 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J6",
+        "item": "시뮬레이션 값과 측정값을 같은 조건에서 견주었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J6",
+        "item": "데이터시트의 한계값과 설계값을 대조했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J7",
+        "item": "발진이나 포화의 원인 후보를 좁혀 들어갔다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J7",
+        "item": "소자값을 바꾸고 바뀐 결과를 다시 쟀다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J8",
+        "item": "검토 회의에서 회로 판단을 설명했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J8",
+        "item": "그 회로가 다음 단계 보드에 쓰였다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "ARTIFACT",
+        "item": "회로도"
+      },
+      {
+        "domain": "TD01",
+        "slot": "VERIFY",
+        "item": "시뮬레이션 결과"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J1",
+        "item": "논리가 맡을 범위와 상위에 맡길 것을 갈라 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J1",
+        "item": "인터페이스 경계를 먼저 정해 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J2",
+        "item": "요구를 동작 주파수와 지연 수치로 옮겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J2",
+        "item": "자원 한계를 설계 조건으로 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J3",
+        "item": "상태 기계의 상태와 전이를 정했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J3",
+        "item": "파이프라인 단계 수를 정했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J4",
+        "item": "논리 기술을 적고 시뮬레이터로 돌렸다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J4",
+        "item": "검증 벤치를 만들어 경우를 덮었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J5",
+        "item": "논리 기술 코드와 제약 파일을 남겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J5",
+        "item": "검증 결과를 보고로 남겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J6",
+        "item": "시뮬레이션 파형과 실제 동작을 견주었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J6",
+        "item": "타이밍 보고의 여유를 설계값과 대조했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J7",
+        "item": "오동작의 원인 후보를 좁혀 들어갔다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J7",
+        "item": "고친 뒤 같은 경우를 다시 돌려 확인했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J8",
+        "item": "검토에서 구조 선택의 까닭을 설명했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J8",
+        "item": "그 모듈이 상위 시스템에 들어갔다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "ARTIFACT",
+        "item": "논리 기술 코드"
+      },
+      {
+        "domain": "TD02",
+        "slot": "VERIFY",
+        "item": "시뮬레이션 파형"
+      }
+    ],
+    "picked_alt": [
+      {
+        "domain": "TD01",
+        "slot": "J1",
+        "item": "요구가 없는 부분의 가정을 세워 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J1",
+        "item": "회로가 맡을 범위와 다루지 않을 것을 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J2",
+        "item": "동작 온도와 전원 변동 범위를 조건으로 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J2",
+        "item": "잡음과 소비전류의 허용치를 설계 조건에 넣었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J3",
+        "item": "안정도 여유를 보고 보상 소자를 정했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J3",
+        "item": "능동 소자를 특성 비교로 골라 정했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J4",
+        "item": "잡음 예산을 손계산으로 남겼다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J4",
+        "item": "회로 시뮬레이터로 주파수 응답을 확인했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J5",
+        "item": "설계 계산서를 다음 사람이 읽게 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J5",
+        "item": "회로도와 소자 선정표를 문서로 남겼다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J6",
+        "item": "데이터시트의 한계값과 설계값을 대조했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J6",
+        "item": "시뮬레이션 값과 측정값을 같은 조건에서 견주었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J7",
+        "item": "소자값을 바꾸고 바뀐 결과를 다시 쟀다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J7",
+        "item": "발진이나 포화의 원인 후보를 좁혀 들어갔다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J8",
+        "item": "그 회로가 다음 단계 보드에 쓰였다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J8",
+        "item": "검토 회의에서 회로 판단을 설명했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "ARTIFACT",
+        "item": "측정 보고"
+      },
+      {
+        "domain": "TD01",
+        "slot": "VERIFY",
+        "item": "기존 회로"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J1",
+        "item": "인터페이스 경계를 먼저 정해 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J1",
+        "item": "논리가 맡을 범위와 상위에 맡길 것을 갈라 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J2",
+        "item": "자원 한계를 설계 조건으로 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J2",
+        "item": "요구를 동작 주파수와 지연 수치로 옮겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J3",
+        "item": "클럭 영역 사이의 동기화 방식을 정했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J3",
+        "item": "파이프라인 단계 수를 정했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J4",
+        "item": "검증 벤치를 만들어 경우를 덮었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J4",
+        "item": "논리 기술을 적고 시뮬레이터로 돌렸다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J5",
+        "item": "검증 결과를 보고로 남겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J5",
+        "item": "논리 기술 코드와 제약 파일을 남겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J6",
+        "item": "타이밍 보고의 여유를 설계값과 대조했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J6",
+        "item": "시뮬레이션 파형과 실제 동작을 견주었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J7",
+        "item": "고친 뒤 같은 경우를 다시 돌려 확인했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J7",
+        "item": "오동작의 원인 후보를 좁혀 들어갔다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J8",
+        "item": "그 모듈이 상위 시스템에 들어갔다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J8",
+        "item": "검토에서 구조 선택의 까닭을 설명했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "ARTIFACT",
+        "item": "동작 비트스트림"
+      },
+      {
+        "domain": "TD02",
+        "slot": "VERIFY",
+        "item": "규격 문서"
+      }
+    ],
+    "zoneDiff": [
+      "TD01",
+      "TD02"
+    ],
+    "axisDiff": 0,
+    "NONE": {
+      "headline": {
+        "title": "아날로그 회로 설계 과제는 해 봤고, 정리만 남았어요",
+        "lead": "뭘 골랐는지만 덧붙이면 돼요."
+      },
+      "zones": {
+        "TD01": "Z2_EVIDENCE_INCOMPLETE",
+        "TD02": "Z2_EVIDENCE_INCOMPLETE",
+        "TD03": "Z2_EVIDENCE_INCOMPLETE",
+        "TD04": "Z2_EVIDENCE_INCOMPLETE",
+        "TD05": "NOT_EXPLORED",
+        "TD06": "NOT_EXPLORED",
+        "TD07": "NOT_EXPLORED",
+        "TD08": "NOT_EXPLORED",
+        "TD09": "NOT_EXPLORED",
+        "TD10": "NOT_EXPLORED",
+        "TD11": "NOT_EXPLORED",
+        "TD12": "NOT_EXPLORED"
+      },
+      "axes": {
+        "TD01": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD02": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD03": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD04": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD05": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD06": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD07": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD08": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD09": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD10": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD11": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD12": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        }
+      },
+      "evidence": [],
+      "gaps": [
+        {
+          "title": "아날로그 회로 설계 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "아날로그 회로 설계 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "디지털·논리 설계 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "디지털·논리 설계 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "임베디드·펌웨어 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "임베디드·펌웨어 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "신호처리 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "신호처리 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        }
+      ],
+      "actions": [
+        "최근 아날로그 회로 설계 과제 하나. 회로 구조와 능동 소자 종류, 어느 성능을 먼저 지킬지 가운데 직접 정한 것과 그 까닭을 설계 계산서에 한 줄씩 남깁니다.",
+        "최근 디지털·논리 설계 과제 하나. 상태 기계 구조와 파이프라인 단계를 몇으로 둘지 가운데 직접 정한 것과 그 까닭을 검증 벤치에 한 줄씩 남깁니다.",
+        "최근 임베디드·펌웨어 과제 하나. 주기를 나눌 구조와 인터럽트를 어디에 둘지 가운데 직접 정한 것과 그 까닭을 동작 로그에 한 줄씩 남깁니다.",
+        "최근 신호처리 과제 하나. 필터 종류와 차수, 변환 구간 길이를 얼마로 둘지 가운데 직접 정한 것과 그 까닭을 성능 지표에 한 줄씩 남깁니다.",
+        "다음 아날로그 회로 설계 과제 하나. 끝까지 가서 회로도나 소자 선정표 한 벌을 남겨 두세요.",
+        "다음 디지털·논리 설계 과제 하나. 끝까지 가서 논리 기술 코드나 제약 파일 한 벌을 남겨 두세요.",
+        "다음 임베디드·펌웨어 과제 하나. 끝까지 가서 펌웨어 소스나 빌드 산출물 한 벌을 남겨 두세요.",
+        "다음 신호처리 과제 하나. 끝까지 가서 처리 코드나 필터 계수 한 벌을 남겨 두세요."
+      ]
+    },
+    "WITH": {
+      "headline": {
+        "title": "아날로그 회로 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+        "lead": "확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요."
+      },
+      "zones": {
+        "TD01": "Z1_EVIDENCE_ESTABLISHED",
+        "TD02": "Z1_EVIDENCE_ESTABLISHED",
+        "TD03": "Z2_EVIDENCE_INCOMPLETE",
+        "TD04": "Z2_EVIDENCE_INCOMPLETE",
+        "TD05": "NOT_EXPLORED",
+        "TD06": "NOT_EXPLORED",
+        "TD07": "NOT_EXPLORED",
+        "TD08": "NOT_EXPLORED",
+        "TD09": "NOT_EXPLORED",
+        "TD10": "NOT_EXPLORED",
+        "TD11": "NOT_EXPLORED",
+        "TD12": "NOT_EXPLORED"
+      },
+      "axes": {
+        "TD01": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD02": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD03": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD04": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD05": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD06": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD07": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD08": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD09": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD10": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD11": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD12": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        }
+      },
+      "evidence": [
+        {
+          "code": "TD01",
+          "decided": [],
+          "did": [
+            "요구가 없는 부분의 가정을 세워 적었다",
+            "회로가 맡을 범위와 다루지 않을 것을 적었다",
+            "요구를 이득과 대역폭 수치로 옮겨 적었다",
+            "잡음과 소비전류의 허용치를 설계 조건에 넣었다",
+            "바이어스 동작점을 정했다",
+            "저항과 커패시터 값을 계산해 정했다",
+            "잡음 예산을 손계산으로 남겼다",
+            "회로 시뮬레이터로 주파수 응답을 확인했다",
+            "회로도",
+            "설계 계산서를 다음 사람이 읽게 적었다",
+            "회로도와 소자 선정표를 문서로 남겼다",
+            "데이터시트의 한계값과 설계값을 대조했다",
+            "시뮬레이션 값과 측정값을 같은 조건에서 견주었다",
+            "시뮬레이션 결과",
+            "발진이나 포화의 원인 후보를 좁혀 들어갔다",
+            "소자값을 바꾸고 바뀐 결과를 다시 쟀다",
+            "검토 회의에서 회로 판단을 설명했다",
+            "그 회로가 다음 단계 보드에 쓰였다"
+          ],
+          "artifacts": [
+            "회로도"
+          ],
+          "verifications": [
+            "시뮬레이션 결과"
+          ]
+        },
+        {
+          "code": "TD02",
+          "decided": [],
+          "did": [
+            "논리가 맡을 범위와 상위에 맡길 것을 갈라 적었다",
+            "인터페이스 경계를 먼저 정해 적었다",
+            "요구를 동작 주파수와 지연 수치로 옮겼다",
+            "자원 한계를 설계 조건으로 적었다",
+            "상태 기계의 상태와 전이를 정했다",
+            "파이프라인 단계 수를 정했다",
+            "검증 벤치를 만들어 경우를 덮었다",
+            "논리 기술을 적고 시뮬레이터로 돌렸다",
+            "논리 기술 코드",
+            "검증 결과를 보고로 남겼다",
+            "논리 기술 코드와 제약 파일을 남겼다",
+            "시뮬레이션 파형과 실제 동작을 견주었다",
+            "타이밍 보고의 여유를 설계값과 대조했다",
+            "시뮬레이션 파형",
+            "고친 뒤 같은 경우를 다시 돌려 확인했다",
+            "오동작의 원인 후보를 좁혀 들어갔다",
+            "검토에서 구조 선택의 까닭을 설명했다",
+            "그 모듈이 상위 시스템에 들어갔다"
+          ],
+          "artifacts": [
+            "논리 기술 코드"
+          ],
+          "verifications": [
+            "시뮬레이션 파형"
+          ]
+        }
+      ],
+      "gaps": [
+        {
+          "title": "아날로그 회로 설계 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "디지털·논리 설계 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "임베디드·펌웨어 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "신호처리 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        }
+      ],
+      "actions": [
+        "최근 아날로그 회로 설계 과제 하나. 회로 구조와 능동 소자 종류, 어느 성능을 먼저 지킬지 가운데 직접 정한 것과 그 까닭을 설계 계산서에 한 줄씩 남깁니다.",
+        "최근 디지털·논리 설계 과제 하나. 상태 기계 구조와 파이프라인 단계를 몇으로 둘지 가운데 직접 정한 것과 그 까닭을 검증 벤치에 한 줄씩 남깁니다.",
+        "다음 임베디드·펌웨어 과제 하나. 끝까지 가서 펌웨어 소스나 빌드 산출물 한 벌을 남겨 두세요.",
+        "다음 신호처리 과제 하나. 끝까지 가서 처리 코드나 필터 계수 한 벌을 남겨 두세요."
+      ]
+    },
+    "ALT": {
+      "headline": {
+        "title": "아날로그 회로 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+        "lead": "확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요."
+      },
+      "zones": {
+        "TD01": "Z1_EVIDENCE_ESTABLISHED",
+        "TD02": "Z1_EVIDENCE_ESTABLISHED",
+        "TD03": "Z2_EVIDENCE_INCOMPLETE",
+        "TD04": "Z2_EVIDENCE_INCOMPLETE",
+        "TD05": "NOT_EXPLORED",
+        "TD06": "NOT_EXPLORED",
+        "TD07": "NOT_EXPLORED",
+        "TD08": "NOT_EXPLORED",
+        "TD09": "NOT_EXPLORED",
+        "TD10": "NOT_EXPLORED",
+        "TD11": "NOT_EXPLORED",
+        "TD12": "NOT_EXPLORED"
+      },
+      "axes": {
+        "TD01": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD02": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD03": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD04": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD05": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD06": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD07": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD08": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD09": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD10": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD11": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD12": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        }
+      },
+      "evidence": [
+        {
+          "code": "TD01",
+          "decided": [],
+          "did": [
+            "요구가 없는 부분의 가정을 세워 적었다",
+            "회로가 맡을 범위와 다루지 않을 것을 적었다",
+            "동작 온도와 전원 변동 범위를 조건으로 적었다",
+            "잡음과 소비전류의 허용치를 설계 조건에 넣었다",
+            "능동 소자를 특성 비교로 골라 정했다",
+            "안정도 여유를 보고 보상 소자를 정했다",
+            "잡음 예산을 손계산으로 남겼다",
+            "회로 시뮬레이터로 주파수 응답을 확인했다",
+            "측정 보고",
+            "설계 계산서를 다음 사람이 읽게 적었다",
+            "회로도와 소자 선정표를 문서로 남겼다",
+            "데이터시트의 한계값과 설계값을 대조했다",
+            "시뮬레이션 값과 측정값을 같은 조건에서 견주었다",
+            "기존 회로",
+            "발진이나 포화의 원인 후보를 좁혀 들어갔다",
+            "소자값을 바꾸고 바뀐 결과를 다시 쟀다",
+            "검토 회의에서 회로 판단을 설명했다",
+            "그 회로가 다음 단계 보드에 쓰였다"
+          ],
+          "artifacts": [
+            "측정 보고"
+          ],
+          "verifications": [
+            "기존 회로"
+          ]
+        },
+        {
+          "code": "TD02",
+          "decided": [],
+          "did": [
+            "논리가 맡을 범위와 상위에 맡길 것을 갈라 적었다",
+            "인터페이스 경계를 먼저 정해 적었다",
+            "요구를 동작 주파수와 지연 수치로 옮겼다",
+            "자원 한계를 설계 조건으로 적었다",
+            "클럭 영역 사이의 동기화 방식을 정했다",
+            "파이프라인 단계 수를 정했다",
+            "검증 벤치를 만들어 경우를 덮었다",
+            "논리 기술을 적고 시뮬레이터로 돌렸다",
+            "동작 비트스트림",
+            "검증 결과를 보고로 남겼다",
+            "논리 기술 코드와 제약 파일을 남겼다",
+            "시뮬레이션 파형과 실제 동작을 견주었다",
+            "타이밍 보고의 여유를 설계값과 대조했다",
+            "규격 문서",
+            "고친 뒤 같은 경우를 다시 돌려 확인했다",
+            "오동작의 원인 후보를 좁혀 들어갔다",
+            "검토에서 구조 선택의 까닭을 설명했다",
+            "그 모듈이 상위 시스템에 들어갔다"
+          ],
+          "artifacts": [
+            "동작 비트스트림"
+          ],
+          "verifications": [
+            "규격 문서"
+          ]
+        }
+      ],
+      "gaps": [
+        {
+          "title": "아날로그 회로 설계 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "디지털·논리 설계 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "임베디드·펌웨어 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "신호처리 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        }
+      ],
+      "actions": [
+        "최근 아날로그 회로 설계 과제 하나. 회로 구조와 능동 소자 종류, 어느 성능을 먼저 지킬지 가운데 직접 정한 것과 그 까닭을 설계 계산서에 한 줄씩 남깁니다.",
+        "최근 디지털·논리 설계 과제 하나. 상태 기계 구조와 파이프라인 단계를 몇으로 둘지 가운데 직접 정한 것과 그 까닭을 검증 벤치에 한 줄씩 남깁니다.",
+        "다음 임베디드·펌웨어 과제 하나. 끝까지 가서 펌웨어 소스나 빌드 산출물 한 벌을 남겨 두세요.",
+        "다음 신호처리 과제 하나. 끝까지 가서 처리 코드나 필터 계수 한 벌을 남겨 두세요."
+      ]
+    }
+  },
+  "CS_CORE_V1": {
+    "source": "295",
+    "attempts": {
+      "NONE": "358",
+      "WITH": "359",
+      "ALT": "360"
+    },
+    "picked": [
+      {
+        "domain": "TD01",
+        "slot": "J1",
+        "item": "이 시스템이 맡을 일과 맡지 않을 일을 갈라 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J1",
+        "item": "요구가 모호한 부분의 가정을 세워 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J2",
+        "item": "요구를 응답 시간이나 동시 사용자 수로 옮겨 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J2",
+        "item": "서로 부딪히는 요구의 우선순위를 정했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J3",
+        "item": "모듈을 가르는 선을 정했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J3",
+        "item": "어느 기능을 어느 모듈이 맡을지 배정했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J4",
+        "item": "구조를 적는 표기 방법을 골라 썼다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J4",
+        "item": "결정을 기록으로 남기는 방식을 정했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J5",
+        "item": "모듈 구조도를 문서로 남겼다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J5",
+        "item": "인터페이스 규약을 적어 두었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J6",
+        "item": "설계안 둘을 같은 기준으로 견주었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J6",
+        "item": "구현된 코드가 설계와 맞는지 대조했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J7",
+        "item": "한 곳을 고치니 깨진 자리를 찾아 좁혔다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J7",
+        "item": "같은 수정이 되풀이되지 않게 구조를 바꿨다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J8",
+        "item": "설계안을 검토 회의에서 설명했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J8",
+        "item": "내 설계가 일정과 인원 배치에 쓰였다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "ARTIFACT",
+        "item": "요구 목록"
+      },
+      {
+        "domain": "TD01",
+        "slot": "VERIFY",
+        "item": "요구 목록"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J1",
+        "item": "풀 문제를 입력과 출력으로 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J1",
+        "item": "다루지 않을 입력 범위를 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J2",
+        "item": "허용 응답 시간을 수치로 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J2",
+        "item": "메모리 상한을 조건으로 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J3",
+        "item": "자료를 담을 표현을 골랐다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J3",
+        "item": "어느 연산을 빠르게 할지 정했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J4",
+        "item": "복잡도를 손으로 계산했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J4",
+        "item": "성능 측정 방법을 정해 썼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J5",
+        "item": "구현 코드를 다른 사람이 쓸 수 있게 남겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J5",
+        "item": "복잡도 근거를 메모로 남겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J6",
+        "item": "이론값과 실측 시간을 대조했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J6",
+        "item": "다른 자료 표현으로 같은 입력을 돌려 견주었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J7",
+        "item": "느린 구간을 측정으로 찾아냈다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J7",
+        "item": "원인을 고친 뒤 시간을 다시 재었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J8",
+        "item": "성능 비교를 팀에 설명했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J8",
+        "item": "내 근거가 기능 범위 결정에 쓰였다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "ARTIFACT",
+        "item": "구현 코드"
+      },
+      {
+        "domain": "TD02",
+        "slot": "VERIFY",
+        "item": "이론 복잡도"
+      }
+    ],
+    "picked_alt": [
+      {
+        "domain": "TD01",
+        "slot": "J1",
+        "item": "요구가 모호한 부분의 가정을 세워 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J1",
+        "item": "이 시스템이 맡을 일과 맡지 않을 일을 갈라 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J2",
+        "item": "지켜야 할 조건을 인수 기준으로 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J2",
+        "item": "서로 부딪히는 요구의 우선순위를 정했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J3",
+        "item": "모듈 사이의 의존 방향을 정했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J3",
+        "item": "어느 기능을 어느 모듈이 맡을지 배정했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J4",
+        "item": "결정을 기록으로 남기는 방식을 정했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J4",
+        "item": "구조를 적는 표기 방법을 골라 썼다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J5",
+        "item": "용어 사전을 만들어 팀이 같이 썼다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J5",
+        "item": "인터페이스 규약을 적어 두었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J6",
+        "item": "구현된 코드가 설계와 맞는지 대조했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J6",
+        "item": "설계안 둘을 같은 기준으로 견주었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J7",
+        "item": "같은 수정이 되풀이되지 않게 구조를 바꿨다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J7",
+        "item": "한 곳을 고치니 깨진 자리를 찾아 좁혔다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J8",
+        "item": "내 설계가 일정과 인원 배치에 쓰였다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J8",
+        "item": "설계안을 검토 회의에서 설명했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "ARTIFACT",
+        "item": "용어 사전"
+      },
+      {
+        "domain": "TD01",
+        "slot": "VERIFY",
+        "item": "검토 의견"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J1",
+        "item": "다루지 않을 입력 범위를 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J1",
+        "item": "풀 문제를 입력과 출력으로 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J2",
+        "item": "메모리 상한을 조건으로 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J2",
+        "item": "허용 응답 시간을 수치로 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J3",
+        "item": "정확도를 조금 버리고 속도를 택했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J3",
+        "item": "어느 연산을 빠르게 할지 정했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J4",
+        "item": "성능 측정 방법을 정해 썼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J4",
+        "item": "복잡도를 손으로 계산했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J5",
+        "item": "복잡도 근거를 메모로 남겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J5",
+        "item": "구현 코드를 다른 사람이 쓸 수 있게 남겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J6",
+        "item": "경계 입력에서 결과를 확인했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J6",
+        "item": "다른 자료 표현으로 같은 입력을 돌려 견주었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J7",
+        "item": "원인을 고친 뒤 시간을 다시 재었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J7",
+        "item": "느린 구간을 측정으로 찾아냈다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J8",
+        "item": "내 근거가 기능 범위 결정에 쓰였다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J8",
+        "item": "성능 비교를 팀에 설명했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "ARTIFACT",
+        "item": "비교 표"
+      },
+      {
+        "domain": "TD02",
+        "slot": "VERIFY",
+        "item": "경계 입력 결과"
+      }
+    ],
+    "zoneDiff": [
+      "TD01",
+      "TD02"
+    ],
+    "axisDiff": 0,
+    "NONE": {
+      "headline": {
+        "title": "소프트웨어 설계·구조 과제는 해 봤고, 정리만 남았어요",
+        "lead": "뭘 골랐는지만 덧붙이면 돼요."
+      },
+      "zones": {
+        "TD01": "Z2_EVIDENCE_INCOMPLETE",
+        "TD02": "Z2_EVIDENCE_INCOMPLETE",
+        "TD03": "Z2_EVIDENCE_INCOMPLETE",
+        "TD04": "Z2_EVIDENCE_INCOMPLETE",
+        "TD05": "NOT_EXPLORED",
+        "TD06": "NOT_EXPLORED",
+        "TD07": "NOT_EXPLORED",
+        "TD08": "NOT_EXPLORED",
+        "TD09": "NOT_EXPLORED",
+        "TD10": "NOT_EXPLORED",
+        "TD11": "NOT_EXPLORED"
+      },
+      "axes": {
+        "TD01": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD02": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD03": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD04": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD05": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD06": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD07": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD08": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD09": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD10": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD11": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        }
+      },
+      "evidence": [],
+      "gaps": [
+        {
+          "title": "소프트웨어 설계·구조 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "소프트웨어 설계·구조 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "자료구조·알고리즘 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "자료구조·알고리즘 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "서버·API 구현 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "서버·API 구현 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "데이터 저장·질의 설계 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "데이터 저장·질의 설계 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        }
+      ],
+      "actions": [
+        "최근 소프트웨어 설계·구조 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 모듈 구조도에 그대로 옮깁니다.",
+        "최근 자료구조·알고리즘 과제 하나. 자료를 어떤 표현으로 담을지와 어느 연산을 빠르게 할지 가운데 직접 정한 것과 그 까닭을 성능 측정 기록에 한 줄씩 남깁니다.",
+        "최근 서버·API 구현 과제 하나. 주소 체계와 응답 꼴과 오류 코드, 어디까지 한 번에 처리할지 가운데 직접 정한 것과 그 까닭을 요청 시험 묶음에 한 줄씩 남깁니다.",
+        "최근 데이터 저장·질의 설계 과제 하나. 표를 나누는 선과 열 종류, 어느 조건을 빠르게 찾을지 가운데 직접 정한 것과 그 까닭을 질의 모음에 한 줄씩 남깁니다.",
+        "다음 소프트웨어 설계·구조 과제 하나. 끝까지 가서 요구 목록이나 모듈 구조도 한 벌을 남겨 두세요.",
+        "다음 자료구조·알고리즘 과제 하나. 끝까지 가서 구현 코드나 복잡도 근거 메모 한 벌을 남겨 두세요.",
+        "다음 서버·API 구현 과제 하나. 끝까지 가서 서버 코드나 응답 규약 문서 한 벌을 남겨 두세요.",
+        "다음 데이터 저장·질의 설계 과제 하나. 끝까지 가서 스키마 정의나 색인 목록 한 벌을 남겨 두세요."
+      ]
+    },
+    "WITH": {
+      "headline": {
+        "title": "소프트웨어 설계·구조 과제에서 방향을 직접 정해 본 일이 있어요",
+        "lead": "확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요."
+      },
+      "zones": {
+        "TD01": "Z1_EVIDENCE_ESTABLISHED",
+        "TD02": "Z1_EVIDENCE_ESTABLISHED",
+        "TD03": "Z2_EVIDENCE_INCOMPLETE",
+        "TD04": "Z2_EVIDENCE_INCOMPLETE",
+        "TD05": "NOT_EXPLORED",
+        "TD06": "NOT_EXPLORED",
+        "TD07": "NOT_EXPLORED",
+        "TD08": "NOT_EXPLORED",
+        "TD09": "NOT_EXPLORED",
+        "TD10": "NOT_EXPLORED",
+        "TD11": "NOT_EXPLORED"
+      },
+      "axes": {
+        "TD01": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD02": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD03": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD04": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD05": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD06": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD07": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD08": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD09": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD10": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD11": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        }
+      },
+      "evidence": [
+        {
+          "code": "TD01",
+          "decided": [],
+          "did": [
+            "요구가 모호한 부분의 가정을 세워 적었다",
+            "이 시스템이 맡을 일과 맡지 않을 일을 갈라 적었다",
+            "서로 부딪히는 요구의 우선순위를 정했다",
+            "요구를 응답 시간이나 동시 사용자 수로 옮겨 적었다",
+            "모듈을 가르는 선을 정했다",
+            "어느 기능을 어느 모듈이 맡을지 배정했다",
+            "결정을 기록으로 남기는 방식을 정했다",
+            "구조를 적는 표기 방법을 골라 썼다",
+            "요구 목록",
+            "모듈 구조도를 문서로 남겼다",
+            "인터페이스 규약을 적어 두었다",
+            "구현된 코드가 설계와 맞는지 대조했다",
+            "설계안 둘을 같은 기준으로 견주었다",
+            "같은 수정이 되풀이되지 않게 구조를 바꿨다",
+            "한 곳을 고치니 깨진 자리를 찾아 좁혔다",
+            "내 설계가 일정과 인원 배치에 쓰였다",
+            "설계안을 검토 회의에서 설명했다"
+          ],
+          "artifacts": [
+            "요구 목록"
+          ],
+          "verifications": [
+            "요구 목록"
+          ]
+        },
+        {
+          "code": "TD02",
+          "decided": [],
+          "did": [
+            "다루지 않을 입력 범위를 적었다",
+            "풀 문제를 입력과 출력으로 적었다",
+            "메모리 상한을 조건으로 적었다",
+            "허용 응답 시간을 수치로 적었다",
+            "어느 연산을 빠르게 할지 정했다",
+            "자료를 담을 표현을 골랐다",
+            "복잡도를 손으로 계산했다",
+            "성능 측정 방법을 정해 썼다",
+            "구현 코드",
+            "구현 코드를 다른 사람이 쓸 수 있게 남겼다",
+            "복잡도 근거를 메모로 남겼다",
+            "다른 자료 표현으로 같은 입력을 돌려 견주었다",
+            "이론값과 실측 시간을 대조했다",
+            "이론 복잡도",
+            "느린 구간을 측정으로 찾아냈다",
+            "원인을 고친 뒤 시간을 다시 재었다",
+            "내 근거가 기능 범위 결정에 쓰였다",
+            "성능 비교를 팀에 설명했다"
+          ],
+          "artifacts": [
+            "구현 코드"
+          ],
+          "verifications": [
+            "이론 복잡도"
+          ]
+        }
+      ],
+      "gaps": [
+        {
+          "title": "소프트웨어 설계·구조 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "자료구조·알고리즘 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "서버·API 구현 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "데이터 저장·질의 설계 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        }
+      ],
+      "actions": [
+        "최근 소프트웨어 설계·구조 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 모듈 구조도에 그대로 옮깁니다.",
+        "최근 자료구조·알고리즘 과제 하나. 자료를 어떤 표현으로 담을지와 어느 연산을 빠르게 할지 가운데 직접 정한 것과 그 까닭을 성능 측정 기록에 한 줄씩 남깁니다.",
+        "다음 서버·API 구현 과제 하나. 끝까지 가서 서버 코드나 응답 규약 문서 한 벌을 남겨 두세요.",
+        "다음 데이터 저장·질의 설계 과제 하나. 끝까지 가서 스키마 정의나 색인 목록 한 벌을 남겨 두세요."
+      ]
+    },
+    "ALT": {
+      "headline": {
+        "title": "소프트웨어 설계·구조 과제에서 방향을 직접 정해 본 일이 있어요",
+        "lead": "확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요."
+      },
+      "zones": {
+        "TD01": "Z1_EVIDENCE_ESTABLISHED",
+        "TD02": "Z1_EVIDENCE_ESTABLISHED",
+        "TD03": "Z2_EVIDENCE_INCOMPLETE",
+        "TD04": "Z2_EVIDENCE_INCOMPLETE",
+        "TD05": "NOT_EXPLORED",
+        "TD06": "NOT_EXPLORED",
+        "TD07": "NOT_EXPLORED",
+        "TD08": "NOT_EXPLORED",
+        "TD09": "NOT_EXPLORED",
+        "TD10": "NOT_EXPLORED",
+        "TD11": "NOT_EXPLORED"
+      },
+      "axes": {
+        "TD01": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD02": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD03": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD04": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD05": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD06": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD07": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD08": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD09": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD10": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD11": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        }
+      },
+      "evidence": [
+        {
+          "code": "TD01",
+          "decided": [],
+          "did": [
+            "요구가 모호한 부분의 가정을 세워 적었다",
+            "이 시스템이 맡을 일과 맡지 않을 일을 갈라 적었다",
+            "서로 부딪히는 요구의 우선순위를 정했다",
+            "지켜야 할 조건을 인수 기준으로 적었다",
+            "모듈 사이의 의존 방향을 정했다",
+            "어느 기능을 어느 모듈이 맡을지 배정했다",
+            "결정을 기록으로 남기는 방식을 정했다",
+            "구조를 적는 표기 방법을 골라 썼다",
+            "용어 사전",
+            "용어 사전을 만들어 팀이 같이 썼다",
+            "인터페이스 규약을 적어 두었다",
+            "구현된 코드가 설계와 맞는지 대조했다",
+            "설계안 둘을 같은 기준으로 견주었다",
+            "검토 의견",
+            "같은 수정이 되풀이되지 않게 구조를 바꿨다",
+            "한 곳을 고치니 깨진 자리를 찾아 좁혔다",
+            "내 설계가 일정과 인원 배치에 쓰였다",
+            "설계안을 검토 회의에서 설명했다"
+          ],
+          "artifacts": [
+            "용어 사전"
+          ],
+          "verifications": [
+            "검토 의견"
+          ]
+        },
+        {
+          "code": "TD02",
+          "decided": [],
+          "did": [
+            "다루지 않을 입력 범위를 적었다",
+            "풀 문제를 입력과 출력으로 적었다",
+            "메모리 상한을 조건으로 적었다",
+            "허용 응답 시간을 수치로 적었다",
+            "어느 연산을 빠르게 할지 정했다",
+            "정확도를 조금 버리고 속도를 택했다",
+            "복잡도를 손으로 계산했다",
+            "성능 측정 방법을 정해 썼다",
+            "비교 표",
+            "구현 코드를 다른 사람이 쓸 수 있게 남겼다",
+            "복잡도 근거를 메모로 남겼다",
+            "경계 입력에서 결과를 확인했다",
+            "다른 자료 표현으로 같은 입력을 돌려 견주었다",
+            "경계 입력 결과",
+            "느린 구간을 측정으로 찾아냈다",
+            "원인을 고친 뒤 시간을 다시 재었다",
+            "내 근거가 기능 범위 결정에 쓰였다",
+            "성능 비교를 팀에 설명했다"
+          ],
+          "artifacts": [
+            "비교 표"
+          ],
+          "verifications": [
+            "경계 입력 결과"
+          ]
+        }
+      ],
+      "gaps": [
+        {
+          "title": "소프트웨어 설계·구조 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "자료구조·알고리즘 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "서버·API 구현 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "데이터 저장·질의 설계 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        }
+      ],
+      "actions": [
+        "최근 소프트웨어 설계·구조 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 모듈 구조도에 그대로 옮깁니다.",
+        "최근 자료구조·알고리즘 과제 하나. 자료를 어떤 표현으로 담을지와 어느 연산을 빠르게 할지 가운데 직접 정한 것과 그 까닭을 성능 측정 기록에 한 줄씩 남깁니다.",
+        "다음 서버·API 구현 과제 하나. 끝까지 가서 서버 코드나 응답 규약 문서 한 벌을 남겨 두세요.",
+        "다음 데이터 저장·질의 설계 과제 하나. 끝까지 가서 스키마 정의나 색인 목록 한 벌을 남겨 두세요."
+      ]
+    }
+  },
+  "PUBADM_CORE_V1": {
+    "source": "304",
+    "attempts": {
+      "NONE": "361",
+      "WITH": "362",
+      "ALT": "363"
+    },
+    "picked": [
+      {
+        "domain": "TD01",
+        "slot": "J1",
+        "item": "이번에 다룰 대상과 다루지 않을 대상을 갈라 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J1",
+        "item": "목표가 모호한 부분의 가정을 세워 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J2",
+        "item": "목표를 건수나 비율 같은 성과지표로 옮겼다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J2",
+        "item": "서로 부딪히는 목표의 우선순위를 정했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J3",
+        "item": "여러 안 가운데 하나를 근거를 들어 골랐다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J3",
+        "item": "예산이나 인력을 항목별로 나눴다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J4",
+        "item": "쓸 추계 틀이나 분석 방법을 골라 적용했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J4",
+        "item": "계획을 적는 서식을 정해 썼다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J5",
+        "item": "사업계획서나 기획안을 문서로 남겼다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J5",
+        "item": "목표와 성과지표를 표로 정리했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J6",
+        "item": "안 둘을 같은 기준으로 견주었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J6",
+        "item": "계획과 실제 집행을 대조했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J7",
+        "item": "달성이 안 된 항목의 까닭을 좁혔다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J7",
+        "item": "다음 계획에서 조건을 바꿨다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J8",
+        "item": "기획안을 회의에서 설명했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J8",
+        "item": "내 기획이 예산이나 인력 배치에 쓰였다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "ARTIFACT",
+        "item": "사업계획서 한 벌"
+      },
+      {
+        "domain": "TD01",
+        "slot": "VERIFY",
+        "item": "상위 계획"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J1",
+        "item": "질의에서 다툼이 되는 쟁점을 좁혀 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J1",
+        "item": "검토하지 않을 범위를 적어 두었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J2",
+        "item": "조문의 요건을 확인 항목으로 풀어 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J2",
+        "item": "요건이 서로 부딪히는 자리를 찾아 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J3",
+        "item": "적용할 조문과 적용하지 않을 조문을 갈랐다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J3",
+        "item": "예외나 단서를 적용할지 직접 정했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J4",
+        "item": "법령 검색 도구로 개정 이력까지 확인했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J4",
+        "item": "조문을 견주는 대조표 서식을 정해 썼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J5",
+        "item": "검토 의견서를 문서로 남겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J5",
+        "item": "조문 대조표를 만들어 남겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J6",
+        "item": "상위 법령과 내 해석을 대조했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J6",
+        "item": "지난 유권해석이나 비슷한 처분과 견주었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J7",
+        "item": "해석이 뒤집힌 자리의 조문을 좁혔다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J7",
+        "item": "같은 오해가 나지 않게 지침이나 서식을 고쳤다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J8",
+        "item": "검토 결과를 회의에서 설명했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J8",
+        "item": "내 검토가 처분이나 공식 회신으로 나갔다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "ARTIFACT",
+        "item": "검토 의견서"
+      },
+      {
+        "domain": "TD02",
+        "slot": "VERIFY",
+        "item": "상위 법령"
+      }
+    ],
+    "picked_alt": [
+      {
+        "domain": "TD01",
+        "slot": "J1",
+        "item": "목표가 모호한 부분의 가정을 세워 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J1",
+        "item": "이번에 다룰 대상과 다루지 않을 대상을 갈라 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J2",
+        "item": "지표를 재는 방법과 주기를 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J2",
+        "item": "서로 부딪히는 목표의 우선순위를 정했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J3",
+        "item": "하지 않기로 한 것을 적어 두었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J3",
+        "item": "예산이나 인력을 항목별로 나눴다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J4",
+        "item": "계획을 적는 서식을 정해 썼다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J4",
+        "item": "쓸 추계 틀이나 분석 방법을 골라 적용했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J5",
+        "item": "결정의 까닭을 기록으로 남겼다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J5",
+        "item": "목표와 성과지표를 표로 정리했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J6",
+        "item": "계획과 실제 집행을 대조했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J6",
+        "item": "안 둘을 같은 기준으로 견주었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J7",
+        "item": "다음 계획에서 조건을 바꿨다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J7",
+        "item": "달성이 안 된 항목의 까닭을 좁혔다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J8",
+        "item": "내 기획이 예산이나 인력 배치에 쓰였다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J8",
+        "item": "기획안을 회의에서 설명했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "ARTIFACT",
+        "item": "결정 기록"
+      },
+      {
+        "domain": "TD01",
+        "slot": "VERIFY",
+        "item": "검토 의견"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J1",
+        "item": "검토하지 않을 범위를 적어 두었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J1",
+        "item": "질의에서 다툼이 되는 쟁점을 좁혀 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J2",
+        "item": "적용 시점과 경과 규정을 확인했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J2",
+        "item": "요건이 서로 부딪히는 자리를 찾아 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J3",
+        "item": "재량의 범위를 정해 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J3",
+        "item": "예외나 단서를 적용할지 직접 정했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J4",
+        "item": "조문을 견주는 대조표 서식을 정해 썼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J4",
+        "item": "법령 검색 도구로 개정 이력까지 확인했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J5",
+        "item": "해석의 까닭을 기록으로 남겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J5",
+        "item": "조문 대조표를 만들어 남겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J6",
+        "item": "지난 유권해석이나 비슷한 처분과 견주었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J6",
+        "item": "상위 법령과 내 해석을 대조했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J7",
+        "item": "같은 오해가 나지 않게 지침이나 서식을 고쳤다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J7",
+        "item": "해석이 뒤집힌 자리의 조문을 좁혔다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J8",
+        "item": "내 검토가 처분이나 공식 회신으로 나갔다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J8",
+        "item": "검토 결과를 회의에서 설명했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "ARTIFACT",
+        "item": "지침 개정안"
+      },
+      {
+        "domain": "TD02",
+        "slot": "VERIFY",
+        "item": "상급 기관 회신"
+      }
+    ],
+    "zoneDiff": [
+      "TD01",
+      "TD02"
+    ],
+    "axisDiff": 0,
+    "NONE": {
+      "headline": {
+        "title": "정책·사업 기획 과제는 해 봤고, 정리만 남았어요",
+        "lead": "뭘 골랐는지만 덧붙이면 돼요."
+      },
+      "zones": {
+        "TD01": "Z2_EVIDENCE_INCOMPLETE",
+        "TD02": "Z2_EVIDENCE_INCOMPLETE",
+        "TD03": "Z2_EVIDENCE_INCOMPLETE",
+        "TD04": "Z2_EVIDENCE_INCOMPLETE",
+        "TD05": "NOT_EXPLORED",
+        "TD06": "NOT_EXPLORED",
+        "TD07": "NOT_EXPLORED",
+        "TD08": "NOT_EXPLORED",
+        "TD09": "NOT_EXPLORED",
+        "TD10": "NOT_EXPLORED",
+        "TD11": "NOT_EXPLORED",
+        "TD12": "NOT_EXPLORED"
+      },
+      "axes": {
+        "TD01": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD02": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD03": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD04": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD05": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD06": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD07": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD08": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD09": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD10": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD11": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD12": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        }
+      },
+      "evidence": [],
+      "gaps": [
+        {
+          "title": "정책·사업 기획 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "정책·사업 기획 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "법령·규정 해석 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "법령·규정 해석 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "예산 편성·집행 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "예산 편성·집행 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "행정 절차·민원 처리 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "행정 절차·민원 처리 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        }
+      ],
+      "actions": [
+        "최근 정책·사업 기획 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 성과지표를 정리한 표에 그대로 옮깁니다.",
+        "최근 법령·규정 해석 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 조문 대조표에 그대로 옮깁니다.",
+        "최근 예산 편성·집행 과제 하나. 어느 사업을 얼마로 줄이고 어느 사업을 남길지 가운데 직접 정한 것과 그 까닭을 집행 계획표에 한 줄씩 남깁니다.",
+        "최근 행정 절차·민원 처리 과제 하나. 그 자리에서 처리할 범위와 보완을 요구할 범위 가운데 직접 정한 것과 그 까닭을 통지문에 한 줄씩 남깁니다.",
+        "다음 정책·사업 기획 과제 하나. 끝까지 가서 사업계획서 한 벌이나 성과지표 표 한 벌을 남겨 두세요.",
+        "다음 법령·규정 해석 과제 하나. 끝까지 가서 검토 의견서나 조문 대조표 한 벌을 남겨 두세요.",
+        "다음 예산 편성·집행 과제 하나. 끝까지 가서 예산안 한 벌이나 사업별 산출 근거 한 벌을 남겨 두세요.",
+        "다음 행정 절차·민원 처리 과제 하나. 끝까지 가서 처분 결정 기록이나 보완 요구 공문 한 벌을 남겨 두세요."
+      ]
+    },
+    "WITH": {
+      "headline": {
+        "title": "정책·사업 기획 과제에서 방향을 직접 정해 본 일이 있어요",
+        "lead": "확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요."
+      },
+      "zones": {
+        "TD01": "Z1_EVIDENCE_ESTABLISHED",
+        "TD02": "Z1_EVIDENCE_ESTABLISHED",
+        "TD03": "Z2_EVIDENCE_INCOMPLETE",
+        "TD04": "Z2_EVIDENCE_INCOMPLETE",
+        "TD05": "NOT_EXPLORED",
+        "TD06": "NOT_EXPLORED",
+        "TD07": "NOT_EXPLORED",
+        "TD08": "NOT_EXPLORED",
+        "TD09": "NOT_EXPLORED",
+        "TD10": "NOT_EXPLORED",
+        "TD11": "NOT_EXPLORED",
+        "TD12": "NOT_EXPLORED"
+      },
+      "axes": {
+        "TD01": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD02": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD03": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD04": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD05": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD06": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD07": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD08": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD09": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD10": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD11": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD12": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        }
+      },
+      "evidence": [
+        {
+          "code": "TD01",
+          "decided": [],
+          "did": [
+            "목표가 모호한 부분의 가정을 세워 적었다",
+            "이번에 다룰 대상과 다루지 않을 대상을 갈라 적었다",
+            "목표를 건수나 비율 같은 성과지표로 옮겼다",
+            "서로 부딪히는 목표의 우선순위를 정했다",
+            "여러 안 가운데 하나를 근거를 들어 골랐다",
+            "예산이나 인력을 항목별로 나눴다",
+            "계획을 적는 서식을 정해 썼다",
+            "쓸 추계 틀이나 분석 방법을 골라 적용했다",
+            "사업계획서 한 벌",
+            "목표와 성과지표를 표로 정리했다",
+            "사업계획서나 기획안을 문서로 남겼다",
+            "계획과 실제 집행을 대조했다",
+            "안 둘을 같은 기준으로 견주었다",
+            "상위 계획",
+            "다음 계획에서 조건을 바꿨다",
+            "달성이 안 된 항목의 까닭을 좁혔다",
+            "기획안을 회의에서 설명했다",
+            "내 기획이 예산이나 인력 배치에 쓰였다"
+          ],
+          "artifacts": [
+            "사업계획서 한 벌"
+          ],
+          "verifications": [
+            "상위 계획"
+          ]
+        },
+        {
+          "code": "TD02",
+          "decided": [],
+          "did": [
+            "검토하지 않을 범위를 적어 두었다",
+            "질의에서 다툼이 되는 쟁점을 좁혀 적었다",
+            "요건이 서로 부딪히는 자리를 찾아 적었다",
+            "조문의 요건을 확인 항목으로 풀어 적었다",
+            "예외나 단서를 적용할지 직접 정했다",
+            "적용할 조문과 적용하지 않을 조문을 갈랐다",
+            "법령 검색 도구로 개정 이력까지 확인했다",
+            "조문을 견주는 대조표 서식을 정해 썼다",
+            "검토 의견서",
+            "검토 의견서를 문서로 남겼다",
+            "조문 대조표를 만들어 남겼다",
+            "상위 법령과 내 해석을 대조했다",
+            "지난 유권해석이나 비슷한 처분과 견주었다",
+            "상위 법령",
+            "같은 오해가 나지 않게 지침이나 서식을 고쳤다",
+            "해석이 뒤집힌 자리의 조문을 좁혔다",
+            "검토 결과를 회의에서 설명했다",
+            "내 검토가 처분이나 공식 회신으로 나갔다"
+          ],
+          "artifacts": [
+            "검토 의견서"
+          ],
+          "verifications": [
+            "상위 법령"
+          ]
+        }
+      ],
+      "gaps": [
+        {
+          "title": "정책·사업 기획 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "법령·규정 해석 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "예산 편성·집행 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "행정 절차·민원 처리 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        }
+      ],
+      "actions": [
+        "최근 정책·사업 기획 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 성과지표를 정리한 표에 그대로 옮깁니다.",
+        "최근 법령·규정 해석 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 조문 대조표에 그대로 옮깁니다.",
+        "다음 예산 편성·집행 과제 하나. 끝까지 가서 예산안 한 벌이나 사업별 산출 근거 한 벌을 남겨 두세요.",
+        "다음 행정 절차·민원 처리 과제 하나. 끝까지 가서 처분 결정 기록이나 보완 요구 공문 한 벌을 남겨 두세요."
+      ]
+    },
+    "ALT": {
+      "headline": {
+        "title": "정책·사업 기획 과제에서 방향을 직접 정해 본 일이 있어요",
+        "lead": "확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요."
+      },
+      "zones": {
+        "TD01": "Z1_EVIDENCE_ESTABLISHED",
+        "TD02": "Z1_EVIDENCE_ESTABLISHED",
+        "TD03": "Z2_EVIDENCE_INCOMPLETE",
+        "TD04": "Z2_EVIDENCE_INCOMPLETE",
+        "TD05": "NOT_EXPLORED",
+        "TD06": "NOT_EXPLORED",
+        "TD07": "NOT_EXPLORED",
+        "TD08": "NOT_EXPLORED",
+        "TD09": "NOT_EXPLORED",
+        "TD10": "NOT_EXPLORED",
+        "TD11": "NOT_EXPLORED",
+        "TD12": "NOT_EXPLORED"
+      },
+      "axes": {
+        "TD01": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD02": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD03": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD04": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD05": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD06": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD07": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD08": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD09": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD10": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD11": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD12": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        }
+      },
+      "evidence": [
+        {
+          "code": "TD01",
+          "decided": [],
+          "did": [
+            "목표가 모호한 부분의 가정을 세워 적었다",
+            "이번에 다룰 대상과 다루지 않을 대상을 갈라 적었다",
+            "서로 부딪히는 목표의 우선순위를 정했다",
+            "지표를 재는 방법과 주기를 적었다",
+            "예산이나 인력을 항목별로 나눴다",
+            "하지 않기로 한 것을 적어 두었다",
+            "계획을 적는 서식을 정해 썼다",
+            "쓸 추계 틀이나 분석 방법을 골라 적용했다",
+            "결정 기록",
+            "결정의 까닭을 기록으로 남겼다",
+            "목표와 성과지표를 표로 정리했다",
+            "계획과 실제 집행을 대조했다",
+            "안 둘을 같은 기준으로 견주었다",
+            "검토 의견",
+            "다음 계획에서 조건을 바꿨다",
+            "달성이 안 된 항목의 까닭을 좁혔다",
+            "기획안을 회의에서 설명했다",
+            "내 기획이 예산이나 인력 배치에 쓰였다"
+          ],
+          "artifacts": [
+            "결정 기록"
+          ],
+          "verifications": [
+            "검토 의견"
+          ]
+        },
+        {
+          "code": "TD02",
+          "decided": [],
+          "did": [
+            "검토하지 않을 범위를 적어 두었다",
+            "질의에서 다툼이 되는 쟁점을 좁혀 적었다",
+            "요건이 서로 부딪히는 자리를 찾아 적었다",
+            "적용 시점과 경과 규정을 확인했다",
+            "예외나 단서를 적용할지 직접 정했다",
+            "재량의 범위를 정해 적었다",
+            "법령 검색 도구로 개정 이력까지 확인했다",
+            "조문을 견주는 대조표 서식을 정해 썼다",
+            "지침 개정안",
+            "조문 대조표를 만들어 남겼다",
+            "해석의 까닭을 기록으로 남겼다",
+            "상위 법령과 내 해석을 대조했다",
+            "지난 유권해석이나 비슷한 처분과 견주었다",
+            "상급 기관 회신",
+            "같은 오해가 나지 않게 지침이나 서식을 고쳤다",
+            "해석이 뒤집힌 자리의 조문을 좁혔다",
+            "검토 결과를 회의에서 설명했다",
+            "내 검토가 처분이나 공식 회신으로 나갔다"
+          ],
+          "artifacts": [
+            "지침 개정안"
+          ],
+          "verifications": [
+            "상급 기관 회신"
+          ]
+        }
+      ],
+      "gaps": [
+        {
+          "title": "정책·사업 기획 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "법령·규정 해석 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "예산 편성·집행 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "행정 절차·민원 처리 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        }
+      ],
+      "actions": [
+        "최근 정책·사업 기획 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 성과지표를 정리한 표에 그대로 옮깁니다.",
+        "최근 법령·규정 해석 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 조문 대조표에 그대로 옮깁니다.",
+        "다음 예산 편성·집행 과제 하나. 끝까지 가서 예산안 한 벌이나 사업별 산출 근거 한 벌을 남겨 두세요.",
+        "다음 행정 절차·민원 처리 과제 하나. 끝까지 가서 처분 결정 기록이나 보완 요구 공문 한 벌을 남겨 두세요."
+      ]
+    }
+  },
+  "NURSING_CORE_V1": {
+    "source": "300",
+    "attempts": {
+      "NONE": "364",
+      "WITH": "365",
+      "ALT": "366"
+    },
+    "picked": [
+      {
+        "domain": "TD01",
+        "slot": "J1",
+        "item": "볼 항목을 좁혀 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J1",
+        "item": "보지 않을 항목과 그 까닭을 적어 두었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J2",
+        "item": "환자가 말한 것을 기록 항목으로 옮겼다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J2",
+        "item": "쓸 척도의 점수 기준을 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J3",
+        "item": "지금 문제로 볼 것을 직접 정했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J3",
+        "item": "먼저 볼 문제의 차례를 직접 짰다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J4",
+        "item": "쓸 척도나 사정 방법을 골라 적용했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J4",
+        "item": "말로 묻지 못하는 대상에 맞춰 방법을 바꿨다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J5",
+        "item": "사정 기록을 남겼다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J5",
+        "item": "지금 문제의 목록을 남겼다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J6",
+        "item": "내 사정을 검사값과 대조했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J6",
+        "item": "앞 근무의 기록이나 다른 간호사의 판단과 견주었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J7",
+        "item": "본 것과 들은 것이 어긋난 까닭을 좁혔다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J7",
+        "item": "다시 재어 판단을 고쳤다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J8",
+        "item": "내 사정이 회진에서 쓰였다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J8",
+        "item": "내 사정이 치료 방향을 바꿨다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "ARTIFACT",
+        "item": "사정 기록"
+      },
+      {
+        "domain": "TD01",
+        "slot": "VERIFY",
+        "item": "앞 근무의 사정 기록"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J1",
+        "item": "이번 근무에 할 것을 좁혀 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J1",
+        "item": "미룰 것과 그 까닭을 적어 두었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J2",
+        "item": "처방을 간호 중재로 옮겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J2",
+        "item": "확인할 항목과 때를 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J3",
+        "item": "먼저 할 중재를 직접 정했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J3",
+        "item": "맡길 범위를 직접 가렸다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J4",
+        "item": "표준 중재를 그 환자에게 맞춰 바꿨다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J4",
+        "item": "쓸 교육 자료를 골라 맞췄다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J5",
+        "item": "간호계획을 남겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J5",
+        "item": "중재를 고른 근거를 남겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J6",
+        "item": "세운 계획을 상태 변화와 대조했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J6",
+        "item": "표준 목록이나 다른 간호사의 계획과 견주었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J7",
+        "item": "계획대로 되지 않은 까닭을 좁혔다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J7",
+        "item": "차례를 바꿔 다시 해 보았다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J8",
+        "item": "내 계획이 병동의 표준이 됐다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J8",
+        "item": "내 계획이 퇴원 결정에 쓰였다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "ARTIFACT",
+        "item": "간호계획"
+      },
+      {
+        "domain": "TD02",
+        "slot": "VERIFY",
+        "item": "앞서 세운 계획"
+      }
+    ],
+    "picked_alt": [
+      {
+        "domain": "TD01",
+        "slot": "J1",
+        "item": "보지 않을 항목과 그 까닭을 적어 두었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J1",
+        "item": "볼 항목을 좁혀 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J2",
+        "item": "다시 잴 때를 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J2",
+        "item": "쓸 척도의 점수 기준을 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J3",
+        "item": "문제가 아니라고 가려 둔 것을 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J3",
+        "item": "먼저 볼 문제의 차례를 직접 짰다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J4",
+        "item": "말로 묻지 못하는 대상에 맞춰 방법을 바꿨다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J4",
+        "item": "쓸 척도나 사정 방법을 골라 적용했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J5",
+        "item": "말할 수 없는 것을 적어 두었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J5",
+        "item": "지금 문제의 목록을 남겼다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J6",
+        "item": "앞 근무의 기록이나 다른 간호사의 판단과 견주었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J6",
+        "item": "내 사정을 검사값과 대조했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J7",
+        "item": "다시 재어 판단을 고쳤다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J7",
+        "item": "본 것과 들은 것이 어긋난 까닭을 좁혔다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J8",
+        "item": "내 사정이 치료 방향을 바꿨다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J8",
+        "item": "내 사정이 회진에서 쓰였다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "ARTIFACT",
+        "item": "다시 잰 기록"
+      },
+      {
+        "domain": "TD01",
+        "slot": "VERIFY",
+        "item": "의사의 진단"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J1",
+        "item": "미룰 것과 그 까닭을 적어 두었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J1",
+        "item": "이번 근무에 할 것을 좁혀 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J2",
+        "item": "퇴원까지의 목표를 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J2",
+        "item": "확인할 항목과 때를 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J3",
+        "item": "뺄 중재를 직접 가렸다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J3",
+        "item": "맡길 범위를 직접 가렸다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J4",
+        "item": "쓸 교육 자료를 골라 맞췄다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J4",
+        "item": "표준 중재를 그 환자에게 맞춰 바꿨다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J5",
+        "item": "퇴원까지의 차례를 남겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J5",
+        "item": "중재를 고른 근거를 남겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J6",
+        "item": "표준 목록이나 다른 간호사의 계획과 견주었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J6",
+        "item": "세운 계획을 상태 변화와 대조했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J7",
+        "item": "차례를 바꿔 다시 해 보았다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J7",
+        "item": "계획대로 되지 않은 까닭을 좁혔다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J8",
+        "item": "내 계획이 퇴원 결정에 쓰였다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J8",
+        "item": "내 계획이 병동의 표준이 됐다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "ARTIFACT",
+        "item": "고친 계획과 그 까닭"
+      },
+      {
+        "domain": "TD02",
+        "slot": "VERIFY",
+        "item": "퇴원 뒤의 경과"
+      }
+    ],
+    "zoneDiff": [
+      "TD01",
+      "TD02"
+    ],
+    "axisDiff": 0,
+    "NONE": {
+      "headline": {
+        "title": "간호 사정·간호진단 과제는 해 봤고, 정리만 남았어요",
+        "lead": "뭘 골랐는지만 덧붙이면 돼요."
+      },
+      "zones": {
+        "TD01": "Z2_EVIDENCE_INCOMPLETE",
+        "TD02": "Z2_EVIDENCE_INCOMPLETE",
+        "TD03": "Z2_EVIDENCE_INCOMPLETE",
+        "TD04": "Z2_EVIDENCE_INCOMPLETE",
+        "TD05": "NOT_EXPLORED",
+        "TD06": "NOT_EXPLORED",
+        "TD07": "NOT_EXPLORED",
+        "TD08": "NOT_EXPLORED",
+        "TD09": "NOT_EXPLORED",
+        "TD10": "NOT_EXPLORED",
+        "TD11": "NOT_EXPLORED",
+        "TD12": "NOT_EXPLORED"
+      },
+      "axes": {
+        "TD01": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD02": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD03": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD04": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD05": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD06": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD07": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD08": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD09": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD10": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD11": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD12": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        }
+      },
+      "evidence": [],
+      "gaps": [
+        {
+          "title": "간호 사정·간호진단 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "간호 사정·간호진단 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "간호 계획·우선순위 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "간호 계획·우선순위 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "투약·주사 관리 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "투약·주사 관리 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "상태 변화 감지·보고 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "상태 변화 감지·보고 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        }
+      ],
+      "actions": [
+        "최근 간호 사정·간호진단 과제 하나. 볼 항목과 지금 상태, 그리고 문제의 이름 가운데 직접 정한 것과 그 까닭을 지금 문제의 목록에 한 줄씩 남깁니다.",
+        "최근 간호 계획·우선순위 과제 하나. 그때 무엇을 문제로 잡았는지 세 줄로 써서 간호계획 맨 앞에 붙입니다.",
+        "최근 투약·주사 관리 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 되물은 내용과 그 답에 그대로 옮깁니다.",
+        "최근 상태 변화 감지·보고 과제 하나. 볼 신호와 알릴 선, 그리고 알릴 상대 가운데 직접 정한 것과 그 까닭을 알리지 않고 둔 까닭에 한 줄씩 남깁니다.",
+        "다음 간호 사정·간호진단 과제 하나. 끝까지 가서 사정 기록이나 볼 항목을 정한 근거 한 벌을 남겨 두세요.",
+        "다음 간호 계획·우선순위 과제 하나. 끝까지 가서 간호계획이나 중재를 고른 근거 한 벌을 남겨 두세요.",
+        "다음 투약·주사 관리 과제 하나. 끝까지 가서 투약 기록이나 되물은 내용과 그 답 한 벌을 남겨 두세요.",
+        "다음 상태 변화 감지·보고 과제 하나. 끝까지 가서 관찰 기록이나 알린 내용과 때 한 벌을 남겨 두세요."
+      ]
+    },
+    "WITH": {
+      "headline": {
+        "title": "간호 사정·간호진단 과제에서 방향을 직접 정해 본 일이 있어요",
+        "lead": "확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요."
+      },
+      "zones": {
+        "TD01": "Z1_EVIDENCE_ESTABLISHED",
+        "TD02": "Z1_EVIDENCE_ESTABLISHED",
+        "TD03": "Z2_EVIDENCE_INCOMPLETE",
+        "TD04": "Z2_EVIDENCE_INCOMPLETE",
+        "TD05": "NOT_EXPLORED",
+        "TD06": "NOT_EXPLORED",
+        "TD07": "NOT_EXPLORED",
+        "TD08": "NOT_EXPLORED",
+        "TD09": "NOT_EXPLORED",
+        "TD10": "NOT_EXPLORED",
+        "TD11": "NOT_EXPLORED",
+        "TD12": "NOT_EXPLORED"
+      },
+      "axes": {
+        "TD01": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD02": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD03": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD04": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD05": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD06": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD07": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD08": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD09": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD10": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD11": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD12": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        }
+      },
+      "evidence": [
+        {
+          "code": "TD01",
+          "decided": [],
+          "did": [
+            "보지 않을 항목과 그 까닭을 적어 두었다",
+            "볼 항목을 좁혀 적었다",
+            "쓸 척도의 점수 기준을 적었다",
+            "환자가 말한 것을 기록 항목으로 옮겼다",
+            "먼저 볼 문제의 차례를 직접 짰다",
+            "지금 문제로 볼 것을 직접 정했다",
+            "말로 묻지 못하는 대상에 맞춰 방법을 바꿨다",
+            "쓸 척도나 사정 방법을 골라 적용했다",
+            "사정 기록",
+            "사정 기록을 남겼다",
+            "지금 문제의 목록을 남겼다",
+            "내 사정을 검사값과 대조했다",
+            "앞 근무의 기록이나 다른 간호사의 판단과 견주었다",
+            "앞 근무의 사정 기록",
+            "다시 재어 판단을 고쳤다",
+            "본 것과 들은 것이 어긋난 까닭을 좁혔다",
+            "내 사정이 치료 방향을 바꿨다",
+            "내 사정이 회진에서 쓰였다"
+          ],
+          "artifacts": [
+            "사정 기록"
+          ],
+          "verifications": [
+            "앞 근무의 사정 기록"
+          ]
+        },
+        {
+          "code": "TD02",
+          "decided": [],
+          "did": [
+            "미룰 것과 그 까닭을 적어 두었다",
+            "이번 근무에 할 것을 좁혀 적었다",
+            "처방을 간호 중재로 옮겼다",
+            "확인할 항목과 때를 적었다",
+            "맡길 범위를 직접 가렸다",
+            "먼저 할 중재를 직접 정했다",
+            "쓸 교육 자료를 골라 맞췄다",
+            "표준 중재를 그 환자에게 맞춰 바꿨다",
+            "간호계획",
+            "간호계획을 남겼다",
+            "중재를 고른 근거를 남겼다",
+            "세운 계획을 상태 변화와 대조했다",
+            "표준 목록이나 다른 간호사의 계획과 견주었다",
+            "앞서 세운 계획",
+            "계획대로 되지 않은 까닭을 좁혔다",
+            "차례를 바꿔 다시 해 보았다",
+            "내 계획이 병동의 표준이 됐다",
+            "내 계획이 퇴원 결정에 쓰였다"
+          ],
+          "artifacts": [
+            "간호계획"
+          ],
+          "verifications": [
+            "앞서 세운 계획"
+          ]
+        }
+      ],
+      "gaps": [
+        {
+          "title": "간호 사정·간호진단 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "간호 계획·우선순위 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "투약·주사 관리 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "상태 변화 감지·보고 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        }
+      ],
+      "actions": [
+        "최근 간호 사정·간호진단 과제 하나. 볼 항목과 지금 상태, 그리고 문제의 이름 가운데 직접 정한 것과 그 까닭을 지금 문제의 목록에 한 줄씩 남깁니다.",
+        "최근 간호 계획·우선순위 과제 하나. 그때 무엇을 문제로 잡았는지 세 줄로 써서 간호계획 맨 앞에 붙입니다.",
+        "다음 투약·주사 관리 과제 하나. 끝까지 가서 투약 기록이나 되물은 내용과 그 답 한 벌을 남겨 두세요.",
+        "다음 상태 변화 감지·보고 과제 하나. 끝까지 가서 관찰 기록이나 알린 내용과 때 한 벌을 남겨 두세요."
+      ]
+    },
+    "ALT": {
+      "headline": {
+        "title": "간호 사정·간호진단 과제에서 방향을 직접 정해 본 일이 있어요",
+        "lead": "확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요."
+      },
+      "zones": {
+        "TD01": "Z1_EVIDENCE_ESTABLISHED",
+        "TD02": "Z1_EVIDENCE_ESTABLISHED",
+        "TD03": "Z2_EVIDENCE_INCOMPLETE",
+        "TD04": "Z2_EVIDENCE_INCOMPLETE",
+        "TD05": "NOT_EXPLORED",
+        "TD06": "NOT_EXPLORED",
+        "TD07": "NOT_EXPLORED",
+        "TD08": "NOT_EXPLORED",
+        "TD09": "NOT_EXPLORED",
+        "TD10": "NOT_EXPLORED",
+        "TD11": "NOT_EXPLORED",
+        "TD12": "NOT_EXPLORED"
+      },
+      "axes": {
+        "TD01": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD02": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD03": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD04": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD05": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD06": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD07": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD08": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD09": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD10": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD11": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD12": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        }
+      },
+      "evidence": [
+        {
+          "code": "TD01",
+          "decided": [],
+          "did": [
+            "보지 않을 항목과 그 까닭을 적어 두었다",
+            "볼 항목을 좁혀 적었다",
+            "다시 잴 때를 적었다",
+            "쓸 척도의 점수 기준을 적었다",
+            "먼저 볼 문제의 차례를 직접 짰다",
+            "문제가 아니라고 가려 둔 것을 적었다",
+            "말로 묻지 못하는 대상에 맞춰 방법을 바꿨다",
+            "쓸 척도나 사정 방법을 골라 적용했다",
+            "다시 잰 기록",
+            "말할 수 없는 것을 적어 두었다",
+            "지금 문제의 목록을 남겼다",
+            "내 사정을 검사값과 대조했다",
+            "앞 근무의 기록이나 다른 간호사의 판단과 견주었다",
+            "의사의 진단",
+            "다시 재어 판단을 고쳤다",
+            "본 것과 들은 것이 어긋난 까닭을 좁혔다",
+            "내 사정이 치료 방향을 바꿨다",
+            "내 사정이 회진에서 쓰였다"
+          ],
+          "artifacts": [
+            "다시 잰 기록"
+          ],
+          "verifications": [
+            "의사의 진단"
+          ]
+        },
+        {
+          "code": "TD02",
+          "decided": [],
+          "did": [
+            "미룰 것과 그 까닭을 적어 두었다",
+            "이번 근무에 할 것을 좁혀 적었다",
+            "퇴원까지의 목표를 적었다",
+            "확인할 항목과 때를 적었다",
+            "맡길 범위를 직접 가렸다",
+            "뺄 중재를 직접 가렸다",
+            "쓸 교육 자료를 골라 맞췄다",
+            "표준 중재를 그 환자에게 맞춰 바꿨다",
+            "고친 계획과 그 까닭",
+            "중재를 고른 근거를 남겼다",
+            "퇴원까지의 차례를 남겼다",
+            "세운 계획을 상태 변화와 대조했다",
+            "표준 목록이나 다른 간호사의 계획과 견주었다",
+            "퇴원 뒤의 경과",
+            "계획대로 되지 않은 까닭을 좁혔다",
+            "차례를 바꿔 다시 해 보았다",
+            "내 계획이 병동의 표준이 됐다",
+            "내 계획이 퇴원 결정에 쓰였다"
+          ],
+          "artifacts": [
+            "고친 계획과 그 까닭"
+          ],
+          "verifications": [
+            "퇴원 뒤의 경과"
+          ]
+        }
+      ],
+      "gaps": [
+        {
+          "title": "간호 사정·간호진단 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "간호 계획·우선순위 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "투약·주사 관리 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "상태 변화 감지·보고 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        }
+      ],
+      "actions": [
+        "최근 간호 사정·간호진단 과제 하나. 볼 항목과 지금 상태, 그리고 문제의 이름 가운데 직접 정한 것과 그 까닭을 지금 문제의 목록에 한 줄씩 남깁니다.",
+        "최근 간호 계획·우선순위 과제 하나. 그때 무엇을 문제로 잡았는지 세 줄로 써서 간호계획 맨 앞에 붙입니다.",
+        "다음 투약·주사 관리 과제 하나. 끝까지 가서 투약 기록이나 되물은 내용과 그 답 한 벌을 남겨 두세요.",
+        "다음 상태 변화 감지·보고 과제 하나. 끝까지 가서 관찰 기록이나 알린 내용과 때 한 벌을 남겨 두세요."
+      ]
+    }
+  },
+  "MEDIA_CORE_V1": {
+    "source": "306",
+    "attempts": {
+      "NONE": "367",
+      "WITH": "368",
+      "ALT": "369"
+    },
+    "picked": [
+      {
+        "domain": "TD01",
+        "slot": "J1",
+        "item": "알릴 것을 좁혀 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J1",
+        "item": "알리지 않을 것과 그 까닭을 적어 두었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J2",
+        "item": "광고주의 말을 확인 항목으로 옮겼다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J2",
+        "item": "지킬 조건을 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J3",
+        "item": "받는 사람이 여럿일 때 직접 정했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J3",
+        "item": "먼저 볼 쪽을 직접 가렸다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J4",
+        "item": "조사 방법과 모을 범위를 골라 적용했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J4",
+        "item": "방법이 맞지 않아 다른 방법으로 바꿨다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J5",
+        "item": "기획서를 남겼다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J5",
+        "item": "사례 정리를 남겼다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J6",
+        "item": "세운 기획을 수용자의 말과 대조했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J6",
+        "item": "비슷한 사례와 견주었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J7",
+        "item": "엉뚱하다는 말의 까닭을 좁혔다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J7",
+        "item": "기획을 바꿔 다시 해 보았다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J8",
+        "item": "내 기획 방식이 팀의 서식이 됐다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J8",
+        "item": "내 조사가 광고주 결정에 쓰였다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "ARTIFACT",
+        "item": "기획서"
+      },
+      {
+        "domain": "TD01",
+        "slot": "VERIFY",
+        "item": "수용자의 말"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J1",
+        "item": "말할 것을 좁혀 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J1",
+        "item": "말하지 않을 것과 그 까닭을 적어 두었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J2",
+        "item": "광고주의 인상을 지킬 것과 버릴 것으로 옮겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J2",
+        "item": "지킬 조건을 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J3",
+        "item": "여러 메시지 가운데 하나를 직접 정했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J3",
+        "item": "말하는 결을 직접 가렸다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J4",
+        "item": "보여 줄 방법과 묶음을 골라 적용했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J4",
+        "item": "방식이 맞지 않아 다른 방식으로 바꿨다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J5",
+        "item": "메시지 한 줄을 남겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J5",
+        "item": "말하는 결을 적어 남겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J6",
+        "item": "세운 메시지를 기획서와 대조했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J6",
+        "item": "브랜드가 쓰는 말과 견주었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J7",
+        "item": "흔하다는 말의 까닭을 좁혔다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J7",
+        "item": "근거를 바꿔 다시 적어 보았다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J8",
+        "item": "내 한 줄이 브랜드가 쓰는 말이 됐다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J8",
+        "item": "내 제안이 광고주 결정에 쓰였다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "ARTIFACT",
+        "item": "메시지 한 줄"
+      },
+      {
+        "domain": "TD02",
+        "slot": "VERIFY",
+        "item": "기획서"
+      }
+    ],
+    "picked_alt": [
+      {
+        "domain": "TD01",
+        "slot": "J1",
+        "item": "알리지 않을 것과 그 까닭을 적어 두었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J1",
+        "item": "알릴 것을 좁혀 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J2",
+        "item": "끝에 확인할 항목을 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J2",
+        "item": "지킬 조건을 적었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J3",
+        "item": "뺄 주제를 직접 정했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J3",
+        "item": "먼저 볼 쪽을 직접 가렸다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J4",
+        "item": "방법이 맞지 않아 다른 방법으로 바꿨다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J4",
+        "item": "조사 방법과 모을 범위를 골라 적용했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J5",
+        "item": "조사 기록을 남겼다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J5",
+        "item": "사례 정리를 남겼다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J6",
+        "item": "비슷한 사례와 견주었다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J6",
+        "item": "세운 기획을 수용자의 말과 대조했다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J7",
+        "item": "기획을 바꿔 다시 해 보았다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J7",
+        "item": "엉뚱하다는 말의 까닭을 좁혔다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J8",
+        "item": "내 조사가 광고주 결정에 쓰였다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "J8",
+        "item": "내 기획 방식이 팀의 서식이 됐다"
+      },
+      {
+        "domain": "TD01",
+        "slot": "ARTIFACT",
+        "item": "조사 기록"
+      },
+      {
+        "domain": "TD01",
+        "slot": "VERIFY",
+        "item": "다른 사람의 읽기"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J1",
+        "item": "말하지 않을 것과 그 까닭을 적어 두었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J1",
+        "item": "말할 것을 좁혀 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J2",
+        "item": "끝에 확인할 항목을 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J2",
+        "item": "지킬 조건을 적었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J3",
+        "item": "버릴 표현을 직접 정했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J3",
+        "item": "말하는 결을 직접 가렸다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J4",
+        "item": "방식이 맞지 않아 다른 방식으로 바꿨다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J4",
+        "item": "보여 줄 방법과 묶음을 골라 적용했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J5",
+        "item": "지킬 것과 버릴 것을 남겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J5",
+        "item": "말하는 결을 적어 남겼다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J6",
+        "item": "브랜드가 쓰는 말과 견주었다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J6",
+        "item": "세운 메시지를 기획서와 대조했다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J7",
+        "item": "근거를 바꿔 다시 적어 보았다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J7",
+        "item": "흔하다는 말의 까닭을 좁혔다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J8",
+        "item": "내 제안이 광고주 결정에 쓰였다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "J8",
+        "item": "내 한 줄이 브랜드가 쓰는 말이 됐다"
+      },
+      {
+        "domain": "TD02",
+        "slot": "ARTIFACT",
+        "item": "설명한 기록"
+      },
+      {
+        "domain": "TD02",
+        "slot": "VERIFY",
+        "item": "다른 사람의 읽기"
+      }
+    ],
+    "zoneDiff": [
+      "TD01",
+      "TD02"
+    ],
+    "axisDiff": 0,
+    "NONE": {
+      "headline": {
+        "title": "기획·과제 정의 과제는 해 봤고, 정리만 남았어요",
+        "lead": "뭘 골랐는지만 덧붙이면 돼요."
+      },
+      "zones": {
+        "TD01": "Z2_EVIDENCE_INCOMPLETE",
+        "TD02": "Z2_EVIDENCE_INCOMPLETE",
+        "TD03": "Z2_EVIDENCE_INCOMPLETE",
+        "TD04": "Z2_EVIDENCE_INCOMPLETE",
+        "TD05": "NOT_EXPLORED",
+        "TD06": "NOT_EXPLORED",
+        "TD07": "NOT_EXPLORED",
+        "TD08": "NOT_EXPLORED",
+        "TD09": "NOT_EXPLORED",
+        "TD10": "NOT_EXPLORED",
+        "TD11": "NOT_EXPLORED",
+        "TD12": "NOT_EXPLORED"
+      },
+      "axes": {
+        "TD01": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD02": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD03": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD04": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD05": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD06": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD07": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD08": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD09": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD10": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD11": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD12": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        }
+      },
+      "evidence": [],
+      "gaps": [
+        {
+          "title": "기획·과제 정의 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "기획·과제 정의 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "메시지·콘셉트 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "메시지·콘셉트 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "매체·채널 설계 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "매체·채널 설계 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "촬영·조명 설계 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "촬영·조명 설계 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        }
+      ],
+      "actions": [
+        "최근 기획·과제 정의 과제 하나. 그때 무엇을 문제로 잡았는지 세 줄로 써서 기획서 맨 앞에 붙입니다.",
+        "최근 메시지·콘셉트 과제 하나. 그때 무엇을 문제로 잡았는지 세 줄로 써서 메시지 한 줄 맨 앞에 붙입니다.",
+        "최근 매체·채널 설계 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 매체를 고른 근거에 그대로 옮깁니다.",
+        "최근 촬영·조명 설계 과제 하나. 자리 보기, 빛 세우기 같은 것 가운데 왜 그 방법을 골랐는지 다른 선택과 나란히 촬영 계획에 적습니다.",
+        "다음 기획·과제 정의 과제 하나. 끝까지 가서 기획서나 받는 사람을 적은 한 장 한 벌을 남겨 두세요.",
+        "다음 메시지·콘셉트 과제 하나. 끝까지 가서 메시지 한 줄이나 말하는 결을 적은 한 장 한 벌을 남겨 두세요.",
+        "다음 매체·채널 설계 과제 하나. 끝까지 가서 매체 집행 계획이나 매체를 고른 근거 한 벌을 남겨 두세요.",
+        "다음 촬영·조명 설계 과제 하나. 끝까지 가서 촬영 계획이나 앵글과 조명을 적은 한 장 한 벌을 남겨 두세요."
+      ]
+    },
+    "WITH": {
+      "headline": {
+        "title": "기획·과제 정의 과제에서 방향을 직접 정해 본 일이 있어요",
+        "lead": "확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요."
+      },
+      "zones": {
+        "TD01": "Z1_EVIDENCE_ESTABLISHED",
+        "TD02": "Z1_EVIDENCE_ESTABLISHED",
+        "TD03": "Z2_EVIDENCE_INCOMPLETE",
+        "TD04": "Z2_EVIDENCE_INCOMPLETE",
+        "TD05": "NOT_EXPLORED",
+        "TD06": "NOT_EXPLORED",
+        "TD07": "NOT_EXPLORED",
+        "TD08": "NOT_EXPLORED",
+        "TD09": "NOT_EXPLORED",
+        "TD10": "NOT_EXPLORED",
+        "TD11": "NOT_EXPLORED",
+        "TD12": "NOT_EXPLORED"
+      },
+      "axes": {
+        "TD01": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD02": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD03": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD04": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD05": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD06": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD07": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD08": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD09": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD10": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD11": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD12": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        }
+      },
+      "evidence": [
+        {
+          "code": "TD01",
+          "decided": [],
+          "did": [
+            "알리지 않을 것과 그 까닭을 적어 두었다",
+            "알릴 것을 좁혀 적었다",
+            "광고주의 말을 확인 항목으로 옮겼다",
+            "지킬 조건을 적었다",
+            "먼저 볼 쪽을 직접 가렸다",
+            "받는 사람이 여럿일 때 직접 정했다",
+            "방법이 맞지 않아 다른 방법으로 바꿨다",
+            "조사 방법과 모을 범위를 골라 적용했다",
+            "기획서",
+            "기획서를 남겼다",
+            "사례 정리를 남겼다",
+            "비슷한 사례와 견주었다",
+            "세운 기획을 수용자의 말과 대조했다",
+            "수용자의 말",
+            "기획을 바꿔 다시 해 보았다",
+            "엉뚱하다는 말의 까닭을 좁혔다",
+            "내 기획 방식이 팀의 서식이 됐다",
+            "내 조사가 광고주 결정에 쓰였다"
+          ],
+          "artifacts": [
+            "기획서"
+          ],
+          "verifications": [
+            "수용자의 말"
+          ]
+        },
+        {
+          "code": "TD02",
+          "decided": [],
+          "did": [
+            "말하지 않을 것과 그 까닭을 적어 두었다",
+            "말할 것을 좁혀 적었다",
+            "광고주의 인상을 지킬 것과 버릴 것으로 옮겼다",
+            "지킬 조건을 적었다",
+            "말하는 결을 직접 가렸다",
+            "여러 메시지 가운데 하나를 직접 정했다",
+            "방식이 맞지 않아 다른 방식으로 바꿨다",
+            "보여 줄 방법과 묶음을 골라 적용했다",
+            "메시지 한 줄",
+            "말하는 결을 적어 남겼다",
+            "메시지 한 줄을 남겼다",
+            "브랜드가 쓰는 말과 견주었다",
+            "세운 메시지를 기획서와 대조했다",
+            "기획서",
+            "근거를 바꿔 다시 적어 보았다",
+            "흔하다는 말의 까닭을 좁혔다",
+            "내 제안이 광고주 결정에 쓰였다",
+            "내 한 줄이 브랜드가 쓰는 말이 됐다"
+          ],
+          "artifacts": [
+            "메시지 한 줄"
+          ],
+          "verifications": [
+            "기획서"
+          ]
+        }
+      ],
+      "gaps": [
+        {
+          "title": "기획·과제 정의 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "메시지·콘셉트 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "매체·채널 설계 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "촬영·조명 설계 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        }
+      ],
+      "actions": [
+        "최근 기획·과제 정의 과제 하나. 그때 무엇을 문제로 잡았는지 세 줄로 써서 기획서 맨 앞에 붙입니다.",
+        "최근 메시지·콘셉트 과제 하나. 그때 무엇을 문제로 잡았는지 세 줄로 써서 메시지 한 줄 맨 앞에 붙입니다.",
+        "다음 매체·채널 설계 과제 하나. 끝까지 가서 매체 집행 계획이나 매체를 고른 근거 한 벌을 남겨 두세요.",
+        "다음 촬영·조명 설계 과제 하나. 끝까지 가서 촬영 계획이나 앵글과 조명을 적은 한 장 한 벌을 남겨 두세요."
+      ]
+    },
+    "ALT": {
+      "headline": {
+        "title": "기획·과제 정의 과제에서 방향을 직접 정해 본 일이 있어요",
+        "lead": "확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요."
+      },
+      "zones": {
+        "TD01": "Z1_EVIDENCE_ESTABLISHED",
+        "TD02": "Z1_EVIDENCE_ESTABLISHED",
+        "TD03": "Z2_EVIDENCE_INCOMPLETE",
+        "TD04": "Z2_EVIDENCE_INCOMPLETE",
+        "TD05": "NOT_EXPLORED",
+        "TD06": "NOT_EXPLORED",
+        "TD07": "NOT_EXPLORED",
+        "TD08": "NOT_EXPLORED",
+        "TD09": "NOT_EXPLORED",
+        "TD10": "NOT_EXPLORED",
+        "TD11": "NOT_EXPLORED",
+        "TD12": "NOT_EXPLORED"
+      },
+      "axes": {
+        "TD01": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD02": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD03": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD04": {
+          "0": "CONFIRMED",
+          "1": "CONFIRMED",
+          "2": "CONFIRMED",
+          "3": "CONFIRMED",
+          "4": "CONFIRMED",
+          "5": "CONFIRMED",
+          "6": "CONFIRMED",
+          "7": "CONFIRMED"
+        },
+        "TD05": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD06": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD07": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD08": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD09": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD10": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD11": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        },
+        "TD12": {
+          "0": "NOT_OBSERVED",
+          "1": "NOT_OBSERVED",
+          "2": "NOT_OBSERVED",
+          "3": "NOT_OBSERVED",
+          "4": "NOT_OBSERVED",
+          "5": "NOT_OBSERVED",
+          "6": "NOT_OBSERVED",
+          "7": "NOT_OBSERVED"
+        }
+      },
+      "evidence": [
+        {
+          "code": "TD01",
+          "decided": [],
+          "did": [
+            "알리지 않을 것과 그 까닭을 적어 두었다",
+            "알릴 것을 좁혀 적었다",
+            "끝에 확인할 항목을 적었다",
+            "지킬 조건을 적었다",
+            "먼저 볼 쪽을 직접 가렸다",
+            "뺄 주제를 직접 정했다",
+            "방법이 맞지 않아 다른 방법으로 바꿨다",
+            "조사 방법과 모을 범위를 골라 적용했다",
+            "조사 기록",
+            "사례 정리를 남겼다",
+            "조사 기록을 남겼다",
+            "비슷한 사례와 견주었다",
+            "세운 기획을 수용자의 말과 대조했다",
+            "다른 사람의 읽기",
+            "기획을 바꿔 다시 해 보았다",
+            "엉뚱하다는 말의 까닭을 좁혔다",
+            "내 기획 방식이 팀의 서식이 됐다",
+            "내 조사가 광고주 결정에 쓰였다"
+          ],
+          "artifacts": [
+            "조사 기록"
+          ],
+          "verifications": [
+            "다른 사람의 읽기"
+          ]
+        },
+        {
+          "code": "TD02",
+          "decided": [],
+          "did": [
+            "말하지 않을 것과 그 까닭을 적어 두었다",
+            "말할 것을 좁혀 적었다",
+            "끝에 확인할 항목을 적었다",
+            "지킬 조건을 적었다",
+            "말하는 결을 직접 가렸다",
+            "버릴 표현을 직접 정했다",
+            "방식이 맞지 않아 다른 방식으로 바꿨다",
+            "보여 줄 방법과 묶음을 골라 적용했다",
+            "설명한 기록",
+            "말하는 결을 적어 남겼다",
+            "지킬 것과 버릴 것을 남겼다",
+            "브랜드가 쓰는 말과 견주었다",
+            "세운 메시지를 기획서와 대조했다",
+            "다른 사람의 읽기",
+            "근거를 바꿔 다시 적어 보았다",
+            "흔하다는 말의 까닭을 좁혔다",
+            "내 제안이 광고주 결정에 쓰였다",
+            "내 한 줄이 브랜드가 쓰는 말이 됐다"
+          ],
+          "artifacts": [
+            "설명한 기록"
+          ],
+          "verifications": [
+            "다른 사람의 읽기"
+          ]
+        }
+      ],
+      "gaps": [
+        {
+          "title": "기획·과제 정의 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "메시지·콘셉트 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+          "why": "직접 정한 것이 보입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+          "detail": "직접 판단한 것이 있고, 이 영역을 설명할 만큼인 넷에는 아직 못 미칩니다"
+        },
+        {
+          "title": "매체·채널 설계 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        },
+        {
+          "title": "촬영·조명 설계 · 무엇을 남겼는지 아직 고르지 않았습니다",
+          "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+          "detail": "산출물을 내셨다고 답하셨는데 그것이 무엇인지는 아직 고르지 않으셨습니다"
+        }
+      ],
+      "actions": [
+        "최근 기획·과제 정의 과제 하나. 그때 무엇을 문제로 잡았는지 세 줄로 써서 기획서 맨 앞에 붙입니다.",
+        "최근 메시지·콘셉트 과제 하나. 그때 무엇을 문제로 잡았는지 세 줄로 써서 메시지 한 줄 맨 앞에 붙입니다.",
+        "다음 매체·채널 설계 과제 하나. 끝까지 가서 매체 집행 계획이나 매체를 고른 근거 한 벌을 남겨 두세요.",
+        "다음 촬영·조명 설계 과제 하나. 끝까지 가서 촬영 계획이나 앵글과 조명을 적은 한 장 한 벌을 남겨 두세요."
+      ]
+    }
+  }
+}

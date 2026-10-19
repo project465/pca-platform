@@ -128,7 +128,7 @@
 .cm-cmp-flow li { padding: 11px 0; }
 .cm-cmp-flow b {
   display: block; color: var(--pcu-blue-lit);
-  font-size: var(--pcu-t-cap); font-weight: 700; letter-spacing: .1em;
+  font-size: var(--pcu-t-cap); font-weight: 700; letter-spacing: .02em;
 }
 .cm-cmp-flow strong {
   display: block; margin-top: 4px; color: var(--pcu-on-navy);
@@ -142,7 +142,9 @@
 .cm-cmp-eyebrow {
   margin: 0 0 12px;
   color: var(--pcu-blue-lit);
-  font-size: var(--pcu-t-cap); font-weight: 700; letter-spacing: .12em;
+  /* **한글에 자간을 벌리지 않는다**: `.12em` 이면 `배 재 대 학 교` 로
+     흩어져 이름표가 아니라 띄어 쓴 글로 읽힌다 */
+  font-size: var(--pcu-t-cap); font-weight: 700; letter-spacing: .02em;
   text-transform: uppercase;
 }
 .cm-cmp-title {
@@ -172,6 +174,9 @@
   font-size: 16px; font-weight: 700; letter-spacing: -.01em;
   cursor: pointer;
   box-shadow: 0 10px 24px rgba(0, 0, 0, .22);
+  /* 단추가 `<Link>` 로 서는 자리(이어하기 · 결과 보기)에서 밑줄이 섰다.
+     `globals.css` 가 링크의 색만 되돌리고 꾸밈은 그대로 둔다 */
+  text-decoration: none;
 }
 .cm-cmp-cta:hover { background: #eef4ff; }
 .cm-cmp-cta:focus-visible { outline: 3px solid var(--pcu-blue-lit); outline-offset: 3px; }

@@ -322,8 +322,11 @@
  * 없음` 을 받았다. 현재 상태 칸의 세부가 1440 에서 말줄임으로 잘리던 것을
  * 짧은 말로 고쳤다. 계정(`/my`)이 기록 없는 `옛 검사 기록` 과 주문 칸을
  * 세우지 않는다. 판정과 현재 상태 계산은 그대로다.
+ *
+ * R35 출시 차단 해소 · 전공 목록의 학교 카드가 응시 상태대로 선다(이어하기 ·
+ * 결과 보기 · 다시 시작). 결과를 받은 학생에게 `시작하기` 를 세우지 않는다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V47";
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V48";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.

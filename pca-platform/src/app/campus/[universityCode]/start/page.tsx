@@ -6,6 +6,7 @@ import {
   coreOf, findLeaf, pickRequired, specializationName, statusOf, university,
 } from "@/lib/campus/registry";
 import { campusStudentOf } from "@/lib/campus/students";
+import { CAMPUS_CTA_KO, campusAttemptState } from "@/lib/campus/attempt-state";
 import { currentUser } from "@/lib/session";
 import { CampusShell } from "../../shell";
 import { startFromCampus } from "../../actions";
@@ -69,6 +70,13 @@ export default async function CampusStart({ params }: Params) {
   const ready = !picking && statusOf(u, found) === "READY";
   const core = coreOf(found.leaf);
   const spec = specializationName(found.leaf);
+  /**
+   * **단추의 말은 응시 상태가 정한다.** 전에는 결과를 받은 학생에게도
+   * `검사 시작하기` 가 섰고, 누르면 지난 결과로 돌아갔다. 시작 · 이어하기 ·
+   * 결과 보기 · (담당자가 열어 준 때만) 다시 시작이다.
+   */
+  const st = await campusAttemptState(user.id);
+  const cta = CAMPUS_CTA_KO[st.kind];
 
   /**
    * **여기서 쿠키를 적지 않는다.** 서버 컴포넌트에서 쓰면 Next 가
@@ -86,13 +94,47 @@ export default async function CampusStart({ params }: Params) {
         <p className="cm-cmp-eyebrow">{u.university_name} · {found.college.name}</p>
         <h1 className="cm-cmp-title">{found.leaf.name}</h1>
         <p className="cm-cmp-lead">
-          {picking
-            ? "관심 있는 전공을 고르면 그 전공 기준으로 검사를 시작합니다."
-            : ready
-              ? "학교에 등록된 학과입니다. 이 학과 기준으로 검사를 시작합니다."
-              : "이 학과는 아직 검사를 시작할 수 없습니다."}
+          {st.kind === "resume"
+            ? "푸는 중인 검사가 있습니다. 이어서 답하시면 됩니다."
+            : st.kind === "result"
+              ? "이 학과 기준의 결과가 나와 있습니다."
+              : st.kind === "retake"
+                ? "학과 담당자가 다시 응시를 열어 주었습니다."
+                : picking
+                  ? "관심 있는 전공을 고르면 그 전공 기준으로 검사를 시작합니다."
+                  : ready
+                    ? "학교에 등록된 학과입니다. 이 학과 기준으로 검사를 시작합니다."
+                    : "이 학과는 아직 검사를 시작할 수 없습니다."}
         </p>
-        {picking ? (
+        {st.kind === "resume" || st.kind === "result" ? (
+          <div className="cm-cmp-cta-row">
+            <Link className="cm-cmp-cta" href={st.kind === "resume"
+              ? `/v3/${st.attemptId}` : `/v3/${st.attemptId}/result`}>
+              {cta.label}<span aria-hidden="true">→</span>
+            </Link>
+            {st.kind === "result" ? (
+              <Link className="cm-cmp-cta-2" href="/me">내 CareerMatri</Link>
+            ) : null}
+          </div>
+        ) : st.kind === "retake" && (ready || picking) ? (
+          picking ? (
+            <div className="cm-cmp-cta-row">
+              <Link className="cm-cmp-cta" href={`/campus/${code}/majors?pick=1`}>
+                전공 고르고 다시 시작하기<span aria-hidden="true">→</span>
+              </Link>
+              <Link className="cm-cmp-cta-2" href={`/v3/${st.attemptId}/result`}>지난 결과 보기</Link>
+            </div>
+          ) : (
+            <form action={startFromCampus} className="cm-cmp-cta-row">
+              <input type="hidden" name="u" value={u.university_code} />
+              <input type="hidden" name="d" value={found.leaf.code} />
+              <button type="submit" className="cm-cmp-cta">
+                {cta.label}<span aria-hidden="true">→</span>
+              </button>
+              <Link className="cm-cmp-cta-2" href={`/v3/${st.attemptId}/result`}>지난 결과 보기</Link>
+            </form>
+          )
+        ) : picking ? (
           <div className="cm-cmp-cta-row">
             <Link className="cm-cmp-cta" href={`/campus/${code}/majors?pick=1`}>
               전공 고르기<span aria-hidden="true">→</span>
@@ -135,11 +177,13 @@ export default async function CampusStart({ params }: Params) {
       </dl>
 
       <p className="cm-cmp-note">
-        {picking
-          ? "고른 전공은 이 응시에만 적용되고 학과 소속은 그대로 남습니다."
-          : ready
-            ? "문항마다 저장되어 창을 닫아도 보던 자리에서 이어집니다."
-            : "학과 담당자에게 알려 주시면 학교와 함께 확인해 드립니다."}
+        {st.kind !== "start"
+          ? cta.note
+          : picking
+            ? "고른 전공은 이 응시에만 적용되고 학과 소속은 그대로 남습니다."
+            : ready
+              ? cta.note
+              : "학과 담당자에게 알려 주시면 학교와 함께 확인해 드립니다."}
       </p>
     </CampusShell>
   );

@@ -3,11 +3,11 @@
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { retakeState } from "@/lib/me-v3/retake";
-import { clearCampusEntry, readCampusEntry } from "@/lib/campus/entry";
+import { clearCampusEntry } from "@/lib/campus/entry";
 import { pickRequired } from "@/lib/campus/registry";
-import { campusStudentOf } from "@/lib/campus/students";
+import { startGate } from "@/lib/campus/start-gate";
 import {
-  currentAttempt, openAttempt, setProfile, v3Grants,
+  currentAttempt, openAttempt, setProfile,
 } from "@/lib/me-v3/runtime/session";
 import type { GradField, Stage, Tier } from "@/lib/me-v3/scoring/types";
 
@@ -60,14 +60,36 @@ export async function startV3(form: FormData): Promise<void> {
     redirect(`/v3/${open.id}`);
   }
 
-  /* **막는 자리는 서버다**(규격 §7). 화면이 먼저 돌려보내지만, 폼을 직접
-     보내는 길이 남아 있으면 끝낸 사람의 응시가 하나 더 생긴다 */
-  const retake = await retakeState(user.id);
-  if (!retake.canStart && retake.lastAttemptId) {
-    redirect(`/v3/${retake.lastAttemptId}/result?again=1`);
+  /**
+   * **학교가 발급한 계정은 학교 경로로만 응시를 연다.**
+   *
+   * 학교 쿠키가 없거나 다른 학교 것이면 전에는 맥락만 버리고 **개인 응시가
+   * 그대로 열렸다.** 그 응시는 담당자 화면에 잡히지 않고 등급도 학교 계약이
+   * 정한 것이 아니다. 판정은 `startGate()` 한 자리이고 시작 화면도 같은
+   * 함수를 읽는다: 화면만 막으면 이 폼을 직접 보내는 길이 남는다.
+   *
+   * 개인 응시는 **개인 이용권을 실제로 들고 있는** 학교 학생과 학교 학생이
+   * 아닌 사람에게만 열린다. 학교 응시에는 학교 이용권만 쓰고, 개인 응시에는
+   * 개인 이용권만 쓴다: 섞으면 산 사람이 그 값을 모르는 채로 잃는다.
+   */
+  const gate = await startGate(user.id);
+  if (gate.kind === "school_only") {
+    await clearCampusEntry();
+    redirect(gate.to);
   }
 
-  const grants = await v3Grants(user.id);
+  /* **막는 자리는 서버다**(규격 §7). 화면이 먼저 돌려보내지만, 폼을 직접
+     보내는 길이 남아 있으면 끝낸 사람의 응시가 하나 더 생긴다. **다시 여는
+     권한은 그 길의 이용권만 센다**: 학교 응시를 한 번 끝낸 학생이 산 개인
+     이용권으로 학교 응시를 하나 더 여는 길이 없다 */
+  const retake = await retakeState(user.id);
+  if (retake.done > 0 && !gate.grants.length && retake.lastAttemptId) {
+    redirect(gate.kind === "campus"
+      ? `/campus/${gate.mine.row.university_code.toLowerCase()}/start`
+      : `/v3/${retake.lastAttemptId}/result?again=1`);
+  }
+
+  const grants = gate.grants;
   const tier: Tier = grants[0]?.tier ?? "BASIC";
 
   /**
@@ -76,25 +98,13 @@ export async function startV3(form: FormData): Promise<void> {
    * 폼이 보낸 값이 아니라 쿠키에 적힌 학교·학과 코드를 **등록부로 다시
    * 맞춰 본 값**이다(`readCampusEntry`). 그래서 주소나 폼을 고쳐 아직
    * 열리지 않은 전공으로 들어가는 길이 없다.
-   */
-  const entry = await readCampusEntry();
-
-  /**
-   * **학교 맥락은 그 학교의 학생에게만 적는다.**
    *
-   * 전에는 쿠키가 들고 온 것을 그대로 넘기고, 그 사람이 그 학교의 학생인지
-   * 묻지 않았다. 그래서 **이미 다른 계정으로 로그인해 있던 사람**이 학과
-   * 쪽에서 `검사 시작` 을 누르면 그 사람의 응시에 학교와 단과대학과 학과가
-   * 적히고 등급이 PRO 로 섰다. 발급한 계정과 응시한 계정이 갈리고, 담당자
-   * 화면은 그 줄을 그 학과의 학생으로 센다. 운영 Canary 가 그렇게 났다.
-   *
-   * **쿠키의 학과를 믿지 않고 등록된 줄을 쓴다.** 믿을 것은 명단이 적어 준
-   * 자리이고(규격 §7) 쿠키는 어느 학교 쪽에서 들어왔는지만 말한다. 학생이
-   * 아니면 맥락을 버리고 일반 B2C 응시를 연다: 그 사람은 개인 회원이고,
-   * 비슷한 자리로 짐작해 학교에 넣지 않는다.
+   * **학교 맥락은 그 학교의 학생에게만 적는다**(`startGate` 가 쿠키를 그
+   * 사람의 등록된 줄에 대고 맞춘다). 믿을 것은 명단이 적어 준 자리이고
+   * 쿠키는 어느 학교 쪽에서 들어왔는지만 말한다.
    */
-  const mine = entry
-    ? await campusStudentOf(user.id, entry.university_code) : null;
+  const entry = gate.kind === "campus" ? gate.entry : null;
+  const mine = gate.kind === "campus" ? gate.mine : null;
 
   /**
    * **자율전공학부 학생의 Core 는 고른 전공이 정한다**(규격 §32 · §33).

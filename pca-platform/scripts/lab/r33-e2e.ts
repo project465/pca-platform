@@ -493,8 +493,14 @@ async function main(): Promise<void> {
     ok("재로그인 뒤 경험 목록이 그대로다", (await rp3.locator("body").innerText()).includes(title));
     await rp3.goto(`${BASE}/v3/start`, { waitUntil: "domcontentloaded" });
     await rp3.waitForLoadState("networkidle").catch(() => undefined);
-    ok("결과를 받은 뒤 /v3/start 는 새 응시를 열지 않고 지난 결과로 보낸다",
-      new RegExp(`/v3/${att}/result`).test(rp3.url()), new URL(rp3.url()).pathname);
+    /* 학교 학생은 학교 시작 쪽으로 간다(출시 차단 해소). 거기 서는 단추가
+       `결과 보기` 이고 그 결과로 간다: 시작한다고 적힌 단추가 서지 않는다 */
+    const back = new URL(rp3.url()).pathname;
+    const see = rp3.getByRole("link", { name: /^결과 보기/ });
+    ok("결과를 받은 뒤 /v3/start 는 새 응시를 열지 않고 학교 쪽 `결과 보기` 로 보낸다",
+      back === `/campus/${UNI.toLowerCase()}/start` && await see.count() === 1
+      && (await see.getAttribute("href")) === `/v3/${att}/result`
+      && await rp3.getByRole("button", { name: /검사 시작/ }).count() === 0, back);
     ok("이 학생의 응시는 여전히 하나다",
       (await count(`SELECT count(*)::text n FROM v3_attempts WHERE user_id = $1::bigint`, [stu.id])) === 1);
     await rp3.close();

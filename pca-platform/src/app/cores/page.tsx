@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import { coresForMarket } from "@/lib/me-v3/core-registry";
 import { currentAttempt, v3Grants } from "@/lib/me-v3/runtime/session";
+import { campusAttemptState } from "@/lib/campus/attempt-state";
 import { campusStudentContext } from "@/lib/campus/students";
 import "../surface.css";
 import "../me/platform.css";
@@ -50,6 +51,9 @@ export default async function Cores() {
    * `openAttempt()` 하나다(설계 원칙 10).
    */
   const mine = await campusStudentContext(user.id);
+  /* 학교 학생의 단추는 그 학생의 응시 상태가 정한다: 결과를 받은
+     학생에게 `시작하기` 를 세우지 않는다(누르면 지난 결과로 돌아간다) */
+  const st = mine ? await campusAttemptState(user.id) : null;
 
   return (
     <CmShell active="/cores" title="검사">
@@ -87,15 +91,17 @@ export default async function Cores() {
           <PickGrid cols={1}>
             <PickCard
               href={open ? `/v3/${open.id}`
-                : `/campus/${mine.row.university_code.toLowerCase()}`
-                  + `/d/${encodeURIComponent(mine.row.department_code)}`}
+                : st?.kind === "result" ? `/v3/${st.attemptId}/result`
+                : `/campus/${mine.row.university_code.toLowerCase()}/start`}
               icon="compass"
               title={`${mine.university_name} ${mine.department_name}`}
               tag="학교 계약"
               lead={"학교가 적어 준 학과로 검사를 시작합니다. 결과는 그 학과 "
                 + "담당자의 집계에 들어갑니다."}
               meta="적힌 학과가 다르면 학과 담당자에게 알려 주세요."
-              cta={open ? "이어하기" : "학과 확인하고 시작하기"}
+              cta={open ? "이어하기" : st?.kind === "result" ? "결과 보기"
+                : st?.kind === "retake" ? "학과 확인하고 다시 시작하기"
+                : "학과 확인하고 시작하기"}
               strong
             />
           </PickGrid>

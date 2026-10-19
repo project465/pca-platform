@@ -2,9 +2,9 @@ import { redirect } from "next/navigation";
 import { BrandMark } from "@/components/sf/brand-mark";
 import { requireUser } from "@/lib/session";
 import { retakeState } from "@/lib/me-v3/retake";
-import { currentAttempt, estimate, v3Grants } from "@/lib/me-v3/runtime/session";
+import { currentAttempt, estimate } from "@/lib/me-v3/runtime/session";
 import { core as coreEntry, sellableCores } from "@/lib/me-v3/core-registry";
-import { readCampusEntry } from "@/lib/campus/entry";
+import { startGate } from "@/lib/campus/start-gate";
 import type { Tier } from "@/lib/me-v3/scoring/types";
 import { TIER_WHAT } from "../tier-text";
 import StartForm from "./start-form";
@@ -30,30 +30,39 @@ export default async function V3Start({
   if (open) redirect(`/v3/${open.id}`);
 
   /**
+   * **학교가 발급한 계정에는 개인 응시의 시작 화면을 세우지 않는다.**
+   *
+   * 판정은 `startGate()` 한 자리이고 서버 액션도 같은 함수를 읽는다.
+   * 학교 쿠키 없이 이 주소를 바로 친 학교 학생은 학교 경로로 간다: 거기서
+   * 그 학생의 학과와 지금 상태(시작 · 이어하기 · 결과 보기)가 선다.
+   */
+  const gate = await startGate(user.id);
+  if (gate.kind === "school_only") redirect(gate.to);
+
+  /**
    * **이미 끝낸 사람은 새 응시를 열지 않는다**(규격 §7).
    *
    * 전에는 여기서 아무것도 보지 않아 결과를 받은 학생이 단추를 한 번 더
    * 누르면 응시가 하나 더 생겼다. 지금은 **담당자가 열어 준 때만**(쓰지
    * 않은 이용권 한 줄) 다시 열리고, 그렇지 않으면 지난 결과로 보낸다.
    * **지난 결과를 지우지 않는다**: 막는 것은 새 줄을 만드는 일이다.
+   * 다시 여는 권한은 **그 길의 이용권만** 센다(`startGate`).
    */
   const retake = await retakeState(user.id);
-  if (!retake.canStart && retake.lastAttemptId) {
-    redirect(`/v3/${retake.lastAttemptId}/result?again=1`);
+  if (retake.done > 0 && !gate.grants.length && retake.lastAttemptId) {
+    redirect(gate.kind === "campus"
+      ? `/campus/${gate.mine.row.university_code.toLowerCase()}/start`
+      : `/v3/${retake.lastAttemptId}/result?again=1`);
   }
 
-  const grants = await v3Grants(user.id);
-  /* **어느 전공을 시작하는가.** 이용권이 가리키는 core 를 읽고, 아직
-     아무것도 고르지 않았으면 그 시장에서 열려 있는 core 를 묻는다.
-     기본값으로 한 전공을 박아 두면 다른 전공 학생이 **남의 전공 시간**
-     을 보고 앉는다 */
+  const grants = gate.grants;
   /**
    * **학교 진입으로 고른 학과가 있으면 그 전공이다**(규격 §11 · §12).
    *
-   * 쿠키에 적힌 학교·학과를 등록부로 다시 맞춰 본 값이라, 아직 열리지
-   * 않은 전공은 여기 오지 않는다. 없으면 전과 같다.
+   * 쿠키에 적힌 학교·학과를 등록부로 다시 맞춰 본 값이고, 그 사람이 그
+   * 학교의 등록된 학생일 때만 선다. 아니면 개인 응시의 화면이다.
    */
-  const campus = await readCampusEntry();
+  const campus = gate.kind === "campus" ? gate.entry : null;
   /**
    * **학교 진입은 등급을 고르지 않는다. 늘 PRO 다.**
    *

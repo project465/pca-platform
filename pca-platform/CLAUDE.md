@@ -12518,3 +12518,27 @@ AI_AUDIT.md · STAGING_CHECKS.md · pdf/ · sheets/ · shots/).
 `CAREERMATRI_WORKSPACE_UI_V47` · `careermatri-workspace-copy.31`. Staging 은 이
 컨테이너에서 열리지 않아 NOT VERIFIED, 운영은 바뀌지 않았다. Gate 1 · 2 · 4 는
 사람의 판정이 필요해 NOT VERIFIED, Gate 5(AI)는 LLM 0 이라 FAIL 이다.
+
+**R35 출시 차단 해소. 학교 계정이 개인 응시를 열지 못하게 했다.** (2026-10-19)
+
+학교가 발급한 계정이 학교 쿠키 없이 `/v3/start` 를 치면 맥락만 버리고 **개인
+응시(BASIC · 기계공학)가 그대로 열렸다.** 담당자 집계에 잡히지 않고 학교 응시가
+한 번이라는 정책도 그 길로 샜다. 판정을 `src/lib/campus/start-gate.ts` 한 자리에
+두고 시작 화면과 서버 액션이 같이 읽는다: 등록된 학교 학생은 학교 경로로 가고,
+개인 이용권을 **실제로 든** 학생만 개인 응시를 연다. 학교 응시에는 학교 이용권만 ·
+개인 응시에는 개인 이용권만 쓴다. 단추의 말은 응시 상태가 정한다
+(`src/lib/campus/attempt-state.ts`): 검사 시작 · 이어하기 · 결과 보기 · (담당자가
+열어 준 때만) 다시 시작.
+
+**담당자 재응시가 한 번도 저장되지 않았다.** `CM_V3_CAMPUS_PRO` 상품 줄이 없어 외래키가
+매번 거절했다. `db/schema_campus_students.sql` 끝에 꺼 둔 상품 한 줄을 더했고 Staging ·
+운영에는 `npm run db:upgrade` 한 번이 필요하다.
+
+**검사 스크립트를 함께 돌리지 않는다.** `campus:walk` 의 집계 단계
+(`campus-agg-check.ts`)가 이 DB 의 `PCU` 응시를 전부 지운다. E2E 가 걷는 도중에
+돌렸더니 그 응시가 사라져 `답 0개` 로 걸렸다. 제품 결함이 아니고 검사끼리의 충돌이다.
+
+근거를 고른 학생과 안 고른 학생을 여섯 전공에서 견줬다(`scripts/lab/rb-evidence-compare.ts`,
+42 / 42): 근거가 묶음과 Gap 과 할 일을 실제로 바꾸고, 다른 근거는 다른 글을 만들고,
+`검증된 · 증명 · 확인된 성과` 로 부풀린 자리가 0 이다. 보고는 `docs/metri/review/rb/`.
+판본: `ME_V3_2_ASSESSMENT_UI_V44` · `CAREERMATRI_WORKSPACE_UI_V48`.
