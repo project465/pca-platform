@@ -155,7 +155,7 @@ function rendered(m: ReturnType<typeof buildResult>): string[] {
   }
   out.push(...draftKo(m.translation?.steps ?? []));
   /* 영역에 걸치지 않는 판단. **축 두 줄과 문항 줄을 함께 센다** */
-  const cm = commonKo(m.common);
+  const cm = commonKo(m.common, core);
   out.push(...cm.owned, ...cm.confirmed, ...cm.didOwn, ...cm.didConfirm);
   return out.filter(Boolean);
 }

@@ -981,7 +981,15 @@ function Steps({
             <input type="radio" name={f.itemId} checked={value === o.value}
               aria-label={`${f.label ?? ""} · ${o.full}`} onChange={pick(o)} />
             <span className="qs-mark" aria-hidden />
-            <span className="qs-body"><span className="qs-label">{o.short}</span></span>
+            {/* R34 §6: 한 화면에 질문이 넷이면 같은 다섯 낱말이 스무 번 선다.
+                번호를 같이 적고, 첫 질문 뒤의 줄에서는 CSS 가 낱말을 접어
+                번호와 고른 칸의 낱말만 남긴다(넓은 화면). **보기 문면과
+                저장되는 값은 그대로다**: 첫 줄이 그 화면의 범례가 되고,
+                보조 기기는 `aria-label` 로 밝혀 적는 말을 그대로 받는다 */}
+            <span className="qs-body">
+              {c.answer === "exposure" ? null : <i className="qs-sn" aria-hidden>{o.value}</i>}
+              <span className="qs-label">{o.short}</span>
+            </span>
           </label>
         ))}
       </div>
@@ -1099,7 +1107,7 @@ function Row({
        무엇에 답하는지가 화면에 없다. 보조 기기는 `legend` 로 같은 말을
        한 번 받으므로 여기서는 `aria-hidden` 으로 되풀이를 막는다 */
     return (
-      <div className={`qs-row${miss ? " is-miss" : ""}`}>
+      <div className={`qs-row${miss ? " is-miss" : ""}`} data-n={n ?? 1}>
         {f.label ? (
           <span aria-hidden>
             {of && of > 1 ? <i className="qs-n">{n} / {of}</i> : null}

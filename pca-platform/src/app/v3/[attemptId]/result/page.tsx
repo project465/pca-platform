@@ -247,10 +247,14 @@ function Basic({ core, d }: { core: string; d: ResultDomain }) {
  * 여기서 고르는 것은 어느 줄에 적을지뿐이다.
  */
 function evidenceRows(d: ResultDomain): { decided: string[]; did: string[] } {
+  /* **결과물 이름을 `직접 정한 것` 으로 적지 않는다**(R34 §2). 결과 모델의
+     `decided` 는 소유로 선 축의 고른 항목 전부라, 산출물 축(J5)이 소유로
+     서면 `지표 정의표` 가 판단 자리에 선다. 전에는 판단이 하나도 남지
+     않을 때 그 이름을 그대로 되돌려 보여서, 종이 2쪽과 7쪽에 `직접 정한
+     것: 지표 정의표` 가 섰다. 산출물과 견준 대상은 제 칸에만 선다 */
   const named = new Set([...d.artifacts, ...d.verifications]);
-  const trimmed = d.decided.filter((x) => !named.has(x));
   return {
-    decided: trimmed.length ? trimmed : d.decided,
+    decided: d.decided.filter((x) => !named.has(x)),
     did: d.did.filter((x) => !d.decided.includes(x) && !named.has(x)),
   };
 }
@@ -262,19 +266,31 @@ function Why({ d }: { d: ResultDomain }) {
      세 이름표 아래에 `아직 고른 것이 없습니다` 가 세 번 섰다(종이 7쪽).
      비어 있는 칸은 이름만 모아 한 줄로 적고, 전부 비면 그 한 줄뿐이다 */
   const empty = [
-    !did.length && !decided.length ? "해 본 일" : "",
-    !d.artifacts.length ? "손에 남은 것" : "",
-    !d.verifications.length ? "비교한 것" : "",
+    !did.length && !decided.length ? "해 봤다고 고른 것" : "",
+    !d.artifacts.length ? "남겼다고 고른 결과물" : "",
+    !d.verifications.length ? "견줬다고 고른 대상" : "",
   ].filter(Boolean);
-  if (empty.length === 3) {
-    return <p className="rs-dnone">해 본 일 · 손에 남은 것 · 비교한 것을 아직 고르지 않았습니다</p>;
-  }
+  /* **고른 항목 가운데 응답으로는 확인에 못 미친 것**(R34 §1 추적표).
+     결과 모델의 `did` · `decided` 는 확인·소유로 선 축의 항목만 들어서,
+     해 봤다고 답하지 않은 축에서 고른 항목(`axes[].picks`)은 어느 화면에도
+     서지 않았다(자료에서 넣을 것과 뺄 것을 정했다 — 응시 182). 고른 것은
+     전부 돌려주되 **판정을 바꾸지 않는다**: 이름표가 그 사실을 적는다 */
+  const shown = new Set([...d.did, ...d.decided, ...d.artifacts, ...d.verifications]);
+  const unconfirmed = [...new Set(d.axes.flatMap((a) => a.picks))].filter((x) => !shown.has(x));
+  /* R34: 전부 비면 기본 보기(`Strongest`)가 이미 그 사실을 적는다. 여기서
+     한 줄을 더 세우면 종이 8쪽에 같은 말이 두 번 선다 */
+  if (empty.length === 3 && !unconfirmed.length) return null;
+  /* **네 층의 이름을 가른다**(R34 §2). 넷은 전부 그 사람이 응답에서 고른
+     항목이고 밖에서 확인한 기록이 아니다. 그래서 이름표가 `고른` 을 든다:
+     `직접 정했다고 고른 것` · `해 봤다고 고른 것` · `남겼다고 고른 결과물` ·
+     `견줬다고 고른 대상`. 권하는 행동은 이 카드가 아니라 `적을 과제 고르기`
+     절이 든다 */
   return (
     <div className="rs-why">
       <dl>
         {decided.length ? (
           <>
-            <dt>직접 정한 것</dt>
+            <dt>직접 정했다고 고른 것</dt>
             <dd><Picks items={decided} own /></dd>
           </>
         ) : null}
@@ -282,22 +298,30 @@ function Why({ d }: { d: ResultDomain }) {
             없는 문제를 만들어 보이게 된다 */}
         {did.length || !decided.length ? (
           <>
-            <dt>해 본 일</dt>
+            <dt>해 봤다고 고른 것</dt>
             <dd><Picks items={did} /></dd>
           </>
         ) : null}
         {d.artifacts.length ? (<>
-          <dt>손에 남은 것</dt>
+          <dt>남겼다고 고른 결과물</dt>
           <dd><Picks items={d.artifacts} max={6} /></dd>
         </>) : null}
         {d.verifications.length ? (<>
-          <dt>비교한 것</dt>
+          <dt>견줬다고 고른 대상</dt>
           <dd><Picks items={d.verifications} max={6} /></dd>
+        </>) : null}
+        {unconfirmed.length ? (<>
+          <dt>골랐지만 응답으로는 아직 확인되지 않은 것</dt>
+          <dd><Picks items={unconfirmed} max={6} /></dd>
         </>) : null}
       </dl>
       {empty.length ? (
         <p className="rs-dnone">아직 고르지 않음 · {empty.join(" · ")}</p>
       ) : null}
+      <p className="rs-dnone">
+        넷 다 검사에서 스스로 고른 답입니다. 파일이나 평가처럼 밖에서 확인한
+        기록은 아니고, 수치와 결과는 직접 적습니다.
+      </p>
     </div>
   );
 }
@@ -416,16 +440,19 @@ function Strongest({ d }: { d: ResultDomain }) {
      적고 아래에는 행동만 선다 */
   const groups = [
     /* 산출물 이름은 아래 줄이 제 이름으로 적는다(`evidenceRows`) */
-    { label: "직접 정한 것", items: take(evidenceRows(d).decided) },
-    { label: "남긴 결과", items: take(d.artifacts) },
+    { label: "직접 정했다고 고른 것", items: take(evidenceRows(d).decided) },
+    { label: "남겼다고 고른 결과물", items: take(d.artifacts) },
   ].filter((g) => g.items.length);
   if (!groups.length) {
     return (
       /* **카드마다 같은 문장을 되풀이하지 않는다**(규격 §10). 근거를
          고르지 않은 영역이 넷이면 이 문장이 네 번 선다. 그 영역의 상태와
          빈자리는 바로 위와 아래가 이미 적고 있으므로, 여기는 **고른 것이
-         없다는 사실**만 칸의 말로 적는다 */
-      <p className="rs-dnone">아직 고른 근거 없음</p>
+         없다는 사실**만 칸의 말로 적는다.
+         R34: `아직 고른 근거 없음` 은 무엇을 안 골랐는지가 없어 읽는 사람이
+         `근거가 없다` 로 읽었다. 검사에서 해 봤다고 답한 것과 근거 항목을
+         고르는 것은 다른 일이라 그 둘을 한 줄에 적는다 */
+      <p className="rs-dnone">검사에서 해 봤다고 답했고, 근거 항목(판단 · 결과물 · 견준 대상)은 고르지 않았습니다</p>
     );
   }
   return (
@@ -463,7 +490,7 @@ function EvidenceRow(
         {" — "}{axisStateKo(axis, state)}
       </p>
       <div className="keys">
-        <span className="rs-keylabel">고르신 항목</span>
+        <span className="rs-keylabel">고른 항목</span>
         {/* **`아직 고른 것이 없습니다` 를 여기 그대로 쓰지 않는다.** 바로
             위에 `확인됐습니다` 가 적혀 있어서 두 줄이 서로를 부순다.
             이 자리에서 비어 있다는 것은 **설명할 재료가 없다**는 뜻이다 */}
@@ -487,11 +514,27 @@ function EvidenceNone(
 ) {
   const none = rows.filter((e) => !e.picks.length);
   if (!none.length) return null;
+  /* R34: 영역마다 긴 괄호를 단 열한 토막이 한 문단으로 섰다(종이 3쪽).
+     영역을 머리로 두고 축의 짧은 이름만 잇는다. `확인됐다` 의 뜻도 같이
+     적는다: 검사에서 해 봤다고 답했다는 뜻이고 근거 항목은 비어 있다 */
+  const by = new Map<string, string[]>();
+  for (const e of none) {
+    const list = by.get(e.domain) ?? [];
+    list.push(AXIS_KO[e.axis]);
+    by.set(e.domain, list);
+  }
   return (
-    <p className="rs-none rs-evnone">
-      확인은 됐지만 고르신 근거 항목이 없어 지금은 설명할 재료가 없는 판단 {none.length}:{" "}
-      {none.map((e) => `${domainName(core, e.domain)}(${axisStateKo(e.axis, e.state)})`).join(" · ")}
-    </p>
+    <div className="rs-evnone">
+      <p className="rs-none">
+        검사에서 해 봤다고 답했지만 근거 항목을 고르지 않은 판단 {none.length}
+        — 지금은 설명할 재료가 없습니다.
+      </p>
+      <ul>
+        {[...by.entries()].map(([td, axes]) => (
+          <li key={td}><b>{domainName(core, td)}</b> {axes.join(" · ")}</li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
@@ -1081,8 +1124,10 @@ export default async function V3Result({
       return {
         code,
         name: domainName(core, code),
-        said: d?.decided[0] ?? d?.did[0] ?? "",
-        left: d?.artifacts[0] ?? d?.verifications[0] ?? "",
+        said: evidenceRows(d!).decided[0] ?? d?.did[0] ?? "",
+        /* **남긴 것만 든다**(R34). 견준 대상을 결과물 자리에 세우면 `지난
+           캠페인 반응` 이 손에 남은 것으로 읽힌다 */
+        left: d?.artifacts[0] ?? "",
       };
     })
     .filter((r) => r.said);
@@ -1217,7 +1262,7 @@ export default async function V3Result({
   const bg = model.overview.basic_groups;
   /* 영역에 걸치지 않는 판단. **열두 영역에 넣지 않는다**: 기술영역을 묻지
      않은 자리라 영역별 판정과 섞이면 안 된다 */
-  const cm = commonKo(model.common);
+  const cm = commonKo(model.common, core);
   const orgName = (c: string) => orgChoices(core).find((x) => x.code === c)?.name ?? c;
   /* **조직환경(OC)과 기관 유형(ORG)은 다른 층이다.** 앞엣것은 그 일을
      하는 자리의 성격이고 뒤엣것은 그 자리를 가진 기관의 종류다 */
@@ -1540,13 +1585,20 @@ export default async function V3Result({
                 고른 것**이고, 묶음 딱지와 상태 문장만 검사가 가른 것이다. 그
                 사실을 절 머리에서 한 번 적는다 */}
             <p className="rs-note rs-layers">
-              아래 항목은 전부 응답에서 직접 고르신 것입니다. 해 본 일 → 직접 정한 것 →
-              남긴 결과물 → 비교·검증 차례로 적고, 묶음 딱지와 상태 문장만 검사가 가른 것입니다.
+              아래 항목은 전부 검사에서 스스로 고른 답입니다. 네 층으로 적습니다:
+              해 봤다고 고른 것 → 직접 정했다고 고른 것 → 남겼다고 고른 결과물 →
+              견줬다고 고른 대상. 파일이나 평가처럼 밖에서 확인한 기록은 아니고,
+              묶음 딱지와 상태 문장만 검사가 가른 것입니다. 권하는 행동은
+              ‘적을 과제 고르기’ 에 따로 적습니다.
             </p>
             {evRows.length ? (
               <>
+                {/* R34 §4: `바로 꺼내 쓸 수 있는` 을 적지 않는다. 줄마다
+                    **남겼다고 고른 결과물이 있는가**를 가른다: 있으면 그 이름,
+                    없으면 `남긴 것 확인 필요`. 수치와 결과는 어느 줄에도 없고
+                    그 사실을 아래 한 줄이 적는다 */}
                 <p className="rs-sh-s">
-                  지원서에서 바로 꺼내 쓸 수 있는 경험 {evRows.length}가지입니다.
+                  지원서로 옮길 재료가 있는 경험 {evRows.length}가지입니다.
                 </p>
                 <ul className="rs-ebr">
                   {evRows.map((r) => (
@@ -1556,10 +1608,15 @@ export default async function V3Result({
                         <b>{sayKo(r.said)}</b>
                         <small>{r.name}</small>
                       </span>
-                      {r.left ? <em>{thingKo(r.left)}</em> : null}
+                      {r.left
+                        ? <em>남겼다고 고른 것 · {thingKo(r.left)}</em>
+                        : <em>남긴 것 확인 필요</em>}
                     </li>
                   ))}
                 </ul>
+                <p className="rs-note rs-ebr-note">
+                  수치 · 기간 · 결과는 여기 없습니다. 지원서에 옮길 때 직접 적습니다.
+                </p>
               </>
             ) : null}
             {/* **들머리를 두지 않는다**(R10 §D). `여기 있는 건 전부 직접
@@ -1572,7 +1629,7 @@ export default async function V3Result({
                     이 줄을 할 일로 보고 결과지 마흔 벌에서 걸었다. 여기서
                     남길 것을 적을 수는 없다: 어느 영역인지가 아직 없다 */}
                 <p className="rs-note">
-                  지금 바로 꺼내 쓸 경험은 아직 없어요. 아래 &lsquo;적을 과제
+                  지원서로 옮길 만큼 확인된 경험은 아직 없어요. 아래 &lsquo;적을 과제
                   고르기&rsquo;부터 보시면 돼요.
                 </p>
                 {/* **그 학과 학생이 낼 수 있는 근거를 적는다**(갈래 계약의
@@ -1721,7 +1778,7 @@ export default async function V3Result({
             <div className="rs-ev">
               <section>
                 <h3>지원서에서 설명할 수 있는 경험</h3>
-                <p>직접 정한 것으로 확인됐고, 고르신 근거가 함께 있는 자리입니다.</p>
+                <p>직접 정한 것으로 확인됐고, 고른 근거 항목이 함께 있는 자리입니다.</p>
                 {model.evidence.ready.length ? (<>
                   {model.evidence.ready.filter((e) => e.picks.length).slice(0, 6).map((e) => (
                     <EvidenceRow key={`${e.domain}.${e.axis}`} core={core} domain={e.domain}
@@ -1739,7 +1796,7 @@ export default async function V3Result({
                     하면 채워지는지로 잇는다 */}
                 </>) : (
                   <p>
-                    지금 바로 꺼내 쓸 자리는 아직 없습니다. 아래
+                    지원서로 옮길 자리는 아직 없습니다. 아래
                     ‘적을 과제 고르기’ 가운데 하나를 끝내면 이 칸이 먼저
                     채워집니다.
                   </p>

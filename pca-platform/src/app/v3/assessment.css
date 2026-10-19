@@ -163,11 +163,14 @@
  * 읽힌다. 학교 이름이 한 단 짙고 학과가 그 뒤에 붙는다.
  */
 .qs-where {
-  flex: none; display: inline-flex; align-items: baseline; gap: 6px;
+  /* R34: `flex: none` 에 38ch 를 주었더니 1440 에서 진행 줄이 `영역 … › 실… ›
+     근거 …` 로 잘렸다. 학교·학과는 줄어들 수 있고, 지금 단계 이름은 잘리지
+     않는다 */
+  flex: 0 1 auto; min-width: 0; display: inline-flex; align-items: baseline; gap: 6px;
   padding-left: var(--q-s3); margin-left: 1px;
   border-left: 1px solid var(--q-line);
   color: var(--q-ink-2); font-size: var(--q-t-meta); font-weight: var(--ui-w-sb);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 38ch;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 26ch;
 }
 .qs-where b { color: var(--q-ink); font-weight: var(--ui-w-bd); }
 
@@ -189,8 +192,9 @@
   flex: 1 1 auto; min-width: 0;
   display: flex; align-items: center; gap: var(--q-s2);
 }
-.qs-crumb span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.qs-crumb .now { color: var(--q-ink); font-weight: var(--ui-w-sb); }
+.qs-crumb span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 0 1 auto; min-width: 0; }
+/* 지금 단계는 잘리지 않는다. 앞뒤 단계가 먼저 줄어든다 */
+.qs-crumb .now { color: var(--q-ink); font-weight: var(--ui-w-sb); flex: none; overflow: visible; }
 .qs-crumb i { font-style: normal; color: var(--q-line); }
 /* **막대는 2px 이다.** 띠 아래 선과 겹치지 않게 띠 안쪽 맨 아래에 눕는다 */
 .qs-bar {
@@ -380,7 +384,19 @@
      읽히므로 칸의 바닥을 맞춘다 */
   .qs-scale-5 .qs-opt { min-height: 60px; justify-content: flex-start; }
   .qs-scale-5 .qs-label { font-size: var(--q-t-meta); line-height: 1.35; }
+  /* R34 §6 · 설문표 되풀이를 줄인다. 첫 질문의 다섯 낱말이 그 화면의 범례이고,
+     둘째 질문부터는 번호만 서되 고른 칸과 가리킨 칸에서 낱말이 되살아난다.
+     **보기의 수와 차례와 값은 그대로다** */
+  .qs-sn { display: block; font-style: normal; font-size: var(--q-t-cap); color: var(--q-ink-3); line-height: 1; margin-bottom: 3px; }
+  .qs-row[data-n]:not([data-n="1"]) .qs-scale-5 .qs-opt { min-height: 48px; }
+  .qs-row[data-n]:not([data-n="1"]) .qs-scale-5 .qs-sn { font-size: var(--q-t-meta); color: var(--q-ink-2); margin-bottom: 0; }
+  .qs-row[data-n]:not([data-n="1"]) .qs-scale-5 .qs-opt:not(.is-on):not(:hover):not(:focus-within) .qs-label { display: none; }
+  .qs-row[data-n]:not([data-n="1"]) .qs-scale-5 .qs-opt.is-on .qs-sn,
+  .qs-row[data-n]:not([data-n="1"]) .qs-scale-5 .qs-opt:hover .qs-sn,
+  .qs-row[data-n]:not([data-n="1"]) .qs-scale-5 .qs-opt:focus-within .qs-sn { margin-bottom: 3px; }
 }
+/* 좁은 화면에서는 줄이 접혀 번호를 따로 세우지 않는다(`Sum` 이 `5 매우 관심 있음` 을 적는다) */
+@media (max-width: 719px) { .qs-sn { display: none; } }
 /* 좁은 화면: 네 칸이 세로로 서되 이름과 한 마디가 같은 줄이다 */
 @media (max-width: 719px) {
   .qs-own .qs-opt { align-items: center; padding: var(--q-s3) var(--q-s4); min-height: var(--q-hit-sm); }

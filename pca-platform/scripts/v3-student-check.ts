@@ -10,6 +10,7 @@ import {
   EXAMPLE_FALLBACK, EXPERIENCE_EXAMPLE, EXPERIENCE_FLOW, FLOW_FALLBACK, STUDENT_COPY,
 } from "../src/lib/me-v3/student/copy";
 import { TRANSLATE_MENU, TRANSLATE_NEUTRAL } from "../src/lib/me-v3/student/translate";
+import { COMMON_BY_CORE, COMMON_ME, COMMON_NEUTRAL, commonItemKo } from "../src/lib/me-v3/student/common";
 import { FAMILY_FILL, FAMILY_LINE, FAMILY_MEANING }
   from "../src/lib/me-v3/student/icon";
 
@@ -328,6 +329,35 @@ console.log("\n── 14. 번역 보기가 Core 마다 서는가 ──");
     (neu.match(/치수|재질|부품|해석|도면|공정|인증|형상|고객|예산|매출/) ?? ["없다"])[0]);
   const cores = Object.keys(TRANSLATE_MENU);
   console.log(`  적어둠  제 벌을 드는 Core ${cores.length} (${cores.join(" · ")}) · 나머지는 중립 벌`);
+}
+
+/* ── §15 영역에 걸치지 않는 판단의 이름이 Core 마다 든다 (R34 · Staging PDF 9쪽) ── */
+console.log("\n── 15. 공통 판단·학위 묶음의 이름이 Core 마다 서는가 ──");
+{
+  const tko = body("src/lib/me-v3/result/text.ko.ts");
+  ok("결과 문장이 그 Core 의 벌을 읽는다", /commonItemKo\(core, id\)/.test(tko) && /COMMON_ITEM_KO: Record<string, string> = COMMON_ME/.test(tko));
+  ok("결과지가 Core 를 넘긴다", /commonKo\(model\.common, core\)/.test(body("src/app/v3/[attemptId]/result/page.tsx")));
+  const ids = Object.keys(COMMON_ME);
+  ok("기계공학 벌이 서른을 든다", ids.length === 30);
+  ok("중립 벌이 같은 번호를 빠짐없이 든다", ids.every((k) => !!COMMON_NEUTRAL[k]) && Object.keys(COMMON_NEUTRAL).length === 30);
+  /* 기계공학에서만 쓰는 말만 센다. `설계` 와 `해석` 은 건축과 전기전자의 말이기도 하다 */
+  const ME_WORDS = /치수|실험값|계산값|시작품|캡스톤/;
+  const all = reg.cores.map((c) => c.code).filter((c) => !!COMMON_BY_CORE[c] || c !== "ME_CORE_V3");
+  const missing: string[] = []; const stray: string[] = [];
+  for (const c of all) {
+    for (const k of ids) {
+      const t = commonItemKo(c, k);
+      if (!t) missing.push(`${c}:${k}`);
+      else if (c !== "ME_CORE_V3" && c !== "EE_CORE_V1" && ME_WORDS.test(t)) stray.push(`${c}:${k}:${t}`);
+    }
+  }
+  ok("Core 마다 서른 번호가 전부 이름을 든다", missing.length === 0, missing.slice(0, 4).join(" "));
+  ok("이공계 밖 Core 의 벌에 기계공학의 말이 없다", stray.length === 0, stray.slice(0, 3).join(" | "));
+  const extra = Object.entries(COMMON_BY_CORE).flatMap(([c, m]) => Object.keys(m).filter((k) => !ids.includes(k)).map((k) => `${c}:${k}`));
+  ok("Core 벌에 은행에 없는 번호가 없다", extra.length === 0, extra.join(" "));
+  const biz = ids.map((k) => commonItemKo("BIZ_CORE_V1", k)).join(" ");
+  ok("경영 벌이 조건이나 치수를 말하지 않는다", !/치수|실험값/.test(biz));
+  console.log(`  적어둠  제 벌을 드는 Core ${Object.keys(COMMON_BY_CORE).length} · 나머지는 중립 벌`);
 }
 
 console.log(`\n통과 ${pass} · 걸림 ${bad.length}`);

@@ -16,6 +16,7 @@ import { plainKo, sayKo, thingKo } from "./say";
 import { chainFor } from "./chains";
 import { andList, josaOf, orList, withJosa } from "./josa";
 import { REASON_KO } from "../scoring/text.ko";
+import { COMMON_ME, commonItemKo } from "../student/common";
 import type {
   Action, ActionCode, CommonView, FirstMove, Gap, GapWhy, HeadlineCode, PackView,
   ResultModel,
@@ -279,7 +280,10 @@ const HEADLINE_SAID_KO: Partial<Record<HeadlineCode | "EVIDENCE_READY_OUTPUT", (
  * 상태를 학생의 말로 한 번 적을 뿐이다.
  */
 const HEADLINE_BADGE_KO: Record<HeadlineCode, string> = {
-  EVIDENCE_READY: "지원서에 바로 쓸 수 있어요",
+  /* **`바로 쓸 수 있다` 고 적지 않는다**(R34 §4). 응답에서 확인된 것은
+     그 사람이 고른 항목이고, 수치와 결과는 아직 적히지 않았다. 알약이
+     말할 수 있는 것은 `옮겨 적을 재료가 있다` 까지다 */
+  EVIDENCE_READY: "지원서에 쓸 경험이 있어요",
   EVIDENCE_PARTIAL: "정리만 하면 돼요",
   EVIDENCE_LOW_INTEREST: "해 본 일은 쌓여 있어요",
   EXPLORING: "이제 시작해 보면 돼요",
@@ -996,7 +1000,7 @@ export function actionBriefKo(
  * 된다까지이고, 그 뒤는 읽는 사람의 일이다.
  */
 const ACTION_WHY_KO: Record<ActionCode, string> = {
-  WRITE_UP: "한 쪽으로 묶어 두면 면접에서 그대로 꺼내 쓸 수 있어요.",
+  WRITE_UP: "한 쪽으로 묶어 두면 면접에서 설명하기 쉬워요.",
   DEEPEN_OWNERSHIP: "세 줄만 적어 두면 지원서에서 어떤 기준으로 정했는지를"
     + " 그대로 옮겨 쓸 수 있어요.",
   BUILD_OUTPUT: "남겨 둔 것이 있으면 그 일을 무엇으로 보여줄지 말할 수 있습니다.",
@@ -1287,7 +1291,10 @@ function headlineLead(m: ResultModel): string | null {
     return "뭘 골랐는지만 덧붙이면 돼요.";
   }
   if (m.overview.headline === "EVIDENCE_READY") {
-    return "지원서에 그대로 쓰시면 돼요.";
+    /* R34: `그대로 쓰시면 돼요` 는 수치와 결과까지 우리가 끝낸 것으로
+       읽힌다. 옮길 재료가 있다는 것과 직접 적을 것이 남았다는 것을 한
+       문장에 둔다 */
+    return "확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.";
   }
   if (m.overview.headline === "EVIDENCE_LOW_INTEREST") {
     return "이 쪽을 계속 볼지만 정하면 돼요.";
@@ -1556,43 +1563,14 @@ export const XFIELD_ORDER = [
  * `~한 적이 있다` 가 열두 번 되풀이되면 읽히지 않기 때문이다. **학위마다 다른
  * 장면을 그대로 들고 간다**: 같은 축이라도 학부는 캡스톤이고 포닥은 과제 운영이다.
  */
-export const COMMON_ITEM_KO: Record<string, string> = {
-  /* 공통 판단. 어느 학위나 받는다 */
-  CJ_SCOPE: "다룰 범위를 좁혀 정하고 까닭을 적기",
-  CJ_REQUIRE: "말로 받은 요구를 숫자로 바꾸기",
-  CJ_METHOD: "쓸 방법을 고르고 까닭을 적기",
-  CJ_COMPARE: "선택지를 같은 기준으로 견주어 고르기",
-  CJ_HANDOFF: "내가 낸 것을 다른 사람이 받아 쓰기",
-  CJ_GIVEN_REV: "내려온 조건을 근거를 들어 바꾸기",
-  /* 학부 장면 */
-  UG_SCOPE: "캡스톤에서 다룰 범위를 직접 좁히기",
-  UG_DECIDE: "수업 과제에서 조건이나 치수를 직접 정하기",
-  UG_OUTPUT: "만든 것을 남이 읽고 쓸 수 있게 정리하기",
-  UG_CHECK: "실험값과 계산값을 대조해 차이를 설명하기",
-  UG_FIX: "예상과 다른 결과의 원인을 좁혀 다시 하기",
-  UG_USED: "내가 만든 것이 팀의 다음 작업에 쓰이기",
-  /* 석사 장면 */
-  MS_PROBLEM: "다룰 연구 문제를 직접 좁히기",
-  MS_CONDITION: "과제 목표를 측정할 수 있는 조건으로 옮기기",
-  MS_METHOD: "실험이나 해석의 조건을 직접 정하기",
-  MS_OUTPUT: "남이 다시 할 수 있게 방법과 조건을 남기기",
-  MS_VERIFY: "내 결과를 다른 방법으로 얻은 값과 대조하기",
-  MS_TRANSLATE: "연구에서 한 일을 산업에서 쓰는 말로 옮기기",
-  /* 박사 장면 */
-  PHD_FRAME: "풀 수 있는 크기로 문제를 다시 자르기",
-  PHD_ASSUME: "세운 가정이 깨지는 조건을 미리 적기",
-  PHD_PICK: "방법이 여럿일 때 하나를 골라 까닭을 남기기",
-  PHD_VAR: "무엇을 고정하고 무엇을 바꿀지 직접 정하기",
-  PHD_UNCERT: "결과에 남은 불확실성의 크기를 적기",
-  PHD_LIMIT: "내 방법이 안 되는 범위를 찾아 적기",
-  /* 박사후연구원 장면 */
-  PD_SCOPE: "내가 책임지는 범위와 맡긴 범위를 가르기",
-  PD_RUN: "과제 일정과 자원을 직접 나누기",
-  PD_ALONE: "지도 없이 직접 정하고 그대로 가기",
-  PD_TEAM: "다른 사람의 결과를 받아 내 작업에 이어 붙이기",
-  PD_OUT: "연구 결과를 과제 보고나 특허나 시작품으로 바꾸기",
-  PD_LINK: "내 결과가 기업이나 다른 기관의 작업에 쓰이기",
-};
+/**
+ * **R34: 이 표는 기계공학 벌이고 다른 Core 는 `student/common.ts` 가 든다.**
+ * 전에는 이 한 벌이 스무 Core 전부에 나가 경영학과 학생의 종이에
+ * `조건이나 치수` 와 `실험값과 계산값` 이 섰다. 표 자체는 `COMMON_ME` 를
+ * 그대로 가리키고(`v3:measure` 가 이 이름으로 번호 덮임을 센다), 읽는
+ * 자리는 `commonKo(v, core)` 가 그 Core 의 벌로 간다.
+ */
+export const COMMON_ITEM_KO: Record<string, string> = COMMON_ME;
 
 /**
  * 영역에 걸치지 않는 판단을 읽는 말로.
@@ -1602,14 +1580,16 @@ export const COMMON_ITEM_KO: Record<string, string> = {
  * 판단이었는지를 되돌려 준다. 둘 가운데 하나만 두면 읽는 사람이 자기 답을
  * 알아보지 못하거나(축만) 전체가 안 보인다(문항만).
  */
-export function commonKo(v: CommonView): {
+export function commonKo(v: CommonView, core = "ME_CORE_V3"): {
   owned: string[]; confirmed: string[];
   didOwn: string[]; didConfirm: string[];
 } {
   const owned = v.axes.filter((a) => a.owned).map((a) => AXIS_KO[a.axis]);
   const confirmed = v.axes
     .filter((a) => a.confirmed && !a.owned).map((a) => AXIS_KO[a.axis]);
-  const name = (id: string) => COMMON_ITEM_KO[id];
+  /* **그 Core 의 말로 부른다**(R34). Core 를 못 받은 옛 호출은 기계공학
+     벌로 떨어진다: 그 자리가 전과 같은 글자를 내야 되짚을 때 갈리지 않는다 */
+  const name = (id: string) => commonItemKo(core, id) ?? undefined;
   /**
    * **굳은 결과에 이 칸이 없을 수 있다.**
    *

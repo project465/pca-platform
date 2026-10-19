@@ -686,8 +686,13 @@
 }
 .rs-ebr em {
   flex: none; font-style: normal; font-size: var(--r-t-meta);
-  color: var(--r-ink-2); font-weight: var(--ui-w-md); white-space: nowrap;
+  color: var(--r-ink-2); font-weight: var(--ui-w-md);
+  /* R34: `남겼다고 고른 것 · 캠페인 기획서` 처럼 길어져 한 줄로 못 박으면
+     좁은 단에서 잘린다. 오른쪽 맞춤으로 접는다 */
+  max-width: 42%; text-align: right; word-break: keep-all;
 }
+/* 수치와 결과는 여기 없다는 한 줄(R34 §4) */
+.rs-ebr-note { margin: 10px 0 0; font-size: var(--r-t-meta); color: var(--r-ink-3); }
 @media (max-width: 879px) {
   .rs-ebr > li { grid-template-columns: auto minmax(0, 1fr); }
   .rs-ebr em { grid-column: 2; margin-top: 2px; }
@@ -934,6 +939,14 @@
   margin: 14px 0 0; padding: 0;
   font-size: var(--r-t-body); color: var(--r-ink-3); line-height: 1.55;
 }
+/* 근거 항목을 고르지 않은 판단(R34). 영역이 머리, 축의 짧은 이름이 뒤 */
+.rs-evnone { margin: 12px 0 0; }
+.rs-evnone p { margin: 0; }
+.rs-evnone ul {
+  margin: 6px 0 0; padding: 0; list-style: none;
+  display: grid; gap: 3px; font-size: var(--r-t-gloss); color: var(--r-ink-3);
+}
+.rs-evnone li b { font-weight: var(--ui-w-md); color: var(--r-ink-2); margin-right: 6px; }
 /* **회색 박스 안의 라벨/값 짝을 걷었다**(R21 §D). 머리는 가는 금이
    대신하고 값만 선다 */
 .rs-dgap {
