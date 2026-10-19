@@ -1,0 +1,27 @@
+# PDF 쪽마다 세로로 찬 비율 (scripts/lab/r32_pdffill.py · 96dpi 렌더)
+
+## e2e/pdf (E2E 학생 · 실제 클릭 응답)
+page-01.png:  88.2%
+page-02.png:  98.1%
+page-03.png:  87.4%
+page-04.png:  95.4%
+page-05.png:  94.8%
+page-06.png:  89.5%
+page-07.png:  97.2%
+page-08.png:  98.1%
+page-09.png:  97.1%
+page-10.png:  91.0%
+
+## pdf-c (사람 C · 근거를 많이 고른 응답)
+page-01.png:  88.2%
+page-02.png:  97.5%
+page-03.png:  96.8%
+page-04.png:  91.4%
+page-05.png:  94.9%
+page-06.png:  99.1%
+page-07.png:  99.2%
+page-08.png:  99.3%
+page-09.png:  91.4%
+page-10.png:  96.8%
+page-11.png:  98.7%
+page-12.png:  71.9%

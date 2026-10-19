@@ -156,7 +156,14 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
  * 까닭 한 줄이 축을 따라 갈린다. 현재 상태의 머리 한 줄이 묶음이 말하는
  * 것만 적는다(`stateLeadKo`). 판정과 결과 모델은 그대로다.
  */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.63";
+/**
+ * R32 · 종이 3·5·7·11쪽. 고르신 항목이 없는 판단을 축마다 되풀이하지 않고
+ * 한 줄에 모은다(`EvidenceNone`). 아무것도 고르지 않은 영역은 세 이름표
+ * 대신 한 줄이다(`Why`). 이어 붙인 자소서 문단 대신 역할·상황 → 행동 →
+ * 판단 → 결과 네 칸(`draftFrameKo`). 근거 절 머리에 네 층을 가르는 한 줄.
+ * 고르신 목표를 종이에서 두 칸으로. 결과 모델과 판정은 그대로다.
+ */
+export const RESULT_COPY_VERSION = "me-v3-result-copy.64";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -429,7 +436,7 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.63";
  * R30 PHASE 1. 결과지 현재 상태 카드가 `studentStateView` 를 읽는다: 어느
  * 영역을 세우는가와 세부 한 줄이 작업공간 홈과 한 자리에서 정해진다.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V74";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V75";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

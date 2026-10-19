@@ -309,7 +309,13 @@
  * R30. 홈 현재 상태가 결과지와 같은 `studentStateView` 를 읽고, 경험
  * 추가가 걸음마다 안내 한 덩이와 묶은 종류와 두 줄짜리 영역 칸으로 선다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V45";
+/**
+ * R32 · Home Hero 를 목표 화면의 329px 에 맞췄다(여백·줄 사이·단추 키만,
+ * 글자 크기는 그대로). 경험 추가 2단이 판단(역할)을 먼저 묻고 상황을
+ * 다음에 묻는다. 저장 완료가 달라진 현재 상태와 다음 행동을 먼저 들고
+ * 고른 항목은 그 뒤다. 저장 계약과 현재 상태 계산은 그대로다.
+ */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V46";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -342,7 +348,7 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V45";
  * R30. `기술 판단` 과 `기술영역` 이 그 Core 의 말로 선다(`experienceFlow`).
  * 홈 Hero 머리가 영역 이름을 들고, 현재 상태 머리 한 줄이 묶음대로 적힌다.
  */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.29";
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.30";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

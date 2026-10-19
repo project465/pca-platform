@@ -18,7 +18,7 @@ import {
 import {
   actionBriefKo, actionHeadKo, actionKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO,
   BASIC_GROUP_KO, bridgeKo,
-  commonKo, domainChainKo, draftKo, gapCellKo, gapKo, gapNeedKo, gapShortKo,
+  commonKo, domainChainKo, draftFrameKo, draftKo, gapCellKo, gapKo, gapNeedKo, gapShortKo,
   actionWhyKo, AXIS_DID_KO, headlineBadgeKo, headlineKo, needKo,
   pickSentenceKo,
   evidenceStoryKo, keptNoteKo, moreReadyKo,
@@ -258,6 +258,17 @@ function evidenceRows(d: ResultDomain): { decided: string[]; did: string[] } {
 /** 왜 이 결과인가. **해석보다 그 사람이 고른 항목이 큰 자리를 차지한다** */
 function Why({ d }: { d: ResultDomain }) {
   const { decided, did } = evidenceRows(d);
+  /* R32: 아무것도 고르지 않은 영역에서 `해 본 일 / 손에 남은 것 / 비교한 것`
+     세 이름표 아래에 `아직 고른 것이 없습니다` 가 세 번 섰다(종이 7쪽).
+     비어 있는 칸은 이름만 모아 한 줄로 적고, 전부 비면 그 한 줄뿐이다 */
+  const empty = [
+    !did.length && !decided.length ? "해 본 일" : "",
+    !d.artifacts.length ? "손에 남은 것" : "",
+    !d.verifications.length ? "비교한 것" : "",
+  ].filter(Boolean);
+  if (empty.length === 3) {
+    return <p className="rs-dnone">해 본 일 · 손에 남은 것 · 비교한 것을 아직 고르지 않았습니다</p>;
+  }
   return (
     <div className="rs-why">
       <dl>
@@ -275,11 +286,18 @@ function Why({ d }: { d: ResultDomain }) {
             <dd><Picks items={did} /></dd>
           </>
         ) : null}
-        <dt>손에 남은 것</dt>
-        <dd><Picks items={d.artifacts} max={6} /></dd>
-        <dt>비교한 것</dt>
-        <dd><Picks items={d.verifications} max={6} /></dd>
+        {d.artifacts.length ? (<>
+          <dt>손에 남은 것</dt>
+          <dd><Picks items={d.artifacts} max={6} /></dd>
+        </>) : null}
+        {d.verifications.length ? (<>
+          <dt>비교한 것</dt>
+          <dd><Picks items={d.verifications} max={6} /></dd>
+        </>) : null}
       </dl>
+      {empty.length ? (
+        <p className="rs-dnone">아직 고르지 않음 · {empty.join(" · ")}</p>
+      ) : null}
     </div>
   );
 }
@@ -456,6 +474,27 @@ function EvidenceRow(
   );
 }
 
+/**
+ * 고르신 항목이 없는 판단 줄(R32).
+ *
+ * 전에는 축마다 `고르신 항목 · 고르신 근거 항목이 없어, 지금은 설명할
+ * 재료가 없습니다` 가 한 줄씩 섰다. 근거를 고르지 않은 사람의 종이 3쪽이
+ * 그 같은 줄 다섯으로 찼다. 사실은 그대로 적되 **한 줄에 모은다**: 어느
+ * 판단이 그 상태인지는 이름으로 남는다.
+ */
+function EvidenceNone(
+  { core, rows }: { core: string; rows: { domain: string; axis: Axis; state: Parameters<typeof axisStateKo>[1]; picks: string[] }[] },
+) {
+  const none = rows.filter((e) => !e.picks.length);
+  if (!none.length) return null;
+  return (
+    <p className="rs-none rs-evnone">
+      확인은 됐지만 고르신 근거 항목이 없어 지금은 설명할 재료가 없는 판단 {none.length}:{" "}
+      {none.map((e) => `${domainName(core, e.domain)}(${axisStateKo(e.axis, e.state)})`).join(" · ")}
+    </p>
+  );
+}
+
 function Plan(
   { core, actions, stage, attemptId, saved, where }: {
     core: string; actions: Action[]; stage: ResultModel["stage"];
@@ -561,6 +600,7 @@ function Translation({ view, major }: { view: TranslationView; major: string }) 
     .filter((x): x is TranslationView["xfield"][number] => !!x && !!xfieldKo(x.item_id, major));
   if (!rows.length && !xf.length) return null;
   const draft = draftKo(view.steps);
+  const frame = draftFrameKo(view.steps);
   return (
     <section className="rs-sect" id="translation">
       <h2>연구·프로젝트를 직무 언어로</h2>
@@ -619,12 +659,23 @@ function Translation({ view, major }: { view: TranslationView; major: string }) 
             .map((s) => TRANS_STEP_KO[s.item_id]).join(" · ")}
         </p>
       ) : null}
-      {draft.length >= 3 ? (
-        <div className="rs-draft">
-          <h3>지원서에서 이렇게 묶어볼 수 있습니다</h3>
-          <p>{draft.join(" ")}</p>
+      {/* R32: 보기를 `~했습니다.` 로 이어 붙인 문단을 내놓지 않는다(종이 5쪽).
+          네 칸(역할·상황 → 행동 → 판단 → 결과)에 고르신 보기를 그대로 나눠
+          돌려주고, 문장으로 잇는 일과 수치를 채우는 일은 그 사람이 한다 */}
+      {frame.length >= 2 ? (
+        <div className="rs-draft rs-frame">
+          <h3>지원서 문단의 뼈대: 역할 · 행동 · 판단 · 결과</h3>
+          <dl>
+            {frame.map((f) => (
+              <div key={f.label}>
+                <dt>{f.label}<small>{f.hint}</small></dt>
+                <dd>{f.items.join(" · ")}</dd>
+              </div>
+            ))}
+          </dl>
           <p className="rs-note">
-            고르신 답을 차례대로 이은 것입니다. 수치와 결과는 직접 채워주세요.
+            네 칸은 고르신 보기 그대로입니다. 한 문단으로 잇는 것과 수치 · 기간 ·
+            결과를 채우는 것은 직접 하셔야 하고, 여기에 없는 성과를 적지 않습니다.
           </p>
         </div>
       ) : null}
@@ -1482,8 +1533,16 @@ export default async function V3Result({
             <div className="rs-sh">
               <i aria-hidden="true"><Ic name="note" /></i>
               <h2>내가 이미 가진 근거</h2>
+
               {evRows.length ? <a href="#plan">다음 할 일 →</a> : null}
             </div>
+            {/* R32: 네 층을 가른다. 여기 적힌 항목은 전부 **그 사람이 응답에서
+                고른 것**이고, 묶음 딱지와 상태 문장만 검사가 가른 것이다. 그
+                사실을 절 머리에서 한 번 적는다 */}
+            <p className="rs-note rs-layers">
+              아래 항목은 전부 응답에서 직접 고르신 것입니다. 해 본 일 → 직접 정한 것 →
+              남긴 결과물 → 비교·검증 차례로 적고, 묶음 딱지와 상태 문장만 검사가 가른 것입니다.
+            </p>
             {evRows.length ? (
               <>
                 <p className="rs-sh-s">
@@ -1664,10 +1723,11 @@ export default async function V3Result({
                 <h3>지원서에서 설명할 수 있는 경험</h3>
                 <p>직접 정한 것으로 확인됐고, 고르신 근거가 함께 있는 자리입니다.</p>
                 {model.evidence.ready.length ? (<>
-                  {model.evidence.ready.slice(0, 6).map((e) => (
+                  {model.evidence.ready.filter((e) => e.picks.length).slice(0, 6).map((e) => (
                     <EvidenceRow key={`${e.domain}.${e.axis}`} core={core} domain={e.domain}
                       axis={e.axis} state={e.state} picks={e.picks} own />
                   ))}
+                  <EvidenceNone core={core} rows={model.evidence.ready} />
                   {model.evidence.ready.length > 6 ? (
                     <p className="rs-none rs-evmore">
                       이 밖에 {model.evidence.ready.length - 6}가지가 더 확인됐습니다.
@@ -1689,10 +1749,11 @@ export default async function V3Result({
                 <h3>경험은 있지만 설명 근거를 더 붙일 부분</h3>
                 <p>해 본 것은 확인됐고, 어디까지 직접 정했는지가 덜 적힌 자리입니다.</p>
                 {model.evidence.partial.length ? (<>
-                  {model.evidence.partial.slice(0, 6).map((e) => (
+                  {model.evidence.partial.filter((e) => e.picks.length).slice(0, 6).map((e) => (
                     <EvidenceRow key={`${e.domain}.${e.axis}`} core={core} domain={e.domain}
                       axis={e.axis} state={e.state} picks={e.picks} />
                   ))}
+                  <EvidenceNone core={core} rows={model.evidence.partial} />
                   {model.evidence.partial.length > 6 ? (
                     <p className="rs-none rs-evmore">
                       이 밖에 {model.evidence.partial.length - 6}가지가 더 있어요.
@@ -2483,7 +2544,7 @@ export default async function V3Result({
               받아 두고 결과지에 한 글자도 나오지 않았다. 판정에 들어가지
               않는다는 것도 함께 적는다 */}
           {model.targets.orgs.length || goal.role || goal.industry || goal.org ? (
-            <div className="rs-pack">
+            <div className="rs-pack" id="goals">
               {/* **`고른 자리` 는 우리 쪽 말이다**(FINAL POLISH §2).
                   이 묶음이 드는 것은 응시 중에 고르신 목표 산업·직무·조직
                   이고, 그 자리를 부르는 자연스러운 말이 `목표` 다. 담는

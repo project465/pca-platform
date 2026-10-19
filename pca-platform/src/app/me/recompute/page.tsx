@@ -38,8 +38,9 @@ function monthKo(d: string | null): string {
  * 화면은 사이에 서서 묻는 자리가 아니라 **무엇이 달라졌는지 적는 자리**다.
  *
  * **일곱을 차례로 적는다**(R31 · Human Review). 경험이 저장됐어요 → 그
- * 사람이 적은 경험 제목 → 기록으로 확인된 역할과 판단 → 실제 달라진 현재
- * 상태 → 보완할 근거 → 현재 상태 확인하기 → 다른 경험 추가하기.
+ * 사람이 적은 경험 제목 → 실제 달라진 현재 상태 → 보완할 근거 → 현재 상태
+ * 확인하기 → 다른 경험 추가하기 → 기록으로 확인된 역할과 판단 (R32: 변화와
+ * 다음 행동이 먼저다).
  *
  * 전에는 `경영전략·기획 · 문제로 잡은 것 · 경험 근거 2개` 처럼 **우리 쪽
  * 자료 구조의 줄**이 영역·축마다 되풀이됐다. 적은 사람이 알고 싶은 것은
@@ -186,7 +187,70 @@ export default async function Recompute(
         </div>
       ) : (
         <>
-          {/* ── 3. 기록으로 확인된 역할과 판단 ──
+          {/* ── 3. 실제 달라진 현재 상태 ──
+              달라진 것이 없으면 그 사실과 까닭을 적는다(규격 §13). `경험이
+              추가되었습니다` 로 끝내면 적은 사람이 자기 기록이 버려진 줄 안다 */}
+          <h2 className="cm-sect">
+            {applied ? "실제 달라진 현재 상태" : "현재 상태에서 달라지는 것"}
+          </h2>
+          <div className="cm-panel">
+            <div className="cm-pane">
+              {changes.length ? (
+                <div className="cm-rows">
+                  {changes.map((line) => (
+                    <p className="cm-row" key={line}><b>{line}</b></p>
+                  ))}
+                </div>
+              ) : (
+                <>
+                  <h3>{NO_CHANGE_KO[why].title}</h3>
+                  <p>{NO_CHANGE_KO[why].why}</p>
+                </>
+              )}
+              {plan.closed_gaps.length ? (
+                <p className="cm-none">
+                  부족했던 부분 {plan.closed_gaps.length}곳이{" "}
+                  {applied ? "메워졌습니다" : "메워집니다"} ·{" "}
+                  {plan.closed_gaps
+                    .map((g) => domainName(core, g.domain)).join(" · ")}
+                </p>
+              ) : null}
+              <p className="cm-none">검사 당시 결과는 그대로 남습니다.</p>
+            </div>
+          </div>
+
+          {/* ── 4. 보완할 근거 ──
+              **하나만 적는다**(규격 §10). 나머지는 `지금 할 일` 이 든다. 보완할
+              자리가 없으면 절을 세우지 않는다 */}
+          {gap ? (
+            <>
+              <h2 className="cm-sect">다음에 보완할 것</h2>
+              <div className="cm-panel">
+                <div className="cm-pane">
+                  <p><b>{gap.title}</b></p>
+                  <p className="cm-none">{gap.why}</p>
+                </div>
+              </div>
+            </>
+          ) : null}
+
+          {/* ── 어디로 가는가 ──
+              주된 단추는 달라진 현재 상태를 보는 것이고, 그 옆이 다른 경험을
+              하나 더 적는 길이다. **틀어진 사람에게는 `다시 시도` 가 선다** */}
+          <div className="cm-acts" style={{ marginTop: 20 }}>
+            {failed ? (
+              <form action={runRecompute}>
+                <ApplyButton retry />
+              </form>
+            ) : (
+              <Link className="cm-btn is-primary" href="/me/state">현재 상태 확인하기</Link>
+            )}
+            <Link className="cm-btn" href="/me/experience/new">다른 경험 추가하기</Link>
+          </div>
+
+          {/* ── 5. 기록으로 확인된 역할과 판단 ──
+              R32: 달라진 현재 상태와 다음 행동 뒤로 내렸다. 적은 사람이 바로 알고
+              싶은 것은 `그래서 무엇이 달라지나` 이고, 고른 항목은 그다음이다 ──
               고른 것이 하나도 없으면 이 절은 서지 않는다 */}
           {said.length ? (
             <>
@@ -228,66 +292,6 @@ export default async function Recompute(
             </>
           ) : null}
 
-          {/* ── 4. 실제 달라진 현재 상태 ──
-              달라진 것이 없으면 그 사실과 까닭을 적는다(규격 §13). `경험이
-              추가되었습니다` 로 끝내면 적은 사람이 자기 기록이 버려진 줄 안다 */}
-          <h2 className="cm-sect">
-            {applied ? "실제 달라진 현재 상태" : "현재 상태에서 달라지는 것"}
-          </h2>
-          <div className="cm-panel">
-            <div className="cm-pane">
-              {changes.length ? (
-                <div className="cm-rows">
-                  {changes.map((line) => (
-                    <p className="cm-row" key={line}><b>{line}</b></p>
-                  ))}
-                </div>
-              ) : (
-                <>
-                  <h3>{NO_CHANGE_KO[why].title}</h3>
-                  <p>{NO_CHANGE_KO[why].why}</p>
-                </>
-              )}
-              {plan.closed_gaps.length ? (
-                <p className="cm-none">
-                  부족했던 부분 {plan.closed_gaps.length}곳이{" "}
-                  {applied ? "메워졌습니다" : "메워집니다"} ·{" "}
-                  {plan.closed_gaps
-                    .map((g) => domainName(core, g.domain)).join(" · ")}
-                </p>
-              ) : null}
-              <p className="cm-none">검사 당시 결과는 그대로 남습니다.</p>
-            </div>
-          </div>
-
-          {/* ── 5. 보완할 근거 ──
-              **하나만 적는다**(규격 §10). 나머지는 `지금 할 일` 이 든다. 보완할
-              자리가 없으면 절을 세우지 않는다 */}
-          {gap ? (
-            <>
-              <h2 className="cm-sect">다음에 보완할 것</h2>
-              <div className="cm-panel">
-                <div className="cm-pane">
-                  <p><b>{gap.title}</b></p>
-                  <p className="cm-none">{gap.why}</p>
-                </div>
-              </div>
-            </>
-          ) : null}
-
-          {/* ── 6 · 7. 어디로 가는가 ──
-              주된 단추는 달라진 현재 상태를 보는 것이고, 그 옆이 다른 경험을
-              하나 더 적는 길이다. **틀어진 사람에게는 `다시 시도` 가 선다** */}
-          <div className="cm-acts" style={{ marginTop: 20 }}>
-            {failed ? (
-              <form action={runRecompute}>
-                <ApplyButton retry />
-              </form>
-            ) : (
-              <Link className="cm-btn is-primary" href="/me/state">현재 상태 확인하기</Link>
-            )}
-            <Link className="cm-btn" href="/me/experience/new">다른 경험 추가하기</Link>
-          </div>
 
           {/* ── 상세는 눌러서 ──
               되짚을 사람에게만 필요한 표다. 늘 펼쳐 두면 이 화면에서 가장

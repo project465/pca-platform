@@ -202,14 +202,15 @@ export default function Steps(
 
       {/* ── 2단. 어디에서 무엇을 직접 정했나 ── */}
       <div hidden={step !== 2}>
-        <Guide n={2} title="어디에서 무엇을 정했나요"
+        <Guide n={2} title="그 일에서 무엇을 직접 정했나요"
           body={
             <>
               {fromAction
                 ? <>할 일에서 넘어온 영역이 켜져 있습니다: {fromAction}. 다른 영역의 일이면 바꾸셔도 됩니다. </>
                 : null}
-              {flow.domainWord}을 고르면 그 영역에서 직접 정한 것을 고르는 칸이
-              뜹니다. 지원서와 면접에서 읽히는 쪽은 한 일보다 직접 정한 것입니다.
+              {flow.domainWord}을 고르면 그 영역에서 <b>맡은 역할로 직접 정한 것</b>을 먼저
+              고르고, 그다음에 다룬 문제를 고릅니다. 지원서와 면접에서 읽히는 쪽은
+              한 일보다 직접 정한 것입니다.
             </>
           } />
         <fieldset className="cm-field">
@@ -242,9 +243,13 @@ export default function Steps(
           {picked.map((d) => (
             <section className="cm-subs" key={`j-${d.code}`}>
               <h4>{d.name}</h4>
-              {group(flow.problemQ, "problem", d.problems, `${d.code}-p`, "problems")}
+              {/* R32: 판단(역할)이 먼저, 상황(다룬 문제)이 다음이다. 지원서에서
+                  읽히는 쪽이 앞엣것이라 그 칸을 먼저 만난다. 저장되는 칸 이름과
+                  값은 그대로다 */}
               {group(flow.decidedQ, "decision", d.decisions, `${d.code}-d`, "decisions",
-                "지원서에서 읽히는 쪽")}
+                "맡은 역할에서 직접 정한 것 · 지원서에서 읽히는 쪽")}
+              {group(flow.problemQ, "problem", d.problems, `${d.code}-p`, "problems",
+                "그때의 상황")}
             </section>
           ))}
           {!picked.length ? (

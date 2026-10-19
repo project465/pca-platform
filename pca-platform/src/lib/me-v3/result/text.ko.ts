@@ -1465,6 +1465,34 @@ export function draftKo(
 }
 
 /**
+ * 지원서 문단의 뼈대(R32).
+ *
+ * **고르신 보기를 `~했습니다.` 로 이어 붙인 문단을 내놓지 않는다.** 그
+ * 문단은 열 보기를 차례로 늘어놓은 것이라 자기소개서로 읽히지 않고, 읽는
+ * 사람이 그것을 지원서에 그대로 붙이면 수치도 역할도 없는 글이 된다.
+ * 대신 **역할·상황 → 행동 → 판단 → 결과** 네 칸으로 고르신 보기를 그대로
+ * 나누어 돌려준다. 비어 있는 칸은 세우지 않고, 문장으로 잇는 일과 수치를
+ * 채우는 일은 그 사람이 한다. 새 문장을 만들지 않는다.
+ */
+export type DraftFrame = { label: string; hint: string; items: string[] }[];
+export function draftFrameKo(
+  steps: { item_id: string; choice: string | null }[],
+): DraftFrame {
+  const by = new Map(steps.filter((x) => x.choice).map((x) => [x.item_id, x.choice as string]));
+  const pick = (ids: string[]) => ids.map((id) => by.get(id)).filter((v): v is string => !!v);
+  return [
+    { label: "역할·상황", hint: "맡은 자리에서 어떤 문제였고 왜 문제였는지",
+      items: pick(["TR_T1", "TR_T2"]) },
+    { label: "행동", hint: "무엇을 바꿨고 어떤 방법으로 몇 번 돌렸는지",
+      items: pick(["TR_T4", "TR_T3", "TR_T5"]) },
+    { label: "판단", hint: "무엇을 직접 정했고 무엇과 견줬고 안 됐을 때 무엇을 고쳤는지",
+      items: pick(["TR_T8", "TR_T6", "TR_T7"]) },
+    { label: "결과", hint: "무엇이 남았고 어디에 쓰였는지 · 수치와 기간은 직접 적는다",
+      items: pick(["TR_T9", "TR_T10"]) },
+  ].filter((f) => f.items.length);
+}
+
+/**
  * 번역 표에 세울 차례.
  *
  * 열 단계가 이야기고, `TR_TAG_*` 는 그 과제가 어느 영역에 닿았는지를

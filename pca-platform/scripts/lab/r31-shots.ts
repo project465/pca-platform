@@ -318,7 +318,10 @@ async function main(): Promise<void> {
     await experienceRound(mctx, "m", `${TITLE} (발표 자료)`);
     {
       const q = await open(mctx, `${BASE}/me`);
-      await viewport(q, `${OUT}/23-home-after-save-m.png`, "홈 /me (경험 저장 뒤)", "저장 전 01-home-m 와 비교");
+      /* R32: 손전화 첫 창에는 `최근 변화` 가 들어오지 않아 저장 전과 같은
+         그림이 된다. 이 한 장은 쪽 전체를 뜬다 */
+      await q.screenshot({ path: `${OUT}/23-home-after-save-m.png`, fullPage: true });
+      mark(`${OUT}/23-home-after-save-m.png`, "홈 /me (경험 저장 뒤 · 쪽 전체)", "저장 전 01-home-m 와 비교 · 최근 변화가 아래에 선다");
       await q.close();
     }
     for (const [n, path, target] of [

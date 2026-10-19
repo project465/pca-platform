@@ -1,0 +1,17 @@
+
+신규 사용자가 옛 검사로 들어갈 길이 있는가 — 지금 판본 ME_V3_2
+
+  통과  route 가 표에 한 번씩만 적혀 있다 — 줄 52개
+  통과  표의 route 가 전부 실제 쪽이다
+  통과  소유 구역의 쪽이 전부 분류돼 있다 — 쪽 52개
+  통과  신규 진입면에 옛 검사로 가는 줄이 없다
+  통과  옛 검사 주소를 적어 둔 자리가 `engine-entry.ts` 하나뿐이다
+  통과  `startPathFor` 가 지금 판본에만 주소를 준다
+  통과  `resumePathFor` 는 옛 판본에만 주소를 준다
+  통과  산 뒤에 보내는 자리가 전부 `startPathFor` 를 거친다 — 자리 5곳
+  통과  REDIRECT 로 적어 둔 쪽이 실제로 보낸다
+  통과  가격표가 지금 판본만 읽는다 (`assessment_version` 으로 거른다)
+
+  route 52줄 — CURRENT 33 · COMPATIBILITY 14 · REDIRECT 4 · DEPRECATED 1 · 소유 구역 밖 51쪽
+
+확인 10가지 — 통과 10 · 걸림 0

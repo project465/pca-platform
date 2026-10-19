@@ -10,13 +10,15 @@
 import json, os, re, sys
 
 root = sys.argv[1]
-lines = ["# R31 Human Review Package · INDEX", "",
+LABEL = os.environ.get("LABEL", "R31")
+REPORT = os.environ.get("REPORT", "R31_BIZ_GOLD_MASTER_HUMAN_REVIEW.md")
+lines = [f"# {LABEL} Human Review Package · INDEX", "",
          "모든 증거가 이 폴더 아래에 있다. 파일명 · 대상 화면 · 시나리오 · 뷰포트 · 결과를 한 줄씩 적는다.",
          "테스트 계정의 비밀번호와 개인정보는 어디에도 적지 않았다(아이디는 `zzr31…` 꼴의 시험용이다).", ""]
 bid = os.path.join(root, "BUILD_ID.txt")
 if os.path.exists(bid):
     lines += ["- 모든 캡처 · E2E · PDF · 시나리오는 **같은 빌드**에서 떴다: `" + open(bid, encoding="utf-8").read().strip() + "`",
-              "- 한 번에 내려받는 묶음: `../R31_HUMAN_REVIEW_PACKAGE.zip` (이 폴더 전체 + 보고서)",
+              f"- 한 번에 내려받는 묶음: `../{LABEL}_HUMAN_REVIEW_PACKAGE.zip` (이 폴더 전체 + 보고서)",
               "- 빠르게 훑는 자리: `contact/` 의 Contact Sheet(썸네일) → 글자를 읽을 때는 각 칸에 적힌 원본 파일을 연다", ""]
 
 def table(rows, head):
@@ -92,7 +94,7 @@ if os.path.isdir(ck):
         rows.append((f"`checks/{f}`", name, last[0][:90]))
     lines += table(rows, ["파일", "명령", "마지막 줄"])
 lines.append("")
-lines += ["## 6. 보고서", "", "- `../../R31_BIZ_GOLD_MASTER_HUMAN_REVIEW.md` — 판정 · P0/P1/P2 · 배포 가능 범위 · 5 기준 PASS/FAIL/NOT VERIFIED · HUMAN REVIEW REQUESTED", ""]
+lines += ["## 6. 보고서", "", f"- `../../{REPORT}` — 판정 · P0/P1/P2 · 배포 가능 범위 · 5 기준 PASS/FAIL/NOT VERIFIED · HUMAN REVIEW REQUESTED", ""]
 # 7. 전체 파일 목록
 lines += ["## 7. 전체 파일 목록 (크기)", ""]
 allf = []

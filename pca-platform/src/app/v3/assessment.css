@@ -1087,10 +1087,13 @@
 }
 .qs-save:focus-visible { outline: 2px solid var(--q-accent); outline-offset: 2px; }
 /* 한 화면에 질문이 둘일 때 몇째인지. **번호가 질문보다 크지 않다** */
+/* 문항 번호(R32). 전에는 강조색 굵은 글씨로 제 줄에 서서 질문보다 먼저
+   읽혔고, 한 화면에 넷이 서면 그 넷이 설문지의 번호표가 됐다. 지금은
+   질문 앞에 작고 옅게 붙는다. **한글에 자간을 벌리지 않는다** */
 .qs-n {
-  display: block; margin-bottom: 4px;
-  font-style: normal; font-size: var(--q-t-cap); font-weight: var(--ui-w-bd);
-  color: var(--q-accent); letter-spacing: .08em;
+  display: inline-block; margin: 0 8px 0 0; vertical-align: baseline;
+  font-style: normal; font-size: var(--q-t-meta); font-weight: var(--ui-w-sb);
+  color: var(--sf-ink-3); letter-spacing: 0;
 }
 .qs-need { font-size: var(--q-t-meta); color: var(--sf-part); font-weight: var(--ui-w-sb); }
 

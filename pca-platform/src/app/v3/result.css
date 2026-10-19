@@ -1463,6 +1463,36 @@
 /* 종이에서는 전체 문단이 펴지므로 미리보기를 내보내지 않는다. 한 문장이
    같은 쪽에 두 번 뽑히던 일이 있었다 */
 @media print { .rs-draft.is-pre { display: none; } }
+@media print {
+  /* 종이 11쪽(R32): 고르신 목표 다섯이 한 칸씩 세로로 서서 마지막 쪽이
+     반 넘게 비었다. 세 칸으로 접는다(두 줄). 두 칸(세 줄)으로 두었더니
+     기계공학 PRO 의 읽는 기준 한 줄이 앞 쪽 바닥 8% 에 못 들어가 **마지막
+     쪽이 13% 만 찬 종이**가 났고, 한 줄을 돌려받으니 여덟 쪽 98% 다. 다른
+     스물한 벌은 마지막 쪽이 85% 위라 한 줄에 흔들리지 않는다. 담긴 글은
+     그대로다 */
+  #goals dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1mm 5mm; }
+  #goals dl > div { padding: 1mm 0; }
+  .rs-frame > dl { gap: 1.5mm; }
+  .rs-frame > dl > div { padding-bottom: 1.5mm; grid-template-columns: 24mm 1fr; }
+  .rs-frame dt > small { display: none; }
+}
+/* 지원서 문단의 뼈대(R32). 네 칸이 **표가 아니라 메모**로 읽히게 이름표는
+   작고 값이 본문이다. 종이에서도 같은 꼴이다 */
+.rs-frame > dl { margin: 0; display: grid; gap: 10px; }
+.rs-frame > dl > div {
+  display: grid; grid-template-columns: 9em 1fr; gap: 4px 14px; align-items: start;
+  padding: 0 0 10px; border-bottom: 1px solid var(--r-line);
+}
+.rs-frame > dl > div:last-child { border-bottom: 0; padding-bottom: 0; }
+.rs-frame dt { font-weight: var(--ui-w-bd); color: var(--r-ink); font-size: var(--r-t-body); }
+.rs-frame dt > small {
+  display: block; margin-top: 2px; font-size: var(--r-t-meta);
+  font-weight: var(--ui-w-rg); color: var(--r-ink-3); line-height: 1.4;
+}
+.rs-frame dd { margin: 0; font-size: var(--r-t-body); color: var(--r-ink); line-height: 1.6; }
+@media (max-width: 719px) { .rs-frame > dl > div { grid-template-columns: 1fr; } }
+/* 고르신 항목이 없는 판단을 한 줄에 모은 자리(R32) */
+.rs-evnone { display: block; margin-top: 8px; line-height: 1.6; }
 .rs-draft > .rs-note {
   margin-top: var(--r-s2); font-size: var(--r-t-meta); color: var(--r-ink-3);
 }
@@ -1794,7 +1824,13 @@
     color: var(--r-ink-3); break-after: avoid;
   }
   .rs-eyebrow::after { display: none; }
-  .rs-open { break-inside: avoid; }
+  /* R32 · 종이 11쪽. 이 상자는 `전체 기술영역과 지역 자료 보기` 가 접어 둔
+     덩이 전부(먼저 볼 영역 · 빈자리 · 열두 영역 · 지역)를 감싸서 종이 석 장을
+     넘는다. 여기에 `avoid` 가 걸려 있으면 앞 절의 꼬리 한 줄 뒤에서 **쪽 하나가
+     통째로 빈 채로** 다음 쪽에서 시작한다(R32 E2E 7쪽 15% · 사람 C 6쪽 3%).
+     R31 은 앞 절이 우연히 쪽 바닥까지 차서 드러나지 않았다. 안쪽의 영역 패널과
+     줄 하나는 제 `avoid` 를 그대로 들고 있다 */
+  .rs-open { break-inside: auto; }
   .rs-do1 {
     margin: 3mm 0 0; padding: 2mm 0 0; break-inside: avoid;
     background: none; border-radius: 0;
@@ -2264,6 +2300,10 @@
      앞 쪽 바닥에 못 들어가는 날 **마지막 쪽에 그 14% 만 선 종이**가
      나온다(ME STANDARD). 두 칸이면 같은 글이 두 배 높이로 서서 그
      쪽이 읽을 만하게 찬다. **담긴 글은 한 줄도 덜어내지 않았다** */
+  /* **네 칸이다**(R32). 위의 상자가 흐르게 되자 꼬리가 마지막 쪽으로 옮겨
+     와, 두 칸짜리 읽는 기준이 앞 쪽 바닥의 15% 에 못 들어가고 **마지막 쪽에
+     그 14% 만 선 종이**가 났다. 한 줄로 세우면 같은 글이 앞 쪽 바닥에 들어가고
+     E2E 와 사람 C 가 열 쪽 · 모든 쪽 88% 이상이다. 담긴 글은 그대로다 */
   .rs-fine #howto dl {
     display: grid; grid-template-columns: 1fr; gap: 0;
   }
@@ -2287,13 +2327,16 @@
    * `break-before: avoid` 를 같이 걸면 앞 쪽에서 시작하고, 못 들어가는
    * 만큼만 다음 쪽으로 넘어간다. 담긴 글은 한 줄도 바뀌지 않는다
    */
-  .rs-fine { break-inside: avoid; }
-  /* **닫는 부록은 한 덩이로 움직인다**(R18). `.rs-fine` 에만 `avoid` 를
-     걸면 안쪽의 펼쳐진 묶음이 쪼개져 `고르신 목표` 는 앞 쪽에 남고
-     `읽는 기준` 만 마지막 쪽에 13% 로 선다. 펼쳐진 덩이에도 걸어 둘을
-     같이 움직이게 한다 */
-  .rs-fine .rs-disc > div { break-inside: avoid; }
+  /* R32 · 종이 11쪽. 닫는 부록을 한 덩이로 묶어 두었더니 앞 쪽 바닥에 15%
+     가 남은 날에도 통째로 다음 쪽으로 밀려 **마지막 쪽이 45% 만 찬 종이**가
+     나왔다(R31 PDF). 덩이째 옮기지 않고 **줄 단위로 흐르게** 둔다: 머리와
+     첫 줄은 붙어 있고(`break-after: avoid`), 칸 하나는 쪼개지지 않는다.
+     읽는 기준 넷은 종이에서 두 칸으로 접는다. 담긴 글은 그대로다 */
+  .rs-fine { break-inside: auto; }
   .rs-fine .rs-disc > div { break-inside: auto; }
+  .rs-fine h3, .rs-fine .rs-pack > p { break-after: avoid; }
+  .rs-fine .rs-pack dl > div { break-inside: avoid; }
+  .rs-fine #howto dl { grid-template-columns: repeat(4, 1fr); gap: 0 5mm; }
   .rs-fine #howto dl > div { break-inside: avoid; }
   .rs-fine a { color: inherit; text-decoration: none; }
 }

@@ -394,8 +394,11 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
   /* 안쪽 여백. **글이 서는 선이 쪽 제목보다 한 번 더 들어간다**
      (목표 화면): Hero 는 면을 가진 자리라 그 면의 안쪽에서 다시 시작한다 */
   margin-top: clamp(8px, .5vw, 10px);
-  padding: clamp(22px, 2.08vw, 30px) clamp(18px, 2.08vw, 30px)
-           clamp(22px, 2.29vw, 33px) clamp(18px, 4.51vw, 65px);
+  /* R32: 목표 화면의 Hero 높이가 329 인데 395 였다. 위아래 여백 30·33 과
+     느슨한 줄 사이(머리 1.57 · 까닭 1.6)가 그 66px 이었다. 글자 크기는
+     그대로다(목표와 ±0.1) */
+  padding: clamp(20px, 1.67vw, 24px) clamp(18px, 2.08vw, 30px)
+           clamp(20px, 1.67vw, 24px) clamp(18px, 4.51vw, 65px);
   /* **면을 한 겹으로 두지 않는다**(규격 §3·§7). 왼쪽 위가 한 단 짙고
      오른쪽 아래로 갈수록 밝아지면, 글이 올라앉은 자리와 그림이 선 자리가
      같은 면 안에서 갈린다. 그림자는 쓰지 않는다 */
@@ -435,22 +438,22 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
   width: clamp(18px, 2.01vw, 29px); height: clamp(18px, 2.01vw, 29px);
 }
 .cm-hero-h {
-  margin: clamp(10px, .76vw, 11px) 0 0;
-  font-size: clamp(21px, 2.22vw, 32px); line-height: 1.57;
+  margin: clamp(5px, .42vw, 6px) 0 0;
+  font-size: clamp(21px, 2.22vw, 32px); line-height: 1.38;
   font-weight: var(--ui-w-bd); color: var(--sf-ink); letter-spacing: -.024em;
   max-width: 22ch; text-wrap: balance;
 }
 .cm-hero-why {
-  margin: clamp(10px, 1.04vw, 15px) 0 0;
-  font-size: clamp(14px, 1.61vw, 23.2px); line-height: 1.6;
+  margin: clamp(8px, .7vw, 10px) 0 0;
+  font-size: clamp(14px, 1.61vw, 23.2px); line-height: 1.45;
   color: var(--sf-ink-2); max-width: 50ch;
 }
 .cm-hero-acts {
   display: flex; align-items: center; gap: clamp(8px, 2.64vw, 38px);
-  margin-top: clamp(14px, 1.46vw, 21px); flex-wrap: wrap;
+  margin-top: clamp(8px, .7vw, 10px); flex-wrap: wrap;
 }
 .cm-hero-acts .cm-btn.is-primary {
-  min-height: clamp(48px, 4.51vw, 65px); padding: 0 clamp(24px, 3.68vw, 53px);
+  min-height: clamp(48px, 3.75vw, 54px); padding: 0 clamp(24px, 3.33vw, 48px);
   font-size: clamp(16px, 1.53vw, 22px); font-weight: var(--ui-w-bd);
   border-radius: clamp(11px, .97vw, 14px);
   background: linear-gradient(180deg, #2a72c9 0%, #1c5fb0 100%);

@@ -1,0 +1,17 @@
+계획 화면 66 · 계획 문항(중복 제외) 109 · 저장 109
+계획에 있고 저장 안 됨: []
+저장됐고 계획에 없음: []
+화면 종류별 문항 수: {
+  profile: 0,
+  'pick-industry': 0,
+  scene: 0,
+  sweep: 27,
+  single: 19,
+  pair: 50,
+  checklist: 0,
+  'pick-role': 0,
+  'pick-org': 0,
+  transition: 0,
+  group: 13,
+  done: 0
+}

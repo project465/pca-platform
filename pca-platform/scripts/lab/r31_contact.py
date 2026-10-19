@@ -16,6 +16,8 @@ import json, os, sys
 from PIL import Image, ImageDraw, ImageFont
 
 root = sys.argv[1]
+LABEL = os.environ.get("LABEL", "R31")
+REPORT = os.environ.get("REPORT", "R31_BIZ_GOLD_MASTER_HUMAN_REVIEW.md")
 out = os.path.join(root, "contact"); os.makedirs(out, exist_ok=True)
 
 def font(sz):
@@ -85,18 +87,18 @@ def chunks(xs, n):
     for i in range(0, len(xs), n): yield xs[i:i + n]
 
 for n, part in enumerate(chunks(desk, 9), 1):
-    sheet(part, 3, 620, 560, f"R31 BIZ · Desktop 1440×900 · 장 {n}", os.path.join(out, f"contact-desktop-{n}.png"))
+    sheet(part, 3, 620, 560, f"{LABEL} BIZ · Desktop 1440×900 · 장 {n}", os.path.join(out, f"contact-desktop-{n}.png"))
 for n, part in enumerate(chunks(mob, 12), 1):
-    sheet(part, 6, 240, 620, f"R31 BIZ · Mobile 390×844 @2x · 장 {n}", os.path.join(out, f"contact-mobile-{n}.png"))
+    sheet(part, 6, 240, 620, f"{LABEL} BIZ · Mobile 390×844 @2x · 장 {n}", os.path.join(out, f"contact-mobile-{n}.png"))
 
 pdfdir = os.path.join(root, "e2e", "pdf")
 if os.path.isdir(pdfdir):
     pages = sorted(f for f in os.listdir(pdfdir) if f.startswith("page-") and f.endswith(".png"))
     sheet([(os.path.join(pdfdir, f), f, f"PDF {int(f[5:7])}쪽") for f in pages], 4, 400, 566,
-          "R31 BIZ · 내려받은 PDF 전체 쪽 (96dpi 렌더)", os.path.join(out, "contact-pdf.png"))
+          f"{LABEL} BIZ · 내려받은 PDF 전체 쪽 (96dpi 렌더)", os.path.join(out, "contact-pdf.png"))
 
 cmp = [(os.path.join(root, "shots", f), f, t) for f, t in
        [("cmp-home-vs-reference.png", "Premium Home Reference ↔ 홈 /me"),
         ("cmp-result-state-vs-home.png", "결과지 현재 상태 ↔ 홈 현재 상태")]
        if os.path.exists(os.path.join(root, "shots", f))]
-if cmp: sheet(cmp, 1, 1400, 1000, "R31 BIZ · 레퍼런스 대조", os.path.join(out, "contact-compare.png"))
+if cmp: sheet(cmp, 1, 1400, 1000, f"{LABEL} BIZ · 레퍼런스 대조", os.path.join(out, "contact-compare.png"))
