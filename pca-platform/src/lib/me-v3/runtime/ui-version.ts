@@ -132,7 +132,7 @@
  * R32 · 문항 번호(`.qs-n`)를 질문 앞의 작은 글자로 내렸다. 전에는 강조색
  * 굵은 글씨로 제 줄에 서서 질문보다 먼저 읽혔다. 문항·보기·저장 값은 그대로다.
  */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V41";
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V42";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
 /* copy.15 — 받침 한 줄과 보기 넷의 예시가 화면에 서는 글자다 */

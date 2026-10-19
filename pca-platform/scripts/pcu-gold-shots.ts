@@ -213,7 +213,7 @@ async function main(): Promise<void> {
     await openAll(p);
     await p.waitForTimeout(300);
     await section(p, "06-result-evidence", /내가 이미 가진 근거|근거가 어디에/);
-    await section(p, "07-result-action", /다음에 할 일/);
+    await section(p, "07-result-action", /다른 영역부터 적어도 돼요|지금 할 일/);
     await snap(p, "08-result-full", true);
 
     /* ⑧⑨ 종이 — 쪽을 그림으로 뜬다 */

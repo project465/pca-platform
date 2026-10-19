@@ -67,6 +67,8 @@ const FILES = [
   "src/lib/me-v3/student/icon.ts",
   "src/lib/me-v3/student/index.ts",
   "src/lib/me-v3/student/state.ts",
+  /* R34: 공통 판단·학위 묶음의 이름을 Core 마다 드는 사전 */
+  "src/lib/me-v3/student/common.ts",
   "src/lib/me-v3/result/spec-view.ts",
   "src/lib/me-v3/result/meta.ts",
   /* 시각화 넷과 그것이 읽을 값. **결과지가 그리는 것이라 이 동결이

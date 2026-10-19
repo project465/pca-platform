@@ -198,10 +198,10 @@ export function EvidenceMatrix(
         <thead>
           <tr>
             <th scope="col">영역</th>
-            <th scope="col">해 봤다고 확인된 판단</th>
-            <th scope="col">직접 정했다고 확인된 판단</th>
-            <th scope="col">남겼다고 고른 결과물</th>
-            <th scope="col">견줬다고 고른 대상</th>
+            <th scope="col">확인된 판단</th>
+            <th scope="col">직접 정한 판단</th>
+            <th scope="col">남겼다고 고른 것</th>
+            <th scope="col">견줬다고 고른 것</th>
             <th scope="col">단계</th>
           </tr>
         </thead>

@@ -143,7 +143,10 @@
   border-bottom: 1px solid var(--q-line);
 }
 .qs-head-in {
-  width: 100%; max-width: var(--q-col);
+  /* R34: 머리띠는 질문 폭(760)에 묶이지 않는다. 그 폭에서는 상표 · 학교·학과 ·
+     진행 셋 · 저장 · 등급이 한 줄에 들어가지 않아 `영역… › 실… › 근거…` 로
+     잘렸다. 띠는 한 단 넓게 서고 본문만 읽는 폭으로 좁힌다 */
+  width: 100%; max-width: max(var(--q-col), 1000px);
   margin: 0 auto; padding: 0 var(--q-gutter);
 }
 .qs-top {
@@ -166,7 +169,8 @@
   /* R34: `flex: none` 에 38ch 를 주었더니 1440 에서 진행 줄이 `영역 … › 실… ›
      근거 …` 로 잘렸다. 학교·학과는 줄어들 수 있고, 지금 단계 이름은 잘리지
      않는다 */
-  flex: 0 1 auto; min-width: 0; display: inline-flex; align-items: baseline; gap: 6px;
+  /* `inline-flex` 에는 말줄임이 걸리지 않아 글자가 반쯤 잘린 채 섰다(`경영ㅎ`) */
+  flex: 0 1 auto; min-width: 0; display: inline-block; vertical-align: baseline;
   padding-left: var(--q-s3); margin-left: 1px;
   border-left: 1px solid var(--q-line);
   color: var(--q-ink-2); font-size: var(--q-t-meta); font-weight: var(--ui-w-sb);

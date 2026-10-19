@@ -107,7 +107,7 @@ function PackBody(
         <div>
           <dt>여기서도 쓸 수 있는 경험</dt>
           <dd>
-            <Picks own max={12} items={uniq([
+            <Picks own max={6} items={uniq([
               ...v.overlap.map((o) => cell(o.domain, o.axis)),
               ...v.answered.map((a) => cell(a.domain, a.axis)),
               ...v.established.map((e) =>
@@ -121,7 +121,7 @@ function PackBody(
         <div>
           <dt>여기서 한 번 더 보는 것</dt>
           <dd>
-            <Picks max={10} items={uniq([
+            <Picks max={6} items={uniq([
               ...v.requested.map((r) => `${dn(r.domain)} · ${AXIS_KO[r.axis]}`),
               ...v.not_yet.map((a) => cell(a.domain, a.axis)),
             ]).slice(0, 10)} />
@@ -318,10 +318,6 @@ function Why({ d }: { d: ResultDomain }) {
       {empty.length ? (
         <p className="rs-dnone">아직 고르지 않음 · {empty.join(" · ")}</p>
       ) : null}
-      <p className="rs-dnone">
-        넷 다 검사에서 스스로 고른 답입니다. 파일이나 평가처럼 밖에서 확인한
-        기록은 아니고, 수치와 결과는 직접 적습니다.
-      </p>
     </div>
   );
 }
@@ -526,8 +522,8 @@ function EvidenceNone(
   return (
     <div className="rs-evnone">
       <p className="rs-none">
-        검사에서 해 봤다고 답했지만 근거 항목을 고르지 않은 판단 {none.length}
-        — 지금은 설명할 재료가 없습니다.
+        검사에서 해 봤다고 답했지만 근거 항목을 고르지 않은 판단이 {none.length}개
+        있습니다. 지금은 설명할 재료가 없습니다.
       </p>
       <ul>
         {[...by.entries()].map(([td, axes]) => (
@@ -2050,7 +2046,7 @@ export default async function V3Result({
           <h2>먼저 볼 영역</h2>
           <p className="rs-note">
             {focus.length
-              ? "응답에서 확인된 내용만 정리했습니다."
+              ? "응답에서 확인된 내용만 정리했습니다. 아래 항목은 전부 검사에서 스스로 고른 답이고, 파일이나 평가처럼 밖에서 확인한 기록이 아닙니다."
               : "지금 응답만으로는 어느 영역이 앞선다고 보기 어렵습니다. 아래 전체 영역에서 한 가지를 골라 짧게 해 보고, 무엇을 했고 무엇을 정했는지 다섯 줄로 적어보세요."}
           </p>
           {focus.map((d, i) => (

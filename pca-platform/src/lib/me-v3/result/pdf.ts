@@ -200,8 +200,8 @@ export async function drawResultPdf(opts: DrawOpts): Promise<Buffer> {
        손전화 화면이 된다(A4 의 글 폭이 690px 안팎이라 좁은 화면 규칙에
        걸린다) */
     await page.emulateMedia({ media: "print" });
-    const pdf = await page.pdf({
-      format: "A4", printBackground: true,
+    const pdfOpts = {
+      format: "A4" as const, printBackground: true,
       /* **쪽수는 본문을 깎지 않고 여백에서 돌려받는다**(상용화 PHASE 0).
          위아래 16mm 는 쪽머리와 쪽번호가 들어가는 자리까지 치고도 남는
          값이었다. 14mm 로 줄여 쪽마다 두 줄을 더 싣는다. 좌우는 그대로
@@ -214,14 +214,51 @@ export async function drawResultPdf(opts: DrawOpts): Promise<Buffer> {
       footerTemplate: '<div style="font-size:7pt;color:#5f6e86;width:100%;'
         + 'padding:0 14mm;text-align:right;font-family:sans-serif">'
         + '<span class="pageNumber"></span> / <span class="totalPages"></span></div>',
-    });
-    return pdf;
+    };
+    const first = await page.pdf(pdfOpts);
+    /* **여기서 기다린다.** `return fitTail(...)` 로 두면 아래 `finally` 가
+       브라우저를 먼저 닫고 둘째 인쇄가 `Printing failed` 로 떨어진다(한 번
+       그렇게 503 이 났다). 운영 요약 쪽이 적어 둔 것과 같은 자리다 */
+    return await fitTail(page, pdfOpts, first);
   } catch (e) {
     if (e instanceof PdfFailed) throw e;
     throw new PdfFailed("render", (e as Error).message.split("\n")[0]);
   } finally {
     await browser.close();
   }
+}
+
+/** PDF 바이트에서 쪽 수를 센다. `v3-pdf-audit` 이 쓰는 것과 같은 그림이다 */
+function pageCount(buf: Buffer): number {
+  return (buf.toString("latin1").match(/\/Type\s*\/Page[^s]/g) ?? []).length;
+}
+
+/**
+ * **마지막 쪽이 거의 빈 종이를 내보내지 않는다**(R34 §5).
+ *
+ * 쪽 높이가 고정이라 마지막 쪽이 얼마나 차는가는 **문서 길이가 쪽 경계에
+ * 어디쯤 떨어지는가**로 정해진다. 그 길이는 응답마다 다르므로 CSS 한 벌로는
+ * 어느 학생의 종이도 그 자리를 보장하지 못한다(실제 학생 한 벌이 11쪽 가운데
+ * 마지막이 13% 였다). 그래서 **그 종이 하나에 대고** 맞춘다: 그대로 뽑은
+ * 것에서 쪽 수를 세고, 글을 6% 안에서 줄여 **쪽이 하나 줄어드는 첫 배율**이
+ * 있으면 그것을 쓴다. 줄어든 그 쪽이 들고 있던 것이 앞 쪽으로 올라오므로
+ * 새 마지막 쪽은 늘 앞 쪽만큼 찬다.
+ *
+ * **담긴 글을 한 줄도 덜어내지 않고**, 쪽이 줄지 않으면 그대로 1.0 이다.
+ * 6% 아래로는 내려가지 않는다: 본문 10pt 가 9.4pt 아래로 가면 종이에서
+ * 읽는 속도가 떨어진다. 쪽이 둘뿐인 종이는 건드리지 않는다.
+ */
+async function fitTail(
+  page: { pdf(o: Record<string, unknown>): Promise<Buffer> },
+  opts: Record<string, unknown>, first: Buffer,
+): Promise<Buffer> {
+  const n0 = pageCount(first);
+  if (n0 < 3) return first;
+  for (const scale of [0.985, 0.97, 0.955, 0.94]) {
+    const b = await page.pdf({ ...opts, scale });
+    if (pageCount(b) < n0) return b;
+  }
+  return first;
 }
 
 /** 뽑은 종이를 자리에 둔다. 웹에서 바로 열리지 않는 자리다 */

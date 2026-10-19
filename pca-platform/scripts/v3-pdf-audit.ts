@@ -308,6 +308,16 @@ async function main(): Promise<void> {
         await p.locator(".rs-openbtn").first().click({ timeout: 3000 }).catch(() => undefined);
         await p.waitForTimeout(400);
         const web = await p.locator("body").innerText();
+        /**
+         * **종이에 서지 않는 단추의 글자는 견주지 않는다.** 펼침 단추
+         * (`확인된 경험 전부 보기`)는 인쇄 규칙이 숨기므로 그 글자가 웹에만
+         * 있는 것은 설계다. 6번이 그 글자를 첫 화면 칸 이름으로 읽어
+         * 멀쩡한 종이를 걸었다.
+         */
+        const webPrint = await p.evaluate(() => {
+          document.querySelectorAll("button").forEach((e) => e.remove());
+          return document.body.innerText;
+        });
         const res = await p.request.get(`${BASE}/v3/${a.id}/result/pdf`, { timeout: 180000 });
         const file = `${OUT}/${core}-${tier}.pdf`;
         let pages = 0; let kb = 0; let pageFill: number[] = [];
@@ -372,10 +382,15 @@ async function main(): Promise<void> {
            * 것이 그것이고, 쪽수 하나로는 **밀려서 빈 쪽**과 **담긴 것이
            * 많아 길어진 종이**를 가를 수 없다.
            */
+          /**
+           * **아래를 열에서 아홉으로 내렸다**(R34 §5). 종이에서 열두 영역의
+           * 여덟 축 목록을 접고(부록의 긴 안쪽 판정 나열) 지원서 틀이 쪽을
+           * 넘어 흐르게 두면서 학교 종이가 9~10쪽이 됐다. 짧은 쪽은 보고다.
+           */
           if (leaf && pages > 13) {
-            problems.push(`학교 종이가 ${pages}쪽이다 (허용 10~13)`);
-          } else if (leaf && (pages < 10 || pages === 13)) {
-            notes.push(`학교 종이가 ${pages}쪽이다 (허용 10~13)`);
+            problems.push(`학교 종이가 ${pages}쪽이다 (허용 9~13)`);
+          } else if (leaf && (pages < 9 || pages === 13)) {
+            notes.push(`학교 종이가 ${pages}쪽이다 (허용 9~13)`);
           }
           /* 4-3. **밀려서 반쯤 빈 쪽이 없는가.** 마지막 쪽은 위에서
              따로 센다(`LAST_FILL_MIN`) */
@@ -415,7 +430,7 @@ async function main(): Promise<void> {
           }
           /* 6. 웹과 종이가 같은 말을 하는가 (첫 화면 네 칸) */
           for (const key of ["확인된 경험", "남긴 근거", "지금 할 일"]) {
-            if (web.includes(key) && !all.includes(key)) {
+            if (webPrint.includes(key) && !all.includes(key)) {
               problems.push(`웹에는 있고 종이에 없다 — ${key}`);
             }
           }

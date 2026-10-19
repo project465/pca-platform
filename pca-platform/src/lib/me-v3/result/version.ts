@@ -163,7 +163,7 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
  * 판단 → 결과 네 칸(`draftFrameKo`). 근거 절 머리에 네 층을 가르는 한 줄.
  * 고르신 목표를 종이에서 두 칸으로. 결과 모델과 판정은 그대로다.
  */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.64";
+export const RESULT_COPY_VERSION = "me-v3-result-copy.65";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -436,7 +436,7 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.64";
  * R30 PHASE 1. 결과지 현재 상태 카드가 `studentStateView` 를 읽는다: 어느
  * 영역을 세우는가와 세부 한 줄이 작업공간 홈과 한 자리에서 정해진다.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V75";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V76";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

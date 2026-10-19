@@ -53,6 +53,15 @@ async function main(): Promise<void> {
     department_code: found.leaf.code, core_code: s.core_code,
     specialization: found.leaf.specialization ?? null,
   };
+  /* `ATT=<응시번호>` 면 그 응시를 다시 읽기만 한다(글자 층만 고친 뒤 표를 다시 뜰 때).
+     응시도 응답도 고른 근거도 새로 만들지 않는다 */
+  const REUSE = process.env.ATT ?? "";
+  if (REUSE) {
+    const row = await query<{ user_id: string }>(`SELECT user_id::text FROM v3_attempts WHERE id = $1`, [REUSE]);
+    if (!row[0]) throw new Error(`응시 ${REUSE} 가 없다`);
+    await dump({ id: REUSE } as V3Attempt, row[0].user_id, s.core_code, rows, []);
+    process.exit(0);
+  }
   const st = await makeStudent(LOGIN);
   await registerCampusStudent(st.id, "PCU", s.department_code);
   await query(
@@ -104,8 +113,20 @@ async function main(): Promise<void> {
     a = (await attemptOf(a.id, st.id)) as V3Attempt;
   }
   const done = (await attemptOf(a.id, st.id)) as V3Attempt;
-  const { id: snapId } = await submit(done);
+  await submit(done);
+  await dump(a, st.id, s.core_code, rows, picked);
+  process.exit(0);
+}
 
+async function dump(
+  a: V3Attempt, userId: string, coreCode: string, rows: Row[],
+  picked: { domain: string; slot: string; item_text: string }[],
+): Promise<void> {
+  const snapRow = await query<{ id: string }>(
+    `SELECT id::text FROM v3_snapshots WHERE attempt_id = $1 ORDER BY created_at DESC LIMIT 1`, [a.id]);
+  const snapId = snapRow[0]?.id ?? "";
+  const st = { id: userId };
+  void coreCode;
   /* 3) DB 에 실제로 적힌 수 */
   const cnt = await query<{ ans: string; picks: string; snaps: string }>(
     `SELECT (SELECT count(*) FROM v3_responses WHERE attempt_id=$1)::text ans,
@@ -150,6 +171,5 @@ async function main(): Promise<void> {
   console.log(`attempt=${a.id} login=${LOGIN} responses=${cnt[0].ans} picks=${cnt[0].picks} snaps=${cnt[0].snaps}`);
   console.log(`headline=${m.overview.headline} focus=${focus.map(name).join(" / ")}`);
   console.log(`badge=${headlineBadgeKo(m)} | ${head.title} | ${head.lead}`);
-  process.exit(0);
 }
 main().catch((e) => { console.error(e); process.exit(1); });
