@@ -55,6 +55,16 @@ export type StateTile = {
 
 export type StateView = {
   tiles: StateTile[];
+  /**
+   * 카드 셋의 세부가 **한 종류**다(R31 · Human Review).
+   *
+   * 전에는 칸마다 따로 정해서 한 줄에 `사업계획서`(남긴 것)와 `고객을 나누고
+   * 반응 비교하기`(해 본 일)가 나란히 섰다. 둘은 서로 다른 물음의 답이라
+   * 읽는 사람이 세 칸을 한 자로 견줄 수 없다. 세운 영역 전부에 실제로 남긴
+   * 것이 있을 때만 그 이름을 세우고, 하나라도 없으면 셋 다 해 본 일로 적는다.
+   * 남긴 것의 원문은 `tiles[].artifact` 에 그대로 남아 되짚는 자리가 쓴다.
+   */
+  kind: StateTileKind;
   /** 절 머리 아래 한 줄. 이름씨로 끊는다(R27). 세울 영역이 없으면 빈 글자 */
   lead: string;
   counts: { established: number; incomplete: number; interest: number };
@@ -78,7 +88,8 @@ export function studentStateView(
   zoneOf: Record<string, Zone>, max = 3,
 ): StateView {
   const none: StateView = {
-    tiles: [], lead: "", counts: { established: 0, incomplete: 0, interest: 0 },
+    tiles: [], lead: "", kind: "activity",
+    counts: { established: 0, incomplete: 0, interest: 0 },
   };
   if (!model) return none;
   const order = model.domains.map((d) => d.code);
@@ -92,31 +103,30 @@ export function studentStateView(
     .slice(0, max);
   if (!picked.length) return none;
 
-  const tiles: StateTile[] = picked.map((code) => {
+  /* 영역마다 **남긴 것**이 있는지 먼저 본다. 사전의 결과물 이름은 그 영역이
+     보통 남기는 것의 이름이지 그 사람이 남긴 것이 아니다 */
+  const rows = picked.map((code) => {
     const d = model.domains.find((x) => x.code === code);
     const dict = STUDENT_COPY[core]?.[code] ?? null;
-    /* **실제로 남긴 것이 먼저다.** 사전의 결과물 이름은 그 영역이 보통
-       남기는 것의 이름이지 그 사람이 남긴 것이 아니다 */
     const left = (d?.artifacts ?? []).map((a) => ({ raw: a, say: thingKo(a) }))
       .filter((x) => x.say.length <= SUB_MAX);
-    if (left.length) {
-      return {
-        code, zone: zoneOf[code], sub: left[0].say, kind: "artifact",
-        family: dict?.family ?? null, artifact: left[0].raw,
-      };
-    }
-    return {
-      code, zone: zoneOf[code], sub: dict?.activity ?? domainSub(core, code),
-      kind: "activity", family: dict?.family ?? null, artifact: null,
-    };
+    return { code, dict, left: left[0] ?? null };
   });
+  /* **셋이 한 종류다.** 전부 남긴 것이 있을 때만 그 이름을 세운다 */
+  const kind: StateTileKind = rows.every((r) => r.left) ? "artifact" : "activity";
+  const tiles: StateTile[] = rows.map(({ code, dict, left }) => ({
+    code, zone: zoneOf[code], kind,
+    sub: kind === "artifact" && left ? left.say : (dict?.activity ?? domainSub(core, code)),
+    family: dict?.family ?? null,
+    artifact: left?.raw ?? null,
+  }));
 
   const counts = {
     established: tiles.filter((t) => t.zone === "Z1_EVIDENCE_ESTABLISHED").length,
     incomplete: tiles.filter((t) => t.zone === "Z2_EVIDENCE_INCOMPLETE").length,
     interest: tiles.filter((t) => t.zone === "Z4_INSUFFICIENT_EVIDENCE").length,
   };
-  return { tiles, lead: leadKo(counts), counts };
+  return { tiles, lead: leadKo(counts), kind, counts };
 }
 
 /**

@@ -128,7 +128,7 @@
  * **이 화면은 손전화에서 한 화소도 바뀌지 않는다**: `clamp` 의 아래 값이
  * 전과 같은 숫자다(390 에서 질문 18 · 보기 16 · 뜻 14 · 머리말 12).
  */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V39";
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V40";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
 /* copy.15 — 받침 한 줄과 보기 넷의 예시가 화면에 서는 글자다 */
@@ -136,7 +136,7 @@ export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V39";
 /* copy.17 — 시작 안내에 그 전공에서 자주 서는 자리 셋이 새로 선다 */
 /* copy.18 — 비어 있는 질문을 짚는 한 줄과 남은 수를 적는 줄이 새로 선다 */
 /* copy.19 — 산업 장면과 대학원 알약이 그 전공의 이름으로 선다(P0) */
-export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.24";
+export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.25";
 
 /*
  * `V19` · `copy.14` 로 올린 까닭. **경험 빈도의 화면 말을 공통으로
@@ -557,4 +557,11 @@ export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.24";
  * 가를 수 없다**: 파일럿 뒤에 `이 사람이 어느 화면으로 답했는가` 를 묻는
  * 자리가 그 판본이다. R26 에서 같은 자리를 같은 까닭으로 한 번 다시
  * 적었다.
+ */
+
+/**
+ * R31. 경험 번역 열 단계의 보기가 Core 마다 든다(`student/translate.ts`).
+ * 전에는 `menus.ts` 의 한 벌이 스무 Core 전부에 기계공학의 보기(`재질이나
+ * 부품을 바꿨다`)를 내줬고 그 글자가 경영학과 학생의 종이에 그대로 이어졌다.
+ * 저장되는 값(`S1`~`S5`)과 보기의 수와 차례는 그대로라 측정은 바뀌지 않는다.
  */

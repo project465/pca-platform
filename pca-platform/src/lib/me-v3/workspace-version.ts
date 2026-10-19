@@ -309,7 +309,7 @@
  * R30. 홈 현재 상태가 결과지와 같은 `studentStateView` 를 읽고, 경험
  * 추가가 걸음마다 안내 한 덩이와 묶은 종류와 두 줄짜리 영역 칸으로 선다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V44";
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V45";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -342,7 +342,7 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V44";
  * R30. `기술 판단` 과 `기술영역` 이 그 Core 의 말로 선다(`experienceFlow`).
  * 홈 Hero 머리가 영역 이름을 들고, 현재 상태 머리 한 줄이 묶음대로 적힌다.
  */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.28";
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.29";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**
@@ -866,4 +866,13 @@ export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.28";
  *
  * **화면 구조는 한 줄도 바뀌지 않았다**: `WORKSPACE_UI_VERSION` 은
  * 그대로이고 바뀐 것은 그 칸에 넘기는 값 하나다.
+ */
+
+/**
+ * R31 · Human Review 결함 수정. 저장 직후 화면이 일곱을 차례로 적는다(저장됐어요
+ * · 그 사람의 경험 제목 · 기록으로 확인된 역할과 판단 · 실제 달라진 현재 상태 ·
+ * 다음에 보완할 것 · 현재 상태 확인하기 · 다른 경험 추가하기)이고 **학생 실제
+ * 데이터가 없는 항목은 서지 않는다.** 경험 추가 2단은 그 사람의 결과가 서 있는
+ * 영역부터 세우고 나머지를 접는다. 홈 영역 칸의 거드는 줄이 두 줄까지 접혀
+ * 말줄임으로 뜻이 잘리지 않는다. 현재 상태 카드 셋의 세부가 한 종류다.
  */

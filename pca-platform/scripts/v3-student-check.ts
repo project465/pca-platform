@@ -9,6 +9,7 @@ import { readFileSync } from "node:fs";
 import {
   EXAMPLE_FALLBACK, EXPERIENCE_EXAMPLE, EXPERIENCE_FLOW, FLOW_FALLBACK, STUDENT_COPY,
 } from "../src/lib/me-v3/student/copy";
+import { TRANSLATE_MENU, TRANSLATE_NEUTRAL } from "../src/lib/me-v3/student/translate";
 import { FAMILY_FILL, FAMILY_LINE, FAMILY_MEANING }
   from "../src/lib/me-v3/student/icon";
 
@@ -268,6 +269,65 @@ console.log("\n── 12. 경험 추가가 그 Core 의 말로 묻는가 ──"
   ok("종류 아홉이 세 묶음에 빠짐없이 한 번씩 든다",
     kinds.length === 9 && grouped.length === 9 && kinds.every((k) => grouped.includes(k)),
     `정본 ${kinds.join(",")} / 묶음 ${grouped.join(",")}`);
+}
+
+/* ── §13 R31 Human Review 결함 다섯 ── */
+console.log("\n── 13. Human Review 결함이 닫혔는가 ──");
+{
+  const v = body("src/lib/me-v3/student/state.ts");
+  /* (a) 카드 셋의 세부가 한 종류다: 전부 남긴 것일 때만 그 이름 */
+  ok("현재 상태 세부가 한 종류다", /rows\.every\(\(r\) => r\.left\)/.test(v) && /kind: StateTileKind;/.test(v));
+  const steps = body("src/app/me/experience/steps.tsx");
+  const comp = body("src/app/me/experience/compose.tsx");
+  /* (b) 2단이 그 사람의 결과가 서 있는 영역부터 세우고 나머지를 접는다 */
+  ok("2단이 결과가 선 영역부터 세운다", /suggest/.test(steps) && /is-dom-more/.test(steps));
+  ok("먼저 세울 영역을 두 화면과 같은 함수로 고른다", /studentStateView\(/.test(comp));
+  ok("접힌 안의 칸도 같은 이름으로 보낸다",
+    (steps.match(/name="td"/g) ?? []).length === 1 && /rest\.map\(domPick\)/.test(steps));
+  /* (c) 저장 직후가 일곱을 차례로 적고 내부 근거 수를 나열하지 않는다 */
+  const rc = body("src/app/me/recompute/page.tsx");
+  for (const h of ["경험이 저장됐어요", "기록으로 확인된 역할과 판단",
+    "실제 달라진 현재 상태", "다음에 보완할 것", "현재 상태 확인하기", "다른 경험 추가하기"]) {
+    ok(`저장 직후에 \`${h}\` 가 선다`, rc.includes(h));
+  }
+  ok("저장 직후가 경험 근거 수를 나열하지 않는다", !/경험 근거 \{/.test(rc) && !/AXIS_SLOT_KO/.test(rc));
+  ok("저장 직후의 제목이 그 사람의 말이다", /fresh\.title/.test(rc) && /cm-saved-title/.test(rc));
+  ok("고른 판단이 없으면 그 절이 서지 않는다", /said\.length \?/.test(rc));
+  /* (d) 반쯤 선 축의 말이 머리글과 부딪히지 않는다 */
+  const t = body("src/lib/me-v3/result/text.ko.ts");
+  ok("반쯤 선 축이 `아직 없습니다` 로 적히지 않는다",
+    !/어디까지 직접 정했는지가 아직 없습니다/.test(t) && /직접 정한 것은 보이고/.test(t));
+  /* (e) 홈 영역 칸의 거드는 줄이 한 줄 말줄임이 아니다 */
+  const css = body("src/app/me/platform.css");
+  const small = css.slice(css.indexOf(".cm-tile-txt small {"), css.indexOf("}", css.indexOf(".cm-tile-txt small {")));
+  ok("영역 칸 거드는 줄이 한 줄에서 잘리지 않는다", !/nowrap/.test(small) && /line-clamp: 2/.test(small));
+}
+
+/* ── §14 경험 번역 보기가 Core 마다 든다 (R31 · PDF 검증에서 찾은 자리) ── */
+console.log("\n── 14. 번역 보기가 Core 마다 서는가 ──");
+{
+  const menus = body("src/lib/me-v3/runtime/menus.ts");
+  ok("공통 층이 번역 보기를 글자로 들지 않는다", !/const TRANS\b/.test(menus) && /translateMenu\(ctx\.core/.test(menus));
+  const ids = Object.keys(TRANSLATE_NEUTRAL);
+  ok("중립 벌이 열 단계를 다 든다", ids.length === 10 && ids.every((k) => /^TR_T\d+$/.test(k)));
+  for (const c of ["ME_CORE_V3", "BIZ_CORE_V1"]) {
+    const m = TRANSLATE_MENU[c];
+    ok(`${c} 에 번역 보기가 있다`, !!m && Object.keys(m).length === 10);
+    /* 저장되는 값이 보기의 자리라 **수와 차례**가 세 벌에서 같아야 한다 */
+    ok(`${c} 의 단계마다 보기 수가 중립 벌과 같다`,
+      !!m && ids.every((k) => m[k].options.length === TRANSLATE_NEUTRAL[k].options.length));
+    ok(`${c} 의 \`없다\` 보기가 같은 자리에 선다`, !!m
+      && /없다$/.test(m.TR_T6.options[3]) && /않았다$/.test(m.TR_T7.options[4])
+      && /없다$/.test(m.TR_T8.options[3]) && /없다$/.test(m.TR_T9.options[4]));
+  }
+  const biz = Object.values(TRANSLATE_MENU.BIZ_CORE_V1).flatMap((x) => x.options).join(" ");
+  ok("경영 벌에 기계공학의 말이 없다", !/치수|재질|부품|해석|시험|계측|도면|공정|인증|형상/.test(biz),
+    (biz.match(/치수|재질|부품|해석|시험|계측|도면|공정|인증|형상/) ?? ["없다"])[0]);
+  const neu = Object.values(TRANSLATE_NEUTRAL).flatMap((x) => x.options).join(" ");
+  ok("중립 벌이 한 전공을 가리키지 않는다", !/치수|재질|부품|해석|도면|공정|인증|형상|고객|예산|매출/.test(neu),
+    (neu.match(/치수|재질|부품|해석|도면|공정|인증|형상|고객|예산|매출/) ?? ["없다"])[0]);
+  const cores = Object.keys(TRANSLATE_MENU);
+  console.log(`  적어둠  제 벌을 드는 Core ${cores.length} (${cores.join(" · ")}) · 나머지는 중립 벌`);
 }
 
 console.log(`\n통과 ${pass} · 걸림 ${bad.length}`);

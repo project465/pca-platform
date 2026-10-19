@@ -67,3 +67,4 @@ export function experienceExample(core: string): string {
 export function experienceFlow(core: string): ExperienceFlow {
   return EXPERIENCE_FLOW[core] ?? FLOW_FALLBACK;
 }
+export { translateMenu, TRANSLATE_MENU, TRANSLATE_NEUTRAL } from "./translate";

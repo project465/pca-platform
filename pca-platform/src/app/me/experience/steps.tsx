@@ -71,7 +71,7 @@ function Guide({ n, title, body }: { n: number; title: string; body: ReactNode }
  * 먼저 본다: 지나왔으면 채워져 있으므로 마지막 저장에서 걸릴 것이 없다.
  */
 export default function Steps(
-  { domains, one, three, value, saveLabel, flow, fromAction }: {
+  { domains, one, three, value, saveLabel, flow, fromAction, suggest }: {
     domains: Dom[]; one: ReactNode; three: ReactNode; value?: Picked;
     /**
      * 걸음 어디서나 저장할 수 있게 한다. **고치는 자리에서만 켠다.**
@@ -88,6 +88,13 @@ export default function Steps(
     flow: ExperienceFlow;
     /** 할 일에서 넘어와 켜 둔 영역의 이름. 2단 안내가 그 사실을 적는다 */
     fromAction?: string;
+    /**
+     * 먼저 세울 영역(R31 · Human Review). **그 사람의 결과가 서 있는 영역**
+     * 이다. 전에는 열두 칸이 같은 생김새로 한 번에 깔려 손전화에서 세로로
+     * 열둘이 쌓였고, 그 모양이 설문지로 읽혔다. 결과가 없는 사람은 비어
+     * 있고 그때는 전과 같이 전부가 선다.
+     */
+    suggest?: string[];
   },
 ) {
   const [step, setStep] = useState(1);
@@ -96,6 +103,25 @@ export default function Steps(
   const [on, setOn] = useState<string[]>(value?.td ?? []);
   const firstPanel = useRef<HTMLDivElement>(null);
   const picked = domains.filter((d) => on.includes(d.code));
+  /* 먼저 세울 칸과 접어 둘 칸. 켜져 있는 영역은 어느 묶음에서 왔든 앞에 선다:
+     접힌 자리에서 켜진 칸은 고른 사람이 자기가 고른 것을 다시 찾아야 한다 */
+  const leadCodes = suggest?.length
+    ? [...new Set([...suggest, ...on])].filter((c) => domains.some((d) => d.code === c))
+    : domains.map((d) => d.code);
+  const lead = leadCodes.map((c) => domains.find((d) => d.code === c)!).filter(Boolean);
+  const rest = domains.filter((d) => !leadCodes.includes(d.code));
+  const domPick = (d: Dom) => (
+    <label className="cm-pick" key={d.code}>
+      <input type="checkbox" name="td" value={d.code}
+        checked={on.includes(d.code)}
+        onChange={(e) => setOn((prev) => e.target.checked
+          ? [...prev, d.code] : prev.filter((x) => x !== d.code))} />
+      <span className="cm-pick-t">
+        <b>{d.name}</b>
+        {d.sub ? <small>{d.sub}</small> : null}
+      </span>
+    </label>
+  );
   const steps = [
     { n: 1, title: "무슨 경험" },
     { n: 2, title: flow.step2 },
@@ -194,20 +220,25 @@ export default function Steps(
               칸마다 이름 아래에 **그 영역에서 학생이 해 본 일**을 사전의
               말로 한 줄 적는다(R30): 분류 이름만 서면 경영학과 학생이
               `재무·투자 판단` 이 자기 동아리 예산 일인지 알 수 없다 */}
+          {rest.length ? (
+            <em className="cm-dom-lead">
+              최근 결과에서 확인된 {flow.domainWord}부터 보여 드립니다.
+            </em>
+          ) : null}
           <div className="cm-pickset is-td is-dom">
-            {domains.map((d) => (
-              <label className="cm-pick" key={d.code}>
-                <input type="checkbox" name="td" value={d.code}
-                  checked={on.includes(d.code)}
-                  onChange={(e) => setOn((prev) => e.target.checked
-                    ? [...prev, d.code] : prev.filter((x) => x !== d.code))} />
-                <span className="cm-pick-t">
-                  <b>{d.name}</b>
-                  {d.sub ? <small>{d.sub}</small> : null}
-                </span>
-              </label>
-            ))}
+            {lead.map(domPick)}
           </div>
+          {/* 나머지는 접어 둔다. **고를 수 있는 것은 한 칸도 줄지 않는다**:
+              접힌 안에 켜진 칸이 없을 때만 접혀 있고, 그 안의 칸도 같은 이름
+              `td` 로 보낸다 */}
+          {rest.length ? (
+            <details className="cm-fold is-dom-more">
+              <summary>다른 {flow.domainWord} 보기 · {rest.length}</summary>
+              <div className="cm-pickset is-td is-dom">
+                {rest.map(domPick)}
+              </div>
+            </details>
+          ) : null}
           {picked.map((d) => (
             <section className="cm-subs" key={`j-${d.code}`}>
               <h4>{d.name}</h4>

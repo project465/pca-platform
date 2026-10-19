@@ -353,11 +353,14 @@ async function main(): Promise<void> {
        다시 열면 `?new=` 이 빠져 이번 경험으로 좁힌 글이 사라진다 */
     await p.bringToFront().catch(() => undefined);
     const planTxt = await p.evaluate(() => document.body.innerText);
-    ok("이번 경험에서 새로 연결된 것을 적는다",
-      /새로 연결된 것/.test(planTxt));
+    ok("기록으로 확인된 역할과 판단을 적는다",
+      /기록으로 확인된 역할과 판단/.test(planTxt));
     ok("현재 상태에서 달라진 것을 적는다",
-      /현재 상태에서 달라진 것|현재 상태에서 달라지는 것/.test(planTxt));
-    ok("그다음에 할 일을 적는다", /그다음에 할 일/.test(planTxt));
+      /실제 달라진 현재 상태|현재 상태에서 달라진 것|현재 상태에서 달라지는 것/.test(planTxt));
+    ok("보완할 것이나 현재 상태로 가는 길을 적는다",
+      /다음에 보완할 것|현재 상태 확인하기/.test(planTxt));
+    /* R31: 우리 쪽 자료 구조의 줄(`경험 근거 N개`)을 되풀이하지 않는다 */
+    ok("저장 직후가 내부 근거 수를 나열하지 않는다", !/경험 근거 \d+개/.test(planTxt));
     /* **세 상태를 글자로 적는다**(규격 §2) */
     ok("반영이 끝났다는 것을 글자로 적는다",
       /현재 상태에 더했습니다/.test(planTxt),

@@ -1,0 +1,324 @@
+[
+  {
+    "file": "00-home-before-d.png",
+    "target": "홈 /me (검사 전)",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": ""
+  },
+  {
+    "file": "02-assess-start-m.png",
+    "target": "검사 시작 화면 /v3/start",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Mobile 390×844 @2x",
+    "note": ""
+  },
+  {
+    "file": "02-assess-start-d.png",
+    "target": "검사 시작 화면 /v3/start",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": ""
+  },
+  {
+    "file": "03-assess-intro-d.png",
+    "target": "시작 안내 /v3/{id}/intro",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": ""
+  },
+  {
+    "file": "04-assess-interest-d.png",
+    "target": "응시 · 영역 훑기(관심)",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": "실제 클릭으로 진입"
+  },
+  {
+    "file": "05-assess-judgment-d.png",
+    "target": "응시 · 판단 문항",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": "실제 클릭으로 4화면 지난 뒤"
+  },
+  {
+    "file": "03-assess-intro-m.png",
+    "target": "시작 안내",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Mobile 390×844 @2x",
+    "note": ""
+  },
+  {
+    "file": "04-assess-interest-m.png",
+    "target": "응시 · 영역 훑기(관심)",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Mobile 390×844 @2x",
+    "note": "데스크톱이 지난 자리에서 이어서"
+  },
+  {
+    "file": "05-assess-judgment-m.png",
+    "target": "응시 · 판단 문항",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Mobile 390×844 @2x",
+    "note": "손전화에서 실제 클릭으로 3화면 지난 뒤"
+  },
+  {
+    "file": "06-done-d.png",
+    "target": "완료 브리지 /v3/{id}/done",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": ""
+  },
+  {
+    "file": "07-result-top-d.png",
+    "target": "결과 첫 화면",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": ""
+  },
+  {
+    "file": "08-result-state-d.png",
+    "target": "결과 · 현재 상태",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": "카드 셋 세부가 한 종류 (R31)"
+  },
+  {
+    "file": "09-result-evidence-d.png",
+    "target": "결과 · 근거(Evidence)",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": ""
+  },
+  {
+    "file": "10-result-plan-d.png",
+    "target": "결과 · 할 일(Action)",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": ""
+  },
+  {
+    "file": "11-result-gaps-d.png",
+    "target": "결과 · 더 채울 부분(Gap)",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": "PARTIAL 말이 머리글과 부딪히지 않는다 (R31)"
+  },
+  {
+    "file": "12-result-apply-d.png",
+    "target": "결과 · 지원서·면접(PRO 번역)",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": ""
+  },
+  {
+    "file": "01-home-d.png",
+    "target": "홈 /me (결과 뒤)",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": "레퍼런스 대조 대상"
+  },
+  {
+    "file": "08b-home-state-d.png",
+    "target": "홈 · 현재 상태 절",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": "결과지와 같은 함수 · 거드는 줄 두 줄까지 (R31)"
+  },
+  {
+    "file": "17-me-state-d.png",
+    "target": "현재 상태 /me/state",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": ""
+  },
+  {
+    "file": "18-me-next-d.png",
+    "target": "지금 할 일 /me/next",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": ""
+  },
+  {
+    "file": "13-exp-step1-d.png",
+    "target": "경험 추가 1단",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": ""
+  },
+  {
+    "file": "14-exp-step2-d.png",
+    "target": "경험 추가 2단",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": "결과가 선 영역부터 세우고 나머지를 접는다 (R31)"
+  },
+  {
+    "file": "15-exp-step3-d.png",
+    "target": "경험 추가 3단",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": ""
+  },
+  {
+    "file": "16-postsave-d.png",
+    "target": "경험 저장 직후",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": "일곱 항목 구조 · 학생 실제 데이터만 (R31)"
+  },
+  {
+    "file": "19-exp-list-d.png",
+    "target": "경험 목록",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": ""
+  },
+  {
+    "file": "20-exp-edit-d.png",
+    "target": "경험 고치기",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": ""
+  },
+  {
+    "file": "21-me-apply-d.png",
+    "target": "지원 기록 /me/apply",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": ""
+  },
+  {
+    "file": "22-me-track-d.png",
+    "target": "Track /me/track",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": ""
+  },
+  {
+    "file": "07-result-top-m.png",
+    "target": "결과 첫 화면",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Mobile 390×844 @2x",
+    "note": ""
+  },
+  {
+    "file": "08-result-state-m.png",
+    "target": "결과 · 현재 상태",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Mobile 390×844 @2x",
+    "note": ""
+  },
+  {
+    "file": "09-result-evidence-m.png",
+    "target": "결과 · 근거(Evidence)",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Mobile 390×844 @2x",
+    "note": ""
+  },
+  {
+    "file": "10-result-plan-m.png",
+    "target": "결과 · 할 일(Action)",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Mobile 390×844 @2x",
+    "note": ""
+  },
+  {
+    "file": "11-result-gaps-m.png",
+    "target": "결과 · 더 채울 부분(Gap)",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Mobile 390×844 @2x",
+    "note": ""
+  },
+  {
+    "file": "12-result-apply-m.png",
+    "target": "결과 · 지원서·면접(PRO 번역)",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Mobile 390×844 @2x",
+    "note": ""
+  },
+  {
+    "file": "01-home-m.png",
+    "target": "홈 /me (결과 뒤)",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Mobile 390×844 @2x",
+    "note": ""
+  },
+  {
+    "file": "17-me-state-m.png",
+    "target": "현재 상태 /me/state",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Mobile 390×844 @2x",
+    "note": ""
+  },
+  {
+    "file": "18-me-next-m.png",
+    "target": "지금 할 일 /me/next",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Mobile 390×844 @2x",
+    "note": ""
+  },
+  {
+    "file": "13-exp-step1-m.png",
+    "target": "경험 추가 1단",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Mobile 390×844 @2x",
+    "note": ""
+  },
+  {
+    "file": "14-exp-step2-m.png",
+    "target": "경험 추가 2단",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Mobile 390×844 @2x",
+    "note": "결과가 선 영역부터 세우고 나머지를 접는다 (R31)"
+  },
+  {
+    "file": "15-exp-step3-m.png",
+    "target": "경험 추가 3단",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Mobile 390×844 @2x",
+    "note": ""
+  },
+  {
+    "file": "16-postsave-m.png",
+    "target": "경험 저장 직후",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Mobile 390×844 @2x",
+    "note": "일곱 항목 구조 · 학생 실제 데이터만 (R31)"
+  },
+  {
+    "file": "19-exp-list-m.png",
+    "target": "경험 목록",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Mobile 390×844 @2x",
+    "note": ""
+  },
+  {
+    "file": "21-me-apply-m.png",
+    "target": "지원 기록 /me/apply",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Mobile 390×844 @2x",
+    "note": ""
+  },
+  {
+    "file": "22-me-track-m.png",
+    "target": "Track /me/track",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Mobile 390×844 @2x",
+    "note": ""
+  },
+  {
+    "file": "cmp-home-vs-reference.png",
+    "target": "레퍼런스 ↔ 홈 나란히",
+    "scenario": "-",
+    "viewport": "폭 720 로 맞춤 · 세로 제 비율",
+    "note": "늘려 맞추지 않음"
+  },
+  {
+    "file": "cmp-result-state-vs-home.png",
+    "target": "결과지 현재 상태 ↔ 홈 현재 상태",
+    "scenario": "-",
+    "viewport": "폭 720",
+    "note": "같은 함수(studentStateView)"
+  }
+]

@@ -1,0 +1,27 @@
+
+── CareerMatri 운영 점검 2026-10-19 02:53 ──
+
+  WARNING  DEPLOY          claude/careermatri-screen-review-p0c8kb 에 올리지 않은 변경이 있습니다. Railway 는 올라간 것만 봅니다.
+  READY    DOCKER_RUNTIME  runtime 이미지에 결과지 엔진 · 법정 문서 · db · ops · 글꼴 · Chromium 이 다 들어갑니다.
+  UNKNOWN  DOMAIN          이 자리가 PLATFORM_URL 을 들고 있지 않습니다.
+                           → Railway → 서비스 → Variables 의 PLATFORM_URL 이 https://app.careermatri.com 인지 봅니다. 값을 바꾸지는 않습니다.
+  UNKNOWN  APP_ENV         이 자리가 APP_ENV 를 들고 있지 않습니다.
+                           → Railway → 서비스 → Variables 의 APP_ENV 가 staging 인지 봅니다. 이 회차에서는 staging 을 그대로 둡니다.
+  UNKNOWN  DATABASE        이 자리가 DATABASE_URL 을 들고 있지 않습니다.
+                           → Railway → Postgres → Variables 의 DATABASE_URL 을 넣고 다시 돌립니다. 값은 화면에 찍지 않습니다.
+  UNKNOWN  PDF_VOLUME      이 자리가 REPORT_PDF_DIR 을 들고 있지 않습니다.
+                           → Dockerfile 이 /app/var/reports 로 못 박아 두므로 운영 이미지에서는 늘 차 있습니다. Railway → 서비스 → Settings → Volumes 의 Mount path 가 그 자리인지 봅니다.
+  BLOCKED  EMAIL           SMTP 자격증명이 없어 한 통도 나가지 않습니다. 코드 쪽은 `npm run mail:check` 가 끝까지 확인합니다 — MAIL_HOST · MAIL_PORT · MAIL_USER · MAIL_PASS · MAIL_FROM 다섯 줄만 남았습니다.
+  UNKNOWN  OAUTH           이 기계가 공급자 값을 들고 있지 않습니다.
+                           → 운영 컨테이너에서 돌립니다. 코드 쪽은 `npm run oauth:ready` 가 봅니다.
+  READY    LEGAL           약관·개인정보·환불 셋의 본문을 runtime 에서 읽었습니다.
+  UNKNOWN  BUSINESS        일곱 칸이 site_settings 에 있고 이 자리는 DB 를 들고 있지 않습니다.
+                           → DATABASE_URL 을 넣고 다시 돌리거나, /admin/business 화면을 봅니다.
+  UNKNOWN  BACKUP          기록이 DB 에 있고 이 자리는 DB 를 들고 있지 않습니다.
+                           → DATABASE_URL 을 넣고 다시 돌립니다.
+  BLOCKED  PAYMENT         가짜 결제입니다. PG 계약이 아직 없고, 붙이는 일은 이 회차에서 시작하지 않습니다. 운영(APP_ENV=production)에서는 서버가 아예 뜨지 않으므로, 이 줄이 막혀 있는 동안은 staging 으로 둡니다.
+
+  READY 2 · WARNING 1 · BLOCKED 2 · UNKNOWN 7
+
+  EMAIL · PAYMENT 가 막혀 있습니다.
+

@@ -156,6 +156,7 @@ const FILES = [
   "src/app/v3/[attemptId]/result/charts.tsx",
   "src/lib/me-v3/runtime/blocks.ts",
   "src/lib/me-v3/runtime/menus.ts",
+  "src/lib/me-v3/student/translate.ts",
   "src/lib/me-v3/runtime/session.ts",
   /* 내 CareerMatri. **검사 화면만 재면 플랫폼 쪽이 다른 말투로 선다.**
      한 사람이 검사를 끝내고 이어서 누르는 쪽이라, 여기가 설명서 말투면

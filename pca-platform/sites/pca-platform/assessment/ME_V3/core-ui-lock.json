@@ -3,17 +3,17 @@
  "note": "Core 화면 열넷의 묶음 동결. 측정 동결과 별개다. layout 대변경은 별도 STOP GATE 이고, 고쳤으면 그 화면의 판본을 올리고 세 동결을 다시 적은 다음 `CORE_UI_FREEZE=write npm run v3:freeze:core`",
  "label": "CAREERMATRI_CORE_UI_FREEZE_1",
  "locks": {
-  "assessment": "2756ad2f8f96a0e6",
-  "result": "192c4019e056b4ed",
-  "workspace": "1f59fd98761d282c"
+  "assessment": "6cbe13b74ea185d0",
+  "result": "79c6914c538cfbb8",
+  "workspace": "2aae42adce0f1cca"
  },
  "versions": {
-  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V39",
-  "assessment_copy_version": "me-v3-2-assessment-copy.24",
-  "result_ui_version": "ME_V3_RESULT_UI_V73",
-  "result_copy_version": "me-v3-result-copy.62",
-  "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V44",
-  "workspace_copy_version": "careermatri-workspace-copy.28"
+  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V40",
+  "assessment_copy_version": "me-v3-2-assessment-copy.25",
+  "result_ui_version": "ME_V3_RESULT_UI_V74",
+  "result_copy_version": "me-v3-result-copy.63",
+  "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V45",
+  "workspace_copy_version": "careermatri-workspace-copy.29"
  },
  "screens": {
   "Home": "workspace:78258b5b5dd6d367",

@@ -156,7 +156,7 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
  * 까닭 한 줄이 축을 따라 갈린다. 현재 상태의 머리 한 줄이 묶음이 말하는
  * 것만 적는다(`stateLeadKo`). 판정과 결과 모델은 그대로다.
  */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.62";
+export const RESULT_COPY_VERSION = "me-v3-result-copy.63";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -429,7 +429,7 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.62";
  * R30 PHASE 1. 결과지 현재 상태 카드가 `studentStateView` 를 읽는다: 어느
  * 영역을 세우는가와 세부 한 줄이 작업공간 홈과 한 자리에서 정해진다.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V73";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V74";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX
@@ -1165,4 +1165,15 @@ export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V73";
  * **판단은 한 줄도 바뀌지 않았다**: 문항 은행 · 채점 · 소유 판정 · 묶음
  * 규칙 · 결과 모델 · 등록부 · 학생 공개 상태 · DB 스키마가 그대로고
  * `v3:freeze:measure` 가 기록을 다시 적지 않은 채로 통과한다.
+ */
+
+/**
+ * R31 · Human Review 결함 수정. 현재 상태 카드 셋의 세부가 **한 종류**다
+ * (전부 남긴 것이 있을 때만 그 이름, 아니면 셋 다 해 본 일): 전에는 한 줄에
+ * 남긴 것과 해 본 일이 섞여 섰다. `PARTIAL_EVIDENCE` 빈자리의 말을 `직접
+ * 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직` 으로
+ * 고쳐 머리글의 `직접 정해 본 일` 과 부딪히지 않는다(시나리오 C).
+ *
+ * **판단은 한 줄도 바뀌지 않았다**: 문항 은행 · 채점 · 소유 판정 · 묶음
+ * 규칙 · 결과 모델 · 등록부 · 학생 공개 상태 · DB 스키마가 그대로다.
  */

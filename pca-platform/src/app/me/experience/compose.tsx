@@ -1,9 +1,12 @@
 import { activeMajorName } from "@/lib/me-v3/major-name";
 import {
-  EXPERIENCE_KINDS, activeCoreOrPick, type Experience,
+  EXPERIENCE_KINDS, activeCoreOrPick, latestResult, type Experience,
 } from "@/lib/me-v3/platform";
 import { content, domainName } from "@/lib/me-v3/runtime/session";
-import { experienceExample, experienceFlow, studentActivity } from "@/lib/me-v3/student";
+import {
+  experienceExample, experienceFlow, studentActivity, studentStateView,
+} from "@/lib/me-v3/student";
+import type { Zone } from "@/lib/me-v3/scoring/types";
 import { CmShell, CmHead } from "../shell";
 import { MonthPick } from "../ui";
 import { saveExperience, editExperience } from "./actions";
@@ -99,6 +102,17 @@ export default async function Compose(
   /* 묻는 말은 **그 Core 의 사전**이 든다(R30). `기술 판단` 을 화면에 박지
      않는다: 경영학과 학생이 자기 과제를 그 말로 읽지 못한다 */
   const flow = experienceFlow(core);
+  /* 2단에서 먼저 세울 영역(R31). **결과지와 홈이 읽는 같은 함수**로 고른다:
+     그 사람의 결과가 서 있는 영역 셋이고, 할 일에서 넘어온 영역이 있으면
+     그것이 맨 앞이다. 결과가 없으면 비어 있고 그때는 전부가 선다 */
+  const model = await latestResult(user.id);
+  const zoneOf: Record<string, Zone> = {};
+  for (const d of model?.domains ?? []) zoneOf[d.code] = d.zone;
+  const suggest = [
+    ...(td ? [td] : []),
+    ...(model ? studentStateView(core, model, zoneOf, 3).tiles.map((t) => t.code) : []),
+    ...(value?.td_codes ?? []),
+  ];
   const picked = {
     td: value?.td_codes ?? (td ? [td] : []),
     problems: value?.problems ?? [],
@@ -157,6 +171,7 @@ export default async function Compose(
           flow={flow}
           {...(edit ? { saveLabel: "고친 내용 저장" } : {})}
           {...(!edit && td ? { fromAction: domainName(core, td) } : {})}
+          suggest={[...new Set(suggest)]}
           domains={domains.map((d) => ({
             code: d.code, name: domainName(core, d.code),
             /* 이름 아래 한 줄은 **그 영역에서 학생이 해 본 일**이다. 사전이

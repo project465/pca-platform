@@ -12304,3 +12304,33 @@ PASS · FREEZE 를 선언하지 않는다. C 의 머리글(`직접 정해 본 �
 사람 판단을 받는다. 사전이 있는 Core 는 여섯이고 20 Core 와 115 학과로
 넓히지 않았다. 네트워크 정책이 `app.careermatri.com:443` 을 막아 운영
 배포본을 밖에서 열지 못했고 **학생 공개 상태를 한 칸도 바꾸지 않았다.**
+
+**BIZ Gold Master. 브라우저로 끝까지 가고 종이를 사람이 읽었다.** (2026-10-19)
+
+R31. R30 Human Review 의 결함 다섯을 닫고, 학교가 발급한 BIZ 계정 하나로 **실제
+Chromium 에서 문항 전부를 눌러** 제출 → 결과 → PDF 까지 갔다(`scripts/lab/r31-e2e.ts`
+· 37/37). 종이 열한 쪽을 사람이 읽다가 **여섯째 결함**을 찾았다: 경험 번역 열 단계의
+보기가 `runtime/menus.ts` 에 한 벌로 글자로 있어 스무 Core 전부가 기계공학의 보기
+(`재질이나 부품을 바꿨다`)를 받았고, 경영학과 학생의 종이에 그 말이 그대로 이어졌다.
+`student/translate.ts` 가 Core 마다 든다(ME 그대로 · BIZ · 나머지는 중립). 저장되는
+값(`S1`~`S5`)과 보기의 수와 차례는 같아 **측정은 그대로다**. 증거는 전부
+`docs/metri/review/r31/`(INDEX.md) 이고 보고는 `docs/metri/R31_BIZ_GOLD_MASTER_HUMAN_REVIEW.md`.
+
+**검사가 거짓으로 걸린 자리 넷을 전부 검사 쪽에서 고쳤다.** 전체 판단 수와 영역별
+수를 섞어 더했고, 접힌 절(`rs-openbtn`)을 펴지 않고 영역 이름을 셌고, pdftotext 가
+가운뎃점을 떨어뜨린 것을 글자 그대로 견줬고, 묻지 않은 영역에도 수를 요구했다.
+**느슨하게 한 줄은 없다**: 화면이 실제로 적는 칸에 맞췄다.
+
+**결과 쪽의 `networkidle` 을 기다리지 않는다.** 한 번은 제출까지 끝나고 `scored`
+로 굳은 뒤 마지막 이동이 돌아오지 않아 스무 분을 멈췄다. 걸음에 시간 예산을 두고
+돌아오지 않으면 DB 가 적은 상태로 이어 간다.
+
+**`/v3/start` 는 열린 응시가 있으면 그리로 돌려보낸다.** 손전화 시작 화면을 응시를
+연 뒤에 찍으면 응시 화면이 그 이름으로 선다. 같은 그림이 두 이름으로 저장되면
+걸리는 줄이 그것을 잡았다.
+
+판본: `ME_V3_RESULT_UI_V74` · `me-v3-result-copy.63` · `CAREERMATRI_WORKSPACE_UI_V45`
+· `careermatri-workspace-copy.29` · `ME_V3_2_ASSESSMENT_UI_V40` · `me-v3-2-assessment-copy.25`.
+**문항 은행과 판단 규칙과 결과 모델은 그대로고** 측정 동결이 기록을 다시 적지 않은
+채로 통과한다. AI Advantage 는 FAIL(LLM 호출 0)이고, 운영은 NOT VERIFIED 이며,
+Human Design PASS 와 Scene Freeze 는 선언하지 않는다. 학생 공개 상태를 바꾸지 않았다.

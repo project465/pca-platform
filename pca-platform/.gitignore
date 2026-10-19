@@ -55,3 +55,5 @@ var/pcu-readiness/
 var/r24/
 var/r30*/
 var/r30-*
+var/r31*/
+var/r31-*

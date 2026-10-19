@@ -40,6 +40,7 @@ const FILES = [
   "src/app/v3/[attemptId]/actions.ts",
   "src/lib/me-v3/runtime/blocks.ts",
   "src/lib/me-v3/runtime/menus.ts",
+  "src/lib/me-v3/student/translate.ts",
   "src/lib/me-v3/runtime/session.ts",
   /* 흐름을 고르는 자리다. 여기 없으면 **화면 파일을 한 줄도 안 고치고
      흐름을 바꿀 수 있다**: 어느 영역을 몇 개 열지와 어느 묶음을 받을지가

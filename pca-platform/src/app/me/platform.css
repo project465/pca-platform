@@ -563,10 +563,15 @@ a.cm-tile:nth-child(3n+3) .cm-tile-ico {
   letter-spacing: -.015em; line-height: 1.3;
 }
 .cm-tile-txt small {
-  display: block; margin-top: 5px; font-size: clamp(14px, 1.38vw, 19.8px);
+  display: -webkit-box; margin-top: 5px; font-size: clamp(14px, 1.38vw, 19.8px);
   color: var(--sf-not);
   line-height: 1.35;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  /* **말줄임은 줄이는 것이 아니라 가리는 것이다**(R31 · Human Review).
+     한 줄에서 끊으면 1440 에서 `채널별 성과 비…` 로 뜻이 가운데서 잘렸다.
+     두 줄까지 접고, 그 안에 든다. 칸의 키는 배지가 정하므로 두 줄이 되어도
+     칸이 늘어나지 않는다 */
+  overflow: hidden; white-space: normal; word-break: keep-all;
+  -webkit-line-clamp: 2; -webkit-box-orient: vertical;
 }
 /* 들어가는 표시는 **줄 끝에 선다**: 글과 같은 줄에 두면 설명이 길어질 때
    따라 내려가 어느 줄에 속한 표시인지 흐려진다 */
@@ -1702,6 +1707,24 @@ a.cm-feed-row:hover, .cm-feed > li:hover { background: #fafcfe; }
 
 /* 영역 칸의 두 줄: 이름과 그 영역에서 해 본 일 */
 .cm-pickset.is-dom > .cm-pick { align-items: flex-start; min-height: 56px; padding: 10px 12px; }
+/* 먼저 세운 영역 위의 한 마디와 접어 둔 나머지(R31). 접힌 머리는 칸과 같은
+   무게로 서지 않는다: 그 자리가 묻는 것은 `더 볼까` 하나다 */
+/* 저장 직후(R31). 제목은 그 사람의 말이라 이 쪽에서 가장 큰 글이고, 고른
+   판단은 묻는 자리마다 한 줄이다. 축 이름도 수도 적지 않는다 */
+.cm-saved { margin-bottom: 18px; }
+.cm-saved-meta { margin: 0 0 6px; font-size: var(--ui-t-cap); color: var(--sf-ink-3); }
+.cm-saved-title { margin: 0; font-size: var(--ui-t-section); font-weight: var(--ui-w-bd); line-height: 1.3; color: var(--sf-ink); word-break: keep-all; }
+.cm-said { margin: 0; display: grid; gap: 10px; }
+.cm-said > div { display: grid; grid-template-columns: 9em 1fr; gap: 10px; align-items: baseline; }
+.cm-said dt { margin: 0; font-size: var(--ui-t-cap); font-weight: var(--ui-w-sb); color: var(--sf-ink-2); }
+.cm-said dd { margin: 0; color: var(--sf-ink); line-height: 1.5; word-break: keep-all; }
+@media (max-width: 719px) {
+  .cm-said > div { grid-template-columns: 1fr; gap: 2px; }
+}
+.cm-dom-lead { display: block; margin: 0 0 8px; font-size: var(--ui-t-cap); color: var(--sf-ink-3); font-style: normal; }
+.cm-fold.is-dom-more { margin-top: 10px; }
+.cm-fold.is-dom-more > summary { font-size: var(--ui-t-cap); color: var(--sf-ink-2); }
+.cm-fold.is-dom-more > .cm-pickset { margin-top: 10px; }
 .cm-pickset.is-dom > .cm-pick::before { margin-top: 3px; }
 .cm-pick-t { display: flex; flex-direction: column; gap: 2px; min-width: 0; line-height: 1.35; }
 .cm-pick-t b { font-weight: var(--ui-w-sb); }

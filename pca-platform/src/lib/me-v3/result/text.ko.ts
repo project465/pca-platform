@@ -393,8 +393,14 @@ const GAP_TITLE_KO: Record<Gap["kind"], (ax: string, a?: Axis | null) => string>
      **축 이름을 이 자리에 적지 않는다**(R2 §12). 전에는 `요구 해석은 해
      보셨고 …` 로 섰다. `요구 해석` 은 우리 쪽 분류이고, 바로 앞에 영역
      이름이 이미 적혀 있어서 그 말이 없어도 어디의 이야기인지 읽힌다 */
+  /* **직접 정한 것이 확인된 자리다**(R31 · Human Review). 이 종류는
+     `confirmed && !owned` 에서만 서므로(`build.ts`) 그 사람은 이미 무엇을
+     정했다고 답했고, 모자란 것은 **그 기준을 어떤 근거로 어디까지
+     맡았는가**다. 전에는 `어디까지 직접 정했는지가 아직 없습니다` 로 적어
+     머리글의 `방향을 직접 정해 본 일이 있어요` 와 한 쪽에서 부딪혔다
+     (R30 시나리오 C) */
   PARTIAL_EVIDENCE: () =>
-    "해 보신 일은 적혀 있고, 어디까지 직접 정했는지가 아직 없습니다",
+    "직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
 };
 
 /**
@@ -410,7 +416,7 @@ const GAP_SHORT_KO: Record<Gap["kind"], (ax: string) => string> = {
   OUTPUT_EVIDENCE: () => "남긴 결과물이 무엇인지",
   VERIFICATION: () => "무엇과 비교해 확인했는지",
   AXIS: (ax) => ax,
-  PARTIAL_EVIDENCE: () => "어디까지 직접 정했는지",
+  PARTIAL_EVIDENCE: () => "정한 기준의 근거와 범위",
 };
 
 /**
@@ -438,8 +444,8 @@ export function gapCellKo(g: Gap): string {
 }
 
 /** 반쯤 선 자리는 까닭도 다르다. `보여줄 방법이 없다` 는 참이 아니다 */
-const PARTIAL_WHY_KO = "해 보신 것은 보입니다. 지원서에서는 여기서"
-  + " 무엇을 직접 정했는지까지 묻습니다.";
+const PARTIAL_WHY_KO = "직접 정한 것이 보입니다. 지원서와 면접에서는 그"
+  + " 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.";
 
 
 /**
@@ -995,7 +1001,7 @@ const ACTION_WHY_KO: Record<ActionCode, string> = {
     + " 그대로 옮겨 쓸 수 있어요.",
   BUILD_OUTPUT: "남겨 둔 것이 있으면 그 일을 무엇으로 보여줄지 말할 수 있습니다.",
   ADD_VERIFICATION: "견줘 둔 표가 있으면 그 값을 어떻게 확인했는지 말할 수 있어요.",
-  FILL_AXIS: "까닭이 한 줄 적혀 있으면 그 자리에서 무엇을 정했는지 말할 수 있습니다.",
+  FILL_AXIS: "까닭이 한 줄 적혀 있으면 그 과제에서 무엇을 정했는지 말할 수 있습니다.",
   TRY_SHORT_EXPERIENCE: "짧게라도 한 번 해 두면 다음에 적을 이야기가 생겨요.",
   EXPLORE_BROADLY: "한 가지를 겪어 보면 나머지와 견줄 기준이 생깁니다.",
   STUDY_NEXT: "들은 것을 과제 하나에 써 보면 그 자리에 기록이 남습니다.",

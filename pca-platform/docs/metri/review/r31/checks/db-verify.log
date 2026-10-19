@@ -1,0 +1,32 @@
+PostgreSQL      16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)
+표              136개
+핵심 표         7 / 7
+ME_V3 표        5 / 5
+내 CareerMatri  5 / 5
+로그인 방법     표 1 / 1 · users.pw_login 1 / 1
+외래키          218개
+
+지금 판본 상품  ME_V3_2 · 켜진 것 0개
+     판매를 아직 열지 않았습니다. 가격표가 '아직 판매를 열지
+     않았습니다' 로 섭니다 — 옛 검사로 보내지 않습니다.
+
+상품 (ME_V2 · 옛 판본. 보존하고 공개 가격표에는 내놓지 않는다)
+       code        | market |   tier   | amount | currency | price_status | active 
+-------------------+--------+----------+--------+----------+--------------+--------
+ ME_V2_BASIC_KR    | KR     | BASIC    |      0 | KRW      | approved     | t
+ ME_V2_STANDARD_KR | KR     | STANDARD |  14900 | KRW      | approved     | t
+ ME_V2_PRO_KR      | KR     | PRO      |  21900 | KRW      | approved     | t
+ ME_V2_BASIC_GL    | GLOBAL | BASIC    |      0 | USD      | approved     | t
+ ME_V2_STANDARD_GL | GLOBAL | STANDARD |   1499 | USD      | approved     | t
+ ME_V2_PRO_GL      | GLOBAL | PRO      |   2499 | USD      | approved     | t
+(6 rows)
+
+
+필수 동의문      4개
+사람            41명 (시연 34명)
+
+팔 수 있는 상태입니다.
+
+이 스크립트가 못 보는 넷(자동 백업 주기 · 디스크 용량 · 동시 접속
+상한 · 지역)은 관리형 플랫폼 쪽에서 봅니다 —
+docs/metri/45_railway_ops.md
