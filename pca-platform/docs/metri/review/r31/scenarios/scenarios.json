@@ -4,7 +4,7 @@
     "before": {
       "who": "A",
       "name": "거의 경험이 없는 학생",
-      "attempt": "31",
+      "attempt": "43",
       "focus": [],
       "zones": {
         "TD01": "Z4_INSUFFICIENT_EVIDENCE",
@@ -61,7 +61,7 @@
     "before": {
       "who": "B",
       "name": "일부 경험과 일부 증거가 있는 학생",
-      "attempt": "33",
+      "attempt": "44",
       "focus": [
         "TD01",
         "TD02",
@@ -307,7 +307,7 @@
     },
     "experience": {
       "td": "재무·투자 판단",
-      "id": "30",
+      "id": "39",
       "moved": [
         "재무·투자 판단·J6 PARTICIPATED→CONFIRMED"
       ],
@@ -317,7 +317,7 @@
     "after": {
       "who": "B",
       "name": "일부 경험과 일부 증거가 있는 학생",
-      "attempt": "33",
+      "attempt": "44",
       "focus": [
         "TD01",
         "TD02",
@@ -570,7 +570,7 @@
     "before": {
       "who": "C",
       "name": "여러 영역을 직접 수행하고 증거가 있는 학생",
-      "attempt": "35",
+      "attempt": "46",
       "focus": [
         "TD01",
         "TD02",
@@ -873,7 +873,7 @@
     },
     "experience": {
       "td": "경영전략·기획",
-      "id": "31",
+      "id": "40",
       "moved": [],
       "zone_moves": [],
       "closed_gaps": 0
@@ -881,7 +881,7 @@
     "after": {
       "who": "C",
       "name": "여러 영역을 직접 수행하고 증거가 있는 학생",
-      "attempt": "35",
+      "attempt": "46",
       "focus": [
         "TD01",
         "TD02",
@@ -1191,7 +1191,7 @@
     "before": {
       "who": "D",
       "name": "C 와 비슷한 활동이지만 직접 정한 것이 없는 학생",
-      "attempt": "36",
+      "attempt": "48",
       "focus": [
         "TD04"
       ],

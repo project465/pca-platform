@@ -55,12 +55,12 @@ SCENE FREEZE           선언하지 않음
 
 | 걸음 | 결과 |
 |---|---|
-| 로그인 → 학과 상세(`/campus/pcu/d/PCU26_BIZ`) → 검사 시작하기 → `/v3/start` → 학부 → 검사 시작 | PASS · 응시 32 · 응시 줄이 `BIZ_CORE_V1 · PCU26_BIZ · tier PRO` |
+| 로그인 → 학과 상세(`/campus/pcu/d/PCU26_BIZ`) → 검사 시작하기 → `/v3/start` → 학부 → 검사 시작 | PASS · 응시 45 · 응시 줄이 `BIZ_CORE_V1 · PCU26_BIZ · tier PRO` |
 | 모든 문항 응답(실제 클릭) | PASS · 화면 67 · 5.4분 · 서버에 답 109개 |
 | 제출 → 결과 생성 | PASS · `scored` · 완료 브리지 → 결과 · 결과 모델 영역 12 |
 | 점수 대조(화면 ↔ 굳은 결과 모델) | PASS · 머리글 글자 그대로 · 현재 상태 카드 3/3 · 전체 판단 수 `18·0`(`overview.counts`) · 깊게 물은 영역 3곳의 판단 수 3/3 · 열두 영역 이름 12/12 |
 | 화면에 안쪽 코드 · 점수 · 퍼센트 · 순위 | PASS · 0건 |
-| PDF 다운로드(Desktop) | PASS · 200 `application/pdf` · 1,447,536바이트 · `attachment; filename="careermatri-v3-PRO-32.pdf"` |
+| PDF 다운로드(Desktop) | PASS · 200 `application/pdf` · 1,447,536바이트 · `attachment; filename="careermatri-v3-PRO-45.pdf"` |
 | PDF 다운로드(Mobile 390) | PASS · 200 · 결과 화면 가로 넘침 +0px · 내려받기 길 있음 |
 | 다른 학생 → 같은 PDF / 결과 | PASS · 404 / 결과 안 보임 |
 | 비로그인 → PDF | PASS · 307 |
@@ -78,12 +78,12 @@ SCENE FREEZE           선언하지 않음
 이어 가게 고쳤다. **제품 쪽 문제가 아니다**: 그 응시는 109개 답과 결과 모델이
 전부 서 있었다.
 
-캡처와 E2E 증거는 빌드 `MNOLR1SLfAtw9d9y-9tJ3` 에서 떴다. 그 뒤 결과 문장 한 줄
-(`FILL_AXIS` 의 까닭 줄에서 우리 쪽 비유 `그 자리에서` → `그 과제에서`)만 고쳐
-마지막 빌드 `-JZFNXyX2QE0tKMYg2ftb` 를 다시 구웠고, 그 빌드로 제품 루프
-66/66(`review/r31/checks/v3-product-loop.log`)을 돌렸다. 두 빌드의 차이는 그 한
-줄이고 그 줄은 캡처한 화면 어디에도 서지 않는다(C 의 빈자리는 `FILL_AXIS` 가
-아니다). 그래도 **그림을 다시 뜨지는 않았으므로** 그 사실을 여기 적는다.
+Human Review 핸드오프(2026-10-19 둘째 바퀴)에서 캡처 · E2E · PDF · 시나리오를 **전부 마지막 빌드**
+(`-JZFNXyX2QE0tKMYg2ftb`, 제품 루프 66/66 을 돌린 그 빌드)에서 다시 떴다. 첫 바퀴와 마지막 빌드
+사이의 차이는 결과 문장 한 줄(`FILL_AXIS` 까닭 줄의 `그 자리에서` → `그 과제에서`)뿐이었고, 다시 뜬
+뒤에는 그 차이가 없다. E2E 는 새 계정(`zzr31e1033498` · 응시 45)으로 다시 37/37 이고 PDF 는 같은 열한
+쪽 · 같은 바이트 수다. 캡처에는 제출 직전 화면(`05b-assess-submit-d`)과 경험 저장 뒤 홈
+(`23-home-after-save-{d,m}`)이 더해졌고, `review/r31/BUILD_ID.txt` 가 그 빌드를 적는다.
 
 **API 테스트와 가른다.** 위 E2E 는 문항 전부를 화면에서 눌렀다. 아래 두 줄은 API
 수준의 계약·회귀 검사이고 브라우저 E2E 를 대체하지 않는다.
@@ -170,7 +170,7 @@ PASS 로 적는다. 실결제 · 운영 DB 변경 · 운영 브랜치 Push · �
 
 ## 7. 디자인 및 제품 검증
 
-`review/r31/shots/` 에 47장(Desktop 1440×900 · Mobile 390×844 @2x · 원본 해상도)과
+`review/r31/shots/` 에 49장(Desktop 1440×900 · Mobile 390×844 @2x · 원본 해상도)과 `review/r31/contact/` 의 Contact Sheet(썸네일 · 원본은 따로)와
 나란히 둔 그림 둘이 있고 `index.json` 과 `INDEX.md` 가 파일명 · 대상 · 시나리오 ·
 뷰포트 · 결과를 잇는다. 자리: 홈(검사 전·후) · 검사 시작 · 시작 안내 · 응시(영역
 훑기 · 판단 문항, 실제 클릭) · 완료 브리지 · 결과(첫 화면 · 현재 상태 · 근거 · 할

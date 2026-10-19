@@ -13,6 +13,11 @@ root = sys.argv[1]
 lines = ["# R31 Human Review Package · INDEX", "",
          "모든 증거가 이 폴더 아래에 있다. 파일명 · 대상 화면 · 시나리오 · 뷰포트 · 결과를 한 줄씩 적는다.",
          "테스트 계정의 비밀번호와 개인정보는 어디에도 적지 않았다(아이디는 `zzr31…` 꼴의 시험용이다).", ""]
+bid = os.path.join(root, "BUILD_ID.txt")
+if os.path.exists(bid):
+    lines += ["- 모든 캡처 · E2E · PDF · 시나리오는 **같은 빌드**에서 떴다: `" + open(bid, encoding="utf-8").read().strip() + "`",
+              "- 한 번에 내려받는 묶음: `../R31_HUMAN_REVIEW_PACKAGE.zip` (이 폴더 전체 + 보고서)",
+              "- 빠르게 훑는 자리: `contact/` 의 Contact Sheet(썸네일) → 글자를 읽을 때는 각 칸에 적힌 원본 파일을 연다", ""]
 
 def table(rows, head):
     out = ["| " + " | ".join(head) + " |", "|" + "---|" * len(head)]
@@ -32,6 +37,17 @@ if os.path.exists(idx):
 else:
     lines.append("캡처 색인(`shots/index.json`)이 없다 — 캡처가 돌지 않았다.")
 lines.append("")
+
+# 1b. Contact Sheet
+cdir = os.path.join(root, "contact")
+if os.path.isdir(cdir):
+    lines += ["## 1b. Contact Sheet (`contact/`) — 썸네일 · 원본은 위 표의 파일", ""]
+    rows = []
+    for f in sorted(os.listdir(cdir)):
+        kind = ("Desktop 캡처 묶음" if "desktop" in f else "Mobile 캡처 묶음" if "mobile" in f
+                else "PDF 전체 쪽" if "pdf" in f else "레퍼런스 대조")
+        rows.append((f"`contact/{f}`", kind, "격자 썸네일 · 긴 쪽은 위 일부만 · 칸 아래에 원본 파일명", "-", "있음"))
+    lines += table(rows, ["파일", "대상", "시나리오", "뷰포트", "결과"]) + [""]
 
 # 2. E2E
 lines += ["## 2. 실제 브라우저 E2E (`e2e/`)", ""]
@@ -55,7 +71,8 @@ lines.append("")
 # 3. 시나리오
 lines += ["## 3. 학생별 결과 검증 A/B/C/D (`scenarios/`)", "",
           "- `scenarios/scenarios.md` — 네 사람의 입력 → 머리글 → 현재 상태 → Hero → 빈자리 → 할 일 → 근거 → 경험 추가 뒤 /me (서버 함수로 읽은 글자 그대로)",
-          "- `scenarios/scenarios.json` — 같은 값의 기계 판독용", ""]
+          "- `scenarios/scenarios.json` — 같은 값의 기계 판독용",
+          "- `scenarios/ABCD_COMPARISON.md` — 입력(응답 규칙) → 머리글·묶음 → 현재 상태 카드 → Evidence(사실) → Gap·Action(권고) → 경험 추가 전후 비교표 (`scripts/lab/r31_abcd.py` 가 json 에서 만든다)", ""]
 
 # 4. 레퍼런스 대조
 lines += ["## 4. Premium Home Reference 대조 (`shots/cmp-*.png` · `compare/`)", "",
@@ -71,9 +88,21 @@ if os.path.isdir(ck):
     for f in sorted(os.listdir(ck)):
         t = open(os.path.join(ck, f), encoding="utf-8", errors="ignore").read()
         last = [l for l in t.strip().splitlines() if l.strip()][-1:] or [""]
-        rows.append((f"`checks/{f}`", f.replace("-", ":").replace(".log", ""), last[0][:90]))
+        name = "개인정보·비밀키 검사 (scripts/lab/r31_secrets.py)" if f.startswith("privacy") else f.replace("-", ":").replace(".log", "")
+        rows.append((f"`checks/{f}`", name, last[0][:90]))
     lines += table(rows, ["파일", "명령", "마지막 줄"])
 lines.append("")
 lines += ["## 6. 보고서", "", "- `../../R31_BIZ_GOLD_MASTER_HUMAN_REVIEW.md` — 판정 · P0/P1/P2 · 배포 가능 범위 · 5 기준 PASS/FAIL/NOT VERIFIED · HUMAN REVIEW REQUESTED", ""]
+# 7. 전체 파일 목록
+lines += ["## 7. 전체 파일 목록 (크기)", ""]
+allf = []
+for d, _, fs in os.walk(root):
+    for f in fs:
+        pth = os.path.join(d, f)
+        if f == "INDEX.md": continue
+        allf.append((os.path.relpath(pth, root), os.path.getsize(pth)))
+allf.sort()
+lines += table([(f"`{a}`", f"{b/1024:.0f} KB") for a, b in allf], ["파일", "크기"]) + ["",
+          f"파일 {len(allf)}벌 · {sum(b for _, b in allf)/1048576:.1f} MB", ""]
 open(os.path.join(root, "INDEX.md"), "w", encoding="utf-8").write("\n".join(lines))
 print("  떴다", os.path.join(root, "INDEX.md"))

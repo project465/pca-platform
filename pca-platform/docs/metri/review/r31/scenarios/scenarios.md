@@ -2,7 +2,7 @@
 
 ## A · 거의 경험이 없는 학생
 
-- 계정 `r30-biz_core_v1-a@test.invalid` · 응시 31
+- 계정 `r30-biz_core_v1-a@test.invalid` · 응시 43
 - headline: **아직 한쪽으로 크게 기울지는 않았어요** — 해 본 적이 있다고 고르신 쪽부터 좁혀 보세요.
 - focus: (없음)
 - Result 현재 상태 머리: ``
@@ -14,7 +14,7 @@
 
 ## B · 일부 경험과 일부 증거가 있는 학생
 
-- 계정 `r30-biz_core_v1-b@test.invalid` · 응시 33
+- 계정 `r30-biz_core_v1-b@test.invalid` · 응시 44
 - headline: **경영전략·기획과 마케팅·시장 과제는 해 봤고, 정리만 남았어요** — 뭘 골랐는지만 덧붙이면 돼요.
 - focus: 경영전략·기획(Z2_EVIDENCE_INCOMPLETE) · 마케팅·시장(Z2_EVIDENCE_INCOMPLETE) · 영업·사업개발(Z2_EVIDENCE_INCOMPLETE) · 재무·투자 판단(Z2_EVIDENCE_INCOMPLETE)
 - Result 현재 상태 머리: `해 봤고 정리만 남은 일 3가지`
@@ -37,14 +37,14 @@
 - 근거 영업·사업개발: did 2 · decided 0 · artifacts 0 · verifications 0
   - 이야기: 이번 거래에 넣을 것과 넣지 않을 것을 갈라 적었습니다 / 남긴 것 (없음)
   - 지원서 제시 가격과 양보하지 않을 조건을 어떤 기준으로 나눴는지부터 꺼내보세요 · 면접 그때 무엇을 보고 정했나요?
-- **경험 추가**: {"td":"재무·투자 판단","id":"30","moved":["재무·투자 판단·J6 PARTICIPATED→CONFIRMED"],"zone_moves":[],"closed_gaps":1}
+- **경험 추가**: {"td":"재무·투자 판단","id":"39","moved":["재무·투자 판단·J6 PARTICIPATED→CONFIRMED"],"zone_moves":[],"closed_gaps":1}
 - 추가 뒤 /me(stage RECOMPUTED): 경영전략·기획(Z2_EVIDENCE_INCOMPLETE) sub `목표와 성과 기준 정하기 [activity]` · 마케팅·시장(Z2_EVIDENCE_INCOMPLETE) sub `고객을 나누고 반응 비교하기 [activity]` · 영업·사업개발(Z2_EVIDENCE_INCOMPLETE) sub `고객을 찾고 제안 만들기 [activity]`
 - 추가 뒤 Hero: [DEEPEN_OWNERSHIP] 경영전략·기획 과제에서 직접 정한 기준 적어 두기 / 경영전략·기획 과제 하나. 직접 정한 기준을 세 줄로 적습니다.
 - 추가 뒤 gaps: 경영전략·기획 · 받은 요구를 어떤 조건으로 옮겼는지가 아직 없습니다 | 경영전략·기획 · 과제에서 손에 남은 것이 아직 없어요 | 마케팅·시장 · 무엇과 비교해 봤는지가 아직 없어요 | 영업·사업개발 · 과제에서 손에 남은 것이 아직 없어요
 
 ## C · 여러 영역을 직접 수행하고 증거가 있는 학생
 
-- 계정 `r30-biz_core_v1-c@test.invalid` · 응시 35
+- 계정 `r30-biz_core_v1-c@test.invalid` · 응시 46
 - headline: **경영전략·기획 과제에서 방향을 직접 정해 본 일이 있어요** — 지원서에 그대로 쓰시면 돼요.
 - focus: 경영전략·기획(Z1_EVIDENCE_ESTABLISHED) · 마케팅·시장(Z1_EVIDENCE_ESTABLISHED) · 영업·사업개발(Z1_EVIDENCE_ESTABLISHED) · 재무·투자 판단(Z1_EVIDENCE_ESTABLISHED)
 - Result 현재 상태 머리: `지금 설명할 수 있는 일 3가지`
@@ -67,14 +67,14 @@
 - 근거 영업·사업개발: did 20 · decided 6 · artifacts 2 · verifications 2
   - 이야기: 납기나 결제 조건을 정했습니다 / 고객 요구가 애매한 부분은 가정을 적었습니다 / 남긴 것 견적서, 제안서
   - 지원서 제시 가격과 양보하지 않을 조건을 어떤 기준으로 나눴는지부터 꺼내보세요 · 면접 우리 단가 기준과 어떻게 맞췄나요?
-- **경험 추가**: {"td":"경영전략·기획","id":"31","moved":[],"zone_moves":[],"closed_gaps":0}
+- **경험 추가**: {"td":"경영전략·기획","id":"40","moved":[],"zone_moves":[],"closed_gaps":0}
 - 추가 뒤 /me(stage RECOMPUTED): 경영전략·기획(Z1_EVIDENCE_ESTABLISHED) sub `사업계획 [artifact]` · 마케팅·시장(Z1_EVIDENCE_ESTABLISHED) sub `채널별 성과 비교표 [artifact]` · 영업·사업개발(Z1_EVIDENCE_ESTABLISHED) sub `견적서 [artifact]`
 - 추가 뒤 Hero: [DEEPEN_OWNERSHIP] 경영전략·기획 과제에서 요구를 옮긴 조건 적어 두기 / 경영전략·기획 과제 하나. 받은 요구를 어떤 조건으로 옮겼는지 세 줄로 적습니다.
 - 추가 뒤 gaps: 경영전략·기획 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다 | 마케팅·시장 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다 | 영업·사업개발 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다 | 재무·투자 판단 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다
 
 ## D · C 와 비슷한 활동이지만 직접 정한 것이 없는 학생
 
-- 계정 `r30-biz_core_v1-d@test.invalid` · 응시 36
+- 계정 `r30-biz_core_v1-d@test.invalid` · 응시 48
 - headline: **재무·투자 판단 과제를 끝까지 가서 남긴 것이 있어요** — 지원서에 그대로 쓰시면 돼요.
 - focus: 재무·투자 판단(Z1_EVIDENCE_ESTABLISHED)
 - Result 현재 상태 머리: `설명할 수 있는 일 1가지 · 정리가 덜 된 일 2가지`

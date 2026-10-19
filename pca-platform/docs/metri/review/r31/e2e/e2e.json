@@ -1,10 +1,10 @@
 {
   "core": "BIZ_CORE_V1",
   "leaf": "PCU26_BIZ",
-  "attempt": "32",
-  "login_id": "zzr31e9599955",
+  "attempt": "45",
+  "login_id": "zzr31e1033498",
   "base": "http://127.0.0.1:3100",
-  "at": "2026-10-19T03:19:03.037Z",
+  "at": "2026-10-19T03:42:51.987Z",
   "pass": 37,
   "fail": []
 }

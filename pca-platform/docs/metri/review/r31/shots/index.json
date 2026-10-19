@@ -63,6 +63,13 @@
     "note": "손전화에서 실제 클릭으로 3화면 지난 뒤"
   },
   {
+    "file": "05b-assess-submit-d.png",
+    "target": "응시 · 제출 직전 (마지막 화면)",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": "실제 클릭으로 제출한다"
+  },
+  {
     "file": "06-done-d.png",
     "target": "완료 브리지 /v3/{id}/done",
     "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
@@ -166,6 +173,13 @@
     "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
     "viewport": "Desktop 1440×900",
     "note": "일곱 항목 구조 · 학생 실제 데이터만 (R31)"
+  },
+  {
+    "file": "23-home-after-save-d.png",
+    "target": "홈 /me (경험 저장 뒤)",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Desktop 1440×900",
+    "note": "저장 전 01-home-d 와 비교"
   },
   {
     "file": "19-exp-list-d.png",
@@ -285,6 +299,13 @@
     "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
     "viewport": "Mobile 390×844 @2x",
     "note": "일곱 항목 구조 · 학생 실제 데이터만 (R31)"
+  },
+  {
+    "file": "23-home-after-save-m.png",
+    "target": "홈 /me (경험 저장 뒤)",
+    "scenario": "BIZ · PCU26_BIZ · 학교 발급 계정 · 사람 C",
+    "viewport": "Mobile 390×844 @2x",
+    "note": "저장 전 01-home-m 와 비교"
   },
   {
     "file": "19-exp-list-m.png",

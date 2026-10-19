@@ -229,6 +229,8 @@ async function main(): Promise<void> {
     if (!pol) throw new Error("사람 C 가 없습니다");
     await answerAll(CORE, a, stu.id, pol);
     await p.goto(`${BASE}/v3/${att}`, { waitUntil: "networkidle" });
+    if (/\/v3\/\d+$/.test(p.url()))
+      await viewport(p, `${OUT}/05b-assess-submit-d.png`, "응시 · 제출 직전 (마지막 화면)", "실제 클릭으로 제출한다");
     for (let t = 0; t < 4 && !/\/(done|result)$/.test(p.url()); t += 1) {
       const btn = p.locator("button.qs-btn-main, a.qs-btn-main").first();
       if (!(await btn.count())) break;
@@ -278,6 +280,11 @@ async function main(): Promise<void> {
       await q.close();
     }
     await experienceRound(ctx, "d", TITLE);
+    {
+      const q = await open(ctx, `${BASE}/me`);
+      await viewport(q, `${OUT}/23-home-after-save-d.png`, "홈 /me (경험 저장 뒤)", "저장 전 01-home-d 와 비교");
+      await q.close();
+    }
     const exp = await queryOne<{ id: string }>(
       `SELECT id::text FROM v3_experiences WHERE user_id = $1 ORDER BY created_at DESC LIMIT 1`, [stu.id]);
     for (const [n, path, target] of [
@@ -309,6 +316,11 @@ async function main(): Promise<void> {
       await q.close();
     }
     await experienceRound(mctx, "m", `${TITLE} (발표 자료)`);
+    {
+      const q = await open(mctx, `${BASE}/me`);
+      await viewport(q, `${OUT}/23-home-after-save-m.png`, "홈 /me (경험 저장 뒤)", "저장 전 01-home-m 와 비교");
+      await q.close();
+    }
     for (const [n, path, target] of [
       ["19-exp-list", "/me/experience", "경험 목록"],
       ["21-me-apply", "/me/apply", "지원 기록 /me/apply"], ["22-me-track", "/me/track", "Track /me/track"],
