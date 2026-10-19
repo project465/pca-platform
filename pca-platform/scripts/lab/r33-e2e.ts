@@ -258,6 +258,7 @@ async function main(): Promise<void> {
 
     /* ── 5. 저장 실패 → 다시 시도 (PostgreSQL 을 실제로 멈춘다) ───── */
     head("5. 저장 실패");
+    const errsBeforeOutage = errs.length;
     const nBeforeFail = await count(`SELECT count(*)::text n FROM v3_responses WHERE attempt_id = $1`, [att]);
     pg("stop");
     await sleep(800);
@@ -282,6 +283,10 @@ async function main(): Promise<void> {
     const nAfterFail = await count(`SELECT count(*)::text n FROM v3_responses WHERE attempt_id = $1`, [att]);
     ok("다시 시도한 답이 DB 에 실제로 들어간다", nAfterFail > nBeforeFail, `${nBeforeFail} → ${nAfterFail}`);
 
+    /* DB 가 멈춘 동안 쪽을 다시 그리는 요청이 500 을 받는 것은 그 고장의 모양이다.
+       세는 것은 **DB 가 돌아온 뒤**의 5xx 다 */
+    const duringOutage = errs.splice(errsBeforeOutage);
+    if (duringOutage.length) note(`DB 가 멈춘 동안 받은 응답: ${duringOutage.join(" | ").slice(0, 160)}`);
     ok("저장 실패 뒤에도 응시 화면에 그대로 있다 (로그인이나 홈으로 튕기지 않는다)",
       new RegExp(`/v3/${att}`).test(p.url()), new URL(p.url()).pathname);
     if (!new RegExp(`/v3/${att}`).test(p.url())) {
@@ -415,15 +420,21 @@ async function main(): Promise<void> {
     const landedE = new URL(ep.url()).pathname + new URL(ep.url()).search;
     ok("저장하면 달라진 것을 먼저 보여 준다 (/me/recompute?new=)", landedE.startsWith("/me/recompute") && landedE.includes("new="), landedE);
     const pending = await count(
-      `SELECT count(*)::text n FROM career_events WHERE user_id = $1::bigint AND processed_at IS NULL`, [stu.id]).catch(() => -1);
+      `SELECT count(*)::text n FROM career_events WHERE user_id = $1::bigint AND status <> 'done'`, [stu.id]);
     const prof2 = await q1<{ g: string; at: string | null }>(
       `SELECT jsonb_typeof(gaps) g, recomputed_at::text at FROM career_profiles WHERE user_id = $1::bigint AND core_code = $2`,
       [stu.id, CORE]);
     ok("저장하면 누르지 않아도 현재 상태에 반영된다 (recomputed_at · 밀린 일 0)",
       !!prof2?.at && prof2?.g === "array" && pending === 0, `recomputed_at ${prof2?.at ?? "없음"} · 밀린 일 ${pending}`);
+    /* 저장 직후 쪽이 달라진 것을 적는다. `/me/state` 는 기준 시각으로 반영을 적는다
+       (`새 경험을 더했습니다` 배너는 사람이 반영 단추를 누른 길(`?r=1`)에만 선다) */
+    const recTxt = await ep.locator("body").innerText();
+    ok("저장 직후 쪽이 그 경험으로 달라지는 현재 상태를 적는다",
+      /달라진|현재 상태/.test(recTxt) && recTxt.includes(title));
     await ep.goto(`${BASE}/me/state`, { waitUntil: "networkidle" });
     const stateTxt = await ep.locator("body").innerText();
-    ok("현재 상태 화면이 새 경험을 더했다고 적는다", /새 경험을 더했습니다/.test(stateTxt));
+    ok("현재 상태 화면이 경험을 얹은 값이라고 적는다 (반영 시각 기준)",
+      /그 뒤의 경험을 얹은 값/.test(stateTxt) && /기준/.test(stateTxt));
     await ep.goto(`${BASE}/me/experience`, { waitUntil: "networkidle" });
     const listTxt = await ep.locator("body").innerText();
     ok("경험 목록에 그 경험이 있고 더했는지가 적힌다", listTxt.includes(title) && /더함|더하지 않음/.test(listTxt));
