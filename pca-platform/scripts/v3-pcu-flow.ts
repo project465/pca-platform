@@ -17,7 +17,7 @@ import { readFileSync } from "node:fs";
 import { chromium, type Page } from "playwright";
 import {
   BASE, assertFreshServer, assertPreviewServer, fillExperience, gateCreds,
-  loadEnv, login, makeStudent,
+  loadEnv, login, makeStudent, registerCampusStudent,
 } from "./_loop-fixture";
 import { walk } from "./_v3-walk";
 import { query, queryOne } from "../src/lib/db";
@@ -61,6 +61,13 @@ async function main(): Promise<void> {
 
   const mail = `pcu-flow-${CORE.toLowerCase().replace(/_/g, "-")}@test.invalid`;
   const st = await makeStudent(mail);
+  /* **학교가 발급한 학생이어야 한다.** 학교 쪽 `검사 시작` 은 그 학교의 학생인지
+     보고(운영 Canary 에서 발급 계정과 응시 계정이 갈린 뒤로 둔 규칙) 아니면
+     학교 로그인으로 돌려보낸다. 전에는 줄 없이 들어가 그 자리에서 멈췬 것을
+     `검사가 열리지 않는다` 로 거꾸로 적었다. 담당자 집계는 시연 계정을
+     거르므로 이 사람을 시연으로 두지 않는다 */
+  await registerCampusStudent(st.id, "PCU", leaf.code);
+  await query(`UPDATE users SET is_demo = FALSE WHERE id = $1::bigint`, [st.id]);
   await query(
     `INSERT INTO entitlements
        (user_id, product_code, kind, tier, major_code, assessment_version, status)
