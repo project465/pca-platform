@@ -7,7 +7,7 @@
  */
 import { readFileSync } from "node:fs";
 import {
-  EXAMPLE_FALLBACK, EXPERIENCE_EXAMPLE, STUDENT_COPY,
+  EXAMPLE_FALLBACK, EXPERIENCE_EXAMPLE, EXPERIENCE_FLOW, FLOW_FALLBACK, STUDENT_COPY,
 } from "../src/lib/me-v3/student/copy";
 import { FAMILY_FILL, FAMILY_LINE, FAMILY_MEANING }
   from "../src/lib/me-v3/student/icon";
@@ -199,12 +199,19 @@ console.log("\n── 9. 경험 추가의 예시 ──");
 /* ── §6 두 화면이 한 사전을 읽는다 ── */
 console.log("\n── 10. 한 사전을 읽는가 ──");
 {
-  const r = body("src/lib/me-v3/result/tile-sub.ts");
+  /* R30: 두 화면이 `현재 상태` 를 **한 함수**(`studentStateView`)로 읽는다.
+     어느 영역을 세우고 세부에 무엇을 적고 머리에 무엇을 적는지가 그 한
+     자리에서 정해지고, 그 함수가 사전을 읽는다 */
+  const r = body("src/app/v3/[attemptId]/result/page.tsx");
   const m = body("src/app/me/page.tsx");
-  ok("결과지가 학생 사전을 읽는다", /studentActivity/.test(r));
-  ok("작업공간이 학생 사전을 읽는다", /studentEvidence/.test(m));
+  const v = body("src/lib/me-v3/student/state.ts");
+  ok("결과지가 학생 사전을 읽는다", /studentStateView/.test(r));
+  ok("작업공간이 학생 사전을 읽는다", /studentStateView/.test(m));
+  ok("그 자리가 사전을 읽는다", /STUDENT_COPY/.test(v));
   /* `subareas` 를 잘라 쓰는 길이 학생 화면에 직접 남아 있지 않다 */
-  ok("결과지가 taxonomy 토막을 직접 쓰지 않는다", !/domainSub/.test(r));
+  ok("결과지가 taxonomy 토막을 직접 쓰지 않는다", !/domainSub/.test(r) && !/\btileSub\(/.test(r));
+  /* 실제로 남긴 것이 사전의 결과물 이름보다 먼저다 */
+  ok("세부 줄이 실제 산출물을 먼저 본다", /artifacts/.test(v) && /thingKo/.test(v));
 }
 
 /* ── Core 를 건너 같은 문장을 돌려 쓰지 않는다 ──
@@ -229,6 +236,38 @@ console.log("\n── 11. Core 를 건너 겹치지 않는가 ──");
     ok(`${key === "activity" ? "활동" : "결과물"} 이 Core 를 건너 겹치지 않는다`,
       dup.length === 0, dup.map(([s, w]) => `${s}(${w.join(",")})`).join(" · "));
   }
+}
+
+/* ── R30 PHASE 2 : 경험 추가가 그 Core 의 말로 묻는다 ──
+ *
+ * 2단의 이름과 영역을 부르는 말이 `기술 판단` 과 `기술영역` 으로 화면에
+ * 글자로 박혀 있었다. 기계공학에서 온 말이라 경영학과 학생은 자기 과제를
+ * 그 말로 읽지 못한다. 지금은 사전(`EXPERIENCE_FLOW`)이 들고, 아홉 종류를
+ * 세 묶음으로 세우되 **종류를 하나도 빠뜨리거나 더하지 않는다**. */
+console.log("\n── 12. 경험 추가가 그 Core 의 말로 묻는가 ──");
+{
+  for (const c of GOLD) ok(`${c} 에 흐름 말이 있다`, Boolean(EXPERIENCE_FLOW[c]));
+  ok("되돌아갈 자리가 전공을 가리키지 않는다",
+    !/기술|경영|간호|행정|개발|제작/.test(FLOW_FALLBACK.step2 + FLOW_FALLBACK.domainWord));
+  const steps = body("src/app/me/experience/steps.tsx");
+  const comp = body("src/app/me/experience/compose.tsx");
+  ok("걸음 이름과 영역 말이 화면에 글자로 박혀 있지 않다",
+    !/["'`>]기술 판단["'`<]|어느 기술영역의/.test(steps + comp));
+  ok("두 화면이 사전의 흐름 말을 읽는다",
+    /experienceFlow\(/.test(comp) && /flow\.domainWord/.test(steps) && /flow\.step2/.test(steps));
+  ok("영역 칸이 학생 활동 구를 든다", /studentActivity\(/.test(comp) && /d\.sub/.test(steps));
+  ok("걸음마다 안내가 선다", (steps.match(/<Guide /g) ?? []).length === 3);
+  /* 아홉 종류가 세 묶음에 빠짐없이 한 번씩 든다. 종류의 정본은 `platform.ts` 다 */
+  const platform = body("src/lib/me-v3/platform.ts");
+  /* 종류 블록만 본다: 같은 파일의 지원 기록 상태(`watching` …)가 같은 꼴이다 */
+  const block = platform.slice(platform.indexOf("EXPERIENCE_KINDS = ["),
+    platform.indexOf("] as const", platform.indexOf("EXPERIENCE_KINDS = [")));
+  const kinds = [...block.matchAll(/\{ code: "([a-z]+)", label:/g)].map((m) => m[1]);
+  const grouped = [...comp.matchAll(/codes: \[([^\]]+)\]/g)]
+    .flatMap((m) => m[1].split(",").map((x) => x.trim().replace(/"/g, "")));
+  ok("종류 아홉이 세 묶음에 빠짐없이 한 번씩 든다",
+    kinds.length === 9 && grouped.length === 9 && kinds.every((k) => grouped.includes(k)),
+    `정본 ${kinds.join(",")} / 묶음 ${grouped.join(",")}`);
 }
 
 console.log(`\n통과 ${pass} · 걸림 ${bad.length}`);

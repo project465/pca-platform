@@ -76,6 +76,7 @@ const FILES = [
   "src/lib/me-v3/student/copy.ts",
   "src/lib/me-v3/student/icon.ts",
   "src/lib/me-v3/student/index.ts",
+  "src/lib/me-v3/student/state.ts",
   "src/app/me/experience/steps.tsx",
   "src/app/me/experience/[id]/edit/page.tsx",
   "src/app/me/experience/actions.ts",

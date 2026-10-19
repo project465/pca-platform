@@ -14,7 +14,7 @@ import { recentChangeKo } from "@/lib/me-v3/change-text.ko";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { majorNameOf } from "@/lib/me-v3/major-name";
 import {
-  FAMILY_LINE, NEUTRAL_LINE, studentEvidence, studentFamily,
+  FAMILY_LINE, NEUTRAL_LINE, studentStateView,
 } from "@/lib/me-v3/student";
 import { resultMeta } from "@/lib/me-v3/result/meta";
 import { CmShell, CmHead } from "./shell";
@@ -92,7 +92,10 @@ export default async function Home() {
   const nowDomain = nowModel?.domain ? domainName(core, nowModel.domain) : "";
   const nowSay = nowModel && st.model
     ? {
-      head: actionHeadKo(nowModel),
+      /* 머리에 **영역**을 담는다(R30). `그때 직접 정한 것을 적어 두기` 만
+         읽은 사람은 어느 과제의 무엇을 적으라는 것인지 알 수 없었다.
+         목표 화면의 Hero 가 영역과 할 일을 한 문장에 담는 자리다 */
+      head: actionHeadKo(nowModel, nowDomain),
       brief: actionBriefKo(nowModel, nowDomain),
       /* **둘째 층은 그걸 하면 무엇이 남는지다**(SIGN-OFF §6). 결과지의
          `지금 할 일` 칸이 같은 함수를 부르므로 두 쪽의 말이 갈리지
@@ -120,10 +123,13 @@ export default async function Home() {
    * **차례를 여기서 만들지 않는다.** `currentState()` 가 정한 묶음에서
    * 설명할 수 있는 쪽만 집어 세 줄까지다. 나머지는 `현재 상태` 가 든다.
    */
-  const ready = Object.entries(st.zoneOf)
-    .filter(([, z]) => READY_ZONES.includes(z))
-    .map(([d]) => d)
-    .slice(0, HOME_ROWS);
+  /* **결과지와 한 자리에서 읽는다**(R30 · PHASE 1). 전에는 이 쪽이
+     `zoneOf` 를 영역 차례로 걸러 셋을 집어서, 근거가 선 영역(Z1)이 네
+     번째 영역이면 **그 사람의 가장 센 자리가 홈에서 빠졌다**(시나리오 D).
+     지금은 결과지와 같은 함수가 차례와 세부와 머리 한 줄을 정한다. 넘기는
+     묶음은 **지금 값**(`st.zoneOf`)이라 경험을 더한 뒤의 변화가 그대로 선다 */
+  const stateView = studentStateView(core, st.model, st.zoneOf, HOME_ROWS);
+  const ready = stateView.tiles.map((t) => t.code);
   /**
    * 영역 칸의 거드는 한 줄.
    *
@@ -136,26 +142,14 @@ export default async function Home() {
    * 답을 알아본다. 하나도 없으면 그 영역이 먼저 정하는 것으로 내려간다:
    * 비워 두면 칸 셋이 이름만 든 줄이 된다.
    */
-  const tileSub = (d: string): string => {
-    /* **결과지와 한 사전을 읽는다**(CROSS-CORE §6). 전에는 이 칸이 그
-       사람이 남긴 것(`artifacts[0]`)을 적고 결과지는 학생 행동 구를
-       적어서, 같은 영역이 두 화면에서 서로 이어지지 않는 말로 섰다.
-       지금은 `Domain → Activity → Evidence` 를 한 object 가 공급하고
-       이 칸이 그 가운데 `evidence` 를 든다.
-
-       **말줄임이 서지 않는다**: 이 칸의 글 폭이 168px 안팎이라 열 자가
-       넘으면 가려졌는데, 사전의 `evidence` 는 여덟 자 안짝으로 적는다.
-       **말줄임은 담긴 것을 가리는 것이지 줄인 것이 아니다** */
-    const dict = studentEvidence(core, d);
-    if (dict) return dict;
-    /* 아직 사전을 적지 않은 Core. 전과 같이 그 사람이 남긴 것을 쓴다 */
-    const left = st.model?.domains.find((x) => x.code === d)?.artifacts ?? [];
-    if (left.length) return thingKo(left[0]);
-    return domainChainKo(core, d)[0] ?? "";
-  };
-  /** 갈래를 선 글리프로. 적어 두지 않은 Core 는 한 가지 표시로 선다 */
+  /* 세부 한 줄과 표시. **그 사람이 실제로 남긴 것이 먼저다**(R30). 전에는
+     이 칸이 사전의 결과물 이름(`사업계획서`)을 남겼는지와 무관하게 적어서,
+     아무것도 남기지 않은 사람이 그것을 가진 것으로 읽혔다. 남긴 것이 없으면
+     사전의 활동 구(해 본 일)가 서고, 둘 다 `studentStateView` 가 정한다 */
+  const tileSub = (d: string): string =>
+    stateView.tiles.find((t) => t.code === d)?.sub ?? "";
   const tileIcon = (d: string): IconName => {
-    const fam = studentFamily(core, d);
+    const fam = stateView.tiles.find((t) => t.code === d)?.family ?? null;
     return fam ? FAMILY_LINE[fam] : NEUTRAL_LINE;
   };
   /* **홈이 요약을 따로 짓지 않는다**(규격 §11). 네 묶음이 전부
@@ -359,9 +353,9 @@ export default async function Home() {
               한 일 대신 우리 표를 가리킨다 */}
           <SectionHeader icon="chart" title="현재 상태"
             moreHref="/me/state" moreLabel="전체 보기 →"
-            sub={ready.length
-              ? `지금 설명할 수 있는 일 ${ready.length}가지입니다.`
-              : READY_NONE} />
+            /* **묶음이 말하는 것만 적는다**(R30): 정리가 덜 된 영역을
+               `설명할 수 있다` 고 적지 않는다. 글자는 결과지와 같은 자리가 든다 */
+            sub={ready.length ? `${stateView.lead}입니다.` : READY_NONE} />
           {ready.length ? (
             <div className="cm-tiles">
               {ready.map((d) => (
@@ -537,8 +531,8 @@ const HOME_ROWS = 3;
  */
 const HOME_RECENT = 1;
 
-/** 첫 카드에 올리는 묶음. **아직 판단하기 어려운 영역은 올리지 않는다** */
-const READY_ZONES: string[] = ["Z1_EVIDENCE_ESTABLISHED", "Z2_EVIDENCE_INCOMPLETE"];
+/* 첫 카드에 올리는 묶음과 차례는 `studentStateView` 가 든다(R30): 근거가 선
+   영역 → 정리가 덜 된 영역 → 둘 다 없으면 관심이 높은 영역 */
 
 /**
  * 영역 칸의 아이콘(규격 §6).

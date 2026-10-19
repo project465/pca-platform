@@ -3,6 +3,7 @@ import { requireUser } from "@/lib/session";
 import { activeMajorName } from "@/lib/me-v3/major-name";
 import {
   EXPERIENCE_KINDS, experiencesOf, reflectedExperiences, activeCoreOrPick } from "@/lib/me-v3/platform";
+import { experienceFlow } from "@/lib/me-v3/student";
 import { recomputeStatus } from "@/lib/me-v3/recompute";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import { CmShell, CmHead } from "../shell";
@@ -32,6 +33,8 @@ export default async function Experiences() {
   const major = await activeMajorName(user.id);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
   const core = await activeCoreOrPick(user.id);
+  /* 영역을 부르는 말은 그 Core 의 사전이 든다(R30) */
+  const flow = experienceFlow(core);
   const [rows, st, done] = await Promise.all([
     experiencesOf(user.id), recomputeStatus(user.id), reflectedExperiences(user.id),
   ]);
@@ -118,7 +121,7 @@ export default async function Experiences() {
                       <span className="cm-item-sub">
                         {tds.length
                           ? tds.join(" · ")
-                          : "기술영역을 고르지 않으셔서 아직 어느 판단으로도 가지 않았습니다"}
+                          : `${flow.domainWord}을 고르지 않으셔서 아직 어느 판단으로도 가지 않았습니다`}
                         {e.started_on ? "" : " · 날짜는 적어 둔 날입니다"}
                       </span>
                     </summary>

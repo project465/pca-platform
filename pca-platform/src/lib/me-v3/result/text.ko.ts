@@ -256,8 +256,15 @@ const HEADLINE_ZONE: Partial<Record<HeadlineCode, Zone>> = {
  *
  * **동사를 사람 말로 둔다**(§11): `정하고` · `골랐고` · `남았어요`.
  */
-const HEADLINE_SAID_KO: Partial<Record<HeadlineCode, (where: string) => string>> = {
+const HEADLINE_SAID_KO: Partial<Record<HeadlineCode | "EVIDENCE_READY_OUTPUT", (where: string) => string>> = {
   EVIDENCE_READY: (w) => `${w} 과제에서 방향을 직접 정해 본 일이 있어요`,
+  /* **직접 정하지 않은 사람에게 `직접 정해 본` 을 적지 않는다**(R30 시나리오 D).
+     근거가 선 영역(Z1)은 필수 축과 산출물로 서고 직접 판단(J3)이 받아서
+     수행에 머문 채로도 설 수 있다. 그 사람의 첫 줄이 `방향을 직접 정해 본
+     일` 이면 지원서에 그대로 옮겨 적는 순간 거짓이 된다. 그래서 J3 가
+     확인되지 않은 영역이 머리에 설 때는 **실제로 선 것**(끝까지 가서
+     남긴 것)으로 적는다. 묶음도 알약도 그대로다 */
+  EVIDENCE_READY_OUTPUT: (w) => `${w} 과제를 끝까지 가서 남긴 것이 있어요`,
   EVIDENCE_PARTIAL: (w) => `${w} 과제는 해 봤고, 정리만 남았어요`,
   EVIDENCE_LOW_INTEREST: (w) =>
     `${w} 과제는 해 봤는데, 마음은 다른 쪽에 있어요`,
@@ -867,8 +874,56 @@ const ACTION_HEAD_KO: Record<ActionCode, string> = {
   RECHECK_DIRECTION: "계속할 쪽인지 정하기",
 };
 
-export function actionHeadKo(a: Action): string {
-  return ACTION_HEAD_KO[a.code];
+/**
+ * 할 일의 머리 한 줄. **영역을 받으면 그 영역의 말로 적는다**(R30).
+ *
+ * 전에는 머리가 종류만 말했다(`그때 직접 정한 것을 적어 두기`). 홈 Hero 와
+ * 결과지 `지금 할 일` 칸에서 그 한 줄만 읽은 사람은 **어느 과제의 무엇을**
+ * 적으라는 것인지 알 수 없었고, 아래 설명이 다른 축(`받은 요구를 어떤
+ * 조건으로 옮겼는지`)을 말하면 머리와 설명이 서로 어긋났다. 목표 화면의 그
+ * 자리는 `구조·내구 해석 경험에서 결과를 판단한 기준을 한 줄로 정리해보세요`
+ * 처럼 영역과 할 일을 한 문장에 담는다.
+ *
+ * **새 사실을 만들지 않는다.** 들어가는 것은 할 일이 이미 들고 있는 영역과
+ * 축(`AXIS_NEED_KO`)뿐이다. 영역을 못 받으면 전과 같은 머리다.
+ */
+/**
+ * 머리 한 줄에 드는 축의 **짧은 이름씨**. `받은 요구를 어떤 조건으로
+ * 옮겼는지` 를 그대로 머리에 넣으면 손전화에서 네 줄이 되고, 3초 안에
+ * 무엇을 하라는지가 안 읽힌다. 긴 말은 설명 줄(`actionBriefKo`)이 든다.
+ * **가리키는 축은 같다**: 짧게 적을 뿐 다른 축을 가리키지 않는다.
+ */
+const HEAD_NEED_KO: Record<Axis, string> = {
+  J1: "풀려고 한 문제",
+  J2: "요구를 옮긴 조건",
+  J3: "직접 정한 기준",
+  J4: "쓴 방법",
+  J5: "남은 결과물",
+  J6: "비교한 기준",
+  J7: "고친 내용",
+  J8: "결과가 쓰인 곳",
+};
+
+export function actionHeadKo(a: Action, domainName?: string): string {
+  const d = (domainName ?? "").trim();
+  if (!d) return ACTION_HEAD_KO[a.code];
+  const need = a.axis ? HEAD_NEED_KO[a.axis] : null;
+  switch (a.code) {
+    case "WRITE_UP": return `${d} 경험 하나를 한 쪽으로 정리하기`;
+    case "DEEPEN_OWNERSHIP":
+      return need ? `${d} 과제에서 ${need} 적어 두기`
+        : `${d} 과제에서 직접 정한 것을 적어 두기`;
+    case "BUILD_OUTPUT": return `${d} 과제에서 손에 남는 결과물 하나 만들기`;
+    case "ADD_VERIFICATION": return `${d}에서 낸 결과를 한 번 비교해 보기`;
+    case "FILL_AXIS":
+      return need ? `다음 ${d} 과제에서 ${need} 직접 정하기`
+        : `다음 ${d} 과제에서 한 가지를 직접 정하기`;
+    case "TRY_SHORT_EXPERIENCE": return `${d}에서 한 가지를 짧게 해 보기`;
+    case "STUDY_NEXT": return `${d} 수업에서 배운 것을 작은 과제에 써 보기`;
+    case "RECHECK_DIRECTION": return `${withJosa(d, "을를")} 계속할 쪽인지 정하기`;
+    /* 영역이 정해지지 않은 할 일. 받은 이름을 쓰지 않는다 */
+    case "EXPLORE_BROADLY": return ACTION_HEAD_KO[a.code];
+  }
 }
 
 /**
@@ -949,6 +1004,13 @@ const ACTION_WHY_KO: Record<ActionCode, string> = {
 
 /** 할 일 칸의 **이유 한 줄**. 할 일이 없으면 적지 않는다 */
 export function actionWhyKo(a: Action): string {
+  /* **축이 있으면 그 축의 말로**(R30). `직접 정한 것을 적어 두기` 의 까닭이
+     `어떤 기준으로 정했는지` 인 것은 맞지만, 같은 종류라도 받은 요구를
+     옮긴 조건(J2)이나 쓴 방법(J4)을 적으라는 할 일 아래에 그 줄이 서면
+     머리와 까닭이 서로 다른 것을 말한다 */
+  if (a.code === "DEEPEN_OWNERSHIP" && a.axis && a.axis !== "J3") {
+    return `세 줄만 적어 두면 지원서에서 ${needWithJosa(AXIS_NEED_KO[a.axis])} 그대로 적을 수 있어요.`;
+  }
   return ACTION_WHY_KO[a.code];
 }
 
@@ -1232,9 +1294,15 @@ export function headlineKo(
 ): { title: string; lead: string } {
   const base = HEADLINE_KO[m.overview.headline];
   const lead = headlineLead(m) ?? base.lead;
-  const said = HEADLINE_SAID_KO[m.overview.headline];
+  const doms = headlineDomains(m);
+  const first = m.domains.find((d) => d.code === doms[0]);
+  const j3 = first?.axes.find((a) => a.axis === "J3")?.state;
+  const ownedWord = j3 === "CONFIRMED" || j3 === "OWNED";
+  const said = m.overview.headline === "EVIDENCE_READY" && !ownedWord
+    ? HEADLINE_SAID_KO.EVIDENCE_READY_OUTPUT
+    : HEADLINE_SAID_KO[m.overview.headline];
   if (!name || !said) return { title: base.title, lead };
-  const names = headlineDomains(m).map(name).filter(Boolean);
+  const names = doms.map(name).filter(Boolean);
   if (!names.length) return { title: base.title, lead };
   const title = said(andList(names));
   /* **이름을 둘 이으면 taxonomy 를 이어 붙인 문장이 된다**(R5 §4).

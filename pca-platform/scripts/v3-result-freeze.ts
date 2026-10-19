@@ -66,6 +66,7 @@ const FILES = [
   "src/lib/me-v3/student/copy.ts",
   "src/lib/me-v3/student/icon.ts",
   "src/lib/me-v3/student/index.ts",
+  "src/lib/me-v3/student/state.ts",
   "src/lib/me-v3/result/spec-view.ts",
   "src/lib/me-v3/result/meta.ts",
   /* 시각화 넷과 그것이 읽을 값. **결과지가 그리는 것이라 이 동결이

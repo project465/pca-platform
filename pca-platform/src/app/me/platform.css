@@ -1671,6 +1671,56 @@ a.cm-feed-row:hover, .cm-feed > li:hover { background: #fafcfe; }
   margin: 22px 0 0; padding: 16px 0 0; border-top: 1px solid var(--sf-line-2);
 }
 
+/* ── 걸음 안내(R30 · PHASE 2) ───────────────────────────────────────
+   걸음마다 맨 위에 서는 한 덩이: 왜 적는가 · 무엇을 고르는가 · 고르면
+   무엇이 달라지는가. **칸보다 크지 않다**: 꺼진 면 하나에 번호 하나와
+   두 줄이고 테를 두르지 않는다. 테를 두르면 적는 판 안에 상자가 하나 더
+   선다 */
+.cm-guide {
+  display: flex; gap: 12px; align-items: flex-start;
+  margin: 0 0 18px; padding: 12px 14px;
+  border-radius: var(--ui-r-sm); background: var(--sf-surface-2);
+}
+.cm-guide-n {
+  flex: none; display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px; margin-top: 1px; border-radius: 50%;
+  background: var(--sf-accent); color: #fff;
+  font-size: var(--ui-t-cap); font-weight: var(--ui-w-bd); font-variant-numeric: tabular-nums;
+}
+.cm-guide strong {
+  display: block; font-size: var(--ui-t-sub); font-weight: var(--ui-w-bd); color: var(--sf-ink);
+}
+.cm-guide p {
+  margin: 2px 0 0; font-size: var(--ui-t-cap); color: var(--sf-ink-2); line-height: 1.6;
+}
+
+/* 종류 아홉을 세 묶음으로. 묶음 머리는 이름과 한 마디이고 상자가 아니다 */
+.cm-kinds { display: grid; gap: 14px; }
+.cm-kind-g > p { margin: 0 0 6px; display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.cm-kind-g > p b { font-size: var(--ui-t-cap); font-weight: var(--ui-w-sb); color: var(--sf-ink); }
+.cm-kind-g > p small { font-size: var(--ui-t-cap); color: var(--sf-ink-3); }
+
+/* 영역 칸의 두 줄: 이름과 그 영역에서 해 본 일 */
+.cm-pickset.is-dom > .cm-pick { align-items: flex-start; min-height: 56px; padding: 10px 12px; }
+.cm-pickset.is-dom > .cm-pick::before { margin-top: 3px; }
+.cm-pick-t { display: flex; flex-direction: column; gap: 2px; min-width: 0; line-height: 1.35; }
+.cm-pick-t b { font-weight: var(--ui-w-sb); }
+.cm-pick-t small { font-size: var(--ui-t-cap); font-weight: var(--ui-w-rg); color: var(--sf-ink-3); }
+.cm-pick:has(input:checked) .cm-pick-t small { color: var(--sf-accent-ink); opacity: .8; }
+/* 묶음 머리 옆의 한 마디(`지원서에서 읽히는 쪽`) */
+.cm-sub > p small { font-weight: var(--ui-w-rg); color: var(--sf-ink-3); }
+
+/* 날짜는 제목 아래 한 단 작은 자리. 적는 판에서 가장 큰 자리가 되면 안 된다 */
+.cm-meta { margin-top: 2px; }
+.cm-meta .cm-field { margin-bottom: 0; }
+
+/* 손전화: 누르는 자리 44px 이상. 알약 하나가 한 손가락이다 */
+@media (max-width: 719px) {
+  .cm-pick { min-height: 44px; }
+  .cm-guide { padding: 10px 12px; gap: 10px; }
+  .cm-pickset.is-td { grid-template-columns: 1fr; }
+}
+
 /* ── 요약 Hero(규격 §2 B) ─────────────────────────────────────────────
    **지금 상태 한 값**을 들고 그 뒤에 행동을 둔다. Home 의 `PrimaryActionHero`
    와 같은 면과 같은 둥글기를 쓰되 그림을 담지 않는다: 쪽마다 같은 그림이

@@ -3,7 +3,7 @@ import {
   EXPERIENCE_KINDS, activeCoreOrPick, type Experience,
 } from "@/lib/me-v3/platform";
 import { content, domainName } from "@/lib/me-v3/runtime/session";
-import { experienceExample } from "@/lib/me-v3/student";
+import { experienceExample, experienceFlow, studentActivity } from "@/lib/me-v3/student";
 import { CmShell, CmHead } from "../shell";
 import { MonthPick } from "../ui";
 import { saveExperience, editExperience } from "./actions";
@@ -25,6 +25,24 @@ const USED_WHERE = [
   "보고서나 과제 결과물로 제출됐다",
   "팀이나 다음 사람이 이어받았다",
   "아직 쓰인 곳이 없다",
+];
+
+/**
+ * 아홉 종류를 **세 묶음**으로 세운다(R30 · PHASE 2).
+ *
+ * 아홉이 한 줄에 알약으로 깔리면 읽는 사람이 아홉을 다 읽고 고른다. 묶음
+ * 머리가 먼저 읽히면 자기 일이 어느 묶음인지부터 좁혀 셋 가운데서 고른다.
+ * **종류와 저장되는 값은 그대로다**: 묶는 것은 화면이고 `kind` 의 아홉 코드가
+ * 한 글자도 바뀌지 않는다. 아홉이 빠짐없이 어느 묶음에 드는지는
+ * `v3:student` 가 센다.
+ */
+const KIND_GROUPS: { label: string; hint: string; codes: string[] }[] = [
+  { label: "수업·과제", hint: "들으면서 맡거나 제출한 것",
+    codes: ["course", "assignment", "capstone"] },
+  { label: "연구·프로젝트", hint: "직접 끌고 간 것",
+    codes: ["research", "paper", "project"] },
+  { label: "현장·자격", hint: "밖에서 맡았거나 따 둔 것",
+    codes: ["internship", "work", "credential"] },
 ];
 
 /**
@@ -78,6 +96,9 @@ export default async function Compose(
    * 추가` 를 누른 사람은 **그 영역의 일**을 적으러 온 것이고, 켜 두지
    * 않으면 열두 영역에서 그 하나를 다시 찾아야 한다.
    */
+  /* 묻는 말은 **그 Core 의 사전**이 든다(R30). `기술 판단` 을 화면에 박지
+     않는다: 경영학과 학생이 자기 과제를 그 말로 읽지 못한다 */
+  const flow = experienceFlow(core);
   const picked = {
     td: value?.td_codes ?? (td ? [td] : []),
     problems: value?.problems ?? [],
@@ -133,9 +154,15 @@ export default async function Compose(
         {value ? <input type="hidden" name="id" value={value.id} /> : null}
         <Steps
           value={picked}
+          flow={flow}
           {...(edit ? { saveLabel: "고친 내용 저장" } : {})}
+          {...(!edit && td ? { fromAction: domainName(core, td) } : {})}
           domains={domains.map((d) => ({
             code: d.code, name: domainName(core, d.code),
+            /* 이름 아래 한 줄은 **그 영역에서 학생이 해 본 일**이다. 사전이
+               없는 Core 는 전과 같이 `domainSub` 로 떨어지고 그 사실은
+               `v3:student` 가 센다 */
+            sub: studentActivity(core, d.code),
             /* 문제와 판단은 **그 영역의 체크리스트에서** 온다. 지어낸
                보기를 두면 고르는 사람이 자기 일과 다른 말을 고른다 */
             problems: pick(d.code, "J1", 6),
@@ -148,21 +175,28 @@ export default async function Compose(
                   보이는 자리라 `가장 가까운 하나를 고르세요` 는 보고 있는
                   것을 글로 한 번 더 읽게 하는 줄이다. 설명문을 읽어야
                   적을 수 있는 칸이면 그 칸이 잘못 서 있는 것이다 */}
-              <label className="cm-field">
-                <span>어떤 경험인가요</span>
-                <div className="cm-pickset">
-                  {/* **미리 고르지 않는다.** `수업` 을 켜 둔 채로 두면
-                      그냥 넘긴 사람의 기록이 전부 수업이 되고, 그 값은
-                      그 사람이 고른 값이 아니다 */}
-                  {EXPERIENCE_KINDS.map((k) => (
-                    <label className="cm-pick" key={k.code}>
-                      <input type="radio" name="kind" value={k.code} required
-                        defaultChecked={value?.kind === k.code} />
-                      {k.label}
-                    </label>
+              <fieldset className="cm-field">
+                <legend><span>어떤 경험인가요</span></legend>
+                <div className="cm-kinds">
+                  {KIND_GROUPS.map((g) => (
+                    <div className="cm-kind-g" key={g.label}>
+                      <p><b>{g.label}</b><small>{g.hint}</small></p>
+                      <div className="cm-pickset">
+                        {/* **미리 고르지 않는다.** `수업` 을 켜 둔 채로 두면
+                            그냥 넘긴 사람의 기록이 전부 수업이 되고, 그 값은
+                            그 사람이 고른 값이 아니다 */}
+                        {EXPERIENCE_KINDS.filter((k) => g.codes.includes(k.code)).map((k) => (
+                          <label className="cm-pick" key={k.code}>
+                            <input type="radio" name="kind" value={k.code} required
+                              defaultChecked={value?.kind === k.code} />
+                            {k.label}
+                          </label>
+                        ))}
+                      </div>
+                    </div>
                   ))}
                 </div>
-              </label>
+              </fieldset>
 
               {/* 빈 칸의 길잡이는 **예시 하나**가 맡는다. 같은 말을 설명으로
                   한 번 더 적으면 칸 하나에 읽을 줄이 셋이 된다 */}
@@ -182,8 +216,14 @@ export default async function Compose(
                   칸 둘로 세우면 날짜가 이 걸음에서 가장 큰 자리를 먹는데,
                   날짜는 나중에 찾을 때 쓰는 값이지 판정에 들어가는 값이
                   아니다. 끝난 달은 3단에서 적고 싶은 사람만 적는다 */}
-              <MonthPick name="started_on" label="시작한 달"
-                value={value?.started_on ?? null} />
+              {/* **날짜가 걸음을 차지하지 않게 둔다**(R30). 찾을 때 쓰는 값이지
+                  판정에 들어가는 값이 아니라, 제목 아래 한 단 작은 자리에
+                  대략이면 된다는 말과 함께 선다 */}
+              <div className="cm-meta">
+                <MonthPick name="started_on" label="시작한 달"
+                  hint="대략이면 됩니다. 나중에 찾을 때만 씁니다."
+                  value={value?.started_on ?? null} />
+              </div>
             </>
           }
           three={

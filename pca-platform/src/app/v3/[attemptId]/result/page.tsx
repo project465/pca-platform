@@ -8,9 +8,8 @@ import {
   attemptOf, domainName, industryChoices, latestResult, orgChoices,
   roleChoices, industriesFromDomains, rolesFromDomains,
 } from "@/lib/me-v3/runtime/session";
-import { tileSub } from "@/lib/me-v3/result/tile-sub";
 import { domainArtifacts } from "@/lib/me-v3/runtime/domain-facts";
-import type { Axis } from "@/lib/me-v3/scoring/types";
+import type { Axis, Zone } from "@/lib/me-v3/scoring/types";
 import {
   coreOf,
   type Action, type Gap, type PackView, type ResultDomain,
@@ -42,7 +41,7 @@ import {
 } from "./charts";
 import { Ic, IcF, type IcFName } from "./art";
 import {
-  FAMILY_FILL, NEUTRAL_FILL, studentFamily,
+  FAMILY_FILL, NEUTRAL_FILL, studentStateView,
 } from "@/lib/me-v3/student";
 import ResultNav from "./result-nav";
 import "../../result.css";
@@ -978,16 +977,21 @@ export default async function V3Result({
      문서**였다. 간호 사정에 막대가 서는 자리다. 지금은 그 영역이 어느
      갈래인지를 사전이 적고, 적어 두지 않은 Core 는 **짐작하지 않고** 한
      가지 표시로 선다: 번호로 돌리면 그것이 곧 자리로 정하는 일이다 */
-  const stateTiles = focus.slice(0, 3).map((d, i) => {
-    const fam = studentFamily(core, d.code);
-    return {
-      code: d.code,
-      name: domainName(core, d.code),
-      sub: tileSub(core, d.code),
-      icon: (fam ? FAMILY_FILL[fam] : NEUTRAL_FILL) as IcFName,
-      tint: i % 3,
-    };
-  });
+  /* **두 화면이 한 자리에서 읽는다**(R30 · PHASE 1). 어느 영역을 세우고
+     세부에 무엇을 적고 머리에 무엇을 적는지를 `studentStateView` 가 정하고,
+     작업공간 홈이 같은 함수를 부른다. 전에는 이 자리가 `focus` 를, 홈이
+     `zoneOf` 를 영역 차례로 걸러 **같은 사람에게 다른 영역 셋**을 세웠다.
+     세부는 **그 사람이 실제로 남긴 것**이 먼저이고 없으면 사전의 활동 구다 */
+  const stateZone: Record<string, Zone> = {};
+  for (const d of model.domains) stateZone[d.code] = d.zone;
+  const stateView = studentStateView(core, model, stateZone, 3);
+  const stateTiles = stateView.tiles.map((t, i) => ({
+    code: t.code,
+    name: domainName(core, t.code),
+    sub: t.sub,
+    icon: (t.family ? FAMILY_FILL[t.family] : NEUTRAL_FILL) as IcFName,
+    tint: i % 3,
+  }));
   /* 절 머리 아래 **한 줄**. 가진 것과 비어 있는 것을 한 문장에 담는다:
      두 문장을 이어 붙이면 설명 아래 설명이 되고, 그것이 규격 §5 가
      막는 모양이다. 비어 있는 쪽은 **하나만** 적는다 */
@@ -1005,9 +1009,10 @@ export default async function V3Result({
      이름이고, 바로 아래 카드 셋이 이미 그 분류를 이름으로 적는다. 그
      위에서 한 번 더 분류를 세면 이 줄이 가리키는 것이 그 사람이 한 일이
      아니라 우리 표가 된다. 세는 것은 그대로 카드 수다 */
-  const stateLead = stateTiles.length
-    ? `지금 설명할 수 있는 일 ${stateTiles.length}가지`
-    : "";
+  /* **묶음이 말하는 것만 적는다**(R30). 정리가 덜 된 영역(Z2)에
+     `설명할 수 있는` 을 적지 않는다: 그 사람이 지금 할 수 없는 것을 할 수
+     있다고 적는 자리였다. 글자는 `studentStateView` 가 든다 */
+  const stateLead = stateView.lead;
 
   /**
    * ── SCENE 3 EVIDENCE 들머리 ──
@@ -1102,7 +1107,10 @@ export default async function V3Result({
   const writeHref = shownAction?.domain
     ? `/me/experience/new?td=${shownAction.domain}`
     : "/me/experience/new";
-  const doHead = shownAction ? actionHeadKo(shownAction)
+  /* 머리에 **영역**을 담는다(R30). 종류만 적은 머리 아래에 다른 축의
+     설명이 서면 둘이 어긋난다 */
+  const doHead = shownAction
+    ? actionHeadKo(shownAction, shownAction.domain ? domainName(core, shownAction.domain) : "")
     : topGap ? "먼저 적어 두기" : moveText;
   const doDetail = shownAction
     ? actionBriefKo(

@@ -187,12 +187,23 @@ export async function previewRecompute(userId: string): Promise<RecomputePlan> {
     const z = zoneOf(snap, d, after);
     if (z !== d.zone) zone_moves.push({ domain: d.code, before: d.zone, after: z });
   }
-  /* 메워진 자리. 굳은 결과의 빈자리 가운데 지금 확인으로 선 것 */
+  /* 메워진 자리. 굳은 결과의 빈자리 가운데 **이번 경험으로** 확인까지
+     올라간 것.
+
+     **닫을 수 있는 자리만 닫는다**(R30). 전에는 그 축이 확인 이상이기만
+     하면 닫았다. 그래서 둘이 틀렸다. 첫째, 검사에서 이미 확인된 축에
+     경험을 붙이면 아무것도 올라가지 않았는데도(`moved: false`) 그 축의
+     빈자리가 닫히고 할 일이 `done` 으로 바뀌었다. 둘째, `어디까지 직접
+     정했는지` 를 묻는 자리(`PARTIAL_EVIDENCE`)가 묻는 것은 소유(OWNED)인데
+     **경험으로는 소유가 서지 않는다**(이 파일의 머리말). 그 자리를 확인으로
+     닫으면 해 본 것을 직접 정한 것으로 적는 셈이다. 시나리오 B 에서 그
+     모양이 났다: 경영전략·기획의 `직접 정한 것` 자리가 경험 하나로 닫혔다 */
   const model = await latestResult(userId);
-  const closed = (model?.gaps ?? []).filter((g) =>
-    g.axis && after.get(`${g.domain}.${g.axis}`)
-      && RANK[after.get(`${g.domain}.${g.axis}`) as AxisState] >= RANK["CONFIRMED"])
-    .map((g) => ({ id: g.id, domain: g.domain, axis: g.axis }));
+  const closed = (model?.gaps ?? []).filter((g) => {
+    if (!g.axis || g.kind === "PARTIAL_EVIDENCE") return false;
+    const c = cands.find((x) => x.domain === g.domain && x.axis === g.axis);
+    return !!c && c.moved && RANK[c.after] >= RANK["CONFIRMED"];
+  }).map((g) => ({ id: g.id, domain: g.domain, axis: g.axis }));
   const moved = cands.filter((c) => c.moved);
   return {
     base_attempt_id: snap.attempt_id, pending: pend,

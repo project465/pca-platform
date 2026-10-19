@@ -162,7 +162,10 @@ export default async function State(
       <StatHero
         icon="layers"
         label="현재 설명할 수 있는 영역"
-        value={ready.length}
+        /* **묶음이 말하는 것만 센다**(R30). 전에는 정리가 덜 된 영역(Z2)
+           까지 `설명할 수 있는` 수에 넣었다. 그 수는 근거가 선 영역(Z1)
+           이고, 해 봤고 정리만 남은 쪽은 아래 한 줄이 따로 센다 */
+        value={ready.filter((r) => r.zone === "Z1_EVIDENCE_ESTABLISHED").length}
         unit="개"
         /* **0개와 변화 있음을 나란히 두지 않는다**(규격 §3). 아래 `최근
            달라진 것` 에 올라간 축이 적혀 있는데 이 값이 0 이면, 두 칸이
@@ -171,7 +174,15 @@ export default async function State(
            잇는다. **판정 기준은 그대로다**: 세는 값도 묶음 조건도 한 줄도
            바뀌지 않았고, 바뀐 것은 그 0 을 어떻게 적는가뿐이다 */
         note={ready.length
-          ? `가장 근거가 잘 잡힌 곳은 ${domainName(core, ready[0].domain)}입니다.`
+          ? [
+            ready[0].zone === "Z1_EVIDENCE_ESTABLISHED"
+              ? `가장 근거가 잘 잡힌 곳은 ${domainName(core, ready[0].domain)}입니다.`
+              : `${domainName(core, ready[0].domain)}은 해 봤고 정리만 남았습니다.`,
+            ready.some((r) => r.zone === "Z2_EVIDENCE_INCOMPLETE")
+              && ready[0].zone === "Z1_EVIDENCE_ESTABLISHED"
+              ? `정리만 남은 영역이 ${ready.filter((r) => r.zone === "Z2_EVIDENCE_INCOMPLETE").length}개 더 있습니다.`
+              : "",
+          ].filter(Boolean).join(" ")
           : realChange
             ? "변화는 생겼지만 아직 설명할 수 있는 기준까지는 올라오지 않았습니다. 무엇이 올라갔는지는 아래 `최근 달라진 것` 에 적혀 있습니다."
             : "관심이 높은 영역에서 짧게 한 번 해 보고 그것을 경험으로 적으면 여기에 섭니다."}

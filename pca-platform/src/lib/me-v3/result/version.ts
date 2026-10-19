@@ -151,7 +151,12 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
  * **판정도 결과 모델도 한 줄 바뀌지 않았다.** 여기 서는 값은 전부 결과
  * 모델이 이미 들고 있던 것이고, 바뀐 것은 그것을 부르는 말과 자리다.
  */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.61";
+/**
+ * R30 PHASE 1. 할 일 머리에 영역 이름이 들어가고(`actionHeadKo(a, domain)`)
+ * 까닭 한 줄이 축을 따라 갈린다. 현재 상태의 머리 한 줄이 묶음이 말하는
+ * 것만 적는다(`stateLeadKo`). 판정과 결과 모델은 그대로다.
+ */
+export const RESULT_COPY_VERSION = "me-v3-result-copy.62";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -420,7 +425,11 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.61";
  * **판정도 문장도 바뀌지 않았다.** 그래서 `RESULT_COPY_VERSION` 과
  * `RESULT_MODEL_VERSION` 은 그대로다.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V72";
+/**
+ * R30 PHASE 1. 결과지 현재 상태 카드가 `studentStateView` 를 읽는다: 어느
+ * 영역을 세우는가와 세부 한 줄이 작업공간 홈과 한 자리에서 정해진다.
+ */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V73";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

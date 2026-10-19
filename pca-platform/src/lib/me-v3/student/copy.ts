@@ -240,3 +240,62 @@ export const EXPERIENCE_EXAMPLE: Record<string, string> = {
 
 /** 아직 사전을 적지 않은 Core 가 드는 예시. **전공을 가리키지 않는다** */
 export const EXAMPLE_FALLBACK = "예: 수업 과제에서 직접 맡았던 일 하나";
+
+/**
+ * 경험 추가 흐름이 **그 전공의 말**로 묻는 자리(R30 · PHASE 2).
+ *
+ * 전에는 2단의 이름이 `기술 판단` 이고 묻는 말이 `어느 기술영역의 일인가요`
+ * 였다. 기계공학에서 온 말이라 경영학과 학생은 자기 과제를 `기술 판단` 으로
+ * 읽지 못한다(사업주가 BIZ 에서 짚은 자리). 운영 Canary 의 `기계공학자` 와
+ * 같은 모양이고, 그래서 화면에 글자로 박지 않고 사전이 든다.
+ *
+ * 드는 것은 넷이다. 걸음 이름 · 영역을 부르는 말 · 1단에서 다룬 것을 묻는
+ * 말 · 직접 정한 것을 묻는 말. **고르는 값과 저장되는 칸은 그대로다**: 영역
+ * 코드도 체크리스트도 판정도 이 표를 읽지 않는다.
+ */
+export type ExperienceFlow = {
+  /** 2단의 걸음 이름. 짧게, 넉 자 안짝 */
+  step2: string;
+  /** 영역을 부르는 말. `어느 ${domainWord}의 일이었나요` 로 선다 */
+  domainWord: string;
+  /** 그 경험에서 다룬 것을 묻는 말(J1 의 자리) */
+  problemQ: string;
+  /** 직접 정한 것을 묻는 말(J3 의 자리) */
+  decidedQ: string;
+};
+
+export const EXPERIENCE_FLOW: Record<string, ExperienceFlow> = {
+  BIZ_CORE_V1: {
+    step2: "업무 판단", domainWord: "업무 영역",
+    problemQ: "어떤 문제를 다뤘나요", decidedQ: "무엇을 직접 정했나요",
+  },
+  NURSING_CORE_V1: {
+    step2: "임상 판단", domainWord: "간호 영역",
+    problemQ: "어떤 상황이었나요", decidedQ: "무엇을 직접 판단했나요",
+  },
+  PUBADM_CORE_V1: {
+    step2: "행정 판단", domainWord: "행정 영역",
+    problemQ: "어떤 사안을 다뤘나요", decidedQ: "무엇을 직접 정했나요",
+  },
+  CS_CORE_V1: {
+    step2: "기술 판단", domainWord: "개발 영역",
+    problemQ: "어떤 문제를 풀었나요", decidedQ: "무엇을 직접 정했나요",
+  },
+  EE_CORE_V1: {
+    step2: "기술 판단", domainWord: "기술영역",
+    problemQ: "어떤 문제를 다뤘나요", decidedQ: "무엇을 직접 정했나요",
+  },
+  MEDIA_CORE_V1: {
+    step2: "제작 판단", domainWord: "제작 영역",
+    problemQ: "어떤 과제였나요", decidedQ: "무엇을 직접 정했나요",
+  },
+};
+
+/**
+ * 아직 사전을 적지 않은 Core 가 드는 말. **전공을 가리키지 않는다**: 어느
+ * 전공에서 읽어도 틀리지 않는 말로 두고, 그 Core 의 말은 사전을 쓰는 날 든다.
+ */
+export const FLOW_FALLBACK: ExperienceFlow = {
+  step2: "직접 정한 것", domainWord: "영역",
+  problemQ: "어떤 문제를 다뤘나요", decidedQ: "무엇을 직접 정했나요",
+};

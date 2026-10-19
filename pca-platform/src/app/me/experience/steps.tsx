@@ -1,47 +1,16 @@
 "use client";
 
 import { useRef, useState, type ReactNode } from "react";
+import type { ExperienceFlow } from "@/lib/me-v3/student";
 
 export type Dom = {
   code: string; name: string;
+  /** 그 영역에서 학생이 해 본 일을 적은 구(사전). 이름 아래 한 줄로 선다 */
+  sub: string;
   problems: string[]; decisions: string[];
   artifacts: string[]; verify: string[];
 };
 
-/**
- * 세 걸음의 이름. **무엇을 묻는 자리인지**로 적는다. 축 이름이 아니다.
- *
- * **설명을 달지 않는다**(규격 §2). 한동안 이름마다 한 줄씩 덧붙였더니
- * 손전화에서 걸음 표가 두 줄로 접혀 260px 을 먹었고, **첫 입력 칸이 화면
- * 밖으로 밀렸다.** 무엇을 묻는지는 그 걸음의 칸이 적는다.
- */
-const STEPS = [
-  { n: 1, title: "무슨 경험" },
-  { n: 2, title: "기술 판단" },
-  { n: 3, title: "남은 것" },
-] as const;
-
-/**
- * 경험 하나를 세 걸음으로 적는다(규격 §4).
- *
- * **한 번에 다 펼치지 않는다.** 전에는 칸 스무 개와 칩 이백 개가 한
- * 화면에 서서, 1~2분이면 되는 일이 과제로 읽혔다. 그런데 **걸음마다
- * 저장하지도 않는다**: 저장을 셋으로 쪼개면 둘째에서 닫은 기록이 반쪽으로
- * 남고, 그 반쪽이 판정에 들어간다.
- *
- * 그래서 걸음은 **화면만** 나눈다. 세 판이 전부 폼 안에 그대로 있고
- * (`hidden` 으로 가린다) 저장은 마지막에 한 번이다. **DB 구조를 한 줄도
- * 바꾸지 않았다**: 받는 칸과 저장하는 함수가 전과 같다.
- *
- * **고른 영역의 항목만 띄운다.** 열두 영역의 항목을 다 펼치면 쓸 일 없는
- * 칸이 이백 개 보이고 거기서 닫는다. 그리고 영역을 고르는 자리가 2단이라
- * 3단의 결과물 칩은 **고른 영역의 것만** 선다.
- *
- * **가린 칸에 `required` 가 남아 있으면 저장이 막힌다.** 브라우저가
- * `display:none` 인 칸을 거절하면서 초점을 못 줘, 누른 사람은 **아무 일도
- * 일어나지 않는 단추**를 본다. 그래서 1단을 지나기 전에 그 칸들을 여기서
- * 먼저 본다: 지나왔으면 채워져 있으므로 마지막 저장에서 걸릴 것이 없다.
- */
 /**
  * 적어 둔 값. **고치는 자리에서 쓴다**(규격 §9).
  *
@@ -54,8 +23,55 @@ export type Picked = {
   artifacts: string[]; verifications: string[];
 };
 
+/**
+ * 걸음마다 맨 위에 서는 안내 한 덩이(R30 · PHASE 2).
+ *
+ * 세 걸음이 **왜 적는가 · 무엇을 고르는가 · 고르면 무엇이 달라지는가**를
+ * 각각 한 번씩 적는다. 전에는 그 말이 폼 아래의 접힌 자리에 한 번만 있어
+ * 2단에서 처음 고르는 칸을 만난 사람이 이 칸이 어디에 쓰이는지 모른 채로
+ * 골랐다. 설명문이 아니라 그 걸음의 **머리**다: 한 걸음에 하나이고 칸보다
+ * 크지 않다.
+ */
+function Guide({ n, title, body }: { n: number; title: string; body: ReactNode }) {
+  return (
+    <div className="cm-guide">
+      <span className="cm-guide-n" aria-hidden="true">{n}</span>
+      <div>
+        <strong>{title}</strong>
+        <p>{body}</p>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * 경험 하나를 세 걸음으로 적는다(규격 §4).
+ *
+ * **한 번에 다 펼치지 않는다.** 전에는 칸 스무 개와 칩 이백 개가 한
+ * 화면에 서서, 1~2분이면 되는 일이 과제로 읽혔다. 그런데 **걸음마다
+ * 저장하지도 않는다**: 저장을 셋으로 쪼개면 둘째에서 닫은 기록이 반쪽으로
+ * 남고, 그 반쪽이 판정에 들어간다.
+ *
+ * 그래서 걸음은 **화면만** 나눈다. 세 판이 전부 폼 안에 그대로 있고
+ * (`hidden` 으로 가린다) 저장은 마지막에 한 번이다. 그래서 이전으로
+ * 돌아가도 고른 것이 그대로 있다. **DB 구조를 한 줄도 바꾸지 않았다**:
+ * 받는 칸과 저장하는 함수가 전과 같다.
+ *
+ * **묻는 말은 사전이 든다**(R30). 2단의 이름과 영역을 부르는 말이 전에는
+ * `기술 판단` 과 `기술영역` 으로 글자로 박혀 있어 경영학과 학생이 자기
+ * 과제를 그 말로 읽지 못했다. 지금은 `flow` 가 그 Core 의 말을 들고 온다.
+ *
+ * **고른 영역의 항목만 띄운다.** 열두 영역의 항목을 다 펼치면 쓸 일 없는
+ * 칸이 이백 개 보이고 거기서 닫는다. 그리고 영역을 고르는 자리가 2단이라
+ * 3단의 결과물 칩은 **고른 영역의 것만** 선다.
+ *
+ * **가린 칸에 `required` 가 남아 있으면 저장이 막힌다.** 브라우저가
+ * `display:none` 인 칸을 거절하면서 초점을 못 줘, 누른 사람은 **아무 일도
+ * 일어나지 않는 단추**를 본다. 그래서 1단을 지나기 전에 그 칸들을 여기서
+ * 먼저 본다: 지나왔으면 채워져 있으므로 마지막 저장에서 걸릴 것이 없다.
+ */
 export default function Steps(
-  { domains, one, three, value, saveLabel }: {
+  { domains, one, three, value, saveLabel, flow, fromAction }: {
     domains: Dom[]; one: ReactNode; three: ReactNode; value?: Picked;
     /**
      * 걸음 어디서나 저장할 수 있게 한다. **고치는 자리에서만 켠다.**
@@ -68,6 +84,10 @@ export default function Steps(
      * 없는 기록이 쌓이고, 그 기록은 현재 상태에 더해지지 않는다.
      */
     saveLabel?: string;
+    /** 그 Core 의 말. 걸음 이름과 영역을 부르는 말과 묻는 말 둘 */
+    flow: ExperienceFlow;
+    /** 할 일에서 넘어와 켜 둔 영역의 이름. 2단 안내가 그 사실을 적는다 */
+    fromAction?: string;
   },
 ) {
   const [step, setStep] = useState(1);
@@ -76,6 +96,11 @@ export default function Steps(
   const [on, setOn] = useState<string[]>(value?.td ?? []);
   const firstPanel = useRef<HTMLDivElement>(null);
   const picked = domains.filter((d) => on.includes(d.code));
+  const steps = [
+    { n: 1, title: "무슨 경험" },
+    { n: 2, title: flow.step2 },
+    { n: 3, title: "남은 것" },
+  ];
 
   /** 1단의 필수 칸을 지나기 전에 본다. 비었으면 그 칸을 집어서 알려 준다 */
   function ok1(): boolean {
@@ -114,10 +139,10 @@ export default function Steps(
 
   const group = (
     label: string, name: string, items: string[], key: string,
-    field: keyof Picked,
+    field: keyof Picked, note?: string,
   ) => items.length ? (
     <div className="cm-sub" key={key}>
-      <p>{label}</p>
+      <p>{label}{note ? <small> · {note}</small> : null}</p>
       <div className="cm-pickset">
         {items.map((x) => (
           <label className="cm-pick" key={x}>
@@ -135,7 +160,7 @@ export default function Steps(
           남은 걸음이 몇인지 모르면 둘째에서 닫기 때문이고, 한 줄로 적는
           까닭은 이 표가 첫 입력 칸보다 커지면 안 되기 때문이다 */}
       <ol className="cm-wiz" aria-label="세 걸음 가운데 지금">
-        {STEPS.map((s) => (
+        {steps.map((s) => (
           <li key={s.n} className={s.n === step ? "is-on" : s.n < step ? "is-done" : ""}>
             <b>{s.n}</b>{s.title}
           </li>
@@ -143,39 +168,57 @@ export default function Steps(
       </ol>
 
       {/* ── 1단. 무슨 경험이었나 ── */}
-      <div ref={firstPanel} hidden={step !== 1}>{one}</div>
+      <div ref={firstPanel} hidden={step !== 1}>
+        <Guide n={1} title="경험 하나만 떠올리면 됩니다"
+          body="수업 과제든 동아리 일이든 직접 맡았던 것 하나를 고르고 한 줄로 적습니다. 지원서와 면접에서 꺼내 쓸 근거가 한 줄 늘고, 검사 당시 결과는 그대로 남습니다." />
+        {one}
+      </div>
 
-      {/* ── 2단. 어떤 기술 판단이었나 ── */}
+      {/* ── 2단. 어디에서 무엇을 직접 정했나 ── */}
       <div hidden={step !== 2}>
+        <Guide n={2} title="어디에서 무엇을 정했나요"
+          body={
+            <>
+              {fromAction
+                ? <>할 일에서 넘어온 영역이 켜져 있습니다: {fromAction}. 다른 영역의 일이면 바꾸셔도 됩니다. </>
+                : null}
+              {flow.domainWord}을 고르면 그 영역에서 직접 정한 것을 고르는 칸이
+              뜹니다. 지원서와 면접에서 읽히는 쪽은 한 일보다 직접 정한 것입니다.
+            </>
+          } />
         <fieldset className="cm-field">
-          <legend><span>어느 기술영역의 일인가요</span></legend>
+          <legend><span>어느 {flow.domainWord}의 일이었나요</span></legend>
           <em>여러 개 고를 수 있습니다.</em>
           {/* **영역 고르기와 판단 고르기를 같은 생김새로 두지 않는다**
-              (규격 §9). 전에는 둘 다 알약이라, 열두 영역 알약 아래에
-              판단 알약이 이어 붙어 **어디까지가 영역이고 어디부터가
-              판단인지가 화면에서 안 갈렸다.** 영역은 고르는 **표**이고
-              판단은 고르는 **말**이다 */}
-          <div className="cm-pickset is-td">
+              (규격 §9). 영역은 고르는 **표**이고 판단은 고르는 **말**이다.
+              칸마다 이름 아래에 **그 영역에서 학생이 해 본 일**을 사전의
+              말로 한 줄 적는다(R30): 분류 이름만 서면 경영학과 학생이
+              `재무·투자 판단` 이 자기 동아리 예산 일인지 알 수 없다 */}
+          <div className="cm-pickset is-td is-dom">
             {domains.map((d) => (
               <label className="cm-pick" key={d.code}>
                 <input type="checkbox" name="td" value={d.code}
                   checked={on.includes(d.code)}
                   onChange={(e) => setOn((prev) => e.target.checked
                     ? [...prev, d.code] : prev.filter((x) => x !== d.code))} />
-                {d.name}
+                <span className="cm-pick-t">
+                  <b>{d.name}</b>
+                  {d.sub ? <small>{d.sub}</small> : null}
+                </span>
               </label>
             ))}
           </div>
           {picked.map((d) => (
             <section className="cm-subs" key={`j-${d.code}`}>
               <h4>{d.name}</h4>
-              {group("어떤 문제였나", "problem", d.problems, `${d.code}-p`, "problems")}
-              {group("무엇을 직접 정했나", "decision", d.decisions, `${d.code}-d`, "decisions")}
+              {group(flow.problemQ, "problem", d.problems, `${d.code}-p`, "problems")}
+              {group(flow.decidedQ, "decision", d.decisions, `${d.code}-d`, "decisions",
+                "지원서에서 읽히는 쪽")}
             </section>
           ))}
           {!picked.length ? (
             <p className="cm-none">
-              기술영역을 고르면 그 영역에서 직접 정한 것을 고르는 칸이 뜹니다.
+              {flow.domainWord}을 고르면 그 영역에서 직접 정한 것을 고르는 칸이 뜹니다.
               고르지 않으시면 이 기록은 현재 상태에 더해지지 않고 목록에만
               남습니다.
             </p>
@@ -185,6 +228,8 @@ export default function Steps(
 
       {/* ── 3단. 무엇이 남았나 ── */}
       <div hidden={step !== 3}>
+        <Guide n={3} title="손에 남은 것이 있나요"
+          body="남긴 결과물과 비교해 본 것을 고르면 같은 영역의 근거가 둘이 되고, 그만큼 현재 상태와 다음 할 일이 달라집니다. 없으면 비워 두셔도 됩니다." />
         {picked.length ? (
           <fieldset className="cm-field">
             <legend><span>무엇이 남았나요</span></legend>
@@ -217,7 +262,7 @@ export default function Steps(
           </fieldset>
         ) : (
           <p className="cm-none">
-            2단에서 기술영역을 고르시면 그 영역에서 남긴 결과물과 비교해
+            2단에서 {flow.domainWord}을 고르시면 그 영역에서 남긴 결과물과 비교해
             확인한 것을 고를 수 있습니다.
           </p>
         )}
@@ -236,7 +281,7 @@ export default function Steps(
         그러면 클릭 처리기(`go`)가 돌아 3단으로 넘어간 뒤, 브라우저가
         **그 순간의 `type` 으로** 기본 동작을 정해 폼을 보낸다.
         누르는 사람에게는 `다음` 을 눌렀더니 3단을 건너뛰고 저장된 것으로
-        보이고, **3단의 결과물과 쓰인 자리가 통째로 빈 기록이 쌓인다.**
+        보이고, **3단의 결과물과 쓰인 곳이 통째로 빈 기록이 쌓인다.**
         `key` 가 다르면 React 가 노드를 새로 만들어 `type` 이 섞이지 않는다.
       */}
       <div className="cm-wiz-nav">
