@@ -12378,3 +12378,57 @@ R31 Human Review 가 짚은 것을 BIZ 전체에 걸쳐 고쳤다. 측정은
 `ME_V3_2_ASSESSMENT_UI_V41`. AI Advantage 는 FAIL(LLM 호출 0) 그대로이고
 운영은 NOT VERIFIED 이며 학생 공개 상태를 바꾸지 않았다. Design PASS 와
 Scene Freeze 는 선언하지 않는다.
+
+**R33. 운영 완성과 직접 검수. 실제 브라우저와 실제 DB 로 한 학생의 하루를 끝까지 밟았다.** (2026-10-19)
+
+디자인 회차를 멈추고 **실제로 쓸 수 있는가**를 봤다. `scripts/lab/r33-e2e.ts` 가
+Chromium 과 PostgreSQL 로 로그인 → 검사 시작 → 응답 저장 → 새로고침 → 이어하기 →
+저장 실패 → 서버 재시작 → 제출(중복 클릭 · 동시 제출) → 결과 → PDF → 경험 추가 →
+현재 상태 → 로그아웃 → 재로그인 → 기록 재조회 → 권한 → PDF 오류 → 재시작 뒤까지
+밟고 자리마다 DB 를 같이 센다. **고장을 실제로 낸다**: 저장 실패는 PostgreSQL 을
+멈춰서, PDF 오류는 그리는 쪽이 닿을 수 없는 주소로 서버를 다시 띄워서. 안내는
+`docs/metri/R33_STAGING_OPERATION.md`.
+
+**DB 가 잠깐 끊긴 것과 계정이 없는 것은 다른 일이다.** `auth.ts` 의 jwt 콜백이 매
+요청마다 사용자 줄을 다시 읽는데, 그 조회가 던지면 `null` 로 떨어져 세션이 통째로
+비었다. 그래서 **검사 한가운데 있던 학생이 홈으로 떨어져 보내지 못한 답을 잃었다**
+(E2E 1차가 그렇게 떨어졌다). 앞서 확인된 토큰은 그대로 두고 저장 실패는 그 호출이
+제 자리에서 `저장 실패 · 다시 시도` 로 적는다. 처음 들어오는 토큰은 전처럼 거절한다.
+
+**같은 응시를 같은 순간에 두 번 제출해도 결과는 한 벌이다.** `submit()` 이 아무
+잠금 없이 스냅샷을 적어 동시 호출 둘이 두 줄을 만들었다(실제로 만들어 봤다). 응시
+줄을 `FOR UPDATE` 로 잠그고 `in_progress` 일 때만 적는다. 화면의 단추가 꺼지는
+것은 안내이고 막는 자리는 서버다.
+
+**운영은 다른 가지다.** Railway 가 굽는 것은 `claude/amazing-thompson-w3f2o2`
+이고, 이 작업 가지는 커밋 상태가 `pending` 이라 **한 번도 배포된 적이 없다.** 이
+세션에는 Railway 토큰과 통신이 없어 staging 을 만들지 못했고, 그래서
+**사용자가 Railway 에서 누를 차례**를 적었다(새 환경 `staging` · 새 Postgres · 이
+가지의 서비스 · 변수 일곱). localhost 를 접속 URL 로 내놓지 않는다.
+
+**Staging 은 한 줄로 선다**(`npm run staging:bootstrap`, 운영 이미지에 담았다).
+빈 DB 면 `db:init`, 아니면 `db:upgrade` → 배재대 기관과 담당자 → 전공 여섯의 시험
+학생 → 비밀번호 표를 **그 자리에서 한 번만** 보여 준다. `APP_ENV` 가 `staging` 이
+아니면 한 줄도 쓰지 않고 멈춘다: 운영에 시험 계정을 만드는 길을 코드에 두지 않는다.
+
+**학교 응시는 좌석을 소비하지 않는다.** `contracts`/`seats` 줄이 0 인 채로 Campus
+PRO 와 집계와 PDF 와 권한이 전부 선다. 등급은 `openAttempt` 가 학교 맥락을 보고
+PRO 로 못 박고 재응시는 담당자가 이용권 한 줄로 열어 줄 때만이다.
+
+**검사가 거꾸로 적은 자리 둘을 고쳤다.** `v3-pcu-flow` 가 학교가 발급하지 않은
+학생으로 들어가 학교 로그인으로 돌려보내진 것을 `검사가 열리지 않는다` 로 적었고,
+결과지 머리를 옛 글자(`지금 확인된 것` · `… 진로 진단 결과`)로 찾고 있었다. 그리고
+**DB 를 멈춘 동안 받은 500 은 그 고장의 모양이다**: 세는 것은 DB 가 돌아온 뒤의
+5xx 다.
+
+```bash
+UI_BASE=http://127.0.0.1:3100 V3_PREVIEW_OPEN='*' \
+  V3_CAMPUS_FIXTURE=scripts/fixtures/campus-zztest.json \
+  CORE=BIZ_CORE_V1 LEAF=PCU26_BIZ OUT=var/r33/e2e npx tsx scripts/lab/r33-e2e.ts
+npm run staging:bootstrap   # Railway staging 컨테이너에서 (APP_ENV=staging 에서만 돈다)
+```
+
+판본을 올리지 않았다: 화면도 문장도 바뀌지 않았고 검사 화면 동결은
+`runtime/session.ts` 의 지문만 다시 적었다. 측정 동결은 기록을 다시 적지 않은 채로
+통과한다. AI Advantage 는 FAIL(LLM 호출 0) 그대로이고 **운영은 NOT VERIFIED**
+이며 학생 공개 상태를 바꾸지 않았다.

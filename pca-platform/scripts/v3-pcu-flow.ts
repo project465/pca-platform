@@ -22,7 +22,7 @@ import {
 import { walk } from "./_v3-walk";
 import { query, queryOne } from "../src/lib/db";
 import { core as coreEntry, defaultCore } from "../src/lib/me-v3/core-registry";
-import { allLeaves, university } from "../src/lib/campus/registry";
+import { allLeaves, specializationName, university } from "../src/lib/campus/registry";
 
 loadEnv();
 
@@ -121,12 +121,16 @@ async function main(): Promise<void> {
     /* 5. 결과와 종이 */
     await p.goto(`${BASE}/v3/${attempt}/result`, { waitUntil: "domcontentloaded" });
     const res = await p.locator("body").innerText();
-    ok("결과 첫 화면이 선다", res.includes("지금 확인된 것"));
-    /* **제목 줄을 본다.** 본문 어딘가에 전공 이름이 있는 것으로는 모자란다:
-       제목이 다른 전공을 적고 있어도 그 검사는 지나간다 */
-    const kicker = (res.match(/([가-힣·A-Za-z ]+) 진로 진단 결과/) ?? ["", ""])[1].trim();
-    ok("결과지 제목이 이 전공을 적는다", kicker === (coreEntry(CORE).name_ko ?? ""),
-      `${kicker || "없다"} ≠ ${coreEntry(CORE).name_ko ?? ""}`);
+    ok("결과 첫 화면이 선다", res.includes("지금 할 일") && (await p.locator("h1").count()) > 0);
+    /* **신분 줄을 본다.** 본문 어딘가에 전공 이름이 있는 것으로는 모자란다:
+       머리가 다른 전공을 적고 있어도 그 검사는 지나간다. 지금 결과지의
+       신분 줄은 `학과 · 갈래(없으면 전공)` 이다(`.rs-cover-who`) */
+    const who = (await p.locator(".rs-cover-who").first().innerText().catch(() => "")).trim();
+    const major = coreEntry(CORE).name_ko ?? "";
+    const spec = specializationName(leaf);
+    ok("결과지 신분 줄이 이 학과와 전공을 적는다",
+      who.includes(leaf.name) && (who.includes(major) || (!!spec && who.includes(spec))),
+      `"${who || "없다"}" ← ${leaf.name} · ${spec ?? major}`);
     const pdf = await p.request.get(`${BASE}/v3/${attempt}/result/pdf`, { timeout: 180000 });
     ok("종이가 나온다", pdf.status() === 200, `${pdf.status()}`);
 
