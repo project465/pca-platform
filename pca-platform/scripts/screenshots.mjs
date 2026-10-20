@@ -23,7 +23,7 @@ const shot = async (page, name, full = false) => {
 /** 가운데 패널만 잘라낸다. 여백이 대부분인 화면을 줄여서 실으면 글자가 안 보인다. */
 const shotPanel = async (page, name) => {
   await page.waitForLoadState("networkidle");
-  await page.locator(".panel").first().screenshot({ path: `${OUT}/${name}.png` });
+  await page.locator(".auth, .panel").first().screenshot({ path: `${OUT}/${name}.png` });
   console.log("shot(panel):", name, page.url());
 };
 

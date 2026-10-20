@@ -109,6 +109,13 @@ node scripts/export-preview.mjs kr out-kr.html
 - JWT 타입 보강은 `"@auth/core/jwt"` 와 `"next-auth/jwt"` **둘 다** 해야 한다.
   뒤쪽만 하면 `token.displayName` 이 `{}` 가 된다
 
+**화면 톤 개편 (2026-10-20)** — 흑백 선 위주에서 공공 교육 포털형으로 바꿨다
+- 토큰 `src/app/globals.css`, 셸 `src/components/app-shell.tsx` (위 헤더 + 왼쪽 사이드바, 역할별 메뉴)
+- 학생·학과 첫 화면을 인사 → 일정 카드 → 바로가기 타일 → 진행 단계로. 로그인은 좌우 분할
+- 시안 세 장(`mockups/*.html`)도 같은 토큰으로 다시 그렸다. 검사 화면에 답안 현황(OMR)·
+  자동 저장 표시·숫자 키 입력, 결과지는 대시보드형(막대·레이더·코멘트)
+- 이 환경은 npm 레지스트리가 막혀 있어 `next build`·`tsc` 를 돌리지 못했다. 받는 쪽에서 한 번 돌려 볼 것
+
 **소개 사이트 (`marketing/`)**
 - 라우트 7개. 한국 `/ /pca /anchor /adopt /pricing /about /contact`,
   글로벌은 `/anchor /adopt` 대신 `/localisation /partnership`

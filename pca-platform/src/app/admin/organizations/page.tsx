@@ -2,9 +2,9 @@ import Link from "next/link";
 import { query } from "@/lib/db";
 import { namesOf } from "@/lib/i18n";
 import { requireRole } from "@/lib/session";
-import AdminShell from "@/components/admin-shell";
+import AppShell from "@/components/app-shell";
 
-export const metadata = { title: "기관 목록 — 단체 PCA 플랫폼" };
+export const metadata = { title: "기관 목록" };
 export const dynamic = "force-dynamic";
 
 type Row = {
@@ -43,8 +43,13 @@ export default async function OrganizationsPage() {
   const parentIds = rows.map((r) => r.parent_id).filter((v): v is string => v !== null);
   const names = await namesOf("organizations", [...ids, ...parentIds], user.locale);
 
+  const universities = rows.filter((r) => r.org_type === "university").length;
+  const departments = rows.filter((r) => r.org_type === "department").length;
+  const accounts = rows.reduce((sum, r) => sum + Number(r.member_count), 0);
+  const countries = new Set(rows.map((r) => r.country)).size;
+
   return (
-    <AdminShell user={user} current="/admin/organizations">
+    <AppShell user={user} area="admin" current="/admin/organizations">
       <div className="page-head">
         <h1>기관</h1>
         <span className="count">{rows.length}곳</span>
@@ -52,6 +57,24 @@ export default async function OrganizationsPage() {
           <Link className="act solid" href="/admin/organizations/new">
             기관 등록
           </Link>
+        </div>
+      </div>
+
+      <div className="stats">
+        <div className="stat">
+          <div className="k"><i />대학</div>
+          <div className="v">{universities}<small>곳</small></div>
+          <div className="n">{countries}개 나라</div>
+        </div>
+        <div className="stat s2">
+          <div className="k"><i />학과</div>
+          <div className="v">{departments}<small>곳</small></div>
+          <div className="n">계약 단위</div>
+        </div>
+        <div className="stat s3">
+          <div className="k"><i />발급 계정</div>
+          <div className="v">{accounts.toLocaleString("ko-KR")}<small>개</small></div>
+          <div className="n">학생·담당자 합계</div>
         </div>
       </div>
 
@@ -109,6 +132,6 @@ export default async function OrganizationsPage() {
           </table>
         </div>
       )}
-    </AdminShell>
+    </AppShell>
   );
 }

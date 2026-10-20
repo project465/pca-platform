@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { BRAND } from "@/lib/brand";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "단체 PCA 플랫폼",
-  description: "공과계열 학과를 위한 진로 지표 검사 플랫폼",
+  title: { default: BRAND, template: `%s | ${BRAND}` },
+  description: "전공에서 직무까지 — 대학 학과를 위한 진로 지표 검사",
 };
 
 export default function RootLayout({
