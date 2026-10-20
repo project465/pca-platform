@@ -47,6 +47,11 @@ const txt = async (page, sel, ms = 15000) => {
 };
 const sql = (q) => (DB ? execFileSync("psql", [DB, "-tAc", q], { encoding: "utf8" }).trim() : "");
 
+/* Staging 처럼 사이트 전체가 Basic 인증 뒤에 있으면 그 열쇠를 같이 넘긴다(값은 환경변수로만) */
+const gate = (process.env.STAGING_BASIC_AUTH ?? "").trim();
+const AUTH = gate.includes(":")
+  ? { httpCredentials: { username: gate.slice(0, gate.indexOf(":")), password: gate.slice(gate.indexOf(":") + 1) } }
+  : {};
 const browser = await pw.chromium.launch({ args: ["--no-sandbox"] });
 const shot = async (page, name, full = true) => {
   await page.screenshot({ path: path.join(OUT, `${name}.jpg`), fullPage: full, type: "jpeg", quality: 78 });
@@ -65,7 +70,7 @@ console.log(`\n세종 MVP 브라우저 시연 — ${BASE}\n`);
 
 /* 1. 공개 쪽 */
 {
-  const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
+  const ctx = await browser.newContext({ ...AUTH, viewport: { width: 1366, height: 900 } });
   const page = await ctx.newPage();
   const r = await page.goto(`${BASE}/sejong`);
   ok("홈 200", r?.status() === 200, String(r?.status()));
@@ -78,7 +83,7 @@ console.log(`\n세종 MVP 브라우저 시연 — ${BASE}\n`);
   ok("탐색에 '채용 중' 표기가 없다", !/채용 중(?!으로 표시한)/.test(body.replace("채용 중으로 표시한 곳", "")));
   ok("탐색에 '추천' 이 기업 소개로 쓰이지 않는다", !/추천 기업|추천합니다/.test(body));
   await shot(page, "02-explore-public");
-  const m = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true });
+  const m = await browser.newContext({ ...AUTH, viewport: { width: 390, height: 844 }, isMobile: true });
   const mp = await m.newPage();
   await mp.goto(`${BASE}/sejong`);
   const over = await mp.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1);
@@ -89,7 +94,7 @@ console.log(`\n세종 MVP 브라우저 시연 — ${BASE}\n`);
 }
 
 /* 2. 구직자 */
-const seeker = await browser.newContext({ viewport: { width: 1366, height: 900 } });
+const seeker = await browser.newContext({ ...AUTH, viewport: { width: 1366, height: 900 } });
 {
   const page = await login(seeker, "sj-demo01", need("SJ_PW_SEEKER"));
   ok("구직자 로그인 → 대시보드", page.url().endsWith("/sejong/me"), page.url());
@@ -172,6 +177,24 @@ const seeker = await browser.newContext({ viewport: { width: 1366, height: 900 }
     } catch (e) { console.log(`  (pdftoppm 없음: ${String(e).slice(0, 80)})`); }
   }
 
+  /* 무단 접근: 남의 응시 · 상담사 화면 · 로그인 없는 PDF */
+  const otherAtt = sql(`SELECT a.id FROM sj_attempts a JOIN users u ON u.id = a.user_id
+     WHERE u.login_id <> 'sj-demo01' ORDER BY a.id LIMIT 1`);
+  if (otherAtt) {
+    await page.goto(`${BASE}/sejong/diagnosis/${otherAtt}`);
+    ok("남의 응시 번호를 주소로 넣어도 문항이 열리지 않는다", (await page.locator("[data-item]").count()) === 0, page.url());
+  }
+  const someone = sql("SELECT user_id FROM sj_participants p JOIN users u ON u.id = p.user_id WHERE u.login_id = 'sj-v01'");
+  await page.goto(`${BASE}/sejong/counselor/${someone}`);
+  ok("구직자는 상담사 열람 화면에 못 들어간다", !(await page.locator("#sj-report").count()), page.url());
+  {
+    const anon = await browser.newContext({ ...AUTH });
+    const r = await anon.request.get(`${BASE}/sejong/report/pdf`, { maxRedirects: 0 });
+    const b = await r.body();
+    ok("로그인 없이 PDF 를 받을 수 없다", r.status() !== 200 && b.subarray(0, 4).toString() !== "%PDF", String(r.status()));
+    await anon.close();
+  }
+
   await page.goto(`${BASE}/sejong/me`);
   await page.click("form.sj-actions button");
   await page.waitForLoadState("networkidle");
@@ -181,7 +204,7 @@ const seeker = await browser.newContext({ viewport: { width: 1366, height: 900 }
 
 /* 3. 상담사 */
 {
-  const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
+  const ctx = await browser.newContext({ ...AUTH, viewport: { width: 1366, height: 900 } });
   const page = await login(ctx, "sj-counsel1", need("SJ_PW_COUNSEL"));
   ok("상담사 로그인 → 상담사 화면", page.url().endsWith("/sejong/counselor"), page.url());
   await shot(page, "13-counselor-list");
@@ -209,7 +232,7 @@ const seeker = await browser.newContext({ viewport: { width: 1366, height: 900 }
 
 /* 4. 관리자 */
 {
-  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const ctx = await browser.newContext({ ...AUTH, viewport: { width: 1440, height: 900 } });
   const page = await login(ctx, "sj-admin", need("SJ_PW_ADMIN"));
   ok("관리자 로그인 → 대시보드", page.url().endsWith("/sejong/admin"), page.url());
   const t = await page.textContent("body");

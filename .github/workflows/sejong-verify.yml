@@ -216,3 +216,144 @@ jobs:
         run: |
           cat "$OUT/steps.tsv"
           ! awk -F'\t' '$2 != "0"' "$OUT/steps.tsv" | grep -q .
+
+  # Staging 리허설: Railway 가 굽는 것과 같은 운영 Dockerfile 이미지를 그대로 띄우고,
+  # STAGING_PLAN.md 의 차례(컨테이너 안 db:init → 세종 스키마 → 비밀 없는 시드)를
+  # 컨테이너 안에서 밟은 뒤, Basic 인증 뒤의 그 서버를 실제 브라우저로 끝까지 누른다.
+  # **이것은 Staging 접속이 아니다.** 러너 안에서만 뜨고 바깥 주소가 없다.
+  staging-rehearsal:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[sejong-verify]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    concurrency:
+      group: sejong-rehearsal
+      cancel-in-progress: false
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: cm
+          POSTGRES_PASSWORD: cm-ci-only
+          POSTGRES_DB: cm_stage
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U cm" --health-interval 5s
+          --health-timeout 5s --health-retries 20
+    defaults:
+      run:
+        working-directory: pca-platform
+        shell: bash --noprofile --norc {0}
+    env:
+      OUT: var/sejong-rehearsal
+      DB: postgres://cm:cm-ci-only@127.0.0.1:5432/cm_stage
+      URL: http://127.0.0.1:3200
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: pca-platform/package-lock.json
+
+      - name: 실행마다 새 비밀값 (로그에서 가린다)
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client poppler-utils >/dev/null
+          mkdir -p "$OUT/logs"; : > "$OUT/steps.tsv"
+          for k in SJ_PW_ADMIN SJ_PW_COUNSEL SJ_PW_SEEKER SJ_PW_VIRTUAL AUTH_SECRET GATE_PW; do
+            v="$(openssl rand -base64 24 | tr -d '/+=')"; echo "::add-mask::$v"; echo "$k=$v" >> "$GITHUB_ENV"
+          done
+
+      - name: 운영 Dockerfile 로 이미지 굽기 (Railway 와 같은 빌드)
+        run: |
+          docker build -t sejong-staging:rehearsal . > "$OUT/logs/docker-build.log" 2>&1; rc=$?
+          tail -25 "$OUT/logs/docker-build.log"
+          printf 'docker build (운영 Dockerfile)\t%s\n' $rc >> "$OUT/steps.tsv"; exit $rc
+
+      - name: 컨테이너 띄우기 (APP_ENV=staging · Basic 인증 · 내부 DB)
+        run: |
+          docker run -d --name sj --network host \
+            -e DATABASE_URL="$DB" -e AUTH_SECRET -e APP_ENV=staging -e PORT=3200 \
+            -e STAGING_BASIC_AUTH="qa:$GATE_PW" -e PLATFORM_URL="$URL" -e PDF_BASE="$URL" \
+            -e DB_IS_PERSISTENT=yes sejong-staging:rehearsal
+          for i in $(seq 1 90); do curl -sf "$URL/api/health" >/dev/null && break; sleep 2; done
+          c=$(curl -s -o /dev/null -w '%{http_code}' "$URL/api/health"); echo "health $c"
+          printf 'container up · /api/health %s\t%s\n' "$c" $([ "$c" = 200 ] && echo 0 || echo 1) >> "$OUT/steps.tsv"
+
+      - name: STAGING_PLAN 6번 — 컨테이너 안에서 DB 세우기
+        run: |
+          rc=0
+          docker exec -w /app sj npm run -s db:init > "$OUT/logs/db-init.log" 2>&1 || rc=1
+          docker exec -w /app sj psql "$DB" -q -v ON_ERROR_STOP=1 -f db/sejong/schema_sejong_demo.sql >> "$OUT/logs/db-init.log" 2>&1 || rc=1
+          docker exec -w /app sj psql "$DB" -q -v ON_ERROR_STOP=1 --single-transaction \
+            -v pw_admin="$SJ_PW_ADMIN" -v pw_counsel="$SJ_PW_COUNSEL" \
+            -v pw_seeker="$SJ_PW_SEEKER" -v pw_virtual="$SJ_PW_VIRTUAL" \
+            -f db/sejong/seed_sejong_demo.sql >> "$OUT/logs/db-init.log" 2>&1 || rc=1
+          n=$(psql "$DB" -tAc "SELECT count(*) FROM sj_participants")
+          echo "participants $n"; tail -5 "$OUT/logs/db-init.log"
+          [ "$n" = 21 ] || rc=1
+          printf 'in-container db:init · 세종 스키마 · 시드 (참여자 %s)\t%s\n' "$n" $rc >> "$OUT/steps.tsv"
+
+      - name: 시드 안전장치 — 비밀번호 변수 없이 · 실사용자 있는 DB
+        run: |
+          rc=0
+          out=$(docker exec -w /app sj psql "$DB" -v ON_ERROR_STOP=1 -f db/sejong/seed_sejong_demo.sql 2>&1)
+          echo "$out" | grep -q "을 -v 로 주십시오" || rc=1
+          psql "$DB" -qc "CREATE DATABASE cm_real"
+          R=postgres://cm:cm-ci-only@127.0.0.1:5432/cm_real
+          docker exec -w /app sj sh -c "DATABASE_URL=$R npm run -s db:init" > /dev/null 2>&1
+          psql "$R" -qc "INSERT INTO users (login_id, display_name, is_demo, password_hash) VALUES ('real', 'r', false, 'x')"
+          docker exec -w /app sj psql "$R" -q -f db/sejong/schema_sejong_demo.sql > /dev/null 2>&1
+          docker exec -w /app sj psql "$R" -v ON_ERROR_STOP=1 -v pw_admin=a -v pw_counsel=b -v pw_seeker=c -v pw_virtual=d \
+            -f db/sejong/seed_sejong_demo.sql 2>&1 | grep -q "시연이 아닌 사용자가 있는 DB" || rc=1
+          [ "$(psql "$R" -tAc 'SELECT count(*) FROM sj_participants')" = 0 ] || rc=1
+          printf 'seed guards (변수 없음 · 실사용자 DB)\t%s\n' $rc >> "$OUT/steps.tsv"
+
+      - name: 접근 제한 — Basic 인증 · noindex · 헬스만 열림
+        run: |
+          rc=0
+          a=$(curl -s -o /dev/null -w '%{http_code}' "$URL/sejong"); echo "no-auth /sejong $a"; [ "$a" = 401 ] || rc=1
+          b=$(curl -s -o /dev/null -w '%{http_code}' -u "qa:$GATE_PW" "$URL/sejong"); echo "auth /sejong $b"; [ "$b" = 200 ] || rc=1
+          curl -sI -u "qa:$GATE_PW" "$URL/sejong" | grep -qi '^x-robots-tag:.*noindex' || { echo "noindex 없음"; rc=1; }
+          h=$(curl -s -o /dev/null -w '%{http_code}' "$URL/api/health"); [ "$h" = 200 ] || rc=1
+          printf 'access gate (401 · 200 · noindex)\t%s\n' $rc >> "$OUT/steps.tsv"
+
+      - name: npm ci (E2E 도구만)
+        run: npm ci --no-audit --no-fund > /dev/null && npx playwright install --with-deps chromium > /dev/null
+
+      - name: 컨테이너에 대고 브라우저 E2E (구직자 · 상담사 · 관리자 · PDF)
+        run: |
+          STAGING_BASIC_AUTH="qa:$GATE_PW" BASE="$URL" DATABASE_URL="$DB" OUT="$OUT/shots" \
+            node scripts/sejong/e2e-shots.mjs > "$OUT/e2e.log" 2>&1; rc=$?
+          cat "$OUT/e2e.log"
+          printf 'browser e2e on container\t%s\n' $rc >> "$OUT/steps.tsv"
+          docker logs sj 2>&1 | grep -n "sejong-pdf\|Error" | head -20 || true
+
+      - name: 결과 (글만)
+        if: always()
+        run: |
+          docker logs sj > "$OUT/logs/container.log" 2>&1 || true
+          { echo "## Staging 리허설 (운영 이미지)"; echo; echo '| 단계 | 종료코드 |'; echo '|---|---|';
+            awk -F'\t' '{print "| " $1 " | " $2 " |"}' "$OUT/steps.tsv"; echo;
+            grep -E "통과 · .* 걸림" "$OUT/e2e.log" || true; } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 글로 된 결과만 올린다
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sejong-rehearsal-text
+          path: |
+            pca-platform/var/sejong-rehearsal/*.tsv
+            pca-platform/var/sejong-rehearsal/*.log
+            pca-platform/var/sejong-rehearsal/logs/
+          retention-days: 7
+
+      - name: 판정
+        if: always()
+        run: |
+          cat "$OUT/steps.tsv"
+          ! awk -F'\t' '$2 != "0"' "$OUT/steps.tsv" | grep -q .
