@@ -1,0 +1,15 @@
+# R0 기준 확인 2026-10-20T12:55:29Z
+branch claude/happy-faraday-q85c13
+HEAD   a4a7121d151a2b89c01877f2b51f4e42247fd248
+origin a4a7121d151a2b89c01877f2b51f4e42247fd248
+a4a7121d commit 2026-10-20 12:15:42 +0000 4차: 통합 현황 00_STATUS
+bd86b349 commit 2026-10-20 12:15:15 +0000 Track A 4차 2판: BIZ 결과지 매거진형 재설계 — editorial8 · render8 · 12쪽 시안 · 전체 셋 · 검사 · 편집 지침
+169d9123 commit 2026-10-20 12:15:16 +0000 Track E 4차: 연동 검사를 2판 렌더러(editorial8 · render8)로 · 통합 승인 요청
+
+ M pca-platform/scripts/lab/r35-inventory.ts
+ M pca-platform/src/lib/me-v3/report-gm/editorial8.ts
+?? pca-platform/docs/metri/review/r5/
+?? pca-platform/scripts/lab/gm-r5.ts
+?? pca-platform/scripts/lab/r5-staging-probe.ts
+?? pca-platform/src/lib/me-v3/report-gm/render9.ts
+?? pca-platform/var/

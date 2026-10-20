@@ -1,0 +1,26 @@
+# HEAD a4a7121d (+ R5 미커밋 변경) · 시작 2026-10-20T12:48:38Z · 2초 · 실행기 run · node v22.22.0
+# env: PGPORT= DATABASE_URL=postgres:///cm_dev V3_PREVIEW_OPEN=* V3_CAMPUS_FIXTURE= ROUNDS= CLASS= OUT=
+# run scripts/v3-measurement-freeze.ts
+# exit=0
+  core  ME_CORE_V3 · ME_V3_2
+  동결  ME_V3_MEASUREMENT_FREEZE_1
+
+  통과  측정 판본 넷이 동결 기록과 같다 — ME_CORE_V3 · ME_V3_ITEM_BANK_V2.5 · me-v3-scoring.5 · me-v3-result-model.6
+  통과  측정 층 파일의 지문이 그대로다 — 파일 19벌
+  통과  보기 넷의 문면과 수가 그대로다 — 없다 / 남이 한 것을 받아 썼다 / 내가 했다 / 내가 정하고 그 결과가 쓰였다
+  통과  소유 네 단계의 이름이 그대로다 — NONE < RECEIVED < DID < DECIDED_USED
+  통과  사람 열두 벌의 Core 판정이 기준선과 같다 — 열두 벌 가운데 12벌 대조
+  통과  팩 문항을 바닥에서 천장까지 바꿔도 Core 판정이 같다 — 팩 문항 136개 · 지문 같음
+  통과  산업을 갈아 끼워도 Core 판정이 같다 — INDUSTRY_SEMICON_V2 ↔ INDUSTRY_DEFENSE_V2
+  통과  문면을 고친 문항의 보기와 척도와 축이 그대로다 — L0~L3 · J3 · 보기 4
+  통과  채점과 결과 모델이 문항 문면을 읽지 않는다 — 문면을 읽는 줄 0
+  통과  construct 가 적히지 않은 문항이 없다 — 문항 369개 · 등록부 369줄
+  통과  코드가 글자로 적은 문항 번호가 전부 은행에 있다 — 산 번호 603개
+  통과  결과지가 채점 엔진을 다시 부르지 않는다 — 읽는 쪽 2곳
+  통과  UI 동결 파일과 측정 동결 파일이 겹치지 않는다 — 화면 93벌 · 측정 19벌
+  통과  dead item 과 사람 벌을 세는 명령이 사슬에 남아 있다 — v3:measure · v3:gaming · v3:registry · v3:j3 · v3:result
+
+  확인 14가지 — 통과 14 · 걸림 0
+
+  ME_V3_MEASUREMENT_FREEZE_1 — 측정체계가 동결 기록과 같다.
+  받고 쓰지 않는 문항과 사람 열세 벌은 v3:measure 와 v3:gaming 이 센다.

@@ -1,0 +1,57 @@
+2026-10-20T12:24:02Z
+== https://charming-reverence-staging.up.railway.app/me
+curl: (56) CONNECT tunnel failed, response 403
+http=000 t=0.277595
+== https://charming-reverence-staging.up.railway.app/api/health
+curl: (56) CONNECT tunnel failed, response 403
+http=000 t=0.325113
+== https://app.careermatri.com/api/health
+curl: (56) CONNECT tunnel failed, response 403
+http=000 t=0.274621
+== https://railway.app
+curl: (56) CONNECT tunnel failed, response 403
+http=000 t=0.301187
+== https://backboard.railway.app/graphql/v2
+curl: (56) CONNECT tunnel failed, response 403
+http=000 t=0.274609
+[
+ {
+  "ts": "2026-10-20T12:23:49.834Z",
+  "kind": "connect_rejected",
+  "detail": "gateway answered 403 to CONNECT (policy denial or upstream failure)",
+  "host": "registry.npmjs.org:443"
+ },
+ {
+  "ts": "2026-10-20T12:24:03.156Z",
+  "kind": "connect_rejected",
+  "detail": "gateway answered 403 to CONNECT (policy denial or upstream failure)",
+  "host": "charming-reverence-staging.up.railway.app:443"
+ },
+ {
+  "ts": "2026-10-20T12:24:03.495Z",
+  "kind": "connect_rejected",
+  "detail": "gateway answered 403 to CONNECT (policy denial or upstream failure)",
+  "host": "charming-reverence-staging.up.railway.app:443"
+ },
+ {
+  "ts": "2026-10-20T12:24:03.782Z",
+  "kind": "connect_rejected",
+  "detail": "gateway answered 403 to CONNECT (policy denial or upstream failure)",
+  "host": "app.careermatri.com:443"
+ },
+ {
+  "ts": "2026-10-20T12:24:04.100Z",
+  "kind": "connect_rejected",
+  "detail": "gateway answered 403 to CONNECT (policy denial or upstream failure)",
+  "host": "railway.app:443"
+ },
+ {
+  "ts": "2026-10-20T12:24:04.370Z",
+  "kind": "connect_rejected",
+  "detail": "gateway answered 403 to CONNECT (policy denial or upstream failure)",
+  "host": "backboard.railway.app:443"
+ }
+]
+# 2차 확인 2026-10-20T12:55:28Z
+curl: (56) CONNECT tunnel failed, response 403
+http=000

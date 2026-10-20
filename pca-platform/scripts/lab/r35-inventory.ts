@@ -25,7 +25,11 @@ import { appEnv } from "../../src/lib/env";
 const OUT = process.env.OUT ?? "var/r35/inventory";
 const SRC = process.env.SRC_ATTEMPT ?? "244";
 const LEAF = process.env.LEAF ?? "PCU26_BIZ";
-const VIEWS = { d: { width: 1440, height: 900 }, m: { width: 390, height: 844 } } as const;
+const ALL_VIEWS = { d: { width: 1440, height: 900 }, m: { width: 390, height: 844 }, s: { width: 360, height: 800 } } as const;
+/* R5: 360 폭(보급형 안드로이드)을 더했다. 기본은 전과 같은 둘이고 `VIEWS=d,m,s` 로 고른다 */
+const VIEWS = Object.fromEntries(
+  (process.env.VIEWS || "d,m").split(",").filter((k) => k in ALL_VIEWS).map((k) => [k, ALL_VIEWS[k as keyof typeof ALL_VIEWS]]),
+) as Partial<typeof ALL_VIEWS> & { d: typeof ALL_VIEWS.d };
 const CODES: [RegExp, string][] = [
   [/\bZ[1-5]_[A-Z]/, "zone"], [/\bNOT_EXPLORED\b/, "NOT_EXPLORED"], [/\bTD\d{2}\b/, "TD"],
   [/_CORE_V\d/, "core"], [/\bPCU2[67]_[A-Z]/, "leaf"], [/\bSPEC_[A-Z]/, "spec"],
@@ -81,9 +85,9 @@ async function cloneCampus(userId: string): Promise<string> {
   return id;
 }
 
-async function visit(ctx: BrowserContext, who: string, route: string, view: "d" | "m", note = ""): Promise<void> {
+async function visit(ctx: BrowserContext, who: string, route: string, view: keyof typeof ALL_VIEWS, note = ""): Promise<void> {
   const p: Page = await ctx.newPage();
-  await p.setViewportSize(VIEWS[view]);
+  await p.setViewportSize(ALL_VIEWS[view]);
   const errs: string[] = [];
   p.on("pageerror", (e) => errs.push(String(e).slice(0, 160)));
   p.on("console", (m) => { if (m.type() === "error") errs.push(m.text().slice(0, 160)); });
@@ -149,7 +153,7 @@ async function main(): Promise<void> {
     for (const r of ["/", "/login", "/campus/pcu", "/campus/pcu/majors", `/campus/pcu/d/${LEAF}`,
                      "/campus/pcu/login", "/cores", "/pricing", "/sample", "/support",
                      "/legal/terms", "/legal/privacy", "/me", "/org/v3", `/v3/${att}/result`]) {
-      for (const v of ["d", "m"] as const) await visit(anon, "anon", r, v);
+      for (const v of Object.keys(VIEWS) as (keyof typeof ALL_VIEWS)[]) await visit(anon, "anon", r, v);
     }
     await anon.close();
 
@@ -168,7 +172,7 @@ async function main(): Promise<void> {
       "/my/assessments", "/my/evidence", "/my/applications", "/cores", "/v3/start",
       `/v3/${att}`, `/v3/${att}/intro`, `/v3/${att}/done`, `/v3/${att}/result`,
       "/campus/pcu", `/campus/pcu/d/${LEAF}`, "/campus/pcu/start", "/org/v3"].filter(Boolean);
-    for (const r of STUDENT) for (const v of ["d", "m"] as const) await visit(sc, "student", r, v);
+    for (const r of STUDENT) for (const v of Object.keys(VIEWS) as (keyof typeof ALL_VIEWS)[]) await visit(sc, "student", r, v);
     await fetchBin(sc, "student", `/v3/${att}/result/pdf`);
     await sc.close();
 
@@ -176,7 +180,7 @@ async function main(): Promise<void> {
     const fc = await b.newContext({ locale: "ko-KR" });
     const fp = await login(fc, `zzr35f${stamp}`, fresh.pw); await fp.close();
     for (const r of ["/me", "/me/state", "/me/next", "/me/experience", "/me/results", "/my", "/cores", "/v3/start", `/campus/pcu/d/${LEAF}`]) {
-      for (const v of ["d", "m"] as const) await visit(fc, "fresh", r, v);
+      for (const v of Object.keys(VIEWS) as (keyof typeof ALL_VIEWS)[]) await visit(fc, "fresh", r, v);
     }
     await fc.close();
 
@@ -187,7 +191,7 @@ async function main(): Promise<void> {
                      "/org/v3/report", "/org/participants", "/org/cohorts", "/org/licenses",
                      "/org/insights", "/org/evidence-insights", "/org/reports", "/org/contract",
                      "/org/settings", "/me", `/v3/${att}/result`, "/admin"]) {
-      for (const v of ["d", "m"] as const) await visit(ac, "admin", r, v);
+      for (const v of Object.keys(VIEWS) as (keyof typeof ALL_VIEWS)[]) await visit(ac, "admin", r, v);
     }
     for (const r of ["/org/v3/report.pdf", "/org/v3/export/students.csv", "/org/v3/export/departments.csv", `/v3/${att}/result/pdf`]) {
       await fetchBin(ac, "admin", r);

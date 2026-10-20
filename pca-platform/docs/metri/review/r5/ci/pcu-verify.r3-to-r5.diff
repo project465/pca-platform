@@ -1,0 +1,120 @@
+--- docs/metri/review/tracks-r3/F/ci/pcu-verify.yml.draft	2026-10-20 10:14:57.102317996 +0000
++++ docs/metri/review/r5/ci/pcu-verify.yml.draft	2026-10-20 12:48:08.178457257 +0000
+@@ -1,21 +1,23 @@
+-# **초안 · 승인 전에는 `.github/workflows/` 에 두지 않는다.**
++# **초안 · 승인 전에는 `.github/workflows/` 에 두지 않는다.** (R5 · 2026-10-20)
+ #
+-# PCU 가지 전용 검증. 이 세션은 npm 레지스트리가 막혀 `npm ci` · `next build` ·
+-# 브라우저 E2E 를 직접 못 돌린다. 같은 일을 GitHub 러너에서 한다. 틀은 이미
+-# 성공한 `origin/claude/epic-galileo-lrvgxr:.github/workflows/sejong-verify.yml`
+-# (run 39393453011 · E2E 33/33 · rehearsal 6/6) 을 그대로 따른다.
++# 3차 초안(tracks-r3/F/ci/pcu-verify.yml.draft)에서 바뀐 것 셋:
++#  1) 브라우저 화면을 1440×900 · 390×844 · 360×800 셋으로 찍는다
++#     (r35-inventory 의 VIEWS=d,m,s · 원본 응시는 r33-e2e 가 방금 끝낸 응시)
++#  2) **기존 Staging 을 읽기만 하는 job(staging-probe)** 을 따로 둔다.
++#     이 세션 컨테이너는 charming-reverence-staging.up.railway.app 이 CONNECT 403 이라
++#     GitHub 러너에서 두드린다. 저장소 비밀값 다섯이 있을 때만 돈다(없으면 건너뜀).
++#     로그인 · 화면 열기 · 캡처만 하고 **응시 · 제출 · 계정 생성 · 배포를 하지 않는다.**
++#  3) 캡처와 PDF 는 PCU_ARTIFACT_KEY 가 있을 때만 AES-256 으로 잠가 올린다(3일).
+ #
+ # 보안
+ # - GITHUB_TOKEN 은 `contents: read` 만. 저장소에 아무것도 커밋 · 푸시하지 않는다.
+-# - 테스트 자료는 러너 안의 일회용 PostgreSQL 과 합성 시험 계정뿐이다. 운영 · Staging
+-#   DB · Railway · 실제 개인정보 · KODATA 원본 · 저장소 비밀값을 쓰지 않는다.
+-# - 시험 계정 비밀번호는 실행마다 무작위로 만들고 로그에서 가린다.
+-# - 공개 저장소의 artifact 는 로그인한 누구나 받을 수 있다. 그래서 **글로 된 결과만**
+-#   올린다. 화면 캡처 · PDF 는 `PCU_ARTIFACT_KEY` 비밀값이 있을 때만 AES-256 으로
+-#   잠가 올린다(보관 3일). 없으면 올리지 않는다.
++# - verify job 의 자료는 러너 안 일회용 PostgreSQL 과 합성 계정뿐. 운영 · Staging DB ·
++#   Railway API · 실제 개인정보 · KODATA 원본을 쓰지 않는다.
++# - staging-probe 는 Staging 의 **HTTP 화면만** 읽는다. 운영(app.careermatri.com)은 두드리지 않는다.
++# - 시험 비밀번호는 실행마다 무작위 · 로그에서 가린다. 공개 저장소 artifact 는 로그인한
++#   누구나 받으므로 글로 된 결과만 그대로 올린다.
+ #
+-# 언제 도는가: 손으로(workflow_dispatch), 또는 커밋 메시지에 `[pcu-verify]` 가 있는
+-# 이 가지의 푸시만. 다른 가지 · 다른 푸시에서는 일을 하지 않는다.
++# 언제 도는가: workflow_dispatch, 또는 이 가지에서 커밋 메시지에 `[pcu-verify]` 가 있을 때.
+ name: pcu-verify
+ 
+ on:
+@@ -141,7 +143,12 @@
+           npm run -s pcu:campus > "$OUT/logs/pcu-campus.log" 2>&1 || rc=1
+           npm run -s pcu:ops > "$OUT/logs/pcu-ops.log" 2>&1 || rc=1
+           npx tsx scripts/v3-pdf-audit.ts > "$OUT/logs/pdf-audit.log" 2>&1 || rc=1
+-          printf 'browser e2e\t%s\n' $rc >> "$OUT/steps.tsv"; exit $rc
++          printf 'browser e2e\t%s\n' $rc >> "$OUT/steps.tsv"
++          SRC="$(node -e 'console.log(require("./'"$OUT"'/e2e/e2e.json").attempt||"")')"
++          VIEWS=d,m,s SRC_ATTEMPT="$SRC" LEAF=PCU26_BIZ OUT="$OUT/inventory" \
++            npx tsx scripts/lab/r35-inventory.ts > "$OUT/logs/inventory.log" 2>&1; r=$?
++          printf 'screens 1440·390·360\t%s\n' $r >> "$OUT/steps.tsv"
++          [ $rc -eq 0 ] && [ $r -eq 0 ]
+ 
+       - name: 결과 한 장
+         if: always()
+@@ -157,7 +164,66 @@
+             pca-platform/var/pcu-ci/logs/*.log
+           retention-days: 7
+ 
++      - name: 캡처 · PDF 는 잠가서만 올린다
++        if: always() && env.PCU_ARTIFACT_KEY != ''
++        env:
++          PCU_ARTIFACT_KEY: ${{ secrets.PCU_ARTIFACT_KEY }}
++        run: |
++          tar czf - -C "$OUT" e2e inventory | openssl enc -aes-256-cbc -pbkdf2 -salt \
++            -pass env:PCU_ARTIFACT_KEY -out "$OUT/shots.tgz.enc"
++      - uses: actions/upload-artifact@v4
++        if: always() && hashFiles('pca-platform/var/pcu-ci/shots.tgz.enc') != ''
++        with:
++          name: pcu-verify-shots-enc
++          path: pca-platform/var/pcu-ci/shots.tgz.enc
++          retention-days: 3
++
+       - name: 판정 (한 단계라도 걸리면 빨강)
+         if: always()
+         run: |
+           awk -F'\t' '$2 != 0 { bad=1; print "걸림 " $1 } END { exit bad }' "$OUT/steps.tsv"
++
++  # 기존 Staging 을 읽기만 한다. 비밀값 다섯이 없으면 이 job 은 아무 일도 하지 않는다.
++  staging-probe:
++    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[pcu-verify]')
++    runs-on: ubuntu-latest
++    timeout-minutes: 20
++    permissions:
++      contents: read
++    env:
++      STAGING_BASE: https://charming-reverence-staging.up.railway.app
++      STAGING_BASIC_AUTH: ${{ secrets.STAGING_BASIC_AUTH }}
++      PCU_STUDENT_ID: ${{ secrets.PCU_STAGING_STUDENT_ID }}
++      PCU_STUDENT_PW: ${{ secrets.PCU_STAGING_STUDENT_PW }}
++      PCU_ADMIN_ID: ${{ secrets.PCU_STAGING_ADMIN_ID }}
++      PCU_ADMIN_PW: ${{ secrets.PCU_STAGING_ADMIN_PW }}
++      PCU_ARTIFACT_KEY: ${{ secrets.PCU_ARTIFACT_KEY }}
++      OUT: var/r5-staging
++    defaults:
++      run:
++        working-directory: pca-platform
++    steps:
++      - uses: actions/checkout@v4
++        with: { fetch-depth: 1, persist-credentials: false }
++      - uses: actions/setup-node@v4
++        with: { node-version: 22 }
++      - name: 비밀값이 없으면 건너뛴다
++        id: gate
++        run: |
++          if [ -z "$PCU_STUDENT_ID" ] || [ -z "$PCU_ADMIN_ID" ]; then echo "skip=1" >> "$GITHUB_OUTPUT"; echo "비밀값 없음 · 건너뜀"; fi
++          curl -s -o /dev/null -w 'health %{http_code}\n' "$STAGING_BASE/api/health" | tee health.txt
++          curl -sI "$STAGING_BASE/login" | grep -i '^x-robots-tag' || echo 'x-robots-tag 없음'
++      - name: 화면 열기 · 캡처 (응시 · 제출 · 계정 생성 없음)
++        if: steps.gate.outputs.skip != '1'
++        run: |
++          npm ci --no-audit --no-fund >/dev/null && npx playwright install --with-deps chromium >/dev/null
++          npx tsx scripts/lab/r5-staging-probe.ts
++          tar czf - -C "$OUT" . | openssl enc -aes-256-cbc -pbkdf2 -salt -pass env:PCU_ARTIFACT_KEY -out staging.tgz.enc
++      - uses: actions/upload-artifact@v4
++        if: always() && steps.gate.outputs.skip != '1'
++        with:
++          name: pcu-staging-probe
++          path: |
++            pca-platform/var/r5-staging/staging-probe.md
++            pca-platform/staging.tgz.enc
++          retention-days: 3

@@ -1,0 +1,19 @@
+# 빌드 환경 확인 2026-10-20T12:56:39Z · node v22.22.0 · npm 10.9.4
+node_modules 파일 수: 577
+node_modules/next: 0 파일
+node_modules/react: 0 파일
+node_modules/pg: 0 파일
+node_modules/typescript: 0 파일
+node_modules/playwright: 170 파일
+== npm ping
+Terminated
+== curl registry
+curl: (6) Could not resolve host: registry.npmjs.org
+http=000
+== docker
+Server:
+failed to connect to the docker API at unix:///var/run/docker.sock; check if the path is correct and if the daemon is running: dial unix /var/run/docker.sock: connect: no such file or directory
+== curl registry (프록시 경유 · HTTPS_PROXY)
+curl: (6) Could not resolve host: registry.npmjs.org
+http=000
+(이 셸에는 HTTPS_PROXY 가 비어 있어 이름 풀이부터 실패. 프록시 경유 시도의 결과는 staging-reach.log 의 relay 기록: registry.npmjs.org:443 → connect_rejected 403)
