@@ -58,6 +58,11 @@ export const NAV_CAMPUS_V3: NavItem[] = [
   { href: "/org/v3", label: "navV3Insights", icon: "grid" },
   { href: "/org/v3/students", label: "navV3Students", icon: "users" },
 ];
+/** 기관(진흥원 등) 담당자의 메뉴. 같은 자리이고 이름만 `참여자` 다 */
+export const NAV_CAMPUS_V3_AGENCY: NavItem[] = [
+  { href: "/org/v3", label: "navV3Insights", icon: "grid" },
+  { href: "/org/v3/students", label: "navV3Participants", icon: "users" },
+];
 
 /**
  * 운영 메뉴.

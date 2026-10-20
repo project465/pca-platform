@@ -1970,3 +1970,22 @@ a.cm-nav.is-on { border-radius: 12px; }
 .cm-util-out:hover { border-color: #c9d6ff; color: #1f4fd1; }
 .cm-sheet-out { padding: 12px 16px 4px; }
 .cm-sheet-out .cm-util-out { width: 100%; }
+
+/* 손전화 서랍(화면 시안 2026-10-20). 서랍은 흰 판이고 아래 띠(`.cm-tabs`)
+   안에 들어 있어서, 왼쪽 남색 띠의 글자색(옅은 회색)과 아래 띠 칸의
+   모양(세로로 선 작은 칸)을 함께 물려받아 글자가 안 보이고 고른 줄이 빈
+   파란 막대로 섰다. 서랍 안의 줄은 흰 판에 맞는 가로 줄로 다시 세운다 */
+.cm-sheet .cm-group > h2 { color: var(--sf-ink-3, #6b7a90); }
+.cm-sheet a.cm-nav {
+  flex-direction: row; justify-content: flex-start; align-items: center;
+  gap: 12px; height: auto; min-height: 46px; padding: 0 12px;
+  border-radius: 12px; color: var(--sf-ink, #1a2233);
+  font-size: 15px; font-weight: var(--ui-w-sb); letter-spacing: -.01em;
+}
+.cm-sheet a.cm-nav > svg { width: 20px; height: 20px; opacity: .8; }
+.cm-sheet a.cm-nav small { color: var(--sf-ink-3, #6b7a90); opacity: 1; }
+.cm-sheet a.cm-nav:hover { background: #f3f6fb; color: var(--sf-ink, #1a2233); }
+.cm-sheet a.cm-nav.is-on { background: #eaf0ff; color: #1f4fd1; }
+.cm-sheet a.cm-nav.is-on::before { display: none; }
+.cm-sheet a.cm-nav.is-on small { color: #1f4fd1; opacity: .8; }
+.cm-sheet a.cm-nav:focus-visible { outline: 2px solid #2f6bff; outline-offset: 2px; }

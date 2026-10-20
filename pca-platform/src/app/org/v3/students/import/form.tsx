@@ -1,5 +1,6 @@
 "use client";
 
+import { campusSay } from "@/lib/campus/words";
 import Link from "next/link";
 import { useActionState } from "react";
 import { applyAction, previewAction, type ImportState } from "../actions";
@@ -16,7 +17,9 @@ const EMPTY: ImportState = {};
  * **오류 줄에서 멈추지 않는다.** 한 줄이 틀렸다고 전부를 되돌리면 그
  * 파일을 몇 번이고 다시 올린다.
  */
-export default function ImportForm() {
+export default function ImportForm({ agency = false }: { agency?: boolean }) {
+  /* 기관(진흥원 등)이면 학생 · 학번 · 학과를 기관 낱말로 적는다 */
+  const t = campusSay(agency ? { org_kind: "agency" } : null);
   const [state, run, pending] = useActionState(
     async (prev: ImportState, form: FormData): Promise<ImportState> =>
       (String(form.get("step") ?? "") === "apply"
@@ -62,7 +65,7 @@ export default function ImportForm() {
           <div className="sf-section-h">
             <h2 className="sf-h2">미리 보기</h2>
             <span className="sf-meta">
-              새로 만들 {fresh}명 · 학과만 맞출 {ok.length - fresh}명 · 거절 {bad.length}줄
+              새로 만들 {fresh}명 · {t("학과만")} 맞출 {ok.length - fresh}명 · 거절 {bad.length}줄
             </span>
           </div>
 
@@ -71,7 +74,7 @@ export default function ImportForm() {
               <table className="sf-table">
                 <thead>
                   <tr>
-                    <th scope="col">줄</th><th scope="col">학번</th>
+                    <th scope="col">줄</th><th scope="col">{t("학번")}</th>
                     <th scope="col">이름</th><th scope="col">거절한 까닭</th>
                   </tr>
                 </thead>
@@ -96,7 +99,7 @@ export default function ImportForm() {
             <input type="hidden" name="text" value={pre.text} />
             <p className="sf-meta">
               정상인 {ok.length}줄만 적용합니다. 거절된 줄은 건너뜁니다.
-              {" "}이미 있는 학생은 <b>학과만 맞추고 비밀번호는 그대로</b> 둡니다.
+              {" "}이미 있는 {t("학생은")} <b>{t("학과만")} 맞추고 비밀번호는 그대로</b> 둡니다.
             </p>
             <button className="sf-btn" type="submit"
               disabled={pending || !ok.length}>
@@ -120,7 +123,7 @@ export default function ImportForm() {
             <div className="sf-issued">
               <b>새 비밀번호 — 이 화면에서만 보입니다</b>
               <p>지금 복사해 두세요. 이 화면을 벗어나면 다시 볼 수 없고,
-                그때는 학생마다 한 번 더 발급해야 합니다.</p>
+                그때는 {t("학생마다")} 한 번 더 발급해야 합니다.</p>
               <ul>
                 {state.issued.map((x) => (
                   <li key={x.login_id}>
@@ -135,7 +138,7 @@ export default function ImportForm() {
               <table className="sf-table">
                 <thead>
                   <tr>
-                    <th scope="col">줄</th><th scope="col">학번</th>
+                    <th scope="col">줄</th><th scope="col">{t("학번")}</th>
                     <th scope="col">거절한 까닭</th>
                   </tr>
                 </thead>
@@ -152,7 +155,7 @@ export default function ImportForm() {
             </div>
           ) : null}
           <p style={{ marginTop: 16 }}>
-            <Link className="sf-btn ghost" href="/org/v3/students">학생 목록으로</Link>
+            <Link className="sf-btn ghost" href="/org/v3/students">{t("학생 목록으로")}</Link>
           </p>
         </section>
       ) : null}

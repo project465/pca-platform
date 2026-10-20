@@ -1,5 +1,6 @@
 "use client";
 
+import { campusSay } from "@/lib/campus/words";
 import { useActionState } from "react";
 import {
   retakeAction, rotateAction, setStatusAction, type ManageState,
@@ -23,8 +24,10 @@ const ATTEMPT_KO: Record<StudentRow["attempt"], string> = {
  * 학생이 들고 있던 열쇠가 그 자리에서 죽는다.
  */
 export default function StudentRows(
-  { rows, deptNames }: {
+  { rows, deptNames, agency = false }: {
     rows: StudentRow[];
+    /** 기관(진흥원 등)이면 학생 · 학번 · 학과를 기관 낱말로 적는다 */
+    agency?: boolean;
     /**
      * 학과 코드 → 담당자가 읽는 이름.
      *
@@ -35,6 +38,7 @@ export default function StudentRows(
     deptNames: Record<string, string>;
   },
 ) {
+  const t = campusSay(agency ? { org_kind: "agency" } : null);
   const [state, run, pending] = useActionState(
     async (prev: ManageState, form: FormData): Promise<ManageState> => {
       const kind = String(form.get("kind") ?? "");
@@ -60,7 +64,7 @@ export default function StudentRows(
               </li>
             ))}
           </ul>
-          <small>학생에게 전한 뒤 이 화면을 닫아 주세요. 다시 보려면 한 번 더 발급해야 합니다.</small>
+          <small>{t("학생에게")} 전한 뒤 이 화면을 닫아 주세요. 다시 보려면 한 번 더 발급해야 합니다.</small>
         </div>
       ) : null}
 
@@ -69,8 +73,8 @@ export default function StudentRows(
           <thead>
             <tr>
               <th scope="col">이름</th>
-              <th scope="col">학번</th>
-              <th scope="col">학과</th>
+              <th scope="col">{t("학번")}</th>
+              <th scope="col">{t("학과")}</th>
               <th scope="col">계정</th>
               <th scope="col">응시</th>
               <th scope="col">완료일</th>
@@ -100,7 +104,7 @@ export default function StudentRows(
                     <button type="submit" className="sf-mini" disabled={pending}
                       onClick={(e) => {
                         if (!confirm(
-                          `${r.name} 학생의 비밀번호를 다시 냅니다.\n`
+                          `${r.name} ${t("학생")}의 비밀번호를 다시 냅니다.\n`
                           + "지금 들고 있는 비밀번호는 그 자리에서 쓸 수 없게 됩니다.",
                         )) e.preventDefault();
                       }}>비밀번호 재발급</button>

@@ -172,7 +172,7 @@ export default async function CampusV3({
   const shell = (children: React.ReactNode) => (
     <Shell
       surface="campus" lang={L} nav={nav} active="/org/v3"
-      who={{ name: user.name, role: ROLE_LABEL[user.role] ?? "" }}
+      who={{ name: user.name, role: say(ROLE_LABEL[user.role] ?? "") }}
       topTitle={org ? org.name : BRAND.campus}
       topRight={<LangSelect current={L} />}
     >

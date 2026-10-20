@@ -344,7 +344,11 @@
  * 로그아웃을 한 번에 닿게 한다: 실용 줄 끝과 손전화 서랍 맨 아래에 단추가
  * 선다. 전에는 계정 쪽 안에만 있어 공용 PC 에서 나가는 길을 찾지 못했다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V51";
+/**
+ * 손전화 서랍의 줄을 흰 판에 맞게 다시 세운다. 남색 띠의 글자색과 아래 띠
+ * 칸의 모양을 물려받아 글자가 안 보이고 고른 줄이 빈 파란 막대로 섰다.
+ */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V52";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.

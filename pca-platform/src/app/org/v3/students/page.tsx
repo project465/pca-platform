@@ -10,6 +10,7 @@ import { BRAND, toLang2 } from "@/lib/surface-text";
 import { Shell, PageHead, Section } from "@/components/sf/shell";
 import { campusSay, university } from "@/lib/campus/registry";
 import { sayTree } from "@/lib/campus/say-tree";
+import { loginPrefixOf } from "@/lib/campus/students";
 import { campusNav } from "@/lib/campus/org-mode";
 import { Empty } from "@/components/sf/parts";
 import LangSelect from "@/components/sf/lang-select";
@@ -63,7 +64,7 @@ export default async function CampusStudents({
   const shell = (children: React.ReactNode) => (
     <Shell
       surface="campus" lang={L} nav={nav} active="/org/v3/students"
-      who={{ name: user.name, role: ROLE_LABEL[user.role] ?? "" }}
+      who={{ name: user.name, role: say(ROLE_LABEL[user.role] ?? "") }}
       topTitle={org ? org.name : BRAND.campus}
       topRight={<LangSelect current={L} />}
     >
@@ -180,7 +181,7 @@ export default async function CampusStudents({
                 없었다). 쪽은 열리는 것으로 보이는 다른 검사들이 이 쪽을
                 한 번도 열지 않아 몇 회차 동안 조용했다. 읽는 자리는 그대로
                 등록부 하나이고, 넘기는 것은 **그 줄에 쓸 이름뿐**이다 */}
-            <StudentRows rows={rows}
+            <StudentRows rows={rows} agency={agency}
               deptNames={Object.fromEntries(
                 rows.map((r) => [r.department_code, deptName(r.department_code)]))} />
             {pages > 1 ? (
@@ -198,7 +199,8 @@ export default async function CampusStudents({
         )}
       </Section>
 
-      <AddStudent leaves={leaves.map((r) => ({ code: r.code, name: r.name }))} />
+      <AddStudent leaves={leaves.map((r) => ({ code: r.code, name: r.name }))}
+        prefix={reg ? loginPrefixOf(reg) : ""} agency={agency} />
     </>,
   );
 }
