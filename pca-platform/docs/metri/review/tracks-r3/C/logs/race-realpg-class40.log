@@ -1,0 +1,9 @@
+드라이버 실제 node-postgres 8.16.3 · BIZ_CORE_V1 · 5판
+  1판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":1,"picks":0,"note":0,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  2판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":8,"picks":1,"note":0,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  3판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":8,"picks":0,"note":0,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  4판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":8,"picks":2,"note":2,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  5판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":3,"picks":1,"note":0,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  반 40명 동시 제출: 성공 40/40 · 다시 채점 같음 40/40 · 3487ms
+
+R1 true · R2 true · R3 true · R4 true · R5 true

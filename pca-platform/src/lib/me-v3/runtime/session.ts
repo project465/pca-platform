@@ -670,14 +670,21 @@ async function writable(c: PoolClient, attemptId: string): Promise<boolean> {
  */
 export async function saveNote(
   attemptId: string, itemId: string, text: string,
-): Promise<void> {
-  await query(
-    `INSERT INTO v3_responses (attempt_id, item_id, kind, note_text)
-     VALUES ($1,$2,'skipped',$3)
-     ON CONFLICT (attempt_id, item_id) DO UPDATE SET note_text = $3`,
-    [attemptId, itemId, text.slice(0, 400)],
-  );
-  await query(`UPDATE v3_attempts SET last_saved_at = now() WHERE id = $1`, [attemptId]);
+): Promise<boolean> {
+  /* 덧붙이는 줄도 굳은 판정 뒤에 쓰지 않는다. 답을 고르지 않은 문항에 줄만
+     적으면 `skipped` 줄이 하나 생기는데, 그것이 제출 뒤에 생기면 남은 응답으로
+     다시 채점한 판정이 굳은 판정과 갈린다(Track C 3차) */
+  return tx(async (c) => {
+    if (!(await writable(c, attemptId))) return false;
+    await c.query(
+      `INSERT INTO v3_responses (attempt_id, item_id, kind, note_text)
+       VALUES ($1,$2,'skipped',$3)
+       ON CONFLICT (attempt_id, item_id) DO UPDATE SET note_text = $3`,
+      [attemptId, itemId, text.slice(0, 400)],
+    );
+    await c.query(`UPDATE v3_attempts SET last_saved_at = now() WHERE id = $1`, [attemptId]);
+    return true;
+  });
 }
 
 export async function notesOf(attemptId: string): Promise<Record<string, string>> {
@@ -696,14 +703,17 @@ export async function notesOf(attemptId: string): Promise<Record<string, string>
 export async function setProfile(
   attemptId: string, stage: Stage, gradField: GradField | null,
   undergradCore: UndergradCore | null = null,
-): Promise<void> {
+): Promise<boolean> {
   const field = stage === "bachelor" ? null : gradField;
-  await query(
+  /* 바뀐 줄이 없으면 거짓이다. 전에는 끝난 응시에 보내도 늘 참을 돌려줘서
+     화면이 `저장됨` 을 적었다 */
+  const r = await query<{ id: string }>(
     `UPDATE v3_attempts
         SET education_stage=$2, grad_field=$3, undergrad_core=$4, last_saved_at=now()
-      WHERE id=$1 AND status='in_progress'`,
+      WHERE id=$1 AND status='in_progress' RETURNING id::text`,
     [attemptId, stage, field,
      crossField(stage, field) ? undergradCore : null]);
+  return r.length > 0;
 }
 
 /**
@@ -715,7 +725,7 @@ export async function setProfile(
 export async function savePicks3(
   core: string, attemptId: string,
   kind: "industry" | "role" | "org", codes: string[],
-): Promise<void> {
+): Promise<boolean> {
   const known = kind === "industry" ? industryChoices(core).map((x) => x.code)
     : kind === "role" ? roleChoices(core).map((x) => x.code)
       : orgChoices(core).map((x) => x.code);
@@ -723,22 +733,23 @@ export async function savePicks3(
   const col = kind === "industry" ? "industry_interest"
     : kind === "role" ? "role_interest" : "org_interest";
   if (kind === "industry") {
-    await query(
+    const r = await query<{ id: string }>(
       `UPDATE v3_attempts SET industry_interest=$2, industry_pack=$3,
-              last_saved_at=now() WHERE id=$1 AND status='in_progress'`,
+              last_saved_at=now() WHERE id=$1 AND status='in_progress' RETURNING id::text`,
       [attemptId, clean, clean[0] ?? null]);
-    return;
+    return r.length > 0;
   }
   if (kind === "role") {
-    await query(
+    const r = await query<{ id: string }>(
       `UPDATE v3_attempts SET role_interest=$2, role_pack=$3,
-              last_saved_at=now() WHERE id=$1 AND status='in_progress'`,
+              last_saved_at=now() WHERE id=$1 AND status='in_progress' RETURNING id::text`,
       [attemptId, clean, clean[0] ?? null]);
-    return;
+    return r.length > 0;
   }
-  await query(
-    `UPDATE v3_attempts SET ${col}=$2, last_saved_at=now() WHERE id=$1 AND status='in_progress'`,
+  const r = await query<{ id: string }>(
+    `UPDATE v3_attempts SET ${col}=$2, last_saved_at=now() WHERE id=$1 AND status='in_progress' RETURNING id::text`,
     [attemptId, clean]);
+  return r.length > 0;
 }
 
 export async function savePicks(
@@ -1017,9 +1028,14 @@ export async function menuContextOf(a: V3Attempt): Promise<MenuContext> {
   };
 }
 
-export async function moveTo(attemptId: string, screenId: string): Promise<void> {
-  await query(`UPDATE v3_attempts SET current_screen=$2, last_saved_at=now() WHERE id=$1`,
+export async function moveTo(attemptId: string, screenId: string): Promise<boolean> {
+  /* 끝난 응시의 자리를 옮기지 않는다. 제출이 `done` 으로 적은 뒤에 늦게 온
+     이동이 그 자리를 덮으면, 다시 들어온 사람이 결과 대신 문항 화면을 받는다 */
+  const r = await query<{ id: string }>(
+    `UPDATE v3_attempts SET current_screen=$2, last_saved_at=now()
+      WHERE id=$1 AND status='in_progress' RETURNING id::text`,
     [attemptId, screenId]);
+  return r.length > 0;
 }
 
 /**

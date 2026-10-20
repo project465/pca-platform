@@ -111,12 +111,23 @@ export default function Screen({
    *  같은 네 줄이 스물여덟 번 서고, 질문보다 센 설명문이 된다 */
   const guideAt = s.fields.findIndex((f) => f.control.kind === "level");
 
-  /** 보내는 것을 줄 세운다. 둘이 겹치면 늦게 끝난 쪽이 먼저 끝난 쪽을 덮는다 */
+  /**
+   * 보내는 것을 줄 세운다. 둘이 겹치면 늦게 끝난 쪽이 먼저 끝난 쪽을 덮는다.
+   *
+   * **`{ ok: false }` 도 실패다.** 서버 동작은 거절할 때 던지지 않고 거짓을
+   * 돌려준다(다른 탭에서 이미 제출했거나 남의 응시일 때). 전에는 던진 것만
+   * 실패로 세서, 거절된 저장에도 머리띠가 `저장됨` 을 적었다(Track C 3차).
+   */
   const push = useCallback((run: () => Promise<unknown>) => {
     setSaving((n) => n + 1);
+    const refused = (r: unknown) =>
+      !!r && typeof r === "object" && (r as { ok?: unknown }).ok === false;
     queue.current = queue.current
       .then(run)
-      .then(() => { setFailed(false); setSent(true); },
+      .then((r) => {
+        if (refused(r)) { lastRun.current = run; setFailed(true); return; }
+        setFailed(false); setSent(true);
+      },
         () => { lastRun.current = run; setFailed(true); })
       .finally(() => setSaving((n) => n - 1));
     return queue.current;

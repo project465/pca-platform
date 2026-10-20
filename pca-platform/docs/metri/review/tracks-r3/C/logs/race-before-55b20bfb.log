@@ -1,0 +1,13 @@
+드라이버 실제 node-postgres 8.16.3 · BIZ_CORE_V1 · 5판
+    finish 오류: timeout exceeded when trying to connect
+  1판 결과 0줄 · 다시 채점 다르다 : undefined ≠ {"context":{"common":[{"axis":"J1","block":"CORE-JUDGE","con · 받아들인 {"answer":9,"picks":2,"note":0,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 바뀜 · ok 거짓 answer,picks,note,profile,industry
+    finish 오류: timeout exceeded when trying to connect
+  2판 결과 0줄 · 다시 채점 다르다 : undefined ≠ {"context":{"common":[{"axis":"J1","block":"CORE-JUDGE","con · 받아들인 {"answer":12,"picks":4,"note":4,"profile":1,"industry":1,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 answer,picks,note,profile,industry
+    finish 오류: timeout exceeded when trying to connect
+  3판 결과 0줄 · 다시 채점 다르다 : undefined ≠ {"context":{"common":[{"axis":"J1","block":"CORE-JUDGE","con · 받아들인 {"answer":11,"picks":4,"note":1,"profile":0,"industry":1,"cursor":0} · 뒤에 보낸 것 DB 바뀜 · ok 거짓 answer,picks,note,profile,industry
+    finish 오류: timeout exceeded when trying to connect
+  4판 결과 0줄 · 다시 채점 다르다 : undefined ≠ {"context":{"common":[{"axis":"J1","block":"CORE-JUDGE","con · 받아들인 {"answer":11,"picks":3,"note":0,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 바뀜 · ok 거짓 answer,picks,note,profile,industry
+  5판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":11,"picks":3,"note":4,"profile":1,"industry":1,"cursor":1} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  반 14명 동시 제출: 성공 7/14 · 다시 채점 같음 7/14 · 10632ms · 실패 예: timeout exceeded when trying to connect
+
+R1 false · R2 false · R3 false · R4 false · R5 false

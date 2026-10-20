@@ -1,0 +1,19 @@
+드라이버 실제 node-postgres 8.16.3 · BIZ_CORE_V1 · 15판
+  1판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":10,"picks":4,"note":0,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  2판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":3,"picks":0,"note":0,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  3판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":8,"picks":4,"note":1,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  4판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":6,"picks":0,"note":3,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  5판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":10,"picks":1,"note":1,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  6판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":3,"picks":0,"note":0,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  7판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":7,"picks":0,"note":0,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  8판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":10,"picks":2,"note":0,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  9판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":10,"picks":1,"note":2,"profile":0,"industry":1,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  10판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":10,"picks":1,"note":1,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  11판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":11,"picks":1,"note":1,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  12판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":11,"picks":3,"note":1,"profile":1,"industry":1,"cursor":1} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  13판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":3,"picks":0,"note":0,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  14판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":1,"picks":0,"note":0,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  15판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":6,"picks":1,"note":0,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  반 14명 동시 제출: 성공 14/14 · 다시 채점 같음 14/14 · 1314ms
+
+R1 true · R2 true · R3 true · R4 true · R5 true

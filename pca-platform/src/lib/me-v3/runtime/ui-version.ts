@@ -141,7 +141,12 @@
  * 판정(`startGate`)을 읽고, 학교 응시에는 학교 이용권만 · 개인 응시에는
  * 개인 이용권만 쓴다. 문항·보기·저장 값·문면은 그대로다.
  */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V44";
+/**
+ * 3차 Track C · 저장 줄이 `{ ok: false }` 로 거절된 것을 실패로 센다
+ * (`screen.tsx` 의 `push`). 전에는 던진 것만 실패로 세서 거절된 저장에도
+ * `저장됨` 이 섰다. 문항·보기·저장 값·문면은 그대로다.
+ */
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V45";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
 /* copy.15 — 받침 한 줄과 보기 넷의 예시가 화면에 서는 글자다 */

@@ -50,8 +50,7 @@ export async function noteAction(
 ): Promise<{ ok: boolean }> {
   const at = await mine(attemptId);
   if (!at) return { ok: false };
-  await saveNote(attemptId, itemId, text);
-  return { ok: true };
+  return { ok: await saveNote(attemptId, itemId, text) };
 }
 
 /**
@@ -71,8 +70,7 @@ export async function profileAction(
   if (stage !== "bachelor" && !f) return { ok: false };
   const u = UG.includes((undergrad ?? "") as UndergradCore)
     ? (undergrad as UndergradCore) : null;
-  await setProfile(attemptId, stage as Stage, f, u);
-  return { ok: true };
+  return { ok: await setProfile(attemptId, stage as Stage, f, u) };
 }
 
 export async function picksAction(
@@ -95,8 +93,8 @@ export async function picksAction3(
 ): Promise<{ ok: boolean }> {
   const at = await mine(attemptId);
   if (!at) return { ok: false };
-  try { await savePicks3(at.core_code, attemptId, kind, codes); } catch { return { ok: false }; }
-  return { ok: true };
+  try { return { ok: await savePicks3(at.core_code, attemptId, kind, codes) }; }
+  catch { return { ok: false }; }
 }
 
 /** 이어보기 자리를 옮긴다. **주소의 수가 아니라 화면 이름으로 적는다** */
@@ -108,8 +106,7 @@ export async function cursorAction(
   const plan = await planFor(at);
   const s = plan.screens[index];
   if (!s) return { ok: false };
-  await moveTo(attemptId, s.id);
-  return { ok: true };
+  return { ok: await moveTo(attemptId, s.id) };
 }
 
 /**
