@@ -313,7 +313,11 @@
  * `○○ 학생, 안녕하세요` 로, 학과 집계 첫 화면을 `○○ 담당자님, 안녕하세요`
  * 로 연다(단계 이름은 제목 위 한 줄). 판정과 현재 상태 계산은 그대로다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V43_1";
+/**
+ * 쪽 제목을 오른쪽 실용 줄 아래로 내린다. 실용 줄 옆에 남는 폭이 좁아 인사
+ * 제목이 이름 첫 낱말만 남기고 꺾였다. 띠 머리는 눌리지 않게 한다.
+ */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V43_2";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.

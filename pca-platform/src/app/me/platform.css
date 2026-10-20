@@ -1873,3 +1873,12 @@ a.cm-nav.is-on { border-radius: 12px; }
 .cm-hero-more { color: #fff; }
 .cm-hero-more:hover { color: #fff; background: rgba(255, 255, 255, .14); }
 .cm-hero-art { background: rgba(255, 255, 255, .92); border-radius: var(--ui-r); padding: 10px; }
+
+/* 쪽 제목은 오른쪽 실용 줄 **아래**에서 시작한다(화면 시안 2026-10-20).
+   실용 줄 옆에 남는 폭이 280px 남짓이라, 인사 제목 `○○ 학생, 안녕하세요`
+   가 이름 첫 낱말만 남기고 꺾였다. 눈썹(`내 커리어`)은 그대로 실용 줄 옆에
+   선다 */
+.cm-utilrow ~ .cm-head .cm-h1 { clear: right; }
+/* 띠 머리는 줄어들지 않는다. 전공 이름이 두 줄이 되면 머리가 최소
+   높이에 눌려 `CareerMatri` 가 띠 위 끝에 붙었다 */
+.cm-rail-brand { flex-shrink: 0; padding-block: 14px; }
