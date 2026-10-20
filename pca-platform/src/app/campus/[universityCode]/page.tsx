@@ -2,7 +2,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import "../../surface.css";
 import "../campus.css";
-import { leavesOf, offered, statusOf, university, visible } from "@/lib/campus/registry";
+import {
+  campusSay, leavesOf, offered, statusOf, university, visible,
+} from "@/lib/campus/registry";
 import { pickCatalog } from "@/lib/campus/pick";
 import { CampusShell } from "../shell";
 
@@ -80,6 +82,7 @@ export default async function CampusEntry({ params, searchParams }: Params) {
   const { universityCode } = await params;
   const u = university(universityCode);
   if (!u) notFound();
+  const t = campusSay(u);
   const { y } = await searchParams;
   const cat = await pickCatalog(u, y);
   const code = u.university_code.toLowerCase();
@@ -103,7 +106,7 @@ export default async function CampusEntry({ params, searchParams }: Params) {
           늘어난다. 두 번째 줄은 이미 받은 계정으로 돌아오는 사람의 길이다 */}
       <section className="cm-cmp-hero has-flow">
         <div>
-        <p className="cm-cmp-eyebrow">{u.university_name} 학생 전용</p>
+        <p className="cm-cmp-eyebrow">{u.university_name} {t("학생")} 전용</p>
         <h1 className="cm-cmp-title">내 전공에서 시작하는 진로 분석</h1>
         <p className="cm-cmp-lead">
           지금까지 해본 경험에서 산업·직무 연결과 다음 준비 방향을
@@ -111,10 +114,10 @@ export default async function CampusEntry({ params, searchParams }: Params) {
         </p>
         <div className="cm-cmp-cta-row">
           <Link className="cm-cmp-cta" href={majors}>
-            내 학과 선택하기<span aria-hidden="true">→</span>
+            {t("내 학과 선택하기")}<span aria-hidden="true">→</span>
           </Link>
           <Link className="cm-cmp-cta-2" href={`/campus/${code}/login`}>
-            학교 계정으로 로그인
+            {t("학교 계정으로 로그인")}
           </Link>
         </div>
         </div>
@@ -123,8 +126,8 @@ export default async function CampusEntry({ params, searchParams }: Params) {
           {FLOW.map((f) => (
             <li key={f.n}>
               <b>{f.n}</b>
-              <strong>{f.t}</strong>
-              <span>{f.d}</span>
+              <strong>{t(f.t)}</strong>
+              <span>{t(f.d)}</span>
             </li>
           ))}
         </ol>
@@ -134,8 +137,8 @@ export default async function CampusEntry({ params, searchParams }: Params) {
         {VALUES.map((v, i) => (
           <article className="cm-cmp-value" key={v.t}>
             <span className="cm-cmp-value-n">0{i + 1}</span>
-            <h3>{v.t}</h3>
-            <p>{v.d}</p>
+            <h3>{t(v.t)}</h3>
+            <p>{t(v.d)}</p>
           </article>
         ))}
       </div>
@@ -145,7 +148,7 @@ export default async function CampusEntry({ params, searchParams }: Params) {
           찾던 사람이 빠진 줄로 읽는다 */}
       <section className="cm-cmp-sect">
         <div className="cm-cmp-sect-h">
-          <h2>단과대학별로 찾기</h2>
+          <h2>{t("단과대학별로 찾기")}</h2>
           <p>{cat.label} 기준</p>
         </div>
         <nav className="cm-cmp-list">

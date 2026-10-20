@@ -1,8 +1,14 @@
 /**
- * **배재대 기관 한 줄과 담당자 하나.** 운영에서 사람이 한 번 치는 자리다.
+ * **학교(기관) 한 줄과 담당자 하나.** 운영에서 사람이 한 번 치는 자리다.
  *
- *   npm run pcu:org                                  읽기만 한다
- *   APPLY=yes npm run pcu:org <아이디> <이메일> <이름>   만든다
+ *   npm run pcu:org                                  배재대를 읽기만 한다
+ *   UNI=KU npm run pcu:org                           고려대를 읽기만 한다
+ *   UNI=KU APPLY=yes npm run pcu:org                 고려대 기관과 담당자(ku_admin)를 만든다
+ *   UNI=KU APPLY=yes npm run pcu:org <아이디> <이메일> <이름>   이름을 정해 만든다
+ *
+ * 학교 코드와 이름은 학교 등록부(`campus-universities.json`)에서 읽는다.
+ * 등록부에 없는 코드는 받지 않는다: 등록부에 없는 기관 줄은 학생 화면과
+ * 이어지지 않는다.
  *
  * 학생 흐름은 기관 줄이 없어도 돈다(`/campus/pcu` 로 들어온 응시는
  * `v3_attempts.university_code` 로 묶인다). 기관 줄이 필요한 쪽은 담당자
@@ -28,9 +34,18 @@
 import { randomBytes } from "node:crypto";
 import { query, queryOne } from "../src/lib/db";
 import { hashPassword } from "../src/lib/password";
+import { university } from "../src/lib/campus/registry";
 
-const CODE = "PCU";
-const NAME = "배재대학교";
+const CODE = (process.env.UNI ?? "PCU").trim().toUpperCase();
+const REG = university(CODE);
+if (!REG) {
+  console.error(`학교 등록부에 ${CODE} 가 없습니다. UNI 를 확인해 주세요.`);
+  process.exit(2);
+}
+const NAME = REG.university_name;
+/* 기관(진흥원 등)은 공공기관으로 적는다. 학교 진입 흐름은 이 칸을 읽지 않는다 */
+const ORG_TYPE = REG.org_kind === "agency" ? "public_institution" : "university";
+const LC = CODE.toLowerCase();
 
 type Org = { id: string; name: string | null; status: string; is_demo: boolean };
 
@@ -55,10 +70,14 @@ async function main(): Promise<void> {
   }
   const apply = (process.env.APPLY ?? "").toLowerCase() === "yes";
   const rotate = (process.env.ROTATE ?? "").toLowerCase() === "yes";
-  const [loginId, email, display] = process.argv.slice(2);
+  const [argId, argEmail, argName] = process.argv.slice(2);
+  /* 아이디를 안 주면 `<코드>_admin` 으로 만든다(배재대가 쓰는 `pcu_admin` 과 같은 꼴) */
+  const loginId = argId || `${LC}_admin`;
+  const email = argEmail || `${LC}-admin@careermatri.invalid`;
+  const display = argName || `${NAME} 담당자`;
 
   const before = await readNow();
-  console.log(`\n── 배재대 기관과 담당자 (${apply ? "만든다" : "읽기만"})\n`);
+  console.log(`\n── ${NAME}(${CODE}) 기관과 담당자 (${apply ? "만든다" : "읽기만"})\n`);
   console.log(`  기관    ${before.org
     ? `있다 (${before.org.name ?? "이름 없음"} · ${before.org.status}`
       + `${before.org.is_demo ? " · 시연" : ""})`
@@ -71,7 +90,8 @@ async function main(): Promise<void> {
       process.exit(0);
     }
     console.log("  만들려면:");
-    console.log("    APPLY=yes npm run pcu:org <아이디> <이메일> <이름>\n");
+    console.log(`    UNI=${CODE} APPLY=yes npm run pcu:org            (아이디 ${LC}_admin)`);
+    console.log(`    UNI=${CODE} APPLY=yes npm run pcu:org <아이디> <이메일> <이름>\n`);
     process.exit(0);
   }
 
@@ -84,10 +104,10 @@ async function main(): Promise<void> {
   const org = await queryOne<{ id: string }>(
     `INSERT INTO organizations (code, country, org_type, status, name,
                                 language, is_demo)
-     VALUES ($1, 'KR', 'university', 'active', $2, 'ko', FALSE)
+     VALUES ($1, 'KR', $3, 'active', $2, 'ko', FALSE)
      ON CONFLICT (code) DO UPDATE SET status = 'active'
      RETURNING id::text`,
-    [CODE, NAME],
+    [CODE, NAME, ORG_TYPE],
   );
   if (!org) throw new Error("기관 줄을 만들지 못했습니다.");
 

@@ -21,6 +21,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Icon } from "@/components/sf/icon";
 import { BrandMark } from "@/components/sf/brand-mark";
+import LogoutButton from "@/components/logout-button";
 import { CM_GROUPS, CM_TABS, CM_NAV, navOn } from "./nav";
 import { CmFind, type FindItem } from "./find";
 
@@ -218,6 +219,9 @@ export function CmShell({
                     </>
                   ) : null}
                   {who ? <CmUtil name={who} /> : null}
+                  {/* 로그아웃은 한 번에 닿아야 한다. 계정 쪽 안에만 두었더니
+                      공용 PC 에서 학생이 나가는 길을 찾지 못했다 */}
+                  {who ? <LogoutButton className="cm-util-out" /> : null}
                 </div>
               ) : null}
               {children}
@@ -254,6 +258,9 @@ export function CmShell({
                 {g.items.map((it) => <NavRow key={it.href} it={it} active={active} />)}
               </section>
             ))}
+            {who ? (
+              <div className="cm-sheet-out"><LogoutButton className="cm-util-out" /></div>
+            ) : null}
           </div>
         </details>
       </nav>

@@ -548,3 +548,12 @@ a.cm-cmp-row:focus-visible { outline: 2px solid var(--pcu-blue); outline-offset:
   outline: 3px solid rgba(47, 107, 255, .18); outline-offset: 0;
 }
 .cm-cmp-auth button[type="submit"] { border-radius: 12px; }
+
+/* 띠 오른쪽 로그아웃(화면 시안 2026-10-20). 로그인한 사람에게만 선다 */
+.cm-cmp-out {
+  margin-left: 14px; min-height: 34px; padding: 0 12px; border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.28); background: transparent;
+  color: #fff; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+}
+.cm-cmp-out:hover { background: rgba(255,255,255,.12); }
+@media (max-width: 640px) { .cm-cmp-band-in form { margin-left: auto; } }

@@ -9,6 +9,8 @@ import { campusViewer } from "@/lib/campus/viewer";
 import { BRAND, toLang2 } from "@/lib/surface-text";
 import { Shell, PageHead, Section } from "@/components/sf/shell";
 import { NAV_CAMPUS } from "@/components/sf/nav";
+import { campusSay, university } from "@/lib/campus/registry";
+import { sayTree } from "@/lib/campus/say-tree";
 import { Empty } from "@/components/sf/parts";
 import LangSelect from "@/components/sf/lang-select";
 import StudentRows from "./rows";
@@ -53,6 +55,10 @@ export default async function CampusStudents({
      `아직 시작하지 않은 학생 63명` 이 나란히 섰다 */
   const withDemo = sp.demo === "1";
 
+  /* 기관(진흥원 등)이면 화면 글자를 기관 낱말로 바꾼다(`sayTree`) */
+  const reg = uni ? university(uni) : null;
+  const say = campusSay(reg);
+  const agency = reg?.org_kind === "agency";
   const shell = (children: React.ReactNode) => (
     <Shell
       surface="campus" lang={L} nav={NAV_CAMPUS} active="/org/v3/students"
@@ -60,7 +66,7 @@ export default async function CampusStudents({
       topTitle={org ? org.name : BRAND.campus}
       topRight={<LangSelect current={L} />}
     >
-      {children}
+      {sayTree(children, say, agency)}
     </Shell>
   );
 

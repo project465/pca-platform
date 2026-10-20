@@ -317,7 +317,11 @@
  * 쪽 제목을 오른쪽 실용 줄 아래로 내린다. 실용 줄 옆에 남는 폭이 좁아 인사
  * 제목이 이름 첫 낱말만 남기고 꺾였다. 띠 머리는 눌리지 않게 한다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V43_2";
+/**
+ * 로그아웃을 한 번에 닿게 한다: 실용 줄 끝과 손전화 서랍 맨 아래에 단추가
+ * 선다. 전에는 계정 쪽 안에만 있어 공용 PC 에서 나가는 길을 찾지 못했다.
+ */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V43_3";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.

@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import "../../../../surface.css";
 import "../../../campus.css";
 import {
-  coreOf, findLeaf, specializationName, statusOf, university,
+  campusSay, coreOf, findLeaf, specializationName, statusOf, university,
 } from "@/lib/campus/registry";
 import { CampusShell } from "../../../shell";
 import { startFromCampus } from "../../../actions";
@@ -37,6 +37,7 @@ export default async function CampusDepartment({ params }: Params) {
   const { universityCode, department } = await params;
   const u = university(universityCode);
   if (!u) notFound();
+  const t = campusSay(u);
   const found = findLeaf(u, department);
   if (!found) notFound();
   const { leaf } = found;
@@ -66,13 +67,13 @@ export default async function CampusDepartment({ params }: Params) {
         <p className="cm-cmp-eyebrow">{u.university_name} · {where}</p>
         <h1 className="cm-cmp-title">{leaf.name}</h1>
         <p className="cm-cmp-lead">
-          {ready
+          {t(ready
             ? "이 전공이 다루는 영역마다 해 본 일과 직접 정한 것을 묻습니다."
               + " 문항마다 저장되어 창을 닫아도 보던 자리에서 이어집니다."
             : routing
               ? "전공을 고른 뒤에 그 전공으로 시작합니다. 지금 가장 관심 있는"
                 + " 전공을 고르시면 됩니다. 나중에 다시 고를 수 있습니다."
-              : "이 학과는 지금 응시할 수 없습니다."}
+              : "이 학과는 지금 응시할 수 없습니다.")}
         </p>
         {ready ? (
           /* **주소로 전공을 바꿀 수 없다.** 폼이 보내는 것은 학교와 학과
@@ -83,12 +84,12 @@ export default async function CampusDepartment({ params }: Params) {
             <button type="submit" className="cm-cmp-cta">
               검사 시작하기<span aria-hidden="true">→</span>
             </button>
-            <Link className="cm-cmp-cta-2" href={back}>다른 학과 선택</Link>
+            <Link className="cm-cmp-cta-2" href={back}>{t("다른 학과 선택")}</Link>
           </form>
         ) : (
           <div className="cm-cmp-cta-row">
             <Link className="cm-cmp-cta" href={routing ? `${back}&pick=1` : back}>
-              {routing ? "전공 고르기" : "다른 학과 선택"}
+              {routing ? "전공 고르기" : t("다른 학과 선택")}
               <span aria-hidden="true">→</span>
             </Link>
           </div>
@@ -109,12 +110,12 @@ export default async function CampusDepartment({ params }: Params) {
         ) : null
       ) : (
         <p className="cm-cmp-note">
-          {routing
+          {t(routing
             ? "어느 전공으로 재는지는 고르신 전공이 정합니다. 학부 이름만"
               + " 보고 특정 전공으로 판단하지 않습니다."
             : leaf.core_code
               ? "이 학과의 문항과 산업 자료를 그 전공을 아는 분이 써야 열립니다."
-              : "어느 전공 검사로 이을지 학교와 확인하고 있습니다."}
+              : "어느 전공 검사로 이을지 학교와 확인하고 있습니다.")}
         </p>
       )}
     </CampusShell>
