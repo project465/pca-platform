@@ -446,7 +446,14 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.66";
  * 할 수 있는 한 걸음`)를 머리로 세운다. 전에는 단추를 지우기만 해서 목록이
  * 머리 없이 남았다. 화면과 글자와 결과 모델은 그대로다.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V77";
+/**
+ * 화면 시안(2026-10-20, `mockups/02_student_report.html`)으로 겉모양을 바꿨다.
+ * 결과지 토큰의 강조색을 남색에서 #2f6bff 로 바꾸고, 화면에서는(`@media
+ * screen`) 절 하나를 흰 그림자 카드 한 장으로, 카드 셋을 파랑·초록·보라 색
+ * 타일로, 영역 묶음을 옅은 판으로 세운다. 종이의 쪽 문법과 결과 모델과
+ * 글자는 그대로다.
+ */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V78";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

@@ -164,7 +164,7 @@ a.cm-nav.is-on {
   position: relative;
   /* 고른 줄. **목표 화면의 면은 파란 기울기 하나다**: 왼쪽이 밝고
      오른쪽으로 가라앉아, 띠 안에서 그 줄만 떠오른다 */
-  background: linear-gradient(90deg, #0046a9 0%, #0e3d78 100%);
+  background: #2f6bff;
   color: #fff; font-weight: var(--ui-w-bd);
 }
 /* **왼쪽 금을 두지 않는다**(목표 화면). 면 하나로 충분하고, 금까지
@@ -456,13 +456,11 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
   min-height: clamp(48px, 3.75vw, 54px); padding: 0 clamp(24px, 3.33vw, 48px);
   font-size: clamp(16px, 1.53vw, 22px); font-weight: var(--ui-w-bd);
   border-radius: clamp(11px, .97vw, 14px);
-  background: linear-gradient(180deg, #2a72c9 0%, #1c5fb0 100%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, .22),
-    0 3px 10px rgba(28, 95, 176, .3), 0 1px 2px rgba(10, 27, 49, .12);
+  background: #2f6bff;
+  box-shadow: 0 3px 10px rgba(47, 107, 255, .3), 0 1px 2px rgba(17, 30, 60, .12);
 }
 .cm-hero-acts .cm-btn.is-primary:hover {
-  background: linear-gradient(180deg, #2f7ad6 0%, #1f66bb 100%);
+  background: #1f4fd1;
 }
 /* 거드는 자리는 **테도 면도 없다**: 주된 단추와 같은 무게로 서면 둘 가운데
    무엇을 눌러야 하는지를 읽는 사람이 한 번 더 고른다 */
@@ -1900,3 +1898,32 @@ a.cm-pc:hover { border-color: var(--cm-blue-line); box-shadow: var(--cm-lift-sh)
 /* 묶음 사이 한 칸. **쪽마다 숫자를 적지 않는다**: 적으면 17과 18이 섞이고
    그 어긋남은 쪽을 이어서 누를 때만 보인다 */
 .cm-mb { margin-bottom: var(--cm-gap-section); }
+
+/* ── 화면 시안 스킨 (2026-10-20) ─────────────────────────────────────
+   `mockups` 의 학생 첫 화면과 같은 모양으로 맞춘다. 영역 카드는 색 타일이고
+   흰 글자다. 색은 뜻을 갖지 않고 칸을 가르기만 한다(위 규칙과 같다) */
+a.cm-tile {
+  border: 0; color: #fff;
+  border-radius: var(--ui-r-lg);
+  background: linear-gradient(160deg, #3d7bff, #1f55e0);
+  box-shadow: 0 1px 2px rgba(17, 30, 60, .05), 0 10px 28px rgba(17, 30, 60, .10);
+}
+a.cm-tile:nth-child(4n+2) { background: linear-gradient(160deg, #17a884, #0b7f66); }
+a.cm-tile:nth-child(4n+3) { background: linear-gradient(160deg, #8c6cf5, #6544de); }
+a.cm-tile:nth-child(4n+4) { background: linear-gradient(160deg, #f7a928, #e38600); }
+a.cm-tile:hover {
+  border-color: transparent; filter: brightness(1.05);
+  box-shadow: 0 2px 4px rgba(17, 30, 60, .06), 0 14px 32px rgba(17, 30, 60, .14);
+}
+a.cm-tile .cm-tile-ico,
+a.cm-tile:nth-child(3n+2) .cm-tile-ico,
+a.cm-tile:nth-child(3n+3) .cm-tile-ico {
+  background: rgba(255, 255, 255, .18); color: #fff; border-color: transparent; box-shadow: none;
+}
+a.cm-tile .cm-tile-txt b { color: #fff; }
+a.cm-tile .cm-tile-txt small { color: rgba(255, 255, 255, .86); }
+a.cm-tile > svg:last-child { color: #fff; opacity: .9; }
+a.cm-tile:focus-visible { outline: 3px solid rgba(47, 107, 255, .45); outline-offset: 2px; }
+
+/* 왼쪽 띠: 남색 판의 고른 줄은 파랑 한 칸 */
+a.cm-nav.is-on { border-radius: 12px; }

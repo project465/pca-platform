@@ -2,7 +2,7 @@
  "schema_version": "me-v3-ui-lock.1",
  "note": "검사 화면 1차 동결. 결과지 작업 중에는 명백한 버그와 접근성 오류만 고치고, 고쳤으면 `ui-version.ts` 의 판본을 올린 뒤 `FREEZE=update npm run v3:freeze` 로 지문을 다시 적는다",
  "versions": {
-  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V45",
+  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V46",
   "assessment_copy_version": "me-v3-2-assessment-copy.25",
   "assessment_version": "ME_V3_2",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.5",
@@ -10,8 +10,8 @@
  },
  "files": {
   "src/app/v3/layout.tsx": "5169464a4bd3741726beea4d17ee6ddb9d070c090513a3ca029f526883e05864",
-  "src/app/surface.css": "b1875a36649fc8eee9c76575f66d0d9c49b5e6892e611965ba5e895b825c5fbe",
-  "src/app/v3/assessment.css": "6edb035ae96a29fa6afcc1c83499bd85495261f5863ea73417c1a7be71da15d0",
+  "src/app/surface.css": "03ebfbed94b46928225df3843c206121a2cf48802c7700bcf9225171545980a6",
+  "src/app/v3/assessment.css": "1b10d8be99d9395bdfbf64de08a867993a24d8a737130adc70dd6ca6cb581552",
   "src/app/v3/tier-text.ts": "5667a87afae3e7dc0789076d463ee8d5bdf865b182be12d00dd6a4d1aa1a5c51",
   "src/app/v3/start/page.tsx": "bbf0d8cb20cc42f2badbb76670f05420e12048be98a4448f32fb90646240de4f",
   "src/app/v3/start/start-form.tsx": "85013e48c2cd9e0f440389564dfef1c3584073e969ceba431647afae69fb5531",
@@ -19,7 +19,7 @@
   "src/app/v3/[attemptId]/page.tsx": "9bf971e055a1eb125f29e62ec3ffb3beea5b87f28f4f1a524dd20d81c3a8f03c",
   "src/app/v3/[attemptId]/intro/page.tsx": "860fdccb422c946ae0188c1bd8f1fe900d012446f08b752999af9015973486b4",
   "src/app/v3/[attemptId]/done/page.tsx": "6c39b5aae12b8c1e743d93e70035ad667ccbd4c3592e4ef6765cea686b98d314",
-  "src/app/v3/[attemptId]/screen.tsx": "6c977aaac84fd2a4077ea5e2df9275d830a8aae4159818556a3745f0252b2f98",
+  "src/app/v3/[attemptId]/screen.tsx": "41685cceebe1c4b63ab5e81478dd3a93a164ed15703741bf2a630a8806591467",
   "src/app/v3/[attemptId]/model.ts": "54fa5e4425f7ea45b42a62ea47c30378ab387fbac3d82b959ef22a6b57a92d8b",
   "src/app/v3/[attemptId]/actions.ts": "cff4d6b883de9d3465dbcb84eea618643e4254eeb7d8a195a743f173e2f60c70",
   "src/lib/me-v3/runtime/blocks.ts": "767db3fbd95f9969d53018b0b1057cb3a13ba3b5d274ddbd8c212858bbbe9432",
