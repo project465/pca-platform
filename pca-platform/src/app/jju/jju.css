@@ -18,9 +18,11 @@
   --j-ink-2: #4e5968;
   --j-ink-3: #8b95a1;
   --j-line: #e5e8eb;
-  --j-blue: #3182f6;
-  --j-blue-d: #1b64da;
-  --j-blue-s: #e8f3ff;
+  --j-blue: #1854a8;
+  --j-blue-d: #0c3c84;
+  --j-blue-s: #e8f1fa;
+  --j-sky: #0084c0;
+  --j-star: #e4c000;
   --j-r: 20px;
 }
 
@@ -56,12 +58,13 @@
 }
 .jju-btn:hover { background: var(--j-blue-d); }
 .jju-btn.is-sub { background: var(--j-blue-s); color: var(--j-blue-d) !important; }
-.jju-btn.is-sub:hover { background: #d6e8ff; }
+.jju-btn.is-sub:hover { background: #d9e8f6; }
 
 /* ── 첫 덩이 ────────────────────────────────────────────── */
 .jju-hero { padding: 28px 4px 8px; }
 .jju-hero.is-page { padding-top: 12px; }
-.jju-hero-k { margin: 0 0 10px; font-size: 15px; font-weight: 600; color: var(--j-blue); }
+.jju-hero-k { margin: 0 0 10px; font-size: 15px; font-weight: 600; color: var(--j-sky); }
+.jju-hero-k::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 8px; border-radius: 50%; background: var(--j-star); vertical-align: 2px; }
 .jju-hero h1 { margin: 0; font-size: 28px; line-height: 1.38; font-weight: 700; letter-spacing: -.02em; }
 .jju-hero-p { margin: 14px 0 0; font-size: 17px; line-height: 1.6; color: var(--j-ink-2); }
 .jju-hero-acts { display: grid; gap: 10px; margin-top: 28px; }

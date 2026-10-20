@@ -28,11 +28,15 @@ function opener(no: number, _kicker: string, title: string, thesis: string): str
   return `<header class="op op-c${no % 4}"><p class="op-n">${pad2(no)}</p><div><h2>${esc(title)}</h2>${thesis ? `<p class="op-t">${esc(thesis)}</p>` : ""}</div></header>`;
 }
 
-/** 표지의 물결. 값을 담지 않는 장식이고, 위·아래 두 벌이 같은 모양을 뒤집어 쓴다 */
-const WAVES = `<path d="M0 0H210C190 8 168 3 150 14C128 27 104 20 84 33C60 48 30 50 0 72Z" fill="#e6f0ff"/>
-<path d="M0 0H160C142 14 120 8 100 22C80 36 52 30 30 44C18 52 8 54 0 56Z" fill="#b7d3fb"/>
-<path d="M0 0H118C104 12 86 10 70 22C52 35 30 30 0 44Z" fill="#6ea4f2"/>
-<path d="M0 0H74C62 10 48 9 36 18C24 27 12 26 0 31Z" fill="#2f6fd6"/>`;
+/**
+ * 표지의 동심원. 전주대 옛 보고서 표지의 원 무늬를 학교 색으로 옮긴 장식이고
+ * 값을 담지 않는다. **학교 상징(JJ 표시 · 별)은 그리지 않는다**: 쓰려면 학교
+ * 승인이 먼저다(JJU_MVP 8절 5).
+ */
+const RINGS = [[24, 34, 16], [52, 18, 11], [14, 70, 9], [40, 96, 13], [18, 128, 7], [30, 160, 10], [196, 214, 13], [203, 246, 8], [188, 279, 6]]
+  .map(([x, y, r]) => `<g transform="translate(${x} ${y})">${[1, .78, .56, .34].map((k, i) => `<circle r="${(r * k).toFixed(1)}" fill="none" stroke="${i % 2 ? "#9cc8e6" : "#c9e1f2"}" stroke-width="${i === 3 ? 1.6 : .7}"/>`).join("")}<circle r="${(r * .14).toFixed(1)}" fill="#0084c0" opacity=".55"/></g>`).join("");
+const SWASH = `<path d="M-10 118C40 104 90 112 140 96S200 70 230 74" fill="none" stroke="#d6e6f3" stroke-width="1.2"/>
+<path d="M-10 124C46 112 100 120 150 104S206 82 232 86" fill="none" stroke="#e6f0f8" stroke-width=".8"/>`;
 
 /** 한눈에 보기 칸의 표시. 흰 선 하나로 그린다 */
 const TILE_IC = [
@@ -42,7 +46,7 @@ const TILE_IC = [
   `<path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/>`,
 ];
 
-const DONUT_C: Record<string, string> = { OWNED: "#1b64da", CONFIRMED: "#5ea0ff", PARTICIPATED: "#b8d4ff", NOT_OBSERVED: "#e5e8eb" };
+const DONUT_C: Record<string, string> = { OWNED: "#0c3060", CONFIRMED: "#1854a8", PARTICIPATED: "#7fc0e4", NOT_OBSERVED: "#e5e8eb" };
 
 /**
  * 한눈에 보기 — 숫자 칸 넷 · 영역 막대 · 판단 도넛. **값을 새로 만들지 않는다**:
@@ -131,14 +135,13 @@ function gapList(g: GoldDoc): string {
 export function goldHtml(g: GoldDoc, w: Workbook): string {
   const P: string[] = [];
 
-  /* ── 표지 ── 흰 바탕 · 위아래 물결 · 큰 해와 제목. 숫자 칸을 두지 않는다 */
+  /* ── 표지 ── 흰 바탕 · 동심원 · 오른쪽 위 학교 색 상자 · 큰 해와 제목 */
   P.push(`<section class="cover">
-<svg class="wv wv-t" viewBox="0 0 210 90" preserveAspectRatio="none" aria-hidden="true">${WAVES}</svg>
-<svg class="wv wv-b" viewBox="0 0 210 90" preserveAspectRatio="none" aria-hidden="true">${WAVES}</svg>
-<div class="cv-top"><p class="cv-k"><b>전주대학교</b> × CareerMatri</p><p class="cv-r"><span>AI 부트캠프</span>${esc(g.student.track)}</p></div>
-<div class="cv-mid"><p class="cv-y">${esc(g.submitted.slice(0, 4))}</p><p class="cv-t1">커리어 분석</p><p class="cv-t2">리포트</p><i class="cv-rule"></i>
+<svg class="rings" viewBox="0 0 210 297" preserveAspectRatio="none" aria-hidden="true">${SWASH}${RINGS}</svg>
+<div class="cv-box"><b>전주대학교</b><span>JEONJU UNIVERSITY</span></div>
+<div class="cv-mid"><p class="cv-k">${esc(g.program)}</p><p class="cv-y">${esc(g.submitted.slice(0, 4))}</p><p class="cv-t1">커리어 분석</p><p class="cv-t2">리포트</p><i class="cv-rule"></i>
 <p class="cv-lead">${esc(g.title)}</p>${g.lead ? `<p class="cv-sub">${esc(g.lead)}</p>` : ""}</div>
-<div class="cv-bot"><p>${esc(g.id)} · ${esc(g.student.track)} · ${esc(g.student.field)}${g.student.spec ? ` · ${esc(g.student.spec)}` : ""} · ${esc(g.submitted)}</p>
+<div class="cv-bot"><p class="cv-who">${esc(g.student.track)} · ${esc(g.student.field)}${g.student.spec ? ` · ${esc(g.student.spec)}` : ""}</p><p>${esc(g.id)} · 응답일 ${esc(g.submitted)} · 전주대학교 × CareerMatri</p>
 ${g.demo ? `<p class="cv-demo">시연 자료예요. 합성 학생이고, 컴퓨터·소프트웨어 검사는 전공자 검토 전이라 학생 진단이나 사업 성과로 쓰지 않아요.</p>` : ""}</div>
 </section>`);
 
@@ -220,7 +223,7 @@ ${w.course ? `<p class="course">${tag("SOURCE")} 지금 열린 공식 과정: ${
 const CSS = `
 @page{size:A4;margin:14mm 17mm 15mm;@top-left{content:"전주대학교 × CareerMatri · 커리어 분석 리포트";font-family:sans-serif;font-size:7.5pt;color:#8a94a6}@top-right{content:"본인만 보는 문서";font-family:sans-serif;font-size:7.5pt;color:#8a94a6}@bottom-left{content:"점수나 순위를 만들지 않는 리포트예요";font-family:sans-serif;font-size:7.5pt;color:#8a94a6}@bottom-right{content:counter(page) " / " counter(pages);font-family:sans-serif;font-size:7.5pt;color:#8a94a6}}
 @page:first{margin:0;@top-left{content:none}@top-right{content:none}@bottom-left{content:none}@bottom-right{content:none}}
-:root{--royal:#1d3fa8;--blue2:#2f7de1;--ink:#111a2b;--ink2:#3f4a5e;--mute:#667085;--line:#d8dde6;--line2:#eceff4;--tint:#f4f6f9;--navy:#132a4d;--blue:#2457c5;--gap:#b4431b;--amber:#a15c07}
+:root{--royal:#1854a8;--blue2:#0084c0;--sky:#0084c0;--star:#e4c000;--ink:#111a2b;--ink2:#3f4a5e;--mute:#667085;--line:#d8dde6;--line2:#eceff4;--tint:#f4f6f9;--navy:#0c3060;--blue:#2457c5;--gap:#b4431b;--amber:#a15c07}
 *{box-sizing:border-box}
 html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 body{margin:0;font-family:"Noto Sans CJK KR","Noto Sans KR","Apple SD Gothic Neo","WenQuanYi Zen Hei",sans-serif;color:var(--ink);font-size:10.5pt;line-height:1.62;word-break:keep-all;overflow-wrap:anywhere;background:#fff}
@@ -238,25 +241,26 @@ h3 small{font-weight:400;color:var(--mute);font-size:8.8pt;margin-left:6px}
 .tg{display:inline-block;font-size:7.6pt;font-weight:700;letter-spacing:.02em;padding:0 5px;border-radius:3px;line-height:15px;vertical-align:1px;white-space:nowrap}
 .tg-JUDGED{background:var(--navy);color:#fff}.tg-SELF{border:1px solid var(--navy);color:var(--navy);line-height:13px}
 .tg-READ{background:#e4e8ef;color:var(--ink2)}.tg-ADVICE{border:1px solid var(--blue);color:var(--blue);line-height:13px}.tg-SOURCE{border:1px solid var(--amber);color:var(--amber);line-height:13px}
-/* 표지 — 흰 바탕 · 위아래 물결 · 큰 해와 제목 */
-.cover{height:297mm;margin:0;padding:22mm 20mm 20mm;background:#fff;color:var(--ink);display:flex;flex-direction:column;break-after:page;position:relative;overflow:hidden}
-.wv{position:absolute;left:0;width:210mm;height:90mm;z-index:0}.wv-t{top:0}.wv-b{bottom:0;transform:rotate(180deg)}
-.cv-top{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:flex-start}
-.cv-k{font-size:10.5pt;color:#fff;margin-top:2mm}.cv-k b{font-weight:700}
-.cv-r{text-align:right;font-size:12pt;color:#6e8fbf;line-height:1.35}.cv-r span{display:block;font-size:9pt;font-weight:700;color:var(--royal);letter-spacing:.04em}
-.cv-mid{position:relative;z-index:1;margin-top:62mm}
-.cv-y{font-size:46pt;line-height:1;font-weight:800;color:var(--blue2)}
-.cv-t1{font-size:36pt;line-height:1.15;font-weight:300;color:#3a4a66;margin-top:2mm}
-.cv-t2{font-size:38pt;line-height:1.1;font-weight:800;color:var(--royal)}
-.cv-rule{display:block;width:44mm;height:1.2mm;background:var(--royal);margin:7mm 0 6mm}
-.cv-lead{font-size:13pt;line-height:1.5;font-weight:700;max-width:120mm;color:var(--ink)}
-.cv-sub{font-size:10pt;line-height:1.6;color:var(--mute);max-width:115mm;margin-top:2mm}
-.cv-bot{position:relative;z-index:1;margin-top:auto;max-width:120mm}
-.cv-bot p{font-size:8.6pt;color:var(--ink2)}.cv-demo{margin-top:2mm;color:var(--mute) !important}
+/* 표지 — 흰 바탕 · 동심원 · 학교 색 상자 */
+.cover{height:297mm;margin:0;padding:0 20mm 18mm;background:#fff;color:var(--ink);display:flex;flex-direction:column;break-after:page;position:relative;overflow:hidden}
+.rings{position:absolute;inset:0;width:210mm;height:297mm;z-index:0}
+.cv-box{position:absolute;right:20mm;top:0;z-index:1;width:40mm;height:44mm;background:var(--royal);color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:0 4mm 4mm}
+.cv-box::before{content:"";position:absolute;right:4mm;top:5mm;width:3.2mm;height:3.2mm;border-radius:50%;background:var(--star)}
+.cv-box b{font-size:14pt;font-weight:800;letter-spacing:-.01em}.cv-box span{font-size:6.6pt;letter-spacing:.06em;opacity:.8;margin-top:.8mm}
+.cv-mid{position:relative;z-index:1;margin-top:96mm;margin-left:42mm}
+.cv-k{font-size:10pt;font-weight:700;color:var(--sky);margin-bottom:4mm}
+.cv-y{font-size:50pt;line-height:1;font-weight:800;color:var(--sky)}
+.cv-t1{font-size:34pt;line-height:1.15;font-weight:300;color:#33415c;margin-top:2mm}
+.cv-t2{font-size:38pt;line-height:1.1;font-weight:800;color:var(--navy)}
+.cv-rule{display:block;width:44mm;height:1.4mm;background:linear-gradient(90deg,var(--royal) 0 78%,var(--star) 78%);margin:7mm 0 6mm}
+.cv-lead{font-size:13pt;line-height:1.5;font-weight:700;max-width:118mm;color:var(--ink)}
+.cv-sub{font-size:10pt;line-height:1.6;color:var(--mute);max-width:112mm;margin-top:2mm}
+.cv-bot{position:relative;z-index:1;margin-top:auto;margin-left:42mm;max-width:118mm;border-top:1px solid var(--line);padding-top:3mm}
+.cv-bot p{font-size:8.6pt;color:var(--ink2)}.cv-who{font-size:10pt !important;font-weight:700;color:var(--navy) !important;margin-bottom:1mm}.cv-demo{margin-top:2mm;color:var(--mute) !important}
 /* 장 머리 — 파란 띠 하나 · 큰 번호 · 제목 · 한 줄 */
-.op{display:grid;grid-template-columns:20mm 1fr;gap:5mm;align-items:center;background:var(--royal);color:#fff;border-radius:2.5mm;padding:5mm 7mm;margin-bottom:6mm;position:relative;overflow:hidden}
+.op{display:grid;grid-template-columns:20mm 1fr;gap:5mm;align-items:center;background:linear-gradient(100deg,var(--navy),var(--royal) 70%);color:#fff;border-radius:2.5mm;padding:5mm 7mm;margin-bottom:6mm;position:relative;overflow:hidden}
 .op::after{content:"";position:absolute;right:-14mm;top:-18mm;width:52mm;height:52mm;border-radius:50%;border:7mm solid rgba(255,255,255,.08)}
-.op-n{font-size:30pt;line-height:1;font-weight:800;color:#9cc3ff}
+.op-n{font-size:30pt;line-height:1;font-weight:800;color:var(--star)}
 .op h2{font-size:17pt;line-height:1.3;letter-spacing:-.01em;color:#fff}
 .op-t{font-size:9.8pt;color:#dbe7ff;margin-top:1.5mm;line-height:1.5}
 /* 한눈에 보기 */
@@ -264,7 +268,7 @@ h3 small{font-weight:400;color:var(--mute);font-size:8.8pt;margin-left:6px}
 .tile{border-radius:3mm;background:var(--tint);padding:4mm 4mm 3.5mm}
 .tile .ic{display:inline-flex;width:9mm;height:9mm;border-radius:50%;align-items:center;justify-content:center;background:var(--royal)}
 .tile .ic svg{width:5mm;height:5mm;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.tile.t1 .ic{background:#12a39a}.tile.t2 .ic{background:#f0a400}.tile.t3 .ic{background:#e2567d}
+.tile.t1 .ic{background:var(--sky)}.tile.t2 .ic{background:#d7a900}.tile.t3 .ic{background:var(--navy)}
 .tile b{display:block;font-size:26pt;line-height:1;font-weight:800;margin-top:3mm;color:var(--ink)}
 .tile p{font-size:10pt;font-weight:700;margin-top:1.5mm}.tile small{display:block;font-size:8pt;color:var(--mute);line-height:1.4;margin-top:.8mm}
 .vis{margin-top:2mm;break-inside:avoid}
@@ -353,6 +357,6 @@ svg.fit{width:100%;height:auto;margin-top:2mm}
 .facts,.src{margin:0;padding:0;list-style:none;font-size:9.2pt}.facts li,.src li{padding:1mm 0;border-bottom:1px solid var(--line2);break-inside:avoid}
 .facts small{display:block;color:var(--mute);font-size:8.4pt}.src span{display:block;color:var(--mute);font-size:8.3pt;word-break:break-all}
 .legal{margin-top:6mm;font-size:8.8pt;color:var(--mute);border-top:1px solid var(--line);padding-top:2.5mm}
-@media screen{body{background:#e9ecf1;padding:24px 0}section{background:#fff;max-width:210mm;margin:0 auto 18px;padding:14mm 17mm;box-shadow:0 1px 3px rgba(17,26,43,.12)}.cover{height:297mm;padding:22mm 20mm}}
-@media screen and (max-width:720px){section{padding:20px 16px !important}.two,.roles,.plan,.conv{grid-template-columns:1fr}.ar{transform:rotate(90deg)}.proj article{grid-template-columns:1fr}.tiles{grid-template-columns:1fr 1fr}.cover{height:auto;min-height:200mm}.cv-mid{margin-top:40mm}.cv-y{font-size:34pt}.cv-t1{font-size:26pt}.cv-t2{font-size:28pt}.tb{display:block;overflow-x:auto}.hm{font-size:8pt}}
+@media screen{body{background:#e9ecf1;padding:24px 0}section{background:#fff;max-width:210mm;margin:0 auto 18px;padding:14mm 17mm;box-shadow:0 1px 3px rgba(17,26,43,.12)}.cover{height:297mm;padding:0 20mm 18mm}}
+@media screen and (max-width:720px){section{padding:20px 16px !important}.two,.roles,.plan,.conv{grid-template-columns:1fr}.ar{transform:rotate(90deg)}.proj article{grid-template-columns:1fr}.tiles{grid-template-columns:1fr 1fr}.cover{height:auto;min-height:200mm}.cv-mid{margin-top:70mm;margin-left:0}.cv-bot{margin-left:0}.cv-y{font-size:34pt}.cv-t1{font-size:26pt}.cv-t2{font-size:28pt}.tb{display:block;overflow-x:auto}.hm{font-size:8pt}}
 `;
