@@ -1,18 +1,26 @@
 # 세종 MVP — 무엇이 있고, 어떻게 띄우고, 어디까지 확인했는가
 
-## 1. 확인 상태 (2026-10-20)
+## 1. 확인 상태 (2026-10-20, GitHub Actions `sejong-verify` run 39392001156 · 커밋 d91f0e00)
 
-| 구분 | 상태 |
+세션 환경은 npm 레지스트리가 막혀 있어, 아래는 전부 GitHub 러너(일회용 PostgreSQL 16 ·
+합성 DEMO 시드 · 실행마다 무작위 비밀번호)에서 돌린 결과다. **CI PASS 는 Staging 접속이 아니다.**
+
+| 구분 | 결과 |
 |---|---|
-| 분석 규칙 (`src/sejong/lib/analysis.ts`) | **실행 확인.** `node --experimental-strip-types scripts/sejong/analysis-check.mjs` 23/23 |
-| DB 층 (`db/sejong/schema_sejong_demo.sql`) | **실행 확인.** 로컬 PostgreSQL 16 에 공통 스키마 체인(19개 파일) 다음으로 두 번 적용해 멱등 확인 |
-| 시연 자료 (`scripts/sejong/seed-demo.mjs`) | **실행 확인.** 참여자 21 · 완료 10 · 진행 중 4 · 응답 290 · 경험 20 · 동의 12 |
-| 관리자 집계 SQL (`src/sejong/lib/metrics.ts`) | **실행 확인.** 질의 7개를 시연 DB 에서 psql 로 돌려 사업별 깔때기 · 관심 분야 · 상태 표가 나온다 |
-| 화면 코드 (`src/app/sejong/**`, `src/sejong/**`) | **타입만 확인.** 외부 패키지를 대역으로 두고 TypeScript 6 으로 검사해 0 오류. **Next.js 빌드와 실제 브라우저 확인은 아직이다** |
-| 브라우저 E2E · 화면 캡처 (`scripts/sejong/e2e-shots.mjs`) | **아직 못 돌렸다.** 이 환경의 네트워크 정책이 `registry.npmjs.org` 를 막아 `npm ci` 가 안 된다(next·react·pg·next-auth 가 없다) |
+| `npm ci` | 통과 |
+| 전체 TypeScript (`tsc --noEmit`) | 통과 |
+| Next.js 실제 빌드 (`next build`, standalone) | 통과 |
+| 공통 DB 체인 (HEAD · 기준 두 벌) | 통과 |
+| 기존 측정·채점 회귀 16종 (기준 `0bff307c` 대조) | 14 통과 · 2 걸림(`golden:check` · `evidence:check`) — **기준 커밋에서도 똑같이 걸림 → 세종과 무관.** 세종 때문에 걸린 회귀 0 |
+| 세종 분석 규칙 | 23 / 23 |
+| DB 층 · 권한 경계 (`db-check.mjs`) | 16 / 16 |
+| 공통 파일 변경 | 0 |
+| 브라우저 E2E (구직자 · 상담사 · 관리자 · PDF) | **30 / 30** — PDF 200 · 11쪽 · 렌더 기록 남음 |
 
-**막힌 것 하나:** npm 레지스트리 접근. 환경 설정 → Network access 에서
-`registry.npmjs.org` 를 허용하면 아래 3절을 그대로 돌린다.
+CI 가 찾아 고친 결함 하나: 응시 시각이 Date 로 와서 결과지(`/sejong/report`)·PDF·상담사
+열람이 그리는 순간 터졌다 → `store.ts` 에서 `::text` 로 읽는다. E2E 쪽 답 패턴 하나도 고쳤다.
+
+캡처·PDF 는 공개 저장소에 올리지 않는다(아래 Staging 계획 0-1).
 
 ## 2. 무엇이 있는가
 
