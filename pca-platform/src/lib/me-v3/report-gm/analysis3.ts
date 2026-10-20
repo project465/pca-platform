@@ -133,7 +133,7 @@ export function domainRead(m: ResultModel, d: ResultDomain, exps: Experience[]):
       break;
     default:
       headline = `${j(name, "은는")} 이번 검사에서 자세히 묻지 않은 영역입니다.`;
-      meaning.push(`${interest ? `관심은 ${interest} 답했고 ` : ""}${freq ? `경험은 ${freq} 답했습니다. ` : ""}이 영역의 판단은 자세히 묻지 않았기 때문에, 아래 그림에서 이 영역이 비어 있는 것은 경험이 없어서가 아니라 질문하지 않았기 때문입니다.`);
+      meaning.push(`${interest ? `${interest} 답했고 ` : ""}${freq ? `경험은 ${freq} 답했습니다. ` : ""}이 영역의 판단은 자세히 묻지 않았기 때문에, 판단 그림과 표에서 이 영역이 비어 있는 것은 경험이 없어서가 아니라 질문하지 않았기 때문입니다.`);
   }
   if (d.zone !== "NOT_EXPLORED") {
     limits.push("이 해설은 학생이 고른 응답과 체크리스트 항목으로 만든 것입니다. 결과물의 완성도나 실제 성과(수치·기간)는 확인하지 않았습니다.");
@@ -699,7 +699,8 @@ export function profileRead(m: ResultModel, exps: Experience[]): ProfileRead {
   if (never.length) P.push(`${j(join(never.map((a) => JUDGE[a].name), ", "), "은는")} 물어본 영역에서 아직 스스로 해 봤다고 답하지 않았습니다. 능력이 없다는 뜻이 아니라, 그런 장면을 맡아 본 경험이 아직 적다는 뜻입니다.`);
   if (highInt.length) P.push(`관심은 ${join(highInt, ", ")}에서 높게 나왔습니다.${notAsked.length ? ` 그중 ${j(join(notAsked, ", "), "은는")} 이번 검사에서 판단을 자세히 묻지 않아, 관심이 있다는 것까지만 알 수 있습니다.` : ""}`);
   if (z3.length) P.push(`${j(join(z3, ", "), "은는")} 해 본 경험은 있지만 관심은 낮게 나왔습니다. 진로를 이쪽으로 정할 필요는 없지만, 다른 직무에 지원할 때 기본기로 쓸 수 있는 경험입니다.`);
-  const picks = m.domains.reduce((n, d) => n + d.did.length, 0);
+  // 고른 근거는 결과 모델의 네 목록을 합쳐 센다: 묻지 않은 판단 자리의 ‘비교한 대상’ 은 `did` 에 들지 않고 `verifications` 에만 남는다(격리 검사에서 저장 27 · did 26)
+  const picks = m.domains.reduce((n, d) => n + new Set([...d.did, ...d.decided, ...d.artifacts, ...d.verifications]).size, 0);
   const arts = m.domains.reduce((n, d) => n + d.artifacts.length, 0);
   const evidenceLine = picks === 0 && !exps.length
     ? "체크리스트에서 고른 항목과 경험 기록이 모두 없어, 아래 해석은 판단을 묻는 질문에 답한 내용만으로 만들었습니다."

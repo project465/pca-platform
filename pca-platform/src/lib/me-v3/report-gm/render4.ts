@@ -47,7 +47,7 @@ export const opener = (no: string, kicker: string, title: string, dek: string) =
 /* ── ① 표지 ────────────────────────────────────────────────────── */
 
 /** 열두 영역의 관심(선의 길이)과 해 본 깊이(점의 채움). 학생의 응답으로 그린다 */
-function signature(r: Report3): string {
+export function signature(r: Report3): string {
   const S = 250, c = S / 2, R = 92;
   const n = r.map.length;
   const len = (b: string | null) => (b === "HIGH" ? 1 : b === "MID" ? 0.66 : b === "LOW" ? 0.36 : 0.2);
@@ -133,13 +133,13 @@ function radar(r: Report3): string {
   return `<svg class="rd" viewBox="0 0 ${W} ${H}" role="img" aria-label="판단 단계 방사형 그래프">${rings}${spokes}${series}${labels}</svg>`;
 }
 /** 영역 × 판단: 칸마다 단계(눈금 셋). 묻지 않은 칸은 줄표 */
-function matrix(r: Report3): string {
+export function matrix(r: Report3): string {
   const pip = (lv: Level | null) => lv === null ? `<span class="mx-na">—</span>`
     : `<span class="pips l${lv}">${[1, 2, 3].map((k) => `<i class="${k <= lv ? "on" : ""}"></i>`).join("")}</span>`;
   return `<table class="mx"><thead><tr><th></th>${r.radar.axes.map((a) => `<th>${esc(JUDGE[a.axis].name)}</th>`).join("")}</tr></thead>
   <tbody>${r.radar.series.map((s, k) => `<tr><th><i class="sw" style="background:${SER[k]}"></i>${esc(s.name)}</th>${s.levels.map((v) => `<td>${pip(v)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
 }
-function p2(r: Report3): string {
+export function p2(r: Report3): string {
   const b = r.radar.best;
   const n3 = b.filter((x) => x.level === 3), n2 = b.filter((x) => x.level === 2), n1 = b.filter((x) => x.level !== null && x.level <= 1);
   const stat = (n: number, label: string, xs: typeof b) => `<div class="st"><span class="st-n">${n}</span><div><b>${esc(label)}</b><p>${esc(xs.map((x) => JUDGE[x.axis].name).join(" · ") || "—")}</p></div></div>`;
@@ -166,8 +166,8 @@ function p2(r: Report3): string {
 /* ── ③ Evidence 심층 분석 ────────────────────────────────────────── */
 
 const COVER: Record<string, string> = { strong: "스스로 해 봄", partial: "지시받아 해 봄", none: "해 본 적 없음", unasked: "묻지 않음" };
-function p3(r: Report3): string {
-  const d: DomainRead = r.domains.find((x) => x.zone === "Z1_EVIDENCE_ESTABLISHED") ?? r.domains[0];
+export function p3(r: Report3, pick?: DomainRead): string {
+  const d: DomainRead = pick ?? r.domains.find((x) => x.zone === "Z1_EVIDENCE_ESTABLISHED") ?? r.domains[0];
   const rec = r.records.find((x) => x.domains.includes(d.name));
   const cols: [string, string[], string][] = [
     ["직접 정한 것", d.decisions, "기준을 내가 정했다고 고른 장면"],
@@ -232,7 +232,7 @@ function p4(r: Report3): string {
 
 /* ── ⑤ 개인별 취업 실행 로드맵 ──────────────────────────────────── */
 
-function p5(r: Report3): string {
+export function p5(r: Report3): string {
   const role = r.strategy.roleName;
   const goalDir = r.directions.find((d) => d.goal);
   const todos = new Map(r.priorities.map((x) => [x.todo, x]));
@@ -248,7 +248,7 @@ function p5(r: Report3): string {
   ${opener("11", "개인별 취업 실행 로드맵", `${role}을 향한 실행 로드맵`, `과제는 모두 ${role}의 업무 영역과 핵심 판단에서 골랐습니다. 첫 과제는 30일, 둘째는 60일에 놓이고 90일에는 ${role}의 일을 겨냥한 프로젝트를 끝냅니다.`)}
   <div class="chainv">
     <div class="goalc"><span>목표</span><b>${esc(r.priorities[0]?.chain.goal ?? role)}</b>${goalDir ? `<em>준비 상태 · ${esc(goalDir.readiness)}</em>` : ""}</div>
-    <ol>${r.priorities.map((x) => `<li><span class="rel">${esc(x.relationTag)}</span><b>${x.order}. ${esc(x.title)}</b><p>${esc(x.link)}</p><em>${esc(x.when)} · 남길 것 ${esc(x.output)}</em></li>`).join("")}</ol>
+    <ol>${r.priorities.slice(0, 3).map((x) => `<li><span class="rel">${esc(x.relationTag)}</span><b>${x.order}. ${esc(x.title)}</b><p>${esc(x.link)}</p><em>${esc(x.when)} · 남길 것 ${esc(x.output)}</em></li>`).join("")}</ol>
   </div>
   <div class="tl">
     <div class="tl-h"><span></span>${periods.map((p) => `<b>${esc(p)}</b>`).join("")}</div>

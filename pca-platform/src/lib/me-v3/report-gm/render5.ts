@@ -38,18 +38,18 @@ export type Lib = {
 
 export const DESIGN5_PAGES = [25, 28, 36, 37, 43, 44, 56, 79] as const;
 
-const eok = (n: number | undefined) => (n === undefined || !Number.isFinite(n) ? "—" : (n / 1e8).toLocaleString("ko-KR", { maximumFractionDigits: 1, minimumFractionDigits: 1 }));
-const ymd = (s: string) => (s && s.length === 8 ? `${s.slice(0, 4)}-${s.slice(4, 6)}-${s.slice(6)}` : s);
-const tag = (k: "OFFICIAL_DIRECT" | "THIRD_PARTY" | "SEARCH_ONLY" | "CONFLICTING" | "UNVERIFIED" | "GENERAL" | "READ", t?: string) => {
+export const eok = (n: number | undefined) => (n === undefined || !Number.isFinite(n) ? "—" : (n / 1e8).toLocaleString("ko-KR", { maximumFractionDigits: 1, minimumFractionDigits: 1 }));
+export const ymd = (s: string) => (s && s.length === 8 ? `${s.slice(0, 4)}-${s.slice(4, 6)}-${s.slice(6)}` : s);
+export const tag = (k: "OFFICIAL_DIRECT" | "THIRD_PARTY" | "SEARCH_ONLY" | "CONFLICTING" | "UNVERIFIED" | "GENERAL" | "READ", t?: string) => {
   const T = { OFFICIAL_DIRECT: "공식 원문 직접 확인", THIRD_PARTY: "제3자 자료 확인", SEARCH_ONLY: "검색 결과만 확인", CONFLICTING: "상충 정보 존재", UNVERIFIED: "검증되지 않음", GENERAL: "직무 일반", READ: "리포트 해석" } as const;
   return `<span class="vt vt-${k}">${esc(t ?? T[k])}</span>`;
 };
-const ROLE_SHORT: Record<string, string> = {
+export const ROLE_SHORT: Record<string, string> = {
   ROLE_PLAN_V1: "경영기획", ROLE_ANALYTICS_V1: "데이터 기반 경영", ROLE_FINACC_V1: "재무·회계", ROLE_OPS_V1: "운영관리",
   ROLE_CS_V1: "서비스·고객", ROLE_SALES_V1: "사업개발·영업", ROLE_MKT_V1: "마케팅", ROLE_HR_V1: "인사",
 };
-const ROLE_ORDER = ["ROLE_PLAN_V1", "ROLE_MKT_V1", "ROLE_HR_V1", "ROLE_FINACC_V1", "ROLE_SALES_V1", "ROLE_OPS_V1", "ROLE_ANALYTICS_V1", "ROLE_CS_V1"];
-const pick = (fin: Fin) => (fin && Object.keys(fin.consolidated).length ? { kind: "연결", v: fin.consolidated } : fin ? { kind: "별도", v: fin.separate } : null);
+export const ROLE_ORDER = ["ROLE_PLAN_V1", "ROLE_MKT_V1", "ROLE_HR_V1", "ROLE_FINACC_V1", "ROLE_SALES_V1", "ROLE_OPS_V1", "ROLE_ANALYTICS_V1", "ROLE_CS_V1"];
+export const pick = (fin: Fin) => (fin && Object.keys(fin.consolidated).length ? { kind: "연결", v: fin.consolidated } : fin ? { kind: "별도", v: fin.separate } : null);
 
 function frame(r: Report3, lib: Lib, n: number, body: string): string {
   const head = [r.meta.school, r.meta.department].filter(Boolean).join(" · ");
@@ -61,17 +61,17 @@ function frame(r: Report3, lib: Lib, n: number, body: string): string {
 </section>`;
 }
 /** 설계표의 부족 자료 번호를 쪽 아래에 그대로 적는다 */
-function gaps(lib: Lib, n: number): string {
+export function gaps(lib: Lib, n: number): string {
   const p = lib.toc.pages.find((x) => x.n === n)!;
   if (!p.missing.length) return "";
   return `<p class="gap">부족한 조사 자료 — ${p.missing.map((k) => `<b>${esc(k)}</b> ${esc(lib.toc.missing[k]?.what ?? "")}`).join(" · ")}</p>`;
 }
-const focusCompany = (r: Report3): CompanyDeep => r.companies.find((x) => x.jobs[0]?.role === r.strategy.roleCode) ?? r.companies[0];
-const dartOf = (lib: Lib, id: string) => lib.dart.orgs.find((x) => x.id === id);
+export const focusCompany = (r: Report3): CompanyDeep => r.companies.find((x) => x.jobs[0]?.role === r.strategy.roleCode) ?? r.companies[0];
+export const dartOf = (lib: Lib, id: string) => lib.dart.orgs.find((x) => x.id === id);
 
 /* ── 25 경영학 직무 지도 ─────────────────────────────────────────── */
 
-function d25(r: Report3, lib: Lib): string {
+export function d25(r: Report3, lib: Lib): string {
   const goal = r.strategy.roleCode;
   const roles = ROLE_ORDER.filter((k) => lib.roles.roles[k]);
   const mapBy = new Map(r.map.map((m) => [m.code, m]));
@@ -99,7 +99,7 @@ function d25(r: Report3, lib: Lib): string {
 
 /* ── 28 사업보고서로 산업·회사 읽기 ────────────────────────────── */
 
-function d28(r: Report3, lib: Lib): string {
+export function d28(r: Report3, lib: Lib): string {
   const c = focusCompany(r);
   const ov = lib.overview.orgs.find((x) => x.id === c.id && x.excerpt) ?? lib.overview.orgs.find((x) => x.excerpt)!;
   const name = lib.dart.orgs.find((x) => x.id === ov.id)?.name ?? c.name;
@@ -131,7 +131,7 @@ function d28(r: Report3, lib: Lib): string {
 
 /* ── 36 산업 구조도 ─────────────────────────────────────────────── */
 
-function d36(r: Report3, lib: Lib): string {
+export function d36(r: Report3, lib: Lib): string {
   const strategic = lib.orgs.region_facts.find((f) => f.text.includes("전략산업"));
   const local = lib.orgs.orgs.filter((o) => o.region !== "NATIONAL");
   const groups = new Map<string, typeof local>();
@@ -161,7 +161,7 @@ function d36(r: Report3, lib: Lib): string {
 
 /* ── 37 공시로 본 지역 기업 ────────────────────────────────────── */
 
-function d37(r: Report3, lib: Lib): string {
+export function d37(r: Report3, lib: Lib): string {
   const v2 = new Map(lib.orgs.orgs.map((o) => [o.id, o]));
   const listed = lib.dart.orgs.filter((o) => o.dart?.stock_code && v2.get(o.id)?.region !== "NATIONAL");
   const other = lib.dart.orgs.filter((o) => o.dart && !o.dart.stock_code && v2.get(o.id)?.region !== "NATIONAL");
@@ -186,7 +186,7 @@ function d37(r: Report3, lib: Lib): string {
 /* ── 43 기업 ① 사업과 위치 ─────────────────────────────────────── */
 
 /** 손익 부호에 따라 읽는 법 한 줄을 고른다. 까닭을 단정하지 않고 어디서 확인할지만 적는다 */
-function readSigns(op: number | undefined, ni: number | undefined): string {
+export function readSigns(op: number | undefined, ni: number | undefined): string {
   if (op === undefined || ni === undefined) return "공시 계정이 비어 있어 읽는 법을 적지 않았습니다.";
   if (op < 0 && ni >= 0) return "영업이익은 마이너스인데 당기순이익은 플러스입니다. 본업 밖(금융 수익 등)에서 이익이 났을 수 있으니 손익계산서 주석에서 확인합니다.";
   if (op < 0 && ni < 0) return "영업이익과 당기순이익이 모두 마이너스입니다. 연구개발비처럼 미리 쓰는 비용이 매출보다 큰 해인지, 보고서의 비용 구성에서 확인합니다.";
@@ -194,8 +194,7 @@ function readSigns(op: number | undefined, ni: number | undefined): string {
   return "영업이익과 당기순이익이 모두 플러스입니다. 지난해와 견주어 늘었는지 줄었는지를 같은 보고서의 비교 칸에서 봅니다.";
 }
 
-function d43(r: Report3, lib: Lib): string {
-  const c = focusCompany(r);
+export function d43(r: Report3, lib: Lib, c: CompanyDeep = focusCompany(r), n = 43, no = "①"): string {
   const d = dartOf(lib, c.id);
   const ov = lib.overview.orgs.find((x) => x.id === c.id);
   const f = pick(d?.financials ?? null);
@@ -204,13 +203,13 @@ function d43(r: Report3, lib: Lib): string {
   const bar = (label: string, v: number | undefined) => `<div class="fb"><span>${esc(label)}</span><div class="fb-t"><i class="${(v ?? 0) < 0 ? "neg" : ""}" style="width:${v === undefined ? 0 : Math.max(1.5, 100 * Math.abs(v) / max)}%"></i></div><b class="${(v ?? 0) < 0 ? "neg" : ""}">${eok(v)}억</b></div>`;
   const id = d?.dart;
   const quote = (ov?.excerpt ?? "").slice(0, 330).replace(/\s+\S*$/, "") + " …";
-  return frame(r, lib, 43, `
-  ${opener("06", "기업 ① 사업과 위치", c.name, c.headline)}
+  return frame(r, lib, n, `
+  ${opener("06", `기업 ${no} 사업과 위치`, c.name, c.headline)}
   <div class="idg">${id ? [
     ["공시 등록명", id.corp_name], ["시장", `${id.corp_cls}${id.stock_code ? ` · ${id.stock_code}` : ""}`], ["본점", id.adres], ["설립", ymd(id.est_dt)],
     ["사업자등록번호", `${id.bizr_no.replace(/(\d{3})(\d{2})(\d{5})/, "$1-$2-$3")}${d?.compare?.bizno === "SAME" ? " · 자료와 일치" : ""}`], ["홈페이지", id.hm_url ?? "공시에 없음"],
   ].map(([k, v]) => `<div><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join("") : `<div><span>공시</span><b>공시 목록에 없음</b></div>`}</div>
-  <p class="small idsrc">${tag("OFFICIAL_DIRECT")} 위 여섯 칸은 OpenDART 기업개황(${esc(d?.checked_on ?? "")})</p>
+  <p class="small idsrc">${id ? `${tag("OFFICIAL_DIRECT")} 위 여섯 칸은 OpenDART 기업개황(${esc(d?.checked_on ?? "")})` : `${tag("UNVERIFIED", "공시 개황 없음")} OpenDART 고유번호 목록에서 이 회사를 찾지 못했습니다(${esc(lib.dart.checked_on)}). 식별 정보는 공식 원문으로 확인하지 못했습니다.`}</p>
   <div class="g43">
     <div><h3 class="eyebrow">① 무엇을 하는 회사인가 <span>공시 원문</span></h3>
       ${ov?.excerpt ? `<blockquote class="bq">${esc(quote)}</blockquote><p class="small">${esc(ov.report)} · 접수번호 ${esc(ov.rcept_no)} · ‘사업의 개요’ 앞부분 그대로</p>` : `<p class="slot1">공시 원문 없음 — 확인 필요</p>`}
@@ -225,20 +224,19 @@ function d43(r: Report3, lib: Lib): string {
       <p>${esc(c.interpret[1] ?? c.why)}</p></div>
   </div>
   <p class="src">${tag("OFFICIAL_DIRECT")} 개황·원문·재무는 OpenDART · ${tag("THIRD_PARTY")}·${tag("SEARCH_ONLY")} 제품과 해석은 리포트 자료(v2)에서 왔고 줄마다 출처가 있습니다 · 채용 여부는 확인하지 않았습니다.</p>
-  ${gaps(lib, 43)}`);
+  ${gaps(lib, n)}`);
 }
 
 /* ── 44 기업 ① 일의 체계와 실제 업무 ──────────────────────────── */
 
-function d44(r: Report3, lib: Lib): string {
-  const c = focusCompany(r);
+export function d44(r: Report3, lib: Lib, c: CompanyDeep = focusCompany(r), n = 44, no = "①"): string {
   const d = dartOf(lib, c.id);
   const seg = d?.staff?.by_segment ?? [];
   const tot = seg.reduce((a, s) => a + s.count, 0);
   const goal = c.jobs[0];
   const ST: Record<string, string> = { "채용 공고에서 본 직무": "SEARCH_ONLY", "기관 소개에서 본 직무": "SEARCH_ONLY" };
-  return frame(r, lib, 44, `
-  ${opener("06", "기업 ① 일의 체계와 실제 업무", c.name, "공시의 사업부문별 인원으로 회사의 일이 어디에 몰려 있는지 보고, 그 위에 공고에서 본 경영 직무와 학생의 검사 응답을 겹쳤습니다.")}
+  return frame(r, lib, n, `
+  ${opener("06", `기업 ${no} 일의 체계와 실제 업무`, c.name, "공시의 사업부문별 인원으로 회사의 일이 어디에 몰려 있는지 보고, 그 위에 공고에서 본 경영 직무와 학생의 검사 응답을 겹쳤습니다.")}
   <div class="g44">
     <div><h3 class="eyebrow">③ 사람은 어디에 있나 <span>${esc(d?.staff ? `${d.staff.year} 사업보고서 직원 현황` : "공시 없음")}</span></h3>
       ${seg.length ? `<div class="stk">${seg.map((s, i) => `<div class="stk-s sg${i}" style="flex:${s.count}"><b>${s.count}</b></div>`).join("")}</div>
@@ -254,24 +252,22 @@ function d44(r: Report3, lib: Lib): string {
       <p class="small">이 표는 직무 적합도나 합격 가능성이 아닙니다. 직무의 핵심 판단 가운데 지금 응답에서 확인된 것과 아닌 것을 갈랐습니다.</p></div>
   </div>
   <p class="src">조직도·직무 소개 원문(R7)과 공식 채용 공고(R8)를 읽기 전이라, ④·⑤의 ‘본 일’ 은 검색 결과 수준입니다 · 채용 여부는 확인하지 않았습니다.</p>
-  ${gaps(lib, 44)}`);
+  ${gaps(lib, n)}`);
 }
 
 /* ── 56 기업 ① 지원 전략 ───────────────────────────────────────── */
 
-function d56(r: Report3, lib: Lib): string {
-  const c = focusCompany(r);
+export function d56(r: Report3, lib: Lib, c: CompanyDeep = focusCompany(r), n = 56, no = "①", story = r.application.stories[0], withCal = true): string {
   const g = c.jobs[0];
   const d = dartOf(lib, c.id);
-  const story = r.application.stories[0];
   const listed = Boolean(d?.dart?.stock_code);
   const cal: [string, string, string][] = [
     ["지금 ~ 3개월", g.project.title.replace(/'([^']+)'/g, "‘$1’"), `남길 것 — ${g.project.output}`],
     ["3 ~ 6개월", listed ? "반기보고서(사업연도 시작 후 6개월이 끝나고 45일 안 공시)로 숫자 다시 맞추기" : "기업 누리집·보도로 사업 변화 다시 확인하기", "남길 것 — 바뀐 숫자 한 줄과 그 까닭"],
     ["6 ~ 12개월", "공식 채용 공고 원문에서 이 직무의 요건 확인하고, 내 결과물과 한 줄씩 대조하기", "남길 것 — 요건 대조표(공고 원문 주소와 확인일 포함)"],
   ];
-  return frame(r, lib, 56, `
-  ${opener("07", "기업 ① 지원 전략", `${c.name} · ${g.name}`, "앞 쪽에서 본 회사의 일과 학생의 근거를 서류와 면접에서 어떻게 쓸지, 그리고 3개월에서 12개월 사이에 무엇을 할지 적었습니다.")}
+  return frame(r, lib, n, `
+  ${opener("07", `기업 ${no} 지원 전략`, `${c.name} · ${g.name}`, "앞 쪽에서 본 회사의 일과 학생의 근거를 서류와 면접에서 어떻게 쓸지, 그리고 3개월에서 12개월 사이에 무엇을 할지 적었습니다.")}
   <div class="g56">
     <div><h3 class="eyebrow">⑩ 자기소개서 문단 재료 <span>고른 근거 그대로 · 수치는 직접</span></h3>
       ${story ? `<dl class="sty">${story.parts.map((p) => `<div class="${p.filled ? "" : "empty"}"><dt>${esc(p.label)}</dt><dd>${esc(p.text)}</dd></div>`).join("")}</dl><p class="small">${esc(g.selfIntro)}</p>` : `<p class="slot1">고른 근거가 없어 문단 재료를 세우지 않았습니다</p>`}</div>
@@ -279,17 +275,17 @@ function d56(r: Report3, lib: Lib): string {
       <p class="pj">${esc(g.project.title)}</p><ol class="pj-s">${g.project.steps.slice(0, 4).map((s) => `<li>${esc(s)}</li>`).join("")}</ol><p class="small">${esc(g.portfolio)}</p>
       <h3 class="eyebrow">받을 질문</h3><ul class="qs">${g.interview.slice(0, 3).map((q) => `<li>“${esc(q)}”</li>`).join("")}</ul></div>
   </div>
-  <h3 class="eyebrow">⑫ 3 · 6 · 12개월 <span>${listed ? "상장사 정기공시 일정에 맞춤" : "공시 의무 없는 회사"}</span></h3>
-  <div class="cal">${cal.map(([w, t, o]) => `<div><span>${esc(w)}</span><b>${esc(t)}</b><em>${esc(o)}</em></div>`).join("")}</div>
+  ${withCal ? `<h3 class="eyebrow">⑫ 3 · 6 · 12개월 <span>${listed ? "상장사 정기공시 일정에 맞춤" : "공시 의무 없는 회사"}</span></h3>
+  <div class="cal">${cal.map(([w, t, o]) => `<div><span>${esc(w)}</span><b>${esc(t)}</b><em>${esc(o)}</em></div>`).join("")}</div>` : ""}
   <div class="chk"><b>⑪ 공식 채용 정보 확인 방법</b><span>${esc(c.toCheck.slice(0, 2).join(" · ") || "신입 채용 이력이 있는 부서")}</span><span>회사 채용 쪽과 공고 원문의 주소·확인일을 함께 적어 두세요. 이 리포트는 채용 여부를 확인하지 않았습니다.</span></div>
-  ${gaps(lib, 56)}`);
+  ${gaps(lib, n)}`);
 }
 
 /* ── 79 출처와 판본 ────────────────────────────────────────────── */
 
-function d79(r: Report3, lib: Lib): string {
+export function d79(r: Report3, lib: Lib, built?: number[]): string {
   const parts = Object.entries(lib.toc.parts);
-  const cnt = (k: string) => lib.toc.pages.filter((p) => p.verify.includes(k)).length;
+  const cnt = (k: string) => lib.toc.pages.filter((p) => (!built || built.includes(p.n)) && p.verify.includes(k)).length;
   const libs: [string, string, string, string][] = [
     ["검사 응답 · 결과 모델", "학생 응답 · 고른 근거", "판본 고정(굳은 결과)", Object.entries(r.versions).filter(([k]) => /bank|scor|result_model/i.test(k)).map(([, v]) => v).join(" · ") || "판본 표 참고"],
     ["경험 기록", "학생이 적은 기록(자기보고)", "응시 뒤 갱신 가능", "기록마다 적은 날"],
@@ -312,9 +308,9 @@ function d79(r: Report3, lib: Lib): string {
       <li>${tag("SEARCH_ONLY")} 검색·보도 결과만 봄</li>
       <li>${tag("CONFLICTING")} 출처끼리 다름 — 예: 본점 소재지가 자료와 공시에서 다른 곳</li>
       <li>${tag("UNVERIFIED")} 확인하지 못함</li></ul></div>
-    <div><h3 class="eyebrow">80쪽 설계에서 쪽마다 걸린 수준 <span>쪽 수</span></h3><ul class="vc">
+    <div><h3 class="eyebrow">${built ? "이 보고서의 쪽마다 걸린 수준" : "80쪽 설계에서 쪽마다 걸린 수준"} <span>쪽 수</span></h3><ul class="vc">
       ${[["MEASURED", "검사 응답"], ["GENERAL", "직무 일반"], ["OFFICIAL_DIRECT", "공식 원문"], ["THIRD_PARTY", "제3자 자료"], ["SEARCH_ONLY", "검색 결과"], ["NEEDS_OFFICIAL", "공식 자료 필요"]].map(([k, t]) => `<li><span>${esc(t)}</span><i style="width:${(cnt(k) * 1.6).toFixed(1)}mm"></i><b>${cnt(k)}</b></li>`).join("")}</ul>
-      <p class="small">한 쪽에 수준이 여럿이면 각각 셉니다. 장 ${parts.length}개 · 80쪽.</p></div>
+      <p class="small">한 쪽에 수준이 여럿이면 각각 셉니다. 장 ${parts.length}개 · ${built ? `이 학생 판 ${built.length}쪽` : "80쪽"}.</p></div>
   </div>
   <p class="src">이 리포트는 점수 · 순위 · 합격 가능성 · 채용 여부를 내지 않습니다. 공식 통계와 공고 원문을 확보하면 그 칸의 확인 수준과 확인일이 바뀌고, 학생의 검사 결과는 바뀌지 않습니다.</p>`);
 }
@@ -327,7 +323,7 @@ export function design5(r: Report3, lib: Lib, f: Fonts): string {
 <style>${faces(f)}${CSS.replace(/__FONT__/g, f.family)}${CSS5}</style></head><body>${pages.join("\n")}</body></html>`;
 }
 
-const CSS5 = `
+export const CSS5 = `
 .vt-GENERAL{background:#EFEAF8;color:#4B3A78}.vt-READ{background:#F7EEDF;color:#7A5418}
 .gap{font-size:7.8pt;color:#7A5418;background:var(--amber-t);padding:1.4mm 2.4mm;margin-top:2mm;line-height:1.5}
 .gap b{color:#5E3E0F}
