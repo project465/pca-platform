@@ -39,36 +39,44 @@ npm 레지스트리가 막혀 이 세션에서는 설치·빌드·브라우저 �
 ## 2. 차례 (사람이 Railway 에서, 승인 뒤)
 
 1. 새 프로젝트 `careermatri-sejong-staging` → **Empty**.
-2. **PostgreSQL** 추가(이 프로젝트 전용).
+2. **PostgreSQL** 추가(이 프로젝트 전용). 추가한 뒤 그 서비스의 Settings → Networking 에서
+   **TCP Proxy(공개 접속)를 지운다.** 앱은 내부망(`*.railway.internal`)으로만 붙는다.
 3. **GitHub Repo** 서비스 추가 → `project465/pca-platform` · 가지 **`claude/epic-galileo-lrvgxr`**.
-   - Root Directory 는 지금 공용 Staging 서비스의 값을 그대로 확인해서 맞춘다.
-     **추측해서 적지 않는다.** 저장소에서 `Dockerfile` 은 `pca-platform/` 아래에 있다.
-   - 자동 배포는 켜 두되, 이 가지에는 세종 작업만 올라간다.
-4. 변수 (값은 Railway 에서 새로 만든다. 운영 값을 복사하지 않는다)
+   - Root Directory 는 운영 서비스의 값을 열어 보고 같게 맞춘다(저장소에서 `Dockerfile` ·
+     `railway.json` 은 `pca-platform/` 아래에 있다). **추측해서 적지 않는다.**
+   - 이 가지에는 세종 작업만 올라간다. 자동 배포를 켜 두면 세종 커밋마다 Staging 이 새로 선다.
+4. 변수 (전부 이 프로젝트에서 새로 만든다. 운영·배재대 Staging 값을 복사하지 않는다)
 
    | 변수 | 값 |
    |---|---|
-   | `DATABASE_URL` | `${{Postgres.DATABASE_URL}}` (참조) |
+   | `DATABASE_URL` | `${{Postgres.DATABASE_URL}}` (참조 · 내부망 주소) |
    | `AUTH_SECRET` | 새로 생성 (`openssl rand -base64 32`) |
-   | `APP_ENV` | `staging` |
-   | `STAGING_BASIC_AUTH` | `아이디:비밀번호` (공유는 따로) |
-   | `PLATFORM_URL` | Railway 가 준 `*.up.railway.app` 주소 |
-   | `PDF_BASE` | 같은 주소 |
-   | `REPORT_PDF_DIR` | 볼륨을 붙일 경우만. 세종 PDF 는 디스크에 쓰지 않는다 |
+   | `APP_ENV` | `staging` (가짜 결제는 열리지만 결제 대행 변수가 없어 돈은 안 움직인다) |
+   | `STAGING_BASIC_AUTH` | `아이디:긴비밀번호` — 사이트 전체 자물쇠 · `noindex`. 공유는 따로 |
+   | `PLATFORM_URL` | 5번에서 받은 `https://…up.railway.app` |
+   | `PDF_BASE` | 같은 주소 (PDF 를 그리는 브라우저가 이 주소로 결과지를 연다) |
+   | `DB_IS_PERSISTENT` | `yes` |
 
-   결제(`PORTONE_*`)·메일(`MAIL_*`)·소셜 로그인 변수는 **넣지 않는다**.
-5. **도메인 생성** → `*.up.railway.app`.
-6. DB 세우기. 저장소를 받은 컴퓨터에서 그 DB 를 대상으로 돌린다.
+   넣지 않는 것: `PORTONE_*` · `PAYMENTS_PROVIDER` · `MAIL_*` · OAuth · `OPS_TOKEN` ·
+   `V3_PREVIEW_OPEN` · `V3_CAMPUS_FIXTURE`. 볼륨도 필요 없다(세종 PDF 는 디스크에 쓰지 않는다).
+5. 앱 서비스 Settings → Networking → **Generate Domain** → `*.up.railway.app`.
+6. DB 세우기 — **앱 컨테이너 안에서** (Railway → 앱 서비스 → ⋯ → Shell 또는 `railway ssh`).
+   운영 이미지에 `psql` 과 `/app/db` 가 들어 있으므로 DB 를 바깥에 열 일이 없다.
    ```bash
-   node -e 'const c=require("./deploy/db-chain.json");for(const f of [...c.base,...c.upgrade])console.log(f)' \
-     | while read f; do psql "$DATABASE_URL" -v ON_ERROR_STOP=1 --single-transaction -f "$f"; done
+   npm run db:init                                   # 빈 DB 에 공통 체인
    psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f db/sejong/schema_sejong_demo.sql
-   node --experimental-strip-types scripts/sejong/seed-demo.mjs > sj-seed.sql   # 주소에 railway 가 있으면 멈춘다
+   P(){ head -c 18 /dev/urandom | base64 | tr -d '/+='; }
+   A=$(P) C=$(P) S=$(P) V=$(P)
+   psql "$DATABASE_URL" -v ON_ERROR_STOP=1 --single-transaction \
+     -v pw_admin="$A" -v pw_counsel="$C" -v pw_seeker="$S" -v pw_virtual="$V" \
+     -f db/sejong/seed_sejong_demo.sql
+   printf 'sj-admin %s\nsj-counsel1 %s\nsj-demo01 %s\n' "$A" "$C" "$S"   # 이 화면에서 한 번만 받아 적는다
    ```
-   마지막 줄은 일부러 원격에서 멈추게 해 두었다. **원격 시드는 별도 승인 뒤**
-   `seed-demo.mjs` 의 막는 줄을 그 한 번만 풀거나, 시연 계정만 손으로 만든다.
-7. 확인: `/api/health` 200 → `/sejong` 에 Basic 인증 창 → 시연 계정 로그인 →
-   `scripts/sejong/e2e-shots.mjs` 를 `BASE=<주소>` 로 돌린다.
+   시드 SQL 은 비밀번호 변수가 없거나 **시연이 아닌 사용자가 있는 DB** 면 스스로 멈춘다.
+   운영·배재대 Staging 에 잘못 붙어도 한 줄도 넣지 않는다.
+7. 확인: `/api/health` 200 → `/sejong` 에 Basic 인증 창 → `sj-demo01` 로그인 → 진단 24문항 →
+   결과 → 결과지 PDF → `sj-admin` 관리자 화면 → `sj-counsel1` 상담사 열람.
+   **이 단계가 끝나야 "Staging 에서 실제로 접속했다" 고 적는다.**
 
 ## 3. 보안
 
