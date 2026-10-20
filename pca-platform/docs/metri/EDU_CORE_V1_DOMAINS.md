@@ -1,4 +1,4 @@
-# 교육 Core 영역별 검토표 (EDU_V1 · EDU_V1_ITEM_BANK_V1)
+# 교육 Core 영역별 검토표 (EDU_V1 · EDU_V1_ITEM_BANK_V1.2)
 
 이 파일은 **생성물이다**. 고칠 곳은 `edu-v1-items.json` 와 `edu-v1-domains.json` 이고, 고친 뒤 `CORE=EDU_CORE_V1 npm run core:qa` 를 돌린다.
 

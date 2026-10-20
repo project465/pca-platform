@@ -1,4 +1,4 @@
-# 간호 Core 영역별 검토표 (NURSING_V1 · NURSING_V1_ITEM_BANK_V1)
+# 간호 Core 영역별 검토표 (NURSING_V1 · NURSING_V1_ITEM_BANK_V1.2)
 
 이 파일은 **생성물이다**. 고칠 곳은 `nursing-v1-items.json` 와 `nursing-v1-domains.json` 이고, 고친 뒤 `CORE=NURSING_CORE_V1 npm run core:qa` 를 돌린다.
 

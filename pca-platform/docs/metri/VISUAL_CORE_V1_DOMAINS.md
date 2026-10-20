@@ -1,4 +1,4 @@
-# 시각·디자인 Core 영역별 검토표 (VISUAL_V1 · VISUAL_V1_ITEM_BANK_V1)
+# 시각·디자인 Core 영역별 검토표 (VISUAL_V1 · VISUAL_V1_ITEM_BANK_V1.3)
 
 이 파일은 **생성물이다**. 고칠 곳은 `visual-v1-items.json` 와 `visual-v1-domains.json` 이고, 고친 뒤 `CORE=VISUAL_CORE_V1 npm run core:qa` 를 돌린다.
 

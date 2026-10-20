@@ -139,10 +139,20 @@ const JOSA_BAD: { re: RegExp; want: "none" | "other"; fix: string }[] = [
   { re: /([가-힣])이나(?=[\s,.·)’]|$)/g, want: "none", fix: "나" },
   { re: /([가-힣])를(?=[\s,.·)’]|$)/g, want: "other", fix: "을" },
 ];
+/**
+ * **조사가 아니라 말끝인 자리.** `모으다` 처럼 `으` 로 끝나는 말은 `모을 ·
+ * 모은` 으로 꼴이 바뀌는데, 그 `을 · 은` 은 조사가 아니라 관형형 말끝이다.
+ * 받침 없는 `모` 뒤에 붙었다고 걸면 맞는 문장(`이번에 모을 자료`)이 걸린다.
+ * 그런 낱말만 적어 둔다: 넓게 풀면 진짜 조사 실수를 놓친다
+ */
+const NOT_JOSA = new Set(["모을", "모은"]);
 const josaHits: string[] = [];
 for (const l of lines) {
   for (const { re, want, fix } of JOSA_BAD) {
     for (const m of l.text.matchAll(re)) {
+      const at = m.index ?? 0;
+      const prev = at > 0 ? l.text[at - 1] : "";
+      if (!/[가-힣]/.test(prev) && NOT_JOSA.has(m[0].trim())) continue;
       const t = tail(m[1]);
       const wrong = want === "none" ? t === "none" : t !== "none";
       if (wrong) josaHits.push(`${l.who} ${l.where}: ${m[0]} → ${m[1]}${fix}`);

@@ -1373,7 +1373,7 @@
    "name_en": "Architecture and Interior Architecture",
    "assessment_version": "ARCH_V1",
    "status": "building",
-   "maturity": "FOUNDATION",
+   "maturity": "READY_FOR_DOMAIN_REVIEW",
    "aliases": [
     "건축학과",
     "건축학부",
@@ -1414,7 +1414,7 @@
    "packs_note": "산업팩은 여덟이고 건축·실내건축계열이 실제로 서는 자리로 갈랐다. **`건축` 을 산업으로 두지 않는다**: 그것은 하는 일의 이름이지 서는 자리가 아니고, 같은 도면을 놓고 주거와 공공과 상업과 실내가 서로 다른 판단을 묻는다. 주거와 공공을 따로 둔 까닭은 앞엣것은 같은 평면이 수백 벌 되풀이된다가, 뒤엣것은 심의와 예산을 통과해야 한다가 기준을 정하기 때문이다",
    "measurement_note": "**공간 감각과 그림 솜씨를 재지 않는다.** 묻는 것은 `도면 보는 것이 좋다` 나 `공간 감각이 좋다` 가 아니라 **치수와 조문과 수를 놓고 무엇을 직접 정했는가**다. 짝 표가 선호 문항에 소유 사다리 넷을 붙이는 길을 막고 있고, 문항마다 primary construct 를 적어 두어 추론으로 지나갈 수 없다",
    "open_to_students": false,
-   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다",
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝났다(2026-10-20 · DB 없이 도는 검사 열일곱 통과). 남은 것은 **그 전공 전문가가 읽는 일**이다: 검토 묶음이 `docs/metri/ARCH_CORE_V1_REVIEW.md` 와 `_REVIEW.csv` 이고 그 판정이 돌아오기 전에는 이 칸을 올리지 않는다. 스테이징에서는 `V3_PREVIEW_OPEN` 으로 미리 열어 볼 수 있다",
    "fixtures": {
     "personas": "sites/pca-platform/assessment/ARCH_V1/personas.json",
     "bank_lock": "sites/pca-platform/assessment/ARCH_V1/bank-lock.json",
@@ -1595,7 +1595,7 @@
    "name_en": "Civil and Railway Engineering",
    "assessment_version": "CIV_V1",
    "status": "building",
-   "maturity": "FOUNDATION",
+   "maturity": "READY_FOR_DOMAIN_REVIEW",
    "aliases": [
     "토목공학과",
     "건설환경공학과",
@@ -1637,7 +1637,7 @@
    "packs_note": "산업팩은 여덟이고 토목·철도건설계열이 실제로 서는 자리로 갈랐다. **`토목` 을 산업으로 두지 않는다**: 그것은 다루는 것의 이름이지 서는 자리가 아니고, 같은 교량을 놓고 시공사와 설계사와 발주청과 감리가 서로 다른 판단을 묻는다. 시공사와 설계사를 따로 둔 까닭은 앞엣것은 그날 공정이 밀리면 뒤가 다 밀린다가, 뒤엣것은 도면 한 장이 현장 전부를 정한다가 기준을 정하기 때문이다",
    "measurement_note": "**도면 솜씨와 계산 속도를 재지 않는다.** 묻는 것은 `구조물을 보는 일이 좋다` 나 `계산이 빠르다` 가 아니라 **치수와 하중과 기준값을 놓고 무엇을 직접 정했는가**다. 짝 표가 선호 문항에 소유 사다리 넷을 붙이는 길을 막고 있고, 문항마다 primary construct 를 적어 두어 추론으로 지나갈 수 없다. **자격 보유 여부도 재지 않는다**: 이 Core 가 내놓는 것은 확인된 판단이고 자격이 아니다",
    "open_to_students": false,
-   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다",
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝났다(2026-10-20 · DB 없이 도는 검사 열일곱 통과). 남은 것은 **그 전공 전문가가 읽는 일**이다: 검토 묶음이 `docs/metri/CIV_CORE_V1_REVIEW.md` 와 `_REVIEW.csv` 이고 그 판정이 돌아오기 전에는 이 칸을 올리지 않는다. 스테이징에서는 `V3_PREVIEW_OPEN` 으로 미리 열어 볼 수 있다",
    "fixtures": {
     "personas": "sites/pca-platform/assessment/CIV_V1/personas.json",
     "bank_lock": "sites/pca-platform/assessment/CIV_V1/bank-lock.json",
@@ -1827,7 +1827,7 @@
    "name_en": "Biotechnology and Bioengineering",
    "assessment_version": "BT_V1",
    "status": "building",
-   "maturity": "FOUNDATION",
+   "maturity": "READY_FOR_DOMAIN_REVIEW",
    "aliases": [
     "생명공학과",
     "바이오공학과",
@@ -1862,7 +1862,7 @@
    "domains_note": "열둘은 앞 Core 들의 열둘을 맞춘 수가 아니다. 생명공학이 실제로 내리는 판단을 세어 분자 실험과 배양과 발효와 단백질과 유전자와 분석과 자료와 진단과 공정과 품질과 연구 설계와 생물안전까지 열둘이고, `실험 노트 쓰기` 와 `문헌 읽기` 같은 **일하는 방식**은 영역으로 두지 않았다. 그런 것은 열두 영역 전부에 걸쳐 있어서 영역으로 두면 같은 자리를 두 번 센다",
    "packs_note": "산업팩은 여덟이고 생명공학이 실제로 서는 자리로 갈랐다. **`바이오` 를 산업으로 두지 않는다**: 그것은 분야 이름이지 하는 일이 아니고, 같은 분야 안에서 의약품과 진단과 식품과 환경이 서로 다른 판단을 묻는다. 완제 의약품과 위탁 개발생산을 따로 둔 것도 같은 까닭이다: 앞엣것은 허가 서류가 기준을 정하고 뒤엣것은 고객사 한 곳의 규격이 기준을 정한다",
    "open_to_students": false,
-   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다",
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝났다(2026-10-20 · DB 없이 도는 검사 열일곱 통과). 남은 것은 **그 전공 전문가가 읽는 일**이다: 검토 묶음이 `docs/metri/BT_CORE_V1_REVIEW.md` 와 `_REVIEW.csv` 이고 그 판정이 돌아오기 전에는 이 칸을 올리지 않는다. 스테이징에서는 `V3_PREVIEW_OPEN` 으로 미리 열어 볼 수 있다",
    "fixtures": {
     "personas": "sites/pca-platform/assessment/BT_V1/personas.json",
     "bank_lock": "sites/pca-platform/assessment/BT_V1/bank-lock.json",
@@ -1956,7 +1956,7 @@
    "name_en": "Sports Science, Coaching and Exercise Rehabilitation",
    "assessment_version": "SPORTS_V1",
    "status": "building",
-   "maturity": "FOUNDATION",
+   "maturity": "READY_FOR_DOMAIN_REVIEW",
    "aliases": [
     "체육학과",
     "스포츠과학과",
@@ -1996,7 +1996,7 @@
    "packs_note": "산업팩은 여덟이고 체육·운동재활계열이 실제로 서는 자리로 갈랐다. **`스포츠` 를 산업으로 두지 않는다**: 그것은 다루는 것의 이름이지 서는 자리가 아니고, 같은 운동을 놓고 프로팀과 재활센터와 피트니스와 학교가 서로 다른 판단을 묻는다. 프로팀과 재활센터를 따로 둔 까닭은 앞엣것은 이번 주 경기에 내보낼 수 있는가가, 뒤엣것은 다시 다치지 않고 돌아가는가가 기준을 정하기 때문이다",
    "measurement_note": "**운동을 좋아하는 정도와 자기 운동 실력을 재지 않는다.** 묻는 것은 `운동하는 것이 좋다` 나 `달리기가 빠르다` 가 아니라 **남을 재고 짜고 돌리면서 무엇을 직접 정했는가**다. 짝 표가 선호 문항에 소유 사다리 넷을 붙이는 길을 막고 있고, 문항마다 primary construct 를 적어 두어 추론으로 지나갈 수 없다",
    "open_to_students": false,
-   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다",
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝났다(2026-10-20 · DB 없이 도는 검사 열일곱 통과). 남은 것은 **그 전공 전문가가 읽는 일**이다: 검토 묶음이 `docs/metri/SPORTS_CORE_V1_REVIEW.md` 와 `_REVIEW.csv` 이고 그 판정이 돌아오기 전에는 이 칸을 올리지 않는다. 스테이징에서는 `V3_PREVIEW_OPEN` 으로 미리 열어 볼 수 있다",
    "fixtures": {
     "personas": "sites/pca-platform/assessment/SPORTS_V1/personas.json",
     "bank_lock": "sites/pca-platform/assessment/SPORTS_V1/bank-lock.json",
@@ -2258,7 +2258,7 @@
    "name_en": "Nursing",
    "assessment_version": "NURSING_V1",
    "status": "building",
-   "maturity": "FOUNDATION",
+   "maturity": "READY_FOR_DOMAIN_REVIEW",
    "aliases": [
     "간호학과",
     "간호학부"
@@ -2290,7 +2290,7 @@
    "packs_note": "산업팩은 여덟이고 간호사가 실제로 서는 자리로 갈랐다. **`간호` 를 산업으로 두지 않는다**: 그것은 하는 일의 이름이지 서는 자리가 아니고, 같은 일을 놓고 급성기 병동과 중환자실과 요양기관과 보건소가 서로 다른 판단을 묻는다. 중환자·응급과 급성기 병동을 따로 둔 까닭은 앞엣것은 몇 분 안에 가르는 일이, 뒤엣것은 한 교대에 여러 사람을 같은 질로 보는 일이 기준을 정하기 때문이다",
    "measurement_note": "**돌봄 성향을 재지 않는다.** 묻는 것은 `환자를 따뜻하게 대한다` 가 아니라 무엇을 직접 정했고 그것이 어디까지 갔는가다. 짝 표가 선호 문항에 소유 사다리 넷을 붙이는 길을 막고 있고, 문항마다 primary construct 를 적어 두어 추론으로 지나갈 수 없다. **면허 여부도 재지 않는다**: 이 Core 가 내놓는 것은 확인된 판단이고 자격이 아니다",
    "open_to_students": false,
-   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다",
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝났다(2026-10-20 · DB 없이 도는 검사 열일곱 통과). 남은 것은 **그 전공 전문가가 읽는 일**이다: 검토 묶음이 `docs/metri/NURSING_CORE_V1_REVIEW.md` 와 `_REVIEW.csv` 이고 그 판정이 돌아오기 전에는 이 칸을 올리지 않는다. 스테이징에서는 `V3_PREVIEW_OPEN` 으로 미리 열어 볼 수 있다",
    "fixtures": {
     "personas": "sites/pca-platform/assessment/NURSING_V1/personas.json",
     "bank_lock": "sites/pca-platform/assessment/NURSING_V1/bank-lock.json",
@@ -2383,7 +2383,7 @@
    "name_en": "Health Administration and Social Welfare",
    "assessment_version": "HEALTH_V1",
    "status": "building",
-   "maturity": "FOUNDATION",
+   "maturity": "READY_FOR_DOMAIN_REVIEW",
    "aliases": [
     "보건의료복지학과",
     "보건행정학과",
@@ -2422,7 +2422,7 @@
    "packs_note": "산업팩은 여덟이고 보건·의료복지계열이 실제로 서는 자리로 갈랐다. **`공공기관` 을 산업으로 두지 않는다**: 그것은 소속의 성격이지 하는 일이 아니고, 같은 공공기관 안에서 보건소와 심사기관과 복지관이 서로 다른 판단을 묻는다. 병원과 요양기관을 따로 둔 까닭은 앞엣것은 재원일수와 환자 안전이, 뒤엣것은 등급과 입소율과 사고 없음이 기준을 정하기 때문이다",
    "measurement_note": "**돌봄 성향을 재지 않는다.** 묻는 것은 `사람을 돕는 일이 좋다` 가 아니라 무엇을 직접 정했고 그것이 어디까지 갔는가다. 짝 표가 선호 문항에 소유 사다리 넷을 붙이는 길을 막고 있고, 문항마다 primary construct 를 적어 두어 추론으로 지나갈 수 없다",
    "open_to_students": false,
-   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다",
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝났다(2026-10-20 · DB 없이 도는 검사 열일곱 통과). 남은 것은 **그 전공 전문가가 읽는 일**이다: 검토 묶음이 `docs/metri/HEALTH_CORE_V1_REVIEW.md` 와 `_REVIEW.csv` 이고 그 판정이 돌아오기 전에는 이 칸을 올리지 않는다. 스테이징에서는 `V3_PREVIEW_OPEN` 으로 미리 열어 볼 수 있다",
    "fixtures": {
     "personas": "sites/pca-platform/assessment/HEALTH_V1/personas.json",
     "bank_lock": "sites/pca-platform/assessment/HEALTH_V1/bank-lock.json",
@@ -2684,7 +2684,7 @@
    "name_en": "Food Science, Nutrition and Culinary",
    "assessment_version": "FOOD_V1",
    "status": "building",
-   "maturity": "FOUNDATION",
+   "maturity": "READY_FOR_DOMAIN_REVIEW",
    "aliases": [
     "식품공학과",
     "식품영양학과",
@@ -2721,7 +2721,7 @@
    "packs_note": "산업팩은 여덟이고 식품계열이 실제로 서는 자리로 갈랐다. **`식품` 을 산업으로 두지 않는다**: 그것은 다루는 것의 이름이지 서는 자리가 아니고, 같은 원료를 놓고 공장과 점포와 급식소와 병원이 서로 다른 판단을 묻는다. 제조와 외식을 따로 둔 까닭은 앞엣것은 배치마다 같은 품질이, 뒤엣것은 그 자리에서 손님이 기다리는 동안 가려야 하는 것이 기준을 정하기 때문이다",
    "measurement_note": "**맛의 취향을 재지 않는다.** 묻는 것은 `단맛을 좋아한다` 가 아니라 무엇을 직접 정했고 그것이 어디까지 갔는가다. 짝 표가 선호 문항에 소유 사다리 넷을 붙이는 길을 막고 있고, 문항마다 primary construct 를 적어 두어 추론으로 지나갈 수 없다",
    "open_to_students": false,
-   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다",
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝났다(2026-10-20 · DB 없이 도는 검사 열일곱 통과). 남은 것은 **그 전공 전문가가 읽는 일**이다: 검토 묶음이 `docs/metri/FOOD_CORE_V1_REVIEW.md` 와 `_REVIEW.csv` 이고 그 판정이 돌아오기 전에는 이 칸을 올리지 않는다. 스테이징에서는 `V3_PREVIEW_OPEN` 으로 미리 열어 볼 수 있다",
    "fixtures": {
     "personas": "sites/pca-platform/assessment/FOOD_V1/personas.json",
     "bank_lock": "sites/pca-platform/assessment/FOOD_V1/bank-lock.json",
@@ -4177,7 +4177,7 @@
    "name_en": "Public Administration",
    "assessment_version": "PUBADM_V1",
    "status": "building",
-   "maturity": "FOUNDATION",
+   "maturity": "READY_FOR_DOMAIN_REVIEW",
    "aliases": [
     "행정학과",
     "정책학과",
@@ -4211,7 +4211,7 @@
    "domains_note": "열둘은 앞 Core 들의 열둘을 맞춘 수가 아니다. 행정이 실제로 내리는 판단을 세어 정책과 법령과 예산과 민원과 인사와 성과와 자료와 회계와 주민과 안전과 조달과 정보까지 열둘이고, `문서 작성` 과 `보고` 같은 **일하는 방식**은 영역으로 두지 않았다. 그런 것은 열두 영역 전부에 걸쳐 있어서 영역으로 두면 같은 자리를 두 번 센다",
    "packs_note": "산업팩은 여덟이고 행정이 실제로 서는 자리로 갈랐다. **`공무원` 을 산업으로 두지 않는다**: 그것은 신분이지 하는 일이 아니고, 같은 신분 안에서 중앙과 지방과 규제와 재난이 서로 다른 판단을 묻는다",
    "open_to_students": false,
-   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다",
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝났다(2026-10-20 · DB 없이 도는 검사 열일곱 통과). 남은 것은 **그 전공 전문가가 읽는 일**이다: 검토 묶음이 `docs/metri/PUBADM_CORE_V1_REVIEW.md` 와 `_REVIEW.csv` 이고 그 판정이 돌아오기 전에는 이 칸을 올리지 않는다. 스테이징에서는 `V3_PREVIEW_OPEN` 으로 미리 열어 볼 수 있다",
    "fixtures": {
     "personas": "sites/pca-platform/assessment/PUBADM_V1/personas.json",
     "bank_lock": "sites/pca-platform/assessment/PUBADM_V1/bank-lock.json",
@@ -4435,7 +4435,7 @@
    "name_en": "Psychology and Counseling",
    "assessment_version": "PSY_V1",
    "status": "building",
-   "maturity": "FOUNDATION",
+   "maturity": "READY_FOR_DOMAIN_REVIEW",
    "aliases": [
     "심리학과",
     "심리상담학과",
@@ -4471,7 +4471,7 @@
    "packs_note": "산업팩은 여덟이고 심리·상담계열이 실제로 서는 자리로 갈랐다. **`심리상담` 을 산업으로 두지 않는다**: 그것은 하는 일의 이름이지 서는 자리가 아니고, 같은 일을 놓고 사설 센터와 병원과 학교와 공공기관이 서로 다른 판단을 묻는다. 상담·심리치료와 병원·임상을 따로 둔 까닭은 앞엣것은 그 사람이 다음 주에도 오는지가, 뒤엣것은 다른 전문직과 판단을 맞추는 일이 기준을 정하기 때문이다",
    "measurement_note": "**성격 유형을 재지 않는다.** 이 Core 가 묻는 것은 `사람을 좋아한다` 나 `공감을 잘한다` 가 아니라 무엇을 직접 정했고 그것이 어디까지 갔는가다. 짝 표가 선호 문항에 소유 사다리 넷을 붙이는 길을 막고 있고, 문항마다 primary construct 를 적어 두어 추론으로 지나갈 수 없다",
    "open_to_students": false,
-   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다",
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝났다(2026-10-20 · DB 없이 도는 검사 열일곱 통과). 남은 것은 **그 전공 전문가가 읽는 일**이다: 검토 묶음이 `docs/metri/PSY_CORE_V1_REVIEW.md` 와 `_REVIEW.csv` 이고 그 판정이 돌아오기 전에는 이 칸을 올리지 않는다. 스테이징에서는 `V3_PREVIEW_OPEN` 으로 미리 열어 볼 수 있다",
    "fixtures": {
     "personas": "sites/pca-platform/assessment/PSY_V1/personas.json",
     "bank_lock": "sites/pca-platform/assessment/PSY_V1/bank-lock.json",
@@ -4564,7 +4564,7 @@
    "name_en": "Media, Communications and Performing Arts",
    "assessment_version": "MEDIA_V1",
    "status": "building",
-   "maturity": "FOUNDATION",
+   "maturity": "READY_FOR_DOMAIN_REVIEW",
    "aliases": [
     "미디어영상학과",
     "신문방송학과",
@@ -4604,7 +4604,7 @@
    "packs_note": "산업팩은 여덟이고 미디어·광고홍보·공연계열이 실제로 서는 자리로 갈랐다. **`미디어` 를 산업으로 두지 않는다**: 그것은 다루는 것의 이름이지 서는 자리가 아니고, 같은 영상을 놓고 광고와 방송과 영화와 플랫폼이 서로 다른 판단을 묻는다. 광고와 방송을 따로 둔 까닭은 앞엣것은 광고주가 고르지 않으면 그 안이 남지 않는다가, 뒤엣것은 편성 시간은 미룰 수 없다가 기준을 정하기 때문이다",
    "measurement_note": "**말솜씨와 사람 사귀는 성향을 재지 않는다.** 묻는 것은 `사람 앞에 서는 일이 좋다` 나 `말을 잘한다` 가 아니라 **무엇을 어떤 근거로 정했고 그것이 어디까지 갔는가**다. 짝 표가 선호 문항에 소유 사다리 넷을 붙이는 길을 막고 있고, 문항마다 primary construct 를 적어 두어 추론으로 지나갈 수 없다. **무대 위의 끼나 카메라 앞의 태를 묻지도 않는다**: 그것은 사람이 보는 일이고 이 검사가 내놓는 것은 확인된 판단이다",
    "open_to_students": false,
-   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다",
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝났다(2026-10-20 · DB 없이 도는 검사 열일곱 통과). 남은 것은 **그 전공 전문가가 읽는 일**이다: 검토 묶음이 `docs/metri/MEDIA_CORE_V1_REVIEW.md` 와 `_REVIEW.csv` 이고 그 판정이 돌아오기 전에는 이 칸을 올리지 않는다. 스테이징에서는 `V3_PREVIEW_OPEN` 으로 미리 열어 볼 수 있다",
    "fixtures": {
     "personas": "sites/pca-platform/assessment/MEDIA_V1/personas.json",
     "bank_lock": "sites/pca-platform/assessment/MEDIA_V1/bank-lock.json",
@@ -4948,7 +4948,7 @@
    "name_en": "Language and Literature",
    "assessment_version": "LANG_V1",
    "status": "building",
-   "maturity": "FOUNDATION",
+   "maturity": "READY_FOR_DOMAIN_REVIEW",
    "aliases": [
     "국어국문학과",
     "국어국문한국어교육학과",
@@ -4984,7 +4984,7 @@
    "domains_note": "열둘은 앞 Core 들의 열둘을 맞춘 수가 아니다. 어문계열이 실제로 내리는 판단을 세어 문헌과 해석과 언어 구조와 말뭉치와 번역과 편집과 교육 설계와 수업 평가와 창작과 지역 이해와 조사와 콘텐츠까지 열둘이고, `발표 잘하기` 같은 **일하는 방식**은 영역으로 두지 않았다. 번역과 편집을 나눈 까닭은 앞엣것은 다른 말로 된 뜻을 옮기고 뒤엣것은 이쪽 말로 된 글을 고쳐 내보내기 때문이다",
    "packs_note": "산업팩은 여덟이고 어문계열이 실제로 서는 자리로 갈랐다. **`문학` 을 산업으로 두지 않는다**: 그것은 다루는 대상이지 하는 일이 아니고, 같은 대상을 놓고 출판과 교육과 번역과 연구가 서로 다른 판단을 묻는다. 출판과 콘텐츠를 따로 둔 까닭은 앞엣것은 한 권의 완성도가, 뒤엣것은 회차마다의 반응이 기준을 정하기 때문이다",
    "open_to_students": false,
-   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다",
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝났다(2026-10-20 · DB 없이 도는 검사 열일곱 통과). 남은 것은 **그 전공 전문가가 읽는 일**이다: 검토 묶음이 `docs/metri/LANG_CORE_V1_REVIEW.md` 와 `_REVIEW.csv` 이고 그 판정이 돌아오기 전에는 이 칸을 올리지 않는다. 스테이징에서는 `V3_PREVIEW_OPEN` 으로 미리 열어 볼 수 있다",
    "fixtures": {
     "personas": "sites/pca-platform/assessment/LANG_V1/personas.json",
     "bank_lock": "sites/pca-platform/assessment/LANG_V1/bank-lock.json",
@@ -5327,7 +5327,7 @@
    "name_en": "Law and Police Studies",
    "assessment_version": "LAW_V1",
    "status": "building",
-   "maturity": "FOUNDATION",
+   "maturity": "READY_FOR_DOMAIN_REVIEW",
    "aliases": [
     "법학과",
     "법학부",
@@ -5363,7 +5363,7 @@
    "domains_note": "열둘은 앞 Core 들의 열둘을 맞춘 수가 아니다. 법·경찰계열이 실제로 내리는 판단을 세어 조사와 사실 정리와 요건 해석과 서면과 계약 검토와 분쟁 대응과 준법 점검과 증거 수집과 현장 대응과 상담과 자료 분석과 규정 설계까지 열둘이고, `논리적으로 쓰기` 같은 **일하는 방식**은 영역으로 두지 않았다. 법령 조사와 요건 해석을 나눈 까닭은 앞엣것이 쓸 조문과 판례를 찾아 고르는 일이고 뒤엣것이 그 요건에 사실을 대어 한쪽으로 결론을 내는 일이어서다. 사실관계 정리와 수사·증거 수집도 나눴다: 앞엣것은 이미 들어온 자료에서 쟁점을 가르고 뒤엣것은 없는 자료를 절차에 맞게 새로 확보한다",
    "packs_note": "산업팩은 여덟이고 법·경찰계열이 실제로 서는 자리로 갈랐다. **`공무원` 과 `법조인` 을 산업으로 두지 않는다**: 그것은 신분이지 하는 일이 아니고, 같은 신분 안에서 송무와 수사와 규제와 교정이 서로 다른 판단을 묻는다. 규제·감독과 기업 법무·준법을 따로 둔 까닭은 한쪽이 판정을 내리는 자리에 서고 다른 쪽이 그 판정을 받는 자리에 서기 때문이다",
    "open_to_students": false,
-   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다",
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝났다(2026-10-20 · DB 없이 도는 검사 열일곱 통과). 남은 것은 **그 전공 전문가가 읽는 일**이다: 검토 묶음이 `docs/metri/LAW_CORE_V1_REVIEW.md` 와 `_REVIEW.csv` 이고 그 판정이 돌아오기 전에는 이 칸을 올리지 않는다. 스테이징에서는 `V3_PREVIEW_OPEN` 으로 미리 열어 볼 수 있다",
    "fixtures": {
     "personas": "sites/pca-platform/assessment/LAW_V1/personas.json",
     "bank_lock": "sites/pca-platform/assessment/LAW_V1/bank-lock.json",
@@ -5544,7 +5544,7 @@
    "name_en": "Education",
    "assessment_version": "EDU_V1",
    "status": "building",
-   "maturity": "FOUNDATION",
+   "maturity": "READY_FOR_DOMAIN_REVIEW",
    "aliases": [
     "교육학과",
     "유아교육과",
@@ -5580,7 +5580,7 @@
    "packs_note": "산업팩은 여덟이고 교육계열이 실제로 서는 자리로 갈랐다. **`교육` 을 산업으로 두지 않는다**: 그것은 하는 일의 이름이지 서는 자리가 아니고, 같은 일을 놓고 유아기관과 학교와 학원과 기업 교육팀이 서로 다른 판단을 묻는다. 학교와 학원을 따로 둔 까닭은 앞엣것은 정해진 교육과정과 생활지도가, 뒤엣것은 다음 달에도 오는지가 기준을 정하기 때문이다",
    "measurement_note": "**성향을 재지 않는다.** 묻는 것은 `아이를 좋아한다` 가 아니라 무엇을 직접 정했고 그것이 어디까지 갔는가다. 짝 표가 선호 문항에 소유 사다리 넷을 붙이는 길을 막고 있고, 문항마다 primary construct 를 적어 두어 추론으로 지나갈 수 없다",
    "open_to_students": false,
-   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다",
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝났다(2026-10-20 · DB 없이 도는 검사 열일곱 통과). 남은 것은 **그 전공 전문가가 읽는 일**이다: 검토 묶음이 `docs/metri/EDU_CORE_V1_REVIEW.md` 와 `_REVIEW.csv` 이고 그 판정이 돌아오기 전에는 이 칸을 올리지 않는다. 스테이징에서는 `V3_PREVIEW_OPEN` 으로 미리 열어 볼 수 있다",
    "fixtures": {
     "personas": "sites/pca-platform/assessment/EDU_V1/personas.json",
     "bank_lock": "sites/pca-platform/assessment/EDU_V1/bank-lock.json",
@@ -5702,7 +5702,7 @@
    "name_en": "Horticulture, Forestry and Landscape Architecture",
    "assessment_version": "AGRI_V1",
    "status": "building",
-   "maturity": "FOUNDATION",
+   "maturity": "READY_FOR_DOMAIN_REVIEW",
    "aliases": [
     "원예학과",
     "원예산림학과",
@@ -5742,7 +5742,7 @@
    "packs_note": "산업팩은 여덟이고 원예·산림·조경계열이 실제로 서는 자리로 갈랐다. **`농업` 을 산업으로 두지 않는다**: 그것은 다루는 것의 이름이지 서는 자리가 아니고, 같은 작물을 놓고 시설원예와 노지와 종묘와 화훼가 서로 다른 판단을 묻는다. 시설원예와 노지를 따로 둔 까닭은 앞엣것은 설정값을 내가 정해 연중 맞추는 일이, 뒤엣것은 못 바꾸는 날씨에 맞춰 때를 고르는 일이 기준을 정하기 때문이다",
    "measurement_note": "**식물을 좋아하는 정도를 재지 않는다.** 묻는 것은 `흙을 만지는 일이 좋다` 나 `자연이 편하다` 가 아니라 **살아 있는 것을 놓고 무엇을 직접 정했는가**다. 짝 표가 선호 문항에 소유 사다리 넷을 붙이는 길을 막고 있고, 문항마다 primary construct 를 적어 두어 추론으로 지나갈 수 없다",
    "open_to_students": false,
-   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다",
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝났다(2026-10-20 · DB 없이 도는 검사 열일곱 통과). 남은 것은 **그 전공 전문가가 읽는 일**이다: 검토 묶음이 `docs/metri/AGRI_CORE_V1_REVIEW.md` 와 `_REVIEW.csv` 이고 그 판정이 돌아오기 전에는 이 칸을 올리지 않는다. 스테이징에서는 `V3_PREVIEW_OPEN` 으로 미리 열어 볼 수 있다",
    "fixtures": {
     "personas": "sites/pca-platform/assessment/AGRI_V1/personas.json",
     "bank_lock": "sites/pca-platform/assessment/AGRI_V1/bank-lock.json",
@@ -5923,7 +5923,7 @@
    "name_en": "Visual Communication and Design",
    "assessment_version": "VISUAL_V1",
    "status": "building",
-   "maturity": "FOUNDATION",
+   "maturity": "READY_FOR_DOMAIN_REVIEW",
    "aliases": [
     "시각디자인학과",
     "커뮤니케이션디자인학과",
@@ -5963,7 +5963,7 @@
    "packs_note": "산업팩은 여덟이고 시각·디자인계열이 실제로 서는 자리로 갈랐다. **`디자인` 을 산업으로 두지 않는다**: 그것은 하는 일의 이름이지 서는 자리가 아니고, 같은 그림을 놓고 웹툰과 게임과 브랜드와 제품이 서로 다른 판단을 묻는다. 웹툰과 게임 아트를 따로 둔 까닭은 앞엣것은 한 주를 밀면 그 주의 독자가 빠진다가, 뒤엣것은 돌아가지 않으면 예쁜 것이 뜻이 없다가 기준을 정하기 때문이다",
    "measurement_note": "**그림 솜씨와 감각을 재지 않는다.** 묻는 것은 `그림 그리는 것이 좋다` 나 `감각이 좋다` 가 아니라 **무엇을 어떤 근거로 정했고 그것이 어디까지 갔는가**다. 짝 표가 선호 문항에 소유 사다리 넷을 붙이는 길을 막고 있고, 문항마다 primary construct 를 적어 두어 추론으로 지나갈 수 없다. **포트폴리오의 잘 그린 정도를 묻지도 않는다**: 그것은 사람이 보는 일이고 이 검사가 내놓는 것은 확인된 판단이다",
    "open_to_students": false,
-   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다",
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝났다(2026-10-20 · DB 없이 도는 검사 열일곱 통과). 남은 것은 **그 전공 전문가가 읽는 일**이다: 검토 묶음이 `docs/metri/VISUAL_CORE_V1_REVIEW.md` 와 `_REVIEW.csv` 이고 그 판정이 돌아오기 전에는 이 칸을 올리지 않는다. 스테이징에서는 `V3_PREVIEW_OPEN` 으로 미리 열어 볼 수 있다",
    "fixtures": {
     "personas": "sites/pca-platform/assessment/VISUAL_V1/personas.json",
     "bank_lock": "sites/pca-platform/assessment/VISUAL_V1/bank-lock.json",
@@ -6306,7 +6306,7 @@
    "name_en": "Fashion, Beauty and Styling",
    "assessment_version": "STYLE_V1",
    "status": "building",
-   "maturity": "FOUNDATION",
+   "maturity": "READY_FOR_DOMAIN_REVIEW",
    "aliases": [
     "의류패션학과",
     "패션디자인학과",
@@ -6346,7 +6346,7 @@
    "packs_note": "산업팩은 여덟이고 패션·뷰티계열이 실제로 서는 자리로 갈랐다. **`패션` 과 `뷰티` 를 산업으로 두지 않는다**: 그것은 다루는 것의 이름이지 서는 자리가 아니고, 같은 옷을 놓고 브랜드와 공장과 매장이 서로 다른 판단을 묻는다. 브랜드와 공장을 따로 둔 까닭은 앞엣것은 안 팔리면 그 철의 기획이 남지 않는다가, 뒤엣것은 치수가 틀리면 그 생산분 전부가 돌아온다가 기준을 정하기 때문이다",
    "measurement_note": "**옷을 잘 입는 정도와 감각을 재지 않는다.** 묻는 것은 `옷 고르는 일이 좋다` 나 `감각이 좋다` 가 아니라 **무엇을 어떤 근거로 정했고 그것이 어디까지 갔는가**다. 짝 표가 선호 문항에 소유 사다리 넷을 붙이는 길을 막고 있고, 문항마다 primary construct 를 적어 두어(`style-v1-constructs.json`) 추론으로 지나갈 수 없다. **외모와 체형을 묻지도 않는다**: 그것은 응시자 자신의 몸이고 이 검사가 내놓는 것은 확인된 판단이다",
    "open_to_students": false,
-   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝나기 전에는 학생에게 열지 않는다. `status` 는 짓고 있다는 뜻이고 여는 것은 이 칸이 정한다",
+   "open_note": "문항과 매핑과 결과지와 자동 검사가 끝났다(2026-10-20 · DB 없이 도는 검사 열일곱 통과). 남은 것은 **그 전공 전문가가 읽는 일**이다: 검토 묶음이 `docs/metri/STYLE_CORE_V1_REVIEW.md` 와 `_REVIEW.csv` 이고 그 판정이 돌아오기 전에는 이 칸을 올리지 않는다. 스테이징에서는 `V3_PREVIEW_OPEN` 으로 미리 열어 볼 수 있다",
    "fixtures": {
     "personas": "sites/pca-platform/assessment/STYLE_V1/personas.json",
     "bank_lock": "sites/pca-platform/assessment/STYLE_V1/bank-lock.json",

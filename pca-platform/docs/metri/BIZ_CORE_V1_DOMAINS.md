@@ -1,4 +1,4 @@
-# 경영 Core 영역별 검토표 (BIZ_V1 · BIZ_V1_ITEM_BANK_V1)
+# 경영 Core 영역별 검토표 (BIZ_V1 · BIZ_V1_ITEM_BANK_V1.3)
 
 이 파일은 **생성물이다**. 고칠 곳은 `biz-v1-items.json` 와 `biz-v1-domains.json` 이고, 고친 뒤 `CORE=BIZ_CORE_V1 npm run core:qa` 를 돌린다.
 
