@@ -1,0 +1,8 @@
+verdict	READY_WHEN_LANDED
+current_repro_standing	10
+current_fail	0
+landed_patches	L1,L2,L3
+landed_fail	0
+landed_protect_rc	0
+git	315a769c
+note	pg=psql shim · next-auth/browser/운영 NOT VERIFIED

@@ -1,0 +1,13 @@
+line	check	rc	pass	fail	todo	skip
+current	sc1-profile	0	27	0	0	0
+current	sc1-boundary	0	6	0	0	0
+current	l2-identity	0	10	0	11	0
+current	l1-erasure	0	7	0	4	0
+current	l3-forgot	0	2	0	1	0
+current	protect	0	11	0		
+landed	sc1-profile	0	27	0	0	0
+landed	sc1-boundary	0	6	0	0	0
+landed	l2-identity	0	14	0	1	6
+landed	l1-erasure	0	7	0	3	1
+landed	l3-forgot	0	2	0	0	1
+landed	protect	0	11	0		

@@ -1,0 +1,147 @@
+TAP version 13
+# \# ER-0 user_id 표 34 · 지움 11 · 남김 3 · 어디에도 없음 20: analytics_events auth_accounts campus_students career_events career_profiles cohort_members consent_records consents entitlements erasure_log evidence_profiles outbox refund_requests v3_actions v3_applications v3_attempts v3_experiences v3_pilot_participants v3_saved_jobs v3_track_interest
+# Subtest: ER-0 user_id 칸이 있는 표를 파기 목록 · 보존 목록에 대어 가른다
+ok 1 - ER-0 user_id 칸이 있는 표를 파기 목록 · 보존 목록에 대어 가른다
+  ---
+  duration_ms: 465.6988
+  type: 'test'
+  ...
+# \# ER-1 before {"exp":1,"app":1,"cs":1,"mem":1} · removed {"memberships":1} · after {"exp":1,"app":1,"cs":1,"mem":0}
+# Subtest: ER-1 익명화가 끝까지 돌고 users 가 erased 가 된다
+ok 2 - ER-1 익명화가 끝까지 돌고 users 가 erased 가 된다
+  ---
+  duration_ms: 1340.569333
+  type: 'test'
+  ...
+# Subtest: ER-REPRO-2 v3_experiences 의 제목 · 메모가 파기 뒤에도 남는다
+ok 3 - ER-REPRO-2 v3_experiences 의 제목 · 메모가 파기 뒤에도 남는다
+  ---
+  duration_ms: 44.120417
+  type: 'test'
+  ...
+# Subtest: ER-REPRO-3 campus_students 의 학번 · 학교 · 학과가 같은 users.id 에 이어진 채 남는다
+ok 4 - ER-REPRO-3 campus_students 의 학번 · 학교 · 학과가 같은 users.id 에 이어진 채 남는다
+  ---
+  duration_ms: 42.208578
+  type: 'test'
+  ...
+# \# ER-REPRO-5 소비자 0 · 운영 명령 0 · 검사한 파일 417
+# Subtest: ER-REPRO-4 v3_applications 의 기관 이름 · 메모가 남는다
+ok 5 - ER-REPRO-4 v3_applications 의 기관 이름 · 메모가 남는다
+  ---
+  duration_ms: 41.285343
+  type: 'test'
+  ...
+# Subtest: ER-REPRO-5 purge_after 가 지난 V3 메모를 지우는 제품 코드 · 운영 명령이 없고, 기한이 지나도 남는다
+ok 6 - ER-REPRO-5 purge_after 가 지난 V3 메모를 지우는 제품 코드 · 운영 명령이 없고, 기한이 지나도 남는다
+  ---
+  duration_ms: 68.235691
+  type: 'test'
+  ...
+# Subtest: ER-FIX-1a 파기 뒤 v3_experiences 줄이 없다 (L1)
+not ok 7 - ER-FIX-1a 파기 뒤 v3_experiences 줄이 없다 (L1) # TODO proposed/cc009-l1.patch 승인 · 적용 뒤 켠다
+  ---
+  duration_ms: 187.345409
+  type: 'test'
+  location: '/home/user/pca-platform/pca-platform/scripts/shared-core/p0-erasure.test.ts:138:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    1 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/pca-platform/pca-platform/scripts/shared-core/p0-erasure.test.ts:139:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: ER-FIX-1b 파기 뒤 v3_applications 줄이 없다 (L4)
+not ok 8 - ER-FIX-1b 파기 뒤 v3_applications 줄이 없다 (L4) # TODO 본체가 파기 계약(CC-009)을 승인 · 구현한 뒤 켠다
+  ---
+  duration_ms: 193.251417
+  type: 'test'
+  location: '/home/user/pca-platform/pca-platform/scripts/shared-core/p0-erasure.test.ts:141:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    1 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/pca-platform/pca-platform/scripts/shared-core/p0-erasure.test.ts:142:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: ER-G 지우는 표가 전부 화면의 묶음(ERASE_GROUPS)에 들어 있다
+ok 9 - ER-G 지우는 표가 전부 화면의 묶음(ERASE_GROUPS)에 들어 있다
+  ---
+  duration_ms: 0.983193
+  type: 'test'
+  ...
+# Subtest: ER-FIX-2 파기 뒤 campus_students 에 학번이 남지 않는다
+not ok 10 - ER-FIX-2 파기 뒤 campus_students 에 학번이 남지 않는다 # TODO 본체가 파기 계약(CC-009)을 승인 · 구현한 뒤 켠다
+  ---
+  duration_ms: 213.154317
+  type: 'test'
+  location: '/home/user/pca-platform/pca-platform/scripts/shared-core/p0-erasure.test.ts:149:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    1 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/pca-platform/pca-platform/scripts/shared-core/p0-erasure.test.ts:150:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: ER-FIX-3 기한이 지난 V3 메모를 지우는 길이 있다
+not ok 11 - ER-FIX-3 기한이 지난 V3 메모를 지우는 길이 있다 # TODO 본체가 파기 계약(CC-009)을 승인 · 구현한 뒤 켠다
+  ---
+  duration_ms: 49.416154
+  type: 'test'
+  location: '/home/user/pca-platform/pca-platform/scripts/shared-core/p0-erasure.test.ts:152:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    '1' !== '0'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '0'
+  actual: '1'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/pca-platform/pca-platform/scripts/shared-core/p0-erasure.test.ts:155:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 4
+# duration_ms 3028.932454
