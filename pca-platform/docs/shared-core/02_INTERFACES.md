@@ -18,6 +18,10 @@
 
 ## SC-1 Tenant Profile — 기관 하나를 읽는 한 자리
 
+> **R36 에서 구현했다(읽기 전용 · 미연결).** 실제 파일 이름과 함수는 이 절의 초안과 다르다:
+> `loadTenantProfile` · `findTenantProfile` · `listTenantProfiles` 이고 어댑터는 `campus.ts`, zod 대신
+> 손으로 쓴 엄격한 검사(모르는 칸 거절)다. 정본은 [SC1_TENANT_PROFILE.md](SC1_TENANT_PROFILE.md).
+
 **목적**: 대학 · 공공기관 · 개인 사용자를 같은 꼴로 읽는다. 전주대와 세종이 **코드를 고치지 않고 파일 하나를
 더해** 붙을 수 있게 한다.
 
@@ -94,6 +98,10 @@ JSON 그대로 둔다. 1~2단계는 파일이라 운영 DB 를 건드리지 않�
 ---
 
 ## SC-2 로그인 아이디 이름공간 — P0
+
+> **R36 에서 고쳤다(제안).** 아래 초안의 `id_prefix` 접두어 방식만으로는 모자란다: 신원은
+> `(university_code, student_id)` 이고 접두어는 손잡이 배정일 뿐이다. 재현과 수정안·검증·승인 목록은
+> [R36_P0_LOGIN_COLLISION.md](R36_P0_LOGIN_COLLISION.md), 패치는 `proposed/sc2-p0.patch`.
 
 **목적**: 한 학교의 명단이 다른 학교 학생의 계정을 덮지 못하게 한다(J-7).
 

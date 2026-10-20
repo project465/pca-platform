@@ -1,0 +1,159 @@
+{
+  "repro0": {
+    "pcu_login": "SC36-0000",
+    "zz_login": "SC36-0000"
+  },
+  "repro1": {
+    "first": {
+      "created": true,
+      "userId": "3"
+    },
+    "again": {
+      "created": false,
+      "password": null
+    },
+    "row": {
+      "id": "3",
+      "login_id": "SC36-0001",
+      "display_name": "가상 A",
+      "password_hash": "(기록하지 않음)",
+      "cs_uni": "PCU",
+      "cs_sid": "SC36-0001",
+      "cs_col": "HUMSOC",
+      "cs_dep": "PCU26_KOREAN",
+      "orgs": [
+        "PCU"
+      ]
+    }
+  },
+  "repro2": {
+    "preview_zz": [
+      {
+        "ok": true,
+        "existing": true
+      }
+    ],
+    "add_zz": {
+      "ok": true,
+      "password": null,
+      "login_id": "SC36-0002"
+    },
+    "before": {
+      "cs": [
+        "PCU",
+        "HUMSOC",
+        "PCU26_KOREAN"
+      ],
+      "orgs": [
+        "PCU"
+      ],
+      "ctx": {
+        "university_code": "PCU",
+        "college_code": "HUMSOC",
+        "department_code": "PCU26_KOREAN",
+        "core_code": "LANG_CORE_V1",
+        "specialization": "SPEC_LANG_KOREAN"
+      }
+    },
+    "after": {
+      "cs": [
+        "PCU",
+        "ZZ_ENG",
+        "ZZ26_ME"
+      ],
+      "orgs": [
+        "PCU"
+      ],
+      "name": "가상 A",
+      "ctx": null,
+      "hash_changed": false
+    },
+    "list_pcu": [
+      [
+        "SC36-0002",
+        "ZZ_ENG",
+        "ZZ26_ME"
+      ]
+    ],
+    "list_zz_total": 0
+  },
+  "repro3": {
+    "apply_zz": {
+      "created": 0,
+      "updated": 1,
+      "rejected": 0
+    },
+    "after_cs": [
+      "PCU",
+      "ZZ26_ME"
+    ]
+  },
+  "repro4": {
+    "provision_zz": {
+      "created": false,
+      "userId": "6",
+      "password_issued": true
+    },
+    "before": {
+      "id": "6",
+      "name": "가상 A",
+      "cs_uni": "PCU",
+      "orgs": [
+        "PCU"
+      ]
+    },
+    "after": {
+      "id": "6",
+      "name": "가상 B",
+      "cs_uni": "ZZTEST",
+      "cs_dep": "ZZ26_ME",
+      "orgs": [
+        "PCU",
+        "ZZTEST"
+      ]
+    },
+    "login_sql_resolves_to": "6",
+    "forgot_sql_resolves_to": "6",
+    "pcu_password_still_works": false,
+    "zz_password_works": true,
+    "pcu_attempt_visible_to_new_holder": true,
+    "pcu_admin_rotate": {
+      "ok": false,
+      "why": "이 학교가 발급한 계정이 아닙니다"
+    },
+    "zz_admin_disable": {
+      "ok": true
+    }
+  },
+  "repro5": {
+    "add_zz": {
+      "ok": true,
+      "password": null,
+      "login_id": "SC36-0005"
+    },
+    "after_cs": [
+      "PCU",
+      "SC36-0005",
+      "ZZ26_ME"
+    ]
+  },
+  "repro6": {
+    "error_code": "23505",
+    "error": "ERROR:  23505: duplicate key value violates unique constraint \"users_email_key\"\nDETAIL:  Key (email)=(sc36-shared@example.invalid) already exists.\nCONTEXT:  PL/",
+    "rows": [
+      "ZZTEST",
+      null,
+      null
+    ]
+  },
+  "repro7": {
+    "zz_rotate_pcu_student": {
+      "ok": false,
+      "why": "이 학교가 발급한 계정이 아닙니다"
+    },
+    "zz_disable_pcu_student": {
+      "ok": false,
+      "why": "이 학교가 발급한 계정이 아닙니다"
+    }
+  }
+}

@@ -1,0 +1,4 @@
+$ bash scripts/shared-core/test/typecheck.sh
+tsc Version 6.0.2 · files 9
+TSC_EXIT=0
+EXIT=0

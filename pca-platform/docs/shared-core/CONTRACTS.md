@@ -13,7 +13,7 @@
 | | |
 |---|---|
 | 영향 | 배재 · 전주 · 세종 · 본체 |
-| 바뀌는 것 | Common Core 가 맡는 자리: 기관 프로필 · 로그인 이름공간 · 콘텐츠 선택 · 결과 렌더 기록 · 역할 · 기관 격리 검사. 새 코드는 `src/lib/shared-core/` · `content/tenants/` · `db/proposed/` · `scripts/shared-core-*.ts` · `docs/shared-core/` |
+| 바뀌는 것 | Common Core 가 맡는 자리: 기관 프로필 · 로그인 이름공간 · 콘텐츠 선택 · 결과 렌더 기록 · 역할 · 기관 격리 검사. 새 코드는 `src/lib/shared-core/` · `content/tenants/` · `db/proposed/` · `scripts/shared-core/` · `docs/shared-core/` |
 | 바뀌지 않는 것 | 본체가 제안한 `src/lib/tenant/` · `docs/core/` 를 Common Core 가 쓰지 않는다(이름을 갈랐다). 본체는 상용화(PG · B2C · Global)를 맡는다 |
 | 공용 파일 | `package.json` 에 `shared-core:check` 한 줄(1단계) · `shared-core:isolation` 한 줄(5단계). `CLAUDE.md` 는 통합할 때 이 폴더를 가리키는 한 줄만 |
 | 기준 커밋 | 전주대 · 세종도 `4f02d79b` 에서 출발하기를 권한다 |
@@ -24,24 +24,37 @@
 | | |
 |---|---|
 | 영향 | 전주대 · 세종 (새 파일을 쓴다) · 배재 (영향 없음) |
-| 바뀌는 것 | `content/tenants/<코드>.json` 한 벌을 더하면 기관이 생긴다. 읽는 자리는 `resolveTenant()` 하나 |
+| 바뀌는 것 | `content/tenants/<코드>.json` 한 벌을 더하면 기관이 생긴다. 읽는 자리는 `loadTenantProfile()` 하나 (R36 구현 · 미연결 · [SC1_TENANT_PROFILE.md](SC1_TENANT_PROFILE.md)) |
 | 바뀌지 않는 것 | `campus-universities.json` 과 그 등록부 코드 · 학교 진입 화면 · 응시 · 채점 · 결과 · DB |
 | 각 세션이 할 일 | 자기 코드의 파일 하나만 쓴다. 남의 파일을 고치지 않는다. 학교라면 단과대·학과 구조는 지금처럼 등록부(`campus-universities.json`)에 들어가야 학생 진입이 서는데, **그 파일은 배재 소유라 블록을 더하는 일은 배재 세션과 맞춘다** (전주대 세션이 적은 `운영에서는 무시되는 테스트용 설정 파일` 은 `V3_CAMPUS_FIXTURE` 이고 그 길을 그대로 쓴다) |
 | 되돌림 | 파일을 지우면 그 기관이 사라진다. 다른 기관에 영향 없음 |
 | 승인 | 사업주 · 전주대 · 세종 |
 
-## CC-002 로그인 아이디 이름공간 (SC-2) — P0
+## CC-002 로그인 신원 (SC-2) — P0 · R36 개정
 
 | | |
 |---|---|
-| 영향 | **배재** (파일 소유) · 전주대 (접두어 사용) |
-| 바뀌는 것 | `src/lib/campus/students.ts` 에 두 줄: 아이디를 `namespacedLoginId()` 로 만들고, 이미 있는 계정을 `canClaimExisting()` 으로 묻는다. 다른 학교 학생 계정과 학교가 발급하지 않은 계정은 덮지 않고 그 줄을 거절로 돌려준다 |
-| 배재의 동작 | PCU 의 `id_prefix` 가 `null` 이라 아이디가 지금과 같다. 같은 명단을 다시 올리는 경우(같은 학교)도 지금과 같다 |
-| 바뀌지 않는 것 | DB 스키마 · `users.login_id UNIQUE` · 비밀번호 규칙 · `pcu:students rotate` |
-| 확인 | 로컬 DB 에서 `pcu:students` 결과가 글자까지 같은가 · 임시 학교 둘이 같은 학번을 올려도 서로 덮지 않는가 · `campus:walk` · `pcu:campus` |
-| 되돌림 | 두 줄을 지우면 된다. 데이터는 바뀌지 않았다 |
+| 영향 | **배재** (파일 소유) · 전주대 · 세종 (두 번째 학교부터) · 본체 (2단계 인증) |
+| 재현 | 다른 학교가 같은 학번을 올리면 앞 학교 학생의 학과가 덮이고(rotate 없음), rotate 면 계정·열쇠·학교·응시가 통째로 넘어간다. [R36_P0_LOGIN_COLLISION.md](R36_P0_LOGIN_COLLISION.md) |
+| 바뀌는 것 (1단계) | `students.ts` 가 사람을 `(university_code, student_id)` 로만 찾는다 · 남의 손잡이·메일을 가져가지 않고 그 줄을 거절한다 · `campus_students` 의 학교를 바꿔 쓰지 않는다 · 새 학교의 손잡이는 `<CODE>:<학번>` · `manage.ts` 미리 보기는 그 학교 안에서만 · 거절은 그 줄만. 패치 `proposed/sc2-p0.patch` |
+| 바뀌는 것 (2단계) | 학교 로그인·비밀번호 찾기가 기관 코드를 함께 넘기고 `authorize()` 가 `(기관, 학번)` 으로 찾는다. 시도 제한 열쇠에 기관 코드 |
+| 배재의 동작 | 아이디 = 학번 그대로 · 재등록 수렴 · 열쇠 그대로 · rotate 는 같은 계정. `P0-COMPAT-1/2` 가 전후 모두 센다 |
+| 바뀌지 않는 것 | **DB 스키마** · `users.login_id UNIQUE` · `campus_students UNIQUE(university_code, student_id)` · 비밀번호 규칙 |
+| 확인 | 수정 사본에서 FIX-1~7 · COMPAT-1/2 통과(`evidence/R36/p0-fixed-run.log`). 적용 뒤 `campus:walk` · `pcu:campus` (브라우저) |
+| 데이터 | PCU 이전 없음. 운영 탐지 SQL `scripts/shared-core/sql/r36_p0_detect.sql` (읽기만) |
+| 되돌림 | 패치를 되돌리면 된다. 데이터는 바뀌지 않는다 |
 | 시한 | **두 번째 학교가 명단을 올리기 전** |
-| 승인 | 사업주 · 배재 |
+| 승인 | 총괄 PM · 사업주 · 배재 (1단계) · 본체 (2단계) |
+
+## CC-002a 배포 upgrade 가 학번 계정을 시연으로 표시한다 (ADJ-1) — R36 발견
+
+| | |
+|---|---|
+| 영향 | 배재 (담당자 목록·집계에서 학생이 빠진다) |
+| 재현 | `scripts/shared-core/p0-demo-remark.test.ts` — 다시 부은 뒤 `is_demo true · 목록 0` |
+| 바꿀 자리 | `db/schema_phase2_4.sql` 의 일괄 UPDATE 에 `campus_students` 가 있는 줄을 빼는 조건 한 줄 |
+| 운영 | NOT VERIFIED — 탐지 SQL 의 `ADJ1` 이 센다 |
+| 승인 | 총괄 PM · 배재 |
 
 ## CC-003 콘텐츠 선택 (SC-3)
 

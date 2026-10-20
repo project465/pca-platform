@@ -1,0 +1,19 @@
+$ SC_SHIMS=1 DATABASE_URL=<sandbox> … node --no-warnings --experimental-strip-types --import ./scripts/shared-core/test/register.mjs --test scripts/shared-core/p0-demo-remark.test.ts
+TAP version 13
+# \# before {"is_demo":false,"listed":1} · after {"is_demo":true,"listed":0}
+# Subtest: ADJ-1 배포 upgrade 를 다시 부으면 메일 없는 학번 계정이 시연으로 표시되고 담당자 목록에서 사라진다
+ok 1 - ADJ-1 배포 upgrade 를 다시 부으면 메일 없는 학번 계정이 시연으로 표시되고 담당자 목록에서 사라진다
+  ---
+  duration_ms: 708.074244
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1176.806596
+EXIT=0

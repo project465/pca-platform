@@ -1,0 +1,112 @@
+TAP version 13
+# Subtest: P0-REPRO-0 checkStudent 는 아이디를 기관 없이 학번 그대로 만든다
+ok 1 - P0-REPRO-0 checkStudent 는 아이디를 기관 없이 학번 그대로 만든다 # SKIP 수정안 적용 사본 — 재현 대상 동작이 사라졌다(FIX-* 가 대신 센다)
+  ---
+  duration_ms: 335.669224
+  type: 'test'
+  ...
+# Subtest: P0-REPRO-1 최초 등록과 같은 기관 재등록은 한 계정으로 수렴한다(기준선)
+ok 2 - P0-REPRO-1 최초 등록과 같은 기관 재등록은 한 계정으로 수렴한다(기준선)
+  ---
+  duration_ms: 401.123484
+  type: 'test'
+  ...
+# Subtest: P0-REPRO-2 다른 기관이 같은 학번을 올리면(화면 경로 · rotate 없음) 앞 기관 학생의 학과가 덮인다
+ok 3 - P0-REPRO-2 다른 기관이 같은 학번을 올리면(화면 경로 · rotate 없음) 앞 기관 학생의 학과가 덮인다 # SKIP 수정안 적용 사본 — 재현 대상 동작이 사라졌다(FIX-* 가 대신 센다)
+  ---
+  duration_ms: 0.307162
+  type: 'test'
+  ...
+# Subtest: P0-REPRO-3 CSV 적용도 같은 길이다(applyImport → 고침 1 · 만듦 0)
+ok 4 - P0-REPRO-3 CSV 적용도 같은 길이다(applyImport → 고침 1 · 만듦 0) # SKIP 수정안 적용 사본 — 재현 대상 동작이 사라졌다(FIX-* 가 대신 센다)
+  ---
+  duration_ms: 0.205934
+  type: 'test'
+  ...
+# Subtest: P0-REPRO-4 rotate 로 올리면(CLI `pcu:students` ROTATE=yes 경로) 계정이 통째로 넘어간다
+ok 5 - P0-REPRO-4 rotate 로 올리면(CLI `pcu:students` ROTATE=yes 경로) 계정이 통째로 넘어간다 # SKIP 수정안 적용 사본 — 재현 대상 동작이 사라졌다(FIX-* 가 대신 센다)
+  ---
+  duration_ms: 0.25149
+  type: 'test'
+  ...
+# Subtest: P0-REPRO-5 명단에 적은 login_id 가 다른 기관 아이디와 같아도 같은 길이다
+ok 6 - P0-REPRO-5 명단에 적은 login_id 가 다른 기관 아이디와 같아도 같은 길이다 # SKIP 수정안 적용 사본 — 재현 대상 동작이 사라졌다(FIX-* 가 대신 센다)
+  ---
+  duration_ms: 0.222043
+  type: 'test'
+  ...
+# Subtest: P0-REPRO-6 같은 메일이 다른 기관 명단에 있으면 그 줄에서 적용이 던지고 뒤 줄이 남는다
+ok 7 - P0-REPRO-6 같은 메일이 다른 기관 명단에 있으면 그 줄에서 적용이 던지고 뒤 줄이 남는다 # SKIP 수정안 적용 사본 — 재현 대상 동작이 사라졌다(FIX-* 가 대신 센다)
+  ---
+  duration_ms: 0.098459
+  type: 'test'
+  ...
+# Subtest: P0-REPRO-7 다른 기관 담당자는 남의 학생을 직접 다루지 못한다(기준선 격리)
+ok 8 - P0-REPRO-7 다른 기관 담당자는 남의 학생을 직접 다루지 못한다(기준선 격리)
+  ---
+  duration_ms: 449.675524
+  type: 'test'
+  ...
+# Subtest: P0-FIX-1 다른 기관의 같은 학번은 각자의 계정이 된다
+ok 9 - P0-FIX-1 다른 기관의 같은 학번은 각자의 계정이 된다
+  ---
+  duration_ms: 730.972979
+  type: 'test'
+  ...
+# Subtest: P0-FIX-2 다른 기관의 명단 적용이 남의 학생 학과를 바꾸지 않는다
+ok 10 - P0-FIX-2 다른 기관의 명단 적용이 남의 학생 학과를 바꾸지 않는다
+  ---
+  duration_ms: 760.75805
+  type: 'test'
+  ...
+# Subtest: P0-FIX-3 rotate 도 다른 기관 학생의 열쇠·이름·학교를 바꾸지 않는다
+ok 11 - P0-FIX-3 rotate 도 다른 기관 학생의 열쇠·이름·학교를 바꾸지 않는다
+  ---
+  duration_ms: 614.567125
+  type: 'test'
+  ...
+# Subtest: P0-FIX-4 다른 기관 미리 보기에 남의 학번이 '이미 있음' 으로 새지 않는다
+ok 12 - P0-FIX-4 다른 기관 미리 보기에 남의 학번이 '이미 있음' 으로 새지 않는다
+  ---
+  duration_ms: 359.065566
+  type: 'test'
+  ...
+# Subtest: P0-FIX-5 다른 기관 명단의 겹치는 메일은 그 줄만 거절하고 뒤 줄은 적힌다
+ok 13 - P0-FIX-5 다른 기관 명단의 겹치는 메일은 그 줄만 거절하고 뒤 줄은 적힌다
+  ---
+  duration_ms: 1331.073116
+  type: 'test'
+  ...
+# Subtest: P0-FIX-6 학교가 발급하지 않은 계정을 학번이 같다고 가져가지 않는다
+ok 14 - P0-FIX-6 학교가 발급하지 않은 계정을 학번이 같다고 가져가지 않는다
+  ---
+  duration_ms: 218.529204
+  type: 'test'
+  ...
+# Subtest: P0-FIX-7 남의 학생 응시가 새 기관 학생에게 보이지 않는다
+ok 15 - P0-FIX-7 남의 학생 응시가 새 기관 학생에게 보이지 않는다
+  ---
+  duration_ms: 654.221232
+  type: 'test'
+  ...
+# Subtest: P0-COMPAT-2 배재 재등록과 rotate 는 같은 계정에서 일어난다(고치기 전후 모두)
+ok 16 - P0-COMPAT-2 배재 재등록과 rotate 는 같은 계정에서 일어난다(고치기 전후 모두)
+  ---
+  duration_ms: 614.882413
+  type: 'test'
+  ...
+# Subtest: P0-COMPAT-1 배재 기존 계정의 아이디와 로그인은 학번 그대로다(고치기 전후 모두 서야 한다)
+ok 17 - P0-COMPAT-1 배재 기존 계정의 아이디와 로그인은 학번 그대로다(고치기 전후 모두 서야 한다)
+  ---
+  duration_ms: 315.028061
+  type: 'test'
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 6
+# todo 0
+# duration_ms 7269.305589

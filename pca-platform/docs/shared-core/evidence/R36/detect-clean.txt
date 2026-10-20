@@ -1,0 +1,17 @@
+BEGIN
+check_id | n | user_ids
+D1_student_in_many_orgs | 0 | 
+(1 row)
+check_id | n | user_ids
+D2_membership_vs_campus_row | 0 | 
+(1 row)
+check_id | n | attempt_ids
+D3_attempt_vs_campus_row | 0 | 
+(1 row)
+check_id | n | user_ids
+D4_login_not_student_id | 0 | 
+(1 row)
+check_id | n | user_ids
+ADJ1_campus_student_marked_demo | 0 | 
+(1 row)
+ROLLBACK

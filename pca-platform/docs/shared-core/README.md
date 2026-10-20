@@ -12,6 +12,9 @@
 | [02_INTERFACES.md](02_INTERFACES.md) | 공통 Core 인터페이스와 파일 정의 |
 | [03_PLAN.md](03_PLAN.md) | 계약을 보존하는 구현 순서와 단계별 검사 |
 | [CONTRACTS.md](CONTRACTS.md) | 영향받는 세션에 전달할 변경 계약서(초안) |
+| [R36_P0_LOGIN_COLLISION.md](R36_P0_LOGIN_COLLISION.md) | **R36 P0** 기관 사이 학번 충돌 재현 · 영향 · 수정안 · 승인 목록 |
+| [SC1_TENANT_PROFILE.md](SC1_TENANT_PROFILE.md) | **R36 SC-1** 기관 프로필 읽기 전용 인터페이스 계약과 경계 |
+| [R36_REPORT.md](R36_REPORT.md) | R36 보고 열 항목 |
 
 ## 기준 커밋에서 돌린 불변 묶음 (2026-10-20)
 
@@ -28,7 +31,8 @@
 
 **이 세션의 네트워크 정책이 `registry.npmjs.org` 를 막아**(connect_rejected) `npm ci` 를 할 수 없었다. 그래서
 `tsx` 대신 Node 22 의 type-stripping 과 확장자 없는 import 를 푸는 작은 로더(세션 scratchpad, 저장소 밖)로
-DB 없는 검사만 돌렸다. `tsc` 와 `pg` · Playwright 가 필요한 검사(`v3:freeze` · `v3:result:freeze` ·
+DB 없는 검사만 돌렸다. (R36 에서 그 로더를 저장소의 `scripts/shared-core/test/` 로 옮기고,
+`pg` 를 psql 로 대신하는 shim 과 일회용 PostgreSQL 16 샌드박스를 더해 `v3:freeze` 까지 돌린다.) `tsc` 와 `pg` · Playwright 가 필요한 검사(`v3:freeze` · `v3:result:freeze` ·
 `v3:workspace` · `v3:runtime` 등)는 의존성 설치가 되는 환경에서 1단계를 시작할 때 돌린다.
 
 ## 이 작업이 지키는 규칙
@@ -43,7 +47,7 @@ DB 없는 검사만 돌렸다. `tsc` 와 `pg` · Playwright 가 필요한 검사
 4. **다른 세션의 파일을 고치지 않는다.** 고쳐야 하면 `CONTRACTS.md` 에 계약을 쓰고
    그 세션의 승인을 받는다. 소유 구역은 `00_BASELINE.md` §5.
 5. **공통 Core 의 새 코드는 새 자리에만 둔다.** `src/lib/shared-core/`,
-   `sites/pca-platform/content/tenants/`, `db/proposed/`, `scripts/shared-core-*.ts`,
+   `sites/pca-platform/content/tenants/`, `db/proposed/`, `scripts/shared-core/`,
    `docs/shared-core/`. (본체 세션이 제안한 `src/lib/tenant/` · `docs/core/` 와
    겹치지 않게 이름을 갈랐다.)
 6. **CLAUDE.md 를 고치지 않는다.** 여러 세션이 동시에 덧붙이는 충돌 지점이다.

@@ -1,0 +1,230 @@
+diff --git a/pca-platform/scripts/pcu-students.ts b/pca-platform/scripts/pcu-students.ts
+index 82f9ed97..428db139 100644
+--- a/pca-platform/scripts/pcu-students.ts
++++ b/pca-platform/scripts/pcu-students.ts
+@@ -41,7 +41,7 @@ import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+ import { dirname, resolve } from "node:path";
+ import { query, queryOne } from "../src/lib/db";
+ import {
+-  checkStudent, provisionStudent, campusStudentCount, initialPassword,
++  CampusProvisionRejected, checkStudent, provisionStudent, campusStudentCount, initialPassword,
+   type CampusStudentInput,
+ } from "../src/lib/campus/students";
+ import { hashPassword } from "../src/lib/password";
+@@ -233,7 +233,13 @@ async function main(): Promise<void> {
+     const c = checkStudent(UNI, r);
+     if (!c.ok) { bad.push(`${r.student_id || "(학번 없음)"} ${c.why}`); continue; }
+     if (!apply) { kept.push(`${r.student_id} ${r.name} → ${c.value.ctx.department_code}`); continue; }
+-    const res = await provisionStudent(org.id, c.value, { rotate });
++    let res: Awaited<ReturnType<typeof provisionStudent>>;
++    try {
++      res = await provisionStudent(org.id, c.value, { rotate });
++    } catch (e) {
++      if (e instanceof CampusProvisionRejected) { bad.push(`${r.student_id} ${e.message}`); continue; }
++      throw e;
++    }
+     if (res.password) {
+       made.push({
+         student_id: r.student_id, name: r.name,
+diff --git a/pca-platform/src/lib/campus/manage.ts b/pca-platform/src/lib/campus/manage.ts
+index ae6861a0..cacaba06 100644
+--- a/pca-platform/src/lib/campus/manage.ts
++++ b/pca-platform/src/lib/campus/manage.ts
+@@ -17,7 +17,7 @@ import { query, queryOne } from "@/lib/db";
+ import { audit } from "@/lib/audit";
+ import { hashPassword } from "@/lib/password";
+ import {
+-  checkStudent, initialPassword, provisionStudent,
++  CampusProvisionRejected, checkStudent, initialPassword, provisionStudent,
+   type CampusStudentInput,
+ } from "@/lib/campus/students";
+ import { ASSESSMENT_VERSION } from "@/lib/me-v3/runtime/session";
+@@ -239,7 +239,13 @@ export async function addStudentAccount(
+ ): Promise<{ ok: boolean; why?: string; password?: string | null; login_id?: string }> {
+   const checked = checkStudent(universityCode, row);
+   if (!checked.ok) return { ok: false, why: checked.why };
+-  const made = await provisionStudent(orgId, checked.value);
++  let made: Awaited<ReturnType<typeof provisionStudent>>;
++  try {
++    made = await provisionStudent(orgId, checked.value);
++  } catch (e) {
++    if (e instanceof CampusProvisionRejected) return { ok: false, why: e.message };
++    throw e;
++  }
+   await audit({
+     actorId: Number(actor.userId), actorRole: actor.role,
+     action: made.created ? "campus.student.create" : "campus.student.update",
+@@ -332,8 +338,12 @@ export async function previewImport(
+     }
+     const c = checkStudent(universityCode, r.input);
+     if (!c.ok) { out.push({ ...r, ok: false, why: c.why }); continue; }
++    /* **이 학교의 학생인가만 묻는다.** 손잡이로 물으면 다른 학교에 같은 학번이
++       있다는 사실이 `이미 있음` 으로 새고, 그 줄이 남의 학생을 고친다(R36 P0) */
+     const had = await queryOne<{ id: string }>(
+-      `SELECT id::text FROM users WHERE login_id = $1`, [c.value.loginId]);
++      `SELECT user_id::text AS id FROM campus_students
++        WHERE university_code = $1 AND student_id = $2`,
++      [c.value.ctx.university_code, c.value.input.student_id]);
+     out.push({ ...r, ok: true, existing: Boolean(had) });
+   }
+   return { ok: true, rows: out };
+@@ -361,7 +371,17 @@ export async function applyImport(
+     if (!r.ok) { rejected.push(r); continue; }
+     const c = checkStudent(universityCode, r.input);
+     if (!c.ok) { rejected.push({ ...r, ok: false, why: c.why }); continue; }
+-    const made = await provisionStudent(orgId, c.value);
++    let made: Awaited<ReturnType<typeof provisionStudent>>;
++    try {
++      made = await provisionStudent(orgId, c.value);
++    } catch (e) {
++      /* **그 줄만 거절한다.** 한 줄에서 던지면 뒤 줄이 반쯤 남는다 */
++      if (e instanceof CampusProvisionRejected) {
++        rejected.push({ ...r, ok: false, why: e.message });
++        continue;
++      }
++      throw e;
++    }
+     if (made.created && made.password) {
+       created.push({ login_id: c.value.loginId, password: made.password });
+     } else updated += 1;
+diff --git a/pca-platform/src/lib/campus/students.ts b/pca-platform/src/lib/campus/students.ts
+index d3cd1757..51b86714 100644
+--- a/pca-platform/src/lib/campus/students.ts
++++ b/pca-platform/src/lib/campus/students.ts
+@@ -94,10 +94,38 @@ export function checkStudent(
+       why: `어느 전공 검사로 이을지 아직 정해지지 않은 자리입니다: ${found.leaf.name}`,
+     };
+   }
+-  const loginId = (row.login_id ?? "").trim() || sid;
++  const loginId = (row.login_id ?? "").trim() || defaultLoginId(universityCode, sid);
+   return { ok: true, value: { input: { ...row, student_id: sid }, loginId, ctx } };
+ }
+ 
++/**
++ * **같은 사람인가는 (학교, 학번) 이 정한다**(R36 SC-2). `users.login_id` 는
++ * 그 사람에게 붙여 둔 손잡이이고 신원이 아니다.
++ *
++ * 손잡이는 전 세계에 하나여야 한다(`users.login_id UNIQUE`). 그래서 학번을
++ * 그대로 손잡이로 쓰는 학교를 **이미 그렇게 나간 학교로만** 둔다: 배재 학생의
++ * 아이디가 학번이고 그 아이디가 이미 학생 손에 있다. 다른 학교는
++ * `<학교 코드>:<학번>` 을 손잡이로 적어 배재의 학번과 겹칠 수 없게 한다.
++ * **겹치지 않는 것을 이 글자가 보장하지 않는다**: 보장은 아래
++ * `provisionStudent` 가 (학교, 학번)으로만 사람을 찾고 남의 손잡이를 가져가지
++ * 않는 데서 온다. 글자는 두 번째 학교의 첫 학생이 거절되지 않게 하는 자리다.
++ */
++export const BARE_LOGIN_UNIVERSITIES: ReadonlySet<string> = new Set(["PCU"]);
++
++export function defaultLoginId(universityCode: string, sid: string): string {
++  return BARE_LOGIN_UNIVERSITIES.has(universityCode) ? sid : `${universityCode}:${sid}`;
++}
++
++/** 이 줄은 만들지 않는다. 남의 계정을 가져가는 대신 담당자에게 돌려준다 */
++export class CampusProvisionRejected extends Error {
++  readonly code: "LOGIN_TAKEN" | "EMAIL_TAKEN";
++  constructor(code: "LOGIN_TAKEN" | "EMAIL_TAKEN", message: string) {
++    super(message);
++    this.name = "CampusProvisionRejected";
++    this.code = code;
++  }
++}
++
+ /** 사람이 옮겨 적을 수 있는 글자만. 헷갈리는 0·O·1·l 을 뺀다 */
+ const ALPHA = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
+ 
+@@ -121,30 +149,52 @@ export async function provisionStudent(
+   opts: { rotate?: boolean } = {},
+ ): Promise<{ created: boolean; password: string | null; userId: string }> {
+   const { input, loginId, ctx } = checked;
+-  const had = await queryOne<{ id: string }>(
+-    `SELECT id::text FROM users WHERE login_id = $1`, [loginId]);
+-  if (had && !opts.rotate) {
++  /* **(학교, 학번)으로만 찾는다.** 손잡이(login_id)로 찾으면 다른 학교의 같은
++     학번이나 학교가 발급하지 않은 계정을 같은 사람으로 읽는다(R36 P0) */
++  const mine = await queryOne<{ id: string }>(
++    `SELECT user_id::text AS id FROM campus_students
++      WHERE university_code = $1 AND student_id = $2`,
++    [ctx.university_code, input.student_id]);
++  if (mine && !opts.rotate) {
+     /* 학과가 바뀌었을 수 있으므로 그 줄은 맞춰 둔다. 열쇠만 그대로다 */
+     await query(
+       `UPDATE campus_students
+           SET college_code = $2, department_code = $3, specialization = $4
+-        WHERE user_id = $1::bigint`,
+-      [had.id, ctx.college_code, ctx.department_code, ctx.specialization]);
+-    return { created: false, password: null, userId: had.id };
++        WHERE user_id = $1::bigint AND university_code = $5`,
++      [mine.id, ctx.college_code, ctx.department_code, ctx.specialization,
++        ctx.university_code]);
++    return { created: false, password: null, userId: mine.id };
++  }
++
++  /* 손잡이와 메일을 다른 사람이 들고 있으면 **가져가지 않는다** */
++  const holder = await queryOne<{ id: string }>(
++    `SELECT id::text FROM users WHERE login_id = $1`, [loginId]);
++  if (holder && holder.id !== mine?.id) {
++    throw new CampusProvisionRejected("LOGIN_TAKEN",
++      `아이디가 이미 다른 계정에 있습니다: ${loginId}`);
++  }
++  const email = input.email?.trim() || null;
++  if (email) {
++    const em = await queryOne<{ id: string }>(
++      `SELECT id::text FROM users WHERE lower(email) = lower($1)`, [email]);
++    if (em && em.id !== mine?.id) {
++      throw new CampusProvisionRejected("EMAIL_TAKEN", "메일 주소가 이미 다른 계정에 있습니다");
++    }
+   }
+ 
+   const pw = initialPassword();
+-  const user = await queryOne<{ id: string; is_demo: boolean }>(
+-    `INSERT INTO users (login_id, email, display_name, password_hash,
+-                        status, locale, must_reset_pw)
+-     VALUES ($1, $2, $3, $4, 'active', 'ko', FALSE)
+-     ON CONFLICT (login_id) DO UPDATE
+-       SET password_hash = EXCLUDED.password_hash,
+-           display_name  = EXCLUDED.display_name
+-     RETURNING id::text, is_demo`,
+-    [loginId, input.email?.trim() || null, input.name.trim(),
+-      await hashPassword(pw)],
+-  );
++  const hash = await hashPassword(pw);
++  const user = mine
++    ? await queryOne<{ id: string; is_demo: boolean }>(
++      `UPDATE users SET password_hash = $2, display_name = $3
++        WHERE id = $1::bigint RETURNING id::text, is_demo`,
++      [mine.id, hash, input.name.trim()])
++    : await queryOne<{ id: string; is_demo: boolean }>(
++      `INSERT INTO users (login_id, email, display_name, password_hash,
++                          status, locale, must_reset_pw)
++       VALUES ($1, $2, $3, $4, 'active', 'ko', FALSE)
++       RETURNING id::text, is_demo`,
++      [loginId, email, input.name.trim(), hash]);
+   if (!user) throw new Error(`계정을 만들지 못했습니다: ${loginId}`);
+   /* **학생을 시연으로 표시하지 않는다.** 사람을 만드는 자리가 스무 곳이
+      넘어 트리거가 아이디 모양만 보고 표시할 수 있고, 그 자리는 운영
+@@ -161,20 +211,21 @@ export async function provisionStudent(
+      ON CONFLICT (user_id, org_id, role) DO NOTHING`,
+     [user.id, orgId]);
+ 
++  /* **다른 학교의 줄을 고쳐 쓰지 않는다.** 같은 (학교, 학번)일 때만 맞춘다 */
+   await query(
+     `INSERT INTO campus_students (user_id, university_code, student_id,
+                                   college_code, department_code, specialization)
+      VALUES ($1::bigint, $2, $3, $4, $5, $6)
+      ON CONFLICT (user_id) DO UPDATE
+-       SET university_code = EXCLUDED.university_code,
+-           student_id      = EXCLUDED.student_id,
+-           college_code    = EXCLUDED.college_code,
++       SET college_code    = EXCLUDED.college_code,
+            department_code = EXCLUDED.department_code,
+-           specialization  = EXCLUDED.specialization`,
++           specialization  = EXCLUDED.specialization
++     WHERE campus_students.university_code = EXCLUDED.university_code
++       AND campus_students.student_id      = EXCLUDED.student_id`,
+     [user.id, ctx.university_code, input.student_id,
+       ctx.college_code, ctx.department_code, ctx.specialization]);
+ 
+-  return { created: !had, password: pw, userId: user.id };
++  return { created: !mine, password: pw, userId: user.id };
+ }
+ 
+ /**

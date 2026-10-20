@@ -1,0 +1,12 @@
+# base(d1c3ca87) ↔ head(작업 트리) 로그 대조
+SAME  campus-check.log
+SAME  db-chain.log
+SAME  v2-frozen.log
+SAME  v3-freeze-measure.log
+SAME  v3-freeze.log
+SAME  v3-result-freeze.log
+SAME  v3-scoring-BIZ_CORE_V1.log
+SAME  v3-scoring-CS_CORE_V1.log
+SAME  v3-scoring-EE_CORE_V1.log
+SAME  v3-scoring-ME_CORE_V3.log
+SAME  v3-workspace.log

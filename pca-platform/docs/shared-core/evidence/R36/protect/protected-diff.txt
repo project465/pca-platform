@@ -1,0 +1,81 @@
+# 보호 경로 diff — 작업 트리(추적 안 된 새 파일 포함) 대 기준
+## vs 4f02d79b
+tracked diff lines: 0
+untracked in protected paths: 0
+## vs d1c3ca87
+tracked diff lines: 0
+untracked in protected paths: 0
+## 이 회차에 생긴 파일 (전부 shared-core 자리)
+  docs/shared-core/R36_P0_LOGIN_COLLISION.md
+  docs/shared-core/SC1_TENANT_PROFILE.md
+  docs/shared-core/evidence/R36/adj1-demo-remark.log
+  docs/shared-core/evidence/R36/detect-after-repro.txt
+  docs/shared-core/evidence/R36/detect-clean.txt
+  docs/shared-core/evidence/R36/p0-fixed-observed.json
+  docs/shared-core/evidence/R36/p0-fixed-run.log
+  docs/shared-core/evidence/R36/p0-observed.json
+  docs/shared-core/evidence/R36/p0-run.log
+  docs/shared-core/evidence/R36/protect/base-d1c3ca87/campus-check.log
+  docs/shared-core/evidence/R36/protect/base-d1c3ca87/db-chain.log
+  docs/shared-core/evidence/R36/protect/base-d1c3ca87/summary.tsv
+  docs/shared-core/evidence/R36/protect/base-d1c3ca87/v2-frozen.log
+  docs/shared-core/evidence/R36/protect/base-d1c3ca87/v3-freeze-measure.log
+  docs/shared-core/evidence/R36/protect/base-d1c3ca87/v3-freeze.log
+  docs/shared-core/evidence/R36/protect/base-d1c3ca87/v3-result-freeze.log
+  docs/shared-core/evidence/R36/protect/base-d1c3ca87/v3-scoring-BIZ_CORE_V1.log
+  docs/shared-core/evidence/R36/protect/base-d1c3ca87/v3-scoring-CS_CORE_V1.log
+  docs/shared-core/evidence/R36/protect/base-d1c3ca87/v3-scoring-EE_CORE_V1.log
+  docs/shared-core/evidence/R36/protect/base-d1c3ca87/v3-scoring-ME_CORE_V3.log
+  docs/shared-core/evidence/R36/protect/base-d1c3ca87/v3-workspace.log
+  docs/shared-core/evidence/R36/protect/compare.txt
+  docs/shared-core/evidence/R36/protect/head/campus-check.log
+  docs/shared-core/evidence/R36/protect/head/db-chain.log
+  docs/shared-core/evidence/R36/protect/head/summary.tsv
+  docs/shared-core/evidence/R36/protect/head/v2-frozen.log
+  docs/shared-core/evidence/R36/protect/head/v3-freeze-measure.log
+  docs/shared-core/evidence/R36/protect/head/v3-freeze.log
+  docs/shared-core/evidence/R36/protect/head/v3-result-freeze.log
+  docs/shared-core/evidence/R36/protect/head/v3-scoring-BIZ_CORE_V1.log
+  docs/shared-core/evidence/R36/protect/head/v3-scoring-CS_CORE_V1.log
+  docs/shared-core/evidence/R36/protect/head/v3-scoring-EE_CORE_V1.log
+  docs/shared-core/evidence/R36/protect/head/v3-scoring-ME_CORE_V3.log
+  docs/shared-core/evidence/R36/protect/head/v3-workspace.log
+  docs/shared-core/evidence/R36/protect/protected-diff.txt
+  docs/shared-core/evidence/R36/sandbox-applied.txt
+  docs/shared-core/evidence/R36/sandbox-up.log
+  docs/shared-core/evidence/R36/sc1-boundary.log
+  docs/shared-core/evidence/R36/sc1-run.log
+  docs/shared-core/evidence/R36/sc1-typecheck.log
+  docs/shared-core/proposed/sc2-p0.patch
+  scripts/shared-core/p0-demo-remark.test.ts
+  scripts/shared-core/p0-login-collision.test.ts
+  scripts/shared-core/sql/r36_p0_detect.sql
+  scripts/shared-core/tenant-boundary.test.ts
+  scripts/shared-core/tenant-profile.test.ts
+  scripts/shared-core/test/loader.mjs
+  scripts/shared-core/test/pg-sandbox.sh
+  scripts/shared-core/test/protect.sh
+  scripts/shared-core/test/register.mjs
+  scripts/shared-core/test/shims/bcryptjs.mjs
+  scripts/shared-core/test/shims/next-navigation.mjs
+  scripts/shared-core/test/shims/pg.mjs
+  scripts/shared-core/test/typecheck.sh
+  src/lib/shared-core/tenant/campus.ts
+  src/lib/shared-core/tenant/errors.ts
+  src/lib/shared-core/tenant/index.ts
+  src/lib/shared-core/tenant/refs.ts
+  src/lib/shared-core/tenant/resolve.ts
+  src/lib/shared-core/tenant/types.ts
+  src/lib/shared-core/tenant/validate.ts
+## 고친 추적 파일
+  pca-platform/docs/shared-core/02_INTERFACES.md
+  pca-platform/docs/shared-core/CONTRACTS.md
+  pca-platform/docs/shared-core/README.md
+## 지문
+9688a9268690d2872c7499c574897cbbc4fc1898f5ba6c49cc461f85c18b266f  deploy/db-chain.json
+b029cf0a5a6440a73b923ee5995366de479d14f245bf0c3b9b0b161bafb9572a  sites/pca-platform/content/campus-universities.json
+b2188400aa80a7a12e3339c5fa9aa0547bfb8968514ff1313c10750b5eb4b574  sites/pca-platform/content/major-cores.json
+831cdd497174dc32ce5ed148902574a510a4bba648b0e3bb55b3c5deb9c870fd  assessment-frozen.json
+4f02d79b:deploy/db-chain.json 9688a9268690d2872c7499c574897cbbc4fc1898f5ba6c49cc461f85c18b266f
+4f02d79b:campus-universities.json b029cf0a5a6440a73b923ee5995366de479d14f245bf0c3b9b0b161bafb9572a
+BASIC 48 = items-core 48 · STANDARD 68 = +items-standard 20 · PRO 92 = +items-pro 24 (Q 번호 끝자리 48·68·92)
