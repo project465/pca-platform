@@ -1,0 +1,21 @@
+psql:db/schema_metri.sql:1049: NOTICE:  column "major_id" of relation "hs_univ_subject_recs" already exists, skipping
+psql:db/seed/metri/skill_tree.sql:3: WARNING:  there is already a transaction in progress
+WARNING:  there is no transaction in progress
+psql:db/schema_phase2.sql:31: NOTICE:  constraint "products_tier_chk" of relation "products" does not exist, skipping
+psql:db/schema_phase2.sql:34: NOTICE:  constraint "products_market_chk" of relation "products" does not exist, skipping
+psql:db/schema_phase2.sql:83: NOTICE:  constraint "entitlements_status_chk" of relation "entitlements" does not exist, skipping
+psql:db/schema_phase2.sql:110: NOTICE:  constraint "attempts_stage_chk" of relation "attempts" does not exist, skipping
+psql:db/schema_phase2.sql:172: NOTICE:  index "report_snapshots_attempt_key" does not exist, skipping
+psql:db/schema_phase2.sql:174: NOTICE:  relation "report_snapshots_attempt_idx" already exists, skipping
+psql:db/schema_phase2_1.sql:106: NOTICE:  trigger "payment_events_no_change" for relation "payment_events" does not exist, skipping
+psql:db/schema_phase2_2.sql:146: NOTICE:  constraint "job_failures_kind_chk" of relation "job_failures" does not exist, skipping
+psql:db/schema_phase2_4.sql:36: NOTICE:  trigger "users_mark_demo" for relation "users" does not exist, skipping
+psql:db/schema_v3_runtime.sql:78: NOTICE:  column "note_text" of relation "v3_responses" already exists, skipping
+psql:db/schema_v3_arch.sql:84: NOTICE:  relation "region_industry" does not exist, skipping
+psql:db/schema_v3_arch.sql:86: NOTICE:  relation "industry_td_demand" does not exist, skipping
+psql:db/schema_v3_arch.sql:88: NOTICE:  relation "org_registry" does not exist, skipping
+psql:db/schema_v3_platform.sql:70: NOTICE:  column "problems" of relation "v3_experiences" already exists, skipping
+psql:db/schema_v3_platform.sql:71: NOTICE:  column "used_where" of relation "v3_experiences" already exists, skipping
+psql:db/schema_v3_pilot.sql:397: NOTICE:  trigger "v3_response_change_trg" for relation "v3_responses" does not exist, skipping
+psql:db/schema_v3_pilot.sql:415: NOTICE:  trigger "v3_screen_trace_trg" for relation "v3_attempts" does not exist, skipping
+psql:db/schema_campus_entry.sql:32: NOTICE:  constraint "v3_campus_pair" of relation "v3_attempts" does not exist, skipping
