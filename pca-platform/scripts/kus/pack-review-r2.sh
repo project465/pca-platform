@@ -16,12 +16,12 @@ if [ -d docs/kus/r2/shots-next ]; then
 fi
 cp docs/kus/r2/qa/pdf/*.pdf docs/kus/r2/qa/pdf/*.html "$R/pdf/server/"
 cp docs/kus/r2/qa/verify.log "$R/logs/kus-server-e2e.log"
-[ -d docs/kus/r2/ci ] && cp docs/kus/r2/ci/* "$R/logs/" 2>/dev/null || true
+for d in docs/kus/r2/ci-run*; do [ -d "$d" ] && mkdir -p "$R/logs/$(basename "$d")" && cp "$d"/* "$R/logs/$(basename "$d")/"; done
 cp docs/kus/r2/qa/rich-poor-contra.json docs/kus/data/kus-core-compat.json docs/kus/data/kus-core-compat.result.json \
   docs/kus/data/kus-curricula.search-excerpt.json scripts/fixtures/campus-kus.json "$R/data/"
 {
   echo "# KUS-R2-REVIEW"; echo
-  echo "- 가지: claude/ecstatic-cori-sv6lh5 · 커밋 $(git rev-parse --short HEAD) · 기준 4f02d79b"
+  echo "- 가지: claude/ecstatic-cori-sv6lh5 · 커밋 $(git rev-parse --short HEAD) · 기준 4f02d79b · 마지막 [kus-verify] 커밋 $(git log --grep="\[kus-verify\]" -1 --format=%h)"
   echo "- 화면: screens-next/*.next.jpg — GitHub 러너의 \`next build\` 서버를 실제 Chromium 으로 찍었다($(cat docs/kus/r2/shots-next/RUN.txt 2>/dev/null || echo '캡처 없음'))"
   echo "- PDF: pdf/next (실제 Next 경로로 내려받음) · pdf/server (같은 코드를 서버 쪽 E2E 에서 뽑음)"
   echo "- 시작: docs/R2_REPORT.md"; echo

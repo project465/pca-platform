@@ -205,14 +205,14 @@ ${table(["면접 질문", "답의 뼈대"], vd.interview.map((q) => [esc(q.q), e
   /* 8 */
   const col = (t: string, xs: PlanItem[]) => `<div class="pcol"><p class="ph">${t}</p>${xs.length
     ? `<ol>${xs.map((x) => `<li><span class="src">${esc(x.from)}</span>${esc(x.do)}<small><b>끝난 기준</b> ${esc(x.done)}</small></li>`).join("")}</ol>`
-    : `<p class="empty">이 때에 낸 할 일이 없습니다.</p>`}</div>`;
+    : `<p class="empty">이 시기에 따로 잡힌 할 일은 없습니다. 앞 칸의 할 일을 마무리하는 데 씁니다.</p>`}</div>`;
   const ch8 = chapter(8, "30·60·90일 실행 계획", "결과 모델이 정한 때(지금 · 다음 · 나중)를 30·60·90일로 옮기고, 탐방 기록의 상태에서 나온 할 일을 더했습니다. 할 일마다 끝났다고 볼 기준을 붙였습니다.",
     `<div class="plan">${col("30일", a.plan.d30)}${col("60일", a.plan.d60)}${col("90일", a.plan.d90)}</div>
 ${a.actions.some((x) => x.note) ? `<p class="muted">${esc([...new Set(a.actions.map((x) => x.note).filter(Boolean))].slice(0, 3).join(" "))}</p>` : ""}`);
 
   const limits = `<section class="ch lim flow"><header class="ch-h"><span class="no">—</span><div><p class="kick">APPENDIX</p><h2>근거와 한계</h2></div></header>
 ${table(["무엇", "출처 · 상태"], [
-    ["검사", `${esc(s.core)} · 문항 ${esc(meta.modules.item_bank_version ?? "?")} · 채점 ${esc(meta.modules.scoring_version ?? "?")} · 결과 모델 ${esc(meta.modules.result_model_version ?? "?")}. 규준과 인지면접 전이라 <b>검증된 검사가 아닙니다</b>.`],
+    ["검사", `${esc(s.coreName)} 검사(판본 ${esc(s.core)}) · 문항 ${esc(meta.modules.item_bank_version ?? "?")} · 채점 ${esc(meta.modules.scoring_version ?? "?")} · 결과 모델 ${esc(meta.modules.result_model_version ?? "?")}. 규준과 인지면접 전이라 <b>검증된 검사가 아닙니다</b>.`],
     ["판정", "공통 엔진이 응답에서 냈습니다. KUS 리포트는 판정을 바꾸지 않고, 근거가 받치는 정도를 함께 적습니다(1장)."],
     ["학과와 Core", `${esc(s.department)} · ${esc(s.compat ? COMPAT_KO[s.compat] ?? s.compat : "호환 등급 없음")}. 등급은 학과 교육과정(공식 쪽 검색 발췌)과 Core 영역을 대조한 것이며, 원문 대조와 전공자 검수 전입니다.`],
     ["학교 진입", "학교 진입 응시는 등급을 고르지 않고 PRO 로 엽니다(공통 규칙). 문항과 채점 기준을 바꾸지 않았습니다."],

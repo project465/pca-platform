@@ -19,7 +19,7 @@ export default async function KusPlan() {
   const col = (t: string, xs: PlanItem[]) => (
     <div><h3>{t}</h3>{xs.length ? <ol>{xs.map((x) => (
       <li key={x.do}><span>{x.do}</span><small className="kus-done"><b>끝난 기준</b> {x.done}</small></li>))}</ol>
-      : <p className="cm-shsub">이 때에 낸 할 일이 없습니다.</p>}</div>
+      : <p className="cm-shsub">이 시기에 따로 잡힌 할 일은 없습니다. 앞 칸의 할 일을 마무리하는 데 씁니다.</p>}</div>
   );
   return (
     <KusShell active="/kus/plan" who={w.name} dept={`${w.college} · ${w.dept}`} test={w.test}>
@@ -29,7 +29,7 @@ export default async function KusPlan() {
         <>
           <div className="kus-plan">{col("30일", a.plan.d30)}{col("60일", a.plan.d60)}{col("90일", a.plan.d90)}</div>
           <section className="kus-panel">
-            <SectionHeader icon="bolt" title="할 일 전체(결과 모델)" />
+            <SectionHeader icon="bolt" title="할 일 전체" />
             <ol className="kus-todo">{a.actions.map((x) => (
               <li key={x.do}><div><b>{({ NOW: "지금", NEXT: "다음", LATER: "나중" } as const)[x.horizon]}{x.domain ? ` · ${x.domain}` : ""}</b><small>{x.do}</small></div></li>))}</ol>
           </section>

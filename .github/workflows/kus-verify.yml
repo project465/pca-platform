@@ -221,9 +221,10 @@ jobs:
           if [ ! -d shots ] || [ -z "$(ls -A shots 2>/dev/null)" ]; then echo "캡처 없음"; exit 0; fi
           D="pca-platform/docs/kus/r2/shots-next"
           rm -rf "$D"; mkdir -p "$D"; cp -r shots/. "$D/"
-          printf 'run %s · sha %s · %s\n' "${{ github.run_id }}" "${{ github.sha }}" "$(date -u +%FT%TZ)" > "$D/RUN.txt"
+          # 검증이 실패한 실행의 캡처도 올린다(무엇이 걸렸는지 그림으로 보려고). 그래서 판정을 같이 적는다
+          printf 'run %s · sha %s · %s · verify %s\n' "${{ github.run_id }}" "${{ github.sha }}" "$(date -u +%FT%TZ)" "${{ needs.verify.result }}" > "$D/RUN.txt"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add "$D"
-          git commit -q -m "KUS R2: 실제 Next 캡처 (run ${{ github.run_id }} · ${GITHUB_SHA::8})" || { echo "바뀐 것 없음"; exit 0; }
+          git commit -q -m "KUS R2: 실제 Next 캡처 (run ${{ github.run_id }} · ${GITHUB_SHA::8} · verify ${{ needs.verify.result }})" || { echo "바뀐 것 없음"; exit 0; }
           for i in 1 2 3; do git pull -q --rebase origin "${{ github.ref_name }}" && git push -q origin "HEAD:${{ github.ref_name }}" && break; sleep 5; done

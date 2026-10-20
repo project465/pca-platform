@@ -14,7 +14,7 @@
 
 ── 3. 검사: 열기 · 중간 저장 · 이어하기 · 제출 · 중복 제출
   PASS  RICH 응시가 KUS 학교 맥락 · PRO 로 열린다(BASIC 을 넘겨도) — PRO BIZ_CORE_V1 SPEC_BIZ_GENERAL
-  PASS  이어하기: 같은 응시로 돌아온다 — 응시 85
+  PASS  이어하기: 같은 응시로 돌아온다 — 응시 90
   PASS  이어하기: 중간 저장한 답이 그대로다 — 답 26개 · 화면 sweep-learning
   PASS  이어하기: 멈춘 화면에서 다시 선다 — sweep-learning
   PASS  이어하기: 응시가 하나다 — 1
@@ -43,7 +43,7 @@
   PASS  POOR 저장한 탐방을 다시 읽는다 — [테스트] 가상기업 A · 등록 탐방
   PASS  CONTRA 탐방 기록이 검사를 지난다
   PASS  CONTRA 저장한 탐방을 다시 읽는다 — [테스트] 학생이 적은 기업 · 확인 전
-  PASS  직접 해 본 활동을 공통 경험으로 옮긴다 — 경험 18
+  PASS  직접 해 본 활동을 공통 경험으로 옮긴다 — 경험 19
   PASS  남의 경험 번호는 탐방에 잇지 못한다
   PASS  탐방 기록이 굳은 결과를 바꾸지 않는다
 
@@ -52,17 +52,17 @@
   PASS  RICH 리포트 HTML 이 선다
   PASS  RICH 리포트에 테스트 띠가 선다
   PASS  RICH 리포트에 여덟 장이 다 있다
-  PASS  RICH PDF 가 뽑힌다 — 301795바이트
+  PASS  RICH PDF 가 뽑힌다 — 302578바이트
   PASS  POOR KUS 분석 묶음이 선다
   PASS  POOR 리포트 HTML 이 선다
   PASS  POOR 리포트에 테스트 띠가 선다
   PASS  POOR 리포트에 여덟 장이 다 있다
-  PASS  POOR PDF 가 뽑힌다 — 358808바이트
+  PASS  POOR PDF 가 뽑힌다 — 358721바이트
   PASS  CONTRA KUS 분석 묶음이 선다
   PASS  CONTRA 리포트 HTML 이 선다
   PASS  CONTRA 리포트에 테스트 띠가 선다
   PASS  CONTRA 리포트에 여덟 장이 다 있다
-  PASS  CONTRA PDF 가 뽑힌다 — 361124바이트
+  PASS  CONTRA PDF 가 뽑힌다 — 361013바이트
   PASS  이름을 지우고 견줘도 세 리포트가 서로 다르다
   PASS  RICH 는 POOR 보다 확인된 판단이 많다 — 32 > 0
   PASS  RICH 는 근거가 선 영역이 있고 POOR 는 없다 — 4 · 0
