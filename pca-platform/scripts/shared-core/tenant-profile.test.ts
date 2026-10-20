@@ -327,7 +327,75 @@ test("T20 오류 코드는 계약에 적힌 열하나뿐이고 메시지가 코�
   assert.equal(e.name, "TenantProfileError");
 });
 
-/* ── 7. 운영 설정을 건드리지 않았다 ──────────────────────────────── */
+/* ── 7. R37 계약 재검토 ──────────────────────────────────────────── */
+
+test("T21 파일을 만든 차례 · 디렉터리 탐색 차례가 결과를 바꾸지 않는다", () => {
+  const a = sandbox(); const b = sandbox();
+  const zz = { ...VALID };
+  const campus = JSON.parse(readFileSync(REAL_CAMPUS, "utf8"));
+  writeFileSync(join(a, "campus-universities.json"), JSON.stringify(campus));
+  writeFileSync(join(b, "campus-universities.json"), JSON.stringify(campus));
+  putTenant(a, "ZZTEST.json", zz);
+  /* 열쇠 차례를 거꾸로 한 같은 내용 (replacer 배열은 안쪽 칸까지 걸러서 쓰지 않는다) */
+  putTenant(b, "ZZTEST.json", Object.fromEntries(Object.entries(zz).reverse()));
+  const la = listTenantProfiles({ contentDir: a }).map((p) => canonicalProfileJson({ ...p, source: { ...p.source, sha256: "" } }));
+  const lb = listTenantProfiles({ contentDir: b }).map((p) => canonicalProfileJson({ ...p, source: { ...p.source, sha256: "" } }));
+  assert.deepEqual(la, lb);
+  assert.deepEqual(listTenantProfiles({ contentDir: a }).map((p) => p.code), ["PCU", "ZZTEST"], "코드순");
+});
+
+test("T22 국가와 시장은 다른 칸이다 — KR 기관이 GLOBAL 시장을 들 수 있다", () => {
+  const d = sandbox();
+  putTenant(d, "ZZTEST.json", { ...VALID, country: "KR", market: "GLOBAL" });
+  const p = loadTenantProfile("ZZTEST", { contentDir: d });
+  assert.equal(p.country, "KR"); assert.equal(p.market, "GLOBAL");
+});
+
+test("T23 등록부의 학교 코드는 그대로 기관 코드가 된다(새 ID 없음 · 꼴이 TENANT_CODE 안)", () => {
+  for (const f of [REAL_CAMPUS, FIXTURE]) {
+    const raw = JSON.parse(readFileSync(f, "utf8")) as { universities: { university_code: string }[] };
+    const opts = f === REAL_CAMPUS ? { contentDir: REAL } : { contentDir: REAL, campusRegistryFile: FIXTURE };
+    const codes = listTenantProfiles(opts).map((p) => p.code).sort();
+    assert.deepEqual(codes, raw.universities.map((u) => u.university_code).sort(), f);
+  }
+});
+
+test("T24 같은 코드를 두 원천이 들면 내용이 같아도 거절한다(우선순위 규칙을 두지 않는다)", () => {
+  const campus = JSON.parse(readFileSync(FIXTURE, "utf8"));
+  const d = sandbox(campus);
+  const fromCampus = loadTenantProfile("ZZTEST", { contentDir: d });
+  putTenant(d, "ZZTEST.json", {
+    schema_version: TENANT_PROFILE_SCHEMA, code: "ZZTEST", name: fromCampus.name, kind: "university",
+    country: fromCampus.country, market: fromCampus.market,
+    majors: { cores: [...fromCampus.majors.cores] },
+    content: { region_codes: [...fromCampus.content.region_codes], org_dataset: null },
+  });
+  assert.equal(errCode(() => loadTenantProfile("ZZTEST", { contentDir: d })), "CODE_CONFLICT");
+});
+
+test("T25 읽는 법을 모르는 등록부 판본은 거절한다 — 칸 이름이 바뀐 판본이 빈 프로필로 서지 않는다", () => {
+  const campus = JSON.parse(readFileSync(REAL_CAMPUS, "utf8"));
+  const renamed = JSON.parse(JSON.stringify(campus).replace(/"core_code"/g, '"core"'));
+  const d0 = sandbox(renamed);
+  /* 판본 칸을 그대로 두면(.5) 옛 규칙으로 읽혀 Core 0 개 프로필이 선다 — 그래서 판본을 본다 */
+  const p0 = loadTenantProfile("PCU", { contentDir: d0 });
+  assert.deepEqual(p0.majors.cores, [], "같은 판본 이름이면 막을 수 없다 — 판본을 올리는 쪽이 같이 올려야 한다");
+  renamed.schema_version = "cm-campus-universities.6";
+  const d1 = sandbox(renamed);
+  assert.equal(errCode(() => loadTenantProfile("PCU", { contentDir: d1 })), "UNSUPPORTED_SCHEMA_VERSION");
+  assert.ok(loadTenantProfile("ZZTEST", { contentDir: REAL, campusRegistryFile: FIXTURE }), "판본 칸이 없는 fixture 는 받는다");
+});
+
+test("T26 학교 코드 꼴이 아닌 등록부 줄은 거절한다(소문자 · 너무 김)", () => {
+  for (const bad of ["pcu", "P", "A".repeat(33)]) {
+    const campus = JSON.parse(readFileSync(FIXTURE, "utf8"));
+    campus.universities[0].university_code = bad;
+    const d = sandbox(campus);
+    assert.equal(errCode(() => listTenantProfiles({ contentDir: d })), "INVALID_CODE", bad);
+  }
+});
+
+/* ── 8. 운영 설정을 건드리지 않았다 ──────────────────────────────── */
 
 test("T99 운영 콘텐츠 디렉터리와 PCU 등록부의 지문이 시작할 때와 같다", () => {
   assert.equal(sha(REAL_CAMPUS), BEFORE.campus);

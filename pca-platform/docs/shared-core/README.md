@@ -15,6 +15,11 @@
 | [R36_P0_LOGIN_COLLISION.md](R36_P0_LOGIN_COLLISION.md) | **R36 P0** 기관 사이 학번 충돌 재현 · 영향 · 수정안 · 승인 목록 |
 | [SC1_TENANT_PROFILE.md](SC1_TENANT_PROFILE.md) | **R36 SC-1** 기관 프로필 읽기 전용 인터페이스 계약과 경계 |
 | [R36_REPORT.md](R36_REPORT.md) | R36 보고 열 항목 |
+| [R37_REPORT.md](R37_REPORT.md) | **R37** 보고 열 항목 |
+| [R37_TRACKS.md](R37_TRACKS.md) | Gate P0 + Track A~F 현황 · 결함 우선순위 · 다음 순서 |
+| [R37_P0_VERIFICATION.md](R37_P0_VERIFICATION.md) | SC-2 여덟 질문 · 식별자 · PASS/TODO/SKIP · ADJ-1 |
+| [R37_BENCHMARK.md](R37_BENCHMARK.md) | Core 품질 벤치마크 v1 기준선 (합성 44 사례) |
+| [handoffs/2026-10-20_pcu-gm-core-requests.md](handoffs/2026-10-20_pcu-gm-core-requests.md) | 배재 GM 요청 3건 회신 초안 (**보내지 않음**) |
 
 ## 기준 커밋에서 돌린 불변 묶음 (2026-10-20)
 

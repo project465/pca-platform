@@ -1,0 +1,1 @@
+DATABASE_URL=postgresql://postgres@/sc_test?host=/tmp/sc-pg-sandbox/sock&port=55436

@@ -423,6 +423,55 @@ test("P0-FIX-7 남의 학생 응시가 새 기관 학생에게 보이지 않는�
   assert.notEqual(await attemptOf(att, a.userId), null);
 });
 
+async function forgotResolves(identifier: string): Promise<string | null> {
+  const r = await queryOne<{ id: string }>(FORGOT_SQL, [identifier]);
+  return r ? String(r.id) : null;
+}
+async function orgsOfUser(userId: string): Promise<string[]> {
+  return (await query<{ code: string }>(
+    `SELECT o.code FROM memberships m JOIN organizations o ON o.id = m.org_id
+      WHERE m.user_id = $1::bigint ORDER BY o.code`, [userId])).map((x) => x.code);
+}
+
+test("P0-FIX-8 비밀번호 찾기에 학번을 넣으면 그 학번의 배재 학생 계정으로만 간다(남의 학교 계정으로 가지 않는다)", TODO, async () => {
+  const sid = "SC36-F081";
+  const a = await provisionStudent(orgPcu, checked(PCU, sid, "가상 A", PCU_DEPT));
+  const b = await provisionStudent(orgZz, checked(ZZ, sid, "가상 B", ZZ_DEPT), { rotate: true });
+  assert.notEqual(a.userId, b.userId);
+  assert.equal(await forgotResolves(sid), a.userId, "학번 그대로 = PCU 학생");
+  const zzHandle = checked(ZZ, sid, "가상 B", ZZ_DEPT).loginId;
+  assert.notEqual(zzHandle, sid, "다른 학교의 손잡이는 학번과 다르다");
+  assert.equal(await forgotResolves(zzHandle), b.userId, "그 학교 학생은 제 손잡이로 찾는다");
+});
+
+test("P0-FIX-9 다른 학교의 명단 · rotate 가 앞 학교 학생의 소속(memberships)을 바꾸지 않는다", TODO, async () => {
+  const sid = "SC36-F091";
+  const a = await provisionStudent(orgPcu, checked(PCU, sid, "가상 A", PCU_DEPT));
+  await addStudentAccount(ZZ, orgZz, { student_id: sid, name: "가상 B", department_code: ZZ_DEPT }, actorZz);
+  await provisionStudent(orgZz, checked(ZZ, sid, "가상 B", ZZ_DEPT), { rotate: true });
+  assert.deepEqual(await orgsOfUser(a.userId), [PCU], "세션이 다시 읽는 memberships 가 그대로다");
+});
+
+test("P0-FIX-10 로그인 질의: 학번 그대로는 배재 학생 · 다른 학교 손잡이는 그 학생", TODO, async () => {
+  const sid = "SC36-F101";
+  const a = await provisionStudent(orgPcu, checked(PCU, sid, "가상 A", PCU_DEPT));
+  const b = await provisionStudent(orgZz, checked(ZZ, sid, "가상 B", ZZ_DEPT));
+  assert.notEqual(b.userId, a.userId, "전제: 두 사람이 서로 다른 계정이다(지금 코드에서는 같은 계정이라 여기서 걸린다)");
+  assert.equal(await loginResolves(sid), a.userId);
+  assert.equal(await loginResolves(checked(ZZ, sid, "가상 B", ZZ_DEPT).loginId), b.userId);
+});
+
+/** **패치로도 닫히지 않는 자리.** 2단계(기관을 아는 로그인) 전까지 todo 로 남는다 */
+const STAGE2 = { todo: "SC-2 2단계(학교 로그인이 기관 코드를 넘기고 authorize 가 (기관, 학번)으로 찾는다) 승인 · 구현 뒤에 켠다" };
+test("P0-RISK-1 다른 학교 학생이 학교 로그인 화면에 학번만 넣어 제 계정으로 들어간다", STAGE2, async () => {
+  const sid = "SC36-R001";
+  const a = await provisionStudent(orgPcu, checked(PCU, sid, "가상 A", PCU_DEPT));
+  const b = await provisionStudent(orgZz, checked(ZZ, sid, "가상 B", ZZ_DEPT));
+  assert.notEqual(b.userId, a.userId, "전제: 두 사람이 서로 다른 계정이다");
+  /* 지금 로그인 질의는 기관을 받지 않는다. 학번만 넣으면 배재 학생이 나온다 */
+  assert.equal(await loginResolves(sid), b.userId);
+});
+
 test("P0-COMPAT-2 배재 재등록과 rotate 는 같은 계정에서 일어난다(고치기 전후 모두)", async () => {
   const sid = "SC36-C002";
   const a = await provisionStudent(orgPcu, checked(PCU, sid, "가상 A", PCU_DEPT));

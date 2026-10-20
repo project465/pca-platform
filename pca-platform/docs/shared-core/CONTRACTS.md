@@ -4,7 +4,7 @@
 모두 `DRAFT` 이고 이 세션은 승인 전에 다른 세션의 파일을 고치지 않는다. 다른 세션에 보내지 않았다:
 보낼지는 사업주가 정한다.
 
-기준 커밋: `4f02d79b` · Common Core 가지: `feature/shared-core` (= `claude/determined-brahmagupta-jwnqs9`)
+기준 커밋: `4f02d79b` · Common Core 가지: `feature/shared-core` (= `claude/determined-brahmagupta-jwnqs9`) · R37 개정: CC-002a · CC-006 후보 · CC-007 · CC-008 검토 항목
 
 ---
 
@@ -41,6 +41,7 @@
 | 배재의 동작 | 아이디 = 학번 그대로 · 재등록 수렴 · 열쇠 그대로 · rotate 는 같은 계정. `P0-COMPAT-1/2` 가 전후 모두 센다 |
 | 바뀌지 않는 것 | **DB 스키마** · `users.login_id UNIQUE` · `campus_students UNIQUE(university_code, student_id)` · 비밀번호 규칙 |
 | 확인 | 수정 사본에서 FIX-1~7 · COMPAT-1/2 통과(`evidence/R36/p0-fixed-run.log`). 적용 뒤 `campus:walk` · `pcu:campus` (브라우저) |
+| 확인 (R37) | 시험 21개. 지금 코드 10 PASS / 11 TODO · 수정 사본 14 PASS / 6 SKIP / 1 TODO(RISK-1 — 1단계로는 풀리지 않는다). 비밀번호 찾기(FIX-8) · 소속(FIX-9) · 로그인 질의(FIX-10)를 더했다. 여덟 질문: [R37_P0_VERIFICATION.md](R37_P0_VERIFICATION.md) |
 | 데이터 | PCU 이전 없음. 운영 탐지 SQL `scripts/shared-core/sql/r36_p0_detect.sql` (읽기만) |
 | 되돌림 | 패치를 되돌리면 된다. 데이터는 바뀌지 않는다 |
 | 시한 | **두 번째 학교가 명단을 올리기 전** |
@@ -52,8 +53,14 @@
 |---|---|
 | 영향 | 배재 (담당자 목록·집계에서 학생이 빠진다) |
 | 재현 | `scripts/shared-core/p0-demo-remark.test.ts` — 다시 부은 뒤 `is_demo true · 목록 0` |
-| 바꿀 자리 | `db/schema_phase2_4.sql` 의 일괄 UPDATE 에 `campus_students` 가 있는 줄을 빼는 조건 한 줄 |
-| 운영 | NOT VERIFIED — 탐지 SQL 의 `ADJ1` 이 센다 |
+| 언제 나는가 (R37) | **처음 부을 때는 안 난다**: INSERT 트리거는 숫자 학번만으로 표시하지 않는다(ADJ-1a). **upgrade 를 다시 부을 때마다** 학교 학생이 시연으로 표시되고 담당자 목록에서 빠진다(ADJ-1b · 목록 1 → 0 · 실패한 파일 0) |
+| 바뀌는 것은 하나 | 다시 부어도 `users.is_demo` 말고는 사람 · 소속 · 학교 줄이 바뀌지 않는다(ADJ-1e · 지문 대조) |
+| 바꿀 자리 (R37 개정) | **이미 부어진 `db/schema_phase2_4.sql` 은 고치지 않는다.** 따로 한 파일 `docs/shared-core/proposed/adj1-campus-students-not-demo.sql` 을 upgrade 목록 **맨 뒤**(`schema_campus_students.sql` 다음)에 둔다. 학교 학생만 걷고 시드 꼴 계정은 그대로 · 멱등(ADJ-1d). `provisionStudent` 가 계정을 만들 때 하는 일과 같은 규칙이다 |
+| 목록에 넣지 않으면 | 다음 배포에 또 표시된다(ADJ-1d 마지막 단계가 그것을 보인다) |
+| 위험 | 확인용 학교(ZZTEST)의 학생도 걷힌다. 그 학교를 지표에서 가리고 싶다면 별도 규칙이다 |
+| 탐지 | `scripts/shared-core/sql/r36_p0_detect.sql` 의 `ADJ1` 줄. **읽기만 한다**(DET-1: 쓰는 문장 0 · `BEGIN TRANSACTION READ ONLY` · DB 지문 전후 같음 · READ ONLY 쓰기 거절). 운영에서 돌리는 일은 운영자 승인 뒤 |
+| 운영 | NOT VERIFIED |
+| 분류 | DB/API CONTRACT (배포 차례 변경) |
 | 승인 | 총괄 PM · 배재 |
 
 ## CC-003 콘텐츠 선택 (SC-3)
@@ -86,6 +93,42 @@
 | 결정할 것 | `memberships.role` 에 `counselor` 값을 둘지 · 상담사가 개인 결과지를 여는 계약 조건 · 동의를 받는 화면 |
 | 바뀌지 않는 것 | 기본값: **기관은 개인 결과지를 못 본다**(`org.participant.report.read` 는 어느 역할에도 없다) |
 | 승인 | 사업주 (개인정보 · 법무 확인 포함) |
+
+## CC-006 후보 경험 기록의 기준 시점 — R37 · 배재 GM 요청 1 · **DRAFT · 승인된 요구사항 아님**
+
+| | |
+|---|---|
+| 영향 | 배재 GM (PDF) · 본체 (작업공간 · 파기) · SC-4 (발급 기록) |
+| 지금 | `v3_snapshots` 는 경험을 고쳐도 그대로다(TP-1). 결과 화면이 읽는 `experiencesOf` 는 그 순간의 값이고 지우면 흔적이 없다(TP-2). 본체 PDF 는 경험을 싣지 않는다(TP-3 정적). **GM PDF 가 live 경험을 실을 때** 같은 응시의 종이가 달라진다 |
+| 권고 | **A · 스냅숏.** 구조화 열쇠(종류 · 제목 · 영역 · 결정 · 산출물 · 검증 · 문제 · 쓰인 자리 · 기간)만 적고 `note_text` 는 뺀다(1년 파기 우회 방지) |
+| 결정할 것 | 굳히는 시점: **A1 제출 때**(같은 응시의 종이가 다시 안 바뀐다 · 결과 뒤에 적은 경험은 영영 안 선다) / **A2 발급 때**(CC-004 의 발급 기록에 같이 적는다 · 종이 한 벌마다 재현) |
+| 견준 안 | B · 이력 표(기준일 질의). 쓰고 읽는 자리가 다수 바뀌고 같은 파기 질문이 생긴다. 비교표는 [handoffs/2026-10-20_pcu-gm-core-requests.md](handoffs/2026-10-20_pcu-gm-core-requests.md) |
+| 바뀌지 않는 것 | 채점 · 결과 모델 · 이미 적힌 `v3_snapshots` 줄(칸을 더할 뿐 고치지 않는다) |
+| 지난 응시 | 어느 안이든 되살릴 수 없다. "기준 없음" 으로 읽는다 |
+| 같이 정할 것 (정적 발견) | `erasure.ts` 의 지우는 표에 `v3_experiences` 가 없다 · `v3_experiences.purge_after` 를 집행하는 자리가 없다 |
+| DB | 이 회차에 바꾸지 않았다. 고르면 `db/proposed/` 에 적고 Staging 먼저 |
+| 분류 | DB/API CONTRACT |
+| 승인 | 총괄 PM · 사업주 (개인정보) · 배재 |
+
+## CC-007 검토 항목 GM 서버 입구 · 런타임 파일 — R37 · 배재 GM 요청 3 · **기록만**
+
+| | |
+|---|---|
+| 요청 | 운영 `/v3/{id}/result/pdf` 를 그대로 두고 승인 플래그 뒤에 별도 입구(담당자 전용 미리보기 등) · 런타임 이미지에 `data/report-gm/*` · `data/region/*` · Pretendard(OFL) |
+| 책임 | 배포·디자인 쪽. Common Core 는 Dockerfile · 서버 코드를 고치지 않는다 |
+| 검토할 것 | `deploy/runtime-needs.json` · `Dockerfile` 변경 · 글꼴 라이선스와 내려받기(지금 저장소에 없다) · 지역·공시 자료 사용 권리(CC-003) · 미리보기 권한(기관은 기본으로 개인 결과지를 못 본다, CC-005) |
+| 분류 | DEPLOYMENT/INFRA · DB/API CONTRACT (새 입구) |
+| 승인 | 사업주 · 총괄 PM (디자인 승인 뒤) |
+
+## CC-008 검토 항목 결과지 빈자리의 범위 — R37 벤치마크 발견 · **기록만**
+
+| | |
+|---|---|
+| 관찰 | 스냅샷은 답하지 않은 축을 `empty` · `SKIPPED` 로 가른다. 결과 모델의 빈자리(`gapsOf`)는 **필수 축 · J5/J6 · 요청된 축 · focus 의 부분 축 하나**만 세운다. 그래서 ME · EE 에서 심화 축 넷에 답하지 않은 사례(C07)와 J4 를 `없다` 로 답한 사례(C08)가 강한 사례(C01)와 **머리글 · 할 일 목록이 같다**(벤치마크 6/20 짝) |
+| 숫자 | `docs/shared-core/evidence/R37/bench/results.json` 의 `actual.gaps_d1` · `empty_d1` |
+| 판단 | 설계된 동작으로 보인다(비필수 · 미요청 축을 빈자리로 세우지 않는다). 바꿀지 말지는 결과 계약이라 이 세션이 정하지 않는다 |
+| 분류 | ASSESSMENT/SCORING CONTRACT (결과 모델) |
+| 승인 | 총괄 PM |
 
 ## STOP GATE — 참여자 학업 단계
 

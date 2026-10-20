@@ -1,0 +1,1442 @@
+{
+  "cores": [
+    {
+      "code": "ME_CORE_V3",
+      "status": "building",
+      "open_to_students": null,
+      "maturity": "READY_FOR_REVIEW",
+      "files_missing": [],
+      "items": 369,
+      "items_by_tier": {
+        "BASIC": 120,
+        "STANDARD": 156,
+        "PRO": 93
+      },
+      "items_by_module": {
+        "CORE-GRID": 36,
+        "CORE-JUDGE": 6,
+        "UG-CORE": 6,
+        "MS-CORE": 6,
+        "PHD-CORE": 6,
+        "POSTDOC-CORE": 6,
+        "GRAD-XFIELD": 4,
+        "PROBE-S4": 96,
+        "DEEP-S8": 48,
+        "CONSIST": 4,
+        "TRANS-10": 10,
+        "TARGET": 3,
+        "CORE-FORCE": 2,
+        "INDUSTRY": 80,
+        "ROLE": 56
+      },
+      "domains": 12,
+      "required_axes_per_domain": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "checklist_items": 256,
+      "artifacts": 61,
+      "verify_targets": 66,
+      "industry_packs": 8,
+      "role_packs": 8,
+      "relations": {
+        "td_industry": 96,
+        "td_role": 96,
+        "broken": 0,
+        "broken_sample": [],
+        "duplicate_pairs": 0,
+        "strength": {
+          "있음": 65,
+          "드묾": 95,
+          "중심": 32
+        },
+        "domains_without_industry": 0,
+        "packs_without_domain": 0
+      },
+      "fixtures": {
+        "personas": true,
+        "bank_lock": true
+      }
+    },
+    {
+      "code": "EE_CORE_V1",
+      "status": "building",
+      "open_to_students": false,
+      "maturity": "READY_FOR_DOMAIN_REVIEW",
+      "files_missing": [],
+      "items": 369,
+      "items_by_tier": {
+        "BASIC": 120,
+        "STANDARD": 156,
+        "PRO": 93
+      },
+      "items_by_module": {
+        "CORE-GRID": 36,
+        "PROBE-S4": 96,
+        "DEEP-S8": 48,
+        "CORE-JUDGE": 6,
+        "UG-CORE": 6,
+        "MS-CORE": 6,
+        "PHD-CORE": 6,
+        "POSTDOC-CORE": 6,
+        "GRAD-XFIELD": 4,
+        "TRANS-10": 10,
+        "CONSIST": 4,
+        "TARGET": 3,
+        "CORE-FORCE": 2,
+        "INDUSTRY": 80,
+        "ROLE": 56
+      },
+      "domains": 12,
+      "required_axes_per_domain": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "checklist_items": 231,
+      "artifacts": 60,
+      "verify_targets": 60,
+      "industry_packs": 8,
+      "role_packs": 8,
+      "relations": {
+        "td_industry": 96,
+        "td_role": 96,
+        "broken": 0,
+        "broken_sample": [],
+        "duplicate_pairs": 0,
+        "strength": {
+          "있음": 47,
+          "드묾": 101,
+          "중심": 44
+        },
+        "domains_without_industry": 0,
+        "packs_without_domain": 0
+      },
+      "fixtures": {
+        "personas": true,
+        "bank_lock": true
+      }
+    },
+    {
+      "code": "SEMI_CORE_V1",
+      "status": "planned"
+    },
+    {
+      "code": "MSE_CORE_V1",
+      "status": "planned"
+    },
+    {
+      "code": "CHE_CORE_V1",
+      "status": "planned"
+    },
+    {
+      "code": "IE_CORE_V1",
+      "status": "planned"
+    },
+    {
+      "code": "CS_CORE_V1",
+      "status": "building",
+      "open_to_students": false,
+      "maturity": "READY_FOR_DOMAIN_REVIEW",
+      "files_missing": [],
+      "items": 344,
+      "items_by_tier": {
+        "BASIC": 113,
+        "STANDARD": 148,
+        "PRO": 83
+      },
+      "items_by_module": {
+        "CORE-GRID": 33,
+        "PROBE-S4": 88,
+        "DEEP-S8": 44,
+        "CORE-JUDGE": 6,
+        "UG-CORE": 6,
+        "MS-CORE": 6,
+        "PHD-CORE": 6,
+        "POSTDOC-CORE": 6,
+        "GRAD-XFIELD": 4,
+        "TRANS-10": 10,
+        "CONSIST": 4,
+        "TARGET": 3,
+        "CORE-FORCE": 2,
+        "INDUSTRY": 70,
+        "ROLE": 56
+      },
+      "domains": 11,
+      "required_axes_per_domain": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "checklist_items": 202,
+      "artifacts": 55,
+      "verify_targets": 55,
+      "industry_packs": 7,
+      "role_packs": 8,
+      "relations": {
+        "td_industry": 77,
+        "td_role": 88,
+        "broken": 0,
+        "broken_sample": [],
+        "duplicate_pairs": 0,
+        "strength": {
+          "있음": 36,
+          "중심": 37,
+          "드묾": 92
+        },
+        "domains_without_industry": 0,
+        "packs_without_domain": 0
+      },
+      "fixtures": {
+        "personas": true,
+        "bank_lock": true
+      }
+    },
+    {
+      "code": "ROBOT_CORE_V1",
+      "status": "planned"
+    },
+    {
+      "code": "AUTO_CORE_V1",
+      "status": "planned"
+    },
+    {
+      "code": "ENER_CORE_V1",
+      "status": "planned"
+    },
+    {
+      "code": "ENV_CORE_V1",
+      "status": "planned"
+    },
+    {
+      "code": "ARCH_CORE_V1",
+      "status": "building",
+      "open_to_students": false,
+      "maturity": "FOUNDATION",
+      "files_missing": [],
+      "items": 369,
+      "items_by_tier": {
+        "BASIC": 120,
+        "STANDARD": 156,
+        "PRO": 93
+      },
+      "items_by_module": {
+        "CORE-GRID": 36,
+        "PROBE-S4": 96,
+        "DEEP-S8": 48,
+        "CORE-JUDGE": 6,
+        "UG-CORE": 6,
+        "MS-CORE": 6,
+        "PHD-CORE": 6,
+        "POSTDOC-CORE": 6,
+        "GRAD-XFIELD": 4,
+        "TRANS-10": 10,
+        "CONSIST": 4,
+        "TARGET": 3,
+        "CORE-FORCE": 2,
+        "INDUSTRY": 80,
+        "ROLE": 56
+      },
+      "domains": 12,
+      "required_axes_per_domain": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "checklist_items": 228,
+      "artifacts": 60,
+      "verify_targets": 60,
+      "industry_packs": 8,
+      "role_packs": 8,
+      "relations": {
+        "td_industry": 96,
+        "td_role": 96,
+        "broken": 0,
+        "broken_sample": [],
+        "duplicate_pairs": 0,
+        "strength": {
+          "있음": 52,
+          "드묾": 105,
+          "중심": 35
+        },
+        "domains_without_industry": 0,
+        "packs_without_domain": 0
+      },
+      "fixtures": {
+        "personas": true,
+        "bank_lock": true
+      }
+    },
+    {
+      "code": "CIV_CORE_V1",
+      "status": "building",
+      "open_to_students": false,
+      "maturity": "FOUNDATION",
+      "files_missing": [],
+      "items": 369,
+      "items_by_tier": {
+        "BASIC": 120,
+        "STANDARD": 156,
+        "PRO": 93
+      },
+      "items_by_module": {
+        "CORE-GRID": 36,
+        "PROBE-S4": 96,
+        "DEEP-S8": 48,
+        "CORE-JUDGE": 6,
+        "UG-CORE": 6,
+        "MS-CORE": 6,
+        "PHD-CORE": 6,
+        "POSTDOC-CORE": 6,
+        "GRAD-XFIELD": 4,
+        "TRANS-10": 10,
+        "CONSIST": 4,
+        "TARGET": 3,
+        "CORE-FORCE": 2,
+        "INDUSTRY": 80,
+        "ROLE": 56
+      },
+      "domains": 12,
+      "required_axes_per_domain": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "checklist_items": 228,
+      "artifacts": 60,
+      "verify_targets": 60,
+      "industry_packs": 8,
+      "role_packs": 8,
+      "relations": {
+        "td_industry": 96,
+        "td_role": 96,
+        "broken": 0,
+        "broken_sample": [],
+        "duplicate_pairs": 0,
+        "strength": {
+          "드묾": 106,
+          "있음": 51,
+          "중심": 35
+        },
+        "domains_without_industry": 0,
+        "packs_without_domain": 0
+      },
+      "fixtures": {
+        "personas": true,
+        "bank_lock": true
+      }
+    },
+    {
+      "code": "MATH_CORE_V1",
+      "status": "planned"
+    },
+    {
+      "code": "PHYS_CORE_V1",
+      "status": "planned"
+    },
+    {
+      "code": "CHEM_CORE_V1",
+      "status": "planned"
+    },
+    {
+      "code": "BIO_CORE_V1",
+      "status": "planned"
+    },
+    {
+      "code": "BT_CORE_V1",
+      "status": "building",
+      "open_to_students": false,
+      "maturity": "FOUNDATION",
+      "files_missing": [],
+      "items": 369,
+      "items_by_tier": {
+        "BASIC": 120,
+        "STANDARD": 156,
+        "PRO": 93
+      },
+      "items_by_module": {
+        "CORE-GRID": 36,
+        "PROBE-S4": 96,
+        "DEEP-S8": 48,
+        "CORE-JUDGE": 6,
+        "UG-CORE": 6,
+        "MS-CORE": 6,
+        "PHD-CORE": 6,
+        "POSTDOC-CORE": 6,
+        "GRAD-XFIELD": 4,
+        "TRANS-10": 10,
+        "CONSIST": 4,
+        "TARGET": 3,
+        "CORE-FORCE": 2,
+        "INDUSTRY": 80,
+        "ROLE": 56
+      },
+      "domains": 12,
+      "required_axes_per_domain": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "checklist_items": 228,
+      "artifacts": 60,
+      "verify_targets": 60,
+      "industry_packs": 8,
+      "role_packs": 8,
+      "relations": {
+        "td_industry": 96,
+        "td_role": 96,
+        "broken": 0,
+        "broken_sample": [],
+        "duplicate_pairs": 0,
+        "strength": {
+          "있음": 80,
+          "드묾": 88,
+          "중심": 24
+        },
+        "domains_without_industry": 0,
+        "packs_without_domain": 0
+      },
+      "fixtures": {
+        "personas": true,
+        "bank_lock": true
+      }
+    },
+    {
+      "code": "SPORTS_CORE_V1",
+      "status": "building",
+      "open_to_students": false,
+      "maturity": "FOUNDATION",
+      "files_missing": [],
+      "items": 369,
+      "items_by_tier": {
+        "BASIC": 120,
+        "STANDARD": 156,
+        "PRO": 93
+      },
+      "items_by_module": {
+        "CORE-GRID": 36,
+        "PROBE-S4": 96,
+        "DEEP-S8": 48,
+        "CORE-JUDGE": 6,
+        "UG-CORE": 6,
+        "MS-CORE": 6,
+        "PHD-CORE": 6,
+        "POSTDOC-CORE": 6,
+        "GRAD-XFIELD": 4,
+        "TRANS-10": 10,
+        "CONSIST": 4,
+        "TARGET": 3,
+        "CORE-FORCE": 2,
+        "INDUSTRY": 80,
+        "ROLE": 56
+      },
+      "domains": 12,
+      "required_axes_per_domain": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "checklist_items": 228,
+      "artifacts": 60,
+      "verify_targets": 60,
+      "industry_packs": 8,
+      "role_packs": 8,
+      "relations": {
+        "td_industry": 96,
+        "td_role": 96,
+        "broken": 0,
+        "broken_sample": [],
+        "duplicate_pairs": 0,
+        "strength": {
+          "있음": 27,
+          "중심": 45,
+          "드묾": 120
+        },
+        "domains_without_industry": 0,
+        "packs_without_domain": 0
+      },
+      "fixtures": {
+        "personas": true,
+        "bank_lock": true
+      }
+    },
+    {
+      "code": "NURSING_CORE_V1",
+      "status": "building",
+      "open_to_students": false,
+      "maturity": "FOUNDATION",
+      "files_missing": [],
+      "items": 369,
+      "items_by_tier": {
+        "BASIC": 120,
+        "STANDARD": 156,
+        "PRO": 93
+      },
+      "items_by_module": {
+        "CORE-GRID": 36,
+        "PROBE-S4": 96,
+        "DEEP-S8": 48,
+        "CORE-JUDGE": 6,
+        "UG-CORE": 6,
+        "MS-CORE": 6,
+        "PHD-CORE": 6,
+        "POSTDOC-CORE": 6,
+        "GRAD-XFIELD": 4,
+        "TRANS-10": 10,
+        "CONSIST": 4,
+        "TARGET": 3,
+        "CORE-FORCE": 2,
+        "INDUSTRY": 80,
+        "ROLE": 56
+      },
+      "domains": 12,
+      "required_axes_per_domain": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "checklist_items": 228,
+      "artifacts": 60,
+      "verify_targets": 60,
+      "industry_packs": 8,
+      "role_packs": 8,
+      "relations": {
+        "td_industry": 96,
+        "td_role": 96,
+        "broken": 0,
+        "broken_sample": [],
+        "duplicate_pairs": 0,
+        "strength": {
+          "있음": 47,
+          "드묾": 106,
+          "중심": 39
+        },
+        "domains_without_industry": 0,
+        "packs_without_domain": 0
+      },
+      "fixtures": {
+        "personas": true,
+        "bank_lock": true
+      }
+    },
+    {
+      "code": "HEALTH_CORE_V1",
+      "status": "building",
+      "open_to_students": false,
+      "maturity": "FOUNDATION",
+      "files_missing": [],
+      "items": 369,
+      "items_by_tier": {
+        "BASIC": 120,
+        "STANDARD": 156,
+        "PRO": 93
+      },
+      "items_by_module": {
+        "CORE-GRID": 36,
+        "PROBE-S4": 96,
+        "DEEP-S8": 48,
+        "CORE-JUDGE": 6,
+        "UG-CORE": 6,
+        "MS-CORE": 6,
+        "PHD-CORE": 6,
+        "POSTDOC-CORE": 6,
+        "GRAD-XFIELD": 4,
+        "TRANS-10": 10,
+        "CONSIST": 4,
+        "TARGET": 3,
+        "CORE-FORCE": 2,
+        "INDUSTRY": 80,
+        "ROLE": 56
+      },
+      "domains": 12,
+      "required_axes_per_domain": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "checklist_items": 227,
+      "artifacts": 60,
+      "verify_targets": 60,
+      "industry_packs": 8,
+      "role_packs": 8,
+      "relations": {
+        "td_industry": 96,
+        "td_role": 96,
+        "broken": 0,
+        "broken_sample": [],
+        "duplicate_pairs": 0,
+        "strength": {
+          "드묾": 127,
+          "중심": 47,
+          "있음": 18
+        },
+        "domains_without_industry": 0,
+        "packs_without_domain": 0
+      },
+      "fixtures": {
+        "personas": true,
+        "bank_lock": true
+      }
+    },
+    {
+      "code": "FOOD_CORE_V1",
+      "status": "building",
+      "open_to_students": false,
+      "maturity": "FOUNDATION",
+      "files_missing": [],
+      "items": 369,
+      "items_by_tier": {
+        "BASIC": 120,
+        "STANDARD": 156,
+        "PRO": 93
+      },
+      "items_by_module": {
+        "CORE-GRID": 36,
+        "PROBE-S4": 96,
+        "DEEP-S8": 48,
+        "CORE-JUDGE": 6,
+        "UG-CORE": 6,
+        "MS-CORE": 6,
+        "PHD-CORE": 6,
+        "POSTDOC-CORE": 6,
+        "GRAD-XFIELD": 4,
+        "TRANS-10": 10,
+        "CONSIST": 4,
+        "TARGET": 3,
+        "CORE-FORCE": 2,
+        "INDUSTRY": 80,
+        "ROLE": 56
+      },
+      "domains": 12,
+      "required_axes_per_domain": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "checklist_items": 227,
+      "artifacts": 60,
+      "verify_targets": 60,
+      "industry_packs": 8,
+      "role_packs": 8,
+      "relations": {
+        "td_industry": 96,
+        "td_role": 96,
+        "broken": 0,
+        "broken_sample": [],
+        "duplicate_pairs": 0,
+        "strength": {
+          "있음": 22,
+          "드묾": 123,
+          "중심": 47
+        },
+        "domains_without_industry": 0,
+        "packs_without_domain": 0
+      },
+      "fixtures": {
+        "personas": true,
+        "bank_lock": true
+      }
+    },
+    {
+      "code": "BIZ_CORE_V1",
+      "status": "building",
+      "open_to_students": true,
+      "maturity": "READY_FOR_DOMAIN_REVIEW",
+      "files_missing": [],
+      "items": 359,
+      "items_by_tier": {
+        "BASIC": 120,
+        "STANDARD": 156,
+        "PRO": 83
+      },
+      "items_by_module": {
+        "CORE-GRID": 36,
+        "PROBE-S4": 96,
+        "DEEP-S8": 48,
+        "CORE-JUDGE": 6,
+        "UG-CORE": 6,
+        "MS-CORE": 6,
+        "PHD-CORE": 6,
+        "POSTDOC-CORE": 6,
+        "GRAD-XFIELD": 4,
+        "TRANS-10": 10,
+        "CONSIST": 4,
+        "TARGET": 3,
+        "CORE-FORCE": 2,
+        "INDUSTRY": 70,
+        "ROLE": 56
+      },
+      "domains": 12,
+      "required_axes_per_domain": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "checklist_items": 218,
+      "artifacts": 60,
+      "verify_targets": 60,
+      "industry_packs": 7,
+      "role_packs": 8,
+      "relations": {
+        "td_industry": 84,
+        "td_role": 96,
+        "broken": 0,
+        "broken_sample": [],
+        "duplicate_pairs": 0,
+        "strength": {
+          "있음": 70,
+          "드묾": 86,
+          "중심": 24
+        },
+        "domains_without_industry": 0,
+        "packs_without_domain": 0
+      },
+      "fixtures": {
+        "personas": true,
+        "bank_lock": true
+      }
+    },
+    {
+      "code": "ECON_CORE_V1",
+      "status": "planned"
+    },
+    {
+      "code": "ACCT_CORE_V1",
+      "status": "planned"
+    },
+    {
+      "code": "FIN_CORE_V1",
+      "status": "planned"
+    },
+    {
+      "code": "TRADE_CORE_V1",
+      "status": "planned"
+    },
+    {
+      "code": "PUBADM_CORE_V1",
+      "status": "building",
+      "open_to_students": false,
+      "maturity": "FOUNDATION",
+      "files_missing": [],
+      "items": 369,
+      "items_by_tier": {
+        "BASIC": 120,
+        "STANDARD": 156,
+        "PRO": 93
+      },
+      "items_by_module": {
+        "CORE-GRID": 36,
+        "PROBE-S4": 96,
+        "DEEP-S8": 48,
+        "CORE-JUDGE": 6,
+        "UG-CORE": 6,
+        "MS-CORE": 6,
+        "PHD-CORE": 6,
+        "POSTDOC-CORE": 6,
+        "GRAD-XFIELD": 4,
+        "TRANS-10": 10,
+        "CONSIST": 4,
+        "TARGET": 3,
+        "CORE-FORCE": 2,
+        "INDUSTRY": 80,
+        "ROLE": 56
+      },
+      "domains": 12,
+      "required_axes_per_domain": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "checklist_items": 228,
+      "artifacts": 60,
+      "verify_targets": 60,
+      "industry_packs": 8,
+      "role_packs": 8,
+      "relations": {
+        "td_industry": 96,
+        "td_role": 96,
+        "broken": 0,
+        "broken_sample": [],
+        "duplicate_pairs": 0,
+        "strength": {
+          "있음": 69,
+          "드묾": 94,
+          "중심": 29
+        },
+        "domains_without_industry": 0,
+        "packs_without_domain": 0
+      },
+      "fixtures": {
+        "personas": true,
+        "bank_lock": true
+      }
+    },
+    {
+      "code": "POL_CORE_V1",
+      "status": "planned"
+    },
+    {
+      "code": "SOC_CORE_V1",
+      "status": "planned"
+    },
+    {
+      "code": "PSY_CORE_V1",
+      "status": "building",
+      "open_to_students": false,
+      "maturity": "FOUNDATION",
+      "files_missing": [],
+      "items": 369,
+      "items_by_tier": {
+        "BASIC": 120,
+        "STANDARD": 156,
+        "PRO": 93
+      },
+      "items_by_module": {
+        "CORE-GRID": 36,
+        "PROBE-S4": 96,
+        "DEEP-S8": 48,
+        "CORE-JUDGE": 6,
+        "UG-CORE": 6,
+        "MS-CORE": 6,
+        "PHD-CORE": 6,
+        "POSTDOC-CORE": 6,
+        "GRAD-XFIELD": 4,
+        "TRANS-10": 10,
+        "CONSIST": 4,
+        "TARGET": 3,
+        "CORE-FORCE": 2,
+        "INDUSTRY": 80,
+        "ROLE": 56
+      },
+      "domains": 12,
+      "required_axes_per_domain": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "checklist_items": 228,
+      "artifacts": 60,
+      "verify_targets": 60,
+      "industry_packs": 8,
+      "role_packs": 8,
+      "relations": {
+        "td_industry": 96,
+        "td_role": 96,
+        "broken": 0,
+        "broken_sample": [],
+        "duplicate_pairs": 0,
+        "strength": {
+          "드묾": 130,
+          "중심": 42,
+          "있음": 20
+        },
+        "domains_without_industry": 0,
+        "packs_without_domain": 0
+      },
+      "fixtures": {
+        "personas": true,
+        "bank_lock": true
+      }
+    },
+    {
+      "code": "MEDIA_CORE_V1",
+      "status": "building",
+      "open_to_students": false,
+      "maturity": "FOUNDATION",
+      "files_missing": [],
+      "items": 369,
+      "items_by_tier": {
+        "BASIC": 120,
+        "STANDARD": 156,
+        "PRO": 93
+      },
+      "items_by_module": {
+        "CORE-GRID": 36,
+        "PROBE-S4": 96,
+        "DEEP-S8": 48,
+        "CORE-JUDGE": 6,
+        "UG-CORE": 6,
+        "MS-CORE": 6,
+        "PHD-CORE": 6,
+        "POSTDOC-CORE": 6,
+        "GRAD-XFIELD": 4,
+        "TRANS-10": 10,
+        "CONSIST": 4,
+        "TARGET": 3,
+        "CORE-FORCE": 2,
+        "INDUSTRY": 80,
+        "ROLE": 56
+      },
+      "domains": 12,
+      "required_axes_per_domain": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "checklist_items": 228,
+      "artifacts": 60,
+      "verify_targets": 60,
+      "industry_packs": 8,
+      "role_packs": 8,
+      "relations": {
+        "td_industry": 96,
+        "td_role": 96,
+        "broken": 0,
+        "broken_sample": [],
+        "duplicate_pairs": 0,
+        "strength": {
+          "있음": 42,
+          "드묾": 112,
+          "중심": 38
+        },
+        "domains_without_industry": 0,
+        "packs_without_domain": 0
+      },
+      "fixtures": {
+        "personas": true,
+        "bank_lock": true
+      }
+    },
+    {
+      "code": "LANG_CORE_V1",
+      "status": "building",
+      "open_to_students": false,
+      "maturity": "FOUNDATION",
+      "files_missing": [],
+      "items": 369,
+      "items_by_tier": {
+        "BASIC": 120,
+        "STANDARD": 156,
+        "PRO": 93
+      },
+      "items_by_module": {
+        "CORE-GRID": 36,
+        "PROBE-S4": 96,
+        "DEEP-S8": 48,
+        "CORE-JUDGE": 6,
+        "UG-CORE": 6,
+        "MS-CORE": 6,
+        "PHD-CORE": 6,
+        "POSTDOC-CORE": 6,
+        "GRAD-XFIELD": 4,
+        "TRANS-10": 10,
+        "CONSIST": 4,
+        "TARGET": 3,
+        "CORE-FORCE": 2,
+        "INDUSTRY": 80,
+        "ROLE": 56
+      },
+      "domains": 12,
+      "required_axes_per_domain": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "checklist_items": 228,
+      "artifacts": 60,
+      "verify_targets": 60,
+      "industry_packs": 8,
+      "role_packs": 8,
+      "relations": {
+        "td_industry": 96,
+        "td_role": 96,
+        "broken": 0,
+        "broken_sample": [],
+        "duplicate_pairs": 0,
+        "strength": {
+          "있음": 80,
+          "드묾": 88,
+          "중심": 24
+        },
+        "domains_without_industry": 0,
+        "packs_without_domain": 0
+      },
+      "fixtures": {
+        "personas": true,
+        "bank_lock": true
+      }
+    },
+    {
+      "code": "LAW_CORE_V1",
+      "status": "building",
+      "open_to_students": false,
+      "maturity": "FOUNDATION",
+      "files_missing": [],
+      "items": 369,
+      "items_by_tier": {
+        "BASIC": 120,
+        "STANDARD": 156,
+        "PRO": 93
+      },
+      "items_by_module": {
+        "CORE-GRID": 36,
+        "PROBE-S4": 96,
+        "DEEP-S8": 48,
+        "CORE-JUDGE": 6,
+        "UG-CORE": 6,
+        "MS-CORE": 6,
+        "PHD-CORE": 6,
+        "POSTDOC-CORE": 6,
+        "GRAD-XFIELD": 4,
+        "TRANS-10": 10,
+        "CONSIST": 4,
+        "TARGET": 3,
+        "CORE-FORCE": 2,
+        "INDUSTRY": 80,
+        "ROLE": 56
+      },
+      "domains": 12,
+      "required_axes_per_domain": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "checklist_items": 228,
+      "artifacts": 60,
+      "verify_targets": 60,
+      "industry_packs": 8,
+      "role_packs": 8,
+      "relations": {
+        "td_industry": 96,
+        "td_role": 96,
+        "broken": 0,
+        "broken_sample": [],
+        "duplicate_pairs": 0,
+        "strength": {
+          "중심": 46,
+          "드묾": 129,
+          "있음": 17
+        },
+        "domains_without_industry": 0,
+        "packs_without_domain": 0
+      },
+      "fixtures": {
+        "personas": true,
+        "bank_lock": true
+      }
+    },
+    {
+      "code": "EDU_CORE_V1",
+      "status": "building",
+      "open_to_students": false,
+      "maturity": "FOUNDATION",
+      "files_missing": [],
+      "items": 369,
+      "items_by_tier": {
+        "BASIC": 120,
+        "STANDARD": 156,
+        "PRO": 93
+      },
+      "items_by_module": {
+        "CORE-GRID": 36,
+        "PROBE-S4": 96,
+        "DEEP-S8": 48,
+        "CORE-JUDGE": 6,
+        "UG-CORE": 6,
+        "MS-CORE": 6,
+        "PHD-CORE": 6,
+        "POSTDOC-CORE": 6,
+        "GRAD-XFIELD": 4,
+        "TRANS-10": 10,
+        "CONSIST": 4,
+        "TARGET": 3,
+        "CORE-FORCE": 2,
+        "INDUSTRY": 80,
+        "ROLE": 56
+      },
+      "domains": 12,
+      "required_axes_per_domain": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "checklist_items": 228,
+      "artifacts": 60,
+      "verify_targets": 60,
+      "industry_packs": 8,
+      "role_packs": 8,
+      "relations": {
+        "td_industry": 96,
+        "td_role": 96,
+        "broken": 0,
+        "broken_sample": [],
+        "duplicate_pairs": 0,
+        "strength": {
+          "있음": 22,
+          "중심": 46,
+          "드묾": 124
+        },
+        "domains_without_industry": 0,
+        "packs_without_domain": 0
+      },
+      "fixtures": {
+        "personas": true,
+        "bank_lock": true
+      }
+    },
+    {
+      "code": "COUN_CORE_V1",
+      "status": "planned"
+    },
+    {
+      "code": "AGRI_CORE_V1",
+      "status": "building",
+      "open_to_students": false,
+      "maturity": "FOUNDATION",
+      "files_missing": [],
+      "items": 369,
+      "items_by_tier": {
+        "BASIC": 120,
+        "STANDARD": 156,
+        "PRO": 93
+      },
+      "items_by_module": {
+        "CORE-GRID": 36,
+        "PROBE-S4": 96,
+        "DEEP-S8": 48,
+        "CORE-JUDGE": 6,
+        "UG-CORE": 6,
+        "MS-CORE": 6,
+        "PHD-CORE": 6,
+        "POSTDOC-CORE": 6,
+        "GRAD-XFIELD": 4,
+        "TRANS-10": 10,
+        "CONSIST": 4,
+        "TARGET": 3,
+        "CORE-FORCE": 2,
+        "INDUSTRY": 80,
+        "ROLE": 56
+      },
+      "domains": 12,
+      "required_axes_per_domain": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "checklist_items": 228,
+      "artifacts": 60,
+      "verify_targets": 60,
+      "industry_packs": 8,
+      "role_packs": 8,
+      "relations": {
+        "td_industry": 96,
+        "td_role": 96,
+        "broken": 0,
+        "broken_sample": [],
+        "duplicate_pairs": 0,
+        "strength": {
+          "드묾": 123,
+          "중심": 44,
+          "있음": 25
+        },
+        "domains_without_industry": 0,
+        "packs_without_domain": 0
+      },
+      "fixtures": {
+        "personas": true,
+        "bank_lock": true
+      }
+    },
+    {
+      "code": "VISUAL_CORE_V1",
+      "status": "building",
+      "open_to_students": false,
+      "maturity": "FOUNDATION",
+      "files_missing": [],
+      "items": 369,
+      "items_by_tier": {
+        "BASIC": 120,
+        "STANDARD": 156,
+        "PRO": 93
+      },
+      "items_by_module": {
+        "CORE-GRID": 36,
+        "PROBE-S4": 96,
+        "DEEP-S8": 48,
+        "CORE-JUDGE": 6,
+        "UG-CORE": 6,
+        "MS-CORE": 6,
+        "PHD-CORE": 6,
+        "POSTDOC-CORE": 6,
+        "GRAD-XFIELD": 4,
+        "TRANS-10": 10,
+        "CONSIST": 4,
+        "TARGET": 3,
+        "CORE-FORCE": 2,
+        "INDUSTRY": 80,
+        "ROLE": 56
+      },
+      "domains": 12,
+      "required_axes_per_domain": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "checklist_items": 228,
+      "artifacts": 60,
+      "verify_targets": 60,
+      "industry_packs": 8,
+      "role_packs": 8,
+      "relations": {
+        "td_industry": 96,
+        "td_role": 96,
+        "broken": 0,
+        "broken_sample": [],
+        "duplicate_pairs": 0,
+        "strength": {
+          "드묾": 111,
+          "있음": 41,
+          "중심": 40
+        },
+        "domains_without_industry": 0,
+        "packs_without_domain": 0
+      },
+      "fixtures": {
+        "personas": true,
+        "bank_lock": true
+      }
+    },
+    {
+      "code": "STYLE_CORE_V1",
+      "status": "building",
+      "open_to_students": false,
+      "maturity": "FOUNDATION",
+      "files_missing": [],
+      "items": 369,
+      "items_by_tier": {
+        "BASIC": 120,
+        "STANDARD": 156,
+        "PRO": 93
+      },
+      "items_by_module": {
+        "CORE-GRID": 36,
+        "PROBE-S4": 96,
+        "DEEP-S8": 48,
+        "CORE-JUDGE": 6,
+        "UG-CORE": 6,
+        "MS-CORE": 6,
+        "PHD-CORE": 6,
+        "POSTDOC-CORE": 6,
+        "GRAD-XFIELD": 4,
+        "TRANS-10": 10,
+        "CONSIST": 4,
+        "TARGET": 3,
+        "CORE-FORCE": 2,
+        "INDUSTRY": 80,
+        "ROLE": 56
+      },
+      "domains": 12,
+      "required_axes_per_domain": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "checklist_items": 228,
+      "artifacts": 60,
+      "verify_targets": 60,
+      "industry_packs": 8,
+      "role_packs": 8,
+      "relations": {
+        "td_industry": 96,
+        "td_role": 96,
+        "broken": 0,
+        "broken_sample": [],
+        "duplicate_pairs": 0,
+        "strength": {
+          "중심": 44,
+          "드묾": 117,
+          "있음": 31
+        },
+        "domains_without_industry": 0,
+        "packs_without_domain": 0
+      },
+      "fixtures": {
+        "personas": true,
+        "bank_lock": true
+      }
+    }
+  ],
+  "llm_calls_in_me_v3": [],
+  "fetch_in_me_v3": [],
+  "me_v3_files": 57
+}

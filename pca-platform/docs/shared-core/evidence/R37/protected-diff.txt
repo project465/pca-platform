@@ -1,0 +1,25 @@
+# R37 tracked diff vs 60f04ad8 (+ untracked)
+ .../scripts/shared-core/p0-demo-remark.test.ts     | 134 ++++++++++++++++-----
+ .../scripts/shared-core/p0-login-collision.test.ts |  49 ++++++++
+ .../scripts/shared-core/tenant-profile.test.ts     |  70 ++++++++++-
+ pca-platform/scripts/shared-core/test/typecheck.sh |   7 +-
+ pca-platform/src/lib/shared-core/tenant/campus.ts  |  18 +++
+ 5 files changed, 249 insertions(+), 29 deletions(-)
+
+ M scripts/shared-core/p0-demo-remark.test.ts
+ M scripts/shared-core/p0-login-collision.test.ts
+ M scripts/shared-core/tenant-profile.test.ts
+ M scripts/shared-core/test/typecheck.sh
+ M src/lib/shared-core/tenant/campus.ts
+?? docs/shared-core/evidence/R37/
+?? docs/shared-core/proposed/adj1-campus-students-not-demo.sql
+?? scripts/shared-core/bench/
+?? scripts/shared-core/evidence-aggregation.test.ts
+?? scripts/shared-core/exp-timepoint.test.ts
+
+# protected paths touched:
+  (end)
+
+# checksums
+9688a9268690d2872c7499c574897cbbc4fc1898f5ba6c49cc461f85c18b266f  deploy/db-chain.json
+b029cf0a5a6440a73b923ee5995366de479d14f245bf0c3b9b0b161bafb9572a  sites/pca-platform/content/campus-universities.json

@@ -1,0 +1,35 @@
+{
+  "repro1": {
+    "first": {
+      "created": true,
+      "userId": "3"
+    },
+    "again": {
+      "created": false,
+      "password": null
+    },
+    "row": {
+      "id": "3",
+      "login_id": "SC36-0001",
+      "display_name": "가상 A",
+      "password_hash": "(기록하지 않음)",
+      "cs_uni": "PCU",
+      "cs_sid": "SC36-0001",
+      "cs_col": "HUMSOC",
+      "cs_dep": "PCU26_KOREAN",
+      "orgs": [
+        "PCU"
+      ]
+    }
+  },
+  "repro7": {
+    "zz_rotate_pcu_student": {
+      "ok": false,
+      "why": "이 학교가 발급한 계정이 아닙니다"
+    },
+    "zz_disable_pcu_student": {
+      "ok": false,
+      "why": "이 학교가 발급한 계정이 아닙니다"
+    }
+  }
+}

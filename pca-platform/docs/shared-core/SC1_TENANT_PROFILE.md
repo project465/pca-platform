@@ -83,7 +83,7 @@ node --no-warnings --experimental-strip-types --import ./scripts/shared-core/tes
 bash scripts/shared-core/test/typecheck.sh   # 부분 타입 검사 (shared-core 와 그 테스트만)
 ```
 
-- `tenant-profile.test.ts` 21 가지 (T01~T20 · T99). T99 가 운영 콘텐츠 디렉터리와 PCU 등록부의
+- `tenant-profile.test.ts` 27 가지 (T01~T26 · T99 · R37 에서 T21~T26 을 더했다). T99 가 운영 콘텐츠 디렉터리와 PCU 등록부의
   지문이 시작할 때와 같은지 끝에서 센다.
 - `tenant-boundary.test.ts` 6 가지 (B0~B5).
 - 일부러 깨 본 것: 모르는 칸 검사 끄기 → T10 · 충돌 검사 끄기 → T13 · 얼리기 끄기 → T03 ·
@@ -91,7 +91,25 @@ bash scripts/shared-core/test/typecheck.sh   # 부분 타입 검사 (shared-core
   밖에서 shared-core 들여오기(부수효과 import · 동적 import) → B2. 전부 걸렸고 되돌렸다.
   (처음에는 `import "…"` 꼴을 B2 가 못 봤다 — 정규식을 넓혔다.)
 
-## 8. 다음 (이번 회차 밖)
+## 8. R37 계약 검증 (원천 충돌 · ID · 판본 · 참조 경계)
+
+33 / 33 통과(`docs/shared-core/evidence/R37/sc1-run.log`) · 부분 타입 검사 TSC_EXIT=0(13 파일 ·
+`typecheck.log` · **프로젝트 전체 typecheck 가 아니다**).
+
+| 시험 | 묻는 것 | 결과 |
+|---|---|---|
+| T21 | 파일을 만든 차례 · 객체 키 차례가 결과를 바꾸는가 | 안 바꾼다 |
+| T22 | 국가와 시장이 다른 칸인가 (KR 기관 · GLOBAL 시장) | 받는다 |
+| T23 | 등록부 · fixture 의 학교 코드가 그대로 기관 코드인가 (새 ID 를 만들지 않는다) | 같다 |
+| T24 | 같은 코드를 두 원천이 들면 — **내용이 같아도** | `CODE_CONFLICT`. 우선순위 규칙을 두지 않는다 |
+| T25 | 칸 이름이 바뀐 등록부 | 판본을 올리면 `UNSUPPORTED_SCHEMA_VERSION`. **판본을 그대로 두면 Core 0 개 프로필이 오류 없이 선다** — 막을 수 없는 자리로 적어 둔다 |
+| T26 | 학교 코드 꼴이 아닌 줄 | `INVALID_CODE` |
+
+R37 에서 고친 것 하나: `campus.ts` 가 **읽는 법을 아는 판본**(`KNOWN_CAMPUS_SCHEMAS =
+["cm-campus-universities.5"]`)만 받는다. 판본 칸이 없는 파일(fixture 꼴)은 받는다. 분류
+SHARED CORE INTERNAL · 운영 등록부를 읽는 자리는 아직 아무 데도 연결되지 않았다(B2).
+
+## 9. 다음 (이번 회차 밖)
 
 SC-2 적용 뒤 학교 로그인 쪽이 기관 코드를 넘길 때 `loadTenantProfile` 로 그 코드가 등록된
 기관인지를 묻는 것이 첫 연결 후보다. 연결은 계약(CC-001) 승인 뒤 하고, 그때 B2 를 그 한 파일만

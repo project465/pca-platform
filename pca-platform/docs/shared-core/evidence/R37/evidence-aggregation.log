@@ -1,0 +1,43 @@
+TAP version 13
+# \# BIZ {"picks_rows":26,"unique_pk":26,"did":25,"decided":0,"artifacts":4,"verifications":3,"sum_of_four":32,"confirmed_pk":25,"candidate_pk":1}
+# \# BIZ overlap {"decidedInDid":0,"artInDid":4,"verInDid":2,"sum_of_four":32,"unique_pk":26}
+# \# CS collision {"pk_rows":2,"did_hits":1,"artifacts":1,"verifications":1}
+# Subtest: E1 did 는 확인된 축의 근거만 담는다 — VERIFY 하나가 빠지는 것은 의도된 동작이다
+ok 1 - E1 did 는 확인된 축의 근거만 담는다 — VERIFY 하나가 빠지는 것은 의도된 동작이다
+  ---
+  duration_ms: 49.013603
+  type: 'test'
+  ...
+# Subtest: E2 verifications · artifacts 는 축 상태를 보지 않는다
+ok 2 - E2 verifications · artifacts 는 축 상태를 보지 않는다
+  ---
+  duration_ms: 37.251165
+  type: 'test'
+  ...
+# Subtest: E3 네 목록의 합은 같은 근거를 두 번 이상 센다
+ok 3 - E3 네 목록의 합은 같은 근거를 두 번 이상 센다
+  ---
+  duration_ms: 35.060714
+  type: 'test'
+  ...
+# Subtest: E4 decided 는 did 의 부분집합이다
+ok 4 - E4 decided 는 did 의 부분집합이다
+  ---
+  duration_ms: 36.611554
+  type: 'test'
+  ...
+# Subtest: E5 같은 글이 ARTIFACT 와 VERIFY 에 다 있으면 did 가 하나로 합친다 (CS TD01 '요구 목록')
+ok 5 - E5 같은 글이 ARTIFACT 와 VERIFY 에 다 있으면 did 가 하나로 합친다 (CS TD01 '요구 목록')
+  ---
+  duration_ms: 28.01055
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 624.956062

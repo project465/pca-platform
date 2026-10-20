@@ -1,0 +1,36 @@
+TAP version 13
+# \# TP-1 snapshot 2a58f66bf1d7 → 2a58f66bf1d7 → 2a58f66bf1d7 → 2a58f66bf1d7
+# Subtest: TP-1 응시 결과(v3_snapshots: 판정 · 결과 모델)는 경험을 더하고 고치고 지워도 한 글자도 바뀌지 않는다
+ok 1 - TP-1 응시 결과(v3_snapshots: 판정 · 결과 모델)는 경험을 더하고 고치고 지워도 한 글자도 바뀌지 않는다
+  ---
+  duration_ms: 826.585836
+  type: 'test'
+  ...
+# \# TP-2 live d7517139 → df756eaf → b48d4612 → d7517139
+# Subtest: TP-2 결과 화면이 그릴 때 읽는 경험 기록(experiencesOf)은 그 순간의 값이다 — 응시 시점에 고정되지 않는다
+ok 2 - TP-2 결과 화면이 그릴 때 읽는 경험 기록(experiencesOf)은 그 순간의 값이다 — 응시 시점에 고정되지 않는다
+  ---
+  duration_ms: 635.742202
+  type: 'test'
+  ...
+# Subtest: TP-3 (정적) 지금 결과지는 경험 기록을 웹에만 세우고 종이(@media print)에서는 숨긴다
+ok 3 - TP-3 (정적) 지금 결과지는 경험 기록을 웹에만 세우고 종이(@media print)에서는 숨긴다
+  ---
+  duration_ms: 2.853104
+  type: 'test'
+  ...
+# Subtest: TP-4 경험 한 줄 메모는 1년 뒤 지우게 돼 있다 — 스냅샷에 베끼면 그 정책을 다시 맞춰야 한다
+ok 4 - TP-4 경험 한 줄 메모는 1년 뒤 지우게 돼 있다 — 스냅샷에 베끼면 그 정책을 다시 맞춰야 한다
+  ---
+  duration_ms: 358.733759
+  type: 'test'
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 4
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2243.385762

@@ -1,0 +1,6793 @@
+{
+  "metrics": {
+    "accuracy": {
+      "determinism": "44/44",
+      "invariants": "396/396"
+    },
+    "cases": "44/44",
+    "checks": "556/556",
+    "personalization": {
+      "pairs": "36/36",
+      "action_sentences": {
+        "total": 68,
+        "distinct": 40
+      },
+      "headlines": {
+        "total": 44,
+        "distinct": 14
+      },
+      "identical_action_lists_within_core": [
+        [
+          "ME-C01",
+          "ME-C05",
+          "ME-C06",
+          "ME-C07",
+          "ME-C08",
+          "ME-C09"
+        ],
+        [
+          "BIZ-C01",
+          "BIZ-C05",
+          "BIZ-C06",
+          "BIZ-C08",
+          "BIZ-C09"
+        ],
+        [
+          "EE-C01",
+          "EE-C05",
+          "EE-C06",
+          "EE-C07",
+          "EE-C08",
+          "EE-C09"
+        ],
+        [
+          "CS-C01",
+          "CS-C05",
+          "CS-C06",
+          "CS-C08",
+          "CS-C09"
+        ]
+      ],
+      "core_differs_but_headline_and_actions_same": [
+        "ME-C01~ME-C07",
+        "ME-C01~ME-C08",
+        "BIZ-C01~BIZ-C08",
+        "EE-C01~EE-C07",
+        "EE-C01~EE-C08",
+        "CS-C01~CS-C08"
+      ]
+    },
+    "data_quality": {
+      "cores_scanned": 20,
+      "slot_text_collisions": {
+        "ME_CORE_V3": 0,
+        "EE_CORE_V1": 0,
+        "CS_CORE_V1": 6,
+        "ARCH_CORE_V1": 0,
+        "CIV_CORE_V1": 0,
+        "BT_CORE_V1": 0,
+        "SPORTS_CORE_V1": 0,
+        "NURSING_CORE_V1": 0,
+        "HEALTH_CORE_V1": 1,
+        "FOOD_CORE_V1": 0,
+        "BIZ_CORE_V1": 1,
+        "PUBADM_CORE_V1": 0,
+        "PSY_CORE_V1": 0,
+        "MEDIA_CORE_V1": 0,
+        "LANG_CORE_V1": 1,
+        "LAW_CORE_V1": 0,
+        "EDU_CORE_V1": 1,
+        "AGRI_CORE_V1": 1,
+        "VISUAL_CORE_V1": 0,
+        "STYLE_CORE_V1": 0
+      },
+      "dup_in_same_slot": {
+        "ME_CORE_V3": 0,
+        "EE_CORE_V1": 0,
+        "CS_CORE_V1": 0,
+        "ARCH_CORE_V1": 0,
+        "CIV_CORE_V1": 0,
+        "BT_CORE_V1": 0,
+        "SPORTS_CORE_V1": 0,
+        "NURSING_CORE_V1": 0,
+        "HEALTH_CORE_V1": 0,
+        "FOOD_CORE_V1": 0,
+        "BIZ_CORE_V1": 0,
+        "PUBADM_CORE_V1": 0,
+        "PSY_CORE_V1": 0,
+        "MEDIA_CORE_V1": 0,
+        "LANG_CORE_V1": 0,
+        "LAW_CORE_V1": 0,
+        "EDU_CORE_V1": 0,
+        "AGRI_CORE_V1": 0,
+        "VISUAL_CORE_V1": 0,
+        "STYLE_CORE_V1": 0
+      }
+    }
+  },
+  "pairs": [
+    {
+      "core": "ME_CORE_V3",
+      "a": "ME-C01",
+      "b": "ME-C02",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "full_same": false,
+      "text_same": false,
+      "ok": true
+    },
+    {
+      "core": "ME_CORE_V3",
+      "a": "ME-C01",
+      "b": "ME-C03",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "full_same": false,
+      "text_same": false,
+      "ok": true
+    },
+    {
+      "core": "ME_CORE_V3",
+      "a": "ME-C01",
+      "b": "ME-C04",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "full_same": false,
+      "text_same": false,
+      "ok": true
+    },
+    {
+      "core": "ME_CORE_V3",
+      "a": "ME-C01",
+      "b": "ME-C05",
+      "relation": "CORE_SAME",
+      "core_same": true,
+      "full_same": false,
+      "text_same": true,
+      "ok": true
+    },
+    {
+      "core": "ME_CORE_V3",
+      "a": "ME-C01",
+      "b": "ME-C06",
+      "relation": "FULL_SAME",
+      "core_same": true,
+      "full_same": true,
+      "text_same": true,
+      "ok": true
+    },
+    {
+      "core": "ME_CORE_V3",
+      "a": "ME-C01",
+      "b": "ME-C07",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "full_same": false,
+      "text_same": true,
+      "ok": true
+    },
+    {
+      "core": "ME_CORE_V3",
+      "a": "ME-C01",
+      "b": "ME-C08",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "full_same": false,
+      "text_same": true,
+      "ok": true
+    },
+    {
+      "core": "ME_CORE_V3",
+      "a": "ME-C01",
+      "b": "ME-C09",
+      "relation": "CORE_SAME",
+      "core_same": true,
+      "full_same": false,
+      "text_same": true,
+      "ok": true
+    },
+    {
+      "core": "ME_CORE_V3",
+      "a": "ME-C01",
+      "b": "ME-C11",
+      "relation": "CORE_SAME",
+      "core_same": true,
+      "full_same": false,
+      "text_same": false,
+      "ok": true
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "a": "BIZ-C01",
+      "b": "BIZ-C02",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "full_same": false,
+      "text_same": false,
+      "ok": true
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "a": "BIZ-C01",
+      "b": "BIZ-C03",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "full_same": false,
+      "text_same": false,
+      "ok": true
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "a": "BIZ-C01",
+      "b": "BIZ-C04",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "full_same": false,
+      "text_same": false,
+      "ok": true
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "a": "BIZ-C01",
+      "b": "BIZ-C05",
+      "relation": "CORE_SAME",
+      "core_same": true,
+      "full_same": false,
+      "text_same": true,
+      "ok": true
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "a": "BIZ-C01",
+      "b": "BIZ-C06",
+      "relation": "FULL_SAME",
+      "core_same": true,
+      "full_same": true,
+      "text_same": true,
+      "ok": true
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "a": "BIZ-C01",
+      "b": "BIZ-C07",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "full_same": false,
+      "text_same": false,
+      "ok": true
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "a": "BIZ-C01",
+      "b": "BIZ-C08",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "full_same": false,
+      "text_same": true,
+      "ok": true
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "a": "BIZ-C01",
+      "b": "BIZ-C09",
+      "relation": "CORE_SAME",
+      "core_same": true,
+      "full_same": false,
+      "text_same": true,
+      "ok": true
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "a": "BIZ-C01",
+      "b": "BIZ-C11",
+      "relation": "CORE_SAME",
+      "core_same": true,
+      "full_same": false,
+      "text_same": false,
+      "ok": true
+    },
+    {
+      "core": "EE_CORE_V1",
+      "a": "EE-C01",
+      "b": "EE-C02",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "full_same": false,
+      "text_same": false,
+      "ok": true
+    },
+    {
+      "core": "EE_CORE_V1",
+      "a": "EE-C01",
+      "b": "EE-C03",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "full_same": false,
+      "text_same": false,
+      "ok": true
+    },
+    {
+      "core": "EE_CORE_V1",
+      "a": "EE-C01",
+      "b": "EE-C04",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "full_same": false,
+      "text_same": false,
+      "ok": true
+    },
+    {
+      "core": "EE_CORE_V1",
+      "a": "EE-C01",
+      "b": "EE-C05",
+      "relation": "CORE_SAME",
+      "core_same": true,
+      "full_same": false,
+      "text_same": true,
+      "ok": true
+    },
+    {
+      "core": "EE_CORE_V1",
+      "a": "EE-C01",
+      "b": "EE-C06",
+      "relation": "FULL_SAME",
+      "core_same": true,
+      "full_same": true,
+      "text_same": true,
+      "ok": true
+    },
+    {
+      "core": "EE_CORE_V1",
+      "a": "EE-C01",
+      "b": "EE-C07",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "full_same": false,
+      "text_same": true,
+      "ok": true
+    },
+    {
+      "core": "EE_CORE_V1",
+      "a": "EE-C01",
+      "b": "EE-C08",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "full_same": false,
+      "text_same": true,
+      "ok": true
+    },
+    {
+      "core": "EE_CORE_V1",
+      "a": "EE-C01",
+      "b": "EE-C09",
+      "relation": "CORE_SAME",
+      "core_same": true,
+      "full_same": false,
+      "text_same": true,
+      "ok": true
+    },
+    {
+      "core": "EE_CORE_V1",
+      "a": "EE-C01",
+      "b": "EE-C11",
+      "relation": "CORE_SAME",
+      "core_same": true,
+      "full_same": false,
+      "text_same": false,
+      "ok": true
+    },
+    {
+      "core": "CS_CORE_V1",
+      "a": "CS-C01",
+      "b": "CS-C02",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "full_same": false,
+      "text_same": false,
+      "ok": true
+    },
+    {
+      "core": "CS_CORE_V1",
+      "a": "CS-C01",
+      "b": "CS-C03",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "full_same": false,
+      "text_same": false,
+      "ok": true
+    },
+    {
+      "core": "CS_CORE_V1",
+      "a": "CS-C01",
+      "b": "CS-C04",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "full_same": false,
+      "text_same": false,
+      "ok": true
+    },
+    {
+      "core": "CS_CORE_V1",
+      "a": "CS-C01",
+      "b": "CS-C05",
+      "relation": "CORE_SAME",
+      "core_same": true,
+      "full_same": false,
+      "text_same": true,
+      "ok": true
+    },
+    {
+      "core": "CS_CORE_V1",
+      "a": "CS-C01",
+      "b": "CS-C06",
+      "relation": "FULL_SAME",
+      "core_same": true,
+      "full_same": true,
+      "text_same": true,
+      "ok": true
+    },
+    {
+      "core": "CS_CORE_V1",
+      "a": "CS-C01",
+      "b": "CS-C07",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "full_same": false,
+      "text_same": false,
+      "ok": true
+    },
+    {
+      "core": "CS_CORE_V1",
+      "a": "CS-C01",
+      "b": "CS-C08",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "full_same": false,
+      "text_same": true,
+      "ok": true
+    },
+    {
+      "core": "CS_CORE_V1",
+      "a": "CS-C01",
+      "b": "CS-C09",
+      "relation": "CORE_SAME",
+      "core_same": true,
+      "full_same": false,
+      "text_same": true,
+      "ok": true
+    },
+    {
+      "core": "CS_CORE_V1",
+      "a": "CS-C01",
+      "b": "CS-C11",
+      "relation": "CORE_SAME",
+      "core_same": true,
+      "full_same": false,
+      "text_same": false,
+      "ok": true
+    }
+  ],
+  "cases": [
+    {
+      "id": "ME-C01",
+      "core": "ME_CORE_V3",
+      "kind": "C01_STRONG",
+      "input": "TD01 여덟 축을 전부 직접 수행(2) · 체크리스트 축마다 둘 · 산출물 둘 · 검증 둘 · 관심 5",
+      "expect": [
+        "TD01 이 Z1(근거가 선 영역)",
+        "TD01 confirmed_all = 8",
+        "응답 품질 OK"
+      ],
+      "must_ground": [
+        "did · decided · artifacts · verifications 의 모든 항목이 제출한 고르기 안에 있다"
+      ],
+      "forbidden": [
+        "고르지 않은 항목이 근거로 선다",
+        "근거 둘 미만인 축이 OWNED"
+      ],
+      "gap_condition": "TD01 은 확인된 축이 여덟이라 확인 빈자리는 서지 않는다(소유를 더 세우라는 빈자리는 설 수 있다 · 검사)",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "OK",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J3:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J3"
+        ],
+        "headline": "기구·제품 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 26,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 32
+          },
+          "unique_text": 26,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 26,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "d1 Z1",
+          "ok": true,
+          "detail": "Z1_EVIDENCE_ESTABLISHED"
+        },
+        {
+          "name": "d1 confirmed_all=8",
+          "ok": true,
+          "detail": "8"
+        },
+        {
+          "name": "품질 OK",
+          "ok": true,
+          "detail": "OK"
+        },
+        {
+          "name": "확인되지 않은 축의 빈자리가 서지 않는다(소유를 더 세우라는 빈자리는 설 수 있다)",
+          "ok": true,
+          "detail": "-"
+        }
+      ]
+    },
+    {
+      "id": "ME-C02",
+      "core": "ME_CORE_V3",
+      "kind": "C02_SAME_MAJOR_NO_EXP",
+      "input": "C01 과 같은 전공 · 같은 관심 · 여덟 축을 전부 `없다`(0) · 고르기 없음",
+      "expect": [
+        "TD01 이 Z1 이 아니다",
+        "TD01 confirmed_all = 0"
+      ],
+      "must_ground": [
+        "근거 목록이 비어 있다"
+      ],
+      "forbidden": [
+        "확인된 축이 선다",
+        "Z1"
+      ],
+      "gap_condition": "필수 축 · 산출물 공백이 까닭으로 선다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z4_INSUFFICIENT_EVIDENCE",
+        "confirmed": [],
+        "owned": [],
+        "reasons": [
+          "NO_CONFIRMED_AXIS"
+        ],
+        "quality": "OK",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 3,
+        "gaps_d1": [
+          "J3:REQUIRED_AXIS",
+          "J5:OUTPUT",
+          "J6:VERIFICATION"
+        ],
+        "empty_d1": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "actions": [
+          "TRY_SHORT_EXPERIENCE:TD01:-",
+          "STUDY_NEXT:TD01:-",
+          "BUILD_OUTPUT:TD01:J5",
+          "ADD_VERIFICATION:TD01:J6",
+          "FILL_AXIS:TD01:J3"
+        ],
+        "headline": "아직 직접 해 본 과제는 많지 않아요",
+        "tally": {
+          "raw": {
+            "did": 0,
+            "decided": 0,
+            "artifacts": 0,
+            "verifications": 0,
+            "sum4": 0
+          },
+          "unique_text": 0,
+          "unique_key": 0,
+          "submitted": 0,
+          "confirmed_keys": 0,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 0,
+            "did_verifications": 0,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "d1 Z1 아님",
+          "ok": true,
+          "detail": "Z4_INSUFFICIENT_EVIDENCE"
+        },
+        {
+          "name": "d1 confirmed_all=0",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "name": "d1 did 비어 있음",
+          "ok": true,
+          "detail": "0"
+        }
+      ]
+    },
+    {
+      "id": "ME-C03",
+      "core": "ME_CORE_V3",
+      "kind": "C03_SAME_EXP_LOW_INTEREST",
+      "input": "C01 과 같은 경험 · 관심과 학습 의향만 1 (엔진에 '지식 수준' 측정이 없어 가장 가까운 신호로 바꿨다)",
+      "expect": [
+        "축 상태가 C01 과 같다",
+        "TD01 이 Z3(근거는 있고 관심이 낮다)"
+      ],
+      "must_ground": [
+        "근거 목록이 C01 과 같다"
+      ],
+      "forbidden": [
+        "관심이 낮다는 까닭으로 확인된 축이 내려간다"
+      ],
+      "gap_condition": "관심 · 근거를 합치지 않는다: 축 빈자리는 C01 과 같다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z3_EVIDENCE_LOW_INTEREST",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [
+          "LOW_INTEREST_WITH_EVIDENCE"
+        ],
+        "quality": "OK",
+        "focus": [],
+        "gaps": 0,
+        "gaps_d1": [],
+        "empty_d1": [],
+        "actions": [
+          "RECHECK_DIRECTION:TD01:-"
+        ],
+        "headline": "기구·제품 설계 과제는 해 봤는데, 마음은 다른 쪽에 있어요",
+        "tally": {
+          "raw": {
+            "did": 26,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 32
+          },
+          "unique_text": 26,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 26,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "축 상태가 C01 과 같다",
+          "ok": true
+        },
+        {
+          "name": "d1 Z3",
+          "ok": true,
+          "detail": "Z3_EVIDENCE_LOW_INTEREST"
+        },
+        {
+          "name": "근거 목록이 C01 과 같다",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "ME-C04",
+      "core": "ME_CORE_V3",
+      "kind": "C04_CLAIM_WITHOUT_EVIDENCE",
+      "input": "여덟 축 전부 `내가 정했고 쓰였다`(3) · 체크리스트 · 산출물 · 검증 0",
+      "expect": [
+        "OWNED 축이 없다(근거 둘 미만)",
+        "TD01 이 Z1 이 아니다(산출물 근거 없음)"
+      ],
+      "must_ground": [
+        "decided 가 비어 있다"
+      ],
+      "forbidden": [
+        "근거 없이 '직접 정했다' 가 선다",
+        "Z1"
+      ],
+      "gap_condition": "산출물 근거 공백(MISSING_OUTPUT_EVIDENCE 계열)이 까닭으로 선다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z2_EVIDENCE_INCOMPLETE",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [
+          "MISSING_OUTPUT_EVIDENCE"
+        ],
+        "quality": "REVIEW",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 2,
+        "gaps_d1": [
+          "J3:PARTIAL_EVIDENCE",
+          "J5:OUTPUT_EVIDENCE"
+        ],
+        "empty_d1": [],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J3",
+          "BUILD_OUTPUT:TD01:J5"
+        ],
+        "headline": "기구·제품 설계 과제는 해 봤고, 정리만 남았어요",
+        "tally": {
+          "raw": {
+            "did": 0,
+            "decided": 0,
+            "artifacts": 0,
+            "verifications": 0,
+            "sum4": 0
+          },
+          "unique_text": 0,
+          "unique_key": 0,
+          "submitted": 0,
+          "confirmed_keys": 0,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 0,
+            "did_verifications": 0,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "OWNED 없음",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "d1 Z1 아님",
+          "ok": true,
+          "detail": "Z2_EVIDENCE_INCOMPLETE"
+        },
+        {
+          "name": "decided 비어 있음",
+          "ok": true
+        },
+        {
+          "name": "산출물 근거 공백이 까닭으로 선다",
+          "ok": true,
+          "detail": "MISSING_OUTPUT_EVIDENCE"
+        }
+      ]
+    },
+    {
+      "id": "ME-C05",
+      "core": "ME_CORE_V3",
+      "kind": "C05_ACTIVITY_OTHER_INDUSTRY",
+      "input": "C01 과 같은 응답 · 산업팩 · 역할팩만 다른 것",
+      "expect": [
+        "Core 판정(coreOnly) 이 C01 과 같다",
+        "산업 맥락은 다르다"
+      ],
+      "must_ground": [
+        "산업 · 역할이 축 수준을 바꾸지 않는다"
+      ],
+      "forbidden": [
+        "산업을 바꿨더니 묶음이 바뀐다"
+      ],
+      "gap_condition": "C01 과 같다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "OK",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J3:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J3"
+        ],
+        "headline": "기구·제품 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 26,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 32
+          },
+          "unique_text": 26,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 26,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "coreOnly 가 C01 과 같다",
+          "ok": true
+        },
+        {
+          "name": "산업 맥락은 다르다(팩이 둘 이상인 Core)",
+          "ok": true,
+          "detail": "INDUSTRY_DEFENSE_V2 vs INDUSTRY_SEMICON_V2"
+        }
+      ]
+    },
+    {
+      "id": "ME-C06",
+      "core": "ME_CORE_V3",
+      "kind": "C06_REPEAT_REORDERED",
+      "input": "C01 과 같은 응답을 열쇠 차례만 거꾸로 적어 다시 제출",
+      "expect": [
+        "스냅샷 전체(attempt_id 제외)가 C01 과 글자까지 같다"
+      ],
+      "must_ground": [
+        "입력 차례가 결과를 바꾸지 않는다"
+      ],
+      "forbidden": [
+        "같은 입력에서 다른 결과"
+      ],
+      "gap_condition": "C01 과 같다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "OK",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J3:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J3"
+        ],
+        "headline": "기구·제품 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 26,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 32
+          },
+          "unique_text": 26,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 26,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "스냅샷이 C01 과 글자까지 같다(attempt_id · trace 제외)",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "ME-C07",
+      "core": "ME_CORE_V3",
+      "kind": "C07_PARTIAL_MISSING",
+      "input": "TD01 의 심화 축 넷(J1 J2 J4 J8)에 답하지 않음 · 체크리스트는 고른 그대로",
+      "expect": [
+        "던지지 않는다",
+        "답하지 않은 축은 확인되지 않는다",
+        "그 축의 고르기는 did 에 들어가지 않는다"
+      ],
+      "must_ground": [
+        "확인되지 않은 축의 고르기는 '후보' 로만 남는다"
+      ],
+      "forbidden": [
+        "답하지 않은 축이 확인된다",
+        "고르기만으로 축이 선다"
+      ],
+      "gap_condition": "스냅샷: 답하지 않은 축이 SKIPPED 로 갈린다(검사) · 결과지 빈자리에 서는가는 관찰값(gaps_d1)",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J3",
+          "J5",
+          "J6",
+          "J7"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "REVIEW",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J3:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [
+          "J1",
+          "J2",
+          "J4",
+          "J8"
+        ],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J3"
+        ],
+        "headline": "기구·제품 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 18,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 24
+          },
+          "unique_text": 18,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 18,
+          "candidates": 8,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "답하지 않은 심화 축이 확인되지 않는다",
+          "ok": true,
+          "detail": "J3+J5+J6+J7"
+        },
+        {
+          "name": "그 축의 missing 이 SKIPPED",
+          "ok": true,
+          "detail": "J1:SKIPPED,J2:SKIPPED,J4:SKIPPED,J8:SKIPPED"
+        },
+        {
+          "name": "그 축의 고르기가 did 에 없다(후보로 남는다)",
+          "ok": true,
+          "detail": "후보 8"
+        }
+      ]
+    },
+    {
+      "id": "ME-C08",
+      "core": "ME_CORE_V3",
+      "kind": "C08_TOOL_MISMATCH",
+      "input": "TD01 J4(방법·도구)를 `없다` 로 답하고 J4 체크리스트는 고름",
+      "expect": [
+        "J4 가 확인되지 않는다",
+        "J4 고르기가 did 에 없다"
+      ],
+      "must_ground": [
+        "응답과 고르기가 어긋나면 응답을 따른다"
+      ],
+      "forbidden": [
+        "고른 도구만으로 J4 가 선다"
+      ],
+      "gap_condition": "스냅샷 empty 에 J4 가 선다(검사) · 결과지 빈자리에 서는가는 관찰값(gaps_d1)",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "REVIEW",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J3:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [
+          "J4"
+        ],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J3"
+        ],
+        "headline": "기구·제품 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 24,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 30
+          },
+          "unique_text": 24,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 24,
+          "candidates": 2,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "J4 확인 안 됨",
+          "ok": true,
+          "detail": "NOT_OBSERVED"
+        },
+        {
+          "name": "J4 고르기가 did 에 없다",
+          "ok": true,
+          "detail": "J4 고르기 2"
+        },
+        {
+          "name": "스냅샷 empty 에 J4 가 선다",
+          "ok": true,
+          "detail": "empty=J4"
+        }
+      ]
+    },
+    {
+      "id": "ME-C09",
+      "core": "ME_CORE_V3",
+      "kind": "C09_SAME_MAJOR_OTHER_GOAL",
+      "input": "C01 과 같은 응답 · 관심 역할(role_interest)만 다름",
+      "expect": [
+        "Core 판정이 C01 과 같다",
+        "결과 모델의 역할 맥락이 다르다"
+      ],
+      "must_ground": [
+        "목표는 판정에 들어가지 않는다"
+      ],
+      "forbidden": [
+        "목표 직무를 바꿨더니 축 상태가 바뀐다"
+      ],
+      "gap_condition": "C01 과 같다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "OK",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J3:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J3"
+        ],
+        "headline": "기구·제품 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 26,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 32
+          },
+          "unique_text": 26,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 26,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "coreOnly 가 C01 과 같다",
+          "ok": true
+        },
+        {
+          "name": "역할 맥락이 다르다",
+          "ok": true,
+          "detail": "ROLE_DESIGN_V2 vs ROLE_CAE_V2"
+        }
+      ]
+    },
+    {
+      "id": "ME-C10",
+      "core": "ME_CORE_V3",
+      "kind": "C10_BASIC_TIER",
+      "input": "C01 과 같은 사람 · BASIC (선별 네 축만 묻는다)",
+      "expect": [
+        "Z1 이 어디에도 없다(BASIC 은 근거가 섰다고 적지 않는다)",
+        "심화 축이 확인되지 않는다"
+      ],
+      "must_ground": [
+        "선별 축만 근거로 선다"
+      ],
+      "forbidden": [
+        "BASIC 에서 Z1"
+      ],
+      "gap_condition": "심화 축을 빈자리로 세지 않는다(묻지 않았다)",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z2_EVIDENCE_INCOMPLETE",
+        "confirmed": [
+          "J3",
+          "J5",
+          "J6",
+          "J7"
+        ],
+        "owned": [],
+        "reasons": [
+          "TIER_WITHOUT_DEEP_AXES"
+        ],
+        "quality": "REVIEW",
+        "focus": [
+          "TD01",
+          "TD02"
+        ],
+        "gaps": 0,
+        "gaps_d1": [],
+        "empty_d1": [
+          "J1",
+          "J2",
+          "J4",
+          "J8"
+        ],
+        "actions": [
+          "WRITE_UP:TD01:-"
+        ],
+        "headline": "기구·제품 설계 과제는 해 봤고, 정리만 남았어요",
+        "tally": {
+          "raw": {
+            "did": 18,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 24
+          },
+          "unique_text": 18,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 18,
+          "candidates": 8,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Z1 이 없다",
+          "ok": true
+        },
+        {
+          "name": "심화 축이 확인되지 않는다",
+          "ok": true,
+          "detail": "TD01:J3+J5+J6+J7,TD02:J3+J5+J6+J7"
+        },
+        {
+          "name": "BASIC 에서 빈자리(gaps)를 세지 않는다",
+          "ok": true,
+          "detail": "0"
+        }
+      ]
+    },
+    {
+      "id": "ME-C11",
+      "core": "ME_CORE_V3",
+      "kind": "C11_STAGE_POSTDOC",
+      "input": "C01 과 같은 응답 · 학업 단계만 postdoc",
+      "expect": [
+        "Core 판정이 C01 과 같다(학위가 판정을 바꾸지 않는다)"
+      ],
+      "must_ground": [
+        "학위는 장면만 바꾼다"
+      ],
+      "forbidden": [
+        "포닥이라서 높게 나온다"
+      ],
+      "gap_condition": "C01 과 같다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "OK",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J3:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J3"
+        ],
+        "headline": "기구·제품 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 26,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 32
+          },
+          "unique_text": 26,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 26,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "coreOnly 가 C01 과 같다",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "BIZ-C01",
+      "core": "BIZ_CORE_V1",
+      "kind": "C01_STRONG",
+      "input": "TD01 여덟 축을 전부 직접 수행(2) · 체크리스트 축마다 둘 · 산출물 둘 · 검증 둘 · 관심 5",
+      "expect": [
+        "TD01 이 Z1(근거가 선 영역)",
+        "TD01 confirmed_all = 8",
+        "응답 품질 OK"
+      ],
+      "must_ground": [
+        "did · decided · artifacts · verifications 의 모든 항목이 제출한 고르기 안에 있다"
+      ],
+      "forbidden": [
+        "고르지 않은 항목이 근거로 선다",
+        "근거 둘 미만인 축이 OWNED"
+      ],
+      "gap_condition": "TD01 은 확인된 축이 여덟이라 확인 빈자리는 서지 않는다(소유를 더 세우라는 빈자리는 설 수 있다 · 검사)",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "OK",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J2:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J2"
+        ],
+        "headline": "경영전략·기획 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 26,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 32
+          },
+          "unique_text": 26,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 26,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "d1 Z1",
+          "ok": true,
+          "detail": "Z1_EVIDENCE_ESTABLISHED"
+        },
+        {
+          "name": "d1 confirmed_all=8",
+          "ok": true,
+          "detail": "8"
+        },
+        {
+          "name": "품질 OK",
+          "ok": true,
+          "detail": "OK"
+        },
+        {
+          "name": "확인되지 않은 축의 빈자리가 서지 않는다(소유를 더 세우라는 빈자리는 설 수 있다)",
+          "ok": true,
+          "detail": "-"
+        }
+      ]
+    },
+    {
+      "id": "BIZ-C02",
+      "core": "BIZ_CORE_V1",
+      "kind": "C02_SAME_MAJOR_NO_EXP",
+      "input": "C01 과 같은 전공 · 같은 관심 · 여덟 축을 전부 `없다`(0) · 고르기 없음",
+      "expect": [
+        "TD01 이 Z1 이 아니다",
+        "TD01 confirmed_all = 0"
+      ],
+      "must_ground": [
+        "근거 목록이 비어 있다"
+      ],
+      "forbidden": [
+        "확인된 축이 선다",
+        "Z1"
+      ],
+      "gap_condition": "필수 축 · 산출물 공백이 까닭으로 선다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z4_INSUFFICIENT_EVIDENCE",
+        "confirmed": [],
+        "owned": [],
+        "reasons": [
+          "NO_CONFIRMED_AXIS"
+        ],
+        "quality": "OK",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 4,
+        "gaps_d1": [
+          "J3:REQUIRED_AXIS",
+          "J2:REQUIRED_AXIS",
+          "J5:OUTPUT",
+          "J6:VERIFICATION"
+        ],
+        "empty_d1": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "actions": [
+          "TRY_SHORT_EXPERIENCE:TD01:-",
+          "STUDY_NEXT:TD01:-",
+          "BUILD_OUTPUT:TD01:J5",
+          "ADD_VERIFICATION:TD01:J6",
+          "FILL_AXIS:TD01:J2",
+          "FILL_AXIS:TD01:J3"
+        ],
+        "headline": "아직 직접 해 본 과제는 많지 않아요",
+        "tally": {
+          "raw": {
+            "did": 0,
+            "decided": 0,
+            "artifacts": 0,
+            "verifications": 0,
+            "sum4": 0
+          },
+          "unique_text": 0,
+          "unique_key": 0,
+          "submitted": 0,
+          "confirmed_keys": 0,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 0,
+            "did_verifications": 0,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "d1 Z1 아님",
+          "ok": true,
+          "detail": "Z4_INSUFFICIENT_EVIDENCE"
+        },
+        {
+          "name": "d1 confirmed_all=0",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "name": "d1 did 비어 있음",
+          "ok": true,
+          "detail": "0"
+        }
+      ]
+    },
+    {
+      "id": "BIZ-C03",
+      "core": "BIZ_CORE_V1",
+      "kind": "C03_SAME_EXP_LOW_INTEREST",
+      "input": "C01 과 같은 경험 · 관심과 학습 의향만 1 (엔진에 '지식 수준' 측정이 없어 가장 가까운 신호로 바꿨다)",
+      "expect": [
+        "축 상태가 C01 과 같다",
+        "TD01 이 Z3(근거는 있고 관심이 낮다)"
+      ],
+      "must_ground": [
+        "근거 목록이 C01 과 같다"
+      ],
+      "forbidden": [
+        "관심이 낮다는 까닭으로 확인된 축이 내려간다"
+      ],
+      "gap_condition": "관심 · 근거를 합치지 않는다: 축 빈자리는 C01 과 같다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z3_EVIDENCE_LOW_INTEREST",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [
+          "LOW_INTEREST_WITH_EVIDENCE"
+        ],
+        "quality": "OK",
+        "focus": [],
+        "gaps": 0,
+        "gaps_d1": [],
+        "empty_d1": [],
+        "actions": [
+          "RECHECK_DIRECTION:TD01:-"
+        ],
+        "headline": "경영전략·기획 과제는 해 봤는데, 마음은 다른 쪽에 있어요",
+        "tally": {
+          "raw": {
+            "did": 26,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 32
+          },
+          "unique_text": 26,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 26,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "축 상태가 C01 과 같다",
+          "ok": true
+        },
+        {
+          "name": "d1 Z3",
+          "ok": true,
+          "detail": "Z3_EVIDENCE_LOW_INTEREST"
+        },
+        {
+          "name": "근거 목록이 C01 과 같다",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "BIZ-C04",
+      "core": "BIZ_CORE_V1",
+      "kind": "C04_CLAIM_WITHOUT_EVIDENCE",
+      "input": "여덟 축 전부 `내가 정했고 쓰였다`(3) · 체크리스트 · 산출물 · 검증 0",
+      "expect": [
+        "OWNED 축이 없다(근거 둘 미만)",
+        "TD01 이 Z1 이 아니다(산출물 근거 없음)"
+      ],
+      "must_ground": [
+        "decided 가 비어 있다"
+      ],
+      "forbidden": [
+        "근거 없이 '직접 정했다' 가 선다",
+        "Z1"
+      ],
+      "gap_condition": "산출물 근거 공백(MISSING_OUTPUT_EVIDENCE 계열)이 까닭으로 선다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z2_EVIDENCE_INCOMPLETE",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [
+          "MISSING_OUTPUT_EVIDENCE"
+        ],
+        "quality": "REVIEW",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 2,
+        "gaps_d1": [
+          "J2:PARTIAL_EVIDENCE",
+          "J5:OUTPUT_EVIDENCE"
+        ],
+        "empty_d1": [],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J2",
+          "BUILD_OUTPUT:TD01:J5"
+        ],
+        "headline": "경영전략·기획 과제는 해 봤고, 정리만 남았어요",
+        "tally": {
+          "raw": {
+            "did": 0,
+            "decided": 0,
+            "artifacts": 0,
+            "verifications": 0,
+            "sum4": 0
+          },
+          "unique_text": 0,
+          "unique_key": 0,
+          "submitted": 0,
+          "confirmed_keys": 0,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 0,
+            "did_verifications": 0,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "OWNED 없음",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "d1 Z1 아님",
+          "ok": true,
+          "detail": "Z2_EVIDENCE_INCOMPLETE"
+        },
+        {
+          "name": "decided 비어 있음",
+          "ok": true
+        },
+        {
+          "name": "산출물 근거 공백이 까닭으로 선다",
+          "ok": true,
+          "detail": "MISSING_OUTPUT_EVIDENCE"
+        }
+      ]
+    },
+    {
+      "id": "BIZ-C05",
+      "core": "BIZ_CORE_V1",
+      "kind": "C05_ACTIVITY_OTHER_INDUSTRY",
+      "input": "C01 과 같은 응답 · 산업팩 · 역할팩만 다른 것",
+      "expect": [
+        "Core 판정(coreOnly) 이 C01 과 같다",
+        "산업 맥락은 다르다"
+      ],
+      "must_ground": [
+        "산업 · 역할이 축 수준을 바꾸지 않는다"
+      ],
+      "forbidden": [
+        "산업을 바꿨더니 묶음이 바뀐다"
+      ],
+      "gap_condition": "C01 과 같다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "OK",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J2:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J2"
+        ],
+        "headline": "경영전략·기획 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 26,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 32
+          },
+          "unique_text": 26,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 26,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "coreOnly 가 C01 과 같다",
+          "ok": true
+        },
+        {
+          "name": "산업 맥락은 다르다(팩이 둘 이상인 Core)",
+          "ok": true,
+          "detail": "INDUSTRY_TRAVEL_V1 vs INDUSTRY_B2B_V1"
+        }
+      ]
+    },
+    {
+      "id": "BIZ-C06",
+      "core": "BIZ_CORE_V1",
+      "kind": "C06_REPEAT_REORDERED",
+      "input": "C01 과 같은 응답을 열쇠 차례만 거꾸로 적어 다시 제출",
+      "expect": [
+        "스냅샷 전체(attempt_id 제외)가 C01 과 글자까지 같다"
+      ],
+      "must_ground": [
+        "입력 차례가 결과를 바꾸지 않는다"
+      ],
+      "forbidden": [
+        "같은 입력에서 다른 결과"
+      ],
+      "gap_condition": "C01 과 같다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "OK",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J2:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J2"
+        ],
+        "headline": "경영전략·기획 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 26,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 32
+          },
+          "unique_text": 26,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 26,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "스냅샷이 C01 과 글자까지 같다(attempt_id · trace 제외)",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "BIZ-C07",
+      "core": "BIZ_CORE_V1",
+      "kind": "C07_PARTIAL_MISSING",
+      "input": "TD01 의 심화 축 넷(J1 J2 J4 J8)에 답하지 않음 · 체크리스트는 고른 그대로",
+      "expect": [
+        "던지지 않는다",
+        "답하지 않은 축은 확인되지 않는다",
+        "그 축의 고르기는 did 에 들어가지 않는다"
+      ],
+      "must_ground": [
+        "확인되지 않은 축의 고르기는 '후보' 로만 남는다"
+      ],
+      "forbidden": [
+        "답하지 않은 축이 확인된다",
+        "고르기만으로 축이 선다"
+      ],
+      "gap_condition": "스냅샷: 답하지 않은 축이 SKIPPED 로 갈린다(검사) · 결과지 빈자리에 서는가는 관찰값(gaps_d1)",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z2_EVIDENCE_INCOMPLETE",
+        "confirmed": [
+          "J3",
+          "J5",
+          "J6",
+          "J7"
+        ],
+        "owned": [],
+        "reasons": [
+          "MISSING_REQUIRED_AXIS"
+        ],
+        "quality": "REVIEW",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 2,
+        "gaps_d1": [
+          "J2:REQUIRED_AXIS",
+          "J3:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [
+          "J1",
+          "J2",
+          "J4",
+          "J8"
+        ],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J3",
+          "FILL_AXIS:TD01:J2"
+        ],
+        "headline": "경영전략·기획 과제는 해 봤고, 정리만 남았어요",
+        "tally": {
+          "raw": {
+            "did": 18,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 24
+          },
+          "unique_text": 18,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 18,
+          "candidates": 8,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "답하지 않은 심화 축이 확인되지 않는다",
+          "ok": true,
+          "detail": "J3+J5+J6+J7"
+        },
+        {
+          "name": "그 축의 missing 이 SKIPPED",
+          "ok": true,
+          "detail": "J1:SKIPPED,J2:SKIPPED,J4:SKIPPED,J8:SKIPPED"
+        },
+        {
+          "name": "그 축의 고르기가 did 에 없다(후보로 남는다)",
+          "ok": true,
+          "detail": "후보 8"
+        }
+      ]
+    },
+    {
+      "id": "BIZ-C08",
+      "core": "BIZ_CORE_V1",
+      "kind": "C08_TOOL_MISMATCH",
+      "input": "TD01 J4(방법·도구)를 `없다` 로 답하고 J4 체크리스트는 고름",
+      "expect": [
+        "J4 가 확인되지 않는다",
+        "J4 고르기가 did 에 없다"
+      ],
+      "must_ground": [
+        "응답과 고르기가 어긋나면 응답을 따른다"
+      ],
+      "forbidden": [
+        "고른 도구만으로 J4 가 선다"
+      ],
+      "gap_condition": "스냅샷 empty 에 J4 가 선다(검사) · 결과지 빈자리에 서는가는 관찰값(gaps_d1)",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "REVIEW",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J2:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [
+          "J4"
+        ],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J2"
+        ],
+        "headline": "경영전략·기획 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 24,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 30
+          },
+          "unique_text": 24,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 24,
+          "candidates": 2,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "J4 확인 안 됨",
+          "ok": true,
+          "detail": "NOT_OBSERVED"
+        },
+        {
+          "name": "J4 고르기가 did 에 없다",
+          "ok": true,
+          "detail": "J4 고르기 2"
+        },
+        {
+          "name": "스냅샷 empty 에 J4 가 선다",
+          "ok": true,
+          "detail": "empty=J4"
+        }
+      ]
+    },
+    {
+      "id": "BIZ-C09",
+      "core": "BIZ_CORE_V1",
+      "kind": "C09_SAME_MAJOR_OTHER_GOAL",
+      "input": "C01 과 같은 응답 · 관심 역할(role_interest)만 다름",
+      "expect": [
+        "Core 판정이 C01 과 같다",
+        "결과 모델의 역할 맥락이 다르다"
+      ],
+      "must_ground": [
+        "목표는 판정에 들어가지 않는다"
+      ],
+      "forbidden": [
+        "목표 직무를 바꿨더니 축 상태가 바뀐다"
+      ],
+      "gap_condition": "C01 과 같다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "OK",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J2:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J2"
+        ],
+        "headline": "경영전략·기획 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 26,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 32
+          },
+          "unique_text": 26,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 26,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "coreOnly 가 C01 과 같다",
+          "ok": true
+        },
+        {
+          "name": "역할 맥락이 다르다",
+          "ok": true,
+          "detail": "ROLE_CS_V1 vs ROLE_PLAN_V1"
+        }
+      ]
+    },
+    {
+      "id": "BIZ-C10",
+      "core": "BIZ_CORE_V1",
+      "kind": "C10_BASIC_TIER",
+      "input": "C01 과 같은 사람 · BASIC (선별 네 축만 묻는다)",
+      "expect": [
+        "Z1 이 어디에도 없다(BASIC 은 근거가 섰다고 적지 않는다)",
+        "심화 축이 확인되지 않는다"
+      ],
+      "must_ground": [
+        "선별 축만 근거로 선다"
+      ],
+      "forbidden": [
+        "BASIC 에서 Z1"
+      ],
+      "gap_condition": "심화 축을 빈자리로 세지 않는다(묻지 않았다)",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z2_EVIDENCE_INCOMPLETE",
+        "confirmed": [
+          "J3",
+          "J5",
+          "J6",
+          "J7"
+        ],
+        "owned": [],
+        "reasons": [
+          "TIER_WITHOUT_DEEP_AXES"
+        ],
+        "quality": "REVIEW",
+        "focus": [
+          "TD01",
+          "TD02"
+        ],
+        "gaps": 0,
+        "gaps_d1": [],
+        "empty_d1": [
+          "J1",
+          "J2",
+          "J4",
+          "J8"
+        ],
+        "actions": [
+          "WRITE_UP:TD01:-"
+        ],
+        "headline": "경영전략·기획과 마케팅·시장 과제는 해 봤고, 정리만 남았어요",
+        "tally": {
+          "raw": {
+            "did": 18,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 24
+          },
+          "unique_text": 18,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 18,
+          "candidates": 8,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Z1 이 없다",
+          "ok": true
+        },
+        {
+          "name": "심화 축이 확인되지 않는다",
+          "ok": true,
+          "detail": "TD01:J3+J5+J6+J7,TD02:J3+J5+J6+J7"
+        },
+        {
+          "name": "BASIC 에서 빈자리(gaps)를 세지 않는다",
+          "ok": true,
+          "detail": "0"
+        }
+      ]
+    },
+    {
+      "id": "BIZ-C11",
+      "core": "BIZ_CORE_V1",
+      "kind": "C11_STAGE_POSTDOC",
+      "input": "C01 과 같은 응답 · 학업 단계만 postdoc",
+      "expect": [
+        "Core 판정이 C01 과 같다(학위가 판정을 바꾸지 않는다)"
+      ],
+      "must_ground": [
+        "학위는 장면만 바꾼다"
+      ],
+      "forbidden": [
+        "포닥이라서 높게 나온다"
+      ],
+      "gap_condition": "C01 과 같다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "OK",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J2:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J2"
+        ],
+        "headline": "경영전략·기획 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 26,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 32
+          },
+          "unique_text": 26,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 26,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "coreOnly 가 C01 과 같다",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "EE-C01",
+      "core": "EE_CORE_V1",
+      "kind": "C01_STRONG",
+      "input": "TD01 여덟 축을 전부 직접 수행(2) · 체크리스트 축마다 둘 · 산출물 둘 · 검증 둘 · 관심 5",
+      "expect": [
+        "TD01 이 Z1(근거가 선 영역)",
+        "TD01 confirmed_all = 8",
+        "응답 품질 OK"
+      ],
+      "must_ground": [
+        "did · decided · artifacts · verifications 의 모든 항목이 제출한 고르기 안에 있다"
+      ],
+      "forbidden": [
+        "고르지 않은 항목이 근거로 선다",
+        "근거 둘 미만인 축이 OWNED"
+      ],
+      "gap_condition": "TD01 은 확인된 축이 여덟이라 확인 빈자리는 서지 않는다(소유를 더 세우라는 빈자리는 설 수 있다 · 검사)",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "OK",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J3:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J3"
+        ],
+        "headline": "아날로그 회로 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 26,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 32
+          },
+          "unique_text": 26,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 26,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "d1 Z1",
+          "ok": true,
+          "detail": "Z1_EVIDENCE_ESTABLISHED"
+        },
+        {
+          "name": "d1 confirmed_all=8",
+          "ok": true,
+          "detail": "8"
+        },
+        {
+          "name": "품질 OK",
+          "ok": true,
+          "detail": "OK"
+        },
+        {
+          "name": "확인되지 않은 축의 빈자리가 서지 않는다(소유를 더 세우라는 빈자리는 설 수 있다)",
+          "ok": true,
+          "detail": "-"
+        }
+      ]
+    },
+    {
+      "id": "EE-C02",
+      "core": "EE_CORE_V1",
+      "kind": "C02_SAME_MAJOR_NO_EXP",
+      "input": "C01 과 같은 전공 · 같은 관심 · 여덟 축을 전부 `없다`(0) · 고르기 없음",
+      "expect": [
+        "TD01 이 Z1 이 아니다",
+        "TD01 confirmed_all = 0"
+      ],
+      "must_ground": [
+        "근거 목록이 비어 있다"
+      ],
+      "forbidden": [
+        "확인된 축이 선다",
+        "Z1"
+      ],
+      "gap_condition": "필수 축 · 산출물 공백이 까닭으로 선다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z4_INSUFFICIENT_EVIDENCE",
+        "confirmed": [],
+        "owned": [],
+        "reasons": [
+          "NO_CONFIRMED_AXIS"
+        ],
+        "quality": "OK",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 3,
+        "gaps_d1": [
+          "J3:REQUIRED_AXIS",
+          "J5:OUTPUT",
+          "J6:VERIFICATION"
+        ],
+        "empty_d1": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "actions": [
+          "TRY_SHORT_EXPERIENCE:TD01:-",
+          "STUDY_NEXT:TD01:-",
+          "BUILD_OUTPUT:TD01:J5",
+          "ADD_VERIFICATION:TD01:J6",
+          "FILL_AXIS:TD01:J3"
+        ],
+        "headline": "아직 직접 해 본 과제는 많지 않아요",
+        "tally": {
+          "raw": {
+            "did": 0,
+            "decided": 0,
+            "artifacts": 0,
+            "verifications": 0,
+            "sum4": 0
+          },
+          "unique_text": 0,
+          "unique_key": 0,
+          "submitted": 0,
+          "confirmed_keys": 0,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 0,
+            "did_verifications": 0,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "d1 Z1 아님",
+          "ok": true,
+          "detail": "Z4_INSUFFICIENT_EVIDENCE"
+        },
+        {
+          "name": "d1 confirmed_all=0",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "name": "d1 did 비어 있음",
+          "ok": true,
+          "detail": "0"
+        }
+      ]
+    },
+    {
+      "id": "EE-C03",
+      "core": "EE_CORE_V1",
+      "kind": "C03_SAME_EXP_LOW_INTEREST",
+      "input": "C01 과 같은 경험 · 관심과 학습 의향만 1 (엔진에 '지식 수준' 측정이 없어 가장 가까운 신호로 바꿨다)",
+      "expect": [
+        "축 상태가 C01 과 같다",
+        "TD01 이 Z3(근거는 있고 관심이 낮다)"
+      ],
+      "must_ground": [
+        "근거 목록이 C01 과 같다"
+      ],
+      "forbidden": [
+        "관심이 낮다는 까닭으로 확인된 축이 내려간다"
+      ],
+      "gap_condition": "관심 · 근거를 합치지 않는다: 축 빈자리는 C01 과 같다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z3_EVIDENCE_LOW_INTEREST",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [
+          "LOW_INTEREST_WITH_EVIDENCE"
+        ],
+        "quality": "OK",
+        "focus": [],
+        "gaps": 0,
+        "gaps_d1": [],
+        "empty_d1": [],
+        "actions": [
+          "RECHECK_DIRECTION:TD01:-"
+        ],
+        "headline": "아날로그 회로 설계 과제는 해 봤는데, 마음은 다른 쪽에 있어요",
+        "tally": {
+          "raw": {
+            "did": 26,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 32
+          },
+          "unique_text": 26,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 26,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "축 상태가 C01 과 같다",
+          "ok": true
+        },
+        {
+          "name": "d1 Z3",
+          "ok": true,
+          "detail": "Z3_EVIDENCE_LOW_INTEREST"
+        },
+        {
+          "name": "근거 목록이 C01 과 같다",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "EE-C04",
+      "core": "EE_CORE_V1",
+      "kind": "C04_CLAIM_WITHOUT_EVIDENCE",
+      "input": "여덟 축 전부 `내가 정했고 쓰였다`(3) · 체크리스트 · 산출물 · 검증 0",
+      "expect": [
+        "OWNED 축이 없다(근거 둘 미만)",
+        "TD01 이 Z1 이 아니다(산출물 근거 없음)"
+      ],
+      "must_ground": [
+        "decided 가 비어 있다"
+      ],
+      "forbidden": [
+        "근거 없이 '직접 정했다' 가 선다",
+        "Z1"
+      ],
+      "gap_condition": "산출물 근거 공백(MISSING_OUTPUT_EVIDENCE 계열)이 까닭으로 선다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z2_EVIDENCE_INCOMPLETE",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [
+          "MISSING_OUTPUT_EVIDENCE"
+        ],
+        "quality": "REVIEW",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 2,
+        "gaps_d1": [
+          "J3:PARTIAL_EVIDENCE",
+          "J5:OUTPUT_EVIDENCE"
+        ],
+        "empty_d1": [],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J3",
+          "BUILD_OUTPUT:TD01:J5"
+        ],
+        "headline": "아날로그 회로 설계 과제는 해 봤고, 정리만 남았어요",
+        "tally": {
+          "raw": {
+            "did": 0,
+            "decided": 0,
+            "artifacts": 0,
+            "verifications": 0,
+            "sum4": 0
+          },
+          "unique_text": 0,
+          "unique_key": 0,
+          "submitted": 0,
+          "confirmed_keys": 0,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 0,
+            "did_verifications": 0,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "OWNED 없음",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "d1 Z1 아님",
+          "ok": true,
+          "detail": "Z2_EVIDENCE_INCOMPLETE"
+        },
+        {
+          "name": "decided 비어 있음",
+          "ok": true
+        },
+        {
+          "name": "산출물 근거 공백이 까닭으로 선다",
+          "ok": true,
+          "detail": "MISSING_OUTPUT_EVIDENCE"
+        }
+      ]
+    },
+    {
+      "id": "EE-C05",
+      "core": "EE_CORE_V1",
+      "kind": "C05_ACTIVITY_OTHER_INDUSTRY",
+      "input": "C01 과 같은 응답 · 산업팩 · 역할팩만 다른 것",
+      "expect": [
+        "Core 판정(coreOnly) 이 C01 과 같다",
+        "산업 맥락은 다르다"
+      ],
+      "must_ground": [
+        "산업 · 역할이 축 수준을 바꾸지 않는다"
+      ],
+      "forbidden": [
+        "산업을 바꿨더니 묶음이 바뀐다"
+      ],
+      "gap_condition": "C01 과 같다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "OK",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J3:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J3"
+        ],
+        "headline": "아날로그 회로 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 26,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 32
+          },
+          "unique_text": 26,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 26,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "coreOnly 가 C01 과 같다",
+          "ok": true
+        },
+        {
+          "name": "산업 맥락은 다르다(팩이 둘 이상인 Core)",
+          "ok": true,
+          "detail": "INDUSTRY_AUTOEV_V1 vs INDUSTRY_SEMI_V1"
+        }
+      ]
+    },
+    {
+      "id": "EE-C06",
+      "core": "EE_CORE_V1",
+      "kind": "C06_REPEAT_REORDERED",
+      "input": "C01 과 같은 응답을 열쇠 차례만 거꾸로 적어 다시 제출",
+      "expect": [
+        "스냅샷 전체(attempt_id 제외)가 C01 과 글자까지 같다"
+      ],
+      "must_ground": [
+        "입력 차례가 결과를 바꾸지 않는다"
+      ],
+      "forbidden": [
+        "같은 입력에서 다른 결과"
+      ],
+      "gap_condition": "C01 과 같다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "OK",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J3:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J3"
+        ],
+        "headline": "아날로그 회로 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 26,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 32
+          },
+          "unique_text": 26,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 26,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "스냅샷이 C01 과 글자까지 같다(attempt_id · trace 제외)",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "EE-C07",
+      "core": "EE_CORE_V1",
+      "kind": "C07_PARTIAL_MISSING",
+      "input": "TD01 의 심화 축 넷(J1 J2 J4 J8)에 답하지 않음 · 체크리스트는 고른 그대로",
+      "expect": [
+        "던지지 않는다",
+        "답하지 않은 축은 확인되지 않는다",
+        "그 축의 고르기는 did 에 들어가지 않는다"
+      ],
+      "must_ground": [
+        "확인되지 않은 축의 고르기는 '후보' 로만 남는다"
+      ],
+      "forbidden": [
+        "답하지 않은 축이 확인된다",
+        "고르기만으로 축이 선다"
+      ],
+      "gap_condition": "스냅샷: 답하지 않은 축이 SKIPPED 로 갈린다(검사) · 결과지 빈자리에 서는가는 관찰값(gaps_d1)",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J3",
+          "J5",
+          "J6",
+          "J7"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "REVIEW",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J3:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [
+          "J1",
+          "J2",
+          "J4",
+          "J8"
+        ],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J3"
+        ],
+        "headline": "아날로그 회로 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 18,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 24
+          },
+          "unique_text": 18,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 18,
+          "candidates": 8,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "답하지 않은 심화 축이 확인되지 않는다",
+          "ok": true,
+          "detail": "J3+J5+J6+J7"
+        },
+        {
+          "name": "그 축의 missing 이 SKIPPED",
+          "ok": true,
+          "detail": "J1:SKIPPED,J2:SKIPPED,J4:SKIPPED,J8:SKIPPED"
+        },
+        {
+          "name": "그 축의 고르기가 did 에 없다(후보로 남는다)",
+          "ok": true,
+          "detail": "후보 8"
+        }
+      ]
+    },
+    {
+      "id": "EE-C08",
+      "core": "EE_CORE_V1",
+      "kind": "C08_TOOL_MISMATCH",
+      "input": "TD01 J4(방법·도구)를 `없다` 로 답하고 J4 체크리스트는 고름",
+      "expect": [
+        "J4 가 확인되지 않는다",
+        "J4 고르기가 did 에 없다"
+      ],
+      "must_ground": [
+        "응답과 고르기가 어긋나면 응답을 따른다"
+      ],
+      "forbidden": [
+        "고른 도구만으로 J4 가 선다"
+      ],
+      "gap_condition": "스냅샷 empty 에 J4 가 선다(검사) · 결과지 빈자리에 서는가는 관찰값(gaps_d1)",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "REVIEW",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J3:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [
+          "J4"
+        ],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J3"
+        ],
+        "headline": "아날로그 회로 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 24,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 30
+          },
+          "unique_text": 24,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 24,
+          "candidates": 2,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "J4 확인 안 됨",
+          "ok": true,
+          "detail": "NOT_OBSERVED"
+        },
+        {
+          "name": "J4 고르기가 did 에 없다",
+          "ok": true,
+          "detail": "J4 고르기 2"
+        },
+        {
+          "name": "스냅샷 empty 에 J4 가 선다",
+          "ok": true,
+          "detail": "empty=J4"
+        }
+      ]
+    },
+    {
+      "id": "EE-C09",
+      "core": "EE_CORE_V1",
+      "kind": "C09_SAME_MAJOR_OTHER_GOAL",
+      "input": "C01 과 같은 응답 · 관심 역할(role_interest)만 다름",
+      "expect": [
+        "Core 판정이 C01 과 같다",
+        "결과 모델의 역할 맥락이 다르다"
+      ],
+      "must_ground": [
+        "목표는 판정에 들어가지 않는다"
+      ],
+      "forbidden": [
+        "목표 직무를 바꿨더니 축 상태가 바뀐다"
+      ],
+      "gap_condition": "C01 과 같다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "OK",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J3:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J3"
+        ],
+        "headline": "아날로그 회로 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 26,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 32
+          },
+          "unique_text": 26,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 26,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "coreOnly 가 C01 과 같다",
+          "ok": true
+        },
+        {
+          "name": "역할 맥락이 다르다",
+          "ok": true,
+          "detail": "ROLE_QUALITY_V1 vs ROLE_DESIGN_V1"
+        }
+      ]
+    },
+    {
+      "id": "EE-C10",
+      "core": "EE_CORE_V1",
+      "kind": "C10_BASIC_TIER",
+      "input": "C01 과 같은 사람 · BASIC (선별 네 축만 묻는다)",
+      "expect": [
+        "Z1 이 어디에도 없다(BASIC 은 근거가 섰다고 적지 않는다)",
+        "심화 축이 확인되지 않는다"
+      ],
+      "must_ground": [
+        "선별 축만 근거로 선다"
+      ],
+      "forbidden": [
+        "BASIC 에서 Z1"
+      ],
+      "gap_condition": "심화 축을 빈자리로 세지 않는다(묻지 않았다)",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z2_EVIDENCE_INCOMPLETE",
+        "confirmed": [
+          "J3",
+          "J5",
+          "J6",
+          "J7"
+        ],
+        "owned": [],
+        "reasons": [
+          "TIER_WITHOUT_DEEP_AXES"
+        ],
+        "quality": "REVIEW",
+        "focus": [
+          "TD01",
+          "TD02"
+        ],
+        "gaps": 0,
+        "gaps_d1": [],
+        "empty_d1": [
+          "J1",
+          "J2",
+          "J4",
+          "J8"
+        ],
+        "actions": [
+          "WRITE_UP:TD01:-"
+        ],
+        "headline": "아날로그 회로 설계 과제는 해 봤고, 정리만 남았어요",
+        "tally": {
+          "raw": {
+            "did": 18,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 24
+          },
+          "unique_text": 18,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 18,
+          "candidates": 8,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Z1 이 없다",
+          "ok": true
+        },
+        {
+          "name": "심화 축이 확인되지 않는다",
+          "ok": true,
+          "detail": "TD01:J3+J5+J6+J7,TD02:J3+J5+J6+J7"
+        },
+        {
+          "name": "BASIC 에서 빈자리(gaps)를 세지 않는다",
+          "ok": true,
+          "detail": "0"
+        }
+      ]
+    },
+    {
+      "id": "EE-C11",
+      "core": "EE_CORE_V1",
+      "kind": "C11_STAGE_POSTDOC",
+      "input": "C01 과 같은 응답 · 학업 단계만 postdoc",
+      "expect": [
+        "Core 판정이 C01 과 같다(학위가 판정을 바꾸지 않는다)"
+      ],
+      "must_ground": [
+        "학위는 장면만 바꾼다"
+      ],
+      "forbidden": [
+        "포닥이라서 높게 나온다"
+      ],
+      "gap_condition": "C01 과 같다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "OK",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J3:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J3"
+        ],
+        "headline": "아날로그 회로 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 26,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 32
+          },
+          "unique_text": 26,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 26,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "coreOnly 가 C01 과 같다",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "CS-C01",
+      "core": "CS_CORE_V1",
+      "kind": "C01_STRONG",
+      "input": "TD01 여덟 축을 전부 직접 수행(2) · 체크리스트 축마다 둘 · 산출물 둘 · 검증 둘 · 관심 5",
+      "expect": [
+        "TD01 이 Z1(근거가 선 영역)",
+        "TD01 confirmed_all = 8",
+        "응답 품질 OK"
+      ],
+      "must_ground": [
+        "did · decided · artifacts · verifications 의 모든 항목이 제출한 고르기 안에 있다"
+      ],
+      "forbidden": [
+        "고르지 않은 항목이 근거로 선다",
+        "근거 둘 미만인 축이 OWNED"
+      ],
+      "gap_condition": "TD01 은 확인된 축이 여덟이라 확인 빈자리는 서지 않는다(소유를 더 세우라는 빈자리는 설 수 있다 · 검사)",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "OK",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J2:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J2"
+        ],
+        "headline": "소프트웨어 설계·구조 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 25,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 31
+          },
+          "unique_text": 25,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 26,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 1
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "d1 Z1",
+          "ok": true,
+          "detail": "Z1_EVIDENCE_ESTABLISHED"
+        },
+        {
+          "name": "d1 confirmed_all=8",
+          "ok": true,
+          "detail": "8"
+        },
+        {
+          "name": "품질 OK",
+          "ok": true,
+          "detail": "OK"
+        },
+        {
+          "name": "확인되지 않은 축의 빈자리가 서지 않는다(소유를 더 세우라는 빈자리는 설 수 있다)",
+          "ok": true,
+          "detail": "-"
+        }
+      ]
+    },
+    {
+      "id": "CS-C02",
+      "core": "CS_CORE_V1",
+      "kind": "C02_SAME_MAJOR_NO_EXP",
+      "input": "C01 과 같은 전공 · 같은 관심 · 여덟 축을 전부 `없다`(0) · 고르기 없음",
+      "expect": [
+        "TD01 이 Z1 이 아니다",
+        "TD01 confirmed_all = 0"
+      ],
+      "must_ground": [
+        "근거 목록이 비어 있다"
+      ],
+      "forbidden": [
+        "확인된 축이 선다",
+        "Z1"
+      ],
+      "gap_condition": "필수 축 · 산출물 공백이 까닭으로 선다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z4_INSUFFICIENT_EVIDENCE",
+        "confirmed": [],
+        "owned": [],
+        "reasons": [
+          "NO_CONFIRMED_AXIS"
+        ],
+        "quality": "OK",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 4,
+        "gaps_d1": [
+          "J2:REQUIRED_AXIS",
+          "J3:REQUIRED_AXIS",
+          "J5:OUTPUT",
+          "J6:VERIFICATION"
+        ],
+        "empty_d1": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "actions": [
+          "TRY_SHORT_EXPERIENCE:TD01:-",
+          "STUDY_NEXT:TD01:-",
+          "BUILD_OUTPUT:TD01:J5",
+          "ADD_VERIFICATION:TD01:J6",
+          "FILL_AXIS:TD01:J2",
+          "FILL_AXIS:TD01:J3"
+        ],
+        "headline": "아직 직접 해 본 과제는 많지 않아요",
+        "tally": {
+          "raw": {
+            "did": 0,
+            "decided": 0,
+            "artifacts": 0,
+            "verifications": 0,
+            "sum4": 0
+          },
+          "unique_text": 0,
+          "unique_key": 0,
+          "submitted": 0,
+          "confirmed_keys": 0,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 0,
+            "did_verifications": 0,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "d1 Z1 아님",
+          "ok": true,
+          "detail": "Z4_INSUFFICIENT_EVIDENCE"
+        },
+        {
+          "name": "d1 confirmed_all=0",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "name": "d1 did 비어 있음",
+          "ok": true,
+          "detail": "0"
+        }
+      ]
+    },
+    {
+      "id": "CS-C03",
+      "core": "CS_CORE_V1",
+      "kind": "C03_SAME_EXP_LOW_INTEREST",
+      "input": "C01 과 같은 경험 · 관심과 학습 의향만 1 (엔진에 '지식 수준' 측정이 없어 가장 가까운 신호로 바꿨다)",
+      "expect": [
+        "축 상태가 C01 과 같다",
+        "TD01 이 Z3(근거는 있고 관심이 낮다)"
+      ],
+      "must_ground": [
+        "근거 목록이 C01 과 같다"
+      ],
+      "forbidden": [
+        "관심이 낮다는 까닭으로 확인된 축이 내려간다"
+      ],
+      "gap_condition": "관심 · 근거를 합치지 않는다: 축 빈자리는 C01 과 같다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z3_EVIDENCE_LOW_INTEREST",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [
+          "LOW_INTEREST_WITH_EVIDENCE"
+        ],
+        "quality": "OK",
+        "focus": [],
+        "gaps": 0,
+        "gaps_d1": [],
+        "empty_d1": [],
+        "actions": [
+          "RECHECK_DIRECTION:TD01:-"
+        ],
+        "headline": "소프트웨어 설계·구조 과제는 해 봤는데, 마음은 다른 쪽에 있어요",
+        "tally": {
+          "raw": {
+            "did": 25,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 31
+          },
+          "unique_text": 25,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 26,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 1
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "축 상태가 C01 과 같다",
+          "ok": true
+        },
+        {
+          "name": "d1 Z3",
+          "ok": true,
+          "detail": "Z3_EVIDENCE_LOW_INTEREST"
+        },
+        {
+          "name": "근거 목록이 C01 과 같다",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "CS-C04",
+      "core": "CS_CORE_V1",
+      "kind": "C04_CLAIM_WITHOUT_EVIDENCE",
+      "input": "여덟 축 전부 `내가 정했고 쓰였다`(3) · 체크리스트 · 산출물 · 검증 0",
+      "expect": [
+        "OWNED 축이 없다(근거 둘 미만)",
+        "TD01 이 Z1 이 아니다(산출물 근거 없음)"
+      ],
+      "must_ground": [
+        "decided 가 비어 있다"
+      ],
+      "forbidden": [
+        "근거 없이 '직접 정했다' 가 선다",
+        "Z1"
+      ],
+      "gap_condition": "산출물 근거 공백(MISSING_OUTPUT_EVIDENCE 계열)이 까닭으로 선다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z2_EVIDENCE_INCOMPLETE",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [
+          "MISSING_OUTPUT_EVIDENCE"
+        ],
+        "quality": "REVIEW",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 2,
+        "gaps_d1": [
+          "J2:PARTIAL_EVIDENCE",
+          "J5:OUTPUT_EVIDENCE"
+        ],
+        "empty_d1": [],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J2",
+          "BUILD_OUTPUT:TD01:J5"
+        ],
+        "headline": "소프트웨어 설계·구조 과제는 해 봤고, 정리만 남았어요",
+        "tally": {
+          "raw": {
+            "did": 0,
+            "decided": 0,
+            "artifacts": 0,
+            "verifications": 0,
+            "sum4": 0
+          },
+          "unique_text": 0,
+          "unique_key": 0,
+          "submitted": 0,
+          "confirmed_keys": 0,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 0,
+            "did_verifications": 0,
+            "decided_did": 0
+          },
+          "text_collisions": 0
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "OWNED 없음",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "d1 Z1 아님",
+          "ok": true,
+          "detail": "Z2_EVIDENCE_INCOMPLETE"
+        },
+        {
+          "name": "decided 비어 있음",
+          "ok": true
+        },
+        {
+          "name": "산출물 근거 공백이 까닭으로 선다",
+          "ok": true,
+          "detail": "MISSING_OUTPUT_EVIDENCE"
+        }
+      ]
+    },
+    {
+      "id": "CS-C05",
+      "core": "CS_CORE_V1",
+      "kind": "C05_ACTIVITY_OTHER_INDUSTRY",
+      "input": "C01 과 같은 응답 · 산업팩 · 역할팩만 다른 것",
+      "expect": [
+        "Core 판정(coreOnly) 이 C01 과 같다",
+        "산업 맥락은 다르다"
+      ],
+      "must_ground": [
+        "산업 · 역할이 축 수준을 바꾸지 않는다"
+      ],
+      "forbidden": [
+        "산업을 바꿨더니 묶음이 바뀐다"
+      ],
+      "gap_condition": "C01 과 같다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "OK",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J2:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J2"
+        ],
+        "headline": "소프트웨어 설계·구조 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 25,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 31
+          },
+          "unique_text": 25,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 26,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 1
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "coreOnly 가 C01 과 같다",
+          "ok": true
+        },
+        {
+          "name": "산업 맥락은 다르다(팩이 둘 이상인 Core)",
+          "ok": true,
+          "detail": "INDUSTRY_FINTECH_V1 vs INDUSTRY_PLATFORM_V1"
+        }
+      ]
+    },
+    {
+      "id": "CS-C06",
+      "core": "CS_CORE_V1",
+      "kind": "C06_REPEAT_REORDERED",
+      "input": "C01 과 같은 응답을 열쇠 차례만 거꾸로 적어 다시 제출",
+      "expect": [
+        "스냅샷 전체(attempt_id 제외)가 C01 과 글자까지 같다"
+      ],
+      "must_ground": [
+        "입력 차례가 결과를 바꾸지 않는다"
+      ],
+      "forbidden": [
+        "같은 입력에서 다른 결과"
+      ],
+      "gap_condition": "C01 과 같다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "OK",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J2:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J2"
+        ],
+        "headline": "소프트웨어 설계·구조 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 25,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 31
+          },
+          "unique_text": 25,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 26,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 1
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "스냅샷이 C01 과 글자까지 같다(attempt_id · trace 제외)",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "CS-C07",
+      "core": "CS_CORE_V1",
+      "kind": "C07_PARTIAL_MISSING",
+      "input": "TD01 의 심화 축 넷(J1 J2 J4 J8)에 답하지 않음 · 체크리스트는 고른 그대로",
+      "expect": [
+        "던지지 않는다",
+        "답하지 않은 축은 확인되지 않는다",
+        "그 축의 고르기는 did 에 들어가지 않는다"
+      ],
+      "must_ground": [
+        "확인되지 않은 축의 고르기는 '후보' 로만 남는다"
+      ],
+      "forbidden": [
+        "답하지 않은 축이 확인된다",
+        "고르기만으로 축이 선다"
+      ],
+      "gap_condition": "스냅샷: 답하지 않은 축이 SKIPPED 로 갈린다(검사) · 결과지 빈자리에 서는가는 관찰값(gaps_d1)",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z2_EVIDENCE_INCOMPLETE",
+        "confirmed": [
+          "J3",
+          "J5",
+          "J6",
+          "J7"
+        ],
+        "owned": [],
+        "reasons": [
+          "MISSING_REQUIRED_AXIS"
+        ],
+        "quality": "REVIEW",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 2,
+        "gaps_d1": [
+          "J2:REQUIRED_AXIS",
+          "J3:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [
+          "J1",
+          "J2",
+          "J4",
+          "J8"
+        ],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J3",
+          "FILL_AXIS:TD01:J2"
+        ],
+        "headline": "소프트웨어 설계·구조 과제는 해 봤고, 정리만 남았어요",
+        "tally": {
+          "raw": {
+            "did": 17,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 23
+          },
+          "unique_text": 17,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 18,
+          "candidates": 8,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 1
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "답하지 않은 심화 축이 확인되지 않는다",
+          "ok": true,
+          "detail": "J3+J5+J6+J7"
+        },
+        {
+          "name": "그 축의 missing 이 SKIPPED",
+          "ok": true,
+          "detail": "J1:SKIPPED,J2:SKIPPED,J4:SKIPPED,J8:SKIPPED"
+        },
+        {
+          "name": "그 축의 고르기가 did 에 없다(후보로 남는다)",
+          "ok": true,
+          "detail": "후보 8"
+        }
+      ]
+    },
+    {
+      "id": "CS-C08",
+      "core": "CS_CORE_V1",
+      "kind": "C08_TOOL_MISMATCH",
+      "input": "TD01 J4(방법·도구)를 `없다` 로 답하고 J4 체크리스트는 고름",
+      "expect": [
+        "J4 가 확인되지 않는다",
+        "J4 고르기가 did 에 없다"
+      ],
+      "must_ground": [
+        "응답과 고르기가 어긋나면 응답을 따른다"
+      ],
+      "forbidden": [
+        "고른 도구만으로 J4 가 선다"
+      ],
+      "gap_condition": "스냅샷 empty 에 J4 가 선다(검사) · 결과지 빈자리에 서는가는 관찰값(gaps_d1)",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "REVIEW",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J2:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [
+          "J4"
+        ],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J2"
+        ],
+        "headline": "소프트웨어 설계·구조 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 23,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 29
+          },
+          "unique_text": 23,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 24,
+          "candidates": 2,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 1
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "J4 확인 안 됨",
+          "ok": true,
+          "detail": "NOT_OBSERVED"
+        },
+        {
+          "name": "J4 고르기가 did 에 없다",
+          "ok": true,
+          "detail": "J4 고르기 2"
+        },
+        {
+          "name": "스냅샷 empty 에 J4 가 선다",
+          "ok": true,
+          "detail": "empty=J4"
+        }
+      ]
+    },
+    {
+      "id": "CS-C09",
+      "core": "CS_CORE_V1",
+      "kind": "C09_SAME_MAJOR_OTHER_GOAL",
+      "input": "C01 과 같은 응답 · 관심 역할(role_interest)만 다름",
+      "expect": [
+        "Core 판정이 C01 과 같다",
+        "결과 모델의 역할 맥락이 다르다"
+      ],
+      "must_ground": [
+        "목표는 판정에 들어가지 않는다"
+      ],
+      "forbidden": [
+        "목표 직무를 바꿨더니 축 상태가 바뀐다"
+      ],
+      "gap_condition": "C01 과 같다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "OK",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J2:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J2"
+        ],
+        "headline": "소프트웨어 설계·구조 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 25,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 31
+          },
+          "unique_text": 25,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 26,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 1
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "coreOnly 가 C01 과 같다",
+          "ok": true
+        },
+        {
+          "name": "역할 맥락이 다르다",
+          "ok": true,
+          "detail": "ROLE_QUALITY_V1 vs ROLE_DEV_V1"
+        }
+      ]
+    },
+    {
+      "id": "CS-C10",
+      "core": "CS_CORE_V1",
+      "kind": "C10_BASIC_TIER",
+      "input": "C01 과 같은 사람 · BASIC (선별 네 축만 묻는다)",
+      "expect": [
+        "Z1 이 어디에도 없다(BASIC 은 근거가 섰다고 적지 않는다)",
+        "심화 축이 확인되지 않는다"
+      ],
+      "must_ground": [
+        "선별 축만 근거로 선다"
+      ],
+      "forbidden": [
+        "BASIC 에서 Z1"
+      ],
+      "gap_condition": "심화 축을 빈자리로 세지 않는다(묻지 않았다)",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z2_EVIDENCE_INCOMPLETE",
+        "confirmed": [
+          "J3",
+          "J5",
+          "J6",
+          "J7"
+        ],
+        "owned": [],
+        "reasons": [
+          "TIER_WITHOUT_DEEP_AXES"
+        ],
+        "quality": "REVIEW",
+        "focus": [
+          "TD01",
+          "TD02"
+        ],
+        "gaps": 0,
+        "gaps_d1": [],
+        "empty_d1": [
+          "J1",
+          "J2",
+          "J4",
+          "J8"
+        ],
+        "actions": [
+          "WRITE_UP:TD01:-"
+        ],
+        "headline": "소프트웨어 설계·구조 과제는 해 봤고, 정리만 남았어요",
+        "tally": {
+          "raw": {
+            "did": 17,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 23
+          },
+          "unique_text": 17,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 18,
+          "candidates": 8,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 1
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Z1 이 없다",
+          "ok": true
+        },
+        {
+          "name": "심화 축이 확인되지 않는다",
+          "ok": true,
+          "detail": "TD01:J3+J5+J6+J7,TD02:J3+J5+J6+J7"
+        },
+        {
+          "name": "BASIC 에서 빈자리(gaps)를 세지 않는다",
+          "ok": true,
+          "detail": "0"
+        }
+      ]
+    },
+    {
+      "id": "CS-C11",
+      "core": "CS_CORE_V1",
+      "kind": "C11_STAGE_POSTDOC",
+      "input": "C01 과 같은 응답 · 학업 단계만 postdoc",
+      "expect": [
+        "Core 판정이 C01 과 같다(학위가 판정을 바꾸지 않는다)"
+      ],
+      "must_ground": [
+        "학위는 장면만 바꾼다"
+      ],
+      "forbidden": [
+        "포닥이라서 높게 나온다"
+      ],
+      "gap_condition": "C01 과 같다",
+      "actual": {
+        "d1": "TD01",
+        "zone": "Z1_EVIDENCE_ESTABLISHED",
+        "confirmed": [
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J5",
+          "J6",
+          "J7",
+          "J8"
+        ],
+        "owned": [],
+        "reasons": [],
+        "quality": "OK",
+        "focus": [
+          "TD01"
+        ],
+        "gaps": 1,
+        "gaps_d1": [
+          "J2:PARTIAL_EVIDENCE"
+        ],
+        "empty_d1": [],
+        "actions": [
+          "DEEPEN_OWNERSHIP:TD01:J2"
+        ],
+        "headline": "소프트웨어 설계·구조 과제에서 방향을 직접 정해 본 일이 있어요",
+        "tally": {
+          "raw": {
+            "did": 25,
+            "decided": 0,
+            "artifacts": 3,
+            "verifications": 3,
+            "sum4": 31
+          },
+          "unique_text": 25,
+          "unique_key": 26,
+          "submitted": 26,
+          "confirmed_keys": 26,
+          "candidates": 0,
+          "overlap": {
+            "did_artifacts": 3,
+            "did_verifications": 3,
+            "decided_did": 0
+          },
+          "text_collisions": 1
+        }
+      },
+      "verdict": "PASS",
+      "checks": [
+        {
+          "name": "D 같은 입력 두 번 = 같은 스냅샷",
+          "ok": true
+        },
+        {
+          "name": "K1 Z1 이면 확인 축 ≥4 · 필수 축 · 산출물 · 산출물 근거",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K2 required_ok 는 필수 축이 전부 확인일 때만",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K3 OWNED 축은 근거 ≥2",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K4 확인 축은 DID/DECIDED_USED 응답이 있다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K5 NOT_EXPLORED 는 그 등급이 깊게(BASIC 은 선별로) 열지 않은 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K6 BASIC 에 Z1 이 없다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K7 focus 는 열어 본 영역이다",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K8 결과의 근거 글은 전부 제출한 고르기에서 왔다(지어냄 0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "K9 decided ⊆ did",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "coreOnly 가 C01 과 같다",
+          "ok": true
+        }
+      ]
+    }
+  ],
+  "texts": [
+    {
+      "core": "ME_CORE_V3",
+      "id": "ME-C01",
+      "headline": "기구·제품 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 기구·제품 설계 과제 하나. 개념안 몇 개를 둘지와 어느 요구를 먼저 지킬지 가운데 직접 정한 것과 그 까닭을 BOM에 한 줄씩 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "ME_CORE_V3",
+      "id": "ME-C02",
+      "headline": "아직 직접 해 본 과제는 많지 않아요",
+      "actions": [
+        "기구·제품 설계를 다룰 짧은 과제나 스터디 하나를 정해 보세요. 한 일과 직접 정한 것을 다섯 줄로 적어 두세요. / 수업 프로젝트나 교내 과제 하나면 충분합니다.",
+        "기구·제품 설계 수업이나 교육 하나를 정해 들어 보세요. 배운 것을 작은 과제에 한 번 쓰고, 무엇이 남았는지 적어 두세요. / 그 과제에서 남긴 것이 다음에 설명할 근거가 됩니다.",
+        "다음 기구·제품 설계 과제 하나. 끝까지 가서 조립도나 부품도 한 벌을 남겨 두세요.",
+        "다음 기구·제품 설계 과제 하나. 낸 결과를 다른 설계안이나 손계산과 견주고, 두 값의 차이와 그 까닭을 표 한 장으로 남겨 두세요. / 어긋났을 때는 간섭이나 조립 불가나 파손이 나면 원인을 치수·재질·공정 가운데로 좁힌다",
+        "다음 기구·제품 설계 과제 하나. 기준이 되는 값을 직접 정하고, 왜 그 값인지 BOM에 함께 적습니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "ME_CORE_V3",
+      "id": "ME-C03",
+      "headline": "기구·제품 설계 과제는 해 봤는데, 마음은 다른 쪽에 있어요",
+      "actions": [
+        "최근 기구·제품 설계 과제 하나. 그때 한 일을 한 쪽으로 적고, 계속 쓸 경험인지 정해 보세요."
+      ]
+    },
+    {
+      "core": "ME_CORE_V3",
+      "id": "ME-C04",
+      "headline": "기구·제품 설계 과제는 해 봤고, 정리만 남았어요",
+      "actions": [
+        "최근 기구·제품 설계 과제 하나. 개념안 몇 개를 둘지와 어느 요구를 먼저 지킬지 가운데 직접 정한 것과 그 까닭을 BOM에 한 줄씩 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다.",
+        "다음 기구·제품 설계 과제 하나. 끝까지 가서 조립도나 부품도 한 벌을 남겨 두세요."
+      ]
+    },
+    {
+      "core": "ME_CORE_V3",
+      "id": "ME-C05",
+      "headline": "기구·제품 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 기구·제품 설계 과제 하나. 개념안 몇 개를 둘지와 어느 요구를 먼저 지킬지 가운데 직접 정한 것과 그 까닭을 BOM에 한 줄씩 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "ME_CORE_V3",
+      "id": "ME-C06",
+      "headline": "기구·제품 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 기구·제품 설계 과제 하나. 개념안 몇 개를 둘지와 어느 요구를 먼저 지킬지 가운데 직접 정한 것과 그 까닭을 BOM에 한 줄씩 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "ME_CORE_V3",
+      "id": "ME-C07",
+      "headline": "기구·제품 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 기구·제품 설계 과제 하나. 개념안 몇 개를 둘지와 어느 요구를 먼저 지킬지 가운데 직접 정한 것과 그 까닭을 BOM에 한 줄씩 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "ME_CORE_V3",
+      "id": "ME-C08",
+      "headline": "기구·제품 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 기구·제품 설계 과제 하나. 개념안 몇 개를 둘지와 어느 요구를 먼저 지킬지 가운데 직접 정한 것과 그 까닭을 BOM에 한 줄씩 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "ME_CORE_V3",
+      "id": "ME-C09",
+      "headline": "기구·제품 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 기구·제품 설계 과제 하나. 개념안 몇 개를 둘지와 어느 요구를 먼저 지킬지 가운데 직접 정한 것과 그 까닭을 BOM에 한 줄씩 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "ME_CORE_V3",
+      "id": "ME-C10",
+      "headline": "기구·제품 설계 과제는 해 봤고, 정리만 남았어요",
+      "actions": [
+        "최근 기구·제품 설계 과제 하나. 그때 무엇을 정했고 무엇이 남았는지 한 쪽으로 정리해 두세요. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "ME_CORE_V3",
+      "id": "ME-C11",
+      "headline": "기구·제품 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 기구·제품 설계 과제 하나. 개념안 몇 개를 둘지와 어느 요구를 먼저 지킬지 가운데 직접 정한 것과 그 까닭을 BOM에 한 줄씩 남깁니다. / 혼자 판단한 범위와 과제에서 맡은 몫을 적으면 됩니다. 그 결과를 산업이나 기관의 말로 옮긴 문장도 함께 두세요."
+      ]
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "id": "BIZ-C01",
+      "headline": "경영전략·기획 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 경영전략·기획 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 목표와 지표를 정리한 표에 그대로 옮깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "id": "BIZ-C02",
+      "headline": "아직 직접 해 본 과제는 많지 않아요",
+      "actions": [
+        "경영전략·기획을 다룰 짧은 과제나 스터디 하나를 정해 보세요. 한 일과 직접 정한 것을 다섯 줄로 적어 두세요. / 수업 프로젝트나 교내 과제 하나면 충분합니다.",
+        "경영전략·기획 수업이나 교육 하나를 정해 들어 보세요. 배운 것을 작은 과제에 한 번 쓰고, 무엇이 남았는지 적어 두세요. / 그 과제에서 남긴 것이 다음에 설명할 근거가 됩니다.",
+        "다음 경영전략·기획 과제 하나. 끝까지 가서 사업계획 한 벌이나 목표와 지표 표 한 벌을 남겨 두세요.",
+        "다음 경영전략·기획 과제 하나. 낸 결과를 전사 목표나 지난 기간 실적과 견주고, 두 값의 차이와 그 까닭을 표 한 장으로 남겨 두세요. / 어긋났을 때는 달성이 안 되면 목표가 과했는지 자원이 모자랐는지를 갈라 본다",
+        "다음 경영전략·기획 과제 하나. 받은 요구를 숫자로 옮기는 일을 맡고, 그 조건을 목표와 지표를 정리한 표로 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다.",
+        "다음 경영전략·기획 과제 하나. 기준이 되는 값을 직접 정하고, 왜 그 값인지 우선순위 근거에 함께 적습니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "id": "BIZ-C03",
+      "headline": "경영전략·기획 과제는 해 봤는데, 마음은 다른 쪽에 있어요",
+      "actions": [
+        "최근 경영전략·기획 과제 하나. 그때 한 일을 한 쪽으로 적고, 계속 쓸 경험인지 정해 보세요."
+      ]
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "id": "BIZ-C04",
+      "headline": "경영전략·기획 과제는 해 봤고, 정리만 남았어요",
+      "actions": [
+        "최근 경영전략·기획 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 목표와 지표를 정리한 표에 그대로 옮깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다.",
+        "다음 경영전략·기획 과제 하나. 끝까지 가서 사업계획 한 벌이나 목표와 지표 표 한 벌을 남겨 두세요."
+      ]
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "id": "BIZ-C05",
+      "headline": "경영전략·기획 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 경영전략·기획 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 목표와 지표를 정리한 표에 그대로 옮깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "id": "BIZ-C06",
+      "headline": "경영전략·기획 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 경영전략·기획 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 목표와 지표를 정리한 표에 그대로 옮깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "id": "BIZ-C07",
+      "headline": "경영전략·기획 과제는 해 봤고, 정리만 남았어요",
+      "actions": [
+        "최근 경영전략·기획 과제 하나. 이번에 하지 않을 것과 먼저 할 것 가운데 직접 정한 것과 그 까닭을 우선순위 근거에 한 줄씩 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다.",
+        "다음 경영전략·기획 과제 하나. 받은 요구를 숫자로 옮기는 일을 맡고, 그 조건을 목표와 지표를 정리한 표로 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "id": "BIZ-C08",
+      "headline": "경영전략·기획 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 경영전략·기획 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 목표와 지표를 정리한 표에 그대로 옮깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "id": "BIZ-C09",
+      "headline": "경영전략·기획 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 경영전략·기획 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 목표와 지표를 정리한 표에 그대로 옮깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "id": "BIZ-C10",
+      "headline": "경영전략·기획과 마케팅·시장 과제는 해 봤고, 정리만 남았어요",
+      "actions": [
+        "최근 경영전략·기획 과제 하나. 그때 무엇을 정했고 무엇이 남았는지 한 쪽으로 정리해 두세요. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "id": "BIZ-C11",
+      "headline": "경영전략·기획 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 경영전략·기획 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 목표와 지표를 정리한 표에 그대로 옮깁니다. / 혼자 판단한 범위와 과제에서 맡은 몫을 적으면 됩니다. 그 결과를 산업이나 기관의 말로 옮긴 문장도 함께 두세요."
+      ]
+    },
+    {
+      "core": "EE_CORE_V1",
+      "id": "EE-C01",
+      "headline": "아날로그 회로 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 아날로그 회로 설계 과제 하나. 회로 구조와 능동 소자 종류, 어느 성능을 먼저 지킬지 가운데 직접 정한 것과 그 까닭을 설계 계산서에 한 줄씩 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "EE_CORE_V1",
+      "id": "EE-C02",
+      "headline": "아직 직접 해 본 과제는 많지 않아요",
+      "actions": [
+        "아날로그 회로 설계를 다룰 짧은 과제나 스터디 하나를 정해 보세요. 한 일과 직접 정한 것을 다섯 줄로 적어 두세요. / 수업 프로젝트나 교내 과제 하나면 충분합니다.",
+        "아날로그 회로 설계 수업이나 교육 하나를 정해 들어 보세요. 배운 것을 작은 과제에 한 번 쓰고, 무엇이 남았는지 적어 두세요. / 그 과제에서 남긴 것이 다음에 설명할 근거가 됩니다.",
+        "다음 아날로그 회로 설계 과제 하나. 끝까지 가서 회로도나 소자 선정표 한 벌을 남겨 두세요.",
+        "다음 아날로그 회로 설계 과제 하나. 낸 결과를 시뮬레이션 결과나 데이터시트 한계와 견주고, 두 값의 차이와 그 까닭을 표 한 장으로 남겨 두세요. / 어긋났을 때는 발진이나 포화나 잡음 초과가 나면 원인을 소자값·배치·전원 가운데로 좁힌다",
+        "다음 아날로그 회로 설계 과제 하나. 기준이 되는 값을 직접 정하고, 왜 그 값인지 설계 계산서에 함께 적습니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "EE_CORE_V1",
+      "id": "EE-C03",
+      "headline": "아날로그 회로 설계 과제는 해 봤는데, 마음은 다른 쪽에 있어요",
+      "actions": [
+        "최근 아날로그 회로 설계 과제 하나. 그때 한 일을 한 쪽으로 적고, 계속 쓸 경험인지 정해 보세요."
+      ]
+    },
+    {
+      "core": "EE_CORE_V1",
+      "id": "EE-C04",
+      "headline": "아날로그 회로 설계 과제는 해 봤고, 정리만 남았어요",
+      "actions": [
+        "최근 아날로그 회로 설계 과제 하나. 회로 구조와 능동 소자 종류, 어느 성능을 먼저 지킬지 가운데 직접 정한 것과 그 까닭을 설계 계산서에 한 줄씩 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다.",
+        "다음 아날로그 회로 설계 과제 하나. 끝까지 가서 회로도나 소자 선정표 한 벌을 남겨 두세요."
+      ]
+    },
+    {
+      "core": "EE_CORE_V1",
+      "id": "EE-C05",
+      "headline": "아날로그 회로 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 아날로그 회로 설계 과제 하나. 회로 구조와 능동 소자 종류, 어느 성능을 먼저 지킬지 가운데 직접 정한 것과 그 까닭을 설계 계산서에 한 줄씩 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "EE_CORE_V1",
+      "id": "EE-C06",
+      "headline": "아날로그 회로 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 아날로그 회로 설계 과제 하나. 회로 구조와 능동 소자 종류, 어느 성능을 먼저 지킬지 가운데 직접 정한 것과 그 까닭을 설계 계산서에 한 줄씩 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "EE_CORE_V1",
+      "id": "EE-C07",
+      "headline": "아날로그 회로 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 아날로그 회로 설계 과제 하나. 회로 구조와 능동 소자 종류, 어느 성능을 먼저 지킬지 가운데 직접 정한 것과 그 까닭을 설계 계산서에 한 줄씩 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "EE_CORE_V1",
+      "id": "EE-C08",
+      "headline": "아날로그 회로 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 아날로그 회로 설계 과제 하나. 회로 구조와 능동 소자 종류, 어느 성능을 먼저 지킬지 가운데 직접 정한 것과 그 까닭을 설계 계산서에 한 줄씩 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "EE_CORE_V1",
+      "id": "EE-C09",
+      "headline": "아날로그 회로 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 아날로그 회로 설계 과제 하나. 회로 구조와 능동 소자 종류, 어느 성능을 먼저 지킬지 가운데 직접 정한 것과 그 까닭을 설계 계산서에 한 줄씩 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "EE_CORE_V1",
+      "id": "EE-C10",
+      "headline": "아날로그 회로 설계 과제는 해 봤고, 정리만 남았어요",
+      "actions": [
+        "최근 아날로그 회로 설계 과제 하나. 그때 무엇을 정했고 무엇이 남았는지 한 쪽으로 정리해 두세요. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "EE_CORE_V1",
+      "id": "EE-C11",
+      "headline": "아날로그 회로 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 아날로그 회로 설계 과제 하나. 회로 구조와 능동 소자 종류, 어느 성능을 먼저 지킬지 가운데 직접 정한 것과 그 까닭을 설계 계산서에 한 줄씩 남깁니다. / 혼자 판단한 범위와 과제에서 맡은 몫을 적으면 됩니다. 그 결과를 산업이나 기관의 말로 옮긴 문장도 함께 두세요."
+      ]
+    },
+    {
+      "core": "CS_CORE_V1",
+      "id": "CS-C01",
+      "headline": "소프트웨어 설계·구조 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 소프트웨어 설계·구조 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 모듈 구조도에 그대로 옮깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "CS_CORE_V1",
+      "id": "CS-C02",
+      "headline": "아직 직접 해 본 과제는 많지 않아요",
+      "actions": [
+        "소프트웨어 설계·구조를 다룰 짧은 과제나 스터디 하나를 정해 보세요. 한 일과 직접 정한 것을 다섯 줄로 적어 두세요. / 수업 프로젝트나 교내 과제 하나면 충분합니다.",
+        "소프트웨어 설계·구조 수업이나 교육 하나를 정해 들어 보세요. 배운 것을 작은 과제에 한 번 쓰고, 무엇이 남았는지 적어 두세요. / 그 과제에서 남긴 것이 다음에 설명할 근거가 됩니다.",
+        "다음 소프트웨어 설계·구조 과제 하나. 끝까지 가서 요구 목록이나 모듈 구조도 한 벌을 남겨 두세요.",
+        "다음 소프트웨어 설계·구조 과제 하나. 낸 결과를 요구 목록이나 기존 시스템 구조와 견주고, 두 값의 차이와 그 까닭을 표 한 장으로 남겨 두세요. / 어긋났을 때는 한 곳을 고치는데 여러 모듈이 같이 바뀌면 경계를 다시 가른다",
+        "다음 소프트웨어 설계·구조 과제 하나. 받은 요구를 숫자로 옮기는 일을 맡고, 그 조건을 모듈 구조도로 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다.",
+        "다음 소프트웨어 설계·구조 과제 하나. 기준이 되는 값을 직접 정하고, 왜 그 값인지 인터페이스 규약에 함께 적습니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "CS_CORE_V1",
+      "id": "CS-C03",
+      "headline": "소프트웨어 설계·구조 과제는 해 봤는데, 마음은 다른 쪽에 있어요",
+      "actions": [
+        "최근 소프트웨어 설계·구조 과제 하나. 그때 한 일을 한 쪽으로 적고, 계속 쓸 경험인지 정해 보세요."
+      ]
+    },
+    {
+      "core": "CS_CORE_V1",
+      "id": "CS-C04",
+      "headline": "소프트웨어 설계·구조 과제는 해 봤고, 정리만 남았어요",
+      "actions": [
+        "최근 소프트웨어 설계·구조 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 모듈 구조도에 그대로 옮깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다.",
+        "다음 소프트웨어 설계·구조 과제 하나. 끝까지 가서 요구 목록이나 모듈 구조도 한 벌을 남겨 두세요."
+      ]
+    },
+    {
+      "core": "CS_CORE_V1",
+      "id": "CS-C05",
+      "headline": "소프트웨어 설계·구조 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 소프트웨어 설계·구조 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 모듈 구조도에 그대로 옮깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "CS_CORE_V1",
+      "id": "CS-C06",
+      "headline": "소프트웨어 설계·구조 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 소프트웨어 설계·구조 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 모듈 구조도에 그대로 옮깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "CS_CORE_V1",
+      "id": "CS-C07",
+      "headline": "소프트웨어 설계·구조 과제는 해 봤고, 정리만 남았어요",
+      "actions": [
+        "최근 소프트웨어 설계·구조 과제 하나. 이번에 받지 않을 것과 모듈을 가르는 선 가운데 직접 정한 것과 그 까닭을 인터페이스 규약에 한 줄씩 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다.",
+        "다음 소프트웨어 설계·구조 과제 하나. 받은 요구를 숫자로 옮기는 일을 맡고, 그 조건을 모듈 구조도로 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "CS_CORE_V1",
+      "id": "CS-C08",
+      "headline": "소프트웨어 설계·구조 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 소프트웨어 설계·구조 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 모듈 구조도에 그대로 옮깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "CS_CORE_V1",
+      "id": "CS-C09",
+      "headline": "소프트웨어 설계·구조 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 소프트웨어 설계·구조 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 모듈 구조도에 그대로 옮깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "CS_CORE_V1",
+      "id": "CS-C10",
+      "headline": "소프트웨어 설계·구조 과제는 해 봤고, 정리만 남았어요",
+      "actions": [
+        "최근 소프트웨어 설계·구조 과제 하나. 그때 무엇을 정했고 무엇이 남았는지 한 쪽으로 정리해 두세요. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    {
+      "core": "CS_CORE_V1",
+      "id": "CS-C11",
+      "headline": "소프트웨어 설계·구조 과제에서 방향을 직접 정해 본 일이 있어요",
+      "actions": [
+        "최근 소프트웨어 설계·구조 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 모듈 구조도에 그대로 옮깁니다. / 혼자 판단한 범위와 과제에서 맡은 몫을 적으면 됩니다. 그 결과를 산업이나 기관의 말로 옮긴 문장도 함께 두세요."
+      ]
+    }
+  ],
+  "data_quality": {
+    "ME_CORE_V3": {
+      "domains": 12,
+      "slot_text_collisions": [],
+      "dup_in_list": []
+    },
+    "EE_CORE_V1": {
+      "domains": 12,
+      "slot_text_collisions": [],
+      "dup_in_list": []
+    },
+    "CS_CORE_V1": {
+      "domains": 11,
+      "slot_text_collisions": [
+        "TD01:ARTIFACT/VERIFY:요구 목록",
+        "TD03:ARTIFACT/VERIFY:응답 규약 문서",
+        "TD06:ARTIFACT/VERIFY:자원 사용 측정",
+        "TD07:ARTIFACT/VERIFY:실패 주입 결과",
+        "TD10:ARTIFACT/VERIFY:통과 기준표",
+        "TD10:ARTIFACT/VERIFY:장애 기록"
+      ],
+      "dup_in_list": []
+    },
+    "ARCH_CORE_V1": {
+      "domains": 12,
+      "slot_text_collisions": [],
+      "dup_in_list": []
+    },
+    "CIV_CORE_V1": {
+      "domains": 12,
+      "slot_text_collisions": [],
+      "dup_in_list": []
+    },
+    "BT_CORE_V1": {
+      "domains": 12,
+      "slot_text_collisions": [],
+      "dup_in_list": []
+    },
+    "SPORTS_CORE_V1": {
+      "domains": 12,
+      "slot_text_collisions": [],
+      "dup_in_list": []
+    },
+    "NURSING_CORE_V1": {
+      "domains": 12,
+      "slot_text_collisions": [],
+      "dup_in_list": []
+    },
+    "HEALTH_CORE_V1": {
+      "domains": 12,
+      "slot_text_collisions": [
+        "TD03:ARTIFACT/VERIFY:설문 결과"
+      ],
+      "dup_in_list": []
+    },
+    "FOOD_CORE_V1": {
+      "domains": 12,
+      "slot_text_collisions": [],
+      "dup_in_list": []
+    },
+    "BIZ_CORE_V1": {
+      "domains": 12,
+      "slot_text_collisions": [
+        "TD12:ARTIFACT/VERIFY:요구사항 정의서"
+      ],
+      "dup_in_list": []
+    },
+    "PUBADM_CORE_V1": {
+      "domains": 12,
+      "slot_text_collisions": [],
+      "dup_in_list": []
+    },
+    "PSY_CORE_V1": {
+      "domains": 12,
+      "slot_text_collisions": [],
+      "dup_in_list": []
+    },
+    "MEDIA_CORE_V1": {
+      "domains": 12,
+      "slot_text_collisions": [],
+      "dup_in_list": []
+    },
+    "LANG_CORE_V1": {
+      "domains": 12,
+      "slot_text_collisions": [
+        "TD08:ARTIFACT/VERIFY:채점 기준표"
+      ],
+      "dup_in_list": []
+    },
+    "LAW_CORE_V1": {
+      "domains": 12,
+      "slot_text_collisions": [],
+      "dup_in_list": []
+    },
+    "EDU_CORE_V1": {
+      "domains": 12,
+      "slot_text_collisions": [
+        "TD05:ARTIFACT/VERIFY:다시 잰 결과"
+      ],
+      "dup_in_list": []
+    },
+    "AGRI_CORE_V1": {
+      "domains": 12,
+      "slot_text_collisions": [
+        "TD04:ARTIFACT/VERIFY:다시 잰 결과"
+      ],
+      "dup_in_list": []
+    },
+    "VISUAL_CORE_V1": {
+      "domains": 12,
+      "slot_text_collisions": [],
+      "dup_in_list": []
+    },
+    "STYLE_CORE_V1": {
+      "domains": 12,
+      "slot_text_collisions": [],
+      "dup_in_list": []
+    }
+  }
+}

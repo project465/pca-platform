@@ -108,6 +108,19 @@ function universityProfile(
   });
 }
 
+/**
+ * 이 어댑터가 읽는 법을 아는 등록부 판본.
+ *
+ * **모르는 판본을 짐작해 읽지 않는다.** 칸 이름이 바뀐 판본(`core_code` →
+ * 다른 이름)을 옛 규칙으로 읽으면 Core 가 하나도 안 잡힌 프로필이 오류 없이
+ * 선다(R37 에서 그 모양을 확인했다). 판본을 올리는 날 여기에 한 줄을 더하고
+ * 그 판본의 읽는 법을 확인한다.
+ *
+ * `schema_version` 이 아예 없는 파일은 확인용 fixture(`campus-zztest.json`)
+ * 꼴이라 받는다. 운영 등록부는 늘 판본을 든다.
+ */
+export const KNOWN_CAMPUS_SCHEMAS: readonly string[] = ["cm-campus-universities.5"];
+
 /** 등록부 글자 한 벌 → 학교마다 프로필 하나. 같은 학교 코드가 두 번이면 거절한다 */
 export function parseCampusRegistry(
   raw: string, relFile: string, refs: TenantRefs,
@@ -121,6 +134,11 @@ export function parseCampusRegistry(
   }
   if (!isObj(j)) {
     throw new TenantProfileError("INVALID_SCHEMA", `${relFile}: 맨 위가 객체여야 합니다`, { file: relFile });
+  }
+  if (j.schema_version !== undefined && !KNOWN_CAMPUS_SCHEMAS.includes(String(j.schema_version))) {
+    throw new TenantProfileError("UNSUPPORTED_SCHEMA_VERSION",
+      `${relFile}: 읽는 법을 모르는 등록부 판본입니다 — ${String(j.schema_version)}`,
+      { file: relFile, field: "schema_version", value: String(j.schema_version) });
   }
   if (!Array.isArray(j.universities)) {
     throw new TenantProfileError("MISSING_FIELD",
