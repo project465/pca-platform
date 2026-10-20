@@ -591,10 +591,13 @@ export async function currentAttempt(userId: string): Promise<V3Attempt | null> 
       ORDER BY started_at DESC LIMIT 1`, [userId]);
 }
 
-export async function attemptOf(id: string, userId: string): Promise<V3Attempt | null> {
-  return queryOne<V3Attempt>(
+export async function attemptOf(
+  id: string, userId: string, db?: Reader,
+): Promise<V3Attempt | null> {
+  const rows = await rowsOf<V3Attempt & Record<string, unknown>>(db,
     `SELECT ${ATTEMPT_COLS}
        FROM v3_attempts WHERE id = $1 AND user_id = $2`, [id, userId]);
+  return rows[0] ?? null;
 }
 
 /* ── 응답 ─────────────────────────────────────────────────────────── */
@@ -617,6 +620,24 @@ export async function saveAnswer(
     await c.query(`UPDATE v3_attempts SET last_saved_at = now() WHERE id = $1`, [attemptId]);
     return true;
   });
+}
+
+/**
+ * 읽는 자리가 어느 연결을 쓰는가. **제출 안에서는 그 트랜잭션의 연결로 읽는다.**
+ *
+ * 전에는 `submit()` 이 연결 하나로 응시 줄을 `FOR UPDATE` 로 잡은 채, 응답과 근거를
+ * 풀의 **다른** 연결로 읽었다. 같은 응시에 저장이 몰리면 그 저장들이 풀의 연결을
+ * 쥔 채 이 줄 잠금을 기다리고, 제출은 읽을 연결을 못 얻어 10초 뒤
+ * `timeout exceeded when trying to connect` 로 떨어졌다(Track C 3차 · 실제
+ * node-postgres · 풀 10). 같은 모양이 여러 학생이 한꺼번에 제출할 때도 난다:
+ * 제출 열이 각자 연결 하나를 쥐고 하나씩 더 기다리면 풀이 통째로 멈춘다.
+ */
+type Reader = Pick<PoolClient, "query">;
+async function rowsOf<T extends Record<string, unknown>>(
+  db: Reader | undefined, sql: string, params: unknown[],
+): Promise<T[]> {
+  if (!db) return query<T>(sql, params);
+  return (await db.query<T>(sql, params)).rows;
 }
 
 /**
@@ -740,8 +761,10 @@ export async function savePicks(
   });
 }
 
-export async function answersOf(attemptId: string): Promise<Record<string, Answer>> {
-  const rows = await query<{ item_id: string; kind: string; value_int: number | null; value_text: string | null }>(
+export async function answersOf(
+  attemptId: string, db?: Reader,
+): Promise<Record<string, Answer>> {
+  const rows = await rowsOf<{ item_id: string; kind: string; value_int: number | null; value_text: string | null }>(db,
     `SELECT item_id, kind, value_int, value_text FROM v3_responses WHERE attempt_id = $1`,
     [attemptId]);
   const out: Record<string, Answer> = {};
@@ -755,12 +778,12 @@ export async function answersOf(attemptId: string): Promise<Record<string, Answe
   return out;
 }
 
-export async function picksOf(attemptId: string): Promise<{
+export async function picksOf(attemptId: string, db?: Reader): Promise<{
   checklists: Record<string, string[]>;
   artifacts: Record<string, string[]>;
   verifications: Record<string, string[]>;
 }> {
-  const rows = await query<{ domain_code: string; slot: string; item_text: string }>(
+  const rows = await rowsOf<{ domain_code: string; slot: string; item_text: string }>(db,
     `SELECT domain_code, slot, item_text FROM v3_evidence_picks WHERE attempt_id = $1`,
     [attemptId]);
   const checklists: Record<string, string[]> = {};
@@ -1067,9 +1090,9 @@ export async function newScreensAfterUpgrade(
 
 /* ── 제출과 판정 ───────────────────────────────────────────────────── */
 
-export async function submissionOf(a: V3Attempt): Promise<Submission> {
-  const answers = await answersOf(a.id);
-  const picks = await picksOf(a.id);
+export async function submissionOf(a: V3Attempt, db?: Reader): Promise<Submission> {
+  const answers = await answersOf(a.id, db);
+  const picks = await picksOf(a.id, db);
   const plan = buildPlan(planInput(a, answers), planDeps(a.core_code));
   return {
     attempt_id: a.id, tier: a.tier, stage: a.education_stage, grad_field: a.grad_field,
@@ -1107,8 +1130,8 @@ export async function submit(a: V3Attempt): Promise<{ snapshot: Snapshot; id: st
      * 읽는 응답이 굳는 판정의 입력과 같다. 응시 줄도 다시 읽는다: 넘겨받은
      * `a` 는 화면이 들고 있던 값이라 그 뒤에 고른 팩이 빠져 있을 수 있다.
      */
-    a = (await attemptOf(a.id, a.user_id)) ?? a;
-    const sub = await submissionOf(a);
+    a = (await attemptOf(a.id, a.user_id, c)) ?? a;
+    const sub = await submissionOf(a, c);
     const loaded = load(a.core_code);
     const snapshot = score(sub, loaded);
     /* 결과 모델을 같은 줄에 굳힌다. 읽는 쪽이 다시 만들면 엔진이 바뀐 날
