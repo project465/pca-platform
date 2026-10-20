@@ -12675,3 +12675,32 @@ npx tsx scripts/lab/trackE-check.ts       # GM PDF 입력 고정 · 재현성 ·
 **Gold Master 의 경험 기록은 응시 시점에 고정한다**(`src/lib/me-v3/report-gm/inputs.ts`). 공통 DB 를 바꾸지 않고, 굳은 결과보다
 먼저 만들어졌고 그 뒤로 고치지 않은 기록만 넣으며 첫 생성이 입력을 `var/gm-inputs/` 에 굳힌다. 바른 해법(제출 때 스냅숏에 함께
 적기)은 Core 요청 1 로 남아 있다. **기관 담당자는 개인 GM PDF 를 기본으로 받지 못한다**: 계약 · 동의 칸이 없다(`canReadParticipantReport`).
+
+**다섯 트랙 2차. 실제 드라이버로 재현한 경합 하나를 고쳤다.** (2026-10-20)
+
+PM 통합 검수(CONDITIONAL PASS)의 차기 지시를 트랙마다 처리했다. 통합 현황은 `docs/metri/review/tracks-r2/README.md`.
+측정 동결은 기록을 다시 적지 않은 채로 통과한다.
+
+**대체 드라이버로는 보이지 않던 경합이 실제 드라이버에서 났다.** 저장소 밖에 진짜 node-postgres(8.16.3)를 세우고 따로 띄운
+클러스터(포트 5433)를 `pg_ctlcluster` 로 실제로 멈췄다 띄웠다. 그 자리에서 **제출과 같은 순간 들어온 다른 탭의 저장 서른이 전부
+받아들여져 굳은 판정과 저장된 응답이 어긋났다.** 저장이 응시 줄을 `FOR NO KEY UPDATE` 로 잡고 `in_progress` 일 때만 쓰고(`writable()`),
+제출은 `FOR UPDATE` 를 잡은 **뒤에** 응답을 다시 읽어 채점한다. `FOR SHARE` 는 `last_saved_at` 갱신과 교착해 쓰지 않았다.
+
+**검사를 다시 돌릴 수 있게 둔다.** 시험 계정을 지우려다 감사 기록(외래키)에 막히면 같은 아이디로 새로 만들 수 없다. 있으면 그 계정을
+다시 쓴다(`trackD-admin.ts` · `trackD-seed.ts`).
+
+**굳힌 파일에 자유입력을 담지 않는다.** Gold Master 입력 고정 파일이 경험 기록의 `note_text` 를 들고 있었다. DB 는 1년 뒤 그 칸을
+지우는데 파일에 남으면 파기가 반쪽이다. 렌더가 읽지 않는 칸이라 뺐고 판본을 `gm-input.2` 로 올렸다. 파기 함수(`purgeGm` ·
+`purgeGmForUser`)는 GM 입력 모듈에 두었고 **공통 `erasure.ts` 가 그것을 부르게 하는 일은 승인 요청**이다.
+
+**같은 Core 안에서 Evidence/Gap 은 학과에 따라 갈리지 않는다.** 설계다(판정 불변). 학과마다 갈리는 것은 갈래 다섯 층(먼저 읽는 영역 ·
+산업 · 역할 · 근거 예시 · 행동 제안)이고, 같은 Core 의 학과 짝 176 가운데 그 여섯 칸이 거의 같은 짝은 0 이다(학년도 개편 계보 후보 6 은
+같은 갈래라 같은 내용이 맞다).
+
+```bash
+PGPORT=5433 DATABASE_URL=postgres:///cm_iso_c npx tsx scripts/lab/trackC-outage.ts    # DB 를 실제로 멈춘다
+PGPORT=5433 DATABASE_URL=postgres:///cm_pcu_seed npx tsx scripts/lab/trackD-seed.ts    # 격리 시드 · 담당자 기능
+PGPORT=5433 DATABASE_URL=postgres:///cm_iso_c npx tsx scripts/lab/trackB-content.ts    # 학과별 일곱 칸
+PGPORT=5433 DATABASE_URL=postgres:///cm_iso_c npx tsx scripts/lab/trackB-routing.ts    # 자율전공 두 갈래
+PGPORT=5433 DATABASE_URL=postgres:///cm_iso_c npx tsx scripts/lab/trackE-r2.ts         # 정책 · 파기 · 접근 · 패키징
+```

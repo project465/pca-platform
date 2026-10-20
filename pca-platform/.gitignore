@@ -74,3 +74,13 @@ var/gm-inputs/
 var/gm-out/
 var/trackB-*/
 var/gm-a/
+
+# 5개 트랙 2차 작업 산출물. 고른 것은 docs/metri/review/tracks-r2/ 와 pdf-gm/v8-full/ 에 있다
+var/gm-a-v8/
+var/gm-r2/
+var/r2-reg/
+var/pcu-content/
+var/pcu-dept/
+var/tmp-c/
+var/trackC-realpg/
+var/trackB-e2e.log
