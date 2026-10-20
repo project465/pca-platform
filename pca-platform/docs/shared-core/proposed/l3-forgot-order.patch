@@ -1,0 +1,12 @@
+diff --git a/pca-platform/src/app/password/forgot/actions.ts b/pca-platform/src/app/password/forgot/actions.ts
+index 8d0214ea..74bca049 100644
+--- a/pca-platform/src/app/password/forgot/actions.ts
++++ b/pca-platform/src/app/password/forgot/actions.ts
+@@ -49,6 +49,7 @@ export async function forgotAction(
+   const user = await queryOne<{ id: string; email: string | null }>(
+     `SELECT id, email FROM users
+       WHERE (login_id = $1 OR lower(email) = lower($1)) AND status = 'active'
++      ORDER BY (login_id = $1) DESC NULLS LAST, id
+       LIMIT 1`,
+     [identifier],
+   );

@@ -1,0 +1,25 @@
+diff --git a/pca-platform/src/lib/erasure.ts b/pca-platform/src/lib/erasure.ts
+index ffb70bdc..6cb490fa 100644
+--- a/pca-platform/src/lib/erasure.ts
++++ b/pca-platform/src/lib/erasure.ts
+@@ -44,6 +44,11 @@ const REMOVE: { table: string; why: string }[] = [
+   { table: "match_feedback", why: "자유입력 의견" },
+   { table: "jd_match_scores", why: "어떤 공고에 얼마나 맞았는지는 개인 이력이다" },
+   { table: "memberships", why: "어느 학과 소속이었는지" },
++  /* CC-009 L1: 작업공간에 적은 경험. 제목과 한 줄(`note_text`)이 자유입력이라
++     본문에 사람이 들어간다. 전에는 어느 목록에도 없어 탈퇴 뒤에도 남았다
++     (Core R38 ER-REPRO-2 · 배재 3차 D9). 굳은 결과(`v3_snapshots`)와 응답은
++     위의 KEEP 과 같은 까닭으로 남긴다 — 여기서 지우는 것은 원본 기록이다 */
++  { table: "v3_experiences", why: "경험 제목과 한 줄이 자유입력이라 본문에 사람이 들어갈 수 있다" },
+ ];
+ 
+ /** 남기는 것과 그 이유. 화면과 기록에 그대로 쓴다. */
+@@ -154,7 +159,7 @@ export const ERASE_GROUPS: {
+       en: "Projects, courses, tools, preferred regions and industries, school and year",
+     },
+     tables: ["learner_evidence", "learner_competency_levels", "learner_preferences",
+-      "learner_profiles", "pilot_feedback", "match_feedback"],
++      "learner_profiles", "pilot_feedback", "match_feedback", "v3_experiences"],
+   },
+   {
+     ko: "지원 준비 자료", en: "Application material",

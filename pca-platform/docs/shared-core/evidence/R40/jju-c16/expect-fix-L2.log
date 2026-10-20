@@ -1,0 +1,251 @@
+TAP version 13
+# Subtest: P0-REPRO-0 checkStudent 는 아이디를 기관 없이 학번 그대로 만든다
+ok 1 - P0-REPRO-0 checkStudent 는 아이디를 기관 없이 학번 그대로 만든다 # SKIP 수정안 적용 사본 — 재현 대상 동작이 사라졌다(FIX-* 가 대신 센다)
+  ---
+  duration_ms: 321.746517
+  type: 'test'
+  ...
+# Subtest: P0-REPRO-1 최초 등록과 같은 기관 재등록은 한 계정으로 수렴한다(기준선)
+ok 2 - P0-REPRO-1 최초 등록과 같은 기관 재등록은 한 계정으로 수렴한다(기준선)
+  ---
+  duration_ms: 459.217465
+  type: 'test'
+  ...
+# Subtest: P0-REPRO-2 다른 기관이 같은 학번을 올리면(화면 경로 · rotate 없음) 앞 기관 학생의 학과가 덮인다
+ok 3 - P0-REPRO-2 다른 기관이 같은 학번을 올리면(화면 경로 · rotate 없음) 앞 기관 학생의 학과가 덮인다 # SKIP 수정안 적용 사본 — 재현 대상 동작이 사라졌다(FIX-* 가 대신 센다)
+  ---
+  duration_ms: 0.225063
+  type: 'test'
+  ...
+# Subtest: P0-REPRO-3 CSV 적용도 같은 길이다(applyImport → 고침 1 · 만듦 0)
+ok 4 - P0-REPRO-3 CSV 적용도 같은 길이다(applyImport → 고침 1 · 만듦 0) # SKIP 수정안 적용 사본 — 재현 대상 동작이 사라졌다(FIX-* 가 대신 센다)
+  ---
+  duration_ms: 0.139378
+  type: 'test'
+  ...
+# Subtest: P0-REPRO-4 rotate 로 올리면(CLI `pcu:students` ROTATE=yes 경로) 계정이 통째로 넘어간다
+ok 5 - P0-REPRO-4 rotate 로 올리면(CLI `pcu:students` ROTATE=yes 경로) 계정이 통째로 넘어간다 # SKIP 수정안 적용 사본 — 재현 대상 동작이 사라졌다(FIX-* 가 대신 센다)
+  ---
+  duration_ms: 0.12562
+  type: 'test'
+  ...
+# Subtest: P0-REPRO-5 명단에 적은 login_id 가 다른 기관 아이디와 같아도 같은 길이다
+ok 6 - P0-REPRO-5 명단에 적은 login_id 가 다른 기관 아이디와 같아도 같은 길이다 # SKIP 수정안 적용 사본 — 재현 대상 동작이 사라졌다(FIX-* 가 대신 센다)
+  ---
+  duration_ms: 0.19836
+  type: 'test'
+  ...
+# Subtest: P0-REPRO-6 같은 메일이 다른 기관 명단에 있으면 그 줄에서 적용이 던지고 뒤 줄이 남는다
+ok 7 - P0-REPRO-6 같은 메일이 다른 기관 명단에 있으면 그 줄에서 적용이 던지고 뒤 줄이 남는다 # SKIP 수정안 적용 사본 — 재현 대상 동작이 사라졌다(FIX-* 가 대신 센다)
+  ---
+  duration_ms: 0.096066
+  type: 'test'
+  ...
+# Subtest: P0-REPRO-7 다른 기관 담당자는 남의 학생을 직접 다루지 못한다(기준선 격리)
+ok 8 - P0-REPRO-7 다른 기관 담당자는 남의 학생을 직접 다루지 못한다(기준선 격리)
+  ---
+  duration_ms: 485.87493
+  type: 'test'
+  ...
+# shim: ROLLBACK 을 되돌리지 못한다(autocommit) — 앞 문장은 이미 적혔다
+# Subtest: P0-FIX-1 다른 기관의 같은 학번은 각자의 계정이 된다
+not ok 9 - P0-FIX-1 다른 기관의 같은 학번은 각자의 계정이 된다
+  ---
+  duration_ms: 439.522471
+  type: 'test'
+  location: '/tmp/claude-0/wt-jju/pca-platform/scripts/shared-core/p0-login-collision.test.ts:347:1'
+  failureType: 'testCodeFailure'
+  error: '두 사람 모두 열쇠를 받는다'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/wt-jju/pca-platform/scripts/shared-core/p0-login-collision.test.ts:353:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# shim: ROLLBACK 을 되돌리지 못한다(autocommit) — 앞 문장은 이미 적혔다
+# Subtest: P0-FIX-2 다른 기관의 명단 적용이 남의 학생 학과를 바꾸지 않는다
+ok 10 - P0-FIX-2 다른 기관의 명단 적용이 남의 학생 학과를 바꾸지 않는다
+  ---
+  duration_ms: 640.499861
+  type: 'test'
+  ...
+# shim: ROLLBACK 을 되돌리지 못한다(autocommit) — 앞 문장은 이미 적혔다
+# Subtest: P0-FIX-3 rotate 도 다른 기관 학생의 열쇠·이름·학교를 바꾸지 않는다
+ok 11 - P0-FIX-3 rotate 도 다른 기관 학생의 열쇠·이름·학교를 바꾸지 않는다
+  ---
+  duration_ms: 473.740566
+  type: 'test'
+  ...
+# Subtest: P0-FIX-4 다른 기관 미리 보기에 남의 학번이 '이미 있음' 으로 새지 않는다
+not ok 12 - P0-FIX-4 다른 기관 미리 보기에 남의 학번이 '이미 있음' 으로 새지 않는다
+  ---
+  duration_ms: 367.999194
+  type: 'test'
+  location: '/tmp/claude-0/wt-jju/pca-platform/scripts/shared-core/p0-login-collision.test.ts:380:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/wt-jju/pca-platform/scripts/shared-core/p0-login-collision.test.ts:385:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# shim: ROLLBACK 을 되돌리지 못한다(autocommit) — 앞 문장은 이미 적혔다
+# Subtest: P0-FIX-5 다른 기관 명단의 겹치는 메일은 그 줄만 거절하고 뒤 줄은 적힌다
+not ok 13 - P0-FIX-5 다른 기관 명단의 겹치는 메일은 그 줄만 거절하고 뒤 줄은 적힌다
+  ---
+  duration_ms: 877.985766
+  type: 'test'
+  location: '/tmp/claude-0/wt-jju/pca-platform/scripts/shared-core/p0-login-collision.test.ts:388:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    ERROR:  23505: duplicate key value violates unique constraint "users_email_key"
+    DETAIL:  Key (email)=(sc36-f5@example.invalid) already exists.
+    CONTEXT:  PL/pgSQL function sc_shim.run(text,boolean) line 5 at FOR over EXECUTE statement
+    SCHEMA NAME:  public
+    TABLE NAME:  users
+    CONSTRAINT NAME:  users_email_key
+    LOCATION:  _bt_check_unique, nbtinsert.c:666
+  code: '23505'
+  stack: |-
+    ChildProcess.<anonymous> (file:///tmp/claude-0/wt-jju/pca-platform/scripts/shared-core/test/shims/pg.mjs:75:7)
+    ChildProcess.emit (node:events:519:28)
+    maybeClose (node:internal/child_process:1101:16)
+    ChildProcess._handle.onexit (node:internal/child_process:304:5)
+  ...
+# shim: ROLLBACK 을 되돌리지 못한다(autocommit) — 앞 문장은 이미 적혔다
+# Subtest: P0-FIX-6 학교가 발급하지 않은 계정을 학번이 같다고 가져가지 않는다
+ok 14 - P0-FIX-6 학교가 발급하지 않은 계정을 학번이 같다고 가져가지 않는다
+  ---
+  duration_ms: 236.834391
+  type: 'test'
+  ...
+# shim: ROLLBACK 을 되돌리지 못한다(autocommit) — 앞 문장은 이미 적혔다
+# Subtest: P0-FIX-7 남의 학생 응시가 새 기관 학생에게 보이지 않는다
+not ok 15 - P0-FIX-7 남의 학생 응시가 새 기관 학생에게 보이지 않는다
+  ---
+  duration_ms: 505.084239
+  type: 'test'
+  location: '/tmp/claude-0/wt-jju/pca-platform/scripts/shared-core/p0-login-collision.test.ts:418:1'
+  failureType: 'testCodeFailure'
+  error: '이 아이디는 이미 쓰이고 있습니다'
+  code: 'ERR_TEST_FAILURE'
+  name: 'LoginTaken'
+  stack: |-
+    file:///tmp/claude-0/wt-jju/pca-platform/src/lib/campus/students.ts:141:55
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async tx (file:///tmp/claude-0/wt-jju/pca-platform/src/lib/db.ts:116:17)
+    async TestContext.<anonymous> (file:///tmp/claude-0/wt-jju/pca-platform/scripts/shared-core/p0-login-collision.test.ts:422:13)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# shim: ROLLBACK 을 되돌리지 못한다(autocommit) — 앞 문장은 이미 적혔다
+# Subtest: P0-FIX-8 비밀번호 찾기에 학번을 넣으면 그 학번의 배재 학생 계정으로만 간다(남의 학교 계정으로 가지 않는다)
+not ok 16 - P0-FIX-8 비밀번호 찾기에 학번을 넣으면 그 학번의 배재 학생 계정으로만 간다(남의 학교 계정으로 가지 않는다)
+  ---
+  duration_ms: 405.547859
+  type: 'test'
+  location: '/tmp/claude-0/wt-jju/pca-platform/scripts/shared-core/p0-login-collision.test.ts:438:1'
+  failureType: 'testCodeFailure'
+  error: '이 아이디는 이미 쓰이고 있습니다'
+  code: 'ERR_TEST_FAILURE'
+  name: 'LoginTaken'
+  stack: |-
+    file:///tmp/claude-0/wt-jju/pca-platform/src/lib/campus/students.ts:141:55
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async tx (file:///tmp/claude-0/wt-jju/pca-platform/src/lib/db.ts:116:17)
+    async TestContext.<anonymous> (file:///tmp/claude-0/wt-jju/pca-platform/scripts/shared-core/p0-login-collision.test.ts:441:13)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# shim: ROLLBACK 을 되돌리지 못한다(autocommit) — 앞 문장은 이미 적혔다
+# shim: ROLLBACK 을 되돌리지 못한다(autocommit) — 앞 문장은 이미 적혔다
+# Subtest: P0-FIX-9 다른 학교의 명단 · rotate 가 앞 학교 학생의 소속(memberships)을 바꾸지 않는다
+not ok 17 - P0-FIX-9 다른 학교의 명단 · rotate 가 앞 학교 학생의 소속(memberships)을 바꾸지 않는다
+  ---
+  duration_ms: 475.29592
+  type: 'test'
+  location: '/tmp/claude-0/wt-jju/pca-platform/scripts/shared-core/p0-login-collision.test.ts:449:1'
+  failureType: 'testCodeFailure'
+  error: '이 아이디는 이미 쓰이고 있습니다'
+  code: 'ERR_TEST_FAILURE'
+  name: 'LoginTaken'
+  stack: |-
+    file:///tmp/claude-0/wt-jju/pca-platform/src/lib/campus/students.ts:141:55
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async tx (file:///tmp/claude-0/wt-jju/pca-platform/src/lib/db.ts:116:17)
+    async TestContext.<anonymous> (file:///tmp/claude-0/wt-jju/pca-platform/scripts/shared-core/p0-login-collision.test.ts:453:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# shim: ROLLBACK 을 되돌리지 못한다(autocommit) — 앞 문장은 이미 적혔다
+# Subtest: P0-FIX-10 로그인 질의: 학번 그대로는 배재 학생 · 다른 학교 손잡이는 그 학생
+not ok 18 - P0-FIX-10 로그인 질의: 학번 그대로는 배재 학생 · 다른 학교 손잡이는 그 학생
+  ---
+  duration_ms: 379.784923
+  type: 'test'
+  location: '/tmp/claude-0/wt-jju/pca-platform/scripts/shared-core/p0-login-collision.test.ts:457:1'
+  failureType: 'testCodeFailure'
+  error: '이 아이디는 이미 쓰이고 있습니다'
+  code: 'ERR_TEST_FAILURE'
+  name: 'LoginTaken'
+  stack: |-
+    file:///tmp/claude-0/wt-jju/pca-platform/src/lib/campus/students.ts:141:55
+    async tx (file:///tmp/claude-0/wt-jju/pca-platform/src/lib/db.ts:116:17)
+    async TestContext.<anonymous> (file:///tmp/claude-0/wt-jju/pca-platform/scripts/shared-core/p0-login-collision.test.ts:460:13)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# shim: ROLLBACK 을 되돌리지 못한다(autocommit) — 앞 문장은 이미 적혔다
+# Subtest: P0-RISK-1 다른 학교 학생이 학교 로그인 화면에 학번만 넣어 제 계정으로 들어간다
+not ok 19 - P0-RISK-1 다른 학교 학생이 학교 로그인 화면에 학번만 넣어 제 계정으로 들어간다 # TODO SC-2 2단계(학교 로그인이 기관 코드를 넘기고 authorize 가 (기관, 학번)으로 찾는다) 승인 · 구현 뒤에 켠다
+  ---
+  duration_ms: 371.429409
+  type: 'test'
+  location: '/tmp/claude-0/wt-jju/pca-platform/scripts/shared-core/p0-login-collision.test.ts:468:1'
+  failureType: 'testCodeFailure'
+  error: '이 아이디는 이미 쓰이고 있습니다'
+  code: 'ERR_TEST_FAILURE'
+  name: 'LoginTaken'
+  stack: |-
+    file:///tmp/claude-0/wt-jju/pca-platform/src/lib/campus/students.ts:141:55
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async tx (file:///tmp/claude-0/wt-jju/pca-platform/src/lib/db.ts:116:17)
+    async TestContext.<anonymous> (file:///tmp/claude-0/wt-jju/pca-platform/scripts/shared-core/p0-login-collision.test.ts:471:13)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: P0-COMPAT-2 배재 재등록과 rotate 는 같은 계정에서 일어난다(고치기 전후 모두)
+ok 20 - P0-COMPAT-2 배재 재등록과 rotate 는 같은 계정에서 일어난다(고치기 전후 모두)
+  ---
+  duration_ms: 803.005373
+  type: 'test'
+  ...
+# Subtest: P0-COMPAT-1 배재 기존 계정의 아이디와 로그인은 학번 그대로다(고치기 전후 모두 서야 한다)
+ok 21 - P0-COMPAT-1 배재 기존 계정의 아이디와 로그인은 학번 그대로다(고치기 전후 모두 서야 한다)
+  ---
+  duration_ms: 380.946863
+  type: 'test'
+  ...
+1..21
+# tests 21
+# suites 0
+# pass 7
+# fail 7
+# cancelled 0
+# skipped 6
+# todo 1
+# duration_ms 8107.505988

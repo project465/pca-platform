@@ -10,7 +10,9 @@
  *   ER-REPRO-3  campus_students 의 학번 · 학교 · 학과가 그대로 남는다(같은 users.id 에 이어진 채)
  *   ER-REPRO-4  v3_applications 의 기관 이름 · 메모가 그대로 남는다
  *   ER-REPRO-5  `purge_after` 가 지난 메모를 지우는 제품 코드 · 운영 명령이 없다(정적) — 그리고 기한이 지나도 남는다(DB)
- *   ER-FIX-1~3 (todo) 본체가 파기 계약을 승인 · 구현한 뒤 켠다
+ *   ER-FIX-1a (L1)  `SC_EXPECT_FIX=L1` 수정 사본에서 실제 검사 · 지금 코드에서는 todo
+ *   ER-FIX-1b·2·3 (todo) 파기 나머지(L4) 결정 · 구현 뒤 켠다
+ *   ER-G      지우는 표가 전부 탈퇴 화면의 묶음에 있다(지금 · 수정 사본 둘 다)
  *
  * **트랜잭션**: `anonymizeUser` 는 `tx()` 를 쓴다. 이 검사는 `SC_SHIM_TX=autocommit` 으로 돌고,
  * 그 길은 문장마다 따로 커밋해 **되돌림(ROLLBACK)을 보지 못한다.** 성공 경로의 효과만 센다.
@@ -23,7 +25,10 @@ import assert from "node:assert/strict";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { query, queryOne } from "@/lib/db";
-import { anonymizeUser, erasurePlan } from "@/lib/erasure";
+import { anonymizeUser, erasurePlan, ERASE_GROUPS } from "@/lib/erasure";
+
+/** 수정 사본에서 돌 때(`test/with-patch.sh`) 켜지는 착지 단위. `L1` = `proposed/cc009-l1.patch` */
+const FIXED_L1 = /\bL1\b/.test(process.env.SC_EXPECT_FIX ?? "");
 
 const URL_ = process.env.DATABASE_URL ?? "";
 if (!/host=\/[^&]*sc-pg-sandbox/.test(URL_) || process.env.SC_SHIMS !== "1" || process.env.SC_SHIM_TX !== "autocommit") {
@@ -66,7 +71,8 @@ test("ER-0 user_id 칸이 있는 표를 파기 목록 · 보존 목록에 대어
   const all = rows.map((r) => r.t);
   const unclassified = all.filter((t) => !remove.has(t) && !keep.has(t));
   console.log(`# ER-0 user_id 표 ${all.length} · 지움 ${all.filter((t) => remove.has(t)).length} · 남김 ${all.filter((t) => keep.has(t)).length} · 어디에도 없음 ${unclassified.length}: ${unclassified.join(" ")}`);
-  assert.ok(unclassified.includes("v3_experiences"), "재현: v3_experiences 가 어느 목록에도 없다");
+  if (FIXED_L1) assert.ok(remove.has("v3_experiences"), "L1: v3_experiences 가 지우는 목록에 있다");
+  else assert.ok(unclassified.includes("v3_experiences"), "재현: v3_experiences 가 어느 목록에도 없다");
   assert.ok(unclassified.includes("campus_students"), "재현: campus_students 가 어느 목록에도 없다");
 });
 
@@ -82,7 +88,7 @@ test("ER-1 익명화가 끝까지 돌고 users 가 erased 가 된다", async () 
   assert.equal((await counts()).mem, 0, "memberships 는 지운다(목록에 있다)");
 });
 
-test("ER-REPRO-2 v3_experiences 의 제목 · 메모가 파기 뒤에도 남는다", async () => {
+test("ER-REPRO-2 v3_experiences 의 제목 · 메모가 파기 뒤에도 남는다", { skip: FIXED_L1 ? "수정 사본(L1) — REPRO 건너뜀" : false }, async () => {
   const r = await queryOne<{ title: string; note_text: string | null }>(
     `SELECT title, note_text FROM v3_experiences WHERE user_id = $1::bigint`, [uid]);
   assert.ok(r, "재현: 줄이 남는다");
@@ -123,12 +129,22 @@ test("ER-REPRO-5 purge_after 가 지난 V3 메모를 지우는 제품 코드 · 
   const due = await queryOne<{ n: string }>(
     `SELECT count(*)::text AS n FROM v3_experiences WHERE user_id = $1::bigint
         AND purge_after < current_date AND note_text IS NOT NULL`, [uid]);
-  assert.equal(due!.n, "1", "기한이 지난 메모가 그대로 있다");
+  /* L1 수정 사본에서는 파기가 그 줄을 지워 이 사람의 기한 지난 메모가 0 이다.
+     그래도 **집행 명령이 없다**는 위의 재현은 그대로다(기한 집행은 L4) */
+  assert.equal(due!.n, FIXED_L1 ? "0" : "1", FIXED_L1 ? "L1: 파기가 그 줄을 지웠다" : "기한이 지난 메모가 그대로 있다");
 });
 
 const FIX = { todo: "본체가 파기 계약(CC-009)을 승인 · 구현한 뒤 켠다" };
-test("ER-FIX-1 파기 뒤 v3_experiences · v3_applications 줄이 없다", FIX, async () => {
-  assert.equal((await counts()).exp + (await counts()).app, 0);
+test("ER-FIX-1a 파기 뒤 v3_experiences 줄이 없다 (L1)", FIXED_L1 ? {} : { todo: "proposed/cc009-l1.patch 승인 · 적용 뒤 켠다" }, async () => {
+  assert.equal((await counts()).exp, 0);
+});
+test("ER-FIX-1b 파기 뒤 v3_applications 줄이 없다 (L4)", FIX, async () => {
+  assert.equal((await counts()).app, 0);
+});
+test("ER-G 지우는 표가 전부 화면의 묶음(ERASE_GROUPS)에 들어 있다", async () => {
+  const grouped = new Set(ERASE_GROUPS.flatMap((g) => g.tables));
+  const missing = erasurePlan().remove.map((r) => r.table).filter((t) => !grouped.has(t));
+  assert.deepEqual(missing, [], "탈퇴 화면이 지우는 표를 사람의 말로 다 적는다");
 });
 test("ER-FIX-2 파기 뒤 campus_students 에 학번이 남지 않는다", FIX, async () => {
   assert.equal((await counts()).cs, 0);

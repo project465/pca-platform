@@ -163,7 +163,9 @@ function checked(uni: string, sid: string, name: string, dep: string,
 /* ── P0-REPRO ────────────────────────────────────────────────────── */
 
 /** 수정안이 없애는 동작. 수정안 사본(`SC_EXPECT_FIX=1`)에서는 건너뛴다 */
-const GONE = process.env.SC_EXPECT_FIX === "1"
+/* `1` 은 R36 부터의 약속, `L2` 는 R40 공통 관문(`gate.sh`)이 넘기는 착지 단위 이름이다 */
+const SC2_FIXED = process.env.SC_EXPECT_FIX === "1" || /\bL2\b/.test(process.env.SC_EXPECT_FIX ?? "");
+const GONE = SC2_FIXED
   ? { skip: "수정안 적용 사본 — 재현 대상 동작이 사라졌다(FIX-* 가 대신 센다)" } : {};
 
 test("P0-REPRO-0 checkStudent 는 아이디를 기관 없이 학번 그대로 만든다", GONE, () => {
@@ -338,7 +340,7 @@ test("P0-REPRO-7 다른 기관 담당자는 남의 학생을 직접 다루지 �
 
 /* ── P0-FIX (고친 뒤의 불변식 · 지금은 todo) ───────────────────── */
 
-const FIX_MODE = process.env.SC_EXPECT_FIX === "1";
+const FIX_MODE = SC2_FIXED;
 const TODO = FIX_MODE ? {}
   : { todo: "총괄 PM 승인 뒤 SC-2 수정안(docs/shared-core/R36_P0_LOGIN_COLLISION.md)을 적용하면 켠다" };
 
