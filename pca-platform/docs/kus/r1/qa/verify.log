@@ -1,0 +1,96 @@
+── 1. 학교 등록부와 학과 상태
+  PASS  KUS 등록부가 fixture 로 선다 — 자리 34
+  PASS  운영 규칙으로 열린 자리는 융합경영 두 전공뿐 — KUS26_CBIZ_GM,KUS26_CBIZ_DM
+  PASS  CS·EE 는 미리보기로만 열린다(시연 표시) — KUS26_CSW,KUS26_EIE
+  PASS  매핑 판단 전인 자리는 준비 중
+  PASS  자유전공학부는 Core 를 들지 않는다
+
+── 2. 기관 · 담당자 · 학생 (테스트)
+  PASS  KUS 학생 셋이 같은 학과 맥락을 든다 — SPEC_BIZ_GLOBAL_MGMT,SPEC_BIZ_GLOBAL_MGMT,SPEC_BIZ_GLOBAL_MGMT
+  PASS  KUS 학생은 kusStudentOf 를 지난다
+  PASS  배재 학생은 KUS 학생이 아니다
+  PASS  진흥원 대역 사용자는 KUS 학생이 아니다
+
+── 3. 검사: 열기 · 중간 저장 · 이어하기 · 제출 · 중복 제출
+  PASS  RICH 응시가 KUS 학교 맥락 · PRO 로 열린다(BASIC 을 넘겨도) — PRO BIZ_CORE_V1 SPEC_BIZ_GLOBAL_MGMT
+  PASS  이어하기: 같은 응시로 돌아온다 — 응시 25
+  PASS  이어하기: 중간 저장한 답이 그대로다 — 답 26개 · 화면 sweep-learning
+  PASS  이어하기: 멈춘 화면에서 다시 선다 — sweep-learning
+  PASS  이어하기: 응시가 하나다 — 1
+  PASS  RICH 끝까지 간다 — 화면 72
+  PASS  RICH 동시 제출 둘에도 결과가 한 벌 — 스냅샷 1 · 답 122
+  PASS  RICH 끝난 뒤 다시 제출해도 늘지 않는다
+  PASS  POOR 응시가 KUS 학교 맥락 · PRO 로 열린다(BASIC 을 넘겨도) — PRO BIZ_CORE_V1 SPEC_BIZ_GLOBAL_MGMT
+  PASS  POOR 끝까지 간다 — 화면 72
+  PASS  POOR 동시 제출 둘에도 결과가 한 벌 — 스냅샷 1 · 답 106
+  PASS  POOR 끝난 뒤 다시 제출해도 늘지 않는다
+  PASS  CONTRA 응시가 KUS 학교 맥락 · PRO 로 열린다(BASIC 을 넘겨도) — PRO BIZ_CORE_V1 SPEC_BIZ_GLOBAL_MGMT
+  PASS  CONTRA 끝까지 간다 — 화면 72
+  PASS  CONTRA 동시 제출 둘에도 결과가 한 벌 — 스냅샷 1 · 답 106
+  PASS  CONTRA 끝난 뒤 다시 제출해도 늘지 않는다
+  PASS  배재 학생 응시는 PCU 로 적힌다
+  PASS  진행중 학생은 중간에 멈춘 응시 하나를 든다 — 답 24개
+
+── 4. 기업탐방 기록
+  PASS  담당자가 등록한 탐방(테스트) 하나가 보인다 — [테스트] 가상기업 A
+  PASS  직무도 활동도 없는 기록은 거절한다 — 관찰한 직무를 하나 이상 고르거나 적어 주세요
+  PASS  등록되지 않은 탐방 번호는 거절한다
+  PASS  사전에 없는 직무·영역·활동 코드는 기록에 서지 않는다
+  PASS  RICH 탐방 기록이 검사를 지난다
+  PASS  RICH 저장한 탐방을 다시 읽는다 — [테스트] 가상기업 A · 등록 탐방
+  PASS  POOR 탐방 기록이 검사를 지난다
+  PASS  POOR 저장한 탐방을 다시 읽는다 — [테스트] 가상기업 A · 등록 탐방
+  PASS  CONTRA 탐방 기록이 검사를 지난다
+  PASS  CONTRA 저장한 탐방을 다시 읽는다 — [테스트] 학생이 적은 기업 · 확인 전
+  PASS  직접 해 본 활동을 공통 경험으로 옮긴다 — 경험 6
+  PASS  남의 경험 번호는 탐방에 잇지 못한다
+  PASS  탐방 기록이 굳은 결과를 바꾸지 않는다
+
+── 5. 개인별 결과 · 리포트 · PDF (RICH / POOR / CONTRA)
+  PASS  RICH KUS 분석 묶음이 선다
+  PASS  RICH 리포트 HTML 이 선다
+  PASS  RICH 리포트에 테스트 띠가 선다
+  PASS  RICH 리포트에 여덟 장이 다 있다
+  PASS  RICH PDF 가 뽑힌다 — 295497바이트
+  PASS  POOR KUS 분석 묶음이 선다
+  PASS  POOR 리포트 HTML 이 선다
+  PASS  POOR 리포트에 테스트 띠가 선다
+  PASS  POOR 리포트에 여덟 장이 다 있다
+  PASS  POOR PDF 가 뽑힌다 — 312097바이트
+  PASS  CONTRA KUS 분석 묶음이 선다
+  PASS  CONTRA 리포트 HTML 이 선다
+  PASS  CONTRA 리포트에 테스트 띠가 선다
+  PASS  CONTRA 리포트에 여덟 장이 다 있다
+  PASS  CONTRA PDF 가 뽑힌다 — 299313바이트
+  PASS  이름을 지우고 견줘도 세 리포트가 서로 다르다
+  PASS  RICH 는 POOR 보다 확인된 판단이 많다 — 32 > 0
+  PASS  RICH 는 근거가 선 영역이 있고 POOR 는 없다 — 4 · 0
+  PASS  CONTRA 는 근거 없이 높게 답해도 근거가 서지 않는다 — {"confirmed":32,"owned":0,"evidence":0,"ready_domains":0,"opened":4}
+  PASS  CONTRA 는 응답 품질에 표시가 선다 — LOW_VARIANCE
+  PASS  세 학생의 머리 상태가 모두 같지는 않다 — 지원서에 쓸 경험이 있어요 | 아직 한쪽으로 기울지 않았어요 | 정리만 하면 돼요
+
+── 6. 학생 사이 격리
+  PASS  POOR 는 RICH 의 탐방 기록을 열 수 없다
+  PASS  POOR 의 기록 목록에 RICH 의 기록이 없다
+  PASS  POOR 는 RICH 의 응시 번호로 결과·리포트를 열 수 없다 — NOT_FOUND
+  PASS  CONTRA 는 RICH 의 PDF 를 받을 수 없다
+
+── 7. 기관 사이 격리 (KUS · 배재 · 진흥원 대역)
+  PASS  배재 학생의 응시를 KUS 리포트로 그리지 않는다 — NOT_KUS
+  PASS  진흥원 대역 사용자는 KUS 응시를 열 수 없다
+  PASS  KUS 집계 시작 수에 배재 학생이 없다 — KUS 시작 4 · 완료 3
+  PASS  KUS 집계의 학과 칸에 다른 학교 코드가 없다 — (5명 미만이라 칸 없음)
+  PASS  배재 집계에 KUS 학생이 없다 — PCU 시작 1
+  PASS  탐방 집계가 KUS 학생만 센다(배재 학생 줄은 빠진다) — {"programs":1,"students":4,"visits":4,"did":2} · KUS 학생 줄 4
+
+── 8. 담당자 권한
+  PASS  KUS 담당자는 KUS 담당자다
+  PASS  배재 담당자는 KUS 담당자가 아니다
+  PASS  진흥원 대역 담당자는 KUS 담당자가 아니다
+  PASS  KUS 학생은 KUS 담당자가 아니다
+  PASS  KUS 담당자는 배재 기관 자료를 만질 수 없다
+  PASS  KUS 담당자는 진흥원 대역 기관 자료를 만질 수 없다
+  PASS  KUS 담당자도 계약·동의 없이 개인 결과를 열 수 없다(공통 규칙) — 계약에 개인 결과지 열람이 들어 있지 않습니다.
+  PASS  KUS 담당자 화면에 개인 결과를 부르는 길이 없다(소스) — 2개 파일에 개인 결과 호출 0
+
+PASS 79 · FAIL 0

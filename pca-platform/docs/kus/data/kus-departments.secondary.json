@@ -1,0 +1,126 @@
+{
+  "accessed_at": "2026-10-20",
+  "official_reachable": false,
+  "notes": "No official page could be opened directly. WebFetch failed DNS resolution (getaddrinfo ENOTFOUND) for EVERY host tried, official or not (sejong.korea.ac.kr, oku.korea.ac.kr, ipsi.korea.ac.kr, registrar.korea.edu, ko.wikipedia.org, dhnews.co.kr). Bash curl through the session egress proxy returned CONNECT 403 (policy reject) for every host. The only working tool was WebSearch, which returns search-engine summaries and excerpts. Most units below appear in excerpts whose cited URL is an official Korea University page or PDF (oku.korea.ac.kr is the Sejong 입학팀, sejong.korea.ac.kr, registrar.korea.ac.kr / registrar.korea.edu, scholar.korea.ac.kr). Because I never saw the page itself, every unit has source_type SECONDARY and evidence SEARCH_EXCERPT_OF_OFFICIAL_URL. Treat this as strong but unverified evidence and re-check on the live pages. Structure is for the 2026 academic year (2026학년도 모집단위, mainly from the 2026 수시모집요강 at oku.korea.ac.kr/attach/202509/1756872350076_0.pdf and the 2026 정시모집요강 / 2026 시행계획). Changes for 2026: 자유전공학부 (과학기술 / 글로벌비즈니스 / 공공정책 / 문화스포츠) [신설], a 전공자율선택제 unit. 컴퓨터융합소프트웨어학과 was renamed 컴퓨터소프트웨어학과 [명칭변경]. 디지털헬스케어공학과 and 첨단융합신약학과 were new in 2025 (27 places each). 디스플레이융합전공 and 반도체물리전공 merged into 반도체물리학부 from 2025. For 2027, a 2027 수시모집요강 (updated 2026-09-08, per a search summary of oku.korea.ac.kr/oku/index.do) and a 2027 정시모집요강 (posted 2026-08-31, per a summary of oku.korea.ac.kr/sejong/index.do) exist, but their unit tables could not be read. The 2027 시행계획 (2025-04) only gives the general caveat that units may be created, merged, split or renamed. No 2027 reorganization could be confirmed. Curriculum year (교육과정 연도) could not be read from any page. The 수강신청 유의사항 PDFs are labelled 2024 (info_caution_sejong_global_2024.pdf, info_caution_sejong_public_2024.pdf) but are undated in the excerpts. The sejong.korea.ac.kr 과학기술대학 page says the college has '14개 학과', which matches the 14 science and technology units listed below.",
+  "colleges": [
+    {
+      "name": "과학기술대학",
+      "source_url": "https://sejong.korea.ac.kr/koreaSejong/7849/subview.do",
+      "source_type": "SECONDARY",
+      "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL",
+      "units": [
+        {"name": "응용수리과학부", "kind": "faculty", "majors": [
+          {"name": "데이터계산과학전공", "kind": "major", "majors": [], "source_url": "https://oku.korea.ac.kr/attach/202509/1756872350076_0.pdf", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "Shown as '응용수리과학부 데이터계산과학전공[교직]' in the 2026 수시 table. A registrar PDF notes the former name: 수학과 ⇒ 응용수리과학부 데이터계산과학전공."}
+        ], "source_url": "https://oku.korea.ac.kr/attach/202509/1756872350076_0.pdf", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "2026 수시 모집단위"},
+        {"name": "반도체물리학부", "kind": "faculty", "majors": [], "source_url": "https://oku.korea.ac.kr/attach/202509/1756872350076_0.pdf", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "2026 수시 모집단위. The 편입학모집요강 (oku.korea.ac.kr/attach/202511/1764146136366_0.pdf) says 디스플레이융합전공 and 반도체물리전공 merged into 반도체물리학부 from 2025. Older name: 디스플레이반도체물리학부."},
+        {"name": "신소재화학과", "kind": "department", "majors": [], "source_url": "https://oku.korea.ac.kr/attach/202509/1756872350076_0.pdf", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "2026 수시 모집단위"},
+        {"name": "컴퓨터소프트웨어학과", "kind": "department", "majors": [], "source_url": "https://oku.korea.ac.kr/attach/202509/1756872350076_0.pdf", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "Renamed from 컴퓨터융합소프트웨어학과 for 2026 ([명칭변경]). Recruits in 정시 다군 (2026 정시모집요강)."},
+        {"name": "전자및정보공학과", "kind": "department", "majors": [], "source_url": "https://oku.korea.ac.kr/attach/202509/1756872350076_0.pdf", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "2026 수시 모집단위"},
+        {"name": "생명정보공학과", "kind": "department", "majors": [], "source_url": "https://oku.korea.ac.kr/attach/202509/1756872350076_0.pdf", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "2026 수시 모집단위"},
+        {"name": "식품생명공학과", "kind": "department", "majors": [], "source_url": "https://oku.korea.ac.kr/attach/202509/1756872350076_0.pdf", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "2026 수시 모집단위"},
+        {"name": "전자·기계융합공학과", "kind": "department", "majors": [], "source_url": "https://oku.korea.ac.kr/attach/202509/1756872350076_0.pdf", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "2026 수시 모집단위"},
+        {"name": "환경시스템공학과", "kind": "department", "majors": [], "source_url": "https://oku.korea.ac.kr/attach/202509/1756872350076_0.pdf", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "2026 수시 모집단위"},
+        {"name": "미래모빌리티학과", "kind": "department", "majors": [], "source_url": "https://oku.korea.ac.kr/attach/202509/1756872350076_0.pdf", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "2026 수시 모집단위. Founded 2022 (per the sejong.korea.ac.kr 과학기술대학 page)."},
+        {"name": "지능형반도체공학과", "kind": "department", "majors": [], "source_url": "https://oku.korea.ac.kr/attach/202509/1756872350076_0.pdf", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "2026 수시 모집단위. Department pages give 2021-03 as the founding date."},
+        {"name": "인공지능사이버보안학과", "kind": "department", "majors": [], "source_url": "https://oku.korea.ac.kr/attach/202509/1756872350076_0.pdf", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "Appears in the 2026 수시 table. Also on the oku 학과 안내 page (MENU_ID=890&CONTENTS_NO=1). Department site: https://caas.korea.ac.kr/sites/secu/index.do"},
+        {"name": "디지털헬스케어공학과", "kind": "department", "majors": [], "source_url": "https://oku.korea.ac.kr/attach/202410/1729055554339_0.pdf", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "[신설] in the 2025 정시모집요강. Also in the 2026 수시 table and the 2026 시행계획 (수능 지정응시영역 변경). The college assignment to 과학기술대학 is inferred: the 2026 시행계획 groups it with the science units, but no excerpt names the college."},
+        {"name": "스마트도시학부", "kind": "faculty", "majors": [], "source_url": "https://oku.korea.ac.kr/attach/202603/1774580716604_0.pdf", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "Appears in the 정시모집요강 (자연 계열, 가군) and in the 2026 수시 materials. Founded 2021-03. No sub-majors were seen. The oku 학과 안내 page (MENU_ID=890&CONTENTS_NO=1) lists it with the 과학기술대학 units."}
+      ]
+    },
+    {
+      "name": "글로벌비즈니스대학",
+      "source_url": "https://registrar.korea.ac.kr/_res/eduinfo/etc/info_caution_sejong_global_2024.pdf",
+      "source_type": "SECONDARY",
+      "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL",
+      "units": [
+        {"name": "글로벌학부", "kind": "faculty", "majors": [
+          {"name": "한국학전공", "kind": "major", "majors": [], "source_url": "https://oku.korea.ac.kr/sejong/cms/FR_CON/index.do?MENU_ID=930", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "Shown as '글로벌학부(한국학전공)'. Marked [교직] in the 2025 정시."},
+          {"name": "중국학전공", "kind": "major", "majors": [], "source_url": "https://oku.korea.ac.kr/sejong/cms/FR_CON/index.do?MENU_ID=930", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "Shown as '글로벌학부(중국학전공)'. Marked [교직] in the 2025 정시."},
+          {"name": "영미학전공", "kind": "major", "majors": [], "source_url": "https://oku.korea.ac.kr/sejong/cms/FR_CON/index.do?MENU_ID=930", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "Shown as '글로벌학부(영미학전공)'. Marked [교직] in the 2025 정시."},
+          {"name": "독일학전공", "kind": "major", "majors": [], "source_url": "https://registrar.korea.ac.kr/_res/eduinfo/etc/info_caution_sejong_global_2024.pdf", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "UNCERTAIN for 2026. It appears in the 2024 수강신청 유의사항 (전공 학점 기준 and its own office contact) but NOT in the oku 학과 안내 모집단위 list. It may still be taught to enrolled students without taking freshman applicants. Verify."}
+        ], "source_url": "https://oku.korea.ac.kr/sejong/cms/FR_CON/index.do?MENU_ID=930", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "College assignment to 글로벌비즈니스대학 is inferred from the registrar 'global' PDF and 자유전공학부(글로벌비즈니스). No excerpt shows the explicit pairing."},
+        {"name": "융합경영학부", "kind": "faculty", "majors": [
+          {"name": "글로벌경영전공", "kind": "major", "majors": [], "source_url": "https://oku.korea.ac.kr/attach/202509/1756872350076_0.pdf", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "The registrar PDF names it '글로벌비즈니스대학 글로벌경영전공'."},
+          {"name": "디지털경영전공", "kind": "major", "majors": [], "source_url": "https://oku.korea.ac.kr/attach/202509/1756872350076_0.pdf", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": ""}
+        ], "source_url": "https://oku.korea.ac.kr/attach/202509/1756872350076_0.pdf", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "2026 수시 모집단위 lists 융합경영학부 with 글로벌경영전공 and 디지털경영전공."}
+      ]
+    },
+    {
+      "name": "공공정책대학",
+      "source_url": "https://oku.korea.ac.kr/sejong/cms/FR_CON/index.do?MENU_ID=890&CONTENTS_NO=5",
+      "source_type": "SECONDARY",
+      "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL",
+      "note": "No excerpt shows the college heading '공공정책대학' directly. The college is inferred from 자유전공학부(공공정책), the registrar file info_caution_sejong_public_2024.pdf, and the oku 학과 안내 page CONTENTS_NO=5, which groups the four units below.",
+      "units": [
+        {"name": "정부행정학부", "kind": "faculty", "majors": [], "source_url": "https://oku.korea.ac.kr/sejong/cms/FR_CON/index.do?MENU_ID=890&CONTENTS_NO=5", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "Renamed from 행정학 계열 in 2017 (news). 2026 정시 다군."},
+        {"name": "공공사회·통일외교학부", "kind": "faculty", "majors": [
+          {"name": "공공사회학전공", "kind": "major", "majors": [], "source_url": "https://oku.korea.ac.kr/sejong/cms/FR_CON/index.do?MENU_ID=890&CONTENTS_NO=5", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": ""},
+          {"name": "통일외교안보전공", "kind": "major", "majors": [], "source_url": "https://oku.korea.ac.kr/sejong/cms/FR_CON/index.do?MENU_ID=890&CONTENTS_NO=5", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": ""}
+        ], "source_url": "https://oku.korea.ac.kr/sejong/cms/FR_CON/index.do?MENU_ID=890&CONTENTS_NO=5", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "2026 정시 recruits at the 학부 level (다군)."},
+        {"name": "경제통계학부", "kind": "faculty", "majors": [], "source_url": "https://oku.korea.ac.kr/sejong/cms/FR_CON/index.do?MENU_ID=890&CONTENTS_NO=5", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "Its current majors are not confirmed. The registrar PDF lists legacy office contacts for 경제정책학전공 and 국가통계전공 / 빅데이터전공, which may be pre-reorganization."},
+        {"name": "빅데이터사이언스학부", "kind": "faculty", "majors": [], "source_url": "https://oku.korea.ac.kr/sejong/cms/FR_CON/index.do?MENU_ID=890&CONTENTS_NO=5", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "Merges the former 국가통계전공 and 빅데이터전공 into one 학부 (oku 학과 안내 page)."}
+      ]
+    },
+    {
+      "name": "문화스포츠대학",
+      "source_url": "https://oku.korea.ac.kr/sejong/cms/FR_CON/index.do?MENU_ID=930",
+      "source_type": "SECONDARY",
+      "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL",
+      "units": [
+        {"name": "국제스포츠학부", "kind": "faculty", "majors": [
+          {"name": "스포츠비즈니스전공", "kind": "major", "majors": [], "source_url": "https://scholar.korea.ac.kr/researcher-profile?ep=1923", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "Shown as '문화스포츠대학 (국제스포츠학부 스포츠비즈니스전공)'. Also seen as '세종 문화스포츠대학 국제스포츠학부 스포츠비즈니스전공' in a gup.korea.ac.kr document."},
+          {"name": "스포츠과학전공", "kind": "major", "majors": [], "source_url": "https://registrar.korea.edu/_res/eduinfo/etc/info_caution_sejong_cultural.pdf", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "WEAK: only in a search summary of the 수강신청 유의사항 ('국제스포츠학부 스포츠과학전공 / 스포츠비즈니스전공'). A second search did not confirm it. Verify."}
+        ], "source_url": "https://oku.korea.ac.kr/sejong/cms/FR_CON/index.do?MENU_ID=930", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "2026 수시 모집단위 at the 학부 level."},
+        {"name": "문화유산융합학부", "kind": "faculty", "majors": [], "source_url": "https://oku.korea.ac.kr/sejong/cms/FR_CON/index.do?MENU_ID=930", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "2026 수시 모집단위. The registrar PDF lists the office '고고미술사학전공 / 문화ICT융합전공' under this 학부, but these majors were not confirmed for 2026."},
+        {"name": "문화창의학부", "kind": "faculty", "majors": [
+          {"name": "미디어문예창작전공", "kind": "major", "majors": [], "source_url": "https://oku.korea.ac.kr/sejong/cms/FR_CON/index.do?MENU_ID=930", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "Shown as '문화창의학부(미디어문예창작전공)'. Founded 1998."},
+          {"name": "문화콘텐츠전공", "kind": "major", "majors": [], "source_url": "https://oku.korea.ac.kr/sejong/cms/FR_CON/index.do?MENU_ID=930", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "Shown as '문화창의학부(문화콘텐츠전공)'."}
+        ], "source_url": "https://oku.korea.ac.kr/sejong/cms/FR_CON/index.do?MENU_ID=930", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "2026 수시 모집단위 at the 학부 level."}
+      ]
+    },
+    {
+      "name": "약학대학",
+      "source_url": "https://sejong.korea.ac.kr/koreaSejong/7850/subview.do",
+      "source_type": "SECONDARY",
+      "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL",
+      "units": [
+        {"name": "약학과", "kind": "department", "majors": [], "source_url": "https://oku.korea.ac.kr/sejong/cms/FR_CON/index.do?MENU_ID=890&CONTENTS_NO=6", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "Founded 2011, now a 6년제 integrated program. Takes 2026 freshman applicants. The 2027 시행계획 says 논술(지역인재) selects only for 약학과."},
+        {"name": "첨단융합신약학과", "kind": "department", "majors": [], "source_url": "https://oku.korea.ac.kr/attach/202410/1729055554339_0.pdf", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "[신설] in the 2025 정시모집요강 (27 places in 2025). The oku 학과 안내 page (CONTENTS_NO=6) summary places it under 약학대학. It does not lead to a pharmacist licence (namu.wiki, a SECONDARY source)."}
+      ]
+    },
+    {
+      "name": "자유전공학부 (광역 모집단위)",
+      "source_url": "https://oku.korea.ac.kr/attach/202509/1756872350076_0.pdf",
+      "source_type": "SECONDARY",
+      "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL",
+      "note": "Not a 단과대학. These are 2026 [신설] 전공자율선택제 admission units, listed under '광역' in the 정시 tables. Each is tied to one college.",
+      "units": [
+        {"name": "자유전공학부(과학기술)", "kind": "track", "majors": [], "source_url": "https://oku.korea.ac.kr/attach/202509/1756872350076_0.pdf", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "2026 신설, 정시 가군"},
+        {"name": "자유전공학부(글로벌비즈니스)", "kind": "track", "majors": [], "source_url": "https://oku.korea.ac.kr/attach/202509/1756872350076_0.pdf", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "2026 신설, 정시 다군"},
+        {"name": "자유전공학부(공공정책)", "kind": "track", "majors": [], "source_url": "https://oku.korea.ac.kr/attach/202509/1756872350076_0.pdf", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "2026 신설"},
+        {"name": "자유전공학부(문화스포츠)", "kind": "track", "majors": [], "source_url": "https://oku.korea.ac.kr/attach/202509/1756872350076_0.pdf", "source_type": "SECONDARY", "evidence": "SEARCH_EXCERPT_OF_OFFICIAL_URL", "note": "2026 신설, 정시 나군 (9 places in one version)"}
+      ]
+    }
+  ],
+  "unreachable": [
+    {"url": "https://sejong.korea.ac.kr", "error": "WebFetch: getaddrinfo ENOTFOUND; curl: CONNECT tunnel failed, response 403 (egress proxy connect_rejected)"},
+    {"url": "https://sejong.korea.ac.kr/sites/kr/index.do", "error": "WebFetch: getaddrinfo ENOTFOUND; curl: CONNECT 403"},
+    {"url": "https://ipsi.korea.ac.kr", "error": "WebFetch: getaddrinfo ENOTFOUND; curl: CONNECT 403"},
+    {"url": "https://oku.korea.ac.kr/attach/202509/1756872350076_0.pdf", "error": "WebFetch: getaddrinfo ENOTFOUND; curl to oku.korea.ac.kr: CONNECT 403"},
+    {"url": "https://registrar.korea.edu/_res/eduinfo/etc/info_caution_sejong_field.pdf", "error": "WebFetch: getaddrinfo ENOTFOUND; curl: CONNECT 403"},
+    {"url": "https://registrar.korea.edu/_res/eduinfo/etc/info_caution_sejong_cultural.pdf", "error": "WebFetch: getaddrinfo ENOTFOUND"},
+    {"url": "https://www.korea.ac.kr", "error": "curl: CONNECT 403"},
+    {"url": "https://ko.wikipedia.org/wiki/고려대학교_세종캠퍼스", "error": "WebFetch: getaddrinfo ENOTFOUND (secondary source also unreachable)"},
+    {"url": "https://www.academyinfo.go.kr", "error": "curl: CONNECT 403"}
+  ],
+  "legacy_or_unconfirmed_names_seen": [
+    "가속기과학과 (founded 2014, per the 과학기술대학 page; not in the 2026 모집단위)",
+    "자유공학부 / School of Liberal Engineering (older 과학기술대학 page version)",
+    "컴퓨터융합소프트웨어학과 (renamed 컴퓨터소프트웨어학과 for 2026)",
+    "디스플레이반도체물리학부 / 디스플레이융합전공 / 반도체물리전공 (merged into 반도체물리학부 from 2025)",
+    "수학과 (became 응용수리과학부 데이터계산과학전공)",
+    "경제정책학전공, 국가통계전공, 빅데이터전공 (legacy majors; 국가통계 and 빅데이터 became 빅데이터사이언스학부)",
+    "고고미술사학전공, 문화ICT융합전공 (under 문화유산융합학부 in the registrar PDF; 2026 status unconfirmed)",
+    "독일학전공 (2024 registrar PDF only)"
+  ]
+}

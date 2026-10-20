@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# harness-only: KUS 화면 하네스 실행기. 제품에 들어가지 않는다.
+HERE="$(cd "$(dirname "$0")" && pwd)"
+TS_SRC_ROOT="${TS_SRC_ROOT:-$PWD/src}" exec node --no-warnings --experimental-transform-types --import "$HERE/register.mjs" "$@"

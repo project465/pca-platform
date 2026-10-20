@@ -1,0 +1,144 @@
+/* KUS 학생 화면에만 있는 칸. **토큰을 새로 만들지 않는다**: 값은
+   `workspace.tokens.css` · `surface.css` 의 것을 읽는다. 이름은 전부
+   `kus-` 로 시작해서 공통 화면의 클래스와 겹치지 않는다 */
+
+.kus-testbar {
+  position: sticky; top: 0; z-index: 30;
+  background: #fff3d6; color: #6b4300; border-bottom: 1px solid #f1d9a0;
+  font-size: 12px; font-weight: 600; text-align: center; padding: 4px 12px;
+}
+.kus-topbar-school { margin-left: auto; font-size: 12px; color: var(--sf-ink-2); font-weight: 600; }
+.kus-rail-dept {
+  margin: 4px 6px 10px; padding: 8px 10px; border-radius: 10px;
+  background: rgba(255, 255, 255, .06); color: #dbe5f2; font-size: 12.5px; line-height: 1.45;
+}
+.kus-rail-foot {
+  margin-top: auto; display: flex; gap: 10px; align-items: center;
+  padding: 12px 6px 4px; border-top: 1px solid var(--cm-rail-line, rgba(255,255,255,.08));
+  color: var(--cm-rail-ink-on, #fff); font-size: 13px;
+}
+.kus-rail-foot b { display: block; font-weight: 600; }
+.kus-linkbtn {
+  background: none; border: 0; padding: 0; color: var(--cm-rail-ink, #9fb0c6);
+  font: inherit; font-size: 12px; cursor: pointer; text-decoration: underline;
+}
+.kus-navbtn { width: 100%; background: none; border: 0; font: inherit; text-align: left; cursor: pointer; }
+
+.kus-note {
+  margin: 12px 0; padding: 10px 14px; border-radius: var(--ui-r-sm, 10px);
+  font-size: 13.5px; line-height: 1.6;
+}
+.kus-note.is-warn { background: #fff7ea; border-left: 3px solid #d99a2b; color: #6b4300; }
+.kus-note.is-info { background: var(--sf-accent-soft, #eef5ff); border-left: 3px solid var(--sf-accent, #1c5fb0); color: var(--sf-ink, #13233a); }
+
+/* ── 홈: 상태 카드 넷 ─────────────────────────────────────────── */
+.kus-stats {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 18px 0 8px;
+}
+.kus-stat {
+  display: flex; flex-direction: column; gap: 6px; min-width: 0;
+  background: var(--sf-surface, #fff); border: 1px solid var(--sf-line, #e3e7ee);
+  border-radius: var(--ui-r, 14px); padding: 14px 16px; text-decoration: none; color: inherit;
+}
+a.kus-stat:hover { border-color: var(--sf-accent-line, #bcd6f2); }
+.kus-stat-k { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--sf-ink-2); font-weight: 600; }
+.kus-stat-k svg { color: var(--sf-accent, #1c5fb0); }
+.kus-stat-v { font-size: 17px; font-weight: 700; color: var(--sf-ink, #13233a); line-height: 1.35; }
+.kus-stat-s { font-size: 12.5px; color: var(--sf-ink-3, #66748a); line-height: 1.5; }
+.kus-pill {
+  display: inline-flex; align-items: center; gap: 4px; align-self: flex-start;
+  font-size: 11.5px; font-weight: 700; padding: 2px 9px; border-radius: 999px;
+  background: var(--sf-surface-2, #f1f4f8); color: var(--sf-ink-2);
+}
+.kus-pill.is-ok { background: #e3f4f1; color: #0f766e; }
+.kus-pill.is-go { background: #eaf2fd; color: #1c5fb0; }
+.kus-pill.is-warn { background: #fff3d6; color: #6b4300; }
+.kus-pill.is-test { background: #fde8e8; color: #a12f2f; }
+
+/* ── 묶음 두 줄 ───────────────────────────────────────────────── */
+.kus-cols { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 18px; margin-top: 10px; }
+.kus-panel {
+  background: var(--sf-surface, #fff); border: 1px solid var(--sf-line, #e3e7ee);
+  border-radius: var(--ui-r, 14px); padding: 16px 18px; margin: 14px 0 0; min-width: 0;
+}
+.kus-panel > h2 { margin-top: 0; }
+.kus-todo { list-style: none; margin: 0; padding: 0; counter-reset: k; }
+.kus-todo li {
+  counter-increment: k; display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px;
+  padding: 10px 0; border-bottom: 1px solid var(--sf-line-2, #eef1f5);
+}
+.kus-todo li:last-child { border-bottom: 0; }
+.kus-todo li::before {
+  content: counter(k); width: 24px; height: 24px; border-radius: 8px; display: grid; place-items: center;
+  background: var(--sf-accent-soft, #eef5ff); color: var(--sf-accent, #1c5fb0); font-weight: 700; font-size: 12.5px;
+}
+.kus-todo b { display: block; font-size: 14.5px; }
+.kus-todo small { display: block; color: var(--sf-ink-3); font-size: 12.5px; margin-top: 2px; line-height: 1.5; }
+.kus-todo a { font-size: 13px; font-weight: 600; color: var(--sf-accent, #1c5fb0); }
+
+.kus-kv { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 6px 12px; margin: 0; font-size: 14px; }
+.kus-kv dt { color: var(--sf-ink-3); font-size: 13px; }
+.kus-kv dd { margin: 0; line-height: 1.55; overflow-wrap: anywhere; }
+
+.kus-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.kus-table th { text-align: left; font-weight: 600; color: var(--sf-ink-2); padding: 8px 8px; border-bottom: 1.5px solid var(--sf-line); font-size: 12.5px; }
+.kus-table td { padding: 9px 8px; border-bottom: 1px solid var(--sf-line-2, #eef1f5); vertical-align: top; line-height: 1.5; }
+.kus-scroll { overflow-x: auto; }
+
+.kus-zone { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 9px; border-radius: 999px; white-space: nowrap; background: #eef1f5; color: #41506a; }
+.kus-zone.z1 { background: #e3f4f1; color: #0f766e; }
+.kus-zone.z2 { background: #eaf2fd; color: #1c5fb0; }
+.kus-zone.z3 { background: #f3efe6; color: #6a5a2f; }
+.kus-zone.z4 { background: #fbeeee; color: #a12f2f; }
+
+.kus-chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; }
+.kus-chips li { border: 1px solid var(--sf-line); border-radius: 10px; padding: 6px 11px; font-weight: 600; font-size: 13.5px; }
+.kus-chips li small { display: block; font-weight: 500; font-size: 11.5px; color: var(--sf-ink-3); }
+.kus-chips li.is-pick { background: var(--sf-accent-soft, #f3f8ff); border-color: var(--sf-accent-line, #bcd6f2); }
+
+.kus-plan { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.kus-plan > div { border: 1px solid var(--sf-line); border-radius: 12px; padding: 14px 16px; background: var(--sf-surface, #fff); }
+.kus-plan h3 { margin: 0 0 8px; font-size: 18px; color: var(--sf-ink); }
+.kus-plan ol { margin: 0; padding-left: 18px; font-size: 13.5px; line-height: 1.6; }
+.kus-plan li { margin-bottom: 8px; }
+
+.kus-visit { border: 1px solid var(--sf-line); border-radius: 12px; padding: 14px 16px; margin: 0 0 12px; background: var(--sf-surface, #fff); }
+.kus-visit-h { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0 0 8px; }
+.kus-visit-h b { font-size: 15.5px; }
+.kus-visit-h time { margin-left: auto; color: var(--sf-ink-3); font-size: 12.5px; }
+.kus-draft { background: var(--sf-surface-2, #f4f7fb); border-radius: 10px; padding: 12px 14px; line-height: 1.75; font-size: 14px; }
+
+/* ── 폼 ──────────────────────────────────────────────────────── */
+.kus-form { display: grid; gap: 18px; }
+.kus-field > label, .kus-field > legend { display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+.kus-field small { display: block; color: var(--sf-ink-3); font-size: 12.5px; margin: -2px 0 8px; }
+.kus-field fieldset, fieldset.kus-field { border: 0; padding: 0; margin: 0; }
+.kus-input, .kus-field select, .kus-field textarea {
+  width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid var(--sf-line); border-radius: 10px;
+  font: inherit; font-size: 15px; background: var(--sf-surface, #fff); color: var(--sf-ink);
+}
+.kus-field textarea { min-height: 88px; resize: vertical; }
+.kus-checks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.kus-checks label {
+  display: flex; gap: 9px; align-items: flex-start; border: 1px solid var(--sf-line); border-radius: 10px;
+  padding: 10px 12px; font-size: 14px; cursor: pointer; background: var(--sf-surface, #fff);
+}
+.kus-checks label:has(input:checked) { border-color: var(--sf-accent, #1c5fb0); background: var(--sf-accent-soft, #eef5ff); }
+.kus-checks input { margin-top: 3px; }
+.kus-checks small { display: block; color: var(--sf-ink-3); font-size: 11.5px; }
+.kus-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+@media (max-width: 1100px) {
+  .kus-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kus-cols { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  .kus-stats { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .kus-plan { grid-template-columns: minmax(0, 1fr); }
+  .kus-checks { grid-template-columns: minmax(0, 1fr); }
+  .kus-kv { grid-template-columns: minmax(0, 1fr); }
+  .kus-kv dt { margin-top: 6px; }
+  .kus-actions .cm-btn { flex: 1 1 100%; min-height: 48px; }
+  .kus-topbar-school { display: none; }
+}
+.kus-h3 { margin: 14px 0 6px; font-size: 14px; color: var(--sf-ink-2); }
