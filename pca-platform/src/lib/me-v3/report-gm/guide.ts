@@ -8,8 +8,13 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import type { VerifyLevel } from "./words";
 
+/** 목표 직무 기준으로 쓴 실행 과제. 다른 직무의 영역 문장을 끌어오지 않으려고 직무마다 따로 적는다 */
+export type Practice = { task: string; output: string; check: string };
+/** 그 직무에게 이 영역이 무엇인지(연결 이유) · 과제 문장을 영역 말로 쓸지 직무 말로 쓸지 · 과제 앞머리 */
+export type Lens = { why: string; mode: "domain" | "role"; ctx: string };
 export type RoleGuide = {
-  summary: string; responsibilities: string[];
+  summary: string; practiceWhere: string; practice: Record<string, Practice>; lens: Record<string, Lens>;
+  responsibilities: string[];
   process: { step: string; what: string }[];
   knowledge: string[]; tools: string[]; experiences: string[]; entry: string[];
   learnOrder: { step: string; why: string }[];

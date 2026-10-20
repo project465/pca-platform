@@ -330,41 +330,213 @@ export function strengths3(m: ResultModel): Strength3[] {
   });
 }
 
-/* ── 개발 우선순위 ────────────────────────────────────────────── */
+/* ── 개발 우선순위 = 목표 직무로 이어지는 실행 전략 ───────────────────── */
+/*
+ * 3차 판은 빈자리(gap) 순위를 그대로 실행 과제로 옮겼다. 그래서 경영기획을 목표로 한 학생에게
+ * 마케팅 영역의 빈자리가 ‘지난 캠페인 반응’ 과제로 섰고, 인사를 목표로 한 학생에게 고객 응대 과제가
+ * 맨 앞에 섰다. 빈자리 순위는 영역 안에서 무엇이 비었는지를 말할 뿐 학생의 목표를 모른다.
+ *
+ * 여기서는 사슬을 목표 직무에서 거꾸로 세운다: 목표 직무 → 그 직무의 업무 영역과 핵심 판단 →
+ * 그 자리의 실제 응답 → 실행 과제 → 남길 결과물. 빈자리는 이 사슬에 걸릴 때만 과제가 되고,
+ * 과제 문장은 목표 직무의 말(`practice` · `lens`)로 쓴다. 다른 직무의 영역 문장을 끌어오지 않는다.
+ * 사슬에 걸리지 않는 빈자리는 버리지 않고 `outside` 로 따로 적는다.
+ */
+export type Relation = "DIRECT" | "ROLE_DOMAIN" | "GOAL_UNASKED" | "SHARED";
+export const RELATION_TAG: Record<Relation, string> = {
+  DIRECT: "목표 직무의 핵심 판단",
+  ROLE_DOMAIN: "목표 직무의 업무 영역",
+  GOAL_UNASKED: "목표 직무 영역 · 경험 확인",
+  SHARED: "직무 공통 역량",
+};
+export type Chain = { goal: string; result: string; evidence: string; requirement: string; task: string; output: string };
+export type Priority3 = {
+  order: number; domain: string; code: string; axis: Axis | null; what: string; plain: string;
+  relation: Relation; relationTag: string; link: string;
+  why: string[]; where: string; task: string; how: string; todo: string; output: string; when: string; check: string; jobs: string[];
+  chain: Chain;
+};
+export type Outside = { domain: string; code: string; what: string; note: string; jobs: string[] };
+export type Strategy = { roleCode: string | null; roleName: string; rows: Priority3[]; outside: Outside[] };
 
-export type Priority3 = { order: number; domain: string; code: string; what: string; plain: string; why: string[]; how: string; output: string; when: string; check: string; jobs: string[] };
-export function priorities3(m: ResultModel): Priority3[] {
+const HB = 0xac00;
+const jong = (ch: string) => { const c = ch.charCodeAt(0) - HB; return c < 0 || c > 11171 ? -1 : c % 28; };
+const noJong = (ch: string) => { const c = ch.charCodeAt(0) - HB; return String.fromCharCode(HB + c - (c % 28)); };
+/** ‘~합니다 · ~남깁니다 · ~적습니다’ 로 끝난 과제 문장을 표에 쓰는 ‘~하기 · ~남기기 · ~적기’ 로 */
+export function asTodo(s: string): string {
+  const t = s.replace(/\.\s*$/, "");
+  if (/습니다$/.test(t)) return t.replace(/습니다$/, "기");
+  const m = t.match(/(.)니다$/);
+  if (m && jong(m[1]) === 17) {
+    const pre = t.slice(0, -3);
+    let stem = noJong(m[1]);
+    if (stem === "드" && pre.endsWith("만")) stem = "들";
+    return pre + stem + "기";
+  }
+  return t;
+}
+/** 영역 사전의 행동 문장(‘~를 정했다’)을 ‘~를 정하는 일’ 로 */
+const L2_TO: [RegExp, string][] = [
+  [/적어 두었다$/, "적어 두는 일"], [/견주었다$/, "견주는 일"], [/좁혔다$/, "좁히는 일"], [/남겼다$/, "남기는 일"],
+  [/옮겼다$/, "옮기는 일"], [/적었다$/, "적는 일"], [/썼다$/, "쓰는 일"], [/받았다$/, "받는 일"], [/정했다$/, "정하는 일"], [/했다$/, "하는 일"],
+];
+export function l2Work(s: string): string { for (const [re, to] of L2_TO) if (re.test(s)) return s.replace(re, to); return s; }
+/** 산업팩의 판단 이름(‘~를 두는가’)은 묻는 꼴이다: 문장 안에서는 ‘~하는 일’ 로 받는다 */
+export function dimWork(name: string): string {
+  return name.replace(/(을|를) 두는가$/, "$1 정해 두는 일").replace(/는가$/, "는 일").replace(/인가$/, "인 일");
+}
+/** 과제 끝에 붙는 한 마디: 무엇을 남겨야 다음 사람이(또 면접관이) 그 판단을 볼 수 있는가 */
+const FINISH: Record<Axis, string> = {
+  J1: "다루지 않기로 한 것과 그 까닭도 함께 적어 둡니다",
+  J2: "지표마다 재는 방법을 함께 적어 둡니다",
+  J3: "고른 까닭과 고르지 않은 안을 한 줄씩 남깁니다",
+  J4: "고른 방법의 한계도 한 줄 적어 둡니다",
+  J5: "다른 사람이 그것만 보고 이어서 할 수 있게 정리합니다",
+  J6: "비교한 조건(기간·대상)을 함께 적어 둡니다",
+  J7: "바꾼 뒤에 같은 문제가 줄었는지 다시 확인합니다",
+  J8: "누가 어떤 결정에 썼는지 한 줄로 남깁니다",
+};
+const LV_SAID: Record<number, string> = { 0: "해 본 적이 없다고 답했습니다", 1: "다른 사람이 정한 조건 안에서 해 봤다고 답했습니다", 2: "스스로 맡아 해 봤다고 답했지만 기준을 정한 장면은 아직입니다" };
+const AX_PREF: Axis[] = ["J2", "J3", "J5", "J1", "J6", "J4", "J7", "J8"];
+
+export function strategy3(m: ResultModel): Strategy {
   const core = coreOf(m);
   const roles = rolePacks(core);
-  const goalRole = roles.find((r) => r.code === m.targets.goal.role);
-  const goalInd = industryPacks(core).find((p) => p.code === m.targets.goal.industry);
   const byCode = new Map(m.domains.map((d) => [d.code, d]));
+  const role = roles.find((r) => r.code === m.targets.goal.role) ?? roles.find((r) => m.targets.roles.includes(r.code)) ?? null;
+  const goalInd = industryPacks(core).find((p) => p.code === m.targets.goal.industry);
   const actBy = new Map(m.actions.map((a) => [a.id, a]));
   const H: Record<string, string> = { NOW: "1~30일", NEXT: "31~90일", LATER: "4~6개월" };
-  const rows = m.gaps.map((g) => {
-    const why: string[] = []; let w = 0;
-    if (goalRole && g.axis && goalRole.required_axes?.includes(g.axis) && goalRole.core_ref?.td.includes(g.domain)) { w += 3; why.push(`목표 직무인 ${goalRole.name_ko}에서 반드시 보는 판단입니다`); }
-    const dim = goalInd?.judgement_dimensions.find((x) => x.domain === g.domain && x.axis === g.axis);
-    if (dim) { w += 2; why.push(`${goalInd!.name_ko} 산업에서는 ‘${askNoun(dim.name)}’가 이 판단이 쓰이는 대표 장면입니다`); }
-    if (g.kind === "REQUIRED_AXIS") { w += 1; why.push("이 영역의 일을 하려면 빠질 수 없는 판단입니다"); }
-    if (g.kind === "PARTIAL_EVIDENCE") why.push("해 본 경험은 있지만, 기준을 직접 정한 장면까지는 아직 보이지 않습니다");
-    if (g.kind === "OUTPUT" || g.kind === "OUTPUT_EVIDENCE") why.push("남긴 결과물이 없어 경험을 서류로 보여 주기 어렵습니다");
-    if (g.kind === "VERIFICATION") why.push("결과를 무엇과 비교했는지가 없어 성과를 말하기 어렵습니다");
-    const d = byCode.get(g.domain)!;
-    const dv = devOf(core, d, g, domainDef(core, g.domain));
-    const a = g.action_id ? actBy.get(g.action_id) : undefined;
-    const ver = domainDef(core, g.domain)?.verify_targets[0];
-    return { w: w * 100 - g.rank, row: {
-      order: 0, domain: domainName(core, g.domain), code: g.domain,
-      what: g.axis ? JUDGE[g.axis].name : "결과물 남기기", plain: g.axis ? JUDGE[g.axis].plain : "경험을 남이 볼 수 있는 문서·표로 남기는 일",
-      why: why.length ? why : ["결과 분석에서 다음에 채울 부분으로 고른 판단입니다"],
-      how: dv.how, output: dv.output, when: a ? H[a.horizon] : "31~90일",
-      check: ver ? `끝난 뒤 결과를 ${j(ver, "과와")} 비교한 기록이 남았는지` : "검토한 사람의 의견이 남았는지",
-      jobs: roles.filter((r) => (r.core_ref?.td ?? []).includes(g.domain) && (!g.axis || r.required_axes?.includes(g.axis))).map((r) => r.name_ko),
-    } as Priority3 };
+  if (!role) return { roleCode: null, roleName: "", rows: [], outside: [] };
+  const g = roleGuide(role.code);
+  const tds = role.core_ref?.td ?? [];
+  const req = (role.required_axes ?? []) as Axis[];
+  const lvIn = (td: string, ax: Axis) => { const d = byCode.get(td); return d ? axisLevel(d, ax) : null; };
+  const covered = (ax: Axis) => tds.some((td) => (lvIn(td, ax) ?? -1) >= 2);
+  const indLine = (td: string, ax: Axis | null) => {
+    const dim = goalInd?.judgement_dimensions.find((x) => x.domain === td && (!ax || x.axis === ax));
+    return dim ? `${goalInd!.name_ko} 산업에서는 ${j(dimWork(dim.name), "이가")} 특히 중요합니다(${dim.why}).` : "";
+  };
+  /** 같은 판단을 목표 직무 밖의 영역에서 해 봤다면 그 경험을 옮겨 쓸 수 있다: 그 연결 이유를 적는다 */
+  const transfer = (ax: Axis) => {
+    const src = m.domains.find((d) => !tds.includes(d.code) && asked(d) && (axisLevel(d, ax) ?? -1) >= 2);
+    if (!src) return "";
+    const own = src.owned.includes(ax);
+    return `‘${JUDGE[ax].name}’는 ${domainName(core, src.code)}에서 ${own ? "기준까지 직접 정했다고" : "스스로 맡아 해 봤다고"} 답했습니다. ${role.name_ko}에서는 같은 판단이 ${andJoin((role.decides ?? []).slice(0, 2))}을 정할 때 쓰이므로, 그 경험을 이 직무의 장면으로 옮겨 설명할 수 있습니다.`;
+  };
+  const evidenceIn = (td: string) => {
+    const d = byCode.get(td);
+    if (!d || !asked(d)) return "이번에 묻지 않음";
+    const ev = evidenceOf(d);
+    const xs = [...ev.decisions, ...ev.acts].slice(0, 2).map(quoted);
+    return xs.length ? `고른 근거 ${xs.join(", ")}${ev.artifacts.length ? ` · 결과물 ${join(ev.artifacts)}` : ""}` : "고른 근거 항목 없음";
+  };
+  type Cand = Priority3 & { w: number; key: string; mode: "domain" | "role" };
+  const cands: Cand[] = [];
+  const make = (td: string, ax: Axis, relation: Relation, w: number, extraWhy: string[], when: string, gapKind?: string): Cand | null => {
+    const lens = g?.lens[td];
+    const def = domainDef(core, td);
+    const pr = g?.practice[ax];
+    const mode: "domain" | "role" = relation === "SHARED" ? "role" : lens?.mode ?? "role";
+    let where: string, task: string, output: string;
+    if (mode === "domain" && def?.axes?.[ax]?.l2) {
+      where = lens?.ctx ?? g?.practiceWhere ?? "";
+      task = `${j(l2Work(def.axes[ax].l2), "을를")} 직접 맡아 보고, ${FINISH[ax]}.`;
+      output = ax === "J5" ? (def.artifacts[0] ?? pr?.output ?? "결과 문서") : (pr?.output ?? "결과 기록");
+    } else if (pr) {
+      where = relation === "SHARED" ? (g?.practiceWhere ?? "") : (lens?.ctx ?? g?.practiceWhere ?? "");
+      task = pr.task.endsWith(".") ? pr.task : pr.task + ".";
+      output = pr.output;
+    } else return null;
+    const comma = /(때|로)$/.test(where) ? "," : "";
+    const how = `${where}${comma} ${task}`.trim();
+    const dn = domainName(core, td);
+    const lv = lvIn(td, ax);
+    const result = lv === null ? `${dn} · 이번 검사에서 자세히 묻지 않았습니다` : `${dn} · ‘${JUDGE[ax].name}’: ${LV_SAID[Math.min(lv, 2)] ?? "기준까지 직접 정했다고 답했습니다"}`;
+    const requirement = relation === "DIRECT"
+      ? `${role.name_ko}에서 꼭 필요한 판단 ‘${JUDGE[ax].name}’`
+      : relation === "SHARED" ? `${role.name_ko}에서 꼭 필요한 판단 ‘${JUDGE[ax].name}’(다른 영역의 경험을 옮겨 씀)`
+        : `${role.name_ko}의 업무 영역 ${dn}: ${lens?.why.replace(/\.$/, "") ?? ""}`;
+    const link = relation === "DIRECT"
+      ? `‘${JUDGE[ax].name}’는 ${role.name_ko}에서 꼭 필요한 판단인데, 이 직무의 업무 영역인 ${dn}에서 아직 확인되지 않았습니다.`
+      : relation === "SHARED" ? (transfer(ax) || `‘${JUDGE[ax].name}’는 ${role.name_ko}에서 꼭 필요한 판단인데, 지금 응답 어디에서도 스스로 해 본 단계로 확인되지 않았습니다.`)
+        : `${j(dn, "은는")} ${lens?.why ?? `${role.name_ko}와 이어지는 영역입니다.`}`;
+    const why = [link, ...extraWhy].filter(Boolean);
+    const tr = relation !== "SHARED" && req.includes(ax) && !covered(ax) ? transfer(ax) : "";
+    if (tr) why.push(tr);
+    const ind = indLine(td, ax); if (ind) why.push(ind);
+    if (gapKind === "VERIFICATION") why.push("결과를 무엇과 비교했는지가 없어, 지금은 성과를 숫자로 말하기 어렵습니다.");
+    if (gapKind === "OUTPUT" || gapKind === "OUTPUT_EVIDENCE") why.push("남긴 결과물이 없어, 지금은 이 경험을 서류로 보여 주기 어렵습니다.");
+    if (gapKind === "PARTIAL_EVIDENCE") why.push("해 본 경험은 있지만, 기준을 직접 정한 장면까지는 아직 응답에서 보이지 않습니다.");
+    return {
+      order: 0, domain: dn, code: td, axis: ax, what: JUDGE[ax].name, plain: JUDGE[ax].plain,
+      relation, relationTag: RELATION_TAG[relation], link, why, where, task, how, todo: asTodo(task), output, when,
+      check: pr?.check ?? "남긴 결과물만 보고 내가 무엇을 판단했는지 알 수 있는가",
+      jobs: [role.name_ko, ...roles.filter((r) => r.code !== role.code && (r.core_ref?.td ?? []).includes(td)).map((r) => r.name_ko)],
+      chain: { goal: `${role.name_ko}${goalInd ? ` · ${goalInd.name_ko}` : ""}`, result, evidence: relation === "SHARED" ? "다른 영역의 응답" : evidenceIn(td), requirement, task: asTodo(task), output },
+      w, key: mode === "role" ? `role:${ax}` : `dom:${td}:${ax}`, mode,
+    };
+  };
+  const KB: Record<string, number> = { REQUIRED_AXIS: 4, AXIS: 3, VERIFICATION: 2, OUTPUT: 2, OUTPUT_EVIDENCE: 2, PARTIAL_EVIDENCE: 1 };
+  const outside: Outside[] = [];
+  for (const gp of m.gaps) {
+    const ax = (gp.axis ?? (gp.kind === "VERIFICATION" ? "J6" : "J5")) as Axis;
+    const idx = tds.indexOf(gp.domain);
+    const a = gp.action_id ? actBy.get(gp.action_id) : undefined;
+    const when = a ? H[a.horizon] : "31~90일";
+    const dim = goalInd?.judgement_dimensions.some((x) => x.domain === gp.domain && x.axis === ax) ? 3 : 0;
+    if (idx < 0) {
+      if (req.includes(ax) && !covered(ax)) { const c = make(gp.domain, ax, "SHARED", 58 + (KB[gp.kind] ?? 0), [], when, gp.kind); if (c) cands.push(c); }
+      else outside.push({ domain: domainName(core, gp.domain), code: gp.domain, what: JUDGE[ax].name,
+        note: `${j(domainName(core, gp.domain), "은는")} ${role.name_ko}의 업무 영역이 아니어서 이번 실행 전략에서 뺐습니다. 이 영역을 쓰는 직무(${roles.filter((r) => (r.core_ref?.td ?? []).includes(gp.domain)).map((r) => r.name_ko).join(" · ") || "—"})도 함께 볼 때 참고하세요.`,
+        jobs: roles.filter((r) => (r.core_ref?.td ?? []).includes(gp.domain)).map((r) => r.name_ko) });
+      continue;
+    }
+    const direct = req.includes(ax) && !covered(ax);
+    const base = direct ? 100 + (2 - idx) * 6 : idx === 0 ? 80 : 50 + (2 - idx) * 2 - ((lvIn(tds[0], ax) ?? -1) >= 2 ? 10 : 0);
+    const c = make(gp.domain, ax, direct ? "DIRECT" : "ROLE_DOMAIN", base + (KB[gp.kind] ?? 0) + dim, [], when, gp.kind);
+    if (c) cands.push(c);
+  }
+  /* 목표 직무의 업무 영역인데 이번 검사에서 묻지 않은 곳: 첫 경험을 만들거나, 이미 한 일을 기록으로 남길 자리 */
+  tds.forEach((td, idx) => {
+    const d = byCode.get(td);
+    if (!d || asked(d)) return;
+    const prefer = [...req, ...AX_PREF.filter((x) => !req.includes(x))];
+    const n = idx === 0 ? 2 : 1;
+    let k = 0;
+    for (const ax of prefer) {
+      if (k >= n) break;
+      if (g?.lens[td]?.mode !== "domain") break;
+      const iw = d.interest === "HIGH" ? 8 : d.interest === "MID" ? 3 : 0;
+      const c = make(td, ax, "GOAL_UNASKED", 70 + iw + (2 - idx) * 2 - k, [
+        `이번 검사에서는 이 영역의 판단을 자세히 묻지 않았${d.interest ? `고, ${INTEREST_SAID[d.interest]} 답했습니다` : "습니다"}. 해 본 일이 있다면 그 장면을 경험 기록에 먼저 남기고, 없다면 다음 과제에서 처음 맡아 봅니다.`,
+      ], "1~30일");
+      if (c) { cands.push(c); k++; }
+    }
   });
-  return rows.sort((a, b) => b.w - a.w).slice(0, 5).map((r, i) => ({ ...r.row, order: i + 1 }));
+  /* 핵심 판단인데 위 어디에도 과제가 서지 않은 것: 직무 공통 역량으로 잇는다 */
+  for (const ax of req) if (!covered(ax) && !cands.some((c) => c.axis === ax)) { const c = make(tds[0], ax, "SHARED", 60, [], "31~90일"); if (c) cands.push(c); }
+
+  /* 고르기: 같은 과제를 두 번 세우지 않고, 직무 말로 쓴 과제는 같은 판단을 한 번만 세운다.
+     중심 영역은 셋까지, 나머지 영역은 하나씩 */
+  const picked: Cand[] = [];
+  for (const c of cands.sort((a, b) => b.w - a.w)) {
+    if (picked.length >= 5) break;
+    if (picked.some((p) => p.key === c.key || p.how === c.how)) continue;
+    if (c.mode === "role" && picked.some((p) => p.axis === c.axis)) continue;
+    const cap = c.code === tds[0] ? 3 : 1;
+    if (picked.filter((p) => p.code === c.code).length >= cap) continue;
+    picked.push(c);
+  }
+  /* 읽는 차례: 핵심 판단 → 중심 영역 → 경험 확인 → 공통 역량 → 다른 업무 영역, 같은 무리 안에서는 일의 흐름(J1→J8) */
+  const tier = (c: Cand) => c.relation === "DIRECT" ? 0 : c.relation === "ROLE_DOMAIN" && c.code === tds[0] ? 1 : c.relation === "GOAL_UNASKED" ? 2 : c.relation === "SHARED" ? 3 : 4;
+  picked.sort((a, b) => tier(a) - tier(b) || AXES.indexOf(a.axis!) - AXES.indexOf(b.axis!));
+  return {
+    roleCode: role.code, roleName: role.name_ko,
+    rows: picked.map(({ w: _w, key: _k, mode: _m, ...r }, i) => ({ ...r, order: i + 1 })),
+    outside,
+  };
 }
+export function priorities3(m: ResultModel): Priority3[] { return strategy3(m).rows; }
 
 /* ── 직무 방향 ────────────────────────────────────────────────── */
 
