@@ -1,0 +1,1907 @@
+{
+  "schema": "sejong-orgs.0",
+  "status": "PREVIEW_ONLY",
+  "checked_on": "2026-10-20",
+  "rules": [
+    "채용 여부는 확인하지 않는다 (hiring.status 는 UNVERIFIED 고정)",
+    "사업장 소재지 기준",
+    "추천 표현 금지",
+    "verify 는 검색 발췌 기준이다. 원문 재확인 전에는 결과지에 내지 않는다 (display_ready=false)",
+    "location_basis=UNCONFIRMED 또는 verify 가 SECONDARY_ONLY·CONFLICTING 이면 원문 확인 뒤에도 결과지 후보에서 뺀다"
+  ],
+  "orgs": [
+    {
+      "id": "SJ-001",
+      "name": "한국개발연구원(KDI)",
+      "org_type": "RESEARCH_INSTITUTE",
+      "region_scope": "SEJONG",
+      "location_basis": "HQ_IN_SEJONG",
+      "hq": {
+        "address": "세종특별자치시 남세종로 263 (반곡동)",
+        "src": [
+          "S1",
+          "S2"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "본원",
+          "kind": "HQ",
+          "address": "세종특별자치시 남세종로 263 (반곡동)",
+          "src": [
+            "S1",
+            "S2"
+          ]
+        }
+      ],
+      "industry_text": "국무총리 산하 정부출연 경제정책 연구기관",
+      "job_area_hints": [
+        "연구"
+      ],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_SINGLE",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "KDI 찾아오시는 길",
+          "url": "https://www.kdi.re.kr/infomation/location",
+          "checked_on": "2026-10-20",
+          "confirms": "주소 세종특별자치시 남세종로 263, 대표전화 044-550-4114"
+        },
+        {
+          "id": "S2",
+          "kind": "OFFICIAL",
+          "title": "KDI 경제교육·정보센터 오시는길",
+          "url": "https://eiec.kdi.re.kr/center/map.do",
+          "checked_on": "2026-10-20",
+          "confirms": "같은 주소(남세종로 263) 표기, 우편번호 30147로 표기"
+        }
+      ],
+      "notes": "우편번호 표기가 본원 페이지(30149)와 센터 페이지(30147)에서 다름. 두 출처 모두 KDI 자체 사이트라 OFFICIAL_SINGLE로 둠. ALIO 기관정보 페이지는 검색에서 찾지 못함. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-002",
+      "name": "한국조세재정연구원(KIPF)",
+      "org_type": "RESEARCH_INSTITUTE",
+      "region_scope": "SEJONG",
+      "location_basis": "HQ_IN_SEJONG",
+      "hq": {
+        "address": "세종특별자치시 시청대로 336",
+        "src": [
+          "S1"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "본원",
+          "kind": "HQ",
+          "address": "세종특별자치시 시청대로 336 (우 30147)",
+          "src": [
+            "S1",
+            "S2"
+          ]
+        }
+      ],
+      "industry_text": "조세·재정 정책 연구 정부출연연구기관",
+      "job_area_hints": [
+        "연구"
+      ],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_CROSSCHECKED",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "찾아오시는길 > 연구원안내 > 한국조세재정연구원",
+          "url": "https://www.kipf.re.kr/kor/About_Location.do",
+          "checked_on": "2026-10-20",
+          "confirms": "주소 (30147) 세종특별자치시 시청대로 336, Tel 044-414-2114"
+        },
+        {
+          "id": "S2",
+          "kind": "ALIO",
+          "title": "ALIO 게시 한국조세재정연구원 채용공고 첨부문서",
+          "url": "https://www.alio.go.kr/download/download.json?fileNo=2799870",
+          "checked_on": "2026-10-20",
+          "confirms": "근무지 표기 '세종특별자치시 시청대로 336' (2022년 무렵 문서)"
+        }
+      ],
+      "notes": "ALIO 출처는 기관정보 페이지가 아니라 ALIO에 게시된 공고 첨부문서이며, 이 데이터셋은 채용 여부를 판단하지 않음. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-003",
+      "name": "한국노동연구원(KLI)",
+      "org_type": "RESEARCH_INSTITUTE",
+      "region_scope": "SEJONG",
+      "location_basis": "HQ_IN_SEJONG",
+      "hq": {
+        "address": "세종특별자치시 시청대로 370 세종국책연구단지 경제정책동 5~7층",
+        "src": [
+          "S1"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "본원",
+          "kind": "HQ",
+          "address": "세종특별자치시 시청대로 370 세종국책연구단지 경제정책동 5~7층 (우 30147)",
+          "src": [
+            "S1"
+          ]
+        }
+      ],
+      "industry_text": "노동정책 연구 정부출연연구기관",
+      "job_area_hints": [
+        "연구"
+      ],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_SINGLE",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "한국노동연구원 찾아오시는길",
+          "url": "https://www.kli.re.kr/menu.es?mid=a10508000000",
+          "checked_on": "2026-10-20",
+          "confirms": "주소 (30147) 세종특별자치시 시청대로 370 세종국책연구단지 경제정책동 5~7층, 대표 044-287-6114"
+        }
+      ],
+      "notes": "ALIO 검색 결과에는 소재지 값이 노출되지 않아 교차확인 못 함. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-004",
+      "name": "한국직업능력연구원(KRIVET)",
+      "org_type": "RESEARCH_INSTITUTE",
+      "region_scope": "SEJONG",
+      "location_basis": "HQ_IN_SEJONG",
+      "hq": {
+        "address": "세종특별자치시 시청대로 370 세종국책연구단지 사회정책동(D동) 8~12층",
+        "src": [
+          "S1",
+          "S2"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "본원",
+          "kind": "HQ",
+          "address": "세종특별자치시 시청대로 370 세종국책연구단지 사회정책동(D동) 8~12층 (우 30147)",
+          "src": [
+            "S1",
+            "S2"
+          ]
+        }
+      ],
+      "industry_text": "직업교육·훈련·자격 정책 연구 정부출연연구기관",
+      "job_area_hints": [
+        "연구"
+      ],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_CROSSCHECKED",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "KRIVET 오시는 길",
+          "url": "https://www.krivet.re.kr/kor/sub.do?menuSn=37",
+          "checked_on": "2026-10-20",
+          "confirms": "주소 세종특별자치시 시청대로 370 세종국책연구단지 사회정책동(D동) 8~12층, 044-415-5000"
+        },
+        {
+          "id": "S2",
+          "kind": "ALIO",
+          "title": "ALIO 기관 경영공시 (구 명칭 한국직업능력개발원)",
+          "url": "http://www.alio.go.kr/managementOrganView.do?seq=C0264&sname=한국직업능력개발원",
+          "checked_on": "2026-10-20",
+          "confirms": "소재지 세종특별자치시 시청대로 370(반곡동) 세종국책연구단지 사회정책동(D동)"
+        }
+      ],
+      "notes": "ALIO 페이지는 옛 기관명(한국직업능력개발원)으로 색인되어 있음. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-005",
+      "name": "국토연구원(KRIHS)",
+      "org_type": "RESEARCH_INSTITUTE",
+      "region_scope": "SEJONG",
+      "location_basis": "HQ_IN_SEJONG",
+      "hq": {
+        "address": "세종특별자치시 국책연구원로 5 (반곡동)",
+        "src": [
+          "S1"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "본원",
+          "kind": "HQ",
+          "address": "세종특별자치시 국책연구원로 5 (반곡동) (우 30147)",
+          "src": [
+            "S1"
+          ]
+        }
+      ],
+      "industry_text": "국토·도시·주택·교통 정책 연구 정부출연연구기관",
+      "job_area_hints": [
+        "연구"
+      ],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_SINGLE",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "국토연구원 오시는 길",
+          "url": "https://www.krihs.re.kr/menu.es?mid=a10307000000",
+          "checked_on": "2026-10-20",
+          "confirms": "주소 세종특별자치시 국책연구원로 5 (반곡동), 대표 044-960-0114"
+        },
+        {
+          "id": "S2",
+          "kind": "ALIO",
+          "title": "ALIO 게시 국토연구원 위촉직 공개채용 공고",
+          "url": "https://www.alio.go.kr/information/informationRecruitDtl.do?seq=264657&s_date=2023.05.07&e_date=2023.12.07&order=IDATE&pageNo=1",
+          "checked_on": "2026-10-20",
+          "confirms": "근무지 '세종시 소재 국토연구원' (시 단위까지만 확인, 도로명 없음)"
+        }
+      ],
+      "notes": "ALIO 공고는 시 단위만 일치해 도로명 주소 기준으로는 OFFICIAL_SINGLE로 분류. 공고는 과거 것이며 현재 채용 여부와 무관. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-006",
+      "name": "한국환경연구원(KEI)",
+      "org_type": "RESEARCH_INSTITUTE",
+      "region_scope": "SEJONG",
+      "location_basis": "HQ_IN_SEJONG",
+      "hq": {
+        "address": "세종특별자치시 시청대로 370 세종국책연구단지 B동(과학·인프라동) 8~11층",
+        "src": [
+          "S1"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "본관",
+          "kind": "HQ",
+          "address": "세종특별자치시 시청대로 370 세종국책연구단지 B동(과학·인프라동) 8~11층 (우 30147)",
+          "src": [
+            "S1"
+          ]
+        },
+        {
+          "label": "별관",
+          "kind": "OFFICE",
+          "address": "세종특별자치시 한누리대로 411, KT&G 세종타워A 5층 (우 30116)",
+          "src": [
+            "S1"
+          ]
+        }
+      ],
+      "industry_text": "환경정책·환경영향평가 연구 정부출연연구기관",
+      "job_area_hints": [
+        "연구"
+      ],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_SINGLE",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "한국환경연구원 찾아오시는 길",
+          "url": "https://www.kei.re.kr/menu.es?mid=a10402050000",
+          "checked_on": "2026-10-20",
+          "confirms": "본관 주소 시청대로 370 세종국책연구단지 B동 8~11층, 별관 한누리대로 411 KT&G 세종타워A 5층, 대표 044-415-7777"
+        }
+      ],
+      "notes": "공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-007",
+      "name": "한국보건사회연구원(KIHASA)",
+      "org_type": "RESEARCH_INSTITUTE",
+      "region_scope": "SEJONG",
+      "location_basis": "HQ_IN_SEJONG",
+      "hq": {
+        "address": "세종특별자치시 시청대로 370 세종국책연구단지 사회정책동 1~5층",
+        "src": [
+          "S1"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "본원",
+          "kind": "HQ",
+          "address": "세종특별자치시 시청대로 370 세종국책연구단지 사회정책동 1~5층 (우 30147)",
+          "src": [
+            "S1"
+          ]
+        }
+      ],
+      "industry_text": "보건·복지·인구 정책 연구 정부출연연구기관",
+      "job_area_hints": [
+        "연구"
+      ],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_SINGLE",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "오시는길 - 연구원소개 - 한국보건사회연구원",
+          "url": "https://www.kihasa.re.kr/institute/map",
+          "checked_on": "2026-10-20",
+          "confirms": "주소 (30147) 세종특별자치시 시청대로 370 세종국책연구단지 사회정책동(1~5층), TEL 044-287-8000"
+        }
+      ],
+      "notes": "같은 사이트의 2018년 첨부자료에는 서울 서초구 엘타워 주소가 있으나 옛 자료로 판단, 사업장으로 기록하지 않음. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-008",
+      "name": "대외경제정책연구원(KIEP)",
+      "org_type": "RESEARCH_INSTITUTE",
+      "region_scope": "SEJONG",
+      "location_basis": "HQ_IN_SEJONG",
+      "hq": {
+        "address": "세종특별자치시 시청대로 370 세종국책연구단지 경제정책동",
+        "src": [
+          "S1"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "본원",
+          "kind": "HQ",
+          "address": "세종특별자치시 시청대로 370 세종국책연구단지 경제정책동 (우 30147, 지번 반곡동 736)",
+          "src": [
+            "S1"
+          ]
+        }
+      ],
+      "industry_text": "대외경제·국제통상 정책 연구 정부출연연구기관",
+      "job_area_hints": [
+        "연구"
+      ],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_SINGLE",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "KIEP 찾아오시는길",
+          "url": "https://www.kiep.go.kr/menu.es?mid=a10410000000",
+          "checked_on": "2026-10-20",
+          "confirms": "주소 세종특별자치시 시청대로 370 세종국책연구단지 경제정책동, 대표 044-414-1114"
+        }
+      ],
+      "notes": "공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-009",
+      "name": "과학기술정책연구원(STEPI)",
+      "org_type": "RESEARCH_INSTITUTE",
+      "region_scope": "SEJONG",
+      "location_basis": "HQ_IN_SEJONG",
+      "hq": {
+        "address": "세종특별자치시 시청대로 370 세종국책연구단지 과학·인프라동 5~7층",
+        "src": [
+          "S1"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "본원",
+          "kind": "HQ",
+          "address": "세종특별자치시 시청대로 370 세종국책연구단지 과학·인프라동 5~7층 (우 30147)",
+          "src": [
+            "S1",
+            "S2"
+          ]
+        }
+      ],
+      "industry_text": "과학기술·혁신 정책 연구 정부출연연구기관",
+      "job_area_hints": [
+        "연구"
+      ],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_SINGLE",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "STEPI 연구원 소식 > 찾아오시는 길",
+          "url": "https://www.stepi.re.kr/site/stepiko/06/10609000000002020102914.jsp",
+          "checked_on": "2026-10-20",
+          "confirms": "주소 (30147) 세종특별자치시 시청대로 370 세종국책연구단지 과학·인프라동 5~7층, TEL 044-287-2000"
+        },
+        {
+          "id": "S2",
+          "kind": "OFFICIAL",
+          "title": "STEPI 국가우주정책연구센터 찾아오시는 길",
+          "url": "https://www.stepi.re.kr/site/sprec/01/10104000000002021120915.jsp",
+          "checked_on": "2026-10-20",
+          "confirms": "같은 건물 표기, 층수는 7층으로 기재"
+        }
+      ],
+      "notes": "층수 표기가 페이지마다 다름(5~7층 / 7층). 두 출처 모두 STEPI 자체 사이트. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-010",
+      "name": "한국교통연구원(KOTI)",
+      "org_type": "RESEARCH_INSTITUTE",
+      "region_scope": "SEJONG",
+      "location_basis": "HQ_IN_SEJONG",
+      "hq": {
+        "address": "세종특별자치시 시청대로 370 세종국책연구단지 과학인프라동(B)",
+        "src": [
+          "S1"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "본원",
+          "kind": "HQ",
+          "address": "세종특별자치시 시청대로 370 세종국책연구단지 과학인프라동(B) (우 30147)",
+          "src": [
+            "S1"
+          ]
+        }
+      ],
+      "industry_text": "교통·물류 정책 연구 정부출연연구기관",
+      "job_area_hints": [
+        "연구"
+      ],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_SINGLE",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "찾아오시는 길 - KOTI 한국교통연구원",
+          "url": "https://www.koti.re.kr/user/cms/directionsList.do",
+          "checked_on": "2026-10-20",
+          "confirms": "주소 세종특별자치시 시청대로 370 세종국책연구단지 과학인프라동(B), 대표 044-211-3114"
+        }
+      ],
+      "notes": "공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-011",
+      "name": "한국농촌경제연구원(KREI)",
+      "org_type": "RESEARCH_INSTITUTE",
+      "region_scope": "CHUNGBUK",
+      "location_basis": "UNCONFIRMED",
+      "hq": {
+        "address": "전라남도 나주시 빛가람로 601 (빛가람동)",
+        "src": [
+          "S1"
+        ]
+      },
+      "sejong_sites": [],
+      "industry_text": "농업·농촌·식품 정책 연구 정부출연연구기관",
+      "job_area_hints": [],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_SINGLE",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "찾아오시는 길 : 한국농촌경제연구원",
+          "url": "https://www.krei.re.kr/krei/page/39",
+          "checked_on": "2026-10-20",
+          "confirms": "본원 주소 (58321) 나주시 빛가람로 601; '농업관측세종사무소' 주소는 충북 청주시 흥덕구 오송읍 오송생명8로 227 오송바이오프라자 3층"
+        }
+      ],
+      "notes": "세종 국책연구단지 소재로 가정했으나 공식 페이지상 본원은 전남 나주. 이름이 '세종사무소'인 곳도 실제 주소는 충북 청주시 오송읍이라 세종 사업장 없음(sejong_sites 비움). 출퇴근권 보조 항목으로 region_scope=CHUNGBUK. 검색 발췌에 '전남광주통합특별시' 표기도 보였으나 공식 원문으로 확인 못 함. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false,
+      "location_note": "세종에 사업장이 없다. 본원은 전남 나주, 관측 사무소는 충북 청주시 오송읍. 통근권 참고용"
+    },
+    {
+      "id": "SJ-012",
+      "name": "한국법제연구원(KLRI)",
+      "org_type": "RESEARCH_INSTITUTE",
+      "region_scope": "SEJONG",
+      "location_basis": "HQ_IN_SEJONG",
+      "hq": {
+        "address": "세종특별자치시 국책연구원로 15 (반곡동)",
+        "src": [
+          "S1"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "본원",
+          "kind": "HQ",
+          "address": "세종특별자치시 국책연구원로 15 (반곡동) (우 30147)",
+          "src": [
+            "S1"
+          ]
+        }
+      ],
+      "industry_text": "법제 연구 정부출연연구기관",
+      "job_area_hints": [
+        "연구"
+      ],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_SINGLE",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "한국법제연구원 오시는길",
+          "url": "https://klri.re.kr/kor/sub06_07.do",
+          "checked_on": "2026-10-20",
+          "confirms": "주소 세종특별자치시 국책연구원로 15(반곡동), 대표 044-861-0300"
+        }
+      ],
+      "notes": "2014년 이전 당시 자료의 '한누리대로 1934'는 옛 표기로 판단해 쓰지 않음. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-013",
+      "name": "한국청소년정책연구원(NYPI)",
+      "org_type": "RESEARCH_INSTITUTE",
+      "region_scope": "SEJONG",
+      "location_basis": "HQ_IN_SEJONG",
+      "hq": {
+        "address": "세종특별자치시 시청대로 370 세종국책연구단지 사회정책동(D동) 6·7층",
+        "src": [
+          "S1"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "본원",
+          "kind": "HQ",
+          "address": "세종특별자치시 시청대로 370 세종국책연구단지 사회정책동(D동) 6·7층 (우 30147)",
+          "src": [
+            "S1"
+          ]
+        }
+      ],
+      "industry_text": "아동·청소년·청년 정책 연구 정부출연연구기관",
+      "job_area_hints": [
+        "연구"
+      ],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_SINGLE",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "한국청소년정책연구원 공지사항",
+          "url": "https://www.nypi.re.kr/menu?menuId=MENU002050100000000",
+          "checked_on": "2026-10-20",
+          "confirms": "주소 세종특별자치시 시청대로 370 세종국책연구단지 사회정책동(D동) 6/7층, TEL 044-415-2114"
+        }
+      ],
+      "notes": "전용 '오시는 길' 페이지는 색인에서 찾지 못해 공지사항 하단 표기로 확인. 페이지마다 전화번호가 다름. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-014",
+      "name": "산업연구원(KIET)",
+      "org_type": "RESEARCH_INSTITUTE",
+      "region_scope": "SEJONG",
+      "location_basis": "HQ_IN_SEJONG",
+      "hq": {
+        "address": "세종특별자치시 시청대로 370 세종국책연구단지 경제정책동(C동) 8~12층",
+        "src": [
+          "S1"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "본원",
+          "kind": "HQ",
+          "address": "세종특별자치시 시청대로 370 세종국책연구단지 경제정책동(C동) 8~12층 (우 30147)",
+          "src": [
+            "S1",
+            "S2"
+          ]
+        }
+      ],
+      "industry_text": "산업·통상 정책 연구 정부출연연구기관",
+      "job_area_hints": [
+        "연구"
+      ],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_CROSSCHECKED",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "KIET 산업연구원 찾아오시는 길",
+          "url": "https://www.kiet.re.kr/introduce/way",
+          "checked_on": "2026-10-20",
+          "confirms": "주소 세종특별자치시 시청대로 370(반곡동, 경제정책동), 대표 044-287-3114"
+        },
+        {
+          "id": "S2",
+          "kind": "GOV",
+          "title": "경제·인문사회연구회 게시 산업연구원 위촉직 채용공고(2024)",
+          "url": "https://nrc.re.kr/board.es?act=view&bid=0012&list_no=178153&mid=a10206010000",
+          "checked_on": "2026-10-20",
+          "confirms": "주소 세종특별자치시 시청대로 370 나라키움 세종국책연구단지 경제정책동 11층"
+        }
+      ],
+      "notes": "요청 목록에는 없지만 국책연구단지 입주 기관이라 추가함. NRC 공고는 2024년 것이며 채용 여부와 무관. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-015",
+      "name": "경제·인문사회연구회(NRC)",
+      "org_type": "PUBLIC_INSTITUTION",
+      "region_scope": "SEJONG",
+      "location_basis": "HQ_IN_SEJONG",
+      "hq": {
+        "address": "세종특별자치시 시청대로 370 세종국책연구단지 연구지원동(A동)",
+        "src": [
+          "S1"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "본부",
+          "kind": "HQ",
+          "address": "세종특별자치시 시청대로 370 세종국책연구단지 연구지원동(A동) (우 30147)",
+          "src": [
+            "S1"
+          ]
+        }
+      ],
+      "industry_text": "국무총리 소속, 26개 경제·인문사회 정부출연연구기관 지원·관리",
+      "job_area_hints": [],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_SINGLE",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "경제·인문사회연구회 오시는 길",
+          "url": "https://www.nrc.re.kr/menu.es?mid=a12005100000",
+          "checked_on": "2026-10-20",
+          "confirms": "주소 (30147) 세종특별자치시 시청대로 370(반곡동) 세종국책연구단지 연구지원동(A동), TEL 044-211-1000"
+        }
+      ],
+      "notes": "소관연구기관 현황 페이지(https://www.nrc.re.kr/menu.es?mid=a12006000000)는 색인 발췌에 기관별 주소가 없어 교차확인 출처로 쓰지 않음. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-016",
+      "name": "세종도시교통공사",
+      "org_type": "LOCAL_PUBLIC_CORP",
+      "region_scope": "SEJONG",
+      "location_basis": "HQ_IN_SEJONG",
+      "hq": {
+        "address": "세종특별자치시 조치원읍 군청로 93 조치원청사 A동",
+        "src": [
+          "S1"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "본사",
+          "kind": "HQ",
+          "address": "세종특별자치시 조치원읍 군청로 93 조치원청사 A동 (신흥리 123, 우 30033)",
+          "src": [
+            "S1",
+            "S2"
+          ]
+        }
+      ],
+      "industry_text": "세종시 지방공기업: 시내버스(BRT 포함)·누리콜 운영, 산업단지 조성사업 시행",
+      "job_area_hints": [],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_SINGLE",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "세종도시교통공사 찾아오시는 길",
+          "url": "http://www.sctc.kr/page/page/PAGE1612050951457498",
+          "checked_on": "2026-10-20",
+          "confirms": "주소 세종특별자치시 조치원읍 군청로 93 조치원청사 A동, 대표 044-850-0100"
+        },
+        {
+          "id": "S2",
+          "kind": "DIRECTORY",
+          "title": "자소설닷컴 기업정보(공공데이터 기반)",
+          "url": "https://jasoseol.com/companies/7220",
+          "checked_on": "2026-10-20",
+          "confirms": "주소 조치원읍 군청로 93 (조치원청사)"
+        }
+      ],
+      "notes": "세종스마트 국가산업단지 공동사업시행자(LH와 공동)로 공고됨(sctc.kr 공고). 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-017",
+      "name": "세종특별자치시시설관리공단",
+      "org_type": "LOCAL_PUBLIC_CORP",
+      "region_scope": "SEJONG",
+      "location_basis": "HQ_IN_SEJONG",
+      "hq": {
+        "address": "세종특별자치시 조치원읍 군청로 93 조치원청사",
+        "src": [
+          "S1"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "본사",
+          "kind": "HQ",
+          "address": "세종특별자치시 조치원읍 군청로 93 조치원청사 (우 30033)",
+          "src": [
+            "S1",
+            "S2"
+          ]
+        }
+      ],
+      "industry_text": "세종시 지방공기업: 공공시설 관리·운영",
+      "job_area_hints": [],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_SINGLE",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "세종시설관리공단 홈페이지",
+          "url": "https://www.sjfmc.or.kr/",
+          "checked_on": "2026-10-20",
+          "confirms": "주소 조치원읍 군청로 93 (조치원청사), 대표 044-850-1100 — 검색 요약이 공단 사이트와 세종시청 공고를 함께 인용"
+        },
+        {
+          "id": "S2",
+          "kind": "DIRECTORY",
+          "title": "자소설닷컴 기업정보(공공데이터 기반)",
+          "url": "https://jasoseol.com/companies/5995",
+          "checked_on": "2026-10-20",
+          "confirms": "주소 세종특별자치시 조치원읍 군청로 93 1층"
+        }
+      ],
+      "notes": "공식 도메인은 sjfmc.or.kr(요청의 sjsisul.or.kr 아님). 세종시청 안내의 '시설관리사업소'(조치원읍 대첩로 98)는 별개 기관. 운영 시설(예: 은하수공원)은 별도 주소라 여기 넣지 않음. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-018",
+      "name": "세종테크노파크",
+      "org_type": "LOCAL_PUBLIC_CORP",
+      "region_scope": "SEJONG",
+      "location_basis": "HQ_IN_SEJONG",
+      "hq": {
+        "address": "세종특별자치시 조치원읍 군청로 95 (신흥리, 세종테크노파크)",
+        "src": [
+          "S1"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "본원",
+          "kind": "HQ",
+          "address": "세종특별자치시 조치원읍 군청로 95 (신흥리) (우 30033)",
+          "src": [
+            "S1"
+          ]
+        },
+        {
+          "label": "미래융합산업센터",
+          "kind": "OFFICE",
+          "address": "세종특별자치시 집현중앙7로 3, 산학연클러스터지원센터 1층 (우 30141)",
+          "src": [
+            "S1"
+          ]
+        }
+      ],
+      "industry_text": "지역 산업·기업 지원 기관(재단법인)",
+      "job_area_hints": [],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_SINGLE",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "세종테크노파크 주요기능 페이지",
+          "url": "https://www.sjtp.or.kr/bbs/introduce/introduce02_3.php",
+          "checked_on": "2026-10-20",
+          "confirms": "본원 주소 군청로 95, 대표 044-850-2100; 미래융합산업센터 집현중앙7로 3"
+        },
+        {
+          "id": "S2",
+          "kind": "GOV",
+          "title": "세종시청 기업입주 공유재산 > 세종테크노파크 본관동",
+          "url": "https://www.sejong.go.kr/depart/sub01_031204.do",
+          "checked_on": "2026-10-20",
+          "confirms": "세종시가 세종테크노파크 본관동을 기업입주 공유재산으로 안내(주소 값은 발췌에서 확인 못 함)"
+        }
+      ],
+      "notes": "엄밀히는 지방공기업이 아니라 재단법인(지역 TP)이지만 스키마에 맞춰 LOCAL_PUBLIC_CORP로 분류. 일부 페이지에 옛 주소 군청로 93(세종SB플라자) 표기가 남아 있음. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-019",
+      "name": "세종창조경제혁신센터",
+      "org_type": "LOCAL_PUBLIC_CORP",
+      "region_scope": "SEJONG",
+      "location_basis": "HQ_IN_SEJONG",
+      "hq": {
+        "address": "세종특별자치시 조치원읍 군청로 93 (신흥리), 세종SB플라자 3층",
+        "src": [
+          "S1",
+          "S2"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "센터",
+          "kind": "HQ",
+          "address": "세종특별자치시 조치원읍 군청로 93 (신흥리), 세종SB플라자 3층",
+          "src": [
+            "S1",
+            "S2"
+          ]
+        }
+      ],
+      "industry_text": "창업 지원 재단법인(창조경제혁신센터)",
+      "job_area_hints": [],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_CROSSCHECKED",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "GOV",
+          "title": "K-Startup 창업공간플랫폼 지원센터 정보",
+          "url": "https://slp.k-startup.go.kr/fsi/cnterBasinfo.do?cnterId=269",
+          "checked_on": "2026-10-20",
+          "confirms": "주소 세종특별자치시 조치원읍 군청로 93 (신흥리), 044-999-0003"
+        },
+        {
+          "id": "S2",
+          "kind": "GOV",
+          "title": "세종시청 세종SB플라자 안내",
+          "url": "https://www.sejong.go.kr/depart/sub01_031201.do",
+          "checked_on": "2026-10-20",
+          "confirms": "세종SB플라자(군청로 93)에 센터 입주"
+        }
+      ],
+      "notes": "센터 자체 사이트(ccei.creativekorea.or.kr/sejong)에서는 도로명 주소를 색인에서 찾지 못함. 옛 공지에 조치원읍 대첩로 32 표기가 있음(과거 위치로 추정). 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-020",
+      "name": "세종일자리경제진흥원",
+      "org_type": "LOCAL_PUBLIC_CORP",
+      "region_scope": "SEJONG",
+      "location_basis": "HQ_IN_SEJONG",
+      "hq": {
+        "address": "세종특별자치시 조치원읍 으뜸길 251, 3층",
+        "src": [
+          "S1"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "본원",
+          "kind": "HQ",
+          "address": "세종특별자치시 조치원읍 으뜸길 251, 3층",
+          "src": [
+            "S1"
+          ]
+        },
+        {
+          "label": "세종일자리지원센터(남부권)",
+          "kind": "OFFICE",
+          "address": "세종특별자치시 도움3로 5 (정부세종청사 BRT 환승센터 1층)",
+          "src": [
+            "S1"
+          ]
+        },
+        {
+          "label": "세종청년센터",
+          "kind": "OFFICE",
+          "address": "세종특별자치시 다정중앙로 20, LH희망상가 2층",
+          "src": [
+            "S1"
+          ]
+        }
+      ],
+      "industry_text": "세종시 출연 재단법인: 일자리·지역경제 지원",
+      "job_area_hints": [],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_SINGLE",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "세종일자리경제진흥원 기관 및 센터소개",
+          "url": "https://sjepa.or.kr/about-centers",
+          "checked_on": "2026-10-20",
+          "confirms": "본원 조치원읍 으뜸길 251 3층, 대표 044-251-3200; 산하 센터 주소"
+        },
+        {
+          "id": "S2",
+          "kind": "GOV",
+          "title": "세종시청 '재단법인 세종일자리경제진흥원 출범 안내'",
+          "url": "https://www.sejong.go.kr/shrUrl/0t25eqWj023nr7YxLuLu.do",
+          "checked_on": "2026-10-20",
+          "confirms": "2024년 출범 사실(대표번호 044-251-3205로 다르게 표기, 주소 값은 발췌에서 확인 못 함)"
+        }
+      ],
+      "notes": "이 보고서를 의뢰한 기관이며, 참고용으로 넣음. 지방공기업이 아니라 출연 재단법인. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-021",
+      "name": "삼성전기 세종사업장",
+      "org_type": "PRIVATE",
+      "region_scope": "SEJONG",
+      "location_basis": "SITE_IN_SEJONG_HQ_ELSEWHERE",
+      "hq": {
+        "address": "경기도 수원시 영통구 매영로 150 (매탄동)",
+        "src": [
+          "S1",
+          "S2"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "세종사업장",
+          "kind": "PLANT",
+          "address": "세종특별자치시 연동면 삼성길 25",
+          "src": [
+            "S1",
+            "S3"
+          ]
+        }
+      ],
+      "industry_text": "전자부품 제조. 세종사업장은 국내 생산기지로 수동소자, 반도체 패키지기판 등 생산(공식 소개). 세종시 표기 업종: 인쇄회로기판용 적층판 제조업 등",
+      "job_area_hints": [
+        "생산"
+      ],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_CROSSCHECKED",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "삼성전기 사업장 소개",
+          "url": "https://m.samsungsem.com/kr/about-us/company/location.do",
+          "checked_on": "2026-10-20",
+          "confirms": "세종사업장 주소 세종특별자치시 연동면 삼성길 25; 수원사업장은 본사·R&D·마케팅"
+        },
+        {
+          "id": "S2",
+          "kind": "DART",
+          "title": "삼성전기 사업보고서(회사 IR 게시본)",
+          "url": "https://www.samsungsem.com/resources/file/kr/ir/archive/21_Business_Report.pdf",
+          "checked_on": "2026-10-20",
+          "confirms": "본사 주소 경기도 수원시 영통구 매영로 150(매탄동)"
+        },
+        {
+          "id": "S3",
+          "kind": "GOV",
+          "title": "세종시청 명학산업단지 입주현황",
+          "url": "https://www.sejong.go.kr/kor/sub04_060302.do",
+          "checked_on": "2026-10-20",
+          "confirms": "명학일반산업단지 입주기업 삼성전기(주), 업종 인쇄회로기판용 적층판 제조업 등"
+        }
+      ],
+      "notes": "요청서의 '연서면'은 공식 표기상 '연동면'임. dart.fss.or.kr 원문은 열람 불가라 회사가 IR에 게시한 사업보고서 PDF로 대신 확인함(2021년판, 최신본 아님). 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-022",
+      "name": "한국콜마",
+      "org_type": "PRIVATE",
+      "region_scope": "SEJONG",
+      "location_basis": "HQ_IN_SEJONG",
+      "hq": {
+        "address": "세종특별자치시 전의면 덕고개길 12-11",
+        "src": [
+          "S1"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "세종 기초화장품공장",
+          "kind": "PLANT",
+          "address": "세종특별자치시 전의면 산단길 22-17",
+          "src": [
+            "S1"
+          ]
+        },
+        {
+          "label": "관정공장(전의2산단)",
+          "kind": "PLANT",
+          "address": "세종특별자치시 전의면 전의2일반산업단지 (번지는 세종시 표에서 확인 못 함)",
+          "src": [
+            "S2"
+          ]
+        }
+      ],
+      "industry_text": "화장품 ODM/OEM 제조",
+      "job_area_hints": [
+        "생산"
+      ],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_CROSSCHECKED",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "한국콜마 오시는 길",
+          "url": "https://www.kolmar.co.kr/about/location.php",
+          "checked_on": "2026-10-20",
+          "confirms": "본사 세종특별자치시 전의면 덕고개길 12-11; 세종 기초화장품공장 전의면 산단길 22-17"
+        },
+        {
+          "id": "S2",
+          "kind": "GOV",
+          "title": "세종시청 전의산업단지 입주현황",
+          "url": "https://www.sejong.go.kr/kor/sub04_060303.do",
+          "checked_on": "2026-10-20",
+          "confirms": "전의2산단 한국콜마 관정공장, 업종 화장품 제조업"
+        },
+        {
+          "id": "S3",
+          "kind": "OFFICIAL",
+          "title": "한국콜마 제14기 정기주주총회 소집공고(2026)",
+          "url": "https://www.kolmar.co.kr/ir/directorate.php/%C3%AC%20%C2%B4%C3%AC%E2%80%9A%C2%AC?ptype=view&idx=7120",
+          "checked_on": "2026-10-20",
+          "confirms": "주총 장소: 산단길 22-15 '한국콜마(주) 관정4지점(舊 콜마비앤에이치(주))' 2층"
+        }
+      ],
+      "notes": "S3의 '舊 콜마비앤에이치' 표기는 해당 건물 소유·용도가 바뀌었다는 뜻으로 보이나 확인 못 함(콜마비앤에이치 항목 참고). 대표번호는 서울(02-515-0150). 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-023",
+      "name": "콜마비앤에이치",
+      "org_type": "PRIVATE",
+      "region_scope": "SEJONG",
+      "location_basis": "HQ_IN_SEJONG",
+      "hq": {
+        "address": "세종특별자치시 전의면 산단길 22-15",
+        "src": [
+          "S1",
+          "S2"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "세종 1공장",
+          "kind": "PLANT",
+          "address": "세종특별자치시 전의면 산단길 22-15",
+          "src": [
+            "S1"
+          ]
+        },
+        {
+          "label": "세종 2공장",
+          "kind": "PLANT",
+          "address": "세종특별자치시 전의면 미래산단로 77",
+          "src": [
+            "S1"
+          ]
+        },
+        {
+          "label": "세종 3공장",
+          "kind": "PLANT",
+          "address": "세종특별자치시 전의면 미래산단로 89",
+          "src": [
+            "S1"
+          ]
+        }
+      ],
+      "industry_text": "건강기능식품 제조. 세종시 표기 업종: 건강기능식품 제조업",
+      "job_area_hints": [
+        "생산"
+      ],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_CROSSCHECKED",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "오시는 길 - Kolmar BNH",
+          "url": "https://kolmarbnh.co.kr/company/contact/",
+          "checked_on": "2026-10-20",
+          "confirms": "세종 1·2·3공장 주소, 대표 044-860-4200; 서울사무소 서초구 사임당로 18"
+        },
+        {
+          "id": "S2",
+          "kind": "OFFICIAL",
+          "title": "콜마비앤에이치 2023 지속가능경영보고서",
+          "url": "https://kolmarbnh.co.kr/wp-content/uploads/2024/08/report_ko.pdf",
+          "checked_on": "2026-10-20",
+          "confirms": "본사 주소 세종특별자치시 전의면 산단길 22-15"
+        },
+        {
+          "id": "S3",
+          "kind": "GOV",
+          "title": "세종시청 전의산업단지 입주현황",
+          "url": "https://www.sejong.go.kr/kor/sub04_060303.do",
+          "checked_on": "2026-10-20",
+          "confirms": "전의2산단 콜마비앤에이치 입주, 업종 건강기능식품 제조업"
+        }
+      ],
+      "notes": "주의: 한국콜마의 2026년 주총 공고에 산단길 22-15 건물이 '한국콜마(주) 관정4지점(舊 콜마비앤에이치(주))'로 표기됨. 법인·건물 변동 여부를 확인하지 못했으니 사용 전에 DART를 다시 확인할 것. 2026년 기사에는 '콜마비앤에이치' 명칭이 계속 쓰임. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-024",
+      "name": "SK바이오텍 (SK pharmteco 세종 사이트)",
+      "org_type": "PRIVATE",
+      "region_scope": "SEJONG",
+      "location_basis": "SITE_IN_SEJONG_HQ_ELSEWHERE",
+      "hq": {
+        "address": "12460 Akron Street, Suite 100, Rancho Cordova, CA 95742, USA (SK pharmteco 글로벌 본사)",
+        "src": [
+          "S1"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "세종 공장",
+          "kind": "PLANT",
+          "address": "세종특별자치시 연동면 명학산단로 80 (우 30068)",
+          "src": [
+            "S1",
+            "S2"
+          ]
+        }
+      ],
+      "industry_text": "저분자 원료의약품(API) CDMO. 세종시 표기 업종: 의약용 화합물 및 항생물질 제조업",
+      "job_area_hints": [
+        "생산"
+      ],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_CROSSCHECKED",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "SK pharmteco Locations",
+          "url": "https://www.skpharmteco.com/about-us/locations/",
+          "checked_on": "2026-10-20",
+          "confirms": "Sejong: 80 Myeonghaksandan-ro, Yeondong-myeon, Sejong-si 30068 — Small Molecule Manufacturing Plant; 글로벌 본사 Rancho Cordova"
+        },
+        {
+          "id": "S2",
+          "kind": "GOV",
+          "title": "세종시청 명학산업단지 입주현황",
+          "url": "https://www.sejong.go.kr/kor/sub04_060302.do",
+          "checked_on": "2026-10-20",
+          "confirms": "명학산단 입주기업 SK바이오텍(주), 업종 의약용 화합물 및 항생물질 제조업"
+        },
+        {
+          "id": "S3",
+          "kind": "GOV",
+          "title": "세종시청 보도자료 'SK바이오텍(주) 원료의약품 세종공장 가동'",
+          "url": "https://www.sejong.go.kr/bbs/R0079/view.do?nttId=66717",
+          "checked_on": "2026-10-20",
+          "confirms": "세종공장의 원료의약품 생산 가동"
+        }
+      ],
+      "notes": "국내 법인(SK바이오텍) 본점 주소는 확인 못 함. hq는 운영 주체 SK pharmteco의 글로벌 본사임. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-025",
+      "name": "SK트리켐",
+      "org_type": "PRIVATE",
+      "region_scope": "SEJONG",
+      "location_basis": "UNCONFIRMED",
+      "hq": {
+        "address": null,
+        "src": []
+      },
+      "sejong_sites": [
+        {
+          "label": "명학산단 사업장",
+          "kind": "PLANT",
+          "address": "세종특별자치시 연동면 내판리 692 (명학일반산업단지)",
+          "src": [
+            "S1"
+          ]
+        }
+      ],
+      "industry_text": "반도체 전구체 등 화학제품 제조. 세종시 표기 업종: 그 외 기타 분류 안된 화학제품 제조업",
+      "job_area_hints": [
+        "생산"
+      ],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_SINGLE",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "GOV",
+          "title": "세종시청 명학산업단지 입주현황",
+          "url": "https://www.sejong.go.kr/kor/sub04_060302.do",
+          "checked_on": "2026-10-20",
+          "confirms": "입주완료 업체 '에스케이트리켐 주식회사', 연동면 내판리 692, 기타 화학제품 제조업"
+        }
+      ],
+      "notes": "세종 사업장은 세종시청 자료로 확인. 본사가 명학산단에 있다는 보도가 있지만 공식 출처로 확인하지 못해 location_basis=UNCONFIRMED(본사 위치 판단 보류). 회사 사이트(sktrichem.com)는 색인 결과가 없음. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false,
+      "location_note": "세종 사업장 주소는 확인했지만 본사 소재지를 찾지 못했다. 스키마에 'HQ 미확인' 값이 없어 UNCONFIRMED 로 두었다"
+    },
+    {
+      "id": "SJ-026",
+      "name": "포스코퓨처엠 세종 음극재공장",
+      "org_type": "PRIVATE",
+      "region_scope": "SEJONG",
+      "location_basis": "SITE_IN_SEJONG_HQ_ELSEWHERE",
+      "hq": {
+        "address": "경상북도 포항시 남구 신항로 110",
+        "src": [
+          "S1"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "음극재 세종 1공장",
+          "kind": "PLANT",
+          "address": "세종특별자치시 전의면 산단길 22-64 (전의산단)",
+          "src": [
+            "S1",
+            "S2",
+            "S3"
+          ]
+        },
+        {
+          "label": "음극재 세종 2공장",
+          "kind": "PLANT",
+          "address": "세종특별자치시 소정면 매실로 294",
+          "src": [
+            "S1",
+            "S2"
+          ]
+        },
+        {
+          "label": "기술연구소",
+          "kind": "RESEARCH",
+          "address": "세종특별자치시 소정면 소정산단4로 31",
+          "src": [
+            "S1"
+          ]
+        }
+      ],
+      "industry_text": "이차전지 소재 제조. 세종 사업장은 천연흑연 음극재 생산",
+      "job_area_hints": [
+        "생산",
+        "연구"
+      ],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_CROSSCHECKED",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "포스코퓨처엠 주요사업장",
+          "url": "https://www.poscofuturem.com/introduce/directions.do",
+          "checked_on": "2026-10-20",
+          "confirms": "세종 음극재 1공장 산단길 22-64, 2공장 소정면 매실로 294, 기술연구소 소정면 소정산단4로31; 본점 포항시 남구 신항로 110"
+        },
+        {
+          "id": "S2",
+          "kind": "DART",
+          "title": "포스코퓨처엠 최근 정기보고서(회사 게시본)",
+          "url": "https://www.poscofuturem.com/resources/file/Regular_report.pdf",
+          "checked_on": "2026-10-20",
+          "confirms": "음극재 세종 1공장 산단길 22-64, 세종 2공장 소정면 매실로 294"
+        },
+        {
+          "id": "S3",
+          "kind": "GOV",
+          "title": "세종시청 전의산업단지 입주현황 / 2020.05 공장등록 현황",
+          "url": "https://www.sejong.go.kr/kor/sub04_060303.do",
+          "checked_on": "2026-10-20",
+          "confirms": "전의2산단 (주)포스코케미칼(현 포스코퓨처엠) 산단길 22-64, 2차전지용 음극활물질"
+        }
+      ],
+      "notes": "세종시청 자료에는 옛 사명 '포스코케미칼'로 나옴. 공식 페이지의 1공장 주소에는 '전의면'이 빠져 있음. 기술연구소의 세종 소재는 회사 페이지 한 곳에서만 확인함. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-027",
+      "name": "원익머트리얼즈 세종 사업장",
+      "org_type": "PRIVATE",
+      "region_scope": "SEJONG",
+      "location_basis": "SITE_IN_SEJONG_HQ_ELSEWHERE",
+      "hq": {
+        "address": "충청북도 청주시 청원구 오창읍 양청3길 30",
+        "src": [
+          "S2"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "전의2산단 사업장",
+          "kind": "PLANT",
+          "address": "세종특별자치시 전의면 전의2일반산업단지 (번지 미확인)",
+          "src": [
+            "S1"
+          ]
+        }
+      ],
+      "industry_text": "반도체·디스플레이용 특수가스. 세종시 표기 업종: 산업용 가스 제조업",
+      "job_area_hints": [
+        "생산"
+      ],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_SINGLE",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "GOV",
+          "title": "세종시청 전의산업단지 입주현황",
+          "url": "https://www.sejong.go.kr/kor/sub04_060303.do",
+          "checked_on": "2026-10-20",
+          "confirms": "전의2산단 입주업체 원익머트리얼즈, 업종 산업용 가스 제조업"
+        },
+        {
+          "id": "S2",
+          "kind": "DIRECTORY",
+          "title": "잡플래닛 기업정보",
+          "url": "https://www.jobplanet.co.kr/companies/61103",
+          "checked_on": "2026-10-20",
+          "confirms": "회사 주소 충북 청주시 청원구 오창읍 양청3길 30 (본사 여부 명시 없음)"
+        }
+      ],
+      "notes": "세종 사업장의 도로명 주소는 공식 출처로 확인 못 함. 본사 주소는 DIRECTORY 출처뿐. 같은 전의산단 'JK머트리얼즈'(한울소재과학 자회사)와 혼동하지 말 것. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-028",
+      "name": "타이슨푸드코리아 세종공장",
+      "org_type": "PRIVATE",
+      "region_scope": "SEJONG",
+      "location_basis": "UNCONFIRMED",
+      "hq": {
+        "address": null,
+        "src": []
+      },
+      "sejong_sites": [
+        {
+          "label": "세종공장(전의1산단)",
+          "kind": "PLANT",
+          "address": "세종특별자치시 전의면 산단길 258 (신정리 619)",
+          "src": [
+            "S1",
+            "S2"
+          ]
+        }
+      ],
+      "industry_text": "육류 가공(햄버거용 패티 등). 세종시 표기 업종: 육류 기타 가공 및 저장처리업(가금류 제외) 등",
+      "job_area_hints": [
+        "생산"
+      ],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_SINGLE",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "GOV",
+          "title": "세종시청 전의산업단지 입주현황",
+          "url": "https://www.sejong.go.kr/kor/sub04_060303.do",
+          "checked_on": "2026-10-20",
+          "confirms": "전의1산단 입주업체 타이슨푸드코리아, 업종 육류 기타 가공 및 저장처리업"
+        },
+        {
+          "id": "S2",
+          "kind": "DIRECTORY",
+          "title": "ifactoryhub 세종시 공장 목록(공장등록 데이터 재가공)",
+          "url": "https://ifactoryhub.com/%ec%84%b8%ec%a2%85%ec%8b%9c-%eb%b9%b5%ea%b3%b5%ec%9e%a5-%eb%a6%ac%ec%8a%a4%ed%8a%b8/",
+          "checked_on": "2026-10-20",
+          "confirms": "전의면 산단길 258(신정리 619), 생산품 햄버거용 패티 (데이터 기준일 2026-06/07)"
+        }
+      ],
+      "notes": "입주 사실은 GOV로 확인했고 번지는 DIRECTORY 출처뿐(팩토리온 원문은 접근 불가). 본사 위치를 확인하지 못해 location_basis=UNCONFIRMED. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false,
+      "location_note": "세종 사업장 주소는 확인했지만 본사 소재지를 찾지 못했다. 스키마에 'HQ 미확인' 값이 없어 UNCONFIRMED 로 두었다"
+    },
+    {
+      "id": "SJ-029",
+      "name": "한국유나이티드제약",
+      "org_type": "PRIVATE",
+      "region_scope": "SEJONG",
+      "location_basis": "HQ_IN_SEJONG",
+      "hq": {
+        "address": "세종특별자치시 전동면 노장공단길 25-23 (본점)",
+        "src": [
+          "S1"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "세종 1공장",
+          "kind": "PLANT",
+          "address": "세종특별자치시 전동면 노장공단길 25-23",
+          "src": [
+            "S2"
+          ]
+        },
+        {
+          "label": "세종 2공장",
+          "kind": "PLANT",
+          "address": "세종특별자치시 연서면 공단로 107 (조치원일반산업단지)",
+          "src": [
+            "S2",
+            "S3"
+          ]
+        },
+        {
+          "label": "전동연구소",
+          "kind": "RESEARCH",
+          "address": "세종특별자치시 전동면 노장공단길 15",
+          "src": [
+            "S2"
+          ]
+        }
+      ],
+      "industry_text": "의약품 제조",
+      "job_area_hints": [
+        "생산",
+        "연구"
+      ],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_CROSSCHECKED",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "한국유나이티드제약 기업개요",
+          "url": "https://www.kup.co.kr/company/overview.htm",
+          "checked_on": "2026-10-20",
+          "confirms": "본점주소 세종특별자치시 전동면 노장공단길 25-23"
+        },
+        {
+          "id": "S2",
+          "kind": "OFFICIAL",
+          "title": "한국유나이티드제약 오시는 길(공장·연구소)",
+          "url": "https://www.kup.co.kr/company/contact2.htm",
+          "checked_on": "2026-10-20",
+          "confirms": "세종1공장 노장공단길 25-23, 세종2공장 연서면 공단로 107, 전동연구소 노장공단길 15"
+        },
+        {
+          "id": "S3",
+          "kind": "GOV",
+          "title": "세종시청 조치원일반산업단지 입주현황",
+          "url": "https://www.sejong.go.kr/kor/sub04_060304.do",
+          "checked_on": "2026-10-20",
+          "confirms": "조치원산단 2공구 입주업체 한국유나이티드제약"
+        }
+      ],
+      "notes": "법인 본점은 세종이고, 홈페이지 '본사' 안내는 서울 강남구 논현로121길 22임(사무 본사). 전동산단 신공장은 계획 단계(보도)라 사업장으로 넣지 않음. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-030",
+      "name": "네이버 데이터센터 '각 세종'",
+      "org_type": "PRIVATE",
+      "region_scope": "SEJONG",
+      "location_basis": "SITE_IN_SEJONG_HQ_ELSEWHERE",
+      "hq": {
+        "address": "경기도 성남시 분당구 정자일로 95 (NAVER 1784)",
+        "src": [
+          "S2"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "데이터센터 각 세종",
+          "kind": "OFFICE",
+          "address": "세종특별자치시 행복대로 824",
+          "src": [
+            "S1"
+          ]
+        }
+      ],
+      "industry_text": "하이퍼스케일 데이터센터(서버 운영)",
+      "job_area_hints": [],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_SINGLE",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "데이터센터 각 세종 - DATA CENTER GAK",
+          "url": "https://datacenter.navercorp.com/gaksejong/",
+          "checked_on": "2026-10-20",
+          "confirms": "주소 세종특별자치시 행복대로 824"
+        },
+        {
+          "id": "S2",
+          "kind": "OFFICIAL",
+          "title": "Contact l NAVER Corp.",
+          "url": "https://www.navercorp.com/naver/naverContact",
+          "checked_on": "2026-10-20",
+          "confirms": "본사 경기도 성남시 분당구 정자일로 95, NAVER 1784"
+        },
+        {
+          "id": "S3",
+          "kind": "OFFICIAL",
+          "title": "하이퍼스케일 데이터센터 각 세종 오픈 l NAVER Corp.",
+          "url": "https://www.navercorp.com/story/storyDetail?seq=2359",
+          "checked_on": "2026-10-20",
+          "confirms": "2023년 11월 1단계(북관) 가동"
+        }
+      ],
+      "notes": "스키마 kind 목록에 데이터센터가 없어 OFFICE로 표기. 개소 연도가 출처마다 다름(스토리 2023, 통합보고서 2024). 운영 법인이 네이버(주)인지 네이버클라우드인지 확인 못 함. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-031",
+      "name": "한화첨단소재 세종사업장 (舊 한화솔루션 첨단소재부문)",
+      "org_type": "PRIVATE",
+      "region_scope": "SEJONG",
+      "location_basis": "SITE_IN_SEJONG_HQ_ELSEWHERE",
+      "hq": {
+        "address": null,
+        "src": []
+      },
+      "sejong_sites": [
+        {
+          "label": "세종사업장 & R&D센터",
+          "kind": "PLANT",
+          "address": "세종특별자치시 부강면 금호안골길 79-20",
+          "src": [
+            "S1",
+            "S2"
+          ]
+        }
+      ],
+      "industry_text": "자동차 경량복합소재 등 첨단소재 제조",
+      "job_area_hints": [
+        "생산",
+        "연구"
+      ],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_CROSSCHECKED",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "한화 > 한화솔루션 첨단소재 부문",
+          "url": "https://www.hanwha.co.kr/business/manufacture/advanced_materials.do",
+          "checked_on": "2026-10-20",
+          "confirms": "세종사업장 주소 세종특별자치시 부강면 금호안골길 79-20, 044-279-8400"
+        },
+        {
+          "id": "S2",
+          "kind": "OFFICIAL",
+          "title": "한화 > 한화첨단소재",
+          "url": "https://m.hanwha.co.kr/business/domestic/view.do?cd=HWAM",
+          "checked_on": "2026-10-20",
+          "confirms": "같은 세종 주소 표기"
+        },
+        {
+          "id": "S3",
+          "kind": "GOV",
+          "title": "세종시청 부강산업단지 입주현황",
+          "url": "https://www.sejong.go.kr/kor/sub04_060305.do",
+          "checked_on": "2026-10-20",
+          "confirms": "부강일반산업단지 입주기업 '한화솔루션 세종사업장'"
+        }
+      ],
+      "notes": "2022.12 물적분할로 세종사업장이 한화첨단소재 소관이 됐다는 공시 문구가 검색 발췌에 있음. 그 뒤 법인 변동은 확인 못 함. 본사는 '서울본사'로만 표기돼 도로명은 확인 못 함(hq null). 조치원산단 명단의 '한화솔루션 경량복합소재개발센터'는 주소를 확인 못 해 사업장으로 넣지 않음. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-032",
+      "name": "보쉬전장 세종공장 (Bosch Korea 세종)",
+      "org_type": "PRIVATE",
+      "region_scope": "SEJONG",
+      "location_basis": "SITE_IN_SEJONG_HQ_ELSEWHERE",
+      "hq": {
+        "address": null,
+        "src": []
+      },
+      "sejong_sites": [
+        {
+          "label": "세종공장",
+          "kind": "PLANT",
+          "address": "세종특별자치시 부강면 금호선말길 115",
+          "src": [
+            "S1",
+            "S2",
+            "S3"
+          ]
+        }
+      ],
+      "industry_text": "자동차 부품(전동 드라이브) 기술·생산",
+      "job_area_hints": [
+        "생산"
+      ],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "OFFICIAL_CROSSCHECKED",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "보쉬 코리아 > 세종",
+          "url": "https://www.bosch.co.kr/our-company/bosch-in-korea/sejong/",
+          "checked_on": "2026-10-20",
+          "confirms": "세종 사업장(부강면), 사업부 전동 드라이브, 업무 자동차 부품 기술 생산; 국내 본사는 '용인(본사)'"
+        },
+        {
+          "id": "S2",
+          "kind": "GOV",
+          "title": "세종시청 부강산업단지 입주현황",
+          "url": "https://www.sejong.go.kr/kor/sub04_060305.do",
+          "checked_on": "2026-10-20",
+          "confirms": "부강일반산업단지 입주기업 ㈜보쉬전장"
+        },
+        {
+          "id": "S3",
+          "kind": "DIRECTORY",
+          "title": "자소설닷컴 기업정보(공공데이터 기반)",
+          "url": "https://jasoseol.com/companies/1069",
+          "checked_on": "2026-10-20",
+          "confirms": "보쉬전장 주소 세종 부강면 금호선말길 115"
+        }
+      ],
+      "notes": "도로명 번지(115)는 DIRECTORY 출처뿐이고 공식 출처로는 '부강면'까지만 확인. 보쉬 국내 본사는 용인이지만 상세 주소는 확인 못 함(hq null). 세종공장이 어느 법인 소속인지는 공식 페이지에 명시가 없음. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-033",
+      "name": "효성중공업 세종공장",
+      "org_type": "PRIVATE",
+      "region_scope": "SEJONG",
+      "location_basis": "SITE_IN_SEJONG_HQ_ELSEWHERE",
+      "hq": {
+        "address": "서울 마포구 마포대로 119 (공덕동, 효성빌딩)",
+        "src": [
+          "S3"
+        ]
+      },
+      "sejong_sites": [
+        {
+          "label": "세종공장(조치원일반산업단지 3공구)",
+          "kind": "PLANT",
+          "address": "세종특별자치시 연서면 공단로 155 또는 연기면 공단로 142 (자료 간 불일치)",
+          "src": [
+            "S1",
+            "S2"
+          ]
+        }
+      ],
+      "industry_text": "중공업. 세종시 표기 업종: 육상 금속 골조 구조재 제조업",
+      "job_area_hints": [
+        "생산"
+      ],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "CONFLICTING",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "GOV",
+          "title": "세종시청 조치원일반산업단지 입주현황",
+          "url": "https://www.sejong.go.kr/kor/sub04_060304.do",
+          "checked_on": "2026-10-20",
+          "confirms": "3공구 입주업체 효성중공업(주) 세종공장, 육상 금속 골조 구조재 제조업"
+        },
+        {
+          "id": "S2",
+          "kind": "GOV",
+          "title": "세종시청 제조업체 공장등록 현황(2020.05 기준)",
+          "url": "https://www.sejong.go.kr/viewer/result/R0106/BBS_202007060740375121.xlsx.files/1.xhtml",
+          "checked_on": "2026-10-20",
+          "confirms": "효성중공업 세종공장 주소가 행마다 '연서면 공단로 155' / '연기면 공단로 142'로 다르게 기재"
+        },
+        {
+          "id": "S3",
+          "kind": "DIRECTORY",
+          "title": "자소설닷컴 기업정보",
+          "url": "https://jasoseol.com/companies/10812",
+          "checked_on": "2026-10-20",
+          "confirms": "본사 서울 마포구 마포대로 119"
+        },
+        {
+          "id": "S4",
+          "kind": "OFFICIAL",
+          "title": "효성중공업 연혁",
+          "url": "https://www.hyosungheavyindustries.com/kr/company/info/history",
+          "checked_on": "2026-10-20",
+          "confirms": "1997년 '조치원공장' 철탑시험장 기록(과거 사실)"
+        }
+      ],
+      "notes": "세종 공장이 있다는 점은 세종시청 자료 두 건이 일치하지만 번지가 서로 달라 CONFLICTING으로 둠. 회사 공식 사이트에서 현재 세종공장 주소는 찾지 못함. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-034",
+      "name": "덴티움 (세종 공장 계획)",
+      "org_type": "PRIVATE",
+      "region_scope": "SEJONG",
+      "location_basis": "UNCONFIRMED",
+      "hq": {
+        "address": "경기도 수원시 영통구 창룡대로256번길 76 (덴티움 지식산업센터)",
+        "src": [
+          "S1"
+        ]
+      },
+      "sejong_sites": [],
+      "industry_text": "치과용 임플란트·의료기기 제조",
+      "job_area_hints": [],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "SECONDARY_ONLY",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "OFFICIAL",
+          "title": "덴티움 연구분석서비스 오시는 길",
+          "url": "https://research.dentium.com/sub/cs_way.php",
+          "checked_on": "2026-10-20",
+          "confirms": "법인 주소 수원시 영통구 창룡대로256번길 76; 국내 생산거점은 화성 전곡공장(전곡산단로 106). 세종 사업장 언급 없음"
+        },
+        {
+          "id": "S2",
+          "kind": "NEWS",
+          "title": "KPI뉴스 '덴티움·에이치비테크놀러지, 세종스마트 단지에 공장 설립'",
+          "url": "https://kpinews.kr/newsView/179548982759603&dt=m",
+          "checked_on": "2026-10-20",
+          "confirms": "세종 스마트그린산단 공장 설립 계획 보도(제목 수준만 확인)"
+        }
+      ],
+      "notes": "세종 '공장'은 보도상 투자 협약·계획일 뿐, 가동 중인 세종 사업장을 공식 출처로 확인 못 함. 다른 보도에 베트남 다낭 제2공장으로 방향을 틀었다는 내용도 있음. 사업장 주소를 넣지 않음. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    },
+    {
+      "id": "SJ-035",
+      "name": "에이치비테크놀러지 (세종 공장 계획)",
+      "org_type": "PRIVATE",
+      "region_scope": "SEJONG",
+      "location_basis": "UNCONFIRMED",
+      "hq": {
+        "address": "충청남도 아산시 음봉면 산동로 87",
+        "src": [
+          "S2"
+        ]
+      },
+      "sejong_sites": [],
+      "industry_text": "디스플레이·반도체 검사장비 제조",
+      "job_area_hints": [],
+      "hiring": {
+        "status": "UNVERIFIED"
+      },
+      "verify": "SECONDARY_ONLY",
+      "sources": [
+        {
+          "id": "S1",
+          "kind": "NEWS",
+          "title": "KPI뉴스 '덴티움·에이치비테크놀러지, 세종스마트 단지에 공장 설립'",
+          "url": "https://kpinews.kr/newsView/179548982759603&dt=m",
+          "checked_on": "2026-10-20",
+          "confirms": "세종 스마트그린산단 공장 설립 계획 보도(제목 수준)"
+        },
+        {
+          "id": "S2",
+          "kind": "DIRECTORY",
+          "title": "자소설닷컴 기업정보",
+          "url": "https://jasoseol.com/companies/2147",
+          "checked_on": "2026-10-20",
+          "confirms": "주소 충남 아산시 음봉면 산동로 87"
+        }
+      ],
+      "notes": "세종 사업장의 가동 여부와 주소를 공식 출처로 확인 못 함. 본사도 DIRECTORY 출처뿐. 계열사 '에이치비솔루션'의 세종 투자 협약도 보도상 언급만 있음. 공식 페이지 원문 직접 열람 불가(WebFetch DNS 실패·프록시 connect_rejected) — 검색엔진 색인 발췌로 확인, 게시 시점 미확인.",
+      "access": "SEARCH_EXCERPT",
+      "display_ready": false
+    }
+  ],
+  "access_method": "SEARCH_EXCERPT_ONLY",
+  "access_note": "이 컨테이너에서는 공식 사이트(alio.go.kr, dart.fss.or.kr, sejong.go.kr, 기업·기관 누리집)를 직접 열지 못했다. verify 값은 '공식 출처의 검색 발췌에서 확인한 수준'이다. 사람이 원문을 열어 다시 확인하기 전에는 display_ready 가 모두 false 다."
+}
