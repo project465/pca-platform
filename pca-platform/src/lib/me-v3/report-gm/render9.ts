@@ -56,7 +56,7 @@ function int3(v: "HIGH" | "MID" | "LOW"): string {
 }
 const INT_KO = { HIGH: "관심 높음", MID: "관심 보통", LOW: "관심 낮음" } as const;
 
-const CSS = (f: Fonts9) => `
+export const CSS9 = (f: Fonts9) => `
 @font-face{font-family:P;src:url("${f.sans}/Pretendard-Regular.otf");font-weight:400}
 @font-face{font-family:P;src:url("${f.sans}/Pretendard-Medium.otf");font-weight:500}
 @font-face{font-family:P;src:url("${f.sans}/Pretendard-SemiBold.otf");font-weight:600}
@@ -459,7 +459,7 @@ function case4Poor(e: Ed8): string {
   const wk = (e.weeks ?? []).map((w) => `<div class="w"><div class="wn">${w.no}주</div><div class="wt">${h(w.what)}</div><div class="wo">남는 것 · ${h(w.out)}</div></div>`).join("");
   return `<div class="eye">비어 있는 판단 → 첫 실습</div>
 <h1>${h(d?.name ?? e.goal.role)}의 여덟 판단은 아직 스스로 맡아 본 응답이 없습니다</h1>
-<p class="lead">관심은 높게 나왔습니다. 그래서 ‘강점’ 대신 출발점을 적습니다. 첫 4주는 판단 하나 — ${h(e.first.title)} — 를 처음부터 끝까지 직접 맡아 보는 데 씁니다.</p>
+<p class="lead">관심은 높게 나왔습니다. 그래서 이 쪽은 해 본 일 대신 출발점부터 적습니다. 첫 4주는 판단 하나 — ${h(e.first.title)} — 를 처음부터 끝까지 직접 맡아 보는 데 씁니다.</p>
 <div class="lab">${h(d?.name ?? "")} · 여덟 판단의 응답 ● (주황 선은 지시받은 범위 안이거나 해 본 적 없음)</div>
 <div class="gp">${gp}</div>
 <div style="height:8mm"></div>
@@ -597,7 +597,7 @@ function close(e: Ed8): string {
   return `<div class="eye">정리</div>
 <div class="nx"><div class="k">다음 한 가지 →</div><div class="v">${h(e.first.title)}</div><div class="s">${h(e.first.where)} · 남길 것: ${h(e.first.output)} · 점검: ${h(e.first.check)}</div></div>
 <h2>90일 동안 이 리포트를 다시 펴는 때</h2>
-<div class="ck">${e.plan.flatMap((p) => p.items).slice(0, 3).map((x, i) => `<div><div class="d">${["30일 뒤", "60일 뒤", "90일 뒤"][i]}</div><div class="t">${h(x.output)}</div><p class="sm">이 결과물이 있으면 경험 기록에 더하고 결과를 다시 봅니다. 확인할 것: ${h(x.check)}</p></div>`).join("")}</div>
+<div class="ck">${e.plan.flatMap((p) => p.items).slice(0, 3).map((x, i, xs) => `<div><div class="d">${["30일 뒤", "60일 뒤", "90일 뒤"][i]}</div><div class="t">${h(x.output)}</div><p class="sm">${xs.slice(0, i).some((y) => y.check === x.check) ? "앞 칸과 같은 것을 확인합니다. 이 결과물만 경험 기록에 더합니다." : `이 결과물이 있으면 경험 기록에 더하고 결과를 다시 봅니다. 확인할 것: ${h(x.check)}`}</p></div>`).join("")}</div>
 <h2>이 리포트가 하지 않은 것</h2>
 <ul class="ln">${e.limits.map((l) => `<li>${h(l)}</li>`).join("")}</ul>
 <div class="sp"></div>
@@ -629,7 +629,7 @@ export function proto9(all: Page9[]): Page9[] {
 export function html9(e: Ed8, ps: Page9[], f: Fonts9): string {
   const toc = `<div class="toc">${ps.slice(1).map((p, i) => `<div><b>${i + 2}</b><span>${h(p.title)}</span></div>`).join("")}</div>`;
   ps = ps.map((p) => (p.key === "cover" ? { ...p, html: p.html.replace("<!--TOC-->", toc) } : p));
-  return `<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>CareerMatri 진로·직무 리포트</title><style>${CSS(f)}</style></head><body>
+  return `<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>CareerMatri 진로·직무 리포트</title><style>${CSS9(f)}</style></head><body>
 ${ps.map((p, i) => `<section class="pg${p.key === "cover" ? " cv" : ""}" data-key="${p.key}" data-grammar="${p.grammar}">${p.html.replace('<span class="pn"></span>', `${i + 1}`)}</section>`).join("\n")}
 </body></html>`;
 }

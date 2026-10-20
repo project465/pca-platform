@@ -7,7 +7,9 @@
 | `02_HUMAN_REVIEW.md` | 사람이 볼 여섯 자리 · 자체 검토 · 판정 칸 (사용자 검수 NOT VERIFIED) |
 | `03_CORE_APPROVAL_REQUESTS.md` | R5 승인 요청 R5-1~R5-8 |
 | `04_RELEASE_GATE.md` | Staging 확인 결과 · 13걸음 · 회귀 · 시연/파일럿/정식 판정 |
+| `05_LONG_VERSION.md` | 긴 판(A안) — v9 의 기업 외 내용 전부 · 파란 테마 · 61/52/54쪽 |
 | `STAGING_BLOCKED.md` | 기존 Staging 에 닿지 못한 정확한 원인과 최소 조치 (한 장) |
+| `pdf-long/` | 긴 판 PDF 세 벌 · 쪽 그림 · LINT_LONG |
 | `pdf/` | PROTO6(6쪽 × 3) · FULL(12쪽 × 3) · 쪽 그림 · COMPARE6 · BEFORE_AFTER · LINT_RESULTS |
 | `ci/` | `pcu-verify` R5 초안(승인 전 · 워크플로 아님) · 3차 초안과의 diff |
 | `logs/` | 원본 로그(R0 기준 · 도달 · 빌드 환경 · 회귀) |

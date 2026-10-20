@@ -36,8 +36,9 @@
 
 - [x] Noto Serif KR 제거 · Pretendard 한 벌 · 12단 격자 · 역할 활자 8단 (`01_DESIGN_DIFF.md` §3)
 - [x] 쪽 문법 12가지 · 시안 6쪽 문법 6/6 · **4쪽 구조가 사례마다 다름**(evidence-flow / gap-timeline / conflict-map)
-- [x] POOR `강점` 0 · 금지어 24 · 단정어 9 · 상투 18 · 명조 · 넘침 · 8.5pt 아래 — 세 사례 0 (`pdf/LINT_RESULTS.md`)
+- [x] POOR `강점` 0(12쪽 판의 마지막 남은 한 줄 "‘강점’ 대신 출발점" 도 고쳐 다시 뽑음) · 금지어 24 · 단정어 9 · 상투 18 · 명조 · 넘침 · 8.5pt 아래 — 세 사례 0 (`pdf/LINT_RESULTS.md`)
 - [x] 시안 6쪽 × 3 · 전체 12쪽 × 3 · 쪽 그림 · 같은 번호 비교판 6 · BEFORE/AFTER 4
+- [~] **긴 판(A안)**: v9 의 기업 외 내용 전부를 R5 디자인 + 파란 테마로 · RICH 61 · POOR 52 · CONTRA 54쪽 · 자동 검사 걸림 0 · 사람 검수 NOT VERIFIED (`05_LONG_VERSION.md`)
 - [~] 사람이 볼 여섯 자리(표지 · 4쪽 · 직무 비교 · 자기소개서 · 면접 · 마지막) — 사용자 검수 NOT VERIFIED
 
 ## R5 회귀 · R6 안전장치
