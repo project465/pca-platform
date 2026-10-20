@@ -1,0 +1,42 @@
+## 2026-10-20T08:49:57Z R3 Track 0 runtime probe
+HEAD 71eca64e63adcc2c93ccfc93ff380d2a6ff64647 (origin/feature/jju-campus 71eca64e63adcc2c93ccfc93ff380d2a6ff64647)
+--- node / npm
+v22.22.0
+10.9.4
+--- hosts (curl via agent proxy, CA bundle trusted)
+https://registry.npmjs.org/next               000
+https://registry.yarnpkg.com/next             000
+https://www.jj.ac.kr/                         000
+https://app.careermatri.com/api/health        000
+https://api.github.com/                       200
+--- npm view next version
+Terminated
+--- proxy recent failures
+{'ts': '2026-10-20T08:48:50.668Z', 'kind': 'connect_rejected', 'detail': 'gateway answered 403 to CONNECT (policy denial or upstream failure)', 'host': 'www.jj.ac.kr:443'}
+{'ts': '2026-10-20T08:48:50.951Z', 'kind': 'connect_rejected', 'detail': 'gateway answered 403 to CONNECT (policy denial or upstream failure)', 'host': 'app.careermatri.com:443'}
+{'ts': '2026-10-20T08:48:51.614Z', 'kind': 'connect_rejected', 'detail': 'gateway answered 403 to CONNECT (policy denial or upstream failure)', 'host': 'registry.yarnpkg.com:443'}
+{'ts': '2026-10-20T08:49:58.457Z', 'kind': 'connect_rejected', 'detail': 'gateway answered 403 to CONNECT (policy denial or upstream failure)', 'host': 'registry.yarnpkg.com:443'}
+{'ts': '2026-10-20T08:49:58.752Z', 'kind': 'connect_rejected', 'detail': 'gateway answered 403 to CONNECT (policy denial or upstream failure)', 'host': 'www.jj.ac.kr:443'}
+{'ts': '2026-10-20T08:49:59.067Z', 'kind': 'connect_rejected', 'detail': 'gateway answered 403 to CONNECT (policy denial or upstream failure)', 'host': 'app.careermatri.com:443'}
+--- docker
+ls: cannot access '/var/run/docker.sock': No such file or directory
+--- CI
+ls: cannot access '../.github/workflows': No such file or directory
+ls: cannot access '.github/workflows': No such file or directory
+--- local packages
+0
+@anthropic-ai
+chromedriver
+corepack
+docx
+eslint
+http-server
+nodemon
+npm
+playwright
+pnpm
+prettier
+serve
+ts-node
+typescript
+yarn

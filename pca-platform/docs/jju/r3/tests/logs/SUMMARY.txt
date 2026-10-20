@@ -1,0 +1,20 @@
+# R3 regression (2026-10-20T09:01:47Z · HEAD 71eca64e + R3 작업 트리 · offline harness · PostgreSQL 16)
+campus-check rc=0 | 확인 80가지 — 통과 80 · 걸림 0
+v3-scoring-ME rc=0 | 확인 31가지 — 통과 31 · 걸림 0
+v3-scoring-CS rc=0 | 확인 31가지 — 통과 31 · 걸림 0
+v3-freeze-measure rc=0 | 확인 14가지 — 통과 14 · 걸림 0
+v3-freeze rc=0 | 검사 화면 동결 OK — ME_V3_2_ASSESSMENT_UI_V44 · me-v3-2-assessment-copy.25 · 파일 21벌 그대로.
+v3-result-freeze rc=0 | 결과지 동결 OK — ME_V3_RESULT_UI_V77 · me-v3-result-copy.65 · me-v3-result-model.6 · 파일 25벌 그대로.
+v3-workspace rc=0 | 작업공간 동결 OK — CAREERMATRI_WORKSPACE_UI_V48 · careermatri-workspace-copy.31 · 파일 53벌 그대로 · 쓰는 이름 133개가 전부 CSS 에 있다.
+v3-freeze-core rc=0 | 확인 6가지 — 통과 6 · 걸림 0
+v3-majors rc=0 | 확인 18가지 — 통과 18 · 걸림 0
+v3-result rc=0 | 확인 25가지 — 통과 25 · 걸림 0
+v3-student rc=0 | 통과 79 · 걸림 0
+db-chain rc=0 | 확인 8가지 — 통과 8 · 걸림 0
+pcu-dept rc=0 | [글자까지 같은 줄] 0줄
+jju-dockerfile-drift rc=0 | 표시한 덩이 3개 · 더한 줄 13줄 · 그 밖 운영과 같다
+jju-verify rc=0 | 통과 42 · 걸림 0
+jju-access rc=1 | 통과 23 · 걸림 3
+jju-c16 rc=1 | 통과 1 · 걸림 7
+jju-report rc=0 | 통과 14 · 걸림 0
+jju-report-http rc=0 | 통과 20 · 걸림 0

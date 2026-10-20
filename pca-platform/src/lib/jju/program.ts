@@ -61,6 +61,19 @@ export function officialProgram(u: CampusUniversity): OfficialProgram | null {
   return p && Array.isArray(p.facts) ? p : null;
 }
 
+/**
+ * 전북·전국 산업 사실(R3 Track B). 출처 URL 과 확인 방식이 함께 온다.
+ * **지금 줄은 전부 검색 결과만으로 적은 것이다**(원문을 열지 못함). 화면과 종이는 그 사실을 함께 적는다.
+ */
+export type RegionFactRow = {
+  id: string; claim: string; status: "FACT" | "INTERPRETATION" | "RECOMMENDATION";
+  url: string; how: string; tracks: string[]; checked_on: string;
+};
+export function regionFacts(u: CampusUniversity): RegionFactRow[] {
+  const p = (u as unknown as { region_facts?: { facts?: RegionFactRow[] } }).region_facts;
+  return Array.isArray(p?.facts) ? p!.facts! : [];
+}
+
 export const FACT_STATUS_KO: Record<FactStatus, string> = {
   VERIFIED: "원문 대조",
   CONFIRMED_BY_OWNER: "공식 출처 · 사업주 확인",

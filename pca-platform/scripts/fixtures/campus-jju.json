@@ -194,39 +194,43 @@
       "id": "F1",
       "text": "2026년 AI 분야 첨단산업 인재양성 부트캠프 사업에 선정됐다",
       "source": "S1",
-      "status": "CONFIRMED_BY_OWNER"
+      "status": "CONFIRMED_BY_OWNER",
+      "caution": "R3 검색 결과(보도)와 내용이 맞는다 · 원문 페이지는 열지 못함(fact-register A03·A05·A06)"
      },
      {
       "id": "F2",
       "text": "사업 기간은 2026~2030년이고 총 사업비는 80억 원 규모다",
       "source": "S1",
       "status": "CONFIRMED_BY_OWNER",
-      "caution": "사업단 전체 사업비다. CareerMatri 계약 예산이나 도입 예산으로 읽거나 적지 않는다"
+      "caution": "사업단 전체 사업비다. CareerMatri 계약 예산이나 도입 예산으로 읽거나 적지 않는다 · R3 검색에서는 '5년간'과 '총 80억 원(국비 71억 2,500만 원 포함)'까지만 보도로 확인됐고 '2026~2030' 의 끝 해는 확인하지 못했다(fact-register A04·A08)"
      },
      {
       "id": "F3",
       "text": "전북 전략산업의 AX(인공지능 전환)와 실무형 피지컬 AI 인재 양성을 목표로 한다",
       "source": "S1",
-      "status": "CONFIRMED_BY_OWNER"
+      "status": "CONFIRMED_BY_OWNER",
+      "caution": "R3 검색 결과(보도)와 내용이 맞는다 · 원문 페이지는 열지 못함(fact-register A03·A05·A06)"
      },
      {
       "id": "F4",
       "text": "AI 융합 교과목, PBL, 현장실습, 마이크로디그리로 운영한다",
       "source": "S1",
-      "status": "CONFIRMED_BY_OWNER"
+      "status": "CONFIRMED_BY_OWNER",
+      "caution": "R3 검색 결과(보도)와 내용이 맞는다 · 원문 페이지는 열지 못함(fact-register A03·A05·A06)"
      },
      {
       "id": "F5",
       "text": "2026 AI 기초 과정을 공지했고 파이썬·데이터 처리·시각화·통계·딥러닝 기초를 다룬다",
       "source": "S2",
-      "status": "CONFIRMED_BY_OWNER"
+      "status": "CONFIRMED_BY_OWNER",
+      "caution": "R3 에서 공개 출처로 다시 확인하지 못했다(fact-register A09·A10 · S2 열람 실패)"
      },
      {
       "id": "F6",
       "text": "AI 기초 과정 뒤에 후속 ND1~ND6 과정이 있다",
       "source": "S2",
       "status": "EXISTS_DETAIL_UNVERIFIED",
-      "caution": "과정 이름·내용·순서·대상은 확인하지 못했다. 화면에 내용을 지어 적지 않는다"
+      "caution": "과정 이름·내용·순서·대상은 확인하지 못했다. 화면에 내용을 지어 적지 않는다 · R3 에서 공개 출처로 다시 확인하지 못했다(fact-register A09·A10 · S2 열람 실패)"
      }
     ],
     "courses": [
@@ -249,6 +253,111 @@
       "topics": [],
       "source": "S2",
       "status": "EXISTS_DETAIL_UNVERIFIED"
+     }
+    ]
+   },
+   "region_facts": {
+    "note": "docs/jju/r3/data/fact-register.csv 에서 고른 줄. 원문 페이지를 열지 못해 전부 검색 결과만으로 적었다(how=SEARCH_RESULT_ONLY). 외부에 쓰기 전에 원문과 대조한다",
+    "facts": [
+     {
+      "id": "B03",
+      "claim": "전북특별자치도는 총사업비 1조 원 규모 '협업지능 피지컬 AI 기반 소프트웨어 플랫폼 연구개발 생태계 조성' 사업의 예비타당성조사 면제가 최종 확정되었다고 밝혔으며, 사업 기간은 2026~2030년(5년)임.",
+      "status": "FACT",
+      "url": "https://www.jeonbuk.go.kr/newsroom/board/view.jeonbuk?menuCd=DOM_000001101000000000&boardId=BBS_0000090&dataSid=626797",
+      "how": "SEARCH_RESULT_ONLY",
+      "tracks": [
+       "피지컬 AI",
+       "스마트팩토리"
+      ],
+      "checked_on": "2026-10-20"
+     },
+     {
+      "id": "B05",
+      "claim": "과기정통부 2026 업무보고에서 4개 권역(서남권·동남권·대경권·전북)에 총 3.1조 원 규모 지역 AX 사업 착수가 제시되었고, 전북의 분야는 'AI 팩토리'로 소개됨.",
+      "status": "FACT",
+      "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148956323",
+      "how": "SEARCH_RESULT_ONLY",
+      "tracks": [
+       "스마트팩토리",
+       "피지컬 AI"
+      ],
+      "checked_on": "2026-10-20"
+     },
+     {
+      "id": "B09",
+      "claim": "전북특별자치도는 2025년 10월 보도자료에서 피지컬 AI가 다품종 소량생산·복합공정·유연생산에 적합해 전북 산업구조에 맞는다고 보고, 농기계·상용차 기반의 농업-제조 융합 모델과 완주·군산·익산·김제·전주를 잇는 제조 생태계를 제시함.",
+      "status": "FACT",
+      "url": "https://www.jeonbuk.go.kr/newsroom/board/view.jeonbuk?menuCd=DOM_000001101000000000&boardId=BBS_0000090&dataSid=633386",
+      "how": "SEARCH_RESULT_ONLY",
+      "tracks": [
+       "피지컬 AI",
+       "스마트팩토리",
+       "AIoT"
+      ],
+      "checked_on": "2026-10-20"
+     },
+     {
+      "id": "B18",
+      "claim": "전북도는 2026년을 'AI로봇 산업 육성 원년'으로 선포했고, 피지컬 AI 실증의 4대 분야로 농업·건설·푸드테크·물류를 제시했다고 보도됨.",
+      "status": "FACT",
+      "url": "https://www.jjan.kr/articleAmp/20260209500202",
+      "how": "SEARCH_RESULT_ONLY",
+      "tracks": [
+       "피지컬 AI",
+       "AIoT"
+      ],
+      "checked_on": "2026-10-20"
+     },
+     {
+      "id": "B20",
+      "claim": "서울신문(2026-09-28)은 전북 피지컬 AI 국책사업에서 전주가 핵심기술 개발·데이터·시험인증·인재양성을, 새만금이 로봇·핵심부품 제조·양산을 맡는 구조라고 보도함.",
+      "status": "FACT",
+      "url": "https://m.go.seoul.co.kr/news/2026/09/28/20260928022002",
+      "how": "SEARCH_RESULT_ONLY",
+      "tracks": [
+       "피지컬 AI",
+       "AI·데이터"
+      ],
+      "checked_on": "2026-10-20"
+     },
+     {
+      "id": "B10",
+      "claim": "전북 RISE(지역혁신중심 대학지원체계)는 2025~2029년 5년간 추진되며, '생명·전환 산업 혁신' 프로젝트에서 전북 8대 전략산업(농생명, 의생명, 청정에너지, 첨단소재, 모빌리티, 디지털, 문화관광, 생명서비스·웰니스) 특화 인재 양성을 다룸.",
+      "status": "FACT",
+      "url": "https://www.jjan.kr/articleAmp/20250402580325",
+      "how": "SEARCH_RESULT_ONLY",
+      "tracks": [
+       "AI·데이터",
+       "LLM 응용",
+       "AIoT",
+       "피지컬 AI",
+       "스마트팩토리"
+      ],
+      "checked_on": "2026-10-20"
+     },
+     {
+      "id": "B16",
+      "claim": "전북 김제 스마트팜 혁신밸리는 전국 4개 스마트팜 혁신밸리 중 가장 먼저 2021년 11월 29일 준공되었고, 약 21ha에 보육·임대·실증온실 등을 갖추며 청년 창업보육을 운영함.",
+      "status": "FACT",
+      "url": "https://smartcity.go.kr/2021/11/29/전북도-전북에-스마트팜-혁신밸리-전국최초-준공/",
+      "how": "SEARCH_RESULT_ONLY",
+      "tracks": [
+       "AIoT",
+       "AI·데이터"
+      ],
+      "checked_on": "2026-10-20"
+     },
+     {
+      "id": "B01",
+      "claim": "새만금은 2023년 7월 20일 국가첨단전략산업 이차전지 특화단지로 지정됨(이차전지: 청주·포항·울산·새만금).",
+      "status": "FACT",
+      "url": "https://m.korea.kr/briefing/pressReleaseView.do?newsId=156607819",
+      "how": "SEARCH_RESULT_ONLY",
+      "tracks": [
+       "스마트팩토리",
+       "AI·데이터"
+      ],
+      "checked_on": "2026-10-20"
      }
     ]
    }

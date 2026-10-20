@@ -16,7 +16,7 @@ import { query, queryOne } from "../src/lib/db";
 import { answersOf, latestResult } from "../src/lib/me-v3/runtime/session";
 import { jjuReportFor, jjuReportPdf } from "../src/lib/jju/report-pdf";
 
-const OUT = process.env.OUT ?? "docs/jju/r2/track-c";
+const OUT = process.env.OUT ?? "docs/jju/r3/track-c";
 let pass = 0; const bad: string[] = [];
 const ok = (w: string, c: boolean, saw = "") => {
   if (c) pass++; else bad.push(w);
@@ -32,7 +32,8 @@ async function main() {
   if (rows.length < 3) throw new Error("scripts/jju-verify.ts 를 먼저 돌린다(합성 학생 셋의 응시가 없다)");
   mkdirSync(`${OUT}/pdf`, { recursive: true });
   const text: Record<string, string> = {};
-  const link: string[] = ["| 학생 | 응시 | 답한 문항 | 묶음(영역: 상태) | 할 일 수 | 리포트 9절 중 학생별로 갈린 절 |", "|---|---|---|---|---|---|"];
+  const sec: Record<string, { evidenced: boolean; derived: boolean; role: string }> = {};
+  const link: string[] = ["| 학생 | 응시 | 답한 문항 | 묶음(영역: 상태) | 할 일 수 | 리포트 10절 중 학생별로 갈린 절 |", "|---|---|---|---|---|---|"];
   for (const r of rows) {
     const id = r.login.replace("qa-jju-qa", "").toUpperCase();
     const got = await jjuReportFor(r.attempt, r.uid);
@@ -42,6 +43,9 @@ async function main() {
     const pdf = await jjuReportPdf(got.html);
     writeFileSync(`${OUT}/pdf/jju-report-${id}.pdf`, pdf);
     ok(`${id} PDF 가 나온다`, pdf.subarray(0, 4).toString() === "%PDF", `${pdf.length}바이트`);
+    sec[id] = { evidenced: got.sections[0].lines.some((l) => l.k === "가진 것" && !/아직 없습니다/.test(l.v)),
+      derived: !!got.sections[2].table?.rows.some((r) => r[1] === "확인된 판단에서 이어짐"),
+      role: JSON.stringify(got.sections[3].table?.rows ?? []) };
     text[id] = got.sections.map((s) => `## ${s.no}. ${s.title}\n${s.lead ? s.lead + "\n" : ""}` + s.lines.map((l) => `- ${l.k ? l.k + ": " : ""}${l.v}`).join("\n")
       + (s.table ? "\n" + s.table.rows.map((x) => `  | ${x.join(" | ")} |`).join("\n") : "")).join("\n\n");
     const m = await latestResult(r.attempt);
@@ -52,15 +56,16 @@ async function main() {
   const ids = Object.keys(text);
   const per = (id: string) => Object.fromEntries(text[id].split("\n\n## ").map((s, i) => [i + 1, s]));
   const differs: number[] = [];
-  for (let n = 1; n <= 9; n += 1) if (new Set(ids.map((id) => per(id)[n])).size > 1) differs.push(n);
-  ok("학생 셋의 리포트에서 갈리는 절이 다섯 이상이다", differs.length >= 5, differs.join(","));
+  for (let n = 1; n <= 10; n += 1) if (new Set(ids.map((id) => per(id)[n])).size > 1) differs.push(n);
+  ok("학생 셋의 리포트에서 갈리는 절이 일곱 이상이다", differs.length >= 7, differs.join(","));
   for (let i = 2; i < link.length; i += 1) link[i] = link[i].replace("(아래 계산)", differs.join(", "));
 
   /* 같은 문장이 셋 모두에 나가는가: 첫 절의 이끄는 줄(요청 C12 우회) */
   const leads = ids.map((id) => text[id].split("\n")[1]);
   ok("첫 절 이끄는 줄이 셋 모두 다르다", new Set(leads).size === ids.length, leads.join(" / "));
-  const sec3 = ids.map((id) => per(id)[3]);
-  ok("근거 없는 연결이 없다(3절이 확인된 영역에서만 선다)", sec3.every((s) => /근거:|적지 않습니다/.test(s)));
+  /* 근거 없는 연결: `확인된 판단에서 이어짐` 줄은 확인된 판단이 있는 학생에게만 선다 */
+  ok("근거 없는 연결이 없다(이어진 직무·산업은 확인된 판단이 있을 때만)", Object.values(sec).every((x) => x.evidenced || !x.derived), JSON.stringify(sec));
+  ok("역할별 직무 역량 표가 학생마다 다르다", new Set(Object.values(sec).map((x) => x.role)).size === ids.length);
 
   /* 내주지 말아야 할 자리 */
   const [a, b] = rows;

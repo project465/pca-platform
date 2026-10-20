@@ -1,0 +1,21 @@
+── 1. 단건 추가 (addStudentAccount · 담당자 화면 `학생 추가`)
+  걸림  JJU → PCU 학생 아이디: 거절되고 줄이 그대로다 — 성공 응답 · campus_students: {"university_code":"PCU","student_id":"QA-C16-P1","college_code":"BUSINESS","department_code":"PCU26_BIZ","specialization":"SPEC_BIZ_GENERAL"} → {"university_code":"PCU","student_id":"QA-C16-P1","college_code":"JJU_AISW","department_code":"JJU1_AI","specialization":"SPEC_CS_AI"}
+  걸림  PCU → JJU 학생 아이디(반대 방향): 거절되고 줄이 그대로다 — 성공 응답 · campus_students: {"university_code":"JJU","student_id":"QA-C16-J1","college_code":"JJU_AISW","department_code":"JJU1_AI","specialization":"SPEC_CS_AI"} → {"university_code":"JJU","student_id":"QA-C16-J1","college_code":"BUSINESS","department_code":"PCU26_BIZ","specialization":"SPEC_BIZ_GENERAL"}
+  걸림  JJU → 다른 기관 담당자 아이디: 거절되고 줄이 그대로다 — 성공 응답 · 변화 없음
+  걸림  JJU → 개인 회원(B2C) 아이디: 거절되고 줄이 그대로다 — 성공 응답 · 변화 없음
+
+── 2. CSV 일괄 등록 (applyImport)
+  걸림  CSV 에 PCU 학생 아이디: 그 줄이 거절되고 피해자 줄이 그대로다 — 만듦 0 · 고침 1 · 거절 0 · campus_students: {"university_code":"PCU","student_id":"QA-C16-P2","college_code":"BUSINESS","department_code":"PCU26_BIZ","specialization":"SPEC_BIZ_GENERAL"} → {"university_code":"PCU","student_id":"QA-C16-P2","college_code":"JJU_AISW","department_code":"JJU1_AI","specialization":"SPEC_CS_AI"}
+
+── 3. rotate 경로 (pcu-students · staging-bootstrap 가 쓰는 provisionStudent(..., {rotate:true}))
+  걸림  rotate 로 PCU 학생 아이디: 거절되고 열쇠·학교·소속이 그대로다 — 통과됨 · display_name: 피해자 qa-c16-p3 → 교차 · password_hash(바뀜) · campus_students: {"university_code":"PCU","student_id":"QA-C16-P3","college_code":"BUSINESS","department_code":"PCU26_BIZ","specialization":"SPEC_BIZ_GENERAL"} → {"university_code":"JJU","student_id":"C16F","college_code":"JJU_AISW","department_code":"JJU1_AI","specialization":"SPEC_CS_AI"} · memberships: [{"org_id":"2","role":"student"}] → [{"org_id":"1","role":"student"},{"org_id":"2","role":"student"}]
+
+── 4. 비밀번호 재발급 (rotateStudentPassword · 소유 확인이 있는 경로)
+  통과  JJU 담당자가 PCU 학생 비밀번호 재발급: 거절되고 해시가 그대로다 — 이 학교가 발급한 계정이 아닙니다 · 변화 없음
+
+── 5. 같은 새 아이디를 두 학교가 같은 순간에 만든다 (경쟁)
+  걸림  경쟁: 한쪽만 성공하고 계정이 한 학교에만 묶인다 — 성공 2 · 실패 0 · 소속 [{"org_id":"1","role":"student"}] · campus_students {"university_code":"JJU","student_id":"C16G","college_code":"BUSINESS","department_code":"PCU26_BIZ","specialization":"SPEC_BIZ_GENERAL"}
+
+  정리  합성 피해자 7명을 지웠다 (남은 줄 0)
+
+  통과 1 · 걸림 7

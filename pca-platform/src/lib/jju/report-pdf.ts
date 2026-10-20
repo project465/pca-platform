@@ -14,7 +14,7 @@ import { queryOne } from "@/lib/db";
 import { answersOf, attemptOf, latestResult } from "@/lib/me-v3/runtime/session";
 import { resolveChromium } from "@/lib/me-v3/result/pdf";
 import { coverageOf } from "@/lib/jju/coverage";
-import { JJU_CODE, jjuUniversity, officialProgram, tracksOf } from "@/lib/jju/program";
+import { JJU_CODE, jjuUniversity, officialProgram, regionFacts, tracksOf } from "@/lib/jju/program";
 import { buildJjuReport, jjuReportHtml } from "@/lib/jju/report";
 
 export type JjuReportRefusal = "NOT_FOUND" | "NOT_JJU" | "NOT_SCORED" | "NO_REGISTRY";
@@ -37,6 +37,8 @@ export async function jjuReportFor(
     model: m, core: a.core_code, program, mode: t?.mode ?? "PREPARING",
     coverage: coverageOf(a.core_code, program?.courses.flatMap((c) => c.topics) ?? []),
     answered: Object.keys(await answersOf(attemptId)),
+    /* 그 트랙 이름에 걸리는 지역 사실만. 트랙 이름 낱말(예: `피지컬 AI`)로 고른다 */
+    region: regionFacts(u).filter((r) => r.tracks.some((k) => (t?.short ?? "").includes(k))).slice(0, 4),
     student: {
       name: who?.name ?? "학생", track: t?.short ?? a.department_code ?? "",
       cohort: t?.cohort.label ?? "", field: t?.field.name ?? "", spec: t?.spec_name ?? null,

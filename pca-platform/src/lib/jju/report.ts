@@ -29,12 +29,14 @@ import {
 import type { Gap, ResultModel } from "@/lib/me-v3/result/model";
 import {
   actionKo, draftFrameKo, evidenceStoryKo, gapKo, headlineBadgeKo,
-  headlineKo,
+  headlineKo, needKo,
 } from "@/lib/me-v3/result/text.ko";
+import { coreFile } from "@/lib/me-v3/core-registry";
+import type { Axis } from "@/lib/me-v3/scoring/types";
 import type { OfficialProgram } from "@/lib/jju/program";
 import { answeredIn, CAP_STATUS_KO, type CapCell } from "@/lib/jju/coverage";
 
-export const JJU_REPORT_VERSION = "jju-report.3";
+export const JJU_REPORT_VERSION = "jju-report.4";
 
 export type JjuReportInput = {
   model: ResultModel;
@@ -47,11 +49,32 @@ export type JjuReportInput = {
   coverage: CapCell[];
   /** 이 응시에서 답한 문항 번호. 측정된 역량 가운데 **실제로 받은 문항**만 센다 */
   answered: string[];
+  /**
+   * 전북·전국의 산업·정책 사실(`docs/jju/r3/data/fact-register.csv` 에서 고른 것).
+   * 출처 URL 과 확인 방식이 함께 온다. **없으면 그 줄을 세우지 않는다.**
+   */
+  region?: RegionFact[];
+};
+
+export type RegionFact = {
+  id: string; claim: string; status: "FACT" | "INTERPRETATION" | "RECOMMENDATION";
+  url: string; how: string; tracks: string[];
 };
 
 type Line = { k?: string; v: string; muted?: boolean };
-type Table = { head: string[]; rows: string[][] };
+type Table = { head: string[]; rows: string[][]; statusCol?: number };
 export type Section = { no: number; title: string; lead?: string; lines: Line[]; table?: Table };
+
+/** 확인된 축의 수. `owned` 는 `confirmed` 의 부분집합이라 더하면 두 번 센다(R2 에서 `10칸` 이 섰다) */
+const axesOf = (d: { confirmed: string[]; owned: string[] }) => new Set([...d.confirmed, ...d.owned]).size;
+
+/** 응답 품질 코드를 종이에 그대로 찍지 않는다 */
+const RQ_KO: Record<string, string> = {
+  OK: "특이 사항 없음",
+  REVIEW: "다시 볼 응답이 있음",
+  LOW_VARIANCE: "답이 한 값으로 고르게 모였음 · 결과를 읽을 때 함께 봄",
+  INCONSISTENT: "앞뒤가 맞지 않는 응답이 있음 · 결과를 읽을 때 함께 봄",
+};
 
 const ZONE_KO: Record<string, string> = {
   Z1_EVIDENCE_ESTABLISHED: "설명할 근거가 있음",
@@ -96,10 +119,18 @@ export function buildJjuReport(x: JjuReportInput): Section[] {
     { k: "지금 상태", v: headlineBadgeKo(m) },
     ...(sample && first ? [{ k: "응답에서 확인된 예", v: `${nm(first.code)} — ${sample}` }] : []),
     { k: "먼저 볼 영역", v: m.overview.focus.map(nm).join(" / ") || "아직 앞선 영역이 없습니다" },
+    { k: "가진 것", v: evidenced.length ? `${evidenced.map((d) => nm(d.code)).slice(0, 3).join(" / ")}에서 확인된 판단이 있습니다` : "확인된 판단이 있는 영역이 아직 없습니다" },
+    { k: "비어 있는 것", v: m.gaps[0] ? `${nm(m.gaps[0].domain)} — ${gapKo(m.gaps[0], "").title.replace(/^\s*·\s*/, "")}` : "결과 모델이 적은 빈자리가 없습니다" },
+    { k: "다음 한 가지", v: m.actions[0] ? actionKo(m.actions[0], m.actions[0].domain ? nm(m.actions[0].domain) : "", m.stage).do : "결과 모델이 낸 할 일이 없습니다" },
     { k: "센 수", v: `확인된 판단 ${m.overview.counts.confirmed_axes}칸 · 직접 정한 것 ${m.overview.counts.owned_axes}칸 · 고른 근거 ${m.overview.counts.evidence_items}개 (점수가 아니라 센 수입니다)` },
     ...(x.mode !== "LIVE" ? [{ v: "이 트랙의 검사는 전공자 검수 전 시연 전용입니다. 이 리포트를 학생 진단이나 사업 성과로 쓰지 않습니다.", muted: true }] : []),
   ] });
 
+  type Dom = { code: string; tools: string[]; artifacts: string[]; verify_targets: string[];
+    org_outcomes: Record<string, string>; workflow: { step: number; name: string; detail: string }[] };
+  type Rel = { td: string; strength: string; axes_watched?: Axis[]; dimensions?: string[] };
+  const dict = new Map(coreFile<{ domains: Dom[] }>(core, "domains").domains.map((d) => [d.code, d]));
+  const rel = coreFile<{ td_role: (Rel & { role: string })[]; td_industry: (Rel & { industry: string })[] }>(core, "relations");
   /* 2. 전공 영역은 검사가 잰 것, AI 역량은 세 층으로 */
   const capRows = x.coverage.map((c) => {
     const got = answeredIn(c, x.answered);
@@ -117,28 +148,80 @@ export function buildJjuReport(x: JjuReportInput): Section[] {
   S.push({ no: 2, title: "전공·AI 지식과 실무역량", lead: "전공 영역은 검사가 판정한 상태이고, AI 역량은 문항이 있는가에 따라 세 층으로 나눕니다.", lines: [
     ...opened.map((d) => ({
       k: nm(d.code),
-      v: `${ZONE_KO[d.zone] ?? d.zone} · 확인된 판단 ${d.confirmed.length + d.owned.length}칸(직접 정함 ${d.owned.length})${d.decided[0] ?? d.did[0] ? ` · 예: ${d.decided[0] ?? d.did[0]}` : ""}`,
+      v: `${ZONE_KO[d.zone] ?? d.zone} · 확인된 판단 ${axesOf(d)}칸(직접 정함 ${d.owned.length})${d.decided[0] ?? d.did[0] ? ` · 예: ${d.decided[0] ?? d.did[0]}` : ""}`,
     })),
-  ], table: { head: ["AI 역량", "이 검사에서", "이 학생"], rows: capRows } });
+    ...(() => {
+      const tds = (m.overview.focus.length ? m.overview.focus : opened.map((d) => d.code)).slice(0, 3);
+      const t = tds.map((td) => `${nm(td)}: ${(dict.get(td)?.tools ?? []).slice(0, 4).join("·") || "—"}`);
+      return t.length ? [{ k: "그 영역에서 쓰는 도구", v: `${t.join(" / ")} (그 Core 사전 · 이 학생이 다룬다는 뜻이 아님)`, muted: true }] : [];
+    })(),
+  ], table: { head: ["AI 역량", "이 검사에서", "이 학생"], rows: capRows, statusCol: 1 } });
 
-  /* 3. 근거가 있는 영역에서만 잇는다 */
-  const roles = confirmed.length ? rolesFromDomains(core, confirmed).slice(0, 4) : [];
-  const inds = confirmed.length ? industriesFromDomains(core, confirmed).slice(0, 4) : [];
-  S.push({ no: 3, title: "산업·직무 탐색", lines: [
-    ...(roles.length ? roles.map((r) => ({
-      k: roleName(core, r.code),
-      v: `근거: ${[...r.core_domains.map((d) => `${nm(d)}(중심)`), ...r.seen_domains.map((d) => `${nm(d)}(있음)`)].join(" · ")}`,
-    })) : [{ v: "확인된 판단이 있는 영역이 아직 없어 이어 볼 일을 적지 않습니다. 관심만으로 직무를 잇지 않습니다." }]),
-    ...(inds.length ? [{ k: "이어 볼 산업", v: inds.map((r) => `${ind.get(r.code) ?? r.code}(${r.core_domains.length + r.seen_domains.length}개 영역 겹침)`).join(" / ") }] : []),
-    { k: "학생이 고른 산업·직무", v: [...m.targets.industries.map((c) => ind.get(c) ?? c), ...m.targets.roles.map((c) => roleName(core, c))].join(" / ") || "고르지 않음" },
-    { v: "이 연결은 적합도나 합격 가능성이 아니라, 확인된 판단이 그 일의 중심 영역과 겹치는지를 적은 것입니다. 산업 근거는 그 Core 의 관계표이고 기업 자료가 아닙니다.", muted: true },
-  ] });
+  /* ── 3~10. Gold Master 구조. 값은 전부 결과 모델 · 그 Core 의 사전과 관계표 · 사업 사실에서 온다 ── */
+  const byCode = new Map(m.domains.map((d) => [d.code, d]));
+  const stateOf = (td: string) => {
+    const d = byCode.get(td);
+    if (!d || d.zone === "NOT_EXPLORED") return "이번 검사에서 묻지 않음";
+    return `${ZONE_KO[d.zone] ?? d.zone} · 확인 ${axesOf(d)}칸`;
+  };
+  const watched = (td: string, axes: Axis[] | undefined) => {
+    const d = byCode.get(td);
+    const xs = (axes ?? []);
+    const hit = d ? xs.filter((a) => d.confirmed.includes(a) || d.owned.includes(a)) : [];
+    return { all: xs, hit, miss: xs.filter((a) => !hit.includes(a)) };
+  };
+  const step = (td: string, name: string) => dict.get(td)?.workflow.find((w) => w.name === name)?.detail ?? "";
 
-  const orgs = m.targets.orgs.map((c) => org.get(c)).filter(Boolean) as { name: string; first: string }[];
-  S.push({ no: 4, title: "조직 유형과 그 근거", lines: [
-    ...(orgs.length ? orgs.map((o) => ({ k: o.name, v: o.first })) : [{ v: "관심 조직 유형을 고르지 않았습니다." }]),
-    { v: "기업 이름을 추천하지 않습니다. 전북권 기업·기관 자료는 출처와 사용 권리를 확인하기 전이라 0줄입니다.", muted: true },
-  ] });
+  /* 3. 산업·역할 비교: 학생이 고른 것과 확인된 판단에서 이어진 것을 함께 놓고 근거 영역을 적는다 */
+  const roleSet = [...new Set([...m.targets.roles, ...(confirmed.length ? rolesFromDomains(core, confirmed).map((r) => r.code) : [])])].slice(0, 4);
+  const indSet = [...new Set([...m.targets.industries, ...(confirmed.length ? industriesFromDomains(core, confirmed).map((r) => r.code) : [])])].slice(0, 4);
+  const centerOf = <T extends Rel>(rows: T[], pick: (r: T) => string, code: string) =>
+    rows.filter((r) => pick(r) === code && r.strength === "중심").map((r) => r.td);
+  /** 중심 영역이 없는 산업은 여러 영역에 고르게 걸린다. `0개 모두 아직` 으로 적지 않고 그 사실을 적는다 */
+  const spreadOf = <T extends Rel>(rows: T[], pick: (r: T) => string, code: string) =>
+    rows.filter((r) => pick(r) === code && r.strength === "있음").map((r) => r.td);
+  const cmpRows: string[][] = [
+    ...roleSet.map((r) => {
+      const tds = centerOf(rel.td_role, (x) => x.role, r);
+      const ready = tds.filter((t) => confirmed.includes(t));
+      return [`직무 · ${roleName(core, r)}`, m.targets.roles.includes(r) ? "학생이 고름" : "확인된 판단에서 이어짐",
+        tds.map(nm).join(" / ") || "—", ready.length ? `${ready.length}/${tds.length} 영역에 확인된 판단` : `중심 영역 ${tds.length}개에 확인된 판단 아직 없음`];
+    }),
+    ...indSet.map((c) => {
+      const tds = centerOf(rel.td_industry, (x) => x.industry, c);
+      const from = m.targets.industries.includes(c) ? "학생이 고름" : "확인된 판단에서 이어짐";
+      if (!tds.length) {
+        const sp = spreadOf(rel.td_industry, (x) => x.industry, c);
+        const hit = sp.filter((t) => confirmed.includes(t));
+        return [`산업 · ${ind.get(c) ?? c}`, from, `중심 영역 없이 ${sp.length}개 영역에 고르게 나타남`,
+          hit.length ? `그 가운데 ${hit.length}개 영역에 확인된 판단` : "그 영역들에 확인된 판단 아직 없음"];
+      }
+      const ready = tds.filter((t) => confirmed.includes(t));
+      return [`산업 · ${ind.get(c) ?? c}`, from,
+        tds.map(nm).join(" / "), ready.length ? `${ready.length}/${tds.length} 영역에 확인된 판단` : `중심 영역 ${tds.length}개에 확인된 판단 아직 없음`];
+    }),
+  ];
+  S.push({ no: 3, title: "산업·직무 비교", lead: cmpRows.length
+      ? "고른 것과 확인된 판단에서 이어진 것을 한 표에 놓고, 그 일이 중심으로 보는 영역에 이 학생의 판단이 얼마나 있는지 셉니다."
+      : "고른 산업·직무도, 확인된 판단도 아직 없어 비교할 줄이 없습니다.",
+    lines: [{ v: "적합도나 합격 가능성이 아닙니다. 중심 영역은 그 Core 의 관계표에서 왔고 기업 자료가 아닙니다. 관심만으로 직무를 잇지 않습니다.", muted: true }],
+    table: cmpRows.length ? { head: ["후보", "어디서 왔나", "그 일의 중심 영역", "이 학생"], rows: cmpRows } : undefined });
+
+  /* 4. 역할별 직무 역량: 한 역할을 골라 Role → 필요한 판단 → 근거/빈자리 → 다음 할 일로 잇는다 */
+  const focusRole = roleSet.find((r) => centerOf(rel.td_role, (x) => x.role, r).some((t) => confirmed.includes(t))) ?? roleSet[0];
+  const roleRows = focusRole ? rel.td_role.filter((x) => x.role === focusRole && x.strength === "중심").map((x) => {
+    const w = watched(x.td, x.axes_watched);
+    const act = m.actions.find((a) => a.domain === x.td);
+    const d = byCode.get(x.td);
+    const ev = d ? (d.decided[0] ?? d.did[0] ?? "") : "";
+    return [nm(x.td), w.all.map(needKo).join(" · "), `${stateOf(x.td)}${w.all.length ? ` · 이 역할이 보는 판단 ${w.hit.length}/${w.all.length}` : ""}${ev ? ` · 예: ${ev}` : ""}`,
+      act ? actionKo(act, nm(x.td), m.stage).do : w.miss.length ? `${needKo(w.miss[0])}부터 적을 경험 하나` : "정리해 둔 근거를 지원서 문장으로"];
+  }) : [];
+  S.push({ no: 4, title: "역할별 직무 역량", lead: focusRole
+      ? `${roleName(core, focusRole)} 역할이 직접 정하는 영역마다, 그 자리가 보는 판단과 이 학생의 상태와 다음 할 일을 잇습니다.`
+      : "이어 볼 역할이 아직 없습니다.",
+    lines: focusRole ? [] : [{ v: "역할을 고르거나 확인된 판단이 생기면 이 표가 섭니다." }],
+    table: roleRows.length ? { head: ["영역", "그 역할이 보는 판단", "이 학생", "다음 할 일"], rows: roleRows } : undefined });
 
   S.push({ no: 5, title: "Evidence / Gap", lines: [
     ...[...new Set(m.evidence.ready.map((g) => g.domain))].map((td) => ({ k: `근거 · ${nm(td)}`, v: m.evidence.ready.filter((g) => g.domain === td).flatMap((g) => g.picks).slice(0, 4).join(" / ") || "—" })),
@@ -146,14 +229,30 @@ export function buildJjuReport(x: JjuReportInput): Section[] {
     ...groupGaps(m.gaps, nm),
   ] });
 
-  /* 6. AI 학습·프로젝트 전략: 측정되는 것과 아닌 것을 나눠서 권한다 */
+  /* 6. 조직 유형과 지역: 고른 조직 유형에서 그 영역이 무엇으로 평가되는가(사전) + 출처 있는 지역 사실 */
+  const orgs = m.targets.orgs.map((c) => ({ c, o: org.get(c) })).filter((x) => x.o) as { c: string; o: { name: string; first: string } }[];
+  const lookTds = (focus => focus.length ? focus : opened.map((d) => d.code))(m.overview.focus).slice(0, 2);
+  const region = (x.region ?? []).slice(0, 6);
+  S.push({ no: 6, title: "조직 유형과 지역에서의 쓰임", lines: [
+    ...(orgs.length ? orgs.flatMap(({ c, o }) => [
+      { k: o.name, v: o.first },
+      ...lookTds.map((td) => ({ k: `  ${nm(td)}`, v: dict.get(td)?.org_outcomes?.[c] ? `이 조직 유형에서는 ${dict.get(td)!.org_outcomes[c]}(으)로 평가됩니다` : "그 Core 사전에 이 조직 유형의 설명이 없습니다" })),
+    ]) : [{ v: "관심 조직 유형을 고르지 않았습니다." }]),
+    ...region.map((r) => ({ k: `${r.id} · ${r.how === "FETCHED_PAGE" && r.status === "FACT" ? "사실" : r.status === "INTERPRETATION" ? "해석" : "보도·자료 요지"}`,
+      v: `${r.claim} [${r.how === "FETCHED_PAGE" ? "원문 확인" : "검색 결과만 · 원문 확인 전"}]` })),
+    { v: region.length
+        ? "지역 사실은 출처가 붙은 것만 적고 아래 10절에 URL 이 있습니다. 특정 기업의 채용·협약을 뜻하지 않습니다. 기업 이름을 추천하지 않습니다."
+        : "기업 이름을 추천하지 않습니다. 지역 사실은 출처를 확인한 것만 적는데 이 리포트에는 아직 없습니다.", muted: true },
+  ] });
+
+  /* 7. AI 학습·프로젝트 전략: 측정되는 것과 아닌 것을 나눠서 권한다 */
   const lead = opened.find((d) => d.did.length || d.decided.length);
   const story = lead ? evidenceStoryKo(core, lead.code, { did: lead.did[0], decided: lead.decided[0], artifacts: lead.artifacts, verifications: lead.verifications }, "lead", nm(lead.code)) : null;
   const ai = x.program?.courses.find((c) => c.status !== "EXISTS_DETAIL_UNVERIFIED");
   const measured = x.coverage.filter((c) => c.status === "MEASURED");
   const offList = x.coverage.filter((c) => c.status === "CURRICULUM" || c.status === "NOT_MEASURED");
   const weak = measured.find((c) => answeredIn(c, x.answered).length === 0) ?? measured[0];
-  S.push({ no: 6, title: "AI 학습·프로젝트 경험 활용", lines: [
+  S.push({ no: 7, title: "AI 학습·프로젝트 경험 활용", lines: [
     ...(story ? [
       { k: "꺼내 쓸 경험", v: `${story.domain} — ${story.action}` },
       ...(story.outputs.length ? [{ k: "남은 결과물", v: story.outputs.join(" / ") }] : []),
@@ -163,24 +262,52 @@ export function buildJjuReport(x: JjuReportInput): Section[] {
     ...(offList.length ? [{ k: "판정 밖에 두는 쪽", v: `${offList.map((c) => c.cap.name).join(" · ")} — 프로젝트 결과물(코드·보고서·시연)로 포트폴리오에 남깁니다. 이 검사는 이것을 재지 않습니다.`, muted: true }] : []),
   ] });
 
+  /* 8. 이력서·자소서·면접·포트폴리오. 고른 답만 칸에 넣고 빈칸은 학생이 적을 자리로 남긴다 */
   const frame = m.translation ? draftFrameKo(m.translation.steps) : [];
-  S.push({ no: 7, title: "자기소개서·면접·포트폴리오 전략", lines: [
-    ...(story ? [{ k: "지원서에서 먼저 쓸 것", v: story.application }, { k: "면접에서 받을 질문", v: story.interview }] : []),
-    ...frame.map((f) => ({ k: `지원서 뼈대 · ${f.label}`, v: f.items.join(" / ") })),
+  const ld = lead ?? first;
+  const bullet = ld ? [
+    `상황: ${step(ld.code, "문제가 들어오는 모양") || "(적을 칸)"}`,
+    `행동: ${ld.decided[0] ?? ld.did[0] ?? "(적을 칸)"}`,
+    `결과물: ${ld.artifacts.slice(0, 2).join(", ") || "(적을 칸)"}`,
+    `견준 대상: ${ld.verifications.slice(0, 1).join("") || "(무엇과 견줬는지 적을 칸)"}`,
+  ] : [];
+  const keep = ld ? [...new Set(ld.artifacts)] : [];
+  const usual = ld ? (dict.get(ld.code)?.artifacts ?? []).filter((a) => !keep.includes(a)).slice(0, 4) : [];
+  S.push({ no: 8, title: "이력서·자기소개서·면접·포트폴리오", lines: [
+    ...(ld ? [{ k: `이력서 한 줄 뼈대 · ${nm(ld.code)}`, v: bullet.join(" → ") }] : []),
+    ...(story ? [{ k: "자기소개서에서 먼저 쓸 것", v: story.application }, { k: "면접에서 받을 질문", v: story.interview }] : []),
+    ...frame.map((f) => ({ k: `자기소개서 뼈대 · ${f.label}`, v: f.items.join(" / ") })),
+    ...(keep.length ? [{ k: "포트폴리오 · 이미 고른 결과물", v: keep.slice(0, 4).join(" / ") }] : []),
+    ...(usual.length ? [{ k: "포트폴리오 · 이 영역에서 흔히 남기는 것", v: `${usual.join(" / ")} (그 Core 사전 · 이 학생이 만들었다는 뜻이 아님)` }] : []),
     { v: "수치·기간·결과는 학생이 직접 적습니다. 이 리포트는 문장을 대신 써 주지 않습니다.", muted: true },
   ] });
 
-  S.push({ no: 8, title: "우선순위 Career Action", lines: m.actions.slice(0, 3).map((a, i) => {
-    const t = actionKo(a, a.domain ? nm(a.domain) : "", m.stage);
-    return { k: `${i + 1}${a.horizon === "NOW" ? " · 지금" : a.horizon === "NEXT" ? " · 다음" : " · 나중"}`, v: `${t.do} ${t.note}` };
-  }) });
+  /* 9. 단계별 계획: 할 일 전부를 때로 묶고, 공식 과정의 자리는 확인된 만큼만 적는다 */
+  const hz: [string, string][] = [["NOW", "지금"], ["NEXT", "다음"], ["LATER", "나중"]];
+  const f4 = x.program?.facts.find((f) => f.id === "F4");
+  S.push({ no: 9, title: "단계별 학습·경험 계획", lines: [
+    /* 덧붙이는 말(`수업 프로젝트나 캡스톤 …`)은 할 일마다 같아서 줄마다 되풀이하면 표가 같은 말로 찬다. 한 번만 적는다 */
+    ...hz.flatMap(([h, label]) => m.actions.filter((a) => a.horizon === h).slice(0, 3).map((a) => {
+      const t = actionKo(a, a.domain ? nm(a.domain) : "", m.stage);
+      return { k: `${label}${a.domain ? ` · ${nm(a.domain)}` : ""}`, v: t.do };
+    })),
+    ...(() => {
+      const notes = [...new Set(m.actions.slice(0, 9).map((a) => actionKo(a, a.domain ? nm(a.domain) : "", m.stage).note).filter(Boolean))];
+      return notes.length ? [{ v: notes.join(" "), muted: true }] : [];
+    })(),
+    ...(m.actions.length ? [] : [{ v: "결과 모델이 낸 할 일이 없습니다." }]),
+    ...(ai ? [{ k: "공식 과정 · 지금 열린 것", v: `${ai.name}(${ai.topics.join("·")}) [${ai.source}]` }] : []),
+    ...(f4 ? [{ k: "공식 과정 · 이어지는 것", v: `${f4.text} [${f4.source}] — 후속 ND1~ND6 의 이름·내용·순서는 확인 전이라 적지 않습니다`, muted: true }] : []),
+  ] });
 
-  S.push({ no: 9, title: "근거 출처와 검증 상태", lines: [
+  S.push({ no: 10, title: "근거 출처와 한계", lines: [
     ...(x.program ? x.program.facts.map((f) => ({ k: `${f.id} · ${f.status === "EXISTS_DETAIL_UNVERIFIED" ? "있음·세부 미확인" : "공식 출처·사업주 확인"}`, v: `${f.text}${f.caution ? ` (${f.caution})` : ""} [${f.source}]` })) : []),
     ...(x.program ? [{ k: "출처", v: x.program.sources.map((s) => `${s.id} ${s.url}`).join(" / ") }, { v: `확인한 날 ${x.program.checked_on}. ${x.program.verification_note}`, muted: true }] : []),
+    ...(region.length ? [{ k: "지역 사실 출처", v: region.map((r) => `${r.id} ${r.url}`).join(" / ") }] : []),
     { k: "트랙·기수", v: "CareerMatri 시연용 분류이며 사업단 공식 트랙이 아닙니다." },
     { k: "검사", v: `${core} · 문항 ${m.provenance.module_versions.item_bank_version ?? "?"} · 채점 ${m.provenance.module_versions.scoring_version ?? "?"} · 규준·인지면접 전이라 검증된 검사가 아닙니다` },
-    { k: "응답 품질", v: m.response_quality.flag },
+    { k: "재지 않는 것", v: x.coverage.filter((c) => c.status === "NOT_MEASURED").map((c) => c.cap.name).join(" · ") || "—" },
+    { k: "응답 품질", v: RQ_KO[m.response_quality.flag] ?? "다시 볼 것이 있음" },
     { k: "리포트", v: JJU_REPORT_VERSION },
   ] });
   return S;
@@ -198,7 +325,7 @@ export function jjuReportHtml(x: JjuReportInput, S: Section[], opts: { draft?: b
     ["근거가 선 영역", `${new Set(m.evidence.ready.map((g) => g.domain)).size}개`],
   ];
   const body = S.map((s) => `<section><h2><span>${s.no}</span>${esc(s.title)}</h2>${s.lead ? `<p class="lead">${esc(s.lead)}</p>` : ""}${s.lines.length ? `<dl>${s.lines.map((l) =>
-    l.k ? `<dt>${esc(l.k)}</dt><dd${l.muted ? ' class="m"' : ""}>${esc(l.v)}</dd>` : `<dd class="full${l.muted ? " m" : ""}">${esc(l.v)}</dd>`).join("")}</dl>` : ""}${s.table ? `<table><thead><tr>${s.table.head.map((t) => `<th>${esc(t)}</th>`).join("")}</tr></thead><tbody>${s.table.rows.map((r) => `<tr>${r.map((c, i) => `<td${i === 1 ? ` class="st st-${esc(c)}"` : ""}>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table>` : ""}</section>`).join("");
+    l.k ? `<dt>${esc(l.k)}</dt><dd${l.muted ? ' class="m"' : ""}>${esc(l.v)}</dd>` : `<dd class="full${l.muted ? " m" : ""}">${esc(l.v)}</dd>`).join("")}</dl>` : ""}${s.table ? `<table><thead><tr>${s.table.head.map((t) => `<th>${esc(t)}</th>`).join("")}</tr></thead><tbody>${s.table.rows.map((r) => `<tr>${r.map((c, i) => `<td${i === s.table!.statusCol ? ` class="st st-${esc(c)}"` : ""}>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table>` : ""}</section>`).join("");
   return `<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>전주대학교 · ${esc(x.student.name)} · CareerMatri</title><style>
 @page{size:A4;margin:13mm 14mm 15mm}
 :root{--ink:#0f1b2d;--ink2:#3d4d66;--line:#dde3ec;--navy:#0f2a4a;--teal:#0f766e}
@@ -212,14 +339,14 @@ section{margin:0 0 11px;break-inside:auto}
 h2{font-size:11.5pt;margin:0 0 5px;display:flex;gap:8px;align-items:center;border-bottom:1px solid var(--line);padding-bottom:3px}
 h2 span{display:inline-block;min-width:19px;height:19px;border-radius:4px;background:var(--navy);color:#fff;font-size:8.5pt;text-align:center;line-height:19px}
 .lead{margin:0 0 5px;font-size:10.6pt;font-weight:600}
-dl{margin:0;display:grid;grid-template-columns:42mm 1fr;gap:3px 10px}dt{color:var(--ink2);font-size:8.9pt}dd{margin:0}
+dl{margin:0;display:grid;grid-template-columns:42mm minmax(0,1fr);gap:3px 10px}dt{color:var(--ink2);font-size:8.9pt}dd{margin:0;min-width:0;overflow-wrap:anywhere}
 dd.full{grid-column:1/-1}dd.m{color:#5b677a;font-size:8.6pt}
 table{width:100%;border-collapse:collapse;margin-top:6px;font-size:8.8pt}th{text-align:left;color:var(--ink2);font-weight:600;border-bottom:1px solid var(--line);padding:3px 4px}
 td{border-bottom:1px solid #eef1f5;padding:3px 4px;vertical-align:top}
-td.st{font-weight:700;white-space:nowrap}td.st-측정{color:var(--teal)}td.st-미측정{color:#9a3412}td.st-교육과정만{color:#6b4300}td.st-자기보고만{color:#5b677a}
+td.st{font-weight:700;white-space:nowrap}td{word-break:keep-all}td.st-측정{color:var(--teal)}td.st-미측정{color:#9a3412}td.st-교육과정만{color:#6b4300}td.st-자기보고만{color:#5b677a}
 footer{margin-top:12px;font-size:7.8pt;color:#5b677a;border-top:1px solid var(--line);padding-top:6px}
 @media screen{body{max-width:820px;margin:0 auto;padding:20px 16px}}
-@media screen and (max-width:600px){dl{grid-template-columns:1fr}dt{margin-top:6px}.cover h1{font-size:15pt}}
+@media screen and (max-width:600px){dl{grid-template-columns:minmax(0,1fr)}table{display:block;overflow-x:auto}dt{margin-top:6px}.cover h1{font-size:15pt}}
 </style></head><body>
 <div class="cover"><p>전주대학교 ${esc(x.program?.name ?? "AI 부트캠프")} · CareerMatri 학생 리포트</p>
 <h1>${esc(x.student.name)} · ${esc(x.student.track)}</h1>
