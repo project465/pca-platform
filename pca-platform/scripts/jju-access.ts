@@ -88,7 +88,7 @@ async function main() {
     `SELECT university_code, college_code, department_code, specialization FROM campus_students WHERE user_id=$1::bigint`, [P]);
   const pcuLogin = (await queryOne<{ l: string }>(`SELECT login_id l FROM users WHERE id=$1::bigint`, [P]))!.l;
   const s6 = await addStudentAccount("JJU", jjuOrg, { student_id: "QAX3", name: "학번 겹침", login_id: pcuLogin, department_code: "JJU1_AI" }, actor);
-  const after = await queryOne<typeof before>(
+  const after = await queryOne<NonNullable<typeof before>>(
     `SELECT university_code, college_code, department_code, specialization FROM campus_students WHERE user_id=$1::bigint`, [P]);
   const changed = JSON.stringify(before) !== JSON.stringify(after);
   ok("전주대 담당자가 배재대 학생과 같은 아이디로 추가해도 배재대 학생 줄이 바뀌지 않는다",
