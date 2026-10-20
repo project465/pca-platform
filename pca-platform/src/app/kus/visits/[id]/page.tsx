@@ -71,7 +71,7 @@ export default async function VisitDetail({ params, searchParams }: {
       </section>
 
       <section className="kus-panel">
-        <SectionHeader icon="doc" title="자기소개서·면접·포트폴리오 초안" sub={d.observeOnly ? "관찰 기록이라 `보았다·이해했다` 로 씁니다." : "직접 해 본 활동이 들어간 초안입니다."} />
+        <SectionHeader icon="doc" title="자기소개서·면접·포트폴리오 초안" sub={d.observeOnly ? "관찰 기록이라 ‘보았다·이해했다’로 씁니다." : "직접 해 본 활동이 들어간 초안입니다."} />
         <h3 className="kus-h3">자기소개서 문단</h3>
         <p className="kus-draft">{d.letter}</p>
         <h3 className="kus-h3">면접 질문과 답의 뼈대</h3>

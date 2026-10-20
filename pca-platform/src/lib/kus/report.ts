@@ -94,7 +94,7 @@ export function kusReportHtml(a: KusAnalysis, meta: KusReportMeta): string {
 
   /* 1 */
   const zoneList = a.deep.length
-    ? `<ul class="zl">${a.deep.map((d) => `<li><span class="zone ${ZONE_CLASS[d.zone] ?? ""}">${esc(d.zoneKo)}</span><b>${esc(d.name)}</b>${d.missingRequired.length ? `<small>비어 있는 꼭 볼 판단: ${esc(d.missingRequired.join(" · "))}</small>` : `<small>꼭 볼 판단이 다 확인됨</small>`}</li>`).join("")}</ul>`
+    ? `<ul class="zl">${a.deep.map((d) => `<li><span class="zone ${ZONE_CLASS[d.zone] ?? ""}">${esc(d.zoneKo)}</span><b>${esc(d.name)}</b>${d.missingRequired.length ? `<small>비어 있는 꼭 볼 판단: ${esc(d.missingRequired.join(" · "))}</small>` : `<small>${r.basis === "SELF_REPORT_ONLY" ? "꼭 볼 판단이 응답으로만 확인됨(근거 항목 없음)" : "꼭 볼 판단이 다 확인됨"}</small>`}</li>`).join("")}</ul>`
     : empty("이번 검사에서 연 영역이 없습니다.");
   const a0 = a.actions[0];
   const ch1 = chapter(1, "개인 현황", a.status.title, `
@@ -106,7 +106,7 @@ export function kusReportHtml(a: KusAnalysis, meta: KusReportMeta): string {
 ${note ? `<p class="warn">${esc(note)}</p>` : ""}
 <h3>영역마다 지금 상태</h3>${zoneList}
 <h3>먼저 할 한 가지</h3>
-${a0 ? `<p class="next"><b>${esc(a0.domain ?? "")}</b> ${esc(a0.do)}</p>` : empty("결과 모델이 낸 할 일이 없습니다.")}`,
+${a0 ? `<p class="next">${a0.domain && !a0.do.startsWith(a0.domain) ? `<b>${esc(a0.domain)}</b> ` : ""}${esc(a0.do)}</p>` : empty("결과 모델이 낸 할 일이 없습니다.")}`,
   { foot: "판정은 공통 엔진이 응답에서 냈고, 이 장은 그 판정이 근거 항목으로 얼마나 받쳐지는지를 함께 적습니다. 검사가 묻지 않은 것은 적지 않습니다." });
 
   /* 2 */
@@ -133,7 +133,7 @@ ${a0 ? `<p class="next"><b>${esc(a0.domain ?? "")}</b> ${esc(a0.do)}</p>` : empt
     (sameWhy ? `<p class="why">연 영역 모두: ${esc(sameWhy)}</p>` : "")
     + (a.deep.length ? a.deep.map(deepBlock).join("") : empty("이번 검사에서 연 영역이 없습니다."))
     + (a.major.notAsked.length ? `<p class="muted">이번 검사에서 묻지 않은 영역: ${esc(a.major.notAsked.join(" · "))}</p>` : ""),
-    { flow: true, foot: "응답 상태는 넷입니다: 아직 없음 · 받아서 수행 · 직접 수행 · 직접 결정. `직접 결정` 은 그 판단에 근거 항목 둘이 받칠 때만 섭니다. 사전의 도구·결과물은 그 영역이 다루는 것이고, 이 학생이 다룬다는 뜻이 아닙니다." });
+    { flow: true, foot: "응답 상태는 넷입니다: 아직 없음 · 받아서 수행 · 직접 수행 · 직접 결정. ‘직접 결정’은 그 판단에 근거 항목 둘이 받칠 때만 섭니다. 사전의 도구·결과물은 그 영역이 다루는 것이고, 이 학생이 다룬다는 뜻이 아닙니다." });
 
   /* 3 (+4) */
   const chainRows = a.deep.filter((d) => d.chain.did.length || d.chain.decided.length || d.chain.artifacts.length || d.chain.verifications.length);
@@ -156,7 +156,7 @@ ${a0 ? `<p class="next"><b>${esc(a0.domain ?? "")}</b> ${esc(a0.do)}</p>` : empt
 <div><h3>직무</h3>${a.interests.roles.length ? `<ul class="tags">${a.interests.roles.map((x) =>
       `<li class="${x.from === "PICKED" ? "pick" : "der"}">${esc(x.name)}<small>${x.from === "PICKED" ? "고름" : "확인된 영역에서 이어짐"}</small></li>`).join("")}</ul>` : empty("고른 직무도 이어진 직무도 없습니다.")}</div></div>
 ${a.interests.orgs.length ? `<p>관심 조직 유형: ${esc(a.interests.orgs.join(" · "))}</p>` : ""}`,
-    { flow: true, foot: "`이어짐` 은 그 Core 의 관계표에서 확인된 영역이 그 직무·산업의 중심 영역일 때입니다. 적합도나 합격 가능성이 아니고, 특정 기업을 추천하지 않습니다." });
+    { flow: true, foot: "‘이어짐’은 그 Core 의 관계표에서 확인된 영역이 그 직무·산업의 중심 영역일 때입니다. 적합도나 합격 가능성이 아니고, 특정 기업을 추천하지 않습니다." });
 
   /* 5 */
   const ch5 = chapter(5, "직무 요구사항과 Gap", a.link.role
@@ -179,7 +179,7 @@ ${a.interests.orgs.length ? `<p>관심 조직 유형: ${esc(a.interests.orgs.joi
   const ch6 = chapter(6, "탐방 경험과 직무 연결", a.visits.length
       ? `기업탐방 ${a.visits.length}건을 본 것 · 직접 해 본 것 · 확인할 것으로 가릅니다. 확인할 것은 학생이 이은 전공 영역의 검사 상태에서 나옵니다.`
       : "아직 남긴 탐방 기록이 없습니다.",
-    a.visits.length ? a.visits.map(visitBlock).join("") : empty("탐방을 다녀오면 KUS 홈의 `기업탐방 기록` 에서 남길 수 있습니다. 등록된 탐방 기업이 없으면 담당자가 등록한 뒤에 고를 수 있습니다."),
+    a.visits.length ? a.visits.map(visitBlock).join("") : empty("탐방을 다녀오면 KUS 홈의 ‘기업탐방 기록’에서 남길 수 있습니다. 등록된 탐방 기업이 없으면 담당자가 등록한 뒤에 고를 수 있습니다."),
     { flow: true, foot: "방문했다는 사실만으로 직무 역량을 판정하지 않습니다. 검사 상태는 탐방 기록으로 바뀌지 않고, 직접 해 본 활동을 경험으로 옮겨야 판정에 들어갑니다." });
 
   /* 7 */
@@ -206,7 +206,7 @@ ${a.application.frame.length ? `<h3>경험 번역 단계에서 고른 답</h3>${
 <h3>탐방 기록에서 꺼낼 초안</h3>${vd ? `<p class="draft">${esc(vd.letter)}</p>
 ${table(["면접 질문", "답의 뼈대"], vd.interview.map((q) => [esc(q.q), esc(q.frame)]))}
 <p class="muted">${esc(vd.cautions.join(" "))}</p>` : empty("탐방 기록이 생기면 이 자리에 초안이 섭니다.")}`,
-    { foot: "수치 · 기간 · 결과는 학생이 직접 적습니다. `(적을 칸)` 과 회색 칸은 응답에 없어서 비워 둔 자리입니다." });
+    { foot: "수치 · 기간 · 결과는 학생이 직접 적습니다. ‘(적을 칸)’과 회색 칸은 응답에 없어서 비워 둔 자리입니다." });
 
   /* 8 */
   const col = (t: string, xs: PlanItem[]) => `<div class="pcol"><p class="ph">${t}</p>${xs.length

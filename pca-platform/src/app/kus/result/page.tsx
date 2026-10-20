@@ -82,7 +82,7 @@ export default async function KusResult() {
               <p className="kus-dom-s">응답에서 확인된 판단 {shown.length}/8{d.interest ? ` · ${d.interest}` : ""}{d.experience ? ` · ${d.experience}` : ""}</p>
               {d.missingRequired.length
                 ? <p className="kus-dom-m">꼭 볼 판단 가운데 비어 있음: {d.missingRequired.join(" · ")}</p>
-                : <p className="kus-dom-ok">꼭 볼 판단이 다 확인됨</p>}
+                : <p className="kus-dom-ok">{r.basis === "SELF_REPORT_ONLY" ? "꼭 볼 판단이 응답으로만 확인됨(근거 항목 없음)" : "꼭 볼 판단이 다 확인됨"}</p>}
               {d.roles.length ? <p className="kus-dom-r">이 영역이 중심인 직무: {d.roles.join(" · ")}</p> : null}
             </li>
           );

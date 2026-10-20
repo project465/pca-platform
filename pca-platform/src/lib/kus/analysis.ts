@@ -171,7 +171,7 @@ export function reliabilityOf(st: KusAnalysis["status"]): KusAnalysis["reliabili
     ...(st.badge !== st.coreBadge || basis === "SELF_REPORT_ONLY" ? [{ k: "공통 결과지의 상태 이름", v: st.coreBadge }] : []),
   ];
   const caution = basis === "SELF_REPORT_ONLY" && c.confirmed > 0
-    ? "확인된 칸은 `해 봤다` 는 응답에서 나왔고 근거 항목이 하나도 붙지 않았습니다. 지원서·면접에서 이 결과를 그대로 성과로 쓰지 않습니다. 이 판정 방식은 측정 담당 검토를 요청해 두었습니다(KUS-CR-04)."
+    ? "확인된 칸은 ‘해 봤다’는 응답에서 나왔고 근거 항목이 하나도 붙지 않았습니다. 지원서·면접에서 이 결과를 그대로 성과로 쓰지 않습니다. 이 판정 방식은 측정 담당 검토를 요청해 두었습니다(KUS-CR-04)."
     : st.quality.flag !== "OK" ? `응답 품질 표시가 있습니다(${st.quality.text}). 결과를 읽을 때 함께 봅니다.` : null;
   return { basis, label, lines, caution };
 }
@@ -362,7 +362,9 @@ export function kusAnalysis(x: KusInput): KusAnalysis {
   };
   const by = (hz: string): PlanItem[] => m.actions.slice(0, 9).filter((a) => a.horizon === hz).slice(0, 3).map((a) => {
     const t = actionKo(a, a.domain ? nm(a.domain) : "", m.stage);
-    return { do: `${a.domain ? `${nm(a.domain)} — ` : ""}${t.do}`, done: doneOf(a), from: "검사" as const };
+    /* 문장이 이미 영역 이름으로 시작하면 앞에 다시 붙이지 않는다(`경영전략·기획 — 경영전략·기획을 …`) */
+    const pre = a.domain && !t.do.startsWith(nm(a.domain)) ? `${nm(a.domain)} — ` : "";
+    return { do: `${pre}${t.do}`, done: doneOf(a), from: "검사" as const };
   });
   const d30 = by("NOW");
   const d60 = by("NEXT");
