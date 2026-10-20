@@ -8,6 +8,8 @@ import {
   demoServer, firstCohortTracks, jjuUniversity, MODE_KO, officialProgram,
 } from "@/lib/jju/program";
 import { DemoRibbon, ModeChip, OfficialFacts } from "./parts";
+import { currentUser } from "@/lib/session";
+import { jjuStudentStatus } from "@/lib/jju/student";
 
 export const metadata = { title: "전주대학교 AI 부트캠프 · CareerMatri" };
 
@@ -36,12 +38,27 @@ export default async function JjuHome() {
   if (!u) notFound();
   const tracks = firstCohortTracks(u);
   const program = officialProgram(u);
+  /* 로그인한 전주대 학생이면 지금 상태와 다음 한 걸음을 맨 위에 둔다 */
+  const user = await currentUser();
+  const me = user ? await jjuStudentStatus(user.id) : null;
   const code = u.university_code.toLowerCase();
 
   return (
     <CampusShell u={u} wide>
       <div className="jju">
         {demoServer() ? <DemoRibbon /> : null}
+
+        {me ? (
+          <section className="jju-me" aria-label="내 진행 상태">
+            <p className="jju-me-k">{me.track} · <ModeChip mode={me.mode} /></p>
+            <h2>{me.headline}</h2>
+            <p className="jju-me-n">{me.note}</p>
+            <div className="jju-me-acts">
+              {me.primary ? <Link className="cm-cmp-btn is-primary" href={me.primary.href}>{me.primary.label}</Link> : null}
+              {me.more.map((l) => <a key={l.href} className="cm-cmp-btn" href={l.href}>{l.label}</a>)}
+            </div>
+          </section>
+        ) : null}
 
         <section className="cm-cmp-hero has-flow">
           <div>

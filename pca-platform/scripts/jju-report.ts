@@ -1,58 +1,86 @@
 /**
- * 합성 QA 학생 셋의 전주대 리포트를 뽑는다(`src/lib/jju/report.ts` 구조).
+ * 합성 QA 학생 셋의 전주대 리포트를 **다운로드 경로와 같은 함수로** 뽑는다.
  *
- * **굳은 결과만 읽는다.** `scripts/jju-verify.ts` 가 공통 엔진으로 제출해
- * 둔 응시의 `result_model` 을 꺼내 아홉 절로 묶고, HTML 과 PDF 를 남긴다.
- * 제품 PDF 경로(`/v3/{id}/result/pdf`)를 거치지 않는 **구조 시안**이고,
- * 문서 머리에 그 사실을 적는다.
+ * `/jju/report/{id}` 와 `/jju/report/{id}/pdf` 가 부르는 `jjuReportFor()` 와
+ * `jjuReportPdf()` 를 그대로 부른다. 그래서 여기서 나온 종이와 그 경로가
+ * 내주는 종이는 같은 코드에서 나온다(HTTP 층은 이 세션에서 띄우지 못했다).
  *
- *   V3_CAMPUS_FIXTURE=scripts/fixtures/campus-jju.json OUT=docs/jju/qa \
+ * 내주지 말아야 할 자리도 같은 함수로 센다: 남의 응시 · 담당자 계정 · 다른
+ * 학교 응시. 응답 → 결과 → 리포트가 어떻게 이어지는지는 `link-table.md` 로 남긴다.
+ *
+ *   V3_CAMPUS_FIXTURE=scripts/fixtures/campus-jju.json OUT=docs/jju/r2/track-c \
  *   npx tsx scripts/jju-report.ts
  */
-import { mkdirSync, writeFileSync, readFileSync } from "node:fs";
-import { chromium } from "playwright";
-import { query } from "../src/lib/db";
-import { latestResult } from "../src/lib/me-v3/runtime/session";
-import { buildJjuReport, jjuReportHtml } from "../src/lib/jju/report";
-import { jjuUniversity, officialProgram, tracksOf } from "../src/lib/jju/program";
+import { mkdirSync, writeFileSync } from "node:fs";
+import { query, queryOne } from "../src/lib/db";
+import { answersOf, latestResult } from "../src/lib/me-v3/runtime/session";
+import { jjuReportFor, jjuReportPdf } from "../src/lib/jju/report-pdf";
 
-const OUT = process.env.OUT ?? "docs/jju/qa";
+const OUT = process.env.OUT ?? "docs/jju/r2/track-c";
+let pass = 0; const bad: string[] = [];
+const ok = (w: string, c: boolean, saw = "") => {
+  if (c) pass++; else bad.push(w);
+  console.log(`  ${c ? "통과" : "걸림"}  ${w}${saw ? " — " + saw : ""}`);
+};
 
 async function main() {
-  const u = jjuUniversity();
-  if (!u) throw new Error("V3_CAMPUS_FIXTURE 가 없다(전주대는 시연 fixture 로만 선다)");
-  const program = officialProgram(u);
-  const notMeasured = JSON.parse(readFileSync(`${OUT}/not-measured.json`, "utf8")) as Record<string, string[]>;
-  const rows = await query<{ attempt: string; login: string; name: string; dept: string; core: string; spec: string | null }>(
-    `SELECT a.id::text attempt, u.login_id login, u.display_name name, a.department_code dept,
-            a.core_code core, a.specialization_code spec
+  const rows = await query<{ attempt: string; login: string; uid: string }>(
+    `SELECT a.id::text attempt, u.login_id login, u.id::text uid
        FROM v3_attempts a JOIN users u ON u.id = a.user_id
       WHERE a.university_code = 'JJU' AND u.login_id LIKE 'qa-jju-qa%' AND a.status = 'scored'
       ORDER BY u.login_id`);
+  if (rows.length < 3) throw new Error("scripts/jju-verify.ts 를 먼저 돌린다(합성 학생 셋의 응시가 없다)");
   mkdirSync(`${OUT}/pdf`, { recursive: true });
-  const browser = await chromium.launch(process.env.CHROMIUM ? { executablePath: process.env.CHROMIUM } : {});
   const text: Record<string, string> = {};
+  const link: string[] = ["| 학생 | 응시 | 답한 문항 | 묶음(영역: 상태) | 할 일 수 | 리포트 9절 중 학생별로 갈린 절 |", "|---|---|---|---|---|---|"];
   for (const r of rows) {
-    const m = await latestResult(r.attempt);
-    if (!m) throw new Error(`${r.login}: 굳은 결과가 없다`);
-    const t = tracksOf(u).find((x) => x.code === r.dept)!;
-    const input = {
-      model: m, core: r.core, program, mode: t.mode, notMeasured: notMeasured[r.core] ?? [],
-      student: { name: r.name, track: t.short, cohort: t.cohort.label, field: t.field.name, spec: t.spec_name },
-    };
-    const sections = buildJjuReport(input);
-    const html = jjuReportHtml(input, sections);
     const id = r.login.replace("qa-jju-qa", "").toUpperCase();
-    writeFileSync(`${OUT}/pdf/jju-report-${id}.html`, html);
-    const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: "load" });
-    await page.pdf({ path: `${OUT}/pdf/jju-report-${id}.pdf`, format: "A4", printBackground: true });
-    await page.close();
-    text[id] = sections.map((s) => `## ${s.no}. ${s.title}\n` + s.lines.map((l) => `- ${l.k ? l.k + ": " : ""}${l.v}`).join("\n")).join("\n\n");
-    console.log(`  뽑음  ${id} · 응시 ${r.attempt} · 절 ${sections.length}`);
+    const got = await jjuReportFor(r.attempt, r.uid);
+    ok(`${id} 본인 응시로 리포트가 선다`, got.ok, got.ok ? `절 ${got.sections.length}` : got.why);
+    if (!got.ok) continue;
+    writeFileSync(`${OUT}/pdf/jju-report-${id}.html`, got.html);
+    const pdf = await jjuReportPdf(got.html);
+    writeFileSync(`${OUT}/pdf/jju-report-${id}.pdf`, pdf);
+    ok(`${id} PDF 가 나온다`, pdf.subarray(0, 4).toString() === "%PDF", `${pdf.length}바이트`);
+    text[id] = got.sections.map((s) => `## ${s.no}. ${s.title}\n${s.lead ? s.lead + "\n" : ""}` + s.lines.map((l) => `- ${l.k ? l.k + ": " : ""}${l.v}`).join("\n")
+      + (s.table ? "\n" + s.table.rows.map((x) => `  | ${x.join(" | ")} |`).join("\n") : "")).join("\n\n");
+    const m = await latestResult(r.attempt);
+    const ans = Object.keys(await answersOf(r.attempt)).length;
+    link.push(`| ${id} | ${r.attempt} | ${ans} | ${m!.domains.filter((d) => d.zone !== "NOT_EXPLORED").map((d) => `${d.code}:${d.zone.slice(0, 2)}`).join(" ")} | ${m!.actions.length} | (아래 계산) |`);
   }
-  await browser.close();
-  writeFileSync(`${OUT}/pdf/report-text.json`, JSON.stringify(text, null, 1));
-  process.exit(0);
+  /* 학생마다 갈린 절 */
+  const ids = Object.keys(text);
+  const per = (id: string) => Object.fromEntries(text[id].split("\n\n## ").map((s, i) => [i + 1, s]));
+  const differs: number[] = [];
+  for (let n = 1; n <= 9; n += 1) if (new Set(ids.map((id) => per(id)[n])).size > 1) differs.push(n);
+  ok("학생 셋의 리포트에서 갈리는 절이 다섯 이상이다", differs.length >= 5, differs.join(","));
+  for (let i = 2; i < link.length; i += 1) link[i] = link[i].replace("(아래 계산)", differs.join(", "));
+
+  /* 같은 문장이 셋 모두에 나가는가: 첫 절의 이끄는 줄(요청 C12 우회) */
+  const leads = ids.map((id) => text[id].split("\n")[1]);
+  ok("첫 절 이끄는 줄이 셋 모두 다르다", new Set(leads).size === ids.length, leads.join(" / "));
+  const sec3 = ids.map((id) => per(id)[3]);
+  ok("근거 없는 연결이 없다(3절이 확인된 영역에서만 선다)", sec3.every((s) => /근거:|적지 않습니다/.test(s)));
+
+  /* 내주지 말아야 할 자리 */
+  const [a, b] = rows;
+  const swap = await jjuReportFor(a.attempt, b.uid);
+  ok("남의 응시 번호로는 리포트가 서지 않는다(ID 교체)", !swap.ok && swap.why === "NOT_FOUND", swap.ok ? "열림" : swap.why);
+  const admin = await queryOne<{ id: string }>(`SELECT id::text FROM users WHERE login_id = 'qa-jju-admin'`);
+  const asAdmin = admin ? await jjuReportFor(a.attempt, admin.id) : { ok: false as const, why: "NOT_FOUND" as const };
+  ok("담당자 계정으로 학생 리포트가 서지 않는다", !asAdmin.ok, asAdmin.ok ? "열림" : asAdmin.why);
+  const pcu = await queryOne<{ attempt: string; uid: string }>(
+    `SELECT a.id::text attempt, a.user_id::text uid FROM v3_attempts a WHERE a.university_code = 'PCU' AND a.status='scored' LIMIT 1`);
+  if (pcu) {
+    const other = await jjuReportFor(pcu.attempt, pcu.uid);
+    ok("다른 학교 응시는 본인이어도 JJU 리포트로 그리지 않는다", !other.ok && other.why === "NOT_JJU", other.ok ? "열림" : other.why);
+  }
+  ok("없는 응시 번호는 서지 않는다", !(await jjuReportFor("999999", a.uid)).ok);
+
+  writeFileSync(`${OUT}/report-text.json`, JSON.stringify(text, null, 1));
+  writeFileSync(`${OUT}/link-table.md`, ["# 응답 → 결과 → 리포트 연결", "", ...link, ""].join("\n"));
+  writeFileSync(`${OUT}/jju-report.log`, `통과 ${pass} · 걸림 ${bad.length}\n${bad.join("\n")}\n`);
+  console.log(`\n  통과 ${pass} · 걸림 ${bad.length}`);
+  process.exit(bad.length ? 1 : 0);
 }
 main().catch((e) => { console.error(e); process.exit(1); });

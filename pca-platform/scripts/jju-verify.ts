@@ -26,6 +26,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { query, queryOne } from "../src/lib/db";
 import { appEnv } from "../src/lib/env";
 import { checkStudent, provisionStudent, campusStudentContext } from "../src/lib/campus/students";
+import { assertLoginFree } from "../src/lib/jju/login-guard";
 import { listStudents, studentCounts } from "../src/lib/campus/manage";
 import { campusV3 } from "../src/lib/me-v3/campus";
 import { canInOrg, canReadParticipantReport } from "../src/lib/rbac";
@@ -215,6 +216,7 @@ async function admin(login: string, orgId: string): Promise<string> {
 async function student(uni: string, orgId: string, sid: string, name: string, dept: string) {
   const c = checkStudent(uni, { student_id: sid, name, login_id: `qa-${uni.toLowerCase()}-${sid.toLowerCase()}`, department_code: dept });
   if (!c.ok) throw new Error(`${sid}: ${c.why}`);
+  await assertLoginFree(c.value.loginId, uni);
   const got = await provisionStudent(orgId, c.value, { rotate: true });
   /* 같은 계정으로 다시 돌릴 때 앞 응시를 치운다: 이 계정은 QA 전용이다 */
   await query(`DELETE FROM v3_snapshots WHERE attempt_id IN (SELECT id FROM v3_attempts WHERE user_id=$1::bigint)`, [got.userId]);
@@ -306,7 +308,10 @@ async function main() {
   const jv = await campusV3({ orgIds: [Number(jjuOrg)], universityCode: JJU_CODE, withDemo: true });
   const pv = await campusV3({ orgIds: [Number(pcuOrg)], universityCode: "PCU", withDemo: true });
   const jDept = jv.by_department.map((c) => c.key);
-  ok("JJU 집계의 시작 수에 PCU 학생이 없다", jv.started === 3, `JJU 시작 ${jv.started} · 완료 ${jv.scored}`);
+  /* 기대값을 3 으로 못 박지 않는다: 다른 검사가 남긴 전주대 응시가 있으면 멀쩡한 집계가 걸린다.
+     재는 것은 PCU 응시가 섞이지 않았는가다 */
+  const jdb = await queryOne<{ n: string }>(`SELECT count(DISTINCT user_id)::text n FROM v3_attempts WHERE university_code='JJU'`);
+  ok("JJU 집계의 시작 수에 PCU 학생이 없다", jv.started === Number(jdb?.n ?? -1), `JJU 시작 ${jv.started} · DB 의 전주대 응시자 ${jdb?.n} · 완료 ${jv.scored}`);
   ok("JJU 집계의 학과 칸에 PCU 코드가 없다", !jDept.some((k) => k.startsWith("PCU")), jDept.join(",") || "(5명 미만이라 칸 없음)");
   ok("PCU 집계에 JJU 학생이 없다", pv.started >= 1 && !pv.by_department.some((c) => c.key.startsWith("JJU")), `PCU 시작 ${pv.started}`);
   const jl = await listStudents({ universityCode: JJU_CODE, withDemo: true, limit: 500 });

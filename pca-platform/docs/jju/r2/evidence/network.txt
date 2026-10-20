@@ -1,0 +1,38 @@
+## 2026-10-20T08:25:34Z network evidence
+--- getent hosts registry.npmjs.org
+(no answer, exit 2)
+--- cat /etc/resolv.conf
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+options timeout:2 attempts:3
+--- curl direct (noproxy) https://registry.npmjs.org/next
+curl: (6) Could not resolve host: registry.npmjs.org
+000
+--- curl via proxy https://registry.npmjs.org/next
+curl: (6) Could not resolve host: registry.npmjs.org
+000
+--- curl via proxy https://www.jj.ac.kr/
+curl: (56) CONNECT tunnel failed, response 403
+000
+--- npm view next version
+--- npm config
+https://registry.npmjs.org/
+null
+http://127.0.0.1:44705
+--- proxy recent failures
+{'ts': '2026-10-20T08:25:26.284Z', 'kind': 'connect_rejected', 'detail': 'gateway answered 403 to CONNECT (policy denial or upstream failure)', 'host': 'www.jj.ac.kr:443'}
+{'ts': '2026-10-20T08:25:26.562Z', 'kind': 'connect_rejected', 'detail': 'gateway answered 403 to CONNECT (policy denial or upstream failure)', 'host': 'app.careermatri.com:443'}
+{'ts': '2026-10-20T08:25:34.980Z', 'kind': 'connect_rejected', 'detail': 'gateway answered 403 to CONNECT (policy denial or upstream failure)', 'host': 'www.jj.ac.kr:443'}
+--- via proxy, NO_PROXY cleared
+curl: (56) CONNECT tunnel failed, response 403
+000
+
+## container runtime
+29.9.1
+failed to connect to the docker API at unix:///var/run/docker.sock; check if the path is correct and if the daemon is running: dial unix /var/run/docker.sock: connect: no such file or directory
+ls: cannot access '/var/run/docker.sock': No such file or directory
+## local packages
+next/react/pg/bcryptjs/next-auth present anywhere under /opt or /home: 0
+repo node_modules: empty directory (0 entries)
+## postgres
+16  main    5432 down   postgres /var/lib/postgresql/16/main /var/log/postgresql/postgresql-16-main.log

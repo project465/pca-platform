@@ -31,6 +31,7 @@ import { hashPassword } from "../src/lib/password";
 import { appEnv } from "../src/lib/env";
 import { sellableCores } from "../src/lib/me-v3/core-registry";
 import { checkStudent, provisionStudent } from "../src/lib/campus/students";
+import { assertLoginFree } from "../src/lib/jju/login-guard";
 import { attemptOf, openAttempt, submit } from "../src/lib/me-v3/runtime/session";
 import type { V3Attempt } from "../src/lib/me-v3/runtime/session";
 import { answerAll, PEOPLE } from "./_v3-answer";
@@ -117,6 +118,7 @@ async function main(): Promise<void> {
         login_id: login, department_code: t.code,
       });
       if (!checked.ok) throw new Error(`${login}: ${checked.why}`);
+      await assertLoginFree(login, JJU_CODE);
       const got = await provisionStudent(org.id, checked.value, { rotate: true });
       let state = "미응시";
       const hasAttempt = await queryOne<{ n: string }>(

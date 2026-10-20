@@ -1,0 +1,565 @@
+{
+ "CS_CORE_V1": {
+  "PY": {
+   "cap": {
+    "id": "PY",
+    "name": "파이썬 프로그래밍",
+    "course": "파이썬",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "CURRICULUM",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "DATA": {
+   "cap": {
+    "id": "DATA",
+    "name": "데이터 처리",
+    "course": "데이터 처리",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "MEASURED",
+   "core": [
+    "TD09_J5_2",
+    "TD09_J4_1"
+   ],
+   "pack": [
+    "INDUSTRY_MOBILITY_V1_I7",
+    "INDUSTRY_HEALTH_V1_I3"
+   ],
+   "self": [
+    "(체크리스트 문구)"
+   ]
+  },
+  "VIS": {
+   "cap": {
+    "id": "VIS",
+    "name": "시각화",
+    "course": "시각화",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "CURRICULUM",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "STAT": {
+   "cap": {
+    "id": "STAT",
+    "name": "통계(측정 분포 수준 포함)",
+    "course": "통계",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "CURRICULUM",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "ML": {
+   "cap": {
+    "id": "ML",
+    "name": "기계학습 모형 평가·개선",
+    "domains": {
+     "CS_CORE_V1": [
+      "TD09"
+     ]
+    },
+    "keys": {}
+   },
+   "status": "MEASURED",
+   "core": [
+    "TD09_J3_1",
+    "TD09_J3_2",
+    "TD09_J5_1",
+    "TD09_J5_2",
+    "TD09_J6_1",
+    "TD09_J6_2",
+    "TD09_J7_1",
+    "TD09_J7_2",
+    "TD09_J1_1",
+    "TD09_J2_1",
+    "TD09_J4_1",
+    "TD09_J8_1"
+   ],
+   "pack": [
+    "INDUSTRY_PLATFORM_V1_I6",
+    "INDUSTRY_FINTECH_V1_I8",
+    "INDUSTRY_GAME_V1_I9",
+    "INDUSTRY_MOBILITY_V1_I7",
+    "INDUSTRY_HEALTH_V1_I3",
+    "INDUSTRY_HEALTH_V1_I7",
+    "INDUSTRY_HEALTH_V1_I8",
+    "INDUSTRY_HEALTH_V1_I9",
+    "INDUSTRY_HEALTH_V1_I10",
+    "ROLE_RESEARCH_V1_R1",
+    "ROLE_RESEARCH_V1_R2",
+    "ROLE_RESEARCH_V1_R4",
+    "ROLE_RESEARCH_V1_R6",
+    "ROLE_RESEARCH_V1_R7"
+   ],
+   "self": [
+    "(체크리스트 문구)"
+   ]
+  },
+  "DL": {
+   "cap": {
+    "id": "DL",
+    "name": "딥러닝·신경망",
+    "course": "딥러닝 기초",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "CURRICULUM",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "LLM": {
+   "cap": {
+    "id": "LLM",
+    "name": "LLM·생성형 AI 응용",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "NOT_MEASURED",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "CV": {
+   "cap": {
+    "id": "CV",
+    "name": "컴퓨터 비전",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "NOT_MEASURED",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "MLOPS": {
+   "cap": {
+    "id": "MLOPS",
+    "name": "모델 배포·운영(MLOps)",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "NOT_MEASURED",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "EDGE": {
+   "cap": {
+    "id": "EDGE",
+    "name": "엣지·온디바이스 AI",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "NOT_MEASURED",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "ROBOT": {
+   "cap": {
+    "id": "ROBOT",
+    "name": "로봇 인지·자율 동작",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "NOT_MEASURED",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "SENSOR": {
+   "cap": {
+    "id": "SENSOR",
+    "name": "센서 신호 수집·처리",
+    "domains": {
+     "EE_CORE_V1": [
+      "TD04"
+     ]
+    },
+    "keys": {}
+   },
+   "status": "MEASURED",
+   "core": [],
+   "pack": [
+    "INDUSTRY_MOBILITY_V1_I7"
+   ],
+   "self": []
+  }
+ },
+ "EE_CORE_V1": {
+  "PY": {
+   "cap": {
+    "id": "PY",
+    "name": "파이썬 프로그래밍",
+    "course": "파이썬",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "CURRICULUM",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "DATA": {
+   "cap": {
+    "id": "DATA",
+    "name": "데이터 처리",
+    "course": "데이터 처리",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "CURRICULUM",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "VIS": {
+   "cap": {
+    "id": "VIS",
+    "name": "시각화",
+    "course": "시각화",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "CURRICULUM",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "STAT": {
+   "cap": {
+    "id": "STAT",
+    "name": "통계(측정 분포 수준 포함)",
+    "course": "통계",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "MEASURED",
+   "core": [
+    "TD04_J2_1",
+    "TD07_J6_2",
+    "TD12_J6_1",
+    "TD12_J7_2"
+   ],
+   "pack": [],
+   "self": [
+    "(체크리스트 문구)"
+   ]
+  },
+  "ML": {
+   "cap": {
+    "id": "ML",
+    "name": "기계학습 모형 평가·개선",
+    "domains": {
+     "CS_CORE_V1": [
+      "TD09"
+     ]
+    },
+    "keys": {}
+   },
+   "status": "NOT_MEASURED",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "DL": {
+   "cap": {
+    "id": "DL",
+    "name": "딥러닝·신경망",
+    "course": "딥러닝 기초",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "CURRICULUM",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "LLM": {
+   "cap": {
+    "id": "LLM",
+    "name": "LLM·생성형 AI 응용",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "NOT_MEASURED",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "CV": {
+   "cap": {
+    "id": "CV",
+    "name": "컴퓨터 비전",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "NOT_MEASURED",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "MLOPS": {
+   "cap": {
+    "id": "MLOPS",
+    "name": "모델 배포·운영(MLOps)",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "NOT_MEASURED",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "EDGE": {
+   "cap": {
+    "id": "EDGE",
+    "name": "엣지·온디바이스 AI",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "NOT_MEASURED",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "ROBOT": {
+   "cap": {
+    "id": "ROBOT",
+    "name": "로봇 인지·자율 동작",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "NOT_MEASURED",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "SENSOR": {
+   "cap": {
+    "id": "SENSOR",
+    "name": "센서 신호 수집·처리",
+    "domains": {
+     "EE_CORE_V1": [
+      "TD04"
+     ]
+    },
+    "keys": {}
+   },
+   "status": "MEASURED",
+   "core": [
+    "TD04_J3_1",
+    "TD04_J3_2",
+    "TD04_J5_1",
+    "TD04_J5_2",
+    "TD04_J6_1",
+    "TD04_J6_2",
+    "TD04_J7_1",
+    "TD04_J7_2",
+    "TD04_J1_1",
+    "TD04_J2_1",
+    "TD04_J4_1",
+    "TD04_J8_1",
+    "TD11_J3_2",
+    "TD11_J7_1"
+   ],
+   "pack": [
+    "INDUSTRY_SEMI_V1_I7",
+    "INDUSTRY_AUTOEV_V1_I7",
+    "INDUSTRY_NETWORK_V1_I9",
+    "INDUSTRY_POWER_V1_I10",
+    "INDUSTRY_CONSUMER_V1_I7",
+    "INDUSTRY_FACTORY_V1_I3",
+    "INDUSTRY_FACTORY_V1_I10",
+    "INDUSTRY_MEDICAL_V1_I4",
+    "INDUSTRY_MEDICAL_V1_I8",
+    "INDUSTRY_MEDICAL_V1_I10",
+    "INDUSTRY_DEFENSE_V1_I7",
+    "ROLE_ANALYSIS_V1_R3",
+    "ROLE_ANALYSIS_V1_R6",
+    "ROLE_RND_V1_R2",
+    "ROLE_RND_V1_R5"
+   ],
+   "self": [
+    "(체크리스트 문구)"
+   ]
+  }
+ },
+ "ME_CORE_V3": {
+  "PY": {
+   "cap": {
+    "id": "PY",
+    "name": "파이썬 프로그래밍",
+    "course": "파이썬",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "CURRICULUM",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "DATA": {
+   "cap": {
+    "id": "DATA",
+    "name": "데이터 처리",
+    "course": "데이터 처리",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "CURRICULUM",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "VIS": {
+   "cap": {
+    "id": "VIS",
+    "name": "시각화",
+    "course": "시각화",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "CURRICULUM",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "STAT": {
+   "cap": {
+    "id": "STAT",
+    "name": "통계(측정 분포 수준 포함)",
+    "course": "통계",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "MEASURED",
+   "core": [
+    "TD10_J3_2"
+   ],
+   "pack": [],
+   "self": [
+    "(체크리스트 문구)"
+   ]
+  },
+  "ML": {
+   "cap": {
+    "id": "ML",
+    "name": "기계학습 모형 평가·개선",
+    "domains": {
+     "CS_CORE_V1": [
+      "TD09"
+     ]
+    },
+    "keys": {}
+   },
+   "status": "NOT_MEASURED",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "DL": {
+   "cap": {
+    "id": "DL",
+    "name": "딥러닝·신경망",
+    "course": "딥러닝 기초",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "CURRICULUM",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "LLM": {
+   "cap": {
+    "id": "LLM",
+    "name": "LLM·생성형 AI 응용",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "NOT_MEASURED",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "CV": {
+   "cap": {
+    "id": "CV",
+    "name": "컴퓨터 비전",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "NOT_MEASURED",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "MLOPS": {
+   "cap": {
+    "id": "MLOPS",
+    "name": "모델 배포·운영(MLOps)",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "NOT_MEASURED",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "EDGE": {
+   "cap": {
+    "id": "EDGE",
+    "name": "엣지·온디바이스 AI",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "NOT_MEASURED",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "ROBOT": {
+   "cap": {
+    "id": "ROBOT",
+    "name": "로봇 인지·자율 동작",
+    "domains": {},
+    "keys": {}
+   },
+   "status": "NOT_MEASURED",
+   "core": [],
+   "pack": [],
+   "self": []
+  },
+  "SENSOR": {
+   "cap": {
+    "id": "SENSOR",
+    "name": "센서 신호 수집·처리",
+    "domains": {
+     "EE_CORE_V1": [
+      "TD04"
+     ]
+    },
+    "keys": {}
+   },
+   "status": "SELF_REPORT",
+   "core": [],
+   "pack": [],
+   "self": [
+    "(체크리스트 문구)"
+   ]
+  }
+ }
+}
