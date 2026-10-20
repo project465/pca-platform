@@ -1,0 +1,9 @@
+  사례 44 · 판정 {"PASS":36,"XFAIL":8}
+  검사 PASS 398 · FAIL 0 · XFAIL 8 (XFAIL 은 합격 통계에 넣지 않는다)
+    OUT-2    PASS 134 · FAIL 0 · XFAIL 0
+    LINEAGE  PASS 88 · FAIL 0 · XFAIL 0
+    OUT-1    PASS 88 · FAIL 0 · XFAIL 8
+    OUT-5    PASS 88 · FAIL 0 · XFAIL 0
+  PASS  R-BIZ  did 25 · 네 목록 합 32 · 고유 26 (R37: 25 · 32 · 26)
+  PASS  R-CS-SLOT  PK 행 2(칸을 갈라 센다) · did 1(글로 합친다) — 고유 집계는 PK 로 해야 두 근거가 하나로 보이지 않는다
+  짝 36: {"DIFFERS_AS_EXPECTED":14,"SAME_AS_EXPECTED":12,"DISCREPANCY":6,"TEXT_ONLY_DIFFERS":4}

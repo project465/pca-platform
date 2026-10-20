@@ -1,0 +1,211 @@
+TAP version 13
+# \# shared-core 7 벌 · 그 밖의 src 405 벌
+# Subtest: B0 shared-core 파일이 있다
+ok 1 - B0 shared-core 파일이 있다
+  ---
+  duration_ms: 1.65138
+  type: 'test'
+  ...
+# Subtest: B1 shared-core 는 node: 내장과 shared-core 안만 들여온다
+ok 2 - B1 shared-core 는 node: 내장과 shared-core 안만 들여온다
+  ---
+  duration_ms: 2.281663
+  type: 'test'
+  ...
+# Subtest: B2 shared-core 밖에서 shared-core 를 들여오는 src 파일이 0 이다
+ok 3 - B2 shared-core 밖에서 shared-core 를 들여오는 src 파일이 0 이다
+  ---
+  duration_ms: 31.903774
+  type: 'test'
+  ...
+# Subtest: B3 쓰는 fs API 가 0 이다
+ok 4 - B3 쓰는 fs API 가 0 이다
+  ---
+  duration_ms: 0.706501
+  type: 'test'
+  ...
+# Subtest: B4 읽는 환경변수는 CONTENT_DIR 하나다
+ok 5 - B4 읽는 환경변수는 CONTENT_DIR 하나다
+  ---
+  duration_ms: 0.771195
+  type: 'test'
+  ...
+# Subtest: B5 DB · 네트워크 · 자식 프로세스에 닿지 않는다
+ok 6 - B5 DB · 네트워크 · 자식 프로세스에 닿지 않는다
+  ---
+  duration_ms: 0.429426
+  type: 'test'
+  ...
+# \# campus-universities.json sha256 b029cf0a5a6440a73b923ee5995366de479d14f245bf0c3b9b0b161bafb9572a
+# \# content/*.json 묶음 sha256 8e7ba0ef4f04f57f82a583fba39dae9abe3e529ab17c3ea5aacc0528ccb4578c
+# Subtest: T01 PCU 는 실제 학교 등록부에서 읽히고 값이 등록부와 맞는다
+ok 7 - T01 PCU 는 실제 학교 등록부에서 읽히고 값이 등록부와 맞는다
+  ---
+  duration_ms: 9.459183
+  type: 'test'
+  ...
+# Subtest: T02 같은 입력이면 같은 정규화 출력이다 (두 번 읽기 · 목록과 단건)
+ok 8 - T02 같은 입력이면 같은 정규화 출력이다 (두 번 읽기 · 목록과 단건)
+  ---
+  duration_ms: 13.755653
+  type: 'test'
+  ...
+# Subtest: T03 프로필은 얼어 있다 — 받은 쪽이 고쳐도 다음 호출이 오염되지 않는다
+ok 9 - T03 프로필은 얼어 있다 — 받은 쪽이 고쳐도 다음 호출이 오염되지 않는다
+  ---
+  duration_ms: 8.557973
+  type: 'test'
+  ...
+# Subtest: T04 ZZTEST 는 campusRegistryFile 로 넘길 때만 읽히고, V3_CAMPUS_FIXTURE 를 덧붙이지 않는다
+ok 10 - T04 ZZTEST 는 campusRegistryFile 로 넘길 때만 읽히고, V3_CAMPUS_FIXTURE 를 덧붙이지 않는다
+  ---
+  duration_ms: 14.445274
+  type: 'test'
+  ...
+# Subtest: T05 등록되지 않은 코드는 TENANT_NOT_FOUND 를 명시적으로 돌려준다
+ok 11 - T05 등록되지 않은 코드는 TENANT_NOT_FOUND 를 명시적으로 돌려준다
+  ---
+  duration_ms: 7.603995
+  type: 'test'
+  ...
+# Subtest: T06 코드 꼴이 아니면 원천을 읽기 전에 INVALID_CODE
+ok 12 - T06 코드 꼴이 아니면 원천을 읽기 전에 INVALID_CODE
+  ---
+  duration_ms: 1.744268
+  type: 'test'
+  ...
+# Subtest: T07 올바른 기관 파일 한 벌은 정규화된 프로필이 된다
+ok 13 - T07 올바른 기관 파일 한 벌은 정규화된 프로필이 된다
+  ---
+  duration_ms: 6.511881
+  type: 'test'
+  ...
+# Subtest: T08 깨진 JSON 은 INVALID_JSON
+ok 14 - T08 깨진 JSON 은 INVALID_JSON
+  ---
+  duration_ms: 7.882242
+  type: 'test'
+  ...
+# Subtest: T09 필수 칸이 빠지면 MISSING_FIELD — 칸마다
+ok 15 - T09 필수 칸이 빠지면 MISSING_FIELD — 칸마다
+  ---
+  duration_ms: 43.805401
+  type: 'test'
+  ...
+# Subtest: T10 모르는 칸은 조용히 버리지 않고 UNKNOWN_FIELD
+ok 16 - T10 모르는 칸은 조용히 버리지 않고 UNKNOWN_FIELD
+  ---
+  duration_ms: 12.473449
+  type: 'test'
+  ...
+# Subtest: T11 schema_version 이 다르면 UNSUPPORTED_SCHEMA_VERSION
+ok 17 - T11 schema_version 이 다르면 UNSUPPORTED_SCHEMA_VERSION
+  ---
+  duration_ms: 14.45452
+  type: 'test'
+  ...
+# Subtest: T12 파일 이름과 code 가 다르면 CODE_MISMATCH
+ok 18 - T12 파일 이름과 code 가 다르면 CODE_MISMATCH
+  ---
+  duration_ms: 4.265636
+  type: 'test'
+  ...
+# Subtest: T13 같은 코드를 두 원천이 들면 CODE_CONFLICT — 섞지 않는다
+ok 19 - T13 같은 코드를 두 원천이 들면 CODE_CONFLICT — 섞지 않는다
+  ---
+  duration_ms: 11.69934
+  type: 'test'
+  ...
+# Subtest: T14 등록되지 않은 참조는 UNKNOWN_REFERENCE (Core · 권역 · 시장)
+ok 20 - T14 등록되지 않은 참조는 UNKNOWN_REFERENCE (Core · 권역 · 시장)
+  ---
+  duration_ms: 13.891377
+  type: 'test'
+  ...
+# Subtest: T15 꼴이 틀린 값은 INVALID_SCHEMA (중복 · kind · country · dataset · 빈 이름)
+ok 21 - T15 꼴이 틀린 값은 INVALID_SCHEMA (중복 · kind · country · dataset · 빈 이름)
+  ---
+  duration_ms: 37.697505
+  type: 'test'
+  ...
+# Subtest: T16 입력 차례가 달라도 정규화 출력이 같다
+ok 22 - T16 입력 차례가 달라도 정규화 출력이 같다
+  ---
+  duration_ms: 10.025228
+  type: 'test'
+  ...
+# Subtest: T17 두 기관의 프로필은 서로의 값을 들지 않는다
+ok 23 - T17 두 기관의 프로필은 서로의 값을 들지 않는다
+  ---
+  duration_ms: 12.382556
+  type: 'test'
+  ...
+# Subtest: T18 기관 파일 디렉터리가 없어도 된다 · 학교 등록부가 없으면 SOURCE_UNREADABLE
+ok 24 - T18 기관 파일 디렉터리가 없어도 된다 · 학교 등록부가 없으면 SOURCE_UNREADABLE
+  ---
+  duration_ms: 6.981893
+  type: 'test'
+  ...
+# Subtest: T19 학교 등록부의 시장이 나라 코드가 아니면 짐작하지 않고 거절한다
+ok 25 - T19 학교 등록부의 시장이 나라 코드가 아니면 짐작하지 않고 거절한다
+  ---
+  duration_ms: 11.069449
+  type: 'test'
+  ...
+# Subtest: T20 오류 코드는 계약에 적힌 열하나뿐이고 메시지가 코드를 든다
+ok 26 - T20 오류 코드는 계약에 적힌 열하나뿐이고 메시지가 코드를 든다
+  ---
+  duration_ms: 0.3248
+  type: 'test'
+  ...
+# Subtest: T21 파일을 만든 차례 · 디렉터리 탐색 차례가 결과를 바꾸지 않는다
+ok 27 - T21 파일을 만든 차례 · 디렉터리 탐색 차례가 결과를 바꾸지 않는다
+  ---
+  duration_ms: 12.815858
+  type: 'test'
+  ...
+# Subtest: T22 국가와 시장은 다른 칸이다 — KR 기관이 GLOBAL 시장을 들 수 있다
+ok 28 - T22 국가와 시장은 다른 칸이다 — KR 기관이 GLOBAL 시장을 들 수 있다
+  ---
+  duration_ms: 3.60322
+  type: 'test'
+  ...
+# Subtest: T23 등록부의 학교 코드는 그대로 기관 코드가 된다(새 ID 없음 · 꼴이 TENANT_CODE 안)
+ok 29 - T23 등록부의 학교 코드는 그대로 기관 코드가 된다(새 ID 없음 · 꼴이 TENANT_CODE 안)
+  ---
+  duration_ms: 7.877782
+  type: 'test'
+  ...
+# Subtest: T24 같은 코드를 두 원천이 들면 내용이 같아도 거절한다(우선순위 규칙을 두지 않는다)
+ok 30 - T24 같은 코드를 두 원천이 들면 내용이 같아도 거절한다(우선순위 규칙을 두지 않는다)
+  ---
+  duration_ms: 9.789714
+  type: 'test'
+  ...
+# Subtest: T25 읽는 법을 모르는 등록부 판본은 거절한다 — 칸 이름이 바뀐 판본이 빈 프로필로 서지 않는다
+ok 31 - T25 읽는 법을 모르는 등록부 판본은 거절한다 — 칸 이름이 바뀐 판본이 빈 프로필로 서지 않는다
+  ---
+  duration_ms: 12.195178
+  type: 'test'
+  ...
+# Subtest: T26 학교 코드 꼴이 아닌 등록부 줄은 거절한다(소문자 · 너무 김)
+ok 32 - T26 학교 코드 꼴이 아닌 등록부 줄은 거절한다(소문자 · 너무 김)
+  ---
+  duration_ms: 10.695091
+  type: 'test'
+  ...
+# Subtest: T99 운영 콘텐츠 디렉터리와 PCU 등록부의 지문이 시작할 때와 같다
+ok 33 - T99 운영 콘텐츠 디렉터리와 PCU 등록부의 지문이 시작할 때와 같다
+  ---
+  duration_ms: 61.370978
+  type: 'test'
+  ...
+1..33
+# tests 33
+# suites 0
+# pass 33
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 870.516364

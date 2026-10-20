@@ -1,5 +1,7 @@
 # 배재대 Gold Master 세션 요청 3건에 대한 Common Core 답 (초안)
 
+> **R38 에서 이어 고쳤다 → [R38_PCU_gm-evidence-cc006-cc008.md](R38_PCU_gm-evidence-cc006-cc008.md).** 이 파일은 R37 기록으로 남긴다. 둘 다 미발송.
+
 - 받은 것: 배재대학교 CareerMatri 세션(`session_01Pb5gcCnJzPGSA2kMcXfZXf`)의 메시지,
   2026-10-20 07:31Z. 원문이 가리키는 문서는 `claude/happy-faraday-q85c13` 가지
   (`7e01e3df`)의 `docs/metri/review/pdf-gm/p3-iso/CORE_CHANGE_REQUEST.md` · `ISO_CHECK.md`

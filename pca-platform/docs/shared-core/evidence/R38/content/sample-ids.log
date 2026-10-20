@@ -1,0 +1,20 @@
+== BIZ_CORE_V1 C07 · 고유 26 · 확인 18 · 후보 8
+  confirmed: EV-TD01-ARTIFACT-710f=목표와 지표 표 | EV-TD01-ARTIFACT-6dc2=사업계획 한 벌 | EV-TD01-J3-502f=여러 안 가운데 하나를 근거를 들어 골랐다 | EV-TD01-J3-e532=예산이나 인원을 항목별로 나눴다
+  candidate: EV-TD01-J1-7e68=목표가 모호한 부분의 가정을 세워 적었다 | EV-TD01-J1-0b08=이번에 다룰 것과 다루지 않을 것을 갈라 적었다 | EV-TD01-J2-9d68=목표를 매출이나 건수 같은 지표로 옮겼다 | EV-TD01-J2-2fc8=서로 부딪히는 목표의 우선순위를 정했다
+  gaps: TD01.J2:TD01.J2:REQUIRED_AXIS:SKIPPED TD01.J3:TD01.J3:PARTIAL_EVIDENCE:NONE_MISSING
+  TD01 confirmed=J3+J5+J6+J7 empty=J1+J2+J4+J8 missing=J1:SKIPPED,J2:SKIPPED,J3:NONE_MISSING,J4:SKIPPED,J5:NONE_MISSING,J6:NONE_MISSING,J7:NONE_MISSING,J8:SKIPPED
+== ME_CORE_V3 C07 · 고유 26 · 확인 18 · 후보 8
+  confirmed: EV-TD01-ARTIFACT-dcb9=부품도 | EV-TD01-ARTIFACT-5c46=조립도 | EV-TD01-J3-9383=끼워 맞춤과 공차 등급을 정했다 | EV-TD01-J3-9153=하중과 재질을 근거로 두께나 단면을 정했다
+  candidate: EV-TD01-J1-6165=설계 범위와 다루지 않을 것을 적었다 | EV-TD01-J1-3366=요구가 없는 부분의 가정을 세워 적었다 | EV-TD01-J2-195a=받은 요구를 치수와 하중과 환경 조건으로 옮겨 적었다 | EV-TD01-J2-a7f3=조립과 가공이 되는 범위를 설계 조건에 넣었다
+  gaps: TD01.J3:TD01.J3:PARTIAL_EVIDENCE:NONE_MISSING
+  TD01 confirmed=J3+J5+J6+J7 empty=J1+J2+J4+J8 missing=J1:SKIPPED,J2:SKIPPED,J3:NONE_MISSING,J4:SKIPPED,J5:NONE_MISSING,J6:NONE_MISSING,J7:NONE_MISSING,J8:SKIPPED
+== ME_CORE_V3 C04 · 고유 0 · 확인 0 · 후보 0
+  confirmed: 
+  candidate: 
+  gaps: TD01.J3:TD01.J3:PARTIAL_EVIDENCE:NONE_MISSING TD01.J5:TD01.J5:OUTPUT_EVIDENCE:NONE_MISSING
+  TD01 confirmed=J1+J2+J3+J4+J5+J6+J7+J8 empty= missing=J1:NONE_MISSING,J2:NONE_MISSING,J3:NONE_MISSING,J4:NONE_MISSING,J5:NONE_MISSING,J6:NONE_MISSING,J7:NONE_MISSING,J8:NONE_MISSING
+== BIZ_CORE_V1 BIZ_CASE · 고유 26 · 확인 25 · 후보 1
+  confirmed: EV-TD01-ARTIFACT-710f=목표와 지표 표 | EV-TD01-ARTIFACT-6dc2=사업계획 한 벌 | EV-TD01-J1-7e68=목표가 모호한 부분의 가정을 세워 적었다 | EV-TD01-J1-0b08=이번에 다룰 것과 다루지 않을 것을 갈라 적었다
+  candidate: EV-TD02-VERIFY-9a8e=지난 캠페인 반응
+  gaps: TD01.J2:TD01.J2:PARTIAL_EVIDENCE:NONE_MISSING TD08.J4:TD08.J4:PARTIAL_EVIDENCE:NONE_MISSING
+  TD01 confirmed=J1+J2+J3+J4+J5+J6+J7+J8 empty= missing=J1:NONE_MISSING,J2:NONE_MISSING,J3:NONE_MISSING,J4:NONE_MISSING,J5:NONE_MISSING,J6:NONE_MISSING,J7:NONE_MISSING,J8:NONE_MISSING

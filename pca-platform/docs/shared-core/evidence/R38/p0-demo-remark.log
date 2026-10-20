@@ -1,0 +1,48 @@
+TAP version 13
+# Subtest: ADJ-1a 처음 세운 DB 에 나중에 만든 학번 학생은 시연이 아니다(트리거는 숫자 학번을 보지 않는다)
+ok 1 - ADJ-1a 처음 세운 DB 에 나중에 만든 학번 학생은 시연이 아니다(트리거는 숫자 학번을 보지 않는다)
+  ---
+  duration_ms: 569.942176
+  type: 'test'
+  ...
+# \# ADJ-1b before {"demo":false,"listed":1} · after {"demo":true,"listed":0} · 실패한 파일 0
+# Subtest: ADJ-1b upgrade 목록을 다시 부으면 학번 학생이 시연으로 표시되고 담당자 목록에서 빠진다
+ok 2 - ADJ-1b upgrade 목록을 다시 부으면 학번 학생이 시연으로 표시되고 담당자 목록에서 빠진다
+  ---
+  duration_ms: 1010.028924
+  type: 'test'
+  ...
+# Subtest: ADJ-1c 그 UPDATE 가 원래 노린 시드 꼴(학교 줄 없음)도 표시된다 — 의도된 동작
+ok 3 - ADJ-1c 그 UPDATE 가 원래 노린 시드 꼴(학교 줄 없음)도 표시된다 — 의도된 동작
+  ---
+  duration_ms: 43.829032
+  type: 'test'
+  ...
+# Subtest: ADJ-1e upgrade 를 다시 부어도 is_demo 말고는 사람 · 소속 · 학교 줄이 바뀌지 않는다
+ok 4 - ADJ-1e upgrade 를 다시 부어도 is_demo 말고는 사람 · 소속 · 학교 줄이 바뀌지 않는다
+  ---
+  duration_ms: 992.980259
+  type: 'test'
+  ...
+# \# DET-1 D1_student_in_many_orgs|0| ; D2_membership_vs_campus_row|0| ; D3_attempt_vs_campus_row|0| ; D4_login_not_student_id|0| ; ADJ1_campus_student_marked_demo|0|
+# Subtest: ADJ-1d 수정안을 upgrade 뒤에 부으면 학교 학생만 걷히고 두 번 돌려도 같다
+ok 5 - ADJ-1d 수정안을 upgrade 뒤에 부으면 학교 학생만 걷히고 두 번 돌려도 같다
+  ---
+  duration_ms: 1258.596346
+  type: 'test'
+  ...
+# Subtest: DET-1 탐지 SQL 은 읽기만 한다
+ok 6 - DET-1 탐지 SQL 은 읽기만 한다
+  ---
+  duration_ms: 278.465208
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4605.711747

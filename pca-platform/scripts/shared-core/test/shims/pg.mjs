@@ -99,8 +99,28 @@ export class Pool {
     return { rows: j.rows, rowCount: j.count };
   }
 
+  /**
+   * 기본은 던진다. `SC_SHIM_TX=autocommit` 일 때만 **원자성 없는** 클라이언트를
+   * 준다(R38): BEGIN · COMMIT 은 아무것도 하지 않고 문장마다 따로 커밋된다.
+   * ROLLBACK 은 되돌리지 못하므로 경고만 남긴다. 그래서 이 길로 센 결과는
+   * **성공 경로의 효과**까지이고, 실패할 때 되돌아가는지는 NOT VERIFIED 다.
+   */
   async connect() {
-    throw new Error("shim: connect()/트랜잭션은 이 대체 모듈이 받지 않습니다");
+    if (process.env.SC_SHIM_TX !== "autocommit") {
+      throw new Error("shim: connect()/트랜잭션은 이 대체 모듈이 받지 않습니다");
+    }
+    return {
+      query: (text, params = []) => {
+        const s = String(text).trim().toUpperCase();
+        if (s === "BEGIN" || s === "COMMIT") return Promise.resolve({ rows: [], rowCount: 0 });
+        if (s === "ROLLBACK") {
+          console.warn("shim: ROLLBACK 을 되돌리지 못한다(autocommit) — 앞 문장은 이미 적혔다");
+          return Promise.resolve({ rows: [], rowCount: 0 });
+        }
+        return this.query(text, params);
+      },
+      release: () => {},
+    };
   }
 
   async end() { /* 띄워 둔 연결이 없다 */ }

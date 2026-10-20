@@ -22,10 +22,10 @@ import { expand, type Fixture } from "@/lib/me-v3/scoring/fixtures";
 import { buildResult } from "@/lib/me-v3/result/build";
 import type { Snapshot, Submission } from "@/lib/me-v3/scoring/types";
 import type { ResultModel } from "@/lib/me-v3/result/model";
+import { BIZ_CASE } from "./fixtures/evidence";
 
 type Key = string;
-const AX = ["J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8"];
-const all = (v: number) => Object.fromEntries(AX.map((a) => [a, v]));
+import { all } from "./fixtures/evidence";
 
 function submitted(sub: Submission): Key[] {
   const out: Key[] = [];
@@ -68,21 +68,6 @@ function run(core: string, f: Fixture) {
   return { sub, s, m: buildResult(s, loaded) };
 }
 const log = (name: string, v: unknown) => console.log(`# ${name} ${JSON.stringify(v)}`);
-
-/* BIZ: 세 영역에 고르기 · TD02 의 비교·검증(J6)은 `받아서 해 봤다`(1)라 확인되지 않는다 */
-const BIZ_CASE: Fixture = {
-  id: "E-BIZ", name: "배재 GM 격리 검사와 같은 모양", tier: "PRO", stage: "bachelor", field: null,
-  probe: ["TD01", "TD02", "TD08"], deep: ["TD01", "TD08"],
-  grid: { TD01: [5, 2, 5], TD02: [4, 1, 4], TD08: [4, 2, 4] },
-  axes: { TD01: all(2), TD08: all(2), TD02: { J3: 2, J5: 2, J6: 1, J7: 2 } },
-  checklist: {
-    TD01: { J1: 2, J2: 1, J3: 2, J4: 1, J5: 1, J6: 1, J7: 1 },
-    TD08: { J1: 1, J3: 2, J4: 2, J6: 1 },
-    TD02: { J3: 2, J5: 1, J7: 1 },
-  },
-  artifacts: { TD01: 2, TD08: 1, TD02: 1 },
-  verify: { TD01: 1, TD08: 1, TD02: 1 },
-};
 
 test("E1 did 는 확인된 축의 근거만 담는다 — VERIFY 하나가 빠지는 것은 의도된 동작이다", () => {
   const { sub, s, m } = run("BIZ_CORE_V1", BIZ_CASE);

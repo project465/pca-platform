@@ -1,0 +1,2444 @@
+[
+  {
+    "core": "ME_CORE_V3",
+    "persona": "RICH",
+    "case": "ME-C01",
+    "rules": {
+      "no_deficit": true,
+      "strengths_confirmed_only": true,
+      "unanswered_not_improve": true,
+      "numbers_match": true
+    },
+    "engine": {
+      "title": "기구·제품 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+      "lead": "확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "gaps": [
+        "기구·제품 설계 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다"
+      ],
+      "actions": [
+        "최근 기구·제품 설계 과제 하나. 개념안 몇 개를 둘지와 어느 요구를 먼저 지킬지 가운데 직접 정한 것과 그 까닭을 BOM에 한 줄씩 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    "three_way": {
+      "strengths": [
+        {
+          "domain": "TD01",
+          "axes": [
+            "J1",
+            "J2",
+            "J3",
+            "J4",
+            "J5",
+            "J6",
+            "J7",
+            "J8"
+          ],
+          "owned": [],
+          "evidence": [
+            {
+              "id": "EV-TD01-ARTIFACT-dcb9",
+              "domain": "TD01",
+              "slot": "ARTIFACT",
+              "text": "부품도"
+            },
+            {
+              "id": "EV-TD01-ARTIFACT-5c46",
+              "domain": "TD01",
+              "slot": "ARTIFACT",
+              "text": "조립도"
+            },
+            {
+              "id": "EV-TD01-J1-6165",
+              "domain": "TD01",
+              "slot": "J1",
+              "text": "설계 범위와 다루지 않을 것을 적었다"
+            },
+            {
+              "id": "EV-TD01-J1-3366",
+              "domain": "TD01",
+              "slot": "J1",
+              "text": "요구가 없는 부분의 가정을 세워 적었다"
+            },
+            {
+              "id": "EV-TD01-J2-195a",
+              "domain": "TD01",
+              "slot": "J2",
+              "text": "받은 요구를 치수와 하중과 환경 조건으로 옮겨 적었다"
+            },
+            {
+              "id": "EV-TD01-J2-a7f3",
+              "domain": "TD01",
+              "slot": "J2",
+              "text": "조립과 가공이 되는 범위를 설계 조건에 넣었다"
+            },
+            {
+              "id": "EV-TD01-J3-9383",
+              "domain": "TD01",
+              "slot": "J3",
+              "text": "끼워 맞춤과 공차 등급을 정했다"
+            },
+            {
+              "id": "EV-TD01-J3-9153",
+              "domain": "TD01",
+              "slot": "J3",
+              "text": "하중과 재질을 근거로 두께나 단면을 정했다"
+            },
+            {
+              "id": "EV-TD01-J4-b9da",
+              "domain": "TD01",
+              "slot": "J4",
+              "text": "공차 누적을 계산해 조립 가능성을 확인했다"
+            },
+            {
+              "id": "EV-TD01-J4-25e8",
+              "domain": "TD01",
+              "slot": "J4",
+              "text": "체결력이나 강성이나 베어링 수명을 손계산으로 확인했다"
+            },
+            {
+              "id": "EV-TD01-J5-4886",
+              "domain": "TD01",
+              "slot": "J5",
+              "text": "승인된 도면이나 부품 사양을 냈다"
+            },
+            {
+              "id": "EV-TD01-J5-304f",
+              "domain": "TD01",
+              "slot": "J5",
+              "text": "조립도와 부품표가 함께 남았다"
+            },
+            {
+              "id": "EV-TD01-J6-c303",
+              "domain": "TD01",
+              "slot": "J6",
+              "text": "공차 누적을 계산해 조립이 되는지 확인했다"
+            },
+            {
+              "id": "EV-TD01-J6-c1c2",
+              "domain": "TD01",
+              "slot": "J6",
+              "text": "이전 모델이나 경쟁 제품의 치수와 견주었다"
+            },
+            {
+              "id": "EV-TD01-J7-cccf",
+              "domain": "TD01",
+              "slot": "J7",
+              "text": "간섭이나 파손의 원인을 치수와 재질과 공정 가운데로 좁혔다"
+            },
+            {
+              "id": "EV-TD01-J7-9a74",
+              "domain": "TD01",
+              "slot": "J7",
+              "text": "조립해 보니 안 맞아서 치수를 고쳤다"
+            },
+            {
+              "id": "EV-TD01-J8-fc66",
+              "domain": "TD01",
+              "slot": "J8",
+              "text": "내 도면으로 제작이나 발주가 진행됐다"
+            },
+            {
+              "id": "EV-TD01-J8-85ff",
+              "domain": "TD01",
+              "slot": "J8",
+              "text": "설계 검토에서 내 안이 채택됐다"
+            },
+            {
+              "id": "EV-TD01-VERIFY-0c3a",
+              "domain": "TD01",
+              "slot": "VERIFY",
+              "text": "다른 설계안"
+            },
+            {
+              "id": "EV-TD01-VERIFY-5826",
+              "domain": "TD01",
+              "slot": "VERIFY",
+              "text": "손계산"
+            }
+          ],
+          "sentence": "기구·제품 설계: 문제 정의 · 요구 해석 · 직접 판단 · 방법과 도구 · 산출물 · 비교와 검증 · 실패와 수정 · 조직 활용 쪽이 응답과 고른 근거로 확인됩니다 (근거 20건 · EV-TD01-ARTIFACT-dcb9, EV-TD01-ARTIFACT-5c46, EV-TD01-J1-6165 …)."
+        },
+        {
+          "domain": "TD02",
+          "axes": [
+            "J3",
+            "J5",
+            "J6",
+            "J7"
+          ],
+          "owned": [],
+          "evidence": [
+            {
+              "id": "EV-TD02-ARTIFACT-014e",
+              "domain": "TD02",
+              "slot": "ARTIFACT",
+              "text": "해석 보고서"
+            },
+            {
+              "id": "EV-TD02-J3-a861",
+              "domain": "TD02",
+              "slot": "J3",
+              "text": "구속 조건과 하중 작용점을 정했다"
+            },
+            {
+              "id": "EV-TD02-J5-dd94",
+              "domain": "TD02",
+              "slot": "J5",
+              "text": "해석 보고서를 판정 결론까지 적어 냈다"
+            },
+            {
+              "id": "EV-TD02-J6-7101",
+              "domain": "TD02",
+              "slot": "J6",
+              "text": "해석값과 시험값을 대조했다"
+            },
+            {
+              "id": "EV-TD02-J7-2c67",
+              "domain": "TD02",
+              "slot": "J7",
+              "text": "해석과 시험이 어긋난 원인을 경계조건·재료·격자 가운데로 좁혔다"
+            },
+            {
+              "id": "EV-TD02-VERIFY-a2a4",
+              "domain": "TD02",
+              "slot": "VERIFY",
+              "text": "손계산"
+            }
+          ],
+          "sentence": "구조·내구 해석: 직접 판단 · 산출물 · 비교와 검증 · 실패와 수정 쪽이 응답과 고른 근거로 확인됩니다 (근거 6건 · EV-TD02-ARTIFACT-014e, EV-TD02-J3-a861, EV-TD02-J5-dd94 …)."
+        }
+      ],
+      "improve": [
+        {
+          "domain": "TD01",
+          "axis": "J3",
+          "gap_id": "TD01.J3",
+          "kind": "PARTIAL_EVIDENCE",
+          "action_id": "A.TD01.J3",
+          "sentence": "기구·제품 설계 · 직접 판단: 해 본 것은 확인됩니다. 기준을 직접 정했는지는 이번 응답(직접 수행)으로 확인되지 않았습니다."
+        }
+      ],
+      "unverified": []
+    }
+  },
+  {
+    "core": "ME_CORE_V3",
+    "persona": "POOR",
+    "case": "ME-C02",
+    "rules": {
+      "no_deficit": true,
+      "strengths_confirmed_only": true,
+      "unanswered_not_improve": true,
+      "numbers_match": true
+    },
+    "engine": {
+      "title": "아직 직접 해 본 과제는 많지 않아요",
+      "lead": "짧게 한 번 해 보면 이야기할 거리가 생겨요.",
+      "gaps": [
+        "기구·제품 설계 · 직접 정한 조건이나 기준이 아직 안 보여요",
+        "기구·제품 설계 · 과제에서 손에 남은 것이 아직 없어요",
+        "기구·제품 설계 · 무엇과 비교해 봤는지가 아직 없어요"
+      ],
+      "actions": [
+        "기구·제품 설계를 다룰 짧은 과제나 스터디 하나를 정해 보세요. 한 일과 직접 정한 것을 다섯 줄로 적어 두세요. / 수업 프로젝트나 교내 과제 하나면 충분합니다.",
+        "기구·제품 설계 수업이나 교육 하나를 정해 들어 보세요. 배운 것을 작은 과제에 한 번 쓰고, 무엇이 남았는지 적어 두세요. / 그 과제에서 남긴 것이 다음에 설명할 근거가 됩니다."
+      ]
+    },
+    "three_way": {
+      "strengths": [],
+      "improve": [
+        {
+          "domain": "TD01",
+          "axis": "J3",
+          "gap_id": "TD01.J3",
+          "kind": "REQUIRED_AXIS",
+          "action_id": "A.TD01.J3",
+          "sentence": "기구·제품 설계 · 직접 판단: 답하신 범위에서 아직 보이지 않습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J5",
+          "gap_id": "TD01.J5",
+          "kind": "OUTPUT",
+          "action_id": "A.TD01.J5",
+          "sentence": "기구·제품 설계 · 산출물: 답하신 범위에서 아직 보이지 않습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J6",
+          "gap_id": "TD01.J6",
+          "kind": "VERIFICATION",
+          "action_id": "A.TD01.J6",
+          "sentence": "기구·제품 설계 · 비교와 검증: 답하신 범위에서 아직 보이지 않습니다."
+        }
+      ],
+      "unverified": []
+    }
+  },
+  {
+    "core": "ME_CORE_V3",
+    "persona": "CONTRA",
+    "case": "ME-C04",
+    "rules": {
+      "no_deficit": true,
+      "strengths_confirmed_only": true,
+      "unanswered_not_improve": true,
+      "numbers_match": true
+    },
+    "engine": {
+      "title": "기구·제품 설계 과제는 해 봤고, 정리만 남았어요",
+      "lead": "뭘 골랐는지만 덧붙이면 돼요.",
+      "gaps": [
+        "기구·제품 설계 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+        "기구·제품 설계 · 무엇을 남겼는지 아직 고르지 않았습니다"
+      ],
+      "actions": [
+        "최근 기구·제품 설계 과제 하나. 개념안 몇 개를 둘지와 어느 요구를 먼저 지킬지 가운데 직접 정한 것과 그 까닭을 BOM에 한 줄씩 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다.",
+        "다음 기구·제품 설계 과제 하나. 끝까지 가서 조립도나 부품도 한 벌을 남겨 두세요."
+      ]
+    },
+    "three_way": {
+      "strengths": [
+        {
+          "domain": "TD01",
+          "axes": [
+            "J1",
+            "J2",
+            "J3",
+            "J4",
+            "J5",
+            "J6",
+            "J7",
+            "J8"
+          ],
+          "owned": [],
+          "evidence": [],
+          "sentence": "기구·제품 설계: 문제 정의 · 요구 해석 · 직접 판단 · 방법과 도구 · 산출물 · 비교와 검증 · 실패와 수정 · 조직 활용 쪽은 응답(자기보고)으로만 확인됩니다. 고른 근거가 없어 지원서에 쓸 경험으로는 아직 이어지지 않습니다. 직접 정한 기준까지는 이번 응답으로 확인되지 않았습니다."
+        },
+        {
+          "domain": "TD02",
+          "axes": [
+            "J3",
+            "J5",
+            "J6",
+            "J7"
+          ],
+          "owned": [],
+          "evidence": [],
+          "sentence": "구조·내구 해석: 직접 판단 · 산출물 · 비교와 검증 · 실패와 수정 쪽은 응답(자기보고)으로만 확인됩니다. 고른 근거가 없어 지원서에 쓸 경험으로는 아직 이어지지 않습니다. 직접 정한 기준까지는 이번 응답으로 확인되지 않았습니다."
+        }
+      ],
+      "improve": [
+        {
+          "domain": "TD01",
+          "axis": "J3",
+          "gap_id": "TD01.J3",
+          "kind": "PARTIAL_EVIDENCE",
+          "action_id": "A.TD01.J3",
+          "sentence": "기구·제품 설계 · 직접 판단: 직접 정했다고 답하셨지만 엔진이 센 근거(고른 항목 · 두 번째 문항)가 1건이라 직접 결정까지는 확인되지 않았습니다(둘 이상 필요)."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J5",
+          "gap_id": "TD01.J5",
+          "kind": "OUTPUT_EVIDENCE",
+          "action_id": "A.TD01.J5",
+          "sentence": "기구·제품 설계 · 산출물: 답하신 범위에서 아직 보이지 않습니다."
+        }
+      ],
+      "unverified": []
+    }
+  },
+  {
+    "core": "ME_CORE_V3",
+    "persona": "PARTIAL",
+    "case": "ME-C07",
+    "rules": {
+      "no_deficit": true,
+      "strengths_confirmed_only": true,
+      "unanswered_not_improve": true,
+      "numbers_match": true
+    },
+    "engine": {
+      "title": "기구·제품 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+      "lead": "확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "gaps": [
+        "기구·제품 설계 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다"
+      ],
+      "actions": [
+        "최근 기구·제품 설계 과제 하나. 개념안 몇 개를 둘지와 어느 요구를 먼저 지킬지 가운데 직접 정한 것과 그 까닭을 BOM에 한 줄씩 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    "three_way": {
+      "strengths": [
+        {
+          "domain": "TD01",
+          "axes": [
+            "J3",
+            "J5",
+            "J6",
+            "J7"
+          ],
+          "owned": [],
+          "evidence": [
+            {
+              "id": "EV-TD01-ARTIFACT-dcb9",
+              "domain": "TD01",
+              "slot": "ARTIFACT",
+              "text": "부품도"
+            },
+            {
+              "id": "EV-TD01-ARTIFACT-5c46",
+              "domain": "TD01",
+              "slot": "ARTIFACT",
+              "text": "조립도"
+            },
+            {
+              "id": "EV-TD01-J3-9383",
+              "domain": "TD01",
+              "slot": "J3",
+              "text": "끼워 맞춤과 공차 등급을 정했다"
+            },
+            {
+              "id": "EV-TD01-J3-9153",
+              "domain": "TD01",
+              "slot": "J3",
+              "text": "하중과 재질을 근거로 두께나 단면을 정했다"
+            },
+            {
+              "id": "EV-TD01-J5-4886",
+              "domain": "TD01",
+              "slot": "J5",
+              "text": "승인된 도면이나 부품 사양을 냈다"
+            },
+            {
+              "id": "EV-TD01-J5-304f",
+              "domain": "TD01",
+              "slot": "J5",
+              "text": "조립도와 부품표가 함께 남았다"
+            },
+            {
+              "id": "EV-TD01-J6-c303",
+              "domain": "TD01",
+              "slot": "J6",
+              "text": "공차 누적을 계산해 조립이 되는지 확인했다"
+            },
+            {
+              "id": "EV-TD01-J6-c1c2",
+              "domain": "TD01",
+              "slot": "J6",
+              "text": "이전 모델이나 경쟁 제품의 치수와 견주었다"
+            },
+            {
+              "id": "EV-TD01-J7-cccf",
+              "domain": "TD01",
+              "slot": "J7",
+              "text": "간섭이나 파손의 원인을 치수와 재질과 공정 가운데로 좁혔다"
+            },
+            {
+              "id": "EV-TD01-J7-9a74",
+              "domain": "TD01",
+              "slot": "J7",
+              "text": "조립해 보니 안 맞아서 치수를 고쳤다"
+            },
+            {
+              "id": "EV-TD01-VERIFY-0c3a",
+              "domain": "TD01",
+              "slot": "VERIFY",
+              "text": "다른 설계안"
+            },
+            {
+              "id": "EV-TD01-VERIFY-5826",
+              "domain": "TD01",
+              "slot": "VERIFY",
+              "text": "손계산"
+            }
+          ],
+          "sentence": "기구·제품 설계: 직접 판단 · 산출물 · 비교와 검증 · 실패와 수정 쪽이 응답과 고른 근거로 확인됩니다 (근거 12건 · EV-TD01-ARTIFACT-dcb9, EV-TD01-ARTIFACT-5c46, EV-TD01-J3-9383 …)."
+        },
+        {
+          "domain": "TD02",
+          "axes": [
+            "J3",
+            "J5",
+            "J6",
+            "J7"
+          ],
+          "owned": [],
+          "evidence": [
+            {
+              "id": "EV-TD02-ARTIFACT-014e",
+              "domain": "TD02",
+              "slot": "ARTIFACT",
+              "text": "해석 보고서"
+            },
+            {
+              "id": "EV-TD02-J3-a861",
+              "domain": "TD02",
+              "slot": "J3",
+              "text": "구속 조건과 하중 작용점을 정했다"
+            },
+            {
+              "id": "EV-TD02-J5-dd94",
+              "domain": "TD02",
+              "slot": "J5",
+              "text": "해석 보고서를 판정 결론까지 적어 냈다"
+            },
+            {
+              "id": "EV-TD02-J6-7101",
+              "domain": "TD02",
+              "slot": "J6",
+              "text": "해석값과 시험값을 대조했다"
+            },
+            {
+              "id": "EV-TD02-J7-2c67",
+              "domain": "TD02",
+              "slot": "J7",
+              "text": "해석과 시험이 어긋난 원인을 경계조건·재료·격자 가운데로 좁혔다"
+            },
+            {
+              "id": "EV-TD02-VERIFY-a2a4",
+              "domain": "TD02",
+              "slot": "VERIFY",
+              "text": "손계산"
+            }
+          ],
+          "sentence": "구조·내구 해석: 직접 판단 · 산출물 · 비교와 검증 · 실패와 수정 쪽이 응답과 고른 근거로 확인됩니다 (근거 6건 · EV-TD02-ARTIFACT-014e, EV-TD02-J3-a861, EV-TD02-J5-dd94 …)."
+        }
+      ],
+      "improve": [
+        {
+          "domain": "TD01",
+          "axis": "J3",
+          "gap_id": "TD01.J3",
+          "kind": "PARTIAL_EVIDENCE",
+          "action_id": "A.TD01.J3",
+          "sentence": "기구·제품 설계 · 직접 판단: 해 본 것은 확인됩니다. 기준을 직접 정했는지는 이번 응답(직접 수행)으로 확인되지 않았습니다."
+        }
+      ],
+      "unverified": [
+        {
+          "domain": "TD01",
+          "axis": "J1",
+          "why": "SKIPPED",
+          "evidence": [],
+          "sentence": "기구·제품 설계 · 문제 정의: 답하지 않아 이번 결과에 넣지 않았습니다. 해 본 일이 없다는 뜻으로 읽지 않습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J2",
+          "why": "SKIPPED",
+          "evidence": [],
+          "sentence": "기구·제품 설계 · 요구 해석: 답하지 않아 이번 결과에 넣지 않았습니다. 해 본 일이 없다는 뜻으로 읽지 않습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J4",
+          "why": "SKIPPED",
+          "evidence": [],
+          "sentence": "기구·제품 설계 · 방법과 도구: 답하지 않아 이번 결과에 넣지 않았습니다. 해 본 일이 없다는 뜻으로 읽지 않습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J8",
+          "why": "SKIPPED",
+          "evidence": [],
+          "sentence": "기구·제품 설계 · 조직 활용: 답하지 않아 이번 결과에 넣지 않았습니다. 해 본 일이 없다는 뜻으로 읽지 않습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": null,
+          "why": "CANDIDATE",
+          "evidence": [
+            {
+              "id": "EV-TD01-J1-6165",
+              "domain": "TD01",
+              "slot": "J1",
+              "text": "설계 범위와 다루지 않을 것을 적었다"
+            },
+            {
+              "id": "EV-TD01-J1-3366",
+              "domain": "TD01",
+              "slot": "J1",
+              "text": "요구가 없는 부분의 가정을 세워 적었다"
+            },
+            {
+              "id": "EV-TD01-J2-195a",
+              "domain": "TD01",
+              "slot": "J2",
+              "text": "받은 요구를 치수와 하중과 환경 조건으로 옮겨 적었다"
+            },
+            {
+              "id": "EV-TD01-J2-a7f3",
+              "domain": "TD01",
+              "slot": "J2",
+              "text": "조립과 가공이 되는 범위를 설계 조건에 넣었다"
+            },
+            {
+              "id": "EV-TD01-J4-b9da",
+              "domain": "TD01",
+              "slot": "J4",
+              "text": "공차 누적을 계산해 조립 가능성을 확인했다"
+            },
+            {
+              "id": "EV-TD01-J4-25e8",
+              "domain": "TD01",
+              "slot": "J4",
+              "text": "체결력이나 강성이나 베어링 수명을 손계산으로 확인했다"
+            },
+            {
+              "id": "EV-TD01-J8-fc66",
+              "domain": "TD01",
+              "slot": "J8",
+              "text": "내 도면으로 제작이나 발주가 진행됐다"
+            },
+            {
+              "id": "EV-TD01-J8-85ff",
+              "domain": "TD01",
+              "slot": "J8",
+              "text": "설계 검토에서 내 안이 채택됐다"
+            }
+          ],
+          "sentence": "기구·제품 설계: 고르신 근거 8건(EV-TD01-J1-6165, EV-TD01-J1-3366 …)은 그 판단이 응답으로 확인되지 않아 확인된 경험으로 쓰지 않았습니다."
+        }
+      ]
+    }
+  },
+  {
+    "core": "BIZ_CORE_V1",
+    "persona": "RICH",
+    "case": "BIZ-C01",
+    "rules": {
+      "no_deficit": true,
+      "strengths_confirmed_only": true,
+      "unanswered_not_improve": true,
+      "numbers_match": true
+    },
+    "engine": {
+      "title": "경영전략·기획 과제에서 방향을 직접 정해 본 일이 있어요",
+      "lead": "확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "gaps": [
+        "경영전략·기획 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다"
+      ],
+      "actions": [
+        "최근 경영전략·기획 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 목표와 지표를 정리한 표에 그대로 옮깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    "three_way": {
+      "strengths": [
+        {
+          "domain": "TD01",
+          "axes": [
+            "J1",
+            "J2",
+            "J3",
+            "J4",
+            "J5",
+            "J6",
+            "J7",
+            "J8"
+          ],
+          "owned": [],
+          "evidence": [
+            {
+              "id": "EV-TD01-ARTIFACT-710f",
+              "domain": "TD01",
+              "slot": "ARTIFACT",
+              "text": "목표와 지표 표"
+            },
+            {
+              "id": "EV-TD01-ARTIFACT-6dc2",
+              "domain": "TD01",
+              "slot": "ARTIFACT",
+              "text": "사업계획 한 벌"
+            },
+            {
+              "id": "EV-TD01-J1-7e68",
+              "domain": "TD01",
+              "slot": "J1",
+              "text": "목표가 모호한 부분의 가정을 세워 적었다"
+            },
+            {
+              "id": "EV-TD01-J1-0b08",
+              "domain": "TD01",
+              "slot": "J1",
+              "text": "이번에 다룰 것과 다루지 않을 것을 갈라 적었다"
+            },
+            {
+              "id": "EV-TD01-J2-9d68",
+              "domain": "TD01",
+              "slot": "J2",
+              "text": "목표를 매출이나 건수 같은 지표로 옮겼다"
+            },
+            {
+              "id": "EV-TD01-J2-2fc8",
+              "domain": "TD01",
+              "slot": "J2",
+              "text": "서로 부딪히는 목표의 우선순위를 정했다"
+            },
+            {
+              "id": "EV-TD01-J3-502f",
+              "domain": "TD01",
+              "slot": "J3",
+              "text": "여러 안 가운데 하나를 근거를 들어 골랐다"
+            },
+            {
+              "id": "EV-TD01-J3-e532",
+              "domain": "TD01",
+              "slot": "J3",
+              "text": "예산이나 인원을 항목별로 나눴다"
+            },
+            {
+              "id": "EV-TD01-J4-4b60",
+              "domain": "TD01",
+              "slot": "J4",
+              "text": "계획을 적는 서식을 정해 썼다"
+            },
+            {
+              "id": "EV-TD01-J4-fa75",
+              "domain": "TD01",
+              "slot": "J4",
+              "text": "쓸 분석 틀을 골라 적용했다"
+            },
+            {
+              "id": "EV-TD01-J5-b4ae",
+              "domain": "TD01",
+              "slot": "J5",
+              "text": "목표와 지표를 표로 정리했다"
+            },
+            {
+              "id": "EV-TD01-J5-dd2e",
+              "domain": "TD01",
+              "slot": "J5",
+              "text": "사업계획이나 기획안을 문서로 남겼다"
+            },
+            {
+              "id": "EV-TD01-J6-42ad",
+              "domain": "TD01",
+              "slot": "J6",
+              "text": "계획과 실제 집행을 대조했다"
+            },
+            {
+              "id": "EV-TD01-J6-eef0",
+              "domain": "TD01",
+              "slot": "J6",
+              "text": "안 둘을 같은 기준으로 견주었다"
+            },
+            {
+              "id": "EV-TD01-J7-0bb3",
+              "domain": "TD01",
+              "slot": "J7",
+              "text": "다음 계획에서 조건을 바꿨다"
+            },
+            {
+              "id": "EV-TD01-J7-bd24",
+              "domain": "TD01",
+              "slot": "J7",
+              "text": "달성이 안 된 항목의 까닭을 좁혔다"
+            },
+            {
+              "id": "EV-TD01-J8-daff",
+              "domain": "TD01",
+              "slot": "J8",
+              "text": "기획안을 회의에서 설명했다"
+            },
+            {
+              "id": "EV-TD01-J8-5de6",
+              "domain": "TD01",
+              "slot": "J8",
+              "text": "내 기획이 예산이나 인원 배치에 쓰였다"
+            },
+            {
+              "id": "EV-TD01-VERIFY-effd",
+              "domain": "TD01",
+              "slot": "VERIFY",
+              "text": "전사 목표"
+            },
+            {
+              "id": "EV-TD01-VERIFY-9125",
+              "domain": "TD01",
+              "slot": "VERIFY",
+              "text": "지난 기간 실적"
+            }
+          ],
+          "sentence": "경영전략·기획: 문제 정의 · 요구 해석 · 직접 판단 · 방법과 도구 · 산출물 · 비교와 검증 · 실패와 수정 · 조직 활용 쪽이 응답과 고른 근거로 확인됩니다 (근거 20건 · EV-TD01-ARTIFACT-710f, EV-TD01-ARTIFACT-6dc2, EV-TD01-J1-7e68 …)."
+        },
+        {
+          "domain": "TD02",
+          "axes": [
+            "J3",
+            "J5",
+            "J6",
+            "J7"
+          ],
+          "owned": [],
+          "evidence": [
+            {
+              "id": "EV-TD02-ARTIFACT-cc88",
+              "domain": "TD02",
+              "slot": "ARTIFACT",
+              "text": "캠페인 기획서"
+            },
+            {
+              "id": "EV-TD02-J3-801d",
+              "domain": "TD02",
+              "slot": "J3",
+              "text": "고객을 나누는 기준을 정했다"
+            },
+            {
+              "id": "EV-TD02-J5-41cf",
+              "domain": "TD02",
+              "slot": "J5",
+              "text": "캠페인 기획서를 문서로 남겼다"
+            },
+            {
+              "id": "EV-TD02-J6-43c0",
+              "domain": "TD02",
+              "slot": "J6",
+              "text": "채널 둘의 성과를 같은 기준으로 견주었다"
+            },
+            {
+              "id": "EV-TD02-J7-79e8",
+              "domain": "TD02",
+              "slot": "J7",
+              "text": "반응이 낮은 까닭을 좁혀 들어갔다"
+            },
+            {
+              "id": "EV-TD02-VERIFY-9a8e",
+              "domain": "TD02",
+              "slot": "VERIFY",
+              "text": "지난 캠페인 반응"
+            }
+          ],
+          "sentence": "마케팅·시장: 직접 판단 · 산출물 · 비교와 검증 · 실패와 수정 쪽이 응답과 고른 근거로 확인됩니다 (근거 6건 · EV-TD02-ARTIFACT-cc88, EV-TD02-J3-801d, EV-TD02-J5-41cf …)."
+        }
+      ],
+      "improve": [
+        {
+          "domain": "TD01",
+          "axis": "J2",
+          "gap_id": "TD01.J2",
+          "kind": "PARTIAL_EVIDENCE",
+          "action_id": "A.TD01.J2",
+          "sentence": "경영전략·기획 · 요구 해석: 해 본 것은 확인됩니다. 기준을 직접 정했는지는 이번 응답(직접 수행)으로 확인되지 않았습니다."
+        }
+      ],
+      "unverified": []
+    }
+  },
+  {
+    "core": "BIZ_CORE_V1",
+    "persona": "POOR",
+    "case": "BIZ-C02",
+    "rules": {
+      "no_deficit": true,
+      "strengths_confirmed_only": true,
+      "unanswered_not_improve": true,
+      "numbers_match": true
+    },
+    "engine": {
+      "title": "아직 직접 해 본 과제는 많지 않아요",
+      "lead": "짧게 한 번 해 보면 이야기할 거리가 생겨요.",
+      "gaps": [
+        "경영전략·기획 · 직접 정한 조건이나 기준이 아직 안 보여요",
+        "경영전략·기획 · 받은 요구를 어떤 조건으로 옮겼는지가 아직 없습니다",
+        "경영전략·기획 · 과제에서 손에 남은 것이 아직 없어요",
+        "경영전략·기획 · 무엇과 비교해 봤는지가 아직 없어요"
+      ],
+      "actions": [
+        "경영전략·기획을 다룰 짧은 과제나 스터디 하나를 정해 보세요. 한 일과 직접 정한 것을 다섯 줄로 적어 두세요. / 수업 프로젝트나 교내 과제 하나면 충분합니다.",
+        "경영전략·기획 수업이나 교육 하나를 정해 들어 보세요. 배운 것을 작은 과제에 한 번 쓰고, 무엇이 남았는지 적어 두세요. / 그 과제에서 남긴 것이 다음에 설명할 근거가 됩니다."
+      ]
+    },
+    "three_way": {
+      "strengths": [],
+      "improve": [
+        {
+          "domain": "TD01",
+          "axis": "J3",
+          "gap_id": "TD01.J3",
+          "kind": "REQUIRED_AXIS",
+          "action_id": "A.TD01.J3",
+          "sentence": "경영전략·기획 · 직접 판단: 답하신 범위에서 아직 보이지 않습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J2",
+          "gap_id": "TD01.J2",
+          "kind": "REQUIRED_AXIS",
+          "action_id": "A.TD01.J2",
+          "sentence": "경영전략·기획 · 요구 해석: 답하신 범위에서 아직 보이지 않습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J5",
+          "gap_id": "TD01.J5",
+          "kind": "OUTPUT",
+          "action_id": "A.TD01.J5",
+          "sentence": "경영전략·기획 · 산출물: 답하신 범위에서 아직 보이지 않습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J6",
+          "gap_id": "TD01.J6",
+          "kind": "VERIFICATION",
+          "action_id": "A.TD01.J6",
+          "sentence": "경영전략·기획 · 비교와 검증: 답하신 범위에서 아직 보이지 않습니다."
+        }
+      ],
+      "unverified": []
+    }
+  },
+  {
+    "core": "BIZ_CORE_V1",
+    "persona": "CONTRA",
+    "case": "BIZ-C04",
+    "rules": {
+      "no_deficit": true,
+      "strengths_confirmed_only": true,
+      "unanswered_not_improve": true,
+      "numbers_match": true
+    },
+    "engine": {
+      "title": "경영전략·기획 과제는 해 봤고, 정리만 남았어요",
+      "lead": "뭘 골랐는지만 덧붙이면 돼요.",
+      "gaps": [
+        "경영전략·기획 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+        "경영전략·기획 · 무엇을 남겼는지 아직 고르지 않았습니다"
+      ],
+      "actions": [
+        "최근 경영전략·기획 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 목표와 지표를 정리한 표에 그대로 옮깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다.",
+        "다음 경영전략·기획 과제 하나. 끝까지 가서 사업계획 한 벌이나 목표와 지표 표 한 벌을 남겨 두세요."
+      ]
+    },
+    "three_way": {
+      "strengths": [
+        {
+          "domain": "TD01",
+          "axes": [
+            "J1",
+            "J2",
+            "J3",
+            "J4",
+            "J5",
+            "J6",
+            "J7",
+            "J8"
+          ],
+          "owned": [],
+          "evidence": [],
+          "sentence": "경영전략·기획: 문제 정의 · 요구 해석 · 직접 판단 · 방법과 도구 · 산출물 · 비교와 검증 · 실패와 수정 · 조직 활용 쪽은 응답(자기보고)으로만 확인됩니다. 고른 근거가 없어 지원서에 쓸 경험으로는 아직 이어지지 않습니다. 직접 정한 기준까지는 이번 응답으로 확인되지 않았습니다."
+        },
+        {
+          "domain": "TD02",
+          "axes": [
+            "J3",
+            "J5",
+            "J6",
+            "J7"
+          ],
+          "owned": [],
+          "evidence": [],
+          "sentence": "마케팅·시장: 직접 판단 · 산출물 · 비교와 검증 · 실패와 수정 쪽은 응답(자기보고)으로만 확인됩니다. 고른 근거가 없어 지원서에 쓸 경험으로는 아직 이어지지 않습니다. 직접 정한 기준까지는 이번 응답으로 확인되지 않았습니다."
+        }
+      ],
+      "improve": [
+        {
+          "domain": "TD01",
+          "axis": "J2",
+          "gap_id": "TD01.J2",
+          "kind": "PARTIAL_EVIDENCE",
+          "action_id": "A.TD01.J2",
+          "sentence": "경영전략·기획 · 요구 해석: 직접 정했다고 답하셨지만 엔진이 센 근거(고른 항목 · 두 번째 문항)가 0건이라 직접 결정까지는 확인되지 않았습니다(둘 이상 필요)."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J5",
+          "gap_id": "TD01.J5",
+          "kind": "OUTPUT_EVIDENCE",
+          "action_id": "A.TD01.J5",
+          "sentence": "경영전략·기획 · 산출물: 답하신 범위에서 아직 보이지 않습니다."
+        }
+      ],
+      "unverified": []
+    }
+  },
+  {
+    "core": "BIZ_CORE_V1",
+    "persona": "PARTIAL",
+    "case": "BIZ-C07",
+    "rules": {
+      "no_deficit": true,
+      "strengths_confirmed_only": true,
+      "unanswered_not_improve": true,
+      "numbers_match": true
+    },
+    "engine": {
+      "title": "경영전략·기획 과제는 해 봤고, 정리만 남았어요",
+      "lead": "뭘 골랐는지만 덧붙이면 돼요.",
+      "gaps": [
+        "경영전략·기획 · 받은 요구를 어떤 조건으로 옮겼는지가 아직 없습니다",
+        "경영전략·기획 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다"
+      ],
+      "actions": [
+        "최근 경영전략·기획 과제 하나. 이번에 하지 않을 것과 먼저 할 것 가운데 직접 정한 것과 그 까닭을 우선순위 근거에 한 줄씩 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다.",
+        "다음 경영전략·기획 과제 하나. 받은 요구를 숫자로 옮기는 일을 맡고, 그 조건을 목표와 지표를 정리한 표로 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    "three_way": {
+      "strengths": [
+        {
+          "domain": "TD01",
+          "axes": [
+            "J3",
+            "J5",
+            "J6",
+            "J7"
+          ],
+          "owned": [],
+          "evidence": [
+            {
+              "id": "EV-TD01-ARTIFACT-710f",
+              "domain": "TD01",
+              "slot": "ARTIFACT",
+              "text": "목표와 지표 표"
+            },
+            {
+              "id": "EV-TD01-ARTIFACT-6dc2",
+              "domain": "TD01",
+              "slot": "ARTIFACT",
+              "text": "사업계획 한 벌"
+            },
+            {
+              "id": "EV-TD01-J3-502f",
+              "domain": "TD01",
+              "slot": "J3",
+              "text": "여러 안 가운데 하나를 근거를 들어 골랐다"
+            },
+            {
+              "id": "EV-TD01-J3-e532",
+              "domain": "TD01",
+              "slot": "J3",
+              "text": "예산이나 인원을 항목별로 나눴다"
+            },
+            {
+              "id": "EV-TD01-J5-b4ae",
+              "domain": "TD01",
+              "slot": "J5",
+              "text": "목표와 지표를 표로 정리했다"
+            },
+            {
+              "id": "EV-TD01-J5-dd2e",
+              "domain": "TD01",
+              "slot": "J5",
+              "text": "사업계획이나 기획안을 문서로 남겼다"
+            },
+            {
+              "id": "EV-TD01-J6-42ad",
+              "domain": "TD01",
+              "slot": "J6",
+              "text": "계획과 실제 집행을 대조했다"
+            },
+            {
+              "id": "EV-TD01-J6-eef0",
+              "domain": "TD01",
+              "slot": "J6",
+              "text": "안 둘을 같은 기준으로 견주었다"
+            },
+            {
+              "id": "EV-TD01-J7-0bb3",
+              "domain": "TD01",
+              "slot": "J7",
+              "text": "다음 계획에서 조건을 바꿨다"
+            },
+            {
+              "id": "EV-TD01-J7-bd24",
+              "domain": "TD01",
+              "slot": "J7",
+              "text": "달성이 안 된 항목의 까닭을 좁혔다"
+            },
+            {
+              "id": "EV-TD01-VERIFY-effd",
+              "domain": "TD01",
+              "slot": "VERIFY",
+              "text": "전사 목표"
+            },
+            {
+              "id": "EV-TD01-VERIFY-9125",
+              "domain": "TD01",
+              "slot": "VERIFY",
+              "text": "지난 기간 실적"
+            }
+          ],
+          "sentence": "경영전략·기획: 직접 판단 · 산출물 · 비교와 검증 · 실패와 수정 쪽이 응답과 고른 근거로 확인됩니다 (근거 12건 · EV-TD01-ARTIFACT-710f, EV-TD01-ARTIFACT-6dc2, EV-TD01-J3-502f …)."
+        },
+        {
+          "domain": "TD02",
+          "axes": [
+            "J3",
+            "J5",
+            "J6",
+            "J7"
+          ],
+          "owned": [],
+          "evidence": [
+            {
+              "id": "EV-TD02-ARTIFACT-cc88",
+              "domain": "TD02",
+              "slot": "ARTIFACT",
+              "text": "캠페인 기획서"
+            },
+            {
+              "id": "EV-TD02-J3-801d",
+              "domain": "TD02",
+              "slot": "J3",
+              "text": "고객을 나누는 기준을 정했다"
+            },
+            {
+              "id": "EV-TD02-J5-41cf",
+              "domain": "TD02",
+              "slot": "J5",
+              "text": "캠페인 기획서를 문서로 남겼다"
+            },
+            {
+              "id": "EV-TD02-J6-43c0",
+              "domain": "TD02",
+              "slot": "J6",
+              "text": "채널 둘의 성과를 같은 기준으로 견주었다"
+            },
+            {
+              "id": "EV-TD02-J7-79e8",
+              "domain": "TD02",
+              "slot": "J7",
+              "text": "반응이 낮은 까닭을 좁혀 들어갔다"
+            },
+            {
+              "id": "EV-TD02-VERIFY-9a8e",
+              "domain": "TD02",
+              "slot": "VERIFY",
+              "text": "지난 캠페인 반응"
+            }
+          ],
+          "sentence": "마케팅·시장: 직접 판단 · 산출물 · 비교와 검증 · 실패와 수정 쪽이 응답과 고른 근거로 확인됩니다 (근거 6건 · EV-TD02-ARTIFACT-cc88, EV-TD02-J3-801d, EV-TD02-J5-41cf …)."
+        }
+      ],
+      "improve": [
+        {
+          "domain": "TD01",
+          "axis": "J3",
+          "gap_id": "TD01.J3",
+          "kind": "PARTIAL_EVIDENCE",
+          "action_id": "A.TD01.J3",
+          "sentence": "경영전략·기획 · 직접 판단: 해 본 것은 확인됩니다. 기준을 직접 정했는지는 이번 응답(직접 수행)으로 확인되지 않았습니다."
+        }
+      ],
+      "unverified": [
+        {
+          "domain": "TD01",
+          "axis": "J2",
+          "why": "SKIPPED",
+          "evidence": [],
+          "sentence": "경영전략·기획 · 요구 해석: 이번 검사에서 답하지 않아 판단하지 않았습니다. 해 본 적이 있다면 그 과제를 기록에 더해 확인할 수 있습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J1",
+          "why": "SKIPPED",
+          "evidence": [],
+          "sentence": "경영전략·기획 · 문제 정의: 답하지 않아 이번 결과에 넣지 않았습니다. 해 본 일이 없다는 뜻으로 읽지 않습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J4",
+          "why": "SKIPPED",
+          "evidence": [],
+          "sentence": "경영전략·기획 · 방법과 도구: 답하지 않아 이번 결과에 넣지 않았습니다. 해 본 일이 없다는 뜻으로 읽지 않습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J8",
+          "why": "SKIPPED",
+          "evidence": [],
+          "sentence": "경영전략·기획 · 조직 활용: 답하지 않아 이번 결과에 넣지 않았습니다. 해 본 일이 없다는 뜻으로 읽지 않습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": null,
+          "why": "CANDIDATE",
+          "evidence": [
+            {
+              "id": "EV-TD01-J1-7e68",
+              "domain": "TD01",
+              "slot": "J1",
+              "text": "목표가 모호한 부분의 가정을 세워 적었다"
+            },
+            {
+              "id": "EV-TD01-J1-0b08",
+              "domain": "TD01",
+              "slot": "J1",
+              "text": "이번에 다룰 것과 다루지 않을 것을 갈라 적었다"
+            },
+            {
+              "id": "EV-TD01-J2-9d68",
+              "domain": "TD01",
+              "slot": "J2",
+              "text": "목표를 매출이나 건수 같은 지표로 옮겼다"
+            },
+            {
+              "id": "EV-TD01-J2-2fc8",
+              "domain": "TD01",
+              "slot": "J2",
+              "text": "서로 부딪히는 목표의 우선순위를 정했다"
+            },
+            {
+              "id": "EV-TD01-J4-4b60",
+              "domain": "TD01",
+              "slot": "J4",
+              "text": "계획을 적는 서식을 정해 썼다"
+            },
+            {
+              "id": "EV-TD01-J4-fa75",
+              "domain": "TD01",
+              "slot": "J4",
+              "text": "쓸 분석 틀을 골라 적용했다"
+            },
+            {
+              "id": "EV-TD01-J8-daff",
+              "domain": "TD01",
+              "slot": "J8",
+              "text": "기획안을 회의에서 설명했다"
+            },
+            {
+              "id": "EV-TD01-J8-5de6",
+              "domain": "TD01",
+              "slot": "J8",
+              "text": "내 기획이 예산이나 인원 배치에 쓰였다"
+            }
+          ],
+          "sentence": "경영전략·기획: 고르신 근거 8건(EV-TD01-J1-7e68, EV-TD01-J1-0b08 …)은 그 판단이 응답으로 확인되지 않아 확인된 경험으로 쓰지 않았습니다."
+        }
+      ]
+    }
+  },
+  {
+    "core": "EE_CORE_V1",
+    "persona": "RICH",
+    "case": "EE-C01",
+    "rules": {
+      "no_deficit": true,
+      "strengths_confirmed_only": true,
+      "unanswered_not_improve": true,
+      "numbers_match": true
+    },
+    "engine": {
+      "title": "아날로그 회로 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+      "lead": "확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "gaps": [
+        "아날로그 회로 설계 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다"
+      ],
+      "actions": [
+        "최근 아날로그 회로 설계 과제 하나. 회로 구조와 능동 소자 종류, 어느 성능을 먼저 지킬지 가운데 직접 정한 것과 그 까닭을 설계 계산서에 한 줄씩 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    "three_way": {
+      "strengths": [
+        {
+          "domain": "TD01",
+          "axes": [
+            "J1",
+            "J2",
+            "J3",
+            "J4",
+            "J5",
+            "J6",
+            "J7",
+            "J8"
+          ],
+          "owned": [],
+          "evidence": [
+            {
+              "id": "EV-TD01-ARTIFACT-472f",
+              "domain": "TD01",
+              "slot": "ARTIFACT",
+              "text": "소자 선정표"
+            },
+            {
+              "id": "EV-TD01-ARTIFACT-17f9",
+              "domain": "TD01",
+              "slot": "ARTIFACT",
+              "text": "회로도"
+            },
+            {
+              "id": "EV-TD01-J1-3366",
+              "domain": "TD01",
+              "slot": "J1",
+              "text": "요구가 없는 부분의 가정을 세워 적었다"
+            },
+            {
+              "id": "EV-TD01-J1-ced9",
+              "domain": "TD01",
+              "slot": "J1",
+              "text": "회로가 맡을 범위와 다루지 않을 것을 적었다"
+            },
+            {
+              "id": "EV-TD01-J2-6227",
+              "domain": "TD01",
+              "slot": "J2",
+              "text": "요구를 이득과 대역폭 수치로 옮겨 적었다"
+            },
+            {
+              "id": "EV-TD01-J2-ae2e",
+              "domain": "TD01",
+              "slot": "J2",
+              "text": "잡음과 소비전류의 허용치를 설계 조건에 넣었다"
+            },
+            {
+              "id": "EV-TD01-J3-84bf",
+              "domain": "TD01",
+              "slot": "J3",
+              "text": "바이어스 동작점을 정했다"
+            },
+            {
+              "id": "EV-TD01-J3-759c",
+              "domain": "TD01",
+              "slot": "J3",
+              "text": "저항과 커패시터 값을 계산해 정했다"
+            },
+            {
+              "id": "EV-TD01-J4-ae8f",
+              "domain": "TD01",
+              "slot": "J4",
+              "text": "잡음 예산을 손계산으로 남겼다"
+            },
+            {
+              "id": "EV-TD01-J4-e6b4",
+              "domain": "TD01",
+              "slot": "J4",
+              "text": "회로 시뮬레이터로 주파수 응답을 확인했다"
+            },
+            {
+              "id": "EV-TD01-J5-743a",
+              "domain": "TD01",
+              "slot": "J5",
+              "text": "설계 계산서를 다음 사람이 읽게 적었다"
+            },
+            {
+              "id": "EV-TD01-J5-7803",
+              "domain": "TD01",
+              "slot": "J5",
+              "text": "회로도와 소자 선정표를 문서로 남겼다"
+            },
+            {
+              "id": "EV-TD01-J6-6213",
+              "domain": "TD01",
+              "slot": "J6",
+              "text": "데이터시트의 한계값과 설계값을 대조했다"
+            },
+            {
+              "id": "EV-TD01-J6-1c97",
+              "domain": "TD01",
+              "slot": "J6",
+              "text": "시뮬레이션 값과 측정값을 같은 조건에서 견주었다"
+            },
+            {
+              "id": "EV-TD01-J7-5089",
+              "domain": "TD01",
+              "slot": "J7",
+              "text": "발진이나 포화의 원인 후보를 좁혀 들어갔다"
+            },
+            {
+              "id": "EV-TD01-J7-7d56",
+              "domain": "TD01",
+              "slot": "J7",
+              "text": "소자값을 바꾸고 바뀐 결과를 다시 쟀다"
+            },
+            {
+              "id": "EV-TD01-J8-2ee9",
+              "domain": "TD01",
+              "slot": "J8",
+              "text": "검토 회의에서 회로 판단을 설명했다"
+            },
+            {
+              "id": "EV-TD01-J8-0e3a",
+              "domain": "TD01",
+              "slot": "J8",
+              "text": "그 회로가 다음 단계 보드에 쓰였다"
+            },
+            {
+              "id": "EV-TD01-VERIFY-6349",
+              "domain": "TD01",
+              "slot": "VERIFY",
+              "text": "데이터시트 한계"
+            },
+            {
+              "id": "EV-TD01-VERIFY-160b",
+              "domain": "TD01",
+              "slot": "VERIFY",
+              "text": "시뮬레이션 결과"
+            }
+          ],
+          "sentence": "아날로그 회로 설계: 문제 정의 · 요구 해석 · 직접 판단 · 방법과 도구 · 산출물 · 비교와 검증 · 실패와 수정 · 조직 활용 쪽이 응답과 고른 근거로 확인됩니다 (근거 20건 · EV-TD01-ARTIFACT-472f, EV-TD01-ARTIFACT-17f9, EV-TD01-J1-3366 …)."
+        },
+        {
+          "domain": "TD02",
+          "axes": [
+            "J3",
+            "J5",
+            "J6",
+            "J7"
+          ],
+          "owned": [],
+          "evidence": [
+            {
+              "id": "EV-TD02-ARTIFACT-f4b8",
+              "domain": "TD02",
+              "slot": "ARTIFACT",
+              "text": "논리 기술 코드"
+            },
+            {
+              "id": "EV-TD02-J3-2270",
+              "domain": "TD02",
+              "slot": "J3",
+              "text": "상태 기계의 상태와 전이를 정했다"
+            },
+            {
+              "id": "EV-TD02-J5-38c3",
+              "domain": "TD02",
+              "slot": "J5",
+              "text": "논리 기술 코드와 제약 파일을 남겼다"
+            },
+            {
+              "id": "EV-TD02-J6-9163",
+              "domain": "TD02",
+              "slot": "J6",
+              "text": "시뮬레이션 파형과 실제 동작을 견주었다"
+            },
+            {
+              "id": "EV-TD02-J7-6459",
+              "domain": "TD02",
+              "slot": "J7",
+              "text": "오동작의 원인 후보를 좁혀 들어갔다"
+            },
+            {
+              "id": "EV-TD02-VERIFY-6279",
+              "domain": "TD02",
+              "slot": "VERIFY",
+              "text": "시뮬레이션 파형"
+            }
+          ],
+          "sentence": "디지털·논리 설계: 직접 판단 · 산출물 · 비교와 검증 · 실패와 수정 쪽이 응답과 고른 근거로 확인됩니다 (근거 6건 · EV-TD02-ARTIFACT-f4b8, EV-TD02-J3-2270, EV-TD02-J5-38c3 …)."
+        }
+      ],
+      "improve": [
+        {
+          "domain": "TD01",
+          "axis": "J3",
+          "gap_id": "TD01.J3",
+          "kind": "PARTIAL_EVIDENCE",
+          "action_id": "A.TD01.J3",
+          "sentence": "아날로그 회로 설계 · 직접 판단: 해 본 것은 확인됩니다. 기준을 직접 정했는지는 이번 응답(직접 수행)으로 확인되지 않았습니다."
+        }
+      ],
+      "unverified": []
+    }
+  },
+  {
+    "core": "EE_CORE_V1",
+    "persona": "POOR",
+    "case": "EE-C02",
+    "rules": {
+      "no_deficit": true,
+      "strengths_confirmed_only": true,
+      "unanswered_not_improve": true,
+      "numbers_match": true
+    },
+    "engine": {
+      "title": "아직 직접 해 본 과제는 많지 않아요",
+      "lead": "짧게 한 번 해 보면 이야기할 거리가 생겨요.",
+      "gaps": [
+        "아날로그 회로 설계 · 직접 정한 조건이나 기준이 아직 안 보여요",
+        "아날로그 회로 설계 · 과제에서 손에 남은 것이 아직 없어요",
+        "아날로그 회로 설계 · 무엇과 비교해 봤는지가 아직 없어요"
+      ],
+      "actions": [
+        "아날로그 회로 설계를 다룰 짧은 과제나 스터디 하나를 정해 보세요. 한 일과 직접 정한 것을 다섯 줄로 적어 두세요. / 수업 프로젝트나 교내 과제 하나면 충분합니다.",
+        "아날로그 회로 설계 수업이나 교육 하나를 정해 들어 보세요. 배운 것을 작은 과제에 한 번 쓰고, 무엇이 남았는지 적어 두세요. / 그 과제에서 남긴 것이 다음에 설명할 근거가 됩니다."
+      ]
+    },
+    "three_way": {
+      "strengths": [],
+      "improve": [
+        {
+          "domain": "TD01",
+          "axis": "J3",
+          "gap_id": "TD01.J3",
+          "kind": "REQUIRED_AXIS",
+          "action_id": "A.TD01.J3",
+          "sentence": "아날로그 회로 설계 · 직접 판단: 답하신 범위에서 아직 보이지 않습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J5",
+          "gap_id": "TD01.J5",
+          "kind": "OUTPUT",
+          "action_id": "A.TD01.J5",
+          "sentence": "아날로그 회로 설계 · 산출물: 답하신 범위에서 아직 보이지 않습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J6",
+          "gap_id": "TD01.J6",
+          "kind": "VERIFICATION",
+          "action_id": "A.TD01.J6",
+          "sentence": "아날로그 회로 설계 · 비교와 검증: 답하신 범위에서 아직 보이지 않습니다."
+        }
+      ],
+      "unverified": []
+    }
+  },
+  {
+    "core": "EE_CORE_V1",
+    "persona": "CONTRA",
+    "case": "EE-C04",
+    "rules": {
+      "no_deficit": true,
+      "strengths_confirmed_only": true,
+      "unanswered_not_improve": true,
+      "numbers_match": true
+    },
+    "engine": {
+      "title": "아날로그 회로 설계 과제는 해 봤고, 정리만 남았어요",
+      "lead": "뭘 골랐는지만 덧붙이면 돼요.",
+      "gaps": [
+        "아날로그 회로 설계 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+        "아날로그 회로 설계 · 무엇을 남겼는지 아직 고르지 않았습니다"
+      ],
+      "actions": [
+        "최근 아날로그 회로 설계 과제 하나. 회로 구조와 능동 소자 종류, 어느 성능을 먼저 지킬지 가운데 직접 정한 것과 그 까닭을 설계 계산서에 한 줄씩 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다.",
+        "다음 아날로그 회로 설계 과제 하나. 끝까지 가서 회로도나 소자 선정표 한 벌을 남겨 두세요."
+      ]
+    },
+    "three_way": {
+      "strengths": [
+        {
+          "domain": "TD01",
+          "axes": [
+            "J1",
+            "J2",
+            "J3",
+            "J4",
+            "J5",
+            "J6",
+            "J7",
+            "J8"
+          ],
+          "owned": [],
+          "evidence": [],
+          "sentence": "아날로그 회로 설계: 문제 정의 · 요구 해석 · 직접 판단 · 방법과 도구 · 산출물 · 비교와 검증 · 실패와 수정 · 조직 활용 쪽은 응답(자기보고)으로만 확인됩니다. 고른 근거가 없어 지원서에 쓸 경험으로는 아직 이어지지 않습니다. 직접 정한 기준까지는 이번 응답으로 확인되지 않았습니다."
+        },
+        {
+          "domain": "TD02",
+          "axes": [
+            "J3",
+            "J5",
+            "J6",
+            "J7"
+          ],
+          "owned": [],
+          "evidence": [],
+          "sentence": "디지털·논리 설계: 직접 판단 · 산출물 · 비교와 검증 · 실패와 수정 쪽은 응답(자기보고)으로만 확인됩니다. 고른 근거가 없어 지원서에 쓸 경험으로는 아직 이어지지 않습니다. 직접 정한 기준까지는 이번 응답으로 확인되지 않았습니다."
+        }
+      ],
+      "improve": [
+        {
+          "domain": "TD01",
+          "axis": "J3",
+          "gap_id": "TD01.J3",
+          "kind": "PARTIAL_EVIDENCE",
+          "action_id": "A.TD01.J3",
+          "sentence": "아날로그 회로 설계 · 직접 판단: 직접 정했다고 답하셨지만 엔진이 센 근거(고른 항목 · 두 번째 문항)가 1건이라 직접 결정까지는 확인되지 않았습니다(둘 이상 필요)."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J5",
+          "gap_id": "TD01.J5",
+          "kind": "OUTPUT_EVIDENCE",
+          "action_id": "A.TD01.J5",
+          "sentence": "아날로그 회로 설계 · 산출물: 답하신 범위에서 아직 보이지 않습니다."
+        }
+      ],
+      "unverified": []
+    }
+  },
+  {
+    "core": "EE_CORE_V1",
+    "persona": "PARTIAL",
+    "case": "EE-C07",
+    "rules": {
+      "no_deficit": true,
+      "strengths_confirmed_only": true,
+      "unanswered_not_improve": true,
+      "numbers_match": true
+    },
+    "engine": {
+      "title": "아날로그 회로 설계 과제에서 방향을 직접 정해 본 일이 있어요",
+      "lead": "확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "gaps": [
+        "아날로그 회로 설계 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다"
+      ],
+      "actions": [
+        "최근 아날로그 회로 설계 과제 하나. 회로 구조와 능동 소자 종류, 어느 성능을 먼저 지킬지 가운데 직접 정한 것과 그 까닭을 설계 계산서에 한 줄씩 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    "three_way": {
+      "strengths": [
+        {
+          "domain": "TD01",
+          "axes": [
+            "J3",
+            "J5",
+            "J6",
+            "J7"
+          ],
+          "owned": [],
+          "evidence": [
+            {
+              "id": "EV-TD01-ARTIFACT-472f",
+              "domain": "TD01",
+              "slot": "ARTIFACT",
+              "text": "소자 선정표"
+            },
+            {
+              "id": "EV-TD01-ARTIFACT-17f9",
+              "domain": "TD01",
+              "slot": "ARTIFACT",
+              "text": "회로도"
+            },
+            {
+              "id": "EV-TD01-J3-84bf",
+              "domain": "TD01",
+              "slot": "J3",
+              "text": "바이어스 동작점을 정했다"
+            },
+            {
+              "id": "EV-TD01-J3-759c",
+              "domain": "TD01",
+              "slot": "J3",
+              "text": "저항과 커패시터 값을 계산해 정했다"
+            },
+            {
+              "id": "EV-TD01-J5-743a",
+              "domain": "TD01",
+              "slot": "J5",
+              "text": "설계 계산서를 다음 사람이 읽게 적었다"
+            },
+            {
+              "id": "EV-TD01-J5-7803",
+              "domain": "TD01",
+              "slot": "J5",
+              "text": "회로도와 소자 선정표를 문서로 남겼다"
+            },
+            {
+              "id": "EV-TD01-J6-6213",
+              "domain": "TD01",
+              "slot": "J6",
+              "text": "데이터시트의 한계값과 설계값을 대조했다"
+            },
+            {
+              "id": "EV-TD01-J6-1c97",
+              "domain": "TD01",
+              "slot": "J6",
+              "text": "시뮬레이션 값과 측정값을 같은 조건에서 견주었다"
+            },
+            {
+              "id": "EV-TD01-J7-5089",
+              "domain": "TD01",
+              "slot": "J7",
+              "text": "발진이나 포화의 원인 후보를 좁혀 들어갔다"
+            },
+            {
+              "id": "EV-TD01-J7-7d56",
+              "domain": "TD01",
+              "slot": "J7",
+              "text": "소자값을 바꾸고 바뀐 결과를 다시 쟀다"
+            },
+            {
+              "id": "EV-TD01-VERIFY-6349",
+              "domain": "TD01",
+              "slot": "VERIFY",
+              "text": "데이터시트 한계"
+            },
+            {
+              "id": "EV-TD01-VERIFY-160b",
+              "domain": "TD01",
+              "slot": "VERIFY",
+              "text": "시뮬레이션 결과"
+            }
+          ],
+          "sentence": "아날로그 회로 설계: 직접 판단 · 산출물 · 비교와 검증 · 실패와 수정 쪽이 응답과 고른 근거로 확인됩니다 (근거 12건 · EV-TD01-ARTIFACT-472f, EV-TD01-ARTIFACT-17f9, EV-TD01-J3-84bf …)."
+        },
+        {
+          "domain": "TD02",
+          "axes": [
+            "J3",
+            "J5",
+            "J6",
+            "J7"
+          ],
+          "owned": [],
+          "evidence": [
+            {
+              "id": "EV-TD02-ARTIFACT-f4b8",
+              "domain": "TD02",
+              "slot": "ARTIFACT",
+              "text": "논리 기술 코드"
+            },
+            {
+              "id": "EV-TD02-J3-2270",
+              "domain": "TD02",
+              "slot": "J3",
+              "text": "상태 기계의 상태와 전이를 정했다"
+            },
+            {
+              "id": "EV-TD02-J5-38c3",
+              "domain": "TD02",
+              "slot": "J5",
+              "text": "논리 기술 코드와 제약 파일을 남겼다"
+            },
+            {
+              "id": "EV-TD02-J6-9163",
+              "domain": "TD02",
+              "slot": "J6",
+              "text": "시뮬레이션 파형과 실제 동작을 견주었다"
+            },
+            {
+              "id": "EV-TD02-J7-6459",
+              "domain": "TD02",
+              "slot": "J7",
+              "text": "오동작의 원인 후보를 좁혀 들어갔다"
+            },
+            {
+              "id": "EV-TD02-VERIFY-6279",
+              "domain": "TD02",
+              "slot": "VERIFY",
+              "text": "시뮬레이션 파형"
+            }
+          ],
+          "sentence": "디지털·논리 설계: 직접 판단 · 산출물 · 비교와 검증 · 실패와 수정 쪽이 응답과 고른 근거로 확인됩니다 (근거 6건 · EV-TD02-ARTIFACT-f4b8, EV-TD02-J3-2270, EV-TD02-J5-38c3 …)."
+        }
+      ],
+      "improve": [
+        {
+          "domain": "TD01",
+          "axis": "J3",
+          "gap_id": "TD01.J3",
+          "kind": "PARTIAL_EVIDENCE",
+          "action_id": "A.TD01.J3",
+          "sentence": "아날로그 회로 설계 · 직접 판단: 해 본 것은 확인됩니다. 기준을 직접 정했는지는 이번 응답(직접 수행)으로 확인되지 않았습니다."
+        }
+      ],
+      "unverified": [
+        {
+          "domain": "TD01",
+          "axis": "J1",
+          "why": "SKIPPED",
+          "evidence": [],
+          "sentence": "아날로그 회로 설계 · 문제 정의: 답하지 않아 이번 결과에 넣지 않았습니다. 해 본 일이 없다는 뜻으로 읽지 않습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J2",
+          "why": "SKIPPED",
+          "evidence": [],
+          "sentence": "아날로그 회로 설계 · 요구 해석: 답하지 않아 이번 결과에 넣지 않았습니다. 해 본 일이 없다는 뜻으로 읽지 않습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J4",
+          "why": "SKIPPED",
+          "evidence": [],
+          "sentence": "아날로그 회로 설계 · 방법과 도구: 답하지 않아 이번 결과에 넣지 않았습니다. 해 본 일이 없다는 뜻으로 읽지 않습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J8",
+          "why": "SKIPPED",
+          "evidence": [],
+          "sentence": "아날로그 회로 설계 · 조직 활용: 답하지 않아 이번 결과에 넣지 않았습니다. 해 본 일이 없다는 뜻으로 읽지 않습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": null,
+          "why": "CANDIDATE",
+          "evidence": [
+            {
+              "id": "EV-TD01-J1-3366",
+              "domain": "TD01",
+              "slot": "J1",
+              "text": "요구가 없는 부분의 가정을 세워 적었다"
+            },
+            {
+              "id": "EV-TD01-J1-ced9",
+              "domain": "TD01",
+              "slot": "J1",
+              "text": "회로가 맡을 범위와 다루지 않을 것을 적었다"
+            },
+            {
+              "id": "EV-TD01-J2-6227",
+              "domain": "TD01",
+              "slot": "J2",
+              "text": "요구를 이득과 대역폭 수치로 옮겨 적었다"
+            },
+            {
+              "id": "EV-TD01-J2-ae2e",
+              "domain": "TD01",
+              "slot": "J2",
+              "text": "잡음과 소비전류의 허용치를 설계 조건에 넣었다"
+            },
+            {
+              "id": "EV-TD01-J4-ae8f",
+              "domain": "TD01",
+              "slot": "J4",
+              "text": "잡음 예산을 손계산으로 남겼다"
+            },
+            {
+              "id": "EV-TD01-J4-e6b4",
+              "domain": "TD01",
+              "slot": "J4",
+              "text": "회로 시뮬레이터로 주파수 응답을 확인했다"
+            },
+            {
+              "id": "EV-TD01-J8-2ee9",
+              "domain": "TD01",
+              "slot": "J8",
+              "text": "검토 회의에서 회로 판단을 설명했다"
+            },
+            {
+              "id": "EV-TD01-J8-0e3a",
+              "domain": "TD01",
+              "slot": "J8",
+              "text": "그 회로가 다음 단계 보드에 쓰였다"
+            }
+          ],
+          "sentence": "아날로그 회로 설계: 고르신 근거 8건(EV-TD01-J1-3366, EV-TD01-J1-ced9 …)은 그 판단이 응답으로 확인되지 않아 확인된 경험으로 쓰지 않았습니다."
+        }
+      ]
+    }
+  },
+  {
+    "core": "CS_CORE_V1",
+    "persona": "RICH",
+    "case": "CS-C01",
+    "rules": {
+      "no_deficit": true,
+      "strengths_confirmed_only": true,
+      "unanswered_not_improve": true,
+      "numbers_match": true
+    },
+    "engine": {
+      "title": "소프트웨어 설계·구조 과제에서 방향을 직접 정해 본 일이 있어요",
+      "lead": "확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "gaps": [
+        "소프트웨어 설계·구조 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다"
+      ],
+      "actions": [
+        "최근 소프트웨어 설계·구조 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 모듈 구조도에 그대로 옮깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    "three_way": {
+      "strengths": [
+        {
+          "domain": "TD01",
+          "axes": [
+            "J1",
+            "J2",
+            "J3",
+            "J4",
+            "J5",
+            "J6",
+            "J7",
+            "J8"
+          ],
+          "owned": [],
+          "evidence": [
+            {
+              "id": "EV-TD01-ARTIFACT-f43c",
+              "domain": "TD01",
+              "slot": "ARTIFACT",
+              "text": "모듈 구조도"
+            },
+            {
+              "id": "EV-TD01-ARTIFACT-45cb",
+              "domain": "TD01",
+              "slot": "ARTIFACT",
+              "text": "요구 목록"
+            },
+            {
+              "id": "EV-TD01-J1-7202",
+              "domain": "TD01",
+              "slot": "J1",
+              "text": "요구가 모호한 부분의 가정을 세워 적었다"
+            },
+            {
+              "id": "EV-TD01-J1-40ec",
+              "domain": "TD01",
+              "slot": "J1",
+              "text": "이 시스템이 맡을 일과 맡지 않을 일을 갈라 적었다"
+            },
+            {
+              "id": "EV-TD01-J2-a00e",
+              "domain": "TD01",
+              "slot": "J2",
+              "text": "서로 부딪히는 요구의 우선순위를 정했다"
+            },
+            {
+              "id": "EV-TD01-J2-6878",
+              "domain": "TD01",
+              "slot": "J2",
+              "text": "요구를 응답 시간이나 동시 사용자 수로 옮겨 적었다"
+            },
+            {
+              "id": "EV-TD01-J3-5d6f",
+              "domain": "TD01",
+              "slot": "J3",
+              "text": "모듈을 가르는 선을 정했다"
+            },
+            {
+              "id": "EV-TD01-J3-4835",
+              "domain": "TD01",
+              "slot": "J3",
+              "text": "어느 기능을 어느 모듈이 맡을지 배정했다"
+            },
+            {
+              "id": "EV-TD01-J4-1765",
+              "domain": "TD01",
+              "slot": "J4",
+              "text": "결정을 기록으로 남기는 방식을 정했다"
+            },
+            {
+              "id": "EV-TD01-J4-0f70",
+              "domain": "TD01",
+              "slot": "J4",
+              "text": "구조를 적는 표기 방법을 골라 썼다"
+            },
+            {
+              "id": "EV-TD01-J5-cda7",
+              "domain": "TD01",
+              "slot": "J5",
+              "text": "모듈 구조도를 문서로 남겼다"
+            },
+            {
+              "id": "EV-TD01-J5-cd6a",
+              "domain": "TD01",
+              "slot": "J5",
+              "text": "인터페이스 규약을 적어 두었다"
+            },
+            {
+              "id": "EV-TD01-J6-de7f",
+              "domain": "TD01",
+              "slot": "J6",
+              "text": "구현된 코드가 설계와 맞는지 대조했다"
+            },
+            {
+              "id": "EV-TD01-J6-0931",
+              "domain": "TD01",
+              "slot": "J6",
+              "text": "설계안 둘을 같은 기준으로 견주었다"
+            },
+            {
+              "id": "EV-TD01-J7-4c91",
+              "domain": "TD01",
+              "slot": "J7",
+              "text": "같은 수정이 되풀이되지 않게 구조를 바꿨다"
+            },
+            {
+              "id": "EV-TD01-J7-5efc",
+              "domain": "TD01",
+              "slot": "J7",
+              "text": "한 곳을 고치니 깨진 자리를 찾아 좁혔다"
+            },
+            {
+              "id": "EV-TD01-J8-685e",
+              "domain": "TD01",
+              "slot": "J8",
+              "text": "내 설계가 일정과 인원 배치에 쓰였다"
+            },
+            {
+              "id": "EV-TD01-J8-31b3",
+              "domain": "TD01",
+              "slot": "J8",
+              "text": "설계안을 검토 회의에서 설명했다"
+            },
+            {
+              "id": "EV-TD01-VERIFY-70cd",
+              "domain": "TD01",
+              "slot": "VERIFY",
+              "text": "기존 시스템 구조"
+            },
+            {
+              "id": "EV-TD01-VERIFY-4049",
+              "domain": "TD01",
+              "slot": "VERIFY",
+              "text": "요구 목록"
+            }
+          ],
+          "sentence": "소프트웨어 설계·구조: 문제 정의 · 요구 해석 · 직접 판단 · 방법과 도구 · 산출물 · 비교와 검증 · 실패와 수정 · 조직 활용 쪽이 응답과 고른 근거로 확인됩니다 (근거 20건 · EV-TD01-ARTIFACT-f43c, EV-TD01-ARTIFACT-45cb, EV-TD01-J1-7202 …)."
+        },
+        {
+          "domain": "TD02",
+          "axes": [
+            "J3",
+            "J5",
+            "J6",
+            "J7"
+          ],
+          "owned": [],
+          "evidence": [
+            {
+              "id": "EV-TD02-ARTIFACT-4665",
+              "domain": "TD02",
+              "slot": "ARTIFACT",
+              "text": "구현 코드"
+            },
+            {
+              "id": "EV-TD02-J3-c8cf",
+              "domain": "TD02",
+              "slot": "J3",
+              "text": "자료를 담을 표현을 골랐다"
+            },
+            {
+              "id": "EV-TD02-J5-f388",
+              "domain": "TD02",
+              "slot": "J5",
+              "text": "구현 코드를 다른 사람이 쓸 수 있게 남겼다"
+            },
+            {
+              "id": "EV-TD02-J6-d9b8",
+              "domain": "TD02",
+              "slot": "J6",
+              "text": "이론값과 실측 시간을 대조했다"
+            },
+            {
+              "id": "EV-TD02-J7-3102",
+              "domain": "TD02",
+              "slot": "J7",
+              "text": "느린 구간을 측정으로 찾아냈다"
+            },
+            {
+              "id": "EV-TD02-VERIFY-c2c5",
+              "domain": "TD02",
+              "slot": "VERIFY",
+              "text": "이론 복잡도"
+            }
+          ],
+          "sentence": "자료구조·알고리즘: 직접 판단 · 산출물 · 비교와 검증 · 실패와 수정 쪽이 응답과 고른 근거로 확인됩니다 (근거 6건 · EV-TD02-ARTIFACT-4665, EV-TD02-J3-c8cf, EV-TD02-J5-f388 …)."
+        }
+      ],
+      "improve": [
+        {
+          "domain": "TD01",
+          "axis": "J2",
+          "gap_id": "TD01.J2",
+          "kind": "PARTIAL_EVIDENCE",
+          "action_id": "A.TD01.J2",
+          "sentence": "소프트웨어 설계·구조 · 요구 해석: 해 본 것은 확인됩니다. 기준을 직접 정했는지는 이번 응답(직접 수행)으로 확인되지 않았습니다."
+        }
+      ],
+      "unverified": []
+    }
+  },
+  {
+    "core": "CS_CORE_V1",
+    "persona": "POOR",
+    "case": "CS-C02",
+    "rules": {
+      "no_deficit": true,
+      "strengths_confirmed_only": true,
+      "unanswered_not_improve": true,
+      "numbers_match": true
+    },
+    "engine": {
+      "title": "아직 직접 해 본 과제는 많지 않아요",
+      "lead": "짧게 한 번 해 보면 이야기할 거리가 생겨요.",
+      "gaps": [
+        "소프트웨어 설계·구조 · 받은 요구를 어떤 조건으로 옮겼는지가 아직 없습니다",
+        "소프트웨어 설계·구조 · 직접 정한 조건이나 기준이 아직 안 보여요",
+        "소프트웨어 설계·구조 · 과제에서 손에 남은 것이 아직 없어요",
+        "소프트웨어 설계·구조 · 무엇과 비교해 봤는지가 아직 없어요"
+      ],
+      "actions": [
+        "소프트웨어 설계·구조를 다룰 짧은 과제나 스터디 하나를 정해 보세요. 한 일과 직접 정한 것을 다섯 줄로 적어 두세요. / 수업 프로젝트나 교내 과제 하나면 충분합니다.",
+        "소프트웨어 설계·구조 수업이나 교육 하나를 정해 들어 보세요. 배운 것을 작은 과제에 한 번 쓰고, 무엇이 남았는지 적어 두세요. / 그 과제에서 남긴 것이 다음에 설명할 근거가 됩니다."
+      ]
+    },
+    "three_way": {
+      "strengths": [],
+      "improve": [
+        {
+          "domain": "TD01",
+          "axis": "J2",
+          "gap_id": "TD01.J2",
+          "kind": "REQUIRED_AXIS",
+          "action_id": "A.TD01.J2",
+          "sentence": "소프트웨어 설계·구조 · 요구 해석: 답하신 범위에서 아직 보이지 않습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J3",
+          "gap_id": "TD01.J3",
+          "kind": "REQUIRED_AXIS",
+          "action_id": "A.TD01.J3",
+          "sentence": "소프트웨어 설계·구조 · 직접 판단: 답하신 범위에서 아직 보이지 않습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J5",
+          "gap_id": "TD01.J5",
+          "kind": "OUTPUT",
+          "action_id": "A.TD01.J5",
+          "sentence": "소프트웨어 설계·구조 · 산출물: 답하신 범위에서 아직 보이지 않습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J6",
+          "gap_id": "TD01.J6",
+          "kind": "VERIFICATION",
+          "action_id": "A.TD01.J6",
+          "sentence": "소프트웨어 설계·구조 · 비교와 검증: 답하신 범위에서 아직 보이지 않습니다."
+        }
+      ],
+      "unverified": []
+    }
+  },
+  {
+    "core": "CS_CORE_V1",
+    "persona": "CONTRA",
+    "case": "CS-C04",
+    "rules": {
+      "no_deficit": true,
+      "strengths_confirmed_only": true,
+      "unanswered_not_improve": true,
+      "numbers_match": true
+    },
+    "engine": {
+      "title": "소프트웨어 설계·구조 과제는 해 봤고, 정리만 남았어요",
+      "lead": "뭘 골랐는지만 덧붙이면 돼요.",
+      "gaps": [
+        "소프트웨어 설계·구조 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+        "소프트웨어 설계·구조 · 무엇을 남겼는지 아직 고르지 않았습니다"
+      ],
+      "actions": [
+        "최근 소프트웨어 설계·구조 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 모듈 구조도에 그대로 옮깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다.",
+        "다음 소프트웨어 설계·구조 과제 하나. 끝까지 가서 요구 목록이나 모듈 구조도 한 벌을 남겨 두세요."
+      ]
+    },
+    "three_way": {
+      "strengths": [
+        {
+          "domain": "TD01",
+          "axes": [
+            "J1",
+            "J2",
+            "J3",
+            "J4",
+            "J5",
+            "J6",
+            "J7",
+            "J8"
+          ],
+          "owned": [],
+          "evidence": [],
+          "sentence": "소프트웨어 설계·구조: 문제 정의 · 요구 해석 · 직접 판단 · 방법과 도구 · 산출물 · 비교와 검증 · 실패와 수정 · 조직 활용 쪽은 응답(자기보고)으로만 확인됩니다. 고른 근거가 없어 지원서에 쓸 경험으로는 아직 이어지지 않습니다. 직접 정한 기준까지는 이번 응답으로 확인되지 않았습니다."
+        },
+        {
+          "domain": "TD02",
+          "axes": [
+            "J3",
+            "J5",
+            "J6",
+            "J7"
+          ],
+          "owned": [],
+          "evidence": [],
+          "sentence": "자료구조·알고리즘: 직접 판단 · 산출물 · 비교와 검증 · 실패와 수정 쪽은 응답(자기보고)으로만 확인됩니다. 고른 근거가 없어 지원서에 쓸 경험으로는 아직 이어지지 않습니다. 직접 정한 기준까지는 이번 응답으로 확인되지 않았습니다."
+        }
+      ],
+      "improve": [
+        {
+          "domain": "TD01",
+          "axis": "J2",
+          "gap_id": "TD01.J2",
+          "kind": "PARTIAL_EVIDENCE",
+          "action_id": "A.TD01.J2",
+          "sentence": "소프트웨어 설계·구조 · 요구 해석: 직접 정했다고 답하셨지만 엔진이 센 근거(고른 항목 · 두 번째 문항)가 0건이라 직접 결정까지는 확인되지 않았습니다(둘 이상 필요)."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J5",
+          "gap_id": "TD01.J5",
+          "kind": "OUTPUT_EVIDENCE",
+          "action_id": "A.TD01.J5",
+          "sentence": "소프트웨어 설계·구조 · 산출물: 답하신 범위에서 아직 보이지 않습니다."
+        }
+      ],
+      "unverified": []
+    }
+  },
+  {
+    "core": "CS_CORE_V1",
+    "persona": "PARTIAL",
+    "case": "CS-C07",
+    "rules": {
+      "no_deficit": true,
+      "strengths_confirmed_only": true,
+      "unanswered_not_improve": true,
+      "numbers_match": true
+    },
+    "engine": {
+      "title": "소프트웨어 설계·구조 과제는 해 봤고, 정리만 남았어요",
+      "lead": "뭘 골랐는지만 덧붙이면 돼요.",
+      "gaps": [
+        "소프트웨어 설계·구조 · 받은 요구를 어떤 조건으로 옮겼는지가 아직 없습니다",
+        "소프트웨어 설계·구조 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다"
+      ],
+      "actions": [
+        "최근 소프트웨어 설계·구조 과제 하나. 이번에 받지 않을 것과 모듈을 가르는 선 가운데 직접 정한 것과 그 까닭을 인터페이스 규약에 한 줄씩 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다.",
+        "다음 소프트웨어 설계·구조 과제 하나. 받은 요구를 숫자로 옮기는 일을 맡고, 그 조건을 모듈 구조도로 남깁니다. / 수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+      ]
+    },
+    "three_way": {
+      "strengths": [
+        {
+          "domain": "TD01",
+          "axes": [
+            "J3",
+            "J5",
+            "J6",
+            "J7"
+          ],
+          "owned": [],
+          "evidence": [
+            {
+              "id": "EV-TD01-ARTIFACT-f43c",
+              "domain": "TD01",
+              "slot": "ARTIFACT",
+              "text": "모듈 구조도"
+            },
+            {
+              "id": "EV-TD01-ARTIFACT-45cb",
+              "domain": "TD01",
+              "slot": "ARTIFACT",
+              "text": "요구 목록"
+            },
+            {
+              "id": "EV-TD01-J3-5d6f",
+              "domain": "TD01",
+              "slot": "J3",
+              "text": "모듈을 가르는 선을 정했다"
+            },
+            {
+              "id": "EV-TD01-J3-4835",
+              "domain": "TD01",
+              "slot": "J3",
+              "text": "어느 기능을 어느 모듈이 맡을지 배정했다"
+            },
+            {
+              "id": "EV-TD01-J5-cda7",
+              "domain": "TD01",
+              "slot": "J5",
+              "text": "모듈 구조도를 문서로 남겼다"
+            },
+            {
+              "id": "EV-TD01-J5-cd6a",
+              "domain": "TD01",
+              "slot": "J5",
+              "text": "인터페이스 규약을 적어 두었다"
+            },
+            {
+              "id": "EV-TD01-J6-de7f",
+              "domain": "TD01",
+              "slot": "J6",
+              "text": "구현된 코드가 설계와 맞는지 대조했다"
+            },
+            {
+              "id": "EV-TD01-J6-0931",
+              "domain": "TD01",
+              "slot": "J6",
+              "text": "설계안 둘을 같은 기준으로 견주었다"
+            },
+            {
+              "id": "EV-TD01-J7-4c91",
+              "domain": "TD01",
+              "slot": "J7",
+              "text": "같은 수정이 되풀이되지 않게 구조를 바꿨다"
+            },
+            {
+              "id": "EV-TD01-J7-5efc",
+              "domain": "TD01",
+              "slot": "J7",
+              "text": "한 곳을 고치니 깨진 자리를 찾아 좁혔다"
+            },
+            {
+              "id": "EV-TD01-VERIFY-70cd",
+              "domain": "TD01",
+              "slot": "VERIFY",
+              "text": "기존 시스템 구조"
+            },
+            {
+              "id": "EV-TD01-VERIFY-4049",
+              "domain": "TD01",
+              "slot": "VERIFY",
+              "text": "요구 목록"
+            }
+          ],
+          "sentence": "소프트웨어 설계·구조: 직접 판단 · 산출물 · 비교와 검증 · 실패와 수정 쪽이 응답과 고른 근거로 확인됩니다 (근거 12건 · EV-TD01-ARTIFACT-f43c, EV-TD01-ARTIFACT-45cb, EV-TD01-J3-5d6f …)."
+        },
+        {
+          "domain": "TD02",
+          "axes": [
+            "J3",
+            "J5",
+            "J6",
+            "J7"
+          ],
+          "owned": [],
+          "evidence": [
+            {
+              "id": "EV-TD02-ARTIFACT-4665",
+              "domain": "TD02",
+              "slot": "ARTIFACT",
+              "text": "구현 코드"
+            },
+            {
+              "id": "EV-TD02-J3-c8cf",
+              "domain": "TD02",
+              "slot": "J3",
+              "text": "자료를 담을 표현을 골랐다"
+            },
+            {
+              "id": "EV-TD02-J5-f388",
+              "domain": "TD02",
+              "slot": "J5",
+              "text": "구현 코드를 다른 사람이 쓸 수 있게 남겼다"
+            },
+            {
+              "id": "EV-TD02-J6-d9b8",
+              "domain": "TD02",
+              "slot": "J6",
+              "text": "이론값과 실측 시간을 대조했다"
+            },
+            {
+              "id": "EV-TD02-J7-3102",
+              "domain": "TD02",
+              "slot": "J7",
+              "text": "느린 구간을 측정으로 찾아냈다"
+            },
+            {
+              "id": "EV-TD02-VERIFY-c2c5",
+              "domain": "TD02",
+              "slot": "VERIFY",
+              "text": "이론 복잡도"
+            }
+          ],
+          "sentence": "자료구조·알고리즘: 직접 판단 · 산출물 · 비교와 검증 · 실패와 수정 쪽이 응답과 고른 근거로 확인됩니다 (근거 6건 · EV-TD02-ARTIFACT-4665, EV-TD02-J3-c8cf, EV-TD02-J5-f388 …)."
+        }
+      ],
+      "improve": [
+        {
+          "domain": "TD01",
+          "axis": "J3",
+          "gap_id": "TD01.J3",
+          "kind": "PARTIAL_EVIDENCE",
+          "action_id": "A.TD01.J3",
+          "sentence": "소프트웨어 설계·구조 · 직접 판단: 해 본 것은 확인됩니다. 기준을 직접 정했는지는 이번 응답(직접 수행)으로 확인되지 않았습니다."
+        }
+      ],
+      "unverified": [
+        {
+          "domain": "TD01",
+          "axis": "J2",
+          "why": "SKIPPED",
+          "evidence": [],
+          "sentence": "소프트웨어 설계·구조 · 요구 해석: 이번 검사에서 답하지 않아 판단하지 않았습니다. 해 본 적이 있다면 그 과제를 기록에 더해 확인할 수 있습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J1",
+          "why": "SKIPPED",
+          "evidence": [],
+          "sentence": "소프트웨어 설계·구조 · 문제 정의: 답하지 않아 이번 결과에 넣지 않았습니다. 해 본 일이 없다는 뜻으로 읽지 않습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J4",
+          "why": "SKIPPED",
+          "evidence": [],
+          "sentence": "소프트웨어 설계·구조 · 방법과 도구: 답하지 않아 이번 결과에 넣지 않았습니다. 해 본 일이 없다는 뜻으로 읽지 않습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": "J8",
+          "why": "SKIPPED",
+          "evidence": [],
+          "sentence": "소프트웨어 설계·구조 · 조직 활용: 답하지 않아 이번 결과에 넣지 않았습니다. 해 본 일이 없다는 뜻으로 읽지 않습니다."
+        },
+        {
+          "domain": "TD01",
+          "axis": null,
+          "why": "CANDIDATE",
+          "evidence": [
+            {
+              "id": "EV-TD01-J1-7202",
+              "domain": "TD01",
+              "slot": "J1",
+              "text": "요구가 모호한 부분의 가정을 세워 적었다"
+            },
+            {
+              "id": "EV-TD01-J1-40ec",
+              "domain": "TD01",
+              "slot": "J1",
+              "text": "이 시스템이 맡을 일과 맡지 않을 일을 갈라 적었다"
+            },
+            {
+              "id": "EV-TD01-J2-a00e",
+              "domain": "TD01",
+              "slot": "J2",
+              "text": "서로 부딪히는 요구의 우선순위를 정했다"
+            },
+            {
+              "id": "EV-TD01-J2-6878",
+              "domain": "TD01",
+              "slot": "J2",
+              "text": "요구를 응답 시간이나 동시 사용자 수로 옮겨 적었다"
+            },
+            {
+              "id": "EV-TD01-J4-1765",
+              "domain": "TD01",
+              "slot": "J4",
+              "text": "결정을 기록으로 남기는 방식을 정했다"
+            },
+            {
+              "id": "EV-TD01-J4-0f70",
+              "domain": "TD01",
+              "slot": "J4",
+              "text": "구조를 적는 표기 방법을 골라 썼다"
+            },
+            {
+              "id": "EV-TD01-J8-685e",
+              "domain": "TD01",
+              "slot": "J8",
+              "text": "내 설계가 일정과 인원 배치에 쓰였다"
+            },
+            {
+              "id": "EV-TD01-J8-31b3",
+              "domain": "TD01",
+              "slot": "J8",
+              "text": "설계안을 검토 회의에서 설명했다"
+            }
+          ],
+          "sentence": "소프트웨어 설계·구조: 고르신 근거 8건(EV-TD01-J1-7202, EV-TD01-J1-40ec …)은 그 판단이 응답으로 확인되지 않아 확인된 경험으로 쓰지 않았습니다."
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,28 @@
+# R38 diff vs c4f39cdf
+ pca-platform/scripts/shared-core/test/shims/pg.mjs | 22 ++++++-
+ pca-platform/scripts/shared-core/test/typecheck.sh |  4 +-
+ 6 files changed, 89 insertions(+), 90 deletions(-)
+ M docs/shared-core/CONTRACTS.md
+ M docs/shared-core/handoffs/2026-10-20_pcu-gm-core-requests.md
+ M scripts/shared-core/bench/run.ts
+ M scripts/shared-core/evidence-aggregation.test.ts
+ M scripts/shared-core/test/shims/pg.mjs
+ M scripts/shared-core/test/typecheck.sh
+?? docs/shared-core/R38_OUTPUT_CONTENT_QA.md
+?? docs/shared-core/evidence/R38/
+?? docs/shared-core/handoffs/R38_JJU_status.md
+?? docs/shared-core/handoffs/R38_MAIN_p0-identity-erasure.md
+?? docs/shared-core/handoffs/R38_PCU_gm-evidence-cc006-cc008.md
+?? docs/shared-core/handoffs/R38_SEJONG_status.md
+?? scripts/shared-core/bench/keys.ts
+?? scripts/shared-core/content/
+?? scripts/shared-core/fixtures/
+?? scripts/shared-core/p0-erasure.test.ts
+
+# protected paths touched:
+(end)
+
+# checksums
+9688a9268690d2872c7499c574897cbbc4fc1898f5ba6c49cc461f85c18b266f  deploy/db-chain.json
+b029cf0a5a6440a73b923ee5995366de479d14f245bf0c3b9b0b161bafb9572a  sites/pca-platform/content/campus-universities.json
+b2188400aa80a7a12e3339c5fa9aa0547bfb8968514ff1313c10750b5eb4b574  sites/pca-platform/content/major-cores.json

@@ -10,11 +10,13 @@ if [ ! -x "$TSC" ] || [ ! -d "$TYPES/node" ]; then
   echo "NOT VERIFIED: tsc 또는 @types/node 가 없습니다 ($TSC)"; exit 2
 fi
 CFG="$(mktemp -d)/tsconfig.json"
+# R38: content/ · fixtures/ 도 넣는다(DB 없이 돈다).
 # R37: DB 없이 도는 벤치마크와 Evidence 검사도 넣는다 — 그 둘이 들여오는
 # me-v3 scoring · result 모듈까지 따라 검사된다. DB 를 쓰는 검사는 `pg` 타입이
 # 없어 넣지 않는다(NOT VERIFIED).
 FILES=$( (ls "$ROOT"/src/lib/shared-core/tenant/*.ts; ls "$ROOT"/scripts/shared-core/tenant-*.test.ts \
-  "$ROOT"/scripts/shared-core/evidence-aggregation.test.ts "$ROOT"/scripts/shared-core/bench/*.ts) \
+  "$ROOT"/scripts/shared-core/evidence-aggregation.test.ts "$ROOT"/scripts/shared-core/bench/*.ts \
+  "$ROOT"/scripts/shared-core/content/*.ts "$ROOT"/scripts/shared-core/fixtures/*.ts) \
   | sed 's|^|"|;s|$|"|' | paste -sd, )
 cat > "$CFG" <<JSON
 { "compilerOptions": { "target":"ES2022","lib":["ES2022"],"module":"ESNext","moduleResolution":"Bundler",

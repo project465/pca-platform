@@ -20,6 +20,10 @@
 | [R37_P0_VERIFICATION.md](R37_P0_VERIFICATION.md) | SC-2 여덟 질문 · 식별자 · PASS/TODO/SKIP · ADJ-1 |
 | [R37_BENCHMARK.md](R37_BENCHMARK.md) | Core 품질 벤치마크 v1 기준선 (합성 44 사례) |
 | [handoffs/2026-10-20_pcu-gm-core-requests.md](handoffs/2026-10-20_pcu-gm-core-requests.md) | 배재 GM 요청 3건 회신 초안 (**보내지 않음**) |
+| [R38_REPORT.md](R38_REPORT.md) | **R38** 보고 — 콘텐츠 무결성 · 파기 재현 · 기관 회신 |
+| [R38_TRACKS.md](R38_TRACKS.md) | R38 Track 상태 |
+| [R38_OUTPUT_CONTENT_QA.md](R38_OUTPUT_CONTENT_QA.md) | 결과 본문 QA (합성 · 전/후 · 근거 ID · 9축) |
+| `handoffs/R38_*.md` | 배재 · 본체 · 전주 · 세종 회신 초안 (**미발송**) |
 
 ## 기준 커밋에서 돌린 불변 묶음 (2026-10-20)
 

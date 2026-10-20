@@ -1,0 +1,310 @@
+TAP version 13
+# Subtest: P0-REPRO-0 checkStudent 는 아이디를 기관 없이 학번 그대로 만든다
+ok 1 - P0-REPRO-0 checkStudent 는 아이디를 기관 없이 학번 그대로 만든다
+  ---
+  duration_ms: 331.770449
+  type: 'test'
+  ...
+# Subtest: P0-REPRO-1 최초 등록과 같은 기관 재등록은 한 계정으로 수렴한다(기준선)
+ok 2 - P0-REPRO-1 최초 등록과 같은 기관 재등록은 한 계정으로 수렴한다(기준선)
+  ---
+  duration_ms: 311.405457
+  type: 'test'
+  ...
+# Subtest: P0-REPRO-2 다른 기관이 같은 학번을 올리면(화면 경로 · rotate 없음) 앞 기관 학생의 학과가 덮인다
+ok 3 - P0-REPRO-2 다른 기관이 같은 학번을 올리면(화면 경로 · rotate 없음) 앞 기관 학생의 학과가 덮인다
+  ---
+  duration_ms: 777.862041
+  type: 'test'
+  ...
+# Subtest: P0-REPRO-3 CSV 적용도 같은 길이다(applyImport → 고침 1 · 만듦 0)
+ok 4 - P0-REPRO-3 CSV 적용도 같은 길이다(applyImport → 고침 1 · 만듦 0)
+  ---
+  duration_ms: 472.466745
+  type: 'test'
+  ...
+# Subtest: P0-REPRO-4 rotate 로 올리면(CLI `pcu:students` ROTATE=yes 경로) 계정이 통째로 넘어간다
+ok 5 - P0-REPRO-4 rotate 로 올리면(CLI `pcu:students` ROTATE=yes 경로) 계정이 통째로 넘어간다
+  ---
+  duration_ms: 983.980711
+  type: 'test'
+  ...
+# Subtest: P0-REPRO-5 명단에 적은 login_id 가 다른 기관 아이디와 같아도 같은 길이다
+ok 6 - P0-REPRO-5 명단에 적은 login_id 가 다른 기관 아이디와 같아도 같은 길이다
+  ---
+  duration_ms: 408.664125
+  type: 'test'
+  ...
+# Subtest: P0-REPRO-6 같은 메일이 다른 기관 명단에 있으면 그 줄에서 적용이 던지고 뒤 줄이 남는다
+ok 7 - P0-REPRO-6 같은 메일이 다른 기관 명단에 있으면 그 줄에서 적용이 던지고 뒤 줄이 남는다
+  ---
+  duration_ms: 677.3876
+  type: 'test'
+  ...
+# Subtest: P0-REPRO-7 다른 기관 담당자는 남의 학생을 직접 다루지 못한다(기준선 격리)
+ok 8 - P0-REPRO-7 다른 기관 담당자는 남의 학생을 직접 다루지 못한다(기준선 격리)
+  ---
+  duration_ms: 359.190178
+  type: 'test'
+  ...
+# Subtest: P0-FIX-1 다른 기관의 같은 학번은 각자의 계정이 된다
+not ok 9 - P0-FIX-1 다른 기관의 같은 학번은 각자의 계정이 된다 # TODO 총괄 PM 승인 뒤 SC-2 수정안(docs/shared-core/R36_P0_LOGIN_COLLISION.md)을 적용하면 켠다
+  ---
+  duration_ms: 372.406802
+  type: 'test'
+  location: '/home/user/pca-platform/pca-platform/scripts/shared-core/p0-login-collision.test.ts:345:1'
+  failureType: 'testCodeFailure'
+  error: '두 사람 모두 열쇠를 받는다'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/pca-platform/pca-platform/scripts/shared-core/p0-login-collision.test.ts:351:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: P0-FIX-2 다른 기관의 명단 적용이 남의 학생 학과를 바꾸지 않는다
+not ok 10 - P0-FIX-2 다른 기관의 명단 적용이 남의 학생 학과를 바꾸지 않는다 # TODO 총괄 PM 승인 뒤 SC-2 수정안(docs/shared-core/R36_P0_LOGIN_COLLISION.md)을 적용하면 켠다
+  ---
+  duration_ms: 493.842228
+  type: 'test'
+  location: '/home/user/pca-platform/pca-platform/scripts/shared-core/p0-login-collision.test.ts:359:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'ZZ26_ME'
+    - 'PCU26_KOREAN'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'PCU26_KOREAN'
+  actual: 'ZZ26_ME'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/pca-platform/pca-platform/scripts/shared-core/p0-login-collision.test.ts:365:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: P0-FIX-3 rotate 도 다른 기관 학생의 열쇠·이름·학교를 바꾸지 않는다
+not ok 11 - P0-FIX-3 rotate 도 다른 기관 학생의 열쇠·이름·학교를 바꾸지 않는다 # TODO 총괄 PM 승인 뒤 SC-2 수정안(docs/shared-core/R36_P0_LOGIN_COLLISION.md)을 적용하면 켠다
+  ---
+  duration_ms: 489.410299
+  type: 'test'
+  location: '/home/user/pca-platform/pca-platform/scripts/shared-core/p0-login-collision.test.ts:368:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    undefined !== '15'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '15'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/pca-platform/pca-platform/scripts/shared-core/p0-login-collision.test.ts:374:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: P0-FIX-4 다른 기관 미리 보기에 남의 학번이 '이미 있음' 으로 새지 않는다
+not ok 12 - P0-FIX-4 다른 기관 미리 보기에 남의 학번이 '이미 있음' 으로 새지 않는다 # TODO 총괄 PM 승인 뒤 SC-2 수정안(docs/shared-core/R36_P0_LOGIN_COLLISION.md)을 적용하면 켠다
+  ---
+  duration_ms: 277.995312
+  type: 'test'
+  location: '/home/user/pca-platform/pca-platform/scripts/shared-core/p0-login-collision.test.ts:378:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/pca-platform/pca-platform/scripts/shared-core/p0-login-collision.test.ts:383:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: P0-FIX-5 다른 기관 명단의 겹치는 메일은 그 줄만 거절하고 뒤 줄은 적힌다
+not ok 13 - P0-FIX-5 다른 기관 명단의 겹치는 메일은 그 줄만 거절하고 뒤 줄은 적힌다 # TODO 총괄 PM 승인 뒤 SC-2 수정안(docs/shared-core/R36_P0_LOGIN_COLLISION.md)을 적용하면 켠다
+  ---
+  duration_ms: 694.913766
+  type: 'test'
+  location: '/home/user/pca-platform/pca-platform/scripts/shared-core/p0-login-collision.test.ts:386:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    ERROR:  23505: duplicate key value violates unique constraint "users_email_key"
+    DETAIL:  Key (email)=(sc36-f5@example.invalid) already exists.
+    CONTEXT:  PL/pgSQL function sc_shim.run(text,boolean) line 5 at FOR over EXECUTE statement
+    SCHEMA NAME:  public
+    TABLE NAME:  users
+    CONSTRAINT NAME:  users_email_key
+    LOCATION:  _bt_check_unique, nbtinsert.c:666
+  code: '23505'
+  stack: |-
+    ChildProcess.<anonymous> (file:///home/user/pca-platform/pca-platform/scripts/shared-core/test/shims/pg.mjs:75:7)
+    ChildProcess.emit (node:events:519:28)
+    maybeClose (node:internal/child_process:1101:16)
+    ChildProcess._handle.onexit (node:internal/child_process:304:5)
+  ...
+# Subtest: P0-FIX-6 학교가 발급하지 않은 계정을 학번이 같다고 가져가지 않는다
+not ok 14 - P0-FIX-6 학교가 발급하지 않은 계정을 학번이 같다고 가져가지 않는다 # TODO 총괄 PM 승인 뒤 SC-2 수정안(docs/shared-core/R36_P0_LOGIN_COLLISION.md)을 적용하면 켠다
+  ---
+  duration_ms: 231.808318
+  type: 'test'
+  location: '/home/user/pca-platform/pca-platform/scripts/shared-core/p0-login-collision.test.ts:403:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    거절로 돌려준다
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/pca-platform/pca-platform/scripts/shared-core/p0-login-collision.test.ts:410:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: P0-FIX-7 남의 학생 응시가 새 기관 학생에게 보이지 않는다
+not ok 15 - P0-FIX-7 남의 학생 응시가 새 기관 학생에게 보이지 않는다 # TODO 총괄 PM 승인 뒤 SC-2 수정안(docs/shared-core/R36_P0_LOGIN_COLLISION.md)을 적용하면 켠다
+  ---
+  duration_ms: 512.8633
+  type: 'test'
+  location: '/home/user/pca-platform/pca-platform/scripts/shared-core/p0-login-collision.test.ts:416:1'
+  failureType: 'testCodeFailure'
+  error: `Expected "actual" to be strictly unequal to: '22'`
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '22'
+  actual: '22'
+  operator: 'notStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/pca-platform/pca-platform/scripts/shared-core/p0-login-collision.test.ts:421:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: P0-FIX-8 비밀번호 찾기에 학번을 넣으면 그 학번의 배재 학생 계정으로만 간다(남의 학교 계정으로 가지 않는다)
+not ok 16 - P0-FIX-8 비밀번호 찾기에 학번을 넣으면 그 학번의 배재 학생 계정으로만 간다(남의 학교 계정으로 가지 않는다) # TODO 총괄 PM 승인 뒤 SC-2 수정안(docs/shared-core/R36_P0_LOGIN_COLLISION.md)을 적용하면 켠다
+  ---
+  duration_ms: 409.1399
+  type: 'test'
+  location: '/home/user/pca-platform/pca-platform/scripts/shared-core/p0-login-collision.test.ts:436:1'
+  failureType: 'testCodeFailure'
+  error: `Expected "actual" to be strictly unequal to: '24'`
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '24'
+  actual: '24'
+  operator: 'notStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/pca-platform/pca-platform/scripts/shared-core/p0-login-collision.test.ts:440:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: P0-FIX-9 다른 학교의 명단 · rotate 가 앞 학교 학생의 소속(memberships)을 바꾸지 않는다
+not ok 17 - P0-FIX-9 다른 학교의 명단 · rotate 가 앞 학교 학생의 소속(memberships)을 바꾸지 않는다 # TODO 총괄 PM 승인 뒤 SC-2 수정안(docs/shared-core/R36_P0_LOGIN_COLLISION.md)을 적용하면 켠다
+  ---
+  duration_ms: 560.368343
+  type: 'test'
+  location: '/home/user/pca-platform/pca-platform/scripts/shared-core/p0-login-collision.test.ts:447:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    세션이 다시 읽는 memberships 가 그대로다
+    + actual - expected
+    
+      [
+        'PCU',
+    +   'ZZTEST'
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'PCU'
+  actual:
+    0: 'PCU'
+    1: 'ZZTEST'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/pca-platform/pca-platform/scripts/shared-core/p0-login-collision.test.ts:452:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: P0-FIX-10 로그인 질의: 학번 그대로는 배재 학생 · 다른 학교 손잡이는 그 학생
+not ok 18 - P0-FIX-10 로그인 질의: 학번 그대로는 배재 학생 · 다른 학교 손잡이는 그 학생 # TODO 총괄 PM 승인 뒤 SC-2 수정안(docs/shared-core/R36_P0_LOGIN_COLLISION.md)을 적용하면 켠다
+  ---
+  duration_ms: 294.944634
+  type: 'test'
+  location: '/home/user/pca-platform/pca-platform/scripts/shared-core/p0-login-collision.test.ts:455:1'
+  failureType: 'testCodeFailure'
+  error: '전제: 두 사람이 서로 다른 계정이다(지금 코드에서는 같은 계정이라 여기서 걸린다)'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '28'
+  actual: '28'
+  operator: 'notStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/pca-platform/pca-platform/scripts/shared-core/p0-login-collision.test.ts:459:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: P0-RISK-1 다른 학교 학생이 학교 로그인 화면에 학번만 넣어 제 계정으로 들어간다
+not ok 19 - P0-RISK-1 다른 학교 학생이 학교 로그인 화면에 학번만 넣어 제 계정으로 들어간다 # TODO SC-2 2단계(학교 로그인이 기관 코드를 넘기고 authorize 가 (기관, 학번)으로 찾는다) 승인 · 구현 뒤에 켠다
+  ---
+  duration_ms: 284.360031
+  type: 'test'
+  location: '/home/user/pca-platform/pca-platform/scripts/shared-core/p0-login-collision.test.ts:466:1'
+  failureType: 'testCodeFailure'
+  error: '전제: 두 사람이 서로 다른 계정이다'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '29'
+  actual: '29'
+  operator: 'notStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/pca-platform/pca-platform/scripts/shared-core/p0-login-collision.test.ts:470:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: P0-COMPAT-2 배재 재등록과 rotate 는 같은 계정에서 일어난다(고치기 전후 모두)
+ok 20 - P0-COMPAT-2 배재 재등록과 rotate 는 같은 계정에서 일어난다(고치기 전후 모두)
+  ---
+  duration_ms: 532.056527
+  type: 'test'
+  ...
+# Subtest: P0-COMPAT-1 배재 기존 계정의 아이디와 로그인은 학번 그대로다(고치기 전후 모두 서야 한다)
+ok 21 - P0-COMPAT-1 배재 기존 계정의 아이디와 로그인은 학번 그대로다(고치기 전후 모두 서야 한다)
+  ---
+  duration_ms: 283.386386
+  type: 'test'
+  ...
+1..21
+# tests 21
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 11
+# duration_ms 10173.159608

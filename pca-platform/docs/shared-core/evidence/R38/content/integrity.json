@@ -1,0 +1,3672 @@
+{
+  "summary": {
+    "checks": {
+      "PASS": 398,
+      "FAIL": 0,
+      "XFAIL": 8
+    },
+    "by_family": {
+      "OUT-2": {
+        "PASS": 134,
+        "FAIL": 0,
+        "XFAIL": 0
+      },
+      "LINEAGE": {
+        "PASS": 88,
+        "FAIL": 0,
+        "XFAIL": 0
+      },
+      "OUT-1": {
+        "PASS": 88,
+        "FAIL": 0,
+        "XFAIL": 8
+      },
+      "OUT-5": {
+        "PASS": 88,
+        "FAIL": 0,
+        "XFAIL": 0
+      }
+    },
+    "cases": 44,
+    "case_verdicts": {
+      "PASS": 36,
+      "XFAIL": 8
+    },
+    "pairs": {
+      "DIFFERS_AS_EXPECTED": 14,
+      "SAME_AS_EXPECTED": 12,
+      "DISCREPANCY": 6,
+      "TEXT_ONLY_DIFFERS": 4
+    }
+  },
+  "regression": [
+    {
+      "id": "R-BIZ",
+      "family": "OUT-2",
+      "verdict": "PASS",
+      "detail": "did 25 · 네 목록 합 32 · 고유 26 (R37: 25 · 32 · 26)"
+    },
+    {
+      "id": "R-CS-SLOT",
+      "family": "OUT-2",
+      "verdict": "PASS",
+      "detail": "PK 행 2(칸을 갈라 센다) · did 1(글로 합친다) — 고유 집계는 PK 로 해야 두 근거가 하나로 보이지 않는다"
+    }
+  ],
+  "rows": [
+    {
+      "case": "ME-C01",
+      "core": "ME_CORE_V3",
+      "kind": "C01_STRONG",
+      "input_hash": "754f0137e730",
+      "snapshot_hash": "933a5a3265d5",
+      "evidence_refs": "PK 26 · 확인 26 · 후보 0",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "c833dda39f30",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "기구·제품 설계 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 26 · 네 목록 합 32 · 확인 26 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_SEMICON_V2 · 팩 있음 · 말 8 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_CAE_V2 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "ME-C02",
+      "core": "ME_CORE_V3",
+      "kind": "C02_SAME_MAJOR_NO_EXP",
+      "input_hash": "5ce723b6ab05",
+      "snapshot_hash": "8a382bf9520c",
+      "evidence_refs": "PK 0 · 확인 0 · 후보 0",
+      "gap_types": "REQUIRED_AXIS+OUTPUT+VERIFICATION",
+      "headline_action_hash": "cadcbb6eca03",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "아직 직접 해 본 과제는 많지 않아요 / 짧게 한 번 해 보면 이야기할 거리가 생겨요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 0 · did 0 · 네 목록 합 0 · 확인 0 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_SEMICON_V2 · 팩 있음 · 말 8 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_CAE_V2 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "ME-C03",
+      "core": "ME_CORE_V3",
+      "kind": "C03_SAME_EXP_LOW_INTEREST",
+      "input_hash": "59428bd57806",
+      "snapshot_hash": "b7bda6d3ab6f",
+      "evidence_refs": "PK 26 · 확인 26 · 후보 0",
+      "gap_types": "-",
+      "headline_action_hash": "146db8bfa623",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "기구·제품 설계 과제는 해 봤는데, 마음은 다른 쪽에 있어요 / 이 쪽을 계속 볼지만 정하면 돼요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 26 · 네 목록 합 32 · 확인 26 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_SEMICON_V2 · 팩 있음 · 말 8 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_CAE_V2 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "ME-C04",
+      "core": "ME_CORE_V3",
+      "kind": "C04_CLAIM_WITHOUT_EVIDENCE",
+      "input_hash": "359e0f0d2f0b",
+      "snapshot_hash": "444f315e73fa",
+      "evidence_refs": "PK 0 · 확인 0 · 후보 0",
+      "gap_types": "PARTIAL_EVIDENCE+OUTPUT_EVIDENCE",
+      "headline_action_hash": "02570054792e",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "기구·제품 설계 과제는 해 봤고, 정리만 남았어요 / 뭘 골랐는지만 덧붙이면 돼요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 0 · did 0 · 네 목록 합 0 · 확인 0 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_SEMICON_V2 · 팩 있음 · 말 8 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_CAE_V2 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "ME-C05",
+      "core": "ME_CORE_V3",
+      "kind": "C05_ACTIVITY_OTHER_INDUSTRY",
+      "input_hash": "4ae6c382bcfe",
+      "snapshot_hash": "933a5a3265d5",
+      "evidence_refs": "PK 26 · 확인 26 · 후보 0",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "c833dda39f30",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "기구·제품 설계 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 26 · 네 목록 합 32 · 확인 26 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_DEFENSE_V2 · 팩 있음 · 말 8 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_PM_V2 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "ME-C06",
+      "core": "ME_CORE_V3",
+      "kind": "C06_REPEAT_REORDERED",
+      "input_hash": "2c29cc9fc6fd",
+      "snapshot_hash": "933a5a3265d5",
+      "evidence_refs": "PK 26 · 확인 26 · 후보 0",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "c833dda39f30",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "기구·제품 설계 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 26 · 네 목록 합 32 · 확인 26 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_SEMICON_V2 · 팩 있음 · 말 8 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_CAE_V2 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "ME-C07",
+      "core": "ME_CORE_V3",
+      "kind": "C07_PARTIAL_MISSING",
+      "input_hash": "40e02c6b2b9a",
+      "snapshot_hash": "2ea5b621949b",
+      "evidence_refs": "PK 26 · 확인 18 · 후보 8",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "c833dda39f30",
+      "discrepancy": "C-UNSEEN",
+      "expected_reason": "C-UNSEEN→CC-008",
+      "observed_output": "기구·제품 설계 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "XFAIL",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 8 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 18 · 네 목록 합 24 · 확인 18 · 후보 8"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "C-UNSEEN",
+          "family": "OUT-1",
+          "verdict": "XFAIL",
+          "detail": "스냅샷 empty J1+J2+J4+J8 · 결과지 빈자리에 없음 J1+J2+J4+J8 · C01 과 머리글·할 일 같음 true",
+          "contract": "CC-008"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_SEMICON_V2 · 팩 있음 · 말 8 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_CAE_V2 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "ME-C08",
+      "core": "ME_CORE_V3",
+      "kind": "C08_TOOL_MISMATCH",
+      "input_hash": "d5c40d36c5c1",
+      "snapshot_hash": "934d2ddd7bfd",
+      "evidence_refs": "PK 26 · 확인 24 · 후보 2",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "c833dda39f30",
+      "discrepancy": "C-UNSEEN",
+      "expected_reason": "C-UNSEEN→CC-008",
+      "observed_output": "기구·제품 설계 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "XFAIL",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 2 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 24 · 네 목록 합 30 · 확인 24 · 후보 2"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "C-UNSEEN",
+          "family": "OUT-1",
+          "verdict": "XFAIL",
+          "detail": "스냅샷 empty J4 · 결과지 빈자리에 없음 J4 · C01 과 머리글·할 일 같음 true",
+          "contract": "CC-008"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_SEMICON_V2 · 팩 있음 · 말 8 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_CAE_V2 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "ME-C09",
+      "core": "ME_CORE_V3",
+      "kind": "C09_SAME_MAJOR_OTHER_GOAL",
+      "input_hash": "6d27f4a4caf9",
+      "snapshot_hash": "933a5a3265d5",
+      "evidence_refs": "PK 26 · 확인 26 · 후보 0",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "c833dda39f30",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "기구·제품 설계 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 26 · 네 목록 합 32 · 확인 26 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_SEMICON_V2 · 팩 있음 · 말 8 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_DESIGN_V2 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "ME-C10",
+      "core": "ME_CORE_V3",
+      "kind": "C10_BASIC_TIER",
+      "input_hash": "6cb7881cb800",
+      "snapshot_hash": "41c1da7b177d",
+      "evidence_refs": "PK 26 · 확인 18 · 후보 8",
+      "gap_types": "-",
+      "headline_action_hash": "6c3277f6157c",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "기구·제품 설계 과제는 해 봤고, 정리만 남았어요 / 뭘 골랐는지만 덧붙이면 돼요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 8 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 18 · 네 목록 합 24 · 확인 18 · 후보 8"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_SEMICON_V2 · 팩 있음 · 말 8 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_CAE_V2 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "ME-C11",
+      "core": "ME_CORE_V3",
+      "kind": "C11_STAGE_POSTDOC",
+      "input_hash": "dbf2385d83b8",
+      "snapshot_hash": "933a5a3265d5",
+      "evidence_refs": "PK 26 · 확인 26 · 후보 0",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "0312b302125a",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "기구·제품 설계 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 26 · 네 목록 합 32 · 확인 26 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_SEMICON_V2 · 팩 있음 · 말 8 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_CAE_V2 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "BIZ-C01",
+      "core": "BIZ_CORE_V1",
+      "kind": "C01_STRONG",
+      "input_hash": "3c94fbedcd91",
+      "snapshot_hash": "933a5a3265d5",
+      "evidence_refs": "PK 26 · 확인 26 · 후보 0",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "db70f07ab7d6",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "경영전략·기획 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 26 · 네 목록 합 32 · 확인 26 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_B2B_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_PLAN_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "BIZ-C02",
+      "core": "BIZ_CORE_V1",
+      "kind": "C02_SAME_MAJOR_NO_EXP",
+      "input_hash": "149831eb9579",
+      "snapshot_hash": "8a382bf9520c",
+      "evidence_refs": "PK 0 · 확인 0 · 후보 0",
+      "gap_types": "REQUIRED_AXIS+OUTPUT+VERIFICATION",
+      "headline_action_hash": "a1bfb081a921",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "아직 직접 해 본 과제는 많지 않아요 / 짧게 한 번 해 보면 이야기할 거리가 생겨요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 0 · did 0 · 네 목록 합 0 · 확인 0 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_B2B_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_PLAN_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "BIZ-C03",
+      "core": "BIZ_CORE_V1",
+      "kind": "C03_SAME_EXP_LOW_INTEREST",
+      "input_hash": "8b107567f976",
+      "snapshot_hash": "b7bda6d3ab6f",
+      "evidence_refs": "PK 26 · 확인 26 · 후보 0",
+      "gap_types": "-",
+      "headline_action_hash": "2fbd64da3cc2",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "경영전략·기획 과제는 해 봤는데, 마음은 다른 쪽에 있어요 / 이 쪽을 계속 볼지만 정하면 돼요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 26 · 네 목록 합 32 · 확인 26 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_B2B_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_PLAN_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "BIZ-C04",
+      "core": "BIZ_CORE_V1",
+      "kind": "C04_CLAIM_WITHOUT_EVIDENCE",
+      "input_hash": "a26fa8748b74",
+      "snapshot_hash": "444f315e73fa",
+      "evidence_refs": "PK 0 · 확인 0 · 후보 0",
+      "gap_types": "PARTIAL_EVIDENCE+OUTPUT_EVIDENCE",
+      "headline_action_hash": "794de8f1e9ab",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "경영전략·기획 과제는 해 봤고, 정리만 남았어요 / 뭘 골랐는지만 덧붙이면 돼요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 0 · did 0 · 네 목록 합 0 · 확인 0 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_B2B_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_PLAN_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "BIZ-C05",
+      "core": "BIZ_CORE_V1",
+      "kind": "C05_ACTIVITY_OTHER_INDUSTRY",
+      "input_hash": "18567ec8cef0",
+      "snapshot_hash": "933a5a3265d5",
+      "evidence_refs": "PK 26 · 확인 26 · 후보 0",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "db70f07ab7d6",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "경영전략·기획 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 26 · 네 목록 합 32 · 확인 26 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_TRAVEL_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_FINACC_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "BIZ-C06",
+      "core": "BIZ_CORE_V1",
+      "kind": "C06_REPEAT_REORDERED",
+      "input_hash": "8edbd04566e1",
+      "snapshot_hash": "933a5a3265d5",
+      "evidence_refs": "PK 26 · 확인 26 · 후보 0",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "db70f07ab7d6",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "경영전략·기획 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 26 · 네 목록 합 32 · 확인 26 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_B2B_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_PLAN_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "BIZ-C07",
+      "core": "BIZ_CORE_V1",
+      "kind": "C07_PARTIAL_MISSING",
+      "input_hash": "f45d93c4e842",
+      "snapshot_hash": "c342c5f4bb8a",
+      "evidence_refs": "PK 26 · 확인 18 · 후보 8",
+      "gap_types": "REQUIRED_AXIS+PARTIAL_EVIDENCE",
+      "headline_action_hash": "88660a7ec069",
+      "discrepancy": "C-SKIP-CAL",
+      "expected_reason": "C-SKIP-CAL→CC-008",
+      "observed_output": "경영전략·기획 과제는 해 봤고, 정리만 남았어요 / 뭘 골랐는지만 덧붙이면 돼요.",
+      "verdict": "XFAIL",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 8 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 18 · 네 목록 합 24 · 확인 18 · 후보 8"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "XFAIL",
+          "detail": "답하지 않은 축이 '아직 없습니다' 글로 선다: TD01.J2:SKIPPED",
+          "contract": "CC-008"
+        },
+        {
+          "id": "C-UNSEEN",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "스냅샷 empty J1+J2+J4+J8 · 결과지 빈자리에 없음 J1+J4+J8 · C01 과 머리글·할 일 같음 false"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_B2B_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_PLAN_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "BIZ-C08",
+      "core": "BIZ_CORE_V1",
+      "kind": "C08_TOOL_MISMATCH",
+      "input_hash": "9e42078d8240",
+      "snapshot_hash": "934d2ddd7bfd",
+      "evidence_refs": "PK 26 · 확인 24 · 후보 2",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "db70f07ab7d6",
+      "discrepancy": "C-UNSEEN",
+      "expected_reason": "C-UNSEEN→CC-008",
+      "observed_output": "경영전략·기획 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "XFAIL",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 2 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 24 · 네 목록 합 30 · 확인 24 · 후보 2"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "C-UNSEEN",
+          "family": "OUT-1",
+          "verdict": "XFAIL",
+          "detail": "스냅샷 empty J4 · 결과지 빈자리에 없음 J4 · C01 과 머리글·할 일 같음 true",
+          "contract": "CC-008"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_B2B_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_PLAN_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "BIZ-C09",
+      "core": "BIZ_CORE_V1",
+      "kind": "C09_SAME_MAJOR_OTHER_GOAL",
+      "input_hash": "a18d2f025c1e",
+      "snapshot_hash": "933a5a3265d5",
+      "evidence_refs": "PK 26 · 확인 26 · 후보 0",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "db70f07ab7d6",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "경영전략·기획 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 26 · 네 목록 합 32 · 확인 26 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_B2B_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_CS_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "BIZ-C10",
+      "core": "BIZ_CORE_V1",
+      "kind": "C10_BASIC_TIER",
+      "input_hash": "8d261da64cf2",
+      "snapshot_hash": "39e5b6715274",
+      "evidence_refs": "PK 26 · 확인 18 · 후보 8",
+      "gap_types": "-",
+      "headline_action_hash": "27f1858813e1",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "경영전략·기획과 마케팅·시장 과제는 해 봤고, 정리만 남았어요 / 뭘 골랐는지만 덧붙이면 돼요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 8 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 18 · 네 목록 합 24 · 확인 18 · 후보 8"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_B2B_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_PLAN_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "BIZ-C11",
+      "core": "BIZ_CORE_V1",
+      "kind": "C11_STAGE_POSTDOC",
+      "input_hash": "5fdbc06fb250",
+      "snapshot_hash": "933a5a3265d5",
+      "evidence_refs": "PK 26 · 확인 26 · 후보 0",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "1186c8508912",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "경영전략·기획 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 26 · 네 목록 합 32 · 확인 26 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_B2B_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_PLAN_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "EE-C01",
+      "core": "EE_CORE_V1",
+      "kind": "C01_STRONG",
+      "input_hash": "24738cb7c41b",
+      "snapshot_hash": "933a5a3265d5",
+      "evidence_refs": "PK 26 · 확인 26 · 후보 0",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "1131110ce9e9",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "아날로그 회로 설계 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 26 · 네 목록 합 32 · 확인 26 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_SEMI_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_DESIGN_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "EE-C02",
+      "core": "EE_CORE_V1",
+      "kind": "C02_SAME_MAJOR_NO_EXP",
+      "input_hash": "c1c45dcda134",
+      "snapshot_hash": "8a382bf9520c",
+      "evidence_refs": "PK 0 · 확인 0 · 후보 0",
+      "gap_types": "REQUIRED_AXIS+OUTPUT+VERIFICATION",
+      "headline_action_hash": "770bded15d19",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "아직 직접 해 본 과제는 많지 않아요 / 짧게 한 번 해 보면 이야기할 거리가 생겨요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 0 · did 0 · 네 목록 합 0 · 확인 0 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_SEMI_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_DESIGN_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "EE-C03",
+      "core": "EE_CORE_V1",
+      "kind": "C03_SAME_EXP_LOW_INTEREST",
+      "input_hash": "5c3b5694bd8e",
+      "snapshot_hash": "b7bda6d3ab6f",
+      "evidence_refs": "PK 26 · 확인 26 · 후보 0",
+      "gap_types": "-",
+      "headline_action_hash": "339ad408e58a",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "아날로그 회로 설계 과제는 해 봤는데, 마음은 다른 쪽에 있어요 / 이 쪽을 계속 볼지만 정하면 돼요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 26 · 네 목록 합 32 · 확인 26 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_SEMI_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_DESIGN_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "EE-C04",
+      "core": "EE_CORE_V1",
+      "kind": "C04_CLAIM_WITHOUT_EVIDENCE",
+      "input_hash": "e3f835636952",
+      "snapshot_hash": "444f315e73fa",
+      "evidence_refs": "PK 0 · 확인 0 · 후보 0",
+      "gap_types": "PARTIAL_EVIDENCE+OUTPUT_EVIDENCE",
+      "headline_action_hash": "b46f26daac9f",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "아날로그 회로 설계 과제는 해 봤고, 정리만 남았어요 / 뭘 골랐는지만 덧붙이면 돼요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 0 · did 0 · 네 목록 합 0 · 확인 0 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_SEMI_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_DESIGN_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "EE-C05",
+      "core": "EE_CORE_V1",
+      "kind": "C05_ACTIVITY_OTHER_INDUSTRY",
+      "input_hash": "62bb5bb25224",
+      "snapshot_hash": "933a5a3265d5",
+      "evidence_refs": "PK 26 · 확인 26 · 후보 0",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "1131110ce9e9",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "아날로그 회로 설계 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 26 · 네 목록 합 32 · 확인 26 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_AUTOEV_V1 · 팩 있음 · 말 6 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_ANALYSIS_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "EE-C06",
+      "core": "EE_CORE_V1",
+      "kind": "C06_REPEAT_REORDERED",
+      "input_hash": "9205796c182c",
+      "snapshot_hash": "933a5a3265d5",
+      "evidence_refs": "PK 26 · 확인 26 · 후보 0",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "1131110ce9e9",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "아날로그 회로 설계 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 26 · 네 목록 합 32 · 확인 26 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_SEMI_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_DESIGN_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "EE-C07",
+      "core": "EE_CORE_V1",
+      "kind": "C07_PARTIAL_MISSING",
+      "input_hash": "1b394eec1f5c",
+      "snapshot_hash": "2ea5b621949b",
+      "evidence_refs": "PK 26 · 확인 18 · 후보 8",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "1131110ce9e9",
+      "discrepancy": "C-UNSEEN",
+      "expected_reason": "C-UNSEEN→CC-008",
+      "observed_output": "아날로그 회로 설계 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "XFAIL",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 8 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 18 · 네 목록 합 24 · 확인 18 · 후보 8"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "C-UNSEEN",
+          "family": "OUT-1",
+          "verdict": "XFAIL",
+          "detail": "스냅샷 empty J1+J2+J4+J8 · 결과지 빈자리에 없음 J1+J2+J4+J8 · C01 과 머리글·할 일 같음 true",
+          "contract": "CC-008"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_SEMI_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_DESIGN_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "EE-C08",
+      "core": "EE_CORE_V1",
+      "kind": "C08_TOOL_MISMATCH",
+      "input_hash": "8b944838c0fb",
+      "snapshot_hash": "934d2ddd7bfd",
+      "evidence_refs": "PK 26 · 확인 24 · 후보 2",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "1131110ce9e9",
+      "discrepancy": "C-UNSEEN",
+      "expected_reason": "C-UNSEEN→CC-008",
+      "observed_output": "아날로그 회로 설계 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "XFAIL",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 2 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 24 · 네 목록 합 30 · 확인 24 · 후보 2"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "C-UNSEEN",
+          "family": "OUT-1",
+          "verdict": "XFAIL",
+          "detail": "스냅샷 empty J4 · 결과지 빈자리에 없음 J4 · C01 과 머리글·할 일 같음 true",
+          "contract": "CC-008"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_SEMI_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_DESIGN_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "EE-C09",
+      "core": "EE_CORE_V1",
+      "kind": "C09_SAME_MAJOR_OTHER_GOAL",
+      "input_hash": "cd1f928ff50b",
+      "snapshot_hash": "933a5a3265d5",
+      "evidence_refs": "PK 26 · 확인 26 · 후보 0",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "1131110ce9e9",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "아날로그 회로 설계 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 26 · 네 목록 합 32 · 확인 26 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_SEMI_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_QUALITY_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "EE-C10",
+      "core": "EE_CORE_V1",
+      "kind": "C10_BASIC_TIER",
+      "input_hash": "406f200ded12",
+      "snapshot_hash": "41c1da7b177d",
+      "evidence_refs": "PK 26 · 확인 18 · 후보 8",
+      "gap_types": "-",
+      "headline_action_hash": "ddf55f306d69",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "아날로그 회로 설계 과제는 해 봤고, 정리만 남았어요 / 뭘 골랐는지만 덧붙이면 돼요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 8 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 18 · 네 목록 합 24 · 확인 18 · 후보 8"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_SEMI_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_DESIGN_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "EE-C11",
+      "core": "EE_CORE_V1",
+      "kind": "C11_STAGE_POSTDOC",
+      "input_hash": "273d7873bfee",
+      "snapshot_hash": "933a5a3265d5",
+      "evidence_refs": "PK 26 · 확인 26 · 후보 0",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "91937da3a89d",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "아날로그 회로 설계 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 26 · 네 목록 합 32 · 확인 26 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_SEMI_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_DESIGN_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "CS-C01",
+      "core": "CS_CORE_V1",
+      "kind": "C01_STRONG",
+      "input_hash": "ca039e0cd49b",
+      "snapshot_hash": "5d8ab8777a1c",
+      "evidence_refs": "PK 26 · 확인 26 · 후보 0",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "a676048420ca",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "소프트웨어 설계·구조 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 25 · 네 목록 합 31 · 확인 26 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_PLATFORM_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_DEV_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "CS-C02",
+      "core": "CS_CORE_V1",
+      "kind": "C02_SAME_MAJOR_NO_EXP",
+      "input_hash": "11845115b8af",
+      "snapshot_hash": "46b5b876e8b8",
+      "evidence_refs": "PK 0 · 확인 0 · 후보 0",
+      "gap_types": "REQUIRED_AXIS+OUTPUT+VERIFICATION",
+      "headline_action_hash": "75ffb7f477b6",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "아직 직접 해 본 과제는 많지 않아요 / 짧게 한 번 해 보면 이야기할 거리가 생겨요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 0 · did 0 · 네 목록 합 0 · 확인 0 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_PLATFORM_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_DEV_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "CS-C03",
+      "core": "CS_CORE_V1",
+      "kind": "C03_SAME_EXP_LOW_INTEREST",
+      "input_hash": "609df721d141",
+      "snapshot_hash": "7e60f3c23b50",
+      "evidence_refs": "PK 26 · 확인 26 · 후보 0",
+      "gap_types": "-",
+      "headline_action_hash": "e120863176d4",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "소프트웨어 설계·구조 과제는 해 봤는데, 마음은 다른 쪽에 있어요 / 이 쪽을 계속 볼지만 정하면 돼요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 25 · 네 목록 합 31 · 확인 26 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_PLATFORM_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_DEV_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "CS-C04",
+      "core": "CS_CORE_V1",
+      "kind": "C04_CLAIM_WITHOUT_EVIDENCE",
+      "input_hash": "7cb2aa607029",
+      "snapshot_hash": "bddf27889a5f",
+      "evidence_refs": "PK 0 · 확인 0 · 후보 0",
+      "gap_types": "PARTIAL_EVIDENCE+OUTPUT_EVIDENCE",
+      "headline_action_hash": "a5056fcb7a87",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "소프트웨어 설계·구조 과제는 해 봤고, 정리만 남았어요 / 뭘 골랐는지만 덧붙이면 돼요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 0 · did 0 · 네 목록 합 0 · 확인 0 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_PLATFORM_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_DEV_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "CS-C05",
+      "core": "CS_CORE_V1",
+      "kind": "C05_ACTIVITY_OTHER_INDUSTRY",
+      "input_hash": "4937d56c94e8",
+      "snapshot_hash": "5d8ab8777a1c",
+      "evidence_refs": "PK 26 · 확인 26 · 후보 0",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "a676048420ca",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "소프트웨어 설계·구조 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 25 · 네 목록 합 31 · 확인 26 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_FINTECH_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_QA_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "CS-C06",
+      "core": "CS_CORE_V1",
+      "kind": "C06_REPEAT_REORDERED",
+      "input_hash": "00b41f428d48",
+      "snapshot_hash": "5d8ab8777a1c",
+      "evidence_refs": "PK 26 · 확인 26 · 후보 0",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "a676048420ca",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "소프트웨어 설계·구조 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 25 · 네 목록 합 31 · 확인 26 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_PLATFORM_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_DEV_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "CS-C07",
+      "core": "CS_CORE_V1",
+      "kind": "C07_PARTIAL_MISSING",
+      "input_hash": "2c091bf71767",
+      "snapshot_hash": "a3c8c1bd9f16",
+      "evidence_refs": "PK 26 · 확인 18 · 후보 8",
+      "gap_types": "REQUIRED_AXIS+PARTIAL_EVIDENCE",
+      "headline_action_hash": "0a241b7cc3a7",
+      "discrepancy": "C-SKIP-CAL",
+      "expected_reason": "C-SKIP-CAL→CC-008",
+      "observed_output": "소프트웨어 설계·구조 과제는 해 봤고, 정리만 남았어요 / 뭘 골랐는지만 덧붙이면 돼요.",
+      "verdict": "XFAIL",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 8 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 17 · 네 목록 합 23 · 확인 18 · 후보 8"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "XFAIL",
+          "detail": "답하지 않은 축이 '아직 없습니다' 글로 선다: TD01.J2:SKIPPED",
+          "contract": "CC-008"
+        },
+        {
+          "id": "C-UNSEEN",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "스냅샷 empty J1+J2+J4+J8 · 결과지 빈자리에 없음 J1+J4+J8 · C01 과 머리글·할 일 같음 false"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_PLATFORM_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_DEV_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "CS-C08",
+      "core": "CS_CORE_V1",
+      "kind": "C08_TOOL_MISMATCH",
+      "input_hash": "8e59c761aba0",
+      "snapshot_hash": "236639ec7e4c",
+      "evidence_refs": "PK 26 · 확인 24 · 후보 2",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "a676048420ca",
+      "discrepancy": "C-UNSEEN",
+      "expected_reason": "C-UNSEEN→CC-008",
+      "observed_output": "소프트웨어 설계·구조 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "XFAIL",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 2 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 23 · 네 목록 합 29 · 확인 24 · 후보 2"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "C-UNSEEN",
+          "family": "OUT-1",
+          "verdict": "XFAIL",
+          "detail": "스냅샷 empty J4 · 결과지 빈자리에 없음 J4 · C01 과 머리글·할 일 같음 true",
+          "contract": "CC-008"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_PLATFORM_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_DEV_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "CS-C09",
+      "core": "CS_CORE_V1",
+      "kind": "C09_SAME_MAJOR_OTHER_GOAL",
+      "input_hash": "2b5a6c62a49c",
+      "snapshot_hash": "5d8ab8777a1c",
+      "evidence_refs": "PK 26 · 확인 26 · 후보 0",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "a676048420ca",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "소프트웨어 설계·구조 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 25 · 네 목록 합 31 · 확인 26 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_PLATFORM_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_QUALITY_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "CS-C10",
+      "core": "CS_CORE_V1",
+      "kind": "C10_BASIC_TIER",
+      "input_hash": "919a09f51602",
+      "snapshot_hash": "166803ce2c6f",
+      "evidence_refs": "PK 26 · 확인 18 · 후보 8",
+      "gap_types": "-",
+      "headline_action_hash": "1a8c14a90f27",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "소프트웨어 설계·구조 과제는 해 봤고, 정리만 남았어요 / 뭘 골랐는지만 덧붙이면 돼요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 8 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 17 · 네 목록 합 23 · 확인 18 · 후보 8"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_PLATFORM_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_DEV_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    },
+    {
+      "case": "CS-C11",
+      "core": "CS_CORE_V1",
+      "kind": "C11_STAGE_POSTDOC",
+      "input_hash": "09ce0532c85e",
+      "snapshot_hash": "5d8ab8777a1c",
+      "evidence_refs": "PK 26 · 확인 26 · 후보 0",
+      "gap_types": "PARTIAL_EVIDENCE",
+      "headline_action_hash": "5047f3d2edc1",
+      "discrepancy": "-",
+      "expected_reason": "-",
+      "observed_output": "소프트웨어 설계·구조 과제에서 방향을 직접 정해 본 일이 있어요 / 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "E-CAND-MODEL",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "후보 0 · did/decided 로 샌 것 0"
+        },
+        {
+          "id": "E-CAND-TEXT",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "머리글에 선 후보 글 0"
+        },
+        {
+          "id": "E-PK",
+          "family": "OUT-2",
+          "verdict": "PASS",
+          "detail": "고유(PK) 26 · did 25 · 네 목록 합 31 · 확인 26 · 후보 0"
+        },
+        {
+          "id": "L-LINK",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "끊긴 연결 0"
+        },
+        {
+          "id": "L-GAPKIND",
+          "family": "LINEAGE",
+          "verdict": "PASS",
+          "detail": "종류와 축 상태가 맞다"
+        },
+        {
+          "id": "C-NODEFICIT",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "결핍 말 0"
+        },
+        {
+          "id": "C-SKIP-CAL",
+          "family": "OUT-1",
+          "verdict": "PASS",
+          "detail": "해당 없음"
+        },
+        {
+          "id": "P-INDUSTRY",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "INDUSTRY_PLATFORM_V1 · 팩 있음 · 말 7 가운데 팩에 없는 것 0 · 없는 영역 0"
+        },
+        {
+          "id": "P-ROLE",
+          "family": "OUT-5",
+          "verdict": "PASS",
+          "detail": "ROLE_DEV_V1 · 팩 있음 · 말 3 가운데 팩에 없는 것 0 · 없는 영역 0"
+        }
+      ]
+    }
+  ],
+  "pairs": [
+    {
+      "core": "ME_CORE_V3",
+      "a": "ME-C01",
+      "b": "ME-C02",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "text_same": false,
+      "axis_diff": [
+        "TD01.J1:CONFIRMED→NOT_OBSERVED",
+        "TD01.J2:CONFIRMED→NOT_OBSERVED",
+        "TD01.J3(필수):CONFIRMED→NOT_OBSERVED",
+        "TD01.J4:CONFIRMED→NOT_OBSERVED",
+        "TD01.J5(필수):CONFIRMED→NOT_OBSERVED",
+        "TD01.J6:CONFIRMED→NOT_OBSERVED",
+        "TD01.J7:CONFIRMED→NOT_OBSERVED",
+        "TD01.J8:CONFIRMED→NOT_OBSERVED",
+        "TD02.J3(필수):CONFIRMED→NOT_OBSERVED",
+        "TD02.J5:CONFIRMED→NOT_OBSERVED",
+        "TD02.J6(필수):CONFIRMED→NOT_OBSERVED",
+        "TD02.J7:CONFIRMED→NOT_OBSERVED"
+      ],
+      "class": "DIFFERS_AS_EXPECTED",
+      "why": "판정이 달라 글도 다르다"
+    },
+    {
+      "core": "ME_CORE_V3",
+      "a": "ME-C01",
+      "b": "ME-C03",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "text_same": false,
+      "axis_diff": [],
+      "class": "DIFFERS_AS_EXPECTED",
+      "why": "판정이 달라 글도 다르다"
+    },
+    {
+      "core": "ME_CORE_V3",
+      "a": "ME-C01",
+      "b": "ME-C04",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "text_same": false,
+      "axis_diff": [],
+      "class": "DIFFERS_AS_EXPECTED",
+      "why": "판정이 달라 글도 다르다"
+    },
+    {
+      "core": "ME_CORE_V3",
+      "a": "ME-C01",
+      "b": "ME-C05",
+      "relation": "CORE_SAME",
+      "core_same": true,
+      "text_same": true,
+      "axis_diff": [],
+      "class": "SAME_AS_EXPECTED",
+      "why": "산업 맥락만 다르다 — Core 판정이 같다. 산업 문장은 팩 절이 따로 든다"
+    },
+    {
+      "core": "ME_CORE_V3",
+      "a": "ME-C01",
+      "b": "ME-C06",
+      "relation": "FULL_SAME",
+      "core_same": true,
+      "text_same": true,
+      "axis_diff": [],
+      "class": "SAME_AS_EXPECTED",
+      "why": "같은 응답 · 차례만 다르다 — 같아야 한다"
+    },
+    {
+      "core": "ME_CORE_V3",
+      "a": "ME-C01",
+      "b": "ME-C07",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "text_same": true,
+      "axis_diff": [
+        "TD01.J1:CONFIRMED→NOT_OBSERVED",
+        "TD01.J2:CONFIRMED→NOT_OBSERVED",
+        "TD01.J4:CONFIRMED→NOT_OBSERVED",
+        "TD01.J8:CONFIRMED→NOT_OBSERVED"
+      ],
+      "class": "DISCREPANCY",
+      "why": "달라진 축이 전부 비필수 · 미요청이다(TD01.J1:CONFIRMED→NOT_OBSERVED, TD01.J2:CONFIRMED→NOT_OBSERVED, TD01.J4:CONFIRMED→NOT_OBSERVED, TD01.J8:CONFIRMED→NOT_OBSERVED) — gapsOf 범위 밖이라 글에 안 선다 · CC-008"
+    },
+    {
+      "core": "ME_CORE_V3",
+      "a": "ME-C01",
+      "b": "ME-C08",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "text_same": true,
+      "axis_diff": [
+        "TD01.J4:CONFIRMED→NOT_OBSERVED"
+      ],
+      "class": "DISCREPANCY",
+      "why": "달라진 축이 전부 비필수 · 미요청이다(TD01.J4:CONFIRMED→NOT_OBSERVED) — gapsOf 범위 밖이라 글에 안 선다 · CC-008"
+    },
+    {
+      "core": "ME_CORE_V3",
+      "a": "ME-C01",
+      "b": "ME-C09",
+      "relation": "CORE_SAME",
+      "core_same": true,
+      "text_same": true,
+      "axis_diff": [],
+      "class": "SAME_AS_EXPECTED",
+      "why": "목표 역할만 다르다 — Core 판정이 같다. 역할 문장은 팩 절이 따로 든다"
+    },
+    {
+      "core": "ME_CORE_V3",
+      "a": "ME-C01",
+      "b": "ME-C11",
+      "relation": "CORE_SAME",
+      "core_same": true,
+      "text_same": false,
+      "axis_diff": [],
+      "class": "TEXT_ONLY_DIFFERS",
+      "why": "학위만 다르다 — Core 판정과 머리글은 같고 할 일의 덧붙이는 줄만 학위에 맞게 갈린다(actionKo 의 stage · 설계된 동작)"
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "a": "BIZ-C01",
+      "b": "BIZ-C02",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "text_same": false,
+      "axis_diff": [
+        "TD01.J1:CONFIRMED→NOT_OBSERVED",
+        "TD01.J2(필수):CONFIRMED→NOT_OBSERVED",
+        "TD01.J3(필수):CONFIRMED→NOT_OBSERVED",
+        "TD01.J4:CONFIRMED→NOT_OBSERVED",
+        "TD01.J5:CONFIRMED→NOT_OBSERVED",
+        "TD01.J6:CONFIRMED→NOT_OBSERVED",
+        "TD01.J7:CONFIRMED→NOT_OBSERVED",
+        "TD01.J8:CONFIRMED→NOT_OBSERVED",
+        "TD02.J3(필수):CONFIRMED→NOT_OBSERVED",
+        "TD02.J5:CONFIRMED→NOT_OBSERVED",
+        "TD02.J6(필수):CONFIRMED→NOT_OBSERVED",
+        "TD02.J7:CONFIRMED→NOT_OBSERVED"
+      ],
+      "class": "DIFFERS_AS_EXPECTED",
+      "why": "판정이 달라 글도 다르다"
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "a": "BIZ-C01",
+      "b": "BIZ-C03",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "text_same": false,
+      "axis_diff": [],
+      "class": "DIFFERS_AS_EXPECTED",
+      "why": "판정이 달라 글도 다르다"
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "a": "BIZ-C01",
+      "b": "BIZ-C04",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "text_same": false,
+      "axis_diff": [],
+      "class": "DIFFERS_AS_EXPECTED",
+      "why": "판정이 달라 글도 다르다"
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "a": "BIZ-C01",
+      "b": "BIZ-C05",
+      "relation": "CORE_SAME",
+      "core_same": true,
+      "text_same": true,
+      "axis_diff": [],
+      "class": "SAME_AS_EXPECTED",
+      "why": "산업 맥락만 다르다 — Core 판정이 같다. 산업 문장은 팩 절이 따로 든다"
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "a": "BIZ-C01",
+      "b": "BIZ-C06",
+      "relation": "FULL_SAME",
+      "core_same": true,
+      "text_same": true,
+      "axis_diff": [],
+      "class": "SAME_AS_EXPECTED",
+      "why": "같은 응답 · 차례만 다르다 — 같아야 한다"
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "a": "BIZ-C01",
+      "b": "BIZ-C07",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "text_same": false,
+      "axis_diff": [
+        "TD01.J1:CONFIRMED→NOT_OBSERVED",
+        "TD01.J2(필수):CONFIRMED→NOT_OBSERVED",
+        "TD01.J4:CONFIRMED→NOT_OBSERVED",
+        "TD01.J8:CONFIRMED→NOT_OBSERVED"
+      ],
+      "class": "DIFFERS_AS_EXPECTED",
+      "why": "판정이 달라 글도 다르다"
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "a": "BIZ-C01",
+      "b": "BIZ-C08",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "text_same": true,
+      "axis_diff": [
+        "TD01.J4:CONFIRMED→NOT_OBSERVED"
+      ],
+      "class": "DISCREPANCY",
+      "why": "달라진 축이 전부 비필수 · 미요청이다(TD01.J4:CONFIRMED→NOT_OBSERVED) — gapsOf 범위 밖이라 글에 안 선다 · CC-008"
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "a": "BIZ-C01",
+      "b": "BIZ-C09",
+      "relation": "CORE_SAME",
+      "core_same": true,
+      "text_same": true,
+      "axis_diff": [],
+      "class": "SAME_AS_EXPECTED",
+      "why": "목표 역할만 다르다 — Core 판정이 같다. 역할 문장은 팩 절이 따로 든다"
+    },
+    {
+      "core": "BIZ_CORE_V1",
+      "a": "BIZ-C01",
+      "b": "BIZ-C11",
+      "relation": "CORE_SAME",
+      "core_same": true,
+      "text_same": false,
+      "axis_diff": [],
+      "class": "TEXT_ONLY_DIFFERS",
+      "why": "학위만 다르다 — Core 판정과 머리글은 같고 할 일의 덧붙이는 줄만 학위에 맞게 갈린다(actionKo 의 stage · 설계된 동작)"
+    },
+    {
+      "core": "EE_CORE_V1",
+      "a": "EE-C01",
+      "b": "EE-C02",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "text_same": false,
+      "axis_diff": [
+        "TD01.J1:CONFIRMED→NOT_OBSERVED",
+        "TD01.J2:CONFIRMED→NOT_OBSERVED",
+        "TD01.J3(필수):CONFIRMED→NOT_OBSERVED",
+        "TD01.J4:CONFIRMED→NOT_OBSERVED",
+        "TD01.J5(필수):CONFIRMED→NOT_OBSERVED",
+        "TD01.J6:CONFIRMED→NOT_OBSERVED",
+        "TD01.J7:CONFIRMED→NOT_OBSERVED",
+        "TD01.J8:CONFIRMED→NOT_OBSERVED",
+        "TD02.J3(필수):CONFIRMED→NOT_OBSERVED",
+        "TD02.J5:CONFIRMED→NOT_OBSERVED",
+        "TD02.J6(필수):CONFIRMED→NOT_OBSERVED",
+        "TD02.J7:CONFIRMED→NOT_OBSERVED"
+      ],
+      "class": "DIFFERS_AS_EXPECTED",
+      "why": "판정이 달라 글도 다르다"
+    },
+    {
+      "core": "EE_CORE_V1",
+      "a": "EE-C01",
+      "b": "EE-C03",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "text_same": false,
+      "axis_diff": [],
+      "class": "DIFFERS_AS_EXPECTED",
+      "why": "판정이 달라 글도 다르다"
+    },
+    {
+      "core": "EE_CORE_V1",
+      "a": "EE-C01",
+      "b": "EE-C04",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "text_same": false,
+      "axis_diff": [],
+      "class": "DIFFERS_AS_EXPECTED",
+      "why": "판정이 달라 글도 다르다"
+    },
+    {
+      "core": "EE_CORE_V1",
+      "a": "EE-C01",
+      "b": "EE-C05",
+      "relation": "CORE_SAME",
+      "core_same": true,
+      "text_same": true,
+      "axis_diff": [],
+      "class": "SAME_AS_EXPECTED",
+      "why": "산업 맥락만 다르다 — Core 판정이 같다. 산업 문장은 팩 절이 따로 든다"
+    },
+    {
+      "core": "EE_CORE_V1",
+      "a": "EE-C01",
+      "b": "EE-C06",
+      "relation": "FULL_SAME",
+      "core_same": true,
+      "text_same": true,
+      "axis_diff": [],
+      "class": "SAME_AS_EXPECTED",
+      "why": "같은 응답 · 차례만 다르다 — 같아야 한다"
+    },
+    {
+      "core": "EE_CORE_V1",
+      "a": "EE-C01",
+      "b": "EE-C07",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "text_same": true,
+      "axis_diff": [
+        "TD01.J1:CONFIRMED→NOT_OBSERVED",
+        "TD01.J2:CONFIRMED→NOT_OBSERVED",
+        "TD01.J4:CONFIRMED→NOT_OBSERVED",
+        "TD01.J8:CONFIRMED→NOT_OBSERVED"
+      ],
+      "class": "DISCREPANCY",
+      "why": "달라진 축이 전부 비필수 · 미요청이다(TD01.J1:CONFIRMED→NOT_OBSERVED, TD01.J2:CONFIRMED→NOT_OBSERVED, TD01.J4:CONFIRMED→NOT_OBSERVED, TD01.J8:CONFIRMED→NOT_OBSERVED) — gapsOf 범위 밖이라 글에 안 선다 · CC-008"
+    },
+    {
+      "core": "EE_CORE_V1",
+      "a": "EE-C01",
+      "b": "EE-C08",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "text_same": true,
+      "axis_diff": [
+        "TD01.J4:CONFIRMED→NOT_OBSERVED"
+      ],
+      "class": "DISCREPANCY",
+      "why": "달라진 축이 전부 비필수 · 미요청이다(TD01.J4:CONFIRMED→NOT_OBSERVED) — gapsOf 범위 밖이라 글에 안 선다 · CC-008"
+    },
+    {
+      "core": "EE_CORE_V1",
+      "a": "EE-C01",
+      "b": "EE-C09",
+      "relation": "CORE_SAME",
+      "core_same": true,
+      "text_same": true,
+      "axis_diff": [],
+      "class": "SAME_AS_EXPECTED",
+      "why": "목표 역할만 다르다 — Core 판정이 같다. 역할 문장은 팩 절이 따로 든다"
+    },
+    {
+      "core": "EE_CORE_V1",
+      "a": "EE-C01",
+      "b": "EE-C11",
+      "relation": "CORE_SAME",
+      "core_same": true,
+      "text_same": false,
+      "axis_diff": [],
+      "class": "TEXT_ONLY_DIFFERS",
+      "why": "학위만 다르다 — Core 판정과 머리글은 같고 할 일의 덧붙이는 줄만 학위에 맞게 갈린다(actionKo 의 stage · 설계된 동작)"
+    },
+    {
+      "core": "CS_CORE_V1",
+      "a": "CS-C01",
+      "b": "CS-C02",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "text_same": false,
+      "axis_diff": [
+        "TD01.J1:CONFIRMED→NOT_OBSERVED",
+        "TD01.J2(필수):CONFIRMED→NOT_OBSERVED",
+        "TD01.J3(필수):CONFIRMED→NOT_OBSERVED",
+        "TD01.J4:CONFIRMED→NOT_OBSERVED",
+        "TD01.J5:CONFIRMED→NOT_OBSERVED",
+        "TD01.J6:CONFIRMED→NOT_OBSERVED",
+        "TD01.J7:CONFIRMED→NOT_OBSERVED",
+        "TD01.J8:CONFIRMED→NOT_OBSERVED",
+        "TD02.J3(필수):CONFIRMED→NOT_OBSERVED",
+        "TD02.J5:CONFIRMED→NOT_OBSERVED",
+        "TD02.J6(필수):CONFIRMED→NOT_OBSERVED",
+        "TD02.J7:CONFIRMED→NOT_OBSERVED"
+      ],
+      "class": "DIFFERS_AS_EXPECTED",
+      "why": "판정이 달라 글도 다르다"
+    },
+    {
+      "core": "CS_CORE_V1",
+      "a": "CS-C01",
+      "b": "CS-C03",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "text_same": false,
+      "axis_diff": [],
+      "class": "DIFFERS_AS_EXPECTED",
+      "why": "판정이 달라 글도 다르다"
+    },
+    {
+      "core": "CS_CORE_V1",
+      "a": "CS-C01",
+      "b": "CS-C04",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "text_same": false,
+      "axis_diff": [],
+      "class": "DIFFERS_AS_EXPECTED",
+      "why": "판정이 달라 글도 다르다"
+    },
+    {
+      "core": "CS_CORE_V1",
+      "a": "CS-C01",
+      "b": "CS-C05",
+      "relation": "CORE_SAME",
+      "core_same": true,
+      "text_same": true,
+      "axis_diff": [],
+      "class": "SAME_AS_EXPECTED",
+      "why": "산업 맥락만 다르다 — Core 판정이 같다. 산업 문장은 팩 절이 따로 든다"
+    },
+    {
+      "core": "CS_CORE_V1",
+      "a": "CS-C01",
+      "b": "CS-C06",
+      "relation": "FULL_SAME",
+      "core_same": true,
+      "text_same": true,
+      "axis_diff": [],
+      "class": "SAME_AS_EXPECTED",
+      "why": "같은 응답 · 차례만 다르다 — 같아야 한다"
+    },
+    {
+      "core": "CS_CORE_V1",
+      "a": "CS-C01",
+      "b": "CS-C07",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "text_same": false,
+      "axis_diff": [
+        "TD01.J1:CONFIRMED→NOT_OBSERVED",
+        "TD01.J2(필수):CONFIRMED→NOT_OBSERVED",
+        "TD01.J4:CONFIRMED→NOT_OBSERVED",
+        "TD01.J8:CONFIRMED→NOT_OBSERVED"
+      ],
+      "class": "DIFFERS_AS_EXPECTED",
+      "why": "판정이 달라 글도 다르다"
+    },
+    {
+      "core": "CS_CORE_V1",
+      "a": "CS-C01",
+      "b": "CS-C08",
+      "relation": "CORE_DIFFERS",
+      "core_same": false,
+      "text_same": true,
+      "axis_diff": [
+        "TD01.J4:CONFIRMED→NOT_OBSERVED"
+      ],
+      "class": "DISCREPANCY",
+      "why": "달라진 축이 전부 비필수 · 미요청이다(TD01.J4:CONFIRMED→NOT_OBSERVED) — gapsOf 범위 밖이라 글에 안 선다 · CC-008"
+    },
+    {
+      "core": "CS_CORE_V1",
+      "a": "CS-C01",
+      "b": "CS-C09",
+      "relation": "CORE_SAME",
+      "core_same": true,
+      "text_same": true,
+      "axis_diff": [],
+      "class": "SAME_AS_EXPECTED",
+      "why": "목표 역할만 다르다 — Core 판정이 같다. 역할 문장은 팩 절이 따로 든다"
+    },
+    {
+      "core": "CS_CORE_V1",
+      "a": "CS-C01",
+      "b": "CS-C11",
+      "relation": "CORE_SAME",
+      "core_same": true,
+      "text_same": false,
+      "axis_diff": [],
+      "class": "TEXT_ONLY_DIFFERS",
+      "why": "학위만 다르다 — Core 판정과 머리글은 같고 할 일의 덧붙이는 줄만 학위에 맞게 갈린다(actionKo 의 stage · 설계된 동작)"
+    }
+  ]
+}
