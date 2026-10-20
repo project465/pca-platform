@@ -12,6 +12,7 @@
  * **routing 과 scoring 을 갈라 둔다.** 여기서는 무엇을 물을지만 정하고,
  * 판정은 `scoring/engine.ts` 가 끝에서 한 번 한다.
  */
+import type { PoolClient } from "pg";
 import { query, queryOne, tx } from "@/lib/db";
 import {
   core as coreOf, coreFile, defaultCore, packs as readPacks, sellableCores,
@@ -600,18 +601,42 @@ export async function attemptOf(id: string, userId: string): Promise<V3Attempt |
 
 export async function saveAnswer(
   attemptId: string, itemId: string, a: Answer,
-): Promise<void> {
+): Promise<boolean> {
   const int = a.kind === "level" ? a.index
     : a.kind === "scale5" || a.kind === "exposure" ? a.value : null;
   const text = a.kind === "choice" ? a.value : null;
-  await query(
-    `INSERT INTO v3_responses (attempt_id, item_id, kind, value_int, value_text)
-     VALUES ($1,$2,$3,$4,$5)
-     ON CONFLICT (attempt_id, item_id)
-       DO UPDATE SET kind = $3, value_int = $4, value_text = $5, answered_at = now()`,
-    [attemptId, itemId, a.kind, int, text],
-  );
-  await query(`UPDATE v3_attempts SET last_saved_at = now() WHERE id = $1`, [attemptId]);
+  return tx(async (c) => {
+    if (!(await writable(c, attemptId))) return false;
+    await c.query(
+      `INSERT INTO v3_responses (attempt_id, item_id, kind, value_int, value_text)
+       VALUES ($1,$2,$3,$4,$5)
+       ON CONFLICT (attempt_id, item_id)
+         DO UPDATE SET kind = $3, value_int = $4, value_text = $5, answered_at = now()`,
+      [attemptId, itemId, a.kind, int, text],
+    );
+    await c.query(`UPDATE v3_attempts SET last_saved_at = now() WHERE id = $1`, [attemptId]);
+    return true;
+  });
+}
+
+/**
+ * **응시가 아직 열려 있을 때만 쓴다. 판정에 들어가는 쓰기가 전부 여기를 지난다.**
+ *
+ * 전에는 서버 액션의 `mine()` 이 상태를 보고 나서 따로 썼다. 그 사이에 제출이
+ * 끼면 굳은 판정에 없는 답이 응답 표에 남는다(Track C 2차 O5: 제출과 같은
+ * 순간에 들어온 저장 서른 개가 전부 받아들여지고, 저장된 응답으로 다시 채점한
+ * 값이 굳은 판정과 갈렸다). 응시 줄을 `FOR NO KEY UPDATE` 로 잡고 그 자리에서
+ * 상태를 본다: 제출의 `FOR UPDATE` 와 맞물려, 제출이 잠금을 쥔 동안 들어온
+ * 쓰기는 기다렸다가 `scored` 를 보고 물러난다.
+ *
+ * `FOR SHARE` 로 두지 않은 까닭: 둘이 함께 공유 잠금을 쥔 채 같은 줄의
+ * `last_saved_at` 을 고치면 서로를 기다려 교착이 난다.
+ */
+async function writable(c: PoolClient, attemptId: string): Promise<boolean> {
+  const r = await c.query(
+    `SELECT 1 FROM v3_attempts WHERE id = $1 AND status = 'in_progress' FOR NO KEY UPDATE`,
+    [attemptId]);
+  return r.rows.length > 0;
 }
 
 /**
@@ -655,7 +680,7 @@ export async function setProfile(
   await query(
     `UPDATE v3_attempts
         SET education_stage=$2, grad_field=$3, undergrad_core=$4, last_saved_at=now()
-      WHERE id=$1`,
+      WHERE id=$1 AND status='in_progress'`,
     [attemptId, stage, field,
      crossField(stage, field) ? undergradCore : null]);
 }
@@ -679,34 +704,40 @@ export async function savePicks3(
   if (kind === "industry") {
     await query(
       `UPDATE v3_attempts SET industry_interest=$2, industry_pack=$3,
-              last_saved_at=now() WHERE id=$1`,
+              last_saved_at=now() WHERE id=$1 AND status='in_progress'`,
       [attemptId, clean, clean[0] ?? null]);
     return;
   }
   if (kind === "role") {
     await query(
       `UPDATE v3_attempts SET role_interest=$2, role_pack=$3,
-              last_saved_at=now() WHERE id=$1`,
+              last_saved_at=now() WHERE id=$1 AND status='in_progress'`,
       [attemptId, clean, clean[0] ?? null]);
     return;
   }
   await query(
-    `UPDATE v3_attempts SET ${col}=$2, last_saved_at=now() WHERE id=$1`,
+    `UPDATE v3_attempts SET ${col}=$2, last_saved_at=now() WHERE id=$1 AND status='in_progress'`,
     [attemptId, clean]);
 }
 
 export async function savePicks(
   attemptId: string, domain: string, slot: string, items: string[],
-): Promise<void> {
-  await query(
-    `DELETE FROM v3_evidence_picks WHERE attempt_id=$1 AND domain_code=$2 AND slot=$3`,
-    [attemptId, domain, slot]);
-  for (const t of items) {
-    await query(
-      `INSERT INTO v3_evidence_picks (attempt_id, domain_code, slot, item_text)
-       VALUES ($1,$2,$3,$4) ON CONFLICT DO NOTHING`, [attemptId, domain, slot, t]);
-  }
-  await query(`UPDATE v3_attempts SET last_saved_at = now() WHERE id = $1`, [attemptId]);
+): Promise<boolean> {
+  /* 지우고 다시 넣는 둘이 한 묶음이다. 따로 두면 두 탭이 같은 칸을 고칠 때
+     섞이고, 그 사이에 제출이 끼면 반쯤 지워진 칸으로 판정한다 */
+  return tx(async (c) => {
+    if (!(await writable(c, attemptId))) return false;
+    await c.query(
+      `DELETE FROM v3_evidence_picks WHERE attempt_id=$1 AND domain_code=$2 AND slot=$3`,
+      [attemptId, domain, slot]);
+    for (const t of items) {
+      await c.query(
+        `INSERT INTO v3_evidence_picks (attempt_id, domain_code, slot, item_text)
+         VALUES ($1,$2,$3,$4) ON CONFLICT DO NOTHING`, [attemptId, domain, slot, t]);
+    }
+    await c.query(`UPDATE v3_attempts SET last_saved_at = now() WHERE id = $1`, [attemptId]);
+    return true;
+  });
 }
 
 export async function answersOf(attemptId: string): Promise<Record<string, Answer>> {
@@ -1060,71 +1091,80 @@ export async function submissionOf(a: V3Attempt): Promise<Submission> {
  * 제출하면 새 줄이 생기고, 앞 줄은 그때의 판본과 함께 남는다.
  */
 export async function submit(a: V3Attempt): Promise<{ snapshot: Snapshot; id: string }> {
-  const sub = await submissionOf(a);
-  const loaded = load(a.core_code);
-  const snapshot = score(sub, loaded);
-  /* 결과 모델을 같은 줄에 굳힌다. 읽는 쪽이 다시 만들면 엔진이 바뀐 날
-     그 사람의 결과지가 조용히 달라진다 */
-  const result = buildResult(snapshot, loaded, {
-    packs: {
-      industries: industryChoices(a.core_code).map((x) => x.code),
-      roles: roleChoices(a.core_code).map((x) => x.code),
-    },
-    translation: translationChoices(a.core_code, sub),
-  });
-  /**
-   * **응시마다 판본 열두 가지를 남긴다.**
-   *
-   * 채점 엔진은 화면 판본을 모른다(알면 문장 하나 고친 날 채점이 달라진
-   * 것처럼 보인다). 그래서 **적는 자리에서** 화면과 문장 판본을 얹는다.
-   * 파일럿 분석이 묻는 것은 `이 사람이 어느 화면으로 어느 문장을 읽고
-   * 답했는가` 이고, 끝난 뒤에는 되물을 수 없다.
-   *
-   * 작업공간 판본도 한 칸이다. **판정에 쓰이지 않는다**: 그 사람이 결과를
-   * 받은 뒤 어느 작업공간으로 들어갔는지를 되짚는 자리이고, 경험을 쌓는
-   * 화면이 달라지면 다음에 반영한 것의 뜻도 달라진다.
-   */
-  const versions = {
-    ...snapshot.module_versions,
-    /**
-     * 어느 Core 의 어느 갈래로 응시했는가.
-     *
-     * `core_version` 과 같은 값이지만 이름을 따로 둔다: 저쪽은 채점이
-     * 읽은 Core 이고 이쪽은 **그 사람이 고른 자리**다. 둘이 어긋나면
-     * 어느 한쪽이 거짓이므로 `v3:provenance` 가 같은지 센다.
-     *
-     * **갈래는 없으면 `null` 이다.** 비워 두지 않고 적는 까닭은, 칸이
-     * 아예 없는 것과 갈래 없이 응시한 것이 되짚을 때 구별되지 않기
-     * 때문이다.
-     */
-    core_code: a.core_code,
-    specialization: a.specialization_code ?? null,
-    assessment_ui_version: ASSESSMENT_UI_VERSION,
-    assessment_copy_version: ASSESSMENT_COPY_VERSION,
-    result_model_version: RESULT_MODEL_VERSION,
-    result_copy_version: RESULT_COPY_VERSION,
-    result_ui_version: RESULT_UI_VERSION,
-    workspace_ui_version: WORKSPACE_UI_VERSION,
-  };
-  /**
-   * **같은 응시를 같은 순간에 두 번 제출해도 결과는 한 벌이다.**
-   *
-   * 화면은 `결과 만들기` 를 누르면 단추를 끄지만, 두 요청이 같은 순간에
-   * 들어오면(두 탭 · 끊긴 요청의 재시도 · 급한 두 번 클릭) 둘 다 `mine()`
-   * 을 지나 여기까지 온다. 그러면 스냅샷이 두 줄 쌓이고, 어느 쪽이 그
-   * 사람의 결과인지 읽는 자리마다 갈린다(R33 E2E 가 동시 호출 둘로 두 줄을
-   * 만들었다). 응시 줄을 잠그고 아직 `in_progress` 일 때만 적는다. 늦게 온
-   * 쪽은 **이미 굳은 줄**을 돌려받고 아무것도 더 쓰지 않는다.
-   */
   const claimed = await tx(async (c) => {
     const lock = await c.query<{ status: string }>(
       `SELECT status FROM v3_attempts WHERE id = $1 FOR UPDATE`, [a.id]);
     if (lock.rows[0]?.status !== "in_progress") {
-      const ex = await c.query<{ id: string }>(
-        `SELECT id::text FROM v3_snapshots WHERE attempt_id = $1
+      const ex = await c.query<{ id: string; payload: Snapshot }>(
+        `SELECT id::text, payload FROM v3_snapshots WHERE attempt_id = $1
           ORDER BY created_at DESC LIMIT 1`, [a.id]);
-      return { id: ex.rows[0]?.id as string, fresh: false };
+      return { id: ex.rows[0]?.id as string, fresh: false, snapshot: ex.rows[0]?.payload as Snapshot };
     }
+    /**
+     * **잠금을 쥔 뒤에 읽는다.** 전에는 응답을 먼저 읽고 채점한 다음 잠갔다.
+     * 그 사이에 들어온 저장은 응답 표에는 남고 판정에는 없었다(Track C 2차
+     * O5). 지금은 쓰기가 전부 `writable()` 에서 이 줄 잠금과 맞물리므로, 여기서
+     * 읽는 응답이 굳는 판정의 입력과 같다. 응시 줄도 다시 읽는다: 넘겨받은
+     * `a` 는 화면이 들고 있던 값이라 그 뒤에 고른 팩이 빠져 있을 수 있다.
+     */
+    a = (await attemptOf(a.id, a.user_id)) ?? a;
+    const sub = await submissionOf(a);
+    const loaded = load(a.core_code);
+    const snapshot = score(sub, loaded);
+    /* 결과 모델을 같은 줄에 굳힌다. 읽는 쪽이 다시 만들면 엔진이 바뀐 날
+       그 사람의 결과지가 조용히 달라진다 */
+    const result = buildResult(snapshot, loaded, {
+      packs: {
+        industries: industryChoices(a.core_code).map((x) => x.code),
+        roles: roleChoices(a.core_code).map((x) => x.code),
+      },
+      translation: translationChoices(a.core_code, sub),
+    });
+    /**
+     * **응시마다 판본 열두 가지를 남긴다.**
+     *
+     * 채점 엔진은 화면 판본을 모른다(알면 문장 하나 고친 날 채점이 달라진
+     * 것처럼 보인다). 그래서 **적는 자리에서** 화면과 문장 판본을 얹는다.
+     * 파일럿 분석이 묻는 것은 `이 사람이 어느 화면으로 어느 문장을 읽고
+     * 답했는가` 이고, 끝난 뒤에는 되물을 수 없다.
+     *
+     * 작업공간 판본도 한 칸이다. **판정에 쓰이지 않는다**: 그 사람이 결과를
+     * 받은 뒤 어느 작업공간으로 들어갔는지를 되짚는 자리이고, 경험을 쌓는
+     * 화면이 달라지면 다음에 반영한 것의 뜻도 달라진다.
+     */
+    const versions = {
+      ...snapshot.module_versions,
+      /**
+       * 어느 Core 의 어느 갈래로 응시했는가.
+       *
+       * `core_version` 과 같은 값이지만 이름을 따로 둔다: 저쪽은 채점이
+       * 읽은 Core 이고 이쪽은 **그 사람이 고른 자리**다. 둘이 어긋나면
+       * 어느 한쪽이 거짓이므로 `v3:provenance` 가 같은지 센다.
+       *
+       * **갈래는 없으면 `null` 이다.** 비워 두지 않고 적는 까닭은, 칸이
+       * 아예 없는 것과 갈래 없이 응시한 것이 되짚을 때 구별되지 않기
+       * 때문이다.
+       */
+      core_code: a.core_code,
+      specialization: a.specialization_code ?? null,
+      assessment_ui_version: ASSESSMENT_UI_VERSION,
+      assessment_copy_version: ASSESSMENT_COPY_VERSION,
+      result_model_version: RESULT_MODEL_VERSION,
+      result_copy_version: RESULT_COPY_VERSION,
+      result_ui_version: RESULT_UI_VERSION,
+      workspace_ui_version: WORKSPACE_UI_VERSION,
+    };
+    /**
+     * **같은 응시를 같은 순간에 두 번 제출해도 결과는 한 벌이다.**
+     *
+     * 화면은 `결과 만들기` 를 누르면 단추를 끄지만, 두 요청이 같은 순간에
+     * 들어오면(두 탭 · 끊긴 요청의 재시도 · 급한 두 번 클릭) 둘 다 `mine()`
+     * 을 지나 여기까지 온다. 그러면 스냅샷이 두 줄 쌓이고, 어느 쪽이 그
+     * 사람의 결과인지 읽는 자리마다 갈린다(R33 E2E 가 동시 호출 둘로 두 줄을
+     * 만들었다). 응시 줄을 잠그고 아직 `in_progress` 일 때만 적는다. 늦게 온
+     * 쪽은 **이미 굳은 줄**을 돌려받고 아무것도 더 쓰지 않는다.
+     */
+
     const ins = await c.query<{ id: string }>(
       `INSERT INTO v3_snapshots
          (attempt_id, module_versions, response_quality, payload,
@@ -1137,8 +1177,9 @@ export async function submit(a: V3Attempt): Promise<{ snapshot: Snapshot; id: st
     await c.query(
       `UPDATE v3_attempts SET status='scored', submitted_at=now(), current_screen='done'
         WHERE id=$1`, [a.id]);
-    return { id: ins.rows[0]?.id as string, fresh: true };
+    return { id: ins.rows[0]?.id as string, fresh: true, snapshot };
   });
+  const snapshot = claimed.snapshot;
   if (!claimed.fresh) return { snapshot, id: claimed.id };
   const row = { id: claimed.id };
   /* **검사가 끝나는 자리가 아니다.** 고른 산업과 직무와 조직을 지금 값으로
