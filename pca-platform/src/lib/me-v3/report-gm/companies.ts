@@ -18,6 +18,7 @@ import { domainName } from "../runtime/session";
 import { axisWord } from "./lexicon";
 import { industryPacks, rolePacks, type Direction } from "./profile";
 import type { Axis } from "../scoring/types";
+import type { VerifyLevel } from "./words";
 
 export type SourceKind = "OFFICIAL" | "DART" | "KODATA" | "NEWS" | "DIRECTORY" | "COMMUNITY" | "SEARCH";
 export type Source = { kind: SourceKind; title: string; url?: string | null; checked_on: string };
@@ -91,7 +92,7 @@ export type CompanyQA = {
   firstCheck: string[];
 };
 
-export function explore(m: ResultModel, dirs: Direction[], set: OrgSet2 = orgSet2()):
+export function explore(m: ResultModel, dirs: Direction[] | { code: string }[], set: OrgSet2 = orgSet2(), deepN = 3):
   { groups: { region: Region; items: Explore[] }[]; deep: Explore[]; note: string; few: string | null } {
   const core = coreOf(m);
   const roles = rolePacks(core);
@@ -154,7 +155,6 @@ export function explore(m: ResultModel, dirs: Direction[], set: OrgSet2 = orgSet
       companySpecific: r.o.interpretation.slice(0, 3),
     };
   };
-  const deepN = 3;
   /* 심층 분석은 **공식 자료와 대조한 지역 기업**만 맡는다. 2차 출처뿐인 곳을 깊게 쓰면
      확인되지 않은 내용이 가장 긴 글이 된다 */
   const local = rows.filter((r) => r.o.region !== "NATIONAL" && r.o.verify === "OFFICIAL_CROSSCHECKED");
@@ -237,4 +237,23 @@ function roadmap(m: ResultModel, e: Explore): { when: string; what: string; keep
     { when: "2~3개월", what: e.lack[0] ? `‘${e.lack[0].split(" — ")[0]}’를 다음 수업 과제에서 맡아 본다` : `확인된 경험 하나를 ${j}의 일에 대어 다시 정리한다`, keep: e.q?.projects[0] ?? "결과물 한 장" },
     { when: "4~6개월", what: `현장실습·공모전·학회 가운데 하나에서 ${e.org.industry_line} 쪽 문제를 다뤄 본다`, keep: "지원서 문단 초안과 면접 답변 메모" },
   ];
+}
+
+/* ── 3차: 검증 상태 다섯 ─────────────────────────────────────── */
+
+/** 기업 하나의 검증 상태. **공식 원문을 직접 열람한 기업은 이 판에 없다**: 2차 판의
+ *  `OFFICIAL_CROSSCHECKED` 는 검색 결과가 KODATA 의 식별자·주소와 맞았다는 뜻이었고,
+ *  그것을 `공식 확인` 으로 적으면 거짓이 된다 */
+export function verifyLevel(o: Org2): VerifyLevel {
+  if (o.verify === "CONFLICTING") return "CONFLICTING";
+  if (!o.sources.length) return "UNVERIFIED";
+  if (o.sources.some((s) => s.kind === "KODATA")) return "THIRD_PARTY";
+  return "SEARCH_ONLY";
+}
+/** 사실 한 줄의 검증 상태: 그 줄이 기대는 출처 가운데 가장 단단한 것 */
+export function factLevel(o: Org2, src: number[]): VerifyLevel {
+  const kinds = src.map((i) => o.sources[i]?.kind).filter(Boolean);
+  if (!kinds.length) return "UNVERIFIED";
+  if (kinds.includes("KODATA")) return "THIRD_PARTY";
+  return "SEARCH_ONLY";
 }

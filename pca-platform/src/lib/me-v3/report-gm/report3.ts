@@ -1,0 +1,302 @@
+/**
+ * **PDF GOLD MASTER 3차 · 리포트 조립.** 장마다 쓸 값을 한 객체로 모은다.
+ *
+ * 판단은 결과 모델이 하고, 문장은 `analysis3.ts` 가, 직무·기업 설명은 손으로 쓴
+ * 안내 자료(`guide.ts`)가 든다. 여기서는 그것을 학생 한 사람의 응답에 맞춰 엮는다.
+ * 모든 결론 줄은 `trace` 에 어디서 왔는지를 함께 적는다. 저장하지 않는다.
+ */
+import type { ResultModel } from "../result/model";
+import { coreOf } from "../result/model";
+import { withJosa } from "../result/josa";
+import { domainName } from "../runtime/session";
+import { core as coreEntry } from "../core-registry";
+import { interestEvidenceMap, radar, asked, rolePacks, industryPacks, type MapCell, type Radar } from "./profile";
+import {
+  andJoin, crossRows, directions3, domainRead, evidenceOf, growth, priorities3, profileRead, recordRead, strengths3, verifyTasks,
+  type CrossRow, type Direction3, type DomainRead, type Growth, type Priority3, type ProfileRead, type RecordRead,
+  type Strength3, type Verify, type Experience,
+} from "./analysis3";
+import { explore, orgSet2, verifyLevel, factLevel, JOB_STATUS_KO, type Explore, type Org2, type OrgSet2, type Region } from "./companies";
+import { companyGuide, roleGuide, type GuideSource } from "./guide";
+import { JUDGE, VERIFY5, type VerifyLevel } from "./words";
+
+const j = withJosa;
+export type Meta = {
+  school: string | null; department: string | null; major: string | null;
+  specialization: string | null; answeredOn: string | null; tier: string;
+};
+export type Trace = { section: string; claim: string; from: string[]; evidence?: string[] };
+
+export type CompanyJob = {
+  /** 학생의 탐색 직무 밖에서, 이 회사 안내가 함께 다루는 직무 */
+  extra?: boolean;
+  role: string; name: string; status: string; posted: string | null; tasks: string;
+  flow: string[]; knowledge: string[]; tools: string[];
+  have: string[]; need: string[];
+  learn: string[]; project: { title: string; steps: string[]; output: string };
+  portfolio: string; develop: string; selfIntro: string; interview: string[]; posting: string[];
+};
+export type CompanyDeep = {
+  id: string; name: string; region: Region; regionBasis: string; verify: VerifyLevel;
+  bizno: string | null; listing: string | null; hq: string; sites: string[];
+  headline: string; facts: { text: string; level: VerifyLevel }[]; market: string; products: string[];
+  interpret: string[]; why: string; links: string[]; jobs: CompanyJob[];
+  toCheck: string[]; sources: GuideSource[]; hiring: string;
+};
+export type PlanRow = { period: string; what: string; why: string; how: string; output: string; check: string };
+export type Story = { from: string; fits: string[]; parts: { label: string; text: string; filled: boolean }[]; add: string };
+
+export type Report3 = {
+  core: string; meta: Meta; majorName: string;
+  kind: "EVIDENCE" | "EARLY" | "MIXED";
+  summary: { lead: string; points: { label: string; fact: string; meaning: string; limit: string; action: string }[]; glance: { label: string; value: string }[] };
+  radar: Radar; map: MapCell[]; profile: ProfileRead;
+  domains: DomainRead[]; records: RecordRead[]; cross: CrossRow[]; verify: Verify | null;
+  strengths: Strength3[]; priorities: Priority3[]; directions: Direction3[]; growth: Growth | null;
+  region: { facts: OrgSet2["region_facts"]; groups: { region: Region; items: Explore[] }[]; note: string; few: string | null };
+  companies: CompanyDeep[];
+  application: { stories: Story[]; portfolio: { title: string; include: string; from: string; status: "보유" | "새로 만들기" }[]; interview: { q: string; why: string; material: string }[] };
+  plan: PlanRow[];
+  final: { text: string; why: string; when: string }[];
+  worksheet: { title: string; prefill: Record<string, string> }[];
+  verifyTable: { name: string; bizno: string; region: string; level: VerifyLevel; tag: string; used: "심층" | "목록"; checked: string }[];
+  trace: Trace[];
+  versions: Record<string, string>;
+  checkedOn: string;
+};
+
+export function build3(m: ResultModel, meta: Meta, exps: Experience[], set: OrgSet2 = orgSet2()): Report3 {
+  const core = coreOf(m);
+  const nm = (td: string) => domainName(core, td);
+  const trace: Trace[] = [];
+  const prof = profileRead(m, exps);
+  const st = strengths3(m);
+  const pr = priorities3(m);
+  const dirs = directions3(m);
+  const gr = growth(m);
+  const ex = explore(m, dirs, set, 4);
+  const z1 = m.domains.filter((d) => d.zone === "Z1_EVIDENCE_ESTABLISHED");
+  const z2 = m.domains.filter((d) => d.zone === "Z2_EVIDENCE_INCOMPLETE" || d.zone === "Z3_EVIDENCE_LOW_INTEREST");
+  const kind: Report3["kind"] = z1.length ? "EVIDENCE" : z2.length ? "MIXED" : "EARLY";
+
+  /* 영역 해설: 깊게 물은 영역 → 핵심만 물은 영역 → 관심이 높은데 묻지 않은 영역 */
+  const order = [...m.domains.filter((d) => d.opened.deep), ...m.domains.filter((d) => !d.opened.deep && d.opened.probe)];
+  const domains = order.map((d) => domainRead(m, d, exps));
+  const unaskedHigh = m.domains.filter((d) => !asked(d) && d.interest === "HIGH").map((d) => domainRead(m, d, exps));
+  const records = exps.map((e) => recordRead(m, e));
+  const cross = crossRows(m, exps);
+  const vt = verifyTasks(m, exps);
+  for (const d of domains) trace.push({ section: "영역별 심층 해설", claim: `${d.name}: ${d.zoneTag}`, from: [`domains[${d.code}].zone`, `domains[${d.code}].axes`], evidence: [...d.decisions, ...d.artifacts, ...d.comparisons].slice(0, 6) });
+  for (const r of records) trace.push({ section: "경험 기록 해설", claim: r.title, from: ["v3_experiences"], evidence: [...r.decisions, ...r.artifacts] });
+  for (const c of cross) trace.push({ section: "검사·경험 교차", claim: `${c.name}: ${c.kind}`, from: [`domains[${c.code}]`, "v3_experiences.td_codes"] });
+
+  /* 01 종합 의견 */
+  const goalDir = dirs.find((d) => d.goal) ?? dirs[0];
+  const points: Report3["summary"]["points"] = [];
+  if (st[0]) {
+    // 의미 문장은 고른 근거가 있는 만큼만 말한다: 결과물을 고르지 않은 학생에게 ‘문서로 남겼다’고 적지 않는다
+    const s0 = st[0];
+    const meaning0 = s0.artifacts.length
+      ? `${s0.name}의 일을 스스로 맡아 해 봤고, 그 결과를 ${s0.artifacts[0]} 같은 결과물로 남겼다는 점이 이 결과에서 가장 단단합니다.`
+      : s0.decisions.length || s0.acts.length
+        ? `${s0.name}에서 스스로 해 본 일은 체크리스트 항목으로도 확인됩니다. 다만 그 일을 보여 줄 결과물은 아직 고르지 않았습니다.`
+        : `${withJosa(s0.name, "은는")} 이 결과에서 가장 많은 판단을 스스로 해 봤다고 답한 영역입니다. 그 장면을 받치는 근거 항목과 결과물은 아직 없어, 응답만으로 확인된 상태입니다.`;
+    points.push({ label: s0.artifacts.length || s0.decisions.length ? "가장 분명한 강점" : "가장 많이 해 봤다고 답한 영역", fact: s0.story, meaning: meaning0,
+      limit: st[0].comparisons.length ? "결과물의 완성도와 실제 성과 수치는 이 검사로 확인하지 않았습니다." : "결과를 무엇과 비교했는지는 아직 응답에 없습니다.",
+      action: st[0].show });
+    trace.push({ section: "01 종합 의견", claim: points[points.length - 1].label, from: [`domains[${st[0].code}].zone`, `domains[${st[0].code}].decided`, `domains[${st[0].code}].artifacts`], evidence: [...st[0].decisions, ...st[0].artifacts] });
+  } else if (gr) {
+    points.push({ label: "지금의 출발점", fact: `관심은 ${gr.domains.join(", ")}에서 높게 나왔고, 이 영역들의 일을 스스로 맡아 해 본 경험은 아직 적다고 답했습니다.`,
+      meaning: "관심이 분명한 영역이 있다는 것은 방향을 정하기 좋은 출발점입니다. 지금은 잘하는 일을 찾기보다 처음 해 볼 일을 고르는 단계입니다.",
+      limit: "관심 응답은 그 일이 실제로 맞는지까지 말해 주지 않습니다. 직접 해 본 뒤에 다시 확인해야 합니다.",
+      action: `첫 실무형 프로젝트로 ${withJosa(`‘${gr.project.title}’`, "을를")} 권합니다(‘성장 설계’ 장).` });
+    trace.push({ section: "01 종합 의견", claim: "출발점", from: ["domains.interest=HIGH", "domains.zone=Z4"] });
+  }
+  if (prof.caution) points.push({ label: "응답을 읽을 때 주의할 점", fact: "판단 문항에서는 높게 답했지만 그 판단을 받치는 근거 항목은 고르지 않은 영역이 있습니다.", meaning: "이 보고서는 그 판단들을 ‘직접 수행’ 단계까지만 반영했습니다.", limit: "응답이 틀렸다는 뜻이 아니라, 아직 확인할 자료가 없다는 뜻입니다.", action: "‘검사 응답과 경험 기록의 대조’ 장의 확인 과제로 어느 쪽이 맞는지 스스로 확인할 수 있습니다." });
+  if (pr[0]) {
+    points.push({ label: "먼저 채울 부분", fact: `${pr[0].domain}에서 ‘${pr[0].what}’가 아직 응답에서 확인되지 않았습니다.`, meaning: pr[0].why[0] + ".", limit: "확인되지 않았다는 것이 할 수 없다는 뜻은 아닙니다.", action: `${pr[0].how}. 남길 것은 ${pr[0].output}입니다.` });
+    trace.push({ section: "01 종합 의견", claim: `우선순위 ${pr[0].domain}/${pr[0].what}`, from: ["gaps[rank]", "role.required_axes", "industry.judgement_dimensions"] });
+  }
+  if (goalDir) {
+    points.push({ label: "목표 직무와의 거리", fact: `목표로 고른 직무는 ${goalDir.name}이고, 이 직무가 반드시 보는 판단 기준으로 지금 상태는 ‘${goalDir.readiness}’입니다.`, meaning: goalDir.summary, limit: "직무 적합도나 합격 가능성을 계산한 것이 아닙니다.", action: goalDir.need[0] ? (goalDir.need[0].kind === "domain" ? `이 직무와 이어지는 ${goalDir.need[0].name} 영역은 이번 검사에서 자세히 묻지 않았습니다. 그 영역에서 해 본 일이 있다면 경험 기록에 먼저 적어 두세요.` : `다음으로 채울 판단은 ‘${goalDir.need[0].name}’입니다(${goalDir.need[0].why.replace(/\.$/, "")}).`) : "지금 경험을 이 직무의 말로 정리하는 일이 남았습니다(‘단계별 실행 계획’ 장)." });
+    trace.push({ section: "01 종합 의견", claim: `방향 ${goalDir.name} ${goalDir.readiness}`, from: ["targets.goal.role", "role.required_axes × domains.axes"], evidence: goalDir.have.map((h) => `${h.domain} — ${h.text}`) });
+  }
+  const lead = kind === "EVIDENCE"
+    ? `${andJoin(z1.map((d) => nm(d.code)))}에서 직접 판단하고 결과물로 남긴 경험이 확인됩니다. 이 경험을 ${goalDir?.name ?? "목표 직무"}의 말로 정리하고, 비어 있는 판단 한두 가지를 채우는 것이 다음 6개월의 중심입니다.`
+    : kind === "MIXED"
+      ? `${z2.map((d) => nm(d.code)).join(", ")}에서 해 본 일은 응답으로 확인되지만, 그 경험을 보여 줄 근거가 아직 부족합니다. 해 본 일을 확인 가능한 기록으로 바꾸는 것이 첫 과제입니다.`
+      : `${gr?.domains.join(", ") ?? "몇몇 영역"}에 관심이 분명하게 나왔습니다. 이 보고서는 그 관심을 첫 경험과 첫 포트폴리오로 바꾸는 순서를 담았습니다.`;
+  const glance = [
+    { label: "직접 판단한 경험이 확인된 영역", value: z1.map((d) => nm(d.code)).join(" · ") || "아직 없음" },
+    { label: "해 본 일은 있고 근거가 더 필요한 영역", value: z2.map((d) => nm(d.code)).join(" · ") || "없음" },
+    { label: "관심은 높고 경험이 적은 영역", value: m.domains.filter((d) => d.zone === "Z4_INSUFFICIENT_EVIDENCE").map((d) => nm(d.code)).join(" · ") || "없음" },
+    { label: "목표 직무 · 준비 상태", value: goalDir ? `${goalDir.name} · ${goalDir.readiness}` : "—" },
+    { label: "먼저 채울 판단", value: pr[0] ? `${pr[0].domain} · ${pr[0].what}` : "—" },
+    { label: "먼저 살펴볼 진로 탐색 기업", value: ex.deep.map((e) => e.org.name).join(" · ") || "—" },
+  ];
+
+  /* 기업 심층 */
+  const companies = ex.deep.map((e) => companyDeep(m, e, dirs, exps));
+  for (const c of companies) trace.push({ section: "기업 심층 분석", claim: c.name, from: [...c.links], evidence: c.jobs.flatMap((x) => x.have).slice(0, 4) });
+
+  /* 서류·면접 */
+  const stories: Story[] = [];
+  for (const s of st.slice(0, 2)) {
+    stories.push({ from: `${s.name} — 검사 응답`, fits: s.jobs,
+      parts: [
+        { label: "상황과 내 역할", text: "직접 기입 — 어떤 수업·활동이었고, 팀에서 무엇을 맡았는지", filled: false },
+        { label: "내가 정한 것", text: s.decisions[0] ?? s.acts[0] ?? "직접 기입", filled: !!(s.decisions[0] ?? s.acts[0]) },
+        { label: "그 결과 남긴 것", text: s.artifacts[0] ?? "직접 기입", filled: !!s.artifacts[0] },
+        { label: "무엇과 비교했고 무엇이 달라졌나", text: s.comparisons[0] ? `${withJosa(s.comparisons[0], "과와")} 비교 — 결과 수치는 직접 기입` : "직접 기입 — 목표·지난 실적·다른 안 가운데 하나와 비교", filled: !!s.comparisons[0] },
+      ],
+      add: s.comparisons.length ? "결과 수치와 기간을 넣으면 한 문단이 완성됩니다." : "결과를 무엇과 비교했는지가 비어 있어, 이 부분을 채워야 성과를 말할 수 있습니다." });
+  }
+  for (const r of records.slice(0, 2)) {
+    if (stories.some((x) => x.from.includes(r.title))) continue;
+    stories.push({ from: `${r.title} — 경험 기록`, fits: r.jobs.map((x) => x.name),
+      parts: [
+        { label: "상황과 내 역할", text: `${r.kind} · ${r.period}${r.usedWhere.length ? ` · ${r.usedWhere.join(", ")}` : ""} — 맡은 역할은 직접 기입`, filled: true },
+        { label: "내가 정한 것", text: r.decisions[0] ?? "직접 기입", filled: !!r.decisions[0] },
+        { label: "그 결과 남긴 것", text: r.artifacts.join(" · ") || "직접 기입", filled: !!r.artifacts.length },
+        { label: "무엇과 비교했고 무엇이 달라졌나", text: r.comparisons[0] ?? "직접 기입 — 기록에 비교 대상이 아직 없습니다", filled: !!r.comparisons[0] },
+      ],
+      add: r.check.slice(0, 2).join(", ") + "을 먼저 채워 두세요." });
+  }
+  const have = new Set(m.domains.flatMap((d) => d.artifacts).concat(exps.flatMap((e) => e.artifacts)));
+  const portfolio: Report3["application"]["portfolio"] = [];
+  for (const a of have) portfolio.push({ title: a, include: "결과물 한 장과, 그 안에서 내가 정한 것 한 줄·비교한 대상 한 줄", from: "검사·경험 기록에서 고른 결과물", status: "보유" });
+  const goalGuide = goalDir ? roleGuide(goalDir.code) : null;
+  for (const p of (goalGuide?.portfolio ?? []).slice(0, 3)) if (!portfolio.some((x) => x.title === p)) portfolio.push({ title: p, include: "목표 직무에서 흔히 보는 결과물(직무 일반)", from: `${goalDir!.name} 직무 안내`, status: "새로 만들기" });
+  for (const c of companies.slice(0, 2)) for (const jb of c.jobs.slice(0, 1)) portfolio.push({ title: jb.project.title.replace(/^‘|’$/g, ""), include: jb.project.output, from: `${c.name} 탐색 프로젝트`, status: "새로 만들기" });
+  const interview: Report3["application"]["interview"] = [];
+  for (const s of st.slice(0, 2)) interview.push({ q: s.question, why: `${s.name}에서 고르신 판단을 면접관이 되짚는 질문입니다`, material: [s.decisions[0], s.artifacts[0], s.comparisons[0]].filter(Boolean).join(" · ") || "직접 기입" });
+  for (const p of pr.slice(0, 2)) interview.push({ q: `“${p.domain} 쪽에서 ${j(p.what, "을를")} 해 본 적이 있나요?”`, why: "아직 응답에서 확인되지 않은 판단이라 미리 준비해 둘 질문입니다", material: `준비 — ${p.how}` });
+  for (const q of (goalGuide?.interview ?? []).slice(0, 2)) interview.push({ q: `“${q.q}”`, why: q.why, material: st[0] ? `${st[0].name}의 ${st[0].decisions[0] ?? st[0].acts[0] ?? "경험"}` : "첫 프로젝트의 결과" });
+
+  /* 실행 계획 */
+  const plan: PlanRow[] = [];
+  const c0 = companies[0];
+  if (pr[0]) plan.push({ period: "30일", what: pr[0].how, why: pr[0].why[0], how: "진행 중인 수업 과제나 팀 과제에서", output: pr[0].output, check: pr[0].check });
+  else if (gr) plan.push({ period: "30일", what: gr.learn[0]?.step ?? "직무 기초 익히기", why: gr.learn[0]?.why ?? "", how: "수업·온라인 강의", output: "학습 메모", check: "직무 공고 다섯 건의 담당 업무를 설명할 수 있는가" });
+  plan.push({ period: "30일", what: records.length ? `경험 기록 ‘${records[0].title}’에 ${andJoin(records[0].check.slice(0, 2))} 채우기` : "가장 최근 수업 과제 하나를 경험 기록으로 처음 남기기", why: "기록이 있어야 검사 응답을 면접에서 장면으로 말할 수 있습니다", how: "내 CareerMatri의 경험 추가·고치기", output: "갱신된 경험 기록", check: "역할·정한 것·결과물·비교 대상 네 칸이 찼는가" });
+  if (c0) plan.push({ period: "60일", what: `${c0.name}의 공식 홈페이지·공시·채용 페이지를 직접 열람해 이 보고서의 기업 정보를 확인하기`, why: "이 보고서의 기업 정보는 제3자 자료와 검색 결과이며, 공식 원문을 직접 확인하지 않았습니다", how: "‘정리 워크시트’ 장의 기업 확인 메모에 출처와 확인일 적기", output: "기업 확인 메모", check: "사업·직무·근무지를 원문으로 확인했는가" });
+  if (pr[1]) plan.push({ period: "60일", what: pr[1].how, why: pr[1].why[0], how: "다음 과제에서", output: pr[1].output, check: pr[1].check });
+  else if (gr) plan.push({ period: "60일", what: gr.entry[0], why: "첫 경험을 만드는 가장 가까운 자리입니다", how: "교내 수업·동아리·학회", output: "활동 기록 한 건", check: "그 활동에서 내가 정한 것이 하나 이상 있는가" });
+  const proj = c0?.jobs[0]?.project ?? gr?.project;
+  if (proj) plan.push({ period: "90일", what: `실무형 프로젝트 ‘${proj.title}’ 완료`, why: "기업과 직무를 공부한 결과를 결과물로 남겨야 서류에서 쓰입니다", how: (proj as { steps: string[] }).steps.slice(0, 2).join(" → ") + " …", output: proj.output, check: "다른 사람이 그 결과물만 보고 내가 무엇을 판단했는지 알 수 있는가" });
+  plan.push({ period: "90일", what: stories[0] ? `${stories[0].from.split(" — ")[0]} 경험을 자기소개서 문단 하나와 면접 답변 하나로 정리하기` : "새로 만든 경험을 문단 하나로 정리하기", why: "경험이 문장으로 옮겨지지 않으면 서류에서 쓰이지 않습니다", how: "‘자기소개서·포트폴리오·면접 전략’ 장의 네 칸 구조에 맞춰 쓰고 수치·기간을 직접 넣기", output: "자기소개서 문단 초안과 답변 메모", check: "문단에 ‘내가 정한 것’과 ‘비교한 결과’가 들어 있는가" });
+  plan.push({ period: "6개월", what: "현장실습·공모전·학회 가운데 하나에 참여해 학교 밖 과제 경험 만들기", why: "학교 밖 과제의 결과물은 수업 과제보다 직무에 가깝게 읽힙니다", how: "교내 현장실습지원센터·취업지원 프로그램", output: "실전 과제 결과물", check: "결과물에 고객·의뢰 기관의 의견이 남았는가" });
+  plan.push({ period: "6개월", what: `결과물 ${Math.max(3, portfolio.filter((p) => p.status === "보유").length)}건을 한 묶음의 포트폴리오로 정리`, why: "흩어진 결과물은 지원 시점에 다시 찾기 어렵습니다", how: "결과물마다 ‘내가 정한 것·비교한 대상’ 한 줄 붙이기", output: "포트폴리오 묶음", check: "결과물마다 내 역할이 한 줄로 적혀 있는가" });
+  plan.push({ period: "12개월", what: `${andJoin(dirs.slice(0, 2).map((d) => d.name))} 가운데 지원할 방향을 정하고, 공고 다섯 건의 요구 조건을 이 보고서와 대조하기`, why: "1년이면 학년이 바뀌고 지원 시점이 가까워집니다", how: "공고의 담당 업무·우대 조건을 ‘직무별 실제 업무와 요구 역량’ 장의 ‘아직 확인되지 않은 요구’과 견주기", output: "직무별 요구 조건 대조표", check: "공고 요구 가운데 아직 근거가 없는 항목을 셀 수 있는가" });
+  plan.push({ period: "12개월", what: "CareerMatri 검사를 다시 보고 이번 결과와 비교하기", why: "근거가 늘었는지를 같은 기준으로 확인합니다", how: "담당자에게 재응시를 요청", output: "두 결과의 비교", check: "‘직접 수행’에서 ‘기준까지 직접 결정’으로 바뀐 판단이 있는가" });
+
+  const final = [
+    pr[0] && { text: pr[0].how, why: `${pr[0].domain}의 ‘${pr[0].what}’ — ${pr[0].why[0]}`, when: pr[0].when },
+    !pr[0] && gr && { text: gr.entry[0], why: "첫 경험을 만드는 가장 가까운 활동입니다", when: "1~30일" },
+    { text: records.length ? `경험 기록 ‘${records[0].title}’의 빈칸을 채운다` : "최근 과제 하나를 경험 기록으로 남긴다", why: "검사 응답을 면접 장면으로 말할 재료입니다", when: "1~30일" },
+    c0 && { text: `${c0.name}의 공식 자료를 직접 확인하고 확인 메모를 남긴다`, why: "기업 정보는 공식 원문 확인 전입니다", when: "31~60일" },
+    proj && { text: `‘${proj.title}’를 끝까지 만들어 결과물로 남긴다`, why: "기업·직무 탐색을 결과물로 바꾸는 일입니다", when: "61~90일" },
+  ].filter(Boolean).slice(0, 4) as Report3["final"];
+
+  const worksheet = [
+    ...(st.length ? st.slice(0, 1) : []).map((s) => ({ title: `${s.name} 경험 정리`, prefill: { decided: s.decisions[0] ?? s.acts[0] ?? "", artifact: s.artifacts[0] ?? "", verify: s.comparisons[0] ?? "" } })),
+    ...records.slice(0, 1).map((r) => ({ title: `‘${r.title}’ 정리`, prefill: { decided: r.decisions[0] ?? "", artifact: r.artifacts[0] ?? "", verify: r.comparisons[0] ?? "" } })),
+    { title: "새로 정리할 경험", prefill: {} as Record<string, string> },
+  ].slice(0, 2);
+
+  const usedDeep = new Set(ex.deep.map((e) => e.org.id));
+  const usedAll = new Set(ex.groups.flatMap((g) => g.items.map((e) => e.org.id)));
+  const verifyTable = set.orgs.filter((o) => usedAll.has(o.id)).map((o) => {
+    const lv = verifyLevel(o);
+    return { name: o.name, bizno: o.identifiers.bizno ?? "미확인", region: o.region, level: lv, tag: VERIFY5[lv].tag, used: usedDeep.has(o.id) ? "심층" as const : "목록" as const, checked: o.sources.map((s) => s.checked_on).sort().slice(-1)[0] ?? "" };
+  });
+  for (const s of st) trace.push({ section: "강점 활용", claim: s.name, from: [`domains[${s.code}].zone`, `domains[${s.code}].decided`], evidence: [...s.decisions, ...s.artifacts] });
+  for (const p of pr) trace.push({ section: "개발 우선순위", claim: `${p.order}. ${p.domain}/${p.what}`, from: ["gaps", "role.required_axes", "industry.judgement_dimensions"] });
+  for (const d of dirs) trace.push({ section: "직무 분석", claim: `${d.name} ${d.readiness}`, from: ["role.core_ref.td × domains.zone", "role.required_axes × axes"], evidence: d.have.map((h) => `${h.domain} — ${h.text}`) });
+  for (const p of plan) trace.push({ section: "실행 계획", claim: `${p.period} ${p.what.slice(0, 32)}`, from: ["priorities", "records", "companies", "growth"] });
+
+  return {
+    core, meta, majorName: coreEntry(core).name_ko ?? core, kind,
+    summary: { lead, points, glance },
+    radar: radar(m), map: interestEvidenceMap(m), profile: prof,
+    domains: [...domains, ...unaskedHigh], records, cross, verify: vt,
+    strengths: st, priorities: pr, directions: dirs, growth: gr,
+    region: { facts: set.region_facts, groups: ex.groups, note: ex.note, few: ex.few },
+    companies, application: { stories, portfolio: portfolio.slice(0, 8), interview: interview.slice(0, 8) },
+    plan, final, worksheet, verifyTable, trace,
+    versions: {
+      major: coreEntry(core).name_ko ?? core,
+      ...Object.fromEntries(Object.entries(m.provenance.module_versions).map(([k, v]) => [k, String(v)])),
+      result_model: m.provenance.result_model_version,
+    },
+    checkedOn: set.checked_on,
+  };
+}
+
+function companyDeep(m: ResultModel, e: Explore, dirs: Direction3[], exps: Experience[]): CompanyDeep {
+  const core = coreOf(m);
+  const o: Org2 = e.org;
+  const g = companyGuide(o.id);
+  const roles = rolePacks(core);
+  const byCode = new Map(m.domains.map((d) => [d.code, d]));
+  const facts = g?.facts.map((f) => ({ text: f.text, level: f.kind })) ?? o.facts.map((f) => ({ text: f.text, level: factLevel(o, f.src) }));
+  const extraSrc = (g?.facts ?? []).map((f) => f.src).filter(Boolean) as GuideSource[];
+  const sources: GuideSource[] = [...o.sources.map((s) => ({ kind: s.kind, title: s.title, url: s.url ?? null, checked_on: s.checked_on })), ...extraSrc]
+    .filter((s, i, xs) => xs.findIndex((y) => y.title === s.title) === i);
+  // 탐색 직무가 하나뿐인 회사는 그 회사 안내가 다루는 직무 하나를 더 본다: 같은 회사 안에서 경영 직무가 어떻게 갈리는지가 보여야 한다
+  const pick = e.jobs.slice(0, 3).map((jb) => ({ ...jb, extra: false }));
+  if (pick.length < 2 && g) {
+    const add = o.jobs.find((x) => !pick.some((y) => y.role === x.role) && g.jobs[x.role]);
+    if (add) pick.push({ ...add, name: roles.find((r) => r.code === add.role)?.name_ko ?? add.role, extra: true });
+  }
+  const jobs: CompanyJob[] = pick.map((jb) => {
+    const rp = roles.find((r) => r.code === jb.role);
+    const rg = roleGuide(jb.role);
+    const cg = g?.jobs[jb.role];
+    const tds = rp?.core_ref?.td ?? [];
+    const req = rp?.required_axes ?? [];
+    const have: string[] = [], need: string[] = [];
+    for (const ax of req) {
+      const hit = tds.map((td) => byCode.get(td)).find((d) => d && (d.owned.includes(ax) || d.confirmed.includes(ax)));
+      if (hit) {
+        const ev = evidenceOf(hit);
+        const item = ev.decisions[0] ?? ev.acts[0];
+        have.push(`${JUDGE[ax].name} — ${domainName(core, hit.code)}에서 ${hit.owned.includes(ax) ? "기준까지 직접 정했다고 답함" : "스스로 해 봤다고 답함"}${item ? ` (‘${item}’)` : " (고른 근거 항목 없음)"}`);
+      } else need.push(`${JUDGE[ax].name} — ${JUDGE[ax].plain}`);
+    }
+    const rec = exps.find((x) => x.td_codes.some((td) => tds.includes(td)));
+    const strongD = tds.map((td) => byCode.get(td)).find((d) => d && d.zone === "Z1_EVIDENCE_ESTABLISHED") ?? tds.map((td) => byCode.get(td)).find((d) => d && d.confirmed.length);
+    const sev = strongD ? evidenceOf(strongD) : null;
+    const develop = rec
+      ? `경험 기록 ‘${rec.title}’을 이 회사의 ${rp?.name_ko ?? ""} 일에 대어 다시 정리할 수 있습니다. ${rec.decisions[0] ? `기록의 ‘${rec.decisions[0]}’가 이 직무의 ‘${cg?.flow[1] ?? rg?.process[2]?.what ?? "판단"}’와 가까운 장면입니다.` : "기록에 직접 정한 것을 먼저 채워 두세요."}`
+      : sev && (sev.decisions[0] ?? sev.acts[0])
+        ? `${domainName(core, strongD!.code)}에서 고른 ‘${sev.decisions[0] ?? sev.acts[0]}’를 이 회사의 ${cg?.flow[1] ? `‘${cg.flow[1]}’` : "일"}에 견주어 설명해 보세요. 같은 판단을 이 산업의 장면으로 옮기는 연습이 됩니다.`
+        : `아직 이 직무와 이어지는 경험 기록이 없습니다. 아래 프로젝트가 이 회사·직무를 겨냥한 첫 경험이 됩니다.`;
+    const selfIntro = sev && sev.artifacts[0]
+      ? `자기소개서에서는 ${(sev.decisions[0] ?? sev.acts[0]) ? `‘${sev.decisions[0] ?? sev.acts[0]}’를 중심 장면으로, ` : ""}${withJosa(sev.artifacts[0], "을를")} 결과로 두고, 이 회사의 ${o.industry_line} 맥락에서 그 판단이 왜 필요한지 한 문장을 덧붙이는 구성이 맞습니다.`
+      : `지금은 자기소개서에 쓸 직접 경험이 부족합니다. 아래 프로젝트의 결과물(${cg?.project.output ?? rg?.firstProject.output ?? "결과물"})이 그 자리를 채웁니다.`;
+    return {
+      extra: jb.extra, role: jb.role, name: jb.name, status: JOB_STATUS_KO[jb.status], posted: jb.evidence ?? null, tasks: jb.tasks,
+      flow: cg?.flow ?? (rg?.process.map((p) => `${p.step} — ${p.what}`) ?? []),
+      knowledge: [...(cg?.learn ?? []), ...(rg?.knowledge.slice(0, 2) ?? [])].slice(0, 5), tools: rg?.tools.slice(0, 3) ?? [],
+      have, need,
+      learn: cg?.learn ?? rg?.knowledge ?? [],
+      project: cg?.project ?? { title: rg?.firstProject.title ?? "", steps: rg?.firstProject.steps ?? [], output: rg?.firstProject.output ?? "" },
+      portfolio: cg?.portfolio ?? rg?.portfolio[0] ?? "", develop, selfIntro,
+      interview: [...(cg?.interview ?? []), ...(rg?.interview.slice(0, 1).map((x) => x.q) ?? [])].slice(0, 3),
+      posting: [...(cg?.posting ?? []), ...(rg?.postingCheck.slice(0, 1) ?? [])].slice(0, 4),
+    };
+  });
+  const inds = industryPacks(core);
+  const links = e.links.map((l) => l.text);
+  return {
+    id: o.id, name: o.name, region: o.region, regionBasis: o.region_basis, verify: verifyLevel(o),
+    bizno: o.identifiers.bizno, listing: o.identifiers.listing, hq: o.hq.text, sites: o.sites,
+    headline: g?.headline ?? o.industry_line, facts, market: g?.market ?? "", products: g?.products ?? [],
+    interpret: g?.interpret ?? o.interpretation, why: g?.why ?? "", links,
+    jobs, toCheck: o.to_check, sources, hiring: o.hiring.note,
+  };
+  void inds;
+}
+
+export { JUDGE };
