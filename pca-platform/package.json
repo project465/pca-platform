@@ -48,6 +48,7 @@
     "demo:check": "tsx scripts/demo-check.ts",
     "dev:setup": "bash scripts/dev-setup.sh",
     "staging:check": "tsx scripts/staging-check.ts",
+    "staging:reset-student": "tsx scripts/staging-reset-student.ts",
     "db:init": "bash scripts/db-init.sh",
     "db:upgrade": "bash scripts/db-upgrade.sh",
     "db:verify": "bash deploy/ops/db-verify.sh",

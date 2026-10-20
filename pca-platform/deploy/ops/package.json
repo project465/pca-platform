@@ -17,6 +17,7 @@
     "pcu:students": "node ops/pcu-students.cjs",
     "pcu:diag": "node ops/pcu-diag.cjs",
     "staging:bootstrap": "node ops/staging-bootstrap.cjs",
-    "staging:check": "node ops/staging-check.cjs"
+    "staging:check": "node ops/staging-check.cjs",
+    "staging:reset-student": "node ops/staging-reset-student.cjs"
   }
 }

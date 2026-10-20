@@ -336,7 +336,11 @@
  * 파란 기울기 판이고 절차 세 걸음은 번호 원을 단다. 판정과 현재 상태
  * 계산은 그대로다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V49";
+/**
+ * 쪽 제목을 오른쪽 실용 줄 아래로 내린다. 실용 줄 옆에 남는 폭이 좁아 인사
+ * 제목이 이름 첫 낱말만 남기고 꺾였다. 띠 머리는 눌리지 않게 한다.
+ */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V50";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
