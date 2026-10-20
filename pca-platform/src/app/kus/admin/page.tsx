@@ -66,7 +66,7 @@ export default async function KusAdmin({ searchParams }: { searchParams: Promise
       </section>
 
       <section className="kus-panel">
-        <SectionHeader icon="layers" title="학과별 완료(5명 이상인 칸만)" />
+        <SectionHeader icon="layers" title="학과별 완료" sub="5명이 안 되는 학과는 수를 적지 않습니다(한 사람이 드러나지 않게)." />
         {agg.by_department.length ? (
           <div className="kus-scroll"><table className="kus-table">
             <thead><tr><th>학과·전공</th><th>완료</th></tr></thead>
