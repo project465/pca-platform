@@ -47,14 +47,19 @@ let seed = 20261020;
 const rnd = () => ((seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648);
 const pick = (a) => a[Math.floor(rnd() * a.length)];
 
+/* `--psql-vars`: 비밀번호 자리에 psql 변수(`:'pw_admin'` …)를 둔 SQL 을 뽑는다.
+ * 그 SQL 에는 비밀이 없어서 저장소에 둘 수 있고(`db/sejong/seed_sejong_demo.sql`),
+ * 운영 이미지에 `/app/db` 로 실리므로 Staging 컨테이너 안에서 psql 로 넣을 수 있다
+ * (DB 를 바깥에 열지 않는다). 비밀번호는 넣는 사람이 `-v` 로 준다. */
+const VARS = process.argv.includes("--psql-vars");
 const gen = () => randomBytes(12).toString("base64url");
-const PW = {
+const PW = VARS ? { admin: ":'pw_admin'", counsel: ":'pw_counsel'", seeker: ":'pw_seeker'", virtual: ":'pw_virtual'" } : {
   admin: process.env.SJ_PW_ADMIN || gen(),
   counsel: process.env.SJ_PW_COUNSEL || gen(),
   seeker: process.env.SJ_PW_SEEKER || gen(),
   virtual: process.env.SJ_PW_VIRTUAL || gen(),
 };
-{
+if (!VARS) {
   const lines = [
     `sj-admin\t${PW.admin}`, `sj-counsel1\t${PW.counsel}`, `sj-counsel2\t${PW.counsel}`,
     `sj-demo01\t${PW.seeker}`, `sj-v01..sj-v20\t${PW.virtual}`,
@@ -80,7 +85,7 @@ sql(`INSERT INTO sj_programs (code, org_id, name, region_rule, is_demo) VALUES
 
 function user(login, name, pw, { reset = false } = {}) {
   sql(`INSERT INTO users (login_id, password_hash, display_name, must_reset_pw, is_demo, pw_login)
-       VALUES (${q(login)}, crypt(${q(pw)}, gen_salt('bf', 12)), ${q(name)}, ${reset}, true, true)
+       VALUES (${q(login)}, crypt(${VARS ? pw : q(pw)}, gen_salt('bf', 12)), ${q(name)}, ${reset}, true, true)
        ON CONFLICT DO NOTHING`);
   return `(SELECT id FROM users WHERE login_id = ${q(login)})`;
 }
@@ -182,4 +187,25 @@ plan.forEach((state, i) => {
   }
 });
 
-console.log(`-- 세종 시연 자료 (scripts/sejong/seed-demo.mjs). 개발·시연 DB 전용\n${out.join("\n")}`);
+const GUARD = `-- 생성물: node --experimental-strip-types scripts/sejong/seed-demo.mjs --psql-vars
+-- 직접 고치지 않는다. 합성 DEMO 자료만 들어 있고 비밀번호는 없다.
+--
+--   psql "$DATABASE_URL" -v ON_ERROR_STOP=1 --single-transaction \\
+--     -v pw_admin=… -v pw_counsel=… -v pw_seeker=… -v pw_virtual=… \\
+--     -f db/sejong/seed_sejong_demo.sql
+--
+-- 지키는 것 둘: 비밀번호 변수가 없으면 멈춘다 · 시연이 아닌 사용자가 한 명이라도
+-- 있는 DB(운영·배재대 Staging 같은)에서는 멈춘다.
+\\if :{?pw_admin}
+\\else
+\\echo 'pw_admin · pw_counsel · pw_seeker · pw_virtual 을 -v 로 주십시오.'
+\\quit
+\\endif
+SELECT count(*) AS sj_real_users FROM users WHERE NOT is_demo \\gset
+SELECT :sj_real_users > 0 AS sj_has_real \\gset
+\\if :sj_has_real
+\\echo '시연이 아닌 사용자가 있는 DB 입니다. 세종 시연 시드를 넣지 않습니다.'
+\\quit
+\\endif
+`;
+console.log(`${VARS ? GUARD : ""}-- 세종 시연 자료 (scripts/sejong/seed-demo.mjs). 개발·시연 DB 전용\n${out.join("\n")}`);
