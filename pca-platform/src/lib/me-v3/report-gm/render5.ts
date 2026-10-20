@@ -110,7 +110,7 @@ export function d28(r: Report3, lib: Lib): string {
   const first = r.priorities[0];
   // 목표 직무는 학생마다 다르다: 경영기획으로 못 박지 않는다
   const role = r.strategy.roleName || "경영 직무";
-  const quote = (ov.excerpt ?? "").slice(0, 560).replace(/\s+\S*$/, "") + " …";
+  const quote = (ov.excerpt ?? "").slice(0, 470).replace(/\s+\S*$/, "") + " …";
   const steps: [string, string, string][] = [
     ["무엇을 팔아 돈을 버나", "사업 부문과 수익이 들어오는 길을 한 줄로 적습니다. 제품을 파는지, 기술이나 권리를 계약으로 파는지가 첫 갈림길입니다.", "‘사업의 개요’ · ‘주요 제품’"],
     ["숫자로 맞춰 보나", `같은 보고서의 재무 쪽에서 매출과 영업이익을 찾아 위의 한 줄과 맞는지 봅니다.${fin ? ` 이 회사의 ${dart!.financials!.year}년 ${fin.kind} 매출은 ${eok(fin.v["매출액"])}억 원, 영업이익은 ${eok(fin.v["영업이익"])}억 원입니다.` : ""}`, "‘재무에 관한 사항’"],

@@ -176,7 +176,7 @@ function devOf(core: string, d: ResultDomain, g: Gap, def?: DomainDef): DomainRe
   };
   const output: Record<Axis, string> = {
     J1: "과제 범위 메모", J2: def?.artifacts.find((a) => /지표|목표|기준/.test(a)) ?? "목표·지표 표",
-    J3: "판단 근거 한 장", J4: "방법 비교 메모", J5: def?.artifacts[0] ?? "결과 문서",
+    J3: `${def?.artifacts[0] ?? "과제 결과물"}에 붙인 ‘고른 안·버린 안’ 메모 한 장`, J4: "방법 비교 메모", J5: def?.artifacts[0] ?? "결과 문서",
     J6: `${def?.verify_targets[0] ?? "목표"} 대비 비교표`, J7: "원인 분석과 수정 기록", J8: "활용 기록",
   };
   return { what: JUDGE[ax].name, how: how[ax], output: output[ax], axis: ax };
@@ -510,7 +510,7 @@ export function strategy3(m: ResultModel): Strategy {
     const link = relation === "DIRECT"
       ? `‘${JUDGE[ax].name}’는 ${role.name_ko}에서 꼭 필요한 판단인데, 이 직무의 업무 영역인 ${dn}에서 아직 확인되지 않았습니다.`
       : relation === "SHARED" ? (transfer(ax) || `‘${JUDGE[ax].name}’는 ${role.name_ko}에서 꼭 필요한 판단인데, 지금 응답 어디에서도 스스로 해 봤다고 확인되지 않았습니다.`)
-        : `${j(dn, "은는")} ${lens?.why ?? `${role.name_ko}와 이어지는 영역입니다.`}`;
+        : `${j(dn, "은는")} ${lens?.why ?? `${role.name_ko}와 이어지는 영역입니다.`}`.replace(/([^.?!])$/, "$1.");
     const why = [link, ...extraWhy].filter(Boolean);
     const tr = relation !== "SHARED" && req.includes(ax) && !covered(ax) ? transfer(ax) : "";
     if (tr) why.push(tr);
@@ -694,9 +694,12 @@ export function profileRead(m: ResultModel, exps: Experience[]): ProfileRead {
   const P: string[] = [];
   if (owned.size) P.push(`여덟 가지 판단 가운데 ${j(join([...owned].map((a) => JUDGE[a].name), ", "), "은는")} 기준까지 직접 정했다고 답했습니다. 체크리스트에서도 그 장면을 함께 골라, 이번 결과에서 가장 분명하게 확인되는 판단입니다.`);
   const confOnly = [...confirmed].filter((a) => !owned.has(a));
-  if (confOnly.length) P.push(`${j(join(confOnly.map((a) => JUDGE[a].name), ", "), "은는")} 스스로 맡아 해 봤지만 기준을 정한 장면까지는 응답에서 보이지 않습니다. 다음 과제에서 이 가운데 하나를 골라 기준까지 직접 정해 보면, 지원서에서 ‘내가 정한 일’로 말할 수 있게 됩니다.`);
+  if (confOnly.length >= 5) P.push(`여덟 가지 판단 가운데 ${confOnly.length}가지(${join(confOnly.map((a) => JUDGE[a].name), ", ")})를 스스로 맡아 해 봤지만, 기준을 정한 장면까지는 응답에서 보이지 않습니다. 다음 과제에서 이 가운데 하나를 골라 기준까지 직접 정해 보면, 지원서에서 ‘내가 정한 일’로 말할 수 있게 됩니다.`);
+  else if (confOnly.length) P.push(`${j(join(confOnly.map((a) => JUDGE[a].name), ", "), "은는")} 스스로 맡아 해 봤지만 기준을 정한 장면까지는 응답에서 보이지 않습니다. 다음 과제에서 이 가운데 하나를 골라 기준까지 직접 정해 보면, 지원서에서 ‘내가 정한 일’로 말할 수 있게 됩니다.`);
   const never = AXES.filter((a) => !confirmed.has(a) && askedD.some((d) => axisLevel(d, a) !== null));
-  if (never.length) P.push(`${j(join(never.map((a) => JUDGE[a].name), ", "), "은는")} 물어본 영역에서 아직 스스로 해 봤다고 답하지 않았습니다. 능력이 없다는 뜻이 아니라, 그런 장면을 맡아 본 경험이 아직 적다는 뜻입니다.`);
+  // 여덟 판단을 모두 늘어놓으면 문장이 끝나는 자리를 놓친다: 다 비었으면 ‘여덟 가지 가운데 아직 없음’ 으로 적는다
+  if (never.length >= 8) P.push(`물어본 영역에서 여덟 가지 판단(${JUDGE[never[0]].name}부터 ${JUDGE[never[never.length - 1]].name}까지) 가운데 아직 스스로 해 봤다고 답한 것이 없습니다. 능력이 없다는 뜻이 아니라, 그런 장면을 맡아 본 경험이 아직 적다는 뜻입니다.`);
+  else if (never.length) P.push(`${j(join(never.map((a) => JUDGE[a].name), ", "), "은는")} 물어본 영역에서 아직 스스로 해 봤다고 답하지 않았습니다. 능력이 없다는 뜻이 아니라, 그런 장면을 맡아 본 경험이 아직 적다는 뜻입니다.`);
   if (highInt.length) P.push(`관심은 ${join(highInt, ", ")}에서 높게 나왔습니다.${notAsked.length ? ` 그중 ${j(join(notAsked, ", "), "은는")} 이번 검사에서 판단을 자세히 묻지 않아, 관심이 있다는 것까지만 알 수 있습니다.` : ""}`);
   if (z3.length) P.push(`${j(join(z3, ", "), "은는")} 해 본 경험은 있지만 관심은 낮게 나왔습니다. 진로를 이쪽으로 정할 필요는 없지만, 다른 직무에 지원할 때 기본기로 쓸 수 있는 경험입니다.`);
   // 고른 근거는 결과 모델의 네 목록을 합쳐 센다: 묻지 않은 판단 자리의 ‘비교한 대상’ 은 `did` 에 들지 않고 `verifications` 에만 남는다(격리 검사에서 저장 27 · did 26)
@@ -747,7 +750,7 @@ export function growth(m: ResultModel): Growth | null {
       { when: "2개월", what: g.entry[0], output: "활동 기록 한 건(경험 기록에 남기기)" },
       { when: "3개월", what: `첫 실무형 프로젝트 ‘${g.firstProject.title}’ 시작`, output: "프로젝트 계획 한 장" },
       { when: "4~5개월", what: "프로젝트 완료와 결과 비교", output: g.firstProject.output },
-      { when: "6개월", what: "첫 포트폴리오 묶음 만들기와 CareerMatri 재검사", output: "포트폴리오 2~3건, 두 결과의 비교" },
+      { when: "6개월", what: `‘${g.firstProject.title}’ 결과물로 포트폴리오 첫 장 만들기와 CareerMatri 재검사`, output: "포트폴리오 첫 장(결과물 1건)과 두 결과의 비교" },
     ],
   };
 }

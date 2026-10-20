@@ -49,6 +49,13 @@ export type CompanyDeep = {
 export type PlanRow = { label: string; period: string; what: string; why: string; how: string; output: string; check: string };
 export type Story = { from: string; fits: string[]; parts: { label: string; text: string; filled: boolean }[]; add: string };
 
+/**
+ * 면접 질문 한 줄. **질문이 묻는 판단(축)과 그 옆에 붙는 ‘내가 정한 것’ 은 같은 축이어야 한다.**
+ * v7 은 질문과 상관없이 그 영역의 첫 문장을 붙여 ‘목표를 숫자로 정해 본 경험’ 옆에 ‘예산을 항목별로 나눴다’ 가 섰다.
+ * `pick` 은 그 축에서 학생이 실제로 고른 문장이고, 없으면 비워 두어 화면이 직접 기입 칸을 세운다.
+ */
+export type Interview3 = { q: string; why: string; material: string; axis?: string; domain?: string; pick?: string };
+
 export type Report3 = {
   core: string; meta: Meta; majorName: string;
   kind: "EVIDENCE" | "EARLY" | "MIXED";
@@ -60,7 +67,7 @@ export type Report3 = {
   strategy: { roleCode: string | null; roleName: string; outside: Outside[] };
   region: { facts: OrgSet2["region_facts"]; groups: { region: Region; items: Explore[] }[]; note: string; few: string | null };
   companies: CompanyDeep[];
-  application: { stories: Story[]; portfolio: { title: string; include: string; from: string; status: "보유" | "새로 만들기" }[]; interview: { q: string; why: string; material: string }[] };
+  application: { stories: Story[]; portfolio: { title: string; include: string; from: string; status: "보유" | "새로 만들기" }[]; interview: Interview3[] };
   plan: PlanRow[];
   final: { text: string; label: string; why: string; when: string }[];
   worksheet: { title: string; prefill: Record<string, string> }[];
@@ -115,10 +122,10 @@ export function build3(m: ResultModel, meta: Meta, exps: Experience[], set: OrgS
     points.push({ label: "지금의 출발점", fact: `관심은 ${gr.domains.join(", ")}에서 높게 나왔고, 이 영역들의 일을 스스로 맡아 해 본 경험은 아직 적다고 답했습니다.`,
       meaning: "관심이 분명한 영역이 있다는 것은 방향을 정하기 좋은 출발점입니다. 지금은 잘하는 일을 찾기보다 처음 해 볼 일을 고르는 단계입니다.",
       limit: "관심 응답은 그 일이 실제로 맞는지까지 말해 주지 않습니다. 직접 해 본 뒤에 다시 확인해야 합니다.",
-      action: `첫 실무형 프로젝트로 ${withJosa(qt(gr.project.title), "을를")} 권합니다(‘성장 설계’ 장).` });
+      action: `첫 실무형 프로젝트로 ${withJosa(qt(gr.project.title), "을를")} 권합니다. 만드는 차례는 ‘포트폴리오 한 건 설계’ 쪽에 있습니다.` });
     trace.push({ section: "01 종합 의견", claim: "출발점", from: ["domains.interest=HIGH", "domains.zone=Z4"] });
   }
-  if (prof.caution) points.push({ label: "응답을 읽을 때 주의할 점", fact: "판단을 묻는 질문에는 높게 답했지만, 그 장면을 체크리스트에서는 고르지 않은 영역이 있습니다.", meaning: "이 보고서는 그 판단들을 ‘직접 수행’ 단계까지만 반영했습니다.", limit: "응답이 틀렸다는 뜻이 아니라, 아직 확인할 자료가 없다는 뜻입니다.", action: "‘검사 응답과 경험 기록의 대조’ 장의 확인 과제로 어느 쪽이 맞는지 스스로 확인할 수 있습니다." });
+  if (prof.caution) points.push({ label: "응답을 읽을 때 주의할 점", fact: "판단을 묻는 질문에는 높게 답했지만, 그 장면을 체크리스트에서는 고르지 않은 영역이 있습니다.", meaning: "이 보고서는 그 판단들을 ‘직접 수행’ 단계까지만 반영했습니다.", limit: "응답이 틀렸다는 뜻이 아니라, 아직 확인할 자료가 없다는 뜻입니다.", action: "‘응답을 어떻게 읽었나’ 쪽의 확인 과제로 어느 쪽이 맞는지 스스로 확인할 수 있습니다." });
   if (pr[0]) {
     // 사실은 그 자리의 응답, 뜻은 목표 직무와의 연결 이유, 할 일은 목표 직무의 말로 쓴 과제와 산출물(실행 전략의 첫 줄)
     points.push({ label: "먼저 채울 부분", fact: pr[0].fact, meaning: /[.]$/.test(pr[0].link) ? pr[0].link : pr[0].link + ".",
@@ -180,13 +187,44 @@ export function build3(m: ResultModel, meta: Meta, exps: Experience[], set: OrgS
   for (const p of (goalGuide?.portfolio ?? []).slice(0, 3)) if (!portfolio.some((x) => x.title === p)) portfolio.push({ title: p, include: "목표 직무에서 흔히 보는 결과물(직무 일반)", from: `${goalDir!.name} 직무 안내`, status: "새로 만들기" });
   for (const c of companies.slice(0, 2)) for (const jb of c.jobs.slice(0, 1)) portfolio.push({ title: jb.project.title.replace(/^‘|’$/g, ""), include: jb.project.output, from: `${c.name} 탐색 프로젝트`, status: "새로 만들기" });
   const interview: Report3["application"]["interview"] = [];
-  for (const s of st.slice(0, 2)) interview.push({ q: s.question, why: `${s.name}에서 고르신 판단을 면접관이 되짚는 질문입니다`, material: [s.decisions[0], s.artifacts[0], s.comparisons[0]].filter(Boolean).join(" · ") || "직접 기입" });
+  /* 고른 문장의 축: 그 영역 체크리스트에서 그 문장이 어느 판단(J1~J8) 아래 있는지 */
+  const ckl = content(core).checklists.domains;
+  const axisOfPick = (td: string, text: string): string | undefined =>
+    Object.entries(ckl[td] ?? {}).find(([, list]) => list.some((x) => x.text === text))?.[0];
+  const pickPool = [...st.map((s) => s.code), ...m.domains.map((d) => d.code)]
+    .filter((c, i, a) => a.indexOf(c) === i)
+    .flatMap((code) => { const d = m.domains.find((x) => x.code === code); if (!d) return []; const ev = evidenceOf(d);
+      return [...ev.decisions, ...ev.acts].map((t) => ({ td: code, name: domainName(core, code), text: t, axis: axisOfPick(code, t) })); });
+  const usedPick = new Set<string>();
+  for (const s of st.slice(0, 2)) {
+    const pick = s.decisions[0] ?? s.acts[0];
+    if (pick) usedPick.add(`${s.code}|${pick}`);
+    interview.push({ q: s.question, why: pick ? `${s.name}에서 고르신 판단을 면접관이 되짚는 질문입니다` : `${s.name}에서 스스로 해 봤다고 답한 장면을 되짚는 질문입니다 — 고른 문장은 아직 없습니다`, material: [s.decisions[0], s.artifacts[0], s.comparisons[0]].filter(Boolean).join(" · ") || "직접 기입",
+      // 고른 문장이 없으면 질문이 ‘결과가 기대와 달랐던 적’(실패·수정)을 묻는다
+      axis: pick ? axisOfPick(s.code, pick) : "J7", domain: s.code, pick });
+  }
   // 아직 확인되지 않은 자리의 질문은 목표 직무가 그 판단을 묻는 문항(역할팩)에서 고른다: 다른 직무의 장면으로 묻지 않는다
   for (const p of pr.slice(0, 2)) interview.push({
     q: p.ask ? `“${p.ask}”` : `“${p.domain} 과제에서 ${j(p.what, "을를")} 직접 맡아 본 적이 있나요?”`,
     why: `${strat.roleName}에서 ‘${p.title}’ 장면을 묻는 질문입니다. 아직 응답에서 확인되지 않아 미리 준비합니다`,
     material: `준비 — ${p.todo} → ${p.output}` });
-  for (const q of (goalGuide?.interview ?? []).slice(0, 2)) interview.push({ q: `“${q.q}”`, why: q.why, material: st[0] ? `${st[0].name}의 ${st[0].decisions[0] ?? st[0].acts[0] ?? "경험"}` : "첫 프로젝트의 결과" });
+  /* 직무 일반 질문은 그 질문이 묻는 판단(축)에서 학생이 고른 문장을 붙인다. 없으면 직접 기입이다 */
+  /* 같은 판단 안에서도 질문의 말과 가장 가까운 문장을 고른다(두 글자 묶음 겹침). 이미 앞 질문이 그 장면을 물었으면 그 질문은 건너뛴다 */
+  const bi = (t: string) => { const z = t.replace(/[\s“”‘’.,?·]/g, ""); const o = new Set<string>(); for (let i = 0; i < z.length - 1; i++) o.add(z.slice(i, i + 2)); return o; };
+  const near = (a: string, b: string) => { const A = bi(a), B = bi(b); let n = 0; for (const x of A) if (B.has(x)) n++; return n / Math.max(1, Math.min(A.size, B.size)); };
+  let guideN = 0;
+  for (const q of (goalGuide?.interview ?? []) as { q: string; why: string; axis?: string }[]) {
+    if (guideN >= 2) break;
+    const same = q.axis ? pickPool.filter((x) => x.axis === q.axis) : [];
+    const usedNear = same.filter((x) => usedPick.has(`${x.td}|${x.text}`)).some((x) => near(q.q, x.text) >= 0.3);
+    if (usedNear) continue;
+    const hit = same.filter((x) => !usedPick.has(`${x.td}|${x.text}`)).sort((a, b) => near(q.q, b.text) - near(q.q, a.text))[0];
+    if (hit) usedPick.add(`${hit.td}|${hit.text}`);
+    guideN++;
+    interview.push({ q: `“${q.q}”`, why: q.why,
+      material: hit ? `${hit.name}의 ${hit.text}` : "직접 기입 — 이 질문이 묻는 판단에서 고른 문장이 아직 없습니다",
+      axis: q.axis, domain: hit?.td, pick: hit?.text });
+  }
 
   /* 실행 계획 */
   const plan: PlanRow[] = [];
@@ -207,8 +245,17 @@ export function build3(m: ResultModel, meta: Meta, exps: Experience[], set: OrgS
   const projFrom = goalJob ? `${goalJob.c.name} · ${goalJob.jb.name}` : `${strat.roleName || "목표 직무"} 직무 안내`;
   if (proj) plan.push({ label: qt(proj.title), period: "90일", what: `실무형 프로젝트 ${qt(proj.title)} 완료(${projFrom})`, why: `${strat.roleName || "목표 직무"}의 일을 결과물로 남겨야 서류에서 쓰입니다`, how: (proj as { steps: string[] }).steps.slice(0, 2).join(" → ") + " …", output: proj.output, check: "다른 사람이 그 결과물만 보고 내가 무엇을 판단했는지 알 수 있는가" });
   plan.push({ label: stories[0] ? `${stories[0].from.split(" — ")[0]} 경험을 자기소개서·면접 답변으로` : "새 경험을 자기소개서 문단으로", period: "90일", what: stories[0] ? `${stories[0].from.split(" — ")[0]} 경험을 자기소개서 문단 하나와 면접 답변 하나로 정리하기` : "새로 만든 경험을 문단 하나로 정리하기", why: "경험이 문장으로 옮겨지지 않으면 서류에서 쓰이지 않습니다", how: "‘자기소개서·포트폴리오·면접 전략’ 장의 네 칸 구조에 맞춰 쓰고 수치·기간을 직접 넣기", output: "자기소개서 문단 초안과 답변 메모", check: "문단에 ‘내가 정한 것’과 ‘비교한 결과’가 들어 있는가" });
-  plan.push({ label: "학교 밖 과제 경험 하나 만들기", period: "6개월", what: "현장실습·공모전·학회 가운데 하나에 참여해 학교 밖 과제 경험 만들기", why: "학교 밖 과제의 결과물은 수업 과제보다 직무에 가깝게 읽힙니다", how: "교내 현장실습지원센터·취업지원 프로그램", output: "실전 과제 결과물", check: "결과물에 고객·의뢰 기관의 의견이 남았는가" });
-  plan.push({ label: `결과물 ${Math.max(3, portfolio.filter((p) => p.status === "보유").length)}건을 포트폴리오로 묶기`, period: "6개월", what: `결과물 ${Math.max(3, portfolio.filter((p) => p.status === "보유").length)}건을 한 묶음의 포트폴리오로 정리`, why: "흩어진 결과물은 지원 시점에 다시 찾기 어렵습니다", how: "결과물마다 ‘내가 정한 것·비교한 대상’ 한 줄 붙이기", output: "포트폴리오 묶음", check: "결과물마다 내 역할이 한 줄로 적혀 있는가" });
+    /* 무엇을 남기는지까지 적는다: 목표 직무에서 흔히 보는 결과물 하나를 그 과제의 산출물로 */
+  const outside = goalGuide?.portfolio?.[0];
+  plan.push({ label: "학교 밖 과제 경험 하나 만들기", period: "6개월", what: `현장실습·공모전·학회 가운데 하나에서 팀 과제 하나를 맡아${outside ? ` ${j(outside, "을를")}` : " 결과물 한 건을"} 남기기(팀 3~5명 · 4~8주 규모)`, why: "학교 밖 과제의 결과물은 수업 과제보다 직무에 가깝게 읽힙니다", how: "교내 현장실습지원센터·취업지원 프로그램·학과 공모전 공지", output: outside ?? "실전 과제 결과물", check: "결과물에 고객·의뢰 기관의 의견이 남았는가" });
+  /* **가진 결과물 수에 맞춰 적는다.** 고른 결과물이 0건인 학생에게 ‘3건을 묶기’ 를 적으면 없는 결과물을 있는 것처럼 읽힌다 */
+  const owned = portfolio.filter((p) => p.status === "보유").length;
+  const made = proj ? `90일 프로젝트 ${qt(proj.title)}의 결과물` : "90일 안에 만든 결과물";
+  plan.push(owned === 0
+    ? { label: "첫 결과물 한 건으로 포트폴리오 시작하기", period: "6개월", what: `${made}을 포트폴리오 첫 장으로 정리하기(지금 고른 결과물은 아직 없습니다)`, why: "결과물이 한 건이라도 있어야 서류에서 보여 줄 것이 생깁니다", how: "결과물 한 장에 ‘내가 정한 것’ 한 줄과 ‘무엇과 견줬나’ 한 줄 붙이기", output: "포트폴리오 첫 장", check: "그 한 장만 보고 내가 무엇을 판단했는지 알 수 있는가" }
+    : owned < 3
+      ? { label: `가진 결과물 ${owned}건에 새 결과물 하나를 더해 묶기`, period: "6개월", what: `고른 결과물 ${owned}건과 ${made}을 한 묶음의 포트폴리오로 정리`, why: "흩어진 결과물은 지원 시점에 다시 찾기 어렵습니다", how: "결과물마다 ‘내가 정한 것·비교한 대상’ 한 줄 붙이기", output: `포트폴리오 묶음(${owned + 1}건)`, check: "결과물마다 내 역할이 한 줄로 적혀 있는가" }
+      : { label: `결과물 ${owned}건을 포트폴리오로 묶기`, period: "6개월", what: `고른 결과물 ${owned}건을 한 묶음의 포트폴리오로 정리`, why: "흩어진 결과물은 지원 시점에 다시 찾기 어렵습니다", how: "결과물마다 ‘내가 정한 것·비교한 대상’ 한 줄 붙이기", output: "포트폴리오 묶음", check: "결과물마다 내 역할이 한 줄로 적혀 있는가" });
   plan.push({ label: "지원 방향 정하고 공고 다섯 건과 대조", period: "12개월", what: `${andJoin(dirs.slice(0, 2).map((d) => d.name))} 가운데 지원할 방향을 정하고, 공고 다섯 건의 요구 조건을 이 보고서와 대조하기`, why: "1년이면 학년이 바뀌고 지원 시점이 가까워집니다", how: "공고의 담당 업무·우대 조건을 ‘직무별 실제 업무와 요구 역량’ 장의 ‘아직 확인되지 않은 요구’와 견주기", output: "직무별 요구 조건 대조표", check: "공고 요구 가운데 아직 근거가 없는 항목을 셀 수 있는가" });
   plan.push({ label: "재검사로 이번 결과와 비교", period: "12개월", what: "CareerMatri 검사를 다시 보고 이번 결과와 비교하기", why: "근거가 늘었는지를 같은 기준으로 확인합니다", how: "담당자에게 재응시를 요청", output: "두 결과의 비교", check: "‘직접 수행’에서 ‘기준까지 직접 결정’으로 바뀐 판단이 있는가" });
 
