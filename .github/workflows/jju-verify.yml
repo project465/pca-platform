@@ -135,6 +135,7 @@ jobs:
           # 접근 검사가 남긴 것을 치우고 A/B/C 를 새로 세운다(E2E 가 읽는다)
           run jju-verify-2 env OUT="$OUT/qa" npx tsx scripts/jju-verify.ts
           run jju-report   env OUT="$OUT/report" npx tsx scripts/jju-report.ts
+          run jju-gold     env OUT="$OUT/gold" DPI=150 npx tsx scripts/jju-gold-render.ts
           psql "$DATABASE_URL" -P pager=off -f docs/jju/r3/security/C16/c16_readonly_audit.sql > "$OUT/c16/c16_readonly_audit.ci.txt" 2>&1 || true
 
       - name: 실제 Next 서버 → 실제 Auth.js → 브라우저 E2E

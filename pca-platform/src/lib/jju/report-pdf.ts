@@ -15,13 +15,17 @@ import { answersOf, attemptOf, latestResult } from "@/lib/me-v3/runtime/session"
 import { resolveChromium } from "@/lib/me-v3/result/pdf";
 import { coverageOf } from "@/lib/jju/coverage";
 import { JJU_CODE, jjuUniversity, officialProgram, regionFacts, tracksOf } from "@/lib/jju/program";
-import { buildJjuReport, jjuReportHtml } from "@/lib/jju/report";
+import { buildJjuReport } from "@/lib/jju/report";
+import { buildGold } from "@/lib/jju/gold";
+import { buildWorkbook } from "@/lib/jju/gold-workbook";
+import { goldHtml } from "@/lib/jju/gold-html";
 
 export type JjuReportRefusal = "NOT_FOUND" | "NOT_JJU" | "NOT_SCORED" | "NO_REGISTRY";
 
 export async function jjuReportFor(
   attemptId: string, userId: string,
-): Promise<{ ok: true; html: string; sections: ReturnType<typeof buildJjuReport> } | { ok: false; why: JjuReportRefusal }> {
+): Promise<{ ok: true; html: string; sections: ReturnType<typeof buildJjuReport>;
+  gold: ReturnType<typeof buildGold>; work: ReturnType<typeof buildWorkbook> } | { ok: false; why: JjuReportRefusal }> {
   const u = jjuUniversity();
   if (!u) return { ok: false, why: "NO_REGISTRY" };
   const a = await attemptOf(attemptId, userId);
@@ -44,8 +48,16 @@ export async function jjuReportFor(
       cohort: t?.cohort.label ?? "", field: t?.field.name ?? "", spec: t?.spec_name ?? null,
     },
   };
+  /* 열 절 데이터 층(`buildJjuReport`)은 그대로 둔다: 회귀 검사가 그 값을 읽는다.
+     종이와 웹은 Gold Master 편집본이 같은 결과 모델에서 다시 그린다 */
   const sections = buildJjuReport(input);
-  return { ok: true, html: jjuReportHtml(input, sections), sections };
+  const at = await queryOne<{ d: string }>(
+    `SELECT to_char(coalesce(submitted_at, last_saved_at, started_at) AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD') d
+       FROM v3_attempts WHERE id = $1::bigint`, [attemptId]);
+  const gold = buildGold({ ...input, attemptId, submitted: at?.d ?? "" });
+  const course = program?.courses.find((c) => c.status !== "EXISTS_DETAIL_UNVERIFIED") ?? null;
+  const work = buildWorkbook(m, a.core_code, { roles: gold.roles.map((r) => r.code), course });
+  return { ok: true, html: goldHtml(gold, work), sections, gold, work };
 }
 
 export async function jjuReportPdf(html: string): Promise<Buffer> {
@@ -58,9 +70,13 @@ export async function jjuReportPdf(html: string): Promise<Buffer> {
   try {
     const page = await browser.newPage();
     await page.setContent(html, { waitUntil: "load" });
+    /* 한글 글꼴이 다 들어온 뒤에 뽑는다. 덜 들어온 채로 뽑으면 대체 글꼴로 그려진 줄이 남는다 */
+    await page.evaluate(() => (document as unknown as { fonts: { ready: Promise<unknown> } }).fonts.ready);
     /* `return page.pdf()` 로 두면 finally 가 그리는 동안 브라우저를 닫는다
        (운영 요약 쪽이 그 자리에서 `Printing failed` 를 냈다) */
-    const pdf = await page.pdf({ format: "A4", printBackground: true });
+    /* 머리말·꼬리말과 쪽 번호는 HTML 의 `@page` 여백 상자가 그린다. 그래야 표지 한 쪽만
+       여백 없이(`@page:first`) 꽉 채워 뽑을 수 있다 */
+    const pdf = await page.pdf({ format: "A4", printBackground: true, preferCSSPageSize: true });
     return Buffer.from(pdf);
   } finally {
     await browser.close();
