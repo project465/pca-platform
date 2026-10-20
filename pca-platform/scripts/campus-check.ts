@@ -826,7 +826,14 @@ ok("학교 코드가 겹치지 않는다",
 
   /* **학교 로고를 그려 넣지 않는다**(규격 §4 전 회차) */
   const noAsset = unis.filter((u) => !u.brand_asset).map((u) => u.university_code);
-  const drawn = TSX.filter((f) => /<svg|<img|<path/.test(body(read(f))));
+  /* asset 파일을 그대로 세우는 `<img src={u.brand_asset}>` 는 그린 것이 아니다.
+     세는 것은 직접 그린 모양(svg·path)과 등록부 밖의 그림 주소다 */
+  const drawn = TSX.filter((f) => {
+    const src = body(read(f));
+    if (/<svg|<path/.test(src)) return true;
+    const imgs = src.match(/<img[^>]*>/g) ?? [];
+    return imgs.some((t) => !/src=\{[^}]*brand_asset\}/.test(t));
+  });
   ok(`학교 로고를 그려 넣지 않았다 — asset 없는 학교 ${noAsset.length}개`,
     !drawn.length, drawn.join(" "));
 }

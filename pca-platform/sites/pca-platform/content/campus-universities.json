@@ -58,8 +58,8 @@
    "university_name": "배재대학교",
    "market_code": "KR",
    "entry_note": "CareerMatri + 배재대학교 전용 진입",
-   "brand_asset": null,
-   "brand_asset_note": "학교 로고 asset 이 저장소에 없다. **그려 넣지 않는다**: 학교 상표를 우리가 다시 그리면 그 학교가 승인한 적 없는 상표가 학생 화면에 선다",
+   "brand_asset": "/brand/schools/pcu.png",
+   "brand_asset_note": "2026-10-20 사업주가 받아 준 로고 이미지. 흰 바탕만 투명으로 바꾸고 잘랐다(다시 그리지 않았다)",
    "region_hint": "KR-CHUNGCHEONG",
    "region_cities": [
     "대전",

@@ -114,9 +114,6 @@ html [data-school="pcu"] .rs {
   --r-line-sel: #1557c7; --r-blue: #1557c7; --r-blue-soft: #eaf1fd;
 }
 
-/* 학교 표시 자리. 로고 파일이 있는 학교만 그림이 선다 */
-.cm-school-logo { display: block; height: 30px; width: auto; }
-
 /* ── 학교 진입 띠: 흰 머리띠 ─────────────────────────────────────
    어두운 띠는 그대로 두면 화면 맨 위가 가장 무거운 덩이가 된다. 흰 띠에
    학교 이름(또는 로고)이 먼저 서고 CareerMatri 는 한 단 옅게 선다 */

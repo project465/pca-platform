@@ -501,3 +501,6 @@ a.cm-cmp-row:focus-visible { outline: 2px solid var(--pcu-blue); outline-offset:
   .cm-cmp-row { padding: 12px 14px; gap: 10px; }
   .cm-cmp-auth { padding: 24px 18px 20px; margin-top: 12px; }
 }
+
+/* 학교 표시 자리. 등록부에 로고 파일이 있는 학교만 그림이 선다(그리지 않는다) */
+.cm-school-logo { display: block; height: 30px; width: auto; }
