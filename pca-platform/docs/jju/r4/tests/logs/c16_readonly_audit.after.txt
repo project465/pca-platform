@@ -1,0 +1,20 @@
+ check | user_id | university_code | department_code 
+-------+---------+-----------------+-----------------
+(0 rows)
+
+ check | user_id | orgs 
+-------+---------+------
+(0 rows)
+
+ check | user_id | university_code 
+-------+---------+-----------------
+(0 rows)
+
+      check      | id |        action         | org_id | target_id 
+-----------------+----+-----------------------+--------+-----------
+ cross_org_audit |  1 | campus.student.update |      1 | 6
+ cross_org_audit |  2 | campus.student.update |      1 | 6
+ cross_org_audit |  3 | campus.student.update |      1 | 6
+ cross_org_audit | 15 | campus.student.update |      1 | 6
+(4 rows)
+

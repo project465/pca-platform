@@ -41,7 +41,7 @@ import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { query, queryOne } from "../src/lib/db";
 import {
-  checkStudent, provisionStudent, campusStudentCount, initialPassword,
+  checkStudent, LoginTaken, provisionStudent, campusStudentCount, initialPassword,
   type CampusStudentInput,
 } from "../src/lib/campus/students";
 import { hashPassword } from "../src/lib/password";
@@ -233,7 +233,10 @@ async function main(): Promise<void> {
     const c = checkStudent(UNI, r);
     if (!c.ok) { bad.push(`${r.student_id || "(학번 없음)"} ${c.why}`); continue; }
     if (!apply) { kept.push(`${r.student_id} ${r.name} → ${c.value.ctx.department_code}`); continue; }
-    const res = await provisionStudent(org.id, c.value, { rotate });
+    /* 이미 있는 아이디가 이 학교 학생이 아니면 공통 쪽이 던진다(C16). 그 줄만 거르고 이어 간다 */
+    let res;
+    try { res = await provisionStudent(org.id, c.value, { rotate }); }
+    catch (e) { if (e instanceof LoginTaken) { bad.push(`${r.student_id} ${e.message}`); continue; } throw e; }
     if (res.password) {
       made.push({
         student_id: r.student_id, name: r.name,

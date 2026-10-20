@@ -30,7 +30,7 @@ import { randomBytes } from "node:crypto";
 import { query, queryOne } from "../src/lib/db";
 import { appEnv, stagingGate } from "../src/lib/env";
 import { hashPassword } from "../src/lib/password";
-import { checkStudent, provisionStudent } from "../src/lib/campus/students";
+import { checkStudent, LoginTaken, provisionStudent } from "../src/lib/campus/students";
 import {
   allLeaves, coreOf, statusOf, university,
 } from "../src/lib/campus/registry";
@@ -136,7 +136,9 @@ async function stepStudents(orgId: string, creds: Cred[]): Promise<void> {
         college_code: seat.college.code, department_code: seat.leaf.code,
       });
       if (!checked.ok) { console.log(`  걸림   ${login} — ${checked.why}`); continue; }
-      const made = await provisionStudent(orgId, checked.value, { rotate: ROTATE });
+      let made;
+      try { made = await provisionStudent(orgId, checked.value, { rotate: ROTATE }); }
+      catch (e) { if (e instanceof LoginTaken) { console.log(`  걸림   ${login} — ${e.message}`); continue; } throw e; }
       creds.push({
         role: "학생", login, pw: made.password,
         where: `/campus/${UNI.toLowerCase()}/login`,

@@ -1,0 +1,23 @@
+  통과  A 웹 리포트 200 · text/html — 200 21159B
+  통과  A PDF 200 · application/pdf · attachment · %PDF — 200 attachment; filename="careermatri-jju-31.pdf" 149444B
+  통과  A PDF 를 캐시하지 않는다
+  통과  B 웹 리포트 200 · text/html — 200 21555B
+  통과  B PDF 200 · application/pdf · attachment · %PDF — 200 attachment; filename="careermatri-jju-32.pdf" 150501B
+  통과  B PDF 를 캐시하지 않는다
+  통과  C 웹 리포트 200 · text/html — 200 22313B
+  통과  C PDF 200 · application/pdf · attachment · %PDF — 200 attachment; filename="careermatri-jju-33.pdf" 150652B
+  통과  C PDF 를 캐시하지 않는다
+  통과  같은 학교 학생 B → A 의 웹 리포트 404 — 404
+  통과  같은 학교 학생 B → A 의 PDF 404 — 404
+  통과  전주대 담당자 → A 의 웹 리포트 404 — 404
+  통과  전주대 담당자 → A 의 PDF 404 — 404
+  통과  배재대 학생 → A 의 웹 리포트 404 — 404
+  통과  배재대 학생 → A 의 PDF 404 — 404
+  통과  배재대 담당자 → A 의 웹 리포트 404 — 404
+  통과  배재대 담당자 → A 의 PDF 404 — 404
+  통과  로그인하지 않으면 로그인 화면으로 보낸다(307 → /login) — 307 /login
+  통과  없는 응시 번호는 404 — 404
+  통과  배재대 학생 본인의 배재대 응시는 전주대 리포트로 그리지 않는다(404) — 404
+
+통과 20 · 걸림 0
+

@@ -3,7 +3,7 @@
  "dump": {
   "A": {
    "label": "AI 기초는 강하고 실무 경험이 적은 학생",
-   "attempt": "26",
+   "attempt": "31",
    "versions": {
     "core_version": "CS_CORE_V1",
     "scoring_version": "me-v3-scoring.5",
@@ -141,7 +141,7 @@
   },
   "B": {
    "label": "프로그래밍·프로젝트 경험은 많고 직무 이해가 약한 학생",
-   "attempt": "27",
+   "attempt": "32",
    "versions": {
     "core_version": "CS_CORE_V1",
     "scoring_version": "me-v3-scoring.5",
@@ -293,7 +293,7 @@
   },
   "C": {
    "label": "전공 기초는 있고 AI 지식·근거가 부족한 학생",
-   "attempt": "28",
+   "attempt": "33",
    "versions": {
     "core_version": "CS_CORE_V1",
     "scoring_version": "me-v3-scoring.5",

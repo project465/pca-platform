@@ -100,12 +100,16 @@ async function main() {
       [P, before.university_code, before.college_code, before.department_code, before.specialization]);
     say("  되돌림  배재대 QA 학생 줄을 원래 값으로 돌려 두었다");
   }
-  /* rotate 경로(운영 스크립트 pcu-students · staging-bootstrap 가 쓴다)는 더 세다:
-     ON CONFLICT (login_id) 가 남의 학교 학생의 비밀번호와 학교를 통째로 바꾼다.
-     여기서는 되돌릴 수 없는 일(해시 교체)이라 실제로 돌리지 않고 코드로만 적는다 */
+  /* rotate 경로(운영 스크립트 pcu-students · staging-bootstrap 가 쓴다). C16 수정 뒤에는 실제로 돌려 본다:
+     거절되면 아무 줄도 바뀌지 않는다. 바뀌면(수정이 빠지면) QA 학생의 열쇠가 바뀌므로 jju-verify 를 다시 돌린다 */
   const c = checkStudent("JJU", { student_id: "QAX4", name: "x", login_id: pcuLogin, department_code: "JJU1_AI" });
-  ok("(코드 읽기) rotate 경로는 아이디가 겹치면 남의 학교 계정의 열쇠·학교를 덮는다 — 돌리지 않음", false,
-    `provisionStudent(..., {rotate:true}) · ON CONFLICT (login_id) DO UPDATE password_hash · campus_students university_code 덮어씀 · 확인용 checkStudent ${c.ok ? "통과" : "거절"}`);
+  const hashBefore = (await queryOne<{ h: string }>(`SELECT password_hash h FROM users WHERE id=$1::bigint`, [P]))?.h;
+  let rot = "";
+  if (c.ok) { try { await provisionStudent(jjuOrg, c.value, { rotate: true }); } catch (e) { rot = (e as Error).message; } }
+  const hashAfter = (await queryOne<{ h: string }>(`SELECT password_hash h FROM users WHERE id=$1::bigint`, [P]))?.h;
+  const ctxAfter = await campusStudentContext(P);
+  ok("rotate 경로도 다른 학교 학생의 열쇠·학교를 덮지 않는다", !!rot && hashBefore === hashAfter && ctxAfter?.ctx.university_code === "PCU",
+    `${rot || "통과됨(수정 없음)"} · 열쇠 ${hashBefore === hashAfter ? "그대로" : "바뀜"}`);
   void provisionStudent;
   /* 공통 경로는 못 고치지만 전주대가 소유한 스크립트는 들어가기 전에 멈춘다 */
   const own = await loginOwner(pcuLogin, "JJU");

@@ -17,7 +17,7 @@
  * 검사를 시작하는 자리가 그때 다시 본다.
  */
 import { randomBytes } from "node:crypto";
-import { query, queryOne } from "@/lib/db";
+import { query, queryOne, tx } from "@/lib/db";
 import { hashPassword } from "@/lib/password";
 import {
   contextOf, findLeaf, routingContextOf, university, type CampusContext,
@@ -116,65 +116,76 @@ export function initialPassword(len = 12): string {
  * 사람은 보통 명단을 다시 올리는 것인데, 그때 비밀번호가 갈리면 어제
  * 받아 간 학생이 그 자리에서 잠긴다.
  */
+/**
+ * 이미 있는 아이디가 **같은 학교의 학생**이 아니면 던진다(C16).
+ * 누구 것인지는 적지 않는다: 그 말 자체가 다른 학교 학생이 있다는 답이 된다.
+ */
+export class LoginTaken extends Error {
+  constructor() { super("이 아이디는 이미 쓰이고 있습니다"); this.name = "LoginTaken"; }
+}
+
 export async function provisionStudent(
   orgId: string, checked: Checked,
   opts: { rotate?: boolean } = {},
 ): Promise<{ created: boolean; password: string | null; userId: string }> {
   const { input, loginId, ctx } = checked;
-  const had = await queryOne<{ id: string }>(
-    `SELECT id::text FROM users WHERE login_id = $1`, [loginId]);
-  if (had && !opts.rotate) {
-    /* 학과가 바뀌었을 수 있으므로 그 줄은 맞춰 둔다. 열쇠만 그대로다 */
-    await query(
-      `UPDATE campus_students
-          SET college_code = $2, department_code = $3, specialization = $4
-        WHERE user_id = $1::bigint`,
-      [had.id, ctx.college_code, ctx.department_code, ctx.specialization]);
-    return { created: false, password: null, userId: had.id };
-  }
-
-  const pw = initialPassword();
-  const user = await queryOne<{ id: string; is_demo: boolean }>(
-    `INSERT INTO users (login_id, email, display_name, password_hash,
-                        status, locale, must_reset_pw)
-     VALUES ($1, $2, $3, $4, 'active', 'ko', FALSE)
-     ON CONFLICT (login_id) DO UPDATE
-       SET password_hash = EXCLUDED.password_hash,
-           display_name  = EXCLUDED.display_name
-     RETURNING id::text, is_demo`,
-    [loginId, input.email?.trim() || null, input.name.trim(),
-      await hashPassword(pw)],
-  );
-  if (!user) throw new Error(`계정을 만들지 못했습니다: ${loginId}`);
-  /* **학생을 시연으로 표시하지 않는다.** 사람을 만드는 자리가 스무 곳이
-     넘어 트리거가 아이디 모양만 보고 표시할 수 있고, 그 자리는 운영
-     지표에서 걸러지므로 담당자 화면의 수가 비어 보인다 */
-  if (user.is_demo) {
-    await query(`UPDATE users SET is_demo = FALSE WHERE id = $1::bigint`,
-      [user.id]);
-  }
-
-  /* 소속은 `memberships` 가 든다. 역할은 전부터 있던 `student` 다 */
-  await query(
-    `INSERT INTO memberships (user_id, org_id, role)
-     VALUES ($1::bigint, $2::bigint, 'student')
-     ON CONFLICT (user_id, org_id, role) DO NOTHING`,
-    [user.id, orgId]);
-
-  await query(
-    `INSERT INTO campus_students (user_id, university_code, student_id,
-                                  college_code, department_code, specialization)
-     VALUES ($1::bigint, $2, $3, $4, $5, $6)
-     ON CONFLICT (user_id) DO UPDATE
-       SET university_code = EXCLUDED.university_code,
-           student_id      = EXCLUDED.student_id,
-           college_code    = EXCLUDED.college_code,
-           department_code = EXCLUDED.department_code,
-           specialization  = EXCLUDED.specialization`,
-    [user.id, ctx.university_code, input.student_id,
-      ctx.college_code, ctx.department_code, ctx.specialization]);
-
-  return { created: !had, password: pw, userId: user.id };
+  /* 아이디 하나를 한 번에 한 곳만 만진다. 두 학교가 같은 순간에 같은 새 아이디를
+     만들면 둘 다 `없다` 를 읽고 둘 다 쓴다(C16 경쟁). 잠금은 이 거래가 끝날 때 풀린다 */
+  return tx(async (c) => {
+    await c.query(`SELECT pg_advisory_xact_lock(hashtext($1))`, [loginId]);
+    const had = (await c.query<{ id: string; uni: string | null }>(
+      `SELECT u.id::text, cs.university_code AS uni
+         FROM users u LEFT JOIN campus_students cs ON cs.user_id = u.id
+        WHERE u.login_id = $1`, [loginId])).rows[0];
+    /* 개인 회원 · 담당자 · 다른 학교 학생이면 어느 칸도 바꾸지 않는다 */
+    if (had && had.uni !== ctx.university_code) throw new LoginTaken();
+    if (had && !opts.rotate) {
+      await c.query(
+        `UPDATE campus_students
+            SET college_code = $2, department_code = $3, specialization = $4
+          WHERE user_id = $1::bigint AND university_code = $5`,
+        [had.id, ctx.college_code, ctx.department_code, ctx.specialization, ctx.university_code]);
+      return { created: false, password: null, userId: had.id };
+    }
+    const pw = initialPassword();
+    const hash = await hashPassword(pw);
+    let userId: string;
+    if (had) {
+      await c.query(`UPDATE users SET password_hash = $2, display_name = $3 WHERE id = $1::bigint`,
+        [had.id, hash, input.name.trim()]);
+      userId = had.id;
+    } else {
+      const ins = (await c.query<{ id: string }>(
+        `INSERT INTO users (login_id, email, display_name, password_hash,
+                            status, locale, must_reset_pw, is_demo)
+         VALUES ($1, $2, $3, $4, 'active', 'ko', FALSE, FALSE)
+         ON CONFLICT (login_id) DO NOTHING
+         RETURNING id::text`,
+        [loginId, input.email?.trim() || null, input.name.trim(), hash])).rows[0];
+      if (!ins) throw new LoginTaken();
+      userId = ins.id;
+      /* 트리거가 아이디 모양을 보고 시연으로 표시할 수 있다(전과 같은 까닭) */
+      await c.query(`UPDATE users SET is_demo = FALSE WHERE id = $1::bigint`, [userId]);
+    }
+    await c.query(
+      `INSERT INTO memberships (user_id, org_id, role)
+       VALUES ($1::bigint, $2::bigint, 'student')
+       ON CONFLICT (user_id, org_id, role) DO NOTHING`, [userId, orgId]);
+    /* 학교 칸은 덮지 않는다: 여기까지 온 줄은 없거나 같은 학교다 */
+    await c.query(
+      `INSERT INTO campus_students (user_id, university_code, student_id,
+                                    college_code, department_code, specialization)
+       VALUES ($1::bigint, $2, $3, $4, $5, $6)
+       ON CONFLICT (user_id) DO UPDATE
+         SET student_id      = EXCLUDED.student_id,
+             college_code    = EXCLUDED.college_code,
+             department_code = EXCLUDED.department_code,
+             specialization  = EXCLUDED.specialization
+       WHERE campus_students.university_code = EXCLUDED.university_code`,
+      [userId, ctx.university_code, input.student_id,
+        ctx.college_code, ctx.department_code, ctx.specialization]);
+    return { created: !had, password: pw, userId };
+  });
 }
 
 /**

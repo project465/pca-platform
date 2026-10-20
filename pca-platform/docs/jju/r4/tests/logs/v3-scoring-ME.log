@@ -1,0 +1,50 @@
+  core  ME_CORE_V3 · me-v3-scoring.5 · ME_V3_ITEM_BANK_V2.5
+
+  통과  문항 은행이 잠긴 판본과 같다 — 18벌 · ME_V3_ITEM_BANK_V2.5
+  통과  사람 열두 벌이 기대한 묶음과 까닭을 낸다 — 12벌
+  통과  두 번 돌려도 같은 값
+  통과  응답을 넣은 순서가 결과를 바꾸지 않는다
+  통과  Core 판정 지문이 그대로다 — 12벌
+  통과  A 학위만 바꿔도 Core 판정이 같다 — 학부·석사·박사·포닥
+  통과  B 전공계열만 바꿔도 Core 판정이 같다 — 계열 넷
+  통과  C 산업팩만 바꿔도 Core 판정이 같다 — 반도체·방산·자동차·없음
+  통과  D 역할팩만 바꿔도 Core 판정이 같다 — CAE·PM·설계·없음
+  통과  E 관심만 올려도 근거 상태가 그대로다 — TD04 묶음은 Z2_EVIDENCE_INCOMPLETE에서 Z2_EVIDENCE_INCOMPLETE로 옮겨도 된다
+  통과  F 산출물을 더하면 근거가 선다 — TD02 Z2_EVIDENCE_INCOMPLETE → Z1_EVIDENCE_ESTABLISHED
+  통과  G 검증을 더하면 그 축만 바뀐다 — TD06 J6 NOT_OBSERVED → CONFIRMED
+  통과  종합 적합도 숫자를 만들지 않는다 — 관심·경험·학습·축이 따로 나간다
+  통과  BASIC 에는 근거가 섰다는 판정이 없다 — 2벌
+  통과  소유는 응답과 근거 둘을 함께 본다
+  통과  근거가 하나면 소유로 올리지 않는다 — J3 CONFIRMED · 근거 1
+  통과  선별 축의 두 문항을 다 채우면 근거 하나로 센다 — 근거 2 (checklist:구속 조건과 하중 작용점을 정했다 · second_item)
+  통과  남이 정한 것을 받아 쓴 응답은 확인이 아니다 — 참여 8축 · 확인 0축
+  통과  빈 것의 뜻을 하나로 뭉개지 않는다 — ANSWERED_NONE · NONE_MISSING · NOT_ROUTED · SKIPPED
+  통과  reason code 가 목록 안에 있다 — 21가지
+  통과  엔진이 사람에게 나갈 한국어를 품지 않는다 — 8벌
+  통과  엔진이 번역표를 읽지 않는다
+  통과  ME_V2 를 읽지 않는다 — 금지 낱말 일곱 갈래
+  통과  무작위와 시각을 읽지 않는다 — 8벌
+  통과  팩을 골라도 Core 판정이 같다 — 읽는 순서 J3·J6·J4·J7·J2
+  통과  팩 판본이 스냅샷에 적힌다
+  통과  스냅샷에 판본 여섯 칸 — core_version · item_bank_version · scoring_version · industry_pack_version · role_pack_version · region_layer_version
+  통과  보기 넷의 뜻이 한 곳에 있다 — NONE · RECEIVED · DID · DECIDED_USED
+  통과  응답 품질이 낮아도 Core 판정을 깎지 않는다 — flag=INCONSISTENT · CONSISTENCY_PAIR_GAP
+  통과  같은 상태로 묶인 영역을 그대로 적는다 — 3벌에서 묶음이 생긴다
+  통과  trace 가 문항 번호까지 되짚는다 — TD02_J3_1=DECIDED_USED TD02_J3_2=DECIDED_USED
+
+사람 열두 벌
+
+  P01 경험 없는 학부생                BASIC    근거 없음             덜 섬 없음             부족  2개 · LOW_VARIANCE
+  P02 관심만 높은 학부생               BASIC    근거 없음             덜 섬 없음             부족  2개 · OK
+  P03 설계 캡스톤 학생                STANDARD 근거 TD01           덜 섬 TD08           부족  1개 · OK
+  P04 구조해석 석사                  STANDARD 근거 TD02           덜 섬 TD01,TD07      부족  0개 · OK
+  P05 열유체 석사                   STANDARD 근거 TD03           덜 섬 TD02,TD07      부족  0개 · OK
+  P06 제어 프로젝트 학생               STANDARD 근거 TD05           덜 섬 TD01,TD12      부족  0개 · OK
+  P07 생산기술 경험자                 STANDARD 근거 TD08           덜 섬 TD09,TD10      부족  0개 · OK
+  P08 설비 경험자                   STANDARD 근거 TD09           덜 섬 TD08           부족  1개 · OK
+  P09 재료·파손 박사                 PRO      근거 TD06,TD07      덜 섬 없음             부족  0개 · OK
+  P10 연구성과는 많지만 직접 판단이 적은 박사   PRO      근거 없음             덜 섬 TD02,TD03      부족  1개 · OK
+  P11 판단은 많지만 산출물이 없는 포닥       PRO      근거 없음             덜 섬 TD02,TD03,TD04 부족  0개 · OK
+  P12 판단과 산출물과 검증이 모두 강한 포닥    PRO      근거 TD02,TD04,TD07 덜 섬 없음             부족  0개 · OK
+
+확인 31가지 — 통과 31 · 걸림 0

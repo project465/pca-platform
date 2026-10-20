@@ -1,0 +1,46 @@
+PCU 학과 콘텐츠 QA — var/pcu-dept/dept.tsv
+
+[§1 Coverage]
+  전체 선택 자리        117
+  Assessment 대상       115
+  전공 고르는 자리      2  자율전공학부 · 자율전공학부
+  Core 없음(고장)       0
+  (Core · 갈래) 묶음    62
+  한 묶음을 나눠 쓰는 학과 6짝
+    EE_CORE_V1/SPEC_EE_ROBOT           드론로봇공학과 · 드론로봇공학전공
+    MEDIA_CORE_V1/SPEC_MEDIA_MUSIC     음악트랙 · 실용음악전공
+    MEDIA_CORE_V1/SPEC_MEDIA_FILM      영화영상트랙 · 영화영상학전공
+    SPORTS_CORE_V1/SPORTS_SENIOR       시니어운동처방전공 · 시니어운동처방·파크골프전공
+    BIZ_CORE_V1/SPEC_BIZ_CULTURE_BIZ   아트컬처비즈니스전공 · K컬처비즈니스전공
+    CS_CORE_V1/SPEC_CS_GLOBAL_IT       글로벌IT전공 · 글로벌IT·AI전공
+  학년도마다 다른 묶음  0
+
+[§2 항목별 판정]
+  항목                   PASS  WEAK  GENERIC  WRONG
+  검사 경험 예시              115     0        0      0
+  Domain 설명             115     0        0      0
+  결과 머리말                115     0        0      0
+  확인된 경험 설명             115     0        0      0
+  Evidence 예시           115     0        0      0
+  Gap 설명                115     0        0      0
+  Action                115     0        0      0
+  Industry/Role         115     0        0      0
+  합계                    920     0        0      0
+
+[가장 많이 걸린 자리 0 / 걸린 자리 0]
+
+[§11 지원서·면접 재료] 묶음 62 가운데 비어 있는 것 0
+
+[학생이 읽는 자리에 닿는가]
+  검사 경험 예시             읽는 자리 2
+  Domain 설명            읽는 자리 2
+  확인된 경험 설명            읽는 자리 2
+  Evidence 예시          읽는 자리 6
+  산업                   읽는 자리 1
+  직무                   읽는 자리 1
+  Action(먼저)           읽는 자리 3
+  Action(다음)           읽는 자리 1
+  지원서·면접 재료            읽는 자리 5
+
+[글자까지 같은 줄] 0줄
+[Action 끝 24자가 같은 틀] 0가지
