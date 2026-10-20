@@ -12,10 +12,10 @@ v3(RICH 50 · POOR 47 · CONTRA 53쪽)의 승인 보류 지시를 받아 **분�
 |---|---|---|
 | 실행 전략 사슬 점검(세 사례) | 자동 검사 통과 | `LINKAGE_AUDIT.md` 걸린 줄 0 |
 | 쓰지 않기로 한 말 | 자동 검사 통과 | 렌더한 글자 전체에서 0곳 |
-| 5쪽 넘침 | 자동 검사 통과 | 남은 높이 1 · 36 · 19 · 85 · 91px |
+| 5쪽 넘침 | 자동 검사 통과 | Pretendard 기준 남은 높이 19 · 87 · 19 · 120 · 140px |
 | 측정 동결 `v3:freeze:measure` | 자동 검사 통과 | 14/14, 기록을 다시 적지 않음 |
 | **디자인 Human Review** | **미승인 (보류)** | 사업주가 5쪽 PDF 와 v3/v4 비교 그림을 직접 보고 판정 |
-| 최종 글꼴(Pretendard) PDF | **없음 — 막힘** | 이 컨테이너는 npm·GitHub·jsdelivr·fonts.gstatic 이 막혀 Pretendard 를 받지 못한다. 지금 PDF 는 NanumGothic 이고 **승인 대상이 아니다** |
+| 최종 글꼴(Pretendard) PDF | **있음 (2026-10-20 재출력)** | Pretendard 1.3.9 공식 배포본(GitHub `orioncactus/pretendard` 릴리스 zip · SIL OFL 1.1). `pdffonts` 로 본 임베드 글꼴이 Pretendard Regular · Bold · ExtraBold 뿐이고 대체 글꼴 0. 이전 NanumGothic 판은 커밋 `a284eeff` 에만 남는다 |
 | Annual Report 레퍼런스 비교 | **못 함 — 막힘** | 레퍼런스 이미지를 받지 못했다(정보 위계 · 그래프 크기 · 본문 가독성 · 그림 구성 · 정렬 · 박스 디자인 비교가 비어 있다) |
 | 정식 의존성 환경의 전체 `tsc` · 회귀 | **못 함 — 막힘** | `npm ci` 불가(레지스트리 차단). 임시 실행기로 돌린 결과만 있다(5절) |
 | CONTRA 고객·서비스 → 인사 연결 | 넣지 않음(근거 부족) | 아래 7절 |
@@ -88,7 +88,7 @@ v3 는 결과 모델의 빈자리 순위를 그대로 실행 과제로 옮겨, �
 - **`npx tsc --noEmit` 은 돌리지 못했다**(`node_modules` 와 `@types` 없음). 대신 전역 `tsc` 로 바뀐 파일(`report-gm/*` · `gm-*.ts`)을
   외부 모듈만 임시 선언으로 바꿔 검사했고 고친 파일에서 난 오류는 0이다. 저장소의 정식 `npm run typecheck` 는 의존성이 설치된 곳에서 한 번
   더 돌려야 한다.
-- **글꼴**: Pretendard 를 받을 수 없어 NanumGothic(PyPI · OFL)으로 뽑았다. `DESIGN_NOTES.md` 첫 절.
+- **글꼴**: 처음에는 Pretendard 를 받을 수 없어 NanumGothic 으로 뽑았다. 2026-10-20 에 GitHub 릴리스 내려받기가 열려 Pretendard 1.3.9 공식 배포본(GitHub `orioncactus/pretendard` 릴리스 zip · SIL OFL 1.1)으로 다시 뽑았다. 글꼴 파일은 저장소에 넣지 않고 `var/pdf-gm/fonts/pretendard/`(gitignore)에 둔다.
 - **Annual Report 레퍼런스 이미지 없음**: `DESIGN_NOTES.md` 첫 절.
 - **검토 사례**: 인수인계 문서 5절 (a) 방법으로, 빈 DB 에서 `gm-cases2.ts`(원본 응시 없이 사람 셋의 규칙으로 BIZ 응시를 만든다)로 다시
   굳혔다. v3 의 462 · 463 · 464 를 만든 스크립트가 이것이라 `gm-cases.ts` 를 고칠 필요가 없었다. 새 응시 번호는 1 · 2 · 3 이고, 실행 전략
@@ -115,7 +115,7 @@ CASE=RICH:1 npx tsx scripts/lab/gm-sample4.ts           # 대표 5쪽 → BIZ-GM
   응답만으로 확인된 축(고른 항목 없음)에서도 섰다. 지금은 **그 축의 체크리스트 항목을 실제로 고른 영역**에서만 그 줄을 세우고
   (`analysis3.ts` `transfer()` · `pickedIn`), 세 사례에서 그 줄이 0곳이다. RICH 대표 5쪽은 이 변경으로 한 글자도 바뀌지 않았다
   (쪽 그림 다섯의 지문이 같다).
-- Pretendard 로 다시 뽑아 줄바꿈 확인 · 레퍼런스 이미지 기준 재조정. 필요한 것 둘 가운데 하나:
-  ① Pretendard 글꼴 파일(OTF/TTF, 400·500·600·700)을 올려 주시거나 환경 네트워크 설정에서 `registry.npmjs.org` 또는 `github.com`
-  을 허용, ② Annual Report 레퍼런스 쪽 그림. 글꼴은 `var/pdf-gm/fonts/pretendard/` 에 두면 `gm-sample4.ts` 가 먼저 쓴다.
+- Annual Report 레퍼런스 쪽 그림을 받아 정보 위계 · 그래프 크기 · 본문 가독성 · 그림 구성 · 정렬 · 박스 디자인을 견준다.
+- Pretendard 판을 보며 확인할 자리(눈으로 본 것, 고치지 않았다): 5쪽 상단 과제 칸의 ‘남길 것 …’ 줄이 접힐 때 줄 사이가 넓게 벌어진다 ·
+  2쪽 방사형 그림 안의 단계 눈금 글자(‘지시받아 수행’ 등)가 선과 겹친다.
 - 정식 의존성 환경(`npm ci` 가 되는 곳)에서 `npm run typecheck` 와 회귀(`v3:all` · `v3:freeze:measure`)를 다시 돌린다.

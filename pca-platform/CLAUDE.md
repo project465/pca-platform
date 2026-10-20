@@ -12616,8 +12616,8 @@ v3 승인 보류 지시(`docs/metri/review/pdf-gm/HANDOFF_GM4.md`)의 4절을 �
 문장만** 인용한다(전에는 두 판단에 같은 첫 문장이 붙었다).
 
 **이 컨테이너는 npm 레지스트리와 GitHub 내려받기가 막혀 있었다.** 저장소 밖에 임시 실행기(전역 TypeScript 로 `.ts` 실행 · `pg` 는
-PyPI psycopg 로 붙는 대체)를 두고 저장소 코드를 그대로 돌렸고, 글꼴은 Pretendard 대신 NanumGothic 으로 뽑았다
-(`var/pdf-gm/fonts/pretendard/` 가 있으면 그것을 먼저 쓴다). 정식 `npm run typecheck` 는 의존성이 있는 곳에서 다시 돌린다.
+PyPI psycopg 로 붙는 대체)를 두고 저장소 코드를 그대로 돌렸다. 글꼴은 처음 NanumGothic 으로 뽑았다가, GitHub 릴리스 내려받기가
+열린 뒤 Pretendard 1.3.9(OFL)를 `var/pdf-gm/fonts/pretendard/` 에 두고 다시 뽑았다(글꼴 파일은 저장소에 넣지 않는다). 정식 `npm run typecheck` 는 의존성이 있는 곳에서 다시 돌린다.
 측정 동결은 기록을 다시 적지 않은 채로 통과한다.
 
 ```bash
