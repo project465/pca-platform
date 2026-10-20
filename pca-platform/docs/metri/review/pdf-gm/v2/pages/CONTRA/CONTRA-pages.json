@@ -1,0 +1,150 @@
+{
+ "pdf": "docs/metri/review/pdf-gm/v2/BIZ-GM-CONTRA.pdf",
+ "pages": 24,
+ "rows": [
+  {
+   "page": 1,
+   "file": "CONTRA-p-01.png",
+   "chars": 325,
+   "fill": 0.96
+  },
+  {
+   "page": 2,
+   "file": "CONTRA-p-02.png",
+   "chars": 840,
+   "fill": 0.73
+  },
+  {
+   "page": 3,
+   "file": "CONTRA-p-03.png",
+   "chars": 922,
+   "fill": 0.91
+  },
+  {
+   "page": 4,
+   "file": "CONTRA-p-04.png",
+   "chars": 753,
+   "fill": 0.97
+  },
+  {
+   "page": 5,
+   "file": "CONTRA-p-05.png",
+   "chars": 723,
+   "fill": 0.75
+  },
+  {
+   "page": 6,
+   "file": "CONTRA-p-06.png",
+   "chars": 597,
+   "fill": 0.75
+  },
+  {
+   "page": 7,
+   "file": "CONTRA-p-07.png",
+   "chars": 674,
+   "fill": 0.86
+  },
+  {
+   "page": 8,
+   "file": "CONTRA-p-08.png",
+   "chars": 888,
+   "fill": 0.95
+  },
+  {
+   "page": 9,
+   "file": "CONTRA-p-09.png",
+   "chars": 937,
+   "fill": 0.87
+  },
+  {
+   "page": 10,
+   "file": "CONTRA-p-10.png",
+   "chars": 1076,
+   "fill": 0.94
+  },
+  {
+   "page": 11,
+   "file": "CONTRA-p-11.png",
+   "chars": 1245,
+   "fill": 0.91
+  },
+  {
+   "page": 12,
+   "file": "CONTRA-p-12.png",
+   "chars": 724,
+   "fill": 0.63
+  },
+  {
+   "page": 13,
+   "file": "CONTRA-p-13.png",
+   "chars": 893,
+   "fill": 0.91
+  },
+  {
+   "page": 14,
+   "file": "CONTRA-p-14.png",
+   "chars": 1359,
+   "fill": 0.79
+  },
+  {
+   "page": 15,
+   "file": "CONTRA-p-15.png",
+   "chars": 1007,
+   "fill": 0.97
+  },
+  {
+   "page": 16,
+   "file": "CONTRA-p-16.png",
+   "chars": 883,
+   "fill": 0.53
+  },
+  {
+   "page": 17,
+   "file": "CONTRA-p-17.png",
+   "chars": 906,
+   "fill": 0.97
+  },
+  {
+   "page": 18,
+   "file": "CONTRA-p-18.png",
+   "chars": 1068,
+   "fill": 0.86
+  },
+  {
+   "page": 19,
+   "file": "CONTRA-p-19.png",
+   "chars": 716,
+   "fill": 0.98
+  },
+  {
+   "page": 20,
+   "file": "CONTRA-p-20.png",
+   "chars": 966,
+   "fill": 0.88
+  },
+  {
+   "page": 21,
+   "file": "CONTRA-p-21.png",
+   "chars": 688,
+   "fill": 0.82
+  },
+  {
+   "page": 22,
+   "file": "CONTRA-p-22.png",
+   "chars": 230,
+   "fill": 0.72
+  },
+  {
+   "page": 23,
+   "file": "CONTRA-p-23.png",
+   "chars": 628,
+   "fill": 0.96
+  },
+  {
+   "page": 24,
+   "file": "CONTRA-p-24.png",
+   "chars": 974,
+   "fill": 0.61
+  }
+ ]
+}

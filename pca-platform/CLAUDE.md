@@ -12565,3 +12565,19 @@ SRC=74 npx tsx scripts/lab/gm-cases.ts     # BIZ 검토 응시 (근거 많음 ·
 npx tsx scripts/lab/gm-report.ts           # 세 사례를 새 템플릿으로 뽑는다
 npx tsx scripts/lab/gm-trace.ts            # 결론마다 입력을 되짚는다 (28가지)
 ```
+
+**BIZ PDF GOLD MASTER v2 (미리보기, Human Review 대기).** (2026-10-20)
+
+반려된 12쪽 판을 13장 · 20~24쪽으로 다시 짰다. 운영 PDF 경로와 Production 은 그대로고
+다른 학과로 넓히지 않았다. 읽는 층은 `src/lib/me-v3/report-gm/{profile,companies,report2,render2}.ts`
+이고 뽑는 쪽은 `scripts/lab/gm-*.ts` 다. 보고는 `docs/metri/review/pdf-gm/v2/README.md`.
+
+**KODATA 는 제3자 자료다.** 공식 자료와 같은 층으로 적지 않고 재무표·신용등급·주주·거래처를
+옮기지 않으며 원본(대외비)을 저장소에 넣지 않는다. 기업 자료 v2(`data/region/kr-chungcheong-orgs.v2.json`)는
+`PREVIEW_ONLY` 이고 줄마다 출처와 확인 상태를 든다. **채용 여부는 전부 미확인이다.**
+
+**한 사실을 두 상자가 다른 말로 적지 않는다.** 심층 카드의 `지금 가진 근거` 는 응답으로 확인된 판단을
+드는데 10문항의 같은 칸은 고른 근거만 보고 `아직 없습니다` 를 적어, 한 쪽에 서로 반대인 두 줄이 섰다.
+고른 근거가 없으면 응답 쪽을 그 이름으로 적는다.
+
+**장마다 쪽을 새로 열면 장 끝이 빈 쪽으로 남는다.** 장 바뀜을 01·02·08 에만 두었다.

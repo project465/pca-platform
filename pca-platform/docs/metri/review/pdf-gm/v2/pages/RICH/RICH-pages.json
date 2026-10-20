@@ -1,0 +1,150 @@
+{
+ "pdf": "docs/metri/review/pdf-gm/v2/BIZ-GM-RICH.pdf",
+ "pages": 24,
+ "rows": [
+  {
+   "page": 1,
+   "file": "RICH-p-01.png",
+   "chars": 325,
+   "fill": 0.96
+  },
+  {
+   "page": 2,
+   "file": "RICH-p-02.png",
+   "chars": 756,
+   "fill": 0.64
+  },
+  {
+   "page": 3,
+   "file": "RICH-p-03.png",
+   "chars": 872,
+   "fill": 0.96
+  },
+  {
+   "page": 4,
+   "file": "RICH-p-04.png",
+   "chars": 688,
+   "fill": 0.9
+  },
+  {
+   "page": 5,
+   "file": "RICH-p-05.png",
+   "chars": 685,
+   "fill": 0.73
+  },
+  {
+   "page": 6,
+   "file": "RICH-p-06.png",
+   "chars": 681,
+   "fill": 0.76
+  },
+  {
+   "page": 7,
+   "file": "RICH-p-07.png",
+   "chars": 732,
+   "fill": 0.9
+  },
+  {
+   "page": 8,
+   "file": "RICH-p-08.png",
+   "chars": 903,
+   "fill": 0.9
+  },
+  {
+   "page": 9,
+   "file": "RICH-p-09.png",
+   "chars": 1077,
+   "fill": 0.87
+  },
+  {
+   "page": 10,
+   "file": "RICH-p-10.png",
+   "chars": 1091,
+   "fill": 0.93
+  },
+  {
+   "page": 11,
+   "file": "RICH-p-11.png",
+   "chars": 1026,
+   "fill": 0.79
+  },
+  {
+   "page": 12,
+   "file": "RICH-p-12.png",
+   "chars": 663,
+   "fill": 0.53
+  },
+  {
+   "page": 13,
+   "file": "RICH-p-13.png",
+   "chars": 834,
+   "fill": 0.91
+  },
+  {
+   "page": 14,
+   "file": "RICH-p-14.png",
+   "chars": 1351,
+   "fill": 0.77
+  },
+  {
+   "page": 15,
+   "file": "RICH-p-15.png",
+   "chars": 994,
+   "fill": 0.98
+  },
+  {
+   "page": 16,
+   "file": "RICH-p-16.png",
+   "chars": 1137,
+   "fill": 0.64
+  },
+  {
+   "page": 17,
+   "file": "RICH-p-17.png",
+   "chars": 912,
+   "fill": 0.96
+  },
+  {
+   "page": 18,
+   "file": "RICH-p-18.png",
+   "chars": 1142,
+   "fill": 0.93
+  },
+  {
+   "page": 19,
+   "file": "RICH-p-19.png",
+   "chars": 666,
+   "fill": 0.99
+  },
+  {
+   "page": 20,
+   "file": "RICH-p-20.png",
+   "chars": 958,
+   "fill": 0.9
+  },
+  {
+   "page": 21,
+   "file": "RICH-p-21.png",
+   "chars": 865,
+   "fill": 0.99
+  },
+  {
+   "page": 22,
+   "file": "RICH-p-22.png",
+   "chars": 278,
+   "fill": 0.72
+  },
+  {
+   "page": 23,
+   "file": "RICH-p-23.png",
+   "chars": 613,
+   "fill": 0.96
+  },
+  {
+   "page": 24,
+   "file": "RICH-p-24.png",
+   "chars": 961,
+   "fill": 0.61
+  }
+ ]
+}

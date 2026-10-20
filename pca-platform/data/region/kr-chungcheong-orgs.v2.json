@@ -1,0 +1,2072 @@
+{
+ "schema": "careermatri-region-orgs.2",
+ "checked_on": "2026-10-20",
+ "status": "PREVIEW_ONLY",
+ "note": "학생 공개 결과지에 싣기 전에 공식 확인이 필요합니다. KODATA 는 제3자 기업정보이며 재무표·신용등급·거래처 이름은 옮기지 않았습니다. 채용 여부는 확인하지 않았습니다.",
+ "region_facts": [
+  {
+   "text": "유성구 명목 지역내총생산 17조 7,047억 원, 대전 전체(53조 3,174억 원)의 33.2% (2023년 기준)",
+   "region": "DAEJEON",
+   "source": {
+    "kind": "NEWS",
+    "title": "청년일보 — 대전 경제 이끄는 유성구",
+    "url": "https://www.youthdaily.co.kr/news/article.html?no=222673",
+    "checked_on": "2026-10-19"
+   }
+  },
+  {
+   "text": "유성구가 대전 사업서비스업 총생산(7조 8,194억 원)의 59.1%를 차지",
+   "region": "DAEJEON",
+   "source": {
+    "kind": "NEWS",
+    "title": "청년일보 — 대전 경제 이끄는 유성구",
+    "url": "https://www.youthdaily.co.kr/news/article.html?no=222673",
+    "checked_on": "2026-10-19"
+   }
+  },
+  {
+   "text": "대덕연구개발특구 입주 기관 3,063개 · 매출 27조 5,102억 원 (2024년 기준)",
+   "region": "DAEJEON",
+   "source": {
+    "kind": "NEWS",
+    "title": "더팩트 — 세계적 연구 역량, 지역 기업 성장으로 연결해야",
+    "url": "https://news.tf.co.kr/read/ogmeta/2361673.htm",
+    "checked_on": "2026-10-19"
+   }
+  },
+  {
+   "text": "대전시 6대 전략산업: 우주항공 · 바이오헬스 · 나노반도체 · 국방 · 양자 · 로봇",
+   "region": "DAEJEON",
+   "source": {
+    "kind": "NEWS",
+    "title": "뉴스서울 — 대전시 선도연구개발지원단 선정",
+    "url": "https://newsseoul.co.kr/news/view/1065568235175781",
+    "checked_on": "2026-10-19"
+   }
+  },
+  {
+   "text": "중앙행정기관 40개와 국책연구기관 15개의 행정중심복합도시 이전이 마무리됐다 (2017년 보도)",
+   "region": "SEJONG",
+   "source": {
+    "kind": "NEWS",
+    "title": "아주경제 (2017-01)",
+    "url": "https://www.ajunews.com/view/20170118161946224",
+    "checked_on": "2026-10-19"
+   }
+  },
+  {
+   "text": "삼성디스플레이 아산(탕정) 디스플레이 클러스터 투자 확대",
+   "region": "CHUNGNAM",
+   "source": {
+    "kind": "NEWS",
+    "title": "헤럴드경제 (2026-07)",
+    "url": "https://www.heraldk.com/article/2026070121250683470",
+    "checked_on": "2026-10-19"
+   }
+  }
+ ],
+ "orgs": [
+  {
+   "id": "KR-DJ-PLANI",
+   "name": "(주)플랜아이",
+   "identifiers": {
+    "bizno": "305-81-72470",
+    "corpno": "160111-0181927",
+    "listing": null,
+    "src": [
+     0,
+     1
+    ]
+   },
+   "region": "DAEJEON",
+   "region_basis": "본점 소재지",
+   "hq": {
+    "text": "대전 유성구 문지로 282-10",
+    "src": [
+     0,
+     1
+    ]
+   },
+   "sites": [
+    "서울 구로구 지점",
+    "광주 북구 지점"
+   ],
+   "facts": [
+    {
+     "text": "공공기관·대학·기업을 대상으로 홈페이지 구축, 보안·클라우드 운영(MSP), 지식재산관리시스템과 그룹웨어 같은 업무 시스템을 만든다.",
+     "src": [
+      0,
+      1
+     ]
+    },
+    {
+     "text": "표준산업분류는 시스템 소프트웨어 개발 및 공급업이고 2004년 대전에서 설립됐다.",
+     "src": [
+      0
+     ]
+    },
+    {
+     "text": "제3자 기업정보에 따르면 주요 매출처는 중앙부처·공공기관·연구기관 같은 공공 부문 비중이 크다.",
+     "src": [
+      0
+     ]
+    }
+   ],
+   "industry_line": "공공기관 대상 소프트웨어 구축·운영",
+   "industries": [
+    "INDUSTRY_DIGITAL_V1",
+    "INDUSTRY_PUBLIC_V1"
+   ],
+   "jobs": [
+    {
+     "role": "ROLE_SALES_V1",
+     "status": "POSTING_SEEN",
+     "tasks": "클라우드 운영 서비스를 공공·기업 고객에게 제안하고 견적과 계약 조건을 정리한다",
+     "evidence": "클라우드 MSP 영업·기술영업 경력 공고",
+     "src": [
+      2
+     ]
+    },
+    {
+     "role": "ROLE_PLAN_V1",
+     "status": "POSTING_SEEN",
+     "tasks": "신사업(AI 플랫폼) 기획과 사업 수행 관리(PM)를 맡는다",
+     "evidence": "AX사업부 사업개발(기획)·PM 경력 공고",
+     "src": [
+      2
+     ]
+    },
+    {
+     "role": "ROLE_MKT_V1",
+     "status": "POSTING_SEEN",
+     "tasks": "온라인 홍보와 콘텐츠를 기획한다",
+     "evidence": "온라인 홍보·콘텐츠 기획 공고",
+     "src": [
+      3
+     ]
+    },
+    {
+     "role": "ROLE_FINACC_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "공공 사업의 정산과 비용 집행 기록을 맞춘다"
+    }
+   ],
+   "interpretation": [
+    "매출의 큰 부분이 공공 사업이라면 제안서 작성, 사업 일정 관리, 정산 문서가 경영 쪽 일의 중심이 됩니다.",
+    "공고에 경력직이 많이 보입니다. 신입으로 들어갈 자리가 있는지는 공고마다 따로 봐야 합니다."
+   ],
+   "to_check": [
+    "신입 채용 이력이 있는지",
+    "지식재산관리시스템 사업이 지금도 주력인지(공식 홈페이지에서는 AI·클라우드가 앞에 나옵니다)"
+   ],
+   "sources": [
+    {
+     "kind": "KODATA",
+     "title": "(주)플랜아이 기업종합보고서(KODATA, 이노폴리스벤처협회 제공본)",
+     "url": null,
+     "checked_on": "2026-09-07"
+    },
+    {
+     "kind": "SEARCH",
+     "title": "공식 홈페이지 검색 결과(본사 주소·사업 소개·사업자번호 일치)",
+     "url": "https://www.plani.co.kr/",
+     "checked_on": "2026-10-20"
+    },
+    {
+     "kind": "SEARCH",
+     "title": "사람인 기업 채용 목록 검색 결과",
+     "url": "https://www.saramin.co.kr/zf_user/company-info/view-inner-recruit/csn/T3RKQTVPdDBsU0EyOUs4ZUNzVW01UT09",
+     "checked_on": "2026-10-20"
+    },
+    {
+     "kind": "SEARCH",
+     "title": "잡코리아 기업 채용 목록 검색 결과",
+     "url": "https://www.jobkorea.co.kr/company/45026648/recruit",
+     "checked_on": "2026-10-20"
+    }
+   ],
+   "verify": "OFFICIAL_CROSSCHECKED",
+   "origin": "KODATA_NEW",
+   "hiring": {
+    "status": "UNVERIFIED",
+    "note": "채용 여부를 확인하지 않았습니다. 공고에서 본 직무는 그 직무가 있었다는 근거까지입니다."
+   }
+  },
+  {
+   "id": "KR-DJ-LAMILAB",
+   "name": "라미랩(주)",
+   "identifiers": {
+    "bizno": "787-88-00352",
+    "corpno": "160111-0426240",
+    "listing": null,
+    "src": [
+     0
+    ]
+   },
+   "region": "DAEJEON",
+   "region_basis": "본점 소재지",
+   "hq": {
+    "text": "대전 대덕구 한남로 70 한남대 캠퍼스혁신파크",
+    "src": [
+     0,
+     1
+    ]
+   },
+   "sites": [
+    "부산 해운대구 사업장(제3자 기업정보 기재)"
+   ],
+   "facts": [
+    {
+     "text": "3차원 공간정보(GIS)를 바탕으로 재난 의사결정 지원 플랫폼 같은 응용 소프트웨어를 만든다.",
+     "src": [
+      0,
+      1
+     ]
+    },
+    {
+     "text": "종업원 20명 안팎의 소기업이고, 매출처는 지방자치단체와 공공 연구기관 비중이 크다(제3자 기업정보).",
+     "src": [
+      0
+     ]
+    }
+   ],
+   "industry_line": "공공 재난·공간정보 소프트웨어",
+   "industries": [
+    "INDUSTRY_DIGITAL_V1",
+    "INDUSTRY_PUBLIC_V1"
+   ],
+   "jobs": [
+    {
+     "role": "ROLE_OPS_V1",
+     "status": "POSTING_SEEN",
+     "tasks": "정부 과제의 일정과 정산, 회사 경영지원 업무를 함께 맡는다",
+     "evidence": "과제관리 및 경영지원 경력 공고",
+     "src": [
+      2
+     ]
+    },
+    {
+     "role": "ROLE_MKT_V1",
+     "status": "POSTING_SEEN",
+     "tasks": "브랜드 마케팅과 영업 지원 자료를 만든다",
+     "evidence": "브랜드 마케팅·영업지원 경력 공고",
+     "src": [
+      2
+     ]
+    },
+    {
+     "role": "ROLE_SALES_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "지자체·공공기관 사업 공고를 찾아 제안서를 준비한다"
+    }
+   ],
+   "interpretation": [
+    "작은 팀이라 과제 관리·정산·홍보가 한 사람에게 모일 수 있습니다. 여러 일을 끝까지 맡아 본 경험이 그대로 쓰이는 자리입니다.",
+    "정부 과제 매출이 많다면 과제 계획서와 결과 보고서의 서식을 지키는 일이 중요합니다."
+   ],
+   "to_check": [
+    "신입 채용 이력",
+    "부산 사업장의 성격"
+   ],
+   "sources": [
+    {
+     "kind": "KODATA",
+     "title": "라미랩(주) 기업종합보고서(KODATA, 이노폴리스벤처협회 제공본)",
+     "url": null,
+     "checked_on": "2026-09-07"
+    },
+    {
+     "kind": "SEARCH",
+     "title": "공식 홈페이지 검색 결과(주소·제품)",
+     "url": "https://www.lamilab.xyz/",
+     "checked_on": "2026-10-20"
+    },
+    {
+     "kind": "SEARCH",
+     "title": "잡코리아 채용 공고 검색 결과",
+     "url": "https://www.jobkorea.co.kr/recruit/co_read/recruit/c/31831723",
+     "checked_on": "2026-10-20"
+    }
+   ],
+   "verify": "OFFICIAL_CROSSCHECKED",
+   "origin": "KODATA_NEW",
+   "hiring": {
+    "status": "UNVERIFIED",
+    "note": "채용 여부를 확인하지 않았습니다. 공고에서 본 직무는 그 직무가 있었다는 근거까지입니다."
+   }
+  },
+  {
+   "id": "KR-DJ-LIGACHEM",
+   "name": "(주)리가켐바이오사이언스",
+   "identifiers": {
+    "bizno": "314-81-82268",
+    "corpno": "160111-0206866",
+    "listing": "코스닥 상장(2013-05-10)",
+    "src": [
+     0,
+     2
+    ]
+   },
+   "region": "DAEJEON",
+   "region_basis": "본점 소재지",
+   "hq": {
+    "text": "대전 유성구 국제과학10로 10",
+    "src": [
+     0,
+     1
+    ]
+   },
+   "sites": [
+    "서울 마포구 지점(의약품 영업 사무소)"
+   ],
+   "facts": [
+    {
+     "text": "항체-약물접합체(ADC) 플랫폼과 신약 후보물질을 개발하고, 이를 해외 제약·바이오 기업에 기술이전하는 신약개발 기업이다.",
+     "src": [
+      0,
+      1
+     ]
+    },
+    {
+     "text": "매출 대부분이 기술이전과 로열티에서 나온다(제3자 기업정보).",
+     "src": [
+      0
+     ]
+    },
+    {
+     "text": "코스닥 상장사이며 2024년부터 오리온 계열로 보도됐다.",
+     "src": [
+      2,
+      3
+     ]
+    }
+   ],
+   "industry_line": "신약 기술이전(바이오)",
+   "industries": [
+    "INDUSTRY_B2B_V1"
+   ],
+   "jobs": [
+    {
+     "role": "ROLE_FINACC_V1",
+     "status": "POSTING_SEEN",
+     "tasks": "연구비·기술료 수익과 비용을 결산 기준에 맞춰 기록한다",
+     "evidence": "대전 근무 회계 담당 경력 공고(2024)",
+     "src": [
+      4
+     ]
+    },
+    {
+     "role": "ROLE_PLAN_V1",
+     "status": "POSTING_SEEN",
+     "tasks": "사업전략센터에서 특허(IP)와 계약 일정을 관리한다",
+     "evidence": "사업전략센터 IP 담당 경력 공고",
+     "src": [
+      4
+     ]
+    },
+    {
+     "role": "ROLE_SALES_V1",
+     "status": "ORG_PAGE",
+     "tasks": "해외 제약사와 기술이전 협상 자료를 준비한다(사업개발)",
+     "evidence": "보도자료의 사업개발 전용 연락처",
+     "src": [
+      1
+     ]
+    }
+   ],
+   "interpretation": [
+    "물건을 파는 회사가 아니라 기술 계약을 파는 회사라, 경영 쪽 일은 계약 조건·마일스톤 일정·로열티 수익을 다루는 쪽에 가깝습니다.",
+    "계약 상대가 해외 기업이라 영어로 된 계약·발표 자료를 읽고 쓰는 일이 많을 수 있습니다.",
+    "보이는 공고가 경력직 위주입니다. 학부 신입은 회계·총무 같은 지원 부서에서 먼저 보시는 것이 현실적입니다."
+   ],
+   "to_check": [
+    "신입 채용 이력이 있는 부서",
+    "2026년 현재 대표·조직 변경 내용"
+   ],
+   "sources": [
+    {
+     "kind": "KODATA",
+     "title": "(주)리가켐바이오사이언스 기업종합보고서(KODATA, 이노폴리스벤처협회 제공본)",
+     "url": null,
+     "checked_on": "2026-09-07"
+    },
+    {
+     "kind": "SEARCH",
+     "title": "공식 홈페이지 위치 안내 검색 결과",
+     "url": "https://ligachembio.com/company/location.php?lang=e",
+     "checked_on": "2026-10-20"
+    },
+    {
+     "kind": "SEARCH",
+     "title": "코스닥 141080 상장 정보 검색 결과",
+     "url": "https://sg.finance.yahoo.com/quote/141080.KQ/profile",
+     "checked_on": "2026-10-20"
+    },
+    {
+     "kind": "NEWS",
+     "title": "오리온 계열 편입 보도(뉴스토마토)",
+     "url": "https://newstomato.com/ReadNews.aspx?no=1219492",
+     "checked_on": "2026-10-20"
+    },
+    {
+     "kind": "SEARCH",
+     "title": "잡코리아 채용 공고 검색 결과",
+     "url": "https://www.jobkorea.co.kr/recruit/co_read/recruit/c/legochembi",
+     "checked_on": "2026-10-20"
+    }
+   ],
+   "verify": "OFFICIAL_CROSSCHECKED",
+   "origin": "KODATA_NEW",
+   "hiring": {
+    "status": "UNVERIFIED",
+    "note": "채용 여부를 확인하지 않았습니다. 공고에서 본 직무는 그 직무가 있었다는 근거까지입니다."
+   }
+  },
+  {
+   "id": "KR-DJ-I3SYSTEM",
+   "name": "아이쓰리시스템(주)",
+   "identifiers": {
+    "bizno": "314-81-23158",
+    "corpno": "160111-0072738",
+    "listing": "코스닥 상장(2015-07-30)",
+    "src": [
+     0,
+     2
+    ]
+   },
+   "region": "DAEJEON",
+   "region_basis": "본점 소재지",
+   "hq": {
+    "text": "대전 유성구 테크노5로 69",
+    "src": [
+     0,
+     1
+    ]
+   },
+   "sites": [
+    "대전 유성구 문지동 사업장",
+    "대전 유성구 장동 사업장(연구)",
+    "대전 유성구 둔곡 사업장"
+   ],
+   "facts": [
+    {
+     "text": "적외선과 X-ray 영상센서를 개발·생산하고, 방산 장비에 들어가는 부품으로 공급한다.",
+     "src": [
+      0,
+      3
+     ]
+    },
+    {
+     "text": "주요 고객은 국내 방산 체계종합기업과 국방 공공기관이다(제3자 기업정보).",
+     "src": [
+      0
+     ]
+    },
+    {
+     "text": "대전 안에 사업장이 넷이고 2026년 둔곡 신공장 준공이 보도됐다.",
+     "src": [
+      0,
+      1
+     ]
+    }
+   ],
+   "industry_line": "방산 영상센서 부품 제조",
+   "industries": [
+    "INDUSTRY_B2B_V1"
+   ],
+   "jobs": [
+    {
+     "role": "ROLE_OPS_V1",
+     "status": "POSTING_SEEN",
+     "tasks": "부품과 원자재를 발주하고 납기와 단가를 관리한다(구매)",
+     "evidence": "구매 부문 신입·경력 공고(2026-04, 2026-09)",
+     "src": [
+      4
+     ]
+    },
+    {
+     "role": "ROLE_FINACC_V1",
+     "status": "POSTING_SEEN",
+     "tasks": "제조 원가와 결산 자료를 맞춘다",
+     "evidence": "회계 부문 신입 공고",
+     "src": [
+      5
+     ]
+    },
+    {
+     "role": "ROLE_SALES_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "방산 체계기업의 요구 사양과 납기를 계약 조건으로 정리한다"
+    }
+   ],
+   "interpretation": [
+    "방산 납품은 고객이 몇 곳으로 정해져 있고 납기와 품질 기록이 엄격합니다. 구매·원가 쪽 일에서 기준을 지키고 기록을 남기는 습관이 그대로 쓰입니다.",
+    "이 자료에서 경영 계열 신입 공고(구매·회계)가 실제로 보인 몇 안 되는 지역 기업입니다."
+   ],
+   "to_check": [
+    "방산 보안 규정에 따른 지원 자격 조건",
+    "구매 부문 근무지가 어느 사업장인지"
+   ],
+   "sources": [
+    {
+     "kind": "KODATA",
+     "title": "아이쓰리시스템(주) 기업종합보고서(KODATA, 이노폴리스벤처협회 제공본)",
+     "url": null,
+     "checked_on": "2026-09-07"
+    },
+    {
+     "kind": "SEARCH",
+     "title": "공식 홈페이지 검색 결과",
+     "url": "https://i3system.com/?lang=en",
+     "checked_on": "2026-10-20"
+    },
+    {
+     "kind": "SEARCH",
+     "title": "코스닥 214430 상장 정보 검색 결과",
+     "url": "https://www.valueline.co.kr/finance/income/214430",
+     "checked_on": "2026-10-20"
+    },
+    {
+     "kind": "NEWS",
+     "title": "적외선 영상센서 사업 보도(한경머니)",
+     "url": "https://magazine.hankyung.com/money/article/202604166423c",
+     "checked_on": "2026-10-20"
+    },
+    {
+     "kind": "SEARCH",
+     "title": "자소설닷컴 채용 목록 검색 결과",
+     "url": "https://jasoseol.com/companies/6465/careers",
+     "checked_on": "2026-10-20"
+    },
+    {
+     "kind": "SEARCH",
+     "title": "회계 신입 공고 검색 결과",
+     "url": "https://inthiswork.com/?p=399383",
+     "checked_on": "2026-10-20"
+    }
+   ],
+   "verify": "OFFICIAL_CROSSCHECKED",
+   "origin": "KODATA_NEW",
+   "hiring": {
+    "status": "UNVERIFIED",
+    "note": "채용 여부를 확인하지 않았습니다. 공고에서 본 직무는 그 직무가 있었다는 근거까지입니다."
+   }
+  },
+  {
+   "id": "KR-CN-MTG",
+   "name": "(주)엠티지",
+   "identifiers": {
+    "bizno": "314-81-46845",
+    "corpno": "160111-0129422",
+    "listing": null,
+    "src": [
+     0,
+     1
+    ]
+   },
+   "region": "CHUNGNAM",
+   "region_basis": "본점·공장 소재지(충남 금산)",
+   "hq": {
+    "text": "충남 금산군 복수면 자라전길 62",
+    "src": [
+     0,
+     1
+    ]
+   },
+   "sites": [
+    "충남 금산군 진산면 제2공장",
+    "대전 유성구 지사(연구소, 검색 결과)"
+   ],
+   "facts": [
+    {
+     "text": "군용·민수용 안테나와 안테나 측정 시스템, 전파 시험 시설을 설계하고 만든다.",
+     "src": [
+      0,
+      1
+     ]
+    },
+    {
+     "text": "방산 체계종합기업과 항공 기업에 주로 납품한다(제3자 기업정보).",
+     "src": [
+      0
+     ]
+    }
+   ],
+   "industry_line": "방산 안테나·전파 측정 장비 제조",
+   "industries": [
+    "INDUSTRY_B2B_V1"
+   ],
+   "jobs": [
+    {
+     "role": "ROLE_HR_V1",
+     "status": "POSTING_SEEN",
+     "tasks": "생산직·연구직 채용과 인사 기록을 관리한다",
+     "evidence": "인사·사업·자재 부문 채용 공고(금산 근무)",
+     "src": [
+      2
+     ]
+    },
+    {
+     "role": "ROLE_OPS_V1",
+     "status": "POSTING_SEEN",
+     "tasks": "자재 발주와 재고를 관리한다",
+     "evidence": "같은 공고의 자재 부문",
+     "src": [
+      2
+     ]
+    },
+    {
+     "role": "ROLE_PLAN_V1",
+     "status": "POSTING_SEEN",
+     "tasks": "방산 사업의 계약·일정·납품을 관리한다(사업 부문)",
+     "evidence": "같은 공고의 사업 부문",
+     "src": [
+      2
+     ]
+    }
+   ],
+   "interpretation": [
+    "근무지가 금산이라 대전에서 통근할 수 있는지를 먼저 따져야 합니다.",
+    "방산 수주는 사업 기간이 길어, 사업 부문은 계약 일정과 납품 문서를 끝까지 관리하는 일이 중심입니다."
+   ],
+   "to_check": [
+    "공고 게시일(검색 결과에서는 날짜가 보이지 않았습니다)",
+    "통근 지원 여부"
+   ],
+   "sources": [
+    {
+     "kind": "KODATA",
+     "title": "(주)엠티지 기업종합보고서(KODATA, 이노폴리스벤처협회 제공본)",
+     "url": null,
+     "checked_on": "2026-09-07"
+    },
+    {
+     "kind": "SEARCH",
+     "title": "공식 홈페이지 오시는 길 검색 결과",
+     "url": "https://www.mtginc.co.kr/promotion/directions.php",
+     "checked_on": "2026-10-20"
+    },
+    {
+     "kind": "SEARCH",
+     "title": "사람인 기업 채용 목록 검색 결과",
+     "url": "https://www.saramin.co.kr/zf_user/company-info/view-inner-recruit/csn/ZllGZEZCMGxzSXM1TlpJWFdYbkhlZz09",
+     "checked_on": "2026-10-20"
+    }
+   ],
+   "verify": "OFFICIAL_CROSSCHECKED",
+   "origin": "KODATA_NEW",
+   "hiring": {
+    "status": "UNVERIFIED",
+    "note": "채용 여부를 확인하지 않았습니다. 공고에서 본 직무는 그 직무가 있었다는 근거까지입니다."
+   }
+  },
+  {
+   "id": "KR-DJ-ILSHIN",
+   "name": "(주)일신오토클레이브",
+   "identifiers": {
+    "bizno": "314-81-43101",
+    "corpno": "160111-0120579",
+    "listing": null,
+    "src": [
+     0,
+     1
+    ]
+   },
+   "region": "DAEJEON",
+   "region_basis": "본점 소재지",
+   "hq": {
+    "text": "대전 유성구 테크노2로 255",
+    "src": [
+     0,
+     1
+    ]
+   },
+   "sites": [
+    "대전 유성구 신동 초고압 톨링센터·기술연구소"
+   ],
+   "facts": [
+    {
+     "text": "오토클레이브·고압반응기·초고압 분산기·프레스 같은 고온·고압 공정장비를 설계부터 설치까지 맡아 만든다.",
+     "src": [
+      0,
+      2
+     ]
+    },
+    {
+     "text": "전자부품·화학·자동차 제조사에 장비를 공급한다(제3자 기업정보).",
+     "src": [
+      0
+     ]
+    }
+   ],
+   "industry_line": "고온·고압 공정장비 제조",
+   "industries": [
+    "INDUSTRY_B2B_V1"
+   ],
+   "jobs": [
+    {
+     "role": "ROLE_SALES_V1",
+     "status": "ORG_PAGE",
+     "tasks": "고객사 공정 조건을 듣고 견적과 납기를 제안한 뒤 사후관리까지 잇는다(기술영업)",
+     "evidence": "기술영업 직원 인터뷰·영업 창구 소개",
+     "src": [
+      3
+     ]
+    },
+    {
+     "role": "ROLE_FINACC_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "주문 제작 장비마다 원가를 계산해 단가 근거를 만든다"
+    }
+   ],
+   "interpretation": [
+    "장비 한 대가 주문 제작이라 견적 하나에 원가 계산과 납기 약속이 같이 들어갑니다. 원가회계와 영업 사이를 잇는 경험이 쓰이는 자리입니다.",
+    "최근 공고는 기술연구소 쪽만 확인됐습니다. 경영 계열 자리는 상시 채용 페이지를 직접 보셔야 합니다."
+   ],
+   "to_check": [
+    "상시 채용 페이지의 경영 계열 모집 여부",
+    "기술영업이 전공 제한을 두는지"
+   ],
+   "sources": [
+    {
+     "kind": "KODATA",
+     "title": "(주)일신오토클레이브 기업종합보고서(KODATA, 이노폴리스벤처협회 제공본)",
+     "url": null,
+     "checked_on": "2026-09-07"
+    },
+    {
+     "kind": "SEARCH",
+     "title": "공식 홈페이지 검색 결과",
+     "url": "https://suflux.com/",
+     "checked_on": "2026-10-20"
+    },
+    {
+     "kind": "DIRECTORY",
+     "title": "기계 산업 기업정보(코머신) 검색 결과",
+     "url": "https://www.komachine.com/ko/companies/ilshin-autoclave/files",
+     "checked_on": "2026-10-20"
+    },
+    {
+     "kind": "NEWS",
+     "title": "기술영업 소개 기사(2013)",
+     "url": "https://kidd.co.kr/news/169856",
+     "checked_on": "2026-10-20"
+    }
+   ],
+   "verify": "OFFICIAL_CROSSCHECKED",
+   "origin": "KODATA_NEW",
+   "hiring": {
+    "status": "UNVERIFIED",
+    "note": "채용 여부를 확인하지 않았습니다. 공고에서 본 직무는 그 직무가 있었다는 근거까지입니다."
+   }
+  },
+  {
+   "id": "KR-DJ-JEIOTECH",
+   "name": "(주)제이오텍",
+   "identifiers": {
+    "bizno": "105-81-46727",
+    "corpno": "110111-0652647",
+    "listing": null,
+    "src": [
+     0,
+     1
+    ]
+   },
+   "region": "DAEJEON",
+   "region_basis": "본점·공장 소재지",
+   "hq": {
+    "text": "대전 유성구 테크노2로 153",
+    "src": [
+     0,
+     1
+    ]
+   },
+   "sites": [
+    "서울 금천구 영업소(해외영업)",
+    "수원·대구·부산 지역 영업 거점(제3자 기업정보)"
+   ],
+   "facts": [
+    {
+     "text": "연구용 실험기기와 환경신뢰성 시험장비, 의료용 냉장·냉동고를 만들고 실험실 구성까지 맡는다.",
+     "src": [
+      0,
+      2
+     ]
+    },
+    {
+     "text": "2차전지·전자부품·자동차 제조사와 공공기관에 판매하고, 공공조달 낙찰 실적이 있다(제3자 기업정보).",
+     "src": [
+      0
+     ]
+    }
+   ],
+   "industry_line": "실험·시험장비 제조와 공공조달",
+   "industries": [
+    "INDUSTRY_B2B_V1",
+    "INDUSTRY_PUBLIC_V1"
+   ],
+   "jobs": [
+    {
+     "role": "ROLE_SALES_V1",
+     "status": "POSTING_SEEN",
+     "tasks": "공공기관·연구기관에 장비를 제안하고 조달 입찰 서류를 준비한다(기술영업)",
+     "evidence": "공공기관 기술영업(서울·대전) 공고, 수원 기술영업 신입·경력 공고(2024-11)",
+     "src": [
+      3
+     ]
+    },
+    {
+     "role": "ROLE_OPS_V1",
+     "status": "POSTING_SEEN",
+     "tasks": "부품 구매와 납기를 관리한다",
+     "evidence": "구매관리 경력 공고",
+     "src": [
+      4
+     ]
+    },
+    {
+     "role": "ROLE_MKT_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "제품군별 카탈로그와 전시회 자료를 만든다"
+    }
+   ],
+   "interpretation": [
+    "공공기관 판매 비중이 있다면 조달 입찰 절차와 규격서를 읽는 일이 영업의 큰 부분입니다.",
+    "지역 영업 거점이 여럿이라 근무지가 대전 본사가 아닐 수 있습니다."
+   ],
+   "to_check": [
+    "기술영업 신입 공고의 근무지",
+    "대구·부산 거점의 현재 운영 여부"
+   ],
+   "sources": [
+    {
+     "kind": "KODATA",
+     "title": "(주)제이오텍 기업종합보고서(KODATA, 이노폴리스벤처협회 제공본)",
+     "url": null,
+     "checked_on": "2026-09-07"
+    },
+    {
+     "kind": "SEARCH",
+     "title": "공식 홈페이지 연락처 검색 결과",
+     "url": "https://www.jeiotech.com/eng/about/contact.php",
+     "checked_on": "2026-10-20"
+    },
+    {
+     "kind": "DIRECTORY",
+     "title": "원티드 기업 소개 검색 결과",
+     "url": "https://www.wanted.co.kr/company/31442",
+     "checked_on": "2026-10-20"
+    },
+    {
+     "kind": "SEARCH",
+     "title": "잡코리아 채용 목록 검색 결과",
+     "url": "https://www.jobkorea.co.kr/company/42165786/recruit",
+     "checked_on": "2026-10-20"
+    },
+    {
+     "kind": "SEARCH",
+     "title": "사람인 구매관리 공고 검색 결과",
+     "url": "https://m.saramin.co.kr/jobs/theme/koreabio",
+     "checked_on": "2026-10-20"
+    }
+   ],
+   "verify": "OFFICIAL_CROSSCHECKED",
+   "origin": "KODATA_NEW",
+   "hiring": {
+    "status": "UNVERIFIED",
+    "note": "채용 여부를 확인하지 않았습니다. 공고에서 본 직무는 그 직무가 있었다는 근거까지입니다."
+   }
+  },
+  {
+   "id": "KR-NA-GEMVAX",
+   "name": "(주)젬백스앤카엘",
+   "identifiers": {
+    "bizno": "314-81-21219",
+    "corpno": "160111-0069636",
+    "listing": "코스닥 상장(2005-06-24)",
+    "src": [
+     0,
+     2
+    ]
+   },
+   "region": "NATIONAL",
+   "region_basis": "본점 소재지(2025-12 경기 성남으로 이전)",
+   "hq": {
+    "text": "경기 성남시 분당구 운중로 117(2025-12 이전, 전에는 대전 유성구)",
+    "src": [
+     0,
+     1
+    ]
+   },
+   "sites": [
+    "대전 유성구 공장(이전 뒤 운영 여부 미확인)"
+   ],
+   "facts": [
+    {
+     "text": "반도체·디스플레이 클린룸에 쓰는 케미컬 에어필터를 만들고, 펩타이드 신약 후보물질을 함께 개발한다.",
+     "src": [
+      0,
+      3
+     ]
+    },
+    {
+     "text": "2025년 12월 본점을 대전에서 경기 성남으로 옮겼다.",
+     "src": [
+      0,
+      1
+     ]
+    }
+   ],
+   "industry_line": "반도체 공정용 필터와 신약 개발",
+   "industries": [
+    "INDUSTRY_B2B_V1"
+   ],
+   "jobs": [
+    {
+     "role": "ROLE_FINACC_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "필터 사업과 신약 사업의 원가와 연구비를 나눠 기록한다"
+    },
+    {
+     "role": "ROLE_SALES_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "반도체 제조사의 구매 부서와 공급 조건을 맞춘다"
+    }
+   ],
+   "interpretation": [
+    "본점이 옮겨 가서 지역 기업으로 적지 않았습니다. 대전 공장이 남아 있는지 확인되면 다시 분류합니다."
+   ],
+   "to_check": [
+    "대전 공장 존속 여부",
+    "경영 계열 공고 이력(검색에서는 품질관리 공고만 보였습니다)"
+   ],
+   "sources": [
+    {
+     "kind": "KODATA",
+     "title": "(주)젬백스앤카엘 기업종합보고서(KODATA, 이노폴리스벤처협회 제공본)",
+     "url": null,
+     "checked_on": "2026-09-07"
+    },
+    {
+     "kind": "SEARCH",
+     "title": "기업 재무 정보 페이지 주소 검색 결과(FnGuide)",
+     "url": "https://comp.fnguide.com/SVO2/asp/SVD_Finance.asp?pGB=1&gicode=A082270",
+     "checked_on": "2026-10-20"
+    },
+    {
+     "kind": "SEARCH",
+     "title": "한국거래소 공시(KIND) 검색 결과",
+     "url": "https://kind.krx.co.kr/external/2023/03/22/001526/20230322006412/11011.htm",
+     "checked_on": "2026-10-20"
+    },
+    {
+     "kind": "NEWS",
+     "title": "필터·신약 사업 보도(뉴스핌)",
+     "url": "https://www.newspim.com/news/view/20260313000949",
+     "checked_on": "2026-10-20"
+    }
+   ],
+   "verify": "CONFLICTING",
+   "origin": "KODATA_NEW",
+   "hiring": {
+    "status": "UNVERIFIED",
+    "note": "채용 여부를 확인하지 않았습니다. 공고에서 본 직무는 그 직무가 있었다는 근거까지입니다."
+   }
+  },
+  {
+   "id": "KR-DJ-CAVAC",
+   "name": "(주)중앙백신연구소",
+   "identifiers": {
+    "bizno": "305-81-19849",
+    "corpno": "160111-0042533",
+    "listing": "코스닥 상장(2003-10-31)",
+    "src": [
+     0,
+     2
+    ]
+   },
+   "region": "DAEJEON",
+   "region_basis": "본점 소재지",
+   "hq": {
+    "text": "대전 유성구 유성대로 1476-37",
+    "src": [
+     0,
+     1
+    ]
+   },
+   "sites": [
+    "충남 논산 공장",
+    "충북 영동 사업장(제3자 기업정보)"
+   ],
+   "facts": [
+    {
+     "text": "돼지·닭·반려동물용 백신을 개발·생산하고 20여 개국에 수출한다.",
+     "src": [
+      1
+     ]
+    },
+    {
+     "text": "국내에서는 동물약품 도매·유통망을 거쳐 팔고, 해외에서는 글로벌 동물약품사와 맺은 생산·유통 계약으로 판다(제3자 기업정보).",
+     "src": [
+      0
+     ]
+    }
+   ],
+   "industry_line": "동물용 백신 제조와 수출",
+   "industries": [
+    "INDUSTRY_B2B_V1"
+   ],
+   "jobs": [
+    {
+     "role": "ROLE_SALES_V1",
+     "status": "POSTING_SEEN",
+     "tasks": "동물약품 도매상과 축산 농가 쪽 판매처를 관리한다(국내영업), 해외 유통사와 수출 조건을 맞춘다(해외영업)",
+     "evidence": "국내영업 신입·경력(2026-01 마감), 2026 하반기 신입 국내영업, 해외영업 공고",
+     "src": [
+      3,
+      4
+     ]
+    },
+    {
+     "role": "ROLE_MKT_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "제품별 판매 자료와 수의사 대상 설명 자료를 만든다"
+    }
+   ],
+   "interpretation": [
+    "수출 비중이 있다면 해외영업은 나라마다 다른 등록 절차와 유통 계약을 다룹니다. 무역 실무와 영어 문서가 같이 필요합니다.",
+    "2026년 하반기 신입 채용에 국내영업이 들어 있다는 검색 결과가 있어, 이 자료에서 학부 신입 경로가 가장 뚜렷하게 보인 곳입니다."
+   ],
+   "to_check": [
+    "하반기 신입 공고의 지원 자격(전공 제한)",
+    "영업 근무지가 본사인지 지역인지"
+   ],
+   "sources": [
+    {
+     "kind": "KODATA",
+     "title": "(주)중앙백신연구소 기업종합보고서(KODATA, 이노폴리스벤처협회 제공본)",
+     "url": null,
+     "checked_on": "2026-09-07"
+    },
+    {
+     "kind": "SEARCH",
+     "title": "공식 홈페이지 회사 소개 검색 결과",
+     "url": "https://cavac.co.kr/about/company",
+     "checked_on": "2026-10-20"
+    },
+    {
+     "kind": "SEARCH",
+     "title": "코스닥 072020 상장 정보 검색 결과",
+     "url": "https://www.stockhub.kr/stock/072020",
+     "checked_on": "2026-10-20"
+    },
+    {
+     "kind": "SEARCH",
+     "title": "잡코리아 채용 목록 검색 결과",
+     "url": "https://www.jobkorea.co.kr/company/46089067/recruit",
+     "checked_on": "2026-10-20"
+    },
+    {
+     "kind": "SEARCH",
+     "title": "캐치 채용 목록 검색 결과",
+     "url": "https://www.catch.co.kr/Comp/RecruitInfo/529435",
+     "checked_on": "2026-10-20"
+    }
+   ],
+   "verify": "OFFICIAL_CROSSCHECKED",
+   "origin": "KODATA_NEW",
+   "hiring": {
+    "status": "UNVERIFIED",
+    "note": "채용 여부를 확인하지 않았습니다. 공고에서 본 직무는 그 직무가 있었다는 근거까지입니다."
+   }
+  },
+  {
+   "id": "KR-DJ-KORAIL",
+   "name": "한국철도공사(코레일)",
+   "origin": "EXISTING_V1",
+   "identifiers": {
+    "bizno": null,
+    "corpno": null,
+    "listing": null,
+    "src": []
+   },
+   "region": "DAEJEON",
+   "region_basis": "본사 소재지",
+   "hq": {
+    "text": "대전 동구 (대전역 동광장 철도기관 공동사옥)",
+    "src": [
+     0
+    ]
+   },
+   "sites": [],
+   "facts": [
+    {
+     "text": "철도 운송 공기업 (기관명 기준. 세부 사업은 공식 자료로 확인 전)",
+     "src": [
+      0
+     ]
+    }
+   ],
+   "industry_line": "철도 운송 공기업",
+   "industries": [
+    "INDUSTRY_AVIATION_V1",
+    "INDUSTRY_PUBLIC_V1"
+   ],
+   "jobs": [
+    {
+     "role": "ROLE_CS_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "고객 응대 기준과 처리 기록을 관리한다"
+    },
+    {
+     "role": "ROLE_OPS_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "업무 절차와 일정을 관리한다"
+    },
+    {
+     "role": "ROLE_ANALYTICS_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "운영 자료를 모아 지표로 정리한다"
+    }
+   ],
+   "interpretation": [],
+   "to_check": [
+    "공식 홈페이지·공공기관 경영정보 공개시스템(ALIO)·전자공시에서 주소와 사업을 직접 확인",
+    "본사 소재지다. 신입 근무지는 전국 배치일 수 있어 근무지로 적지 않는다"
+   ],
+   "sources": [
+    {
+     "kind": "COMMUNITY",
+     "title": "본사 대전 동구 · 국가철도공단과 공동사옥",
+     "url": "https://comento.kr/job-questions/%ED%95%9C%EA%B5%AD%EC%B2%A0%EB%8F%84%EA%B3%B5%EC%82%AC/%EC%A0%84%EA%B8%B0%EC%A7%81/%EB%8C%80%EC%A0%84%EC%97%90_%EC%9E%88%EB%8A%94_%EA%B3%B5%EA%B8%B0%EC%97%85_%EA%B4%80%EB%A0%A8_%EC%A7%88%EB%AC%B8%EC%9E%85%EB%8B%88%EB%8B%A4-126538",
+     "checked_on": "2026-10-19"
+    }
+   ],
+   "hiring": {
+    "status": "UNVERIFIED",
+    "note": "채용 여부를 확인하지 않았습니다"
+   },
+   "verify": "SECONDARY_ONLY"
+  },
+  {
+   "id": "KR-DJ-KRNA",
+   "name": "국가철도공단",
+   "origin": "EXISTING_V1",
+   "identifiers": {
+    "bizno": null,
+    "corpno": null,
+    "listing": null,
+    "src": []
+   },
+   "region": "DAEJEON",
+   "region_basis": "본사 소재지",
+   "hq": {
+    "text": "대전 동구 (코레일과 같은 공동사옥)",
+    "src": [
+     0
+    ]
+   },
+   "sites": [],
+   "facts": [
+    {
+     "text": "철도 시설 공공기관 (기관명 기준. 세부 사업은 공식 자료로 확인 전)",
+     "src": [
+      0
+     ]
+    }
+   ],
+   "industry_line": "철도 시설 공공기관",
+   "industries": [
+    "INDUSTRY_PUBLIC_V1",
+    "INDUSTRY_B2B_V1"
+   ],
+   "jobs": [
+    {
+     "role": "ROLE_PLAN_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "사업 계획과 예산 배분을 정리한다"
+    },
+    {
+     "role": "ROLE_FINACC_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "예산 집행과 결산 기록을 맞춘다"
+    },
+    {
+     "role": "ROLE_OPS_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "업무 절차와 일정을 관리한다"
+    }
+   ],
+   "interpretation": [],
+   "to_check": [
+    "공식 홈페이지·공공기관 경영정보 공개시스템(ALIO)·전자공시에서 주소와 사업을 직접 확인"
+   ],
+   "sources": [
+    {
+     "kind": "COMMUNITY",
+     "title": "코레일과 같은 사옥",
+     "url": "https://comento.kr/job-questions/%ED%95%9C%EA%B5%AD%EC%B2%A0%EB%8F%84%EA%B3%B5%EC%82%AC/%EC%A0%84%EA%B8%B0%EC%A7%81/%EB%8C%80%EC%A0%84%EC%97%90_%EC%9E%88%EB%8A%94_%EA%B3%B5%EA%B8%B0%EC%97%85_%EA%B4%80%EB%A0%A8_%EC%A7%88%EB%AC%B8%EC%9E%85%EB%8B%88%EB%8B%A4-126538",
+     "checked_on": "2026-10-19"
+    }
+   ],
+   "hiring": {
+    "status": "UNVERIFIED",
+    "note": "채용 여부를 확인하지 않았습니다"
+   },
+   "verify": "SECONDARY_ONLY"
+  },
+  {
+   "id": "KR-DJ-KWATER",
+   "name": "한국수자원공사(K-water)",
+   "origin": "EXISTING_V1",
+   "identifiers": {
+    "bizno": null,
+    "corpno": null,
+    "listing": null,
+    "src": []
+   },
+   "region": "DAEJEON",
+   "region_basis": "본사 소재지",
+   "hq": {
+    "text": "대전 대덕구",
+    "src": [
+     0
+    ]
+   },
+   "sites": [],
+   "facts": [
+    {
+     "text": "수자원 관리 공기업 (기관명 기준. 세부 사업은 공식 자료로 확인 전)",
+     "src": [
+      0
+     ]
+    }
+   ],
+   "industry_line": "수자원 관리 공기업",
+   "industries": [
+    "INDUSTRY_PUBLIC_V1"
+   ],
+   "jobs": [
+    {
+     "role": "ROLE_PLAN_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "사업 계획과 예산 배분을 정리한다"
+    },
+    {
+     "role": "ROLE_FINACC_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "예산 집행과 결산 기록을 맞춘다"
+    },
+    {
+     "role": "ROLE_HR_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "채용과 교육 기준을 정한다"
+    },
+    {
+     "role": "ROLE_ANALYTICS_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "운영 자료를 모아 지표로 정리한다"
+    }
+   ],
+   "interpretation": [],
+   "to_check": [
+    "공식 홈페이지·공공기관 경영정보 공개시스템(ALIO)·전자공시에서 주소와 사업을 직접 확인"
+   ],
+   "sources": [
+    {
+     "kind": "NEWS",
+     "title": "사진 설명 '대전시 대덕구 한국수자원공사 본사'",
+     "url": "https://www.heraldk.com/article/2026041417293148932",
+     "checked_on": "2026-10-19"
+    }
+   ],
+   "hiring": {
+    "status": "UNVERIFIED",
+    "note": "채용 여부를 확인하지 않았습니다"
+   },
+   "verify": "SECONDARY_ONLY"
+  },
+  {
+   "id": "KR-DJ-KOMSCO",
+   "name": "한국조폐공사",
+   "origin": "EXISTING_V1",
+   "identifiers": {
+    "bizno": null,
+    "corpno": null,
+    "listing": null,
+    "src": []
+   },
+   "region": "DAEJEON",
+   "region_basis": "본사 소재지",
+   "hq": {
+    "text": "대전 유성구 과학로 80-67",
+    "src": [
+     0,
+     1
+    ]
+   },
+   "sites": [],
+   "facts": [
+    {
+     "text": "화폐·보안 제품 공기업 (기관명 기준. 세부 사업은 공식 자료로 확인 전)",
+     "src": [
+      0,
+      1
+     ]
+    }
+   ],
+   "industry_line": "화폐·보안 제품 공기업",
+   "industries": [
+    "INDUSTRY_PUBLIC_V1",
+    "INDUSTRY_B2B_V1"
+   ],
+   "jobs": [
+    {
+     "role": "ROLE_PLAN_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "사업 계획과 예산 배분을 정리한다"
+    },
+    {
+     "role": "ROLE_SALES_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "고객사 요구를 계약 조건으로 정리한다"
+    },
+    {
+     "role": "ROLE_FINACC_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "예산 집행과 결산 기록을 맞춘다"
+    },
+    {
+     "role": "ROLE_MKT_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "홍보·판매 채널을 기획하고 성과를 비교한다"
+    }
+   ],
+   "interpretation": [],
+   "to_check": [
+    "공식 홈페이지·공공기관 경영정보 공개시스템(ALIO)·전자공시에서 주소와 사업을 직접 확인",
+    "커뮤니티 글에 본사만 대전이고 근무지는 다를 수 있다는 언급이 있다"
+   ],
+   "sources": [
+    {
+     "kind": "DIRECTORY",
+     "title": "주소 대전 유성구 과학로 80-67",
+     "url": "https://www.jobkorea.co.kr/company/1371859/info",
+     "checked_on": "2026-10-19"
+    },
+    {
+     "kind": "DIRECTORY",
+     "title": "같은 주소",
+     "url": "https://jasoseol.com/companies/882",
+     "checked_on": "2026-10-19"
+    }
+   ],
+   "hiring": {
+    "status": "UNVERIFIED",
+    "note": "채용 여부를 확인하지 않았습니다"
+   },
+   "verify": "SECONDARY_ONLY"
+  },
+  {
+   "id": "KR-DJ-ROSSO",
+   "name": "로쏘(주) — 성심당 운영사",
+   "origin": "EXISTING_V1",
+   "identifiers": {
+    "bizno": null,
+    "corpno": null,
+    "listing": null,
+    "src": []
+   },
+   "region": "DAEJEON",
+   "region_basis": "본사 소재지",
+   "hq": {
+    "text": "대전 (도로명 주소 미확인)",
+    "src": [
+     0,
+     1
+    ]
+   },
+   "sites": [],
+   "facts": [
+    {
+     "text": "제과 브랜드 성심당 운영. 2025년 매출 2,629억 원 · 영업이익 643억 원 (전자공시 인용 보도)",
+     "src": [
+      0,
+      1
+     ]
+    }
+   ],
+   "industry_line": "제과 브랜드 성심당 운영. 2025년 매출 2,629억",
+   "industries": [
+    "INDUSTRY_CONSUMER_V1",
+    "INDUSTRY_TRAVEL_V1"
+   ],
+   "jobs": [
+    {
+     "role": "ROLE_MKT_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "홍보·판매 채널을 기획하고 성과를 비교한다"
+    },
+    {
+     "role": "ROLE_OPS_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "업무 절차와 일정을 관리한다"
+    },
+    {
+     "role": "ROLE_CS_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "고객 응대 기준과 처리 기록을 관리한다"
+    },
+    {
+     "role": "ROLE_ANALYTICS_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "운영 자료를 모아 지표로 정리한다"
+    }
+   ],
+   "interpretation": [],
+   "to_check": [
+    "공식 홈페이지·공공기관 경영정보 공개시스템(ALIO)·전자공시에서 주소와 사업을 직접 확인"
+   ],
+   "sources": [
+    {
+     "kind": "DIRECTORY",
+     "title": "2001년 설립 · 본사 대전",
+     "url": "https://thevc.kr/rosso",
+     "checked_on": "2026-10-19"
+    },
+    {
+     "kind": "NEWS",
+     "title": "2025년 매출 2,629억 원",
+     "url": "https://www.ddaily.co.kr/page/view/2026041217450859242",
+     "checked_on": "2026-10-19"
+    }
+   ],
+   "hiring": {
+    "status": "UNVERIFIED",
+    "note": "채용 여부를 확인하지 않았습니다"
+   },
+   "verify": "SECONDARY_ONLY"
+  },
+  {
+   "id": "KR-DJ-GYERYONG",
+   "name": "계룡건설산업",
+   "origin": "EXISTING_V1",
+   "identifiers": {
+    "bizno": null,
+    "corpno": null,
+    "listing": null,
+    "src": []
+   },
+   "region": "DAEJEON",
+   "region_basis": "본사 소재지",
+   "hq": {
+    "text": "대전 서구 탄방동 사옥 (번지 미확인)",
+    "src": [
+     0,
+     1,
+     2
+    ]
+   },
+   "sites": [],
+   "facts": [
+    {
+     "text": "종합건설. 대전도시철도 2호선 공사 수주 보도",
+     "src": [
+      0,
+      1,
+      2
+     ]
+    }
+   ],
+   "industry_line": "종합건설. 대전도시철도 2호선 공사 수주 보도",
+   "industries": [
+    "INDUSTRY_B2B_V1"
+   ],
+   "jobs": [
+    {
+     "role": "ROLE_FINACC_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "예산 집행과 결산 기록을 맞춘다"
+    },
+    {
+     "role": "ROLE_PLAN_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "사업 계획과 예산 배분을 정리한다"
+    },
+    {
+     "role": "ROLE_HR_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "채용과 교육 기준을 정한다"
+    },
+    {
+     "role": "ROLE_SALES_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "고객사 요구를 계약 조건으로 정리한다"
+    }
+   ],
+   "interpretation": [],
+   "to_check": [
+    "공식 홈페이지·공공기관 경영정보 공개시스템(ALIO)·전자공시에서 주소와 사업을 직접 확인"
+   ],
+   "sources": [
+    {
+     "kind": "DIRECTORY",
+     "title": "2014년 탄방동 사옥 준공·이전",
+     "url": "https://www.sankun.com/company-info/bRrEM4IJ6aIAIBItqCLctw",
+     "checked_on": "2026-10-19"
+    },
+    {
+     "kind": "DIRECTORY",
+     "title": "채용 공고 근무지 대전 서구 (공고 게시 시점 미확인)",
+     "url": "https://m.catch.co.kr/NCS/RecruitInfoDetails/575276",
+     "checked_on": "2026-10-19"
+    },
+    {
+     "kind": "NEWS",
+     "title": "대전도시철도 2호선 공사 수주",
+     "url": "https://www.digitaltoday.co.kr/aigongsi/amp/2136/gyeryong-construction-daejeon-metro-line-2-contract",
+     "checked_on": "2026-10-19"
+    }
+   ],
+   "hiring": {
+    "status": "UNVERIFIED",
+    "note": "채용 여부를 확인하지 않았습니다"
+   },
+   "verify": "SECONDARY_ONLY"
+  },
+  {
+   "id": "KR-DJ-DJTO",
+   "name": "대전관광공사",
+   "origin": "EXISTING_V1",
+   "identifiers": {
+    "bizno": null,
+    "corpno": null,
+    "listing": null,
+    "src": []
+   },
+   "region": "DAEJEON",
+   "region_basis": "본사 소재지",
+   "hq": {
+    "text": "대전 (주소 미확인)",
+    "src": [
+     0,
+     1
+    ]
+   },
+   "sites": [],
+   "facts": [
+    {
+     "text": "대전시 지방공기업. 컨벤션센터·전시장 등 MICE 시설 운영, 관광기업지원센터 운영",
+     "src": [
+      0,
+      1
+     ]
+    }
+   ],
+   "industry_line": "대전시 지방공기업. 컨벤션센터·전시장 등 MICE 시설",
+   "industries": [
+    "INDUSTRY_TRAVEL_V1",
+    "INDUSTRY_PUBLIC_V1"
+   ],
+   "jobs": [
+    {
+     "role": "ROLE_MKT_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "홍보·판매 채널을 기획하고 성과를 비교한다"
+    },
+    {
+     "role": "ROLE_PLAN_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "사업 계획과 예산 배분을 정리한다"
+    },
+    {
+     "role": "ROLE_CS_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "고객 응대 기준과 처리 기록을 관리한다"
+    }
+   ],
+   "interpretation": [],
+   "to_check": [
+    "공식 홈페이지·공공기관 경영정보 공개시스템(ALIO)·전자공시에서 주소와 사업을 직접 확인"
+   ],
+   "sources": [
+    {
+     "kind": "DIRECTORY",
+     "title": "MICE · 관광 진흥 · 시설 운영",
+     "url": "https://thevc.kr/daejeoncitytourismassociation",
+     "checked_on": "2026-10-19"
+    },
+    {
+     "kind": "NEWS",
+     "title": "청주공항 연계 관광 활성화 협약 (2024-08)",
+     "url": "https://newsseoul.co.kr/news/view/1065600038744845",
+     "checked_on": "2026-10-19"
+    }
+   ],
+   "hiring": {
+    "status": "UNVERIFIED",
+    "note": "채용 여부를 확인하지 않았습니다"
+   },
+   "verify": "SECONDARY_ONLY"
+  },
+  {
+   "id": "KR-DJ-GOLFZON",
+   "name": "골프존",
+   "origin": "EXISTING_V1",
+   "identifiers": {
+    "bizno": null,
+    "corpno": null,
+    "listing": null,
+    "src": []
+   },
+   "region": "DAEJEON",
+   "region_basis": "사업장 소재지",
+   "hq": {
+    "text": "대전 유성구 테크노11로 13 사업장(건물 용도 공장) · 본사 위치는 출처마다 다름",
+    "src": [
+     0,
+     1
+    ]
+   },
+   "sites": [],
+   "facts": [
+    {
+     "text": "골프 시뮬레이터·골프 플랫폼 (세부는 공식 자료로 확인 전)",
+     "src": [
+      0,
+      1
+     ]
+    }
+   ],
+   "industry_line": "골프 시뮬레이터·골프 플랫폼",
+   "industries": [
+    "INDUSTRY_DIGITAL_V1",
+    "INDUSTRY_CONSUMER_V1"
+   ],
+   "jobs": [
+    {
+     "role": "ROLE_ANALYTICS_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "운영 자료를 모아 지표로 정리한다"
+    },
+    {
+     "role": "ROLE_MKT_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "홍보·판매 채널을 기획하고 성과를 비교한다"
+    },
+    {
+     "role": "ROLE_PLAN_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "사업 계획과 예산 배분을 정리한다"
+    }
+   ],
+   "interpretation": [],
+   "to_check": [
+    "공식 홈페이지·공공기관 경영정보 공개시스템(ALIO)·전자공시에서 주소와 사업을 직접 확인"
+   ],
+   "sources": [
+    {
+     "kind": "DIRECTORY",
+     "title": "유성구 테크노11로 13 · 용도 공장",
+     "url": "https://safehomes.kr/risk-map/대전광역시/유성구/탑립동/기타/building/골프존/10741100171884",
+     "checked_on": "2026-10-19"
+    },
+    {
+     "kind": "DIRECTORY",
+     "title": "주소 서울 강남구 영동대로 735 로 표기",
+     "url": "https://www.jobplanet.co.kr/companies/85411/info/%EA%B3%A8%ED%94%84%EC%A1%B4",
+     "checked_on": "2026-10-19"
+    }
+   ],
+   "hiring": {
+    "status": "UNVERIFIED",
+    "note": "채용 여부를 확인하지 않았습니다"
+   },
+   "verify": "CONFLICTING"
+  },
+  {
+   "id": "KR-CB-AEROK",
+   "name": "에어로케이항공",
+   "origin": "EXISTING_V1",
+   "identifiers": {
+    "bizno": null,
+    "corpno": null,
+    "listing": null,
+    "src": []
+   },
+   "region": "CHUNGBUK",
+   "region_basis": "운항 거점",
+   "hq": {
+    "text": "청주국제공항 거점 (본사 주소 미확인)",
+    "src": [
+     0,
+     1
+    ]
+   },
+   "sites": [],
+   "facts": [
+    {
+     "text": "청주국제공항 거점 저비용항공사. 일본 정기노선 11개 (2026-07 보도)",
+     "src": [
+      0,
+      1
+     ]
+    }
+   ],
+   "industry_line": "청주국제공항 거점 저비용항공사. 일본 정기노선 11개",
+   "industries": [
+    "INDUSTRY_AVIATION_V1",
+    "INDUSTRY_TRAVEL_V1"
+   ],
+   "jobs": [
+    {
+     "role": "ROLE_ANALYTICS_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "운영 자료를 모아 지표로 정리한다"
+    },
+    {
+     "role": "ROLE_CS_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "고객 응대 기준과 처리 기록을 관리한다"
+    },
+    {
+     "role": "ROLE_OPS_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "업무 절차와 일정을 관리한다"
+    },
+    {
+     "role": "ROLE_MKT_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "홍보·판매 채널을 기획하고 성과를 비교한다"
+    }
+   ],
+   "interpretation": [],
+   "to_check": [
+    "공식 홈페이지·공공기관 경영정보 공개시스템(ALIO)·전자공시에서 주소와 사업을 직접 확인"
+   ],
+   "sources": [
+    {
+     "kind": "NEWS",
+     "title": "청주 출발 일본 노선 11개로 확대",
+     "url": "https://www.segye.com/newsView/20260723514592",
+     "checked_on": "2026-10-19"
+    },
+    {
+     "kind": "NEWS",
+     "title": "청주·인천 기점 누적 탑승객 500만 명",
+     "url": "https://www.fnnews.com/news/202607131327059627",
+     "checked_on": "2026-10-19"
+    }
+   ],
+   "hiring": {
+    "status": "UNVERIFIED",
+    "note": "채용 여부를 확인하지 않았습니다"
+   },
+   "verify": "SECONDARY_ONLY"
+  },
+  {
+   "id": "KR-CN-SDC-ASAN",
+   "name": "삼성디스플레이 아산캠퍼스",
+   "origin": "EXISTING_V1",
+   "identifiers": {
+    "bizno": null,
+    "corpno": null,
+    "listing": null,
+    "src": []
+   },
+   "region": "CHUNGNAM",
+   "region_basis": "사업장 소재지",
+   "hq": {
+    "text": "충남 아산시 탕정면 일대 (사업장)",
+    "src": [
+     0,
+     1
+    ]
+   },
+   "sites": [],
+   "facts": [
+    {
+     "text": "디스플레이 생산 사업장. 아산 클러스터 투자 확대 보도",
+     "src": [
+      0,
+      1
+     ]
+    }
+   ],
+   "industry_line": "디스플레이 생산 사업장. 아산 클러스터 투자 확대 보도",
+   "industries": [
+    "INDUSTRY_B2B_V1"
+   ],
+   "jobs": [
+    {
+     "role": "ROLE_OPS_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "업무 절차와 일정을 관리한다"
+    },
+    {
+     "role": "ROLE_FINACC_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "예산 집행과 결산 기록을 맞춘다"
+    },
+    {
+     "role": "ROLE_HR_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "채용과 교육 기준을 정한다"
+    },
+    {
+     "role": "ROLE_PLAN_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "사업 계획과 예산 배분을 정리한다"
+    }
+   ],
+   "interpretation": [],
+   "to_check": [
+    "공식 홈페이지·공공기관 경영정보 공개시스템(ALIO)·전자공시에서 주소와 사업을 직접 확인",
+    "사업장 위치다. 경영 직무의 근무지인지는 확인하지 않았다"
+   ],
+   "sources": [
+    {
+     "kind": "NEWS",
+     "title": "아산 디스플레이 클러스터",
+     "url": "https://www.heraldk.com/article/2026070121250683470",
+     "checked_on": "2026-10-19"
+    },
+    {
+     "kind": "NEWS",
+     "title": "아산 투자",
+     "url": "https://www.inews24.com/view/2001598",
+     "checked_on": "2026-10-19"
+    }
+   ],
+   "hiring": {
+    "status": "UNVERIFIED",
+    "note": "채용 여부를 확인하지 않았습니다"
+   },
+   "verify": "SECONDARY_ONLY"
+  },
+  {
+   "id": "KR-NA-KAL",
+   "name": "대한항공",
+   "origin": "EXISTING_V1",
+   "identifiers": {
+    "bizno": null,
+    "corpno": null,
+    "listing": null,
+    "src": []
+   },
+   "region": "NATIONAL",
+   "region_basis": "본사 소재지",
+   "hq": {
+    "text": "서울 강서구 하늘길 260 (공항동)",
+    "src": [
+     0,
+     1
+    ]
+   },
+   "sites": [],
+   "facts": [
+    {
+     "text": "여객·화물 운송, 항공기 정비, 기내식 등",
+     "src": [
+      0,
+      1
+     ]
+    }
+   ],
+   "industry_line": "여객·화물 운송, 항공기 정비, 기내식 등",
+   "industries": [
+    "INDUSTRY_AVIATION_V1"
+   ],
+   "jobs": [
+    {
+     "role": "ROLE_ANALYTICS_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "운영 자료를 모아 지표로 정리한다"
+    },
+    {
+     "role": "ROLE_CS_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "고객 응대 기준과 처리 기록을 관리한다"
+    },
+    {
+     "role": "ROLE_SALES_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "고객사 요구를 계약 조건으로 정리한다"
+    },
+    {
+     "role": "ROLE_PLAN_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "사업 계획과 예산 배분을 정리한다"
+    }
+   ],
+   "interpretation": [],
+   "to_check": [
+    "공식 홈페이지·공공기관 경영정보 공개시스템(ALIO)·전자공시에서 주소와 사업을 직접 확인"
+   ],
+   "sources": [
+    {
+     "kind": "DIRECTORY",
+     "title": "주소 하늘길 260",
+     "url": "https://jasoseol.com/companies/45",
+     "checked_on": "2026-10-19"
+    },
+    {
+     "kind": "DIRECTORY",
+     "title": "사업 범위",
+     "url": "https://www.itwiki.kr/w/%EB%8C%80%ED%95%9C%ED%95%AD%EA%B3%B5",
+     "checked_on": "2026-10-19"
+    }
+   ],
+   "hiring": {
+    "status": "UNVERIFIED",
+    "note": "채용 여부를 확인하지 않았습니다"
+   },
+   "verify": "SECONDARY_ONLY"
+  },
+  {
+   "id": "KR-NA-KAC",
+   "name": "한국공항공사",
+   "origin": "EXISTING_V1",
+   "identifiers": {
+    "bizno": null,
+    "corpno": null,
+    "listing": null,
+    "src": []
+   },
+   "region": "NATIONAL",
+   "region_basis": "본사 소재지",
+   "hq": {
+    "text": "서울 강서구 하늘길 78",
+    "src": [
+     0
+    ]
+   },
+   "sites": [],
+   "facts": [
+    {
+     "text": "공항 운영 공기업 (기관명 기준)",
+     "src": [
+      0
+     ]
+    }
+   ],
+   "industry_line": "공항 운영 공기업",
+   "industries": [
+    "INDUSTRY_AVIATION_V1",
+    "INDUSTRY_PUBLIC_V1"
+   ],
+   "jobs": [
+    {
+     "role": "ROLE_OPS_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "업무 절차와 일정을 관리한다"
+    },
+    {
+     "role": "ROLE_PLAN_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "사업 계획과 예산 배분을 정리한다"
+    },
+    {
+     "role": "ROLE_CS_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "고객 응대 기준과 처리 기록을 관리한다"
+    },
+    {
+     "role": "ROLE_ANALYTICS_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "운영 자료를 모아 지표로 정리한다"
+    }
+   ],
+   "interpretation": [],
+   "to_check": [
+    "공식 홈페이지·공공기관 경영정보 공개시스템(ALIO)·전자공시에서 주소와 사업을 직접 확인",
+    "청주공항 등 지방 공항 근무 여부는 확인하지 않았다"
+   ],
+   "sources": [
+    {
+     "kind": "DIRECTORY",
+     "title": "주소 하늘길 78",
+     "url": "https://jasoseol.com/companies/202",
+     "checked_on": "2026-10-19"
+    }
+   ],
+   "hiring": {
+    "status": "UNVERIFIED",
+    "note": "채용 여부를 확인하지 않았습니다"
+   },
+   "verify": "SECONDARY_ONLY"
+  },
+  {
+   "id": "KR-NA-IIAC",
+   "name": "인천국제공항공사",
+   "origin": "EXISTING_V1",
+   "identifiers": {
+    "bizno": null,
+    "corpno": null,
+    "listing": null,
+    "src": []
+   },
+   "region": "NATIONAL",
+   "region_basis": "본사 소재지",
+   "hq": {
+    "text": "인천 중구 공항로424번길 47",
+    "src": [
+     0
+    ]
+   },
+   "sites": [],
+   "facts": [
+    {
+     "text": "인천국제공항 운영 공기업 (기관명 기준)",
+     "src": [
+      0
+     ]
+    }
+   ],
+   "industry_line": "인천국제공항 운영 공기업",
+   "industries": [
+    "INDUSTRY_AVIATION_V1",
+    "INDUSTRY_PUBLIC_V1"
+   ],
+   "jobs": [
+    {
+     "role": "ROLE_OPS_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "업무 절차와 일정을 관리한다"
+    },
+    {
+     "role": "ROLE_CS_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "고객 응대 기준과 처리 기록을 관리한다"
+    },
+    {
+     "role": "ROLE_ANALYTICS_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "운영 자료를 모아 지표로 정리한다"
+    },
+    {
+     "role": "ROLE_PLAN_V1",
+     "status": "INDUSTRY_EXAMPLE",
+     "tasks": "사업 계획과 예산 배분을 정리한다"
+    }
+   ],
+   "interpretation": [],
+   "to_check": [
+    "공식 홈페이지·공공기관 경영정보 공개시스템(ALIO)·전자공시에서 주소와 사업을 직접 확인"
+   ],
+   "sources": [
+    {
+     "kind": "DIRECTORY",
+     "title": "본사 주소",
+     "url": "https://linkareer.com/company-analysis/186",
+     "checked_on": "2026-10-19"
+    }
+   ],
+   "hiring": {
+    "status": "UNVERIFIED",
+    "note": "채용 여부를 확인하지 않았습니다"
+   },
+   "verify": "SECONDARY_ONLY"
+  }
+ ]
+}

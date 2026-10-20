@@ -1,0 +1,126 @@
+{
+ "pdf": "docs/metri/review/pdf-gm/v2/BIZ-GM-POOR.pdf",
+ "pages": 20,
+ "rows": [
+  {
+   "page": 1,
+   "file": "POOR-p-01.png",
+   "chars": 324,
+   "fill": 0.96
+  },
+  {
+   "page": 2,
+   "file": "POOR-p-02.png",
+   "chars": 688,
+   "fill": 0.61
+  },
+  {
+   "page": 3,
+   "file": "POOR-p-03.png",
+   "chars": 884,
+   "fill": 0.96
+  },
+  {
+   "page": 4,
+   "file": "POOR-p-04.png",
+   "chars": 659,
+   "fill": 0.99
+  },
+  {
+   "page": 5,
+   "file": "POOR-p-05.png",
+   "chars": 755,
+   "fill": 0.85
+  },
+  {
+   "page": 6,
+   "file": "POOR-p-06.png",
+   "chars": 1029,
+   "fill": 0.98
+  },
+  {
+   "page": 7,
+   "file": "POOR-p-07.png",
+   "chars": 893,
+   "fill": 0.82
+  },
+  {
+   "page": 8,
+   "file": "POOR-p-08.png",
+   "chars": 1041,
+   "fill": 0.96
+  },
+  {
+   "page": 9,
+   "file": "POOR-p-09.png",
+   "chars": 944,
+   "fill": 0.88
+  },
+  {
+   "page": 10,
+   "file": "POOR-p-10.png",
+   "chars": 785,
+   "fill": 0.79
+  },
+  {
+   "page": 11,
+   "file": "POOR-p-11.png",
+   "chars": 879,
+   "fill": 0.97
+  },
+  {
+   "page": 12,
+   "file": "POOR-p-12.png",
+   "chars": 1108,
+   "fill": 0.62
+  },
+  {
+   "page": 13,
+   "file": "POOR-p-13.png",
+   "chars": 938,
+   "fill": 0.95
+  },
+  {
+   "page": 14,
+   "file": "POOR-p-14.png",
+   "chars": 728,
+   "fill": 0.41
+  },
+  {
+   "page": 15,
+   "file": "POOR-p-15.png",
+   "chars": 914,
+   "fill": 0.95
+  },
+  {
+   "page": 16,
+   "file": "POOR-p-16.png",
+   "chars": 1277,
+   "fill": 0.95
+  },
+  {
+   "page": 17,
+   "file": "POOR-p-17.png",
+   "chars": 905,
+   "fill": 0.91
+  },
+  {
+   "page": 18,
+   "file": "POOR-p-18.png",
+   "chars": 860,
+   "fill": 0.89
+  },
+  {
+   "page": 19,
+   "file": "POOR-p-19.png",
+   "chars": 482,
+   "fill": 0.94
+  },
+  {
+   "page": 20,
+   "file": "POOR-p-20.png",
+   "chars": 1241,
+   "fill": 0.84
+  }
+ ]
+}
