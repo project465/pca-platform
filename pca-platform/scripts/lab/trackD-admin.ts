@@ -84,8 +84,13 @@ async function orgId(code: string, name: string): Promise<string> {
     `INSERT INTO organizations (code, name, org_type, status, country) VALUES ($1,$2,'university','active','KR') RETURNING id::text`, [code, name]);
   return r!.id;
 }
+/** 다시 돌려도 같은 계정을 쓴다(감사 기록이 그 계정을 가리켜 지울 수 없다) */
+async function person(login: string): Promise<{ id: string }> {
+  const had = await queryOne<{ id: string }>(`SELECT id::text FROM users WHERE login_id=$1`, [login]);
+  return had ?? await makeStudent(login);
+}
 async function staff(login: string, org: string, role: "org_admin" | "instructor"): Promise<Who> {
-  const u = await makeStudent(login);
+  const u = await person(login);
   await query(`DELETE FROM memberships WHERE user_id=$1`, [u.id]);
   await query(`INSERT INTO memberships (user_id, org_id, role) VALUES ($1,$2,$3)`, [u.id, org, role]);
   return { id: u.id, name: login, locale: "ko", mustResetPw: false, role, memberships: [{ orgId: org, role }] };
@@ -97,7 +102,8 @@ async function main(): Promise<void> {
   const pcuAdmin = await staff("zztd-pcu-admin", pcuOrg, "org_admin");
   const pcuInst = await staff("zztd-pcu-inst", pcuOrg, "instructor");
   const zzAdmin = await staff("zztd-zz-admin", zzOrg, "org_admin");
-  const plain = await makeStudent("zztd-plain");
+  const plain = await person("zztd-plain");
+  await query(`DELETE FROM memberships WHERE user_id=$1 AND org_id IS NOT NULL`, [plain.id]);
   const student: Who = { id: plain.id, name: "학생", locale: "ko", mustResetPw: false, role: "student", memberships: [] };
 
   /* 지난 회차의 같은 학번을 치운다(시험 계정만) */
