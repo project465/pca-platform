@@ -2,7 +2,9 @@
  * **Staging 배포본을 사람이 바로 눌러 볼 수 있는 상태로 세운다.** Railway 의
  * staging 서비스 Shell 에서 한 번 치는 자리다.
  *
- *   npm run staging:bootstrap                 # 읽고 · 세우고 · 열쇠를 한 번 보여 준다
+ *   npm run staging:bootstrap                 # 읽고 · 세우고 · 열쇠를 한 번 보여 준다(배재대)
+ *   UNI=ALL npm run staging:bootstrap         # 등록부의 학교 전부(고려대 · 전주대 · 진흥원 포함)
+ *   UNI=KU,JJU npm run staging:bootstrap      # 고른 학교만
  *   STUDENTS=2 npm run staging:bootstrap      # 전공마다 학생 둘
  *   CORES=BIZ_CORE_V1,CS_CORE_V1 npm run staging:bootstrap
  *   ROTATE=yes npm run staging:bootstrap      # 이미 있는 시험 계정의 열쇠를 새로 낸다
@@ -32,14 +34,25 @@ import { appEnv, stagingGate } from "../src/lib/env";
 import { hashPassword } from "../src/lib/password";
 import { checkStudent, provisionStudent } from "../src/lib/campus/students";
 import {
-  allLeaves, coreOf, statusOf, university,
+  allLeaves, campusRegistry, campusWords, coreOf, statusOf, university,
 } from "../src/lib/campus/registry";
 import { core as coreEntry, previewOpenCores, sellableCores } from "../src/lib/me-v3/core-registry";
 
-const UNI = process.env.UNI ?? "PCU";
-const UNI_NAME = "배재대학교";
-const ADMIN_ID = process.env.ADMIN_ID ?? "pcu_admin";
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "pcu-admin@staging.invalid";
+/* 세울 학교. `UNI=KU` 하나, `UNI=PCU,KU` 여럿, `UNI=ALL` 이면 등록부의 학교 전부다 */
+const UNIS_RAW = (process.env.UNI ?? "PCU").trim().toUpperCase();
+const UNIS = UNIS_RAW === "ALL"
+  ? campusRegistry().universities.map((x) => x.university_code)
+  : UNIS_RAW.split(",").map((x) => x.trim()).filter(Boolean);
+/* 학교마다 담당자 아이디는 `<코드>_admin` 이다. 배재대는 전부터 `pcu_admin`
+   이고 `ADMIN_ID` 로 덮을 수 있다(학교 하나를 세울 때만) */
+const adminIdOf = (uni: string): string =>
+  (UNIS.length === 1 && process.env.ADMIN_ID) || `${uni.toLowerCase()}_admin`;
+const adminEmailOf = (uni: string): string =>
+  (UNIS.length === 1 && process.env.ADMIN_EMAIL) || `${uni.toLowerCase()}-admin@staging.invalid`;
+/* 시험 학생 아이디. 배재대는 전부터 `test-biz-01` 이고, 다른 학교는 학교
+   코드를 붙인다(`test-ku-biz-01`). 아이디는 전체에서 하나라 겹치면 안 된다 */
+const testLoginOf = (uni: string, short: string, i: number): string =>
+  `test-${uni === "PCU" ? "" : `${uni.toLowerCase()}-`}${short}-${String(i).padStart(2, "0")}`;
 const ROTATE = (process.env.ROTATE ?? "").toLowerCase() === "yes";
 const SKIP_DB = (process.env.SKIP_DB ?? "").toLowerCase() === "yes";
 const PER_CORE = Math.max(1, Math.min(5, Number(process.env.STUDENTS ?? 1) || 1));
@@ -76,12 +89,19 @@ async function stepDb(): Promise<void> {
   }
 }
 
-async function stepOrg(creds: Cred[]): Promise<string> {
+async function stepOrg(UNI: string, creds: Cred[]): Promise<string> {
+  const reg = university(UNI);
+  if (!reg) throw new Error(`등록부에 ${UNI} 가 없다`);
+  const UNI_NAME = reg.university_name;
+  const ADMIN_ID = adminIdOf(UNI);
+  const ADMIN_EMAIL = adminEmailOf(UNI);
+  const words = campusWords(reg);
   const org = await queryOne<{ id: string }>(
     `INSERT INTO organizations (code, country, org_type, status, name, language, is_demo)
-     VALUES ($1, 'KR', 'university', 'active', $2, 'ko', FALSE)
+     VALUES ($1, 'KR', $3, 'active', $2, 'ko', FALSE)
      ON CONFLICT (code) DO UPDATE SET status = 'active', is_demo = FALSE
-     RETURNING id::text`, [UNI, UNI_NAME]);
+     RETURNING id::text`,
+    [UNI, UNI_NAME, reg.org_kind === "agency" ? "public_institution" : "university"]);
   if (!org) throw new Error("기관 줄을 만들지 못했다");
   await query(
     `INSERT INTO translations (table_name, row_id, lang, field, value)
@@ -96,9 +116,10 @@ async function stepOrg(creds: Cred[]): Promise<string> {
     pw = freshPw(16);
     const u = await queryOne<{ id: string }>(
       `INSERT INTO users (login_id, email, display_name, password_hash, status, locale, must_reset_pw, is_demo)
-       VALUES ($1, $2, '학과 담당자 (시험)', $3, 'active', 'ko', FALSE, FALSE)
+       VALUES ($1, $2, $4, $3, 'active', 'ko', FALSE, FALSE)
        ON CONFLICT (login_id) DO UPDATE SET password_hash = EXCLUDED.password_hash, status = 'active'
-       RETURNING id::text`, [ADMIN_ID, ADMIN_EMAIL, await hashPassword(pw)]);
+       RETURNING id::text`,
+      [ADMIN_ID, ADMIN_EMAIL, await hashPassword(pw), `${words.staff} (시험)`]);
     if (!u) throw new Error("담당자 계정을 만들지 못했다");
     await query(`UPDATE users SET is_demo = FALSE WHERE id = $1::bigint`, [u.id]);
     await query(
@@ -110,15 +131,16 @@ async function stepOrg(creds: Cred[]): Promise<string> {
        ON CONFLICT (user_id, org_id, role) DO NOTHING`, [had.id, org.id]);
   }
   creds.push({
-    role: "학과 담당자", login: ADMIN_ID, pw, where: "/login",
+    role: `${UNI} 담당자`, login: ADMIN_ID, pw, where: "/login",
     note: pw ? "지금 한 번만 보인다" : "이미 있다 · 열쇠는 그대로 (ROTATE=yes 로 새로)",
   });
   return org.id;
 }
 
-async function stepStudents(orgId: string, creds: Cred[]): Promise<void> {
+async function stepStudents(UNI: string, orgId: string, creds: Cred[]): Promise<void> {
   const u = university(UNI);
   if (!u) throw new Error(`등록부에 ${UNI} 가 없다`);
+  const UNI_NAME = u.university_name;
   const leaves = allLeaves(u).filter((r) => r.catalog.default_for_unknown);
   for (const code of CORES) {
     let entry: { name_ko: string } | null = null;
@@ -130,15 +152,20 @@ async function stepStudents(orgId: string, creds: Cred[]): Promise<void> {
     const ready = statusOf(u, seat) === "READY";
     const short = code.replace(/_CORE_V\d+$/, "").toLowerCase();
     for (let i = 1; i <= PER_CORE; i += 1) {
-      const login = `test-${short}-${String(i).padStart(2, "0")}`;
+      const login = testLoginOf(UNI, short, i);
       const checked = checkStudent(UNI, {
         student_id: login, login_id: login, name: `시험 학생 ${entry.name_ko} ${i}`, email: null,
         college_code: seat.college.code, department_code: seat.leaf.code,
       });
       if (!checked.ok) { console.log(`  걸림   ${login} — ${checked.why}`); continue; }
-      const made = await provisionStudent(orgId, checked.value, { rotate: ROTATE });
+      let made;
+      try {
+        made = await provisionStudent(orgId, checked.value, { rotate: ROTATE });
+      } catch (e) {
+        console.log(`  걸림   ${login} — ${(e as Error).message}`); continue;
+      }
       creds.push({
-        role: "학생", login, pw: made.password,
+        role: `${UNI} 학생`, login, pw: made.password,
         where: `/campus/${UNI.toLowerCase()}/login`,
         note: `${seat.leaf.name} (${entry.name_ko})`
           + (ready ? "" : " · **아직 학생에게 닫혀 있다** — V3_PREVIEW_OPEN 을 확인")
@@ -172,11 +199,15 @@ async function main(): Promise<void> {
   await stepDb();
 
   /* 3. 기관 · 담당자 · 학생 */
-  console.log("\n── 배재대 기관과 담당자");
   const creds: Cred[] = [];
-  const orgId = await stepOrg(creds);
-  console.log("\n── 시험 학생 (전공마다)");
-  await stepStudents(orgId, creds);
+  for (const uni of UNIS) {
+    const reg = university(uni);
+    if (!reg) { console.log(`\n  걸림   등록부에 ${uni} 가 없다 — 건너뛴다`); continue; }
+    console.log(`\n── ${reg.university_name}(${uni}) 기관과 담당자`);
+    const orgId = await stepOrg(uni, creds);
+    console.log(`\n── ${reg.university_name} 시험 학생 (전공마다)`);
+    await stepStudents(uni, orgId, creds);
+  }
 
   /* 4. 한 번만 보여 준다 */
   console.log("\n── 접속 정보 (이 화면에서만 보인다 · 어디에도 적히지 않는다)\n");
@@ -186,7 +217,7 @@ async function main(): Promise<void> {
     console.log(`  ${pad(c.role, 10)}${pad(c.login, 18)}${pad(c.pw ?? "(그대로)", 18)}${pad(base + c.where, 58)}${c.note}`);
   }
   if (gate) console.log(`\n  먼저 브라우저가 묻는 자물쇠: 아이디 ${gate.user} · 비밀번호는 Railway 변수 STAGING_BASIC_AUTH 의 콜론 뒤`);
-  console.log(`\n  다음: 학생 아이디로 ${base}/campus/${UNI.toLowerCase()}/login 에 들어가 검사 → 결과 → PDF → 경험 추가까지 누른다.`);
+  console.log(`\n  다음: 학생 아이디로 ${UNIS.map((x) => `${base}/campus/${x.toLowerCase()}/login`).join(" · ")} 에 들어가 검사 → 결과 → PDF → 경험 추가까지 누른다.`);
   console.log(`        담당자 아이디로 ${base}/org/v3 에서 집계가 서는지 본다.\n`);
   process.exit(0);
 }

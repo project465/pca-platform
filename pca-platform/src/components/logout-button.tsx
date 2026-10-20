@@ -9,13 +9,17 @@ import { signOut } from "@/lib/auth";
  * 컴포넌트에 한국어를 박지 않는다.**
  */
 export default function LogoutButton({
-  className, label = "로그아웃",
-}: { className?: string; label?: string }) {
+  className, label = "로그아웃", redirectTo = "/login",
+}: { className?: string; label?: string; redirectTo?: string }) {
+  /* 나간 뒤 돌아갈 곳. 학교 전용 진입으로 들어온 학생은 그 학교의
+     로그인으로 돌아가야 다음 사람이 같은 문으로 들어온다. 이 단추가 받는
+     값은 화면이 정한 우리 쪽 주소뿐이다 */
+  const to = redirectTo.startsWith("/") && !redirectTo.startsWith("//") ? redirectTo : "/login";
   return (
     <form
       action={async () => {
         "use server";
-        await signOut({ redirectTo: "/login" });
+        await signOut({ redirectTo: to });
       }}
     >
       <button type="submit" className={className}>{label}</button>
