@@ -161,7 +161,8 @@ export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V46";
 /* copy.17 — 시작 안내에 그 전공에서 자주 서는 자리 셋이 새로 선다 */
 /* copy.18 — 비어 있는 질문을 짚는 한 줄과 남은 수를 적는 줄이 새로 선다 */
 /* copy.19 — 산업 장면과 대학원 알약이 그 전공의 이름으로 선다(P0) */
-export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.25";
+/** 화면 시안(2026-10-20): 답안 현황 칸의 머리와 안내 한 줄을 더했다 */
+export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.26";
 
 /*
  * `V19` · `copy.14` 로 올린 까닭. **경험 빈도의 화면 말을 공통으로
