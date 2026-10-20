@@ -1,0 +1,17 @@
+# 2026-10-20T11:49:46Z · HEAD 697b4b19 · 이 환경의 빌드 의존성 확인(읽기만)
+next         빈 폴더(package.json 없음 · 파일 0개)
+typescript   빈 폴더(package.json 없음 · 파일 0개)
+react        빈 폴더(package.json 없음 · 파일 0개)
+pg           빈 폴더(package.json 없음 · 파일 0개)
+@types/node  빈 폴더(package.json 없음 · 파일 0개)
+playwright   설치됨 1.56.1
+node_modules/.bin: 없음 → npm run typecheck(tsc) · npm run build(next) 실행 불가
+playwright 전역: 1.56.1
+$ npm view next version --registry https://registry.npmjs.org (10초)
+npm error network If you are behind a proxy, please make sure that the
+npm error network 'proxy' config is set properly.  See: 'npm help config'
+npm error A complete log of this run can be found in: /root/.npm/_logs/2026-10-20T11_49_46_312Z-debug-0.log
+--- .github/workflows (저장소 루트 · 앱 폴더)
+ls: cannot access '/home/user/pca-platform/.github/workflows': No such file or directory
+ls: cannot access '/home/user/pca-platform/pca-platform/.github/workflows': No such file or directory
+--- 초안: docs/metri/review/tracks-r3/F/ci/pcu-verify.yml.draft 163줄 · 저장소에 두지 않음(승인 대기)
