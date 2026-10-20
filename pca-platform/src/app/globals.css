@@ -1225,3 +1225,100 @@ td .sub { display: block; font-size: 12.5px; color: var(--muted); }
 
 /* 관리자 띠의 상표는 링크지만 글자에 밑줄을 긋지 않는다(화면 시안 2026-10-20) */
 .sf-side .sf-brand, .sf-side .sf-brand:hover { text-decoration: none; }
+
+/* ============================================================
+   공개 쪽 겉모양(화면 시안 2026-10-20). 로그인 전에 닿는 쪽 — 시작 고르기 ·
+   로그인 · 가입 · 비밀번호 · 가격 · 약관 · 문의 — 을 학교 입구와 같은
+   모양으로 맞춘다. 짙은 단추는 남색·검정이 아니라 파랑이고, 칸은 둥글고
+   옅은 그림자를 두른다. 글과 길은 그대로다.
+   ============================================================ */
+
+/* 짙은 단추 하나는 파랑이다. 관리자 화면 단추(`.sf-btn`)와 같은 색이다 */
+button.act.solid, .act.solid {
+  background: var(--sf-accent); border-color: var(--sf-accent); color: #fff;
+  box-shadow: 0 6px 16px rgba(47, 107, 255, .22);
+}
+button.act.solid:hover, a.act.solid:hover {
+  background: var(--sf-accent-ink); border-color: var(--sf-accent-ink);
+}
+
+/* 언어 전환: 눌린 칸은 파랑. 각진 상자 대신 둥근 알약 둘이다 */
+.langsw { border-radius: 10px; overflow: hidden; }
+.langsw button.on { background: var(--sf-accent); color: #fff; }
+
+/* 시작 고르기. 머리띠는 학교 입구와 같은 남색, 문패는 둥근 카드 둘이고
+   먼저 권하는 길은 파란 기울기 판이다 */
+.door { background: var(--sf-bg, #f3f6fb); }
+.door-bar { background: #1e2a3e; padding: 14px max(20px, env(safe-area-inset-left, 0px)); }
+.door-main { padding-top: 56px; }
+.door-main h1, .door-card b { color: var(--sf-ink); }
+.door-card.primary b { color: #fff; }
+.doors { gap: 14px; }
+.door-card {
+  position: relative; gap: 6px;
+  border: 1px solid transparent; border-radius: 18px;
+  padding: 22px 56px 22px 24px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, .04), 0 8px 24px rgba(16, 24, 40, .06);
+  transition: box-shadow 120ms ease, transform 120ms ease, border-color 120ms ease;
+}
+.door-card::after {
+  content: "→"; position: absolute; right: 22px; top: 50%; transform: translateY(-50%);
+  font-size: 18px; font-weight: 700; color: var(--sf-accent);
+}
+.door-card:hover { border-color: #c9d6ff; box-shadow: 0 10px 28px rgba(47, 107, 255, .14); }
+.door-card b { font-size: 17.5px; }
+.door-card.primary {
+  background: linear-gradient(135deg, #3d7bff 0%, #2f6bff 45%, #1f4fd1 100%);
+  border-color: transparent; color: #fff;
+  box-shadow: 0 12px 30px rgba(47, 107, 255, .28);
+}
+.door-card.primary::after { color: #fff; }
+.door-card.primary span { color: rgba(255, 255, 255, .86); }
+.door-card.primary:hover { border-color: transparent; filter: brightness(1.04); }
+.door-foot a { color: var(--sf-accent-ink); }
+
+/* 가격 · 상품의 시장 고르기: 눌린 칸은 파랑 */
+nav.pxmkt a[aria-current="true"] { background: var(--sf-accent); color: #fff; }
+
+/* 문의 · 약관: 머리띠 바로 밑에 제목이 붙어 섰다. 다른 공개 쪽처럼 위를 띄운다 */
+.pubwrap.spwrap, .pubwrap.lgwrap { padding-top: 44px; }
+
+/* 약관 본문. 조문 제목 · 번호 목록 · 표를 문서처럼 세운다 */
+.lgdoc {
+  margin-top: 8px; padding: 32px 36px;
+  background: var(--sf-surface); border-radius: 18px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, .04), 0 8px 24px rgba(16, 24, 40, .06);
+  font-size: 14.5px; line-height: 1.8; color: var(--sf-ink-2);
+  word-break: keep-all; overflow-wrap: anywhere;
+}
+.lgdoc > :first-child { margin-top: 0; }
+.lgdoc h2 {
+  margin: 30px 0 10px; padding-top: 22px; border-top: 1px solid var(--sf-line);
+  font-size: 17px; font-weight: 750; color: var(--sf-ink); letter-spacing: -.01em;
+}
+.lgdoc > h2:first-child { padding-top: 0; border-top: 0; }
+.lgdoc h3 { margin: 22px 0 8px; font-size: 15.5px; font-weight: 700; color: var(--sf-ink); }
+.lgdoc h4 { margin: 18px 0 6px; font-size: 14.5px; font-weight: 700; color: var(--sf-ink); }
+.lgdoc p { margin: 10px 0; }
+.lgdoc ol, .lgdoc ul { margin: 8px 0; padding-left: 1.5em; }
+.lgdoc li { margin: 5px 0; padding-left: 2px; }
+.lgdoc li::marker { color: var(--sf-ink-3); font-weight: 600; }
+.lgdoc li > ol, .lgdoc li > ul { margin: 6px 0 4px; }
+.lgdoc strong { color: var(--sf-ink); font-weight: 700; }
+.lgdoc code {
+  padding: 1px 6px; border-radius: 6px; background: #eef2fa;
+  font-family: inherit; font-size: .95em; color: var(--sf-ink);
+}
+.lgdoc blockquote {
+  margin: 14px 0; padding: 12px 16px; border-left: 3px solid var(--sf-accent);
+  background: #f4f7fe; border-radius: 0 10px 10px 0;
+}
+.lgdoc hr { margin: 28px 0; border: 0; border-top: 1px solid var(--sf-line); }
+.lgdoc-tw { margin: 14px 0; overflow-x: auto; border: 1px solid var(--sf-line); border-radius: 12px; }
+.lgdoc table { width: 100%; border-collapse: collapse; font-size: 13.5px; line-height: 1.6; }
+.lgdoc th, .lgdoc td { padding: 10px 14px; text-align: left; vertical-align: top; border-top: 1px solid var(--sf-line); }
+.lgdoc thead th { border-top: 0; background: #f3f6fb; color: var(--sf-ink); font-weight: 700; white-space: nowrap; }
+@media (max-width: 640px) {
+  .lgdoc { padding: 22px 18px; font-size: 14px; }
+  .pubwrap.spwrap, .pubwrap.lgwrap { padding-top: 28px; }
+}

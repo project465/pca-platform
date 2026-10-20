@@ -3,6 +3,7 @@ import Link from "next/link";
 import BrandHome from "@/components/sf/brand-home";
 import PublicFooter from "@/components/sf/public-footer";
 import { readLegalBody } from "@/lib/legal-doc";
+import { LegalMarkdown } from "@/lib/legal-md";
 import { resolveLang } from "@/lib/locale-server";
 import { activeDocs, type ConsentKind } from "@/lib/consent";
 import { toLang2, txer } from "@/lib/surface-text";
@@ -65,14 +66,14 @@ export default async function LegalPage({
             <Link href="/" className="sf-btn ghost sm">{T("navHome")}</Link>
           </div>
         </header>
-        <div className="pubwrap" style={{ maxWidth: 760 }}>
+        <div className="pubwrap lgwrap" style={{ maxWidth: 760 }}>
           <div className="sf-head">
             <div className="sf-head-t">
               <h1 className="sf-h1">{L === "en" ? solo.en : solo.ko}</h1>
             </div>
           </div>
           {text ? (
-            <pre className="lgbody">{text}</pre>
+            <LegalMarkdown text={text} dropTitle />
           ) : (
             /* 없는 것을 있는 척하지 않는다 */
             <p className="sf-sub">
@@ -107,7 +108,7 @@ export default async function LegalPage({
         </div>
       </header>
 
-      <div className="pubwrap" style={{ maxWidth: 760 }}>
+      <div className="pubwrap lgwrap" style={{ maxWidth: 760 }}>
         <div className="sf-head">
           <div className="sf-head-t">
             <div className="sf-eyebrow">
@@ -124,7 +125,7 @@ export default async function LegalPage({
         ) : null}
 
         {body ? (
-          <pre className="lgbody">{body}</pre>
+          <LegalMarkdown text={body} dropTitle />
         ) : (
           <p className="sf-sub">{T("cnNotAgreed")}</p>
         )}
